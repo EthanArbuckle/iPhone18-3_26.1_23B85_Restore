@@ -1,33 +1,33 @@
 @interface NPKProtoGenerateTransactionKeyWithParametersResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTransactionKeyCertChain:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTransactionKeyCertChain:(id)chain;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoGenerateTransactionKeyWithParametersResponse
 
-- (void)addTransactionKeyCertChain:(id)a3
+- (void)addTransactionKeyCertChain:(id)chain
 {
-  v4 = a3;
+  chainCopy = chain;
   transactionKeyCertChains = self->_transactionKeyCertChains;
-  v8 = v4;
+  v8 = chainCopy;
   if (!transactionKeyCertChains)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_transactionKeyCertChains;
     self->_transactionKeyCertChains = v6;
 
-    v4 = v8;
+    chainCopy = v8;
     transactionKeyCertChains = self->_transactionKeyCertChains;
   }
 
-  [(NSMutableArray *)transactionKeyCertChains addObject:v4];
+  [(NSMutableArray *)transactionKeyCertChains addObject:chainCopy];
 }
 
 - (id)description
@@ -36,20 +36,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoGenerateTransactionKeyWithParametersResponse;
   v4 = [(NPKProtoGenerateTransactionKeyWithParametersResponse *)&v8 description];
-  v5 = [(NPKProtoGenerateTransactionKeyWithParametersResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoGenerateTransactionKeyWithParametersResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   transactionKeyIdentifier = self->_transactionKeyIdentifier;
   if (transactionKeyIdentifier)
   {
-    [v3 setObject:transactionKeyIdentifier forKey:@"transactionKeyIdentifier"];
+    [dictionary setObject:transactionKeyIdentifier forKey:@"transactionKeyIdentifier"];
   }
 
   transactionKeyCertChains = self->_transactionKeyCertChains;
@@ -73,10 +73,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_transactionKeyIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -127,47 +127,47 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_transactionKeyIdentifier)
   {
-    [v9 setTransactionKeyIdentifier:?];
+    [toCopy setTransactionKeyIdentifier:?];
   }
 
   if ([(NPKProtoGenerateTransactionKeyWithParametersResponse *)self transactionKeyCertChainsCount])
   {
-    [v9 clearTransactionKeyCertChains];
-    v4 = [(NPKProtoGenerateTransactionKeyWithParametersResponse *)self transactionKeyCertChainsCount];
-    if (v4)
+    [toCopy clearTransactionKeyCertChains];
+    transactionKeyCertChainsCount = [(NPKProtoGenerateTransactionKeyWithParametersResponse *)self transactionKeyCertChainsCount];
+    if (transactionKeyCertChainsCount)
     {
-      v5 = v4;
+      v5 = transactionKeyCertChainsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoGenerateTransactionKeyWithParametersResponse *)self transactionKeyCertChainAtIndex:i];
-        [v9 addTransactionKeyCertChain:v7];
+        [toCopy addTransactionKeyCertChain:v7];
       }
     }
   }
 
   if (self->_appletIdentifier)
   {
-    [v9 setAppletIdentifier:?];
+    [toCopy setAppletIdentifier:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_errorData)
   {
-    [v9 setErrorData:?];
-    v8 = v9;
+    [toCopy setErrorData:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_transactionKeyIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_transactionKeyIdentifier copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -191,7 +191,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v20 + 1) + 8 * v12) copyWithZone:{a3, v20}];
+        v13 = [*(*(&v20 + 1) + 8 * v12) copyWithZone:{zone, v20}];
         [v5 addTransactionKeyCertChain:v13];
 
         ++v12;
@@ -204,11 +204,11 @@
     while (v10);
   }
 
-  v14 = [(NSData *)self->_appletIdentifier copyWithZone:a3];
+  v14 = [(NSData *)self->_appletIdentifier copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
-  v16 = [(NSData *)self->_errorData copyWithZone:a3];
+  v16 = [(NSData *)self->_errorData copyWithZone:zone];
   v17 = v5[2];
   v5[2] = v16;
 
@@ -216,13 +216,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((transactionKeyIdentifier = self->_transactionKeyIdentifier, !(transactionKeyIdentifier | v4[4])) || -[NSString isEqual:](transactionKeyIdentifier, "isEqual:")) && ((transactionKeyCertChains = self->_transactionKeyCertChains, !(transactionKeyCertChains | v4[3])) || -[NSMutableArray isEqual:](transactionKeyCertChains, "isEqual:")) && ((appletIdentifier = self->_appletIdentifier, !(appletIdentifier | v4[1])) || -[NSData isEqual:](appletIdentifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((transactionKeyIdentifier = self->_transactionKeyIdentifier, !(transactionKeyIdentifier | equalCopy[4])) || -[NSString isEqual:](transactionKeyIdentifier, "isEqual:")) && ((transactionKeyCertChains = self->_transactionKeyCertChains, !(transactionKeyCertChains | equalCopy[3])) || -[NSMutableArray isEqual:](transactionKeyCertChains, "isEqual:")) && ((appletIdentifier = self->_appletIdentifier, !(appletIdentifier | equalCopy[1])) || -[NSData isEqual:](appletIdentifier, "isEqual:")))
   {
     errorData = self->_errorData;
-    if (errorData | v4[2])
+    if (errorData | equalCopy[2])
     {
       v9 = [(NSData *)errorData isEqual:?];
     }
@@ -249,11 +249,11 @@
   return v4 ^ v5 ^ [(NSData *)self->_errorData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(NPKProtoGenerateTransactionKeyWithParametersResponse *)self setTransactionKeyIdentifier:?];
   }
@@ -262,7 +262,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -286,12 +286,12 @@
     while (v7);
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NPKProtoGenerateTransactionKeyWithParametersResponse *)self setAppletIdentifier:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NPKProtoGenerateTransactionKeyWithParametersResponse *)self setErrorData:?];
   }

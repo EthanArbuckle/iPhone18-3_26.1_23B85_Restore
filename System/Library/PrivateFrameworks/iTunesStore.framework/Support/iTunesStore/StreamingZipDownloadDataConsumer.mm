@@ -1,12 +1,12 @@
 @interface StreamingZipDownloadDataConsumer
-- (BOOL)consumeData:(id)a3 error:(id *)a4;
-- (BOOL)finish:(id *)a3;
-- (StreamingZipDownloadDataConsumer)initWithPath:(id)a3 options:(id)a4;
-- (id)_stringWithFileSystemRepresentation:(const char *)a3;
-- (id)_stringWithFileSystemRepresentation:(const char *)a3 length:(unint64_t)a4;
-- (unint64_t)_diskUsageForPath:(id)a3;
+- (BOOL)consumeData:(id)data error:(id *)error;
+- (BOOL)finish:(id *)finish;
+- (StreamingZipDownloadDataConsumer)initWithPath:(id)path options:(id)options;
+- (id)_stringWithFileSystemRepresentation:(const char *)representation;
+- (id)_stringWithFileSystemRepresentation:(const char *)representation length:(unint64_t)length;
+- (unint64_t)_diskUsageForPath:(id)path;
 - (unint64_t)diskUsage;
-- (void)_initializeExtractorWithPath:(id)a3 options:(id)a4;
+- (void)_initializeExtractorWithPath:(id)path options:(id)options;
 - (void)reset;
 - (void)suspend;
 - (void)truncate;
@@ -14,26 +14,26 @@
 
 @implementation StreamingZipDownloadDataConsumer
 
-- (StreamingZipDownloadDataConsumer)initWithPath:(id)a3 options:(id)a4
+- (StreamingZipDownloadDataConsumer)initWithPath:(id)path options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = StreamingZipDownloadDataConsumer;
   v8 = [(StreamingZipDownloadDataConsumer *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    [(StreamingZipDownloadDataConsumer *)v8 _initializeExtractorWithPath:v6 options:v7];
+    [(StreamingZipDownloadDataConsumer *)v8 _initializeExtractorWithPath:pathCopy options:optionsCopy];
     v10 = *(&v9->super._overrideProgress + 1);
     if (v10)
     {
       [v10 setExtractorDelegate:v9];
-      v11 = [v7 copy];
+      v11 = [optionsCopy copy];
       v12 = *(&v9->_hasConsumedData + 1);
       *(&v9->_hasConsumedData + 1) = v11;
 
-      v13 = [v6 copy];
+      v13 = [pathCopy copy];
       v14 = *(&v9->_options + 1);
       *(&v9->_options + 1) = v13;
     }
@@ -48,9 +48,9 @@
   return v9;
 }
 
-- (BOOL)consumeData:(id)a3 error:(id *)a4
+- (BOOL)consumeData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -71,7 +71,7 @@
   v17 = &v24;
   v9 = v7;
   v15 = v9;
-  [v8 supplyBytes:v6 withCompletionBlock:v14];
+  [v8 supplyBytes:dataCopy withCompletionBlock:v14];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v10 = v25;
   if (BYTE1(self->_extractor))
@@ -86,9 +86,9 @@
 
   BYTE1(self->_extractor) = v11 & 1;
   v12 = *(v10 + 24);
-  if (a4 && (v10[3] & 1) == 0)
+  if (error && (v10[3] & 1) == 0)
   {
-    *a4 = v19[5];
+    *error = v19[5];
     v12 = *(v25 + 24);
   }
 
@@ -111,7 +111,7 @@
   return result;
 }
 
-- (BOOL)finish:(id *)a3
+- (BOOL)finish:(id *)finish
 {
   v20 = 0;
   v21 = &v20;
@@ -136,9 +136,9 @@
   [v6 finishStreamWithCompletionBlock:v10];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = *(v21 + 24);
-  if (a3 && (v21[3] & 1) == 0)
+  if (finish && (v21[3] & 1) == 0)
   {
-    *a3 = v15[5];
+    *finish = v15[5];
     v8 = *(v21 + 24);
   }
 
@@ -177,11 +177,11 @@
   BYTE1(self->_extractor) = *(&self->_percentComplete + 1) != 0;
 }
 
-- (void)_initializeExtractorWithPath:(id)a3 options:(id)a4
+- (void)_initializeExtractorWithPath:(id)path options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_alloc(ISWeakLinkedClassForString()) initWithPath:v7 options:v6];
+  optionsCopy = options;
+  pathCopy = path;
+  v8 = [objc_alloc(ISWeakLinkedClassForString()) initWithPath:pathCopy options:optionsCopy];
 
   v9 = *(&self->super._overrideProgress + 1);
   *(&self->super._overrideProgress + 1) = v8;
@@ -192,16 +192,16 @@
   v14 = 3221225472;
   v15 = sub_10010A4F8;
   v16 = &unk_100328DE8;
-  v17 = self;
+  selfCopy = self;
   v18 = v10;
   v12 = v10;
   [v11 prepareForExtraction:&v13];
   [v12 waitUntilFinished];
 }
 
-- (unint64_t)_diskUsageForPath:(id)a3
+- (unint64_t)_diskUsageForPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = [NSMutableSet setWithCapacity:0];
   v5 = [NSMutableArray arrayWithCapacity:1];
   v93 = 0;
@@ -209,10 +209,10 @@
   v92 = 0xA200000900000005;
   v94 = 0x500000002;
   v6 = malloc_type_malloc(0x8000uLL, 0xF218F1B2uLL);
-  v84 = v3;
-  if (v3)
+  v84 = pathCopy;
+  if (pathCopy)
   {
-    [v5 addObject:v3];
+    [v5 addObject:pathCopy];
     goto LABEL_16;
   }
 
@@ -222,19 +222,19 @@
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v9;
   }
@@ -258,9 +258,9 @@
 
   if (v13)
   {
-    v10 = [NSString stringWithCString:v13 encoding:4, &v96, v83, 0];
+    oSLogObject = [NSString stringWithCString:v13 encoding:4, &v96, v83, 0];
     free(v13);
-    v81 = v10;
+    v81 = oSLogObject;
     SSFileLog();
 LABEL_14:
   }
@@ -316,21 +316,21 @@ LABEL_20:
                     v39 = +[SSLogConfig sharedConfig];
                   }
 
-                  v40 = [v39 shouldLog];
+                  shouldLog2 = [v39 shouldLog];
                   if ([v39 shouldLogToDisk])
                   {
-                    v40 |= 2u;
+                    shouldLog2 |= 2u;
                   }
 
-                  v41 = [v39 OSLogObject];
-                  if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+                  oSLogObject2 = [v39 OSLogObject];
+                  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
                   {
-                    v42 = v40;
+                    v42 = shouldLog2;
                   }
 
                   else
                   {
-                    v42 = v40 & 2;
+                    v42 = shouldLog2 & 2;
                   }
 
                   if (v42)
@@ -427,19 +427,19 @@ LABEL_56:
                     v39 = +[SSLogConfig sharedConfig];
                   }
 
-                  v58 = [v39 shouldLog];
+                  shouldLog3 = [v39 shouldLog];
                   if ([v39 shouldLogToDisk])
                   {
-                    v58 |= 2u;
+                    shouldLog3 |= 2u;
                   }
 
-                  v41 = [v39 OSLogObject];
-                  if (!os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
+                  oSLogObject2 = [v39 OSLogObject];
+                  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
                   {
-                    v58 &= 2u;
+                    shouldLog3 &= 2u;
                   }
 
-                  if (v58)
+                  if (shouldLog3)
                   {
                     v59 = objc_opt_class();
                     v96 = 138412802;
@@ -457,9 +457,9 @@ LABEL_95:
 LABEL_96:
                     if (v47)
                     {
-                      v41 = [NSString stringWithCString:v47 encoding:4];
+                      oSLogObject2 = [NSString stringWithCString:v47 encoding:4];
                       free(v47);
-                      v82 = v41;
+                      v82 = oSLogObject2;
                       SSFileLog();
                       goto LABEL_98;
                     }
@@ -482,19 +482,19 @@ LABEL_98:
                     v39 = +[SSLogConfig sharedConfig];
                   }
 
-                  v52 = [v39 shouldLog];
+                  shouldLog4 = [v39 shouldLog];
                   if ([v39 shouldLogToDisk])
                   {
-                    v52 |= 2u;
+                    shouldLog4 |= 2u;
                   }
 
-                  v41 = [v39 OSLogObject];
-                  if (!os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+                  oSLogObject2 = [v39 OSLogObject];
+                  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
                   {
-                    v52 &= 2u;
+                    shouldLog4 &= 2u;
                   }
 
-                  if (v52)
+                  if (shouldLog4)
                   {
                     v53 = objc_opt_class();
                     v96 = 138412802;
@@ -528,19 +528,19 @@ LABEL_98:
                   v34 = +[SSLogConfig sharedConfig];
                 }
 
-                v55 = [v34 shouldLog];
+                shouldLog5 = [v34 shouldLog];
                 if ([v34 shouldLogToDisk])
                 {
-                  v55 |= 2u;
+                  shouldLog5 |= 2u;
                 }
 
-                v36 = [v34 OSLogObject];
-                if (!os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+                oSLogObject3 = [v34 OSLogObject];
+                if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
                 {
-                  v55 &= 2u;
+                  shouldLog5 &= 2u;
                 }
 
-                if (!v55)
+                if (!shouldLog5)
                 {
                   goto LABEL_84;
                 }
@@ -560,9 +560,9 @@ LABEL_82:
 
                 if (v57)
                 {
-                  v36 = [NSString stringWithCString:v57 encoding:4];
+                  oSLogObject3 = [NSString stringWithCString:v57 encoding:4];
                   free(v57);
-                  v82 = v36;
+                  v82 = oSLogObject3;
                   SSFileLog();
                   goto LABEL_84;
                 }
@@ -615,19 +615,19 @@ LABEL_33:
                     v34 = +[SSLogConfig sharedConfig];
                   }
 
-                  v35 = [v34 shouldLog];
+                  shouldLog6 = [v34 shouldLog];
                   if ([v34 shouldLogToDisk])
                   {
-                    v35 |= 2u;
+                    shouldLog6 |= 2u;
                   }
 
-                  v36 = [v34 OSLogObject];
-                  if (!os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
+                  oSLogObject3 = [v34 OSLogObject];
+                  if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
                   {
-                    v35 &= 2u;
+                    shouldLog6 &= 2u;
                   }
 
-                  if (v35)
+                  if (shouldLog6)
                   {
                     v37 = objc_opt_class();
                     v96 = 138412802;
@@ -673,19 +673,19 @@ LABEL_100:
           v70 = +[SSLogConfig sharedConfig];
         }
 
-        v71 = [v70 shouldLog];
+        shouldLog7 = [v70 shouldLog];
         if ([v70 shouldLogToDisk])
         {
-          v72 = v71 | 2;
+          v72 = shouldLog7 | 2;
         }
 
         else
         {
-          v72 = v71;
+          v72 = shouldLog7;
         }
 
-        v73 = [v70 OSLogObject];
-        if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
+        oSLogObject4 = [v70 OSLogObject];
+        if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
         {
           v74 = v72;
         }
@@ -715,9 +715,9 @@ LABEL_100:
 
           if (v79)
           {
-            v73 = [NSString stringWithCString:v79 encoding:4, &v96, v83];
+            oSLogObject4 = [NSString stringWithCString:v79 encoding:4, &v96, v83];
             free(v79);
-            v82 = v73;
+            v82 = oSLogObject4;
             SSFileLog();
             goto LABEL_126;
           }
@@ -741,19 +741,19 @@ LABEL_128:
         v60 = +[SSLogConfig sharedConfig];
       }
 
-      v61 = [v60 shouldLog];
+      shouldLog8 = [v60 shouldLog];
       if ([v60 shouldLogToDisk])
       {
-        v62 = v61 | 2;
+        v62 = shouldLog8 | 2;
       }
 
       else
       {
-        v62 = v61;
+        v62 = shouldLog8;
       }
 
-      v63 = [v60 OSLogObject];
-      if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
+      oSLogObject5 = [v60 OSLogObject];
+      if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
       {
         v64 = v62;
       }
@@ -796,9 +796,9 @@ LABEL_129:
       }
     }
 
-    v63 = [NSString stringWithCString:v69 encoding:4, &v96, v83];
+    oSLogObject5 = [NSString stringWithCString:v69 encoding:4, &v96, v83];
     free(v69);
-    v82 = v63;
+    v82 = oSLogObject5;
     SSFileLog();
 LABEL_113:
 
@@ -812,17 +812,17 @@ LABEL_132:
   return v89;
 }
 
-- (id)_stringWithFileSystemRepresentation:(const char *)a3
+- (id)_stringWithFileSystemRepresentation:(const char *)representation
 {
-  v5 = strlen(a3);
+  v5 = strlen(representation);
 
-  return [(StreamingZipDownloadDataConsumer *)self _stringWithFileSystemRepresentation:a3 length:v5];
+  return [(StreamingZipDownloadDataConsumer *)self _stringWithFileSystemRepresentation:representation length:v5];
 }
 
-- (id)_stringWithFileSystemRepresentation:(const char *)a3 length:(unint64_t)a4
+- (id)_stringWithFileSystemRepresentation:(const char *)representation length:(unint64_t)length
 {
   v6 = +[NSFileManager defaultManager];
-  v7 = [v6 stringWithFileSystemRepresentation:a3 length:a4];
+  v7 = [v6 stringWithFileSystemRepresentation:representation length:length];
 
   return v7;
 }

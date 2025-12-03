@@ -1,19 +1,19 @@
 @interface NSData
-+ (NSData)dataWithContentsOfURL:(id)a3 drmContext:(id)a4 error:(id *)a5;
++ (NSData)dataWithContentsOfURL:(id)l drmContext:(id)context error:(id *)error;
 @end
 
 @implementation NSData
 
-+ (NSData)dataWithContentsOfURL:(id)a3 drmContext:(id)a4 error:(id *)a5
++ (NSData)dataWithContentsOfURL:(id)l drmContext:(id)context error:(id *)error
 {
-  if (a4)
+  if (context)
   {
-    return [a4 dataWithContentsOfURL:a3 error:a5];
+    return [context dataWithContentsOfURL:l error:error];
   }
 
   else
   {
-    return [NSData dataWithContentsOfURL:a3, 0, a5];
+    return [NSData dataWithContentsOfURL:l, 0, error];
   }
 }
 

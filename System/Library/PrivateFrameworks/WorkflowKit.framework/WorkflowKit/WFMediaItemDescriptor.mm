@@ -1,16 +1,16 @@
 @interface WFMediaItemDescriptor
-+ (id)allDescriptorsForMediaTypeUsingMPMediaQuery:(id)a3;
-+ (id)collectionForPlaybackWithItemName:(id)a3 persistentIdentifier:(id)a4 mediaType:(id)a5;
-+ (id)collectionsOrItemsFromQuery:(id)a3 forMediaType:(id)a4;
-+ (id)descriptorForMPMediaEntity:(id)a3 mediaType:(id)a4;
-+ (id)descriptorWithPersistentIdentifier:(id)a3 mediaType:(id)a4;
-+ (id)itemCollectionFromQuery:(id)a3 mediaType:(id)a4;
-+ (id)mpMediaQueryForName:(id)a3 withMediaType:(id)a4;
-+ (id)mpMediaQueryForPersistentIdentifier:(id)a3 withMediaType:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (WFMediaItemDescriptor)initWithIntent:(id)a3;
-- (WFMediaItemDescriptor)initWithMediaItemName:(id)a3 persistentIdentifier:(id)a4 mediaType:(id)a5;
-- (WFMediaItemDescriptor)initWithMediaItemName:(id)a3 playbackArchiveData:(id)a4;
++ (id)allDescriptorsForMediaTypeUsingMPMediaQuery:(id)query;
++ (id)collectionForPlaybackWithItemName:(id)name persistentIdentifier:(id)identifier mediaType:(id)type;
++ (id)collectionsOrItemsFromQuery:(id)query forMediaType:(id)type;
++ (id)descriptorForMPMediaEntity:(id)entity mediaType:(id)type;
++ (id)descriptorWithPersistentIdentifier:(id)identifier mediaType:(id)type;
++ (id)itemCollectionFromQuery:(id)query mediaType:(id)type;
++ (id)mpMediaQueryForName:(id)name withMediaType:(id)type;
++ (id)mpMediaQueryForPersistentIdentifier:(id)identifier withMediaType:(id)type;
+- (BOOL)isEqual:(id)equal;
+- (WFMediaItemDescriptor)initWithIntent:(id)intent;
+- (WFMediaItemDescriptor)initWithMediaItemName:(id)name persistentIdentifier:(id)identifier mediaType:(id)type;
+- (WFMediaItemDescriptor)initWithMediaItemName:(id)name playbackArchiveData:(id)data;
 - (id)collectionForPlayback;
 - (unint64_t)hash;
 @end
@@ -20,25 +20,25 @@
 - (id)collectionForPlayback
 {
   v3 = objc_opt_class();
-  v4 = [(WFMediaItemDescriptor *)self itemName];
-  v5 = [(WFMediaItemDescriptor *)self persistentIdentifier];
-  v6 = [(WFMediaItemDescriptor *)self type];
-  v7 = [v3 collectionForPlaybackWithItemName:v4 persistentIdentifier:v5 mediaType:v6];
+  itemName = [(WFMediaItemDescriptor *)self itemName];
+  persistentIdentifier = [(WFMediaItemDescriptor *)self persistentIdentifier];
+  type = [(WFMediaItemDescriptor *)self type];
+  v7 = [v3 collectionForPlaybackWithItemName:itemName persistentIdentifier:persistentIdentifier mediaType:type];
 
   return v7;
 }
 
-+ (id)collectionForPlaybackWithItemName:(id)a3 persistentIdentifier:(id)a4 mediaType:(id)a5
++ (id)collectionForPlaybackWithItemName:(id)name persistentIdentifier:(id)identifier mediaType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9 || ([a1 mpMediaQueryForPersistentIdentifier:v9 withMediaType:v10], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a1, "itemCollectionFromQuery:mediaType:", v11, v10), v12 = objc_claimAutoreleasedReturnValue(), v11, !v12))
+  nameCopy = name;
+  identifierCopy = identifier;
+  typeCopy = type;
+  if (!identifierCopy || ([self mpMediaQueryForPersistentIdentifier:identifierCopy withMediaType:typeCopy], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(self, "itemCollectionFromQuery:mediaType:", v11, typeCopy), v12 = objc_claimAutoreleasedReturnValue(), v11, !v12))
   {
-    if ([v8 length])
+    if ([nameCopy length])
     {
-      v13 = [a1 mpMediaQueryForName:v8 withMediaType:v10];
-      v12 = [a1 itemCollectionFromQuery:v13 mediaType:v10];
+      v13 = [self mpMediaQueryForName:nameCopy withMediaType:typeCopy];
+      v12 = [self itemCollectionFromQuery:v13 mediaType:typeCopy];
     }
 
     else
@@ -50,19 +50,19 @@
   return v12;
 }
 
-+ (id)itemCollectionFromQuery:(id)a3 mediaType:(id)a4
++ (id)itemCollectionFromQuery:(id)query mediaType:(id)type
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 collectionsOrItemsFromQuery:v6 forMediaType:v7];
-  v9 = [v8 firstObject];
+  queryCopy = query;
+  typeCopy = type;
+  v8 = [self collectionsOrItemsFromQuery:queryCopy forMediaType:typeCopy];
+  firstObject = [v8 firstObject];
 
   getMPMediaItemCollectionClass();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else
@@ -89,7 +89,7 @@
     if (objc_opt_isKindOfClass())
     {
       v13 = objc_alloc(getMPMediaItemCollectionClass());
-      v22[0] = v9;
+      v22[0] = firstObject;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
       v10 = [v13 initWithItems:v14];
     }
@@ -105,12 +105,12 @@
   return v10;
 }
 
-+ (id)mpMediaQueryForName:(id)a3 withMediaType:(id)a4
++ (id)mpMediaQueryForName:(id)name withMediaType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  typeCopy = type;
   MPMediaPropertyPredicateClass = getMPMediaPropertyPredicateClass();
-  v8 = v6;
+  v8 = typeCopy;
   if (![v8 isEqualToString:@"Playlist"])
   {
     v18 = WFGroupingPropertyForMediaType(v8);
@@ -142,9 +142,9 @@
             goto LABEL_5;
           }
 
-          v20 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPMediaItemPropertyAlbumArtist(void)"];
-          [v20 handleFailureInFunction:v21 file:@"WFMediaItemDescriptor+Library.m" lineNumber:30 description:{@"%s", dlerror(), v26, v27, v28, v29}];
+          [currentHandler handleFailureInFunction:v21 file:@"WFMediaItemDescriptor+Library.m" lineNumber:30 description:{@"%s", dlerror(), v26, v27, v28, v29}];
           goto LABEL_38;
         case 4:
           v30 = 0;
@@ -170,9 +170,9 @@
             goto LABEL_5;
           }
 
-          v20 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPMediaItemPropertyComposer(void)"];
-          [v20 handleFailureInFunction:v21 file:@"WFMediaItemDescriptor+Library.m" lineNumber:31 description:{@"%s", dlerror(), v26, v27, v28, v29}];
+          [currentHandler handleFailureInFunction:v21 file:@"WFMediaItemDescriptor+Library.m" lineNumber:31 description:{@"%s", dlerror(), v26, v27, v28, v29}];
           goto LABEL_38;
         case 5:
           v30 = 0;
@@ -198,9 +198,9 @@
             goto LABEL_5;
           }
 
-          v20 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPMediaItemPropertyGenre(void)"];
-          [v20 handleFailureInFunction:v21 file:@"WFMediaItemDescriptor+Library.m" lineNumber:32 description:{@"%s", dlerror(), v26, v27, v28, v29}];
+          [currentHandler handleFailureInFunction:v21 file:@"WFMediaItemDescriptor+Library.m" lineNumber:32 description:{@"%s", dlerror(), v26, v27, v28, v29}];
           goto LABEL_38;
       }
     }
@@ -232,9 +232,9 @@
           goto LABEL_5;
         }
 
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPMediaItemPropertyAlbumTitle(void)"];
-        [v20 handleFailureInFunction:v21 file:@"WFMediaItemDescriptor+Library.m" lineNumber:28 description:{@"%s", dlerror(), v26, v27, v28, v29}];
+        [currentHandler handleFailureInFunction:v21 file:@"WFMediaItemDescriptor+Library.m" lineNumber:28 description:{@"%s", dlerror(), v26, v27, v28, v29}];
         goto LABEL_38;
       }
 
@@ -263,9 +263,9 @@
           goto LABEL_5;
         }
 
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPMediaItemPropertyArtist(void)"];
-        [v20 handleFailureInFunction:v21 file:@"WFMediaItemDescriptor+Library.m" lineNumber:29 description:{@"%s", dlerror(), v26, v27, v28, v29}];
+        [currentHandler handleFailureInFunction:v21 file:@"WFMediaItemDescriptor+Library.m" lineNumber:29 description:{@"%s", dlerror(), v26, v27, v28, v29}];
 LABEL_38:
 
         __break(1u);
@@ -297,9 +297,9 @@ LABEL_38:
   _Block_object_dispose(&v30, 8);
   if (!v9)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPMediaPlaylistPropertyName(void)"];
-    [v20 handleFailureInFunction:v21 file:@"WFMediaItemDescriptor+Library.m" lineNumber:26 description:{@"%s", dlerror(), v26, v27, v28, v29}];
+    [currentHandler handleFailureInFunction:v21 file:@"WFMediaItemDescriptor+Library.m" lineNumber:26 description:{@"%s", dlerror(), v26, v27, v28, v29}];
     goto LABEL_38;
   }
 
@@ -308,7 +308,7 @@ LABEL_5:
 LABEL_6:
   v12 = v11;
 
-  v13 = [MPMediaPropertyPredicateClass predicateWithValue:v5 forProperty:v12];
+  v13 = [MPMediaPropertyPredicateClass predicateWithValue:nameCopy forProperty:v12];
 
   v14 = objc_alloc(getMPMediaQueryClass());
   v15 = [MEMORY[0x1E695DFD8] setWithObject:v13];
@@ -319,16 +319,16 @@ LABEL_6:
   return v16;
 }
 
-+ (id)descriptorWithPersistentIdentifier:(id)a3 mediaType:(id)a4
++ (id)descriptorWithPersistentIdentifier:(id)identifier mediaType:(id)type
 {
-  v6 = a4;
-  v7 = [a1 mpMediaQueryForPersistentIdentifier:a3 withMediaType:v6];
-  v8 = [a1 collectionsOrItemsFromQuery:v7 forMediaType:v6];
-  v9 = [v8 firstObject];
+  typeCopy = type;
+  v7 = [self mpMediaQueryForPersistentIdentifier:identifier withMediaType:typeCopy];
+  v8 = [self collectionsOrItemsFromQuery:v7 forMediaType:typeCopy];
+  firstObject = [v8 firstObject];
 
-  if (v9)
+  if (firstObject)
   {
-    v10 = [a1 descriptorForMPMediaEntity:v9 mediaType:v6];
+    v10 = [self descriptorForMPMediaEntity:firstObject mediaType:typeCopy];
   }
 
   else
@@ -339,12 +339,12 @@ LABEL_6:
   return v10;
 }
 
-+ (id)mpMediaQueryForPersistentIdentifier:(id)a3 withMediaType:(id)a4
++ (id)mpMediaQueryForPersistentIdentifier:(id)identifier withMediaType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   MPMediaPropertyPredicateClass = getMPMediaPropertyPredicateClass();
-  v8 = v6;
+  v8 = typeCopy;
   if ([v8 isEqualToString:@"Playlist"])
   {
     v27 = 0;
@@ -367,9 +367,9 @@ LABEL_6:
     _Block_object_dispose(&v27, 8);
     if (!v9)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPMediaPlaylistPropertyPersistentID(void)"];
-      [v11 handleFailureInFunction:v12 file:@"WFMediaItemDescriptor+Library.m" lineNumber:20 description:{@"%s", dlerror(), v23, v24, v25, v26}];
+      [currentHandler handleFailureInFunction:v12 file:@"WFMediaItemDescriptor+Library.m" lineNumber:20 description:{@"%s", dlerror(), v23, v24, v25, v26}];
 LABEL_32:
 
       __break(1u);
@@ -401,9 +401,9 @@ LABEL_32:
     _Block_object_dispose(&v27, 8);
     if (!v9)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPMediaItemPropertyPersistentID(void)"];
-      [v11 handleFailureInFunction:v12 file:@"WFMediaItemDescriptor+Library.m" lineNumber:21 description:{@"%s", dlerror(), v23, v24, v25, v26}];
+      [currentHandler handleFailureInFunction:v12 file:@"WFMediaItemDescriptor+Library.m" lineNumber:21 description:{@"%s", dlerror(), v23, v24, v25, v26}];
       goto LABEL_32;
     }
 
@@ -432,9 +432,9 @@ LABEL_32:
     _Block_object_dispose(&v27, 8);
     if (!v9)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPMediaItemPropertyAlbumPersistentID(void)"];
-      [v11 handleFailureInFunction:v12 file:@"WFMediaItemDescriptor+Library.m" lineNumber:22 description:{@"%s", dlerror(), v23, v24, v25, v26}];
+      [currentHandler handleFailureInFunction:v12 file:@"WFMediaItemDescriptor+Library.m" lineNumber:22 description:{@"%s", dlerror(), v23, v24, v25, v26}];
       goto LABEL_32;
     }
 
@@ -465,9 +465,9 @@ LABEL_16:
     _Block_object_dispose(&v27, 8);
     if (!v9)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPMediaItemPropertyArtistPersistentID(void)"];
-      [v11 handleFailureInFunction:v12 file:@"WFMediaItemDescriptor+Library.m" lineNumber:23 description:{@"%s", dlerror(), v23, v24, v25, v26}];
+      [currentHandler handleFailureInFunction:v12 file:@"WFMediaItemDescriptor+Library.m" lineNumber:23 description:{@"%s", dlerror(), v23, v24, v25, v26}];
       goto LABEL_32;
     }
 
@@ -494,7 +494,7 @@ LABEL_17:
   v16 = v15;
 LABEL_18:
 
-  v17 = [MPMediaPropertyPredicateClass predicateWithValue:v5 forProperty:v16];
+  v17 = [MPMediaPropertyPredicateClass predicateWithValue:identifierCopy forProperty:v16];
 
   v18 = objc_alloc(getMPMediaQueryClass());
   v19 = [MEMORY[0x1E695DFD8] setWithObject:v17];
@@ -503,61 +503,61 @@ LABEL_18:
   return v20;
 }
 
-+ (id)allDescriptorsForMediaTypeUsingMPMediaQuery:(id)a3
++ (id)allDescriptorsForMediaTypeUsingMPMediaQuery:(id)query
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Playlist"])
+  queryCopy = query;
+  if ([queryCopy isEqualToString:@"Playlist"])
   {
-    v5 = [getMPMediaQueryClass() playlistsQuery];
+    playlistsQuery = [getMPMediaQueryClass() playlistsQuery];
   }
 
-  else if ([v4 isEqualToString:@"Song"])
+  else if ([queryCopy isEqualToString:@"Song"])
   {
-    v5 = [getMPMediaQueryClass() songsQuery];
+    playlistsQuery = [getMPMediaQueryClass() songsQuery];
   }
 
-  else if ([v4 isEqualToString:@"Album"])
+  else if ([queryCopy isEqualToString:@"Album"])
   {
-    v5 = [getMPMediaQueryClass() albumsQuery];
+    playlistsQuery = [getMPMediaQueryClass() albumsQuery];
   }
 
-  else if ([v4 isEqualToString:@"Artist"])
+  else if ([queryCopy isEqualToString:@"Artist"])
   {
-    v5 = [getMPMediaQueryClass() artistsQuery];
+    playlistsQuery = [getMPMediaQueryClass() artistsQuery];
   }
 
-  else if ([v4 isEqualToString:@"Genre"])
+  else if ([queryCopy isEqualToString:@"Genre"])
   {
-    v5 = [getMPMediaQueryClass() genresQuery];
+    playlistsQuery = [getMPMediaQueryClass() genresQuery];
   }
 
-  else if ([v4 isEqualToString:@"Compilation"])
+  else if ([queryCopy isEqualToString:@"Compilation"])
   {
-    v5 = [getMPMediaQueryClass() compilationsQuery];
+    playlistsQuery = [getMPMediaQueryClass() compilationsQuery];
   }
 
   else
   {
-    if (([v4 isEqualToString:@"Composer"] & 1) == 0)
+    if (([queryCopy isEqualToString:@"Composer"] & 1) == 0)
     {
 
       goto LABEL_18;
     }
 
-    v5 = [getMPMediaQueryClass() composersQuery];
+    playlistsQuery = [getMPMediaQueryClass() composersQuery];
   }
 
-  v6 = v5;
+  v6 = playlistsQuery;
 
   if (v6)
   {
-    v7 = [a1 collectionsOrItemsFromQuery:v6 forMediaType:v4];
+    v7 = [self collectionsOrItemsFromQuery:v6 forMediaType:queryCopy];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __78__WFMediaItemDescriptor_Library__allDescriptorsForMediaTypeUsingMPMediaQuery___block_invoke;
     v10[3] = &unk_1E8378148;
-    v12 = a1;
-    v11 = v4;
+    selfCopy = self;
+    v11 = queryCopy;
     v8 = [v7 if_map:v10];
 
     goto LABEL_19;
@@ -570,51 +570,51 @@ LABEL_19:
   return v8;
 }
 
-+ (id)collectionsOrItemsFromQuery:(id)a3 forMediaType:(id)a4
++ (id)collectionsOrItemsFromQuery:(id)query forMediaType:(id)type
 {
-  v5 = a3;
-  if ([a4 isEqualToString:@"Song"])
+  queryCopy = query;
+  if ([type isEqualToString:@"Song"])
   {
-    [v5 items];
+    [queryCopy items];
   }
 
   else
   {
-    [v5 collections];
+    [queryCopy collections];
   }
   v6 = ;
 
   return v6;
 }
 
-+ (id)descriptorForMPMediaEntity:(id)a3 mediaType:(id)a4
++ (id)descriptorForMPMediaEntity:(id)entity mediaType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v5, "persistentID")}];
-  v8 = [v6 isEqualToString:@"Song"];
-  if ([v6 isEqualToString:@"Playlist"])
+  entityCopy = entity;
+  typeCopy = type;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(entityCopy, "persistentID")}];
+  v8 = [typeCopy isEqualToString:@"Song"];
+  if ([typeCopy isEqualToString:@"Playlist"])
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [v6 isEqualToString:@"Song"] ^ 1;
+    v9 = [typeCopy isEqualToString:@"Song"] ^ 1;
   }
 
   if ((v8 | v9))
   {
-    v10 = v5;
+    representativeItem = entityCopy;
   }
 
   else
   {
-    v10 = [v5 representativeItem];
+    representativeItem = [entityCopy representativeItem];
   }
 
-  v11 = v10;
-  v12 = v6;
+  v11 = representativeItem;
+  v12 = typeCopy;
   if ([v12 isEqualToString:@"Playlist"])
   {
     v13 = @"name";
@@ -658,24 +658,24 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [(WFMediaItemDescriptor *)self itemName];
-  v4 = [v3 hash];
-  v5 = [(WFMediaItemDescriptor *)self persistentIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(WFMediaItemDescriptor *)self type];
-  v8 = [v7 hash];
-  v9 = [(WFMediaItemDescriptor *)self playbackArchiveData];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(WFMediaItemDescriptor *)self intent];
-  v12 = [v11 hash];
+  itemName = [(WFMediaItemDescriptor *)self itemName];
+  v4 = [itemName hash];
+  persistentIdentifier = [(WFMediaItemDescriptor *)self persistentIdentifier];
+  v6 = [persistentIdentifier hash] ^ v4;
+  type = [(WFMediaItemDescriptor *)self type];
+  v8 = [type hash];
+  playbackArchiveData = [(WFMediaItemDescriptor *)self playbackArchiveData];
+  v10 = v6 ^ v8 ^ [playbackArchiveData hash];
+  intent = [(WFMediaItemDescriptor *)self intent];
+  v12 = [intent hash];
 
   return v10 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  if (self == v7)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -685,52 +685,52 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
-      v9 = [(WFMediaItemDescriptor *)self itemName];
-      if (v9 || ([(WFMediaItemDescriptor *)v8 itemName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      v8 = equalCopy;
+      itemName = [(WFMediaItemDescriptor *)self itemName];
+      if (itemName || ([(WFMediaItemDescriptor *)v8 itemName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v4 = [(WFMediaItemDescriptor *)self itemName];
-        v10 = [(WFMediaItemDescriptor *)v8 itemName];
-        v27 = [v4 isEqual:v10];
+        itemName2 = [(WFMediaItemDescriptor *)self itemName];
+        itemName3 = [(WFMediaItemDescriptor *)v8 itemName];
+        v27 = [itemName2 isEqual:itemName3];
 
-        if (v9)
+        if (itemName)
         {
 LABEL_11:
 
-          v12 = [(WFMediaItemDescriptor *)self persistentIdentifier];
-          if (v12 || ([(WFMediaItemDescriptor *)v8 persistentIdentifier], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+          persistentIdentifier = [(WFMediaItemDescriptor *)self persistentIdentifier];
+          if (persistentIdentifier || ([(WFMediaItemDescriptor *)v8 persistentIdentifier], (itemName2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v13 = [(WFMediaItemDescriptor *)self persistentIdentifier];
-            v5 = [(WFMediaItemDescriptor *)v8 persistentIdentifier];
-            v14 = [v13 isEqual:v5];
+            persistentIdentifier2 = [(WFMediaItemDescriptor *)self persistentIdentifier];
+            persistentIdentifier3 = [(WFMediaItemDescriptor *)v8 persistentIdentifier];
+            v14 = [persistentIdentifier2 isEqual:persistentIdentifier3];
 
-            if (v12)
+            if (persistentIdentifier)
             {
 LABEL_17:
 
-              v15 = [(WFMediaItemDescriptor *)self type];
-              v16 = [(WFMediaItemDescriptor *)v8 type];
-              v17 = [v15 isEqual:v16];
+              type = [(WFMediaItemDescriptor *)self type];
+              type2 = [(WFMediaItemDescriptor *)v8 type];
+              v17 = [type isEqual:type2];
 
-              v18 = [(WFMediaItemDescriptor *)self playbackArchiveData];
-              if (v18 || ([(WFMediaItemDescriptor *)v8 playbackArchiveData], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+              playbackArchiveData = [(WFMediaItemDescriptor *)self playbackArchiveData];
+              if (playbackArchiveData || ([(WFMediaItemDescriptor *)v8 playbackArchiveData], (persistentIdentifier3 = objc_claimAutoreleasedReturnValue()) != 0))
               {
-                v19 = [(WFMediaItemDescriptor *)self playbackArchiveData];
-                v20 = [(WFMediaItemDescriptor *)v8 playbackArchiveData];
-                v21 = [v19 isEqual:v20];
+                playbackArchiveData2 = [(WFMediaItemDescriptor *)self playbackArchiveData];
+                playbackArchiveData3 = [(WFMediaItemDescriptor *)v8 playbackArchiveData];
+                v21 = [playbackArchiveData2 isEqual:playbackArchiveData3];
 
-                if (v18)
+                if (playbackArchiveData)
                 {
 LABEL_23:
 
-                  v22 = [(WFMediaItemDescriptor *)self intent];
-                  if (v22 || ([(WFMediaItemDescriptor *)v8 intent], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+                  intent = [(WFMediaItemDescriptor *)self intent];
+                  if (intent || ([(WFMediaItemDescriptor *)v8 intent], (persistentIdentifier3 = objc_claimAutoreleasedReturnValue()) != 0))
                   {
-                    v23 = [(WFMediaItemDescriptor *)self intent];
-                    v24 = [(WFMediaItemDescriptor *)v8 intent];
-                    v25 = [v23 isEqual:v24];
+                    intent2 = [(WFMediaItemDescriptor *)self intent];
+                    intent3 = [(WFMediaItemDescriptor *)v8 intent];
+                    v25 = [intent2 isEqual:intent3];
 
-                    if (v22)
+                    if (intent)
                     {
 LABEL_29:
 
@@ -782,13 +782,13 @@ LABEL_30:
   return v11;
 }
 
-- (WFMediaItemDescriptor)initWithIntent:(id)a3
+- (WFMediaItemDescriptor)initWithIntent:(id)intent
 {
-  v5 = a3;
-  if (!v5)
+  intentCopy = intent;
+  if (!intentCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFMediaItemState.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"intent"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFMediaItemState.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"intent"}];
   }
 
   v17.receiver = self;
@@ -796,13 +796,13 @@ LABEL_30:
   v6 = [(MTLModel *)&v17 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [intentCopy copy];
     intent = v6->_intent;
     v6->_intent = v7;
 
-    v9 = [v5 mediaContainer];
-    v10 = [v9 title];
-    v11 = [v10 copy];
+    mediaContainer = [intentCopy mediaContainer];
+    title = [mediaContainer title];
+    v11 = [title copy];
     itemName = v6->_itemName;
     v6->_itemName = v11;
 
@@ -815,14 +815,14 @@ LABEL_30:
   return v6;
 }
 
-- (WFMediaItemDescriptor)initWithMediaItemName:(id)a3 playbackArchiveData:(id)a4
+- (WFMediaItemDescriptor)initWithMediaItemName:(id)name playbackArchiveData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  nameCopy = name;
+  dataCopy = data;
+  v9 = dataCopy;
+  if (nameCopy)
   {
-    if (v8)
+    if (dataCopy)
     {
       goto LABEL_3;
     }
@@ -830,8 +830,8 @@ LABEL_30:
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFMediaItemState.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"itemName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFMediaItemState.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"itemName"}];
 
     if (v9)
     {
@@ -839,8 +839,8 @@ LABEL_30:
     }
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"WFMediaItemState.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"playbackArchiveData"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFMediaItemState.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"playbackArchiveData"}];
 
 LABEL_3:
   v20.receiver = self;
@@ -848,7 +848,7 @@ LABEL_3:
   v10 = [(MTLModel *)&v20 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     itemName = v10->_itemName;
     v10->_itemName = v11;
 
@@ -865,15 +865,15 @@ LABEL_3:
   return v10;
 }
 
-- (WFMediaItemDescriptor)initWithMediaItemName:(id)a3 persistentIdentifier:(id)a4 mediaType:(id)a5
+- (WFMediaItemDescriptor)initWithMediaItemName:(id)name persistentIdentifier:(id)identifier mediaType:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9 | v10)
+  nameCopy = name;
+  identifierCopy = identifier;
+  typeCopy = type;
+  v12 = typeCopy;
+  if (nameCopy | identifierCopy)
   {
-    if (v11)
+    if (typeCopy)
     {
       goto LABEL_3;
     }
@@ -881,8 +881,8 @@ LABEL_3:
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFMediaItemState.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"itemName || persistentIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFMediaItemState.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"itemName || persistentIdentifier"}];
 
     if (v12)
     {
@@ -890,8 +890,8 @@ LABEL_3:
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"WFMediaItemState.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"type"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFMediaItemState.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"type"}];
 
 LABEL_3:
   v24.receiver = self;
@@ -899,11 +899,11 @@ LABEL_3:
   v13 = [(MTLModel *)&v24 init];
   if (v13)
   {
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     itemName = v13->_itemName;
     v13->_itemName = v14;
 
-    v16 = [v10 copy];
+    v16 = [identifierCopy copy];
     persistentIdentifier = v13->_persistentIdentifier;
     v13->_persistentIdentifier = v16;
 

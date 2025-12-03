@@ -1,16 +1,16 @@
 @interface NUVideoRenderClient
-- (NUVideoRenderClient)initWithName:(id)a3 responseQueue:(id)a4;
-- (void)submitRequestForComposition:(id)a3 completion:(id)a4;
+- (NUVideoRenderClient)initWithName:(id)name responseQueue:(id)queue;
+- (void)submitRequestForComposition:(id)composition completion:(id)completion;
 @end
 
 @implementation NUVideoRenderClient
 
-- (void)submitRequestForComposition:(id)a3 completion:(id)a4
+- (void)submitRequestForComposition:(id)composition completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v6 = a4;
-  if (!v43)
+  compositionCopy = composition;
+  completionCopy = completion;
+  if (!compositionCopy)
   {
     v11 = NUAssertLogger_21622();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -31,8 +31,8 @@
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v25;
         v46 = 2114;
@@ -43,8 +43,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -53,7 +53,7 @@
     _NUAssertFailHandler("[NUVideoRenderClient submitRequestForComposition:completion:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUVideoRenderRequest.m", 45, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "composition != nil");
   }
 
-  if (!v6)
+  if (!completionCopy)
   {
     v18 = NUAssertLogger_21622();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -74,8 +74,8 @@
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v35 callStackSymbols];
+        v38 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v34;
         v46 = 2114;
@@ -86,8 +86,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -96,25 +96,25 @@
     _NUAssertFailHandler("[NUVideoRenderClient submitRequestForComposition:completion:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUVideoRenderRequest.m", 46, @"Invalid parameter not satisfying: %s", v39, v40, v41, v42, "completionBlock != nil");
   }
 
-  v7 = [(NURenderRequest *)[NUVideoRenderRequest alloc] initWithComposition:v43];
-  v8 = [(NUVideoRenderClient *)self pipelineFilters];
-  [(NURenderRequest *)v7 setPipelineFilters:v8];
+  v7 = [(NURenderRequest *)[NUVideoRenderRequest alloc] initWithComposition:compositionCopy];
+  pipelineFilters = [(NUVideoRenderClient *)self pipelineFilters];
+  [(NURenderRequest *)v7 setPipelineFilters:pipelineFilters];
 
-  v9 = [(NUVideoRenderClient *)self scalePolicy];
-  [(NUVideoRenderRequest *)v7 setScalePolicy:v9];
+  scalePolicy = [(NUVideoRenderClient *)self scalePolicy];
+  [(NUVideoRenderRequest *)v7 setScalePolicy:scalePolicy];
 
   [(NURenderRequest *)v7 setSampleMode:[(NUVideoRenderClient *)self sampleMode]];
-  v10 = [(NURenderClient *)self name];
-  [(NURenderRequest *)v7 setName:v10];
+  name = [(NURenderClient *)self name];
+  [(NURenderRequest *)v7 setName:name];
 
-  [(NURenderClient *)self submitGenericRequest:v7 completion:v6];
+  [(NURenderClient *)self submitGenericRequest:v7 completion:completionCopy];
 }
 
-- (NUVideoRenderClient)initWithName:(id)a3 responseQueue:(id)a4
+- (NUVideoRenderClient)initWithName:(id)name responseQueue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = NUVideoRenderClient;
-  v4 = [(NURenderClient *)&v8 initWithName:a3 responseQueue:a4];
+  v4 = [(NURenderClient *)&v8 initWithName:name responseQueue:queue];
   if (v4)
   {
     v5 = +[NUFixedScalePolicy oneToOneScalePolicy];

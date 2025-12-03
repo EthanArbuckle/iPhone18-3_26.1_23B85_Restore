@@ -1,9 +1,9 @@
 @interface _MTLComputePipelineState
-- (_MTLComputePipelineState)initWithDevice:(id)a3 pipelineStateDescriptor:(id)a4;
-- (_MTLComputePipelineState)initWithParent:(id)a3;
-- (id)formattedDescription:(unint64_t)a3;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3;
+- (_MTLComputePipelineState)initWithDevice:(id)device pipelineStateDescriptor:(id)descriptor;
+- (_MTLComputePipelineState)initWithParent:(id)parent;
+- (id)formattedDescription:(unint64_t)description;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor;
 - (void)dealloc;
 @end
 
@@ -18,9 +18,9 @@
   [(_MTLObjectWithLabel *)&v3 dealloc];
 }
 
-- (_MTLComputePipelineState)initWithDevice:(id)a3 pipelineStateDescriptor:(id)a4
+- (_MTLComputePipelineState)initWithDevice:(id)device pipelineStateDescriptor:(id)descriptor
 {
-  if (a3)
+  if (device)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -32,10 +32,10 @@
 
   else
   {
-    [(_MTLComputePipelineState *)self initWithDevice:a2 pipelineStateDescriptor:0, a4, v4, v5, v6, v7, v29];
+    [(_MTLComputePipelineState *)self initWithDevice:a2 pipelineStateDescriptor:0, descriptor, v4, v5, v6, v7, v29];
   }
 
-  if (a4)
+  if (descriptor)
   {
     objc_opt_class();
     v19 = objc_opt_isKindOfClass();
@@ -55,17 +55,17 @@
   v27 = [(_MTLAllocation *)&v32 initWithAllocationType:4];
   if (v27)
   {
-    if ([a4 label])
+    if ([descriptor label])
     {
-      [v27 setLabel:{objc_msgSend(a4, "label")}];
+      [v27 setLabel:{objc_msgSend(descriptor, "label")}];
     }
 
-    *(v27 + 4) = a3;
-    v27[48] = [a4 supportIndirectCommandBuffers];
-    *(v27 + 7) = [a4 textureWriteRoundingMode];
-    if (a4)
+    *(v27 + 4) = device;
+    v27[48] = [descriptor supportIndirectCommandBuffers];
+    *(v27 + 7) = [descriptor textureWriteRoundingMode];
+    if (descriptor)
     {
-      [a4 requiredThreadsPerThreadgroup];
+      [descriptor requiredThreadsPerThreadgroup];
     }
 
     else
@@ -81,9 +81,9 @@
   return v27;
 }
 
-- (_MTLComputePipelineState)initWithParent:(id)a3
+- (_MTLComputePipelineState)initWithParent:(id)parent
 {
-  if (a3)
+  if (parent)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -103,16 +103,16 @@
   v18 = [(_MTLAllocation *)&v23 initWithAllocationType:4];
   if (v18)
   {
-    if ([a3 label])
+    if ([parent label])
     {
-      [v18 setLabel:{objc_msgSend(a3, "label")}];
+      [v18 setLabel:{objc_msgSend(parent, "label")}];
     }
 
-    *(v18 + 4) = [a3 device];
-    v18[48] = [a3 supportIndirectCommandBuffers];
-    *(v18 + 7) = [a3 textureWriteRoundingMode];
-    *(v18 + 5) = *(a3 + 5);
-    [a3 requiredThreadsPerThreadgroup];
+    *(v18 + 4) = [parent device];
+    v18[48] = [parent supportIndirectCommandBuffers];
+    *(v18 + 7) = [parent textureWriteRoundingMode];
+    *(v18 + 5) = *(parent + 5);
+    [parent requiredThreadsPerThreadgroup];
     *(v18 + 88) = v21;
     *(v18 + 13) = v22;
   }
@@ -120,10 +120,10 @@
   return v18;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v14[6] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v6 = MEMORY[0x1E696AEC0];
   v13.receiver = self;
   v13.super_class = _MTLComputePipelineState;
@@ -132,21 +132,21 @@
   v14[1] = @"label =";
   if ([(_MTLObjectWithLabel *)self label])
   {
-    v8 = [(_MTLObjectWithLabel *)self label];
+    label = [(_MTLObjectWithLabel *)self label];
   }
 
   else
   {
-    v8 = @"<none>";
+    label = @"<none>";
   }
 
-  v14[2] = v8;
+  v14[2] = label;
   v14[3] = v5;
   v14[4] = @"device =";
   device = self->_device;
   if (device)
   {
-    v10 = [(MTLDevice *)device formattedDescription:a3 + 4];
+    v10 = [(MTLDevice *)device formattedDescription:description + 4];
   }
 
   else
@@ -160,18 +160,18 @@
   return result;
 }
 
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor
 {
-  v4 = [(_MTLComputePipelineState *)self device];
+  device = [(_MTLComputePipelineState *)self device];
 
-  return [(MTLDevice *)v4 newVisibleFunctionTableWithDescriptor:a3];
+  return [(MTLDevice *)device newVisibleFunctionTableWithDescriptor:descriptor];
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
-  v4 = [(_MTLComputePipelineState *)self device];
+  device = [(_MTLComputePipelineState *)self device];
 
-  return [(MTLDevice *)v4 newIntersectionFunctionTableWithDescriptor:a3];
+  return [(MTLDevice *)device newIntersectionFunctionTableWithDescriptor:descriptor];
 }
 
 @end

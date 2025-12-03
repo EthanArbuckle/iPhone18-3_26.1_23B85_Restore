@@ -1,5 +1,5 @@
 @interface NSFileHandle
-+ (NSFileHandle)allocWithZone:(_NSZone *)a3;
++ (NSFileHandle)allocWithZone:(_NSZone *)zone;
 + (NSFileHandle)fileHandleForReadingAtPath:(NSString *)path;
 + (NSFileHandle)fileHandleForReadingFromURL:(NSURL *)url error:(NSError *)error;
 + (NSFileHandle)fileHandleForUpdatingAtPath:(NSString *)path;
@@ -10,9 +10,9 @@
 + (NSFileHandle)fileHandleWithStandardError;
 + (NSFileHandle)fileHandleWithStandardInput;
 + (NSFileHandle)fileHandleWithStandardOutput;
-+ (id)fileHandleForReadingFromURL:(id)a3 mode:(unsigned __int16)a4 error:(id *)a5;
-+ (id)fileHandleForUpdatingURL:(id)a3 mode:(unsigned __int16)a4 error:(id *)a5;
-+ (id)fileHandleForWritingToURL:(id)a3 mode:(unsigned __int16)a4 error:(id *)a5;
++ (id)fileHandleForReadingFromURL:(id)l mode:(unsigned __int16)mode error:(id *)error;
++ (id)fileHandleForUpdatingURL:(id)l mode:(unsigned __int16)mode error:(id *)error;
++ (id)fileHandleForWritingToURL:(id)l mode:(unsigned __int16)mode error:(id *)error;
 + (void)initialize;
 - (BOOL)closeAndReturnError:(NSError *)error;
 - (BOOL)getOffset:(unint64_t *)offsetInFile error:(NSError *)error;
@@ -24,10 +24,10 @@
 - (NSData)readDataToEndOfFileAndReturnError:(NSError *)error;
 - (NSData)readDataUpToLength:(NSUInteger)length error:(NSError *)error;
 - (NSFileHandle)initWithCoder:(NSCoder *)coder;
-- (NSFileHandle)initWithPath:(id)a3 flags:(int64_t)a4 createMode:(int64_t)a5 error:(id *)a6;
-- (NSFileHandle)initWithURL:(id)a3 flags:(int64_t)a4 createMode:(int64_t)a5 error:(id *)a6;
+- (NSFileHandle)initWithPath:(id)path flags:(int64_t)flags createMode:(int64_t)mode error:(id *)error;
+- (NSFileHandle)initWithURL:(id)l flags:(int64_t)flags createMode:(int64_t)mode error:(id *)error;
 - (void)closeFile;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)seekToFileOffset:(unint64_t)offset;
 - (void)setReadabilityHandler:(void *)readabilityHandler;
 - (void)setWriteabilityHandler:(void *)writeabilityHandler;
@@ -41,7 +41,7 @@
 + (void)initialize
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v7.rlim_cur = 0;
     v7.rlim_max = 0;
@@ -108,7 +108,7 @@ uint64_t __40__NSFileHandle_fileHandleWithNullDevice__block_invoke()
   v3[1] = 3221225472;
   v3[2] = __43__NSFileHandle_fileHandleWithStandardInput__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (qword_1ED43F068 != -1)
   {
     dispatch_once(&qword_1ED43F068, v3);
@@ -142,7 +142,7 @@ uint64_t __43__NSFileHandle_fileHandleWithStandardInput__block_invoke(uint64_t a
   v3[1] = 3221225472;
   v3[2] = __44__NSFileHandle_fileHandleWithStandardOutput__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (qword_1ED43F078 != -1)
   {
     dispatch_once(&qword_1ED43F078, v3);
@@ -176,7 +176,7 @@ uint64_t __44__NSFileHandle_fileHandleWithStandardOutput__block_invoke(uint64_t 
   v3[1] = 3221225472;
   v3[2] = __43__NSFileHandle_fileHandleWithStandardError__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (qword_1ED43F088 != -1)
   {
     dispatch_once(&qword_1ED43F088, v3);
@@ -203,14 +203,14 @@ uint64_t __43__NSFileHandle_fileHandleWithStandardError__block_invoke(uint64_t a
   return result;
 }
 
-+ (NSFileHandle)allocWithZone:(_NSZone *)a3
++ (NSFileHandle)allocWithZone:(_NSZone *)zone
 {
-  if (NSFileHandle == a1)
+  if (NSFileHandle == self)
   {
-    a1 = objc_opt_self();
+    self = objc_opt_self();
   }
 
-  return NSAllocateObject(a1, 0, a3);
+  return NSAllocateObject(self, 0, zone);
 }
 
 - (NSFileHandle)initWithCoder:(NSCoder *)coder
@@ -236,94 +236,94 @@ uint64_t __43__NSFileHandle_fileHandleWithStandardError__block_invoke(uint64_t a
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = NSClassFromString(@"NSFileHandle");
 
   NSRequestConcreteImplementation(self, a2, v5);
 }
 
-- (NSFileHandle)initWithURL:(id)a3 flags:(int64_t)a4 createMode:(int64_t)a5 error:(id *)a6
+- (NSFileHandle)initWithURL:(id)l flags:(int64_t)flags createMode:(int64_t)mode error:(id *)error
 {
-  if ([a3 isFileURL])
+  if ([l isFileURL])
   {
-    v11 = [a3 path];
+    path = [l path];
   }
 
   else
   {
-    v11 = 0;
+    path = 0;
   }
 
-  return [(NSFileHandle *)self initWithPath:v11 flags:a4 createMode:a5 error:a6];
+  return [(NSFileHandle *)self initWithPath:path flags:flags createMode:mode error:error];
 }
 
-- (NSFileHandle)initWithPath:(id)a3 flags:(int64_t)a4 createMode:(int64_t)a5 error:(id *)a6
+- (NSFileHandle)initWithPath:(id)path flags:(int64_t)flags createMode:(int64_t)mode error:(id *)error
 {
-  [(NSFileHandle *)self init:a3];
+  [(NSFileHandle *)self init:path];
   v8 = NSClassFromString(@"NSFileHandle");
   NSRequestConcreteImplementation(self, a2, v8);
 }
 
 + (NSFileHandle)fileHandleForReadingAtPath:(NSString *)path
 {
-  v3 = [objc_allocWithZone(a1) initWithPath:path flags:0 createMode:0];
+  v3 = [objc_allocWithZone(self) initWithPath:path flags:0 createMode:0];
 
   return v3;
 }
 
 + (NSFileHandle)fileHandleForWritingAtPath:(NSString *)path
 {
-  v3 = [objc_allocWithZone(a1) initWithPath:path flags:1 createMode:0];
+  v3 = [objc_allocWithZone(self) initWithPath:path flags:1 createMode:0];
 
   return v3;
 }
 
 + (NSFileHandle)fileHandleForUpdatingAtPath:(NSString *)path
 {
-  v3 = [objc_allocWithZone(a1) initWithPath:path flags:2 createMode:0];
+  v3 = [objc_allocWithZone(self) initWithPath:path flags:2 createMode:0];
 
   return v3;
 }
 
 + (NSFileHandle)fileHandleForReadingFromURL:(NSURL *)url error:(NSError *)error
 {
-  v4 = [objc_allocWithZone(a1) initWithURL:url flags:0 createMode:0 error:error];
+  v4 = [objc_allocWithZone(self) initWithURL:url flags:0 createMode:0 error:error];
 
   return v4;
 }
 
 + (NSFileHandle)fileHandleForWritingToURL:(NSURL *)url error:(NSError *)error
 {
-  v4 = [objc_allocWithZone(a1) initWithURL:url flags:1 createMode:0 error:error];
+  v4 = [objc_allocWithZone(self) initWithURL:url flags:1 createMode:0 error:error];
 
   return v4;
 }
 
 + (NSFileHandle)fileHandleForUpdatingURL:(NSURL *)url error:(NSError *)error
 {
-  v4 = [objc_allocWithZone(a1) initWithURL:url flags:2 createMode:0 error:error];
+  v4 = [objc_allocWithZone(self) initWithURL:url flags:2 createMode:0 error:error];
 
   return v4;
 }
 
-+ (id)fileHandleForReadingFromURL:(id)a3 mode:(unsigned __int16)a4 error:(id *)a5
++ (id)fileHandleForReadingFromURL:(id)l mode:(unsigned __int16)mode error:(id *)error
 {
-  v5 = [objc_allocWithZone(a1) initWithURL:a3 flags:512 createMode:a4 error:a5];
+  v5 = [objc_allocWithZone(self) initWithURL:l flags:512 createMode:mode error:error];
 
   return v5;
 }
 
-+ (id)fileHandleForWritingToURL:(id)a3 mode:(unsigned __int16)a4 error:(id *)a5
++ (id)fileHandleForWritingToURL:(id)l mode:(unsigned __int16)mode error:(id *)error
 {
-  v5 = [objc_allocWithZone(a1) initWithURL:a3 flags:513 createMode:a4 error:a5];
+  v5 = [objc_allocWithZone(self) initWithURL:l flags:513 createMode:mode error:error];
 
   return v5;
 }
 
-+ (id)fileHandleForUpdatingURL:(id)a3 mode:(unsigned __int16)a4 error:(id *)a5
++ (id)fileHandleForUpdatingURL:(id)l mode:(unsigned __int16)mode error:(id *)error
 {
-  v5 = [objc_allocWithZone(a1) initWithURL:a3 flags:514 createMode:a4 error:a5];
+  v5 = [objc_allocWithZone(self) initWithURL:l flags:514 createMode:mode error:error];
 
   return v5;
 }
@@ -401,10 +401,10 @@ uint64_t __43__NSFileHandle_fileHandleWithStandardError__block_invoke(uint64_t a
     *error = 0;
   }
 
-  v9 = [(NSFileHandle *)self offsetInFile];
+  offsetInFile = [(NSFileHandle *)self offsetInFile];
   if (offsetInFile)
   {
-    *offsetInFile = v9;
+    *offsetInFile = offsetInFile;
   }
 
   return 1;
@@ -424,10 +424,10 @@ uint64_t __43__NSFileHandle_fileHandleWithStandardError__block_invoke(uint64_t a
     *error = 0;
   }
 
-  v9 = [(NSFileHandle *)self seekToEndOfFile];
+  seekToEndOfFile = [(NSFileHandle *)self seekToEndOfFile];
   if (offsetInFile)
   {
-    *offsetInFile = v9;
+    *offsetInFile = seekToEndOfFile;
   }
 
   return 1;

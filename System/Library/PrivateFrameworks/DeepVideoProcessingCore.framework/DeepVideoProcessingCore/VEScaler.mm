@@ -1,9 +1,9 @@
 @interface VEScaler
 - (VEScaler)init;
 - (void)dealloc;
-- (void)downScaleFrameSource:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 rotate:(int64_t)a5 waitForCompletion:(BOOL)a6;
-- (void)scaleFrameSource:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 cropRectangles:(id *)a5 upscale:(BOOL)a6 rotate:(int64_t)a7 waitForCompletion:(BOOL)a8;
-- (void)upScaleAndCropFrameSource:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 upscale:(BOOL)a5 rotate:(int64_t)a6 waitForCompletion:(BOOL)a7;
+- (void)downScaleFrameSource:(__CVBuffer *)source destination:(__CVBuffer *)destination rotate:(int64_t)rotate waitForCompletion:(BOOL)completion;
+- (void)scaleFrameSource:(__CVBuffer *)source destination:(__CVBuffer *)destination cropRectangles:(id *)rectangles upscale:(BOOL)upscale rotate:(int64_t)rotate waitForCompletion:(BOOL)completion;
+- (void)upScaleAndCropFrameSource:(__CVBuffer *)source destination:(__CVBuffer *)destination upscale:(BOOL)upscale rotate:(int64_t)rotate waitForCompletion:(BOOL)completion;
 @end
 
 @implementation VEScaler
@@ -35,17 +35,17 @@
   return v3;
 }
 
-- (void)scaleFrameSource:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 cropRectangles:(id *)a5 upscale:(BOOL)a6 rotate:(int64_t)a7 waitForCompletion:(BOOL)a8
+- (void)scaleFrameSource:(__CVBuffer *)source destination:(__CVBuffer *)destination cropRectangles:(id *)rectangles upscale:(BOOL)upscale rotate:(int64_t)rotate waitForCompletion:(BOOL)completion
 {
-  v8 = a8;
-  v10 = a6;
+  completionCopy = completion;
+  upscaleCopy = upscale;
   v13 = *MEMORY[0x277CBECE8];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   v15 = Mutable;
   v16 = MEMORY[0x277CBED28];
-  if (v8)
+  if (completionCopy)
   {
-    if (v10)
+    if (upscaleCopy)
     {
       goto LABEL_3;
     }
@@ -54,19 +54,19 @@
   else
   {
     CFDictionarySetValue(Mutable, *MEMORY[0x277D1AE90], *MEMORY[0x277CBED28]);
-    if (v10)
+    if (upscaleCopy)
     {
 LABEL_3:
       v17 = *v16;
       CFDictionarySetValue(v15, *MEMORY[0x277D1AE38], *v16);
       CFDictionarySetValue(v15, *MEMORY[0x277D1AE88], v17);
-      if (!a7)
+      if (!rotate)
       {
         goto LABEL_4;
       }
 
 LABEL_8:
-      switch(a7)
+      switch(rotate)
       {
         case 3:
           v18 = 3;
@@ -83,7 +83,7 @@ LABEL_16:
           v19 = CFNumberCreate(v13, kCFNumberIntType, &v21);
           CFDictionarySetValue(v15, *MEMORY[0x277D1AEA0], v19);
           CFRelease(v19);
-          if (v8)
+          if (completionCopy)
           {
             goto LABEL_5;
           }
@@ -91,8 +91,8 @@ LABEL_16:
 LABEL_17:
           v21 = xmmword_285B2E498;
           v22 = qword_285B2E4A8;
-          CVPixelBufferGetIOSurface(a3);
-          CVPixelBufferGetIOSurface(a4);
+          CVPixelBufferGetIOSurface(source);
+          CVPixelBufferGetIOSurface(destination);
           goto LABEL_18;
       }
 
@@ -101,20 +101,20 @@ LABEL_17:
     }
   }
 
-  if (a7)
+  if (rotate)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  if (!v8)
+  if (!completionCopy)
   {
     goto LABEL_17;
   }
 
 LABEL_5:
-  CVPixelBufferGetIOSurface(a3);
-  CVPixelBufferGetIOSurface(a4);
+  CVPixelBufferGetIOSurface(source);
+  CVPixelBufferGetIOSurface(destination);
 LABEL_18:
   if (IOSurfaceAcceleratorTransformSurface())
   {
@@ -123,7 +123,7 @@ LABEL_18:
       v20 = global_logger;
       if (os_log_type_enabled(global_logger, OS_LOG_TYPE_ERROR))
       {
-        [VEScaler scaleFrameSource:v20 destination:a3 cropRectangles:a4 upscale:? rotate:? waitForCompletion:?];
+        [VEScaler scaleFrameSource:v20 destination:source cropRectangles:destination upscale:? rotate:? waitForCompletion:?];
       }
     }
   }
@@ -131,38 +131,38 @@ LABEL_18:
   CFRelease(v15);
 }
 
-- (void)downScaleFrameSource:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 rotate:(int64_t)a5 waitForCompletion:(BOOL)a6
+- (void)downScaleFrameSource:(__CVBuffer *)source destination:(__CVBuffer *)destination rotate:(int64_t)rotate waitForCompletion:(BOOL)completion
 {
-  v6 = a6;
+  completionCopy = completion;
   kdebug_trace();
   v14 = 0u;
   v11 = 0u;
-  v12 = CVPixelBufferGetWidth(a3) << 16;
-  v13 = CVPixelBufferGetHeight(a3) << 16;
-  [(VEScaler *)self scaleFrameSource:a3 destination:a4 cropRectangles:&v11 upscale:0 rotate:a5 waitForCompletion:v6];
+  v12 = CVPixelBufferGetWidth(source) << 16;
+  v13 = CVPixelBufferGetHeight(source) << 16;
+  [(VEScaler *)self scaleFrameSource:source destination:destination cropRectangles:&v11 upscale:0 rotate:rotate waitForCompletion:completionCopy];
   kdebug_trace();
 }
 
-- (void)upScaleAndCropFrameSource:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 upscale:(BOOL)a5 rotate:(int64_t)a6 waitForCompletion:(BOOL)a7
+- (void)upScaleAndCropFrameSource:(__CVBuffer *)source destination:(__CVBuffer *)destination upscale:(BOOL)upscale rotate:(int64_t)rotate waitForCompletion:(BOOL)completion
 {
-  v7 = a7;
-  v9 = a5;
+  completionCopy = completion;
+  upscaleCopy = upscale;
   kdebug_trace();
-  Width = CVPixelBufferGetWidth(a4);
+  Width = CVPixelBufferGetWidth(destination);
   v14 = Width;
   v23 = Width;
-  Height = CVPixelBufferGetHeight(a4);
+  Height = CVPixelBufferGetHeight(destination);
   v19 = 0;
   v17 = 0u;
   v18 = 0u;
   v20 = v14;
   v21 = Height;
-  if ((a6 - 1) <= 1)
+  if ((rotate - 1) <= 1)
   {
     swapWidthAndHeight(&v23, &Height);
   }
 
-  if (v9)
+  if (upscaleCopy)
   {
     v15 = (v23 << 15) & 0xFFFFFFFFFFFF0000;
     v16 = (Height << 15) & 0xFFFFFFFFFFFF0000;
@@ -176,7 +176,7 @@ LABEL_18:
 
   *&v18 = v15;
   *(&v18 + 1) = v16;
-  [(VEScaler *)self scaleFrameSource:a3 destination:a4 cropRectangles:&v17 upscale:v9 rotate:a6 waitForCompletion:v7];
+  [(VEScaler *)self scaleFrameSource:source destination:destination cropRectangles:&v17 upscale:upscaleCopy rotate:rotate waitForCompletion:completionCopy];
   kdebug_trace();
 }
 

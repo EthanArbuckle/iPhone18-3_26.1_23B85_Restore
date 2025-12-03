@@ -1,16 +1,16 @@
 @interface UIShadowView
-- (UIShadowView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setShadowImage:(id)a3 forEdge:(unint64_t)a4 inside:(BOOL)a5;
+- (UIShadowView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setShadowImage:(id)image forEdge:(unint64_t)edge inside:(BOOL)inside;
 @end
 
 @implementation UIShadowView
 
-- (UIShadowView)initWithFrame:(CGRect)a3
+- (UIShadowView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIShadowView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,14 +21,14 @@
   return v4;
 }
 
-- (void)setShadowImage:(id)a3 forEdge:(unint64_t)a4 inside:(BOOL)a5
+- (void)setShadowImage:(id)image forEdge:(unint64_t)edge inside:(BOOL)inside
 {
-  v5 = a5;
-  v9 = a3;
-  if (self->_image != v9)
+  insideCopy = inside;
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v23 = v9;
-    objc_storeStrong(&self->_image, a3);
+    v23 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(UIView *)self frame];
     v11 = v10;
     v13 = v12;
@@ -38,31 +38,31 @@
     v19 = v18;
     v20 = v19;
     v21 = v13 - v19;
-    if (a4 != 1)
+    if (edge != 1)
     {
       v21 = v13 + v17;
     }
 
     v22 = v13 + v17 - v20;
-    if (a4 == 1)
+    if (edge == 1)
     {
       v22 = v13;
     }
 
-    if (!v5)
+    if (!insideCopy)
     {
       v22 = v21;
     }
 
     [(UIView *)self setFrame:v11, v22, v15];
-    v9 = v23;
+    imageCopy = v23;
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   image = self->_image;
-  [(UIView *)self bounds:a3.origin.x];
+  [(UIView *)self bounds:rect.origin.x];
 
   [(UIImage *)image draw1PartImageInRect:?];
 }

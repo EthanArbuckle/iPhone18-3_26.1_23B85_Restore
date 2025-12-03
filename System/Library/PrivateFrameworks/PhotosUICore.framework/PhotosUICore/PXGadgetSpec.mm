@@ -1,27 +1,27 @@
 @interface PXGadgetSpec
 + (PXLayoutMetricInterpolator)horizontalContentInsetsInterpolator;
-+ (double)sectionHeaderHeightForStyle:(unint64_t)a3 dividerHidden:(BOOL)a4;
-+ (double)sectionHeaderTitleBottomSpacingForStyle:(unint64_t)a3;
-+ (double)sectionHeaderTitleHeightForStyle:(unint64_t)a3 dividerHidden:(BOOL)a4;
-+ (double)sectionHeaderTopSpacingForStyle:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToGadgetSpec:(id)a3;
-- (BOOL)shouldInsetContentForTraitCollection:(id)a3;
++ (double)sectionHeaderHeightForStyle:(unint64_t)style dividerHidden:(BOOL)hidden;
++ (double)sectionHeaderTitleBottomSpacingForStyle:(unint64_t)style;
++ (double)sectionHeaderTitleHeightForStyle:(unint64_t)style dividerHidden:(BOOL)hidden;
++ (double)sectionHeaderTopSpacingForStyle:(unint64_t)style;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToGadgetSpec:(id)spec;
+- (BOOL)shouldInsetContentForTraitCollection:(id)collection;
 - (PXExtendedTraitCollection)rootExtendedTraitCollection;
-- (PXGadgetSpec)initWithTraitCollection:(id)a3 scrollAxis:(int64_t)a4;
+- (PXGadgetSpec)initWithTraitCollection:(id)collection scrollAxis:(int64_t)axis;
 - (UIEdgeInsets)accessoryViewInset;
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)layoutInsets;
-- (double)columnSpacingForColumnSpan:(int64_t)a3;
-- (double)columnWidthForColumnSpan:(int64_t)a3;
+- (double)columnSpacingForColumnSpan:(int64_t)span;
+- (double)columnWidthForColumnSpan:(int64_t)span;
 @end
 
 @implementation PXGadgetSpec
 
-- (BOOL)shouldInsetContentForTraitCollection:(id)a3
+- (BOOL)shouldInsetContentForTraitCollection:(id)collection
 {
-  v3 = [a3 traitCollection];
-  v4 = [v3 horizontalSizeClass] != 1 || objc_msgSend(v3, "verticalSizeClass") != 2;
+  traitCollection = [collection traitCollection];
+  v4 = [traitCollection horizontalSizeClass] != 1 || objc_msgSend(traitCollection, "verticalSizeClass") != 2;
 
   return v4;
 }
@@ -84,41 +84,41 @@ void __69__PXGadgetSpec_PlatformSpecific__horizontalContentInsetsInterpolator__b
   return result;
 }
 
-- (double)columnSpacingForColumnSpan:(int64_t)a3
+- (double)columnSpacingForColumnSpan:(int64_t)span
 {
-  v5 = [(PXGadgetSpec *)self shouldUseAccessibilityLayout];
+  shouldUseAccessibilityLayout = [(PXGadgetSpec *)self shouldUseAccessibilityLayout];
   v6 = 0;
-  if (a3 <= 2)
+  if (span <= 2)
   {
-    if (!a3)
+    if (!span)
     {
       v7 = off_1E7721798;
-      if (!v5)
+      if (!shouldUseAccessibilityLayout)
       {
-        v9 = [off_1E7721798 gadgetColumnSpacingSpanSingleSetAInterpolator];
+        gadgetColumnSpacingSpanSingleSetAInterpolator = [off_1E7721798 gadgetColumnSpacingSpanSingleSetAInterpolator];
         goto LABEL_17;
       }
 
       goto LABEL_15;
     }
 
-    if (a3 != 1)
+    if (span != 1)
     {
-      if (a3 == 2)
+      if (span == 2)
       {
         v7 = off_1E7721798;
-        if (v5)
+        if (shouldUseAccessibilityLayout)
         {
           v8 = off_1E7721798;
 LABEL_9:
-          v9 = [v8 gadgetColumnSpacingSpanDoubleSetAInterpolator];
+          gadgetColumnSpacingSpanSingleSetAInterpolator = [v8 gadgetColumnSpacingSpanDoubleSetAInterpolator];
 LABEL_17:
-          v6 = v9;
+          v6 = gadgetColumnSpacingSpanSingleSetAInterpolator;
           goto LABEL_18;
         }
 
 LABEL_15:
-        v9 = [v7 gadgetColumnSpacingSpanDoubleSetBInterpolator];
+        gadgetColumnSpacingSpanSingleSetAInterpolator = [v7 gadgetColumnSpacingSpanDoubleSetBInterpolator];
         goto LABEL_17;
       }
 
@@ -135,12 +135,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ((a3 - 3) < 2)
+  if ((span - 3) < 2)
   {
     goto LABEL_8;
   }
 
-  if (a3 != 5)
+  if (span != 5)
   {
     goto LABEL_18;
   }
@@ -149,21 +149,21 @@ LABEL_8:
   return result;
 }
 
-- (double)columnWidthForColumnSpan:(int64_t)a3
+- (double)columnWidthForColumnSpan:(int64_t)span
 {
-  v5 = [(PXGadgetSpec *)self shouldUseAccessibilityLayout];
+  shouldUseAccessibilityLayout = [(PXGadgetSpec *)self shouldUseAccessibilityLayout];
   v6 = 0.0;
-  if (a3 <= 2)
+  if (span <= 2)
   {
-    if (!a3)
+    if (!span)
     {
       v7 = off_1E7721798;
-      if (!v5)
+      if (!shouldUseAccessibilityLayout)
       {
-        v10 = [off_1E7721798 gadgetColumnWidthSpanSingleSetAInterpolator];
+        gadgetColumnWidthSpanSingleSetAInterpolator = [off_1E7721798 gadgetColumnWidthSpanSingleSetAInterpolator];
 LABEL_23:
-        v25 = v10;
-        if (v10)
+        v25 = gadgetColumnWidthSpanSingleSetAInterpolator;
+        if (gadgetColumnWidthSpanSingleSetAInterpolator)
         {
           [(PXGadgetSpec *)self layoutReferenceWidth];
           [v25 valueForMetric:?];
@@ -176,21 +176,21 @@ LABEL_23:
       goto LABEL_14;
     }
 
-    if (a3 != 1)
+    if (span != 1)
     {
-      if (a3 == 2)
+      if (span == 2)
       {
         v7 = off_1E7721798;
-        if (v5)
+        if (shouldUseAccessibilityLayout)
         {
           v8 = off_1E7721798;
 LABEL_21:
-          v10 = [v8 gadgetColumnWidthSpanDoubleSetAInterpolator];
+          gadgetColumnWidthSpanSingleSetAInterpolator = [v8 gadgetColumnWidthSpanDoubleSetAInterpolator];
           goto LABEL_23;
         }
 
 LABEL_14:
-        v10 = [v7 gadgetColumnWidthSpanDoubleSetBInterpolator];
+        gadgetColumnWidthSpanSingleSetAInterpolator = [v7 gadgetColumnWidthSpanDoubleSetBInterpolator];
         goto LABEL_23;
       }
 
@@ -202,7 +202,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  switch(a3)
+  switch(span)
   {
     case 3:
       [(PXGadgetSpec *)self layoutReferenceWidth];
@@ -240,19 +240,19 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)isEqualToGadgetSpec:(id)a3
+- (BOOL)isEqualToGadgetSpec:(id)spec
 {
-  v4 = a3;
-  [v4 layoutReferenceWidth];
-  if (v5 == self->_layoutReferenceWidth && self->_shouldInsetAllContent == [v4 shouldInsetAllContent])
+  specCopy = spec;
+  [specCopy layoutReferenceWidth];
+  if (v5 == self->_layoutReferenceWidth && self->_shouldInsetAllContent == [specCopy shouldInsetAllContent])
   {
-    [v4 interItemSpacing];
-    if (v6 == self->_interItemSpacing && [v4 scrollAxis] == self->_scrollAxis && objc_msgSend(v4, "layoutSizeClass") == self->_layoutSizeClass && objc_msgSend(v4, "layoutOrientation") == self->_layoutOrientation && objc_msgSend(v4, "layoutDirection") == self->_layoutDirection)
+    [specCopy interItemSpacing];
+    if (v6 == self->_interItemSpacing && [specCopy scrollAxis] == self->_scrollAxis && objc_msgSend(specCopy, "layoutSizeClass") == self->_layoutSizeClass && objc_msgSend(specCopy, "layoutOrientation") == self->_layoutOrientation && objc_msgSend(specCopy, "layoutDirection") == self->_layoutDirection)
     {
-      [v4 fixedColumnWidth];
-      if (v7 == self->_fixedColumnWidth && self->_shouldUseAccessibilityLayout == [v4 shouldUseAccessibilityLayout])
+      [specCopy fixedColumnWidth];
+      if (v7 == self->_fixedColumnWidth && self->_shouldUseAccessibilityLayout == [specCopy shouldUseAccessibilityLayout])
       {
-        [v4 accessoryViewInset];
+        [specCopy accessoryViewInset];
         PXEdgeInsetsApproximatelyEqualToEdgeInsets();
       }
     }
@@ -261,13 +261,13 @@ LABEL_20:
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 isEqualToGadgetSpec:self];
+    v5 = [equalCopy isEqualToGadgetSpec:self];
   }
 
   else
@@ -280,19 +280,19 @@ LABEL_20:
 
 - (PXExtendedTraitCollection)rootExtendedTraitCollection
 {
-  v2 = [(PXGadgetSpec *)self extendedTraitCollection];
-  v3 = [v2 rootExtendedTraitCollection];
+  extendedTraitCollection = [(PXGadgetSpec *)self extendedTraitCollection];
+  rootExtendedTraitCollection = [extendedTraitCollection rootExtendedTraitCollection];
 
-  return v3;
+  return rootExtendedTraitCollection;
 }
 
-- (PXGadgetSpec)initWithTraitCollection:(id)a3 scrollAxis:(int64_t)a4
+- (PXGadgetSpec)initWithTraitCollection:(id)collection scrollAxis:(int64_t)axis
 {
-  v8 = a3;
-  if (!a4)
+  collectionCopy = collection;
+  if (!axis)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXGadgetSpec.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"scrollAxis != PXAxisUndefined"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetSpec.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"scrollAxis != PXAxisUndefined"}];
   }
 
   v16.receiver = self;
@@ -301,11 +301,11 @@ LABEL_20:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_extendedTraitCollection, a3);
-    v10->_scrollAxis = a4;
-    [v8 layoutReferenceSize];
+    objc_storeStrong(&v9->_extendedTraitCollection, collection);
+    v10->_scrollAxis = axis;
+    [collectionCopy layoutReferenceSize];
     v10->_layoutReferenceWidth = v11;
-    [v8 layoutReferenceSize];
+    [collectionCopy layoutReferenceSize];
     v10->_layoutReferenceHeight = v12;
     v13 = *(off_1E7721FA8 + 1);
     *&v10->_layoutInsets.top = *off_1E7721FA8;
@@ -313,25 +313,25 @@ LABEL_20:
     v10->_fixedColumnWidth = 164.0;
     [objc_opt_class() horizontalContentInsetsInterpolator];
     [objc_claimAutoreleasedReturnValue() valueForMetric:v10->_layoutReferenceWidth];
-    [v8 displayScale];
+    [collectionCopy displayScale];
     PXFloatRoundToPixel();
   }
 
   return 0;
 }
 
-+ (double)sectionHeaderTitleBottomSpacingForStyle:(unint64_t)a3
++ (double)sectionHeaderTitleBottomSpacingForStyle:(unint64_t)style
 {
-  if (a3 > 3)
+  if (style > 3)
   {
-    if (a3 == 4 || a3 == 5)
+    if (style == 4 || style == 5)
     {
 LABEL_7:
       PXScaledValueForTextStyleWithSymbolicTraits();
     }
   }
 
-  else if (a3 - 2 < 2 || !a3)
+  else if (style - 2 < 2 || !style)
   {
     goto LABEL_7;
   }
@@ -339,51 +339,51 @@ LABEL_7:
   return 0.0;
 }
 
-+ (double)sectionHeaderTopSpacingForStyle:(unint64_t)a3
++ (double)sectionHeaderTopSpacingForStyle:(unint64_t)style
 {
-  if (a3 < 4)
+  if (style < 4)
   {
     PXVisionScaledFloat();
   }
 
-  if (a3 - 4 < 2)
+  if (style - 4 < 2)
   {
     PXScaledValueForTextStyleWithSymbolicTraits();
   }
 
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:a1 file:@"PXGadgetSpec.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"topSpacing > 0.0"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetSpec.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"topSpacing > 0.0"}];
 
   return 0.0;
 }
 
-+ (double)sectionHeaderTitleHeightForStyle:(unint64_t)a3 dividerHidden:(BOOL)a4
++ (double)sectionHeaderTitleHeightForStyle:(unint64_t)style dividerHidden:(BOOL)hidden
 {
-  if (a3 < 4)
+  if (style < 4)
   {
     PXVisionScaledFloat();
   }
 
-  if (a3 == 4 || a3 == 5)
+  if (style == 4 || style == 5)
   {
     PXScaledValueForTextStyleWithSymbolicTraits();
   }
 
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:a1 file:@"PXGadgetSpec.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"titleHeight > 0.0"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetSpec.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"titleHeight > 0.0"}];
 
   return 0.0;
 }
 
-+ (double)sectionHeaderHeightForStyle:(unint64_t)a3 dividerHidden:(BOOL)a4
++ (double)sectionHeaderHeightForStyle:(unint64_t)style dividerHidden:(BOOL)hidden
 {
   [PXGadgetSpec sectionHeaderTitleHeightForStyle:"sectionHeaderTitleHeightForStyle:dividerHidden:" dividerHidden:?];
   v7 = v6;
-  [PXGadgetSpec sectionHeaderTitleBottomSpacingForStyle:a3];
+  [PXGadgetSpec sectionHeaderTitleBottomSpacingForStyle:style];
   v9 = v7 + v8;
-  if (!a4)
+  if (!hidden)
   {
-    [PXGadgetSpec sectionHeaderTopSpacingForStyle:a3];
+    [PXGadgetSpec sectionHeaderTopSpacingForStyle:style];
     return v9 + v10;
   }
 

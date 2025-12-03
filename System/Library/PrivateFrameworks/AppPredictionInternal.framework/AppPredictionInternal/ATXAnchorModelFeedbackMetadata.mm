@@ -1,23 +1,23 @@
 @interface ATXAnchorModelFeedbackMetadata
-+ (id)anchorFeedbackMetadataFromArchivedData:(id)a3;
-+ (id)archivedDataForAnchorFeedbackMetadata:(id)a3;
-- (ATXAnchorModelFeedbackMetadata)initWithAnchorSuggestionTuples:(id)a3;
-- (ATXAnchorModelFeedbackMetadata)initWithCoder:(id)a3;
-- (ATXAnchorModelFeedbackMetadata)initWithSuggestionUUIDToAnchorPredictionMapping:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXAnchorModelFeedbackMetadata:(id)a3;
-- (id)anchorModelPredictionForProactiveSuggestion:(id)a3;
++ (id)anchorFeedbackMetadataFromArchivedData:(id)data;
++ (id)archivedDataForAnchorFeedbackMetadata:(id)metadata;
+- (ATXAnchorModelFeedbackMetadata)initWithAnchorSuggestionTuples:(id)tuples;
+- (ATXAnchorModelFeedbackMetadata)initWithCoder:(id)coder;
+- (ATXAnchorModelFeedbackMetadata)initWithSuggestionUUIDToAnchorPredictionMapping:(id)mapping;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXAnchorModelFeedbackMetadata:(id)metadata;
+- (id)anchorModelPredictionForProactiveSuggestion:(id)suggestion;
 - (unint64_t)hash;
 @end
 
 @implementation ATXAnchorModelFeedbackMetadata
 
-+ (id)archivedDataForAnchorFeedbackMetadata:(id)a3
++ (id)archivedDataForAnchorFeedbackMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   v4 = objc_autoreleasePoolPush();
   v10 = 0;
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v10];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:metadataCopy requiringSecureCoding:1 error:&v10];
   v6 = v10;
   objc_autoreleasePoolPop(v4);
   if (v5)
@@ -42,12 +42,12 @@
   return v5;
 }
 
-+ (id)anchorFeedbackMetadataFromArchivedData:(id)a3
++ (id)anchorFeedbackMetadataFromArchivedData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_autoreleasePoolPush();
   v10 = 0;
-  v5 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v10];
+  v5 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v10];
   v6 = v10;
   objc_autoreleasePoolPop(v4);
   if (v5)
@@ -72,9 +72,9 @@
   return v5;
 }
 
-- (ATXAnchorModelFeedbackMetadata)initWithAnchorSuggestionTuples:(id)a3
+- (ATXAnchorModelFeedbackMetadata)initWithAnchorSuggestionTuples:(id)tuples
 {
-  v4 = a3;
+  tuplesCopy = tuples;
   v5 = objc_opt_new();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -82,7 +82,7 @@
   v9[3] = &unk_27859F750;
   v10 = v5;
   v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [tuplesCopy enumerateObjectsUsingBlock:v9];
 
   v7 = [(ATXAnchorModelFeedbackMetadata *)self initWithSuggestionUUIDToAnchorPredictionMapping:v6];
   return v7;
@@ -99,27 +99,27 @@ void __65__ATXAnchorModelFeedbackMetadata_initWithAnchorSuggestionTuples___block
   [*(a1 + 32) setObject:v6 forKey:v5];
 }
 
-- (ATXAnchorModelFeedbackMetadata)initWithSuggestionUUIDToAnchorPredictionMapping:(id)a3
+- (ATXAnchorModelFeedbackMetadata)initWithSuggestionUUIDToAnchorPredictionMapping:(id)mapping
 {
-  v5 = a3;
+  mappingCopy = mapping;
   v9.receiver = self;
   v9.super_class = ATXAnchorModelFeedbackMetadata;
   v6 = [(ATXAnchorModelFeedbackMetadata *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_suggestionUUIDToAnchorPredictionMapping, a3);
+    objc_storeStrong(&v6->_suggestionUUIDToAnchorPredictionMapping, mapping);
   }
 
   return v7;
 }
 
-- (id)anchorModelPredictionForProactiveSuggestion:(id)a3
+- (id)anchorModelPredictionForProactiveSuggestion:(id)suggestion
 {
-  if (a3)
+  if (suggestion)
   {
-    v4 = [a3 uuid];
-    v5 = [(NSMutableDictionary *)self->_suggestionUUIDToAnchorPredictionMapping objectForKey:v4];
+    uuid = [suggestion uuid];
+    v5 = [(NSMutableDictionary *)self->_suggestionUUIDToAnchorPredictionMapping objectForKey:uuid];
   }
 
   else
@@ -130,9 +130,9 @@ void __65__ATXAnchorModelFeedbackMetadata_initWithAnchorSuggestionTuples___block
   return v5;
 }
 
-- (ATXAnchorModelFeedbackMetadata)initWithCoder:(id)a3
+- (ATXAnchorModelFeedbackMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x277CBEB98]);
   v7 = objc_opt_class();
@@ -141,34 +141,34 @@ void __65__ATXAnchorModelFeedbackMetadata_initWithAnchorSuggestionTuples___block
   objc_autoreleasePoolPop(v5);
   v10 = MEMORY[0x277D42620];
   v11 = __atxlog_handle_anchor();
-  v12 = [v10 robustDecodeObjectOfClasses:v9 forKey:@"mapping" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXAnchorModelFeedbackMetadata" errorCode:-1 logHandle:v11];
+  v12 = [v10 robustDecodeObjectOfClasses:v9 forKey:@"mapping" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXAnchorModelFeedbackMetadata" errorCode:-1 logHandle:v11];
 
   v13 = [(ATXAnchorModelFeedbackMetadata *)self initWithSuggestionUUIDToAnchorPredictionMapping:v12];
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAnchorModelFeedbackMetadata *)self isEqualToATXAnchorModelFeedbackMetadata:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAnchorModelFeedbackMetadata *)self isEqualToATXAnchorModelFeedbackMetadata:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXAnchorModelFeedbackMetadata:(id)a3
+- (BOOL)isEqualToATXAnchorModelFeedbackMetadata:(id)metadata
 {
   v4 = self->_suggestionUUIDToAnchorPredictionMapping;
   v5 = v4;
-  if (v4 == *(a3 + 1))
+  if (v4 == *(metadata + 1))
   {
     v6 = 1;
   }
@@ -188,8 +188,8 @@ void __65__ATXAnchorModelFeedbackMetadata_initWithAnchorSuggestionTuples___block
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NSMutableDictionary *)self->_suggestionUUIDToAnchorPredictionMapping allValues];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_suggestionUUIDToAnchorPredictionMapping allValues];
+  v3 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -201,13 +201,13 @@ void __65__ATXAnchorModelFeedbackMetadata_initWithAnchorSuggestionTuples___block
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         v5 = [*(*(&v10 + 1) + 8 * i) hash] - v5 + 32 * v5;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);

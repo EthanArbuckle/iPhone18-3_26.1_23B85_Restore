@@ -1,38 +1,38 @@
 @interface MFMessageHeaders
-+ (BOOL)isStructuredHeaderKey:(id)a3;
-+ (id)addressListFromEncodedString:(id)a3;
++ (BOOL)isStructuredHeaderKey:(id)key;
++ (id)addressListFromEncodedString:(id)string;
 + (id)basicHeaders;
-+ (id)copyAddressListFromEncodedData:(id)a3 encoding:(unsigned int)a4;
-+ (id)encodedDataForAddressList:(id)a3 splittingAtLength:(unint64_t)a4 firstLineBuffer:(unint64_t)a5;
-+ (id)uniqueHeaderKeyStringForString:(id)a3;
-- (BOOL)hasHeaderForKey:(id)a3;
-- (MFMessageHeaders)initWithASCIIHeaderString:(id)a3;
-- (id)_capitalizedKeyForKey:(id)a3;
-- (id)_commaSeparatedValuesForKey:(id)a3 includeAngleBracket:(BOOL)a4;
-- (id)_copyAddressListForKey:(id)a3;
-- (id)_copyHeaderValueForKey:(id)a3;
-- (id)_copyHeaderValueForKey:(id)a3 offset:(unint64_t *)a4 decoded:(BOOL)a5;
-- (id)_decodeHeaderKeysFromData:(id)a3;
-- (id)_headerValueForKey:(id)a3 offset:(unint64_t *)a4;
-- (id)copyDecodedStringFromHeaderData:(id)a3 withRange:(_NSRange)a4;
-- (id)copyFirstNonDecodedHeaderForKey:(id)a3;
-- (id)copyFirstStringValueForKey:(id)a3;
-- (id)copyHeadersForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)firstAddressForKey:(id)a3;
-- (id)firstHeaderForKey:(id)a3;
-- (id)firstMessageIDForKey:(id)a3;
++ (id)copyAddressListFromEncodedData:(id)data encoding:(unsigned int)encoding;
++ (id)encodedDataForAddressList:(id)list splittingAtLength:(unint64_t)length firstLineBuffer:(unint64_t)buffer;
++ (id)uniqueHeaderKeyStringForString:(id)string;
+- (BOOL)hasHeaderForKey:(id)key;
+- (MFMessageHeaders)initWithASCIIHeaderString:(id)string;
+- (id)_capitalizedKeyForKey:(id)key;
+- (id)_commaSeparatedValuesForKey:(id)key includeAngleBracket:(BOOL)bracket;
+- (id)_copyAddressListForKey:(id)key;
+- (id)_copyHeaderValueForKey:(id)key;
+- (id)_copyHeaderValueForKey:(id)key offset:(unint64_t *)offset decoded:(BOOL)decoded;
+- (id)_decodeHeaderKeysFromData:(id)data;
+- (id)_headerValueForKey:(id)key offset:(unint64_t *)offset;
+- (id)copyDecodedStringFromHeaderData:(id)data withRange:(_NSRange)range;
+- (id)copyFirstNonDecodedHeaderForKey:(id)key;
+- (id)copyFirstStringValueForKey:(id)key;
+- (id)copyHeadersForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)firstAddressForKey:(id)key;
+- (id)firstHeaderForKey:(id)key;
+- (id)firstMessageIDForKey:(id)key;
 - (id)firstSenderAddress;
 - (id)headersDictionary;
-- (id)headersForKey:(id)a3;
+- (id)headersForKey:(id)key;
 - (id)headersRequiringSMTPUTF8Support;
-- (id)messageIDListForKey:(id)a3;
+- (id)messageIDListForKey:(id)key;
 - (id)mutableCopy;
 - (id)senderForUnsubscribeMessage;
 - (unsigned)_contentTypeEncoding;
-- (void)_setCapitalizedKey:(id)a3 forKey:(id)a4;
-- (void)appendHeaderData:(id)a3 andRecipients:(id)a4;
-- (void)enumerateKeysAndBytesUsingBlock:(id)a3;
+- (void)_setCapitalizedKey:(id)key forKey:(id)forKey;
+- (void)appendHeaderData:(id)data andRecipients:(id)recipients;
+- (void)enumerateKeysAndBytesUsingBlock:(id)block;
 @end
 
 @implementation MFMessageHeaders
@@ -61,23 +61,23 @@
   return v7;
 }
 
-+ (BOOL)isStructuredHeaderKey:(id)a3
++ (BOOL)isStructuredHeaderKey:(id)key
 {
-  v3 = a3;
-  v4 = ![v3 caseInsensitiveCompare:*MEMORY[0x1E699B180]] || !objc_msgSend(v3, "caseInsensitiveCompare:", *MEMORY[0x1E699B0E0]) || !objc_msgSend(v3, "caseInsensitiveCompare:", *MEMORY[0x1E699B160]) || !objc_msgSend(v3, "caseInsensitiveCompare:", *MEMORY[0x1E699B170]) || !objc_msgSend(v3, "caseInsensitiveCompare:", *MEMORY[0x1E699B158]) || !objc_msgSend(v3, "caseInsensitiveCompare:", *MEMORY[0x1E699B098]) || !objc_msgSend(v3, "caseInsensitiveCompare:", *MEMORY[0x1E699B088]) || objc_msgSend(v3, "caseInsensitiveCompare:", *MEMORY[0x1E699B150]) == 0;
+  keyCopy = key;
+  v4 = ![keyCopy caseInsensitiveCompare:*MEMORY[0x1E699B180]] || !objc_msgSend(keyCopy, "caseInsensitiveCompare:", *MEMORY[0x1E699B0E0]) || !objc_msgSend(keyCopy, "caseInsensitiveCompare:", *MEMORY[0x1E699B160]) || !objc_msgSend(keyCopy, "caseInsensitiveCompare:", *MEMORY[0x1E699B170]) || !objc_msgSend(keyCopy, "caseInsensitiveCompare:", *MEMORY[0x1E699B158]) || !objc_msgSend(keyCopy, "caseInsensitiveCompare:", *MEMORY[0x1E699B098]) || !objc_msgSend(keyCopy, "caseInsensitiveCompare:", *MEMORY[0x1E699B088]) || objc_msgSend(keyCopy, "caseInsensitiveCompare:", *MEMORY[0x1E699B150]) == 0;
 
   return v4;
 }
 
-- (MFMessageHeaders)initWithASCIIHeaderString:(id)a3
+- (MFMessageHeaders)initWithASCIIHeaderString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:1];
+  v4 = [string dataUsingEncoding:1];
   v5 = [(MFMessageHeaders *)self initWithHeaderData:v4 encoding:1536];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MFMessageHeaders alloc];
   data = self->_data;
@@ -105,9 +105,9 @@
   v4 = v3;
   v8 = v4;
   [(MFMessageHeaders *)self enumerateKeysAndBytesUsingBlock:v7];
-  v5 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v5;
+  return allObjects;
 }
 
 void __51__MFMessageHeaders_headersRequiringSMTPUTF8Support__block_invoke(uint64_t a1, void *a2, char *a3, uint64_t a4)
@@ -125,10 +125,10 @@ void __51__MFMessageHeaders_headersRequiringSMTPUTF8Support__block_invoke(uint64
   }
 }
 
-- (void)enumerateKeysAndBytesUsingBlock:(id)a3
+- (void)enumerateKeysAndBytesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(NSData *)self->_data bytes];
+  blockCopy = block;
+  bytes = [(NSData *)self->_data bytes];
   [(NSData *)self->_data length];
   memset(v9, 170, sizeof(v9));
   while (1)
@@ -139,10 +139,10 @@ void __51__MFMessageHeaders_headersRequiringSMTPUTF8Support__block_invoke(uint64
       break;
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:&v5[v9[2]] length:v9[3] encoding:1 freeWhenDone:0];
-    v8 = [v7 lowercaseString];
+    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:&bytes[v9[2]] length:v9[3] encoding:1 freeWhenDone:0];
+    lowercaseString = [v7 lowercaseString];
 
-    v4[2](v4, v8, &v5[v9[0]], v9[1]);
+    blockCopy[2](blockCopy, lowercaseString, &bytes[v9[0]], v9[1]);
   }
 }
 
@@ -154,12 +154,12 @@ void __51__MFMessageHeaders_headersRequiringSMTPUTF8Support__block_invoke(uint64
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = 0;
-  v3 = [(MFMessageHeaders *)self _contentTypeEncoding];
+  _contentTypeEncoding = [(MFMessageHeaders *)self _contentTypeEncoding];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__MFMessageHeaders_headersDictionary__block_invoke;
   v6[3] = &unk_1E8454E58;
-  v7 = v3;
+  v7 = _contentTypeEncoding;
   v6[4] = &v8;
   [(MFMessageHeaders *)self enumerateKeysAndBytesUsingBlock:v6];
   v4 = v9[5];
@@ -200,10 +200,10 @@ void __37__MFMessageHeaders_headersDictionary__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)_setCapitalizedKey:(id)a3 forKey:(id)a4
+- (void)_setCapitalizedKey:(id)key forKey:(id)forKey
 {
-  v8 = a3;
-  v5 = a4;
+  keyCopy = key;
+  forKeyCopy = forKey;
   _MFLockGlobalLock();
   Mutable = _capitalizedKeyCache;
   if (!_capitalizedKeyCache)
@@ -212,23 +212,23 @@ void __37__MFMessageHeaders_headersDictionary__block_invoke(uint64_t a1, void *a
     _capitalizedKeyCache = Mutable;
   }
 
-  if (!CFDictionaryGetValue(Mutable, v5))
+  if (!CFDictionaryGetValue(Mutable, forKeyCopy))
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v8];
-    CFDictionarySetValue(_capitalizedKeyCache, v5, v7);
+    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:keyCopy];
+    CFDictionarySetValue(_capitalizedKeyCache, forKeyCopy, v7);
   }
 
   _MFUnlockGlobalLock();
 }
 
-- (id)_capitalizedKeyForKey:(id)a3
+- (id)_capitalizedKeyForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   if (_capitalizedKeyCache)
   {
     _MFLockGlobalLock();
-    v6 = CFDictionaryGetValue(_capitalizedKeyCache, v5);
+    capitalizedString = CFDictionaryGetValue(_capitalizedKeyCache, v5);
     _MFUnlockGlobalLock();
     if (!v5)
     {
@@ -238,22 +238,22 @@ void __37__MFMessageHeaders_headersDictionary__block_invoke(uint64_t a1, void *a
 
   else
   {
-    v6 = 0;
-    if (!v4)
+    capitalizedString = 0;
+    if (!keyCopy)
     {
       goto LABEL_7;
     }
   }
 
-  if (!v6)
+  if (!capitalizedString)
   {
-    v6 = [v5 capitalizedString];
-    [(MFMessageHeaders *)self _setCapitalizedKey:v6 forKey:v5];
+    capitalizedString = [v5 capitalizedString];
+    [(MFMessageHeaders *)self _setCapitalizedKey:capitalizedString forKey:v5];
   }
 
 LABEL_7:
 
-  return v6;
+  return capitalizedString;
 }
 
 - (unsigned)_contentTypeEncoding
@@ -308,34 +308,34 @@ LABEL_7:
   return v12;
 }
 
-- (id)copyDecodedStringFromHeaderData:(id)a3 withRange:(_NSRange)a4
+- (id)copyDecodedStringFromHeaderData:(id)data withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  dataCopy = data;
+  if (!dataCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = MFLogGeneral();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      [(MFMessageHeaders *)isKindOfClass & 1 copyDecodedStringFromHeaderData:v26 withRange:v8, v9];
+      [(MFMessageHeaders *)isKindOfClass & 1 copyDecodedStringFromHeaderData:v26 withRange:dataCopy, v9];
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     objc_opt_class();
-    [v11 handleFailureInMethod:a2 object:self file:@"MessageHeaders.m" lineNumber:305 description:{@"MFMessageHeaders::copyDecodedStringFromHeaderData invalid data, [data:%p] [data.isNSData:%i]", v8, objc_opt_isKindOfClass() & 1}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MessageHeaders.m" lineNumber:305 description:{@"MFMessageHeaders::copyDecodedStringFromHeaderData invalid data, [data:%p] [data.isNSData:%i]", dataCopy, objc_opt_isKindOfClass() & 1}];
   }
 
-  if (location + length > [v8 length])
+  if (location + length > [dataCopy length])
   {
     v12 = MFLogGeneral();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
       *buf = 134218496;
-      v21 = [v8 length];
+      v21 = [dataCopy length];
       v22 = 2048;
       v23 = location;
       v24 = 2048;
@@ -343,8 +343,8 @@ LABEL_7:
       _os_log_fault_impl(&dword_1D36B2000, v12, OS_LOG_TYPE_FAULT, "_MFCreateStringFromHeaderBytes buffer overflow preempt, [data.length:%lu] [range.location:%lu/length:%lu]", buf, 0x20u);
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MessageHeaders.m" lineNumber:312 description:{@"_MFCreateStringFromHeaderBytes buffer overflow preempt, [data.length:%lu] [range.location:%lu/length:%lu]", objc_msgSend(v8, "length"), location, length}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MessageHeaders.m" lineNumber:312 description:{@"_MFCreateStringFromHeaderBytes buffer overflow preempt, [data.length:%lu] [range.location:%lu/length:%lu]", objc_msgSend(dataCopy, "length"), location, length}];
   }
 
   preferredEncoding = self->_preferredEncoding;
@@ -354,8 +354,8 @@ LABEL_7:
     self->_preferredEncoding = preferredEncoding;
   }
 
-  v15 = v8;
-  v16 = _MFCreateStringFromHeaderBytes(preferredEncoding, ([v8 bytes] + location), length);
+  v15 = dataCopy;
+  v16 = _MFCreateStringFromHeaderBytes(preferredEncoding, ([dataCopy bytes] + location), length);
   if (!v16)
   {
     if (self->_preferredEncoding == -1)
@@ -365,8 +365,8 @@ LABEL_7:
 
     else
     {
-      v17 = v8;
-      v16 = _MFCreateStringFromHeaderBytes(0xFFFFFFFF, ([v8 bytes] + location), length);
+      v17 = dataCopy;
+      v16 = _MFCreateStringFromHeaderBytes(0xFFFFFFFF, ([dataCopy bytes] + location), length);
     }
   }
 
@@ -374,14 +374,14 @@ LABEL_7:
   return v16;
 }
 
-- (id)_copyHeaderValueForKey:(id)a3 offset:(unint64_t *)a4 decoded:(BOOL)a5
+- (id)_copyHeaderValueForKey:(id)key offset:(unint64_t *)offset decoded:(BOOL)decoded
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = *a4;
-  if (v9 < [(NSData *)self->_data length]&& (v10 = *a4, [(NSData *)self->_data length], v11 = *a4, ECGetNextHeaderFromDataInRange()))
+  decodedCopy = decoded;
+  keyCopy = key;
+  v9 = *offset;
+  if (v9 < [(NSData *)self->_data length]&& (v10 = *offset, [(NSData *)self->_data length], v11 = *offset, ECGetNextHeaderFromDataInRange()))
   {
-    if (v5)
+    if (decodedCopy)
     {
       v12 = [(MFMessageHeaders *)self copyDecodedStringFromHeaderData:self->_data withRange:0, 0];
     }
@@ -392,7 +392,7 @@ LABEL_7:
     }
 
     v13 = v12;
-    *a4 = 0;
+    *offset = 0;
   }
 
   else
@@ -403,22 +403,22 @@ LABEL_7:
   return v13;
 }
 
-- (id)_headerValueForKey:(id)a3 offset:(unint64_t *)a4
+- (id)_headerValueForKey:(id)key offset:(unint64_t *)offset
 {
-  v4 = [(MFMessageHeaders *)self _copyHeaderValueForKey:a3 offset:a4 decoded:1];
+  v4 = [(MFMessageHeaders *)self _copyHeaderValueForKey:key offset:offset decoded:1];
 
   return v4;
 }
 
-- (id)_copyHeaderValueForKey:(id)a3
+- (id)_copyHeaderValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = 0;
   v9 = 0;
   while (1)
   {
-    v7 = [(MFMessageHeaders *)self _copyHeaderValueForKey:v4 offset:&v9 decoded:1];
+    v7 = [(MFMessageHeaders *)self _copyHeaderValueForKey:keyCopy offset:&v9 decoded:1];
 
     if (!v7)
     {
@@ -432,18 +432,18 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)hasHeaderForKey:(id)a3
+- (BOOL)hasHeaderForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(NSData *)self->_data length];
   LOBYTE(self) = ECGetNextHeaderFromDataInRange();
 
   return self;
 }
 
-- (id)copyHeadersForKey:(id)a3
+- (id)copyHeadersForKey:(id)key
 {
-  v3 = [(MFMessageHeaders *)self _copyHeaderValueForKey:a3];
+  v3 = [(MFMessageHeaders *)self _copyHeaderValueForKey:key];
   v4 = v3;
   if (v3 && ![v3 count])
   {
@@ -458,26 +458,26 @@ LABEL_7:
   return v5;
 }
 
-- (id)headersForKey:(id)a3
+- (id)headersForKey:(id)key
 {
-  v3 = [(MFMessageHeaders *)self copyHeadersForKey:a3];
+  v3 = [(MFMessageHeaders *)self copyHeadersForKey:key];
 
   return v3;
 }
 
-+ (id)copyAddressListFromEncodedData:(id)a3 encoding:(unsigned int)a4
++ (id)copyAddressListFromEncodedData:(id)data encoding:(unsigned int)encoding
 {
-  v30 = a3;
+  dataCopy = data;
   v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [v30 length];
-  v5 = [v30 bytes];
-  v6 = v5;
+  v4 = [dataCopy length];
+  bytes = [dataCopy bytes];
+  v6 = bytes;
   if (v4 >= 1)
   {
     v7 = 0;
     v8 = 0;
-    v9 = v5 + v4;
-    v10 = v5;
+    v9 = bytes + v4;
+    v10 = bytes;
     while (1)
     {
       v11 = *v10;
@@ -567,21 +567,21 @@ LABEL_14:
 
         if (v18 - v6 >= 1)
         {
-          v23 = _MFCreateStringFromHeaderBytes(a4, v6, v18 - v6);
-          v24 = [v23 emailAddressValue];
-          v25 = [v24 stringValue];
-          v26 = v25;
-          if (v25)
+          v23 = _MFCreateStringFromHeaderBytes(encoding, v6, v18 - v6);
+          emailAddressValue = [v23 emailAddressValue];
+          stringValue = [emailAddressValue stringValue];
+          v26 = stringValue;
+          if (stringValue)
           {
-            v27 = v25;
+            stringValue2 = stringValue;
           }
 
           else
           {
-            v27 = [v23 stringValue];
+            stringValue2 = [v23 stringValue];
           }
 
-          v28 = v27;
+          v28 = stringValue2;
 
           if ([v28 length])
           {
@@ -609,24 +609,24 @@ LABEL_40:
   return v31;
 }
 
-+ (id)addressListFromEncodedString:(id)a3
++ (id)addressListFromEncodedString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:4];
-  v5 = [a1 copyAddressListFromEncodedData:v4 encoding:134217984];
+  v4 = [string dataUsingEncoding:4];
+  v5 = [self copyAddressListFromEncodedData:v4 encoding:134217984];
 
   return v5;
 }
 
-+ (id)encodedDataForAddressList:(id)a3 splittingAtLength:(unint64_t)a4 firstLineBuffer:(unint64_t)a5
++ (id)encodedDataForAddressList:(id)list splittingAtLength:(unint64_t)length firstLineBuffer:(unint64_t)buffer
 {
   v117 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  listCopy = list;
   v95 = objc_alloc_init(MFMutableData);
-  v8 = a4 - a5;
-  v90 = a4;
+  v8 = length - buffer;
+  lengthCopy = length;
   v112 = 0u;
   v113 = 0u;
-  if (!a4)
+  if (!length)
   {
     v8 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -634,8 +634,8 @@ LABEL_40:
   v96 = v8;
   v110 = 0uLL;
   v111 = 0uLL;
-  obj = v7;
-  v9 = [obj countByEnumeratingWithState:&v110 objects:v116 count:{16, v7}];
+  obj = listCopy;
+  v9 = [obj countByEnumeratingWithState:&v110 objects:v116 count:{16, listCopy}];
   if (v9)
   {
     v92 = *v111;
@@ -1229,7 +1229,7 @@ LABEL_101:
           else
           {
             [(MFMutableData *)v95 appendBytes:" length:\n ", 3];
-            v96 = v90;
+            v96 = lengthCopy;
           }
         }
 
@@ -1254,16 +1254,16 @@ LABEL_101:
   return v95;
 }
 
-- (id)_copyAddressListForKey:(id)a3
+- (id)_copyAddressListForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (self->_preferredEncoding == -1)
   {
     self->_preferredEncoding = [(MFMessageHeaders *)self _contentTypeEncoding];
   }
 
   v8 = 0;
-  v5 = [(MFMessageHeaders *)self _copyHeaderValueForKey:v4 offset:&v8 decoded:0];
+  v5 = [(MFMessageHeaders *)self _copyHeaderValueForKey:keyCopy offset:&v8 decoded:0];
   v6 = [objc_opt_class() copyAddressListFromEncodedData:v5 encoding:self->_preferredEncoding];
 
   return v6;
@@ -1287,10 +1287,10 @@ LABEL_101:
 
 - (id)senderForUnsubscribeMessage
 {
-  v2 = [(MFMessageHeaders *)self copyAddressListForTo];
-  if ([v2 count])
+  copyAddressListForTo = [(MFMessageHeaders *)self copyAddressListForTo];
+  if ([copyAddressListForTo count])
   {
-    v3 = [v2 objectAtIndexedSubscript:0];
+    v3 = [copyAddressListForTo objectAtIndexedSubscript:0];
   }
 
   else
@@ -1301,11 +1301,11 @@ LABEL_101:
   return v3;
 }
 
-- (id)_commaSeparatedValuesForKey:(id)a3 includeAngleBracket:(BOOL)a4
+- (id)_commaSeparatedValuesForKey:(id)key includeAngleBracket:(BOOL)bracket
 {
-  v30 = a4;
-  v29 = a3;
-  v5 = [(MFMessageHeaders *)self copyFirstHeaderForKey:v29];
+  bracketCopy = bracket;
+  keyCopy = key;
+  v5 = [(MFMessageHeaders *)self copyFirstHeaderForKey:keyCopy];
   v42 = 0xAAAAAAAAAAAAAAAALL;
   *&v6 = 0xAAAAAAAAAAAAAAAALL;
   *(&v6 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -1339,7 +1339,7 @@ LABEL_101:
     }
 
     v12 = 0;
-    v10 = 0;
+    array = 0;
     v13 = 0;
     *(&v41 + 1) = 0;
     v42 = 0;
@@ -1425,13 +1425,13 @@ LABEL_19:
 
       if (v19 == 62)
       {
-        if (v30)
+        if (bracketCopy)
         {
           v20 = v13 - v15 + 1;
-          if (!v10)
+          if (!array)
           {
 LABEL_28:
-            v10 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
           }
         }
 
@@ -1439,14 +1439,14 @@ LABEL_28:
         {
           v21 = ~v15++;
           v20 = v13 + v21;
-          if (!v10)
+          if (!array)
           {
             goto LABEL_28;
           }
         }
 
         v22 = [(__CFString *)v5 substringWithRange:v15, v20];
-        [v10 addObject:v22];
+        [array addObject:v22];
 
         v15 = 0x7FFFFFFFFFFFFFFFLL;
       }
@@ -1462,32 +1462,32 @@ LABEL_30:
     }
   }
 
-  v10 = 0;
+  array = 0;
 LABEL_5:
 
-  return v10;
+  return array;
 }
 
-- (id)firstHeaderForKey:(id)a3
+- (id)firstHeaderForKey:(id)key
 {
   v5 = 0;
-  v3 = [(MFMessageHeaders *)self _headerValueForKey:a3 offset:&v5];
+  v3 = [(MFMessageHeaders *)self _headerValueForKey:key offset:&v5];
 
   return v3;
 }
 
-- (id)firstAddressForKey:(id)a3
+- (id)firstAddressForKey:(id)key
 {
-  v3 = [(MFMessageHeaders *)self firstHeaderForKey:a3];
+  v3 = [(MFMessageHeaders *)self firstHeaderForKey:key];
 
   return v3;
 }
 
-- (id)copyFirstNonDecodedHeaderForKey:(id)a3
+- (id)copyFirstNonDecodedHeaderForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = 0;
-  v5 = [(MFMessageHeaders *)self _copyHeaderValueForKey:v4 offset:&v7 decoded:0];
+  v5 = [(MFMessageHeaders *)self _copyHeaderValueForKey:keyCopy offset:&v7 decoded:0];
   if (v5)
   {
     objc_opt_class();
@@ -1500,9 +1500,9 @@ LABEL_5:
   return v5;
 }
 
-- (id)copyFirstStringValueForKey:(id)a3
+- (id)copyFirstStringValueForKey:(id)key
 {
-  v4 = [(MFMessageHeaders *)self copyFirstHeaderForKey:a3];
+  v4 = [(MFMessageHeaders *)self copyFirstHeaderForKey:key];
   objc_opt_class();
   v5 = v4;
   if (objc_opt_isKindOfClass())
@@ -1513,14 +1513,14 @@ LABEL_5:
   return v5;
 }
 
-- (id)_decodeHeaderKeysFromData:(id)a3
+- (id)_decodeHeaderKeysFromData:(id)data
 {
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__MFMessageHeaders__decodeHeaderKeysFromData___block_invoke;
   v7[3] = &unk_1E8454E30;
-  v5 = v4;
+  v5 = array;
   v8 = v5;
   [(MFMessageHeaders *)self enumerateKeysAndBytesUsingBlock:v7];
 
@@ -1534,13 +1534,13 @@ void __46__MFMessageHeaders__decodeHeaderKeysFromData___block_invoke(uint64_t a1
   [v2 addObject:?];
 }
 
-- (void)appendHeaderData:(id)a3 andRecipients:(id)a4
+- (void)appendHeaderData:(id)data andRecipients:(id)recipients
 {
   v66 = *MEMORY[0x1E69E9840];
-  v59 = a3;
-  v60 = a4;
-  v52 = [(MFMessageHeaders *)self allHeaderKeys];
-  v53 = [v52 count];
+  dataCopy = data;
+  recipientsCopy = recipients;
+  allHeaderKeys = [(MFMessageHeaders *)self allHeaderKeys];
+  v53 = [allHeaderKeys count];
   v46 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v47 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v48 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -1558,10 +1558,10 @@ void __46__MFMessageHeaders__decodeHeaderKeysFromData___block_invoke(uint64_t a1
     v43 = *MEMORY[0x1E699B0E0];
     v41 = *MEMORY[0x1E699B160];
     v40 = *MEMORY[0x1E699B150];
-    v56 = self;
+    selfCopy = self;
     while (1)
     {
-      v8 = [v52 objectAtIndex:{v6, v40}];
+      v8 = [allHeaderKeys objectAtIndex:{v6, v40}];
       v9 = [v8 isEqualToString:v51];
       v10 = ([v8 isEqualToString:v50] & 1) != 0 ? 1 : objc_msgSend(v8, "isEqualToString:", v45);
       if ([v8 isEqualToString:v49])
@@ -1681,10 +1681,10 @@ LABEL_35:
 
             if ((v26 & 1) == 0)
             {
-              [v59 mf_appendCString:{objc_msgSend(v12, "ef_lossyDefaultCStringBytes")}];
-              [v59 appendBytes:": " length:2];
-              [v59 appendData:v20];
-              [v59 appendBytes:"\n" length:1];
+              [dataCopy mf_appendCString:{objc_msgSend(v12, "ef_lossyDefaultCStringBytes")}];
+              [dataCopy appendBytes:": " length:2];
+              [dataCopy appendData:v20];
+              [dataCopy appendBytes:"\n" length:1];
             }
 
             goto LABEL_40;
@@ -1721,7 +1721,7 @@ LABEL_40:
 LABEL_41:
 
       v8 = v54;
-      self = v56;
+      self = selfCopy;
 LABEL_42:
 
       v6 = ++v55;
@@ -1736,11 +1736,11 @@ LABEL_42:
   }
 
 LABEL_46:
-  [v59 appendBytes:"\n" length:1];
+  [dataCopy appendBytes:"\n" length:1];
   if ([v47 count])
   {
-    v27 = [v47 allObjects];
-    [v42 addObjectsFromArray:v27];
+    allObjects = [v47 allObjects];
+    [v42 addObjectsFromArray:allObjects];
   }
 
   else
@@ -1750,15 +1750,15 @@ LABEL_46:
       goto LABEL_51;
     }
 
-    v27 = [v46 allObjects];
-    [v42 addObjectsFromArray:v27];
+    allObjects = [v46 allObjects];
+    [v42 addObjectsFromArray:allObjects];
   }
 
 LABEL_51:
   if ([v48 count])
   {
-    v28 = [v48 allObjects];
-    [v42 addObjectsFromArray:v28];
+    allObjects2 = [v48 allObjects];
+    [v42 addObjectsFromArray:allObjects2];
   }
 
   v63 = 0u;
@@ -1780,22 +1780,22 @@ LABEL_51:
         }
 
         v33 = *(*(&v61 + 1) + 8 * i);
-        v34 = [v33 emailAddressValue];
-        v35 = [v34 simpleAddress];
-        v36 = v35;
-        if (v35)
+        emailAddressValue = [v33 emailAddressValue];
+        simpleAddress = [emailAddressValue simpleAddress];
+        v36 = simpleAddress;
+        if (simpleAddress)
         {
-          v37 = v35;
+          stringValue = simpleAddress;
         }
 
         else
         {
-          v37 = [v33 stringValue];
+          stringValue = [v33 stringValue];
         }
 
-        v38 = v37;
+        v38 = stringValue;
 
-        [v60 addObject:v38];
+        [recipientsCopy addObject:v38];
       }
 
       v30 = [v29 countByEnumeratingWithState:&v61 objects:v65 count:16];
@@ -1807,11 +1807,11 @@ LABEL_51:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)uniqueHeaderKeyStringForString:(id)a3
++ (id)uniqueHeaderKeyStringForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = *MEMORY[0x1E699B0E0];
-  if (![v3 caseInsensitiveCompare:*MEMORY[0x1E699B0E0]] || (v4 = *MEMORY[0x1E699B178], v5 = v3, !objc_msgSend(v3, "caseInsensitiveCompare:", *MEMORY[0x1E699B178])))
+  if (![stringCopy caseInsensitiveCompare:*MEMORY[0x1E699B0E0]] || (v4 = *MEMORY[0x1E699B178], v5 = stringCopy, !objc_msgSend(stringCopy, "caseInsensitiveCompare:", *MEMORY[0x1E699B178])))
   {
     v5 = v4;
   }
@@ -1819,16 +1819,16 @@ LABEL_51:
   return v5;
 }
 
-- (id)messageIDListForKey:(id)a3
+- (id)messageIDListForKey:(id)key
 {
-  v3 = [(MFMessageHeaders *)self headersForKey:a3];
+  v3 = [(MFMessageHeaders *)self headersForKey:key];
 
   return v3;
 }
 
-- (id)firstMessageIDForKey:(id)a3
+- (id)firstMessageIDForKey:(id)key
 {
-  v3 = [(MFMessageHeaders *)self firstHeaderForKey:a3];
+  v3 = [(MFMessageHeaders *)self firstHeaderForKey:key];
 
   return v3;
 }

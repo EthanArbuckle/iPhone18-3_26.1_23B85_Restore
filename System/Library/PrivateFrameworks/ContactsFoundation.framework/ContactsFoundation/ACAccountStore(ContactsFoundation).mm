@@ -11,53 +11,53 @@
 {
   v4 = a3;
   v5 = objc_alloc_init(CNPromise);
-  v6 = [(CNPromise *)v5 BOOLErrorCompletionHandlerAdapter];
-  [a1 canSaveAccount:v4 withCompletionHandler:v6];
+  bOOLErrorCompletionHandlerAdapter = [(CNPromise *)v5 BOOLErrorCompletionHandlerAdapter];
+  [self canSaveAccount:v4 withCompletionHandler:bOOLErrorCompletionHandlerAdapter];
 
-  v7 = [(CNPromise *)v5 future];
+  future = [(CNPromise *)v5 future];
 
-  return v7;
+  return future;
 }
 
 - (id)_cn_saveVerifiedAccount:()ContactsFoundation
 {
   v4 = a3;
   v5 = objc_alloc_init(CNPromise);
-  v6 = [(CNPromise *)v5 BOOLErrorCompletionHandlerAdapter];
-  [a1 saveVerifiedAccount:v4 withCompletionHandler:v6];
+  bOOLErrorCompletionHandlerAdapter = [(CNPromise *)v5 BOOLErrorCompletionHandlerAdapter];
+  [self saveVerifiedAccount:v4 withCompletionHandler:bOOLErrorCompletionHandlerAdapter];
 
-  v7 = [(CNPromise *)v5 future];
+  future = [(CNPromise *)v5 future];
 
-  return v7;
+  return future;
 }
 
 - (id)_cn_removeAccount:()ContactsFoundation
 {
   v4 = a3;
   v5 = objc_alloc_init(CNPromise);
-  v6 = [(CNPromise *)v5 BOOLErrorCompletionHandlerAdapter];
-  [a1 removeAccount:v4 withCompletionHandler:v6];
+  bOOLErrorCompletionHandlerAdapter = [(CNPromise *)v5 BOOLErrorCompletionHandlerAdapter];
+  [self removeAccount:v4 withCompletionHandler:bOOLErrorCompletionHandlerAdapter];
 
-  v7 = [(CNPromise *)v5 future];
+  future = [(CNPromise *)v5 future];
 
-  return v7;
+  return future;
 }
 
 - (id)cardDAVAccountForPrimaryAppleAccountWithAppleID:()ContactsFoundation logger:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959820]];
-  v9 = [a1 accountsWithAccountType:v8];
+  v8 = [self accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959820]];
+  v9 = [self accountsWithAccountType:v8];
   if ([v9 count])
   {
     v10 = [v9 _cn_firstObjectPassingTest:&__block_literal_global_0];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 parentAccount];
-      v13 = [v12 _cn_appleAccountAppleID];
-      v14 = [v13 isEqualToString:v6];
+      parentAccount = [v10 parentAccount];
+      _cn_appleAccountAppleID = [parentAccount _cn_appleAccountAppleID];
+      v14 = [_cn_appleAccountAppleID isEqualToString:v6];
 
       if (v14)
       {
@@ -73,9 +73,9 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v16 = [v11 parentAccount];
-      v17 = [v16 _cn_appleAccountAppleIDAliases];
-      v18 = [v17 containsObject:v6];
+      parentAccount2 = [v11 parentAccount];
+      _cn_appleAccountAppleIDAliases = [parentAccount2 _cn_appleAccountAppleIDAliases];
+      v18 = [_cn_appleAccountAppleIDAliases containsObject:v6];
 
       if (v18)
       {

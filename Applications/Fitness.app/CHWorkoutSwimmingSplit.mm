@@ -1,25 +1,25 @@
 @interface CHWorkoutSwimmingSplit
-- (CHWorkoutSwimmingSplit)initWithSplitDelimiterDistance:(int64_t)a3 distanceInUserUnit:(double)a4 strokeCount:(int64_t)a5 duration:(double)a6;
+- (CHWorkoutSwimmingSplit)initWithSplitDelimiterDistance:(int64_t)distance distanceInUserUnit:(double)unit strokeCount:(int64_t)count duration:(double)duration;
 - (double)_fractionToFillTotalSplitDelimiterDistance;
 - (double)durationScaledToFillSplit;
 - (id)description;
-- (id)formattedPaceWithFormattingManager:(id)a3;
+- (id)formattedPaceWithFormattingManager:(id)manager;
 - (id)formattedStrokeCount;
 @end
 
 @implementation CHWorkoutSwimmingSplit
 
-- (CHWorkoutSwimmingSplit)initWithSplitDelimiterDistance:(int64_t)a3 distanceInUserUnit:(double)a4 strokeCount:(int64_t)a5 duration:(double)a6
+- (CHWorkoutSwimmingSplit)initWithSplitDelimiterDistance:(int64_t)distance distanceInUserUnit:(double)unit strokeCount:(int64_t)count duration:(double)duration
 {
   v11.receiver = self;
   v11.super_class = CHWorkoutSwimmingSplit;
   result = [(CHWorkoutSwimmingSplit *)&v11 init];
   if (result)
   {
-    result->_splitDelimiterDistance = a3;
-    result->_distanceInUserUnit = a4;
-    result->_strokeCount = a5;
-    result->_duration = a6;
+    result->_splitDelimiterDistance = distance;
+    result->_distanceInUserUnit = unit;
+    result->_strokeCount = count;
+    result->_duration = duration;
   }
 
   return result;
@@ -27,9 +27,9 @@
 
 - (double)_fractionToFillTotalSplitDelimiterDistance
 {
-  v3 = [(CHWorkoutSwimmingSplit *)self splitDelimiterDistance];
+  splitDelimiterDistance = [(CHWorkoutSwimmingSplit *)self splitDelimiterDistance];
   [(CHWorkoutSwimmingSplit *)self distanceInUserUnit];
-  return v3 / v4;
+  return splitDelimiterDistance / v4;
 }
 
 - (double)durationScaledToFillSplit
@@ -48,11 +48,11 @@
   return v3;
 }
 
-- (id)formattedPaceWithFormattingManager:(id)a3
+- (id)formattedPaceWithFormattingManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   [(CHWorkoutSwimmingSplit *)self durationScaledToFillSplit];
-  v5 = [v4 stringWithDuration:1 durationFormat:?];
+  v5 = [managerCopy stringWithDuration:1 durationFormat:?];
 
   return v5;
 }

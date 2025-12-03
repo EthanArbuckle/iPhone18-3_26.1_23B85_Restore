@@ -1,11 +1,11 @@
 @interface PXComposeRecipientView
 - (PXComposeRecipientView)init;
 - (PXComposeRecipientViewDelegate)delegate;
-- (void)addRecipient:(id)a3;
-- (void)addRecipients:(id)a3;
-- (void)removeRecipient:(id)a3;
-- (void)removeRecipients:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)addRecipient:(id)recipient;
+- (void)addRecipients:(id)recipients;
+- (void)removeRecipient:(id)recipient;
+- (void)removeRecipients:(id)recipients;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PXComposeRecipientView
@@ -17,9 +17,9 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -37,46 +37,46 @@
   }
 }
 
-- (void)removeRecipients:(id)a3
+- (void)removeRecipients:(id)recipients
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  recipientsCopy = recipients;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientView.m" lineNumber:38 description:{@"Method %s is a responsibility of subclass %@", "-[PXComposeRecipientView removeRecipients:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientView.m" lineNumber:38 description:{@"Method %s is a responsibility of subclass %@", "-[PXComposeRecipientView removeRecipients:]", v8}];
 
   abort();
 }
 
-- (void)addRecipients:(id)a3
+- (void)addRecipients:(id)recipients
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  recipientsCopy = recipients;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientView.m" lineNumber:34 description:{@"Method %s is a responsibility of subclass %@", "-[PXComposeRecipientView addRecipients:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientView.m" lineNumber:34 description:{@"Method %s is a responsibility of subclass %@", "-[PXComposeRecipientView addRecipients:]", v8}];
 
   abort();
 }
 
-- (void)removeRecipient:(id)a3
+- (void)removeRecipient:(id)recipient
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  recipientCopy = recipient;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientView.m" lineNumber:30 description:{@"Method %s is a responsibility of subclass %@", "-[PXComposeRecipientView removeRecipient:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientView.m" lineNumber:30 description:{@"Method %s is a responsibility of subclass %@", "-[PXComposeRecipientView removeRecipient:]", v8}];
 
   abort();
 }
 
-- (void)addRecipient:(id)a3
+- (void)addRecipient:(id)recipient
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  recipientCopy = recipient;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientView.m" lineNumber:26 description:{@"Method %s is a responsibility of subclass %@", "-[PXComposeRecipientView addRecipient:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientView.m" lineNumber:26 description:{@"Method %s is a responsibility of subclass %@", "-[PXComposeRecipientView addRecipient:]", v8}];
 
   abort();
 }

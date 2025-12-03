@@ -1,15 +1,15 @@
 @interface CAMAutoMacroButton
-- (CAMAutoMacroButton)initWithFrame:(CGRect)a3;
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4;
+- (CAMAutoMacroButton)initWithFrame:(CGRect)frame;
+- (void)setActive:(BOOL)active animated:(BOOL)animated;
 @end
 
 @implementation CAMAutoMacroButton
 
-- (CAMAutoMacroButton)initWithFrame:(CGRect)a3
+- (CAMAutoMacroButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CAMAutoMacroButton;
-  v3 = [(CAMCircleButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMCircleButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -20,15 +20,15 @@
   return v4;
 }
 
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4
+- (void)setActive:(BOOL)active animated:(BOOL)animated
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v5 = a4;
-    self->_active = a3;
+    animatedCopy = animated;
+    self->_active = active;
     [(CAMCircleButton *)self updateTintColors];
 
-    [(CAMCircleButton *)self updateSlashAnimated:v5];
+    [(CAMCircleButton *)self updateSlashAnimated:animatedCopy];
   }
 }
 

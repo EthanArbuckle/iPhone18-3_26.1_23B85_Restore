@@ -1,8 +1,8 @@
 @interface SUSUIControllerServer
 + (id)sharedInstance;
-- (BOOL)createKeybagWithSecret:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)getPasscodePolicy:(id)a3;
+- (BOOL)createKeybagWithSecret:(id)secret;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)getPasscodePolicy:(id)policy;
 - (void)run;
 @end
 
@@ -46,20 +46,20 @@
   objc_storeStrong(v7, 0);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, listener);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, connection);
   v10 = [v16 valueForEntitlement:@"com.apple.softwareupdateservices.ui.client.allowed"];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    [v16 _setQueue:v18->_queue];
+    [v16 _setQueue:selfCopy->_queue];
     [v16 setInterruptionHandler:?];
     [v16 setInvalidationHandler:0];
     v5 = v16;
@@ -70,7 +70,7 @@
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___SUSUIControllerServerInterface];
     [v7 setExportedInterface:?];
 
-    [v16 setExportedObject:v18];
+    [v16 setExportedObject:selfCopy];
     [v16 resume];
     v12 = SUSUILog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -104,12 +104,12 @@
   return v19 & 1;
 }
 
-- (BOOL)createKeybagWithSecret:(id)a3
+- (BOOL)createKeybagWithSecret:(id)secret
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, secret);
   v4 = +[SUSUISoftwareUpdateController sharedInstance];
   v5 = [(SUSUISoftwareUpdateController *)v4 _createAutoInstallKeybagWithPasscode:location[0]];
 
@@ -117,12 +117,12 @@
   return v5;
 }
 
-- (void)getPasscodePolicy:(id)a3
+- (void)getPasscodePolicy:(id)policy
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, policy);
   if (location[0])
   {
     v3 = location[0];

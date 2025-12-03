@@ -1,11 +1,11 @@
 @interface BRButtonResolverController
 + (id)sharedInstance;
 + (void)sharedInstance;
-- (BOOL)enableStates:(id)a3 error:(id *)a4;
+- (BOOL)enableStates:(id)states error:(id *)error;
 - (BOOL)isReady;
-- (BOOL)playState:(unint64_t)a3 forSpeed:(unint64_t)a4 error:(id *)a5;
-- (BOOL)setConfigs:(id)a3 withAssets:(id)a4 forStates:(id)a5 error:(id *)a6;
-- (BOOL)setGlobalConfigs:(id)a3 error:(id *)a4;
+- (BOOL)playState:(unint64_t)state forSpeed:(unint64_t)speed error:(id *)error;
+- (BOOL)setConfigs:(id)configs withAssets:(id)assets forStates:(id)states error:(id *)error;
+- (BOOL)setGlobalConfigs:(id)configs error:(id *)error;
 - (BRButtonResolverController)init;
 - (id)description;
 - (id)propertyList;
@@ -14,7 +14,7 @@
 - (void)dealloc;
 - (void)init;
 - (void)propertyList;
-- (void)scheduleReadyNotificationOnDispatchQueue:(id)a3 withBlock:(id)a4;
+- (void)scheduleReadyNotificationOnDispatchQueue:(id)queue withBlock:(id)block;
 @end
 
 @implementation BRButtonResolverController
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = __44__BRButtonResolverController_sharedInstance__block_invoke;
   block[3] = &unk_278D3F310;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once != -1)
   {
     dispatch_once(&sharedInstance_once, block);
@@ -96,7 +96,7 @@ id __44__BRButtonResolverController_sharedInstance__block_invoke(uint64_t a1)
 - (id)propertyList
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -117,7 +117,7 @@ id __44__BRButtonResolverController_sharedInstance__block_invoke(uint64_t a1)
           objc_enumerationMutation(interfaces);
         }
 
-        [v3 setObject:objc_msgSend(*(*(&v12 + 1) + 8 * v8++) forKeyedSubscript:{"propertyList"), objc_msgSend(objc_opt_class(), "description")}];
+        [dictionary setObject:objc_msgSend(*(*(&v12 + 1) + 8 * v8++) forKeyedSubscript:{"propertyList"), objc_msgSend(objc_opt_class(), "description")}];
       }
 
       while (v6 != v8);
@@ -136,11 +136,11 @@ id __44__BRButtonResolverController_sharedInstance__block_invoke(uint64_t a1)
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [(BRButtonResolverController *)v3 propertyList];
+    [(BRButtonResolverController *)dictionary propertyList];
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v3;
+  return dictionary;
 }
 
 - (BOOL)isReady
@@ -165,8 +165,8 @@ LABEL_3:
         objc_enumerationMutation(interfaces);
       }
 
-      v7 = [*(*(&v10 + 1) + 8 * v6) isReady];
-      if (!v7)
+      isReady = [*(*(&v10 + 1) + 8 * v6) isReady];
+      if (!isReady)
       {
         break;
       }
@@ -187,11 +187,11 @@ LABEL_3:
   else
   {
 LABEL_9:
-    LOBYTE(v7) = 1;
+    LOBYTE(isReady) = 1;
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v7;
+  return isReady;
 }
 
 - (unint64_t)maxAssetSlots
@@ -207,7 +207,7 @@ LABEL_9:
   {
     v4 = v3;
     v5 = *v12;
-    v6 = -1;
+    maxAssetSlots = -1;
     do
     {
       for (i = 0; i != v4; ++i)
@@ -218,9 +218,9 @@ LABEL_9:
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        if ([v8 maxAssetSlots] < v6)
+        if ([v8 maxAssetSlots] < maxAssetSlots)
         {
-          v6 = [v8 maxAssetSlots];
+          maxAssetSlots = [v8 maxAssetSlots];
         }
       }
 
@@ -232,11 +232,11 @@ LABEL_9:
 
   else
   {
-    v6 = -1;
+    maxAssetSlots = -1;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v6;
+  return maxAssetSlots;
 }
 
 - (unint64_t)unusedAssetSlots
@@ -252,7 +252,7 @@ LABEL_9:
   {
     v4 = v3;
     v5 = *v12;
-    v6 = -1;
+    unusedAssetSlots = -1;
     do
     {
       for (i = 0; i != v4; ++i)
@@ -263,9 +263,9 @@ LABEL_9:
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        if ([v8 maxAssetSlots] < v6)
+        if ([v8 maxAssetSlots] < unusedAssetSlots)
         {
-          v6 = [v8 unusedAssetSlots];
+          unusedAssetSlots = [v8 unusedAssetSlots];
         }
       }
 
@@ -277,14 +277,14 @@ LABEL_9:
 
   else
   {
-    v6 = -1;
+    unusedAssetSlots = -1;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v6;
+  return unusedAssetSlots;
 }
 
-- (BOOL)setGlobalConfigs:(id)a3 error:(id *)a4
+- (BOOL)setGlobalConfigs:(id)configs error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
   v31 = 0;
@@ -302,7 +302,7 @@ LABEL_9:
 
   if ([(BRButtonResolverController *)self isReady])
   {
-    if (a3)
+    if (configs)
     {
       v29 = 0u;
       v30 = 0u;
@@ -327,7 +327,7 @@ LABEL_9:
             objc_enumerationMutation(interfaces);
           }
 
-          [*(*(&v27 + 1) + 8 * i) setGlobalConfigs:a3 error:&v31];
+          [*(*(&v27 + 1) + 8 * i) setGlobalConfigs:configs error:&v31];
         }
 
         v17 = [(NSSet *)interfaces countByEnumeratingWithState:&v27 objects:v36 count:16];
@@ -379,7 +379,7 @@ LABEL_15:
     v35 = v20;
     _os_log_error_impl(&dword_242149000, v21, OS_LOG_TYPE_ERROR, "%s error: %@", buf, 0x16u);
     v20 = v31;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -387,10 +387,10 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_19:
-    *a4 = v20;
+    *error = v20;
   }
 
 LABEL_21:
@@ -399,7 +399,7 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)setConfigs:(id)a3 withAssets:(id)a4 forStates:(id)a5 error:(id *)a6
+- (BOOL)setConfigs:(id)configs withAssets:(id)assets forStates:(id)states error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v37 = 0;
@@ -417,13 +417,13 @@ LABEL_21:
 
   if ([(BRButtonResolverController *)self isReady])
   {
-    if (a5)
+    if (states)
     {
-      if ([a5 count])
+      if ([states count])
       {
-        if (!a3 || (v19 = [a3 count], v19 == objc_msgSend(a5, "count")))
+        if (!configs || (v19 = [configs count], v19 == objc_msgSend(states, "count")))
         {
-          if (!a4 || (v20 = [a4 count], v20 == objc_msgSend(a5, "count")))
+          if (!assets || (v20 = [assets count], v20 == objc_msgSend(states, "count")))
           {
             v35 = 0u;
             v36 = 0u;
@@ -448,7 +448,7 @@ LABEL_21:
                   objc_enumerationMutation(interfaces);
                 }
 
-                [*(*(&v33 + 1) + 8 * i) setConfigs:a3 withAssets:a4 forStates:a5 error:&v37];
+                [*(*(&v33 + 1) + 8 * i) setConfigs:configs withAssets:assets forStates:states error:&v37];
               }
 
               v23 = [(NSSet *)interfaces countByEnumeratingWithState:&v33 objects:v42 count:16];
@@ -503,7 +503,7 @@ LABEL_20:
     v41 = v26;
     _os_log_error_impl(&dword_242149000, v27, OS_LOG_TYPE_ERROR, "%s error: %@", buf, 0x16u);
     v26 = v37;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_26;
     }
@@ -511,10 +511,10 @@ LABEL_20:
     goto LABEL_24;
   }
 
-  if (a6)
+  if (error)
   {
 LABEL_24:
-    *a6 = v26;
+    *error = v26;
   }
 
 LABEL_26:
@@ -523,7 +523,7 @@ LABEL_26:
   return result;
 }
 
-- (BOOL)enableStates:(id)a3 error:(id *)a4
+- (BOOL)enableStates:(id)states error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
   v28 = 0;
@@ -564,7 +564,7 @@ LABEL_26:
           objc_enumerationMutation(interfaces);
         }
 
-        [*(*(&v24 + 1) + 8 * i) enableStates:a3 error:&v28];
+        [*(*(&v24 + 1) + 8 * i) enableStates:states error:&v28];
       }
 
       v17 = [(NSSet *)interfaces countByEnumeratingWithState:&v24 objects:v33 count:16];
@@ -604,7 +604,7 @@ LABEL_26:
     v32 = v20;
     _os_log_error_impl(&dword_242149000, v21, OS_LOG_TYPE_ERROR, "%s error: %@", buf, 0x16u);
     v20 = v28;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -612,10 +612,10 @@ LABEL_26:
     goto LABEL_18;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_18:
-    *a4 = v20;
+    *error = v20;
   }
 
 LABEL_20:
@@ -624,7 +624,7 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)playState:(unint64_t)a3 forSpeed:(unint64_t)a4 error:(id *)a5
+- (BOOL)playState:(unint64_t)state forSpeed:(unint64_t)speed error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
   v30 = 0;
@@ -665,7 +665,7 @@ LABEL_20:
           objc_enumerationMutation(interfaces);
         }
 
-        [*(*(&v26 + 1) + 8 * i) playState:a3 forSpeed:a4 error:&v30];
+        [*(*(&v26 + 1) + 8 * i) playState:state forSpeed:speed error:&v30];
       }
 
       v19 = [(NSSet *)interfaces countByEnumeratingWithState:&v26 objects:v35 count:16];
@@ -705,7 +705,7 @@ LABEL_20:
     v34 = v22;
     _os_log_error_impl(&dword_242149000, v23, OS_LOG_TYPE_ERROR, "%s error: %@", buf, 0x16u);
     v22 = v30;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -713,10 +713,10 @@ LABEL_20:
     goto LABEL_18;
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_18:
-    *a5 = v22;
+    *error = v22;
   }
 
 LABEL_20:
@@ -725,7 +725,7 @@ LABEL_20:
   return result;
 }
 
-- (void)scheduleReadyNotificationOnDispatchQueue:(id)a3 withBlock:(id)a4
+- (void)scheduleReadyNotificationOnDispatchQueue:(id)queue withBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
   v19[0] = 0;
@@ -768,9 +768,9 @@ LABEL_20:
         v14[1] = 3221225472;
         v14[2] = __81__BRButtonResolverController_scheduleReadyNotificationOnDispatchQueue_withBlock___block_invoke;
         v14[3] = &unk_278D3F338;
-        v14[6] = a4;
+        v14[6] = block;
         v14[7] = v19;
-        v14[4] = a3;
+        v14[4] = queue;
         v14[5] = v12;
         [v12 scheduleReadyNotificationWithBlock:v14];
         ++v11;
@@ -814,7 +814,7 @@ void __81__BRButtonResolverController_scheduleReadyNotificationOnDispatchQueue_w
 + (void)sharedInstance
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0(&dword_242149000, a1, a3, "%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0(&dword_242149000, self, a3, "%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -844,7 +844,7 @@ void __81__BRButtonResolverController_scheduleReadyNotificationOnDispatchQueue_w
   v3 = 136315394;
   v4 = "[BRButtonResolverController propertyList]";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_242149000, a2, OS_LOG_TYPE_DEBUG, "%s %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }

@@ -1,30 +1,30 @@
 @interface UIKBUndoControl
-+ (id)controlLableTextByType:(int64_t)a3 style:(id)a4 available:(BOOL)a5;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (UIKBUndoControl)initWithType:(int64_t)a3 andStyling:(id)a4;
++ (id)controlLableTextByType:(int64_t)type style:(id)style available:(BOOL)available;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (UIKBUndoControl)initWithType:(int64_t)type andStyling:(id)styling;
 - (_UISlotView)securePasteButtonSlotView;
-- (id)controlImageByType:(int64_t)a3;
-- (id)controlLabelImageNameByType:(int64_t)a3 isRTL:(BOOL)a4;
-- (void)configureSecurePasteButtonInRootView:(id)a3;
-- (void)layoutControlForType:(int64_t)a3 andStyling:(id)a4;
+- (id)controlImageByType:(int64_t)type;
+- (id)controlLabelImageNameByType:(int64_t)type isRTL:(BOOL)l;
+- (void)configureSecurePasteButtonInRootView:(id)view;
+- (void)layoutControlForType:(int64_t)type andStyling:(id)styling;
 - (void)layoutSubviews;
-- (void)updateCoverWithTavelProcess:(double)a3 isRTL:(BOOL)a4;
+- (void)updateCoverWithTavelProcess:(double)process isRTL:(BOOL)l;
 - (void)updateUndoControlStyle;
 @end
 
 @implementation UIKBUndoControl
 
-- (UIKBUndoControl)initWithType:(int64_t)a3 andStyling:(id)a4
+- (UIKBUndoControl)initWithType:(int64_t)type andStyling:(id)styling
 {
-  v7 = a4;
+  stylingCopy = styling;
   v32.receiver = self;
   v32.super_class = UIKBUndoControl;
   v8 = [(UIView *)&v32 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_style, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_style, styling);
     v10 = +[UIColor clearColor];
     [(UIView *)v9 setBackgroundColor:v10];
 
@@ -33,40 +33,40 @@
     v9->_springCoverView = v11;
 
     [(UIView *)v9->_springCoverView setUserInteractionEnabled:0];
-    v13 = [v7 HUDbackgroundColor];
-    [(UIView *)v9->_springCoverView setBackgroundColor:v13];
+    hUDbackgroundColor = [stylingCopy HUDbackgroundColor];
+    [(UIView *)v9->_springCoverView setBackgroundColor:hUDbackgroundColor];
 
     [(UIView *)v9->_springCoverView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v9 addSubview:v9->_springCoverView];
-    v14 = [(UIView *)v9->_springCoverView leftAnchor];
-    v15 = [(UIView *)v9 leftAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:0.0];
+    leftAnchor = [(UIView *)v9->_springCoverView leftAnchor];
+    leftAnchor2 = [(UIView *)v9 leftAnchor];
+    v16 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:0.0];
     coverConstraintLeftAnchor = v9->_coverConstraintLeftAnchor;
     v9->_coverConstraintLeftAnchor = v16;
 
     [(NSLayoutConstraint *)v9->_coverConstraintLeftAnchor setActive:1];
-    v18 = [(UIView *)v9->_springCoverView rightAnchor];
-    v19 = [(UIView *)v9 rightAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19 constant:0.0];
+    rightAnchor = [(UIView *)v9->_springCoverView rightAnchor];
+    rightAnchor2 = [(UIView *)v9 rightAnchor];
+    v20 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:0.0];
     coverConstraintRightAnchor = v9->_coverConstraintRightAnchor;
     v9->_coverConstraintRightAnchor = v20;
 
     [(NSLayoutConstraint *)v9->_coverConstraintRightAnchor setActive:1];
-    v22 = [(UIView *)v9->_springCoverView topAnchor];
-    v23 = [(UIView *)v9 topAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:0.0];
+    topAnchor = [(UIView *)v9->_springCoverView topAnchor];
+    topAnchor2 = [(UIView *)v9 topAnchor];
+    v24 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     coverConstraintTopAnchor = v9->_coverConstraintTopAnchor;
     v9->_coverConstraintTopAnchor = v24;
 
     [(NSLayoutConstraint *)v9->_coverConstraintTopAnchor setActive:1];
-    v26 = [(UIView *)v9->_springCoverView bottomAnchor];
-    v27 = [(UIView *)v9 bottomAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:0.0];
+    bottomAnchor = [(UIView *)v9->_springCoverView bottomAnchor];
+    bottomAnchor2 = [(UIView *)v9 bottomAnchor];
+    v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     coverConstraintBottomAnchor = v9->_coverConstraintBottomAnchor;
     v9->_coverConstraintBottomAnchor = v28;
 
     [(NSLayoutConstraint *)v9->_coverConstraintBottomAnchor setActive:1];
-    [(UIKBUndoControl *)v9 layoutControlForType:a3 andStyling:v7];
+    [(UIKBUndoControl *)v9 layoutControlForType:type andStyling:stylingCopy];
     [(UIView *)v9 _setDisableDictationTouchCancellation:1];
     v30 = v9;
   }
@@ -79,8 +79,8 @@
   v8.receiver = self;
   v8.super_class = UIKBUndoControl;
   [(UIView *)&v8 layoutSubviews];
-  v3 = [(UIView *)self traitCollection];
-  if ([v3 userInterfaceStyle] == 1)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 1)
   {
     v4 = 2;
   }
@@ -90,25 +90,25 @@
     v4 = 1;
   }
 
-  v5 = [(UIKBUndoControl *)self style];
-  [v5 setAppearance:v4];
+  style = [(UIKBUndoControl *)self style];
+  [style setAppearance:v4];
 
-  v6 = [(UIView *)self traitOverrides];
+  traitOverrides = [(UIView *)self traitOverrides];
   v7 = objc_opt_self();
-  [v6 setNSIntegerValue:v4 forTrait:v7];
+  [traitOverrides setNSIntegerValue:v4 forTrait:v7];
 }
 
 - (void)updateUndoControlStyle
 {
-  v3 = [(UIControl *)self state];
-  if (v3 == 2)
+  state = [(UIControl *)self state];
+  if (state == 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_securePasteButtonSlotView);
     [WeakRetained setAlpha:0.0];
 
-    v9 = [(UIKBUndoStyling *)self->_style buttonGlyphColorDisabled];
-    [(UILabel *)self->_label setTextColor:v9];
-    [(UIView *)self->_icon setTintColor:v9];
+    buttonGlyphColorDisabled = [(UIKBUndoStyling *)self->_style buttonGlyphColorDisabled];
+    [(UILabel *)self->_label setTextColor:buttonGlyphColorDisabled];
+    [(UIView *)self->_icon setTintColor:buttonGlyphColorDisabled];
 
     springCoverView = self->_springCoverView;
 
@@ -117,7 +117,7 @@
 
   else
   {
-    if (v3 == 1)
+    if (state == 1)
     {
       v6 = objc_loadWeakRetained(&self->_securePasteButtonSlotView);
 
@@ -137,14 +137,14 @@
       [(UILabel *)self->_label setTextColor:v11];
       [(UIView *)self->_icon setTintColor:v11];
 
-      v12 = [(UIKBUndoControl *)self springCoverView];
-      v15 = v12;
+      springCoverView = [(UIKBUndoControl *)self springCoverView];
+      v15 = springCoverView;
       v13 = 0.0;
     }
 
     else
     {
-      if (v3)
+      if (state)
       {
         return;
       }
@@ -167,29 +167,29 @@
       [(UILabel *)self->_label setTextColor:v14];
       [(UIView *)self->_icon setTintColor:v14];
 
-      v12 = [(UIKBUndoControl *)self springCoverView];
-      v15 = v12;
+      springCoverView = [(UIKBUndoControl *)self springCoverView];
+      v15 = springCoverView;
       v13 = 1.0;
     }
 
-    [v12 setAlpha:v13];
+    [springCoverView setAlpha:v13];
   }
 }
 
-- (void)updateCoverWithTavelProcess:(double)a3 isRTL:(BOOL)a4
+- (void)updateCoverWithTavelProcess:(double)process isRTL:(BOOL)l
 {
-  v4 = a4;
+  lCopy = l;
   if ([(UIKBUndoControl *)self type]== 1)
   {
-    if (v4)
+    if (lCopy)
     {
 LABEL_3:
       [(UIView *)self bounds];
-      v7 = CGRectGetWidth(v16) * a3;
-      v8 = [(UIKBUndoControl *)self coverConstraintLeftAnchor];
+      v7 = CGRectGetWidth(v16) * process;
+      coverConstraintLeftAnchor = [(UIKBUndoControl *)self coverConstraintLeftAnchor];
 LABEL_11:
-      v11 = v8;
-      [v8 setConstant:v7];
+      v11 = coverConstraintLeftAnchor;
+      [coverConstraintLeftAnchor setConstant:v7];
 
       goto LABEL_12;
     }
@@ -199,38 +199,38 @@ LABEL_11:
 
   if ([(UIKBUndoControl *)self type]== 2)
   {
-    if (!v4)
+    if (!lCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     [(UIView *)self bounds];
-    v7 = -(a3 * CGRectGetWidth(v17));
+    v7 = -(process * CGRectGetWidth(v17));
 LABEL_10:
-    v8 = [(UIKBUndoControl *)self coverConstraintRightAnchor];
+    coverConstraintLeftAnchor = [(UIKBUndoControl *)self coverConstraintRightAnchor];
     goto LABEL_11;
   }
 
   if ([(UIKBUndoControl *)self type]== 4 || [(UIKBUndoControl *)self type]== 3)
   {
     [(UIView *)self bounds];
-    v9 = CGRectGetWidth(v18) * a3 * 0.5;
-    v10 = [(UIKBUndoControl *)self coverConstraintLeftAnchor];
-    [v10 setConstant:v9];
+    v9 = CGRectGetWidth(v18) * process * 0.5;
+    coverConstraintLeftAnchor2 = [(UIKBUndoControl *)self coverConstraintLeftAnchor];
+    [coverConstraintLeftAnchor2 setConstant:v9];
 
     [(UIView *)self bounds];
-    v7 = -(a3 * CGRectGetWidth(v19)) * 0.5;
+    v7 = -(process * CGRectGetWidth(v19)) * 0.5;
     goto LABEL_10;
   }
 
   if ([(UIKBUndoControl *)self type]== 5 || [(UIKBUndoControl *)self type]== 6)
   {
-    v12 = 1.0 - a3;
+    v12 = 1.0 - process;
     [(UIView *)self bounds];
-    v13 = (1.0 - a3) * CGRectGetWidth(v20) * 0.5;
-    v14 = [(UIKBUndoControl *)self coverConstraintLeftAnchor];
-    [v14 setConstant:v13];
+    v13 = (1.0 - process) * CGRectGetWidth(v20) * 0.5;
+    coverConstraintLeftAnchor3 = [(UIKBUndoControl *)self coverConstraintLeftAnchor];
+    [coverConstraintLeftAnchor3 setConstant:v13];
 
     [(UIView *)self bounds];
     v7 = v12 * CGRectGetWidth(v21) * -0.5;
@@ -242,17 +242,17 @@ LABEL_12:
   [(UIView *)self layoutIfNeeded];
 }
 
-- (id)controlLabelImageNameByType:(int64_t)a3 isRTL:(BOOL)a4
+- (id)controlLabelImageNameByType:(int64_t)type isRTL:(BOOL)l
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     v5 = @"doc.on.doc";
-    if (a3 != 4)
+    if (type != 4)
     {
       v5 = 0;
     }
 
-    if ((a3 - 5) >= 2)
+    if ((type - 5) >= 2)
     {
       v4 = v5;
     }
@@ -265,7 +265,7 @@ LABEL_12:
 
   else
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v6 = @"arrow.uturn.backward";
       v7 = @"arrow.uturn.forward";
@@ -273,9 +273,9 @@ LABEL_12:
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
-        if (a3 == 3)
+        if (type == 3)
         {
           v4 = @"scissors";
         }
@@ -292,7 +292,7 @@ LABEL_12:
       v7 = @"arrow.uturn.backward";
     }
 
-    if (a4)
+    if (l)
     {
       v6 = v7;
     }
@@ -305,32 +305,32 @@ LABEL_17:
   return v4;
 }
 
-- (id)controlImageByType:(int64_t)a3
+- (id)controlImageByType:(int64_t)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v3 = [UIImage systemImageNamed:off_1E7119830[a3 - 1]];
+    v3 = [UIImage systemImageNamed:off_1E7119830[type - 1]];
     v4 = [v3 imageWithRenderingMode:2];
   }
 
   return v4;
 }
 
-+ (id)controlLableTextByType:(int64_t)a3 style:(id)a4 available:(BOOL)a5
++ (id)controlLableTextByType:(int64_t)type style:(id)style available:(BOOL)available
 {
-  v7 = a4;
-  v8 = v7;
+  styleCopy = style;
+  v8 = styleCopy;
   v9 = 0;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
-      if (a5)
+      if (available)
       {
         v10 = @"Copy";
       }
@@ -343,9 +343,9 @@ LABEL_17:
       goto LABEL_26;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
-      if (a5)
+      if (available)
       {
         v10 = @"Paste";
       }
@@ -358,12 +358,12 @@ LABEL_17:
       goto LABEL_26;
     }
 
-    if (a3 != 6)
+    if (type != 6)
     {
       goto LABEL_28;
     }
 
-    if ([v7 tooSmallForInstructionalText])
+    if ([styleCopy tooSmallForInstructionalText])
     {
       v10 = @"PASTE_ALLOW_BUTTON_WITHOUT_EXPLANATION_TEXT";
       v11 = @"Allow Paste";
@@ -378,16 +378,16 @@ LABEL_17:
 
   else
   {
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
-        if (a3 != 3)
+        if (type != 3)
         {
           goto LABEL_28;
         }
 
-        if (a5)
+        if (available)
         {
           v10 = @"Cut";
         }
@@ -400,7 +400,7 @@ LABEL_17:
         goto LABEL_26;
       }
 
-      if (a5)
+      if (available)
       {
         v10 = @"REDO_BUTTON_TITLE_LABEL_IN_HUD";
         v11 = @"Redo";
@@ -413,7 +413,7 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    if (!a5)
+    if (!available)
     {
       v10 = @"Nothing to Undo";
       goto LABEL_26;
@@ -430,18 +430,18 @@ LABEL_28:
   return v9;
 }
 
-- (void)layoutControlForType:(int64_t)a3 andStyling:(id)a4
+- (void)layoutControlForType:(int64_t)type andStyling:(id)styling
 {
-  v59 = a4;
-  v6 = [(UIKBUndoControl *)self controlImageByType:a3];
+  stylingCopy = styling;
+  v6 = [(UIKBUndoControl *)self controlImageByType:type];
   v7 = [[UIImageView alloc] initWithImage:v6];
   icon = self->_icon;
   self->_icon = v7;
 
   [(UIImageView *)self->_icon setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIImageView *)self->_icon setContentMode:1];
-  v9 = [v59 undoInteractiveControlLabelFont];
-  v10 = [UIImageSymbolConfiguration configurationWithFont:v9];
+  undoInteractiveControlLabelFont = [stylingCopy undoInteractiveControlLabelFont];
+  v10 = [UIImageSymbolConfiguration configurationWithFont:undoInteractiveControlLabelFont];
   [(UIImageView *)self->_icon setPreferredSymbolConfiguration:v10];
 
   if ([(UIKBUndoStyling *)self->_style isRTL])
@@ -456,9 +456,9 @@ LABEL_28:
 
   [(UIImageView *)self->_icon setSemanticContentAttribute:v11];
   [(UIView *)self addSubview:self->_icon];
-  if ((a3 - 3) > 3)
+  if ((type - 3) > 3)
   {
-    if (![v59 undoRedoIconOnly])
+    if (![stylingCopy undoRedoIconOnly])
     {
       v35 = objc_alloc_init(UILabel);
       label = self->_label;
@@ -466,70 +466,70 @@ LABEL_28:
 
       [(UIView *)self addSubview:self->_label];
       [(UIView *)self->_label setTranslatesAutoresizingMaskIntoConstraints:0];
-      v37 = [objc_opt_class() controlLableTextByType:a3 style:self->_style available:1];
+      v37 = [objc_opt_class() controlLableTextByType:type style:self->_style available:1];
       [(UILabel *)self->_label setText:v37];
 
-      v38 = [(UIKBUndoStyling *)self->_style undoInteractiveControlLabelFont];
-      [(UILabel *)self->_label setFont:v38];
+      undoInteractiveControlLabelFont2 = [(UIKBUndoStyling *)self->_style undoInteractiveControlLabelFont];
+      [(UILabel *)self->_label setFont:undoInteractiveControlLabelFont2];
 
-      v39 = [(UIView *)self->_icon firstBaselineAnchor];
-      v40 = [(UIView *)self->_label firstBaselineAnchor];
-      v41 = [v39 constraintEqualToAnchor:v40];
+      firstBaselineAnchor = [(UIView *)self->_icon firstBaselineAnchor];
+      firstBaselineAnchor2 = [(UIView *)self->_label firstBaselineAnchor];
+      v41 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
       [v41 setActive:1];
 
-      v42 = [(UIView *)self->_label centerYAnchor];
-      v43 = [(UIView *)self centerYAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
+      centerYAnchor = [(UIView *)self->_label centerYAnchor];
+      centerYAnchor2 = [(UIView *)self centerYAnchor];
+      v44 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       [v44 setActive:1];
 
-      if (a3 == 1)
+      if (type == 1)
       {
-        v45 = [(UIView *)self->_icon leadingAnchor];
-        v46 = [(UIView *)self leadingAnchor];
-        v47 = [v45 constraintEqualToAnchor:v46 constant:21.0];
+        leadingAnchor = [(UIView *)self->_icon leadingAnchor];
+        leadingAnchor2 = [(UIView *)self leadingAnchor];
+        v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:21.0];
         [v47 setActive:1];
 
-        v48 = [(UIView *)self->_label leadingAnchor];
-        v49 = [(UIView *)self->_icon trailingAnchor];
-        v50 = [v48 constraintEqualToAnchor:v49 constant:4.0];
+        leadingAnchor3 = [(UIView *)self->_label leadingAnchor];
+        trailingAnchor = [(UIView *)self->_icon trailingAnchor];
+        v50 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:4.0];
         [v50 setActive:1];
 
-        v32 = [(UIView *)self trailingAnchor];
-        v33 = [(UIView *)self->_label trailingAnchor];
+        trailingAnchor2 = [(UIView *)self trailingAnchor];
+        trailingAnchor3 = [(UIView *)self->_label trailingAnchor];
         v51 = 22.0;
       }
 
       else
       {
-        v52 = [(UIView *)self->_label leadingAnchor];
-        v53 = [(UIView *)self leadingAnchor];
-        v54 = [v52 constraintEqualToAnchor:v53 constant:22.0];
+        leadingAnchor4 = [(UIView *)self->_label leadingAnchor];
+        leadingAnchor5 = [(UIView *)self leadingAnchor];
+        v54 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:22.0];
         [v54 setActive:1];
 
-        v55 = [(UIView *)self->_icon leadingAnchor];
-        v56 = [(UIView *)self->_label trailingAnchor];
-        v57 = [v55 constraintEqualToAnchor:v56 constant:4.0];
+        leadingAnchor6 = [(UIView *)self->_icon leadingAnchor];
+        trailingAnchor4 = [(UIView *)self->_label trailingAnchor];
+        v57 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor4 constant:4.0];
         [v57 setActive:1];
 
-        v32 = [(UIView *)self trailingAnchor];
-        v33 = [(UIView *)self->_icon trailingAnchor];
+        trailingAnchor2 = [(UIView *)self trailingAnchor];
+        trailingAnchor3 = [(UIView *)self->_icon trailingAnchor];
         v51 = 21.0;
       }
 
-      v34 = [v32 constraintEqualToAnchor:v33 constant:v51];
+      v34 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:v51];
       goto LABEL_16;
     }
 
-    v17 = [(UIView *)self->_icon centerXAnchor];
-    v18 = [(UIView *)self centerXAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    centerXAnchor = [(UIView *)self->_icon centerXAnchor];
+    centerXAnchor2 = [(UIView *)self centerXAnchor];
+    v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   }
 
   else
   {
-    v12 = [v59 cutCopyPasteIconOnly];
+    cutCopyPasteIconOnly = [stylingCopy cutCopyPasteIconOnly];
     v13 = self->_icon;
-    if (!v12)
+    if (!cutCopyPasteIconOnly)
     {
       [(UIView *)v13 removeFromSuperview];
       v22 = objc_alloc_init(UILabel);
@@ -539,34 +539,34 @@ LABEL_28:
       [(UIView *)self addSubview:self->_label];
       [(UIView *)self->_label setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UILabel *)self->_label setTextAlignment:1];
-      v24 = [objc_opt_class() controlLableTextByType:a3 style:self->_style available:1];
+      v24 = [objc_opt_class() controlLableTextByType:type style:self->_style available:1];
       [(UILabel *)self->_label setText:v24];
 
-      v25 = [v59 undoInteractiveControlLabelFont];
-      [(UILabel *)self->_label setFont:v25];
+      undoInteractiveControlLabelFont3 = [stylingCopy undoInteractiveControlLabelFont];
+      [(UILabel *)self->_label setFont:undoInteractiveControlLabelFont3];
 
-      v26 = [(UIView *)self->_label leadingAnchor];
-      v27 = [(UIView *)self leadingAnchor];
-      v28 = [v26 constraintEqualToAnchor:v27 constant:16.0];
+      leadingAnchor7 = [(UIView *)self->_label leadingAnchor];
+      leadingAnchor8 = [(UIView *)self leadingAnchor];
+      v28 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:16.0];
       [v28 setActive:1];
 
-      v29 = [(UIView *)self trailingAnchor];
-      v30 = [(UIView *)self->_label trailingAnchor];
-      v31 = [v29 constraintEqualToAnchor:v30 constant:16.0];
+      trailingAnchor5 = [(UIView *)self trailingAnchor];
+      trailingAnchor6 = [(UIView *)self->_label trailingAnchor];
+      v31 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:16.0];
       [v31 setActive:1];
 
       v21 = self->_label;
       goto LABEL_11;
     }
 
-    v14 = [(UIView *)v13 leadingAnchor];
-    v15 = [(UIView *)self leadingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:16.0];
+    leadingAnchor9 = [(UIView *)v13 leadingAnchor];
+    leadingAnchor10 = [(UIView *)self leadingAnchor];
+    v16 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:16.0];
     [v16 setActive:1];
 
-    v17 = [(UIView *)self trailingAnchor];
-    v18 = [(UIView *)self->_icon trailingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:16.0];
+    centerXAnchor = [(UIView *)self trailingAnchor];
+    centerXAnchor2 = [(UIView *)self->_icon trailingAnchor];
+    v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:16.0];
   }
 
   v20 = v19;
@@ -574,17 +574,17 @@ LABEL_28:
 
   v21 = self->_icon;
 LABEL_11:
-  v32 = [v21 centerYAnchor];
-  v33 = [(UIView *)self centerYAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  trailingAnchor2 = [v21 centerYAnchor];
+  trailingAnchor3 = [(UIView *)self centerYAnchor];
+  v34 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
 LABEL_16:
   v58 = v34;
   [v34 setActive:1];
 }
 
-- (void)configureSecurePasteButtonInRootView:(id)a3
+- (void)configureSecurePasteButtonInRootView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_securePasteButtonSlotView);
 
   if (WeakRetained)
@@ -598,10 +598,10 @@ LABEL_16:
     objc_storeWeak(&self->_securePasteButtonSlotView, v6);
   }
 
-  v7 = [(UIKBUndoStyling *)self->_style cutCopyPasteIconOnly];
+  cutCopyPasteIconOnly = [(UIKBUndoStyling *)self->_style cutCopyPasteIconOnly];
   v8 = MEMORY[0x1E69BC820];
   [(UIKBUndoStyling *)self->_style cutControlMinWidth];
-  if (v7)
+  if (cutCopyPasteIconOnly)
   {
     [v8 undoInteractionHUDIconPasteButtonTagWithMinWidth:?];
   }
@@ -627,7 +627,7 @@ LABEL_16:
   v16 = v11;
   objc_copyWeak(&v17, &location);
   [(_UISlotView *)v6 _setSlotAnyContentProvider:&v12];
-  [(_UISlotView *)v6 _overlayView:v4 centerInView:self, v12, v13, v14, v15];
+  [(_UISlotView *)v6 _overlayView:viewCopy centerInView:self, v12, v13, v14, v15];
   objc_destroyWeak(&v17);
 
   objc_destroyWeak(&location);
@@ -680,10 +680,10 @@ void __56__UIKBUndoControl_configureSecurePasteButtonInRootView___block_invoke_4
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(UIView *)self bounds];
   v7 = v6 + -20.0;
   v9 = v8 + 40.0;

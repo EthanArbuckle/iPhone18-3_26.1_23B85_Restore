@@ -1,50 +1,50 @@
 @interface CKComposeAssetExplorerManager
-- (CKComposeAssetExplorerManager)initWithInputController:(id)a3;
+- (CKComposeAssetExplorerManager)initWithInputController:(id)controller;
 - (id)browser;
 - (id)clearAndDisableShelfAndReturnPreviouslyShelvedData;
-- (id)generatePackageFromAssetURL:(id)a3 appendedVideoURL:(id)a4 previewImage:(id)a5;
-- (void)_stageAssetPackage:(id)a3 toBrowser:(id)a4;
-- (void)saveFileURL:(id)a3 filename:(id)a4 transcoderUserInfo:(id)a5 fullyRealizedPreview:(id)a6 rawPreview:(id)a7 appendedVideoURL:(id)a8;
-- (void)setInputController:(id)a3;
-- (void)stageAssetPackage:(id)a3;
+- (id)generatePackageFromAssetURL:(id)l appendedVideoURL:(id)rL previewImage:(id)image;
+- (void)_stageAssetPackage:(id)package toBrowser:(id)browser;
+- (void)saveFileURL:(id)l filename:(id)filename transcoderUserInfo:(id)info fullyRealizedPreview:(id)preview rawPreview:(id)rawPreview appendedVideoURL:(id)rL;
+- (void)setInputController:(id)controller;
+- (void)stageAssetPackage:(id)package;
 - (void)tryToStagePendingPackages;
 @end
 
 @implementation CKComposeAssetExplorerManager
 
-- (CKComposeAssetExplorerManager)initWithInputController:(id)a3
+- (CKComposeAssetExplorerManager)initWithInputController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = CKComposeAssetExplorerManager;
   v5 = [(CKComposeAssetExplorerManager *)&v11 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
-    [(CKComposeAssetExplorerManager *)v5 setPackagesToStage:v6];
+    array = [MEMORY[0x1E695DF70] array];
+    [(CKComposeAssetExplorerManager *)v5 setPackagesToStage:array];
 
     v7 = +[CKBalloonPluginManager sharedInstance];
     [v7 invalidatePhotosViewController];
 
-    v8 = [MEMORY[0x1E695DF70] array];
-    [(CKComposeAssetExplorerManager *)v5 setSavedData:v8];
+    array2 = [MEMORY[0x1E695DF70] array];
+    [(CKComposeAssetExplorerManager *)v5 setSavedData:array2];
 
     [(CKComposeAssetExplorerManager *)v5 setAllItemsShouldNotAppearInShelf:0];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v5 selector:sel__balloonPluginExtensionsLoaded_ name:*MEMORY[0x1E69A56C8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__balloonPluginExtensionsLoaded_ name:*MEMORY[0x1E69A56C8] object:0];
 
-    [(CKComposeAssetExplorerManager *)v5 setInputController:v4];
+    [(CKComposeAssetExplorerManager *)v5 setInputController:controllerCopy];
   }
 
   return v5;
 }
 
-- (void)setInputController:(id)a3
+- (void)setInputController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (![(CKComposeAssetExplorerManager *)self allItemsShouldNotAppearInShelf])
   {
-    objc_storeStrong(&self->_inputController, a3);
+    objc_storeStrong(&self->_inputController, controller);
     [(CKComposeAssetExplorerManager *)self tryToStagePendingPackages];
   }
 }
@@ -101,8 +101,8 @@ LABEL_35:
     return;
   }
 
-  v4 = [(CKComposeAssetExplorerManager *)self packagesToStage];
-  v5 = [v4 count];
+  packagesToStage = [(CKComposeAssetExplorerManager *)self packagesToStage];
+  v5 = [packagesToStage count];
 
   if (!v5)
   {
@@ -121,9 +121,9 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  v6 = [(CKComposeAssetExplorerManager *)self inputController];
+  inputController = [(CKComposeAssetExplorerManager *)self inputController];
 
-  if (!v6)
+  if (!inputController)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -140,33 +140,33 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  v7 = [(CKComposeAssetExplorerManager *)self browser];
-  v8 = v7;
-  if (v7)
+  browser = [(CKComposeAssetExplorerManager *)self browser];
+  v8 = browser;
+  if (browser)
   {
-    v9 = [v7 sendDelegate];
-    v10 = [(CKComposeAssetExplorerManager *)self inputController];
+    sendDelegate = [browser sendDelegate];
+    inputController2 = [(CKComposeAssetExplorerManager *)self inputController];
 
-    if (v9 != v10)
+    if (sendDelegate != inputController2)
     {
       if (IMOSLoggingEnabled())
       {
         v11 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [(CKComposeAssetExplorerManager *)self inputController];
+          inputController3 = [(CKComposeAssetExplorerManager *)self inputController];
           v31 = 138412290;
-          v32 = v12;
+          v32 = inputController3;
           _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Setting browser send delegate to %@", &v31, 0xCu);
         }
       }
 
-      v13 = [(CKComposeAssetExplorerManager *)self inputController];
-      [v8 setSendDelegate:v13];
+      inputController4 = [(CKComposeAssetExplorerManager *)self inputController];
+      [v8 setSendDelegate:inputController4];
     }
 
-    v14 = [v8 sendDelegate];
-    v15 = v14 == 0;
+    sendDelegate2 = [v8 sendDelegate];
+    v15 = sendDelegate2 == 0;
 
     v16 = IMOSLoggingEnabled();
     if (!v15)
@@ -176,8 +176,8 @@ LABEL_35:
         v17 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
-          v18 = [(CKComposeAssetExplorerManager *)self packagesToStage];
-          v19 = [v18 count];
+          packagesToStage2 = [(CKComposeAssetExplorerManager *)self packagesToStage];
+          v19 = [packagesToStage2 count];
           v31 = 134217984;
           v32 = v19;
           _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "Staging %lu packages to browser", &v31, 0xCu);
@@ -188,8 +188,8 @@ LABEL_35:
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v20 = [(CKComposeAssetExplorerManager *)self packagesToStage];
-      v21 = [v20 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      packagesToStage3 = [(CKComposeAssetExplorerManager *)self packagesToStage];
+      v21 = [packagesToStage3 countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v21)
       {
         v22 = *v27;
@@ -199,20 +199,20 @@ LABEL_35:
           {
             if (*v27 != v22)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(packagesToStage3);
             }
 
             [(CKComposeAssetExplorerManager *)self _stageAssetPackage:*(*(&v26 + 1) + 8 * i) toBrowser:v8];
           }
 
-          v21 = [v20 countByEnumeratingWithState:&v26 objects:v30 count:16];
+          v21 = [packagesToStage3 countByEnumeratingWithState:&v26 objects:v30 count:16];
         }
 
         while (v21);
       }
 
-      v24 = [(CKComposeAssetExplorerManager *)self packagesToStage];
-      [v24 removeAllObjects];
+      packagesToStage4 = [(CKComposeAssetExplorerManager *)self packagesToStage];
+      [packagesToStage4 removeAllObjects];
 
       goto LABEL_44;
     }
@@ -245,13 +245,13 @@ LABEL_43:
 LABEL_44:
 }
 
-- (void)_stageAssetPackage:(id)a3 toBrowser:(id)a4
+- (void)_stageAssetPackage:(id)package toBrowser:(id)browser
 {
-  v5 = a3;
-  v6 = a4;
+  packageCopy = package;
+  browserCopy = browser;
   if (objc_opt_respondsToSelector())
   {
-    [v6 stageAssetToTransportAndNotifySendDelegate:v5];
+    [browserCopy stageAssetToTransportAndNotifySendDelegate:packageCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -265,13 +265,13 @@ LABEL_44:
   }
 }
 
-- (void)stageAssetPackage:(id)a3
+- (void)stageAssetPackage:(id)package
 {
-  v4 = a3;
-  if (v4)
+  packageCopy = package;
+  if (packageCopy)
   {
-    v5 = [(CKComposeAssetExplorerManager *)self packagesToStage];
-    [v5 addObject:v4];
+    packagesToStage = [(CKComposeAssetExplorerManager *)self packagesToStage];
+    [packagesToStage addObject:packageCopy];
 
     [(CKComposeAssetExplorerManager *)self tryToStagePendingPackages];
   }
@@ -287,25 +287,25 @@ LABEL_44:
   }
 }
 
-- (id)generatePackageFromAssetURL:(id)a3 appendedVideoURL:(id)a4 previewImage:(id)a5
+- (id)generatePackageFromAssetURL:(id)l appendedVideoURL:(id)rL previewImage:(id)image
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  imageCopy = image;
   if (![(CKComposeAssetExplorerManager *)self allItemsShouldNotAppearInShelf])
   {
     if (generatePackageFromAssetURL_appendedVideoURL_previewImage__IMAEFileAssetPackageGenerator)
     {
-      if (v9)
+      if (rLCopy)
       {
 LABEL_9:
-        v17[0] = v8;
-        v17[1] = v9;
+        v17[0] = lCopy;
+        v17[1] = rLCopy;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
 LABEL_12:
         v14 = v13;
-        v12 = [generatePackageFromAssetURL_appendedVideoURL_previewImage__IMAEFileAssetPackageGenerator generateAssetFromFileURLs:v13 previewImage:v10 error:0];
+        v12 = [generatePackageFromAssetURL_appendedVideoURL_previewImage__IMAEFileAssetPackageGenerator generateAssetFromFileURLs:v13 previewImage:imageCopy error:0];
 
         goto LABEL_13;
       }
@@ -314,13 +314,13 @@ LABEL_12:
     else
     {
       generatePackageFromAssetURL_appendedVideoURL_previewImage__IMAEFileAssetPackageGenerator = MEMORY[0x193AF5EC0](@"AEFileAssetPackageGenerator", @"AssetExplorer");
-      if (v9)
+      if (rLCopy)
       {
         goto LABEL_9;
       }
     }
 
-    v18[0] = v8;
+    v18[0] = lCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     goto LABEL_12;
   }
@@ -353,32 +353,32 @@ LABEL_13:
     }
   }
 
-  v4 = [MEMORY[0x1E695DF70] array];
-  [(CKComposeAssetExplorerManager *)self setPackagesToStage:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  [(CKComposeAssetExplorerManager *)self setPackagesToStage:array];
 
-  v5 = [(CKComposeAssetExplorerManager *)self browser];
-  [v5 clearAllStagedPluginPackages];
+  browser = [(CKComposeAssetExplorerManager *)self browser];
+  [browser clearAllStagedPluginPackages];
   [(CKComposeAssetExplorerManager *)self setAllItemsShouldNotAppearInShelf:1];
-  v6 = [(CKComposeAssetExplorerManager *)self savedData];
-  v7 = [v6 copy];
+  savedData = [(CKComposeAssetExplorerManager *)self savedData];
+  v7 = [savedData copy];
 
   [(CKComposeAssetExplorerManager *)self setSavedData:0];
 
   return v7;
 }
 
-- (void)saveFileURL:(id)a3 filename:(id)a4 transcoderUserInfo:(id)a5 fullyRealizedPreview:(id)a6 rawPreview:(id)a7 appendedVideoURL:(id)a8
+- (void)saveFileURL:(id)l filename:(id)filename transcoderUserInfo:(id)info fullyRealizedPreview:(id)preview rawPreview:(id)rawPreview appendedVideoURL:(id)rL
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v21 = [[CKComposeAssetExplorerManagerSavedData alloc] initWithFileURL:v19 filename:v18 transcoderUserInfo:v17 fullyRealizedPreview:v16 rawPreview:v15 appendedVideoURL:v14];
+  rLCopy = rL;
+  rawPreviewCopy = rawPreview;
+  previewCopy = preview;
+  infoCopy = info;
+  filenameCopy = filename;
+  lCopy = l;
+  v21 = [[CKComposeAssetExplorerManagerSavedData alloc] initWithFileURL:lCopy filename:filenameCopy transcoderUserInfo:infoCopy fullyRealizedPreview:previewCopy rawPreview:rawPreviewCopy appendedVideoURL:rLCopy];
 
-  v20 = [(CKComposeAssetExplorerManager *)self savedData];
-  [v20 addObject:v21];
+  savedData = [(CKComposeAssetExplorerManager *)self savedData];
+  [savedData addObject:v21];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface APPBLogAggregateMetricsRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDistributionMetrics:(id)a3;
-- (void)addScalarMetrics:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDistributionMetrics:(id)metrics;
+- (void)addScalarMetrics:(id)metrics;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBLogAggregateMetricsRequest
@@ -26,40 +26,40 @@
   return v3;
 }
 
-- (void)addDistributionMetrics:(id)a3
+- (void)addDistributionMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   distributionMetrics = self->_distributionMetrics;
-  v8 = v4;
+  v8 = metricsCopy;
   if (!distributionMetrics)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_distributionMetrics;
     self->_distributionMetrics = v6;
 
-    v4 = v8;
+    metricsCopy = v8;
     distributionMetrics = self->_distributionMetrics;
   }
 
-  [(NSMutableArray *)distributionMetrics addObject:v4];
+  [(NSMutableArray *)distributionMetrics addObject:metricsCopy];
 }
 
-- (void)addScalarMetrics:(id)a3
+- (void)addScalarMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   scalarMetrics = self->_scalarMetrics;
-  v8 = v4;
+  v8 = metricsCopy;
   if (!scalarMetrics)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_scalarMetrics;
     self->_scalarMetrics = v6;
 
-    v4 = v8;
+    metricsCopy = v8;
     scalarMetrics = self->_scalarMetrics;
   }
 
-  [(NSMutableArray *)scalarMetrics addObject:v4];
+  [(NSMutableArray *)scalarMetrics addObject:metricsCopy];
 }
 
 - (id)description
@@ -67,8 +67,8 @@
   v7.receiver = self;
   v7.super_class = APPBLogAggregateMetricsRequest;
   v3 = [(APPBLogAggregateMetricsRequest *)&v7 description];
-  v4 = [(APPBLogAggregateMetricsRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBLogAggregateMetricsRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -111,8 +111,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -146,8 +146,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -162,9 +162,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_deviceModel)
   {
     PBDataWriterWriteStringField();
@@ -238,58 +238,58 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_deviceModel)
   {
-    [v12 setDeviceModel:?];
+    [toCopy setDeviceModel:?];
   }
 
   if (self->_operatingSystemDescription)
   {
-    [v12 setOperatingSystemDescription:?];
+    [toCopy setOperatingSystemDescription:?];
   }
 
   if ([(APPBLogAggregateMetricsRequest *)self distributionMetricsCount])
   {
-    [v12 clearDistributionMetrics];
-    v4 = [(APPBLogAggregateMetricsRequest *)self distributionMetricsCount];
-    if (v4)
+    [toCopy clearDistributionMetrics];
+    distributionMetricsCount = [(APPBLogAggregateMetricsRequest *)self distributionMetricsCount];
+    if (distributionMetricsCount)
     {
-      v5 = v4;
+      v5 = distributionMetricsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(APPBLogAggregateMetricsRequest *)self distributionMetricsAtIndex:i];
-        [v12 addDistributionMetrics:v7];
+        [toCopy addDistributionMetrics:v7];
       }
     }
   }
 
   if ([(APPBLogAggregateMetricsRequest *)self scalarMetricsCount])
   {
-    [v12 clearScalarMetrics];
-    v8 = [(APPBLogAggregateMetricsRequest *)self scalarMetricsCount];
-    if (v8)
+    [toCopy clearScalarMetrics];
+    scalarMetricsCount = [(APPBLogAggregateMetricsRequest *)self scalarMetricsCount];
+    if (scalarMetricsCount)
     {
-      v9 = v8;
+      v9 = scalarMetricsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(APPBLogAggregateMetricsRequest *)self scalarMetricsAtIndex:j];
-        [v12 addScalarMetrics:v11];
+        [toCopy addScalarMetrics:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_deviceModel copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_deviceModel copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_operatingSystemDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_operatingSystemDescription copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -313,7 +313,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v27 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v27 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addDistributionMetrics:v15];
 
         v14 = v14 + 1;
@@ -346,7 +346,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v23 + 1) + 8 * v20) copyWithZone:{a3, v23}];
+        v21 = [*(*(&v23 + 1) + 8 * v20) copyWithZone:{zone, v23}];
         [v5 addScalarMetrics:v21];
 
         v20 = v20 + 1;
@@ -362,13 +362,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((deviceModel = self->_deviceModel, !(deviceModel | v4[1])) || -[NSString isEqual:](deviceModel, "isEqual:")) && ((operatingSystemDescription = self->_operatingSystemDescription, !(operatingSystemDescription | v4[3])) || -[NSString isEqual:](operatingSystemDescription, "isEqual:")) && ((distributionMetrics = self->_distributionMetrics, !(distributionMetrics | v4[2])) || -[NSMutableArray isEqual:](distributionMetrics, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((deviceModel = self->_deviceModel, !(deviceModel | equalCopy[1])) || -[NSString isEqual:](deviceModel, "isEqual:")) && ((operatingSystemDescription = self->_operatingSystemDescription, !(operatingSystemDescription | equalCopy[3])) || -[NSString isEqual:](operatingSystemDescription, "isEqual:")) && ((distributionMetrics = self->_distributionMetrics, !(distributionMetrics | equalCopy[2])) || -[NSMutableArray isEqual:](distributionMetrics, "isEqual:")))
   {
     scalarMetrics = self->_scalarMetrics;
-    if (scalarMetrics | v4[4])
+    if (scalarMetrics | equalCopy[4])
     {
       v9 = [(NSMutableArray *)scalarMetrics isEqual:?];
     }
@@ -395,15 +395,15 @@
   return v4 ^ v5 ^ [(NSMutableArray *)self->_scalarMetrics hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(APPBLogAggregateMetricsRequest *)self setDeviceModel:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(APPBLogAggregateMetricsRequest *)self setOperatingSystemDescription:?];
   }
@@ -412,7 +412,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -440,7 +440,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = *(v4 + 4);
+  v10 = *(fromCopy + 4);
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {

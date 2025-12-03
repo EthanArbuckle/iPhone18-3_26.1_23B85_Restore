@@ -1,24 +1,24 @@
 @interface PLProcessInfo
-- (BOOL)isEqualToProcessInfo:(id)a3;
-- (PLProcessInfo)initWithProcessInfo:(id)a3;
+- (BOOL)isEqualToProcessInfo:(id)info;
+- (PLProcessInfo)initWithProcessInfo:(id)info;
 - (id)description;
-- (id)diffSinceBaseline:(id)a3;
+- (id)diffSinceBaseline:(id)baseline;
 - (void)populateCPUTime;
 @end
 
 @implementation PLProcessInfo
 
-- (PLProcessInfo)initWithProcessInfo:(id)a3
+- (PLProcessInfo)initWithProcessInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_alloc_init(PLProcessInfo);
-  v6 = [v4 processName];
-  [(PLProcessInfo *)v5 setProcessName:v6];
+  processName = [infoCopy processName];
+  [(PLProcessInfo *)v5 setProcessName:processName];
 
-  -[PLProcessInfo setPid:](v5, "setPid:", [v4 pid]);
-  [v4 totalUserTime];
+  -[PLProcessInfo setPid:](v5, "setPid:", [infoCopy pid]);
+  [infoCopy totalUserTime];
   [(PLProcessInfo *)v5 setTotalUserTime:?];
-  [v4 totalSystemTime];
+  [infoCopy totalSystemTime];
   v8 = v7;
 
   [(PLProcessInfo *)v5 setTotalSystemTime:v8];
@@ -28,37 +28,37 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLProcessInfo *)self processName];
+  processName = [(PLProcessInfo *)self processName];
   v5 = [(PLProcessInfo *)self pid];
-  v6 = [(PLProcessInfo *)self threadNameToInfo];
-  v7 = [v3 stringWithFormat:@"%@ (%d), %lu threads", v4, v5, objc_msgSend(v6, "count")];
+  threadNameToInfo = [(PLProcessInfo *)self threadNameToInfo];
+  v7 = [v3 stringWithFormat:@"%@ (%d), %lu threads", processName, v5, objc_msgSend(threadNameToInfo, "count")];
 
   return v7;
 }
 
-- (id)diffSinceBaseline:(id)a3
+- (id)diffSinceBaseline:(id)baseline
 {
-  v4 = a3;
+  baselineCopy = baseline;
   v5 = [[PLProcessInfo alloc] initWithProcessInfo:self];
   [(PLProcessInfo *)self totalUserTime];
   v7 = v6;
-  [v4 totalUserTime];
+  [baselineCopy totalUserTime];
   [(PLProcessInfo *)v5 setTotalUserTime:v7 - v8];
   [(PLProcessInfo *)self totalSystemTime];
   v10 = v9;
-  [v4 totalSystemTime];
+  [baselineCopy totalSystemTime];
   [(PLProcessInfo *)v5 setTotalSystemTime:v10 - v11];
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  v13 = [(PLProcessInfo *)self threadNameToInfo];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  threadNameToInfo = [(PLProcessInfo *)self threadNameToInfo];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __35__PLProcessInfo_diffSinceBaseline___block_invoke;
   v20 = &unk_1E851B228;
-  v21 = v4;
-  v22 = v12;
-  v14 = v12;
-  v15 = v4;
-  [v13 enumerateKeysAndObjectsUsingBlock:&v17];
+  v21 = baselineCopy;
+  v22 = dictionary;
+  v14 = dictionary;
+  v15 = baselineCopy;
+  [threadNameToInfo enumerateKeysAndObjectsUsingBlock:&v17];
 
   [(PLProcessInfo *)v5 setThreadNameToInfo:v14, v17, v18, v19, v20];
 
@@ -96,18 +96,18 @@ void __35__PLProcessInfo_diffSinceBaseline___block_invoke(uint64_t a1, void *a2,
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqualToProcessInfo:(id)a3
+- (BOOL)isEqualToProcessInfo:(id)info
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     goto LABEL_16;
   }
 
-  v5 = [(PLProcessInfo *)self processName];
-  v6 = [v4 processName];
-  v7 = [v5 isEqualToString:v6];
+  processName = [(PLProcessInfo *)self processName];
+  processName2 = [infoCopy processName];
+  v7 = [processName isEqualToString:processName2];
 
   if (!v7)
   {
@@ -115,14 +115,14 @@ void __35__PLProcessInfo_diffSinceBaseline___block_invoke(uint64_t a1, void *a2,
   }
 
   v8 = [(PLProcessInfo *)self pid];
-  if (v8 != [v4 pid])
+  if (v8 != [infoCopy pid])
   {
     goto LABEL_16;
   }
 
   [(PLProcessInfo *)self totalUserTime];
   v10 = v9;
-  [v4 totalUserTime];
+  [infoCopy totalUserTime];
   if (v10 != v11)
   {
     goto LABEL_16;
@@ -130,16 +130,16 @@ void __35__PLProcessInfo_diffSinceBaseline___block_invoke(uint64_t a1, void *a2,
 
   [(PLProcessInfo *)self totalSystemTime];
   v13 = v12;
-  [v4 totalSystemTime];
+  [infoCopy totalSystemTime];
   if (v13 != v14)
   {
     goto LABEL_16;
   }
 
-  v15 = [(PLProcessInfo *)self threadNameToInfo];
-  v16 = [v15 count];
-  v17 = [v4 threadNameToInfo];
-  v18 = [v17 count];
+  threadNameToInfo = [(PLProcessInfo *)self threadNameToInfo];
+  v16 = [threadNameToInfo count];
+  threadNameToInfo2 = [infoCopy threadNameToInfo];
+  v18 = [threadNameToInfo2 count];
 
   if (v16 == v18)
   {
@@ -163,10 +163,10 @@ void __35__PLProcessInfo_diffSinceBaseline___block_invoke(uint64_t a1, void *a2,
           }
 
           v23 = *(*(&v33 + 1) + 8 * i);
-          v24 = [(PLProcessInfo *)self threadNameToInfo];
-          v25 = [v24 objectForKeyedSubscript:v23];
-          v26 = [v4 threadNameToInfo];
-          v27 = [v26 objectForKeyedSubscript:v23];
+          threadNameToInfo3 = [(PLProcessInfo *)self threadNameToInfo];
+          v25 = [threadNameToInfo3 objectForKeyedSubscript:v23];
+          threadNameToInfo4 = [infoCopy threadNameToInfo];
+          v27 = [threadNameToInfo4 objectForKeyedSubscript:v23];
           v28 = [v25 isEqualToThreadInfo:v27];
 
           if (!v28)

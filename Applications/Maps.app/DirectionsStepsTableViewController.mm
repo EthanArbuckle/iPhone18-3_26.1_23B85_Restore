@@ -6,47 +6,47 @@
 - (RouteStepListDelegate)delegate;
 - (UIScrollViewDelegate)scrollViewDelegate;
 - (UITableView)tableView;
-- (id)routeStepForIndexPath:(id)a3;
+- (id)routeStepForIndexPath:(id)path;
 - (unint64_t)options;
-- (void)setDebugViewControllerEnabled:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setOptions:(unint64_t)a3;
-- (void)setRoute:(id)a3;
-- (void)setScrollViewDelegate:(id)a3;
+- (void)setDebugViewControllerEnabled:(BOOL)enabled;
+- (void)setDelegate:(id)delegate;
+- (void)setOptions:(unint64_t)options;
+- (void)setRoute:(id)route;
+- (void)setScrollViewDelegate:(id)delegate;
 - (void)updateTheme;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DirectionsStepsTableViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = DirectionsStepsTableViewController;
-  [(DirectionsStepsTableViewController *)&v5 viewDidAppear:a3];
-  v4 = [(DirectionsStepsTableViewController *)self dataSource];
-  [v4 scrollToCurrentStep];
+  [(DirectionsStepsTableViewController *)&v5 viewDidAppear:appear];
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  [dataSource scrollToCurrentStep];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(DirectionsStepsTableViewController *)self dataSource];
-  [v5 suspendAutoscrollingToStep];
+  appearCopy = appear;
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  [dataSource suspendAutoscrollingToStep];
 
-  v6 = [(DirectionsStepsTableViewController *)self dataSource];
-  [v6 reloadData];
+  dataSource2 = [(DirectionsStepsTableViewController *)self dataSource];
+  [dataSource2 reloadData];
 
-  v7 = [(DirectionsStepsTableViewController *)self dataSource];
-  [v7 resumeAutoscrollingToStep];
+  dataSource3 = [(DirectionsStepsTableViewController *)self dataSource];
+  [dataSource3 resumeAutoscrollingToStep];
 
   v8.receiver = self;
   v8.super_class = DirectionsStepsTableViewController;
-  [(DirectionsStepsTableViewController *)&v8 viewWillAppear:v3];
+  [(DirectionsStepsTableViewController *)&v8 viewWillAppear:appearCopy];
 }
 
 - (void)updateTheme
@@ -54,57 +54,57 @@
   v4.receiver = self;
   v4.super_class = DirectionsStepsTableViewController;
   [(MapsThemeViewController *)&v4 updateTheme];
-  v3 = [(DirectionsStepsTableViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(DirectionsStepsTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)setDebugViewControllerEnabled:(BOOL)a3
+- (void)setDebugViewControllerEnabled:(BOOL)enabled
 {
-  if (self->_debugViewControllerEnabled != a3)
+  if (self->_debugViewControllerEnabled != enabled)
   {
-    self->_debugViewControllerEnabled = a3;
-    if (a3)
+    self->_debugViewControllerEnabled = enabled;
+    if (enabled)
     {
-      v4 = [(DirectionsStepsTableViewController *)self debugViewsController];
-      v5 = [v4 debugControlsView];
+      debugViewsController = [(DirectionsStepsTableViewController *)self debugViewsController];
+      debugControlsView = [debugViewsController debugControlsView];
 
-      [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v6 = [(DirectionsStepsTableViewController *)self view];
-      [v6 addSubview:v5];
+      [debugControlsView setTranslatesAutoresizingMaskIntoConstraints:0];
+      view = [(DirectionsStepsTableViewController *)self view];
+      [view addSubview:debugControlsView];
 
-      v46 = [v5 leadingAnchor];
-      v47 = [(DirectionsStepsTableViewController *)self view];
-      v45 = [v47 safeAreaLayoutGuide];
-      v44 = [v45 leadingAnchor];
-      v43 = [v46 constraintEqualToAnchor:v44 constant:8.0];
+      leadingAnchor = [debugControlsView leadingAnchor];
+      view2 = [(DirectionsStepsTableViewController *)self view];
+      safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+      leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+      v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
       v49[0] = v43;
-      v41 = [v5 trailingAnchor];
-      v42 = [(DirectionsStepsTableViewController *)self view];
-      v40 = [v42 safeAreaLayoutGuide];
-      v7 = [v40 trailingAnchor];
-      v8 = [v41 constraintEqualToAnchor:v7 constant:-8.0];
+      trailingAnchor = [debugControlsView trailingAnchor];
+      view3 = [(DirectionsStepsTableViewController *)self view];
+      safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+      trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+      v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
       v49[1] = v8;
-      v9 = [v5 bottomAnchor];
-      v10 = [(DirectionsStepsTableViewController *)self view];
-      v11 = [v10 safeAreaLayoutGuide];
-      v12 = [v11 bottomAnchor];
-      v13 = [v9 constraintEqualToAnchor:v12 constant:-8.0];
+      bottomAnchor = [debugControlsView bottomAnchor];
+      view4 = [(DirectionsStepsTableViewController *)self view];
+      safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+      bottomAnchor2 = [safeAreaLayoutGuide3 bottomAnchor];
+      v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
       v49[2] = v13;
       v14 = [NSArray arrayWithObjects:v49 count:3];
       [NSLayoutConstraint activateConstraints:v14];
 
-      v15 = [(DirectionsStepsTableViewController *)self debugViewsController];
-      [v15 didManuallyAddDebugViews];
+      debugViewsController2 = [(DirectionsStepsTableViewController *)self debugViewsController];
+      [debugViewsController2 didManuallyAddDebugViews];
 
-      v16 = [(DirectionsStepsTableViewController *)self tableView];
-      [v16 bounds];
+      tableView = [(DirectionsStepsTableViewController *)self tableView];
+      [tableView bounds];
       v18 = v17;
       v20 = v19;
       v22 = v21;
       v24 = v23;
 
-      v25 = [(DirectionsStepsTableViewController *)self debugViewsController];
-      [v25 debugViewHeight];
+      debugViewsController3 = [(DirectionsStepsTableViewController *)self debugViewsController];
+      [debugViewsController3 debugViewHeight];
       v27 = v26;
 
       v51.origin.x = v18;
@@ -117,7 +117,7 @@
       v52.size.width = v22;
       v52.size.height = v27;
       v29 = Height - CGRectGetHeight(v52);
-      [v5 setFrame:{0.0, v29, v22, v27}];
+      [debugControlsView setFrame:{0.0, v29, v22, v27}];
       left = UIEdgeInsetsZero.left;
       right = UIEdgeInsetsZero.right;
       v53.origin.x = 0.0;
@@ -125,24 +125,24 @@
       v53.size.width = v22;
       v53.size.height = v27;
       v32 = CGRectGetHeight(v53);
-      v33 = [(DirectionsStepsTableViewController *)self tableView];
-      [v33 setContentInset:{UIEdgeInsetsZero.top, left, v32, right}];
+      tableView2 = [(DirectionsStepsTableViewController *)self tableView];
+      [tableView2 setContentInset:{UIEdgeInsetsZero.top, left, v32, right}];
     }
 
     else if (self->_debugViewsController)
     {
-      v34 = [(DirectionsStepsTableViewController *)self debugViewsController];
-      v35 = [v34 debugControlsView];
-      [v35 removeFromSuperview];
+      debugViewsController4 = [(DirectionsStepsTableViewController *)self debugViewsController];
+      debugControlsView2 = [debugViewsController4 debugControlsView];
+      [debugControlsView2 removeFromSuperview];
 
-      v36 = [(DirectionsStepsTableViewController *)self debugViewsController];
-      [v36 didManuallyRemoveDebugViews];
+      debugViewsController5 = [(DirectionsStepsTableViewController *)self debugViewsController];
+      [debugViewsController5 didManuallyRemoveDebugViews];
 
       v37 = UIEdgeInsetsZero.left;
       bottom = UIEdgeInsetsZero.bottom;
       v39 = UIEdgeInsetsZero.right;
-      v48 = [(DirectionsStepsTableViewController *)self tableView];
-      [v48 setContentInset:{UIEdgeInsetsZero.top, v37, bottom, v39}];
+      tableView3 = [(DirectionsStepsTableViewController *)self tableView];
+      [tableView3 setContentInset:{UIEdgeInsetsZero.top, v37, bottom, v39}];
     }
   }
 }
@@ -159,33 +159,33 @@
     if ([v6 isCurrentlyConnectedToCarAppScene])
     {
       v7 = +[CarDisplayController sharedInstance];
-      v8 = [v7 isCarAppSceneHostingNavigation];
+      isCarAppSceneHostingNavigation = [v7 isCarAppSceneHostingNavigation];
     }
 
     else
     {
-      v8 = 0;
+      isCarAppSceneHostingNavigation = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    isCarAppSceneHostingNavigation = 0;
   }
 
-  v9 = [(DirectionsStepsTableViewController *)self dataSource];
-  if ([v9 enableNavigationUpdates])
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  if ([dataSource enableNavigationUpdates])
   {
     v10 = +[MNNavigationService sharedService];
-    v11 = [v10 isNavigatingFromTrace];
+    isNavigatingFromTrace = [v10 isNavigatingFromTrace];
   }
 
   else
   {
-    v11 = 0;
+    isNavigatingFromTrace = 0;
   }
 
-  return v4 & v8 & v11;
+  return v4 & isCarAppSceneHostingNavigation & isNavigatingFromTrace;
 }
 
 - (NavigationDebugViewsController)debugViewsController
@@ -201,15 +201,15 @@
     [(NavigationDebugViewsController *)self->_debugViewsController setAutomaticallyHideTraceControls:0];
     [(NavigationDebugViewsController *)self->_debugViewsController setUpCameraSnapshotPickerVCFromViewController:self];
     v6 = +[CarDisplayController sharedInstance];
-    v7 = [v6 isCurrentlyConnectedToCarAppScene];
+    isCurrentlyConnectedToCarAppScene = [v6 isCurrentlyConnectedToCarAppScene];
 
     debugViewsController = self->_debugViewsController;
-    if (v7)
+    if (isCurrentlyConnectedToCarAppScene)
     {
       v8 = +[CarDisplayController sharedInstance];
-      v9 = [v8 chromeViewController];
-      v10 = [v9 mapView];
-      [(NavigationDebugViewsController *)debugViewsController setMapView:v10];
+      chromeViewController = [v8 chromeViewController];
+      mapView = [chromeViewController mapView];
+      [(NavigationDebugViewsController *)debugViewsController setMapView:mapView];
 
       debugViewsController = self->_debugViewsController;
     }
@@ -218,72 +218,72 @@
   return debugViewsController;
 }
 
-- (void)setScrollViewDelegate:(id)a3
+- (void)setScrollViewDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(DirectionsStepsTableViewController *)self dataSource];
-  [v5 setScrollViewDelegate:v4];
+  delegateCopy = delegate;
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  [dataSource setScrollViewDelegate:delegateCopy];
 }
 
 - (UIScrollViewDelegate)scrollViewDelegate
 {
-  v2 = [(DirectionsStepsTableViewController *)self dataSource];
-  v3 = [v2 scrollViewDelegate];
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  scrollViewDelegate = [dataSource scrollViewDelegate];
 
-  return v3;
+  return scrollViewDelegate;
 }
 
-- (id)routeStepForIndexPath:(id)a3
+- (id)routeStepForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(DirectionsStepsTableViewController *)self dataSource];
-  v6 = [v5 routeStepForIndexPath:v4];
+  pathCopy = path;
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  v6 = [dataSource routeStepForIndexPath:pathCopy];
 
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(DirectionsStepsTableViewController *)self dataSource];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  [dataSource setDelegate:delegateCopy];
 }
 
 - (RouteStepListDelegate)delegate
 {
-  v2 = [(DirectionsStepsTableViewController *)self dataSource];
-  v3 = [v2 delegate];
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  delegate = [dataSource delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setOptions:(unint64_t)a3
+- (void)setOptions:(unint64_t)options
 {
-  v4 = [(DirectionsStepsTableViewController *)self dataSource];
-  [v4 setOptions:a3];
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  [dataSource setOptions:options];
 }
 
 - (unint64_t)options
 {
-  v2 = [(DirectionsStepsTableViewController *)self dataSource];
-  v3 = [v2 options];
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  options = [dataSource options];
 
-  return v3;
+  return options;
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v4 = a3;
-  v5 = [(DirectionsStepsTableViewController *)self dataSource];
-  [v5 setRoute:v4];
+  routeCopy = route;
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  [dataSource setRoute:routeCopy];
 }
 
 - (GEOComposedRoute)route
 {
-  v2 = [(DirectionsStepsTableViewController *)self dataSource];
-  v3 = [v2 route];
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  route = [dataSource route];
 
-  return v3;
+  return route;
 }
 
 - (void)viewLayoutMarginsDidChange
@@ -291,8 +291,8 @@
   v4.receiver = self;
   v4.super_class = DirectionsStepsTableViewController;
   [(DirectionsStepsTableViewController *)&v4 viewLayoutMarginsDidChange];
-  v3 = [(DirectionsStepsTableViewController *)self dataSource];
-  [v3 invalidateLayoutAndReloadData];
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  [dataSource invalidateLayoutAndReloadData];
 }
 
 - (void)viewDidLayoutSubviews
@@ -313,8 +313,8 @@
   v33.super_class = DirectionsStepsTableViewController;
   [(DirectionsStepsTableViewController *)&v33 viewDidLoad];
   v3 = [MapsThemeTableView alloc];
-  v4 = [(DirectionsStepsTableViewController *)self view];
-  [v4 bounds];
+  view = [(DirectionsStepsTableViewController *)self view];
+  [view bounds];
   v9 = [(MapsThemeTableView *)v3 initWithFrame:[(DirectionsStepsTableViewController *)self tableViewStyle] style:v5, v6, v7, v8];
 
   [(MapsThemeTableView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -323,54 +323,54 @@
   v10 = +[UIColor separatorColor];
   [(MapsThemeTableView *)v9 setSeparatorColor:v10];
 
-  v11 = [(DirectionsStepsTableViewController *)self view];
-  [v11 addSubview:v9];
+  view2 = [(DirectionsStepsTableViewController *)self view];
+  [view2 addSubview:v9];
 
   [(DirectionsStepsTableViewController *)self setTableView:v9];
-  v12 = [(DirectionsStepsTableViewController *)self dataSource];
-  [v12 setTableView:v9];
+  dataSource = [(DirectionsStepsTableViewController *)self dataSource];
+  [dataSource setTableView:v9];
 
-  v13 = [(DirectionsStepsTableViewController *)self dataSource];
-  v14 = [(DirectionsStepsTableViewController *)self tableView];
-  [v14 setDelegate:v13];
+  dataSource2 = [(DirectionsStepsTableViewController *)self dataSource];
+  tableView = [(DirectionsStepsTableViewController *)self tableView];
+  [tableView setDelegate:dataSource2];
 
-  v15 = [(DirectionsStepsTableViewController *)self dataSource];
-  v16 = [(DirectionsStepsTableViewController *)self tableView];
-  [v16 setDataSource:v15];
+  dataSource3 = [(DirectionsStepsTableViewController *)self dataSource];
+  tableView2 = [(DirectionsStepsTableViewController *)self tableView];
+  [tableView2 setDataSource:dataSource3];
 
-  v17 = [(DirectionsStepsTableViewController *)self view];
+  view3 = [(DirectionsStepsTableViewController *)self view];
   LODWORD(v18) = 1148846080;
-  v19 = [(MapsThemeTableView *)v9 _maps_constraintsEqualToEdgesOfView:v17 priority:v18];
+  v19 = [(MapsThemeTableView *)v9 _maps_constraintsEqualToEdgesOfView:view3 priority:v18];
 
-  v20 = [v19 topConstraint];
+  topConstraint = [v19 topConstraint];
   tableTopEdgeConstraint = self->_tableTopEdgeConstraint;
-  self->_tableTopEdgeConstraint = v20;
+  self->_tableTopEdgeConstraint = topConstraint;
 
-  v22 = [v19 allConstraints];
-  [NSLayoutConstraint activateConstraints:v22];
+  allConstraints = [v19 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 
-  v23 = [(DirectionsStepsTableViewController *)self dataSource];
-  v24 = [(DirectionsStepsTableViewController *)self view];
-  [v23 setCollapsingHeaderSuperview:v24 topAnchorConstraint:self->_tableTopEdgeConstraint];
+  dataSource4 = [(DirectionsStepsTableViewController *)self dataSource];
+  view4 = [(DirectionsStepsTableViewController *)self view];
+  [dataSource4 setCollapsingHeaderSuperview:view4 topAnchorConstraint:self->_tableTopEdgeConstraint];
 
   [(NSLayoutConstraint *)self->_tableTopEdgeConstraint constant];
   self->_showsHairline = v25 > 2.22044605e-16;
-  v26 = [(DirectionsStepsTableViewController *)self dataSource];
-  [v26 setScrollDirectionHandler:&stru_10164E070];
+  dataSource5 = [(DirectionsStepsTableViewController *)self dataSource];
+  [dataSource5 setScrollDirectionHandler:&stru_10164E070];
 
   v27 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  v28 = [(DirectionsStepsTableViewController *)self tableView];
-  [v28 setTableFooterView:v27];
+  tableView3 = [(DirectionsStepsTableViewController *)self tableView];
+  [tableView3 setTableFooterView:v27];
 
-  v29 = [(DirectionsStepsTableViewController *)self tableView];
-  [v29 setBackgroundView:0];
+  tableView4 = [(DirectionsStepsTableViewController *)self tableView];
+  [tableView4 setBackgroundView:0];
 
   v30 = +[UIColor clearColor];
-  v31 = [(DirectionsStepsTableViewController *)self tableView];
-  [v31 setBackgroundColor:v30];
+  tableView5 = [(DirectionsStepsTableViewController *)self tableView];
+  [tableView5 setBackgroundColor:v30];
 
-  v32 = [(DirectionsStepsTableViewController *)self tableView];
-  [v32 setSeparatorInset:{0.0, 16.0, 0.0, 16.0}];
+  tableView6 = [(DirectionsStepsTableViewController *)self tableView];
+  [tableView6 setSeparatorInset:{0.0, 16.0, 0.0, 16.0}];
 
   [(DirectionsStepsTableViewController *)self setDebugViewControllerEnabled:[(DirectionsStepsTableViewController *)self shouldShowDebugViewController]];
 }

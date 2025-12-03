@@ -10,11 +10,11 @@
 - (double)strength;
 - (double)tone;
 - (id)multiSettingKey;
-- (void)setGrain:(double)a3;
-- (void)setHue:(double)a3;
-- (void)setNeutral:(double)a3;
-- (void)setStrength:(double)a3;
-- (void)setTone:(double)a3;
+- (void)setGrain:(double)grain;
+- (void)setHue:(double)hue;
+- (void)setNeutral:(double)neutral;
+- (void)setStrength:(double)strength;
+- (void)setTone:(double)tone;
 @end
 
 @implementation PISmartBlackAndWhiteAdjustmentController
@@ -63,87 +63,87 @@
 
 - (double)hue
 {
-  v3 = [objc_opt_class() hueKey];
-  v4 = [(PIAdjustmentController *)self _primitiveValueForKey:v3];
+  hueKey = [objc_opt_class() hueKey];
+  v4 = [(PIAdjustmentController *)self _primitiveValueForKey:hueKey];
   [v4 doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setHue:(double)a3
+- (void)setHue:(double)hue
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [objc_opt_class() hueKey];
-  [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:hue];
+  hueKey = [objc_opt_class() hueKey];
+  [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:hueKey];
 }
 
 - (double)grain
 {
-  v3 = [objc_opt_class() grainKey];
-  v4 = [(PIAdjustmentController *)self _primitiveValueForKey:v3];
+  grainKey = [objc_opt_class() grainKey];
+  v4 = [(PIAdjustmentController *)self _primitiveValueForKey:grainKey];
   [v4 doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setGrain:(double)a3
+- (void)setGrain:(double)grain
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [objc_opt_class() grainKey];
-  [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:grain];
+  grainKey = [objc_opt_class() grainKey];
+  [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:grainKey];
 }
 
 - (double)tone
 {
-  v3 = [objc_opt_class() toneKey];
-  v4 = [(PIAdjustmentController *)self _primitiveValueForKey:v3];
+  toneKey = [objc_opt_class() toneKey];
+  v4 = [(PIAdjustmentController *)self _primitiveValueForKey:toneKey];
   [v4 doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setTone:(double)a3
+- (void)setTone:(double)tone
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [objc_opt_class() toneKey];
-  [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:tone];
+  toneKey = [objc_opt_class() toneKey];
+  [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:toneKey];
 }
 
 - (double)neutral
 {
-  v3 = [objc_opt_class() neutralKey];
-  v4 = [(PIAdjustmentController *)self _primitiveValueForKey:v3];
+  neutralKey = [objc_opt_class() neutralKey];
+  v4 = [(PIAdjustmentController *)self _primitiveValueForKey:neutralKey];
   [v4 doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setNeutral:(double)a3
+- (void)setNeutral:(double)neutral
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [objc_opt_class() neutralKey];
-  [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:neutral];
+  neutralKey = [objc_opt_class() neutralKey];
+  [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:neutralKey];
 }
 
 - (double)strength
 {
-  v3 = [objc_opt_class() strengthKey];
-  v4 = [(PIAdjustmentController *)self _primitiveValueForKey:v3];
+  strengthKey = [objc_opt_class() strengthKey];
+  v4 = [(PIAdjustmentController *)self _primitiveValueForKey:strengthKey];
   [v4 doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setStrength:(double)a3
+- (void)setStrength:(double)strength
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [objc_opt_class() strengthKey];
-  [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:v4];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:strength];
+  strengthKey = [objc_opt_class() strengthKey];
+  [(PIAdjustmentController *)self _setPrimitiveValue:v5 forKey:strengthKey];
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface RTSynthesizedLocationStore
-- (BOOL)removeLocationsPredating:(id)a3;
-- (RTSynthesizedLocationStore)initWithPersistenceManager:(id)a3;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (id)fetchRequestFromStoredLocationOptions:(id)a3;
-- (void)_fetchStoredLocationsCountWithContext:(id)a3 handler:(id)a4;
-- (void)_fetchStoredLocationsCountWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchStoredLocationsWithContext:(id)a3 handler:(id)a4;
-- (void)_fetchStoredLocationsWithOptions:(id)a3 handler:(id)a4;
-- (void)_removeLocationsOnDateInterval:(id)a3 handler:(id)a4;
-- (void)_removeLocationsPredating:(id)a3 handler:(id)a4;
-- (void)_storeLocations:(id)a3 handler:(id)a4;
-- (void)_storeLocationsByBatches:(id)a3 handler:(id)a4;
-- (void)_storeLocationsForBatch:(id)a3 batchNo:(unint64_t)a4 batchSize:(unint64_t)a5 handler:(id)a6;
-- (void)fetchStoredLocationsCountWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchStoredLocationsWithContext:(id)a3 handler:(id)a4;
-- (void)fetchStoredLocationsWithOptions:(id)a3 handler:(id)a4;
-- (void)removeLocationsOnDateInterval:(id)a3 handler:(id)a4;
-- (void)removeLocationsPredating:(id)a3 handler:(id)a4;
-- (void)storeLocations:(id)a3 handler:(id)a4;
+- (BOOL)removeLocationsPredating:(id)predating;
+- (RTSynthesizedLocationStore)initWithPersistenceManager:(id)manager;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (id)fetchRequestFromStoredLocationOptions:(id)options;
+- (void)_fetchStoredLocationsCountWithContext:(id)context handler:(id)handler;
+- (void)_fetchStoredLocationsCountWithOptions:(id)options handler:(id)handler;
+- (void)_fetchStoredLocationsWithContext:(id)context handler:(id)handler;
+- (void)_fetchStoredLocationsWithOptions:(id)options handler:(id)handler;
+- (void)_removeLocationsOnDateInterval:(id)interval handler:(id)handler;
+- (void)_removeLocationsPredating:(id)predating handler:(id)handler;
+- (void)_storeLocations:(id)locations handler:(id)handler;
+- (void)_storeLocationsByBatches:(id)batches handler:(id)handler;
+- (void)_storeLocationsForBatch:(id)batch batchNo:(unint64_t)no batchSize:(unint64_t)size handler:(id)handler;
+- (void)fetchStoredLocationsCountWithOptions:(id)options handler:(id)handler;
+- (void)fetchStoredLocationsWithContext:(id)context handler:(id)handler;
+- (void)fetchStoredLocationsWithOptions:(id)options handler:(id)handler;
+- (void)removeLocationsOnDateInterval:(id)interval handler:(id)handler;
+- (void)removeLocationsPredating:(id)predating handler:(id)handler;
+- (void)storeLocations:(id)locations handler:(id)handler;
 @end
 
 @implementation RTSynthesizedLocationStore
 
-- (RTSynthesizedLocationStore)initWithPersistenceManager:(id)a3
+- (RTSynthesizedLocationStore)initWithPersistenceManager:(id)manager
 {
-  v3 = self;
+  selfCopy = self;
   v18 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (manager)
   {
     v13.receiver = self;
     v13.super_class = RTSynthesizedLocationStore;
@@ -47,8 +47,8 @@
       }
     }
 
-    v3 = v5;
-    v7 = v3;
+    selfCopy = v5;
+    v7 = selfCopy;
   }
 
   else
@@ -66,16 +66,16 @@
   return v7;
 }
 
-- (void)_storeLocations:(id)a3 handler:(id)a4
+- (void)_storeLocations:(id)locations handler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v14 = a4;
+  locationsCopy = locations;
+  handlerCopy = handler;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  v6 = [locationsCopy countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -88,7 +88,7 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(locationsCopy);
         }
 
         v11 = *(*(&v20 + 1) + 8 * v10);
@@ -107,7 +107,7 @@
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v7 = [locationsCopy countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v7);
@@ -117,10 +117,10 @@
   v17[1] = 3221225472;
   v17[2] = __54__RTSynthesizedLocationStore__storeLocations_handler___block_invoke;
   v17[3] = &unk_2788C4780;
-  v18 = v14;
+  v18 = handlerCopy;
   v19 = a2;
-  v13 = v14;
-  [(RTStore *)self storeWritableObjects:v5 handler:v17];
+  v13 = handlerCopy;
+  [(RTStore *)self storeWritableObjects:locationsCopy handler:v17];
 }
 
 void __54__RTSynthesizedLocationStore__storeLocations_handler___block_invoke(uint64_t a1, void *a2)
@@ -148,37 +148,37 @@ void __54__RTSynthesizedLocationStore__storeLocations_handler___block_invoke(uin
   }
 }
 
-- (void)_storeLocationsForBatch:(id)a3 batchNo:(unint64_t)a4 batchSize:(unint64_t)a5 handler:(id)a6
+- (void)_storeLocationsForBatch:(id)batch batchNo:(unint64_t)no batchSize:(unint64_t)size handler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
-  v13 = [v11 count];
-  if (a5 * a4 + a5 >= v13)
+  batchCopy = batch;
+  handlerCopy = handler;
+  v13 = [batchCopy count];
+  if (size * no + size >= v13)
   {
     v14 = v13;
   }
 
   else
   {
-    v14 = a5 * a4 + a5;
+    v14 = size * no + size;
   }
 
-  v15 = [v11 subarrayWithRange:{a5 * a4, v14 - a5 * a4}];
-  v16 = [v11 count];
+  v15 = [batchCopy subarrayWithRange:{size * no, v14 - size * no}];
+  v16 = [batchCopy count];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __80__RTSynthesizedLocationStore__storeLocationsForBatch_batchNo_batchSize_handler___block_invoke;
   v24[3] = &unk_2788CA108;
-  v26 = v12;
-  v27 = a4;
+  v26 = handlerCopy;
+  noCopy = no;
   v24[4] = self;
-  v25 = v11;
-  v17 = (a5 + v16 - 1) / a5;
+  v25 = batchCopy;
+  v17 = (size + v16 - 1) / size;
   v28 = v17;
-  v29 = a5;
-  v18 = v11;
-  v19 = v12;
+  sizeCopy = size;
+  v18 = batchCopy;
+  v19 = handlerCopy;
   [(RTSynthesizedLocationStore *)self _storeLocations:v15 handler:v24];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -193,11 +193,11 @@ void __54__RTSynthesizedLocationStore__storeLocations_handler___block_invoke(uin
       v32 = 2112;
       v33 = v23;
       v34 = 1024;
-      v35 = a4;
+      noCopy2 = no;
       v36 = 1024;
       v37 = v17;
       v38 = 1024;
-      v39 = a5;
+      sizeCopy2 = size;
       _os_log_debug_impl(&dword_2304B3000, v20, OS_LOG_TYPE_DEBUG, "%@,%@,stored location batch,%d,totalBatchs,%d,batchSize,%d", buf, 0x28u);
     }
   }
@@ -248,11 +248,11 @@ LABEL_8:
   }
 }
 
-- (void)_storeLocationsByBatches:(id)a3 handler:(id)a4
+- (void)_storeLocationsByBatches:(id)batches handler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  batchesCopy = batches;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -266,21 +266,21 @@ LABEL_8:
       v15 = 2112;
       v16 = v12;
       v17 = 2048;
-      v18 = [v7 count];
+      v18 = [batchesCopy count];
       v19 = 2048;
       v20 = 100;
       _os_log_debug_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEBUG, "%@,%@ storeLocations in batches,locationCount,%lu,batchSize,%lu", &v13, 0x2Au);
     }
   }
 
-  [(RTSynthesizedLocationStore *)self _storeLocationsForBatch:v7 batchNo:0 batchSize:100 handler:v8];
+  [(RTSynthesizedLocationStore *)self _storeLocationsForBatch:batchesCopy batchNo:0 batchSize:100 handler:handlerCopy];
 }
 
-- (void)storeLocations:(id)a3 handler:(id)a4
+- (void)storeLocations:(id)locations handler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  locationsCopy = locations;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -291,41 +291,41 @@ LABEL_8:
       *buf = 138412546;
       v18 = v13;
       v19 = 2048;
-      v20 = [v6 count];
+      v20 = [locationsCopy count];
       _os_log_debug_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEBUG, "%@ storeLocations invoked with locationCount,%lu", buf, 0x16u);
     }
   }
 
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__RTSynthesizedLocationStore_storeLocations_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v15 = locationsCopy;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = locationsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchStoredLocationsCountWithContext:(id)a3 handler:(id)a4
+- (void)_fetchStoredLocationsCountWithContext:(id)context handler:(id)handler
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __76__RTSynthesizedLocationStore__fetchStoredLocationsCountWithContext_handler___block_invoke;
     aBlock[3] = &unk_2788C4F38;
-    v22 = v6;
-    v23 = self;
-    v8 = v7;
+    v22 = contextCopy;
+    selfCopy = self;
+    v8 = handlerCopy;
     v24 = v8;
     v9 = _Block_copy(aBlock);
-    v10 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __76__RTSynthesizedLocationStore__fetchStoredLocationsCountWithContext_handler___block_invoke_67;
@@ -334,7 +334,7 @@ LABEL_8:
     v19 = v9;
     v20 = v8;
     v11 = v9;
-    dispatch_async(v10, v18);
+    dispatch_async(queue, v18);
 
     v12 = v22;
   }
@@ -484,12 +484,12 @@ void __76__RTSynthesizedLocationStore__fetchStoredLocationsCountWithContext_hand
   [v1 _performBlock:v2 contextType:1 errorHandler:v3];
 }
 
-- (void)_fetchStoredLocationsCountWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchStoredLocationsCountWithOptions:(id)options handler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -502,33 +502,33 @@ void __76__RTSynthesizedLocationStore__fetchStoredLocationsCountWithContext_hand
     }
   }
 
-  v9 = [objc_alloc(MEMORY[0x277D01348]) initWithEnumerationOptions:v6];
-  [(RTSynthesizedLocationStore *)self _fetchStoredLocationsCountWithContext:v9 handler:v7];
+  v9 = [objc_alloc(MEMORY[0x277D01348]) initWithEnumerationOptions:optionsCopy];
+  [(RTSynthesizedLocationStore *)self _fetchStoredLocationsCountWithContext:v9 handler:handlerCopy];
 }
 
-- (void)fetchStoredLocationsCountWithOptions:(id)a3 handler:(id)a4
+- (void)fetchStoredLocationsCountWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__RTSynthesizedLocationStore_fetchStoredLocationsCountWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchStoredLocationsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchStoredLocationsWithOptions:(id)options handler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -541,45 +541,45 @@ void __76__RTSynthesizedLocationStore__fetchStoredLocationsCountWithContext_hand
     }
   }
 
-  v9 = [objc_alloc(MEMORY[0x277D01348]) initWithEnumerationOptions:v6];
-  [(RTSynthesizedLocationStore *)self _fetchStoredLocationsWithContext:v9 handler:v7];
+  v9 = [objc_alloc(MEMORY[0x277D01348]) initWithEnumerationOptions:optionsCopy];
+  [(RTSynthesizedLocationStore *)self _fetchStoredLocationsWithContext:v9 handler:handlerCopy];
 }
 
-- (void)fetchStoredLocationsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchStoredLocationsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__RTSynthesizedLocationStore_fetchStoredLocationsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchStoredLocationsWithContext:(id)a3 handler:(id)a4
+- (void)_fetchStoredLocationsWithContext:(id)context handler:(id)handler
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __71__RTSynthesizedLocationStore__fetchStoredLocationsWithContext_handler___block_invoke;
     aBlock[3] = &unk_2788C4910;
-    v23 = v7;
-    v24 = self;
+    v23 = contextCopy;
+    selfCopy = self;
     v26 = a2;
-    v9 = v8;
+    v9 = handlerCopy;
     v25 = v9;
     v10 = _Block_copy(aBlock);
-    v11 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__RTSynthesizedLocationStore__fetchStoredLocationsWithContext_handler___block_invoke_70;
@@ -588,7 +588,7 @@ void __76__RTSynthesizedLocationStore__fetchStoredLocationsCountWithContext_hand
     v20 = v10;
     v21 = v9;
     v12 = v10;
-    dispatch_async(v11, block);
+    dispatch_async(queue, block);
 
     v13 = v23;
   }
@@ -846,42 +846,42 @@ void __71__RTSynthesizedLocationStore__fetchStoredLocationsWithContext_handler__
   [v1 _performBlock:v2 contextType:1 errorHandler:v3];
 }
 
-- (void)fetchStoredLocationsWithContext:(id)a3 handler:(id)a4
+- (void)fetchStoredLocationsWithContext:(id)context handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  contextCopy = context;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__RTSynthesizedLocationStore_fetchStoredLocationsWithContext_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = contextCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = contextCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_removeLocationsPredating:(id)a3 handler:(id)a4
+- (void)_removeLocationsPredating:(id)predating handler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  predatingCopy = predating;
+  if (predatingCopy)
   {
     v15 = @"timestamp";
-    v7 = a4;
+    handlerCopy = handler;
     v14 = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
     v16 = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
 
-    [(RTStore *)self purgePredating:v6 predicateMappings:v9 handler:v7];
+    [(RTStore *)self purgePredating:predatingCopy predicateMappings:v9 handler:handlerCopy];
   }
 
   else
   {
-    v10 = a4;
+    handlerCopy2 = handler;
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -897,33 +897,33 @@ void __71__RTSynthesizedLocationStore__fetchStoredLocationsWithContext_handler__
     v17 = *MEMORY[0x277CCA450];
     v18 = @"requires a valid date.";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    v7 = [v12 errorWithDomain:v13 code:7 userInfo:v9];
-    v10[2](v10, v7);
+    handlerCopy = [v12 errorWithDomain:v13 code:7 userInfo:v9];
+    handlerCopy2[2](handlerCopy2, handlerCopy);
   }
 }
 
-- (void)removeLocationsPredating:(id)a3 handler:(id)a4
+- (void)removeLocationsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__RTSynthesizedLocationStore_removeLocationsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (BOOL)removeLocationsPredating:(id)a3
+- (BOOL)removeLocationsPredating:(id)predating
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  predatingCopy = predating;
+  if (!predatingCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -950,7 +950,7 @@ void __71__RTSynthesizedLocationStore__fetchStoredLocationsWithContext_handler__
   v36 = v44;
   v7 = v6;
   v35 = v7;
-  [(RTSynthesizedLocationStore *)self removeLocationsPredating:v4 handler:v34];
+  [(RTSynthesizedLocationStore *)self removeLocationsPredating:predatingCopy handler:v34];
   v8 = v7;
   v9 = [MEMORY[0x277CBEAA8] now];
   v10 = dispatch_time(0, 3600000000000);
@@ -961,11 +961,11 @@ void __71__RTSynthesizedLocationStore__fetchStoredLocationsWithContext_handler__
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_47];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -1025,25 +1025,25 @@ void __55__RTSynthesizedLocationStore_removeLocationsPredating___block_invoke(ui
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_removeLocationsOnDateInterval:(id)a3 handler:(id)a4
+- (void)_removeLocationsOnDateInterval:(id)interval handler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  intervalCopy = interval;
+  if (intervalCopy)
   {
     v15 = @"timestamp";
-    v7 = a4;
+    handlerCopy = handler;
     v14 = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
     v16 = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
 
-    [(RTStore *)self purgeDateInterval:v6 predicateMappings:v9 purgeLimit:3600 handler:v7];
+    [(RTStore *)self purgeDateInterval:intervalCopy predicateMappings:v9 purgeLimit:3600 handler:handlerCopy];
   }
 
   else
   {
-    v10 = a4;
+    handlerCopy2 = handler;
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -1059,34 +1059,34 @@ void __55__RTSynthesizedLocationStore_removeLocationsPredating___block_invoke(ui
     v17 = *MEMORY[0x277CCA450];
     v18 = @"requires a valid dateInterval.";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    v7 = [v12 errorWithDomain:v13 code:7 userInfo:v9];
-    v10[2](v10, v7);
+    handlerCopy = [v12 errorWithDomain:v13 code:7 userInfo:v9];
+    handlerCopy2[2](handlerCopy2, handlerCopy);
   }
 }
 
-- (void)removeLocationsOnDateInterval:(id)a3 handler:(id)a4
+- (void)removeLocationsOnDateInterval:(id)interval handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  intervalCopy = interval;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__RTSynthesizedLocationStore_removeLocationsOnDateInterval_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = intervalCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = intervalCopy;
+  dispatch_async(queue, block);
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (!a5)
+  optionsCopy = options;
+  v9 = optionsCopy;
+  if (!error)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1098,7 +1098,7 @@ void __55__RTSynthesizedLocationStore_removeLocationsPredating___block_invoke(ui
     goto LABEL_8;
   }
 
-  if (v8)
+  if (optionsCopy)
   {
     v10 = objc_opt_class();
     if (v10 != objc_opt_class())
@@ -1116,7 +1116,7 @@ void __55__RTSynthesizedLocationStore_removeLocationsPredating___block_invoke(ui
       v18 = [v15 errorWithDomain:v16 code:7 userInfo:v17];
 
       v19 = v18;
-      *a5 = v18;
+      *error = v18;
 
 LABEL_8:
       v21 = 0;
@@ -1124,7 +1124,7 @@ LABEL_8:
     }
 
     v21 = [(RTSynthesizedLocationStore *)self fetchRequestFromStoredLocationOptions:v9];
-    [v21 setFetchOffset:a4];
+    [v21 setFetchOffset:offset];
   }
 
   else
@@ -1137,7 +1137,7 @@ LABEL_8:
     }
 
     _RTErrorInvalidParameterCreate(@"options");
-    *a5 = v21 = 0;
+    *error = v21 = 0;
   }
 
 LABEL_13:
@@ -1145,11 +1145,11 @@ LABEL_13:
   return v21;
 }
 
-- (id)fetchRequestFromStoredLocationOptions:(id)a3
+- (id)fetchRequestFromStoredLocationOptions:(id)options
 {
   v65[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  optionsCopy = options;
+  if (optionsCopy)
   {
     v4 = +[RTSynthesizedLocationMO fetchRequest];
     [v4 setReturnsObjectsAsFaults:0];
@@ -1158,44 +1158,44 @@ LABEL_13:
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v65 count:1];
     [v4 setSortDescriptors:v6];
 
-    v7 = [v3 dateInterval];
-    v8 = [v7 startDate];
-    v9 = v8;
-    if (v8)
+    dateInterval = [optionsCopy dateInterval];
+    startDate = [dateInterval startDate];
+    v9 = startDate;
+    if (startDate)
     {
-      v10 = v8;
+      distantPast = startDate;
     }
 
     else
     {
-      v10 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
     }
 
-    log = v10;
+    log = distantPast;
 
-    v11 = [v3 dateInterval];
-    v12 = [v11 endDate];
-    v13 = v12;
-    if (v12)
+    dateInterval2 = [optionsCopy dateInterval];
+    endDate = [dateInterval2 endDate];
+    v13 = endDate;
+    if (endDate)
     {
-      v14 = v12;
+      distantFuture = endDate;
     }
 
     else
     {
-      v14 = [MEMORY[0x277CBEAA8] distantFuture];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     }
 
-    v15 = v14;
+    v15 = distantFuture;
 
-    v16 = [v3 preferredDownsamplingLevel];
-    if ([v3 batchSize])
+    preferredDownsamplingLevel = [optionsCopy preferredDownsamplingLevel];
+    if ([optionsCopy batchSize])
     {
-      v17 = [v3 batchSize];
+      batchSize = [optionsCopy batchSize];
       v18 = 3600;
-      if (v17 < 0xE10)
+      if (batchSize < 0xE10)
       {
-        v18 = v17;
+        v18 = batchSize;
       }
     }
 
@@ -1205,7 +1205,7 @@ LABEL_13:
     }
 
     v58 = v18;
-    v19 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v20 = MEMORY[0x277CCA920];
     v21 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%@ <= %K", log, @"timestamp"];
     v64[0] = v21;
@@ -1216,23 +1216,23 @@ LABEL_13:
     v24 = [v20 andPredicateWithSubpredicates:v23];
 
     v57 = v24;
-    [v19 addObject:v24];
+    [array addObject:v24];
     v25 = MEMORY[0x277CCAC30];
-    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v16];
+    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:preferredDownsamplingLevel];
     v27 = [v25 predicateWithFormat:@"%K >= %@", @"downsamplingLevel", v26];
 
-    [v19 addObject:v27];
-    v28 = [v3 boundingBoxLocation];
+    [array addObject:v27];
+    boundingBoxLocation = [optionsCopy boundingBoxLocation];
 
-    if (v28)
+    if (boundingBoxLocation)
     {
       *buf = 0;
-      v29 = [v3 boundingBoxLocation];
-      [v29 coordinate];
-      v30 = [v3 boundingBoxLocation];
-      [v30 coordinate];
-      v31 = [v3 boundingBoxLocation];
-      [v31 horizontalAccuracy];
+      boundingBoxLocation2 = [optionsCopy boundingBoxLocation];
+      [boundingBoxLocation2 coordinate];
+      boundingBoxLocation3 = [optionsCopy boundingBoxLocation];
+      [boundingBoxLocation3 coordinate];
+      boundingBoxLocation4 = [optionsCopy boundingBoxLocation];
+      [boundingBoxLocation4 horizontalAccuracy];
       RTCommonCalculateBoundingBox();
 
       v52 = MEMORY[0x277CCA920];
@@ -1260,7 +1260,7 @@ LABEL_13:
       v4 = v56;
       v27 = v55;
 
-      [v19 addObject:v43];
+      [array addObject:v43];
     }
 
     v44 = MEMORY[0x277CCA920];
@@ -1271,8 +1271,8 @@ LABEL_13:
     v48 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
     v49 = [v44 andPredicateWithSubpredicates:v48];
 
-    [v19 addObject:v49];
-    v50 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v19];
+    [array addObject:v49];
+    v50 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array];
     [v4 setPredicate:v50];
 
     [v4 setFetchBatchSize:100];

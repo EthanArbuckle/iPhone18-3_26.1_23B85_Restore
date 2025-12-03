@@ -1,16 +1,16 @@
 @interface MSJunkTriageAction
-+ (BOOL)hasNonJunkMessagesInSelection:(id)a3;
++ (BOOL)hasNonJunkMessagesInSelection:(id)selection;
 - (BOOL)hasNonJunkMessages;
-- (MSJunkTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6;
+- (MSJunkTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate;
 @end
 
 @implementation MSJunkTriageAction
 
-- (MSJunkTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6
+- (MSJunkTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a6;
-  if ([objc_opt_class() hasNonJunkMessagesInSelection:v10])
+  selectionCopy = selection;
+  delegateCopy = delegate;
+  if ([objc_opt_class() hasNonJunkMessagesInSelection:selectionCopy])
   {
     v12 = [objc_alloc(MEMORY[0x277D070C8]) initWithBuilder:&__block_literal_global_5];
     v13 = 1;
@@ -26,7 +26,7 @@
   v18.receiver = self;
   v18.super_class = MSJunkTriageAction;
   v17 = 0;
-  v15 = [(MSMoveTriageAction *)&v18 initWithMessageListSelection:v10 origin:a4 actor:a5 delegate:v11 destinationMailboxType:v13 flagChange:v12 copyMessages:v17];
+  v15 = [(MSMoveTriageAction *)&v18 initWithMessageListSelection:selectionCopy origin:origin actor:actor delegate:delegateCopy destinationMailboxType:v13 flagChange:v12 copyMessages:v17];
 
   return v15;
 }
@@ -34,25 +34,25 @@
 - (BOOL)hasNonJunkMessages
 {
   v3 = objc_opt_class();
-  v4 = [(MSTriageAction *)self messageListItemSelection];
-  LOBYTE(v3) = [v3 hasNonJunkMessagesInSelection:v4];
+  messageListItemSelection = [(MSTriageAction *)self messageListItemSelection];
+  LOBYTE(v3) = [v3 hasNonJunkMessagesInSelection:messageListItemSelection];
 
   return v3;
 }
 
-+ (BOOL)hasNonJunkMessagesInSelection:(id)a3
++ (BOOL)hasNonJunkMessagesInSelection:(id)selection
 {
-  v3 = a3;
-  if ([v3 isSelectAll])
+  selectionCopy = selection;
+  if ([selectionCopy isSelectAll])
   {
-    v4 = [v3 mailboxes];
-    v5 = [v4 ef_any:&__block_literal_global_5];
+    mailboxes = [selectionCopy mailboxes];
+    v5 = [mailboxes ef_any:&__block_literal_global_5];
   }
 
   else
   {
-    v4 = [v3 messageListItems];
-    v5 = [v4 ef_any:&__block_literal_global_8];
+    mailboxes = [selectionCopy messageListItems];
+    v5 = [mailboxes ef_any:&__block_literal_global_8];
   }
 
   v6 = v5;

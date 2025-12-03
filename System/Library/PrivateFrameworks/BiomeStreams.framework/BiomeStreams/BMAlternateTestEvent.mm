@@ -1,21 +1,21 @@
 @interface BMAlternateTestEvent
-- (BMAlternateTestEvent)initWithAlternateContent:(unsigned int)a3 dataVersion:(unsigned int)a4;
-- (BMAlternateTestEvent)initWithCoder:(id)a3;
-- (BMAlternateTestEvent)initWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BOOL)checkAndReportDecodingFailureIfNeededForuint32_t:(unsigned int)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
+- (BMAlternateTestEvent)initWithAlternateContent:(unsigned int)content dataVersion:(unsigned int)version;
+- (BMAlternateTestEvent)initWithCoder:(id)coder;
+- (BMAlternateTestEvent)initWithData:(id)data dataVersion:(unsigned int)version;
+- (BOOL)checkAndReportDecodingFailureIfNeededForuint32_t:(unsigned int)foruint32_t key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMAlternateTestEvent
 
-- (BMAlternateTestEvent)initWithData:(id)a3 dataVersion:(unsigned int)a4
+- (BMAlternateTestEvent)initWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = BMAlternateTestEvent;
   v7 = [(BMEventBase *)&v10 init];
-  if (!v7 || [v6 length] == 8 && (objc_msgSend(v6, "getBytes:length:", &v7->_data, 8), v7->_data.dataVersion == a4))
+  if (!v7 || [dataCopy length] == 8 && (objc_msgSend(dataCopy, "getBytes:length:", &v7->_data, 8), v7->_data.dataVersion == version))
   {
     v8 = v7;
   }
@@ -28,15 +28,15 @@
   return v8;
 }
 
-- (BMAlternateTestEvent)initWithAlternateContent:(unsigned int)a3 dataVersion:(unsigned int)a4
+- (BMAlternateTestEvent)initWithAlternateContent:(unsigned int)content dataVersion:(unsigned int)version
 {
   v7.receiver = self;
   v7.super_class = BMAlternateTestEvent;
   result = [(BMEventBase *)&v7 init];
   if (result)
   {
-    result->_data.dataVersion = a4;
-    result->_data.content = a3;
+    result->_data.dataVersion = version;
+    result->_data.content = content;
   }
 
   return result;
@@ -49,32 +49,32 @@
   return v2;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForuint32_t:(unsigned int)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForuint32_t:(unsigned int)foruint32_t key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!foruint32_t)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = MEMORY[0x1E696ABC0];
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", v11, *MEMORY[0x1E696A578]];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", keyCopy, *MEMORY[0x1E696A578]];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 errorWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 errorWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -86,33 +86,33 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   p_data = &self->_data;
   dataVersion = self->_data.dataVersion;
-  v5 = a3;
-  [v5 encodeInt32:dataVersion forKey:@"dataVersion"];
-  [v5 encodeInt32:p_data->content forKey:@"alternateContent"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:dataVersion forKey:@"dataVersion"];
+  [coderCopy encodeInt32:p_data->content forKey:@"alternateContent"];
 }
 
-- (BMAlternateTestEvent)initWithCoder:(id)a3
+- (BMAlternateTestEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 decodeInt32ForKey:@"dataVersion"];
-  if (-[BMAlternateTestEvent checkAndReportDecodingFailureIfNeededForuint32_t:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForuint32_t:key:coder:errorDomain:errorCode:", v7, @"dataVersion", v4, v6, -1) || (v8 = [v4 decodeInt32ForKey:@"alternateContent"], -[BMAlternateTestEvent checkAndReportDecodingFailureIfNeededForuint32_t:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForuint32_t:key:coder:errorDomain:errorCode:", v8, @"alternateContent", v4, v6, -1)))
+  v7 = [coderCopy decodeInt32ForKey:@"dataVersion"];
+  if (-[BMAlternateTestEvent checkAndReportDecodingFailureIfNeededForuint32_t:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForuint32_t:key:coder:errorDomain:errorCode:", v7, @"dataVersion", coderCopy, v6, -1) || (v8 = [coderCopy decodeInt32ForKey:@"alternateContent"], -[BMAlternateTestEvent checkAndReportDecodingFailureIfNeededForuint32_t:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForuint32_t:key:coder:errorDomain:errorCode:", v8, @"alternateContent", coderCopy, v6, -1)))
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(BMAlternateTestEvent *)self initWithAlternateContent:v8 dataVersion:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

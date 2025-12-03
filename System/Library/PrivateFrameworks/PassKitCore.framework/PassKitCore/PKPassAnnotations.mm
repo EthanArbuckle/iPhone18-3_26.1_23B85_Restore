@@ -1,16 +1,16 @@
 @interface PKPassAnnotations
-- (BOOL)isEqual:(id)a3;
-- (PKPassAnnotations)initWithCoder:(id)a3;
-- (PKPassAnnotations)initWithDictionary:(id)a3;
-- (PKPassAnnotations)initWithSortingState:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPassAnnotations)initWithCoder:(id)coder;
+- (PKPassAnnotations)initWithDictionary:(id)dictionary;
+- (PKPassAnnotations)initWithSortingState:(int64_t)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassAnnotations
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PKPassAnnotations allocWithZone:?]];
   v4->_sortingState = self->_sortingState;
@@ -18,24 +18,24 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sortingState = self->_sortingState;
-  v5 = a3;
-  [v5 encodeInteger:sortingState forKey:@"sortingState"];
-  [v5 encodeObject:self->_archivedTimestamp forKey:@"archivedTimestamp"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:sortingState forKey:@"sortingState"];
+  [coderCopy encodeObject:self->_archivedTimestamp forKey:@"archivedTimestamp"];
 }
 
-- (PKPassAnnotations)initWithCoder:(id)a3
+- (PKPassAnnotations)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPassAnnotations;
   v5 = [(PKPassAnnotations *)&v9 init];
   if (v5)
   {
-    v5->_sortingState = [v4 decodeIntegerForKey:@"sortingState"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"archivedTimestamp"];
+    v5->_sortingState = [coderCopy decodeIntegerForKey:@"sortingState"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"archivedTimestamp"];
     archivedTimestamp = v5->_archivedTimestamp;
     v5->_archivedTimestamp = v6;
   }
@@ -43,16 +43,16 @@
   return v5;
 }
 
-- (PKPassAnnotations)initWithDictionary:(id)a3
+- (PKPassAnnotations)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKPassAnnotations;
   v5 = [(PKPassAnnotations *)&v9 init];
   if (v5)
   {
-    v5->_sortingState = [v4 PKIntegerForKey:@"sortingState"];
-    v6 = [v4 PKDateForKey:@"archivedTimestamp"];
+    v5->_sortingState = [dictionaryCopy PKIntegerForKey:@"sortingState"];
+    v6 = [dictionaryCopy PKDateForKey:@"archivedTimestamp"];
     archivedTimestamp = v5->_archivedTimestamp;
     v5->_archivedTimestamp = v6;
   }
@@ -60,7 +60,7 @@
   return v5;
 }
 
-- (PKPassAnnotations)initWithSortingState:(int64_t)a3
+- (PKPassAnnotations)initWithSortingState:(int64_t)state
 {
   v9.receiver = self;
   v9.super_class = PKPassAnnotations;
@@ -68,8 +68,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_sortingState = a3;
-    if (a3 == 1)
+    v4->_sortingState = state;
+    if (state == 1)
     {
       v6 = [MEMORY[0x1E695DF00] now];
     }
@@ -86,23 +86,23 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   sortingState = self->_sortingState;
-  if (sortingState == [v4 sortingState])
+  if (sortingState == [equalCopy sortingState])
   {
     archivedTimestamp = self->_archivedTimestamp;
-    v7 = [v4 archivedTimestamp];
-    v8 = v7;
-    if (archivedTimestamp && v7)
+    archivedTimestamp = [equalCopy archivedTimestamp];
+    v8 = archivedTimestamp;
+    if (archivedTimestamp && archivedTimestamp)
     {
-      v9 = [(NSDate *)archivedTimestamp isEqual:v7];
+      v9 = [(NSDate *)archivedTimestamp isEqual:archivedTimestamp];
     }
 
     else
     {
-      v9 = archivedTimestamp == v7;
+      v9 = archivedTimestamp == archivedTimestamp;
     }
   }
 

@@ -1,22 +1,22 @@
 @interface VUIPlistMediaDatabaseEntity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VUIPlistMediaDatabaseEntity)init;
-- (VUIPlistMediaDatabaseEntity)initWithDictionary:(id)a3;
-- (VUIPlistMediaDatabaseEntity)initWithIdentifier:(id)a3 type:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VUIPlistMediaDatabaseEntity)initWithDictionary:(id)dictionary;
+- (VUIPlistMediaDatabaseEntity)initWithIdentifier:(id)identifier type:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)_mediaEntityPropertyDidChange:(id)a3;
+- (void)_mediaEntityPropertyDidChange:(id)change;
 - (void)dealloc;
 @end
 
 @implementation VUIPlistMediaDatabaseEntity
 
-- (VUIPlistMediaDatabaseEntity)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (VUIPlistMediaDatabaseEntity)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"identifier"}];
   }
@@ -26,13 +26,13 @@
   v7 = [(VUIPlistMediaDatabaseEntity *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v7->_type = a4;
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__mediaEntityPropertyDidChange_ name:VUIPlistMediaEntityPropertyDidChange object:0];
+    v7->_type = type;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__mediaEntityPropertyDidChange_ name:VUIPlistMediaEntityPropertyDidChange object:0];
   }
 
   return v7;
@@ -40,45 +40,45 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIPlistMediaDatabaseEntity;
   [(VUIPlistMediaDatabaseEntity *)&v4 dealloc];
 }
 
-- (VUIPlistMediaDatabaseEntity)initWithDictionary:(id)a3
+- (VUIPlistMediaDatabaseEntity)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 vui_stringForKey:@"Identifier"];
-  v6 = [v4 vui_numberForKey:@"Type"];
-  v7 = [v6 unsignedIntegerValue];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy vui_stringForKey:@"Identifier"];
+  v6 = [dictionaryCopy vui_numberForKey:@"Type"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [(VUIPlistMediaDatabaseEntity *)self initWithIdentifier:v5 type:v7];
+  v8 = [(VUIPlistMediaDatabaseEntity *)self initWithIdentifier:v5 type:unsignedIntegerValue];
   if (v8)
   {
-    v9 = [v4 vui_stringForKey:@"Title"];
+    v9 = [dictionaryCopy vui_stringForKey:@"Title"];
     v10 = [v9 copy];
     title = v8->_title;
     v8->_title = v10;
 
-    v12 = [v4 vui_stringForKey:@"GenreTitle"];
+    v12 = [dictionaryCopy vui_stringForKey:@"GenreTitle"];
     v13 = [v12 copy];
     genreTitle = v8->_genreTitle;
     v8->_genreTitle = v13;
 
-    v15 = [v4 vui_stringForKey:@"ContentDescription"];
+    v15 = [dictionaryCopy vui_stringForKey:@"ContentDescription"];
     v16 = [v15 copy];
     contentDescription = v8->_contentDescription;
     v8->_contentDescription = v16;
 
-    v18 = [v4 vui_stringForKey:@"canonicalId"];
+    v18 = [dictionaryCopy vui_stringForKey:@"canonicalId"];
     v19 = [v18 copy];
     canonicalID = v8->_canonicalID;
     v8->_canonicalID = v19;
 
-    v21 = [v4 vui_stringForKey:@"CoverArtURL"];
+    v21 = [dictionaryCopy vui_stringForKey:@"CoverArtURL"];
     if (v21)
     {
       v22 = [MEMORY[0x1E695DFF8] URLWithString:v21];
@@ -103,32 +103,32 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(VUIPlistMediaDatabaseEntity *)self identifier];
-  [v3 vui_setObjectIfNotNil:v4 forKey:@"Identifier"];
+  identifier = [(VUIPlistMediaDatabaseEntity *)self identifier];
+  [v3 vui_setObjectIfNotNil:identifier forKey:@"Identifier"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VUIPlistMediaDatabaseEntity type](self, "type")}];
   [v3 vui_setObjectIfNotNil:v5 forKey:@"Type"];
 
-  v6 = [(VUIPlistMediaDatabaseEntity *)self title];
-  [v3 vui_setObjectIfNotNil:v6 forKey:@"Title"];
+  title = [(VUIPlistMediaDatabaseEntity *)self title];
+  [v3 vui_setObjectIfNotNil:title forKey:@"Title"];
 
-  v7 = [(VUIPlistMediaDatabaseEntity *)self contentDescription];
-  [v3 vui_setObjectIfNotNil:v7 forKey:@"ContentDescription"];
+  contentDescription = [(VUIPlistMediaDatabaseEntity *)self contentDescription];
+  [v3 vui_setObjectIfNotNil:contentDescription forKey:@"ContentDescription"];
 
-  v8 = [(VUIPlistMediaDatabaseEntity *)self coverArtURL];
-  v9 = [v8 absoluteString];
-  [v3 vui_setObjectIfNotNil:v9 forKey:@"CoverArtURL"];
+  coverArtURL = [(VUIPlistMediaDatabaseEntity *)self coverArtURL];
+  absoluteString = [coverArtURL absoluteString];
+  [v3 vui_setObjectIfNotNil:absoluteString forKey:@"CoverArtURL"];
 
-  v10 = [(VUIPlistMediaDatabaseEntity *)self genreTitle];
-  [v3 vui_setObjectIfNotNil:v10 forKey:@"GenreTitle"];
+  genreTitle = [(VUIPlistMediaDatabaseEntity *)self genreTitle];
+  [v3 vui_setObjectIfNotNil:genreTitle forKey:@"GenreTitle"];
 
-  v11 = [(VUIPlistMediaDatabaseEntity *)self canonicalID];
-  [v3 vui_setObjectIfNotNil:v11 forKey:@"canonicalId"];
+  canonicalID = [(VUIPlistMediaDatabaseEntity *)self canonicalID];
+  [v3 vui_setObjectIfNotNil:canonicalID forKey:@"canonicalId"];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithIdentifier:self->_identifier type:self->_type];
   v5 = [(NSString *)self->_title copy];
@@ -156,34 +156,34 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VUIPlistMediaDatabaseEntity *)self type];
-  v4 = [(VUIPlistMediaDatabaseEntity *)self identifier];
-  v5 = [v4 hash];
+  type = [(VUIPlistMediaDatabaseEntity *)self type];
+  identifier = [(VUIPlistMediaDatabaseEntity *)self identifier];
+  v5 = [identifier hash];
 
-  return v5 ^ v3;
+  return v5 ^ type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(VUIPlistMediaDatabaseEntity *)self identifier];
-        v8 = [(VUIPlistMediaDatabaseEntity *)v6 identifier];
-        v9 = v7;
-        v10 = v8;
+        identifier = [(VUIPlistMediaDatabaseEntity *)self identifier];
+        identifier2 = [(VUIPlistMediaDatabaseEntity *)v6 identifier];
+        v9 = identifier;
+        v10 = identifier2;
         v11 = v10;
         if (v9 == v10)
         {
@@ -205,10 +205,10 @@
           }
         }
 
-        v14 = [(VUIPlistMediaDatabaseEntity *)self isLocal];
-        v15 = [(VUIPlistMediaDatabaseEntity *)v6 isLocal];
-        v9 = v14;
-        v16 = v15;
+        isLocal = [(VUIPlistMediaDatabaseEntity *)self isLocal];
+        isLocal2 = [(VUIPlistMediaDatabaseEntity *)v6 isLocal];
+        v9 = isLocal;
+        v16 = isLocal2;
         v11 = v16;
         if (v9 == v16)
         {
@@ -230,10 +230,10 @@
           }
         }
 
-        v18 = [(VUIPlistMediaDatabaseEntity *)self title];
-        v19 = [(VUIPlistMediaDatabaseEntity *)v6 title];
-        v9 = v18;
-        v20 = v19;
+        title = [(VUIPlistMediaDatabaseEntity *)self title];
+        title2 = [(VUIPlistMediaDatabaseEntity *)v6 title];
+        v9 = title;
+        v20 = title2;
         v11 = v20;
         if (v9 == v20)
         {
@@ -255,10 +255,10 @@
           }
         }
 
-        v22 = [(VUIPlistMediaDatabaseEntity *)self contentDescription];
-        v23 = [(VUIPlistMediaDatabaseEntity *)v6 contentDescription];
-        v9 = v22;
-        v24 = v23;
+        contentDescription = [(VUIPlistMediaDatabaseEntity *)self contentDescription];
+        contentDescription2 = [(VUIPlistMediaDatabaseEntity *)v6 contentDescription];
+        v9 = contentDescription;
+        v24 = contentDescription2;
         v11 = v24;
         if (v9 == v24)
         {
@@ -280,10 +280,10 @@
           }
         }
 
-        v26 = [(VUIPlistMediaDatabaseEntity *)self coverArtURL];
-        v27 = [(VUIPlistMediaDatabaseEntity *)v6 coverArtURL];
-        v9 = v26;
-        v28 = v27;
+        coverArtURL = [(VUIPlistMediaDatabaseEntity *)self coverArtURL];
+        coverArtURL2 = [(VUIPlistMediaDatabaseEntity *)v6 coverArtURL];
+        v9 = coverArtURL;
+        v28 = coverArtURL2;
         v11 = v28;
         if (v9 == v28)
         {
@@ -305,10 +305,10 @@
           }
         }
 
-        v30 = [(VUIPlistMediaDatabaseEntity *)self genreTitle];
-        v31 = [(VUIPlistMediaDatabaseEntity *)v6 genreTitle];
-        v9 = v30;
-        v32 = v31;
+        genreTitle = [(VUIPlistMediaDatabaseEntity *)self genreTitle];
+        genreTitle2 = [(VUIPlistMediaDatabaseEntity *)v6 genreTitle];
+        v9 = genreTitle;
+        v32 = genreTitle2;
         v11 = v32;
         if (v9 == v32)
         {
@@ -330,8 +330,8 @@
           }
         }
 
-        v34 = [(VUIPlistMediaDatabaseEntity *)self type];
-        if (v34 != [(VUIPlistMediaDatabaseEntity *)v6 type])
+        type = [(VUIPlistMediaDatabaseEntity *)self type];
+        if (type != [(VUIPlistMediaDatabaseEntity *)v6 type])
         {
 LABEL_47:
           v12 = 0;
@@ -340,10 +340,10 @@ LABEL_50:
           goto LABEL_51;
         }
 
-        v35 = [(VUIPlistMediaDatabaseEntity *)self canonicalID];
-        v36 = [(VUIPlistMediaDatabaseEntity *)v6 canonicalID];
-        v9 = v35;
-        v37 = v36;
+        canonicalID = [(VUIPlistMediaDatabaseEntity *)self canonicalID];
+        canonicalID2 = [(VUIPlistMediaDatabaseEntity *)v6 canonicalID];
+        v9 = canonicalID;
+        v37 = canonicalID2;
         v11 = v37;
         if (v9 == v37)
         {
@@ -382,8 +382,8 @@ LABEL_51:
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIPlistMediaDatabaseEntity *)self identifier];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"identifier", v6];
+  identifier = [(VUIPlistMediaDatabaseEntity *)self identifier];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"identifier", identifier];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
@@ -392,33 +392,33 @@ LABEL_51:
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(VUIPlistMediaDatabaseEntity *)self isLocal];
-  v13 = [v11 stringWithFormat:@"%@=%@", @"isLocal", v12];
+  isLocal = [(VUIPlistMediaDatabaseEntity *)self isLocal];
+  v13 = [v11 stringWithFormat:@"%@=%@", @"isLocal", isLocal];
   [v3 addObject:v13];
 
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(VUIPlistMediaDatabaseEntity *)self title];
-  v16 = [v14 stringWithFormat:@"%@=%@", @"title", v15];
+  title = [(VUIPlistMediaDatabaseEntity *)self title];
+  v16 = [v14 stringWithFormat:@"%@=%@", @"title", title];
   [v3 addObject:v16];
 
   v17 = MEMORY[0x1E696AEC0];
-  v18 = [(VUIPlistMediaDatabaseEntity *)self contentDescription];
-  v19 = [v17 stringWithFormat:@"%@=%@", @"contentDescription", v18];
+  contentDescription = [(VUIPlistMediaDatabaseEntity *)self contentDescription];
+  v19 = [v17 stringWithFormat:@"%@=%@", @"contentDescription", contentDescription];
   [v3 addObject:v19];
 
   v20 = MEMORY[0x1E696AEC0];
-  v21 = [(VUIPlistMediaDatabaseEntity *)self coverArtURL];
-  v22 = [v20 stringWithFormat:@"%@=%@", @"coverArtURL", v21];
+  coverArtURL = [(VUIPlistMediaDatabaseEntity *)self coverArtURL];
+  v22 = [v20 stringWithFormat:@"%@=%@", @"coverArtURL", coverArtURL];
   [v3 addObject:v22];
 
   v23 = MEMORY[0x1E696AEC0];
-  v24 = [(VUIPlistMediaDatabaseEntity *)self genreTitle];
-  v25 = [v23 stringWithFormat:@"%@=%@", @"genreTitle", v24];
+  genreTitle = [(VUIPlistMediaDatabaseEntity *)self genreTitle];
+  v25 = [v23 stringWithFormat:@"%@=%@", @"genreTitle", genreTitle];
   [v3 addObject:v25];
 
   v26 = MEMORY[0x1E696AEC0];
-  v27 = [(VUIPlistMediaDatabaseEntity *)self canonicalID];
-  v28 = [v26 stringWithFormat:@"%@=%@", @"canonicalID", v27];
+  canonicalID = [(VUIPlistMediaDatabaseEntity *)self canonicalID];
+  v28 = [v26 stringWithFormat:@"%@=%@", @"canonicalID", canonicalID];
   [v3 addObject:v28];
 
   v29 = MEMORY[0x1E696AEC0];
@@ -428,30 +428,30 @@ LABEL_51:
   return v31;
 }
 
-- (void)_mediaEntityPropertyDidChange:(id)a3
+- (void)_mediaEntityPropertyDidChange:(id)change
 {
-  v14 = a3;
-  v4 = [v14 object];
-  v5 = v4;
-  if (v4 != self)
+  changeCopy = change;
+  object = [changeCopy object];
+  v5 = object;
+  if (object != self)
   {
-    v6 = [(VUIPlistMediaDatabaseEntity *)v4 identifier];
-    v7 = [(VUIPlistMediaDatabaseEntity *)self identifier];
-    v8 = [v6 isEqualToString:v7];
+    identifier = [(VUIPlistMediaDatabaseEntity *)object identifier];
+    identifier2 = [(VUIPlistMediaDatabaseEntity *)self identifier];
+    v8 = [identifier isEqualToString:identifier2];
 
     if (v8)
     {
-      v9 = [v14 userInfo];
-      v10 = [v9 objectForKey:VUIPlistMediaEntityPropertyDidChangePropertyNameKey];
+      userInfo = [changeCopy userInfo];
+      v10 = [userInfo objectForKey:VUIPlistMediaEntityPropertyDidChangePropertyNameKey];
 
-      v11 = [v14 userInfo];
-      v12 = [v11 objectForKey:VUIPlistMediaEntityPropertyDidChangePropertyValueKey];
+      userInfo2 = [changeCopy userInfo];
+      v12 = [userInfo2 objectForKey:VUIPlistMediaEntityPropertyDidChangePropertyValueKey];
 
       if (v10)
       {
-        v13 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
 
-        if (v12 == v13)
+        if (v12 == null)
         {
 
           v12 = 0;

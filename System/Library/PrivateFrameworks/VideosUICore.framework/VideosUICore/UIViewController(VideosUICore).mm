@@ -16,31 +16,31 @@
 
 - (uint64_t)vui_requiresLegacyPresentation
 {
-  v1 = objc_getAssociatedObject(a1, &VUIRequiresLegacyPresentationKey);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, &VUIRequiresLegacyPresentationKey);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setVui_requiresLegacyPresentation:()VideosUICore
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  objc_setAssociatedObject(a1, &VUIRequiresLegacyPresentationKey, v2, 1);
+  objc_setAssociatedObject(self, &VUIRequiresLegacyPresentationKey, v2, 1);
 }
 
 - (unint64_t)vuiUserInterfaceStyle
 {
-  v1 = [a1 traitCollection];
-  v2 = [v1 userInterfaceStyle];
+  traitCollection = [self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return [VUICoreUtilities vuiUserInterfaceStyleForInterfaceStyle:v2];
+  return [VUICoreUtilities vuiUserInterfaceStyleForInterfaceStyle:userInterfaceStyle];
 }
 
 - (unint64_t)vuiOverrideUserInterfaceStyle
 {
-  v1 = [a1 overrideUserInterfaceStyle];
+  overrideUserInterfaceStyle = [self overrideUserInterfaceStyle];
 
-  return [VUICoreUtilities vuiUserInterfaceStyleForInterfaceStyle:v1];
+  return [VUICoreUtilities vuiUserInterfaceStyleForInterfaceStyle:overrideUserInterfaceStyle];
 }
 
 - (uint64_t)vui_setOverrideUserInterfaceStyle:()VideosUICore
@@ -55,51 +55,51 @@
     v3 = 2 * (a3 == 2);
   }
 
-  return [a1 setOverrideUserInterfaceStyle:v3];
+  return [self setOverrideUserInterfaceStyle:v3];
 }
 
 - (uint64_t)vuiIsRTL
 {
-  v1 = [a1 vuiView];
-  v2 = [v1 vuiIsRTL];
+  vuiView = [self vuiView];
+  vuiIsRTL = [vuiView vuiIsRTL];
 
-  return v2;
+  return vuiIsRTL;
 }
 
 - (BOOL)vuiIsNavigationRoot
 {
-  v2 = [a1 vuiNavigationController];
-  v3 = [v2 viewControllers];
-  v4 = [v3 firstObject];
+  vuiNavigationController = [self vuiNavigationController];
+  viewControllers = [vuiNavigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  return v4 == a1;
+  return firstObject == self;
 }
 
 - (id)vui_initWithNibName:()VideosUICore bundle:
 {
-  v4 = [a1 initWithNibName:a3 bundle:a4];
+  v4 = [self initWithNibName:a3 bundle:a4];
 
   return v4;
 }
 
 - (id)vui_initWithCoder:()VideosUICore
 {
-  v3 = [a1 initWithCoder:a3];
+  v3 = [self initWithCoder:a3];
 
   return v3;
 }
 
 - (void)vui_presentedContentSizeChanged:()VideosUICore
 {
-  v4 = [a3 view];
-  [v4 intrinsicContentSize];
+  view = [a3 view];
+  [view intrinsicContentSize];
   v6 = v5;
   v8 = v7;
 
   if (round(v6) != 0.0 && round(v8) != 0.0)
   {
 
-    [a1 setPreferredContentSize:?];
+    [self setPreferredContentSize:?];
   }
 }
 
@@ -107,8 +107,8 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 vuiView];
-  v9 = [v8 vui_addSubview:v7 oldView:v6];
+  vuiView = [self vuiView];
+  v9 = [vuiView vui_addSubview:v7 oldView:v6];
 
   return v9;
 }

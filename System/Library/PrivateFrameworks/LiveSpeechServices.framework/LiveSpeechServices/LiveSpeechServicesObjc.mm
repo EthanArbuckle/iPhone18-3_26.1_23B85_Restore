@@ -1,49 +1,49 @@
 @interface LiveSpeechServicesObjc
 + (id)favoritePhrases;
 + (id)liveSpeechPhrases;
-+ (id)observeFavoriteLiveSpeechPhrasesChanges:(id)a3;
-+ (id)observeFavoritePhrasesChanges:(id)a3;
++ (id)observeFavoriteLiveSpeechPhrasesChanges:(id)changes;
++ (id)observeFavoritePhrasesChanges:(id)changes;
 + (id)phraseInputIDKey;
 + (id)phraseShortcutKey;
 + (id)phraseTextKey;
-+ (void)addFavoritePhrase:(id)a3;
-+ (void)removeFavoritePhrase:(id)a3;
-+ (void)startLiveSpeechAndReturnError:(id *)a3;
-+ (void)stopLiveSpeechAndReturnError:(id *)a3;
++ (void)addFavoritePhrase:(id)phrase;
++ (void)removeFavoritePhrase:(id)phrase;
++ (void)startLiveSpeechAndReturnError:(id *)error;
++ (void)stopLiveSpeechAndReturnError:(id *)error;
 @end
 
 @implementation LiveSpeechServicesObjc
 
-+ (void)startLiveSpeechAndReturnError:(id *)a3
++ (void)startLiveSpeechAndReturnError:(id *)error
 {
   v4 = +[LiveSpeechServices shared];
-  [v4 startLiveSpeechAndReturnError:a3];
+  [v4 startLiveSpeechAndReturnError:error];
 }
 
-+ (void)stopLiveSpeechAndReturnError:(id *)a3
++ (void)stopLiveSpeechAndReturnError:(id *)error
 {
   v4 = +[LiveSpeechServices shared];
-  [v4 stopLiveSpeechAndReturnError:a3];
+  [v4 stopLiveSpeechAndReturnError:error];
 }
 
 + (id)liveSpeechPhrases
 {
   v2 = +[LiveSpeechServices shared];
-  v3 = [v2 liveSpeechPhrases];
+  liveSpeechPhrases = [v2 liveSpeechPhrases];
 
-  return v3;
+  return liveSpeechPhrases;
 }
 
-+ (id)observeFavoriteLiveSpeechPhrasesChanges:(id)a3
++ (id)observeFavoriteLiveSpeechPhrasesChanges:(id)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v4 = +[LiveSpeechServices shared];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__LiveSpeechServicesObjc_observeFavoriteLiveSpeechPhrasesChanges___block_invoke;
   v8[3] = &unk_27981C100;
-  v9 = v3;
-  v5 = v3;
+  v9 = changesCopy;
+  v5 = changesCopy;
   v6 = [v4 observeFavoriteLiveSpeechPhrasesChanges:v8];
 
   return v6;
@@ -52,59 +52,59 @@
 + (id)favoritePhrases
 {
   v2 = +[LiveSpeechServices shared];
-  v3 = [v2 favoritePhrases];
+  favoritePhrases = [v2 favoritePhrases];
 
-  return v3;
+  return favoritePhrases;
 }
 
-+ (void)addFavoritePhrase:(id)a3
++ (void)addFavoritePhrase:(id)phrase
 {
-  v3 = a3;
+  phraseCopy = phrase;
   v4 = +[LiveSpeechServices shared];
-  [v4 addFavoritePhrase:v3];
+  [v4 addFavoritePhrase:phraseCopy];
 }
 
-+ (void)removeFavoritePhrase:(id)a3
++ (void)removeFavoritePhrase:(id)phrase
 {
-  v3 = a3;
+  phraseCopy = phrase;
   v4 = +[LiveSpeechServices shared];
-  [v4 removeFavoritePhrase:v3];
+  [v4 removeFavoritePhrase:phraseCopy];
 }
 
 + (id)phraseTextKey
 {
   v2 = +[LiveSpeechServices shared];
-  v3 = [v2 phraseTextKey];
+  phraseTextKey = [v2 phraseTextKey];
 
-  return v3;
+  return phraseTextKey;
 }
 
 + (id)phraseInputIDKey
 {
   v2 = +[LiveSpeechServices shared];
-  v3 = [v2 phraseInputIDKey];
+  phraseInputIDKey = [v2 phraseInputIDKey];
 
-  return v3;
+  return phraseInputIDKey;
 }
 
 + (id)phraseShortcutKey
 {
   v2 = +[LiveSpeechServices shared];
-  v3 = [v2 phraseShortcutKey];
+  phraseShortcutKey = [v2 phraseShortcutKey];
 
-  return v3;
+  return phraseShortcutKey;
 }
 
-+ (id)observeFavoritePhrasesChanges:(id)a3
++ (id)observeFavoritePhrasesChanges:(id)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v4 = +[LiveSpeechServices shared];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__LiveSpeechServicesObjc_observeFavoritePhrasesChanges___block_invoke;
   v8[3] = &unk_27981C100;
-  v9 = v3;
-  v5 = v3;
+  v9 = changesCopy;
+  v5 = changesCopy;
   v6 = [v4 observeFavoritePhrasesChanges:v8];
 
   return v6;

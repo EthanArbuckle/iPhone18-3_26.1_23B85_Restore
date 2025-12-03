@@ -1,7 +1,7 @@
 @interface PVCompositeDelegateEffect
 + (void)registerEffects;
 - (BOOL)loadEffect;
-- (PVCompositeDelegateEffect)initWithEffectID:(id)a3;
+- (PVCompositeDelegateEffect)initWithEffectID:(id)d;
 - (void)releaseEffect;
 @end
 
@@ -16,11 +16,11 @@
   [v3 registerContentClass:objc_opt_class() forID:@"F3D8E4D0-686B-44C6-8966-E50856A94959" type:@"effect.video.compositor" withProperties:v2];
 }
 
-- (PVCompositeDelegateEffect)initWithEffectID:(id)a3
+- (PVCompositeDelegateEffect)initWithEffectID:(id)d
 {
   v4.receiver = self;
   v4.super_class = PVCompositeDelegateEffect;
-  result = [(PVEffect *)&v4 initWithEffectID:a3];
+  result = [(PVEffect *)&v4 initWithEffectID:d];
   if (result)
   {
     atomic_store(0, &result->_loaded);
@@ -31,18 +31,18 @@
 
 - (BOOL)loadEffect
 {
-  v3 = [(PVCompositeDelegateEffect *)self renderDelegate];
-  if (v3)
+  renderDelegate = [(PVCompositeDelegateEffect *)self renderDelegate];
+  if (renderDelegate)
   {
-    v4 = v3;
-    v5 = [(PVCompositeDelegateEffect *)self renderDelegate];
+    v4 = renderDelegate;
+    renderDelegate2 = [(PVCompositeDelegateEffect *)self renderDelegate];
     v6 = objc_opt_respondsToSelector();
 
     if ((v6 & 1) != 0 && !atomic_fetch_add(&self->_loaded.__a_.__a_value, 1u))
     {
-      v7 = [(PVCompositeDelegateEffect *)self renderDelegate];
-      v8 = [(PVCompositeDelegateEffect *)self userContext];
-      [v7 loadWithUserContext:v8];
+      renderDelegate3 = [(PVCompositeDelegateEffect *)self renderDelegate];
+      userContext = [(PVCompositeDelegateEffect *)self userContext];
+      [renderDelegate3 loadWithUserContext:userContext];
     }
   }
 
@@ -53,18 +53,18 @@
 
 - (void)releaseEffect
 {
-  v3 = [(PVCompositeDelegateEffect *)self renderDelegate];
-  if (v3)
+  renderDelegate = [(PVCompositeDelegateEffect *)self renderDelegate];
+  if (renderDelegate)
   {
-    v4 = v3;
-    v5 = [(PVCompositeDelegateEffect *)self renderDelegate];
+    v4 = renderDelegate;
+    renderDelegate2 = [(PVCompositeDelegateEffect *)self renderDelegate];
     v6 = objc_opt_respondsToSelector();
 
     if ((v6 & 1) != 0 && atomic_fetch_add(&self->_loaded.__a_.__a_value, 0xFFFFFFFF) == 1)
     {
-      v7 = [(PVCompositeDelegateEffect *)self renderDelegate];
-      v8 = [(PVCompositeDelegateEffect *)self userContext];
-      [v7 unloadWithUserContext:v8];
+      renderDelegate3 = [(PVCompositeDelegateEffect *)self renderDelegate];
+      userContext = [(PVCompositeDelegateEffect *)self userContext];
+      [renderDelegate3 unloadWithUserContext:userContext];
     }
   }
 

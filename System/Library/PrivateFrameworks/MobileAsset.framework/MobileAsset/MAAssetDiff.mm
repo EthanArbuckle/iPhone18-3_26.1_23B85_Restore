@@ -2,14 +2,14 @@
 + (id)allowEverythingDifferent;
 + (id)requireSameAssetTypeAndAssetId;
 + (id)requireSameAssetTypeAndDownloadContent;
-- (BOOL)hasOnlyAllowedDifferences:(id)a3;
-- (MAAssetDiff)initWithCoder:(id)a3;
-- (MAAssetDiff)initWithPlist:(id)a3;
+- (BOOL)hasOnlyAllowedDifferences:(id)differences;
+- (MAAssetDiff)initWithCoder:(id)coder;
+- (MAAssetDiff)initWithPlist:(id)plist;
 - (id)encodeAsPlist;
-- (id)initDifferentAssetType:(BOOL)a3 assetId:(BOOL)a4 attributes:(BOOL)a5 assetIdAttributes:(BOOL)a6 dynamicAssetId:(BOOL)a7 nonIdAttributes:(BOOL)a8 content:(BOOL)a9 url:(BOOL)a10 policy:(BOOL)a11;
-- (id)initFromDiff:(unint64_t)a3;
-- (id)initFromInverseOfCategories:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initDifferentAssetType:(BOOL)type assetId:(BOOL)id attributes:(BOOL)attributes assetIdAttributes:(BOOL)idAttributes dynamicAssetId:(BOOL)assetId nonIdAttributes:(BOOL)nonIdAttributes content:(BOOL)content url:(BOOL)self0 policy:(BOOL)self1;
+- (id)initFromDiff:(unint64_t)diff;
+- (id)initFromInverseOfCategories:(unint64_t)categories;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAAssetDiff
@@ -35,18 +35,18 @@
   return allowableDiffFromCategories(v2);
 }
 
-- (MAAssetDiff)initWithCoder:(id)a3
+- (MAAssetDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MAAssetDiff;
   v5 = [(MAAssetDiff *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"diffBits"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"diffBits"];
     v5->_diffRaw = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"diffMask"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"diffMask"];
     v5->_mask = [v7 unsignedIntegerValue];
 
     v5->_diff = v5->_mask & v5->_diffRaw;
@@ -55,18 +55,18 @@
   return v5;
 }
 
-- (MAAssetDiff)initWithPlist:(id)a3
+- (MAAssetDiff)initWithPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v9.receiver = self;
   v9.super_class = MAAssetDiff;
   v5 = [(MAAssetDiff *)&v9 init];
   if (v5)
   {
-    v6 = getPlistNumber(v4, @"diffBits");
+    v6 = getPlistNumber(plistCopy, @"diffBits");
     v5->_diffRaw = [v6 unsignedIntegerValue];
 
-    v7 = getPlistNumber(v4, @"diffMask");
+    v7 = getPlistNumber(plistCopy, @"diffMask");
     v5->_mask = [v7 unsignedIntegerValue];
 
     v5->_diff = v5->_mask & v5->_diffRaw;
@@ -75,16 +75,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   diff = self->_diff;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInteger:diff];
-  [v6 encodeObject:v7 forKey:@"diffBits"];
+  [coderCopy encodeObject:v7 forKey:@"diffBits"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_mask];
-  [v6 encodeObject:v8 forKey:@"diffMask"];
+  [coderCopy encodeObject:v8 forKey:@"diffMask"];
 }
 
 - (id)encodeAsPlist
@@ -99,17 +99,17 @@
   return v3;
 }
 
-- (id)initDifferentAssetType:(BOOL)a3 assetId:(BOOL)a4 attributes:(BOOL)a5 assetIdAttributes:(BOOL)a6 dynamicAssetId:(BOOL)a7 nonIdAttributes:(BOOL)a8 content:(BOOL)a9 url:(BOOL)a10 policy:(BOOL)a11
+- (id)initDifferentAssetType:(BOOL)type assetId:(BOOL)id attributes:(BOOL)attributes assetIdAttributes:(BOOL)idAttributes dynamicAssetId:(BOOL)assetId nonIdAttributes:(BOOL)nonIdAttributes content:(BOOL)content url:(BOOL)self0 policy:(BOOL)self1
 {
-  v11 = a8;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  if (!a3)
+  nonIdAttributesCopy = nonIdAttributes;
+  assetIdCopy = assetId;
+  idAttributesCopy = idAttributes;
+  attributesCopy = attributes;
+  idCopy = id;
+  if (!type)
   {
     v17 = 0;
-    if (!a4)
+    if (!id)
     {
       goto LABEL_6;
     }
@@ -118,20 +118,20 @@
   }
 
   v17 = categoryUnion(0, 1);
-  if (v15)
+  if (idCopy)
   {
 LABEL_5:
     v17 = categoryUnion(v17, 2);
   }
 
 LABEL_6:
-  if (v14)
+  if (attributesCopy)
   {
     v17 = categoryUnion(v17, 4);
-    if (!v13)
+    if (!idAttributesCopy)
     {
 LABEL_8:
-      if (!v11)
+      if (!nonIdAttributesCopy)
       {
         goto LABEL_9;
       }
@@ -140,16 +140,16 @@ LABEL_8:
     }
   }
 
-  else if (!v13)
+  else if (!idAttributesCopy)
   {
     goto LABEL_8;
   }
 
   v17 = categoryUnion(v17, 8);
-  if (!v11)
+  if (!nonIdAttributesCopy)
   {
 LABEL_9:
-    if (!a9)
+    if (!content)
     {
       goto LABEL_10;
     }
@@ -159,10 +159,10 @@ LABEL_9:
 
 LABEL_19:
   v17 = categoryUnion(v17, 16);
-  if (!a9)
+  if (!content)
   {
 LABEL_10:
-    if (!a10)
+    if (!url)
     {
       goto LABEL_11;
     }
@@ -172,10 +172,10 @@ LABEL_10:
 
 LABEL_20:
   v17 = categoryUnion(v17, 32);
-  if (!a10)
+  if (!url)
   {
 LABEL_11:
-    if (!a11)
+    if (!policy)
     {
       goto LABEL_12;
     }
@@ -185,10 +185,10 @@ LABEL_11:
 
 LABEL_21:
   v17 = categoryUnion(v17, 64);
-  if (!a11)
+  if (!policy)
   {
 LABEL_12:
-    if (!v12)
+    if (!assetIdCopy)
     {
       goto LABEL_14;
     }
@@ -198,7 +198,7 @@ LABEL_12:
 
 LABEL_22:
   v17 = categoryUnion(v17, 128);
-  if (v12)
+  if (assetIdCopy)
   {
 LABEL_13:
     v17 = categoryUnion(v17, 256);
@@ -209,15 +209,15 @@ LABEL_14:
   return [(MAAssetDiff *)self initFromDiff:v17];
 }
 
-- (id)initFromDiff:(unint64_t)a3
+- (id)initFromDiff:(unint64_t)diff
 {
-  v3 = a3;
+  diffCopy = diff;
   v7.receiver = self;
   v7.super_class = MAAssetDiff;
   v4 = [(MAAssetDiff *)&v7 init];
   if (v4)
   {
-    v5 = categoryClean(v3);
+    v5 = categoryClean(diffCopy);
     v4->_mask = 511;
     v4->_diffRaw = v5;
     v4->_diff = v5 & 0x1FF;
@@ -226,26 +226,26 @@ LABEL_14:
   return v4;
 }
 
-- (id)initFromInverseOfCategories:(unint64_t)a3
+- (id)initFromInverseOfCategories:(unint64_t)categories
 {
-  v4 = categoryInverse(a3);
+  v4 = categoryInverse(categories);
 
   return [(MAAssetDiff *)self initFromDiff:v4];
 }
 
-- (BOOL)hasOnlyAllowedDifferences:(id)a3
+- (BOOL)hasOnlyAllowedDifferences:(id)differences
 {
-  if (a3)
+  if (differences)
   {
-    v4 = [a3 category];
+    category = [differences category];
   }
 
   else
   {
-    v4 = 0;
+    category = 0;
   }
 
-  v5 = categoryInverse(v4);
+  v5 = categoryInverse(category);
   v6 = categoryIntersection(self->_diff, v5);
 
   return isCategoryNone(v6);

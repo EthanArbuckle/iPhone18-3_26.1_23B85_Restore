@@ -1,22 +1,22 @@
 @interface HUIconPickerCell
 - (HFImageIconDescriptor)iconDescriptor;
-- (HUIconPickerCell)initWithFrame:(CGRect)a3;
+- (HUIconPickerCell)initWithFrame:(CGRect)frame;
 - (id)_iconTintColor;
-- (void)_updateIconDescriptor:(id)a3;
+- (void)_updateIconDescriptor:(id)descriptor;
 - (void)layoutSubviews;
-- (void)setIconDescriptor:(id)a3 andSelectedTintColor:(id)a4;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelectedTintColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setIconDescriptor:(id)descriptor andSelectedTintColor:(id)color;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelectedTintColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HUIconPickerCell
 
-- (HUIconPickerCell)initWithFrame:(CGRect)a3
+- (HUIconPickerCell)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = HUIconPickerCell;
-  v3 = [(HUIconPickerCell *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUIconPickerCell *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D180D0]);
@@ -24,35 +24,35 @@
     v5 = [v4 initWithFrame:1 contentMode:?];
     [(HUIconPickerCell *)v3 setIconView:v5];
 
-    v6 = [(HUIconPickerCell *)v3 iconView];
-    [v6 setIconSize:5];
+    iconView = [(HUIconPickerCell *)v3 iconView];
+    [iconView setIconSize:5];
 
-    v7 = [(HUIconPickerCell *)v3 iconView];
-    [v7 setUserInteractionEnabled:0];
+    iconView2 = [(HUIconPickerCell *)v3 iconView];
+    [iconView2 setUserInteractionEnabled:0];
 
-    v8 = [(HUIconPickerCell *)v3 iconView];
-    [v8 setDisableContinuousAnimation:1];
+    iconView3 = [(HUIconPickerCell *)v3 iconView];
+    [iconView3 setDisableContinuousAnimation:1];
 
-    v9 = [(HUIconPickerCell *)v3 contentView];
-    v10 = [(HUIconPickerCell *)v3 iconView];
-    [v9 addSubview:v10];
+    contentView = [(HUIconPickerCell *)v3 contentView];
+    iconView4 = [(HUIconPickerCell *)v3 iconView];
+    [contentView addSubview:iconView4];
 
     v11 = objc_alloc(MEMORY[0x277D75D18]);
     [(HUIconPickerCell *)v3 bounds];
     v12 = [v11 initWithFrame:?];
     [(HUIconPickerCell *)v3 setSelectedBackgroundView:v12];
 
-    v13 = [(HUIconPickerCell *)v3 selectedBackgroundView];
-    v14 = [v13 layer];
-    [v14 setCornerRadius:7.0];
+    selectedBackgroundView = [(HUIconPickerCell *)v3 selectedBackgroundView];
+    layer = [selectedBackgroundView layer];
+    [layer setCornerRadius:7.0];
 
-    v15 = [(HUIconPickerCell *)v3 selectedBackgroundView];
-    v16 = [v15 layer];
-    [v16 setMasksToBounds:1];
+    selectedBackgroundView2 = [(HUIconPickerCell *)v3 selectedBackgroundView];
+    layer2 = [selectedBackgroundView2 layer];
+    [layer2 setMasksToBounds:1];
 
-    v17 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    v18 = [(HUIconPickerCell *)v3 selectedBackgroundView];
-    [v18 setBackgroundColor:v17];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    selectedBackgroundView3 = [(HUIconPickerCell *)v3 selectedBackgroundView];
+    [selectedBackgroundView3 setBackgroundColor:secondarySystemBackgroundColor];
   }
 
   return v3;
@@ -69,50 +69,50 @@
   y = v10.origin.y;
   width = v10.size.width;
   height = v10.size.height;
-  v7 = [(HUIconPickerCell *)self iconView];
-  [v7 setFrame:{x, y, width, height}];
+  iconView = [(HUIconPickerCell *)self iconView];
+  [iconView setFrame:{x, y, width, height}];
 }
 
-- (void)_updateIconDescriptor:(id)a3
+- (void)_updateIconDescriptor:(id)descriptor
 {
   v4 = MEMORY[0x277D755D0];
   v5 = *MEMORY[0x277D76918];
-  v6 = a3;
+  descriptorCopy = descriptor;
   v7 = [v4 configurationWithTextStyle:v5];
-  v11 = [v6 imageIconDescriptorWithUpdatedImageSymbolConfiguration:v7];
+  v11 = [descriptorCopy imageIconDescriptorWithUpdatedImageSymbolConfiguration:v7];
 
-  v8 = [(HUIconPickerCell *)self iconView];
-  [v8 updateWithIconDescriptor:v11 displayStyle:1 animated:1];
+  iconView = [(HUIconPickerCell *)self iconView];
+  [iconView updateWithIconDescriptor:v11 displayStyle:1 animated:1];
 
-  v9 = [(HUIconPickerCell *)self _iconTintColor];
-  v10 = [(HUIconPickerCell *)self iconView];
-  [v10 setTintColor:v9];
+  _iconTintColor = [(HUIconPickerCell *)self _iconTintColor];
+  iconView2 = [(HUIconPickerCell *)self iconView];
+  [iconView2 setTintColor:_iconTintColor];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v5.receiver = self;
   v5.super_class = HUIconPickerCell;
-  [(HUIconPickerCell *)&v5 setSelected:a3];
-  v4 = [(HUIconPickerCell *)self iconDescriptor];
-  [(HUIconPickerCell *)self _updateIconDescriptor:v4];
+  [(HUIconPickerCell *)&v5 setSelected:selected];
+  iconDescriptor = [(HUIconPickerCell *)self iconDescriptor];
+  [(HUIconPickerCell *)self _updateIconDescriptor:iconDescriptor];
 }
 
-- (void)setSelectedTintColor:(id)a3
+- (void)setSelectedTintColor:(id)color
 {
-  objc_storeStrong(&self->_selectedTintColor, a3);
-  v4 = [(HUIconPickerCell *)self iconDescriptor];
-  [(HUIconPickerCell *)self _updateIconDescriptor:v4];
+  objc_storeStrong(&self->_selectedTintColor, color);
+  iconDescriptor = [(HUIconPickerCell *)self iconDescriptor];
+  [(HUIconPickerCell *)self _updateIconDescriptor:iconDescriptor];
 }
 
 - (HFImageIconDescriptor)iconDescriptor
 {
   objc_opt_class();
-  v3 = [(HUIconPickerCell *)self iconView];
-  v4 = [v3 iconDescriptor];
+  iconView = [(HUIconPickerCell *)self iconView];
+  iconDescriptor = [iconView iconDescriptor];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = iconDescriptor;
   }
 
   else
@@ -127,8 +127,8 @@
 
 - (id)_iconTintColor
 {
-  v3 = [(HUIconPickerCell *)self traitCollection];
-  if ([v3 userInterfaceStyle] == 2)
+  traitCollection = [(HUIconPickerCell *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     [MEMORY[0x277D75348] systemDarkMidGrayColor];
   }
@@ -141,31 +141,31 @@
 
   if (([(HUIconPickerCell *)self isSelected]& 1) != 0)
   {
-    v5 = [(HUIconPickerCell *)self selectedTintColor];
+    selectedTintColor = [(HUIconPickerCell *)self selectedTintColor];
   }
 
   else
   {
-    v5 = v4;
+    selectedTintColor = v4;
   }
 
-  v6 = v5;
+  v6 = selectedTintColor;
 
   return v6;
 }
 
-- (void)setIconDescriptor:(id)a3 andSelectedTintColor:(id)a4
+- (void)setIconDescriptor:(id)descriptor andSelectedTintColor:(id)color
 {
-  objc_storeStrong(&self->_selectedTintColor, a4);
-  v6 = a3;
-  [(HUIconPickerCell *)self _updateIconDescriptor:v6];
+  objc_storeStrong(&self->_selectedTintColor, color);
+  descriptorCopy = descriptor;
+  [(HUIconPickerCell *)self _updateIconDescriptor:descriptorCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = [(HUIconPickerCell *)self _iconTintColor];
-  v4 = [(HUIconPickerCell *)self iconView];
-  [v4 setTintColor:v5];
+  _iconTintColor = [(HUIconPickerCell *)self _iconTintColor];
+  iconView = [(HUIconPickerCell *)self iconView];
+  [iconView setTintColor:_iconTintColor];
 }
 
 @end

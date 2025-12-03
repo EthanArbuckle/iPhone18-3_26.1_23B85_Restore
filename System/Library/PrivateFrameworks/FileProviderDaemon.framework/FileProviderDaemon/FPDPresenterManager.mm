@@ -1,26 +1,26 @@
 @interface FPDPresenterManager
-- (FPDPresenterManager)initWithExtensionManager:(id)a3;
-- (id)presenterWithID:(id)a3;
-- (id)presentersForDomain:(id)a3;
-- (unint64_t)promisePresenterWithID:(id)a3;
-- (void)addPresenter:(id)a3 itemID:(id)a4 urlHint:(id)a5 auditToken:(id *)a6 promiseID:(unint64_t)a7;
-- (void)forgetPromiseForPresenterWithID:(id)a3 promiseID:(unint64_t)a4;
-- (void)removePresenter:(id)a3;
-- (void)signalPresentersForItemID:(id)a3;
+- (FPDPresenterManager)initWithExtensionManager:(id)manager;
+- (id)presenterWithID:(id)d;
+- (id)presentersForDomain:(id)domain;
+- (unint64_t)promisePresenterWithID:(id)d;
+- (void)addPresenter:(id)presenter itemID:(id)d urlHint:(id)hint auditToken:(id *)token promiseID:(unint64_t)iD;
+- (void)forgetPromiseForPresenterWithID:(id)d promiseID:(unint64_t)iD;
+- (void)removePresenter:(id)presenter;
+- (void)signalPresentersForItemID:(id)d;
 @end
 
 @implementation FPDPresenterManager
 
-- (FPDPresenterManager)initWithExtensionManager:(id)a3
+- (FPDPresenterManager)initWithExtensionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = FPDPresenterManager;
   v5 = [(FPDPresenterManager *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_extensionManager, v4);
+    objc_storeWeak(&v5->_extensionManager, managerCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("presenter manager queue", v7);
     queue = v6->_queue;
@@ -38,24 +38,24 @@
   return v6;
 }
 
-- (unint64_t)promisePresenterWithID:(id)a3
+- (unint64_t)promisePresenterWithID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v5->nextPromiseID + 1;
-  v5->nextPromiseID = v6;
-  objc_sync_exit(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->nextPromiseID + 1;
+  selfCopy->nextPromiseID = v6;
+  objc_sync_exit(selfCopy);
 
-  queue = v5->_queue;
+  queue = selfCopy->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__FPDPresenterManager_promisePresenterWithID___block_invoke;
   block[3] = &unk_1E83BEB18;
-  v11 = v4;
+  v11 = dCopy;
   v12 = v6;
-  block[4] = v5;
-  v8 = v4;
+  block[4] = selfCopy;
+  v8 = dCopy;
   dispatch_async(queue, block);
 
   return v6;
@@ -68,18 +68,18 @@ void __46__FPDPresenterManager_promisePresenterWithID___block_invoke(void *a1)
   [v2 setObject:v3 forKey:a1[5]];
 }
 
-- (void)forgetPromiseForPresenterWithID:(id)a3 promiseID:(unint64_t)a4
+- (void)forgetPromiseForPresenterWithID:(id)d promiseID:(unint64_t)iD
 {
-  v6 = a3;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__FPDPresenterManager_forgetPromiseForPresenterWithID_promiseID___block_invoke;
   block[3] = &unk_1E83BEB18;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = dCopy;
+  iDCopy = iD;
+  v8 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -98,27 +98,27 @@ void __65__FPDPresenterManager_forgetPromiseForPresenterWithID_promiseID___block
   }
 }
 
-- (void)addPresenter:(id)a3 itemID:(id)a4 urlHint:(id)a5 auditToken:(id *)a6 promiseID:(unint64_t)a7
+- (void)addPresenter:(id)presenter itemID:(id)d urlHint:(id)hint auditToken:(id *)token promiseID:(unint64_t)iD
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  presenterCopy = presenter;
+  dCopy = d;
+  hintCopy = hint;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
-  v16 = *&a6->var0[4];
-  v25 = *a6->var0;
+  v16 = *&token->var0[4];
+  v25 = *token->var0;
   v26 = v16;
   block[2] = __72__FPDPresenterManager_addPresenter_itemID_urlHint_auditToken_promiseID___block_invoke;
   block[3] = &unk_1E83C1830;
   block[4] = self;
-  v21 = v13;
-  v23 = v14;
-  v24 = a7;
-  v22 = v12;
-  v17 = v14;
-  v18 = v12;
-  v19 = v13;
+  v21 = dCopy;
+  v23 = hintCopy;
+  iDCopy = iD;
+  v22 = presenterCopy;
+  v17 = hintCopy;
+  v18 = presenterCopy;
+  v19 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -160,17 +160,17 @@ LABEL_6:
   }
 }
 
-- (void)removePresenter:(id)a3
+- (void)removePresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__FPDPresenterManager_removePresenter___block_invoke;
   v7[3] = &unk_1E83BE158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = presenterCopy;
+  v6 = presenterCopy;
   dispatch_async(queue, v7);
 }
 
@@ -199,9 +199,9 @@ void __39__FPDPresenterManager_removePresenter___block_invoke(uint64_t a1)
   }
 }
 
-- (id)presenterWithID:(id)a3
+- (id)presenterWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -213,10 +213,10 @@ void __39__FPDPresenterManager_removePresenter___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__FPDPresenterManager_presenterWithID___block_invoke;
   block[3] = &unk_1E83C1858;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -233,9 +233,9 @@ void __39__FPDPresenterManager_presenterWithID___block_invoke(void *a1)
   *(v3 + 40) = v2;
 }
 
-- (id)presentersForDomain:(id)a3
+- (id)presentersForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v5 = objc_opt_new();
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -243,10 +243,10 @@ void __39__FPDPresenterManager_presenterWithID___block_invoke(void *a1)
   block[2] = __43__FPDPresenterManager_presentersForDomain___block_invoke;
   block[3] = &unk_1E83BDE60;
   block[4] = self;
-  v13 = v4;
+  v13 = domainCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
+  v8 = domainCopy;
   dispatch_sync(queue, block);
   v9 = v14;
   v10 = v7;
@@ -278,23 +278,23 @@ void __43__FPDPresenterManager_presentersForDomain___block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)signalPresentersForItemID:(id)a3
+- (void)signalPresentersForItemID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 providerDomainID];
-  v6 = [v4 identifier];
+  dCopy = d;
+  providerDomainID = [dCopy providerDomainID];
+  identifier = [dCopy identifier];
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__FPDPresenterManager_signalPresentersForItemID___block_invoke;
   v11[3] = &unk_1E83BF988;
   v11[4] = self;
-  v12 = v5;
-  v13 = v6;
-  v14 = v4;
-  v8 = v4;
-  v9 = v6;
-  v10 = v5;
+  v12 = providerDomainID;
+  v13 = identifier;
+  v14 = dCopy;
+  v8 = dCopy;
+  v9 = identifier;
+  v10 = providerDomainID;
   dispatch_async(queue, v11);
 }
 

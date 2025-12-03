@@ -1,30 +1,30 @@
 @interface AXUIBannerView
-- (AXUIBannerView)initWithFrame:(CGRect)a3;
+- (AXUIBannerView)initWithFrame:(CGRect)frame;
 - (NSString)text;
 - (void)_updateSecondaryTextVisibility;
-- (void)setSecondaryText:(id)a3;
-- (void)setText:(id)a3;
+- (void)setSecondaryText:(id)text;
+- (void)setText:(id)text;
 @end
 
 @implementation AXUIBannerView
 
-- (AXUIBannerView)initWithFrame:(CGRect)a3
+- (AXUIBannerView)initWithFrame:(CGRect)frame
 {
   v120[3] = *MEMORY[0x1E69E9840];
   v116.receiver = self;
   v116.super_class = AXUIBannerView;
-  v3 = [(AXUIPlatterContainerView *)&v116 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AXUIPlatterContainerView *)&v116 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v5 = MEMORY[0x1E69DB878];
-    v6 = [(AXUIPlatterContainerView *)v3 primaryTextStyle];
-    v7 = [v5 preferredFontForTextStyle:v6];
+    primaryTextStyle = [(AXUIPlatterContainerView *)v3 primaryTextStyle];
+    v7 = [v5 preferredFontForTextStyle:primaryTextStyle];
 
     v8 = objc_alloc(MEMORY[0x1E69DD298]);
     v9 = MEMORY[0x1E69DD248];
-    v10 = [(AXUIPlatterContainerView *)v4 platterBlurEffect];
-    v11 = [v9 effectForBlurEffect:v10 style:0];
+    platterBlurEffect = [(AXUIPlatterContainerView *)v4 platterBlurEffect];
+    v11 = [v9 effectForBlurEffect:platterBlurEffect style:0];
     v12 = [v8 initWithEffect:v11];
 
     if (_UISolariumEnabled())
@@ -35,8 +35,8 @@
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
     v13 = objc_alloc(MEMORY[0x1E69DD298]);
     v14 = MEMORY[0x1E69DD248];
-    v15 = [(AXUIPlatterContainerView *)v4 platterBlurEffect];
-    v16 = [v14 effectForBlurEffect:v15 style:1];
+    platterBlurEffect2 = [(AXUIPlatterContainerView *)v4 platterBlurEffect];
+    v16 = [v14 effectForBlurEffect:platterBlurEffect2 style:1];
     v17 = [v13 initWithEffect:v16];
 
     if (_UISolariumEnabled())
@@ -45,21 +45,21 @@
     }
 
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = [(AXUIPlatterContainerView *)v4 contentView];
-    [v18 addSubview:v12];
+    contentView = [(AXUIPlatterContainerView *)v4 contentView];
+    [contentView addSubview:v12];
 
-    v19 = [(AXUIPlatterContainerView *)v4 contentView];
-    [v19 addSubview:v17];
+    contentView2 = [(AXUIPlatterContainerView *)v4 contentView];
+    [contentView2 addSubview:v17];
 
-    v20 = [v12 contentView];
-    v21 = [v17 contentView];
+    contentView3 = [v12 contentView];
+    contentView4 = [v17 contentView];
     v22 = objc_opt_new();
     [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
     v111 = v7;
     [v22 setFont:v7];
     [v22 setNumberOfLines:0];
     [v22 setTextAlignment:1];
-    [v20 addSubview:v22];
+    [contentView3 addSubview:v22];
     v109 = v4;
     p_textLabel = &v4->_textLabel;
     v24 = v22;
@@ -71,43 +71,43 @@
 
     [v25 setNumberOfLines:0];
     [v25 setTextAlignment:1];
-    v110 = v21;
-    [v21 addSubview:v25];
+    v110 = contentView4;
+    [contentView4 addSubview:v25];
     [v25 setHidden:1];
     if (_UISolariumEnabled())
     {
-      v27 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [v25 setTextColor:v27];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [v25 setTextColor:secondaryLabelColor];
     }
 
     objc_storeStrong(&v109->_secondaryTextLabel, v25);
-    v28 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29 = MEMORY[0x1E696ACD8];
-    v30 = [(AXUIPlatterContainerView *)v109 contentView];
+    contentView5 = [(AXUIPlatterContainerView *)v109 contentView];
     v108 = v12;
-    v31 = [v29 ax_constraintsToMakeView:v12 sameDimensionsAsView:v30];
-    [v28 addObjectsFromArray:v31];
+    v31 = [v29 ax_constraintsToMakeView:v12 sameDimensionsAsView:contentView5];
+    [array addObjectsFromArray:v31];
 
     v32 = MEMORY[0x1E696ACD8];
-    v33 = [(AXUIPlatterContainerView *)v109 contentView];
+    contentView6 = [(AXUIPlatterContainerView *)v109 contentView];
     v107 = v17;
-    v34 = [v32 ax_constraintsToMakeView:v17 sameDimensionsAsView:v33];
-    v35 = v28;
-    [v28 addObjectsFromArray:v34];
+    v34 = [v32 ax_constraintsToMakeView:v17 sameDimensionsAsView:contentView6];
+    v35 = array;
+    [array addObjectsFromArray:v34];
 
     v36 = MEMORY[0x1E69DCA40];
-    v37 = [(AXUIPlatterContainerView *)v109 primaryTextStyle];
-    v38 = [v36 metricsForTextStyle:v37];
+    primaryTextStyle2 = [(AXUIPlatterContainerView *)v109 primaryTextStyle];
+    v38 = [v36 metricsForTextStyle:primaryTextStyle2];
     [(AXUIBannerView *)v109 defaultTitleToSubtitleVerticalSpacing];
     [v38 scaledValueForValue:?];
     v40 = v39;
-    v41 = [v25 font];
-    [v41 capHeight];
+    font = [v25 font];
+    [font capHeight];
     v43 = v40 + v42;
 
     v44 = MEMORY[0x1E69DCA40];
-    v45 = [(AXUIPlatterContainerView *)v109 primaryTextStyle];
-    v46 = [v44 metricsForTextStyle:v45];
+    primaryTextStyle3 = [(AXUIPlatterContainerView *)v109 primaryTextStyle];
+    v46 = [v44 metricsForTextStyle:primaryTextStyle3];
     [(AXUIBannerView *)v109 defaultPlatterToTextVerticalSpacing];
     [v46 scaledValueForValue:?];
     v48 = v47;
@@ -116,18 +116,18 @@
     v50 = v48 + v49;
     [(AXUIBannerView *)v109 platterToTextHorizontalSpacing];
     v52 = v51;
-    v53 = [v24 leadingAnchor];
-    v54 = [v20 leadingAnchor];
-    v55 = [v53 constraintEqualToAnchor:v54 constant:v52];
+    leadingAnchor = [v24 leadingAnchor];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v55 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v52];
 
-    v56 = [v20 trailingAnchor];
-    v57 = [v24 trailingAnchor];
-    v58 = [v56 constraintEqualToAnchor:v57 constant:v52];
+    trailingAnchor = [contentView3 trailingAnchor];
+    trailingAnchor2 = [v24 trailingAnchor];
+    v58 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v52];
 
-    v101 = v20;
-    v59 = [v20 bottomAnchor];
-    v60 = [v24 lastBaselineAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60 constant:v48];
+    v101 = contentView3;
+    bottomAnchor = [contentView3 bottomAnchor];
+    lastBaselineAnchor = [v24 lastBaselineAnchor];
+    v61 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:v48];
 
     v105 = v58;
     v106 = v55;
@@ -137,8 +137,8 @@
     v120[2] = v61;
     v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:v120 count:3];
     v63 = v25;
-    v64 = [v25 text];
-    v65 = [v64 length];
+    text = [v25 text];
+    v65 = [text length];
 
     if (v65)
     {
@@ -177,26 +177,26 @@
 
     v103 = v35;
     [v35 addObjectsFromArray:{v62, v62}];
-    v73 = [v63 firstBaselineAnchor];
-    v74 = [v24 lastBaselineAnchor];
-    v100 = [v73 constraintEqualToAnchor:v74 constant:v43];
+    firstBaselineAnchor = [v63 firstBaselineAnchor];
+    lastBaselineAnchor2 = [v24 lastBaselineAnchor];
+    v100 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2 constant:v43];
 
-    v75 = [v63 leadingAnchor];
-    v76 = [v110 leadingAnchor];
-    v99 = [v75 constraintGreaterThanOrEqualToAnchor:v76 constant:v52];
+    leadingAnchor3 = [v63 leadingAnchor];
+    leadingAnchor4 = [v110 leadingAnchor];
+    v99 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:v52];
 
-    v77 = [v110 trailingAnchor];
-    v78 = [v63 trailingAnchor];
-    v98 = [v77 constraintGreaterThanOrEqualToAnchor:v78 constant:v52];
+    trailingAnchor3 = [v110 trailingAnchor];
+    trailingAnchor4 = [v63 trailingAnchor];
+    v98 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4 constant:v52];
 
-    v79 = [v110 bottomAnchor];
+    bottomAnchor2 = [v110 bottomAnchor];
     v102 = v63;
-    v80 = [v63 lastBaselineAnchor];
-    v97 = [v79 constraintEqualToAnchor:v80 constant:v48];
+    lastBaselineAnchor3 = [v63 lastBaselineAnchor];
+    v97 = [bottomAnchor2 constraintEqualToAnchor:lastBaselineAnchor3 constant:v48];
 
-    v81 = [v63 centerXAnchor];
-    v82 = [v110 centerXAnchor];
-    v95 = [v81 constraintEqualToAnchor:v82];
+    centerXAnchor = [v63 centerXAnchor];
+    centerXAnchor2 = [v110 centerXAnchor];
+    v95 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
     v118[0] = v100;
     v118[1] = v99;
@@ -210,13 +210,13 @@
     v109->_withSecondaryTextConstraints = v83;
 
     v96 = v84;
-    v86 = [v84 firstBaselineAnchor];
-    v87 = [v20 topAnchor];
-    v88 = [v86 constraintEqualToAnchor:v87 constant:v50];
+    firstBaselineAnchor2 = [v84 firstBaselineAnchor];
+    topAnchor = [contentView3 topAnchor];
+    v88 = [firstBaselineAnchor2 constraintEqualToAnchor:topAnchor constant:v50];
     v117[0] = v88;
-    v89 = [v84 centerXAnchor];
-    v90 = [v20 centerXAnchor];
-    v91 = [v89 constraintEqualToAnchor:v90];
+    centerXAnchor3 = [v84 centerXAnchor];
+    centerXAnchor4 = [contentView3 centerXAnchor];
+    v91 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v117[1] = v91;
     v92 = [MEMORY[0x1E695DEC8] arrayWithObjects:v117 count:2];
     [v103 addObjectsFromArray:v92];
@@ -227,66 +227,66 @@
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(AXUIBannerView *)self textLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  textLabel = [(AXUIBannerView *)self textLabel];
+  [textLabel setText:textCopy];
 }
 
 - (NSString)text
 {
-  v2 = [(AXUIBannerView *)self textLabel];
-  v3 = [v2 text];
+  textLabel = [(AXUIBannerView *)self textLabel];
+  text = [textLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v4 = a3;
-  v5 = [(AXUIBannerView *)self secondaryTextLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  secondaryTextLabel = [(AXUIBannerView *)self secondaryTextLabel];
+  [secondaryTextLabel setText:textCopy];
 
   [(AXUIBannerView *)self _updateSecondaryTextVisibility];
 }
 
 - (void)_updateSecondaryTextVisibility
 {
-  v3 = [(AXUIBannerView *)self secondaryTextLabel];
-  v4 = [v3 text];
-  v5 = [v4 length];
+  secondaryTextLabel = [(AXUIBannerView *)self secondaryTextLabel];
+  text = [secondaryTextLabel text];
+  v5 = [text length];
 
-  v6 = [(AXUIBannerView *)self secondaryTextLabel];
-  v7 = [v6 isHidden];
+  secondaryTextLabel2 = [(AXUIBannerView *)self secondaryTextLabel];
+  isHidden = [secondaryTextLabel2 isHidden];
 
   if (v5)
   {
-    if (!v7)
+    if (!isHidden)
     {
       return;
     }
 
-    v8 = [(AXUIBannerView *)self secondaryTextLabel];
-    [v8 setHidden:0];
+    secondaryTextLabel3 = [(AXUIBannerView *)self secondaryTextLabel];
+    [secondaryTextLabel3 setHidden:0];
 
     v9 = MEMORY[0x1E696ACD8];
-    v12 = [(AXUIBannerView *)self withSecondaryTextConstraints];
+    withSecondaryTextConstraints = [(AXUIBannerView *)self withSecondaryTextConstraints];
     [v9 activateConstraints:?];
   }
 
   else
   {
-    if (v7)
+    if (isHidden)
     {
       return;
     }
 
-    v10 = [(AXUIBannerView *)self secondaryTextLabel];
-    [v10 setHidden:1];
+    secondaryTextLabel4 = [(AXUIBannerView *)self secondaryTextLabel];
+    [secondaryTextLabel4 setHidden:1];
 
     v11 = MEMORY[0x1E696ACD8];
-    v12 = [(AXUIBannerView *)self withSecondaryTextConstraints];
+    withSecondaryTextConstraints = [(AXUIBannerView *)self withSecondaryTextConstraints];
     [v11 deactivateConstraints:?];
   }
 }

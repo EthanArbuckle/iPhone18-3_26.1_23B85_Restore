@@ -6,16 +6,16 @@
 
 - (uint64_t)unc_isInternalUserNotificationsTool
 {
-  v2 = [a1 unc_applicationIdentifier];
-  if ([v2 isEqualToString:@"com.apple.usernotifications.untool"])
+  unc_applicationIdentifier = [self unc_applicationIdentifier];
+  if ([unc_applicationIdentifier isEqualToString:@"com.apple.usernotifications.untool"])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 unc_applicationIdentifier];
-    v3 = [v4 isEqualToString:@"com.apple.internal.suiuntool"];
+    unc_applicationIdentifier2 = [self unc_applicationIdentifier];
+    v3 = [unc_applicationIdentifier2 isEqualToString:@"com.apple.internal.suiuntool"];
   }
 
   return v3;

@@ -9,7 +9,7 @@
 
 + (void)initialize
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___iFBAConstants;
   objc_msgSendSuper2(&v5, "initialize");
   v2 = +[NSMutableDictionary dictionary];

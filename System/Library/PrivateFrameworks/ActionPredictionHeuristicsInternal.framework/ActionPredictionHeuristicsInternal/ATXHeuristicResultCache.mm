@@ -2,18 +2,18 @@
 + (ATXHeuristicResultCache)sharedInstance;
 + (id)sharedPassLibrary;
 - (ATXHeuristicResultCache)init;
-- (BOOL)isFocusModeActiveWithError:(id *)a3;
-- (id)_internExpirerLocked:(id)a3;
+- (BOOL)isFocusModeActiveWithError:(id *)error;
+- (id)_internExpirerLocked:(id)locked;
 - (id)firstExpirationDate;
 - (id)heuristicsCached;
-- (id)objectForKey:(id)a3 found:(BOOL *)a4;
+- (id)objectForKey:(id)key found:(BOOL *)found;
 - (unint64_t)count;
-- (void)_expire:(id)a3 postNotification:(BOOL)a4;
-- (void)_handleFocusStateUpdate:(id)a3;
+- (void)_expire:(id)_expire postNotification:(BOOL)notification;
+- (void)_handleFocusStateUpdate:(id)update;
 - (void)_observeUserFocusChanges;
 - (void)dealloc;
 - (void)expireAll;
-- (void)setObject:(id)a3 expirers:(id)a4 forKey:(id)a5;
+- (void)setObject:(id)object expirers:(id)expirers forKey:(id)key;
 @end
 
 @implementation ATXHeuristicResultCache
@@ -44,8 +44,8 @@ uint64_t __31__ATXHeuristicResultCache_init__block_invoke_194(uint64_t a1)
   self->_cache = v4;
 
   pthread_mutex_unlock(&self->_lock);
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"com.apple.duetexpertd.heuristic.cache-expired" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.duetexpertd.heuristic.cache-expired" object:self];
 }
 
 + (ATXHeuristicResultCache)sharedInstance
@@ -177,10 +177,10 @@ uint64_t __31__ATXHeuristicResultCache_init__block_invoke_2(uint64_t a1)
     self->_focusScheduler = v3;
 
     v5 = BiomeLibrary();
-    v6 = [v5 UserFocus];
-    v7 = [v6 ComputedMode];
-    v8 = [v7 atx_DSLPublisher];
-    v9 = [v8 subscribeOn:self->_focusScheduler];
+    userFocus = [v5 UserFocus];
+    computedMode = [userFocus ComputedMode];
+    atx_DSLPublisher = [computedMode atx_DSLPublisher];
+    v9 = [atx_DSLPublisher subscribeOn:self->_focusScheduler];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __51__ATXHeuristicResultCache__observeUserFocusChanges__block_invoke_202;
@@ -223,31 +223,31 @@ void __51__ATXHeuristicResultCache__observeUserFocusChanges__block_invoke_202(ui
   }
 }
 
-- (void)_handleFocusStateUpdate:(id)a3
+- (void)_handleFocusStateUpdate:(id)update
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = __atxlog_handle_heuristic();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = updateCopy;
     _os_log_impl(&dword_23E3EA000, v5, OS_LOG_TYPE_INFO, "Biome user focus computed mode stream received an update: %@", &v10, 0xCu);
   }
 
   pthread_mutex_lock(&self->_lock);
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "starting")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(updateCopy, "starting")}];
   cachedIsFocusActiveState = self->_cachedIsFocusActiveState;
   self->_cachedIsFocusActiveState = v6;
 
   pthread_mutex_unlock(&self->_lock);
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotificationName:@"DNDStateChanged" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"DNDStateChanged" object:self];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isFocusModeActiveWithError:(id *)a3
+- (BOOL)isFocusModeActiveWithError:(id *)error
 {
   pthread_mutex_lock(&self->_lock);
   cachedIsFocusActiveState = self->_cachedIsFocusActiveState;
@@ -261,9 +261,9 @@ void __51__ATXHeuristicResultCache__observeUserFocusChanges__block_invoke_202(ui
     v20 = __Block_byref_object_dispose__6;
     v21 = 0;
     v6 = BiomeLibrary();
-    v7 = [v6 UserFocus];
-    v8 = [v7 ComputedMode];
-    v9 = [v8 atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_2850BA4B8 lastN:&unk_2850BA4B8 reversed:0];
+    userFocus = [v6 UserFocus];
+    computedMode = [userFocus ComputedMode];
+    v9 = [computedMode atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_2850BA4B8 lastN:&unk_2850BA4B8 reversed:0];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __54__ATXHeuristicResultCache_isFocusModeActiveWithError___block_invoke;
@@ -277,9 +277,9 @@ void __51__ATXHeuristicResultCache__observeUserFocusChanges__block_invoke_202(ui
     v10 = [v9 sinkWithCompletion:v15 receiveInput:v14];
 
     v11 = v17[5];
-    if (v11 && *a3)
+    if (v11 && *error)
     {
-      *a3 = v11;
+      *error = v11;
     }
 
     _Block_object_dispose(&v16, 8);
@@ -287,9 +287,9 @@ void __51__ATXHeuristicResultCache__observeUserFocusChanges__block_invoke_202(ui
     cachedIsFocusActiveState = self->_cachedIsFocusActiveState;
   }
 
-  v12 = [(NSNumber *)cachedIsFocusActiveState BOOLValue];
+  bOOLValue = [(NSNumber *)cachedIsFocusActiveState BOOLValue];
   pthread_mutex_unlock(&self->_lock);
-  return v12;
+  return bOOLValue;
 }
 
 void __54__ATXHeuristicResultCache_isFocusModeActiveWithError___block_invoke(uint64_t a1, void *a2)
@@ -334,7 +334,7 @@ void __54__ATXHeuristicResultCache_isFocusModeActiveWithError___block_invoke_205
   block[1] = 3221225472;
   block[2] = __44__ATXHeuristicResultCache_sharedPassLibrary__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedPassLibrary_onceToken != -1)
   {
     dispatch_once(&sharedPassLibrary_onceToken, block);
@@ -395,19 +395,19 @@ void __44__ATXHeuristicResultCache_sharedPassLibrary__block_invoke_2(uint64_t a1
   return v3;
 }
 
-- (void)setObject:(id)a3 expirers:(id)a4 forKey:(id)a5
+- (void)setObject:(id)object expirers:(id)expirers forKey:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  expirersCopy = expirers;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v11 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  v11 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(expirersCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = v9;
+  v12 = expirersCopy;
   v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
@@ -436,28 +436,28 @@ void __44__ATXHeuristicResultCache_sharedPassLibrary__block_invoke_2(uint64_t a1
     while (v14);
   }
 
-  v18 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v10];
+  v18 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:keyCopy];
   if (!v18)
   {
-    v18 = [[ATXHeuristicResultCacheEntry alloc] initWithHeuristic:v10 cache:self];
-    [(NSMutableDictionary *)self->_cache setObject:v18 forKeyedSubscript:v10];
+    v18 = [[ATXHeuristicResultCacheEntry alloc] initWithHeuristic:keyCopy cache:self];
+    [(NSMutableDictionary *)self->_cache setObject:v18 forKeyedSubscript:keyCopy];
   }
 
-  [(ATXHeuristicResultCacheEntry *)v18 setActions:v8 expirers:v11, v20];
+  [(ATXHeuristicResultCacheEntry *)v18 setActions:objectCopy expirers:v11, v20];
   pthread_mutex_unlock(&self->_lock);
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_internExpirerLocked:(id)a3
+- (id)_internExpirerLocked:(id)locked
 {
-  v4 = a3;
-  v5 = [(NSHashTable *)self->_expirerInternTable member:v4];
+  lockedCopy = locked;
+  v5 = [(NSHashTable *)self->_expirerInternTable member:lockedCopy];
   v6 = v5;
   if (!v5)
   {
-    [(NSHashTable *)self->_expirerInternTable addObject:v4];
-    v6 = v4;
+    [(NSHashTable *)self->_expirerInternTable addObject:lockedCopy];
+    v6 = lockedCopy;
   }
 
   v7 = v6;
@@ -465,11 +465,11 @@ void __44__ATXHeuristicResultCache_sharedPassLibrary__block_invoke_2(uint64_t a1
   return v7;
 }
 
-- (id)objectForKey:(id)a3 found:(BOOL *)a4
+- (id)objectForKey:(id)key found:(BOOL *)found
 {
-  v6 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v7 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:keyCopy];
 
   if (v7)
   {
@@ -483,9 +483,9 @@ void __44__ATXHeuristicResultCache_sharedPassLibrary__block_invoke_2(uint64_t a1
 
   v9 = v8;
   pthread_mutex_unlock(&self->_lock);
-  if (a4)
+  if (found)
   {
-    *a4 = v7 != 0;
+    *found = v7 != 0;
   }
 
   return v9;
@@ -494,9 +494,9 @@ void __44__ATXHeuristicResultCache_sharedPassLibrary__block_invoke_2(uint64_t a1
 - (id)heuristicsCached
 {
   pthread_mutex_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_cache allKeys];
+  allKeys = [(NSMutableDictionary *)self->_cache allKeys];
   pthread_mutex_unlock(&self->_lock);
-  v4 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v3];
+  v4 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:allKeys];
 
   return v4;
 }
@@ -529,8 +529,8 @@ void __44__ATXHeuristicResultCache_sharedPassLibrary__block_invoke_2(uint64_t a1
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 fireDate];
-          v11 = [v6 earlierDate:v10];
+          fireDate = [v9 fireDate];
+          v11 = [v6 earlierDate:fireDate];
           v12 = v11;
           if (v11)
           {
@@ -539,7 +539,7 @@ void __44__ATXHeuristicResultCache_sharedPassLibrary__block_invoke_2(uint64_t a1
 
           else
           {
-            v13 = v10;
+            v13 = fireDate;
           }
 
           v14 = v13;
@@ -565,26 +565,26 @@ void __44__ATXHeuristicResultCache_sharedPassLibrary__block_invoke_2(uint64_t a1
   return v6;
 }
 
-- (void)_expire:(id)a3 postNotification:(BOOL)a4
+- (void)_expire:(id)_expire postNotification:(BOOL)notification
 {
-  v4 = a4;
+  notificationCopy = notification;
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  _expireCopy = _expire;
   v7 = __atxlog_handle_heuristic();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = _expireCopy;
     _os_log_impl(&dword_23E3EA000, v7, OS_LOG_TYPE_DEFAULT, "Expiring %@", &v10, 0xCu);
   }
 
   pthread_mutex_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_cache removeObjectForKey:v6];
+  [(NSMutableDictionary *)self->_cache removeObjectForKey:_expireCopy];
   pthread_mutex_unlock(&self->_lock);
-  if (v4)
+  if (notificationCopy)
   {
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"com.apple.duetexpertd.heuristic.cache-expired" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"com.apple.duetexpertd.heuristic.cache-expired" object:self];
   }
 
   v9 = *MEMORY[0x277D85DE8];

@@ -1,13 +1,13 @@
 @interface _UIImageContentRenditionEffects
-+ (id)effectsWithTintColor:(void *)a3 visualEffects:(int)a4 drawMode:(char)a5 bold:;
++ (id)effectsWithTintColor:(void *)color visualEffects:(int)effects drawMode:(char)mode bold:;
 @end
 
 @implementation _UIImageContentRenditionEffects
 
-+ (id)effectsWithTintColor:(void *)a3 visualEffects:(int)a4 drawMode:(char)a5 bold:
++ (id)effectsWithTintColor:(void *)color visualEffects:(int)effects drawMode:(char)mode bold:
 {
   v8 = a2;
-  v9 = a3;
+  colorCopy = color;
   objc_opt_self();
   v10 = objc_opt_new();
   v11 = *(v10 + 16);
@@ -15,10 +15,10 @@
   v12 = v8;
 
   v13 = *(v10 + 24);
-  *(v10 + 24) = v9;
+  *(v10 + 24) = colorCopy;
 
-  *(v10 + 12) = a4;
-  *(v10 + 8) = a5;
+  *(v10 + 12) = effects;
+  *(v10 + 8) = mode;
 
   return v10;
 }

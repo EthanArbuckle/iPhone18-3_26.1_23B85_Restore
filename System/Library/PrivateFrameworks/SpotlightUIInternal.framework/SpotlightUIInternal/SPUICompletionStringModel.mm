@@ -1,22 +1,22 @@
 @interface SPUICompletionStringModel
-- (SPUICompletionStringModel)initWithTypedString:(id)a3 hasTokens:(BOOL)a4 queryId:(unint64_t)a5 hasMarkedText:(BOOL)a6;
+- (SPUICompletionStringModel)initWithTypedString:(id)string hasTokens:(BOOL)tokens queryId:(unint64_t)id hasMarkedText:(BOOL)text;
 @end
 
 @implementation SPUICompletionStringModel
 
-- (SPUICompletionStringModel)initWithTypedString:(id)a3 hasTokens:(BOOL)a4 queryId:(unint64_t)a5 hasMarkedText:(BOOL)a6
+- (SPUICompletionStringModel)initWithTypedString:(id)string hasTokens:(BOOL)tokens queryId:(unint64_t)id hasMarkedText:(BOOL)text
 {
-  v11 = a3;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = SPUICompletionStringModel;
   v12 = [(SPUICompletionStringModel *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_displayedText, a3);
-    v13->_searchFieldHasTokens = a4;
-    v13->_queryId = a5;
-    v13->_hasMarkedText = a6;
+    objc_storeStrong(&v12->_displayedText, string);
+    v13->_searchFieldHasTokens = tokens;
+    v13->_queryId = id;
+    v13->_hasMarkedText = text;
   }
 
   return v13;

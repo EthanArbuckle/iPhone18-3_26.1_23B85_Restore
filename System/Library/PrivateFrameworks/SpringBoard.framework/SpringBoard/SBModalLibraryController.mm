@@ -1,68 +1,68 @@
 @interface SBModalLibraryController
 - (BOOL)isPresentingLibrary;
 - (BOOL)isPresentingLibraryInForeground;
-- (BOOL)modalLibraryPresenterShouldAllowSwipeToDismissGesture:(id)a3;
+- (BOOL)modalLibraryPresenterShouldAllowSwipeToDismissGesture:(id)gesture;
 - (SBFloatingDockController)floatingDockController;
-- (SBModalLibraryController)initWithIconManager:(id)a3 libraryViewController:(id)a4 floatingDockController:(id)a5 windowScene:(id)a6;
+- (SBModalLibraryController)initWithIconManager:(id)manager libraryViewController:(id)controller floatingDockController:(id)dockController windowScene:(id)scene;
 - (SBWindowScene)windowScene;
 - (id)_currentLayoutState;
-- (void)_configureFloatingDockBehaviorAssertionForPresented:(BOOL)a3;
-- (void)_didCompleteTransitionWithLibraryToPresented:(BOOL)a3;
+- (void)_configureFloatingDockBehaviorAssertionForPresented:(BOOL)presented;
+- (void)_didCompleteTransitionWithLibraryToPresented:(BOOL)presented;
 - (void)_evaluateKeyboardWindowLevelAssertion;
 - (void)_evaluateResignActiveAssertion;
 - (void)_evaluateWindowStatus;
-- (void)_prepareLibraryViewControllerForDismissal:(id)a3;
-- (void)_setLibraryDisplayLayoutElementActive:(BOOL)a3;
-- (void)_willPerformTransitionWithLibraryToPresented:(BOOL)a3;
+- (void)_prepareLibraryViewControllerForDismissal:(id)dismissal;
+- (void)_setLibraryDisplayLayoutElementActive:(BOOL)active;
+- (void)_willPerformTransitionWithLibraryToPresented:(BOOL)presented;
 - (void)dealloc;
-- (void)dismissLibraryAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissLibraryAnimated:(BOOL)animated completion:(id)completion;
 - (void)invalidate;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4;
-- (void)libraryViewController:(id)a3 didDismissSearchController:(id)a4;
-- (void)libraryViewController:(id)a3 willPresentSearchController:(id)a4;
-- (void)modalLibraryPresenter:(id)a3 didDismissLibrary:(id)a4;
-- (void)modalLibraryPresenter:(id)a3 didPassCriticalDismissalPoint:(id)a4;
-- (void)modalLibraryPresenter:(id)a3 didPresentLibrary:(id)a4;
-- (void)modalLibraryPresenter:(id)a3 willDismissLibrary:(id)a4;
-- (void)modalLibraryPresenter:(id)a3 willPresentLibrary:(id)a4;
-- (void)presentLibraryAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentLibraryCategoryPodForCategoryIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)toggleLibraryPresentedAnimated:(BOOL)a3 completion:(id)a4;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context;
+- (void)libraryViewController:(id)controller didDismissSearchController:(id)searchController;
+- (void)libraryViewController:(id)controller willPresentSearchController:(id)searchController;
+- (void)modalLibraryPresenter:(id)presenter didDismissLibrary:(id)library;
+- (void)modalLibraryPresenter:(id)presenter didPassCriticalDismissalPoint:(id)point;
+- (void)modalLibraryPresenter:(id)presenter didPresentLibrary:(id)library;
+- (void)modalLibraryPresenter:(id)presenter willDismissLibrary:(id)library;
+- (void)modalLibraryPresenter:(id)presenter willPresentLibrary:(id)library;
+- (void)presentLibraryAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentLibraryCategoryPodForCategoryIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion;
+- (void)toggleLibraryPresentedAnimated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation SBModalLibraryController
 
-- (SBModalLibraryController)initWithIconManager:(id)a3 libraryViewController:(id)a4 floatingDockController:(id)a5 windowScene:(id)a6
+- (SBModalLibraryController)initWithIconManager:(id)manager libraryViewController:(id)controller floatingDockController:(id)dockController windowScene:(id)scene
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  controllerCopy = controller;
+  dockControllerCopy = dockController;
+  sceneCopy = scene;
   v26.receiver = self;
   v26.super_class = SBModalLibraryController;
   v15 = [(SBModalLibraryController *)&v26 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_iconManager, a3);
-    objc_storeStrong(&v16->_libraryViewController, a4);
-    [v12 addObserver:v16];
-    objc_storeWeak(&v16->_floatingDockController, v13);
-    objc_storeWeak(&v16->_windowScene, v14);
-    v17 = [v14 layoutStateTransitionCoordinator];
-    [v17 addObserver:v16];
+    objc_storeStrong(&v15->_iconManager, manager);
+    objc_storeStrong(&v16->_libraryViewController, controller);
+    [controllerCopy addObserver:v16];
+    objc_storeWeak(&v16->_floatingDockController, dockControllerCopy);
+    objc_storeWeak(&v16->_windowScene, sceneCopy);
+    layoutStateTransitionCoordinator = [sceneCopy layoutStateTransitionCoordinator];
+    [layoutStateTransitionCoordinator addObserver:v16];
 
-    v18 = [v13 floatingDockViewController];
-    v19 = [v18 configureForPresentingLibraryViewController:v12];
+    floatingDockViewController = [dockControllerCopy floatingDockViewController];
+    v19 = [floatingDockViewController configureForPresentingLibraryViewController:controllerCopy];
     libraryPresenter = v16->_libraryPresenter;
     v16->_libraryPresenter = v19;
 
     [(SBHModalLibraryPresenter *)v16->_libraryPresenter setPresentationDelegate:v16];
     [(SBHModalLibraryPresenter *)v16->_libraryPresenter addObserver:v16];
     v21 = +[SBSceneManagerCoordinator sharedInstance];
-    v22 = [v21 sceneDeactivationManager];
-    v23 = [v22 newAssertionWithReason:18];
+    sceneDeactivationManager = [v21 sceneDeactivationManager];
+    v23 = [sceneDeactivationManager newAssertionWithReason:18];
     resignActiveAssertion = v16->_resignActiveAssertion;
     v16->_resignActiveAssertion = v23;
   }
@@ -72,7 +72,7 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
 }
 
 - (void)invalidate
@@ -80,87 +80,87 @@
   if (![(SBModalLibraryController *)self isInvalidated])
   {
     [(SBModalLibraryController *)self setInvalidated:1];
-    v3 = [(SBModalLibraryController *)self libraryViewController];
-    [v3 invalidate];
+    libraryViewController = [(SBModalLibraryController *)self libraryViewController];
+    [libraryViewController invalidate];
 
-    v4 = [(SBModalLibraryController *)self libraryViewController];
-    [v4 removeObserver:self];
+    libraryViewController2 = [(SBModalLibraryController *)self libraryViewController];
+    [libraryViewController2 removeObserver:self];
 
-    v5 = [(SBModalLibraryController *)self windowScene];
-    v6 = [v5 layoutStateTransitionCoordinator];
-    [v6 removeObserver:self];
+    windowScene = [(SBModalLibraryController *)self windowScene];
+    layoutStateTransitionCoordinator = [windowScene layoutStateTransitionCoordinator];
+    [layoutStateTransitionCoordinator removeObserver:self];
 
-    v7 = [(SBModalLibraryController *)self libraryDisplayLayoutElementAssertion];
-    [v7 invalidate];
+    libraryDisplayLayoutElementAssertion = [(SBModalLibraryController *)self libraryDisplayLayoutElementAssertion];
+    [libraryDisplayLayoutElementAssertion invalidate];
 
-    v8 = [(SBModalLibraryController *)self floatingDockBehaviorAssertion];
-    [v8 invalidate];
+    floatingDockBehaviorAssertion = [(SBModalLibraryController *)self floatingDockBehaviorAssertion];
+    [floatingDockBehaviorAssertion invalidate];
 
-    v9 = [(SBModalLibraryController *)self resignActiveAssertion];
-    [v9 relinquish];
+    resignActiveAssertion = [(SBModalLibraryController *)self resignActiveAssertion];
+    [resignActiveAssertion relinquish];
 
-    v10 = [(SBModalLibraryController *)self libraryWindowKeyboardFocusAssertion];
-    [v10 invalidate];
+    libraryWindowKeyboardFocusAssertion = [(SBModalLibraryController *)self libraryWindowKeyboardFocusAssertion];
+    [libraryWindowKeyboardFocusAssertion invalidate];
   }
 }
 
 - (BOOL)isPresentingLibraryInForeground
 {
-  v2 = [(SBModalLibraryController *)self libraryPresenter];
-  v3 = [v2 isPresentingLibrary];
-  v4 = [v2 isLibraryContainedInForeground];
+  libraryPresenter = [(SBModalLibraryController *)self libraryPresenter];
+  isPresentingLibrary = [libraryPresenter isPresentingLibrary];
+  isLibraryContainedInForeground = [libraryPresenter isLibraryContainedInForeground];
 
-  return v3 & v4;
+  return isPresentingLibrary & isLibraryContainedInForeground;
 }
 
 - (BOOL)isPresentingLibrary
 {
-  v2 = [(SBModalLibraryController *)self libraryPresenter];
-  v3 = [v2 isPresentingLibrary];
+  libraryPresenter = [(SBModalLibraryController *)self libraryPresenter];
+  isPresentingLibrary = [libraryPresenter isPresentingLibrary];
 
-  return v3;
+  return isPresentingLibrary;
 }
 
-- (void)presentLibraryAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentLibraryAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SBModalLibraryController *)self libraryPresenter];
-  [v7 presentLibraryWithAnimation:v4 completion:v6];
+  animatedCopy = animated;
+  completionCopy = completion;
+  libraryPresenter = [(SBModalLibraryController *)self libraryPresenter];
+  [libraryPresenter presentLibraryWithAnimation:animatedCopy completion:completionCopy];
 }
 
-- (void)dismissLibraryAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissLibraryAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SBModalLibraryController *)self libraryPresenter];
-  [v7 dismissLibraryWithAnimation:v4 completion:v6];
+  animatedCopy = animated;
+  completionCopy = completion;
+  libraryPresenter = [(SBModalLibraryController *)self libraryPresenter];
+  [libraryPresenter dismissLibraryWithAnimation:animatedCopy completion:completionCopy];
 }
 
-- (void)toggleLibraryPresentedAnimated:(BOOL)a3 completion:(id)a4
+- (void)toggleLibraryPresentedAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SBModalLibraryController *)self libraryPresenter];
-  [v7 toggleLibraryPresentedInForegroundWithAnimation:v4 completion:v6];
+  animatedCopy = animated;
+  completionCopy = completion;
+  libraryPresenter = [(SBModalLibraryController *)self libraryPresenter];
+  [libraryPresenter toggleLibraryPresentedInForegroundWithAnimation:animatedCopy completion:completionCopy];
 }
 
-- (void)presentLibraryCategoryPodForCategoryIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentLibraryCategoryPodForCategoryIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __95__SBModalLibraryController_presentLibraryCategoryPodForCategoryIdentifier_animated_completion___block_invoke;
   v12[3] = &unk_2783AAC18;
-  v13 = v8;
-  v14 = self;
-  v16 = v6;
-  v15 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(SBModalLibraryController *)self presentLibraryAnimated:v6 completion:v12];
+  v13 = identifierCopy;
+  selfCopy = self;
+  v16 = animatedCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
+  [(SBModalLibraryController *)self presentLibraryAnimated:animatedCopy completion:v12];
 }
 
 void __95__SBModalLibraryController_presentLibraryCategoryPodForCategoryIdentifier_animated_completion___block_invoke(uint64_t a1, int a2)
@@ -186,149 +186,149 @@ void __95__SBModalLibraryController_presentLibraryCategoryPodForCategoryIdentifi
   }
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context
 {
-  [(SBModalLibraryController *)self _evaluateKeyboardWindowLevelAssertion:a3];
+  [(SBModalLibraryController *)self _evaluateKeyboardWindowLevelAssertion:coordinator];
   [(SBModalLibraryController *)self _evaluateResignActiveAssertion];
 
   [(SBModalLibraryController *)self _evaluateWindowStatus];
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context
 {
-  v6 = [a4 toLayoutState];
-  if ([v6 unlockedEnvironmentMode] == 1 && -[SBModalLibraryController isPresentingLibrary](self, "isPresentingLibrary"))
+  toLayoutState = [context toLayoutState];
+  if ([toLayoutState unlockedEnvironmentMode] == 1 && -[SBModalLibraryController isPresentingLibrary](self, "isPresentingLibrary"))
   {
-    v5 = [(SBModalLibraryController *)self libraryPresenter];
-    [v5 setOverrideContainerViewController:0];
+    libraryPresenter = [(SBModalLibraryController *)self libraryPresenter];
+    [libraryPresenter setOverrideContainerViewController:0];
   }
 
   [(SBModalLibraryController *)self _evaluateWindowStatus];
 }
 
-- (void)libraryViewController:(id)a3 willPresentSearchController:(id)a4
+- (void)libraryViewController:(id)controller willPresentSearchController:(id)searchController
 {
-  [(SBModalLibraryController *)self setPresentingOrTransitioningSearch:1, a4];
+  [(SBModalLibraryController *)self setPresentingOrTransitioningSearch:1, searchController];
 
   [(SBModalLibraryController *)self _evaluateKeyboardWindowLevelAssertion];
 }
 
-- (void)libraryViewController:(id)a3 didDismissSearchController:(id)a4
+- (void)libraryViewController:(id)controller didDismissSearchController:(id)searchController
 {
-  [(SBModalLibraryController *)self setPresentingOrTransitioningSearch:0, a4];
+  [(SBModalLibraryController *)self setPresentingOrTransitioningSearch:0, searchController];
 
   [(SBModalLibraryController *)self _evaluateKeyboardWindowLevelAssertion];
 }
 
-- (BOOL)modalLibraryPresenterShouldAllowSwipeToDismissGesture:(id)a3
+- (BOOL)modalLibraryPresenterShouldAllowSwipeToDismissGesture:(id)gesture
 {
-  v4 = [(SBModalLibraryController *)self iconManager];
-  v5 = [(SBModalLibraryController *)self libraryViewController];
-  v6 = [v4 _shouldLibraryOverlayAllowSwipeToDismissGesture:v5];
+  iconManager = [(SBModalLibraryController *)self iconManager];
+  libraryViewController = [(SBModalLibraryController *)self libraryViewController];
+  v6 = [iconManager _shouldLibraryOverlayAllowSwipeToDismissGesture:libraryViewController];
 
   return v6;
 }
 
-- (void)modalLibraryPresenter:(id)a3 willPresentLibrary:(id)a4
+- (void)modalLibraryPresenter:(id)presenter willPresentLibrary:(id)library
 {
-  v5 = a4;
-  v7 = [(SBModalLibraryController *)self iconManager];
-  v6 = [v5 _sbWindowScene];
+  libraryCopy = library;
+  iconManager = [(SBModalLibraryController *)self iconManager];
+  _sbWindowScene = [libraryCopy _sbWindowScene];
 
-  LODWORD(v5) = [v6 isMainDisplayWindowScene];
-  if (v5)
+  LODWORD(libraryCopy) = [_sbWindowScene isMainDisplayWindowScene];
+  if (libraryCopy)
   {
-    [v7 setMainDisplayLibraryViewVisible:1 libraryViewTransitioning:1];
+    [iconManager setMainDisplayLibraryViewVisible:1 libraryViewTransitioning:1];
   }
 
   [(SBModalLibraryController *)self _willPerformTransitionWithLibraryToPresented:1];
 }
 
-- (void)modalLibraryPresenter:(id)a3 didPresentLibrary:(id)a4
+- (void)modalLibraryPresenter:(id)presenter didPresentLibrary:(id)library
 {
-  v5 = a4;
+  libraryCopy = library;
   [(SBModalLibraryController *)self _didCompleteTransitionWithLibraryToPresented:1];
-  v6 = [v5 _sbWindowScene];
+  _sbWindowScene = [libraryCopy _sbWindowScene];
 
-  LODWORD(v5) = [v6 isMainDisplayWindowScene];
-  if (v5)
+  LODWORD(libraryCopy) = [_sbWindowScene isMainDisplayWindowScene];
+  if (libraryCopy)
   {
-    v9 = [(SBModalLibraryController *)self iconManager];
-    [v9 setMainDisplayLibraryViewVisibilityTransitioning:0];
-    v7 = [v9 rootFolderController];
-    v8 = [MEMORY[0x277D75518] focusSystemForEnvironment:v7];
-    [v8 _focusEnvironmentWillDisappear:v7];
+    iconManager = [(SBModalLibraryController *)self iconManager];
+    [iconManager setMainDisplayLibraryViewVisibilityTransitioning:0];
+    rootFolderController = [iconManager rootFolderController];
+    v8 = [MEMORY[0x277D75518] focusSystemForEnvironment:rootFolderController];
+    [v8 _focusEnvironmentWillDisappear:rootFolderController];
   }
 }
 
-- (void)modalLibraryPresenter:(id)a3 willDismissLibrary:(id)a4
+- (void)modalLibraryPresenter:(id)presenter willDismissLibrary:(id)library
 {
-  v8 = a4;
-  v5 = [v8 _sbWindowScene];
-  v6 = [v5 isMainDisplayWindowScene];
+  libraryCopy = library;
+  _sbWindowScene = [libraryCopy _sbWindowScene];
+  isMainDisplayWindowScene = [_sbWindowScene isMainDisplayWindowScene];
 
-  if (v6)
+  if (isMainDisplayWindowScene)
   {
-    v7 = [(SBModalLibraryController *)self iconManager];
-    [v7 setMainDisplayLibraryViewVisibilityTransitioning:1];
+    iconManager = [(SBModalLibraryController *)self iconManager];
+    [iconManager setMainDisplayLibraryViewVisibilityTransitioning:1];
   }
 
-  [(SBModalLibraryController *)self _prepareLibraryViewControllerForDismissal:v8];
+  [(SBModalLibraryController *)self _prepareLibraryViewControllerForDismissal:libraryCopy];
   [(SBModalLibraryController *)self _willPerformTransitionWithLibraryToPresented:0];
 }
 
-- (void)modalLibraryPresenter:(id)a3 didPassCriticalDismissalPoint:(id)a4
+- (void)modalLibraryPresenter:(id)presenter didPassCriticalDismissalPoint:(id)point
 {
-  v5 = a4;
-  v6 = [(SBModalLibraryController *)self iconManager];
-  [v6 _scrollToLastIconPageIfNecessaryForLibraryOverlayDismissal:v5];
+  pointCopy = point;
+  iconManager = [(SBModalLibraryController *)self iconManager];
+  [iconManager _scrollToLastIconPageIfNecessaryForLibraryOverlayDismissal:pointCopy];
 }
 
-- (void)modalLibraryPresenter:(id)a3 didDismissLibrary:(id)a4
+- (void)modalLibraryPresenter:(id)presenter didDismissLibrary:(id)library
 {
-  v5 = [a4 _sbWindowScene];
-  v6 = [v5 isMainDisplayWindowScene];
+  _sbWindowScene = [library _sbWindowScene];
+  isMainDisplayWindowScene = [_sbWindowScene isMainDisplayWindowScene];
 
-  if (v6)
+  if (isMainDisplayWindowScene)
   {
-    v7 = [(SBModalLibraryController *)self iconManager];
-    [v7 setMainDisplayLibraryViewVisible:0 libraryViewTransitioning:0];
+    iconManager = [(SBModalLibraryController *)self iconManager];
+    [iconManager setMainDisplayLibraryViewVisible:0 libraryViewTransitioning:0];
   }
 
   [(SBModalLibraryController *)self _didCompleteTransitionWithLibraryToPresented:0];
 }
 
-- (void)_willPerformTransitionWithLibraryToPresented:(BOOL)a3
+- (void)_willPerformTransitionWithLibraryToPresented:(BOOL)presented
 {
-  v3 = a3;
-  v5 = [(SBModalLibraryController *)self floatingDockController];
-  v6 = [v5 floatingDockViewController];
-  [v6 setLibraryPodIconVisible:v3 ^ 1];
+  presentedCopy = presented;
+  floatingDockController = [(SBModalLibraryController *)self floatingDockController];
+  floatingDockViewController = [floatingDockController floatingDockViewController];
+  [floatingDockViewController setLibraryPodIconVisible:presentedCopy ^ 1];
 
-  [(SBModalLibraryController *)self _configureFloatingDockBehaviorAssertionForPresented:v3];
-  if (v3)
+  [(SBModalLibraryController *)self _configureFloatingDockBehaviorAssertionForPresented:presentedCopy];
+  if (presentedCopy)
   {
     [(SBModalLibraryController *)self _evaluateResignActiveAssertion];
     [(SBModalLibraryController *)self _evaluateKeyboardWindowLevelAssertion];
-    v7 = [(SBModalLibraryController *)self libraryViewController];
-    [v7 enumerateDisplayedIconViewsUsingBlock:&__block_literal_global_316];
+    libraryViewController = [(SBModalLibraryController *)self libraryViewController];
+    [libraryViewController enumerateDisplayedIconViewsUsingBlock:&__block_literal_global_316];
   }
 
   [(SBModalLibraryController *)self _evaluateWindowStatus];
 }
 
-- (void)_didCompleteTransitionWithLibraryToPresented:(BOOL)a3
+- (void)_didCompleteTransitionWithLibraryToPresented:(BOOL)presented
 {
-  v3 = a3;
+  presentedCopy = presented;
   [(SBModalLibraryController *)self _setLibraryDisplayLayoutElementActive:?];
   [(SBModalLibraryController *)self _evaluateKeyboardWindowLevelAssertion];
   [(SBModalLibraryController *)self _evaluateResignActiveAssertion];
-  if (v3)
+  if (presentedCopy)
   {
-    v5 = [(SBModalLibraryController *)self _currentLayoutState];
-    v6 = [v5 unlockedEnvironmentMode];
+    _currentLayoutState = [(SBModalLibraryController *)self _currentLayoutState];
+    unlockedEnvironmentMode = [_currentLayoutState unlockedEnvironmentMode];
 
-    if (v6 == 3)
+    if (unlockedEnvironmentMode == 3)
     {
       v9 = +[SBWorkspace mainWorkspace];
       v7 = [(SBModalLibraryController *)self coordinatorRequestedIdleTimerBehavior:v9];
@@ -337,21 +337,21 @@ void __95__SBModalLibraryController_presentLibraryCategoryPodForCategoryIdentifi
   }
 }
 
-- (void)_setLibraryDisplayLayoutElementActive:(BOOL)a3
+- (void)_setLibraryDisplayLayoutElementActive:(BOOL)active
 {
-  v3 = a3;
-  v5 = [(SBModalLibraryController *)self libraryDisplayLayoutElementAssertion];
-  if (v3 && !v5)
+  activeCopy = active;
+  libraryDisplayLayoutElementAssertion = [(SBModalLibraryController *)self libraryDisplayLayoutElementAssertion];
+  if (activeCopy && !libraryDisplayLayoutElementAssertion)
   {
     v19 = 0;
     v6 = objc_alloc(MEMORY[0x277D66A50]);
     v7 = [v6 initWithIdentifier:*MEMORY[0x277D66F00]];
     [v7 setFillsDisplayBounds:1];
     [v7 setLayoutRole:3];
-    v8 = [(SBModalLibraryController *)self libraryViewController];
-    v9 = [v8 view];
-    v10 = [v9 window];
-    [v10 level];
+    libraryViewController = [(SBModalLibraryController *)self libraryViewController];
+    view = [libraryViewController view];
+    window = [view window];
+    [window level];
     v12 = v11;
     v13 = v11;
 
@@ -366,30 +366,30 @@ void __95__SBModalLibraryController_presentLibraryCategoryPodForCategoryIdentifi
     }
 
     [v7 setLevel:v14];
-    v15 = [(SBModalLibraryController *)self libraryViewController];
-    v16 = [v15 _sbWindowScene];
-    v17 = [v16 displayLayoutPublisher];
-    v18 = [v17 addElement:v7];
+    libraryViewController2 = [(SBModalLibraryController *)self libraryViewController];
+    _sbWindowScene = [libraryViewController2 _sbWindowScene];
+    displayLayoutPublisher = [_sbWindowScene displayLayoutPublisher];
+    v18 = [displayLayoutPublisher addElement:v7];
 
     [(SBModalLibraryController *)self setLibraryDisplayLayoutElementAssertion:v18];
     goto LABEL_10;
   }
 
-  if (!v3 && v5)
+  if (!activeCopy && libraryDisplayLayoutElementAssertion)
   {
-    v19 = v5;
-    [v5 invalidate];
+    v19 = libraryDisplayLayoutElementAssertion;
+    [libraryDisplayLayoutElementAssertion invalidate];
     [(SBModalLibraryController *)self setLibraryDisplayLayoutElementAssertion:0];
 LABEL_10:
-    v5 = v19;
+    libraryDisplayLayoutElementAssertion = v19;
   }
 }
 
-- (void)_prepareLibraryViewControllerForDismissal:(id)a3
+- (void)_prepareLibraryViewControllerForDismissal:(id)dismissal
 {
-  [a3 enumerateDisplayedIconViewsUsingBlock:&__block_literal_global_23_1];
-  v4 = [(SBModalLibraryController *)self iconManager];
-  [v4 dismissIconShareSheets];
+  [dismissal enumerateDisplayedIconViewsUsingBlock:&__block_literal_global_23_1];
+  iconManager = [(SBModalLibraryController *)self iconManager];
+  [iconManager dismissIconShareSheets];
 }
 
 void __70__SBModalLibraryController__prepareLibraryViewControllerForDismissal___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -402,27 +402,27 @@ void __70__SBModalLibraryController__prepareLibraryViewControllerForDismissal___
   }
 }
 
-- (void)_configureFloatingDockBehaviorAssertionForPresented:(BOOL)a3
+- (void)_configureFloatingDockBehaviorAssertionForPresented:(BOOL)presented
 {
-  v3 = a3;
-  v5 = [(SBModalLibraryController *)self floatingDockBehaviorAssertion];
-  if (v3 && !v5)
+  presentedCopy = presented;
+  floatingDockBehaviorAssertion = [(SBModalLibraryController *)self floatingDockBehaviorAssertion];
+  if (presentedCopy && !floatingDockBehaviorAssertion)
   {
     v9 = 0;
     v6 = [SBFloatingDockBehaviorAssertion alloc];
-    v7 = [(SBModalLibraryController *)self floatingDockController];
-    v8 = [(SBFloatingDockBehaviorAssertion *)v6 initWithFloatingDockController:v7 visibleProgress:1 animated:1 gesturePossible:9 atLevel:@"SBModalLibraryPresentedReason" reason:0 withCompletion:0.0];
+    floatingDockController = [(SBModalLibraryController *)self floatingDockController];
+    v8 = [(SBFloatingDockBehaviorAssertion *)v6 initWithFloatingDockController:floatingDockController visibleProgress:1 animated:1 gesturePossible:9 atLevel:@"SBModalLibraryPresentedReason" reason:0 withCompletion:0.0];
 
     [(SBModalLibraryController *)self setFloatingDockBehaviorAssertion:v8];
 LABEL_7:
-    v5 = v9;
+    floatingDockBehaviorAssertion = v9;
     goto LABEL_8;
   }
 
-  if (!v3 && v5)
+  if (!presentedCopy && floatingDockBehaviorAssertion)
   {
-    v9 = v5;
-    [v5 invalidate];
+    v9 = floatingDockBehaviorAssertion;
+    [floatingDockBehaviorAssertion invalidate];
     [(SBModalLibraryController *)self setFloatingDockBehaviorAssertion:0];
     goto LABEL_7;
   }
@@ -433,21 +433,21 @@ LABEL_8:
 - (void)_evaluateKeyboardWindowLevelAssertion
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained isMainDisplayWindowScene];
+  isMainDisplayWindowScene = [WeakRetained isMainDisplayWindowScene];
 
-  if (!v4)
+  if (!isMainDisplayWindowScene)
   {
     return;
   }
 
-  v5 = [(SBModalLibraryController *)self _currentLayoutState];
-  v6 = [v5 unlockedEnvironmentMode];
+  _currentLayoutState = [(SBModalLibraryController *)self _currentLayoutState];
+  unlockedEnvironmentMode = [_currentLayoutState unlockedEnvironmentMode];
 
-  v7 = (v6 & 0xFFFFFFFFFFFFFFFELL) == 2 && [(SBModalLibraryController *)self isPresentingLibraryInForeground]&& [(SBModalLibraryController *)self isPresentingOrTransitioningSearch];
-  v8 = [(SBModalLibraryController *)self keyboardWindowLevelAssertion];
-  if (!v7 || v8)
+  v7 = (unlockedEnvironmentMode & 0xFFFFFFFFFFFFFFFELL) == 2 && [(SBModalLibraryController *)self isPresentingLibraryInForeground]&& [(SBModalLibraryController *)self isPresentingOrTransitioningSearch];
+  keyboardWindowLevelAssertion = [(SBModalLibraryController *)self keyboardWindowLevelAssertion];
+  if (!v7 || keyboardWindowLevelAssertion)
   {
-    if (v8)
+    if (keyboardWindowLevelAssertion)
     {
       v17 = v7;
     }
@@ -462,43 +462,43 @@ LABEL_8:
       goto LABEL_16;
     }
 
-    v18 = v8;
-    [v8 invalidate];
+    v18 = keyboardWindowLevelAssertion;
+    [keyboardWindowLevelAssertion invalidate];
     [(SBModalLibraryController *)self setKeyboardWindowLevelAssertion:0];
   }
 
   else
   {
     v18 = 0;
-    v9 = [(SBModalLibraryController *)self libraryViewController];
-    v10 = [v9 _sbWindowScene];
-    v11 = [v10 medusaHostedKeyboardWindowController];
-    v12 = [(SBModalLibraryController *)self libraryViewController];
-    v13 = [v12 view];
-    v14 = [v13 window];
-    [v14 windowLevel];
-    v16 = [v11 newMedusaHostedKeyboardWindowLevelAssertionWithPriority:1 windowLevel:v15 + 1.0];
+    libraryViewController = [(SBModalLibraryController *)self libraryViewController];
+    _sbWindowScene = [libraryViewController _sbWindowScene];
+    medusaHostedKeyboardWindowController = [_sbWindowScene medusaHostedKeyboardWindowController];
+    libraryViewController2 = [(SBModalLibraryController *)self libraryViewController];
+    view = [libraryViewController2 view];
+    window = [view window];
+    [window windowLevel];
+    v16 = [medusaHostedKeyboardWindowController newMedusaHostedKeyboardWindowLevelAssertionWithPriority:1 windowLevel:v15 + 1.0];
 
     [(SBModalLibraryController *)self setKeyboardWindowLevelAssertion:v16];
   }
 
-  v8 = v18;
+  keyboardWindowLevelAssertion = v18;
 LABEL_16:
 }
 
 - (void)_evaluateResignActiveAssertion
 {
-  v3 = [(SBModalLibraryController *)self _currentLayoutState];
-  v4 = [v3 unlockedEnvironmentMode];
+  _currentLayoutState = [(SBModalLibraryController *)self _currentLayoutState];
+  unlockedEnvironmentMode = [_currentLayoutState unlockedEnvironmentMode];
 
-  v5 = [(SBModalLibraryController *)self isPresentingLibraryInForeground];
-  v6 = v4 == 3 && v5;
-  v7 = [(SBModalLibraryController *)self resignActiveAssertion];
-  v8 = [v7 isAcquired];
+  isPresentingLibraryInForeground = [(SBModalLibraryController *)self isPresentingLibraryInForeground];
+  v6 = unlockedEnvironmentMode == 3 && isPresentingLibraryInForeground;
+  resignActiveAssertion = [(SBModalLibraryController *)self resignActiveAssertion];
+  isAcquired = [resignActiveAssertion isAcquired];
 
-  if (!v6 || (v8 & 1) != 0)
+  if (!v6 || (isAcquired & 1) != 0)
   {
-    if (v6 || (v8 & 1) == 0)
+    if (v6 || (isAcquired & 1) == 0)
     {
       return;
     }
@@ -510,8 +510,8 @@ LABEL_16:
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[Modal Library Controller] Updating resign active assertion to: Relinquished", v14, 2u);
     }
 
-    v10 = [(SBModalLibraryController *)self resignActiveAssertion];
-    [v10 relinquish];
+    resignActiveAssertion2 = [(SBModalLibraryController *)self resignActiveAssertion];
+    [resignActiveAssertion2 relinquish];
   }
 
   else
@@ -523,10 +523,10 @@ LABEL_16:
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[Modal Library Controller] Updating resign active assertion to: Acquired", buf, 2u);
     }
 
-    v10 = [(SBModalLibraryController *)self resignActiveAssertion];
+    resignActiveAssertion2 = [(SBModalLibraryController *)self resignActiveAssertion];
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v12 = [WeakRetained _fbsDisplayIdentity];
-    [v10 sb_acquireForDisplayIdentity:v12];
+    _fbsDisplayIdentity = [WeakRetained _fbsDisplayIdentity];
+    [resignActiveAssertion2 sb_acquireForDisplayIdentity:_fbsDisplayIdentity];
   }
 }
 
@@ -534,26 +534,26 @@ LABEL_16:
 {
   if ([(SBModalLibraryController *)self isPresentingLibraryInForeground])
   {
-    v3 = [(SBModalLibraryController *)self libraryViewController];
-    v4 = [v3 viewIfLoaded];
-    v12 = [v4 window];
+    libraryViewController = [(SBModalLibraryController *)self libraryViewController];
+    viewIfLoaded = [libraryViewController viewIfLoaded];
+    window = [viewIfLoaded window];
 
     if (!self->_libraryWindowKeyboardFocusAssertion)
     {
       v5 = +[SBWorkspace mainWorkspace];
-      v6 = [v5 keyboardFocusController];
+      keyboardFocusController = [v5 keyboardFocusController];
       v7 = +[SBKeyboardFocusLockReason modalAppLibrary];
-      v8 = [v6 focusLockSpringBoardWindow:v12 forReason:v7];
+      v8 = [keyboardFocusController focusLockSpringBoardWindow:window forReason:v7];
       libraryWindowKeyboardFocusAssertion = self->_libraryWindowKeyboardFocusAssertion;
       self->_libraryWindowKeyboardFocusAssertion = v8;
     }
 
-    if (([v12 isKeyWindow] & 1) == 0)
+    if (([window isKeyWindow] & 1) == 0)
     {
-      [v12 makeKeyWindow];
+      [window makeKeyWindow];
     }
 
-    v10 = v12;
+    v10 = window;
   }
 
   else
@@ -573,10 +573,10 @@ LABEL_16:
 - (id)_currentLayoutState
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained layoutStateProvider];
-  v4 = [v3 layoutState];
+  layoutStateProvider = [WeakRetained layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
 
-  return v4;
+  return layoutState;
 }
 
 - (SBFloatingDockController)floatingDockController

@@ -1,12 +1,12 @@
 @interface SkipContentIntentResponse
-- (SkipContentIntentResponse)initWithPropertiesByName:(id)a3;
+- (SkipContentIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation SkipContentIntentResponse
 
-- (SkipContentIntentResponse)initWithPropertiesByName:(id)a3
+- (SkipContentIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_268B37B64();
   }

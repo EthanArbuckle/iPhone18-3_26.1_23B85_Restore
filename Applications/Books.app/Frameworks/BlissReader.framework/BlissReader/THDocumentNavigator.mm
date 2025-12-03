@@ -1,77 +1,77 @@
 @interface THDocumentNavigator
-- (BOOL)canNavigateByBookDirection:(int)a3 bookGranularity:(int)a4;
-- (BOOL)canNavigateByHistoryDirection:(int)a3;
-- (BOOL)followAnchor:(id)a3 pulse:(BOOL)a4;
-- (BOOL)followLink:(id)a3 animated:(BOOL)a4;
-- (BOOL)isPageLocationValid:(id)a3;
-- (BOOL)jumpToPageLocation:(id)a3 touchHistory:(BOOL)a4 minor:(BOOL)a5;
-- (BOOL)p_followDocumentAnchor:(id)a3 pulse:(BOOL)a4;
-- (BOOL)restorePlaceholderWithOverrideLocation:(id)a3;
+- (BOOL)canNavigateByBookDirection:(int)direction bookGranularity:(int)granularity;
+- (BOOL)canNavigateByHistoryDirection:(int)direction;
+- (BOOL)followAnchor:(id)anchor pulse:(BOOL)pulse;
+- (BOOL)followLink:(id)link animated:(BOOL)animated;
+- (BOOL)isPageLocationValid:(id)valid;
+- (BOOL)jumpToPageLocation:(id)location touchHistory:(BOOL)history minor:(BOOL)minor;
+- (BOOL)p_followDocumentAnchor:(id)anchor pulse:(BOOL)pulse;
+- (BOOL)restorePlaceholderWithOverrideLocation:(id)location;
 - (CGRect)rectForFlowAnchor;
-- (THDocumentNavigator)initWithDocumentRoot:(id)a3 interactiveCanvasController:(id)a4;
-- (_NSRange)bodyRangeForStorageAnchorInFlow:(id)a3 sectionController:(id)a4;
+- (THDocumentNavigator)initWithDocumentRoot:(id)root interactiveCanvasController:(id)controller;
+- (_NSRange)bodyRangeForStorageAnchorInFlow:(id)flow sectionController:(id)controller;
 - (_NSRange)currentAbsolutePageIndexRange;
-- (_NSRange)p_bodyRangeForPossiblyAttachedInfo:(id)a3 body:(id)a4;
-- (_NSRange)p_bodyRangeForStorageAnchorInFlow:(id)a3;
-- (_NSRange)p_flowPivotRangeForBodyAnchor:(id)a3;
+- (_NSRange)p_bodyRangeForPossiblyAttachedInfo:(id)info body:(id)body;
+- (_NSRange)p_bodyRangeForStorageAnchorInFlow:(id)flow;
+- (_NSRange)p_flowPivotRangeForBodyAnchor:(id)anchor;
 - (id)currentBookspotLocation;
 - (id)currentContentNode;
 - (id)currentPageInfo;
-- (id)currentPageInfoForBookmarksUsingViewCenter:(BOOL)a3;
+- (id)currentPageInfoForBookmarksUsingViewCenter:(BOOL)center;
 - (id)currentPageInfoForEndOfVisibleCanvas;
 - (id)currentPageLocation;
 - (id)currentPageLocationForCenterOfVisibleRectInInteractiveCanvasController;
-- (id)linkForURL:(id)a3 inContentNode:(id)a4;
-- (id)linkForURL:(id)a3 inStorage:(id)a4;
-- (id)p_anchorForLink:(id)a3;
-- (id)p_bodyStorageAnchorForAbsolutePageIndex:(unint64_t)a3;
+- (id)linkForURL:(id)l inContentNode:(id)node;
+- (id)linkForURL:(id)l inStorage:(id)storage;
+- (id)p_anchorForLink:(id)link;
+- (id)p_bodyStorageAnchorForAbsolutePageIndex:(unint64_t)index;
 - (id)p_bodyStorageAnchorForFlow;
-- (id)p_bodyStorageAnchorForFlowInRect:(CGRect)a3;
-- (id)pageLocationForAbsolutePageIndex:(unint64_t)a3;
-- (id)pageNumberStringForLink:(id)a3;
-- (id)readingProgressAllowSample:(BOOL)a3;
-- (id)storageAnchorForAbsolutePageIndex:(unint64_t)a3;
-- (id)storageAnchorForBookmarksUsingViewCenter:(BOOL)a3;
+- (id)p_bodyStorageAnchorForFlowInRect:(CGRect)rect;
+- (id)pageLocationForAbsolutePageIndex:(unint64_t)index;
+- (id)pageNumberStringForLink:(id)link;
+- (id)readingProgressAllowSample:(BOOL)sample;
+- (id)storageAnchorForAbsolutePageIndex:(unint64_t)index;
+- (id)storageAnchorForBookmarksUsingViewCenter:(BOOL)center;
 - (id)storageAnchorForCurrentPage;
 - (unint64_t)absolutePageIndexForBeginningOfSection;
 - (unint64_t)absolutePageIndexForEndOfPreviousSection;
 - (unint64_t)absolutePageIndexForEndOfSection;
-- (unint64_t)absolutePageIndexForLink:(id)a3;
+- (unint64_t)absolutePageIndexForLink:(id)link;
 - (unint64_t)absolutePageIndexForNextSection;
 - (unint64_t)absolutePageIndexForPreviousSection;
 - (unint64_t)currentAbsolutePageIndex;
 - (unint64_t)currentAbsolutePageIndexForBeginningOfVisibleCanvas;
-- (unint64_t)currentAbsolutePageIndexForBookmarksUsingViewCenter:(BOOL)a3;
+- (unint64_t)currentAbsolutePageIndexForBookmarksUsingViewCenter:(BOOL)center;
 - (unint64_t)currentAbsolutePageIndexForEndOfVisibleCanvas;
 - (unint64_t)currentChapterIndex;
 - (unint64_t)currentNavigationUnitRelativePageIndex;
 - (unint64_t)lastAbsolutePageIndex;
 - (unint64_t)nextVisibleAbsolutePageNumber;
 - (unint64_t)previousVisibleAbsolutePageNumber;
-- (unint64_t)relativePageIndexForLink:(id)a3;
+- (unint64_t)relativePageIndexForLink:(id)link;
 - (void)dealloc;
-- (void)navigateByBookDirection:(int)a3 bookGranularity:(int)a4;
-- (void)navigateByHistoryDirection:(int)a3;
-- (void)p_jumpToAnnotationAnchor:(id)a3 pulse:(BOOL)a4;
-- (void)p_jumpToContentNodeAnchor:(id)a3;
-- (void)p_jumpToPageAnchor:(id)a3;
-- (void)p_jumpToStorageAnchor:(id)a3 pulse:(BOOL)a4;
-- (void)p_jumpWithBlock:(id)a3 andPulseStorageAnchor:(id)a4;
-- (void)p_jumpWithBlock:(id)a3 annotation:(id)a4 noteSelectionRange:(_NSRange)a5;
-- (void)p_pulseStorageAnchor:(id)a3;
-- (void)p_resolveLink:(id)a3 andCallBlock:(id)a4;
-- (void)p_scrollToAbsolutePageIndex:(unint64_t)a3 animated:(BOOL)a4;
+- (void)navigateByBookDirection:(int)direction bookGranularity:(int)granularity;
+- (void)navigateByHistoryDirection:(int)direction;
+- (void)p_jumpToAnnotationAnchor:(id)anchor pulse:(BOOL)pulse;
+- (void)p_jumpToContentNodeAnchor:(id)anchor;
+- (void)p_jumpToPageAnchor:(id)anchor;
+- (void)p_jumpToStorageAnchor:(id)anchor pulse:(BOOL)pulse;
+- (void)p_jumpWithBlock:(id)block andPulseStorageAnchor:(id)anchor;
+- (void)p_jumpWithBlock:(id)block annotation:(id)annotation noteSelectionRange:(_NSRange)range;
+- (void)p_pulseStorageAnchor:(id)anchor;
+- (void)p_resolveLink:(id)link andCallBlock:(id)block;
+- (void)p_scrollToAbsolutePageIndex:(unint64_t)index animated:(BOOL)animated;
 - (void)savePlaceholder;
 - (void)scrollToNextSection;
 - (void)scrollToPreviousSection;
-- (void)setDocumentRoot:(id)a3;
-- (void)setVisibleAbsolutePhysicalPageIndex:(unint64_t)a3;
-- (void)setVisibleAbsolutePhysicalPageIndex:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setDocumentRoot:(id)root;
+- (void)setVisibleAbsolutePhysicalPageIndex:(unint64_t)index;
+- (void)setVisibleAbsolutePhysicalPageIndex:(unint64_t)index animated:(BOOL)animated;
 @end
 
 @implementation THDocumentNavigator
 
-- (THDocumentNavigator)initWithDocumentRoot:(id)a3 interactiveCanvasController:(id)a4
+- (THDocumentNavigator)initWithDocumentRoot:(id)root interactiveCanvasController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = THDocumentNavigator;
@@ -79,8 +79,8 @@
   v7 = v6;
   if (v6)
   {
-    [(THDocumentNavigator *)v6 setDocumentRoot:a3];
-    v7->_interactiveCanvasController = a4;
+    [(THDocumentNavigator *)v6 setDocumentRoot:root];
+    v7->_interactiveCanvasController = controller;
     [(THBookspotHistoryStack *)[(THDocumentRoot *)v7->_documentRoot bookspotHistoryStack] setDelegate:v7];
   }
 
@@ -99,23 +99,23 @@
   [(THDocumentNavigator *)&v3 dealloc];
 }
 
-- (void)setDocumentRoot:(id)a3
+- (void)setDocumentRoot:(id)root
 {
   documentRoot = self->_documentRoot;
-  if (documentRoot != a3)
+  if (documentRoot != root)
   {
 
-    self->_documentRoot = a3;
-    self->_documentLinkResolver = [[THDocumentLinkResolver alloc] initWithDocumentRoot:a3];
+    self->_documentRoot = root;
+    self->_documentLinkResolver = [[THDocumentLinkResolver alloc] initWithDocumentRoot:root];
   }
 }
 
-- (void)p_resolveLink:(id)a3 andCallBlock:(id)a4
+- (void)p_resolveLink:(id)link andCallBlock:(id)block
 {
-  v5 = a3;
-  if (([a3 isPageLink] & 1) != 0 || (objc_msgSend(v5, "isChapterGuidLink") & 1) != 0 || objc_msgSend(v5, "isChapterLink"))
+  linkCopy = link;
+  if (([link isPageLink] & 1) != 0 || (objc_msgSend(linkCopy, "isChapterGuidLink") & 1) != 0 || objc_msgSend(linkCopy, "isChapterLink"))
   {
-    v7 = [(THDocumentLinkResolver *)[(THDocumentNavigator *)self documentLinkResolver] absolutePageNumberFromCustomLink:v5 presentationType:[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType]];
+    v7 = [(THDocumentLinkResolver *)[(THDocumentNavigator *)self documentLinkResolver] absolutePageNumberFromCustomLink:linkCopy presentationType:[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType]];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
       return;
@@ -123,42 +123,42 @@
 
     v8 = v7;
     v9 = [(THModelNode *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] rootNode] contentNodeForRelativePageIndex:v7 forPresentationType:[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType]];
-    v10 = *(a4 + 2);
-    v11 = a4;
+    v10 = *(block + 2);
+    blockCopy2 = block;
     v12 = v8;
     goto LABEL_7;
   }
 
-  v13 = [(THDocumentLinkResolver *)[(THDocumentNavigator *)self documentLinkResolver] absoluteLink:v5 withContentNode:[(THDocumentNavigator *)self currentContentNode]];
+  v13 = [(THDocumentLinkResolver *)[(THDocumentNavigator *)self documentLinkResolver] absoluteLink:linkCopy withContentNode:[(THDocumentNavigator *)self currentContentNode]];
   if (v13)
   {
-    v5 = v13;
+    linkCopy = v13;
     v14 = [(THDocumentLinkResolver *)[(THDocumentNavigator *)self documentLinkResolver] contentNodeFromLink:v13];
     if (v14)
     {
       v15 = v14;
       if ([v14 nodeBodyExists])
       {
-        [THContentLinkResolver navigableAnchorFromLink:v5 withContentNode:v15 presentationType:[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType]];
+        [THContentLinkResolver navigableAnchorFromLink:linkCopy withContentNode:v15 presentationType:[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType]];
         objc_opt_class();
         v16 = TSUDynamicCast();
         v17 = v16 ? [(THDocumentRoot *)self->_documentRoot absolutePageIndexForStorageAnchor:v16]: [(THDocumentNavigationModel *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel] absolutePageIndexForContentNodeRelativePageIndex:0 inContentNode:v15 forPresentationType:[THPresentationType paginatedPresentationTypeInContext:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] context]]];
         v12 = v17;
         if (v17 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v10 = *(a4 + 2);
-          v11 = a4;
+          v10 = *(block + 2);
+          blockCopy2 = block;
           v9 = v15;
 LABEL_7:
 
-          v10(v11, v12, v9, v5);
+          v10(blockCopy2, v12, v9, linkCopy);
         }
       }
     }
   }
 }
 
-- (unint64_t)absolutePageIndexForLink:(id)a3
+- (unint64_t)absolutePageIndexForLink:(id)link
 {
   v6 = 0;
   v7 = &v6;
@@ -169,13 +169,13 @@ LABEL_7:
   v5[2] = sub_1B9458;
   v5[3] = &unk_45E9A0;
   v5[4] = &v6;
-  [(THDocumentNavigator *)self p_resolveLink:a3 andCallBlock:v5];
+  [(THDocumentNavigator *)self p_resolveLink:link andCallBlock:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (id)pageNumberStringForLink:(id)a3
+- (id)pageNumberStringForLink:(id)link
 {
   v6 = 0;
   v7 = &v6;
@@ -189,30 +189,30 @@ LABEL_7:
   v5[3] = &unk_45E9C8;
   v5[4] = self;
   v5[5] = &v6;
-  [(THDocumentNavigator *)self p_resolveLink:a3 andCallBlock:v5];
+  [(THDocumentNavigator *)self p_resolveLink:link andCallBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (BOOL)followLink:(id)a3 animated:(BOOL)a4
+- (BOOL)followLink:(id)link animated:(BOOL)animated
 {
-  v4 = a4;
-  if ([a3 isRelative])
+  animatedCopy = animated;
+  if ([link isRelative])
   {
-    v7 = [(THDocumentNavigator *)self p_anchorForLink:a3];
+    v7 = [(THDocumentNavigator *)self p_anchorForLink:link];
   }
 
   else
   {
-    v7 = [(THDocumentLinkResolver *)[(THDocumentNavigator *)self documentLinkResolver] anchorFromAbsoluteLink:a3 presentationType:[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType]];
+    v7 = [(THDocumentLinkResolver *)[(THDocumentNavigator *)self documentLinkResolver] anchorFromAbsoluteLink:link presentationType:[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType]];
   }
 
   v8 = v7;
   if (v7)
   {
     v9 = +[UIView areAnimationsEnabled];
-    [UIView setAnimationsEnabled:v4];
+    [UIView setAnimationsEnabled:animatedCopy];
     v10 = [(THDocumentNavigator *)self followAnchor:v8 pulse:1];
     [UIView setAnimationsEnabled:v9];
     return v10;
@@ -223,22 +223,22 @@ LABEL_7:
     [(THDocumentNavigator *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self failedToFollowLink:a3];
+      [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self failedToFollowLink:link];
     }
 
     return 0;
   }
 }
 
-- (BOOL)followAnchor:(id)a3 pulse:(BOOL)a4
+- (BOOL)followAnchor:(id)anchor pulse:(BOOL)pulse
 {
-  v4 = a4;
+  pulseCopy = pulse;
   [(THDocumentNavigator *)self setFollowingAnchor:1];
-  if ([a3 contentNode])
+  if ([anchor contentNode])
   {
-    v7 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel];
-    v8 = [(NSArray *)[(THDocumentNavigationModel *)v7 navigationUnits] indexOfObject:[(THDocumentNavigationModel *)v7 navigationUnitContainingContentNode:[(THDocumentNavigator *)self currentContentNode]]];
-    v9 = -[NSArray indexOfObject:](-[THDocumentNavigationModel navigationUnits](v7, "navigationUnits"), "indexOfObject:", -[THDocumentNavigationModel navigationUnitContainingContentNode:](v7, "navigationUnitContainingContentNode:", [a3 contentNode]));
+    navigationModel = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel];
+    v8 = [(NSArray *)[(THDocumentNavigationModel *)navigationModel navigationUnits] indexOfObject:[(THDocumentNavigationModel *)navigationModel navigationUnitContainingContentNode:[(THDocumentNavigator *)self currentContentNode]]];
+    v9 = -[NSArray indexOfObject:](-[THDocumentNavigationModel navigationUnits](navigationModel, "navigationUnits"), "indexOfObject:", -[THDocumentNavigationModel navigationUnitContainingContentNode:](navigationModel, "navigationUnitContainingContentNode:", [anchor contentNode]));
     v10 = v9;
     v11 = v8 == 0x7FFFFFFFFFFFFFFFLL || v8 == v9;
     v12 = !v11;
@@ -246,7 +246,7 @@ LABEL_7:
     {
       if (v8 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v13 = [(THDocumentNavigator *)self p_followDocumentAnchor:a3 pulse:v4];
+        v13 = [(THDocumentNavigator *)self p_followDocumentAnchor:anchor pulse:pulseCopy];
         goto LABEL_23;
       }
     }
@@ -263,10 +263,10 @@ LABEL_7:
     [(THDocumentNavigator *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      -[THDocumentNavigatorDelegate documentNavigator:willChangeFromContentNode:toContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:willChangeFromContentNode:toContentNode:", self, -[THDocumentNavigator currentContentNode](self, "currentContentNode"), [a3 contentNode]);
+      -[THDocumentNavigatorDelegate documentNavigator:willChangeFromContentNode:toContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:willChangeFromContentNode:toContentNode:", self, -[THDocumentNavigator currentContentNode](self, "currentContentNode"), [anchor contentNode]);
     }
 
-    v13 = [(THDocumentNavigator *)self p_followDocumentAnchor:a3 pulse:v4];
+    v13 = [(THDocumentNavigator *)self p_followDocumentAnchor:anchor pulse:pulseCopy];
     if (v12)
     {
       [(THDocumentNavigator *)self delegate];
@@ -279,7 +279,7 @@ LABEL_7:
     [(THDocumentNavigator *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      -[THDocumentNavigatorDelegate documentNavigator:didChangeFromContentNode:toContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:didChangeFromContentNode:toContentNode:", self, -[THDocumentNavigator currentContentNode](self, "currentContentNode"), [a3 contentNode]);
+      -[THDocumentNavigatorDelegate documentNavigator:didChangeFromContentNode:toContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:didChangeFromContentNode:toContentNode:", self, -[THDocumentNavigator currentContentNode](self, "currentContentNode"), [anchor contentNode]);
     }
   }
 
@@ -288,7 +288,7 @@ LABEL_7:
     [(THDocumentNavigator *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self failedToFollowAnchor:a3 pulse:v4];
+      [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self failedToFollowAnchor:anchor pulse:pulseCopy];
     }
 
     v13 = 0;
@@ -301,15 +301,15 @@ LABEL_23:
   return v13;
 }
 
-- (BOOL)p_followDocumentAnchor:(id)a3 pulse:(BOOL)a4
+- (BOOL)p_followDocumentAnchor:(id)anchor pulse:(BOOL)pulse
 {
-  v4 = a4;
-  if (![a3 contentNode])
+  pulseCopy = pulse;
+  if (![anchor contentNode])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (![a3 contentNode])
+  if (![anchor contentNode])
   {
     return 0;
   }
@@ -322,7 +322,7 @@ LABEL_23:
     v8 = TSUDynamicCast();
     if (v8)
     {
-      [(THDocumentNavigator *)self p_jumpToAnnotationAnchor:v8 pulse:v4];
+      [(THDocumentNavigator *)self p_jumpToAnnotationAnchor:v8 pulse:pulseCopy];
       goto LABEL_12;
     }
 
@@ -345,42 +345,42 @@ LABEL_23:
     return 0;
   }
 
-  [(THDocumentNavigator *)self p_jumpToStorageAnchor:v7 pulse:v4];
+  [(THDocumentNavigator *)self p_jumpToStorageAnchor:v7 pulse:pulseCopy];
 LABEL_12:
   v11 = 1;
   [(THDocumentNavigator *)self setVisitedPagesAfterOpening:1];
   return v11;
 }
 
-- (void)p_scrollToAbsolutePageIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)p_scrollToAbsolutePageIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel];
-  v8 = [(THDocumentNavigationModel *)v7 contentNodeForAbsolutePageIndex:a3];
-  [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self willNavigateToAbsolutePageIndex:a3 inContentNode:v8];
+  animatedCopy = animated;
+  navigationModel = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel];
+  v8 = [(THDocumentNavigationModel *)navigationModel contentNodeForAbsolutePageIndex:index];
+  [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self willNavigateToAbsolutePageIndex:index inContentNode:v8];
   v9 = [THPresentationType paginatedPresentationTypeInContext:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] context]];
   if (v8)
   {
     v10 = v9;
     if ([(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isPaginated])
     {
-      v11 = [(THDocumentNavigationModel *)v7 navigationUnitRelativePageIndexForAbsolutePageIndex:a3 forPresentationType:v10];
+      v11 = [(THDocumentNavigationModel *)navigationModel navigationUnitRelativePageIndexForAbsolutePageIndex:index forPresentationType:v10];
       [(THDocumentNavigator *)self delegate];
       if (objc_opt_respondsToSelector())
       {
         v12 = [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigatorIsInTwoPageMode:self];
-        v13 = a3 - 1;
+        indexCopy = index - 1;
         v14 = v11 - 1;
         if ((v11 & 1) == 0)
         {
           v14 = v11;
-          v13 = a3;
+          indexCopy = index;
         }
 
         if (v12)
         {
           v11 = v14;
-          a3 = v13;
+          index = indexCopy;
         }
       }
 
@@ -389,8 +389,8 @@ LABEL_12:
 
     else
     {
-      v23 = [v8 storageAnchorForNodeRelativePageIndex:{objc_msgSend(v8, "relativePageIndexForAbsolutePageIndex:forPresentationType:", a3, v10)}];
-      [v23 setAbsolutePageIndex:a3];
+      v23 = [v8 storageAnchorForNodeRelativePageIndex:{objc_msgSend(v8, "relativePageIndexForAbsolutePageIndex:forPresentationType:", index, v10)}];
+      [v23 setAbsolutePageIndex:index];
       [(THSectionController *)[(THDocumentNavigator *)self sectionController] rectForBodyAnchor:v23];
     }
 
@@ -408,36 +408,36 @@ LABEL_12:
     height = CGRectNull.size.height;
   }
 
-  v24 = [(THDocumentNavigator *)self delegate];
+  delegate = [(THDocumentNavigator *)self delegate];
 
-  [(THDocumentNavigatorDelegate *)v24 documentNavigator:self scrollToAbsolutePageIndex:a3 specificUnscaledCanvasRect:v4 animated:0 willPulse:x, y, width, height];
+  [(THDocumentNavigatorDelegate *)delegate documentNavigator:self scrollToAbsolutePageIndex:index specificUnscaledCanvasRect:animatedCopy animated:0 willPulse:x, y, width, height];
 }
 
-- (void)setVisibleAbsolutePhysicalPageIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)setVisibleAbsolutePhysicalPageIndex:(unint64_t)index animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
 
-    [(THDocumentNavigator *)self p_scrollToAbsolutePageIndex:a3 animated:1];
+    [(THDocumentNavigator *)self p_scrollToAbsolutePageIndex:index animated:1];
   }
 
   else
   {
     +[CATransaction begin];
-    [(THDocumentNavigator *)self p_scrollToAbsolutePageIndex:a3 animated:0];
+    [(THDocumentNavigator *)self p_scrollToAbsolutePageIndex:index animated:0];
 
     +[CATransaction commit];
   }
 }
 
-- (void)setVisibleAbsolutePhysicalPageIndex:(unint64_t)a3
+- (void)setVisibleAbsolutePhysicalPageIndex:(unint64_t)index
 {
-  [(THDocumentNavigator *)self setVisibleAbsolutePhysicalPageIndex:a3 animated:0];
+  [(THDocumentNavigator *)self setVisibleAbsolutePhysicalPageIndex:index animated:0];
 
   [(THDocumentNavigator *)self setVisitedPagesAfterOpening:1];
 }
 
-- (unint64_t)relativePageIndexForLink:(id)a3
+- (unint64_t)relativePageIndexForLink:(id)link
 {
   [(THDocumentNavigator *)self p_anchorForLink:?];
   objc_opt_class();
@@ -445,31 +445,31 @@ LABEL_12:
   if (v5)
   {
     v6 = v5;
-    v7 = [(THDocumentNavigator *)self sectionController];
+    sectionController = [(THDocumentNavigator *)self sectionController];
 
-    return [(THSectionController *)v7 relativePageIndexForBodyStorageAnchor:v6];
+    return [(THSectionController *)sectionController relativePageIndexForBodyStorageAnchor:v6];
   }
 
   else
   {
-    v9 = [(THDocumentLinkResolver *)[(THDocumentNavigator *)self documentLinkResolver] contentNodeFromLink:a3];
+    v9 = [(THDocumentLinkResolver *)[(THDocumentNavigator *)self documentLinkResolver] contentNodeFromLink:link];
     if (v9)
     {
       v10 = v9;
       if ([(THDocumentNavigator *)self sectionController])
       {
-        v11 = [(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType];
+        presentationType = [(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType];
       }
 
       else
       {
-        v11 = [THPresentationType paginatedPresentationTypeInContext:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] context]];
+        presentationType = [THPresentationType paginatedPresentationTypeInContext:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] context]];
       }
 
-      v12 = v11;
-      v13 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel];
+      v12 = presentationType;
+      navigationModel = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel];
 
-      return [(THDocumentNavigationModel *)v13 navigationUnitRelativePageIndexForContentNodeRelativePageIndex:0 inContentNode:v10 forPresentationType:v12];
+      return [(THDocumentNavigationModel *)navigationModel navigationUnitRelativePageIndexForContentNodeRelativePageIndex:0 inContentNode:v10 forPresentationType:v12];
     }
 
     else
@@ -481,17 +481,17 @@ LABEL_12:
 
 - (id)currentContentNode
 {
-  v3 = [(THDocumentNavigator *)self currentNavigationUnitRelativePageIndex];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  currentNavigationUnitRelativePageIndex = [(THDocumentNavigator *)self currentNavigationUnitRelativePageIndex];
+  if (currentNavigationUnitRelativePageIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v5 = v3;
-  v6 = [(THSectionController *)[(THDocumentNavigator *)self sectionController] currentNavigationUnit];
+  v5 = currentNavigationUnitRelativePageIndex;
+  currentNavigationUnit = [(THSectionController *)[(THDocumentNavigator *)self sectionController] currentNavigationUnit];
   v7 = [THPresentationType paginatedPresentationTypeInContext:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] context]];
 
-  return [(THNavigationUnit *)v6 contentNodeForRelativePageIndex:v5 forPresentationType:v7];
+  return [(THNavigationUnit *)currentNavigationUnit contentNodeForRelativePageIndex:v5 forPresentationType:v7];
 }
 
 - (unint64_t)currentAbsolutePageIndexForBeginningOfVisibleCanvas
@@ -503,19 +503,19 @@ LABEL_12:
 
   if ([(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isPaginated])
   {
-    v3 = [(THDocumentNavigator *)self sectionController];
-    v4 = [(THDocumentNavigator *)self interactiveCanvasController];
+    sectionController = [(THDocumentNavigator *)self sectionController];
+    interactiveCanvasController = [(THDocumentNavigator *)self interactiveCanvasController];
 
-    return [(THSectionController *)v3 absolutePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:v4];
+    return [(THSectionController *)sectionController absolutePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:interactiveCanvasController];
   }
 
-  v6 = [(THDocumentNavigator *)self currentPageLocation];
-  if (!v6)
+  currentPageLocation = [(THDocumentNavigator *)self currentPageLocation];
+  if (!currentPageLocation)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return [v6 absolutePhysicalPageIndex];
+  return [currentPageLocation absolutePhysicalPageIndex];
 }
 
 - (unint64_t)currentAbsolutePageIndexForEndOfVisibleCanvas
@@ -527,19 +527,19 @@ LABEL_12:
 
   if ([(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isPaginated])
   {
-    v3 = [(THDocumentNavigator *)self sectionController];
-    v4 = [(THDocumentNavigator *)self interactiveCanvasController];
+    sectionController = [(THDocumentNavigator *)self sectionController];
+    interactiveCanvasController = [(THDocumentNavigator *)self interactiveCanvasController];
 
-    return [(THSectionController *)v3 absolutePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:v4];
+    return [(THSectionController *)sectionController absolutePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:interactiveCanvasController];
   }
 
-  v6 = [(THDocumentNavigator *)self currentPageLocation];
-  if (!v6)
+  currentPageLocation = [(THDocumentNavigator *)self currentPageLocation];
+  if (!currentPageLocation)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return [v6 absolutePhysicalPageIndex];
+  return [currentPageLocation absolutePhysicalPageIndex];
 }
 
 - (unint64_t)currentAbsolutePageIndex
@@ -551,10 +551,10 @@ LABEL_12:
 
   if ([(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isPaginated])
   {
-    v3 = [(THDocumentNavigator *)self sectionController];
-    v4 = [(THDocumentNavigator *)self interactiveCanvasController];
+    sectionController = [(THDocumentNavigator *)self sectionController];
+    interactiveCanvasController = [(THDocumentNavigator *)self interactiveCanvasController];
 
-    return [(THSectionController *)v3 absolutePageIndexForCenterOfVisibleRectInInteractiveCanvasController:v4];
+    return [(THSectionController *)sectionController absolutePageIndexForCenterOfVisibleRectInInteractiveCanvasController:interactiveCanvasController];
   }
 
   v6 = [-[THInteractiveCanvasController canvasView](-[THDocumentNavigator interactiveCanvasController](self "interactiveCanvasController")];
@@ -586,25 +586,25 @@ LABEL_12:
     }
   }
 
-  v13 = [v12 absolutePageIndex];
-  if (v13 != 0x7FFFFFFFFFFFFFFFLL)
+  absolutePageIndex = [v12 absolutePageIndex];
+  if (absolutePageIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    return v13;
+    return absolutePageIndex;
   }
 
 LABEL_15:
-  v14 = [(THDocumentNavigator *)self currentPageLocation];
+  currentPageLocation = [(THDocumentNavigator *)self currentPageLocation];
   v5 = 0x7FFFFFFFFFFFFFFFLL;
-  if (!v14)
+  if (!currentPageLocation)
   {
     return v5;
   }
 
-  v15 = v14;
-  v13 = [v14 absolutePhysicalPageIndex];
-  if (v13 != 0x7FFFFFFFFFFFFFFFLL)
+  v15 = currentPageLocation;
+  absolutePageIndex = [currentPageLocation absolutePhysicalPageIndex];
+  if (absolutePageIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    return v13;
+    return absolutePageIndex;
   }
 
   v16 = [(THDocumentNavigationModel *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel] contentNodeForPageLocation:v15];
@@ -614,9 +614,9 @@ LABEL_15:
   }
 
   v17 = [THModelStorageAnchor storageAnchorWithContentNode:v16 pageLocation:v15];
-  v18 = [(THDocumentNavigator *)self documentRoot];
+  documentRoot = [(THDocumentNavigator *)self documentRoot];
 
-  return [(THDocumentRoot *)v18 absolutePageIndexForStorageAnchor:v17];
+  return [(THDocumentRoot *)documentRoot absolutePageIndexForStorageAnchor:v17];
 }
 
 - (id)currentPageInfoForEndOfVisibleCanvas
@@ -626,18 +626,18 @@ LABEL_15:
   {
     if ([(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isPaginated])
     {
-      v4 = [(THDocumentNavigator *)self sectionController];
-      v5 = [(THDocumentNavigator *)self interactiveCanvasController];
+      sectionController = [(THDocumentNavigator *)self sectionController];
+      interactiveCanvasController = [(THDocumentNavigator *)self interactiveCanvasController];
 
-      return [(THSectionController *)v4 pageInfoForSecondQuadrantOfVisibleRectInInteractiveCanvasController:v5];
+      return [(THSectionController *)sectionController pageInfoForSecondQuadrantOfVisibleRectInInteractiveCanvasController:interactiveCanvasController];
     }
 
     else
     {
       v6 = [THPresentationType flowPresentationTypeInContext:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] context]];
-      v7 = [(THDocumentNavigator *)self currentContentNode];
+      currentContentNode = [(THDocumentNavigator *)self currentContentNode];
 
-      return [v7 pageAtRelativeIndex:0 forPresentationType:v6];
+      return [currentContentNode pageAtRelativeIndex:0 forPresentationType:v6];
     }
   }
 
@@ -653,30 +653,30 @@ LABEL_15:
 
   if ([(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isPaginated])
   {
-    v3 = [(THDocumentNavigator *)self sectionController];
-    v4 = [(THDocumentNavigator *)self interactiveCanvasController];
+    sectionController = [(THDocumentNavigator *)self sectionController];
+    interactiveCanvasController = [(THDocumentNavigator *)self interactiveCanvasController];
 
-    return [(THSectionController *)v3 pageInfoForCenterOfVisibleRectInInteractiveCanvasController:v4];
+    return [(THSectionController *)sectionController pageInfoForCenterOfVisibleRectInInteractiveCanvasController:interactiveCanvasController];
   }
 
   else
   {
     v5 = [THPresentationType flowPresentationTypeInContext:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] context]];
-    v6 = [(THDocumentNavigator *)self currentContentNode];
+    currentContentNode = [(THDocumentNavigator *)self currentContentNode];
 
-    return [v6 pageAtRelativeIndex:0 forPresentationType:v5];
+    return [currentContentNode pageAtRelativeIndex:0 forPresentationType:v5];
   }
 }
 
 - (id)currentBookspotLocation
 {
-  v3 = [(THDocumentNavigator *)self storageAnchorForCurrentPage];
-  if (v3)
+  storageAnchorForCurrentPage = [(THDocumentNavigator *)self storageAnchorForCurrentPage];
+  if (storageAnchorForCurrentPage)
   {
-    v4 = [THPageLocation pageLocationWithStorageAnchor:v3];
+    v4 = [THPageLocation pageLocationWithStorageAnchor:storageAnchorForCurrentPage];
     if ([(THPageLocation *)v4 absolutePhysicalPageIndex]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(THPageLocation *)v4 setAbsolutePhysicalPageIndex:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] absolutePageIndexForStorageAnchor:v3]];
+      [(THPageLocation *)v4 setAbsolutePhysicalPageIndex:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] absolutePageIndexForStorageAnchor:storageAnchorForCurrentPage]];
     }
 
     return v4;
@@ -699,97 +699,97 @@ LABEL_15:
 
   if (![(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isPaginated])
   {
-    v5 = [(THDocumentNavigator *)self currentPageLocation];
-    if (v5)
+    currentPageLocation = [(THDocumentNavigator *)self currentPageLocation];
+    if (currentPageLocation)
     {
-      v3 = [v5 absolutePhysicalPageIndex];
+      absolutePhysicalPageIndex = [currentPageLocation absolutePhysicalPageIndex];
 LABEL_7:
       v4 = (&dword_0 + 1);
       goto LABEL_8;
     }
 
 LABEL_6:
-    v3 = 0x7FFFFFFFFFFFFFFFLL;
+    absolutePhysicalPageIndex = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_7;
   }
 
-  v3 = [(THSectionController *)[(THDocumentNavigator *)self sectionController] absolutePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:[(THDocumentNavigator *)self interactiveCanvasController]];
-  v4 = [(THSectionController *)[(THDocumentNavigator *)self sectionController] absolutePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:[(THDocumentNavigator *)self interactiveCanvasController]]- v3 + 1;
+  absolutePhysicalPageIndex = [(THSectionController *)[(THDocumentNavigator *)self sectionController] absolutePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:[(THDocumentNavigator *)self interactiveCanvasController]];
+  v4 = [(THSectionController *)[(THDocumentNavigator *)self sectionController] absolutePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:[(THDocumentNavigator *)self interactiveCanvasController]]- absolutePhysicalPageIndex + 1;
 LABEL_8:
-  v6 = v3;
+  v6 = absolutePhysicalPageIndex;
   result.length = v4;
   result.location = v6;
   return result;
 }
 
-- (BOOL)jumpToPageLocation:(id)a3 touchHistory:(BOOL)a4 minor:(BOOL)a5
+- (BOOL)jumpToPageLocation:(id)location touchHistory:(BOOL)history minor:(BOOL)minor
 {
-  v5 = a5;
-  v6 = a4;
-  if (a4)
+  minorCopy = minor;
+  historyCopy = history;
+  if (history)
   {
     [(THBookspotHistoryStack *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookspotHistoryStack] recordCurrentLocationInHistory];
   }
 
-  v9 = [(THDocumentNavigationModel *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel] contentNodeForPageLocation:a3];
+  v9 = [(THDocumentNavigationModel *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel] contentNodeForPageLocation:location];
   if (v9)
   {
     [(THDocumentNavigator *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self willJumpToPageLocation:a3];
+      [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self willJumpToPageLocation:location];
     }
 
-    if ([a3 storageUID])
+    if ([location storageUID])
     {
-      v10 = [[THModelStorageAnchor alloc] initWithContentNode:v9 pageLocation:a3];
+      v10 = [[THModelStorageAnchor alloc] initWithContentNode:v9 pageLocation:location];
       if ([(THBookDescription *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookDescription] isEpub])
       {
-        v11 = 0x7FFFFFFFFFFFFFFFLL;
+        absolutePhysicalPageIndex = 0x7FFFFFFFFFFFFFFFLL;
       }
 
       else
       {
-        v11 = [a3 absolutePhysicalPageIndex];
+        absolutePhysicalPageIndex = [location absolutePhysicalPageIndex];
       }
 
-      [(THModelStorageAnchor *)v10 setAbsolutePageIndex:v11];
+      [(THModelStorageAnchor *)v10 setAbsolutePageIndex:absolutePhysicalPageIndex];
       [(THDocumentNavigator *)self followAnchor:v10 pulse:0];
     }
 
     else
     {
       v12 = [THPresentationType paginatedPresentationTypeInContext:[(THModelNode *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] rootNode] context]];
-      -[THDocumentNavigator followAnchor:pulse:](self, "followAnchor:pulse:", -[THModelPageAnchor initWithContentNode:relativePageIndex:presentationType:]([THModelPageAnchor alloc], "initWithContentNode:relativePageIndex:presentationType:", v9, [v9 relativePageIndexForAbsolutePageIndex:objc_msgSend(a3 forPresentationType:{"absolutePhysicalPageIndex"), v12}], v12), 0);
+      -[THDocumentNavigator followAnchor:pulse:](self, "followAnchor:pulse:", -[THModelPageAnchor initWithContentNode:relativePageIndex:presentationType:]([THModelPageAnchor alloc], "initWithContentNode:relativePageIndex:presentationType:", v9, [v9 relativePageIndexForAbsolutePageIndex:objc_msgSend(location forPresentationType:{"absolutePhysicalPageIndex"), v12}], v12), 0);
     }
 
     [(THDocumentNavigator *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self didJumpToPageLocation:a3];
+      [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self didJumpToPageLocation:location];
     }
 
-    if (v6)
+    if (historyCopy)
     {
-      [(THBookspotHistoryStack *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookspotHistoryStack] gotoBookspot:a3 minor:v5];
+      [(THBookspotHistoryStack *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookspotHistoryStack] gotoBookspot:location minor:minorCopy];
     }
 
-    v13 = [a3 copy];
+    v13 = [location copy];
     v14 = +[NSNotificationCenter defaultCenter];
     v15 = THNavigationHistoryDidChangeNotification;
     v17[0] = @"pageLocation";
     v17[1] = @"minor";
     v18[0] = v13;
-    v18[1] = [NSNumber numberWithBool:v5];
+    v18[1] = [NSNumber numberWithBool:minorCopy];
     [(NSNotificationCenter *)v14 postNotificationName:v15 object:[NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:2]];
   }
 
   return v9 != 0;
 }
 
-- (unint64_t)currentAbsolutePageIndexForBookmarksUsingViewCenter:(BOOL)a3
+- (unint64_t)currentAbsolutePageIndexForBookmarksUsingViewCenter:(BOOL)center
 {
-  if (a3)
+  if (center)
   {
     return [(THDocumentNavigator *)self currentAbsolutePageIndex];
   }
@@ -800,12 +800,12 @@ LABEL_8:
   }
 }
 
-- (id)currentPageInfoForBookmarksUsingViewCenter:(BOOL)a3
+- (id)currentPageInfoForBookmarksUsingViewCenter:(BOOL)center
 {
-  v3 = a3;
+  centerCopy = center;
   if ([(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isPaginated]|| ![(THBookDescription *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookDescription] isEpub])
   {
-    if (v3)
+    if (centerCopy)
     {
 
       return [(THDocumentNavigator *)self currentPageInfo];
@@ -823,11 +823,11 @@ LABEL_8:
     result = [(THSectionController *)[(THDocumentNavigator *)self sectionController] currentNavigationUnit];
     if (result)
     {
-      v6 = [(THDocumentNavigator *)self p_bodyStorageAnchorForFlow];
+      p_bodyStorageAnchorForFlow = [(THDocumentNavigator *)self p_bodyStorageAnchorForFlow];
       [THPresentationType paginatedPresentationTypeInContext:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] context]];
-      v7 = [v6 contentNode];
+      contentNode = [p_bodyStorageAnchorForFlow contentNode];
 
-      return [v7 pageInfoForStorageAnchor:? forPresentationType:?];
+      return [contentNode pageInfoForStorageAnchor:? forPresentationType:?];
     }
   }
 
@@ -836,29 +836,29 @@ LABEL_8:
 
 - (unint64_t)currentChapterIndex
 {
-  v3 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel];
-  v4 = [(THDocumentNavigator *)self currentContentNode];
-  if (!v3)
+  navigationModel = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel];
+  currentContentNode = [(THDocumentNavigator *)self currentContentNode];
+  if (!navigationModel)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = v4;
-  if (!v4)
+  v5 = currentContentNode;
+  if (!currentContentNode)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = [(THDocumentNavigationModel *)v3 navigationUnits];
-  v7 = [(THDocumentNavigationModel *)v3 navigationUnitContainingContentNode:v5];
+  navigationUnits = [(THDocumentNavigationModel *)navigationModel navigationUnits];
+  v7 = [(THDocumentNavigationModel *)navigationModel navigationUnitContainingContentNode:v5];
 
-  return [(NSArray *)v6 indexOfObject:v7];
+  return [(NSArray *)navigationUnits indexOfObject:v7];
 }
 
-- (id)p_bodyStorageAnchorForAbsolutePageIndex:(unint64_t)a3
+- (id)p_bodyStorageAnchorForAbsolutePageIndex:(unint64_t)index
 {
-  v5 = [(THDocumentNavigationModel *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel] contentNodeForAbsolutePageIndex:a3];
-  v6 = [v5 relativePageIndexForAbsolutePageIndex:a3 forPresentationType:{-[THSectionController presentationType](-[THDocumentNavigator sectionController](self, "sectionController"), "presentationType")}];
+  v5 = [(THDocumentNavigationModel *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel] contentNodeForAbsolutePageIndex:index];
+  v6 = [v5 relativePageIndexForAbsolutePageIndex:index forPresentationType:{-[THSectionController presentationType](-[THDocumentNavigator sectionController](self, "sectionController"), "presentationType")}];
   v7 = [v5 storageAnchorForNodeRelativePageIndex:v6];
   [v7 setNodeRelativePageIndex:v6];
   return v7;
@@ -871,12 +871,12 @@ LABEL_8:
   return [(THDocumentNavigator *)self p_bodyStorageAnchorForFlowInRect:?];
 }
 
-- (id)p_bodyStorageAnchorForFlowInRect:(CGRect)a3
+- (id)p_bodyStorageAnchorForFlowInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(THDocumentNavigator *)self rectForFlowAnchor];
   v19.origin.x = x;
   v19.origin.y = y;
@@ -884,27 +884,27 @@ LABEL_8:
   v19.size.height = height;
   if (!CGRectEqualToRect(v18, v19) || ![(THDocumentNavigator *)self cachedFlowAnchorForRect]|| [(THDocumentNavigator *)self followingAnchor])
   {
-    v8 = [(THSectionController *)[(THDocumentNavigator *)self sectionController] bodyAnchorForCanvasRect:x, y, width, height];
-    v9 = [(THDocumentNavigator *)self p_flowPivotRangeForBodyAnchor:v8];
+    height = [(THSectionController *)[(THDocumentNavigator *)self sectionController] bodyAnchorForCanvasRect:x, y, width, height];
+    v9 = [(THDocumentNavigator *)self p_flowPivotRangeForBodyAnchor:height];
     v11 = v10;
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    v12 = [v8 contentNode];
-    v13 = [v12 relativePageIndexForBodyCharacterIndex:v9];
+    contentNode = [height contentNode];
+    v13 = [contentNode relativePageIndexForBodyCharacterIndex:v9];
 
     self->_cachedFlowAnchorForRect = 0;
-    v14 = +[THModelStorageAnchor storageAnchorWithContentNode:storageUID:range:](THModelStorageAnchor, "storageAnchorWithContentNode:storageUID:range:", v12, [v8 storageUID], v9, v11);
+    v14 = +[THModelStorageAnchor storageAnchorWithContentNode:storageUID:range:](THModelStorageAnchor, "storageAnchorWithContentNode:storageUID:range:", contentNode, [height storageUID], v9, v11);
     self->_cachedFlowAnchorForRect = v14;
     [(THModelStorageAnchor *)v14 setNodeRelativePageIndex:v13];
     [(THDocumentNavigator *)self setRectForFlowAnchor:x, y, width, height];
   }
 
-  v15 = [(THDocumentNavigator *)self cachedFlowAnchorForRect];
+  cachedFlowAnchorForRect = [(THDocumentNavigator *)self cachedFlowAnchorForRect];
 
-  return v15;
+  return cachedFlowAnchorForRect;
 }
 
 - (id)storageAnchorForCurrentPage
@@ -916,13 +916,13 @@ LABEL_8:
 
   if ([(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isPaginated])
   {
-    v3 = [(THDocumentNavigator *)self currentAbsolutePageIndex];
-    if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+    currentAbsolutePageIndex = [(THDocumentNavigator *)self currentAbsolutePageIndex];
+    if (currentAbsolutePageIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
-    return [(THDocumentNavigator *)self p_bodyStorageAnchorForAbsolutePageIndex:v3];
+    return [(THDocumentNavigator *)self p_bodyStorageAnchorForAbsolutePageIndex:currentAbsolutePageIndex];
   }
 
   else
@@ -932,7 +932,7 @@ LABEL_8:
   }
 }
 
-- (id)storageAnchorForAbsolutePageIndex:(unint64_t)a3
+- (id)storageAnchorForAbsolutePageIndex:(unint64_t)index
 {
   if (![(THDocumentNavigator *)self sectionController])
   {
@@ -941,12 +941,12 @@ LABEL_8:
 
   if ([(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isPaginated])
   {
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
-    return [(THDocumentNavigator *)self p_bodyStorageAnchorForAbsolutePageIndex:a3];
+    return [(THDocumentNavigator *)self p_bodyStorageAnchorForAbsolutePageIndex:index];
   }
 
   else
@@ -956,15 +956,15 @@ LABEL_8:
   }
 }
 
-- (id)storageAnchorForBookmarksUsingViewCenter:(BOOL)a3
+- (id)storageAnchorForBookmarksUsingViewCenter:(BOOL)center
 {
-  v3 = a3;
+  centerCopy = center;
   result = [(THDocumentNavigator *)self sectionController];
   if (result)
   {
     if ([(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isPaginated])
     {
-      v6 = [(THDocumentNavigator *)self currentAbsolutePageIndexForBookmarksUsingViewCenter:v3];
+      v6 = [(THDocumentNavigator *)self currentAbsolutePageIndexForBookmarksUsingViewCenter:centerCopy];
 
       return [(THDocumentNavigator *)self p_bodyStorageAnchorForAbsolutePageIndex:v6];
     }
@@ -991,15 +991,15 @@ LABEL_8:
 
   else
   {
-    v5 = [(THDocumentNavigator *)self currentAbsolutePageIndex];
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+    currentAbsolutePageIndex = [(THDocumentNavigator *)self currentAbsolutePageIndex];
+    if (currentAbsolutePageIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
     else
     {
-      v6 = [[THPageLocation alloc] initWithAbsolutePageIndex:v5];
+      v6 = [[THPageLocation alloc] initWithAbsolutePageIndex:currentAbsolutePageIndex];
 
       return v6;
     }
@@ -1008,31 +1008,31 @@ LABEL_8:
 
 - (id)currentPageLocation
 {
-  v3 = [(THDocumentNavigator *)self storageAnchorForCurrentPage];
-  if (v3)
+  storageAnchorForCurrentPage = [(THDocumentNavigator *)self storageAnchorForCurrentPage];
+  if (storageAnchorForCurrentPage)
   {
 
-    return [THPageLocation pageLocationWithStorageAnchor:v3];
+    return [THPageLocation pageLocationWithStorageAnchor:storageAnchorForCurrentPage];
   }
 
   else
   {
-    v5 = [(THDocumentNavigator *)self currentAbsolutePageIndex];
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+    currentAbsolutePageIndex = [(THDocumentNavigator *)self currentAbsolutePageIndex];
+    if (currentAbsolutePageIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
     else
     {
-      v6 = [[THPageLocation alloc] initWithAbsolutePageIndex:v5];
+      v6 = [[THPageLocation alloc] initWithAbsolutePageIndex:currentAbsolutePageIndex];
 
       return v6;
     }
   }
 }
 
-- (id)pageLocationForAbsolutePageIndex:(unint64_t)a3
+- (id)pageLocationForAbsolutePageIndex:(unint64_t)index
 {
   v4 = [(THDocumentNavigator *)self storageAnchorForAbsolutePageIndex:?];
   if (v4)
@@ -1041,20 +1041,20 @@ LABEL_8:
     return [THPageLocation pageLocationWithStorageAnchor:v4];
   }
 
-  else if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  else if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   else
   {
-    v6 = [[THPageLocation alloc] initWithAbsolutePageIndex:a3];
+    v6 = [[THPageLocation alloc] initWithAbsolutePageIndex:index];
 
     return v6;
   }
 }
 
-- (id)readingProgressAllowSample:(BOOL)a3
+- (id)readingProgressAllowSample:(BOOL)sample
 {
   if ([(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] reflowablePaginationController]&& ![(THReflowablePaginationController *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] reflowablePaginationController] paginationComplete])
   {
@@ -1068,70 +1068,70 @@ LABEL_8:
   }
 
   v6 = result;
-  if (!a3 && [(THBookDescription *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookDescription] isSample])
+  if (!sample && [(THBookDescription *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookDescription] isSample])
   {
     return 0;
   }
 
-  v7 = [(THDocumentNavigationModel *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel] pageCount];
-  if (!v7)
+  pageCount = [(THDocumentNavigationModel *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel] pageCount];
+  if (!pageCount)
   {
     return &off_49CFF0;
   }
 
-  *&v8 = [v6 absolutePhysicalPageIndex] / v7;
+  *&v8 = [v6 absolutePhysicalPageIndex] / pageCount;
 
   return [NSNumber numberWithFloat:v8];
 }
 
-- (id)linkForURL:(id)a3 inStorage:(id)a4
+- (id)linkForURL:(id)l inStorage:(id)storage
 {
-  v6 = [(THNavigationUnit *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] currentNavigationUnit] contentNodeForInfo:a4];
+  v6 = [(THNavigationUnit *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] currentNavigationUnit] contentNodeForInfo:storage];
 
-  return [(THDocumentNavigator *)self linkForURL:a3 inContentNode:v6];
+  return [(THDocumentNavigator *)self linkForURL:l inContentNode:v6];
 }
 
-- (id)linkForURL:(id)a3 inContentNode:(id)a4
+- (id)linkForURL:(id)l inContentNode:(id)node
 {
-  v7 = [a3 absoluteString];
-  if (![a3 scheme])
+  absoluteString = [l absoluteString];
+  if (![l scheme])
   {
-    if ([(NSString *)v7 hasPrefix:@"OPS/"])
+    if ([(NSString *)absoluteString hasPrefix:@"OPS/"])
     {
-      v7 = [(NSString *)v7 substringFromIndex:4];
+      absoluteString = [(NSString *)absoluteString substringFromIndex:4];
     }
 
-    if (a4)
+    if (node)
     {
-      v8 = [@"apub:///0/0/0/" stringByAppendingString:{objc_msgSend(a4, "applePubRelativePath")}];
-      if ([(NSString *)v7 characterAtIndex:0]!= 35)
+      absoluteString2 = [@"apub:///0/0/0/" stringByAppendingString:{objc_msgSend(node, "applePubRelativePath")}];
+      if ([(NSString *)absoluteString characterAtIndex:0]!= 35)
       {
-        v8 = [[[NSURL URLWithString:?]] absoluteString];
+        absoluteString2 = [[[NSURL URLWithString:?]] absoluteString];
       }
 
-      v7 = [(NSString *)v8 stringByAppendingString:v7];
+      absoluteString = [(NSString *)absoluteString2 stringByAppendingString:absoluteString];
     }
   }
 
-  v9 = [[THModelLink alloc] initWithTarget:v7 context:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] context]];
+  v9 = [[THModelLink alloc] initWithTarget:absoluteString context:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] context]];
 
   return v9;
 }
 
-- (_NSRange)p_flowPivotRangeForBodyAnchor:(id)a3
+- (_NSRange)p_flowPivotRangeForBodyAnchor:(id)anchor
 {
   if ([(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isPaginated])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [a3 range];
+  range = [anchor range];
   v7 = v6;
   if (![(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isPaginated])
   {
-    v8 = [(THDocumentNavigator *)self sectionController];
+    sectionController = [(THDocumentNavigator *)self sectionController];
     [(THInteractiveCanvasController *)[(THDocumentNavigator *)self interactiveCanvasController] visibleUnscaledRect];
-    v9 = [(THSectionController *)v8 firstLineInRect:a3 forBodyAnchor:?];
+    v9 = [(THSectionController *)sectionController firstLineInRect:anchor forBodyAnchor:?];
     v11 = v9 + v10 - 1;
     if (!v10)
     {
@@ -1141,11 +1141,11 @@ LABEL_8:
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = v10 != 0;
-      v5 = v11;
+      range = v11;
     }
   }
 
-  v12 = v5;
+  v12 = range;
   v13 = v7;
   result.length = v13;
   result.location = v12;
@@ -1154,35 +1154,35 @@ LABEL_8:
 
 - (unint64_t)currentNavigationUnitRelativePageIndex
 {
-  v3 = [(THDocumentNavigator *)self currentAbsolutePageIndex];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  currentAbsolutePageIndex = [(THDocumentNavigator *)self currentAbsolutePageIndex];
+  if (currentAbsolutePageIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = v3;
-  v6 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel];
+  v5 = currentAbsolutePageIndex;
+  navigationModel = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel];
   v7 = [THPresentationType paginatedPresentationTypeInContext:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] context]];
 
-  return [(THDocumentNavigationModel *)v6 navigationUnitRelativePageIndexForAbsolutePageIndex:v5 forPresentationType:v7];
+  return [(THDocumentNavigationModel *)navigationModel navigationUnitRelativePageIndexForAbsolutePageIndex:v5 forPresentationType:v7];
 }
 
-- (void)p_jumpToContentNodeAnchor:(id)a3
+- (void)p_jumpToContentNodeAnchor:(id)anchor
 {
-  if (a3)
+  if (anchor)
   {
-    v5 = [objc_msgSend(a3 "contentNode")];
-    -[THDocumentNavigatorDelegate documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:", self, v5, [a3 contentNode]);
+    v5 = [objc_msgSend(anchor "contentNode")];
+    -[THDocumentNavigatorDelegate documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:", self, v5, [anchor contentNode]);
     if ([(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] isCorrupt])
     {
-      v6 = [(THDocumentNavigator *)self delegate];
+      delegate = [(THDocumentNavigator *)self delegate];
 
-      [(THDocumentNavigatorDelegate *)v6 documentNavigatorBookIsCorrupt:self, v7, v8, v9, v10, v11, v12, v13];
+      [(THDocumentNavigatorDelegate *)delegate documentNavigatorBookIsCorrupt:self, v7, v8, v9, v10, v11, v12, v13];
     }
 
     else
     {
-      v14 = [objc_msgSend(a3 "contentNode")];
+      v14 = [objc_msgSend(anchor "contentNode")];
       if (v14 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v15 = 1;
@@ -1194,31 +1194,31 @@ LABEL_8:
       }
 
       [(THSectionController *)[(THDocumentNavigator *)self sectionController] ensureLayoutThroughRelativePageRange:0, v15];
-      -[THSectionController sectionOriginForContentNode:](-[THDocumentNavigator sectionController](self, "sectionController"), "sectionOriginForContentNode:", [a3 contentNode]);
+      -[THSectionController sectionOriginForContentNode:](-[THDocumentNavigator sectionController](self, "sectionController"), "sectionOriginForContentNode:", [anchor contentNode]);
       if (v5 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v18 = v16;
         v19 = v17;
-        -[THDocumentNavigatorDelegate documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:", self, v5, [a3 contentNode]);
-        v20 = [(THDocumentNavigator *)self delegate];
+        -[THDocumentNavigatorDelegate documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:", self, v5, [anchor contentNode]);
+        delegate2 = [(THDocumentNavigator *)self delegate];
 
-        [(THDocumentNavigatorDelegate *)v20 documentNavigator:self scrollToAbsolutePageIndex:v5 specificUnscaledCanvasRect:0 animated:0 willPulse:v18, v19, 1.0, 1.0];
+        [(THDocumentNavigatorDelegate *)delegate2 documentNavigator:self scrollToAbsolutePageIndex:v5 specificUnscaledCanvasRect:0 animated:0 willPulse:v18, v19, 1.0, 1.0];
       }
     }
   }
 }
 
-- (void)p_jumpToPageAnchor:(id)a3
+- (void)p_jumpToPageAnchor:(id)anchor
 {
-  if (a3)
+  if (anchor)
   {
-    v4 = [a3 absolutePageIndex];
+    absolutePageIndex = [anchor absolutePageIndex];
 
-    [(THDocumentNavigator *)self setVisibleAbsolutePhysicalPageIndex:v4 animated:1];
+    [(THDocumentNavigator *)self setVisibleAbsolutePhysicalPageIndex:absolutePageIndex animated:1];
   }
 }
 
-- (id)p_anchorForLink:(id)a3
+- (id)p_anchorForLink:(id)link
 {
   v6 = 0;
   v7 = &v6;
@@ -1230,48 +1230,48 @@ LABEL_8:
   v5[1] = 3221225472;
   v5[2] = sub_1BB670;
   v5[3] = &unk_45E9F0;
-  v5[5] = a3;
+  v5[5] = link;
   v5[6] = &v6;
   v5[4] = self;
-  [(THDocumentNavigator *)self p_resolveLink:a3 andCallBlock:v5];
+  [(THDocumentNavigator *)self p_resolveLink:link andCallBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (void)p_jumpToStorageAnchor:(id)a3 pulse:(BOOL)a4
+- (void)p_jumpToStorageAnchor:(id)anchor pulse:(BOOL)pulse
 {
-  if (!a3)
+  if (!anchor)
   {
     return;
   }
 
-  v4 = a4;
-  v7 = [a3 contentNode];
+  pulseCopy = pulse;
+  contentNode = [anchor contentNode];
   if ([(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] isCorrupt])
   {
-    v8 = [(THDocumentNavigator *)self delegate];
+    delegate = [(THDocumentNavigator *)self delegate];
 
-    [(THDocumentNavigatorDelegate *)v8 documentNavigatorBookIsCorrupt:self];
+    [(THDocumentNavigatorDelegate *)delegate documentNavigatorBookIsCorrupt:self];
     return;
   }
 
-  if (-[THPresentationType isPaginated](-[THSectionController presentationType](-[THDocumentNavigator sectionController](self, "sectionController"), "presentationType"), "isPaginated") && [a3 absolutePageIndex] != 0x7FFFFFFFFFFFFFFFLL)
+  if (-[THPresentationType isPaginated](-[THSectionController presentationType](-[THDocumentNavigator sectionController](self, "sectionController"), "presentationType"), "isPaginated") && [anchor absolutePageIndex] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v32 = [a3 absolutePageIndex];
+    absolutePageIndex = [anchor absolutePageIndex];
 
-    [(THDocumentNavigator *)self p_scrollToAbsolutePageIndex:v32 animated:0];
+    [(THDocumentNavigator *)self p_scrollToAbsolutePageIndex:absolutePageIndex animated:0];
   }
 
   else
   {
-    v9 = [v7 bodyStorageForPresentationType:{-[THSectionController presentationType](-[THDocumentNavigator sectionController](self, "sectionController"), "presentationType")}];
+    v9 = [contentNode bodyStorageForPresentationType:{-[THSectionController presentationType](-[THDocumentNavigator sectionController](self, "sectionController"), "presentationType")}];
     if (!v9)
     {
-      v9 = [v7 bodyStorageForPresentationType:{+[THPresentationType flowPresentationTypeInContext:](THPresentationType, "flowPresentationTypeInContext:", -[THDocumentRoot context](-[THDocumentNavigator documentRoot](self, "documentRoot"), "context"))}];
+      v9 = [contentNode bodyStorageForPresentationType:{+[THPresentationType flowPresentationTypeInContext:](THPresentationType, "flowPresentationTypeInContext:", -[THDocumentRoot context](-[THDocumentNavigator documentRoot](self, "documentRoot"), "context"))}];
     }
 
-    if ([objc_msgSend(v7 nodeUniqueIDForInfo:{v9), "isEqual:", objc_msgSend(a3, "storageUID")}])
+    if ([objc_msgSend(contentNode nodeUniqueIDForInfo:{v9), "isEqual:", objc_msgSend(anchor, "storageUID")}])
     {
       if ([(THBookDescription *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookDescription] isEpub])
       {
@@ -1280,70 +1280,70 @@ LABEL_8:
 
       else
       {
-        v10 = [(THSectionController *)[(THDocumentNavigator *)self sectionController] absolutePageIndexForBodyStorageAnchor:a3];
+        v10 = [(THSectionController *)[(THDocumentNavigator *)self sectionController] absolutePageIndexForBodyStorageAnchor:anchor];
       }
 
-      [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self willNavigateToAbsolutePageIndex:v10 inContentNode:v7];
+      [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self willNavigateToAbsolutePageIndex:v10 inContentNode:contentNode];
       v56[0] = _NSConcreteStackBlock;
       v56[1] = 3221225472;
       v56[2] = sub_1BBF30;
       v56[3] = &unk_45CEE0;
       v56[4] = self;
-      v56[5] = a3;
-      v57 = v4;
-      if (v4)
+      v56[5] = anchor;
+      v57 = pulseCopy;
+      if (pulseCopy)
       {
-        v33 = a3;
+        anchorCopy2 = anchor;
       }
 
       else
       {
-        v33 = 0;
+        anchorCopy2 = 0;
       }
 
       v34 = v56;
 LABEL_34:
-      v35 = self;
+      selfCopy2 = self;
 LABEL_35:
-      [(THDocumentNavigator *)v35 p_jumpWithBlock:v34 andPulseStorageAnchor:v33];
+      [(THDocumentNavigator *)selfCopy2 p_jumpWithBlock:v34 andPulseStorageAnchor:anchorCopy2];
       return;
     }
 
-    v11 = [v7 infoForNodeUniqueID:objc_msgSend(a3 forPresentationType:{"storageUID"), -[THSectionController presentationType](-[THDocumentNavigator sectionController](self, "sectionController"), "presentationType")}];
+    v11 = [contentNode infoForNodeUniqueID:objc_msgSend(anchor forPresentationType:{"storageUID"), -[THSectionController presentationType](-[THDocumentNavigator sectionController](self, "sectionController"), "presentationType")}];
     if (!v11)
     {
       return;
     }
 
     v12 = v11;
-    v13 = [(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType];
-    if ([(THPresentationType *)v13 isFlow])
+    presentationType = [(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType];
+    if ([(THPresentationType *)presentationType isFlow])
     {
       y = CGRectZero.origin.y;
       width = CGRectZero.size.width;
       height = CGRectZero.size.height;
-      v17 = [v7 infoForNodeUniqueID:objc_msgSend(a3 forPresentationType:{"storageUID"), -[THSectionController presentationType](-[THDocumentNavigator sectionController](self, "sectionController"), "presentationType")}];
+      v17 = [contentNode infoForNodeUniqueID:objc_msgSend(anchor forPresentationType:{"storageUID"), -[THSectionController presentationType](-[THDocumentNavigator sectionController](self, "sectionController"), "presentationType")}];
       v18 = height;
       v19 = width;
       v20 = y;
       x = CGRectZero.origin.x;
       if (v17)
       {
-        v22 = v17;
+        parentInfo = v17;
         v23 = 0;
         do
         {
           objc_opt_class();
           v24 = TSUClassAndProtocolCast();
-          v22 = [v22 parentInfo];
+          parentInfo = [parentInfo parentInfo];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v23 = v22;
+            v23 = parentInfo;
           }
         }
 
-        while (v22);
+        while (parentInfo);
         v18 = height;
         v19 = width;
         v20 = y;
@@ -1358,22 +1358,22 @@ LABEL_35:
             v54 = 0x2020000000;
             v55 = 0x7FFFFFFFFFFFFFFFLL;
             v25 = objc_opt_class();
-            v26 = [v24 range];
+            range = [v24 range];
             v51[0] = _NSConcreteStackBlock;
             v51[1] = 3221225472;
             v51[2] = sub_1BBFCC;
             v51[3] = &unk_45EA18;
             v51[4] = v23;
             v51[5] = &v52;
-            [v24 enumerateAttachmentsOfClass:v25 inTextRange:v26 usingBlock:{v27, v51}];
+            [v24 enumerateAttachmentsOfClass:v25 inTextRange:range usingBlock:{v27, v51}];
             v18 = height;
             v19 = width;
             v20 = y;
             x = CGRectZero.origin.x;
             if (v53[3] != 0x7FFFFFFFFFFFFFFFLL)
             {
-              -[THDocumentNavigatorDelegate documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:", self, [a3 absolutePageIndex], objc_msgSend(a3, "contentNode"));
-              [(THSectionController *)[(THDocumentNavigator *)self sectionController] rectForBodyAnchor:[THModelStorageAnchor storageAnchorWithContentNode:v7 storageUID:0 range:v53[3], 1]];
+              -[THDocumentNavigatorDelegate documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:", self, [anchor absolutePageIndex], objc_msgSend(anchor, "contentNode"));
+              [(THSectionController *)[(THDocumentNavigator *)self sectionController] rectForBodyAnchor:[THModelStorageAnchor storageAnchorWithContentNode:contentNode storageUID:0 range:v53[3], 1]];
               x = v28;
               v20 = v29;
               v19 = v30;
@@ -1385,8 +1385,8 @@ LABEL_35:
 
           else
           {
-            -[THDocumentNavigatorDelegate documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:", self, [a3 absolutePageIndex], objc_msgSend(a3, "contentNode"));
-            [(THSectionController *)[(THDocumentNavigator *)self sectionController] rectForContentNode:v7 layout:[(THInteractiveCanvasController *)[(THDocumentNavigator *)self interactiveCanvasController] validatedLayoutForInfo:v24]];
+            -[THDocumentNavigatorDelegate documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:", self, [anchor absolutePageIndex], objc_msgSend(anchor, "contentNode"));
+            [(THSectionController *)[(THDocumentNavigator *)self sectionController] rectForContentNode:contentNode layout:[(THInteractiveCanvasController *)[(THDocumentNavigator *)self interactiveCanvasController] validatedLayoutForInfo:v24]];
             x = v37;
             v20 = v38;
             v19 = v39;
@@ -1405,7 +1405,7 @@ LABEL_35:
       v61.size.height = height;
       if (CGRectEqualToRect(v59, v61))
       {
-        v41 = [(THDocumentNavigator *)self p_bodyRangeForStorageAnchorInFlow:a3];
+        v41 = [(THDocumentNavigator *)self p_bodyRangeForStorageAnchorInFlow:anchor];
         if (v41 == 0x7FFFFFFFFFFFFFFFLL)
         {
           [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -1413,8 +1413,8 @@ LABEL_35:
 
         else
         {
-          v43 = [THModelStorageAnchor storageAnchorWithContentNode:v7 storageUID:0 range:v41, v42];
-          -[THDocumentNavigatorDelegate documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:", self, [a3 absolutePageIndex], objc_msgSend(a3, "contentNode"));
+          v43 = [THModelStorageAnchor storageAnchorWithContentNode:contentNode storageUID:0 range:v41, v42];
+          -[THDocumentNavigatorDelegate documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:](-[THDocumentNavigator delegate](self, "delegate"), "documentNavigator:willNavigateToAbsolutePageIndex:inContentNode:", self, [anchor absolutePageIndex], objc_msgSend(anchor, "contentNode"));
           [(THSectionController *)[(THDocumentNavigator *)self sectionController] rectForBodyAnchor:v43];
           x = v44;
           v20 = v45;
@@ -1438,15 +1438,15 @@ LABEL_35:
         v49[2] = sub_1BC024;
         v49[3] = &unk_45EA40;
         v49[4] = self;
-        v49[5] = a3;
+        v49[5] = anchor;
         *&v49[6] = x;
         *&v49[7] = v20;
         *&v49[8] = v19;
         *&v49[9] = v18;
-        v50 = v4;
+        v50 = pulseCopy;
         v34 = v49;
-        v35 = self;
-        v33 = 0;
+        selfCopy2 = self;
+        anchorCopy2 = 0;
         goto LABEL_35;
       }
     }
@@ -1455,12 +1455,12 @@ LABEL_35:
     {
       if ([(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] reflowablePaginationController])
       {
-        v36 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] absolutePageIndexForStorageAnchor:a3];
+        v36 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] absolutePageIndexForStorageAnchor:anchor];
       }
 
       else
       {
-        v36 = [v7 absolutePageIndexForRelativePageIndex:objc_msgSend(v7 forPresentationType:{"relativePageIndexForInfo:forPresentationType:", v12, v13), v13}];
+        v36 = [contentNode absolutePageIndexForRelativePageIndex:objc_msgSend(contentNode forPresentationType:{"relativePageIndexForInfo:forPresentationType:", v12, presentationType), presentationType}];
       }
 
       if (v36 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1471,14 +1471,14 @@ LABEL_35:
         v48[3] = &unk_45B298;
         v48[4] = self;
         v48[5] = v36;
-        if (v4)
+        if (pulseCopy)
         {
-          v33 = a3;
+          anchorCopy2 = anchor;
         }
 
         else
         {
-          v33 = 0;
+          anchorCopy2 = 0;
         }
 
         v34 = v48;
@@ -1488,40 +1488,40 @@ LABEL_35:
   }
 }
 
-- (void)p_jumpToAnnotationAnchor:(id)a3 pulse:(BOOL)a4
+- (void)p_jumpToAnnotationAnchor:(id)anchor pulse:(BOOL)pulse
 {
-  if (a3)
+  if (anchor)
   {
-    v6 = [a3 annotation];
-    v7 = [a3 noteRange];
-    [(THDocumentNavigator *)self p_jumpWithBlock:&v9 annotation:v6 noteSelectionRange:v7, v8];
+    annotation = [anchor annotation];
+    noteRange = [anchor noteRange];
+    [(THDocumentNavigator *)self p_jumpWithBlock:&v9 annotation:annotation noteSelectionRange:noteRange, v8];
   }
 }
 
-- (void)p_jumpWithBlock:(id)a3 andPulseStorageAnchor:(id)a4
+- (void)p_jumpWithBlock:(id)block andPulseStorageAnchor:(id)anchor
 {
-  if (a3)
+  if (block)
   {
-    v7 = [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self willJumpToStorageAnchor:a4];
-    (*(a3 + 2))(a3);
-    if (a4)
+    v7 = [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self willJumpToStorageAnchor:anchor];
+    (*(block + 2))(block);
+    if (anchor)
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_1BC2EC;
       v11[3] = &unk_45AE58;
       v11[4] = self;
-      v11[5] = a4;
+      v11[5] = anchor;
       [(THInteractiveCanvasController *)[(THDocumentNavigator *)self interactiveCanvasController] performBlockAfterNextLayout:v11];
       [(THInteractiveCanvasController *)[(THDocumentNavigator *)self interactiveCanvasController] layoutInvalidated];
       [(THInteractiveCanvasController *)[(THDocumentNavigator *)self interactiveCanvasController] layoutIfNeeded];
       if ([(THPresentationType *)[(THSectionController *)[(THDocumentNavigator *)self sectionController] presentationType] isFlow])
       {
-        (*(a3 + 2))(a3);
+        (*(block + 2))(block);
       }
     }
 
-    [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self didJumpToStorageAnchor:a4 withWillJumpReturn:v7];
+    [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self didJumpToStorageAnchor:anchor withWillJumpReturn:v7];
   }
 
   else
@@ -1534,15 +1534,15 @@ LABEL_35:
   }
 }
 
-- (void)p_jumpWithBlock:(id)a3 annotation:(id)a4 noteSelectionRange:(_NSRange)a5
+- (void)p_jumpWithBlock:(id)block annotation:(id)annotation noteSelectionRange:(_NSRange)range
 {
-  if (a3)
+  if (block)
   {
-    length = a5.length;
-    location = a5.location;
+    length = range.length;
+    location = range.location;
     v10 = [(THDocumentNavigatorDelegate *)[(THDocumentNavigator *)self delegate] documentNavigator:self willJumpToStorageAnchor:0];
-    (*(a3 + 2))(a3);
-    if (a4)
+    (*(block + 2))(block);
+    if (annotation)
     {
       if (location != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -1557,7 +1557,7 @@ LABEL_35:
         v14[2] = sub_1BC4EC;
         v14[3] = &unk_45EA68;
         v14[4] = self;
-        v14[5] = a4;
+        v14[5] = annotation;
         v14[6] = v15;
         v14[7] = location;
         v14[8] = length;
@@ -1581,18 +1581,18 @@ LABEL_35:
   }
 }
 
-- (void)p_pulseStorageAnchor:(id)a3
+- (void)p_pulseStorageAnchor:(id)anchor
 {
-  [objc_msgSend(a3 "contentNode")];
+  [objc_msgSend(anchor "contentNode")];
   objc_opt_class();
   v5 = TSUDynamicCast();
   if (v5)
   {
     v6 = v5;
-    v7 = [(THDocumentNavigator *)self interactiveCanvasController];
-    v9 = [a3 range];
+    interactiveCanvasController = [(THDocumentNavigator *)self interactiveCanvasController];
+    range = [anchor range];
 
-    [(THInteractiveCanvasController *)v7 pulseStorage:v6 range:v9, v8];
+    [(THInteractiveCanvasController *)interactiveCanvasController pulseStorage:v6 range:range, v8];
   }
 
   else
@@ -1601,53 +1601,53 @@ LABEL_35:
   }
 }
 
-- (_NSRange)p_bodyRangeForStorageAnchorInFlow:(id)a3
+- (_NSRange)p_bodyRangeForStorageAnchorInFlow:(id)flow
 {
-  v5 = [(THDocumentNavigator *)self sectionController];
+  sectionController = [(THDocumentNavigator *)self sectionController];
 
-  v6 = [(THDocumentNavigator *)self bodyRangeForStorageAnchorInFlow:a3 sectionController:v5];
+  v6 = [(THDocumentNavigator *)self bodyRangeForStorageAnchorInFlow:flow sectionController:sectionController];
   result.length = v7;
   result.location = v6;
   return result;
 }
 
-- (_NSRange)bodyRangeForStorageAnchorInFlow:(id)a3 sectionController:(id)a4
+- (_NSRange)bodyRangeForStorageAnchorInFlow:(id)flow sectionController:(id)controller
 {
   v7 = [THPresentationType paginatedPresentationTypeInContext:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] context]];
   v8 = [THPresentationType flowPresentationTypeInContext:[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] context]];
-  v9 = [a3 contentNode];
-  [v9 infoForNodeUniqueID:objc_msgSend(a3 forPresentationType:{"storageUID"), v7}];
+  contentNode = [flow contentNode];
+  [contentNode infoForNodeUniqueID:objc_msgSend(flow forPresentationType:{"storageUID"), v7}];
   objc_opt_class();
   v10 = TSUClassAndProtocolCast();
   if (!v10)
   {
-    [v9 infoForNodeUniqueID:objc_msgSend(a3 forPresentationType:{"storageUID", &OBJC_PROTOCOL___TSDInfo), v8}];
+    [contentNode infoForNodeUniqueID:objc_msgSend(flow forPresentationType:{"storageUID", &OBJC_PROTOCOL___TSDInfo), v8}];
     objc_opt_class();
     v10 = TSUClassAndProtocolCast();
   }
 
-  v11 = -[THDocumentNavigator p_bodyRangeForPossiblyAttachedInfo:body:](self, "p_bodyRangeForPossiblyAttachedInfo:body:", v10, [objc_msgSend(a3 contentNode]);
+  range = -[THDocumentNavigator p_bodyRangeForPossiblyAttachedInfo:body:](self, "p_bodyRangeForPossiblyAttachedInfo:body:", v10, [objc_msgSend(flow contentNode]);
   v13 = v12;
-  if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+  if (range == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = [objc_msgSend(a3 "contentNode")];
+    v14 = [objc_msgSend(flow "contentNode")];
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v15 = [objc_msgSend(a3 "contentNode")];
-      v16 = v15;
+      v15 = [objc_msgSend(flow "contentNode")];
+      nodeRelativePageIndex = v15;
       if (v15 == 0x7FFFFFFFFFFFFFFFLL && v10)
       {
-        v17 = [objc_msgSend(a3 contentNode];
-        if (v17 && TSDTopmostInfoFromInfo() == v17)
+        contentNode2 = [objc_msgSend(flow contentNode];
+        if (contentNode2 && TSDTopmostInfoFromInfo() == contentNode2)
         {
-          v16 = 0;
+          nodeRelativePageIndex = 0;
           goto LABEL_13;
         }
 
 LABEL_12:
-        v16 = [a3 nodeRelativePageIndex];
-        v11 = 0x7FFFFFFFFFFFFFFFLL;
-        if (v16 == 0x7FFFFFFFFFFFFFFFLL)
+        nodeRelativePageIndex = [flow nodeRelativePageIndex];
+        range = 0x7FFFFFFFFFFFFFFFLL;
+        if (nodeRelativePageIndex == 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_16;
         }
@@ -1663,31 +1663,31 @@ LABEL_12:
 
     else
     {
-      v16 = v14;
+      nodeRelativePageIndex = v14;
     }
 
 LABEL_13:
-    v18 = [v9 storageAnchorForNodeRelativePageIndex:v16];
+    v18 = [contentNode storageAnchorForNodeRelativePageIndex:nodeRelativePageIndex];
     if (v18)
     {
-      v11 = [v18 range];
+      range = [v18 range];
       v13 = v19;
     }
 
     else
     {
-      v11 = 0x7FFFFFFFFFFFFFFFLL;
+      range = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
 LABEL_16:
   v20 = v13;
   result.length = v20;
-  result.location = v11;
+  result.location = range;
   return result;
 }
 
-- (_NSRange)p_bodyRangeForPossiblyAttachedInfo:(id)a3 body:(id)a4
+- (_NSRange)p_bodyRangeForPossiblyAttachedInfo:(id)info body:(id)body
 {
   v16 = 0;
   v17 = &v16;
@@ -1699,10 +1699,10 @@ LABEL_16:
   v5 = TSUDynamicCast();
   if (v5)
   {
-    v6 = [v5 findCharIndex];
+    findCharIndex = [v5 findCharIndex];
     v7 = v17;
     v8 = 1;
-    v17[4] = v6;
+    v17[4] = findCharIndex;
     v7[5] = 1;
   }
 
@@ -1710,20 +1710,20 @@ LABEL_16:
   {
     v9 = TSDTopmostInfoFromInfo();
     v10 = objc_opt_class();
-    v11 = [a4 range];
+    range = [body range];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1BCA28;
     v15[3] = &unk_45EA18;
     v15[4] = v9;
     v15[5] = &v16;
-    [a4 enumerateAttachmentsOfClass:v10 inTextRange:v11 usingBlock:{v12, v15}];
-    v6 = v17[4];
+    [body enumerateAttachmentsOfClass:v10 inTextRange:range usingBlock:{v12, v15}];
+    findCharIndex = v17[4];
     v8 = v17[5];
   }
 
   _Block_object_dispose(&v16, 8);
-  v13 = v6;
+  v13 = findCharIndex;
   v14 = v8;
   result.length = v14;
   result.location = v13;
@@ -1756,9 +1756,9 @@ LABEL_16:
 
 - (unint64_t)absolutePageIndexForPreviousSection
 {
-  v3 = [(THDocumentNavigator *)self currentContentNode];
+  currentContentNode = [(THDocumentNavigator *)self currentContentNode];
   objc_opt_class();
-  [v3 parent];
+  [currentContentNode parent];
   v4 = TSUDynamicCast();
   if (v4)
   {
@@ -1787,9 +1787,9 @@ LABEL_16:
 
 - (unint64_t)absolutePageIndexForEndOfPreviousSection
 {
-  v3 = [(THDocumentNavigator *)self currentContentNode];
+  currentContentNode = [(THDocumentNavigator *)self currentContentNode];
   objc_opt_class();
-  [v3 parent];
+  [currentContentNode parent];
   v4 = TSUDynamicCast();
   if (!v4)
   {
@@ -1815,9 +1815,9 @@ LABEL_16:
 
 - (unint64_t)absolutePageIndexForNextSection
 {
-  v3 = [(THDocumentNavigator *)self currentContentNode];
+  currentContentNode = [(THDocumentNavigator *)self currentContentNode];
   objc_opt_class();
-  [v3 parent];
+  [currentContentNode parent];
   v4 = TSUDynamicCast();
   objc_opt_class();
   [v4 nextSibling];
@@ -1846,10 +1846,10 @@ LABEL_16:
     v3 = (&dword_0 + 1);
   }
 
-  v4 = [(THDocumentNavigator *)self currentAbsolutePageIndex];
-  if (&v3[v4] <= [(THDocumentNavigator *)self lastAbsolutePageIndex])
+  currentAbsolutePageIndex = [(THDocumentNavigator *)self currentAbsolutePageIndex];
+  if (&v3[currentAbsolutePageIndex] <= [(THDocumentNavigator *)self lastAbsolutePageIndex])
   {
-    return &v3[v4];
+    return &v3[currentAbsolutePageIndex];
   }
 
   else
@@ -1871,27 +1871,27 @@ LABEL_16:
     v3 = &dword_0 + 1;
   }
 
-  v4 = [(THDocumentNavigator *)self currentAbsolutePageIndex];
-  v5 = [(THDocumentNavigator *)self absolutePageIndexForBeginningOfSection];
+  currentAbsolutePageIndex = [(THDocumentNavigator *)self currentAbsolutePageIndex];
+  absolutePageIndexForBeginningOfSection = [(THDocumentNavigator *)self absolutePageIndexForBeginningOfSection];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  if (absolutePageIndexForBeginningOfSection == 0x7FFFFFFFFFFFFFFFLL)
   {
     return v6;
   }
 
-  if (v4 > v5)
+  if (currentAbsolutePageIndex > absolutePageIndexForBeginningOfSection)
   {
-    v6 = v5;
-    if (v4 < v3 + v5)
+    v6 = absolutePageIndexForBeginningOfSection;
+    if (currentAbsolutePageIndex < v3 + absolutePageIndexForBeginningOfSection)
     {
       return v6;
     }
   }
 
-  if (v4 != v5)
+  if (currentAbsolutePageIndex != absolutePageIndexForBeginningOfSection)
   {
-    v6 = v4 - v3;
-    if (v4 < v3)
+    v6 = currentAbsolutePageIndex - v3;
+    if (currentAbsolutePageIndex < v3)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -1904,9 +1904,9 @@ LABEL_16:
 
 - (unint64_t)absolutePageIndexForBeginningOfSection
 {
-  v3 = [(THDocumentNavigator *)self currentContentNode];
+  currentContentNode = [(THDocumentNavigator *)self currentContentNode];
   objc_opt_class();
-  [v3 parent];
+  [currentContentNode parent];
   v4 = TSUDynamicCast();
   if (v4)
   {
@@ -1921,9 +1921,9 @@ LABEL_16:
 
 - (unint64_t)absolutePageIndexForEndOfSection
 {
-  v3 = [(THDocumentNavigator *)self currentContentNode];
+  currentContentNode = [(THDocumentNavigator *)self currentContentNode];
   objc_opt_class();
-  [v3 parent];
+  [currentContentNode parent];
   v4 = TSUDynamicCast();
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4)
@@ -1938,33 +1938,33 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)canNavigateByBookDirection:(int)a3 bookGranularity:(int)a4
+- (BOOL)canNavigateByBookDirection:(int)direction bookGranularity:(int)granularity
 {
   if ([(THDocumentNavigator *)self currentAbsolutePageIndex]== 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  if (a3 == 2)
+  if (direction == 2)
   {
-    if (a4 > 1)
+    if (granularity > 1)
     {
-      if (a4 == 2)
+      if (granularity == 2)
       {
-        v8 = [(THDocumentNavigator *)self absolutePageIndexForEndOfSection];
-        return v8 != 0x7FFFFFFFFFFFFFFFLL;
+        absolutePageIndexForEndOfSection = [(THDocumentNavigator *)self absolutePageIndexForEndOfSection];
+        return absolutePageIndexForEndOfSection != 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      if (a4 == 3)
+      if (granularity == 3)
       {
-        v8 = [(THDocumentNavigator *)self absolutePageIndexForPreviousSection];
-        return v8 != 0x7FFFFFFFFFFFFFFFLL;
+        absolutePageIndexForEndOfSection = [(THDocumentNavigator *)self absolutePageIndexForPreviousSection];
+        return absolutePageIndexForEndOfSection != 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      return a4 == 4;
+      return granularity == 4;
     }
 
-    if (!a4)
+    if (!granularity)
     {
       v16 = +[TSUAssertionHandler currentHandler];
       v17 = [NSString stringWithUTF8String:"[THDocumentNavigator canNavigateByBookDirection:bookGranularity:]"];
@@ -1977,38 +1977,38 @@ LABEL_24:
       return 0;
     }
 
-    if (a4 == 1)
+    if (granularity == 1)
     {
-      v8 = [(THDocumentNavigator *)self previousVisibleAbsolutePageNumber];
-      return v8 != 0x7FFFFFFFFFFFFFFFLL;
+      absolutePageIndexForEndOfSection = [(THDocumentNavigator *)self previousVisibleAbsolutePageNumber];
+      return absolutePageIndexForEndOfSection != 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
-  else if (a3 == 1)
+  else if (direction == 1)
   {
-    v7 = [(THDocumentNavigator *)self lastAbsolutePageIndex];
-    if (a4 > 1)
+    lastAbsolutePageIndex = [(THDocumentNavigator *)self lastAbsolutePageIndex];
+    if (granularity > 1)
     {
-      if (a4 == 2)
+      if (granularity == 2)
       {
-        v8 = [(THDocumentNavigator *)self absolutePageIndexForBeginningOfSection];
-        return v8 != 0x7FFFFFFFFFFFFFFFLL;
+        absolutePageIndexForEndOfSection = [(THDocumentNavigator *)self absolutePageIndexForBeginningOfSection];
+        return absolutePageIndexForEndOfSection != 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      if (a4 == 3)
+      if (granularity == 3)
       {
-        v8 = [(THDocumentNavigator *)self absolutePageIndexForNextSection];
-        return v8 != 0x7FFFFFFFFFFFFFFFLL;
+        absolutePageIndexForEndOfSection = [(THDocumentNavigator *)self absolutePageIndexForNextSection];
+        return absolutePageIndexForEndOfSection != 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      return a4 == 4;
+      return granularity == 4;
     }
 
-    if (a4)
+    if (granularity)
     {
-      if (a4 == 1)
+      if (granularity == 1)
       {
-        return [(THDocumentNavigator *)self nextVisibleAbsolutePageNumber]<= v7;
+        return [(THDocumentNavigator *)self nextVisibleAbsolutePageNumber]<= lastAbsolutePageIndex;
       }
 
       return 0;
@@ -2043,9 +2043,9 @@ LABEL_24:
 
   else
   {
-    v3 = [(THDocumentNavigator *)self absolutePageIndexForNextSection];
+    absolutePageIndexForNextSection = [(THDocumentNavigator *)self absolutePageIndexForNextSection];
 
-    [(THDocumentNavigator *)self setVisibleAbsolutePhysicalPageIndex:v3];
+    [(THDocumentNavigator *)self setVisibleAbsolutePhysicalPageIndex:absolutePageIndexForNextSection];
   }
 }
 
@@ -2066,95 +2066,95 @@ LABEL_24:
 
   else
   {
-    v3 = [(THDocumentNavigator *)self previousVisibleAbsolutePageNumber];
+    previousVisibleAbsolutePageNumber = [(THDocumentNavigator *)self previousVisibleAbsolutePageNumber];
 
-    [(THDocumentNavigator *)self setVisibleAbsolutePhysicalPageIndex:v3];
+    [(THDocumentNavigator *)self setVisibleAbsolutePhysicalPageIndex:previousVisibleAbsolutePageNumber];
   }
 }
 
-- (BOOL)canNavigateByHistoryDirection:(int)a3
+- (BOOL)canNavigateByHistoryDirection:(int)direction
 {
   if ([(THDocumentNavigator *)self currentAbsolutePageIndex]== 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  if (a3 != 2)
+  if (direction != 2)
   {
-    if (a3 == 1)
+    if (direction == 1)
     {
-      v5 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookspotHistoryStack];
+      bookspotHistoryStack = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookspotHistoryStack];
 
-      return [(THBookspotHistoryStack *)v5 hasNextBookspot];
+      return [(THBookspotHistoryStack *)bookspotHistoryStack hasNextBookspot];
     }
 
     return 0;
   }
 
-  v7 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookspotHistoryStack];
+  bookspotHistoryStack2 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookspotHistoryStack];
 
-  return [(THBookspotHistoryStack *)v7 hasPrevBookspot];
+  return [(THBookspotHistoryStack *)bookspotHistoryStack2 hasPrevBookspot];
 }
 
-- (void)navigateByHistoryDirection:(int)a3
+- (void)navigateByHistoryDirection:(int)direction
 {
   if ([(THDocumentNavigator *)self currentAbsolutePageIndex]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a3 == 2)
+    if (direction == 2)
     {
-      v6 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookspotHistoryStack];
+      bookspotHistoryStack = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookspotHistoryStack];
 
-      [(THBookspotHistoryStack *)v6 gotoPrevBookspot];
+      [(THBookspotHistoryStack *)bookspotHistoryStack gotoPrevBookspot];
     }
 
-    else if (a3 == 1)
+    else if (direction == 1)
     {
-      v5 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookspotHistoryStack];
+      bookspotHistoryStack2 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookspotHistoryStack];
 
-      [(THBookspotHistoryStack *)v5 gotoNextBookspot];
+      [(THBookspotHistoryStack *)bookspotHistoryStack2 gotoNextBookspot];
     }
   }
 }
 
-- (void)navigateByBookDirection:(int)a3 bookGranularity:(int)a4
+- (void)navigateByBookDirection:(int)direction bookGranularity:(int)granularity
 {
   if ([(THDocumentNavigator *)self currentAbsolutePageIndex]== 0x7FFFFFFFFFFFFFFFLL)
   {
     return;
   }
 
-  if (a3 != 2)
+  if (direction != 2)
   {
-    if (a3 != 1)
+    if (direction != 1)
     {
       return;
     }
 
-    if (a4 > 1)
+    if (granularity > 1)
     {
-      switch(a4)
+      switch(granularity)
       {
         case 2:
-          v7 = [(THDocumentNavigator *)self absolutePageIndexForEndOfSection];
+          absolutePageIndexForEndOfSection = [(THDocumentNavigator *)self absolutePageIndexForEndOfSection];
           break;
         case 3:
-          v7 = [(THDocumentNavigator *)self absolutePageIndexForNextSection];
+          absolutePageIndexForEndOfSection = [(THDocumentNavigator *)self absolutePageIndexForNextSection];
           break;
         case 4:
-          v7 = [(THDocumentNavigator *)self lastAbsolutePageIndex];
+          absolutePageIndexForEndOfSection = [(THDocumentNavigator *)self lastAbsolutePageIndex];
 LABEL_34:
-          v9 = v7;
-          v8 = self;
+          v9 = absolutePageIndexForEndOfSection;
+          selfCopy3 = self;
 LABEL_35:
 
-          [(THDocumentNavigator *)v8 setVisibleAbsolutePhysicalPageIndex:v9 animated:1];
+          [(THDocumentNavigator *)selfCopy3 setVisibleAbsolutePhysicalPageIndex:v9 animated:1];
           return;
         default:
           return;
       }
 
 LABEL_32:
-      if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+      if (absolutePageIndexForEndOfSection == 0x7FFFFFFFFFFFFFFFLL)
       {
         return;
       }
@@ -2162,22 +2162,22 @@ LABEL_32:
       goto LABEL_34;
     }
 
-    if (a4)
+    if (granularity)
     {
-      if (a4 != 1)
+      if (granularity != 1)
       {
         return;
       }
 
-      v10 = [(THDocumentNavigator *)self lastAbsolutePageIndex];
-      v11 = [(THDocumentNavigator *)self nextVisibleAbsolutePageNumber];
-      if (v11 > v10)
+      lastAbsolutePageIndex = [(THDocumentNavigator *)self lastAbsolutePageIndex];
+      nextVisibleAbsolutePageNumber = [(THDocumentNavigator *)self nextVisibleAbsolutePageNumber];
+      if (nextVisibleAbsolutePageNumber > lastAbsolutePageIndex)
       {
         return;
       }
 
-      v12 = v11;
-      if (v11 > [(THDocumentNavigator *)self absolutePageIndexForEndOfSection])
+      v12 = nextVisibleAbsolutePageNumber;
+      if (nextVisibleAbsolutePageNumber > [(THDocumentNavigator *)self absolutePageIndexForEndOfSection])
       {
 
         [(THDocumentNavigator *)self scrollToNextSection];
@@ -2185,7 +2185,7 @@ LABEL_32:
       }
 
 LABEL_43:
-      v8 = self;
+      selfCopy3 = self;
       v9 = v12;
       goto LABEL_35;
     }
@@ -2199,18 +2199,18 @@ LABEL_43:
     goto LABEL_40;
   }
 
-  if (a4 > 1)
+  if (granularity > 1)
   {
-    switch(a4)
+    switch(granularity)
     {
       case 2:
-        v7 = [(THDocumentNavigator *)self absolutePageIndexForBeginningOfSection];
+        absolutePageIndexForEndOfSection = [(THDocumentNavigator *)self absolutePageIndexForBeginningOfSection];
         break;
       case 3:
-        v7 = [(THDocumentNavigator *)self absolutePageIndexForPreviousSection];
+        absolutePageIndexForEndOfSection = [(THDocumentNavigator *)self absolutePageIndexForPreviousSection];
         break;
       case 4:
-        v8 = self;
+        selfCopy3 = self;
         v9 = 0;
         goto LABEL_35;
       default:
@@ -2220,7 +2220,7 @@ LABEL_43:
     goto LABEL_32;
   }
 
-  if (!a4)
+  if (!granularity)
   {
     v20 = +[TSUAssertionHandler currentHandler];
     v21 = [NSString stringWithUTF8String:"[THDocumentNavigator navigateByBookDirection:bookGranularity:]"];
@@ -2234,19 +2234,19 @@ LABEL_40:
     return;
   }
 
-  if (a4 != 1)
+  if (granularity != 1)
   {
     return;
   }
 
-  v13 = [(THDocumentNavigator *)self previousVisibleAbsolutePageNumber];
-  if (v13 == 0x7FFFFFFFFFFFFFFFLL)
+  previousVisibleAbsolutePageNumber = [(THDocumentNavigator *)self previousVisibleAbsolutePageNumber];
+  if (previousVisibleAbsolutePageNumber == 0x7FFFFFFFFFFFFFFFLL)
   {
     return;
   }
 
-  v12 = v13;
-  if (v13 >= [(THDocumentNavigator *)self absolutePageIndexForBeginningOfSection])
+  v12 = previousVisibleAbsolutePageNumber;
+  if (previousVisibleAbsolutePageNumber >= [(THDocumentNavigator *)self absolutePageIndexForBeginningOfSection])
   {
     goto LABEL_43;
   }
@@ -2254,23 +2254,23 @@ LABEL_40:
   [(THDocumentNavigator *)self scrollToPreviousSection];
 }
 
-- (BOOL)isPageLocationValid:(id)a3
+- (BOOL)isPageLocationValid:(id)valid
 {
-  if (!a3)
+  if (!valid)
   {
     return 0;
   }
 
-  if ([a3 absolutePhysicalPageIndex] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([valid absolutePhysicalPageIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v6 = [a3 absolutePhysicalPageIndex];
-  return v6 < [(THDocumentNavigationModel *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel] pageCount];
+  absolutePhysicalPageIndex = [valid absolutePhysicalPageIndex];
+  return absolutePhysicalPageIndex < [(THDocumentNavigationModel *)[(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] navigationModel] pageCount];
 }
 
-- (BOOL)restorePlaceholderWithOverrideLocation:(id)a3
+- (BOOL)restorePlaceholderWithOverrideLocation:(id)location
 {
   if (![(THDocumentNavigator *)self documentRoot])
   {
@@ -2283,11 +2283,11 @@ LABEL_40:
   v5 = [(THDocumentNavigator *)self isPageLocationValid:v10];
   if (v5 && v9)
   {
-    v6 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookspotHistoryStack];
-    [(THBookspotHistoryStack *)v6 resetWithDictionaryRepresentation:v9];
+    bookspotHistoryStack = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] bookspotHistoryStack];
+    [(THBookspotHistoryStack *)bookspotHistoryStack resetWithDictionaryRepresentation:v9];
   }
 
-  if (!a3 || (v7 = 1, ![(THDocumentNavigator *)self followAnchor:a3 pulse:1]))
+  if (!location || (v7 = 1, ![(THDocumentNavigator *)self followAnchor:location pulse:1]))
   {
     if (v5)
     {
@@ -2311,24 +2311,24 @@ LABEL_40:
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v3 = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] annotationController];
+  annotationController = [(THDocumentRoot *)[(THDocumentNavigator *)self documentRoot] annotationController];
   if (-[THDocumentRoot isCorrupt](-[THDocumentNavigator documentRoot](self, "documentRoot"), "isCorrupt") || (v4 = -[THDocumentNavigator currentPageLocation](self, "currentPageLocation"), v5 = -[THDocumentNavigator storageAnchorForCurrentPage](self, "storageAnchorForCurrentPage"), v6 = -[THBookspotHistoryStack dictionaryRepresentation](-[THDocumentRoot bookspotHistoryStack](-[THDocumentNavigator documentRoot](self, "documentRoot"), "bookspotHistoryStack"), "dictionaryRepresentation"), ![v4 absolutePhysicalPageIndex]))
   {
-    v8 = v3;
+    v8 = annotationController;
     v9 = 0;
     v10 = 0;
-    v7 = 0;
+    contentNode = 0;
   }
 
   else
   {
-    v7 = [v5 contentNode];
-    v8 = v3;
+    contentNode = [v5 contentNode];
+    v8 = annotationController;
     v9 = v4;
     v10 = v6;
   }
 
-  [(THAnnotationStorageController *)v8 setPlaceholder:v9 pageHistoryDictionary:v10 withContentNode:v7];
+  [(THAnnotationStorageController *)v8 setPlaceholder:v9 pageHistoryDictionary:v10 withContentNode:contentNode];
 }
 
 - (CGRect)rectForFlowAnchor

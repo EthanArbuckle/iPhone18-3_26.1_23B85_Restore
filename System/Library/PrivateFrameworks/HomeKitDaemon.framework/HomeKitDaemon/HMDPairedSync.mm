@@ -1,17 +1,17 @@
 @interface HMDPairedSync
-- (HMDPairedSync)initWithQueue:(id)a3;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
+- (HMDPairedSync)initWithQueue:(id)queue;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
 @end
 
 @implementation HMDPairedSync
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  sessionCopy = session;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -22,14 +22,14 @@
   }
 
   objc_autoreleasePoolPop(v8);
-  [v7 syncDidComplete];
+  [sessionCopy syncDidComplete];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDPairedSync)initWithQueue:(id)a3
+- (HMDPairedSync)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = HMDPairedSync;
   v5 = [(HMDPairedSync *)&v9 init];
@@ -39,7 +39,7 @@
     coordinator = v5->_coordinator;
     v5->_coordinator = v6;
 
-    [(PSYSyncCoordinator *)v5->_coordinator setDelegate:v5 queue:v4];
+    [(PSYSyncCoordinator *)v5->_coordinator setDelegate:v5 queue:queueCopy];
   }
 
   return v5;

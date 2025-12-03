@@ -1,13 +1,13 @@
 @interface TabCompletionProvider
-- (BOOL)browserTabCompletionProvider:(id)a3 shouldExtensionURLAppearAsSwitchToTabItem:(id)a4;
+- (BOOL)browserTabCompletionProvider:(id)provider shouldExtensionURLAppearAsSwitchToTabItem:(id)item;
 - (TabCompletionProviderDataSource)tabCompletionProviderDataSource;
-- (id)bestTabCompletionMatchForQuery:(id)a3 withTopHitURL:(id)a4;
-- (id)browserTabCompletionProvider:(id)a3 alternativeDisplayTextForURLForExtensionURL:(id)a4;
-- (id)selectedTabInfoForBrowserTabCompletionProvider:(id)a3;
-- (id)tabInfosForBrowserTabCompletionProvider:(id)a3;
+- (id)bestTabCompletionMatchForQuery:(id)query withTopHitURL:(id)l;
+- (id)browserTabCompletionProvider:(id)provider alternativeDisplayTextForURLForExtensionURL:(id)l;
+- (id)selectedTabInfoForBrowserTabCompletionProvider:(id)provider;
+- (id)tabInfosForBrowserTabCompletionProvider:(id)provider;
 - (void)dealloc;
-- (void)didFindMatchesForCurrentQueryInBrowserTabCompletionProvider:(id)a3;
-- (void)setQueryToComplete:(id)a3;
+- (void)didFindMatchesForCurrentQueryInBrowserTabCompletionProvider:(id)provider;
+- (void)setQueryToComplete:(id)complete;
 @end
 
 @implementation TabCompletionProvider
@@ -20,13 +20,13 @@
   [(TabCompletionProvider *)&v3 dealloc];
 }
 
-- (id)bestTabCompletionMatchForQuery:(id)a3 withTopHitURL:(id)a4
+- (id)bestTabCompletionMatchForQuery:(id)query withTopHitURL:(id)l
 {
-  v6 = a4;
-  v7 = [(CompletionProvider *)self completionsForQuery:a3];
+  lCopy = l;
+  v7 = [(CompletionProvider *)self completionsForQuery:query];
   if ([v7 count])
   {
-    v8 = [(WBSBrowserTabCompletionProvider *)self->_browserTabCompletionProvider bestTabCompletionMatchFromMatches:v7 withTopHitURL:v6];
+    v8 = [(WBSBrowserTabCompletionProvider *)self->_browserTabCompletionProvider bestTabCompletionMatchFromMatches:v7 withTopHitURL:lCopy];
   }
 
   else
@@ -37,10 +37,10 @@
   return v8;
 }
 
-- (void)setQueryToComplete:(id)a3
+- (void)setQueryToComplete:(id)complete
 {
-  v8 = a3;
-  v4 = [v8 queryString];
+  completeCopy = complete;
+  queryString = [completeCopy queryString];
   browserTabCompletionProvider = self->_browserTabCompletionProvider;
   if (!browserTabCompletionProvider)
   {
@@ -53,20 +53,20 @@
     browserTabCompletionProvider = self->_browserTabCompletionProvider;
   }
 
-  -[WBSBrowserTabCompletionProvider setCurrentQuery:forQueryID:](browserTabCompletionProvider, "setCurrentQuery:forQueryID:", v4, [v8 queryID]);
+  -[WBSBrowserTabCompletionProvider setCurrentQuery:forQueryID:](browserTabCompletionProvider, "setCurrentQuery:forQueryID:", queryString, [completeCopy queryID]);
 }
 
-- (id)tabInfosForBrowserTabCompletionProvider:(id)a3
+- (id)tabInfosForBrowserTabCompletionProvider:(id)provider
 {
   v36 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_tabCompletionProviderDataSource);
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [WeakRetained windowUUIDsToTabsForTabCompletionProvider:self];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __65__TabCompletionProvider_tabInfosForBrowserTabCompletionProvider___block_invoke;
   v33[3] = &unk_2781D7430;
-  v7 = v5;
+  v7 = array;
   v34 = v7;
   [v6 enumerateKeysAndObjectsUsingBlock:v33];
   v8 = [WeakRetained currentWindowUUIDForTabCompletionProvider:self];
@@ -91,22 +91,22 @@
 
         v13 = *(*(&v29 + 1) + 8 * i);
         v14 = objc_alloc(MEMORY[0x277CCAD78]);
-        v15 = [v13 uuid];
-        v16 = [v14 initWithUUIDString:v15];
+        uuid = [v13 uuid];
+        v16 = [v14 initWithUUIDString:uuid];
 
-        v17 = [v13 displayTitle];
-        v18 = [v13 tabs];
+        displayTitle = [v13 displayTitle];
+        tabs = [v13 tabs];
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __65__TabCompletionProvider_tabInfosForBrowserTabCompletionProvider___block_invoke_3;
         v24[3] = &unk_2781D7458;
         v25 = v8;
         v26 = v16;
-        v27 = v17;
+        v27 = displayTitle;
         v28 = v7;
-        v19 = v17;
+        v19 = displayTitle;
         v20 = v16;
-        [v18 enumerateObjectsUsingBlock:v24];
+        [tabs enumerateObjectsUsingBlock:v24];
       }
 
       v10 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
@@ -172,24 +172,24 @@ void __65__TabCompletionProvider_tabInfosForBrowserTabCompletionProvider___block
   }
 }
 
-- (id)selectedTabInfoForBrowserTabCompletionProvider:(id)a3
+- (id)selectedTabInfoForBrowserTabCompletionProvider:(id)provider
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabCompletionProviderDataSource);
   v5 = [WeakRetained selectedTabDocumentForTabCompletionProvider:self];
 
   if (v5)
   {
-    v6 = [v5 browserController];
-    v7 = [v6 tabController];
-    v8 = [v7 currentTabs];
-    v9 = [v8 indexOfObjectIdenticalTo:v5];
+    browserController = [v5 browserController];
+    tabController = [browserController tabController];
+    currentTabs = [tabController currentTabs];
+    v9 = [currentTabs indexOfObjectIdenticalTo:v5];
 
     v10 = objc_alloc(MEMORY[0x277D49E40]);
-    v11 = [v5 uuid];
-    v12 = [v6 UUID];
+    uuid = [v5 uuid];
+    uUID = [browserController UUID];
     v13 = [v5 URL];
-    v14 = [v5 title];
-    v15 = [v10 initWithUUID:v11 windowUUID:v12 tabGroupUUID:0 tabGroupTitle:0 tabIndex:v9 url:v13 title:v14 pageStatus:{objc_msgSend(v5, "pageStatus")}];
+    title = [v5 title];
+    v15 = [v10 initWithUUID:uuid windowUUID:uUID tabGroupUUID:0 tabGroupTitle:0 tabIndex:v9 url:v13 title:title pageStatus:{objc_msgSend(v5, "pageStatus")}];
   }
 
   else
@@ -200,25 +200,25 @@ void __65__TabCompletionProvider_tabInfosForBrowserTabCompletionProvider___block
   return v15;
 }
 
-- (void)didFindMatchesForCurrentQueryInBrowserTabCompletionProvider:(id)a3
+- (void)didFindMatchesForCurrentQueryInBrowserTabCompletionProvider:(id)provider
 {
-  v5 = [(WBSBrowserTabCompletionProvider *)self->_browserTabCompletionProvider currentTabCompletionMatches];
-  v4 = [(WBSBrowserTabCompletionProvider *)self->_browserTabCompletionProvider currentQuery];
-  [(CompletionProvider *)self setCompletions:v5 forString:v4];
+  currentTabCompletionMatches = [(WBSBrowserTabCompletionProvider *)self->_browserTabCompletionProvider currentTabCompletionMatches];
+  currentQuery = [(WBSBrowserTabCompletionProvider *)self->_browserTabCompletionProvider currentQuery];
+  [(CompletionProvider *)self setCompletions:currentTabCompletionMatches forString:currentQuery];
 }
 
-- (BOOL)browserTabCompletionProvider:(id)a3 shouldExtensionURLAppearAsSwitchToTabItem:(id)a4
+- (BOOL)browserTabCompletionProvider:(id)provider shouldExtensionURLAppearAsSwitchToTabItem:(id)item
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  itemCopy = item;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v5 = +[Application sharedApplication];
-  v6 = [v5 allWebExtensionsControllers];
+  allWebExtensionsControllers = [v5 allWebExtensionsControllers];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [allWebExtensionsControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -228,23 +228,23 @@ void __65__TabCompletionProvider_tabInfosForBrowserTabCompletionProvider___block
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allWebExtensionsControllers);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v4 host];
-        v12 = [v10 webExtensionForBaseURIHost:v11];
+        host = [itemCopy host];
+        v12 = [v10 webExtensionForBaseURIHost:host];
 
         if (v12)
         {
-          v13 = [v12 newTabOverridePageURL];
-          LODWORD(v7) = [v4 isEqual:v13] ^ 1;
+          newTabOverridePageURL = [v12 newTabOverridePageURL];
+          LODWORD(v7) = [itemCopy isEqual:newTabOverridePageURL] ^ 1;
 
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allWebExtensionsControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -259,44 +259,44 @@ LABEL_11:
   return v7;
 }
 
-- (id)browserTabCompletionProvider:(id)a3 alternativeDisplayTextForURLForExtensionURL:(id)a4
+- (id)browserTabCompletionProvider:(id)provider alternativeDisplayTextForURLForExtensionURL:(id)l
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  lCopy = l;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v5 = +[Application sharedApplication];
-  v6 = [v5 allWebExtensionsControllers];
+  allWebExtensionsControllers = [v5 allWebExtensionsControllers];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  if (v7)
+  displayName = [allWebExtensionsControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (displayName)
   {
     v8 = *v15;
     while (2)
     {
-      for (i = 0; i != v7; i = i + 1)
+      for (i = 0; i != displayName; i = i + 1)
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allWebExtensionsControllers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v4 host];
-        v12 = [v10 webExtensionForBaseURIHost:v11];
+        host = [lCopy host];
+        v12 = [v10 webExtensionForBaseURIHost:host];
 
         if (v12)
         {
-          v7 = [v12 displayName];
+          displayName = [v12 displayName];
 
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      if (v7)
+      displayName = [allWebExtensionsControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
+      if (displayName)
       {
         continue;
       }
@@ -307,7 +307,7 @@ LABEL_11:
 
 LABEL_11:
 
-  return v7;
+  return displayName;
 }
 
 - (TabCompletionProviderDataSource)tabCompletionProviderDataSource

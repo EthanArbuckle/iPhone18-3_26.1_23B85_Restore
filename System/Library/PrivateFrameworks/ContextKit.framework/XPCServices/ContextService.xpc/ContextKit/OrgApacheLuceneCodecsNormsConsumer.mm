@@ -1,18 +1,18 @@
 @interface OrgApacheLuceneCodecsNormsConsumer
-- (void)mergeNormsFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withOrgApacheLuceneIndexMergeState:(id)a4 withJavaUtilList:(id)a5;
-- (void)mergeWithOrgApacheLuceneIndexMergeState:(id)a3;
+- (void)mergeNormsFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withOrgApacheLuceneIndexMergeState:(id)state withJavaUtilList:(id)list;
+- (void)mergeWithOrgApacheLuceneIndexMergeState:(id)state;
 @end
 
 @implementation OrgApacheLuceneCodecsNormsConsumer
 
-- (void)mergeWithOrgApacheLuceneIndexMergeState:(id)a3
+- (void)mergeWithOrgApacheLuceneIndexMergeState:(id)state
 {
-  if (!a3)
+  if (!state)
   {
     goto LABEL_33;
   }
 
-  v4 = *(a3 + 5);
+  v4 = *(state + 5);
   if (!v4)
   {
     goto LABEL_33;
@@ -34,14 +34,14 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = *(a3 + 2);
+  v9 = *(state + 2);
   if (!v9)
   {
 LABEL_33:
     JreThrowNullPointerException();
   }
 
-  v27 = [*(a3 + 2) countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v27 = [*(state + 2) countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v27)
   {
     v10 = *v29;
@@ -65,7 +65,7 @@ LABEL_33:
         if ([*(*(&v28 + 1) + 8 * i) hasNorms])
         {
           v13 = new_JavaUtilArrayList_init();
-          v14 = *(a3 + 5);
+          v14 = *(state + 5);
           if (!v14)
           {
             goto LABEL_33;
@@ -81,7 +81,7 @@ LABEL_33:
               goto LABEL_25;
             }
 
-            v18 = *(a3 + 7);
+            v18 = *(state + 7);
             if (!v18)
             {
               goto LABEL_33;
@@ -108,14 +108,14 @@ LABEL_25:
 
             [(JavaUtilArrayList *)v15 addWithId:v23, v24, v25];
             ++v16;
-            v14 = *(a3 + 5);
+            v14 = *(state + 5);
             if (!v14)
             {
               goto LABEL_33;
             }
           }
 
-          [(OrgApacheLuceneCodecsNormsConsumer *)self mergeNormsFieldWithOrgApacheLuceneIndexFieldInfo:v12 withOrgApacheLuceneIndexMergeState:a3 withJavaUtilList:v15];
+          [(OrgApacheLuceneCodecsNormsConsumer *)self mergeNormsFieldWithOrgApacheLuceneIndexFieldInfo:v12 withOrgApacheLuceneIndexMergeState:state withJavaUtilList:v15];
           v10 = v24;
           v9 = v25;
         }
@@ -128,14 +128,14 @@ LABEL_25:
   }
 }
 
-- (void)mergeNormsFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withOrgApacheLuceneIndexMergeState:(id)a4 withJavaUtilList:(id)a5
+- (void)mergeNormsFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withOrgApacheLuceneIndexMergeState:(id)state withJavaUtilList:(id)list
 {
   v9 = [OrgApacheLuceneCodecsNormsConsumer__1 alloc];
-  JreStrongAssign(&v9->val$toMerge_, a5);
-  JreStrongAssign(&v9->val$mergeState_, a4);
+  JreStrongAssign(&v9->val$toMerge_, list);
+  JreStrongAssign(&v9->val$mergeState_, state);
   v10 = v9;
 
-  [(OrgApacheLuceneCodecsNormsConsumer *)self addNormsFieldWithOrgApacheLuceneIndexFieldInfo:a3 withJavaLangIterable:v10];
+  [(OrgApacheLuceneCodecsNormsConsumer *)self addNormsFieldWithOrgApacheLuceneIndexFieldInfo:info withJavaLangIterable:v10];
 }
 
 @end

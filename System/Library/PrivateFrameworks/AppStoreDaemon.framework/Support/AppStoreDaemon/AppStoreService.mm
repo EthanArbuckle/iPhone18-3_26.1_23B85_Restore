@@ -1,14 +1,14 @@
 @interface AppStoreService
 - (AppStoreService)init;
-- (void)addBadgeIDs:(id)a3 replyHandler:(id)a4;
-- (void)allBadgeIDsWithReplyHandler:(id)a3;
-- (void)allBadgeMetricsWithReplyHandler:(id)a3;
-- (void)badgeIDCountWithReplyHandler:(id)a3;
-- (void)launchAppStoreWithURL:(id)a3 withReplyHandler:(id)a4;
-- (void)reloadWidgetOnConnectivityToEndpoint:(id)a3 parameters:(id)a4 replyHandler:(id)a5;
-- (void)removeAllBadgeIDsWithReplyHandler:(id)a3;
-- (void)removeBadgeIDs:(id)a3 replyHandler:(id)a4;
-- (void)removeBadgeMetricsForBadgeIDs:(id)a3 replyHandler:(id)a4;
+- (void)addBadgeIDs:(id)ds replyHandler:(id)handler;
+- (void)allBadgeIDsWithReplyHandler:(id)handler;
+- (void)allBadgeMetricsWithReplyHandler:(id)handler;
+- (void)badgeIDCountWithReplyHandler:(id)handler;
+- (void)launchAppStoreWithURL:(id)l withReplyHandler:(id)handler;
+- (void)reloadWidgetOnConnectivityToEndpoint:(id)endpoint parameters:(id)parameters replyHandler:(id)handler;
+- (void)removeAllBadgeIDsWithReplyHandler:(id)handler;
+- (void)removeBadgeIDs:(id)ds replyHandler:(id)handler;
+- (void)removeBadgeMetricsForBadgeIDs:(id)ds replyHandler:(id)handler;
 @end
 
 @implementation AppStoreService
@@ -29,10 +29,10 @@
   return v2;
 }
 
-- (void)launchAppStoreWithURL:(id)a3 withReplyHandler:(id)a4
+- (void)launchAppStoreWithURL:(id)l withReplyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = objc_alloc_init(_TtC9appstored6LogKey);
   v9 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -47,7 +47,7 @@
 
   v11 = +[NSMutableDictionary dictionary];
   v12 = v11;
-  if (v6 && ([v11 setObject:v6 forKeyedSubscript:FBSOpenApplicationOptionKeyPayloadURL], +[ApplicationProxy proxyForBundleID:](ApplicationProxy, "proxyForBundleID:", @"com.apple.AppStore"), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (lCopy && ([v11 setObject:lCopy forKeyedSubscript:FBSOpenApplicationOptionKeyPayloadURL], +[ApplicationProxy proxyForBundleID:](ApplicationProxy, "proxyForBundleID:", @"com.apple.AppStore"), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v14 = v13;
     v15 = sub_100214C6C([ApplicationContext alloc], v13);
@@ -55,7 +55,7 @@
     v17[1] = 3221225472;
     v17[2] = sub_100233968;
     v17[3] = &unk_10051B548;
-    v18 = v7;
+    v18 = handlerCopy;
     [v15 launchApplicationWithOptions:v12 completionHandler:v17];
   }
 
@@ -70,14 +70,14 @@
     }
 
     v14 = ASDErrorWithDescription();
-    (*(v7 + 2))(v7, 2, v14);
+    (*(handlerCopy + 2))(handlerCopy, 2, v14);
   }
 }
 
-- (void)addBadgeIDs:(id)a3 replyHandler:(id)a4
+- (void)addBadgeIDs:(id)ds replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dsCopy = ds;
   v8 = objc_alloc_init(_TtC9appstored6LogKey);
   v9 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -91,11 +91,11 @@
   }
 
   v11 = sub_10020BE10();
-  v12 = sub_10020C9FC(v11, v7, v8);
+  v12 = sub_10020C9FC(v11, dsCopy, v8);
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, v12, 0);
+    handlerCopy[2](handlerCopy, v12, 0);
   }
 
   v13 = ASDLogHandleForCategory();
@@ -112,9 +112,9 @@
   }
 }
 
-- (void)allBadgeIDsWithReplyHandler:(id)a3
+- (void)allBadgeIDsWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(_TtC9appstored6LogKey);
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -130,9 +130,9 @@
   v8 = sub_10020BE10();
   v9 = sub_10020D264(v8, v5);
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v9, 0);
+    handlerCopy[2](handlerCopy, v9, 0);
   }
 
   v10 = ASDLogHandleForCategory();
@@ -150,9 +150,9 @@
   }
 }
 
-- (void)allBadgeMetricsWithReplyHandler:(id)a3
+- (void)allBadgeMetricsWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(_TtC9appstored6LogKey);
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -168,17 +168,17 @@
   v8 = sub_10020BE10();
   v9 = sub_10020D55C(v8, v5);
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v9, 0);
+    handlerCopy[2](handlerCopy, v9, 0);
   }
 
   v10 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 keyEnumerator];
-    v12 = [v11 allObjects];
-    v13 = [v12 componentsJoinedByString:{@", "}];
+    keyEnumerator = [v9 keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
+    v13 = [allObjects componentsJoinedByString:{@", "}];
     v14 = sub_1002338F0(self);
     v15 = 138412802;
     v16 = v5;
@@ -190,9 +190,9 @@
   }
 }
 
-- (void)badgeIDCountWithReplyHandler:(id)a3
+- (void)badgeIDCountWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(_TtC9appstored6LogKey);
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -208,9 +208,9 @@
   v8 = sub_10020BE10();
   v9 = sub_10020D6CC(v8, v5);
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v9, 0);
+    handlerCopy[2](handlerCopy, v9, 0);
   }
 
   v10 = ASDLogHandleForCategory();
@@ -227,9 +227,9 @@
   }
 }
 
-- (void)removeAllBadgeIDsWithReplyHandler:(id)a3
+- (void)removeAllBadgeIDsWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(_TtC9appstored6LogKey);
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -245,9 +245,9 @@
   v8 = sub_10020BE10();
   v9 = sub_10020DA34(v8, v5);
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v9, 0);
+    handlerCopy[2](handlerCopy, v9, 0);
   }
 
   v10 = ASDLogHandleForCategory();
@@ -264,15 +264,15 @@
   }
 }
 
-- (void)removeBadgeIDs:(id)a3 replyHandler:(id)a4
+- (void)removeBadgeIDs:(id)ds replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = objc_alloc_init(_TtC9appstored6LogKey);
   v9 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 componentsJoinedByString:{@", "}];
+    v10 = [dsCopy componentsJoinedByString:{@", "}];
     v11 = sub_1002338F0(self);
     v17 = 138412802;
     v18 = v8;
@@ -285,11 +285,11 @@
 
   v12 = sub_10020BE10();
   v13 = sub_1002338F0(self);
-  v14 = sub_10020DC44(v12, v6, v13, v8);
+  v14 = sub_10020DC44(v12, dsCopy, v13, v8);
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v14, 0);
+    handlerCopy[2](handlerCopy, v14, 0);
   }
 
   v15 = ASDLogHandleForCategory();
@@ -306,15 +306,15 @@
   }
 }
 
-- (void)removeBadgeMetricsForBadgeIDs:(id)a3 replyHandler:(id)a4
+- (void)removeBadgeMetricsForBadgeIDs:(id)ds replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = objc_alloc_init(_TtC9appstored6LogKey);
   v9 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 componentsJoinedByString:{@", "}];
+    v10 = [dsCopy componentsJoinedByString:{@", "}];
     v11 = sub_1002338F0(self);
     v16 = 138412802;
     v17 = v8;
@@ -326,11 +326,11 @@
   }
 
   v12 = sub_10020BE10();
-  v13 = sub_10020D8E0(v12, v6, v8);
+  v13 = sub_10020D8E0(v12, dsCopy, v8);
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v13, 0);
+    handlerCopy[2](handlerCopy, v13, 0);
   }
 
   v14 = ASDLogHandleForCategory();
@@ -347,15 +347,15 @@
   }
 }
 
-- (void)reloadWidgetOnConnectivityToEndpoint:(id)a3 parameters:(id)a4 replyHandler:(id)a5
+- (void)reloadWidgetOnConnectivityToEndpoint:(id)endpoint parameters:(id)parameters replyHandler:(id)handler
 {
-  v10 = a5;
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  parametersCopy = parameters;
+  endpointCopy = endpoint;
   v9 = +[_TtC9appstored38WidgetReloadOnNetworkReachableActivity sharedActivity];
-  [v9 scheduleWithEndpoint:v8 parameters:v7];
+  [v9 scheduleWithEndpoint:endpointCopy parameters:parametersCopy];
 
-  v10[2](v10, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface HUAnnounceRecordingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)beginRecording:(id)a3;
-- (void)stopRecordAndSend:(id)a3;
+- (void)beginRecording:(id)recording;
+- (void)stopRecordAndSend:(id)send;
 - (void)viewDidLoad;
 @end
 
 @implementation HUAnnounceRecordingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUAnnounceRecordingViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"HURecordingButton" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"HUAnnounceRecordingViewController" hasInstanceMethod:@"beginRecording:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HUAnnounceRecordingViewController" hasInstanceMethod:@"stopRecordAndSend:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HUAnnounceRecordingViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HUAnnounceRecordingViewController" hasInstanceMethod:@"largeTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUAnnounceRecordingViewController" hasInstanceMethod:@"recordButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUAnnounceRecordingViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"HURecordingButton" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"HUAnnounceRecordingViewController" hasInstanceMethod:@"beginRecording:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HUAnnounceRecordingViewController" hasInstanceMethod:@"stopRecordAndSend:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HUAnnounceRecordingViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HUAnnounceRecordingViewController" hasInstanceMethod:@"largeTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUAnnounceRecordingViewController" hasInstanceMethod:@"recordButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -36,22 +36,22 @@ void __78__HUAnnounceRecordingViewControllerAccessibility_accessibilityPerformMa
   [v1 sendActionsForControlEvents:64];
 }
 
-- (void)beginRecording:(id)a3
+- (void)beginRecording:(id)recording
 {
   v6.receiver = self;
   v6.super_class = HUAnnounceRecordingViewControllerAccessibility;
-  [(HUAnnounceRecordingViewControllerAccessibility *)&v6 beginRecording:a3];
+  [(HUAnnounceRecordingViewControllerAccessibility *)&v6 beginRecording:recording];
   [*MEMORY[0x29EDC8008] _accessibilitySetIsDictationListeningOverride:MEMORY[0x29EDB8EB0]];
   v4 = *MEMORY[0x29EDC7ED8];
   v5 = [(HUAnnounceRecordingViewControllerAccessibility *)self safeValueForKey:@"recordButton"];
   UIAccessibilityPostNotification(v4, v5);
 }
 
-- (void)stopRecordAndSend:(id)a3
+- (void)stopRecordAndSend:(id)send
 {
   v3.receiver = self;
   v3.super_class = HUAnnounceRecordingViewControllerAccessibility;
-  [(HUAnnounceRecordingViewControllerAccessibility *)&v3 stopRecordAndSend:a3];
+  [(HUAnnounceRecordingViewControllerAccessibility *)&v3 stopRecordAndSend:send];
   [*MEMORY[0x29EDC8008] _accessibilitySetIsDictationListeningOverride:0];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }

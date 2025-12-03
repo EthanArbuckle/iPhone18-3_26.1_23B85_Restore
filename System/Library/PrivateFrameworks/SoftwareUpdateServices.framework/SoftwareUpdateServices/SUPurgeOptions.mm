@@ -1,9 +1,9 @@
 @interface SUPurgeOptions
 - (SUPurgeOptions)init;
-- (SUPurgeOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUPurgeOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUPurgeOptions
@@ -22,29 +22,29 @@
   return result;
 }
 
-- (SUPurgeOptions)initWithCoder:(id)a3
+- (SUPurgeOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SUPurgeOptions;
   v5 = [(SUOptionsBase *)&v7 init];
   if (v5)
   {
-    -[SUPurgeOptions setNotifyUser:](v5, "setNotifyUser:", [v4 decodeBoolForKey:@"notify"]);
-    -[SUPurgeOptions setUserRequested:](v5, "setUserRequested:", [v4 decodeBoolForKey:@"userRequested"]);
+    -[SUPurgeOptions setNotifyUser:](v5, "setNotifyUser:", [coderCopy decodeBoolForKey:@"notify"]);
+    -[SUPurgeOptions setUserRequested:](v5, "setUserRequested:", [coderCopy decodeBoolForKey:@"userRequested"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[SUPurgeOptions notifyUser](self forKey:{"notifyUser"), @"notify"}];
-  [v4 encodeBool:-[SUPurgeOptions userRequested](self forKey:{"userRequested"), @"userRequested"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[SUPurgeOptions notifyUser](self forKey:{"notifyUser"), @"notify"}];
+  [coderCopy encodeBool:-[SUPurgeOptions userRequested](self forKey:{"userRequested"), @"userRequested"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setNotifyUser:{-[SUPurgeOptions notifyUser](self, "notifyUser")}];

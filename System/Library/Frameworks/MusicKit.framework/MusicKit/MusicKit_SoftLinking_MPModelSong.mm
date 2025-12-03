@@ -1,33 +1,33 @@
 @interface MusicKit_SoftLinking_MPModelSong
-+ (int64_t)cloudStatusForRawValue:(int64_t)a3;
-+ (int64_t)rawValueForCloudStatus:(int64_t)a3;
++ (int64_t)cloudStatusForRawValue:(int64_t)value;
++ (int64_t)rawValueForCloudStatus:(int64_t)status;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelSong
 
-+ (int64_t)cloudStatusForRawValue:(int64_t)a3
++ (int64_t)cloudStatusForRawValue:(int64_t)value
 {
-  if ((a3 - 1) >= 9)
+  if ((value - 1) >= 9)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return value;
   }
 }
 
-+ (int64_t)rawValueForCloudStatus:(int64_t)a3
++ (int64_t)rawValueForCloudStatus:(int64_t)status
 {
-  if ((a3 - 1) >= 9)
+  if ((status - 1) >= 9)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return status;
   }
 }
 

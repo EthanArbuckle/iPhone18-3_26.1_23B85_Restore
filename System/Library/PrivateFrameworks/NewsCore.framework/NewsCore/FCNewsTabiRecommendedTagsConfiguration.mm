@@ -1,5 +1,5 @@
 @interface FCNewsTabiRecommendedTagsConfiguration
-- (FCNewsTabiRecommendedTagsConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiRecommendedTagsConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -8,35 +8,35 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiRecommendedTagsConfiguration *)self bundleInputOutputConfiguration];
-  v5 = [v4 indentedDescription];
-  [v3 appendFormat:@"\n\tbundleInputOutputConfiguration: %@;", v5];
+  bundleInputOutputConfiguration = [(FCNewsTabiRecommendedTagsConfiguration *)self bundleInputOutputConfiguration];
+  indentedDescription = [bundleInputOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tbundleInputOutputConfiguration: %@;", indentedDescription];
 
-  v6 = [(FCNewsTabiRecommendedTagsConfiguration *)self nonBundleInputOutputConfiguration];
-  v7 = [v6 indentedDescription];
-  [v3 appendFormat:@"\n\tnonBundleInputOutputConfiguration: %@;", v7];
+  nonBundleInputOutputConfiguration = [(FCNewsTabiRecommendedTagsConfiguration *)self nonBundleInputOutputConfiguration];
+  indentedDescription2 = [nonBundleInputOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tnonBundleInputOutputConfiguration: %@;", indentedDescription2];
 
-  v8 = [(FCNewsTabiRecommendedTagsConfiguration *)self userContextConfiguration];
-  v9 = [v8 indentedDescription];
-  [v3 appendFormat:@"\n\tcontextConfiguration: %@;", v9];
+  userContextConfiguration = [(FCNewsTabiRecommendedTagsConfiguration *)self userContextConfiguration];
+  indentedDescription3 = [userContextConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tcontextConfiguration: %@;", indentedDescription3];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiRecommendedTagsConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiRecommendedTagsConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [FCNewsTabiRecommendedTagsInputOutputConfiguration alloc];
-  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"bundleInputOutputConfiguration", 0);
+  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"bundleInputOutputConfiguration", 0);
   v7 = [(FCNewsTabiRecommendedTagsInputOutputConfiguration *)v5 initWithDictionary:v6];
 
   if (v7)
   {
     v8 = v7;
     v9 = [FCNewsTabiRecommendedTagsInputOutputConfiguration alloc];
-    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"nonBundleInputOutputConfiguration", 0);
+    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"nonBundleInputOutputConfiguration", 0);
     v11 = [(FCNewsTabiRecommendedTagsInputOutputConfiguration *)v9 initWithDictionary:v10];
 
     if (v11)
@@ -50,14 +50,14 @@
       {
         objc_storeStrong(&v13->_bundleInputOutputConfiguration, v7);
         objc_storeStrong(&v14->_nonBundleInputOutputConfiguration, v11);
-        v15 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"contextConfiguration", 0);
+        v15 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"contextConfiguration", 0);
         v16 = [[FCNewsTabiRecommendedTagsContextConfiguration alloc] initWithDictionary:v15];
         contextConfiguration = v14->_contextConfiguration;
         v14->_contextConfiguration = v16;
       }
 
       self = v14;
-      v18 = self;
+      selfCopy = self;
     }
 
     else
@@ -66,8 +66,8 @@
       v21[1] = 3221225472;
       v21[2] = __61__FCNewsTabiRecommendedTagsConfiguration_initWithDictionary___block_invoke_58;
       v21[3] = &unk_1E7C36F98;
-      v22 = v4;
-      v18 = __61__FCNewsTabiRecommendedTagsConfiguration_initWithDictionary___block_invoke_58(v21);
+      v22 = dictionaryCopy;
+      selfCopy = __61__FCNewsTabiRecommendedTagsConfiguration_initWithDictionary___block_invoke_58(v21);
       v12 = v22;
     }
   }
@@ -78,12 +78,12 @@
     v23[1] = 3221225472;
     v23[2] = __61__FCNewsTabiRecommendedTagsConfiguration_initWithDictionary___block_invoke;
     v23[3] = &unk_1E7C36F98;
-    v24 = v4;
-    v18 = __61__FCNewsTabiRecommendedTagsConfiguration_initWithDictionary___block_invoke(v23);
+    v24 = dictionaryCopy;
+    selfCopy = __61__FCNewsTabiRecommendedTagsConfiguration_initWithDictionary___block_invoke(v23);
     v8 = v24;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 uint64_t __61__FCNewsTabiRecommendedTagsConfiguration_initWithDictionary___block_invoke(uint64_t a1)

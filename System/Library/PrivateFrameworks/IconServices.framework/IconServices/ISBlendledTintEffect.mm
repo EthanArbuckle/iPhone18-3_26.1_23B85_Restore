@@ -1,41 +1,41 @@
 @interface ISBlendledTintEffect
-- (ISBlendledTintEffect)initWithColor:(id)a3;
-- (id)filterWithBackgroundImage:(id)a3 inputImage:(id)a4;
+- (ISBlendledTintEffect)initWithColor:(id)color;
+- (id)filterWithBackgroundImage:(id)image inputImage:(id)inputImage;
 @end
 
 @implementation ISBlendledTintEffect
 
-- (ISBlendledTintEffect)initWithColor:(id)a3
+- (ISBlendledTintEffect)initWithColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = ISBlendledTintEffect;
   v6 = [(ISBlendledTintEffect *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_color, a3);
+    objc_storeStrong(&v6->_color, color);
   }
 
   return v7;
 }
 
-- (id)filterWithBackgroundImage:(id)a3 inputImage:(id)a4
+- (id)filterWithBackgroundImage:(id)image inputImage:(id)inputImage
 {
   v6 = MEMORY[0x1E695F648];
-  v7 = a4;
-  v8 = a3;
+  inputImageCopy = inputImage;
+  imageCopy = image;
   v9 = [v6 filterWithName:@"CIConstantColorGenerator"];
-  v10 = [(ISBlendledTintEffect *)self color];
-  v11 = [v10 ciColor];
-  [v9 setValue:v11 forKey:*MEMORY[0x1E695FA78]];
+  color = [(ISBlendledTintEffect *)self color];
+  ciColor = [color ciColor];
+  [v9 setValue:ciColor forKey:*MEMORY[0x1E695FA78]];
 
   v12 = [MEMORY[0x1E695F648] filterWithName:@"CIBlendWithMask"];
-  [v12 setValue:v7 forKey:*MEMORY[0x1E695FAC8]];
+  [v12 setValue:inputImageCopy forKey:*MEMORY[0x1E695FAC8]];
 
-  [v12 setValue:v8 forKey:*MEMORY[0x1E695FA48]];
-  v13 = [v9 outputImage];
-  [v12 setValue:v13 forKey:*MEMORY[0x1E695FAB0]];
+  [v12 setValue:imageCopy forKey:*MEMORY[0x1E695FA48]];
+  outputImage = [v9 outputImage];
+  [v12 setValue:outputImage forKey:*MEMORY[0x1E695FAB0]];
 
   return v12;
 }

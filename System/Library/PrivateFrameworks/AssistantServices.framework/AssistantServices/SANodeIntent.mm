@@ -1,17 +1,17 @@
 @interface SANodeIntent
-- (id)_tccAccessInfoForAppID:(id)a3;
-- (id)ad_filteredDictionaryWithAppID:(id)a3;
+- (id)_tccAccessInfoForAppID:(id)d;
+- (id)ad_filteredDictionaryWithAppID:(id)d;
 @end
 
 @implementation SANodeIntent
 
-- (id)ad_filteredDictionaryWithAppID:(id)a3
+- (id)ad_filteredDictionaryWithAppID:(id)d
 {
-  v4 = a3;
-  v5 = [(SANodeIntent *)self dictionary];
-  v39 = [v5 mutableCopy];
+  dCopy = d;
+  dictionary = [(SANodeIntent *)self dictionary];
+  v39 = [dictionary mutableCopy];
 
-  v36 = [(SANodeIntent *)self _tccAccessInfoForAppID:v4];
+  v36 = [(SANodeIntent *)self _tccAccessInfoForAppID:dCopy];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -39,41 +39,41 @@
         }
 
         v12 = *(*(&v40 + 1) + 8 * i);
-        v13 = [v12 privacyCategory];
-        v14 = [v13 isEqualToString:v9];
+        privacyCategory = [v12 privacyCategory];
+        v14 = [privacyCategory isEqualToString:v9];
 
         if (v14)
         {
-          if ([v4 isEqualToString:@"com.apple.mobileslideshow"])
+          if ([dCopy isEqualToString:@"com.apple.mobileslideshow"])
           {
-            v15 = 1;
+            bOOLValue = 1;
           }
 
           else
           {
             v16 = [v36 objectForKey:kTCCServiceAddressBook];
-            v15 = [v16 BOOLValue];
+            bOOLValue = [v16 BOOLValue];
           }
         }
 
         else
         {
-          v15 = 0;
+          bOOLValue = 0;
         }
 
-        v17 = [v12 privacyCategory];
-        v18 = [v17 isEqualToString:v10];
+        privacyCategory2 = [v12 privacyCategory];
+        v18 = [privacyCategory2 isEqualToString:v10];
 
         if (v18)
         {
-          [CLLocationManager authorizationStatusForBundleIdentifier:v4];
+          [CLLocationManager authorizationStatusForBundleIdentifier:dCopy];
           if (AFLocationStatusIsAllowed())
           {
             continue;
           }
         }
 
-        else if (v15)
+        else if (bOOLValue)
         {
           continue;
         }
@@ -82,21 +82,21 @@
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
         {
           v20 = v19;
-          v21 = [v12 privacyCategory];
-          v22 = [v12 redactionTarget];
+          privacyCategory3 = [v12 privacyCategory];
+          redactionTarget = [v12 redactionTarget];
           *buf = 136315906;
           v45 = "[SANodeIntent(ADGenericIntentRequestTransformer) ad_filteredDictionaryWithAppID:]";
           v46 = 2112;
-          v47 = v4;
+          v47 = dCopy;
           v48 = 2112;
-          v49 = v21;
+          v49 = privacyCategory3;
           v50 = 2112;
-          v51 = v22;
+          v51 = redactionTarget;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s Application %@ does not have access to %@, removing %@ from the intent node", buf, 0x2Au);
         }
 
-        v23 = [v12 redactionTarget];
-        v24 = [v23 isEqualToString:v37];
+        redactionTarget2 = [v12 redactionTarget];
+        v24 = [redactionTarget2 isEqualToString:v37];
 
         if (v24)
         {
@@ -107,8 +107,8 @@ LABEL_19:
           continue;
         }
 
-        v27 = [v12 redactionTarget];
-        v28 = [v27 isEqualToString:v35];
+        redactionTarget3 = [v12 redactionTarget];
+        v28 = [redactionTarget3 isEqualToString:v35];
 
         if (v28)
         {
@@ -118,8 +118,8 @@ LABEL_19:
 
         else
         {
-          v29 = [v12 redactionTarget];
-          v30 = [v29 isEqualToString:v33];
+          redactionTarget4 = [v12 redactionTarget];
+          v30 = [redactionTarget4 isEqualToString:v33];
 
           if (v30)
           {
@@ -139,9 +139,9 @@ LABEL_19:
   return v39;
 }
 
-- (id)_tccAccessInfoForAppID:(id)a3
+- (id)_tccAccessInfoForAppID:(id)d
 {
-  v3 = [LSBundleProxy bundleProxyForIdentifier:a3];
+  v3 = [LSBundleProxy bundleProxyForIdentifier:d];
   v4 = CFBundleCreate(0, [v3 bundleURL]);
   if (v4)
   {

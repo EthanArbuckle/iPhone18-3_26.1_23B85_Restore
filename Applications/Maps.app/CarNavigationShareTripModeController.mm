@@ -1,31 +1,31 @@
 @interface CarNavigationShareTripModeController
-+ (void)attemptToStartShareWithContact:(id)a3 sharingIdentity:(id)a4 interruptPresenter:(id)a5 completion:(id)a6;
++ (void)attemptToStartShareWithContact:(id)contact sharingIdentity:(id)identity interruptPresenter:(id)presenter completion:(id)completion;
 - (CarNavigationShareTripModeController)init;
 - (ChromeViewController)chromeViewController;
 - (NSArray)carFocusOrderSequences;
 - (id)desiredCards;
-- (void)_attemptToStartShareWithContact:(id)a3 fromController:(id)a4;
+- (void)_attemptToStartShareWithContact:(id)contact fromController:(id)controller;
 - (void)_cancelDismiss;
 - (void)_closeResultsController;
 - (void)_commitPendingShares;
 - (void)_dismissAfterDelay;
-- (void)_displayContactResults:(id)a3 withTitle:(id)a4;
-- (void)_externalDeviceUpdated:(id)a3;
-- (void)_handleContactSearchResults:(id)a3 query:(id)a4;
+- (void)_displayContactResults:(id)results withTitle:(id)title;
+- (void)_externalDeviceUpdated:(id)updated;
+- (void)_handleContactSearchResults:(id)results query:(id)query;
 - (void)_refreshSharingIdentity;
 - (void)_requestDictation;
-- (void)_requestKeyboardInputUsingInteractionModel:(unint64_t)a3;
-- (void)_updateSharingFooterWithIdentity:(id)a3;
-- (void)_updateWithSharingIdentity:(id)a3;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)carCardViewCloseButtonTapped:(id)a3;
-- (void)carNavigationShareTripViewController:(id)a3 didStartSharingWithContact:(id)a4;
-- (void)carNavigationShareTripViewController:(id)a3 didStopSharingWithContact:(id)a4;
-- (void)carNavigationShareTripViewController:(id)a3 wantsToStartSharingWithContact:(id)a4;
-- (void)configureCard:(id)a3 forKey:(id)a4;
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)sharedTripServiceDidUpdateSendingAvailability:(id)a3;
+- (void)_requestKeyboardInputUsingInteractionModel:(unint64_t)model;
+- (void)_updateSharingFooterWithIdentity:(id)identity;
+- (void)_updateWithSharingIdentity:(id)identity;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)carCardViewCloseButtonTapped:(id)tapped;
+- (void)carNavigationShareTripViewController:(id)controller didStartSharingWithContact:(id)contact;
+- (void)carNavigationShareTripViewController:(id)controller didStopSharingWithContact:(id)contact;
+- (void)carNavigationShareTripViewController:(id)controller wantsToStartSharingWithContact:(id)contact;
+- (void)configureCard:(id)card forKey:(id)key;
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)sharedTripServiceDidUpdateSendingAvailability:(id)availability;
 @end
 
 @implementation CarNavigationShareTripModeController
@@ -84,94 +84,94 @@
   }
 }
 
-- (void)carNavigationShareTripViewController:(id)a3 didStopSharingWithContact:(id)a4
+- (void)carNavigationShareTripViewController:(id)controller didStopSharingWithContact:(id)contact
 {
-  v6 = a4;
+  contactCopy = contact;
   [(CarNavigationShareTripModeController *)self _cancelDismiss];
-  if (([(SharedTripSuggestionsDataSource *)self->_dataSource sharingStateForContact:v6]& 0xFFFFFFFFFFFFFFFELL) == 2)
+  if (([(SharedTripSuggestionsDataSource *)self->_dataSource sharingStateForContact:contactCopy]& 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v5 = [(CarNavigationShareTripModeController *)self chromeViewController];
-    [v5 captureUserAction:9026];
+    chromeViewController = [(CarNavigationShareTripModeController *)self chromeViewController];
+    [chromeViewController captureUserAction:9026];
 
-    [(SharedTripSuggestionsDataSource *)self->_dataSource toggleContact:v6];
+    [(SharedTripSuggestionsDataSource *)self->_dataSource toggleContact:contactCopy];
   }
 }
 
-- (void)carNavigationShareTripViewController:(id)a3 didStartSharingWithContact:(id)a4
+- (void)carNavigationShareTripViewController:(id)controller didStartSharingWithContact:(id)contact
 {
-  v5 = a4;
+  contactCopy = contact;
   [(CarNavigationShareTripModeController *)self _dismissAfterDelay];
-  if (![(SharedTripSuggestionsDataSource *)self->_dataSource sharingStateForContact:v5])
+  if (![(SharedTripSuggestionsDataSource *)self->_dataSource sharingStateForContact:contactCopy])
   {
-    [(SharedTripSuggestionsDataSource *)self->_dataSource toggleContact:v5];
+    [(SharedTripSuggestionsDataSource *)self->_dataSource toggleContact:contactCopy];
   }
 }
 
-- (void)carNavigationShareTripViewController:(id)a3 wantsToStartSharingWithContact:(id)a4
+- (void)carNavigationShareTripViewController:(id)controller wantsToStartSharingWithContact:(id)contact
 {
-  v7 = a3;
-  v6 = a4;
-  if (self->_suggestionsCardController == v7)
+  controllerCopy = controller;
+  contactCopy = contact;
+  if (self->_suggestionsCardController == controllerCopy)
   {
     self->_userInteracted = 1;
   }
 
   [(CarNavigationShareTripModeController *)self _cancelDismiss];
-  if (![(SharedTripSuggestionsDataSource *)self->_dataSource sharingStateForContact:v6])
+  if (![(SharedTripSuggestionsDataSource *)self->_dataSource sharingStateForContact:contactCopy])
   {
-    [(CarNavigationShareTripModeController *)self _attemptToStartShareWithContact:v6 fromController:v7];
+    [(CarNavigationShareTripModeController *)self _attemptToStartShareWithContact:contactCopy fromController:controllerCopy];
   }
 }
 
-- (void)_attemptToStartShareWithContact:(id)a3 fromController:(id)a4
+- (void)_attemptToStartShareWithContact:(id)contact fromController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 stringValue];
-  if (v8)
+  contactCopy = contact;
+  controllerCopy = controller;
+  stringValue = [contactCopy stringValue];
+  if (stringValue)
   {
     objc_initWeak(&location, self);
     v9 = objc_opt_class();
     sharingIdentity = self->_sharingIdentity;
-    v11 = [(CarNavigationShareTripModeController *)self chromeViewController];
+    chromeViewController = [(CarNavigationShareTripModeController *)self chromeViewController];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1006D24D0;
     v12[3] = &unk_101661480;
     objc_copyWeak(&v15, &location);
-    v13 = v7;
-    v14 = v8;
-    [v9 attemptToStartShareWithContact:v6 sharingIdentity:sharingIdentity interruptPresenter:v11 completion:v12];
+    v13 = controllerCopy;
+    v14 = stringValue;
+    [v9 attemptToStartShareWithContact:contactCopy sharingIdentity:sharingIdentity interruptPresenter:chromeViewController completion:v12];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_updateWithSharingIdentity:(id)a3
+- (void)_updateWithSharingIdentity:(id)identity
 {
-  v4 = a3;
-  [(CarNavigationShareTripModeController *)self _updateSharingFooterWithIdentity:v4];
-  v5 = [v4 hasValidAccount];
+  identityCopy = identity;
+  [(CarNavigationShareTripModeController *)self _updateSharingFooterWithIdentity:identityCopy];
+  hasValidAccount = [identityCopy hasValidAccount];
 
-  if ((v5 & 1) == 0)
+  if ((hasValidAccount & 1) == 0)
   {
     v6 = +[CarChromeModeCoordinator sharedInstance];
     [v6 popFromContext:self];
   }
 }
 
-- (void)sharedTripServiceDidUpdateSendingAvailability:(id)a3
+- (void)sharedTripServiceDidUpdateSendingAvailability:(id)availability
 {
-  v4 = [a3 sharingIdentity];
-  [(CarNavigationShareTripModeController *)self _updateWithSharingIdentity:v4];
+  sharingIdentity = [availability sharingIdentity];
+  [(CarNavigationShareTripModeController *)self _updateWithSharingIdentity:sharingIdentity];
 }
 
-- (void)_handleContactSearchResults:(id)a3 query:(id)a4
+- (void)_handleContactSearchResults:(id)results query:(id)query
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  resultsCopy = results;
+  queryCopy = query;
+  v8 = [resultsCopy count];
   v9 = sub_1000946AC();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
   if (v8)
@@ -183,16 +183,16 @@ LABEL_20:
       v23 = +[NSBundle mainBundle];
       v9 = [v23 localizedStringForKey:@"CarPlay_ShareTrip_ContactResultsTitle" value:@"localized string not found" table:0];
 
-      v24 = [NSString localizedStringWithFormat:v9, v7];
-      [(CarNavigationShareTripModeController *)self _displayContactResults:v6 withTitle:v24];
+      queryCopy = [NSString localizedStringWithFormat:v9, queryCopy];
+      [(CarNavigationShareTripModeController *)self _displayContactResults:resultsCopy withTitle:queryCopy];
 
       goto LABEL_23;
     }
 
-    v11 = self;
-    if (!v11)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v16 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_19;
     }
 
@@ -200,24 +200,24 @@ LABEL_20:
     v13 = NSStringFromClass(v12);
     if (objc_opt_respondsToSelector())
     {
-      v14 = [(CarNavigationShareTripModeController *)v11 performSelector:"accessibilityIdentifier"];
+      v14 = [(CarNavigationShareTripModeController *)selfCopy performSelector:"accessibilityIdentifier"];
       v15 = v14;
       if (v14 && ![v14 isEqualToString:v13])
       {
-        v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v13, selfCopy, v15];
 
         goto LABEL_9;
       }
     }
 
-    v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v13, selfCopy];
 LABEL_9:
 
 LABEL_19:
     *buf = 138543618;
-    v27 = v16;
+    v27 = selfCopy;
     v28 = 2048;
-    v29 = [v6 count];
+    v29 = [resultsCopy count];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}@] [Keyboard] Displaying %lu contact results", buf, 0x16u);
 
     goto LABEL_20;
@@ -225,10 +225,10 @@ LABEL_19:
 
   if (v10)
   {
-    v17 = self;
-    if (!v17)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v22 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_22;
     }
 
@@ -236,32 +236,32 @@ LABEL_19:
     v19 = NSStringFromClass(v18);
     if (objc_opt_respondsToSelector())
     {
-      v20 = [(CarNavigationShareTripModeController *)v17 performSelector:"accessibilityIdentifier"];
+      v20 = [(CarNavigationShareTripModeController *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v21 = v20;
       if (v20 && ![v20 isEqualToString:v19])
       {
-        v22 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v21];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy2, v21];
 
         goto LABEL_17;
       }
     }
 
-    v22 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy2];
 LABEL_17:
 
 LABEL_22:
     *buf = 138543362;
-    v27 = v22;
+    v27 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}@] [Keyboard] No contact results", buf, 0xCu);
   }
 
 LABEL_23:
 
-  v25 = [(CarNavigationShareTripModeController *)self chromeViewController];
-  [v25 popToContext:self animated:1 completion:0];
+  chromeViewController = [(CarNavigationShareTripModeController *)self chromeViewController];
+  [chromeViewController popToContext:self animated:1 completion:0];
 }
 
-- (void)_requestKeyboardInputUsingInteractionModel:(unint64_t)a3
+- (void)_requestKeyboardInputUsingInteractionModel:(unint64_t)model
 {
   [(CarNavigationShareTripModeController *)self _cancelDismiss];
   objc_initWeak(&location, self);
@@ -272,23 +272,23 @@ LABEL_23:
   v7[2] = sub_1006D2A98;
   v7[3] = &unk_101626990;
   objc_copyWeak(&v8, &location);
-  [v5 displayTripSharingContactKeyboardSearchWithInteractionModel:a3 dataSource:dataSource searchHandler:v7];
+  [v5 displayTripSharingContactKeyboardSearchWithInteractionModel:model dataSource:dataSource searchHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)_displayContactResults:(id)a3 withTitle:(id)a4
+- (void)_displayContactResults:(id)results withTitle:(id)title
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_TtC4Maps36CarNavigationShareTripViewController alloc] initWithDelegate:self dataSource:self->_dataSource sharingIdentity:self->_sharingIdentity searchResults:v7 searchQuery:v6];
+  titleCopy = title;
+  resultsCopy = results;
+  v8 = [[_TtC4Maps36CarNavigationShareTripViewController alloc] initWithDelegate:self dataSource:self->_dataSource sharingIdentity:self->_sharingIdentity searchResults:resultsCopy searchQuery:titleCopy];
 
   contactSearchResultsController = self->_contactSearchResultsController;
   self->_contactSearchResultsController = v8;
 
-  v10 = [(CarNavigationShareTripModeController *)self chromeViewController];
-  [v10 updateCardsForContext:self animated:1];
+  chromeViewController = [(CarNavigationShareTripModeController *)self chromeViewController];
+  [chromeViewController updateCardsForContext:self animated:1];
 }
 
 - (void)_requestDictation
@@ -323,7 +323,7 @@ LABEL_23:
   objc_destroyWeak(&location);
 }
 
-- (void)_externalDeviceUpdated:(id)a3
+- (void)_externalDeviceUpdated:(id)updated
 {
   v4 = +[CarDisplayController maximumListLength];
   if ([(SharedTripSuggestionsDataSource *)self->_dataSource softCap]!= v4)
@@ -351,12 +351,12 @@ LABEL_23:
   {
     self->_contactSearchResultsController = 0;
 
-    v4 = [(CarNavigationShareTripModeController *)self chromeViewController];
-    [v4 updateCardsForContext:self animated:1];
+    chromeViewController = [(CarNavigationShareTripModeController *)self chromeViewController];
+    [chromeViewController updateCardsForContext:self animated:1];
   }
 }
 
-- (void)carCardViewCloseButtonTapped:(id)a3
+- (void)carCardViewCloseButtonTapped:(id)tapped
 {
   if (self->_contactSearchResultsController)
   {
@@ -366,28 +366,28 @@ LABEL_23:
 
   else
   {
-    v4 = [(CarNavigationShareTripModeController *)self chromeViewController];
-    [v4 captureUserAction:4 onTarget:1019];
+    chromeViewController = [(CarNavigationShareTripModeController *)self chromeViewController];
+    [chromeViewController captureUserAction:4 onTarget:1019];
 
     v5 = +[CarChromeModeCoordinator sharedInstance];
     [v5 popFromContext:self];
   }
 }
 
-- (void)configureCard:(id)a3 forKey:(id)a4
+- (void)configureCard:(id)card forKey:(id)key
 {
-  v20 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:@"ShareTripContactResults"])
+  cardCopy = card;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"ShareTripContactResults"])
   {
-    [v20 setContent:self->_contactSearchResultsController];
-    v7 = [(CarNavigationShareTripViewController *)self->_contactSearchResultsController title];
-    [v20 setTitle:v7];
+    [cardCopy setContent:self->_contactSearchResultsController];
+    title = [(CarNavigationShareTripViewController *)self->_contactSearchResultsController title];
+    [cardCopy setTitle:title];
   }
 
   else
   {
-    if (![v6 isEqualToString:@"ShareTrip"])
+    if (![keyCopy isEqualToString:@"ShareTrip"])
     {
       goto LABEL_32;
     }
@@ -402,13 +402,13 @@ LABEL_23:
       suggestionsCardController = self->_suggestionsCardController;
     }
 
-    [v20 setContent:suggestionsCardController];
-    v7 = +[NSBundle mainBundle];
-    v11 = [v7 localizedStringForKey:@"CarPlay_ShareTrip_CardTitle" value:@"localized string not found" table:0];
-    [v20 setTitle:v11];
+    [cardCopy setContent:suggestionsCardController];
+    title = +[NSBundle mainBundle];
+    v11 = [title localizedStringForKey:@"CarPlay_ShareTrip_CardTitle" value:@"localized string not found" table:0];
+    [cardCopy setTitle:v11];
   }
 
-  [v20 setAccessoryType:1];
+  [cardCopy setAccessoryType:1];
   v12 = objc_alloc_init(CarCardLayout);
   [(CarCardLayout *)v12 setEdgePosition:0];
   [(CarCardLayout *)v12 setCornerPosition:4];
@@ -423,11 +423,11 @@ LABEL_23:
   [(CarCardLayout *)v12 setMargins:*&qword_10193E338, *&qword_10193E338, *&qword_10193E338, *&qword_10193E338];
   [(CarCardLayout *)v12 setFlipForRightHandDrive:1];
   v15 = v12;
-  v16 = [(CarCardLayout *)v15 primaryAxis];
-  v17 = [(CarCardLayout *)v15 cornerPosition];
-  if (v16 == 1)
+  primaryAxis = [(CarCardLayout *)v15 primaryAxis];
+  cornerPosition = [(CarCardLayout *)v15 cornerPosition];
+  if (primaryAxis == 1)
   {
-    if (v17 == 4 || [(CarCardLayout *)v15 cornerPosition]== 1 || [(CarCardLayout *)v15 edgePosition]== 2)
+    if (cornerPosition == 4 || [(CarCardLayout *)v15 cornerPosition]== 1 || [(CarCardLayout *)v15 edgePosition]== 2)
     {
       v18 = 8;
     }
@@ -452,7 +452,7 @@ LABEL_23:
 
   else
   {
-    v19 = v17 == 4 || [(CarCardLayout *)v15 cornerPosition]== 8 || [(CarCardLayout *)v15 edgePosition]== 4;
+    v19 = cornerPosition == 4 || [(CarCardLayout *)v15 cornerPosition]== 8 || [(CarCardLayout *)v15 edgePosition]== 4;
     if ([(CarCardLayout *)v15 cornerPosition]== 1 || [(CarCardLayout *)v15 cornerPosition]== 2 || [(CarCardLayout *)v15 edgePosition]== 1)
     {
       v19 |= 4uLL;
@@ -471,57 +471,57 @@ LABEL_23:
 
   [(CarCardLayout *)v15 setEdgesAffectingMapInsets:v19];
   [(CarCardLayout *)v15 setHorizontallyCenterMapInsets:0];
-  [v20 setLayout:v15];
+  [cardCopy setLayout:v15];
 
 LABEL_32:
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1006D3374;
   v4[3] = &unk_101661738;
   v4[4] = self;
-  [a4 addCompletion:v4];
+  [animation addCompletion:v4];
 }
 
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1006D346C;
   v4[3] = &unk_101661B18;
   v4[4] = self;
-  [a4 addPreparation:v4];
+  [animation addPreparation:v4];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1006D34F4;
   v4[3] = &unk_101661B18;
   v4[4] = self;
-  [a4 addPreparation:v4];
+  [animation addPreparation:v4];
 }
 
-- (void)_updateSharingFooterWithIdentity:(id)a3
+- (void)_updateSharingFooterWithIdentity:(id)identity
 {
-  objc_storeStrong(&self->_sharingIdentity, a3);
-  v5 = a3;
-  [(CarNavigationShareTripViewController *)self->_suggestionsCardController setSharingIdentity:v5];
-  [(CarNavigationShareTripViewController *)self->_contactSearchResultsController setSharingIdentity:v5];
+  objc_storeStrong(&self->_sharingIdentity, identity);
+  identityCopy = identity;
+  [(CarNavigationShareTripViewController *)self->_suggestionsCardController setSharingIdentity:identityCopy];
+  [(CarNavigationShareTripViewController *)self->_contactSearchResultsController setSharingIdentity:identityCopy];
 }
 
 - (void)_refreshSharingIdentity
 {
   v3 = +[MSPSharedTripService sharedInstance];
-  v4 = [v3 sharingIdentity];
+  sharingIdentity = [v3 sharingIdentity];
 
-  if (v4)
+  if (sharingIdentity)
   {
-    [(CarNavigationShareTripModeController *)self _updateSharingFooterWithIdentity:v4];
+    [(CarNavigationShareTripModeController *)self _updateSharingFooterWithIdentity:sharingIdentity];
   }
 
   else
@@ -540,23 +540,23 @@ LABEL_32:
   }
 }
 
-+ (void)attemptToStartShareWithContact:(id)a3 sharingIdentity:(id)a4 interruptPresenter:(id)a5 completion:(id)a6
++ (void)attemptToStartShareWithContact:(id)contact sharingIdentity:(id)identity interruptPresenter:(id)presenter completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  identityCopy = identity;
+  presenterCopy = presenter;
+  completionCopy = completion;
   v12 = +[MSPSharedTripService sharedInstance];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1006D3930;
   v16[3] = &unk_1016269E0;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v20 = a1;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v17 = identityCopy;
+  v18 = presenterCopy;
+  v19 = completionCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v14 = presenterCopy;
+  v15 = identityCopy;
   [v12 fetchRequiresUserConfirmationOfSharingIdentityWithCompletion:v16];
 }
 

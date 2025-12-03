@@ -1,10 +1,10 @@
 @interface LifecycleManager
-- (void)applicationDidEnterBackgroundWithNotification:(id)a3;
+- (void)applicationDidEnterBackgroundWithNotification:(id)notification;
 @end
 
 @implementation LifecycleManager
 
-- (void)applicationDidEnterBackgroundWithNotification:(id)a3
+- (void)applicationDidEnterBackgroundWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

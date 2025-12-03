@@ -1,8 +1,8 @@
 @interface BEExternalIframeJS
 - (BEExternalIframeJS)init;
-- (id)anyFrameJavascript:(int64_t)a3;
-- (id)anyFrameJavascriptURL:(int64_t)a3;
-- (id)preApprovalToLoadScriptForURL:(id)a3;
+- (id)anyFrameJavascript:(int64_t)javascript;
+- (id)anyFrameJavascriptURL:(int64_t)l;
+- (id)preApprovalToLoadScriptForURL:(id)l;
 @end
 
 @implementation BEExternalIframeJS
@@ -22,10 +22,10 @@
   return v2;
 }
 
-- (id)preApprovalToLoadScriptForURL:(id)a3
+- (id)preApprovalToLoadScriptForURL:(id)l
 {
-  v3 = [a3 absoluteString];
-  v4 = [NSJSONSerialization dataWithJSONObject:v3 options:4 error:0];
+  absoluteString = [l absoluteString];
+  v4 = [NSJSONSerialization dataWithJSONObject:absoluteString options:4 error:0];
 
   v5 = [[NSString alloc] initWithData:v4 encoding:4];
   v6 = [NSString stringWithFormat:@"__ibooks_external_iframe.addBlockedLink(%@)", v5];;
@@ -33,9 +33,9 @@
   return v6;
 }
 
-- (id)anyFrameJavascript:(int64_t)a3
+- (id)anyFrameJavascript:(int64_t)javascript
 {
-  if (a3)
+  if (javascript)
   {
     v3 = 0;
   }
@@ -43,10 +43,10 @@
   else
   {
     v5 = +[external_iframe source];
-    v6 = [(BEDocumentLoadExternalResourcesController *)self->_documentLoadExternalResourcesController dataURLForPlaceholder];
-    if ([v6 length])
+    dataURLForPlaceholder = [(BEDocumentLoadExternalResourcesController *)self->_documentLoadExternalResourcesController dataURLForPlaceholder];
+    if ([dataURLForPlaceholder length])
     {
-      v7 = [NSString stringWithFormat:@"__ibooks_external_iframe.contentBlockerUrl='%@'", v6];;
+      v7 = [NSString stringWithFormat:@"__ibooks_external_iframe.contentBlockerUrl='%@'", dataURLForPlaceholder];;
       v3 = [v5 stringByAppendingString:v7];
     }
 
@@ -59,9 +59,9 @@
   return v3;
 }
 
-- (id)anyFrameJavascriptURL:(int64_t)a3
+- (id)anyFrameJavascriptURL:(int64_t)l
 {
-  if (a3)
+  if (l)
   {
     v3 = 0;
   }

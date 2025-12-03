@@ -1,20 +1,20 @@
 @interface PHInCallRoundedRectView
-- (PHInCallRoundedRectView)initWithFrame:(CGRect)a3;
-- (id)createRingImageWithSize:(CGSize)a3 strokeWidth:(double)a4 color:(id)a5;
+- (PHInCallRoundedRectView)initWithFrame:(CGRect)frame;
+- (id)createRingImageWithSize:(CGSize)size strokeWidth:(double)width color:(id)color;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation PHInCallRoundedRectView
 
-- (PHInCallRoundedRectView)initWithFrame:(CGRect)a3
+- (PHInCallRoundedRectView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v35.receiver = self;
   v35.super_class = PHInCallRoundedRectView;
-  v5 = [(PHInCallRoundedRectView *)&v35 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(PHInCallRoundedRectView *)&v35 initWithFrame:frame.origin.x, frame.origin.y];
   v6 = v5;
   if (v5)
   {
@@ -23,11 +23,11 @@
     v7 = +[UIColor clearColor];
     [(PHInCallRoundedRectView *)v6 setBackgroundColor:v7];
 
-    v8 = [(PHInCallRoundedRectView *)v6 layer];
-    [v8 setAllowsGroupBlending:0];
+    layer = [(PHInCallRoundedRectView *)v6 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v9 = [(PHInCallRoundedRectView *)v6 layer];
-    [v9 setAllowsGroupOpacity:0];
+    layer2 = [(PHInCallRoundedRectView *)v6 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
     [(PHInCallRoundedRectView *)v6 setStrokeWidth:1.5];
     [(PHInCallRoundedRectView *)v6 setCornerRadius:5.0];
@@ -40,8 +40,8 @@
     [(CALayer *)v6->_luminanceRingLayer setCompositingFilter:v13];
 
     [(CALayer *)v6->_luminanceRingLayer setFrame:0.0, 0.0, width, height];
-    v14 = [(PHInCallRoundedRectView *)v6 layer];
-    [v14 addSublayer:v6->_luminanceRingLayer];
+    layer3 = [(PHInCallRoundedRectView *)v6 layer];
+    [layer3 addSublayer:v6->_luminanceRingLayer];
 
     v15 = +[CALayer layer];
     dodgeRingLayer = v6->_dodgeRingLayer;
@@ -52,8 +52,8 @@
     [(CALayer *)v6->_dodgeRingLayer setCompositingFilter:v18];
 
     [(CALayer *)v6->_dodgeRingLayer setFrame:0.0, 0.0, width, height];
-    v19 = [(PHInCallRoundedRectView *)v6 layer];
-    [v19 addSublayer:v6->_dodgeRingLayer];
+    layer4 = [(PHInCallRoundedRectView *)v6 layer];
+    [layer4 addSublayer:v6->_dodgeRingLayer];
 
     v20 = +[CALayer layer];
     highlightLuminanceLayer = v6->_highlightLuminanceLayer;
@@ -63,8 +63,8 @@
     [(CALayer *)v6->_highlightLuminanceLayer setCompositingFilter:v22];
 
     [(CALayer *)v6->_highlightLuminanceLayer setFrame:0.0, 0.0, width, height];
-    v23 = [(PHInCallRoundedRectView *)v6 layer];
-    [v23 addSublayer:v6->_highlightLuminanceLayer];
+    layer5 = [(PHInCallRoundedRectView *)v6 layer];
+    [layer5 addSublayer:v6->_highlightLuminanceLayer];
 
     v24 = +[CALayer layer];
     highlightDodgeLayer = v6->_highlightDodgeLayer;
@@ -80,8 +80,8 @@
     [(PHInCallRoundedRectView *)v6 cornerRadius];
     [(CALayer *)v6->_highlightDodgeLayer setCornerRadius:?];
     [(CALayer *)v6->_highlightDodgeLayer setOpacity:0.0];
-    v28 = [(PHInCallRoundedRectView *)v6 layer];
-    [v28 addSublayer:v6->_highlightDodgeLayer];
+    layer6 = [(PHInCallRoundedRectView *)v6 layer];
+    [layer6 addSublayer:v6->_highlightDodgeLayer];
 
     v29 = +[CALayer layer];
     v30 = v6->_highlightLuminanceLayer;
@@ -97,8 +97,8 @@
     [(PHInCallRoundedRectView *)v6 cornerRadius];
     [(CALayer *)v6->_highlightLuminanceLayer setCornerRadius:?];
     [(CALayer *)v6->_highlightLuminanceLayer setOpacity:0.0];
-    v33 = [(PHInCallRoundedRectView *)v6 layer];
-    [v33 insertSublayer:v6->_highlightLuminanceLayer below:v6->_highlightDodgeLayer];
+    layer7 = [(PHInCallRoundedRectView *)v6 layer];
+    [layer7 insertSublayer:v6->_highlightLuminanceLayer below:v6->_highlightDodgeLayer];
   }
 
   return v6;
@@ -137,16 +137,16 @@
   -[CALayer setContents:](self->_dodgeRingLayer, "setContents:", [v26 CGImage]);
 }
 
-- (id)createRingImageWithSize:(CGSize)a3 strokeWidth:(double)a4 color:(id)a5
+- (id)createRingImageWithSize:(CGSize)size strokeWidth:(double)width color:(id)color
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   v21.origin.x = 0.0;
   v21.origin.y = 0.0;
   v21.size.width = width;
   v21.size.height = height;
-  v22 = CGRectInset(v21, a4, a4);
+  v22 = CGRectInset(v21, width, width);
   x = v22.origin.x;
   y = v22.origin.y;
   v12 = v22.size.width;
@@ -161,7 +161,7 @@
   [v15 appendPath:v17];
 
   [v15 setUsesEvenOddFillRule:1];
-  [v9 setFill];
+  [colorCopy setFill];
 
   [v15 fill];
   v18 = UIGraphicsGetImageFromCurrentImageContext();
@@ -170,15 +170,15 @@
   return v18;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   +[CATransaction begin];
   LODWORD(v5) = 1043207291;
   v6 = [NSNumber numberWithFloat:v5];
   [CATransaction setValue:v6 forKey:kCATransactionAnimationDuration];
 
-  if (v3)
+  if (highlightedCopy)
   {
     v7 = 1.0;
   }
@@ -195,9 +195,9 @@
   +[CATransaction commit];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v10.receiver = self;
   v10.super_class = PHInCallRoundedRectView;
   [(PHInCallRoundedRectView *)&v10 setUserInteractionEnabled:?];
@@ -206,7 +206,7 @@
   v6 = [NSNumber numberWithFloat:v5];
   [CATransaction setValue:v6 forKey:kCATransactionAnimationDuration];
 
-  if (v3)
+  if (enabledCopy)
   {
     v8 = 1.0;
   }

@@ -1,7 +1,7 @@
 @interface IPAImageTransformSequence
 - (BOOL)canAlignToPixelsExactly;
-- (CGPoint)mapPoint:(CGPoint)a3;
-- (IPAImageTransformSequence)initWithTransforms:(id)a3;
+- (CGPoint)mapPoint:(CGPoint)point;
+- (IPAImageTransformSequence)initWithTransforms:(id)transforms;
 - (id)description;
 - (id)inputGeometry;
 - (id)intrinsicGeometry;
@@ -28,8 +28,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSArray *)self->_transforms reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  reverseObjectEnumerator = [(NSArray *)self->_transforms reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -39,14 +39,14 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) inverseTransform];
-        [v3 addObject:v8];
+        inverseTransform = [*(*(&v11 + 1) + 8 * i) inverseTransform];
+        [v3 addObject:inverseTransform];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -57,10 +57,10 @@
   return v9;
 }
 
-- (CGPoint)mapPoint:(CGPoint)a3
+- (CGPoint)mapPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
@@ -103,18 +103,18 @@
 
 - (id)intrinsicGeometry
 {
-  v2 = [(NSArray *)self->_transforms lastObject];
-  v3 = [v2 intrinsicGeometry];
+  lastObject = [(NSArray *)self->_transforms lastObject];
+  intrinsicGeometry = [lastObject intrinsicGeometry];
 
-  return v3;
+  return intrinsicGeometry;
 }
 
 - (id)inputGeometry
 {
-  v2 = [(NSArray *)self->_transforms firstObject];
-  v3 = [v2 inputGeometry];
+  firstObject = [(NSArray *)self->_transforms firstObject];
+  inputGeometry = [firstObject inputGeometry];
 
-  return v3;
+  return inputGeometry;
 }
 
 - (BOOL)canAlignToPixelsExactly
@@ -161,17 +161,17 @@ LABEL_11:
   return v6;
 }
 
-- (IPAImageTransformSequence)initWithTransforms:(id)a3
+- (IPAImageTransformSequence)initWithTransforms:(id)transforms
 {
-  v4 = a3;
-  if ([v4 count])
+  transformsCopy = transforms;
+  if ([transformsCopy count])
   {
     v9.receiver = self;
     v9.super_class = IPAImageTransformSequence;
     v5 = [(IPAImageTransformSequence *)&v9 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [transformsCopy copy];
       transforms = v5->_transforms;
       v5->_transforms = v6;
     }

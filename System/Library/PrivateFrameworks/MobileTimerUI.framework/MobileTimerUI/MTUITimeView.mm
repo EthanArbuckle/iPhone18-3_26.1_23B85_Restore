@@ -1,13 +1,13 @@
 @interface MTUITimeView
 - (void)handleLocaleChange;
-- (void)setTime:(double)a3;
+- (void)setTime:(double)time;
 @end
 
 @implementation MTUITimeView
 
-- (void)setTime:(double)a3
+- (void)setTime:(double)time
 {
-  self->_time = a3;
+  self->_time = time;
   v4 = FormatTime();
   [(MTUITimeView *)self setText:v4];
 }

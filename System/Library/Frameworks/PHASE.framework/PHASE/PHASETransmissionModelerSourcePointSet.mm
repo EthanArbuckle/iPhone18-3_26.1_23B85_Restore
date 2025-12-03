@@ -1,9 +1,9 @@
 @interface PHASETransmissionModelerSourcePointSet
 - (PHASETransmissionModelerSourcePointSet)init;
-- (PHASETransmissionModelerSourcePointSet)initWithRenderSourceView:(const void *)a3;
-- (__n128)positionAndAttenuationAtIndex:(unint64_t)a3;
-- (__n128)positionAtIndex:(unint64_t)a3;
-- (float)attenuationAtIndex:(int64_t)a3;
+- (PHASETransmissionModelerSourcePointSet)initWithRenderSourceView:(const void *)view;
+- (__n128)positionAndAttenuationAtIndex:(unint64_t)index;
+- (__n128)positionAtIndex:(unint64_t)index;
+- (float)attenuationAtIndex:(int64_t)index;
 - (id).cxx_construct;
 @end
 
@@ -18,13 +18,13 @@
   return result;
 }
 
-- (PHASETransmissionModelerSourcePointSet)initWithRenderSourceView:(const void *)a3
+- (PHASETransmissionModelerSourcePointSet)initWithRenderSourceView:(const void *)view
 {
   v27.receiver = self;
   v27.super_class = PHASETransmissionModelerSourcePointSet;
   v4 = [(PHASETransmissionModelerSourcePointSet *)&v27 init];
   v5 = v4;
-  v6 = *(a3 + 2);
+  v6 = *(view + 2);
   v7 = *(v4 + 1);
   v8 = *(v4 + 2);
   v9 = (v8 - v7) >> 4;
@@ -87,7 +87,7 @@ LABEL_15:
     v16 = 0;
     do
     {
-      v17 = *(a3 + 4);
+      v17 = *(view + 4);
       v18 = *(v17 + (v16 << 7) + 124);
       if (v18)
       {
@@ -110,7 +110,7 @@ LABEL_15:
       }
 
       v23 = (1.0 / v18) * v20;
-      v24 = *(a3 + 3) + 12 * v16;
+      v24 = *(view + 3) + 12 * v16;
       *&v25 = *v24;
       DWORD2(v25) = *(v24 + 8);
       *(&v25 + 3) = v23;
@@ -124,12 +124,12 @@ LABEL_15:
   return v5;
 }
 
-- (__n128)positionAtIndex:(unint64_t)a3
+- (__n128)positionAtIndex:(unint64_t)index
 {
   v11 = *MEMORY[0x277D85DE8];
-  if ((a3 & 0x8000000000000000) != 0 || (v3 = *(a1 + 1), a3 >= (*(a1 + 2) - v3) >> 4))
+  if ((index & 0x8000000000000000) != 0 || (v3 = *(self + 1), index >= (*(self + 2) - v3) >> 4))
   {
-    v5 = **(Phase::Logger::GetInstance(a1) + 224);
+    v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 136315394;
@@ -143,13 +143,13 @@ LABEL_15:
     std::runtime_error::runtime_error(exception, "PRECONDITION: index >= 0 && index < _points.size() is false.");
   }
 
-  return *(v3 + 16 * a3);
+  return *(v3 + 16 * index);
 }
 
-- (float)attenuationAtIndex:(int64_t)a3
+- (float)attenuationAtIndex:(int64_t)index
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 < 0 || (v3 = *self->_anon_8, a3 >= ((*&self->_anon_8[8] - v3) >> 4)))
+  if (index < 0 || (v3 = *self->_anon_8, index >= ((*&self->_anon_8[8] - v3) >> 4)))
   {
     v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -165,15 +165,15 @@ LABEL_15:
     std::runtime_error::runtime_error(exception, "PRECONDITION: index >= 0 && index < _points.size() is false.");
   }
 
-  return *(v3 + 16 * a3 + 12);
+  return *(v3 + 16 * index + 12);
 }
 
-- (__n128)positionAndAttenuationAtIndex:(unint64_t)a3
+- (__n128)positionAndAttenuationAtIndex:(unint64_t)index
 {
   v11 = *MEMORY[0x277D85DE8];
-  if ((a3 & 0x8000000000000000) != 0 || (v3 = *(a1 + 1), a3 >= (*(a1 + 2) - v3) >> 4))
+  if ((index & 0x8000000000000000) != 0 || (v3 = *(self + 1), index >= (*(self + 2) - v3) >> 4))
   {
-    v5 = **(Phase::Logger::GetInstance(a1) + 224);
+    v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 136315394;
@@ -187,7 +187,7 @@ LABEL_15:
     std::runtime_error::runtime_error(exception, "PRECONDITION: index >= 0 && index < _points.size() is false.");
   }
 
-  return *(v3 + 16 * a3);
+  return *(v3 + 16 * index);
 }
 
 - (id).cxx_construct

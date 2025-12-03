@@ -1,10 +1,10 @@
 @interface AXOnboardingObjCBridge
 + (id)sharedInstance;
 - (BOOL)heySiriEnabled;
-- (BOOL)isSameLangaugeFromLocaleIdentifier:(id)a3 secondLocaleIdentifier:(id)a4;
+- (BOOL)isSameLangaugeFromLocaleIdentifier:(id)identifier secondLocaleIdentifier:(id)localeIdentifier;
 - (BOOL)shouldShowCapitalizationPage;
 - (id)_setupKeyboardNotificationsIfNecessary;
-- (id)localizedVoiceControlCommand:(id)a3;
+- (id)localizedVoiceControlCommand:(id)command;
 - (void)_adjustForKeyboard;
 - (void)disableSoftwareKeyboard;
 - (void)toggleVoiceControl;
@@ -69,17 +69,17 @@ void __64__AXOnboardingObjCBridge__setupKeyboardNotificationsIfNecessary__block_
 - (void)disableSoftwareKeyboard
 {
   GSEventSetHardwareKeyboardAttached();
-  v2 = [MEMORY[0x277D75678] activeInstance];
-  [v2 setAutomaticMinimizationEnabled:1];
+  activeInstance = [MEMORY[0x277D75678] activeInstance];
+  [activeInstance setAutomaticMinimizationEnabled:1];
 
-  v3 = [MEMORY[0x277D75678] activeInstance];
-  [v3 dismissKeyboard];
+  activeInstance2 = [MEMORY[0x277D75678] activeInstance];
+  [activeInstance2 dismissKeyboard];
 
-  v4 = [MEMORY[0x277D75678] sharedInstance];
-  [v4 setAutomaticMinimizationEnabled:1];
+  mEMORY[0x277D75678] = [MEMORY[0x277D75678] sharedInstance];
+  [mEMORY[0x277D75678] setAutomaticMinimizationEnabled:1];
 
-  v5 = [MEMORY[0x277D75678] sharedInstance];
-  [v5 dismissKeyboard];
+  mEMORY[0x277D75678]2 = [MEMORY[0x277D75678] sharedInstance];
+  [mEMORY[0x277D75678]2 dismissKeyboard];
 }
 
 - (void)toggleVoiceControl
@@ -89,10 +89,10 @@ void __64__AXOnboardingObjCBridge__setupKeyboardNotificationsIfNecessary__block_
   [(AXOnboardingObjCBridge *)self enableVoiceControl:v3];
 }
 
-- (id)localizedVoiceControlCommand:(id)a3
+- (id)localizedVoiceControlCommand:(id)command
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  commandCopy = command;
   if (localizedVoiceControlCommand__onceToken != -1)
   {
     [AXOnboardingObjCBridge localizedVoiceControlCommand:];
@@ -120,8 +120,8 @@ LABEL_5:
       v9 = *(*(&v18 + 1) + 8 * v8);
       if (([v9 isGroup] & 1) == 0)
       {
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v3];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:commandCopy];
 
         if (v11)
         {
@@ -141,15 +141,15 @@ LABEL_5:
       }
     }
 
-    v13 = [v9 identifier];
-    if ([v13 isEqualToString:@"Text.Unselect"])
+    identifier2 = [v9 identifier];
+    if ([identifier2 isEqualToString:@"Text.Unselect"])
     {
-      v14 = [v9 locale];
-      v15 = [v14 hasPrefix:@"en"];
+      locale = [v9 locale];
+      v15 = [locale hasPrefix:@"en"];
 
       if (v15)
       {
-        v12 = @"Unselect that";
+        displayString = @"Unselect that";
 LABEL_18:
 
         goto LABEL_19;
@@ -160,19 +160,19 @@ LABEL_18:
     {
     }
 
-    v12 = [v9 displayString];
+    displayString = [v9 displayString];
     goto LABEL_18;
   }
 
 LABEL_12:
 
-  NSLog(&cfstr_CannotFindName.isa, v3);
-  v12 = &stru_284FF0250;
+  NSLog(&cfstr_CannotFindName.isa, commandCopy);
+  displayString = &stru_284FF0250;
 LABEL_19:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return displayString;
 }
 
 void __55__AXOnboardingObjCBridge_localizedVoiceControlCommand___block_invoke()
@@ -203,16 +203,16 @@ void __55__AXOnboardingObjCBridge_localizedVoiceControlCommand___block_invoke()
 
 - (BOOL)heySiriEnabled
 {
-  v2 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  v3 = [v2 voiceTriggerEnabled];
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  voiceTriggerEnabled = [mEMORY[0x277D7A8D0] voiceTriggerEnabled];
 
-  return v3;
+  return voiceTriggerEnabled;
 }
 
-- (BOOL)isSameLangaugeFromLocaleIdentifier:(id)a3 secondLocaleIdentifier:(id)a4
+- (BOOL)isSameLangaugeFromLocaleIdentifier:(id)identifier secondLocaleIdentifier:(id)localeIdentifier
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  localeIdentifierCopy = localeIdentifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -231,7 +231,7 @@ void __55__AXOnboardingObjCBridge_localizedVoiceControlCommand___block_invoke()
 
   v8 = v7;
   _Block_object_dispose(&v12, 8);
-  v9 = [v7 isSameLangaugeFromLocaleIdentifier:v5 secondLocaleIdentifier:v6];
+  v9 = [v7 isSameLangaugeFromLocaleIdentifier:identifierCopy secondLocaleIdentifier:localeIdentifierCopy];
 
   return v9;
 }
@@ -256,16 +256,16 @@ void __55__AXOnboardingObjCBridge_localizedVoiceControlCommand___block_invoke()
 
   v4 = v3;
   _Block_object_dispose(&v10, 8);
-  v5 = [v3 sharedPreferences];
-  v6 = [v5 bestLocaleIdentifier];
-  if ([(AXOnboardingObjCBridge *)self isSameLangaugeFromLocaleIdentifier:@"ja_JP" secondLocaleIdentifier:v6]|| [(AXOnboardingObjCBridge *)self isSameLangaugeFromLocaleIdentifier:@"zh_HK" secondLocaleIdentifier:v6])
+  sharedPreferences = [v3 sharedPreferences];
+  bestLocaleIdentifier = [sharedPreferences bestLocaleIdentifier];
+  if ([(AXOnboardingObjCBridge *)self isSameLangaugeFromLocaleIdentifier:@"ja_JP" secondLocaleIdentifier:bestLocaleIdentifier]|| [(AXOnboardingObjCBridge *)self isSameLangaugeFromLocaleIdentifier:@"zh_HK" secondLocaleIdentifier:bestLocaleIdentifier])
   {
     LOBYTE(v7) = 0;
   }
 
   else
   {
-    v7 = ![(AXOnboardingObjCBridge *)self isSameLangaugeFromLocaleIdentifier:@"zh_CN" secondLocaleIdentifier:v6];
+    v7 = ![(AXOnboardingObjCBridge *)self isSameLangaugeFromLocaleIdentifier:@"zh_CN" secondLocaleIdentifier:bestLocaleIdentifier];
   }
 
   return v7;

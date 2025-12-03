@@ -1,9 +1,9 @@
 @interface WOWorkoutExternalProviderObserver
 + (id)sharedInstance;
 - (id)_init;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
-- (void)queue_evaluateRemovedBundleIdentifiers:(id)a3;
+- (void)queue_evaluateRemovedBundleIdentifiers:(id)identifiers;
 @end
 
 @implementation WOWorkoutExternalProviderObserver
@@ -72,23 +72,23 @@ void __51__WOWorkoutExternalProviderObserver_sharedInstance__block_invoke(id a1)
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = +[LSApplicationWorkspace defaultWorkspace];
-  [v2 removeObserver:v5];
+  [v2 removeObserver:selfCopy];
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = WOWorkoutExternalProviderObserver;
   [(WOWorkoutExternalProviderObserver *)&v3 dealloc];
 }
 
-- (void)queue_evaluateRemovedBundleIdentifiers:(id)a3
+- (void)queue_evaluateRemovedBundleIdentifiers:(id)identifiers
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v6->_workerQueue);
+  objc_storeStrong(location, identifiers);
+  dispatch_assert_queue_V2(selfCopy->_workerQueue);
   _HKInitializeLogging();
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_INFO))
   {
@@ -151,20 +151,20 @@ void __76__WOWorkoutExternalProviderObserver_queue_evaluateRemovedBundleIdentifi
   objc_storeStrong(&location, 0);
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_workerQueue;
+  objc_storeStrong(location, uninstall);
+  queue = selfCopy->_workerQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = __62__WOWorkoutExternalProviderObserver_applicationsDidUninstall___block_invoke;
   v8 = &unk_203F8;
   v9 = location[0];
-  v10 = v12;
+  v10 = selfCopy;
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);

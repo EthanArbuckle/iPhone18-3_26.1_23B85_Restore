@@ -1,11 +1,11 @@
 @interface SpeakThisEventProcessor
-- (BOOL)_handleEvent:(id)a3;
+- (BOOL)_handleEvent:(id)event;
 - (SpeakThisEventProcessorDelegate)delegate;
-- (id)contextForDisplayID:(unint64_t)a3;
+- (id)contextForDisplayID:(unint64_t)d;
 - (unsigned)contextIdForActiveDisplay;
-- (void)addEventContextForWindow:(id)a3;
+- (void)addEventContextForWindow:(id)window;
 - (void)dealloc;
-- (void)removeEventContextForContextID:(unsigned int)a3;
+- (void)removeEventContextForContextID:(unsigned int)d;
 @end
 
 @implementation SpeakThisEventProcessor
@@ -18,9 +18,9 @@
   [(SpeakThisEventProcessor *)&v3 dealloc];
 }
 
-- (void)addEventContextForWindow:(id)a3
+- (void)addEventContextForWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   if (!self->_eventContexts)
   {
     v5 = +[NSMutableSet set];
@@ -28,25 +28,25 @@
     self->_eventContexts = v5;
   }
 
-  v7 = [v4 _contextId];
-  v8 = [v4 screen];
-  v9 = [v8 displayIdentity];
-  v10 = [v9 displayID];
+  _contextId = [windowCopy _contextId];
+  screen = [windowCopy screen];
+  displayIdentity = [screen displayIdentity];
+  displayID = [displayIdentity displayID];
 
-  v11 = [v4 screen];
-  v12 = [v11 displayConfiguration];
-  v13 = [v12 hardwareIdentifier];
+  screen2 = [windowCopy screen];
+  displayConfiguration = [screen2 displayConfiguration];
+  hardwareIdentifier = [displayConfiguration hardwareIdentifier];
 
-  v14 = [[SpeakThisEventContext alloc] initWithDisplayID:v10 contextID:v7 displayHardwareID:v13];
+  v14 = [[SpeakThisEventContext alloc] initWithDisplayID:displayID contextID:_contextId displayHardwareID:hardwareIdentifier];
   [(NSMutableSet *)self->_eventContexts addObject:v14];
   v15 = AXLogSpeakScreen();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    sub_1BBDC(v7, v15);
+    sub_1BBDC(_contextId, v15);
   }
 }
 
-- (void)removeEventContextForContextID:(unsigned int)a3
+- (void)removeEventContextForContextID:(unsigned int)d
 {
   v13 = 0u;
   v14 = 0u;
@@ -68,7 +68,7 @@ LABEL_3:
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
-      if ([v10 contextID] == a3)
+      if ([v10 contextID] == d)
       {
         break;
       }
@@ -96,7 +96,7 @@ LABEL_3:
     v12 = AXLogSpeakScreen();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      sub_1BC54(a3, v12);
+      sub_1BC54(d, v12);
     }
   }
 
@@ -108,12 +108,12 @@ LABEL_14:
     v11 = AXLogSpeakScreen();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_1BCCC(a3, v11);
+      sub_1BCCC(d, v11);
     }
   }
 }
 
-- (id)contextForDisplayID:(unint64_t)a3
+- (id)contextForDisplayID:(unint64_t)d
 {
   v12 = 0u;
   v13 = 0u;
@@ -135,7 +135,7 @@ LABEL_14:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 displayID] == a3)
+        if ([v9 displayID] == d)
         {
           v10 = v9;
           goto LABEL_11;
@@ -182,7 +182,7 @@ LABEL_11:
         v8 = *(*(&v11 + 1) + 8 * i);
         if ([v8 displayID] == self->_activeDisplayId)
         {
-          v9 = [v8 contextID];
+          contextID = [v8 contextID];
           goto LABEL_11;
         }
       }
@@ -197,28 +197,28 @@ LABEL_11:
     }
   }
 
-  v9 = -1;
+  contextID = -1;
 LABEL_11:
 
-  return v9;
+  return contextID;
 }
 
-- (BOOL)_handleEvent:(id)a3
+- (BOOL)_handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SpeakThisEventProcessor *)self delegate];
-  [v5 speakThisUIFrameWithEventProcessor:self];
+  eventCopy = event;
+  delegate = [(SpeakThisEventProcessor *)self delegate];
+  [delegate speakThisUIFrameWithEventProcessor:self];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [v4 denormalizedEventRepresentation:0 descale:1];
+  v14 = [eventCopy denormalizedEventRepresentation:0 descale:1];
 
-  v15 = [v14 handInfo];
-  v16 = [v15 paths];
-  v17 = [v16 firstObject];
-  [v17 pathLocation];
+  handInfo = [v14 handInfo];
+  paths = [handInfo paths];
+  firstObject = [paths firstObject];
+  [firstObject pathLocation];
   v19 = v18;
   v21 = v20;
 
@@ -242,27 +242,27 @@ LABEL_21:
   v24 = self->_disableSystemGesturesAssertion;
   self->_disableSystemGesturesAssertion = 0;
 
-  v25 = [v14 keyInfo];
-  [v25 translateKeycode];
+  keyInfo = [v14 keyInfo];
+  [keyInfo translateKeycode];
 
-  v26 = [v14 keyInfo];
-  if (![v26 keyDown])
+  keyInfo2 = [v14 keyInfo];
+  if (![keyInfo2 keyDown])
   {
     goto LABEL_10;
   }
 
-  v27 = [v14 keyInfo];
-  if ([v27 modifierState] != 2)
+  keyInfo3 = [v14 keyInfo];
+  if ([keyInfo3 modifierState] != 2)
   {
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  v28 = [v14 keyInfo];
-  v29 = [v28 keyCode];
+  keyInfo4 = [v14 keyInfo];
+  keyCode = [keyInfo4 keyCode];
 
-  if (v29 == 41)
+  if (keyCode == 41)
   {
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
@@ -274,22 +274,22 @@ LABEL_10:
   }
 
 LABEL_11:
-  v31 = [(SpeakThisEventProcessor *)self delegate];
-  v32 = [v31 isInSpeakUnderFingerModeWithEventProcessor:self];
+  delegate2 = [(SpeakThisEventProcessor *)self delegate];
+  v32 = [delegate2 isInSpeakUnderFingerModeWithEventProcessor:self];
 
   if (!v32)
   {
     goto LABEL_21;
   }
 
-  v33 = [v14 handInfo];
-  if ([v33 eventType] == 6)
+  handInfo2 = [v14 handInfo];
+  if ([handInfo2 eventType] == 6)
   {
     goto LABEL_15;
   }
 
-  v34 = [v14 handInfo];
-  if ([v34 eventType] == 10)
+  handInfo3 = [v14 handInfo];
+  if ([handInfo3 eventType] == 10)
   {
 
 LABEL_15:
@@ -303,10 +303,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v36 = [v14 handInfo];
-  v37 = [v36 eventType];
+  handInfo4 = [v14 handInfo];
+  eventType = [handInfo4 eventType];
 
-  if (v37 == 9)
+  if (eventType == 9)
   {
     goto LABEL_16;
   }

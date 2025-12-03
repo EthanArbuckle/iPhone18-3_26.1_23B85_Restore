@@ -1,16 +1,16 @@
 @interface InvertedGradientLayer
 - (_TtC8AppStoreP33_94B25735D188DA0572222549F0689D5E21InvertedGradientLayer)init;
-- (_TtC8AppStoreP33_94B25735D188DA0572222549F0689D5E21InvertedGradientLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (_TtC8AppStoreP33_94B25735D188DA0572222549F0689D5E21InvertedGradientLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation InvertedGradientLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_10043C2E8(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_10043C2E8(contextCopy);
 }
 
 - (_TtC8AppStoreP33_94B25735D188DA0572222549F0689D5E21InvertedGradientLayer)init
@@ -24,7 +24,7 @@
   return [(InvertedGradientLayer *)&v3 init];
 }
 
-- (_TtC8AppStoreP33_94B25735D188DA0572222549F0689D5E21InvertedGradientLayer)initWithLayer:(id)a3
+- (_TtC8AppStoreP33_94B25735D188DA0572222549F0689D5E21InvertedGradientLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();

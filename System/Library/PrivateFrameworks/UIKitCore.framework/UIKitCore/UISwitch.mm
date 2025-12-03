@@ -1,62 +1,62 @@
 @interface UISwitch
-+ (id)visualElementForTraitCollection:(id)a3;
-+ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)a3;
++ (id)visualElementForTraitCollection:(id)collection;
++ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)behavior;
 - (BOOL)_isFixedSize;
 - (CGPoint)accessibilityActivationPoint;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (CGSize)_layoutSizeThatFits:(CGSize)a3 fixedAxes:(unint64_t)a4;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (CGSize)_layoutSizeThatFits:(CGSize)fits fixedAxes:(unint64_t)axes;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UIImpactFeedbackGenerator)_impactFeedbackGenerator;
 - (UISwitch)initWithCoder:(NSCoder *)coder;
 - (UISwitch)initWithFrame:(CGRect)frame;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
-- (void)_populateArchivedSubviews:(id)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
+- (void)_populateArchivedSubviews:(id)subviews;
 - (void)_refreshVisualElement;
-- (void)_refreshVisualElementForTraitCollection:(id)a3 populatingAPIProperties:(BOOL)a4;
-- (void)_setAlwaysShowsOnOffLabel:(BOOL)a3;
-- (void)_setImpactFeedbackGenerator:(id)a3;
-- (void)_setStyle:(int64_t)a3;
+- (void)_refreshVisualElementForTraitCollection:(id)collection populatingAPIProperties:(BOOL)properties;
+- (void)_setAlwaysShowsOnOffLabel:(BOOL)label;
+- (void)_setImpactFeedbackGenerator:(id)generator;
+- (void)_setStyle:(int64_t)style;
 - (void)_showingOnOffLabelChanged;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFrame:(CGRect)frame;
 - (void)setOffImage:(UIImage *)offImage;
-- (void)setOn:(BOOL)a3 animated:(BOOL)a4 notifyingVisualElement:(BOOL)a5;
+- (void)setOn:(BOOL)on animated:(BOOL)animated notifyingVisualElement:(BOOL)element;
 - (void)setOnImage:(UIImage *)onImage;
 - (void)setOnTintColor:(UIColor *)onTintColor;
 - (void)setPreferredStyle:(UISwitchStyle)preferredStyle;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 - (void)setThumbTintColor:(UIColor *)thumbTintColor;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 - (void)setTitle:(NSString *)title;
 - (void)tintColorDidChange;
-- (void)visualElement:(id)a3 transitionedToOn:(BOOL)a4;
+- (void)visualElement:(id)element transitionedToOn:(BOOL)on;
 @end
 
 @implementation UISwitch
 
 - (BOOL)_isFixedSize
 {
-  v2 = [(UISwitch *)self visualElement];
+  visualElement = [(UISwitch *)self visualElement];
   v3 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [objc_opt_class() isFixedSize];
+    isFixedSize = [objc_opt_class() isFixedSize];
   }
 
   else
   {
-    v5 = 1;
+    isFixedSize = 1;
   }
 
-  return v5;
+  return isFixedSize;
 }
 
 - (void)tintColorDidChange
@@ -64,13 +64,13 @@
   v4.receiver = self;
   v4.super_class = UISwitch;
   [(UIView *)&v4 tintColorDidChange];
-  v3 = [(UISwitch *)self visualElement];
-  [v3 tintColorDidChange];
+  visualElement = [(UISwitch *)self visualElement];
+  [visualElement tintColorDidChange];
 }
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v3 = [(UISwitch *)self visualElement];
+  visualElement = [(UISwitch *)self visualElement];
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -84,7 +84,7 @@
 
     else
     {
-      [v3 alignmentRectInsets];
+      [visualElement alignmentRectInsets];
     }
 
     v12 = v7;
@@ -123,8 +123,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIAccessibilityOnOffSwitchLabelsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIAccessibilityOnOffSwitchLabelsDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = UISwitch;
@@ -177,81 +177,81 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = UISwitch;
-  [(UIControl *)&v15 encodeWithCoder:v4];
+  [(UIControl *)&v15 encodeWithCoder:coderCopy];
   if ([(UIControl *)self isEnabled])
   {
-    [v4 encodeBool:-[UIControl isEnabled](self forKey:{"isEnabled"), @"UISwitchEnabled"}];
+    [coderCopy encodeBool:-[UIControl isEnabled](self forKey:{"isEnabled"), @"UISwitchEnabled"}];
   }
 
   if ([(UISwitch *)self isOn])
   {
-    [v4 encodeBool:-[UISwitch isOn](self forKey:{"isOn"), @"UISwitchOn"}];
+    [coderCopy encodeBool:-[UISwitch isOn](self forKey:{"isOn"), @"UISwitchOn"}];
   }
 
-  v5 = [(UISwitch *)self onTintColor];
+  onTintColor = [(UISwitch *)self onTintColor];
 
-  if (v5)
+  if (onTintColor)
   {
-    v6 = [(UISwitch *)self onTintColor];
-    [v4 encodeObject:v6 forKey:@"UISwitchOnTintColor"];
+    onTintColor2 = [(UISwitch *)self onTintColor];
+    [coderCopy encodeObject:onTintColor2 forKey:@"UISwitchOnTintColor"];
   }
 
-  v7 = [(UISwitch *)self tintColor];
+  tintColor = [(UISwitch *)self tintColor];
 
-  if (v7)
+  if (tintColor)
   {
-    v8 = [(UISwitch *)self tintColor];
-    [v4 encodeObject:v8 forKey:@"UISwitchTintColor"];
+    tintColor2 = [(UISwitch *)self tintColor];
+    [coderCopy encodeObject:tintColor2 forKey:@"UISwitchTintColor"];
   }
 
-  v9 = [(UISwitch *)self thumbTintColor];
+  thumbTintColor = [(UISwitch *)self thumbTintColor];
 
-  if (v9)
+  if (thumbTintColor)
   {
-    v10 = [(UISwitch *)self thumbTintColor];
-    [v4 encodeObject:v10 forKey:@"UISwitchThumbTintColor"];
+    thumbTintColor2 = [(UISwitch *)self thumbTintColor];
+    [coderCopy encodeObject:thumbTintColor2 forKey:@"UISwitchThumbTintColor"];
   }
 
-  v11 = [(UISwitch *)self onImage];
+  onImage = [(UISwitch *)self onImage];
 
-  if (v11)
+  if (onImage)
   {
-    v12 = [(UISwitch *)self onImage];
-    [v4 encodeObject:v12 forKey:@"UISwitchOnImage"];
+    onImage2 = [(UISwitch *)self onImage];
+    [coderCopy encodeObject:onImage2 forKey:@"UISwitchOnImage"];
   }
 
-  v13 = [(UISwitch *)self offImage];
+  offImage = [(UISwitch *)self offImage];
 
-  if (v13)
+  if (offImage)
   {
-    v14 = [(UISwitch *)self offImage];
-    [v4 encodeObject:v14 forKey:@"UISwitchOffImage"];
+    offImage2 = [(UISwitch *)self offImage];
+    [coderCopy encodeObject:offImage2 forKey:@"UISwitchOffImage"];
   }
 
   if ([(UISwitch *)self preferredStyle])
   {
-    [v4 encodeInteger:self->_style forKey:@"UISwitchStyle"];
+    [coderCopy encodeInteger:self->_style forKey:@"UISwitchStyle"];
   }
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
   v6.receiver = self;
   v6.super_class = UISwitch;
-  v4 = a3;
-  [(UIView *)&v6 _populateArchivedSubviews:v4];
+  subviewsCopy = subviews;
+  [(UIView *)&v6 _populateArchivedSubviews:subviewsCopy];
   v5 = [(UISwitch *)self visualElement:v6.receiver];
-  [v4 removeObject:v5];
+  [subviewsCopy removeObject:v5];
 }
 
-+ (id)visualElementForTraitCollection:(id)a3
++ (id)visualElementForTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   if (_UIInternalPreferencesRevisionOnce != -1)
   {
     dispatch_once(&_UIInternalPreferencesRevisionOnce, &__block_literal_global_5_11);
@@ -282,11 +282,11 @@
 
 LABEL_4:
   v7 = objc_opt_class();
-  v8 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
   v9 = 0;
-  if (v8 > 2)
+  if (userInterfaceIdiom > 2)
   {
-    if (v8 == 3)
+    if (userInterfaceIdiom == 3)
     {
       if ((_UISolariumEnabled() & 1) == 0)
       {
@@ -295,7 +295,7 @@ LABEL_4:
       }
     }
 
-    else if (v8 != 5 && v8 != 8)
+    else if (userInterfaceIdiom != 5 && userInterfaceIdiom != 8)
     {
       goto LABEL_18;
     }
@@ -307,37 +307,37 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  if (v8 < 2)
+  if (userInterfaceIdiom < 2)
   {
     goto LABEL_14;
   }
 
-  if (v8 == -1)
+  if (userInterfaceIdiom == -1)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    v11 = v10;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v11 = currentHandler;
     v12 = @"UISwitch attempted to be initialized or updated with a trait collection containing UIUserInterfaceIdiomUnspecified.";
     v13 = a2;
-    v14 = a1;
+    selfCopy2 = self;
     v15 = 250;
   }
 
   else
   {
-    if (v8 != 2)
+    if (userInterfaceIdiom != 2)
     {
       goto LABEL_18;
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    v11 = v10;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v11 = currentHandler;
     v12 = @"UISwitch cannot be used on tvOS.";
     v13 = a2;
-    v14 = a1;
+    selfCopy2 = self;
     v15 = 247;
   }
 
-  [v10 handleFailureInMethod:v13 object:v14 file:@"UISwitch.m" lineNumber:v15 description:v12];
+  [currentHandler handleFailureInMethod:v13 object:selfCopy2 file:@"UISwitch.m" lineNumber:v15 description:v12];
 
   v9 = 0;
 LABEL_18:
@@ -347,112 +347,112 @@ LABEL_18:
 
 - (void)_refreshVisualElement
 {
-  v3 = [(UIView *)self traitCollection];
-  [(UISwitch *)self _refreshVisualElementForTraitCollection:v3 populatingAPIProperties:1];
+  traitCollection = [(UIView *)self traitCollection];
+  [(UISwitch *)self _refreshVisualElementForTraitCollection:traitCollection populatingAPIProperties:1];
 }
 
-- (void)_refreshVisualElementForTraitCollection:(id)a3 populatingAPIProperties:(BOOL)a4
+- (void)_refreshVisualElementForTraitCollection:(id)collection populatingAPIProperties:(BOOL)properties
 {
-  v4 = a4;
-  v8 = __visualElementProvider;
+  propertiesCopy = properties;
+  selfCopy = __visualElementProvider;
   if (!__visualElementProvider)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  v24 = v8;
-  v9 = a3;
+  v24 = selfCopy;
+  collectionCopy = collection;
   v10 = objc_opt_class();
-  v11 = [(UISwitch *)self style];
+  style = [(UISwitch *)self style];
   if (objc_opt_respondsToSelector())
   {
-    [v10 visualElementForTraitCollection:v9 style:v11];
+    [v10 visualElementForTraitCollection:collectionCopy style:style];
   }
 
   else
   {
-    [v10 visualElementForTraitCollection:v9];
+    [v10 visualElementForTraitCollection:collectionCopy];
   }
   v12 = ;
 
   if (!v12)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = [(UIView *)v24 description];
-    [v22 handleFailureInMethod:a2 object:self file:@"UISwitch.m" lineNumber:275 description:{@"Nil UISwitch visual element provided by %@", v23}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISwitch.m" lineNumber:275 description:{@"Nil UISwitch visual element provided by %@", v23}];
   }
 
-  v13 = [(UISwitch *)self visualElement];
-  [v13 removeFromSuperview];
+  visualElement = [(UISwitch *)self visualElement];
+  [visualElement removeFromSuperview];
 
-  v14 = [(UISwitch *)self visualElement];
-  [v14 setSwitchControl:0];
+  visualElement2 = [(UISwitch *)self visualElement];
+  [visualElement2 setSwitchControl:0];
 
   [(UISwitch *)self setVisualElement:0];
   [(UISwitch *)self setVisualElement:v12];
-  v15 = [(UISwitch *)self visualElement];
-  [v15 setSwitchControl:self];
+  visualElement3 = [(UISwitch *)self visualElement];
+  [visualElement3 setSwitchControl:self];
 
   if ([(UISwitch *)self _isFixedSize])
   {
     [(UIView *)self frame];
-    v16 = self;
+    selfCopy2 = self;
   }
 
   else
   {
     [(UIView *)v12 setAutoresizingMask:18];
     [(UIView *)self bounds];
-    v16 = v12;
+    selfCopy2 = v12;
   }
 
-  [(UISwitch *)v16 setFrame:?];
+  [(UISwitch *)selfCopy2 setFrame:?];
   [(UIView *)self invalidateIntrinsicContentSize];
   [(UIView *)self addSubview:v12];
   [(UISwitch *)v12 setOn:[(UISwitch *)self isOn] animated:0];
   [(UISwitch *)v12 setShowsOnOffLabel:[(UISwitch *)self _shouldShowOnOffLabels]];
   [(UISwitch *)v12 setEnabled:[(UIControl *)self isEnabled]];
   [(UISwitch *)v12 setSemanticContentAttribute:[(UIView *)self semanticContentAttribute]];
-  if (v4)
+  if (propertiesCopy)
   {
-    v17 = [(UISwitch *)self onImage];
-    [(UISwitch *)v12 setOnImage:v17];
+    onImage = [(UISwitch *)self onImage];
+    [(UISwitch *)v12 setOnImage:onImage];
 
-    v18 = [(UISwitch *)self offImage];
-    [(UISwitch *)v12 setOffImage:v18];
+    offImage = [(UISwitch *)self offImage];
+    [(UISwitch *)v12 setOffImage:offImage];
 
-    v19 = [(UISwitch *)self tintColor];
-    [(UISwitch *)v12 setTintColor:v19];
+    tintColor = [(UISwitch *)self tintColor];
+    [(UISwitch *)v12 setTintColor:tintColor];
 
-    v20 = [(UISwitch *)self onTintColor];
-    [(UISwitch *)v12 setOnTintColor:v20];
+    onTintColor = [(UISwitch *)self onTintColor];
+    [(UISwitch *)v12 setOnTintColor:onTintColor];
 
-    v21 = [(UISwitch *)self thumbTintColor];
-    [(UISwitch *)v12 setThumbTintColor:v21];
+    thumbTintColor = [(UISwitch *)self thumbTintColor];
+    [(UISwitch *)v12 setThumbTintColor:thumbTintColor];
   }
 }
 
-- (void)visualElement:(id)a3 transitionedToOn:(BOOL)a4
+- (void)visualElement:(id)element transitionedToOn:(BOOL)on
 {
-  [(UISwitch *)self setOn:a4 animated:0 notifyingVisualElement:0];
+  [(UISwitch *)self setOn:on animated:0 notifyingVisualElement:0];
 
   [(UIControl *)self sendActionsForControlEvents:4096];
 }
 
-- (void)_setStyle:(int64_t)a3
+- (void)_setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(UISwitch *)self _refreshVisualElement];
   }
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UISwitch *)self visualElement];
+  height = size.height;
+  width = size.width;
+  visualElement = [(UISwitch *)self visualElement];
   v7 = objc_opt_class();
   if ([(UISwitch *)self _isFixedSize])
   {
@@ -461,7 +461,7 @@ LABEL_18:
 
   else
   {
-    [v6 _intrinsicSizeWithinSize:{width, height}];
+    [visualElement _intrinsicSizeWithinSize:{width, height}];
   }
 
   v10 = v8;
@@ -474,7 +474,7 @@ LABEL_18:
   return result;
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
   if (![(UISwitch *)self _isFixedSize])
   {
@@ -483,20 +483,20 @@ LABEL_18:
   }
 }
 
-- (CGSize)_layoutSizeThatFits:(CGSize)a3 fixedAxes:(unint64_t)a4
+- (CGSize)_layoutSizeThatFits:(CGSize)fits fixedAxes:(unint64_t)axes
 {
-  [(UISwitch *)self _intrinsicSizeWithinSize:a4, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  [(UISwitch *)self _intrinsicSizeWithinSize:axes, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(UISwitch *)self _isFixedSize])
   {
     [(UISwitch *)self sizeThatFits:width, height];
@@ -509,18 +509,18 @@ LABEL_18:
   [(UIView *)&v10 setFrame:x, y, width, height];
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UISwitch *)self visualElement];
+  interactionCopy = interaction;
+  requestCopy = request;
+  regionCopy = region;
+  visualElement = [(UISwitch *)self visualElement];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(UISwitch *)self visualElement];
-    v14 = [v13 pointerInteraction:v8 regionForRequest:v9 defaultRegion:v10];
+    visualElement2 = [(UISwitch *)self visualElement];
+    v14 = [visualElement2 pointerInteraction:interactionCopy regionForRequest:requestCopy defaultRegion:regionCopy];
   }
 
   else
@@ -531,17 +531,17 @@ LABEL_18:
   return v14;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UISwitch *)self visualElement];
+  interactionCopy = interaction;
+  regionCopy = region;
+  visualElement = [(UISwitch *)self visualElement];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(UISwitch *)self visualElement];
-    v11 = [v10 pointerInteraction:v6 styleForRegion:v7];
+    visualElement2 = [(UISwitch *)self visualElement];
+    v11 = [visualElement2 pointerInteraction:interactionCopy styleForRegion:regionCopy];
   }
 
   else
@@ -552,66 +552,66 @@ LABEL_18:
   return v11;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(UISwitch *)self visualElement];
+  interactionCopy = interaction;
+  regionCopy = region;
+  animatorCopy = animator;
+  visualElement = [(UISwitch *)self visualElement];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(UISwitch *)self visualElement];
-    [v12 pointerInteraction:v13 willEnterRegion:v8 animator:v9];
+    visualElement2 = [(UISwitch *)self visualElement];
+    [visualElement2 pointerInteraction:interactionCopy willEnterRegion:regionCopy animator:animatorCopy];
   }
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(UISwitch *)self visualElement];
+  interactionCopy = interaction;
+  regionCopy = region;
+  animatorCopy = animator;
+  visualElement = [(UISwitch *)self visualElement];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(UISwitch *)self visualElement];
-    [v12 pointerInteraction:v13 willExitRegion:v8 animator:v9];
+    visualElement2 = [(UISwitch *)self visualElement];
+    [visualElement2 pointerInteraction:interactionCopy willExitRegion:regionCopy animator:animatorCopy];
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v6.receiver = self;
   v6.super_class = UISwitch;
   [(UIView *)&v6 setSemanticContentAttribute:?];
-  v5 = [(UISwitch *)self visualElement];
-  [v5 setSemanticContentAttribute:a3];
+  visualElement = [(UISwitch *)self visualElement];
+  [visualElement setSemanticContentAttribute:attribute];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = UISwitch;
   [(UIControl *)&v6 setEnabled:?];
-  v5 = [(UISwitch *)self visualElement];
-  [v5 setEnabled:v3];
+  visualElement = [(UISwitch *)self visualElement];
+  [visualElement setEnabled:enabledCopy];
 }
 
-- (void)setOn:(BOOL)a3 animated:(BOOL)a4 notifyingVisualElement:(BOOL)a5
+- (void)setOn:(BOOL)on animated:(BOOL)animated notifyingVisualElement:(BOOL)element
 {
-  if (self->_on != a3)
+  if (self->_on != on)
   {
-    v5 = a3;
-    self->_on = a3;
-    if (a5)
+    onCopy = on;
+    self->_on = on;
+    if (element)
     {
-      v6 = a4;
-      v7 = [(UISwitch *)self visualElement];
-      [v7 setOn:v5 animated:v6];
+      animatedCopy = animated;
+      visualElement = [(UISwitch *)self visualElement];
+      [visualElement setOn:onCopy animated:animatedCopy];
     }
   }
 }
@@ -620,55 +620,55 @@ LABEL_18:
 {
   objc_storeStrong(&self->_onTintColor, onTintColor);
   v5 = onTintColor;
-  v6 = [(UISwitch *)self visualElement];
-  [v6 setOnTintColor:v5];
+  visualElement = [(UISwitch *)self visualElement];
+  [visualElement setOnTintColor:v5];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  objc_storeStrong(&self->_tintColor, a3);
-  v5 = a3;
-  v6 = [(UISwitch *)self visualElement];
-  [v6 setTintColor:v5];
+  objc_storeStrong(&self->_tintColor, color);
+  colorCopy = color;
+  visualElement = [(UISwitch *)self visualElement];
+  [visualElement setTintColor:colorCopy];
 }
 
 - (void)setThumbTintColor:(UIColor *)thumbTintColor
 {
   objc_storeStrong(&self->_thumbTintColor, thumbTintColor);
   v5 = thumbTintColor;
-  v6 = [(UISwitch *)self visualElement];
-  [v6 setThumbTintColor:v5];
+  visualElement = [(UISwitch *)self visualElement];
+  [visualElement setThumbTintColor:v5];
 }
 
 - (void)setOffImage:(UIImage *)offImage
 {
   objc_storeStrong(&self->_offImage, offImage);
   v5 = offImage;
-  v6 = [(UISwitch *)self visualElement];
-  [v6 setOffImage:v5];
+  visualElement = [(UISwitch *)self visualElement];
+  [visualElement setOffImage:v5];
 }
 
 - (void)setOnImage:(UIImage *)onImage
 {
   objc_storeStrong(&self->_onImage, onImage);
   v5 = onImage;
-  v6 = [(UISwitch *)self visualElement];
-  [v6 setOnImage:v5];
+  visualElement = [(UISwitch *)self visualElement];
+  [visualElement setOnImage:v5];
 }
 
-- (void)_setAlwaysShowsOnOffLabel:(BOOL)a3
+- (void)_setAlwaysShowsOnOffLabel:(BOOL)label
 {
-  v3 = a3;
-  v5 = [(UISwitch *)self visualElement];
-  [v5 setShowsOnOffLabel:v3];
+  labelCopy = label;
+  visualElement = [(UISwitch *)self visualElement];
+  [visualElement setShowsOnOffLabel:labelCopy];
 
-  self->_alwaysShowOnOffLabel = v3;
+  self->_alwaysShowOnOffLabel = labelCopy;
 }
 
 - (void)_showingOnOffLabelChanged
 {
-  v3 = [(UISwitch *)self visualElement];
-  [v3 setShowsOnOffLabel:{-[UISwitch _shouldShowOnOffLabels](self, "_shouldShowOnOffLabels")}];
+  visualElement = [(UISwitch *)self visualElement];
+  [visualElement setShowsOnOffLabel:{-[UISwitch _shouldShowOnOffLabels](self, "_shouldShowOnOffLabels")}];
 }
 
 - (void)setTitle:(NSString *)title
@@ -686,47 +686,47 @@ LABEL_18:
   if (self->_preferredStyle != preferredStyle)
   {
     self->_preferredStyle = preferredStyle;
-    v5 = [(UIView *)self traitCollection];
-    [v5 userInterfaceIdiom];
+    traitCollection = [(UIView *)self traitCollection];
+    [traitCollection userInterfaceIdiom];
 
     [(UISwitch *)self _setStyle:2];
   }
 }
 
-- (void)_setImpactFeedbackGenerator:(id)a3
+- (void)_setImpactFeedbackGenerator:(id)generator
 {
-  v5 = a3;
-  v6 = [(UISwitch *)self visualElement];
-  v7 = [v6 impactFeedbackGenerator];
-  v8 = [v7 isActive];
+  generatorCopy = generator;
+  visualElement = [(UISwitch *)self visualElement];
+  impactFeedbackGenerator = [visualElement impactFeedbackGenerator];
+  isActive = [impactFeedbackGenerator isActive];
 
-  if (v8)
+  if (isActive)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UISwitch.m" lineNumber:564 description:@"Impact feedback behavior should not be changed while active."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISwitch.m" lineNumber:564 description:@"Impact feedback behavior should not be changed while active."];
   }
 
-  v10 = [(UISwitch *)self visualElement];
-  [v10 setImpactFeedbackGenerator:v5];
+  visualElement2 = [(UISwitch *)self visualElement];
+  [visualElement2 setImpactFeedbackGenerator:generatorCopy];
 }
 
 - (UIImpactFeedbackGenerator)_impactFeedbackGenerator
 {
-  v2 = [(UISwitch *)self visualElement];
-  v3 = [v2 impactFeedbackGenerator];
+  visualElement = [(UISwitch *)self visualElement];
+  impactFeedbackGenerator = [visualElement impactFeedbackGenerator];
 
-  return v3;
+  return impactFeedbackGenerator;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 5 && ([(UISwitch *)self visualElement], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (userInterfaceIdiom == 5 && ([(UISwitch *)self visualElement], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(UISwitch *)self visualElement];
-    [v6 accessibilityActivationPoint];
+    visualElement = [(UISwitch *)self visualElement];
+    [visualElement accessibilityActivationPoint];
     v8 = v7;
     v10 = v9;
 
@@ -746,9 +746,9 @@ LABEL_18:
   return result;
 }
 
-+ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)a3
++ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)behavior
 {
-  if (a3)
+  if (behavior)
   {
     v3 = 16;
   }

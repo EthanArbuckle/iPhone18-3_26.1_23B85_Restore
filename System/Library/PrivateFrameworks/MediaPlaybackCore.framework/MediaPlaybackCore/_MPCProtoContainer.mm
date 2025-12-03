@@ -1,11 +1,11 @@
 @interface _MPCProtoContainer
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addItem:(uint64_t)a1;
+- (uint64_t)addItem:(uint64_t)item;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MPCProtoContainer
@@ -28,23 +28,23 @@
   return v6 ^ [(NSString *)self->_playActivityQueueGroupingID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_containerType != *(v4 + 2))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_containerType != *(equalCopy + 2))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v9 = 0;
@@ -52,13 +52,13 @@ LABEL_15:
   }
 
   identifierSet = self->_identifierSet;
-  if (identifierSet | *(v4 + 2) && ![(_MPCProtoContainerIdentifierSet *)identifierSet isEqual:?])
+  if (identifierSet | *(equalCopy + 2) && ![(_MPCProtoContainerIdentifierSet *)identifierSet isEqual:?])
   {
     goto LABEL_15;
   }
 
   items = self->_items;
-  if (items | *(v4 + 3))
+  if (items | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)items isEqual:?])
     {
@@ -67,7 +67,7 @@ LABEL_15:
   }
 
   playActivityFeatureName = self->_playActivityFeatureName;
-  if (playActivityFeatureName | *(v4 + 4))
+  if (playActivityFeatureName | *(equalCopy + 4))
   {
     if (![(NSString *)playActivityFeatureName isEqual:?])
     {
@@ -76,7 +76,7 @@ LABEL_15:
   }
 
   playActivityQueueGroupingID = self->_playActivityQueueGroupingID;
-  if (playActivityQueueGroupingID | *(v4 + 5))
+  if (playActivityQueueGroupingID | *(equalCopy + 5))
   {
     v9 = [(NSString *)playActivityQueueGroupingID isEqual:?];
   }
@@ -91,10 +91,10 @@ LABEL_16:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -102,7 +102,7 @@ LABEL_16:
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(_MPCProtoContainerIdentifierSet *)self->_identifierSet copyWithZone:a3];
+  v7 = [(_MPCProtoContainerIdentifierSet *)self->_identifierSet copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
@@ -126,7 +126,7 @@ LABEL_16:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v20 + 1) + 8 * v13) copyWithZone:{a3, v20}];
+        v14 = [*(*(&v20 + 1) + 8 * v13) copyWithZone:{zone, v20}];
         [(_MPCProtoContainer *)v6 addItem:v14];
 
         ++v13;
@@ -139,32 +139,32 @@ LABEL_16:
     while (v11);
   }
 
-  v15 = [(NSString *)self->_playActivityFeatureName copyWithZone:a3];
+  v15 = [(NSString *)self->_playActivityFeatureName copyWithZone:zone];
   v16 = v6[4];
   v6[4] = v15;
 
-  v17 = [(NSString *)self->_playActivityQueueGroupingID copyWithZone:a3];
+  v17 = [(NSString *)self->_playActivityQueueGroupingID copyWithZone:zone];
   v18 = v6[5];
   v6[5] = v17;
 
   return v6;
 }
 
-- (uint64_t)addItem:(uint64_t)a1
+- (uint64_t)addItem:(uint64_t)item
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (item)
   {
-    v5 = *(a1 + 24);
+    v5 = *(item + 24);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 24);
-      *(a1 + 24) = v6;
+      v7 = *(item + 24);
+      *(item + 24) = v6;
 
-      v5 = *(a1 + 24);
+      v5 = *(item + 24);
     }
 
     v3 = [v5 addObject:v9];
@@ -174,10 +174,10 @@ LABEL_16:
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
@@ -233,18 +233,18 @@ LABEL_16:
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_containerType];
-    [v3 setObject:v4 forKey:@"containerType"];
+    [dictionary setObject:v4 forKey:@"containerType"];
   }
 
   identifierSet = self->_identifierSet;
   if (identifierSet)
   {
-    v6 = [(_MPCProtoContainerIdentifierSet *)identifierSet dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"identifierSet"];
+    dictionaryRepresentation = [(_MPCProtoContainerIdentifierSet *)identifierSet dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"identifierSet"];
   }
 
   if ([(NSMutableArray *)self->_items count])
@@ -269,8 +269,8 @@ LABEL_16:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -279,22 +279,22 @@ LABEL_16:
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"item"];
+    [dictionary setObject:v7 forKey:@"item"];
   }
 
   playActivityFeatureName = self->_playActivityFeatureName;
   if (playActivityFeatureName)
   {
-    [v3 setObject:playActivityFeatureName forKey:@"playActivityFeatureName"];
+    [dictionary setObject:playActivityFeatureName forKey:@"playActivityFeatureName"];
   }
 
   playActivityQueueGroupingID = self->_playActivityQueueGroupingID;
   if (playActivityQueueGroupingID)
   {
-    [v3 setObject:playActivityQueueGroupingID forKey:@"playActivityQueueGroupingID"];
+    [dictionary setObject:playActivityQueueGroupingID forKey:@"playActivityQueueGroupingID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -303,8 +303,8 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = _MPCProtoContainer;
   v4 = [(_MPCProtoContainer *)&v8 description];
-  v5 = [(_MPCProtoContainer *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MPCProtoContainer *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

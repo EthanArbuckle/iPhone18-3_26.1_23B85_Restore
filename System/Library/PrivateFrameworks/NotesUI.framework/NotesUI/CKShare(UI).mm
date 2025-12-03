@@ -23,31 +23,31 @@
 - (void)ic_updateFromObject:()UI
 {
   v30 = a3;
-  v4 = [v30 shareType];
-  [a1 setObject:v4 forKeyedSubscript:*MEMORY[0x1E695B830]];
+  shareType = [v30 shareType];
+  [self setObject:shareType forKeyedSubscript:*MEMORY[0x1E695B830]];
 
-  v5 = [v30 shareTitle];
-  [a1 setObject:v5 forKeyedSubscript:*MEMORY[0x1E695B828]];
+  shareTitle = [v30 shareTitle];
+  [self setObject:shareTitle forKeyedSubscript:*MEMORY[0x1E695B828]];
 
-  v6 = [objc_opt_class() ic_fallbackThumbnail];
-  v7 = [v6 ic_PNGData];
-  [a1 setObject:v7 forKeyedSubscript:*MEMORY[0x1E695B820]];
+  ic_fallbackThumbnail = [objc_opt_class() ic_fallbackThumbnail];
+  ic_PNGData = [ic_fallbackThumbnail ic_PNGData];
+  [self setObject:ic_PNGData forKeyedSubscript:*MEMORY[0x1E695B820]];
 
-  v8 = [v30 recordType];
-  [a1 setObject:v8 forKeyedSubscript:*MEMORY[0x1E69B75A0]];
+  recordType = [v30 recordType];
+  [self setObject:recordType forKeyedSubscript:*MEMORY[0x1E69B75A0]];
 
-  v9 = [v30 recordID];
-  if (v9)
+  recordID = [v30 recordID];
+  if (recordID)
   {
     v10 = objc_alloc(MEMORY[0x1E695BAB0]);
-    v11 = [v30 recordID];
-    v12 = [v10 initWithRecordID:v11 action:0];
-    [a1 setObject:v12 forKeyedSubscript:*MEMORY[0x1E69B7598]];
+    recordID2 = [v30 recordID];
+    v12 = [v10 initWithRecordID:recordID2 action:0];
+    [self setObject:v12 forKeyedSubscript:*MEMORY[0x1E69B7598]];
   }
 
   else
   {
-    [a1 setObject:0 forKeyedSubscript:*MEMORY[0x1E69B7598]];
+    [self setObject:0 forKeyedSubscript:*MEMORY[0x1E69B7598]];
   }
 
   objc_opt_class();
@@ -56,17 +56,17 @@
   if (v13)
   {
     v15 = __ICLocalizedFrameworkString_impl(@"Shared Note", @"Shared Note", 0, 1);
-    [a1 setObject:v15 forKeyedSubscript:*v14];
+    [self setObject:v15 forKeyedSubscript:*v14];
 
-    v16 = [v13 snippet];
-    v17 = [a1 encryptedValues];
-    [v17 setObject:v16 forKeyedSubscript:*MEMORY[0x1E69B75B8]];
+    snippet = [v13 snippet];
+    encryptedValues = [self encryptedValues];
+    [encryptedValues setObject:snippet forKeyedSubscript:*MEMORY[0x1E69B75B8]];
 
     v18 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v13, "attachmentContentInfoType")}];
-    [a1 setObject:v18 forKeyedSubscript:*MEMORY[0x1E69B75B0]];
+    [self setObject:v18 forKeyedSubscript:*MEMORY[0x1E69B75B0]];
 
     v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v13, "attachmentContentInfoCount")}];
-    [a1 setObject:v19 forKeyedSubscript:*MEMORY[0x1E69B75A8]];
+    [self setObject:v19 forKeyedSubscript:*MEMORY[0x1E69B75A8]];
   }
 
   objc_opt_class();
@@ -74,23 +74,23 @@
   if (v20)
   {
     v21 = __ICLocalizedFrameworkString_impl(@"Shared Folder", @"Shared Folder", 0, 1);
-    [a1 setObject:v21 forKeyedSubscript:*v14];
+    [self setObject:v21 forKeyedSubscript:*v14];
 
     v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v20, "visibleNotesCount")}];
-    [a1 setObject:v22 forKeyedSubscript:*MEMORY[0x1E69B7578]];
+    [self setObject:v22 forKeyedSubscript:*MEMORY[0x1E69B7578]];
 
     v23 = MEMORY[0x1E696AD98];
-    v24 = [v20 visibleNotesIncludingChildFolders];
-    v25 = [v23 numberWithUnsignedInteger:{objc_msgSend(v24, "count")}];
-    [a1 setObject:v25 forKeyedSubscript:*MEMORY[0x1E69B7580]];
+    visibleNotesIncludingChildFolders = [v20 visibleNotesIncludingChildFolders];
+    v25 = [v23 numberWithUnsignedInteger:{objc_msgSend(visibleNotesIncludingChildFolders, "count")}];
+    [self setObject:v25 forKeyedSubscript:*MEMORY[0x1E69B7580]];
 
     v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v20, "visibleNoteContainerChildrenCount")}];
-    [a1 setObject:v26 forKeyedSubscript:*MEMORY[0x1E69B75C0]];
+    [self setObject:v26 forKeyedSubscript:*MEMORY[0x1E69B75C0]];
 
     v27 = MEMORY[0x1E696AD98];
-    v28 = [v20 recursiveVisibleSubfolders];
-    v29 = [v27 numberWithUnsignedInteger:{objc_msgSend(v28, "count")}];
-    [a1 setObject:v29 forKeyedSubscript:*MEMORY[0x1E69B75C8]];
+    recursiveVisibleSubfolders = [v20 recursiveVisibleSubfolders];
+    v29 = [v27 numberWithUnsignedInteger:{objc_msgSend(recursiveVisibleSubfolders, "count")}];
+    [self setObject:v29 forKeyedSubscript:*MEMORY[0x1E69B75C8]];
   }
 }
 
@@ -98,16 +98,16 @@
 {
   v6 = a4;
   v7 = a3;
-  [objc_opt_class() ic_updateThumbnailsForObject:v7 share:a1 completion:v6];
+  [objc_opt_class() ic_updateThumbnailsForObject:v7 share:self completion:v6];
 }
 
 - (void)ic_updateFromObject:()UI generateThumbnails:
 {
   v6 = a3;
-  [a1 ic_updateFromObject:?];
+  [self ic_updateFromObject:?];
   if (a4)
   {
-    [a1 ic_updateThumbnailsFromObject:v6 completion:0];
+    [self ic_updateThumbnailsFromObject:v6 completion:0];
   }
 }
 

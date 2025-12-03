@@ -1,50 +1,50 @@
 @interface LSBundleRecordUpdater
-- (BOOL)checkNeedsUpdateForiTunesMetadata:(id)a3 SINFo:(id)a4 placeholderMetadata:(id)a5;
-- (BOOL)parsePersonas:(id)a3 error:(id *)a4;
-- (BOOL)updateBundleRecord:(id *)a3;
-- (LSBundleRecordUpdater)initWithBundleIdentifier:(id)a3 preferPlaceholder:(BOOL)a4;
-- (LSBundleRecordUpdater)initWithDatabase:(id)a3 bundleUnit:(unsigned int)a4 bundleData:(const LSBundleData *)a5;
+- (BOOL)checkNeedsUpdateForiTunesMetadata:(id)metadata SINFo:(id)fo placeholderMetadata:(id)placeholderMetadata;
+- (BOOL)parsePersonas:(id)personas error:(id *)error;
+- (BOOL)updateBundleRecord:(id *)record;
+- (LSBundleRecordUpdater)initWithBundleIdentifier:(id)identifier preferPlaceholder:(BOOL)placeholder;
+- (LSBundleRecordUpdater)initWithDatabase:(id)database bundleUnit:(unsigned int)unit bundleData:(const LSBundleData *)data;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)parsePlaceholderMetadata:(id)a3;
-- (void)parseSINFDictionary:(id)a3;
-- (void)parseiTunesMetadata:(id)a3;
+- (void)parsePlaceholderMetadata:(id)metadata;
+- (void)parseSINFDictionary:(id)dictionary;
+- (void)parseiTunesMetadata:(id)metadata;
 @end
 
 @implementation LSBundleRecordUpdater
 
-- (LSBundleRecordUpdater)initWithDatabase:(id)a3 bundleUnit:(unsigned int)a4 bundleData:(const LSBundleData *)a5
+- (LSBundleRecordUpdater)initWithDatabase:(id)database bundleUnit:(unsigned int)unit bundleData:(const LSBundleData *)data
 {
-  v8 = a3;
+  databaseCopy = database;
   v12.receiver = self;
   v12.super_class = LSBundleRecordUpdater;
   v9 = [(LSBundleRecordUpdater *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    [(LSRecordBuilder *)v9 setDatabase:v8];
-    v10->_bundleID = a4;
-    memcpy(&v10->_bundleData, a5, 0x238uLL);
+    [(LSRecordBuilder *)v9 setDatabase:databaseCopy];
+    v10->_bundleID = unit;
+    memcpy(&v10->_bundleData, data, 0x238uLL);
     v10->_hasContext = 0;
   }
 
   return v10;
 }
 
-- (LSBundleRecordUpdater)initWithBundleIdentifier:(id)a3 preferPlaceholder:(BOOL)a4
+- (LSBundleRecordUpdater)initWithBundleIdentifier:(id)identifier preferPlaceholder:(BOOL)placeholder
 {
-  v4 = a4;
+  placeholderCopy = placeholder;
   v26 = *MEMORY[0x1E69E9840];
   v23 = 0;
   obj = 0;
   v22 = 0;
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   inited = _LSContextInitReturningError(&obj, &v24);
   v8 = v24;
   if (inited)
   {
-    if (v4)
+    if (placeholderCopy)
     {
       v9 = 1152;
     }
@@ -55,7 +55,7 @@
     }
 
     memset(buf, 0, 32);
-    if (_LSBundleFindWithInfoAndNo_IOFilter(&obj, 0, v6, 0, buf, 2, v9, 0, 0, &v23, &v22, 0))
+    if (_LSBundleFindWithInfoAndNo_IOFilter(&obj, 0, identifierCopy, 0, buf, 2, v9, 0, 0, &v23, &v22, 0))
     {
       v10 = 0;
       v11 = 1;
@@ -87,7 +87,7 @@ LABEL_9:
       {
         v18 = *(v22 + 172);
         *buf = 138412546;
-        *&buf[4] = v6;
+        *&buf[4] = identifierCopy;
         *&buf[12] = 2048;
         *&buf[14] = v18;
         _os_log_impl(&dword_18162D000, v17, OS_LOG_TYPE_DEFAULT, "Created bundleRecordUpdater for app %@. flags=%llx", buf, 0x16u);
@@ -106,7 +106,7 @@ LABEL_9:
   v17 = _LSDefaultLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    [(LSBundleRecordUpdater *)v6 initWithBundleIdentifier:v14 preferPlaceholder:v17];
+    [(LSBundleRecordUpdater *)identifierCopy initWithBundleIdentifier:v14 preferPlaceholder:v17];
   }
 
   v16 = 0;
@@ -128,12 +128,12 @@ LABEL_18:
   [(LSBundleRecordUpdater *)&v3 dealloc];
 }
 
-- (void)parseiTunesMetadata:(id)a3
+- (void)parseiTunesMetadata:(id)metadata
 {
-  v4 = a3;
-  if (v4 && self->_bundleID)
+  metadataCopy = metadata;
+  if (metadataCopy && self->_bundleID)
   {
-    v56 = v4;
+    v56 = metadataCopy;
     v5 = *(&self->_bundleData._clas + 1);
     bundleFlags_high = HIDWORD(self->_bundleData._bundleFlags);
     v6 = _LSPlistGet(self->super._db, self->_bundleData.base.infoDictionary);
@@ -345,7 +345,7 @@ LABEL_72:
             HIDWORD(self->_bundleData._bundleFlags) = bundleFlags_high;
             *(&self->_bundleData._clas + 1) = v50;
 
-            v4 = v56;
+            metadataCopy = v56;
             goto LABEL_73;
           }
 
@@ -386,14 +386,14 @@ LABEL_71:
 LABEL_73:
 }
 
-- (void)parseSINFDictionary:(id)a3
+- (void)parseSINFDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4 && self->_bundleID)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy && self->_bundleID)
   {
-    v11 = v4;
+    v11 = dictionaryCopy;
     p_bundleData = &self->_bundleData;
-    *(&self->_bundleData.purchaserDSID + 4) = [v4 _LS_integerForKey:@"DownloaderDSID"];
+    *(&self->_bundleData.purchaserDSID + 4) = [dictionaryCopy _LS_integerForKey:@"DownloaderDSID"];
     *(&self->_bundleData.staticDiskUsage + 4) = [v11 _LS_integerForKey:@"ApplicationDSID"];
     *(&self->_bundleData.downloaderDSID + 4) = [v11 _LS_integerForKey:@"FamilyID"];
     v6 = *(&self->_bundleData._clas + 1);
@@ -412,18 +412,18 @@ LABEL_73:
     }
 
     *(&p_bundleData->_clas + 1) = v9 | v10 | v6 & 0xFFFFFFFFFCFFFFFFLL;
-    v4 = v11;
+    dictionaryCopy = v11;
   }
 }
 
-- (void)parsePlaceholderMetadata:(id)a3
+- (void)parsePlaceholderMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_bundleID)
+  metadataCopy = metadata;
+  v5 = metadataCopy;
+  if (metadataCopy && self->_bundleID)
   {
-    v8 = v4;
-    v6 = [v4 _LS_integerForKey:@"LSInstallType"];
+    v8 = metadataCopy;
+    v6 = [metadataCopy _LS_integerForKey:@"LSInstallType"];
     if (v6)
     {
       self->_bundleData.shortVersionString = v6;
@@ -438,20 +438,20 @@ LABEL_73:
   }
 }
 
-- (BOOL)parsePersonas:(id)a3 error:(id *)a4
+- (BOOL)parsePersonas:(id)personas error:(id *)error
 {
   v65 = *MEMORY[0x1E69E9840];
-  v48 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v48, "count")}];
+  personasCopy = personas;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(personasCopy, "count")}];
   memset(&v55, 0, sizeof(v55));
-  std::vector<unsigned int>::reserve(&v55, [v48 count]);
+  std::vector<unsigned int>::reserve(&v55, [personasCopy count]);
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v48;
+  obj = personasCopy;
   v6 = [obj countByEnumeratingWithState:&v51 objects:v64 count:16];
-  v49 = self;
+  selfCopy = self;
   if (v6)
   {
     v7 = 0;
@@ -467,10 +467,10 @@ LABEL_73:
 
         v10 = *(*(&v51 + 1) + 8 * i);
         v11 = [(_LSPersonaWithAttributes *)v10 personaType]== 3;
-        v12 = [(_LSPersonaWithAttributes *)v10 personaUniqueString];
-        [v5 addObject:v12];
+        personaUniqueString = [(_LSPersonaWithAttributes *)v10 personaUniqueString];
+        [v5 addObject:personaUniqueString];
 
-        v13 = [(_LSPersonaWithAttributes *)v10 personaType];
+        personaType = [(_LSPersonaWithAttributes *)v10 personaType];
         end = v55.__end_;
         if (v55.__end_ >= v55.__end_cap_.__value_)
         {
@@ -501,7 +501,7 @@ LABEL_73:
             std::allocator<unsigned int>::allocate_at_least[abi:nn200100](&v55, v22);
           }
 
-          *(4 * v18) = v13;
+          *(4 * v18) = personaType;
           v15 = (4 * v18 + 4);
           memcpy(0, begin, v17);
           v23 = v55.__begin_;
@@ -516,7 +516,7 @@ LABEL_73:
 
         else
         {
-          *v55.__end_ = v13;
+          *v55.__end_ = personaType;
           v15 = end + 1;
         }
 
@@ -596,12 +596,12 @@ LABEL_73:
     [(_LSDatabase *)self->super._db store];
     libraryPath = p_bundleData->libraryPath;
     _CSArrayEnumerateAllValues();
-    v35 = self;
+    selfCopy2 = self;
     v36 = *(*(&buf + 1) + 48);
-    for (j = *(*(&buf + 1) + 56); v36 != j; v35 = v49)
+    for (j = *(*(&buf + 1) + 56); v36 != j; selfCopy2 = selfCopy)
     {
       v38 = *v36;
-      [(_LSDatabase *)v35->super._db store];
+      [(_LSDatabase *)selfCopy2->super._db store];
       _CSStringRelease();
       ++v36;
     }
@@ -775,7 +775,7 @@ void __45__LSBundleRecordUpdater_parsePersonas_error___block_invoke(uint64_t a1,
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateBundleRecord:(id *)a3
+- (BOOL)updateBundleRecord:(id *)record
 {
   v22 = 0;
   *&self->_bundleData.appStoreToolsBuildVersion = _LSDatabaseGetSequenceNumber(self->super._db) + 1;
@@ -816,31 +816,31 @@ void __45__LSBundleRecordUpdater_parsePersonas_error___block_invoke(uint64_t a1,
         v21 = self->super._db;
         v17 = [MEMORY[0x1E695DFD8] setWithObject:v16];
         v18 = +[LSApplicationRestrictionsManager sharedInstance];
-        v19 = [(LSApplicationRestrictionsManager *)v18 defaultStateProvider];
-        _LSServer_SendStateChangedNotificationsForBundlesWithIdentifiers(&v21, v17, v19);
+        defaultStateProvider = [(LSApplicationRestrictionsManager *)v18 defaultStateProvider];
+        _LSServer_SendStateChangedNotificationsForBundlesWithIdentifiers(&v21, v17, defaultStateProvider);
       }
     }
 
     _LSDatabaseCommit(self->super._db);
   }
 
-  else if (a3)
+  else if (record)
   {
-    *a3 = v22;
+    *record = v22;
   }
 
   return v8 != 0;
 }
 
-- (BOOL)checkNeedsUpdateForiTunesMetadata:(id)a3 SINFo:(id)a4 placeholderMetadata:(id)a5
+- (BOOL)checkNeedsUpdateForiTunesMetadata:(id)metadata SINFo:(id)fo placeholderMetadata:(id)placeholderMetadata
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  v11 = (v8 | a4) != 0;
-  if (v9)
+  metadataCopy = metadata;
+  placeholderMetadataCopy = placeholderMetadata;
+  v10 = placeholderMetadataCopy;
+  v11 = (metadataCopy | fo) != 0;
+  if (placeholderMetadataCopy)
   {
-    v12 = [v9 _LS_integerForKey:@"LSInstallType"];
+    v12 = [placeholderMetadataCopy _LS_integerForKey:@"LSInstallType"];
     v13 = [v10 _LS_integerForKey:@"PlaceholderFailureReason"];
     if (v12 && v12 != self->_bundleData.shortVersionString)
     {
@@ -853,7 +853,7 @@ void __45__LSBundleRecordUpdater_parsePersonas_error___block_invoke(uint64_t a1,
     }
 
     v14 = objc_opt_class();
-    v15 = [v8 objectForKey:@"rating"];
+    v15 = [metadataCopy objectForKey:@"rating"];
     v16 = v15;
     if (v14 && v15)
     {

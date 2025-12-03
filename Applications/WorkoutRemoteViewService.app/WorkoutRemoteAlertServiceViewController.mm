@@ -1,31 +1,31 @@
 @interface WorkoutRemoteAlertServiceViewController
-- (WorkoutRemoteAlertServiceViewController)initWithCoder:(id)a3;
-- (WorkoutRemoteAlertServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (WorkoutRemoteAlertServiceViewController)initWithCoder:(id)coder;
+- (WorkoutRemoteAlertServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dismissView;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation WorkoutRemoteAlertServiceViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = partial apply for thunk for @escaping @callee_unowned @convention(block) () -> ();
   }
 
-  v7 = a3;
-  v8 = self;
-  WorkoutRemoteAlertServiceViewController.configure(with:completion:)(a3, v6);
+  contextCopy = context;
+  selfCopy = self;
+  WorkoutRemoteAlertServiceViewController.configure(with:completion:)(context, v6);
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v6);
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -37,38 +37,38 @@
 
 - (void)dismissView
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutRemoteAlertServiceViewController.dismissView()();
 }
 
-- (WorkoutRemoteAlertServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WorkoutRemoteAlertServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for WorkoutRemoteAlertServiceViewController();
-  v9 = [(WorkoutRemoteAlertServiceViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(WorkoutRemoteAlertServiceViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (WorkoutRemoteAlertServiceViewController)initWithCoder:(id)a3
+- (WorkoutRemoteAlertServiceViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for WorkoutRemoteAlertServiceViewController();
-  v4 = a3;
-  v5 = [(WorkoutRemoteAlertServiceViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(WorkoutRemoteAlertServiceViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

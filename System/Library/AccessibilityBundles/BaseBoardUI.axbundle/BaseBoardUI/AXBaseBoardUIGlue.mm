@@ -8,14 +8,14 @@
 {
   if (!_Failover)
   {
-    v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
     v5[0] = MEMORY[0x29EDCA5F8];
     v5[1] = 3221225472;
     v5[2] = __50__AXBaseBoardUIGlue_accessibilityInitializeBundle__block_invoke_2;
     v5[3] = &unk_29F2A7578;
     v6 = @"BaseBoardUI AX Bundle";
     v7 = @"BaseBoardUI";
-    [v2 performValidations:&__block_literal_global withPreValidationHandler:v5 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_289];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:v5 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_289];
 
     v3 = [objc_allocWithZone(AXBaseBoardUIGlue) init];
     v4 = _Failover;

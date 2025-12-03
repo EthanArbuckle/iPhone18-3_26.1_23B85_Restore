@@ -1,12 +1,12 @@
 @interface OSLogPosition
-- (OSLogPosition)initWithDate:(id)a3;
-- (OSLogPosition)initWithEventSource:(id)a3 timeIntervalSinceEnd:(double)a4;
-- (OSLogPosition)initWithTimeIntervalSinceLatestBoot:(double)a3;
+- (OSLogPosition)initWithDate:(id)date;
+- (OSLogPosition)initWithEventSource:(id)source timeIntervalSinceEnd:(double)end;
+- (OSLogPosition)initWithTimeIntervalSinceLatestBoot:(double)boot;
 @end
 
 @implementation OSLogPosition
 
-- (OSLogPosition)initWithTimeIntervalSinceLatestBoot:(double)a3
+- (OSLogPosition)initWithTimeIntervalSinceLatestBoot:(double)boot
 {
   v8.receiver = self;
   v8.super_class = OSLogPosition;
@@ -15,16 +15,16 @@
   if (v4)
   {
     v4->_precision = 2;
-    v4->_offset = a3;
+    v4->_offset = boot;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (OSLogPosition)initWithEventSource:(id)a3 timeIntervalSinceEnd:(double)a4
+- (OSLogPosition)initWithEventSource:(id)source timeIntervalSinceEnd:(double)end
 {
-  v6 = a3;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = OSLogPosition;
   v7 = [(OSLogPosition *)&v14 init];
@@ -32,8 +32,8 @@
   if (v7)
   {
     v7->_precision = 1;
-    v9 = [v6 newestDate];
-    v10 = [v9 dateByAddingTimeInterval:a4];
+    newestDate = [sourceCopy newestDate];
+    v10 = [newestDate dateByAddingTimeInterval:end];
     date = v8->_date;
     v8->_date = v10;
 
@@ -43,9 +43,9 @@
   return v8;
 }
 
-- (OSLogPosition)initWithDate:(id)a3
+- (OSLogPosition)initWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = OSLogPosition;
   v6 = [(OSLogPosition *)&v10 init];
@@ -53,7 +53,7 @@
   if (v6)
   {
     v6->_precision = 1;
-    objc_storeStrong(&v6->_date, a3);
+    objc_storeStrong(&v6->_date, date);
     v8 = v7;
   }
 

@@ -1,25 +1,25 @@
 @interface SUUIGiftDateTableViewCell
-- (SUUIGiftDateTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SUUIGiftDateTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (SUUIGiftDateTableViewCellDelegate)delegate;
 - (id)_labelColor;
-- (id)_labelForDate:(id)a3;
+- (id)_labelForDate:(id)date;
 - (id)_newLabel;
 - (void)_datePickerDateDidChange;
 - (void)_datePickerEditingDidBegin;
 - (void)layoutSubviews;
-- (void)setChecked:(BOOL)a3;
-- (void)setDate:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setPlaceholder:(id)a3;
+- (void)setChecked:(BOOL)checked;
+- (void)setDate:(id)date;
+- (void)setLabel:(id)label;
+- (void)setPlaceholder:(id)placeholder;
 @end
 
 @implementation SUUIGiftDateTableViewCell
 
-- (SUUIGiftDateTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SUUIGiftDateTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v23.receiver = self;
   v23.super_class = SUUIGiftDateTableViewCell;
-  v4 = [(SUUIGiftDateTableViewCell *)&v23 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SUUIGiftDateTableViewCell *)&v23 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -27,11 +27,11 @@
     v4->_bottomBorderView = v5;
 
     v7 = v4->_bottomBorderView;
-    v8 = [MEMORY[0x277D75348] separatorColor];
-    [(UIView *)v7 setBackgroundColor:v8];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    [(UIView *)v7 setBackgroundColor:separatorColor];
 
-    v9 = [(SUUIGiftDateTableViewCell *)v4 contentView];
-    [v9 addSubview:v4->_bottomBorderView];
+    contentView = [(SUUIGiftDateTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_bottomBorderView];
 
     v10 = objc_alloc_init(MEMORY[0x277D753E8]);
     datePicker = v4->_datePicker;
@@ -40,8 +40,8 @@
     [(UIDatePicker *)v4->_datePicker setDatePickerMode:1];
     [(UIDatePicker *)v4->_datePicker setPreferredDatePickerStyle:2];
     v12 = v4->_datePicker;
-    v13 = [MEMORY[0x277D75348] systemBlueColor];
-    [(UIDatePicker *)v12 setTintColor:v13];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(UIDatePicker *)v12 setTintColor:systemBlueColor];
 
     v14 = *MEMORY[0x277D76840];
     [(UIDatePicker *)v4->_datePicker setMaximumContentSizeCategory:*MEMORY[0x277D76840]];
@@ -56,22 +56,22 @@
     v4->_topBorderView = v16;
 
     v18 = v4->_topBorderView;
-    v19 = [MEMORY[0x277D75348] separatorColor];
-    [(UIView *)v18 setBackgroundColor:v19];
+    separatorColor2 = [MEMORY[0x277D75348] separatorColor];
+    [(UIView *)v18 setBackgroundColor:separatorColor2];
 
-    v20 = [(SUUIGiftDateTableViewCell *)v4 contentView];
-    [v20 addSubview:v4->_topBorderView];
+    contentView2 = [(SUUIGiftDateTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_topBorderView];
 
-    v21 = [MEMORY[0x277D75128] sharedApplication];
-    v4->_leftToRight = [v21 userInterfaceLayoutDirection] == 0;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v4->_leftToRight = [mEMORY[0x277D75128] userInterfaceLayoutDirection] == 0;
   }
 
   return v4;
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  if (self->_checked == a3)
+  if (self->_checked == checked)
   {
     return;
   }
@@ -81,9 +81,9 @@
   v23 = v5;
   v24 = v4;
   v25 = v3;
-  self->_checked = a3;
+  self->_checked = checked;
   checkmarkView = self->_checkmarkView;
-  if (!a3)
+  if (!checked)
   {
     [(UIImageView *)checkmarkView removeFromSuperview];
     v13 = self->_checkmarkView;
@@ -95,8 +95,8 @@
   {
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v14 = [MEMORY[0x277D755B8] imageNamed:@"GiftCheckmark" inBundle:v13];
-    v15 = [(SUUIGiftDateTableViewCell *)self tintColor];
-    v16 = [v14 _flatImageWithColor:v15];
+    tintColor = [(SUUIGiftDateTableViewCell *)self tintColor];
+    v16 = [v14 _flatImageWithColor:tintColor];
 
     v17 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v16 highlightedImage:0];
     v18 = self->_checkmarkView;
@@ -113,24 +113,24 @@ LABEL_6:
   [(SUUIGiftDateTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v10 = a3;
-  v4 = [(SUUIGiftDateTableViewCell *)self date];
-  v5 = v10;
-  v6 = v4;
-  if (v4 != v10)
+  dateCopy = date;
+  date = [(SUUIGiftDateTableViewCell *)self date];
+  v5 = dateCopy;
+  v6 = date;
+  if (date != dateCopy)
   {
-    v7 = [v4 isEqualToDate:v10];
-    v5 = v10;
+    v7 = [date isEqualToDate:dateCopy];
+    v5 = dateCopy;
     if ((v7 & 1) == 0)
     {
-      if (v10)
+      if (dateCopy)
       {
-        v8 = [(SUUIGiftDateTableViewCell *)self contentView];
-        [v8 addSubview:self->_datePicker];
+        contentView = [(SUUIGiftDateTableViewCell *)self contentView];
+        [contentView addSubview:self->_datePicker];
 
-        [(UIDatePicker *)self->_datePicker setDate:v10];
+        [(UIDatePicker *)self->_datePicker setDate:dateCopy];
         [(UIDatePicker *)self->_datePicker sizeToFit];
       }
 
@@ -140,7 +140,7 @@ LABEL_6:
       }
 
       [(SUUIGiftDateTableViewCell *)self setNeedsLayout];
-      v5 = v10;
+      v5 = dateCopy;
     }
   }
 
@@ -148,23 +148,23 @@ LABEL_6:
   [(SUUIGiftDateTableViewCell *)self setLabel:v9];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v10 = a3;
-  v4 = [(SUUIGiftDateTableViewCell *)self label];
-  if (v4 != v10 && ([v4 isEqualToString:v10] & 1) == 0)
+  labelCopy = label;
+  label = [(SUUIGiftDateTableViewCell *)self label];
+  if (label != labelCopy && ([label isEqualToString:labelCopy] & 1) == 0)
   {
     labelLabel = self->_labelLabel;
-    if (v10)
+    if (labelCopy)
     {
       if (!labelLabel)
       {
-        v6 = [(SUUIGiftDateTableViewCell *)self _newLabel];
+        _newLabel = [(SUUIGiftDateTableViewCell *)self _newLabel];
         v7 = self->_labelLabel;
-        self->_labelLabel = v6;
+        self->_labelLabel = _newLabel;
 
-        v8 = [(SUUIGiftDateTableViewCell *)self contentView];
-        [v8 addSubview:self->_labelLabel];
+        contentView = [(SUUIGiftDateTableViewCell *)self contentView];
+        [contentView addSubview:self->_labelLabel];
 
         labelLabel = self->_labelLabel;
       }
@@ -184,14 +184,14 @@ LABEL_6:
   }
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
-  v16 = a3;
-  v4 = [(SUUIGiftDateTableViewCell *)self label];
-  if (v4 != v16 && ([v4 isEqualToString:v16] & 1) == 0)
+  placeholderCopy = placeholder;
+  label = [(SUUIGiftDateTableViewCell *)self label];
+  if (label != placeholderCopy && ([label isEqualToString:placeholderCopy] & 1) == 0)
   {
     placeholderLabel = self->_placeholderLabel;
-    if (v16)
+    if (placeholderCopy)
     {
       if (!placeholderLabel)
       {
@@ -200,8 +200,8 @@ LABEL_6:
         self->_placeholderLabel = v6;
 
         v8 = self->_placeholderLabel;
-        v9 = [MEMORY[0x277D75348] clearColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(UILabel *)v8 setBackgroundColor:clearColor];
 
         v10 = self->_placeholderLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
@@ -209,11 +209,11 @@ LABEL_6:
 
         [(UILabel *)self->_placeholderLabel setNumberOfLines:2];
         v12 = self->_placeholderLabel;
-        v13 = [MEMORY[0x277D75348] placeholderTextColor];
-        [(UILabel *)v12 setTextColor:v13];
+        placeholderTextColor = [MEMORY[0x277D75348] placeholderTextColor];
+        [(UILabel *)v12 setTextColor:placeholderTextColor];
 
-        v14 = [(SUUIGiftDateTableViewCell *)self contentView];
-        [v14 addSubview:self->_placeholderLabel];
+        contentView = [(SUUIGiftDateTableViewCell *)self contentView];
+        [contentView addSubview:self->_placeholderLabel];
 
         placeholderLabel = self->_placeholderLabel;
       }
@@ -238,8 +238,8 @@ LABEL_6:
   v70.receiver = self;
   v70.super_class = SUUIGiftDateTableViewCell;
   [(SUUIGiftDateTableViewCell *)&v70 layoutSubviews];
-  v3 = [(SUUIGiftDateTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUIGiftDateTableViewCell *)self contentView];
+  [contentView bounds];
   v69 = v4;
   v6 = v5;
   v8 = v7;
@@ -256,9 +256,9 @@ LABEL_6:
     v18 = (v10 - v15) * 0.5;
     v19 = floorf(v18);
     [(UIImageView *)self->_checkmarkView setFrame:v11 - v13, v19];
-    v20 = [(SUUIGiftDateTableViewCell *)self leftToRight];
+    leftToRight = [(SUUIGiftDateTableViewCell *)self leftToRight];
     v21 = self->_checkmarkView;
-    if (v20)
+    if (leftToRight)
     {
       v22 = v17;
     }
@@ -289,9 +289,9 @@ LABEL_6:
     v32 = (v10 - height) * 0.5;
     v33 = floorf(v32);
     [(UILabel *)self->_labelLabel setFrame:15.0, v33, width, height];
-    v34 = [(SUUIGiftDateTableViewCell *)self leftToRight];
+    leftToRight2 = [(SUUIGiftDateTableViewCell *)self leftToRight];
     v35 = self->_labelLabel;
-    if (!v34)
+    if (!leftToRight2)
     {
       [SUUICGRectHelpers rect:15.0 withFlippedOriginXRelativeTo:v33, width, height, v69, v27, v68, v10];
       v30 = v36;
@@ -321,9 +321,9 @@ LABEL_6:
     v47 = (v10 - v44) * 0.5;
     v48 = floorf(v47);
     [(UILabel *)self->_placeholderLabel setHidden:1];
-    v49 = [(SUUIGiftDateTableViewCell *)self leftToRight];
+    leftToRight3 = [(SUUIGiftDateTableViewCell *)self leftToRight];
     v50 = self->_datePicker;
-    if (v49)
+    if (leftToRight3)
     {
       v51 = self->_datePicker;
       v52 = v46;
@@ -353,9 +353,9 @@ LABEL_21:
     v59 = floorf(*&v56);
     [(UILabel *)self->_placeholderLabel setHidden:0];
     [(UILabel *)self->_placeholderLabel setFrame:v40, v59, v57, v45];
-    v60 = [(SUUIGiftDateTableViewCell *)self leftToRight];
+    leftToRight4 = [(SUUIGiftDateTableViewCell *)self leftToRight];
     v50 = self->_placeholderLabel;
-    if (v60)
+    if (leftToRight4)
     {
       v51 = self->_placeholderLabel;
       v52 = v40;
@@ -374,8 +374,8 @@ LABEL_20:
   }
 
 LABEL_22:
-  v65 = [MEMORY[0x277D759A0] mainScreen];
-  [v65 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v67 = 1.0 / v66;
 
   [(UIView *)self->_topBorderView setFrame:0.0, 0.0, v8, v67];
@@ -384,12 +384,12 @@ LABEL_22:
 
 - (void)_datePickerDateDidChange
 {
-  v5 = [(UIDatePicker *)self->_datePicker date];
-  v3 = [(SUUIGiftDateTableViewCell *)self _labelForDate:v5];
+  date = [(UIDatePicker *)self->_datePicker date];
+  v3 = [(SUUIGiftDateTableViewCell *)self _labelForDate:date];
   [(SUUIGiftDateTableViewCell *)self setLabel:v3];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained giftDateTableViewCell:self didChangeDate:v5];
+  [WeakRetained giftDateTableViewCell:self didChangeDate:date];
 }
 
 - (void)_datePickerEditingDidBegin
@@ -424,22 +424,22 @@ void __55__SUUIGiftDateTableViewCell__datePickerEditingDidBegin__block_invoke(ui
   return v2;
 }
 
-- (id)_labelForDate:(id)a3
+- (id)_labelForDate:(id)date
 {
-  v4 = a3;
-  v5 = [(SUUIGiftDateTableViewCell *)self giftConfiguration];
-  v6 = [v5 clientContext];
+  dateCopy = date;
+  giftConfiguration = [(SUUIGiftDateTableViewCell *)self giftConfiguration];
+  clientContext = [giftConfiguration clientContext];
 
-  v7 = [(UIDatePicker *)self->_datePicker calendar];
-  LODWORD(v5) = [v7 isDateInToday:v4];
+  calendar = [(UIDatePicker *)self->_datePicker calendar];
+  LODWORD(giftConfiguration) = [calendar isDateInToday:dateCopy];
 
-  if (v5)
+  if (giftConfiguration)
   {
-    if (v6)
+    if (clientContext)
     {
       v8 = @"GIFTING_FIELD_LABEL_TODAY";
 LABEL_6:
-      v9 = [v6 localizedStringForKey:v8 inTable:@"Gifting"];
+      v9 = [clientContext localizedStringForKey:v8 inTable:@"Gifting"];
       goto LABEL_10;
     }
 
@@ -448,7 +448,7 @@ LABEL_6:
 
   else
   {
-    if (v6)
+    if (clientContext)
     {
       v8 = @"GIFTING_FIELD_LABEL_OTHER_DATE";
       goto LABEL_6;
@@ -467,14 +467,14 @@ LABEL_10:
 - (id)_newLabel
 {
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   v5 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
   [v3 setFont:v5];
 
-  v6 = [(SUUIGiftDateTableViewCell *)self _labelColor];
-  [v3 setTextColor:v6];
+  _labelColor = [(SUUIGiftDateTableViewCell *)self _labelColor];
+  [v3 setTextColor:_labelColor];
 
   return v3;
 }

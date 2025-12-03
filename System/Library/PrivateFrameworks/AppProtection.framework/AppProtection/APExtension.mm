@@ -1,11 +1,11 @@
 @interface APExtension
-- (APExtension)initWithExtensionUUID:(id)a3 bundleIdentifier:(id)a4;
+- (APExtension)initWithExtensionUUID:(id)d bundleIdentifier:(id)identifier;
 - (BOOL)isFirstParty;
 @end
 
 @implementation APExtension
 
-- (APExtension)initWithExtensionUUID:(id)a3 bundleIdentifier:(id)a4
+- (APExtension)initWithExtensionUUID:(id)d bundleIdentifier:(id)identifier
 {
   v4 = sub_185B67AFC();
   v5 = *(*(v4 - 8) + 64);
@@ -18,7 +18,7 @@
 
 - (BOOL)isFirstParty
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _sSo11APExtensionC13AppProtectionE10firstPartySbvg_0();
 
   return v3 & 1;

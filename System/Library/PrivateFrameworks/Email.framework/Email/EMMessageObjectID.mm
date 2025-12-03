@@ -1,14 +1,14 @@
 @interface EMMessageObjectID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (EMMessageObjectID)init;
-- (EMMessageObjectID)initWithCoder:(id)a3;
-- (EMMessageObjectID)initWithCollectionItemID:(id)a3 mailboxScope:(id)a4;
-- (EMMessageObjectID)initWithCollectionItemID:(id)a3 predicate:(id)a4 mailboxTypeResolver:(id)a5;
-- (EMMessageObjectID)initWithGlobalMessageID:(int64_t)a3 mailboxScope:(id)a4;
+- (EMMessageObjectID)initWithCoder:(id)coder;
+- (EMMessageObjectID)initWithCollectionItemID:(id)d mailboxScope:(id)scope;
+- (EMMessageObjectID)initWithCollectionItemID:(id)d predicate:(id)predicate mailboxTypeResolver:(id)resolver;
+- (EMMessageObjectID)initWithGlobalMessageID:(int64_t)d mailboxScope:(id)scope;
 - (id)description;
 - (int64_t)globalMessageID;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMMessageObjectID
@@ -24,8 +24,8 @@
 
   else
   {
-    v4 = [(EMMessageObjectID *)self collectionItemID];
-    v3 = [v4 hash];
+    collectionItemID = [(EMMessageObjectID *)self collectionItemID];
+    v3 = [collectionItemID hash];
   }
 
   return v3;
@@ -33,10 +33,10 @@
 
 - (int64_t)globalMessageID
 {
-  v2 = [(EMMessageObjectID *)self collectionItemID];
-  v3 = [v2 globalMessageID];
+  collectionItemID = [(EMMessageObjectID *)self collectionItemID];
+  globalMessageID = [collectionItemID globalMessageID];
 
-  return v3;
+  return globalMessageID;
 }
 
 - (EMMessageObjectID)init
@@ -54,10 +54,10 @@
   return v2;
 }
 
-- (EMMessageObjectID)initWithCollectionItemID:(id)a3 mailboxScope:(id)a4
+- (EMMessageObjectID)initWithCollectionItemID:(id)d mailboxScope:(id)scope
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  scopeCopy = scope;
   v14.receiver = self;
   v14.super_class = EMMessageObjectID;
   v9 = [(EMObjectID *)&v14 initAsEphemeralID:0];
@@ -65,37 +65,37 @@
   v11 = v9;
   if (v9)
   {
-    objc_storeStrong(v9 + 5, a3);
-    objc_storeStrong(v10 + 6, a4);
+    objc_storeStrong(v9 + 5, d);
+    objc_storeStrong(v10 + 6, scope);
   }
 
-  v12 = [v11 cachedSelf];
+  cachedSelf = [v11 cachedSelf];
 
-  return v12;
+  return cachedSelf;
 }
 
-- (EMMessageObjectID)initWithCollectionItemID:(id)a3 predicate:(id)a4 mailboxTypeResolver:(id)a5
+- (EMMessageObjectID)initWithCollectionItemID:(id)d predicate:(id)predicate mailboxTypeResolver:(id)resolver
 {
-  v8 = a3;
-  v9 = [EMMessageListItemPredicates mailboxScopeForPredicate:a4 withMailboxTypeResolver:a5];
-  v10 = [(EMMessageObjectID *)self initWithCollectionItemID:v8 mailboxScope:v9];
+  dCopy = d;
+  v9 = [EMMessageListItemPredicates mailboxScopeForPredicate:predicate withMailboxTypeResolver:resolver];
+  v10 = [(EMMessageObjectID *)self initWithCollectionItemID:dCopy mailboxScope:v9];
 
   return v10;
 }
 
-- (EMMessageObjectID)initWithGlobalMessageID:(int64_t)a3 mailboxScope:(id)a4
+- (EMMessageObjectID)initWithGlobalMessageID:(int64_t)d mailboxScope:(id)scope
 {
-  v6 = a4;
-  v7 = [[EMMessageCollectionItemID alloc] initWithGlobalMessageID:a3];
-  v8 = [(EMMessageObjectID *)self initWithCollectionItemID:v7 mailboxScope:v6];
+  scopeCopy = scope;
+  v7 = [[EMMessageCollectionItemID alloc] initWithGlobalMessageID:d];
+  v8 = [(EMMessageObjectID *)self initWithCollectionItemID:v7 mailboxScope:scopeCopy];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -105,7 +105,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(EMObjectID *)self isEphemeral]|| [(EMObjectID *)v5 isEphemeral])
       {
         v12.receiver = self;
@@ -115,12 +115,12 @@
 
       else
       {
-        v7 = [(EMMessageObjectID *)self collectionItemID];
-        v8 = [(EMMessageObjectID *)v5 collectionItemID];
-        if ([v7 isEqual:v8])
+        collectionItemID = [(EMMessageObjectID *)self collectionItemID];
+        collectionItemID2 = [(EMMessageObjectID *)v5 collectionItemID];
+        if ([collectionItemID isEqual:collectionItemID2])
         {
-          v9 = [(EMMessageObjectID *)self mailboxScope];
-          v10 = [(EMMessageObjectID *)v5 mailboxScope];
+          mailboxScope = [(EMMessageObjectID *)self mailboxScope];
+          mailboxScope2 = [(EMMessageObjectID *)v5 mailboxScope];
           v6 = EFObjectsAreEqual();
         }
 
@@ -146,21 +146,21 @@
   v11.receiver = self;
   v11.super_class = EMMessageObjectID;
   v4 = [(EMObjectID *)&v11 description];
-  v5 = [(EMMessageObjectID *)self collectionItemID];
-  v6 = [v5 description];
-  v7 = [(EMMessageObjectID *)self mailboxScope];
-  v8 = [v7 description];
+  collectionItemID = [(EMMessageObjectID *)self collectionItemID];
+  v6 = [collectionItemID description];
+  mailboxScope = [(EMMessageObjectID *)self mailboxScope];
+  v8 = [mailboxScope description];
   v9 = [v3 initWithFormat:@"%@ %@ %@", v4, v6, v8];
 
   return v9;
 }
 
-- (EMMessageObjectID)initWithCoder:(id)a3
+- (EMMessageObjectID)initWithCoder:(id)coder
 {
-  v8 = a3;
-  v9 = self;
-  v4 = self;
-  v5 = v8;
+  coderCopy = coder;
+  selfCopy = self;
+  selfCopy2 = self;
+  v5 = coderCopy;
   v6 = EFDecodeCacheableInstance();
 
   return v6;
@@ -189,10 +189,10 @@ id __35__EMMessageObjectID_initWithCoder___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v3 = v4;
+  coderCopy = coder;
+  v3 = coderCopy;
   EFEncodeCacheableInstance();
 }
 

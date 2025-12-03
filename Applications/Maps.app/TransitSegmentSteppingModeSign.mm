@@ -4,8 +4,8 @@
 - (GEOComposedString)minorFormattedInstruction;
 - (GEOComposedString)tertiaryFormattedInstruction;
 - (GEOComposedTransitTripRouteStep)boardClusteredStep;
-- (TransitSegmentSteppingModeSign)initWithStep:(id)a3 stepIndexRange:(_NSRange)a4;
-- (TransitSegmentSteppingModeSign)initWithWalkingSegment:(id)a3 stepIndexRange:(_NSRange)a4;
+- (TransitSegmentSteppingModeSign)initWithStep:(id)step stepIndexRange:(_NSRange)range;
+- (TransitSegmentSteppingModeSign)initWithWalkingSegment:(id)segment stepIndexRange:(_NSRange)range;
 - (_NSRange)stepIndexRange;
 @end
 
@@ -41,51 +41,51 @@ LABEL_5:
 
 - (GEOComposedString)tertiaryFormattedInstruction
 {
-  v2 = [(MNTransitInstruction *)self->_instruction tertiaryInstructionStrings];
-  v3 = [v2 firstObject];
+  tertiaryInstructionStrings = [(MNTransitInstruction *)self->_instruction tertiaryInstructionStrings];
+  firstObject = [tertiaryInstructionStrings firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (GEOComposedString)minorFormattedInstruction
 {
-  v2 = [(MNTransitInstruction *)self->_instruction minorInstructionStrings];
-  v3 = [v2 firstObject];
+  minorInstructionStrings = [(MNTransitInstruction *)self->_instruction minorInstructionStrings];
+  firstObject = [minorInstructionStrings firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (GEOComposedString)majorFormattedInstruction
 {
-  v2 = [(MNTransitInstruction *)self->_instruction majorInstructionStrings];
-  v3 = [v2 firstObject];
+  majorInstructionStrings = [(MNTransitInstruction *)self->_instruction majorInstructionStrings];
+  firstObject = [majorInstructionStrings firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (BOOL)hasValidInstructions
 {
-  v2 = [(MNTransitInstruction *)self->_instruction majorInstructionStrings];
-  v3 = [v2 count] != 0;
+  majorInstructionStrings = [(MNTransitInstruction *)self->_instruction majorInstructionStrings];
+  v3 = [majorInstructionStrings count] != 0;
 
   return v3;
 }
 
-- (TransitSegmentSteppingModeSign)initWithWalkingSegment:(id)a3 stepIndexRange:(_NSRange)a4
+- (TransitSegmentSteppingModeSign)initWithWalkingSegment:(id)segment stepIndexRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  segmentCopy = segment;
   v33.receiver = self;
   v33.super_class = TransitSegmentSteppingModeSign;
   v9 = [(TransitSegmentSteppingModeSign *)&v33 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_segment, a3);
+    objc_storeStrong(&v9->_segment, segment);
     v10->_stepIndexRange.location = location;
     v10->_stepIndexRange.length = length;
-    v11 = [v8 transitInstructionInContext:1];
+    v11 = [segmentCopy transitInstructionInContext:1];
     instruction = v10->_instruction;
     v10->_instruction = v11;
 
@@ -94,8 +94,8 @@ LABEL_5:
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v14 = [v8 steps];
-    v15 = [v14 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    steps = [segmentCopy steps];
+    v15 = [steps countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v15)
     {
       v16 = v15;
@@ -106,21 +106,21 @@ LABEL_5:
         {
           if (*v30 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(steps);
           }
 
           v19 = *(*(&v29 + 1) + 8 * i);
-          v20 = [v19 transitIncidents];
-          v21 = [v20 count];
+          transitIncidents = [v19 transitIncidents];
+          v21 = [transitIncidents count];
 
           if (v21)
           {
-            v22 = [v19 transitIncidents];
-            [v13 addObjectsFromArray:v22];
+            transitIncidents2 = [v19 transitIncidents];
+            [v13 addObjectsFromArray:transitIncidents2];
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v16 = [steps countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v16);
@@ -129,15 +129,15 @@ LABEL_5:
     if ([v13 count])
     {
       v23 = [MergedTransitRoutingIncidentMessage alloc];
-      v24 = [v13 allObjects];
-      v25 = [(MergedTransitRoutingIncidentMessage *)v23 initWithTransitIncidents:v24];
+      allObjects = [v13 allObjects];
+      v25 = [(MergedTransitRoutingIncidentMessage *)v23 initWithTransitIncidents:allObjects];
       incidentMessage = v10->_incidentMessage;
       v10->_incidentMessage = v25;
     }
 
     else
     {
-      v24 = v10->_incidentMessage;
+      allObjects = v10->_incidentMessage;
       v10->_incidentMessage = 0;
     }
 
@@ -147,27 +147,27 @@ LABEL_5:
   return v10;
 }
 
-- (TransitSegmentSteppingModeSign)initWithStep:(id)a3 stepIndexRange:(_NSRange)a4
+- (TransitSegmentSteppingModeSign)initWithStep:(id)step stepIndexRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  stepCopy = step;
   v19.receiver = self;
   v19.super_class = TransitSegmentSteppingModeSign;
   v9 = [(TransitSegmentSteppingModeSign *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_step, a3);
+    objc_storeStrong(&v9->_step, step);
     v10->_stepIndexRange.location = location;
     v10->_stepIndexRange.length = length;
-    v11 = [v8 transitInstructionInContext:1];
+    v11 = [stepCopy transitInstructionInContext:1];
     instruction = v10->_instruction;
     v10->_instruction = v11;
 
     v13 = [MergedTransitRoutingIncidentMessage alloc];
-    v14 = [v8 transitIncidents];
-    v15 = [(MergedTransitRoutingIncidentMessage *)v13 initWithTransitIncidents:v14];
+    transitIncidents = [stepCopy transitIncidents];
+    v15 = [(MergedTransitRoutingIncidentMessage *)v13 initWithTransitIncidents:transitIncidents];
     incidentMessage = v10->_incidentMessage;
     v10->_incidentMessage = v15;
 

@@ -1,7 +1,7 @@
 @interface _UITextFieldLineBackgroundProvider
 + (id)lineStyleMetricsProvider;
-- (void)drawInBounds:(CGRect)a3;
-- (void)enabledDidChangeAnimated:(BOOL)a3;
+- (void)drawInBounds:(CGRect)bounds;
+- (void)enabledDidChangeAnimated:(BOOL)animated;
 @end
 
 @implementation _UITextFieldLineBackgroundProvider
@@ -13,25 +13,25 @@
   return v2;
 }
 
-- (void)enabledDidChangeAnimated:(BOOL)a3
+- (void)enabledDidChangeAnimated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = _UITextFieldLineBackgroundProvider;
-  [(_UITextFieldBackgroundProvider *)&v5 enabledDidChangeAnimated:a3];
-  v4 = [(_UITextFieldBackgroundProvider *)self textField];
-  [v4 setNeedsDisplay];
+  [(_UITextFieldBackgroundProvider *)&v5 enabledDidChangeAnimated:animated];
+  textField = [(_UITextFieldBackgroundProvider *)self textField];
+  [textField setNeedsDisplay];
 }
 
-- (void)drawInBounds:(CGRect)a3
+- (void)drawInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(_UITextFieldDrawingBackgroundProvider *)self drawsContent])
   {
-    v9 = [(_UITextFieldBackgroundProvider *)self textField];
-    if ([v9 isEnabled])
+    textField = [(_UITextFieldBackgroundProvider *)self textField];
+    if ([textField isEnabled])
     {
       +[UIColor labelColor];
     }

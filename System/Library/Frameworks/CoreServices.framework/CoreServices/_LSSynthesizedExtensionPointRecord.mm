@@ -1,16 +1,16 @@
 @interface _LSSynthesizedExtensionPointRecord
-- (_LSSynthesizedExtensionPointRecord)initWithCoder:(id)a3;
-- (_LSSynthesizedExtensionPointRecord)initWithIdentifier:(id)a3;
-- (id)_initWithContext:(LSContext *)a3 persistentIdentifierData:(const LSPersistentIdentifierData *)a4 length:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_LSSynthesizedExtensionPointRecord)initWithCoder:(id)coder;
+- (_LSSynthesizedExtensionPointRecord)initWithIdentifier:(id)identifier;
+- (id)_initWithContext:(LSContext *)context persistentIdentifierData:(const LSPersistentIdentifierData *)data length:(unint64_t)length;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LSSynthesizedExtensionPointRecord
 
-- (_LSSynthesizedExtensionPointRecord)initWithIdentifier:(id)a3
+- (_LSSynthesizedExtensionPointRecord)initWithIdentifier:(id)identifier
 {
-  v4 = self;
+  selfCopy = self;
   CurrentContext = _LSDatabaseContextGetCurrentContext(self);
   v15 = 0;
   v16 = 0;
@@ -24,13 +24,13 @@
   }
 
   v7 = *([(_LSDatabase *)*v6 schema]+ 1592);
-  v13.receiver = v4;
+  v13.receiver = selfCopy;
   v13.super_class = _LSSynthesizedExtensionPointRecord;
   v6 = [(LSRecord *)&v13 _initWithContext:v6 tableID:v7 unitID:0];
   if (v6)
   {
-    v8 = [a3 copy];
-    v4 = v6[4];
+    v8 = [identifier copy];
+    selfCopy = v6[4];
     v6[4] = v8;
 LABEL_4:
   }
@@ -52,14 +52,14 @@ LABEL_4:
   return v9;
 }
 
-- (id)_initWithContext:(LSContext *)a3 persistentIdentifierData:(const LSPersistentIdentifierData *)a4 length:(unint64_t)a5
+- (id)_initWithContext:(LSContext *)context persistentIdentifierData:(const LSPersistentIdentifierData *)data length:(unint64_t)length
 {
   v10.receiver = self;
   v10.super_class = _LSSynthesizedExtensionPointRecord;
-  v7 = [LSRecord _initWithContext:sel__initWithContext_persistentIdentifierData_length_ persistentIdentifierData:a3 length:?];
+  v7 = [LSRecord _initWithContext:sel__initWithContext_persistentIdentifierData_length_ persistentIdentifierData:context length:?];
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:a4->var5 length:a5 - 28 encoding:4 freeWhenDone:0];
+    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:data->var5 length:length - 28 encoding:4 freeWhenDone:0];
     if (v8)
     {
       objc_storeStrong(v7 + 4, v8);
@@ -69,22 +69,22 @@ LABEL_4:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _LSSynthesizedExtensionPointRecord;
   [(LSRecord *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_identifier forKey:@"identifier"];
+  [coder encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (_LSSynthesizedExtensionPointRecord)initWithCoder:(id)a3
+- (_LSSynthesizedExtensionPointRecord)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = _LSSynthesizedExtensionPointRecord;
   v4 = [(LSRecord *)&v8 initWithCoder:?];
   if (v4)
   {
-    v5 = [a3 ls_decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v5 = [coder ls_decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v4->_identifier;
     v4->_identifier = v5;
   }
@@ -92,11 +92,11 @@ LABEL_4:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = _LSSynthesizedExtensionPointRecord;
-  v4 = [(LSRecord *)&v7 copyWithZone:a3];
+  v4 = [(LSRecord *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

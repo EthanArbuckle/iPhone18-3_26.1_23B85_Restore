@@ -1,6 +1,6 @@
 @interface FCNewsTabiAdSegmentsEndpoint
 - (FCNewsTabiAdSegmentsEndpoint)init;
-- (FCNewsTabiAdSegmentsEndpoint)initWithDictionary:(id)a3;
+- (FCNewsTabiAdSegmentsEndpoint)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -32,15 +32,15 @@
   objc_exception_throw(v6);
 }
 
-- (FCNewsTabiAdSegmentsEndpoint)initWithDictionary:(id)a3
+- (FCNewsTabiAdSegmentsEndpoint)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationStringValue(v4, @"packageAssetID", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationStringValue(dictionaryCopy, @"packageAssetID", 0);
   v6 = v5;
   if (v5)
   {
     v7 = v5;
-    v8 = FCAppConfigurationStringValue(v4, @"adSegmentsOutputName", 0);
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"adSegmentsOutputName", 0);
     v9 = v8;
     if (v8)
     {
@@ -58,7 +58,7 @@
         {
           objc_storeStrong(&v12->_packageAssetID, v6);
           objc_storeStrong(&v13->_adSegmentsOutputName, v9);
-          v14 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"eventAggregationOutputs", 0);
+          v14 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"eventAggregationOutputs", 0);
           if (v14)
           {
             v15 = [[FCNewsTabiEventAggregationOutputsConfiguration alloc] initWithDictionary:v14];
@@ -74,7 +74,7 @@
       }
 
       self = v13;
-      v17 = self;
+      selfCopy = self;
     }
 
     else
@@ -83,8 +83,8 @@
       v21[1] = 3221225472;
       v21[2] = __51__FCNewsTabiAdSegmentsEndpoint_initWithDictionary___block_invoke_16;
       v21[3] = &unk_1E7C36F98;
-      v22 = v4;
-      v17 = __51__FCNewsTabiAdSegmentsEndpoint_initWithDictionary___block_invoke_16(v21);
+      v22 = dictionaryCopy;
+      selfCopy = __51__FCNewsTabiAdSegmentsEndpoint_initWithDictionary___block_invoke_16(v21);
       v10 = v22;
     }
   }
@@ -95,12 +95,12 @@
     v23[1] = 3221225472;
     v23[2] = __51__FCNewsTabiAdSegmentsEndpoint_initWithDictionary___block_invoke;
     v23[3] = &unk_1E7C36F98;
-    v24 = v4;
-    v17 = __51__FCNewsTabiAdSegmentsEndpoint_initWithDictionary___block_invoke(v23);
+    v24 = dictionaryCopy;
+    selfCopy = __51__FCNewsTabiAdSegmentsEndpoint_initWithDictionary___block_invoke(v23);
     v7 = v24;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 uint64_t __51__FCNewsTabiAdSegmentsEndpoint_initWithDictionary___block_invoke(uint64_t a1)
@@ -142,15 +142,15 @@ uint64_t __51__FCNewsTabiAdSegmentsEndpoint_initWithDictionary___block_invoke_16
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiAdSegmentsEndpoint *)self packageAssetID];
-  [v3 appendFormat:@"\n\tpackageAssetID: %@;", v4];
+  packageAssetID = [(FCNewsTabiAdSegmentsEndpoint *)self packageAssetID];
+  [v3 appendFormat:@"\n\tpackageAssetID: %@;", packageAssetID];
 
-  v5 = [(FCNewsTabiAdSegmentsEndpoint *)self adSegmentsOutputName];
-  [v3 appendFormat:@"\n\tadSegmentsOutputName: %@;", v5];
+  adSegmentsOutputName = [(FCNewsTabiAdSegmentsEndpoint *)self adSegmentsOutputName];
+  [v3 appendFormat:@"\n\tadSegmentsOutputName: %@;", adSegmentsOutputName];
 
-  v6 = [(FCNewsTabiAdSegmentsEndpoint *)self eventAggregationOutputs];
-  v7 = [v6 indentedDescription];
-  [v3 appendFormat:@"\n\teventAggregationOutputs: %@;", v7];
+  eventAggregationOutputs = [(FCNewsTabiAdSegmentsEndpoint *)self eventAggregationOutputs];
+  indentedDescription = [eventAggregationOutputs indentedDescription];
+  [v3 appendFormat:@"\n\teventAggregationOutputs: %@;", indentedDescription];
 
   [v3 appendString:@"\n>"];
 

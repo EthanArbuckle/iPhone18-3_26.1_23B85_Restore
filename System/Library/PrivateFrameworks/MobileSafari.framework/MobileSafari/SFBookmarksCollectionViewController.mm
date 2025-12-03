@@ -1,68 +1,68 @@
 @interface SFBookmarksCollectionViewController
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4;
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 selectionFollowsFocusForItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldBeginMultipleSelectionInteractionAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5;
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session;
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view selectionFollowsFocusForItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldBeginMultipleSelectionInteractionAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
 - (NSArray)keyCommands;
-- (_TtC12MobileSafari35SFBookmarksCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (void)collectionView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (_TtC12MobileSafari35SFBookmarksCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (void)collectionView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)downArrowPressed;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)upArrowPressed;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SFBookmarksCollectionViewController
 
 - (void)downArrowPressed
 {
-  v1 = a1;
+  selfCopy = self;
   sub_18BA9D5CC();
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_18BA9A104(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_18BA9A104(controller);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BA9A24C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for SFBookmarksCollectionViewController();
   v4 = v6.receiver;
-  [(SFBookmarksCollectionViewController *)&v6 viewWillAppear:v3];
+  [(SFBookmarksCollectionViewController *)&v6 viewWillAppear:appearCopy];
   v5 = *&v4[OBJC_IVAR____TtC12MobileSafari35SFBookmarksCollectionViewController_collectionView];
   if (v5)
   {
@@ -76,13 +76,13 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for SFBookmarksCollectionViewController();
   v4 = v7.receiver;
-  [(SFBookmarksCollectionViewController *)&v7 viewDidAppear:v3];
+  [(SFBookmarksCollectionViewController *)&v7 viewDidAppear:appearCopy];
   v4[OBJC_IVAR____TtC12MobileSafari35SFBookmarksCollectionViewController_needsContentOffsetUpdate] = 0;
   v5 = *&v4[OBJC_IVAR____TtC12MobileSafari35SFBookmarksCollectionViewController_collectionView];
   if (v5)
@@ -106,10 +106,10 @@
   sub_18BA99B28();
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v6 = self;
-  sub_18BA9A8E0(a3, a4);
+  selfCopy = self;
+  sub_18BA9A8E0(editing, animated);
 }
 
 - (NSArray)keyCommands
@@ -128,55 +128,55 @@
   return v2;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_18BAA23FC(v6);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_18BAA23FC(contextCopy);
 }
 
 - (void)upArrowPressed
 {
-  v4 = self;
-  v2 = [(SFBookmarksCollectionViewController *)v4 navigationController];
-  if (v2)
+  selfCopy = self;
+  navigationController = [(SFBookmarksCollectionViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
+    v3 = navigationController;
   }
 }
 
-- (_TtC12MobileSafari35SFBookmarksCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12MobileSafari35SFBookmarksCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v6 = sub_18BC1EDD8();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1ED88();
-  v10 = a3;
-  v11 = self;
-  LOBYTE(self) = SFBookmarksCollectionViewController.collectionView(_:shouldSelectItemAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(self) = SFBookmarksCollectionViewController.collectionView(_:shouldSelectItemAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v5 = sub_18BC1EDD8();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v12[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0) - 8];
   sub_18BC1ED88();
-  v9 = self;
-  if ([(SFBookmarksCollectionViewController *)v9 isEditing])
+  selfCopy = self;
+  if ([(SFBookmarksCollectionViewController *)selfCopy isEditing])
   {
     sub_18BA9AA44();
   }
@@ -198,15 +198,15 @@
   (*(v6 + 8))(v8, v5);
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
   v5 = sub_18BC1EDD8();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1ED88();
-  v9 = self;
-  if ([(SFBookmarksCollectionViewController *)v9 isEditing])
+  selfCopy = self;
+  if ([(SFBookmarksCollectionViewController *)selfCopy isEditing])
   {
     sub_18BA9AA44();
   }
@@ -214,29 +214,29 @@
   (*(v6 + 8))(v8, v5);
 }
 
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path
 {
   v6 = sub_18BC1EDD8();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1ED88();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = sub_18BAA2620();
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path
 {
   v5 = sub_18BC1EDD8();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v12[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0) - 8];
   sub_18BC1ED88();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_18BA95F78();
   sub_18BC1FD18();
 
@@ -251,18 +251,18 @@
   (*(v6 + 8))(v8, v5);
 }
 
-- (BOOL)collectionView:(id)a3 shouldBeginMultipleSelectionInteractionAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldBeginMultipleSelectionInteractionAtIndexPath:(id)path
 {
   v5 = sub_18BC1EDD8();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v16 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1ED88();
-  v9 = a3;
+  viewCopy = view;
   v10 = sub_18BC1ED68();
-  v11 = [v9 cellForItemAtIndexPath_];
+  cellForItemAtIndexPath_ = [viewCopy cellForItemAtIndexPath_];
 
-  if (v11)
+  if (cellForItemAtIndexPath_)
   {
     ObjectType = swift_getObjectType();
     v13 = swift_conformsToProtocol2();
@@ -280,14 +280,14 @@
   else
   {
     v14 = 0;
-    v11 = v9;
+    cellForItemAtIndexPath_ = viewCopy;
   }
 
   (*(v6 + 8))(v8, v5);
   return v14 & 1;
 }
 
-- (void)collectionView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4
+- (void)collectionView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path
 {
   v5 = sub_18BC1EDD8();
   v6 = *(v5 - 8);
@@ -298,9 +298,9 @@
   (*(v6 + 8))(v8, v5);
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
-  v26 = self;
+  selfCopy = self;
   v7 = sub_18BC1EDD8();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
@@ -314,8 +314,8 @@
   sub_18BC1ED88();
   sub_18BC1ED88();
   sub_18BC1ED88();
-  v20 = a3;
-  v21 = v26;
+  viewCopy = view;
+  v21 = selfCopy;
   SFBookmarksCollectionViewController.collectionView(_:targetIndexPathForMoveOfItemFromOriginalIndexPath:atCurrentIndexPath:toProposedIndexPath:)(v13, v10, v19);
 
   v22 = *(v8 + 8);
@@ -328,36 +328,36 @@
   return v23;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
   sub_18BC1EDD8();
   v7 = sub_18BC20D98();
-  v8 = a3;
-  v9 = self;
+  viewCopy = view;
+  selfCopy = self;
   v10 = sub_18BAA2708(v7);
 
   return v10;
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_18BAA29EC(a5);
+  selfCopy = self;
+  sub_18BAA29EC(animator);
 
   swift_unknownObjectRelease();
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path
 {
   v6 = sub_18BC1EDD8();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v14[-((v8 + 15) & 0xFFFFFFFFFFFFFFF0) - 8];
   sub_18BC1ED88();
-  v10 = self;
+  selfCopy = self;
   v11 = sub_18BA95F78();
   sub_18BC1FD18();
 
@@ -378,7 +378,7 @@
   return 0;
 }
 
-- (BOOL)collectionView:(id)a3 selectionFollowsFocusForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view selectionFollowsFocusForItemAtIndexPath:(id)path
 {
   v4 = sub_18BC1EDD8();
   v5 = *(v4 - 8);
@@ -389,16 +389,16 @@
   return 1;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context
 {
   v7 = sub_18BC1EDD8();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1ED88();
-  v11 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v12 = self;
+  selfCopy = self;
   LOBYTE(self) = sub_18BAA2BB8();
 
   swift_unknownObjectRelease();
@@ -406,43 +406,43 @@
   return self & 1;
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    v8 = self;
-    v5 = [(SFBookmarksCollectionViewController *)v8 navigationController];
-    if (v5)
+    selfCopy = self;
+    navigationController = [(SFBookmarksCollectionViewController *)selfCopy navigationController];
+    if (navigationController)
     {
-      v6 = v5;
-      v7 = [v5 navigationBar];
+      v6 = navigationController;
+      navigationBar = [navigationController navigationBar];
 
-      [v7 sizeToFit];
+      [navigationBar sizeToFit];
     }
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v6 = self;
-  v3 = [(SFBookmarksCollectionViewController *)v6 navigationController];
-  if (v3)
+  selfCopy = self;
+  navigationController = [(SFBookmarksCollectionViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v4 = v3;
-    v5 = [v3 navigationBar];
+    v4 = navigationController;
+    navigationBar = [navigationController navigationBar];
 
-    [v5 sizeToFit];
+    [navigationBar sizeToFit];
   }
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
   v6 = sub_18BC1EDD8();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1ED88();
-  v10 = self;
+  selfCopy = self;
   sub_18BA9D1E0(v9, 1);
 
   (*(v7 + 8))(v9, v6);
@@ -452,14 +452,14 @@
   return v11;
 }
 
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
   v7 = sub_18BC1EDD8();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1ED88();
-  v11 = self;
+  selfCopy = self;
   sub_18BA9D1E0(v10, 0);
 
   (*(v8 + 8))(v10, v7);
@@ -469,37 +469,37 @@
   return v12;
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session
 {
-  v5 = self;
+  selfCopy = self;
   v6 = (self + OBJC_IVAR____TtC12MobileSafari35SFBookmarksCollectionViewController_canHandleDropSession);
   swift_beginAccess();
   v7 = *v6;
   swift_unknownObjectRetain();
-  v8 = v5;
+  v8 = selfCopy;
   sub_18BC1E1A8();
-  LOBYTE(v5) = v7(a4);
+  LOBYTE(selfCopy) = v7(session);
   swift_unknownObjectRelease();
 
-  return v5 & 1;
+  return selfCopy & 1;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_18BAA2C90(a4);
+  selfCopy = self;
+  sub_18BAA2C90(coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA9D5BD0);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v11 = &v18 - v10;
-  if (a5)
+  if (path)
   {
     sub_18BC1ED88();
     v12 = sub_18BC1EDD8();
@@ -512,10 +512,10 @@
     (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   }
 
-  v14 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v15 = self;
-  v16 = SFBookmarksCollectionViewController.collectionView(_:dropSessionDidUpdate:withDestinationIndexPath:)(v14, a4, v11);
+  selfCopy = self;
+  v16 = SFBookmarksCollectionViewController.collectionView(_:dropSessionDidUpdate:withDestinationIndexPath:)(viewCopy, update, v11);
 
   swift_unknownObjectRelease();
   sub_18B988BAC(v11, &unk_1EA9D5BD0);
@@ -523,12 +523,12 @@
   return v16;
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12MobileSafari35SFBookmarksCollectionViewController_collectionView);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = v3;
     if ([v5 isDragging])
     {
@@ -538,9 +538,9 @@
 
     else
     {
-      v6 = [v5 isDecelerating];
+      isDecelerating = [v5 isDecelerating];
 
-      LOBYTE(self) = v6 ^ 1;
+      LOBYTE(self) = isDecelerating ^ 1;
     }
   }
 
@@ -552,30 +552,30 @@
   return self;
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   v5 = sub_18BC20BD8();
   v7 = v6;
   v8 = self + OBJC_IVAR____TtC12MobileSafari35SFBookmarksCollectionViewController_searchTextDidChangeHandler;
   swift_beginAccess();
   v9 = *v8;
-  v10 = self;
+  selfCopy = self;
   sub_18BC1E1A8();
-  v9(v5, v7, v10);
+  v9(v5, v7, selfCopy);
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_18BA947A4();
-  v5 = [v4 searchBar];
+  searchBar = [v4 searchBar];
 
-  [v5 setText_];
-  v6 = (v3 + OBJC_IVAR____TtC12MobileSafari35SFBookmarksCollectionViewController_searchTextDidChangeHandler);
+  [searchBar setText_];
+  v6 = (selfCopy + OBJC_IVAR____TtC12MobileSafari35SFBookmarksCollectionViewController_searchTextDidChangeHandler);
   swift_beginAccess();
   isa = v6->super.super.super.isa;
   sub_18BC1E1A8();
-  isa(0, 0, v3);
+  isa(0, 0, selfCopy);
 }
 
 @end

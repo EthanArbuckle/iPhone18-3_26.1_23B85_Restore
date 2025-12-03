@@ -1,51 +1,51 @@
 @interface RTStore
-+ (BOOL)handleCoreDataException:(id)a3 outError:(id *)a4;
-+ (id)availabilityToString:(unint64_t)a3;
-+ (id)contextTypeToString:(unint64_t)a3;
-+ (id)exceptionHandlingPolicyToString:(int64_t)a3;
-+ (int64_t)evaluatePolicyForCoreDataContextPerformBlockException:(id)a3;
-- (RTStore)initWithInterimPersistenceManager:(id)a3;
-- (RTStore)initWithPersistenceManager:(id)a3;
-- (void)_fetchReadableObjectsOfType:(Class)a3 fetchRequest:(id)a4 handler:(id)a5;
-- (void)_onInterimPersistenceManagerNotification:(id)a3;
-- (void)_onPersistenceManagerNotification:(id)a3;
-- (void)_performBlock:(id)a3 contextType:(unint64_t)a4 errorHandler:(id)a5;
-- (void)_purgeDateInterval:(id)a3 predicateMappings:(id)a4 limit:(unint64_t)a5 handler:(id)a6;
-- (void)_removeAll:(id)a3 handler:(id)a4;
-- (void)_setupContextsHandler:(id)a3;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_storeWritableObjects:(id)a3 handler:(id)a4;
-- (void)_updateWritableObjects:(id)a3 handler:(id)a4;
-- (void)enumerateType:(Class)a3 fetchRequest:(id)a4 enumerationBlock:(id)a5;
-- (void)executeDeleteRequests:(id)a3 context:(id)a4 handler:(id)a5;
-- (void)fetchAvailabilityWithHandler:(id)a3;
-- (void)fetchEnumerableObjectsWithOptions:(id)a3 offset:(unint64_t)a4 handler:(id)a5;
-- (void)fetchReadableObjectsOfType:(Class)a3 fetchRequest:(id)a4 handler:(id)a5;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)onInterimPersistenceManagerNotification:(id)a3;
-- (void)onPersistenceManagerNotification:(id)a3;
-- (void)purgeDateInterval:(id)a3 predicateMappings:(id)a4 handler:(id)a5;
-- (void)purgeDateInterval:(id)a3 predicateMappings:(id)a4 purgeLimit:(unint64_t)a5 handler:(id)a6;
-- (void)purgePredating:(id)a3 predicateMappings:(id)a4 handler:(id)a5;
-- (void)purgePredating:(id)a3 predicateMappings:(id)a4 purgeLimit:(unint64_t)a5 handler:(id)a6;
-- (void)removeAll:(id)a3 handler:(id)a4;
-- (void)setAvailability:(unint64_t)a3;
-- (void)storeWritableObjects:(id)a3 handler:(id)a4;
-- (void)updateWritableObjects:(id)a3 handler:(id)a4;
++ (BOOL)handleCoreDataException:(id)exception outError:(id *)error;
++ (id)availabilityToString:(unint64_t)string;
++ (id)contextTypeToString:(unint64_t)string;
++ (id)exceptionHandlingPolicyToString:(int64_t)string;
++ (int64_t)evaluatePolicyForCoreDataContextPerformBlockException:(id)exception;
+- (RTStore)initWithInterimPersistenceManager:(id)manager;
+- (RTStore)initWithPersistenceManager:(id)manager;
+- (void)_fetchReadableObjectsOfType:(Class)type fetchRequest:(id)request handler:(id)handler;
+- (void)_onInterimPersistenceManagerNotification:(id)notification;
+- (void)_onPersistenceManagerNotification:(id)notification;
+- (void)_performBlock:(id)block contextType:(unint64_t)type errorHandler:(id)handler;
+- (void)_purgeDateInterval:(id)interval predicateMappings:(id)mappings limit:(unint64_t)limit handler:(id)handler;
+- (void)_removeAll:(id)all handler:(id)handler;
+- (void)_setupContextsHandler:(id)handler;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_storeWritableObjects:(id)objects handler:(id)handler;
+- (void)_updateWritableObjects:(id)objects handler:(id)handler;
+- (void)enumerateType:(Class)type fetchRequest:(id)request enumerationBlock:(id)block;
+- (void)executeDeleteRequests:(id)requests context:(id)context handler:(id)handler;
+- (void)fetchAvailabilityWithHandler:(id)handler;
+- (void)fetchEnumerableObjectsWithOptions:(id)options offset:(unint64_t)offset handler:(id)handler;
+- (void)fetchReadableObjectsOfType:(Class)type fetchRequest:(id)request handler:(id)handler;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)onInterimPersistenceManagerNotification:(id)notification;
+- (void)onPersistenceManagerNotification:(id)notification;
+- (void)purgeDateInterval:(id)interval predicateMappings:(id)mappings handler:(id)handler;
+- (void)purgeDateInterval:(id)interval predicateMappings:(id)mappings purgeLimit:(unint64_t)limit handler:(id)handler;
+- (void)purgePredating:(id)predating predicateMappings:(id)mappings handler:(id)handler;
+- (void)purgePredating:(id)predating predicateMappings:(id)mappings purgeLimit:(unint64_t)limit handler:(id)handler;
+- (void)removeAll:(id)all handler:(id)handler;
+- (void)setAvailability:(unint64_t)availability;
+- (void)storeWritableObjects:(id)objects handler:(id)handler;
+- (void)updateWritableObjects:(id)objects handler:(id)handler;
 @end
 
 @implementation RTStore
 
-+ (id)availabilityToString:(unint64_t)a3
++ (id)availabilityToString:(unint64_t)string
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"Unavailable";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"Available";
   }
@@ -56,15 +56,15 @@
   }
 }
 
-+ (id)contextTypeToString:(unint64_t)a3
++ (id)contextTypeToString:(unint64_t)string
 {
   v3 = @"Delete";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"Fetch";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"Insert";
   }
@@ -75,11 +75,11 @@
   }
 }
 
-- (RTStore)initWithPersistenceManager:(id)a3
+- (RTStore)initWithPersistenceManager:(id)manager
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v19.receiver = self;
     v19.super_class = RTStore;
@@ -88,14 +88,14 @@
     if (v6)
     {
       v6->_availability = 0;
-      objc_storeStrong(&v6->_persistenceManager, a3);
-      v8 = [MEMORY[0x277CBEB38] dictionary];
+      objc_storeStrong(&v6->_persistenceManager, manager);
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       contexts = v7->_contexts;
-      v7->_contexts = v8;
+      v7->_contexts = dictionary;
 
       v10 = [RTInvocationDispatcher alloc];
-      v11 = [(RTNotifier *)v7 queue];
-      v12 = [(RTInvocationDispatcher *)v10 initWithQueue:v11];
+      queue = [(RTNotifier *)v7 queue];
+      v12 = [(RTInvocationDispatcher *)v10 initWithQueue:queue];
       dispatcher = v7->_dispatcher;
       v7->_dispatcher = v12;
 
@@ -107,7 +107,7 @@
     }
 
     self = v7;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -122,16 +122,16 @@
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: persistenceManager (in %s:%d)", buf, 0x12u);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (void)_setupContextsHandler:(id)a3
+- (void)_setupContextsHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v16 = a3;
+  handlerCopy = handler;
   v5 = dispatch_group_create();
   v23 = 0u;
   v24 = 0u;
@@ -153,13 +153,13 @@
         }
 
         v10 = *(*(&v23 + 1) + 8 * v9);
-        v11 = [(RTStore *)self contexts];
-        v12 = [v11 objectForKey:v10];
+        contexts = [(RTStore *)self contexts];
+        v12 = [contexts objectForKey:v10];
 
         if (!v12)
         {
           dispatch_group_enter(v5);
-          v13 = [(RTStore *)self persistenceManager];
+          persistenceManager = [(RTStore *)self persistenceManager];
           v20[0] = MEMORY[0x277D85DD0];
           v20[1] = 3221225472;
           v20[2] = __33__RTStore__setupContextsHandler___block_invoke;
@@ -168,7 +168,7 @@
           v20[5] = v10;
           v22 = a2;
           v21 = v5;
-          [v13 createManagedObjectContext:v20];
+          [persistenceManager createManagedObjectContext:v20];
         }
 
         ++v9;
@@ -181,14 +181,14 @@
     while (v7);
   }
 
-  v14 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__RTStore__setupContextsHandler___block_invoke_43;
   block[3] = &unk_2788C4758;
   v19 = v17;
   v15 = v17;
-  dispatch_group_notify(v5, v14, block);
+  dispatch_group_notify(v5, queue, block);
 }
 
 void __33__RTStore__setupContextsHandler___block_invoke(uint64_t a1, void *a2)
@@ -250,17 +250,17 @@ uint64_t __33__RTStore__setupContextsHandler___block_invoke_43(uint64_t a1)
   return result;
 }
 
-- (void)_onPersistenceManagerNotification:(id)a3
+- (void)_onPersistenceManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTPersistenceManagerNotificationAvailabilityDidChange];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [v4 availability];
-    if (v8 == 2)
+    availability = [notificationCopy availability];
+    if (availability == 2)
     {
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
@@ -272,34 +272,34 @@ uint64_t __33__RTStore__setupContextsHandler___block_invoke_43(uint64_t a1)
 
     else
     {
-      v9 = v8;
-      v10 = [(RTStore *)self contexts];
-      [v10 removeAllObjects];
+      v9 = availability;
+      contexts = [(RTStore *)self contexts];
+      [contexts removeAllObjects];
 
       [(RTStore *)self setAvailability:v9 == 1];
     }
   }
 }
 
-- (void)onPersistenceManagerNotification:(id)a3
+- (void)onPersistenceManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__RTStore_onPersistenceManagerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (RTStore)initWithInterimPersistenceManager:(id)a3
+- (RTStore)initWithInterimPersistenceManager:(id)manager
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v19.receiver = self;
     v19.super_class = RTStore;
@@ -308,14 +308,14 @@ uint64_t __33__RTStore__setupContextsHandler___block_invoke_43(uint64_t a1)
     if (v6)
     {
       v6->_availability = 0;
-      objc_storeStrong(&v6->_interimPersistenceManager, a3);
-      v8 = [MEMORY[0x277CBEB38] dictionary];
+      objc_storeStrong(&v6->_interimPersistenceManager, manager);
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       contexts = v7->_contexts;
-      v7->_contexts = v8;
+      v7->_contexts = dictionary;
 
       v10 = [RTInvocationDispatcher alloc];
-      v11 = [(RTNotifier *)v7 queue];
-      v12 = [(RTInvocationDispatcher *)v10 initWithQueue:v11];
+      queue = [(RTNotifier *)v7 queue];
+      v12 = [(RTInvocationDispatcher *)v10 initWithQueue:queue];
       dispatcher = v7->_dispatcher;
       v7->_dispatcher = v12;
 
@@ -325,7 +325,7 @@ uint64_t __33__RTStore__setupContextsHandler___block_invoke_43(uint64_t a1)
     }
 
     self = v7;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -340,111 +340,111 @@ uint64_t __33__RTStore__setupContextsHandler___block_invoke_43(uint64_t a1)
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: interimPersistenceManager (in %s:%d)", buf, 0x12u);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (void)_onInterimPersistenceManagerNotification:(id)a3
+- (void)_onInterimPersistenceManagerNotification:(id)notification
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTInterimPersistenceManagerNotificationAvailabilityDidChange];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [v4 availability];
-    if (v8 == 2)
+    availability = [notificationCopy availability];
+    if (availability == 2)
     {
       v9 = objc_alloc(MEMORY[0x277CBEB38]);
       v22[0] = &unk_28459E7D8;
-      v10 = [(RTStore *)self interimPersistenceManager];
-      v11 = [v10 managedObjectContext];
-      v23[0] = v11;
+      interimPersistenceManager = [(RTStore *)self interimPersistenceManager];
+      managedObjectContext = [interimPersistenceManager managedObjectContext];
+      v23[0] = managedObjectContext;
       v22[1] = &unk_28459E7F0;
-      v12 = [(RTStore *)self interimPersistenceManager];
-      v13 = [v12 managedObjectContext];
-      v23[1] = v13;
+      interimPersistenceManager2 = [(RTStore *)self interimPersistenceManager];
+      managedObjectContext2 = [interimPersistenceManager2 managedObjectContext];
+      v23[1] = managedObjectContext2;
       v22[2] = &unk_28459E808;
-      v14 = [(RTStore *)self interimPersistenceManager];
-      v15 = [v14 managedObjectContext];
-      v23[2] = v15;
+      interimPersistenceManager3 = [(RTStore *)self interimPersistenceManager];
+      managedObjectContext3 = [interimPersistenceManager3 managedObjectContext];
+      v23[2] = managedObjectContext3;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:3];
       v17 = [v9 initWithDictionary:v16];
       [(RTStore *)self setContexts:v17];
 
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2;
     }
 
     else
     {
-      v20 = v8;
-      v21 = [(RTStore *)self contexts];
-      [v21 removeAllObjects];
+      v20 = availability;
+      contexts = [(RTStore *)self contexts];
+      [contexts removeAllObjects];
 
-      v18 = self;
+      selfCopy2 = self;
       v19 = v20 == 1;
     }
 
-    [(RTStore *)v18 setAvailability:v19];
+    [(RTStore *)selfCopy2 setAvailability:v19];
   }
 }
 
-- (void)onInterimPersistenceManagerNotification:(id)a3
+- (void)onInterimPersistenceManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__RTStore_onInterimPersistenceManagerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v11 = a3;
-  v4 = [(RTStore *)self persistenceManager];
+  handlerCopy = handler;
+  persistenceManager = [(RTStore *)self persistenceManager];
   v5 = +[(RTNotification *)RTPersistenceManagerNotificationAvailabilityDidChange];
-  [v4 removeObserver:self fromNotification:v5];
+  [persistenceManager removeObserver:self fromNotification:v5];
 
-  v6 = [(RTStore *)self interimPersistenceManager];
+  interimPersistenceManager = [(RTStore *)self interimPersistenceManager];
   v7 = +[(RTNotification *)RTInterimPersistenceManagerNotificationAvailabilityDidChange];
-  [v6 removeObserver:self fromNotification:v7];
+  [interimPersistenceManager removeObserver:self fromNotification:v7];
 
-  v8 = [(RTStore *)self contexts];
-  [v8 removeAllObjects];
+  contexts = [(RTStore *)self contexts];
+  [contexts removeAllObjects];
 
-  v9 = [(RTStore *)self dispatcher];
-  [v9 shutdown];
+  dispatcher = [(RTStore *)self dispatcher];
+  [dispatcher shutdown];
 
-  v10 = v11;
-  if (v11)
+  v10 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v11 + 2))(v11, 0);
-    v10 = v11;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v10 = handlerCopy;
   }
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   v8 = +[(RTNotification *)RTStoreNotificationAvailabilityDidChange];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [nameCopy isEqualToString:v8];
 
   if (v9)
   {
     v10 = [[RTStoreNotificationAvailabilityDidChange alloc] initWithAvailability:[(RTStore *)self availability]];
-    [(RTNotifier *)self postNotification:v10 toObserver:v6];
+    [(RTNotifier *)self postNotification:v10 toObserver:observerCopy];
   }
 
   else
@@ -453,18 +453,18 @@ uint64_t __33__RTStore__setupContextsHandler___block_invoke_43(uint64_t a1)
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v7;
+      v13 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "unhandled notification %@", &v12, 0xCu);
     }
   }
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  nameCopy = name;
   v5 = +[(RTNotification *)RTStoreNotificationAvailabilityDidChange];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [nameCopy isEqualToString:v5];
 
   if ((v6 & 1) == 0)
   {
@@ -472,18 +472,18 @@ uint64_t __33__RTStore__setupContextsHandler___block_invoke_43(uint64_t a1)
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v7, OS_LOG_TYPE_ERROR, "unhandled notification %@", &v8, 0xCu);
     }
   }
 }
 
-- (void)setAvailability:(unint64_t)a3
+- (void)setAvailability:(unint64_t)availability
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_availability != a3)
+  if (self->_availability != availability)
   {
-    self->_availability = a3;
+    self->_availability = availability;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -503,30 +503,30 @@ uint64_t __33__RTStore__setupContextsHandler___block_invoke_43(uint64_t a1)
     v8 = [[RTStoreNotificationAvailabilityDidChange alloc] initWithAvailability:self->_availability];
     [(RTNotifier *)self postNotification:v8];
 
-    v9 = [(RTStore *)self dispatcher];
-    v10 = [v9 invocationsPending];
+    dispatcher = [(RTStore *)self dispatcher];
+    invocationsPending = [dispatcher invocationsPending];
 
-    if (v10)
+    if (invocationsPending)
     {
-      v11 = [(RTStore *)self dispatcher];
-      [v11 dispatchPendingInvocations];
+      dispatcher2 = [(RTStore *)self dispatcher];
+      [dispatcher2 dispatchPendingInvocations];
     }
   }
 }
 
-- (void)fetchAvailabilityWithHandler:(id)a3
+- (void)fetchAvailabilityWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __40__RTStore_fetchAvailabilityWithHandler___block_invoke;
     v7[3] = &unk_2788C4D38;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = handlerCopy;
+    dispatch_async(queue, v7);
 
     v6 = v8;
   }
@@ -542,19 +542,19 @@ uint64_t __33__RTStore__setupContextsHandler___block_invoke_43(uint64_t a1)
   }
 }
 
-- (void)_storeWritableObjects:(id)a3 handler:(id)a4
+- (void)_storeWritableObjects:(id)objects handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  objectsCopy = objects;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__RTStore__storeWritableObjects_handler___block_invoke;
   aBlock[3] = &unk_2788C4FB0;
-  v14 = v8;
+  v14 = handlerCopy;
   v15 = a2;
-  v13 = v7;
-  v9 = v8;
-  v10 = v7;
+  v13 = objectsCopy;
+  v9 = handlerCopy;
+  v10 = objectsCopy;
   v11 = _Block_copy(aBlock);
   [(RTStore *)self _performBlock:v11 contextType:2 errorHandler:v9];
 }
@@ -617,31 +617,31 @@ void __41__RTStore__storeWritableObjects_handler___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)storeWritableObjects:(id)a3 handler:(id)a4
+- (void)storeWritableObjects:(id)objects handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  objectsCopy = objects;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__RTStore_storeWritableObjects_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = objectsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = objectsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_updateWritableObjects:(id)a3 handler:(id)a4
+- (void)_updateWritableObjects:(id)objects handler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  objectsCopy = objects;
+  handlerCopy = handler;
+  if ([objectsCopy count])
   {
-    v9 = [v7 firstObject];
+    firstObject = [objectsCopy firstObject];
     NSSelectorFromString(&cfstr_Updatemanagedo.isa);
     v10 = objc_opt_respondsToSelector();
 
@@ -651,9 +651,9 @@ void __41__RTStore__storeWritableObjects_handler___block_invoke(uint64_t a1, voi
       aBlock[1] = 3221225472;
       aBlock[2] = __42__RTStore__updateWritableObjects_handler___block_invoke;
       aBlock[3] = &unk_2788C4FB0;
-      v25 = v7;
+      v25 = objectsCopy;
       v27 = a2;
-      v11 = v8;
+      v11 = handlerCopy;
       v26 = v11;
       v12 = _Block_copy(aBlock);
       [(RTStore *)self _performBlock:v12 contextType:2 errorHandler:v11];
@@ -663,7 +663,7 @@ void __41__RTStore__storeWritableObjects_handler___block_invoke(uint64_t a1, voi
     {
       v13 = MEMORY[0x277CCACA8];
       v14 = NSStringFromSelector(a2);
-      v15 = [v7 firstObject];
+      firstObject2 = [objectsCopy firstObject];
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
       v18 = [v13 stringWithFormat:@"%@, %@ does not support update protocol", v14, v17];
@@ -680,7 +680,7 @@ void __41__RTStore__storeWritableObjects_handler___block_invoke(uint64_t a1, voi
         _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "%@ (in %s:%d)", buf, 0x1Cu);
       }
 
-      if (v8)
+      if (handlerCopy)
       {
         v20 = MEMORY[0x277CCA9B8];
         v21 = *MEMORY[0x277D01448];
@@ -688,14 +688,14 @@ void __41__RTStore__storeWritableObjects_handler___block_invoke(uint64_t a1, voi
         v29 = v18;
         v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
         v23 = [v20 errorWithDomain:v21 code:7 userInfo:v22];
-        (*(v8 + 2))(v8, v23);
+        (*(handlerCopy + 2))(handlerCopy, v23);
       }
     }
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
-    (*(v8 + 2))(v8, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -832,34 +832,34 @@ void __42__RTStore__updateWritableObjects_handler___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)updateWritableObjects:(id)a3 handler:(id)a4
+- (void)updateWritableObjects:(id)objects handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  objectsCopy = objects;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__RTStore_updateWritableObjects_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = objectsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = objectsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_performBlock:(id)a3 contextType:(unint64_t)a4 errorHandler:(id)a5
+- (void)_performBlock:(id)block contextType:(unint64_t)type errorHandler:(id)handler
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  blockCopy = block;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (blockCopy)
   {
-    v12 = [(RTStore *)self contexts];
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    v14 = [v12 objectForKey:v13];
+    contexts = [(RTStore *)self contexts];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+    v14 = [contexts objectForKey:v13];
 
     if (v14)
     {
@@ -867,10 +867,10 @@ void __42__RTStore__updateWritableObjects_handler___block_invoke(uint64_t a1, vo
       v40[1] = 3221225472;
       v40[2] = __50__RTStore__performBlock_contextType_errorHandler___block_invoke_84;
       v40[3] = &unk_2788C6210;
-      v43 = v9;
+      v43 = blockCopy;
       v15 = v14;
       v41 = v15;
-      v42 = self;
+      selfCopy = self;
       [v15 performBlock:v40];
     }
 
@@ -880,10 +880,10 @@ void __42__RTStore__updateWritableObjects_handler___block_invoke(uint64_t a1, vo
       {
         if (v11)
         {
-          v22 = [(RTStore *)self availability];
+          availability = [(RTStore *)self availability];
           v23 = MEMORY[0x277CCA9B8];
           v24 = *MEMORY[0x277D01448];
-          if (v22 == 1)
+          if (availability == 1)
           {
             v53 = *MEMORY[0x277CCA450];
             v25 = MEMORY[0x277CCACA8];
@@ -905,7 +905,7 @@ void __42__RTStore__updateWritableObjects_handler___block_invoke(uint64_t a1, vo
             v27 = NSStringFromClass(v38);
             v28 = NSStringFromSelector(a2);
             v29 = [RTStore availabilityToString:[(RTStore *)self availability]];
-            v30 = [RTStore contextTypeToString:a4];
+            v30 = [RTStore contextTypeToString:type];
             v31 = [v37 stringWithFormat:@"%@, %@, availability, %@, invalid context of type, %@", v27, v28, v29, v30];
             v52 = v31;
             v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
@@ -918,14 +918,14 @@ void __42__RTStore__updateWritableObjects_handler___block_invoke(uint64_t a1, vo
 
       else
       {
-        v33 = [(RTStore *)self dispatcher];
+        dispatcher = [(RTStore *)self dispatcher];
         v47[0] = MEMORY[0x277D85DD0];
         v47[1] = 3221225472;
         v47[2] = __50__RTStore__performBlock_contextType_errorHandler___block_invoke;
         v47[3] = &unk_2788CD658;
         v47[4] = self;
-        v48 = v9;
-        v50 = a4;
+        v48 = blockCopy;
+        typeCopy = type;
         v49 = v11;
         v44[0] = MEMORY[0x277D85DD0];
         v44[1] = 3221225472;
@@ -937,7 +937,7 @@ void __42__RTStore__updateWritableObjects_handler___block_invoke(uint64_t a1, vo
         v34 = objc_opt_class();
         v35 = NSStringFromClass(v34);
         v36 = NSStringFromSelector(a2);
-        [v33 enqueueBlock:v47 failureBlock:v44 description:{@"%@-%@", v35, v36}];
+        [dispatcher enqueueBlock:v47 failureBlock:v44 description:{@"%@-%@", v35, v36}];
       }
 
       v15 = 0;
@@ -946,7 +946,7 @@ void __42__RTStore__updateWritableObjects_handler___block_invoke(uint64_t a1, vo
     goto LABEL_14;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v16 = MEMORY[0x277CCA9B8];
     v17 = *MEMORY[0x277D01448];
@@ -1001,15 +1001,15 @@ void __50__RTStore__performBlock_contextType_errorHandler___block_invoke_84(uint
   objc_autoreleasePoolPop(v2);
 }
 
-+ (id)exceptionHandlingPolicyToString:(int64_t)a3
++ (id)exceptionHandlingPolicyToString:(int64_t)string
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"ExitGracefully";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"ThrowException";
   }
@@ -1020,12 +1020,12 @@ void __50__RTStore__performBlock_contextType_errorHandler___block_invoke_84(uint
   }
 }
 
-+ (BOOL)handleCoreDataException:(id)a3 outError:(id *)a4
++ (BOOL)handleCoreDataException:(id)exception outError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [RTException coreDataExceptionLogging:v6];
-  v7 = [objc_opt_class() evaluatePolicyForCoreDataContextPerformBlockException:v6];
+  exceptionCopy = exception;
+  [RTException coreDataExceptionLogging:exceptionCopy];
+  v7 = [objc_opt_class() evaluatePolicyForCoreDataContextPerformBlockException:exceptionCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -1042,14 +1042,14 @@ void __50__RTStore__performBlock_contextType_errorHandler___block_invoke_84(uint
       v24 = 2112;
       v25 = v12;
       v26 = 2112;
-      v27 = v6;
+      v27 = exceptionCopy;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, %@, exception handling policy, %@, exception, %@", buf, 0x2Au);
     }
   }
 
   if (v7 == 2)
   {
-    objc_exception_throw(v6);
+    objc_exception_throw(exceptionCopy);
   }
 
   if (v7 == 1)
@@ -1058,32 +1058,32 @@ void __50__RTStore__performBlock_contextType_errorHandler___block_invoke_84(uint
   }
 
   +[RTException unknownExceptionHandlingPolicyDeadInside];
-  if (a4)
+  if (error)
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = *MEMORY[0x277D01448];
-    v15 = [v6 reason];
+    reason = [exceptionCopy reason];
     v18[1] = @"NSException";
-    v19[0] = v15;
-    v19[1] = v6;
+    v19[0] = reason;
+    v19[1] = exceptionCopy;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
-    *a4 = [v13 errorWithDomain:v14 code:0 userInfo:v16];
+    *error = [v13 errorWithDomain:v14 code:0 userInfo:v16];
   }
 
   return 0;
 }
 
-+ (int64_t)evaluatePolicyForCoreDataContextPerformBlockException:(id)a3
++ (int64_t)evaluatePolicyForCoreDataContextPerformBlockException:(id)exception
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
+  exceptionCopy = exception;
+  userInfo = [exceptionCopy userInfo];
   v5 = *MEMORY[0x277CBE2C8];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277CBE2C8]];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBE2C8]];
 
   if (v6)
   {
-    v7 = [v3 userInfo];
-    v8 = [v7 objectForKeyedSubscript:v5];
+    userInfo2 = [exceptionCopy userInfo];
+    v8 = [userInfo2 objectForKeyedSubscript:v5];
 
     if ([v8 intValue] == 13 || objc_msgSend(v8, "intValue") == 23)
     {
@@ -1091,8 +1091,8 @@ void __50__RTStore__performBlock_contextType_errorHandler___block_invoke_84(uint
     }
   }
 
-  v9 = [v3 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"RTPersistenceOpearationsErrorDomain"];
+  userInfo3 = [exceptionCopy userInfo];
+  v10 = [userInfo3 objectForKeyedSubscript:@"RTPersistenceOpearationsErrorDomain"];
 
   if (!v10)
   {
@@ -1100,8 +1100,8 @@ void __50__RTStore__performBlock_contextType_errorHandler___block_invoke_84(uint
     goto LABEL_10;
   }
 
-  v11 = [v3 userInfo];
-  v8 = [v11 objectForKeyedSubscript:@"RTPersistenceOpearationsErrorDomain"];
+  userInfo4 = [exceptionCopy userInfo];
+  v8 = [userInfo4 objectForKeyedSubscript:@"RTPersistenceOpearationsErrorDomain"];
 
   if ([v8 intValue] != 1 && objc_msgSend(v8, "intValue") != 2)
   {
@@ -1117,29 +1117,29 @@ LABEL_10:
   return v12;
 }
 
-- (void)removeAll:(id)a3 handler:(id)a4
+- (void)removeAll:(id)all handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  allCopy = all;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__RTStore_removeAll_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = allCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = allCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_removeAll:(id)a3 handler:(id)a4
+- (void)_removeAll:(id)all handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  allCopy = all;
+  handlerCopy = handler;
+  if (!allCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1152,15 +1152,15 @@ LABEL_10:
     }
   }
 
-  if ([v6 count])
+  if ([allCopy count])
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __30__RTStore__removeAll_handler___block_invoke;
     aBlock[3] = &unk_2788C4F38;
-    v12 = v6;
-    v13 = self;
-    v9 = v7;
+    v12 = allCopy;
+    selfCopy = self;
+    v9 = handlerCopy;
     v14 = v9;
     v10 = _Block_copy(aBlock);
     [(RTStore *)self _performBlock:v10 contextType:0 errorHandler:v9];
@@ -1214,24 +1214,24 @@ void __30__RTStore__removeAll_handler___block_invoke(uint64_t a1, void *a2)
   [*(a1 + 40) executeDeleteRequests:v3 context:v12 handler:*(a1 + 48)];
 }
 
-- (void)purgePredating:(id)a3 predicateMappings:(id)a4 handler:(id)a5
+- (void)purgePredating:(id)predating predicateMappings:(id)mappings handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  mappingsCopy = mappings;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __52__RTStore_purgePredating_predicateMappings_handler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = predatingCopy;
+  v17 = mappingsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = mappingsCopy;
+  v14 = predatingCopy;
+  dispatch_async(queue, v15);
 }
 
 void __52__RTStore_purgePredating_predicateMappings_handler___block_invoke(void *a1)
@@ -1243,25 +1243,25 @@ void __52__RTStore_purgePredating_predicateMappings_handler___block_invoke(void 
   [v2 _purgeDateInterval:v4 predicateMappings:a1[6] limit:0 handler:a1[7]];
 }
 
-- (void)purgePredating:(id)a3 predicateMappings:(id)a4 purgeLimit:(unint64_t)a5 handler:(id)a6
+- (void)purgePredating:(id)predating predicateMappings:(id)mappings purgeLimit:(unint64_t)limit handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  mappingsCopy = mappings;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__RTStore_purgePredating_predicateMappings_purgeLimit_handler___block_invoke;
   block[3] = &unk_2788C5110;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a5;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = predatingCopy;
+  v20 = handlerCopy;
+  limitCopy = limit;
+  v19 = mappingsCopy;
+  v14 = handlerCopy;
+  v15 = mappingsCopy;
+  v16 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
 void __63__RTStore_purgePredating_predicateMappings_purgeLimit_handler___block_invoke(void *a1)
@@ -1273,79 +1273,79 @@ void __63__RTStore_purgePredating_predicateMappings_purgeLimit_handler___block_i
   [v2 _purgeDateInterval:v4 predicateMappings:a1[6] limit:a1[8] handler:a1[7]];
 }
 
-- (void)purgeDateInterval:(id)a3 predicateMappings:(id)a4 handler:(id)a5
+- (void)purgeDateInterval:(id)interval predicateMappings:(id)mappings handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  intervalCopy = interval;
+  mappingsCopy = mappings;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __55__RTStore_purgeDateInterval_predicateMappings_handler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = intervalCopy;
+  v17 = mappingsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = mappingsCopy;
+  v14 = intervalCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)purgeDateInterval:(id)a3 predicateMappings:(id)a4 purgeLimit:(unint64_t)a5 handler:(id)a6
+- (void)purgeDateInterval:(id)interval predicateMappings:(id)mappings purgeLimit:(unint64_t)limit handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(RTNotifier *)self queue];
+  intervalCopy = interval;
+  mappingsCopy = mappings;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__RTStore_purgeDateInterval_predicateMappings_purgeLimit_handler___block_invoke;
   block[3] = &unk_2788C5110;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a5;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = intervalCopy;
+  v20 = handlerCopy;
+  limitCopy = limit;
+  v19 = mappingsCopy;
+  v14 = handlerCopy;
+  v15 = mappingsCopy;
+  v16 = intervalCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_purgeDateInterval:(id)a3 predicateMappings:(id)a4 limit:(unint64_t)a5 handler:(id)a6
+- (void)_purgeDateInterval:(id)interval predicateMappings:(id)mappings limit:(unint64_t)limit handler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10)
+  intervalCopy = interval;
+  mappingsCopy = mappings;
+  handlerCopy = handler;
+  if (intervalCopy)
   {
-    if (v11)
+    if (mappingsCopy)
     {
-      v13 = [v11 allKeys];
-      if ([v13 count])
+      allKeys = [mappingsCopy allKeys];
+      if ([allKeys count])
       {
         v24 = MEMORY[0x277D85DD0];
         v25 = 3221225472;
         v26 = __62__RTStore__purgeDateInterval_predicateMappings_limit_handler___block_invoke;
         v27 = &unk_2788CD680;
-        v13 = v13;
-        v28 = v13;
-        v29 = v11;
-        v33 = a5;
-        v30 = v10;
-        v31 = self;
-        v14 = v12;
+        allKeys = allKeys;
+        v28 = allKeys;
+        v29 = mappingsCopy;
+        limitCopy = limit;
+        v30 = intervalCopy;
+        selfCopy = self;
+        v14 = handlerCopy;
         v32 = v14;
         v15 = _Block_copy(&v24);
         [(RTStore *)self _performBlock:v15 contextType:0 errorHandler:v14, v24, v25, v26, v27];
       }
 
-      else if (v12)
+      else if (handlerCopy)
       {
-        (*(v12 + 2))(v12, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0);
       }
 
       goto LABEL_15;
@@ -1364,7 +1364,7 @@ void __63__RTStore_purgePredating_predicateMappings_purgeLimit_handler___block_i
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: dateInterval (in %s:%d)", buf, 0x12u);
     }
 
-    if (v11)
+    if (mappingsCopy)
     {
       goto LABEL_12;
     }
@@ -1380,7 +1380,7 @@ void __63__RTStore_purgePredating_predicateMappings_purgeLimit_handler___block_i
     _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: mappings (in %s:%d)", buf, 0x12u);
   }
 
-  if (v10)
+  if (intervalCopy)
   {
     v18 = MEMORY[0x277CCA9B8];
     v19 = *MEMORY[0x277D01448];
@@ -1402,11 +1402,11 @@ LABEL_12:
   v22 = &v36;
 LABEL_13:
   v23 = [v20 dictionaryWithObjects:v21 forKeys:v22 count:1];
-  v13 = [v18 errorWithDomain:v19 code:7 userInfo:v23];
+  allKeys = [v18 errorWithDomain:v19 code:7 userInfo:v23];
 
-  if (v12)
+  if (handlerCopy)
   {
-    (*(v12 + 2))(v12, v13);
+    (*(handlerCopy + 2))(handlerCopy, allKeys);
   }
 
 LABEL_15:
@@ -1495,18 +1495,18 @@ void __62__RTStore__purgeDateInterval_predicateMappings_limit_handler___block_in
   [*(a1 + 56) executeDeleteRequests:v3 context:v16 handler:*(a1 + 64)];
 }
 
-- (void)executeDeleteRequests:(id)a3 context:(id)a4 handler:(id)a5
+- (void)executeDeleteRequests:(id)requests context:(id)context handler:(id)handler
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v30 = a5;
+  requestsCopy = requests;
+  contextCopy = context;
+  handlerCopy = handler;
   v9 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v7;
+  obj = requestsCopy;
   v34 = [obj countByEnumeratingWithState:&v38 objects:v52 count:16];
   if (v34)
   {
@@ -1528,7 +1528,7 @@ void __62__RTStore__purgeDateInterval_predicateMappings_limit_handler___block_in
           v13 = v12;
           v14 = objc_autoreleasePoolPush();
           v37 = v12;
-          v15 = [v8 executeRequest:v11 error:&v37];
+          v15 = [contextCopy executeRequest:v11 error:&v37];
           v12 = v37;
 
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -1537,13 +1537,13 @@ void __62__RTStore__purgeDateInterval_predicateMappings_limit_handler___block_in
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
             {
               v20 = NSStringFromSelector(a2);
-              v21 = [v15 result];
+              result = [v15 result];
               *buf = 138413058;
               v45 = v20;
               v46 = 2112;
               v47 = v11;
               v48 = 2112;
-              v49 = v21;
+              v49 = result;
               v50 = 2112;
               v51 = v12;
               _os_log_debug_impl(&dword_2304B3000, v16, OS_LOG_TYPE_DEBUG, "%@, request, %@, deleted count, %@, error, %@", buf, 0x2Au);
@@ -1560,18 +1560,18 @@ void __62__RTStore__purgeDateInterval_predicateMappings_limit_handler___block_in
             break;
           }
 
-          v17 = [v11 fetchRequest];
-          if (![v17 fetchLimit])
+          fetchRequest = [v11 fetchRequest];
+          if (![fetchRequest fetchLimit])
           {
 
             break;
           }
 
-          v18 = [v15 result];
-          v19 = [v18 unsignedIntegerValue];
+          result2 = [v15 result];
+          unsignedIntegerValue = [result2 unsignedIntegerValue];
 
           objc_autoreleasePoolPop(v14);
-          if (!v19)
+          if (!unsignedIntegerValue)
           {
             goto LABEL_19;
           }
@@ -1590,7 +1590,7 @@ LABEL_19:
   }
 
   v36 = 0;
-  v22 = [v8 save:&v36];
+  v22 = [contextCopy save:&v36];
   v23 = v36;
   if ((v22 & 1) == 0)
   {
@@ -1608,7 +1608,7 @@ LABEL_19:
     [v9 addObject:v23];
   }
 
-  if (v30)
+  if (handlerCopy)
   {
     if ([v9 count] > 1)
     {
@@ -1617,51 +1617,51 @@ LABEL_19:
       v42 = *MEMORY[0x277D01440];
       v43 = v9;
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-      v25 = [v26 errorWithDomain:v27 code:9 userInfo:v28];
+      firstObject = [v26 errorWithDomain:v27 code:9 userInfo:v28];
     }
 
     else
     {
-      v25 = [v9 firstObject];
+      firstObject = [v9 firstObject];
     }
 
-    v30[2](v30, v25);
+    handlerCopy[2](handlerCopy, firstObject);
   }
 }
 
-- (void)fetchEnumerableObjectsWithOptions:(id)a3 offset:(unint64_t)a4 handler:(id)a5
+- (void)fetchEnumerableObjectsWithOptions:(id)options offset:(unint64_t)offset handler:(id)handler
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (([(RTStore *)self conformsToProtocol:&unk_2845A65E0]& 1) != 0)
     {
-      v10 = [v8 enumeratedType];
+      enumeratedType = [optionsCopy enumeratedType];
       if (objc_opt_respondsToSelector())
       {
-        v11 = self;
+        selfCopy = self;
         v26 = 0;
-        v12 = [(RTStore *)v11 fetchRequestFromOptions:v8 offset:a4 error:&v26];
+        v12 = [(RTStore *)selfCopy fetchRequestFromOptions:optionsCopy offset:offset error:&v26];
         v13 = v26;
         if (v12)
         {
-          v14 = [v8 processingBlock];
+          processingBlock = [optionsCopy processingBlock];
           v22[0] = MEMORY[0x277D85DD0];
           v22[1] = 3221225472;
           v22[2] = __60__RTStore_fetchEnumerableObjectsWithOptions_offset_handler___block_invoke;
           v22[3] = &unk_2788CD6A8;
-          v25 = a4;
-          v23 = v14;
-          v24 = v9;
-          v15 = v14;
-          [(RTStore *)v11 fetchReadableObjectsOfType:v10 fetchRequest:v12 handler:v22];
+          offsetCopy = offset;
+          v23 = processingBlock;
+          v24 = handlerCopy;
+          v15 = processingBlock;
+          [(RTStore *)selfCopy fetchReadableObjectsOfType:enumeratedType fetchRequest:v12 handler:v22];
         }
 
         else
         {
-          (*(v9 + 2))(v9, 0, 0, v13);
+          (*(handlerCopy + 2))(handlerCopy, 0, 0, v13);
         }
 
         goto LABEL_13;
@@ -1688,17 +1688,17 @@ LABEL_19:
     }
 
     v21 = [v18 dictionaryWithObjects:v19 forKeys:v20 count:1];
-    v11 = [v16 errorWithDomain:v17 code:7 userInfo:v21];
+    selfCopy = [v16 errorWithDomain:v17 code:7 userInfo:v21];
 
-    (*(v9 + 2))(v9, 0, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, selfCopy);
     goto LABEL_13;
   }
 
-  v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  if (os_log_type_enabled(&v11->super.super.super, OS_LOG_TYPE_ERROR))
+  selfCopy = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+  if (os_log_type_enabled(&selfCopy->super.super.super, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_2304B3000, &v11->super.super.super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, &selfCopy->super.super.super, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
   }
 
 LABEL_13:
@@ -1726,17 +1726,17 @@ void __60__RTStore_fetchEnumerableObjectsWithOptions_offset_handler___block_invo
   (*(a1[5] + 16))();
 }
 
-- (void)enumerateType:(Class)a3 fetchRequest:(id)a4 enumerationBlock:(id)a5
+- (void)enumerateType:(Class)type fetchRequest:(id)request enumerationBlock:(id)block
 {
   v85[1] = *MEMORY[0x277D85DE8];
-  v53 = a4;
-  v7 = a5;
-  if (v7)
+  requestCopy = request;
+  blockCopy = block;
+  if (blockCopy)
   {
     v67 = 0;
-    if (a3)
+    if (type)
     {
-      if (([(objc_class *)a3 conformsToProtocol:&unk_2845A4970]& 1) != 0)
+      if (([(objc_class *)type conformsToProtocol:&unk_2845A4970]& 1) != 0)
       {
         if ([(RTStore *)self availability]!= 2)
         {
@@ -1761,14 +1761,14 @@ void __60__RTStore_fetchEnumerableObjectsWithOptions_offset_handler___block_invo
           }
 
           v67 = 1;
-          v7[2](v7, 0, v56, &v67);
+          blockCopy[2](blockCopy, 0, v56, &v67);
           goto LABEL_52;
         }
 
-        if (v53)
+        if (requestCopy)
         {
-          v52 = a3;
-          v56 = [v53 copy];
+          typeCopy = type;
+          v56 = [requestCopy copy];
           v54 = 0;
           *v73 = 0;
           *&v73[8] = v73;
@@ -1797,7 +1797,7 @@ void __60__RTStore_fetchEnumerableObjectsWithOptions_offset_handler___block_invo
                 *buf = 138412803;
                 *&buf[4] = v33;
                 v69 = 2112;
-                v70 = v52;
+                v70 = typeCopy;
                 v71 = 2117;
                 v72 = v56;
                 _os_log_debug_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEBUG, "%@, iterating type %@, with fetchRequest, %{sensitive}@", buf, 0x20u);
@@ -1813,7 +1813,7 @@ void __60__RTStore_fetchEnumerableObjectsWithOptions_offset_handler___block_invo
             v60 = &v61;
             v11 = v10;
             v58 = v11;
-            [(RTStore *)self fetchReadableObjectsOfType:v52 fetchRequest:v56 handler:v57];
+            [(RTStore *)self fetchReadableObjectsOfType:typeCopy fetchRequest:v56 handler:v57];
             v12 = v11;
             v13 = [MEMORY[0x277CBEAA8] now];
             v14 = dispatch_time(0, 3600000000000);
@@ -1824,11 +1824,11 @@ void __60__RTStore_fetchEnumerableObjectsWithOptions_offset_handler___block_invo
               v17 = v16;
               v18 = objc_opt_new();
               v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_83];
-              v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-              v21 = [v20 filteredArrayUsingPredicate:v19];
-              v22 = [v21 firstObject];
+              callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+              v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+              firstObject = [v21 firstObject];
 
-              [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+              [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
               v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
               if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
               {
@@ -1865,7 +1865,7 @@ LABEL_18:
               objc_storeStrong(v62 + 5, v26);
             }
 
-            v7[2](v7, *(*&v73[8] + 40), v62[5], &v67);
+            blockCopy[2](blockCopy, *(*&v73[8] + 40), v62[5], &v67);
             if (v67 == 1)
             {
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1984,7 +1984,7 @@ LABEL_33:
     }
 
     v67 = 1;
-    v7[2](v7, 0, v56, &v67);
+    blockCopy[2](blockCopy, 0, v56, &v67);
 LABEL_52:
 
     goto LABEL_53;
@@ -2017,22 +2017,22 @@ void __55__RTStore_enumerateType_fetchRequest_enumerationBlock___block_invoke(ui
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)fetchReadableObjectsOfType:(Class)a3 fetchRequest:(id)a4 handler:(id)a5
+- (void)fetchReadableObjectsOfType:(Class)type fetchRequest:(id)request handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  requestCopy = request;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __59__RTStore_fetchReadableObjectsOfType_fetchRequest_handler___block_invoke;
     v12[3] = &unk_2788CD6D0;
     v12[4] = self;
-    v15 = a3;
-    v13 = v8;
-    v14 = v9;
-    dispatch_async(v10, v12);
+    typeCopy = type;
+    v13 = requestCopy;
+    v14 = handlerCopy;
+    dispatch_async(queue, v12);
   }
 
   else
@@ -2046,26 +2046,26 @@ void __55__RTStore_enumerateType_fetchRequest_enumerationBlock___block_invoke(ui
   }
 }
 
-- (void)_fetchReadableObjectsOfType:(Class)a3 fetchRequest:(id)a4 handler:(id)a5
+- (void)_fetchReadableObjectsOfType:(Class)type fetchRequest:(id)request handler:(id)handler
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  requestCopy = request;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (a3)
+    if (type)
     {
-      if (v9)
+      if (requestCopy)
       {
         aBlock[0] = MEMORY[0x277D85DD0];
         aBlock[1] = 3221225472;
         aBlock[2] = __60__RTStore__fetchReadableObjectsOfType_fetchRequest_handler___block_invoke;
         aBlock[3] = &unk_2788CD718;
-        v23 = v9;
+        v23 = requestCopy;
         v25 = a2;
-        v11 = v10;
+        v11 = handlerCopy;
         v24 = v11;
-        v26 = a3;
+        typeCopy = type;
         v12 = _Block_copy(aBlock);
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
@@ -2101,7 +2101,7 @@ void __55__RTStore_enumerateType_fetchRequest_enumerationBlock___block_invoke(ui
     v19 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:1];
     v13 = [v14 errorWithDomain:v15 code:7 userInfo:v19];
 
-    (*(v10 + 2))(v10, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
     goto LABEL_10;
   }
 

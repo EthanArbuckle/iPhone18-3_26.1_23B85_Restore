@@ -1,15 +1,15 @@
 @interface FBSSceneClientIdentity
-+ (id)identityForBundleID:(id)a3;
-+ (id)identityForInjectedEndpointToProcessIdentity:(id)a3;
-+ (id)identityForManagedEndpointOfProcessIdentity:(id)a3;
-+ (id)identityForProcessIdentity:(id)a3;
++ (id)identityForBundleID:(id)d;
++ (id)identityForInjectedEndpointToProcessIdentity:(id)identity;
++ (id)identityForManagedEndpointOfProcessIdentity:(id)identity;
++ (id)identityForProcessIdentity:(id)identity;
 + (id)localIdentity;
-- (BOOL)isEqual:(id)a3;
-- (FBSSceneClientIdentity)initWithCoder:(id)a3;
-- (id)_initWithLocal:(BOOL)a3 direct:(BOOL)a4 identity:(id)a5 description:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (FBSSceneClientIdentity)initWithCoder:(id)coder;
+- (id)_initWithLocal:(BOOL)local direct:(BOOL)direct identity:(id)identity description:(id)description;
 - (id)bundleIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FBSSceneClientIdentity
@@ -17,30 +17,30 @@
 + (id)localIdentity
 {
   v2 = [FBSSceneClientIdentity alloc];
-  v3 = [MEMORY[0x1E69C75F0] identityOfCurrentProcess];
-  v4 = [(FBSSceneClientIdentity *)v2 _initWithLocal:1 direct:0 identity:v3 description:0];
+  identityOfCurrentProcess = [MEMORY[0x1E69C75F0] identityOfCurrentProcess];
+  v4 = [(FBSSceneClientIdentity *)v2 _initWithLocal:1 direct:0 identity:identityOfCurrentProcess description:0];
 
   return v4;
 }
 
 - (id)bundleIdentifier
 {
-  v2 = [(FBSSceneClientIdentity *)self processIdentity];
-  v3 = [v2 embeddedApplicationIdentifier];
+  processIdentity = [(FBSSceneClientIdentity *)self processIdentity];
+  embeddedApplicationIdentifier = [processIdentity embeddedApplicationIdentifier];
 
-  return v3;
+  return embeddedApplicationIdentifier;
 }
 
-+ (id)identityForBundleID:(id)a3
++ (id)identityForBundleID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     [FBSSceneClientIdentity identityForBundleID:a2];
   }
 
-  v5 = v4;
-  v6 = [MEMORY[0x1E69C75F0] identityForEmbeddedApplicationIdentifier:v4];
+  v5 = dCopy;
+  v6 = [MEMORY[0x1E69C75F0] identityForEmbeddedApplicationIdentifier:dCopy];
   if (!v6)
   {
     [(FBSSceneClientIdentity *)v5 identityForBundleID:a2];
@@ -52,17 +52,17 @@
   return v8;
 }
 
-+ (id)identityForProcessIdentity:(id)a3
++ (id)identityForProcessIdentity:(id)identity
 {
-  v4 = a3;
-  if (!v4)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [FBSSceneClientIdentity identityForProcessIdentity:a2];
   }
 
-  v5 = v4;
-  v6 = [MEMORY[0x1E69C75F0] identityOfCurrentProcess];
-  v7 = [v5 isEqual:v6];
+  v5 = identityCopy;
+  identityOfCurrentProcess = [MEMORY[0x1E69C75F0] identityOfCurrentProcess];
+  v7 = [v5 isEqual:identityOfCurrentProcess];
 
   if (v7)
   {
@@ -78,48 +78,48 @@
   return v8;
 }
 
-+ (id)identityForInjectedEndpointToProcessIdentity:(id)a3
++ (id)identityForInjectedEndpointToProcessIdentity:(id)identity
 {
-  v4 = a3;
-  if (!v4)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [FBSSceneClientIdentity identityForInjectedEndpointToProcessIdentity:a2];
   }
 
-  v5 = v4;
-  v6 = [[FBSSceneClientIdentity alloc] _initWithLocal:0 direct:0 identity:v4 description:0];
+  v5 = identityCopy;
+  v6 = [[FBSSceneClientIdentity alloc] _initWithLocal:0 direct:0 identity:identityCopy description:0];
 
   return v6;
 }
 
-+ (id)identityForManagedEndpointOfProcessIdentity:(id)a3
++ (id)identityForManagedEndpointOfProcessIdentity:(id)identity
 {
-  v4 = a3;
-  if (!v4)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [FBSSceneClientIdentity identityForManagedEndpointOfProcessIdentity:a2];
   }
 
-  v5 = v4;
-  v6 = [[FBSSceneClientIdentity alloc] _initWithLocal:0 direct:1 identity:v4 description:0];
+  v5 = identityCopy;
+  v6 = [[FBSSceneClientIdentity alloc] _initWithLocal:0 direct:1 identity:identityCopy description:0];
 
   return v6;
 }
 
-- (id)_initWithLocal:(BOOL)a3 direct:(BOOL)a4 identity:(id)a5 description:(id)a6
+- (id)_initWithLocal:(BOOL)local direct:(BOOL)direct identity:(id)identity description:(id)description
 {
-  v11 = a5;
-  v12 = a6;
+  identityCopy = identity;
+  descriptionCopy = description;
   v21.receiver = self;
   v21.super_class = FBSSceneClientIdentity;
   v13 = [(FBSSceneClientIdentity *)&v21 init];
   v14 = v13;
   if (v13)
   {
-    v13->_local = a3;
-    v13->_direct = a4;
-    objc_storeStrong(&v13->_processIdentity, a5);
-    objc_storeStrong(&v14->_description, a6);
+    v13->_local = local;
+    v13->_direct = direct;
+    objc_storeStrong(&v13->_processIdentity, identity);
+    objc_storeStrong(&v14->_description, description);
     description = v14->_description;
     if (!description)
     {
@@ -149,10 +149,10 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -179,30 +179,30 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (self->_local)
   {
-    [v4 encodeBool:1 forKey:@"local"];
+    [coderCopy encodeBool:1 forKey:@"local"];
   }
 
   if (self->_direct)
   {
-    [v4 encodeBool:1 forKey:@"direct"];
+    [coderCopy encodeBool:1 forKey:@"direct"];
   }
 
-  [v4 encodeObject:self->_processIdentity forKey:@"identity"];
-  [v4 encodeObject:self->_description forKey:@"desc"];
+  [coderCopy encodeObject:self->_processIdentity forKey:@"identity"];
+  [coderCopy encodeObject:self->_description forKey:@"desc"];
 }
 
-- (FBSSceneClientIdentity)initWithCoder:(id)a3
+- (FBSSceneClientIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"local"];
-  v6 = [v4 decodeBoolForKey:@"direct"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"desc"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"local"];
+  v6 = [coderCopy decodeBoolForKey:@"direct"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"desc"];
 
   v9 = [(FBSSceneClientIdentity *)self _initWithLocal:v5 direct:v6 identity:v7 description:v8];
   return v9;

@@ -1,31 +1,31 @@
 @interface CDMVocTrie
-+ (id)getTrieURLs:(id)a3;
-- (CDMVocTrie)initWithTriePath:(id)a3;
-- (id)entriesForText:(id)a3;
-- (id)usoGraphForLabel:(id)a3 semantic:(id)a4;
-- (int)getUsoNodeIndex:(id)a3 semantic:(id)a4;
++ (id)getTrieURLs:(id)ls;
+- (CDMVocTrie)initWithTriePath:(id)path;
+- (id)entriesForText:(id)text;
+- (id)usoGraphForLabel:(id)label semantic:(id)semantic;
+- (int)getUsoNodeIndex:(id)index semantic:(id)semantic;
 @end
 
 @implementation CDMVocTrie
 
-- (int)getUsoNodeIndex:(id)a3 semantic:(id)a4
+- (int)getUsoNodeIndex:(id)index semantic:(id)semantic
 {
-  v6 = a3;
-  v7 = a4;
+  indexCopy = index;
+  semanticCopy = semantic;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
   if (self->vocUsoNodeIndexTrieReadOnly)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@+%@", v6, v7];
+    semanticCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@+%@", indexCopy, semanticCopy];
     vocUsoNodeIndexTrieReadOnly = self->vocUsoNodeIndexTrieReadOnly;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __39__CDMVocTrie_getUsoNodeIndex_semantic___block_invoke;
     v12[3] = &unk_1E862F8B0;
     v12[4] = &v13;
-    [(OVMarisaTrie *)vocUsoNodeIndexTrieReadOnly lookupKey:v8 resultBlock:v12];
+    [(OVMarisaTrie *)vocUsoNodeIndexTrieReadOnly lookupKey:semanticCopy resultBlock:v12];
 
     v10 = *(v14 + 6);
   }
@@ -40,18 +40,18 @@
   return v10;
 }
 
-- (id)usoGraphForLabel:(id)a3 semantic:(id)a4
+- (id)usoGraphForLabel:(id)label semantic:(id)semantic
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  semanticCopy = semantic;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__8551;
   v19 = __Block_byref_object_dispose__8552;
   v20 = 0;
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@+%@", v6, v7];
+  semanticCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@+%@", labelCopy, semanticCopy];
   vocUsoTrieReadOnly = self->vocUsoTrieReadOnly;
   if (vocUsoTrieReadOnly)
   {
@@ -60,7 +60,7 @@
     v14[2] = __40__CDMVocTrie_usoGraphForLabel_semantic___block_invoke;
     v14[3] = &unk_1E862F8B0;
     v14[4] = &v15;
-    [(OVMarisaTrie *)vocUsoTrieReadOnly lookupKey:v8 resultBlock:v14];
+    [(OVMarisaTrie *)vocUsoTrieReadOnly lookupKey:semanticCopy resultBlock:v14];
   }
 
   else
@@ -112,9 +112,9 @@ void __40__CDMVocTrie_usoGraphForLabel_semantic___block_invoke(uint64_t a1, void
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)entriesForText:(id)a3
+- (id)entriesForText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = objc_opt_new();
   vocTextTrieReadOnly = self->vocTextTrieReadOnly;
   if (vocTextTrieReadOnly && self->vocLabelTrieReadOnly)
@@ -123,8 +123,8 @@ void __40__CDMVocTrie_usoGraphForLabel_semantic___block_invoke(uint64_t a1, void
     v8[1] = 3221225472;
     v8[2] = __29__CDMVocTrie_entriesForText___block_invoke;
     v8[3] = &unk_1E862F888;
-    v9 = v4;
-    v10 = self;
+    v9 = textCopy;
+    selfCopy = self;
     v11 = v5;
     [(OVMarisaTrie *)vocTextTrieReadOnly lookupKey:v9 resultBlock:v8];
   }
@@ -194,22 +194,22 @@ void __29__CDMVocTrie_entriesForText___block_invoke_20(uint64_t a1, void *a2, vo
   }
 }
 
-- (CDMVocTrie)initWithTriePath:(id)a3
+- (CDMVocTrie)initWithTriePath:(id)path
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v35.receiver = self;
   v35.super_class = CDMVocTrie;
   v5 = [(CDMVocTrie *)&v35 init];
   if (v5)
   {
-    if (!v4)
+    if (!pathCopy)
     {
       v6 = NSTemporaryDirectory();
-      v4 = [v6 stringByStandardizingPath];
+      pathCopy = [v6 stringByStandardizingPath];
     }
 
-    v7 = [CDMVocTrie getTrieURLs:v4];
+    v7 = [CDMVocTrie getTrieURLs:pathCopy];
     v8 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -302,14 +302,14 @@ LABEL_20:
   return v32;
 }
 
-+ (id)getTrieURLs:(id)a3
++ (id)getTrieURLs:(id)ls
 {
-  v3 = a3;
-  v15 = [v3 stringByAppendingPathComponent:@"vocText.trie"];
-  v4 = [v3 stringByAppendingPathComponent:@"vocLabel.trie"];
-  v5 = [v3 stringByAppendingPathComponent:@"vocSemantic.trie"];
-  v6 = [v3 stringByAppendingPathComponent:@"vocUso.trie"];
-  v7 = [v3 stringByAppendingPathComponent:@"vocUsoNodeIndex.trie"];
+  lsCopy = ls;
+  v15 = [lsCopy stringByAppendingPathComponent:@"vocText.trie"];
+  v4 = [lsCopy stringByAppendingPathComponent:@"vocLabel.trie"];
+  v5 = [lsCopy stringByAppendingPathComponent:@"vocSemantic.trie"];
+  v6 = [lsCopy stringByAppendingPathComponent:@"vocUso.trie"];
+  v7 = [lsCopy stringByAppendingPathComponent:@"vocUsoNodeIndex.trie"];
 
   v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:v15];
   v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4];

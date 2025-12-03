@@ -2,17 +2,17 @@
 - (BOOL)_allowFacesToAdjoinToAdjacentFaces;
 - (id)_animationsForEnd;
 - (id)_animationsForStart;
-- (id)geometriesForKeyplane:(id)a3;
-- (id)meshTransformForKeyplane:(id)a3 toKeyplane:(id)a4;
+- (id)geometriesForKeyplane:(id)keyplane;
+- (id)meshTransformForKeyplane:(id)keyplane toKeyplane:(id)toKeyplane;
 - (id)sortedCommonVisibleKeys;
-- (id)symmetricMeshTransformForKeyplane:(id)a3;
+- (id)symmetricMeshTransformForKeyplane:(id)keyplane;
 - (void)_updateTransition;
 - (void)commitTransitionRebuild;
 - (void)dealloc;
-- (void)rebuildWithStartKeyplane:(id)a3 startView:(id)a4 endKeyplane:(id)a5 endView:(id)a6;
+- (void)rebuildWithStartKeyplane:(id)keyplane startView:(id)view endKeyplane:(id)endKeyplane endView:(id)endView;
 - (void)removeAllAnimations;
-- (void)updateOpacityAnimation:(id)a3;
-- (void)updateWithProgress:(double)a3;
+- (void)updateOpacityAnimation:(id)animation;
+- (void)updateWithProgress:(double)progress;
 @end
 
 @implementation UIKeyboardSquishTransition
@@ -25,23 +25,23 @@
   [(UIKeyboardKeyplaneTransition *)&v3 dealloc];
 }
 
-- (void)rebuildWithStartKeyplane:(id)a3 startView:(id)a4 endKeyplane:(id)a5 endView:(id)a6
+- (void)rebuildWithStartKeyplane:(id)keyplane startView:(id)view endKeyplane:(id)endKeyplane endView:(id)endView
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  keyplaneCopy = keyplane;
+  endKeyplaneCopy = endKeyplane;
   v38.receiver = self;
   v38.super_class = UIKeyboardSquishTransition;
-  [(UIKeyboardKeyplaneTransition *)&v38 rebuildWithStartKeyplane:v10 startView:a4 endKeyplane:v11 endView:a6];
-  if (v10)
+  [(UIKeyboardKeyplaneTransition *)&v38 rebuildWithStartKeyplane:keyplaneCopy startView:view endKeyplane:endKeyplaneCopy endView:endView];
+  if (keyplaneCopy)
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v13 = [v10 keys];
-    v14 = [v13 countByEnumeratingWithState:&v34 objects:v40 count:16];
+    keys = [keyplaneCopy keys];
+    v14 = [keys countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v14)
     {
       v15 = v14;
@@ -52,37 +52,37 @@
         {
           if (*v35 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(keys);
           }
 
           v18 = *(*(&v34 + 1) + 8 * i);
-          v19 = [v18 shape];
+          shape = [v18 shape];
 
-          if (v19)
+          if (shape)
           {
-            v20 = [v18 shape];
-            [v12 addObject:v20];
+            shape2 = [v18 shape];
+            [array addObject:shape2];
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v34 objects:v40 count:16];
+        v15 = [keys countByEnumeratingWithState:&v34 objects:v40 count:16];
       }
 
       while (v15);
     }
 
-    [(UIKeyboardSquishTransition *)self setStartGeometries:v12];
+    [(UIKeyboardSquishTransition *)self setStartGeometries:array];
   }
 
-  if (v11)
+  if (endKeyplaneCopy)
   {
-    v21 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v22 = [v11 keys];
-    v23 = [v22 countByEnumeratingWithState:&v30 objects:v39 count:16];
+    keys2 = [endKeyplaneCopy keys];
+    v23 = [keys2 countByEnumeratingWithState:&v30 objects:v39 count:16];
     if (v23)
     {
       v24 = v23;
@@ -93,26 +93,26 @@
         {
           if (*v31 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(keys2);
           }
 
           v27 = *(*(&v30 + 1) + 8 * j);
-          v28 = [v27 shape];
+          shape3 = [v27 shape];
 
-          if (v28)
+          if (shape3)
           {
-            v29 = [v27 shape];
-            [v21 addObject:v29];
+            shape4 = [v27 shape];
+            [array2 addObject:shape4];
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v30 objects:v39 count:16];
+        v24 = [keys2 countByEnumeratingWithState:&v30 objects:v39 count:16];
       }
 
       while (v24);
     }
 
-    [(UIKeyboardSquishTransition *)self setEndGeometries:v21];
+    [(UIKeyboardSquishTransition *)self setEndGeometries:array2];
   }
 }
 
@@ -122,12 +122,12 @@
   self->_widthRatio = v3;
   [(UIKBTree *)self->super._end primaryKeylayoutOffset];
   self->_offsetX = v4;
-  v5 = [(UIKeyboardSquishTransition *)self sortedCommonVisibleKeys];
-  [(UIKeyboardSquishTransition *)self setCommonVisibleKeys:v5];
+  sortedCommonVisibleKeys = [(UIKeyboardSquishTransition *)self sortedCommonVisibleKeys];
+  [(UIKeyboardSquishTransition *)self setCommonVisibleKeys:sortedCommonVisibleKeys];
 
-  v6 = [(UIKeyboardKeyplaneTransition *)self initiallyAtEnd];
+  initiallyAtEnd = [(UIKeyboardKeyplaneTransition *)self initiallyAtEnd];
   v7 = 0.0;
-  if (v6)
+  if (initiallyAtEnd)
   {
     v7 = 1.0;
   }
@@ -139,23 +139,23 @@
 
 - (id)_animationsForStart
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(UIKeyboardSquishTransition *)self useInteractiveOpacity])
   {
     v4 = [MEMORY[0x1E6979318] normalizedAnimationWithKeyPath:@"opacity" fromValue:&unk_1EFE32050 toValue:&unk_1EFE32068];
-    v5 = [MEMORY[0x1E69793D0] _kbTimingFunction];
-    [v4 setTimingFunction:v5];
+    _kbTimingFunction = [MEMORY[0x1E69793D0] _kbTimingFunction];
+    [v4 setTimingFunction:_kbTimingFunction];
 
-    [v3 setObject:v4 forKey:@"start opacity interpolation"];
+    [dictionary setObject:v4 forKey:@"start opacity interpolation"];
   }
 
   if ([(UIKeyboardSquishTransition *)self animationType]== 1)
   {
-    v6 = [(UIView *)self->super._startView layer];
-    [v6 position];
+    layer = [(UIView *)self->super._startView layer];
+    [layer position];
     v8 = v7;
     v10 = v9;
-    [v6 bounds];
+    [layer bounds];
     v12 = v11;
     v13 = 1.0 - self->_widthRatio;
     v14 = v11 * v13;
@@ -176,12 +176,12 @@
     v18 = [MEMORY[0x1E696B098] valueWithCGPoint:{v8 + v17, v10}];
     [v15 setToValue:v18];
 
-    [v3 setObject:v15 forKey:@"start position interpolation"];
+    [dictionary setObject:v15 forKey:@"start position interpolation"];
     v19 = 0uLL;
     memset(&v27, 0, sizeof(v27));
-    if (v6)
+    if (layer)
     {
-      [v6 transform];
+      [layer transform];
       v19 = 0uLL;
     }
 
@@ -213,37 +213,37 @@
       goto LABEL_13;
     }
 
-    v6 = [(UIKeyboardSquishTransition *)self meshTransformForKeyplane:self->super._start toKeyplane:self->super._start];
+    layer = [(UIKeyboardSquishTransition *)self meshTransformForKeyplane:self->super._start toKeyplane:self->super._start];
     v15 = [(UIKeyboardSquishTransition *)self meshTransformForKeyplane:self->super._start toKeyplane:self->super._end];
-    v21 = [MEMORY[0x1E6979318] normalizedAnimationWithKeyPath:@"meshTransform" fromValue:v6 toValue:v15];
+    v21 = [MEMORY[0x1E6979318] normalizedAnimationWithKeyPath:@"meshTransform" fromValue:layer toValue:v15];
   }
 
-  [v3 setObject:v21 forKey:@"start transform interpolation"];
+  [dictionary setObject:v21 forKey:@"start transform interpolation"];
 
 LABEL_13:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)_animationsForEnd
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(UIKeyboardSquishTransition *)self useInteractiveOpacity])
   {
     v4 = [MEMORY[0x1E6979318] normalizedAnimationWithKeyPath:@"opacity" fromValue:&unk_1EFE32068 toValue:&unk_1EFE32050];
-    v5 = [MEMORY[0x1E69793D0] _kbTimingFunction];
-    [v4 setTimingFunction:v5];
+    _kbTimingFunction = [MEMORY[0x1E69793D0] _kbTimingFunction];
+    [v4 setTimingFunction:_kbTimingFunction];
 
-    [v3 setObject:v4 forKey:@"end opacity interpolation"];
+    [dictionary setObject:v4 forKey:@"end opacity interpolation"];
   }
 
   if ([(UIKeyboardSquishTransition *)self animationType]== 1)
   {
-    v6 = [(UIView *)self->super._endView layer];
-    [v6 position];
+    layer = [(UIView *)self->super._endView layer];
+    [layer position];
     v8 = v7;
     v10 = v9;
-    [v6 bounds];
+    [layer bounds];
     v12 = v11;
     v13 = 1.0 - self->_widthRatio;
     v14 = v11 * v13;
@@ -264,12 +264,12 @@ LABEL_13:
     v18 = [MEMORY[0x1E696B098] valueWithCGPoint:{v8, v10}];
     [v15 setToValue:v18];
 
-    [v6 addAnimation:v15 forKey:@"end position interpolation"];
+    [layer addAnimation:v15 forKey:@"end position interpolation"];
     v19 = 0uLL;
     memset(&v27, 0, sizeof(v27));
-    if (v6)
+    if (layer)
     {
-      [v6 transform];
+      [layer transform];
       v19 = 0uLL;
     }
 
@@ -301,98 +301,98 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    v6 = [(UIKeyboardSquishTransition *)self meshTransformForKeyplane:self->super._end toKeyplane:self->super._start];
+    layer = [(UIKeyboardSquishTransition *)self meshTransformForKeyplane:self->super._end toKeyplane:self->super._start];
     v15 = [(UIKeyboardSquishTransition *)self meshTransformForKeyplane:self->super._end toKeyplane:self->super._end];
-    v21 = [MEMORY[0x1E6979318] normalizedAnimationWithKeyPath:@"meshTransform" fromValue:v6 toValue:v15];
+    v21 = [MEMORY[0x1E6979318] normalizedAnimationWithKeyPath:@"meshTransform" fromValue:layer toValue:v15];
   }
 
-  [v3 setObject:v21 forKey:@"end transform interpolation"];
+  [dictionary setObject:v21 forKey:@"end transform interpolation"];
 
 LABEL_13:
 
-  return v3;
+  return dictionary;
 }
 
 - (void)_updateTransition
 {
-  v3 = [(UIView *)self->super._startView layer];
-  v4 = [(UIView *)self->super._endView layer];
+  layer = [(UIView *)self->super._startView layer];
+  layer2 = [(UIView *)self->super._endView layer];
   [(UIView *)self->super._startView contentScaleFactor];
-  [v3 setRasterizationScale:?];
+  [layer setRasterizationScale:?];
   [(UIView *)self->super._endView contentScaleFactor];
-  [v4 setRasterizationScale:?];
-  v5 = [(UIKeyboardSquishTransition *)self _animationsForStart];
+  [layer2 setRasterizationScale:?];
+  _animationsForStart = [(UIKeyboardSquishTransition *)self _animationsForStart];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __47__UIKeyboardSquishTransition__updateTransition__block_invoke;
   v11[3] = &unk_1E7118E48;
-  v12 = v3;
-  v6 = v3;
-  [v5 enumerateKeysAndObjectsUsingBlock:v11];
+  v12 = layer;
+  v6 = layer;
+  [_animationsForStart enumerateKeysAndObjectsUsingBlock:v11];
 
-  v7 = [(UIKeyboardSquishTransition *)self _animationsForEnd];
+  _animationsForEnd = [(UIKeyboardSquishTransition *)self _animationsForEnd];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__UIKeyboardSquishTransition__updateTransition__block_invoke_2;
   v9[3] = &unk_1E7118E48;
-  v10 = v4;
-  v8 = v4;
-  [v7 enumerateKeysAndObjectsUsingBlock:v9];
+  v10 = layer2;
+  v8 = layer2;
+  [_animationsForEnd enumerateKeysAndObjectsUsingBlock:v9];
 }
 
 - (void)removeAllAnimations
 {
-  v3 = [(UIKeyboardSquishTransition *)self opacityAnimationDisplayLink];
-  [v3 invalidate];
+  opacityAnimationDisplayLink = [(UIKeyboardSquishTransition *)self opacityAnimationDisplayLink];
+  [opacityAnimationDisplayLink invalidate];
 
   [(UIKeyboardSquishTransition *)self setOpacityAnimationDisplayLink:0];
-  v4 = [(UIView *)self->super._startView layer];
-  v5 = [(UIView *)self->super._endView layer];
-  [v4 removeAnimationForKey:@"start opacity interpolation"];
-  [v5 removeAnimationForKey:@"end opacity interpolation"];
-  [v4 removeAnimationForKey:@"start position interpolation"];
-  [v5 removeAnimationForKey:@"end position interpolation"];
-  [v4 removeAnimationForKey:@"start transform interpolation"];
-  [v5 removeAnimationForKey:@"end transform interpolation"];
+  layer = [(UIView *)self->super._startView layer];
+  layer2 = [(UIView *)self->super._endView layer];
+  [layer removeAnimationForKey:@"start opacity interpolation"];
+  [layer2 removeAnimationForKey:@"end opacity interpolation"];
+  [layer removeAnimationForKey:@"start position interpolation"];
+  [layer2 removeAnimationForKey:@"end position interpolation"];
+  [layer removeAnimationForKey:@"start transform interpolation"];
+  [layer2 removeAnimationForKey:@"end transform interpolation"];
   v6.receiver = self;
   v6.super_class = UIKeyboardSquishTransition;
   [(UIKeyboardKeyplaneTransition *)&v6 removeAllAnimations];
 }
 
-- (void)updateWithProgress:(double)a3
+- (void)updateWithProgress:(double)progress
 {
   [(UIView *)self->super._startView setHidden:0];
   [(UIView *)self->super._endView setHidden:0];
   v13.receiver = self;
   v13.super_class = UIKeyboardSquishTransition;
-  [(UIKeyboardKeyplaneTransition *)&v13 updateWithProgress:a3];
+  [(UIKeyboardKeyplaneTransition *)&v13 updateWithProgress:progress];
   [(UIKeyboardSquishTransition *)self previousProgress];
   v6 = v5;
-  if (![(UIKeyboardSquishTransition *)self useInteractiveOpacity]&& a3 >= 0.5 == v6 < 0.5)
+  if (![(UIKeyboardSquishTransition *)self useInteractiveOpacity]&& progress >= 0.5 == v6 < 0.5)
   {
-    [(UIKeyboardSquishTransition *)self setOpacityAnimationDirectionForward:a3 >= 0.5];
-    v7 = [(UIKeyboardSquishTransition *)self opacityAnimationDisplayLink];
+    [(UIKeyboardSquishTransition *)self setOpacityAnimationDirectionForward:progress >= 0.5];
+    opacityAnimationDisplayLink = [(UIKeyboardSquishTransition *)self opacityAnimationDisplayLink];
 
-    if (!v7)
+    if (!opacityAnimationDisplayLink)
     {
       [(UIKeyboardSquishTransition *)self setOpacityAnimationBeginTime:CACurrentMediaTime()];
-      v8 = [(UIView *)self->super._startView window];
-      v9 = [v8 screen];
-      v10 = [v9 displayLinkWithTarget:self selector:sel_updateOpacityAnimation_];
+      window = [(UIView *)self->super._startView window];
+      screen = [window screen];
+      v10 = [screen displayLinkWithTarget:self selector:sel_updateOpacityAnimation_];
       [(UIKeyboardSquishTransition *)self setOpacityAnimationDisplayLink:v10];
 
-      v11 = [(UIKeyboardSquishTransition *)self opacityAnimationDisplayLink];
-      v12 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v11 addToRunLoop:v12 forMode:*MEMORY[0x1E695DA28]];
+      opacityAnimationDisplayLink2 = [(UIKeyboardSquishTransition *)self opacityAnimationDisplayLink];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [opacityAnimationDisplayLink2 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
     }
   }
 
-  [(UIKeyboardSquishTransition *)self setPreviousProgress:a3];
+  [(UIKeyboardSquishTransition *)self setPreviousProgress:progress];
 }
 
-- (void)updateOpacityAnimation:(id)a3
+- (void)updateOpacityAnimation:(id)animation
 {
-  [a3 timestamp];
+  [animation timestamp];
   v5 = v4;
   [(UIKeyboardSquishTransition *)self opacityAnimationBeginTime];
   v7 = v5 - v6;
@@ -400,32 +400,32 @@ LABEL_13:
   if ([(UIKeyboardSquishTransition *)self opacityAnimationDirectionForward])
   {
     v9 = 1.0 - v8;
-    v11 = [(UIView *)self->super._startView layer];
+    layer = [(UIView *)self->super._startView layer];
     v10 = 1.0 - v8;
     *&v12 = v10;
-    [v11 setOpacity:v12];
+    [layer setOpacity:v12];
   }
 
   else
   {
-    v14 = [(UIView *)self->super._startView layer];
+    layer2 = [(UIView *)self->super._startView layer];
     v13 = v8;
     *&v15 = v13;
-    [v14 setOpacity:v15];
+    [layer2 setOpacity:v15];
 
     v8 = 1.0 - v8;
     v9 = v8;
   }
 
-  v17 = [(UIView *)self->super._endView layer];
+  layer3 = [(UIView *)self->super._endView layer];
   v16 = v8;
   *&v18 = v16;
-  [v17 setOpacity:v18];
+  [layer3 setOpacity:v18];
 
   if (fabs(v9) < 0.01 || v7 >= 1.0)
   {
-    v20 = [(UIKeyboardSquishTransition *)self opacityAnimationDisplayLink];
-    [v20 invalidate];
+    opacityAnimationDisplayLink = [(UIKeyboardSquishTransition *)self opacityAnimationDisplayLink];
+    [opacityAnimationDisplayLink invalidate];
 
     [(UIKeyboardSquishTransition *)self setOpacityAnimationDisplayLink:0];
   }
@@ -433,18 +433,18 @@ LABEL_13:
 
 - (id)sortedCommonVisibleKeys
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(UIKBTree *)self->super._end keys];
-  v5 = [(UIKBTree *)self->super._start keysOrderedByPosition];
+  array = [MEMORY[0x1E695DF70] array];
+  keys = [(UIKBTree *)self->super._end keys];
+  keysOrderedByPosition = [(UIKBTree *)self->super._start keysOrderedByPosition];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__UIKeyboardSquishTransition_sortedCommonVisibleKeys__block_invoke;
   v11[3] = &unk_1E7114750;
-  v12 = v4;
-  v6 = v3;
+  v12 = keys;
+  v6 = array;
   v13 = v6;
-  v7 = v4;
-  [v5 enumerateObjectsUsingBlock:v11];
+  v7 = keys;
+  [keysOrderedByPosition enumerateObjectsUsingBlock:v11];
 
   v8 = v13;
   v9 = v6;
@@ -461,9 +461,9 @@ void __53__UIKeyboardSquishTransition_sortedCommonVisibleKeys__block_invoke(uint
   }
 }
 
-- (id)geometriesForKeyplane:(id)a3
+- (id)geometriesForKeyplane:(id)keyplane
 {
-  if (self->super._start == a3)
+  if (self->super._start == keyplane)
   {
     [(UIKeyboardSquishTransition *)self startGeometries];
   }
@@ -479,18 +479,18 @@ void __53__UIKeyboardSquishTransition_sortedCommonVisibleKeys__block_invoke(uint
 
 - (BOOL)_allowFacesToAdjoinToAdjacentFaces
 {
-  v2 = [objc_opt_self() mainScreen];
-  [v2 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   v4 = fabs(v3 + -3.0) < 0.00000011920929;
 
   return v4;
 }
 
-- (id)symmetricMeshTransformForKeyplane:(id)a3
+- (id)symmetricMeshTransformForKeyplane:(id)keyplane
 {
   v242 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIKeyboardSquishTransition *)self commonVisibleKeys];
+  keyplaneCopy = keyplane;
+  commonVisibleKeys = [(UIKeyboardSquishTransition *)self commonVisibleKeys];
   if ([(UIKeyboardSquishTransition *)self disableMeshOptimization])
   {
     v6 = 35;
@@ -501,8 +501,8 @@ void __53__UIKeyboardSquishTransition_sortedCommonVisibleKeys__block_invoke(uint
     v6 = 20;
   }
 
-  v7 = 5 * [v5 count] + v6;
-  v8 = [v5 count];
+  v7 = 5 * [commonVisibleKeys count] + v6;
+  v8 = [commonVisibleKeys count];
   v208[1] = v208;
   MEMORY[0x1EEE9AC00](v8);
   v9 = &v208[-4 * v7];
@@ -512,21 +512,21 @@ void __53__UIKeyboardSquishTransition_sortedCommonVisibleKeys__block_invoke(uint
   v14 = *(MEMORY[0x1E695F050] + 8);
   v16 = *(MEMORY[0x1E695F050] + 16);
   v15 = *(MEMORY[0x1E695F050] + 24);
-  [v4 frame];
+  [keyplaneCopy frame];
   v18 = v17;
   v233 = 1.0 / v19;
-  [v4 primaryKeylayoutOffset];
+  [keyplaneCopy primaryKeylayoutOffset];
   v21 = v20;
-  [v4 primaryKeylayoutWidthRatio];
+  [keyplaneCopy primaryKeylayoutWidthRatio];
   v23 = v22;
-  v215 = self;
-  v217 = v4;
-  v216 = [(UIKeyboardSquishTransition *)self geometriesForKeyplane:v4];
+  selfCopy = self;
+  v217 = keyplaneCopy;
+  v216 = [(UIKeyboardSquishTransition *)self geometriesForKeyplane:keyplaneCopy];
   v237 = 0u;
   v238 = 0u;
   v239 = 0u;
   v240 = 0u;
-  v213 = v5;
+  v213 = commonVisibleKeys;
   v218 = [v213 countByEnumeratingWithState:&v237 objects:v241 count:16];
   v24 = 0;
   v25 = 0;
@@ -566,8 +566,8 @@ void __53__UIKeyboardSquishTransition_sortedCommonVisibleKeys__block_invoke(uint
 
       v229 = v28;
       v31 = *(*(&v237 + 1) + 8 * v28);
-      v32 = [v217 keys];
-      v33 = [v32 indexOfObject:v31];
+      keys = [v217 keys];
+      v33 = [keys indexOfObject:v31];
       v34 = [v216 objectAtIndex:v33];
 
       [v34 frame];
@@ -650,7 +650,7 @@ void __53__UIKeyboardSquishTransition_sortedCommonVisibleKeys__block_invoke(uint
         v80[2] = v83;
         v80[3] = v84;
         v80[4] = 0.5;
-        if ((IsNull | ![(UIKeyboardSquishTransition *)v215 _allowFacesToAdjoinToAdjacentFaces]))
+        if ((IsNull | ![(UIKeyboardSquishTransition *)selfCopy _allowFacesToAdjoinToAdjacentFaces]))
         {
           v85 = v232;
           v46 = v225;
@@ -914,7 +914,7 @@ void __53__UIKeyboardSquishTransition_sortedCommonVisibleKeys__block_invoke(uint
 
       else
       {
-        if ([(UIKeyboardSquishTransition *)v215 disableMeshOptimization])
+        if ([(UIKeyboardSquishTransition *)selfCopy disableMeshOptimization])
         {
           v53 = &v52[5 * v25];
           v245.origin.x = v36;
@@ -1289,19 +1289,19 @@ LABEL_29:
   return v206;
 }
 
-- (id)meshTransformForKeyplane:(id)a3 toKeyplane:(id)a4
+- (id)meshTransformForKeyplane:(id)keyplane toKeyplane:(id)toKeyplane
 {
   v358 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 == v7)
+  keyplaneCopy = keyplane;
+  toKeyplaneCopy = toKeyplane;
+  if (keyplaneCopy == toKeyplaneCopy)
   {
-    v284 = [(UIKeyboardSquishTransition *)self symmetricMeshTransformForKeyplane:v6];
+    v284 = [(UIKeyboardSquishTransition *)self symmetricMeshTransformForKeyplane:keyplaneCopy];
   }
 
   else
   {
-    v8 = [(UIKeyboardSquishTransition *)self commonVisibleKeys];
+    commonVisibleKeys = [(UIKeyboardSquishTransition *)self commonVisibleKeys];
     if ([(UIKeyboardSquishTransition *)self disableMeshOptimization])
     {
       v9 = 35;
@@ -1312,8 +1312,8 @@ LABEL_29:
       v9 = 20;
     }
 
-    v10 = 5 * [v8 count] + v9;
-    v11 = [v8 count];
+    v10 = 5 * [commonVisibleKeys count] + v9;
+    v11 = [commonVisibleKeys count];
     v300[1] = v300;
     MEMORY[0x1EEE9AC00](v11);
     MEMORY[0x1EEE9AC00](v12);
@@ -1323,27 +1323,27 @@ LABEL_29:
     v15 = *(MEMORY[0x1E695F050] + 24);
     v347 = *(MEMORY[0x1E695F050] + 16);
     v345 = v15;
-    [v6 frame];
+    [keyplaneCopy frame];
     v17 = v16;
     v350 = 1.0 / v18;
-    [v7 frame];
+    [toKeyplaneCopy frame];
     v20 = v19;
     v352 = 1.0 / v21;
-    [v6 primaryKeylayoutOffset];
+    [keyplaneCopy primaryKeylayoutOffset];
     v23 = v22;
-    [v6 primaryKeylayoutWidthRatio];
+    [keyplaneCopy primaryKeylayoutWidthRatio];
     v25 = v24;
-    [v7 primaryKeylayoutOffset];
+    [toKeyplaneCopy primaryKeylayoutOffset];
     v27 = v26;
-    [v7 primaryKeylayoutWidthRatio];
+    [toKeyplaneCopy primaryKeylayoutWidthRatio];
     v29 = v28;
-    v315 = [(UIKeyboardSquishTransition *)self geometriesForKeyplane:v6];
-    v314 = [(UIKeyboardSquishTransition *)self geometriesForKeyplane:v7];
+    v315 = [(UIKeyboardSquishTransition *)self geometriesForKeyplane:keyplaneCopy];
+    v314 = [(UIKeyboardSquishTransition *)self geometriesForKeyplane:toKeyplaneCopy];
     v353 = 0u;
     v354 = 0u;
     v355 = 0u;
     v356 = 0u;
-    v307 = v8;
+    v307 = commonVisibleKeys;
     v317 = [v307 countByEnumeratingWithState:&v353 objects:v357 count:16];
     v332 = &v300[-4 * v10];
     v30 = 0;
@@ -1371,9 +1371,9 @@ LABEL_29:
       v38 = v341;
       v39 = v14;
       v40 = NAN;
-      v313 = v6;
-      v312 = v7;
-      v311 = self;
+      v313 = keyplaneCopy;
+      v312 = toKeyplaneCopy;
+      selfCopy = self;
       do
       {
         v41 = 0;
@@ -1394,12 +1394,12 @@ LABEL_29:
 
           v331 = v41;
           v42 = *(*(&v353 + 1) + 8 * v41);
-          v43 = [v6 keys];
-          v44 = [v43 indexOfObject:v42];
+          keys = [keyplaneCopy keys];
+          v44 = [keys indexOfObject:v42];
           v45 = [v315 objectAtIndex:v44];
 
-          v46 = [v7 keys];
-          v47 = [v46 indexOfObject:v42];
+          keys2 = [toKeyplaneCopy keys];
+          v47 = [keys2 indexOfObject:v42];
           v48 = [v314 objectAtIndex:v47];
 
           [v45 frame];
@@ -1803,9 +1803,9 @@ LABEL_29:
 
           else
           {
-            v75 = [(UIKeyboardSquishTransition *)self disableMeshOptimization];
+            disableMeshOptimization = [(UIKeyboardSquishTransition *)self disableMeshOptimization];
             v76 = v316;
-            if (v75)
+            if (disableMeshOptimization)
             {
               v77 = &v316[5 * *&v31];
               v361.origin.x = v50;
@@ -2148,9 +2148,9 @@ LABEL_29:
           v277[9] = v282;
 
           v41 = v331 + 1;
-          v6 = v313;
-          v7 = v312;
-          self = v311;
+          keyplaneCopy = v313;
+          toKeyplaneCopy = v312;
+          self = selfCopy;
           v33 = v345;
           v35 = v347;
           v37 = v341;

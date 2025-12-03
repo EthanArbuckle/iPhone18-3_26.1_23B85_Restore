@@ -1,18 +1,18 @@
 @interface TNAdditionalPageContentRep
 - (CGRect)clipRect;
-- (TNAdditionalPageContentRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TNAdditionalPageContentRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (unint64_t)pageIndex;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 - (void)willBeRemoved;
 @end
 
 @implementation TNAdditionalPageContentRep
 
-- (TNAdditionalPageContentRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TNAdditionalPageContentRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v17.receiver = self;
   v17.super_class = TNAdditionalPageContentRep;
-  v4 = [(TNPageContentRep *)&v17 initWithLayout:a3 canvas:a4];
+  v4 = [(TNPageContentRep *)&v17 initWithLayout:layout canvas:canvas];
   v7 = v4;
   if (v4)
   {
@@ -46,11 +46,11 @@
   return v6;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v9 = objc_msgSend_pageController(self, a2, a3);
+  v9 = objc_msgSend_pageController(self, a2, context);
   v7 = objc_msgSend_pageIndex(self, v5, v6);
-  objc_msgSend_drawAdditionalContentForPageIndex_inContext_(v9, v8, v7, a3);
+  objc_msgSend_drawAdditionalContentForPageIndex_inContext_(v9, v8, v7, context);
 }
 
 - (CGRect)clipRect

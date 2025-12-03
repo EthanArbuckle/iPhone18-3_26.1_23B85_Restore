@@ -1,7 +1,7 @@
 @interface CADistanceFieldLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property;
 - (BOOL)invertsShape;
 - (CGColor)foregroundColor;
 - (NSString)renderMode;
@@ -9,37 +9,37 @@
 - (double)offset;
 - (double)sharpness;
 - (unsigned)_renderImageCopyFlags;
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3;
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags;
 - (void)_colorSpaceDidChange;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
-- (void)didChangeValueForKey:(id)a3;
-- (void)setForegroundColor:(CGColor *)a3;
-- (void)setInvertsShape:(BOOL)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setOffset:(double)a3;
-- (void)setRenderMode:(id)a3;
-- (void)setSharpness:(double)a3;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
+- (void)didChangeValueForKey:(id)key;
+- (void)setForegroundColor:(CGColor *)color;
+- (void)setInvertsShape:(BOOL)shape;
+- (void)setLineWidth:(double)width;
+- (void)setOffset:(double)offset;
+- (void)setRenderMode:(id)mode;
+- (void)setSharpness:(double)sharpness;
 @end
 
 @implementation CADistanceFieldLayer
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CADistanceFieldLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
-- (void)setForegroundColor:(CGColor *)a3
+- (void)setForegroundColor:(CGColor *)color
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = color;
   CA::Layer::setter(self->super._attr.layer, 0x109, 2, v3);
 }
 
@@ -51,10 +51,10 @@
   return v3[0];
 }
 
-- (void)setSharpness:(double)a3
+- (void)setSharpness:(double)sharpness
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = sharpness;
   CA::Layer::setter(self->super._attr.layer, 0x288, 0x12, v3);
 }
 
@@ -66,10 +66,10 @@
   return *v3;
 }
 
-- (void)setOffset:(double)a3
+- (void)setOffset:(double)offset
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = offset;
   CA::Layer::setter(self->super._attr.layer, 0x216, 0x12, v3);
 }
 
@@ -81,10 +81,10 @@
   return *v3;
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = width;
   CA::Layer::setter(self->super._attr.layer, 0x1E3, 0x12, v3);
 }
 
@@ -96,11 +96,11 @@
   return *v3;
 }
 
-- (void)setInvertsShape:(BOOL)a3
+- (void)setInvertsShape:(BOOL)shape
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x1C4, 6, &v3);
+  shapeCopy = shape;
+  CA::Layer::setter(self->super._attr.layer, 0x1C4, 6, &shapeCopy);
 }
 
 - (BOOL)invertsShape
@@ -111,10 +111,10 @@
   return v3;
 }
 
-- (void)setRenderMode:(id)a3
+- (void)setRenderMode:(id)mode
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = mode;
   CA::Layer::setter(self->super._attr.layer, 0x25A, 3, v3);
 }
 
@@ -126,11 +126,11 @@
   return v3[0];
 }
 
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags
 {
   v3 = 0;
   v6 = *MEMORY[0x1E69E9840];
-  while (animatable_atoms[v3] != a3)
+  while (animatable_atoms[v3] != flags)
   {
     if (++v3 == 5)
     {
@@ -143,11 +143,11 @@
   return 32;
 }
 
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property
 {
   v3 = 0;
   v6 = *MEMORY[0x1E69E9840];
-  while (all_atoms[v3] != a3)
+  while (all_atoms[v3] != property)
   {
     if (++v3 == 6)
     {
@@ -173,23 +173,23 @@
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = CADistanceFieldLayer;
-  v3 = [(CALayer *)&v5 _colorSpaceDidChange];
+  _colorSpaceDidChange = [(CALayer *)&v5 _colorSpaceDidChange];
   v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v4)
   {
-    v4 = CA::Transaction::create(v3);
+    v4 = CA::Transaction::create(_colorSpaceDidChange);
   }
 
   CA::Layer::set_commit_needed(self->super._attr.layer, v4, 0x10000);
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v25 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = CADistanceFieldLayer;
-  v8 = [(CALayer *)&v24 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (v8 && (*(a5 + 2) & 1) != 0)
+  v8 = [(CALayer *)&v24 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (v8 && (*(commitFlags + 2) & 1) != 0)
   {
     if (x_malloc_get_zone::once != -1)
     {
@@ -209,11 +209,11 @@
       *(v9 + 8) = 0;
     }
 
-    v11 = [(CADistanceFieldLayer *)self renderMode];
-    if (v11)
+    renderMode = [(CADistanceFieldLayer *)self renderMode];
+    if (renderMode)
     {
-      v12 = v11;
-      if ([(NSString *)v11 isEqualToString:@"fill"])
+      v12 = renderMode;
+      if ([(NSString *)renderMode isEqualToString:@"fill"])
       {
         v13 = 1;
       }
@@ -241,11 +241,11 @@
       v10[4] = v13;
     }
 
-    v14 = [(CADistanceFieldLayer *)self foregroundColor];
-    if (v14)
+    foregroundColor = [(CADistanceFieldLayer *)self foregroundColor];
+    if (foregroundColor)
     {
-      v16 = v14;
-      v17 = CA::Context::current_colorspace(a3, v15);
+      v16 = foregroundColor;
+      v17 = CA::Context::current_colorspace(layer, v15);
       v23 = 0;
       CA::Render::convert_cgcolor(v16, v17, &v23, 0, v18);
       v10[5] = v23;
@@ -275,10 +275,10 @@
   return v8;
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 1);
+  v5 = CAInternAtom(key, 1);
   v6 = 0;
   while (v5 != all_atoms[v6])
   {
@@ -298,13 +298,13 @@
 LABEL_8:
   v8.receiver = self;
   v8.super_class = CADistanceFieldLayer;
-  [(CADistanceFieldLayer *)&v8 didChangeValueForKey:a3];
+  [(CADistanceFieldLayer *)&v8 didChangeValueForKey:key];
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v8 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 1);
+  v5 = CAInternAtom(key, 1);
   if (v5 == 602)
   {
     return @"fill";
@@ -323,9 +323,9 @@ LABEL_8:
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CADistanceFieldLayer;
-    return objc_msgSendSuper2(&v7, sel_defaultValueForKey_, a3);
+    return objc_msgSendSuper2(&v7, sel_defaultValueForKey_, key);
   }
 }
 

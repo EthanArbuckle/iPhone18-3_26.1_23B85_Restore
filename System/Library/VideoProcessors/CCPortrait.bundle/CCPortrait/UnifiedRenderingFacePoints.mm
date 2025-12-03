@@ -4,8 +4,8 @@
 - (CGPoint)leftEyeCenterPos;
 - (CGPoint)rightEyeCenterPos;
 - (UnifiedRenderingFacePoints)init;
-- (UnifiedRenderingFacePoints)initWithCenterPos:(CGPoint)a3 leftEyeCenterPos:(CGPoint)a4 rightEyeCenterPos:(CGPoint)a5 chinCenterPos:(CGPoint)a6;
-- (UnifiedRenderingFacePoints)initWithDictionary:(id)a3;
+- (UnifiedRenderingFacePoints)initWithCenterPos:(CGPoint)pos leftEyeCenterPos:(CGPoint)centerPos rightEyeCenterPos:(CGPoint)eyeCenterPos chinCenterPos:(CGPoint)chinCenterPos;
+- (UnifiedRenderingFacePoints)initWithDictionary:(id)dictionary;
 - (id)debugDescription;
 @end
 
@@ -28,16 +28,16 @@
   return result;
 }
 
-- (UnifiedRenderingFacePoints)initWithCenterPos:(CGPoint)a3 leftEyeCenterPos:(CGPoint)a4 rightEyeCenterPos:(CGPoint)a5 chinCenterPos:(CGPoint)a6
+- (UnifiedRenderingFacePoints)initWithCenterPos:(CGPoint)pos leftEyeCenterPos:(CGPoint)centerPos rightEyeCenterPos:(CGPoint)eyeCenterPos chinCenterPos:(CGPoint)chinCenterPos
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v10 = a4.y;
-  v11 = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
+  y = chinCenterPos.y;
+  x = chinCenterPos.x;
+  v8 = eyeCenterPos.y;
+  v9 = eyeCenterPos.x;
+  v10 = centerPos.y;
+  v11 = centerPos.x;
+  v12 = pos.y;
+  v13 = pos.x;
   v15.receiver = self;
   v15.super_class = UnifiedRenderingFacePoints;
   result = [(UnifiedRenderingFacePoints *)&v15 init];
@@ -66,9 +66,9 @@
   return v9;
 }
 
-- (UnifiedRenderingFacePoints)initWithDictionary:(id)a3
+- (UnifiedRenderingFacePoints)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v64.receiver = self;
   v64.super_class = UnifiedRenderingFacePoints;
   v5 = [(UnifiedRenderingFacePoints *)&v64 init];
@@ -80,7 +80,7 @@
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v12 = objc_msgSend_allKeys(v4, v10, v11);
+    v12 = objc_msgSend_allKeys(dictionaryCopy, v10, v11);
     v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v60, v59, 16);
     if (v14)
     {
@@ -120,41 +120,41 @@
       while (v16);
     }
 
-    v24 = objc_msgSend_objectForKeyedSubscript_(v4, v23, @"centerPos");
+    v24 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v23, @"centerPos");
 
     if (v24)
     {
-      v26 = objc_msgSend_objectForKeyedSubscript_(v4, v25, @"centerPos");
+      v26 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v25, @"centerPos");
       objc_msgSend_CGPointValue(v26, v27, v28);
       v5->_centerPos.x = v29;
       v5->_centerPos.y = v30;
     }
 
-    v31 = objc_msgSend_objectForKeyedSubscript_(v4, v25, @"leftEyeCenterPos");
+    v31 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v25, @"leftEyeCenterPos");
 
     if (v31)
     {
-      v33 = objc_msgSend_objectForKeyedSubscript_(v4, v32, @"leftEyeCenterPos");
+      v33 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v32, @"leftEyeCenterPos");
       objc_msgSend_CGPointValue(v33, v34, v35);
       v5->_leftEyeCenterPos.x = v36;
       v5->_leftEyeCenterPos.y = v37;
     }
 
-    v38 = objc_msgSend_objectForKeyedSubscript_(v4, v32, @"rightEyeCenterPos");
+    v38 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v32, @"rightEyeCenterPos");
 
     if (v38)
     {
-      v40 = objc_msgSend_objectForKeyedSubscript_(v4, v39, @"rightEyeCenterPos");
+      v40 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v39, @"rightEyeCenterPos");
       objc_msgSend_CGPointValue(v40, v41, v42);
       v5->_rightEyeCenterPos.x = v43;
       v5->_rightEyeCenterPos.y = v44;
     }
 
-    v45 = objc_msgSend_objectForKeyedSubscript_(v4, v39, @"chinCenterPos");
+    v45 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v39, @"chinCenterPos");
 
     if (v45)
     {
-      v47 = objc_msgSend_objectForKeyedSubscript_(v4, v46, @"chinCenterPos");
+      v47 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v46, @"chinCenterPos");
       objc_msgSend_CGPointValue(v47, v48, v49);
       v5->_chinCenterPos.x = v50;
       v5->_chinCenterPos.y = v51;

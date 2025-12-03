@@ -1,26 +1,26 @@
 @interface CellularLteCdrxConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCellStatus:(BOOL)a3;
-- (void)setHasDrxInactivityMs:(BOOL)a3;
-- (void)setHasDrxRetxTimerMs:(BOOL)a3;
-- (void)setHasDrxShortCycleNum:(BOOL)a3;
-- (void)setHasLongDrxCycleMs:(BOOL)a3;
-- (void)setHasOnDurationMs:(BOOL)a3;
-- (void)setHasShortDrxCycleMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCellStatus:(BOOL)status;
+- (void)setHasDrxInactivityMs:(BOOL)ms;
+- (void)setHasDrxRetxTimerMs:(BOOL)ms;
+- (void)setHasDrxShortCycleNum:(BOOL)num;
+- (void)setHasLongDrxCycleMs:(BOOL)ms;
+- (void)setHasOnDurationMs:(BOOL)ms;
+- (void)setHasShortDrxCycleMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularLteCdrxConfig
 
-- (void)setHasCellStatus:(BOOL)a3
+- (void)setHasCellStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasOnDurationMs:(BOOL)a3
+- (void)setHasOnDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 64;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasDrxInactivityMs:(BOOL)a3
+- (void)setHasDrxInactivityMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDrxRetxTimerMs:(BOOL)a3
+- (void)setHasDrxRetxTimerMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 8;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasLongDrxCycleMs:(BOOL)a3
+- (void)setHasLongDrxCycleMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 32;
   }
@@ -93,9 +93,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasShortDrxCycleMs:(BOOL)a3
+- (void)setHasShortDrxCycleMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x80;
   }
@@ -108,9 +108,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasDrxShortCycleNum:(BOOL)a3
+- (void)setHasDrxShortCycleNum:(BOOL)num
 {
-  if (a3)
+  if (num)
   {
     v3 = 16;
   }
@@ -128,8 +128,8 @@
   v7.receiver = self;
   v7.super_class = CellularLteCdrxConfig;
   v3 = [(CellularLteCdrxConfig *)&v7 description];
-  v4 = [(CellularLteCdrxConfig *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularLteCdrxConfig *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -256,9 +256,9 @@ LABEL_10:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -369,14 +369,14 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 44) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 44) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -395,8 +395,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 4) = self->_cellStatus;
-  *(v4 + 44) |= 2u;
+  *(toCopy + 4) = self->_cellStatus;
+  *(toCopy + 44) |= 2u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -410,8 +410,8 @@ LABEL_4:
   }
 
 LABEL_15:
-  *(v4 + 9) = self->_onDurationMs;
-  *(v4 + 44) |= 0x40u;
+  *(toCopy + 9) = self->_onDurationMs;
+  *(toCopy + 44) |= 0x40u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -425,8 +425,8 @@ LABEL_5:
   }
 
 LABEL_16:
-  *(v4 + 5) = self->_drxInactivityMs;
-  *(v4 + 44) |= 4u;
+  *(toCopy + 5) = self->_drxInactivityMs;
+  *(toCopy + 44) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -440,8 +440,8 @@ LABEL_6:
   }
 
 LABEL_17:
-  *(v4 + 6) = self->_drxRetxTimerMs;
-  *(v4 + 44) |= 8u;
+  *(toCopy + 6) = self->_drxRetxTimerMs;
+  *(toCopy + 44) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -455,8 +455,8 @@ LABEL_7:
   }
 
 LABEL_18:
-  *(v4 + 8) = self->_longDrxCycleMs;
-  *(v4 + 44) |= 0x20u;
+  *(toCopy + 8) = self->_longDrxCycleMs;
+  *(toCopy + 44) |= 0x20u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -470,21 +470,21 @@ LABEL_8:
   }
 
 LABEL_19:
-  *(v4 + 10) = self->_shortDrxCycleMs;
-  *(v4 + 44) |= 0x80u;
+  *(toCopy + 10) = self->_shortDrxCycleMs;
+  *(toCopy + 44) |= 0x80u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_9:
-    *(v4 + 7) = self->_drxShortCycleNum;
-    *(v4 + 44) |= 0x10u;
+    *(toCopy + 7) = self->_drxShortCycleNum;
+    *(toCopy + 44) |= 0x10u;
   }
 
 LABEL_10:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -596,111 +596,111 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_40;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_40;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_cellStatus != *(v4 + 4))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_cellStatus != *(equalCopy + 4))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 44) & 0x40) == 0 || self->_onDurationMs != *(v4 + 9))
+    if ((*(equalCopy + 44) & 0x40) == 0 || self->_onDurationMs != *(equalCopy + 9))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 44) & 0x40) != 0)
+  else if ((*(equalCopy + 44) & 0x40) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_drxInactivityMs != *(v4 + 5))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_drxInactivityMs != *(equalCopy + 5))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0 || self->_drxRetxTimerMs != *(v4 + 6))
+    if ((*(equalCopy + 44) & 8) == 0 || self->_drxRetxTimerMs != *(equalCopy + 6))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 44) & 8) != 0)
+  else if ((*(equalCopy + 44) & 8) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 44) & 0x20) == 0 || self->_longDrxCycleMs != *(v4 + 8))
+    if ((*(equalCopy + 44) & 0x20) == 0 || self->_longDrxCycleMs != *(equalCopy + 8))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 44) & 0x20) != 0)
+  else if ((*(equalCopy + 44) & 0x20) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    if ((*(v4 + 44) & 0x80) == 0 || self->_shortDrxCycleMs != *(v4 + 10))
+    if ((*(equalCopy + 44) & 0x80) == 0 || self->_shortDrxCycleMs != *(equalCopy + 10))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 44) & 0x80) != 0)
+  else if ((*(equalCopy + 44) & 0x80) != 0)
   {
 LABEL_40:
     v5 = 0;
     goto LABEL_41;
   }
 
-  v5 = (*(v4 + 44) & 0x10) == 0;
+  v5 = (*(equalCopy + 44) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 44) & 0x10) == 0 || self->_drxShortCycleNum != *(v4 + 7))
+    if ((*(equalCopy + 44) & 0x10) == 0 || self->_drxShortCycleNum != *(equalCopy + 7))
     {
       goto LABEL_40;
     }
@@ -823,15 +823,15 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -844,14 +844,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 2) == 0)
+  else if ((*(fromCopy + 44) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_cellStatus = *(v4 + 4);
+  self->_cellStatus = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x40) == 0)
   {
 LABEL_4:
@@ -864,9 +864,9 @@ LABEL_4:
   }
 
 LABEL_15:
-  self->_onDurationMs = *(v4 + 9);
+  self->_onDurationMs = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -879,9 +879,9 @@ LABEL_5:
   }
 
 LABEL_16:
-  self->_drxInactivityMs = *(v4 + 5);
+  self->_drxInactivityMs = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -894,9 +894,9 @@ LABEL_6:
   }
 
 LABEL_17:
-  self->_drxRetxTimerMs = *(v4 + 6);
+  self->_drxRetxTimerMs = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x20) == 0)
   {
 LABEL_7:
@@ -909,9 +909,9 @@ LABEL_7:
   }
 
 LABEL_18:
-  self->_longDrxCycleMs = *(v4 + 8);
+  self->_longDrxCycleMs = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x80) == 0)
   {
 LABEL_8:
@@ -924,12 +924,12 @@ LABEL_8:
   }
 
 LABEL_19:
-  self->_shortDrxCycleMs = *(v4 + 10);
+  self->_shortDrxCycleMs = *(fromCopy + 10);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 44) & 0x10) != 0)
+  if ((*(fromCopy + 44) & 0x10) != 0)
   {
 LABEL_9:
-    self->_drxShortCycleNum = *(v4 + 7);
+    self->_drxShortCycleNum = *(fromCopy + 7);
     *&self->_has |= 0x10u;
   }
 

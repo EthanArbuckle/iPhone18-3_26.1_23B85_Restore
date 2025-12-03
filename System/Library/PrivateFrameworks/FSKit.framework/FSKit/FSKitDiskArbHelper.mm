@@ -1,16 +1,16 @@
 @interface FSKitDiskArbHelper
-+ (id)waitForPreviousTasksToComplete:(id)a3 client:(id)a4;
-+ (int)DAMountFSKitVolume:(id)a3 deviceName:(id)a4 mountPoint:(id)a5 volumeName:(id)a6 auditToken:(id *)a7 mountOptions:(id)a8;
-+ (int)DAMountUserFSVolume:(id)a3 deviceName:(id)a4 mountPoint:(id)a5 volumeName:(id)a6 auditToken:(id *)a7 mountOptions:(id)a8;
-+ (int)DAMountUserFSVolume:(id)a3 deviceName:(id)a4 mountPoint:(id)a5 volumeName:(id)a6 mountOptions:(id)a7;
++ (id)waitForPreviousTasksToComplete:(id)complete client:(id)client;
++ (int)DAMountFSKitVolume:(id)volume deviceName:(id)name mountPoint:(id)point volumeName:(id)volumeName auditToken:(id *)token mountOptions:(id)options;
++ (int)DAMountUserFSVolume:(id)volume deviceName:(id)name mountPoint:(id)point volumeName:(id)volumeName auditToken:(id *)token mountOptions:(id)options;
++ (int)DAMountUserFSVolume:(id)volume deviceName:(id)name mountPoint:(id)point volumeName:(id)volumeName mountOptions:(id)options;
 @end
 
 @implementation FSKitDiskArbHelper
 
-+ (id)waitForPreviousTasksToComplete:(id)a3 client:(id)a4
++ (id)waitForPreviousTasksToComplete:(id)complete client:(id)client
 {
-  v5 = a3;
-  v6 = a4;
+  completeCopy = complete;
+  clientCopy = client;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -31,10 +31,10 @@
   v21[1] = 3221225472;
   v21[2] = __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invoke;
   v21[3] = &unk_278FED228;
-  v7 = v5;
+  v7 = completeCopy;
   v22 = v7;
   v23 = &v32;
-  [v6 currentTasksSync:v21];
+  [clientCopy currentTasksSync:v21];
   if ([v33[5] count])
   {
     v8 = dispatch_group_create();
@@ -54,7 +54,7 @@
     v15[2] = __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invoke_5;
     v15[3] = &unk_278FECF30;
     v15[4] = &v26;
-    [v6 setTaskUpdateHandler:v10 replyHandler:v15];
+    [clientCopy setTaskUpdateHandler:v10 replyHandler:v15];
     v11 = dispatch_time(0, 5000000000);
     dispatch_group_wait(v9, v11);
     v14[0] = MEMORY[0x277D85DD0];
@@ -62,7 +62,7 @@
     v14[2] = __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invoke_6;
     v14[3] = &unk_278FECF30;
     v14[4] = &v26;
-    [v6 setTaskUpdateHandler:0 replyHandler:v14];
+    [clientCopy setTaskUpdateHandler:0 replyHandler:v14];
     v12 = v27[5];
   }
 
@@ -195,29 +195,29 @@ void __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invo
   }
 }
 
-+ (int)DAMountFSKitVolume:(id)a3 deviceName:(id)a4 mountPoint:(id)a5 volumeName:(id)a6 auditToken:(id *)a7 mountOptions:(id)a8
++ (int)DAMountFSKitVolume:(id)volume deviceName:(id)name mountPoint:(id)point volumeName:(id)volumeName auditToken:(id *)token mountOptions:(id)options
 {
   v97 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v57 = a5;
-  v56 = a6;
-  v16 = a8;
+  volumeCopy = volume;
+  nameCopy = name;
+  pointCopy = point;
+  volumeNameCopy = volumeName;
+  optionsCopy = options;
   v17 = fskit_std_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136316418;
     *&buf[4] = "+[FSKitDiskArbHelper DAMountFSKitVolume:deviceName:mountPoint:volumeName:auditToken:mountOptions:]";
     *&buf[12] = 2112;
-    *&buf[14] = v14;
+    *&buf[14] = volumeCopy;
     *&buf[22] = 2112;
-    v93 = v15;
+    v93 = nameCopy;
     *v94 = 2112;
-    *&v94[2] = v57;
+    *&v94[2] = pointCopy;
     *&v94[10] = 2112;
-    *&v94[12] = v56;
+    *&v94[12] = volumeNameCopy;
     v95 = 2112;
-    v96 = v16;
+    v96 = optionsCopy;
     _os_log_debug_impl(&dword_24A929000, v17, OS_LOG_TYPE_DEBUG, "%s:start:fsShortName(%@):deviceName(%@):mountPoint(%@):volumeName(%@):mountOptionString(%@)", buf, 0x3Eu);
   }
 
@@ -229,16 +229,16 @@ void __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invo
   v93 = __Block_byref_object_copy__5;
   *v94 = __Block_byref_object_dispose__5;
   *&v94[8] = 0;
-  v19 = [v16 containsString:@"rdonly"];
-  if ([v14 isEqualToString:@"passthroughfs"])
+  v19 = [optionsCopy containsString:@"rdonly"];
+  if ([volumeCopy isEqualToString:@"passthroughfs"])
   {
-    v20 = [MEMORY[0x277CBEBC0] fileURLWithPath:v15];
+    v20 = [MEMORY[0x277CBEBC0] fileURLWithPath:nameCopy];
     v21 = [FSPathURLResource secureResourceWithURL:v20 readonly:v19];
   }
 
   else
   {
-    v21 = [FSBlockDeviceResource proxyResourceForBSDName:v15 isWritable:v19 ^ 1];
+    v21 = [FSBlockDeviceResource proxyResourceForBSDName:nameCopy isWritable:v19 ^ 1];
   }
 
   v22 = [FSKitDiskArbHelper waitForPreviousTasksToComplete:v21 client:v18];
@@ -248,7 +248,7 @@ void __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invo
   v24 = *(*&buf[8] + 40);
   if (v24)
   {
-    v25 = [v24 code];
+    code = [v24 code];
   }
 
   else
@@ -259,7 +259,7 @@ void __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invo
     v86 = __Block_byref_object_copy__5;
     v87 = __Block_byref_object_dispose__5;
     v88 = 0;
-    v54 = [a1 getFileProviderID];
+    getFileProviderID = [self getFileProviderID];
     v55 = [MEMORY[0x277D23DA8] newClientForProvider:?];
     v26 = dispatch_group_create();
     dispatch_group_enter(v26);
@@ -271,10 +271,10 @@ void __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invo
     v82 = &v83;
     v27 = v26;
     v80 = v27;
-    v28 = *&a7->var0[4];
-    *v89 = *a7->var0;
+    v28 = *&token->var0[4];
+    *v89 = *token->var0;
     *&v89[16] = v28;
-    [v18 loadResource:v21 shortName:v14 options:v58 auditToken:v89 replyHandler:v79];
+    [v18 loadResource:v21 shortName:volumeCopy options:v58 auditToken:v89 replyHandler:v79];
     v29 = dispatch_time(0, 20000000000);
     if (dispatch_group_wait(v27, v29))
     {
@@ -285,14 +285,14 @@ void __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invo
       v32 = fskit_std_log();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        [FSKitDiskArbHelper DAMountFSKitVolume:v15 deviceName:&buf[8] mountPoint:? volumeName:? auditToken:? mountOptions:?];
+        [FSKitDiskArbHelper DAMountFSKitVolume:nameCopy deviceName:&buf[8] mountPoint:? volumeName:? auditToken:? mountOptions:?];
       }
     }
 
     v33 = *(*&buf[8] + 40);
     if (v33)
     {
-      v25 = [v33 code];
+      code = [v33 code];
     }
 
     else
@@ -306,22 +306,22 @@ void __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invo
       v61[1] = 3221225472;
       v61[2] = __98__FSKitDiskArbHelper_DAMountFSKitVolume_deviceName_mountPoint_volumeName_auditToken_mountOptions___block_invoke_24;
       v61[3] = &unk_278FEE0B0;
-      v62 = v16;
+      v62 = optionsCopy;
       v53 = v18;
       v63 = v53;
-      v35 = v14;
-      v36 = *&a7->var0[4];
-      v72 = *a7->var0;
+      v35 = volumeCopy;
+      v36 = *&token->var0[4];
+      v72 = *token->var0;
       v73 = v36;
       v64 = v35;
       v70 = buf;
-      v37 = v15;
+      v37 = nameCopy;
       v65 = v37;
       v66 = v55;
-      v67 = v54;
+      v67 = getFileProviderID;
       v68 = 0;
       v74 = 4096;
-      v69 = v57;
+      v69 = pointCopy;
       v71 = &v75;
       [v34 enumerateObjectsUsingBlock:v61];
       if (!v76[3])
@@ -335,8 +335,8 @@ void __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invo
         v59[2] = __98__FSKitDiskArbHelper_DAMountFSKitVolume_deviceName_mountPoint_volumeName_auditToken_mountOptions___block_invoke_32;
         v59[3] = &unk_278FECF08;
         v60 = v39;
-        v40 = *a7->var0;
-        v41 = *&a7->var0[4];
+        v40 = *token->var0;
+        v41 = *&token->var0[4];
         v42 = v60;
         *v89 = v40;
         *&v89[16] = v41;
@@ -351,14 +351,14 @@ void __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invo
           v46 = fskit_std_log();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
           {
-            v50 = [v21 getResourceID];
+            getResourceID = [v21 getResourceID];
             v51 = *(*&buf[8] + 40);
             *v89 = 136315906;
             *&v89[4] = "+[FSKitDiskArbHelper DAMountFSKitVolume:deviceName:mountPoint:volumeName:auditToken:mountOptions:]";
             *&v89[12] = 2112;
             *&v89[14] = v52;
             *&v89[22] = 2112;
-            *&v89[24] = v50;
+            *&v89[24] = getResourceID;
             v90 = 2112;
             v91 = v51;
             _os_log_error_impl(&dword_24A929000, v46, OS_LOG_TYPE_ERROR, "%s: %@ failed to unloadResource (%@) error (%@)", v89, 0x2Au);
@@ -369,12 +369,12 @@ void __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invo
       v47 = *(*&buf[8] + 40);
       if (v47)
       {
-        v25 = [v47 code];
+        code = [v47 code];
       }
 
       else
       {
-        v25 = 0;
+        code = 0;
       }
 
       _Block_object_dispose(&v75, 8);
@@ -385,7 +385,7 @@ void __60__FSKitDiskArbHelper_waitForPreviousTasksToComplete_client___block_invo
 
   _Block_object_dispose(buf, 8);
   v48 = *MEMORY[0x277D85DE8];
-  return v25;
+  return code;
 }
 
 void __98__FSKitDiskArbHelper_DAMountFSKitVolume_deviceName_mountPoint_volumeName_auditToken_mountOptions___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -641,13 +641,13 @@ void __98__FSKitDiskArbHelper_DAMountFSKitVolume_deviceName_mountPoint_volumeNam
   dispatch_group_leave(*(a1 + 32));
 }
 
-+ (int)DAMountUserFSVolume:(id)a3 deviceName:(id)a4 mountPoint:(id)a5 volumeName:(id)a6 mountOptions:(id)a7
++ (int)DAMountUserFSVolume:(id)volume deviceName:(id)name mountPoint:(id)point volumeName:(id)volumeName mountOptions:(id)options
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  volumeCopy = volume;
+  nameCopy = name;
+  pointCopy = point;
+  volumeNameCopy = volumeName;
+  optionsCopy = options;
   v17 = +[FSAuditToken token];
   v18 = v17;
   if (v17)
@@ -660,29 +660,29 @@ void __98__FSKitDiskArbHelper_DAMountFSKitVolume_deviceName_mountPoint_volumeNam
     memset(v21, 0, sizeof(v21));
   }
 
-  v19 = [a1 DAMountUserFSVolume:v12 deviceName:v13 mountPoint:v14 volumeName:v15 auditToken:v21 mountOptions:v16];
+  v19 = [self DAMountUserFSVolume:volumeCopy deviceName:nameCopy mountPoint:pointCopy volumeName:volumeNameCopy auditToken:v21 mountOptions:optionsCopy];
 
   return v19;
 }
 
-+ (int)DAMountUserFSVolume:(id)a3 deviceName:(id)a4 mountPoint:(id)a5 volumeName:(id)a6 auditToken:(id *)a7 mountOptions:(id)a8
++ (int)DAMountUserFSVolume:(id)volume deviceName:(id)name mountPoint:(id)point volumeName:(id)volumeName auditToken:(id *)token mountOptions:(id)options
 {
   v72 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  if (![v14 hasSuffix:@"_fskit"])
+  volumeCopy = volume;
+  nameCopy = name;
+  pointCopy = point;
+  volumeNameCopy = volumeName;
+  optionsCopy = options;
+  if (![volumeCopy hasSuffix:@"_fskit"])
   {
     v53 = objc_autoreleasePoolPush();
     v22 = +[stolenUSBLocalStorageClient newManager];
     v62 = [MEMORY[0x277D23DA8] newClientForProvider:@"com.apple.filesystems.UserFS.FileProvider"];
     v67 = 0;
     v56 = v22;
-    a1 = [v22 loadVolumes:v15 ofType:v14 withError:&v67];
+    self = [v22 loadVolumes:nameCopy ofType:volumeCopy withError:&v67];
     v23 = v67;
-    v52 = a1;
+    selfCopy = self;
     if (v23)
     {
       v24 = v23;
@@ -697,7 +697,7 @@ void __98__FSKitDiskArbHelper_DAMountFSKitVolume_deviceName_mountPoint_volumeNam
 
     else
     {
-      if (!a1)
+      if (!self)
       {
         v26 = v53;
         goto LABEL_8;
@@ -707,14 +707,14 @@ void __98__FSKitDiskArbHelper_DAMountFSKitVolume_deviceName_mountPoint_volumeNam
       v66 = 0u;
       v63 = 0u;
       v64 = 0u;
-      obj = a1;
+      obj = self;
       v61 = [obj countByEnumeratingWithState:&v63 objects:v71 count:16];
       if (v61)
       {
-        v59 = v16;
-        v60 = v18;
-        v58 = v14;
-        v51 = v15;
+        v59 = pointCopy;
+        v60 = optionsCopy;
+        v58 = volumeCopy;
+        v51 = nameCopy;
         v29 = 0;
         v24 = 0;
         v57 = *v64;
@@ -734,7 +734,7 @@ void __98__FSKitDiskArbHelper_DAMountFSKitVolume_deviceName_mountPoint_volumeNam
 
             v33 = [v29 objectForKey:@"UUID"];
             v34 = [v29 objectForKey:@"name"];
-            if (v17 && ([v17 isEqual:v34] & 1) == 0)
+            if (volumeNameCopy && ([volumeNameCopy isEqual:v34] & 1) == 0)
             {
               v35 = fskit_std_log();
               if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
@@ -742,7 +742,7 @@ void __98__FSKitDiskArbHelper_DAMountFSKitVolume_deviceName_mountPoint_volumeNam
                 *buf = 138412802;
                 *&buf[4] = v51;
                 *&buf[12] = 2112;
-                *&buf[14] = v17;
+                *&buf[14] = volumeNameCopy;
                 *&buf[22] = 2112;
                 *&buf[24] = v34;
                 _os_log_impl(&dword_24A929000, v35, OS_LOG_TYPE_INFO, "%@: got 2 different names from probe and userfs: p->%@  u->%@", buf, 0x20u);
@@ -750,23 +750,23 @@ void __98__FSKitDiskArbHelper_DAMountFSKitVolume_deviceName_mountPoint_volumeNam
 
               if ([v34 isEqual:@"Untitled"])
               {
-                v36 = v17;
+                v36 = volumeNameCopy;
 
                 v34 = v36;
               }
             }
 
             v37 = [v29 objectForKeyedSubscript:@"how"];
-            v38 = [v37 intValue];
+            intValue = [v37 intValue];
 
             if ([v60 containsString:@"rdonly"])
             {
-              v39 = v38 | 0x800;
+              v39 = intValue | 0x800;
             }
 
             else
             {
-              v39 = v38;
+              v39 = intValue;
             }
 
             v40 = [v29 objectForKeyedSubscript:@"errorForDomain"];
@@ -774,15 +774,15 @@ void __98__FSKitDiskArbHelper_DAMountFSKitVolume_deviceName_mountPoint_volumeNam
             if (v40)
             {
               v41 = [v29 objectForKeyedSubscript:@"errorForDomain"];
-              v42 = [v41 integerValue];
+              integerValue = [v41 integerValue];
 
-              if (v42 != -1000)
+              if (integerValue != -1000)
               {
                 v50 = fskit_std_log();
                 if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 134217984;
-                  *&buf[4] = v42;
+                  *&buf[4] = integerValue;
                   _os_log_error_impl(&dword_24A929000, v50, OS_LOG_TYPE_ERROR, "unsupported error code for domain: %ld", buf, 0xCu);
                 }
 
@@ -815,8 +815,8 @@ void __98__FSKitDiskArbHelper_DAMountFSKitVolume_deviceName_mountPoint_volumeNam
               _os_log_impl(&dword_24A929000, v44, OS_LOG_TYPE_INFO, "%@ mounting with name %@, error %@, and how 0x%x.", buf, 0x26u);
             }
 
-            v45 = *&a7->var0[4];
-            *buf = *a7->var0;
+            v45 = *&token->var0[4];
+            *buf = *token->var0;
             *&buf[16] = v45;
             v24 = [v62 mountVolume:v33 fileSystem:v58 displayName:v34 provider:@"com.apple.filesystems.UserFS.FileProvider" domainError:v43 on:v59 how:v39 options:0 auditToken:buf];
 
@@ -867,12 +867,12 @@ void __98__FSKitDiskArbHelper_DAMountFSKitVolume_deviceName_mountPoint_volumeNam
 
         v49 = v29;
 LABEL_47:
-        v15 = v51;
+        nameCopy = v51;
         v26 = v53;
 
-        v14 = v58;
-        v16 = v59;
-        v18 = v60;
+        volumeCopy = v58;
+        pointCopy = v59;
+        optionsCopy = v60;
       }
 
       else
@@ -883,12 +883,12 @@ LABEL_47:
 
       if (!v24)
       {
-        LODWORD(a1) = 0;
+        LODWORD(self) = 0;
         goto LABEL_8;
       }
     }
 
-    LODWORD(a1) = [v24 code];
+    LODWORD(self) = [v24 code];
 
 LABEL_8:
     objc_autoreleasePoolPop(v26);
@@ -897,17 +897,17 @@ LABEL_8:
   }
 
   v19 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"_"];
-  v20 = [v14 substringToIndex:{objc_msgSend(v14, "rangeOfCharacterFromSet:", v19)}];
+  v20 = [volumeCopy substringToIndex:{objc_msgSend(volumeCopy, "rangeOfCharacterFromSet:", v19)}];
 
-  v21 = *&a7->var0[4];
-  *buf = *a7->var0;
+  v21 = *&token->var0[4];
+  *buf = *token->var0;
   *&buf[16] = v21;
-  LODWORD(a1) = [a1 DAMountFSKitVolume:v20 deviceName:v15 mountPoint:v16 volumeName:v17 auditToken:buf mountOptions:v18];
-  v14 = v20;
+  LODWORD(self) = [self DAMountFSKitVolume:v20 deviceName:nameCopy mountPoint:pointCopy volumeName:volumeNameCopy auditToken:buf mountOptions:optionsCopy];
+  volumeCopy = v20;
 LABEL_9:
 
   v27 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
 + (void)DAMountFSKitVolume:(uint64_t)a1 deviceName:(uint64_t)a2 mountPoint:volumeName:auditToken:mountOptions:.cold.1(uint64_t a1, uint64_t a2)

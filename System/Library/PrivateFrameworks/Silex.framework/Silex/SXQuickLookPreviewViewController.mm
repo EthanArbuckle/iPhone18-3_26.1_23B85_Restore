@@ -1,24 +1,24 @@
 @interface SXQuickLookPreviewViewController
-- (SXQuickLookPreviewViewController)initWithFile:(id)a3 transitionContext:(id)a4;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4;
+- (SXQuickLookPreviewViewController)initWithFile:(id)file transitionContext:(id)context;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item;
 - (void)viewDidLoad;
 @end
 
 @implementation SXQuickLookPreviewViewController
 
-- (SXQuickLookPreviewViewController)initWithFile:(id)a3 transitionContext:(id)a4
+- (SXQuickLookPreviewViewController)initWithFile:(id)file transitionContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  fileCopy = file;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SXQuickLookPreviewViewController;
   v9 = [(QLPreviewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_file, a3);
-    objc_storeStrong(&v10->_transitionContext, a4);
+    objc_storeStrong(&v9->_file, file);
+    objc_storeStrong(&v10->_transitionContext, context);
   }
 
   return v10;
@@ -33,24 +33,24 @@
   [(QLPreviewController *)self setDataSource:self];
 }
 
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item
 {
-  v4 = [(SXQuickLookPreviewViewController *)self transitionContext:a3];
-  v5 = [v4 originView];
+  v4 = [(SXQuickLookPreviewViewController *)self transitionContext:controller];
+  originView = [v4 originView];
 
-  return v5;
+  return originView;
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
   v5 = objc_alloc(MEMORY[0x1E697A0B8]);
-  v6 = [(SXQuickLookPreviewViewController *)self file];
-  v7 = [v6 fileURL];
-  v8 = [v5 initWithFileAtURL:v7];
+  file = [(SXQuickLookPreviewViewController *)self file];
+  fileURL = [file fileURL];
+  v8 = [v5 initWithFileAtURL:fileURL];
 
-  v9 = [(SXQuickLookPreviewViewController *)self file];
-  v10 = [v9 shareURL];
-  [v8 setCanonicalWebPageURL:v10];
+  file2 = [(SXQuickLookPreviewViewController *)self file];
+  shareURL = [file2 shareURL];
+  [v8 setCanonicalWebPageURL:shareURL];
 
   return v8;
 }

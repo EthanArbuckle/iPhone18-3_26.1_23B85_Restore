@@ -1,23 +1,23 @@
 @interface _PXZoomablePhotosUserDefaultSearch
 - (NSNumber)preferredIndividualItemsColumnsNumber;
-- (void)setPreferredIndividualItemsColumnsNumber:(id)a3;
+- (void)setPreferredIndividualItemsColumnsNumber:(id)number;
 @end
 
 @implementation _PXZoomablePhotosUserDefaultSearch
 
-- (void)setPreferredIndividualItemsColumnsNumber:(id)a3
+- (void)setPreferredIndividualItemsColumnsNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(_PXZoomablePhotosUserDefaultsImp *)self defaults];
-  [v5 setSearchPreferredIndividualItemsColumns:v4];
+  numberCopy = number;
+  defaults = [(_PXZoomablePhotosUserDefaultsImp *)self defaults];
+  [defaults setSearchPreferredIndividualItemsColumns:numberCopy];
 }
 
 - (NSNumber)preferredIndividualItemsColumnsNumber
 {
-  v2 = [(_PXZoomablePhotosUserDefaultsImp *)self defaults];
-  v3 = [v2 searchPreferredIndividualItemsColumns];
+  defaults = [(_PXZoomablePhotosUserDefaultsImp *)self defaults];
+  searchPreferredIndividualItemsColumns = [defaults searchPreferredIndividualItemsColumns];
 
-  return v3;
+  return searchPreferredIndividualItemsColumns;
 }
 
 @end

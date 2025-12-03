@@ -6,9 +6,9 @@
 - (void)beginEqualization;
 - (void)finishEqualization;
 - (void)restoreDelegate;
-- (void)setDelegate:(id)a3;
-- (void)setOptimisticValue:(id)a3;
-- (void)setVolumeValue:(float)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setOptimisticValue:(id)value;
+- (void)setVolumeValue:(float)value;
 @end
 
 @implementation MRUVolumeController
@@ -17,19 +17,19 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPVolumeController *)self volumeControlLabel];
-  v6 = [v3 stringWithFormat:@"<%@:%p (%@)>", v4, self, v5];
+  volumeControlLabel = [(MPVolumeController *)self volumeControlLabel];
+  v6 = [v3 stringWithFormat:@"<%@:%p (%@)>", v4, self, volumeControlLabel];
 
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = MRUVolumeController;
-  v4 = a3;
-  [(MPVolumeController *)&v5 setDelegate:v4];
-  objc_storeWeak(&self->_shadowDelegate, v4);
+  delegateCopy = delegate;
+  [(MPVolumeController *)&v5 setDelegate:delegateCopy];
+  objc_storeWeak(&self->_shadowDelegate, delegateCopy);
 }
 
 - (float)volumeValue
@@ -53,32 +53,32 @@
   return result;
 }
 
-- (void)setVolumeValue:(float)a3
+- (void)setVolumeValue:(float)value
 {
   v9.receiver = self;
   v9.super_class = MRUVolumeController;
   [(MPVolumeController *)&v9 setVolumeValue:?];
-  *&v5 = a3;
+  *&v5 = value;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   [(MRUVolumeController *)self setOptimisticValue:v6];
 
-  v7 = [(MRUVolumeController *)self coordinationDelegate];
-  *&v8 = a3;
-  [v7 volumeController:self volumeValueDidChange:v8];
+  coordinationDelegate = [(MRUVolumeController *)self coordinationDelegate];
+  *&v8 = value;
+  [coordinationDelegate volumeController:self volumeValueDidChange:v8];
 }
 
-- (void)setOptimisticValue:(id)a3
+- (void)setOptimisticValue:(id)value
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  valueCopy = value;
   if (!self->_optimisticValue)
   {
     v6 = MCLogCategoryVolume();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      [v5 floatValue];
+      [valueCopy floatValue];
       *buf = 138412546;
-      v16 = self;
+      selfCopy = self;
       v17 = 2048;
       v18 = v7;
       _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "%@ - Start optimistic state with: %.2f", buf, 0x16u);
@@ -88,14 +88,14 @@
   v14.receiver = self;
   v14.super_class = MRUVolumeController;
   [(MPVolumeController *)&v14 setDelegate:0];
-  objc_storeStrong(&self->_optimisticValue, a3);
+  objc_storeStrong(&self->_optimisticValue, value);
   WeakRetained = objc_loadWeakRetained(&self->_shadowDelegate);
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_shadowDelegate);
-    [v5 floatValue];
+    [valueCopy floatValue];
     [v10 volumeController:self volumeValueDidChange:?];
   }
 
@@ -175,9 +175,9 @@ void __42__MRUVolumeController_setOptimisticValue___block_invoke(uint64_t a1)
 
   if (v5)
   {
-    v6 = [(MPVolumeController *)self delegate];
+    delegate = [(MPVolumeController *)self delegate];
     [(MRUVolumeController *)self volumeValue];
-    [v6 volumeController:self volumeValueDidChange:?];
+    [delegate volumeController:self volumeValueDidChange:?];
   }
 
   v7 = objc_loadWeakRetained(&self->_shadowDelegate);
@@ -185,8 +185,8 @@ void __42__MRUVolumeController_setOptimisticValue___block_invoke(uint64_t a1)
 
   if (v8)
   {
-    v9 = [(MPVolumeController *)self delegate];
-    [v9 volumeController:self volumeControlAvailableDidChange:{-[MPVolumeController isVolumeControlAvailable](self, "isVolumeControlAvailable")}];
+    delegate2 = [(MPVolumeController *)self delegate];
+    [delegate2 volumeController:self volumeControlAvailableDidChange:{-[MPVolumeController isVolumeControlAvailable](self, "isVolumeControlAvailable")}];
   }
 
   v10 = objc_loadWeakRetained(&self->_shadowDelegate);
@@ -194,8 +194,8 @@ void __42__MRUVolumeController_setOptimisticValue___block_invoke(uint64_t a1)
 
   if (v11)
   {
-    v12 = [(MPVolumeController *)self delegate];
-    [v12 volumeController:self volumeControlCapabilitiesDidChange:{-[MPVolumeController volumeCapabilities](self, "volumeCapabilities")}];
+    delegate3 = [(MPVolumeController *)self delegate];
+    [delegate3 volumeController:self volumeControlCapabilitiesDidChange:{-[MPVolumeController volumeCapabilities](self, "volumeCapabilities")}];
   }
 
   v13 = objc_loadWeakRetained(&self->_shadowDelegate);
@@ -203,8 +203,8 @@ void __42__MRUVolumeController_setOptimisticValue___block_invoke(uint64_t a1)
 
   if (v14)
   {
-    v15 = [(MPVolumeController *)self delegate];
-    [v15 volumeController:self mutedStateDidChange:{-[MPVolumeController isMuted](self, "isMuted")}];
+    delegate4 = [(MPVolumeController *)self delegate];
+    [delegate4 volumeController:self mutedStateDidChange:{-[MPVolumeController isMuted](self, "isMuted")}];
   }
 }
 

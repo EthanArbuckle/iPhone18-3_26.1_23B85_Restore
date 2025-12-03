@@ -8,15 +8,15 @@
 {
   if (!_Failover)
   {
-    v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v2 performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_403 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_412];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_403 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_412];
 
     v3 = [objc_allocWithZone(AXMobileCalGlue) init];
     v4 = _Failover;
     _Failover = v3;
 
-    v5 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v5 addHandler:&__block_literal_global_540 forFramework:@"AddressBookUI"];
+    mEMORY[0x29EDBD690] = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690] addHandler:&__block_literal_global_540 forFramework:@"AddressBookUI"];
   }
 }
 

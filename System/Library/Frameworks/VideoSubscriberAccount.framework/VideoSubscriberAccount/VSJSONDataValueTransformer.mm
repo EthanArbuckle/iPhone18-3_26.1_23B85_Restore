@@ -1,16 +1,16 @@
 @interface VSJSONDataValueTransformer
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSJSONDataValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  valueCopy = value;
+  v4 = valueCopy;
+  if (valueCopy)
   {
-    v5 = v3;
+    v5 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

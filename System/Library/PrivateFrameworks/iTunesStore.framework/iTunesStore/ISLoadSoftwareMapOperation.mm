@@ -16,24 +16,24 @@
 
   else
   {
-    v4 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v4)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v4 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
-    if ([v4 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_INFO))
     {
       v6 &= 2u;
     }
@@ -56,27 +56,27 @@
     }
 
     v10 = objc_alloc_init(ISSoftwareMap);
-    v11 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    v12 = v11;
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    mEMORY[0x277D69B38]3 = mEMORY[0x277D69B38]2;
     if (v10)
     {
-      if (!v11)
+      if (!mEMORY[0x277D69B38]2)
       {
-        v12 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v13 = [v12 shouldLog];
-      if ([v12 shouldLogToDisk])
+      shouldLog2 = [mEMORY[0x277D69B38]3 shouldLog];
+      if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
       {
-        v14 = v13 | 2;
+        v14 = shouldLog2 | 2;
       }
 
       else
       {
-        v14 = v13;
+        v14 = shouldLog2;
       }
 
-      if (!os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_INFO))
+      if (!os_log_type_enabled([mEMORY[0x277D69B38]3 OSLogObject], OS_LOG_TYPE_INFO))
       {
         v14 &= 2u;
       }
@@ -105,23 +105,23 @@
 
     else
     {
-      if (!v11)
+      if (!mEMORY[0x277D69B38]2)
       {
-        v12 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v20 = [v12 shouldLog];
-      if ([v12 shouldLogToDisk])
+      shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+      if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
       {
-        v21 = v20 | 2;
+        v21 = shouldLog3 | 2;
       }
 
       else
       {
-        v21 = v20;
+        v21 = shouldLog3;
       }
 
-      if (!os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x277D69B38]3 OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v21 &= 2u;
       }

@@ -2,28 +2,28 @@
 - (BKDockableMiniPlayer)miniPlayerViewController;
 - (NSArray)viewControllers;
 - (NSMutableArray)mutableChildViewControllers;
-- (_TtC5Books33MiniPlayerHostingTabBarController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC5Books33MiniPlayerHostingTabBarController)initWithTabs:(id)a3;
+- (_TtC5Books33MiniPlayerHostingTabBarController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC5Books33MiniPlayerHostingTabBarController)initWithTabs:(id)tabs;
 - (id)_viewControllersInTabBar;
-- (void)_rebuildTabBarItemsAnimated:(BOOL)a3;
-- (void)_updateLayoutForTraitCollection:(id)a3;
-- (void)bc_setPreferredTabBarScrollEdgeAppearance:(id)a3;
-- (void)dockMiniPlayer:(id)a3;
-- (void)setMiniPlayerViewController:(id)a3;
-- (void)setMutableChildViewControllers:(id)a3;
-- (void)setViewControllers:(id)a3;
+- (void)_rebuildTabBarItemsAnimated:(BOOL)animated;
+- (void)_updateLayoutForTraitCollection:(id)collection;
+- (void)bc_setPreferredTabBarScrollEdgeAppearance:(id)appearance;
+- (void)dockMiniPlayer:(id)player;
+- (void)setMiniPlayerViewController:(id)controller;
+- (void)setMutableChildViewControllers:(id)controllers;
+- (void)setViewControllers:(id)controllers;
 - (void)undockMiniPlayer;
 - (void)viewDidLayoutSubviews;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MiniPlayerHostingTabBarController
 
-- (_TtC5Books33MiniPlayerHostingTabBarController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Books33MiniPlayerHostingTabBarController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1007A2254();
     v7 = v6;
@@ -35,11 +35,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return MiniPlayerHostingTabBarController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return MiniPlayerHostingTabBarController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (void)_updateLayoutForTraitCollection:(id)a3
+- (void)_updateLayoutForTraitCollection:(id)collection
 {
   v5 = OBJC_IVAR____TtC5Books33MiniPlayerHostingTabBarController_isRebuildingTabBarItems;
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Books33MiniPlayerHostingTabBarController_isRebuildingTabBarItems);
@@ -47,23 +47,23 @@
   v8.receiver = self;
   v8.super_class = type metadata accessor for MiniPlayerHostingTabBarController();
   v7 = v8.receiver;
-  [(MiniPlayerHostingTabBarController *)&v8 _updateLayoutForTraitCollection:a3];
+  [(MiniPlayerHostingTabBarController *)&v8 _updateLayoutForTraitCollection:collection];
   *(&self->super.super.super.super.isa + v5) = v6;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for MiniPlayerHostingTabBarController();
   v4 = v5.receiver;
-  [(MiniPlayerHostingTabBarController *)&v5 viewWillAppear:v3];
-  sub_100023FDC(v3);
+  [(MiniPlayerHostingTabBarController *)&v5 viewWillAppear:appearCopy];
+  sub_100023FDC(appearCopy);
 }
 
 - (NSArray)viewControllers
 {
-  v2 = self;
+  selfCopy = self;
   MiniPlayerHostingTabBarController.viewControllers.getter();
   v4 = v3;
 
@@ -83,34 +83,34 @@
 
 - (NSMutableArray)mutableChildViewControllers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MiniPlayerHostingTabBarController.mutableChildViewControllers.getter();
 
   return v3;
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = self;
+  selfCopy = self;
   _s5Books33MiniPlayerHostingTabBarControllerC11viewDidMove2to23shouldAppearOrDisappearySo8UIWindowCSg_SbtF_0();
 }
 
-- (void)_rebuildTabBarItemsAnimated:(BOOL)a3
+- (void)_rebuildTabBarItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = OBJC_IVAR____TtC5Books33MiniPlayerHostingTabBarController_isRebuildingTabBarItems;
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Books33MiniPlayerHostingTabBarController_isRebuildingTabBarItems);
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Books33MiniPlayerHostingTabBarController_isRebuildingTabBarItems) = 1;
   v8.receiver = self;
   v8.super_class = type metadata accessor for MiniPlayerHostingTabBarController();
   v7 = v8.receiver;
-  [(MiniPlayerHostingTabBarController *)&v8 _rebuildTabBarItemsAnimated:v3];
+  [(MiniPlayerHostingTabBarController *)&v8 _rebuildTabBarItemsAnimated:animatedCopy];
   *(&self->super.super.super.super.isa + v5) = v6;
 }
 
 - (id)_viewControllersInTabBar
 {
-  v2 = self;
+  selfCopy = self;
   MiniPlayerHostingTabBarController._viewControllersInTabBar()();
 
   sub_10000A7C4(0, &qword_100AD7CB0);
@@ -128,8 +128,8 @@
   v3 = sub_100021C08();
   v5 = v4;
   ObjectType = swift_getObjectType();
-  v7 = [v2 tabBar];
-  [v7 frame];
+  tabBar = [v2 tabBar];
+  [tabBar frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -147,11 +147,11 @@
   _s5Books33MiniPlayerHostingTabBarControllerC11viewDidMove2to23shouldAppearOrDisappearySo8UIWindowCSg_SbtF_0();
 }
 
-- (void)bc_setPreferredTabBarScrollEdgeAppearance:(id)a3
+- (void)bc_setPreferredTabBarScrollEdgeAppearance:(id)appearance
 {
-  v6 = a3;
-  v5 = self;
-  sub_10058C820(a3);
+  appearanceCopy = appearance;
+  selfCopy = self;
+  sub_10058C820(appearance);
 }
 
 - (BKDockableMiniPlayer)miniPlayerViewController
@@ -161,41 +161,41 @@
   return *(&self->super.super.super.super.isa + v3);
 }
 
-- (void)setMiniPlayerViewController:(id)a3
+- (void)setMiniPlayerViewController:(id)controller
 {
   v5 = OBJC_IVAR____TtC5Books33MiniPlayerHostingTabBarController_miniPlayerViewController;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.super.isa + v5) = controller;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_100583104(v6);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for MiniPlayerHostingTabBarController();
   v4 = v5.receiver;
-  [(MiniPlayerHostingTabBarController *)&v5 viewWillDisappear:v3];
-  sub_100023FDC(v3 | 0x40);
+  [(MiniPlayerHostingTabBarController *)&v5 viewWillDisappear:disappearCopy];
+  sub_100023FDC(disappearCopy | 0x40);
 }
 
-- (void)setViewControllers:(id)a3
+- (void)setViewControllers:(id)controllers
 {
-  isa = a3;
-  if (a3)
+  isa = controllers;
+  if (controllers)
   {
     sub_10000A7C4(0, &qword_100AD7CB0);
     sub_1007A25E4();
-    v5 = self;
+    selfCopy = self;
     isa = sub_1007A25D4().super.isa;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7.receiver = self;
@@ -203,25 +203,25 @@
   [(MiniPlayerHostingTabBarController *)&v7 setViewControllers:isa];
 }
 
-- (void)setMutableChildViewControllers:(id)a3
+- (void)setMutableChildViewControllers:(id)controllers
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for MiniPlayerHostingTabBarController();
-  [(MiniPlayerHostingTabBarController *)&v4 setMutableChildViewControllers:a3];
+  [(MiniPlayerHostingTabBarController *)&v4 setMutableChildViewControllers:controllers];
 }
 
-- (_TtC5Books33MiniPlayerHostingTabBarController)initWithTabs:(id)a3
+- (_TtC5Books33MiniPlayerHostingTabBarController)initWithTabs:(id)tabs
 {
   sub_10000A7C4(0, &qword_100AEB148);
   sub_1007A25E4();
   return MiniPlayerHostingTabBarController.init(tabs:)();
 }
 
-- (void)dockMiniPlayer:(id)a3
+- (void)dockMiniPlayer:(id)player
 {
-  v4 = a3;
-  v5 = self;
-  MiniPlayerHostingTabBarController.dockMiniPlayer(_:)(v4);
+  playerCopy = player;
+  selfCopy = self;
+  MiniPlayerHostingTabBarController.dockMiniPlayer(_:)(playerCopy);
 }
 
 - (void)undockMiniPlayer
@@ -230,7 +230,7 @@
   swift_beginAccess();
   v4 = *(&self->super.super.super.super.isa + v3);
   *(&self->super.super.super.super.isa + v3) = 0;
-  v5 = self;
+  selfCopy = self;
   sub_100583104(v4);
 }
 

@@ -10,20 +10,20 @@
   v8.receiver = self;
   v8.super_class = CCUIControlResizingSettings;
   [(PTSettings *)&v8 setDefaultValues];
-  v3 = [(CCUIControlResizingSettings *)self resizeHandleSettings];
-  [v3 setDefaultValues];
+  resizeHandleSettings = [(CCUIControlResizingSettings *)self resizeHandleSettings];
+  [resizeHandleSettings setDefaultValues];
 
-  v4 = [(CCUIControlResizingSettings *)self smallControlsResizeHandleSettings];
-  [v4 setDefaultValues];
+  smallControlsResizeHandleSettings = [(CCUIControlResizingSettings *)self smallControlsResizeHandleSettings];
+  [smallControlsResizeHandleSettings setDefaultValues];
 
-  v5 = [(CCUIControlResizingSettings *)self smallControlsResizeHandleSettings];
-  [v5 setResizeHandleUsesTruncatedSectorHitArea:1];
+  smallControlsResizeHandleSettings2 = [(CCUIControlResizingSettings *)self smallControlsResizeHandleSettings];
+  [smallControlsResizeHandleSettings2 setResizeHandleUsesTruncatedSectorHitArea:1];
 
-  v6 = [(CCUIControlResizingSettings *)self animationSettings];
-  [v6 setDefaultValues];
+  animationSettings = [(CCUIControlResizingSettings *)self animationSettings];
+  [animationSettings setDefaultValues];
 
-  v7 = [(CCUIControlResizingSettings *)self labelTransitionAnimationSettings];
-  [v7 setDefaultValues];
+  labelTransitionAnimationSettings = [(CCUIControlResizingSettings *)self labelTransitionAnimationSettings];
+  [labelTransitionAnimationSettings setDefaultValues];
 
   [(CCUIControlResizingSettings *)self setLabelTransitionCrossblurRadius:6.0];
   [(CCUIControlResizingSettings *)self setBlurPocketWidth:45.0];
@@ -100,8 +100,8 @@
   v28 = [v26 sectionWithRows:v27];
 
   v29 = MEMORY[0x277D431A8];
-  v30 = [MEMORY[0x277D43238] action];
-  v31 = [v29 rowWithTitle:@"Restore Defaults" action:v30];
+  action = [MEMORY[0x277D43238] action];
+  v31 = [v29 rowWithTitle:@"Restore Defaults" action:action];
 
   v32 = MEMORY[0x277D43218];
   v55 = v31;

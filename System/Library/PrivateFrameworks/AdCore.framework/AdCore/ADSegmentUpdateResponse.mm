@@ -1,14 +1,14 @@
 @interface ADSegmentUpdateResponse
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSegmentRefreshIntervalInSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSegmentRefreshIntervalInSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ADSegmentUpdateResponse
@@ -31,9 +31,9 @@ void __34__ADSegmentUpdateResponse_options__block_invoke()
   options_sOptions_13 = &unk_285104E48;
 }
 
-- (void)setHasSegmentRefreshIntervalInSeconds:(BOOL)a3
+- (void)setHasSegmentRefreshIntervalInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }
@@ -52,20 +52,20 @@ void __34__ADSegmentUpdateResponse_options__block_invoke()
   v8.receiver = self;
   v8.super_class = ADSegmentUpdateResponse;
   v4 = [(ADSegmentUpdateResponse *)&v8 description];
-  v5 = [(ADSegmentUpdateResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ADSegmentUpdateResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   idDebug = self->_idDebug;
   if (idDebug)
   {
-    [v3 setObject:idDebug forKey:@"idDebug"];
+    [dictionary setObject:idDebug forKey:@"idDebug"];
   }
 
   has = self->_has;
@@ -86,14 +86,14 @@ void __34__ADSegmentUpdateResponse_options__block_invoke()
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_idDebug)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -101,7 +101,7 @@ void __34__ADSegmentUpdateResponse_options__block_invoke()
   {
     segmentRefreshIntervalInSeconds = self->_segmentRefreshIntervalInSeconds;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -109,39 +109,39 @@ void __34__ADSegmentUpdateResponse_options__block_invoke()
   {
     maxSegmentUpdateIntervalInSeconds = self->_maxSegmentUpdateIntervalInSeconds;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_idDebug)
   {
-    v6 = v4;
-    [v4 setIdDebug:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setIdDebug:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_segmentRefreshIntervalInSeconds;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 2) = *&self->_segmentRefreshIntervalInSeconds;
+    *(toCopy + 32) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_maxSegmentUpdateIntervalInSeconds;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = *&self->_maxSegmentUpdateIntervalInSeconds;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_idDebug copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_idDebug copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -162,16 +162,16 @@ void __34__ADSegmentUpdateResponse_options__block_invoke()
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   idDebug = self->_idDebug;
-  if (idDebug | *(v4 + 3))
+  if (idDebug | *(equalCopy + 3))
   {
     if (![(NSString *)idDebug isEqual:?])
     {
@@ -181,23 +181,23 @@ void __34__ADSegmentUpdateResponse_options__block_invoke()
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_segmentRefreshIntervalInSeconds != *(v4 + 2))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_segmentRefreshIntervalInSeconds != *(equalCopy + 2))
     {
       goto LABEL_13;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 32) & 1) == 0;
+  v6 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_maxSegmentUpdateIntervalInSeconds != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_maxSegmentUpdateIntervalInSeconds != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
@@ -283,27 +283,27 @@ LABEL_14:
   return v6 ^ v3 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(ADSegmentUpdateResponse *)self setIdDebug:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) != 0)
   {
-    self->_segmentRefreshIntervalInSeconds = v4[2];
+    self->_segmentRefreshIntervalInSeconds = fromCopy[2];
     *&self->_has |= 2u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
   }
 
   if (v5)
   {
-    self->_maxSegmentUpdateIntervalInSeconds = v4[1];
+    self->_maxSegmentUpdateIntervalInSeconds = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

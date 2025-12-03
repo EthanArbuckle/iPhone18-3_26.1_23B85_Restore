@@ -1,9 +1,9 @@
 @interface QSSPronGuessStreamingRequest
-- (Offset<siri::speech::qss_fb::PronGuessStreamingRequest>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::qss_fb::PronGuessStreamingRequest>)addObjectToBuffer:(void *)buffer;
 - (QSSAudioPacket)contentAsQSSAudioPacket;
 - (QSSCancelRequest)contentAsQSSCancelRequest;
 - (QSSFinishAudio)contentAsQSSFinishAudio;
-- (QSSPronGuessStreamingRequest)initWithFlatbuffData:(id)a3 root:(const PronGuessStreamingRequest *)a4 verify:(BOOL)a5;
+- (QSSPronGuessStreamingRequest)initWithFlatbuffData:(id)data root:(const PronGuessStreamingRequest *)root verify:(BOOL)verify;
 - (QSSStartPronGuessRequest)contentAsQSSStartPronGuessRequest;
 - (id)flatbuffData;
 - (int64_t)content_type;
@@ -40,13 +40,13 @@ flatbuffers::DetachedBuffer *__44__QSSPronGuessStreamingRequest_flatbuffData__bl
   return result;
 }
 
-- (Offset<siri::speech::qss_fb::PronGuessStreamingRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::PronGuessStreamingRequest>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSPronGuessStreamingRequest *)self content_type];
+  content_type = [(QSSPronGuessStreamingRequest *)self content_type];
   if ([(QSSPronGuessStreamingRequest *)self content_type]== 1)
   {
-    v6 = [(QSSPronGuessStreamingRequest *)self contentAsQSSStartPronGuessRequest];
-    LODWORD(v7) = [v6 addObjectToBuffer:a3];
+    contentAsQSSStartPronGuessRequest = [(QSSPronGuessStreamingRequest *)self contentAsQSSStartPronGuessRequest];
+    LODWORD(v7) = [contentAsQSSStartPronGuessRequest addObjectToBuffer:buffer];
 
     v7 = v7;
   }
@@ -58,8 +58,8 @@ flatbuffers::DetachedBuffer *__44__QSSPronGuessStreamingRequest_flatbuffData__bl
 
   if ([(QSSPronGuessStreamingRequest *)self content_type]== 2)
   {
-    v8 = [(QSSPronGuessStreamingRequest *)self contentAsQSSAudioPacket];
-    LODWORD(v9) = [v8 addObjectToBuffer:a3];
+    contentAsQSSAudioPacket = [(QSSPronGuessStreamingRequest *)self contentAsQSSAudioPacket];
+    LODWORD(v9) = [contentAsQSSAudioPacket addObjectToBuffer:buffer];
 
     v9 = v9;
   }
@@ -71,8 +71,8 @@ flatbuffers::DetachedBuffer *__44__QSSPronGuessStreamingRequest_flatbuffData__bl
 
   if ([(QSSPronGuessStreamingRequest *)self content_type]== 3)
   {
-    v10 = [(QSSPronGuessStreamingRequest *)self contentAsQSSFinishAudio];
-    LODWORD(v11) = [v10 addObjectToBuffer:a3];
+    contentAsQSSFinishAudio = [(QSSPronGuessStreamingRequest *)self contentAsQSSFinishAudio];
+    LODWORD(v11) = [contentAsQSSFinishAudio addObjectToBuffer:buffer];
 
     v11 = v11;
   }
@@ -84,8 +84,8 @@ flatbuffers::DetachedBuffer *__44__QSSPronGuessStreamingRequest_flatbuffData__bl
 
   if ([(QSSPronGuessStreamingRequest *)self content_type]== 4)
   {
-    v12 = [(QSSPronGuessStreamingRequest *)self contentAsQSSCancelRequest];
-    v13 = [v12 addObjectToBuffer:a3];
+    contentAsQSSCancelRequest = [(QSSPronGuessStreamingRequest *)self contentAsQSSCancelRequest];
+    v13 = [contentAsQSSCancelRequest addObjectToBuffer:buffer];
 
     v14 = v13;
   }
@@ -95,33 +95,33 @@ flatbuffers::DetachedBuffer *__44__QSSPronGuessStreamingRequest_flatbuffData__bl
     v14 = 0;
   }
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v15 = *(a3 + 5);
-  v16 = *(a3 + 6);
-  v17 = *(a3 + 4);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v15 = *(buffer + 5);
+  v16 = *(buffer + 6);
+  v17 = *(buffer + 4);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, content_type);
   if ([(QSSPronGuessStreamingRequest *)self content_type]== 1)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v7);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v7);
   }
 
   if ([(QSSPronGuessStreamingRequest *)self content_type]== 2)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v9);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v9);
   }
 
   if ([(QSSPronGuessStreamingRequest *)self content_type]== 3)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v11);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v11);
   }
 
   if ([(QSSPronGuessStreamingRequest *)self content_type]== 4)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v14);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v14);
   }
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v17 - v16 + v15);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v17 - v16 + v15);
 }
 
 - (QSSCancelRequest)contentAsQSSCancelRequest
@@ -271,10 +271,10 @@ flatbuffers::DetachedBuffer *__44__QSSPronGuessStreamingRequest_flatbuffData__bl
   }
 }
 
-- (QSSPronGuessStreamingRequest)initWithFlatbuffData:(id)a3 root:(const PronGuessStreamingRequest *)a4 verify:(BOOL)a5
+- (QSSPronGuessStreamingRequest)initWithFlatbuffData:(id)data root:(const PronGuessStreamingRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v33.receiver = self;
   v33.super_class = QSSPronGuessStreamingRequest;
   v10 = [(QSSPronGuessStreamingRequest *)&v33 init];
@@ -284,32 +284,32 @@ flatbuffers::DetachedBuffer *__44__QSSPronGuessStreamingRequest_flatbuffData__bl
     goto LABEL_43;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_44;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (v5)
+  v10->_root = root;
+  if (verifyCopy)
   {
-    v13 = [(NSData *)v10->_data bytes];
+    bytes2 = [(NSData *)v10->_data bytes];
     v14 = [(NSData *)v10->_data length];
     root = v10->_root;
-    if (root < v13 || root > v13 + v14)
+    if (root < bytes2 || root > bytes2 + v14)
     {
       goto LABEL_44;
     }
 
-    v17 = [(NSData *)v10->_data bytes];
+    bytes3 = [(NSData *)v10->_data bytes];
     v18 = [(NSData *)v10->_data length];
-    v28 = v17;
+    v28 = bytes3;
     v29 = v18;
     v30 = xmmword_26914CD70;
     v31 = 0;
@@ -396,9 +396,9 @@ LABEL_44:
   }
 
 LABEL_42:
-  v24 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v24;
+  v11->_storage = dictionary;
 
 LABEL_43:
   v26 = v11;

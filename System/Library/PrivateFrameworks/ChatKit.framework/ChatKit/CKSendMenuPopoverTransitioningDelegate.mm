@@ -1,8 +1,8 @@
 @interface CKSendMenuPopoverTransitioningDelegate
 - (CKSendMenuPopoverTransitioningDelegate)init;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 @end
 
 @implementation CKSendMenuPopoverTransitioningDelegate
@@ -26,7 +26,7 @@
   return v3;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   if (!self->_presentationController)
   {
@@ -38,7 +38,7 @@
   return v4;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   if (!self->_presentationController)
   {
@@ -50,14 +50,14 @@
   return v6;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
   presentationController = self->_presentationController;
   if (!presentationController)
   {
-    v8 = a4;
-    v9 = a3;
-    v10 = [[CKSendMenuPopoverPresentationController alloc] initWithConfiguration:self->_configuration popoverViewController:v9 presentingViewController:v8];
+    viewControllerCopy = viewController;
+    controllerCopy = controller;
+    v10 = [[CKSendMenuPopoverPresentationController alloc] initWithConfiguration:self->_configuration popoverViewController:controllerCopy presentingViewController:viewControllerCopy];
 
     v11 = self->_presentationController;
     self->_presentationController = v10;

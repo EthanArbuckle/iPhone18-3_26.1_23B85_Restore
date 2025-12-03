@@ -1,25 +1,25 @@
 @interface CSLPRFStingSettingsViewController
 - (CSLPRFStingSettingsViewController)init;
-- (id)_gesturePaneChordFooterTextForActionType:(unint64_t)a3;
-- (id)_gesturePaneFooterTextForActionType:(unint64_t)a3;
-- (id)_gesturePaneSpecifiersForActionType:(unint64_t)a3;
-- (id)_holdToActivateMandrakeForSpecifier:(id)a3;
-- (id)_makeListItemSpecifier:(id)a3 label:(id)a4 icon:(id)a5 detail:(Class)a6;
+- (id)_gesturePaneChordFooterTextForActionType:(unint64_t)type;
+- (id)_gesturePaneFooterTextForActionType:(unint64_t)type;
+- (id)_gesturePaneSpecifiersForActionType:(unint64_t)type;
+- (id)_holdToActivateMandrakeForSpecifier:(id)specifier;
+- (id)_makeListItemSpecifier:(id)specifier label:(id)label icon:(id)icon detail:(Class)detail;
 - (id)_mandrakeSpecifiers;
 - (id)_quickSwitchSpecifiers;
 - (id)_selectedAccessibilitySpecifier;
-- (id)_selectedActionItemSpecifierForActionType:(unint64_t)a3;
-- (id)_selectedAppSpecifier:(id)a3 detail:(Class)a4;
+- (id)_selectedActionItemSpecifierForActionType:(unint64_t)type;
+- (id)_selectedAppSpecifier:(id)specifier detail:(Class)detail;
 - (id)_selectedShortcutSpecifier;
-- (id)_selectedWorkoutItemForIdentifier:(id)a3 workoutItems:(id)a4;
-- (id)_specifiersForActionType:(unint64_t)a3;
+- (id)_selectedWorkoutItemForIdentifier:(id)identifier workoutItems:(id)items;
+- (id)_specifiersForActionType:(unint64_t)type;
 - (id)_specifiersForUnconfiguredAction;
-- (id)_workoutSpecifiersForActionType:(unint64_t)a3 bundleID:(id)a4 workoutIdentifier:(id)a5;
+- (id)_workoutSpecifiersForActionType:(unint64_t)type bundleID:(id)d workoutIdentifier:(id)identifier;
 - (id)specifiers;
 - (void)_deregisterMandrakeSettingsListener;
 - (void)_registerMandrakeSettingsListener;
-- (void)_setHoldToActivateMandrake:(id)a3 forSpecifier:(id)a4;
-- (void)addSelectedAppRowWithTitle:(id)a3 specifiers:(id)a4;
+- (void)_setHoldToActivateMandrake:(id)mandrake forSpecifier:(id)specifier;
+- (void)addSelectedAppRowWithTitle:(id)title specifiers:(id)specifiers;
 - (void)dealloc;
 - (void)reloadSpecifiers;
 - (void)viewDidLoad;
@@ -63,10 +63,10 @@
   v8.receiver = self;
   v8.super_class = CSLPRFStingSettingsViewController;
   [(CSLPRFStingSettingsViewController *)&v8 viewDidLoad];
-  v3 = [(CSLPRFStingSettingsViewController *)self table];
+  table = [(CSLPRFStingSettingsViewController *)self table];
   v4 = objc_opt_class();
   v5 = +[CSLPRFStingGesturePaneCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"ROOT_CONTROLLER_TITLE" value:&stru_C380 table:@"LocalizableSettings-N199"];
@@ -81,10 +81,10 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(CSLPRFStingConfiguration *)self->_stingConfiguration actionType];
-    if (v5)
+    actionType = [(CSLPRFStingConfiguration *)self->_stingConfiguration actionType];
+    if (actionType)
     {
-      [(CSLPRFStingSettingsViewController *)self _specifiersForActionType:v5];
+      [(CSLPRFStingSettingsViewController *)self _specifiersForActionType:actionType];
     }
 
     else
@@ -92,11 +92,11 @@
       [(CSLPRFStingSettingsViewController *)self _specifiersForUnconfiguredAction];
     }
     v6 = ;
-    v7 = [(CSLPRFStingSettingsViewController *)self _quickSwitchSpecifiers];
-    [v6 addObjectsFromArray:v7];
+    _quickSwitchSpecifiers = [(CSLPRFStingSettingsViewController *)self _quickSwitchSpecifiers];
+    [v6 addObjectsFromArray:_quickSwitchSpecifiers];
 
-    v8 = [(CSLPRFStingSettingsViewController *)self _mandrakeSpecifiers];
-    [v6 addObjectsFromArray:v8];
+    _mandrakeSpecifiers = [(CSLPRFStingSettingsViewController *)self _mandrakeSpecifiers];
+    [v6 addObjectsFromArray:_mandrakeSpecifiers];
 
     v9 = [v6 copy];
     v10 = *&self->PSListController_opaque[v3];
@@ -107,7 +107,7 @@
     {
       v12 = *&self->PSListController_opaque[v3];
       v14 = 138412546;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
       v17 = v12;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "%@: loaded specifiers %@", &v14, 0x16u);
@@ -135,28 +135,28 @@
   return v3;
 }
 
-- (id)_specifiersForActionType:(unint64_t)a3
+- (id)_specifiersForActionType:(unint64_t)type
 {
   v5 = +[NSMutableArray array];
-  v21 = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
-  v6 = [(CSLPRFStingConfiguration *)self->_stingConfiguration workoutIdentifier];
+  bundleID = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
+  workoutIdentifier = [(CSLPRFStingConfiguration *)self->_stingConfiguration workoutIdentifier];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"ACTION" value:&stru_C380 table:@"LocalizableSettings-N199"];
   v9 = [PSSpecifier groupSpecifierWithID:@"StingSystemSettingsActionTypeGroupID" name:v8];
 
   [v5 addObject:v9];
-  v10 = [(CSLPRFStingSettingsViewController *)self _selectedActionItemSpecifierForActionType:a3];
+  v10 = [(CSLPRFStingSettingsViewController *)self _selectedActionItemSpecifierForActionType:type];
   [v5 addObject:v10];
-  if (a3 <= 8)
+  if (type <= 8)
   {
-    if (!a3)
+    if (!type)
     {
       goto LABEL_22;
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 != 6)
+      if (type != 6)
       {
         goto LABEL_21;
       }
@@ -164,8 +164,8 @@
       goto LABEL_12;
     }
 
-    v14 = [(CSLPRFStingSettingsViewController *)self _selectedShortcutSpecifier];
-    if (v14)
+    _selectedShortcutSpecifier = [(CSLPRFStingSettingsViewController *)self _selectedShortcutSpecifier];
+    if (_selectedShortcutSpecifier)
     {
       v15 = [NSBundle bundleForClass:objc_opt_class()];
       v16 = [v15 localizedStringForKey:@"SHORTCUT_TITLE" value:&stru_C380 table:@"LocalizableSettings-N199"];
@@ -178,11 +178,11 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (a3 <= 19)
+  if (type <= 19)
   {
-    if (a3 != 9)
+    if (type != 9)
     {
-      if (a3 == 18)
+      if (type == 18)
       {
         goto LABEL_22;
       }
@@ -193,19 +193,19 @@ LABEL_20:
     goto LABEL_12;
   }
 
-  if (a3 == 38)
+  if (type == 38)
   {
-    v14 = [(CSLPRFStingSettingsViewController *)self _selectedAccessibilitySpecifier];
-    if (v14)
+    _selectedShortcutSpecifier = [(CSLPRFStingSettingsViewController *)self _selectedAccessibilitySpecifier];
+    if (_selectedShortcutSpecifier)
     {
       v15 = [NSBundle bundleForClass:objc_opt_class()];
       v16 = [v15 localizedStringForKey:@"ACCESSIBILITY_TITLE" value:&stru_C380 table:@"LocalizableSettings-N199"];
       v17 = @"StingSystemSettingsAccessibilityGroupID";
 LABEL_19:
-      v18 = [PSSpecifier groupSpecifierWithID:v17 name:v16, PSSpecifier];
+      pSSpecifier = [PSSpecifier groupSpecifierWithID:v17 name:v16, PSSpecifier];
 
-      [v5 addObject:v18];
-      [v5 addObject:v14];
+      [v5 addObject:pSSpecifier];
+      [v5 addObject:_selectedShortcutSpecifier];
 
       goto LABEL_20;
     }
@@ -213,26 +213,26 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a3 == 20)
+  if (type == 20)
   {
 LABEL_12:
     v11 = [NSBundle bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"APP" value:&stru_C380 table:@"LocalizableSettings-N199"];
-    v13 = [v12 localizedUppercaseString];
-    [(CSLPRFStingSettingsViewController *)self addSelectedAppRowWithTitle:v13 specifiers:v5];
+    localizedUppercaseString = [v12 localizedUppercaseString];
+    [(CSLPRFStingSettingsViewController *)self addSelectedAppRowWithTitle:localizedUppercaseString specifiers:v5];
 
-    if (a3 != 6 && a3 != 9)
+    if (type != 6 && type != 9)
     {
       goto LABEL_21;
     }
 
-    v14 = [(CSLPRFStingSettingsViewController *)self _workoutSpecifiersForActionType:a3 bundleID:v21 workoutIdentifier:v6];
-    [v5 addObjectsFromArray:v14];
+    _selectedShortcutSpecifier = [(CSLPRFStingSettingsViewController *)self _workoutSpecifiersForActionType:type bundleID:bundleID workoutIdentifier:workoutIdentifier];
+    [v5 addObjectsFromArray:_selectedShortcutSpecifier];
     goto LABEL_20;
   }
 
 LABEL_21:
-  v19 = [(CSLPRFStingSettingsViewController *)self _gesturePaneSpecifiersForActionType:a3];
+  v19 = [(CSLPRFStingSettingsViewController *)self _gesturePaneSpecifiersForActionType:type];
   [v5 addObjectsFromArray:v19];
 
 LABEL_22:
@@ -240,14 +240,14 @@ LABEL_22:
   return v5;
 }
 
-- (id)_gesturePaneSpecifiersForActionType:(unint64_t)a3
+- (id)_gesturePaneSpecifiersForActionType:(unint64_t)type
 {
   v5 = +[NSMutableArray array];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"GESTURE_PANE_TITLE" value:&stru_C380 table:@"LocalizableSettings-N199"];
   v8 = [PSSpecifier groupSpecifierWithID:@"StingSystemSettingsActionTypeGroupID" name:v7];
 
-  v25 = [(CSLPRFStingSettingsViewController *)self _gesturePaneFooterTextForActionType:a3];
+  v25 = [(CSLPRFStingSettingsViewController *)self _gesturePaneFooterTextForActionType:type];
   [v8 setProperty:? forKey:?];
   v24 = PSFooterAlignmentGroupKey;
   [v8 setProperty:&off_CF30 forKey:?];
@@ -261,7 +261,7 @@ LABEL_22:
   v13 = PSTableCellHeightKey;
   [v9 setProperty:v12 forKey:PSTableCellHeightKey];
 
-  v14 = [CSLPRFStingSettingsModel sfSymbolAssetNameForActionType:a3];
+  v14 = [CSLPRFStingSettingsModel sfSymbolAssetNameForActionType:type];
   if (v14)
   {
     [v9 setProperty:v14 forKey:@"CSLPRFStingGesturePaneCellSymbolName"];
@@ -271,7 +271,7 @@ LABEL_22:
   if (CSLHasChordActionInstructions())
   {
     v15 = CSLChordAction();
-    if (v15 != a3)
+    if (v15 != type)
     {
       v16 = [CSLPRFStingSettingsModel sfSymbolAssetNameForActionType:v15];
 
@@ -279,7 +279,7 @@ LABEL_22:
     }
 
     v17 = [PSSpecifier groupSpecifierWithID:@"StingSystemSettingsGesturesGroupTwoID"];
-    v23 = [(CSLPRFStingSettingsViewController *)self _gesturePaneChordFooterTextForActionType:a3];
+    v23 = [(CSLPRFStingSettingsViewController *)self _gesturePaneChordFooterTextForActionType:type];
     [v17 setProperty:? forKey:?];
     [v17 setProperty:&off_CF30 forKey:v24];
     v18 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:-1 edit:0];
@@ -293,7 +293,7 @@ LABEL_22:
       [v18 setProperty:v14 forKey:@"CSLPRFStingGesturePaneCellSymbolName"];
     }
 
-    v20 = [NSNumber numberWithBool:a3 != 20];
+    v20 = [NSNumber numberWithBool:type != 20];
     [v18 setProperty:v20 forKey:@"CSLPRFStingGesturePaneCellHasChordArrow"];
 
     [v5 addObject:v17];
@@ -305,14 +305,14 @@ LABEL_22:
   return v21;
 }
 
-- (id)_gesturePaneFooterTextForActionType:(unint64_t)a3
+- (id)_gesturePaneFooterTextForActionType:(unint64_t)type
 {
   v3 = 0;
-  if (a3 <= 19)
+  if (type <= 19)
   {
-    if (a3 <= 4)
+    if (type <= 4)
     {
-      switch(a3)
+      switch(type)
       {
         case 1uLL:
           v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -334,32 +334,32 @@ LABEL_22:
       }
     }
 
-    else if (a3 > 8)
+    else if (type > 8)
     {
-      if (a3 == 9)
+      if (type == 9)
       {
         v9 = [NSBundle bundleForClass:objc_opt_class()];
         v5 = [v9 localizedStringForKey:@"GESTURE_PANE_WORKOUT_OPEN" value:&stru_C380 table:@"LocalizableSettings-N199"];
 
-        v10 = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
+        bundleID = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
         v11 = [CSLPRFApplicationLibrary sharedLibraryForLocation:0];
-        v12 = [v11 applicationWithBundleIdentifier:v10];
-        v13 = [v12 localizedName];
+        v12 = [v11 applicationWithBundleIdentifier:bundleID];
+        localizedName = [v12 localizedName];
 
-        if (![v13 length])
+        if (![localizedName length])
         {
           v14 = [NSBundle bundleForClass:objc_opt_class()];
           v15 = [v14 localizedStringForKey:@"APP" value:&stru_C380 table:@"LocalizableSettings-N199"];
 
-          v13 = v15;
+          localizedName = v15;
         }
 
-        v3 = [NSString localizedStringWithFormat:v5, v13];
+        v3 = [NSString localizedStringWithFormat:v5, localizedName];
 
         goto LABEL_38;
       }
 
-      if (a3 != 12)
+      if (type != 12)
       {
         goto LABEL_39;
       }
@@ -369,7 +369,7 @@ LABEL_22:
       v6 = @"GESTURE_PANE_BACKTRACK_SINGLE_PRESS";
     }
 
-    else if (a3 == 5)
+    else if (type == 5)
     {
       v4 = [NSBundle bundleForClass:objc_opt_class()];
       v5 = v4;
@@ -378,7 +378,7 @@ LABEL_22:
 
     else
     {
-      if (a3 != 6)
+      if (type != 6)
       {
         goto LABEL_39;
       }
@@ -391,9 +391,9 @@ LABEL_22:
     goto LABEL_36;
   }
 
-  if (a3 <= 33)
+  if (type <= 33)
   {
-    switch(a3)
+    switch(type)
     {
       case 0x14uLL:
         v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -418,9 +418,9 @@ LABEL_22:
     goto LABEL_36;
   }
 
-  if (a3 > 39)
+  if (type > 39)
   {
-    if (a3 == 40)
+    if (type == 40)
     {
       v4 = [NSBundle bundleForClass:objc_opt_class()];
       v5 = v4;
@@ -429,7 +429,7 @@ LABEL_22:
 
     else
     {
-      if (a3 != 42)
+      if (type != 42)
       {
         goto LABEL_39;
       }
@@ -442,9 +442,9 @@ LABEL_22:
     goto LABEL_36;
   }
 
-  if (a3 != 34)
+  if (type != 34)
   {
-    if (a3 != 38)
+    if (type != 38)
     {
       goto LABEL_39;
     }
@@ -470,12 +470,12 @@ LABEL_39:
   return v3;
 }
 
-- (id)_gesturePaneChordFooterTextForActionType:(unint64_t)a3
+- (id)_gesturePaneChordFooterTextForActionType:(unint64_t)type
 {
   v3 = 0;
-  if (a3 > 11)
+  if (type > 11)
   {
-    switch(a3)
+    switch(type)
     {
       case 0xCuLL:
         v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -505,7 +505,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (a3 == 4 || a3 == 6)
+  if (type == 4 || type == 6)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -518,20 +518,20 @@ LABEL_13:
   return v3;
 }
 
-- (void)addSelectedAppRowWithTitle:(id)a3 specifiers:(id)a4
+- (void)addSelectedAppRowWithTitle:(id)title specifiers:(id)specifiers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
-  v9 = [(CSLPRFApplicationLibrary *)self->_appLibrary applicationWithBundleIdentifier:v8];
+  titleCopy = title;
+  specifiersCopy = specifiers;
+  bundleID = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
+  v9 = [(CSLPRFApplicationLibrary *)self->_appLibrary applicationWithBundleIdentifier:bundleID];
   if (v9)
   {
-    v10 = [PSSpecifier groupSpecifierWithID:@"StingSystemSettingsSelectedAppGroupID" name:v6];
-    [v7 addObject:v10];
+    v10 = [PSSpecifier groupSpecifierWithID:@"StingSystemSettingsSelectedAppGroupID" name:titleCopy];
+    [specifiersCopy addObject:v10];
     v11 = [(CSLPRFStingSettingsViewController *)self _selectedAppSpecifier:v9 detail:objc_opt_class()];
     if (v11)
     {
-      [v7 addObject:v11];
+      [specifiersCopy addObject:v11];
     }
   }
 
@@ -540,15 +540,15 @@ LABEL_13:
     v12 = cslprf_sting_settings_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_7C00(v8, v12);
+      sub_7C00(bundleID, v12);
     }
   }
 }
 
 - (id)_selectedShortcutSpecifier
 {
-  v3 = [(CSLPRFStingConfiguration *)self->_stingConfiguration workoutIdentifier];
-  v4 = [(CSLPRFStingSettingsModel *)self->_model shortcutItems];
+  workoutIdentifier = [(CSLPRFStingConfiguration *)self->_stingConfiguration workoutIdentifier];
+  shortcutItems = [(CSLPRFStingSettingsModel *)self->_model shortcutItems];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -559,10 +559,10 @@ LABEL_13:
   v9 = 3221225472;
   v10 = sub_2500;
   v11 = &unk_C2F0;
-  v5 = v3;
+  v5 = workoutIdentifier;
   v12 = v5;
   v13 = &v14;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v8];
+  [shortcutItems enumerateKeysAndObjectsUsingBlock:&v8];
   v6 = [(CSLPRFStingSettingsViewController *)self _makeListItemSpecifier:@"StingSystemSettingsShortcuts" label:v15[5] icon:0 detail:objc_opt_class(), v8, v9, v10, v11];
 
   _Block_object_dispose(&v14, 8);
@@ -572,7 +572,7 @@ LABEL_13:
 
 - (id)_selectedAccessibilitySpecifier
 {
-  v3 = [(CSLPRFStingConfiguration *)self->_stingConfiguration workoutIdentifier];
+  workoutIdentifier = [(CSLPRFStingConfiguration *)self->_stingConfiguration workoutIdentifier];
   [(CSLPRFStingSettingsModel *)self->_model accessibilityItems];
   v15 = 0u;
   v16 = 0u;
@@ -583,7 +583,7 @@ LABEL_13:
   {
     v6 = v5;
     v7 = *v16;
-    v8 = &stru_C380;
+    title = &stru_C380;
     while (2)
     {
       for (i = 0; i != v6; i = i + 1)
@@ -594,12 +594,12 @@ LABEL_13:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v3];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:workoutIdentifier];
 
         if (v12)
         {
-          v8 = [v10 title];
+          title = [v10 title];
           goto LABEL_12;
         }
       }
@@ -616,64 +616,64 @@ LABEL_13:
 
   else
   {
-    v8 = &stru_C380;
+    title = &stru_C380;
   }
 
 LABEL_12:
 
-  v13 = [(CSLPRFStingSettingsViewController *)self _makeListItemSpecifier:@"StingSystemSettingsAccessibility" label:v8 icon:0 detail:objc_opt_class()];
+  v13 = [(CSLPRFStingSettingsViewController *)self _makeListItemSpecifier:@"StingSystemSettingsAccessibility" label:title icon:0 detail:objc_opt_class()];
 
   return v13;
 }
 
-- (id)_workoutSpecifiersForActionType:(unint64_t)a3 bundleID:(id)a4 workoutIdentifier:(id)a5
+- (id)_workoutSpecifiersForActionType:(unint64_t)type bundleID:(id)d workoutIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
   v10 = +[NSMutableArray array];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"FIRST_PRESS" value:&stru_C380 table:@"LocalizableSettings-N199"];
   v13 = [PSSpecifier groupSpecifierWithID:@"StingSystemSettingsWorkoutGroupID" name:v12];
 
   [v10 addObject:v13];
-  if (a3 == 6)
+  if (type == 6)
   {
-    v14 = [(CSLPRFStingSettingsModel *)self->_model startWorkoutsListForBundleID:v8];
-    v15 = [(CSLPRFStingSettingsViewController *)self _selectedWorkoutItemForIdentifier:v9 workoutItems:v14];
-    v16 = [v15 title];
-    v17 = [v15 subtitle];
+    bundleID = [(CSLPRFStingSettingsModel *)self->_model startWorkoutsListForBundleID:dCopy];
+    localizedName = [(CSLPRFStingSettingsViewController *)self _selectedWorkoutItemForIdentifier:identifierCopy workoutItems:bundleID];
+    title = [localizedName title];
+    subtitle = [localizedName subtitle];
   }
 
   else
   {
-    v26 = v9;
-    v18 = v8;
-    v14 = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
+    v26 = identifierCopy;
+    v18 = dCopy;
+    bundleID = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
     v19 = [CSLPRFApplicationLibrary sharedLibraryForLocation:0];
-    v20 = [v19 applicationWithBundleIdentifier:v14];
-    v15 = [v20 localizedName];
+    v20 = [v19 applicationWithBundleIdentifier:bundleID];
+    localizedName = [v20 localizedName];
 
-    if (v15 && [v15 length])
+    if (localizedName && [localizedName length])
     {
       v21 = [NSBundle bundleForClass:objc_opt_class()];
       v22 = [v21 localizedStringForKey:@"OPEN_APP_NAME" value:&stru_C380 table:@"LocalizableSettings-N199"];
-      v16 = [NSString stringWithFormat:v22, v15];
+      title = [NSString stringWithFormat:v22, localizedName];
 
-      v17 = 0;
+      subtitle = 0;
     }
 
     else
     {
-      v17 = 0;
-      v16 = 0;
+      subtitle = 0;
+      title = 0;
     }
 
-    v8 = v18;
-    v9 = v26;
+    dCopy = v18;
+    identifierCopy = v26;
   }
 
-  v23 = [PSSpecifier preferenceSpecifierNamed:v16 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
-  [v23 setProperty:v17 forKey:PSTableCellSubtitleTextKey];
+  v23 = [PSSpecifier preferenceSpecifierNamed:title target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+  [v23 setProperty:subtitle forKey:PSTableCellSubtitleTextKey];
   [v23 setProperty:objc_opt_class() forKey:PSCellClassKey];
   [v23 setProperty:self->_model forKey:@"StingSettingsModel"];
   [v10 addObject:v23];
@@ -682,15 +682,15 @@ LABEL_12:
   return v24;
 }
 
-- (id)_selectedWorkoutItemForIdentifier:(id)a3 workoutItems:(id)a4
+- (id)_selectedWorkoutItemForIdentifier:(id)identifier workoutItems:(id)items
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  itemsCopy = items;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [itemsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -702,12 +702,12 @@ LABEL_12:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 workoutIdentifier];
-        v14 = [v13 isEqualToString:v5];
+        workoutIdentifier = [v12 workoutIdentifier];
+        v14 = [workoutIdentifier isEqualToString:identifierCopy];
 
         if (v14)
         {
@@ -717,7 +717,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [itemsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -731,19 +731,19 @@ LABEL_12:
   return v9;
 }
 
-- (id)_selectedAppSpecifier:(id)a3 detail:(Class)a4
+- (id)_selectedAppSpecifier:(id)specifier detail:(Class)detail
 {
-  v6 = a3;
-  v7 = [v6 localizedName];
-  v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:a4 cell:2 edit:0];
+  specifierCopy = specifier;
+  localizedName = [specifierCopy localizedName];
+  v8 = [PSSpecifier preferenceSpecifierNamed:localizedName target:self set:0 get:0 detail:detail cell:2 edit:0];
 
-  [v8 setApp:v6];
-  v9 = [v6 bundleIdentifier];
-  [v8 setIdentifier:v9];
+  [v8 setApp:specifierCopy];
+  bundleIdentifier = [specifierCopy bundleIdentifier];
+  [v8 setIdentifier:bundleIdentifier];
 
-  v10 = [v6 bundleIdentifier];
+  bundleIdentifier2 = [specifierCopy bundleIdentifier];
 
-  [v8 setProperty:v10 forKey:PSLazyIconAppID];
+  [v8 setProperty:bundleIdentifier2 forKey:PSLazyIconAppID];
   [v8 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
   [v8 setProperty:objc_opt_class() forKey:PSCellClassKey];
   [v8 setProperty:self->_model forKey:@"StingSettingsModel"];
@@ -751,16 +751,16 @@ LABEL_12:
   return v8;
 }
 
-- (id)_selectedActionItemSpecifierForActionType:(unint64_t)a3
+- (id)_selectedActionItemSpecifierForActionType:(unint64_t)type
 {
-  if (a3 != 18 && a3)
+  if (type != 18 && type)
   {
-    v6 = [CSLPRFStingSettingsModel sfSymbolAssetNameForActionType:a3];
+    v6 = [CSLPRFStingSettingsModel sfSymbolAssetNameForActionType:type];
     v8 = [UIImage _systemImageNamed:v6];
     v9 = +[UIColor systemWhiteColor];
     v10 = [v8 imageWithTintColor:v9 renderingMode:1];
 
-    v11 = [CSLPRFStingSettingsModel actionNameForActionType:a3];
+    v11 = [CSLPRFStingSettingsModel actionNameForActionType:type];
     v7 = [(CSLPRFStingSettingsViewController *)self _makeListItemSpecifier:@"StingSystemSettingsActionTypeItem" label:v11 icon:v10 detail:objc_opt_class()];
   }
 
@@ -783,18 +783,18 @@ LABEL_12:
   [(CSLPRFStingSettingsViewController *)&v3 reloadSpecifiers];
 }
 
-- (id)_makeListItemSpecifier:(id)a3 label:(id)a4 icon:(id)a5 detail:(Class)a6
+- (id)_makeListItemSpecifier:(id)specifier label:(id)label icon:(id)icon detail:(Class)detail
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [PSSpecifier preferenceSpecifierNamed:a4 target:self set:0 get:0 detail:a6 cell:2 edit:0];
+  specifierCopy = specifier;
+  iconCopy = icon;
+  v12 = [PSSpecifier preferenceSpecifierNamed:label target:self set:0 get:0 detail:detail cell:2 edit:0];
   v13 = v12;
-  if (v11)
+  if (iconCopy)
   {
-    [v12 setProperty:v11 forKey:PSIconImageKey];
+    [v12 setProperty:iconCopy forKey:PSIconImageKey];
   }
 
-  [v13 setIdentifier:v10];
+  [v13 setIdentifier:specifierCopy];
   [v13 setProperty:self->_model forKey:@"StingSettingsModel"];
 
   return v13;
@@ -842,14 +842,14 @@ LABEL_12:
 - (void)_registerMandrakeSettingsListener
 {
   objc_initWeak(&location, self);
-  v3 = [SOSMandrakeStateChangedNotification UTF8String];
+  uTF8String = [SOSMandrakeStateChangedNotification UTF8String];
   v4 = &_dispatch_main_q;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_34FC;
   v5[3] = &unk_C318;
   objc_copyWeak(&v6, &location);
-  notify_register_dispatch(v3, &self->_stingActivatesMandrakeNotifyToken, &_dispatch_main_q, v5);
+  notify_register_dispatch(uTF8String, &self->_stingActivatesMandrakeNotifyToken, &_dispatch_main_q, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -865,14 +865,14 @@ LABEL_12:
   }
 }
 
-- (void)_setHoldToActivateMandrake:(id)a3 forSpecifier:(id)a4
+- (void)_setHoldToActivateMandrake:(id)mandrake forSpecifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [mandrake BOOLValue];
 
-  [SOSUtilities setLongPressTriggersMandrake:v4];
+  [SOSUtilities setLongPressTriggersMandrake:bOOLValue];
 }
 
-- (id)_holdToActivateMandrakeForSpecifier:(id)a3
+- (id)_holdToActivateMandrakeForSpecifier:(id)specifier
 {
   v3 = +[SOSUtilities longPressTriggersMandrake];
 

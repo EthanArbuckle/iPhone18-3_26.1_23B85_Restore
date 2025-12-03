@@ -1,12 +1,12 @@
 @interface SFShortcutsImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFShortcutsImage)initWithCoder:(id)a3;
-- (SFShortcutsImage)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFShortcutsImage)initWithCoder:(id)coder;
+- (SFShortcutsImage)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFShortcutsImage
@@ -16,38 +16,38 @@
   v7.receiver = self;
   v7.super_class = SFShortcutsImage;
   v3 = [(SFImage *)&v7 hash];
-  v4 = [(SFShortcutsImage *)self lnPropertyIdentifier];
-  v5 = [v4 hash];
+  lnPropertyIdentifier = [(SFShortcutsImage *)self lnPropertyIdentifier];
+  v5 = [lnPropertyIdentifier hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFShortcutsImage *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFShortcutsImage, [(SFImage *)&v13 isEqual:v4]))
+  else if ([(SFShortcutsImage *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFShortcutsImage, [(SFImage *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFShortcutsImage *)self lnPropertyIdentifier];
-    v7 = [(SFShortcutsImage *)v5 lnPropertyIdentifier];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    lnPropertyIdentifier = [(SFShortcutsImage *)self lnPropertyIdentifier];
+    lnPropertyIdentifier2 = [(SFShortcutsImage *)v5 lnPropertyIdentifier];
+    if ((lnPropertyIdentifier != 0) == (lnPropertyIdentifier2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFShortcutsImage *)self lnPropertyIdentifier];
-      if (v8)
+      lnPropertyIdentifier3 = [(SFShortcutsImage *)self lnPropertyIdentifier];
+      if (lnPropertyIdentifier3)
       {
-        v9 = [(SFShortcutsImage *)self lnPropertyIdentifier];
-        v10 = [(SFShortcutsImage *)v5 lnPropertyIdentifier];
-        v11 = [v9 isEqual:v10];
+        lnPropertyIdentifier4 = [(SFShortcutsImage *)self lnPropertyIdentifier];
+        lnPropertyIdentifier5 = [(SFShortcutsImage *)v5 lnPropertyIdentifier];
+        v11 = [lnPropertyIdentifier4 isEqual:lnPropertyIdentifier5];
       }
 
       else
@@ -65,13 +65,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFShortcutsImage;
-  v4 = [(SFImage *)&v8 copyWithZone:a3];
-  v5 = [(SFShortcutsImage *)self lnPropertyIdentifier];
-  v6 = [v5 copy];
+  v4 = [(SFImage *)&v8 copyWithZone:zone];
+  lnPropertyIdentifier = [(SFShortcutsImage *)self lnPropertyIdentifier];
+  v6 = [lnPropertyIdentifier copy];
   [v4 setLnPropertyIdentifier:v6];
 
   return v4;
@@ -80,31 +80,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBShortcutsImage alloc] initWithFacade:self];
-  v3 = [(_SFPBShortcutsImage *)v2 jsonData];
+  jsonData = [(_SFPBShortcutsImage *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBShortcutsImage alloc] initWithFacade:self];
-  v3 = [(_SFPBShortcutsImage *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBShortcutsImage *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBImage alloc] initWithFacade:self];
-  v5 = [(_SFPBImage *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBImage *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFShortcutsImage)initWithCoder:(id)a3
+- (SFShortcutsImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBImage alloc] initWithData:v5];
   v9.receiver = self;
@@ -114,20 +114,20 @@
   return v7;
 }
 
-- (SFShortcutsImage)initWithProtobuf:(id)a3
+- (SFShortcutsImage)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFShortcutsImage;
   v5 = [(SFShortcutsImage *)&v10 init];
   if (v5)
   {
-    v6 = [v4 lnPropertyIdentifier];
+    lnPropertyIdentifier = [protobufCopy lnPropertyIdentifier];
 
-    if (v6)
+    if (lnPropertyIdentifier)
     {
-      v7 = [v4 lnPropertyIdentifier];
-      [(SFShortcutsImage *)v5 setLnPropertyIdentifier:v7];
+      lnPropertyIdentifier2 = [protobufCopy lnPropertyIdentifier];
+      [(SFShortcutsImage *)v5 setLnPropertyIdentifier:lnPropertyIdentifier2];
     }
 
     v8 = v5;

@@ -1,22 +1,22 @@
 @interface CRLImageProvider
-+ (CRLImageProvider)allocWithZone:(_NSZone *)a3;
++ (CRLImageProvider)allocWithZone:(_NSZone *)zone;
 - (BOOL)isValid;
 - (CGSize)naturalSize;
-- (CRLImageProvider)initWithImageData:(id)a3;
+- (CRLImageProvider)initWithImageData:(id)data;
 - (CRLImageProvider)retain;
 - (void)dealloc;
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4;
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect;
 - (void)i_flushIfNoOneUsing;
 - (void)release;
 @end
 
 @implementation CRLImageProvider
 
-+ (CRLImageProvider)allocWithZone:(_NSZone *)a3
++ (CRLImageProvider)allocWithZone:(_NSZone *)zone
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___CRLImageProvider;
-  result = objc_msgSendSuper2(&v4, "allocWithZone:", a3);
+  result = objc_msgSendSuper2(&v4, "allocWithZone:", zone);
   if (result)
   {
     atomic_store(1u, &result->mRetainCount);
@@ -25,9 +25,9 @@
   return result;
 }
 
-- (CRLImageProvider)initWithImageData:(id)a3
+- (CRLImageProvider)initWithImageData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -53,7 +53,7 @@
   v5 = [(CRLImageProvider *)&v7 init];
   if (v5)
   {
-    v5->mImageData = a3;
+    v5->mImageData = data;
     [(CRLImageProvider *)v5 i_commonInit];
   }
 
@@ -115,9 +115,9 @@
   return 1;
 }
 
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect
 {
-  [CRLAssertionHandler _atomicIncrementAssertCount:a3];
+  [CRLAssertionHandler _atomicIncrementAssertCount:context];
   if (qword_101AD5A10 != -1)
   {
     sub_10136C718();

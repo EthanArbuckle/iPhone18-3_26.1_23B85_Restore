@@ -1,13 +1,13 @@
 @interface CNChangeHistoryAnchor
 + (id)limitedAccessHistoryAnchor;
 + (id)log;
-- (CNChangeHistoryAnchor)initWithCoder:(id)a3;
-- (CNChangeHistoryAnchor)initWithHistoryToken:(id)a3 error:(id *)a4;
-- (CNChangeHistoryAnchor)initWithSequenceNumber:(int64_t)a3 changeRecordID:(int64_t)a4;
+- (CNChangeHistoryAnchor)initWithCoder:(id)coder;
+- (CNChangeHistoryAnchor)initWithHistoryToken:(id)token error:(id *)error;
+- (CNChangeHistoryAnchor)initWithSequenceNumber:(int64_t)number changeRecordID:(int64_t)d;
 - (NSData)historyToken;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNChangeHistoryAnchor
@@ -17,9 +17,9 @@
   v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [(CNChangeHistoryAnchor *)self encodeWithCoder:v3];
   [v3 finishEncoding];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
 - (id)description
@@ -34,9 +34,9 @@
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CNChangeHistoryAnchor changeRecordID](self, "changeRecordID")}];
   v9 = [v3 appendName:@"changeRecordID" object:v8];
 
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 + (id)log
@@ -67,7 +67,7 @@ uint64_t __28__CNChangeHistoryAnchor_log__block_invoke()
   return v2;
 }
 
-- (CNChangeHistoryAnchor)initWithSequenceNumber:(int64_t)a3 changeRecordID:(int64_t)a4
+- (CNChangeHistoryAnchor)initWithSequenceNumber:(int64_t)number changeRecordID:(int64_t)d
 {
   v10.receiver = self;
   v10.super_class = CNChangeHistoryAnchor;
@@ -75,8 +75,8 @@ uint64_t __28__CNChangeHistoryAnchor_log__block_invoke()
   v7 = v6;
   if (v6)
   {
-    v6->_changeRecordID = a4;
-    v6->_sequenceNumber = a3;
+    v6->_changeRecordID = d;
+    v6->_sequenceNumber = number;
     v6->_version = 2;
     v8 = v6;
   }
@@ -84,12 +84,12 @@ uint64_t __28__CNChangeHistoryAnchor_log__block_invoke()
   return v7;
 }
 
-- (CNChangeHistoryAnchor)initWithHistoryToken:(id)a3 error:(id *)a4
+- (CNChangeHistoryAnchor)initWithHistoryToken:(id)token error:(id *)error
 {
   v6 = MEMORY[0x1E696ACD0];
-  v7 = a3;
+  tokenCopy = token;
   v14 = 0;
-  v8 = [[v6 alloc] initForReadingFromData:v7 error:&v14];
+  v8 = [[v6 alloc] initForReadingFromData:tokenCopy error:&v14];
 
   v9 = v14;
   if (v8)
@@ -97,27 +97,27 @@ uint64_t __28__CNChangeHistoryAnchor_log__block_invoke()
     v10 = [(CNChangeHistoryAnchor *)self initWithCoder:v8];
     [v8 finishDecoding];
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
     v12 = [MEMORY[0x1E6996708] errorWithCode:6 underlyingError:v9];
-    if (a4)
+    if (error)
     {
       v12 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (CNChangeHistoryAnchor)initWithCoder:(id)a3
+- (CNChangeHistoryAnchor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CNChangeHistoryAnchor;
   v5 = [(CNChangeHistoryAnchor *)&v10 init];
@@ -128,24 +128,24 @@ uint64_t __28__CNChangeHistoryAnchor_log__block_invoke()
   }
 
   v5->_version = 1;
-  if ([v4 containsValueForKey:@"_version"])
+  if ([coderCopy containsValueForKey:@"_version"])
   {
-    v6->_version = [v4 decodeIntegerForKey:@"_version"];
+    v6->_version = [coderCopy decodeIntegerForKey:@"_version"];
   }
 
-  if (![v4 containsValueForKey:@"_sequenceNumber"])
+  if (![coderCopy containsValueForKey:@"_sequenceNumber"])
   {
     goto LABEL_9;
   }
 
-  v7 = [v4 decodeIntegerForKey:@"_sequenceNumber"];
+  v7 = [coderCopy decodeIntegerForKey:@"_sequenceNumber"];
   v6->_changeRecordID = -1;
   v6->_sequenceNumber = v7;
   if (v6->_version >= 2)
   {
-    if ([v4 containsValueForKey:@"_changeRecordID"])
+    if ([coderCopy containsValueForKey:@"_changeRecordID"])
     {
-      v6->_changeRecordID = [v4 decodeIntegerForKey:@"_changeRecordID"];
+      v6->_changeRecordID = [coderCopy decodeIntegerForKey:@"_changeRecordID"];
       goto LABEL_8;
     }
 
@@ -161,33 +161,33 @@ LABEL_10:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInteger:version forKey:@"_version"];
-  [v5 encodeInteger:self->_sequenceNumber forKey:@"_sequenceNumber"];
-  [v5 encodeInteger:self->_changeRecordID forKey:@"_changeRecordID"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:version forKey:@"_version"];
+  [coderCopy encodeInteger:self->_sequenceNumber forKey:@"_sequenceNumber"];
+  [coderCopy encodeInteger:self->_changeRecordID forKey:@"_changeRecordID"];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(CNChangeHistoryAnchor *)self sequenceNumber];
-  if (v5 >= [v4 sequenceNumber])
+  compareCopy = compare;
+  sequenceNumber = [(CNChangeHistoryAnchor *)self sequenceNumber];
+  if (sequenceNumber >= [compareCopy sequenceNumber])
   {
-    v7 = [(CNChangeHistoryAnchor *)self sequenceNumber];
-    if (v7 > [v4 sequenceNumber])
+    sequenceNumber2 = [(CNChangeHistoryAnchor *)self sequenceNumber];
+    if (sequenceNumber2 > [compareCopy sequenceNumber])
     {
       v6 = 1;
       goto LABEL_7;
     }
 
-    v8 = [(CNChangeHistoryAnchor *)self changeRecordID];
-    if (v8 >= [v4 changeRecordID])
+    changeRecordID = [(CNChangeHistoryAnchor *)self changeRecordID];
+    if (changeRecordID >= [compareCopy changeRecordID])
     {
-      v9 = [(CNChangeHistoryAnchor *)self changeRecordID];
-      v6 = v9 > [v4 changeRecordID];
+      changeRecordID2 = [(CNChangeHistoryAnchor *)self changeRecordID];
+      v6 = changeRecordID2 > [compareCopy changeRecordID];
       goto LABEL_7;
     }
   }

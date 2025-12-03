@@ -1,11 +1,11 @@
 @interface CRKSingleConnectionAttemptStudentDaemonProxy
 - (CRKSingleConnectionAttemptStudentDaemonProxy)init;
-- (CRKSingleConnectionAttemptStudentDaemonProxy)initWithTransportProvider:(id)a3;
-- (id)operationForRequest:(id)a3;
+- (CRKSingleConnectionAttemptStudentDaemonProxy)initWithTransportProvider:(id)provider;
+- (id)operationForRequest:(id)request;
 - (void)connect;
 - (void)connectIfNeeded;
 - (void)dealloc;
-- (void)failWithError:(id)a3;
+- (void)failWithError:(id)error;
 @end
 
 @implementation CRKSingleConnectionAttemptStudentDaemonProxy
@@ -26,16 +26,16 @@
   return v4;
 }
 
-- (CRKSingleConnectionAttemptStudentDaemonProxy)initWithTransportProvider:(id)a3
+- (CRKSingleConnectionAttemptStudentDaemonProxy)initWithTransportProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = CRKSingleConnectionAttemptStudentDaemonProxy;
   v6 = [(CRKSingleConnectionAttemptStudentDaemonProxy *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mTransportProvider, a3);
+    objc_storeStrong(&v6->mTransportProvider, provider);
     v8 = objc_opt_new();
     mTaskClient = v7->mTaskClient;
     v7->mTaskClient = v8;
@@ -80,24 +80,24 @@ uint64_t __55__CRKSingleConnectionAttemptStudentDaemonProxy_connect__block_invok
   }
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v5 = a3;
-  if (!v5)
+  errorCopy = error;
+  if (!errorCopy)
   {
     [(CRKSingleConnectionAttemptStudentDaemonProxy *)a2 failWithError:?];
   }
 
   mError = self->mError;
-  self->mError = v5;
-  v7 = v5;
+  self->mError = errorCopy;
+  v7 = errorCopy;
 
   [(CATTaskClient *)self->mTaskClient invalidateWithError:v7];
 }
 
-- (id)operationForRequest:(id)a3
+- (id)operationForRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [(CRKSingleConnectionAttemptStudentDaemonProxy *)a2 operationForRequest:?];
@@ -106,12 +106,12 @@ uint64_t __55__CRKSingleConnectionAttemptStudentDaemonProxy_connect__block_invok
   [(CRKSingleConnectionAttemptStudentDaemonProxy *)self connectIfNeeded];
   if (self->mError)
   {
-    [MEMORY[0x277CF9558] invalidRemoteTaskWithRequest:v5 error:?];
+    [MEMORY[0x277CF9558] invalidRemoteTaskWithRequest:requestCopy error:?];
   }
 
   else
   {
-    [(CATTaskClient *)self->mTaskClient prepareTaskOperationForRequest:v5];
+    [(CATTaskClient *)self->mTaskClient prepareTaskOperationForRequest:requestCopy];
   }
   v6 = ;
 

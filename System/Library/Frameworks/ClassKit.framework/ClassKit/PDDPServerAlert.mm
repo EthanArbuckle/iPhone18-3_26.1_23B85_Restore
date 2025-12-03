@@ -1,21 +1,21 @@
 @interface PDDPServerAlert
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addOtherButtonInfos:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDisplayType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addOtherButtonInfos:(id)infos;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDisplayType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPServerAlert
 
-- (void)setHasDisplayType:(BOOL)a3
+- (void)setHasDisplayType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -28,22 +28,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addOtherButtonInfos:(id)a3
+- (void)addOtherButtonInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   otherButtonInfos = self->_otherButtonInfos;
-  v8 = v4;
+  v8 = infosCopy;
   if (!otherButtonInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_otherButtonInfos;
     self->_otherButtonInfos = v6;
 
-    v4 = v8;
+    infosCopy = v8;
     otherButtonInfos = self->_otherButtonInfos;
   }
 
-  [(NSMutableArray *)otherButtonInfos addObject:v4];
+  [(NSMutableArray *)otherButtonInfos addObject:infosCopy];
 }
 
 - (id)description
@@ -51,8 +51,8 @@
   v7.receiver = self;
   v7.super_class = PDDPServerAlert;
   v3 = [(PDDPServerAlert *)&v7 description];
-  v4 = [(PDDPServerAlert *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPServerAlert *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -85,22 +85,22 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v10 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v12 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   dateExpires = self->_dateExpires;
   if (dateExpires)
   {
-    v14 = [(PDDPDate *)dateExpires dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"date_expires"];
+    dictionaryRepresentation3 = [(PDDPDate *)dateExpires dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"date_expires"];
   }
 
   title = self->_title;
@@ -118,8 +118,8 @@
   defaultButtonInfo = self->_defaultButtonInfo;
   if (defaultButtonInfo)
   {
-    v18 = [(PDDPButtonInfo *)defaultButtonInfo dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"default_button_info"];
+    dictionaryRepresentation4 = [(PDDPButtonInfo *)defaultButtonInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"default_button_info"];
   }
 
   if ([(NSMutableArray *)self->_otherButtonInfos count])
@@ -144,8 +144,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation5 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation5];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -160,9 +160,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_alertId)
   {
     PBDataWriterWriteStringField();
@@ -242,28 +242,28 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_alertId)
   {
-    [v4 setAlertId:?];
-    v4 = v10;
+    [toCopy setAlertId:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 13) = self->_displayType;
-    *(v4 + 80) |= 2u;
+    *(toCopy + 13) = self->_displayType;
+    *(toCopy + 80) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 12) = self->_displayRoles;
-    *(v4 + 80) |= 1u;
+    *(toCopy + 12) = self->_displayRoles;
+    *(toCopy + 80) |= 1u;
   }
 
   if (self->_dateCreated)
@@ -299,10 +299,10 @@
   if ([(PDDPServerAlert *)self otherButtonInfosCount])
   {
     [v10 clearOtherButtonInfos];
-    v6 = [(PDDPServerAlert *)self otherButtonInfosCount];
-    if (v6)
+    otherButtonInfosCount = [(PDDPServerAlert *)self otherButtonInfosCount];
+    if (otherButtonInfosCount)
     {
-      v7 = v6;
+      v7 = otherButtonInfosCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PDDPServerAlert *)self otherButtonInfosAtIndex:i];
@@ -312,10 +312,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_alertId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_alertId copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -333,27 +333,27 @@
     *(v5 + 80) |= 1u;
   }
 
-  v9 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v9 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v10 = v5[2];
   v5[2] = v9;
 
-  v11 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v11 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v12 = v5[4];
   v5[4] = v11;
 
-  v13 = [(PDDPDate *)self->_dateExpires copyWithZone:a3];
+  v13 = [(PDDPDate *)self->_dateExpires copyWithZone:zone];
   v14 = v5[3];
   v5[3] = v13;
 
-  v15 = [(NSString *)self->_title copyWithZone:a3];
+  v15 = [(NSString *)self->_title copyWithZone:zone];
   v16 = v5[9];
   v5[9] = v15;
 
-  v17 = [(NSString *)self->_message copyWithZone:a3];
+  v17 = [(NSString *)self->_message copyWithZone:zone];
   v18 = v5[7];
   v5[7] = v17;
 
-  v19 = [(PDDPButtonInfo *)self->_defaultButtonInfo copyWithZone:a3];
+  v19 = [(PDDPButtonInfo *)self->_defaultButtonInfo copyWithZone:zone];
   v20 = v5[5];
   v5[5] = v19;
 
@@ -376,7 +376,7 @@
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v28 + 1) + 8 * i) copyWithZone:{a3, v28}];
+        v26 = [*(*(&v28 + 1) + 8 * i) copyWithZone:{zone, v28}];
         [v5 addOtherButtonInfos:v26];
       }
 
@@ -389,16 +389,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   alertId = self->_alertId;
-  if (alertId | *(v4 + 1))
+  if (alertId | *(equalCopy + 1))
   {
     if (![(NSString *)alertId isEqual:?])
     {
@@ -406,16 +406,16 @@
     }
   }
 
-  v6 = *(v4 + 80);
+  v6 = *(equalCopy + 80);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_displayType != *(v4 + 13))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_displayType != *(equalCopy + 13))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
 LABEL_28:
     v14 = 0;
@@ -424,25 +424,25 @@ LABEL_28:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_displayRoles != *(v4 + 12))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_displayRoles != *(equalCopy + 12))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
     goto LABEL_28;
   }
 
   dateCreated = self->_dateCreated;
-  if (dateCreated | *(v4 + 2) && ![(PDDPDate *)dateCreated isEqual:?])
+  if (dateCreated | *(equalCopy + 2) && ![(PDDPDate *)dateCreated isEqual:?])
   {
     goto LABEL_28;
   }
 
   dateLastModified = self->_dateLastModified;
-  if (dateLastModified | *(v4 + 4))
+  if (dateLastModified | *(equalCopy + 4))
   {
     if (![(PDDPDate *)dateLastModified isEqual:?])
     {
@@ -451,7 +451,7 @@ LABEL_28:
   }
 
   dateExpires = self->_dateExpires;
-  if (dateExpires | *(v4 + 3))
+  if (dateExpires | *(equalCopy + 3))
   {
     if (![(PDDPDate *)dateExpires isEqual:?])
     {
@@ -460,7 +460,7 @@ LABEL_28:
   }
 
   title = self->_title;
-  if (title | *(v4 + 9))
+  if (title | *(equalCopy + 9))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -469,7 +469,7 @@ LABEL_28:
   }
 
   message = self->_message;
-  if (message | *(v4 + 7))
+  if (message | *(equalCopy + 7))
   {
     if (![(NSString *)message isEqual:?])
     {
@@ -478,7 +478,7 @@ LABEL_28:
   }
 
   defaultButtonInfo = self->_defaultButtonInfo;
-  if (defaultButtonInfo | *(v4 + 5))
+  if (defaultButtonInfo | *(equalCopy + 5))
   {
     if (![(PDDPButtonInfo *)defaultButtonInfo isEqual:?])
     {
@@ -487,7 +487,7 @@ LABEL_28:
   }
 
   otherButtonInfos = self->_otherButtonInfos;
-  if (otherButtonInfos | *(v4 + 8))
+  if (otherButtonInfos | *(equalCopy + 8))
   {
     v14 = [(NSMutableArray *)otherButtonInfos isEqual:?];
   }
@@ -536,30 +536,30 @@ LABEL_6:
   return v9 ^ v11 ^ [(NSMutableArray *)self->_otherButtonInfos hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(PDDPServerAlert *)self setAlertId:?];
   }
 
-  v5 = *(v4 + 80);
+  v5 = *(fromCopy + 80);
   if ((v5 & 2) != 0)
   {
-    self->_displayType = *(v4 + 13);
+    self->_displayType = *(fromCopy + 13);
     *&self->_has |= 2u;
-    v5 = *(v4 + 80);
+    v5 = *(fromCopy + 80);
   }
 
   if (v5)
   {
-    self->_displayRoles = *(v4 + 12);
+    self->_displayRoles = *(fromCopy + 12);
     *&self->_has |= 1u;
   }
 
   dateCreated = self->_dateCreated;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   if (dateCreated)
   {
     if (v7)
@@ -574,7 +574,7 @@ LABEL_6:
   }
 
   dateLastModified = self->_dateLastModified;
-  v9 = *(v4 + 4);
+  v9 = *(fromCopy + 4);
   if (dateLastModified)
   {
     if (v9)
@@ -589,7 +589,7 @@ LABEL_6:
   }
 
   dateExpires = self->_dateExpires;
-  v11 = *(v4 + 3);
+  v11 = *(fromCopy + 3);
   if (dateExpires)
   {
     if (v11)
@@ -603,18 +603,18 @@ LABEL_6:
     [(PDDPServerAlert *)self setDateExpires:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PDDPServerAlert *)self setTitle:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(PDDPServerAlert *)self setMessage:?];
   }
 
   defaultButtonInfo = self->_defaultButtonInfo;
-  v13 = *(v4 + 5);
+  v13 = *(fromCopy + 5);
   if (defaultButtonInfo)
   {
     if (v13)
@@ -632,7 +632,7 @@ LABEL_6:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v14 = *(v4 + 8);
+  v14 = *(fromCopy + 8);
   v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v15)
   {

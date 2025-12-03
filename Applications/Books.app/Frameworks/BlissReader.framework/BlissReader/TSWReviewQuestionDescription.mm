@@ -1,78 +1,78 @@
 @interface TSWReviewQuestionDescription
-+ (id)createQuestionDescriptionForQuestionType:(id)a3 withContext:(id)a4;
++ (id)createQuestionDescriptionForQuestionType:(id)type withContext:(id)context;
 - (CGSize)questionReferenceContentSizeHint;
-- (TSWReviewQuestionDescription)initWithContext:(id)a3;
-- (id)choiceAtIndex:(unint64_t)a3;
+- (TSWReviewQuestionDescription)initWithContext:(id)context;
+- (id)choiceAtIndex:(unint64_t)index;
 - (int64_t)numberOfChoices;
 - (int64_t)questionCardinality;
-- (unint64_t)indexOfChoice:(id)a3;
-- (void)addChoice:(id)a3;
+- (unint64_t)indexOfChoice:(id)choice;
+- (void)addChoice:(id)choice;
 - (void)dealloc;
-- (void)setChoiceDescriptions:(id)a3;
-- (void)setQuestionCategoryName:(id)a3;
-- (void)setQuestionChoiceNumberStyle:(id)a3;
-- (void)setQuestionFeedbackIfCorrect:(id)a3;
-- (void)setQuestionFeedbackIfIncorrect:(id)a3;
-- (void)setQuestionFeedbackIfPartiallyCorrect:(id)a3;
-- (void)setQuestionGeneralFeedback:(id)a3;
-- (void)setQuestionID:(id)a3;
-- (void)setQuestionPrompt:(id)a3;
-- (void)setQuestionPromptAlternateText:(id)a3;
-- (void)setQuestionReferenceContent:(id)a3;
-- (void)setQuestionReferenceContentAlternateText:(id)a3;
-- (void)setQuestionReferenceContentSizeHint:(CGSize)a3;
-- (void)setQuestionReferenceContentType:(id)a3;
-- (void)setQuestionType:(id)a3;
+- (void)setChoiceDescriptions:(id)descriptions;
+- (void)setQuestionCategoryName:(id)name;
+- (void)setQuestionChoiceNumberStyle:(id)style;
+- (void)setQuestionFeedbackIfCorrect:(id)correct;
+- (void)setQuestionFeedbackIfIncorrect:(id)incorrect;
+- (void)setQuestionFeedbackIfPartiallyCorrect:(id)correct;
+- (void)setQuestionGeneralFeedback:(id)feedback;
+- (void)setQuestionID:(id)d;
+- (void)setQuestionPrompt:(id)prompt;
+- (void)setQuestionPromptAlternateText:(id)text;
+- (void)setQuestionReferenceContent:(id)content;
+- (void)setQuestionReferenceContentAlternateText:(id)text;
+- (void)setQuestionReferenceContentSizeHint:(CGSize)hint;
+- (void)setQuestionReferenceContentType:(id)type;
+- (void)setQuestionType:(id)type;
 @end
 
 @implementation TSWReviewQuestionDescription
 
-- (void)setQuestionCategoryName:(id)a3
+- (void)setQuestionCategoryName:(id)name
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  nameCopy = name;
 
-  self->mCategoryName = a3;
+  self->mCategoryName = name;
 }
 
-- (void)setQuestionGeneralFeedback:(id)a3
+- (void)setQuestionGeneralFeedback:(id)feedback
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  feedbackCopy = feedback;
 
-  self->mGeneralFeedback = a3;
+  self->mGeneralFeedback = feedback;
 }
 
-- (void)setQuestionID:(id)a3
+- (void)setQuestionID:(id)d
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  dCopy = d;
 
-  self->mID = a3;
+  self->mID = d;
 }
 
-- (void)setQuestionPrompt:(id)a3
+- (void)setQuestionPrompt:(id)prompt
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  promptCopy = prompt;
 
-  self->mPrompt = a3;
+  self->mPrompt = prompt;
 }
 
-- (void)setQuestionPromptAlternateText:(id)a3
+- (void)setQuestionPromptAlternateText:(id)text
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  textCopy = text;
 
-  self->mPromptAlternateText = a3;
+  self->mPromptAlternateText = text;
 }
 
-- (void)setQuestionReferenceContent:(id)a3
+- (void)setQuestionReferenceContent:(id)content
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  contentCopy = content;
 
-  self->mReferenceContent = a3;
+  self->mReferenceContent = content;
 }
 
 - (CGSize)questionReferenceContentSizeHint
@@ -84,82 +84,82 @@
   return result;
 }
 
-- (void)setQuestionReferenceContentSizeHint:(CGSize)a3
+- (void)setQuestionReferenceContentSizeHint:(CGSize)hint
 {
-  height = a3.height;
-  width = a3.width;
+  height = hint.height;
+  width = hint.width;
   [(TSWReviewQuestionDescription *)self willModify];
   self->mReferenceContentSize.width = width;
   self->mReferenceContentSize.height = height;
 }
 
-- (void)setQuestionReferenceContentType:(id)a3
+- (void)setQuestionReferenceContentType:(id)type
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  typeCopy = type;
 
-  self->mReferenceContentType = a3;
+  self->mReferenceContentType = type;
 }
 
-- (void)setQuestionReferenceContentAlternateText:(id)a3
+- (void)setQuestionReferenceContentAlternateText:(id)text
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  textCopy = text;
 
-  self->mReferenceContentAlternateText = a3;
+  self->mReferenceContentAlternateText = text;
 }
 
-- (void)setQuestionType:(id)a3
+- (void)setQuestionType:(id)type
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  typeCopy = type;
 
-  self->mType = a3;
+  self->mType = type;
 }
 
-- (void)setChoiceDescriptions:(id)a3
+- (void)setChoiceDescriptions:(id)descriptions
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  descriptionsCopy = descriptions;
 
-  self->mChoiceDescriptions = a3;
+  self->mChoiceDescriptions = descriptions;
 }
 
-- (void)setQuestionChoiceNumberStyle:(id)a3
+- (void)setQuestionChoiceNumberStyle:(id)style
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  styleCopy = style;
 
-  self->mChoiceNumberStyle = a3;
+  self->mChoiceNumberStyle = style;
 }
 
-- (void)setQuestionFeedbackIfCorrect:(id)a3
+- (void)setQuestionFeedbackIfCorrect:(id)correct
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  correctCopy = correct;
 
-  self->mFeedbackCorrect = a3;
+  self->mFeedbackCorrect = correct;
 }
 
-- (void)setQuestionFeedbackIfPartiallyCorrect:(id)a3
+- (void)setQuestionFeedbackIfPartiallyCorrect:(id)correct
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  correctCopy = correct;
 
-  self->mFeedbackPartial = a3;
+  self->mFeedbackPartial = correct;
 }
 
-- (void)setQuestionFeedbackIfIncorrect:(id)a3
+- (void)setQuestionFeedbackIfIncorrect:(id)incorrect
 {
   [(TSWReviewQuestionDescription *)self willModify];
-  v5 = a3;
+  incorrectCopy = incorrect;
 
-  self->mFeedbackIncorrect = a3;
+  self->mFeedbackIncorrect = incorrect;
 }
 
-+ (id)createQuestionDescriptionForQuestionType:(id)a3 withContext:(id)a4
++ (id)createQuestionDescriptionForQuestionType:(id)type withContext:(id)context
 {
-  if (([a3 isEqualToString:TSWReviewQuestionDescriptionTypeMultiChoiceValue] & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", TSWReviewQuestionDescriptionTypeMultiChoiceImageValue) & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", TSWReviewQuestionDescriptionTypeAssociativeTokenValue) & 1) == 0 && !objc_msgSend(a3, "isEqualToString:", TSWReviewQuestionDescriptionTypeAssociativeImageValue) || (v6 = -[TSWReviewQuestionDescription initWithContext:]([TSWReviewQuestionDescription alloc], "initWithContext:", a4), -[TSWReviewQuestionDescription setValue:forKey:](v6, "setValue:forKey:", a3, TSWReviewQuestionDescriptionTypeKey), !v6))
+  if (([type isEqualToString:TSWReviewQuestionDescriptionTypeMultiChoiceValue] & 1) == 0 && (objc_msgSend(type, "isEqualToString:", TSWReviewQuestionDescriptionTypeMultiChoiceImageValue) & 1) == 0 && (objc_msgSend(type, "isEqualToString:", TSWReviewQuestionDescriptionTypeAssociativeTokenValue) & 1) == 0 && !objc_msgSend(type, "isEqualToString:", TSWReviewQuestionDescriptionTypeAssociativeImageValue) || (v6 = -[TSWReviewQuestionDescription initWithContext:]([TSWReviewQuestionDescription alloc], "initWithContext:", context), -[TSWReviewQuestionDescription setValue:forKey:](v6, "setValue:forKey:", type, TSWReviewQuestionDescriptionTypeKey), !v6))
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     return 0;
@@ -168,11 +168,11 @@
   return v6;
 }
 
-- (TSWReviewQuestionDescription)initWithContext:(id)a3
+- (TSWReviewQuestionDescription)initWithContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = TSWReviewQuestionDescription;
-  v3 = [(TSWReviewQuestionDescription *)&v5 initWithContext:a3];
+  v3 = [(TSWReviewQuestionDescription *)&v5 initWithContext:context];
   if (v3)
   {
     [(TSWReviewQuestionDescription *)v3 setChoiceDescriptions:+[NSMutableArray array]];
@@ -181,11 +181,11 @@
   return v3;
 }
 
-- (void)addChoice:(id)a3
+- (void)addChoice:(id)choice
 {
-  v4 = [(TSWReviewQuestionDescription *)self choiceDescriptions];
+  choiceDescriptions = [(TSWReviewQuestionDescription *)self choiceDescriptions];
 
-  [(NSMutableArray *)v4 addObject:a3];
+  [(NSMutableArray *)choiceDescriptions addObject:choice];
 }
 
 - (void)dealloc
@@ -216,33 +216,33 @@
   [(TSWReviewQuestionDescription *)&v3 dealloc];
 }
 
-- (id)choiceAtIndex:(unint64_t)a3
+- (id)choiceAtIndex:(unint64_t)index
 {
-  v4 = [(TSWReviewQuestionDescription *)self choiceDescriptions];
+  choiceDescriptions = [(TSWReviewQuestionDescription *)self choiceDescriptions];
 
-  return [(NSMutableArray *)v4 objectAtIndex:a3];
+  return [(NSMutableArray *)choiceDescriptions objectAtIndex:index];
 }
 
-- (unint64_t)indexOfChoice:(id)a3
+- (unint64_t)indexOfChoice:(id)choice
 {
-  v4 = [(TSWReviewQuestionDescription *)self choiceDescriptions];
+  choiceDescriptions = [(TSWReviewQuestionDescription *)self choiceDescriptions];
 
-  return [(NSMutableArray *)v4 indexOfObjectIdenticalTo:a3];
+  return [(NSMutableArray *)choiceDescriptions indexOfObjectIdenticalTo:choice];
 }
 
 - (int64_t)numberOfChoices
 {
-  v2 = [(TSWReviewQuestionDescription *)self choiceDescriptions];
+  choiceDescriptions = [(TSWReviewQuestionDescription *)self choiceDescriptions];
 
-  return [(NSMutableArray *)v2 count];
+  return [(NSMutableArray *)choiceDescriptions count];
 }
 
 - (int64_t)questionCardinality
 {
   if (![(TSWReviewQuestionDescription *)self questionCardinality_original])
   {
-    v3 = [(TSWReviewQuestionDescription *)self questionType];
-    if (v3 == TSWReviewQuestionDescriptionTypeAssociativeTokenValue || (v4 = [(TSWReviewQuestionDescription *)self questionType], v4 == TSWReviewQuestionDescriptionTypeAssociativeImageValue))
+    questionType = [(TSWReviewQuestionDescription *)self questionType];
+    if (questionType == TSWReviewQuestionDescriptionTypeAssociativeTokenValue || (v4 = [(TSWReviewQuestionDescription *)self questionType], v4 == TSWReviewQuestionDescriptionTypeAssociativeImageValue))
     {
       v7 = [NSNumber numberWithInteger:3];
       [(TSWReviewQuestionDescription *)self setValue:v7 forKey:TSWReviewQuestionDescriptionCardinalityKey];
@@ -250,8 +250,8 @@
 
     else
     {
-      v5 = [(TSWReviewQuestionDescription *)self questionType];
-      if (v5 == TSWReviewQuestionDescriptionTypeMultiChoiceValue || (v6 = [(TSWReviewQuestionDescription *)self questionType], v6 == TSWReviewQuestionDescriptionTypeMultiChoiceImageValue))
+      questionType2 = [(TSWReviewQuestionDescription *)self questionType];
+      if (questionType2 == TSWReviewQuestionDescriptionTypeMultiChoiceValue || (v6 = [(TSWReviewQuestionDescription *)self questionType], v6 == TSWReviewQuestionDescriptionTypeMultiChoiceImageValue))
       {
         v10[0] = 0;
         v10[1] = v10;

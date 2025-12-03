@@ -22,9 +22,9 @@
     j__CFArrayAppendValue(v3->super._currentRotors, 0x57);
     j__CFArrayAppendValue(v3->super._currentRotors, 0x58);
     v4 = +[VOTOutputManager outputManager];
-    v5 = [v4 externalAudioRouteSelected];
+    externalAudioRouteSelected = [v4 externalAudioRouteSelected];
 
-    if (v5)
+    if (externalAudioRouteSelected)
     {
       j__CFArrayAppendValue(v3->super._currentRotors, 0x59);
     }

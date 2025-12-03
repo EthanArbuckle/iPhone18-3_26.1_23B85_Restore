@@ -1,24 +1,24 @@
 @interface UARPBuildManifest
-- (BOOL)isChipEntryKey:(id)a3;
-- (BOOL)parseBuildManifest:(id)a3;
-- (UARPBuildManifest)initWithPlist:(id)a3;
-- (id)chipNameForKey:(id)a3;
-- (id)createBundleIdentity:(id)a3;
-- (id)createChipEntryFromChipEntryDict:(id)a3 chipName:(id)a4;
-- (id)createManifestEntryForKey:(id)a3 dictionary:(id)a4;
-- (id)createNumberTupleForKey:(id)a3 object:(id)a4;
-- (id)generateChipEntries:(id)a3;
-- (id)numberForObject:(id)a3;
+- (BOOL)isChipEntryKey:(id)key;
+- (BOOL)parseBuildManifest:(id)manifest;
+- (UARPBuildManifest)initWithPlist:(id)plist;
+- (id)chipNameForKey:(id)key;
+- (id)createBundleIdentity:(id)identity;
+- (id)createChipEntryFromChipEntryDict:(id)dict chipName:(id)name;
+- (id)createManifestEntryForKey:(id)key dictionary:(id)dictionary;
+- (id)createNumberTupleForKey:(id)key object:(id)object;
+- (id)generateChipEntries:(id)entries;
+- (id)numberForObject:(id)object;
 @end
 
 @implementation UARPBuildManifest
 
-- (UARPBuildManifest)initWithPlist:(id)a3
+- (UARPBuildManifest)initWithPlist:(id)plist
 {
   v7.receiver = self;
   v7.super_class = UARPBuildManifest;
   v4 = [(UARPBuildManifest *)&v7 init];
-  if (!v4 || (v5 = [NSDictionary dictionaryWithContentsOfURL:a3]) == 0 || ![(UARPBuildManifest *)v4 parseBuildManifest:v5])
+  if (!v4 || (v5 = [NSDictionary dictionaryWithContentsOfURL:plist]) == 0 || ![(UARPBuildManifest *)v4 parseBuildManifest:v5])
   {
 
     return 0;
@@ -27,9 +27,9 @@
   return v4;
 }
 
-- (BOOL)isChipEntryKey:(id)a3
+- (BOOL)isChipEntryKey:(id)key
 {
-  if ([a3 hasSuffix:@"BoardID"])
+  if ([key hasSuffix:@"BoardID"])
   {
     return 1;
   }
@@ -43,7 +43,7 @@
       break;
     }
 
-    v7 = [a3 hasSuffix:off_100081CA0[v5 + 1]];
+    v7 = [key hasSuffix:off_100081CA0[v5 + 1]];
     v5 = v6 + 1;
   }
 
@@ -51,9 +51,9 @@
   return v6 < 3;
 }
 
-- (id)chipNameForKey:(id)a3
+- (id)chipNameForKey:(id)key
 {
-  v3 = [a3 componentsSeparatedByCharactersInSet:{+[NSCharacterSet characterSetWithCharactersInString:](NSCharacterSet, "characterSetWithCharactersInString:", @", ")}];
+  v3 = [key componentsSeparatedByCharactersInSet:{+[NSCharacterSet characterSetWithCharactersInString:](NSCharacterSet, "characterSetWithCharactersInString:", @", ")}];
   if ([v3 count] == 1)
   {
     return @"Ap";
@@ -62,12 +62,12 @@
   return [v3 firstObject];
 }
 
-- (id)numberForObject:(id)a3
+- (id)numberForObject:(id)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    sub_10004F3DC(a3, &v5);
+    sub_10004F3DC(object, &v5);
     return v5;
   }
 
@@ -76,7 +76,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      return a3;
+      return object;
     }
 
     else
@@ -86,25 +86,25 @@
   }
 }
 
-- (id)createNumberTupleForKey:(id)a3 object:(id)a4
+- (id)createNumberTupleForKey:(id)key object:(id)object
 {
-  result = [(UARPBuildManifest *)self numberForObject:a4];
+  result = [(UARPBuildManifest *)self numberForObject:object];
   if (result)
   {
     v6 = result;
     v7 = [UARPPersonalizationNumberTuple32 alloc];
-    v8 = [v6 unsignedIntValue];
+    unsignedIntValue = [v6 unsignedIntValue];
 
-    return [(UARPPersonalizationNumberTuple32 *)v7 initWithKey:a3 value:v8];
+    return [(UARPPersonalizationNumberTuple32 *)v7 initWithKey:key value:unsignedIntValue];
   }
 
   return result;
 }
 
-- (BOOL)parseBuildManifest:(id)a3
+- (BOOL)parseBuildManifest:(id)manifest
 {
   v5 = +[NSMutableArray array];
-  v6 = [a3 objectForKeyedSubscript:@"BuildIdentities"];
+  v6 = [manifest objectForKeyedSubscript:@"BuildIdentities"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -163,10 +163,10 @@ LABEL_4:
   return v12;
 }
 
-- (id)createBundleIdentity:(id)a3
+- (id)createBundleIdentity:(id)identity
 {
   v34 = +[NSMutableDictionary dictionary];
-  v5 = [a3 countByEnumeratingWithState:sub_10002E0F4() objects:? count:?];
+  v5 = [identity countByEnumeratingWithState:sub_10002E0F4() objects:? count:?];
   v6 = &MGCopyAnswer_ptr;
   if (v5)
   {
@@ -178,7 +178,7 @@ LABEL_3:
     {
       if (*v40 != v8)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(identity);
       }
 
       v10 = *(v39 + 8 * v9);
@@ -198,12 +198,12 @@ LABEL_3:
           [v34 setObject:v12 forKeyedSubscript:v11];
         }
 
-        [v12 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", v10), v10}];
+        [v12 setObject:objc_msgSend(identity forKeyedSubscript:{"objectForKeyedSubscript:", v10), v10}];
       }
 
       if (v7 == ++v9)
       {
-        v7 = [a3 countByEnumeratingWithState:v38 objects:v42 count:16];
+        v7 = [identity countByEnumeratingWithState:v38 objects:v42 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -217,18 +217,18 @@ LABEL_3:
   else
   {
 LABEL_13:
-    v13 = [a3 objectForKeyedSubscript:@"Manifest"];
+    v13 = [identity objectForKeyedSubscript:@"Manifest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v32 = a3;
+      identityCopy = identity;
       v14 = [v13 countByEnumeratingWithState:sub_10002E10C() objects:? count:?];
       if (v14)
       {
         v15 = v14;
         v16 = *v37;
         v17 = @"Info";
-        v33 = self;
+        selfCopy = self;
 LABEL_16:
         v18 = 0;
         while (1)
@@ -273,7 +273,7 @@ LABEL_16:
             [v25 setObject:objc_msgSend(v13 forKeyedSubscript:{"objectForKeyedSubscript:", v19), v19}];
             v6 = v22;
             v17 = v24;
-            self = v33;
+            self = selfCopy;
           }
 
           if (v15 == ++v18)
@@ -299,7 +299,7 @@ LABEL_28:
           return result;
         }
 
-        v27 = [v32 objectForKeyedSubscript:@"Info"];
+        v27 = [identityCopy objectForKeyedSubscript:@"Info"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -324,25 +324,25 @@ LABEL_28:
   return 0;
 }
 
-- (id)createManifestEntryForKey:(id)a3 dictionary:(id)a4
+- (id)createManifestEntryForKey:(id)key dictionary:(id)dictionary
 {
-  result = [a4 objectForKeyedSubscript:@"Digest"];
+  result = [dictionary objectForKeyedSubscript:@"Digest"];
   if (result)
   {
     v7 = result;
-    v8 = [objc_msgSend(a4 objectForKeyedSubscript:{@"Trusted", "BOOLValue"}];
+    v8 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"Trusted", "BOOLValue"}];
     v9 = [UARPBundleIdentityManifestEntry alloc];
 
-    return [(UARPBundleIdentityManifestEntry *)v9 initWithName:a3 digest:v7 trusted:v8];
+    return [(UARPBundleIdentityManifestEntry *)v9 initWithName:key digest:v7 trusted:v8];
   }
 
   return result;
 }
 
-- (id)createChipEntryFromChipEntryDict:(id)a3 chipName:(id)a4
+- (id)createChipEntryFromChipEntryDict:(id)dict chipName:(id)name
 {
   v7 = +[NSMutableArray array];
-  v34 = [a3 countByEnumeratingWithState:sub_10002E0F4() objects:? count:?];
+  v34 = [dict countByEnumeratingWithState:sub_10002E0F4() objects:? count:?];
   if (!v34)
   {
     v11 = 0;
@@ -352,7 +352,7 @@ LABEL_28:
     goto LABEL_41;
   }
 
-  v29 = a4;
+  nameCopy = name;
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -364,11 +364,11 @@ LABEL_28:
     {
       if (*v40 != v33)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(dict);
       }
 
       v13 = *(v39 + 8 * i);
-      v14 = [a3 objectForKeyedSubscript:{v13, v29}];
+      v14 = [dict objectForKeyedSubscript:{v13, nameCopy}];
       if ([v13 hasSuffix:@"BoardID"])
       {
         if (v11)
@@ -475,7 +475,7 @@ LABEL_28:
       }
     }
 
-    v34 = [a3 countByEnumeratingWithState:v38 objects:v42 count:16];
+    v34 = [dict countByEnumeratingWithState:v38 objects:v42 count:16];
   }
 
   while (v34);
@@ -484,7 +484,7 @@ LABEL_28:
   {
     if ([v7 count])
     {
-      v27 = [[UARPBundleIdentityChipEntry alloc] initWithChipName:v29 boardID:v11 chipID:v10 securityDomain:v8 manifest:v7];
+      v27 = [[UARPBundleIdentityChipEntry alloc] initWithChipName:nameCopy boardID:v11 chipID:v10 securityDomain:v8 manifest:v7];
       [(UARPBundleIdentityChipEntry *)v27 setManifestEpoch:v9];
       goto LABEL_42;
     }
@@ -498,7 +498,7 @@ LABEL_42:
   return v27;
 }
 
-- (id)generateChipEntries:(id)a3
+- (id)generateChipEntries:(id)entries
 {
   v5 = +[NSMutableArray array];
   v20 = 0;
@@ -517,7 +517,7 @@ LABEL_3:
   {
     if (MEMORY[0] != v12)
     {
-      objc_enumerationMutation(a3);
+      objc_enumerationMutation(entries);
     }
 
     result = -[UARPBuildManifest createChipEntryFromChipEntryDict:chipName:](self, "createChipEntryFromChipEntryDict:chipName:", [sub_10002E124() objectForKeyedSubscript:v20], *(8 * v13));

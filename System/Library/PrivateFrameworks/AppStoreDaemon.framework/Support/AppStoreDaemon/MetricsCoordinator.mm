@@ -1,6 +1,6 @@
 @interface MetricsCoordinator
 - (MetricsCoordinator)init;
-- (void)_handleAppleIDDidChangeNotification:(id)a3;
+- (void)_handleAppleIDDidChangeNotification:(id)notification;
 @end
 
 @implementation MetricsCoordinator
@@ -19,15 +19,15 @@
     v2->_dispatchQueue = v5;
 
     v7 = +[ACAccountStore ams_sharedAccountStore];
-    v8 = [v7 ams_activeiTunesAccount];
+    ams_activeiTunesAccount = [v7 ams_activeiTunesAccount];
 
-    if (v8)
+    if (ams_activeiTunesAccount)
     {
       v9 = +[ACAccountStore ams_sharedAccountStore];
-      v10 = [v9 ams_activeiTunesAccount];
-      v11 = [v10 ams_DSID];
+      ams_activeiTunesAccount2 = [v9 ams_activeiTunesAccount];
+      ams_DSID = [ams_activeiTunesAccount2 ams_DSID];
       activeAccountID = v2->_activeAccountID;
-      v2->_activeAccountID = v11;
+      v2->_activeAccountID = ams_DSID;
     }
 
     v13 = +[NSNotificationCenter defaultCenter];
@@ -80,17 +80,17 @@
   return v2;
 }
 
-- (void)_handleAppleIDDidChangeNotification:(id)a3
+- (void)_handleAppleIDDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002B9914;
   v7[3] = &unk_10051B570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(dispatchQueue, v7);
 }
 

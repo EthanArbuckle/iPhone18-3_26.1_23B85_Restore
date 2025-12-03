@@ -1,8 +1,8 @@
 @interface AGXG18PFamilyDynamicLibrary
-- (AGXG18PFamilyDynamicLibrary)initWithBinaryData:(id)a3 name:(id)a4 device:(id)a5;
-- (AGXG18PFamilyDynamicLibrary)initWithCompilerReply:(const void *)a3 name:(id)a4 device:(id)a5;
-- (AGXG18PFamilyDynamicLibrary)initWithLibrary:(id)a3 binaryData:(id)a4 device:(id)a5 error:(id *)a6;
-- (AGXG18PFamilyDynamicLibrary)initWithURL:(id)a3 device:(id)a4 options:(unint64_t)a5 error:(id *)a6;
+- (AGXG18PFamilyDynamicLibrary)initWithBinaryData:(id)data name:(id)name device:(id)device;
+- (AGXG18PFamilyDynamicLibrary)initWithCompilerReply:(const void *)reply name:(id)name device:(id)device;
+- (AGXG18PFamilyDynamicLibrary)initWithLibrary:(id)library binaryData:(id)data device:(id)device error:(id *)error;
+- (AGXG18PFamilyDynamicLibrary)initWithURL:(id)l device:(id)device options:(unint64_t)options error:(id *)error;
 - (id).cxx_construct;
 @end
 
@@ -15,7 +15,7 @@
   return self;
 }
 
-- (AGXG18PFamilyDynamicLibrary)initWithCompilerReply:(const void *)a3 name:(id)a4 device:(id)a5
+- (AGXG18PFamilyDynamicLibrary)initWithCompilerReply:(const void *)reply name:(id)name device:(id)device
 {
   v6.receiver = self;
   v6.super_class = AGXG18PFamilyDynamicLibrary;
@@ -27,7 +27,7 @@
   return 0;
 }
 
-- (AGXG18PFamilyDynamicLibrary)initWithBinaryData:(id)a3 name:(id)a4 device:(id)a5
+- (AGXG18PFamilyDynamicLibrary)initWithBinaryData:(id)data name:(id)name device:(id)device
 {
   v6.receiver = self;
   v6.super_class = AGXG18PFamilyDynamicLibrary;
@@ -39,11 +39,11 @@
   return 0;
 }
 
-- (AGXG18PFamilyDynamicLibrary)initWithURL:(id)a3 device:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (AGXG18PFamilyDynamicLibrary)initWithURL:(id)l device:(id)device options:(unint64_t)options error:(id *)error
 {
   v7.receiver = self;
   v7.super_class = AGXG18PFamilyDynamicLibrary;
-  if ([_MTLDynamicLibrary initWithURL:sel_initWithURL_device_options_error_ device:a3 options:? error:?])
+  if ([_MTLDynamicLibrary initWithURL:sel_initWithURL_device_options_error_ device:l options:? error:?])
   {
     operator new();
   }
@@ -51,11 +51,11 @@
   return 0;
 }
 
-- (AGXG18PFamilyDynamicLibrary)initWithLibrary:(id)a3 binaryData:(id)a4 device:(id)a5 error:(id *)a6
+- (AGXG18PFamilyDynamicLibrary)initWithLibrary:(id)library binaryData:(id)data device:(id)device error:(id *)error
 {
   v7.receiver = self;
   v7.super_class = AGXG18PFamilyDynamicLibrary;
-  if ([_MTLDynamicLibrary initWithLibrary:sel_initWithLibrary_binaryData_device_error_ binaryData:a3 device:? error:?])
+  if ([_MTLDynamicLibrary initWithLibrary:sel_initWithLibrary_binaryData_device_error_ binaryData:library device:? error:?])
   {
     operator new();
   }

@@ -1,14 +1,14 @@
 @interface ATXMPBBlendingClientModelEngagementClientCacheAgeTracker
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsOutcomeType:(id)a3;
+- (int)StringAsOutcomeType:(id)type;
 - (int)outcomeType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBBlendingClientModelEngagementClientCacheAgeTracker
@@ -26,20 +26,20 @@
   }
 }
 
-- (int)StringAsOutcomeType:(id)a3
+- (int)StringAsOutcomeType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Conversion"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Conversion"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Rejection"])
+  else if ([typeCopy isEqualToString:@"Rejection"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Abandon"])
+  else if ([typeCopy isEqualToString:@"Abandon"])
   {
     v4 = 3;
   }
@@ -58,15 +58,15 @@
   v8.receiver = self;
   v8.super_class = ATXMPBBlendingClientModelEngagementClientCacheAgeTracker;
   v4 = [(ATXMPBBlendingClientModelEngagementClientCacheAgeTracker *)&v8 description];
-  v5 = [(ATXMPBBlendingClientModelEngagementClientCacheAgeTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBBlendingClientModelEngagementClientCacheAgeTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = self->_outcomeType - 1;
@@ -80,92 +80,92 @@
       v5 = off_1E86A4C98[v4];
     }
 
-    [v3 setObject:v5 forKey:@"outcomeType"];
+    [dictionary setObject:v5 forKey:@"outcomeType"];
   }
 
   clientModelId = self->_clientModelId;
   if (clientModelId)
   {
-    [v3 setObject:clientModelId forKey:@"clientModelId"];
+    [dictionary setObject:clientModelId forKey:@"clientModelId"];
   }
 
   consumerSubType = self->_consumerSubType;
   if (consumerSubType)
   {
-    [v3 setObject:consumerSubType forKey:@"consumerSubType"];
+    [dictionary setObject:consumerSubType forKey:@"consumerSubType"];
   }
 
   clientModelABGroup = self->_clientModelABGroup;
   if (clientModelABGroup)
   {
-    [v3 setObject:clientModelABGroup forKey:@"clientModelABGroup"];
+    [dictionary setObject:clientModelABGroup forKey:@"clientModelABGroup"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     outcomeType = self->_outcomeType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_clientModelId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_consumerSubType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_clientModelABGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_outcomeType;
-    *(v4 + 36) |= 1u;
+    toCopy[8] = self->_outcomeType;
+    *(toCopy + 36) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_clientModelId)
   {
-    [v4 setClientModelId:?];
-    v4 = v5;
+    [toCopy setClientModelId:?];
+    toCopy = v5;
   }
 
   if (self->_consumerSubType)
   {
     [v5 setConsumerSubType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_clientModelABGroup)
   {
     [v5 setClientModelABGroup:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -173,39 +173,39 @@
     *(v5 + 36) |= 1u;
   }
 
-  v7 = [(NSString *)self->_clientModelId copyWithZone:a3];
+  v7 = [(NSString *)self->_clientModelId copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(NSString *)self->_consumerSubType copyWithZone:a3];
+  v9 = [(NSString *)self->_consumerSubType copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
-  v11 = [(NSString *)self->_clientModelABGroup copyWithZone:a3];
+  v11 = [(NSString *)self->_clientModelABGroup copyWithZone:zone];
   v12 = v6[1];
   v6[1] = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_outcomeType != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_outcomeType != *(equalCopy + 8))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_13:
     v9 = 0;
@@ -213,13 +213,13 @@ LABEL_13:
   }
 
   clientModelId = self->_clientModelId;
-  if (clientModelId | *(v4 + 2) && ![(NSString *)clientModelId isEqual:?])
+  if (clientModelId | *(equalCopy + 2) && ![(NSString *)clientModelId isEqual:?])
   {
     goto LABEL_13;
   }
 
   consumerSubType = self->_consumerSubType;
-  if (consumerSubType | *(v4 + 3))
+  if (consumerSubType | *(equalCopy + 3))
   {
     if (![(NSString *)consumerSubType isEqual:?])
     {
@@ -228,7 +228,7 @@ LABEL_13:
   }
 
   clientModelABGroup = self->_clientModelABGroup;
-  if (clientModelABGroup | *(v4 + 1))
+  if (clientModelABGroup | *(equalCopy + 1))
   {
     v9 = [(NSString *)clientModelABGroup isEqual:?];
   }
@@ -260,32 +260,32 @@ LABEL_14:
   return v4 ^ v5 ^ [(NSString *)self->_clientModelABGroup hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[9])
+  fromCopy = from;
+  if (fromCopy[9])
   {
-    self->_outcomeType = v4[8];
+    self->_outcomeType = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 2))
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(ATXMPBBlendingClientModelEngagementClientCacheAgeTracker *)self setClientModelId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ATXMPBBlendingClientModelEngagementClientCacheAgeTracker *)self setConsumerSubType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ATXMPBBlendingClientModelEngagementClientCacheAgeTracker *)self setClientModelABGroup:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

@@ -1,20 +1,20 @@
 @interface HKHRCardioFitnessAnalyticsResult
-- (HKHRCardioFitnessAnalyticsResult)initWithStatus:(int64_t)a3 error:(id)a4;
+- (HKHRCardioFitnessAnalyticsResult)initWithStatus:(int64_t)status error:(id)error;
 @end
 
 @implementation HKHRCardioFitnessAnalyticsResult
 
-- (HKHRCardioFitnessAnalyticsResult)initWithStatus:(int64_t)a3 error:(id)a4
+- (HKHRCardioFitnessAnalyticsResult)initWithStatus:(int64_t)status error:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   v11.receiver = self;
   v11.super_class = HKHRCardioFitnessAnalyticsResult;
   v8 = [(HKHRCardioFitnessAnalyticsResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_status = a3;
-    objc_storeStrong(&v8->_error, a4);
+    v8->_status = status;
+    objc_storeStrong(&v8->_error, error);
   }
 
   return v9;

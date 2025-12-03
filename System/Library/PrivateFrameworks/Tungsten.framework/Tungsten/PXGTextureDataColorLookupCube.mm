@@ -1,19 +1,19 @@
 @interface PXGTextureDataColorLookupCube
 - (PXGTextureDataColorLookupCube)init;
-- (PXGTextureDataColorLookupCube)initWithData:(id)a3 edgeSize:(int64_t)a4 pixelFormat:(unint64_t)a5;
+- (PXGTextureDataColorLookupCube)initWithData:(id)data edgeSize:(int64_t)size pixelFormat:(unint64_t)format;
 - (double)center;
-- (id)createTextureWithContext:(id)a3;
+- (id)createTextureWithContext:(id)context;
 @end
 
 @implementation PXGTextureDataColorLookupCube
 
 - (double)center
 {
-  v2 = [a1 edgeSize];
-  v3 = [a1[6] bytes];
+  edgeSize = [self edgeSize];
+  bytes = [self[6] bytes];
   v5 = 0;
-  v6 = (v2 - 1 + ((v2 - 1) >> 31)) >> 1;
-  v7 = v3 + 4 * ((v2 - 1) / 2);
+  v6 = (edgeSize - 1 + ((edgeSize - 1) >> 31)) >> 1;
+  v7 = bytes + 4 * ((edgeSize - 1) / 2);
   v8 = 0uLL;
   v9 = vdupq_n_s32(0x4B400000u);
   v10 = vdupq_n_s32(0xCB400000);
@@ -23,13 +23,13 @@
   {
     v13 = 0;
     v14 = v12;
-    v15 = v7 + 4 * (v2 * v2) * (v5 + v6);
+    v15 = v7 + 4 * (edgeSize * edgeSize) * (v5 + v6);
     v16 = 1;
     do
     {
       v17 = 0;
       v18 = v16;
-      v19 = v15 + 4 * (v13 + v6) * v2;
+      v19 = v15 + 4 * (v13 + v6) * edgeSize;
       v20 = 1;
       do
       {
@@ -58,40 +58,40 @@
   return result;
 }
 
-- (id)createTextureWithContext:(id)a3
+- (id)createTextureWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 device];
+  contextCopy = context;
+  device = [contextCopy device];
   device = self->_device;
 
-  if (v5 == device)
+  if (device == device)
   {
     v12 = self->_texture;
   }
 
   else
   {
-    v7 = [(PXGTextureDataColorLookupCube *)self data];
-    v8 = [(PXGColorLookupCube *)self edgeSize];
-    v9 = [(PXGTextureDataColorLookupCube *)self pixelFormat];
-    v10 = PXGBytesPerPixelForMetalPixelFormat(v9) * v8;
+    data = [(PXGTextureDataColorLookupCube *)self data];
+    edgeSize = [(PXGColorLookupCube *)self edgeSize];
+    pixelFormat = [(PXGTextureDataColorLookupCube *)self pixelFormat];
+    v10 = PXGBytesPerPixelForMetalPixelFormat(pixelFormat) * edgeSize;
     v11 = objc_alloc_init(MEMORY[0x277CD7058]);
     [v11 setTextureType:7];
-    [v11 setWidth:v8];
-    [v11 setHeight:v8];
-    [v11 setDepth:v8];
-    [v11 setPixelFormat:v9];
+    [v11 setWidth:edgeSize];
+    [v11 setHeight:edgeSize];
+    [v11 setDepth:edgeSize];
+    [v11 setPixelFormat:pixelFormat];
     [v11 setUsage:1];
     [v11 setResourceOptions:0];
-    v12 = [v4 newTextureWithDescriptor:v11];
+    v12 = [contextCopy newTextureWithDescriptor:v11];
     memset(v16, 0, 24);
-    v16[3] = v8;
-    v16[4] = v8;
-    v16[5] = v8;
-    [v4 copyBytes:objc_msgSend(v7 toTexture:"bytes" inRegion:0 length:0 bytesPerRow:0) bytesPerImage:{v12, v16, objc_msgSend(v7, "length"), v10, v10 * v8}];
-    v13 = [v4 device];
+    v16[3] = edgeSize;
+    v16[4] = edgeSize;
+    v16[5] = edgeSize;
+    [contextCopy copyBytes:objc_msgSend(data toTexture:"bytes" inRegion:0 length:0 bytesPerRow:0) bytesPerImage:{v12, v16, objc_msgSend(data, "length"), v10, v10 * edgeSize}];
+    device2 = [contextCopy device];
     v14 = self->_device;
-    self->_device = v13;
+    self->_device = device2;
 
     objc_storeStrong(&self->_texture, v12);
   }
@@ -101,24 +101,24 @@
 
 - (PXGTextureDataColorLookupCube)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGColorLookupCube.m" lineNumber:446 description:{@"%s is not available as initializer", "-[PXGTextureDataColorLookupCube init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGColorLookupCube.m" lineNumber:446 description:{@"%s is not available as initializer", "-[PXGTextureDataColorLookupCube init]"}];
 
   abort();
 }
 
-- (PXGTextureDataColorLookupCube)initWithData:(id)a3 edgeSize:(int64_t)a4 pixelFormat:(unint64_t)a5
+- (PXGTextureDataColorLookupCube)initWithData:(id)data edgeSize:(int64_t)size pixelFormat:(unint64_t)format
 {
-  v9 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = PXGTextureDataColorLookupCube;
   v10 = [(PXGTextureDataColorLookupCube *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(PXGColorLookupCube *)v10 setEdgeSize:a4];
-    v11->_pixelFormat = a5;
-    objc_storeStrong(&v11->_data, a3);
+    [(PXGColorLookupCube *)v10 setEdgeSize:size];
+    v11->_pixelFormat = format;
+    objc_storeStrong(&v11->_data, data);
   }
 
   return v11;

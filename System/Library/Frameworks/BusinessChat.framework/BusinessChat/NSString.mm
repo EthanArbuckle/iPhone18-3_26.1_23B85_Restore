@@ -6,9 +6,9 @@
 
 - (id)normalizedBase64Encoded
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 copy];
+    v1 = [self copy];
     v2 = [v1 stringByReplacingOccurrencesOfString:@"-" withString:@"+"];
 
     v3 = [v2 stringByReplacingOccurrencesOfString:@"_" withString:@"/"];

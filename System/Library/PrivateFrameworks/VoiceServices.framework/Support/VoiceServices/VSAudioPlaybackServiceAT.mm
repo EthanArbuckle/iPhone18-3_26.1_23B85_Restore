@@ -1,26 +1,26 @@
 @interface VSAudioPlaybackServiceAT
 - (AudioStreamBasicDescription)asbd;
 - (AudioTimeStamp)audioStartTimeStamp;
-- (BOOL)getAveragePower:(float *)a3 andPeakPower:(float *)a4;
+- (BOOL)getAveragePower:(float *)power andPeakPower:(float *)peakPower;
 - (BOOL)isAudioQueueRunning;
 - (BOOL)isAudioQueueStalled;
-- (VSAudioPlaybackServiceAT)initWithAudioSessionID:(unsigned int)a3 asbd:(AudioStreamBasicDescription *)a4;
+- (VSAudioPlaybackServiceAT)initWithAudioSessionID:(unsigned int)d asbd:(AudioStreamBasicDescription *)asbd;
 - (_opaque_pthread_cond_t)stateChangeCondition;
 - (_opaque_pthread_mutex_t)waitForStateChangeMutex;
-- (id)_enqueueAudioBytesLength:(unsigned int)a3 audioBytes:(const void *)a4 packetCount:(int64_t)a5 packetDescriptions:(const void *)a6;
-- (id)addBoundaryTimeObserverForTimes:(id)a3 usingBlock:(id)a4;
+- (id)_enqueueAudioBytesLength:(unsigned int)length audioBytes:(const void *)bytes packetCount:(int64_t)count packetDescriptions:(const void *)descriptions;
+- (id)addBoundaryTimeObserverForTimes:(id)times usingBlock:(id)block;
 - (id)start;
 - (void)dealloc;
 - (void)dequeueAvailableMappedAudio;
 - (void)didEndAccessPower;
-- (void)enqueue:(id)a3 packetCount:(int64_t)a4 packetDescriptions:(id)a5;
+- (void)enqueue:(id)enqueue packetCount:(int64_t)count packetDescriptions:(id)descriptions;
 - (void)flushAndStop;
 - (void)handleMediaServerReset;
 - (void)pause;
-- (void)setAsbd:(AudioStreamBasicDescription *)a3;
-- (void)setAudioStartTimeStamp:(AudioTimeStamp *)a3;
-- (void)setStateChangeCondition:(_opaque_pthread_cond_t *)a3;
-- (void)setWaitForStateChangeMutex:(_opaque_pthread_mutex_t *)a3;
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd;
+- (void)setAudioStartTimeStamp:(AudioTimeStamp *)stamp;
+- (void)setStateChangeCondition:(_opaque_pthread_cond_t *)condition;
+- (void)setWaitForStateChangeMutex:(_opaque_pthread_mutex_t *)mutex;
 - (void)signalQueueRunningStateChange;
 - (void)stop;
 - (void)waitForAudioQueueStop;
@@ -29,12 +29,12 @@
 
 @implementation VSAudioPlaybackServiceAT
 
-- (void)setAudioStartTimeStamp:(AudioTimeStamp *)a3
+- (void)setAudioStartTimeStamp:(AudioTimeStamp *)stamp
 {
-  v3 = *&a3->mSampleTime;
-  v4 = *&a3->mRateScalar;
-  v5 = *&a3->mSMPTETime.mHours;
-  *&self->_audioStartTimeStamp.mSMPTETime.mSubframes = *&a3->mSMPTETime.mSubframes;
+  v3 = *&stamp->mSampleTime;
+  v4 = *&stamp->mRateScalar;
+  v5 = *&stamp->mSMPTETime.mHours;
+  *&self->_audioStartTimeStamp.mSMPTETime.mSubframes = *&stamp->mSMPTETime.mSubframes;
   *&self->_audioStartTimeStamp.mSMPTETime.mHours = v5;
   *&self->_audioStartTimeStamp.mSampleTime = v3;
   *&self->_audioStartTimeStamp.mRateScalar = v4;
@@ -51,11 +51,11 @@
   return self;
 }
 
-- (void)setStateChangeCondition:(_opaque_pthread_cond_t *)a3
+- (void)setStateChangeCondition:(_opaque_pthread_cond_t *)condition
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[24];
-  *&self->_stateChangeCondition.__opaque[8] = *&a3->__opaque[8];
+  v3 = *&condition->__sig;
+  v4 = *&condition->__opaque[24];
+  *&self->_stateChangeCondition.__opaque[8] = *&condition->__opaque[8];
   *&self->_stateChangeCondition.__opaque[24] = v4;
   *&self->_stateChangeCondition.__sig = v3;
 }
@@ -69,12 +69,12 @@
   return self;
 }
 
-- (void)setWaitForStateChangeMutex:(_opaque_pthread_mutex_t *)a3
+- (void)setWaitForStateChangeMutex:(_opaque_pthread_mutex_t *)mutex
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  v5 = *&a3->__opaque[40];
-  *&self->_waitForStateChangeMutex.__opaque[24] = *&a3->__opaque[24];
+  v3 = *&mutex->__sig;
+  v4 = *&mutex->__opaque[8];
+  v5 = *&mutex->__opaque[40];
+  *&self->_waitForStateChangeMutex.__opaque[24] = *&mutex->__opaque[24];
   *&self->_waitForStateChangeMutex.__opaque[40] = v5;
   *&self->_waitForStateChangeMutex.__sig = v3;
   *&self->_waitForStateChangeMutex.__opaque[8] = v4;
@@ -91,11 +91,11 @@
   return self;
 }
 
-- (void)setAsbd:(AudioStreamBasicDescription *)a3
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_asbd.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&asbd->mSampleRate;
+  v4 = *&asbd->mBytesPerPacket;
+  *&self->_asbd.mBitsPerChannel = *&asbd->mBitsPerChannel;
   *&self->_asbd.mBytesPerPacket = v4;
   *&self->_asbd.mSampleRate = v3;
 }
@@ -109,12 +109,12 @@
   return self;
 }
 
-- (BOOL)getAveragePower:(float *)a3 andPeakPower:(float *)a4
+- (BOOL)getAveragePower:(float *)power andPeakPower:(float *)peakPower
 {
   v28 = *MEMORY[0x277D85DE8];
   ioDataSize = 8;
-  v7 = [(VSAudioPlaybackServiceAT *)self isAudioQueueRunning];
-  if (v7)
+  isAudioQueueRunning = [(VSAudioPlaybackServiceAT *)self isAudioQueueRunning];
+  if (isAudioQueueRunning)
   {
     Property = AudioQueueGetProperty(self->_audioQueue, 0x61716D64u, outData, &ioDataSize);
     if (Property)
@@ -140,20 +140,20 @@
       error = self->_error;
       self->_error = v14;
 
-      LOBYTE(v7) = 0;
+      LOBYTE(isAudioQueueRunning) = 0;
     }
 
     else
     {
       v16 = outData[1];
-      *a3 = *outData;
-      *a4 = v16;
-      LOBYTE(v7) = 1;
+      *power = *outData;
+      *peakPower = v16;
+      LOBYTE(isAudioQueueRunning) = 1;
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return v7;
+  return isAudioQueueRunning;
 }
 
 - (void)didEndAccessPower
@@ -222,13 +222,13 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addBoundaryTimeObserverForTimes:(id)a3 usingBlock:(id)a4
+- (id)addBoundaryTimeObserverForTimes:(id)times usingBlock:(id)block
 {
   if (self->_timebase)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [[VSOccasionalTimesObserver alloc] initWithTimebase:self->_timebase times:v7 queue:0 block:v6];
+    blockCopy = block;
+    timesCopy = times;
+    v8 = [[VSOccasionalTimesObserver alloc] initWithTimebase:self->_timebase times:timesCopy queue:0 block:blockCopy];
   }
 
   else
@@ -277,8 +277,8 @@
   v18 = *MEMORY[0x277D85DE8];
   if (self->_state == 3)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [v3 timeIntervalSinceDate:self->_audioQueueFutureEndDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:self->_audioQueueFutureEndDate];
     v5 = v4 > 5.0;
     if (v4 > 5.0)
     {
@@ -287,7 +287,7 @@
       v7 = VSGetLogDefault();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v6 stringFromDate:v3];
+        v10 = [v6 stringFromDate:date];
         v11 = [v6 stringFromDate:self->_audioQueueFutureEndDate];
         v12 = 138412802;
         v13 = v10;
@@ -404,7 +404,7 @@ LABEL_17:
     {
       v12 = [MEMORY[0x277CCACA8] vs_stringFrom4CC:v3];
       *buf = 138412290;
-      v16 = v12;
+      selfCopy = v12;
       _os_log_error_impl(&dword_2727E4000, v5, OS_LOG_TYPE_ERROR, "Error AudioQueuePause %@", buf, 0xCu);
     }
 
@@ -421,7 +421,7 @@ LABEL_17:
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2727E4000, v5, OS_LOG_TYPE_INFO, "VSAudioPlaybackService %p success AudioQueuePause", buf, 0xCu);
   }
 
@@ -593,13 +593,13 @@ LABEL_18:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_enqueueAudioBytesLength:(unsigned int)a3 audioBytes:(const void *)a4 packetCount:(int64_t)a5 packetDescriptions:(const void *)a6
+- (id)_enqueueAudioBytesLength:(unsigned int)length audioBytes:(const void *)bytes packetCount:(int64_t)count packetDescriptions:(const void *)descriptions
 {
   v58 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (length)
   {
     outBuffer = 0;
-    v11 = AudioQueueAllocateBuffer(self->_audioQueue, a3, &outBuffer);
+    v11 = AudioQueueAllocateBuffer(self->_audioQueue, length, &outBuffer);
     if (v11)
     {
       v12 = v11;
@@ -620,15 +620,15 @@ LABEL_21:
       goto LABEL_30;
     }
 
-    memcpy(outBuffer->mAudioData, a4, a3);
-    outBuffer->mAudioDataByteSize = a3;
+    memcpy(outBuffer->mAudioData, bytes, length);
+    outBuffer->mAudioDataByteSize = length;
     memset(&outTimeStamp, 0, sizeof(outTimeStamp));
     CurrentTime = AudioQueueGetCurrentTime(self->_audioQueue, 0, &outTimeStamp, 0);
     if (self->_enqueuedSampleCount == 0.0)
     {
-      v18 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       audioQueueStartDate = self->_audioQueueStartDate;
-      self->_audioQueueStartDate = v18;
+      self->_audioQueueStartDate = date;
     }
 
     if (!CurrentTime)
@@ -647,7 +647,7 @@ LABEL_21:
         {
           v24 = self->_audioStartTimeStamp.mSampleTime;
           *buf = 134217984;
-          v48 = *&v24;
+          selfCopy = *&v24;
           _os_log_impl(&dword_2727E4000, v23, OS_LOG_TYPE_INFO, "Audio queue start sample time: %.0f", buf, 0xCu);
         }
 
@@ -665,7 +665,7 @@ LABEL_21:
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
           *buf = 67109120;
-          LODWORD(v48) = v28;
+          LODWORD(selfCopy) = v28;
           _os_log_error_impl(&dword_2727E4000, v29, OS_LOG_TYPE_ERROR, "Detected stalled audio generation, will enqueue %d silence frame to compensate.", buf, 8u);
         }
 
@@ -675,7 +675,7 @@ LABEL_21:
       }
     }
 
-    v31 = AudioQueueEnqueueBuffer(self->_audioQueue, outBuffer, a5, a6);
+    v31 = AudioQueueEnqueueBuffer(self->_audioQueue, outBuffer, count, descriptions);
     if (v31)
     {
       v32 = v31;
@@ -684,7 +684,7 @@ LABEL_21:
       {
         v45 = [MEMORY[0x277CCACA8] vs_stringFrom4CC:v32];
         *buf = 138412290;
-        v48 = v45;
+        selfCopy = v45;
         _os_log_error_impl(&dword_2727E4000, v33, OS_LOG_TYPE_ERROR, "Error AudioQueueEnqueueBuffer %@", buf, 0xCu);
       }
 
@@ -695,14 +695,14 @@ LABEL_21:
     }
 
     kdebug_trace();
-    if (a5 && a6)
+    if (count && descriptions)
     {
-      v35 = (self->_asbd.mFramesPerPacket * a5);
+      v35 = (self->_asbd.mFramesPerPacket * count);
     }
 
     else
     {
-      v35 = (a3 / self->_asbd.mBytesPerFrame);
+      v35 = (length / self->_asbd.mBytesPerFrame);
     }
 
     v36 = v35 + self->_enqueuedSampleCount;
@@ -717,11 +717,11 @@ LABEL_21:
       v40 = self->_enqueuedSampleCount;
       discontinuedDuringPlayback = self->_discontinuedDuringPlayback;
       *buf = 134219008;
-      v48 = self;
+      selfCopy = self;
       v49 = 2048;
       v50 = outTimeStamp.mSampleTime;
       v51 = 2048;
-      v52 = a3;
+      lengthCopy = length;
       v53 = 2048;
       v54 = v40;
       v55 = 1024;
@@ -756,10 +756,10 @@ LABEL_30:
         break;
       }
 
-      v11 = [(NSMutableArray *)self->_enqueuedMappedAudioInfo firstObject];
+      firstObject = [(NSMutableArray *)self->_enqueuedMappedAudioInfo firstObject];
       [(NSMutableArray *)self->_enqueuedMappedAudioInfo removeObjectAtIndex:0];
-      [v11 audioBytesRange];
-      v13 = -[VSAudioPlaybackServiceAT _enqueueAudioBytesLength:audioBytes:packetCount:packetDescriptions:](self, "_enqueueAudioBytesLength:audioBytes:packetCount:packetDescriptions:", v12, -[VSMappedData bytesAtOffset:](self->_mappedData, "bytesAtOffset:", [v11 audioBytesRange]), objc_msgSend(v11, "packetCount"), -[VSMappedData bytesAtOffset:](self->_mappedData, "bytesAtOffset:", objc_msgSend(v11, "packetDescriptionsRange")));
+      [firstObject audioBytesRange];
+      v13 = -[VSAudioPlaybackServiceAT _enqueueAudioBytesLength:audioBytes:packetCount:packetDescriptions:](self, "_enqueueAudioBytesLength:audioBytes:packetCount:packetDescriptions:", v12, -[VSMappedData bytesAtOffset:](self->_mappedData, "bytesAtOffset:", [firstObject audioBytesRange]), objc_msgSend(firstObject, "packetCount"), -[VSMappedData bytesAtOffset:](self->_mappedData, "bytesAtOffset:", objc_msgSend(firstObject, "packetDescriptionsRange")));
       if (!v13)
       {
         ++self->_playingBufferCount;
@@ -774,18 +774,18 @@ LABEL_30:
   }
 }
 
-- (void)enqueue:(id)a3 packetCount:(int64_t)a4 packetDescriptions:(id)a5
+- (void)enqueue:(id)enqueue packetCount:(int64_t)count packetDescriptions:(id)descriptions
 {
-  v8 = a5;
-  v9 = a3;
+  descriptionsCopy = descriptions;
+  enqueueCopy = enqueue;
   pthread_mutex_lock(&__VSAudioQueueBufferLock);
   v16 = objc_alloc_init(VSAudioMappedInfoAT);
-  v10 = [(VSMappedData *)self->_mappedData appendData:v9];
+  v10 = [(VSMappedData *)self->_mappedData appendData:enqueueCopy];
   v12 = v11;
 
   [(VSAudioMappedInfoAT *)v16 setAudioBytesRange:v10, v12];
-  [(VSAudioMappedInfoAT *)v16 setPacketCount:a4];
-  v13 = [(VSMappedData *)self->_mappedData appendData:v8];
+  [(VSAudioMappedInfoAT *)v16 setPacketCount:count];
+  v13 = [(VSMappedData *)self->_mappedData appendData:descriptionsCopy];
   v15 = v14;
 
   [(VSAudioMappedInfoAT *)v16 setPacketDescriptionsRange:v13, v15];
@@ -824,9 +824,9 @@ LABEL_30:
   else
   {
     self->_state = 2;
-    v11 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     audioQueueStartDate = self->_audioQueueStartDate;
-    self->_audioQueueStartDate = v11;
+    self->_audioQueueStartDate = date;
 
     v13 = [(NSDate *)self->_audioQueueStartDate dateByAddingTimeInterval:self->_enqueuedSampleCount / self->_asbd.mSampleRate];
     audioQueueFutureEndDate = self->_audioQueueFutureEndDate;
@@ -886,8 +886,8 @@ LABEL_30:
 - (void)dealloc
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = AudioQueueDispose(self->_audioQueue, 1u);
   if (v4)
@@ -915,7 +915,7 @@ LABEL_30:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (VSAudioPlaybackServiceAT)initWithAudioSessionID:(unsigned int)a3 asbd:(AudioStreamBasicDescription *)a4
+- (VSAudioPlaybackServiceAT)initWithAudioSessionID:(unsigned int)d asbd:(AudioStreamBasicDescription *)asbd
 {
   v46 = *MEMORY[0x277D85DE8];
   mach_absolute_time();
@@ -926,20 +926,20 @@ LABEL_30:
   if (v7)
   {
     *(v7 + 5) = 1;
-    v9 = *&a4->mSampleRate;
-    v10 = *&a4->mBytesPerPacket;
-    *(v7 + 17) = *&a4->mBitsPerChannel;
+    v9 = *&asbd->mSampleRate;
+    v10 = *&asbd->mBytesPerPacket;
+    *(v7 + 17) = *&asbd->mBitsPerChannel;
     *(v7 + 120) = v10;
     *(v7 + 104) = v9;
-    if (a3)
+    if (d)
     {
-      *(v7 + 3) = a3;
+      *(v7 + 3) = d;
     }
 
     else
     {
-      v11 = [MEMORY[0x277CB83F8] sharedInstance];
-      *(v8 + 3) = [v11 opaqueSessionID];
+      mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+      *(v8 + 3) = [mEMORY[0x277CB83F8] opaqueSessionID];
     }
 
     *(v8 + 18) = 1018212795;
@@ -956,9 +956,9 @@ LABEL_30:
     v13 = *(v8 + 9);
     *(v8 + 9) = v12;
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v15 = *(v8 + 10);
-    *(v8 + 10) = v14;
+    *(v8 + 10) = array;
 
     v16 = objc_alloc_init(MEMORY[0x277CCA928]);
     v17 = *(v8 + 12);
@@ -1013,14 +1013,14 @@ LABEL_30:
       }
     }
 
-    v32 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v32 addObserver:v8 selector:sel_handleMediaServerReset name:*MEMORY[0x277CB80A0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_handleMediaServerReset name:*MEMORY[0x277CB80A0] object:0];
 
     v33 = VSGetLogDefault();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v43) = a3;
+      LODWORD(v43) = d;
       _os_log_impl(&dword_2727E4000, v33, OS_LOG_TYPE_DEFAULT, "AudioQueue initialized with session ID: %d", buf, 8u);
     }
   }

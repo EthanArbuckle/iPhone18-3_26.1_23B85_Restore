@@ -1,25 +1,25 @@
 @interface VKToneGenerator
-- (VKToneGenerator)initWithHapticEngineDelegate:(id)a3;
+- (VKToneGenerator)initWithHapticEngineDelegate:(id)delegate;
 - (VKWalkAssistHapticEngineDelegate)hapticEngineDelegate;
-- (id)configureAudioEngineWithError:(id *)a3;
-- (void)configurePlayerWithPitchFactor:(float)a3 leftBalance:(float)a4 rightBalance:(float)a5 volume:(float)a6 loop:(BOOL)a7;
+- (id)configureAudioEngineWithError:(id *)error;
+- (void)configurePlayerWithPitchFactor:(float)factor leftBalance:(float)balance rightBalance:(float)rightBalance volume:(float)volume loop:(BOOL)loop;
 - (void)pause;
 - (void)playOnePulse;
-- (void)playSoundWithPitchFactor:(float)a3 leftBalance:(float)a4 rightBalance:(float)a5 volume:(float)a6 loop:(BOOL)a7;
-- (void)setUsesSoundFeedback:(BOOL)a3;
+- (void)playSoundWithPitchFactor:(float)factor leftBalance:(float)balance rightBalance:(float)rightBalance volume:(float)volume loop:(BOOL)loop;
+- (void)setUsesSoundFeedback:(BOOL)feedback;
 - (void)startPulse;
 - (void)stopPulse;
 @end
 
 @implementation VKToneGenerator
 
-- (void)setUsesSoundFeedback:(BOOL)a3
+- (void)setUsesSoundFeedback:(BOOL)feedback
 {
-  if (self->_usesSoundFeedback != a3)
+  if (self->_usesSoundFeedback != feedback)
   {
     v10[5] = v3;
     v10[6] = v4;
-    if (a3)
+    if (feedback)
     {
       v10[0] = 0;
       v6 = [(VKToneGenerator *)self configureAudioEngineWithError:v10];
@@ -50,9 +50,9 @@
   }
 }
 
-- (VKToneGenerator)initWithHapticEngineDelegate:(id)a3
+- (VKToneGenerator)initWithHapticEngineDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = VKToneGenerator;
   v5 = [(VKToneGenerator *)&v19 init];
@@ -74,7 +74,7 @@
     timer = v6->_timer;
     v6->_timer = 0;
 
-    objc_storeWeak(&v6->_hapticEngineDelegate, v4);
+    objc_storeWeak(&v6->_hapticEngineDelegate, delegateCopy);
     v17 = v6;
   }
 
@@ -96,13 +96,13 @@
     v16[2] = 0x3032000000;
     v16[3] = __Block_byref_object_copy_;
     v16[4] = __Block_byref_object_dispose_;
-    v17 = [MEMORY[0x29EDB8DB0] date];
+    date = [MEMORY[0x29EDB8DB0] date];
     v15[0] = 0;
     v15[1] = v15;
     v15[2] = 0x2020000000;
     v15[3] = 0x3FC3333333333333;
     v3 = objc_alloc(MEMORY[0x29EDB8E68]);
-    v4 = [MEMORY[0x29EDB8DB0] date];
+    date2 = [MEMORY[0x29EDB8DB0] date];
     v8 = MEMORY[0x29EDCA5F8];
     v9 = 3221225472;
     v10 = __29__VKToneGenerator_startPulse__block_invoke;
@@ -110,12 +110,12 @@
     objc_copyWeak(&v14, &location);
     v12 = v16;
     v13 = v15;
-    v5 = [v3 initWithFireDate:v4 interval:1 repeats:&v8 block:0.001];
+    v5 = [v3 initWithFireDate:date2 interval:1 repeats:&v8 block:0.001];
     timer = self->_timer;
     self->_timer = v5;
 
-    v7 = [MEMORY[0x29EDB8E48] currentRunLoop];
-    [v7 addTimer:self->_timer forMode:*MEMORY[0x29EDB8CC0]];
+    currentRunLoop = [MEMORY[0x29EDB8E48] currentRunLoop];
+    [currentRunLoop addTimer:self->_timer forMode:*MEMORY[0x29EDB8CC0]];
 
     objc_destroyWeak(&v14);
     _Block_object_dispose(v15, 8);
@@ -212,19 +212,19 @@ LABEL_15:
   }
 }
 
-- (id)configureAudioEngineWithError:(id *)a3
+- (id)configureAudioEngineWithError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x29EDB8008]);
   v6 = objc_alloc_init(MEMORY[0x29EDB8030]);
   player = self->_player;
   self->_player = v6;
 
-  v8 = [v5 mainMixerNode];
+  mainMixerNode = [v5 mainMixerNode];
   mixer = self->_mixer;
-  self->_mixer = v8;
+  self->_mixer = mainMixerNode;
 
   [v5 attachNode:self->_player];
-  if ([v5 startAndReturnError:a3])
+  if ([v5 startAndReturnError:error])
   {
     v10 = v5;
   }
@@ -246,9 +246,9 @@ LABEL_15:
   [(VKToneGenerator *)self playSoundWithPitchFactor:0 leftBalance:v2 rightBalance:v3 volume:v4 loop:v5];
   if (self->_shouldPlayHapticPulse)
   {
-    v8 = [(VKToneGenerator *)self hapticEngineDelegate];
+    hapticEngineDelegate = [(VKToneGenerator *)self hapticEngineDelegate];
     *&v7 = self->_volume;
-    [v8 playSingleHapticPulseWithIntensity:v7 duration:self->_pulseDuration];
+    [hapticEngineDelegate playSingleHapticPulseWithIntensity:v7 duration:self->_pulseDuration];
   }
 }
 
@@ -264,7 +264,7 @@ LABEL_15:
   [(AVAudioPlayerNode *)player pause];
 }
 
-- (void)configurePlayerWithPitchFactor:(float)a3 leftBalance:(float)a4 rightBalance:(float)a5 volume:(float)a6 loop:(BOOL)a7
+- (void)configurePlayerWithPitchFactor:(float)factor leftBalance:(float)balance rightBalance:(float)rightBalance volume:(float)volume loop:(BOOL)loop
 {
   if (self->_audioFileURL)
   {
@@ -276,8 +276,8 @@ LABEL_15:
     if (v15)
     {
       v16 = v15;
-      v17 = AXLogCommon();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+      processingFormat = AXLogCommon();
+      if (os_log_type_enabled(processingFormat, OS_LOG_TYPE_FAULT))
       {
         [VKToneGenerator configurePlayerWithPitchFactor:leftBalance:rightBalance:volume:loop:];
       }
@@ -285,14 +285,14 @@ LABEL_15:
       goto LABEL_35;
     }
 
-    v17 = [v14 processingFormat];
-    [(AVAudioEngine *)self->_audioEngine connect:self->_player to:self->_mixer format:v17];
-    [v17 sampleRate];
+    processingFormat = [v14 processingFormat];
+    [(AVAudioEngine *)self->_audioEngine connect:self->_player to:self->_mixer format:processingFormat];
+    [processingFormat sampleRate];
     v19 = v18;
     v20 = [v14 length];
     v21 = objc_alloc(MEMORY[0x29EDB8020]);
-    v22 = [v14 processingFormat];
-    v23 = [v21 initWithPCMFormat:v22 frameCapacity:v20];
+    processingFormat2 = [v14 processingFormat];
+    v23 = [v21 initWithPCMFormat:processingFormat2 frameCapacity:v20];
 
     [v23 setFrameLength:v20];
     v57 = 0;
@@ -310,45 +310,45 @@ LABEL_15:
     else
     {
       v25 = v19;
-      v26 = v20 / a3;
+      v26 = v20 / factor;
       v27 = v26;
       self->_pulseDuration = (v26 / v25);
       v28 = objc_alloc(MEMORY[0x29EDB8020]);
-      v29 = [v14 processingFormat];
-      v30 = [v28 initWithPCMFormat:v29 frameCapacity:v27];
+      processingFormat3 = [v14 processingFormat];
+      v30 = [v28 initWithPCMFormat:processingFormat3 frameCapacity:v27];
       buffer = self->_buffer;
       self->_buffer = v30;
 
       [(AVAudioPCMBuffer *)self->_buffer setFrameLength:v27];
-      v32 = [v17 channelCount];
-      if (v32)
+      channelCount = [processingFormat channelCount];
+      if (channelCount)
       {
-        v33 = v32;
-        v34 = v32;
-        v35 = [v23 floatChannelData];
-        v36 = [(AVAudioPCMBuffer *)self->_buffer floatChannelData];
+        v33 = channelCount;
+        v34 = channelCount;
+        floatChannelData = [v23 floatChannelData];
+        floatChannelData2 = [(AVAudioPCMBuffer *)self->_buffer floatChannelData];
         v37 = malloc_type_malloc(4 * v33, 0x100004052888210uLL);
         if (v33 == 1)
         {
-          if (a4 <= a5)
+          if (balance <= rightBalance)
           {
-            v38 = a5;
+            balanceCopy = rightBalance;
           }
 
           else
           {
-            v38 = a4;
+            balanceCopy = balance;
           }
 
-          *v37 = v38 * a6;
+          *v37 = balanceCopy * volume;
         }
 
         else
         {
           v39 = (v34 + 3) & 0x1FFFFFFFCLL;
           v40 = vdupq_n_s64(v34 - 1);
-          v41 = a4 * a6;
-          v42 = a5 * a6;
+          v41 = balance * volume;
+          v42 = rightBalance * volume;
           v43 = xmmword_29C71B4F0;
           v44 = xmmword_29C71B500;
           v45 = v37 + 2;
@@ -389,11 +389,11 @@ LABEL_15:
           {
             v50 = 0;
             v51 = v37[v48];
-            v52 = *(v35 + 8 * v48);
-            v53 = v36[v48];
+            v52 = *(floatChannelData + 8 * v48);
+            v53 = floatChannelData2[v48];
             do
             {
-              v54 = v50 * a3;
+              v54 = v50 * factor;
               if (v54 >= v49)
               {
                 v56 = *(v52 + 4 * v49);
@@ -431,17 +431,17 @@ LABEL_35:
   }
 }
 
-- (void)playSoundWithPitchFactor:(float)a3 leftBalance:(float)a4 rightBalance:(float)a5 volume:(float)a6 loop:(BOOL)a7
+- (void)playSoundWithPitchFactor:(float)factor leftBalance:(float)balance rightBalance:(float)rightBalance volume:(float)volume loop:(BOOL)loop
 {
   if (self->_usesSoundFeedback)
   {
-    v7 = a7;
+    loopCopy = loop;
     [VKToneGenerator configurePlayerWithPitchFactor:"configurePlayerWithPitchFactor:leftBalance:rightBalance:volume:loop:" leftBalance:? rightBalance:? volume:? loop:?];
     if (self->_buffer)
     {
       if ([(AVAudioEngine *)self->_audioEngine isRunning])
       {
-        if (v7)
+        if (loopCopy)
         {
           v9 = 5;
         }

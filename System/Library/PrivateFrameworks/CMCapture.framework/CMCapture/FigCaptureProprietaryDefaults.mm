@@ -1,21 +1,21 @@
 @interface FigCaptureProprietaryDefaults
-- (FigCaptureProprietaryDefaults)initWithDefaultsChangedHandler:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)objectsForWildcardKey:(id)a3;
-- (id)setObject:(id)a3 forWildcardKey:(id)a4;
+- (FigCaptureProprietaryDefaults)initWithDefaultsChangedHandler:(id)handler;
+- (id)objectForKey:(id)key;
+- (id)objectsForWildcardKey:(id)key;
+- (id)setObject:(id)object forWildcardKey:(id)key;
 - (void)dealloc;
-- (void)observeChangesForKey:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)sendNotificationOfNewTransientValue:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)stopObservingChangesForKey:(id)a3;
+- (void)observeChangesForKey:(id)key;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)sendNotificationOfNewTransientValue:(id)value forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)stopObservingChangesForKey:(id)key;
 @end
 
 @implementation FigCaptureProprietaryDefaults
 
-- (FigCaptureProprietaryDefaults)initWithDefaultsChangedHandler:(id)a3
+- (FigCaptureProprietaryDefaults)initWithDefaultsChangedHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Need a non-nil defaultsChangedHandler" userInfo:0]);
   }
@@ -27,7 +27,7 @@
   {
     v4->_videoUserDefaults = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.cameracapture"];
     v4->_audioUserDefaults = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.coreaudio"];
-    v4->_defaultsChangedHandler = [a3 copy];
+    v4->_defaultsChangedHandler = [handler copy];
     v4->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -82,13 +82,13 @@
   [(FigCaptureProprietaryDefaults *)&v10 dealloc];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     if (self)
     {
-      v5 = [a3 hasPrefix:@"AUVoiceIOClients"];
+      v5 = [key hasPrefix:@"AUVoiceIOClients"];
       v6 = 8;
       if (v5)
       {
@@ -103,7 +103,7 @@
       v7 = 0;
     }
 
-    return [v7 valueForKey:a3];
+    return [v7 valueForKey:key];
   }
 
   else
@@ -113,20 +113,20 @@
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     os_unfair_lock_lock(&self->_lock);
     self->_changingDefaultsMyself = 1;
-    v7 = [a4 hasPrefix:@"AUVoiceIOClients"];
+    v7 = [key hasPrefix:@"AUVoiceIOClients"];
     v8 = 8;
     if (v7)
     {
       v8 = 16;
     }
 
-    [*(&self->super.isa + v8) setObject:a3 forKey:a4];
+    [*(&self->super.isa + v8) setObject:object forKey:key];
     self->_changingDefaultsMyself = 0;
 
     os_unfair_lock_unlock(&self->_lock);
@@ -138,11 +138,11 @@
   }
 }
 
-- (id)objectsForWildcardKey:(id)a3
+- (id)objectsForWildcardKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    [(FigCaptureProprietaryDefaults *)self objectsForWildcardKey:a3, v4, &v5];
+    [(FigCaptureProprietaryDefaults *)self objectsForWildcardKey:key, v4, &v5];
     return v5;
   }
 
@@ -166,13 +166,13 @@ uint64_t __55__FigCaptureProprietaryDefaults_objectsForWildcardKey___block_invok
   return result;
 }
 
-- (id)setObject:(id)a3 forWildcardKey:(id)a4
+- (id)setObject:(id)object forWildcardKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     os_unfair_lock_lock(&self->_lock);
     self->_changingDefaultsMyself = 1;
-    v7 = [a4 hasPrefix:@"AUVoiceIOClients"];
+    v7 = [key hasPrefix:@"AUVoiceIOClients"];
     v8 = 8;
     if (v7)
     {
@@ -181,20 +181,20 @@ uint64_t __55__FigCaptureProprietaryDefaults_objectsForWildcardKey___block_invok
 
     v9 = *(&self->super.isa + v8);
     v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
-    v11 = [v9 dictionaryRepresentation];
+    dictionaryRepresentation = [v9 dictionaryRepresentation];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __58__FigCaptureProprietaryDefaults_setObject_forWildcardKey___block_invoke;
     v13[3] = &unk_1E7991CC8;
-    v13[4] = a4;
+    v13[4] = key;
     v13[5] = v9;
-    v13[6] = a3;
+    v13[6] = object;
     v13[7] = v10;
-    [v11 enumerateKeysAndObjectsUsingBlock:v13];
-    if (![v10 count] && (objc_msgSend(a4, "containsString:", @"*") & 1) == 0)
+    [dictionaryRepresentation enumerateKeysAndObjectsUsingBlock:v13];
+    if (![v10 count] && (objc_msgSend(key, "containsString:", @"*") & 1) == 0)
     {
-      [v9 setObject:a3 forKey:a4];
-      [v10 addObject:a4];
+      [v9 setObject:object forKey:key];
+      [v10 addObject:key];
     }
 
     self->_changingDefaultsMyself = 0;
@@ -224,9 +224,9 @@ uint64_t __58__FigCaptureProprietaryDefaults_setObject_forWildcardKey___block_in
   return result;
 }
 
-- (void)observeChangesForKey:(id)a3
+- (void)observeChangesForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     os_unfair_lock_lock(&self->_lock);
     observedKeys = self->_observedKeys;
@@ -236,9 +236,9 @@ uint64_t __58__FigCaptureProprietaryDefaults_setObject_forWildcardKey___block_in
       self->_observedKeys = observedKeys;
     }
 
-    [(NSMutableSet *)observedKeys addObject:a3];
+    [(NSMutableSet *)observedKeys addObject:key];
     os_unfair_lock_unlock(&self->_lock);
-    v6 = [a3 hasPrefix:@"AUVoiceIOClients"];
+    v6 = [key hasPrefix:@"AUVoiceIOClients"];
     v7 = 8;
     if (v6)
     {
@@ -247,7 +247,7 @@ uint64_t __58__FigCaptureProprietaryDefaults_setObject_forWildcardKey___block_in
 
     v8 = *(&self->super.isa + v7);
 
-    [v8 addObserver:self forKeyPath:a3 options:3 context:0];
+    [v8 addObserver:self forKeyPath:key options:3 context:0];
   }
 
   else
@@ -256,17 +256,17 @@ uint64_t __58__FigCaptureProprietaryDefaults_setObject_forWildcardKey___block_in
   }
 }
 
-- (void)stopObservingChangesForKey:(id)a3
+- (void)stopObservingChangesForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(NSMutableSet *)self->_observedKeys containsObject:a3];
-    [(NSMutableSet *)self->_observedKeys removeObject:a3];
+    v5 = [(NSMutableSet *)self->_observedKeys containsObject:key];
+    [(NSMutableSet *)self->_observedKeys removeObject:key];
     os_unfair_lock_unlock(&self->_lock);
     if (v5)
     {
-      v6 = [a3 hasPrefix:@"AUVoiceIOClients"];
+      v6 = [key hasPrefix:@"AUVoiceIOClients"];
       v7 = 8;
       if (v6)
       {
@@ -275,7 +275,7 @@ uint64_t __58__FigCaptureProprietaryDefaults_setObject_forWildcardKey___block_in
 
       v8 = *(&self->super.isa + v7);
 
-      [v8 removeObserver:self forKeyPath:a3 context:0];
+      [v8 removeObserver:self forKeyPath:key context:0];
     }
   }
 
@@ -285,17 +285,17 @@ uint64_t __58__FigCaptureProprietaryDefaults_setObject_forWildcardKey___block_in
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   if (!self->_changingDefaultsMyself)
   {
     os_unfair_lock_lock(&self->_lock);
-    v9 = [(NSMutableSet *)self->_observedKeys containsObject:a3];
+    v9 = [(NSMutableSet *)self->_observedKeys containsObject:path];
     os_unfair_lock_unlock(&self->_lock);
     if (v9)
     {
-      [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-      [a5 objectForKeyedSubscript:*MEMORY[0x1E696A500]];
+      [change objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+      [change objectForKeyedSubscript:*MEMORY[0x1E696A500]];
       v10 = *(self->_defaultsChangedHandler + 2);
 
       v10();
@@ -303,9 +303,9 @@ uint64_t __58__FigCaptureProprietaryDefaults_setObject_forWildcardKey___block_in
   }
 }
 
-- (void)sendNotificationOfNewTransientValue:(id)a3 forKey:(id)a4
+- (void)sendNotificationOfNewTransientValue:(id)value forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     os_unfair_lock_lock(&self->_lock);
     (*(self->_defaultsChangedHandler + 2))();

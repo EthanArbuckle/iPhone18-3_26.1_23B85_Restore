@@ -1,18 +1,18 @@
 @interface TVTemplateFeaturesManager
 - (TVTemplateFeaturesManagerDelegate)delegate;
-- (id)_contextsForFeature:(id)a3;
-- (id)currentContextForFeature:(id)a3;
-- (int64_t)_rankForContext:(id)a3;
-- (void)popContext:(id)a3 forFeature:(id)a4;
-- (void)pushContext:(id)a3 forFeature:(id)a4;
+- (id)_contextsForFeature:(id)feature;
+- (id)currentContextForFeature:(id)feature;
+- (int64_t)_rankForContext:(id)context;
+- (void)popContext:(id)context forFeature:(id)feature;
+- (void)pushContext:(id)context forFeature:(id)feature;
 @end
 
 @implementation TVTemplateFeaturesManager
 
-- (void)pushContext:(id)a3 forFeature:(id)a4
+- (void)pushContext:(id)context forFeature:(id)feature
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  featureCopy = feature;
   if (!self->_contextsByFeature)
   {
     v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
@@ -20,9 +20,9 @@
     self->_contextsByFeature = v8;
   }
 
-  v10 = [(TVTemplateFeaturesManager *)self _contextsForFeature:v7];
-  v11 = [_TVTemplateFeatureContextHandle handleWithContext:v6];
-  [v11 setRank:{-[TVTemplateFeaturesManager _rankForContext:](self, "_rankForContext:", v6)}];
+  v10 = [(TVTemplateFeaturesManager *)self _contextsForFeature:featureCopy];
+  v11 = [_TVTemplateFeatureContextHandle handleWithContext:contextCopy];
+  [v11 setRank:{-[TVTemplateFeaturesManager _rankForContext:](self, "_rankForContext:", contextCopy)}];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -59,8 +59,8 @@
   v14 = v21[3];
   if (v14 == [v10 count] - 1)
   {
-    v15 = [(TVTemplateFeaturesManager *)self delegate];
-    [v15 featuresManager:self currentContextDidChangeForFeature:v7];
+    delegate = [(TVTemplateFeaturesManager *)self delegate];
+    [delegate featuresManager:self currentContextDidChangeForFeature:featureCopy];
   }
 
   _Block_object_dispose(&v20, 8);
@@ -86,34 +86,34 @@ void __52__TVTemplateFeaturesManager_pushContext_forFeature___block_invoke(uint6
   }
 }
 
-- (void)popContext:(id)a3 forFeature:(id)a4
+- (void)popContext:(id)context forFeature:(id)feature
 {
-  v11 = a4;
-  v6 = a3;
-  v7 = [(TVTemplateFeaturesManager *)self _contextsForFeature:v11];
-  v8 = [_TVTemplateFeatureContextHandle handleWithContext:v6];
+  featureCopy = feature;
+  contextCopy = context;
+  v7 = [(TVTemplateFeaturesManager *)self _contextsForFeature:featureCopy];
+  v8 = [_TVTemplateFeatureContextHandle handleWithContext:contextCopy];
 
   v9 = [v7 indexOfObject:v8];
   [v7 removeObject:v8];
   if (v9 == [v7 count])
   {
-    v10 = [(TVTemplateFeaturesManager *)self delegate];
-    [v10 featuresManager:self currentContextDidChangeForFeature:v11];
+    delegate = [(TVTemplateFeaturesManager *)self delegate];
+    [delegate featuresManager:self currentContextDidChangeForFeature:featureCopy];
   }
 }
 
-- (id)currentContextForFeature:(id)a3
+- (id)currentContextForFeature:(id)feature
 {
-  v3 = [(TVTemplateFeaturesManager *)self _contextsForFeature:a3];
-  v4 = [v3 lastObject];
-  v5 = [v4 context];
+  v3 = [(TVTemplateFeaturesManager *)self _contextsForFeature:feature];
+  lastObject = [v3 lastObject];
+  context = [lastObject context];
 
-  return v5;
+  return context;
 }
 
-- (id)_contextsForFeature:(id)a3
+- (id)_contextsForFeature:(id)feature
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithCString:protocol_getName(a3) encoding:30];
+  v4 = [MEMORY[0x277CCACA8] stringWithCString:protocol_getName(feature) encoding:30];
   v5 = [(NSMutableDictionary *)self->_contextsByFeature objectForKeyedSubscript:v4];
   if (!v5)
   {
@@ -124,25 +124,25 @@ void __52__TVTemplateFeaturesManager_pushContext_forFeature___block_invoke(uint6
   return v5;
 }
 
-- (int64_t)_rankForContext:(id)a3
+- (int64_t)_rankForContext:(id)context
 {
-  v3 = [a3 tv_associatedIKViewElement];
-  if (!v3)
+  tv_associatedIKViewElement = [context tv_associatedIKViewElement];
+  if (!tv_associatedIKViewElement)
   {
     return -1;
   }
 
-  v4 = v3;
+  v4 = tv_associatedIKViewElement;
   v5 = -1;
   do
   {
     ++v5;
-    v6 = [v4 parent];
+    parent = [v4 parent];
 
-    v4 = v6;
+    v4 = parent;
   }
 
-  while (v6);
+  while (parent);
   return v5;
 }
 

@@ -1,26 +1,26 @@
 @interface NotificationService
 - (_TtC26FindMyNotificationsService19NotificationService)init;
 - (void)dealloc;
-- (void)didReceiveNotificationRequest:(id)a3 withContentHandler:(id)a4;
+- (void)didReceiveNotificationRequest:(id)request withContentHandler:(id)handler;
 - (void)serviceExtensionTimeWillExpire;
 @end
 
 @implementation NotificationService
 
-- (void)didReceiveNotificationRequest:(id)a3 withContentHandler:(id)a4
+- (void)didReceiveNotificationRequest:(id)request withContentHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_10001182C(v7, v8, v6);
+  requestCopy = request;
+  selfCopy = self;
+  sub_10001182C(requestCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
 - (void)serviceExtensionTimeWillExpire
 {
-  v2 = self;
+  selfCopy = self;
   sub_100010988();
 }
 
@@ -30,10 +30,10 @@
   memset(v6, 0, sizeof(v6));
   v3 = OBJC_IVAR____TtC26FindMyNotificationsService19NotificationService_currentContentService;
   swift_beginAccess();
-  v4 = self;
+  selfCopy = self;
   sub_100010E64(v6, self + v3);
   swift_endAccess();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for NotificationService();
   [(NotificationService *)&v5 dealloc];
 }

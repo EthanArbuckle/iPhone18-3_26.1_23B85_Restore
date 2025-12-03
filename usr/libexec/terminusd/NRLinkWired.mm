@@ -1,24 +1,24 @@
 @interface NRLinkWired
-- (BOOL)cancelWithReason:(id)a3;
+- (BOOL)cancelWithReason:(id)reason;
 - (BOOL)initializeExternalDeviceLink;
 - (BOOL)initiateConnection;
 - (BOOL)resume;
-- (BOOL)sendControlData:(id)a3;
+- (BOOL)sendControlData:(id)data;
 - (BOOL)start;
 - (BOOL)suspend;
 - (id)copyDescriptionInner;
-- (id)copyNotifyPayloadsToSendWithProxy:(BOOL)a3 sendingClassC:(BOOL *)a4;
+- (id)copyNotifyPayloadsToSendWithProxy:(BOOL)proxy sendingClassC:(BOOL *)c;
 - (id)copyStatusString;
 - (id)getOrSendIDSDeviceID;
-- (id)ikeSessionPointerForDataProtectionClass:(unsigned __int8)a3;
-- (void)checkPeerAvailabilityWithForceAggressive:(BOOL)a3;
+- (id)ikeSessionPointerForDataProtectionClass:(unsigned __int8)class;
+- (void)checkPeerAvailabilityWithForceAggressive:(BOOL)aggressive;
 - (void)initiatePairing;
 - (void)invalidateLink;
-- (void)requestConfigurationForListener:(id)a3 session:(id)a4 sessionConfig:(id)a5 childConfig:(id)a6 validateAuthBlock:(id)a7 responseBlock:(id)a8;
-- (void)retrySetupIPsec:(unsigned __int8)a3;
+- (void)requestConfigurationForListener:(id)listener session:(id)session sessionConfig:(id)config childConfig:(id)childConfig validateAuthBlock:(id)block responseBlock:(id)responseBlock;
+- (void)retrySetupIPsec:(unsigned __int8)psec;
 - (void)sendClassCUnlockedNotify;
 - (void)sendNotifyPayload;
-- (void)setupIKECallbacks:(unsigned __int8)a3;
+- (void)setupIKECallbacks:(unsigned __int8)callbacks;
 - (void)upgradeSessionsIfNeeded;
 @end
 
@@ -37,7 +37,7 @@
     {
       v8 = self->super._nrUUID;
       v9 = _NRCopyLogObjectForNRUUID();
-      v21 = [(NRLink *)self copyDescription];
+      copyDescription = [(NRLink *)self copyDescription];
       _NRLogWithArgs();
     }
   }
@@ -67,7 +67,7 @@
             v13 = self->super._nrUUID;
             v14 = _NRCopyLogObjectForNRUUID();
             v19 = 1204;
-            v20 = [(NRLink *)self copyDescription];
+            copyDescription2 = [(NRLink *)self copyDescription];
             v17 = "";
             v18 = "[NRLinkWired resume]";
             _NRLogWithArgs();
@@ -75,10 +75,10 @@
         }
       }
 
-      [(NRLink *)self changeStateTo:8 details:@"(resume)", v17, v18, v19, v20];
+      [(NRLink *)self changeStateTo:8 details:@"(resume)", v17, v18, v19, copyDescription2];
       [(NRLink *)self setInterfaceRank];
-      v15 = [(NRLink *)self linkDelegate];
-      [v15 linkIsReady:self];
+      linkDelegate = [(NRLink *)self linkDelegate];
+      [linkDelegate linkIsReady:self];
 
       return 1;
     }
@@ -118,7 +118,7 @@
           v12 = self->super._nrUUID;
           v13 = _NRCopyLogObjectForNRUUID();
           v17 = 1176;
-          v18 = [(NRLink *)self copyDescription];
+          copyDescription = [(NRLink *)self copyDescription];
           v15 = "";
           v16 = "[NRLinkWired suspend]";
           _NRLogWithArgs();
@@ -126,10 +126,10 @@
       }
     }
 
-    [(NRLink *)self changeStateTo:9 details:@"(suspend)", v15, v16, v17, v18];
+    [(NRLink *)self changeStateTo:9 details:@"(suspend)", v15, v16, v17, copyDescription];
     [(NRLink *)self setInterfaceRank];
-    v8 = [(NRLink *)self linkDelegate];
-    [v8 linkIsSuspended:self];
+    linkDelegate = [(NRLink *)self linkDelegate];
+    [linkDelegate linkIsSuspended:self];
     goto LABEL_10;
   }
 
@@ -140,8 +140,8 @@
   if (v6)
   {
     v7 = self->super._nrUUID;
-    v8 = _NRCopyLogObjectForNRUUID();
-    v19 = [(NRLink *)self copyDescription];
+    linkDelegate = _NRCopyLogObjectForNRUUID();
+    copyDescription2 = [(NRLink *)self copyDescription];
     _NRLogWithArgs();
 
 LABEL_10:
@@ -209,7 +209,7 @@ LABEL_10:
 
     v9 = self->super._nrUUID;
     v11 = _NRCopyLogObjectForNRUUID();
-    v10 = [(NRLink *)self copyDescription];
+    copyDescription = [(NRLink *)self copyDescription];
     _NRLogWithArgs();
 
     v3 = v11;
@@ -221,37 +221,37 @@ LABEL_22:
 {
   if (![(NRLinkWired *)self isIKEResponder])
   {
-    v3 = [(NRLink *)self nrUUID];
-    v4 = sub_100163A30(NRDLocalDevice, v3);
+    nrUUID = [(NRLink *)self nrUUID];
+    v4 = sub_100163A30(NRDLocalDevice, nrUUID);
 
     v15 = 0;
     v5 = [(NRLinkWired *)self copyNotifyPayloadsToSendWithProxy:sub_100147B98(v4) sendingClassC:&v15];
     [(NRLinkWired *)self setNeedsToSendLocalClassCUnlockNotify:(v15 & 1) == 0];
-    v6 = [(NRLinkWired *)self getOrSendIDSDeviceID];
-    if (v6)
+    getOrSendIDSDeviceID = [(NRLinkWired *)self getOrSendIDSDeviceID];
+    if (getOrSendIDSDeviceID)
     {
-      [v5 addObject:v6];
+      [v5 addObject:getOrSendIDSDeviceID];
     }
 
-    v7 = [(NRLinkWired *)self ikeSessionClassD];
-    v8 = [(NRLinkWired *)self ikeSessionClassC];
+    ikeSessionClassD = [(NRLinkWired *)self ikeSessionClassD];
+    ikeSessionClassC = [(NRLinkWired *)self ikeSessionClassC];
 
-    if (v8)
+    if (ikeSessionClassC)
     {
-      v9 = [(NRLinkWired *)self ikeSessionClassC];
+      ikeSessionClassC2 = [(NRLinkWired *)self ikeSessionClassC];
 
-      v7 = v9;
+      ikeSessionClassD = ikeSessionClassC2;
     }
 
     objc_initWeak(&location, self);
-    v10 = [(NRLink *)self queue];
+    queue = [(NRLink *)self queue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000DD6E0;
     v11[3] = &unk_1001FB928;
     objc_copyWeak(&v12, &location);
     v13 = v15;
-    [v7 sendPrivateNotifies:v5 maxRetries:10 retryIntervalInMilliseconds:1000 callbackQueue:v10 callback:v11];
+    [ikeSessionClassD sendPrivateNotifies:v5 maxRetries:10 retryIntervalInMilliseconds:1000 callbackQueue:queue callback:v11];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -262,9 +262,9 @@ LABEL_22:
 {
   if ([(NRLink *)self state]== 8)
   {
-    v3 = [(NRLinkWired *)self ikeSessionClassD];
+    ikeSessionClassD = [(NRLinkWired *)self ikeSessionClassD];
 
-    if (v3)
+    if (ikeSessionClassD)
     {
       if (![(NRLinkWired *)self hasScheduledSendingLocalClassCUnlock])
       {
@@ -342,12 +342,12 @@ LABEL_22:
   return v7;
 }
 
-- (BOOL)sendControlData:(id)a3
+- (BOOL)sendControlData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v5 = [[NEIKEv2PrivateNotify alloc] initWithNotifyStatus:50702 notifyData:v4];
+    v5 = [[NEIKEv2PrivateNotify alloc] initWithNotifyStatus:50702 notifyData:dataCopy];
     v6 = v5 != 0;
     if (v5)
     {
@@ -355,13 +355,13 @@ LABEL_22:
       v7 = *(&self->_ikeSessionClassD + 7);
       v20 = v5;
       v8 = [NSArray arrayWithObjects:&v20 count:1];
-      v9 = [(NRLink *)self queue];
+      queue = [(NRLink *)self queue];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_1000DE4BC;
       v17[3] = &unk_1001FC018;
       objc_copyWeak(&v18, &location);
-      [v7 sendPrivateNotifies:v8 maxRetries:10 retryIntervalInMilliseconds:1000 callbackQueue:v9 callback:v17];
+      [v7 sendPrivateNotifies:v8 maxRetries:10 retryIntervalInMilliseconds:1000 callbackQueue:queue callback:v17];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(&location);
@@ -397,9 +397,9 @@ LABEL_22:
   return v6;
 }
 
-- (id)copyNotifyPayloadsToSendWithProxy:(BOOL)a3 sendingClassC:(BOOL *)a4
+- (id)copyNotifyPayloadsToSendWithProxy:(BOOL)proxy sendingClassC:(BOOL *)c
 {
-  v5 = a3;
+  proxyCopy = proxy;
   v7 = objc_alloc_init(NSMutableArray);
   v30 = 6144;
   v8 = [[NSMutableData alloc] initWithBytes:&v30 length:2];
@@ -431,14 +431,14 @@ LABEL_22:
   v16 = sub_100147A80();
   [v7 addObject:v16];
   v29 = 0;
-  v17 = [v16 notifyData];
-  [v17 getBytes:&v29 length:1];
+  notifyData = [v16 notifyData];
+  [notifyData getBytes:&v29 length:1];
 
-  *a4 = v29 >> 7;
-  if (v5)
+  *c = v29 >> 7;
+  if (proxyCopy)
   {
-    v18 = [(NRLink *)self nrUUID];
-    v19 = sub_100163A30(NRDLocalDevice, v18);
+    nrUUID = [(NRLink *)self nrUUID];
+    v19 = sub_100163A30(NRDLocalDevice, nrUUID);
 
     if (v19)
     {
@@ -451,9 +451,9 @@ LABEL_22:
     }
 
     v21 = v20;
-    v22 = [v21 proxyCapability];
+    proxyCapability = [v21 proxyCapability];
 
-    if (v22 == 1)
+    if (proxyCapability == 1)
     {
       if (v19)
       {
@@ -466,19 +466,19 @@ LABEL_22:
       }
 
       v24 = v23;
-      v25 = [v24 hasCompanionDatapath];
+      hasCompanionDatapath = [v24 hasCompanionDatapath];
 
-      if (v25)
+      if (hasCompanionDatapath)
       {
-        v26 = 0;
+        localOuterEndpoint = 0;
       }
 
       else
       {
-        v26 = [(NRLink *)self localOuterEndpoint];
+        localOuterEndpoint = [(NRLink *)self localOuterEndpoint];
       }
 
-      v27 = sub_100147C1C(v19, v26);
+      v27 = sub_100147C1C(v19, localOuterEndpoint);
       [v7 addObject:v27];
     }
   }
@@ -486,23 +486,23 @@ LABEL_22:
   return v7;
 }
 
-- (void)requestConfigurationForListener:(id)a3 session:(id)a4 sessionConfig:(id)a5 childConfig:(id)a6 validateAuthBlock:(id)a7 responseBlock:(id)a8
+- (void)requestConfigurationForListener:(id)listener session:(id)session sessionConfig:(id)config childConfig:(id)childConfig validateAuthBlock:(id)block responseBlock:(id)responseBlock
 {
-  v61 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v61)
+  listenerCopy = listener;
+  sessionCopy = session;
+  configCopy = config;
+  childConfigCopy = childConfig;
+  blockCopy = block;
+  responseBlockCopy = responseBlock;
+  if (listenerCopy)
   {
-    if (v14)
+    if (sessionCopy)
     {
-      if (v15)
+      if (configCopy)
       {
-        if (v17)
+        if (blockCopy)
         {
-          if (v18)
+          if (responseBlockCopy)
           {
             nrUUID = self->super._nrUUID;
             v20 = _NRCopyLogObjectForNRUUID();
@@ -512,12 +512,12 @@ LABEL_22:
             {
               v22 = self->super._nrUUID;
               v23 = _NRCopyLogObjectForNRUUID();
-              v59 = v15;
-              v60 = v16;
+              v59 = configCopy;
+              v60 = childConfigCopy;
               v54 = 707;
-              v55 = [(NRLink *)self copyDescription];
-              v56 = v61;
-              v58 = v14;
+              copyDescription = [(NRLink *)self copyDescription];
+              v56 = listenerCopy;
+              v58 = sessionCopy;
               v52 = "";
               v53 = "[NRLinkWired requestConfigurationForListener:session:sessionConfig:childConfig:validateAuthBlock:responseBlock:]";
               _NRLogWithArgs();
@@ -525,18 +525,18 @@ LABEL_22:
 
             if (self->super._state != 255)
             {
-              v24 = [v15 localIdentifier];
+              localIdentifier = [configCopy localIdentifier];
               if (qword_1002292E8 != -1)
               {
                 dispatch_once(&qword_1002292E8, &stru_1001FC558);
               }
 
               v25 = qword_1002292E0;
-              v26 = [v24 isEqual:v25];
+              v26 = [localIdentifier isEqual:v25];
 
               if (v26)
               {
-                if (v16)
+                if (childConfigCopy)
                 {
                   v27 = sub_100146D34(1, 0);
                   [v27 setMode:2];
@@ -552,22 +552,22 @@ LABEL_22:
                   goto LABEL_36;
                 }
 
-                [(NRLink *)self reportEvent:3024 detailsFormat:@"ClassD %@", v14, v53, v54, v55, v56, v58, v59, v60];
+                [(NRLink *)self reportEvent:3024 detailsFormat:@"ClassD %@", sessionCopy, v53, v54, copyDescription, v56, v58, v59, v60];
                 goto LABEL_21;
               }
 
-              v29 = [v15 localIdentifier];
+              localIdentifier2 = [configCopy localIdentifier];
               if (qword_1002292F8 != -1)
               {
                 dispatch_once(&qword_1002292F8, &stru_1001FC578);
               }
 
               v30 = qword_1002292F0;
-              v31 = [v29 isEqual:v30];
+              v31 = [localIdentifier2 isEqual:v30];
 
               if (v31)
               {
-                if (v16)
+                if (childConfigCopy)
                 {
                   v27 = sub_100146D34(1, 0);
                   [v27 setMode:2];
@@ -604,10 +604,10 @@ LABEL_27:
                     {
                       v28 = 3;
 LABEL_36:
-                      v38 = [(NRLinkWired *)self respondToIKESession:v14 dataProtectionClass:v28 validateAuthBlock:v17, v52, v53, v54, v55, v56, v58, v59, v60];
+                      v38 = [(NRLinkWired *)self respondToIKESession:sessionCopy dataProtectionClass:v28 validateAuthBlock:blockCopy, v52, v53, v54, copyDescription, v56, v58, v59, v60];
                       if ([(NRLink *)self setupVirtualInterface])
                       {
-                        v18[2](v18, v38, v27, [(NRLink *)self virtualInterface]);
+                        responseBlockCopy[2](responseBlockCopy, v38, v27, [(NRLink *)self virtualInterface]);
 LABEL_39:
 
 LABEL_40:
@@ -615,12 +615,12 @@ LABEL_40:
                       }
 
 LABEL_38:
-                      v18[2](v18, 0, 0, 0);
+                      responseBlockCopy[2](responseBlockCopy, 0, 0, 0);
                       goto LABEL_39;
                     }
                   }
 
-                  [(NRLink *)self reportEvent:3020 detailsFormat:@"ClassC %@", v14, v53, v54, v55, v56, v58, v59, v60];
+                  [(NRLink *)self reportEvent:3020 detailsFormat:@"ClassC %@", sessionCopy, v53, v54, copyDescription, v56, v58, v59, v60];
                   [(NRLinkWired *)self sendClassCUnlockedNotify];
 LABEL_22:
                   v38 = 0;
@@ -633,7 +633,7 @@ LABEL_22:
                   goto LABEL_27;
                 }
 
-                [(NRLink *)self reportEvent:3024 detailsFormat:@"ClassC %@", v14, v53, v54, v55, v56, v58, v59, v60];
+                [(NRLink *)self reportEvent:3024 detailsFormat:@"ClassC %@", sessionCopy, v53, v54, copyDescription, v56, v58, v59, v60];
               }
 
               else
@@ -646,8 +646,8 @@ LABEL_22:
                 {
                   v35 = self->super._nrUUID;
                   v36 = _NRCopyLogObjectForNRUUID();
-                  v37 = [(NRLink *)self copyDescription];
-                  v57 = [v15 localIdentifier];
+                  copyDescription2 = [(NRLink *)self copyDescription];
+                  localIdentifier3 = [configCopy localIdentifier];
                   _NRLogWithArgs();
                 }
               }
@@ -720,7 +720,7 @@ LABEL_54:
 LABEL_41:
 }
 
-- (void)retrySetupIPsec:(unsigned __int8)a3
+- (void)retrySetupIPsec:(unsigned __int8)psec
 {
   [(NRLinkWired *)self setSetupIPsecRetryCounter:[(NRLinkWired *)self setupIPsecRetryCounter]+ 1];
   if ([(NRLinkWired *)self setupIPsecRetryCounter]> 4)
@@ -734,25 +734,25 @@ LABEL_41:
     [(NRLink *)self reportEvent:3026];
     objc_initWeak(&location, self);
     v5 = dispatch_time(0, 1000000000);
-    v6 = [(NRLink *)self queue];
+    queue = [(NRLink *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000DF310;
     block[3] = &unk_1001FB900;
     objc_copyWeak(&v8, &location);
-    v9 = a3;
-    dispatch_after(v5, v6, block);
+    psecCopy = psec;
+    dispatch_after(v5, queue, block);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)setupIKECallbacks:(unsigned __int8)a3
+- (void)setupIKECallbacks:(unsigned __int8)callbacks
 {
-  v3 = a3;
+  callbacksCopy = callbacks;
   String = NRDataProtectionClassCreateString();
-  if (v3 == 3)
+  if (callbacksCopy == 3)
   {
     v6 = *(&self->_ikeSessionClassD + 7);
     if (!v6)
@@ -775,7 +775,7 @@ LABEL_12:
 
   else
   {
-    if (v3 != 4)
+    if (callbacksCopy != 4)
     {
       nrUUID = self->super._nrUUID;
       v29 = _NRCopyLogObjectForNRUUID();
@@ -785,7 +785,7 @@ LABEL_12:
       {
         v31 = self->super._nrUUID;
         v32 = _NRCopyLogObjectForNRUUID();
-        v36 = [(NRLink *)self copyDescription];
+        copyDescription = [(NRLink *)self copyDescription];
         _NRLogWithArgs();
       }
 
@@ -815,7 +815,7 @@ LABEL_12:
   v63[2] = sub_1000DFF08;
   v63[3] = &unk_1001FB810;
   objc_copyWeak(&v66, location);
-  v67 = v3;
+  v67 = callbacksCopy;
   v10 = String;
   v64 = v10;
   v11 = v9;
@@ -830,7 +830,7 @@ LABEL_12:
   v59 = v12;
   v13 = v11;
   v60 = v13;
-  v62 = v3;
+  v62 = callbacksCopy;
   [v13 setChildStateUpdateBlock:v58];
   v54[0] = _NSConcreteStackBlock;
   v54[1] = 3221225472;
@@ -889,7 +889,7 @@ LABEL_12:
   {
     v26 = self->super._nrUUID;
     v27 = _NRCopyLogObjectForNRUUID();
-    v37 = [(NRLink *)self copyDescription];
+    copyDescription2 = [(NRLink *)self copyDescription];
     _NRLogWithArgs();
   }
 
@@ -908,15 +908,15 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)ikeSessionPointerForDataProtectionClass:(unsigned __int8)a3
+- (id)ikeSessionPointerForDataProtectionClass:(unsigned __int8)class
 {
-  if (a3 == 4)
+  if (class == 4)
   {
     v3 = &OBJC_IVAR___NRLinkWired__ikeSessionClassD;
     return (&self->super.super.isa + *v3);
   }
 
-  if (a3 == 3)
+  if (class == 3)
   {
     v3 = &OBJC_IVAR___NRLinkWired__ikeSessionClassC;
     return (&self->super.super.isa + *v3);
@@ -946,21 +946,21 @@ LABEL_13:
   return result;
 }
 
-- (void)checkPeerAvailabilityWithForceAggressive:(BOOL)a3
+- (void)checkPeerAvailabilityWithForceAggressive:(BOOL)aggressive
 {
-  v3 = a3;
-  v5 = [(NRLink *)self peerAvailabilityCheckInProgress];
+  aggressiveCopy = aggressive;
+  peerAvailabilityCheckInProgress = [(NRLink *)self peerAvailabilityCheckInProgress];
   nrUUID = self->super._nrUUID;
   v7 = _NRCopyLogObjectForNRUUID();
   IsLevelEnabled = _NRLogIsLevelEnabled();
 
-  if (v5)
+  if (peerAvailabilityCheckInProgress)
   {
     if (IsLevelEnabled)
     {
       v9 = self->super._nrUUID;
       v19 = _NRCopyLogObjectForNRUUID();
-      v17 = [(NRLink *)self copyDescription];
+      copyDescription = [(NRLink *)self copyDescription];
       _NRLogWithArgs();
     }
   }
@@ -971,12 +971,12 @@ LABEL_13:
     {
       v10 = self->super._nrUUID;
       v11 = _NRCopyLogObjectForNRUUID();
-      v18 = [(NRLink *)self copyDescription];
+      copyDescription2 = [(NRLink *)self copyDescription];
       _NRLogWithArgs();
     }
 
-    v12 = !v3;
-    if (v3)
+    v12 = !aggressiveCopy;
+    if (aggressiveCopy)
     {
       v13 = 5;
     }
@@ -998,14 +998,14 @@ LABEL_13:
 
     self->super._peerAvailabilityCheckInProgress = 1;
     objc_initWeak(&location, self);
-    v15 = [(NRLinkWired *)self ikeSessionClassC];
-    v16 = [(NRLink *)self queue];
+    ikeSessionClassC = [(NRLinkWired *)self ikeSessionClassC];
+    queue = [(NRLink *)self queue];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000E1308;
     v20[3] = &unk_1001FC018;
     objc_copyWeak(&v21, &location);
-    [v15 sendKeepaliveWithRetries:v13 retryIntervalInMilliseconds:v14 callbackQueue:v16 callback:v20];
+    [ikeSessionClassC sendKeepaliveWithRetries:v13 retryIntervalInMilliseconds:v14 callbackQueue:queue callback:v20];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -1023,7 +1023,7 @@ LABEL_13:
     v6 = self->super._nrUUID;
     v7 = _NRCopyLogObjectForNRUUID();
     v18 = 266;
-    v19 = [(NRLink *)self copyDescription];
+    copyDescription = [(NRLink *)self copyDescription];
     v16 = "";
     v17 = "[NRLinkWired initiateConnection]";
     _NRLogWithArgs();
@@ -1038,16 +1038,16 @@ LABEL_13:
     }
 
     v8 = qword_100228E80;
-    v9 = [(NRLink *)self localInterfaceName];
-    v10 = [(NRLink *)self localOuterEndpoint];
-    v11 = sub_100016A08(v8, self, v9, v10);
+    localInterfaceName = [(NRLink *)self localInterfaceName];
+    localOuterEndpoint = [(NRLink *)self localOuterEndpoint];
+    v11 = sub_100016A08(v8, self, localInterfaceName, localOuterEndpoint);
 
     return v11;
   }
 
-  v13 = [(NRLink *)self remoteOuterEndpoint];
+  remoteOuterEndpoint = [(NRLink *)self remoteOuterEndpoint];
 
-  if (!v13)
+  if (!remoteOuterEndpoint)
   {
     v15 = @"No remote outer endpoint present";
 LABEL_16:
@@ -1094,23 +1094,23 @@ LABEL_16:
 {
   v3 = sub_100163A30(NRDLocalDevice, self->super._nrUUID);
   v4 = objc_alloc_init(NRPairingParameters);
-  v5 = [(NRLink *)self localInterfaceName];
+  localInterfaceName = [(NRLink *)self localInterfaceName];
   if (v4)
   {
-    objc_storeStrong(&v4->_localInterfaceName, v5);
+    objc_storeStrong(&v4->_localInterfaceName, localInterfaceName);
   }
 
-  v6 = [(NRLink *)self localOuterEndpoint];
+  localOuterEndpoint = [(NRLink *)self localOuterEndpoint];
   if (v4)
   {
-    objc_storeStrong(&v4->_localEndpoint, v6);
+    objc_storeStrong(&v4->_localEndpoint, localOuterEndpoint);
   }
 
-  v7 = [(NRLink *)self remoteOuterEndpoint];
-  v8 = v7;
+  remoteOuterEndpoint = [(NRLink *)self remoteOuterEndpoint];
+  v8 = remoteOuterEndpoint;
   if (v4)
   {
-    objc_storeStrong(&v4->_remoteEndpoint, v7);
+    objc_storeStrong(&v4->_remoteEndpoint, remoteOuterEndpoint);
 
     isIKEResponder = self->_isIKEResponder;
     v4->_isResponder = isIKEResponder;
@@ -1150,7 +1150,7 @@ LABEL_16:
   {
     v18 = self->super._nrUUID;
     v19 = _NRCopyLogObjectForNRUUID();
-    v20 = [(NRLink *)self copyDescription];
+    copyDescription = [(NRLink *)self copyDescription];
     _NRLogWithArgs();
   }
 
@@ -1165,31 +1165,31 @@ LABEL_16:
 {
   v7.receiver = self;
   v7.super_class = NRLinkWired;
-  v3 = [(NRLink *)&v7 initializeExternalDeviceLink];
-  if (v3)
+  initializeExternalDeviceLink = [(NRLink *)&v7 initializeExternalDeviceLink];
+  if (initializeExternalDeviceLink)
   {
-    v4 = v3;
+    v4 = initializeExternalDeviceLink;
     [(NRLink *)self changeStateTo:8];
-    v5 = [(NRLink *)self linkDelegate];
-    [v5 linkIsReady:self];
+    linkDelegate = [(NRLink *)self linkDelegate];
+    [linkDelegate linkIsReady:self];
 
-    LOBYTE(v3) = v4;
+    LOBYTE(initializeExternalDeviceLink) = v4;
   }
 
-  return v3;
+  return initializeExternalDeviceLink;
 }
 
-- (BOOL)cancelWithReason:(id)a3
+- (BOOL)cancelWithReason:(id)reason
 {
-  v4 = a3;
-  if (v4)
+  reasonCopy = reason;
+  if (reasonCopy)
   {
-    v5 = [[NSString alloc] initWithFormat:v4 arguments:&v16];
+    v5 = [[NSString alloc] initWithFormat:reasonCopy arguments:&v16];
     [(NRLink *)self reportEvent:3005 details:v5];
     if ([(NRLink *)self changeStateTo:255])
     {
-      v6 = [(NRLink *)self linkDelegate];
-      [v6 linkIsUnavailable:self];
+      linkDelegate = [(NRLink *)self linkDelegate];
+      [linkDelegate linkIsUnavailable:self];
 
       [(NRLinkWired *)self invalidateLink];
     }
@@ -1204,7 +1204,7 @@ LABEL_16:
       {
         v10 = self->super._nrUUID;
         v11 = _NRCopyLogObjectForNRUUID();
-        v15 = [(NRLink *)self copyDescription];
+        copyDescription = [(NRLink *)self copyDescription];
         _NRLogWithArgs();
       }
     }
@@ -1225,15 +1225,15 @@ LABEL_16:
   }
 
 LABEL_7:
-  return v4 != 0;
+  return reasonCopy != 0;
 }
 
 - (BOOL)start
 {
   if ([(NRLink *)self state]== 8)
   {
-    v3 = [(NRLink *)self linkDelegate];
-    [v3 linkIsReady:self];
+    linkDelegate = [(NRLink *)self linkDelegate];
+    [linkDelegate linkIsReady:self];
 
     return 1;
   }
@@ -1244,9 +1244,9 @@ LABEL_7:
   }
 
   [(NRLink *)self setStartRequested:1];
-  v5 = [(NRLink *)self localInterfaceName];
+  localInterfaceName = [(NRLink *)self localInterfaceName];
 
-  if (!v5)
+  if (!localInterfaceName)
   {
     nrUUID = self->super._nrUUID;
     v22 = _NRCopyLogObjectForNRUUID();
@@ -1259,7 +1259,7 @@ LABEL_7:
 
     v24 = self->super._nrUUID;
     v14 = _NRCopyLogObjectForNRUUID();
-    v27 = [(NRLink *)self copyDescription];
+    copyDescription = [(NRLink *)self copyDescription];
     _NRLogWithArgs();
 
     goto LABEL_15;
@@ -1278,7 +1278,7 @@ LABEL_7:
 
     v13 = self->super._nrUUID;
     v14 = _NRCopyLogObjectForNRUUID();
-    v25 = [(NRLink *)self copyDescription];
+    copyDescription2 = [(NRLink *)self copyDescription];
     v28 = sub_1001415A0([(NRLink *)self state]);
     _NRLogWithArgs();
 
@@ -1307,7 +1307,7 @@ LABEL_15:
           {
             v18 = self->super._nrUUID;
             v19 = _NRCopyLogObjectForNRUUID();
-            v26 = [(NRLink *)self copyDescription];
+            copyDescription3 = [(NRLink *)self copyDescription];
             _NRLogWithArgs();
           }
 
@@ -1342,10 +1342,10 @@ LABEL_23:
   v3 = [NSString alloc];
   v9.receiver = self;
   v9.super_class = NRLinkWired;
-  v4 = [(NRLink *)&v9 copyDescriptionInner];
-  v5 = [(NRLink *)self localOuterEndpoint];
-  v6 = [(NRLink *)self remoteOuterEndpoint];
-  v7 = [v3 initWithFormat:@"%@, %@ -> %@", v4, v5, v6];
+  copyDescriptionInner = [(NRLink *)&v9 copyDescriptionInner];
+  localOuterEndpoint = [(NRLink *)self localOuterEndpoint];
+  remoteOuterEndpoint = [(NRLink *)self remoteOuterEndpoint];
+  v7 = [v3 initWithFormat:@"%@, %@ -> %@", copyDescriptionInner, localOuterEndpoint, remoteOuterEndpoint];
 
   return v7;
 }
@@ -1357,12 +1357,12 @@ LABEL_23:
   [(NRLink *)&v9 invalidateLink];
   [(NRLinkWired *)self invalidateIKESessionClassD];
   [(NRLinkWired *)self invalidateIKESessionClassC];
-  v3 = [(NRLinkWired *)self ikeListener];
+  ikeListener = [(NRLinkWired *)self ikeListener];
 
-  if (v3)
+  if (ikeListener)
   {
-    v4 = [(NRLinkWired *)self ikeListener];
-    [v4 cancel];
+    ikeListener2 = [(NRLinkWired *)self ikeListener];
+    [ikeListener2 cancel];
 
     [(NRLinkWired *)self setIkeListener:0];
   }
@@ -1377,11 +1377,11 @@ LABEL_23:
   }
 
   [(NRLink *)self invalidateVirtualInterface];
-  v7 = [(NRLinkWired *)self pathEvaluator];
+  pathEvaluator = [(NRLinkWired *)self pathEvaluator];
 
-  if (v7)
+  if (pathEvaluator)
   {
-    v8 = [(NRLinkWired *)self pathEvaluator];
+    pathEvaluator2 = [(NRLinkWired *)self pathEvaluator];
     nw_path_evaluator_cancel();
 
     [(NRLinkWired *)self setPathEvaluator:0];
@@ -1395,8 +1395,8 @@ LABEL_23:
   v5 = [v3 initWithString:v4];
 
   [v5 appendFormat:@"\n %35s = %@", "nrUUID", self->super._nrUUID];
-  v6 = [(NRLink *)self localInterfaceName];
-  [v5 appendFormat:@"\n %35s = %@", "localInterfaceName", v6];
+  localInterfaceName = [(NRLink *)self localInterfaceName];
+  [v5 appendFormat:@"\n %35s = %@", "localInterfaceName", localInterfaceName];
 
   [v5 appendFormat:@"\n %35s = %@", "listenerPortString", *(&self->_ikeSessionClassC + 7)];
   [v5 appendFormat:@"\n %35s = %@", "ikeSessionClassD", *(&self->_ikeListener + 7)];

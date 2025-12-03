@@ -1,7 +1,7 @@
 @interface CKWalletItemSearchResultsCell
 - (CGPoint)avatarOffsetLTR;
 - (CGPoint)avatarOffsetRTL;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
@@ -12,33 +12,33 @@
   v17.receiver = self;
   v17.super_class = CKWalletItemSearchResultsCell;
   [(CKAttachmentSearchResultCell *)&v17 layoutSubviews];
-  v3 = [(CKEditableSearchResultCell *)self imageView];
-  v4 = [v3 layer];
+  imageView = [(CKEditableSearchResultCell *)self imageView];
+  layer = [imageView layer];
 
-  [v4 setBorderColor:0];
-  [v4 setBorderWidth:0.0];
-  [v4 setCornerRadius:0.0];
-  v5 = [(CKAttachmentSearchResultCell *)self titleLabel];
-  [v5 setHidden:1];
+  [layer setBorderColor:0];
+  [layer setBorderWidth:0.0];
+  [layer setCornerRadius:0.0];
+  titleLabel = [(CKAttachmentSearchResultCell *)self titleLabel];
+  [titleLabel setHidden:1];
 
-  v6 = [(CKAttachmentSearchResultCell *)self titleLabel];
-  [v6 frame];
+  titleLabel2 = [(CKAttachmentSearchResultCell *)self titleLabel];
+  [titleLabel2 frame];
   v8 = v7;
 
-  v9 = [(CKAttachmentSearchResultCell *)self dateLabel];
-  [v9 frame];
+  dateLabel = [(CKAttachmentSearchResultCell *)self dateLabel];
+  [dateLabel frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(CKAttachmentSearchResultCell *)self dateLabel];
-  [v16 setFrame:{v11, v8, v13, v15}];
+  dateLabel2 = [(CKAttachmentSearchResultCell *)self dateLabel];
+  [dateLabel2 setFrame:{v11, v8, v13, v15}];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  [v4 frame];
+  attributesCopy = attributes;
+  [attributesCopy frame];
   x = v16.origin.x;
   y = v16.origin.y;
   width = v16.size.width;
@@ -49,13 +49,13 @@
   v17.size.width = width;
   v17.size.height = height;
   v10 = CGRectGetWidth(v17);
-  v11 = [(CKAttachmentSearchResultCell *)self dateLabel];
-  [v11 sizeThatFits:{v9, 1.79769313e308}];
+  dateLabel = [(CKAttachmentSearchResultCell *)self dateLabel];
+  [dateLabel sizeThatFits:{v9, 1.79769313e308}];
   v13 = v12;
 
-  [v4 setFrame:{x, y, width, v10 + v13 + 4.0}];
+  [attributesCopy setFrame:{x, y, width, v10 + v13 + 4.0}];
 
-  return v4;
+  return attributesCopy;
 }
 
 - (CGPoint)avatarOffsetLTR

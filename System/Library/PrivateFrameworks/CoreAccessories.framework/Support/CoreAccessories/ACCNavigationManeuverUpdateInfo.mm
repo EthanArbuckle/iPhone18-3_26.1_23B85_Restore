@@ -1,7 +1,7 @@
 @interface ACCNavigationManeuverUpdateInfo
-+ (id)keyForType:(unsigned __int16)a3;
++ (id)keyForType:(unsigned __int16)type;
 - (ACCNavigationManeuverUpdateInfo)init;
-- (BOOL)_checkDataClassForType:(unsigned __int16)a3 data:(id)a4;
+- (BOOL)_checkDataClassForType:(unsigned __int16)type data:(id)data;
 @end
 
 @implementation ACCNavigationManeuverUpdateInfo
@@ -21,11 +21,11 @@
   return v2;
 }
 
-- (BOOL)_checkDataClassForType:(unsigned __int16)a3 data:(id)a4
+- (BOOL)_checkDataClassForType:(unsigned __int16)type data:(id)data
 {
-  v4 = a3;
-  v5 = a4;
-  if (v4 <= 0xD && (((1 << v4) & 0x1BAA) != 0 || ((1 << v4) & 0x2054) != 0 || v4 == 10))
+  typeCopy = type;
+  dataCopy = data;
+  if (typeCopy <= 0xD && (((1 << typeCopy) & 0x1BAA) != 0 || ((1 << typeCopy) & 0x2054) != 0 || typeCopy == 10))
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -62,7 +62,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11[0] = 67109120;
-      v11[1] = v4;
+      v11[1] = typeCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[#Navigation] ERROR: Unknown ManeuverInfoUpdate InfoType %d", v11, 8u);
     }
 
@@ -72,9 +72,9 @@
   return isKindOfClass & 1;
 }
 
-+ (id)keyForType:(unsigned __int16)a3
++ (id)keyForType:(unsigned __int16)type
 {
-  switch(a3)
+  switch(type)
   {
     case 1u:
       v3 = &ACCNav_MIUpdate_Index;
@@ -118,7 +118,7 @@ LABEL_23:
       v7 = *v3;
       break;
     default:
-      v4 = a3;
+      typeCopy = type;
       if (gLogObjects)
       {
         v5 = gNumLogObjects < 1;
@@ -148,7 +148,7 @@ LABEL_23:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10[0] = 67109120;
-        v10[1] = v4;
+        v10[1] = typeCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[#Navigation] ERROR: Unknown ManeuverInfoUpdate InfoType %d", v10, 8u);
       }
 

@@ -1,25 +1,25 @@
 @interface ICTuple
-- (BOOL)isEqual:(id)a3;
-- (ICTuple)initWithFirstObject:(id)a3 secondObject:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICTuple)initWithFirstObject:(id)object secondObject:(id)secondObject;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation ICTuple
 
-- (ICTuple)initWithFirstObject:(id)a3 secondObject:(id)a4
+- (ICTuple)initWithFirstObject:(id)object secondObject:(id)secondObject
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  secondObjectCopy = secondObject;
   v12.receiver = self;
   v12.super_class = ICTuple;
   v9 = [(ICTuple *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_firstObject, a3);
-    objc_storeStrong(&v10->_secondObject, a4);
+    objc_storeStrong(&v9->_firstObject, object);
+    objc_storeStrong(&v10->_secondObject, secondObject);
   }
 
   return v10;
@@ -30,50 +30,50 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICTuple *)self firstObject];
-  v7 = [(ICTuple *)self secondObject];
-  v8 = [v3 stringWithFormat:@"<%@: %p, firstObject: %@, secondObject: %@>", v5, self, v6, v7];
+  firstObject = [(ICTuple *)self firstObject];
+  secondObject = [(ICTuple *)self secondObject];
+  v8 = [v3 stringWithFormat:@"<%@: %p, firstObject: %@, secondObject: %@>", v5, self, firstObject, secondObject];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     v5 = objc_opt_class();
-    v6 = ICDynamicCast(v5, v4);
+    v6 = ICDynamicCast(v5, equalCopy);
 
-    v7 = [(ICTuple *)self firstObject];
-    v8 = [v6 firstObject];
+    firstObject = [(ICTuple *)self firstObject];
+    firstObject2 = [v6 firstObject];
     v9 = *MEMORY[0x1E695E738];
-    if (*MEMORY[0x1E695E738] == v7)
+    if (*MEMORY[0x1E695E738] == firstObject)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = v7;
+      v10 = firstObject;
     }
 
-    v11 = v10;
-    if (v9 == v8)
+    secondObject = v10;
+    if (v9 == firstObject2)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = v8;
+      v12 = firstObject2;
     }
 
     v13 = v12;
-    if (v11 | v13)
+    if (secondObject | v13)
     {
-      v14 = v13;
-      if (v11)
+      secondObject2 = v13;
+      if (secondObject)
       {
         v15 = v13 == 0;
       }
@@ -92,7 +92,7 @@ LABEL_33:
         return v16;
       }
 
-      v17 = [v11 isEqual:v13];
+      v17 = [secondObject isEqual:v13];
 
       if (!v17)
       {
@@ -101,27 +101,27 @@ LABEL_33:
       }
     }
 
-    v11 = [(ICTuple *)self secondObject];
-    v14 = [v6 secondObject];
-    if (v9 == v11)
+    secondObject = [(ICTuple *)self secondObject];
+    secondObject2 = [v6 secondObject];
+    if (v9 == secondObject)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = v11;
+      v18 = secondObject;
     }
 
     v19 = v18;
-    if (v9 == v14)
+    if (v9 == secondObject2)
     {
       v20 = 0;
     }
 
     else
     {
-      v20 = v14;
+      v20 = secondObject2;
     }
 
     v21 = v20;
@@ -165,13 +165,13 @@ LABEL_33:
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICTuple *)self firstObject];
+    firstObject = [(ICTuple *)self firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5 = objc_opt_class();
-      v6 = ICCheckedDynamicCast(v5, v4);
-      v7 = ICHashWithArray(v6);
+      null = ICCheckedDynamicCast(v5, firstObject);
+      v7 = ICHashWithArray(null);
     }
 
     else
@@ -180,8 +180,8 @@ LABEL_33:
       if (objc_opt_isKindOfClass())
       {
         v8 = objc_opt_class();
-        v6 = ICCheckedDynamicCast(v8, v4);
-        v7 = ICHashWithDictionary(v6);
+        null = ICCheckedDynamicCast(v8, firstObject);
+        v7 = ICHashWithDictionary(null);
       }
 
       else
@@ -190,8 +190,8 @@ LABEL_33:
         if (objc_opt_isKindOfClass())
         {
           v9 = objc_opt_class();
-          v6 = ICCheckedDynamicCast(v9, v4);
-          v7 = ICHashWithSet(v6);
+          null = ICCheckedDynamicCast(v9, firstObject);
+          v7 = ICHashWithSet(null);
         }
 
         else
@@ -200,20 +200,20 @@ LABEL_33:
           if (objc_opt_isKindOfClass())
           {
             v10 = objc_opt_class();
-            v6 = ICCheckedDynamicCast(v10, v4);
-            v7 = ICHashWithOrderedSet(v6);
+            null = ICCheckedDynamicCast(v10, firstObject);
+            v7 = ICHashWithOrderedSet(null);
           }
 
           else
           {
-            v11 = [v4 hash];
+            v11 = [firstObject hash];
             if (v11)
             {
               goto LABEL_13;
             }
 
-            v6 = [MEMORY[0x1E695DFB0] null];
-            v7 = [v6 hash];
+            null = [MEMORY[0x1E695DFB0] null];
+            v7 = [null hash];
           }
         }
       }
@@ -222,13 +222,13 @@ LABEL_33:
     v11 = v7;
 
 LABEL_13:
-    v12 = [(ICTuple *)self secondObject];
+    secondObject = [(ICTuple *)self secondObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v13 = objc_opt_class();
-      v14 = ICCheckedDynamicCast(v13, v12);
-      v15 = ICHashWithArray(v14);
+      null2 = ICCheckedDynamicCast(v13, secondObject);
+      v15 = ICHashWithArray(null2);
     }
 
     else
@@ -237,8 +237,8 @@ LABEL_13:
       if (objc_opt_isKindOfClass())
       {
         v16 = objc_opt_class();
-        v14 = ICCheckedDynamicCast(v16, v12);
-        v15 = ICHashWithDictionary(v14);
+        null2 = ICCheckedDynamicCast(v16, secondObject);
+        v15 = ICHashWithDictionary(null2);
       }
 
       else
@@ -247,8 +247,8 @@ LABEL_13:
         if (objc_opt_isKindOfClass())
         {
           v17 = objc_opt_class();
-          v14 = ICCheckedDynamicCast(v17, v12);
-          v15 = ICHashWithSet(v14);
+          null2 = ICCheckedDynamicCast(v17, secondObject);
+          v15 = ICHashWithSet(null2);
         }
 
         else
@@ -257,13 +257,13 @@ LABEL_13:
           if (objc_opt_isKindOfClass())
           {
             v18 = objc_opt_class();
-            v14 = ICCheckedDynamicCast(v18, v12);
-            v15 = ICHashWithOrderedSet(v14);
+            null2 = ICCheckedDynamicCast(v18, secondObject);
+            v15 = ICHashWithOrderedSet(null2);
           }
 
           else
           {
-            v19 = [v12 hash];
+            v19 = [secondObject hash];
             v20 = v19;
             if (v19)
             {
@@ -273,8 +273,8 @@ LABEL_24:
               return self->_hash;
             }
 
-            v14 = [MEMORY[0x1E695DFB0] null];
-            v15 = [v14 hash];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            v15 = [null2 hash];
           }
         }
       }
@@ -288,12 +288,12 @@ LABEL_24:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ICTuple allocWithZone:a3];
-  v5 = [(ICTuple *)self firstObject];
-  v6 = [(ICTuple *)self secondObject];
-  v7 = [(ICTuple *)v4 initWithFirstObject:v5 secondObject:v6];
+  v4 = [ICTuple allocWithZone:zone];
+  firstObject = [(ICTuple *)self firstObject];
+  secondObject = [(ICTuple *)self secondObject];
+  v7 = [(ICTuple *)v4 initWithFirstObject:firstObject secondObject:secondObject];
 
   return v7;
 }

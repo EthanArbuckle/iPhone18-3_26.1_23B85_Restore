@@ -1,10 +1,10 @@
 @interface CallRecordConverter
 + (id)sharedInstance;
 - (CallRecordConverter)init;
-- (id)callRecordForRecentCall:(id)a3 withContactsDataSource:(id)a4 withCallProviderManager:(id)a5 withCurrentISOCountryCodes:(id)a6;
-- (id)callRecordsForRecentCalls:(id)a3 withContactsDataSource:(id)a4 withCallProviderManager:(id)a5 withCurrentISOCountryCodes:(id)a6;
-- (int64_t)callCapabilityFromRecentCall:(id)a3;
-- (int64_t)preferredCallProviderFromRecentCall:(id)a3;
+- (id)callRecordForRecentCall:(id)call withContactsDataSource:(id)source withCallProviderManager:(id)manager withCurrentISOCountryCodes:(id)codes;
+- (id)callRecordsForRecentCalls:(id)calls withContactsDataSource:(id)source withCallProviderManager:(id)manager withCurrentISOCountryCodes:(id)codes;
+- (int64_t)callCapabilityFromRecentCall:(id)call;
+- (int64_t)preferredCallProviderFromRecentCall:(id)call;
 @end
 
 @implementation CallRecordConverter
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __37__CallRecordConverter_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -52,19 +52,19 @@ uint64_t __37__CallRecordConverter_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)callRecordsForRecentCalls:(id)a3 withContactsDataSource:(id)a4 withCallProviderManager:(id)a5 withCurrentISOCountryCodes:(id)a6
+- (id)callRecordsForRecentCalls:(id)calls withContactsDataSource:(id)source withCallProviderManager:(id)manager withCurrentISOCountryCodes:(id)codes
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v29 = a4;
-  v28 = a5;
-  v27 = a6;
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  callsCopy = calls;
+  sourceCopy = source;
+  managerCopy = manager;
+  codesCopy = codes;
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(callsCopy, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v12 = v10;
+  v12 = callsCopy;
   v13 = [v12 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v13)
   {
@@ -81,17 +81,17 @@ uint64_t __37__CallRecordConverter_sharedInstance__block_invoke(uint64_t a1)
         }
 
         v17 = *(*(&v32 + 1) + 8 * v16);
-        v18 = [(CallRecordConverter *)self recentCallIdToCallRecordCache];
-        v19 = [v17 uniqueId];
-        v20 = [v18 objectForKey:v19];
+        recentCallIdToCallRecordCache = [(CallRecordConverter *)self recentCallIdToCallRecordCache];
+        uniqueId = [v17 uniqueId];
+        v20 = [recentCallIdToCallRecordCache objectForKey:uniqueId];
 
-        v21 = IntentHandlerDefaultLog();
-        v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG);
+        recentCallIdToCallRecordCache2 = IntentHandlerDefaultLog();
+        v22 = os_log_type_enabled(recentCallIdToCallRecordCache2, OS_LOG_TYPE_DEBUG);
         if (v20)
         {
           if (v22)
           {
-            [CallRecordConverter callRecordsForRecentCalls:v31 withContactsDataSource:v21 withCallProviderManager:? withCurrentISOCountryCodes:?];
+            [CallRecordConverter callRecordsForRecentCalls:v31 withContactsDataSource:recentCallIdToCallRecordCache2 withCallProviderManager:? withCurrentISOCountryCodes:?];
           }
         }
 
@@ -99,13 +99,13 @@ uint64_t __37__CallRecordConverter_sharedInstance__block_invoke(uint64_t a1)
         {
           if (v22)
           {
-            [CallRecordConverter callRecordsForRecentCalls:v36 withContactsDataSource:v17 withCallProviderManager:&v37 withCurrentISOCountryCodes:v21];
+            [CallRecordConverter callRecordsForRecentCalls:v36 withContactsDataSource:v17 withCallProviderManager:&v37 withCurrentISOCountryCodes:recentCallIdToCallRecordCache2];
           }
 
-          v20 = [(CallRecordConverter *)self callRecordForRecentCall:v17 withContactsDataSource:v29 withCallProviderManager:v28 withCurrentISOCountryCodes:v27];
-          v21 = [(CallRecordConverter *)self recentCallIdToCallRecordCache];
-          v23 = [v17 uniqueId];
-          [v21 setObject:v20 forKey:v23];
+          v20 = [(CallRecordConverter *)self callRecordForRecentCall:v17 withContactsDataSource:sourceCopy withCallProviderManager:managerCopy withCurrentISOCountryCodes:codesCopy];
+          recentCallIdToCallRecordCache2 = [(CallRecordConverter *)self recentCallIdToCallRecordCache];
+          uniqueId2 = [v17 uniqueId];
+          [recentCallIdToCallRecordCache2 setObject:v20 forKey:uniqueId2];
         }
 
         [v11 addObject:v20];
@@ -125,23 +125,23 @@ uint64_t __37__CallRecordConverter_sharedInstance__block_invoke(uint64_t a1)
   return v24;
 }
 
-- (id)callRecordForRecentCall:(id)a3 withContactsDataSource:(id)a4 withCallProviderManager:(id)a5 withCurrentISOCountryCodes:(id)a6
+- (id)callRecordForRecentCall:(id)call withContactsDataSource:(id)source withCallProviderManager:(id)manager withCurrentISOCountryCodes:(id)codes
 {
   v66 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v51 = a4;
-  v11 = a5;
-  v50 = a6;
-  v53 = [MEMORY[0x277CBEB18] array];
-  v52 = v10;
-  v49 = v11;
-  if ([v10 callerIdIsBlocked])
+  callCopy = call;
+  sourceCopy = source;
+  managerCopy = manager;
+  codesCopy = codes;
+  array = [MEMORY[0x277CBEB18] array];
+  v52 = callCopy;
+  v49 = managerCopy;
+  if ([callCopy callerIdIsBlocked])
   {
-    v12 = IntentHandlerDefaultLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    remoteParticipantHandles = IntentHandlerDefaultLog();
+    if (os_log_type_enabled(remoteParticipantHandles, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_2688A7000, v12, OS_LOG_TYPE_DEFAULT, "[WARN] Caller ID is blocked", buf, 2u);
+      _os_log_impl(&dword_2688A7000, remoteParticipantHandles, OS_LOG_TYPE_DEFAULT, "[WARN] Caller ID is blocked", buf, 2u);
     }
 
     goto LABEL_35;
@@ -151,28 +151,28 @@ uint64_t __37__CallRecordConverter_sharedInstance__block_invoke(uint64_t a1)
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v12 = [v10 remoteParticipantHandles];
-  v13 = [v12 countByEnumeratingWithState:&v58 objects:v65 count:16];
+  remoteParticipantHandles = [callCopy remoteParticipantHandles];
+  v13 = [remoteParticipantHandles countByEnumeratingWithState:&v58 objects:v65 count:16];
   if (v13)
   {
     v14 = v13;
     v15 = 0;
     v16 = *v59;
-    v55 = v12;
+    v55 = remoteParticipantHandles;
     while (1)
     {
       for (i = 0; i != v14; ++i)
       {
         if (*v59 != v16)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(remoteParticipantHandles);
         }
 
-        v18 = [*(*(&v58 + 1) + 8 * i) tu_tuHandle];
-        if (v18)
+        tu_tuHandle = [*(*(&v58 + 1) + 8 * i) tu_tuHandle];
+        if (tu_tuHandle)
         {
-          v19 = [(CallRecordConverter *)self handleToPersonCache];
-          v20 = [v19 objectForKey:v18];
+          handleToPersonCache = [(CallRecordConverter *)self handleToPersonCache];
+          v20 = [handleToPersonCache objectForKey:tu_tuHandle];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -196,41 +196,41 @@ uint64_t __37__CallRecordConverter_sharedInstance__block_invoke(uint64_t a1)
 
           else
           {
-            v24 = [v10 isoCountryCode];
-            if (v24)
+            isoCountryCode = [callCopy isoCountryCode];
+            if (isoCountryCode)
             {
-              v25 = [v10 isoCountryCode];
-              v64 = v25;
+              isoCountryCode2 = [callCopy isoCountryCode];
+              v64 = isoCountryCode2;
               v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v64 count:1];
             }
 
             else
             {
-              v22 = v50;
+              v22 = codesCopy;
             }
 
-            v21 = [MEMORY[0x277CD3E90] tu_personMatchingHandle:v18 contactsDataSource:v51 isoCountryCodes:v22];
+            v21 = [MEMORY[0x277CD3E90] tu_personMatchingHandle:tu_tuHandle contactsDataSource:sourceCopy isoCountryCodes:v22];
 
             if (v21)
             {
-              v26 = v21;
+              null = v21;
             }
 
             else
             {
-              v26 = [MEMORY[0x277CBEB68] null];
+              null = [MEMORY[0x277CBEB68] null];
             }
 
-            v27 = v26;
-            v28 = [(CallRecordConverter *)self handleToPersonCache];
-            [v28 setObject:v27 forKey:v18];
+            v27 = null;
+            handleToPersonCache2 = [(CallRecordConverter *)self handleToPersonCache];
+            [handleToPersonCache2 setObject:v27 forKey:tu_tuHandle];
 
-            v10 = v52;
+            callCopy = v52;
 LABEL_25:
 
             if (v21)
             {
-              [v53 addObject:v21];
+              [array addObject:v21];
               v15 = v21;
             }
 
@@ -239,7 +239,7 @@ LABEL_25:
               v15 = 0;
             }
 
-            v12 = v55;
+            remoteParticipantHandles = v55;
           }
 
           v29 = IntentHandlerDefaultLog();
@@ -263,10 +263,10 @@ LABEL_25:
 LABEL_32:
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v58 objects:v65 count:16];
+      v14 = [remoteParticipantHandles countByEnumeratingWithState:&v58 objects:v65 count:16];
       if (!v14)
       {
-        v11 = v49;
+        managerCopy = v49;
         goto LABEL_36;
       }
     }
@@ -276,25 +276,25 @@ LABEL_35:
   v15 = 0;
 LABEL_36:
 
-  v30 = [v10 callStatus];
-  if ((*MEMORY[0x277CF7DA8] & v30) != 0)
+  callStatus = [callCopy callStatus];
+  if ((*MEMORY[0x277CF7DA8] & callStatus) != 0)
   {
     v31 = 1;
   }
 
   else
   {
-    v32 = [v10 callStatus];
-    if ((*MEMORY[0x277CF7DA0] & v32) != 0)
+    callStatus2 = [callCopy callStatus];
+    if ((*MEMORY[0x277CF7DA0] & callStatus2) != 0)
     {
       v31 = 2;
     }
 
     else
     {
-      v33 = [v10 callStatus];
+      callStatus3 = [callCopy callStatus];
       v31 = 3;
-      if ((*MEMORY[0x277CF7D98] & v33) == 0)
+      if ((*MEMORY[0x277CF7D98] & callStatus3) == 0)
       {
         v31 = 0;
       }
@@ -302,44 +302,44 @@ LABEL_36:
   }
 
   v56 = v31;
-  v47 = [v11 providerForRecentCall:v10];
-  v44 = [v47 bundleIdentifier];
-  v34 = [(CallRecordConverter *)self preferredCallProviderFromRecentCall:v10];
-  v54 = [(CallRecordConverter *)self callCapabilityFromRecentCall:v10];
+  v47 = [managerCopy providerForRecentCall:callCopy];
+  bundleIdentifier = [v47 bundleIdentifier];
+  v34 = [(CallRecordConverter *)self preferredCallProviderFromRecentCall:callCopy];
+  v54 = [(CallRecordConverter *)self callCapabilityFromRecentCall:callCopy];
   v35 = objc_alloc(MEMORY[0x277CD3AE0]);
-  v48 = [v10 uniqueId];
-  v46 = [v10 date];
-  v36 = v10;
+  uniqueId = [callCopy uniqueId];
+  date = [callCopy date];
+  v36 = callCopy;
   v37 = MEMORY[0x277CCABB0];
   [v36 duration];
   v45 = [v37 numberWithDouble:?];
   v38 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v36, "read") ^ 1}];
   v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v36, "numberOfOccurrences")}];
-  v40 = [v47 identifier];
+  identifier = [v47 identifier];
   v41 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v36, "callerIdIsBlocked")}];
-  v57 = [v35 initWithIdentifier:v48 dateCreated:v46 callRecordType:v56 callCapability:v54 callDuration:v45 unseen:v38 preferredCallProvider:v34 participants:v53 numberOfCalls:v39 providerId:v40 providerBundleId:v44 isCallerIdBlocked:v41];
+  v57 = [v35 initWithIdentifier:uniqueId dateCreated:date callRecordType:v56 callCapability:v54 callDuration:v45 unseen:v38 preferredCallProvider:v34 participants:array numberOfCalls:v39 providerId:identifier providerBundleId:bundleIdentifier isCallerIdBlocked:v41];
 
   v42 = *MEMORY[0x277D85DE8];
 
   return v57;
 }
 
-- (int64_t)preferredCallProviderFromRecentCall:(id)a3
+- (int64_t)preferredCallProviderFromRecentCall:(id)call
 {
-  v3 = [a3 serviceProvider];
-  if ([v3 isEqualToString:*MEMORY[0x277CF7E00]])
+  serviceProvider = [call serviceProvider];
+  if ([serviceProvider isEqualToString:*MEMORY[0x277CF7E00]])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CF7E08]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.Superbox"))
+  else if ([serviceProvider isEqualToString:*MEMORY[0x277CF7E08]] & 1) != 0 || (objc_msgSend(serviceProvider, "isEqualToString:", @"com.apple.Superbox"))
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v3 length];
+    v5 = [serviceProvider length];
     v6 = IntentHandlerDefaultLog();
     v7 = v6;
     if (v5)
@@ -366,13 +366,13 @@ LABEL_36:
   return v4;
 }
 
-- (int64_t)callCapabilityFromRecentCall:(id)a3
+- (int64_t)callCapabilityFromRecentCall:(id)call
 {
-  v3 = [a3 mediaType];
-  v4 = v3;
-  if (v3)
+  mediaType = [call mediaType];
+  v4 = mediaType;
+  if (mediaType)
   {
-    if (v3 == 2)
+    if (mediaType == 2)
     {
       v5 = IntentHandlerDefaultLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -386,7 +386,7 @@ LABEL_36:
 
     else
     {
-      if (v3 != 1)
+      if (mediaType != 1)
       {
         return 0;
       }

@@ -1,26 +1,26 @@
 @interface HTHang
-- (HTHang)initWithXPCDictionary:(id)a3;
+- (HTHang)initWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation HTHang
 
-- (HTHang)initWithXPCDictionary:(id)a3
+- (HTHang)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = HTHang;
   v5 = [(HTHang *)&v20 init];
   if (v5)
   {
-    v6 = stringFromXpcDictionary(v4, *MEMORY[0x277D0FA50]);
+    v6 = stringFromXpcDictionary(dictionaryCopy, *MEMORY[0x277D0FA50]);
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = stringFromXpcDictionary(v4, *MEMORY[0x277D0FA38]);
+    v8 = stringFromXpcDictionary(dictionaryCopy, *MEMORY[0x277D0FA38]);
     bundleID = v5->_bundleID;
     v5->_bundleID = v8;
 
-    v10 = stringFromXpcDictionary(v4, *MEMORY[0x277D0FA40]);
+    v10 = stringFromXpcDictionary(dictionaryCopy, *MEMORY[0x277D0FA40]);
     [v10 doubleValue];
     v12 = v11;
 
@@ -37,11 +37,11 @@
     creationDate = v5->_creationDate;
     v5->_creationDate = v13;
 
-    v15 = stringFromXpcDictionary(v4, *MEMORY[0x277D0FA48]);
+    v15 = stringFromXpcDictionary(dictionaryCopy, *MEMORY[0x277D0FA48]);
     [v15 doubleValue];
     v5->_duration = v16;
 
-    v17 = stringFromXpcDictionary(v4, *MEMORY[0x277D0FA58]);
+    v17 = stringFromXpcDictionary(dictionaryCopy, *MEMORY[0x277D0FA58]);
     processPath = v5->_processPath;
     v5->_processPath = v17;
 

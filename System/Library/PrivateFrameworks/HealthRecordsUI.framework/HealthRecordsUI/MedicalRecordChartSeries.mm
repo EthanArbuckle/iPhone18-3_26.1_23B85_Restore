@@ -1,20 +1,20 @@
 @interface MedicalRecordChartSeries
 - ($59C47D607893B286F305BF66D04A56BD)selectedPathRange;
-- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)a3 blockCoordinate:(id)a4;
+- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)rect blockCoordinate:(id)coordinate;
 - (_TtC15HealthRecordsUI24MedicalRecordChartSeries)init;
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
 @end
 
 @implementation MedicalRecordChartSeries
 
 - ($59C47D607893B286F305BF66D04A56BD)selectedPathRange
 {
-  v4 = self;
-  if ([(HKGraphSeries *)v4 allowsSelection])
+  selfCopy = self;
+  if ([(HKGraphSeries *)selfCopy allowsSelection])
   {
     HKGraphSeriesDataBlockPathMake(&v14);
     v20 = v14;
@@ -55,34 +55,34 @@
   return result;
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  index = a4->index;
-  zoom = a4->zoom;
-  resolution = a4->resolution;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = self;
-  sub_1D12607C8(v12, index, zoom, resolution, v13, v14);
+  index = path->index;
+  zoom = path->zoom;
+  resolution = path->resolution;
+  blockCopy = block;
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  selfCopy = self;
+  sub_1D12607C8(blockCopy, index, zoom, resolution, axisCopy, yAxisCopy);
   v17 = v16;
 
   return v17;
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  tx = a6->tx;
-  ty = a6->ty;
-  v18 = a3;
-  v19 = a7;
-  v20 = self;
-  v27 = *&a6->c;
-  v28 = *&a6->a;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  tx = transform->tx;
+  ty = transform->ty;
+  coordinatesCopy = coordinates;
+  contextCopy = context;
+  selfCopy = self;
+  v27 = *&transform->c;
+  v28 = *&transform->a;
   v33.origin.x = x;
   v33.origin.y = y;
   v33.size.width = width;
@@ -96,8 +96,8 @@
   v23 = swift_allocObject();
   v23[2] = MinX;
   v23[3] = MaxX;
-  *(v23 + 4) = v20;
-  *(v23 + 5) = v19;
+  *(v23 + 4) = selfCopy;
+  *(v23 + 5) = contextCopy;
   v31 = sub_1D1261DC8;
   v32 = *&v23;
   *&aBlock = MEMORY[0x1E69E9820];
@@ -105,62 +105,62 @@
   *&v30 = sub_1D125FD88;
   *(&v30 + 1) = &block_descriptor_18_0;
   v24 = _Block_copy(&aBlock);
-  v25 = v19;
-  v26 = v20;
+  v25 = contextCopy;
+  v26 = selfCopy;
 
   aBlock = v28;
   v30 = v27;
   v31 = *&tx;
   v32 = ty;
-  [v18 enumerateCoordinatesWithTransform:&aBlock roundToViewScale:1 block:v24];
+  [coordinatesCopy enumerateCoordinatesWithTransform:&aBlock roundToViewScale:1 block:v24];
 
   _Block_release(v24);
 }
 
-- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)a3 blockCoordinate:(id)a4
+- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)rect blockCoordinate:(id)coordinate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   swift_unknownObjectRetain();
-  v10 = self;
-  v11 = sub_1D1260F58(a4, x, y, width, height);
+  selfCopy = self;
+  v11 = sub_1D1260F58(coordinate, x, y, width, height);
   swift_unknownObjectRelease();
 
   return v11 & 1;
 }
 
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_1D1261208(a4, x, y);
+  selfCopy = self;
+  sub_1D1261208(coordinate, x, y);
   v11 = v10;
   swift_unknownObjectRelease();
 
   return v11;
 }
 
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1D1261440(a4);
+  selfCopy = self;
+  sub_1D1261440(coordinate);
   v9 = v8;
   swift_unknownObjectRelease();
 
   return v9;
 }
 
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
+  y = point.y;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1D126166C(a4, y);
+  selfCopy = self;
+  sub_1D126166C(coordinate, y);
   v10 = v9;
   swift_unknownObjectRelease();
 

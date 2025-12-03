@@ -1,22 +1,22 @@
 @interface SRUIFDelayedActionCommandCache
-- (SRUIFDelayedActionCommandCache)initWithDelegate:(id)a3;
+- (SRUIFDelayedActionCommandCache)initWithDelegate:(id)delegate;
 - (SRUIFDelayedActionCommandCacheDelegate)delegate;
 - (id)_commandHandler;
-- (void)_invalidateDelayedActionTimer:(id)a3 withKey:(id)a4;
-- (void)_performCommandsWithDelayedActionCommand:(id)a3;
-- (void)_performDelayedActionCommandTimerAction:(id)a3;
-- (void)cancelDelayedActionWithDelayedActionCancelCommand:(id)a3 completion:(id)a4;
+- (void)_invalidateDelayedActionTimer:(id)timer withKey:(id)key;
+- (void)_performCommandsWithDelayedActionCommand:(id)command;
+- (void)_performDelayedActionCommandTimerAction:(id)action;
+- (void)cancelDelayedActionWithDelayedActionCancelCommand:(id)command completion:(id)completion;
 - (void)dealloc;
-- (void)enqueueDelayedActionCommand:(id)a3 completion:(id)a4;
+- (void)enqueueDelayedActionCommand:(id)command completion:(id)completion;
 - (void)invalidatePendingCommands;
 - (void)performDismissalCommands;
 @end
 
 @implementation SRUIFDelayedActionCommandCache
 
-- (SRUIFDelayedActionCommandCache)initWithDelegate:(id)a3
+- (SRUIFDelayedActionCommandCache)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = SRUIFDelayedActionCommandCache;
   v5 = [(SRUIFDelayedActionCommandCache *)&v11 init];
@@ -30,7 +30,7 @@
     dismissalDelayedActionCommandsByIdentifier = v5->_dismissalDelayedActionCommandsByIdentifier;
     v5->_dismissalDelayedActionCommandsByIdentifier = v8;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v5;
@@ -44,11 +44,11 @@
   [(SRUIFDelayedActionCommandCache *)&v3 dealloc];
 }
 
-- (void)enqueueDelayedActionCommand:(id)a3 completion:(id)a4
+- (void)enqueueDelayedActionCommand:(id)command completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   v8 = MEMORY[0x277CEF098];
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -58,44 +58,44 @@
     _os_log_impl(&dword_26951F000, v9, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  v10 = [v6 aceId];
-  v11 = [v6 timerValue];
+  aceId = [commandCopy aceId];
+  timerValue = [commandCopy timerValue];
 
-  if (v11)
+  if (timerValue)
   {
-    v12 = [v6 timerValue];
-    [v12 doubleValue];
+    timerValue2 = [commandCopy timerValue];
+    [timerValue2 doubleValue];
     v14 = v13 / 1000.0;
 
     v15 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v6 commands];
+      commands = [commandCopy commands];
       *buf = 136315906;
       v35 = "[SRUIFDelayedActionCommandCache enqueueDelayedActionCommand:completion:]";
       v36 = 2112;
-      v37 = v6;
+      v37 = commandCopy;
       v38 = 2048;
       v39 = v14;
       v40 = 2112;
-      v41 = v17;
+      v41 = commands;
       _os_log_impl(&dword_26951F000, v16, OS_LOG_TYPE_DEFAULT, "%s Enqueue delayed action command: %@, delay: %f, commands: %@", buf, 0x2Au);
     }
 
     v18 = objc_alloc(MEMORY[0x277CEEEA8]);
-    v19 = [MEMORY[0x277CCAC38] processInfo];
-    v20 = [v19 processIdentifier];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processIdentifier = [processInfo processIdentifier];
     v21 = MEMORY[0x277CCACA8];
-    v22 = [v6 aceId];
-    v23 = [v21 stringWithFormat:@"SiriDelayedActionCommandAssertion-%@", v22];
-    v24 = [v18 initWithPID:v20 flags:1 reason:4 name:v23 withHandler:0];
+    aceId2 = [commandCopy aceId];
+    v23 = [v21 stringWithFormat:@"SiriDelayedActionCommandAssertion-%@", aceId2];
+    v24 = [v18 initWithPID:processIdentifier flags:1 reason:4 name:v23 withHandler:0];
 
     v25 = MEMORY[0x277CBEBB8];
-    v26 = [[_SRUIFAssertingDelayedActionCommand alloc] initWithCommand:v6 assertion:v24];
+    v26 = [[_SRUIFAssertingDelayedActionCommand alloc] initWithCommand:commandCopy assertion:v24];
     v27 = [v25 scheduledTimerWithTimeInterval:self target:sel__performDelayedActionCommandTimerAction_ selector:v26 userInfo:0 repeats:v14];
 
-    [(NSMutableDictionary *)self->_delayedActionTimersByIdentifier setObject:v27 forKey:v10];
+    [(NSMutableDictionary *)self->_delayedActionTimersByIdentifier setObject:v27 forKey:aceId];
   }
 
   else
@@ -104,36 +104,36 @@
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
     {
       v29 = v28;
-      v30 = [v6 commands];
+      commands2 = [commandCopy commands];
       *buf = 136315650;
       v35 = "[SRUIFDelayedActionCommandCache enqueueDelayedActionCommand:completion:]";
       v36 = 2112;
-      v37 = v6;
+      v37 = commandCopy;
       v38 = 2112;
-      v39 = *&v30;
+      v39 = *&commands2;
       _os_log_impl(&dword_26951F000, v29, OS_LOG_TYPE_DEFAULT, "%s Enqueue dismissal action command: %@, commands: %@", buf, 0x20u);
     }
 
-    [(NSMutableDictionary *)self->_dismissalDelayedActionCommandsByIdentifier setObject:v6 forKey:v10];
+    [(NSMutableDictionary *)self->_dismissalDelayedActionCommandsByIdentifier setObject:commandCopy forKey:aceId];
   }
 
   v31 = objc_alloc_init(MEMORY[0x277D47218]);
-  v32 = [v6 aceId];
-  [v31 setRefId:v32];
+  aceId3 = [commandCopy aceId];
+  [v31 setRefId:aceId3];
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v31);
+    completionCopy[2](completionCopy, v31);
   }
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelDelayedActionWithDelayedActionCancelCommand:(id)a3 completion:(id)a4
+- (void)cancelDelayedActionWithDelayedActionCancelCommand:(id)command completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -142,20 +142,20 @@
     _os_log_impl(&dword_26951F000, v8, OS_LOG_TYPE_DEFAULT, "%s ", &v16, 0xCu);
   }
 
-  v9 = [v6 delayedActionAceId];
-  v10 = [(NSMutableDictionary *)self->_delayedActionTimersByIdentifier objectForKey:v9];
+  delayedActionAceId = [commandCopy delayedActionAceId];
+  v10 = [(NSMutableDictionary *)self->_delayedActionTimersByIdentifier objectForKey:delayedActionAceId];
   if (v10)
   {
-    [(SRUIFDelayedActionCommandCache *)self _invalidateDelayedActionTimer:v10 withKey:v9];
+    [(SRUIFDelayedActionCommandCache *)self _invalidateDelayedActionTimer:v10 withKey:delayedActionAceId];
     v11 = objc_alloc_init(MEMORY[0x277D47218]);
   }
 
   else
   {
-    v12 = [(NSMutableDictionary *)self->_dismissalDelayedActionCommandsByIdentifier objectForKey:v9];
+    v12 = [(NSMutableDictionary *)self->_dismissalDelayedActionCommandsByIdentifier objectForKey:delayedActionAceId];
     if (v12)
     {
-      [(NSMutableDictionary *)self->_dismissalDelayedActionCommandsByIdentifier removeObjectForKey:v9];
+      [(NSMutableDictionary *)self->_dismissalDelayedActionCommandsByIdentifier removeObjectForKey:delayedActionAceId];
       v13 = 0x277D47218;
     }
 
@@ -167,21 +167,21 @@
     v11 = objc_alloc_init(*v13);
   }
 
-  v14 = [v6 aceId];
-  [v11 setRefId:v14];
+  aceId = [commandCopy aceId];
+  [v11 setRefId:aceId];
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performDelayedActionCommandTimerAction:(id)a3
+- (void)_performDelayedActionCommandTimerAction:(id)action
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = MEMORY[0x277CEF098];
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -191,34 +191,34 @@
     _os_log_impl(&dword_26951F000, v6, OS_LOG_TYPE_DEFAULT, "%s ", &v15, 0xCu);
   }
 
-  v7 = [v4 userInfo];
+  userInfo = [actionCopy userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    v9 = [v8 command];
-    [(SRUIFDelayedActionCommandCache *)self _performCommandsWithDelayedActionCommand:v9];
+    v8 = userInfo;
+    command = [v8 command];
+    [(SRUIFDelayedActionCommandCache *)self _performCommandsWithDelayedActionCommand:command];
     delayedActionTimersByIdentifier = self->_delayedActionTimersByIdentifier;
-    v11 = [v9 aceId];
-    [(NSMutableDictionary *)delayedActionTimersByIdentifier removeObjectForKey:v11];
+    aceId = [command aceId];
+    [(NSMutableDictionary *)delayedActionTimersByIdentifier removeObjectForKey:aceId];
 
-    v12 = [v8 assertion];
+    assertion = [v8 assertion];
     v13 = *v5;
     if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 136315650;
       v16 = "[SRUIFDelayedActionCommandCache _performDelayedActionCommandTimerAction:]";
       v17 = 2112;
-      v18 = v12;
+      v18 = assertion;
       v19 = 2112;
-      v20 = v9;
+      v20 = command;
       _os_log_impl(&dword_26951F000, v13, OS_LOG_TYPE_DEFAULT, "%s Invalidating assertion: %@ for delayed action command: %@", &v15, 0x20u);
     }
 
-    [v12 invalidate];
+    [assertion invalidate];
   }
 
-  [v4 invalidate];
+  [actionCopy invalidate];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -234,12 +234,12 @@
     _os_log_impl(&dword_26951F000, v3, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  v4 = [(NSMutableDictionary *)self->_delayedActionTimersByIdentifier allKeys];
+  allKeys = [(NSMutableDictionary *)self->_delayedActionTimersByIdentifier allKeys];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -250,7 +250,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -261,7 +261,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -270,50 +270,50 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invalidateDelayedActionTimer:(id)a3 withKey:(id)a4
+- (void)_invalidateDelayedActionTimer:(id)timer withKey:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  keyCopy = key;
   v8 = MEMORY[0x277CEF098];
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v6 userInfo];
+    userInfo = [timerCopy userInfo];
     v19 = 136315394;
     v20 = "[SRUIFDelayedActionCommandCache _invalidateDelayedActionTimer:withKey:]";
     v21 = 2112;
-    v22 = v11;
+    v22 = userInfo;
     _os_log_impl(&dword_26951F000, v10, OS_LOG_TYPE_DEFAULT, "%s Invalidating delayed action timer with userInfo: %@", &v19, 0x16u);
   }
 
-  v12 = [v6 userInfo];
+  userInfo2 = [timerCopy userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
-    v14 = [v13 assertion];
+    v13 = userInfo2;
+    assertion = [v13 assertion];
     v15 = *v8;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v13 command];
+      command = [v13 command];
       v19 = 136315650;
       v20 = "[SRUIFDelayedActionCommandCache _invalidateDelayedActionTimer:withKey:]";
       v21 = 2112;
-      v22 = v14;
+      v22 = assertion;
       v23 = 2112;
-      v24 = v17;
+      v24 = command;
       _os_log_impl(&dword_26951F000, v16, OS_LOG_TYPE_DEFAULT, "%s Invalidating assertion: %@ for delayed action command: %@", &v19, 0x20u);
     }
 
-    [v14 invalidate];
+    [assertion invalidate];
   }
 
-  [v6 invalidate];
+  [timerCopy invalidate];
 
-  [(NSMutableDictionary *)self->_delayedActionTimersByIdentifier removeObjectForKey:v7];
+  [(NSMutableDictionary *)self->_delayedActionTimersByIdentifier removeObjectForKey:keyCopy];
   v18 = *MEMORY[0x277D85DE8];
 }
 
@@ -328,12 +328,12 @@
     _os_log_impl(&dword_26951F000, v3, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  v4 = [(NSMutableDictionary *)self->_dismissalDelayedActionCommandsByIdentifier allKeys];
+  allKeys = [(NSMutableDictionary *)self->_dismissalDelayedActionCommandsByIdentifier allKeys];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -344,7 +344,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -356,7 +356,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -372,40 +372,40 @@
   return v2;
 }
 
-- (void)_performCommandsWithDelayedActionCommand:(id)a3
+- (void)_performCommandsWithDelayedActionCommand:(id)command
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commandCopy = command;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 commands];
+    commands = [commandCopy commands];
     *buf = 136315650;
     v21 = "[SRUIFDelayedActionCommandCache _performCommandsWithDelayedActionCommand:]";
     v22 = 2112;
-    v23 = v4;
+    v23 = commandCopy;
     v24 = 2112;
-    v25 = v7;
+    v25 = commands;
     _os_log_impl(&dword_26951F000, v6, OS_LOG_TYPE_DEFAULT, "%s Performing delayed action command: %@ with commands: %@", buf, 0x20u);
   }
 
-  v8 = [(SRUIFDelayedActionCommandCache *)self _commandHandler];
+  _commandHandler = [(SRUIFDelayedActionCommandCache *)self _commandHandler];
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
   objc_initWeak(buf, self);
-  v10 = [v4 commands];
+  commands2 = [commandCopy commands];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__SRUIFDelayedActionCommandCache__performCommandsWithDelayedActionCommand___block_invoke;
   v15[3] = &unk_279C61C48;
-  v11 = v8;
+  v11 = _commandHandler;
   v16 = v11;
   v12 = v9;
   v17 = v12;
-  v13 = v4;
+  v13 = commandCopy;
   v18 = v13;
   objc_copyWeak(&v19, buf);
-  [v10 enumerateObjectsUsingBlock:v15];
+  [commands2 enumerateObjectsUsingBlock:v15];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(buf);

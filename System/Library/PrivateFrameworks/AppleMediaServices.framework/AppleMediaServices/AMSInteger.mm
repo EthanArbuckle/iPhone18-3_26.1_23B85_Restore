@@ -1,68 +1,68 @@
 @interface AMSInteger
-+ (id)integerWithInteger:(int64_t)a3;
-- (AMSInteger)initWithCoder:(id)a3;
-- (AMSInteger)initWithInteger:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInteger:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)integerWithInteger:(int64_t)integer;
+- (AMSInteger)initWithCoder:(id)coder;
+- (AMSInteger)initWithInteger:(int64_t)integer;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInteger:(id)integer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSInteger
 
-- (AMSInteger)initWithInteger:(int64_t)a3
+- (AMSInteger)initWithInteger:(int64_t)integer
 {
   v5.receiver = self;
   v5.super_class = AMSInteger;
   result = [(AMSInteger *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = integer;
   }
 
   return result;
 }
 
-+ (id)integerWithInteger:(int64_t)a3
++ (id)integerWithInteger:(int64_t)integer
 {
-  v3 = [[a1 alloc] initWithInteger:a3];
+  v3 = [[self alloc] initWithInteger:integer];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSInteger *)self isEqualToInteger:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSInteger *)self isEqualToInteger:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToInteger:(id)a3
+- (BOOL)isEqualToInteger:(id)integer
 {
-  if (!a3)
+  if (!integer)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(AMSInteger *)self value];
-  v6 = [v4 value];
+  integerCopy = integer;
+  value = [(AMSInteger *)self value];
+  value2 = [integerCopy value];
 
-  return v5 == v6;
+  return value == value2;
 }
 
-- (AMSInteger)initWithCoder:(id)a3
+- (AMSInteger)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"value"];
+  v4 = [coder decodeIntegerForKey:@"value"];
 
   return [(AMSInteger *)self initWithInteger:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[AMSInteger value](self forKey:{"value"), @"value"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[AMSInteger value](self forKey:{"value"), @"value"}];
 }
 
 @end

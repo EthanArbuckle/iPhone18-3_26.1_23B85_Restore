@@ -1,16 +1,16 @@
 @interface PUAssetSharingViewControllerFactory
-+ (id)makeSharingViewControllerWithAssets:(id)a3;
++ (id)makeSharingViewControllerWithAssets:(id)assets;
 @end
 
 @implementation PUAssetSharingViewControllerFactory
 
-+ (id)makeSharingViewControllerWithAssets:(id)a3
++ (id)makeSharingViewControllerWithAssets:(id)assets
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AC90];
-  v4 = a3;
-  v5 = [v3 indexSetWithIndexesInRange:{0, objc_msgSend(v4, "count")}];
-  v6 = [v4 objectsAtIndexes:v5];
+  assetsCopy = assets;
+  v5 = [v3 indexSetWithIndexesInRange:{0, objc_msgSend(assetsCopy, "count")}];
+  v6 = [assetsCopy objectsAtIndexes:v5];
 
   v7 = PXMap();
 
@@ -39,9 +39,9 @@
   [(PUActivitySharingConfiguration *)v17 setPhotosDataSource:v21];
 
   v22 = [[PUActivitySharingController alloc] initWithActivitySharingConfiguration:v17];
-  v23 = [(PUActivitySharingController *)v22 activityViewController];
+  activityViewController = [(PUActivitySharingController *)v22 activityViewController];
 
-  return v23;
+  return activityViewController;
 }
 
 id __75__PUAssetSharingViewControllerFactory_makeSharingViewControllerWithAssets___block_invoke(uint64_t a1, void *a2)

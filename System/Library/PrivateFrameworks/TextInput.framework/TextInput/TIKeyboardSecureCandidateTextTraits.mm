@@ -1,25 +1,25 @@
 @interface TIKeyboardSecureCandidateTextTraits
-+ (id)traitsWithFontName:(id)a3 maxFontSize:(double)a4 minFontSize:(double)a5 textColor:(id)a6 yCoordinate:(double)a7 baselineOffset:(double)a8;
-- (BOOL)isEqual:(id)a3;
-- (TIKeyboardSecureCandidateTextTraits)initWithCoder:(id)a3;
-- (TIKeyboardSecureCandidateTextTraits)initWithFontName:(id)a3 maxFontSize:(double)a4 minFontSize:(double)a5 textColor:(id)a6 yCoordinate:(double)a7 baselineOffset:(double)a8;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)traitsWithFontName:(id)name maxFontSize:(double)size minFontSize:(double)fontSize textColor:(id)color yCoordinate:(double)coordinate baselineOffset:(double)offset;
+- (BOOL)isEqual:(id)equal;
+- (TIKeyboardSecureCandidateTextTraits)initWithCoder:(id)coder;
+- (TIKeyboardSecureCandidateTextTraits)initWithFontName:(id)name maxFontSize:(double)size minFontSize:(double)fontSize textColor:(id)color yCoordinate:(double)coordinate baselineOffset:(double)offset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TIKeyboardSecureCandidateTextTraits
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(TIKeyboardSecureCandidateTextTraits *)self fontName];
-    v8 = [v5 fontName];
-    LODWORD(v6) = [v6 _string:v7 matchesString:v8];
+    fontName = [(TIKeyboardSecureCandidateTextTraits *)self fontName];
+    fontName2 = [v5 fontName];
+    LODWORD(v6) = [v6 _string:fontName matchesString:fontName2];
 
     if (!v6)
     {
@@ -42,18 +42,18 @@
       goto LABEL_12;
     }
 
-    v15 = [(TIKeyboardSecureCandidateTextTraits *)self textColor];
-    v16 = [v5 textColor];
-    v17 = v16;
-    if (v15 == v16)
+    textColor = [(TIKeyboardSecureCandidateTextTraits *)self textColor];
+    textColor2 = [v5 textColor];
+    v17 = textColor2;
+    if (textColor == textColor2)
     {
     }
 
     else
     {
-      v18 = [(TIKeyboardSecureCandidateTextTraits *)self textColor];
-      v19 = [v5 textColor];
-      v20 = [v18 isEqual:v19];
+      textColor3 = [(TIKeyboardSecureCandidateTextTraits *)self textColor];
+      textColor4 = [v5 textColor];
+      v20 = [textColor3 isEqual:textColor4];
 
       if (!v20)
       {
@@ -89,31 +89,31 @@ LABEL_14:
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(TIKeyboardSecureCandidateTextTraits *)self fontName];
+  fontName = [(TIKeyboardSecureCandidateTextTraits *)self fontName];
   [(TIKeyboardSecureCandidateTextTraits *)self maxFontSize];
   v6 = v5;
   [(TIKeyboardSecureCandidateTextTraits *)self minFontSize];
   v8 = v7;
-  v9 = [(TIKeyboardSecureCandidateTextTraits *)self textColor];
+  textColor = [(TIKeyboardSecureCandidateTextTraits *)self textColor];
   [(TIKeyboardSecureCandidateTextTraits *)self yCoordinate];
   v11 = v10;
   [(TIKeyboardSecureCandidateTextTraits *)self baselineOffset];
-  [v3 appendFormat:@"; fontName = %@, maxFontSize = %f, minFontSize = %f, textColor = %@, yCoordinate = %f, baselineOffset = %f", v4, v6, v8, v9, v11, v12];
+  [v3 appendFormat:@"; fontName = %@, maxFontSize = %f, minFontSize = %f, textColor = %@, yCoordinate = %f, baselineOffset = %f", fontName, v6, v8, textColor, v11, v12];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   fontName = self->_fontName;
-  v9 = v4;
+  v9 = coderCopy;
   if (fontName)
   {
-    [v4 encodeObject:fontName forKey:@"fontName"];
-    v4 = v9;
+    [coderCopy encodeObject:fontName forKey:@"fontName"];
+    coderCopy = v9;
   }
 
   maxFontSize = self->_maxFontSize;
@@ -121,7 +121,7 @@ LABEL_14:
   {
     *&maxFontSize = maxFontSize;
     [v9 encodeFloat:@"maxFontSize" forKey:maxFontSize];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   minFontSize = self->_minFontSize;
@@ -129,49 +129,49 @@ LABEL_14:
   {
     *&minFontSize = minFontSize;
     [v9 encodeFloat:@"minFontSize" forKey:minFontSize];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   textColor = self->_textColor;
   if (textColor)
   {
     [v9 encodeObject:textColor forKey:@"textColor"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
-  [v4 encodeDouble:@"yCoordinate" forKey:self->_yCoordinate];
+  [coderCopy encodeDouble:@"yCoordinate" forKey:self->_yCoordinate];
   [v9 encodeDouble:@"baselineOffset" forKey:self->_baselineOffset];
 }
 
-- (TIKeyboardSecureCandidateTextTraits)initWithCoder:(id)a3
+- (TIKeyboardSecureCandidateTextTraits)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TIKeyboardSecureCandidateTextTraits *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fontName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fontName"];
     v7 = [v6 copy];
     fontName = v5->_fontName;
     v5->_fontName = v7;
 
-    [v4 decodeFloatForKey:@"maxFontSize"];
+    [coderCopy decodeFloatForKey:@"maxFontSize"];
     v5->_maxFontSize = v9;
-    [v4 decodeFloatForKey:@"minFontSize"];
+    [coderCopy decodeFloatForKey:@"minFontSize"];
     v5->_minFontSize = v10;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textColor"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textColor"];
     textColor = v5->_textColor;
     v5->_textColor = v11;
 
-    [v4 decodeDoubleForKey:@"yCoordinate"];
+    [coderCopy decodeDoubleForKey:@"yCoordinate"];
     v5->_yCoordinate = v13;
-    [v4 decodeDoubleForKey:@"baselineOffset"];
+    [coderCopy decodeDoubleForKey:@"baselineOffset"];
     v5->_baselineOffset = v14;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TIKeyboardSecureCandidateTextTraits);
   if (v4)
@@ -190,34 +190,34 @@ LABEL_14:
   return v4;
 }
 
-- (TIKeyboardSecureCandidateTextTraits)initWithFontName:(id)a3 maxFontSize:(double)a4 minFontSize:(double)a5 textColor:(id)a6 yCoordinate:(double)a7 baselineOffset:(double)a8
+- (TIKeyboardSecureCandidateTextTraits)initWithFontName:(id)name maxFontSize:(double)size minFontSize:(double)fontSize textColor:(id)color yCoordinate:(double)coordinate baselineOffset:(double)offset
 {
-  v14 = a3;
-  v15 = a6;
+  nameCopy = name;
+  colorCopy = color;
   v20.receiver = self;
   v20.super_class = TIKeyboardSecureCandidateTextTraits;
   v16 = [(TIKeyboardSecureCandidateTextTraits *)&v20 init];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [nameCopy copy];
     fontName = v16->_fontName;
     v16->_fontName = v17;
 
-    v16->_maxFontSize = a4;
-    v16->_minFontSize = a5;
-    objc_storeStrong(&v16->_textColor, a6);
-    v16->_yCoordinate = a7;
-    v16->_baselineOffset = a8;
+    v16->_maxFontSize = size;
+    v16->_minFontSize = fontSize;
+    objc_storeStrong(&v16->_textColor, color);
+    v16->_yCoordinate = coordinate;
+    v16->_baselineOffset = offset;
   }
 
   return v16;
 }
 
-+ (id)traitsWithFontName:(id)a3 maxFontSize:(double)a4 minFontSize:(double)a5 textColor:(id)a6 yCoordinate:(double)a7 baselineOffset:(double)a8
++ (id)traitsWithFontName:(id)name maxFontSize:(double)size minFontSize:(double)fontSize textColor:(id)color yCoordinate:(double)coordinate baselineOffset:(double)offset
 {
-  v13 = a6;
-  v14 = a3;
-  v15 = [[TIKeyboardSecureCandidateTextTraits alloc] initWithFontName:v14 maxFontSize:v13 minFontSize:a4 textColor:a5 yCoordinate:a7 baselineOffset:a8];
+  colorCopy = color;
+  nameCopy = name;
+  v15 = [[TIKeyboardSecureCandidateTextTraits alloc] initWithFontName:nameCopy maxFontSize:colorCopy minFontSize:size textColor:fontSize yCoordinate:coordinate baselineOffset:offset];
 
   return v15;
 }

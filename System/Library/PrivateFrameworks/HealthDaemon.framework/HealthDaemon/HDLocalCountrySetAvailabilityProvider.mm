@@ -1,61 +1,61 @@
 @interface HDLocalCountrySetAvailabilityProvider
-- (HDLocalCountrySetAvailabilityProvider)initWithFeatureIdentifier:(id)a3 defaultCountrySet:(id)a4 healthDaemon:(id)a5;
-- (HDLocalCountrySetAvailabilityProvider)initWithFeatureIdentifier:(id)a3 defaultCountrySet:(id)a4 healthDaemon:(id)a5 overrideUserDefaults:(id)a6;
+- (HDLocalCountrySetAvailabilityProvider)initWithFeatureIdentifier:(id)identifier defaultCountrySet:(id)set healthDaemon:(id)daemon;
+- (HDLocalCountrySetAvailabilityProvider)initWithFeatureIdentifier:(id)identifier defaultCountrySet:(id)set healthDaemon:(id)daemon overrideUserDefaults:(id)defaults;
 - (HDRegionAvailabilityProvidingDelegate)delegate;
 - (HKCountrySet)countrySet;
-- (id)onboardingEligibilityForCountryCode:(id)a3;
-- (id)onboardingEligibilityForCountryCode:(id)a3 device:(id)a4;
+- (id)onboardingEligibilityForCountryCode:(id)code;
+- (id)onboardingEligibilityForCountryCode:(id)code device:(id)device;
 - (id)regionAvailability;
-- (void)OTAFeatureAvailabilityManagerDidUpdateFeatureAvailabilityInfo:(id)a3;
+- (void)OTAFeatureAvailabilityManagerDidUpdateFeatureAvailabilityInfo:(id)info;
 - (void)dealloc;
-- (void)downloadLatestOTAAvailabilityInfoWithCompletion:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setDelegate:(id)a3;
+- (void)downloadLatestOTAAvailabilityInfoWithCompletion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation HDLocalCountrySetAvailabilityProvider
 
-- (HDLocalCountrySetAvailabilityProvider)initWithFeatureIdentifier:(id)a3 defaultCountrySet:(id)a4 healthDaemon:(id)a5
+- (HDLocalCountrySetAvailabilityProvider)initWithFeatureIdentifier:(id)identifier defaultCountrySet:(id)set healthDaemon:(id)daemon
 {
   v8 = MEMORY[0x277CBEBD0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 hk_localCountrySetOverrideUserDefaults];
-  v13 = [(HDLocalCountrySetAvailabilityProvider *)self initWithFeatureIdentifier:v11 defaultCountrySet:v10 healthDaemon:v9 overrideUserDefaults:v12];
+  daemonCopy = daemon;
+  setCopy = set;
+  identifierCopy = identifier;
+  hk_localCountrySetOverrideUserDefaults = [v8 hk_localCountrySetOverrideUserDefaults];
+  v13 = [(HDLocalCountrySetAvailabilityProvider *)self initWithFeatureIdentifier:identifierCopy defaultCountrySet:setCopy healthDaemon:daemonCopy overrideUserDefaults:hk_localCountrySetOverrideUserDefaults];
 
   return v13;
 }
 
-- (HDLocalCountrySetAvailabilityProvider)initWithFeatureIdentifier:(id)a3 defaultCountrySet:(id)a4 healthDaemon:(id)a5 overrideUserDefaults:(id)a6
+- (HDLocalCountrySetAvailabilityProvider)initWithFeatureIdentifier:(id)identifier defaultCountrySet:(id)set healthDaemon:(id)daemon overrideUserDefaults:(id)defaults
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  setCopy = set;
+  daemonCopy = daemon;
+  defaultsCopy = defaults;
   v23.receiver = self;
   v23.super_class = HDLocalCountrySetAvailabilityProvider;
   v14 = [(HDLocalCountrySetAvailabilityProvider *)&v23 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     featureIdentifier = v14->_featureIdentifier;
     v14->_featureIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [setCopy copy];
     defaultCountrySet = v14->_defaultCountrySet;
     v14->_defaultCountrySet = v17;
 
-    objc_storeWeak(&v14->_healthDaemon, v12);
-    objc_storeStrong(&v14->_overrideUserDefaults, a6);
+    objc_storeWeak(&v14->_healthDaemon, daemonCopy);
+    objc_storeStrong(&v14->_overrideUserDefaults, defaults);
     WeakRetained = objc_loadWeakRetained(&v14->_healthDaemon);
-    v20 = [WeakRetained OTAFeatureAvailabilityManager];
-    [v20 registerObserver:v14 queue:0];
+    oTAFeatureAvailabilityManager = [WeakRetained OTAFeatureAvailabilityManager];
+    [oTAFeatureAvailabilityManager registerObserver:v14 queue:0];
 
     overrideUserDefaults = v14->_overrideUserDefaults;
     if (overrideUserDefaults)
     {
-      [(NSUserDefaults *)overrideUserDefaults addObserver:v14 forKeyPath:v10 options:0 context:0];
+      [(NSUserDefaults *)overrideUserDefaults addObserver:v14 forKeyPath:identifierCopy options:0 context:0];
     }
   }
 
@@ -65,8 +65,8 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_healthDaemon);
-  v4 = [WeakRetained OTAFeatureAvailabilityManager];
-  [v4 unregisterObserver:self];
+  oTAFeatureAvailabilityManager = [WeakRetained OTAFeatureAvailabilityManager];
+  [oTAFeatureAvailabilityManager unregisterObserver:self];
 
   [(NSUserDefaults *)self->_overrideUserDefaults removeObserver:self forKeyPath:self->_featureIdentifier];
   v5.receiver = self;
@@ -74,9 +74,9 @@
   [(HDLocalCountrySetAvailabilityProvider *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   if (obj)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -87,8 +87,8 @@
 
       if (v7 != obj)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
-        [v8 handleFailureInMethod:a2 object:self file:@"HDLocalCountrySetAvailabilityProvider.m" lineNumber:72 description:@"Delegate cannot be changed after it is set"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"HDLocalCountrySetAvailabilityProvider.m" lineNumber:72 description:@"Delegate cannot be changed after it is set"];
       }
     }
   }
@@ -102,19 +102,19 @@
   if (!self)
   {
 LABEL_10:
-    v8 = 0;
+    allowedCountrySet = 0;
     goto LABEL_11;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_healthDaemon);
-  v4 = [WeakRetained OTAFeatureAvailabilityManager];
+  oTAFeatureAvailabilityManager = [WeakRetained OTAFeatureAvailabilityManager];
   featureIdentifier = self->_featureIdentifier;
   v20 = 0;
-  v6 = [v4 featureAvailabilityInfoForFeature:featureIdentifier error:&v20];
+  v6 = [oTAFeatureAvailabilityManager featureAvailabilityInfoForFeature:featureIdentifier error:&v20];
   v7 = v20;
-  v8 = [v6 allowedCountrySet];
+  allowedCountrySet = [v6 allowedCountrySet];
 
-  if (!v8)
+  if (!allowedCountrySet)
   {
     if (([v7 hk_isHealthKitErrorWithCode:11] & 1) == 0)
     {
@@ -123,7 +123,7 @@ LABEL_10:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v22 = self;
+        selfCopy2 = self;
         v23 = 2114;
         v24 = v7;
         _os_log_error_impl(&dword_228986000, v11, OS_LOG_TYPE_ERROR, "[%{public}@] Unexpected error attempting to read OTA info: %{public}@", buf, 0x16u);
@@ -133,11 +133,11 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v9 = [v8 contentVersion];
-  if (v9 >= [(HKCountrySet *)self->_defaultCountrySet contentVersion])
+  contentVersion = [allowedCountrySet contentVersion];
+  if (contentVersion >= [(HKCountrySet *)self->_defaultCountrySet contentVersion])
   {
-    v10 = v8;
-    v8 = v10;
+    v10 = allowedCountrySet;
+    allowedCountrySet = v10;
     goto LABEL_12;
   }
 
@@ -153,11 +153,11 @@ LABEL_12:
     v15 = HKLogInfrastructure();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v13 dictionaryRepresentation];
+      dictionaryRepresentation = [v13 dictionaryRepresentation];
       *buf = 138543618;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2114;
-      v24 = v19;
+      v24 = dictionaryRepresentation;
       _os_log_error_impl(&dword_228986000, v15, OS_LOG_TYPE_ERROR, "[%{public}@] Internal country set override present: %{public}@", buf, 0x16u);
     }
 
@@ -170,19 +170,19 @@ LABEL_12:
   return v14;
 }
 
-- (void)OTAFeatureAvailabilityManagerDidUpdateFeatureAvailabilityInfo:(id)a3
+- (void)OTAFeatureAvailabilityManagerDidUpdateFeatureAvailabilityInfo:(id)info
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained regionAvailabilityProvidingDidUpdate:self];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:self->_featureIdentifier] && self->_overrideUserDefaults == v11)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:self->_featureIdentifier] && self->_overrideUserDefaults == objectCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -207,7 +207,7 @@ LABEL_12:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v20 = self;
+        selfCopy = self;
         _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_INFO, "[%{public}@] No delegate to receive observation message", buf, 0xCu);
       }
     }
@@ -217,7 +217,7 @@ LABEL_12:
   {
     v18.receiver = self;
     v18.super_class = HDLocalCountrySetAvailabilityProvider;
-    [(HDLocalCountrySetAvailabilityProvider *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(HDLocalCountrySetAvailabilityProvider *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
 LABEL_4:
@@ -225,20 +225,20 @@ LABEL_4:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3
+- (id)onboardingEligibilityForCountryCode:(id)code
 {
-  v4 = a3;
-  v5 = [(HDLocalCountrySetAvailabilityProvider *)self regionAvailability];
-  v6 = [v5 onboardingEligibilityForCountryCode:v4];
+  codeCopy = code;
+  regionAvailability = [(HDLocalCountrySetAvailabilityProvider *)self regionAvailability];
+  v6 = [regionAvailability onboardingEligibilityForCountryCode:codeCopy];
 
   return v6;
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3 device:(id)a4
+- (id)onboardingEligibilityForCountryCode:(id)code device:(id)device
 {
-  v5 = a3;
-  v6 = [(HDLocalCountrySetAvailabilityProvider *)self regionAvailability];
-  v7 = [v6 onboardingEligibilityForCountryCode:v5];
+  codeCopy = code;
+  regionAvailability = [(HDLocalCountrySetAvailabilityProvider *)self regionAvailability];
+  v7 = [regionAvailability onboardingEligibilityForCountryCode:codeCopy];
 
   return v7;
 }
@@ -247,19 +247,19 @@ LABEL_4:
 {
   v2 = MEMORY[0x277CCD898];
   v3 = MEMORY[0x277CCCFE0];
-  v4 = [(HDLocalCountrySetAvailabilityProvider *)self countrySet];
-  v5 = [v3 allowedCountriesInLocalSet:v4];
+  countrySet = [(HDLocalCountrySetAvailabilityProvider *)self countrySet];
+  v5 = [v3 allowedCountriesInLocalSet:countrySet];
   v6 = [v2 allowedInSomeCountries:v5];
 
   return v6;
 }
 
-- (void)downloadLatestOTAAvailabilityInfoWithCompletion:(id)a3
+- (void)downloadLatestOTAAvailabilityInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_healthDaemon);
-  v5 = [WeakRetained OTAFeatureAvailabilityManager];
-  [v5 downloadWithCompletion:v4];
+  oTAFeatureAvailabilityManager = [WeakRetained OTAFeatureAvailabilityManager];
+  [oTAFeatureAvailabilityManager downloadWithCompletion:completionCopy];
 }
 
 - (HDRegionAvailabilityProvidingDelegate)delegate

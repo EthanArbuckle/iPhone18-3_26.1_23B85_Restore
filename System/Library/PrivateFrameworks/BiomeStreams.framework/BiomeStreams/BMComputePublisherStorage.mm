@@ -1,66 +1,66 @@
 @interface BMComputePublisherStorage
 + (id)bookmarkStorageForCurrentProcess;
 + (id)currentSession;
-- (BMComputePublisherStorage)initWithUseCase:(id)a3 domain:(unint64_t)a4 isClient:(BOOL)a5;
-- (BOOL)checkActiveSubscriptionMarkerForStream:(id)a3;
-- (BOOL)checkExistenceOfBookmarkForSubscriptionWithIdentifier:(id)a3 client:(id)a4;
-- (id)bookmarkPathForSessionStorageWithIdentifier:(id)a3 client:(id)a4;
+- (BMComputePublisherStorage)initWithUseCase:(id)case domain:(unint64_t)domain isClient:(BOOL)client;
+- (BOOL)checkActiveSubscriptionMarkerForStream:(id)stream;
+- (BOOL)checkExistenceOfBookmarkForSubscriptionWithIdentifier:(id)identifier client:(id)client;
+- (id)bookmarkPathForSessionStorageWithIdentifier:(id)identifier client:(id)client;
 - (id)currentSessionBookmarkClientOrServerPath;
 - (id)currentSessionBookmarkPath;
 - (id)currentSessionNonwakingSubscriptionPath;
 - (id)currentSessionPath;
 - (id)currentSessionSubscriptionsPath;
-- (id)newFileManagerWithUseCase:(id)a3;
+- (id)newFileManagerWithUseCase:(id)case;
 - (id)persistentPath;
-- (id)readBookmarkForSubscriptionWithIdentifier:(id)a3 client:(id)a4 error:(id *)a5;
-- (id)readNonWakingSubscriptions:(id *)a3;
-- (id)readNonwakingSubscriptionWithIdentifier:(id)a3 client:(id)a4 error:(id *)a5;
+- (id)readBookmarkForSubscriptionWithIdentifier:(id)identifier client:(id)client error:(id *)error;
+- (id)readNonWakingSubscriptions:(id *)subscriptions;
+- (id)readNonwakingSubscriptionWithIdentifier:(id)identifier client:(id)client error:(id *)error;
 - (id)sessionsPath;
-- (id)subscriptionMarkerPathForSessionStorageWithStream:(id)a3;
+- (id)subscriptionMarkerPathForSessionStorageWithStream:(id)stream;
 - (void)initializeBiomeDSLDirectoryForBootSession;
-- (void)removeActiveSubscriptionMarkerForStream:(id)a3;
-- (void)removeBookmarkFileForSubscriptionWithIdentifier:(id)a3 client:(id)a4;
-- (void)removeNonWakingSubscriptionWithIdentifier:(id)a3 client:(id)a4;
-- (void)writeActiveSubscriptionMarkerForStream:(id)a3;
-- (void)writeBookmark:(id)a3 forSubscriptionWithIdentifier:(id)a4 client:(id)a5;
-- (void)writeNonWakingSubscription:(id)a3;
+- (void)removeActiveSubscriptionMarkerForStream:(id)stream;
+- (void)removeBookmarkFileForSubscriptionWithIdentifier:(id)identifier client:(id)client;
+- (void)removeNonWakingSubscriptionWithIdentifier:(id)identifier client:(id)client;
+- (void)writeActiveSubscriptionMarkerForStream:(id)stream;
+- (void)writeBookmark:(id)bookmark forSubscriptionWithIdentifier:(id)identifier client:(id)client;
+- (void)writeNonWakingSubscription:(id)subscription;
 @end
 
 @implementation BMComputePublisherStorage
 
 - (id)currentSessionSubscriptionsPath
 {
-  v2 = [(BMComputePublisherStorage *)self currentSessionPath];
-  v3 = [MEMORY[0x1E698EA08] subscriptions];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  currentSessionPath = [(BMComputePublisherStorage *)self currentSessionPath];
+  subscriptions = [MEMORY[0x1E698EA08] subscriptions];
+  v4 = [currentSessionPath stringByAppendingPathComponent:subscriptions];
 
   return v4;
 }
 
 - (id)currentSessionPath
 {
-  v2 = [(BMComputePublisherStorage *)self sessionsPath];
-  v3 = [objc_opt_class() currentSession];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  sessionsPath = [(BMComputePublisherStorage *)self sessionsPath];
+  currentSession = [objc_opt_class() currentSession];
+  v4 = [sessionsPath stringByAppendingPathComponent:currentSession];
 
   return v4;
 }
 
 - (id)sessionsPath
 {
-  v2 = [(BMComputePublisherStorage *)self basePath];
-  v3 = [MEMORY[0x1E698EA08] sessions];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  basePath = [(BMComputePublisherStorage *)self basePath];
+  sessions = [MEMORY[0x1E698EA08] sessions];
+  v4 = [basePath stringByAppendingPathComponent:sessions];
 
   return v4;
 }
 
 + (id)currentSession
 {
-  v2 = [MEMORY[0x1E696AFB0] bm_bootSessionUUID];
-  v3 = [v2 UUIDString];
+  bm_bootSessionUUID = [MEMORY[0x1E696AFB0] bm_bootSessionUUID];
+  uUIDString = [bm_bootSessionUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)currentSessionBookmarkClientOrServerPath
@@ -75,65 +75,65 @@
     [MEMORY[0x1E698EA08] server];
   }
   v3 = ;
-  v4 = [(BMComputePublisherStorage *)self currentSessionBookmarkPath];
-  v5 = [v4 stringByAppendingPathComponent:v3];
+  currentSessionBookmarkPath = [(BMComputePublisherStorage *)self currentSessionBookmarkPath];
+  v5 = [currentSessionBookmarkPath stringByAppendingPathComponent:v3];
 
   return v5;
 }
 
 - (id)currentSessionBookmarkPath
 {
-  v2 = [(BMComputePublisherStorage *)self currentSessionPath];
-  v3 = [MEMORY[0x1E698EA08] bookmarks];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  currentSessionPath = [(BMComputePublisherStorage *)self currentSessionPath];
+  bookmarks = [MEMORY[0x1E698EA08] bookmarks];
+  v4 = [currentSessionPath stringByAppendingPathComponent:bookmarks];
 
   return v4;
 }
 
 - (id)persistentPath
 {
-  v2 = [(BMComputePublisherStorage *)self basePath];
-  v3 = [MEMORY[0x1E698EA08] persistent];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  basePath = [(BMComputePublisherStorage *)self basePath];
+  persistent = [MEMORY[0x1E698EA08] persistent];
+  v4 = [basePath stringByAppendingPathComponent:persistent];
 
   return v4;
 }
 
 - (id)currentSessionNonwakingSubscriptionPath
 {
-  v2 = [(BMComputePublisherStorage *)self currentSessionPath];
-  v3 = [MEMORY[0x1E698EA08] nonwaking];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  currentSessionPath = [(BMComputePublisherStorage *)self currentSessionPath];
+  nonwaking = [MEMORY[0x1E698EA08] nonwaking];
+  v4 = [currentSessionPath stringByAppendingPathComponent:nonwaking];
 
   return v4;
 }
 
-- (id)newFileManagerWithUseCase:(id)a3
+- (id)newFileManagerWithUseCase:(id)case
 {
-  v4 = a3;
+  caseCopy = case;
   v5 = MEMORY[0x1E698E9C8];
-  v6 = [(BMComputePublisherStorage *)self basePath];
-  if (([v5 pathIsManaged:v6 domain:0] & 1) == 0)
+  basePath = [(BMComputePublisherStorage *)self basePath];
+  if (([v5 pathIsManaged:basePath domain:0] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v7 = [MEMORY[0x1E698E9D8] current];
-  v8 = [v7 reliesOnDirectAccessForDomain:{-[BMComputePublisherStorage domain](self, "domain")}];
+  current = [MEMORY[0x1E698E9D8] current];
+  v8 = [current reliesOnDirectAccessForDomain:{-[BMComputePublisherStorage domain](self, "domain")}];
 
   if (v8)
   {
 LABEL_5:
     v12 = MEMORY[0x1E698E9B8];
-    v10 = [(BMComputePublisherStorage *)self basePath];
-    v11 = [v12 fileManagerWithDirectAccessToDirectory:v10 cachingOptions:3];
+    basePath2 = [(BMComputePublisherStorage *)self basePath];
+    v11 = [v12 fileManagerWithDirectAccessToDirectory:basePath2 cachingOptions:3];
     goto LABEL_6;
   }
 
   v9 = MEMORY[0x1E698E9B8];
-  v10 = [(BMComputePublisherStorage *)self basePath];
-  v11 = [v9 fileManagerWithMediatedAccessToDirectory:v10 useCase:v4 domain:-[BMComputePublisherStorage domain](self user:{"domain"), geteuid()}];
+  basePath2 = [(BMComputePublisherStorage *)self basePath];
+  v11 = [v9 fileManagerWithMediatedAccessToDirectory:basePath2 useCase:caseCopy domain:-[BMComputePublisherStorage domain](self user:{"domain"), geteuid()}];
 LABEL_6:
   v13 = v11;
 
@@ -146,26 +146,26 @@ LABEL_6:
   v3 = __biome_log_for_category();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(BMComputePublisherStorage *)self basePath];
-    v5 = [objc_opt_class() currentSession];
+    basePath = [(BMComputePublisherStorage *)self basePath];
+    currentSession = [objc_opt_class() currentSession];
     *buf = 138412546;
-    v81 = v4;
+    v81 = basePath;
     v82 = 2112;
-    v83 = v5;
+    v83 = currentSession;
     _os_log_impl(&dword_1848EE000, v3, OS_LOG_TYPE_DEFAULT, "Initializing DSL directory %@ with session %@", buf, 0x16u);
   }
 
   v6 = [(BMComputePublisherStorage *)self newFileManagerWithUseCase:*MEMORY[0x1E698E948]];
-  v7 = [(BMComputePublisherStorage *)self currentSessionBookmarkPath];
+  currentSessionBookmarkPath = [(BMComputePublisherStorage *)self currentSessionBookmarkPath];
   v77 = 0;
-  v8 = [v6 createDirectoryAtPath:v7 error:&v77];
+  v8 = [v6 createDirectoryAtPath:currentSessionBookmarkPath error:&v77];
   v9 = v77;
 
   if (v8)
   {
-    v10 = [(BMComputePublisherStorage *)self currentSessionBookmarkPath];
-    v11 = [MEMORY[0x1E698EA08] client];
-    v12 = [v10 stringByAppendingPathComponent:v11];
+    currentSessionBookmarkPath2 = [(BMComputePublisherStorage *)self currentSessionBookmarkPath];
+    client = [MEMORY[0x1E698EA08] client];
+    v12 = [currentSessionBookmarkPath2 stringByAppendingPathComponent:client];
     v76 = v9;
     v13 = [v6 createDirectoryAtPath:v12 error:&v76];
     v14 = v76;
@@ -181,32 +181,32 @@ LABEL_6:
       goto LABEL_26;
     }
 
-    v15 = [(BMComputePublisherStorage *)self currentSessionBookmarkPath];
-    v16 = [MEMORY[0x1E698EA08] server];
-    v17 = [v15 stringByAppendingPathComponent:v16];
+    currentSessionBookmarkPath3 = [(BMComputePublisherStorage *)self currentSessionBookmarkPath];
+    server = [MEMORY[0x1E698EA08] server];
+    v17 = [currentSessionBookmarkPath3 stringByAppendingPathComponent:server];
     v75 = v14;
     v18 = [v6 createDirectoryAtPath:v17 error:&v75];
     v9 = v75;
 
     if (v18)
     {
-      v19 = [(BMComputePublisherStorage *)self currentSessionSubscriptionsPath];
+      currentSessionSubscriptionsPath = [(BMComputePublisherStorage *)self currentSessionSubscriptionsPath];
       v74 = v9;
-      v20 = [v6 createDirectoryAtPath:v19 error:&v74];
+      v20 = [v6 createDirectoryAtPath:currentSessionSubscriptionsPath error:&v74];
       v14 = v74;
 
-      v21 = self;
+      selfCopy2 = self;
       if (v20)
       {
         v22 = [MEMORY[0x1E698E9C8] biomeDirectoryForDomain:self->_domain];
-        v23 = [(BMComputePublisherStorage *)self currentSessionSubscriptionsPath];
-        v24 = [v23 hasPrefix:v22];
+        currentSessionSubscriptionsPath2 = [(BMComputePublisherStorage *)self currentSessionSubscriptionsPath];
+        v24 = [currentSessionSubscriptionsPath2 hasPrefix:v22];
 
         v61 = v22;
         if (v24)
         {
-          v25 = [(BMComputePublisherStorage *)self currentSessionSubscriptionsPath];
-          v26 = [v25 substringFromIndex:{-[NSObject length](v22, "length") + 1}];
+          currentSessionSubscriptionsPath3 = [(BMComputePublisherStorage *)self currentSessionSubscriptionsPath];
+          v26 = [currentSessionSubscriptionsPath3 substringFromIndex:{-[NSObject length](v22, "length") + 1}];
 
           v27 = [v22 mutableCopy];
           v70 = 0u;
@@ -214,8 +214,8 @@ LABEL_6:
           v72 = 0u;
           v73 = 0u;
           v60 = v26;
-          v28 = [v26 pathComponents];
-          v29 = [v28 countByEnumeratingWithState:&v70 objects:v79 count:16];
+          pathComponents = [v26 pathComponents];
+          v29 = [pathComponents countByEnumeratingWithState:&v70 objects:v79 count:16];
           if (v29)
           {
             v30 = v29;
@@ -228,7 +228,7 @@ LABEL_6:
               {
                 if (*v71 != v31)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(pathComponents);
                 }
 
                 v34 = *(*(&v70 + 1) + 8 * v32);
@@ -262,13 +262,13 @@ LABEL_6:
               }
 
               while (v30 != v32);
-              v30 = [v28 countByEnumeratingWithState:&v70 objects:v79 count:16];
+              v30 = [pathComponents countByEnumeratingWithState:&v70 objects:v79 count:16];
             }
 
             while (v30);
           }
 
-          v21 = self;
+          selfCopy2 = self;
           v38 = v60;
         }
 
@@ -281,16 +281,16 @@ LABEL_6:
           }
         }
 
-        v40 = [(BMComputePublisherStorage *)v21 persistentPath];
+        persistentPath = [(BMComputePublisherStorage *)selfCopy2 persistentPath];
         v68 = v14;
-        v41 = [v6 createDirectoryAtPath:v40 error:&v68];
+        v41 = [v6 createDirectoryAtPath:persistentPath error:&v68];
         v42 = v68;
 
         if (v41)
         {
-          v43 = [(BMComputePublisherStorage *)v21 sessionsPath];
+          sessionsPath = [(BMComputePublisherStorage *)selfCopy2 sessionsPath];
           v67 = v42;
-          v44 = [v6 contentsOfDirectoryAtPath:v43 error:&v67];
+          v44 = [v6 contentsOfDirectoryAtPath:sessionsPath error:&v67];
           v9 = v67;
 
           if (v44)
@@ -316,13 +316,13 @@ LABEL_6:
                   }
 
                   v49 = *(*(&v63 + 1) + 8 * v48);
-                  v50 = [objc_opt_class() currentSession];
-                  v51 = [v49 isEqual:v50];
+                  currentSession2 = [objc_opt_class() currentSession];
+                  v51 = [v49 isEqual:currentSession2];
 
                   if ((v51 & 1) == 0)
                   {
-                    v52 = [(BMComputePublisherStorage *)v21 sessionsPath];
-                    v53 = [v52 stringByAppendingPathComponent:v49];
+                    sessionsPath2 = [(BMComputePublisherStorage *)selfCopy2 sessionsPath];
+                    v53 = [sessionsPath2 stringByAppendingPathComponent:v49];
 
                     v54 = __biome_log_for_category();
                     if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
@@ -368,7 +368,7 @@ LABEL_6:
             v58 = __biome_log_for_category();
             if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
             {
-              [(BMComputePublisherStorage *)v21 initializeBiomeDSLDirectoryForBootSession];
+              [(BMComputePublisherStorage *)selfCopy2 initializeBiomeDSLDirectoryForBootSession];
             }
           }
         }
@@ -421,18 +421,18 @@ LABEL_58:
   v59 = *MEMORY[0x1E69E9840];
 }
 
-- (BMComputePublisherStorage)initWithUseCase:(id)a3 domain:(unint64_t)a4 isClient:(BOOL)a5
+- (BMComputePublisherStorage)initWithUseCase:(id)case domain:(unint64_t)domain isClient:(BOOL)client
 {
-  v8 = a3;
+  caseCopy = case;
   v14.receiver = self;
   v14.super_class = BMComputePublisherStorage;
   v9 = [(BMComputePublisherStorage *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_domain = a4;
-    v9->_isClient = a5;
-    v11 = [(BMComputePublisherStorage *)v9 newFileManagerWithUseCase:v8];
+    v9->_domain = domain;
+    v9->_isClient = client;
+    v11 = [(BMComputePublisherStorage *)v9 newFileManagerWithUseCase:caseCopy];
     fileManager = v10->_fileManager;
     v10->_fileManager = v11;
   }
@@ -440,35 +440,35 @@ LABEL_58:
   return v10;
 }
 
-- (id)bookmarkPathForSessionStorageWithIdentifier:(id)a3 client:(id)a4
+- (id)bookmarkPathForSessionStorageWithIdentifier:(id)identifier client:(id)client
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BMComputePublisherStorage *)self currentSessionBookmarkClientOrServerPath];
-  v9 = [v8 stringByAppendingPathComponent:v6];
+  clientCopy = client;
+  identifierCopy = identifier;
+  currentSessionBookmarkClientOrServerPath = [(BMComputePublisherStorage *)self currentSessionBookmarkClientOrServerPath];
+  v9 = [currentSessionBookmarkClientOrServerPath stringByAppendingPathComponent:clientCopy];
 
-  v10 = [v9 stringByAppendingPathComponent:v7];
+  v10 = [v9 stringByAppendingPathComponent:identifierCopy];
 
   return v10;
 }
 
-- (id)subscriptionMarkerPathForSessionStorageWithStream:(id)a3
+- (id)subscriptionMarkerPathForSessionStorageWithStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(BMComputePublisherStorage *)self currentSessionSubscriptionsPath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  streamCopy = stream;
+  currentSessionSubscriptionsPath = [(BMComputePublisherStorage *)self currentSessionSubscriptionsPath];
+  v6 = [currentSessionSubscriptionsPath stringByAppendingPathComponent:streamCopy];
 
   return v6;
 }
 
-- (BOOL)checkExistenceOfBookmarkForSubscriptionWithIdentifier:(id)a3 client:(id)a4
+- (BOOL)checkExistenceOfBookmarkForSubscriptionWithIdentifier:(id)identifier client:(id)client
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(BMComputePublisherStorage *)self bookmarkPathForSessionStorageWithIdentifier:v6 client:a4];
-  v8 = [v7 stringByDeletingLastPathComponent];
+  identifierCopy = identifier;
+  v7 = [(BMComputePublisherStorage *)self bookmarkPathForSessionStorageWithIdentifier:identifierCopy client:client];
+  stringByDeletingLastPathComponent = [v7 stringByDeletingLastPathComponent];
 
-  v9 = [v8 stringByAppendingPathComponent:v6];
+  v9 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:identifierCopy];
   v10 = [(BMFileManager *)self->_fileManager fileExistsAtPath:v9 error:0];
   v11 = __biome_log_for_category();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -488,11 +488,11 @@ LABEL_58:
     v16 = 138413058;
     v17 = v12;
     v18 = 2112;
-    v19 = v6;
+    v19 = identifierCopy;
     v20 = 2112;
     v21 = v13;
     v22 = 2112;
-    v23 = v8;
+    v23 = stringByDeletingLastPathComponent;
     _os_log_impl(&dword_1848EE000, v11, OS_LOG_TYPE_INFO, "Bookmark file exists: %@ for subscription %@ domain: %@ path: %@", &v16, 0x2Au);
   }
 
@@ -500,14 +500,14 @@ LABEL_58:
   return v10;
 }
 
-- (id)readBookmarkForSubscriptionWithIdentifier:(id)a3 client:(id)a4 error:(id *)a5
+- (id)readBookmarkForSubscriptionWithIdentifier:(id)identifier client:(id)client error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length])
+  identifierCopy = identifier;
+  clientCopy = client;
+  if ([identifierCopy length])
   {
-    v10 = [(BMComputePublisherStorage *)self bookmarkPathForSessionStorageWithIdentifier:v8 client:v9];
+    v10 = [(BMComputePublisherStorage *)self bookmarkPathForSessionStorageWithIdentifier:identifierCopy client:clientCopy];
     fileManager = self->_fileManager;
     v34 = 0;
     v12 = [(BMFileManager *)fileManager dataWithContentsOfFileAtPath:v10 error:&v34];
@@ -521,11 +521,11 @@ LABEL_58:
         [BMComputePublisherStorage readBookmarkForSubscriptionWithIdentifier:client:error:];
       }
 
-      if (a5)
+      if (error)
       {
         v16 = v14;
         v17 = 0;
-        *a5 = v14;
+        *error = v14;
 LABEL_30:
 
         goto LABEL_31;
@@ -544,7 +544,7 @@ LABEL_19:
         [(BMComputePublisherStorage *)self domain];
         v24 = BMStringForServiceDomain();
         *buf = 138412802;
-        v38 = v8;
+        v38 = identifierCopy;
         v39 = 2112;
         v40 = v24;
         v41 = 2112;
@@ -557,9 +557,9 @@ LABEL_19:
     }
 
     v18 = MEMORY[0x1E696ACD0];
-    v19 = [MEMORY[0x1E696AB10] bm_allowedClassesForSecureCodingBMBookmark];
+    bm_allowedClassesForSecureCodingBMBookmark = [MEMORY[0x1E696AB10] bm_allowedClassesForSecureCodingBMBookmark];
     v33 = 0;
-    v20 = [v18 unarchivedObjectOfClasses:v19 fromData:v12 error:&v33];
+    v20 = [v18 unarchivedObjectOfClasses:bm_allowedClassesForSecureCodingBMBookmark fromData:v12 error:&v33];
     v14 = v33;
 
     if (v14)
@@ -570,11 +570,11 @@ LABEL_19:
         [BMComputePublisherStorage readBookmarkForSubscriptionWithIdentifier:client:error:];
       }
 
-      if (a5)
+      if (error)
       {
         v22 = v14;
         v17 = 0;
-        *a5 = v14;
+        *error = v14;
 LABEL_29:
 
         goto LABEL_30;
@@ -591,7 +591,7 @@ LABEL_29:
           [(BMComputePublisherStorage *)self domain];
           v26 = BMStringForServiceDomain();
           *buf = 138412802;
-          v38 = v8;
+          v38 = identifierCopy;
           v39 = 2112;
           v40 = v26;
           v41 = 2112;
@@ -609,14 +609,14 @@ LABEL_29:
         [BMComputePublisherStorage readBookmarkForSubscriptionWithIdentifier:client:error:];
       }
 
-      if (a5)
+      if (error)
       {
         v28 = MEMORY[0x1E696ABC0];
         v29 = *MEMORY[0x1E698E908];
         v35 = *MEMORY[0x1E696A578];
         v36 = @"Not a bookmark";
         v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-        *a5 = [v28 errorWithDomain:v29 code:0 userInfo:v30];
+        *error = [v28 errorWithDomain:v29 code:0 userInfo:v30];
       }
     }
 
@@ -638,20 +638,20 @@ LABEL_31:
   return v17;
 }
 
-- (void)writeBookmark:(id)a3 forSubscriptionWithIdentifier:(id)a4 client:(id)a5
+- (void)writeBookmark:(id)bookmark forSubscriptionWithIdentifier:(id)identifier client:(id)client
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 length])
+  bookmarkCopy = bookmark;
+  identifierCopy = identifier;
+  clientCopy = client;
+  if ([identifierCopy length])
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DEF0]);
     v12 = v11;
-    if (v8)
+    if (bookmarkCopy)
     {
       v23 = 0;
-      v13 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v23];
+      v13 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:bookmarkCopy requiringSecureCoding:1 error:&v23];
       v14 = v23;
 
       if (v14)
@@ -660,9 +660,9 @@ LABEL_31:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412802;
-          v25 = v8;
+          v25 = bookmarkCopy;
           v26 = 2112;
-          v27 = v9;
+          v27 = identifierCopy;
           v28 = 2112;
           v29 = v14;
           _os_log_error_impl(&dword_1848EE000, v15, OS_LOG_TYPE_ERROR, "Error archiving bookmark %@ for subscription %@. %@", buf, 0x20u);
@@ -679,7 +679,7 @@ LABEL_16:
       v13 = v11;
     }
 
-    v15 = [(BMComputePublisherStorage *)self bookmarkPathForSessionStorageWithIdentifier:v9 client:v10];
+    v15 = [(BMComputePublisherStorage *)self bookmarkPathForSessionStorageWithIdentifier:identifierCopy client:clientCopy];
     fileManager = self->_fileManager;
     v22 = 0;
     v17 = [(BMFileManager *)fileManager replaceFileAtPath:v15 withData:v13 protection:0xFFFFFFFFLL flags:0 error:&v22];
@@ -690,9 +690,9 @@ LABEL_16:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        v25 = v8;
+        v25 = bookmarkCopy;
         v26 = 2112;
-        v27 = v9;
+        v27 = identifierCopy;
         v28 = 2112;
         v29 = v15;
         v30 = 2112;
@@ -707,7 +707,7 @@ LABEL_16:
       [(BMComputePublisherStorage *)self domain];
       v20 = BMStringForServiceDomain();
       *buf = 138412802;
-      v25 = v9;
+      v25 = identifierCopy;
       v26 = 2112;
       v27 = v20;
       v28 = 2112;
@@ -729,14 +729,14 @@ LABEL_17:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeBookmarkFileForSubscriptionWithIdentifier:(id)a3 client:(id)a4
+- (void)removeBookmarkFileForSubscriptionWithIdentifier:(id)identifier client:(id)client
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  clientCopy = client;
+  if ([identifierCopy length])
   {
-    v8 = [(BMComputePublisherStorage *)self bookmarkPathForSessionStorageWithIdentifier:v6 client:v7];
+    v8 = [(BMComputePublisherStorage *)self bookmarkPathForSessionStorageWithIdentifier:identifierCopy client:clientCopy];
     fileManager = self->_fileManager;
     v16 = 0;
     v10 = [(BMFileManager *)fileManager removeFileAtPath:v8 error:&v16];
@@ -750,7 +750,7 @@ LABEL_17:
         [(BMComputePublisherStorage *)self domain];
         v14 = BMStringForServiceDomain();
         *buf = 138412802;
-        v18 = v6;
+        v18 = identifierCopy;
         v19 = 2112;
         v20 = v14;
         v21 = 2112;
@@ -762,7 +762,7 @@ LABEL_17:
     else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v18 = v6;
+      v18 = identifierCopy;
       v19 = 2112;
       v20 = v8;
       v21 = 2112;
@@ -783,14 +783,14 @@ LABEL_17:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeNonWakingSubscription:(id)a3
+- (void)writeNonWakingSubscription:(id)subscription
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subscriptionCopy = subscription;
   if ([(BMComputePublisherStorage *)self isClient])
   {
-    v5 = __biome_log_for_category();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    identifier = __biome_log_for_category();
+    if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
     {
       [BMComputePublisherStorage writeNonWakingSubscription:];
     }
@@ -798,12 +798,12 @@ LABEL_17:
 
   else
   {
-    v5 = [v4 identifier];
-    v6 = [v4 client];
-    if (([v4 waking] & 1) == 0 && v5 && v6)
+    identifier = [subscriptionCopy identifier];
+    client = [subscriptionCopy client];
+    if (([subscriptionCopy waking] & 1) == 0 && identifier && client)
     {
       v19 = 0;
-      v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v19];
+      v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:subscriptionCopy requiringSecureCoding:1 error:&v19];
       v8 = v19;
       if (v8)
       {
@@ -817,9 +817,9 @@ LABEL_17:
 
       else
       {
-        v11 = [(BMComputePublisherStorage *)self currentSessionNonwakingSubscriptionPath];
-        v12 = [v11 stringByAppendingPathComponent:v6];
-        v10 = [v12 stringByAppendingPathComponent:v5];
+        currentSessionNonwakingSubscriptionPath = [(BMComputePublisherStorage *)self currentSessionNonwakingSubscriptionPath];
+        v12 = [currentSessionNonwakingSubscriptionPath stringByAppendingPathComponent:client];
+        v10 = [v12 stringByAppendingPathComponent:identifier];
 
         fileManager = self->_fileManager;
         v18 = 0;
@@ -831,7 +831,7 @@ LABEL_17:
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412802;
-            v21 = v4;
+            v21 = subscriptionCopy;
             v22 = 2112;
             v23 = v10;
             v24 = 2112;
@@ -844,7 +844,7 @@ LABEL_17:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v21 = v4;
+          v21 = subscriptionCopy;
           v22 = 2112;
           v23 = v10;
           _os_log_impl(&dword_1848EE000, v16, OS_LOG_TYPE_INFO, "Wrote subscription %@ to %@", buf, 0x16u);
@@ -865,11 +865,11 @@ LABEL_17:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeNonWakingSubscriptionWithIdentifier:(id)a3 client:(id)a4
+- (void)removeNonWakingSubscriptionWithIdentifier:(id)identifier client:(id)client
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  clientCopy = client;
   if ([(BMComputePublisherStorage *)self isClient])
   {
     v8 = __biome_log_for_category();
@@ -879,25 +879,25 @@ LABEL_17:
     }
   }
 
-  else if (v6 && v7)
+  else if (identifierCopy && clientCopy)
   {
-    v9 = [(BMComputePublisherStorage *)self currentSessionNonwakingSubscriptionPath];
-    v10 = [v9 stringByAppendingPathComponent:v7];
-    v8 = [v10 stringByAppendingPathComponent:v6];
+    currentSessionNonwakingSubscriptionPath = [(BMComputePublisherStorage *)self currentSessionNonwakingSubscriptionPath];
+    v10 = [currentSessionNonwakingSubscriptionPath stringByAppendingPathComponent:clientCopy];
+    v8 = [v10 stringByAppendingPathComponent:identifierCopy];
 
     fileManager = self->_fileManager;
     v16 = 0;
-    LOBYTE(v9) = [(BMFileManager *)fileManager removeFileAtPath:v8 error:&v16];
+    LOBYTE(currentSessionNonwakingSubscriptionPath) = [(BMFileManager *)fileManager removeFileAtPath:v8 error:&v16];
     v12 = v16;
-    if ((v9 & 1) == 0)
+    if ((currentSessionNonwakingSubscriptionPath & 1) == 0)
     {
       v13 = __biome_log_for_category();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        v18 = v7;
+        v18 = clientCopy;
         v19 = 2112;
-        v20 = v6;
+        v20 = identifierCopy;
         v21 = 2112;
         v22 = v8;
         v23 = 2112;
@@ -910,9 +910,9 @@ LABEL_17:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v18 = v7;
+      v18 = clientCopy;
       v19 = 2112;
-      v20 = v6;
+      v20 = identifierCopy;
       v21 = 2112;
       v22 = v8;
       _os_log_impl(&dword_1848EE000, v14, OS_LOG_TYPE_INFO, "Removed non-waking subscription %@/%@ at %@", buf, 0x20u);
@@ -931,16 +931,16 @@ LABEL_17:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)readNonWakingSubscriptions:(id *)a3
+- (id)readNonWakingSubscriptions:(id *)subscriptions
 {
   v52[1] = *MEMORY[0x1E69E9840];
   if (![(BMComputePublisherStorage *)self isClient])
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8 = [(BMComputePublisherStorage *)self currentSessionNonwakingSubscriptionPath];
+    currentSessionNonwakingSubscriptionPath = [(BMComputePublisherStorage *)self currentSessionNonwakingSubscriptionPath];
     fileManager = self->_fileManager;
     v48 = 0;
-    v10 = [(BMFileManager *)fileManager contentsOfDirectoryAtPath:v8 error:&v48];
+    v10 = [(BMFileManager *)fileManager contentsOfDirectoryAtPath:currentSessionNonwakingSubscriptionPath error:&v48];
     v11 = v48;
     v44 = 0u;
     v45 = 0u;
@@ -952,9 +952,9 @@ LABEL_17:
     {
       v13 = *v45;
       v31 = *v45;
-      v32 = a3;
+      subscriptionsCopy = subscriptions;
       v35 = v12;
-      v36 = v8;
+      v36 = currentSessionNonwakingSubscriptionPath;
       do
       {
         v14 = 0;
@@ -967,7 +967,7 @@ LABEL_17:
 
           v34 = v14;
           v15 = *(*(&v44 + 1) + 8 * v14);
-          v16 = [v8 stringByAppendingPathComponent:{v15, v31}];
+          v16 = [currentSessionNonwakingSubscriptionPath stringByAppendingPathComponent:{v15, v31}];
           v17 = self->_fileManager;
           v43 = v11;
           v37 = v16;
@@ -1003,15 +1003,15 @@ LABEL_17:
 
                 if (!v27)
                 {
-                  if (v32)
+                  if (subscriptionsCopy)
                   {
                     v28 = v11;
-                    *v32 = v11;
+                    *subscriptionsCopy = v11;
                   }
 
                   v12 = v35;
                   v7 = 0;
-                  v8 = v36;
+                  currentSessionNonwakingSubscriptionPath = v36;
                   goto LABEL_25;
                 }
 
@@ -1039,7 +1039,7 @@ LABEL_17:
 
           v14 = v34 + 1;
           v12 = v35;
-          v8 = v36;
+          currentSessionNonwakingSubscriptionPath = v36;
           v13 = v31;
         }
 
@@ -1056,14 +1056,14 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (a3)
+  if (subscriptions)
   {
     v5 = objc_alloc(MEMORY[0x1E696ABC0]);
     v51 = *MEMORY[0x1E696A578];
     v52[0] = @"Invalid for client to read non-waking subscriptions";
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:&v51 count:1];
     v7 = 0;
-    *a3 = [v5 initWithDomain:@"BiomeComputeError" code:-1 userInfo:v6];
+    *subscriptions = [v5 initWithDomain:@"BiomeComputeError" code:-1 userInfo:v6];
 LABEL_26:
 
     goto LABEL_27;
@@ -1076,14 +1076,14 @@ LABEL_27:
   return v7;
 }
 
-- (id)readNonwakingSubscriptionWithIdentifier:(id)a3 client:(id)a4 error:(id *)a5
+- (id)readNonwakingSubscriptionWithIdentifier:(id)identifier client:(id)client error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  clientCopy = client;
   if ([(BMComputePublisherStorage *)self isClient])
   {
-    if (!a5)
+    if (!error)
     {
       v12 = 0;
       goto LABEL_28;
@@ -1094,14 +1094,14 @@ LABEL_27:
     v34[0] = @"Invalid for client to read non-waking subscriptions";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
     v12 = 0;
-    *a5 = [v10 initWithDomain:@"BiomeComputeError" code:-1 userInfo:v11];
+    *error = [v10 initWithDomain:@"BiomeComputeError" code:-1 userInfo:v11];
   }
 
-  else if ([v8 length] && objc_msgSend(v9, "length"))
+  else if ([identifierCopy length] && objc_msgSend(clientCopy, "length"))
   {
-    v13 = [(BMComputePublisherStorage *)self currentSessionNonwakingSubscriptionPath];
-    v14 = [v13 stringByAppendingPathComponent:v9];
-    v11 = [v14 stringByAppendingPathComponent:v8];
+    currentSessionNonwakingSubscriptionPath = [(BMComputePublisherStorage *)self currentSessionNonwakingSubscriptionPath];
+    v14 = [currentSessionNonwakingSubscriptionPath stringByAppendingPathComponent:clientCopy];
+    v11 = [v14 stringByAppendingPathComponent:identifierCopy];
 
     fileManager = self->_fileManager;
     v28 = 0;
@@ -1116,11 +1116,11 @@ LABEL_27:
         [BMComputePublisherStorage readBookmarkForSubscriptionWithIdentifier:client:error:];
       }
 
-      if (a5)
+      if (error)
       {
         v20 = v18;
         v12 = 0;
-        *a5 = v18;
+        *error = v18;
       }
 
       else
@@ -1142,11 +1142,11 @@ LABEL_27:
           [BMComputePublisherStorage readNonwakingSubscriptionWithIdentifier:client:error:];
         }
 
-        if (a5)
+        if (error)
         {
           v23 = v18;
           v12 = 0;
-          *a5 = v18;
+          *error = v18;
         }
 
         else
@@ -1189,11 +1189,11 @@ LABEL_28:
   return v12;
 }
 
-- (BOOL)checkActiveSubscriptionMarkerForStream:(id)a3
+- (BOOL)checkActiveSubscriptionMarkerForStream:(id)stream
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BMComputePublisherStorage *)self subscriptionMarkerPathForSessionStorageWithStream:v4];
+  streamCopy = stream;
+  v5 = [(BMComputePublisherStorage *)self subscriptionMarkerPathForSessionStorageWithStream:streamCopy];
   fileManager = self->_fileManager;
   v15 = 0;
   LODWORD(v7) = [(BMFileManager *)fileManager fileExistsAtPath:v5 error:&v15];
@@ -1225,7 +1225,7 @@ LABEL_28:
     *buf = 138543874;
     v17 = v10;
     v18 = 2114;
-    v19 = v4;
+    v19 = streamCopy;
     v20 = 2114;
     v21 = v12;
     _os_log_impl(&dword_1848EE000, v11, OS_LOG_TYPE_INFO, "Subscription marker exists: %{public}@ for stream: %{public}@ using domain: %{public}@", buf, 0x20u);
@@ -1235,11 +1235,11 @@ LABEL_28:
   return v7;
 }
 
-- (void)writeActiveSubscriptionMarkerForStream:(id)a3
+- (void)writeActiveSubscriptionMarkerForStream:(id)stream
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BMComputePublisherStorage *)self subscriptionMarkerPathForSessionStorageWithStream:v4];
+  streamCopy = stream;
+  v5 = [(BMComputePublisherStorage *)self subscriptionMarkerPathForSessionStorageWithStream:streamCopy];
   v6 = objc_alloc_init(MEMORY[0x1E695DEF0]);
   fileManager = self->_fileManager;
   v15 = 0;
@@ -1272,7 +1272,7 @@ LABEL_28:
     *buf = 138413058;
     v17 = v12;
     v18 = 2112;
-    v19 = v4;
+    v19 = streamCopy;
     v20 = 2112;
     v21 = v13;
     v22 = 2112;
@@ -1283,11 +1283,11 @@ LABEL_28:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeActiveSubscriptionMarkerForStream:(id)a3
+- (void)removeActiveSubscriptionMarkerForStream:(id)stream
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BMComputePublisherStorage *)self subscriptionMarkerPathForSessionStorageWithStream:v4];
+  streamCopy = stream;
+  v5 = [(BMComputePublisherStorage *)self subscriptionMarkerPathForSessionStorageWithStream:streamCopy];
   fileManager = self->_fileManager;
   v14 = 0;
   v7 = [(BMFileManager *)fileManager removeFileAtPath:v5 error:&v14];
@@ -1319,7 +1319,7 @@ LABEL_28:
     *buf = 138413058;
     v16 = v11;
     v17 = 2112;
-    v18 = v4;
+    v18 = streamCopy;
     v19 = 2112;
     v20 = v12;
     v21 = 2112;

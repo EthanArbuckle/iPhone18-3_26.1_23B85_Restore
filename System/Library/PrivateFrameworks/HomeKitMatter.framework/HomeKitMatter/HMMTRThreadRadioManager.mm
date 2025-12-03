@@ -1,7 +1,7 @@
 @interface HMMTRThreadRadioManager
 + (id)logCategory;
 - (BOOL)_shouldRetryWEDConnectionToAccessory;
-- (BOOL)hasMatterThreadAccessoryInHomeWithFabricUUID:(id)a3;
+- (BOOL)hasMatterThreadAccessoryInHomeWithFabricUUID:(id)d;
 - (BOOL)isReadyToEstablishWEDConnection;
 - (BOOL)isReadyToTransitionToFullRouterModeForFirmwareUpdate;
 - (BOOL)isThreadNetworkConnected;
@@ -9,46 +9,46 @@
 - (HMMTRAccessoryServer)wedAccessoryServer;
 - (HMMTRAccessoryServerBrowser)browser;
 - (HMMTRThreadRadioControllerDelegate)delegate;
-- (HMMTRThreadRadioManager)initWithBrowser:(id)a3;
-- (double)_computeRetryDelayForError:(id)a3;
-- (id)_connectionStateValueToString:(int64_t)a3;
-- (id)_nodeTypeValueToString:(int64_t)a3;
+- (HMMTRThreadRadioManager)initWithBrowser:(id)browser;
+- (double)_computeRetryDelayForError:(id)error;
+- (id)_connectionStateValueToString:(int64_t)string;
+- (id)_nodeTypeValueToString:(int64_t)string;
 - (void)_allowDisconnect;
-- (void)_connectToAccessoryWithExtendedMACAddress:(id)a3 forRetry:(BOOL)a4 completion:(id)a5;
-- (void)_notifyThreadRadioStateChanged:(int64_t)a3 nodeType:(int64_t)a4 fabricUUID:(id)a5;
-- (void)_notifyWakeOnDeviceConnectionChanged:(int64_t)a3 eMACAddress:(id)a4;
-- (void)_retryWEDConnectionToAccessoryWithDelayInMs:(double)a3;
-- (void)_startAccessoryPairingWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 accessoryServer:(id)a5 completion:(id)a6;
-- (void)_startThreadRadioForSystemCommissionerFabricUUID:(id)a3;
-- (void)_stopAccessoryFirmwareUpdateWithCompletion:(id)a3;
-- (void)_stopAccessoryPairingWithCompletion:(id)a3;
-- (void)_stopThreadRadioForSystemCommissionerFabricUUID:(id)a3;
-- (void)_stopThreadRadioForTargetFabricUUID:(id)a3;
+- (void)_connectToAccessoryWithExtendedMACAddress:(id)address forRetry:(BOOL)retry completion:(id)completion;
+- (void)_notifyThreadRadioStateChanged:(int64_t)changed nodeType:(int64_t)type fabricUUID:(id)d;
+- (void)_notifyWakeOnDeviceConnectionChanged:(int64_t)changed eMACAddress:(id)address;
+- (void)_retryWEDConnectionToAccessoryWithDelayInMs:(double)ms;
+- (void)_startAccessoryPairingWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device accessoryServer:(id)server completion:(id)completion;
+- (void)_startThreadRadioForSystemCommissionerFabricUUID:(id)d;
+- (void)_stopAccessoryFirmwareUpdateWithCompletion:(id)completion;
+- (void)_stopAccessoryPairingWithCompletion:(id)completion;
+- (void)_stopThreadRadioForSystemCommissionerFabricUUID:(id)d;
+- (void)_stopThreadRadioForTargetFabricUUID:(id)d;
 - (void)allowDisconnect;
-- (void)connectToAccessoryWithExtendedMACAddress:(id)a3 completion:(id)a4;
-- (void)connectToWEDAccessory:(id)a3 completion:(id)a4;
-- (void)disconnectFromWEDAccessory:(id)a3 completion:(id)a4;
-- (void)dispatchAfter:(unint64_t)a3 block:(id)a4;
-- (void)dispatchBlock:(id)a3;
-- (void)handleDeviceLockStateChange:(BOOL)a3;
-- (void)notifyPeripheralDeviceNodeTypeChanged:(int64_t)a3;
-- (void)notifyThreadRadioStateChanged:(int64_t)a3 nodeType:(int64_t)a4 fabricUUID:(id)a5;
-- (void)notifyWakeOnDeviceConnectionChanged:(int64_t)a3 eMACAddress:(id)a4;
-- (void)overrideLocationCheckForPairingForFabricUUID:(id)a3;
-- (void)postNotification:(id)a3 userInfo:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)startAccessoryFirmwareUpdateWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5;
-- (void)startAccessoryPairingWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 accessoryServer:(id)a5 completion:(id)a6;
-- (void)startThreadRadioForHomeWithFabricUUID:(id)a3;
-- (void)startThreadRadioForHomeWithFabricUUID:(id)a3 preventDisconnect:(BOOL)a4;
-- (void)startThreadRadioForSystemCommissionerFabricUUID:(id)a3;
-- (void)startThreadRadioForSystemCommissionerFabricUUID:(id)a3 completion:(id)a4;
-- (void)stopAccessoryFirmwareUpdateWithCompletion:(id)a3;
-- (void)stopAccessoryPairingWithCompletion:(id)a3;
+- (void)connectToAccessoryWithExtendedMACAddress:(id)address completion:(id)completion;
+- (void)connectToWEDAccessory:(id)accessory completion:(id)completion;
+- (void)disconnectFromWEDAccessory:(id)accessory completion:(id)completion;
+- (void)dispatchAfter:(unint64_t)after block:(id)block;
+- (void)dispatchBlock:(id)block;
+- (void)handleDeviceLockStateChange:(BOOL)change;
+- (void)notifyPeripheralDeviceNodeTypeChanged:(int64_t)changed;
+- (void)notifyThreadRadioStateChanged:(int64_t)changed nodeType:(int64_t)type fabricUUID:(id)d;
+- (void)notifyWakeOnDeviceConnectionChanged:(int64_t)changed eMACAddress:(id)address;
+- (void)overrideLocationCheckForPairingForFabricUUID:(id)d;
+- (void)postNotification:(id)notification userInfo:(id)info;
+- (void)setDelegate:(id)delegate;
+- (void)startAccessoryFirmwareUpdateWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device completion:(id)completion;
+- (void)startAccessoryPairingWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device accessoryServer:(id)server completion:(id)completion;
+- (void)startThreadRadioForHomeWithFabricUUID:(id)d;
+- (void)startThreadRadioForHomeWithFabricUUID:(id)d preventDisconnect:(BOOL)disconnect;
+- (void)startThreadRadioForSystemCommissionerFabricUUID:(id)d;
+- (void)startThreadRadioForSystemCommissionerFabricUUID:(id)d completion:(id)completion;
+- (void)stopAccessoryFirmwareUpdateWithCompletion:(id)completion;
+- (void)stopAccessoryPairingWithCompletion:(id)completion;
 - (void)stopThreadOnDeviceLockTimeout;
 - (void)stopThreadOnUserLogout;
-- (void)stopThreadRadioForHomeWithFabricUUID:(id)a3;
-- (void)stopThreadRadioForSystemCommissionerFabricUUID:(id)a3;
+- (void)stopThreadRadioForHomeWithFabricUUID:(id)d;
+- (void)stopThreadRadioForSystemCommissionerFabricUUID:(id)d;
 @end
 
 @implementation HMMTRThreadRadioManager
@@ -74,74 +74,74 @@
   return WeakRetained;
 }
 
-- (id)_connectionStateValueToString:(int64_t)a3
+- (id)_connectionStateValueToString:(int64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2786EDFA8[a3];
+    return off_2786EDFA8[string];
   }
 }
 
-- (id)_nodeTypeValueToString:(int64_t)a3
+- (id)_nodeTypeValueToString:(int64_t)string
 {
-  if ((a3 - 1) > 6)
+  if ((string - 1) > 6)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2786EDF70[a3 - 1];
+    return off_2786EDF70[string - 1];
   }
 }
 
-- (void)dispatchAfter:(unint64_t)a3 block:(id)a4
+- (void)dispatchAfter:(unint64_t)after block:(id)block
 {
-  v6 = a4;
-  v7 = [(HMMTRThreadRadioManager *)self workQueue];
-  dispatch_after(a3, v7, v6);
+  blockCopy = block;
+  workQueue = [(HMMTRThreadRadioManager *)self workQueue];
+  dispatch_after(after, workQueue, blockCopy);
 }
 
-- (void)dispatchBlock:(id)a3
+- (void)dispatchBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMMTRThreadRadioManager *)self workQueue];
-  dispatch_async(v5, v4);
+  blockCopy = block;
+  workQueue = [(HMMTRThreadRadioManager *)self workQueue];
+  dispatch_async(workQueue, blockCopy);
 }
 
-- (void)postNotification:(id)a3 userInfo:(id)a4
+- (void)postNotification:(id)notification userInfo:(id)info
 {
   v6 = MEMORY[0x277CCAB98];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultCenter];
-  [v9 postNotificationName:v8 object:self userInfo:v7];
+  infoCopy = info;
+  notificationCopy = notification;
+  defaultCenter = [v6 defaultCenter];
+  [defaultCenter postNotificationName:notificationCopy object:self userInfo:infoCopy];
 }
 
-- (void)notifyPeripheralDeviceNodeTypeChanged:(int64_t)a3
+- (void)notifyPeripheralDeviceNodeTypeChanged:(int64_t)changed
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (a3 > 7)
+  if (changed > 7)
   {
     v10 = 0;
   }
 
   else
   {
-    if (((1 << a3) & 0xCF) != 0)
+    if (((1 << changed) & 0xCF) != 0)
     {
       v5 = objc_autoreleasePoolPush();
-      v6 = self;
+      selfCopy = self;
       v7 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v8 = HMFGetLogIdentifier();
-        v9 = [(HMMTRThreadRadioManager *)v6 _nodeTypeValueToString:a3];
+        v9 = [(HMMTRThreadRadioManager *)selfCopy _nodeTypeValueToString:changed];
         v21 = 138543618;
         v22 = v8;
         v23 = 2112;
@@ -155,13 +155,13 @@
     else
     {
       v5 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy2 = self;
       v7 = HMFGetOSLogHandle();
       v10 = 1;
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v19 = HMFGetLogIdentifier();
-        v20 = [(HMMTRThreadRadioManager *)v18 _nodeTypeValueToString:a3];
+        v20 = [(HMMTRThreadRadioManager *)selfCopy2 _nodeTypeValueToString:changed];
         v21 = 138543618;
         v22 = v19;
         v23 = 2112;
@@ -173,17 +173,17 @@
     objc_autoreleasePoolPop(v5);
   }
 
-  v11 = [(HMMTRThreadRadioManager *)self pairingAccessoryServer];
-  v12 = v11;
-  if (v11)
+  pairingAccessoryServer = [(HMMTRThreadRadioManager *)self pairingAccessoryServer];
+  v12 = pairingAccessoryServer;
+  if (pairingAccessoryServer)
   {
-    [v11 handleThreadDirectConnectionSleepyTypeChange:v10];
+    [pairingAccessoryServer handleThreadDirectConnectionSleepyTypeChange:v10];
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -199,40 +199,40 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyWakeOnDeviceConnectionChanged:(int64_t)a3 eMACAddress:(id)a4
+- (void)_notifyWakeOnDeviceConnectionChanged:(int64_t)changed eMACAddress:(id)address
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  addressCopy = address;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [(HMMTRThreadRadioManager *)v8 eMACAddressOfWEDAccessory];
+    eMACAddressOfWEDAccessory = [(HMMTRThreadRadioManager *)selfCopy eMACAddressOfWEDAccessory];
     v15 = 138544130;
     v16 = v10;
     v17 = 2112;
-    v18 = v6;
+    v18 = addressCopy;
     v19 = 2048;
-    v20 = a3;
+    changedCopy = changed;
     v21 = 2112;
-    v22 = v11;
+    v22 = eMACAddressOfWEDAccessory;
     _os_log_impl(&dword_22AEAE000, v9, OS_LOG_TYPE_INFO, "%{public}@Received thread WED connection changed notification for eMACAddress: %@ with state: %ld, eMACAddress of last connection: %@", &v15, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v7);
-  if ((a3 - 2) <= 2)
+  if ((changed - 2) <= 2)
   {
-    v12 = [(HMMTRThreadRadioManager *)v8 eMACAddressOfWEDAccessory];
-    if ([v12 isEqualToString:v6])
+    eMACAddressOfWEDAccessory2 = [(HMMTRThreadRadioManager *)selfCopy eMACAddressOfWEDAccessory];
+    if ([eMACAddressOfWEDAccessory2 isEqualToString:addressCopy])
     {
-      v13 = [(HMMTRThreadRadioManager *)v8 isWEDConnectionRetryActive];
+      isWEDConnectionRetryActive = [(HMMTRThreadRadioManager *)selfCopy isWEDConnectionRetryActive];
 
-      if (!v13)
+      if (!isWEDConnectionRetryActive)
       {
-        [(HMMTRThreadRadioManager *)v8 setIsWEDConnectionRetryActive:1];
-        [(HMMTRThreadRadioManager *)v8 _retryWEDConnectionToAccessoryWithDelayInMs:100.0];
+        [(HMMTRThreadRadioManager *)selfCopy setIsWEDConnectionRetryActive:1];
+        [(HMMTRThreadRadioManager *)selfCopy _retryWEDConnectionToAccessoryWithDelayInMs:100.0];
       }
     }
 
@@ -244,50 +244,50 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyWakeOnDeviceConnectionChanged:(int64_t)a3 eMACAddress:(id)a4
+- (void)notifyWakeOnDeviceConnectionChanged:(int64_t)changed eMACAddress:(id)address
 {
-  v6 = a4;
+  addressCopy = address;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __75__HMMTRThreadRadioManager_notifyWakeOnDeviceConnectionChanged_eMACAddress___block_invoke;
   v8[3] = &unk_2786EF918;
-  v9 = v6;
-  v10 = a3;
+  v9 = addressCopy;
+  changedCopy = changed;
   v8[4] = self;
-  v7 = v6;
+  v7 = addressCopy;
   [(HMMTRThreadRadioManager *)self dispatchBlock:v8];
 }
 
-- (void)_retryWEDConnectionToAccessoryWithDelayInMs:(double)a3
+- (void)_retryWEDConnectionToAccessoryWithDelayInMs:(double)ms
 {
   v20 = *MEMORY[0x277D85DE8];
   if ([(HMMTRThreadRadioManager *)self _shouldRetryWEDConnectionToAccessory])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = HMFGetLogIdentifier();
-      v9 = [(HMMTRThreadRadioManager *)v6 eMACAddressOfWEDAccessory];
-      v10 = a3;
+      eMACAddressOfWEDAccessory = [(HMMTRThreadRadioManager *)selfCopy eMACAddressOfWEDAccessory];
+      msCopy = ms;
       *buf = 138543874;
       v15 = v8;
       v16 = 2112;
-      v17 = v9;
+      v17 = eMACAddressOfWEDAccessory;
       v18 = 2048;
-      v19 = v10;
+      v19 = msCopy;
       _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@Attempting to retry WED connection to eMACAddress: %@ after %f milliseconds", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v5);
-    v11 = dispatch_time(0, (a3 * 1000000.0));
+    v11 = dispatch_time(0, (ms * 1000000.0));
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __71__HMMTRThreadRadioManager__retryWEDConnectionToAccessoryWithDelayInMs___block_invoke;
     v13[3] = &unk_2786F0CA8;
-    v13[4] = v6;
-    [(HMMTRThreadRadioManager *)v6 dispatchAfter:v11 block:v13];
+    v13[4] = selfCopy;
+    [(HMMTRThreadRadioManager *)selfCopy dispatchAfter:v11 block:v13];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -396,15 +396,15 @@ uint64_t __71__HMMTRThreadRadioManager__retryWEDConnectionToAccessoryWithDelayIn
   return [v1 _retryWEDConnectionToAccessoryWithDelayInMs:?];
 }
 
-- (double)_computeRetryDelayForError:(id)a3
+- (double)_computeRetryDelayForError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
+  errorCopy = error;
+  v4 = errorCopy;
   v13 = 0x4059000000000000;
-  if (v3 && ([v3 userInfo], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (errorCopy && ([errorCopy userInfo], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCA498]];
+    userInfo = [v4 userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA498]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -442,23 +442,23 @@ uint64_t __71__HMMTRThreadRadioManager__retryWEDConnectionToAccessoryWithDelayIn
 - (BOOL)_shouldRetryWEDConnectionToAccessory
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(HMMTRThreadRadioManager *)self browser];
-  if (![v3 isCurrentDeviceAllowedAccessoryControlDespiteReachableResident])
+  browser = [(HMMTRThreadRadioManager *)self browser];
+  if (![browser isCurrentDeviceAllowedAccessoryControlDespiteReachableResident])
   {
     goto LABEL_7;
   }
 
-  v4 = [(HMMTRThreadRadioManager *)self eMACAddressOfWEDAccessory];
-  if (!v4 || ![(HMMTRThreadRadioManager *)self isWEDConnectionRetryActive])
+  eMACAddressOfWEDAccessory = [(HMMTRThreadRadioManager *)self eMACAddressOfWEDAccessory];
+  if (!eMACAddressOfWEDAccessory || ![(HMMTRThreadRadioManager *)self isWEDConnectionRetryActive])
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v5 = [(HMMTRThreadRadioManager *)self isReadyToEstablishWEDConnection];
+  isReadyToEstablishWEDConnection = [(HMMTRThreadRadioManager *)self isReadyToEstablishWEDConnection];
 
-  if (v5)
+  if (isReadyToEstablishWEDConnection)
   {
     result = 1;
     goto LABEL_15;
@@ -466,23 +466,23 @@ LABEL_7:
 
 LABEL_8:
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [(HMMTRThreadRadioManager *)v8 eMACAddressOfWEDAccessory];
-    v12 = [(HMMTRThreadRadioManager *)v8 browser];
-    [v12 isCurrentDeviceAllowedAccessoryControlDespiteReachableResident];
+    eMACAddressOfWEDAccessory2 = [(HMMTRThreadRadioManager *)selfCopy eMACAddressOfWEDAccessory];
+    browser2 = [(HMMTRThreadRadioManager *)selfCopy browser];
+    [browser2 isCurrentDeviceAllowedAccessoryControlDespiteReachableResident];
     v13 = HMFBooleanToString();
-    [(HMMTRThreadRadioManager *)v8 isWEDConnectionRetryActive];
+    [(HMMTRThreadRadioManager *)selfCopy isWEDConnectionRetryActive];
     v14 = HMFBooleanToString();
-    [(HMMTRThreadRadioManager *)v8 isReadyToEstablishWEDConnection];
+    [(HMMTRThreadRadioManager *)selfCopy isReadyToEstablishWEDConnection];
     v15 = HMFBooleanToString();
     v23 = 138544386;
     v24 = v10;
     v25 = 2112;
-    v26 = v11;
+    v26 = eMACAddressOfWEDAccessory2;
     v27 = 2112;
     v28 = v13;
     v29 = 2112;
@@ -493,23 +493,23 @@ LABEL_8:
   }
 
   objc_autoreleasePoolPop(v7);
-  [(HMMTRThreadRadioManager *)v8 setIsWEDConnectionRetryActive:0];
-  v16 = [(HMMTRThreadRadioManager *)v8 retryCompletionHandler];
-  [(HMMTRThreadRadioManager *)v8 setRetryCompletionHandler:0];
-  if (v16)
+  [(HMMTRThreadRadioManager *)selfCopy setIsWEDConnectionRetryActive:0];
+  retryCompletionHandler = [(HMMTRThreadRadioManager *)selfCopy retryCompletionHandler];
+  [(HMMTRThreadRadioManager *)selfCopy setRetryCompletionHandler:0];
+  if (retryCompletionHandler)
   {
     v17 = [MEMORY[0x277CCA9B8] hmmtrErrorWithCode:14];
-    (v16)[2](v16, v17);
+    (retryCompletionHandler)[2](retryCompletionHandler, v17);
   }
 
-  v18 = [(HMMTRThreadRadioManager *)v8 wedAccessoryServer];
+  wedAccessoryServer = [(HMMTRThreadRadioManager *)selfCopy wedAccessoryServer];
 
-  if (v18)
+  if (wedAccessoryServer)
   {
-    v19 = [(HMMTRThreadRadioManager *)v8 browser];
-    v20 = [(HMMTRThreadRadioManager *)v8 wedAccessoryServer];
+    browser3 = [(HMMTRThreadRadioManager *)selfCopy browser];
+    wedAccessoryServer2 = [(HMMTRThreadRadioManager *)selfCopy wedAccessoryServer];
     v21 = [MEMORY[0x277CCA9B8] hmmtrErrorWithCode:14];
-    [v19 abortOperationsForAccessoryServer:v20 reason:v21];
+    [browser3 abortOperationsForAccessoryServer:wedAccessoryServer2 reason:v21];
   }
 
   result = 0;
@@ -518,12 +518,12 @@ LABEL_15:
   return result;
 }
 
-- (void)_notifyThreadRadioStateChanged:(int64_t)a3 nodeType:(int64_t)a4 fabricUUID:(id)a5
+- (void)_notifyThreadRadioStateChanged:(int64_t)changed nodeType:(int64_t)type fabricUUID:(id)d
 {
   v64 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  dCopy = d;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -531,24 +531,24 @@ LABEL_15:
     *buf = 138544386;
     *&buf[4] = v12;
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = changed;
     *&buf[22] = 2048;
-    v62 = a4;
+    typeCopy = type;
     *v63 = 2112;
-    *&v63[2] = v8;
+    *&v63[2] = dCopy;
     *&v63[10] = 2048;
-    *&v63[12] = [(HMMTRThreadRadioManager *)v10 lastKnownThreadNetworkConnectionState];
+    *&v63[12] = [(HMMTRThreadRadioManager *)selfCopy lastKnownThreadNetworkConnectionState];
     _os_log_impl(&dword_22AEAE000, v11, OS_LOG_TYPE_INFO, "%{public}@Received thread radio state changed notification, connectionState: %ld, nodeType: %ld, fabric:%@, last known connectionState: %ld", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = [(HMMTRThreadRadioManager *)v10 fabricUUIDOfActiveThreadNetwork];
-  v14 = v13 == 0;
+  fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)selfCopy fabricUUIDOfActiveThreadNetwork];
+  v14 = fabricUUIDOfActiveThreadNetwork == 0;
 
   if (v14)
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = v10;
+    v32 = selfCopy;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
@@ -559,33 +559,33 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v31);
-    [(HMMTRThreadRadioManager *)v32 setLastKnownThreadNetworkConnectionState:a3];
+    [(HMMTRThreadRadioManager *)v32 setLastKnownThreadNetworkConnectionState:changed];
   }
 
   else
   {
-    if (!v8)
+    if (!dCopy)
     {
-      v15 = [(HMMTRThreadRadioManager *)v10 browser];
-      v8 = [v15 systemCommissionerFabricUUID];
+      browser = [(HMMTRThreadRadioManager *)selfCopy browser];
+      dCopy = [browser systemCommissionerFabricUUID];
     }
 
-    v16 = [(HMMTRThreadRadioManager *)v10 fabricUUIDOfActiveThreadNetwork];
-    v17 = [v16 isEqual:v8];
+    fabricUUIDOfActiveThreadNetwork2 = [(HMMTRThreadRadioManager *)selfCopy fabricUUIDOfActiveThreadNetwork];
+    v17 = [fabricUUIDOfActiveThreadNetwork2 isEqual:dCopy];
 
     if (v17)
     {
-      if (a3 == 1)
+      if (changed == 1)
       {
-        if ([(HMMTRThreadRadioManager *)v10 lastKnownThreadNetworkConnectionState]&& [(HMMTRThreadRadioManager *)v10 lastKnownThreadNetworkConnectionState]!= 1)
+        if ([(HMMTRThreadRadioManager *)selfCopy lastKnownThreadNetworkConnectionState]&& [(HMMTRThreadRadioManager *)selfCopy lastKnownThreadNetworkConnectionState]!= 1)
         {
           context = objc_autoreleasePoolPush();
-          v40 = v10;
+          v40 = selfCopy;
           v41 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
           {
             v52 = HMFGetLogIdentifier();
-            v42 = [(HMMTRThreadRadioManager *)v40 fabricUUIDOfActiveThreadNetwork];
+            fabricUUIDOfActiveThreadNetwork3 = [(HMMTRThreadRadioManager *)v40 fabricUUIDOfActiveThreadNetwork];
             [(HMMTRThreadRadioManager *)v40 threadNetworkActivatedForSystemCommissionerFabric];
             v43 = HMFBooleanToString();
             [(HMMTRThreadRadioManager *)v40 preventDisconnect];
@@ -593,9 +593,9 @@ LABEL_15:
             *buf = 138544130;
             *&buf[4] = v52;
             *&buf[12] = 2112;
-            *&buf[14] = v42;
+            *&buf[14] = fabricUUIDOfActiveThreadNetwork3;
             *&buf[22] = 2112;
-            v62 = v43;
+            typeCopy = v43;
             *v63 = 2112;
             *&v63[2] = v44;
             _os_log_impl(&dword_22AEAE000, v41, OS_LOG_TYPE_ERROR, "%{public}@Unexpected, thread radio went offline. Restarting thread radio for fabric ID: %@, is system commissioner: %@, preventDisconnect = %@", buf, 0x2Au);
@@ -605,28 +605,28 @@ LABEL_15:
           v57[0] = 0;
           v57[1] = v57;
           v57[2] = 0x2020000000;
-          v58 = [(HMMTRThreadRadioManager *)v40 preventDisconnect];
+          preventDisconnect = [(HMMTRThreadRadioManager *)v40 preventDisconnect];
           v55[0] = 0;
           v55[1] = v55;
           v55[2] = 0x2020000000;
-          v56 = [(HMMTRThreadRadioManager *)v40 threadNetworkActivatedForSystemCommissionerFabric];
+          threadNetworkActivatedForSystemCommissionerFabric = [(HMMTRThreadRadioManager *)v40 threadNetworkActivatedForSystemCommissionerFabric];
           *buf = 0;
           *&buf[8] = buf;
           *&buf[16] = 0x3032000000;
-          v62 = __Block_byref_object_copy__4540;
+          typeCopy = __Block_byref_object_copy__4540;
           *v63 = __Block_byref_object_dispose__4541;
           *&v63[8] = [(HMMTRThreadRadioManager *)v40 fabricUUIDOfActiveThreadNetwork];
           if ([(HMMTRThreadRadioManager *)v40 threadNetworkActivatedForSystemCommissionerFabric])
           {
-            v45 = [(HMMTRThreadRadioManager *)v40 delegate];
-            [v45 stopThreadRadioForUserPreferredNetwork];
+            delegate = [(HMMTRThreadRadioManager *)v40 delegate];
+            [delegate stopThreadRadioForUserPreferredNetwork];
           }
 
           else
           {
-            v45 = [(HMMTRThreadRadioManager *)v40 delegate];
-            v46 = [(HMMTRThreadRadioManager *)v40 fabricUUIDOfActiveThreadNetwork];
-            [v45 stopThreadRadioForHomeWithFabricUUID:v46];
+            delegate = [(HMMTRThreadRadioManager *)v40 delegate];
+            fabricUUIDOfActiveThreadNetwork4 = [(HMMTRThreadRadioManager *)v40 fabricUUIDOfActiveThreadNetwork];
+            [delegate stopThreadRadioForHomeWithFabricUUID:fabricUUIDOfActiveThreadNetwork4];
           }
 
           [(HMMTRThreadRadioManager *)v40 setPreventDisconnect:0];
@@ -634,7 +634,7 @@ LABEL_15:
           if (![(HMMTRThreadRadioManager *)v40 pendingThreadStart])
           {
             [(HMMTRThreadRadioManager *)v40 setPendingThreadStart:1];
-            v47 = [(HMMTRThreadRadioManager *)v40 workQueue];
+            workQueue = [(HMMTRThreadRadioManager *)v40 workQueue];
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __78__HMMTRThreadRadioManager__notifyThreadRadioStateChanged_nodeType_fabricUUID___block_invoke;
@@ -643,7 +643,7 @@ LABEL_15:
             block[5] = v55;
             block[6] = buf;
             block[7] = v57;
-            dispatch_async(v47, block);
+            dispatch_async(workQueue, block);
           }
 
           _Block_object_dispose(buf, 8);
@@ -655,13 +655,13 @@ LABEL_15:
         goto LABEL_36;
       }
 
-      if (a3 == 3)
+      if (changed == 3)
       {
-        v18 = [(HMMTRThreadRadioManager *)v10 fabricUUIDOfPendingStartPairingBlock];
-        if ([v8 isEqual:v18])
+        fabricUUIDOfPendingStartPairingBlock = [(HMMTRThreadRadioManager *)selfCopy fabricUUIDOfPendingStartPairingBlock];
+        if ([dCopy isEqual:fabricUUIDOfPendingStartPairingBlock])
         {
-          v19 = [(HMMTRThreadRadioManager *)v10 pendingStartPairingBlock];
-          v20 = v19 == 0;
+          pendingStartPairingBlock = [(HMMTRThreadRadioManager *)selfCopy pendingStartPairingBlock];
+          v20 = pendingStartPairingBlock == 0;
 
           if (v20)
           {
@@ -669,7 +669,7 @@ LABEL_15:
           }
 
           v21 = objc_autoreleasePoolPush();
-          v22 = v10;
+          v22 = selfCopy;
           v23 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
           {
@@ -680,25 +680,25 @@ LABEL_15:
             *&buf[12] = 2112;
             *&buf[14] = v25;
             *&buf[22] = 2112;
-            v62 = v8;
+            typeCopy = dCopy;
             _os_log_impl(&dword_22AEAE000, v23, OS_LOG_TYPE_INFO, "%{public}@Thread network connection state: %@ for fabric: %@, calling start pairing block now", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(v21);
-          v26 = [(HMMTRThreadRadioManager *)v22 pendingStartPairingBlock];
-          v18 = v26;
-          if (v26)
+          pendingStartPairingBlock2 = [(HMMTRThreadRadioManager *)v22 pendingStartPairingBlock];
+          fabricUUIDOfPendingStartPairingBlock = pendingStartPairingBlock2;
+          if (pendingStartPairingBlock2)
           {
-            (*(v26 + 16))(v26, 0);
+            (*(pendingStartPairingBlock2 + 16))(pendingStartPairingBlock2, 0);
           }
         }
       }
 
 LABEL_16:
-      if ([(HMMTRThreadRadioManager *)v10 isWEDConnectionRetryActive])
+      if ([(HMMTRThreadRadioManager *)selfCopy isWEDConnectionRetryActive])
       {
         v27 = objc_autoreleasePoolPush();
-        v28 = v10;
+        v28 = selfCopy;
         v29 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
@@ -712,32 +712,32 @@ LABEL_16:
       }
 
 LABEL_36:
-      [(HMMTRThreadRadioManager *)v10 setLastKnownThreadNetworkConnectionState:a3];
+      [(HMMTRThreadRadioManager *)selfCopy setLastKnownThreadNetworkConnectionState:changed];
       v59[0] = @"HMMTRThreadRadioConnectionStateKey";
-      v48 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v48 = [MEMORY[0x277CCABB0] numberWithInteger:changed];
       v59[1] = @"HMMTRThreadRadioNodeTypeKey";
       v60[0] = v48;
-      v49 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v49 = [MEMORY[0x277CCABB0] numberWithInteger:type];
       v60[1] = v49;
       v50 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:2];
 
-      [(HMMTRThreadRadioManager *)v10 postNotification:@"HMMTRThreadRadioStateChangedNotification" userInfo:v50];
+      [(HMMTRThreadRadioManager *)selfCopy postNotification:@"HMMTRThreadRadioStateChangedNotification" userInfo:v50];
       goto LABEL_37;
     }
 
     v35 = objc_autoreleasePoolPush();
-    v36 = v10;
+    v36 = selfCopy;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
       v38 = HMFGetLogIdentifier();
-      v39 = [(HMMTRThreadRadioManager *)v36 fabricUUIDOfActiveThreadNetwork];
+      fabricUUIDOfActiveThreadNetwork5 = [(HMMTRThreadRadioManager *)v36 fabricUUIDOfActiveThreadNetwork];
       *buf = 138543874;
       *&buf[4] = v38;
       *&buf[12] = 2112;
-      *&buf[14] = v39;
+      *&buf[14] = fabricUUIDOfActiveThreadNetwork5;
       *&buf[22] = 2112;
-      v62 = v8;
+      typeCopy = dCopy;
       _os_log_impl(&dword_22AEAE000, v37, OS_LOG_TYPE_INFO, "%{public}@Dropping notification as the fabricID does not match that of the active network, activeNetworkFabricUUID: %@, fabricUUID: %@", buf, 0x20u);
     }
 
@@ -768,18 +768,18 @@ uint64_t __78__HMMTRThreadRadioManager__notifyThreadRadioStateChanged_nodeType_f
   }
 }
 
-- (void)notifyThreadRadioStateChanged:(int64_t)a3 nodeType:(int64_t)a4 fabricUUID:(id)a5
+- (void)notifyThreadRadioStateChanged:(int64_t)changed nodeType:(int64_t)type fabricUUID:(id)d
 {
-  v8 = a5;
+  dCopy = d;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__HMMTRThreadRadioManager_notifyThreadRadioStateChanged_nodeType_fabricUUID___block_invoke;
   v10[3] = &unk_2786EDF28;
-  v12 = a3;
-  v13 = a4;
+  changedCopy = changed;
+  typeCopy = type;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
+  v11 = dCopy;
+  v9 = dCopy;
   [(HMMTRThreadRadioManager *)self dispatchBlock:v10];
 }
 
@@ -788,21 +788,21 @@ uint64_t __78__HMMTRThreadRadioManager__notifyThreadRadioStateChanged_nodeType_f
   v25 = *MEMORY[0x277D85DE8];
   if (isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled())
   {
-    v3 = [(HMMTRThreadRadioManager *)self delegate];
-    if (v3)
+    delegate = [(HMMTRThreadRadioManager *)self delegate];
+    if (delegate)
     {
-      v4 = v3;
-      v5 = [(HMMTRThreadRadioManager *)self deviceSupportsThreadService];
+      v4 = delegate;
+      deviceSupportsThreadService = [(HMMTRThreadRadioManager *)self deviceSupportsThreadService];
 
-      if (v5)
+      if (deviceSupportsThreadService)
       {
-        v6 = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
-        if (v6)
+        fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
+        if (fabricUUIDOfActiveThreadNetwork)
         {
           if ([(HMMTRThreadRadioManager *)self threadNetworkActivatedForSystemCommissionerFabric])
           {
             v7 = objc_autoreleasePoolPush();
-            v8 = self;
+            selfCopy3 = self;
             v9 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
             {
@@ -821,30 +821,30 @@ LABEL_17:
           {
             if (![(HMMTRThreadRadioManager *)self isPairingActive])
             {
-              v20 = [(HMMTRThreadRadioManager *)self delegate];
-              v21 = [v20 getThreadNetworkConnectionStateWithFabricUUID:v6];
+              delegate2 = [(HMMTRThreadRadioManager *)self delegate];
+              v21 = [delegate2 getThreadNetworkConnectionStateWithFabricUUID:fabricUUIDOfActiveThreadNetwork];
 
               if (v21 == 3)
               {
-                v22 = [(HMMTRThreadRadioManager *)self delegate];
-                v13 = [v22 getThreadNetworkNodeTypeWithFabricUUID:v6];
+                delegate3 = [(HMMTRThreadRadioManager *)self delegate];
+                selfCopy4 = [delegate3 getThreadNetworkNodeTypeWithFabricUUID:fabricUUIDOfActiveThreadNetwork];
 
-                if (v13 <= 7)
+                if (selfCopy4 <= 7)
                 {
-                  LODWORD(v13) = 0x86u >> v13;
+                  LODWORD(selfCopy4) = 0x86u >> selfCopy4;
                   goto LABEL_21;
                 }
               }
 
 LABEL_20:
-              LOBYTE(v13) = 0;
+              LOBYTE(selfCopy4) = 0;
 LABEL_21:
 
               goto LABEL_11;
             }
 
             v7 = objc_autoreleasePoolPush();
-            v8 = self;
+            selfCopy3 = self;
             v9 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
             {
@@ -860,7 +860,7 @@ LABEL_21:
         else
         {
           v7 = objc_autoreleasePoolPush();
-          v8 = self;
+          selfCopy3 = self;
           v9 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
           {
@@ -882,7 +882,7 @@ LABEL_18:
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy4 = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -893,10 +893,10 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v12);
-  LOBYTE(v13) = 0;
+  LOBYTE(selfCopy4) = 0;
 LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
-  return v13 & 1;
+  return selfCopy4 & 1;
 }
 
 - (BOOL)isReadyToEstablishWEDConnection
@@ -904,24 +904,24 @@ LABEL_11:
   v33 = *MEMORY[0x277D85DE8];
   if (isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled())
   {
-    v3 = [(HMMTRThreadRadioManager *)self delegate];
-    if (v3)
+    delegate = [(HMMTRThreadRadioManager *)self delegate];
+    if (delegate)
     {
-      v4 = v3;
-      v5 = [(HMMTRThreadRadioManager *)self deviceSupportsThreadService];
+      v4 = delegate;
+      deviceSupportsThreadService = [(HMMTRThreadRadioManager *)self deviceSupportsThreadService];
 
-      if (v5)
+      if (deviceSupportsThreadService)
       {
-        v6 = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
-        if (v6)
+        fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
+        if (fabricUUIDOfActiveThreadNetwork)
         {
-          v7 = [(HMMTRThreadRadioManager *)self threadNetworkActivatedForSystemCommissionerFabric];
-          v8 = [(HMMTRThreadRadioManager *)self delegate];
-          v9 = v8;
-          if (v7)
+          threadNetworkActivatedForSystemCommissionerFabric = [(HMMTRThreadRadioManager *)self threadNetworkActivatedForSystemCommissionerFabric];
+          delegate2 = [(HMMTRThreadRadioManager *)self delegate];
+          v9 = delegate2;
+          if (threadNetworkActivatedForSystemCommissionerFabric)
           {
             v30 = 0;
-            v10 = [v8 getUserPreferredThreadNetworkConnectionStateWithError:&v30];
+            v10 = [delegate2 getUserPreferredThreadNetworkConnectionStateWithError:&v30];
             v11 = v30;
 
             if (v11)
@@ -931,9 +931,9 @@ LABEL_11:
 
             else if (v10 == 3)
             {
-              v26 = [(HMMTRThreadRadioManager *)self delegate];
+              delegate3 = [(HMMTRThreadRadioManager *)self delegate];
               v29 = 0;
-              v27 = [v26 getUserPreferredThreadNetworkNodeTypeWithError:&v29];
+              v27 = [delegate3 getUserPreferredThreadNetworkNodeTypeWithError:&v29];
               v11 = v29;
 
               if (v11)
@@ -958,12 +958,12 @@ LABEL_11:
             goto LABEL_28;
           }
 
-          v23 = [v8 getThreadNetworkConnectionStateWithFabricUUID:v6];
+          v23 = [delegate2 getThreadNetworkConnectionStateWithFabricUUID:fabricUUIDOfActiveThreadNetwork];
 
           if (v23 == 3)
           {
-            v24 = [(HMMTRThreadRadioManager *)self delegate];
-            v25 = [v24 getThreadNetworkNodeTypeWithFabricUUID:v6];
+            delegate4 = [(HMMTRThreadRadioManager *)self delegate];
+            v25 = [delegate4 getThreadNetworkNodeTypeWithFabricUUID:fabricUUIDOfActiveThreadNetwork];
 
             if (v25 == 1)
             {
@@ -978,7 +978,7 @@ LABEL_28:
         else
         {
           v19 = objc_autoreleasePoolPush();
-          v20 = self;
+          selfCopy = self;
           v21 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
@@ -998,7 +998,7 @@ LABEL_28:
   }
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy2 = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -1020,19 +1020,19 @@ LABEL_11:
   v30 = *MEMORY[0x277D85DE8];
   if (isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled())
   {
-    v3 = [(HMMTRThreadRadioManager *)self delegate];
-    if (v3)
+    delegate = [(HMMTRThreadRadioManager *)self delegate];
+    if (delegate)
     {
-      v4 = v3;
-      v5 = [(HMMTRThreadRadioManager *)self deviceSupportsThreadService];
+      v4 = delegate;
+      deviceSupportsThreadService = [(HMMTRThreadRadioManager *)self deviceSupportsThreadService];
 
-      if (v5)
+      if (deviceSupportsThreadService)
       {
-        v6 = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
-        if (!v6)
+        fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
+        if (!fabricUUIDOfActiveThreadNetwork)
         {
           v20 = objc_autoreleasePoolPush();
-          v21 = self;
+          selfCopy = self;
           v22 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
           {
@@ -1046,21 +1046,21 @@ LABEL_11:
           goto LABEL_22;
         }
 
-        v7 = [(HMMTRThreadRadioManager *)self threadNetworkActivatedForSystemCommissionerFabric];
-        v8 = [(HMMTRThreadRadioManager *)self delegate];
-        v9 = v8;
-        if (v7)
+        threadNetworkActivatedForSystemCommissionerFabric = [(HMMTRThreadRadioManager *)self threadNetworkActivatedForSystemCommissionerFabric];
+        delegate2 = [(HMMTRThreadRadioManager *)self delegate];
+        v9 = delegate2;
+        if (threadNetworkActivatedForSystemCommissionerFabric)
         {
           v27 = 0;
-          v10 = [v8 getUserPreferredThreadNetworkConnectionStateWithError:&v27];
+          v10 = [delegate2 getUserPreferredThreadNetworkConnectionStateWithError:&v27];
           v11 = v27;
 
           v12 = 0;
           if (!v11 && v10 == 3)
           {
-            v13 = [(HMMTRThreadRadioManager *)self delegate];
+            delegate3 = [(HMMTRThreadRadioManager *)self delegate];
             v26 = 0;
-            v12 = [v13 getUserPreferredThreadNetworkNodeTypeWithError:&v26];
+            v12 = [delegate3 getUserPreferredThreadNetworkNodeTypeWithError:&v26];
             v11 = v26;
 
             if (v11)
@@ -1072,34 +1072,34 @@ LABEL_11:
 
         else
         {
-          v24 = [v8 getThreadNetworkConnectionStateWithFabricUUID:v6];
+          v24 = [delegate2 getThreadNetworkConnectionStateWithFabricUUID:fabricUUIDOfActiveThreadNetwork];
 
           if (v24 != 3)
           {
             goto LABEL_22;
           }
 
-          v25 = [(HMMTRThreadRadioManager *)self delegate];
-          v12 = [v25 getThreadNetworkNodeTypeWithFabricUUID:v6];
+          delegate4 = [(HMMTRThreadRadioManager *)self delegate];
+          v12 = [delegate4 getThreadNetworkNodeTypeWithFabricUUID:fabricUUIDOfActiveThreadNetwork];
         }
 
         if (v12 <= 7)
         {
-          LODWORD(v15) = 0xFCu >> v12;
+          LODWORD(selfCopy2) = 0xFCu >> v12;
 LABEL_23:
 
           goto LABEL_14;
         }
 
 LABEL_22:
-        LOBYTE(v15) = 0;
+        LOBYTE(selfCopy2) = 0;
         goto LABEL_23;
       }
     }
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy2 = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -1110,20 +1110,20 @@ LABEL_22:
   }
 
   objc_autoreleasePoolPop(v14);
-  LOBYTE(v15) = 0;
+  LOBYTE(selfCopy2) = 0;
 LABEL_14:
   v18 = *MEMORY[0x277D85DE8];
-  return v15 & 1;
+  return selfCopy2 & 1;
 }
 
-- (void)_stopThreadRadioForSystemCommissionerFabricUUID:(id)a3
+- (void)_stopThreadRadioForSystemCommissionerFabricUUID:(id)d
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (!isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled() || ([(HMMTRThreadRadioManager *)self delegate], (v5 = objc_claimAutoreleasedReturnValue()) == 0) || (v6 = v5, v7 = [(HMMTRThreadRadioManager *)self deviceSupportsThreadService], v6, !v7))
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
@@ -1138,7 +1138,7 @@ LABEL_14:
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy2 = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1146,15 +1146,15 @@ LABEL_14:
     v32 = 138543618;
     v33 = v11;
     v34 = 2112;
-    v35 = v4;
+    v35 = dCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@Stop thread for system commissioner fabric %@", &v32, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  if (!v4)
+  if (!dCopy)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v9;
+    v13 = selfCopy2;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -1170,21 +1170,21 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if ([(HMMTRThreadRadioManager *)v9 preventDisconnect])
+  if ([(HMMTRThreadRadioManager *)selfCopy2 preventDisconnect])
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v9;
+    v13 = selfCopy2;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [(HMMTRThreadRadioManager *)v13 fabricUUIDOfActiveThreadNetwork];
+      fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)v13 fabricUUIDOfActiveThreadNetwork];
       v32 = 138543874;
       v33 = v15;
       v34 = 2112;
-      v35 = v4;
+      v35 = dCopy;
       v36 = 2112;
-      v37 = v16;
+      v37 = fabricUUIDOfActiveThreadNetwork;
       v17 = "%{public}@Preventing thread stop for system commissioner fabricID %@ because preventDisconnect is true and locked to fabric %@";
       v18 = v14;
       v19 = 32;
@@ -1197,26 +1197,26 @@ LABEL_24:
     goto LABEL_26;
   }
 
-  v26 = [(HMMTRThreadRadioManager *)v9 fabricUUIDOfActiveThreadNetwork];
-  if (v26)
+  fabricUUIDOfActiveThreadNetwork2 = [(HMMTRThreadRadioManager *)selfCopy2 fabricUUIDOfActiveThreadNetwork];
+  if (fabricUUIDOfActiveThreadNetwork2)
   {
-    v27 = v26;
-    v28 = [(HMMTRThreadRadioManager *)v9 fabricUUIDOfActiveThreadNetwork];
-    v29 = [v28 isEqual:v4];
+    v27 = fabricUUIDOfActiveThreadNetwork2;
+    fabricUUIDOfActiveThreadNetwork3 = [(HMMTRThreadRadioManager *)selfCopy2 fabricUUIDOfActiveThreadNetwork];
+    v29 = [fabricUUIDOfActiveThreadNetwork3 isEqual:dCopy];
 
     if ((v29 & 1) == 0)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = v9;
+      v13 = selfCopy2;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v15 = HMFGetLogIdentifier();
-        v16 = [(HMMTRThreadRadioManager *)v13 fabricUUIDOfActiveThreadNetwork];
+        fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)v13 fabricUUIDOfActiveThreadNetwork];
         v32 = 138543618;
         v33 = v15;
         v34 = 2112;
-        v35 = v16;
+        v35 = fabricUUIDOfActiveThreadNetwork;
         v17 = "%{public}@Thread network is running for another fabric ID %@. Not stopping Thread.";
         v18 = v14;
         v19 = 22;
@@ -1232,15 +1232,15 @@ LABEL_13:
     }
   }
 
-  [(HMMTRThreadRadioManager *)v9 setLastKnownThreadNetworkConnectionState:1];
-  v30 = [(HMMTRThreadRadioManager *)v9 delegate];
-  [v30 stopThreadRadioForUserPreferredNetwork];
+  [(HMMTRThreadRadioManager *)selfCopy2 setLastKnownThreadNetworkConnectionState:1];
+  delegate = [(HMMTRThreadRadioManager *)selfCopy2 delegate];
+  [delegate stopThreadRadioForUserPreferredNetwork];
 
-  [(HMMTRThreadRadioManager *)v9 _updateFabricUUIDOfActiveThreadNetwork:0 isFabricUUIDOfSystemCommissioner:0];
-  if (CFPreferencesGetAppBooleanValue(@"StartThreadOnWake", @"/Library/Managed Preferences/mobile/com.apple.homed.plist", 0) && [(HMMTRThreadRadioManager *)v9 deviceIsLockedAndPendingStopThread])
+  [(HMMTRThreadRadioManager *)selfCopy2 _updateFabricUUIDOfActiveThreadNetwork:0 isFabricUUIDOfSystemCommissioner:0];
+  if (CFPreferencesGetAppBooleanValue(@"StartThreadOnWake", @"/Library/Managed Preferences/mobile/com.apple.homed.plist", 0) && [(HMMTRThreadRadioManager *)selfCopy2 deviceIsLockedAndPendingStopThread])
   {
-    v31 = [(HMMTRThreadRadioManager *)v9 delegate];
-    [v31 stopThreadRadioOnDeviceLock];
+    delegate2 = [(HMMTRThreadRadioManager *)selfCopy2 delegate];
+    [delegate2 stopThreadRadioOnDeviceLock];
   }
 
 LABEL_14:
@@ -1248,27 +1248,27 @@ LABEL_14:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopThreadRadioForSystemCommissionerFabricUUID:(id)a3
+- (void)stopThreadRadioForSystemCommissionerFabricUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __74__HMMTRThreadRadioManager_stopThreadRadioForSystemCommissionerFabricUUID___block_invoke;
   v6[3] = &unk_2786EF328;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(HMMTRThreadRadioManager *)self dispatchBlock:v6];
 }
 
-- (void)_startThreadRadioForSystemCommissionerFabricUUID:(id)a3
+- (void)_startThreadRadioForSystemCommissionerFabricUUID:(id)d
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (!isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled() || ([(HMMTRThreadRadioManager *)self delegate], (v5 = objc_claimAutoreleasedReturnValue()) == 0) || (v6 = v5, v7 = [(HMMTRThreadRadioManager *)self deviceSupportsThreadService], v6, !v7))
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
@@ -1283,7 +1283,7 @@ LABEL_14:
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy2 = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1291,27 +1291,27 @@ LABEL_14:
     v25 = 138543618;
     v26 = v11;
     v27 = 2112;
-    v28 = v4;
+    v28 = dCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@Start thread for system commissioner fabric %@", &v25, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  if (v4)
+  if (dCopy)
   {
-    v12 = [(HMMTRThreadRadioManager *)v9 fabricUUIDOfActiveThreadNetwork];
+    fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)selfCopy2 fabricUUIDOfActiveThreadNetwork];
 
-    if (!v12)
+    if (!fabricUUIDOfActiveThreadNetwork)
     {
-      [(HMMTRThreadRadioManager *)v9 _updateFabricUUIDOfActiveThreadNetwork:v4 isFabricUUIDOfSystemCommissioner:1];
-      [(HMMTRThreadRadioManager *)v9 setPreventDisconnect:0];
-      v24 = [(HMMTRThreadRadioManager *)v9 delegate];
-      [v24 startThreadRadioForUserPreferredNetwork];
+      [(HMMTRThreadRadioManager *)selfCopy2 _updateFabricUUIDOfActiveThreadNetwork:dCopy isFabricUUIDOfSystemCommissioner:1];
+      [(HMMTRThreadRadioManager *)selfCopy2 setPreventDisconnect:0];
+      delegate = [(HMMTRThreadRadioManager *)selfCopy2 delegate];
+      [delegate startThreadRadioForUserPreferredNetwork];
 
       goto LABEL_14;
     }
 
     v13 = objc_autoreleasePoolPush();
-    v14 = v9;
+    v14 = selfCopy2;
     v15 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -1319,18 +1319,18 @@ LABEL_14:
     }
 
     v16 = HMFGetLogIdentifier();
-    v17 = [(HMMTRThreadRadioManager *)v14 fabricUUIDOfActiveThreadNetwork];
+    fabricUUIDOfActiveThreadNetwork2 = [(HMMTRThreadRadioManager *)v14 fabricUUIDOfActiveThreadNetwork];
     v25 = 138543618;
     v26 = v16;
     v27 = 2112;
-    v28 = v17;
+    v28 = fabricUUIDOfActiveThreadNetwork2;
     _os_log_impl(&dword_22AEAE000, v15, OS_LOG_TYPE_INFO, "%{public}@Thread network is already running for fabric %@. Not starting Thread.", &v25, 0x16u);
 
     goto LABEL_17;
   }
 
   v13 = objc_autoreleasePoolPush();
-  v14 = v9;
+  v14 = selfCopy2;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -1351,16 +1351,16 @@ LABEL_14:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)overrideLocationCheckForPairingForFabricUUID:(id)a3
+- (void)overrideLocationCheckForPairingForFabricUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__HMMTRThreadRadioManager_overrideLocationCheckForPairingForFabricUUID___block_invoke;
   v6[3] = &unk_2786EF328;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(HMMTRThreadRadioManager *)self dispatchBlock:v6];
 }
 
@@ -1370,21 +1370,21 @@ void __72__HMMTRThreadRadioManager_overrideLocationCheckForPairingForFabricUUID_
   [v2 overrideLocationCheckForPairingForFabricUUID:*(a1 + 40)];
 }
 
-- (void)startThreadRadioForSystemCommissionerFabricUUID:(id)a3 completion:(id)a4
+- (void)startThreadRadioForSystemCommissionerFabricUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __86__HMMTRThreadRadioManager_startThreadRadioForSystemCommissionerFabricUUID_completion___block_invoke;
     v11[3] = &unk_2786F0EA8;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
-    v8 = v7;
-    v9 = v6;
+    v12 = dCopy;
+    v13 = completionCopy;
+    v8 = completionCopy;
+    v9 = dCopy;
     [(HMMTRThreadRadioManager *)self dispatchBlock:v11];
   }
 
@@ -1403,27 +1403,27 @@ uint64_t __86__HMMTRThreadRadioManager_startThreadRadioForSystemCommissionerFabr
   return v2();
 }
 
-- (void)startThreadRadioForSystemCommissionerFabricUUID:(id)a3
+- (void)startThreadRadioForSystemCommissionerFabricUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __75__HMMTRThreadRadioManager_startThreadRadioForSystemCommissionerFabricUUID___block_invoke;
   v6[3] = &unk_2786EF328;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(HMMTRThreadRadioManager *)self dispatchBlock:v6];
 }
 
-- (void)_stopThreadRadioForTargetFabricUUID:(id)a3
+- (void)_stopThreadRadioForTargetFabricUUID:(id)d
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (!isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled() || ([(HMMTRThreadRadioManager *)self delegate], (v5 = objc_claimAutoreleasedReturnValue()) == 0) || (v6 = v5, v7 = [(HMMTRThreadRadioManager *)self deviceSupportsThreadService], v6, !v7))
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
@@ -1438,7 +1438,7 @@ uint64_t __86__HMMTRThreadRadioManager_startThreadRadioForSystemCommissionerFabr
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy2 = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1446,15 +1446,15 @@ uint64_t __86__HMMTRThreadRadioManager_startThreadRadioForSystemCommissionerFabr
     v25 = 138543618;
     v26 = v11;
     v27 = 2112;
-    v28 = v4;
+    v28 = dCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@Stop thread for fabric %@", &v25, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  if (!v4)
+  if (!dCopy)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v9;
+    v13 = selfCopy2;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -1473,21 +1473,21 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([(HMMTRThreadRadioManager *)v9 preventDisconnect])
+  if ([(HMMTRThreadRadioManager *)selfCopy2 preventDisconnect])
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v9;
+    v13 = selfCopy2;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [(HMMTRThreadRadioManager *)v13 fabricUUIDOfActiveThreadNetwork];
+      fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)v13 fabricUUIDOfActiveThreadNetwork];
       v25 = 138543874;
       v26 = v15;
       v27 = 2112;
-      v28 = v4;
+      v28 = dCopy;
       v29 = 2112;
-      v30 = v16;
+      v30 = fabricUUIDOfActiveThreadNetwork;
       _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_INFO, "%{public}@Preventing thread stop for fabric %@ because preventDisconnect is true and locked to fabric %@", &v25, 0x20u);
 
 LABEL_17:
@@ -1497,17 +1497,17 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  [(HMMTRThreadRadioManager *)v9 setLastKnownThreadNetworkConnectionState:1];
-  v23 = [(HMMTRThreadRadioManager *)v9 delegate];
-  [v23 stopThreadRadioForHomeWithFabricUUID:v4];
+  [(HMMTRThreadRadioManager *)selfCopy2 setLastKnownThreadNetworkConnectionState:1];
+  delegate = [(HMMTRThreadRadioManager *)selfCopy2 delegate];
+  [delegate stopThreadRadioForHomeWithFabricUUID:dCopy];
 
-  [(HMMTRThreadRadioManager *)v9 _updateFabricUUIDOfActiveThreadNetwork:0 isFabricUUIDOfSystemCommissioner:0];
-  [(HMMTRThreadRadioManager *)v9 setEMACAddressOfWEDAccessory:0];
-  [(HMMTRThreadRadioManager *)v9 setWedAccessoryServer:0];
-  if (CFPreferencesGetAppBooleanValue(@"StartThreadOnWake", @"/Library/Managed Preferences/mobile/com.apple.homed.plist", 0) && [(HMMTRThreadRadioManager *)v9 deviceIsLockedAndPendingStopThread])
+  [(HMMTRThreadRadioManager *)selfCopy2 _updateFabricUUIDOfActiveThreadNetwork:0 isFabricUUIDOfSystemCommissioner:0];
+  [(HMMTRThreadRadioManager *)selfCopy2 setEMACAddressOfWEDAccessory:0];
+  [(HMMTRThreadRadioManager *)selfCopy2 setWedAccessoryServer:0];
+  if (CFPreferencesGetAppBooleanValue(@"StartThreadOnWake", @"/Library/Managed Preferences/mobile/com.apple.homed.plist", 0) && [(HMMTRThreadRadioManager *)selfCopy2 deviceIsLockedAndPendingStopThread])
   {
-    v24 = [(HMMTRThreadRadioManager *)v9 delegate];
-    [v24 stopThreadRadioOnDeviceLock];
+    delegate2 = [(HMMTRThreadRadioManager *)selfCopy2 delegate];
+    [delegate2 stopThreadRadioOnDeviceLock];
   }
 
 LABEL_14:
@@ -1515,16 +1515,16 @@ LABEL_14:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopThreadRadioForHomeWithFabricUUID:(id)a3
+- (void)stopThreadRadioForHomeWithFabricUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__HMMTRThreadRadioManager_stopThreadRadioForHomeWithFabricUUID___block_invoke;
   v6[3] = &unk_2786EF328;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(HMMTRThreadRadioManager *)self dispatchBlock:v6];
 }
 
@@ -1533,22 +1533,22 @@ LABEL_14:
   v31 = *MEMORY[0x277D85DE8];
   if (isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled() && ([(HMMTRThreadRadioManager *)self delegate], (v3 = objc_claimAutoreleasedReturnValue()) != 0) && (v4 = v3, v5 = [(HMMTRThreadRadioManager *)self deviceSupportsThreadService], v4, v5))
   {
-    v6 = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
-    if (!v6 || (v7 = v6, v8 = [(HMMTRThreadRadioManager *)self preventDisconnect], v7, !v8))
+    fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
+    if (!fabricUUIDOfActiveThreadNetwork || (v7 = fabricUUIDOfActiveThreadNetwork, v8 = [(HMMTRThreadRadioManager *)self preventDisconnect], v7, !v8))
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v12 = HMFGetLogIdentifier();
-        v13 = [(HMMTRThreadRadioManager *)v10 fabricUUIDOfActiveThreadNetwork];
-        [(HMMTRThreadRadioManager *)v10 preventDisconnect];
+        fabricUUIDOfActiveThreadNetwork2 = [(HMMTRThreadRadioManager *)selfCopy fabricUUIDOfActiveThreadNetwork];
+        [(HMMTRThreadRadioManager *)selfCopy preventDisconnect];
         v14 = HMFBooleanToString();
         v25 = 138543874;
         v26 = v12;
         v27 = 2112;
-        v28 = v13;
+        v28 = fabricUUIDOfActiveThreadNetwork2;
         v29 = 2112;
         v30 = v14;
         _os_log_impl(&dword_22AEAE000, v11, OS_LOG_TYPE_ERROR, "%{public}@Unexpected state, fabricUUIDOfActiveThreadNetwork = %@, preventDisconnect = %@", &v25, 0x20u);
@@ -1558,27 +1558,27 @@ LABEL_14:
     }
 
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [(HMMTRThreadRadioManager *)v16 fabricUUIDOfActiveThreadNetwork];
+      fabricUUIDOfActiveThreadNetwork3 = [(HMMTRThreadRadioManager *)selfCopy2 fabricUUIDOfActiveThreadNetwork];
       v25 = 138543618;
       v26 = v18;
       v27 = 2112;
-      v28 = v19;
+      v28 = fabricUUIDOfActiveThreadNetwork3;
       _os_log_impl(&dword_22AEAE000, v17, OS_LOG_TYPE_INFO, "%{public}@Allowing thread stop for fabric %@", &v25, 0x16u);
     }
 
     objc_autoreleasePoolPop(v15);
-    [(HMMTRThreadRadioManager *)v16 setPreventDisconnect:0];
+    [(HMMTRThreadRadioManager *)selfCopy2 setPreventDisconnect:0];
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy3 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
@@ -1604,23 +1604,23 @@ LABEL_14:
   [(HMMTRThreadRadioManager *)self dispatchBlock:v2];
 }
 
-- (BOOL)hasMatterThreadAccessoryInHomeWithFabricUUID:(id)a3
+- (BOOL)hasMatterThreadAccessoryInHomeWithFabricUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMMTRThreadRadioManager *)self delegate];
-  v6 = [v5 hasMatterThreadAccessoryInHomeWithFabricUUID:v4];
+  dCopy = d;
+  delegate = [(HMMTRThreadRadioManager *)self delegate];
+  v6 = [delegate hasMatterThreadAccessoryInHomeWithFabricUUID:dCopy];
 
   return v6;
 }
 
-- (void)_stopAccessoryFirmwareUpdateWithCompletion:(id)a3
+- (void)_stopAccessoryFirmwareUpdateWithCompletion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (!isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled() || ([(HMMTRThreadRadioManager *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
@@ -1635,26 +1635,26 @@ LABEL_14:
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy2 = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [(HMMTRThreadRadioManager *)v7 eMACAddressOfWEDAccessory];
+    eMACAddressOfWEDAccessory = [(HMMTRThreadRadioManager *)selfCopy2 eMACAddressOfWEDAccessory];
     *buf = 138543618;
     v36 = v9;
     v37 = 2112;
-    v38 = v10;
+    v38 = eMACAddressOfWEDAccessory;
     _os_log_impl(&dword_22AEAE000, v8, OS_LOG_TYPE_INFO, "%{public}@stop accessory firmware update for accessory with emac = %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMMTRThreadRadioManager *)v7 fabricUUIDOfActiveThreadNetwork];
+  fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)selfCopy2 fabricUUIDOfActiveThreadNetwork];
 
-  if (!v11)
+  if (!fabricUUIDOfActiveThreadNetwork)
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v7;
+    v26 = selfCopy2;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -1668,15 +1668,15 @@ LABEL_14:
 LABEL_14:
     objc_autoreleasePoolPop(v22);
     v23 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:5 userInfo:0];
-    v4[2](v4, v23);
+    completionCopy[2](completionCopy, v23);
 
     goto LABEL_15;
   }
 
-  if (![(HMMTRThreadRadioManager *)v7 isFirmwareUpdateActive])
+  if (![(HMMTRThreadRadioManager *)selfCopy2 isFirmwareUpdateActive])
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v7;
+    v13 = selfCopy2;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -1689,17 +1689,17 @@ LABEL_14:
     objc_autoreleasePoolPop(v12);
   }
 
-  v16 = [(HMMTRThreadRadioManager *)v7 delegate];
-  v17 = [(HMMTRThreadRadioManager *)v7 fabricUUIDOfActiveThreadNetwork];
+  delegate = [(HMMTRThreadRadioManager *)selfCopy2 delegate];
+  fabricUUIDOfActiveThreadNetwork2 = [(HMMTRThreadRadioManager *)selfCopy2 fabricUUIDOfActiveThreadNetwork];
   v29 = MEMORY[0x277D85DD0];
   v30 = 3221225472;
   v31 = __70__HMMTRThreadRadioManager__stopAccessoryFirmwareUpdateWithCompletion___block_invoke;
   v32 = &unk_2786EF8A0;
-  v33 = v7;
-  v34 = v4;
-  [v16 stopAccessoryFirmwareUpdateWithFabricUUID:v17 completion:&v29];
+  v33 = selfCopy2;
+  v34 = completionCopy;
+  [delegate stopAccessoryFirmwareUpdateWithFabricUUID:fabricUUIDOfActiveThreadNetwork2 completion:&v29];
 
-  [(HMMTRThreadRadioManager *)v7 allowDisconnect:v29];
+  [(HMMTRThreadRadioManager *)selfCopy2 allowDisconnect:v29];
 LABEL_15:
 
   v24 = *MEMORY[0x277D85DE8];
@@ -1747,16 +1747,16 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopAccessoryFirmwareUpdateWithCompletion:(id)a3
+- (void)stopAccessoryFirmwareUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__HMMTRThreadRadioManager_stopAccessoryFirmwareUpdateWithCompletion___block_invoke;
   v6[3] = &unk_2786EF5A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(HMMTRThreadRadioManager *)self dispatchBlock:v6];
 }
 
@@ -1809,31 +1809,31 @@ void __102__HMMTRThreadRadioManager__startAccessoryFirmwareUpdateWithExtendedMAC
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startAccessoryFirmwareUpdateWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5
+- (void)startAccessoryFirmwareUpdateWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  addressCopy = address;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __101__HMMTRThreadRadioManager_startAccessoryFirmwareUpdateWithExtendedMACAddress_isWedDevice_completion___block_invoke;
   v12[3] = &unk_2786EEB30;
   v12[4] = self;
-  v13 = v8;
-  v15 = a4;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = addressCopy;
+  deviceCopy = device;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = addressCopy;
   [(HMMTRThreadRadioManager *)self dispatchBlock:v12];
 }
 
-- (void)_stopAccessoryPairingWithCompletion:(id)a3
+- (void)_stopAccessoryPairingWithCompletion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (!isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled() || ([(HMMTRThreadRadioManager *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
@@ -1847,13 +1847,13 @@ void __102__HMMTRThreadRadioManager__startAccessoryFirmwareUpdateWithExtendedMAC
     goto LABEL_14;
   }
 
-  v6 = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
+  fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy2 = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
-  if (!v6)
+  if (!fabricUUIDOfActiveThreadNetwork)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -1867,7 +1867,7 @@ void __102__HMMTRThreadRadioManager__startAccessoryFirmwareUpdateWithExtendedMAC
 LABEL_14:
     objc_autoreleasePoolPop(v24);
     v25 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:5 userInfo:0];
-    v4[2](v4, v25);
+    completionCopy[2](completionCopy, v25);
 
     goto LABEL_15;
   }
@@ -1875,44 +1875,44 @@ LABEL_14:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [(HMMTRThreadRadioManager *)v8 pairingAccessoryServer];
-    v13 = [v12 nodeID];
-    v14 = [(HMMTRThreadRadioManager *)v8 eMACAddressOfWEDAccessory];
+    pairingAccessoryServer = [(HMMTRThreadRadioManager *)selfCopy2 pairingAccessoryServer];
+    nodeID = [pairingAccessoryServer nodeID];
+    eMACAddressOfWEDAccessory = [(HMMTRThreadRadioManager *)selfCopy2 eMACAddressOfWEDAccessory];
     *buf = 138543874;
     v35 = v11;
     v36 = 2112;
-    v37 = v13;
+    v37 = nodeID;
     v38 = 2112;
-    v39 = v14;
+    v39 = eMACAddressOfWEDAccessory;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@stop accessory pairing for accessory with nodeID = %@, emac = %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  [(HMMTRThreadRadioManager *)v8 setPairingActive:0];
-  [(HMMTRThreadRadioManager *)v8 setPairingAccessoryServer:0];
-  v15 = [(HMMTRThreadRadioManager *)v8 delegate];
-  v16 = [(HMMTRThreadRadioManager *)v8 fabricUUIDOfActiveThreadNetwork];
+  [(HMMTRThreadRadioManager *)selfCopy2 setPairingActive:0];
+  [(HMMTRThreadRadioManager *)selfCopy2 setPairingAccessoryServer:0];
+  delegate = [(HMMTRThreadRadioManager *)selfCopy2 delegate];
+  fabricUUIDOfActiveThreadNetwork2 = [(HMMTRThreadRadioManager *)selfCopy2 fabricUUIDOfActiveThreadNetwork];
   v28 = MEMORY[0x277D85DD0];
   v29 = 3221225472;
   v30 = __63__HMMTRThreadRadioManager__stopAccessoryPairingWithCompletion___block_invoke;
   v31 = &unk_2786EF8A0;
-  v32 = v8;
-  v33 = v4;
-  [v15 stopAccessoryPairingWithFabricUUID:v16 completion:&v28];
+  v32 = selfCopy2;
+  v33 = completionCopy;
+  [delegate stopAccessoryPairingWithFabricUUID:fabricUUIDOfActiveThreadNetwork2 completion:&v28];
 
-  v17 = [(HMMTRThreadRadioManager *)v8 pendingStartPairingBlock:v28];
+  v17 = [(HMMTRThreadRadioManager *)selfCopy2 pendingStartPairingBlock:v28];
 
   if (v17)
   {
-    v18 = [(HMMTRThreadRadioManager *)v8 pendingStartPairingBlock];
-    if (v18)
+    pendingStartPairingBlock = [(HMMTRThreadRadioManager *)selfCopy2 pendingStartPairingBlock];
+    if (pendingStartPairingBlock)
     {
       v19 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:12];
-      (v18)[2](v18, v19);
+      (pendingStartPairingBlock)[2](pendingStartPairingBlock, v19);
     }
   }
 
-  [(HMMTRThreadRadioManager *)v8 allowDisconnect];
+  [(HMMTRThreadRadioManager *)selfCopy2 allowDisconnect];
 
 LABEL_15:
   v26 = *MEMORY[0x277D85DE8];
@@ -1958,16 +1958,16 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopAccessoryPairingWithCompletion:(id)a3
+- (void)stopAccessoryPairingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__HMMTRThreadRadioManager_stopAccessoryPairingWithCompletion___block_invoke;
   v6[3] = &unk_2786EF5A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(HMMTRThreadRadioManager *)self dispatchBlock:v6];
 }
 
@@ -2021,81 +2021,81 @@ LABEL_6:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startAccessoryPairingWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 accessoryServer:(id)a5 completion:(id)a6
+- (void)_startAccessoryPairingWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device accessoryServer:(id)server completion:(id)completion
 {
   v61 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  addressCopy = address;
+  serverCopy = server;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __111__HMMTRThreadRadioManager__startAccessoryPairingWithExtendedMACAddress_isWedDevice_accessoryServer_completion___block_invoke;
   v46[3] = &unk_2786EDF00;
   objc_copyWeak(&v50, &location);
-  v13 = v12;
+  v13 = completionCopy;
   v49 = v13;
-  v45 = v10;
+  v45 = addressCopy;
   v47 = v45;
-  v51 = a4;
-  v14 = v11;
+  deviceCopy = device;
+  v14 = serverCopy;
   v48 = v14;
   v15 = MEMORY[0x2318887D0](v46);
-  v16 = [(HMMTRThreadRadioManager *)self pendingStartPairingBlock];
+  pendingStartPairingBlock = [(HMMTRThreadRadioManager *)self pendingStartPairingBlock];
 
-  if (v16)
+  if (pendingStartPairingBlock)
   {
-    v17 = [(HMMTRThreadRadioManager *)self pendingStartPairingBlock];
-    if (v17)
+    pendingStartPairingBlock2 = [(HMMTRThreadRadioManager *)self pendingStartPairingBlock];
+    if (pendingStartPairingBlock2)
     {
       v18 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:12];
-      (v17)[2](v17, v18);
+      (pendingStartPairingBlock2)[2](pendingStartPairingBlock2, v18);
     }
   }
 
-  v19 = [(HMMTRThreadRadioManager *)self delegate];
-  v20 = [v14 fabricUUID];
-  v21 = [v19 getThreadNetworkConnectionStateWithFabricUUID:v20];
+  delegate = [(HMMTRThreadRadioManager *)self delegate];
+  fabricUUID = [v14 fabricUUID];
+  v21 = [delegate getThreadNetworkConnectionStateWithFabricUUID:fabricUUID];
 
-  v22 = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
-  if (!v22)
+  fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
+  if (!fabricUUIDOfActiveThreadNetwork)
   {
     goto LABEL_14;
   }
 
-  v23 = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
-  v24 = [v14 fabricUUID];
-  v25 = [v23 isEqual:v24];
+  fabricUUIDOfActiveThreadNetwork2 = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
+  fabricUUID2 = [v14 fabricUUID];
+  v25 = [fabricUUIDOfActiveThreadNetwork2 isEqual:fabricUUID2];
   v26 = v21 == 3 ? v25 : 0;
 
   if (v26)
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
       v30 = HMFGetLogIdentifier();
-      v31 = [(HMMTRThreadRadioManager *)v28 _connectionStateValueToString:3];
-      v32 = [v14 fabricUUID];
-      v33 = [(HMMTRThreadRadioManager *)v28 fabricUUIDOfActiveThreadNetwork];
+      v31 = [(HMMTRThreadRadioManager *)selfCopy _connectionStateValueToString:3];
+      fabricUUID3 = [v14 fabricUUID];
+      fabricUUIDOfActiveThreadNetwork3 = [(HMMTRThreadRadioManager *)selfCopy fabricUUIDOfActiveThreadNetwork];
       *buf = 138544130;
       v54 = v30;
       v55 = 2112;
       v56 = v31;
       v57 = 2112;
-      v58 = v32;
+      v58 = fabricUUID3;
       v59 = 2112;
-      v60 = v33;
+      v60 = fabricUUIDOfActiveThreadNetwork3;
       _os_log_impl(&dword_22AEAE000, v29, OS_LOG_TYPE_INFO, "%{public}@Thread network connection state: %@ for fabric: %@, calling start pairing block now. ActiveThreadNetworkFabricID: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v27);
-    v34 = [v14 fabricUUID];
-    [(HMMTRThreadRadioManager *)v28 setFabricUUIDOfPendingStartPairingBlock:v34];
+    fabricUUID4 = [v14 fabricUUID];
+    [(HMMTRThreadRadioManager *)selfCopy setFabricUUIDOfPendingStartPairingBlock:fabricUUID4];
 
     v35 = MEMORY[0x2318887D0](v15);
-    v36 = v35;
+    fabricUUID6 = v35;
     if (v35)
     {
       (*(v35 + 16))(v35, 0);
@@ -2106,29 +2106,29 @@ LABEL_6:
   {
 LABEL_14:
     v37 = objc_autoreleasePoolPush();
-    v38 = self;
+    selfCopy2 = self;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
       v40 = HMFGetLogIdentifier();
-      v41 = [(HMMTRThreadRadioManager *)v38 _connectionStateValueToString:v21];
-      v42 = [v14 fabricUUID];
-      v43 = [(HMMTRThreadRadioManager *)v38 fabricUUIDOfActiveThreadNetwork];
+      v41 = [(HMMTRThreadRadioManager *)selfCopy2 _connectionStateValueToString:v21];
+      fabricUUID5 = [v14 fabricUUID];
+      fabricUUIDOfActiveThreadNetwork4 = [(HMMTRThreadRadioManager *)selfCopy2 fabricUUIDOfActiveThreadNetwork];
       *buf = 138544130;
       v54 = v40;
       v55 = 2112;
       v56 = v41;
       v57 = 2112;
-      v58 = v42;
+      v58 = fabricUUID5;
       v59 = 2112;
-      v60 = v43;
+      v60 = fabricUUIDOfActiveThreadNetwork4;
       _os_log_impl(&dword_22AEAE000, v39, OS_LOG_TYPE_INFO, "%{public}@Thread network connection state: %@ for fabric: %@, deferring call to start pairing block. ActiveThreadNetworkFabricUUID: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v37);
-    [(HMMTRThreadRadioManager *)v38 setPendingStartPairingBlock:v15];
-    v36 = [v14 fabricUUID];
-    [(HMMTRThreadRadioManager *)v38 setFabricUUIDOfPendingStartPairingBlock:v36];
+    [(HMMTRThreadRadioManager *)selfCopy2 setPendingStartPairingBlock:v15];
+    fabricUUID6 = [v14 fabricUUID];
+    [(HMMTRThreadRadioManager *)selfCopy2 setFabricUUIDOfPendingStartPairingBlock:fabricUUID6];
   }
 
   objc_destroyWeak(&v50);
@@ -2187,35 +2187,35 @@ void __111__HMMTRThreadRadioManager__startAccessoryPairingWithExtendedMACAddress
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startAccessoryPairingWithExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 accessoryServer:(id)a5 completion:(id)a6
+- (void)startAccessoryPairingWithExtendedMACAddress:(id)address isWedDevice:(BOOL)device accessoryServer:(id)server completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  addressCopy = address;
+  serverCopy = server;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __110__HMMTRThreadRadioManager_startAccessoryPairingWithExtendedMACAddress_isWedDevice_accessoryServer_completion___block_invoke;
   v16[3] = &unk_2786EF8F0;
   v16[4] = self;
-  v17 = v10;
-  v20 = a4;
-  v18 = v11;
-  v19 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = addressCopy;
+  deviceCopy = device;
+  v18 = serverCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = serverCopy;
+  v15 = addressCopy;
   [(HMMTRThreadRadioManager *)self dispatchBlock:v16];
 }
 
-- (void)_connectToAccessoryWithExtendedMACAddress:(id)a3 forRetry:(BOOL)a4 completion:(id)a5
+- (void)_connectToAccessoryWithExtendedMACAddress:(id)address forRetry:(BOOL)retry completion:(id)completion
 {
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  addressCopy = address;
+  completionCopy = completion;
   if (!isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled() || ([(HMMTRThreadRadioManager *)self delegate], (v10 = objc_claimAutoreleasedReturnValue()) == 0) || (v11 = v10, v12 = [(HMMTRThreadRadioManager *)self deviceSupportsThreadService], v11, !v12))
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
@@ -2223,7 +2223,7 @@ LABEL_10:
 
       objc_autoreleasePoolPop(v15);
       v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:5 userInfo:0];
-      v9[2](v9, v14);
+      completionCopy[2](completionCopy, v14);
       goto LABEL_11;
     }
 
@@ -2240,12 +2240,12 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v13 = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
+  fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)self fabricUUIDOfActiveThreadNetwork];
 
-  if (!v13)
+  if (!fabricUUIDOfActiveThreadNetwork)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -2256,7 +2256,7 @@ LABEL_9:
     *buf = 138543618;
     v53 = v18;
     v54 = 2112;
-    v55 = v8;
+    v55 = addressCopy;
     v19 = "%{public}@No active thread network configured, dropping request to connect to accessory with eMAC %@";
     v20 = v17;
     v21 = OS_LOG_TYPE_ERROR;
@@ -2264,9 +2264,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (v8)
+  if (addressCopy)
   {
-    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
+    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:addressCopy encoding:4];
   }
 
   else
@@ -2277,44 +2277,44 @@ LABEL_9:
   if (-[HMMTRThreadRadioManager isPairingActive](self, "isPairingActive") && !v14 || -[HMMTRThreadRadioManager isPairingActive](self, "isPairingActive") && (-[HMMTRThreadRadioManager eMACAddressOfWEDAccessory](self, "eMACAddressOfWEDAccessory"), v30 = objc_claimAutoreleasedReturnValue(), v31 = [v30 isEqualToString:v14], v30, (v31 & 1) == 0))
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy3 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       v27 = HMFGetLogIdentifier();
-      v28 = [(HMMTRThreadRadioManager *)v25 eMACAddressOfWEDAccessory];
+      eMACAddressOfWEDAccessory = [(HMMTRThreadRadioManager *)selfCopy3 eMACAddressOfWEDAccessory];
       *buf = 138543874;
       v53 = v27;
       v54 = 2112;
       v55 = v14;
       v56 = 2112;
-      v57 = v28;
+      v57 = eMACAddressOfWEDAccessory;
       _os_log_impl(&dword_22AEAE000, v26, OS_LOG_TYPE_INFO, "%{public}@Not processing connect request to a different WED accessory emac %@ when pairing is active for emac %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v24);
     v29 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:5 userInfo:0];
-    v9[2](v9, v29);
+    completionCopy[2](completionCopy, v29);
   }
 
   else
   {
-    if (v8)
+    if (addressCopy)
     {
       [(HMMTRThreadRadioManager *)self setEMACAddressOfWEDAccessory:v14];
     }
 
     else
     {
-      if (a4 || ([(HMMTRThreadRadioManager *)self retryCompletionHandler], v32 = objc_claimAutoreleasedReturnValue(), v32, !v32))
+      if (retry || ([(HMMTRThreadRadioManager *)self retryCompletionHandler], v32 = objc_claimAutoreleasedReturnValue(), v32, !v32))
       {
-        v37 = 0;
+        retryCompletionHandler = 0;
       }
 
       else
       {
         v33 = objc_autoreleasePoolPush();
-        v34 = self;
+        selfCopy4 = self;
         v35 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
@@ -2325,32 +2325,32 @@ LABEL_9:
         }
 
         objc_autoreleasePoolPop(v33);
-        v37 = [(HMMTRThreadRadioManager *)v34 retryCompletionHandler];
-        [(HMMTRThreadRadioManager *)v34 setRetryCompletionHandler:0];
+        retryCompletionHandler = [(HMMTRThreadRadioManager *)selfCopy4 retryCompletionHandler];
+        [(HMMTRThreadRadioManager *)selfCopy4 setRetryCompletionHandler:0];
       }
 
       [(HMMTRThreadRadioManager *)self setEMACAddressOfWEDAccessory:0];
       [(HMMTRThreadRadioManager *)self setIsWEDConnectionRetryActive:0];
-      if (v37)
+      if (retryCompletionHandler)
       {
         v38 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:12];
-        (v37)[2](v37, v38);
+        (retryCompletionHandler)[2](retryCompletionHandler, v38);
       }
 
       [(HMMTRThreadRadioManager *)self setWedAccessoryServer:0];
     }
 
     v39 = objc_autoreleasePoolPush();
-    v40 = self;
+    selfCopy5 = self;
     v41 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
     {
       v42 = HMFGetLogIdentifier();
-      v43 = [(HMMTRThreadRadioManager *)v40 eMACAddressOfWEDAccessory];
+      eMACAddressOfWEDAccessory2 = [(HMMTRThreadRadioManager *)selfCopy5 eMACAddressOfWEDAccessory];
       *buf = 138543618;
       v53 = v42;
       v54 = 2112;
-      v55 = v43;
+      v55 = eMACAddressOfWEDAccessory2;
       _os_log_impl(&dword_22AEAE000, v41, OS_LOG_TYPE_INFO, "%{public}@Set eMACAddress of WED accessory to :%@", buf, 0x16u);
     }
 
@@ -2359,18 +2359,18 @@ LABEL_9:
     v50[1] = 3221225472;
     v50[2] = __89__HMMTRThreadRadioManager__connectToAccessoryWithExtendedMACAddress_forRetry_completion___block_invoke;
     v50[3] = &unk_2786EDEB0;
-    v50[4] = v40;
-    v44 = v8;
+    v50[4] = selfCopy5;
+    v44 = addressCopy;
     v51 = v44;
     v45 = MEMORY[0x2318887D0](v50);
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __89__HMMTRThreadRadioManager__connectToAccessoryWithExtendedMACAddress_forRetry_completion___block_invoke_2;
     v46[3] = &unk_2786EDED8;
-    v46[4] = v40;
+    v46[4] = selfCopy5;
     v47 = v44;
-    v49 = a4;
-    v48 = v9;
+    retryCopy = retry;
+    v48 = completionCopy;
     (v45)[2](v45, v46);
   }
 
@@ -2466,65 +2466,65 @@ LABEL_8:
   return result;
 }
 
-- (void)connectToAccessoryWithExtendedMACAddress:(id)a3 completion:(id)a4
+- (void)connectToAccessoryWithExtendedMACAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __79__HMMTRThreadRadioManager_connectToAccessoryWithExtendedMACAddress_completion___block_invoke;
   v10[3] = &unk_2786F0EA8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = addressCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = addressCopy;
   [(HMMTRThreadRadioManager *)self dispatchBlock:v10];
 }
 
-- (void)connectToWEDAccessory:(id)a3 completion:(id)a4
+- (void)connectToWEDAccessory:(id)accessory completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(HMMTRThreadRadioManager *)self setWedAccessoryServer:v7];
-  v8 = [v7 eMACAddress];
+  completionCopy = completion;
+  accessoryCopy = accessory;
+  [(HMMTRThreadRadioManager *)self setWedAccessoryServer:accessoryCopy];
+  eMACAddress = [accessoryCopy eMACAddress];
 
-  v9 = [v8 dataUsingEncoding:4];
+  v9 = [eMACAddress dataUsingEncoding:4];
 
-  [(HMMTRThreadRadioManager *)self connectToAccessoryWithExtendedMACAddress:v9 completion:v6];
+  [(HMMTRThreadRadioManager *)self connectToAccessoryWithExtendedMACAddress:v9 completion:completionCopy];
 }
 
-- (void)disconnectFromWEDAccessory:(id)a3 completion:(id)a4
+- (void)disconnectFromWEDAccessory:(id)accessory completion:(id)completion
 {
-  [(HMMTRThreadRadioManager *)self connectToAccessoryWithExtendedMACAddress:0 completion:a4];
+  [(HMMTRThreadRadioManager *)self connectToAccessoryWithExtendedMACAddress:0 completion:completion];
 
   [(HMMTRThreadRadioManager *)self setWedAccessoryServer:0];
 }
 
-- (void)startThreadRadioForHomeWithFabricUUID:(id)a3 preventDisconnect:(BOOL)a4
+- (void)startThreadRadioForHomeWithFabricUUID:(id)d preventDisconnect:(BOOL)disconnect
 {
-  v6 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __83__HMMTRThreadRadioManager_startThreadRadioForHomeWithFabricUUID_preventDisconnect___block_invoke;
   v8[3] = &unk_2786F0418;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = dCopy;
+  disconnectCopy = disconnect;
+  v7 = dCopy;
   [(HMMTRThreadRadioManager *)self dispatchBlock:v8];
 }
 
-- (void)startThreadRadioForHomeWithFabricUUID:(id)a3
+- (void)startThreadRadioForHomeWithFabricUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__HMMTRThreadRadioManager_startThreadRadioForHomeWithFabricUUID___block_invoke;
   v6[3] = &unk_2786EF328;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(HMMTRThreadRadioManager *)self dispatchBlock:v6];
 }
 
@@ -2532,7 +2532,7 @@ LABEL_8:
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2547,8 +2547,8 @@ LABEL_8:
   v8[1] = 3221225472;
   v8[2] = __49__HMMTRThreadRadioManager_stopThreadOnUserLogout__block_invoke;
   v8[3] = &unk_2786F0CA8;
-  v8[4] = v4;
-  [(HMMTRThreadRadioManager *)v4 dispatchBlock:v8];
+  v8[4] = selfCopy;
+  [(HMMTRThreadRadioManager *)selfCopy dispatchBlock:v8];
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -2596,12 +2596,12 @@ void __49__HMMTRThreadRadioManager_stopThreadOnUserLogout__block_invoke(uint64_t
 - (void)stopThreadOnDeviceLockTimeout
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMMTRThreadRadioManager *)self preventDisconnect];
+  preventDisconnect = [(HMMTRThreadRadioManager *)self preventDisconnect];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (preventDisconnect)
   {
     if (v7)
     {
@@ -2612,7 +2612,7 @@ void __49__HMMTRThreadRadioManager_stopThreadOnUserLogout__block_invoke(uint64_t
     }
 
     objc_autoreleasePoolPop(v4);
-    [(HMMTRThreadRadioManager *)v5 setDeviceIsLockedAndPendingStopThread:1];
+    [(HMMTRThreadRadioManager *)selfCopy setDeviceIsLockedAndPendingStopThread:1];
   }
 
   else
@@ -2626,33 +2626,33 @@ void __49__HMMTRThreadRadioManager_stopThreadOnUserLogout__block_invoke(uint64_t
     }
 
     objc_autoreleasePoolPop(v4);
-    v10 = [(HMMTRThreadRadioManager *)v5 threadNetworkActivatedForSystemCommissionerFabric];
-    v11 = [(HMMTRThreadRadioManager *)v5 delegate];
-    v12 = v11;
-    if (v10)
+    threadNetworkActivatedForSystemCommissionerFabric = [(HMMTRThreadRadioManager *)selfCopy threadNetworkActivatedForSystemCommissionerFabric];
+    delegate = [(HMMTRThreadRadioManager *)selfCopy delegate];
+    v12 = delegate;
+    if (threadNetworkActivatedForSystemCommissionerFabric)
     {
-      [v11 stopThreadRadioForUserPreferredNetwork];
+      [delegate stopThreadRadioForUserPreferredNetwork];
     }
 
     else
     {
-      v13 = [(HMMTRThreadRadioManager *)v5 fabricUUIDOfActiveThreadNetwork];
-      [v12 stopThreadRadioForHomeWithFabricUUID:v13];
+      fabricUUIDOfActiveThreadNetwork = [(HMMTRThreadRadioManager *)selfCopy fabricUUIDOfActiveThreadNetwork];
+      [v12 stopThreadRadioForHomeWithFabricUUID:fabricUUIDOfActiveThreadNetwork];
     }
 
-    [(HMMTRThreadRadioManager *)v5 _updateFabricUUIDOfActiveThreadNetwork:0 isFabricUUIDOfSystemCommissioner:0];
-    v14 = [(HMMTRThreadRadioManager *)v5 delegate];
-    [v14 stopThreadRadioOnDeviceLock];
+    [(HMMTRThreadRadioManager *)selfCopy _updateFabricUUIDOfActiveThreadNetwork:0 isFabricUUIDOfSystemCommissioner:0];
+    delegate2 = [(HMMTRThreadRadioManager *)selfCopy delegate];
+    [delegate2 stopThreadRadioOnDeviceLock];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDeviceLockStateChange:(BOOL)a3
+- (void)handleDeviceLockStateChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   [(HMMTRThreadRadioManager *)self setDeviceIsLockedAndPendingStopThread:0];
-  if (v3)
+  if (changeCopy)
   {
     v5 = v9;
     v9[0] = MEMORY[0x277D85DD0];
@@ -2765,11 +2765,11 @@ void __55__HMMTRThreadRadioManager_handleDeviceLockStateChange___block_invoke_17
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2783,9 +2783,9 @@ void __55__HMMTRThreadRadioManager_handleDeviceLockStateChange___block_invoke_17
   return WeakRetained;
 }
 
-- (HMMTRThreadRadioManager)initWithBrowser:(id)a3
+- (HMMTRThreadRadioManager)initWithBrowser:(id)browser
 {
-  v4 = a3;
+  browserCopy = browser;
   v19.receiver = self;
   v19.super_class = HMMTRThreadRadioManager;
   v5 = [(HMMTRThreadRadioManager *)&v19 init];
@@ -2817,7 +2817,7 @@ void __55__HMMTRThreadRadioManager_handleDeviceLockStateChange___block_invoke_17
     workQueue = v6->_workQueue;
     v6->_workQueue = v12;
 
-    objc_storeWeak(&v6->_browser, v4);
+    objc_storeWeak(&v6->_browser, browserCopy);
     v14 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:15.0];
     disconnectTimer = v6->_disconnectTimer;
     v6->_disconnectTimer = v14;

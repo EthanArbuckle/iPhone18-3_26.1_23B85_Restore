@@ -1,14 +1,14 @@
 @interface VGHRTFFaceCaptureProcessor
-- (VGHRTFFaceCaptureProcessor)initWithDebugDataPath:(id)a3;
-- (id)processCaptureData:(id)a3 faceData:(id)a4;
+- (VGHRTFFaceCaptureProcessor)initWithDebugDataPath:(id)path;
+- (id)processCaptureData:(id)data faceData:(id)faceData;
 @end
 
 @implementation VGHRTFFaceCaptureProcessor
 
-- (VGHRTFFaceCaptureProcessor)initWithDebugDataPath:(id)a3
+- (VGHRTFFaceCaptureProcessor)initWithDebugDataPath:(id)path
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = VGHRTFFaceCaptureProcessor;
   v5 = [(VGHRTFFaceCaptureProcessor *)&v15 init];
@@ -18,8 +18,8 @@
     LODWORD(v7) = 30.0;
     [v6 setYawLimit:v7];
     [v6 setRequiredPitchPoses:0];
-    [v6 setWriteDebugData:v4 != 0];
-    [v6 setDebugDataPath:v4];
+    [v6 setWriteDebugData:pathCopy != 0];
+    [v6 setDebugDataPath:pathCopy];
     [v6 setUseFKInternalFaceDetector:1];
     v8 = [[VGFaceCapture alloc] initWithOptions:v6];
     capturer = v5->_capturer;
@@ -52,34 +52,34 @@
   return 0;
 }
 
-- (id)processCaptureData:(id)a3 faceData:(id)a4
+- (id)processCaptureData:(id)data faceData:(id)faceData
 {
   v90 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[VGHRTFFaceCaptureUpdateData alloc] initEmpty];
-  [v8 setProgressType:self->_captureState];
+  dataCopy = data;
+  faceDataCopy = faceData;
+  initEmpty = [[VGHRTFFaceCaptureUpdateData alloc] initEmpty];
+  [initEmpty setProgressType:self->_captureState];
   *&v9 = self->_progress;
-  [v8 setProgress:v9];
+  [initEmpty setProgress:v9];
   v10 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:self->_poseStatus copyItems:1];
-  [v8 setPoseStatusList:v10];
+  [initEmpty setPoseStatusList:v10];
 
-  [v8 setTrackedData:0];
-  [v8 setResult:self->_resultsCache];
-  if (v7)
+  [initEmpty setTrackedData:0];
+  [initEmpty setResult:self->_resultsCache];
+  if (faceDataCopy)
   {
     ptr = self->_rectify.__ptr_;
-    v12 = [v6 colorBuffer];
-    v13 = [v6 depthBuffer];
-    [v6 colorIntrinsics];
+    colorBuffer = [dataCopy colorBuffer];
+    depthBuffer = [dataCopy depthBuffer];
+    [dataCopy colorIntrinsics];
     v69 = v15;
     v71 = v14;
     v68 = v16;
-    v17 = [v6 depthCalibrationData];
+    depthCalibrationData = [dataCopy depthCalibrationData];
     v92.columns[1] = v69;
     v92.columns[0] = v71;
     v92.columns[2] = v68;
-    vg::hrtf::Rectify::process(ptr, v12, v13, v92, v17, v81);
+    vg::hrtf::Rectify::process(ptr, colorBuffer, depthBuffer, v92, depthCalibrationData, v81);
 
     if (v89)
     {
@@ -129,11 +129,11 @@
       }
 
       [v19 setVideoIntrinsics:{v82, v83, v84}];
-      v22 = [v7 yawAngle];
-      if (v22)
+      yawAngle = [faceDataCopy yawAngle];
+      if (yawAngle)
       {
-        v23 = [v7 yawAngle];
-        [v23 floatValue];
+        yawAngle2 = [faceDataCopy yawAngle];
+        [yawAngle2 floatValue];
         v25 = v24;
 
         v26 = v25;
@@ -144,11 +144,11 @@
         v26 = 0.0;
       }
 
-      v31 = [v7 rollAngle];
-      if (v31)
+      rollAngle = [faceDataCopy rollAngle];
+      if (rollAngle)
       {
-        v32 = [v7 rollAngle];
-        [v32 floatValue];
+        rollAngle2 = [faceDataCopy rollAngle];
+        [rollAngle2 floatValue];
         v34 = v33;
 
         v35 = v34;
@@ -160,20 +160,20 @@
       }
 
       v36 = [VGFaceMetadata alloc];
-      v37 = [v7 trackedId];
-      [v7 boundingBox];
+      trackedId = [faceDataCopy trackedId];
+      [faceDataCopy boundingBox];
       v39 = v38;
       v41 = v40;
       v43 = v42;
       v45 = v44;
-      v46 = [v6 colorBuffer];
-      v47 = [v46 width];
-      v48 = [v6 colorBuffer];
-      v49 = [v48 height];
-      v50 = [(VGFaceMetadata *)v36 initWithFaceId:v37 bounds:v39 / v47 yawAngle:v41 / v49 rollAngle:v43 / v47, v45 / v49, v26, v35];
+      colorBuffer2 = [dataCopy colorBuffer];
+      width = [colorBuffer2 width];
+      colorBuffer3 = [dataCopy colorBuffer];
+      height = [colorBuffer3 height];
+      v50 = [(VGFaceMetadata *)v36 initWithFaceId:trackedId bounds:v39 / width yawAngle:v41 / height rollAngle:v43 / width, v45 / height, v26, v35];
       [v19 setFace:v50];
 
-      [v6 timestamp];
+      [dataCopy timestamp];
       CMTimeMakeWithSeconds(&v78, v51, 1000000);
       buf = v78;
       [v19 setTimestamp:&buf];
@@ -184,8 +184,8 @@
       v73[3] = &unk_279E28DC0;
       v53 = v52;
       v74 = v53;
-      v75 = self;
-      v54 = v8;
+      selfCopy = self;
+      v54 = initEmpty;
       v76 = v54;
       v55 = MEMORY[0x2743B9AA0](v73);
       if ([(VGFaceCapture *)self->_capturer processWithCaptureData:v19 callback:v55])
@@ -195,27 +195,27 @@
         self->_progress = v56;
         self->_captureState = [v54 progressType];
         v57 = objc_alloc(MEMORY[0x277CBEA60]);
-        v58 = [v54 poseStatusList];
-        v59 = [v57 initWithArray:v58 copyItems:1];
+        poseStatusList = [v54 poseStatusList];
+        v59 = [v57 initWithArray:poseStatusList copyItems:1];
         poseStatus = self->_poseStatus;
         self->_poseStatus = v59;
 
         IOSurface = CVPixelBufferGetIOSurface([v19 yuvRectified]);
-        v62 = [v54 trackedData];
-        [v62 setRectifiedColorBuffer:IOSurface];
+        trackedData = [v54 trackedData];
+        [trackedData setRectifiedColorBuffer:IOSurface];
 
         v63 = CVPixelBufferGetIOSurface([v19 depth]);
-        v64 = [v54 trackedData];
-        [v64 setRectifiedDepthBuffer:v63];
+        trackedData2 = [v54 trackedData];
+        [trackedData2 setRectifiedDepthBuffer:v63];
       }
 
       else
       {
-        v64 = __VGLogSharedInstance();
-        if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
+        trackedData2 = __VGLogSharedInstance();
+        if (os_log_type_enabled(trackedData2, OS_LOG_TYPE_ERROR))
         {
           LOWORD(buf.value) = 0;
-          _os_log_impl(&dword_270F06000, v64, OS_LOG_TYPE_ERROR, " Face tracking failed ", &buf, 2u);
+          _os_log_impl(&dword_270F06000, trackedData2, OS_LOG_TYPE_ERROR, " Face tracking failed ", &buf, 2u);
         }
       }
 
@@ -234,7 +234,7 @@
         _os_log_impl(&dword_270F06000, v29, OS_LOG_TYPE_ERROR, " Failed to rectify face images. ", &buf, 2u);
       }
 
-      v30 = v8;
+      v30 = initEmpty;
     }
 
     if (v89 == 1)
@@ -251,12 +251,12 @@
       _os_log_impl(&dword_270F06000, v27, OS_LOG_TYPE_ERROR, " Face not found. ", v81, 2u);
     }
 
-    v28 = v8;
+    v28 = initEmpty;
   }
 
   v66 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return initEmpty;
 }
 
 void __58__VGHRTFFaceCaptureProcessor_processCaptureData_faceData___block_invoke_3(uint64_t a1, void *a2, void *a3)

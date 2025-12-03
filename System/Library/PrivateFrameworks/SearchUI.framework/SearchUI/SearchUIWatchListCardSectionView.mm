@@ -1,8 +1,8 @@
 @interface SearchUIWatchListCardSectionView
 - (id)setupContentView;
-- (void)didUpdateRowModel:(id)a3 animate:(BOOL)a4;
-- (void)updateTitle:(id)a3 subtitle:(id)a4 image:(id)a5;
-- (void)updateWithRowModel:(id)a3;
+- (void)didUpdateRowModel:(id)model animate:(BOOL)animate;
+- (void)updateTitle:(id)title subtitle:(id)subtitle image:(id)image;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIWatchListCardSectionView
@@ -14,45 +14,45 @@
   return v2;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v5.receiver = self;
   v5.super_class = SearchUIWatchListCardSectionView;
-  v4 = a3;
-  [(SearchUICardSectionView *)&v5 updateWithRowModel:v4];
-  [v4 setDelegate:{self, v5.receiver, v5.super_class}];
-  [(SearchUIWatchListCardSectionView *)self didUpdateRowModel:v4 animate:0];
+  modelCopy = model;
+  [(SearchUICardSectionView *)&v5 updateWithRowModel:modelCopy];
+  [modelCopy setDelegate:{self, v5.receiver, v5.super_class}];
+  [(SearchUIWatchListCardSectionView *)self didUpdateRowModel:modelCopy animate:0];
 }
 
-- (void)didUpdateRowModel:(id)a3 animate:(BOOL)a4
+- (void)didUpdateRowModel:(id)model animate:(BOOL)animate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SearchUICardSectionView *)self rowModel];
+  animateCopy = animate;
+  modelCopy = model;
+  rowModel = [(SearchUICardSectionView *)self rowModel];
 
-  if (v7 == v6)
+  if (rowModel == modelCopy)
   {
-    if ([v6 hasError])
+    if ([modelCopy hasError])
     {
       [(SearchUICardSectionView *)self requestRemovalFromEnclosingView];
     }
 
-    else if ([v6 hasLoaded])
+    else if ([modelCopy hasLoaded])
     {
-      v8 = [v6 title];
-      v9 = [v6 subtitle];
-      v10 = [v6 image];
-      [(SearchUIWatchListCardSectionView *)self updateTitle:v8 subtitle:v9 image:v10];
+      title = [modelCopy title];
+      subtitle = [modelCopy subtitle];
+      image = [modelCopy image];
+      [(SearchUIWatchListCardSectionView *)self updateTitle:title subtitle:subtitle image:image];
 
-      v11 = [(SearchUIWatchListCardSectionView *)self layer];
-      [v11 setAllowsGroupOpacity:0];
+      layer = [(SearchUIWatchListCardSectionView *)self layer];
+      [layer setAllowsGroupOpacity:0];
 
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __62__SearchUIWatchListCardSectionView_didUpdateRowModel_animate___block_invoke;
       v13[3] = &unk_1E85B24C8;
       v13[4] = self;
-      [SearchUIUtilities performAnimatableChanges:v13 animated:v4];
+      [SearchUIUtilities performAnimatableChanges:v13 animated:animateCopy];
     }
 
     else
@@ -66,24 +66,24 @@
   }
 }
 
-- (void)updateTitle:(id)a3 subtitle:(id)a4 image:(id)a5
+- (void)updateTitle:(id)title subtitle:(id)subtitle image:(id)image
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SearchUICardSectionView *)self contentView];
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  imageCopy = image;
+  contentView = [(SearchUICardSectionView *)self contentView];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __63__SearchUIWatchListCardSectionView_updateTitle_subtitle_image___block_invoke;
   v15[3] = &unk_1E85B2568;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [v11 performBatchUpdates:v15];
+  v16 = titleCopy;
+  v17 = subtitleCopy;
+  v18 = imageCopy;
+  v12 = imageCopy;
+  v13 = subtitleCopy;
+  v14 = titleCopy;
+  [contentView performBatchUpdates:v15];
 }
 
 void __63__SearchUIWatchListCardSectionView_updateTitle_subtitle_image___block_invoke(uint64_t a1)

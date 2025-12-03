@@ -1,14 +1,14 @@
 @interface _MPCProtoSetPlaybackSessionResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
 - (double)scheduledRateChangeTimestamp;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)hasScheduledRateChangeTimestamp;
 - (uint64_t)setScheduledRateChangeTimestamp:(uint64_t)result;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MPCProtoSetPlaybackSessionResponse
@@ -48,18 +48,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
-  v5 = (*(v4 + 16) & 1) == 0;
+  v5 = (*(equalCopy + 16) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) != 0 && self->_scheduledRateChangeTimestamp == *(v4 + 1))
+    if ((*(equalCopy + 16) & 1) != 0 && self->_scheduledRateChangeTimestamp == *(equalCopy + 1))
     {
       v5 = 1;
       goto LABEL_7;
@@ -74,9 +74,9 @@ LABEL_7:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 1) = *&self->_scheduledRateChangeTimestamp;
@@ -86,7 +86,7 @@ LABEL_7:
   return result;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -94,14 +94,14 @@ LABEL_7:
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -112,18 +112,18 @@ LABEL_7:
       while (1)
       {
         v21 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v21 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v21 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v21 & 0x7F) << v6;
@@ -140,9 +140,9 @@ LABEL_7:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -151,18 +151,18 @@ LABEL_15:
       {
         *&self->_has |= 1u;
         v20 = 0.0;
-        v14 = [a3 position] + 8;
-        if (v14 >= [a3 position] && (v15 = objc_msgSend(a3, "position") + 8, v15 <= objc_msgSend(a3, "length")))
+        v14 = [from position] + 8;
+        if (v14 >= [from position] && (v15 = objc_msgSend(from, "position") + 8, v15 <= objc_msgSend(from, "length")))
         {
-          v17 = [a3 data];
-          [v17 getBytes:&v20 range:{objc_msgSend(a3, "position"), 8}];
+          data2 = [from data];
+          [data2 getBytes:&v20 range:{objc_msgSend(from, "position"), 8}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 8}];
+          [from setPosition:{objc_msgSend(from, "position") + 8}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         self->_scheduledRateChangeTimestamp = v20;
@@ -177,26 +177,26 @@ LABEL_15:
         }
       }
 
-      v18 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v18 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v16) = [a3 hasError] ^ 1;
+  LOBYTE(v16) = [from hasError] ^ 1;
   return v16;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_scheduledRateChangeTimestamp];
-    [v3 setObject:v4 forKey:@"scheduledRateChangeTimestamp"];
+    [dictionary setObject:v4 forKey:@"scheduledRateChangeTimestamp"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -205,8 +205,8 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = _MPCProtoSetPlaybackSessionResponse;
   v4 = [(_MPCProtoSetPlaybackSessionResponse *)&v8 description];
-  v5 = [(_MPCProtoSetPlaybackSessionResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MPCProtoSetPlaybackSessionResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -234,9 +234,9 @@ LABEL_15:
 
 - (double)scheduledRateChangeTimestamp
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else

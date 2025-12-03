@@ -1,49 +1,49 @@
 @interface VUIProductLockupView
-+ (VUIProductLockupView)productLockupViewWithMedia:(id)a3;
-- (CGSize)_layoutForCategoryAccessibility:(CGSize)a3 metricsOnly:(BOOL)a4;
-- (CGSize)_layoutForCompact:(CGSize)a3 metricsOnly:(BOOL)a4;
-- (CGSize)_layoutForStacked:(CGSize)a3 metricsOnly:(BOOL)a4;
-- (CGSize)_layoutWithSize:(CGSize)a3 metricsOnly:(BOOL)a4;
-- (CGSize)_sizeOfDescriptionLabel:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VUIProductLockupView)initWithFrame:(CGRect)a3;
++ (VUIProductLockupView)productLockupViewWithMedia:(id)media;
+- (CGSize)_layoutForCategoryAccessibility:(CGSize)accessibility metricsOnly:(BOOL)only;
+- (CGSize)_layoutForCompact:(CGSize)compact metricsOnly:(BOOL)only;
+- (CGSize)_layoutForStacked:(CGSize)stacked metricsOnly:(BOOL)only;
+- (CGSize)_layoutWithSize:(CGSize)size metricsOnly:(BOOL)only;
+- (CGSize)_sizeOfDescriptionLabel:(double)label;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VUIProductLockupView)initWithFrame:(CGRect)frame;
 - (VUIProductLockupViewDelegate)delegate;
-- (double)_descriptionBottomMarginWithBaselineMargin:(double)a3;
-- (double)_descriptionTopMarginWithBaselineMargin:(double)a3 otherFont:(id)a4;
+- (double)_descriptionBottomMarginWithBaselineMargin:(double)margin;
+- (double)_descriptionTopMarginWithBaselineMargin:(double)margin otherFont:(id)font;
 - (id)_contentDescriptionAttributedString;
 - (id)_contentDescriptionFont;
-- (void)_updateSubtitleLabelForWindowWidth:(double)a3;
+- (void)_updateSubtitleLabelForWindowWidth:(double)width;
 - (void)layoutSubviews;
-- (void)rentalExpirationLabelNeedsRelayout:(id)a3;
-- (void)setContentDescription:(id)a3;
-- (void)setCoverArtImageProxy:(id)a3 placeholderImage:(id)a4;
-- (void)setCoverArtImageView:(id)a3;
-- (void)setDownloadView:(id)a3;
-- (void)setLeftButton:(id)a3;
-- (void)setMediaBadgeTagsView:(id)a3;
-- (void)setMediaInfoTagsView:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)updateWithMediaEntity:(id)a3;
+- (void)rentalExpirationLabelNeedsRelayout:(id)relayout;
+- (void)setContentDescription:(id)description;
+- (void)setCoverArtImageProxy:(id)proxy placeholderImage:(id)image;
+- (void)setCoverArtImageView:(id)view;
+- (void)setDownloadView:(id)view;
+- (void)setLeftButton:(id)button;
+- (void)setMediaBadgeTagsView:(id)view;
+- (void)setMediaInfoTagsView:(id)view;
+- (void)setSubtitle:(id)subtitle;
+- (void)updateWithMediaEntity:(id)entity;
 @end
 
 @implementation VUIProductLockupView
 
-+ (VUIProductLockupView)productLockupViewWithMedia:(id)a3
++ (VUIProductLockupView)productLockupViewWithMedia:(id)media
 {
-  v3 = a3;
+  mediaCopy = media;
   v4 = [VUIProductLockupView alloc];
   v5 = [(VUIProductLockupView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  [(VUIProductLockupView *)v5 updateWithMediaEntity:v3];
+  [(VUIProductLockupView *)v5 updateWithMediaEntity:mediaCopy];
 
   return v5;
 }
 
-- (VUIProductLockupView)initWithFrame:(CGRect)a3
+- (VUIProductLockupView)initWithFrame:(CGRect)frame
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = VUIProductLockupView;
-  v3 = [(VUIProductLockupView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIProductLockupView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [VUISeparatorView alloc];
@@ -110,86 +110,86 @@ void __38__VUIProductLockupView_initWithFrame___block_invoke(uint64_t a1, uint64
   }
 }
 
-- (void)updateWithMediaEntity:(id)a3
+- (void)updateWithMediaEntity:(id)entity
 {
-  v111 = a3;
-  v4 = [v111 type];
+  entityCopy = entity;
+  type = [entityCopy type];
   v5 = +[VUIMediaEntityType movie];
-  if (v4 == v5)
+  if (type == v5)
   {
     v10 = 1;
   }
 
   else
   {
-    v6 = [v111 type];
+    type2 = [entityCopy type];
     v7 = +[VUIMediaEntityType movieRental];
-    if (v6 == v7)
+    if (type2 == v7)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [v111 type];
+      type3 = [entityCopy type];
       v9 = +[VUIMediaEntityType homeVideo];
-      v10 = v8 == v9;
+      v10 = type3 == v9;
     }
   }
 
-  v11 = [v111 HLSResolution];
-  v12 = v11;
-  if (v11)
+  hLSResolution = [entityCopy HLSResolution];
+  v12 = hLSResolution;
+  if (hLSResolution)
   {
-    v13 = v11;
+    resolution = hLSResolution;
   }
 
   else
   {
-    v13 = [v111 resolution];
+    resolution = [entityCopy resolution];
   }
 
-  v14 = v13;
+  v14 = resolution;
 
-  v15 = [v111 HLSColorCapability];
-  v16 = v15;
-  if (v15)
+  hLSColorCapability = [entityCopy HLSColorCapability];
+  v16 = hLSColorCapability;
+  if (hLSColorCapability)
   {
-    v17 = v15;
+    colorCapability = hLSColorCapability;
   }
 
   else
   {
-    v17 = [v111 colorCapability];
+    colorCapability = [entityCopy colorCapability];
   }
 
-  v18 = v17;
+  v18 = colorCapability;
 
-  v19 = [v111 HLSAudioCapability];
-  v20 = v19;
-  if (v19)
+  hLSAudioCapability = [entityCopy HLSAudioCapability];
+  v20 = hLSAudioCapability;
+  if (hLSAudioCapability)
   {
-    v21 = v19;
+    audioCapability = hLSAudioCapability;
   }
 
   else
   {
-    v21 = [v111 audioCapability];
+    audioCapability = [entityCopy audioCapability];
   }
 
-  v22 = v21;
+  v22 = audioCapability;
 
   v109 = v14;
-  v23 = [v14 unsignedIntegerValue];
-  v24 = [v18 unsignedIntegerValue];
+  unsignedIntegerValue = [v14 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v18 unsignedIntegerValue];
   v107 = v22;
-  v25 = [v22 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v22 unsignedIntegerValue];
   v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v110 = v26;
-  if ((v23 - 1) >= 2)
+  if ((unsignedIntegerValue - 1) >= 2)
   {
     v28 = v26;
-    if (v23 != 3)
+    if (unsignedIntegerValue != 3)
     {
       goto LABEL_21;
     }
@@ -213,14 +213,14 @@ LABEL_21:
     goto LABEL_27;
   }
 
-  if ((v24 & 2) != 0)
+  if ((unsignedIntegerValue2 & 2) != 0)
   {
     v30 = VUIImageResourceMapMediaBadgeDolbyVision;
   }
 
   else
   {
-    if ((v24 & 1) == 0)
+    if ((unsignedIntegerValue2 & 1) == 0)
     {
       goto LABEL_27;
     }
@@ -233,7 +233,7 @@ LABEL_21:
   [v28 addObject:v31];
 
 LABEL_27:
-  if (v25)
+  if (unsignedIntegerValue3)
   {
     v32 = objc_alloc_init(VUIProductBadgeResource);
     [(VUIProductBadgeResource *)v32 setName:@"dolby-atmos"];
@@ -241,48 +241,48 @@ LABEL_27:
   }
 
   v33 = [VUILibraryProductLockupLayout alloc];
-  v34 = [v111 type];
+  type4 = [entityCopy type];
   v108 = v18;
   if (v10)
   {
-    v35 = [(VUILibraryProductLockupLayout *)v33 initWithLayoutType:0 entityType:v34];
+    v35 = [(VUILibraryProductLockupLayout *)v33 initWithLayoutType:0 entityType:type4];
     [(VUIProductLockupView *)self setLayout:v35];
 
-    v36 = [v111 contentDescription];
-    [(VUIProductLockupView *)self setContentDescription:v36];
+    contentDescription = [entityCopy contentDescription];
+    [(VUIProductLockupView *)self setContentDescription:contentDescription];
 
-    v37 = [v111 type];
+    type5 = [entityCopy type];
     v38 = +[VUIMediaEntityType movieRental];
     v39 = v38;
-    if (v37 == v38)
+    if (type5 == v38)
     {
     }
 
     else
     {
-      v40 = [v111 extrasURL];
-      v41 = [v40 absoluteString];
-      v42 = [v41 length];
+      extrasURL = [entityCopy extrasURL];
+      absoluteString = [extrasURL absoluteString];
+      v42 = [absoluteString length];
 
       if (!v42)
       {
 LABEL_39:
         v52 = [VUIRoundButton alloc];
         v51 = MEMORY[0x1E695F058];
-        v50 = [(VUIRoundButton *)v52 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+        contentDescription2 = [(VUIRoundButton *)v52 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
         v53 = [VUIImageResourceMap imageForResourceName:@"button-play"];
-        [(VUIRoundButton *)v50 setButtonImage:v53];
+        [(VUIRoundButton *)contentDescription2 setButtonImage:v53];
         v54 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v55 = [(VUILibraryProductLockupViewLayout *)self->_layout playLabelTextLayout];
+        playLabelTextLayout = [(VUILibraryProductLockupViewLayout *)self->_layout playLabelTextLayout];
         v56 = +[VUILocalizationManager sharedInstance];
         v57 = [v56 localizedStringForKey:@"PLAY"];
-        v58 = [VUILabel labelWithString:v57 textLayout:v55 existingLabel:0];
+        v58 = [VUILabel labelWithString:v57 textLayout:playLabelTextLayout existingLabel:0];
 
         [v54 addObject:v58];
-        v59 = [v111 rentalExpirationDate];
-        if (v59)
+        rentalExpirationDate = [entityCopy rentalExpirationDate];
+        if (rentalExpirationDate)
         {
-          v60 = [VUIRentalExpirationLabel labelWithExpirationDate:v59 textLayout:0 existingLabel:0 locStringPrefix:@"EXPIRATION_IN"];
+          v60 = [VUIRentalExpirationLabel labelWithExpirationDate:rentalExpirationDate textLayout:0 existingLabel:0 locStringPrefix:@"EXPIRATION_IN"];
           expirationLabel = self->_expirationLabel;
           self->_expirationLabel = v60;
 
@@ -291,76 +291,76 @@ LABEL_39:
         }
 
         v62 = [v54 copy];
-        [(VUIRoundButton *)v50 setTextLabels:v62];
+        [(VUIRoundButton *)contentDescription2 setTextLabels:v62];
 
-        [(VUIProductLockupView *)self setLeftButton:v50];
+        [(VUIProductLockupView *)self setLeftButton:contentDescription2];
         goto LABEL_42;
       }
 
-      v37 = objc_alloc_init(VUIProductBadgeResource);
-      [(VUIProductBadgeResource *)v37 setName:@"itunes-extras-badge"];
-      [(VUIProductBadgeResource *)v37 setTemplated:0];
-      [v28 addObject:v37];
+      type5 = objc_alloc_init(VUIProductBadgeResource);
+      [(VUIProductBadgeResource *)type5 setName:@"itunes-extras-badge"];
+      [(VUIProductBadgeResource *)type5 setTemplated:0];
+      [v28 addObject:type5];
     }
 
     goto LABEL_39;
   }
 
-  v43 = [(VUILibraryProductLockupLayout *)v33 initWithLayoutType:1 entityType:v34];
+  v43 = [(VUILibraryProductLockupLayout *)v33 initWithLayoutType:1 entityType:type4];
   [(VUIProductLockupView *)self setLayout:v43];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v44 = [v111 seasonNumber];
+    seasonNumber = [entityCopy seasonNumber];
 
-    if (v44)
+    if (seasonNumber)
     {
       v45 = MEMORY[0x1E696AEC0];
       v46 = +[VUILocalizationManager sharedInstance];
       v47 = [v46 localizedStringForKey:@"SEASON_%@"];
-      v48 = [v111 seasonNumber];
-      v49 = [v45 stringWithValidatedFormat:v47 validFormatSpecifiers:@"%@" error:0, v48];
+      seasonNumber2 = [entityCopy seasonNumber];
+      v49 = [v45 stringWithValidatedFormat:v47 validFormatSpecifiers:@"%@" error:0, seasonNumber2];
 
       [(VUIProductLockupView *)self setSubtitle:v49];
     }
   }
 
-  v50 = [v111 contentDescription];
-  [(VUIProductLockupView *)self setContentDescription:v50];
+  contentDescription2 = [entityCopy contentDescription];
+  [(VUIProductLockupView *)self setContentDescription:contentDescription2];
   v51 = MEMORY[0x1E695F058];
 LABEL_42:
 
-  v63 = [(VUIProductLockupView *)self traitCollection];
-  v64 = +[VUIUtilities placeholderImageResourceName:](VUIUtilities, "placeholderImageResourceName:", [v63 userInterfaceStyle]);
+  traitCollection = [(VUIProductLockupView *)self traitCollection];
+  v64 = +[VUIUtilities placeholderImageResourceName:](VUIUtilities, "placeholderImageResourceName:", [traitCollection userInterfaceStyle]);
   v65 = [VUIImageResourceMap imageForResourceName:v64];
 
-  v66 = [VUIMediaEntityImageLoadParamsFactory imageLoadParamsWithMediaEntity:v111 imageType:0];
-  v67 = [(VUIProductLockupView *)self coverArtImageView];
-  if (v67)
+  v66 = [VUIMediaEntityImageLoadParamsFactory imageLoadParamsWithMediaEntity:entityCopy imageType:0];
+  coverArtImageView = [(VUIProductLockupView *)self coverArtImageView];
+  if (coverArtImageView)
   {
-    v68 = [(VUIProductLockupView *)self coverArtImageView];
+    coverArtImageView2 = [(VUIProductLockupView *)self coverArtImageView];
   }
 
   else
   {
-    v68 = objc_alloc_init(MEMORY[0x1E69DF740]);
+    coverArtImageView2 = objc_alloc_init(MEMORY[0x1E69DF740]);
   }
 
-  v69 = v68;
+  v69 = coverArtImageView2;
 
   [v69 setUserInteractionEnabled:0];
   [v69 setPlaceholderImage:v65];
-  v70 = [(VUIProductLockupView *)self layout];
-  [v70 coverArtImageSize];
+  layout = [(VUIProductLockupView *)self layout];
+  [layout coverArtImageSize];
   v72 = v71;
   v74 = v73;
 
-  v75 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v75 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v77 = v76;
-  v78 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v78 scale];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 scale];
   v80 = v79;
 
   [VUIUtilities imageCornerRadiusWithStyle:0];
@@ -368,8 +368,8 @@ LABEL_42:
   if (v66)
   {
     v82 = objc_alloc(MEMORY[0x1E69DF730]);
-    v83 = [v111 mediaLibrary];
-    v84 = [v82 initWithObject:v66 imageLoader:v83 groupType:0];
+    mediaLibrary = [entityCopy mediaLibrary];
+    v84 = [v82 initWithObject:v66 imageLoader:mediaLibrary groupType:0];
 
     [v69 setImageProxy:v84];
 LABEL_47:
@@ -381,7 +381,7 @@ LABEL_47:
   v101 = NSSelectorFromString(&cfstr_Artworkurl.isa);
   if (objc_opt_respondsToSelector())
   {
-    v84 = ([v111 methodForSelector:v101])(v111, v101);
+    v84 = ([entityCopy methodForSelector:v101])(entityCopy, v101);
     if ([v84 length])
     {
       v102 = [objc_alloc(MEMORY[0x1E69DF770]) initWithSrc:v84 size:{v72 * v77, v74 * v80}];
@@ -391,8 +391,8 @@ LABEL_47:
       [MEMORY[0x1E69DF6D0] radiiFromRadius:v100];
       [v102 setBorderRadii:?];
       [v102 setExtension:@"jpeg"];
-      v104 = [MEMORY[0x1E69DC888] vui_imageBorderColor];
-      [v102 setBackgroundColor:v104];
+      vui_imageBorderColor = [MEMORY[0x1E69DC888] vui_imageBorderColor];
+      [v102 setBackgroundColor:vui_imageBorderColor];
 
       v105 = [MEMORY[0x1E69DF720] makeImageViewWithDescriptor:v102 existingView:v69];
 
@@ -403,13 +403,13 @@ LABEL_47:
   }
 
 LABEL_48:
-  v85 = [(VUIProductLockupView *)self layout];
-  [v85 coverArtCornerRadius];
+  layout2 = [(VUIProductLockupView *)self layout];
+  [layout2 coverArtCornerRadius];
   [v69 setCornerRadius:?];
 
   [v69 setBorderWidth:1.0];
-  v86 = [MEMORY[0x1E69DC888] vui_lockupBorderColorOpal];
-  [v69 setBorderColor:v86];
+  vui_lockupBorderColorOpal = [MEMORY[0x1E69DC888] vui_lockupBorderColorOpal];
+  [v69 setBorderColor:vui_lockupBorderColorOpal];
 
   [(VUIProductLockupView *)self setCoverArtImageView:v69];
   v87 = [[VUIMediaTagsViewLayout alloc] initWithType:12];
@@ -419,31 +419,31 @@ LABEL_48:
   v91 = v51[2];
   v92 = v51[3];
   v93 = [(VUIMediaTagsView *)v88 initWithFrame:v87 layout:*v51, v90, v91, v92];
-  v94 = [[VUIMediaTagsViewHelper alloc] initWithVUIMediaEntity:v111];
+  v94 = [[VUIMediaTagsViewHelper alloc] initWithVUIMediaEntity:entityCopy];
   [(VUIMediaTagsViewHelper *)v94 addSeperatorKey:@"·"];
-  v95 = [(VUIMediaTagsViewHelper *)v94 tagsViewDictionary];
-  [(VUIMediaTagsView *)v93 updateWithMetadata:v95];
+  tagsViewDictionary = [(VUIMediaTagsViewHelper *)v94 tagsViewDictionary];
+  [(VUIMediaTagsView *)v93 updateWithMetadata:tagsViewDictionary];
 
   [(VUIProductLockupView *)self setMediaInfoTagsView:v93];
   v96 = [[VUIMediaTagsViewLayout alloc] initWithType:11];
   v97 = [[VUIMediaTagsView alloc] initWithFrame:v96 layout:v89, v90, v91, v92];
-  v98 = [[VUIMediaTagsViewHelper alloc] initWithVUIMediaEntity:v111];
+  v98 = [[VUIMediaTagsViewHelper alloc] initWithVUIMediaEntity:entityCopy];
   [(VUIMediaTagsViewHelper *)v98 addSeperatorKey:@"·"];
-  v99 = [(VUIMediaTagsViewHelper *)v98 tagsViewDictionary];
-  [(VUIMediaTagsView *)v97 updateWithMetadata:v99];
+  tagsViewDictionary2 = [(VUIMediaTagsViewHelper *)v98 tagsViewDictionary];
+  [(VUIMediaTagsView *)v97 updateWithMetadata:tagsViewDictionary2];
 
   [(VUIProductLockupView *)self setMediaBadgeTagsView:v97];
 }
 
-- (void)setCoverArtImageView:(id)a3
+- (void)setCoverArtImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   coverArtImageView = self->_coverArtImageView;
-  v7 = v5;
-  if (coverArtImageView != v5)
+  v7 = viewCopy;
+  if (coverArtImageView != viewCopy)
   {
     [(VUIImageView *)coverArtImageView removeFromSuperview];
-    objc_storeStrong(&self->_coverArtImageView, a3);
+    objc_storeStrong(&self->_coverArtImageView, view);
     if (self->_coverArtImageView)
     {
       [(VUIProductLockupView *)self addSubview:?];
@@ -451,13 +451,13 @@ LABEL_48:
   }
 }
 
-- (void)setCoverArtImageProxy:(id)a3 placeholderImage:(id)a4
+- (void)setCoverArtImageProxy:(id)proxy placeholderImage:(id)image
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(VUIImageView *)self->_coverArtImageView imageProxy];
-  v20 = v7;
-  v10 = v9;
+  proxyCopy = proxy;
+  imageCopy = image;
+  imageProxy = [(VUIImageView *)self->_coverArtImageView imageProxy];
+  v20 = proxyCopy;
+  v10 = imageProxy;
   if (v10 == v20)
   {
   }
@@ -486,9 +486,9 @@ LABEL_48:
     }
   }
 
-  v14 = [(VUIImageView *)self->_coverArtImageView placeholderImage];
-  v11 = v8;
-  v15 = v14;
+  placeholderImage = [(VUIImageView *)self->_coverArtImageView placeholderImage];
+  v11 = imageCopy;
+  v15 = placeholderImage;
   v12 = v15;
   if (v15 == v11)
   {
@@ -517,25 +517,25 @@ LABEL_16:
     self->_coverArtImageView = v18;
 
     [(VUIImageProxy *)self->_coverArtImageProxy cancel];
-    objc_storeStrong(&self->_coverArtImageProxy, a3);
-    objc_storeStrong(&self->_coverArtPlaceholderImage, a4);
+    objc_storeStrong(&self->_coverArtImageProxy, proxy);
+    objc_storeStrong(&self->_coverArtPlaceholderImage, image);
     [(VUIImageView *)self->_coverArtImageView setImageProxy:v20];
-    [(VUIImageView *)self->_coverArtImageView setPlaceholderImage:v8];
+    [(VUIImageView *)self->_coverArtImageView setPlaceholderImage:imageCopy];
     [(VUIProductLockupView *)self addSubview:self->_coverArtImageView];
   }
 
 LABEL_17:
 }
 
-- (void)setMediaInfoTagsView:(id)a3
+- (void)setMediaInfoTagsView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   mediaInfoTagsView = self->_mediaInfoTagsView;
-  v7 = v5;
-  if (mediaInfoTagsView != v5)
+  v7 = viewCopy;
+  if (mediaInfoTagsView != viewCopy)
   {
     [(VUIMediaTagsView *)mediaInfoTagsView removeFromSuperview];
-    objc_storeStrong(&self->_mediaInfoTagsView, a3);
+    objc_storeStrong(&self->_mediaInfoTagsView, view);
     if (self->_mediaInfoTagsView)
     {
       [(VUIProductLockupView *)self addSubview:?];
@@ -543,15 +543,15 @@ LABEL_17:
   }
 }
 
-- (void)setMediaBadgeTagsView:(id)a3
+- (void)setMediaBadgeTagsView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   mediaBadgeTagsView = self->_mediaBadgeTagsView;
-  v7 = v5;
-  if (mediaBadgeTagsView != v5)
+  v7 = viewCopy;
+  if (mediaBadgeTagsView != viewCopy)
   {
     [(VUIMediaTagsView *)mediaBadgeTagsView removeFromSuperview];
-    objc_storeStrong(&self->_mediaBadgeTagsView, a3);
+    objc_storeStrong(&self->_mediaBadgeTagsView, view);
     if (self->_mediaBadgeTagsView)
     {
       [(VUIProductLockupView *)self addSubview:?];
@@ -559,16 +559,16 @@ LABEL_17:
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v10 = a3;
+  subtitleCopy = subtitle;
   if (![(NSString *)self->_subtitle isEqualToString:?])
   {
     [(VUILabel *)self->_subtitleLabel removeFromSuperview];
     subtitleLabel = self->_subtitleLabel;
     self->_subtitleLabel = 0;
 
-    objc_storeStrong(&self->_subtitle, a3);
+    objc_storeStrong(&self->_subtitle, subtitle);
     if ([(NSString *)self->_subtitle length])
     {
       layout = self->_layout;
@@ -583,24 +583,24 @@ LABEL_17:
   }
 }
 
-- (void)setContentDescription:(id)a3
+- (void)setContentDescription:(id)description
 {
-  v5 = a3;
-  if (![(NSString *)self->_contentDescription isEqualToString:v5])
+  descriptionCopy = description;
+  if (![(NSString *)self->_contentDescription isEqualToString:descriptionCopy])
   {
     [(FocusableTextView *)self->_descriptionTextView removeFromSuperview];
-    objc_storeStrong(&self->_contentDescription, a3);
+    objc_storeStrong(&self->_contentDescription, description);
     if ([(NSString *)self->_contentDescription length])
     {
       layout = self->_layout;
-      v7 = [(VUIProductLockupView *)self traitCollection];
-      v8 = [(VUILibraryProductLockupViewLayout *)layout descriptionTextLayoutForTraitCollection:v7 isExpanded:[(VUIProductLockupView *)self contentDescriptionExpanded]];
+      traitCollection = [(VUIProductLockupView *)self traitCollection];
+      v8 = [(VUILibraryProductLockupViewLayout *)layout descriptionTextLayoutForTraitCollection:traitCollection isExpanded:[(VUIProductLockupView *)self contentDescriptionExpanded]];
 
-      v9 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-      [v8 setColor:v9];
+      vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+      [v8 setColor:vui_secondaryTextColor];
 
-      v10 = [(VUIProductLockupView *)self _contentDescriptionAttributedString];
-      v11 = [FocusableTextView textViewWithAttributedString:v10 textLayout:v8 existingTextView:self->_descriptionTextView];
+      _contentDescriptionAttributedString = [(VUIProductLockupView *)self _contentDescriptionAttributedString];
+      v11 = [FocusableTextView textViewWithAttributedString:_contentDescriptionAttributedString textLayout:v8 existingTextView:self->_descriptionTextView];
       descriptionTextView = self->_descriptionTextView;
       self->_descriptionTextView = v11;
 
@@ -631,15 +631,15 @@ void __46__VUIProductLockupView_setContentDescription___block_invoke(uint64_t a1
   [v2 contentDescriptionExpanded];
 }
 
-- (void)setLeftButton:(id)a3
+- (void)setLeftButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   leftButton = self->_leftButton;
-  v7 = v5;
-  if (leftButton != v5)
+  v7 = buttonCopy;
+  if (leftButton != buttonCopy)
   {
     [(VUIRoundButton *)leftButton removeFromSuperview];
-    objc_storeStrong(&self->_leftButton, a3);
+    objc_storeStrong(&self->_leftButton, button);
     if (self->_leftButton)
     {
       [(VUIProductLockupView *)self addSubview:?];
@@ -647,15 +647,15 @@ void __46__VUIProductLockupView_setContentDescription___block_invoke(uint64_t a1
   }
 }
 
-- (void)setDownloadView:(id)a3
+- (void)setDownloadView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   downloadView = self->_downloadView;
-  v7 = v5;
-  if (downloadView != v5)
+  v7 = viewCopy;
+  if (downloadView != viewCopy)
   {
     [(UIView *)downloadView removeFromSuperview];
-    objc_storeStrong(&self->_downloadView, a3);
+    objc_storeStrong(&self->_downloadView, view);
     if (self->_downloadView)
     {
       [(VUIProductLockupView *)self addSubview:?];
@@ -673,22 +673,22 @@ void __46__VUIProductLockupView_setContentDescription___block_invoke(uint64_t a1
   [(VUIProductLockupView *)self _layoutWithSize:0 metricsOnly:Width, Height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUIProductLockupView *)self _layoutWithSize:1 metricsOnly:a3.width, a3.height];
+  [(VUIProductLockupView *)self _layoutWithSize:1 metricsOnly:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)rentalExpirationLabelNeedsRelayout:(id)a3
+- (void)rentalExpirationLabelNeedsRelayout:(id)relayout
 {
-  [a3 sizeToFit];
+  [relayout sizeToFit];
 
   [(VUIProductLockupView *)self setNeedsLayout];
 }
 
-- (void)_updateSubtitleLabelForWindowWidth:(double)a3
+- (void)_updateSubtitleLabelForWindowWidth:(double)width
 {
   layout = self->_layout;
   [(VUIProductLockupView *)self bounds];
@@ -699,29 +699,29 @@ void __46__VUIProductLockupView_setContentDescription___block_invoke(uint64_t a1
 - (id)_contentDescriptionAttributedString
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = [(VUIProductLockupView *)self contentDescription];
+  contentDescription = [(VUIProductLockupView *)self contentDescription];
 
-  if (v3)
+  if (contentDescription)
   {
-    v4 = [(VUIProductLockupView *)self _contentDescriptionFont];
-    v5 = [(VUIProductLockupView *)self contentDescription];
-    v6 = [MEMORY[0x1E69AD988] parser];
+    _contentDescriptionFont = [(VUIProductLockupView *)self _contentDescriptionFont];
+    contentDescription2 = [(VUIProductLockupView *)self contentDescription];
+    parser = [MEMORY[0x1E69AD988] parser];
     v7 = *MEMORY[0x1E69DB648];
     v19 = *MEMORY[0x1E69DB648];
-    v20[0] = v4;
+    v20[0] = _contentDescriptionFont;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v9 = [MEMORY[0x1E69AD988] displayDelegateWithDefaultAttributes:v8];
-    [v6 setDelegate:v9];
+    [parser setDelegate:v9];
     v16 = 0;
-    v10 = [v6 attributedStringForHTMLString:v5 error:&v16];
+    v10 = [parser attributedStringForHTMLString:contentDescription2 error:&v16];
     v11 = v16;
     if (v11)
     {
       v12 = objc_alloc(MEMORY[0x1E696AAB0]);
       v17 = v7;
-      v18 = v4;
+      v18 = _contentDescriptionFont;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-      v14 = [v12 initWithString:v5 attributes:v13];
+      v14 = [v12 initWithString:contentDescription2 attributes:v13];
 
       v10 = v14;
     }
@@ -735,24 +735,24 @@ void __46__VUIProductLockupView_setContentDescription___block_invoke(uint64_t a1
   return v10;
 }
 
-- (CGSize)_sizeOfDescriptionLabel:(double)a3
+- (CGSize)_sizeOfDescriptionLabel:(double)label
 {
   [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:?];
   v6 = v5;
   v8 = v7;
-  v9 = [(VUIProductLockupView *)self layout];
-  if ([v9 layoutTypeForWindowWidth:a3])
+  layout = [(VUIProductLockupView *)self layout];
+  if ([layout layoutTypeForWindowWidth:label])
   {
-    v10 = [(VUIProductLockupView *)self traitCollection];
-    v11 = [v10 isAXEnabled];
+    traitCollection = [(VUIProductLockupView *)self traitCollection];
+    isAXEnabled = [traitCollection isAXEnabled];
 
-    if (!v11)
+    if (!isAXEnabled)
     {
-      v12 = [(VUIProductLockupView *)self layout];
-      [v12 coverArtImageSize];
-      v14 = a3 - v13;
-      v15 = [(VUIProductLockupView *)self layout];
-      [v15 coverArtImageRightMarginForWindowWidth:a3];
+      layout2 = [(VUIProductLockupView *)self layout];
+      [layout2 coverArtImageSize];
+      v14 = label - v13;
+      layout3 = [(VUIProductLockupView *)self layout];
+      [layout3 coverArtImageRightMarginForWindowWidth:label];
       v17 = v14 - v16 - v8;
 
       goto LABEL_6;
@@ -763,7 +763,7 @@ void __46__VUIProductLockupView_setContentDescription___block_invoke(uint64_t a1
   {
   }
 
-  v17 = a3 - v6;
+  v17 = label - v6;
 LABEL_6:
   descriptionTextView = self->_descriptionTextView;
 
@@ -773,19 +773,19 @@ LABEL_6:
   return result;
 }
 
-- (double)_descriptionTopMarginWithBaselineMargin:(double)a3 otherFont:(id)a4
+- (double)_descriptionTopMarginWithBaselineMargin:(double)margin otherFont:(id)font
 {
-  v6 = a4;
-  v7 = [(VUIProductLockupView *)self _contentDescriptionFont];
-  v8 = [(VUIProductLockupView *)self traitCollection];
-  if (v6)
+  fontCopy = font;
+  _contentDescriptionFont = [(VUIProductLockupView *)self _contentDescriptionFont];
+  traitCollection = [(VUIProductLockupView *)self traitCollection];
+  if (fontCopy)
   {
-    [v7 topMarginToFont:v6 withBaselineMargin:v8 traitCollection:a3];
+    [_contentDescriptionFont topMarginToFont:fontCopy withBaselineMargin:traitCollection traitCollection:margin];
   }
 
   else
   {
-    [v7 topMarginWithBaselineMargin:v8 traitCollection:a3];
+    [_contentDescriptionFont topMarginWithBaselineMargin:traitCollection traitCollection:margin];
   }
 
   v10 = v9;
@@ -793,24 +793,24 @@ LABEL_6:
   return v10;
 }
 
-- (double)_descriptionBottomMarginWithBaselineMargin:(double)a3
+- (double)_descriptionBottomMarginWithBaselineMargin:(double)margin
 {
-  v5 = [(VUIProductLockupView *)self _contentDescriptionFont];
-  v6 = [(VUIProductLockupView *)self traitCollection];
-  [v5 bottomMarginWithBaselineMargin:v6 traitCollection:a3];
+  _contentDescriptionFont = [(VUIProductLockupView *)self _contentDescriptionFont];
+  traitCollection = [(VUIProductLockupView *)self traitCollection];
+  [_contentDescriptionFont bottomMarginWithBaselineMargin:traitCollection traitCollection:margin];
   v8 = v7;
 
   return v8;
 }
 
-- (CGSize)_layoutWithSize:(CGSize)a3 metricsOnly:(BOOL)a4
+- (CGSize)_layoutWithSize:(CGSize)size metricsOnly:(BOOL)only
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
-  if (!a4)
+  onlyCopy = only;
+  height = size.height;
+  width = size.width;
+  if (!only)
   {
-    [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:a3.width];
+    [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:size.width];
     v9 = v8;
     v11 = width - (v8 + v10);
     [(VUIBaseView *)self->_topSeparatorView sizeThatFits:v11, 1.79769313e308];
@@ -820,30 +820,30 @@ LABEL_6:
     [(VUIProductLockupView *)self _updateSubtitleLabelForWindowWidth:width];
   }
 
-  v16 = [(VUIProductLockupView *)self traitCollection];
-  v17 = [v16 isAXEnabled];
+  traitCollection = [(VUIProductLockupView *)self traitCollection];
+  isAXEnabled = [traitCollection isAXEnabled];
 
-  if (v17)
+  if (isAXEnabled)
   {
 
-    [(VUIProductLockupView *)self _layoutForCategoryAccessibility:v4 metricsOnly:width, height];
+    [(VUIProductLockupView *)self _layoutForCategoryAccessibility:onlyCopy metricsOnly:width, height];
   }
 
   else
   {
-    v20 = [(VUIProductLockupView *)self layout];
-    v21 = [v20 layoutTypeForWindowWidth:width];
+    layout = [(VUIProductLockupView *)self layout];
+    v21 = [layout layoutTypeForWindowWidth:width];
 
     if (v21)
     {
 
-      [(VUIProductLockupView *)self _layoutForStacked:v4 metricsOnly:width, height];
+      [(VUIProductLockupView *)self _layoutForStacked:onlyCopy metricsOnly:width, height];
     }
 
     else
     {
 
-      [(VUIProductLockupView *)self _layoutForCompact:v4 metricsOnly:width, height];
+      [(VUIProductLockupView *)self _layoutForCompact:onlyCopy metricsOnly:width, height];
     }
   }
 
@@ -852,10 +852,10 @@ LABEL_6:
   return result;
 }
 
-- (CGSize)_layoutForCategoryAccessibility:(CGSize)a3 metricsOnly:(BOOL)a4
+- (CGSize)_layoutForCategoryAccessibility:(CGSize)accessibility metricsOnly:(BOOL)only
 {
-  width = a3.width;
-  [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:{a3.width, a3.height}];
+  width = accessibility.width;
+  [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:{accessibility.width, accessibility.height}];
   v8 = v7;
   v10 = v9;
   +[VUIViewSpacer spacerB];
@@ -875,18 +875,18 @@ LABEL_6:
   [(VUIRoundButton *)self->_leftButton sizeThatFits:width, 1.79769313e308];
   v50 = v22;
   v53 = v23;
-  v24 = [(VUIProductLockupView *)self _contentDescriptionFont];
+  _contentDescriptionFont = [(VUIProductLockupView *)self _contentDescriptionFont];
   [(VUILibraryProductLockupViewLayout *)self->_layout contentDescriptionTopMarginForWindowWidth:width];
   v26 = v25;
-  v27 = [(VUIProductLockupView *)self traitCollection];
-  [v24 topMarginWithBaselineMargin:v27 traitCollection:v26];
+  traitCollection = [(VUIProductLockupView *)self traitCollection];
+  [_contentDescriptionFont topMarginWithBaselineMargin:traitCollection traitCollection:v26];
 
   [(VUIBaseView *)self->_mediaInfoTagsView sizeThatFits:width, 1.79769313e308];
   v48 = v28;
   v30 = v29;
   [(VUIBaseView *)self->_mediaBadgeTagsView sizeThatFits:width, 1.79769313e308];
   v33 = v32;
-  if (!a4)
+  if (!only)
   {
     v34 = v31;
     [(VUIImageView *)self->_coverArtImageView setFrame:v8, v12, v49, v56];
@@ -929,11 +929,11 @@ LABEL_6:
   return result;
 }
 
-- (CGSize)_layoutForCompact:(CGSize)a3 metricsOnly:(BOOL)a4
+- (CGSize)_layoutForCompact:(CGSize)compact metricsOnly:(BOOL)only
 {
-  v4 = a4;
-  width = a3.width;
-  [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:{a3.width, a3.height}];
+  onlyCopy = only;
+  width = compact.width;
+  [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:{compact.width, compact.height}];
   v8 = v7;
   v10 = v9;
   [(VUILibraryProductLockupViewLayout *)self->_layout coverArtImageSize];
@@ -944,28 +944,28 @@ LABEL_6:
   [(VUIProductLockupView *)self _sizeOfDescriptionLabel:width];
   v118 = v15;
   v127 = v16;
-  v17 = [(VUILabel *)self->_subtitleLabel font];
+  font = [(VUILabel *)self->_subtitleLabel font];
   [(VUILibraryProductLockupViewLayout *)self->_layout subtitleTopMarginForWindowWidth:width];
   v19 = v18;
-  v20 = [(VUIProductLockupView *)self traitCollection];
-  [v17 topMarginWithBaselineMargin:v20 traitCollection:v19];
+  traitCollection = [(VUIProductLockupView *)self traitCollection];
+  [font topMarginWithBaselineMargin:traitCollection traitCollection:v19];
   v114 = v21;
 
   [(VUILabel *)self->_subtitleLabel sizeThatFits:width, 1.79769313e308];
   rect = v22;
   v24 = v23;
-  v25 = [(VUIProductLockupView *)self _contentDescriptionFont];
+  _contentDescriptionFont = [(VUIProductLockupView *)self _contentDescriptionFont];
   [(VUILibraryProductLockupViewLayout *)self->_layout contentDescriptionTopMarginForWindowWidth:width];
   v27 = v26;
-  v28 = [(VUIProductLockupView *)self traitCollection];
-  [v25 topMarginWithBaselineMargin:v28 traitCollection:v27];
+  traitCollection2 = [(VUIProductLockupView *)self traitCollection];
+  [_contentDescriptionFont topMarginWithBaselineMargin:traitCollection2 traitCollection:v27];
   v126 = v29;
 
-  v30 = [(VUIProductLockupView *)self _contentDescriptionFont];
+  _contentDescriptionFont2 = [(VUIProductLockupView *)self _contentDescriptionFont];
   [(VUILibraryProductLockupViewLayout *)self->_layout contentDescriptionBottomMarginForWindowWidth:width];
   v32 = v31;
-  v33 = [(VUIProductLockupView *)self traitCollection];
-  [v30 bottomMarginWithBaselineMargin:v33 traitCollection:v32];
+  traitCollection3 = [(VUIProductLockupView *)self traitCollection];
+  [_contentDescriptionFont2 bottomMarginWithBaselineMargin:traitCollection3 traitCollection:v32];
   v128 = v34;
 
   [(VUIBaseView *)self->_mediaInfoTagsView sizeThatFits:width, 1.79769313e308];
@@ -976,8 +976,8 @@ LABEL_6:
   v124 = v39;
   [(VUILibraryProductLockupViewLayout *)self->_layout metadataTopMargin];
   v41 = v40;
-  v42 = [(VUIProductLockupView *)self traitCollection];
-  [VUIUtilities scaleContentSizeValue:v42 forTraitCollection:v41];
+  traitCollection4 = [(VUIProductLockupView *)self traitCollection];
+  [VUIUtilities scaleContentSizeValue:traitCollection4 forTraitCollection:v41];
   v129 = v43;
 
   v112 = v10;
@@ -985,7 +985,7 @@ LABEL_6:
   v119 = v44;
   v122 = v45;
   [(UIView *)self->_downloadView sizeThatFits:width - v8 - v10, 1.79769313e308];
-  if (!v4)
+  if (!onlyCopy)
   {
     v113 = v47;
     v102 = v8;
@@ -1181,10 +1181,10 @@ LABEL_6:
   return result;
 }
 
-- (CGSize)_layoutForStacked:(CGSize)a3 metricsOnly:(BOOL)a4
+- (CGSize)_layoutForStacked:(CGSize)stacked metricsOnly:(BOOL)only
 {
-  width = a3.width;
-  [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:{a3.width, a3.height}];
+  width = stacked.width;
+  [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:{stacked.width, stacked.height}];
   v8 = v7;
   v10 = v9;
   +[VUIViewSpacer spacerB];
@@ -1198,14 +1198,14 @@ LABEL_6:
   v127 = v13;
   v125 = v16;
   v17 = v8 + v10 + v13 + v16;
-  v18 = [(VUILabel *)self->_subtitleLabel font];
-  v19 = [(VUIProductLockupView *)self traitCollection];
-  [v18 topMarginWithBaselineMargin:v19 traitCollection:30.0];
+  font = [(VUILabel *)self->_subtitleLabel font];
+  traitCollection = [(VUIProductLockupView *)self traitCollection];
+  [font topMarginWithBaselineMargin:traitCollection traitCollection:30.0];
   v21 = v20;
 
-  v22 = [(VUILabel *)self->_subtitleLabel font];
-  v23 = [(VUIProductLockupView *)self traitCollection];
-  [v22 bottomMarginWithBaselineMargin:v23 traitCollection:16.0];
+  font2 = [(VUILabel *)self->_subtitleLabel font];
+  traitCollection2 = [(VUIProductLockupView *)self traitCollection];
+  [font2 bottomMarginWithBaselineMargin:traitCollection2 traitCollection:16.0];
   v114 = v24;
 
   [(VUILabel *)self->_subtitleLabel sizeThatFits:width - v17, 1.79769313e308];
@@ -1216,8 +1216,8 @@ LABEL_6:
   v30 = v29;
   [(VUILibraryProductLockupViewLayout *)self->_layout contentDescriptionTopMarginForWindowWidth:width];
   v32 = v31;
-  v33 = [(VUILabel *)self->_subtitleLabel font];
-  [(VUIProductLockupView *)self _descriptionTopMarginWithBaselineMargin:v33 otherFont:v32];
+  font3 = [(VUILabel *)self->_subtitleLabel font];
+  [(VUIProductLockupView *)self _descriptionTopMarginWithBaselineMargin:font3 otherFont:v32];
   v35 = v34;
 
   [(VUILibraryProductLockupViewLayout *)self->_layout contentDescriptionBottomMarginForWindowWidth:width];
@@ -1233,7 +1233,7 @@ LABEL_6:
   v126 = v41;
   [(VUIRoundButton *)self->_leftButton sizeThatFits:v17, 1.79769313e308];
   v124 = v43;
-  if (!a4)
+  if (!only)
   {
     v96 = width;
     v97 = v42;
@@ -1498,8 +1498,8 @@ LABEL_6:
   v3 = MEMORY[0x1E69DD2E8];
   [(VUIProductLockupView *)self bounds];
   v4 = [v3 vui_currentSizeClassForWindowWidth:CGRectGetWidth(v9)];
-  v5 = [(VUIProductLockupView *)self layout];
-  v6 = [v5 contentDescriptionFontForSizeClass:v4];
+  layout = [(VUIProductLockupView *)self layout];
+  v6 = [layout contentDescriptionFontForSizeClass:v4];
 
   return v6;
 }

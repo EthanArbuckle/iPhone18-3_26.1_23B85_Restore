@@ -1,24 +1,24 @@
 @interface CACEditingModeOverlayManager
 - (CACEditingModeOverlayManagerDelegate)delegate;
-- (CGRect)_interfaceOrientedFrameForElement:(id)a3 axFrame:(CGRect)a4;
-- (_NSRange)rangeForLineNumber:(int64_t)a3 forElement:(id)a4;
-- (id)_visibleLineRangesForElement:(id)a3 lineFetchingGeneration:(unint64_t)a4;
-- (id)_webVisibleLineRangesForElement:(id)a3 lineFetchingGeneration:(unint64_t)a4;
-- (void)_showOverlayElementsForElement:(id)a3 textUnit:(unint64_t)a4 startIndex:(unint64_t)a5;
-- (void)_showPopoverForElement:(id)a3 targetRange:(_NSRange)a4 startIndex:(unint64_t)a5 type:(int64_t)a6;
+- (CGRect)_interfaceOrientedFrameForElement:(id)element axFrame:(CGRect)frame;
+- (_NSRange)rangeForLineNumber:(int64_t)number forElement:(id)element;
+- (id)_visibleLineRangesForElement:(id)element lineFetchingGeneration:(unint64_t)generation;
+- (id)_webVisibleLineRangesForElement:(id)element lineFetchingGeneration:(unint64_t)generation;
+- (void)_showOverlayElementsForElement:(id)element textUnit:(unint64_t)unit startIndex:(unint64_t)index;
+- (void)_showPopoverForElement:(id)element targetRange:(_NSRange)range startIndex:(unint64_t)index type:(int64_t)type;
 - (void)hide;
 - (void)hideWithoutAnimation;
 - (void)numberingDidUpdate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)startDelayedDimmingOfNumbers;
 - (void)stopDelayedDimmingOfNumbers;
 @end
 
 @implementation CACEditingModeOverlayManager
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -28,22 +28,22 @@
   }
 }
 
-- (_NSRange)rangeForLineNumber:(int64_t)a3 forElement:(id)a4
+- (_NSRange)rangeForLineNumber:(int64_t)number forElement:(id)element
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v14 = xmmword_26B404FF0;
   v15[0] = @"lineNumber";
   v5 = MEMORY[0x277CCABB0];
-  v6 = a4;
-  v7 = [v5 numberWithInteger:a3];
+  elementCopy = element;
+  v7 = [v5 numberWithInteger:number];
   v15[1] = @"lineColumn";
   v16[0] = v7;
   v16[1] = &unk_287BEFE68;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
-  v9 = [v6 uiElement];
+  uiElement = [elementCopy uiElement];
 
-  v10 = [v9 objectWithAXAttribute:92504 parameter:v8];
+  v10 = [uiElement objectWithAXAttribute:92504 parameter:v8];
   if (v10)
   {
     v11 = CFGetTypeID(v10);
@@ -60,28 +60,28 @@
   return result;
 }
 
-- (id)_webVisibleLineRangesForElement:(id)a3 lineFetchingGeneration:(unint64_t)a4
+- (id)_webVisibleLineRangesForElement:(id)element lineFetchingGeneration:(unint64_t)generation
 {
-  v6 = a3;
-  v7 = [v6 textMarkerRangeForSelection];
+  elementCopy = element;
+  textMarkerRangeForSelection = [elementCopy textMarkerRangeForSelection];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __87__CACEditingModeOverlayManager__webVisibleLineRangesForElement_lineFetchingGeneration___block_invoke;
   aBlock[3] = &unk_279CEBF90;
-  v21 = v6;
-  v22 = a4;
+  v21 = elementCopy;
+  generationCopy = generation;
   aBlock[4] = self;
-  v8 = v6;
+  v8 = elementCopy;
   v9 = _Block_copy(aBlock);
-  v10 = [v7 firstObject];
-  v11 = [v8 rangeForTextMarkers:v7];
+  firstObject = [textMarkerRangeForSelection firstObject];
+  v11 = [v8 rangeForTextMarkers:textMarkerRangeForSelection];
   v13 = [v8 isVisibleTextRange:{v11, v12}];
-  v14 = (*(v9 + 2))(v9, 0, v10, v13 ^ 1u);
-  v15 = (*(v9 + 2))(v9, 1, v10, v13 ^ 1u);
-  v16 = [v14 reverseObjectEnumerator];
-  v17 = [v16 allObjects];
+  v14 = (*(v9 + 2))(v9, 0, firstObject, v13 ^ 1u);
+  v15 = (*(v9 + 2))(v9, 1, firstObject, v13 ^ 1u);
+  reverseObjectEnumerator = [v14 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v18 = [v17 arrayByAddingObjectsFromArray:v15];
+  v18 = [allObjects arrayByAddingObjectsFromArray:v15];
 
   return v18;
 }
@@ -186,30 +186,30 @@ LABEL_21:
   return v8;
 }
 
-- (id)_visibleLineRangesForElement:(id)a3 lineFetchingGeneration:(unint64_t)a4
+- (id)_visibleLineRangesForElement:(id)element lineFetchingGeneration:(unint64_t)generation
 {
-  v6 = a3;
-  if ([v6 hasAnyTraits:*MEMORY[0x277CE6E90]])
+  elementCopy = element;
+  if ([elementCopy hasAnyTraits:*MEMORY[0x277CE6E90]])
   {
-    v7 = [(CACEditingModeOverlayManager *)self _webVisibleLineRangesForElement:v6 lineFetchingGeneration:a4];
+    array = [(CACEditingModeOverlayManager *)self _webVisibleLineRangesForElement:elementCopy lineFetchingGeneration:generation];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB18] array];
-    v8 = [v6 uiElement];
-    v9 = [v6 selectedTextRange];
-    v29 = v8;
-    if (v8 && self->_lineFetchingGeneration == a4)
+    array = [MEMORY[0x277CBEB18] array];
+    uiElement = [elementCopy uiElement];
+    selectedTextRange = [elementCopy selectedTextRange];
+    v29 = uiElement;
+    if (uiElement && self->_lineFetchingGeneration == generation)
     {
       v10 = 0;
       v11 = 10000;
-      if (v9 > 10000)
+      if (selectedTextRange > 10000)
       {
-        v11 = v9;
+        v11 = selectedTextRange;
       }
 
-      v12 = v9 == 0x7FFFFFFFFFFFFFFFLL || v9 == 0x7FFFFFFF;
+      v12 = selectedTextRange == 0x7FFFFFFFFFFFFFFFLL || selectedTextRange == 0x7FFFFFFF;
       v13 = v11 - 10000;
       if (v12)
       {
@@ -221,11 +221,11 @@ LABEL_21:
         v14 = v13;
       }
 
-      v28 = v6;
+      v28 = elementCopy;
       while (1)
       {
         v15 = objc_autoreleasePoolPush();
-        v16 = [(CACEditingModeOverlayManager *)self rangeForLineNumber:v14 forElement:v6];
+        v16 = [(CACEditingModeOverlayManager *)self rangeForLineNumber:v14 forElement:elementCopy];
         if (v16 + v17 <= (v14 + 1))
         {
           ++v14;
@@ -243,27 +243,27 @@ LABEL_21:
 
         v18 = v16;
         v19 = v17;
-        v20 = [v7 count];
+        v20 = [array count];
         v21 = v10 <= 4 || v20 == 0;
         if (!v21 || v18 == 0x7FFFFFFF || !(v19 | v18))
         {
           break;
         }
 
-        if ([v6 isVisibleTextRange:{v18, v19}])
+        if ([elementCopy isVisibleTextRange:{v18, v19}])
         {
           [MEMORY[0x277CCAE60] valueWithRange:{v18, v19}];
-          v22 = self;
-          v24 = v23 = a4;
-          v25 = [v7 containsObject:v24];
+          selfCopy = self;
+          v24 = v23 = generation;
+          v25 = [array containsObject:v24];
 
-          a4 = v23;
-          self = v22;
-          v6 = v28;
+          generation = v23;
+          self = selfCopy;
+          elementCopy = v28;
           if ((v25 & 1) == 0)
           {
             v26 = [MEMORY[0x277CCAE60] valueWithRange:{v18, v19}];
-            [v7 addObject:v26];
+            [array addObject:v26];
 
             v10 = 0;
           }
@@ -271,7 +271,7 @@ LABEL_21:
 
         ++v10;
         objc_autoreleasePoolPop(v15);
-        if (self->_lineFetchingGeneration != a4)
+        if (self->_lineFetchingGeneration != generation)
         {
           goto LABEL_31;
         }
@@ -283,36 +283,36 @@ LABEL_21:
 LABEL_31:
   }
 
-  return v7;
+  return array;
 }
 
-- (CGRect)_interfaceOrientedFrameForElement:(id)a3 axFrame:(CGRect)a4
+- (CGRect)_interfaceOrientedFrameForElement:(id)element axFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [a3 windowDisplayId];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  windowDisplayId = [element windowDisplayId];
   v9 = +[CACDisplayManager sharedManager];
-  v10 = [v9 overlayViewForDisplayID:v8];
+  v10 = [v9 overlayViewForDisplayID:windowDisplayId];
 
   if (v10)
   {
     v11 = +[CACDisplayManager sharedManager];
-    v12 = [v11 carPlayConnected];
+    carPlayConnected = [v11 carPlayConnected];
 
-    v13 = [MEMORY[0x277CE6BA0] systemWideElement];
-    v14 = v13;
-    if (v12)
+    systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
+    v14 = systemWideElement;
+    if (carPlayConnected)
     {
-      v15 = [v13 elementsForAttribute:1009];
-      v16 = [v15 firstObject];
+      v15 = [systemWideElement elementsForAttribute:1009];
+      firstObject = [v15 firstObject];
 
-      v14 = v16;
+      v14 = firstObject;
     }
 
-    v17 = [v10 window];
-    [v14 convertRect:objc_msgSend(v17 toContextId:"_contextId") displayId:{v8, x, y, width, height}];
+    window = [v10 window];
+    [v14 convertRect:objc_msgSend(window toContextId:"_contextId") displayId:{windowDisplayId, x, y, width, height}];
     x = v18;
     y = v19;
     width = v20;
@@ -330,14 +330,14 @@ LABEL_31:
   return result;
 }
 
-- (void)_showOverlayElementsForElement:(id)a3 textUnit:(unint64_t)a4 startIndex:(unint64_t)a5
+- (void)_showOverlayElementsForElement:(id)element textUnit:(unint64_t)unit startIndex:(unint64_t)index
 {
   v109 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [MEMORY[0x277CBEB18] array];
+  elementCopy = element;
+  array = [MEMORY[0x277CBEB18] array];
   ++self->_lineFetchingGeneration;
-  v9 = [v7 application];
-  v10 = [v9 elementForAttribute:2076];
+  application = [elementCopy application];
+  v10 = [application elementForAttribute:2076];
   [v10 frame];
   v97 = v12;
   v98 = v11;
@@ -349,7 +349,7 @@ LABEL_31:
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
-  obj = [(CACEditingModeOverlayManager *)self _visibleLineRangesForElement:v7 lineFetchingGeneration:lineFetchingGeneration];
+  obj = [(CACEditingModeOverlayManager *)self _visibleLineRangesForElement:elementCopy lineFetchingGeneration:lineFetchingGeneration];
   v83 = [obj countByEnumeratingWithState:&v104 objects:v108 count:16];
   if (v83)
   {
@@ -358,7 +358,7 @@ LABEL_31:
     v76 = *MEMORY[0x277CBF398];
     v73 = *(MEMORY[0x277CBF398] + 24);
     v74 = *(MEMORY[0x277CBF398] + 16);
-    v78 = a4;
+    unitCopy = unit;
     v77 = lineFetchingGeneration;
 LABEL_3:
     v16 = 0;
@@ -375,19 +375,19 @@ LABEL_3:
       }
 
       v17 = *(*(&v104 + 1) + 8 * v16);
-      v18 = [v17 rangeValue];
-      [v7 rectForRange:{v18, v19}];
+      rangeValue = [v17 rangeValue];
+      [elementCopy rectForRange:{rangeValue, v19}];
       v21 = v20;
       v23 = v22;
       v25 = v24;
       v27 = v26;
-      [(CACEditingModeOverlayManager *)self _interfaceOrientedFrameForElement:v7 axFrame:?];
+      [(CACEditingModeOverlayManager *)self _interfaceOrientedFrameForElement:elementCopy axFrame:?];
       v86 = v29;
       v88 = v28;
       v90 = v31;
       v91 = v30;
-      [v7 frame];
-      [(CACEditingModeOverlayManager *)self _interfaceOrientedFrameForElement:v7 axFrame:?];
+      [elementCopy frame];
+      [(CACEditingModeOverlayManager *)self _interfaceOrientedFrameForElement:elementCopy axFrame:?];
       v84 = v32;
       location = [v17 rangeValue];
       length = v34;
@@ -414,7 +414,7 @@ LABEL_3:
       v115.size.height = v95;
       if (CGRectIsEmpty(v115) || (v116.origin.y = v97, v116.origin.x = v98, v116.size.height = v95, v116.size.width = v96, CGRectIsNull(v116)))
       {
-        if (a4 == 2)
+        if (unit == 2)
         {
           goto LABEL_16;
         }
@@ -428,7 +428,7 @@ LABEL_3:
         v117.size.height = height;
         IsNull = CGRectIsNull(v117);
         v41 = height < v99 * 0.5 || IsNull;
-        if (a4 == 2 && (v41 & 1) != 0)
+        if (unit == 2 && (v41 & 1) != 0)
         {
 LABEL_16:
           if (v88 - v84 <= 0.0)
@@ -455,10 +455,10 @@ LABEL_16:
           v44 = v76;
           v47 = v73;
           v46 = v74;
-          if ([v8 count])
+          if ([array count])
           {
-            v48 = [v8 lastObject];
-            [v48 axFrame];
+            lastObject = [array lastObject];
+            [lastObject axFrame];
             v44 = v49;
             v45 = v50;
             v46 = v51;
@@ -467,19 +467,19 @@ LABEL_16:
 
           v54 = v90;
           v53 = v91;
-          if ([v8 count])
+          if ([array count])
           {
-            v55 = [v8 lastObject];
-            v56 = [v55 range];
+            lastObject2 = [array lastObject];
+            range = [lastObject2 range];
             v58 = v57;
 
-            v59 = v56 == 0x7FFFFFFFFFFFFFFFLL;
+            v59 = range == 0x7FFFFFFFFFFFFFFFLL;
           }
 
           else
           {
             v58 = 0;
-            v56 = 0x7FFFFFFFFFFFFFFFLL;
+            range = 0x7FFFFFFFFFFFFFFFLL;
             v59 = 1;
           }
 
@@ -498,7 +498,7 @@ LABEL_16:
           v80 = v119.size.width;
           v112.location = [v17 rangeValue];
           v112.length = v60;
-          v110.location = v56;
+          v110.location = range;
           v110.length = v58;
           v61 = NSUnionRange(v110, v112);
           v120.origin.x = v44;
@@ -525,7 +525,7 @@ LABEL_16:
               v43 = v71;
               if (!v65)
               {
-                [v8 removeLastObject];
+                [array removeLastObject];
                 v43 = v85;
                 v54 = v87;
                 v53 = v89;
@@ -546,17 +546,17 @@ LABEL_16:
           [v66 setInterfaceOrientedFrame:{v43, v53, v42, v54}];
           [v66 setRange:{location, length}];
           [v66 setTextUnit:2];
-          [v66 setNumber:{objc_msgSend(v8, "count") + a5}];
+          [v66 setNumber:{objc_msgSend(array, "count") + index}];
           [v66 setNumberIsFixed:0];
-          v67 = [v7 value];
-          v113.length = [v67 length];
+          value = [elementCopy value];
+          v113.length = [value length];
           v111.location = location;
           v111.length = length;
           v113.location = 0;
           v68 = NSIntersectionRange(v111, v113);
           if (v68.length)
           {
-            v69 = [v67 substringWithRange:{v68.location, v68.length}];
+            v69 = [value substringWithRange:{v68.location, v68.length}];
             [v66 setRepresentedText:v69];
           }
 
@@ -565,8 +565,8 @@ LABEL_16:
             [v66 setRepresentedText:&stru_287BD8610];
           }
 
-          a4 = v78;
-          [v8 addObject:{v66, *&v71, *&v72}];
+          unit = unitCopy;
+          [array addObject:{v66, *&v71, *&v72}];
 
           lineFetchingGeneration = v77;
         }
@@ -585,17 +585,17 @@ LABEL_16:
     }
   }
 
-  if ([v8 count] > 1)
+  if ([array count] > 1)
   {
-    objc_storeStrong(&self->_displayedOverlayElements, v8);
+    objc_storeStrong(&self->_displayedOverlayElements, array);
     objc_storeStrong(&self->_overlayElementsForCommandHandling, self->_displayedOverlayElements);
     v100[0] = MEMORY[0x277D85DD0];
     v100[1] = 3221225472;
     v100[2] = __83__CACEditingModeOverlayManager__showOverlayElementsForElement_textUnit_startIndex___block_invoke_2;
     v100[3] = &unk_279CEBFB8;
-    v102 = self;
-    v103 = a4;
-    v101 = v8;
+    selfCopy = self;
+    unitCopy2 = unit;
+    v101 = array;
     [(CACSimpleContentViewManager *)self showViewControllerWithCreationHandler:&__block_literal_global_20 updateHandler:v100];
   }
 
@@ -646,15 +646,15 @@ void __83__CACEditingModeOverlayManager__showOverlayElementsForElement_textUnit_
   displayedOverlayElements = self->_displayedOverlayElements;
   self->_displayedOverlayElements = MEMORY[0x277CBEBF8];
 
-  v4 = [(CACSimpleContentViewManager *)self viewController];
+  viewController = [(CACSimpleContentViewManager *)self viewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(CACSimpleContentViewManager *)self viewController];
-    v7 = [v6 viewControllerInPopover];
-    [v7 setPopoverShowing:0];
+    viewController2 = [(CACSimpleContentViewManager *)self viewController];
+    viewControllerInPopover = [viewController2 viewControllerInPopover];
+    [viewControllerInPopover setPopoverShowing:0];
   }
 
   v8.receiver = self;
@@ -662,22 +662,22 @@ void __83__CACEditingModeOverlayManager__showOverlayElementsForElement_textUnit_
   [(CACSimpleContentViewManager *)&v8 hideWithoutAnimation];
 }
 
-- (void)_showPopoverForElement:(id)a3 targetRange:(_NSRange)a4 startIndex:(unint64_t)a5 type:(int64_t)a6
+- (void)_showPopoverForElement:(id)element targetRange:(_NSRange)range startIndex:(unint64_t)index type:(int64_t)type
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v72 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v43 = self;
-  v10 = [(CACSimpleContentViewManager *)self viewController];
+  elementCopy = element;
+  selfCopy = self;
+  viewController = [(CACSimpleContentViewManager *)self viewController];
   objc_opt_class();
   LOBYTE(self) = objc_opt_isKindOfClass();
 
   if (self)
   {
-    v11 = [(CACSimpleContentViewManager *)v43 viewController];
-    v12 = [v11 viewControllerInPopover];
-    [v12 setPopoverShowing:0];
+    viewController2 = [(CACSimpleContentViewManager *)selfCopy viewController];
+    viewControllerInPopover = [viewController2 viewControllerInPopover];
+    [viewControllerInPopover setPopoverShowing:0];
   }
 
   v65 = 0;
@@ -688,17 +688,17 @@ void __83__CACEditingModeOverlayManager__showOverlayElementsForElement_textUnit_
   v70 = length;
   if (location == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v13 = [v9 value];
-    v14 = [v13 length];
+    value = [elementCopy value];
+    v14 = [value length];
     v15 = v66;
     v66[4] = 0;
     v15[5] = v14;
   }
 
-  v39 = [v9 value];
-  v41 = [v39 substringWithRange:{location, length}];
-  v42 = [MEMORY[0x277CBEB18] array];
-  [MEMORY[0x277D798A8] textSegmentModelsForText:v41 type:a6 start:a5];
+  value2 = [elementCopy value];
+  v41 = [value2 substringWithRange:{location, length}];
+  array = [MEMORY[0x277CBEB18] array];
+  [MEMORY[0x277D798A8] textSegmentModelsForText:v41 type:type start:index];
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
@@ -725,25 +725,25 @@ void __83__CACEditingModeOverlayManager__showOverlayElementsForElement_textUnit_
         {
           v24 = objc_opt_new();
           [v24 setNumber:{objc_msgSend(v23, "labelNumber")}];
-          v25 = [v23 representedText];
-          v26 = [v25 string];
-          [v24 setRepresentedText:v26];
+          representedText = [v23 representedText];
+          string = [representedText string];
+          [v24 setRepresentedText:string];
 
-          if (a6 < 2)
+          if (type < 2)
           {
-            [v24 setTextUnit:a6];
+            [v24 setTextUnit:type];
           }
 
-          v27 = [v23 nsRange];
+          nsRange = [v23 nsRange];
           [v23 nsRange];
           v29 = v28;
-          [v9 rectForRange:{v27 + location, v28}];
+          [elementCopy rectForRange:{nsRange + location, v28}];
           [v24 setAxFrame:?];
           [v24 axFrame];
-          [(CACEditingModeOverlayManager *)v43 _interfaceOrientedFrameForElement:v9 axFrame:?];
+          [(CACEditingModeOverlayManager *)selfCopy _interfaceOrientedFrameForElement:elementCopy axFrame:?];
           [v24 setInterfaceOrientedFrame:?];
-          [v24 setRange:{v27 + location, v29}];
-          [v42 addObject:v24];
+          [v24 setRange:{nsRange + location, v29}];
+          [array addObject:v24];
           [v24 axFrame];
           if (v20 != 0.0)
           {
@@ -771,12 +771,12 @@ void __83__CACEditingModeOverlayManager__showOverlayElementsForElement_textUnit_
     while (v16);
   }
 
-  if ([v42 count] > 1)
+  if ([array count] > 1)
   {
-    v37 = [(CACSimpleContentViewManager *)v43 viewController];
-    if ([v37 isBeingPresented])
+    viewController3 = [(CACSimpleContentViewManager *)selfCopy viewController];
+    if ([viewController3 isBeingPresented])
     {
-      v38 = [(NSArray *)v43->_displayedOverlayElements isEqualToArray:v42];
+      v38 = [(NSArray *)selfCopy->_displayedOverlayElements isEqualToArray:array];
 
       if (v38)
       {
@@ -788,13 +788,13 @@ void __83__CACEditingModeOverlayManager__showOverlayElementsForElement_textUnit_
     {
     }
 
-    objc_storeStrong(&v43->_displayedOverlayElements, v42);
-    objc_storeStrong(&v43->_overlayElementsForCommandHandling, v43->_displayedOverlayElements);
+    objc_storeStrong(&selfCopy->_displayedOverlayElements, array);
+    objc_storeStrong(&selfCopy->_overlayElementsForCommandHandling, selfCopy->_displayedOverlayElements);
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __83__CACEditingModeOverlayManager__showPopoverForElement_targetRange_startIndex_type___block_invoke_2;
     v55[3] = &unk_279CEC048;
-    v55[4] = v43;
+    v55[4] = selfCopy;
     v56 = &__block_literal_global_383;
     v57 = v17;
     v58 = v18;
@@ -804,29 +804,29 @@ void __83__CACEditingModeOverlayManager__showOverlayElementsForElement_textUnit_
     v46[1] = 3221225472;
     v46[2] = __83__CACEditingModeOverlayManager__showPopoverForElement_targetRange_startIndex_type___block_invoke_7;
     v46[3] = &unk_279CEC070;
-    v47 = v39;
+    v47 = value2;
     v48 = &v65;
-    v49 = a6;
-    v50 = a5;
+    typeCopy = type;
+    indexCopy = index;
     v51 = v17;
     v52 = v18;
     v53 = v19;
     v54 = v20;
-    [(CACSimpleContentViewManager *)v43 showViewControllerWithCreationHandler:v55 updateHandler:v46];
+    [(CACSimpleContentViewManager *)selfCopy showViewControllerWithCreationHandler:v55 updateHandler:v46];
   }
 
   else
   {
-    displayedOverlayElements = v43->_displayedOverlayElements;
-    v43->_displayedOverlayElements = MEMORY[0x277CBEBF8];
+    displayedOverlayElements = selfCopy->_displayedOverlayElements;
+    selfCopy->_displayedOverlayElements = MEMORY[0x277CBEBF8];
 
-    objc_storeStrong(&v43->_overlayElementsForCommandHandling, v43->_displayedOverlayElements);
-    v35 = [(CACSimpleContentViewManager *)v43 viewController];
-    v36 = [v35 isBeingPresented];
+    objc_storeStrong(&selfCopy->_overlayElementsForCommandHandling, selfCopy->_displayedOverlayElements);
+    viewController4 = [(CACSimpleContentViewManager *)selfCopy viewController];
+    isBeingPresented = [viewController4 isBeingPresented];
 
-    if (v36)
+    if (isBeingPresented)
     {
-      [(CACSimpleContentViewManager *)v43 hideAnimated:1 completion:0];
+      [(CACSimpleContentViewManager *)selfCopy hideAnimated:1 completion:0];
     }
   }
 
@@ -1028,25 +1028,25 @@ void __83__CACEditingModeOverlayManager__showPopoverForElement_targetRange_start
 
 - (void)numberingDidUpdate
 {
-  v2 = [(CACEditingModeOverlayManager *)self editingModeOverlayViewController];
-  [v2 numberingDidUpdate];
+  editingModeOverlayViewController = [(CACEditingModeOverlayManager *)self editingModeOverlayViewController];
+  [editingModeOverlayViewController numberingDidUpdate];
 }
 
 - (void)startDelayedDimmingOfNumbers
 {
   [(CACSimpleContentViewManager *)self setPendingDimmingTransactionID:[(CACSimpleContentViewManager *)self pendingDimmingTransactionID]+ 1];
   [(CACSimpleContentViewManager *)self setActiveDimmingTransactionID:[(CACSimpleContentViewManager *)self pendingDimmingTransactionID]];
-  v3 = [(CACEditingModeOverlayManager *)self editingModeOverlayViewController];
-  v4 = [v3 view];
-  [v4 setAlpha:1.0];
+  editingModeOverlayViewController = [(CACEditingModeOverlayManager *)self editingModeOverlayViewController];
+  view = [editingModeOverlayViewController view];
+  [view setAlpha:1.0];
 
-  v5 = [(CACEditingModeOverlayManager *)self delegate];
-  LODWORD(v4) = [v5 isOverlayFadingEnabledForEditingModeOverlayManager:self];
+  delegate = [(CACEditingModeOverlayManager *)self delegate];
+  LODWORD(view) = [delegate isOverlayFadingEnabledForEditingModeOverlayManager:self];
 
-  if (v4)
+  if (view)
   {
-    v6 = [(CACEditingModeOverlayManager *)self delegate];
-    [v6 overlayFadeDelayForEditingModeOverlayManager:self];
+    delegate2 = [(CACEditingModeOverlayManager *)self delegate];
+    [delegate2 overlayFadeDelayForEditingModeOverlayManager:self];
     v8 = dispatch_time(0, (v7 * 1000000000.0));
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1089,9 +1089,9 @@ void __60__CACEditingModeOverlayManager_startDelayedDimmingOfNumbers__block_invo
 - (void)stopDelayedDimmingOfNumbers
 {
   [(CACSimpleContentViewManager *)self setPendingDimmingTransactionID:[(CACSimpleContentViewManager *)self pendingDimmingTransactionID]+ 1];
-  v4 = [(CACEditingModeOverlayManager *)self editingModeOverlayViewController];
-  v3 = [v4 view];
-  [v3 setAlpha:1.0];
+  editingModeOverlayViewController = [(CACEditingModeOverlayManager *)self editingModeOverlayViewController];
+  view = [editingModeOverlayViewController view];
+  [view setAlpha:1.0];
 }
 
 - (CACEditingModeOverlayManagerDelegate)delegate

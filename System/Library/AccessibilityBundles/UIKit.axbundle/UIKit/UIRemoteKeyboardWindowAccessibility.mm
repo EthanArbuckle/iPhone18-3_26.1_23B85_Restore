@@ -1,18 +1,18 @@
 @interface UIRemoteKeyboardWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 @end
 
 @implementation UIRemoteKeyboardWindowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIInputWindowController" hasInstanceMethod:@"visibleInputViewFrame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
   objc_storeStrong(v4, obj);
 }
@@ -28,9 +28,9 @@
   v18[0] = v15;
   memset(&v14, 0, sizeof(v14));
   v13 = 0;
-  v10 = [v15 rootViewController];
+  rootViewController = [v15 rootViewController];
   v12 = __UIAccessibilitySafeClass();
-  MEMORY[0x29EDC9740](v10);
+  MEMORY[0x29EDC9740](rootViewController);
   v11 = MEMORY[0x29EDC9748](v12);
   objc_storeStrong(&v12, 0);
   [v11 safeCGRectForKey:@"visibleInputViewFrame"];

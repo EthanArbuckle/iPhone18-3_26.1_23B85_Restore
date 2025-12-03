@@ -1,19 +1,19 @@
 @interface RBSPreventLaunchLimitation
-+ (id)limitationWithPredicate:(id)a3;
-+ (id)limitationWithPredicate:(id)a3 andException:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (RBSPreventLaunchLimitation)initWithRBSXPCCoder:(id)a3;
-- (id)_initWithPredicate:(void *)a3 andException:;
++ (id)limitationWithPredicate:(id)predicate;
++ (id)limitationWithPredicate:(id)predicate andException:(id)exception;
+- (BOOL)isEqual:(id)equal;
+- (RBSPreventLaunchLimitation)initWithRBSXPCCoder:(id)coder;
+- (id)_initWithPredicate:(void *)predicate andException:;
 - (id)description;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSPreventLaunchLimitation
 
-+ (id)limitationWithPredicate:(id)a3
++ (id)limitationWithPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(RBSPreventLaunchLimitation *)[a1 alloc] _initWithPredicate:v4 andException:0];
+  predicateCopy = predicate;
+  v5 = [(RBSPreventLaunchLimitation *)[self alloc] _initWithPredicate:predicateCopy andException:0];
 
   return v5;
 }
@@ -28,33 +28,33 @@
   return v6;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = RBSPreventLaunchLimitation;
-  [(RBSAttribute *)&v6 encodeWithRBSXPCCoder:v4];
-  [v4 encodeObject:self->_predicate forKey:@"_predicate"];
+  [(RBSAttribute *)&v6 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeObject:self->_predicate forKey:@"_predicate"];
   allow = self->_allow;
   if (allow)
   {
-    [v4 encodeObject:allow forKey:@"_allow"];
+    [coderCopy encodeObject:allow forKey:@"_allow"];
   }
 }
 
-- (RBSPreventLaunchLimitation)initWithRBSXPCCoder:(id)a3
+- (RBSPreventLaunchLimitation)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RBSPreventLaunchLimitation;
-  v5 = [(RBSAttribute *)&v11 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v11 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_predicate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_predicate"];
     predicate = v5->_predicate;
     v5->_predicate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_allow"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_allow"];
     allow = v5->_allow;
     v5->_allow = v8;
   }
@@ -62,10 +62,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_16;
   }
@@ -77,7 +77,7 @@
   }
 
   predicate = self->_predicate;
-  v8 = v4->_predicate;
+  v8 = equalCopy->_predicate;
   if (predicate != v8)
   {
     v9 = !predicate || v8 == 0;
@@ -88,7 +88,7 @@
   }
 
   allow = self->_allow;
-  v11 = v4->_allow;
+  v11 = equalCopy->_allow;
   if (allow == v11)
   {
 LABEL_16:
@@ -119,37 +119,37 @@ LABEL_17:
   return v6;
 }
 
-- (id)_initWithPredicate:(void *)a3 andException:
+- (id)_initWithPredicate:(void *)predicate andException:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  predicateCopy = predicate;
+  if (self)
   {
     if (!v6)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:sel__initWithPredicate_andException_ object:a1 file:@"RBSPreventLaunchLimitation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"predicate"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithPredicate_andException_ object:self file:@"RBSPreventLaunchLimitation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"predicate"}];
     }
 
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = RBSPreventLaunchLimitation;
     v8 = objc_msgSendSuper2(&v11, sel__init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, predicate);
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)limitationWithPredicate:(id)a3 andException:(id)a4
++ (id)limitationWithPredicate:(id)predicate andException:(id)exception
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RBSPreventLaunchLimitation *)[a1 alloc] _initWithPredicate:v7 andException:v6];
+  exceptionCopy = exception;
+  predicateCopy = predicate;
+  v8 = [(RBSPreventLaunchLimitation *)[self alloc] _initWithPredicate:predicateCopy andException:exceptionCopy];
 
   return v8;
 }

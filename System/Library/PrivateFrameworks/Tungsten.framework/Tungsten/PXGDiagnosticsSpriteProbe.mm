@@ -1,39 +1,39 @@
 @interface PXGDiagnosticsSpriteProbe
 + (NSMutableArray)activeSpriteProbes;
 + (PXGSpriteDataStore)spriteDataStore;
-+ (void)_recordEventIfNeededWithType:(int64_t)a3 layout:(id)a4 oldState:(id *)a5 newState:(id *)a6 userInfo:(id)a7;
-+ (void)didAdjustSprites:(id *)a3 forAnimation:(id)a4 appearing:(BOOL)a5;
-+ (void)layout:(id)a3 didChangeSprites:(id *)a4;
-+ (void)layout:(id)a3 didInsertSprites:(id *)a4;
-+ (void)layout:(id)a3 willChangeSprites:(id *)a4;
-+ (void)layout:(id)a3 willRemoveSprites:(id *)a4;
-+ (void)shouldUseDoubleSidedAnimationForSprites:(id *)a3 indexes:(id)a4 animation:(id)a5;
-+ (void)willAdjustSprites:(id *)a3 forAnimation:(id)a4 appearing:(BOOL)a5;
-+ (void)willRequestTextureForSpriteWithGeometry:(id *)a3 style:(id *)a4 info:(id *)a5 inLayout:(id)a6 textureInfo:(id)a7;
++ (void)_recordEventIfNeededWithType:(int64_t)type layout:(id)layout oldState:(id *)state newState:(id *)newState userInfo:(id)info;
++ (void)didAdjustSprites:(id *)sprites forAnimation:(id)animation appearing:(BOOL)appearing;
++ (void)layout:(id)layout didChangeSprites:(id *)sprites;
++ (void)layout:(id)layout didInsertSprites:(id *)sprites;
++ (void)layout:(id)layout willChangeSprites:(id *)sprites;
++ (void)layout:(id)layout willRemoveSprites:(id *)sprites;
++ (void)shouldUseDoubleSidedAnimationForSprites:(id *)sprites indexes:(id)indexes animation:(id)animation;
++ (void)willAdjustSprites:(id *)sprites forAnimation:(id)animation appearing:(BOOL)appearing;
++ (void)willRequestTextureForSpriteWithGeometry:(id *)geometry style:(id *)style info:(id *)info inLayout:(id)layout textureInfo:(id)textureInfo;
 - (PXGDiagnosticsSpriteProbe)init;
-- (id)descriptionForSpriteState:(id *)a3;
-- (void)_recordEventIfNeededWithType:(int64_t)a3 layout:(id)a4 oldState:(id *)a5 newState:(id *)a6 userInfo:(id)a7;
-- (void)_recordEventWithType:(int64_t)a3 oldState:(id *)a4 newState:(id *)a5 userInfo:(id)a6;
-- (void)setActive:(BOOL)a3;
+- (id)descriptionForSpriteState:(id *)state;
+- (void)_recordEventIfNeededWithType:(int64_t)type layout:(id)layout oldState:(id *)state newState:(id *)newState userInfo:(id)info;
+- (void)_recordEventWithType:(int64_t)type oldState:(id *)state newState:(id *)newState userInfo:(id)info;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation PXGDiagnosticsSpriteProbe
 
-- (void)_recordEventIfNeededWithType:(int64_t)a3 layout:(id)a4 oldState:(id *)a5 newState:(id *)a6 userInfo:(id)a7
+- (void)_recordEventIfNeededWithType:(int64_t)type layout:(id)layout oldState:(id *)state newState:(id *)newState userInfo:(id)info
 {
-  v15 = a4;
-  v12 = a7;
-  v13 = [(PXGDiagnosticsSpriteProbe *)self predicate];
-  v14 = v13;
-  if ((!a5 || (*(v13 + 16))(v13, a5, v15)) && (!a6 || (v14)[2](v14, a6, v15)))
+  layoutCopy = layout;
+  infoCopy = info;
+  predicate = [(PXGDiagnosticsSpriteProbe *)self predicate];
+  v14 = predicate;
+  if ((!state || (*(predicate + 16))(predicate, state, layoutCopy)) && (!newState || (v14)[2](v14, newState, layoutCopy)))
   {
-    [(PXGDiagnosticsSpriteProbe *)self _recordEventWithType:a3 oldState:a5 newState:a6 userInfo:v12];
+    [(PXGDiagnosticsSpriteProbe *)self _recordEventWithType:type oldState:state newState:newState userInfo:infoCopy];
   }
 }
 
-- (id)descriptionForSpriteState:(id *)a3
+- (id)descriptionForSpriteState:(id *)state
 {
-  if (a3)
+  if (state)
   {
     PXRectWithCenterAndSize();
     v6 = v5;
@@ -41,9 +41,9 @@
     v10 = v9;
     v12 = v11;
     v13 = MEMORY[0x277CCACA8];
-    var1 = a3->var1.var1.var0.var0.var1;
-    v15 = [(PXGDiagnosticsSpriteProbe *)self tagDescriptor];
-    v16 = v15[2](v15, *&a3[2].var1.var0);
+    var1 = state->var1.var1.var0.var0.var1;
+    tagDescriptor = [(PXGDiagnosticsSpriteProbe *)self tagDescriptor];
+    v16 = tagDescriptor[2](tagDescriptor, *&state[2].var1.var0);
     v17 = [v13 stringWithFormat:@"r:{%0.2f, %0.2f, %0.2f, %0.2f}, a:%0.2f, tag:%@", v6, v8, v10, v12, *&var1, v16];
   }
 
@@ -55,31 +55,31 @@
   return v17;
 }
 
-- (void)_recordEventWithType:(int64_t)a3 oldState:(id *)a4 newState:(id *)a5 userInfo:(id)a6
+- (void)_recordEventWithType:(int64_t)type oldState:(id *)state newState:(id *)newState userInfo:(id)info
 {
-  v10 = a6;
-  v11 = [(PXGDiagnosticsSpriteProbe *)self eventHandler];
-  v11[2](v11, self, a3, a4, a5, v10);
+  infoCopy = info;
+  eventHandler = [(PXGDiagnosticsSpriteProbe *)self eventHandler];
+  eventHandler[2](eventHandler, self, type, state, newState, infoCopy);
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v4 = a3;
-    v6 = [objc_opt_class() activeSpriteProbes];
-    v7 = v6;
+    activeCopy = active;
+    activeSpriteProbes = [objc_opt_class() activeSpriteProbes];
+    v7 = activeSpriteProbes;
     if (self->_active)
     {
-      [v6 removeObject:self];
-      v6 = v7;
+      [activeSpriteProbes removeObject:self];
+      activeSpriteProbes = v7;
     }
 
-    self->_active = v4;
-    if (v4)
+    self->_active = activeCopy;
+    if (activeCopy)
     {
       [v7 addObject:self];
-      v6 = v7;
+      activeSpriteProbes = v7;
     }
   }
 }
@@ -140,17 +140,17 @@ void __33__PXGDiagnosticsSpriteProbe_init__block_invoke_3(uint64_t a1, void *a2,
   }
 }
 
-+ (void)_recordEventIfNeededWithType:(int64_t)a3 layout:(id)a4 oldState:(id *)a5 newState:(id *)a6 userInfo:(id)a7
++ (void)_recordEventIfNeededWithType:(int64_t)type layout:(id)layout oldState:(id *)state newState:(id *)newState userInfo:(id)info
 {
   v24 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a7;
+  layoutCopy = layout;
+  infoCopy = info;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v14 = [a1 activeSpriteProbes];
-  v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  activeSpriteProbes = [self activeSpriteProbes];
+  v15 = [activeSpriteProbes countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v15)
   {
     v16 = v15;
@@ -162,36 +162,36 @@ void __33__PXGDiagnosticsSpriteProbe_init__block_invoke_3(uint64_t a1, void *a2,
       {
         if (*v20 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(activeSpriteProbes);
         }
 
-        [*(*(&v19 + 1) + 8 * v18++) _recordEventIfNeededWithType:a3 layout:v12 oldState:a5 newState:a6 userInfo:v13];
+        [*(*(&v19 + 1) + 8 * v18++) _recordEventIfNeededWithType:type layout:layoutCopy oldState:state newState:newState userInfo:infoCopy];
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v16 = [activeSpriteProbes countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v16);
   }
 }
 
-+ (void)shouldUseDoubleSidedAnimationForSprites:(id *)a3 indexes:(id)a4 animation:(id)a5
++ (void)shouldUseDoubleSidedAnimationForSprites:(id *)sprites indexes:(id)indexes animation:(id)animation
 {
-  v8 = a4;
-  v9 = [a5 layout];
+  indexesCopy = indexes;
+  layout = [animation layout];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
-  v10 = *&a3->var2;
-  v14 = *&a3->var0;
+  v10 = *&sprites->var2;
+  v14 = *&sprites->var0;
   v15 = v10;
   v12[2] = __87__PXGDiagnosticsSpriteProbe_shouldUseDoubleSidedAnimationForSprites_indexes_animation___block_invoke;
   v12[3] = &unk_2782A9E38;
-  var4 = a3->var4;
-  v17 = a1;
-  v13 = v9;
-  v11 = v9;
-  [v8 enumerateIndexesUsingBlock:v12];
+  var4 = sprites->var4;
+  selfCopy = self;
+  v13 = layout;
+  v11 = layout;
+  [indexesCopy enumerateIndexesUsingBlock:v12];
 }
 
 uint64_t __87__PXGDiagnosticsSpriteProbe_shouldUseDoubleSidedAnimationForSprites_indexes_animation___block_invoke(void *a1, unsigned int a2)
@@ -232,25 +232,25 @@ uint64_t __87__PXGDiagnosticsSpriteProbe_shouldUseDoubleSidedAnimationForSprites
   return [v13 _recordEventIfNeededWithType:7 layout:a1[4] oldState:v18 newState:0 userInfo:0];
 }
 
-+ (void)didAdjustSprites:(id *)a3 forAnimation:(id)a4 appearing:(BOOL)a5
++ (void)didAdjustSprites:(id *)sprites forAnimation:(id)animation appearing:(BOOL)appearing
 {
-  v47 = a5;
+  appearingCopy = appearing;
   v80[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [v8 layout];
+  animationCopy = animation;
+  layout = [animationCopy layout];
   v79 = @"duration";
   v10 = MEMORY[0x277CCABB0];
-  [v8 duration];
+  [animationCopy duration];
   v11 = [v10 numberWithDouble:?];
   v80[0] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v80 forKeys:&v79 count:1];
 
   v48 = 0u;
-  v13 = [a1 spriteDataStore];
-  v14 = v13;
-  if (v13)
+  spriteDataStore = [self spriteDataStore];
+  v14 = spriteDataStore;
+  if (spriteDataStore)
   {
-    [v13 sprites];
+    [spriteDataStore sprites];
   }
 
   else
@@ -258,12 +258,12 @@ uint64_t __87__PXGDiagnosticsSpriteProbe_shouldUseDoubleSidedAnimationForSprites
     v48 = 0u;
   }
 
-  if (a3->var0)
+  if (sprites->var0)
   {
-    v46 = [MEMORY[0x277CCA890] currentHandler];
-    [v46 handleFailureInMethod:a2 object:a1 file:@"PXGDiagnosticsSpriteProbe.m" lineNumber:214 description:@"sprite count mismatch"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGDiagnosticsSpriteProbe.m" lineNumber:214 description:@"sprite count mismatch"];
 
-    if (a3->var0)
+    if (sprites->var0)
     {
       v15 = 0;
       v16 = 0;
@@ -326,9 +326,9 @@ uint64_t __87__PXGDiagnosticsSpriteProbe_shouldUseDoubleSidedAnimationForSprites
         v50 = 0u;
         v51 = 0u;
         v49 = 0u;
-        var3 = a3->var3;
-        var4 = a3->var4;
-        v31 = (a3->var2 + v15);
+        var3 = sprites->var3;
+        var4 = sprites->var4;
+        v31 = (sprites->var2 + v15);
         v32 = v31[1];
         v49 = *v31;
         v50 = v32;
@@ -354,11 +354,11 @@ uint64_t __87__PXGDiagnosticsSpriteProbe_shouldUseDoubleSidedAnimationForSprites
         *&v63 = *(v17 + var4 + 32);
         v61 = v41;
         v62 = v40;
-        if (v47)
+        if (appearingCopy)
         {
           v42 = &v49;
           v43 = &v64;
-          v44 = a1;
+          selfCopy2 = self;
           v45 = 5;
         }
 
@@ -366,68 +366,68 @@ uint64_t __87__PXGDiagnosticsSpriteProbe_shouldUseDoubleSidedAnimationForSprites
         {
           v42 = &v64;
           v43 = &v49;
-          v44 = a1;
+          selfCopy2 = self;
           v45 = 6;
         }
 
-        [v44 _recordEventIfNeededWithType:v45 layout:v9 oldState:v42 newState:v43 userInfo:v12];
+        [selfCopy2 _recordEventIfNeededWithType:v45 layout:layout oldState:v42 newState:v43 userInfo:v12];
         ++v18;
         v17 = (v17 + 40);
         v16 += 160;
         v15 += 32;
       }
 
-      while (v18 < a3->var0);
+      while (v18 < sprites->var0);
     }
   }
 }
 
-+ (void)willAdjustSprites:(id *)a3 forAnimation:(id)a4 appearing:(BOOL)a5
++ (void)willAdjustSprites:(id *)sprites forAnimation:(id)animation appearing:(BOOL)appearing
 {
-  v5 = [a1 spriteDataStore];
-  [v5 setSprites:&v6];
+  spriteDataStore = [self spriteDataStore];
+  [spriteDataStore setSprites:&v6];
 }
 
-+ (void)willRequestTextureForSpriteWithGeometry:(id *)a3 style:(id *)a4 info:(id *)a5 inLayout:(id)a6 textureInfo:(id)a7
++ (void)willRequestTextureForSpriteWithGeometry:(id *)geometry style:(id *)style info:(id *)info inLayout:(id)layout textureInfo:(id)textureInfo
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = *&a3->var0.var2;
-  v14[0] = *&a3->var0.var0;
+  v7 = *&geometry->var0.var2;
+  v14[0] = *&geometry->var0.var0;
   v14[1] = v7;
-  v8 = *&a4[2].var3;
-  v14[8] = *(&a4[2].var1 + 4);
+  v8 = *&style[2].var3;
+  v14[8] = *(&style[2].var1 + 4);
   v14[9] = v8;
-  v9 = *(&a4[3].var1 + 8);
-  v14[10] = *&a4[2].var8;
+  v9 = *(&style[3].var1 + 8);
+  v14[10] = *&style[2].var8;
   v14[11] = v9;
-  var1 = a4[1].var1;
-  v14[4] = *&a4->var5;
+  var1 = style[1].var1;
+  v14[4] = *&style->var5;
   v14[5] = var1;
-  v11 = *&a4[1].var6;
-  v14[6] = *&a4[1].var2;
+  v11 = *&style[1].var6;
+  v14[6] = *&style[1].var2;
   v14[7] = v11;
-  v12 = *(&a4->var1 + 12);
-  v14[2] = *&a4->var0;
+  v12 = *(&style->var1 + 12);
+  v14[2] = *&style->var0;
   v14[3] = v12;
-  v13 = *&a5->var4;
-  v14[12] = *&a5->var0;
+  v13 = *&info->var4;
+  v14[12] = *&info->var0;
   v14[13] = v13;
-  var3 = a5[1].var3;
+  var3 = info[1].var3;
   v16 = 0;
-  [a1 _recordEventIfNeededWithType:4 layout:a6 oldState:0 newState:v14 userInfo:a7];
+  [self _recordEventIfNeededWithType:4 layout:layout oldState:0 newState:v14 userInfo:textureInfo];
 }
 
-+ (void)layout:(id)a3 didChangeSprites:(id *)a4
++ (void)layout:(id)layout didChangeSprites:(id *)sprites
 {
   v68 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  layoutCopy = layout;
   v42 = 0u;
   v43 = 0u;
-  v8 = [a1 spriteDataStore];
-  v9 = v8;
-  if (v8)
+  spriteDataStore = [self spriteDataStore];
+  v9 = spriteDataStore;
+  if (spriteDataStore)
   {
-    [v8 sprites];
+    [spriteDataStore sprites];
   }
 
   else
@@ -437,7 +437,7 @@ uint64_t __87__PXGDiagnosticsSpriteProbe_shouldUseDoubleSidedAnimationForSprites
   }
 
   var0 = v42;
-  if (v42 == a4->var0)
+  if (v42 == sprites->var0)
   {
     if (v42)
     {
@@ -501,9 +501,9 @@ LABEL_6:
         v45 = 0u;
         *v46 = 0u;
         v44 = 0u;
-        var3 = a4->var3;
-        var4 = a4->var4;
-        v27 = (a4->var2 + v11);
+        var3 = sprites->var3;
+        var4 = sprites->var4;
+        v27 = (sprites->var2 + v11);
         v28 = v27[1];
         v44 = *v27;
         v45 = v28;
@@ -591,8 +591,8 @@ LABEL_6:
         }
 
 LABEL_27:
-        [a1 _recordEventIfNeededWithType:v40 layout:v7 oldState:v39 newState:&v44 userInfo:{0, *&v38, v42}];
-        var0 = a4->var0;
+        [self _recordEventIfNeededWithType:v40 layout:layoutCopy oldState:v39 newState:&v44 userInfo:{0, *&v38, v42}];
+        var0 = sprites->var0;
 LABEL_28:
         ++v14;
         v13 = (v13 + 40);
@@ -644,11 +644,11 @@ LABEL_26:
 
   else
   {
-    v41 = [MEMORY[0x277CCA890] currentHandler];
-    [v41 handleFailureInMethod:a2 object:a1 file:@"PXGDiagnosticsSpriteProbe.m" lineNumber:180 description:@"sprite count mismatch"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGDiagnosticsSpriteProbe.m" lineNumber:180 description:@"sprite count mismatch"];
 
-    var0 = a4->var0;
-    if (a4->var0)
+    var0 = sprites->var0;
+    if (sprites->var0)
     {
       goto LABEL_6;
     }
@@ -657,16 +657,16 @@ LABEL_26:
 LABEL_40:
 }
 
-+ (void)layout:(id)a3 willChangeSprites:(id *)a4
++ (void)layout:(id)layout willChangeSprites:(id *)sprites
 {
-  v4 = [a1 spriteDataStore];
-  [v4 setSprites:&v5];
+  spriteDataStore = [self spriteDataStore];
+  [spriteDataStore setSprites:&v5];
 }
 
-+ (void)layout:(id)a3 didInsertSprites:(id *)a4
++ (void)layout:(id)layout didInsertSprites:(id *)sprites
 {
   v39 = *MEMORY[0x277D85DE8];
-  if (a4->var0)
+  if (sprites->var0)
   {
     v7 = 0;
     v8 = 0;
@@ -689,9 +689,9 @@ LABEL_40:
       v25 = 0u;
       v26 = 0u;
       v24 = 0u;
-      var3 = a4->var3;
-      var4 = a4->var4;
-      v13 = (a4->var2 + v7);
+      var3 = sprites->var3;
+      var4 = sprites->var4;
+      v13 = (sprites->var2 + v7);
       v14 = v13[1];
       v24 = *v13;
       v25 = v14;
@@ -717,21 +717,21 @@ LABEL_40:
       *&v38 = *(var4 + v9 + 32);
       v36 = v23;
       v37 = v22;
-      [a1 _recordEventIfNeededWithType:1 layout:a3 oldState:0 newState:&v24 userInfo:0];
+      [self _recordEventIfNeededWithType:1 layout:layout oldState:0 newState:&v24 userInfo:0];
       ++v10;
       v9 += 40;
       v8 += 160;
       v7 += 32;
     }
 
-    while (v10 < a4->var0);
+    while (v10 < sprites->var0);
   }
 }
 
-+ (void)layout:(id)a3 willRemoveSprites:(id *)a4
++ (void)layout:(id)layout willRemoveSprites:(id *)sprites
 {
   v39 = *MEMORY[0x277D85DE8];
-  if (a4->var0)
+  if (sprites->var0)
   {
     v7 = 0;
     v8 = 0;
@@ -754,9 +754,9 @@ LABEL_40:
       v25 = 0u;
       v26 = 0u;
       v24 = 0u;
-      var3 = a4->var3;
-      var4 = a4->var4;
-      v13 = (a4->var2 + v7);
+      var3 = sprites->var3;
+      var4 = sprites->var4;
+      v13 = (sprites->var2 + v7);
       v14 = v13[1];
       v24 = *v13;
       v25 = v14;
@@ -782,14 +782,14 @@ LABEL_40:
       *&v38 = *(var4 + v9 + 32);
       v36 = v23;
       v37 = v22;
-      [a1 _recordEventIfNeededWithType:1 layout:a3 oldState:&v24 newState:0 userInfo:0];
+      [self _recordEventIfNeededWithType:1 layout:layout oldState:&v24 newState:0 userInfo:0];
       ++v10;
       v9 += 40;
       v8 += 160;
       v7 += 32;
     }
 
-    while (v10 < a4->var0);
+    while (v10 < sprites->var0);
   }
 }
 

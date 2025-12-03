@@ -1,26 +1,26 @@
 @interface VCAudioCaptionsSpeechRecognizer
-- (BOOL)createRecognizer:(id *)a3;
-- (BOOL)recognizerBufferSetupWithError:(id *)a3;
+- (BOOL)createRecognizer:(id *)recognizer;
+- (BOOL)recognizerBufferSetupWithError:(id *)error;
 - (BOOL)shouldPushSamples;
-- (VCAudioCaptionsSpeechRecognizer)initWithDelegate:(id)a3 isLocal:(BOOL)a4 taskIdentifier:(id)a5 reportingAgent:(opaqueRTCReporting *)a6;
+- (VCAudioCaptionsSpeechRecognizer)initWithDelegate:(id)delegate isLocal:(BOOL)local taskIdentifier:(id)identifier reportingAgent:(opaqueRTCReporting *)agent;
 - (void)dealloc;
 - (void)destroyRecognizer;
-- (void)packageAndSendTranscribedString:(id)a3 withTask:(id)a4 final:(BOOL)a5;
-- (void)pushSamples:(char *)a3 numSamples:(int)a4 hostTime:(double)a5;
+- (void)packageAndSendTranscribedString:(id)string withTask:(id)task final:(BOOL)final;
+- (void)pushSamples:(char *)samples numSamples:(int)numSamples hostTime:(double)time;
 - (void)recognizerBufferTeardown;
-- (void)speechRecognitionTask:(id)a3 didFinishRecognition:(id)a4;
-- (void)speechRecognitionTask:(id)a3 didFinishSuccessfully:(BOOL)a4;
-- (void)speechRecognitionTask:(id)a3 didHypothesizeTranscription:(id)a4;
-- (void)speechRecognitionTaskWasCancelled:(id)a3;
-- (void)speechRecognizer:(id)a3 availabilityDidChange:(BOOL)a4;
+- (void)speechRecognitionTask:(id)task didFinishRecognition:(id)recognition;
+- (void)speechRecognitionTask:(id)task didFinishSuccessfully:(BOOL)successfully;
+- (void)speechRecognitionTask:(id)task didHypothesizeTranscription:(id)transcription;
+- (void)speechRecognitionTaskWasCancelled:(id)cancelled;
+- (void)speechRecognizer:(id)recognizer availabilityDidChange:(BOOL)change;
 - (void)stopCaptions;
 @end
 
 @implementation VCAudioCaptionsSpeechRecognizer
 
-- (VCAudioCaptionsSpeechRecognizer)initWithDelegate:(id)a3 isLocal:(BOOL)a4 taskIdentifier:(id)a5 reportingAgent:(opaqueRTCReporting *)a6
+- (VCAudioCaptionsSpeechRecognizer)initWithDelegate:(id)delegate isLocal:(BOOL)local taskIdentifier:(id)identifier reportingAgent:(opaqueRTCReporting *)agent
 {
-  v8 = a4;
+  localCopy = local;
   v39 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCAudioCaptionsSpeechRecognizer-init");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -36,14 +36,14 @@
       v31 = 1024;
       v32 = 38;
       v33 = 2048;
-      v34 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioCaptionsSpeechRecognizer-init instance=%p", buf, 0x26u);
     }
   }
 
   v26.receiver = self;
   v26.super_class = VCAudioCaptionsSpeechRecognizer;
-  v13 = [(VCAudioCaptions *)&v26 initWithDelegate:a3 isLocal:v8 taskIdentifier:a5 reportingAgent:a6];
+  v13 = [(VCAudioCaptions *)&v26 initWithDelegate:delegate isLocal:localCopy taskIdentifier:identifier reportingAgent:agent];
   v14 = v13;
   if (v13)
   {
@@ -64,7 +64,7 @@
           v31 = 1024;
           v32 = 43;
           v33 = 1024;
-          LODWORD(v34) = frameworkType;
+          LODWORD(selfCopy) = frameworkType;
           v19 = " [%s] %s:%d VCAudioCaptionsSpeechRecognizer-init Succeeded with frameworkType=%d";
           v20 = v17;
           v21 = 34;
@@ -100,7 +100,7 @@ LABEL_18:
           v31 = 1024;
           v32 = 43;
           v33 = 2112;
-          v34 = v15;
+          selfCopy = v15;
           v35 = 2048;
           v36 = v14;
           v37 = 1024;
@@ -179,7 +179,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) VCAudioCaptionsSpeechRecognizer-dealloc";
         v7 = v10;
         v8 = 48;
@@ -193,7 +193,7 @@ LABEL_11:
   [(VCAudioCaptions *)&v11 dealloc];
 }
 
-- (BOOL)createRecognizer:(id *)a3
+- (BOOL)createRecognizer:(id *)recognizer
 {
   v44 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->super._captionsQueue);
@@ -203,7 +203,7 @@ LABEL_11:
     self->_recognizer = v6;
     if (!v6)
     {
-      if (a3)
+      if (recognizer)
       {
         v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptionsSpeechRecognizer.m", 71];
         v18 = 4;
@@ -211,7 +211,7 @@ LABEL_11:
 LABEL_33:
         v30 = [VCSessionErrorUtils VCSessionCaptionsErrorEvent:v18 errorPath:v17 returnCode:v19];
         result = 0;
-        *a3 = v30;
+        *recognizer = v30;
         return result;
       }
 
@@ -242,7 +242,7 @@ LABEL_33:
         v22 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [(SFSpeechRecognizer *)self->_recognizer isAvailable];
+          isAvailable = [(SFSpeechRecognizer *)self->_recognizer isAvailable];
           *buf = 136315906;
           v33 = v21;
           v34 = 2080;
@@ -250,7 +250,7 @@ LABEL_33:
           v36 = 1024;
           v37 = 76;
           v38 = 1024;
-          LODWORD(v39) = v23;
+          LODWORD(v39) = isAvailable;
           v24 = " [%s] %s:%d Recognizer is not available at this point: (%d)";
           v25 = v22;
           v26 = 34;
@@ -278,7 +278,7 @@ LABEL_30:
         v28 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [(SFSpeechRecognizer *)self->_recognizer isAvailable];
+          isAvailable2 = [(SFSpeechRecognizer *)self->_recognizer isAvailable];
           *buf = 136316418;
           v33 = v27;
           v34 = 2080;
@@ -288,9 +288,9 @@ LABEL_30:
           v38 = 2112;
           v39 = v20;
           v40 = 2048;
-          v41 = self;
+          selfCopy2 = self;
           v42 = 1024;
-          v43 = v29;
+          v43 = isAvailable2;
           v24 = " [%s] %s:%d %@(%p) Recognizer is not available at this point: (%d)";
           v25 = v28;
           v26 = 54;
@@ -300,7 +300,7 @@ LABEL_30:
     }
 
     self->_recognizer = 0;
-    if (a3)
+    if (recognizer)
     {
       v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptionsSpeechRecognizer.m", 80];
       v18 = 5;
@@ -369,7 +369,7 @@ LABEL_30:
     v38 = 2112;
     v39 = v5;
     v40 = 2048;
-    v41 = self;
+    selfCopy2 = self;
     v11 = " [%s] %s:%d %@(%p) The speech recognizer already exists!!";
     v12 = v15;
     v13 = 48;
@@ -503,7 +503,7 @@ LABEL_12:
   dispatch_semaphore_signal(teardownSemaphore);
 }
 
-- (BOOL)recognizerBufferSetupWithError:(id *)a3
+- (BOOL)recognizerBufferSetupWithError:(id *)error
 {
   v96 = *MEMORY[0x1E69E9840];
   dispatch_semaphore_wait(self->super._teardownSemaphore, 0xFFFFFFFFFFFFFFFFLL);
@@ -563,9 +563,9 @@ LABEL_64:
       }
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 7, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptionsSpeechRecognizer.m", 204], v65);
+      *error = +[VCSessionErrorUtils VCSessionCaptionsErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionCaptionsErrorEvent:errorPath:returnCode:", 7, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/Captions/VCAudioCaptionsSpeechRecognizer.m", 204], v65);
     }
 
     dispatch_semaphore_signal(self->super._teardownSemaphore);
@@ -573,7 +573,7 @@ LABEL_64:
   }
 
   v6 = v4;
-  v7 = [(SFSpeechAudioBufferRecognitionRequest *)v4 nativeAudioFormat];
+  nativeAudioFormat = [(SFSpeechAudioBufferRecognitionRequest *)v4 nativeAudioFormat];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -582,13 +582,13 @@ LABEL_64:
       v10 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v78 = *[(AVAudioFormat *)v7 streamDescription];
-        v76 = [(AVAudioFormat *)v7 streamDescription][8];
-        v11 = [(AVAudioFormat *)v7 streamDescription][16];
-        v12 = [(AVAudioFormat *)v7 streamDescription][20];
-        v13 = [(AVAudioFormat *)v7 streamDescription][24];
-        v14 = [(AVAudioFormat *)v7 streamDescription][28];
-        v15 = [(AVAudioFormat *)v7 streamDescription][32];
+        v78 = *[(AVAudioFormat *)nativeAudioFormat streamDescription];
+        v76 = [(AVAudioFormat *)nativeAudioFormat streamDescription][8];
+        v11 = [(AVAudioFormat *)nativeAudioFormat streamDescription][16];
+        v12 = [(AVAudioFormat *)nativeAudioFormat streamDescription][20];
+        v13 = [(AVAudioFormat *)nativeAudioFormat streamDescription][24];
+        v14 = [(AVAudioFormat *)nativeAudioFormat streamDescription][28];
+        v15 = [(AVAudioFormat *)nativeAudioFormat streamDescription][32];
         *buf = 136317442;
         *&buf[4] = v9;
         *&buf[12] = 2080;
@@ -637,13 +637,13 @@ LABEL_12:
       v20 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v79 = *[(AVAudioFormat *)v7 streamDescription];
-        v77 = [(AVAudioFormat *)v7 streamDescription][8];
-        v21 = [(AVAudioFormat *)v7 streamDescription][16];
-        v22 = [(AVAudioFormat *)v7 streamDescription][20];
-        v23 = [(AVAudioFormat *)v7 streamDescription][24];
-        v24 = [(AVAudioFormat *)v7 streamDescription][28];
-        v25 = [(AVAudioFormat *)v7 streamDescription][32];
+        v79 = *[(AVAudioFormat *)nativeAudioFormat streamDescription];
+        v77 = [(AVAudioFormat *)nativeAudioFormat streamDescription][8];
+        v21 = [(AVAudioFormat *)nativeAudioFormat streamDescription][16];
+        v22 = [(AVAudioFormat *)nativeAudioFormat streamDescription][20];
+        v23 = [(AVAudioFormat *)nativeAudioFormat streamDescription][24];
+        v24 = [(AVAudioFormat *)nativeAudioFormat streamDescription][28];
+        v25 = [(AVAudioFormat *)nativeAudioFormat streamDescription][32];
         *buf = 136317954;
         *&buf[4] = v19;
         *&buf[12] = 2080;
@@ -888,10 +888,10 @@ LABEL_40:
 
     self->_recognizerRequest = v6;
     self->super._audioBufferAllocator = audioBufferAllocator;
-    v61 = [(AVAudioFormat *)[(SFSpeechAudioBufferRecognitionRequest *)self->_recognizerRequest nativeAudioFormat] streamDescription];
-    v85 = *&v61->mBitsPerChannel;
-    v83 = *&v61->mSampleRate;
-    v84 = *&v61->mBytesPerPacket;
+    streamDescription = [(AVAudioFormat *)[(SFSpeechAudioBufferRecognitionRequest *)self->_recognizerRequest nativeAudioFormat] streamDescription];
+    v85 = *&streamDescription->mBitsPerChannel;
+    v83 = *&streamDescription->mSampleRate;
+    v84 = *&streamDescription->mBytesPerPacket;
     captionsFormat = self->super._captionsFormat;
     *buf = v83;
     *&buf[16] = v84;
@@ -1060,7 +1060,7 @@ LABEL_61:
       v22 = 2112;
       v23 = v6;
       v24 = 2048;
-      v25 = self;
+      selfCopy = self;
       v26 = 1024;
       v27 = v15;
       v10 = " [%s] %s:%d %@(%p) Will not push samples; Recognizer state=%d";
@@ -1077,10 +1077,10 @@ LABEL_8:
   return result;
 }
 
-- (void)pushSamples:(char *)a3 numSamples:(int)a4 hostTime:(double)a5
+- (void)pushSamples:(char *)samples numSamples:(int)numSamples hostTime:(double)time
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = [(VCAudioCaptions *)self convertSamples:a3 numSamples:*&a4, VCCaptionTaskInfo_HostTime(self->super._currentTaskInfo)];
+  v6 = [(VCAudioCaptions *)self convertSamples:samples numSamples:*&numSamples, VCCaptionTaskInfo_HostTime(self->super._currentTaskInfo)];
   self->super._isAudioConverterActive = 1;
   if (v6)
   {
@@ -1130,23 +1130,23 @@ LABEL_8:
         v17 = 2112;
         v18 = v8;
         v19 = 2048;
-        v20 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Sample buffer is nil", &v11, 0x30u);
       }
     }
   }
 }
 
-- (void)packageAndSendTranscribedString:(id)a3 withTask:(id)a4 final:(BOOL)a5
+- (void)packageAndSendTranscribedString:(id)string withTask:(id)task final:(BOOL)final
 {
-  v5 = a5;
+  finalCopy = final;
   v31 = *MEMORY[0x1E69E9840];
-  if (![objc_msgSend(a3 "segments")] || !-[VCAudioCaptions delegate](self, "delegate"))
+  if (![objc_msgSend(string "segments")] || !-[VCAudioCaptions delegate](self, "delegate"))
   {
     return;
   }
 
-  v9 = [(VCAudioCaptions *)self taskInfoForTask:a4];
+  v9 = [(VCAudioCaptions *)self taskInfoForTask:task];
   if (!v9)
   {
     if (objc_opt_class() == self)
@@ -1207,7 +1207,7 @@ LABEL_8:
       v27 = 2112;
       v28 = v12;
       v29 = 2048;
-      v30 = self;
+      selfCopy = self;
       v15 = " [%s] %s:%d %@(%p) Cannot sendTranscription as we don't have a task for it";
       v16 = v19;
       v17 = 48;
@@ -1218,7 +1218,7 @@ LABEL_8:
   }
 
   v10 = v9;
-  v11 = [[VCCaptionsTranscription alloc] initWithSFTranscription:a3 taskInfo:v9 isLocal:self->super._isLocal isFinal:v5];
+  v11 = [[VCCaptionsTranscription alloc] initWithSFTranscription:string taskInfo:v9 isLocal:self->super._isLocal isFinal:finalCopy];
   if (v11)
   {
     v20 = v11;
@@ -1226,7 +1226,7 @@ LABEL_8:
   }
 }
 
-- (void)speechRecognitionTask:(id)a3 didHypothesizeTranscription:(id)a4
+- (void)speechRecognitionTask:(id)task didHypothesizeTranscription:(id)transcription
 {
   v5[7] = *MEMORY[0x1E69E9840];
   captionsQueue = self->super._captionsQueue;
@@ -1235,12 +1235,12 @@ LABEL_8:
   v5[2] = __85__VCAudioCaptionsSpeechRecognizer_speechRecognitionTask_didHypothesizeTranscription___block_invoke;
   v5[3] = &unk_1E85F3E30;
   v5[4] = self;
-  v5[5] = a4;
-  v5[6] = a3;
+  v5[5] = transcription;
+  v5[6] = task;
   dispatch_async(captionsQueue, v5);
 }
 
-- (void)speechRecognitionTask:(id)a3 didFinishRecognition:(id)a4
+- (void)speechRecognitionTask:(id)task didFinishRecognition:(id)recognition
 {
   v35 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1251,8 +1251,8 @@ LABEL_8:
       v9 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [objc_msgSend(objc_msgSend(a4 "bestTranscription")];
-        [objc_msgSend(a4 "speechRecognitionMetadata")];
+        v10 = [objc_msgSend(objc_msgSend(recognition "bestTranscription")];
+        [objc_msgSend(recognition "speechRecognitionMetadata")];
         *buf = 136316418;
         v22 = v8;
         v23 = 2080;
@@ -1260,7 +1260,7 @@ LABEL_8:
         v25 = 1024;
         v26 = 318;
         v27 = 2048;
-        v28 = a3;
+        taskCopy = task;
         v29 = 1024;
         *v30 = v10;
         *&v30[4] = 2048;
@@ -1292,8 +1292,8 @@ LABEL_11:
       v16 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [objc_msgSend(objc_msgSend(a4 "bestTranscription")];
-        [objc_msgSend(a4 "speechRecognitionMetadata")];
+        v17 = [objc_msgSend(objc_msgSend(recognition "bestTranscription")];
+        [objc_msgSend(recognition "speechRecognitionMetadata")];
         *buf = 136316930;
         v22 = v15;
         v23 = 2080;
@@ -1301,11 +1301,11 @@ LABEL_11:
         v25 = 1024;
         v26 = 318;
         v27 = 2112;
-        v28 = v7;
+        taskCopy = v7;
         v29 = 2048;
         *v30 = self;
         *&v30[8] = 2048;
-        *&v30[10] = a3;
+        *&v30[10] = task;
         v31 = 1024;
         v32 = v17;
         v33 = 2048;
@@ -1324,8 +1324,8 @@ LABEL_11:
   block[2] = __78__VCAudioCaptionsSpeechRecognizer_speechRecognitionTask_didFinishRecognition___block_invoke;
   block[3] = &unk_1E85F3E30;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = recognition;
+  block[6] = task;
   dispatch_async(captionsQueue, block);
 }
 
@@ -1338,7 +1338,7 @@ uint64_t __78__VCAudioCaptionsSpeechRecognizer_speechRecognitionTask_didFinishRe
   return [v2 packageAndSendTranscribedString:v3 withTask:v4 final:1];
 }
 
-- (void)speechRecognitionTaskWasCancelled:(id)a3
+- (void)speechRecognitionTaskWasCancelled:(id)cancelled
 {
   v4[5] = *MEMORY[0x1E69E9840];
   captionsQueue = self->super._captionsQueue;
@@ -1368,10 +1368,10 @@ uint64_t __69__VCAudioCaptionsSpeechRecognizer_speechRecognitionTaskWasCancelled
   return [v1 transitionToState:v2 withReason:2 error:v4];
 }
 
-- (void)speechRecognitionTask:(id)a3 didFinishSuccessfully:(BOOL)a4
+- (void)speechRecognitionTask:(id)task didFinishSuccessfully:(BOOL)successfully
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (!a4 && [a3 error])
+  if (!successfully && [task error])
   {
     if (objc_opt_class() == self)
     {
@@ -1381,7 +1381,7 @@ uint64_t __69__VCAudioCaptionsSpeechRecognizer_speechRecognitionTaskWasCancelled
         v8 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          [(VCAudioCaptionsSpeechRecognizer *)v7 speechRecognitionTask:a3 didFinishSuccessfully:v8];
+          [(VCAudioCaptionsSpeechRecognizer *)v7 speechRecognitionTask:task didFinishSuccessfully:v8];
         }
       }
     }
@@ -1413,11 +1413,11 @@ uint64_t __69__VCAudioCaptionsSpeechRecognizer_speechRecognitionTaskWasCancelled
           v19 = 2112;
           v20 = v6;
           v21 = 2048;
-          v22 = self;
+          selfCopy = self;
           v23 = 2112;
-          v24 = [objc_msgSend(a3 "error")];
+          v24 = [objc_msgSend(task "error")];
           v25 = 1024;
-          v26 = [objc_msgSend(a3 "error")];
+          v26 = [objc_msgSend(task "error")];
           _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Task failed with error: %@, status: %d", buf, 0x40u);
         }
       }
@@ -1430,7 +1430,7 @@ uint64_t __69__VCAudioCaptionsSpeechRecognizer_speechRecognitionTaskWasCancelled
   v12[2] = __79__VCAudioCaptionsSpeechRecognizer_speechRecognitionTask_didFinishSuccessfully___block_invoke;
   v12[3] = &unk_1E85F37F0;
   v12[4] = self;
-  v12[5] = a3;
+  v12[5] = task;
   dispatch_async(captionsQueue, v12);
 }
 
@@ -1442,7 +1442,7 @@ uint64_t __79__VCAudioCaptionsSpeechRecognizer_speechRecognitionTask_didFinishSu
   return [v1 removeObject:v2];
 }
 
-- (void)speechRecognizer:(id)a3 availabilityDidChange:(BOOL)a4
+- (void)speechRecognizer:(id)recognizer availabilityDidChange:(BOOL)change
 {
   v7 = *MEMORY[0x1E69E9840];
   captionsQueue = self->super._captionsQueue;
@@ -1451,7 +1451,7 @@ uint64_t __79__VCAudioCaptionsSpeechRecognizer_speechRecognitionTask_didFinishSu
   block[2] = __74__VCAudioCaptionsSpeechRecognizer_speechRecognizer_availabilityDidChange___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v6 = a4;
+  changeCopy = change;
   dispatch_async(captionsQueue, block);
 }
 

@@ -1,25 +1,25 @@
 @interface _RCUIViewNamedConstraints
-- (_RCUIViewNamedConstraints)initWithName:(id)a3 constraints:(id)a4 stalenessToken:(id)a5;
+- (_RCUIViewNamedConstraints)initWithName:(id)name constraints:(id)constraints stalenessToken:(id)token;
 @end
 
 @implementation _RCUIViewNamedConstraints
 
-- (_RCUIViewNamedConstraints)initWithName:(id)a3 constraints:(id)a4 stalenessToken:(id)a5
+- (_RCUIViewNamedConstraints)initWithName:(id)name constraints:(id)constraints stalenessToken:(id)token
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  constraintsCopy = constraints;
+  tokenCopy = token;
   v17.receiver = self;
   v17.super_class = _RCUIViewNamedConstraints;
   v12 = [(_RCUIViewNamedConstraints *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_constraints, a4);
-    if (v11)
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_constraints, constraints);
+    if (tokenCopy)
     {
-      v14 = v11;
+      v14 = tokenCopy;
     }
 
     else

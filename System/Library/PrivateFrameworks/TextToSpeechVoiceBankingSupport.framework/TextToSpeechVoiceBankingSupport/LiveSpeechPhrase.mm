@@ -1,11 +1,11 @@
 @interface LiveSpeechPhrase
 + (id)makeEmptyPhrase;
-+ (id)observeChanges:(id)a3;
++ (id)observeChanges:(id)changes;
 + (int64_t)maxPreferredPhraseCount;
-+ (void)setMaxPreferredPhraseCount:(int64_t)a3;
++ (void)setMaxPreferredPhraseCount:(int64_t)count;
 - (LiveSpeechPhrase)init;
 - (NSDate)creationDate;
-- (void)setCreationDate:(id)a3;
+- (void)setCreationDate:(id)date;
 @end
 
 @implementation LiveSpeechPhrase
@@ -41,7 +41,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_2331EF0B8(v6);
 
   v8 = sub_23328CE1C();
@@ -58,13 +58,13 @@
   return v11;
 }
 
-- (void)setCreationDate:(id)a3
+- (void)setCreationDate:(id)date
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDE1A18, &unk_233297730);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v12 - v7;
-  if (a3)
+  if (date)
   {
     sub_23328CDDC();
     v9 = sub_23328CE1C();
@@ -77,7 +77,7 @@
     (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   }
 
-  v11 = self;
+  selfCopy = self;
   sub_2331EF2F4(v8);
 }
 
@@ -88,9 +88,9 @@
   return v2;
 }
 
-+ (id)observeChanges:(id)a3
++ (id)observeChanges:(id)changes
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(changes);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   if (qword_27DDF8160 != -1)
@@ -119,12 +119,12 @@
 
   v2 = qword_27DDF8168;
   v3 = sub_23328D95C();
-  v4 = [v2 integerForKey_];
+  integerForKey_ = [v2 integerForKey_];
 
-  return v4;
+  return integerForKey_;
 }
 
-+ (void)setMaxPreferredPhraseCount:(int64_t)a3
++ (void)setMaxPreferredPhraseCount:(int64_t)count
 {
   if (qword_27DDF8160 != -1)
   {

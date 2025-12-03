@@ -4,20 +4,20 @@
 - (id)i_wrapPath;
 - (id)layoutGeometryFromInfo;
 - (id)pathForClippingConnectionLines;
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3;
-- (void)dragBy:(CGPoint)a3;
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands;
+- (void)dragBy:(CGPoint)by;
 - (void)endDynamicOperation;
 - (void)invalidate;
 - (void)invalidateExteriorWrap;
 - (void)invalidateParentForWrap;
-- (void)p_addVisibleGeometriesFromInfo:(id)a3 intoArray:(id)a4 withTransform:(CGAffineTransform *)a5;
+- (void)p_addVisibleGeometriesFromInfo:(id)info intoArray:(id)array withTransform:(CGAffineTransform *)transform;
 - (void)p_createDynamicBoardItemCopies;
 - (void)p_destroyDynamicBoardItemCopies;
 - (void)parentDidChange;
-- (void)setGeometry:(id)a3;
-- (void)takeFreeTransformFromTracker:(id)a3;
-- (void)takeRotationFromTracker:(id)a3;
-- (void)takeSizeFromTracker:(id)a3;
+- (void)setGeometry:(id)geometry;
+- (void)takeFreeTransformFromTracker:(id)tracker;
+- (void)takeRotationFromTracker:(id)tracker;
+- (void)takeSizeFromTracker:(id)tracker;
 @end
 
 @implementation CRLBoardItemLayout
@@ -25,16 +25,16 @@
 - (_TtC8Freeform12CRLBoardItem)boardItem
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100013F00(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100013F00(v3, info);
 
   return v5;
 }
 
 - (id)computeWrapPath
 {
-  v2 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v2 size];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry size];
   v3 = [CRLBezierPath bezierPathWithRect:sub_10011ECB4()];
 
   return v3;
@@ -45,9 +45,9 @@
   v3 = *(&self->super.mInfoGeometryBeforeDynamicOperation + 2);
   if (!v3)
   {
-    v4 = [(CRLBoardItemLayout *)self computeWrapPath];
+    computeWrapPath = [(CRLBoardItemLayout *)self computeWrapPath];
     v5 = *(&self->super.mInfoGeometryBeforeDynamicOperation + 2);
-    *(&self->super.mInfoGeometryBeforeDynamicOperation + 2) = v4;
+    *(&self->super.mInfoGeometryBeforeDynamicOperation + 2) = computeWrapPath;
 
     v3 = *(&self->super.mInfoGeometryBeforeDynamicOperation + 2);
   }
@@ -60,8 +60,8 @@
   v3 = *(&self->_cachedWrapPath + 2);
   if (!v3)
   {
-    v4 = [(CRLBoardItemLayout *)self i_wrapPath];
-    v5 = [CRLBezierPath exteriorOfBezierPath:v4];
+    i_wrapPath = [(CRLBoardItemLayout *)self i_wrapPath];
+    v5 = [CRLBezierPath exteriorOfBezierPath:i_wrapPath];
     v6 = *(&self->_cachedWrapPath + 2);
     *(&self->_cachedWrapPath + 2) = v5;
 
@@ -95,31 +95,31 @@
 {
   if (*(&self->_infoGeometryBeforeDynamicOperation + 2))
   {
-    v2 = [[CRLCanvasLayoutGeometry alloc] initWithInfoGeometry:*(&self->_infoGeometryBeforeDynamicOperation + 2)];
+    layoutGeometryFromInfo = [[CRLCanvasLayoutGeometry alloc] initWithInfoGeometry:*(&self->_infoGeometryBeforeDynamicOperation + 2)];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = CRLBoardItemLayout;
-    v2 = [(CRLCanvasLayout *)&v4 layoutGeometryFromInfo];
+    layoutGeometryFromInfo = [(CRLCanvasLayout *)&v4 layoutGeometryFromInfo];
   }
 
-  return v2;
+  return layoutGeometryFromInfo;
 }
 
-- (void)takeRotationFromTracker:(id)a3
+- (void)takeRotationFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v14.receiver = self;
   v14.super_class = CRLBoardItemLayout;
-  [(CRLCanvasLayout *)&v14 takeRotationFromTracker:v4];
+  [(CRLCanvasLayout *)&v14 takeRotationFromTracker:trackerCopy];
   v12 = 0u;
   v13 = 0u;
   v11 = 0u;
-  if (v4)
+  if (trackerCopy)
   {
-    [v4 rotateTransform];
+    [trackerCopy rotateTransform];
   }
 
   else
@@ -141,13 +141,13 @@
   [(CRLCanvasLayout *)self invalidatePosition];
 }
 
-- (void)takeSizeFromTracker:(id)a3
+- (void)takeSizeFromTracker:(id)tracker
 {
   v8.receiver = self;
   v8.super_class = CRLBoardItemLayout;
-  v4 = a3;
-  [(CRLCanvasLayout *)&v8 takeSizeFromTracker:v4];
-  v5 = [v4 currentGeometryForLayout:{self, v8.receiver, v8.super_class}];
+  trackerCopy = tracker;
+  [(CRLCanvasLayout *)&v8 takeSizeFromTracker:trackerCopy];
+  v5 = [trackerCopy currentGeometryForLayout:{self, v8.receiver, v8.super_class}];
 
   v6 = [v5 copy];
   v7 = *(&self->_infoGeometryBeforeDynamicOperation + 2);
@@ -157,18 +157,18 @@
   [(CRLBoardItemLayout *)self invalidateExteriorWrap];
 }
 
-- (void)takeFreeTransformFromTracker:(id)a3
+- (void)takeFreeTransformFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v14.receiver = self;
   v14.super_class = CRLBoardItemLayout;
-  [(CRLCanvasLayout *)&v14 takeFreeTransformFromTracker:v4];
+  [(CRLCanvasLayout *)&v14 takeFreeTransformFromTracker:trackerCopy];
   v12 = 0u;
   v13 = 0u;
   v11 = 0u;
-  if (v4)
+  if (trackerCopy)
   {
-    [v4 freeTransformForLayout:self];
+    [trackerCopy freeTransformForLayout:self];
   }
 
   else
@@ -187,7 +187,7 @@
   v7 = *(&self->_infoGeometryBeforeDynamicOperation + 2);
   *(&self->_infoGeometryBeforeDynamicOperation + 2) = v6;
 
-  if ([v4 isResizing])
+  if ([trackerCopy isResizing])
   {
     [(CRLCanvasLayout *)self invalidateFrame];
     [(CRLBoardItemLayout *)self invalidateExteriorWrap];
@@ -199,11 +199,11 @@
   }
 }
 
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands
 {
   v4.receiver = self;
   v4.super_class = CRLBoardItemLayout;
-  [(CRLCanvasLayout *)&v4 beginDynamicOperationWithRealTimeCommands:a3];
+  [(CRLCanvasLayout *)&v4 beginDynamicOperationWithRealTimeCommands:commands];
   [(CRLBoardItemLayout *)self p_createDynamicBoardItemCopies];
 }
 
@@ -217,8 +217,8 @@
 
 - (void)p_createDynamicBoardItemCopies
 {
-  v3 = [(CRLCanvasLayout *)self info];
-  v4 = [v3 geometry];
+  info = [(CRLCanvasLayout *)self info];
+  geometry = [info geometry];
 
   if (*(&self->_cachedPathForClippingConnectionLines + 2))
   {
@@ -249,7 +249,7 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:159 isFatal:0 description:"expected nil value for '%{public}s'", "_infoGeometryBeforeDynamicOperation"];
   }
 
-  v8 = [v4 copy];
+  v8 = [geometry copy];
   v9 = *(&self->_cachedPathForClippingConnectionLines + 2);
   *(&self->_cachedPathForClippingConnectionLines + 2) = v8;
 
@@ -282,7 +282,7 @@
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:162 isFatal:0 description:"expected nil value for '%{public}s'", "_dynamicInfoGeometry"];
   }
 
-  v13 = [v4 copy];
+  v13 = [geometry copy];
   v14 = *(&self->_infoGeometryBeforeDynamicOperation + 2);
   *(&self->_infoGeometryBeforeDynamicOperation + 2) = v13;
 }
@@ -358,10 +358,10 @@
   *(&self->_infoGeometryBeforeDynamicOperation + 2) = 0;
 }
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
+  y = by.y;
+  x = by.x;
   v13.receiver = self;
   v13.super_class = CRLBoardItemLayout;
   [(CRLCanvasLayout *)&v13 dragBy:?];
@@ -405,19 +405,19 @@
   [(CRLBoardItemLayout *)self invalidateParentForWrap];
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v4 = a3;
-  v5 = [(CRLCanvasAbstractLayout *)self geometry];
-  v6 = v5;
-  if (!v5 || ([v5 isEqual:v4] & 1) == 0 && objc_msgSend(v6, "differsInMoreThanTranslationFrom:", v4))
+  geometryCopy = geometry;
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v6 = geometry;
+  if (!geometry || ([geometry isEqual:geometryCopy] & 1) == 0 && objc_msgSend(v6, "differsInMoreThanTranslationFrom:", geometryCopy))
   {
     [(CRLBoardItemLayout *)self invalidateExteriorWrap];
   }
 
   v7.receiver = self;
   v7.super_class = CRLBoardItemLayout;
-  [(CRLCanvasAbstractLayout *)&v7 setGeometry:v4];
+  [(CRLCanvasAbstractLayout *)&v7 setGeometry:geometryCopy];
 }
 
 - (void)parentDidChange
@@ -428,12 +428,12 @@
   [(CRLCanvasLayout *)&v3 parentDidChange];
 }
 
-- (void)p_addVisibleGeometriesFromInfo:(id)a3 intoArray:(id)a4 withTransform:(CGAffineTransform *)a5
+- (void)p_addVisibleGeometriesFromInfo:(id)info intoArray:(id)array withTransform:(CGAffineTransform *)transform
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CRLCanvasLayout *)self layoutController];
-  v11 = [v10 layoutForInfo:v8 childOfLayout:self];
+  infoCopy = info;
+  arrayCopy = array;
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  v11 = [layoutController layoutForInfo:infoCopy childOfLayout:self];
 
   if (!v11)
   {
@@ -468,8 +468,8 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v15 = [v11 visibleGeometries];
-  v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  visibleGeometries = [v11 visibleGeometries];
+  v16 = [visibleGeometries countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v16)
   {
     v17 = v16;
@@ -480,19 +480,19 @@
       {
         if (*v25 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(visibleGeometries);
         }
 
         v20 = *(*(&v24 + 1) + 8 * i);
-        v21 = *&a5->c;
-        v23[0] = *&a5->a;
+        v21 = *&transform->c;
+        v23[0] = *&transform->a;
         v23[1] = v21;
-        v23[2] = *&a5->tx;
+        v23[2] = *&transform->tx;
         v22 = [v20 geometryByTransformingBy:v23];
-        [v9 addObject:v22];
+        [arrayCopy addObject:v22];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v17 = [visibleGeometries countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v17);

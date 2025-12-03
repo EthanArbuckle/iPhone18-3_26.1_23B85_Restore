@@ -1,6 +1,6 @@
 @interface RTInvocationRecord
-- (RTInvocationRecord)initWithBlock:(id)a3 failureBlock:(id)a4 description:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTInvocationRecord)initWithBlock:(id)block failureBlock:(id)failureBlock description:(id)description;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)invoke;
 - (void)invokeFailure;
 @end
@@ -16,25 +16,25 @@
   }
 }
 
-- (RTInvocationRecord)initWithBlock:(id)a3 failureBlock:(id)a4 description:(id)a5
+- (RTInvocationRecord)initWithBlock:(id)block failureBlock:(id)failureBlock description:(id)description
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  failureBlockCopy = failureBlock;
+  descriptionCopy = description;
   v19.receiver = self;
   v19.super_class = RTInvocationRecord;
   v11 = [(RTInvocationRecord *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [blockCopy copy];
     block = v11->_block;
     v11->_block = v12;
 
-    v14 = [v9 copy];
+    v14 = [failureBlockCopy copy];
     failureBlock = v11->_failureBlock;
     v11->_failureBlock = v14;
 
-    v16 = [v10 copy];
+    v16 = [descriptionCopy copy];
     invocationDescription = v11->_invocationDescription;
     v11->_invocationDescription = v16;
   }
@@ -42,9 +42,9 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   block = self->_block;
   failureBlock = self->_failureBlock;
   invocationDescription = self->_invocationDescription;

@@ -27,8 +27,8 @@ uint64_t __35__SCLWatchServer_sharedWatchServer__block_invoke()
 - (void)run
 {
   v8 = objc_alloc_init(SCLSchoolModeManagerConfiguration);
-  v3 = [MEMORY[0x277D2BCF8] sharedInstance];
-  [(SCLSchoolModeManagerConfiguration *)v8 setDeviceRegistry:v3];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  [(SCLSchoolModeManagerConfiguration *)v8 setDeviceRegistry:mEMORY[0x277D2BCF8]];
 
   v4 = [objc_alloc(MEMORY[0x277D18778]) initWithService:@"com.apple.private.alloy.tinker.school"];
   [(SCLSchoolModeManagerConfiguration *)v8 setService:v4];

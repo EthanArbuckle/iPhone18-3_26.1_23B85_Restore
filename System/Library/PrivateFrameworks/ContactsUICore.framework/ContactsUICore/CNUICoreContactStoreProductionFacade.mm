@@ -1,25 +1,25 @@
 @interface CNUICoreContactStoreProductionFacade
-- (BOOL)enumerateContactsWithFetchRequest:(id)a3 error:(id *)a4 usingBlock:(id)a5;
-- (BOOL)executeSaveRequest:(id)a3 error:(id *)a4;
+- (BOOL)enumerateContactsWithFetchRequest:(id)request error:(id *)error usingBlock:(id)block;
+- (BOOL)executeSaveRequest:(id)request error:(id *)error;
 - (CNUICoreContactStoreProductionFacade)init;
-- (CNUICoreContactStoreProductionFacade)initWithContactStore:(id)a3;
-- (id)_crossPlatformUnifiedMeContactWithKeysToFetch:(id)a3 error:(id *)a4;
-- (id)containerForContact:(id)a3;
+- (CNUICoreContactStoreProductionFacade)initWithContactStore:(id)store;
+- (id)_crossPlatformUnifiedMeContactWithKeysToFetch:(id)fetch error:(id *)error;
+- (id)containerForContact:(id)contact;
 @end
 
 @implementation CNUICoreContactStoreProductionFacade
 
 - (CNUICoreContactStoreProductionFacade)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNUICoreContactStoreProductionFacade)initWithContactStore:(id)a3
+- (CNUICoreContactStoreProductionFacade)initWithContactStore:(id)store
 {
-  v5 = a3;
-  if (!v5)
+  storeCopy = store;
+  if (!storeCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_14 != -1)
     {
@@ -39,53 +39,53 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_contactStore, a3);
+    objc_storeStrong(&v14->_contactStore, store);
     v16 = v15;
   }
 
   return v15;
 }
 
-- (id)_crossPlatformUnifiedMeContactWithKeysToFetch:(id)a3 error:(id *)a4
+- (id)_crossPlatformUnifiedMeContactWithKeysToFetch:(id)fetch error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNUICoreContactStoreProductionFacade *)self contactStore];
-  v8 = [v7 _crossPlatformUnifiedMeContactWithKeysToFetch:v6 error:a4];
+  fetchCopy = fetch;
+  contactStore = [(CNUICoreContactStoreProductionFacade *)self contactStore];
+  v8 = [contactStore _crossPlatformUnifiedMeContactWithKeysToFetch:fetchCopy error:error];
 
   return v8;
 }
 
-- (BOOL)enumerateContactsWithFetchRequest:(id)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)enumerateContactsWithFetchRequest:(id)request error:(id *)error usingBlock:(id)block
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CNUICoreContactStoreProductionFacade *)self contactStore];
-  LOBYTE(a4) = [v10 enumerateContactsWithFetchRequest:v9 error:a4 usingBlock:v8];
+  blockCopy = block;
+  requestCopy = request;
+  contactStore = [(CNUICoreContactStoreProductionFacade *)self contactStore];
+  LOBYTE(error) = [contactStore enumerateContactsWithFetchRequest:requestCopy error:error usingBlock:blockCopy];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)executeSaveRequest:(id)a3 error:(id *)a4
+- (BOOL)executeSaveRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNUICoreContactStoreProductionFacade *)self contactStore];
-  LOBYTE(a4) = [v7 executeSaveRequest:v6 error:a4];
+  requestCopy = request;
+  contactStore = [(CNUICoreContactStoreProductionFacade *)self contactStore];
+  LOBYTE(error) = [contactStore executeSaveRequest:requestCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)containerForContact:(id)a3
+- (id)containerForContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNUICoreContactStoreProductionFacade *)self contactStore];
+  contactCopy = contact;
+  contactStore = [(CNUICoreContactStoreProductionFacade *)self contactStore];
   v6 = MEMORY[0x1E695CE48];
-  v7 = [v4 identifier];
+  identifier = [contactCopy identifier];
 
-  v8 = [v6 predicateForContainerOfContactWithIdentifier:v7];
-  v9 = [v5 containersMatchingPredicate:v8 error:0];
-  v10 = [v9 firstObject];
+  v8 = [v6 predicateForContainerOfContactWithIdentifier:identifier];
+  v9 = [contactStore containersMatchingPredicate:v8 error:0];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
 @end

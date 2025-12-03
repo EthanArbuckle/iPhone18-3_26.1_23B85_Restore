@@ -18,14 +18,14 @@
     case 0:
       v7 = @".latest";
 LABEL_7:
-      v8 = [a1 appendName:v6 object:v7];
+      v8 = [self appendName:v6 object:v7];
       goto LABEL_9;
   }
 
   v9 = MEMORY[0x277CCACA8];
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
   v11 = [v9 stringWithFormat:@"unknown (%@)", v10];
-  v8 = [a1 appendName:v6 object:v11];
+  v8 = [self appendName:v6 object:v11];
 
 LABEL_9:
 

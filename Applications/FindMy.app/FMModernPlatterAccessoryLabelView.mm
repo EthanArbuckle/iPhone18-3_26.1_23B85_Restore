@@ -1,11 +1,11 @@
 @interface FMModernPlatterAccessoryLabelView
-- (_TtC6FindMy33FMModernPlatterAccessoryLabelView)initWithCoder:(id)a3;
-- (_TtC6FindMy33FMModernPlatterAccessoryLabelView)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy33FMModernPlatterAccessoryLabelView)initWithCoder:(id)coder;
+- (_TtC6FindMy33FMModernPlatterAccessoryLabelView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMModernPlatterAccessoryLabelView
 
-- (_TtC6FindMy33FMModernPlatterAccessoryLabelView)initWithCoder:(id)a3
+- (_TtC6FindMy33FMModernPlatterAccessoryLabelView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy33FMModernPlatterAccessoryLabelView_label;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(UILabel) init];
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (_TtC6FindMy33FMModernPlatterAccessoryLabelView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy33FMModernPlatterAccessoryLabelView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,24 +1,24 @@
 @interface SCRODOTPadDriver
-- (BOOL)_setMainTextCells:(const char *)a3 length:(int64_t)a4;
-- (BOOL)setMainCells:(const char *)a3 length:(int64_t)a4;
+- (BOOL)_setMainTextCells:(const char *)cells length:(int64_t)length;
+- (BOOL)setMainCells:(const char *)cells length:(int64_t)length;
 - (BOOL)unloadDriver;
 - (SCRODOTPadDriver)init;
 - (id)_getInputEvents;
 - (id)getInputEvents;
-- (int)_BTLELoadDriverWithIOElement:(id)a3;
-- (int)loadDriverWithIOElement:(id)a3;
+- (int)_BTLELoadDriverWithIOElement:(id)element;
+- (int)loadDriverWithIOElement:(id)element;
 - (void)_dequeueData;
-- (void)_enqueueData:(id)a3;
-- (void)_processCommand:(id)a3;
-- (void)_removeQueuedDataWithType:(int64_t)a3;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
+- (void)_enqueueData:(id)data;
+- (void)_processCommand:(id)command;
+- (void)_removeQueuedDataWithType:(int64_t)type;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
 - (void)dealloc;
 - (void)displayCanvas;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
 @end
 
 @implementation SCRODOTPadDriver
@@ -84,12 +84,12 @@
   [(SCRODOTPadDriver *)&v3 dealloc];
 }
 
-- (int)loadDriverWithIOElement:(id)a3
+- (int)loadDriverWithIOElement:(id)element
 {
-  v4 = a3;
-  if ([v4 transport] == 32 && objc_msgSend(v4, "conformsToProtocol:", &OBJC_PROTOCOL___SCROIOBTLESerialElementProtocol))
+  elementCopy = element;
+  if ([elementCopy transport] == 32 && objc_msgSend(elementCopy, "conformsToProtocol:", &OBJC_PROTOCOL___SCROIOBTLESerialElementProtocol))
   {
-    v5 = [(SCRODOTPadDriver *)self _BTLELoadDriverWithIOElement:v4];
+    v5 = [(SCRODOTPadDriver *)self _BTLELoadDriverWithIOElement:elementCopy];
   }
 
   else
@@ -106,7 +106,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Unload driver: %@", &v7, 0xCu);
   }
 
@@ -142,7 +142,7 @@
   return v3;
 }
 
-- (BOOL)setMainCells:(const char *)a3 length:(int64_t)a4
+- (BOOL)setMainCells:(const char *)cells length:(int64_t)length
 {
   if (self->_setMainCellsSEL)
   {
@@ -152,7 +152,7 @@
   return (self->_setMainCellsIMP)();
 }
 
-- (BOOL)_setMainTextCells:(const char *)a3 length:(int64_t)a4
+- (BOOL)_setMainTextCells:(const char *)cells length:(int64_t)length
 {
   writeCharacteristic = self->_writeCharacteristic;
   if (writeCharacteristic)
@@ -162,24 +162,24 @@
     bzero(v9, v8 + 10);
     *v9 = 21930;
     v9[2] = 0;
-    v9[3] = a4 + 6;
+    v9[3] = length + 6;
     *(v9 + 1) = 512;
     v9[8] = 0;
-    if (a4 >= 1)
+    if (length >= 1)
     {
       v10 = v9 + 9;
-      v11 = a4;
+      lengthCopy = length;
       do
       {
-        v12 = *a3++;
+        v12 = *cells++;
         *v10++ = (2 * v12) & 0x70 | v12 & 0x87 | (v12 >> 3) & 8;
-        --v11;
+        --lengthCopy;
       }
 
-      while (v11);
+      while (lengthCopy);
     }
 
-    if ((a4 + 9) < 5)
+    if ((length + 9) < 5)
     {
       v15 = -91;
     }
@@ -187,7 +187,7 @@
     else
     {
       v13 = v9 + 4;
-      v14 = a4 + 5;
+      v14 = length + 5;
       v15 = -91;
       do
       {
@@ -199,8 +199,8 @@
       while (v14);
     }
 
-    v9[a4 + 9] = v15;
-    v17 = [NSData dataWithBytes:v9 length:a4 + 10];
+    v9[length + 9] = v15;
+    v17 = [NSData dataWithBytes:v9 length:length + 10];
     [(SCRODOTPadDriver *)self _removeQueuedDataWithType:2];
     v18 = objc_opt_new();
     [v18 setData:v17];
@@ -211,7 +211,7 @@
   return writeCharacteristic != 0;
 }
 
-- (void)_removeQueuedDataWithType:(int64_t)a3
+- (void)_removeQueuedDataWithType:(int64_t)type
 {
   dataWritingQueue = self->_dataWritingQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -219,21 +219,21 @@
   v4[2] = sub_1AA0;
   v4[3] = &unk_8208;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_async(dataWritingQueue, v4);
 }
 
-- (void)_enqueueData:(id)a3
+- (void)_enqueueData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dataWritingQueue = self->_dataWritingQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1BE8;
   v7[3] = &unk_8230;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dataCopy;
+  selfCopy = self;
+  v6 = dataCopy;
   dispatch_async(dataWritingQueue, v7);
 }
 
@@ -253,18 +253,18 @@
   if (self->_writeCharacteristic)
   {
     [(SCRODOTPadDriver *)self _removeQueuedDataWithType:1];
-    v3 = [(SCRO2DBrailleCanvasDOT *)self->_canvas mainCells];
-    v4 = [(SCRODOTPadDriver *)self canvasHeight];
-    v5 = [(SCRODOTPadDriver *)self canvasWidth];
-    v24 = v4;
-    if (v4 >= 1)
+    mainCells = [(SCRO2DBrailleCanvasDOT *)self->_canvas mainCells];
+    canvasHeight = [(SCRODOTPadDriver *)self canvasHeight];
+    canvasWidth = [(SCRODOTPadDriver *)self canvasWidth];
+    v24 = canvasHeight;
+    if (canvasHeight >= 1)
     {
-      v6 = v5;
+      v6 = canvasWidth;
       v7 = 0;
-      v8 = v5 + 10;
-      v23 = v5 + 6;
-      v9 = v5 + 9;
-      v22 = v5 + 5;
+      v8 = canvasWidth + 10;
+      v23 = canvasWidth + 6;
+      v9 = canvasWidth + 9;
+      v22 = canvasWidth + 5;
       do
       {
         __chkstk_darwin();
@@ -280,7 +280,7 @@
         {
           v12 = v10 + 9;
           v13 = v6;
-          v14 = v3;
+          v14 = mainCells;
           do
           {
             v15 = *v14++;
@@ -319,7 +319,7 @@
         [v21 setCanvasRow:v7];
         [(SCRODOTPadDriver *)self _enqueueData:v21];
 
-        v3 += v6;
+        mainCells += v6;
         ++v7;
       }
 
@@ -328,18 +328,18 @@
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v6 = [a4 value];
-  if ([v6 length])
+  value = [characteristic value];
+  if ([value length])
   {
     while (1)
     {
-      [v6 length];
+      [value length];
       __chkstk_darwin();
       v8 = &v13 - v7;
-      [v6 getBytes:&v13 - v7 length:{objc_msgSend(v6, "length")}];
-      if ([v6 length] < 4)
+      [value getBytes:&v13 - v7 length:{objc_msgSend(value, "length")}];
+      if ([value length] < 4)
       {
         break;
       }
@@ -355,23 +355,23 @@
       }
 
       v9 = __rev16(*(v8 + 1)) + 4;
-      if (v9 > [v6 length])
+      if (v9 > [value length])
       {
         break;
       }
 
-      v10 = [v6 subdataWithRange:{0, v9}];
+      v10 = [value subdataWithRange:{0, v9}];
       [(SCRODOTPadDriver *)self _processCommand:v10];
-      if (v9 >= [v6 length])
+      if (v9 >= [value length])
       {
 
         break;
       }
 
-      v11 = [v6 subdataWithRange:{v9, objc_msgSend(v6, "length") - v9}];
+      v11 = [value subdataWithRange:{v9, objc_msgSend(value, "length") - v9}];
 
       v12 = [v11 length];
-      v6 = v11;
+      value = v11;
       if (!v12)
       {
         goto LABEL_11;
@@ -379,15 +379,15 @@
     }
   }
 
-  v11 = v6;
+  v11 = value;
 LABEL_11:
 }
 
-- (void)_processCommand:(id)a3
+- (void)_processCommand:(id)command
 {
-  v4 = a3;
-  v5 = &v44 - (([v4 length] + 15) & 0xFFFFFFFFFFFFFFF0);
-  [v4 getBytes:v5 length:{objc_msgSend(v4, "length")}];
+  commandCopy = command;
+  v5 = &v44 - (([commandCopy length] + 15) & 0xFFFFFFFFFFFFFFF0);
+  [commandCopy getBytes:v5 length:{objc_msgSend(commandCopy, "length")}];
   v6 = v5[5];
   if (v5[4])
   {
@@ -472,7 +472,7 @@ LABEL_18:
   v16 = 0;
   for (i = 8; i != 12; ++i)
   {
-    if ([v4 length] > i)
+    if ([commandCopy length] > i)
     {
       v16 = (v5[i] << v15) + v16;
     }
@@ -501,7 +501,7 @@ LABEL_18:
   }
 
   v46 = &v44;
-  v47 = v4;
+  v47 = commandCopy;
   v45 = v14;
   if (v9)
   {
@@ -614,7 +614,7 @@ LABEL_55:
     _os_log_impl(&dword_0, v41, OS_LOG_TYPE_DEFAULT, "Input event: %@", buf, 0xCu);
   }
 
-  v4 = v47;
+  commandCopy = v47;
   v14 = v45;
   if (v27 != 1)
   {
@@ -625,7 +625,7 @@ LABEL_55:
 LABEL_59:
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
   v5 = _SCROD_LOG();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -635,43 +635,43 @@ LABEL_59:
   }
 }
 
-- (int)_BTLELoadDriverWithIOElement:(id)a3
+- (int)_BTLELoadDriverWithIOElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [v5 bundleIdentifier];
+  bundleIdentifier = [v5 bundleIdentifier];
   v7 = _SCROD_LOG();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v43 = v4;
+    v43 = elementCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Loading BTLE element: %@", buf, 0xCu);
   }
 
-  if (v6)
+  if (bundleIdentifier)
   {
     if (self->_isDriverLoaded)
     {
       [(SCRODOTPadDriver *)self unloadDriver];
     }
 
-    v8 = [v5 infoDictionary];
-    v9 = [v8 objectForKey:kSCROBrailleDriverModels];
-    v10 = [(__CFString *)v4 peripheral];
-    v11 = [v10 name];
+    infoDictionary = [v5 infoDictionary];
+    v9 = [infoDictionary objectForKey:kSCROBrailleDriverModels];
+    peripheral = [(__CFString *)elementCopy peripheral];
+    name = [peripheral name];
 
-    v41 = v11;
-    if ([v11 hasPrefix:@"DotPad320"])
+    v41 = name;
+    if ([name hasPrefix:@"DotPad320"])
     {
       v12 = @"com.apple.braille.driver.dot.pad.320";
     }
 
-    else if ([v11 hasPrefix:@"DotPad832"])
+    else if ([name hasPrefix:@"DotPad832"])
     {
       v12 = @"com.apple.braille.driver.dot.pad.832";
     }
 
-    else if ([v11 hasPrefix:@"DotPocket12"])
+    else if ([name hasPrefix:@"DotPocket12"])
     {
       v12 = @"com.apple.braille.driver.dot.mini.12";
     }
@@ -689,8 +689,8 @@ LABEL_59:
     if (v15)
     {
       v38 = v9;
-      v39 = v8;
-      v40 = v6;
+      v39 = infoDictionary;
+      v40 = bundleIdentifier;
       v17 = [v15 objectForKey:kSCROBrailleDriverMainDisplaySize];
       self->_mainSize = [v17 unsignedCharValue];
 
@@ -742,21 +742,21 @@ LABEL_59:
         _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "Dot main size: %@, statusSize: %@, canvas: {%@, %@} : %@", buf, 0x34u);
       }
 
-      v31 = [(__CFString *)v4 central];
-      v32 = [(__CFString *)v4 peripheral];
+      central = [(__CFString *)elementCopy central];
+      peripheral2 = [(__CFString *)elementCopy peripheral];
       v33 = _SCROD_LOG();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v43 = v32;
+        v43 = peripheral2;
         _os_log_impl(&dword_0, v33, OS_LOG_TYPE_DEFAULT, "BTLE Dot Pad %@", buf, 0xCu);
       }
 
       v9 = v38;
-      if (v31 && v32)
+      if (central && peripheral2)
       {
-        objc_storeStrong(&self->_central, v31);
-        objc_storeStrong(&self->_peripheral, v32);
+        objc_storeStrong(&self->_central, central);
+        objc_storeStrong(&self->_peripheral, peripheral2);
         v34 = [[SCRO2DBrailleCanvasDOT alloc] initWithWidth:2 * self->_canvasWidth initWithHeight:4 * self->_canvasHeight];
         canvas = self->_canvas;
         self->_canvas = v34;
@@ -782,20 +782,20 @@ LABEL_59:
         v13 = 1;
       }
 
-      v8 = v39;
-      v6 = v40;
+      infoDictionary = v39;
+      bundleIdentifier = v40;
     }
 
     else
     {
-      v31 = _SCROD_LOG();
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+      central = _SCROD_LOG();
+      if (os_log_type_enabled(central, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
         v43 = v12;
         v44 = 2112;
         v45 = v9;
-        _os_log_impl(&dword_0, v31, OS_LOG_TYPE_DEFAULT, "Failed to load Dotpad braille driver, Unknown model identifier [%{public}@] %@", buf, 0x16u);
+        _os_log_impl(&dword_0, central, OS_LOG_TYPE_DEFAULT, "Failed to load Dotpad braille driver, Unknown model identifier [%{public}@] %@", buf, 0x16u);
       }
 
       v13 = 1;
@@ -804,11 +804,11 @@ LABEL_59:
 
   else
   {
-    v8 = _SCROD_LOG();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    infoDictionary = _SCROD_LOG();
+    if (os_log_type_enabled(infoDictionary, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Failed to load DOTPad braille driver because we have no bundle identifier", buf, 2u);
+      _os_log_impl(&dword_0, infoDictionary, OS_LOG_TYPE_DEFAULT, "Failed to load DOTPad braille driver because we have no bundle identifier", buf, 2u);
     }
 
     v13 = 1;
@@ -817,24 +817,24 @@ LABEL_59:
   return v13;
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v5 = a4;
-  [v5 setDelegate:self];
-  [v5 discoverServices:0];
+  peripheralCopy = peripheral;
+  [peripheralCopy setDelegate:self];
+  [peripheralCopy discoverServices:0];
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   v9 = _SCROD_LOG();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v7;
+    v12 = peripheralCopy;
     v13 = 2112;
-    v14 = v8;
+    v14 = errorCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Disconnect : %@ %@", &v11, 0x16u);
   }
 
@@ -843,15 +843,15 @@ LABEL_59:
   [v10 postNotificationName:@"SCROBrailleDriverProtocolUnloadNotification" object:self userInfo:0];
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v4 = a3;
+  peripheralCopy = peripheral;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 services];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  services = [peripheralCopy services];
+  v6 = [services countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -863,29 +863,29 @@ LABEL_59:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(services);
         }
 
-        [v4 discoverCharacteristics:0 forService:*(*(&v10 + 1) + 8 * v9)];
+        [peripheralCopy discoverCharacteristics:0 forService:*(*(&v10 + 1) + 8 * v9)];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [services countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [a4 characteristics];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  characteristics = [service characteristics];
+  v7 = [characteristics countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -896,7 +896,7 @@ LABEL_59:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(characteristics);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
@@ -910,9 +910,9 @@ LABEL_59:
 
         [(CBPeripheral *)self->_peripheral readValueForCharacteristic:v11];
         [(CBPeripheral *)self->_peripheral setNotifyValue:1 forCharacteristic:v11];
-        v13 = [(CBCharacteristic *)v11 UUID];
-        v14 = [v13 UUIDString];
-        v15 = [v14 length];
+        uUID = [(CBCharacteristic *)v11 UUID];
+        uUIDString = [uUID UUIDString];
+        v15 = [uUIDString length];
 
         if (v15 && ([(CBCharacteristic *)v11 properties]& 8) != 0)
         {
@@ -931,7 +931,7 @@ LABEL_59:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v8 = [characteristics countByEnumeratingWithState:&v18 objects:v24 count:16];
       if (v8)
       {
         continue;

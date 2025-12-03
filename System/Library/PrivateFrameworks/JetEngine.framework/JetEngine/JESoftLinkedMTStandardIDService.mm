@@ -1,42 +1,42 @@
 @interface JESoftLinkedMTStandardIDService
-- (JESoftLinkedMTStandardIDService)initWithAMSBag:(id)a3;
-- (JESoftLinkedMTStandardIDService)initWithConfigDictionary:(id)a3;
-- (id)idFieldsForTopic:(id)a3;
-- (id)idFieldsForTopic:(id)a3 options:(id)a4;
-- (id)mtPromiseToAMSPromise:(id)a3;
-- (id)resetIDForTopics:(id)a3;
-- (id)secretValueForNamespace:(id)a3 options:(id)a4;
+- (JESoftLinkedMTStandardIDService)initWithAMSBag:(id)bag;
+- (JESoftLinkedMTStandardIDService)initWithConfigDictionary:(id)dictionary;
+- (id)idFieldsForTopic:(id)topic;
+- (id)idFieldsForTopic:(id)topic options:(id)options;
+- (id)mtPromiseToAMSPromise:(id)promise;
+- (id)resetIDForTopics:(id)topics;
+- (id)secretValueForNamespace:(id)namespace options:(id)options;
 - (id)sync;
-- (void)performMaintenanceWithCompletion:(id)a3;
-- (void)queryIDForTopic:(id)a3 type:(int64_t)a4 options:(id)a5 completion:(id)a6;
+- (void)performMaintenanceWithCompletion:(id)completion;
+- (void)queryIDForTopic:(id)topic type:(int64_t)type options:(id)options completion:(id)completion;
 @end
 
 @implementation JESoftLinkedMTStandardIDService
 
-- (JESoftLinkedMTStandardIDService)initWithAMSBag:(id)a3
+- (JESoftLinkedMTStandardIDService)initWithAMSBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v8.receiver = self;
   v8.super_class = JESoftLinkedMTStandardIDService;
   v5 = [(JESoftLinkedMTStandardIDService *)&v8 init];
   if (v5)
   {
-    v6 = [objc_alloc(getMTStandardIDServiceClass()) initWithAMSBag:v4];
+    v6 = [objc_alloc(getMTStandardIDServiceClass()) initWithAMSBag:bagCopy];
     [(JESoftLinkedMTStandardIDService *)v5 setBacking:v6];
   }
 
   return v5;
 }
 
-- (JESoftLinkedMTStandardIDService)initWithConfigDictionary:(id)a3
+- (JESoftLinkedMTStandardIDService)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = JESoftLinkedMTStandardIDService;
   v5 = [(JESoftLinkedMTStandardIDService *)&v8 init];
   if (v5)
   {
-    v6 = [objc_alloc(getMTStandardIDServiceClass()) initWithConfigDictionary:v4];
+    v6 = [objc_alloc(getMTStandardIDServiceClass()) initWithConfigDictionary:dictionaryCopy];
     [(JESoftLinkedMTStandardIDService *)v5 setBacking:v6];
   }
 
@@ -45,73 +45,73 @@
 
 - (id)sync
 {
-  v3 = [(JESoftLinkedMTStandardIDService *)self backing];
-  v4 = [v3 sync];
+  backing = [(JESoftLinkedMTStandardIDService *)self backing];
+  sync = [backing sync];
 
-  v5 = [(JESoftLinkedMTStandardIDService *)self mtPromiseToAMSPromise:v4];
+  v5 = [(JESoftLinkedMTStandardIDService *)self mtPromiseToAMSPromise:sync];
 
   return v5;
 }
 
-- (id)resetIDForTopics:(id)a3
+- (id)resetIDForTopics:(id)topics
 {
-  v4 = a3;
-  v5 = [(JESoftLinkedMTStandardIDService *)self backing];
-  v6 = [v5 resetIDForTopics:v4 options:0];
+  topicsCopy = topics;
+  backing = [(JESoftLinkedMTStandardIDService *)self backing];
+  v6 = [backing resetIDForTopics:topicsCopy options:0];
 
   v7 = [(JESoftLinkedMTStandardIDService *)self mtPromiseToAMSPromise:v6];
 
   return v7;
 }
 
-- (id)idFieldsForTopic:(id)a3
+- (id)idFieldsForTopic:(id)topic
 {
-  v4 = a3;
-  v5 = [(JESoftLinkedMTStandardIDService *)self backing];
-  v6 = [v5 IDFieldsForTopic:v4 options:0];
+  topicCopy = topic;
+  backing = [(JESoftLinkedMTStandardIDService *)self backing];
+  v6 = [backing IDFieldsForTopic:topicCopy options:0];
 
   v7 = [(JESoftLinkedMTStandardIDService *)self mtPromiseToAMSPromise:v6];
 
   return v7;
 }
 
-- (id)idFieldsForTopic:(id)a3 options:(id)a4
+- (id)idFieldsForTopic:(id)topic options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(JESoftLinkedMTStandardIDService *)self backing];
-  v9 = [v8 IDFieldsForTopic:v7 options:v6];
+  optionsCopy = options;
+  topicCopy = topic;
+  backing = [(JESoftLinkedMTStandardIDService *)self backing];
+  v9 = [backing IDFieldsForTopic:topicCopy options:optionsCopy];
 
   v10 = [(JESoftLinkedMTStandardIDService *)self mtPromiseToAMSPromise:v9];
 
   return v10;
 }
 
-- (id)secretValueForNamespace:(id)a3 options:(id)a4
+- (id)secretValueForNamespace:(id)namespace options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(JESoftLinkedMTStandardIDService *)self backing];
-  v9 = [v8 secretValueForNamespace:v7 options:v6];
+  optionsCopy = options;
+  namespaceCopy = namespace;
+  backing = [(JESoftLinkedMTStandardIDService *)self backing];
+  v9 = [backing secretValueForNamespace:namespaceCopy options:optionsCopy];
 
   v10 = [(JESoftLinkedMTStandardIDService *)self mtPromiseToAMSPromise:v9];
 
   return v10;
 }
 
-- (void)queryIDForTopic:(id)a3 type:(int64_t)a4 options:(id)a5 completion:(id)a6
+- (void)queryIDForTopic:(id)topic type:(int64_t)type options:(id)options completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(JESoftLinkedMTStandardIDService *)self backing];
+  completionCopy = completion;
+  optionsCopy = options;
+  topicCopy = topic;
+  backing = [(JESoftLinkedMTStandardIDService *)self backing];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__JESoftLinkedMTStandardIDService_queryIDForTopic_type_options_completion___block_invoke;
   v15[3] = &unk_1E794ACB8;
-  v16 = v10;
-  v14 = v10;
-  [v13 queryIDForTopic:v12 type:a4 options:v11 completion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [backing queryIDForTopic:topicCopy type:type options:optionsCopy completion:v15];
 }
 
 void __75__JESoftLinkedMTStandardIDService_queryIDForTopic_type_options_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -147,10 +147,10 @@ void __75__JESoftLinkedMTStandardIDService_queryIDForTopic_type_options_completi
   }
 }
 
-- (id)mtPromiseToAMSPromise:(id)a3
+- (id)mtPromiseToAMSPromise:(id)promise
 {
   v3 = MEMORY[0x1E698CA58];
-  v4 = a3;
+  promiseCopy = promise;
   v5 = objc_alloc_init(v3);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -158,14 +158,14 @@ void __75__JESoftLinkedMTStandardIDService_queryIDForTopic_type_options_completi
   v13[3] = &unk_1E794ACE0;
   v6 = v5;
   v14 = v6;
-  [v4 addErrorBlock:v13];
+  [promiseCopy addErrorBlock:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__JESoftLinkedMTStandardIDService_mtPromiseToAMSPromise___block_invoke_2;
   v11[3] = &unk_1E794AD08;
   v7 = v6;
   v12 = v7;
-  [v4 addSuccessBlock:v11];
+  [promiseCopy addSuccessBlock:v11];
 
   v8 = v12;
   v9 = v7;
@@ -173,11 +173,11 @@ void __75__JESoftLinkedMTStandardIDService_queryIDForTopic_type_options_completi
   return v7;
 }
 
-- (void)performMaintenanceWithCompletion:(id)a3
+- (void)performMaintenanceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(JESoftLinkedMTStandardIDService *)self backing];
-  [v5 performMaintenanceWithCompletion:v4];
+  completionCopy = completion;
+  backing = [(JESoftLinkedMTStandardIDService *)self backing];
+  [backing performMaintenanceWithCompletion:completionCopy];
 }
 
 @end

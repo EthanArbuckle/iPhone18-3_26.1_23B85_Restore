@@ -1,17 +1,17 @@
 @interface CAAUEQViewBase
-- (_TtC12CoreAudioKit14CAAUEQViewBase)initWithFrame:(CGRect)a3;
+- (_TtC12CoreAudioKit14CAAUEQViewBase)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
 - (void)tintColorDidChange;
 @end
 
 @implementation CAAUEQViewBase
 
-- (_TtC12CoreAudioKit14CAAUEQViewBase)initWithFrame:(CGRect)a3
+- (_TtC12CoreAudioKit14CAAUEQViewBase)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12CoreAudioKit14CAAUEQViewBase_viewSetup) = 0;
   v7 = MEMORY[0x277D84F90];
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12CoreAudioKit14CAAUEQViewBase_permanentHeaderConstraints) = MEMORY[0x277D84F90];
@@ -26,7 +26,7 @@
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_2371935F8();
 }
 
@@ -37,11 +37,11 @@
   v2 = v7.receiver;
   [(CAAUEQViewBase *)&v7 tintColorDidChange];
   v3 = sub_23719342C();
-  v4 = [v2 tintColor];
+  tintColor = [v2 tintColor];
   [v3 setTintColor_];
 
   v5 = sub_237193370();
-  v6 = [v2 tintColor];
+  tintColor2 = [v2 tintColor];
   [v5 setTintColor_];
 }
 

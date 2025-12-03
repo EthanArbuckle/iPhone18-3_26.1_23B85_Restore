@@ -1,21 +1,21 @@
 @interface HKCaretOptionalTextField
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (CGRect)caretRectForPosition:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (CGRect)caretRectForPosition:(id)position;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation HKCaretOptionalTextField
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if ([(HKCaretOptionalTextField *)self allowsSelection])
   {
     v10.receiver = self;
     v10.super_class = HKCaretOptionalTextField;
-    v8 = [(HKCaretOptionalTextField *)&v10 hitTest:v7 withEvent:x, y];
+    v8 = [(HKCaretOptionalTextField *)&v10 hitTest:eventCopy withEvent:x, y];
   }
 
   else
@@ -26,7 +26,7 @@
   return v8;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
   if (self->_allowsSelection)
   {
@@ -34,7 +34,7 @@
     v11 = v4;
     v9.receiver = self;
     v9.super_class = HKCaretOptionalTextField;
-    [(HKCaretOptionalTextField *)&v9 caretRectForPosition:a3];
+    [(HKCaretOptionalTextField *)&v9 caretRectForPosition:position];
   }
 
   else
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   if (self->_disableActions)
   {
@@ -63,7 +63,7 @@
   v9 = v5;
   v7.receiver = self;
   v7.super_class = HKCaretOptionalTextField;
-  return [(HKCaretOptionalTextField *)&v7 canPerformAction:a3 withSender:a4];
+  return [(HKCaretOptionalTextField *)&v7 canPerformAction:action withSender:sender];
 }
 
 @end

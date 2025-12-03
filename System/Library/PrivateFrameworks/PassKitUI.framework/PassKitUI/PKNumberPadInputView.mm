@@ -1,46 +1,46 @@
 @interface PKNumberPadInputView
-+ (CGSize)defaultSizeForInterfaceOrientation:(int64_t)a3;
-- (PKNumberPadInputView)initWithFrame:(CGRect)a3 delegate:(id)a4 configurator:(id)a5;
-- (id)_createBorderedButtonForButtonValue:(unint64_t)a3 withBorder:(unint64_t)a4 primaryAction:(id)a5;
-- (void)_numericKeyPressed:(unint64_t)a3;
++ (CGSize)defaultSizeForInterfaceOrientation:(int64_t)orientation;
+- (PKNumberPadInputView)initWithFrame:(CGRect)frame delegate:(id)delegate configurator:(id)configurator;
+- (id)_createBorderedButtonForButtonValue:(unint64_t)value withBorder:(unint64_t)border primaryAction:(id)action;
+- (void)_numericKeyPressed:(unint64_t)pressed;
 - (void)_reloadSubviews;
 - (void)_updateButtons;
 - (void)layoutSubviews;
-- (void)performBatchUpdates:(id)a3;
-- (void)setBottomView:(id)a3;
-- (void)setNumberPadColor:(id)a3;
-- (void)setShowsDecimalPointButton:(BOOL)a3;
-- (void)setTextColor:(id)a3;
+- (void)performBatchUpdates:(id)updates;
+- (void)setBottomView:(id)view;
+- (void)setNumberPadColor:(id)color;
+- (void)setShowsDecimalPointButton:(BOOL)button;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation PKNumberPadInputView
 
-+ (CGSize)defaultSizeForInterfaceOrientation:(int64_t)a3
++ (CGSize)defaultSizeForInterfaceOrientation:(int64_t)orientation
 {
-  [MEMORY[0x1E69DCBB8] defaultSizeForInterfaceOrientation:a3];
+  [MEMORY[0x1E69DCBB8] defaultSizeForInterfaceOrientation:orientation];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (PKNumberPadInputView)initWithFrame:(CGRect)a3 delegate:(id)a4 configurator:(id)a5
+- (PKNumberPadInputView)initWithFrame:(CGRect)frame delegate:(id)delegate configurator:(id)configurator
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegateCopy = delegate;
+  configuratorCopy = configurator;
   v24.receiver = self;
   v24.super_class = PKNumberPadInputView;
-  v13 = [(UIInputView *)&v24 initWithFrame:1 inputViewStyle:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(UIInputView *)&v24 initWithFrame:1 inputViewStyle:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeWeak(&height->_delegate, delegateCopy);
     v15 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-    v16 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [(NSNumberFormatter *)v15 setLocale:v16];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [(NSNumberFormatter *)v15 setLocale:autoupdatingCurrentLocale];
 
     formatter = v14->_formatter;
     v14->_formatter = v15;
@@ -54,7 +54,7 @@
     v21[2] = __60__PKNumberPadInputView_initWithFrame_delegate_configurator___block_invoke;
     v21[3] = &unk_1E8019020;
     v22 = v14;
-    v23 = v12;
+    v23 = configuratorCopy;
     [(PKNumberPadInputView *)v22 performBatchUpdates:v21];
   }
 
@@ -75,14 +75,14 @@ void __60__PKNumberPadInputView_initWithFrame_delegate_configurator___block_invo
   }
 }
 
-- (void)performBatchUpdates:(id)a3
+- (void)performBatchUpdates:(id)updates
 {
-  v4 = a3;
-  if (v4)
+  updatesCopy = updates;
+  if (updatesCopy)
   {
     ++self->_batchedUpdateCount;
-    v6 = v4;
-    (*(v4 + 2))(v4, self);
+    v6 = updatesCopy;
+    (*(updatesCopy + 2))(updatesCopy, self);
     v5 = self->_batchedUpdateCount - 1;
     self->_batchedUpdateCount = v5;
     if (!v5)
@@ -124,24 +124,24 @@ void __60__PKNumberPadInputView_initWithFrame_delegate_configurator___block_invo
   [(UIStackView *)self->_verticalStackView setFrame:v4, v6, v8, v10];
 }
 
-- (void)setShowsDecimalPointButton:(BOOL)a3
+- (void)setShowsDecimalPointButton:(BOOL)button
 {
-  if (self->_showsDecimalPointButton == !a3)
+  if (self->_showsDecimalPointButton == !button)
   {
-    self->_showsDecimalPointButton = a3;
+    self->_showsDecimalPointButton = button;
     [(PKNumberPadInputView *)self _reloadSubviews];
   }
 }
 
-- (void)setNumberPadColor:(id)a3
+- (void)setNumberPadColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v4 = PKProvisioningBackgroundColor();
+    colorCopy = PKProvisioningBackgroundColor();
   }
 
-  obj = v4;
+  obj = colorCopy;
   if ((PKEqualObjects() & 1) == 0)
   {
     objc_storeStrong(&self->_numberPadColor, obj);
@@ -150,15 +150,15 @@ void __60__PKNumberPadInputView_initWithFrame_delegate_configurator___block_invo
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v4 = [MEMORY[0x1E69DC888] labelColor];
+    colorCopy = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  obj = v4;
+  obj = colorCopy;
   if ((PKEqualObjects() & 1) == 0)
   {
     objc_storeStrong(&self->_textColor, obj);
@@ -166,12 +166,12 @@ void __60__PKNumberPadInputView_initWithFrame_delegate_configurator___block_invo
   }
 }
 
-- (void)setBottomView:(id)a3
+- (void)setBottomView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   bottomView = self->_bottomView;
-  v7 = v5;
-  if (bottomView != v5)
+  v7 = viewCopy;
+  if (bottomView != viewCopy)
   {
     if (bottomView)
     {
@@ -179,7 +179,7 @@ void __60__PKNumberPadInputView_initWithFrame_delegate_configurator___block_invo
       [(UIView *)self->_bottomView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_bottomView, a3);
+    objc_storeStrong(&self->_bottomView, view);
     if (self->_bottomView)
     {
       [(UIStackView *)self->_verticalStackView addArrangedSubview:?];
@@ -187,18 +187,18 @@ void __60__PKNumberPadInputView_initWithFrame_delegate_configurator___block_invo
   }
 }
 
-- (void)_numericKeyPressed:(unint64_t)a3
+- (void)_numericKeyPressed:(unint64_t)pressed
 {
-  if (a3 < 0xA || a3 == 11)
+  if (pressed < 0xA || pressed == 11)
   {
-    v5 = PKNumberPadKeyButtonValueToString(self->_formatter, a3);
+    v5 = PKNumberPadKeyButtonValueToString(self->_formatter, pressed);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained numberPadInputView:self requestReplaceSelectedTextFieldRangeWithText:v5];
   }
 
   else
   {
-    if (a3 != 10)
+    if (pressed != 10)
     {
       return;
     }
@@ -345,23 +345,23 @@ void __60__PKNumberPadInputView_initWithFrame_delegate_configurator___block_invo
               v17 = v16;
             }
 
-            v18 = [v14 unsignedIntegerValue];
+            unsignedIntegerValue = [v14 unsignedIntegerValue];
             v19 = MEMORY[0x1E69DC628];
             v30[0] = MEMORY[0x1E69E9820];
             v30[1] = 3221225472;
             v30[2] = __39__PKNumberPadInputView__reloadSubviews__block_invoke;
             v30[3] = &unk_1E8019048;
             objc_copyWeak(v31, &location);
-            v31[1] = v18;
+            v31[1] = unsignedIntegerValue;
             v20 = [v19 actionWithHandler:v30];
-            v21 = [(PKNumberPadInputView *)self _createBorderedButtonForButtonValue:v18 withBorder:v17 primaryAction:v20];
+            v21 = [(PKNumberPadInputView *)self _createBorderedButtonForButtonValue:unsignedIntegerValue withBorder:v17 primaryAction:v20];
 
             v28[0] = MEMORY[0x1E69E9820];
             v28[1] = 3221225472;
             v28[2] = __39__PKNumberPadInputView__reloadSubviews__block_invoke_2;
             v28[3] = &unk_1E8019070;
             objc_copyWeak(v29, &location);
-            v29[1] = v18;
+            v29[1] = unsignedIntegerValue;
             [v21 setConfigurationUpdateHandler:v28];
             [v11 addArrangedSubview:v21];
             [(NSMutableArray *)self->_buttons addObject:v21];
@@ -445,24 +445,24 @@ void __39__PKNumberPadInputView__reloadSubviews__block_invoke_2(uint64_t a1, voi
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)_createBorderedButtonForButtonValue:(unint64_t)a3 withBorder:(unint64_t)a4 primaryAction:(id)a5
+- (id)_createBorderedButtonForButtonValue:(unint64_t)value withBorder:(unint64_t)border primaryAction:(id)action
 {
-  v8 = a5;
+  actionCopy = action;
   v9 = +[PKBorderedButtonConfiguration plainButtonConfiguration];
-  [v9 setBorder:a4];
-  v10 = [v9 background];
-  [v10 setCornerRadius:0.0];
+  [v9 setBorder:border];
+  background = [v9 background];
+  [background setCornerRadius:0.0];
   [v9 setTitleAlignment:2];
   [v9 setTitleTextAttributesTransformer:&__block_literal_global_99];
-  if (a3 != 10 && a3 != 12)
+  if (value != 10 && value != 12)
   {
-    v11 = PKNumberPadKeyButtonValueToString(self->_formatter, a3);
+    v11 = PKNumberPadKeyButtonValueToString(self->_formatter, value);
     [v9 setTitle:v11];
   }
 
-  v12 = [PKBorderedButton borderedButtonWithConfiguration:v9 primaryAction:v8];
+  v12 = [PKBorderedButton borderedButtonWithConfiguration:v9 primaryAction:actionCopy];
   v13 = v12;
-  if (a3 == 12)
+  if (value == 12)
   {
     [v12 setUserInteractionEnabled:0];
   }

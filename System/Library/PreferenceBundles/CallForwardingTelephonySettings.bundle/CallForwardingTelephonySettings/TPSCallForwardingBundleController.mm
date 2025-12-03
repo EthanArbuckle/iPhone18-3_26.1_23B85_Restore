@@ -33,9 +33,9 @@
   if (![(TPSCallForwardingBundleController *)&v7 isHidden]&& (+[UIApplication isRunningInStoreDemoMode]& 1) == 0)
   {
     v2 = +[UIDevice currentDevice];
-    v3 = [v2 userInterfaceIdiom];
+    userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-    if (v3 != &dword_0 + 1)
+    if (userInterfaceIdiom != &dword_0 + 1)
     {
       return 0;
     }
@@ -58,13 +58,13 @@
   {
     v21.receiver = self;
     v21.super_class = TPSCallForwardingBundleController;
-    v4 = [(TPSCallForwardingBundleController *)&v21 subscriptions];
-    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [v4 count]);
+    subscriptions = [(TPSCallForwardingBundleController *)&v21 subscriptions];
+    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [subscriptions count]);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v4;
+    v6 = subscriptions;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v7)
     {
@@ -82,8 +82,8 @@
           v11 = *(*(&v17 + 1) + 8 * i);
           if (([v11 isSimHidden] & 1) == 0)
           {
-            v12 = [(TPSCallForwardingBundleController *)self telephonyController];
-            v13 = [v12 supportsSystemCapabilityCallForwardingForSubscriptionContext:v11];
+            telephonyController = [(TPSCallForwardingBundleController *)self telephonyController];
+            v13 = [telephonyController supportsSystemCapabilityCallForwardingForSubscriptionContext:v11];
 
             if (v13)
             {

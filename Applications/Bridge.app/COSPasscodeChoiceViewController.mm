@@ -8,10 +8,10 @@
 - (id)okayButtonTitle;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)alternateButtonPressed:(id)a3;
-- (void)applyConfirmedOptin:(BOOL)a3;
-- (void)okayButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)applyConfirmedOptin:(BOOL)optin;
+- (void)okayButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation COSPasscodeChoiceViewController
@@ -23,10 +23,10 @@
   v2 = [(COSOptinViewController *)&v10 init];
   if (v2)
   {
-    v3 = [UIApp bridgeController];
-    v4 = [v3 isTinkerPairing];
+    bridgeController = [UIApp bridgeController];
+    isTinkerPairing = [bridgeController isTinkerPairing];
 
-    if (v4)
+    if (isTinkerPairing)
     {
       v5 = 74;
     }
@@ -34,8 +34,8 @@
     else
     {
       v6 = +[UIApplication sharedApplication];
-      v7 = [v6 bridgeController];
-      [v7 sendGizmoPasscodeRestrictions];
+      bridgeController2 = [v6 bridgeController];
+      [bridgeController2 sendGizmoPasscodeRestrictions];
 
       v8 = +[MCProfileConnection sharedConnection];
       if ([v8 BOOLRestrictionForFeature:MCFeaturePasscodeRequired] == 1)
@@ -65,8 +65,8 @@
 
 - (id)detailString
 {
-  v2 = [UIApp bridgeController];
-  v3 = [v2 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
   v4 = pbb_setupflow_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -74,13 +74,13 @@
     v11 = 136315394;
     v12 = "[COSPasscodeChoiceViewController detailString]";
     v13 = 1024;
-    v14 = v3;
+    v14 = isTinkerPairing;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: queried isSatellitePairing (%{BOOL}d)", &v11, 0x12u);
   }
 
   v5 = +[NSBundle mainBundle];
   v6 = v5;
-  if (v3)
+  if (isTinkerPairing)
   {
     v7 = @"PASSCODE_DESCRIPTION_TINKER";
     v8 = @"Localizable-tinker";
@@ -100,7 +100,7 @@
 - (id)imageResource
 {
   v2 = sub_10002D528(@"Screen-Passcode");
-  v3 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v4 = BPSIsDeviceCompatibleWithVersions();
 
   if (v4)
@@ -113,28 +113,28 @@
   return v2;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   [PBBridgeCAReporter recordPasscodeCreatedWithType:1 wasChallenged:self->_passcodeSkipChallenged];
-  v4 = [(COSPasscodeChoiceViewController *)self delegate];
-  [v4 buddyControllerDone:self nextControllerClass:objc_opt_class()];
+  delegate = [(COSPasscodeChoiceViewController *)self delegate];
+  [delegate buddyControllerDone:self nextControllerClass:objc_opt_class()];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   [PBBridgeCAReporter recordPasscodeCreatedWithType:2 wasChallenged:self->_passcodeSkipChallenged];
-  v4 = [(COSPasscodeChoiceViewController *)self delegate];
-  [v4 buddyControllerDone:self nextControllerClass:objc_opt_class()];
+  delegate = [(COSPasscodeChoiceViewController *)self delegate];
+  [delegate buddyControllerDone:self nextControllerClass:objc_opt_class()];
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
-  if (a3)
+  if (optin)
   {
     [PBBridgeCAReporter recordPasscodeChallenge:2];
     v4 = objc_opt_class();
-    v5 = [(COSPasscodeChoiceViewController *)self delegate];
-    [v5 buddyControllerDone:self nextControllerClass:v4];
+    delegate = [(COSPasscodeChoiceViewController *)self delegate];
+    [delegate buddyControllerDone:self nextControllerClass:v4];
   }
 }
 
@@ -170,7 +170,7 @@
   return v3;
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
   self->_passcodeSkipChallenged = 1;
   [PBBridgeCAReporter recordPasscodeChallenge:1];
@@ -180,10 +180,10 @@
 
 + (BOOL)controllerNeedsToRun
 {
-  v2 = [UIApp bridgeController];
-  v3 = [v2 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
-  if (v3)
+  if (isTinkerPairing)
   {
     v4 = pbb_bridge_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

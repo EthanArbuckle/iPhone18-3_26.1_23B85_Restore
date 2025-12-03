@@ -1,61 +1,61 @@
 @interface _MFDASearchCriterionConverterDelegate
-- (BOOL)_shouldConvertEqualsToContainsForKey:(id)a3;
-- (id)messageCriterionConverter:(id)a3 predicateKeysForCriterionType:(int64_t)a4;
-- (unint64_t)messageCriterionConverter:(id)a3 willUsePredicateOperatorType:(unint64_t)a4 forKey:(id)a5;
+- (BOOL)_shouldConvertEqualsToContainsForKey:(id)key;
+- (id)messageCriterionConverter:(id)converter predicateKeysForCriterionType:(int64_t)type;
+- (unint64_t)messageCriterionConverter:(id)converter willUsePredicateOperatorType:(unint64_t)type forKey:(id)key;
 @end
 
 @implementation _MFDASearchCriterionConverterDelegate
 
-- (id)messageCriterionConverter:(id)a3 predicateKeysForCriterionType:(int64_t)a4
+- (id)messageCriterionConverter:(id)converter predicateKeysForCriterionType:(int64_t)type
 {
-  v5 = a3;
+  converterCopy = converter;
   if (messageCriterionConverter_predicateKeysForCriterionType__onceToken != -1)
   {
     [_MFDASearchCriterionConverterDelegate messageCriterionConverter:predicateKeysForCriterionType:];
   }
 
   v6 = messageCriterionConverter_predicateKeysForCriterionType__converterKeyDictionary;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v8 = [v6 objectForKeyedSubscript:v7];
 
   return v8;
 }
 
-- (BOOL)_shouldConvertEqualsToContainsForKey:(id)a3
+- (BOOL)_shouldConvertEqualsToContainsForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (_shouldConvertEqualsToContainsForKey__onceToken != -1)
   {
     [_MFDASearchCriterionConverterDelegate _shouldConvertEqualsToContainsForKey:];
   }
 
-  v4 = [_shouldConvertEqualsToContainsForKey___daKeys containsObject:v3];
+  v4 = [_shouldConvertEqualsToContainsForKey___daKeys containsObject:keyCopy];
 
   return v4;
 }
 
-- (unint64_t)messageCriterionConverter:(id)a3 willUsePredicateOperatorType:(unint64_t)a4 forKey:(id)a5
+- (unint64_t)messageCriterionConverter:(id)converter willUsePredicateOperatorType:(unint64_t)type forKey:(id)key
 {
-  v7 = a5;
-  if (a4 == 4)
+  keyCopy = key;
+  if (type == 4)
   {
-    if ([(_MFDASearchCriterionConverterDelegate *)self _shouldConvertEqualsToContainsForKey:v7])
+    if ([(_MFDASearchCriterionConverterDelegate *)self _shouldConvertEqualsToContainsForKey:keyCopy])
     {
-      a4 = 99;
+      type = 99;
     }
 
     else
     {
-      a4 = 4;
+      type = 4;
     }
   }
 
-  else if (a4 == 10)
+  else if (type == 10)
   {
-    a4 = 99;
+    type = 99;
   }
 
-  return a4;
+  return type;
 }
 
 @end

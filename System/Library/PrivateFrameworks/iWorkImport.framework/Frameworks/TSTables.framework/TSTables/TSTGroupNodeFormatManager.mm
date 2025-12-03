@@ -1,20 +1,20 @@
 @interface TSTGroupNodeFormatManager
-- (BOOL)mergedFormatChangedByAddingRowUID:(const TSKUIDStruct *)a3 andCellValue:(id)a4 groupBy:(id)a5;
-- (BOOL)mergedFormatChangedByRemovingRowUID:(const TSKUIDStruct *)a3 groupBy:(id)a4;
-- (TSTGroupNodeFormatManager)initWithArchive:(const void *)a3;
-- (TSTGroupNodeFormatManager)initWithCellValue:(id)a3;
-- (void)encodeToArchive:(void *)a3 forGroupBy:(id)a4 backwardCompat:(BOOL)a5;
-- (void)p_recalculateMergedFormatWithGroupBy:(id)a3;
+- (BOOL)mergedFormatChangedByAddingRowUID:(const TSKUIDStruct *)d andCellValue:(id)value groupBy:(id)by;
+- (BOOL)mergedFormatChangedByRemovingRowUID:(const TSKUIDStruct *)d groupBy:(id)by;
+- (TSTGroupNodeFormatManager)initWithArchive:(const void *)archive;
+- (TSTGroupNodeFormatManager)initWithCellValue:(id)value;
+- (void)encodeToArchive:(void *)archive forGroupBy:(id)by backwardCompat:(BOOL)compat;
+- (void)p_recalculateMergedFormatWithGroupBy:(id)by;
 - (void)reset;
-- (void)unpackAfterUnarchiveForGroupBy:(id)a3;
-- (void)updateWithDocumentRoot:(id)a3;
+- (void)unpackAfterUnarchiveForGroupBy:(id)by;
+- (void)updateWithDocumentRoot:(id)root;
 @end
 
 @implementation TSTGroupNodeFormatManager
 
-- (TSTGroupNodeFormatManager)initWithCellValue:(id)a3
+- (TSTGroupNodeFormatManager)initWithCellValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v78.receiver = self;
   v78.super_class = TSTGroupNodeFormatManager;
   v5 = [(TSTGroupNodeFormatManager *)&v78 init];
@@ -24,9 +24,9 @@
     goto LABEL_20;
   }
 
-  if (v4)
+  if (valueCopy)
   {
-    v15 = objc_msgSend_valueType(v4, v6, v7, v8, v9);
+    v15 = objc_msgSend_valueType(valueCopy, v6, v7, v8, v9);
     if ((v15 - 9) < 2)
     {
       goto LABEL_10;
@@ -37,7 +37,7 @@
       if (v15)
       {
 LABEL_11:
-        v22 = objc_msgSend_tsceValue(v4, v11, v12, v13, v14);
+        v22 = objc_msgSend_tsceValue(valueCopy, v11, v12, v13, v14);
         v27 = v22;
         if (v22)
         {
@@ -46,7 +46,7 @@ LABEL_11:
 
           if (formatState == 1)
           {
-            v33 = objc_msgSend_tsceValue(v4, v29, v30, v31, v32);
+            v33 = objc_msgSend_tsceValue(valueCopy, v29, v30, v31, v32);
             v38 = v33;
             if (v33)
             {
@@ -61,13 +61,13 @@ LABEL_11:
             v39 = TSCEFormat::tskFormat(&v77, v34, v35, v36, v37);
 
             TSCEFormat::TSCEFormat(&v77, v39, 0);
-            v44 = objc_msgSend_tsceValue(v4, v40, v41, v42, v43);
+            v44 = objc_msgSend_tsceValue(valueCopy, v40, v41, v42, v43);
             TSCEFormat::TSCEFormat(&v75, &v77);
             objc_msgSend_setFormat_(v44, v45, &v75, v46, v47);
-            v52 = objc_msgSend_locale(v4, v48, v49, v50, v51);
+            v52 = objc_msgSend_locale(valueCopy, v48, v49, v50, v51);
             v55 = objc_msgSend_newCellValueFromTSCEValue_withLocale_(TSCECellValue, v53, v44, v52, v54);
 
-            v4 = v55;
+            valueCopy = v55;
           }
         }
 
@@ -83,7 +83,7 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v16 = objc_msgSend_format(v4, v11, v12, v13, v14);
+    v16 = objc_msgSend_format(valueCopy, v11, v12, v13, v14);
     v21 = objc_msgSend_formatType(v16, v17, v18, v19, v20);
 
     if (v21 == 1)
@@ -91,15 +91,15 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v63 = objc_msgSend_tsceValue(v4, v11, v12, v13, v14);
+    v63 = objc_msgSend_tsceValue(valueCopy, v11, v12, v13, v14);
     TSCEFormat::TSCEFormat(&v76, 1);
     TSCEFormat::TSCEFormat(&v77, &v76);
     objc_msgSend_setFormat_(v63, v64, &v77, v65, v66);
-    v71 = objc_msgSend_locale(v4, v67, v68, v69, v70);
+    v71 = objc_msgSend_locale(valueCopy, v67, v68, v69, v70);
     v74 = objc_msgSend_newCellValueFromTSCEValue_withLocale_(TSCECellValue, v72, v63, v71, v73);
 
     v10->_noFormatMergingNeeded = 1;
-    v4 = v74;
+    valueCopy = v74;
     if (v74)
     {
       goto LABEL_11;
@@ -111,9 +111,9 @@ LABEL_10:
     v5->_noFormatMergingNeeded = 1;
   }
 
-  v4 = 0;
+  valueCopy = 0;
 LABEL_18:
-  objc_storeStrong(&v10->_cellValue, v4);
+  objc_storeStrong(&v10->_cellValue, valueCopy);
   if (!v10->_noFormatMergingNeeded)
   {
     v60 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v56, v57, v58, v59);
@@ -161,9 +161,9 @@ LABEL_20:
   }
 }
 
-- (void)p_recalculateMergedFormatWithGroupBy:(id)a3
+- (void)p_recalculateMergedFormatWithGroupBy:(id)by
 {
-  v8 = a3;
+  byCopy = by;
   if (!self->_noFormatMergingNeeded)
   {
     if (objc_msgSend_count(self->_rowLookupKeysForFormat, v4, v5, v6, v7))
@@ -335,10 +335,10 @@ LABEL_22:
 LABEL_23:
 }
 
-- (BOOL)mergedFormatChangedByAddingRowUID:(const TSKUIDStruct *)a3 andCellValue:(id)a4 groupBy:(id)a5
+- (BOOL)mergedFormatChangedByAddingRowUID:(const TSKUIDStruct *)d andCellValue:(id)value groupBy:(id)by
 {
-  v8 = a4;
-  v13 = a5;
+  valueCopy = value;
+  byCopy = by;
   if (self->_noFormatMergingNeeded)
   {
     LOBYTE(v14) = 0;
@@ -346,7 +346,7 @@ LABEL_23:
 
   else
   {
-    v18 = objc_msgSend_format(v8, v9, v10, v11, v12);
+    v18 = objc_msgSend_format(valueCopy, v9, v10, v11, v12);
     if (!v18)
     {
       v19 = MEMORY[0x277D81150];
@@ -372,14 +372,14 @@ LABEL_23:
 
       else
       {
-        v14 = objc_msgSend_isEqual_(self->_cellValue, v35, v8, v36, v37) ^ 1;
+        v14 = objc_msgSend_isEqual_(self->_cellValue, v35, valueCopy, v36, v37) ^ 1;
       }
 
       v34 = objc_opt_new();
       objc_msgSend_setObject_forKey_(self->_rowLookupKeysForFormat, v38, v34, v18, v39);
     }
 
-    if (!v13)
+    if (!byCopy)
     {
       v40 = MEMORY[0x277D81150];
       v41 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v30, "[TSTGroupNodeFormatManager mergedFormatChangedByAddingRowUID:andCellValue:groupBy:]", v32, v33);
@@ -389,28 +389,28 @@ LABEL_23:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v47, v48, v49, v50);
     }
 
-    v51 = objc_msgSend_lookupKeyForRowUID_(v13, v30, a3, v32, v33);
+    v51 = objc_msgSend_lookupKeyForRowUID_(byCopy, v30, d, v32, v33);
     objc_msgSend_addIndex_(v34, v52, v51, v53, v54);
     if (v14)
     {
-      objc_msgSend_p_recalculateMergedFormatWithGroupBy_(self, v55, v13, v56, v57);
+      objc_msgSend_p_recalculateMergedFormatWithGroupBy_(self, v55, byCopy, v56, v57);
     }
   }
 
   return v14;
 }
 
-- (BOOL)mergedFormatChangedByRemovingRowUID:(const TSKUIDStruct *)a3 groupBy:(id)a4
+- (BOOL)mergedFormatChangedByRemovingRowUID:(const TSKUIDStruct *)d groupBy:(id)by
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v10 = v6;
+  byCopy = by;
+  v10 = byCopy;
   if (self->_noFormatMergingNeeded)
   {
     goto LABEL_16;
   }
 
-  if (!v6)
+  if (!byCopy)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTGroupNodeFormatManager mergedFormatChangedByRemovingRowUID:groupBy:]", v8, v9);
@@ -420,7 +420,7 @@ LABEL_23:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_lookupKeyForRowUID_(v10, v7, a3, v8, v9);
+  v22 = objc_msgSend_lookupKeyForRowUID_(v10, v7, d, v8, v9);
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
@@ -481,13 +481,13 @@ LABEL_17:
   return v50;
 }
 
-- (void)updateWithDocumentRoot:(id)a3
+- (void)updateWithDocumentRoot:(id)root
 {
-  v4 = a3;
-  v33 = v4;
-  if (v4)
+  rootCopy = root;
+  v33 = rootCopy;
+  if (rootCopy)
   {
-    v9 = objc_msgSend_documentLocale(v4, v5, v6, v7, v8);
+    v9 = objc_msgSend_documentLocale(rootCopy, v5, v6, v7, v8);
     objc_msgSend_setLocale_(self->_cellValue, v10, v9, v11, v12);
 
     cellValue = self->_cellValue;
@@ -506,12 +506,12 @@ LABEL_17:
   }
 }
 
-- (TSTGroupNodeFormatManager)initWithArchive:(const void *)a3
+- (TSTGroupNodeFormatManager)initWithArchive:(const void *)archive
 {
-  if (*(a3 + 16))
+  if (*(archive + 16))
   {
-    v12 = *(a3 + 12);
-    v13 = objc_msgSend_currentLocale(MEMORY[0x277D81228], a2, a3, v3, v4);
+    v12 = *(archive + 12);
+    v13 = objc_msgSend_currentLocale(MEMORY[0x277D81228], a2, archive, v3, v4);
     v7 = objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v14, v12, v13, v15);
 
     v8 = objc_msgSend_initWithCellValue_(self, v16, v7, v17, v18);
@@ -526,11 +526,11 @@ LABEL_17:
   v64 = v8;
   if (v8)
   {
-    v19 = *(a3 + 8);
-    v20 = *(a3 + 20);
+    v19 = *(archive + 8);
+    v20 = *(archive + 20);
     if (v20 < 1)
     {
-      if (v19 != *(a3 + 14))
+      if (v19 != *(archive + 14))
       {
         v37 = MEMORY[0x277D81150];
         v38 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSTGroupNodeFormatManager initWithArchive:]", v10, v11);
@@ -548,9 +548,9 @@ LABEL_17:
       {
         for (i = 0; i != v19; ++i)
         {
-          v54 = objc_msgSend_formatFromArchive_(MEMORY[0x277D80680], v50, *(*(a3 + 5) + 8 * i + 8), v51, v52);
+          v54 = objc_msgSend_formatFromArchive_(MEMORY[0x277D80680], v50, *(*(archive + 5) + 8 * i + 8), v51, v52);
           v57 = objc_opt_new();
-          v58 = *(*(a3 + 8) + 8 * i + 8);
+          v58 = *(*(archive + 8) + 8 * i + 8);
           if (*(v58 + 24) >= 1)
           {
             v59 = 0;
@@ -559,7 +559,7 @@ LABEL_17:
               v60 = TSKUIDStruct::loadFromMessage(*(*(v58 + 32) + 8 * v59 + 8), v55);
               objc_msgSend_addUUID_(v57, v61, v60, v61, v62);
               ++v59;
-              v58 = *(*(a3 + 8) + 8 * i + 8);
+              v58 = *(*(archive + 8) + 8 * i + 8);
             }
 
             while (v59 < *(v58 + 24));
@@ -575,9 +575,9 @@ LABEL_17:
       v32 = 8;
       do
       {
-        v33 = objc_msgSend_formatFromArchive_(MEMORY[0x277D80680], v9, *(*(a3 + 5) + v32), v10, v11);
+        v33 = objc_msgSend_formatFromArchive_(MEMORY[0x277D80680], v9, *(*(archive + 5) + v32), v10, v11);
         v34 = objc_opt_new();
-        sub_22126A778(*(*(a3 + 11) + v32), &v66);
+        sub_22126A778(*(*(archive + 11) + v32), &v66);
         v65 = v34;
         TSUIndexSet::enumerateRangesUsingBlock();
         objc_msgSend_setObject_forKey_(v64->_rowLookupKeysForFormat, v35, v65, v33, v36);
@@ -594,10 +594,10 @@ LABEL_17:
   return v64;
 }
 
-- (void)unpackAfterUnarchiveForGroupBy:(id)a3
+- (void)unpackAfterUnarchiveForGroupBy:(id)by
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  byCopy = by;
   upgradeRowUidsForFormat = self->_upgradeRowUidsForFormat;
   if (upgradeRowUidsForFormat)
   {
@@ -626,7 +626,7 @@ LABEL_17:
           v24[1] = 3221225472;
           v24[2] = sub_2212D44EC;
           v24[3] = &unk_27845D8B0;
-          v25 = v4;
+          v25 = byCopy;
           v16 = v15;
           v26 = v16;
           objc_msgSend_foreachUuid_(v14, v17, v24, v18, v19);
@@ -644,34 +644,34 @@ LABEL_17:
   }
 }
 
-- (void)encodeToArchive:(void *)a3 forGroupBy:(id)a4 backwardCompat:(BOOL)a5
+- (void)encodeToArchive:(void *)archive forGroupBy:(id)by backwardCompat:(BOOL)compat
 {
-  v8 = a4;
+  byCopy = by;
   rowLookupKeysForFormat = self->_rowLookupKeysForFormat;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_2212D464C;
   v20[3] = &unk_278462B48;
-  v22 = a3;
-  v10 = v8;
+  archiveCopy = archive;
+  v10 = byCopy;
   v21 = v10;
-  v23 = a5;
+  compatCopy = compat;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(rowLookupKeysForFormat, v11, v20, v12, v13);
   cellValue = self->_cellValue;
   if (cellValue)
   {
-    *(a3 + 4) |= 1u;
-    v18 = *(a3 + 12);
+    *(archive + 4) |= 1u;
+    v18 = *(archive + 12);
     if (!v18)
     {
-      v19 = *(a3 + 1);
+      v19 = *(archive + 1);
       if (v19)
       {
         v19 = *(v19 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v18 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellValueArchive>(v19);
-      *(a3 + 12) = v18;
+      *(archive + 12) = v18;
     }
 
     objc_msgSend_encodeCellValueToArchive_(cellValue, v14, v18, v15, v16);

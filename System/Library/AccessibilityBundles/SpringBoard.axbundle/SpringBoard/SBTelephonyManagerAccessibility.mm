@@ -6,13 +6,13 @@
 
 - (void)updateSpringBoard
 {
-  v3 = [MEMORY[0x29EDC6F78] sharedInstance];
-  v4 = [v3 displayedCallFromCalls:0];
+  mEMORY[0x29EDC6F78] = [MEMORY[0x29EDC6F78] sharedInstance];
+  v4 = [mEMORY[0x29EDC6F78] displayedCallFromCalls:0];
 
   v5 = [(SBTelephonyManagerAccessibility *)self safeValueForKey:@"inCall"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], *MEMORY[0x29EDBDAB0]);
   }

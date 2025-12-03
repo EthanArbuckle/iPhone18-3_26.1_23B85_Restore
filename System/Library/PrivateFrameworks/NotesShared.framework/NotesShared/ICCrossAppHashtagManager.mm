@@ -1,7 +1,7 @@
 @interface ICCrossAppHashtagManager
 + (id)hashtagDisplayTextsFromOtherApps;
 + (void)prefetchHashtagDisplayTextsFromOtherApps;
-+ (void)updateUserDefaultsCacheIfNecessaryWithNewlyFetchedHastags:(id)a3;
++ (void)updateUserDefaultsCacheIfNecessaryWithNewlyFetchedHastags:(id)hastags;
 @end
 
 @implementation ICCrossAppHashtagManager
@@ -9,8 +9,8 @@
 + (id)hashtagDisplayTextsFromOtherApps
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  v3 = [v2 objectForKey:@"CrossAppHashtagDisplayText"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  v3 = [mEMORY[0x277D36180] objectForKey:@"CrossAppHashtagDisplayText"];
 
   objc_opt_class();
   v4 = ICCheckedDynamicCast();
@@ -71,14 +71,14 @@ LABEL_12:
 + (void)prefetchHashtagDisplayTextsFromOtherApps
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [a1 bundleIDsForHashtagSupportingAppsOtherThanNotes];
+  bundleIDsForHashtagSupportingAppsOtherThanNotes = [self bundleIDsForHashtagSupportingAppsOtherThanNotes];
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
   v15[3] = __Block_byref_object_copy__33;
   v15[4] = __Block_byref_object_dispose__33;
   v16 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v4 = [objc_alloc(MEMORY[0x277CC3418]) initWithQueryString:0 bundleIDs:v3];
+  v4 = [objc_alloc(MEMORY[0x277CC3418]) initWithQueryString:0 bundleIDs:bundleIDsForHashtagSupportingAppsOtherThanNotes];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __68__ICCrossAppHashtagManager_prefetchHashtagDisplayTextsFromOtherApps__block_invoke;
@@ -90,9 +90,9 @@ LABEL_12:
   v9 = __68__ICCrossAppHashtagManager_prefetchHashtagDisplayTextsFromOtherApps__block_invoke_15;
   v10 = &unk_278197940;
   v12 = v15;
-  v5 = v3;
+  v5 = bundleIDsForHashtagSupportingAppsOtherThanNotes;
   v11 = v5;
-  v13 = a1;
+  selfCopy = self;
   [v4 setCompletionHandler:&v7];
   v6 = os_log_create("com.apple.notes", "SearchIndexer");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -159,18 +159,18 @@ void __68__ICCrossAppHashtagManager_prefetchHashtagDisplayTextsFromOtherApps__bl
   }
 }
 
-+ (void)updateUserDefaultsCacheIfNecessaryWithNewlyFetchedHastags:(id)a3
++ (void)updateUserDefaultsCacheIfNecessaryWithNewlyFetchedHastags:(id)hastags
 {
-  v8 = a3;
-  v4 = [a1 hashtagDisplayTextsFromOtherApps];
-  if (([v8 isEqualToSet:v4] & 1) == 0)
+  hastagsCopy = hastags;
+  hashtagDisplayTextsFromOtherApps = [self hashtagDisplayTextsFromOtherApps];
+  if (([hastagsCopy isEqualToSet:hashtagDisplayTextsFromOtherApps] & 1) == 0)
   {
-    v5 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-    v6 = [v8 allObjects];
-    [v5 setObject:v6 forKey:@"CrossAppHashtagDisplayText"];
+    mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+    allObjects = [hastagsCopy allObjects];
+    [mEMORY[0x277D36180] setObject:allObjects forKey:@"CrossAppHashtagDisplayText"];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"ICCrossAppHashtagDisplayTextUpdatedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ICCrossAppHashtagDisplayTextUpdatedNotification" object:0];
   }
 }
 

@@ -1,30 +1,30 @@
 @interface MGRemoteQueryServerHandlerQuery
-+ (id)handlerForRequest:(id)a3;
++ (id)handlerForRequest:(id)request;
 - (BOOL)validateRequest;
 - (NSArray)queryGroups;
 - (NSError)queryError;
 - (NSString)description;
-- (id)_initWithRequest:(id)a3;
+- (id)_initWithRequest:(id)request;
 - (id)payloadProvider;
-- (int)prepareResponse:(id)a3;
-- (void)_queryHandleResults:(id)a3 error:(id)a4;
+- (int)prepareResponse:(id)response;
+- (void)_queryHandleResults:(id)results error:(id)error;
 - (void)_querySendResults;
 - (void)_queryStart;
 - (void)_requestParse;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)dealloc;
-- (void)provideResponseData:(id)a3;
-- (void)setPayloadProvider:(id)a3;
-- (void)setPendingUpdate:(BOOL)a3;
-- (void)setQueryError:(id)a3;
-- (void)setQueryGroups:(id)a3;
+- (void)provideResponseData:(id)data;
+- (void)setPayloadProvider:(id)provider;
+- (void)setPendingUpdate:(BOOL)update;
+- (void)setQueryError:(id)error;
+- (void)setQueryGroups:(id)groups;
 @end
 
 @implementation MGRemoteQueryServerHandlerQuery
 
-- (id)_initWithRequest:(id)a3
+- (id)_initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = MGRemoteQueryServerHandlerQuery;
   v6 = [(MGRemoteQueryServerHandlerQuery *)&v9 init];
@@ -32,7 +32,7 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
     [(MGRemoteQueryServerHandlerQuery *)v7 _requestParse];
   }
 
@@ -52,49 +52,49 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MGRemoteQueryServerHandlerQuery *)self requestPredicate];
-  v7 = [(MGRemoteQueryServerHandlerQuery *)self query];
-  v8 = [v3 stringWithFormat:@"<%@: %p, _predicate = %@, _query = %@>", v5, self, v6, v7];
+  requestPredicate = [(MGRemoteQueryServerHandlerQuery *)self requestPredicate];
+  query = [(MGRemoteQueryServerHandlerQuery *)self query];
+  v8 = [v3 stringWithFormat:@"<%@: %p, _predicate = %@, _query = %@>", v5, self, requestPredicate, query];
 
   return v8;
 }
 
-+ (id)handlerForRequest:(id)a3
++ (id)handlerForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithRequest:v4];
+  requestCopy = request;
+  v5 = [[self alloc] _initWithRequest:requestCopy];
 
   return v5;
 }
 
 - (BOOL)validateRequest
 {
-  v3 = [objc_opt_class() urlPath];
-  v4 = [(MGRemoteQueryServerHandlerQuery *)self request];
-  v5 = [v4 URL];
-  v6 = [v5 path];
-  v7 = [v3 isEqual:v6];
+  urlPath = [objc_opt_class() urlPath];
+  request = [(MGRemoteQueryServerHandlerQuery *)self request];
+  v5 = [request URL];
+  path = [v5 path];
+  v7 = [urlPath isEqual:path];
 
-  v8 = [(MGRemoteQueryServerHandlerQuery *)self requestPredicate];
-  LOBYTE(v4) = v8 != 0;
+  requestPredicate = [(MGRemoteQueryServerHandlerQuery *)self requestPredicate];
+  LOBYTE(request) = requestPredicate != 0;
 
-  v9 = [(MGRemoteQueryServerHandlerQuery *)self requestPredicate];
-  LOBYTE(v3) = [v9 mg_containsCurrentDevice];
+  requestPredicate2 = [(MGRemoteQueryServerHandlerQuery *)self requestPredicate];
+  LOBYTE(urlPath) = [requestPredicate2 mg_containsCurrentDevice];
 
-  return v4 & ~v3 & v7;
+  return request & ~urlPath & v7;
 }
 
-- (int)prepareResponse:(id)a3
+- (int)prepareResponse:(id)response
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  [(MGRemoteQueryServerHandlerQuery *)self setResponseBoundary:v7];
+  responseCopy = response;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  [(MGRemoteQueryServerHandlerQuery *)self setResponseBoundary:uUIDString];
 
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(MGRemoteQueryServerHandlerQuery *)self responseBoundary];
-  v10 = [v8 stringWithFormat:@"multipart/x-mixed-replace boundary=%@", v9];;
+  responseBoundary = [(MGRemoteQueryServerHandlerQuery *)self responseBoundary];
+  v10 = [v8 stringWithFormat:@"multipart/x-mixed-replace boundary=%@", responseBoundary];;
 
   v11 = *MEMORY[0x277CD9278];
   [v10 UTF8String];
@@ -104,9 +104,9 @@
   return 200;
 }
 
-- (void)provideResponseData:(id)a3
+- (void)provideResponseData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -116,7 +116,7 @@
   v6[2] = __55__MGRemoteQueryServerHandlerQuery_provideResponseData___block_invoke;
   v6[3] = &unk_27989F038;
   v6[4] = self;
-  v5 = v4;
+  v5 = dataCopy;
   v7 = v5;
   v8 = &v9;
   [(MGRemoteQueryServerHandlerQuery *)self _withLock:v6];
@@ -139,8 +139,8 @@ uint64_t __55__MGRemoteQueryServerHandlerQuery_provideResponseData___block_invok
 - (void)_requestParse
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = [(MGRemoteQueryServerHandlerQuery *)self request];
-  v3 = [v2 URL];
+  request = [(MGRemoteQueryServerHandlerQuery *)self request];
+  v3 = [request URL];
 
   if (v3)
   {
@@ -174,16 +174,16 @@ uint64_t __55__MGRemoteQueryServerHandlerQuery_provideResponseData___block_invok
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [@"predicate" isEqual:v11];
+        name = [v10 name];
+        v12 = [@"predicate" isEqual:name];
 
         if (v12)
         {
-          v13 = [v10 value];
-          v14 = v13;
-          if (v13)
+          value = [v10 value];
+          v14 = value;
+          if (value)
           {
-            if ([v13 length])
+            if ([value length])
             {
               v15 = [MEMORY[0x277CCAC30] predicateWithFormat:v14];
               if (v15)
@@ -215,15 +215,15 @@ LABEL_18:
 - (void)_queryStart
 {
   v27[5] = *MEMORY[0x277D85DE8];
-  v3 = [(MGRemoteQueryServerHandlerQuery *)self query];
+  query = [(MGRemoteQueryServerHandlerQuery *)self query];
 
-  if (v3)
+  if (query)
   {
     v4 = MGLogForCategory(5);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v24 = self;
+      selfCopy3 = self;
       _os_log_error_impl(&dword_25863A000, v4, OS_LOG_TYPE_ERROR, "%p handler already started query", buf, 0xCu);
     }
   }
@@ -231,16 +231,16 @@ LABEL_18:
   else
   {
     v5 = MEMORY[0x277CCA920];
-    v6 = [MEMORY[0x277D27440] rq_predicateForHaveCurrentHome];
-    v27[0] = v6;
-    v7 = [MEMORY[0x277D27440] rq_predicateForLocal];
-    v27[1] = v7;
-    v8 = [MEMORY[0x277D27440] rq_predicateForRestrictedTypes];
-    v27[2] = v8;
-    v9 = [MEMORY[0x277D27440] rq_predicateForInCurrentHome];
-    v27[3] = v9;
-    v10 = [(MGRemoteQueryServerHandlerQuery *)self requestPredicate];
-    v27[4] = v10;
+    rq_predicateForHaveCurrentHome = [MEMORY[0x277D27440] rq_predicateForHaveCurrentHome];
+    v27[0] = rq_predicateForHaveCurrentHome;
+    rq_predicateForLocal = [MEMORY[0x277D27440] rq_predicateForLocal];
+    v27[1] = rq_predicateForLocal;
+    rq_predicateForRestrictedTypes = [MEMORY[0x277D27440] rq_predicateForRestrictedTypes];
+    v27[2] = rq_predicateForRestrictedTypes;
+    rq_predicateForInCurrentHome = [MEMORY[0x277D27440] rq_predicateForInCurrentHome];
+    v27[3] = rq_predicateForInCurrentHome;
+    requestPredicate = [(MGRemoteQueryServerHandlerQuery *)self requestPredicate];
+    v27[4] = requestPredicate;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:5];
     v4 = [v5 andPredicateWithSubpredicates:v11];
 
@@ -248,7 +248,7 @@ LABEL_18:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218242;
-      v24 = self;
+      selfCopy3 = self;
       v25 = 2112;
       v26 = v4;
       _os_log_debug_impl(&dword_25863A000, v12, OS_LOG_TYPE_DEBUG, "%p handler starting query with predicate %@", buf, 0x16u);
@@ -267,7 +267,7 @@ LABEL_18:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v24 = self;
+      selfCopy3 = self;
       v25 = 2112;
       v26 = v14;
       _os_log_impl(&dword_25863A000, v15, OS_LOG_TYPE_DEFAULT, "%p handler started query %@", buf, 0x16u);
@@ -292,10 +292,10 @@ void __46__MGRemoteQueryServerHandlerQuery__queryStart__block_invoke(uint64_t a1
   }
 }
 
-- (void)_queryHandleResults:(id)a3 error:(id)a4
+- (void)_queryHandleResults:(id)results error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  errorCopy = error;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -306,10 +306,10 @@ void __46__MGRemoteQueryServerHandlerQuery__queryStart__block_invoke(uint64_t a1
   v11 = 3221225472;
   v12 = __61__MGRemoteQueryServerHandlerQuery__queryHandleResults_error___block_invoke;
   v13 = &unk_27989F088;
-  v14 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = resultsCopy;
   v15 = v8;
-  v9 = v7;
+  v9 = errorCopy;
   v16 = v9;
   v17 = &v18;
   [(MGRemoteQueryServerHandlerQuery *)self _withLock:&v10];
@@ -385,9 +385,9 @@ uint64_t __61__MGRemoteQueryServerHandlerQuery__queryHandleResults_error___block
     v4 = v3;
 LABEL_9:
     v5 = MEMORY[0x277CCAAA0];
-    v6 = [v4 rq_coded];
+    rq_coded = [v4 rq_coded];
     v17 = 0;
-    v7 = [v5 dataWithJSONObject:v6 options:0 error:&v17];
+    v7 = [v5 dataWithJSONObject:rq_coded options:0 error:&v17];
     v8 = v17;
 
     if (v8)
@@ -398,8 +398,8 @@ LABEL_9:
     else
     {
       v9 = MEMORY[0x277CCACA8];
-      v10 = [(MGRemoteQueryServerHandlerQuery *)self responseBoundary];
-      v11 = [v9 stringWithFormat:@"\r\n--%@\r\n", v10];
+      responseBoundary = [(MGRemoteQueryServerHandlerQuery *)self responseBoundary];
+      v11 = [v9 stringWithFormat:@"\r\n--%@\r\n", responseBoundary];
 
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"content-length: %lu\r\ncontent-type: application/json charset=utf8\r\n\r\n", objc_msgSend(v7, "length")];;
       v13 = [v11 dataUsingEncoding:5];
@@ -417,7 +417,7 @@ LABEL_9:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v38 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_25863A000, v4, OS_LOG_TYPE_ERROR, "%p handler not sending query results without payload provider", buf, 0xCu);
   }
 
@@ -500,15 +500,15 @@ LABEL_11:
   return queryGroups;
 }
 
-- (void)setQueryGroups:(id)a3
+- (void)setQueryGroups:(id)groups
 {
-  v7 = a3;
+  groupsCopy = groups;
   os_unfair_lock_assert_owner(&self->_lock);
   queryGroups = self->_queryGroups;
   p_queryGroups = &self->_queryGroups;
-  if (queryGroups != v7 && ([(NSArray *)v7 isEqual:?]& 1) == 0)
+  if (queryGroups != groupsCopy && ([(NSArray *)groupsCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(p_queryGroups, a3);
+    objc_storeStrong(p_queryGroups, groups);
   }
 
   MEMORY[0x2821F96F8]();
@@ -522,15 +522,15 @@ LABEL_11:
   return queryError;
 }
 
-- (void)setQueryError:(id)a3
+- (void)setQueryError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   os_unfair_lock_assert_owner(&self->_lock);
   queryError = self->_queryError;
   p_queryError = &self->_queryError;
-  if (queryError != v7 && ([(NSError *)v7 isEqual:?]& 1) == 0)
+  if (queryError != errorCopy && ([(NSError *)errorCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(p_queryError, a3);
+    objc_storeStrong(p_queryError, error);
   }
 
   MEMORY[0x2821F96F8]();
@@ -544,36 +544,36 @@ LABEL_11:
   return v3;
 }
 
-- (void)setPayloadProvider:(id)a3
+- (void)setPayloadProvider:(id)provider
 {
-  v7 = a3;
+  providerCopy = provider;
   os_unfair_lock_assert_owner(&self->_lock);
-  v4 = v7;
-  if (self->_payloadProvider != v7)
+  v4 = providerCopy;
+  if (self->_payloadProvider != providerCopy)
   {
-    v5 = MEMORY[0x259C85F90](v7);
+    v5 = MEMORY[0x259C85F90](providerCopy);
     payloadProvider = self->_payloadProvider;
     self->_payloadProvider = v5;
 
-    v4 = v7;
+    v4 = providerCopy;
   }
 }
 
-- (void)setPendingUpdate:(BOOL)a3
+- (void)setPendingUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (self->_pendingUpdate != v3)
+  if (self->_pendingUpdate != updateCopy)
   {
-    self->_pendingUpdate = v3;
+    self->_pendingUpdate = updateCopy;
   }
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }

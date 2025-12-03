@@ -18,42 +18,42 @@
 - (uint64_t)hdmc_menstrualCyclesOvulationConfirmationNotificationSetValuesWithState:()HDMCOvulationConfirmationNotification error:
 {
   v6 = a3;
-  v7 = [a1 domainName];
-  v8 = [v7 isEqualToString:@"com.apple.private.health.menstrual-cycles.ovulation-confirmation-notification-state"];
+  domainName = [self domainName];
+  v8 = [domainName isEqualToString:@"com.apple.private.health.menstrual-cycles.ovulation-confirmation-notification-state"];
 
   if ((v8 & 1) == 0)
   {
     [HDKeyValueDomain(HDMCOvulationConfirmationNotification) hdmc_menstrualCyclesOvulationConfirmationNotificationSetValuesWithState:error:];
   }
 
-  if ([a1 category] != 1)
+  if ([self category] != 1)
   {
     [HDKeyValueDomain(HDMCOvulationConfirmationNotification) hdmc_menstrualCyclesOvulationConfirmationNotificationSetValuesWithState:error:];
   }
 
-  v9 = [v6 dictionaryRepresentation];
-  v10 = [a1 setValuesWithDictionary:v9 error:a4];
+  dictionaryRepresentation = [v6 dictionaryRepresentation];
+  v10 = [self setValuesWithDictionary:dictionaryRepresentation error:a4];
 
   return v10;
 }
 
 - (id)hdmc_menstrualCyclesOvulationConfirmationNotificationGetStateWithError:()HDMCOvulationConfirmationNotification
 {
-  v5 = [a1 domainName];
-  v6 = [v5 isEqualToString:@"com.apple.private.health.menstrual-cycles.ovulation-confirmation-notification-state"];
+  domainName = [self domainName];
+  v6 = [domainName isEqualToString:@"com.apple.private.health.menstrual-cycles.ovulation-confirmation-notification-state"];
 
   if ((v6 & 1) == 0)
   {
     [HDKeyValueDomain(HDMCOvulationConfirmationNotification) hdmc_menstrualCyclesOvulationConfirmationNotificationGetStateWithError:];
   }
 
-  if ([a1 category] != 1)
+  if ([self category] != 1)
   {
     [HDKeyValueDomain(HDMCOvulationConfirmationNotification) hdmc_menstrualCyclesOvulationConfirmationNotificationGetStateWithError:];
   }
 
   v14 = 0;
-  v7 = [a1 allValuesWithError:&v14];
+  v7 = [self allValuesWithError:&v14];
   v8 = v14;
   if (v7)
   {
@@ -66,7 +66,7 @@
     v10 = *MEMORY[0x277CCC2E8];
     if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_ERROR))
     {
-      [(HDKeyValueDomain(HDMCOvulationConfirmationNotification) *)v10 hdmc_menstrualCyclesOvulationConfirmationNotificationGetStateWithError:a1];
+      [(HDKeyValueDomain(HDMCOvulationConfirmationNotification) *)v10 hdmc_menstrualCyclesOvulationConfirmationNotificationGetStateWithError:self];
     }
 
     v11 = v8;

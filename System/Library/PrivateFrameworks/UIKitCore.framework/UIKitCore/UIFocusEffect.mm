@@ -1,7 +1,7 @@
 @interface UIFocusEffect
 + (UIFocusEffect)effect;
-- (id)_resolvedEffectForItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_resolvedEffectForItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UIFocusEffect
@@ -13,27 +13,27 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = self;
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  selfCopy = self;
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)_resolvedEffectForItem:(id)a3
+- (id)_resolvedEffectForItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UIFocusEffect.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"item != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusEffect.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"item != nil"}];
   }
 
-  if (_UIFocusEffectIsSystemDefaultVisible(v5))
+  if (_UIFocusEffectIsSystemDefaultVisible(itemCopy))
   {
     v6 = +[(UIFocusEffect *)UIFocusHaloEffect];
-    v7 = [v6 _resolvedEffectForItem:v5];
+    v7 = [v6 _resolvedEffectForItem:itemCopy];
   }
 
   else

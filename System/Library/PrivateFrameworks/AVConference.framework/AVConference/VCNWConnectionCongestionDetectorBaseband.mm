@@ -1,23 +1,23 @@
 @interface VCNWConnectionCongestionDetectorBaseband
-- (BOOL)processNWConnectionNotification:(tagVCNWConnectionNotification *)a3;
+- (BOOL)processNWConnectionNotification:(tagVCNWConnectionNotification *)notification;
 @end
 
 @implementation VCNWConnectionCongestionDetectorBaseband
 
-- (BOOL)processNWConnectionNotification:(tagVCNWConnectionNotification *)a3
+- (BOOL)processNWConnectionNotification:(tagVCNWConnectionNotification *)notification
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (notification)
   {
-    if (a3->version < 3u)
+    if (notification->version < 3u)
     {
-      frequency_band = a3->var1.advisory.frequency_band;
-      reference_signal_level = a3->var1.advisory.cell_context.reference_signal_level;
-      v18 = *(&a3->var1.thermalUpdate + 29);
-      quality_score_loss = a3->var1.advisory.quality_score_loss;
-      v20 = *&a3->var1.advisory.version;
-      interface_type = a3->var1.advisory.header.interface_type;
-      timestamp = a3->var1.advisory.timestamp;
+      frequency_band = notification->var1.advisory.frequency_band;
+      reference_signal_level = notification->var1.advisory.cell_context.reference_signal_level;
+      v18 = *(&notification->var1.thermalUpdate + 29);
+      quality_score_loss = notification->var1.advisory.quality_score_loss;
+      v20 = *&notification->var1.advisory.version;
+      interface_type = notification->var1.advisory.header.interface_type;
+      timestamp = notification->var1.advisory.timestamp;
       memset(&v31[80], 170, 24);
       memset(&v30[1], 170, 64);
       *&v30[0] = 12;
@@ -70,14 +70,14 @@
       v12 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        [(VCNWConnectionCongestionDetectorBaseband *)v11 processNWConnectionNotification:a3, v12];
+        [(VCNWConnectionCongestionDetectorBaseband *)v11 processNWConnectionNotification:notification, v12];
       }
     }
 
     logNWDump = self->super._logNWDump;
     if (logNWDump)
     {
-      VRLogfilePrint(logNWDump, "NWConnection notification has a bad version=%d\n", v5, v6, v7, v8, v9, v10, a3->var1.advisory.version);
+      VRLogfilePrint(logNWDump, "NWConnection notification has a bad version=%d\n", v5, v6, v7, v8, v9, v10, notification->var1.advisory.version);
 LABEL_11:
       LOBYTE(logNWDump) = 0;
     }

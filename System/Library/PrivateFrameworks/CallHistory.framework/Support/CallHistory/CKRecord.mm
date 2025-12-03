@@ -1,22 +1,22 @@
 @interface CKRecord
-+ (id)chsh_transactionRecordWithRecordID:(id)a3;
-+ (id)chsh_transactionRecordWithZoneID:(id)a3;
++ (id)chsh_transactionRecordWithRecordID:(id)d;
++ (id)chsh_transactionRecordWithZoneID:(id)d;
 @end
 
 @implementation CKRecord
 
-+ (id)chsh_transactionRecordWithRecordID:(id)a3
++ (id)chsh_transactionRecordWithRecordID:(id)d
 {
-  v3 = a3;
-  v4 = [[CKRecord alloc] initWithRecordType:@"Transaction" recordID:v3];
+  dCopy = d;
+  v4 = [[CKRecord alloc] initWithRecordType:@"Transaction" recordID:dCopy];
 
   return v4;
 }
 
-+ (id)chsh_transactionRecordWithZoneID:(id)a3
++ (id)chsh_transactionRecordWithZoneID:(id)d
 {
-  v3 = a3;
-  v4 = [[CKRecord alloc] initWithRecordType:@"Transaction" zoneID:v3];
+  dCopy = d;
+  v4 = [[CKRecord alloc] initWithRecordType:@"Transaction" zoneID:dCopy];
 
   return v4;
 }

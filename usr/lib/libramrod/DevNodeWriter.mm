@@ -1,32 +1,32 @@
 @interface DevNodeWriter
 - (BOOL)finished;
 - (BOOL)isAvailable;
-- (DevNodeWriter)initWithIOMedia:(unsigned int)a3;
-- (DevNodeWriter)initWithService:(unsigned int)a3;
-- (DevNodeWriter)initWithServiceNamed:(id)a3 parent:(unsigned int)a4;
+- (DevNodeWriter)initWithIOMedia:(unsigned int)media;
+- (DevNodeWriter)initWithService:(unsigned int)service;
+- (DevNodeWriter)initWithServiceNamed:(id)named parent:(unsigned int)parent;
 - (NSString)devicePath;
-- (int)writeBytes:(const void *)a3 ofLength:(unint64_t)a4 withError:(id *)a5;
-- (int)writeData:(id)a3 withError:(id *)a4;
+- (int)writeBytes:(const void *)bytes ofLength:(unint64_t)length withError:(id *)error;
+- (int)writeData:(id)data withError:(id *)error;
 - (unint64_t)numberOfBytesRemainingInBlock;
 - (void)_setupFileDescriptor;
-- (void)_waitForDeviceNode:(id)a3 withTimeout:(unsigned int)a4;
+- (void)_waitForDeviceNode:(id)node withTimeout:(unsigned int)timeout;
 - (void)dealloc;
 @end
 
 @implementation DevNodeWriter
 
-- (DevNodeWriter)initWithIOMedia:(unsigned int)a3
+- (DevNodeWriter)initWithIOMedia:(unsigned int)media
 {
   v13.receiver = self;
   v13.super_class = DevNodeWriter;
   v4 = [(DevNodeWriter *)&v13 init];
   if (v4)
   {
-    if (IOObjectConformsTo(a3, "IOMedia"))
+    if (IOObjectConformsTo(media, "IOMedia"))
     {
-      IOServiceWaitQuiet(a3, 0);
-      IOObjectRetain(a3);
-      *(v4 + 2) = a3;
+      IOServiceWaitQuiet(media, 0);
+      IOObjectRetain(media);
+      *(v4 + 2) = media;
       *(v4 + 12) = 0xFFFFFFFFLL;
       if ([v4 isAvailable])
       {
@@ -44,11 +44,11 @@
   return v4;
 }
 
-- (DevNodeWriter)initWithService:(unsigned int)a3
+- (DevNodeWriter)initWithService:(unsigned int)service
 {
   entryID = 0;
-  IORegistryEntryGetRegistryEntryID(a3, &entryID);
-  IOServiceWaitQuiet(a3, 0);
+  IORegistryEntryGetRegistryEntryID(service, &entryID);
+  IOServiceWaitQuiet(service, 0);
   v14[0] = @"IOParentMatch";
   v15[0] = IORegistryEntryIDMatching(entryID);
   v15[1] = @"IOMedia";
@@ -78,9 +78,9 @@
   return v8;
 }
 
-- (DevNodeWriter)initWithServiceNamed:(id)a3 parent:(unsigned int)a4
+- (DevNodeWriter)initWithServiceNamed:(id)named parent:(unsigned int)parent
 {
-  Namespace = MSUBootFirmwareFindNamespace(a4, a3);
+  Namespace = MSUBootFirmwareFindNamespace(parent, named);
   v6 = [(DevNodeWriter *)self initWithService:Namespace];
   if (Namespace && IOObjectRelease(Namespace))
   {
@@ -108,13 +108,13 @@
   return v2;
 }
 
-- (void)_waitForDeviceNode:(id)a3 withTimeout:(unsigned int)a4
+- (void)_waitForDeviceNode:(id)node withTimeout:(unsigned int)timeout
 {
-  v6 = [(NSString *)[(DevNodeWriter *)self devicePath] UTF8String];
-  iBU_LOG_real(@"Attempting to open dev node at path: %s", "[DevNodeWriter _waitForDeviceNode:withTimeout:]", v7, v8, v9, v10, v11, v12, v6);
+  uTF8String = [(NSString *)[(DevNodeWriter *)self devicePath] UTF8String];
+  iBU_LOG_real(@"Attempting to open dev node at path: %s", "[DevNodeWriter _waitForDeviceNode:withTimeout:]", v7, v8, v9, v10, v11, v12, uTF8String);
   do
   {
-    v13 = open(v6, 16777217);
+    v13 = open(uTF8String, 16777217);
     if (v13 != -1)
     {
       break;
@@ -124,16 +124,16 @@
     if (*v14 != 2)
     {
       strerror(*v14);
-      iBU_LOG_real(@"open(2) on %s failed with error %d: %s. Not trying agin.", "[DevNodeWriter _waitForDeviceNode:withTimeout:]", v21, v22, v23, v24, v25, v26, v6);
+      iBU_LOG_real(@"open(2) on %s failed with error %d: %s. Not trying agin.", "[DevNodeWriter _waitForDeviceNode:withTimeout:]", v21, v22, v23, v24, v25, v26, uTF8String);
       break;
     }
 
-    iBU_LOG_real(@"Dev node %s doesn't yet exist. Waiting to try again...", "[DevNodeWriter _waitForDeviceNode:withTimeout:]", v15, v16, v17, v18, v19, v20, v6);
+    iBU_LOG_real(@"Dev node %s doesn't yet exist. Waiting to try again...", "[DevNodeWriter _waitForDeviceNode:withTimeout:]", v15, v16, v17, v18, v19, v20, uTF8String);
     sleep(1u);
-    --a4;
+    --timeout;
   }
 
-  while (a4);
+  while (timeout);
   self->_nodeDescriptor = v13;
 }
 
@@ -218,26 +218,26 @@
   }
 }
 
-- (int)writeBytes:(const void *)a3 ofLength:(unint64_t)a4 withError:(id *)a5
+- (int)writeBytes:(const void *)bytes ofLength:(unint64_t)length withError:(id *)error
 {
-  v9 = [(DevNodeWriter *)self nodeDescriptor];
-  if (!a4)
+  nodeDescriptor = [(DevNodeWriter *)self nodeDescriptor];
+  if (!length)
   {
     return 0;
   }
 
-  v10 = v9;
+  v10 = nodeDescriptor;
   while (1)
   {
-    v11 = write(v10, a3, a4);
+    v11 = write(v10, bytes, length);
     if (v11 == -1)
     {
       break;
     }
 
-    a3 = a3 + v11;
-    a4 -= v11;
-    if (!a4)
+    bytes = bytes + v11;
+    length -= v11;
+    if (!length)
     {
       return 0;
     }
@@ -246,34 +246,34 @@
   v13 = *__error();
   v14 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v13 userInfo:0];
   [(DevNodeWriter *)self devicePath];
-  iBU_LOG_real(@"Failed to write %lu bytes to %@", "[DevNodeWriter writeBytes:ofLength:withError:]", v15, v16, v17, v18, v19, v20, a4);
-  if (a5)
+  iBU_LOG_real(@"Failed to write %lu bytes to %@", "[DevNodeWriter writeBytes:ofLength:withError:]", v15, v16, v17, v18, v19, v20, length);
+  if (error)
   {
     [(DevNodeWriter *)self devicePath];
-    *a5 = MSUBootFirmwareError(3, v14, @"Failed to write %lu bytes to %@", v27, v28, v29, v30, v31, a4);
+    *error = MSUBootFirmwareError(3, v14, @"Failed to write %lu bytes to %@", v27, v28, v29, v30, v31, length);
   }
 
-  iBU_LOG_real(@"There are %lu bytes left to write.", "[DevNodeWriter writeBytes:ofLength:withError:]", v21, v22, v23, v24, v25, v26, a4);
+  iBU_LOG_real(@"There are %lu bytes left to write.", "[DevNodeWriter writeBytes:ofLength:withError:]", v21, v22, v23, v24, v25, v26, length);
   return v13 | 0xC000;
 }
 
-- (int)writeData:(id)a3 withError:(id *)a4
+- (int)writeData:(id)data withError:(id *)error
 {
-  v7 = [a3 bytes];
-  v8 = [a3 length];
+  bytes = [data bytes];
+  v8 = [data length];
 
-  return [(DevNodeWriter *)self writeBytes:v7 ofLength:v8 withError:a4];
+  return [(DevNodeWriter *)self writeBytes:bytes ofLength:v8 withError:error];
 }
 
 - (unint64_t)numberOfBytesRemainingInBlock
 {
-  v3 = [(DevNodeWriter *)self preferredBlockSize];
-  if (v3 < 1)
+  preferredBlockSize = [(DevNodeWriter *)self preferredBlockSize];
+  if (preferredBlockSize < 1)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = preferredBlockSize;
   v5 = lseek([(DevNodeWriter *)self nodeDescriptor], 0, 1);
   if ((v5 & 0x8000000000000000) != 0)
   {

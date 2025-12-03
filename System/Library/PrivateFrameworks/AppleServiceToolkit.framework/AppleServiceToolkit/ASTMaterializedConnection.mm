@@ -4,14 +4,14 @@
 - (NSMutableURLRequest)request;
 - (id)_acceptLanguage;
 - (unint64_t)_rootOfTrust;
-- (void)addBody:(id)a3;
-- (void)addBody:(id)a3 gzip:(BOOL)a4;
-- (void)setIdentity:(id)a3;
-- (void)setSessionId:(id)a3;
-- (void)setSignature:(id)a3;
-- (void)setTimeout:(double)a3;
-- (void)signBodyWithPayloadSigner:(id)a3;
-- (void)signPayload:(id)a3 withPayloadSigner:(id)a4;
+- (void)addBody:(id)body;
+- (void)addBody:(id)body gzip:(BOOL)gzip;
+- (void)setIdentity:(id)identity;
+- (void)setSessionId:(id)id;
+- (void)setSignature:(id)signature;
+- (void)setTimeout:(double)timeout;
+- (void)signBodyWithPayloadSigner:(id)signer;
+- (void)signPayload:(id)payload withPayloadSigner:(id)signer;
 @end
 
 @implementation ASTMaterializedConnection
@@ -37,38 +37,38 @@
   request = self->_request;
   if (!request)
   {
-    v4 = [(ASTMaterializedConnection *)self serverURL];
+    serverURL = [(ASTMaterializedConnection *)self serverURL];
 
-    if (v4)
+    if (serverURL)
     {
-      v5 = [(ASTMaterializedConnection *)self serverURL];
-      v6 = [(ASTMaterializedConnection *)self endpoint];
-      v7 = [v5 URLByAppendingPathComponent:v6];
+      serverURL2 = [(ASTMaterializedConnection *)self serverURL];
+      endpoint = [(ASTMaterializedConnection *)self endpoint];
+      v7 = [serverURL2 URLByAppendingPathComponent:endpoint];
     }
 
     else
     {
-      v5 = +[ASTEnvironment currentEnvironment];
-      v6 = [v5 serverURL];
-      v8 = [(ASTMaterializedConnection *)self endpoint];
-      v7 = [v6 URLByAppendingPathComponent:v8];
+      serverURL2 = +[ASTEnvironment currentEnvironment];
+      endpoint = [serverURL2 serverURL];
+      endpoint2 = [(ASTMaterializedConnection *)self endpoint];
+      v7 = [endpoint URLByAppendingPathComponent:endpoint2];
     }
 
-    v9 = [(ASTMaterializedConnection *)self parameters];
-    v10 = [v9 count];
+    parameters = [(ASTMaterializedConnection *)self parameters];
+    v10 = [parameters count];
 
     if (v10)
     {
       v11 = [MEMORY[0x277CCACE0] componentsWithURL:v7 resolvingAgainstBaseURL:0];
-      v12 = [MEMORY[0x277CBEB18] array];
-      v13 = [(ASTMaterializedConnection *)self parameters];
+      array = [MEMORY[0x277CBEB18] array];
+      parameters2 = [(ASTMaterializedConnection *)self parameters];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __36__ASTMaterializedConnection_request__block_invoke;
       v42[3] = &unk_278CBD4F0;
-      v43 = v12;
-      v14 = v12;
-      [v13 enumerateKeysAndObjectsUsingBlock:v42];
+      v43 = array;
+      v14 = array;
+      [parameters2 enumerateKeysAndObjectsUsingBlock:v42];
 
       v15 = [v14 copy];
       [v11 setQueryItems:v15];
@@ -84,53 +84,53 @@
     v19 = self->_request;
     self->_request = v18;
 
-    v20 = [(ASTMaterializedConnection *)self method];
-    [(NSMutableURLRequest *)self->_request setHTTPMethod:v20];
+    method = [(ASTMaterializedConnection *)self method];
+    [(NSMutableURLRequest *)self->_request setHTTPMethod:method];
 
     [(NSMutableURLRequest *)self->_request setHTTPShouldHandleCookies:0];
     [(NSMutableURLRequest *)self->_request setAllowsCellularAccess:[(ASTMaterializedConnection *)self allowsCellularAccess]];
     v21 = self->_request;
-    v22 = [(ASTMaterializedConnection *)self accept];
-    [(NSMutableURLRequest *)v21 setValue:v22 forHTTPHeaderField:@"Accept"];
+    accept = [(ASTMaterializedConnection *)self accept];
+    [(NSMutableURLRequest *)v21 setValue:accept forHTTPHeaderField:@"Accept"];
 
     v23 = self->_request;
-    v24 = [(ASTMaterializedConnection *)self contentType];
-    [(NSMutableURLRequest *)v23 setValue:v24 forHTTPHeaderField:@"Content-Type"];
+    contentType = [(ASTMaterializedConnection *)self contentType];
+    [(NSMutableURLRequest *)v23 setValue:contentType forHTTPHeaderField:@"Content-Type"];
 
     v25 = self->_request;
-    v26 = [v7 host];
-    [(NSMutableURLRequest *)v25 setValue:v26 forHTTPHeaderField:@"Host"];
+    host = [v7 host];
+    [(NSMutableURLRequest *)v25 setValue:host forHTTPHeaderField:@"Host"];
 
     v27 = self->_request;
-    v28 = [(ASTMaterializedConnection *)self _acceptLanguage];
-    [(NSMutableURLRequest *)v27 setValue:v28 forHTTPHeaderField:@"Accept-Language"];
+    _acceptLanguage = [(ASTMaterializedConnection *)self _acceptLanguage];
+    [(NSMutableURLRequest *)v27 setValue:_acceptLanguage forHTTPHeaderField:@"Accept-Language"];
 
     v29 = self->_request;
-    v30 = [(ASTMaterializedConnection *)self identity];
-    v31 = [v30 userAgent];
-    [(NSMutableURLRequest *)v29 setValue:v31 forHTTPHeaderField:@"User-Agent"];
+    identity = [(ASTMaterializedConnection *)self identity];
+    userAgent = [identity userAgent];
+    [(NSMutableURLRequest *)v29 setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 
     v32 = self->_request;
     v33 = +[ASTConnectionUtilities getServerLoggingSelection];
-    v34 = [v33 stringValue];
-    [(NSMutableURLRequest *)v32 setValue:v34 forHTTPHeaderField:@"X-DA-LOG-LEVEL"];
+    stringValue = [v33 stringValue];
+    [(NSMutableURLRequest *)v32 setValue:stringValue forHTTPHeaderField:@"X-DA-LOG-LEVEL"];
 
-    v35 = [(ASTMaterializedConnection *)self signature];
+    signature = [(ASTMaterializedConnection *)self signature];
 
-    if (v35)
+    if (signature)
     {
       v36 = self->_request;
-      v37 = [(ASTMaterializedConnection *)self signature];
-      [(NSMutableURLRequest *)v36 setValue:v37 forHTTPHeaderField:@"Signature"];
+      signature2 = [(ASTMaterializedConnection *)self signature];
+      [(NSMutableURLRequest *)v36 setValue:signature2 forHTTPHeaderField:@"Signature"];
     }
 
-    v38 = [(ASTMaterializedConnection *)self sessionId];
+    sessionId = [(ASTMaterializedConnection *)self sessionId];
 
-    if (v38)
+    if (sessionId)
     {
       v39 = self->_request;
-      v40 = [(ASTMaterializedConnection *)self sessionId];
-      [(NSMutableURLRequest *)v39 setValue:v40 forHTTPHeaderField:@"Diagnostic-Session-ID"];
+      sessionId2 = [(ASTMaterializedConnection *)self sessionId];
+      [(NSMutableURLRequest *)v39 setValue:sessionId2 forHTTPHeaderField:@"Diagnostic-Session-ID"];
     }
 
     request = self->_request;
@@ -146,44 +146,44 @@ void __36__ASTMaterializedConnection_request__block_invoke(uint64_t a1, uint64_t
   [v3 addObject:v4];
 }
 
-- (void)setSignature:(id)a3
+- (void)setSignature:(id)signature
 {
-  objc_storeStrong(&self->_signature, a3);
-  v5 = [(ASTMaterializedConnection *)self request];
-  v4 = [(ASTMaterializedConnection *)self signature];
-  [v5 setValue:v4 forHTTPHeaderField:@"Signature"];
+  objc_storeStrong(&self->_signature, signature);
+  request = [(ASTMaterializedConnection *)self request];
+  signature = [(ASTMaterializedConnection *)self signature];
+  [request setValue:signature forHTTPHeaderField:@"Signature"];
 }
 
-- (void)setIdentity:(id)a3
+- (void)setIdentity:(id)identity
 {
-  objc_storeStrong(&self->_identity, a3);
-  v5 = a3;
-  v7 = [(ASTMaterializedConnection *)self request];
-  v6 = [v5 userAgent];
+  objc_storeStrong(&self->_identity, identity);
+  identityCopy = identity;
+  request = [(ASTMaterializedConnection *)self request];
+  userAgent = [identityCopy userAgent];
 
-  [v7 setValue:v6 forHTTPHeaderField:@"User-Agent"];
+  [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 }
 
-- (void)setTimeout:(double)a3
+- (void)setTimeout:(double)timeout
 {
-  self->_timeout = a3;
-  v4 = [(ASTMaterializedConnection *)self request];
-  [v4 setTimeoutInterval:a3];
+  self->_timeout = timeout;
+  request = [(ASTMaterializedConnection *)self request];
+  [request setTimeoutInterval:timeout];
 }
 
-- (void)setSessionId:(id)a3
+- (void)setSessionId:(id)id
 {
-  objc_storeStrong(&self->_sessionId, a3);
-  v5 = [(ASTMaterializedConnection *)self request];
-  v4 = [(ASTMaterializedConnection *)self sessionId];
-  [v5 setValue:v4 forHTTPHeaderField:@"Diagnostic-Session-ID"];
+  objc_storeStrong(&self->_sessionId, id);
+  request = [(ASTMaterializedConnection *)self request];
+  sessionId = [(ASTMaterializedConnection *)self sessionId];
+  [request setValue:sessionId forHTTPHeaderField:@"Diagnostic-Session-ID"];
 }
 
-- (void)addBody:(id)a3
+- (void)addBody:(id)body
 {
   v11 = *MEMORY[0x277D85DE8];
   v8 = 0;
-  v4 = [ASTEncodingUtilities jsonSerializeObject:a3 error:&v8];
+  v4 = [ASTEncodingUtilities jsonSerializeObject:body error:&v8];
   v5 = v8;
   if (v5)
   {
@@ -204,17 +204,17 @@ void __36__ASTMaterializedConnection_request__block_invoke(uint64_t a1, uint64_t
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addBody:(id)a3 gzip:(BOOL)a4
+- (void)addBody:(id)body gzip:(BOOL)gzip
 {
-  v4 = a4;
+  gzipCopy = gzip;
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  bodyCopy = body;
+  v7 = bodyCopy;
+  if (gzipCopy)
   {
-    if (v6)
+    if (bodyCopy)
     {
-      v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
+      v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:bodyCopy encoding:4];
       v9 = ASTLogHandleForCategory(3);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -227,9 +227,9 @@ void __36__ASTMaterializedConnection_request__block_invoke(uint64_t a1, uint64_t
       }
 
       v11 = +[ASTTestAutomation sharedInstance];
-      v12 = [v11 testAutomationEnabled];
+      testAutomationEnabled = [v11 testAutomationEnabled];
 
-      if (v12)
+      if (testAutomationEnabled)
       {
         v18 = @"payload";
         v19 = v8;
@@ -238,29 +238,29 @@ void __36__ASTMaterializedConnection_request__block_invoke(uint64_t a1, uint64_t
       }
     }
 
-    v14 = [v7 dataGZipDeflated];
+    dataGZipDeflated = [v7 dataGZipDeflated];
 
-    v15 = [(ASTMaterializedConnection *)self request];
-    [v15 setValue:@"gzip" forHTTPHeaderField:@"Content-Encoding"];
+    request = [(ASTMaterializedConnection *)self request];
+    [request setValue:@"gzip" forHTTPHeaderField:@"Content-Encoding"];
 
-    v7 = v14;
+    v7 = dataGZipDeflated;
   }
 
-  v16 = [(ASTMaterializedConnection *)self request];
-  [v16 setHTTPBody:v7];
+  request2 = [(ASTMaterializedConnection *)self request];
+  [request2 setHTTPBody:v7];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)signBodyWithPayloadSigner:(id)a3
+- (void)signBodyWithPayloadSigner:(id)signer
 {
-  v4 = a3;
-  v5 = [(ASTMaterializedConnection *)self rawBody];
+  signerCopy = signer;
+  rawBody = [(ASTMaterializedConnection *)self rawBody];
 
-  if (v5)
+  if (rawBody)
   {
-    v6 = [(ASTMaterializedConnection *)self rawBody];
-    [(ASTMaterializedConnection *)self signPayload:v6 withPayloadSigner:v4];
+    rawBody2 = [(ASTMaterializedConnection *)self rawBody];
+    [(ASTMaterializedConnection *)self signPayload:rawBody2 withPayloadSigner:signerCopy];
   }
 
   else
@@ -273,11 +273,11 @@ void __36__ASTMaterializedConnection_request__block_invoke(uint64_t a1, uint64_t
   }
 }
 
-- (void)signPayload:(id)a3 withPayloadSigner:(id)a4
+- (void)signPayload:(id)payload withPayloadSigner:(id)signer
 {
-  v6 = a4;
+  signerCopy = signer;
   v13 = 0;
-  v7 = [ASTEncodingUtilities jsonSerializeObject:a3 error:&v13];
+  v7 = [ASTEncodingUtilities jsonSerializeObject:payload error:&v13];
   v8 = v13;
   if (v8)
   {
@@ -293,10 +293,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v6 && v7)
+  if (signerCopy && v7)
   {
     v12 = 0;
-    v10 = v6[2](v6, v7, &v12);
+    v10 = signerCopy[2](signerCopy, v7, &v12);
     v9 = v12;
     if (v10)
     {
@@ -322,41 +322,41 @@ LABEL_12:
 - (unint64_t)_rootOfTrust
 {
   v2 = +[ASTEnvironment currentEnvironment];
-  v3 = [v2 server];
+  server = [v2 server];
 
-  if ((v3 - 1) > 0xB)
+  if ((server - 1) > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return qword_240F6E6D0[v3 - 1];
+    return qword_240F6E6D0[server - 1];
   }
 }
 
 - (id)_acceptLanguage
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
-  v3 = [MEMORY[0x277CBEAF8] preferredLanguages];
+  array = [MEMORY[0x277CBEB18] array];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
   if ([MEMORY[0x277CF97E8] isCheckerBoardActive])
   {
-    v4 = [MEMORY[0x277CBEAF8] currentLocale];
-    v5 = [v4 languageIdentifier];
-    v13[0] = v5;
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    languageIdentifier = [currentLocale languageIdentifier];
+    v13[0] = languageIdentifier;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
 
-    v3 = v6;
+    preferredLanguages = v6;
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __44__ASTMaterializedConnection__acceptLanguage__block_invoke;
   v11[3] = &unk_278CBD428;
-  v12 = v2;
-  v7 = v2;
-  [v3 enumerateObjectsUsingBlock:v11];
+  v12 = array;
+  v7 = array;
+  [preferredLanguages enumerateObjectsUsingBlock:v11];
   v8 = [v7 componentsJoinedByString:{@", "}];
 
   v9 = *MEMORY[0x277D85DE8];

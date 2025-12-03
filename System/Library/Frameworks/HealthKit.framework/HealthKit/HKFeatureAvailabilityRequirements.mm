@@ -1,19 +1,19 @@
 @interface HKFeatureAvailabilityRequirements
-+ (id)OSEligibilityDomainIsEligible:(unint64_t)a3;
-+ (id)activeRemoteDeviceIsPresentWhenRequiredForRegionAvailabilityOrDeviceCapabilityForFeatureWithIdentifier:(id)a3;
-+ (id)activeWatchIsNotUnderInternalDevelopmentImportExclusionForFeatureWithIdentifier:(id)a3;
++ (id)OSEligibilityDomainIsEligible:(unint64_t)eligible;
++ (id)activeRemoteDeviceIsPresentWhenRequiredForRegionAvailabilityOrDeviceCapabilityForFeatureWithIdentifier:(id)identifier;
++ (id)activeWatchIsNotUnderInternalDevelopmentImportExclusionForFeatureWithIdentifier:(id)identifier;
 + (id)ageIsPresent;
 + (id)bloodOxygenRecordingsAreEnabled;
-+ (id)capabilityIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:(id)a3;
-+ (id)countryCodeIsPresentForFeatureWithIdentifier:(id)a3;
-+ (id)countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:(id)a3;
-+ (id)countryListIsPresentOnActiveRemoteDeviceForFeatureWithIdentifier:(id)a3;
-+ (id)currentCountryCodeIsPresentForFeatureWithIdentifier:(id)a3;
-+ (id)currentCountryIsSupportedOnLocalDeviceForFeatureWithIdentifier:(id)a3;
-+ (id)defaultHelpTileRequirementsForBackgroundDeliveredFeatureWithFeatureIdentifier:(id)a3 isAgeGatedUserDefaultsKey:(id)a4;
-+ (id)defaultOnboardingEligibilityRequirementsForFeatureIdentifier:(id)a3;
-+ (id)defaultTipsAppVisibilityRequirementsForBackgroundDeliveredFeatureWithFeatureIdentifier:(id)a3 isAgeGatedUserDefaultsKey:(id)a4;
-+ (id)featureIsNotRemotelyDisabledWithIdentifier:(id)a3;
++ (id)capabilityIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:(id)identifier;
++ (id)countryCodeIsPresentForFeatureWithIdentifier:(id)identifier;
++ (id)countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:(id)identifier;
++ (id)countryListIsPresentOnActiveRemoteDeviceForFeatureWithIdentifier:(id)identifier;
++ (id)currentCountryCodeIsPresentForFeatureWithIdentifier:(id)identifier;
++ (id)currentCountryIsSupportedOnLocalDeviceForFeatureWithIdentifier:(id)identifier;
++ (id)defaultHelpTileRequirementsForBackgroundDeliveredFeatureWithFeatureIdentifier:(id)identifier isAgeGatedUserDefaultsKey:(id)key;
++ (id)defaultOnboardingEligibilityRequirementsForFeatureIdentifier:(id)identifier;
++ (id)defaultTipsAppVisibilityRequirementsForBackgroundDeliveredFeatureWithFeatureIdentifier:(id)identifier isAgeGatedUserDefaultsKey:(id)key;
++ (id)featureIsNotRemotelyDisabledWithIdentifier:(id)identifier;
 + (id)fitnessTrackingIsEnabledInPrivacy;
 + (id)healthAppIsNotHidden;
 + (id)hearingAidCapabilityIsSupportedOnAnyPairedAirPods;
@@ -23,48 +23,48 @@
 + (id)isNotInPostPregnancy;
 + (id)localDeviceIsCapableOfPairingWithWatch;
 + (id)localDeviceIsCapableOfWatchPairing;
-+ (id)mutuallyExclusiveFeatureIsOffWithIdentifier:(id)a3;
++ (id)mutuallyExclusiveFeatureIsOffWithIdentifier:(id)identifier;
 + (id)noOngoingPregnancy;
-+ (id)notAgeGatedForUserDefaultsKey:(id)a3;
++ (id)notAgeGatedForUserDefaultsKey:(id)key;
 + (id)notInStoreDemoMode;
-+ (id)notificationAuthorizedWithBundleIdentifier:(id)a3;
-+ (id)notificationsOnForUserDefaultsKey:(id)a3;
-+ (id)onboardedAtLeastDaysAgo:(int64_t)a3 featureIdentifier:(id)a4;
-+ (id)onboardingAcknowledgedWithIdentifier:(id)a3;
-+ (id)onboardingAcknowledgedWithIdentifier:(id)a3 settingsKey:(id)a4;
-+ (id)onboardingNotAcknowledgedWithIdentifier:(id)a3;
-+ (id)onboardingNotAcknowledgedWithIdentifier:(id)a3 settingsKey:(id)a4;
-+ (id)onboardingRecordIsNotPresentForFeatureWithIdentifier:(id)a3;
-+ (id)onboardingRecordIsNotPresentForMutuallyExclusiveFeatureWithIdentifier:(id)a3;
-+ (id)onboardingRecordIsPresentForFeatureWithIdentifier:(id)a3;
-+ (id)onboardingRecordsArePresentForPrerequisiteFeaturesWithIdentifiers:(id)a3;
-+ (id)onboardingUserDefaultsKeyIsNotPresent:(id)a3;
-+ (id)onboardingUserDefaultsKeyIsPresent:(id)a3;
-+ (id)prerequisiteFeaturesAreOnWithFeatureSettings:(id)a3;
++ (id)notificationAuthorizedWithBundleIdentifier:(id)identifier;
++ (id)notificationsOnForUserDefaultsKey:(id)key;
++ (id)onboardedAtLeastDaysAgo:(int64_t)ago featureIdentifier:(id)identifier;
++ (id)onboardingAcknowledgedWithIdentifier:(id)identifier;
++ (id)onboardingAcknowledgedWithIdentifier:(id)identifier settingsKey:(id)key;
++ (id)onboardingNotAcknowledgedWithIdentifier:(id)identifier;
++ (id)onboardingNotAcknowledgedWithIdentifier:(id)identifier settingsKey:(id)key;
++ (id)onboardingRecordIsNotPresentForFeatureWithIdentifier:(id)identifier;
++ (id)onboardingRecordIsNotPresentForMutuallyExclusiveFeatureWithIdentifier:(id)identifier;
++ (id)onboardingRecordIsPresentForFeatureWithIdentifier:(id)identifier;
++ (id)onboardingRecordsArePresentForPrerequisiteFeaturesWithIdentifiers:(id)identifiers;
++ (id)onboardingUserDefaultsKeyIsNotPresent:(id)present;
++ (id)onboardingUserDefaultsKeyIsPresent:(id)present;
++ (id)prerequisiteFeaturesAreOnWithFeatureSettings:(id)settings;
 + (id)profileIsNotFamilySetupPairingProfile;
-+ (id)seedIsNotExpiredForFeatureWithIdentifier:(id)a3;
-+ (id)someRegionIsSupportedForFeatureWithIdentifier:(id)a3;
-+ (id)userDefaultsKeyIsNotPresent:(id)a3;
++ (id)seedIsNotExpiredForFeatureWithIdentifier:(id)identifier;
++ (id)someRegionIsSupportedForFeatureWithIdentifier:(id)identifier;
++ (id)userDefaultsKeyIsNotPresent:(id)present;
 + (id)walkingSteadinessCapabilityIsSupportedOnLocalDevice;
-+ (id)watchAppIsInstalledForBundleIdentifier:(id)a3;
++ (id)watchAppIsInstalledForBundleIdentifier:(id)identifier;
 + (id)watchLowPowerModeIsOff;
 + (id)wristDetectionIsEnabledForActiveWatch;
 @end
 
 @implementation HKFeatureAvailabilityRequirements
 
-+ (id)activeRemoteDeviceIsPresentWhenRequiredForRegionAvailabilityOrDeviceCapabilityForFeatureWithIdentifier:(id)a3
++ (id)activeRemoteDeviceIsPresentWhenRequiredForRegionAvailabilityOrDeviceCapabilityForFeatureWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementActiveRemoteDeviceIsPresentWhenRequiredForRegionAvailabilityOrDeviceCapability alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementActiveRemoteDeviceIsPresentWhenRequiredForRegionAvailabilityOrDeviceCapability alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)activeWatchIsNotUnderInternalDevelopmentImportExclusionForFeatureWithIdentifier:(id)a3
++ (id)activeWatchIsNotUnderInternalDevelopmentImportExclusionForFeatureWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
@@ -83,58 +83,58 @@
   return v2;
 }
 
-+ (id)capabilityIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:(id)a3
++ (id)capabilityIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveRemoteDevice alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementCapabilityIsSupportedOnActiveRemoteDevice alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)countryCodeIsPresentForFeatureWithIdentifier:(id)a3
++ (id)countryCodeIsPresentForFeatureWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementCountryCodeIsPresent alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementCountryCodeIsPresent alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:(id)a3
++ (id)countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementCountryIsSupportedOnLocalDevice alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementCountryIsSupportedOnLocalDevice alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)currentCountryCodeIsPresentForFeatureWithIdentifier:(id)a3
++ (id)currentCountryCodeIsPresentForFeatureWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementCurrentCountryCodeIsPresent alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementCurrentCountryCodeIsPresent alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)countryListIsPresentOnActiveRemoteDeviceForFeatureWithIdentifier:(id)a3
++ (id)countryListIsPresentOnActiveRemoteDeviceForFeatureWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementCountryListIsPresentOnActiveRemoteDevice alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementCountryListIsPresentOnActiveRemoteDevice alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)currentCountryIsSupportedOnLocalDeviceForFeatureWithIdentifier:(id)a3
++ (id)currentCountryIsSupportedOnLocalDeviceForFeatureWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementCurrentCountryIsSupportedOnLocalDevice alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementCurrentCountryIsSupportedOnLocalDevice alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)featureIsNotRemotelyDisabledWithIdentifier:(id)a3
++ (id)featureIsNotRemotelyDisabledWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementFeatureIsNotRemotelyDisabled alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementFeatureIsNotRemotelyDisabled alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
@@ -195,18 +195,18 @@
   return v2;
 }
 
-+ (id)mutuallyExclusiveFeatureIsOffWithIdentifier:(id)a3
++ (id)mutuallyExclusiveFeatureIsOffWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[HKFeatureAvailabilityRequirementMutuallyExclusiveFeatureIsOff alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[HKFeatureAvailabilityRequirementMutuallyExclusiveFeatureIsOff alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)notAgeGatedForUserDefaultsKey:(id)a3
++ (id)notAgeGatedForUserDefaultsKey:(id)key
 {
-  v3 = a3;
-  v4 = [[HKFeatureAvailabilityRequirementNotAgeGatedForUserDefaultsKey alloc] initWithUserDefaultsKey:v3];
+  keyCopy = key;
+  v4 = [[HKFeatureAvailabilityRequirementNotAgeGatedForUserDefaultsKey alloc] initWithUserDefaultsKey:keyCopy];
 
   return v4;
 }
@@ -218,123 +218,123 @@
   return v2;
 }
 
-+ (id)notificationAuthorizedWithBundleIdentifier:(id)a3
++ (id)notificationAuthorizedWithBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[HKFeatureAvailabilityRequirementNotificationAuthorized alloc] initWithBundleIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[HKFeatureAvailabilityRequirementNotificationAuthorized alloc] initWithBundleIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)notificationsOnForUserDefaultsKey:(id)a3
++ (id)notificationsOnForUserDefaultsKey:(id)key
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)[HKFeatureAvailabilityRequirementNotificationsOnForUserDefaultsKey alloc] initWithUserDefaultsKey:v3];
+  keyCopy = key;
+  v4 = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)[HKFeatureAvailabilityRequirementNotificationsOnForUserDefaultsKey alloc] initWithUserDefaultsKey:keyCopy];
 
   return v4;
 }
 
-+ (id)onboardedAtLeastDaysAgo:(int64_t)a3 featureIdentifier:(id)a4
++ (id)onboardedAtLeastDaysAgo:(int64_t)ago featureIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [[HKFeatureAvailabilityRequirementOnboardedBeforeTimeAgo alloc] initWithFeatureIdentifier:v5 daysBeforeCurrentDate:a3];
+  identifierCopy = identifier;
+  v6 = [[HKFeatureAvailabilityRequirementOnboardedBeforeTimeAgo alloc] initWithFeatureIdentifier:identifierCopy daysBeforeCurrentDate:ago];
 
   return v6;
 }
 
-+ (id)onboardingAcknowledgedWithIdentifier:(id)a3
++ (id)onboardingAcknowledgedWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[HKFeatureAvailabilityRequirementOnboardingAcknowledged alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[HKFeatureAvailabilityRequirementOnboardingAcknowledged alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)onboardingAcknowledgedWithIdentifier:(id)a3 settingsKey:(id)a4
++ (id)onboardingAcknowledgedWithIdentifier:(id)identifier settingsKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HKFeatureAvailabilityRequirementOnboardingAcknowledged alloc] initWithFeatureIdentifier:v6 settingsKey:v5];
+  keyCopy = key;
+  identifierCopy = identifier;
+  v7 = [[HKFeatureAvailabilityRequirementOnboardingAcknowledged alloc] initWithFeatureIdentifier:identifierCopy settingsKey:keyCopy];
 
   return v7;
 }
 
-+ (id)onboardingNotAcknowledgedWithIdentifier:(id)a3
++ (id)onboardingNotAcknowledgedWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[HKFeatureAvailabilityRequirementOnboardingNotAcknowledged alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[HKFeatureAvailabilityRequirementOnboardingNotAcknowledged alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)onboardingNotAcknowledgedWithIdentifier:(id)a3 settingsKey:(id)a4
++ (id)onboardingNotAcknowledgedWithIdentifier:(id)identifier settingsKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HKFeatureAvailabilityRequirementOnboardingNotAcknowledged alloc] initWithFeatureIdentifier:v6 settingsKey:v5];
+  keyCopy = key;
+  identifierCopy = identifier;
+  v7 = [[HKFeatureAvailabilityRequirementOnboardingNotAcknowledged alloc] initWithFeatureIdentifier:identifierCopy settingsKey:keyCopy];
 
   return v7;
 }
 
-+ (id)onboardingRecordsArePresentForPrerequisiteFeaturesWithIdentifiers:(id)a3
++ (id)onboardingRecordsArePresentForPrerequisiteFeaturesWithIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v4 = [[HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures alloc] initWithPrerequisiteFeatureIdentifiers:v3];
+  identifiersCopy = identifiers;
+  v4 = [[HKFeatureAvailabilityRequirementOnboardingRecordsArePresentForPrerequisiteFeatures alloc] initWithPrerequisiteFeatureIdentifiers:identifiersCopy];
 
   return v4;
 }
 
-+ (id)onboardingRecordIsNotPresentForFeatureWithIdentifier:(id)a3
++ (id)onboardingRecordIsNotPresentForFeatureWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)[HKFeatureAvailabilityRequirementOnboardingRecordIsNotPresent alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)[HKFeatureAvailabilityRequirementOnboardingRecordIsNotPresent alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)onboardingRecordIsNotPresentForMutuallyExclusiveFeatureWithIdentifier:(id)a3
++ (id)onboardingRecordIsNotPresentForMutuallyExclusiveFeatureWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)[HKFeatureAvailabilityRequirementOnboardingRecordIsNotPresentForMutuallyExclusiveFeature alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)[HKFeatureAvailabilityRequirementOnboardingRecordIsNotPresentForMutuallyExclusiveFeature alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)onboardingRecordIsPresentForFeatureWithIdentifier:(id)a3
++ (id)onboardingRecordIsPresentForFeatureWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)[HKFeatureAvailabilityRequirementOnboardingRecordIsPresent alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)[HKFeatureAvailabilityRequirementOnboardingRecordIsPresent alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)onboardingUserDefaultsKeyIsNotPresent:(id)a3
++ (id)onboardingUserDefaultsKeyIsNotPresent:(id)present
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)[HKFeatureAvailabilityRequirementOnboardingUserDefaultsKeyIsNotPresent alloc] initWithUserDefaultsKey:v3];
+  presentCopy = present;
+  v4 = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)[HKFeatureAvailabilityRequirementOnboardingUserDefaultsKeyIsNotPresent alloc] initWithUserDefaultsKey:presentCopy];
 
   return v4;
 }
 
-+ (id)onboardingUserDefaultsKeyIsPresent:(id)a3
++ (id)onboardingUserDefaultsKeyIsPresent:(id)present
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)[HKFeatureAvailabilityRequirementOnboardingUserDefaultsKeyIsPresent alloc] initWithUserDefaultsKey:v3];
+  presentCopy = present;
+  v4 = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)[HKFeatureAvailabilityRequirementOnboardingUserDefaultsKeyIsPresent alloc] initWithUserDefaultsKey:presentCopy];
 
   return v4;
 }
 
-+ (id)OSEligibilityDomainIsEligible:(unint64_t)a3
++ (id)OSEligibilityDomainIsEligible:(unint64_t)eligible
 {
-  v3 = [[HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible alloc] initWithDomain:a3];
+  v3 = [[HKFeatureAvailabilityRequirementOSEligibilityDomainIsEligible alloc] initWithDomain:eligible];
 
   return v3;
 }
 
-+ (id)prerequisiteFeaturesAreOnWithFeatureSettings:(id)a3
++ (id)prerequisiteFeaturesAreOnWithFeatureSettings:(id)settings
 {
-  v3 = a3;
-  v4 = [[HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn alloc] initWithPrerequisiteFeatureSettings:v3];
+  settingsCopy = settings;
+  v4 = [[HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn alloc] initWithPrerequisiteFeatureSettings:settingsCopy];
 
   return v4;
 }
@@ -346,26 +346,26 @@
   return v2;
 }
 
-+ (id)seedIsNotExpiredForFeatureWithIdentifier:(id)a3
++ (id)seedIsNotExpiredForFeatureWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementSeedIsNotExpired alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(HKFeatureAvailabilityOnboardingEligibilityRequirement *)[HKFeatureAvailabilityRequirementSeedIsNotExpired alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)someRegionIsSupportedForFeatureWithIdentifier:(id)a3
++ (id)someRegionIsSupportedForFeatureWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityRegionAvailabilityRequirement *)[HKFeatureAvailabilityRequirementSomeRegionIsSupported alloc] initWithFeatureIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(HKFeatureAvailabilityRegionAvailabilityRequirement *)[HKFeatureAvailabilityRequirementSomeRegionIsSupported alloc] initWithFeatureIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)userDefaultsKeyIsNotPresent:(id)a3
++ (id)userDefaultsKeyIsNotPresent:(id)present
 {
-  v3 = a3;
-  v4 = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)[HKFeatureAvailabilityRequirementUserDefaultsKeyIsNotPresent alloc] initWithUserDefaultsKey:v3];
+  presentCopy = present;
+  v4 = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)[HKFeatureAvailabilityRequirementUserDefaultsKeyIsNotPresent alloc] initWithUserDefaultsKey:presentCopy];
 
   return v4;
 }
@@ -377,10 +377,10 @@
   return v2;
 }
 
-+ (id)watchAppIsInstalledForBundleIdentifier:(id)a3
++ (id)watchAppIsInstalledForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[HKFeatureAvailabilityRequirementWatchAppIsInstalled alloc] initWithBundleIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[HKFeatureAvailabilityRequirementWatchAppIsInstalled alloc] initWithBundleIdentifier:identifierCopy];
 
   return v4;
 }
@@ -413,27 +413,27 @@
   return v2;
 }
 
-+ (id)defaultOnboardingEligibilityRequirementsForFeatureIdentifier:(id)a3
++ (id)defaultOnboardingEligibilityRequirementsForFeatureIdentifier:(id)identifier
 {
   v17[9] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v16 = [a1 currentCountryCodeIsPresentForFeatureWithIdentifier:v4];
+  identifierCopy = identifier;
+  v16 = [self currentCountryCodeIsPresentForFeatureWithIdentifier:identifierCopy];
   v17[0] = v16;
-  v5 = [a1 activeRemoteDeviceIsPresentWhenRequiredForRegionAvailabilityOrDeviceCapabilityForFeatureWithIdentifier:v4];
+  v5 = [self activeRemoteDeviceIsPresentWhenRequiredForRegionAvailabilityOrDeviceCapabilityForFeatureWithIdentifier:identifierCopy];
   v17[1] = v5;
-  v6 = [a1 capabilityIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:v4];
+  v6 = [self capabilityIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:identifierCopy];
   v17[2] = v6;
-  v7 = [a1 someRegionIsSupportedForFeatureWithIdentifier:v4];
+  v7 = [self someRegionIsSupportedForFeatureWithIdentifier:identifierCopy];
   v17[3] = v7;
-  v8 = [a1 currentCountryIsSupportedOnLocalDeviceForFeatureWithIdentifier:v4];
+  v8 = [self currentCountryIsSupportedOnLocalDeviceForFeatureWithIdentifier:identifierCopy];
   v17[4] = v8;
-  v9 = [a1 countryListIsPresentOnActiveRemoteDeviceForFeatureWithIdentifier:v4];
+  v9 = [self countryListIsPresentOnActiveRemoteDeviceForFeatureWithIdentifier:identifierCopy];
   v17[5] = v9;
-  v10 = [a1 currentCountryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:v4 isSupportedIfCountryListMissing:0];
+  v10 = [self currentCountryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:identifierCopy isSupportedIfCountryListMissing:0];
   v17[6] = v10;
-  v11 = [a1 featureIsNotRemotelyDisabledWithIdentifier:v4];
+  v11 = [self featureIsNotRemotelyDisabledWithIdentifier:identifierCopy];
   v17[7] = v11;
-  v12 = [a1 seedIsNotExpiredForFeatureWithIdentifier:v4];
+  v12 = [self seedIsNotExpiredForFeatureWithIdentifier:identifierCopy];
 
   v17[8] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:9];
@@ -443,31 +443,31 @@
   return v13;
 }
 
-+ (id)defaultHelpTileRequirementsForBackgroundDeliveredFeatureWithFeatureIdentifier:(id)a3 isAgeGatedUserDefaultsKey:(id)a4
++ (id)defaultHelpTileRequirementsForBackgroundDeliveredFeatureWithFeatureIdentifier:(id)identifier isAgeGatedUserDefaultsKey:(id)key
 {
-  v6 = a3;
-  v7 = [a1 defaultTipsAppVisibilityRequirementsForBackgroundDeliveredFeatureWithFeatureIdentifier:v6 isAgeGatedUserDefaultsKey:a4];
-  v8 = [HKFeatureAvailabilityRequirements featureIsOnWithIdentifier:v6 isOnIfSettingIsAbsent:1];
+  identifierCopy = identifier;
+  v7 = [self defaultTipsAppVisibilityRequirementsForBackgroundDeliveredFeatureWithFeatureIdentifier:identifierCopy isAgeGatedUserDefaultsKey:key];
+  v8 = [HKFeatureAvailabilityRequirements featureIsOnWithIdentifier:identifierCopy isOnIfSettingIsAbsent:1];
 
   v9 = [v7 arrayByAddingObject:v8];
 
   return v9;
 }
 
-+ (id)defaultTipsAppVisibilityRequirementsForBackgroundDeliveredFeatureWithFeatureIdentifier:(id)a3 isAgeGatedUserDefaultsKey:(id)a4
++ (id)defaultTipsAppVisibilityRequirementsForBackgroundDeliveredFeatureWithFeatureIdentifier:(id)identifier isAgeGatedUserDefaultsKey:(id)key
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [HKFeatureAvailabilityRequirements onboardingRecordIsPresentForFeatureWithIdentifier:v6];
+  keyCopy = key;
+  identifierCopy = identifier;
+  v7 = [HKFeatureAvailabilityRequirements onboardingRecordIsPresentForFeatureWithIdentifier:identifierCopy];
   v18[0] = v7;
-  v8 = [HKFeatureAvailabilityRequirements featureIsNotRemotelyDisabledWithIdentifier:v6];
+  v8 = [HKFeatureAvailabilityRequirements featureIsNotRemotelyDisabledWithIdentifier:identifierCopy];
   v18[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  v10 = [HKFeatureAvailabilityRequirements countryIsSupportedOnLocalDeviceAndPhoneForFeatureWithIdentifier:v6 isSupportedIfCountryListMissing:1];
+  v10 = [HKFeatureAvailabilityRequirements countryIsSupportedOnLocalDeviceAndPhoneForFeatureWithIdentifier:identifierCopy isSupportedIfCountryListMissing:1];
 
   v11 = [v9 arrayByAddingObjectsFromArray:v10];
-  v12 = [HKFeatureAvailabilityRequirements notAgeGatedForUserDefaultsKey:v5];
+  v12 = [HKFeatureAvailabilityRequirements notAgeGatedForUserDefaultsKey:keyCopy];
 
   v17 = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];

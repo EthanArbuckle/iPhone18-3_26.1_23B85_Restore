@@ -1,80 +1,80 @@
 @interface TUIGradientView
-- (CGPoint)_gradientEndPoint:(BOOL)a3;
-- (CGPoint)_gradientStartPoint:(BOOL)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)runAnimationCount:(int64_t)a3 duration:(double)a4;
-- (void)setColors:(id)a3;
-- (void)setLightConfiguration:(id)a3;
+- (CGPoint)_gradientEndPoint:(BOOL)point;
+- (CGPoint)_gradientStartPoint:(BOOL)point;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)runAnimationCount:(int64_t)count duration:(double)duration;
+- (void)setColors:(id)colors;
+- (void)setLightConfiguration:(id)configuration;
 @end
 
 @implementation TUIGradientView
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  finishedCopy = finished;
+  stopCopy = stop;
+  if (finishedCopy)
   {
-    v11 = v6;
-    v7 = [(TUIGradientView *)self startPointAnimation];
+    v11 = stopCopy;
+    startPointAnimation = [(TUIGradientView *)self startPointAnimation];
 
-    if (v7 == v11)
+    if (startPointAnimation == v11)
     {
-      v10 = [(TUIGradientView *)self gradientLayer];
-      [v10 removeAnimationForKey:@"startPoint.x"];
+      gradientLayer = [(TUIGradientView *)self gradientLayer];
+      [gradientLayer removeAnimationForKey:@"startPoint.x"];
 
       [(TUIGradientView *)self setStartPointAnimation:0];
     }
 
     else
     {
-      v8 = [(TUIGradientView *)self endPointAnimation];
+      endPointAnimation = [(TUIGradientView *)self endPointAnimation];
 
-      v6 = v11;
-      if (v8 != v11)
+      stopCopy = v11;
+      if (endPointAnimation != v11)
       {
         goto LABEL_7;
       }
 
-      v9 = [(TUIGradientView *)self gradientLayer];
-      [v9 removeAnimationForKey:@"endPoint.x"];
+      gradientLayer2 = [(TUIGradientView *)self gradientLayer];
+      [gradientLayer2 removeAnimationForKey:@"endPoint.x"];
 
       [(TUIGradientView *)self setEndPointAnimation:0];
     }
 
-    v6 = v11;
+    stopCopy = v11;
   }
 
 LABEL_7:
 }
 
-- (void)runAnimationCount:(int64_t)a3 duration:(double)a4
+- (void)runAnimationCount:(int64_t)count duration:(double)duration
 {
-  v7 = [(TUIGradientView *)self startPointAnimation];
-  if (v7)
+  startPointAnimation = [(TUIGradientView *)self startPointAnimation];
+  if (startPointAnimation)
   {
   }
 
   else
   {
-    v8 = [(TUIGradientView *)self endPointAnimation];
+    endPointAnimation = [(TUIGradientView *)self endPointAnimation];
 
-    if (!v8)
+    if (!endPointAnimation)
     {
       goto LABEL_5;
     }
   }
 
-  v9 = [(TUIGradientView *)self gradientLayer];
-  [v9 removeAllAnimations];
+  gradientLayer = [(TUIGradientView *)self gradientLayer];
+  [gradientLayer removeAllAnimations];
 
 LABEL_5:
-  v10 = [(TUIGradientView *)self lightConfiguration];
+  lightConfiguration = [(TUIGradientView *)self lightConfiguration];
 
-  if (v10)
+  if (lightConfiguration)
   {
     [(_UIDirectionalLightConfiguration *)self->_lightConfiguration duration];
-    a4 = v11;
+    duration = v11;
   }
 
   [(TUIGradientView *)self _gradientStartPoint:1];
@@ -87,11 +87,11 @@ LABEL_5:
   v21 = v20;
   [(TUIGradientView *)self _gradientEndPoint:0];
   v23 = v22;
-  v24 = [(TUIGradientView *)self gradientLayer];
-  [v24 setStartPoint:{v13, v15}];
+  gradientLayer2 = [(TUIGradientView *)self gradientLayer];
+  [gradientLayer2 setStartPoint:{v13, v15}];
 
-  v25 = [(TUIGradientView *)self gradientLayer];
-  [v25 setEndPoint:{v19, v21}];
+  gradientLayer3 = [(TUIGradientView *)self gradientLayer];
+  [gradientLayer3 setEndPoint:{v19, v21}];
 
   v36 = [MEMORY[0x1E6979318] animationWithKeyPath:@"startPoint.x"];
   v26 = [MEMORY[0x1E696AD98] numberWithDouble:v13];
@@ -100,16 +100,16 @@ LABEL_5:
   v27 = [MEMORY[0x1E696AD98] numberWithDouble:v17];
   [v36 setToValue:v27];
 
-  [v36 setDuration:a4];
-  *&v17 = a3;
-  *&v28 = a3;
+  [v36 setDuration:duration];
+  *&v17 = count;
+  *&v28 = count;
   [v36 setRepeatCount:v28];
   v29 = *MEMORY[0x1E69797E8];
   [v36 setFillMode:*MEMORY[0x1E69797E8]];
   [v36 setRemovedOnCompletion:0];
   [(TUIGradientView *)self setStartPointAnimation:v36];
-  v30 = [(TUIGradientView *)self gradientLayer];
-  [v30 addAnimation:v36 forKey:@"startPoint.x"];
+  gradientLayer4 = [(TUIGradientView *)self gradientLayer];
+  [gradientLayer4 addAnimation:v36 forKey:@"startPoint.x"];
 
   v31 = [MEMORY[0x1E6979318] animationWithKeyPath:@"endPoint.x"];
   v32 = [MEMORY[0x1E696AD98] numberWithDouble:v19];
@@ -118,35 +118,35 @@ LABEL_5:
   v33 = [MEMORY[0x1E696AD98] numberWithDouble:v23];
   [v31 setToValue:v33];
 
-  [v31 setDuration:a4];
+  [v31 setDuration:duration];
   LODWORD(v34) = LODWORD(v17);
   [v31 setRepeatCount:v34];
   [v31 setFillMode:v29];
   [v31 setRemovedOnCompletion:0];
   [(TUIGradientView *)self setEndPointAnimation:v31];
-  v35 = [(TUIGradientView *)self gradientLayer];
-  [v35 addAnimation:v31 forKey:@"endPoint.x"];
+  gradientLayer5 = [(TUIGradientView *)self gradientLayer];
+  [gradientLayer5 addAnimation:v31 forKey:@"endPoint.x"];
 }
 
-- (CGPoint)_gradientEndPoint:(BOOL)a3
+- (CGPoint)_gradientEndPoint:(BOOL)point
 {
-  v3 = a3;
-  v4 = [(TUIGradientView *)self traitCollection];
-  v5 = [v4 layoutDirection];
+  pointCopy = point;
+  traitCollection = [(TUIGradientView *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
   v6 = -1.0;
-  if (v5 == 1)
+  if (layoutDirection == 1)
   {
     v6 = 2.0;
   }
 
   v7 = 1.0;
-  if (v5 == 1)
+  if (layoutDirection == 1)
   {
     v7 = 0.0;
   }
 
-  if (!v3)
+  if (!pointCopy)
   {
     v6 = v7;
   }
@@ -157,25 +157,25 @@ LABEL_5:
   return result;
 }
 
-- (CGPoint)_gradientStartPoint:(BOOL)a3
+- (CGPoint)_gradientStartPoint:(BOOL)point
 {
-  v3 = a3;
-  v4 = [(TUIGradientView *)self traitCollection];
-  v5 = [v4 layoutDirection];
+  pointCopy = point;
+  traitCollection = [(TUIGradientView *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
   v6 = 0.0;
-  if (v5 == 1)
+  if (layoutDirection == 1)
   {
     v6 = 1.0;
   }
 
   v7 = 2.0;
-  if (v5 == 1)
+  if (layoutDirection == 1)
   {
     v7 = -1.0;
   }
 
-  if (!v3)
+  if (!pointCopy)
   {
     v6 = v7;
   }
@@ -186,16 +186,16 @@ LABEL_5:
   return result;
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  colorsCopy = colors;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(colorsCopy, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = colorsCopy;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
@@ -225,45 +225,45 @@ LABEL_5:
     while (v8);
   }
 
-  v13 = [(TUIGradientView *)self gradientLayer];
-  [v13 setColors:v5];
+  gradientLayer = [(TUIGradientView *)self gradientLayer];
+  [gradientLayer setColors:v5];
 
   [(TUIGradientView *)self _gradientStartPoint:1];
   v15 = v14;
   v17 = v16;
-  v18 = [(TUIGradientView *)self gradientLayer];
-  [v18 setStartPoint:{v15, v17}];
+  gradientLayer2 = [(TUIGradientView *)self gradientLayer];
+  [gradientLayer2 setStartPoint:{v15, v17}];
 
   [(TUIGradientView *)self _gradientEndPoint:1];
   v20 = v19;
   v22 = v21;
-  v23 = [(TUIGradientView *)self gradientLayer];
-  [v23 setEndPoint:{v20, v22}];
+  gradientLayer3 = [(TUIGradientView *)self gradientLayer];
+  [gradientLayer3 setEndPoint:{v20, v22}];
 }
 
-- (void)setLightConfiguration:(id)a3
+- (void)setLightConfiguration:(id)configuration
 {
-  v11 = a3;
-  objc_storeStrong(&self->_lightConfiguration, a3);
-  if (v11)
+  configurationCopy = configuration;
+  objc_storeStrong(&self->_lightConfiguration, configuration);
+  if (configurationCopy)
   {
-    v5 = [v11 colorPalette];
-    v6 = [v5 colors];
-    [(TUIGradientView *)self setColors:v6];
+    colorPalette = [configurationCopy colorPalette];
+    colors = [colorPalette colors];
+    [(TUIGradientView *)self setColors:colors];
 
-    v7 = [v11 colorPalette];
-    v8 = [v7 locations];
-    v9 = [(TUIGradientView *)self gradientLayer];
-    [v9 setLocations:v8];
+    colorPalette2 = [configurationCopy colorPalette];
+    locations = [colorPalette2 locations];
+    gradientLayer = [(TUIGradientView *)self gradientLayer];
+    [gradientLayer setLocations:locations];
   }
 
   else
   {
-    v10 = [(TUIGradientView *)self gradientLayer];
-    [v10 setColors:0];
+    gradientLayer2 = [(TUIGradientView *)self gradientLayer];
+    [gradientLayer2 setColors:0];
 
-    v7 = [(TUIGradientView *)self gradientLayer];
-    [v7 setLocations:0];
+    colorPalette2 = [(TUIGradientView *)self gradientLayer];
+    [colorPalette2 setLocations:0];
   }
 }
 

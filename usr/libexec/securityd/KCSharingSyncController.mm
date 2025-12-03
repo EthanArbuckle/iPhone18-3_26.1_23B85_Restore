@@ -1,98 +1,98 @@
 @interface KCSharingSyncController
 + (KCSharingSyncController)sharedInstance;
-- (BOOL)haveUnmirroredGroups:(id)a3 forDatabase:(id)a4;
+- (BOOL)haveUnmirroredGroups:(id)groups forDatabase:(id)database;
 - (BOOL)isCurrentUserIdentifierAvailable;
 - (BOOL)isCurrentUserProvisioned;
-- (BOOL)isLockedError:(id)a3 duringFetchForEngine:(id)a4;
-- (BOOL)obtainAuthoritativeGroupsForPrivate:(id)a3 shared:(id)a4 error:(id *)a5;
-- (BOOL)saveCursor:(id)a3 forScope:(int64_t)a4;
-- (BOOL)setCloudCoreMetadataValue:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setCurrentUserMetadataFeatureUsage:(unint64_t)a3;
-- (BOOL)stageOutgoingShares:(id)a3 deletionsForShares:(id)a4 error:(id *)a5;
-- (BOOL)syncEngine:(id)a3 shouldFetchChangesForZoneID:(id)a4;
-- (BOOL)updateCurrentUserMetadataForKey:(id)a3 toValue:(id)a4 withError:(id *)a5;
+- (BOOL)isLockedError:(id)error duringFetchForEngine:(id)engine;
+- (BOOL)obtainAuthoritativeGroupsForPrivate:(id)private shared:(id)shared error:(id *)error;
+- (BOOL)saveCursor:(id)cursor forScope:(int64_t)scope;
+- (BOOL)setCloudCoreMetadataValue:(id)value forKey:(id)key error:(id *)error;
+- (BOOL)setCurrentUserMetadataFeatureUsage:(unint64_t)usage;
+- (BOOL)stageOutgoingShares:(id)shares deletionsForShares:(id)forShares error:(id *)error;
+- (BOOL)syncEngine:(id)engine shouldFetchChangesForZoneID:(id)d;
+- (BOOL)updateCurrentUserMetadataForKey:(id)key toValue:(id)value withError:(id *)error;
 - (KCSharingSyncController)init;
-- (KCSharingSyncController)initWithStore:(id)a3 container:(id)a4 privateSyncEngine:(id)a5 sharedSyncEngine:(id)a6 messagingdConnection:(id)a7 lockStateTracker:(id)a8 forTesting:(BOOL)a9;
+- (KCSharingSyncController)initWithStore:(id)store container:(id)container privateSyncEngine:(id)engine sharedSyncEngine:(id)syncEngine messagingdConnection:(id)connection lockStateTracker:(id)tracker forTesting:(BOOL)testing;
 - (KCSharingXPCListenerDelegate)xpcListenerDelegate;
 - (id)currentUserMetadata;
-- (id)fetchCloudCoreMetadataValueWithErrorForKey:(id)a3 error:(id *)a4;
-- (id)fetchCursorForScope:(int64_t)a3 zoneIDs:(id)a4;
-- (id)fetchOutgoingChangesWithScope:(int64_t)a3 cursor:(id)a4;
-- (id)fetchStoredSyncEngineStateWithMetadataKey:(id)a3 withError:(id *)a4;
-- (id)getOutgoingStagedDatabaseChangesForSyncEngine:(id)a3;
-- (id)recordZoneIDsToDeleteForSyncEngine:(id)a3;
-- (id)recordZonesToSaveForSyncEngine:(id)a3;
-- (id)storeOldSyncEngineState:(id)a3 asNewSyncEngineStateWithMetadataKey:(id)a4 withError:(id *)a5;
-- (id)subscriptionIDForDatabase:(id)a3;
-- (id)syncEngine:(id)a3 nextBatchOfRecordsToModifyForZoneIDs:(id)a4;
-- (id)syncEngine:(id)a3 nextRecordZoneChangeBatchForContext:(id)a4;
-- (id)syncEngine:(id)a3 recordToSaveForRecordID:(id)a4;
-- (id)unmirroredZonesForPrivate:(id)a3 shared:(id)a4 error:(id *)a5;
+- (id)fetchCloudCoreMetadataValueWithErrorForKey:(id)key error:(id *)error;
+- (id)fetchCursorForScope:(int64_t)scope zoneIDs:(id)ds;
+- (id)fetchOutgoingChangesWithScope:(int64_t)scope cursor:(id)cursor;
+- (id)fetchStoredSyncEngineStateWithMetadataKey:(id)key withError:(id *)error;
+- (id)getOutgoingStagedDatabaseChangesForSyncEngine:(id)engine;
+- (id)recordZoneIDsToDeleteForSyncEngine:(id)engine;
+- (id)recordZonesToSaveForSyncEngine:(id)engine;
+- (id)storeOldSyncEngineState:(id)state asNewSyncEngineStateWithMetadataKey:(id)key withError:(id *)error;
+- (id)subscriptionIDForDatabase:(id)database;
+- (id)syncEngine:(id)engine nextBatchOfRecordsToModifyForZoneIDs:(id)ds;
+- (id)syncEngine:(id)engine nextRecordZoneChangeBatchForContext:(id)context;
+- (id)syncEngine:(id)engine recordToSaveForRecordID:(id)d;
+- (id)unmirroredZonesForPrivate:(id)private shared:(id)shared error:(id *)error;
 - (unint64_t)currentUserMetadataFeatureUsage;
-- (void)CKSyncEnginesInitOperationWithDelay:(BOOL)a3 withCompletion:(id)a4;
-- (void)_onQueueFetchRemoteChangesForZoneIDs:(id)a3 completion:(id)a4;
-- (void)acquireCloudCoreSessionWithContainerID:(id)a3 applicationID:(id)a4 encryptionService:(id)a5 completion:(id)a6;
+- (void)CKSyncEnginesInitOperationWithDelay:(BOOL)delay withCompletion:(id)completion;
+- (void)_onQueueFetchRemoteChangesForZoneIDs:(id)ds completion:(id)completion;
+- (void)acquireCloudCoreSessionWithContainerID:(id)d applicationID:(id)iD encryptionService:(id)service completion:(id)completion;
 - (void)cancelExistingSyncEngines;
-- (void)cancelSyncEngineOperationsWithCompletionBlock:(id)a3;
+- (void)cancelSyncEngineOperationsWithCompletionBlock:(id)block;
 - (void)deviceDidLock;
-- (void)ensureCurrentUserProvisionedWithCompletion:(id)a3;
-- (void)fetchCurrentUserIdentifierFromCloudKitWithReply:(id)a3;
-- (void)fetchCurrentUserIdentifierWithReply:(id)a3;
-- (void)fetchRemoteChangesForZoneIDs:(id)a3 completion:(id)a4;
-- (void)forceReinitSyncEnginesWithCompletionBlock:(id)a3;
-- (void)handleAccountChangeFromUserRecordName:(id)a3 toUserRecordName:(id)a4 shouldWipeLocalState:(BOOL)a5;
-- (void)handleProvisioningActivity:(id)a3 isRetry:(BOOL)a4;
-- (void)initSyncEnginesWithPrivateDB:(id)a3 sharedDB:(id)a4 withCompletion:(id)a5;
-- (void)lockStateChangeNotification:(BOOL)a3;
+- (void)ensureCurrentUserProvisionedWithCompletion:(id)completion;
+- (void)fetchCurrentUserIdentifierFromCloudKitWithReply:(id)reply;
+- (void)fetchCurrentUserIdentifierWithReply:(id)reply;
+- (void)fetchRemoteChangesForZoneIDs:(id)ds completion:(id)completion;
+- (void)forceReinitSyncEnginesWithCompletionBlock:(id)block;
+- (void)handleAccountChangeFromUserRecordName:(id)name toUserRecordName:(id)recordName shouldWipeLocalState:(BOOL)state;
+- (void)handleProvisioningActivity:(id)activity isRetry:(BOOL)retry;
+- (void)initSyncEnginesWithPrivateDB:(id)b sharedDB:(id)dB withCompletion:(id)completion;
+- (void)lockStateChangeNotification:(BOOL)notification;
 - (void)makeStagedOutgoingDatabaseChangesAsPendingSyncEngineChanges;
-- (void)performKCSharingFixUpsWithCompletion:(id)a3;
-- (void)performMaintenanceWithCompletion:(id)a3;
-- (void)preflightWithCompletion:(id)a3 delay:(BOOL)a4;
+- (void)performKCSharingFixUpsWithCompletion:(id)completion;
+- (void)performMaintenanceWithCompletion:(id)completion;
+- (void)preflightWithCompletion:(id)completion delay:(BOOL)delay;
 - (void)processDatabaseModifications;
 - (void)registerProvisioningActivity;
-- (void)removeCKNotificationListenersAfterSessionInvalidationWithPrivateDB:(id)a3 sharedDB:(id)a4;
-- (void)resyncFromRPC:(BOOL)a3 privateRemoteZonesByZoneID:(id)a4 sharedRemoteZonesByZoneID:(id)a5 completion:(id)a6;
-- (void)saveAllOutgoingChangesWithCompletion:(id)a3;
-- (void)saveStagedOutgoingChangesWithCompletion:(id)a3;
-- (void)sendNewIDSInvitesForRecord:(id)a3;
-- (void)setCloudCoreTestingProtocolDelegate:(id)a3;
-- (void)setupCKNotificationListenersWithPrivateDB:(id)a3 sharedDB:(id)a4;
+- (void)removeCKNotificationListenersAfterSessionInvalidationWithPrivateDB:(id)b sharedDB:(id)dB;
+- (void)resyncFromRPC:(BOOL)c privateRemoteZonesByZoneID:(id)d sharedRemoteZonesByZoneID:(id)iD completion:(id)completion;
+- (void)saveAllOutgoingChangesWithCompletion:(id)completion;
+- (void)saveStagedOutgoingChangesWithCompletion:(id)completion;
+- (void)sendNewIDSInvitesForRecord:(id)record;
+- (void)setCloudCoreTestingProtocolDelegate:(id)delegate;
+- (void)setupCKNotificationListenersWithPrivateDB:(id)b sharedDB:(id)dB;
 - (void)setupSessionReinitOperationOnSessionInvalidation;
-- (void)stageAllOutgoingChangesWithCompletion:(id)a3;
-- (void)syncEngine:(id)a3 accountChangedFromUserRecordID:(id)a4 toUserRecordID:(id)a5;
-- (void)syncEngine:(id)a3 didDeleteRecordWithID:(id)a4;
-- (void)syncEngine:(id)a3 didDeleteRecordZoneWithID:(id)a4;
-- (void)syncEngine:(id)a3 didFetchRecord:(id)a4;
-- (void)syncEngine:(id)a3 didSaveRecord:(id)a4;
-- (void)syncEngine:(id)a3 didSaveRecordZone:(id)a4;
-- (void)syncEngine:(id)a3 didUpdateMetadata:(id)a4;
-- (void)syncEngine:(id)a3 failedToDeleteRecordWithID:(id)a4 error:(id)a5;
-- (void)syncEngine:(id)a3 failedToDeleteRecordZoneWithID:(id)a4 error:(id)a5;
-- (void)syncEngine:(id)a3 failedToSaveRecord:(id)a4 error:(id)a5;
-- (void)syncEngine:(id)a3 failedToSaveRecordZone:(id)a4 error:(id)a5;
-- (void)syncEngine:(id)a3 handleEvent:(id)a4;
-- (void)syncEngine:(id)a3 recordWithIDWasDeleted:(id)a4 recordType:(id)a5;
-- (void)syncEngine:(id)a3 zoneWithIDWasDeleted:(id)a4;
-- (void)syncEngineDidEndFetchingChanges:(id)a3;
-- (void)verifyGroupsInSyncAndResync:(BOOL)a3 WithCompletion:(id)a4;
-- (void)verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:(id)a3;
-- (void)verifyGroupsInSyncWithCompletion:(id)a3;
-- (void)wipe:(BOOL)a3 completion:(id)a4;
+- (void)stageAllOutgoingChangesWithCompletion:(id)completion;
+- (void)syncEngine:(id)engine accountChangedFromUserRecordID:(id)d toUserRecordID:(id)iD;
+- (void)syncEngine:(id)engine didDeleteRecordWithID:(id)d;
+- (void)syncEngine:(id)engine didDeleteRecordZoneWithID:(id)d;
+- (void)syncEngine:(id)engine didFetchRecord:(id)record;
+- (void)syncEngine:(id)engine didSaveRecord:(id)record;
+- (void)syncEngine:(id)engine didSaveRecordZone:(id)zone;
+- (void)syncEngine:(id)engine didUpdateMetadata:(id)metadata;
+- (void)syncEngine:(id)engine failedToDeleteRecordWithID:(id)d error:(id)error;
+- (void)syncEngine:(id)engine failedToDeleteRecordZoneWithID:(id)d error:(id)error;
+- (void)syncEngine:(id)engine failedToSaveRecord:(id)record error:(id)error;
+- (void)syncEngine:(id)engine failedToSaveRecordZone:(id)zone error:(id)error;
+- (void)syncEngine:(id)engine handleEvent:(id)event;
+- (void)syncEngine:(id)engine recordWithIDWasDeleted:(id)deleted recordType:(id)type;
+- (void)syncEngine:(id)engine zoneWithIDWasDeleted:(id)deleted;
+- (void)syncEngineDidEndFetchingChanges:(id)changes;
+- (void)verifyGroupsInSyncAndResync:(BOOL)resync WithCompletion:(id)completion;
+- (void)verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:(id)completion;
+- (void)verifyGroupsInSyncWithCompletion:(id)completion;
+- (void)wipe:(BOOL)wipe completion:(id)completion;
 @end
 
 @implementation KCSharingSyncController
 
 - (id)currentUserMetadata
 {
-  v3 = [(KCSharingSyncController *)self store];
+  store = [(KCSharingSyncController *)self store];
   v9 = 0;
-  v4 = [v3 fetchValueForMetadataKey:@"CurrentUserMetadata" error:&v9];
+  v4 = [store fetchValueForMetadataKey:@"CurrentUserMetadata" error:&v9];
   v5 = v9;
 
   [(KCSharingSyncController *)self isLockedError:v5];
   if (!v4)
   {
-    v6 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v7 = KCSharingLogObject();
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -108,11 +108,11 @@
 
 - (BOOL)isCurrentUserProvisioned
 {
-  v2 = [(KCSharingSyncController *)self currentUserMetadata];
-  v3 = [v2 objectForKeyedSubscript:@"pv"];
-  v4 = [v3 BOOLValue];
+  currentUserMetadata = [(KCSharingSyncController *)self currentUserMetadata];
+  v3 = [currentUserMetadata objectForKeyedSubscript:@"pv"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (KCSharingXPCListenerDelegate)xpcListenerDelegate
@@ -122,10 +122,10 @@
   return WeakRetained;
 }
 
-- (void)setCloudCoreTestingProtocolDelegate:(id)a3
+- (void)setCloudCoreTestingProtocolDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(KCSharingSyncController *)self loggingIdentifier];
+  delegateCopy = delegate;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v6 = KCSharingLogObject();
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -134,13 +134,13 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Setting CloudCore testing delegate", v7, 2u);
   }
 
-  [(KCSharingSyncController *)self setCloudCoreTestingDelegate:v4];
+  [(KCSharingSyncController *)self setCloudCoreTestingDelegate:delegateCopy];
 }
 
-- (void)forceReinitSyncEnginesWithCompletionBlock:(id)a3
+- (void)forceReinitSyncEnginesWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(KCSharingSyncController *)self loggingIdentifier];
+  blockCopy = block;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v6 = KCSharingLogObject();
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -149,44 +149,44 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Force reinit of sync engines", buf, 2u);
   }
 
-  v7 = [(KCSharingSyncController *)self queue];
+  queue = [(KCSharingSyncController *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10006A720;
   v9[3] = &unk_100344DC8;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  dispatch_async(v7, v9);
+  v10 = blockCopy;
+  v8 = blockCopy;
+  dispatch_async(queue, v9);
 }
 
-- (void)cancelSyncEngineOperationsWithCompletionBlock:(id)a3
+- (void)cancelSyncEngineOperationsWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(KCSharingSyncController *)self privateSyncEngine];
-  v6 = [(KCSharingSyncController *)self sharedSyncEngine];
-  v7 = [(KCSharingSyncController *)self queue];
+  blockCopy = block;
+  privateSyncEngine = [(KCSharingSyncController *)self privateSyncEngine];
+  sharedSyncEngine = [(KCSharingSyncController *)self sharedSyncEngine];
+  queue = [(KCSharingSyncController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006A984;
   block[3] = &unk_100346018;
   block[4] = self;
-  dispatch_sync(v7, block);
+  dispatch_sync(queue, block);
 
-  if (v6 && v5)
+  if (sharedSyncEngine && privateSyncEngine)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10006A9C8;
     v11[3] = &unk_100344DC8;
-    v12 = v5;
-    v13 = v4;
-    [v6 cancelOperationsWithCompletionHandler:v11];
+    v12 = privateSyncEngine;
+    v13 = blockCopy;
+    [sharedSyncEngine cancelOperationsWithCompletionHandler:v11];
   }
 
   else
   {
-    v8 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v9 = KCSharingLogObject();
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -195,14 +195,14 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Completing without cancelling pending operations", v10, 2u);
     }
 
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 
-- (void)performKCSharingFixUpsWithCompletion:(id)a3
+- (void)performKCSharingFixUpsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(KCSharingSyncController *)self loggingIdentifier];
+  completionCopy = completion;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v6 = KCSharingLogObject();
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -211,15 +211,15 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Trying to run fixups", v10, 2u);
   }
 
-  v7 = [(KCSharingSyncController *)self fixUpManager];
-  v8 = [(KCSharingSyncController *)self store];
-  v9 = [(KCSharingSyncController *)self lockStateTracker];
-  [v7 performFixUpOneWithStore:v8 lockStateTracker:v9 WithCompletion:v4];
+  fixUpManager = [(KCSharingSyncController *)self fixUpManager];
+  store = [(KCSharingSyncController *)self store];
+  lockStateTracker = [(KCSharingSyncController *)self lockStateTracker];
+  [fixUpManager performFixUpOneWithStore:store lockStateTracker:lockStateTracker WithCompletion:completionCopy];
 }
 
 - (void)setupSessionReinitOperationOnSessionInvalidation
 {
-  v3 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v4 = KCSharingLogObject();
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -247,11 +247,11 @@
   objc_destroyWeak(buf);
 }
 
-- (void)removeCKNotificationListenersAfterSessionInvalidationWithPrivateDB:(id)a3 sharedDB:(id)a4
+- (void)removeCKNotificationListenersAfterSessionInvalidationWithPrivateDB:(id)b sharedDB:(id)dB
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(KCSharingSyncController *)self loggingIdentifier];
+  bCopy = b;
+  dBCopy = dB;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v9 = KCSharingLogObject();
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -263,7 +263,7 @@
   notificationListener = self->_notificationListener;
   if (!notificationListener)
   {
-    v14 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v13 = KCSharingLogObject();
 
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -279,9 +279,9 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  if (!v6 || !v7)
+  if (!bCopy || !dBCopy)
   {
-    v17 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
     v13 = KCSharingLogObject();
 
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -295,56 +295,56 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v11 = [(KCSharingSyncController *)self subscriptionIDForDatabase:v6];
-  [(CKNotificationListener *)notificationListener unregisterForSubscriptionWithID:v11 inDatabase:v6];
+  v11 = [(KCSharingSyncController *)self subscriptionIDForDatabase:bCopy];
+  [(CKNotificationListener *)notificationListener unregisterForSubscriptionWithID:v11 inDatabase:bCopy];
 
   v12 = self->_notificationListener;
-  v13 = [(KCSharingSyncController *)self subscriptionIDForDatabase:v7];
-  [(CKNotificationListener *)v12 unregisterForSubscriptionWithID:v13 inDatabase:v7];
+  v13 = [(KCSharingSyncController *)self subscriptionIDForDatabase:dBCopy];
+  [(CKNotificationListener *)v12 unregisterForSubscriptionWithID:v13 inDatabase:dBCopy];
 LABEL_10:
 }
 
-- (id)fetchCloudCoreMetadataValueWithErrorForKey:(id)a3 error:(id *)a4
+- (id)fetchCloudCoreMetadataValueWithErrorForKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [(KCSharingSyncController *)self store];
+  keyCopy = key;
+  store = [(KCSharingSyncController *)self store];
   v14 = 0;
-  v8 = [v7 fetchValueForMetadataKey:v6 error:&v14];
+  v8 = [store fetchValueForMetadataKey:keyCopy error:&v14];
   v9 = v14;
 
   if (v9)
   {
-    v10 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v11 = KCSharingLogObject();
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v16 = v6;
+      v16 = keyCopy;
       v17 = 2114;
       v18 = v9;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to fetch CloudCoreMetadata for key:%{public}@ with error: %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v12 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
   return v8;
 }
 
-- (BOOL)setCloudCoreMetadataValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setCloudCoreMetadataValue:(id)value forKey:(id)key error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  keyCopy = key;
   store = self->_store;
   v15 = 0;
-  v10 = [(KCSharingStore *)store setValue:v7 forMetadataKey:v8 error:&v15];
+  v10 = [(KCSharingStore *)store setValue:valueCopy forMetadataKey:keyCopy error:&v15];
   v11 = v15;
-  v12 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v13 = KCSharingLogObject();
 
   if (v10)
@@ -352,9 +352,9 @@ LABEL_10:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = v8;
+      v17 = keyCopy;
       v18 = 2114;
-      v19 = v7;
+      v19 = valueCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Updated CloudCore Metadata for key: %{public}@ with value: %{public}@", buf, 0x16u);
     }
   }
@@ -362,7 +362,7 @@ LABEL_10:
   else if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v17 = v8;
+    v17 = keyCopy;
     v18 = 2114;
     v19 = v11;
     _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to update CloudCore Metadata for key: %{public}@ with error: %{public}@", buf, 0x16u);
@@ -371,7 +371,7 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)setCurrentUserMetadataFeatureUsage:(unint64_t)a3
+- (BOOL)setCurrentUserMetadataFeatureUsage:(unint64_t)usage
 {
   v5 = [NSNumber numberWithUnsignedInteger:?];
   v11 = 0;
@@ -380,13 +380,13 @@ LABEL_10:
 
   if (v7)
   {
-    v8 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v9 = KCSharingLogObject();
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v13 = a3;
+      usageCopy = usage;
       v14 = 2112;
       v15 = v7;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to set feature usage to %lu: %@", buf, 0x16u);
@@ -398,28 +398,28 @@ LABEL_10:
 
 - (unint64_t)currentUserMetadataFeatureUsage
 {
-  v2 = [(KCSharingSyncController *)self currentUserMetadata];
-  v3 = [v2 objectForKey:@"isInUse"];
-  v4 = [v3 unsignedIntegerValue];
+  currentUserMetadata = [(KCSharingSyncController *)self currentUserMetadata];
+  v3 = [currentUserMetadata objectForKey:@"isInUse"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)isCurrentUserIdentifierAvailable
 {
-  v2 = [(KCSharingSyncController *)self currentUserMetadata];
-  v3 = [v2 objectForKeyedSubscript:@"currentUserIdentifier"];
+  currentUserMetadata = [(KCSharingSyncController *)self currentUserMetadata];
+  v3 = [currentUserMetadata objectForKeyedSubscript:@"currentUserIdentifier"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)updateCurrentUserMetadataForKey:(id)a3 toValue:(id)a4 withError:(id *)a5
+- (BOOL)updateCurrentUserMetadataForKey:(id)key toValue:(id)value withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(KCSharingSyncController *)self currentUserMetadata];
-  v11 = [v10 mutableCopy];
+  keyCopy = key;
+  valueCopy = value;
+  currentUserMetadata = [(KCSharingSyncController *)self currentUserMetadata];
+  v11 = [currentUserMetadata mutableCopy];
   v12 = v11;
   if (v11)
   {
@@ -433,29 +433,29 @@ LABEL_10:
 
   v14 = v13;
 
-  v15 = [v14 objectForKey:v8];
-  v16 = [v15 isEqual:v9];
+  v15 = [v14 objectForKey:keyCopy];
+  v16 = [v15 isEqual:valueCopy];
 
   if (v16)
   {
-    v17 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v18 = KCSharingLogObject();
 
     v19 = 1;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v28 = v8;
+      v28 = keyCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "CurrentUserMetadata for key %@ already at new value (or removed)", buf, 0xCu);
     }
   }
 
   else
   {
-    [v14 setValue:v9 forKey:v8];
-    v20 = [(KCSharingSyncController *)self store];
+    [v14 setValue:valueCopy forKey:keyCopy];
+    store = [(KCSharingSyncController *)self store];
     v26 = 0;
-    v21 = [v20 setValue:v14 forMetadataKey:@"CurrentUserMetadata" error:&v26];
+    v21 = [store setValue:v14 forMetadataKey:@"CurrentUserMetadata" error:&v26];
     v18 = v26;
 
     if (v21)
@@ -466,25 +466,25 @@ LABEL_10:
     else
     {
       [(KCSharingSyncController *)self isLockedError:v18];
-      v22 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
       v23 = KCSharingLogObject();
 
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v28 = v8;
+        v28 = keyCopy;
         v29 = 2114;
-        v30 = v9;
+        v30 = valueCopy;
         v31 = 2114;
         v32 = v18;
         _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Failed to update current user metadata for key %{public}@ to value %{public}@ with error: %{public}@", buf, 0x20u);
       }
 
-      if (a5)
+      if (error)
       {
         v24 = v18;
         v19 = 0;
-        *a5 = v18;
+        *error = v18;
       }
 
       else
@@ -497,17 +497,17 @@ LABEL_10:
   return v19;
 }
 
-- (id)syncEngine:(id)a3 nextRecordZoneChangeBatchForContext:(id)a4
+- (id)syncEngine:(id)engine nextRecordZoneChangeBatchForContext:(id)context
 {
-  v6 = a3;
-  v7 = [a4 options];
-  v47 = [v7 scope];
-  v8 = [v47 zoneIDs];
-  v9 = [v6 database];
-  [v9 databaseScope];
+  engineCopy = engine;
+  options = [context options];
+  scope = [options scope];
+  zoneIDs = [scope zoneIDs];
+  database = [engineCopy database];
+  [database databaseScope];
   v10 = CKDatabaseScopeString();
 
-  v11 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v12 = KCSharingLogObject();
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -515,20 +515,20 @@ LABEL_10:
     *buf = 138543618;
     v50 = v10;
     v51 = 2112;
-    v52 = v8;
+    v52 = zoneIDs;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Requesting next record batch for scope=%{public}@ in zoneIDs=%@", buf, 0x16u);
   }
 
-  v13 = [v6 database];
-  v14 = -[KCSharingSyncController fetchCursorForScope:zoneIDs:](self, "fetchCursorForScope:zoneIDs:", [v13 databaseScope], v8);
+  database2 = [engineCopy database];
+  v14 = -[KCSharingSyncController fetchCursorForScope:zoneIDs:](self, "fetchCursorForScope:zoneIDs:", [database2 databaseScope], zoneIDs);
 
-  v15 = [v6 database];
-  v16 = -[KCSharingSyncController fetchOutgoingChangesWithScope:cursor:](self, "fetchOutgoingChangesWithScope:cursor:", [v15 databaseScope], v14);
+  database3 = [engineCopy database];
+  v16 = -[KCSharingSyncController fetchOutgoingChangesWithScope:cursor:](self, "fetchOutgoingChangesWithScope:cursor:", [database3 databaseScope], v14);
 
   if (!v16)
   {
-    v21 = [v6 database];
-    -[KCSharingSyncController saveCursor:forScope:](self, "saveCursor:forScope:", 0, [v21 databaseScope]);
+    database4 = [engineCopy database];
+    -[KCSharingSyncController saveCursor:forScope:](self, "saveCursor:forScope:", 0, [database4 databaseScope]);
     v25 = 0;
     v24 = v14;
     goto LABEL_18;
@@ -536,23 +536,23 @@ LABEL_10:
 
   if (![v16 isEmpty])
   {
-    v46 = v7;
+    v46 = options;
     v26 = v16;
     v24 = v14;
 LABEL_14:
-    v27 = [v26 cursor];
-    v28 = [v6 database];
-    -[KCSharingSyncController saveCursor:forScope:](self, "saveCursor:forScope:", v27, [v28 databaseScope]);
+    cursor = [v26 cursor];
+    database5 = [engineCopy database];
+    -[KCSharingSyncController saveCursor:forScope:](self, "saveCursor:forScope:", cursor, [database5 databaseScope]);
 
-    v29 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v30 = KCSharingLogObject();
 
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [v26 recordsToSave];
-      v32 = [v31 count];
-      v33 = [v26 recordIDsToDelete];
-      v34 = [v33 count];
+      recordsToSave = [v26 recordsToSave];
+      v32 = [recordsToSave count];
+      recordIDsToDelete = [v26 recordIDsToDelete];
+      v34 = [recordIDsToDelete count];
       *buf = 134218754;
       v50 = v32;
       v51 = 2048;
@@ -560,20 +560,20 @@ LABEL_14:
       v53 = 2114;
       v54 = v10;
       v55 = 2112;
-      v56 = v8;
+      v56 = zoneIDs;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Returning batch of %lu + %lu records to upload in scope=%{public}@, zoneIDs=%@", buf, 0x2Au);
     }
 
     v35 = [CKSyncEngineRecordZoneChangeBatch alloc];
-    v36 = [v26 recordsToSave];
-    v37 = [v26 recordIDsToDelete];
-    v25 = [v35 initWithRecordsToSave:v36 recordIDsToDelete:v37 atomicByZone:0];
+    recordsToSave2 = [v26 recordsToSave];
+    recordIDsToDelete2 = [v26 recordIDsToDelete];
+    v25 = [v35 initWithRecordsToSave:recordsToSave2 recordIDsToDelete:recordIDsToDelete2 atomicByZone:0];
 
-    v21 = v26;
+    database4 = v26;
     goto LABEL_17;
   }
 
-  v17 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
   v18 = KCSharingLogObject();
 
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -583,17 +583,17 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Initial change set for scope=%{public}@ was empty; restaging to pick up stragglers", buf, 0xCu);
   }
 
-  v19 = [v6 database];
-  -[KCSharingSyncController saveCursor:forScope:](self, "saveCursor:forScope:", 0, [v19 databaseScope]);
+  database6 = [engineCopy database];
+  -[KCSharingSyncController saveCursor:forScope:](self, "saveCursor:forScope:", 0, [database6 databaseScope]);
 
-  v20 = [(KCSharingSyncController *)self store];
+  store = [(KCSharingSyncController *)self store];
   v48 = 0;
-  [v20 stageAllOutgoingChangesWithError:&v48];
-  v21 = v48;
+  [store stageAllOutgoingChangesWithError:&v48];
+  database4 = v48;
 
-  if (v21)
+  if (database4)
   {
-    v22 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier4 = [(KCSharingSyncController *)self loggingIdentifier];
     v23 = KCSharingLogObject();
 
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -601,11 +601,11 @@ LABEL_14:
       *buf = 138543618;
       v50 = v10;
       v51 = 2112;
-      v52 = v21;
+      v52 = database4;
       _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Failed to restage scope=%{public}@ outgoing changes: %@", buf, 0x16u);
     }
 
-    [(KCSharingSyncController *)self isLockedError:v21];
+    [(KCSharingSyncController *)self isLockedError:database4];
     v24 = v14;
 LABEL_11:
 
@@ -613,34 +613,34 @@ LABEL_11:
     goto LABEL_18;
   }
 
-  v46 = v7;
+  v46 = options;
   v39 = [KCSharingOutgoingChangesetCursor alloc];
-  v40 = [v6 database];
-  v24 = -[KCSharingOutgoingChangesetCursor initWithDatabaseScope:desiredZoneIDs:](v39, "initWithDatabaseScope:desiredZoneIDs:", [v40 databaseScope], v8);
+  database7 = [engineCopy database];
+  v24 = -[KCSharingOutgoingChangesetCursor initWithDatabaseScope:desiredZoneIDs:](v39, "initWithDatabaseScope:desiredZoneIDs:", [database7 databaseScope], zoneIDs);
 
-  v41 = [v6 database];
-  v26 = -[KCSharingSyncController fetchOutgoingChangesWithScope:cursor:](self, "fetchOutgoingChangesWithScope:cursor:", [v41 databaseScope], v24);
+  database8 = [engineCopy database];
+  v26 = -[KCSharingSyncController fetchOutgoingChangesWithScope:cursor:](self, "fetchOutgoingChangesWithScope:cursor:", [database8 databaseScope], v24);
 
   if (v26)
   {
-    v42 = [v26 isEmpty];
-    v43 = [(KCSharingSyncController *)self loggingIdentifier];
+    isEmpty = [v26 isEmpty];
+    loggingIdentifier5 = [(KCSharingSyncController *)self loggingIdentifier];
     v44 = KCSharingLogObject();
 
     v45 = os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT);
-    if (v42)
+    if (isEmpty)
     {
       if (v45)
       {
         *buf = 138543618;
         v50 = v10;
         v51 = 2112;
-        v52 = v8;
+        v52 = zoneIDs;
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Uploaded all records for scope=%{public}@ in zoneIDs=%@", buf, 0x16u);
       }
 
       v16 = v26;
-      v7 = v46;
+      options = v46;
       goto LABEL_11;
     }
 
@@ -654,48 +654,48 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v21 = 0;
+  database4 = 0;
   v25 = 0;
 LABEL_17:
-  v7 = v46;
+  options = v46;
 LABEL_18:
 
   return v25;
 }
 
-- (void)syncEngine:(id)a3 handleEvent:(id)a4
+- (void)syncEngine:(id)engine handleEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(KCSharingSyncController *)self loggingIdentifier];
+  engineCopy = engine;
+  eventCopy = event;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v9 = KCSharingLogObject();
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 database];
-    [v10 databaseScope];
+    database = [engineCopy database];
+    [database databaseScope];
     v11 = CKDatabaseScopeString();
     *buf = 138412546;
     v178 = v11;
     v179 = 2112;
-    v180 = v7;
+    v180 = eventCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@ Sync Engine Handling Event: %@", buf, 0x16u);
   }
 
-  v12 = [v7 type];
-  if (v12 <= 5)
+  type = [eventCopy type];
+  if (type <= 5)
   {
-    if (v12 > 2)
+    if (type > 2)
     {
-      if (v12 == 3)
+      if (type == 3)
       {
-        v28 = [v7 fetchedRecordZoneChangesEvent];
+        fetchedRecordZoneChangesEvent = [eventCopy fetchedRecordZoneChangesEvent];
         v167 = 0u;
         v168 = 0u;
         v169 = 0u;
         v170 = 0u;
-        v74 = [v28 modifications];
-        v75 = [v74 countByEnumeratingWithState:&v167 objects:v192 count:16];
+        modifications = [fetchedRecordZoneChangesEvent modifications];
+        v75 = [modifications countByEnumeratingWithState:&v167 objects:v192 count:16];
         if (v75)
         {
           v76 = v75;
@@ -706,13 +706,13 @@ LABEL_18:
             {
               if (*v168 != v77)
               {
-                objc_enumerationMutation(v74);
+                objc_enumerationMutation(modifications);
               }
 
-              [(KCSharingSyncController *)self syncEngine:v6 didFetchRecord:*(*(&v167 + 1) + 8 * i)];
+              [(KCSharingSyncController *)self syncEngine:engineCopy didFetchRecord:*(*(&v167 + 1) + 8 * i)];
             }
 
-            v76 = [v74 countByEnumeratingWithState:&v167 objects:v192 count:16];
+            v76 = [modifications countByEnumeratingWithState:&v167 objects:v192 count:16];
           }
 
           while (v76);
@@ -722,8 +722,8 @@ LABEL_18:
         v166 = 0u;
         v163 = 0u;
         v164 = 0u;
-        v33 = [v28 deletions];
-        v79 = [v33 countByEnumeratingWithState:&v163 objects:v191 count:16];
+        deletions = [fetchedRecordZoneChangesEvent deletions];
+        v79 = [deletions countByEnumeratingWithState:&v163 objects:v191 count:16];
         if (v79)
         {
           v80 = v79;
@@ -734,31 +734,31 @@ LABEL_18:
             {
               if (*v164 != v81)
               {
-                objc_enumerationMutation(v33);
+                objc_enumerationMutation(deletions);
               }
 
               v83 = *(*(&v163 + 1) + 8 * j);
-              v84 = [v83 recordID];
-              v85 = [v83 recordType];
-              [(KCSharingSyncController *)self syncEngine:v6 recordWithIDWasDeleted:v84 recordType:v85];
+              recordID = [v83 recordID];
+              recordType = [v83 recordType];
+              [(KCSharingSyncController *)self syncEngine:engineCopy recordWithIDWasDeleted:recordID recordType:recordType];
             }
 
-            v80 = [v33 countByEnumeratingWithState:&v163 objects:v191 count:16];
+            v80 = [deletions countByEnumeratingWithState:&v163 objects:v191 count:16];
           }
 
           while (v80);
         }
       }
 
-      else if (v12 == 4)
+      else if (type == 4)
       {
-        v28 = [v7 sentDatabaseChangesEvent];
+        fetchedRecordZoneChangesEvent = [eventCopy sentDatabaseChangesEvent];
         v159 = 0u;
         v160 = 0u;
         v161 = 0u;
         v162 = 0u;
-        v92 = [v28 savedZones];
-        v93 = [v92 countByEnumeratingWithState:&v159 objects:v190 count:16];
+        savedZones = [fetchedRecordZoneChangesEvent savedZones];
+        v93 = [savedZones countByEnumeratingWithState:&v159 objects:v190 count:16];
         if (v93)
         {
           v94 = v93;
@@ -769,13 +769,13 @@ LABEL_18:
             {
               if (*v160 != v95)
               {
-                objc_enumerationMutation(v92);
+                objc_enumerationMutation(savedZones);
               }
 
-              [(KCSharingSyncController *)self syncEngine:v6 didSaveRecordZone:*(*(&v159 + 1) + 8 * k)];
+              [(KCSharingSyncController *)self syncEngine:engineCopy didSaveRecordZone:*(*(&v159 + 1) + 8 * k)];
             }
 
-            v94 = [v92 countByEnumeratingWithState:&v159 objects:v190 count:16];
+            v94 = [savedZones countByEnumeratingWithState:&v159 objects:v190 count:16];
           }
 
           while (v94);
@@ -785,8 +785,8 @@ LABEL_18:
         v158 = 0u;
         v155 = 0u;
         v156 = 0u;
-        v97 = [v28 deletedZoneIDs];
-        v98 = [v97 countByEnumeratingWithState:&v155 objects:v189 count:16];
+        deletedZoneIDs = [fetchedRecordZoneChangesEvent deletedZoneIDs];
+        v98 = [deletedZoneIDs countByEnumeratingWithState:&v155 objects:v189 count:16];
         if (v98)
         {
           v99 = v98;
@@ -797,13 +797,13 @@ LABEL_18:
             {
               if (*v156 != v100)
               {
-                objc_enumerationMutation(v97);
+                objc_enumerationMutation(deletedZoneIDs);
               }
 
-              [(KCSharingSyncController *)self syncEngine:v6 didDeleteRecordZoneWithID:*(*(&v155 + 1) + 8 * m)];
+              [(KCSharingSyncController *)self syncEngine:engineCopy didDeleteRecordZoneWithID:*(*(&v155 + 1) + 8 * m)];
             }
 
-            v99 = [v97 countByEnumeratingWithState:&v155 objects:v189 count:16];
+            v99 = [deletedZoneIDs countByEnumeratingWithState:&v155 objects:v189 count:16];
           }
 
           while (v99);
@@ -813,8 +813,8 @@ LABEL_18:
         v154 = 0u;
         v151 = 0u;
         v152 = 0u;
-        v102 = [v28 failedZoneSaves];
-        v103 = [v102 countByEnumeratingWithState:&v151 objects:v188 count:16];
+        failedZoneSaves = [fetchedRecordZoneChangesEvent failedZoneSaves];
+        v103 = [failedZoneSaves countByEnumeratingWithState:&v151 objects:v188 count:16];
         if (v103)
         {
           v104 = v103;
@@ -825,27 +825,27 @@ LABEL_18:
             {
               if (*v152 != v105)
               {
-                objc_enumerationMutation(v102);
+                objc_enumerationMutation(failedZoneSaves);
               }
 
               v107 = *(*(&v151 + 1) + 8 * n);
-              v108 = [v107 recordZone];
-              v109 = [v107 error];
-              [(KCSharingSyncController *)self syncEngine:v6 failedToSaveRecordZone:v108 error:v109];
+              recordZone = [v107 recordZone];
+              error = [v107 error];
+              [(KCSharingSyncController *)self syncEngine:engineCopy failedToSaveRecordZone:recordZone error:error];
             }
 
-            v104 = [v102 countByEnumeratingWithState:&v151 objects:v188 count:16];
+            v104 = [failedZoneSaves countByEnumeratingWithState:&v151 objects:v188 count:16];
           }
 
           while (v104);
         }
 
-        v33 = [v28 failedZoneDeletes];
+        deletions = [fetchedRecordZoneChangesEvent failedZoneDeletes];
         v147 = 0u;
         v148 = 0u;
         v149 = 0u;
         v150 = 0u;
-        v110 = [v33 countByEnumeratingWithState:&v147 objects:v187 count:16];
+        v110 = [deletions countByEnumeratingWithState:&v147 objects:v187 count:16];
         if (v110)
         {
           v111 = v110;
@@ -856,15 +856,15 @@ LABEL_18:
             {
               if (*v148 != v112)
               {
-                objc_enumerationMutation(v33);
+                objc_enumerationMutation(deletions);
               }
 
               v114 = *(*(&v147 + 1) + 8 * ii);
-              v115 = [v33 objectForKeyedSubscript:v114];
-              [(KCSharingSyncController *)self syncEngine:v6 failedToDeleteRecordZoneWithID:v114 error:v115];
+              v115 = [deletions objectForKeyedSubscript:v114];
+              [(KCSharingSyncController *)self syncEngine:engineCopy failedToDeleteRecordZoneWithID:v114 error:v115];
             }
 
-            v111 = [v33 countByEnumeratingWithState:&v147 objects:v187 count:16];
+            v111 = [deletions countByEnumeratingWithState:&v147 objects:v187 count:16];
           }
 
           while (v111);
@@ -873,13 +873,13 @@ LABEL_18:
 
       else
       {
-        v28 = [v7 sentRecordZoneChangesEvent];
+        fetchedRecordZoneChangesEvent = [eventCopy sentRecordZoneChangesEvent];
         v143 = 0u;
         v144 = 0u;
         v145 = 0u;
         v146 = 0u;
-        v37 = [v28 savedRecords];
-        v38 = [v37 countByEnumeratingWithState:&v143 objects:v186 count:16];
+        savedRecords = [fetchedRecordZoneChangesEvent savedRecords];
+        v38 = [savedRecords countByEnumeratingWithState:&v143 objects:v186 count:16];
         if (v38)
         {
           v39 = v38;
@@ -890,13 +890,13 @@ LABEL_18:
             {
               if (*v144 != v40)
               {
-                objc_enumerationMutation(v37);
+                objc_enumerationMutation(savedRecords);
               }
 
-              [(KCSharingSyncController *)self syncEngine:v6 didSaveRecord:*(*(&v143 + 1) + 8 * jj)];
+              [(KCSharingSyncController *)self syncEngine:engineCopy didSaveRecord:*(*(&v143 + 1) + 8 * jj)];
             }
 
-            v39 = [v37 countByEnumeratingWithState:&v143 objects:v186 count:16];
+            v39 = [savedRecords countByEnumeratingWithState:&v143 objects:v186 count:16];
           }
 
           while (v39);
@@ -906,8 +906,8 @@ LABEL_18:
         v142 = 0u;
         v139 = 0u;
         v140 = 0u;
-        v42 = [v28 deletedRecordIDs];
-        v43 = [v42 countByEnumeratingWithState:&v139 objects:v185 count:16];
+        deletedRecordIDs = [fetchedRecordZoneChangesEvent deletedRecordIDs];
+        v43 = [deletedRecordIDs countByEnumeratingWithState:&v139 objects:v185 count:16];
         if (v43)
         {
           v44 = v43;
@@ -918,13 +918,13 @@ LABEL_18:
             {
               if (*v140 != v45)
               {
-                objc_enumerationMutation(v42);
+                objc_enumerationMutation(deletedRecordIDs);
               }
 
-              [(KCSharingSyncController *)self syncEngine:v6 didDeleteRecordWithID:*(*(&v139 + 1) + 8 * kk)];
+              [(KCSharingSyncController *)self syncEngine:engineCopy didDeleteRecordWithID:*(*(&v139 + 1) + 8 * kk)];
             }
 
-            v44 = [v42 countByEnumeratingWithState:&v139 objects:v185 count:16];
+            v44 = [deletedRecordIDs countByEnumeratingWithState:&v139 objects:v185 count:16];
           }
 
           while (v44);
@@ -934,8 +934,8 @@ LABEL_18:
         v138 = 0u;
         v135 = 0u;
         v136 = 0u;
-        v47 = [v28 failedRecordSaves];
-        v48 = [v47 countByEnumeratingWithState:&v135 objects:v184 count:16];
+        failedRecordSaves = [fetchedRecordZoneChangesEvent failedRecordSaves];
+        v48 = [failedRecordSaves countByEnumeratingWithState:&v135 objects:v184 count:16];
         if (v48)
         {
           v49 = v48;
@@ -946,27 +946,27 @@ LABEL_18:
             {
               if (*v136 != v50)
               {
-                objc_enumerationMutation(v47);
+                objc_enumerationMutation(failedRecordSaves);
               }
 
               v52 = *(*(&v135 + 1) + 8 * mm);
-              v53 = [v52 record];
-              v54 = [v52 error];
-              [(KCSharingSyncController *)self syncEngine:v6 failedToSaveRecord:v53 error:v54];
+              record = [v52 record];
+              error2 = [v52 error];
+              [(KCSharingSyncController *)self syncEngine:engineCopy failedToSaveRecord:record error:error2];
             }
 
-            v49 = [v47 countByEnumeratingWithState:&v135 objects:v184 count:16];
+            v49 = [failedRecordSaves countByEnumeratingWithState:&v135 objects:v184 count:16];
           }
 
           while (v49);
         }
 
-        v33 = [v28 failedRecordDeletes];
+        deletions = [fetchedRecordZoneChangesEvent failedRecordDeletes];
         v131 = 0u;
         v132 = 0u;
         v133 = 0u;
         v134 = 0u;
-        v55 = [v33 countByEnumeratingWithState:&v131 objects:v183 count:16];
+        v55 = [deletions countByEnumeratingWithState:&v131 objects:v183 count:16];
         if (v55)
         {
           v56 = v55;
@@ -977,15 +977,15 @@ LABEL_18:
             {
               if (*v132 != v57)
               {
-                objc_enumerationMutation(v33);
+                objc_enumerationMutation(deletions);
               }
 
               v59 = *(*(&v131 + 1) + 8 * nn);
-              v60 = [v33 objectForKeyedSubscript:v59];
-              [(KCSharingSyncController *)self syncEngine:v6 failedToDeleteRecordWithID:v59 error:v60];
+              v60 = [deletions objectForKeyedSubscript:v59];
+              [(KCSharingSyncController *)self syncEngine:engineCopy failedToDeleteRecordWithID:v59 error:v60];
             }
 
-            v56 = [v33 countByEnumeratingWithState:&v131 objects:v183 count:16];
+            v56 = [deletions countByEnumeratingWithState:&v131 objects:v183 count:16];
           }
 
           while (v56);
@@ -995,23 +995,23 @@ LABEL_18:
       goto LABEL_136;
     }
 
-    if (!v12)
+    if (!type)
     {
-      v28 = [v7 stateUpdateEvent];
-      v33 = [v28 stateSerialization];
+      fetchedRecordZoneChangesEvent = [eventCopy stateUpdateEvent];
+      deletions = [fetchedRecordZoneChangesEvent stateSerialization];
       v176 = 0;
-      v66 = [NSKeyedArchiver archivedDataWithRootObject:v33 requiringSecureCoding:1 error:&v176];
+      v66 = [NSKeyedArchiver archivedDataWithRootObject:deletions requiringSecureCoding:1 error:&v176];
       v67 = v176;
       v68 = v67;
       if (!v66 || v67)
       {
-        v118 = [(KCSharingSyncController *)self loggingIdentifier];
+        loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
         v119 = KCSharingLogObject();
 
         if (os_log_type_enabled(v119, OS_LOG_TYPE_ERROR))
         {
-          v123 = [v6 database];
-          [v123 databaseScope];
+          database2 = [engineCopy database];
+          [database2 databaseScope];
           v124 = CKDatabaseScopeString();
           *buf = 138412290;
           v178 = v124;
@@ -1021,18 +1021,18 @@ LABEL_18:
 
       else
       {
-        [(KCSharingSyncController *)self syncEngine:v6 didUpdateMetadata:v66];
+        [(KCSharingSyncController *)self syncEngine:engineCopy didUpdateMetadata:v66];
       }
 
       goto LABEL_136;
     }
 
-    if (v12 != 1)
+    if (type != 1)
     {
-      if (v12 == 2)
+      if (type == 2)
       {
-        v129 = v7;
-        [v7 fetchedDatabaseChangesEvent];
+        v129 = eventCopy;
+        [eventCopy fetchedDatabaseChangesEvent];
         v172 = 0u;
         v173 = 0u;
         v174 = 0u;
@@ -1053,13 +1053,13 @@ LABEL_18:
               }
 
               v17 = *(*(&v172 + 1) + 8 * i1);
-              v18 = [(KCSharingSyncController *)self loggingIdentifier];
+              loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
               v19 = KCSharingLogObject();
 
               if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
               {
-                v20 = [v6 database];
-                [v20 databaseScope];
+                database3 = [engineCopy database];
+                [database3 databaseScope];
                 v21 = CKDatabaseScopeString();
                 *buf = 138412546;
                 v178 = v17;
@@ -1076,9 +1076,9 @@ LABEL_18:
         }
 
         memset(v171, 0, sizeof(v171));
-        v22 = [v128 deletions];
-        v7 = v129;
-        if (![v22 countByEnumeratingWithState:v171 objects:v193 count:16])
+        deletions2 = [v128 deletions];
+        eventCopy = v129;
+        if (![deletions2 countByEnumeratingWithState:v171 objects:v193 count:16])
         {
           goto LABEL_144;
         }
@@ -1086,13 +1086,13 @@ LABEL_18:
         v23 = **(&v171[0] + 1);
         if ([**(&v171[0] + 1) reason] == 1)
         {
-          v24 = [(KCSharingSyncController *)self loggingIdentifier];
+          loggingIdentifier4 = [(KCSharingSyncController *)self loggingIdentifier];
           v25 = KCSharingLogObject();
 
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [v6 database];
-            [v26 databaseScope];
+            database4 = [engineCopy database];
+            [database4 databaseScope];
             v27 = CKDatabaseScopeString();
             *buf = 138412546;
             v178 = @"CKSyncEngineZoneDeletionReasonPurged";
@@ -1108,20 +1108,20 @@ LABEL_141:
           if ([v23 reason] != 2)
           {
 LABEL_143:
-            v122 = [v23 zoneID];
-            [(KCSharingSyncController *)self syncEngine:v6 zoneWithIDWasDeleted:v122];
+            zoneID = [v23 zoneID];
+            [(KCSharingSyncController *)self syncEngine:engineCopy zoneWithIDWasDeleted:zoneID];
 
 LABEL_144:
             goto LABEL_138;
           }
 
-          v120 = [(KCSharingSyncController *)self loggingIdentifier];
+          loggingIdentifier5 = [(KCSharingSyncController *)self loggingIdentifier];
           v25 = KCSharingLogObject();
 
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [v6 database];
-            [v26 databaseScope];
+            database4 = [engineCopy database];
+            [database4 databaseScope];
             v27 = CKDatabaseScopeString();
             *buf = 138412546;
             v178 = @"CKSyncEngineZoneDeletionReasonEncryptedDataReset";
@@ -1133,13 +1133,13 @@ LABEL_144:
 
         else
         {
-          v121 = [(KCSharingSyncController *)self loggingIdentifier];
+          loggingIdentifier6 = [(KCSharingSyncController *)self loggingIdentifier];
           v25 = KCSharingLogObject();
 
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [v6 database];
-            [v26 databaseScope];
+            database4 = [engineCopy database];
+            [database4 databaseScope];
             v27 = CKDatabaseScopeString();
             *buf = 138412546;
             v178 = @"CKSyncEngineZoneDeletionReasonDeleted";
@@ -1155,131 +1155,131 @@ LABEL_144:
       goto LABEL_125;
     }
 
-    v28 = [v7 accountChangeEvent];
-    v33 = [v28 previousUser];
-    v86 = [v28 currentUser];
-    [(KCSharingSyncController *)self syncEngine:v6 accountChangedFromUserRecordID:v33 toUserRecordID:v86];
+    fetchedRecordZoneChangesEvent = [eventCopy accountChangeEvent];
+    deletions = [fetchedRecordZoneChangesEvent previousUser];
+    currentUser = [fetchedRecordZoneChangesEvent currentUser];
+    [(KCSharingSyncController *)self syncEngine:engineCopy accountChangedFromUserRecordID:deletions toUserRecordID:currentUser];
     goto LABEL_88;
   }
 
-  if (v12 <= 8)
+  if (type <= 8)
   {
-    if (v12 == 6)
+    if (type == 6)
     {
-      v28 = [v7 willFetchChangesEvent];
-      v33 = [v28 context];
-      v69 = [v33 reason];
-      v70 = [(KCSharingSyncController *)self loggingIdentifier];
+      fetchedRecordZoneChangesEvent = [eventCopy willFetchChangesEvent];
+      deletions = [fetchedRecordZoneChangesEvent context];
+      reason = [deletions reason];
+      loggingIdentifier7 = [(KCSharingSyncController *)self loggingIdentifier];
       v71 = KCSharingLogObject();
 
       if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
       {
-        v72 = [v6 database];
-        [v72 databaseScope];
+        database5 = [engineCopy database];
+        [database5 databaseScope];
         v73 = CKDatabaseScopeString();
         *buf = 138412546;
         v178 = v73;
         v179 = 2048;
-        v180 = v69;
+        v180 = reason;
         _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, "%@ sync engine will fetch changes due to reason: %ld", buf, 0x16u);
       }
 
       goto LABEL_136;
     }
 
-    if (v12 == 7)
+    if (type == 7)
     {
-      v28 = [v7 willFetchRecordZoneChangesEvent];
-      v87 = [(KCSharingSyncController *)self loggingIdentifier];
+      fetchedRecordZoneChangesEvent = [eventCopy willFetchRecordZoneChangesEvent];
+      loggingIdentifier8 = [(KCSharingSyncController *)self loggingIdentifier];
       v88 = KCSharingLogObject();
 
       if (os_log_type_enabled(v88, OS_LOG_TYPE_DEFAULT))
       {
-        v89 = [v6 database];
-        [v89 databaseScope];
+        database6 = [engineCopy database];
+        [database6 databaseScope];
         v90 = CKDatabaseScopeString();
-        v91 = [v28 zoneID];
+        zoneID2 = [fetchedRecordZoneChangesEvent zoneID];
         *buf = 138412547;
         v178 = v90;
         v179 = 2113;
-        v180 = v91;
+        v180 = zoneID2;
         _os_log_impl(&_mh_execute_header, v88, OS_LOG_TYPE_DEFAULT, "%@ sync engine will fetch changes for zone: %{private}@", buf, 0x16u);
       }
 
       goto LABEL_137;
     }
 
-    v28 = [v7 didFetchRecordZoneChangesEvent];
-    v29 = [v28 error];
+    fetchedRecordZoneChangesEvent = [eventCopy didFetchRecordZoneChangesEvent];
+    error3 = [fetchedRecordZoneChangesEvent error];
 
-    if (!v29)
+    if (!error3)
     {
 LABEL_137:
 
       goto LABEL_138;
     }
 
-    v30 = [v28 error];
+    error4 = [fetchedRecordZoneChangesEvent error];
     IsCode = CKErrorIsCode();
 
-    v32 = [(KCSharingSyncController *)self loggingIdentifier];
-    v33 = KCSharingLogObject();
+    loggingIdentifier9 = [(KCSharingSyncController *)self loggingIdentifier];
+    deletions = KCSharingLogObject();
 
     if (IsCode)
     {
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(deletions, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [v6 database];
-        [v34 databaseScope];
+        database7 = [engineCopy database];
+        [database7 databaseScope];
         v35 = CKDatabaseScopeString();
-        v36 = [v28 zoneID];
+        zoneID3 = [fetchedRecordZoneChangesEvent zoneID];
         *buf = 138412547;
         v178 = v35;
         v179 = 2113;
-        v180 = v36;
-        _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "%@ sync engine received zone not found error for zone: %{private}@, treating as zone deletion", buf, 0x16u);
+        v180 = zoneID3;
+        _os_log_impl(&_mh_execute_header, deletions, OS_LOG_TYPE_DEFAULT, "%@ sync engine received zone not found error for zone: %{private}@, treating as zone deletion", buf, 0x16u);
       }
 
-      v33 = [v28 zoneID];
-      [(KCSharingSyncController *)self syncEngine:v6 zoneWithIDWasDeleted:v33];
+      deletions = [fetchedRecordZoneChangesEvent zoneID];
+      [(KCSharingSyncController *)self syncEngine:engineCopy zoneWithIDWasDeleted:deletions];
       goto LABEL_136;
     }
 
-    if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(deletions, OS_LOG_TYPE_ERROR))
     {
 LABEL_136:
 
       goto LABEL_137;
     }
 
-    v125 = [v6 database];
-    [v125 databaseScope];
-    v86 = CKDatabaseScopeString();
-    v126 = [v28 error];
-    v127 = [v28 zoneID];
+    database8 = [engineCopy database];
+    [database8 databaseScope];
+    currentUser = CKDatabaseScopeString();
+    error5 = [fetchedRecordZoneChangesEvent error];
+    zoneID4 = [fetchedRecordZoneChangesEvent zoneID];
     *buf = 138412803;
-    v178 = v86;
+    v178 = currentUser;
     v179 = 2114;
-    v180 = v126;
+    v180 = error5;
     v181 = 2113;
-    v182 = v127;
-    _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%@ sync engine received error: %{public}@ while fetching zone changes for: %{private}@", buf, 0x20u);
+    v182 = zoneID4;
+    _os_log_error_impl(&_mh_execute_header, deletions, OS_LOG_TYPE_ERROR, "%@ sync engine received error: %{public}@ while fetching zone changes for: %{private}@", buf, 0x20u);
 
 LABEL_88:
     goto LABEL_136;
   }
 
-  if (v12 != 9)
+  if (type != 9)
   {
-    if (v12 == 10)
+    if (type == 10)
     {
-      v116 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier10 = [(KCSharingSyncController *)self loggingIdentifier];
       v62 = KCSharingLogObject();
 
       if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
       {
-        v63 = [v6 database];
-        [v63 databaseScope];
+        database9 = [engineCopy database];
+        [database9 databaseScope];
         v64 = CKDatabaseScopeString();
         *buf = 138412290;
         v178 = v64;
@@ -1290,10 +1290,10 @@ LABEL_88:
 
     else
     {
-      if (v12 != 11)
+      if (type != 11)
       {
 LABEL_125:
-        v117 = [(KCSharingSyncController *)self loggingIdentifier];
+        loggingIdentifier11 = [(KCSharingSyncController *)self loggingIdentifier];
         v62 = KCSharingLogObject();
 
         if (!os_log_type_enabled(v62, OS_LOG_TYPE_FAULT))
@@ -1301,8 +1301,8 @@ LABEL_125:
           goto LABEL_126;
         }
 
-        v63 = [v6 database];
-        [v63 databaseScope];
+        database9 = [engineCopy database];
+        [database9 databaseScope];
         v64 = CKDatabaseScopeString();
         *buf = 138412290;
         v178 = v64;
@@ -1310,13 +1310,13 @@ LABEL_125:
         goto LABEL_124;
       }
 
-      v61 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier12 = [(KCSharingSyncController *)self loggingIdentifier];
       v62 = KCSharingLogObject();
 
       if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
       {
-        v63 = [v6 database];
-        [v63 databaseScope];
+        database9 = [engineCopy database];
+        [database9 databaseScope];
         v64 = CKDatabaseScopeString();
         *buf = 138412290;
         v178 = v64;
@@ -1332,26 +1332,26 @@ LABEL_126:
     goto LABEL_138;
   }
 
-  [(KCSharingSyncController *)self syncEngineDidEndFetchingChanges:v6];
+  [(KCSharingSyncController *)self syncEngineDidEndFetchingChanges:engineCopy];
 LABEL_138:
 }
 
-- (BOOL)syncEngine:(id)a3 shouldFetchChangesForZoneID:(id)a4
+- (BOOL)syncEngine:(id)engine shouldFetchChangesForZoneID:(id)d
 {
-  v5 = a3;
-  v6 = [(KCSharingSyncController *)self lockStateTracker];
-  v7 = [v6 isLocked];
+  engineCopy = engine;
+  lockStateTracker = [(KCSharingSyncController *)self lockStateTracker];
+  isLocked = [lockStateTracker isLocked];
 
-  v8 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v9 = KCSharingLogObject();
 
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (isLocked)
   {
     if (v10)
     {
-      v11 = [v5 database];
-      [v11 databaseScope];
+      database = [engineCopy database];
+      [database databaseScope];
       v12 = CKDatabaseScopeString();
       v15 = 138543362;
       v16 = v12;
@@ -1363,8 +1363,8 @@ LABEL_6:
 
   else if (v10)
   {
-    v11 = [v5 database];
-    [v11 databaseScope];
+    database = [engineCopy database];
+    [database databaseScope];
     v12 = CKDatabaseScopeString();
     v15 = 138543362;
     v16 = v12;
@@ -1372,46 +1372,46 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  return v7 ^ 1;
+  return isLocked ^ 1;
 }
 
-- (void)syncEngine:(id)a3 accountChangedFromUserRecordID:(id)a4 toUserRecordID:(id)a5
+- (void)syncEngine:(id)engine accountChangedFromUserRecordID:(id)d toUserRecordID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  engineCopy = engine;
+  dCopy = d;
+  iDCopy = iD;
   v11 = sub_10001078C();
-  v12 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v13 = KCSharingLogObject();
 
   if (v11)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v8 database];
-      [v14 scope];
+      database = [engineCopy database];
+      [database scope];
       v15 = CKDatabaseScopeString();
       *buf = 138543874;
       v25 = v15;
       v26 = 2114;
-      v27 = v9;
+      v27 = dCopy;
       v28 = 2114;
-      v29 = v10;
+      v29 = iDCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Account Change With CloudCore: %{public}@ sync engine received account changed notification: %{public}@ -> %{public}@", buf, 0x20u);
     }
 
-    v16 = [v10 recordName];
+    recordName = [iDCopy recordName];
 
-    if (!v16)
+    if (!recordName)
     {
-      v17 = [(KCSharingSyncController *)self cloudCoreUtilities];
+      cloudCoreUtilities = [(KCSharingSyncController *)self cloudCoreUtilities];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_10006D73C;
       v22[3] = &unk_100334F20;
       v22[4] = self;
-      v23 = v8;
-      [v17 invokeDummyOperationOnAccountSignOutWithCompletionHandler:v22];
+      v23 = engineCopy;
+      [cloudCoreUtilities invokeDummyOperationOnAccountSignOutWithCompletionHandler:v22];
     }
   }
 
@@ -1419,52 +1419,52 @@ LABEL_6:
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v8 database];
-      [v18 scope];
+      database2 = [engineCopy database];
+      [database2 scope];
       v19 = CKDatabaseScopeString();
       *buf = 138543874;
       v25 = v19;
       v26 = 2114;
-      v27 = v9;
+      v27 = dCopy;
       v28 = 2114;
-      v29 = v10;
+      v29 = iDCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ sync engine received account changed notification: %{public}@ -> %{public}@", buf, 0x20u);
     }
 
-    v20 = [v9 recordName];
-    v21 = [v10 recordName];
-    [(KCSharingSyncController *)self handleAccountChangeFromUserRecordName:v20 toUserRecordName:v21 shouldWipeLocalState:1];
+    recordName2 = [dCopy recordName];
+    recordName3 = [iDCopy recordName];
+    [(KCSharingSyncController *)self handleAccountChangeFromUserRecordName:recordName2 toUserRecordName:recordName3 shouldWipeLocalState:1];
   }
 }
 
-- (void)handleAccountChangeFromUserRecordName:(id)a3 toUserRecordName:(id)a4 shouldWipeLocalState:(BOOL)a5
+- (void)handleAccountChangeFromUserRecordName:(id)name toUserRecordName:(id)recordName shouldWipeLocalState:(BOOL)state
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  objc_sync_enter(v10);
+  stateCopy = state;
+  nameCopy = name;
+  recordNameCopy = recordName;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = os_transaction_create();
-  v12 = [(KCSharingSyncController *)v10 store];
+  store = [(KCSharingSyncController *)selfCopy store];
   v39 = 0;
-  v13 = [v12 fetchValueForMetadataKey:@"CurrentUserMetadata" error:&v39];
+  v13 = [store fetchValueForMetadataKey:@"CurrentUserMetadata" error:&v39];
   v14 = v39;
 
   if (v13 || !v14)
   {
     v17 = [v13 objectForKeyedSubscript:@"currentUserIdentifier"];
-    if (([v17 isEqual:v9] & 1) == 0 && v9 | v17)
+    if (([v17 isEqual:recordNameCopy] & 1) == 0 && recordNameCopy | v17)
     {
-      if (v5)
+      if (stateCopy)
       {
-        v20 = [(KCSharingSyncController *)v10 store];
+        store2 = [(KCSharingSyncController *)selfCopy store];
         v38 = 0;
-        v21 = [v20 wipeWithError:&v38];
+        v21 = [store2 wipeWithError:&v38];
         v22 = v38;
 
         if (v21)
         {
-          v23 = [(KCSharingSyncController *)v10 loggingIdentifier];
+          loggingIdentifier = [(KCSharingSyncController *)selfCopy loggingIdentifier];
           v24 = KCSharingLogObject();
 
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -1477,7 +1477,7 @@ LABEL_6:
 
         else
         {
-          v25 = [(KCSharingSyncController *)v10 loggingIdentifier];
+          loggingIdentifier2 = [(KCSharingSyncController *)selfCopy loggingIdentifier];
           v26 = KCSharingLogObject();
 
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1487,16 +1487,16 @@ LABEL_6:
             _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Failed to wipe store with error %@", buf, 0xCu);
           }
 
-          [(KCSharingSyncController *)v10 isLockedError:v22];
+          [(KCSharingSyncController *)selfCopy isLockedError:v22];
         }
       }
 
       v37 = 0;
-      v27 = [(KCSharingSyncController *)v10 updateCurrentUserMetadataForKey:@"currentUserIdentifier" toValue:v9 withError:&v37];
+      v27 = [(KCSharingSyncController *)selfCopy updateCurrentUserMetadataForKey:@"currentUserIdentifier" toValue:recordNameCopy withError:&v37];
       v19 = v37;
       if (v27)
       {
-        v28 = [(KCSharingSyncController *)v10 loggingIdentifier];
+        loggingIdentifier3 = [(KCSharingSyncController *)selfCopy loggingIdentifier];
         v29 = KCSharingLogObject();
 
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -1508,7 +1508,7 @@ LABEL_6:
 
       else
       {
-        v30 = [(KCSharingSyncController *)v10 loggingIdentifier];
+        loggingIdentifier4 = [(KCSharingSyncController *)selfCopy loggingIdentifier];
         v29 = KCSharingLogObject();
 
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -1519,9 +1519,9 @@ LABEL_6:
         }
       }
 
-      if ([(KCSharingSyncController *)v10 forTesting])
+      if ([(KCSharingSyncController *)selfCopy forTesting])
       {
-        v31 = [(KCSharingSyncController *)v10 loggingIdentifier];
+        loggingIdentifier5 = [(KCSharingSyncController *)selfCopy loggingIdentifier];
         v32 = KCSharingLogObject();
 
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -1531,35 +1531,35 @@ LABEL_6:
         }
       }
 
-      else if (v9)
+      else if (recordNameCopy)
       {
-        [(KCSharingSyncController *)v10 registerProvisioningActivity];
+        [(KCSharingSyncController *)selfCopy registerProvisioningActivity];
       }
 
       else
       {
-        [(KCSharingSyncController *)v10 unregisterProvisioningActivity];
+        [(KCSharingSyncController *)selfCopy unregisterProvisioningActivity];
       }
 
       if (sub_10001078C())
       {
-        [(KCSharingSyncController *)v10 cancelExistingSyncEngines];
+        [(KCSharingSyncController *)selfCopy cancelExistingSyncEngines];
       }
 
-      if (v9)
+      if (recordNameCopy)
       {
         v36[0] = _NSConcreteStackBlock;
         v36[1] = 3221225472;
         v36[2] = sub_10006DEB0;
         v36[3] = &unk_100335028;
-        v36[4] = v10;
+        v36[4] = selfCopy;
         v36[5] = mach_absolute_time();
-        [(KCSharingSyncController *)v10 fetchRemoteChangesForZoneIDs:0 completion:v36];
+        [(KCSharingSyncController *)selfCopy fetchRemoteChangesForZoneIDs:0 completion:v36];
       }
 
       else
       {
-        v33 = [(KCSharingSyncController *)v10 loggingIdentifier];
+        loggingIdentifier6 = [(KCSharingSyncController *)selfCopy loggingIdentifier];
         v34 = KCSharingLogObject();
 
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -1569,13 +1569,13 @@ LABEL_6:
         }
       }
 
-      v35 = [(KCSharingSyncController *)v10 xpcListenerDelegate];
-      [v35 accountChanged];
+      xpcListenerDelegate = [(KCSharingSyncController *)selfCopy xpcListenerDelegate];
+      [xpcListenerDelegate accountChanged];
     }
 
     else
     {
-      v18 = [(KCSharingSyncController *)v10 loggingIdentifier];
+      loggingIdentifier7 = [(KCSharingSyncController *)selfCopy loggingIdentifier];
       v19 = KCSharingLogObject();
 
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1583,7 +1583,7 @@ LABEL_6:
         *buf = 138543618;
         v41 = v17;
         v42 = 2114;
-        v43 = v9;
+        v43 = recordNameCopy;
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Ignored account changed notification: currentUserIdentifer=%{public}@ -> newUserIdentifier=%{public}@", buf, 0x16u);
       }
     }
@@ -1591,7 +1591,7 @@ LABEL_6:
 
   else
   {
-    v15 = [(KCSharingSyncController *)v10 loggingIdentifier];
+    loggingIdentifier8 = [(KCSharingSyncController *)selfCopy loggingIdentifier];
     v16 = KCSharingLogObject();
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1601,39 +1601,39 @@ LABEL_6:
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Ignored account changed notification because we failed to fetch currentUserMetadata: %{public}@", buf, 0xCu);
     }
 
-    [(KCSharingSyncController *)v10 isLockedError:v14];
+    [(KCSharingSyncController *)selfCopy isLockedError:v14];
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)cancelExistingSyncEngines
 {
-  v3 = [(KCSharingSyncController *)self queue];
+  queue = [(KCSharingSyncController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006E368;
   block[3] = &unk_100346018;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
-- (id)syncEngine:(id)a3 recordToSaveForRecordID:(id)a4
+- (id)syncEngine:(id)engine recordToSaveForRecordID:(id)d
 {
-  v5 = a4;
-  v6 = [(KCSharingSyncController *)self loggingIdentifier];
+  dCopy = d;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v7 = KCSharingLogObject();
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v5;
+    v17 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Requesting record for recordID=%@", buf, 0xCu);
   }
 
   store = self->_store;
   v15 = 0;
-  v9 = [(KCSharingStore *)store fetchOutgoingRecordWithRecordID:v5 error:&v15];
+  v9 = [(KCSharingStore *)store fetchOutgoingRecordWithRecordID:dCopy error:&v15];
   v10 = v15;
   if (v9)
   {
@@ -1642,13 +1642,13 @@ LABEL_6:
 
   else
   {
-    v12 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v13 = KCSharingLogObject();
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v17 = v5;
+      v17 = dCopy;
       v18 = 2112;
       v19 = v10;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to fetch record for recordID=%@ with error=%@", buf, 0x16u);
@@ -1660,34 +1660,34 @@ LABEL_6:
   return v9;
 }
 
-- (void)syncEngine:(id)a3 didUpdateMetadata:(id)a4
+- (void)syncEngine:(id)engine didUpdateMetadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(KCSharingSyncController *)self loggingIdentifier];
+  engineCopy = engine;
+  metadataCopy = metadata;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v9 = KCSharingLogObject();
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(CKSyncEngine *)v6 database];
-    [v10 databaseScope];
+    database = [(CKSyncEngine *)engineCopy database];
+    [database databaseScope];
     v11 = CKDatabaseScopeString();
     *buf = 138412290;
     v27 = v11;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Updating %@ engine metadata", buf, 0xCu);
   }
 
-  if (self->_privateSyncEngine == v6)
+  if (self->_privateSyncEngine == engineCopy)
   {
     store = self->_store;
     v25 = 0;
-    v14 = [(KCSharingStore *)store setValue:v7 forMetadataKey:@"CKSyncEnginePrivateMetadata" error:&v25];
+    v14 = [(KCSharingStore *)store setValue:metadataCopy forMetadataKey:@"CKSyncEnginePrivateMetadata" error:&v25];
     v15 = v25;
   }
 
   else
   {
-    if (self->_sharedSyncEngine != v6)
+    if (self->_sharedSyncEngine != engineCopy)
     {
       v12 = 0;
       goto LABEL_9;
@@ -1695,7 +1695,7 @@ LABEL_6:
 
     v16 = self->_store;
     v24 = 0;
-    v14 = [(KCSharingStore *)v16 setValue:v7 forMetadataKey:@"CKSyncEngineSharedMetadata" error:&v24];
+    v14 = [(KCSharingStore *)v16 setValue:metadataCopy forMetadataKey:@"CKSyncEngineSharedMetadata" error:&v24];
     v15 = v24;
   }
 
@@ -1704,7 +1704,7 @@ LABEL_6:
   {
 LABEL_9:
     v17 = [(KCSharingSyncController *)self isLockedError:v12];
-    v18 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v19 = KCSharingLogObject();
 
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -1733,10 +1733,10 @@ LABEL_16:
   }
 }
 
-- (void)syncEngineDidEndFetchingChanges:(id)a3
+- (void)syncEngineDidEndFetchingChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(KCSharingSyncController *)self loggingIdentifier];
+  changesCopy = changes;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v6 = KCSharingLogObject();
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1746,14 +1746,14 @@ LABEL_16:
   }
 
   v7 = +[NSMutableArray array];
-  v8 = [(KCSharingSyncController *)self store];
+  store = [(KCSharingSyncController *)self store];
   v19 = 0;
-  v9 = [v8 mergeWithUpdateInfos:v7 error:&v19];
+  v9 = [store mergeWithUpdateInfos:v7 error:&v19];
   v10 = v19;
 
   if ((v9 & 1) == 0)
   {
-    v11 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v12 = KCSharingLogObject();
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1763,7 +1763,7 @@ LABEL_16:
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to apply staged incoming changes with error=%@", buf, 0xCu);
     }
 
-    [(KCSharingSyncController *)self isLockedError:v10 duringFetchForEngine:v4];
+    [(KCSharingSyncController *)self isLockedError:v10 duringFetchForEngine:changesCopy];
   }
 
   if ([v7 count])
@@ -1771,10 +1771,10 @@ LABEL_16:
     v13 = +[KCSharingGroupNotificationConnection sharedInstance];
     [v13 groupsUpdatedWithInfos:v7];
 
-    v14 = [(KCSharingSyncController *)self xpcListenerDelegate];
-    [v14 groupsUpdated];
+    xpcListenerDelegate = [(KCSharingSyncController *)self xpcListenerDelegate];
+    [xpcListenerDelegate groupsUpdated];
 
-    v15 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
     v16 = KCSharingLogObject();
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1789,7 +1789,7 @@ LABEL_16:
 
   else
   {
-    v17 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier4 = [(KCSharingSyncController *)self loggingIdentifier];
     v18 = KCSharingLogObject();
 
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1801,20 +1801,20 @@ LABEL_16:
   }
 }
 
-- (void)syncEngine:(id)a3 recordWithIDWasDeleted:(id)a4 recordType:(id)a5
+- (void)syncEngine:(id)engine recordWithIDWasDeleted:(id)deleted recordType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(KCSharingSyncController *)self loggingIdentifier];
+  engineCopy = engine;
+  deletedCopy = deleted;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v10 = KCSharingLogObject();
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 database];
-    [v11 databaseScope];
+    database = [engineCopy database];
+    [database databaseScope];
     v12 = CKDatabaseScopeString();
     *buf = 138412546;
-    v20 = v8;
+    v20 = deletedCopy;
     v21 = 2114;
     v22 = v12;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Staging incoming record deletion with recordID=%@ for scope=%{public}@", buf, 0x16u);
@@ -1822,95 +1822,95 @@ LABEL_16:
 
   store = self->_store;
   v18 = 0;
-  v14 = [(KCSharingStore *)store stageIncomingDeletionForRecordID:v8 error:&v18];
+  v14 = [(KCSharingStore *)store stageIncomingDeletionForRecordID:deletedCopy error:&v18];
   v15 = v18;
   if ((v14 & 1) == 0)
   {
-    v16 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v17 = KCSharingLogObject();
 
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v20 = v8;
+      v20 = deletedCopy;
       v21 = 2112;
       v22 = v15;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to stage incoming deletion for recordID=%@ with error=%@", buf, 0x16u);
     }
 
-    [(KCSharingSyncController *)self isLockedError:v15 duringFetchForEngine:v7];
+    [(KCSharingSyncController *)self isLockedError:v15 duringFetchForEngine:engineCopy];
   }
 }
 
-- (void)syncEngine:(id)a3 zoneWithIDWasDeleted:(id)a4
+- (void)syncEngine:(id)engine zoneWithIDWasDeleted:(id)deleted
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(KCSharingSyncController *)self loggingIdentifier];
+  engineCopy = engine;
+  deletedCopy = deleted;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v9 = KCSharingLogObject();
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 database];
-    [v10 databaseScope];
+    database = [engineCopy database];
+    [database databaseScope];
     v11 = CKDatabaseScopeString();
     *buf = 138412546;
-    v20 = v7;
+    v20 = deletedCopy;
     v21 = 2114;
     v22 = v11;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Staging incoming share deletion in zoneID=%@ for scope=%{public}@", buf, 0x16u);
   }
 
-  v12 = [[CKRecordID alloc] initWithRecordName:CKRecordNameZoneWideShare zoneID:v7];
-  v13 = [(KCSharingSyncController *)self store];
+  v12 = [[CKRecordID alloc] initWithRecordName:CKRecordNameZoneWideShare zoneID:deletedCopy];
+  store = [(KCSharingSyncController *)self store];
   v18 = 0;
-  v14 = [v13 stageIncomingDeletionForRecordID:v12 error:&v18];
+  v14 = [store stageIncomingDeletionForRecordID:v12 error:&v18];
   v15 = v18;
 
   if ((v14 & 1) == 0)
   {
-    v16 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v17 = KCSharingLogObject();
 
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v20 = v7;
+      v20 = deletedCopy;
       v21 = 2112;
       v22 = v15;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to stage incoming share deletion in zoneID=%@ with error=%@", buf, 0x16u);
     }
 
-    [(KCSharingSyncController *)self isLockedError:v15 duringFetchForEngine:v6];
+    [(KCSharingSyncController *)self isLockedError:v15 duringFetchForEngine:engineCopy];
   }
 }
 
-- (void)syncEngine:(id)a3 didFetchRecord:(id)a4
+- (void)syncEngine:(id)engine didFetchRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(KCSharingSyncController *)self loggingIdentifier];
+  engineCopy = engine;
+  recordCopy = record;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v9 = KCSharingLogObject();
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 database];
-    [v10 databaseScope];
+    database = [engineCopy database];
+    [database databaseScope];
     v11 = CKDatabaseScopeString();
     *buf = 138412546;
     v19 = v11;
     v20 = 2112;
-    v21 = v7;
+    v21 = recordCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "sync engine %@ did fetch record %@", buf, 0x16u);
   }
 
   store = self->_store;
   v17 = 0;
-  v13 = [(KCSharingStore *)store stageIncomingRecord:v7 error:&v17];
+  v13 = [(KCSharingStore *)store stageIncomingRecord:recordCopy error:&v17];
   v14 = v17;
   if ((v13 & 1) == 0)
   {
-    v15 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v16 = KCSharingLogObject();
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1920,18 +1920,18 @@ LABEL_16:
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to stage incoming record with error=%@", buf, 0xCu);
     }
 
-    [(KCSharingSyncController *)self isLockedError:v14 duringFetchForEngine:v6];
+    [(KCSharingSyncController *)self isLockedError:v14 duringFetchForEngine:engineCopy];
   }
 }
 
-- (void)syncEngine:(id)a3 failedToDeleteRecordWithID:(id)a4 error:(id)a5
+- (void)syncEngine:(id)engine failedToDeleteRecordWithID:(id)d error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 recordName];
-  v10 = [v9 isEqualToString:CKRecordNameZoneWideShare];
+  dCopy = d;
+  errorCopy = error;
+  recordName = [dCopy recordName];
+  v10 = [recordName isEqualToString:CKRecordNameZoneWideShare];
 
-  v11 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v12 = KCSharingLogObject();
 
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
@@ -1940,26 +1940,26 @@ LABEL_16:
     if (v13)
     {
       *buf = 138412546;
-      v20 = v7;
+      v20 = dCopy;
       v21 = 2112;
-      v22 = v8;
+      v22 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Dropping outgoing deletion for shareRecordID=%@ that failed to delete with error=%@", buf, 0x16u);
     }
 
-    v14 = [(KCSharingSyncController *)self store];
+    store = [(KCSharingSyncController *)self store];
     v18 = 0;
-    v15 = [v14 dropOutgoingChangeForRecordID:v7 error:&v18];
+    v15 = [store dropOutgoingChangeForRecordID:dCopy error:&v18];
     v12 = v18;
 
     if ((v15 & 1) == 0)
     {
-      v16 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
       v17 = KCSharingLogObject();
 
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v20 = v7;
+        v20 = dCopy;
         v21 = 2112;
         v22 = v12;
         _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to drop outgoing deletion for shareRecordID=%@ with error=%@", buf, 0x16u);
@@ -1972,18 +1972,18 @@ LABEL_16:
   else if (v13)
   {
     *buf = 138412546;
-    v20 = v7;
+    v20 = dCopy;
     v21 = 2112;
-    v22 = v8;
+    v22 = errorCopy;
     _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to delete record for recordID=%@ with error=%@", buf, 0x16u);
   }
 }
 
-- (void)syncEngine:(id)a3 didDeleteRecordWithID:(id)a4
+- (void)syncEngine:(id)engine didDeleteRecordWithID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   store = self->_store;
-  v17 = v5;
+  v17 = dCopy;
   v7 = [NSArray arrayWithObjects:&v17 count:1];
   v14 = 0;
   v8 = [(KCSharingStore *)store updateMirrorWithSavedRecords:0 deletedRecordIDs:v7 error:&v14];
@@ -1991,7 +1991,7 @@ LABEL_16:
 
   if ((v8 & 1) == 0)
   {
-    v10 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v11 = KCSharingLogObject();
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -2004,55 +2004,55 @@ LABEL_16:
     [(KCSharingSyncController *)self isLockedError:v9];
   }
 
-  v12 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
   v13 = KCSharingLogObject();
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = dCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Deleted record with recordID=%@", buf, 0xCu);
   }
 }
 
-- (void)syncEngine:(id)a3 failedToSaveRecord:(id)a4 error:(id)a5
+- (void)syncEngine:(id)engine failedToSaveRecord:(id)record error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 recordID];
-  v12 = [v11 recordName];
-  v13 = [v12 isEqualToString:CKRecordNameZoneWideShare];
+  engineCopy = engine;
+  recordCopy = record;
+  errorCopy = error;
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  v13 = [recordName isEqualToString:CKRecordNameZoneWideShare];
 
   if (v13)
   {
-    v14 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v15 = KCSharingLogObject();
 
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v40 = v9;
+      v40 = recordCopy;
       v41 = 2112;
-      v42 = v10;
+      v42 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Dropping outgoing entry for share=%@ that failed to save with error=%@", buf, 0x16u);
     }
 
-    v16 = [(KCSharingSyncController *)self store];
-    v17 = [v9 recordID];
+    store = [(KCSharingSyncController *)self store];
+    recordID2 = [recordCopy recordID];
     v38 = 0;
-    v18 = [v16 dropOutgoingChangeForRecordID:v17 error:&v38];
+    v18 = [store dropOutgoingChangeForRecordID:recordID2 error:&v38];
     v19 = v38;
 
     if ((v18 & 1) == 0)
     {
-      v20 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
       v21 = KCSharingLogObject();
 
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v40 = v9;
+        v40 = recordCopy;
         v41 = 2112;
         v42 = v19;
         _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to drop outgoing entry for share=%@ with error=%@", buf, 0x16u);
@@ -2068,8 +2068,8 @@ LABEL_17:
 
   if (CKErrorIsCode())
   {
-    v22 = [v10 userInfo];
-    v19 = [v22 objectForKeyedSubscript:CKRecordChangedErrorServerRecordKey];
+    userInfo = [errorCopy userInfo];
+    v19 = [userInfo objectForKeyedSubscript:CKRecordChangedErrorServerRecordKey];
 
     if (v19)
     {
@@ -2079,7 +2079,7 @@ LABEL_17:
       v25 = v37;
       if ((v24 & 1) == 0)
       {
-        v26 = [(KCSharingSyncController *)self loggingIdentifier];
+        loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
         v27 = KCSharingLogObject();
 
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -2092,13 +2092,13 @@ LABEL_17:
         [(KCSharingSyncController *)self isLockedError:v25];
       }
 
-      v28 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier4 = [(KCSharingSyncController *)self loggingIdentifier];
       v29 = KCSharingLogObject();
 
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v40 = v9;
+        v40 = recordCopy;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Staged conflicting server record=%@", buf, 0xCu);
       }
 
@@ -2107,23 +2107,23 @@ LABEL_17:
   }
 
   IsCode = CKErrorIsCode();
-  v31 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier5 = [(KCSharingSyncController *)self loggingIdentifier];
   v32 = KCSharingLogObject();
 
   if (IsCode)
   {
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v9 recordID];
+      recordID3 = [recordCopy recordID];
       *buf = 138412290;
-      v40 = v33;
+      v40 = recordID3;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Failed to save recordID=%@ because we missed a deletion, will treat it as deletion now", buf, 0xCu);
     }
 
-    v34 = [v9 recordID];
-    [(KCSharingSyncController *)self syncEngine:v8 recordWithIDWasDeleted:v34 recordType:@"unused"];
+    recordID4 = [recordCopy recordID];
+    [(KCSharingSyncController *)self syncEngine:engineCopy recordWithIDWasDeleted:recordID4 recordType:@"unused"];
 
-    [v8 setNeedsToFetchChanges];
+    [engineCopy setNeedsToFetchChanges];
   }
 
   else
@@ -2131,17 +2131,17 @@ LABEL_17:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v40 = v9;
+      v40 = recordCopy;
       _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "Failed to save record=%@", buf, 0xCu);
     }
 
-    v35 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier6 = [(KCSharingSyncController *)self loggingIdentifier];
     v36 = KCSharingLogObject();
 
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v40 = v10;
+      v40 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, " => error=%@", buf, 0xCu);
     }
   }
@@ -2149,11 +2149,11 @@ LABEL_17:
 LABEL_27:
 }
 
-- (void)syncEngine:(id)a3 didSaveRecord:(id)a4
+- (void)syncEngine:(id)engine didSaveRecord:(id)record
 {
-  v5 = a4;
+  recordCopy = record;
   store = self->_store;
-  v20 = v5;
+  v20 = recordCopy;
   v7 = [NSArray arrayWithObjects:&v20 count:1];
   v15 = 0;
   v8 = [(KCSharingStore *)store updateMirrorWithSavedRecords:v7 deletedRecordIDs:0 error:&v15];
@@ -2161,14 +2161,14 @@ LABEL_27:
 
   if ((v8 & 1) == 0)
   {
-    v10 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v11 = KCSharingLogObject();
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v5 recordID];
+      recordID = [recordCopy recordID];
       *buf = 138412546;
-      v17 = v14;
+      v17 = recordID;
       v18 = 2112;
       v19 = v9;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to update mirror with saved record %@ with error=%@", buf, 0x16u);
@@ -2177,28 +2177,28 @@ LABEL_27:
     [(KCSharingSyncController *)self isLockedError:v9];
   }
 
-  v12 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
   v13 = KCSharingLogObject();
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v5;
+    v17 = recordCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Successfully uploaded record=%@", buf, 0xCu);
   }
 
-  [(KCSharingSyncController *)self sendNewIDSInvitesForRecord:v5];
+  [(KCSharingSyncController *)self sendNewIDSInvitesForRecord:recordCopy];
 }
 
-- (id)syncEngine:(id)a3 nextBatchOfRecordsToModifyForZoneIDs:(id)a4
+- (id)syncEngine:(id)engine nextBatchOfRecordsToModifyForZoneIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 database];
-  [v8 databaseScope];
+  engineCopy = engine;
+  dsCopy = ds;
+  database = [engineCopy database];
+  [database databaseScope];
   v9 = CKDatabaseScopeString();
 
-  v10 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v11 = KCSharingLogObject();
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2206,21 +2206,21 @@ LABEL_27:
     *buf = 138543618;
     v47 = v9;
     v48 = 2112;
-    v49 = v7;
+    v49 = dsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Requesting next record batch for scope=%{public}@ in zoneIDs=%@", buf, 0x16u);
   }
 
-  v12 = [v6 database];
-  v13 = -[KCSharingSyncController fetchCursorForScope:zoneIDs:](self, "fetchCursorForScope:zoneIDs:", [v12 databaseScope], v7);
+  database2 = [engineCopy database];
+  v13 = -[KCSharingSyncController fetchCursorForScope:zoneIDs:](self, "fetchCursorForScope:zoneIDs:", [database2 databaseScope], dsCopy);
 
-  v14 = [v6 database];
-  v15 = -[KCSharingSyncController fetchOutgoingChangesWithScope:cursor:](self, "fetchOutgoingChangesWithScope:cursor:", [v14 databaseScope], v13);
+  database3 = [engineCopy database];
+  v15 = -[KCSharingSyncController fetchOutgoingChangesWithScope:cursor:](self, "fetchOutgoingChangesWithScope:cursor:", [database3 databaseScope], v13);
 
   if (v15)
   {
     if ([v15 isEmpty])
     {
-      v16 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
       v17 = KCSharingLogObject();
 
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -2230,17 +2230,17 @@ LABEL_27:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Initial change set for scope=%{public}@ was empty; restaging to pick up stragglers", buf, 0xCu);
       }
 
-      v18 = [v6 database];
-      -[KCSharingSyncController saveCursor:forScope:](self, "saveCursor:forScope:", 0, [v18 databaseScope]);
+      database4 = [engineCopy database];
+      -[KCSharingSyncController saveCursor:forScope:](self, "saveCursor:forScope:", 0, [database4 databaseScope]);
 
-      v19 = [(KCSharingSyncController *)self store];
+      store = [(KCSharingSyncController *)self store];
       v45 = 0;
-      [v19 stageAllOutgoingChangesWithError:&v45];
-      v20 = v45;
+      [store stageAllOutgoingChangesWithError:&v45];
+      database8 = v45;
 
-      if (v20)
+      if (database8)
       {
-        v21 = [(KCSharingSyncController *)self loggingIdentifier];
+        loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
         v22 = KCSharingLogObject();
 
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -2248,11 +2248,11 @@ LABEL_27:
           *buf = 138543618;
           v47 = v9;
           v48 = 2112;
-          v49 = v20;
+          v49 = database8;
           _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Failed to restage scope=%{public}@ outgoing changes: %@", buf, 0x16u);
         }
 
-        [(KCSharingSyncController *)self isLockedError:v20];
+        [(KCSharingSyncController *)self isLockedError:database8];
         v23 = v13;
 LABEL_11:
 
@@ -2262,31 +2262,31 @@ LABEL_12:
       }
 
       v38 = [KCSharingOutgoingChangesetCursor alloc];
-      v39 = [v6 database];
-      v23 = -[KCSharingOutgoingChangesetCursor initWithDatabaseScope:desiredZoneIDs:](v38, "initWithDatabaseScope:desiredZoneIDs:", [v39 databaseScope], v7);
+      database5 = [engineCopy database];
+      v23 = -[KCSharingOutgoingChangesetCursor initWithDatabaseScope:desiredZoneIDs:](v38, "initWithDatabaseScope:desiredZoneIDs:", [database5 databaseScope], dsCopy);
 
-      v40 = [v6 database];
-      v25 = -[KCSharingSyncController fetchOutgoingChangesWithScope:cursor:](self, "fetchOutgoingChangesWithScope:cursor:", [v40 databaseScope], v23);
+      database6 = [engineCopy database];
+      v25 = -[KCSharingSyncController fetchOutgoingChangesWithScope:cursor:](self, "fetchOutgoingChangesWithScope:cursor:", [database6 databaseScope], v23);
 
       if (!v25)
       {
-        v20 = 0;
+        database8 = 0;
         goto LABEL_12;
       }
 
-      v41 = [v25 isEmpty];
-      v42 = [(KCSharingSyncController *)self loggingIdentifier];
+      isEmpty = [v25 isEmpty];
+      loggingIdentifier4 = [(KCSharingSyncController *)self loggingIdentifier];
       v43 = KCSharingLogObject();
 
       v44 = os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT);
-      if (v41)
+      if (isEmpty)
       {
         if (v44)
         {
           *buf = 138543618;
           v47 = v9;
           v48 = 2112;
-          v49 = v7;
+          v49 = dsCopy;
           _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Uploaded all records for scope=%{public}@ in zoneIDs=%@", buf, 0x16u);
         }
 
@@ -2308,19 +2308,19 @@ LABEL_12:
       v23 = v13;
     }
 
-    v26 = [v25 cursor];
-    v27 = [v6 database];
-    -[KCSharingSyncController saveCursor:forScope:](self, "saveCursor:forScope:", v26, [v27 databaseScope]);
+    cursor = [v25 cursor];
+    database7 = [engineCopy database];
+    -[KCSharingSyncController saveCursor:forScope:](self, "saveCursor:forScope:", cursor, [database7 databaseScope]);
 
-    v28 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier5 = [(KCSharingSyncController *)self loggingIdentifier];
     v29 = KCSharingLogObject();
 
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [v25 recordsToSave];
-      v31 = [v30 count];
-      v32 = [v25 recordIDsToDelete];
-      v33 = [v32 count];
+      recordsToSave = [v25 recordsToSave];
+      v31 = [recordsToSave count];
+      recordIDsToDelete = [v25 recordIDsToDelete];
+      v33 = [recordIDsToDelete count];
       *buf = 134218754;
       v47 = v31;
       v48 = 2048;
@@ -2328,23 +2328,23 @@ LABEL_12:
       v50 = 2114;
       v51 = v9;
       v52 = 2112;
-      v53 = v7;
+      v53 = dsCopy;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Returning batch of %lu + %lu records to upload in scope=%{public}@, zoneIDs=%@", buf, 0x2Au);
     }
 
     v34 = [CKSyncEngineBatch alloc];
-    v35 = [v25 recordsToSave];
-    v36 = [v25 recordIDsToDelete];
-    v24 = [v34 initWithRecordsToSave:v35 recordIDsToDelete:v36];
+    recordsToSave2 = [v25 recordsToSave];
+    recordIDsToDelete2 = [v25 recordIDsToDelete];
+    v24 = [v34 initWithRecordsToSave:recordsToSave2 recordIDsToDelete:recordIDsToDelete2];
 
     [v24 setAtomic:0];
-    v20 = v25;
+    database8 = v25;
   }
 
   else
   {
-    v20 = [v6 database];
-    -[KCSharingSyncController saveCursor:forScope:](self, "saveCursor:forScope:", 0, [v20 databaseScope]);
+    database8 = [engineCopy database];
+    -[KCSharingSyncController saveCursor:forScope:](self, "saveCursor:forScope:", 0, [database8 databaseScope]);
     v24 = 0;
     v23 = v13;
   }
@@ -2354,53 +2354,53 @@ LABEL_18:
   return v24;
 }
 
-- (void)syncEngine:(id)a3 failedToDeleteRecordZoneWithID:(id)a4 error:(id)a5
+- (void)syncEngine:(id)engine failedToDeleteRecordZoneWithID:(id)d error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(KCSharingSyncController *)self loggingIdentifier];
+  engineCopy = engine;
+  dCopy = d;
+  errorCopy = error;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v12 = KCSharingLogObject();
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v25 = v9;
+    v25 = dCopy;
     v26 = 2112;
-    v27 = v10;
+    v27 = errorCopy;
     _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to delete zoneID=%@ from CloudKit with error=%@", buf, 0x16u);
   }
 
-  v13 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
   v14 = KCSharingLogObject();
 
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v8 database];
-    [v15 databaseScope];
+    database = [engineCopy database];
+    [database databaseScope];
     v16 = CKDatabaseScopeString();
     *buf = 138412546;
-    v25 = v9;
+    v25 = dCopy;
     v26 = 2114;
     v27 = v16;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Dropping outgoing share deletion in zoneID=%@ for scope=%{public}@", buf, 0x16u);
   }
 
-  v17 = [[CKRecordID alloc] initWithRecordName:CKRecordNameZoneWideShare zoneID:v9];
-  v18 = [(KCSharingSyncController *)self store];
+  v17 = [[CKRecordID alloc] initWithRecordName:CKRecordNameZoneWideShare zoneID:dCopy];
+  store = [(KCSharingSyncController *)self store];
   v23 = 0;
-  v19 = [v18 dropOutgoingChangeForRecordID:v17 error:&v23];
+  v19 = [store dropOutgoingChangeForRecordID:v17 error:&v23];
   v20 = v23;
 
   if ((v19 & 1) == 0)
   {
-    v21 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
     v22 = KCSharingLogObject();
 
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v25 = v9;
+      v25 = dCopy;
       v26 = 2112;
       v27 = v20;
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Failed to drop outgoing share deletion in zoneID=%@ with error=%@", buf, 0x16u);
@@ -2410,25 +2410,25 @@ LABEL_18:
   }
 }
 
-- (void)syncEngine:(id)a3 didDeleteRecordZoneWithID:(id)a4
+- (void)syncEngine:(id)engine didDeleteRecordZoneWithID:(id)d
 {
-  v5 = a4;
-  v6 = [(KCSharingSyncController *)self store];
-  v19 = v5;
+  dCopy = d;
+  store = [(KCSharingSyncController *)self store];
+  v19 = dCopy;
   v7 = [NSArray arrayWithObjects:&v19 count:1];
   v14 = 0;
-  v8 = [v6 updateMirrorWithDeletedZoneIDs:v7 error:&v14];
+  v8 = [store updateMirrorWithDeletedZoneIDs:v7 error:&v14];
   v9 = v14;
 
   if ((v8 & 1) == 0)
   {
-    v10 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v11 = KCSharingLogObject();
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v16 = v5;
+      v16 = dCopy;
       v17 = 2112;
       v18 = v9;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to delete zoneID=%@ from mirror with error=%@", buf, 0x16u);
@@ -2437,48 +2437,48 @@ LABEL_18:
     [(KCSharingSyncController *)self isLockedError:v9];
   }
 
-  v12 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
   v13 = KCSharingLogObject();
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = dCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Deleted zoneID=%@ from mirror", buf, 0xCu);
   }
 }
 
-- (id)recordZoneIDsToDeleteForSyncEngine:(id)a3
+- (id)recordZoneIDsToDeleteForSyncEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [(KCSharingSyncController *)self loggingIdentifier];
+  engineCopy = engine;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v6 = KCSharingLogObject();
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 database];
-    [v7 databaseScope];
+    database = [engineCopy database];
+    [database databaseScope];
     v8 = CKDatabaseScopeString();
     *buf = 138543362;
     v23 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Requesting zone IDs to delete for scope=%{public}@", buf, 0xCu);
   }
 
-  v9 = [(KCSharingSyncController *)self store];
-  v10 = [v4 database];
+  store = [(KCSharingSyncController *)self store];
+  database2 = [engineCopy database];
   v21 = 0;
-  v11 = [v9 fetchZoneIDsToDeleteFromDatabaseWithScope:objc_msgSend(v10 error:{"databaseScope"), &v21}];
+  v11 = [store fetchZoneIDsToDeleteFromDatabaseWithScope:objc_msgSend(database2 error:{"databaseScope"), &v21}];
   v12 = v21;
 
-  v13 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
   v14 = KCSharingLogObject();
 
   if (v11)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v4 database];
-      [v15 databaseScope];
+      database3 = [engineCopy database];
+      [database3 databaseScope];
       v16 = CKDatabaseScopeString();
       *buf = 138412546;
       v23 = v11;
@@ -2494,8 +2494,8 @@ LABEL_18:
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v4 database];
-      [v19 databaseScope];
+      database4 = [engineCopy database];
+      [database4 databaseScope];
       v20 = CKDatabaseScopeString();
       *buf = 138543618;
       v23 = v20;
@@ -2510,61 +2510,61 @@ LABEL_18:
   return v11;
 }
 
-- (void)syncEngine:(id)a3 failedToSaveRecordZone:(id)a4 error:(id)a5
+- (void)syncEngine:(id)engine failedToSaveRecordZone:(id)zone error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(KCSharingSyncController *)self loggingIdentifier];
+  engineCopy = engine;
+  zoneCopy = zone;
+  errorCopy = error;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v12 = KCSharingLogObject();
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v25 = [v8 database];
-    [v25 databaseScope];
+    database = [engineCopy database];
+    [database databaseScope];
     v26 = CKDatabaseScopeString();
     *buf = 138412802;
-    v29 = v9;
+    v29 = zoneCopy;
     v30 = 2114;
     v31 = v26;
     v32 = 2112;
-    v33 = v10;
+    v33 = errorCopy;
     _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to save zone=%@ for scope=%{public}@ with error=%@", buf, 0x20u);
   }
 
-  v13 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
   v14 = KCSharingLogObject();
 
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v8 database];
-    [v15 databaseScope];
+    database2 = [engineCopy database];
+    [database2 databaseScope];
     v16 = CKDatabaseScopeString();
     *buf = 138412546;
-    v29 = v9;
+    v29 = zoneCopy;
     v30 = 2114;
     v31 = v16;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Dropping outgoing share entry in zone=%@ for scope=%{public}@", buf, 0x16u);
   }
 
   v17 = [CKRecordID alloc];
-  v18 = [v9 zoneID];
-  v19 = [v17 initWithRecordName:CKRecordNameZoneWideShare zoneID:v18];
+  zoneID = [zoneCopy zoneID];
+  v19 = [v17 initWithRecordName:CKRecordNameZoneWideShare zoneID:zoneID];
 
-  v20 = [(KCSharingSyncController *)self store];
+  store = [(KCSharingSyncController *)self store];
   v27 = 0;
-  v21 = [v20 dropOutgoingChangeForRecordID:v19 error:&v27];
+  v21 = [store dropOutgoingChangeForRecordID:v19 error:&v27];
   v22 = v27;
 
   if ((v21 & 1) == 0)
   {
-    v23 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
     v24 = KCSharingLogObject();
 
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v29 = v9;
+      v29 = zoneCopy;
       v30 = 2112;
       v31 = v22;
       _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Failed to drop outgoing share entry in zone=%@ with error=%@", buf, 0x16u);
@@ -2574,57 +2574,57 @@ LABEL_18:
   }
 }
 
-- (void)syncEngine:(id)a3 didSaveRecordZone:(id)a4
+- (void)syncEngine:(id)engine didSaveRecordZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(KCSharingSyncController *)self loggingIdentifier];
+  engineCopy = engine;
+  zoneCopy = zone;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v9 = KCSharingLogObject();
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 database];
-    [v10 databaseScope];
+    database = [engineCopy database];
+    [database databaseScope];
     v11 = CKDatabaseScopeString();
     v12 = 138412546;
-    v13 = v7;
+    v13 = zoneCopy;
     v14 = 2114;
     v15 = v11;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Successfully saved zone=%@ for scope=%{public}@", &v12, 0x16u);
   }
 }
 
-- (id)recordZonesToSaveForSyncEngine:(id)a3
+- (id)recordZonesToSaveForSyncEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [(KCSharingSyncController *)self loggingIdentifier];
+  engineCopy = engine;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v6 = KCSharingLogObject();
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v4 database];
-    [v7 databaseScope];
+    database = [engineCopy database];
+    [database databaseScope];
     v8 = CKDatabaseScopeString();
     *buf = 138543362;
     v23 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Requesting zones to save for scope=%{public}@", buf, 0xCu);
   }
 
-  v9 = [(KCSharingSyncController *)self store];
-  v10 = [v4 database];
+  store = [(KCSharingSyncController *)self store];
+  database2 = [engineCopy database];
   v21 = 0;
-  v11 = [v9 fetchZonesToSaveToDatabaseWithScope:objc_msgSend(v10 error:{"databaseScope"), &v21}];
+  v11 = [store fetchZonesToSaveToDatabaseWithScope:objc_msgSend(database2 error:{"databaseScope"), &v21}];
   v12 = v21;
 
-  v13 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
   v14 = KCSharingLogObject();
 
   if (v11)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v4 database];
-      [v15 databaseScope];
+      database3 = [engineCopy database];
+      [database3 databaseScope];
       v16 = CKDatabaseScopeString();
       *buf = 138412546;
       v23 = v11;
@@ -2640,8 +2640,8 @@ LABEL_18:
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v4 database];
-      [v19 databaseScope];
+      database4 = [engineCopy database];
+      [database4 databaseScope];
       v20 = CKDatabaseScopeString();
       *buf = 138543618;
       v23 = v20;
@@ -2656,16 +2656,16 @@ LABEL_18:
   return v11;
 }
 
-- (void)lockStateChangeNotification:(BOOL)a3
+- (void)lockStateChangeNotification:(BOOL)notification
 {
-  v3 = a3;
-  v5 = [(KCSharingSyncController *)self loggingIdentifier];
+  notificationCopy = notification;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v6 = KCSharingLogObject();
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = &stru_100348050;
-    if (v3)
+    if (notificationCopy)
     {
       v7 = @"un";
     }
@@ -2675,41 +2675,41 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "CKKSLockStateTracker notified us of lock state change: %{public}@locked", buf, 0xCu);
   }
 
-  if (!v3)
+  if (!notificationCopy)
   {
-    v8 = [(KCSharingSyncController *)self queue];
+    queue = [(KCSharingSyncController *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100071368;
     block[3] = &unk_100346018;
     block[4] = self;
-    dispatch_sync(v8, block);
+    dispatch_sync(queue, block);
   }
 }
 
-- (id)subscriptionIDForDatabase:(id)a3
+- (id)subscriptionIDForDatabase:(id)database
 {
-  [a3 databaseScope];
+  [database databaseScope];
   v3 = CKDatabaseScopeString();
   v4 = [NSString stringWithFormat:@"CKSyncEngineDatabaseSubscription-%@", v3];
 
   return v4;
 }
 
-- (void)verifyGroupsInSyncAndResync:(BOOL)a3 WithCompletion:(id)a4
+- (void)verifyGroupsInSyncAndResync:(BOOL)resync WithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  if (v6)
+  resyncCopy = resync;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = [(KCSharingSyncController *)self store];
+    store = [(KCSharingSyncController *)self store];
     v48 = 0;
-    v8 = [v7 fetchAllSharingGroupsInMirrorWithError:&v48];
+    v8 = [store fetchAllSharingGroupsInMirrorWithError:&v48];
     v9 = v48;
 
     if (!v8 || v9)
     {
-      v36 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
       v37 = KCSharingLogObject();
 
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -2722,19 +2722,19 @@ LABEL_18:
       [(KCSharingSyncController *)self isLockedError:v9];
       if (v9)
       {
-        v6[2](v6, 0, v9);
+        completionCopy[2](completionCopy, 0, v9);
 LABEL_43:
 
         goto LABEL_44;
       }
 
       v10 = [NSError errorWithDomain:@"KCSharingErrorDomain" code:35 userInfo:0];
-      v6[2](v6, 0, v10);
+      completionCopy[2](completionCopy, 0, v10);
     }
 
     else
     {
-      v40 = v4;
+      v40 = resyncCopy;
       v10 = +[NSMutableDictionary dictionary];
       v44 = 0u;
       v45 = 0u;
@@ -2757,8 +2757,8 @@ LABEL_43:
             }
 
             v16 = *(*(&v44 + 1) + 8 * i);
-            v17 = [v16 groupID];
-            [v10 setObject:v16 forKeyedSubscript:v17];
+            groupID = [v16 groupID];
+            [v10 setObject:v16 forKeyedSubscript:groupID];
           }
 
           v13 = [v11 countByEnumeratingWithState:&v44 objects:v49 count:16];
@@ -2767,14 +2767,14 @@ LABEL_43:
         while (v13);
       }
 
-      v18 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
       v19 = KCSharingLogObject();
 
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v10 allKeys];
+        allKeys = [v10 allKeys];
         *buf = 138543362;
-        v51 = v20;
+        v51 = allKeys;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Local group IDs: %{public}@", buf, 0xCu);
       }
 
@@ -2794,13 +2794,13 @@ LABEL_43:
         {
           if (v27)
           {
-            v6[2](v6, 0, v27);
+            completionCopy[2](completionCopy, 0, v27);
           }
 
           else
           {
             v38 = [NSError errorWithDomain:@"KCSharingErrorDomain" code:34 userInfo:0];
-            v6[2](v6, 0, v38);
+            completionCopy[2](completionCopy, 0, v38);
           }
         }
 
@@ -2809,7 +2809,7 @@ LABEL_43:
           v28 = [(KCSharingSyncController *)self haveUnmirroredGroups:v26 forDatabase:@"privateDB"];
           v29 = v26;
           v39 = v28 | [(KCSharingSyncController *)self haveUnmirroredGroups:v26 forDatabase:@"sharedDB"];
-          v30 = [(KCSharingSyncController *)self loggingIdentifier];
+          loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
           v31 = KCSharingLogObject();
 
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -2825,7 +2825,7 @@ LABEL_43:
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Verification complete, groups %@ in sync", buf, 0xCu);
           }
 
-          v33 = [(KCSharingSyncController *)self loggingIdentifier];
+          loggingIdentifier4 = [(KCSharingSyncController *)self loggingIdentifier];
           v34 = KCSharingLogObject();
 
           v35 = os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT);
@@ -2840,7 +2840,7 @@ LABEL_43:
                 _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Verify Groups, Resync is requested, and we are NOT on par with CK; therefore going for resyncing", buf, 2u);
               }
 
-              [(KCSharingSyncController *)self resyncFromRPC:1 privateRemoteZonesByZoneID:v21 sharedRemoteZonesByZoneID:v22 completion:v6];
+              [(KCSharingSyncController *)self resyncFromRPC:1 privateRemoteZonesByZoneID:v21 sharedRemoteZonesByZoneID:v22 completion:completionCopy];
             }
 
             else
@@ -2851,7 +2851,7 @@ LABEL_43:
                 _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Verify Groups, Resync is requested, but we are on par with CK, therefore returning", buf, 2u);
               }
 
-              v6[2](v6, 1, 0);
+              completionCopy[2](completionCopy, 1, 0);
             }
           }
 
@@ -2864,7 +2864,7 @@ LABEL_43:
               _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Verify Groups, Resync is not requested, so returning", buf, 2u);
             }
 
-            v6[2](v6, v39 ^ 1, 0);
+            completionCopy[2](completionCopy, v39 ^ 1, 0);
           }
         }
 
@@ -2873,7 +2873,7 @@ LABEL_43:
 
       else
       {
-        v6[2](v6, 0, v24);
+        completionCopy[2](completionCopy, 0, v24);
         v27 = v25;
         v8 = v41;
       }
@@ -2885,10 +2885,10 @@ LABEL_43:
 LABEL_44:
 }
 
-- (void)verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:(id)a3
+- (void)verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(KCSharingSyncController *)self loggingIdentifier];
+  completionCopy = completion;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v6 = KCSharingLogObject();
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2897,13 +2897,13 @@ LABEL_44:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Going for groups verifying, with resync if required", v7, 2u);
   }
 
-  [(KCSharingSyncController *)self verifyGroupsInSyncAndResync:1 WithCompletion:v4];
+  [(KCSharingSyncController *)self verifyGroupsInSyncAndResync:1 WithCompletion:completionCopy];
 }
 
-- (void)verifyGroupsInSyncWithCompletion:(id)a3
+- (void)verifyGroupsInSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(KCSharingSyncController *)self loggingIdentifier];
+  completionCopy = completion;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v6 = KCSharingLogObject();
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2912,31 +2912,31 @@ LABEL_44:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Going for groups verifying, without resync", v7, 2u);
   }
 
-  [(KCSharingSyncController *)self verifyGroupsInSyncAndResync:0 WithCompletion:v4];
+  [(KCSharingSyncController *)self verifyGroupsInSyncAndResync:0 WithCompletion:completionCopy];
 }
 
-- (void)resyncFromRPC:(BOOL)a3 privateRemoteZonesByZoneID:(id)a4 sharedRemoteZonesByZoneID:(id)a5 completion:(id)a6
+- (void)resyncFromRPC:(BOOL)c privateRemoteZonesByZoneID:(id)d sharedRemoteZonesByZoneID:(id)iD completion:(id)completion
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v13)
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v26 = +[NSAssertionHandler currentHandler];
     [v26 handleFailureInMethod:a2 object:self file:@"KCSharingSyncController.m" lineNumber:1590 description:@"Not passing a completion handler here is a bug"];
   }
 
-  v14 = [(KCSharingSyncController *)self currentUserMetadataFeatureUsage];
-  v15 = [(KCSharingSyncController *)self loggingIdentifier];
+  currentUserMetadataFeatureUsage = [(KCSharingSyncController *)self currentUserMetadataFeatureUsage];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v16 = KCSharingLogObject();
 
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-  if (v14 != 1)
+  if (currentUserMetadataFeatureUsage != 1)
   {
     if (v17)
     {
       *buf = 134217984;
-      v37 = v14;
+      v37 = currentUserMetadataFeatureUsage;
       v18 = "KCSharing feature usage: %lu, proceeding with resync";
       v19 = v16;
       v20 = 12;
@@ -2952,24 +2952,24 @@ LABEL_10:
     v32[3] = &unk_100334FC0;
     v32[4] = self;
     objc_copyWeak(&v34, buf);
-    v21 = v13;
-    v32[6] = v12;
+    v21 = completionCopy;
+    v32[6] = iDCopy;
     v33 = v21;
-    v35 = a3;
-    v32[5] = v11;
+    cCopy = c;
+    v32[5] = dCopy;
     v22 = [NSBlockOperation blockOperationWithBlock:v32];
-    v23 = [(KCSharingSyncController *)self queue];
+    queue = [(KCSharingSyncController *)self queue];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_100071FBC;
     v27[3] = &unk_100343F68;
     objc_copyWeak(&v30, buf);
     v24 = v21;
-    v31 = a3;
+    cCopy2 = c;
     v28 = v22;
     v29 = v24;
     v25 = v22;
-    dispatch_async(v23, v27);
+    dispatch_async(queue, v27);
 
     objc_destroyWeak(&v30);
     objc_destroyWeak(&v34);
@@ -2977,7 +2977,7 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  if (a3)
+  if (c)
   {
     if (v17)
     {
@@ -2999,30 +2999,30 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "KCSharing appears not to be in use, foregoing resync", buf, 2u);
   }
 
-  (*(v13 + 2))(v13, 1, 0);
+  (*(completionCopy + 2))(completionCopy, 1, 0);
 LABEL_14:
 }
 
-- (BOOL)haveUnmirroredGroups:(id)a3 forDatabase:(id)a4
+- (BOOL)haveUnmirroredGroups:(id)groups forDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:v7];
+  groupsCopy = groups;
+  databaseCopy = database;
+  v8 = [groupsCopy objectForKeyedSubscript:databaseCopy];
   v9 = [v8 count];
 
   if (v9)
   {
-    v10 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v11 = KCSharingLogObject();
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v6 objectForKeyedSubscript:v7];
-      v14 = [v13 allKeys];
+      v13 = [groupsCopy objectForKeyedSubscript:databaseCopy];
+      allKeys = [v13 allKeys];
       v15 = 138412546;
-      v16 = v7;
+      v16 = databaseCopy;
       v17 = 2114;
-      v18 = v14;
+      v18 = allKeys;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Unmirrored %@ CloudKit zones: %{public}@", &v15, 0x16u);
     }
   }
@@ -3030,29 +3030,29 @@ LABEL_14:
   return v9 != 0;
 }
 
-- (id)unmirroredZonesForPrivate:(id)a3 shared:(id)a4 error:(id *)a5
+- (id)unmirroredZonesForPrivate:(id)private shared:(id)shared error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9 || !v10 || !a5)
+  privateCopy = private;
+  sharedCopy = shared;
+  v11 = sharedCopy;
+  if (!privateCopy || !sharedCopy || !error)
   {
     v50 = +[NSAssertionHandler currentHandler];
     [v50 handleFailureInMethod:a2 object:self file:@"KCSharingSyncController.m" lineNumber:1530 description:@"Must supply arguments to this function"];
   }
 
   v12 = +[NSMutableDictionary dictionary];
-  v13 = [v9 mutableCopy];
+  v13 = [privateCopy mutableCopy];
   v56 = [v11 mutableCopy];
-  v14 = [(KCSharingSyncController *)self store];
+  store = [(KCSharingSyncController *)self store];
   v69 = 0;
-  v15 = [v14 fetchAllSharingGroupsInMirrorWithError:&v69];
+  v15 = [store fetchAllSharingGroupsInMirrorWithError:&v69];
   v16 = v69;
 
   v55 = v15;
   if (!v15 || v16)
   {
-    v45 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v46 = KCSharingLogObject();
 
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -3068,13 +3068,13 @@ LABEL_14:
     {
       v47 = v16;
       v43 = 0;
-      *a5 = v16;
+      *error = v16;
     }
 
     else
     {
       v48 = [NSError errorWithDomain:@"KCSharingErrorDomain" code:35 userInfo:0];
-      *a5 = v48;
+      *error = v48;
 
       v43 = 0;
     }
@@ -3083,7 +3083,7 @@ LABEL_14:
   else
   {
     v53 = v11;
-    v54 = v9;
+    v54 = privateCopy;
     v17 = +[NSMutableDictionary dictionary];
     v65 = 0u;
     v66 = 0u;
@@ -3106,8 +3106,8 @@ LABEL_14:
           }
 
           v24 = *(*(&v65 + 1) + 8 * i);
-          v25 = [v24 groupID];
-          [v17 setObject:v24 forKeyedSubscript:v25];
+          groupID = [v24 groupID];
+          [v17 setObject:v24 forKeyedSubscript:groupID];
         }
 
         v21 = [v18 countByEnumeratingWithState:&v65 objects:v72 count:16];
@@ -3200,7 +3200,7 @@ LABEL_14:
     v43 = v52;
 
     v11 = v53;
-    v9 = v54;
+    privateCopy = v54;
     v16 = 0;
     v13 = v51;
     v44 = v56;
@@ -3209,12 +3209,12 @@ LABEL_14:
   return v43;
 }
 
-- (BOOL)obtainAuthoritativeGroupsForPrivate:(id)a3 shared:(id)a4 error:(id *)a5
+- (BOOL)obtainAuthoritativeGroupsForPrivate:(id)private shared:(id)shared error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9 || !v10 || !a5)
+  privateCopy = private;
+  sharedCopy = shared;
+  v11 = sharedCopy;
+  if (!privateCopy || !sharedCopy || !error)
   {
     v38 = +[NSAssertionHandler currentHandler];
     [v38 handleFailureInMethod:a2 object:self file:@"KCSharingSyncController.m" lineNumber:1410 description:@"Must provide all arguments to this function"];
@@ -3245,7 +3245,7 @@ LABEL_14:
   v51 = &v58;
   v15 = v12;
   v49 = v15;
-  v16 = v9;
+  v16 = privateCopy;
   v50 = v16;
   [v14 setFetchRecordZonesCompletionBlock:v48];
   v17 = +[CKFetchRecordZonesOperation fetchAllRecordZonesOperation];
@@ -3269,7 +3269,7 @@ LABEL_14:
     v68 = sub_100074124;
     v69 = sub_100074134;
     v70 = 0;
-    v20 = [(KCSharingSyncController *)self cloudCoreUtilities];
+    cloudCoreUtilities = [(KCSharingSyncController *)self cloudCoreUtilities];
     v39[0] = _NSConcreteStackBlock;
     v39[1] = 3221225472;
     v39[2] = sub_1000746E8;
@@ -3279,12 +3279,12 @@ LABEL_14:
     v40 = v18;
     v41 = v14;
     v42 = v17;
-    [v20 withCKDatabases:v39];
+    [cloudCoreUtilities withCKDatabases:v39];
 
     v21 = *(*(&buf + 1) + 40);
     if (v21)
     {
-      v22 = a5 == 0;
+      v22 = error == 0;
     }
 
     else
@@ -3294,7 +3294,7 @@ LABEL_14:
 
     if (!v22)
     {
-      *a5 = v21;
+      *error = v21;
 
       _Block_object_dispose(&buf, 8);
 LABEL_25:
@@ -3308,18 +3308,18 @@ LABEL_25:
   else
   {
     dispatch_group_enter(v18);
-    v23 = [(KCSharingSyncController *)self privateCloudDB];
-    [v23 addOperation:v14];
+    privateCloudDB = [(KCSharingSyncController *)self privateCloudDB];
+    [privateCloudDB addOperation:v14];
 
     dispatch_group_enter(v18);
-    v24 = [(KCSharingSyncController *)self sharedCloudDB];
-    [v24 addOperation:v17];
+    sharedCloudDB = [(KCSharingSyncController *)self sharedCloudDB];
+    [sharedCloudDB addOperation:v17];
   }
 
   v25 = dispatch_time(0, 30000000000);
   if (dispatch_group_wait(v18, v25))
   {
-    v26 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v27 = KCSharingLogObject();
 
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -3329,7 +3329,7 @@ LABEL_25:
     }
 
     [NSError errorWithDomain:@"KCSharingErrorDomain" code:36 userInfo:0];
-    *a5 = v28 = 0;
+    *error = v28 = 0;
     goto LABEL_26;
   }
 
@@ -3350,14 +3350,14 @@ LABEL_25:
     v64 = NSMultipleUnderlyingErrorsKey;
     v65 = v30;
     v31 = [NSDictionary dictionaryWithObjects:&v65 forKeys:&v64 count:1];
-    *a5 = [NSError errorWithDomain:@"KCSharingErrorDomain" code:34 userInfo:v31];
+    *error = [NSError errorWithDomain:@"KCSharingErrorDomain" code:34 userInfo:v31];
 
-    v32 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v33 = KCSharingLogObject();
 
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      v37 = *a5;
+      v37 = *error;
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v37;
       _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Failed to fetch all known CloudKit groups: %@", &buf, 0xCu);
@@ -3366,7 +3366,7 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v35 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
   v36 = KCSharingLogObject();
 
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -3384,16 +3384,16 @@ LABEL_26:
   return v28;
 }
 
-- (BOOL)saveCursor:(id)a3 forScope:(int64_t)a4
+- (BOOL)saveCursor:(id)cursor forScope:(int64_t)scope
 {
-  v5 = a3;
+  cursorCopy = cursor;
   v6 = CKDatabaseScopeString();
   v7 = [NSString stringWithFormat:@"%@-%@", @"outgoingChangesetCursor", v6];
 
-  if (v5)
+  if (cursorCopy)
   {
     v25 = 0;
-    v8 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v25];
+    v8 = [NSKeyedArchiver archivedDataWithRootObject:cursorCopy requiringSecureCoding:1 error:&v25];
     v9 = v25;
     if (v8)
     {
@@ -3408,14 +3408,14 @@ LABEL_26:
     if (!v10)
     {
       v11 = v9;
-      v12 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
       v13 = KCSharingLogObject();
 
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v14 = CKDatabaseScopeString();
         *buf = 138412802;
-        v27 = v5;
+        v27 = cursorCopy;
         v28 = 2112;
         v29 = v14;
         v30 = 2112;
@@ -3454,14 +3454,14 @@ LABEL_20:
   {
     v11 = v18;
     [(KCSharingSyncController *)self isLockedError:v18];
-    v20 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v13 = KCSharingLogObject();
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = CKDatabaseScopeString();
       *buf = 138412802;
-      v27 = v5;
+      v27 = cursorCopy;
       v28 = 2112;
       v29 = v14;
       v30 = 2112;
@@ -3476,7 +3476,7 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  v22 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
   v11 = KCSharingLogObject();
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -3491,9 +3491,9 @@ LABEL_18:
   return v21;
 }
 
-- (id)fetchCursorForScope:(int64_t)a3 zoneIDs:(id)a4
+- (id)fetchCursorForScope:(int64_t)scope zoneIDs:(id)ds
 {
-  v6 = a4;
+  dsCopy = ds;
   v7 = CKDatabaseScopeString();
   v8 = [NSString stringWithFormat:@"%@-%@", @"outgoingChangesetCursor", v7];
 
@@ -3516,7 +3516,7 @@ LABEL_18:
     v25 = 0;
     v17 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v10 error:&v25];
     v13 = v25;
-    v18 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v19 = KCSharingLogObject();
 
     if (!v17 || v13)
@@ -3531,7 +3531,7 @@ LABEL_18:
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Failed to decode outgoing cursor for scope=%@: %@", buf, 0x16u);
       }
 
-      v20 = [[KCSharingOutgoingChangesetCursor alloc] initWithDatabaseScope:a3 desiredZoneIDs:v6];
+      v20 = [[KCSharingOutgoingChangesetCursor alloc] initWithDatabaseScope:scope desiredZoneIDs:dsCopy];
     }
 
     else
@@ -3555,7 +3555,7 @@ LABEL_18:
     if (v11)
     {
       [(KCSharingSyncController *)self isLockedError:v11];
-      v14 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
       v15 = KCSharingLogObject();
 
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -3571,7 +3571,7 @@ LABEL_18:
 
     else
     {
-      v22 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
       v15 = KCSharingLogObject();
 
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -3581,21 +3581,21 @@ LABEL_18:
       }
     }
 
-    v21 = [[KCSharingOutgoingChangesetCursor alloc] initWithDatabaseScope:a3 desiredZoneIDs:v6];
+    v21 = [[KCSharingOutgoingChangesetCursor alloc] initWithDatabaseScope:scope desiredZoneIDs:dsCopy];
   }
 
   return v21;
 }
 
-- (id)fetchOutgoingChangesWithScope:(int64_t)a3 cursor:(id)a4
+- (id)fetchOutgoingChangesWithScope:(int64_t)scope cursor:(id)cursor
 {
   store = self->_store;
   v12 = 0;
-  v6 = [(KCSharingStore *)store fetchOutgoingChangesWithCursor:a4 maxChangeCount:100 maxBatchSizeInBytes:1572864 error:&v12];
+  v6 = [(KCSharingStore *)store fetchOutgoingChangesWithCursor:cursor maxChangeCount:100 maxBatchSizeInBytes:1572864 error:&v12];
   v7 = v12;
   if (!v6)
   {
-    v8 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v9 = KCSharingLogObject();
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -3614,23 +3614,23 @@ LABEL_18:
   return v6;
 }
 
-- (void)wipe:(BOOL)a3 completion:(id)a4
+- (void)wipe:(BOOL)wipe completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(KCSharingSyncController *)self loggingIdentifier];
+  wipeCopy = wipe;
+  completionCopy = completion;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v8 = KCSharingLogObject();
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v17) = v4;
+    LODWORD(v17) = wipeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "🚨 WIPING KCSHARING DATA. Include cloud data: %{BOOL}d", buf, 8u);
   }
 
-  if (v4)
+  if (wipeCopy)
   {
-    v9 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v10 = KCSharingLogObject();
 
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -3647,12 +3647,12 @@ LABEL_18:
 
   else
   {
-    v13 = [(KCSharingSyncController *)self store];
+    store = [(KCSharingSyncController *)self store];
     v15 = 0;
-    [v13 wipeWithError:&v15];
+    [store wipeWithError:&v15];
     v12 = v15;
 
-    v14 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
     v11 = KCSharingLogObject();
 
     if (v12)
@@ -3677,17 +3677,17 @@ LABEL_18:
     }
   }
 
-  v6[2](v6, v12);
+  completionCopy[2](completionCopy, v12);
 }
 
-- (void)sendNewIDSInvitesForRecord:(id)a3
+- (void)sendNewIDSInvitesForRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = sub_1000314F8(v4);
-    v6 = [(KCSharingSyncController *)self loggingIdentifier];
+    v5 = sub_1000314F8(recordCopy);
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v7 = KCSharingLogObject();
 
     if (v5)
@@ -3699,14 +3699,14 @@ LABEL_18:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Asking ksmd to send new invites if needed for group %@", buf, 0xCu);
       }
 
-      v8 = [(KCSharingSyncController *)self messagingdConnection];
+      messagingdConnection = [(KCSharingSyncController *)self messagingdConnection];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_10007549C;
       v9[3] = &unk_100334F20;
       v9[4] = self;
       v10 = v5;
-      [v8 sendNewInvitesForGroup:v10 completion:v9];
+      [messagingdConnection sendNewInvitesForGroup:v10 completion:v9];
     }
 
     else
@@ -3720,10 +3720,10 @@ LABEL_18:
   }
 }
 
-- (void)_onQueueFetchRemoteChangesForZoneIDs:(id)a3 completion:(id)a4
+- (void)_onQueueFetchRemoteChangesForZoneIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v48[0] = 0;
   v48[1] = v48;
   v48[2] = 0x3032000000;
@@ -3731,13 +3731,13 @@ LABEL_18:
   v48[4] = sub_100074134;
   v49 = +[NSMutableArray array];
   v8 = dispatch_group_create();
-  v9 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v10 = KCSharingLogObject();
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = dsCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Force-fetching remote changes for zoneIDs=%{public}@", &buf, 0xCu);
   }
 
@@ -3747,10 +3747,10 @@ LABEL_18:
   v54 = sub_100074124;
   v55 = sub_100074134;
   v56 = 0;
-  v11 = [(KCSharingSyncController *)self privateSyncEngine];
-  if (!v11 || ([(KCSharingSyncController *)self sharedSyncEngine], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12 == 0, v12, v11, v13))
+  privateSyncEngine = [(KCSharingSyncController *)self privateSyncEngine];
+  if (!privateSyncEngine || ([(KCSharingSyncController *)self sharedSyncEngine], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12 == 0, v12, privateSyncEngine, v13))
   {
-    v14 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v15 = KCSharingLogObject();
 
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -3776,10 +3776,10 @@ LABEL_18:
   if (!*(*(&buf + 1) + 40))
   {
     dispatch_group_enter(v8);
-    v22 = [(KCSharingSyncController *)self privateSyncEngine];
-    [v22 setNeedsToFetchChanges];
+    privateSyncEngine2 = [(KCSharingSyncController *)self privateSyncEngine];
+    [privateSyncEngine2 setNeedsToFetchChanges];
 
-    v23 = [(KCSharingSyncController *)self privateSyncEngine];
+    privateSyncEngine3 = [(KCSharingSyncController *)self privateSyncEngine];
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = sub_100075BD4;
@@ -3788,17 +3788,17 @@ LABEL_18:
     v44[4] = self;
     v24 = v8;
     v45 = v24;
-    [v23 fetchChangesWithCompletionHandler:v44];
+    [privateSyncEngine3 fetchChangesWithCompletionHandler:v44];
 
     dispatch_group_enter(v24);
-    v25 = [(KCSharingSyncController *)self sharedSyncEngine];
-    [v25 setNeedsToFetchChanges];
+    sharedSyncEngine = [(KCSharingSyncController *)self sharedSyncEngine];
+    [sharedSyncEngine setNeedsToFetchChanges];
 
     if (sub_10004DE94())
     {
-      if ([v6 count])
+      if ([dsCopy count])
       {
-        v26 = [NSSet setWithArray:v6];
+        v26 = [NSSet setWithArray:dsCopy];
       }
 
       else
@@ -3806,7 +3806,7 @@ LABEL_18:
         v26 = 0;
       }
 
-      v28 = [(KCSharingSyncController *)self sharedSyncEngine];
+      sharedSyncEngine2 = [(KCSharingSyncController *)self sharedSyncEngine];
       v29 = [CKSyncEngineFetchChangesOptions alloc];
       v30 = [[CKSyncEngineFetchChangesScope alloc] initWithZoneIDs:v26];
       v31 = [v29 initWithScope:v30];
@@ -3817,12 +3817,12 @@ LABEL_18:
       v43 = v48;
       v41[4] = self;
       v42 = v24;
-      [v28 fetchChangesWithOptions:v31 completionHandler:v41];
+      [sharedSyncEngine2 fetchChangesWithOptions:v31 completionHandler:v41];
     }
 
     else
     {
-      v27 = [(KCSharingSyncController *)self sharedSyncEngine];
+      sharedSyncEngine3 = [(KCSharingSyncController *)self sharedSyncEngine];
       v38[0] = _NSConcreteStackBlock;
       v38[1] = 3221225472;
       v38[2] = sub_100075D6C;
@@ -3830,11 +3830,11 @@ LABEL_18:
       v40 = v48;
       v38[4] = self;
       v39 = v24;
-      [v27 fetchChangesForZoneIDs:v6 completionHandler:v38];
+      [sharedSyncEngine3 fetchChangesForZoneIDs:dsCopy completionHandler:v38];
     }
   }
 
-  v32 = [(KCSharingSyncController *)self queue];
+  queue = [(KCSharingSyncController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100075E38;
@@ -3842,18 +3842,18 @@ LABEL_18:
   p_buf = &buf;
   v37 = v48;
   block[4] = self;
-  v35 = v7;
-  v33 = v7;
-  dispatch_group_notify(v8, v32, block);
+  v35 = completionCopy;
+  v33 = completionCopy;
+  dispatch_group_notify(v8, queue, block);
 
   _Block_object_dispose(&buf, 8);
   _Block_object_dispose(v48, 8);
 }
 
-- (void)fetchRemoteChangesForZoneIDs:(id)a3 completion:(id)a4
+- (void)fetchRemoteChangesForZoneIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   if (sub_10001078C())
   {
     objc_initWeak(&location, self);
@@ -3862,16 +3862,16 @@ LABEL_18:
     v19[2] = sub_1000762D4;
     v19[3] = &unk_100343EC8;
     objc_copyWeak(&v22, &location);
-    v21 = v7;
-    v20 = v6;
+    v21 = completionCopy;
+    v20 = dsCopy;
     v8 = [NSBlockOperation blockOperationWithBlock:v19];
-    v9 = [(KCSharingSyncController *)self lockStateTracker];
-    v10 = [v9 unlockDependency];
-    [v8 addNullableDependency:v10];
+    lockStateTracker = [(KCSharingSyncController *)self lockStateTracker];
+    unlockDependency = [lockStateTracker unlockDependency];
+    [v8 addNullableDependency:unlockDependency];
 
     if (self->_initializeEnginesOperation)
     {
-      v11 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
       v12 = KCSharingLogObject();
 
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -3897,21 +3897,21 @@ LABEL_18:
 
   else
   {
-    v14 = [(KCSharingSyncController *)self queue];
+    queue = [(KCSharingSyncController *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000763E0;
     block[3] = &unk_100343D18;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    dispatch_sync(v14, block);
+    v16 = dsCopy;
+    v17 = completionCopy;
+    dispatch_sync(queue, block);
   }
 }
 
-- (void)saveStagedOutgoingChangesWithCompletion:(id)a3
+- (void)saveStagedOutgoingChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
@@ -3919,7 +3919,7 @@ LABEL_18:
   v26[4] = sub_100074134;
   v27 = +[NSMutableArray array];
   v5 = dispatch_group_create();
-  v6 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v7 = KCSharingLogObject();
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -3944,7 +3944,7 @@ LABEL_18:
     [v9 sendChangesWithCompletionHandler:v24];
 
     dispatch_group_enter(v11);
-    v12 = [(KCSharingSyncController *)self sharedSyncEngine];
+    sharedSyncEngine = [(KCSharingSyncController *)self sharedSyncEngine];
     v13 = v23;
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
@@ -3952,7 +3952,7 @@ LABEL_18:
     v23[3] = &unk_100346F60;
     v23[5] = v26;
     v23[4] = v11;
-    [v12 sendChangesWithCompletionHandler:v23];
+    [sharedSyncEngine sendChangesWithCompletionHandler:v23];
   }
 
   else
@@ -3968,7 +3968,7 @@ LABEL_18:
     [v14 modifyPendingChangesWithCompletionHandler:v22];
 
     dispatch_group_enter(v15);
-    v12 = [(KCSharingSyncController *)self sharedSyncEngine];
+    sharedSyncEngine = [(KCSharingSyncController *)self sharedSyncEngine];
     v13 = v21;
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
@@ -3976,33 +3976,33 @@ LABEL_18:
     v21[3] = &unk_100346F60;
     v21[5] = v26;
     v21[4] = v15;
-    [v12 modifyPendingChangesWithCompletionHandler:v21];
+    [sharedSyncEngine modifyPendingChangesWithCompletionHandler:v21];
   }
 
-  v16 = [(KCSharingSyncController *)self queue];
+  queue = [(KCSharingSyncController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100076B20;
   block[3] = &unk_100334ED0;
-  v19 = v4;
+  v19 = completionCopy;
   v20 = v26;
   block[4] = self;
-  v17 = v4;
-  dispatch_group_notify(v5, v16, block);
+  v17 = completionCopy;
+  dispatch_group_notify(v5, queue, block);
 
   _Block_object_dispose(v26, 8);
 }
 
-- (void)stageAllOutgoingChangesWithCompletion:(id)a3
+- (void)stageAllOutgoingChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100076E04;
   v7[3] = &unk_1003445C0;
   objc_copyWeak(&v9, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v8 = v5;
   v6 = [NSBlockOperation blockOperationWithBlock:v7];
   [(NSOperationQueue *)self->_operationQueue addOperation:v6];
@@ -4011,12 +4011,12 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (BOOL)stageOutgoingShares:(id)a3 deletionsForShares:(id)a4 error:(id *)a5
+- (BOOL)stageOutgoingShares:(id)shares deletionsForShares:(id)forShares error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(KCSharingSyncController *)self store];
-  v11 = [v10 stageOutgoingShares:v9 deletionsForShares:v8 error:a5];
+  forSharesCopy = forShares;
+  sharesCopy = shares;
+  store = [(KCSharingSyncController *)self store];
+  v11 = [store stageOutgoingShares:sharesCopy deletionsForShares:forSharesCopy error:error];
 
   if (v11 && sub_10004DE94())
   {
@@ -4028,23 +4028,23 @@ LABEL_18:
 
 - (void)makeStagedOutgoingDatabaseChangesAsPendingSyncEngineChanges
 {
-  v3 = [(KCSharingSyncController *)self privateSyncEngine];
-  v4 = [(KCSharingSyncController *)self getOutgoingStagedDatabaseChangesForSyncEngine:v3];
+  privateSyncEngine = [(KCSharingSyncController *)self privateSyncEngine];
+  v4 = [(KCSharingSyncController *)self getOutgoingStagedDatabaseChangesForSyncEngine:privateSyncEngine];
 
-  v5 = [(KCSharingSyncController *)self privateSyncEngine];
-  v6 = [v5 state];
-  [v6 addPendingDatabaseChanges:v4];
+  privateSyncEngine2 = [(KCSharingSyncController *)self privateSyncEngine];
+  state = [privateSyncEngine2 state];
+  [state addPendingDatabaseChanges:v4];
 
-  v7 = [(KCSharingSyncController *)self sharedSyncEngine];
-  v8 = [(KCSharingSyncController *)self getOutgoingStagedDatabaseChangesForSyncEngine:v7];
+  sharedSyncEngine = [(KCSharingSyncController *)self sharedSyncEngine];
+  v8 = [(KCSharingSyncController *)self getOutgoingStagedDatabaseChangesForSyncEngine:sharedSyncEngine];
 
-  v9 = [(KCSharingSyncController *)self sharedSyncEngine];
-  v10 = [v9 state];
-  [v10 addPendingDatabaseChanges:v8];
+  sharedSyncEngine2 = [(KCSharingSyncController *)self sharedSyncEngine];
+  state2 = [sharedSyncEngine2 state];
+  [state2 addPendingDatabaseChanges:v8];
 
   if ([v4 count])
   {
-    v11 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v12 = KCSharingLogObject();
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -4053,14 +4053,14 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Setting pending untracked changes to true in private sync engine", buf, 2u);
     }
 
-    v13 = [(KCSharingSyncController *)self privateSyncEngine];
-    v14 = [v13 state];
-    [v14 setHasPendingUntrackedChanges:1];
+    privateSyncEngine3 = [(KCSharingSyncController *)self privateSyncEngine];
+    state3 = [privateSyncEngine3 state];
+    [state3 setHasPendingUntrackedChanges:1];
   }
 
   if ([v8 count])
   {
-    v15 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v16 = KCSharingLogObject();
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -4069,22 +4069,22 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Setting pending untracked changes to true in shared sync engine", v19, 2u);
     }
 
-    v17 = [(KCSharingSyncController *)self sharedSyncEngine];
-    v18 = [v17 state];
-    [v18 setHasPendingUntrackedChanges:1];
+    sharedSyncEngine3 = [(KCSharingSyncController *)self sharedSyncEngine];
+    state4 = [sharedSyncEngine3 state];
+    [state4 setHasPendingUntrackedChanges:1];
   }
 }
 
-- (id)getOutgoingStagedDatabaseChangesForSyncEngine:(id)a3
+- (id)getOutgoingStagedDatabaseChangesForSyncEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [(KCSharingSyncController *)self loggingIdentifier];
+  engineCopy = engine;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v6 = KCSharingLogObject();
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 database];
-    [v7 databaseScope];
+    database = [engineCopy database];
+    [database databaseScope];
     v8 = CKDatabaseScopeString();
     *buf = 138543362;
     v38 = v8;
@@ -4092,8 +4092,8 @@ LABEL_18:
   }
 
   v9 = objc_alloc_init(NSMutableArray);
-  v10 = [(KCSharingSyncController *)self recordZonesToSaveForSyncEngine:v4];
-  v11 = [(KCSharingSyncController *)self recordZoneIDsToDeleteForSyncEngine:v4];
+  v10 = [(KCSharingSyncController *)self recordZonesToSaveForSyncEngine:engineCopy];
+  v11 = [(KCSharingSyncController *)self recordZoneIDsToDeleteForSyncEngine:engineCopy];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -4157,10 +4157,10 @@ LABEL_18:
   return v9;
 }
 
-- (void)performMaintenanceWithCompletion:(id)a3
+- (void)performMaintenanceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(KCSharingSyncController *)self loggingIdentifier];
+  completionCopy = completion;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v6 = KCSharingLogObject();
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -4175,10 +4175,10 @@ LABEL_18:
   v16[2] = sub_100077888;
   v16[3] = &unk_1003445C0;
   objc_copyWeak(&v18, buf);
-  v7 = v4;
+  v7 = completionCopy;
   v17 = v7;
   v8 = [NSBlockOperation blockOperationWithBlock:v16];
-  v9 = [(KCSharingSyncController *)self queue];
+  queue = [(KCSharingSyncController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100077AEC;
@@ -4188,23 +4188,23 @@ LABEL_18:
   v14 = v7;
   v10 = v8;
   v11 = v7;
-  dispatch_async(v9, block);
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v18);
   objc_destroyWeak(buf);
 }
 
-- (void)saveAllOutgoingChangesWithCompletion:(id)a3
+- (void)saveAllOutgoingChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100078250;
   v6[3] = &unk_100337E48;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(KCSharingSyncController *)self stageAllOutgoingChangesWithCompletion:v6];
 
@@ -4214,7 +4214,7 @@ LABEL_18:
 
 - (void)processDatabaseModifications
 {
-  v3 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v4 = KCSharingLogObject();
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -4231,15 +4231,15 @@ LABEL_18:
   [(KCSharingSyncController *)self saveAllOutgoingChangesWithCompletion:v5];
 }
 
-- (void)fetchCurrentUserIdentifierWithReply:(id)a3
+- (void)fetchCurrentUserIdentifierWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(KCSharingSyncController *)self currentUserMetadata];
-  v6 = [v5 objectForKeyedSubscript:@"currentUserIdentifier"];
+  replyCopy = reply;
+  currentUserMetadata = [(KCSharingSyncController *)self currentUserMetadata];
+  v6 = [currentUserMetadata objectForKeyedSubscript:@"currentUserIdentifier"];
 
   if (v6)
   {
-    v7 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v8 = KCSharingLogObject();
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -4248,7 +4248,7 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Fetched cached current user identifier from store", buf, 2u);
     }
 
-    v4[2](v4, v6, 0);
+    replyCopy[2](replyCopy, v6, 0);
   }
 
   else
@@ -4258,15 +4258,15 @@ LABEL_18:
     v9[2] = sub_100078638;
     v9[3] = &unk_100334EA8;
     v9[4] = self;
-    v10 = v4;
+    v10 = replyCopy;
     [(KCSharingSyncController *)self fetchCurrentUserIdentifierFromCloudKitWithReply:v9];
   }
 }
 
-- (void)fetchCurrentUserIdentifierFromCloudKitWithReply:(id)a3
+- (void)fetchCurrentUserIdentifierFromCloudKitWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(KCSharingSyncController *)self loggingIdentifier];
+  replyCopy = reply;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v6 = KCSharingLogObject();
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -4277,12 +4277,12 @@ LABEL_18:
 
   if (sub_10001078C())
   {
-    v7 = [(KCSharingSyncController *)self cloudCoreUtilities];
+    cloudCoreUtilities = [(KCSharingSyncController *)self cloudCoreUtilities];
     v15 = 0;
-    v8 = [v7 acquiredSessionUserRecordIDAndReturnError:&v15];
+    v8 = [cloudCoreUtilities acquiredSessionUserRecordIDAndReturnError:&v15];
     v9 = v15;
 
-    v10 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v11 = KCSharingLogObject();
 
     if (v9)
@@ -4302,28 +4302,28 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Fetched current user identifier from Acquired Session: %{public}@", buf, 0xCu);
     }
 
-    v4[2](v4, v8, v9);
+    replyCopy[2](replyCopy, v8, v9);
   }
 
   else
   {
-    v12 = [(KCSharingSyncController *)self container];
+    container = [(KCSharingSyncController *)self container];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000789F4;
     v13[3] = &unk_100334EA8;
     v13[4] = self;
-    v14 = v4;
-    [v12 fetchUserRecordIDWithCompletionHandler:v13];
+    v14 = replyCopy;
+    [container fetchUserRecordIDWithCompletionHandler:v13];
   }
 }
 
-- (void)ensureCurrentUserProvisionedWithCompletion:(id)a3
+- (void)ensureCurrentUserProvisionedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(KCSharingSyncController *)self isCurrentUserProvisioned]&& [(KCSharingSyncController *)self isCurrentUserIdentifierAvailable])
   {
-    v5 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v6 = KCSharingLogObject();
 
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -4332,7 +4332,7 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "The user's already provisioned.", buf, 2u);
     }
 
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -4355,7 +4355,7 @@ LABEL_18:
     v15[3] = sub_100074124;
     v15[4] = sub_100074134;
     v16 = 0;
-    v7 = [(KCSharingSyncController *)self queue];
+    queue = [(KCSharingSyncController *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100078E54;
@@ -4364,10 +4364,10 @@ LABEL_18:
     block[5] = v15;
     block[6] = buf;
     block[7] = v17;
-    dispatch_sync(v7, block);
+    dispatch_sync(queue, block);
 
     v8 = *(v20 + 5);
-    v9 = [(KCSharingSyncController *)self queue];
+    queue2 = [(KCSharingSyncController *)self queue];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000793F4;
@@ -4375,8 +4375,8 @@ LABEL_18:
     v12 = v15;
     v13 = v17;
     v10[4] = self;
-    v11 = v4;
-    dispatch_group_notify(v8, v9, v10);
+    v11 = completionCopy;
+    dispatch_group_notify(v8, queue2, v10);
 
     _Block_object_dispose(v15, 8);
     _Block_object_dispose(v17, 8);
@@ -4385,12 +4385,12 @@ LABEL_18:
   }
 }
 
-- (void)handleProvisioningActivity:(id)a3 isRetry:(BOOL)a4
+- (void)handleProvisioningActivity:(id)activity isRetry:(BOOL)retry
 {
-  v4 = a4;
-  v6 = a3;
+  retryCopy = retry;
+  activityCopy = activity;
   v7 = os_transaction_create();
-  if (xpc_activity_get_state(v6) == 4 || xpc_activity_set_state(v6, 4))
+  if (xpc_activity_get_state(activityCopy) == 4 || xpc_activity_set_state(activityCopy, 4))
   {
     objc_initWeak(location, self);
     v16[0] = _NSConcreteStackBlock;
@@ -4398,13 +4398,13 @@ LABEL_18:
     v16[2] = sub_100079BC8;
     v16[3] = &unk_100334E30;
     objc_copyWeak(&v19, location);
-    v17 = v6;
+    v17 = activityCopy;
     v18 = v7;
-    v20 = v4;
+    v20 = retryCopy;
     v8 = [NSBlockOperation blockOperationWithBlock:v16];
     if (self->_initializeEnginesOperation)
     {
-      v9 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
       v10 = KCSharingLogObject();
 
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -4422,10 +4422,10 @@ LABEL_18:
     }
 
     [v8 addNullableDependency:initializeEnginesOperation];
-    if (v4)
+    if (retryCopy)
     {
-      v12 = [(CKKSNearFutureScheduler *)self->_nearFutureScheduler operationDependency];
-      [v8 addNullableDependency:v12];
+      operationDependency = [(CKKSNearFutureScheduler *)self->_nearFutureScheduler operationDependency];
+      [v8 addNullableDependency:operationDependency];
 
       [(CKKSNearFutureScheduler *)self->_nearFutureScheduler trigger];
     }
@@ -4438,13 +4438,13 @@ LABEL_18:
 
   else
   {
-    v13 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v14 = KCSharingLogObject();
 
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       LODWORD(location[0]) = 134217984;
-      *(location + 4) = xpc_activity_get_state(v6);
+      *(location + 4) = xpc_activity_get_state(activityCopy);
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to initiate provisioning activity; current state=%ld", location, 0xCu);
     }
   }
@@ -4465,11 +4465,11 @@ LABEL_18:
   xpc_activity_register("com.apple.securityd.kcsharing.provisioning", empty, handler);
 }
 
-- (void)preflightWithCompletion:(id)a3 delay:(BOOL)a4
+- (void)preflightWithCompletion:(id)completion delay:(BOOL)delay
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(KCSharingSyncController *)self loggingIdentifier];
+  delayCopy = delay;
+  completionCopy = completion;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v8 = KCSharingLogObject();
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4483,21 +4483,21 @@ LABEL_18:
   v20 = 3221225472;
   v21 = sub_10007A4BC;
   v22 = &unk_100343EC8;
-  v23 = self;
+  selfCopy = self;
   objc_copyWeak(&v25, buf);
-  v9 = v6;
+  v9 = completionCopy;
   v24 = v9;
   v10 = [NSBlockOperation blockOperationWithBlock:&v19];
   if (sub_10001078C())
   {
-    v11 = [(KCSharingSyncController *)self lockStateTracker];
-    v12 = [v11 unlockDependency];
-    [v10 addNullableDependency:v12];
+    lockStateTracker = [(KCSharingSyncController *)self lockStateTracker];
+    unlockDependency = [lockStateTracker unlockDependency];
+    [v10 addNullableDependency:unlockDependency];
   }
 
   if (self->_initializeEnginesOperation)
   {
-    v13 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v14 = KCSharingLogObject();
 
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -4511,7 +4511,7 @@ LABEL_18:
 
   else
   {
-    v16 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
     v14 = KCSharingLogObject();
 
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -4527,35 +4527,35 @@ LABEL_18:
 LABEL_11:
 
   [v10 addNullableDependency:self->_initializeEnginesOperation];
-  if (v4)
+  if (delayCopy)
   {
-    v17 = [(CKKSNearFutureScheduler *)self->_nearFutureScheduler operationDependency];
-    [v10 addNullableDependency:v17];
+    operationDependency = [(CKKSNearFutureScheduler *)self->_nearFutureScheduler operationDependency];
+    [v10 addNullableDependency:operationDependency];
 
     [(CKKSNearFutureScheduler *)self->_nearFutureScheduler trigger];
   }
 
-  [(NSOperationQueue *)self->_operationQueue addOperation:v10, v18, v19, v20, v21, v22, v23];
+  [(NSOperationQueue *)self->_operationQueue addOperation:v10, v18, v19, v20, v21, v22, selfCopy];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(buf);
 }
 
-- (BOOL)isLockedError:(id)a3 duringFetchForEngine:(id)a4
+- (BOOL)isLockedError:(id)error duringFetchForEngine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (-[KCSharingSyncController lockStateTracker](self, "lockStateTracker"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isLockedError:v6], v8, v9))
+  errorCopy = error;
+  engineCopy = engine;
+  if (errorCopy && (-[KCSharingSyncController lockStateTracker](self, "lockStateTracker"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isLockedError:errorCopy], v8, v9))
   {
     objc_initWeak(&location, self);
-    v10 = [(KCSharingSyncController *)self queue];
+    queue = [(KCSharingSyncController *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10007B074;
     block[3] = &unk_100344D38;
     objc_copyWeak(&v15, &location);
-    v14 = v7;
-    dispatch_async(v10, block);
+    v14 = engineCopy;
+    dispatch_async(queue, block);
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -4572,11 +4572,11 @@ LABEL_11:
 
 - (void)deviceDidLock
 {
-  v3 = [(KCSharingSyncController *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(KCSharingSyncController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   operationQueue = self->_operationQueue;
-  v5 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v6 = KCSharingLogObject();
 
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -4590,7 +4590,7 @@ LABEL_11:
 
     if (self->_privateSyncEngine && self->_sharedSyncEngine)
     {
-      v8 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
       v9 = KCSharingLogObject();
 
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -4606,7 +4606,7 @@ LABEL_11:
       self->_sharedSyncEngine = 0;
     }
 
-    v12 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
     v13 = KCSharingLogObject();
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -4636,12 +4636,12 @@ LABEL_11:
   }
 }
 
-- (void)CKSyncEnginesInitOperationWithDelay:(BOOL)a3 withCompletion:(id)a4
+- (void)CKSyncEnginesInitOperationWithDelay:(BOOL)delay withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  delayCopy = delay;
+  completionCopy = completion;
   v7 = self->_operationQueue == 0;
-  v8 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v9 = KCSharingLogObject();
 
   if (!v7)
@@ -4658,25 +4658,25 @@ LABEL_11:
     v30[2] = sub_10007C1DC;
     v30[3] = &unk_1003445C0;
     objc_copyWeak(&v32, &buf);
-    v31 = v6;
+    v31 = completionCopy;
     v10 = [NSBlockOperation blockOperationWithBlock:v30];
     v11 = self->_initializeEnginesOperation;
     v12 = v11;
     if (v11 && [(NSBlockOperation *)v11 isPending])
     {
-      v13 = [(KCSharingSyncController *)self loggingIdentifier];
-      v14 = KCSharingLogObject();
+      loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
+      cloudCoreUtilities = KCSharingLogObject();
 
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(cloudCoreUtilities, OS_LOG_TYPE_DEFAULT))
       {
         *v29 = 0;
-        _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Not setting up engine reinit: have extant operation", v29, 2u);
+        _os_log_impl(&_mh_execute_header, cloudCoreUtilities, OS_LOG_TYPE_DEFAULT, "Not setting up engine reinit: have extant operation", v29, 2u);
       }
 
       goto LABEL_22;
     }
 
-    v15 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
     v16 = KCSharingLogObject();
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -4685,19 +4685,19 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Setting up engine reinit operation to run at unlock time", v29, 2u);
     }
 
-    v17 = [(KCSharingSyncController *)self lockStateTracker];
-    v18 = [v17 unlockDependency];
-    [v10 addNullableDependency:v18];
+    lockStateTracker = [(KCSharingSyncController *)self lockStateTracker];
+    unlockDependency = [lockStateTracker unlockDependency];
+    [v10 addNullableDependency:unlockDependency];
 
-    if (v4)
+    if (delayCopy)
     {
-      v19 = [(CKKSNearFutureScheduler *)self->_nearFutureScheduler operationDependency];
-      [v10 addNullableDependency:v19];
+      operationDependency = [(CKKSNearFutureScheduler *)self->_nearFutureScheduler operationDependency];
+      [v10 addNullableDependency:operationDependency];
 
       [(CKKSNearFutureScheduler *)self->_nearFutureScheduler trigger];
     }
 
-    v20 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier4 = [(KCSharingSyncController *)self loggingIdentifier];
     v21 = KCSharingLogObject();
 
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -4709,17 +4709,17 @@ LABEL_11:
     objc_storeStrong(&self->_initializeEnginesOperation, v10);
     if (sub_10001078C())
     {
-      v14 = [(KCSharingSyncController *)self cloudCoreUtilities];
-      if (![v14 haveAcquiredSession])
+      cloudCoreUtilities = [(KCSharingSyncController *)self cloudCoreUtilities];
+      if (![cloudCoreUtilities haveAcquiredSession])
       {
 LABEL_22:
 
         goto LABEL_27;
       }
 
-      v22 = [(KCSharingSyncController *)self hasOutStandingSyncEngineInitializeInitOpAdded];
+      hasOutStandingSyncEngineInitializeInitOpAdded = [(KCSharingSyncController *)self hasOutStandingSyncEngineInitializeInitOpAdded];
 
-      if (!v22)
+      if (!hasOutStandingSyncEngineInitializeInitOpAdded)
       {
 LABEL_27:
 
@@ -4728,7 +4728,7 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      v23 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier5 = [(KCSharingSyncController *)self loggingIdentifier];
       v24 = KCSharingLogObject();
 
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -4742,7 +4742,7 @@ LABEL_25:
 
     else
     {
-      v28 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier6 = [(KCSharingSyncController *)self loggingIdentifier];
       v24 = KCSharingLogObject();
 
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -4768,18 +4768,18 @@ LABEL_25:
   v26 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
   v27 = [NSError errorWithDomain:@"KCSharingErrorDomain" code:40 userInfo:v26];
 
-  (*(v6 + 2))(v6, v27);
+  (*(completionCopy + 2))(completionCopy, v27);
 LABEL_28:
 }
 
-- (void)initSyncEnginesWithPrivateDB:(id)a3 sharedDB:(id)a4 withCompletion:(id)a5
+- (void)initSyncEnginesWithPrivateDB:(id)b sharedDB:(id)dB withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!sub_10001078C() || (-[KCSharingSyncController cloudCoreUtilities](self, "cloudCoreUtilities"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 haveAcquiredSession], v11, v9) && v8 && (v12 & 1) != 0)
+  bCopy = b;
+  dBCopy = dB;
+  completionCopy = completion;
+  if (!sub_10001078C() || (-[KCSharingSyncController cloudCoreUtilities](self, "cloudCoreUtilities"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 haveAcquiredSession], v11, dBCopy) && bCopy && (v12 & 1) != 0)
   {
-    v13 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
     v14 = KCSharingLogObject();
 
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -4795,7 +4795,7 @@ LABEL_28:
       v16 = v60;
       if (v16)
       {
-        v17 = [(KCSharingSyncController *)self loggingIdentifier];
+        loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
         v18 = KCSharingLogObject();
 
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -4812,9 +4812,9 @@ LABEL_52:
       }
 
       v28 = sub_10001078C();
-      if (!v8 && v28)
+      if (!bCopy && v28)
       {
-        v29 = [(KCSharingSyncController *)self loggingIdentifier];
+        loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
         v30 = KCSharingLogObject();
 
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -4828,17 +4828,17 @@ LABEL_52:
         v31 = [NSDictionary dictionaryWithObjects:&v64 forKeys:&v63 count:1];
         v32 = [NSError errorWithDomain:@"KCSharingErrorDomain" code:43 userInfo:v31];
 
-        v10[2](v10, v32);
+        completionCopy[2](completionCopy, v32);
         goto LABEL_16;
       }
 
-      v16 = [[CKSyncEngineConfiguration alloc] initWithDatabase:v8 stateSerialization:empty delegate:self];
+      v16 = [[CKSyncEngineConfiguration alloc] initWithDatabase:bCopy stateSerialization:empty delegate:self];
       v59 = 0;
       v34 = [(KCSharingSyncController *)self fetchStoredSyncEngineStateWithMetadataKey:@"CKSyncEngineSharedMetadata" withError:&v59];
       v36 = v59;
       if (v36)
       {
-        v40 = [(KCSharingSyncController *)self loggingIdentifier];
+        loggingIdentifier4 = [(KCSharingSyncController *)self loggingIdentifier];
         v38 = KCSharingLogObject();
 
         if (!os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -4853,9 +4853,9 @@ LABEL_52:
       }
 
       v49 = sub_10001078C();
-      if (!v9 && v49)
+      if (!dBCopy && v49)
       {
-        v50 = [(KCSharingSyncController *)self loggingIdentifier];
+        loggingIdentifier5 = [(KCSharingSyncController *)self loggingIdentifier];
         v51 = KCSharingLogObject();
 
         if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -4871,12 +4871,12 @@ LABEL_52:
         sub_100061E2C(&v58, 43, v52);
         v53 = v58;
 
-        v10[2](v10, v53);
+        completionCopy[2](completionCopy, v53);
         goto LABEL_31;
       }
 
-      v36 = [[CKSyncEngineConfiguration alloc] initWithDatabase:v9 stateSerialization:v34 delegate:self];
-      v54 = [(KCSharingSyncController *)self loggingIdentifier];
+      v36 = [[CKSyncEngineConfiguration alloc] initWithDatabase:dBCopy stateSerialization:v34 delegate:self];
+      loggingIdentifier6 = [(KCSharingSyncController *)self loggingIdentifier];
       v55 = KCSharingLogObject();
 
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
@@ -4888,7 +4888,7 @@ LABEL_52:
 
     else
     {
-      v20 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier7 = [(KCSharingSyncController *)self loggingIdentifier];
       v21 = KCSharingLogObject();
 
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -4904,7 +4904,7 @@ LABEL_52:
       if (v23)
       {
         v16 = v23;
-        v24 = [(KCSharingSyncController *)self loggingIdentifier];
+        loggingIdentifier8 = [(KCSharingSyncController *)self loggingIdentifier];
         v18 = KCSharingLogObject();
 
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -4918,13 +4918,13 @@ LABEL_52:
 LABEL_15:
 
         [(KCSharingSyncController *)self isLockedError:v16];
-        v10[2](v10, v16);
+        completionCopy[2](completionCopy, v16);
 LABEL_16:
 
         goto LABEL_45;
       }
 
-      v16 = [[CKSyncEngineConfiguration alloc] initWithDatabase:v8 dataSource:self metadata:empty];
+      v16 = [[CKSyncEngineConfiguration alloc] initWithDatabase:bCopy dataSource:self metadata:empty];
       v33 = self->_store;
       v56 = 0;
       v34 = [(KCSharingStore *)v33 fetchValueForMetadataKey:@"CKSyncEngineSharedMetadata" error:&v56];
@@ -4932,7 +4932,7 @@ LABEL_16:
       if (v35)
       {
         v36 = v35;
-        v37 = [(KCSharingSyncController *)self loggingIdentifier];
+        loggingIdentifier9 = [(KCSharingSyncController *)self loggingIdentifier];
         v38 = KCSharingLogObject();
 
         if (!os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -4940,7 +4940,7 @@ LABEL_16:
 LABEL_30:
 
           [(KCSharingSyncController *)self isLockedError:v36];
-          v10[2](v10, v36);
+          completionCopy[2](completionCopy, v36);
 LABEL_31:
 
 LABEL_44:
@@ -4955,7 +4955,7 @@ LABEL_57:
         goto LABEL_30;
       }
 
-      v36 = [[CKSyncEngineConfiguration alloc] initWithDatabase:v9 dataSource:self metadata:v34];
+      v36 = [[CKSyncEngineConfiguration alloc] initWithDatabase:dBCopy dataSource:self metadata:v34];
     }
 
     if (!self->_forTesting)
@@ -4976,7 +4976,7 @@ LABEL_57:
 
     if (self->_receivedPrivatePushesWhileLocked)
     {
-      v43 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier10 = [(KCSharingSyncController *)self loggingIdentifier];
       v44 = KCSharingLogObject();
 
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -4985,15 +4985,15 @@ LABEL_57:
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Sync engine reinit: private engine needs to fetch changes", buf, 2u);
       }
 
-      v45 = [(KCSharingSyncController *)self privateSyncEngine];
-      [v45 setNeedsToFetchChanges];
+      privateSyncEngine = [(KCSharingSyncController *)self privateSyncEngine];
+      [privateSyncEngine setNeedsToFetchChanges];
 
       self->_receivedPrivatePushesWhileLocked = 0;
     }
 
     if (self->_receivedSharedPushesWhileLocked)
     {
-      v46 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier11 = [(KCSharingSyncController *)self loggingIdentifier];
       v47 = KCSharingLogObject();
 
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
@@ -5002,17 +5002,17 @@ LABEL_57:
         _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Sync engine reinit: shared engine needs to fetch changes", buf, 2u);
       }
 
-      v48 = [(KCSharingSyncController *)self sharedSyncEngine];
-      [v48 setNeedsToFetchChanges];
+      sharedSyncEngine = [(KCSharingSyncController *)self sharedSyncEngine];
+      [sharedSyncEngine setNeedsToFetchChanges];
 
       self->_receivedSharedPushesWhileLocked = 0;
     }
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_44;
   }
 
-  v25 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier12 = [(KCSharingSyncController *)self loggingIdentifier];
   v26 = KCSharingLogObject();
 
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -5026,18 +5026,18 @@ LABEL_57:
   v27 = [NSDictionary dictionaryWithObjects:&v68 forKeys:&v67 count:1];
   v16 = [NSError errorWithDomain:@"KCSharingErrorDomain" code:43 userInfo:v27];
 
-  v10[2](v10, v16);
+  completionCopy[2](completionCopy, v16);
 LABEL_45:
 }
 
-- (void)acquireCloudCoreSessionWithContainerID:(id)a3 applicationID:(id)a4 encryptionService:(id)a5 completion:(id)a6
+- (void)acquireCloudCoreSessionWithContainerID:(id)d applicationID:(id)iD encryptionService:(id)service completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  serviceCopy = service;
+  completionCopy = completion;
   v14 = self->_operationQueue == 0;
-  v15 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v16 = KCSharingLogObject();
 
   if (v14)
@@ -5053,7 +5053,7 @@ LABEL_45:
     v18 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v19 = [NSError errorWithDomain:@"KCSharingErrorDomain" code:40 userInfo:v18];
 
-    v13[2](v13, v19);
+    completionCopy[2](completionCopy, v19);
   }
 
   else
@@ -5070,10 +5070,10 @@ LABEL_45:
     v20[2] = sub_10007D3BC;
     v20[3] = &unk_100337BB0;
     objc_copyWeak(&v25, &buf);
-    v21 = v10;
-    v22 = v11;
-    v23 = v12;
-    v24 = v13;
+    v21 = dCopy;
+    v22 = iDCopy;
+    v23 = serviceCopy;
+    v24 = completionCopy;
     v17 = [NSBlockOperation blockOperationWithBlock:v20];
     [(NSOperationQueue *)self->_operationQueue addOperation:v17];
 
@@ -5082,22 +5082,22 @@ LABEL_45:
   }
 }
 
-- (id)fetchStoredSyncEngineStateWithMetadataKey:(id)a3 withError:(id *)a4
+- (id)fetchStoredSyncEngineStateWithMetadataKey:(id)key withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(KCSharingSyncController *)self loggingIdentifier];
+  keyCopy = key;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v8 = KCSharingLogObject();
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v36 = v6;
+    v36 = keyCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Fetching stored %{public}@", buf, 0xCu);
   }
 
-  v9 = [(KCSharingSyncController *)self store];
+  store = [(KCSharingSyncController *)self store];
   v34 = 0;
-  v10 = [v9 fetchValueForMetadataKey:v6 error:&v34];
+  v10 = [store fetchValueForMetadataKey:keyCopy error:&v34];
   v11 = v34;
 
   if (!v11)
@@ -5109,13 +5109,13 @@ LABEL_45:
       v17 = v33;
       if (v17)
       {
-        v18 = [(KCSharingSyncController *)self loggingIdentifier];
+        loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
         v19 = KCSharingLogObject();
 
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v36 = v6;
+          v36 = keyCopy;
           v37 = 2114;
           v38 = v17;
           _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Failed to unarchive %{public}@ with error: %{public}@", buf, 0x16u);
@@ -5124,7 +5124,7 @@ LABEL_45:
         v32 = 0;
         v20 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v10 error:&v32];
         v21 = v32;
-        v22 = [(KCSharingSyncController *)self loggingIdentifier];
+        loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
         v23 = KCSharingLogObject();
 
         if (v21)
@@ -5132,16 +5132,16 @@ LABEL_45:
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v36 = v6;
+            v36 = keyCopy;
             v37 = 2114;
             v38 = v21;
             _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Failed to unarchive old way also %{public}@ with error: %{public}@", buf, 0x16u);
           }
 
-          if (a4)
+          if (error)
           {
             v24 = v21;
-            *a4 = v21;
+            *error = v21;
           }
 
           v15 = 0;
@@ -5151,12 +5151,12 @@ LABEL_45:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v36 = v6;
+          v36 = keyCopy;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Falling back and updating %{public}@ sync engine metadata from old style to new style", buf, 0xCu);
         }
 
         v31 = 0;
-        v26 = [(KCSharingSyncController *)self storeOldSyncEngineState:v10 asNewSyncEngineStateWithMetadataKey:v6 withError:&v31];
+        v26 = [(KCSharingSyncController *)self storeOldSyncEngineState:v10 asNewSyncEngineStateWithMetadataKey:keyCopy withError:&v31];
         v27 = v31;
 
         if (v26)
@@ -5170,10 +5170,10 @@ LABEL_45:
         }
 
         v29 = v28;
-        if (a4 && (v29 & 1) == 0)
+        if (error && (v29 & 1) == 0)
         {
           v30 = v17;
-          *a4 = v17;
+          *error = v17;
         }
 
         if (!v29)
@@ -5200,23 +5200,23 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v12 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier4 = [(KCSharingSyncController *)self loggingIdentifier];
   v13 = KCSharingLogObject();
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v36 = v6;
+    v36 = keyCopy;
     v37 = 2114;
     v38 = v11;
     _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to fetch %{public}@ with error: %{public}@", buf, 0x16u);
   }
 
-  if (a4)
+  if (error)
   {
     v14 = v11;
     v15 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -5229,44 +5229,44 @@ LABEL_22:
   return v15;
 }
 
-- (id)storeOldSyncEngineState:(id)a3 asNewSyncEngineStateWithMetadataKey:(id)a4 withError:(id *)a5
+- (id)storeOldSyncEngineState:(id)state asNewSyncEngineStateWithMetadataKey:(id)key withError:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(KCSharingSyncController *)self loggingIdentifier];
+  keyCopy = key;
+  stateCopy = state;
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v11 = KCSharingLogObject();
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v8;
+    v31 = keyCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Storing Old engine data for new %@sync engine", buf, 0xCu);
   }
 
-  v12 = [[CKSyncEngineStateSerialization alloc] initWithDeprecatedData:v9];
+  v12 = [[CKSyncEngineStateSerialization alloc] initWithDeprecatedData:stateCopy];
   v29 = 0;
   v13 = [NSKeyedArchiver archivedDataWithRootObject:v12 requiringSecureCoding:1 error:&v29];
   v14 = v29;
   v15 = v14;
   if (!v13 || v14)
   {
-    v21 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
     v22 = KCSharingLogObject();
 
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v31 = v8;
+      v31 = keyCopy;
       v32 = 2114;
       v33 = v15;
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Error while archiving old engine state -> new engine state serilization for %@sync engine error: %{public}@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v23 = v15;
       v20 = 0;
-      *a5 = v15;
+      *error = v15;
       goto LABEL_17;
     }
   }
@@ -5275,7 +5275,7 @@ LABEL_22:
   {
     store = self->_store;
     v28 = 0;
-    v17 = [(KCSharingStore *)store setValue:v13 forMetadataKey:v8 error:&v28];
+    v17 = [(KCSharingStore *)store setValue:v13 forMetadataKey:keyCopy error:&v28];
     v18 = v28;
     v19 = v18;
     if (v17)
@@ -5285,7 +5285,7 @@ LABEL_22:
       goto LABEL_17;
     }
 
-    v24 = [(KCSharingSyncController *)self loggingIdentifier];
+    loggingIdentifier3 = [(KCSharingSyncController *)self loggingIdentifier];
     v25 = KCSharingLogObject();
 
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -5295,10 +5295,10 @@ LABEL_22:
       _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Failed to store converted old engine -> new engine metadata with error: %{public}@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v26 = v19;
-      *a5 = v19;
+      *error = v19;
     }
   }
 
@@ -5308,12 +5308,12 @@ LABEL_17:
   return v20;
 }
 
-- (void)setupCKNotificationListenersWithPrivateDB:(id)a3 sharedDB:(id)a4
+- (void)setupCKNotificationListenersWithPrivateDB:(id)b sharedDB:(id)dB
 {
-  v6 = a3;
-  v7 = a4;
+  bCopy = b;
+  dBCopy = dB;
   forTesting = self->_forTesting;
-  v9 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v10 = KCSharingLogObject();
 
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -5334,7 +5334,7 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Setting up CKNotification listeners", buf, 2u);
     }
 
-    if (v6 && v7)
+    if (bCopy && dBCopy)
     {
       objc_initWeak(buf, self);
       v12 = [[CKNotificationListener alloc] initWithMachServiceName:@"com.apple.securityd.aps"];
@@ -5342,22 +5342,22 @@ LABEL_17:
       self->_notificationListener = v12;
 
       v14 = self->_notificationListener;
-      v15 = [(KCSharingSyncController *)self subscriptionIDForDatabase:v6];
+      v15 = [(KCSharingSyncController *)self subscriptionIDForDatabase:bCopy];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_10007E18C;
       v22[3] = &unk_100334D70;
       objc_copyWeak(&v23, buf);
-      [(CKNotificationListener *)v14 registerForSubscriptionWithID:v15 inDatabase:v7 handler:v22];
+      [(CKNotificationListener *)v14 registerForSubscriptionWithID:v15 inDatabase:dBCopy handler:v22];
 
       v16 = self->_notificationListener;
-      v17 = [(KCSharingSyncController *)self subscriptionIDForDatabase:v7];
+      v17 = [(KCSharingSyncController *)self subscriptionIDForDatabase:dBCopy];
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_10007E228;
       v20[3] = &unk_100334D70;
       objc_copyWeak(&v21, buf);
-      [(CKNotificationListener *)v16 registerForSubscriptionWithID:v17 inDatabase:v7 handler:v20];
+      [(CKNotificationListener *)v16 registerForSubscriptionWithID:v17 inDatabase:dBCopy handler:v20];
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&v23);
@@ -5366,7 +5366,7 @@ LABEL_17:
 
     else
     {
-      v18 = [(KCSharingSyncController *)self loggingIdentifier];
+      loggingIdentifier2 = [(KCSharingSyncController *)self loggingIdentifier];
       v19 = KCSharingLogObject();
 
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -5378,14 +5378,14 @@ LABEL_17:
   }
 }
 
-- (KCSharingSyncController)initWithStore:(id)a3 container:(id)a4 privateSyncEngine:(id)a5 sharedSyncEngine:(id)a6 messagingdConnection:(id)a7 lockStateTracker:(id)a8 forTesting:(BOOL)a9
+- (KCSharingSyncController)initWithStore:(id)store container:(id)container privateSyncEngine:(id)engine sharedSyncEngine:(id)syncEngine messagingdConnection:(id)connection lockStateTracker:(id)tracker forTesting:(BOOL)testing
 {
-  v16 = a3;
-  v17 = a4;
-  v54 = a5;
-  v53 = a6;
-  v52 = a7;
-  v18 = a8;
+  storeCopy = store;
+  containerCopy = container;
+  engineCopy = engine;
+  syncEngineCopy = syncEngine;
+  connectionCopy = connection;
+  trackerCopy = tracker;
   v60.receiver = self;
   v60.super_class = KCSharingSyncController;
   v19 = [(KCSharingSyncController *)&v60 init];
@@ -5396,22 +5396,22 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v50 = v17;
+  v50 = containerCopy;
   v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v21 = dispatch_queue_create("com.apple.security.keychain.sharing.KCSharingSyncController", v20);
   queue = v19->_queue;
   v19->_queue = v21;
 
-  objc_storeStrong(&v19->_store, a3);
-  objc_storeStrong(&v19->_container, a4);
-  objc_storeStrong(&v19->_privateSyncEngine, a5);
-  objc_storeStrong(&v19->_sharedSyncEngine, a6);
-  objc_storeStrong(&v19->_messagingdConnection, a7);
-  v23 = [v16 getLoggingIdentifer];
+  objc_storeStrong(&v19->_store, store);
+  objc_storeStrong(&v19->_container, container);
+  objc_storeStrong(&v19->_privateSyncEngine, engine);
+  objc_storeStrong(&v19->_sharedSyncEngine, syncEngine);
+  objc_storeStrong(&v19->_messagingdConnection, connection);
+  getLoggingIdentifer = [storeCopy getLoggingIdentifer];
   loggingIdentifier = v19->_loggingIdentifier;
-  v19->_loggingIdentifier = v23;
+  v19->_loggingIdentifier = getLoggingIdentifer;
 
-  v19->_forTesting = a9;
+  v19->_forTesting = testing;
   reinitSyncEnginesCompletionBlock = v19->_reinitSyncEnginesCompletionBlock;
   v19->_reinitSyncEnginesCompletionBlock = 0;
 
@@ -5431,7 +5431,7 @@ LABEL_23:
     cloudCoreUtilities = v19->_cloudCoreUtilities;
     v19->_cloudCoreUtilities = v30;
 
-    v32 = [(KCSharingSyncController *)v19 loggingIdentifier];
+    loggingIdentifier = [(KCSharingSyncController *)v19 loggingIdentifier];
     v33 = KCSharingLogObject();
 
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
@@ -5448,15 +5448,15 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v17 || a9)
+  if (containerCopy || testing)
   {
-    v40 = [v17 privateCloudDatabase];
-    [(KCSharingSyncController *)v19 setPrivateCloudDB:v40];
+    privateCloudDatabase = [containerCopy privateCloudDatabase];
+    [(KCSharingSyncController *)v19 setPrivateCloudDB:privateCloudDatabase];
 
-    v41 = [v17 sharedCloudDatabase];
-    [(KCSharingSyncController *)v19 setSharedCloudDB:v41];
+    sharedCloudDatabase = [containerCopy sharedCloudDatabase];
+    [(KCSharingSyncController *)v19 setSharedCloudDB:sharedCloudDatabase];
 
-    v42 = [(KCSharingSyncController *)v19 loggingIdentifier];
+    loggingIdentifier2 = [(KCSharingSyncController *)v19 loggingIdentifier];
     v33 = KCSharingLogObject();
 
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -5470,9 +5470,9 @@ LABEL_12:
 
 LABEL_13:
 
-    if (v18)
+    if (trackerCopy)
     {
-      v43 = v18;
+      v43 = trackerCopy;
     }
 
     else
@@ -5483,7 +5483,7 @@ LABEL_13:
     lockStateTracker = v19->_lockStateTracker;
     v19->_lockStateTracker = v43;
 
-    if (!a9)
+    if (!testing)
     {
       v45 = [[CKKSNearFutureScheduler alloc] initWithName:@"KCSharingScheduler" delay:10000000000 keepProcessAlive:0 dependencyDescriptionCode:0 block:&stru_100334D28];
       nearFutureScheduler = v19->_nearFutureScheduler;
@@ -5491,9 +5491,9 @@ LABEL_13:
 
       if ((sub_10001078C() & 1) == 0)
       {
-        v47 = [(KCSharingSyncController *)v19 privateCloudDB];
-        v48 = [(KCSharingSyncController *)v19 sharedCloudDB];
-        [(KCSharingSyncController *)v19 setupCKNotificationListenersWithPrivateDB:v47 sharedDB:v48];
+        privateCloudDB = [(KCSharingSyncController *)v19 privateCloudDB];
+        sharedCloudDB = [(KCSharingSyncController *)v19 sharedCloudDB];
+        [(KCSharingSyncController *)v19 setupCKNotificationListenersWithPrivateDB:privateCloudDB sharedDB:sharedCloudDB];
       }
 
       if (sub_10001078C())
@@ -5521,11 +5521,11 @@ LABEL_13:
     }
 
     [(CKKSLockStateTracker *)v19->_lockStateTracker addLockStateObserver:v19, v50];
-    v17 = v51;
+    containerCopy = v51;
     goto LABEL_23;
   }
 
-  v37 = [(KCSharingSyncController *)v19 loggingIdentifier];
+  loggingIdentifier3 = [(KCSharingSyncController *)v19 loggingIdentifier];
   v38 = KCSharingLogObject();
 
   if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
@@ -5535,7 +5535,7 @@ LABEL_13:
   }
 
   v39 = 0;
-  v17 = 0;
+  containerCopy = 0;
 LABEL_24:
 
   return v39;
@@ -5544,7 +5544,7 @@ LABEL_24:
 - (KCSharingSyncController)init
 {
   v3 = sub_10001078C();
-  v4 = [(KCSharingSyncController *)self loggingIdentifier];
+  loggingIdentifier = [(KCSharingSyncController *)self loggingIdentifier];
   v5 = KCSharingLogObject();
 
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);

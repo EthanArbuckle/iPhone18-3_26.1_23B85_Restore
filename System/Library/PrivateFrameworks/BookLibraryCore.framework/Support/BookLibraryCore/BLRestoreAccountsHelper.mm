@@ -1,43 +1,43 @@
 @interface BLRestoreAccountsHelper
-- (BLRestoreAccountsHelper)initWithAuthenticationQueue:(id)a3;
-- (id)_enqueueAuthenticateTask:(id)a3 error:(id *)a4;
+- (BLRestoreAccountsHelper)initWithAuthenticationQueue:(id)queue;
+- (id)_enqueueAuthenticateTask:(id)task error:(id *)error;
 - (id)_newDefaultAuthenticateOptions;
-- (id)accountIDForAccountName:(id)a3 error:(id *)a4;
-- (id)preflightAccount:(id)a3 error:(id *)a4;
+- (id)accountIDForAccountName:(id)name error:(id *)error;
+- (id)preflightAccount:(id)account error:(id *)error;
 - (void)_dq_establishPrimaryAccount;
 - (void)establishPrimaryAccount;
 @end
 
 @implementation BLRestoreAccountsHelper
 
-- (BLRestoreAccountsHelper)initWithAuthenticationQueue:(id)a3
+- (BLRestoreAccountsHelper)initWithAuthenticationQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8.receiver = self;
   v8.super_class = BLRestoreAccountsHelper;
   v5 = [(BLRestoreAccountsHelper *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!queueCopy)
     {
       v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v4 = dispatch_queue_create("com.apple.ibooks.BLService.BLRestoreAccountsHelper", v6);
+      queueCopy = dispatch_queue_create("com.apple.ibooks.BLService.BLRestoreAccountsHelper", v6);
     }
 
-    objc_storeStrong(&v5->_authenticationQueue, v4);
+    objc_storeStrong(&v5->_authenticationQueue, queueCopy);
   }
 
   return v5;
 }
 
-- (id)accountIDForAccountName:(id)a3 error:(id *)a4
+- (id)accountIDForAccountName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   accountIDsByAppleID = self->_accountIDsByAppleID;
   if (!accountIDsByAppleID)
   {
     v8 = +[ACAccountStore bu_sharedAccountStore];
-    v9 = [v8 accounts];
+    accounts = [v8 accounts];
 
     v10 = objc_alloc_init(NSMutableDictionary);
     v11 = self->_accountIDsByAppleID;
@@ -47,7 +47,7 @@
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v12 = v9;
+    v12 = accounts;
     v13 = [v12 countByEnumeratingWithState:&v40 objects:v50 count:16];
     if (v13)
     {
@@ -63,12 +63,12 @@
           }
 
           v17 = *(*(&v40 + 1) + 8 * i);
-          v18 = [v17 ams_DSID];
-          v19 = [v17 username];
-          v20 = v19;
-          if (v18)
+          ams_DSID = [v17 ams_DSID];
+          username = [v17 username];
+          v20 = username;
+          if (ams_DSID)
           {
-            v21 = v19 == 0;
+            v21 = username == 0;
           }
 
           else
@@ -78,7 +78,7 @@
 
           if (!v21)
           {
-            [(NSMutableDictionary *)self->_accountIDsByAppleID setObject:v18 forKeyedSubscript:v19];
+            [(NSMutableDictionary *)self->_accountIDsByAppleID setObject:ams_DSID forKeyedSubscript:username];
           }
         }
 
@@ -91,11 +91,11 @@
     accountIDsByAppleID = self->_accountIDsByAppleID;
   }
 
-  v22 = [(NSMutableDictionary *)accountIDsByAppleID objectForKeyedSubscript:v6];
+  v22 = [(NSMutableDictionary *)accountIDsByAppleID objectForKeyedSubscript:nameCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = v22;
+    activeStoreAccount = v22;
     goto LABEL_17;
   }
 
@@ -103,8 +103,8 @@
   if (objc_opt_isKindOfClass())
   {
     v24 = v22;
-    v23 = 0;
-    if (!a4)
+    activeStoreAccount = 0;
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -114,14 +114,14 @@
 
   if (!v22)
   {
-    v23 = 0;
+    activeStoreAccount = 0;
     goto LABEL_17;
   }
 
   v28 = +[BUAccountsProvider sharedProvider];
-  v23 = [v28 activeStoreAccount];
+  activeStoreAccount = [v28 activeStoreAccount];
 
-  if (!v23)
+  if (!activeStoreAccount)
   {
     goto LABEL_17;
   }
@@ -130,47 +130,47 @@
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v45 = v6;
+    v45 = nameCopy;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "ContentRestore: Attempting to resolve unknown Apple Account: %@", buf, 0xCu);
   }
 
-  v30 = [(BLRestoreAccountsHelper *)self _newDefaultAuthenticateOptions];
-  v31 = [[AMSAuthenticateTask alloc] initWithAccount:0 options:v30];
-  [v31 setUsername:v6];
+  _newDefaultAuthenticateOptions = [(BLRestoreAccountsHelper *)self _newDefaultAuthenticateOptions];
+  v31 = [[AMSAuthenticateTask alloc] initWithAccount:0 options:_newDefaultAuthenticateOptions];
+  [v31 setUsername:nameCopy];
   v39 = 0;
   v32 = [(BLRestoreAccountsHelper *)self _enqueueAuthenticateTask:v31 error:&v39];
-  v23 = v39;
-  v33 = [v32 account];
+  activeStoreAccount = v39;
+  account = [v32 account];
 
-  if (!v33)
+  if (!account)
   {
     goto LABEL_34;
   }
 
-  v38 = v30;
-  v34 = [v32 account];
-  v35 = [v34 username];
-  if (![v35 length])
+  v38 = _newDefaultAuthenticateOptions;
+  account2 = [v32 account];
+  username2 = [account2 username];
+  if (![username2 length])
   {
 
-    v30 = v38;
+    _newDefaultAuthenticateOptions = v38;
 LABEL_34:
     v37 = BLServiceLog();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v45 = v6;
+      v45 = nameCopy;
       v46 = 2112;
-      v47 = v23;
+      v47 = activeStoreAccount;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "ContentRestore: Could not resolve AppleID: %@ error:  %@", buf, 0x16u);
     }
 
-    if (!v23)
+    if (!activeStoreAccount)
     {
-      v23 = sub_1000A8F44(0, 0, 0);
+      activeStoreAccount = sub_1000A8F44(0, 0, 0);
     }
 
-    [(NSMutableDictionary *)self->_accountIDsByAppleID setObject:v23 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_accountIDsByAppleID setObject:activeStoreAccount forKeyedSubscript:nameCopy];
     goto LABEL_39;
   }
 
@@ -178,27 +178,27 @@ LABEL_34:
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v45 = v6;
+    v45 = nameCopy;
     v46 = 2112;
-    v47 = v35;
+    v47 = username2;
     v48 = 2112;
     v49 = 0;
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "ContentRestore: Resolved AppleID: %@ to AppleID: %@ and DSID: %@", buf, 0x20u);
   }
 
-  [(NSMutableDictionary *)self->_accountIDsByAppleID setObject:0 forKeyedSubscript:v6];
-  [(NSMutableDictionary *)self->_accountIDsByAppleID setObject:0 forKeyedSubscript:v35];
+  [(NSMutableDictionary *)self->_accountIDsByAppleID setObject:0 forKeyedSubscript:nameCopy];
+  [(NSMutableDictionary *)self->_accountIDsByAppleID setObject:0 forKeyedSubscript:username2];
 
-  v30 = v38;
+  _newDefaultAuthenticateOptions = v38;
 LABEL_39:
 
 LABEL_17:
   v24 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_18:
-    v25 = v23;
-    *a4 = v23;
+    v25 = activeStoreAccount;
+    *error = activeStoreAccount;
   }
 
 LABEL_19:
@@ -210,29 +210,29 @@ LABEL_19:
 - (void)establishPrimaryAccount
 {
   v3 = +[BUAccountsProvider sharedProvider];
-  v4 = [v3 activeStoreAccount];
+  activeStoreAccount = [v3 activeStoreAccount];
 
-  if (!v4)
+  if (!activeStoreAccount)
   {
-    v5 = [(BLRestoreAccountsHelper *)self authenticationQueue];
+    authenticationQueue = [(BLRestoreAccountsHelper *)self authenticationQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000C0144;
     block[3] = &unk_10011CFE8;
     block[4] = self;
-    dispatch_sync(v5, block);
+    dispatch_sync(authenticationQueue, block);
   }
 }
 
 - (void)_dq_establishPrimaryAccount
 {
-  v3 = [(BLRestoreAccountsHelper *)self authenticationQueue];
-  dispatch_assert_queue_V2(v3);
+  authenticationQueue = [(BLRestoreAccountsHelper *)self authenticationQueue];
+  dispatch_assert_queue_V2(authenticationQueue);
 
   v4 = +[BUAccountsProvider sharedProvider];
-  v5 = [v4 activeStoreAccount];
+  activeStoreAccount = [v4 activeStoreAccount];
 
-  if (!v5)
+  if (!activeStoreAccount)
   {
     v6 = BLServiceLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -241,12 +241,12 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ContentRestore: Attempt to establish primary account", buf, 2u);
     }
 
-    v7 = [(BLRestoreAccountsHelper *)self _newDefaultAuthenticateOptions];
-    [v7 setCanMakeAccountActive:1];
-    v8 = [[AMSAuthenticateTask alloc] initWithAccount:0 options:v7];
-    v9 = [v8 performAuthentication];
+    _newDefaultAuthenticateOptions = [(BLRestoreAccountsHelper *)self _newDefaultAuthenticateOptions];
+    [_newDefaultAuthenticateOptions setCanMakeAccountActive:1];
+    v8 = [[AMSAuthenticateTask alloc] initWithAccount:0 options:_newDefaultAuthenticateOptions];
+    performAuthentication = [v8 performAuthentication];
     v16 = 0;
-    v10 = [v9 resultWithError:&v16];
+    v10 = [performAuthentication resultWithError:&v16];
     v11 = v16;
 
     v12 = BLServiceLog();
@@ -263,28 +263,28 @@ LABEL_19:
 
     else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v10 account];
-      v15 = [v10 serverResponse];
+      account = [v10 account];
+      serverResponse = [v10 serverResponse];
       *buf = 138412546;
-      v18 = v14;
+      v18 = account;
       v19 = 2112;
-      v20 = v15;
+      v20 = serverResponse;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "ContentRestore: Got account: %@, serverResponse: %@", buf, 0x16u);
     }
   }
 }
 
-- (id)preflightAccount:(id)a3 error:(id *)a4
+- (id)preflightAccount:(id)account error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 ams_DSID];
-  v8 = [v6 username];
-  if ([v8 length])
+  accountCopy = account;
+  ams_DSID = [accountCopy ams_DSID];
+  username = [accountCopy username];
+  if ([username length])
   {
-    v25 = a4;
-    if (v7)
+    errorCopy = error;
+    if (ams_DSID)
     {
-      v9 = [ACAccount bu_storeAccountWithDSID:v7];
+      v9 = [ACAccount bu_storeAccountWithDSID:ams_DSID];
     }
 
     else
@@ -299,7 +299,7 @@ LABEL_19:
 
     else
     {
-      v12 = v6;
+      v12 = accountCopy;
     }
 
     v13 = v12;
@@ -307,27 +307,27 @@ LABEL_19:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413314;
-      v28 = v7;
+      v28 = ams_DSID;
       v29 = 2112;
-      v30 = v8;
+      v30 = username;
       v31 = 1024;
       v32 = v9 == 0;
       v33 = 1024;
-      v34 = [v13 isActive];
+      isActive = [v13 isActive];
       v35 = 1024;
-      v36 = [v13 isAuthenticated];
+      isAuthenticated = [v13 isAuthenticated];
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "ContentRestore: Preflight account: %@ | %@, accountIsNew: %d, active: %d, isAuthenticated: %d", buf, 0x28u);
     }
 
-    v24 = v8;
+    v24 = username;
 
-    v15 = [(BLRestoreAccountsHelper *)self _newDefaultAuthenticateOptions];
-    [v15 setAuthenticationType:0];
-    v16 = [[AMSAuthenticateTask alloc] initWithAccount:v13 options:v15];
+    _newDefaultAuthenticateOptions = [(BLRestoreAccountsHelper *)self _newDefaultAuthenticateOptions];
+    [_newDefaultAuthenticateOptions setAuthenticationType:0];
+    v16 = [[AMSAuthenticateTask alloc] initWithAccount:v13 options:_newDefaultAuthenticateOptions];
     v26 = 0;
     v17 = [(BLRestoreAccountsHelper *)self _enqueueAuthenticateTask:v16 error:&v26];
     v10 = v26;
-    v11 = [v17 account];
+    account = [v17 account];
     v18 = BLServiceLog();
     v19 = v18;
     if (v10)
@@ -335,7 +335,7 @@ LABEL_19:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v28 = v7;
+        v28 = ams_DSID;
         v29 = 2112;
         v30 = v10;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "ContentRestore: Encountered error trying to preflight account: %@, error: %@", buf, 0x16u);
@@ -344,17 +344,17 @@ LABEL_19:
 
     else if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v17 account];
-      v22 = [v17 serverResponse];
+      account2 = [v17 account];
+      serverResponse = [v17 serverResponse];
       *buf = 138412546;
-      v28 = v23;
+      v28 = account2;
       v29 = 2112;
-      v30 = v22;
+      v30 = serverResponse;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "ContentRestore: Got account: %@, serverResponse: %@", buf, 0x16u);
     }
 
-    v8 = v24;
-    a4 = v25;
+    username = v24;
+    error = errorCopy;
   }
 
   else
@@ -364,22 +364,22 @@ LABEL_19:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v28 = v7;
+      v28 = ams_DSID;
       v29 = 2112;
       v30 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "ContentRestore: Cannot restore without an AppleID for account: %@, error: %@", buf, 0x16u);
     }
 
-    v11 = 0;
+    account = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v20 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
-  return v11;
+  return account;
 }
 
 - (id)_newDefaultAuthenticateOptions
@@ -414,25 +414,25 @@ LABEL_19:
   return v2;
 }
 
-- (id)_enqueueAuthenticateTask:(id)a3 error:(id *)a4
+- (id)_enqueueAuthenticateTask:(id)task error:(id *)error
 {
-  v6 = a3;
+  taskCopy = task;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_1000C0988;
   v19 = sub_1000C0998;
   v20 = 0;
-  v7 = [(BLRestoreAccountsHelper *)self authenticationQueue];
+  authenticationQueue = [(BLRestoreAccountsHelper *)self authenticationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C09A0;
   block[3] = &unk_10011EE38;
-  v12 = v6;
+  v12 = taskCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  errorCopy = error;
+  v8 = taskCopy;
+  dispatch_sync(authenticationQueue, block);
 
   v9 = v16[5];
   _Block_object_dispose(&v15, 8);

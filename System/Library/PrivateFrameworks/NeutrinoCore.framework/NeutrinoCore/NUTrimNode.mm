@@ -1,20 +1,20 @@
 @interface NUTrimNode
 - (BOOL)requiresVideoComposition;
-- (NUTrimNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (NUTrimNode)initWithTimeRange:(id *)a3 input:(id)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateVideo:(id *)a3;
-- (id)_evaluateVideoAttributes:(id *)a3;
-- (id)_evaluateVideoComposition:(id *)a3;
-- (id)_evaluateVideoProperties:(id *)a3;
-- (id)_transformWithError:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (NUTrimNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (NUTrimNode)initWithTimeRange:(id *)range input:(id)input;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateVideo:(id *)video;
+- (id)_evaluateVideoAttributes:(id *)attributes;
+- (id)_evaluateVideoComposition:(id *)composition;
+- (id)_evaluateVideoProperties:(id *)properties;
+- (id)_transformWithError:(id *)error;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUTrimNode
 
-- (id)_evaluateVideoAttributes:(id *)a3
+- (id)_evaluateVideoAttributes:(id *)attributes
 {
   v4 = [NUVideoAttributes alloc];
   [(NUTrimNode *)self range];
@@ -25,10 +25,10 @@
   return v5;
 }
 
-- (id)_evaluateVideoProperties:(id *)a3
+- (id)_evaluateVideoProperties:(id *)properties
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!properties)
   {
     v9 = NUAssertLogger_5458();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -49,8 +49,8 @@
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(range.start.value) = 138543618;
         *(&range.start.value + 4) = v16;
         LOWORD(range.start.flags) = 2114;
@@ -61,8 +61,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(range.start.value) = 138543362;
       *(&range.start.value + 4) = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &range, 0xCu);
@@ -98,7 +98,7 @@
       else
       {
         [NUError rangeError:@"keyframe time outside trim range" object:self];
-        *a3 = v7 = 0;
+        *properties = v7 = 0;
       }
     }
 
@@ -116,10 +116,10 @@
   return v7;
 }
 
-- (id)_evaluateVideo:(id *)a3
+- (id)_evaluateVideo:(id *)video
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!video)
   {
     v13 = NUAssertLogger_5458();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -140,8 +140,8 @@
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v20;
         v33 = 2114;
@@ -152,8 +152,8 @@
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -169,10 +169,10 @@
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 tracks];
+    tracks = [v6 tracks];
     [(NUTrimNode *)self range];
     v29 = 0;
-    v9 = [NUVideoUtilities trimCompositionTracks:v8 toRange:buf error:&v29];
+    v9 = [NUVideoUtilities trimCompositionTracks:tracks toRange:buf error:&v29];
     v10 = v29;
 
     if (v9)
@@ -183,23 +183,23 @@
     else
     {
       [NUError errorWithCode:1 reason:@"failed to trim output video to range" object:self underlyingError:v10];
-      *a3 = v11 = 0;
+      *video = v11 = 0;
     }
   }
 
   else
   {
     [NUError errorWithCode:1 reason:@"[NUTrimNode _evaluateVideo] failed to get new composition" object:0];
-    *a3 = v11 = 0;
+    *video = v11 = 0;
   }
 
   return v11;
 }
 
-- (id)_evaluateVideoComposition:(id *)a3
+- (id)_evaluateVideoComposition:(id *)composition
 {
   v71 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!composition)
   {
     v42 = NUAssertLogger_5458();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -220,8 +220,8 @@
         v49 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v50 = MEMORY[0x1E696AF00];
         v51 = v49;
-        v52 = [v50 callStackSymbols];
-        v53 = [v52 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v50 callStackSymbols];
+        v53 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v49;
         *&buf[12] = 2114;
@@ -232,8 +232,8 @@
 
     else if (v46)
     {
-      v47 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v48 = [v47 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v48 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v48;
       _os_log_error_impl(&dword_1C0184000, v45, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -245,13 +245,13 @@
   v5 = [(NURenderNode *)self outputVideo:?];
   if (v5)
   {
-    v6 = [NUVideoUtilities firstEnabledVideoTrackInAsset:v5 error:a3];
+    v6 = [NUVideoUtilities firstEnabledVideoTrackInAsset:v5 error:composition];
     if (v6)
     {
-      v7 = [(NURenderNode *)self inputs];
-      v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+      inputs = [(NURenderNode *)self inputs];
+      v8 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-      v9 = [v8 outputVideoComposition:a3];
+      v9 = [v8 outputVideoComposition:composition];
       if (v9)
       {
         v60 = v8;
@@ -261,8 +261,8 @@
         v65 = 0u;
         v66 = 0u;
         v59 = v9;
-        v10 = [v9 instructions];
-        v11 = [v10 countByEnumeratingWithState:&v63 objects:v70 count:16];
+        instructions = [v9 instructions];
+        v11 = [instructions countByEnumeratingWithState:&v63 objects:v70 count:16];
         if (!v11)
         {
           goto LABEL_34;
@@ -277,7 +277,7 @@
           {
             if (*v64 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(instructions);
             }
 
             v15 = *(*(&v63 + 1) + 8 * v14);
@@ -313,8 +313,8 @@
                   v33 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
                   v34 = MEMORY[0x1E696AF00];
                   v35 = v33;
-                  v36 = [v34 callStackSymbols];
-                  v37 = [v36 componentsJoinedByString:@"\n"];
+                  callStackSymbols3 = [v34 callStackSymbols];
+                  v37 = [callStackSymbols3 componentsJoinedByString:@"\n"];
                   *buf = 138543618;
                   *&buf[4] = v33;
                   *&buf[12] = 2114;
@@ -325,8 +325,8 @@
 
               else if (v30)
               {
-                v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-                v32 = [v31 componentsJoinedByString:@"\n"];
+                callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+                v32 = [callStackSymbols4 componentsJoinedByString:@"\n"];
                 *buf = 138543362;
                 *&buf[4] = v32;
                 _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -412,7 +412,7 @@ LABEL_19:
           }
 
           while (v12 != v14);
-          v23 = [v10 countByEnumeratingWithState:&v63 objects:v70 count:16];
+          v23 = [instructions countByEnumeratingWithState:&v63 objects:v70 count:16];
           v12 = v23;
           if (!v23)
           {
@@ -449,24 +449,24 @@ LABEL_38:
 - (BOOL)requiresVideoComposition
 {
   v2 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v3 = [v2 requiresVideoComposition];
+  requiresVideoComposition = [v2 requiresVideoComposition];
 
-  return v3;
+  return requiresVideoComposition;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v4 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v5 = [v4 outputImage:a3];
+  v5 = [v4 outputImage:image];
 
   return v5;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = NUTrimNode;
-  v7 = [(NURenderNode *)&v11 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v7 = [(NURenderNode *)&v11 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
   if (v7)
   {
     v9 = *&self->_range.start.epoch;
@@ -479,23 +479,23 @@ LABEL_38:
   return v7;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 evaluationMode] != 3)
+  cacheCopy = cache;
+  stateCopy = state;
+  if ([stateCopy evaluationMode] != 3)
   {
 LABEL_7:
-    v10 = v9;
+    v10 = stateCopy;
     goto LABEL_11;
   }
 
-  if (v9)
+  if (stateCopy)
   {
-    [v9 time];
+    [stateCopy time];
     if ((BYTE4(v18) & 0x1D) == 1 && (self->_range.start.flags & 0x1D) == 1)
     {
-      v10 = [v9 copy];
+      v10 = [stateCopy copy];
 
       if (v10)
       {
@@ -524,12 +524,12 @@ LABEL_7:
 LABEL_11:
   v13.receiver = self;
   v13.super_class = NUTrimNode;
-  v11 = [(NURenderNode *)&v13 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+  v11 = [(NURenderNode *)&v13 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
 
   return v11;
 }
 
-- (id)_transformWithError:(id *)a3
+- (id)_transformWithError:(id *)error
 {
   v4 = [NUTimeTransformTrim alloc];
   v7 = *&self->_range.start.value;
@@ -539,11 +539,11 @@ LABEL_11:
   return v5;
 }
 
-- (NUTrimNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUTrimNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_5478);
@@ -587,8 +587,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -604,8 +604,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;
@@ -621,29 +621,29 @@ LABEL_14:
   _NUAssertFailHandler("[NUTrimNode initWithSettings:inputs:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderNode+Time.m", 40, @"Initializer not available: [%@ %@], use designated initializer instead.", v30, v31, v32, v33, v29);
 }
 
-- (NUTrimNode)initWithTimeRange:(id *)a3 input:(id)a4
+- (NUTrimNode)initWithTimeRange:(id *)range input:(id)input
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696B098];
-  v7 = *&a3->var0.var3;
-  v17[0] = *&a3->var0.var0;
+  v7 = *&range->var0.var3;
+  v17[0] = *&range->var0.var0;
   v17[1] = v7;
-  v17[2] = *&a3->var1.var1;
-  v8 = a4;
+  v17[2] = *&range->var1.var1;
+  inputCopy = input;
   v9 = [v6 valueWithCMTimeRange:v17];
   v20 = @"range";
   v21[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   v18 = *MEMORY[0x1E695FAB0];
-  v19 = v8;
+  v19 = inputCopy;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   v16.receiver = self;
   v16.super_class = NUTrimNode;
   v12 = [(NURenderNode *)&v16 initWithSettings:v10 inputs:v11];
 
-  v14 = *&a3->var0.var3;
-  v13 = *&a3->var1.var1;
-  *(v12 + 168) = *&a3->var0.var0;
+  v14 = *&range->var0.var3;
+  v13 = *&range->var1.var1;
+  *(v12 + 168) = *&range->var0.var0;
   *(v12 + 184) = v14;
   *(v12 + 200) = v13;
 

@@ -1,8 +1,8 @@
 @interface DCDeviceMetadataDaemonConnection
 - (DCDeviceMetadataDaemonConnection)init;
 - (id)connection;
-- (id)remoteObjectProxy:(id)a3;
-- (id)synchronousRemoteObjectProxy:(id)a3;
+- (id)remoteObjectProxy:(id)proxy;
+- (id)synchronousRemoteObjectProxy:(id)proxy;
 @end
 
 @implementation DCDeviceMetadataDaemonConnection
@@ -94,20 +94,20 @@ void __46__DCDeviceMetadataDaemonConnection_connection__block_invoke_2(uint64_t 
   }
 }
 
-- (id)remoteObjectProxy:(id)a3
+- (id)remoteObjectProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = [(DCDeviceMetadataDaemonConnection *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  proxyCopy = proxy;
+  connection = [(DCDeviceMetadataDaemonConnection *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:proxyCopy];
 
   return v6;
 }
 
-- (id)synchronousRemoteObjectProxy:(id)a3
+- (id)synchronousRemoteObjectProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = [(DCDeviceMetadataDaemonConnection *)self connection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  proxyCopy = proxy;
+  connection = [(DCDeviceMetadataDaemonConnection *)self connection];
+  v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:proxyCopy];
 
   return v6;
 }

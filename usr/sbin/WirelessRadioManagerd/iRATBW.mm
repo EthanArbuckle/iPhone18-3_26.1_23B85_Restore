@@ -1,14 +1,14 @@
 @interface iRATBW
 + (id)URLOfModelInThisBundle;
 - (iRATBW)init;
-- (iRATBW)initWithConfiguration:(id)a3 error:(id *)a4;
-- (iRATBW)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (iRATBW)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (iRATBW)initWithMLModel:(id)a3;
-- (id)predictionFromCca:(double)a3 weighted_average_phyrate_rx:(double)a4 weighted_average_rssi:(double)a5 weighted_average_snr:(double)a6 maxOfActualLowBandwidth_d:(double)a7 tcpRTTAvg:(double)a8 wifChannelType:(double)a9 wifiguardinterval:(double)a10 isWfiCaptive:(double)a11 wifinumberOfSpatialStreams:(double)a12 error:(id *)a13;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
+- (iRATBW)initWithConfiguration:(id)configuration error:(id *)error;
+- (iRATBW)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (iRATBW)initWithContentsOfURL:(id)l error:(id *)error;
+- (iRATBW)initWithMLModel:(id)model;
+- (id)predictionFromCca:(double)cca weighted_average_phyrate_rx:(double)weighted_average_phyrate_rx weighted_average_rssi:(double)weighted_average_rssi weighted_average_snr:(double)weighted_average_snr maxOfActualLowBandwidth_d:(double)bandwidth_d tcpRTTAvg:(double)avg wifChannelType:(double)type wifiguardinterval:(double)self0 isWfiCaptive:(double)self1 wifinumberOfSpatialStreams:(double)self2 error:(id *)self3;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
 @end
 
 @implementation iRATBW
@@ -33,15 +33,15 @@
   }
 }
 
-- (iRATBW)initWithMLModel:(id)a3
+- (iRATBW)initWithMLModel:(id)model
 {
   v5.receiver = self;
   v5.super_class = iRATBW;
   result = [(iRATBW *)&v5 init];
   if (result)
   {
-    result->_model = a3;
-    if (!a3)
+    result->_model = model;
+    if (!model)
     {
       return 0;
     }
@@ -52,21 +52,21 @@
 
 - (iRATBW)init
 {
-  v3 = [objc_opt_class() URLOfModelInThisBundle];
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
 
-  return [(iRATBW *)self initWithContentsOfURL:v3 error:0];
+  return [(iRATBW *)self initWithContentsOfURL:uRLOfModelInThisBundle error:0];
 }
 
-- (iRATBW)initWithConfiguration:(id)a3 error:(id *)a4
+- (iRATBW)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v7 = [objc_opt_class() URLOfModelInThisBundle];
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
 
-  return [(iRATBW *)self initWithContentsOfURL:v7 configuration:a3 error:a4];
+  return [(iRATBW *)self initWithContentsOfURL:uRLOfModelInThisBundle configuration:configuration error:error];
 }
 
-- (iRATBW)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (iRATBW)initWithContentsOfURL:(id)l error:(id *)error
 {
-  result = [sub_1000D8114() modelWithContentsOfURL:a3 error:a4];
+  result = [sub_1000D8114() modelWithContentsOfURL:l error:error];
   if (result)
   {
 
@@ -76,9 +76,9 @@
   return result;
 }
 
-- (iRATBW)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (iRATBW)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  result = [sub_1000D8114() modelWithContentsOfURL:a3 configuration:a4 error:a5];
+  result = [sub_1000D8114() modelWithContentsOfURL:l configuration:configuration error:error];
   if (result)
   {
 
@@ -88,7 +88,7 @@
   return result;
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -109,26 +109,26 @@
   }
 
   _Block_object_dispose(&v10, 8);
-  return [(iRATBW *)self predictionFromFeatures:a3 options:objc_alloc_init(v7) error:a4];
+  return [(iRATBW *)self predictionFromFeatures:features options:objc_alloc_init(v7) error:error];
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v5 = [(MLModel *)self->_model predictionFromFeatures:a3 options:a4 error:a5];
+  v5 = [(MLModel *)self->_model predictionFromFeatures:features options:options error:error];
   v6 = [iRATBWOutput alloc];
   [objc_msgSend(v5 featureValueForName:{@"actualLowBandwidth_d", "doubleValue"}];
 
   return [(iRATBWOutput *)v6 initWithActualLowBandwidth_d:?];
 }
 
-- (id)predictionFromCca:(double)a3 weighted_average_phyrate_rx:(double)a4 weighted_average_rssi:(double)a5 weighted_average_snr:(double)a6 maxOfActualLowBandwidth_d:(double)a7 tcpRTTAvg:(double)a8 wifChannelType:(double)a9 wifiguardinterval:(double)a10 isWfiCaptive:(double)a11 wifinumberOfSpatialStreams:(double)a12 error:(id *)a13
+- (id)predictionFromCca:(double)cca weighted_average_phyrate_rx:(double)weighted_average_phyrate_rx weighted_average_rssi:(double)weighted_average_rssi weighted_average_snr:(double)weighted_average_snr maxOfActualLowBandwidth_d:(double)bandwidth_d tcpRTTAvg:(double)avg wifChannelType:(double)type wifiguardinterval:(double)self0 isWfiCaptive:(double)self1 wifinumberOfSpatialStreams:(double)self2 error:(id *)self3
 {
-  v15 = [[iRATBWInput alloc] initWithCca:a3 weighted_average_phyrate_rx:a4 weighted_average_rssi:a5 weighted_average_snr:a6 maxOfActualLowBandwidth_d:a7 tcpRTTAvg:a8 wifChannelType:a9 wifiguardinterval:a10 isWfiCaptive:*&a11 wifinumberOfSpatialStreams:*&a12];
+  v15 = [[iRATBWInput alloc] initWithCca:cca weighted_average_phyrate_rx:weighted_average_phyrate_rx weighted_average_rssi:weighted_average_rssi weighted_average_snr:weighted_average_snr maxOfActualLowBandwidth_d:bandwidth_d tcpRTTAvg:avg wifChannelType:type wifiguardinterval:wifiguardinterval isWfiCaptive:*&captive wifinumberOfSpatialStreams:*&streams];
 
-  return [(iRATBW *)self predictionFromFeatures:v15 error:a13];
+  return [(iRATBW *)self predictionFromFeatures:v15 error:error];
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -149,7 +149,7 @@
   }
 
   _Block_object_dispose(&v17, 8);
-  v10 = -[MLModel predictionsFromBatch:options:error:](self->_model, "predictionsFromBatch:options:error:", [[v9 alloc] initWithFeatureProviderArray:a3], a4, a5);
+  v10 = -[MLModel predictionsFromBatch:options:error:](self->_model, "predictionsFromBatch:options:error:", [[v9 alloc] initWithFeatureProviderArray:inputs], options, error);
   v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
   if ([v10 count] >= 1)
   {

@@ -24,15 +24,15 @@
 
   else
   {
-    v6 = [a1 absoluteString];
-    if (v6)
+    absoluteString = [self absoluteString];
+    if (absoluteString)
     {
       v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:@"/var/mobile/Library/Caches/com.apple.itunesstored/url-resolution.plist"];
       v8 = v7;
       if (v7 && ([v7 objectForKey:v4], (v9 = objc_claimAutoreleasedReturnValue()) != 0) || (v10 = objc_msgSend(objc_alloc(MEMORY[0x1E695DF20]), "initWithContentsOfFile:", @"/System/Library/CoreServices/iTunesStoreURLPatterns.plist"), (v11 = v10) != 0) && (-[LaunchServices::URLOverrides objectForKey:](v10, "objectForKey:", v4), v9 = objc_claimAutoreleasedReturnValue(), v11, v9))
       {
         v12 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:v9 options:1 error:0];
-        v5 = [v12 rangeOfFirstMatchInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}] != 0x7FFFFFFFFFFFFFFFLL || v13 != 0;
+        v5 = [v12 rangeOfFirstMatchInString:absoluteString options:0 range:{0, objc_msgSend(absoluteString, "length")}] != 0x7FFFFFFFFFFFFFFFLL || v13 != 0;
       }
 
       else
@@ -61,11 +61,11 @@
 
 - (BOOL)isiWorkURL
 {
-  LaunchServices::URLOverrides::State::State(&v4, a1, 1);
+  LaunchServices::URLOverrides::State::State(&v4, self, 1);
   if (((v5 & 1) != 0 || v6 == 1) && v7 == 1 && LaunchServices::URLOverrides::State::pathHasCaseInsensitivePrefix(&v4, &cfstr_Iw.isa))
   {
-    v1 = [v4 fragment];
-    v2 = v1 != 0;
+    fragment = [v4 fragment];
+    v2 = fragment != 0;
   }
 
   else
@@ -78,14 +78,14 @@
 
 - (id)iWorkApplicationName
 {
-  if (![a1 isiWorkURL])
+  if (![self isiWorkURL])
   {
     v6 = 0;
     goto LABEL_16;
   }
 
-  v2 = [a1 fragment];
-  v3 = [v2 componentsSeparatedByString:@"/"];
+  fragment = [self fragment];
+  v3 = [fragment componentsSeparatedByString:@"/"];
 
   if ([v3 count])
   {
@@ -116,16 +116,16 @@
     if (v8)
     {
       v9 = [LSApplicationProxy applicationProxyForIdentifier:v5];
-      v10 = [v9 localizedName];
+      localizedName = [v9 localizedName];
 LABEL_14:
-      v6 = v10;
+      v6 = localizedName;
 
       goto LABEL_15;
     }
 
 LABEL_13:
     v9 = [v3 objectAtIndex:0];
-    v10 = [v9 capitalizedString];
+    localizedName = [v9 capitalizedString];
     goto LABEL_14;
   }
 
@@ -139,10 +139,10 @@ LABEL_16:
 
 - (__CFString)iWorkDocumentName
 {
-  if ([a1 isiWorkURL])
+  if ([self isiWorkURL])
   {
-    v2 = [a1 fragment];
-    v3 = [v2 componentsSeparatedByString:@"/"];
+    fragment = [self fragment];
+    v3 = [fragment componentsSeparatedByString:@"/"];
 
     if ([v3 count] < 3)
     {
@@ -166,7 +166,7 @@ LABEL_16:
 
 - (id)fmfURL
 {
-  LaunchServices::URLOverrides::State::State(&v3, a1, 1);
+  LaunchServices::URLOverrides::State::State(&v3, self, 1);
   if (((v4 & 1) != 0 || v5 == 1) && (_os_feature_enabled_impl() & 1) == 0)
   {
     v1 = [_LSURLOverride fmfURL:&v3];
@@ -182,7 +182,7 @@ LABEL_16:
 
 - (id)fmipURL
 {
-  LaunchServices::URLOverrides::State::State(&v3, a1, 1);
+  LaunchServices::URLOverrides::State::State(&v3, self, 1);
   if (((v4 & 1) != 0 || v5 == 1) && (_os_feature_enabled_impl() & 1) == 0)
   {
     v1 = [_LSURLOverride fmipURL:&v3];
@@ -198,7 +198,7 @@ LABEL_16:
 
 - (id)iTunesStoreURL
 {
-  LaunchServices::URLOverrides::State::State(&v3, a1, 1);
+  LaunchServices::URLOverrides::State::State(&v3, self, 1);
   if (((v4 & 1) != 0 || v5 == 1) && (_os_feature_enabled_impl() & 1) == 0)
   {
     v1 = [_LSURLOverride iTunesStoreURL:&v3];
@@ -214,7 +214,7 @@ LABEL_16:
 
 - (id)iCloudEmailPrefsURL
 {
-  LaunchServices::URLOverrides::State::State(v3, a1, 1);
+  LaunchServices::URLOverrides::State::State(v3, self, 1);
   if (_os_feature_enabled_impl())
   {
     v1 = 0;
@@ -230,7 +230,7 @@ LABEL_16:
 
 - (id)keynoteLiveURL
 {
-  LaunchServices::URLOverrides::State::State(v3, a1, 1);
+  LaunchServices::URLOverrides::State::State(v3, self, 1);
   if (_os_feature_enabled_impl())
   {
     v1 = 0;
@@ -246,7 +246,7 @@ LABEL_16:
 
 - (id)keynoteLiveURL_noFragment
 {
-  LaunchServices::URLOverrides::State::State(v3, a1, 1);
+  LaunchServices::URLOverrides::State::State(v3, self, 1);
   if (_os_feature_enabled_impl())
   {
     v1 = 0;

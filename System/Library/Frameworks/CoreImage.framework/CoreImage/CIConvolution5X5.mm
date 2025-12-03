@@ -110,12 +110,12 @@
 
   if (![(CIConvolution5X5 *)self _isIdentity])
   {
-    v7 = [(CIVector *)self->inputWeights _values];
+    _values = [(CIVector *)self->inputWeights _values];
     LODWORD(v8) = [objc_msgSend(objc_opt_class() "description")];
     v9 = 0;
     v10 = 0.0;
     LODWORD(v11) = -1;
-    v12 = v7;
+    v12 = _values;
     v13 = -1;
     do
     {
@@ -141,12 +141,12 @@
 
     while (v9 != 5);
     v16 = 0;
-    v17 = &v7[5 * v11];
+    v17 = &_values[5 * v11];
     v18 = *(v17 + 1);
     v56[0] = *v17;
     v56[1] = v18;
     v57 = *(v17 + 4);
-    v19 = &v7[v13];
+    v19 = &_values[v13];
     do
     {
       v20 = *v19;
@@ -166,7 +166,7 @@
     {
 LABEL_27:
       v23 = v22 > 3;
-      v7 += 5;
+      _values += 5;
       if (++v22 == 5)
       {
         v23 = 1;
@@ -175,7 +175,7 @@ LABEL_27:
     }
 
     v24 = 0;
-    while (fabs(v7[v24] - *(v56 + v24 * 8) * v55[v22]) <= 0.000001)
+    while (fabs(_values[v24] - *(v56 + v24 * 8) * v55[v22]) <= 0.000001)
     {
       if (++v24 == 5)
       {

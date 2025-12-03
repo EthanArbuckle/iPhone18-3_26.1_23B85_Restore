@@ -1,24 +1,24 @@
 @interface NUPagingBlueprintItem
-- (BOOL)isEqual:(id)a3;
-- (NUPagingBlueprintItem)initWithPage:(id)a3;
-- (NUPagingBlueprintItem)initWithPageID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NUPagingBlueprintItem)initWithPage:(id)page;
+- (NUPagingBlueprintItem)initWithPageID:(id)d;
 - (unint64_t)hash;
 @end
 
 @implementation NUPagingBlueprintItem
 
-- (NUPagingBlueprintItem)initWithPage:(id)a3
+- (NUPagingBlueprintItem)initWithPage:(id)page
 {
-  v5 = a3;
+  pageCopy = page;
   v12.receiver = self;
   v12.super_class = NUPagingBlueprintItem;
   v6 = [(NUPagingBlueprintItem *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_page, a3);
-    v8 = [v5 identifier];
-    v9 = [v8 copy];
+    objc_storeStrong(&v6->_page, page);
+    identifier = [pageCopy identifier];
+    v9 = [identifier copy];
     identifier = v7->_identifier;
     v7->_identifier = v9;
   }
@@ -26,15 +26,15 @@
   return v7;
 }
 
-- (NUPagingBlueprintItem)initWithPageID:(id)a3
+- (NUPagingBlueprintItem)initWithPageID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = NUPagingBlueprintItem;
   v5 = [(NUPagingBlueprintItem *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -42,10 +42,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -55,9 +55,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NUPagingBlueprintItem *)v4 identifier];
-      v6 = [(NUPagingBlueprintItem *)self identifier];
-      v7 = [v5 isEqualToString:v6];
+      identifier = [(NUPagingBlueprintItem *)equalCopy identifier];
+      identifier2 = [(NUPagingBlueprintItem *)self identifier];
+      v7 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -71,8 +71,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NUPagingBlueprintItem *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(NUPagingBlueprintItem *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

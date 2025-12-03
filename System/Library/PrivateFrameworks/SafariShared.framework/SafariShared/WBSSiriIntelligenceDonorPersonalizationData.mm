@@ -1,5 +1,5 @@
 @interface WBSSiriIntelligenceDonorPersonalizationData
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)clearData;
 @end
 
@@ -12,7 +12,7 @@
   [(WBSSiriIntelligenceDonorPersonalizationData *)self setPosition:0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setSearchQuery:self->_searchQuery];

@@ -1,6 +1,6 @@
 @interface CalculateKeys
-+ (id)keysWithOptions:(uint64_t)a1;
-- (id)initWithOptions:(id *)a1;
++ (id)keysWithOptions:(uint64_t)options;
+- (id)initWithOptions:(id *)options;
 - (id)locales;
 - (id)numberFormatter;
 - (id)variables;
@@ -17,24 +17,24 @@
 
 - (uint64_t)assumeDegrees
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 8) objectForKeyedSubscript:@"CalculateKeyAssumeDegrees"];
+  v1 = [*(self + 8) objectForKeyedSubscript:@"CalculateKeyAssumeDegrees"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)allowPartialExpressions
@@ -42,9 +42,9 @@
   if (result)
   {
     v1 = [*(result + 8) objectForKeyedSubscript:@"CalculateKeyAllowPartialExpressions"];
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
 
-    return v2;
+    return bOOLValue;
   }
 
   return result;
@@ -52,75 +52,75 @@
 
 - (uint64_t)flexibleFractionDigits
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 8) objectForKeyedSubscript:@"CalculateKeyFlexibleFractionDigits"];
+  v1 = [*(self + 8) objectForKeyedSubscript:@"CalculateKeyFlexibleFractionDigits"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 1;
+    bOOLValue = 1;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)engine
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 8) objectForKeyedSubscript:@"CalculateKeyEngine"];
+  v1 = [*(self + 8) objectForKeyedSubscript:@"CalculateKeyEngine"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 intValue];
+    intValue = [v1 intValue];
   }
 
   else
   {
-    v2 = 0;
+    intValue = 0;
   }
 
-  return v2;
+  return intValue;
 }
 
 - (uint64_t)format
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 8) objectForKeyedSubscript:@"CalculateKeyFormat"];
+  v1 = [*(self + 8) objectForKeyedSubscript:@"CalculateKeyFormat"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 intValue];
+    intValue = [v1 intValue];
   }
 
   else
   {
-    v2 = 0;
+    intValue = 0;
   }
 
-  return v2;
+  return intValue;
 }
 
 - (id)numberFormatter
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 8) objectForKeyedSubscript:@"CalculateKeyNumberFormatter"];
+    v1 = [*(self + 8) objectForKeyedSubscript:@"CalculateKeyNumberFormatter"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -143,9 +143,9 @@
 
 - (id)variables
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 8) objectForKeyedSubscript:@"CalculateKeyVariables"];
+    v1 = [*(self + 8) objectForKeyedSubscript:@"CalculateKeyVariables"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -169,9 +169,9 @@
 - (id)locales
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 8) objectForKeyedSubscript:@"CalculateKeyLocales"];
+    v1 = [*(self + 8) objectForKeyedSubscript:@"CalculateKeyLocales"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -214,7 +214,7 @@ LABEL_11:
   return v4;
 }
 
-+ (id)keysWithOptions:(uint64_t)a1
++ (id)keysWithOptions:(uint64_t)options
 {
   v2 = a2;
   objc_opt_self();
@@ -223,22 +223,22 @@ LABEL_11:
   return v3;
 }
 
-- (id)initWithOptions:(id *)a1
+- (id)initWithOptions:(id *)options
 {
   v4 = a2;
-  if (a1)
+  if (options)
   {
-    v7.receiver = a1;
+    v7.receiver = options;
     v7.super_class = CalculateKeys;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    options = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return options;
 }
 
 uint64_t __24__CalculateKeys_locales__block_invoke(uint64_t a1, void *a2)
@@ -252,46 +252,46 @@ uint64_t __24__CalculateKeys_locales__block_invoke(uint64_t a1, void *a2)
 
 - (uint64_t)autoScientificNotation
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 8) objectForKeyedSubscript:@"CalculateKeyAutoScientificNotation"];
+  v1 = [*(self + 8) objectForKeyedSubscript:@"CalculateKeyAutoScientificNotation"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 1;
+    bOOLValue = 1;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)scientificNotationFormat
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 8) objectForKeyedSubscript:@"CalculateKeyScientificNotationFormat"];
+  v1 = [*(self + 8) objectForKeyedSubscript:@"CalculateKeyScientificNotationFormat"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 intValue];
+    intValue = [v1 intValue];
   }
 
   else
   {
-    v2 = 1;
+    intValue = 1;
   }
 
-  return v2;
+  return intValue;
 }
 
 uint64_t __34__CalculateKeys_expectedUnitTypes__block_invoke(uint64_t a1, void *a2)

@@ -1,37 +1,37 @@
 @interface HDWorkoutLocationSmoother
-+ (id)_saveNewRouteSeriesWithProfile:(id)a3 sourceEntity:(id)a4 forWorkout:(id)a5 locations:(id)a6 routes:(id)a7 associateWithWorkout:(BOOL)a8 error:(id *)a9;
-- (HDWorkoutLocationSmoother)initWithProfile:(id)a3;
-- (id)_queue_saveLocations:(void *)a3 forTask:(void *)a4 activity:(uint64_t)a5 saveError:;
-- (id)_workoutWithUUIDString:(uint64_t *)a3 error:;
++ (id)_saveNewRouteSeriesWithProfile:(id)profile sourceEntity:(id)entity forWorkout:(id)workout locations:(id)locations routes:(id)routes associateWithWorkout:(BOOL)withWorkout error:(id *)error;
+- (HDWorkoutLocationSmoother)initWithProfile:(id)profile;
+- (id)_queue_saveLocations:(void *)locations forTask:(void *)task activity:(uint64_t)activity saveError:;
+- (id)_workoutWithUUIDString:(uint64_t *)string error:;
 - (uint64_t)_shouldObserveWorkouts;
-- (void)_associationsSyncedForWorkout:(id)a3;
-- (void)_finishSmoothingSampleWithTask:(void *)a1;
+- (void)_associationsSyncedForWorkout:(id)workout;
+- (void)_finishSmoothingSampleWithTask:(void *)task;
 - (void)_queue_cancelTimeout;
-- (void)_queue_clearSmoothingTimeoutTimerForTask:(uint64_t)a1;
-- (void)_queue_deleteRoutesForTask:(uint64_t)a1;
-- (void)_queue_finishTaskAttempt:(id *)a1;
-- (void)_queue_locationManagerDidSmoothRoutes:(void *)a3 forTask:(void *)a4 error:;
+- (void)_queue_clearSmoothingTimeoutTimerForTask:(uint64_t)task;
+- (void)_queue_deleteRoutesForTask:(uint64_t)task;
+- (void)_queue_finishTaskAttempt:(id *)attempt;
+- (void)_queue_locationManagerDidSmoothRoutes:(void *)routes forTask:(void *)task error:;
 - (void)_queue_smoothAllUnsmoothedLocationSeries;
 - (void)_queue_smoothNextActivityForCurrentTask;
 - (void)_queue_smoothNextSample;
-- (void)_queue_smoothingDidFailForTask:(void *)a3 error:(int)a4 shouldRetry:;
+- (void)_queue_smoothingDidFailForTask:(void *)task error:(int)error shouldRetry:;
 - (void)_queue_startSmoothingCurrentTask;
-- (void)_submitWorkoutPerformanceTask:(void *)a3 event:(char)a4 failure:;
-- (void)_submitWorkoutPerformanceTask:(void *)a3 event:(void *)a4 activity:(uint64_t)a5 locations:(char)a6 failure:;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)_submitWorkoutPerformanceTask:(void *)task event:(char)event failure:;
+- (void)_submitWorkoutPerformanceTask:(void *)task event:(void *)event activity:(uint64_t)activity locations:(char)locations failure:;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
-- (void)foregroundClientProcessesDidChange:(id)a3 previouslyForegroundBundleIdentifiers:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)smoothRouteWithWorkoutUUID:(id)a3 completion:(id)a4;
-- (void)unitTest_smoothRouteForTask:(id)a3 completion:(id)a4;
+- (void)foregroundClientProcessesDidChange:(id)change previouslyForegroundBundleIdentifiers:(id)identifiers;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)smoothRouteWithWorkoutUUID:(id)d completion:(id)completion;
+- (void)unitTest_smoothRouteForTask:(id)task completion:(id)completion;
 @end
 
 @implementation HDWorkoutLocationSmoother
 
-- (HDWorkoutLocationSmoother)initWithProfile:(id)a3
+- (HDWorkoutLocationSmoother)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v13.receiver = self;
   v13.super_class = HDWorkoutLocationSmoother;
   v5 = [(HDWorkoutLocationSmoother *)&v13 init];
@@ -41,7 +41,7 @@
     queue = v5->_queue;
     v5->_queue = v6;
 
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     pendingSmoothingTasks = v5->_pendingSmoothingTasks;
     v5->_pendingSmoothingTasks = v8;
@@ -59,24 +59,24 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"HDAssociationEntityDidReceiveSyncObjectsNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"HDAssociationEntityDidReceiveSyncObjectsNotification" object:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
-  [v5 removeProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database removeProtectedDataObserver:self];
 
   v6 = objc_loadWeakRetained(&self->_profile);
-  v7 = [v6 daemon];
-  v8 = [v7 processStateManager];
-  [v8 unregisterForegroundClientProcessObserver:self];
+  daemon = [v6 daemon];
+  processStateManager = [daemon processStateManager];
+  [processStateManager unregisterForegroundClientProcessObserver:self];
 
   if ([(HDWorkoutLocationSmoother *)self _shouldObserveWorkouts])
   {
     v9 = objc_loadWeakRetained(&self->_profile);
-    v10 = [v9 dataManager];
-    v11 = [MEMORY[0x277CCD720] workoutType];
-    [v10 removeObserver:self forDataType:v11];
+    dataManager = [v9 dataManager];
+    workoutType = [MEMORY[0x277CCD720] workoutType];
+    [dataManager removeObserver:self forDataType:workoutType];
   }
 
   v12.receiver = self;
@@ -89,17 +89,17 @@
   if (result)
   {
     WeakRetained = objc_loadWeakRetained((result + 16));
-    v2 = [WeakRetained daemon];
-    v3 = [v2 behavior];
-    v4 = [v3 routeSmoothingEnabled];
+    daemon = [WeakRetained daemon];
+    behavior = [daemon behavior];
+    routeSmoothingEnabled = [behavior routeSmoothingEnabled];
 
-    return v4;
+    return routeSmoothingEnabled;
   }
 
   return result;
 }
 
-- (void)_associationsSyncedForWorkout:(id)a3
+- (void)_associationsSyncedForWorkout:(id)workout
 {
   _HKInitializeLogging();
   v4 = *MEMORY[0x277CCC330];
@@ -140,17 +140,17 @@ void __59__HDWorkoutLocationSmoother__associationsSyncedForWorkout___block_invok
 - (void)_queue_smoothAllUnsmoothedLocationSeries
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
+    selfCopy = self;
     v2 = [MEMORY[0x277CCD8D8] dataTypeWithCode:102];
-    WeakRetained = objc_loadWeakRetained((v1 + 16));
+    WeakRetained = objc_loadWeakRetained((selfCopy + 16));
     v34 = v2;
     v4 = [HDSampleEntity entityEnumeratorWithType:v2 profile:WeakRetained];
 
-    v5 = objc_loadWeakRetained((v1 + 16));
-    v6 = [v5 metadataManager];
-    v7 = [v6 predicateWithMetadataKey:*MEMORY[0x277CCE118] value:0 operatorType:5];
+    v5 = objc_loadWeakRetained((selfCopy + 16));
+    metadataManager = [v5 metadataManager];
+    v7 = [metadataManager predicateWithMetadataKey:*MEMORY[0x277CCE118] value:0 operatorType:5];
 
     v32 = v7;
     [v4 setPredicate:v7];
@@ -165,7 +165,7 @@ void __59__HDWorkoutLocationSmoother__associationsSyncedForWorkout___block_invok
     v40[1] = 3221225472;
     v40[2] = __69__HDWorkoutLocationSmoother__queue_smoothAllUnsmoothedLocationSeries__block_invoke;
     v40[3] = &unk_27861D470;
-    v40[4] = v1;
+    v40[4] = selfCopy;
     v11 = v10;
     v41 = v11;
     v33 = v4;
@@ -193,13 +193,13 @@ void __59__HDWorkoutLocationSmoother__associationsSyncedForWorkout___block_invok
           v16 = *(*(&v36 + 1) + 8 * i);
           v17 = [HDSmoothingTask alloc];
           v18 = [obj objectForKeyedSubscript:v16];
-          v19 = objc_loadWeakRetained((v1 + 16));
-          v20 = [v19 daemon];
-          [v20 analyticsSubmissionCoordinator];
-          v22 = v21 = v1;
+          v19 = objc_loadWeakRetained((selfCopy + 16));
+          daemon = [v19 daemon];
+          [daemon analyticsSubmissionCoordinator];
+          v22 = v21 = selfCopy;
           v23 = [(HDSmoothingTask *)v17 _initWithWorkout:v16 routes:v18 analyticsSubmissionCoordinator:v22];
 
-          v1 = v21;
+          selfCopy = v21;
           [*(v21 + 24) addObject:v23];
         }
 
@@ -209,9 +209,9 @@ void __59__HDWorkoutLocationSmoother__associationsSyncedForWorkout___block_invok
       while (v13);
     }
 
-    if ([*(v1 + 24) count])
+    if ([*(selfCopy + 24) count])
     {
-      [(HDWorkoutLocationSmoother *)v1 _queue_smoothNextSample];
+      [(HDWorkoutLocationSmoother *)selfCopy _queue_smoothNextSample];
     }
 
     if (v30)
@@ -223,7 +223,7 @@ void __59__HDWorkoutLocationSmoother__associationsSyncedForWorkout___block_invok
 
     else
     {
-      v27 = v1;
+      v27 = selfCopy;
       _HKInitializeLogging();
       v28 = *MEMORY[0x277CCC330];
       v26 = v33;
@@ -238,11 +238,11 @@ void __59__HDWorkoutLocationSmoother__associationsSyncedForWorkout___block_invok
 
       v24 = 1;
       v25 = v34;
-      v1 = v27;
+      selfCopy = v27;
     }
 
-    *(v1 + 48) = v24;
-    *(v1 + 49) = 0;
+    *(selfCopy + 48) = v24;
+    *(selfCopy + 49) = 0;
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -337,23 +337,23 @@ LABEL_12:
   return 1;
 }
 
-- (id)_workoutWithUUIDString:(uint64_t *)a3 error:
+- (id)_workoutWithUUIDString:(uint64_t *)string error:
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v5];
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
-    a1 = [(HDDataEntity *)HDWorkoutEntity objectWithUUID:v6 encodingOptions:0 profile:WeakRetained error:a3];
+    WeakRetained = objc_loadWeakRetained(self + 2);
+    self = [(HDDataEntity *)HDWorkoutEntity objectWithUUID:v6 encodingOptions:0 profile:WeakRetained error:string];
 
-    if (!a1)
+    if (!self)
     {
       _HKInitializeLogging();
       v8 = *MEMORY[0x277CCC330];
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
       {
-        v11 = *a3;
+        v11 = *string;
         v12 = 138412546;
         v13 = v5;
         v14 = 2114;
@@ -361,33 +361,33 @@ LABEL_12:
         _os_log_error_impl(&dword_228986000, v8, OS_LOG_TYPE_ERROR, "[routes] Failed to find workout with UUID=%@: %{public}@", &v12, 0x16u);
       }
 
-      a1 = 0;
+      self = 0;
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
 - (void)_queue_smoothNextSample
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (a1 && (v2 = (a1 + 32), !*(a1 + 32)))
+  if (self && (v2 = (self + 32), !*(self + 32)))
   {
-    v4 = [*(a1 + 24) hk_dequeue];
-    obj = v4;
-    if (v4)
+    hk_dequeue = [*(self + 24) hk_dequeue];
+    obj = hk_dequeue;
+    if (hk_dequeue)
     {
-      v5 = v4;
-      v6 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:a1];
+      v5 = hk_dequeue;
+      v6 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:self];
       [(HDSmoothingTask *)v5 setTransaction:v6];
 
-      v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v8 = [v7 hk_BOOLForKey:@"HDLocationSmootherSmoothWithZeroLocations" defaultValue:0];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v8 = [standardUserDefaults hk_BOOLForKey:@"HDLocationSmootherSmoothWithZeroLocations" defaultValue:0];
 
-      v9 = [v5[2] metadata];
-      v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCE1A0]];
+      metadata = [v5[2] metadata];
+      v10 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCE1A0]];
 
       if (v5[4] || v10 || (v8 & 1) != 0)
       {
@@ -405,7 +405,7 @@ LABEL_12:
         v23 = [MEMORY[0x277CBEAA8] now];
         objc_storeStrong(v5 + 15, v23);
 
-        [(HDWorkoutLocationSmoother *)a1 _queue_startSmoothingCurrentTask];
+        [(HDWorkoutLocationSmoother *)self _queue_startSmoothingCurrentTask];
       }
 
       else
@@ -416,35 +416,35 @@ LABEL_12:
         {
           v12 = v5[2];
           v13 = v11;
-          v14 = [v12 UUID];
+          uUID = [v12 UUID];
           *buf = 138543362;
-          v27 = v14;
+          v27 = uUID;
           _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_DEFAULT, "[routes] Workout %{public}@ has 0 locations; deleting it.", buf, 0xCu);
         }
 
-        [(HDWorkoutLocationSmoother *)a1 _queue_deleteRoutesForTask:v5];
-        [(HDWorkoutLocationSmoother *)a1 _finishSmoothingSampleWithTask:v5];
+        [(HDWorkoutLocationSmoother *)self _queue_deleteRoutesForTask:v5];
+        [(HDWorkoutLocationSmoother *)self _finishSmoothingSampleWithTask:v5];
       }
     }
 
     else
     {
-      v15 = [a1 didCompleteAllPendingSmoothingTasksHandler];
-      v5 = v15;
-      if (v15)
+      didCompleteAllPendingSmoothingTasksHandler = [self didCompleteAllPendingSmoothingTasksHandler];
+      v5 = didCompleteAllPendingSmoothingTasksHandler;
+      if (didCompleteAllPendingSmoothingTasksHandler)
       {
-        (*(v15 + 16))(v15);
+        (*(didCompleteAllPendingSmoothingTasksHandler + 16))(didCompleteAllPendingSmoothingTasksHandler);
       }
 
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
-      v17 = [WeakRetained nanoSyncManager];
-      [v17 syncHealthDataWithOptions:0 reason:@"Workout route smoothed" completion:&__block_literal_global_73];
+      WeakRetained = objc_loadWeakRetained((self + 16));
+      nanoSyncManager = [WeakRetained nanoSyncManager];
+      [nanoSyncManager syncHealthDataWithOptions:0 reason:@"Workout route smoothed" completion:&__block_literal_global_73];
 
       v18 = [objc_alloc(MEMORY[0x277CCD0C8]) initWithPush:1 pull:0 lite:1];
-      v19 = objc_loadWeakRetained((a1 + 16));
-      v20 = [v19 cloudSyncManager];
+      v19 = objc_loadWeakRetained((self + 16));
+      cloudSyncManager = [v19 cloudSyncManager];
       v21 = [objc_alloc(MEMORY[0x277CCD140]) initWithChangesSyncRequest:v18];
-      [v20 syncWithRequest:v21 reason:@"Workout route smoothed" completion:&__block_literal_global_395];
+      [cloudSyncManager syncWithRequest:v21 reason:@"Workout route smoothed" completion:&__block_literal_global_395];
     }
 
     v24 = *MEMORY[0x277D85DE8];
@@ -456,13 +456,13 @@ LABEL_12:
   }
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
-  v6 = [v5 isProtectedDataAvailable];
+  database = [WeakRetained database];
+  isProtectedDataAvailable = [database isProtectedDataAvailable];
 
-  if (v6)
+  if (isProtectedDataAvailable)
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
@@ -475,9 +475,9 @@ LABEL_12:
     v10 = [HDMaintenanceOperation maintenanceOperationWithName:v8 queue:queue synchronousBlock:v30];
 
     v11 = objc_loadWeakRetained(&self->_profile);
-    v12 = [v11 daemon];
-    v13 = [v12 maintenanceWorkCoordinator];
-    [v13 enqueueMaintenanceOperation:v10];
+    daemon = [v11 daemon];
+    maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+    [maintenanceWorkCoordinator enqueueMaintenanceOperation:v10];
   }
 
   else if (!self)
@@ -487,11 +487,11 @@ LABEL_12:
 
   dispatch_assert_queue_V2(self->_queue);
   v14 = objc_loadWeakRetained(&self->_profile);
-  v15 = [v14 daemon];
-  v16 = [v15 behavior];
-  v17 = [v16 isCompanionCapable];
+  daemon2 = [v14 daemon];
+  behavior = [daemon2 behavior];
+  isCompanionCapable = [behavior isCompanionCapable];
 
-  if (v17)
+  if (isCompanionCapable)
   {
     _HKInitializeLogging();
     v18 = *MEMORY[0x277CCC330];
@@ -502,41 +502,41 @@ LABEL_12:
     }
 
     self->_isFirstLaunchAndNotYetSmoothed = 1;
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:self selector:sel__associationsSyncedForWorkout_ name:@"HDAssociationEntityDidReceiveSyncObjectsNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__associationsSyncedForWorkout_ name:@"HDAssociationEntityDidReceiveSyncObjectsNotification" object:0];
 
     v20 = objc_loadWeakRetained(&self->_profile);
-    v21 = [v20 database];
-    [v21 addProtectedDataObserver:self queue:self->_queue];
+    database2 = [v20 database];
+    [database2 addProtectedDataObserver:self queue:self->_queue];
 
     v22 = objc_loadWeakRetained(&self->_profile);
-    v23 = [v22 daemon];
-    v24 = [v23 processStateManager];
-    [v24 registerForegroundClientProcessObserver:self];
+    daemon3 = [v22 daemon];
+    processStateManager = [daemon3 processStateManager];
+    [processStateManager registerForegroundClientProcessObserver:self];
   }
 
   if ([(HDWorkoutLocationSmoother *)self _shouldObserveWorkouts])
   {
     v25 = objc_loadWeakRetained(&self->_profile);
-    v26 = [v25 database];
-    [v26 addProtectedDataObserver:self queue:self->_queue];
+    database3 = [v25 database];
+    [database3 addProtectedDataObserver:self queue:self->_queue];
 
     v27 = objc_loadWeakRetained(&self->_profile);
-    v28 = [v27 dataManager];
-    v29 = [MEMORY[0x277CCD720] workoutType];
-    [v28 addObserver:self forDataType:v29];
+    dataManager = [v27 dataManager];
+    workoutType = [MEMORY[0x277CCD720] workoutType];
+    [dataManager addObserver:self forDataType:workoutType];
   }
 }
 
-- (void)foregroundClientProcessesDidChange:(id)a3 previouslyForegroundBundleIdentifiers:(id)a4
+- (void)foregroundClientProcessesDidChange:(id)change previouslyForegroundBundleIdentifiers:(id)identifiers
 {
-  if ([a3 count])
+  if ([change count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v6 = [WeakRetained database];
-    v7 = [v6 isProtectedDataAvailable];
+    database = [WeakRetained database];
+    isProtectedDataAvailable = [database isProtectedDataAvailable];
 
-    if (v7)
+    if (isProtectedDataAvailable)
     {
       queue = self->_queue;
       block[0] = MEMORY[0x277D85DD0];
@@ -567,11 +567,11 @@ void __102__HDWorkoutLocationSmoother_foregroundClientProcessesDidChange_previou
   }
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (availableCopy)
   {
     if (self->_isFirstLaunchAndNotYetSmoothed)
     {
@@ -613,12 +613,12 @@ LABEL_9:
   }
 }
 
-- (void)_queue_locationManagerDidSmoothRoutes:(void *)a3 forTask:(void *)a4 error:
+- (void)_queue_locationManagerDidSmoothRoutes:(void *)routes forTask:(void *)task error:
 {
   v44 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
+  routesCopy = routes;
+  taskCopy = task;
   _HKInitializeLogging();
   v10 = MEMORY[0x277CCC330];
   v11 = *MEMORY[0x277CCC330];
@@ -630,43 +630,43 @@ LABEL_9:
     _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "[routes] Successfully smoothed %lu routes", &v42, 0xCu);
   }
 
-  if (v8 && (*(v8 + 9) & 1) != 0)
+  if (routesCopy && (*(routesCopy + 9) & 1) != 0)
   {
     _HKInitializeLogging();
     v13 = *v10;
     if (os_log_type_enabled(*v10, OS_LOG_TYPE_ERROR))
     {
-      v14 = v8[2];
+      v14 = routesCopy[2];
       v15 = v13;
-      v16 = [v14 UUID];
+      uUID = [v14 UUID];
       v42 = 138543362;
-      v43 = v16;
+      v43 = uUID;
       _os_log_error_impl(&dword_228986000, v15, OS_LOG_TYPE_ERROR, "[routes] Did finish smoothing locations after timeout for workout %{public}@, locations will be ignored.", &v42, 0xCu);
     }
   }
 
-  else if (v9)
+  else if (taskCopy)
   {
-    v17 = [v9 domain];
-    v18 = [v17 isEqualToString:@"CLSmootherErrorDomain"];
+    domain = [taskCopy domain];
+    v18 = [domain isEqualToString:@"CLSmootherErrorDomain"];
 
-    if (v18 && ([v9 code] - 3) <= 1)
+    if (v18 && ([taskCopy code] - 3) <= 1)
     {
-      v19 = a1;
-      v20 = v8;
-      v21 = v9;
+      selfCopy2 = self;
+      v20 = routesCopy;
+      v21 = taskCopy;
       v22 = 1;
     }
 
     else
     {
-      v19 = a1;
-      v20 = v8;
-      v21 = v9;
+      selfCopy2 = self;
+      v20 = routesCopy;
+      v21 = taskCopy;
       v22 = 0;
     }
 
-    [(HDWorkoutLocationSmoother *)v19 _queue_smoothingDidFailForTask:v20 error:v21 shouldRetry:v22];
+    [(HDWorkoutLocationSmoother *)selfCopy2 _queue_smoothingDidFailForTask:v20 error:v21 shouldRetry:v22];
   }
 
   else
@@ -675,9 +675,9 @@ LABEL_9:
     v23 = *v10;
     if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEFAULT))
     {
-      if (v8)
+      if (routesCopy)
       {
-        v24 = v8[2];
+        v24 = routesCopy[2];
       }
 
       else
@@ -687,21 +687,21 @@ LABEL_9:
 
       v25 = v24;
       v26 = v23;
-      v27 = [v25 UUID];
+      uUID2 = [v25 UUID];
       v42 = 138543362;
-      v43 = v27;
+      v43 = uUID2;
       _os_log_impl(&dword_228986000, v26, OS_LOG_TYPE_DEFAULT, "[routes] Did finish smoothing locations for workout %{public}@", &v42, 0xCu);
     }
 
-    if (![v7 count] && (!v8 || !v8[4]))
+    if (![v7 count] && (!routesCopy || !routesCopy[4]))
     {
       _HKInitializeLogging();
       v28 = *v10;
       if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEFAULT))
       {
-        if (v8)
+        if (routesCopy)
         {
-          v29 = v8[2];
+          v29 = routesCopy[2];
         }
 
         else
@@ -711,9 +711,9 @@ LABEL_9:
 
         v30 = v29;
         v31 = v28;
-        v32 = [v30 UUID];
+        uUID3 = [v30 UUID];
         v42 = 138543362;
-        v43 = v32;
+        v43 = uUID3;
         _os_log_impl(&dword_228986000, v31, OS_LOG_TYPE_DEFAULT, "[routes] Smoothed route has 0 locations for workout %{public}@, deleting it", &v42, 0xCu);
       }
     }
@@ -722,9 +722,9 @@ LABEL_9:
     v33 = *v10;
     if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEFAULT))
     {
-      if (v8)
+      if (routesCopy)
       {
-        v34 = v8[2];
+        v34 = routesCopy[2];
       }
 
       else
@@ -734,41 +734,41 @@ LABEL_9:
 
       v35 = v34;
       v36 = v33;
-      v37 = [v35 UUID];
-      v38 = [v37 UUIDString];
+      uUID4 = [v35 UUID];
+      uUIDString = [uUID4 UUIDString];
       v42 = 138543362;
-      v43 = v38;
+      v43 = uUIDString;
       _os_log_impl(&dword_228986000, v36, OS_LOG_TYPE_DEFAULT, "[routes] Deleting old routes for workout %{public}@", &v42, 0xCu);
     }
 
-    [(HDWorkoutLocationSmoother *)a1 _queue_deleteRoutesForTask:v8];
-    if (v8)
+    [(HDWorkoutLocationSmoother *)self _queue_deleteRoutesForTask:routesCopy];
+    if (routesCopy)
     {
-      v39 = v8[5];
+      v39 = routesCopy[5];
       if (v39)
       {
         v40 = v39;
-        v40[2](v40, v7, v8[7], 0);
+        v40[2](v40, v7, routesCopy[7], 0);
       }
     }
 
-    [(HDWorkoutLocationSmoother *)a1 _finishSmoothingSampleWithTask:v8];
+    [(HDWorkoutLocationSmoother *)self _finishSmoothingSampleWithTask:routesCopy];
   }
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_smoothingDidFailForTask:(void *)a3 error:(int)a4 shouldRetry:
+- (void)_queue_smoothingDidFailForTask:(void *)task error:(int)error shouldRetry:
 {
   v52 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  if (!a1)
+  taskCopy = task;
+  if (!self)
   {
     goto LABEL_37;
   }
 
-  if (!a4 || v7 && *(v7 + 7) > 2uLL)
+  if (!error || v7 && *(v7 + 7) > 2uLL)
   {
     _HKInitializeLogging();
     v14 = MEMORY[0x277CCC330];
@@ -787,17 +787,17 @@ LABEL_9:
 
       v27 = v26;
       v28 = v15;
-      v29 = [v27 UUID];
-      WeakRetained = objc_loadWeakRetained(a1 + 2);
-      v31 = [WeakRetained daemon];
-      v32 = [v31 behavior];
-      v33 = [v32 isAppleWatch];
+      uUID = [v27 UUID];
+      WeakRetained = objc_loadWeakRetained(self + 2);
+      daemon = [WeakRetained daemon];
+      behavior = [daemon behavior];
+      isAppleWatch = [behavior isAppleWatch];
       v34 = @"Phone";
       *buf = 138544130;
       v46 = 2048;
-      v45 = v29;
+      v45 = uUID;
       v47 = 3;
-      if (v33)
+      if (isAppleWatch)
       {
         v34 = @"Watch";
       }
@@ -805,7 +805,7 @@ LABEL_9:
       v48 = 2112;
       v49 = v34;
       v50 = 2112;
-      v51 = v8;
+      v51 = taskCopy;
       _os_log_fault_impl(&dword_228986000, v28, OS_LOG_TYPE_FAULT, "[routes] Couldn't smooth routes for workout %{public}@ after %ld attempts on device %@, marking as v2. Error: %@", buf, 0x2Au);
 
       if (!v7)
@@ -822,7 +822,7 @@ LABEL_9:
     if (*(v7 + 4))
     {
       v42 = 0;
-      v16 = [(HDWorkoutLocationSmoother *)a1 _queue_saveLocations:v7 forTask:0 activity:&v42 saveError:?];
+      v16 = [(HDWorkoutLocationSmoother *)self _queue_saveLocations:v7 forTask:0 activity:&v42 saveError:?];
       v17 = v42;
       _HKInitializeLogging();
       v18 = *v14;
@@ -833,14 +833,14 @@ LABEL_9:
         {
           v20 = *(v7 + 2);
           v21 = v18;
-          v22 = [v20 UUID];
-          v23 = [v22 UUIDString];
+          uUID2 = [v20 UUID];
+          uUIDString = [uUID2 UUIDString];
           *buf = 138543362;
-          v45 = v23;
+          v45 = uUIDString;
           _os_log_impl(&dword_228986000, v21, OS_LOG_TYPE_DEFAULT, "[routes] Deleting old routes for workout %{public}@", buf, 0xCu);
         }
 
-        [(HDWorkoutLocationSmoother *)a1 _queue_deleteRoutesForTask:v7];
+        [(HDWorkoutLocationSmoother *)self _queue_deleteRoutesForTask:v7];
 
         if (!*(v7 + 5))
         {
@@ -873,10 +873,10 @@ LABEL_9:
 
 LABEL_35:
       v40 = v25;
-      v40[2](v40, v24, *(v7 + 7), v8);
+      v40[2](v40, v24, *(v7 + 7), taskCopy);
 
 LABEL_36:
-      [(HDWorkoutLocationSmoother *)a1 _finishSmoothingSampleWithTask:v7];
+      [(HDWorkoutLocationSmoother *)self _finishSmoothingSampleWithTask:v7];
 
       goto LABEL_37;
     }
@@ -898,13 +898,13 @@ LABEL_29:
 
       v37 = v36;
       v38 = v35;
-      v39 = [v37 UUID];
+      uUID3 = [v37 UUID];
       *buf = 138543362;
-      v45 = v39;
+      v45 = uUID3;
       _os_log_impl(&dword_228986000, v38, OS_LOG_TYPE_DEFAULT, "[routes] v2 route has 0 locations for workout %{public}@, deleting it", buf, 0xCu);
     }
 
-    [(HDWorkoutLocationSmoother *)a1 _queue_deleteRoutesForTask:v7];
+    [(HDWorkoutLocationSmoother *)self _queue_deleteRoutesForTask:v7];
     v16 = 0;
     if (!v7)
     {
@@ -937,11 +937,11 @@ LABEL_29:
 
     v11 = v10;
     v12 = v9;
-    v13 = [v11 UUID];
+    uUID4 = [v11 UUID];
     *buf = 138543618;
-    v45 = v13;
+    v45 = uUID4;
     v46 = 2112;
-    v47 = v8;
+    v47 = taskCopy;
     _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "[routes] Smoothing did fail for workout %{public}@ with error: %@", buf, 0x16u);
   }
 
@@ -950,13 +950,13 @@ LABEL_29:
     ++*(v7 + 7);
   }
 
-  [(HDWorkoutLocationSmoother *)a1 _queue_startSmoothingCurrentTask];
+  [(HDWorkoutLocationSmoother *)self _queue_startSmoothingCurrentTask];
 LABEL_37:
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_deleteRoutesForTask:(uint64_t)a1
+- (void)_queue_deleteRoutesForTask:(uint64_t)task
 {
   v3 = a2;
   v11 = 0;
@@ -989,7 +989,7 @@ LABEL_37:
   v18 = 3221225472;
   v19 = __55__HDWorkoutLocationSmoother__deleteSamples_completion___block_invoke;
   v20 = &unk_278614160;
-  v21 = a1;
+  taskCopy = task;
   v8 = v6;
   v22 = v8;
   v9 = &__block_literal_global_410;
@@ -999,7 +999,7 @@ LABEL_37:
   _Block_object_dispose(&v11, 8);
 }
 
-- (void)_finishSmoothingSampleWithTask:(void *)a1
+- (void)_finishSmoothingSampleWithTask:(void *)task
 {
   v3 = a2;
   v4 = v3;
@@ -1013,19 +1013,19 @@ LABEL_37:
   if (v5 < -30.0)
   {
     v7 = v4;
-    v8 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v9 = [v8 isAppleInternalInstall];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    isAppleInternalInstall = [mEMORY[0x277CCDD30] isAppleInternalInstall];
 
-    if (v9)
+    if (isAppleInternalInstall)
     {
       v10 = objc_alloc_init(MEMORY[0x277D10BC0]);
       [v10 setTitle:@"Route Smoothing Issue Detected"];
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Route Smoothing took over %f seconds to complete", 0x403E000000000000];
-      [v10 setMessage:v11];
+      0x403E000000000000 = [MEMORY[0x277CCACA8] stringWithFormat:@"Route Smoothing took over %f seconds to complete", 0x403E000000000000];
+      [v10 setMessage:0x403E000000000000];
 
       [v10 setDefaultButton:@"Tap-to-Radar"];
       [v10 setCancelButton:@"Not Now"];
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, task);
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __59__HDWorkoutLocationSmoother__showTTRAlertForTask_duration___block_invoke;
@@ -1040,12 +1040,12 @@ LABEL_37:
     }
   }
 
-  v12 = a1[1];
+  v12 = task[1];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__HDWorkoutLocationSmoother__finishSmoothingSampleWithTask___block_invoke;
   block[3] = &unk_278613920;
-  block[4] = a1;
+  block[4] = task;
   v13 = v4;
   v15 = v13;
   dispatch_async(v12, block);
@@ -1105,7 +1105,7 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
   v2 = *MEMORY[0x277CCC330];
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
-    v3 = *(a1 + 32);
+    v3 = *(self + 32);
     if (v3)
     {
       v4 = *(v3 + 56);
@@ -1123,8 +1123,8 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
     _os_log_impl(&dword_228986000, v2, OS_LOG_TYPE_DEFAULT, "[routes]: Starting smoothing task attempt %lu for Task: %{public}@ ", &v10, 0x16u);
   }
 
-  [(HDWorkoutLocationSmoother *)a1 _submitWorkoutPerformanceTask:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskBegin" event:0 failure:?];
-  v5 = *(a1 + 32);
+  [(HDWorkoutLocationSmoother *)self _submitWorkoutPerformanceTask:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskBegin" event:0 failure:?];
+  v5 = *(self + 32);
   if (v5)
   {
     v6 = v5[12];
@@ -1143,14 +1143,14 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
   }
 
   [(HDSmoothingTask *)v7 setSmoothingError:?];
-  [(HDWorkoutLocationSmoother *)a1 _queue_smoothNextActivityForCurrentTask];
+  [(HDWorkoutLocationSmoother *)self _queue_smoothNextActivityForCurrentTask];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_submitWorkoutPerformanceTask:(void *)a3 event:(char)a4 failure:
+- (void)_submitWorkoutPerformanceTask:(void *)task event:(char)event failure:
 {
   v7 = a2;
-  v8 = a3;
+  taskCopy = task;
   v9 = objc_alloc(MEMORY[0x277CCAD78]);
   if (v7)
   {
@@ -1162,15 +1162,15 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
     v10 = 0;
   }
 
-  v11 = [v10 metadata];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCE0E8]];
+  metadata = [v10 metadata];
+  v12 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCE0E8]];
   v13 = [v9 initWithUUIDString:v12];
 
   if (v13)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    v14 = [WeakRetained daemon];
-    v15 = [v14 analyticsSubmissionCoordinator];
+    WeakRetained = objc_loadWeakRetained((self + 16));
+    daemon = [WeakRetained daemon];
+    analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
     if (v7)
     {
       v16 = v7[2];
@@ -1182,8 +1182,8 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
     }
 
     v17 = v16;
-    v32 = [v17 workoutActivityType];
-    v18 = a4;
+    workoutActivityType = [v17 workoutActivityType];
+    eventCopy = event;
     if (v7)
     {
       v19 = v7[2];
@@ -1207,8 +1207,8 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
       v23 = 0;
     }
 
-    v24 = [v23 workoutActivities];
-    v25 = [v24 count];
+    workoutActivities = [v23 workoutActivities];
+    v25 = [workoutActivities count];
     if (v7)
     {
       v26 = *(v7 + 8);
@@ -1223,9 +1223,9 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
       v28 = 0;
     }
 
-    LOBYTE(v31) = v18;
+    LOBYTE(v31) = eventCopy;
     LOBYTE(v30) = v26 & 1;
-    [HDWorkoutUtilities submitRouteSmoothingWorkoutPerformanceAnalyticsWithCoordinator:v15 event:v8 sessionIdentifier:v13 activityType:v32 duration:v22 activityCount:v25 extendedMode:v30 totalLocations:v27 routeSmoothingRetryCount:v28 activityID:0 failure:v31];
+    [HDWorkoutUtilities submitRouteSmoothingWorkoutPerformanceAnalyticsWithCoordinator:analyticsSubmissionCoordinator event:taskCopy sessionIdentifier:v13 activityType:workoutActivityType duration:v22 activityCount:v25 extendedMode:v30 totalLocations:v27 routeSmoothingRetryCount:v28 activityID:0 failure:v31];
   }
 
   else
@@ -1243,9 +1243,9 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
 - (void)_queue_smoothNextActivityForCurrentTask
 {
   v94[8] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 32);
+    v2 = *(self + 32);
     v3 = v2;
     if (v2)
     {
@@ -1264,7 +1264,7 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
           v8 = [v7 objectAtIndexedSubscript:v6];
 
           inited = objc_initWeak(&location, v3);
-          objc_initWeak(&from, a1);
+          objc_initWeak(&from, self);
           v10 = inited;
           v68[0] = MEMORY[0x277D85DD0];
           v68[1] = 3221225472;
@@ -1273,7 +1273,7 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
           objc_copyWeak(&v73, &from);
           objc_copyWeak(&v74, &location);
           v71 = v8;
-          v72 = a1;
+          selfCopy = self;
           v11 = v71;
           v67 = v3;
           v65 = v68;
@@ -1286,35 +1286,35 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
             _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "[routes] Smoothing route for activity %@", buf, 0xCu);
           }
 
-          v13 = [v11 workoutConfiguration];
-          v62 = [v13 activityType];
+          workoutConfiguration = [v11 workoutConfiguration];
+          activityType = [workoutConfiguration activityType];
 
           if (v6)
           {
-            v14 = [v11 startDate];
+            startDate = [v11 startDate];
           }
 
           else
           {
-            v14 = 0;
+            startDate = 0;
           }
 
           v16 = v3[11];
           if ([v16 count] - 1 <= v6)
           {
-            v17 = 0;
+            endDate = 0;
           }
 
           else
           {
-            v17 = [v11 endDate];
+            endDate = [v11 endDate];
           }
 
           v18 = v67[3];
           v77 = 0;
           v19 = v18;
-          v20 = v14;
-          v66 = v17;
+          v20 = startDate;
+          v66 = endDate;
           v83 = 0u;
           v84 = 0u;
           v85 = 0u;
@@ -1354,14 +1354,14 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
             }
           }
 
-          v26 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-          v27 = [v26 hk_BOOLForKey:@"HDLocationSmootherSmoothWithOverMaxRouteLength" defaultValue:0];
+          standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          v27 = [standardUserDefaults hk_BOOLForKey:@"HDLocationSmootherSmoothWithOverMaxRouteLength" defaultValue:0];
 
           if ((v21 < 0x8CA1) | v27 & 1)
           {
             v28 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v21];
-            WeakRetained = objc_loadWeakRetained((a1 + 16));
-            v30 = [WeakRetained database];
+            WeakRetained = objc_loadWeakRetained((self + 16));
+            database = [WeakRetained database];
             v78[0] = MEMORY[0x277D85DD0];
             v78[1] = 3221225472;
             v78[2] = __73__HDWorkoutLocationSmoother__locationsForRoutes_startDate_endDate_error___block_invoke;
@@ -1371,7 +1371,7 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
             v81 = v66;
             v82 = v28;
             v31 = v28;
-            v32 = [(HDHealthEntity *)HDLocationSeriesSampleEntity performReadTransactionWithHealthDatabase:v30 error:&v77 block:v78];
+            v32 = [(HDHealthEntity *)HDLocationSeriesSampleEntity performReadTransactionWithHealthDatabase:database error:&v77 block:v78];
 
             if (v32)
             {
@@ -1396,9 +1396,9 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
           if (v34)
           {
             v35 = objc_alloc(MEMORY[0x277CCA970]);
-            v36 = [v11 startDate];
-            v37 = [v11 endDate];
-            v38 = [v35 initWithStartDate:v36 endDate:v37];
+            startDate2 = [v11 startDate];
+            endDate2 = [v11 endDate];
+            v38 = [v35 initWithStartDate:startDate2 endDate:endDate2];
 
             v39 = v67[9];
             *&v83 = MEMORY[0x277D85DD0];
@@ -1410,22 +1410,22 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
             v63 = [v39 hk_map:&v83];
             if ([v34 count] || objc_msgSend(v63, "count"))
             {
-              v40 = [v67 _newLocationSmootherWithWorkoutActivityType:v62 shouldReconstructEntireRoute:*(v67 + 8) timeIntervalsThatNeedPopulating:v63];
-              objc_storeWeak((a1 + 56), v40);
-              -[HDWorkoutLocationSmoother _submitWorkoutPerformanceTask:event:activity:locations:failure:](a1, v67, @"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskSmoothBegin", v11, [v34 count], 0);
+              v40 = [v67 _newLocationSmootherWithWorkoutActivityType:activityType shouldReconstructEntireRoute:*(v67 + 8) timeIntervalsThatNeedPopulating:v63];
+              objc_storeWeak((self + 56), v40);
+              -[HDWorkoutLocationSmoother _submitWorkoutPerformanceTask:event:activity:locations:failure:](self, v67, @"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskSmoothBegin", v11, [v34 count], 0);
               v41 = v67;
-              [(HDWorkoutLocationSmoother *)a1 _queue_cancelTimeout];
+              [(HDWorkoutLocationSmoother *)self _queue_cancelTimeout];
               v41[9] = 0;
 
-              v42 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(a1 + 8));
-              v43 = *(a1 + 40);
-              *(a1 + 40) = v42;
+              v42 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(self + 8));
+              v43 = *(self + 40);
+              *(self + 40) = v42;
 
-              objc_initWeak(v78, a1);
-              v44 = *(a1 + 40);
+              objc_initWeak(v78, self);
+              v44 = *(self + 40);
               v45 = dispatch_time(0, (*(v41 + 8) * 1000000000.0));
               dispatch_source_set_timer(v44, v45, 0xFFFFFFFFFFFFFFFFLL, 0);
-              v46 = *(a1 + 40);
+              v46 = *(self + 40);
               *buf = MEMORY[0x277D85DD0];
               *&buf[8] = 3221225472;
               *&buf[16] = __73__HDWorkoutLocationSmoother__queue_scheduleSmoothingTimeoutTimerForTask___block_invoke;
@@ -1434,7 +1434,7 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
               v89 = v47;
               objc_copyWeak(&v90, v78);
               dispatch_source_set_event_handler(v46, buf);
-              dispatch_resume(*(a1 + 40));
+              dispatch_resume(*(self + 40));
               objc_destroyWeak(&v90);
 
               objc_destroyWeak(v78);
@@ -1453,7 +1453,7 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
                 _os_log_impl(&dword_228986000, v49, OS_LOG_TYPE_DEFAULT, "[routes]: Calling smoother (%{public}@) for activity %{public}@ with %lu location points", buf, 0x20u);
               }
 
-              objc_initWeak(v78, a1);
+              objc_initWeak(v78, self);
               *buf = MEMORY[0x277D85DD0];
               *&buf[8] = 3221225472;
               *&buf[16] = __84__HDWorkoutLocationSmoother__queue_smoothActivity_activityIndex_forTask_completion___block_invoke_400;
@@ -1480,9 +1480,9 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
               {
                 v58 = v67[2];
                 v59 = v57;
-                v60 = [v58 UUID];
+                uUID = [v58 UUID];
                 *buf = 138412290;
-                *&buf[4] = v60;
+                *&buf[4] = uUID;
                 _os_log_impl(&dword_228986000, v59, OS_LOG_TYPE_DEFAULT, "[routes] No locations or activity intervals to smooth for route with UUID=%@:", buf, 0xCu);
               }
 
@@ -1498,9 +1498,9 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
             {
               v54 = v67[2];
               v55 = v53;
-              v56 = [v54 UUID];
+              uUID2 = [v54 UUID];
               *buf = 138412546;
-              *&buf[4] = v56;
+              *&buf[4] = uUID2;
               *&buf[12] = 2114;
               *&buf[14] = v64;
               _os_log_impl(&dword_228986000, v55, OS_LOG_TYPE_DEFAULT, "[routes] Failed to fetch locations for route with UUID=%@: %{public}@", buf, 0x16u);
@@ -1518,7 +1518,7 @@ void __52__HDWorkoutLocationSmoother__queue_smoothNextSample__block_invoke_393(u
         }
       }
 
-      [(HDWorkoutLocationSmoother *)a1 _queue_finishTaskAttempt:v3];
+      [(HDWorkoutLocationSmoother *)self _queue_finishTaskAttempt:v3];
     }
 
 LABEL_11:
@@ -1527,13 +1527,13 @@ LABEL_11:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_finishTaskAttempt:(id *)a1
+- (void)_queue_finishTaskAttempt:(id *)attempt
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (attempt)
   {
-    [(HDWorkoutLocationSmoother *)a1 _queue_cancelTimeout];
+    [(HDWorkoutLocationSmoother *)attempt _queue_cancelTimeout];
     _HKInitializeLogging();
     v4 = *MEMORY[0x277CCC330];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1579,23 +1579,23 @@ LABEL_11:
       if (v10)
       {
         v11 = v10;
-        [(HDWorkoutLocationSmoother *)a1 _submitWorkoutPerformanceTask:v3 event:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskEnd" failure:1];
-        [(HDWorkoutLocationSmoother *)a1 _queue_locationManagerDidSmoothRoutes:v3 forTask:v11 error:?];
+        [(HDWorkoutLocationSmoother *)attempt _submitWorkoutPerformanceTask:v3 event:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskEnd" failure:1];
+        [(HDWorkoutLocationSmoother *)attempt _queue_locationManagerDidSmoothRoutes:v3 forTask:v11 error:?];
 
         goto LABEL_13;
       }
 
-      [(HDWorkoutLocationSmoother *)a1 _submitWorkoutPerformanceTask:v3 event:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskEnd" failure:0];
+      [(HDWorkoutLocationSmoother *)attempt _submitWorkoutPerformanceTask:v3 event:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskEnd" failure:0];
       v12 = *(v3 + 13);
     }
 
     else
     {
-      [(HDWorkoutLocationSmoother *)a1 _submitWorkoutPerformanceTask:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskEnd" event:0 failure:?];
+      [(HDWorkoutLocationSmoother *)attempt _submitWorkoutPerformanceTask:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskEnd" event:0 failure:?];
       v12 = 0;
     }
 
-    [(HDWorkoutLocationSmoother *)a1 _queue_locationManagerDidSmoothRoutes:v12 forTask:v3 error:0];
+    [(HDWorkoutLocationSmoother *)attempt _queue_locationManagerDidSmoothRoutes:v12 forTask:v3 error:0];
   }
 
 LABEL_13:
@@ -1716,12 +1716,12 @@ void __68__HDWorkoutLocationSmoother__queue_smoothNextActivityForCurrentTask__bl
   }
 }
 
-- (id)_queue_saveLocations:(void *)a3 forTask:(void *)a4 activity:(uint64_t)a5 saveError:
+- (id)_queue_saveLocations:(void *)locations forTask:(void *)task activity:(uint64_t)activity saveError:
 {
   v24 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  locationsCopy = locations;
+  taskCopy = task;
+  if (self)
   {
     v30 = 0;
     v31 = &v30;
@@ -1731,14 +1731,14 @@ void __68__HDWorkoutLocationSmoother__queue_smoothNextActivityForCurrentTask__bl
     v35 = 0;
     v11 = objc_alloc_init(HDMutableDatabaseTransactionContext);
     [(HDMutableDatabaseTransactionContext *)v11 setCacheScope:1];
-    if (v10)
+    if (taskCopy)
     {
-      -[HDWorkoutLocationSmoother _submitWorkoutPerformanceTask:event:activity:locations:failure:](a1, v9, @"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskSaveBegin", v10, [v24 count], 0);
+      -[HDWorkoutLocationSmoother _submitWorkoutPerformanceTask:event:activity:locations:failure:](self, locationsCopy, @"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskSaveBegin", taskCopy, [v24 count], 0);
     }
 
     else
     {
-      [(HDWorkoutLocationSmoother *)a1 _submitWorkoutPerformanceTask:v9 event:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskSaveBegin" failure:0];
+      [(HDWorkoutLocationSmoother *)self _submitWorkoutPerformanceTask:locationsCopy event:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskSaveBegin" failure:0];
     }
 
     _HKInitializeLogging();
@@ -1749,36 +1749,36 @@ void __68__HDWorkoutLocationSmoother__queue_smoothNextActivityForCurrentTask__bl
       _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "[routes]: Taking write transaction to save route", buf, 2u);
     }
 
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
-    v14 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained(self + 2);
+    database = [WeakRetained database];
     v15 = +[HDDatabaseTransactionContext contextForWritingProtectedData];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __77__HDWorkoutLocationSmoother__queue_saveLocations_forTask_activity_saveError___block_invoke;
     v25[3] = &unk_27861D560;
     v28 = &v30;
-    v25[4] = a1;
-    v16 = v9;
+    v25[4] = self;
+    v16 = locationsCopy;
     v26 = v16;
     v17 = v24;
     v27 = v17;
-    v18 = [v14 performTransactionWithContext:v15 error:a5 block:v25 inaccessibilityHandler:0];
+    v18 = [database performTransactionWithContext:v15 error:activity block:v25 inaccessibilityHandler:0];
 
-    if (v10)
+    if (taskCopy)
     {
-      v19 = [a1 unitTest_didSaveSmoothedRouteForActivityAndTask];
-      v20 = v19;
-      if (v19)
+      unitTest_didSaveSmoothedRouteForActivityAndTask = [self unitTest_didSaveSmoothedRouteForActivityAndTask];
+      v20 = unitTest_didSaveSmoothedRouteForActivityAndTask;
+      if (unitTest_didSaveSmoothedRouteForActivityAndTask)
       {
-        (*(v19 + 16))(v19, v10, v16);
+        (*(unitTest_didSaveSmoothedRouteForActivityAndTask + 16))(unitTest_didSaveSmoothedRouteForActivityAndTask, taskCopy, v16);
       }
 
-      -[HDWorkoutLocationSmoother _submitWorkoutPerformanceTask:event:activity:locations:failure:](a1, v16, @"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskSaveEnd", v10, [v17 count], v18 ^ 1);
+      -[HDWorkoutLocationSmoother _submitWorkoutPerformanceTask:event:activity:locations:failure:](self, v16, @"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskSaveEnd", taskCopy, [v17 count], v18 ^ 1);
     }
 
     else
     {
-      [(HDWorkoutLocationSmoother *)a1 _submitWorkoutPerformanceTask:v16 event:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskSaveEnd" failure:v18 ^ 1];
+      [(HDWorkoutLocationSmoother *)self _submitWorkoutPerformanceTask:v16 event:@"HDWorkoutAnalyticsPerformanceEventNameRouteSmoothingTaskSaveEnd" failure:v18 ^ 1];
     }
 
     if (v18)
@@ -1804,41 +1804,41 @@ void __68__HDWorkoutLocationSmoother__queue_smoothNextActivityForCurrentTask__bl
   return v22;
 }
 
-- (void)_submitWorkoutPerformanceTask:(void *)a3 event:(void *)a4 activity:(uint64_t)a5 locations:(char)a6 failure:
+- (void)_submitWorkoutPerformanceTask:(void *)task event:(void *)event activity:(uint64_t)activity locations:(char)locations failure:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  if (a1 && v11)
+  taskCopy = task;
+  eventCopy = event;
+  if (self && v11)
   {
     v14 = objc_alloc(MEMORY[0x277CCAD78]);
-    v15 = [v11[2] metadata];
-    v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277CCE0E8]];
+    metadata = [v11[2] metadata];
+    v16 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCE0E8]];
     v17 = [v14 initWithUUIDString:v16];
 
     if (v17)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
-      v35 = [WeakRetained daemon];
-      v33 = [v35 analyticsSubmissionCoordinator];
-      v34 = [v13 workoutConfiguration];
-      v32 = [v34 activityType];
-      [v13 duration];
+      WeakRetained = objc_loadWeakRetained((self + 16));
+      daemon = [WeakRetained daemon];
+      analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+      workoutConfiguration = [eventCopy workoutConfiguration];
+      activityType = [workoutConfiguration activityType];
+      [eventCopy duration];
       v31 = v18;
       [v11[2] workoutActivities];
-      v20 = v19 = a6;
+      v20 = v19 = locations;
       v30 = [v20 count];
       v21 = *(v11 + 8);
       v22 = v17;
-      v23 = v12;
+      v23 = taskCopy;
       v24 = v11[7];
-      v25 = [v13 UUID];
+      uUID = [eventCopy UUID];
       LOBYTE(v29) = v19;
       v28 = v24;
-      v12 = v23;
+      taskCopy = v23;
       v17 = v22;
       LOBYTE(v27) = v21;
-      [HDWorkoutUtilities submitRouteSmoothingWorkoutPerformanceAnalyticsWithCoordinator:v33 event:v12 sessionIdentifier:v22 activityType:v32 duration:v31 activityCount:v30 extendedMode:v27 totalLocations:a5 routeSmoothingRetryCount:v28 activityID:v25 failure:v29];
+      [HDWorkoutUtilities submitRouteSmoothingWorkoutPerformanceAnalyticsWithCoordinator:analyticsSubmissionCoordinator event:taskCopy sessionIdentifier:v22 activityType:activityType duration:v31 activityCount:v30 extendedMode:v27 totalLocations:activity routeSmoothingRetryCount:v28 activityID:uUID failure:v29];
     }
 
     else
@@ -1942,13 +1942,13 @@ void __84__HDWorkoutLocationSmoother__queue_smoothActivity_activityIndex_forTask
   }
 }
 
-- (void)_queue_clearSmoothingTimeoutTimerForTask:(uint64_t)a1
+- (void)_queue_clearSmoothingTimeoutTimerForTask:(uint64_t)task
 {
   v3 = a2;
-  if (a1)
+  if (task)
   {
     v4 = v3;
-    [(HDWorkoutLocationSmoother *)a1 _queue_cancelTimeout];
+    [(HDWorkoutLocationSmoother *)task _queue_cancelTimeout];
     v3 = v4;
     if (v4)
     {
@@ -1959,12 +1959,12 @@ void __84__HDWorkoutLocationSmoother__queue_smoothActivity_activityIndex_forTask
 
 - (void)_queue_cancelTimeout
 {
-  v2 = *(a1 + 40);
+  v2 = *(self + 40);
   if (v2)
   {
     dispatch_source_cancel(v2);
-    v3 = *(a1 + 40);
-    *(a1 + 40) = 0;
+    v3 = *(self + 40);
+    *(self + 40) = 0;
   }
 }
 
@@ -2100,40 +2100,40 @@ LABEL_18:
   return result;
 }
 
-+ (id)_saveNewRouteSeriesWithProfile:(id)a3 sourceEntity:(id)a4 forWorkout:(id)a5 locations:(id)a6 routes:(id)a7 associateWithWorkout:(BOOL)a8 error:(id *)a9
++ (id)_saveNewRouteSeriesWithProfile:(id)profile sourceEntity:(id)entity forWorkout:(id)workout locations:(id)locations routes:(id)routes associateWithWorkout:(BOOL)withWorkout error:(id *)error
 {
-  v60 = a8;
+  withWorkoutCopy = withWorkout;
   v74 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
+  profileCopy = profile;
+  workoutCopy = workout;
   v15 = MEMORY[0x277CBEB38];
-  v61 = a7;
-  v16 = a6;
-  v17 = a4;
+  routesCopy = routes;
+  locationsCopy = locations;
+  entityCopy = entity;
   v18 = [v15 alloc];
   v64[0] = *MEMORY[0x277CCC520];
-  v19 = [MEMORY[0x277CCAD78] UUID];
-  v20 = [v19 UUIDString];
-  v65[0] = v20;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v65[0] = uUIDString;
   v64[1] = *MEMORY[0x277CCE108];
-  v62 = v14;
-  v21 = [v14 UUID];
-  v22 = [v21 UUIDString];
-  v65[1] = v22;
+  v62 = workoutCopy;
+  uUID2 = [workoutCopy UUID];
+  uUIDString2 = [uUID2 UUIDString];
+  v65[1] = uUIDString2;
   v64[2] = *MEMORY[0x277CCC528];
   v23 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277CCE5D0]];
   v65[2] = v23;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:v64 count:3];
   v25 = [v18 initWithDictionary:v24];
 
-  v26 = v13;
+  v26 = profileCopy;
   v27 = v25;
-  v28 = v17;
-  v29 = v16;
-  v30 = v61;
+  v28 = entityCopy;
+  v29 = locationsCopy;
+  v30 = routesCopy;
   objc_opt_self();
   v31 = [MEMORY[0x277CCDC70] _workoutRouteWithDevice:0 metadata:0];
-  v32 = [v26 database];
+  database = [v26 database];
   *buf = MEMORY[0x277D85DD0];
   *&buf[8] = 3221225472;
   *&buf[16] = __105__HDWorkoutLocationSmoother__createWorkoutRouteWithProfile_metadata_sourceEntity_locations_routes_error___block_invoke;
@@ -2150,11 +2150,11 @@ LABEL_18:
   v36 = v28;
   v37 = v31;
   v38 = v26;
-  [(HDHealthEntity *)HDDataEntity performWriteTransactionWithHealthDatabase:v32 error:a9 block:buf];
+  [(HDHealthEntity *)HDDataEntity performWriteTransactionWithHealthDatabase:database error:error block:buf];
 
   [v37 _setMetadata:v33];
-  v39 = [v37 UUID];
-  v40 = [(HDDataEntity *)HDLocationSeriesSampleEntity objectWithUUID:v39 encodingOptions:MEMORY[0x277CBEC10] profile:v38 error:a9];
+  uUID3 = [v37 UUID];
+  v40 = [(HDDataEntity *)HDLocationSeriesSampleEntity objectWithUUID:uUID3 encodingOptions:MEMORY[0x277CBEC10] profile:v38 error:error];
 
   if (!v40)
   {
@@ -2164,10 +2164,10 @@ LABEL_18:
   }
 
   v41 = objc_alloc_init(MEMORY[0x277CBEB28]);
-  v42 = [v40 UUID];
-  [v41 hk_appendBytesWithUUID:v42];
+  uUID4 = [v40 UUID];
+  [v41 hk_appendBytesWithUUID:uUID4];
 
-  if (!v60)
+  if (!withWorkoutCopy)
   {
     v46 = 0;
     v43 = v62;
@@ -2175,9 +2175,9 @@ LABEL_18:
   }
 
   v43 = v62;
-  v44 = [v62 UUID];
+  uUID5 = [v62 UUID];
   v63 = 0;
-  v45 = [HDAssociationEntity insertEntriesWithAssociationUUID:v44 objectUUIDsData:v41 type:0 behavior:0 destinationSubObjectReference:0 profile:v38 error:&v63];
+  v45 = [HDAssociationEntity insertEntriesWithAssociationUUID:uUID5 objectUUIDsData:v41 type:0 behavior:0 destinationSubObjectReference:0 profile:v38 error:&v63];
   v46 = v63;
 
   if (v45)
@@ -2188,12 +2188,12 @@ LABEL_11:
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       v52 = v51;
-      v53 = [v40 UUID];
-      v54 = [v43 UUID];
+      uUID6 = [v40 UUID];
+      uUID7 = [v43 UUID];
       *buf = 138543618;
-      *&buf[4] = v53;
+      *&buf[4] = uUID6;
       *&buf[12] = 2114;
-      *&buf[14] = v54;
+      *&buf[14] = uUID7;
       _os_log_impl(&dword_228986000, v52, OS_LOG_TYPE_DEFAULT, "[routes] Successfully saved and associated smoothed route -> %{public}@ for workout %{public}@", buf, 0x16u);
     }
 
@@ -2206,12 +2206,12 @@ LABEL_11:
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
   {
     v57 = v47;
-    v58 = [v40 UUID];
-    v59 = [v62 UUID];
+    uUID8 = [v40 UUID];
+    uUID9 = [v62 UUID];
     *buf = 138543874;
-    *&buf[4] = v58;
+    *&buf[4] = uUID8;
     *&buf[12] = 2114;
-    *&buf[14] = v59;
+    *&buf[14] = uUID9;
     *&buf[22] = 2114;
     v67 = v46;
     _os_log_error_impl(&dword_228986000, v57, OS_LOG_TYPE_ERROR, "[routes] Failed to associate route %{public}@ with workout %{public}@ %{public}@", buf, 0x20u);
@@ -2221,10 +2221,10 @@ LABEL_11:
   v46 = v48;
   if (v48)
   {
-    if (a9)
+    if (error)
     {
       v49 = v48;
-      *a9 = v46;
+      *error = v46;
     }
 
     else
@@ -2808,7 +2808,7 @@ void __85__HDWorkoutLocationSmoother__handleAlertResponse_selectedButton_task_du
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2852,15 +2852,15 @@ void __49__HDWorkoutLocationSmoother_samplesAdded_anchor___block_invoke(uint64_t
   }
 }
 
-- (void)smoothRouteWithWorkoutUUID:(id)a3 completion:(id)a4
+- (void)smoothRouteWithWorkoutUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = HDDataEntityPredicateForDataUUID();
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v10 = [WeakRetained database];
+  database = [WeakRetained database];
   v29 = 0;
-  v11 = [(HDHealthEntity *)HDWorkoutEntity anyWithPredicate:v8 healthDatabase:v10 error:&v29];
+  v11 = [(HDHealthEntity *)HDWorkoutEntity anyWithPredicate:v8 healthDatabase:database error:&v29];
   v12 = v29;
 
   if (v11)
@@ -2874,9 +2874,9 @@ void __49__HDWorkoutLocationSmoother_samplesAdded_anchor___block_invoke(uint64_t
 
     if (v16)
     {
-      v18 = [v6 UUIDString];
+      uUIDString = [dCopy UUIDString];
       v27 = v17;
-      v19 = [(HDWorkoutLocationSmoother *)&self->super.isa _workoutWithUUIDString:v18 error:&v27];
+      v19 = [(HDWorkoutLocationSmoother *)&self->super.isa _workoutWithUUIDString:uUIDString error:&v27];
       v20 = v27;
 
       if (v19)
@@ -2889,14 +2889,14 @@ void __49__HDWorkoutLocationSmoother_samplesAdded_anchor___block_invoke(uint64_t
         v23 = v16;
         v19 = v19;
         v24 = v19;
-        v25 = self;
-        v26 = v7;
+        selfCopy = self;
+        v26 = completionCopy;
         dispatch_sync(queue, block);
       }
 
       else
       {
-        (*(v7 + 2))(v7, 0, v20);
+        (*(completionCopy + 2))(completionCopy, 0, v20);
       }
     }
 
@@ -2909,7 +2909,7 @@ void __49__HDWorkoutLocationSmoother_samplesAdded_anchor___block_invoke(uint64_t
         v19 = [MEMORY[0x277CCA9B8] hk_error:118 description:@"Object not found"];
       }
 
-      (*(v7 + 2))(v7, 0, v19);
+      (*(completionCopy + 2))(completionCopy, 0, v19);
     }
   }
 
@@ -2922,7 +2922,7 @@ void __49__HDWorkoutLocationSmoother_samplesAdded_anchor___block_invoke(uint64_t
       v13 = [MEMORY[0x277CCA9B8] hk_error:118 description:@"Object not found"];
     }
 
-    (*(v7 + 2))(v7, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 }
 
@@ -3002,20 +3002,20 @@ void __67__HDWorkoutLocationSmoother_smoothRouteWithWorkoutUUID_completion___blo
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unitTest_smoothRouteForTask:(id)a3 completion:(id)a4
+- (void)unitTest_smoothRouteForTask:(id)task completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HDWorkoutLocationSmoother_unitTest_smoothRouteForTask_completion___block_invoke;
   block[3] = &unk_278616D18;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = taskCopy;
+  v9 = completionCopy;
+  v10 = taskCopy;
   dispatch_async(queue, block);
 }
 

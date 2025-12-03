@@ -1,16 +1,16 @@
 @interface PrivacyTypeCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation PrivacyTypeCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppStore.PrivacyTypeCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.PrivacyTypeCollectionViewCell" hasInstanceMethod:@"accessibilityDetailLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.PrivacyTypeCollectionViewCell" hasInstanceMethod:@"accessibilityCategoryViews" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppStore.PrivacyTypeCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.PrivacyTypeCollectionViewCell" hasInstanceMethod:@"accessibilityDetailLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.PrivacyTypeCollectionViewCell" hasInstanceMethod:@"accessibilityCategoryViews" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

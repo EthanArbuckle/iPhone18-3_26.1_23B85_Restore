@@ -1,5 +1,5 @@
 @interface NUAuxiliaryPropertiesRenderJob
-- (BOOL)prepare:(id *)a3;
+- (BOOL)prepare:(id *)prepare;
 - (id)result;
 @end
 
@@ -51,10 +51,10 @@ void __40__NUAuxiliaryPropertiesRenderJob_result__block_invoke(uint64_t a1, uint
   }
 }
 
-- (BOOL)prepare:(id *)a3
+- (BOOL)prepare:(id *)prepare
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!prepare)
   {
     v10 = NUAssertLogger_981();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -75,8 +75,8 @@ void __40__NUAuxiliaryPropertiesRenderJob_result__block_invoke(uint64_t a1, uint
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v17;
         v47 = 2114;
@@ -87,8 +87,8 @@ void __40__NUAuxiliaryPropertiesRenderJob_result__block_invoke(uint64_t a1, uint
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -102,9 +102,9 @@ void __40__NUAuxiliaryPropertiesRenderJob_result__block_invoke(uint64_t a1, uint
   v5 = [(NURenderJob *)&v44 prepare:?];
   if (v5)
   {
-    v6 = [(NURenderJob *)self prepareNode];
+    prepareNode = [(NURenderJob *)self prepareNode];
 
-    if (!v6)
+    if (!prepareNode)
     {
       v26 = NUAssertLogger_981();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -125,8 +125,8 @@ void __40__NUAuxiliaryPropertiesRenderJob_result__block_invoke(uint64_t a1, uint
           v33 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v34 = MEMORY[0x1E696AF00];
           v35 = v33;
-          v36 = [v34 callStackSymbols];
-          v37 = [v36 componentsJoinedByString:@"\n"];
+          callStackSymbols3 = [v34 callStackSymbols];
+          v37 = [callStackSymbols3 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v46 = v33;
           v47 = 2114;
@@ -137,8 +137,8 @@ void __40__NUAuxiliaryPropertiesRenderJob_result__block_invoke(uint64_t a1, uint
 
       else if (v30)
       {
-        v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v32 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v46 = v32;
         _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -147,8 +147,8 @@ void __40__NUAuxiliaryPropertiesRenderJob_result__block_invoke(uint64_t a1, uint
       _NUAssertFailHandler("[NUAuxiliaryPropertiesRenderJob prepare:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUAuxiliaryImageRenderRequest.m", 391, @"Missing prepare node", v38, v39, v40, v41, v43);
     }
 
-    v7 = [(NURenderJob *)self prepareNode];
-    v8 = [v7 imageProperties:a3];
+    prepareNode2 = [(NURenderJob *)self prepareNode];
+    v8 = [prepareNode2 imageProperties:prepare];
     imageProperties = self->_imageProperties;
     self->_imageProperties = v8;
 

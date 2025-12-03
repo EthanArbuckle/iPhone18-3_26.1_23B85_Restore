@@ -1,17 +1,17 @@
 @interface PKPaletteOptionTitleCell
-- (id)initWithTitle:(void *)a3 target:(uint64_t)a4 action:;
+- (id)initWithTitle:(void *)title target:(uint64_t)target action:;
 @end
 
 @implementation PKPaletteOptionTitleCell
 
-- (id)initWithTitle:(void *)a3 target:(uint64_t)a4 action:
+- (id)initWithTitle:(void *)title target:(uint64_t)target action:
 {
   v35[4] = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  titleCopy = title;
+  if (self)
   {
-    v34.receiver = a1;
+    v34.receiver = self;
     v34.super_class = PKPaletteOptionTitleCell;
     v9 = objc_msgSendSuper2(&v34, sel_init);
     if (v9)
@@ -22,38 +22,38 @@
 
       v12 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
       [v9[51] titleLabel];
-      v13 = v32 = v8;
+      v13 = v32 = titleCopy;
       [v13 setFont:v12];
 
       [v9[51] setContentHorizontalAlignment:4];
-      v14 = [MEMORY[0x1E69DC888] labelColor];
-      [v9[51] setTintColor:v14];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [v9[51] setTintColor:labelColor];
 
       [v9[51] setTranslatesAutoresizingMaskIntoConstraints:0];
       [v9 addSubview:v9[51]];
       v25 = MEMORY[0x1E696ACD8];
-      v31 = [v9[51] topAnchor];
-      v30 = [v9 topAnchor];
-      v28 = [v31 constraintEqualToAnchor:v30];
+      topAnchor = [v9[51] topAnchor];
+      topAnchor2 = [v9 topAnchor];
+      v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v35[0] = v28;
-      v27 = [v9[51] bottomAnchor];
-      v26 = [v9 bottomAnchor];
-      [v27 constraintEqualToAnchor:v26];
+      bottomAnchor = [v9[51] bottomAnchor];
+      bottomAnchor2 = [v9 bottomAnchor];
+      [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v15 = v33 = v7;
       v35[1] = v15;
-      v16 = [v9[51] leadingAnchor];
-      v17 = [v9 leadingAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      leadingAnchor = [v9[51] leadingAnchor];
+      leadingAnchor2 = [v9 leadingAnchor];
+      v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v35[2] = v18;
       [v9[51] trailingAnchor];
-      v19 = v29 = a4;
-      v20 = [v9 trailingAnchor];
-      v21 = [v19 constraintEqualToAnchor:v20];
+      v19 = v29 = target;
+      trailingAnchor = [v9 trailingAnchor];
+      v21 = [v19 constraintEqualToAnchor:trailingAnchor];
       v35[3] = v21;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:4];
       [v25 activateConstraints:v22];
 
-      v8 = v32;
+      titleCopy = v32;
       v7 = v33;
 
       LODWORD(v23) = 1148846080;

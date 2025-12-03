@@ -1,62 +1,62 @@
 @interface DMTAutomatedDeviceEnroller
-- (DMTAutomatedDeviceEnroller)initWithEnrollmentPrimitives:(id)a3 enrollmentInformationPrimitives:(id)a4 reachabilityPrimitives:(id)a5 activationPrimitives:(id)a6 wifiPrimitives:(id)a7 profileInstallationPrimitives:(id)a8 destructiveErasePrimitives:(id)a9 nonDestructiveErasePrimitives:(id)a10 powerOffPrimitives:(id)a11;
+- (DMTAutomatedDeviceEnroller)initWithEnrollmentPrimitives:(id)primitives enrollmentInformationPrimitives:(id)informationPrimitives reachabilityPrimitives:(id)reachabilityPrimitives activationPrimitives:(id)activationPrimitives wifiPrimitives:(id)wifiPrimitives profileInstallationPrimitives:(id)installationPrimitives destructiveErasePrimitives:(id)erasePrimitives nonDestructiveErasePrimitives:(id)self0 powerOffPrimitives:(id)self1;
 - (DMTErasePrimitives)nonDestructiveErasePrimitives;
 - (void)activateDevice;
-- (void)activationCompleteWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)activationCompleteWithSuccess:(BOOL)success error:(id)error;
 - (void)beginAutomatedDeviceEnrollment;
 - (void)checkActivationStatus;
 - (void)checkIfAlreadyEnrolled;
-- (void)didDisassociateFromNetworkWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)didJoinNetworkWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)didDisassociateFromNetworkWithSuccess:(BOOL)success error:(id)error;
+- (void)didJoinNetworkWithSuccess:(BOOL)success error:(id)error;
 - (void)disassociateWiFi;
 - (void)enrollDevice;
-- (void)enrollmentCompleteWithResponse:(id)a3 error:(id)a4;
-- (void)eraseAllContentAndSettingsDidFinishWithError:(id)a3;
-- (void)eraseAllContentAndSettingsWithExternalError:(id)a3;
-- (void)eraseAndRestartWithExternalError:(id)a3;
-- (void)eraseAndShutDownWithExternalError:(id)a3;
+- (void)enrollmentCompleteWithResponse:(id)response error:(id)error;
+- (void)eraseAllContentAndSettingsDidFinishWithError:(id)error;
+- (void)eraseAllContentAndSettingsWithExternalError:(id)error;
+- (void)eraseAndRestartWithExternalError:(id)error;
+- (void)eraseAndShutDownWithExternalError:(id)error;
 - (void)eraseCurrentNetworkIfNeeded;
 - (void)installProfile;
 - (void)joinNetwork;
 - (void)joinNetworkUsingCredentials;
-- (void)profileInstallationDidFinish:(id)a3;
-- (void)profileUninstallDidFinish:(id)a3;
-- (void)setNetworkCredential:(id)a3 networkPayload:(id)a4 enrollmentNonce:(id)a5 postEnrollmentBehavior:(int64_t)a6 organizationName:(id)a7 organizationType:(int64_t)a8 mdmServerName:(id)a9 networkConfiguration:(int64_t)a10;
-- (void)tearDownWithFatalError:(id)a3;
-- (void)timeoutOperationDidFinish:(id)a3;
+- (void)profileInstallationDidFinish:(id)finish;
+- (void)profileUninstallDidFinish:(id)finish;
+- (void)setNetworkCredential:(id)credential networkPayload:(id)payload enrollmentNonce:(id)nonce postEnrollmentBehavior:(int64_t)behavior organizationName:(id)name organizationType:(int64_t)type mdmServerName:(id)serverName networkConfiguration:(int64_t)self0;
+- (void)tearDownWithFatalError:(id)error;
+- (void)timeoutOperationDidFinish:(id)finish;
 - (void)uninstallProfile;
 - (void)verifyProfile;
-- (void)waitForReachabilityWithTimeout:(double)a3;
+- (void)waitForReachabilityWithTimeout:(double)timeout;
 @end
 
 @implementation DMTAutomatedDeviceEnroller
 
-- (DMTAutomatedDeviceEnroller)initWithEnrollmentPrimitives:(id)a3 enrollmentInformationPrimitives:(id)a4 reachabilityPrimitives:(id)a5 activationPrimitives:(id)a6 wifiPrimitives:(id)a7 profileInstallationPrimitives:(id)a8 destructiveErasePrimitives:(id)a9 nonDestructiveErasePrimitives:(id)a10 powerOffPrimitives:(id)a11
+- (DMTAutomatedDeviceEnroller)initWithEnrollmentPrimitives:(id)primitives enrollmentInformationPrimitives:(id)informationPrimitives reachabilityPrimitives:(id)reachabilityPrimitives activationPrimitives:(id)activationPrimitives wifiPrimitives:(id)wifiPrimitives profileInstallationPrimitives:(id)installationPrimitives destructiveErasePrimitives:(id)erasePrimitives nonDestructiveErasePrimitives:(id)self0 powerOffPrimitives:(id)self1
 {
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
-  v27 = a7;
-  v26 = a8;
-  v25 = a9;
-  v24 = a10;
-  v23 = a11;
+  primitivesCopy = primitives;
+  informationPrimitivesCopy = informationPrimitives;
+  reachabilityPrimitivesCopy = reachabilityPrimitives;
+  activationPrimitivesCopy = activationPrimitives;
+  wifiPrimitivesCopy = wifiPrimitives;
+  installationPrimitivesCopy = installationPrimitives;
+  erasePrimitivesCopy = erasePrimitives;
+  destructiveErasePrimitivesCopy = destructiveErasePrimitives;
+  offPrimitivesCopy = offPrimitives;
   v32.receiver = self;
   v32.super_class = DMTAutomatedDeviceEnroller;
   v18 = [(DMTAutomatedDeviceEnroller *)&v32 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_enrollmentPrimitives, a3);
-    objc_storeStrong(&v19->_enrollmentInformationPrimitives, a4);
-    objc_storeStrong(&v19->_reachabilityPrimitives, a5);
-    objc_storeStrong(&v19->_activationPrimitives, a6);
-    objc_storeStrong(&v19->_wifiPrimitives, a7);
-    objc_storeStrong(&v19->_profileInstallationPrimitives, a8);
-    objc_storeStrong(&v19->_destructiveErasePrimitives, a9);
-    objc_storeStrong(&v19->_nonDestructiveErasePrimitives, a10);
-    objc_storeStrong(&v19->_powerOffPrimitives, a11);
+    objc_storeStrong(&v18->_enrollmentPrimitives, primitives);
+    objc_storeStrong(&v19->_enrollmentInformationPrimitives, informationPrimitives);
+    objc_storeStrong(&v19->_reachabilityPrimitives, reachabilityPrimitives);
+    objc_storeStrong(&v19->_activationPrimitives, activationPrimitives);
+    objc_storeStrong(&v19->_wifiPrimitives, wifiPrimitives);
+    objc_storeStrong(&v19->_profileInstallationPrimitives, installationPrimitives);
+    objc_storeStrong(&v19->_destructiveErasePrimitives, erasePrimitives);
+    objc_storeStrong(&v19->_nonDestructiveErasePrimitives, destructiveErasePrimitives);
+    objc_storeStrong(&v19->_powerOffPrimitives, offPrimitives);
     v20 = objc_opt_new();
     operationQueue = v19->_operationQueue;
     v19->_operationQueue = v20;
@@ -67,13 +67,13 @@
   return v19;
 }
 
-- (void)setNetworkCredential:(id)a3 networkPayload:(id)a4 enrollmentNonce:(id)a5 postEnrollmentBehavior:(int64_t)a6 organizationName:(id)a7 organizationType:(int64_t)a8 mdmServerName:(id)a9 networkConfiguration:(int64_t)a10
+- (void)setNetworkCredential:(id)credential networkPayload:(id)payload enrollmentNonce:(id)nonce postEnrollmentBehavior:(int64_t)behavior organizationName:(id)name organizationType:(int64_t)type mdmServerName:(id)serverName networkConfiguration:(int64_t)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a7;
-  v21 = a9;
+  credentialCopy = credential;
+  payloadCopy = payload;
+  nonceCopy = nonce;
+  nameCopy = name;
+  serverNameCopy = serverName;
   if ([(DMTAutomatedDeviceEnroller *)self isFinalized])
   {
     v22 = _DMTLogGeneral_2();
@@ -93,17 +93,17 @@
     }
 
     [(DMTAutomatedDeviceEnroller *)self setEnrollmentState:5];
-    [(DMTAutomatedDeviceEnroller *)self setOrganizationName:v20];
-    [(DMTAutomatedDeviceEnroller *)self setOrganizationType:a8];
-    [(DMTAutomatedDeviceEnroller *)self setMdmServerName:v21];
-    [(DMTAutomatedDeviceEnroller *)self setNetworkCredential:v17];
-    v24 = [v17 networkName];
-    [(DMTAutomatedDeviceEnroller *)self setNetworkName:v24];
+    [(DMTAutomatedDeviceEnroller *)self setOrganizationName:nameCopy];
+    [(DMTAutomatedDeviceEnroller *)self setOrganizationType:type];
+    [(DMTAutomatedDeviceEnroller *)self setMdmServerName:serverNameCopy];
+    [(DMTAutomatedDeviceEnroller *)self setNetworkCredential:credentialCopy];
+    networkName = [credentialCopy networkName];
+    [(DMTAutomatedDeviceEnroller *)self setNetworkName:networkName];
 
-    [(DMTAutomatedDeviceEnroller *)self setNetworkPayload:v18];
-    [(DMTAutomatedDeviceEnroller *)self setEnrollmentNonce:v19];
-    [(DMTAutomatedDeviceEnroller *)self setPostEnrollmentBehavior:a6];
-    [(DMTAutomatedDeviceEnroller *)self setNetworkConfiguration:a10];
+    [(DMTAutomatedDeviceEnroller *)self setNetworkPayload:payloadCopy];
+    [(DMTAutomatedDeviceEnroller *)self setEnrollmentNonce:nonceCopy];
+    [(DMTAutomatedDeviceEnroller *)self setPostEnrollmentBehavior:behavior];
+    [(DMTAutomatedDeviceEnroller *)self setNetworkConfiguration:configuration];
   }
 }
 
@@ -142,12 +142,12 @@ LABEL_9:
   }
 
   [(DMTAutomatedDeviceEnroller *)self setEnrollmentState:6];
-  v6 = [(DMTAutomatedDeviceEnroller *)self reachabilityPrimitives];
-  v7 = [v6 reachable];
+  reachabilityPrimitives = [(DMTAutomatedDeviceEnroller *)self reachabilityPrimitives];
+  reachable = [reachabilityPrimitives reachable];
 
   v8 = _DMTLogEnrollment();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (reachable)
   {
     if (v9)
     {
@@ -170,9 +170,9 @@ LABEL_9:
   }
 }
 
-- (void)eraseAndRestartWithExternalError:(id)a3
+- (void)eraseAndRestartWithExternalError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if ([(DMTAutomatedDeviceEnroller *)self isFinalized])
   {
     v6 = _DMTLogGeneral_2();
@@ -186,13 +186,13 @@ LABEL_9:
   {
     [(DMTAutomatedDeviceEnroller *)self setFinalized:1];
     [(DMTAutomatedDeviceEnroller *)self setEnrollmentState:11];
-    [(DMTAutomatedDeviceEnroller *)self eraseAllContentAndSettingsWithExternalError:v5];
+    [(DMTAutomatedDeviceEnroller *)self eraseAllContentAndSettingsWithExternalError:errorCopy];
   }
 }
 
-- (void)eraseAndShutDownWithExternalError:(id)a3
+- (void)eraseAndShutDownWithExternalError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if ([(DMTAutomatedDeviceEnroller *)self isFinalized])
   {
     v6 = _DMTLogGeneral_2();
@@ -206,15 +206,15 @@ LABEL_9:
   {
     [(DMTAutomatedDeviceEnroller *)self setFinalized:1];
     [(DMTAutomatedDeviceEnroller *)self setEnrollmentState:12];
-    [(DMTAutomatedDeviceEnroller *)self eraseAllContentAndSettingsWithExternalError:v5];
+    [(DMTAutomatedDeviceEnroller *)self eraseAllContentAndSettingsWithExternalError:errorCopy];
   }
 }
 
 - (void)eraseCurrentNetworkIfNeeded
 {
-  v3 = [(DMTAutomatedDeviceEnroller *)self installedNetworkPayloadIdentifier];
+  installedNetworkPayloadIdentifier = [(DMTAutomatedDeviceEnroller *)self installedNetworkPayloadIdentifier];
 
-  if (v3)
+  if (installedNetworkPayloadIdentifier)
   {
 
     [(DMTAutomatedDeviceEnroller *)self uninstallProfile];
@@ -222,8 +222,8 @@ LABEL_9:
 
   else
   {
-    v4 = [(DMTAutomatedDeviceEnroller *)self networkCredential];
-    if (v4 && (v5 = v4, -[DMTAutomatedDeviceEnroller networkName](self, "networkName"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 length], v6, v5, v7))
+    networkCredential = [(DMTAutomatedDeviceEnroller *)self networkCredential];
+    if (networkCredential && (v5 = networkCredential, -[DMTAutomatedDeviceEnroller networkName](self, "networkName"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 length], v6, v5, v7))
     {
 
       [(DMTAutomatedDeviceEnroller *)self disassociateWiFi];
@@ -261,46 +261,46 @@ LABEL_9:
   return v5;
 }
 
-- (void)tearDownWithFatalError:(id)a3
+- (void)tearDownWithFatalError:(id)error
 {
-  [(DMTAutomatedDeviceEnroller *)self setEnrollmentError:a3];
+  [(DMTAutomatedDeviceEnroller *)self setEnrollmentError:error];
 
   [(DMTAutomatedDeviceEnroller *)self setEnrollmentState:14];
 }
 
-- (void)waitForReachabilityWithTimeout:(double)a3
+- (void)waitForReachabilityWithTimeout:(double)timeout
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = [DMTWaitForKVOChangeOperation alloc];
-  v6 = [(DMTAutomatedDeviceEnroller *)self reachabilityPrimitives];
-  v7 = [(DMTWaitForKVOChangeOperation *)v5 initWithObservedObject:v6 keyPath:@"reachable" expectedValue:MEMORY[0x277CBEC38] requireExpectedValue:0];
+  reachabilityPrimitives = [(DMTAutomatedDeviceEnroller *)self reachabilityPrimitives];
+  v7 = [(DMTWaitForKVOChangeOperation *)v5 initWithObservedObject:reachabilityPrimitives keyPath:@"reachable" expectedValue:MEMORY[0x277CBEC38] requireExpectedValue:0];
 
-  v8 = [[DMTTimeoutOperation alloc] initWithOperation:v7 timeout:1 cancelsOnTimeout:a3];
+  v8 = [[DMTTimeoutOperation alloc] initWithOperation:v7 timeout:1 cancelsOnTimeout:timeout];
   [(DMTTimeoutOperation *)v8 addTarget:self selector:sel_timeoutOperationDidFinish_ forOperationEvents:6];
   v9 = _DMTLogEnrollment();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
     *buf = 138543362;
     v16 = v10;
     _os_log_impl(&dword_24891B000, v9, OS_LOG_TYPE_DEFAULT, "Waiting for reachability for %{public}@ seconds", buf, 0xCu);
   }
 
-  v11 = [(DMTAutomatedDeviceEnroller *)self operationQueue];
+  operationQueue = [(DMTAutomatedDeviceEnroller *)self operationQueue];
   v14[0] = v7;
   v14[1] = v8;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-  [v11 addOperations:v12 waitUntilFinished:0];
+  [operationQueue addOperations:v12 waitUntilFinished:0];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timeoutOperationDidFinish:(id)a3
+- (void)timeoutOperationDidFinish:(id)finish
 {
-  v4 = [(DMTAutomatedDeviceEnroller *)self reachabilityPrimitives];
-  v5 = [v4 reachable];
+  reachabilityPrimitives = [(DMTAutomatedDeviceEnroller *)self reachabilityPrimitives];
+  reachable = [reachabilityPrimitives reachable];
 
-  if (v5)
+  if (reachable)
   {
     v6 = _DMTLogEnrollment();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -328,7 +328,7 @@ LABEL_9:
 - (void)joinNetwork
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "networkConfiguration")}];
+  v3 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "networkConfiguration")}];
   OUTLINED_FUNCTION_1();
   _os_log_debug_impl(&dword_24891B000, a2, OS_LOG_TYPE_DEBUG, "Unknown network configuration: %{public}@", v5, 0xCu);
 
@@ -350,8 +350,8 @@ LABEL_9:
   v6[3] = &unk_278F5DEC8;
   v6[4] = self;
   v4 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v6];
-  v5 = [(DMTAutomatedDeviceEnroller *)self operationQueue];
-  [v5 addOperation:v4];
+  operationQueue = [(DMTAutomatedDeviceEnroller *)self operationQueue];
+  [operationQueue addOperation:v4];
 }
 
 void __43__DMTAutomatedDeviceEnroller_verifyProfile__block_invoke(uint64_t a1)
@@ -423,36 +423,36 @@ void __43__DMTAutomatedDeviceEnroller_verifyProfile__block_invoke_3(uint64_t a1)
   }
 
   v4 = [DMTInstallProfileOperation alloc];
-  v5 = [(DMTAutomatedDeviceEnroller *)self profileInstallationPrimitives];
-  v6 = [(DMTAutomatedDeviceEnroller *)self networkPayload];
-  v7 = [(DMTInstallProfileOperation *)v4 initWithProfileInstallationPrimitives:v5 profileData:v6];
+  profileInstallationPrimitives = [(DMTAutomatedDeviceEnroller *)self profileInstallationPrimitives];
+  networkPayload = [(DMTAutomatedDeviceEnroller *)self networkPayload];
+  v7 = [(DMTInstallProfileOperation *)v4 initWithProfileInstallationPrimitives:profileInstallationPrimitives profileData:networkPayload];
 
   [(DMTInstallProfileOperation *)v7 addTarget:self selector:sel_profileInstallationDidFinish_ forOperationEvents:6];
-  v8 = [(DMTAutomatedDeviceEnroller *)self operationQueue];
-  [v8 addOperation:v7];
+  operationQueue = [(DMTAutomatedDeviceEnroller *)self operationQueue];
+  [operationQueue addOperation:v7];
 }
 
-- (void)profileInstallationDidFinish:(id)a3
+- (void)profileInstallationDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [v4 error];
+  finishCopy = finish;
+  error = [finishCopy error];
 
-  if (v5)
+  if (error)
   {
-    v9 = [v4 error];
+    error2 = [finishCopy error];
 
-    [(DMTAutomatedDeviceEnroller *)self tearDownWithFatalError:v9];
+    [(DMTAutomatedDeviceEnroller *)self tearDownWithFatalError:error2];
   }
 
   else
   {
-    v6 = [v4 resultObject];
+    resultObject = [finishCopy resultObject];
 
-    [(DMTAutomatedDeviceEnroller *)self setInstalledNetworkPayloadIdentifier:v6];
-    v7 = [(DMTAutomatedDeviceEnroller *)self reachabilityPrimitives];
-    LODWORD(v6) = [v7 reachable];
+    [(DMTAutomatedDeviceEnroller *)self setInstalledNetworkPayloadIdentifier:resultObject];
+    reachabilityPrimitives = [(DMTAutomatedDeviceEnroller *)self reachabilityPrimitives];
+    LODWORD(resultObject) = [reachabilityPrimitives reachable];
 
-    if (v6)
+    if (resultObject)
     {
       v8 = _DMTLogGeneral_2();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -482,26 +482,26 @@ void __43__DMTAutomatedDeviceEnroller_verifyProfile__block_invoke_3(uint64_t a1)
   }
 
   v4 = [DMTUninstallProfileOperation alloc];
-  v5 = [(DMTAutomatedDeviceEnroller *)self profileInstallationPrimitives];
-  v6 = [(DMTAutomatedDeviceEnroller *)self installedNetworkPayloadIdentifier];
-  v7 = [(DMTUninstallProfileOperation *)v4 initWithProfileInstallationPrimitives:v5 profileIdentifier:v6];
+  profileInstallationPrimitives = [(DMTAutomatedDeviceEnroller *)self profileInstallationPrimitives];
+  installedNetworkPayloadIdentifier = [(DMTAutomatedDeviceEnroller *)self installedNetworkPayloadIdentifier];
+  v7 = [(DMTUninstallProfileOperation *)v4 initWithProfileInstallationPrimitives:profileInstallationPrimitives profileIdentifier:installedNetworkPayloadIdentifier];
 
   [(DMTUninstallProfileOperation *)v7 addTarget:self selector:sel_profileUninstallDidFinish_ forOperationEvents:6];
-  v8 = [(DMTAutomatedDeviceEnroller *)self operationQueue];
-  [v8 addOperation:v7];
+  operationQueue = [(DMTAutomatedDeviceEnroller *)self operationQueue];
+  [operationQueue addOperation:v7];
 }
 
-- (void)profileUninstallDidFinish:(id)a3
+- (void)profileUninstallDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [v4 error];
+  finishCopy = finish;
+  error = [finishCopy error];
 
-  if (v5)
+  if (error)
   {
     v6 = _DMTLogGeneral_2();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(DMTAutomatedDeviceEnroller *)self profileUninstallDidFinish:v4];
+      [(DMTAutomatedDeviceEnroller *)self profileUninstallDidFinish:finishCopy];
     }
   }
 
@@ -527,14 +527,14 @@ void __43__DMTAutomatedDeviceEnroller_verifyProfile__block_invoke_3(uint64_t a1)
     _os_log_impl(&dword_24891B000, v3, OS_LOG_TYPE_DEFAULT, "Joining network using provided credentials...", buf, 2u);
   }
 
-  v4 = [(DMTAutomatedDeviceEnroller *)self wifiPrimitives];
-  v5 = [(DMTAutomatedDeviceEnroller *)self networkCredential];
+  wifiPrimitives = [(DMTAutomatedDeviceEnroller *)self wifiPrimitives];
+  networkCredential = [(DMTAutomatedDeviceEnroller *)self networkCredential];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__DMTAutomatedDeviceEnroller_joinNetworkUsingCredentials__block_invoke;
   v6[3] = &unk_278F5E5D8;
   objc_copyWeak(&v7, &location);
-  [v4 joinWiFiNetworkWithCredential:v5 timeout:v6 completion:60.0];
+  [wifiPrimitives joinWiFiNetworkWithCredential:networkCredential timeout:v6 completion:60.0];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -562,10 +562,10 @@ void __57__DMTAutomatedDeviceEnroller_joinNetworkUsingCredentials__block_invoke_
   [WeakRetained didJoinNetworkWithSuccess:*(a1 + 48) error:*(a1 + 32)];
 }
 
-- (void)didJoinNetworkWithSuccess:(BOOL)a3 error:(id)a4
+- (void)didJoinNetworkWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
-  if (a3)
+  errorCopy = error;
+  if (success)
   {
     [(DMTAutomatedDeviceEnroller *)self waitForReachabilityWithTimeout:30.0];
   }
@@ -578,7 +578,7 @@ void __57__DMTAutomatedDeviceEnroller_joinNetworkUsingCredentials__block_invoke_
       [DMTAutomatedDeviceEnroller didJoinNetworkWithSuccess:? error:?];
     }
 
-    [(DMTAutomatedDeviceEnroller *)self tearDownWithFatalError:v6];
+    [(DMTAutomatedDeviceEnroller *)self tearDownWithFatalError:errorCopy];
   }
 }
 
@@ -592,13 +592,13 @@ void __57__DMTAutomatedDeviceEnroller_joinNetworkUsingCredentials__block_invoke_
   }
 
   objc_initWeak(buf, self);
-  v4 = [(DMTAutomatedDeviceEnroller *)self wifiPrimitives];
+  wifiPrimitives = [(DMTAutomatedDeviceEnroller *)self wifiPrimitives];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __46__DMTAutomatedDeviceEnroller_disassociateWiFi__block_invoke;
   v5[3] = &unk_278F5E5D8;
   objc_copyWeak(&v6, buf);
-  [v4 disassociateWiFiNetworkWithCompletion:v5];
+  [wifiPrimitives disassociateWiFiNetworkWithCompletion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(buf);
@@ -626,10 +626,10 @@ void __46__DMTAutomatedDeviceEnroller_disassociateWiFi__block_invoke_2(uint64_t 
   [WeakRetained didDisassociateFromNetworkWithSuccess:*(a1 + 48) error:*(a1 + 32)];
 }
 
-- (void)didDisassociateFromNetworkWithSuccess:(BOOL)a3 error:(id)a4
+- (void)didDisassociateFromNetworkWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
-  if (a3)
+  errorCopy = error;
+  if (success)
   {
     v7 = _DMTLogEnrollment();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -660,13 +660,13 @@ void __46__DMTAutomatedDeviceEnroller_disassociateWiFi__block_invoke_2(uint64_t 
 
   [(DMTAutomatedDeviceEnroller *)self setEnrollmentState:8];
   objc_initWeak(buf, self);
-  v4 = [(DMTAutomatedDeviceEnroller *)self activationPrimitives];
+  activationPrimitives = [(DMTAutomatedDeviceEnroller *)self activationPrimitives];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__DMTAutomatedDeviceEnroller_checkActivationStatus__block_invoke;
   v5[3] = &unk_278F5E5D8;
   objc_copyWeak(&v6, buf);
-  [v4 fetchActivationStateWithCompletion:v5];
+  [activationPrimitives fetchActivationStateWithCompletion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(buf);
@@ -704,13 +704,13 @@ void __51__DMTAutomatedDeviceEnroller_checkActivationStatus__block_invoke_2(uint
   }
 
   objc_initWeak(buf, self);
-  v4 = [(DMTAutomatedDeviceEnroller *)self activationPrimitives];
+  activationPrimitives = [(DMTAutomatedDeviceEnroller *)self activationPrimitives];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __44__DMTAutomatedDeviceEnroller_activateDevice__block_invoke;
   v5[3] = &unk_278F5E5D8;
   objc_copyWeak(&v6, buf);
-  [v4 activateWithCompletion:v5];
+  [activationPrimitives activateWithCompletion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(buf);
@@ -738,10 +738,10 @@ void __44__DMTAutomatedDeviceEnroller_activateDevice__block_invoke_2(uint64_t a1
   [WeakRetained activationCompleteWithSuccess:*(a1 + 48) error:*(a1 + 32)];
 }
 
-- (void)activationCompleteWithSuccess:(BOOL)a3 error:(id)a4
+- (void)activationCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
-  if (a3)
+  errorCopy = error;
+  if (success)
   {
     v7 = _DMTLogEnrollment();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -761,7 +761,7 @@ void __44__DMTAutomatedDeviceEnroller_activateDevice__block_invoke_2(uint64_t a1
       [DMTAutomatedDeviceEnroller activationCompleteWithSuccess:error:];
     }
 
-    [(DMTAutomatedDeviceEnroller *)self tearDownWithFatalError:v6];
+    [(DMTAutomatedDeviceEnroller *)self tearDownWithFatalError:errorCopy];
   }
 }
 
@@ -774,10 +774,10 @@ void __44__DMTAutomatedDeviceEnroller_activateDevice__block_invoke_2(uint64_t a1
     _os_log_impl(&dword_24891B000, v3, OS_LOG_TYPE_DEFAULT, "Checking existing enrollment status...", buf, 2u);
   }
 
-  v4 = [(DMTAutomatedDeviceEnroller *)self enrollmentInformationPrimitives];
-  v5 = [v4 isEnrolled];
+  enrollmentInformationPrimitives = [(DMTAutomatedDeviceEnroller *)self enrollmentInformationPrimitives];
+  isEnrolled = [enrollmentInformationPrimitives isEnrolled];
 
-  if (v5)
+  if (isEnrolled)
   {
     v6 = _DMTLogGeneral_2();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -813,15 +813,15 @@ void __44__DMTAutomatedDeviceEnroller_activateDevice__block_invoke_2(uint64_t a1
 
   [(DMTAutomatedDeviceEnroller *)self setEnrollmentState:9];
   objc_initWeak(buf, self);
-  v4 = [(DMTAutomatedDeviceEnroller *)self enrollmentPrimitives];
-  v5 = [(DMTAutomatedDeviceEnroller *)self enrollmentNonce];
+  enrollmentPrimitives = [(DMTAutomatedDeviceEnroller *)self enrollmentPrimitives];
+  enrollmentNonce = [(DMTAutomatedDeviceEnroller *)self enrollmentNonce];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__DMTAutomatedDeviceEnroller_enrollDevice__block_invoke;
   v6[3] = &unk_278F5E628;
   v6[4] = self;
   objc_copyWeak(&v7, buf);
-  [v4 enrollWithNonce:v5 completionBlock:v6];
+  [enrollmentPrimitives enrollWithNonce:enrollmentNonce completionBlock:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(buf);
@@ -877,15 +877,15 @@ void __42__DMTAutomatedDeviceEnroller_enrollDevice__block_invoke_2(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enrollmentCompleteWithResponse:(id)a3 error:(id)a4
+- (void)enrollmentCompleteWithResponse:(id)response error:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = _DMTLogEnrollment();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (!v5)
+    if (!errorCopy)
     {
       v7 = @"YES";
     }
@@ -895,8 +895,8 @@ void __42__DMTAutomatedDeviceEnroller_enrollDevice__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_24891B000, v6, OS_LOG_TYPE_DEFAULT, "Enrollment complete: %{public}@", &v10, 0xCu);
   }
 
-  [(DMTAutomatedDeviceEnroller *)self setEnrollmentError:v5];
-  if (v5)
+  [(DMTAutomatedDeviceEnroller *)self setEnrollmentError:errorCopy];
+  if (errorCopy)
   {
     v8 = 14;
   }
@@ -910,28 +910,28 @@ void __42__DMTAutomatedDeviceEnroller_enrollDevice__block_invoke_2(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)eraseAllContentAndSettingsWithExternalError:(id)a3
+- (void)eraseAllContentAndSettingsWithExternalError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = v4;
+    enrollmentError = errorCopy;
   }
 
   else
   {
-    v6 = [(DMTAutomatedDeviceEnroller *)self enrollmentError];
-    if (!v6)
+    enrollmentError = [(DMTAutomatedDeviceEnroller *)self enrollmentError];
+    if (!enrollmentError)
     {
-      v7 = [(DMTAutomatedDeviceEnroller *)self nonDestructiveErasePrimitives];
+      nonDestructiveErasePrimitives = [(DMTAutomatedDeviceEnroller *)self nonDestructiveErasePrimitives];
       goto LABEL_5;
     }
   }
 
-  v7 = [(DMTAutomatedDeviceEnroller *)self destructiveErasePrimitives];
+  nonDestructiveErasePrimitives = [(DMTAutomatedDeviceEnroller *)self destructiveErasePrimitives];
 LABEL_5:
-  v8 = v7;
+  v8 = nonDestructiveErasePrimitives;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -954,10 +954,10 @@ void __74__DMTAutomatedDeviceEnroller_eraseAllContentAndSettingsWithExternalErro
   }
 }
 
-- (void)eraseAllContentAndSettingsDidFinishWithError:(id)a3
+- (void)eraseAllContentAndSettingsDidFinishWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     v5 = _DMTLogGeneral_2();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -966,17 +966,17 @@ void __74__DMTAutomatedDeviceEnroller_eraseAllContentAndSettingsWithExternalErro
     }
   }
 
-  v6 = [(DMTAutomatedDeviceEnroller *)self enrollmentState];
-  v7 = [(DMTAutomatedDeviceEnroller *)self powerOffPrimitives];
-  v8 = v7;
-  if (v6 == 11)
+  enrollmentState = [(DMTAutomatedDeviceEnroller *)self enrollmentState];
+  powerOffPrimitives = [(DMTAutomatedDeviceEnroller *)self powerOffPrimitives];
+  v8 = powerOffPrimitives;
+  if (enrollmentState == 11)
   {
-    [v7 reboot];
+    [powerOffPrimitives reboot];
   }
 
   else
   {
-    [v7 shutDown];
+    [powerOffPrimitives shutDown];
   }
 }
 

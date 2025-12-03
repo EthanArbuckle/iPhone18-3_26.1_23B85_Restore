@@ -7,14 +7,14 @@
 
 - (unsigned)serviceType
 {
-  v3 = [(IDSAccount *)self serviceName];
-  if ([v3 isEqualToString:IDSServiceNameiMessage])
+  serviceName = [(IDSAccount *)self serviceName];
+  if ([serviceName isEqualToString:IDSServiceNameiMessage])
   {
     return 0;
   }
 
-  v5 = [(IDSAccount *)self serviceName];
-  if ([v5 isEqualToString:IDSServiceNameiMessageForBusiness])
+  serviceName2 = [(IDSAccount *)self serviceName];
+  if ([serviceName2 isEqualToString:IDSServiceNameiMessageForBusiness])
   {
     return 1;
   }
@@ -37,10 +37,10 @@
 
 - (BOOL)isBizAccount
 {
-  v2 = [(IDSAccount *)self serviceName];
+  serviceName = [(IDSAccount *)self serviceName];
   v3 = IDSServiceNameiMessageForBusiness;
 
-  return [v2 isEqualToString:v3];
+  return [serviceName isEqualToString:v3];
 }
 
 @end

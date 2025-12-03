@@ -1,6 +1,6 @@
 @interface RTLearnedTransitionMO
 + (id)fetchRequest;
-+ (id)managedObjectWithTransition:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5;
++ (id)managedObjectWithTransition:(id)transition managedObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation RTLearnedTransitionMO
@@ -12,13 +12,13 @@
   return v2;
 }
 
-+ (id)managedObjectWithTransition:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5
++ (id)managedObjectWithTransition:(id)transition managedObject:(id)object inManagedObjectContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  transitionCopy = transition;
+  objectCopy = object;
+  contextCopy = context;
+  v11 = contextCopy;
+  if (!transitionCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v10)
+  if (!contextCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -46,7 +46,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (v9)
+  if (objectCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -65,7 +65,7 @@ LABEL_17:
     }
   }
 
-  v12 = [v9 managedObjectContext];
+  managedObjectContext = [objectCopy managedObjectContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -84,8 +84,8 @@ LABEL_9:
     v19[3] = &unk_2788C59F8;
     v23 = buf;
     v24 = a2;
-    v20 = v8;
-    v21 = v9;
+    v20 = transitionCopy;
+    v21 = objectCopy;
     v22 = v11;
     [v22 performBlockAndWait:v19];
     v15 = *(v26 + 5);
@@ -94,8 +94,8 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  v14 = [v9 managedObjectContext];
-  if (([v14 allowTombstones] & 1) != 0 || (objc_msgSend(v9, "flags") & 1) == 0)
+  managedObjectContext2 = [objectCopy managedObjectContext];
+  if (([managedObjectContext2 allowTombstones] & 1) != 0 || (objc_msgSend(objectCopy, "flags") & 1) == 0)
   {
 
     goto LABEL_9;

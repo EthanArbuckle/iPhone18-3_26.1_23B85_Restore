@@ -1,17 +1,17 @@
 @interface NSPointerArray
-- (void)removePointer:(void *)a3;
+- (void)removePointer:(void *)pointer;
 @end
 
 @implementation NSPointerArray
 
-- (void)removePointer:(void *)a3
+- (void)removePointer:(void *)pointer
 {
   if ([(NSPointerArray *)self count])
   {
     v5 = 0;
     do
     {
-      if ([(NSPointerArray *)self pointerAtIndex:v5]== a3)
+      if ([(NSPointerArray *)self pointerAtIndex:v5]== pointer)
       {
         [(NSPointerArray *)self removePointerAtIndex:v5];
       }

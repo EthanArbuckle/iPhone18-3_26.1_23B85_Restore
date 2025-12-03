@@ -1,23 +1,23 @@
 @interface CCDURLOperation
-- (int64_t)_statusCodeFromResponse:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)_callCompletionBlockWithResponse:(id)a3 error:(id)a4;
+- (int64_t)_statusCodeFromResponse:(id)response;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)_callCompletionBlockWithResponse:(id)response error:(id)error;
 - (void)_invalidateAndCancelURLSession;
-- (void)_printStatusCode:(int64_t)a3;
-- (void)_retryRequestIfAllowed:(BOOL)a3 afterDelay:(double)a4 orFailWithError:(id)a5;
-- (void)_retryRequestIfAllowedAfterDelayOrFailWithError:(id)a3;
-- (void)_retryRequestOrFailWithError:(id)a3;
+- (void)_printStatusCode:(int64_t)code;
+- (void)_retryRequestIfAllowed:(BOOL)allowed afterDelay:(double)delay orFailWithError:(id)error;
+- (void)_retryRequestIfAllowedAfterDelayOrFailWithError:(id)error;
+- (void)_retryRequestOrFailWithError:(id)error;
 - (void)_sendFailureNoticeToRemote;
-- (void)_sendResponseInfoToRemoteWithStatusCode:(int64_t)a3;
-- (void)_startRetryTimerWithInterval:(double)a3;
+- (void)_sendResponseInfoToRemoteWithStatusCode:(int64_t)code;
+- (void)_startRetryTimerWithInterval:(double)interval;
 - (void)_startURLRequest;
 - (void)dealloc;
 - (void)endOperation;
 - (void)start;
-- (void)timeoutTimerDidFire:(id)a3;
+- (void)timeoutTimerDidFire:(id)fire;
 @end
 
 @implementation CCDURLOperation
@@ -35,8 +35,8 @@
   v3 = objc_opt_new();
   [(CCDURLOperation *)self setResponseData:v3];
 
-  v4 = [(CCDURLOperation *)self urlSession];
-  [v4 invalidateAndCancel];
+  urlSession = [(CCDURLOperation *)self urlSession];
+  [urlSession invalidateAndCancel];
 
   v5 = +[NSURLSessionConfiguration defaultSessionConfiguration];
   v6 = +[NSOperationQueue mainQueue];
@@ -53,8 +53,8 @@
 
 - (void)_invalidateAndCancelURLSession
 {
-  v3 = [(CCDURLOperation *)self urlSession];
-  [v3 invalidateAndCancel];
+  urlSession = [(CCDURLOperation *)self urlSession];
+  [urlSession invalidateAndCancel];
 
   [(CCDURLOperation *)self setUrlSession:0];
 }
@@ -68,15 +68,15 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Starting URL Request", buf, 2u);
   }
 
-  v4 = [(CCDURLOperation *)self teslaRequest];
+  teslaRequest = [(CCDURLOperation *)self teslaRequest];
   v13 = 0;
-  v5 = [v4 requestWithError:&v13];
+  v5 = [teslaRequest requestWithError:&v13];
   v6 = v13;
 
   if (v5)
   {
-    v7 = [(CCDURLOperation *)self urlSession];
-    v8 = [v7 dataTaskWithRequest:v5];
+    urlSession = [(CCDURLOperation *)self urlSession];
+    v8 = [urlSession dataTaskWithRequest:v5];
 
     if (v8)
     {
@@ -120,13 +120,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Sending failure response back to client", v5, 2u);
   }
 
-  v4 = [(CCDURLOperation *)self error];
-  if (!v4)
+  error = [(CCDURLOperation *)self error];
+  if (!error)
   {
-    v4 = [CCDError internalErrorWithCode:34000];
+    error = [CCDError internalErrorWithCode:34000];
   }
 
-  [(CCDURLOperation *)self _callCompletionBlockWithResponse:0 error:v4];
+  [(CCDURLOperation *)self _callCompletionBlockWithResponse:0 error:error];
 }
 
 - (void)endOperation
@@ -137,40 +137,40 @@
   [(CCDOperation *)&v3 endOperation];
 }
 
-- (void)_callCompletionBlockWithResponse:(id)a3 error:(id)a4
+- (void)_callCompletionBlockWithResponse:(id)response error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  responseCopy = response;
   v8 = *(DEPLogObjects() + 8);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ completed. Calling the completion block.", &v9, 0xCu);
   }
 
-  [(CCDURLOperation *)self completeOperationWithResponse:v7 error:v6];
+  [(CCDURLOperation *)self completeOperationWithResponse:responseCopy error:errorCopy];
 
   [(CCDURLOperation *)self endOperation];
 }
 
-- (int64_t)_statusCodeFromResponse:(id)a3
+- (int64_t)_statusCodeFromResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 statusCode];
-    if (v6 == 503)
+    v5 = responseCopy;
+    statusCode = [v5 statusCode];
+    if (statusCode == 503)
     {
-      v7 = [v5 allHeaderFields];
-      v8 = [v7 objectForKeyedSubscript:@"Retry-After"];
+      allHeaderFields = [v5 allHeaderFields];
+      v8 = [allHeaderFields objectForKeyedSubscript:@"Retry-After"];
 
-      v9 = [v8 integerValue];
-      if (v9 >= 1)
+      integerValue = [v8 integerValue];
+      if (integerValue >= 1)
       {
-        [(CCDURLOperation *)self setRetryAfterInterval:v9];
+        [(CCDURLOperation *)self setRetryAfterInterval:integerValue];
       }
 
       [(CCDURLOperation *)self retryAfterInterval];
@@ -183,13 +183,13 @@
 
   else
   {
-    v6 = 0;
+    statusCode = 0;
   }
 
-  return v6;
+  return statusCode;
 }
 
-- (void)_sendResponseInfoToRemoteWithStatusCode:(int64_t)a3
+- (void)_sendResponseInfoToRemoteWithStatusCode:(int64_t)code
 {
   v5 = *(DEPLogObjects() + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -199,10 +199,10 @@
   }
 
   v12 = 0;
-  v6 = [(CCDURLOperation *)self responseData];
-  v7 = [(CCDURLOperation *)self httpResponseContentType];
+  responseData = [(CCDURLOperation *)self responseData];
+  httpResponseContentType = [(CCDURLOperation *)self httpResponseContentType];
   v11 = 0;
-  v8 = [(CCDURLOperation *)self responseWithResponseData:v6 contentType:v7 statusCode:a3 retryNeeded:&v12 outError:&v11];
+  v8 = [(CCDURLOperation *)self responseWithResponseData:responseData contentType:httpResponseContentType statusCode:code retryNeeded:&v12 outError:&v11];
   v9 = v11;
 
   if (v9)
@@ -223,15 +223,15 @@
   }
 }
 
-- (void)_printStatusCode:(int64_t)a3
+- (void)_printStatusCode:(int64_t)code
 {
-  v4 = [NSString stringWithFormat:@"Response code: %ld, ", a3];
-  v5 = v4;
-  if (a3 > 400)
+  code = [NSString stringWithFormat:@"Response code: %ld, ", code];
+  v5 = code;
+  if (code > 400)
   {
-    if (a3 != 401)
+    if (code != 401)
     {
-      if (a3 == 500)
+      if (code == 500)
       {
         v6 = @"Server Exception";
         goto LABEL_11;
@@ -245,9 +245,9 @@
 
   else
   {
-    if (a3 != 200)
+    if (code != 200)
     {
-      if (a3 == 400)
+      if (code == 400)
       {
         v6 = @"Invalid Request";
         goto LABEL_11;
@@ -262,7 +262,7 @@ LABEL_8:
   }
 
 LABEL_11:
-  v7 = [v4 stringByAppendingString:v6];
+  v7 = [code stringByAppendingString:v6];
 
   v8 = *(DEPLogObjects() + 8);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -273,27 +273,27 @@ LABEL_11:
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = v8;
+  responseCopy = response;
+  handlerCopy = handler;
+  v10 = responseCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 allHeaderFields];
-    v12 = v11;
-    if (v11)
+    allHeaderFields = [v10 allHeaderFields];
+    v12 = allHeaderFields;
+    if (allHeaderFields)
     {
-      v13 = [v11 objectForKeyedSubscript:@"Content-Type"];
+      v13 = [allHeaderFields objectForKeyedSubscript:@"Content-Type"];
       [(CCDURLOperation *)self setHttpResponseContentType:v13];
 
-      v14 = [v10 allHeaderFields];
+      allHeaderFields2 = [v10 allHeaderFields];
       v15 = *(DEPLogObjects() + 8);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = v15;
-        v17 = [v14 description];
+        v17 = [allHeaderFields2 description];
         v18 = 138543362;
         v19 = v17;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Response Headers: %{public}@", &v18, 0xCu);
@@ -301,15 +301,15 @@ LABEL_11:
     }
   }
 
-  v9[2](v9, 1);
+  handlerCopy[2](handlerCopy, 1);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v6 = a5;
+  dataCopy = data;
   v7 = *(DEPLogObjects() + 8);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (dataCopy)
   {
     if (v8)
     {
@@ -317,8 +317,8 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received actual data", buf, 2u);
     }
 
-    v9 = [(CCDURLOperation *)self responseData];
-    [v9 appendData:v6];
+    responseData = [(CCDURLOperation *)self responseData];
+    [responseData appendData:dataCopy];
   }
 
   else if (v8)
@@ -328,20 +328,20 @@ LABEL_11:
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a5;
-  if (v7)
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = *(DEPLogObjects() + 8);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v7;
+      v13 = errorCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Error: %@", &v12, 0xCu);
     }
 
-    v9 = [CCDError internalErrorWithCode:34000 underlyingError:v7];
+    v9 = [CCDError internalErrorWithCode:34000 underlyingError:errorCopy];
     [(CCDURLOperation *)self setError:v9];
 
     [(CCDURLOperation *)self _sendFailureNoticeToRemote];
@@ -349,17 +349,17 @@ LABEL_11:
 
   else
   {
-    v10 = [a4 response];
-    v11 = [(CCDURLOperation *)self _statusCodeFromResponse:v10];
+    response = [task response];
+    v11 = [(CCDURLOperation *)self _statusCodeFromResponse:response];
 
     [(CCDURLOperation *)self _printStatusCode:v11];
     [(CCDURLOperation *)self _sendResponseInfoToRemoteWithStatusCode:v11];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v6 = a6;
+  handlerCopy = handler;
   v7 = *(DEPLogObjects() + 8);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -367,19 +367,19 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Default challange handling", v8, 2u);
   }
 
-  v6[2](v6, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
-- (void)_retryRequestOrFailWithError:(id)a3
+- (void)_retryRequestOrFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(CCDURLOperation *)self retryAfterInterval];
-  [(CCDURLOperation *)self _retryRequestIfAllowed:1 afterDelay:v4 orFailWithError:?];
+  [(CCDURLOperation *)self _retryRequestIfAllowed:1 afterDelay:errorCopy orFailWithError:?];
 }
 
-- (void)_retryRequestIfAllowed:(BOOL)a3 afterDelay:(double)a4 orFailWithError:(id)a5
+- (void)_retryRequestIfAllowed:(BOOL)allowed afterDelay:(double)delay orFailWithError:(id)error
 {
-  if (a3)
+  if (allowed)
   {
     v7 = *(DEPLogObjects() + 8);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -388,36 +388,36 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Retrying the request", buf, 2u);
     }
 
-    [(CCDURLOperation *)self _startRetryTimerWithInterval:a4];
+    [(CCDURLOperation *)self _startRetryTimerWithInterval:delay];
   }
 
   else
   {
-    v8 = [CCDError maxRetriesExceededErrorWithUnderlyingError:a5, a4];
-    [(CCDURLOperation *)self _callCompletionBlockWithResponse:0 error:v8];
+    delay = [CCDError maxRetriesExceededErrorWithUnderlyingError:error, delay];
+    [(CCDURLOperation *)self _callCompletionBlockWithResponse:0 error:delay];
   }
 }
 
-- (void)_retryRequestIfAllowedAfterDelayOrFailWithError:(id)a3
+- (void)_retryRequestIfAllowedAfterDelayOrFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(CCDURLOperation *)self setRequestCount:[(CCDURLOperation *)self requestCount]+ 1];
-  [(CCDURLOperation *)self _retryRequestIfAllowed:[(CCDURLOperation *)self requestCount]< 3 afterDelay:v4 orFailWithError:2.0];
+  [(CCDURLOperation *)self _retryRequestIfAllowed:[(CCDURLOperation *)self requestCount]< 3 afterDelay:errorCopy orFailWithError:2.0];
 }
 
-- (void)_startRetryTimerWithInterval:(double)a3
+- (void)_startRetryTimerWithInterval:(double)interval
 {
   v5 = [NSTimer alloc];
-  v6 = [NSDate dateWithTimeIntervalSinceNow:a3];
+  v6 = [NSDate dateWithTimeIntervalSinceNow:interval];
   v7 = [v5 initWithFireDate:v6 interval:self target:"timeoutTimerDidFire:" selector:0 userInfo:0 repeats:0.0];
   [(CCDURLOperation *)self setTimeoutTimer:v7];
 
   v9 = +[NSRunLoop mainRunLoop];
-  v8 = [(CCDURLOperation *)self timeoutTimer];
-  [v9 addTimer:v8 forMode:NSRunLoopCommonModes];
+  timeoutTimer = [(CCDURLOperation *)self timeoutTimer];
+  [v9 addTimer:timeoutTimer forMode:NSRunLoopCommonModes];
 }
 
-- (void)timeoutTimerDidFire:(id)a3
+- (void)timeoutTimerDidFire:(id)fire
 {
   if ([(CCDURLOperation *)self requestFailed])
   {

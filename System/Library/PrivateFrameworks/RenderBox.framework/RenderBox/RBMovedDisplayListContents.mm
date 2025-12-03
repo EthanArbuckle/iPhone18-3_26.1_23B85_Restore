@@ -3,9 +3,9 @@
 - (CGRect)boundingRect;
 - (float)contentHeadroom;
 - (id).cxx_construct;
-- (void)_drawInState:(_RBDrawingState *)a3 alpha:(float)a4;
-- (void)initWithContents:(uint64_t *)a3 xmlDocument:;
-- (void)renderInContext:(CGContext *)a3 options:(id)a4;
+- (void)_drawInState:(_RBDrawingState *)state alpha:(float)alpha;
+- (void)initWithContents:(uint64_t *)contents xmlDocument:;
+- (void)renderInContext:(CGContext *)context options:(id)options;
 @end
 
 @implementation RBMovedDisplayListContents
@@ -72,18 +72,18 @@
   return result;
 }
 
-- (void)_drawInState:(_RBDrawingState *)a3 alpha:(float)a4
+- (void)_drawInState:(_RBDrawingState *)state alpha:(float)alpha
 {
-  v8 = *(a3 + 1);
+  v8 = *(state + 1);
   if (!*(v8 + 24))
   {
-    make_contents(*(a3 + 1));
+    make_contents(*(state + 1));
   }
 
   p = self->_contents._p;
   if (p)
   {
-    RB::DisplayList::Builder::draw(v8 + 16, p, a3, a4, 0, 0);
+    RB::DisplayList::Builder::draw(v8 + 16, p, state, alpha, 0, 0);
   }
 
   v10 = *(v8 + 320);
@@ -93,30 +93,30 @@
     if (ptr)
     {
 
-      RB::XML::DisplayList::draw_list(v10, a3, ptr, v4, a4);
+      RB::XML::DisplayList::draw_list(v10, state, ptr, v4, alpha);
     }
   }
 }
 
-- (void)renderInContext:(CGContext *)a3 options:(id)a4
+- (void)renderInContext:(CGContext *)context options:(id)options
 {
   p = self->_contents._p;
   if (p)
   {
-    render_contents(a3, a4, p, self->_xml_document.__ptr_);
+    render_contents(context, options, p, self->_xml_document.__ptr_);
 
-    RBXMLRecorderMarkCGFrame(self, a3);
+    RBXMLRecorderMarkCGFrame(self, context);
   }
 }
 
-- (void)initWithContents:(uint64_t *)a3 xmlDocument:
+- (void)initWithContents:(uint64_t *)contents xmlDocument:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = RBMovedDisplayListContents;
   v5 = objc_msgSendSuper2(&v10, sel_init);
   v6 = v5;
@@ -125,8 +125,8 @@
     v7 = v5[1];
     v5[1] = *a2;
     *a2 = v7;
-    v8 = *a3;
-    *a3 = 0;
+    v8 = *contents;
+    *contents = 0;
     std::unique_ptr<RB::XML::Document>::reset[abi:nn200100](v5 + 2, v8);
   }
 

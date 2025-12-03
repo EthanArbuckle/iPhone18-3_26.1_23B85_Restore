@@ -8,16 +8,16 @@
 - (void)cdp_addAuthHeaderWithContext:()CDP
 {
   v4 = a3;
-  v5 = [v4 appleID];
+  appleID = [v4 appleID];
 
-  if (v5)
+  if (appleID)
   {
-    v6 = [v4 passwordEquivToken];
-    if (v6)
+    passwordEquivToken = [v4 passwordEquivToken];
+    if (passwordEquivToken)
     {
       v7 = MEMORY[0x277CCACA8];
-      v8 = [v4 appleID];
-      v9 = [v7 stringWithFormat:@"%@:%@", v8, v6];
+      appleID2 = [v4 appleID];
+      v9 = [v7 stringWithFormat:@"%@:%@", appleID2, passwordEquivToken];
     }
 
     else
@@ -35,12 +35,12 @@
       v10 = @"false";
     }
 
-    [a1 setValue:v10 forHTTPHeaderField:@"X-Apple-Account-Recovery"];
+    [self setValue:v10 forHTTPHeaderField:@"X-Apple-Account-Recovery"];
     if (v9)
     {
-      v11 = [v9 aaf_toBase64EncodedString];
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Basic %@", v11];
-      [a1 setValue:v12 forHTTPHeaderField:@"Authorization"];
+      aaf_toBase64EncodedString = [v9 aaf_toBase64EncodedString];
+      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Basic %@", aaf_toBase64EncodedString];
+      [self setValue:v12 forHTTPHeaderField:@"Authorization"];
     }
 
     else
@@ -56,14 +56,14 @@
 
 - (void)cdp_addClientInfoHeader
 {
-  v2 = [MEMORY[0x277CF0218] currentDevice];
-  v4 = [v2 serverFriendlyDescription];
+  currentDevice = [MEMORY[0x277CF0218] currentDevice];
+  serverFriendlyDescription = [currentDevice serverFriendlyDescription];
 
-  v3 = v4;
-  if (v4)
+  v3 = serverFriendlyDescription;
+  if (serverFriendlyDescription)
   {
-    [a1 setValue:v4 forHTTPHeaderField:@"X-MMe-Client-Info"];
-    v3 = v4;
+    [self setValue:serverFriendlyDescription forHTTPHeaderField:@"X-MMe-Client-Info"];
+    v3 = serverFriendlyDescription;
   }
 }
 

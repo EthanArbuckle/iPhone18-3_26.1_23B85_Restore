@@ -1,9 +1,9 @@
 @interface _MKMotionEffect
-- (CATransform3D)transformWithTranslationScale:(SEL)a3 rotationScale:(UIOffset)a4;
-- (UIOffset)offsetWithScale:(UIOffset)a3;
+- (CATransform3D)transformWithTranslationScale:(SEL)scale rotationScale:(UIOffset)rotationScale;
+- (UIOffset)offsetWithScale:(UIOffset)scale;
 - (UIOffset)rawOffset;
 - (_MKMotionEffectDelegate)delegate;
-- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)a3;
+- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)offset;
 @end
 
 @implementation _MKMotionEffect
@@ -15,11 +15,11 @@
   return WeakRetained;
 }
 
-- (CATransform3D)transformWithTranslationScale:(SEL)a3 rotationScale:(UIOffset)a4
+- (CATransform3D)transformWithTranslationScale:(SEL)scale rotationScale:(UIOffset)rotationScale
 {
   vertical = a5.vertical;
-  v6 = a4.vertical;
-  horizontal = a4.horizontal;
+  v6 = rotationScale.vertical;
+  horizontal = rotationScale.horizontal;
   v9 = MEMORY[0x1E69792E8];
   v10 = *(MEMORY[0x1E69792E8] + 80);
   *&retstr->m31 = *(MEMORY[0x1E69792E8] + 64);
@@ -105,10 +105,10 @@
   return result;
 }
 
-- (UIOffset)offsetWithScale:(UIOffset)a3
+- (UIOffset)offsetWithScale:(UIOffset)scale
 {
-  v3 = a3.horizontal * self->_offset.horizontal;
-  v4 = a3.vertical * self->_offset.vertical;
+  v3 = scale.horizontal * self->_offset.horizontal;
+  v4 = scale.vertical * self->_offset.vertical;
   result.vertical = v4;
   result.horizontal = v3;
   return result;
@@ -123,10 +123,10 @@
   return result;
 }
 
-- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)a3
+- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)offset
 {
-  vertical = a3.vertical;
-  v5 = 0.5 - a3.horizontal * 0.5;
+  vertical = offset.vertical;
+  v5 = 0.5 - offset.horizontal * 0.5;
   *&v5 = v5;
   v6 = [&unk_1F1611B78 CA_interpolateValue:&unk_1F1611B90 byFraction:v5];
   [v6 floatValue];

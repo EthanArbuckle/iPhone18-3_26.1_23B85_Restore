@@ -1,38 +1,38 @@
 @interface ModernLocalizer
 - (NSString)identifier;
 - (_TtC11AppStoreKit15ModernLocalizer)init;
-- (id)decimal:(id)a3 :(int64_t)a4;
-- (id)fileSize:(id)a3;
-- (id)formatDate:(id)a3 :(id)a4;
-- (id)formatDateInSentence:(id)a3 :(id)a4 :(id)a5;
-- (id)formatDateWithContext:(id)a3 :(id)a4 :(id)a5;
-- (id)formatDuration:(int64_t)a3 :(id)a4;
-- (id)formattedCount:(id)a3;
-- (id)formattedCountForPreferredLocale:(id)a3 :(id)a4;
-- (id)relativeDate:(id)a3;
-- (id)string:(id)a3;
-- (id)string:(id)a3 with:(id)a4;
-- (id)stringForPreferredLocale:(id)a3 :(id)a4;
-- (id)stringWithCount:(id)a3 :(int64_t)a4;
-- (id)stringWithCounts:(id)a3 :(id)a4;
-- (id)timeAgo:(id)a3;
-- (id)timeAgoWithContext:(id)a3 :(id)a4;
+- (id)decimal:(id)decimal :(int64_t)a4;
+- (id)fileSize:(id)size;
+- (id)formatDate:(id)date :(id)a4;
+- (id)formatDateInSentence:(id)sentence :(id)a4 :(id)a5;
+- (id)formatDateWithContext:(id)context :(id)a4 :(id)a5;
+- (id)formatDuration:(int64_t)duration :(id)a4;
+- (id)formattedCount:(id)count;
+- (id)formattedCountForPreferredLocale:(id)locale :(id)a4;
+- (id)relativeDate:(id)date;
+- (id)string:(id)string;
+- (id)string:(id)string with:(id)with;
+- (id)stringForPreferredLocale:(id)locale :(id)a4;
+- (id)stringWithCount:(id)count :(int64_t)a4;
+- (id)stringWithCounts:(id)counts :(id)a4;
+- (id)timeAgo:(id)ago;
+- (id)timeAgoWithContext:(id)context :(id)a4;
 @end
 
 @implementation ModernLocalizer
 
-- (id)decimal:(id)a3 :(int64_t)a4
+- (id)decimal:(id)decimal :(int64_t)a4
 {
   v6 = sub_1E1AF44EC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (decimal)
   {
     __swift_project_boxed_opaque_existential_1Tm((&self->super.isa + OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer), *&self->localizer[OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer + 16]);
     (*(v7 + 104))(v9, *MEMORY[0x1E69AB180], v6);
-    v10 = self;
-    v11 = a3;
+    selfCopy = self;
+    decimalCopy = decimal;
     sub_1E1AF5B2C();
 
     (*(v7 + 8))(v9, v6);
@@ -47,7 +47,7 @@
   return v12;
 }
 
-- (id)string:(id)a3
+- (id)string:(id)string
 {
   v4 = sub_1E1AF4EDC();
   v5 = *(v4 - 8);
@@ -56,7 +56,7 @@
   sub_1E1AF5DFC();
   __swift_project_boxed_opaque_existential_1Tm((&self->super.isa + OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer), *&self->localizer[OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer + 16]);
   (*(v5 + 104))(v7, *MEMORY[0x1E69AB388], v4);
-  v8 = self;
+  selfCopy = self;
   sub_1E1AF5B0C();
 
   (*(v5 + 8))(v7, v4);
@@ -65,14 +65,14 @@
   return v9;
 }
 
-- (id)string:(id)a3 with:(id)a4
+- (id)string:(id)string with:(id)with
 {
   v6 = sub_1E1AF4EDC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v14[1] = sub_1E1AF5DFC();
-  if (a4)
+  if (with)
   {
     sub_1E1AF5C7C();
   }
@@ -80,7 +80,7 @@
   __swift_project_boxed_opaque_existential_1Tm((&self->super.isa + OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer), *&self->localizer[OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer + 16]);
   (*(v7 + 104))(v9, *MEMORY[0x1E69AB388], v6);
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   sub_1E1AF5B0C();
 
   (*(v7 + 8))(v9, v10);
@@ -89,11 +89,11 @@
   return v12;
 }
 
-- (id)stringWithCount:(id)a3 :(int64_t)a4
+- (id)stringWithCount:(id)count :(int64_t)a4
 {
   v6 = sub_1E1AF5DFC();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   sub_1E176A598(v6, v8, a4);
 
   v10 = sub_1E1AF5DBC();
@@ -101,41 +101,41 @@
   return v10;
 }
 
-- (id)fileSize:(id)a3
+- (id)fileSize:(id)size
 {
-  v3 = a3;
-  if (a3)
+  sizeCopy = size;
+  if (size)
   {
-    v4 = self;
-    v5 = v3;
+    selfCopy = self;
+    v5 = sizeCopy;
     [v5 doubleValue];
-    __swift_project_boxed_opaque_existential_1Tm((&v4->super.isa + OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer), *&v4->localizer[OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer + 16]);
+    __swift_project_boxed_opaque_existential_1Tm((&selfCopy->super.isa + OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer), *&selfCopy->localizer[OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer + 16]);
     sub_1E1AF5B3C();
 
-    v3 = sub_1E1AF5DBC();
+    sizeCopy = sub_1E1AF5DBC();
   }
 
-  return v3;
+  return sizeCopy;
 }
 
-- (id)formattedCount:(id)a3
+- (id)formattedCount:(id)count
 {
-  v3 = a3;
-  if (a3)
+  countCopy = count;
+  if (count)
   {
-    v4 = self;
-    v5 = v3;
+    selfCopy = self;
+    v5 = countCopy;
     [v5 integerValue];
-    __swift_project_boxed_opaque_existential_1Tm((&v4->super.isa + OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer), *&v4->localizer[OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer + 16]);
+    __swift_project_boxed_opaque_existential_1Tm((&selfCopy->super.isa + OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer), *&selfCopy->localizer[OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer + 16]);
     sub_1E1AF5AFC();
 
-    v3 = sub_1E1AF5DBC();
+    countCopy = sub_1E1AF5DBC();
   }
 
-  return v3;
+  return countCopy;
 }
 
-- (id)formatDate:(id)a3 :(id)a4
+- (id)formatDate:(id)date :(id)a4
 {
   v6 = sub_1E1AEFE6C();
   v7 = *(v6 - 8);
@@ -171,7 +171,7 @@
   {
     (*(v7 + 32))(v9, v12, v6);
     __swift_project_boxed_opaque_existential_1Tm((&self->super.isa + OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer), *&self->localizer[OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer + 16]);
-    v17 = self;
+    selfCopy = self;
     sub_1E1AF5B6C();
 
     (*(v7 + 8))(v9, v6);
@@ -184,7 +184,7 @@
   return v16;
 }
 
-- (id)formatDateWithContext:(id)a3 :(id)a4 :(id)a5
+- (id)formatDateWithContext:(id)context :(id)a4 :(id)a5
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECEBB780);
   MEMORY[0x1EEE9AC00](v7 - 8);
@@ -205,7 +205,7 @@
   }
 
   v15 = sub_1E1AF5DFC();
-  v16 = self;
+  selfCopy = self;
   sub_1E176AC30(v10, v12, v9, v15);
   v18 = v17;
 
@@ -223,7 +223,7 @@
   return v19;
 }
 
-- (id)formatDateInSentence:(id)a3 :(id)a4 :(id)a5
+- (id)formatDateInSentence:(id)sentence :(id)a4 :(id)a5
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECEBB780);
   MEMORY[0x1EEE9AC00](v7 - 8);
@@ -245,7 +245,7 @@
     (*(*(v17 - 8) + 56))(v9, 1, 1, v17);
   }
 
-  v18 = self;
+  selfCopy = self;
   sub_1E176B188(v10, v12, v13, v15, v9);
   v20 = v19;
 
@@ -263,7 +263,7 @@
   return v21;
 }
 
-- (id)relativeDate:(id)a3
+- (id)relativeDate:(id)date
 {
   v5 = sub_1E1AEFE6C();
   v6 = *(v5 - 8);
@@ -274,7 +274,7 @@
   v11 = &v19 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v12);
   v14 = &v19 - v13;
-  if (a3)
+  if (date)
   {
     sub_1E1AEFE3C();
     (*(v6 + 56))(v14, 0, 1, v5);
@@ -297,7 +297,7 @@
   {
     (*(v6 + 32))(v8, v11, v5);
     __swift_project_boxed_opaque_existential_1Tm((&self->super.isa + OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer), *&self->localizer[OBJC_IVAR____TtC11AppStoreKit15ModernLocalizer_localizer + 16]);
-    v16 = self;
+    selfCopy = self;
     sub_1E1AF5B5C();
 
     (*(v6 + 8))(v8, v5);
@@ -324,12 +324,12 @@
   return v8;
 }
 
-- (id)stringWithCounts:(id)a3 :(id)a4
+- (id)stringWithCounts:(id)counts :(id)a4
 {
   v5 = sub_1E1AF5DFC();
   v7 = v6;
   v8 = sub_1E1AF621C();
-  v9 = self;
+  selfCopy = self;
   sub_1E13F0CFC(v5, v7, v8);
 
   v10 = sub_1E1AF5DBC();
@@ -337,7 +337,7 @@
   return v10;
 }
 
-- (id)stringForPreferredLocale:(id)a3 :(id)a4
+- (id)stringForPreferredLocale:(id)locale :(id)a4
 {
   v6 = sub_1E1AF5DFC();
   v8 = v7;
@@ -352,7 +352,7 @@
     v9 = 0;
   }
 
-  v11 = self;
+  selfCopy = self;
   sub_1E13F0528(v6, v8, v9, a4);
 
   v12 = sub_1E1AF5DBC();
@@ -360,12 +360,12 @@
   return v12;
 }
 
-- (id)formattedCountForPreferredLocale:(id)a3 :(id)a4
+- (id)formattedCountForPreferredLocale:(id)locale :(id)a4
 {
   sub_1E1AF5DFC();
-  v6 = self;
-  v7 = a3;
-  sub_1E13F16B0(a3);
+  selfCopy = self;
+  localeCopy = locale;
+  sub_1E13F16B0(locale);
   v9 = v8;
 
   if (v9)
@@ -381,12 +381,12 @@
   return v10;
 }
 
-- (id)timeAgo:(id)a3
+- (id)timeAgo:(id)ago
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECEBB780);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v15 - v6;
-  if (a3)
+  if (ago)
   {
     sub_1E1AEFE3C();
     v8 = sub_1E1AEFE6C();
@@ -399,7 +399,7 @@
     (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_1E176BB70(v7);
   v12 = v11;
 
@@ -417,12 +417,12 @@
   return v13;
 }
 
-- (id)timeAgoWithContext:(id)a3 :(id)a4
+- (id)timeAgoWithContext:(id)context :(id)a4
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECEBB780);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v8 = &v17 - v7;
-  if (a3)
+  if (context)
   {
     sub_1E1AEFE3C();
     v9 = sub_1E1AEFE6C();
@@ -436,7 +436,7 @@
   }
 
   v11 = sub_1E1AF5DFC();
-  v12 = self;
+  selfCopy = self;
   sub_1E176BDB0(v8, v11);
   v14 = v13;
 
@@ -454,11 +454,11 @@
   return v15;
 }
 
-- (id)formatDuration:(int64_t)a3 :(id)a4
+- (id)formatDuration:(int64_t)duration :(id)a4
 {
   sub_1E1AF5DFC();
-  v6 = self;
-  sub_1E176C598(a3);
+  selfCopy = self;
+  sub_1E176C598(duration);
   v8 = v7;
 
   if (v8)

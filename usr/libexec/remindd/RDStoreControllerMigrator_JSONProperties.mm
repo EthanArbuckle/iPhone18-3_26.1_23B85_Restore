@@ -1,101 +1,101 @@
 @interface RDStoreControllerMigrator_JSONProperties
-- (id)reminderIDsMergeableOrderingReplicaIDSourceWithAccountID:(id)a3 listID:(id)a4;
-- (void)migrateCRDTsInAccount:(id)a3;
-- (void)migrateCRDTsInList:(id)a3;
-- (void)migrateCRDTsInObject:(id)a3;
-- (void)migrateStore:(id)a3;
-- (void)migrateStoreIfNeeded:(id)a3 metadata:(id)a4;
-- (void)migrateTokenResolutionMapInObject:(id)a3;
+- (id)reminderIDsMergeableOrderingReplicaIDSourceWithAccountID:(id)d listID:(id)iD;
+- (void)migrateCRDTsInAccount:(id)account;
+- (void)migrateCRDTsInList:(id)list;
+- (void)migrateCRDTsInObject:(id)object;
+- (void)migrateStore:(id)store;
+- (void)migrateStoreIfNeeded:(id)needed metadata:(id)metadata;
+- (void)migrateTokenResolutionMapInObject:(id)object;
 @end
 
 @implementation RDStoreControllerMigrator_JSONProperties
 
-- (void)migrateStoreIfNeeded:(id)a3 metadata:(id)a4
+- (void)migrateStoreIfNeeded:(id)needed metadata:(id)metadata
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"RDStoreControllerMigrator_JSONProperties"];
-  v8 = [v7 integerValue];
+  neededCopy = needed;
+  metadataCopy = metadata;
+  v7 = [metadataCopy objectForKeyedSubscript:@"RDStoreControllerMigrator_JSONProperties"];
+  integerValue = [v7 integerValue];
 
-  if (v8 <= 2)
+  if (integerValue <= 2)
   {
-    [(RDStoreControllerMigrator_JSONProperties *)self migrateStore:v9];
-    [v6 setObject:&off_100905130 forKeyedSubscript:@"RDStoreControllerMigrator_JSONProperties"];
+    [(RDStoreControllerMigrator_JSONProperties *)self migrateStore:neededCopy];
+    [metadataCopy setObject:&off_100905130 forKeyedSubscript:@"RDStoreControllerMigrator_JSONProperties"];
   }
 }
 
-- (void)migrateStore:(id)a3
+- (void)migrateStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = +[REMLogStore container];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v4;
+    v20 = storeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "JSONPropertiesMigration BEGIN {store: %@}", buf, 0xCu);
   }
 
   v6 = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
-  v7 = [v4 persistentStoreCoordinator];
-  [v6 setPersistentStoreCoordinator:v7];
+  persistentStoreCoordinator = [storeCopy persistentStoreCoordinator];
+  [v6 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v6 setTransactionAuthor:RDStoreControllerJSONPropertiesMigrationAuthor];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000B85D0;
   v15[3] = &unk_1008D9C10;
-  v8 = v4;
+  v8 = storeCopy;
   v16 = v8;
   v9 = v6;
   v17 = v9;
-  v18 = self;
+  selfCopy = self;
   [v9 performBlockAndWait:v15];
   v10 = +[REMLogStore container];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(RDStoreControllerMigrator_JSONProperties *)self totalMigratedCount];
-    v12 = [(RDStoreControllerMigrator_JSONProperties *)self totalListCount];
-    v13 = [(RDStoreControllerMigrator_JSONProperties *)self migratedAccount];
-    v14 = [(RDStoreControllerMigrator_JSONProperties *)self migratedListsCount];
+    totalMigratedCount = [(RDStoreControllerMigrator_JSONProperties *)self totalMigratedCount];
+    totalListCount = [(RDStoreControllerMigrator_JSONProperties *)self totalListCount];
+    migratedAccount = [(RDStoreControllerMigrator_JSONProperties *)self migratedAccount];
+    migratedListsCount = [(RDStoreControllerMigrator_JSONProperties *)self migratedListsCount];
     *buf = 134219010;
-    v20 = v11;
+    v20 = totalMigratedCount;
     v21 = 2048;
-    v22 = v12;
+    v22 = totalListCount;
     v23 = 1024;
-    v24 = v13;
+    v24 = migratedAccount;
     v25 = 2048;
-    v26 = v14;
+    v26 = migratedListsCount;
     v27 = 2112;
     v28 = v8;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "JSONPropertiesMigration END {totalMigratedCount: %ld, totalListCount: %ld, migratedAccount: %d. migratedListsCount: %ld, store: %@}", buf, 0x30u);
   }
 }
 
-- (void)migrateTokenResolutionMapInObject:(id)a3
+- (void)migrateTokenResolutionMapInObject:(id)object
 {
-  v7 = a3;
+  objectCopy = object;
   v3 = objc_autoreleasePoolPush();
-  v4 = [v7 primitiveValueForKey:@"resolutionTokenMap_v3_JSONData"];
+  v4 = [objectCopy primitiveValueForKey:@"resolutionTokenMap_v3_JSONData"];
   if (!v4)
   {
-    v5 = [v7 primitiveValueForKey:@"resolutionTokenMap_v2_JSON"];
+    v5 = [objectCopy primitiveValueForKey:@"resolutionTokenMap_v2_JSON"];
     if (v5)
     {
-      [v7 setResolutionTokenMap:v5];
-      [v7 willChangeValueForKey:@"resolutionTokenMap_v2_JSON"];
-      [v7 setPrimitiveValue:0 forKey:@"resolutionTokenMap_v2_JSON"];
-      [v7 didChangeValueForKey:@"resolutionTokenMap_v2_JSON"];
+      [objectCopy setResolutionTokenMap:v5];
+      [objectCopy willChangeValueForKey:@"resolutionTokenMap_v2_JSON"];
+      [objectCopy setPrimitiveValue:0 forKey:@"resolutionTokenMap_v2_JSON"];
+      [objectCopy didChangeValueForKey:@"resolutionTokenMap_v2_JSON"];
     }
 
     else
     {
-      v6 = [v7 primitiveValueForKey:@"resolutionTokenMap"];
+      v6 = [objectCopy primitiveValueForKey:@"resolutionTokenMap"];
       if (v6)
       {
-        [v7 setResolutionTokenMap:v6];
-        [v7 willChangeValueForKey:@"resolutionTokenMap"];
-        [v7 setPrimitiveValue:0 forKey:@"resolutionTokenMap"];
-        [v7 didChangeValueForKey:@"resolutionTokenMap"];
+        [objectCopy setResolutionTokenMap:v6];
+        [objectCopy willChangeValueForKey:@"resolutionTokenMap"];
+        [objectCopy setPrimitiveValue:0 forKey:@"resolutionTokenMap"];
+        [objectCopy didChangeValueForKey:@"resolutionTokenMap"];
       }
     }
   }
@@ -103,53 +103,53 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)migrateCRDTsInObject:(id)a3
+- (void)migrateCRDTsInObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v4 = objc_autoreleasePoolPush();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(RDStoreControllerMigrator_JSONProperties *)self migrateCRDTsInAccount:v5];
+    [(RDStoreControllerMigrator_JSONProperties *)self migrateCRDTsInAccount:objectCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(RDStoreControllerMigrator_JSONProperties *)self migrateCRDTsInList:v5];
+    [(RDStoreControllerMigrator_JSONProperties *)self migrateCRDTsInList:objectCopy];
   }
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)migrateCRDTsInAccount:(id)a3
+- (void)migrateCRDTsInAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 primitiveValueForKey:@"listIDsMergeableOrdering_v2"];
+  accountCopy = account;
+  v5 = [accountCopy primitiveValueForKey:@"listIDsMergeableOrdering_v2"];
   if (!v5)
   {
-    v6 = [v4 remObjectID];
-    v7 = [[REMReplicaIDSource alloc] initWithAccountID:v6 objectID:v6 property:@"listIDsMergeableOrdering"];
-    v8 = [v4 primitiveValueForKey:@"listIDsMergeableOrdering"];
+    remObjectID = [accountCopy remObjectID];
+    v7 = [[REMReplicaIDSource alloc] initWithAccountID:remObjectID objectID:remObjectID property:@"listIDsMergeableOrdering"];
+    v8 = [accountCopy primitiveValueForKey:@"listIDsMergeableOrdering"];
     v35 = 0;
     v9 = [[REMCRMergeableOrderedSet alloc] initWithReplicaIDSource:v7 serializedData:v8 error:&v35];
     v10 = v35;
     v11 = v10;
     if (v9)
     {
-      v25 = self;
+      selfCopy = self;
       v26 = v9;
       v27 = v10;
       v28 = v8;
-      v29 = v6;
-      v30 = v4;
-      v12 = [v9 orderedSet];
-      v13 = [[NSMutableOrderedSet alloc] initWithCapacity:{objc_msgSend(v12, "count")}];
+      v29 = remObjectID;
+      v30 = accountCopy;
+      orderedSet = [v9 orderedSet];
+      v13 = [[NSMutableOrderedSet alloc] initWithCapacity:{objc_msgSend(orderedSet, "count")}];
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v14 = v12;
+      v14 = orderedSet;
       v15 = [v14 countByEnumeratingWithState:&v31 objects:v38 count:16];
       if (!v15)
       {
@@ -172,9 +172,9 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v20 = [v19 uuid];
-            v21 = [v20 UUIDString];
-            [v13 addObject:v21];
+            uuid = [v19 uuid];
+            uUIDString = [uuid UUIDString];
+            [v13 addObject:uUIDString];
           }
 
           else
@@ -186,12 +186,12 @@
               goto LABEL_15;
             }
 
-            v20 = +[REMLogStore container];
-            if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
+            uuid = +[REMLogStore container];
+            if (os_log_type_enabled(uuid, OS_LOG_TYPE_FAULT))
             {
               *buf = 138412290;
               v37 = v19;
-              _os_log_fault_impl(&_mh_execute_header, v20, OS_LOG_TYPE_FAULT, "Failed to create NSUUID from item in legacyOrderedSet. Skipping {item: %@}", buf, 0xCu);
+              _os_log_fault_impl(&_mh_execute_header, uuid, OS_LOG_TYPE_FAULT, "Failed to create NSUUID from item in legacyOrderedSet. Skipping {item: %@}", buf, 0xCu);
             }
           }
 
@@ -206,18 +206,18 @@ LABEL_15:
 LABEL_17:
 
           v22 = [[REMCRMergeableOrderedSet alloc] initWithReplicaIDSource:v7 orderedSet:v13];
-          v23 = [v22 serializedData];
-          if (v23)
+          serializedData = [v22 serializedData];
+          if (serializedData)
           {
-            v4 = v30;
+            accountCopy = v30;
             [v30 willChangeValueForKey:@"listIDsMergeableOrdering_v2"];
-            [v30 setPrimitiveValue:v23 forKey:@"listIDsMergeableOrdering_v2"];
+            [v30 setPrimitiveValue:serializedData forKey:@"listIDsMergeableOrdering_v2"];
             [v30 didChangeValueForKey:@"listIDsMergeableOrdering_v2"];
             [v30 willChangeValueForKey:@"listIDsMergeableOrdering"];
             [v30 setPrimitiveValue:0 forKey:@"listIDsMergeableOrdering"];
             [v30 didChangeValueForKey:@"listIDsMergeableOrdering"];
-            [(RDStoreControllerMigrator_JSONProperties *)v25 setMigratedAccount:1];
-            v6 = v29;
+            [(RDStoreControllerMigrator_JSONProperties *)selfCopy setMigratedAccount:1];
+            remObjectID = v29;
             v5 = 0;
             v11 = v27;
           }
@@ -225,8 +225,8 @@ LABEL_17:
           else
           {
             v24 = +[REMLogStore container];
-            v4 = v30;
-            v6 = v29;
+            accountCopy = v30;
+            remObjectID = v29;
             v11 = v27;
             if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
             {
@@ -253,41 +253,41 @@ LABEL_25:
   }
 }
 
-- (void)migrateCRDTsInList:(id)a3
+- (void)migrateCRDTsInList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   [(RDStoreControllerMigrator_JSONProperties *)self setTotalListCount:[(RDStoreControllerMigrator_JSONProperties *)self totalListCount]+ 1];
-  v5 = [v4 primitiveValueForKey:@"reminderIDsMergeableOrdering_v2_JSON"];
+  v5 = [listCopy primitiveValueForKey:@"reminderIDsMergeableOrdering_v2_JSON"];
   if (!v5)
   {
-    v6 = [v4 account];
-    v7 = v6;
-    if (v6)
+    account = [listCopy account];
+    v7 = account;
+    if (account)
     {
-      v8 = [v6 remObjectID];
-      v9 = [v4 remObjectID];
-      v10 = [(RDStoreControllerMigrator_JSONProperties *)self reminderIDsMergeableOrderingReplicaIDSourceWithAccountID:v8 listID:v9];
+      remObjectID = [account remObjectID];
+      remObjectID2 = [listCopy remObjectID];
+      v10 = [(RDStoreControllerMigrator_JSONProperties *)self reminderIDsMergeableOrderingReplicaIDSourceWithAccountID:remObjectID listID:remObjectID2];
 
-      v11 = [v4 primitiveValueForKey:@"reminderIDsMergeableOrdering"];
+      v11 = [listCopy primitiveValueForKey:@"reminderIDsMergeableOrdering"];
       v38 = 0;
       v12 = [[REMCRMergeableOrderedSet alloc] initWithReplicaIDSource:v10 serializedData:v11 error:&v38];
       v13 = v38;
       v14 = v13;
       if (v12)
       {
-        v27 = self;
+        selfCopy = self;
         v28 = v13;
         v30 = v11;
         v31 = v10;
         v32 = v7;
         v29 = v12;
-        v15 = [v12 orderedSet];
-        v16 = [[NSMutableOrderedSet alloc] initWithCapacity:{objc_msgSend(v15, "count")}];
+        orderedSet = [v12 orderedSet];
+        v16 = [[NSMutableOrderedSet alloc] initWithCapacity:{objc_msgSend(orderedSet, "count")}];
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v17 = v15;
+        v17 = orderedSet;
         v18 = [v17 countByEnumeratingWithState:&v34 objects:v41 count:16];
         if (v18)
         {
@@ -347,13 +347,13 @@ LABEL_25:
 
         if (v25)
         {
-          [v4 willChangeValueForKey:@"reminderIDsMergeableOrdering_v2_JSON"];
-          [v4 setPrimitiveValue:v25 forKey:@"reminderIDsMergeableOrdering_v2_JSON"];
-          [v4 didChangeValueForKey:@"reminderIDsMergeableOrdering_v2_JSON"];
-          [v4 willChangeValueForKey:@"reminderIDsMergeableOrdering"];
-          [v4 setPrimitiveValue:0 forKey:@"reminderIDsMergeableOrdering"];
-          [v4 didChangeValueForKey:@"reminderIDsMergeableOrdering"];
-          [(RDStoreControllerMigrator_JSONProperties *)v27 setMigratedListsCount:[(RDStoreControllerMigrator_JSONProperties *)v27 migratedListsCount]+ 1];
+          [listCopy willChangeValueForKey:@"reminderIDsMergeableOrdering_v2_JSON"];
+          [listCopy setPrimitiveValue:v25 forKey:@"reminderIDsMergeableOrdering_v2_JSON"];
+          [listCopy didChangeValueForKey:@"reminderIDsMergeableOrdering_v2_JSON"];
+          [listCopy willChangeValueForKey:@"reminderIDsMergeableOrdering"];
+          [listCopy setPrimitiveValue:0 forKey:@"reminderIDsMergeableOrdering"];
+          [listCopy didChangeValueForKey:@"reminderIDsMergeableOrdering"];
+          [(RDStoreControllerMigrator_JSONProperties *)selfCopy setMigratedListsCount:[(RDStoreControllerMigrator_JSONProperties *)selfCopy migratedListsCount]+ 1];
         }
 
         else
@@ -388,17 +388,17 @@ LABEL_25:
       v14 = +[REMLogStore container];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        sub_100769B54(v4, v14);
+        sub_100769B54(listCopy, v14);
       }
     }
   }
 }
 
-- (id)reminderIDsMergeableOrderingReplicaIDSourceWithAccountID:(id)a3 listID:(id)a4
+- (id)reminderIDsMergeableOrderingReplicaIDSourceWithAccountID:(id)d listID:(id)iD
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[REMReplicaIDSource alloc] initWithAccountID:v6 objectID:v5 property:@"reminderIDsMergeableOrdering"];
+  iDCopy = iD;
+  dCopy = d;
+  v7 = [[REMReplicaIDSource alloc] initWithAccountID:dCopy objectID:iDCopy property:@"reminderIDsMergeableOrdering"];
 
   return v7;
 }

@@ -1,23 +1,23 @@
 @interface _UIKBUndoGestureObserver
-+ (id)undoGestureObserverWithTarget:(id)a3 action:(SEL)a4 delegate:(id)a5;
-- (BOOL)_acceptsBeingFailureDependentOnGestureRecognizer:(id)a3;
-- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)a3;
++ (id)undoGestureObserverWithTarget:(id)target action:(SEL)action delegate:(id)delegate;
+- (BOOL)_acceptsBeingFailureDependentOnGestureRecognizer:(id)recognizer;
+- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)recognizer;
 - (void)_failOrCancelIfNecessary;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _UIKBUndoGestureObserver
 
-+ (id)undoGestureObserverWithTarget:(id)a3 action:(SEL)a4 delegate:(id)a5
++ (id)undoGestureObserverWithTarget:(id)target action:(SEL)action delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(UIGestureRecognizer *)[_UIKBUndoGestureObserver alloc] initWithTarget:v8 action:a4];
+  delegateCopy = delegate;
+  targetCopy = target;
+  v9 = [(UIGestureRecognizer *)[_UIKBUndoGestureObserver alloc] initWithTarget:targetCopy action:action];
 
   if (v9)
   {
     [(UIGestureRecognizer *)v9 setName:@"com.apple.UIKit.kbProductivity.dismissHUD"];
-    [(UIGestureRecognizer *)v9 setDelegate:v7];
+    [(UIGestureRecognizer *)v9 setDelegate:delegateCopy];
     [(UIGestureRecognizer *)v9 setDelaysTouchesEnded:0];
     [(UIGestureRecognizer *)v9 setCancelsTouchesInView:0];
     [(UIGestureRecognizer *)v9 setRequiresExclusiveTouchType:0];
@@ -27,9 +27,9 @@
   return v9;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([(UIGestureRecognizer *)self numberOfTouches:a3]!= 3 && [(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
+  if ([(UIGestureRecognizer *)self numberOfTouches:ended]!= 3 && [(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
     [(UIGestureRecognizer *)self setState:3];
   }
@@ -55,11 +55,11 @@
   }
 }
 
-- (BOOL)_acceptsBeingFailureDependentOnGestureRecognizer:(id)a3
+- (BOOL)_acceptsBeingFailureDependentOnGestureRecognizer:(id)recognizer
 {
-  if (a3)
+  if (recognizer)
   {
-    return (*(a3 + 14) >> 1) & 1;
+    return (*(recognizer + 14) >> 1) & 1;
   }
 
   else
@@ -70,11 +70,11 @@
   return v3;
 }
 
-- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)a3
+- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)recognizer
 {
-  if (a3)
+  if (recognizer)
   {
-    return (*(a3 + 14) >> 1) & 1;
+    return (*(recognizer + 14) >> 1) & 1;
   }
 
   else

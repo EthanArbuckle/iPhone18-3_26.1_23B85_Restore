@@ -2,7 +2,7 @@
 - (BOOL)unnotifiedIsDataAvailableForClassC;
 - (_OSDataProtectionStateMonitor)init;
 - (void)dealloc;
-- (void)setChangeHandler:(id)a3;
+- (void)setChangeHandler:(id)handler;
 @end
 
 @implementation _OSDataProtectionStateMonitor
@@ -41,26 +41,26 @@
   [(_OSDataProtectionStateMonitor *)&v5 dealloc];
 }
 
-- (void)setChangeHandler:(id)a3
+- (void)setChangeHandler:(id)handler
 {
-  v4 = a3;
-  v9 = v4;
+  handlerCopy = handler;
+  v9 = handlerCopy;
   if (self->_handlerUUID)
   {
     [(_OSDataProtectionManager *)self->_manager deregisterStateChangeHandler:?];
-    v4 = v9;
+    handlerCopy = v9;
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v5 = [(_OSDataProtectionManager *)self->_manager registerStateChangeHandler:v4];
+    v5 = [(_OSDataProtectionManager *)self->_manager registerStateChangeHandler:handlerCopy];
     handlerUUID = self->_handlerUUID;
     self->_handlerUUID = v5;
 
-    v4 = v9;
+    handlerCopy = v9;
   }
 
-  v7 = MEMORY[0x24C1BF860](v4);
+  v7 = MEMORY[0x24C1BF860](handlerCopy);
   changeHandler = self->_changeHandler;
   self->_changeHandler = v7;
 }

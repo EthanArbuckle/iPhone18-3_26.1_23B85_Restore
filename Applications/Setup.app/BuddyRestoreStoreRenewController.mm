@@ -1,25 +1,25 @@
 @interface BuddyRestoreStoreRenewController
-- (void)fetchAccounts:(id)a3;
+- (void)fetchAccounts:(id)accounts;
 @end
 
 @implementation BuddyRestoreStoreRenewController
 
-- (void)fetchAccounts:(id)a3
+- (void)fetchAccounts:(id)accounts
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, accounts);
   if (location[0])
   {
-    v3 = [(BuddyRestoreStoreRenewController *)v12 backupItem];
+    backupItem = [(BuddyRestoreStoreRenewController *)selfCopy backupItem];
     v4 = _NSConcreteStackBlock;
     v5 = -1073741824;
     v6 = 0;
     v7 = sub_1000B9C5C;
     v8 = &unk_10032C268;
     v9 = location[0];
-    [(RestorableBackupItem *)v3 fetchAccounts:&v4];
+    [(RestorableBackupItem *)backupItem fetchAccounts:&v4];
 
     objc_storeStrong(&v9, 0);
     v10 = 0;

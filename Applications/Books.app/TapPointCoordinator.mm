@@ -1,5 +1,5 @@
 @interface TapPointCoordinator
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (_TtC5Books19TapPointCoordinator)init;
 @end
 
@@ -14,11 +14,11 @@
   return [(TapPointCoordinator *)&v5 init];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = self;
-  v6 = [a4 type];
-  *(&v5->super.isa + OBJC_IVAR____TtC5Books19TapPointCoordinator_currentTouchType) = v6;
+  selfCopy = self;
+  type = [touch type];
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC5Books19TapPointCoordinator_currentTouchType) = type;
 
   return 1;
 }

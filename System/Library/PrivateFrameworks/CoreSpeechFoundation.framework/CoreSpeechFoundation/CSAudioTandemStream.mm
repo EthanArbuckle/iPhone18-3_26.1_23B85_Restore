@@ -1,11 +1,11 @@
 @interface CSAudioTandemStream
 - (BOOL)isStreaming;
 - (CSAudioStream)primaryStream;
-- (CSAudioTandemStream)initWithMasterAudioStream:(id)a3 name:(id)a4;
-- (void)attachToPrimaryStreamWithConfig:(id)a3 completion:(id)a4;
-- (void)prepareAudioStreamWithRequest:(id)a3 completion:(id)a4;
-- (void)startAudioStreamWithOption:(id)a3 completion:(id)a4;
-- (void)stopAudioStreamWithOption:(id)a3 completion:(id)a4;
+- (CSAudioTandemStream)initWithMasterAudioStream:(id)stream name:(id)name;
+- (void)attachToPrimaryStreamWithConfig:(id)config completion:(id)completion;
+- (void)prepareAudioStreamWithRequest:(id)request completion:(id)completion;
+- (void)startAudioStreamWithOption:(id)option completion:(id)completion;
+- (void)stopAudioStreamWithOption:(id)option completion:(id)completion;
 @end
 
 @implementation CSAudioTandemStream
@@ -19,41 +19,41 @@
 
 - (BOOL)isStreaming
 {
-  v2 = [(CSAudioTandemStream *)self primaryStream];
-  v3 = [v2 isStreaming];
+  primaryStream = [(CSAudioTandemStream *)self primaryStream];
+  isStreaming = [primaryStream isStreaming];
 
-  return v3;
+  return isStreaming;
 }
 
-- (void)stopAudioStreamWithOption:(id)a3 completion:(id)a4
+- (void)stopAudioStreamWithOption:(id)option completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  optionCopy = option;
+  completionCopy = completion;
   __assert_rtn("[CSAudioTandemStream stopAudioStreamWithOption:completion:]", "CSAudioTandemStream.m", 65, "NO");
 }
 
-- (void)startAudioStreamWithOption:(id)a3 completion:(id)a4
+- (void)startAudioStreamWithOption:(id)option completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  optionCopy = option;
+  completionCopy = completion;
   __assert_rtn("[CSAudioTandemStream startAudioStreamWithOption:completion:]", "CSAudioTandemStream.m", 58, "NO");
 }
 
-- (void)prepareAudioStreamWithRequest:(id)a3 completion:(id)a4
+- (void)prepareAudioStreamWithRequest:(id)request completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   __assert_rtn("[CSAudioTandemStream prepareAudioStreamWithRequest:completion:]", "CSAudioTandemStream.m", 51, "NO");
 }
 
-- (void)attachToPrimaryStreamWithConfig:(id)a3 completion:(id)a4
+- (void)attachToPrimaryStreamWithConfig:(id)config completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSAudioTandemStream *)self primaryStream];
+  configCopy = config;
+  completionCopy = completion;
+  primaryStream = [(CSAudioTandemStream *)self primaryStream];
 
-  if (!v8)
+  if (!primaryStream)
   {
     v12 = CSLogCategoryAudio;
     if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_ERROR))
@@ -61,52 +61,52 @@
       v15 = 136315138;
       v16 = "[CSAudioTandemStream attachToPrimaryStreamWithConfig:completion:]";
       _os_log_error_impl(&dword_1DDA4B000, v12, OS_LOG_TYPE_ERROR, "%s primaryStream already torn down", &v15, 0xCu);
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v7)
+    else if (!completionCopy)
     {
       goto LABEL_6;
     }
 
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.corespeech" code:963 userInfo:0];
-    v7[2](v7, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
 
     goto LABEL_6;
   }
 
-  v9 = [(CSAudioTandemStream *)self primaryStream];
-  v10 = [v9 streamProvider];
-  v11 = [(CSAudioTandemStream *)self primaryStream];
-  [v10 attachTandemStream:self withConfig:v6 toPrimaryStream:v11 completion:v7];
+  primaryStream2 = [(CSAudioTandemStream *)self primaryStream];
+  streamProvider = [primaryStream2 streamProvider];
+  primaryStream3 = [(CSAudioTandemStream *)self primaryStream];
+  [streamProvider attachTandemStream:self withConfig:configCopy toPrimaryStream:primaryStream3 completion:completionCopy];
 
 LABEL_6:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (CSAudioTandemStream)initWithMasterAudioStream:(id)a3 name:(id)a4
+- (CSAudioTandemStream)initWithMasterAudioStream:(id)stream name:(id)name
 {
-  v4 = a3;
-  if (a3)
+  selfCopy = stream;
+  if (stream)
   {
-    v6 = a4;
-    v7 = v4;
+    nameCopy = name;
+    v7 = selfCopy;
     [(CSAudioTandemStream *)self setPrimaryStream:v7];
-    v8 = [(CSAudioStream *)v7 streamProvider];
+    streamProvider = [(CSAudioStream *)v7 streamProvider];
     v9 = [CSAudioStreamRequest alloc];
-    v10 = [(CSAudioStream *)v7 streamRequest];
+    streamRequest = [(CSAudioStream *)v7 streamRequest];
 
-    v11 = [(CSAudioStreamRequest *)v9 initTandemWithRequest:v10];
-    v12 = [(CSAudioStream *)self initWithAudioStreamProvider:v8 streamName:v6 streamRequest:v11];
+    v11 = [(CSAudioStreamRequest *)v9 initTandemWithRequest:streamRequest];
+    v12 = [(CSAudioStream *)self initWithAudioStreamProvider:streamProvider streamName:nameCopy streamRequest:v11];
 
     self = v12;
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

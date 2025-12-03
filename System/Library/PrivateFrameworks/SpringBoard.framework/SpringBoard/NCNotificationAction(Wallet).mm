@@ -8,8 +8,8 @@
 {
   v3 = a3;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 localizedStringForKey:@"WALLET_ACTION_SHOW_PASS" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v6 = [mainBundle localizedStringForKey:@"WALLET_ACTION_SHOW_PASS" value:&stru_283094718 table:@"SpringBoard"];
   [v4 setTitle:v6];
 
   v7 = MEMORY[0x277CCACA8];

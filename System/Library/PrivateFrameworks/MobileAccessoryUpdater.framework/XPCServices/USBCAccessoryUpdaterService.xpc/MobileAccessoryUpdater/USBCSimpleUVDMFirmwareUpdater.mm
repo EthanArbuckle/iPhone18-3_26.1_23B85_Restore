@@ -1,32 +1,32 @@
 @interface USBCSimpleUVDMFirmwareUpdater
 - (BOOL)pingDevice;
-- (id)DeviceSerialNumber:(BOOL)a3;
-- (id)DeviceSerialNumberForController:(id)a3;
-- (id)applyFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6;
-- (id)checkForEntryForSerialNumber:(id)a3 inSavedAccInfo:(id)a4 needsReplacement:(BOOL)a5;
+- (id)DeviceSerialNumber:(BOOL)number;
+- (id)DeviceSerialNumberForController:(id)controller;
+- (id)applyFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress;
+- (id)checkForEntryForSerialNumber:(id)number inSavedAccInfo:(id)info needsReplacement:(BOOL)replacement;
 - (id)enableFirmwareUpdate;
-- (id)executeUVDM:(id)a3 header:(unsigned __int16)a4 svid:(unsigned __int16)a5 data:(unsigned int *)a6 size:(char *)a7 sop:(int)a8 response:(BOOL)a9;
-- (id)finishFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6;
-- (id)getAccessoryFWStagedInfoForSerialNum:(id)a3;
-- (id)prepareFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6;
+- (id)executeUVDM:(id)m header:(unsigned __int16)header svid:(unsigned __int16)svid data:(unsigned int *)data size:(char *)size sop:(int)sop response:(BOOL)response;
+- (id)finishFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress;
+- (id)getAccessoryFWStagedInfoForSerialNum:(id)num;
+- (id)prepareFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress;
 - (id)queryPredicate;
-- (id)setWriteOffset:(unsigned int)a3 length:(unsigned __int8)a4;
-- (id)validateDevice:(id)a3 withFirmware:(id)a4;
+- (id)setWriteOffset:(unsigned int)offset length:(unsigned __int8)length;
+- (id)validateDevice:(id)device withFirmware:(id)firmware;
 - (int)holdSleepAssertion;
 - (int)releaseSleepAssertion;
-- (int)setCFUpForController:(id)a3 enable:(BOOL)a4;
+- (int)setCFUpForController:(id)controller enable:(BOOL)enable;
 - (unsigned)DeviceFirmwareVersion;
 - (void)createUSBDevice;
-- (void)getFWFromURL:(id)a3;
+- (void)getFWFromURL:(id)l;
 - (void)saveAccessoryFWStagedInfo;
 @end
 
 @implementation USBCSimpleUVDMFirmwareUpdater
 
-- (id)validateDevice:(id)a3 withFirmware:(id)a4
+- (id)validateDevice:(id)device withFirmware:(id)firmware
 {
   properties = 0;
-  if ([(USBCSimpleUVDMFirmwareUpdater *)self holdSleepAssertion:a3]|| (!IORegistryEntryCreateCFProperties(self->super._registryEntry, &properties, kCFAllocatorDefault, 0) ? (v5 = properties == 0) : (v5 = 1), v5))
+  if ([(USBCSimpleUVDMFirmwareUpdater *)self holdSleepAssertion:device]|| (!IORegistryEntryCreateCFProperties(self->super._registryEntry, &properties, kCFAllocatorDefault, 0) ? (v5 = properties == 0) : (v5 = 1), v5))
   {
     v6 = 0;
     v19 = 0;
@@ -156,19 +156,19 @@ LABEL_29:
   return v24;
 }
 
-- (id)finishFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6
+- (id)finishFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress
 {
-  if (a3)
+  if (firmware)
   {
-    (*(a3 + 2))(a3, 0, 0, a4, a5, a6);
+    (*(firmware + 2))(firmware, 0, 0, hardware, a5, progress);
   }
 
   return 0;
 }
 
-- (id)DeviceSerialNumber:(BOOL)a3
+- (id)DeviceSerialNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     [(NSMutableDictionary *)self->super._hardwareProperties objectForKeyedSubscript:@"Hardware S/N"];
   }
@@ -185,9 +185,9 @@ LABEL_29:
 - (unsigned)DeviceFirmwareVersion
 {
   v2 = [(NSMutableDictionary *)self->super._hardwareProperties objectForKeyedSubscript:@"Hardware Installed firmware version"];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (id)queryPredicate
@@ -206,15 +206,15 @@ LABEL_29:
 {
   v3 = +[NSFileManager defaultManager];
   v4 = +[NSDate date];
-  v5 = [(MobileAsset *)self->_mobileAsset fwVersion];
-  if (!v5 || (v6 = v5, [(USBCSimpleUVDMFirmwareUpdater *)self DeviceSerialNumber], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  fwVersion = [(MobileAsset *)self->_mobileAsset fwVersion];
+  if (!fwVersion || (v6 = fwVersion, [(USBCSimpleUVDMFirmwareUpdater *)self DeviceSerialNumber], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
     sub_100015FCC(self);
     goto LABEL_14;
   }
 
-  v8 = [(MobileAsset *)self->_mobileAsset fwVersion];
-  v9 = [(USBCSimpleUVDMFirmwareUpdater *)self DeviceSerialNumber];
+  fwVersion2 = [(MobileAsset *)self->_mobileAsset fwVersion];
+  deviceSerialNumber = [(USBCSimpleUVDMFirmwareUpdater *)self DeviceSerialNumber];
   v10 = [NSString pathWithComponents:&off_1000277D8];
   v11 = [v10 stringByAppendingPathComponent:@"StagedFWInfo"];
   if (![v3 fileExistsAtPath:v11])
@@ -234,21 +234,21 @@ LABEL_7:
 
 LABEL_8:
   v21 = v10;
-  v13 = [(USBCSimpleUVDMFirmwareUpdater *)self checkForEntryForSerialNumber:v9 inSavedAccInfo:v12 needsReplacement:1];
+  v13 = [(USBCSimpleUVDMFirmwareUpdater *)self checkForEntryForSerialNumber:deviceSerialNumber inSavedAccInfo:v12 needsReplacement:1];
   if (!v13)
   {
     v13 = +[NSMutableDictionary dictionary];
   }
 
-  [v13 setObject:v9 forKey:@"SerialNumber"];
-  [v13 setObject:v8 forKey:@"StagedFW"];
+  [v13 setObject:deviceSerialNumber forKey:@"SerialNumber"];
+  [v13 setObject:fwVersion2 forKey:@"StagedFW"];
   v22 = v4;
   [v13 setObject:v4 forKey:@"DateSaved"];
   [v12 addObject:v13];
   [(FudPluginDelegate *)self->super._delegate log:7 format:@"Saving Staged Firmware Info to file: %@", v11];
   v14 = [NSURL fileURLWithPath:v11];
   v23 = 0;
-  v15 = v8;
+  v15 = fwVersion2;
   v16 = [v12 writeToURL:v14 error:&v23];
   v17 = v23;
   delegate = self->super._delegate;
@@ -266,9 +266,9 @@ LABEL_8:
 LABEL_14:
 }
 
-- (id)getAccessoryFWStagedInfoForSerialNum:(id)a3
+- (id)getAccessoryFWStagedInfoForSerialNum:(id)num
 {
-  v4 = a3;
+  numCopy = num;
   v5 = +[NSFileManager defaultManager];
   v6 = [NSString pathWithComponents:&off_1000277F0];
   v7 = [v6 stringByAppendingPathComponent:@"StagedFWInfo"];
@@ -278,7 +278,7 @@ LABEL_14:
     v9 = v8;
     if (v8 && [v8 count])
     {
-      v10 = [(USBCSimpleUVDMFirmwareUpdater *)self checkForEntryForSerialNumber:v4 inSavedAccInfo:v9 needsReplacement:0];
+      v10 = [(USBCSimpleUVDMFirmwareUpdater *)self checkForEntryForSerialNumber:numCopy inSavedAccInfo:v9 needsReplacement:0];
       if (v10)
       {
         v11 = v10;
@@ -307,33 +307,33 @@ LABEL_6:
   return v11;
 }
 
-- (id)setWriteOffset:(unsigned int)a3 length:(unsigned __int8)a4
+- (id)setWriteOffset:(unsigned int)offset length:(unsigned __int8)length
 {
-  v8 = a3;
-  v7 = a4;
+  offsetCopy = offset;
+  lengthCopy = length;
   LOBYTE(v6) = 0;
-  v4 = [(USBCSimpleUVDMFirmwareUpdater *)self executeUVDM:0 header:47 svid:1452 data:&v8 size:&v7 sop:0 response:v6];
+  v4 = [(USBCSimpleUVDMFirmwareUpdater *)self executeUVDM:0 header:47 svid:1452 data:&offsetCopy size:&lengthCopy sop:0 response:v6];
 
   return v4;
 }
 
-- (int)setCFUpForController:(id)a3 enable:(BOOL)a4
+- (int)setCFUpForController:(id)controller enable:(BOOL)enable
 {
-  v4 = a4;
-  v6 = a3;
-  pdController = v6;
-  if (!v6)
+  enableCopy = enable;
+  controllerCopy = controller;
+  pdController = controllerCopy;
+  if (!controllerCopy)
   {
     pdController = self->super._pdController;
   }
 
   v8 = pdController;
-  v19 = v4;
+  v19 = enableCopy;
   v18 = 1128682864;
   LODWORD(v15) = 4194305;
   v9 = [(PDController *)v8 executeIECSAtomicCommand:1 cmdBuffer:&v18 dataBuffer:&v19 extDataBuffer:0 returnDataBuffer:v20 returnExtDataBuffer:0 inputDataLength:v15 returnDataBufferLength:10 timeoutInSeconds:?];
   v10 = @"disable";
-  if (v4)
+  if (enableCopy)
   {
     v10 = @"enable";
   }
@@ -367,15 +367,15 @@ LABEL_6:
   return v12;
 }
 
-- (id)executeUVDM:(id)a3 header:(unsigned __int16)a4 svid:(unsigned __int16)a5 data:(unsigned int *)a6 size:(char *)a7 sop:(int)a8 response:(BOOL)a9
+- (id)executeUVDM:(id)m header:(unsigned __int16)header svid:(unsigned __int16)svid data:(unsigned int *)data size:(char *)size sop:(int)sop response:(BOOL)response
 {
-  v11 = a5;
-  v14 = a3;
+  svidCopy = svid;
+  mCopy = m;
   v15 = +[NSMutableDictionary dictionary];
   v32 = 0;
   v31 = 0;
-  pdController = v14;
-  if (!v14)
+  pdController = mCopy;
+  if (!mCopy)
   {
     pdController = self->super._pdController;
   }
@@ -394,13 +394,13 @@ LABEL_6:
 
   if (![(USBCSimpleUVDMFirmwareUpdater *)self setCFUpForController:v17 enable:1])
   {
-    if (a9 && [(PDController *)v17 receiveVDM:v34 length:28 outSop:&v33 outSequence:&v31 + 1 outLength:&v32])
+    if (response && [(PDController *)v17 receiveVDM:v34 length:28 outSop:&v33 outSequence:&v31 + 1 outLength:&v32])
     {
       if ([(USBCSimpleUVDMFirmwareUpdater *)self setCFUpForController:v17 enable:0])
       {
 LABEL_25:
-        v19 = [(USBCSimpleUVDMFirmwareUpdater *)self DeviceSerialNumber];
-        [NSString stringWithFormat:@"%s: Failed to executeUVDM for S/N %@ and failed to setCFUp off", "[USBCSimpleUVDMFirmwareUpdater executeUVDM:header:svid:data:size:sop:response:]", v19];
+        deviceSerialNumber = [(USBCSimpleUVDMFirmwareUpdater *)self DeviceSerialNumber];
+        [NSString stringWithFormat:@"%s: Failed to executeUVDM for S/N %@ and failed to setCFUp off", "[USBCSimpleUVDMFirmwareUpdater executeUVDM:header:svid:data:size:sop:response:]", deviceSerialNumber];
         v26 = LABEL_30:;
         [v15 setObject:v26 forKeyedSubscript:@"Notes"];
 
@@ -410,8 +410,8 @@ LABEL_25:
 
     else
     {
-      v35[0] = a4 & 0x7FFF | (v11 << 16);
-      v20 = *a7;
+      v35[0] = header & 0x7FFF | (svidCopy << 16);
+      v20 = *size;
       if (v20 <= 6)
       {
         v21 = 4 * v20;
@@ -423,7 +423,7 @@ LABEL_25:
       }
 
       __memcpy_chk();
-      v22 = [(PDController *)v17 sendVDM:v35 length:(v21 + 4) sop:a8];
+      v22 = [(PDController *)v17 sendVDM:v35 length:(v21 + 4) sop:sop];
       v23 = v22 == 0;
       if (v22)
       {
@@ -432,7 +432,7 @@ LABEL_25:
 
       else
       {
-        v24 = !a9;
+        v24 = !response;
       }
 
       if (!v24)
@@ -442,12 +442,12 @@ LABEL_25:
         while (1)
         {
           v23 = v31 != HIBYTE(v31);
-          if (v31 != HIBYTE(v31) || [(PDController *)v17 receiveVDM:a6 length:28 outSop:&v33 outSequence:&v31 outLength:&v32])
+          if (v31 != HIBYTE(v31) || [(PDController *)v17 receiveVDM:data length:28 outSop:&v33 outSequence:&v31 outLength:&v32])
           {
             break;
           }
 
-          *a7 = v32 >> 2;
+          *size = v32 >> 2;
           if (v31 != HIBYTE(v31))
           {
             [NSThread sleepForTimeInterval:0.01];
@@ -474,13 +474,13 @@ LABEL_25:
       }
     }
 
-    v19 = [(USBCSimpleUVDMFirmwareUpdater *)self DeviceSerialNumber];
-    [NSString stringWithFormat:@"Failed to executeUVDM for S/N %@", v19, v29];
+    deviceSerialNumber = [(USBCSimpleUVDMFirmwareUpdater *)self DeviceSerialNumber];
+    [NSString stringWithFormat:@"Failed to executeUVDM for S/N %@", deviceSerialNumber, v29];
     goto LABEL_30;
   }
 
-  v19 = [NSString stringWithFormat:@"%s: Failed to setCFUp on", "[USBCSimpleUVDMFirmwareUpdater executeUVDM:header:svid:data:size:sop:response:]"];
-  [v15 setObject:v19 forKeyedSubscript:@"Notes"];
+  deviceSerialNumber = [NSString stringWithFormat:@"%s: Failed to setCFUp on", "[USBCSimpleUVDMFirmwareUpdater executeUVDM:header:svid:data:size:sop:response:]"];
+  [v15 setObject:deviceSerialNumber forKeyedSubscript:@"Notes"];
 LABEL_31:
 
   v25 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:11520 userInfo:v15];
@@ -490,32 +490,32 @@ LABEL_32:
   return v27;
 }
 
-- (id)prepareFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6
+- (id)prepareFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress
 {
-  v10 = a3;
-  v11 = a4;
+  firmwareCopy = firmware;
+  hardwareCopy = hardware;
   v12 = a5;
-  v13 = a6;
+  progressCopy = progress;
   if (self->_useDropboxLocation)
   {
-    v18 = 0;
+    filePathURL = 0;
     goto LABEL_4;
   }
 
-  v14 = [(MobileAsset *)self->_mobileAsset asset];
-  v15 = [v14 getLocalFileUrl];
-  v16 = [(MobileAsset *)self->_mobileAsset fwBundleFileName];
-  v17 = [v15 URLByAppendingPathComponent:v16];
-  v18 = [v17 filePathURL];
+  asset = [(MobileAsset *)self->_mobileAsset asset];
+  getLocalFileUrl = [asset getLocalFileUrl];
+  fwBundleFileName = [(MobileAsset *)self->_mobileAsset fwBundleFileName];
+  v17 = [getLocalFileUrl URLByAppendingPathComponent:fwBundleFileName];
+  filePathURL = [v17 filePathURL];
 
-  if (v18)
+  if (filePathURL)
   {
-    [(USBCSimpleUVDMFirmwareUpdater *)self getFWFromURL:v18];
+    [(USBCSimpleUVDMFirmwareUpdater *)self getFWFromURL:filePathURL];
     if (self->_firmware)
     {
 LABEL_4:
       v19 = 0;
-      if (!v10)
+      if (!firmwareCopy)
       {
         goto LABEL_6;
       }
@@ -525,7 +525,7 @@ LABEL_4:
   }
 
   v19 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:1536 userInfo:0];
-  if (v10)
+  if (firmwareCopy)
   {
 LABEL_5:
     v20 = sub_100010D60();
@@ -537,14 +537,14 @@ LABEL_6:
   return v19;
 }
 
-- (id)applyFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6
+- (id)applyFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress
 {
-  v10 = a3;
-  v11 = a4;
+  firmwareCopy = firmware;
+  hardwareCopy = hardware;
   v12 = a5;
-  v13 = a6;
+  progressCopy = progress;
   p_name = (&stru_100029FF8 + 8);
-  v30 = v11;
+  v30 = hardwareCopy;
   if (!self->super._updaterOperational)
   {
     v21 = 0;
@@ -560,15 +560,15 @@ LABEL_6:
   }
 
   delegate = self->super._delegate;
-  v16 = [v11 objectForKeyedSubscript:@"Hardware Device Class"];
-  v17 = [(USBCSimpleUVDMFirmwareUpdater *)self DeviceSerialNumber];
-  [(FudPluginDelegate *)delegate log:1 format:@"Accessory firmware update started: %@ with S/N %@", v16, v17];
+  v16 = [hardwareCopy objectForKeyedSubscript:@"Hardware Device Class"];
+  deviceSerialNumber = [(USBCSimpleUVDMFirmwareUpdater *)self DeviceSerialNumber];
+  [(FudPluginDelegate *)delegate log:1 format:@"Accessory firmware update started: %@ with S/N %@", v16, deviceSerialNumber];
 
   [(FudPluginDelegate *)self->super._delegate log:7 format:@"=-=-=-=-=-=-=-=-=-=-=-=- Sending Firmware Update Start Command =-=-=-=-=-=-=-=-=-=-=-=-"];
-  v18 = [(USBCSimpleUVDMFirmwareUpdater *)self enableFirmwareUpdate];
-  if (v18 || ([(FudPluginDelegate *)self->super._delegate log:7 format:@"=-=-=-=-=-=-=-=-=-=-=-=- Setting Write Offset =-=-=-=-=-=-=-=-=-=-=-=-"], [(USBCSimpleUVDMFirmwareUpdater *)self setWriteOffset:0 length:1], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+  enableFirmwareUpdate = [(USBCSimpleUVDMFirmwareUpdater *)self enableFirmwareUpdate];
+  if (enableFirmwareUpdate || ([(FudPluginDelegate *)self->super._delegate log:7 format:@"=-=-=-=-=-=-=-=-=-=-=-=- Setting Write Offset =-=-=-=-=-=-=-=-=-=-=-=-"], [(USBCSimpleUVDMFirmwareUpdater *)self setWriteOffset:0 length:1], (enableFirmwareUpdate = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v25 = v18;
+    v25 = enableFirmwareUpdate;
     v21 = 0;
 LABEL_25:
     p_name = (&stru_100029FF8 + 8);
@@ -609,9 +609,9 @@ LABEL_25:
       }
 
       v19 = (v20 + v22);
-      if (v13)
+      if (progressCopy)
       {
-        v13[2](v13, v19 / [(NSData *)self->_firmware length]* 100.0);
+        progressCopy[2](progressCopy, v19 / [(NSData *)self->_firmware length]* 100.0);
       }
 
       v20 = (v20 + v22);
@@ -636,7 +636,7 @@ LABEL_17:
   v25 = [v24 executeUVDM:v29 header:? svid:? data:? size:? sop:? response:?];
 LABEL_18:
   *(&self->super.super.isa + *(p_name + 825)) = 0;
-  if (v10)
+  if (firmwareCopy)
   {
     v26 = sub_100010D60();
     v27(v26);
@@ -645,7 +645,7 @@ LABEL_18:
   return v25;
 }
 
-- (id)DeviceSerialNumberForController:(id)a3
+- (id)DeviceSerialNumberForController:(id)controller
 {
   memset(v8, 0, sizeof(v8));
   LOBYTE(v7) = 1;
@@ -664,17 +664,17 @@ LABEL_18:
   return v5;
 }
 
-- (id)checkForEntryForSerialNumber:(id)a3 inSavedAccInfo:(id)a4 needsReplacement:(BOOL)a5
+- (id)checkForEntryForSerialNumber:(id)number inSavedAccInfo:(id)info needsReplacement:(BOOL)replacement
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  numberCopy = number;
+  infoCopy = info;
+  v10 = infoCopy;
   v11 = 0;
-  v28 = v8;
+  v28 = numberCopy;
   v12 = 0;
-  if (v8 && v9)
+  if (numberCopy && infoCopy)
   {
-    if ([v9 count])
+    if ([infoCopy count])
     {
       v31 = 0u;
       v32 = 0u;
@@ -684,8 +684,8 @@ LABEL_18:
       v12 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v12)
       {
-        v27 = a5;
-        v26 = self;
+        replacementCopy = replacement;
+        selfCopy = self;
         v14 = *v30;
 LABEL_6:
         v15 = 0;
@@ -736,7 +736,7 @@ LABEL_6:
 
           v24 = v23 / 86400.0;
           v12 = [v16 copy];
-          if (v27 || v24 >= 7.0)
+          if (replacementCopy || v24 >= 7.0)
           {
             [v13 removeObject:v16];
 
@@ -745,7 +745,7 @@ LABEL_6:
               goto LABEL_22;
             }
 
-            [(FudPluginDelegate *)v26->super._delegate log:7 format:@"Saved Staged Firmware Info %@ older than %d days (%f sec), discarding", v12, 7, *&v23];
+            [(FudPluginDelegate *)selfCopy->super._delegate log:7 format:@"Saved Staged Firmware Info %@ older than %d days (%f sec), discarding", v12, 7, *&v23];
             v13 = v12;
             v12 = 0;
           }
@@ -832,18 +832,18 @@ LABEL_22:
   return v3;
 }
 
-- (void)getFWFromURL:(id)a3
+- (void)getFWFromURL:(id)l
 {
-  v11 = [NSBundle bundleWithURL:a3];
+  v11 = [NSBundle bundleWithURL:l];
   if (v11)
   {
     v4 = [v11 objectForInfoDictionaryKey:@"FirmwareImageFile"];
     if (v4)
     {
       v5 = v4;
-      v6 = [v4 stringByDeletingPathExtension];
-      v7 = [v5 pathExtension];
-      v8 = [v11 pathForResource:v6 ofType:v7];
+      stringByDeletingPathExtension = [v4 stringByDeletingPathExtension];
+      pathExtension = [v5 pathExtension];
+      v8 = [v11 pathForResource:stringByDeletingPathExtension ofType:pathExtension];
       v9 = [NSData dataWithContentsOfFile:v8];
       firmware = self->_firmware;
       self->_firmware = v9;

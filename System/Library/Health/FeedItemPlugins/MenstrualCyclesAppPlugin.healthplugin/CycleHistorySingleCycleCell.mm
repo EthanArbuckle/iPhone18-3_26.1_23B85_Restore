@@ -1,18 +1,18 @@
 @interface CycleHistorySingleCycleCell
-- (_TtC24MenstrualCyclesAppPlugin27CycleHistorySingleCycleCell)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin27CycleHistorySingleCycleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)cycleViewPanned:(id)a3;
-- (void)cycleViewPressed:(id)a3;
-- (void)cycleViewTapped:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin27CycleHistorySingleCycleCell)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin27CycleHistorySingleCycleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)cycleViewPanned:(id)panned;
+- (void)cycleViewPressed:(id)pressed;
+- (void)cycleViewTapped:(id)tapped;
 - (void)prepareForReuse;
 @end
 
 @implementation CycleHistorySingleCycleCell
 
-- (_TtC24MenstrualCyclesAppPlugin27CycleHistorySingleCycleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin27CycleHistorySingleCycleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
   }
@@ -26,7 +26,7 @@
   return sub_29E108F38(v4, v5);
 }
 
-- (_TtC24MenstrualCyclesAppPlugin27CycleHistorySingleCycleCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin27CycleHistorySingleCycleCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin27CycleHistorySingleCycleCell_singleCycleView;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for CycleHistorySingleCycleView()) init];
@@ -46,38 +46,38 @@
   sub_29DFFBB94();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_29E2C0674();
   v5 = *(v4 - 8);
   MEMORY[0x2A1C7C4A8](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2C0664();
-  v8 = self;
+  selfCopy = self;
   sub_29E108220();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)cycleViewTapped:(id)a3
+- (void)cycleViewTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_29E109094();
 }
 
-- (void)cycleViewPanned:(id)a3
+- (void)cycleViewPanned:(id)panned
 {
-  v4 = a3;
-  v5 = self;
-  sub_29E108A04(v4);
+  pannedCopy = panned;
+  selfCopy = self;
+  sub_29E108A04(pannedCopy);
 }
 
-- (void)cycleViewPressed:(id)a3
+- (void)cycleViewPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
-  sub_29E108B24(v4);
+  pressedCopy = pressed;
+  selfCopy = self;
+  sub_29E108B24(pressedCopy);
 }
 
 @end

@@ -2,76 +2,76 @@
 + (BOOL)isSupported;
 + (id)newGeoTrackingSession;
 + (id)newPositionalTrackingSession;
-+ (id)stringWithARGeoTrackingAccuracy:(int64_t)a3;
-+ (id)stringWithARGeoTrackingState:(int64_t)a3;
-+ (id)stringWithARGeoTrackingStateReason:(int64_t)a3;
-+ (id)stringWithARTrackingState:(int64_t)a3;
-+ (id)stringWithARTrackingStateReason:(int64_t)a3;
++ (id)stringWithARGeoTrackingAccuracy:(int64_t)accuracy;
++ (id)stringWithARGeoTrackingState:(int64_t)state;
++ (id)stringWithARGeoTrackingStateReason:(int64_t)reason;
++ (id)stringWithARTrackingState:(int64_t)state;
++ (id)stringWithARTrackingStateReason:(int64_t)reason;
 @end
 
 @implementation MDARSession
 
-+ (id)stringWithARGeoTrackingAccuracy:(int64_t)a3
++ (id)stringWithARGeoTrackingAccuracy:(int64_t)accuracy
 {
-  if ((a3 - 1) > 2)
+  if ((accuracy - 1) > 2)
   {
     return @"Undetermined";
   }
 
   else
   {
-    return *(&off_1E7B3C118 + a3 - 1);
+    return *(&off_1E7B3C118 + accuracy - 1);
   }
 }
 
-+ (id)stringWithARGeoTrackingStateReason:(int64_t)a3
++ (id)stringWithARGeoTrackingStateReason:(int64_t)reason
 {
-  if ((a3 - 1) > 7)
+  if ((reason - 1) > 7)
   {
     return @"None";
   }
 
   else
   {
-    return *(&off_1E7B3C0D8 + a3 - 1);
+    return *(&off_1E7B3C0D8 + reason - 1);
   }
 }
 
-+ (id)stringWithARGeoTrackingState:(int64_t)a3
++ (id)stringWithARGeoTrackingState:(int64_t)state
 {
-  if ((a3 - 1) > 2)
+  if ((state - 1) > 2)
   {
     return @"NotAvailable";
   }
 
   else
   {
-    return *(&off_1E7B3C0C0 + a3 - 1);
+    return *(&off_1E7B3C0C0 + state - 1);
   }
 }
 
-+ (id)stringWithARTrackingStateReason:(int64_t)a3
++ (id)stringWithARTrackingStateReason:(int64_t)reason
 {
-  if ((a3 - 1) > 3)
+  if ((reason - 1) > 3)
   {
     return @"None";
   }
 
   else
   {
-    return *(&off_1E7B3C0A0 + a3 - 1);
+    return *(&off_1E7B3C0A0 + reason - 1);
   }
 }
 
-+ (id)stringWithARTrackingState:(int64_t)a3
++ (id)stringWithARTrackingState:(int64_t)state
 {
   v3 = @"NotAvailable";
-  if (a3 == 1)
+  if (state == 1)
   {
     v3 = @"Limited";
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     return @"Normal";
   }
@@ -106,9 +106,9 @@
       [v2 setWorldAlignment:0];
       [v2 setLightEstimationEnabled:0];
       v3 = +[VKDebugSettings sharedSettings];
-      v4 = [v3 arEnableEnvironmentMap];
+      arEnableEnvironmentMap = [v3 arEnableEnvironmentMap];
 
-      if (v4)
+      if (arEnableEnvironmentMap)
       {
         [v2 setEnvironmentTexturing:1];
       }
@@ -149,9 +149,9 @@ LABEL_10:
   [v2 setPlaneDetection:0];
   [v2 setLightEstimationEnabled:0];
   v3 = +[VKDebugSettings sharedSettings];
-  v4 = [v3 arEnableEnvironmentMap];
+  arEnableEnvironmentMap = [v3 arEnableEnvironmentMap];
 
-  if (v4)
+  if (arEnableEnvironmentMap)
   {
     [v2 setEnvironmentTexturing:1];
   }

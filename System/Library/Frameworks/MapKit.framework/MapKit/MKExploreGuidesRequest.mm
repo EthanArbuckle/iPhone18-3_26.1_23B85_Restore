@@ -2,11 +2,11 @@
 - (BOOL)isCancelled;
 - (BOOL)isLoading;
 - (CLLocationCoordinate2D)referenceLocation;
-- (MKExploreGuidesRequest)initWithReferenceLocation:(CLLocationCoordinate2D)a3 airportCode:(id)a4 cityName:(id)a5 supportedPunchoutType:(unint64_t)a6;
+- (MKExploreGuidesRequest)initWithReferenceLocation:(CLLocationCoordinate2D)location airportCode:(id)code cityName:(id)name supportedPunchoutType:(unint64_t)type;
 - (unint64_t)geoSupportedPunchoutType;
 - (void)cancel;
 - (void)dealloc;
-- (void)getResponseWithCompletionHandler:(id)a3;
+- (void)getResponseWithCompletionHandler:(id)handler;
 @end
 
 @implementation MKExploreGuidesRequest
@@ -25,16 +25,16 @@
   result = [(MKExploreGuidesRequest *)self supportedPunchoutType];
   if (result)
   {
-    v4 = [(MKExploreGuidesRequest *)self supportedPunchoutType];
-    return [(MKExploreGuidesRequest *)self supportedPunchoutType]& 2 | v4 & 1;
+    supportedPunchoutType = [(MKExploreGuidesRequest *)self supportedPunchoutType];
+    return [(MKExploreGuidesRequest *)self supportedPunchoutType]& 2 | supportedPunchoutType & 1;
   }
 
   return result;
 }
 
-- (void)getResponseWithCompletionHandler:(id)a3
+- (void)getResponseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock_with_options();
   if (self->_loading)
   {
@@ -53,8 +53,8 @@
     v12[2] = __59__MKExploreGuidesRequest_getResponseWithCompletionHandler___block_invoke;
     v12[3] = &unk_1E76CDA20;
     v13 = v7;
-    v14 = v4;
-    v8 = v4;
+    v14 = handlerCopy;
+    v8 = handlerCopy;
     v9 = v7;
     _performBlockOnMainThreadIfNeeded(v12);
   }
@@ -68,8 +68,8 @@
     v10[2] = __59__MKExploreGuidesRequest_getResponseWithCompletionHandler___block_invoke_2;
     v10[3] = &unk_1E76CDA20;
     v10[4] = self;
-    v11 = v4;
-    v9 = v4;
+    v11 = handlerCopy;
+    v9 = handlerCopy;
     _performBlockOnMainThreadIfNeeded(v10);
   }
 }
@@ -220,12 +220,12 @@ void __59__MKExploreGuidesRequest_getResponseWithCompletionHandler___block_invok
   [(MKExploreGuidesRequest *)&v3 dealloc];
 }
 
-- (MKExploreGuidesRequest)initWithReferenceLocation:(CLLocationCoordinate2D)a3 airportCode:(id)a4 cityName:(id)a5 supportedPunchoutType:(unint64_t)a6
+- (MKExploreGuidesRequest)initWithReferenceLocation:(CLLocationCoordinate2D)location airportCode:(id)code cityName:(id)name supportedPunchoutType:(unint64_t)type
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v12 = a4;
-  v13 = a5;
+  longitude = location.longitude;
+  latitude = location.latitude;
+  codeCopy = code;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = MKExploreGuidesRequest;
   v14 = [(MKExploreGuidesRequest *)&v17 init];
@@ -234,9 +234,9 @@ void __59__MKExploreGuidesRequest_getResponseWithCompletionHandler___block_invok
   {
     v14->_referenceLocation.latitude = latitude;
     v14->_referenceLocation.longitude = longitude;
-    objc_storeStrong(&v14->_airportCode, a4);
-    objc_storeStrong(&v15->_cityName, a5);
-    v15->_supportedPunchoutType = a6;
+    objc_storeStrong(&v14->_airportCode, code);
+    objc_storeStrong(&v15->_cityName, name);
+    v15->_supportedPunchoutType = type;
   }
 
   return v15;

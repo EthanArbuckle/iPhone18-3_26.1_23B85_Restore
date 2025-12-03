@@ -1,12 +1,12 @@
 @interface PROPlugIn
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 - (BOOL)is3rdParty;
 - (BOOL)isBlocked;
-- (BOOL)isEqualToPlugIn:(id)a3;
+- (BOOL)isEqualToPlugIn:(id)in;
 - (Class)plugInClass;
-- (PROPlugIn)initWithDictionary:(id)a3 bundle:(id)a4 delegate:(id)a5;
+- (PROPlugIn)initWithDictionary:(id)dictionary bundle:(id)bundle delegate:(id)delegate;
 - (__CFUUID)uuid;
-- (id)apiUsedByPlugInForProtocol:(id)a3;
+- (id)apiUsedByPlugInForProtocol:(id)protocol;
 - (id)blockedLookupKey;
 - (id)bundle;
 - (id)className;
@@ -21,25 +21,25 @@
 - (id)pluginKitPlug;
 - (id)sharedPlugInInstance;
 - (id)version;
-- (void)setBlockedLookupKey:(id)a3 pluginName:(id)a4 version:(id)a5;
-- (void)setDelegate:(id)a3;
-- (void)setIsBlocked:(BOOL)a3;
+- (void)setBlockedLookupKey:(id)key pluginName:(id)name version:(id)version;
+- (void)setDelegate:(id)delegate;
+- (void)setIsBlocked:(BOOL)blocked;
 @end
 
 @implementation PROPlugIn
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v4 = a1;
-  if (objc_opt_class() == a1)
+  selfCopy = self;
+  if (objc_opt_class() == self)
   {
-    v4 = objc_opt_class();
+    selfCopy = objc_opt_class();
   }
 
-  return NSAllocateObject(v4, 0, a3);
+  return NSAllocateObject(selfCopy, 0, zone);
 }
 
-- (PROPlugIn)initWithDictionary:(id)a3 bundle:(id)a4 delegate:(id)a5
+- (PROPlugIn)initWithDictionary:(id)dictionary bundle:(id)bundle delegate:(id)delegate
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -201,7 +201,7 @@
   return 0;
 }
 
-- (id)apiUsedByPlugInForProtocol:(id)a3
+- (id)apiUsedByPlugInForProtocol:(id)protocol
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -210,7 +210,7 @@
   return 0;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -218,7 +218,7 @@
   [v3 raise:v4 format:{@"*** Bad news! %@ send to abstract class %@!", v5, objc_opt_class()}];
 }
 
-- (BOOL)isEqualToPlugIn:(id)a3
+- (BOOL)isEqualToPlugIn:(id)in
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -236,7 +236,7 @@
   return 0;
 }
 
-- (void)setIsBlocked:(BOOL)a3
+- (void)setIsBlocked:(BOOL)blocked
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -244,7 +244,7 @@
   [v3 raise:v4 format:{@"*** Bad news! %@ send to abstract class %@!", v5, objc_opt_class()}];
 }
 
-- (void)setBlockedLookupKey:(id)a3 pluginName:(id)a4 version:(id)a5
+- (void)setBlockedLookupKey:(id)key pluginName:(id)name version:(id)version
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];

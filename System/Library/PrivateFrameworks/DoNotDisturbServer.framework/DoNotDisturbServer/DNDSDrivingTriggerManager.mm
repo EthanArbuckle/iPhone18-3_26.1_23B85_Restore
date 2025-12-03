@@ -1,8 +1,8 @@
 @interface DNDSDrivingTriggerManager
 - (DNDSDrivingTriggerManager)init;
 - (DNDSDrivingTriggerManagerDataSource)dataSource;
-- (void)_configureDrivingTriggerWithMode:(id)a3;
-- (void)_refreshWithMode:(id)a3 event:(id)a4;
+- (void)_configureDrivingTriggerWithMode:(id)mode;
+- (void)_refreshWithMode:(id)mode event:(id)event;
 - (void)refresh;
 @end
 
@@ -21,9 +21,9 @@
 
     if ([(DNDSDrivingTriggerManager *)v2 _featureEnabled])
     {
-      v5 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       sinks = v2->_sinks;
-      v2->_sinks = v5;
+      v2->_sinks = dictionary;
 
       v2->_lock._os_unfair_lock_opaque = 0;
       v7 = objc_alloc_init(MEMORY[0x277CF8988]);
@@ -71,70 +71,70 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_refreshWithMode:(id)a3 event:(id)a4
+- (void)_refreshWithMode:(id)mode event:(id)event
 {
   v83 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DNDSDrivingTriggerManager *)self dataSource];
-  v9 = [v6 eventBody];
+  eventCopy = event;
+  modeCopy = mode;
+  dataSource = [(DNDSDrivingTriggerManager *)self dataSource];
+  eventBody = [eventCopy eventBody];
 
-  v10 = [v9 isStart];
-  v11 = [v7 modeIdentifier];
+  isStart = [eventBody isStart];
+  modeIdentifier = [modeCopy modeIdentifier];
 
   v76 = 0;
-  v12 = [v8 triggerManager:self assertionsWithClientIdentifer:@"com.apple.donotdisturb.private.driving-trigger" error:&v76];
+  v12 = [dataSource triggerManager:self assertionsWithClientIdentifer:@"com.apple.donotdisturb.private.driving-trigger" error:&v76];
   v13 = v76;
-  v14 = [v12 firstObject];
-  if (!v6)
+  firstObject = [v12 firstObject];
+  if (!eventCopy)
   {
     if ([v12 count])
     {
-      if (!v11)
+      if (!modeIdentifier)
       {
         v45 = DNDSLogDrivingTrigger;
         if (os_log_type_enabled(DNDSLogDrivingTrigger, OS_LOG_TYPE_DEFAULT))
         {
           v46 = v45;
-          v47 = [v14 details];
-          v48 = [v47 modeIdentifier];
+          details = [firstObject details];
+          modeIdentifier2 = [details modeIdentifier];
           *buf = 138543362;
-          v78 = v48;
+          v78 = modeIdentifier2;
           _os_log_impl(&dword_24912E000, v46, OS_LOG_TYPE_DEFAULT, "Invalidating active assertion no mode identifer for driving trigger; previousModeID=%{public}@", buf, 0xCu);
         }
 
-        v30 = [v14 UUID];
+        uUID = [firstObject UUID];
         v75 = v13;
-        v49 = [v8 triggerManager:self invalidateModeAssertionWithUUID:v30 reason:2 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.driving-trigger" error:&v75];
+        v49 = [dataSource triggerManager:self invalidateModeAssertionWithUUID:uUID reason:2 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.driving-trigger" error:&v75];
         v36 = v75;
         goto LABEL_21;
       }
 
-      v26 = [v14 details];
-      v27 = [v26 modeIdentifier];
-      v28 = [v11 isEqualToString:v27];
+      details2 = [firstObject details];
+      modeIdentifier3 = [details2 modeIdentifier];
+      v28 = [modeIdentifier isEqualToString:modeIdentifier3];
 
       if ((v28 & 1) == 0)
       {
-        v29 = [v14 details];
-        v30 = [v29 mutableCopy];
+        details3 = [firstObject details];
+        uUID = [details3 mutableCopy];
 
-        [v30 setModeIdentifier:v11];
+        [uUID setModeIdentifier:modeIdentifier];
         v31 = DNDSLogDrivingTrigger;
         if (os_log_type_enabled(DNDSLogDrivingTrigger, OS_LOG_TYPE_DEFAULT))
         {
           v32 = v31;
-          v33 = [v14 details];
-          v34 = [v33 modeIdentifier];
+          details4 = [firstObject details];
+          modeIdentifier4 = [details4 modeIdentifier];
           *buf = 138543618;
-          v78 = v11;
+          v78 = modeIdentifier;
           v79 = 2114;
-          v80 = v34;
+          v80 = modeIdentifier4;
           _os_log_impl(&dword_24912E000, v32, OS_LOG_TYPE_DEFAULT, "Updating active assertion to new mode identifer for driving trigger; modeID=%{public}@ previousModeID=%{public}@", buf, 0x16u);
         }
 
         v74 = v13;
-        v35 = [v8 triggerManager:self takeModeAssertionWithDetails:v30 clientIdentifier:@"com.apple.donotdisturb.private.driving-trigger" error:&v74];
+        v35 = [dataSource triggerManager:self takeModeAssertionWithDetails:uUID clientIdentifier:@"com.apple.donotdisturb.private.driving-trigger" error:&v74];
         v36 = v74;
 LABEL_21:
         v25 = v36;
@@ -148,39 +148,39 @@ LABEL_17:
     goto LABEL_34;
   }
 
-  if (v11)
+  if (modeIdentifier)
   {
     v73 = v13;
-    v15 = [v8 triggerManager:self assertionsWithClientIdentifer:@"com.apple.focus.activity-manager" error:&v73];
+    v15 = [dataSource triggerManager:self assertionsWithClientIdentifer:@"com.apple.focus.activity-manager" error:&v73];
     v16 = v73;
 
     v71[0] = MEMORY[0x277D85DD0];
     v71[1] = 3221225472;
     v71[2] = __52__DNDSDrivingTriggerManager__refreshWithMode_event___block_invoke;
     v71[3] = &unk_278F8A0B0;
-    v17 = v11;
+    v17 = modeIdentifier;
     v72 = v17;
     v18 = [v15 bs_filter:v71];
 
     v62 = v18;
-    v19 = [v18 firstObject];
-    v20 = v19;
-    if (v14 && v19 && (v21 = DNDSLogDrivingTrigger, os_log_type_enabled(DNDSLogDrivingTrigger, OS_LOG_TYPE_ERROR)))
+    firstObject2 = [v18 firstObject];
+    v20 = firstObject2;
+    if (firstObject && firstObject2 && (v21 = DNDSLogDrivingTrigger, os_log_type_enabled(DNDSLogDrivingTrigger, OS_LOG_TYPE_ERROR)))
     {
       *buf = 138543874;
       v78 = v17;
       v79 = 2114;
-      v80 = v14;
+      v80 = firstObject;
       v81 = 2114;
       v82 = v20;
       _os_log_error_impl(&dword_24912E000, v21, OS_LOG_TYPE_ERROR, "Existing assertions found for driving trigger manager and activity manager; modeID=%{public}@ assertion=%{public}@ userAssertion=%{public}@", buf, 0x20u);
-      if (v10)
+      if (isStart)
       {
         goto LABEL_7;
       }
     }
 
-    else if (v10)
+    else if (isStart)
     {
 LABEL_7:
       v22 = objc_alloc_init(MEMORY[0x277D05A40]);
@@ -196,8 +196,8 @@ LABEL_7:
       v67 = v20;
       v68 = v17;
       v69 = v22;
-      v23 = v22;
-      v24 = [v8 triggerManager:self performModeAssertionUpdatesWithHandler:v66];
+      uUID3 = v22;
+      v24 = [dataSource triggerManager:self performModeAssertionUpdatesWithHandler:v66];
 
       v25 = v67;
       goto LABEL_32;
@@ -209,19 +209,19 @@ LABEL_7:
       if (os_log_type_enabled(DNDSLogDrivingTrigger, OS_LOG_TYPE_DEFAULT))
       {
         v51 = v50;
-        v52 = [v20 details];
-        v53 = [v52 modeIdentifier];
+        details5 = [v20 details];
+        modeIdentifier5 = [details5 modeIdentifier];
         *buf = 138543362;
-        v78 = v53;
+        v78 = modeIdentifier5;
         _os_log_impl(&dword_24912E000, v51, OS_LOG_TYPE_DEFAULT, "Invalidating active user assertion in driving trigger in response to event; previousModeID=%{public}@", buf, 0xCu);
       }
 
-      v54 = [v20 UUID];
+      uUID2 = [v20 UUID];
       v65 = v16;
-      v55 = [v8 triggerManager:self invalidateModeAssertionWithUUID:v54 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.driving-trigger" error:&v65];
+      v55 = [dataSource triggerManager:self invalidateModeAssertionWithUUID:uUID2 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.driving-trigger" error:&v65];
       v25 = v65;
 
-      if (!v14)
+      if (!firstObject)
       {
         goto LABEL_33;
       }
@@ -230,7 +230,7 @@ LABEL_7:
     else
     {
       v25 = v16;
-      if (!v14)
+      if (!firstObject)
       {
 LABEL_33:
 
@@ -242,16 +242,16 @@ LABEL_33:
     if (os_log_type_enabled(DNDSLogDrivingTrigger, OS_LOG_TYPE_DEFAULT))
     {
       v57 = v56;
-      v58 = [v14 details];
-      v59 = [v58 modeIdentifier];
+      details6 = [firstObject details];
+      modeIdentifier6 = [details6 modeIdentifier];
       *buf = 138543362;
-      v78 = v59;
+      v78 = modeIdentifier6;
       _os_log_impl(&dword_24912E000, v57, OS_LOG_TYPE_DEFAULT, "Invalidating active assertion in driving trigger in response to event; previousModeID=%{public}@", buf, 0xCu);
     }
 
-    v23 = [v14 UUID];
+    uUID3 = [firstObject UUID];
     v64 = v25;
-    v60 = [v8 triggerManager:self invalidateModeAssertionWithUUID:v23 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.driving-trigger" error:&v64];
+    v60 = [dataSource triggerManager:self invalidateModeAssertionWithUUID:uUID3 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.driving-trigger" error:&v64];
     v16 = v64;
 LABEL_32:
 
@@ -264,21 +264,21 @@ LABEL_32:
     goto LABEL_17;
   }
 
-  v37 = [v12 firstObject];
-  v38 = [v37 UUID];
+  firstObject3 = [v12 firstObject];
+  uUID4 = [firstObject3 UUID];
   v63 = v13;
-  v39 = [v8 triggerManager:self invalidateModeAssertionWithUUID:v38 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.driving-trigger" error:&v63];
+  v39 = [dataSource triggerManager:self invalidateModeAssertionWithUUID:uUID4 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.driving-trigger" error:&v63];
   v25 = v63;
 
   v40 = DNDSLogDrivingTrigger;
   if (os_log_type_enabled(DNDSLogDrivingTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v41 = v40;
-    v42 = [v12 firstObject];
-    v43 = [v42 details];
-    v44 = [v43 modeIdentifier];
+    firstObject4 = [v12 firstObject];
+    details7 = [firstObject4 details];
+    modeIdentifier7 = [details7 modeIdentifier];
     *buf = 138543362;
-    v78 = v44;
+    v78 = modeIdentifier7;
     _os_log_impl(&dword_24912E000, v41, OS_LOG_TYPE_DEFAULT, "Invalidating active assertion no mode identifer for driving trigger in response to event; previousModeID=%{public}@", buf, 0xCu);
   }
 
@@ -347,16 +347,16 @@ uint64_t __52__DNDSDrivingTriggerManager__refreshWithMode_event___block_invoke_3
   return 1;
 }
 
-- (void)_configureDrivingTriggerWithMode:(id)a3
+- (void)_configureDrivingTriggerWithMode:(id)mode
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSMutableDictionary *)self->_sinks objectForKeyedSubscript:@"system"];
   v6 = v5;
-  if (!v4 || v5)
+  if (!modeCopy || v5)
   {
-    if (!v4 && v5)
+    if (!modeCopy && v5)
     {
       [v5 cancel];
       [(NSMutableDictionary *)self->_sinks removeObjectForKey:@"system"];
@@ -369,34 +369,34 @@ uint64_t __52__DNDSDrivingTriggerManager__refreshWithMode_event___block_invoke_3
     if (os_log_type_enabled(DNDSLogDrivingTrigger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = v4;
+      v23 = modeCopy;
       _os_log_impl(&dword_24912E000, v7, OS_LOG_TYPE_DEFAULT, "Adding biome driving event monitor; mode=%{public}@", buf, 0xCu);
     }
 
     v8 = [objc_alloc(MEMORY[0x277CF1918]) initWithIdentifier:@"com.apple.donotdisturb.drivingTrigger" targetQueue:self->_biomeQueue];
-    v9 = [MEMORY[0x277CF1B58] doNotDisturbWhileDrivingStream];
-    v10 = [v9 publisher];
-    v11 = [v10 subscribeOn:v8];
+    doNotDisturbWhileDrivingStream = [MEMORY[0x277CF1B58] doNotDisturbWhileDrivingStream];
+    publisher = [doNotDisturbWhileDrivingStream publisher];
+    v11 = [publisher subscribeOn:v8];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __62__DNDSDrivingTriggerManager__configureDrivingTriggerWithMode___block_invoke_48;
     v20[3] = &unk_278F8AC30;
     v20[4] = self;
-    v12 = v4;
+    v12 = modeCopy;
     v21 = v12;
     v13 = [v11 sinkWithCompletion:&__block_literal_global_16 receiveInput:v20];
 
     [(NSMutableDictionary *)self->_sinks setObject:v13 forKeyedSubscript:@"system"];
-    v14 = [MEMORY[0x277CF1B58] doNotDisturbWhileDrivingStream];
-    v15 = [v14 publisherFromStartTime:CFAbsoluteTimeGetCurrent() + -2.0];
-    v16 = [v15 last];
+    doNotDisturbWhileDrivingStream2 = [MEMORY[0x277CF1B58] doNotDisturbWhileDrivingStream];
+    v15 = [doNotDisturbWhileDrivingStream2 publisherFromStartTime:CFAbsoluteTimeGetCurrent() + -2.0];
+    last = [v15 last];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __62__DNDSDrivingTriggerManager__configureDrivingTriggerWithMode___block_invoke_59;
     v18[3] = &unk_278F8AC30;
     v18[4] = self;
     v19 = v12;
-    v6 = [v16 sinkWithCompletion:&__block_literal_global_58_0 receiveInput:v18];
+    v6 = [last sinkWithCompletion:&__block_literal_global_58_0 receiveInput:v18];
   }
 
   os_unfair_lock_unlock(&self->_lock);

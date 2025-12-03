@@ -1,7 +1,7 @@
 @interface ASDArcadeService
 + (id)defaultService;
 - (ASDArcadeService)init;
-- (void)recordAppLaunchForBundleID:(id)a3 additionalMetrics:(id)a4 replyHandler:(id)a5;
+- (void)recordAppLaunchForBundleID:(id)d additionalMetrics:(id)metrics replyHandler:(id)handler;
 @end
 
 @implementation ASDArcadeService
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __34__ASDArcadeService_defaultService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D600 != -1)
   {
     dispatch_once(&qword_1ED90D600, block);
@@ -39,23 +39,23 @@ uint64_t __34__ASDArcadeService_defaultService__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)recordAppLaunchForBundleID:(id)a3 additionalMetrics:(id)a4 replyHandler:(id)a5
+- (void)recordAppLaunchForBundleID:(id)d additionalMetrics:(id)metrics replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  metricsCopy = metrics;
+  handlerCopy = handler;
   v11 = +[ASDServiceBroker defaultBroker];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __78__ASDArcadeService_recordAppLaunchForBundleID_additionalMetrics_replyHandler___block_invoke;
   v15[3] = &unk_1E7CDD530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = dCopy;
+  v17 = metricsCopy;
+  v18 = handlerCopy;
+  v12 = metricsCopy;
+  v13 = dCopy;
+  v14 = handlerCopy;
   [v11 getOcelotServiceWithCompletionHandler:v15];
 }
 

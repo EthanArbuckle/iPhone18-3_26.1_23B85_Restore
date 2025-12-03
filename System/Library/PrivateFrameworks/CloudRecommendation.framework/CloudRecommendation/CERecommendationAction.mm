@@ -1,41 +1,41 @@
 @interface CERecommendationAction
-- (CERecommendationAction)initWithCoder:(id)a3;
-- (CERecommendationAction)initWithDictionary:(id)a3;
-- (CERecommendationAction)initWithIdentifier:(id)a3 actionTitle:(id)a4 actionType:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CERecommendationAction)initWithCoder:(id)coder;
+- (CERecommendationAction)initWithDictionary:(id)dictionary;
+- (CERecommendationAction)initWithIdentifier:(id)identifier actionTitle:(id)title actionType:(id)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CERecommendationAction
 
-- (CERecommendationAction)initWithIdentifier:(id)a3 actionTitle:(id)a4 actionType:(id)a5
+- (CERecommendationAction)initWithIdentifier:(id)identifier actionTitle:(id)title actionType:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  titleCopy = title;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = CERecommendationAction;
   v12 = [(CERecommendationAction *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_actionIdentifier, a3);
-    objc_storeStrong(&v13->_actionTitle, a4);
-    objc_storeStrong(&v13->_actionType, a5);
+    objc_storeStrong(&v12->_actionIdentifier, identifier);
+    objc_storeStrong(&v13->_actionTitle, title);
+    objc_storeStrong(&v13->_actionType, type);
   }
 
   return v13;
 }
 
-- (CERecommendationAction)initWithDictionary:(id)a3
+- (CERecommendationAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = CERecommendationAction;
   v5 = [(CERecommendationAction *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"identifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       }
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"title"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,7 +71,7 @@
       }
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"actionType"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"actionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -93,32 +93,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   actionIdentifier = self->_actionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:actionIdentifier forKey:@"actionIdentifier"];
-  [v5 encodeObject:self->_actionTitle forKey:@"actionTitle"];
-  [v5 encodeObject:self->_actionType forKey:@"actionType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
+  [coderCopy encodeObject:self->_actionTitle forKey:@"actionTitle"];
+  [coderCopy encodeObject:self->_actionType forKey:@"actionType"];
 }
 
-- (CERecommendationAction)initWithCoder:(id)a3
+- (CERecommendationAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CERecommendationAction;
   v5 = [(CERecommendationAction *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
     actionIdentifier = v5->_actionIdentifier;
     v5->_actionIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionTitle"];
     actionTitle = v5->_actionTitle;
     v5->_actionTitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionType"];
     actionType = v5->_actionType;
     v5->_actionType = v10;
   }
@@ -126,7 +126,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CERecommendationAction allocWithZone:?]];
   [(CERecommendationAction *)v4 setActionIdentifier:self->_actionIdentifier];

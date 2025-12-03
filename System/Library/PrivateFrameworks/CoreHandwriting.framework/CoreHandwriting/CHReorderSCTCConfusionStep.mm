@@ -1,12 +1,12 @@
 @interface CHReorderSCTCConfusionStep
-- (CHReorderSCTCConfusionStep)initWithMaxResultCount:(int64_t)a3;
-- (id)process:(id)a3 options:(id)a4;
+- (CHReorderSCTCConfusionStep)initWithMaxResultCount:(int64_t)count;
+- (id)process:(id)process options:(id)options;
 - (void)dealloc;
 @end
 
 @implementation CHReorderSCTCConfusionStep
 
-- (CHReorderSCTCConfusionStep)initWithMaxResultCount:(int64_t)a3
+- (CHReorderSCTCConfusionStep)initWithMaxResultCount:(int64_t)count
 {
   v10 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -15,7 +15,7 @@
   if (result)
   {
     v5 = result;
-    result->_maxResultCount = a3;
+    result->_maxResultCount = count;
     v8 = *L"Traditional-Simplified";
     v9[0] = *L"nal-Simplified";
     *(v9 + 14) = *L"plified";
@@ -27,17 +27,17 @@
   return result;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v387 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v360 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
   }
 
-  v365 = v6;
+  v365 = processCopy;
   v7 = qword_1EA84DC58;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -46,7 +46,7 @@
   }
 
   maxResultCount = self->_maxResultCount;
-  v14 = objc_msgSend_result(v6, v9, v10, v11, v12, v13);
+  v14 = objc_msgSend_result(processCopy, v9, v10, v11, v12, v13);
   v20 = objc_msgSend_transcriptionPaths(v14, v15, v16, v17, v18, v19);
   v363 = maxResultCount;
   LOBYTE(maxResultCount) = objc_msgSend_count(v20, v21, v22, v23, v24, v25) < 2;
@@ -74,7 +74,7 @@
     v379[3] = &unk_1E6DE0AD8;
     v97 = v73;
     v380 = v97;
-    v381 = self;
+    selfCopy = self;
     v98 = v355;
     v382 = v98;
     objc_msgSend_enumerateTokensInTranscriptionPath_columnRange_tokenProcessingBlock_(v84, v99, v358, 0, v96, v379);

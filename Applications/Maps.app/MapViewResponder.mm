@@ -1,9 +1,9 @@
 @interface MapViewResponder
 - (MKMapView)mapView;
 - (MapViewResponder)init;
-- (MapViewResponder)initWithMapView:(id)a3;
+- (MapViewResponder)initWithMapView:(id)view;
 - (MapViewResponderHandling)target;
-- (void)_nonselectingTapGestureRecognizerAction:(id)a3;
+- (void)_nonselectingTapGestureRecognizerAction:(id)action;
 - (void)dealloc;
 @end
 
@@ -23,24 +23,24 @@
   return WeakRetained;
 }
 
-- (void)_nonselectingTapGestureRecognizerAction:(id)a3
+- (void)_nonselectingTapGestureRecognizerAction:(id)action
 {
-  v4 = a3;
-  v11 = [(MapViewResponder *)self target];
-  v5 = [(MapViewResponder *)self mapView];
-  v6 = [(MapViewResponder *)self mapView];
-  [v4 locationInView:v6];
+  actionCopy = action;
+  target = [(MapViewResponder *)self target];
+  mapView = [(MapViewResponder *)self mapView];
+  mapView2 = [(MapViewResponder *)self mapView];
+  [actionCopy locationInView:mapView2];
   v8 = v7;
   v10 = v9;
 
-  [v11 didTapMapView:v5 atPoint:{v8, v10}];
+  [target didTapMapView:mapView atPoint:{v8, v10}];
 }
 
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_mapView);
-  v4 = [WeakRetained _nonselectingTapGestureRecognizer];
-  [v4 removeTarget:self action:0];
+  _nonselectingTapGestureRecognizer = [WeakRetained _nonselectingTapGestureRecognizer];
+  [_nonselectingTapGestureRecognizer removeTarget:self action:0];
 
   v5.receiver = self;
   v5.super_class = MapViewResponder;
@@ -55,18 +55,18 @@
   return v4;
 }
 
-- (MapViewResponder)initWithMapView:(id)a3
+- (MapViewResponder)initWithMapView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = MapViewResponder;
   v5 = [(MapViewResponder *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_mapView, v4);
-    v7 = [v4 _nonselectingTapGestureRecognizer];
-    [v7 addTarget:v6 action:"_nonselectingTapGestureRecognizerAction:"];
+    objc_storeWeak(&v5->_mapView, viewCopy);
+    _nonselectingTapGestureRecognizer = [viewCopy _nonselectingTapGestureRecognizer];
+    [_nonselectingTapGestureRecognizer addTarget:v6 action:"_nonselectingTapGestureRecognizerAction:"];
 
     v8 = v6;
   }

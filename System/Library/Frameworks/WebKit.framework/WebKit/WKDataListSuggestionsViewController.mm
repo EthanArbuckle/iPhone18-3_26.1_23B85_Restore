@@ -1,8 +1,8 @@
 @interface WKDataListSuggestionsViewController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)reloadData;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation WKDataListSuggestionsViewController
@@ -10,26 +10,26 @@
 - (void)reloadData
 {
   [-[WKDataListSuggestionsViewController tableView](self "tableView")];
-  v3 = [(WKDataListSuggestionsControl *)[(WKDataListSuggestionsViewController *)self control] suggestionsCount];
+  suggestionsCount = [(WKDataListSuggestionsControl *)[(WKDataListSuggestionsViewController *)self control] suggestionsCount];
   v4 = 242.0;
-  if (v3 <= 5)
+  if (suggestionsCount <= 5)
   {
-    v4 = v3 * 44.0;
+    v4 = suggestionsCount * 44.0;
   }
 
   [(WKDataListSuggestionsViewController *)self setPreferredContentSize:320.0, v4];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WKDataListSuggestionsViewController *)self control:a3];
+  v4 = [(WKDataListSuggestionsViewController *)self control:view];
 
   return [(WKDataListSuggestionsControl *)v4 suggestionsCount];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"WKDataListSuggestionCell"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"WKDataListSuggestionCell"];
   if (v6)
   {
     v7 = v6;
@@ -41,15 +41,15 @@
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"WKDataListSuggestionCell"];
   }
 
-  v9 = [(WKDataListSuggestionsViewController *)self control];
-  v10 = [a4 row];
-  if (!v9)
+  control = [(WKDataListSuggestionsViewController *)self control];
+  v10 = [path row];
+  if (!control)
   {
     v17 = 0;
     goto LABEL_9;
   }
 
-  [(WKDataListSuggestionsControl *)v9 suggestionAtIndex:v10];
+  [(WKDataListSuggestionsControl *)control suggestionAtIndex:v10];
   if (!v17)
   {
 LABEL_9:
@@ -88,12 +88,12 @@ LABEL_10:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = [(WKDataListSuggestionsViewController *)self control];
-  v6 = [a4 row];
+  control = [(WKDataListSuggestionsViewController *)self control];
+  v6 = [path row];
 
-  [(WKDataListSuggestionsControl *)v5 didSelectOptionAtIndex:v6];
+  [(WKDataListSuggestionsControl *)control didSelectOptionAtIndex:v6];
 }
 
 @end

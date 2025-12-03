@@ -1,16 +1,16 @@
 @interface EXPSiriSchemaEXPSiriClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (EXPSiriSchemaEXPAllocationChangelogSnapshot)allocationChangelogSnapshot;
 - (EXPSiriSchemaEXPAllocationSnapshot)allocationSnapshot;
 - (EXPSiriSchemaEXPClientExperimentTriggeredTier1)experimentTriggered;
 - (EXPSiriSchemaEXPClientSiriRequestExperimentTriggeredTier1)SiriRequestExperimentTriggered;
 - (EXPSiriSchemaEXPRolloutChangeSnapshot)rolloutChangeSnapshot;
-- (EXPSiriSchemaEXPSiriClientEvent)initWithDictionary:(id)a3;
-- (EXPSiriSchemaEXPSiriClientEvent)initWithJSON:(id)a3;
+- (EXPSiriSchemaEXPSiriClientEvent)initWithDictionary:(id)dictionary;
+- (EXPSiriSchemaEXPSiriClientEvent)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
@@ -20,25 +20,25 @@
 - (void)deleteExperimentTriggered;
 - (void)deleteRolloutChangeSnapshot;
 - (void)deleteSiriRequestExperimentTriggered;
-- (void)setAllocationChangelogSnapshot:(id)a3;
-- (void)setAllocationSnapshot:(id)a3;
-- (void)setExperimentTriggered:(id)a3;
-- (void)setRolloutChangeSnapshot:(id)a3;
-- (void)setSiriRequestExperimentTriggered:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAllocationChangelogSnapshot:(id)snapshot;
+- (void)setAllocationSnapshot:(id)snapshot;
+- (void)setExperimentTriggered:(id)triggered;
+- (void)setRolloutChangeSnapshot:(id)snapshot;
+- (void)setSiriRequestExperimentTriggered:(id)triggered;
+- (void)writeTo:(id)to;
 @end
 
 @implementation EXPSiriSchemaEXPSiriClientEvent
 
-- (EXPSiriSchemaEXPSiriClientEvent)initWithDictionary:(id)a3
+- (EXPSiriSchemaEXPSiriClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = EXPSiriSchemaEXPSiriClientEvent;
   v5 = [(EXPSiriSchemaEXPSiriClientEvent *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"allocationSnapshot"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"allocationSnapshot"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(EXPSiriSchemaEXPSiriClientEvent *)v5 setAllocationSnapshot:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"allocationChangelogSnapshot"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"allocationChangelogSnapshot"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
       [(EXPSiriSchemaEXPSiriClientEvent *)v5 setAllocationChangelogSnapshot:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"experimentTriggered"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"experimentTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       [(EXPSiriSchemaEXPSiriClientEvent *)v5 setExperimentTriggered:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"SiriRequestExperimentTriggered"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"SiriRequestExperimentTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       [(EXPSiriSchemaEXPSiriClientEvent *)v5 setSiriRequestExperimentTriggered:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"rolloutChangeSnapshot"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"rolloutChangeSnapshot"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,30 +84,30 @@
   return v5;
 }
 
-- (EXPSiriSchemaEXPSiriClientEvent)initWithJSON:(id)a3
+- (EXPSiriSchemaEXPSiriClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(EXPSiriSchemaEXPSiriClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(EXPSiriSchemaEXPSiriClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(EXPSiriSchemaEXPSiriClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -120,90 +120,90 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_SiriRequestExperimentTriggered)
   {
-    v4 = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    siriRequestExperimentTriggered = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
+    dictionaryRepresentation = [siriRequestExperimentTriggered dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"SiriRequestExperimentTriggered"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"SiriRequestExperimentTriggered"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"SiriRequestExperimentTriggered"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"SiriRequestExperimentTriggered"];
     }
   }
 
   if (self->_allocationChangelogSnapshot)
   {
-    v7 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    allocationChangelogSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
+    dictionaryRepresentation2 = [allocationChangelogSnapshot dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"allocationChangelogSnapshot"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"allocationChangelogSnapshot"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"allocationChangelogSnapshot"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"allocationChangelogSnapshot"];
     }
   }
 
   if (self->_allocationSnapshot)
   {
-    v10 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    allocationSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
+    dictionaryRepresentation3 = [allocationSnapshot dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"allocationSnapshot"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"allocationSnapshot"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"allocationSnapshot"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"allocationSnapshot"];
     }
   }
 
   if (self->_experimentTriggered)
   {
-    v13 = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    experimentTriggered = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
+    dictionaryRepresentation4 = [experimentTriggered dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"experimentTriggered"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"experimentTriggered"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"experimentTriggered"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"experimentTriggered"];
     }
   }
 
   if (self->_rolloutChangeSnapshot)
   {
-    v16 = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    rolloutChangeSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
+    dictionaryRepresentation5 = [rolloutChangeSnapshot dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"rolloutChangeSnapshot"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"rolloutChangeSnapshot"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"rolloutChangeSnapshot"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"rolloutChangeSnapshot"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -215,34 +215,34 @@
   return v6 ^ [(EXPSiriSchemaEXPRolloutChangeSnapshot *)self->_rolloutChangeSnapshot hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_28;
   }
 
-  v6 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
-  v7 = [v4 allocationSnapshot];
-  if ((v6 != 0) == (v7 == 0))
+  allocationSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
+  allocationSnapshot2 = [equalCopy allocationSnapshot];
+  if ((allocationSnapshot != 0) == (allocationSnapshot2 == 0))
   {
     goto LABEL_27;
   }
 
-  v8 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
-  if (v8)
+  allocationSnapshot3 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
+  if (allocationSnapshot3)
   {
-    v9 = v8;
-    v10 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
-    v11 = [v4 allocationSnapshot];
-    v12 = [v10 isEqual:v11];
+    v9 = allocationSnapshot3;
+    allocationSnapshot4 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
+    allocationSnapshot5 = [equalCopy allocationSnapshot];
+    v12 = [allocationSnapshot4 isEqual:allocationSnapshot5];
 
     if (!v12)
     {
@@ -254,20 +254,20 @@
   {
   }
 
-  v6 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
-  v7 = [v4 allocationChangelogSnapshot];
-  if ((v6 != 0) == (v7 == 0))
+  allocationSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
+  allocationSnapshot2 = [equalCopy allocationChangelogSnapshot];
+  if ((allocationSnapshot != 0) == (allocationSnapshot2 == 0))
   {
     goto LABEL_27;
   }
 
-  v13 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
-  if (v13)
+  allocationChangelogSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
+  if (allocationChangelogSnapshot)
   {
-    v14 = v13;
-    v15 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
-    v16 = [v4 allocationChangelogSnapshot];
-    v17 = [v15 isEqual:v16];
+    v14 = allocationChangelogSnapshot;
+    allocationChangelogSnapshot2 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
+    allocationChangelogSnapshot3 = [equalCopy allocationChangelogSnapshot];
+    v17 = [allocationChangelogSnapshot2 isEqual:allocationChangelogSnapshot3];
 
     if (!v17)
     {
@@ -279,20 +279,20 @@
   {
   }
 
-  v6 = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
-  v7 = [v4 experimentTriggered];
-  if ((v6 != 0) == (v7 == 0))
+  allocationSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
+  allocationSnapshot2 = [equalCopy experimentTriggered];
+  if ((allocationSnapshot != 0) == (allocationSnapshot2 == 0))
   {
     goto LABEL_27;
   }
 
-  v18 = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
-  if (v18)
+  experimentTriggered = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
+  if (experimentTriggered)
   {
-    v19 = v18;
-    v20 = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
-    v21 = [v4 experimentTriggered];
-    v22 = [v20 isEqual:v21];
+    v19 = experimentTriggered;
+    experimentTriggered2 = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
+    experimentTriggered3 = [equalCopy experimentTriggered];
+    v22 = [experimentTriggered2 isEqual:experimentTriggered3];
 
     if (!v22)
     {
@@ -304,20 +304,20 @@
   {
   }
 
-  v6 = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
-  v7 = [v4 SiriRequestExperimentTriggered];
-  if ((v6 != 0) == (v7 == 0))
+  allocationSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
+  allocationSnapshot2 = [equalCopy SiriRequestExperimentTriggered];
+  if ((allocationSnapshot != 0) == (allocationSnapshot2 == 0))
   {
     goto LABEL_27;
   }
 
-  v23 = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
-  if (v23)
+  siriRequestExperimentTriggered = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
+  if (siriRequestExperimentTriggered)
   {
-    v24 = v23;
-    v25 = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
-    v26 = [v4 SiriRequestExperimentTriggered];
-    v27 = [v25 isEqual:v26];
+    v24 = siriRequestExperimentTriggered;
+    siriRequestExperimentTriggered2 = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
+    siriRequestExperimentTriggered3 = [equalCopy SiriRequestExperimentTriggered];
+    v27 = [siriRequestExperimentTriggered2 isEqual:siriRequestExperimentTriggered3];
 
     if (!v27)
     {
@@ -329,12 +329,12 @@
   {
   }
 
-  v6 = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
-  v7 = [v4 rolloutChangeSnapshot];
-  if ((v6 != 0) != (v7 == 0))
+  allocationSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
+  allocationSnapshot2 = [equalCopy rolloutChangeSnapshot];
+  if ((allocationSnapshot != 0) != (allocationSnapshot2 == 0))
   {
-    v28 = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
-    if (!v28)
+    rolloutChangeSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
+    if (!rolloutChangeSnapshot)
     {
 
 LABEL_31:
@@ -342,10 +342,10 @@ LABEL_31:
       goto LABEL_29;
     }
 
-    v29 = v28;
-    v30 = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
-    v31 = [v4 rolloutChangeSnapshot];
-    v32 = [v30 isEqual:v31];
+    v29 = rolloutChangeSnapshot;
+    rolloutChangeSnapshot2 = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
+    rolloutChangeSnapshot3 = [equalCopy rolloutChangeSnapshot];
+    v32 = [rolloutChangeSnapshot2 isEqual:rolloutChangeSnapshot3];
 
     if (v32)
     {
@@ -365,50 +365,50 @@ LABEL_29:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
+  toCopy = to;
+  allocationSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
 
-  if (v4)
+  if (allocationSnapshot)
   {
-    v5 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
+    allocationSnapshot2 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
+  allocationChangelogSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
 
-  if (v6)
+  if (allocationChangelogSnapshot)
   {
-    v7 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
+    allocationChangelogSnapshot2 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
+  experimentTriggered = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
 
-  if (v8)
+  if (experimentTriggered)
   {
-    v9 = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
+    experimentTriggered2 = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
+  siriRequestExperimentTriggered = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
 
-  if (v10)
+  if (siriRequestExperimentTriggered)
   {
-    v11 = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
+    siriRequestExperimentTriggered2 = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
+  rolloutChangeSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (rolloutChangeSnapshot)
   {
-    v14 = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
+    rolloutChangeSnapshot2 = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
@@ -437,9 +437,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setRolloutChangeSnapshot:(id)a3
+- (void)setRolloutChangeSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   allocationSnapshot = self->_allocationSnapshot;
   self->_allocationSnapshot = 0;
 
@@ -453,14 +453,14 @@ LABEL_29:
   self->_SiriRequestExperimentTriggered = 0;
 
   v9 = 105;
-  if (!v4)
+  if (!snapshotCopy)
   {
     v9 = 0;
   }
 
   self->_whichEvent_Type = v9;
   rolloutChangeSnapshot = self->_rolloutChangeSnapshot;
-  self->_rolloutChangeSnapshot = v4;
+  self->_rolloutChangeSnapshot = snapshotCopy;
 }
 
 - (void)deleteSiriRequestExperimentTriggered
@@ -488,9 +488,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setSiriRequestExperimentTriggered:(id)a3
+- (void)setSiriRequestExperimentTriggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   allocationSnapshot = self->_allocationSnapshot;
   self->_allocationSnapshot = 0;
 
@@ -504,14 +504,14 @@ LABEL_29:
   self->_rolloutChangeSnapshot = 0;
 
   v9 = 104;
-  if (!v4)
+  if (!triggeredCopy)
   {
     v9 = 0;
   }
 
   self->_whichEvent_Type = v9;
   SiriRequestExperimentTriggered = self->_SiriRequestExperimentTriggered;
-  self->_SiriRequestExperimentTriggered = v4;
+  self->_SiriRequestExperimentTriggered = triggeredCopy;
 }
 
 - (void)deleteExperimentTriggered
@@ -539,9 +539,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setExperimentTriggered:(id)a3
+- (void)setExperimentTriggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   allocationSnapshot = self->_allocationSnapshot;
   self->_allocationSnapshot = 0;
 
@@ -555,14 +555,14 @@ LABEL_29:
   self->_rolloutChangeSnapshot = 0;
 
   v9 = 103;
-  if (!v4)
+  if (!triggeredCopy)
   {
     v9 = 0;
   }
 
   self->_whichEvent_Type = v9;
   experimentTriggered = self->_experimentTriggered;
-  self->_experimentTriggered = v4;
+  self->_experimentTriggered = triggeredCopy;
 }
 
 - (void)deleteAllocationChangelogSnapshot
@@ -590,9 +590,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setAllocationChangelogSnapshot:(id)a3
+- (void)setAllocationChangelogSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   allocationSnapshot = self->_allocationSnapshot;
   self->_allocationSnapshot = 0;
 
@@ -606,14 +606,14 @@ LABEL_29:
   self->_rolloutChangeSnapshot = 0;
 
   v9 = 102;
-  if (!v4)
+  if (!snapshotCopy)
   {
     v9 = 0;
   }
 
   self->_whichEvent_Type = v9;
   allocationChangelogSnapshot = self->_allocationChangelogSnapshot;
-  self->_allocationChangelogSnapshot = v4;
+  self->_allocationChangelogSnapshot = snapshotCopy;
 }
 
 - (void)deleteAllocationSnapshot
@@ -641,9 +641,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setAllocationSnapshot:(id)a3
+- (void)setAllocationSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   allocationChangelogSnapshot = self->_allocationChangelogSnapshot;
   self->_allocationChangelogSnapshot = 0;
 
@@ -657,77 +657,77 @@ LABEL_29:
   self->_rolloutChangeSnapshot = 0;
 
   v9 = 101;
-  if (!v4)
+  if (!snapshotCopy)
   {
     v9 = 0;
   }
 
   self->_whichEvent_Type = v9;
   allocationSnapshot = self->_allocationSnapshot;
-  self->_allocationSnapshot = v4;
+  self->_allocationSnapshot = snapshotCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(EXPSiriSchemaEXPSiriClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 4)
+  whichEvent_Type = [(EXPSiriSchemaEXPSiriClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 4)
   {
     return @"com.apple.aiml.exp.siri.EXPSiriClientEvent";
   }
 
   else
   {
-    return off_1E78D4AD0[v2 - 101];
+    return off_1E78D4AD0[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = EXPSiriSchemaEXPSiriClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  allocationSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationSnapshot];
+  v7 = [allocationSnapshot applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(EXPSiriSchemaEXPSiriClientEvent *)self deleteAllocationSnapshot];
   }
 
-  v9 = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  allocationChangelogSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self allocationChangelogSnapshot];
+  v10 = [allocationChangelogSnapshot applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(EXPSiriSchemaEXPSiriClientEvent *)self deleteAllocationChangelogSnapshot];
   }
 
-  v12 = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  experimentTriggered = [(EXPSiriSchemaEXPSiriClientEvent *)self experimentTriggered];
+  v13 = [experimentTriggered applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(EXPSiriSchemaEXPSiriClientEvent *)self deleteExperimentTriggered];
   }
 
-  v15 = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  siriRequestExperimentTriggered = [(EXPSiriSchemaEXPSiriClientEvent *)self SiriRequestExperimentTriggered];
+  v16 = [siriRequestExperimentTriggered applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(EXPSiriSchemaEXPSiriClientEvent *)self deleteSiriRequestExperimentTriggered];
   }
 
-  v18 = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  rolloutChangeSnapshot = [(EXPSiriSchemaEXPSiriClientEvent *)self rolloutChangeSnapshot];
+  v19 = [rolloutChangeSnapshot applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(EXPSiriSchemaEXPSiriClientEvent *)self deleteRolloutChangeSnapshot];
   }
@@ -745,30 +745,30 @@ LABEL_29:
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(EXPSiriSchemaEXPSiriClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 4)
+  whichEvent_Type = [(EXPSiriSchemaEXPSiriClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E95A8[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E95A8[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 4)
+  if (tag - 101 > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E95D0[a3 - 101];
+    return off_1E78E95D0[tag - 101];
   }
 }
 

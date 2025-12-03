@@ -1,10 +1,10 @@
 @interface MCCertificateDetailsController
 + (id)_dateFormatter;
-- (id)_propertiesFromTrust:(__SecTrust *)a3;
+- (id)_propertiesFromTrust:(__SecTrust *)trust;
 - (id)specifiers;
-- (id)specifiersFromCertificateProperties:(id)a3;
-- (id)specifiersFromTrust:(__SecTrust *)a3;
-- (id)valueForSpecifier:(id)a3;
+- (id)specifiersFromCertificateProperties:(id)properties;
+- (id)specifiersFromTrust:(__SecTrust *)trust;
+- (id)valueForSpecifier:(id)specifier;
 @end
 
 @implementation MCCertificateDetailsController
@@ -26,17 +26,17 @@
   return v2;
 }
 
-- (id)_propertiesFromTrust:(__SecTrust *)a3
+- (id)_propertiesFromTrust:(__SecTrust *)trust
 {
-  if (!a3)
+  if (!trust)
   {
     goto LABEL_10;
   }
 
   error = 0;
-  if (!SecTrustEvaluateWithError(a3, &error))
+  if (!SecTrustEvaluateWithError(trust, &error))
   {
-    NSLog(&cfstr_SectrustNotTru.isa, a3, error);
+    NSLog(&cfstr_SectrustNotTru.isa, trust, error);
   }
 
   if (error)
@@ -44,7 +44,7 @@
     CFRelease(error);
   }
 
-  CertificateCount = SecTrustGetCertificateCount(a3);
+  CertificateCount = SecTrustGetCertificateCount(trust);
   if (CertificateCount >= 1)
   {
     v5 = 0;
@@ -71,11 +71,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)valueForSpecifier:(id)a3
+- (id)valueForSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v4 = *MEMORY[0x277D401A8];
-  v5 = [v3 propertyForKey:*MEMORY[0x277D401A8]];
+  v5 = [specifierCopy propertyForKey:*MEMORY[0x277D401A8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -91,7 +91,7 @@ LABEL_10:
     HexStringForBytes = [v8 stringFromDate:v7];
 
 LABEL_7:
-    [v3 setProperty:HexStringForBytes forKey:v4];
+    [specifierCopy setProperty:HexStringForBytes forKey:v4];
     goto LABEL_9;
   }
 
@@ -113,12 +113,12 @@ LABEL_9:
   return HexStringForBytes;
 }
 
-- (id)specifiersFromCertificateProperties:(id)a3
+- (id)specifiersFromCertificateProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v22 = v3;
-  v5 = [v3 count];
+  propertiesCopy = properties;
+  array = [MEMORY[0x277CBEB18] array];
+  v22 = propertiesCopy;
+  v5 = [propertiesCopy count];
   if (v5 >= 1)
   {
     v6 = 0;
@@ -138,11 +138,11 @@ LABEL_9:
       if (v14)
       {
         v15 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:v12];
-        [v4 addObject:v15];
+        [array addObject:v15];
 
         v16 = [v11 objectForKey:v9];
         v17 = [(MCCertificateDetailsController *)self specifiersFromCertificateProperties:v16];
-        [v4 addObjectsFromArray:v17];
+        [array addObjectsFromArray:v17];
       }
 
       else
@@ -150,7 +150,7 @@ LABEL_9:
         v16 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v12 target:self set:0 get:sel_valueForSpecifier_ detail:0 cell:4 edit:0];
         v17 = [v11 objectForKey:v9];
         [v16 setProperty:v17 forKey:v19];
-        [v4 addObject:v16];
+        [array addObject:v16];
       }
 
       ++v6;
@@ -159,12 +159,12 @@ LABEL_9:
     while (v10 != v6);
   }
 
-  return v4;
+  return array;
 }
 
-- (id)specifiersFromTrust:(__SecTrust *)a3
+- (id)specifiersFromTrust:(__SecTrust *)trust
 {
-  v4 = [(MCCertificateDetailsController *)self _propertiesFromTrust:a3];
+  v4 = [(MCCertificateDetailsController *)self _propertiesFromTrust:trust];
   v5 = [(MCCertificateDetailsController *)self specifiersFromCertificateProperties:v4];
 
   return v5;
@@ -179,8 +179,8 @@ LABEL_9:
     v5 = MCUILocalizedString(@"CERT_DETAILS");
     [(MCCertificateDetailsController *)self setTitle:v5];
 
-    v6 = [(MCCertificateDetailsController *)self specifier];
-    v7 = [v6 propertyForKey:@"kMCCertificateDetailsTrustRefKey"];
+    specifier = [(MCCertificateDetailsController *)self specifier];
+    v7 = [specifier propertyForKey:@"kMCCertificateDetailsTrustRefKey"];
 
     if (v7)
     {
@@ -191,8 +191,8 @@ LABEL_9:
 
     else
     {
-      v12 = [(MCCertificateDetailsController *)self specifier];
-      v13 = [v12 propertyForKey:@"kMCCertificateDetailsCertificateRefKey"];
+      specifier2 = [(MCCertificateDetailsController *)self specifier];
+      v13 = [specifier2 propertyForKey:@"kMCCertificateDetailsCertificateRefKey"];
 
       if (v13)
       {

@@ -1,15 +1,15 @@
 @interface PK_ipp_collection_t
-- (PK_ipp_collection_t)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PK_ipp_collection_t)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 @end
 
 @implementation PK_ipp_collection_t
 
-- (PK_ipp_collection_t)initWithCoder:(id)a3
+- (PK_ipp_collection_t)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_attrs"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_attrs"];
   v8.receiver = self;
   v8.super_class = PK_ipp_collection_t;
   v6 = [(PK_ipp_t *)&v8 _initWithAttrs:v5];
@@ -17,7 +17,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   attrs = self->super._attrs;
@@ -47,8 +47,8 @@
   v11.receiver = self;
   v11.super_class = PK_ipp_collection_t;
   v7 = [(PK_ipp_t *)&v11 description];
-  v8 = [(PK_ipp_t *)self _descriptionLeader];
-  v9 = [v6 stringWithFormat:@"%@ %@ { %@: %@ }", v7, v8, v16[5], v5];
+  _descriptionLeader = [(PK_ipp_t *)self _descriptionLeader];
+  v9 = [v6 stringWithFormat:@"%@ %@ { %@: %@ }", v7, _descriptionLeader, v16[5], v5];
 
   _Block_object_dispose(&v15, 8);
 

@@ -1,17 +1,17 @@
 @interface BCBuyButtonColorProvider
-+ (id)colorsForButtonState:(unint64_t)a3 isDark:(BOOL)a4 isEnabled:(BOOL)a5;
++ (id)colorsForButtonState:(unint64_t)state isDark:(BOOL)dark isEnabled:(BOOL)enabled;
 @end
 
 @implementation BCBuyButtonColorProvider
 
-+ (id)colorsForButtonState:(unint64_t)a3 isDark:(BOOL)a4 isEnabled:(BOOL)a5
++ (id)colorsForButtonState:(unint64_t)state isDark:(BOOL)dark isEnabled:(BOOL)enabled
 {
   v6 = 0;
-  if (a3 <= 5)
+  if (state <= 5)
   {
-    if (a3 - 1 >= 3)
+    if (state - 1 >= 3)
     {
-      if (a3 == 4)
+      if (state == 4)
       {
         v7 = [UIColor whiteColor:4];
         v9 = +[UIColor systemOrangeColor];
@@ -19,7 +19,7 @@
       }
 
       v7 = 0;
-      if (a3 != 5)
+      if (state != 5)
       {
         goto LABEL_17;
       }
@@ -32,7 +32,7 @@ LABEL_9:
     }
 
 LABEL_7:
-    if (!a4)
+    if (!dark)
     {
       v7 = +[UIColor whiteColor];
       v9 = +[UIColor blackColor];
@@ -43,13 +43,13 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (a3 - 7 < 4)
+  if (state - 7 < 4)
   {
     goto LABEL_7;
   }
 
   v7 = 0;
-  if (a3 != 6)
+  if (state != 6)
   {
     goto LABEL_17;
   }
@@ -58,7 +58,7 @@ LABEL_7:
   v9 = +[UIColor tertiaryLabelColor];
 LABEL_14:
   v6 = v9;
-  if (!a5 && v7)
+  if (!enabled && v7)
   {
     v10 = [UIColor colorWithWhite:1.0 alpha:0.5];
 

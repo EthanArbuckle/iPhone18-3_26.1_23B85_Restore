@@ -1,27 +1,27 @@
 @interface _TVOrganizerCellView
-- (CGSize)_sizeThatFitsComponents:(id)a3 boundingSize:(CGSize)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TVOrganizerCellView)initWithFrame:(CGRect)a3;
-- (int64_t)_alignmentFromView:(id)a3;
+- (CGSize)_sizeThatFitsComponents:(id)components boundingSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TVOrganizerCellView)initWithFrame:(CGRect)frame;
+- (int64_t)_alignmentFromView:(id)view;
 - (void)_resetSubviews;
-- (void)_updateView:(id)a3 maxViewWidth:(double)a4;
-- (void)_verticallyStackComponents:(id)a3 alignment:(int64_t)a4;
+- (void)_updateView:(id)view maxViewWidth:(double)width;
+- (void)_verticallyStackComponents:(id)components alignment:(int64_t)alignment;
 - (void)layoutSubviews;
-- (void)setComponents:(id)a3;
-- (void)setContentVerticalAlignment:(int64_t)a3;
+- (void)setComponents:(id)components;
+- (void)setContentVerticalAlignment:(int64_t)alignment;
 @end
 
 @implementation _TVOrganizerCellView
 
-- (_TVOrganizerCellView)initWithFrame:(CGRect)a3
+- (_TVOrganizerCellView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVOrganizerCellView;
-  v3 = [(_TVOrganizerCellView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVOrganizerCellView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(_TVOrganizerCellView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(_TVOrganizerCellView *)v3 setBackgroundColor:clearColor];
 
     [(_TVOrganizerCellView *)v3 setOpaque:0];
     v3->_contentVerticalAlignment = 1;
@@ -30,34 +30,34 @@
   return v3;
 }
 
-- (void)setContentVerticalAlignment:(int64_t)a3
+- (void)setContentVerticalAlignment:(int64_t)alignment
 {
-  if (self->_contentVerticalAlignment != a3)
+  if (self->_contentVerticalAlignment != alignment)
   {
-    self->_contentVerticalAlignment = a3;
-    v4 = [(_TVOrganizerCellView *)self subviews];
-    v5 = [v4 count];
+    self->_contentVerticalAlignment = alignment;
+    subviews = [(_TVOrganizerCellView *)self subviews];
+    v5 = [subviews count];
 
     if (v5)
     {
-      v6 = [(_TVOrganizerCellView *)self filteredComponents];
-      [(_TVOrganizerCellView *)self _verticallyStackComponents:v6 alignment:self->_contentVerticalAlignment];
+      filteredComponents = [(_TVOrganizerCellView *)self filteredComponents];
+      [(_TVOrganizerCellView *)self _verticallyStackComponents:filteredComponents alignment:self->_contentVerticalAlignment];
     }
   }
 }
 
-- (void)setComponents:(id)a3
+- (void)setComponents:(id)components
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_components, a3);
+  componentsCopy = components;
+  objc_storeStrong(&self->_components, components);
   [(_TVOrganizerCellView *)self setNeedsLayout];
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(componentsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = componentsCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -105,12 +105,12 @@
   [(_TVOrganizerCellView *)self _resetSubviews];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_TVOrganizerCellView *)self filteredComponents];
-  [(_TVOrganizerCellView *)self _sizeThatFitsComponents:v6 boundingSize:width, height];
+  height = fits.height;
+  width = fits.width;
+  filteredComponents = [(_TVOrganizerCellView *)self filteredComponents];
+  [(_TVOrganizerCellView *)self _sizeThatFitsComponents:filteredComponents boundingSize:width, height];
   v8 = v7;
   v10 = v9;
 
@@ -129,12 +129,12 @@
   [(_TVOrganizerCellView *)&v26 layoutSubviews];
   [(_TVOrganizerCellView *)self bounds];
   v4 = v3;
-  v5 = [(_TVOrganizerCellView *)self filteredComponents];
+  filteredComponents = [(_TVOrganizerCellView *)self filteredComponents];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  v6 = [filteredComponents countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -145,19 +145,19 @@
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(filteredComponents);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 superview];
+        superview = [v10 superview];
 
-        if (v11 != self)
+        if (superview != self)
         {
           [(_TVOrganizerCellView *)self addSubview:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v7 = [filteredComponents countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v7);
@@ -167,7 +167,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = v5;
+  v12 = filteredComponents;
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v27 count:16];
   if (v13)
   {
@@ -191,14 +191,14 @@
     while (v14);
   }
 
-  v17 = [(_TVOrganizerCellView *)self filteredComponents];
-  [(_TVOrganizerCellView *)self _verticallyStackComponents:v17 alignment:[(_TVOrganizerCellView *)self contentVerticalAlignment]];
+  filteredComponents2 = [(_TVOrganizerCellView *)self filteredComponents];
+  [(_TVOrganizerCellView *)self _verticallyStackComponents:filteredComponents2 alignment:[(_TVOrganizerCellView *)self contentVerticalAlignment]];
 }
 
-- (void)_verticallyStackComponents:(id)a3 alignment:(int64_t)a4
+- (void)_verticallyStackComponents:(id)components alignment:(int64_t)alignment
 {
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  componentsCopy = components;
   [(_TVOrganizerCellView *)self bounds];
   v55 = v7;
   v9 = v8;
@@ -210,7 +210,7 @@
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v16 = v6;
+  v16 = componentsCopy;
   v17 = [v16 countByEnumeratingWithState:&v61 objects:v66 count:16];
   v18 = 0.0;
   if (v17)
@@ -272,7 +272,7 @@
   }
 
   v32 = v15 + v22;
-  switch(a4)
+  switch(alignment)
   {
     case 3:
       v18 = floor(v9 + v13 - v32);
@@ -345,18 +345,18 @@
   }
 }
 
-- (CGSize)_sizeThatFitsComponents:(id)a3 boundingSize:(CGSize)a4
+- (CGSize)_sizeThatFitsComponents:(id)components boundingSize:(CGSize)size
 {
-  width = a4.width;
+  width = size.width;
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  componentsCopy = components;
   v7 = *MEMORY[0x277CBF3A8];
   v8 = *(MEMORY[0x277CBF3A8] + 8);
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v9 = [v6 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  v9 = [componentsCopy countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v9)
   {
     v10 = v9;
@@ -372,7 +372,7 @@
       {
         if (*v39 != v12)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(componentsCopy);
         }
 
         v17 = *(*(&v38 + 1) + 8 * v14);
@@ -435,7 +435,7 @@
       }
 
       while (v10 != v14);
-      v10 = [v6 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v10 = [componentsCopy countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v10);
@@ -455,13 +455,13 @@
   return result;
 }
 
-- (void)_updateView:(id)a3 maxViewWidth:(double)a4
+- (void)_updateView:(id)view maxViewWidth:(double)width
 {
-  v22 = a3;
-  [v22 tv_margin];
-  if (a4 - (v6 + v7) > 0.0)
+  viewCopy = view;
+  [viewCopy tv_margin];
+  if (width - (v6 + v7) > 0.0)
   {
-    v8 = a4 - (v6 + v7);
+    v8 = width - (v6 + v7);
   }
 
   else
@@ -472,27 +472,27 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v22 tv_textSizeForWidth:v8];
+    [viewCopy tv_textSizeForWidth:v8];
   }
 
   else
   {
-    [v22 tv_sizeThatFits:{v8, 0.0}];
+    [viewCopy tv_sizeThatFits:{v8, 0.0}];
   }
 
   v11 = v9;
   v12 = v10;
-  v13 = [(_TVOrganizerCellView *)self _alignmentFromView:v22];
-  [v22 tv_itemWidth];
+  v13 = [(_TVOrganizerCellView *)self _alignmentFromView:viewCopy];
+  [viewCopy tv_itemWidth];
   v15 = v14;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (v13 & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
-    v16 = v22;
+    v16 = viewCopy;
     if (v15 <= 0.0)
     {
-      [v22 tv_maxWidth];
-      v16 = v22;
+      [viewCopy tv_maxWidth];
+      v16 = viewCopy;
       v18 = fmin(v8, v17);
       if (v17 <= 0.0)
       {
@@ -508,7 +508,7 @@
 
   else
   {
-    v16 = v22;
+    v16 = viewCopy;
   }
 
   v19 = v11;
@@ -517,13 +517,13 @@
   [v16 setBounds:{0.0, 0.0, v20, ceilf(v21)}];
 }
 
-- (int64_t)_alignmentFromView:(id)a3
+- (int64_t)_alignmentFromView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 tv_alignment];
-  if (v4)
+  viewCopy = view;
+  tv_alignment = [viewCopy tv_alignment];
+  if (tv_alignment)
   {
-    v5 = v4;
+    v5 = tv_alignment;
   }
 
   else
@@ -531,20 +531,20 @@
     v5 = 4;
   }
 
-  v6 = [v3 semanticContentAttribute];
+  semanticContentAttribute = [viewCopy semanticContentAttribute];
 
-  return [TVMLUtilities semanticAlignmentForAlignment:v5 semanticContentAttribute:v6];
+  return [TVMLUtilities semanticAlignmentForAlignment:v5 semanticContentAttribute:semanticContentAttribute];
 }
 
 - (void)_resetSubviews
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(_TVOrganizerCellView *)self subviews];
+  subviews = [(_TVOrganizerCellView *)self subviews];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -556,12 +556,12 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(_TVOrganizerCellView *)self filteredComponents];
-        v10 = [v9 containsObject:v8];
+        filteredComponents = [(_TVOrganizerCellView *)self filteredComponents];
+        v10 = [filteredComponents containsObject:v8];
 
         if ((v10 & 1) == 0)
         {
@@ -572,7 +572,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

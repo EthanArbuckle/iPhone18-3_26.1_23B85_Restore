@@ -1,7 +1,7 @@
 @interface CHListSummaryTableViewCell
-+ (BOOL)mostRecentWorkout:(id)a3 supportsMetric:(unint64_t)a4;
-+ (double)heightForWorkoutActivityTypeKey:(id)a3 statistics:(id)a4;
-- (CHListSummaryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (BOOL)mostRecentWorkout:(id)workout supportsMetric:(unint64_t)metric;
++ (double)heightForWorkoutActivityTypeKey:(id)key statistics:(id)statistics;
+- (CHListSummaryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSArray)stackedLabels;
 - (void)_layoutLabels;
 - (void)_updateUI;
@@ -9,17 +9,17 @@
 - (void)_updateUIForWorkout;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setMindfulnessSessionsStatistics:(id)a3 formattingManager:(id)a4;
-- (void)setWorkoutStatistics:(id)a3 activityTypeKey:(id)a4 formattingManager:(id)a5;
+- (void)setMindfulnessSessionsStatistics:(id)statistics formattingManager:(id)manager;
+- (void)setWorkoutStatistics:(id)statistics activityTypeKey:(id)key formattingManager:(id)manager;
 @end
 
 @implementation CHListSummaryTableViewCell
 
-+ (double)heightForWorkoutActivityTypeKey:(id)a3 statistics:(id)a4
++ (double)heightForWorkoutActivityTypeKey:(id)key statistics:(id)statistics
 {
-  v5 = a4;
-  v6 = [a3 activityType];
-  if (v6 == _HKWorkoutActivityTypeNone)
+  statisticsCopy = statistics;
+  activityType = [key activityType];
+  if (activityType == _HKWorkoutActivityTypeNone)
   {
     v7 = 124.0;
   }
@@ -27,12 +27,12 @@
   else
   {
     v8 = objc_opt_class();
-    v9 = [v5 mostRecentWorkout];
-    v10 = [v8 mostRecentWorkout:v9 supportsMetric:1];
+    mostRecentWorkout = [statisticsCopy mostRecentWorkout];
+    v10 = [v8 mostRecentWorkout:mostRecentWorkout supportsMetric:1];
 
     v11 = objc_opt_class();
-    v12 = [v5 mostRecentWorkout];
-    LOBYTE(v11) = [v11 mostRecentWorkout:v12 supportsMetric:8];
+    mostRecentWorkout2 = [statisticsCopy mostRecentWorkout];
+    LOBYTE(v11) = [v11 mostRecentWorkout:mostRecentWorkout2 supportsMetric:8];
 
     v13 = 146.0;
     if (v11)
@@ -54,11 +54,11 @@
   return v7;
 }
 
-- (CHListSummaryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHListSummaryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v48.receiver = self;
   v48.super_class = CHListSummaryTableViewCell;
-  v4 = [(CHListSummaryTableViewCell *)&v48 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CHListSummaryTableViewCell *)&v48 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor systemBackgroundColor];
@@ -81,8 +81,8 @@
     v14 = [v13 localizedStringForKey:@"WORKOUT_MONTH_HEADER_TOTAL" value:&stru_1008680E8 table:@"Localizable"];
     [(UILabel *)v4->_totalHeaderLabel setText:v14];
 
-    v15 = [(CHListSummaryTableViewCell *)v4 contentView];
-    [v15 addSubview:v4->_totalHeaderLabel];
+    contentView = [(CHListSummaryTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_totalHeaderLabel];
 
     v16 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     averageHeaderLabel = v4->_averageHeaderLabel;
@@ -95,62 +95,62 @@
     v20 = [v19 localizedStringForKey:@"WORKOUT_MONTH_HEADER_AVERAGE" value:&stru_1008680E8 table:@"Localizable"];
     [(UILabel *)v4->_averageHeaderLabel setText:v20];
 
-    v21 = [(CHListSummaryTableViewCell *)v4 contentView];
-    [v21 addSubview:v4->_averageHeaderLabel];
+    contentView2 = [(CHListSummaryTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_averageHeaderLabel];
 
-    v22 = [[_CHWorkoutSummaryTabbedLabelContainer alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[_CHWorkoutSummaryTabbedLabelContainer alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     numberOfWorkoutsLabel = v4->_numberOfWorkoutsLabel;
-    v4->_numberOfWorkoutsLabel = v22;
+    v4->_numberOfWorkoutsLabel = height;
 
     v24 = +[UIColor secondaryLabelColor];
     [(_CHWorkoutSummaryTabbedLabelContainer *)v4->_numberOfWorkoutsLabel setTextColor:v24];
 
-    v25 = [(CHListSummaryTableViewCell *)v4 contentView];
-    [v25 addSubview:v4->_numberOfWorkoutsLabel];
+    contentView3 = [(CHListSummaryTableViewCell *)v4 contentView];
+    [contentView3 addSubview:v4->_numberOfWorkoutsLabel];
 
-    v26 = [[_CHWorkoutSummaryTabbedLabelContainer alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height2 = [[_CHWorkoutSummaryTabbedLabelContainer alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     activeEnergyLabel = v4->_activeEnergyLabel;
-    v4->_activeEnergyLabel = v26;
+    v4->_activeEnergyLabel = height2;
 
     v28 = +[ARUIMetricColors energyColors];
-    v29 = [v28 nonGradientTextColor];
-    [(_CHWorkoutSummaryTabbedLabelContainer *)v4->_activeEnergyLabel setTextColor:v29];
+    nonGradientTextColor = [v28 nonGradientTextColor];
+    [(_CHWorkoutSummaryTabbedLabelContainer *)v4->_activeEnergyLabel setTextColor:nonGradientTextColor];
 
-    v30 = [(CHListSummaryTableViewCell *)v4 contentView];
-    [v30 addSubview:v4->_activeEnergyLabel];
+    contentView4 = [(CHListSummaryTableViewCell *)v4 contentView];
+    [contentView4 addSubview:v4->_activeEnergyLabel];
 
-    v31 = [[_CHWorkoutSummaryTabbedLabelContainer alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height3 = [[_CHWorkoutSummaryTabbedLabelContainer alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     durationLabel = v4->_durationLabel;
-    v4->_durationLabel = v31;
+    v4->_durationLabel = height3;
 
     v33 = +[ARUIMetricColors elapsedTimeColors];
-    v34 = [v33 nonGradientTextColor];
-    [(_CHWorkoutSummaryTabbedLabelContainer *)v4->_durationLabel setTextColor:v34];
+    nonGradientTextColor2 = [v33 nonGradientTextColor];
+    [(_CHWorkoutSummaryTabbedLabelContainer *)v4->_durationLabel setTextColor:nonGradientTextColor2];
 
-    v35 = [(CHListSummaryTableViewCell *)v4 contentView];
-    [v35 addSubview:v4->_durationLabel];
+    contentView5 = [(CHListSummaryTableViewCell *)v4 contentView];
+    [contentView5 addSubview:v4->_durationLabel];
 
-    v36 = [[_CHWorkoutSummaryTabbedLabelContainer alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height4 = [[_CHWorkoutSummaryTabbedLabelContainer alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     distanceLabel = v4->_distanceLabel;
-    v4->_distanceLabel = v36;
+    v4->_distanceLabel = height4;
 
     v38 = +[ARUIMetricColors distanceColors];
-    v39 = [v38 nonGradientTextColor];
-    [(_CHWorkoutSummaryTabbedLabelContainer *)v4->_distanceLabel setTextColor:v39];
+    nonGradientTextColor3 = [v38 nonGradientTextColor];
+    [(_CHWorkoutSummaryTabbedLabelContainer *)v4->_distanceLabel setTextColor:nonGradientTextColor3];
 
-    v40 = [(CHListSummaryTableViewCell *)v4 contentView];
-    [v40 addSubview:v4->_distanceLabel];
+    contentView6 = [(CHListSummaryTableViewCell *)v4 contentView];
+    [contentView6 addSubview:v4->_distanceLabel];
 
-    v41 = [[_CHWorkoutSummaryTabbedLabelContainer alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height5 = [[_CHWorkoutSummaryTabbedLabelContainer alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     paceLabel = v4->_paceLabel;
-    v4->_paceLabel = v41;
+    v4->_paceLabel = height5;
 
     v43 = +[ARUIMetricColors paceColors];
-    v44 = [v43 nonGradientTextColor];
-    [(_CHWorkoutSummaryTabbedLabelContainer *)v4->_paceLabel setTextColor:v44];
+    nonGradientTextColor4 = [v43 nonGradientTextColor];
+    [(_CHWorkoutSummaryTabbedLabelContainer *)v4->_paceLabel setTextColor:nonGradientTextColor4];
 
-    v45 = [(CHListSummaryTableViewCell *)v4 contentView];
-    [v45 addSubview:v4->_paceLabel];
+    contentView7 = [(CHListSummaryTableViewCell *)v4 contentView];
+    [contentView7 addSubview:v4->_paceLabel];
 
     v46 = +[NSNotificationCenter defaultCenter];
     [v46 addObserver:v4 selector:"_updateUI" name:kFIUIFitnessUnitPreferencesDidChangeNotification object:0];
@@ -159,34 +159,34 @@
   return v4;
 }
 
-- (void)setWorkoutStatistics:(id)a3 activityTypeKey:(id)a4 formattingManager:(id)a5
+- (void)setWorkoutStatistics:(id)statistics activityTypeKey:(id)key formattingManager:(id)manager
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  managerCopy = manager;
+  keyCopy = key;
+  statisticsCopy = statistics;
   [(CHListSummaryTableViewCell *)self setSummaryType:0];
-  [(CHListSummaryTableViewCell *)self setWorkoutStatistics:v10];
+  [(CHListSummaryTableViewCell *)self setWorkoutStatistics:statisticsCopy];
 
   [(CHListSummaryTableViewCell *)self setMindfulnessSessionsStatistics:0];
-  [(CHListSummaryTableViewCell *)self setActivityTypeKey:v9];
+  [(CHListSummaryTableViewCell *)self setActivityTypeKey:keyCopy];
 
-  [(CHListSummaryTableViewCell *)self setFormattingManager:v8];
+  [(CHListSummaryTableViewCell *)self setFormattingManager:managerCopy];
 
   [(CHListSummaryTableViewCell *)self _updateUI];
 }
 
-- (void)setMindfulnessSessionsStatistics:(id)a3 formattingManager:(id)a4
+- (void)setMindfulnessSessionsStatistics:(id)statistics formattingManager:(id)manager
 {
-  v6 = a4;
-  v7 = a3;
+  managerCopy = manager;
+  statisticsCopy = statistics;
   [(CHListSummaryTableViewCell *)self setSummaryType:1];
   [(CHListSummaryTableViewCell *)self setWorkoutStatistics:0];
-  [(CHListSummaryTableViewCell *)self setMindfulnessSessionsStatistics:v7];
+  [(CHListSummaryTableViewCell *)self setMindfulnessSessionsStatistics:statisticsCopy];
 
   v8 = +[CHWorkoutTypeKey emptyKey];
   [(CHListSummaryTableViewCell *)self setActivityTypeKey:v8];
 
-  [(CHListSummaryTableViewCell *)self setFormattingManager:v6];
+  [(CHListSummaryTableViewCell *)self setFormattingManager:managerCopy];
 
   [(CHListSummaryTableViewCell *)self _updateUI];
 }
@@ -197,8 +197,8 @@
   v4.super_class = CHListSummaryTableViewCell;
   [(CHListSummaryTableViewCell *)&v4 prepareForReuse];
   [(CHListSummaryTableViewCell *)self _setShouldHaveFullLengthBottomSeparator:1];
-  v3 = [(CHListSummaryTableViewCell *)self stackedLabels];
-  [v3 makeObjectsPerformSelector:"setText:" withObject:0];
+  stackedLabels = [(CHListSummaryTableViewCell *)self stackedLabels];
+  [stackedLabels makeObjectsPerformSelector:"setText:" withObject:0];
 }
 
 - (NSArray)stackedLabels
@@ -217,14 +217,14 @@
 
 - (void)_updateUI
 {
-  v3 = [(CHListSummaryTableViewCell *)self summaryType];
-  if (v3 == 1)
+  summaryType = [(CHListSummaryTableViewCell *)self summaryType];
+  if (summaryType == 1)
   {
 
     [(CHListSummaryTableViewCell *)self _updateUIForMindfulnessSessions];
   }
 
-  else if (!v3)
+  else if (!summaryType)
   {
 
     [(CHListSummaryTableViewCell *)self _updateUIForWorkout];
@@ -280,33 +280,33 @@ LABEL_10:
   else
   {
     v10 = objc_opt_class();
-    v11 = [(FIUIWorkoutStatistics *)self->_workoutStatistics mostRecentWorkout];
-    v8 = [v10 mostRecentWorkout:v11 supportsMetric:1];
+    mostRecentWorkout = [(FIUIWorkoutStatistics *)self->_workoutStatistics mostRecentWorkout];
+    v8 = [v10 mostRecentWorkout:mostRecentWorkout supportsMetric:1];
 
     v12 = objc_opt_class();
-    v13 = [(FIUIWorkoutStatistics *)self->_workoutStatistics mostRecentWorkout];
-    v9 = [v12 mostRecentWorkout:v13 supportsMetric:8];
+    mostRecentWorkout2 = [(FIUIWorkoutStatistics *)self->_workoutStatistics mostRecentWorkout];
+    v9 = [v12 mostRecentWorkout:mostRecentWorkout2 supportsMetric:8];
   }
 
-  v14 = [(CHWorkoutTypeKey *)self->_activityTypeKey activityType];
-  v15 = [(CHWorkoutTypeKey *)self->_activityTypeKey isIndoor];
+  activityType = [(CHWorkoutTypeKey *)self->_activityTypeKey activityType];
+  isIndoor = [(CHWorkoutTypeKey *)self->_activityTypeKey isIndoor];
   v66 = HKMetadataKeySwimmingLocationType;
   v16 = [NSNumber numberWithInteger:[(CHWorkoutTypeKey *)self->_activityTypeKey swimLocationType]];
   v67 = v16;
   v17 = [NSDictionary dictionaryWithObjects:&v67 forKeys:&v66 count:1];
-  v18 = [FIUIWorkoutActivityType activityTypeWithHKWorkoutActivityTypeIdentifier:v14 isIndoor:v15 metadata:v17];
+  v18 = [FIUIWorkoutActivityType activityTypeWithHKWorkoutActivityTypeIdentifier:activityType isIndoor:isIndoor metadata:v17];
 
   v19 = FIUIDistanceTypeForActivityType();
   if (v8)
   {
     [(_CHWorkoutSummaryTabbedLabelContainer *)self->_distanceLabel setHidden:0];
-    v20 = [(CHListSummaryTableViewCell *)self workoutStatistics];
-    v21 = [(CHListSummaryTableViewCell *)self formattingManager];
-    v64 = [v20 formattedDistanceWithFormattingManager:v21 distanceType:v19 amountType:0];
+    workoutStatistics = [(CHListSummaryTableViewCell *)self workoutStatistics];
+    formattingManager = [(CHListSummaryTableViewCell *)self formattingManager];
+    v64 = [workoutStatistics formattedDistanceWithFormattingManager:formattingManager distanceType:v19 amountType:0];
 
-    v22 = [(CHListSummaryTableViewCell *)self workoutStatistics];
-    v23 = [(CHListSummaryTableViewCell *)self formattingManager];
-    v65 = [v22 formattedDistanceWithFormattingManager:v23 distanceType:v19 amountType:1];
+    workoutStatistics2 = [(CHListSummaryTableViewCell *)self workoutStatistics];
+    formattingManager2 = [(CHListSummaryTableViewCell *)self formattingManager];
+    v65 = [workoutStatistics2 formattedDistanceWithFormattingManager:formattingManager2 distanceType:v19 amountType:1];
   }
 
   else
@@ -319,9 +319,9 @@ LABEL_10:
   if (v9)
   {
     [(_CHWorkoutSummaryTabbedLabelContainer *)self->_paceLabel setHidden:0];
-    v25 = [(CHListSummaryTableViewCell *)self workoutStatistics];
-    v26 = [(CHListSummaryTableViewCell *)self formattingManager];
-    v63 = [v25 formattedPaceWithFormattingManager:v26 distanceType:v19];
+    workoutStatistics3 = [(CHListSummaryTableViewCell *)self workoutStatistics];
+    formattingManager3 = [(CHListSummaryTableViewCell *)self formattingManager];
+    v63 = [workoutStatistics3 formattedPaceWithFormattingManager:formattingManager3 distanceType:v19];
 
     v27 = FIUIPaceFormatForWorkoutActivityType();
     v28 = +[NSBundle mainBundle];
@@ -367,31 +367,31 @@ LABEL_10:
     v24 = v35;
   }
 
-  v36 = [(CHListSummaryTableViewCell *)self workoutStatistics];
-  v37 = [v36 simpleWorkoutCount];
+  workoutStatistics4 = [(CHListSummaryTableViewCell *)self workoutStatistics];
+  simpleWorkoutCount = [workoutStatistics4 simpleWorkoutCount];
 
   v38 = v24;
   [(_CHWorkoutSummaryTabbedLabelContainer *)self->_numberOfWorkoutsLabel setTitleText:v24];
-  [(_CHWorkoutSummaryTabbedLabelContainer *)self->_numberOfWorkoutsLabel setTotalText:v37];
+  [(_CHWorkoutSummaryTabbedLabelContainer *)self->_numberOfWorkoutsLabel setTotalText:simpleWorkoutCount];
   v39 = +[NSBundle mainBundle];
   v40 = [v39 localizedStringForKey:@"WORKOUT_MONTH_SUMMARY_TIME_TITLE" value:&stru_1008680E8 table:@"Localizable"];
   [(_CHWorkoutSummaryTabbedLabelContainer *)self->_durationLabel setTitleText:v40];
 
-  v41 = [(CHListSummaryTableViewCell *)self workoutStatistics];
-  v42 = [(CHListSummaryTableViewCell *)self formattingManager];
-  v43 = [v41 formattedTotalWorkoutDurationWithFormattingManager:v42];
+  workoutStatistics5 = [(CHListSummaryTableViewCell *)self workoutStatistics];
+  formattingManager4 = [(CHListSummaryTableViewCell *)self formattingManager];
+  v43 = [workoutStatistics5 formattedTotalWorkoutDurationWithFormattingManager:formattingManager4];
   [(_CHWorkoutSummaryTabbedLabelContainer *)self->_durationLabel setTotalText:v43];
 
-  v44 = [(CHListSummaryTableViewCell *)self workoutStatistics];
-  v45 = [(CHListSummaryTableViewCell *)self formattingManager];
-  v46 = [v44 formattedAverageWorkoutDurationWithFormattingManager:v45];
+  workoutStatistics6 = [(CHListSummaryTableViewCell *)self workoutStatistics];
+  formattingManager5 = [(CHListSummaryTableViewCell *)self formattingManager];
+  v46 = [workoutStatistics6 formattedAverageWorkoutDurationWithFormattingManager:formattingManager5];
   [(_CHWorkoutSummaryTabbedLabelContainer *)self->_durationLabel setAverageText:v46];
 
-  v47 = [(CHListSummaryTableViewCell *)self workoutStatistics];
-  v48 = [v47 totalActiveEnergyBurn];
-  v49 = [(FIUIFormattingManager *)self->_formattingManager unitManager];
-  v50 = [v49 userActiveEnergyBurnedUnit];
-  [v48 doubleValueForUnit:v50];
+  workoutStatistics7 = [(CHListSummaryTableViewCell *)self workoutStatistics];
+  totalActiveEnergyBurn = [workoutStatistics7 totalActiveEnergyBurn];
+  unitManager = [(FIUIFormattingManager *)self->_formattingManager unitManager];
+  userActiveEnergyBurnedUnit = [unitManager userActiveEnergyBurnedUnit];
+  [totalActiveEnergyBurn doubleValueForUnit:userActiveEnergyBurnedUnit];
   v52 = v51;
 
   if (v52 <= 2.22044605e-16)
@@ -401,18 +401,18 @@ LABEL_10:
 
   else
   {
-    v53 = [(CHListSummaryTableViewCell *)self formattingManager];
-    v54 = [v53 localizedLongActiveEnergyUnitString];
-    [(_CHWorkoutSummaryTabbedLabelContainer *)self->_activeEnergyLabel setTitleText:v54];
+    formattingManager6 = [(CHListSummaryTableViewCell *)self formattingManager];
+    localizedLongActiveEnergyUnitString = [formattingManager6 localizedLongActiveEnergyUnitString];
+    [(_CHWorkoutSummaryTabbedLabelContainer *)self->_activeEnergyLabel setTitleText:localizedLongActiveEnergyUnitString];
 
-    v55 = [(CHListSummaryTableViewCell *)self workoutStatistics];
-    v56 = [(CHListSummaryTableViewCell *)self formattingManager];
-    v57 = [v55 formattedTotalActiveEnergyBurnWithFormattingManager:v56];
+    workoutStatistics8 = [(CHListSummaryTableViewCell *)self workoutStatistics];
+    formattingManager7 = [(CHListSummaryTableViewCell *)self formattingManager];
+    v57 = [workoutStatistics8 formattedTotalActiveEnergyBurnWithFormattingManager:formattingManager7];
     [(_CHWorkoutSummaryTabbedLabelContainer *)self->_activeEnergyLabel setTotalText:v57];
 
-    v58 = [(CHListSummaryTableViewCell *)self workoutStatistics];
-    v59 = [(CHListSummaryTableViewCell *)self formattingManager];
-    v60 = [v58 formattedAverageActiveEnergyBurnWithFormattingManager:v59];
+    workoutStatistics9 = [(CHListSummaryTableViewCell *)self workoutStatistics];
+    formattingManager8 = [(CHListSummaryTableViewCell *)self formattingManager];
+    v60 = [workoutStatistics9 formattedAverageActiveEnergyBurnWithFormattingManager:formattingManager8];
     [(_CHWorkoutSummaryTabbedLabelContainer *)self->_activeEnergyLabel setAverageText:v60];
   }
 
@@ -436,27 +436,27 @@ LABEL_10:
   [(CHListSummaryTableViewCell *)self setNeedsLayout];
 }
 
-+ (BOOL)mostRecentWorkout:(id)a3 supportsMetric:(unint64_t)a4
++ (BOOL)mostRecentWorkout:(id)workout supportsMetric:(unint64_t)metric
 {
-  v5 = a3;
-  v6 = [v5 fiui_activityType];
-  if ([v6 bridge_isDownhillSnowSport])
+  workoutCopy = workout;
+  fiui_activityType = [workoutCopy fiui_activityType];
+  if ([fiui_activityType bridge_isDownhillSnowSport])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v6 identifier];
-    if (a4 == 8 && v8 == 46)
+    identifier = [fiui_activityType identifier];
+    if (metric == 8 && identifier == 46)
     {
       v7 = 0;
     }
 
     else
     {
-      v9 = [[FIUIWorkoutDefaultMetricsProvider alloc] initWithMetricsVersion:+[FIUIWorkoutDefaultMetricsProvider metricsVersionForWorkout:](FIUIWorkoutDefaultMetricsProvider activityType:"metricsVersionForWorkout:" activityMoveMode:v5) deviceSupportsElevationMetrics:v6 deviceSupportsGroundElevationMetrics:{objc_msgSend(v5, "_activityMoveMode"), 1, 1}];
-      v7 = [v9 isMetricTypeSupported:a4 isMachineWorkout:0 activityType:v6];
+      v9 = [[FIUIWorkoutDefaultMetricsProvider alloc] initWithMetricsVersion:+[FIUIWorkoutDefaultMetricsProvider metricsVersionForWorkout:](FIUIWorkoutDefaultMetricsProvider activityType:"metricsVersionForWorkout:" activityMoveMode:workoutCopy) deviceSupportsElevationMetrics:fiui_activityType deviceSupportsGroundElevationMetrics:{objc_msgSend(workoutCopy, "_activityMoveMode"), 1, 1}];
+      v7 = [v9 isMetricTypeSupported:metric isMachineWorkout:0 activityType:fiui_activityType];
     }
   }
 
@@ -471,17 +471,17 @@ LABEL_10:
   v4 = [v3 localizedStringForKey:@"MINDFULNESS_SESSIONS" value:&stru_1008680E8 table:@"Localizable"];
   [(_CHWorkoutSummaryTabbedLabelContainer *)self->_numberOfWorkoutsLabel setTitleText:v4];
 
-  v5 = [(CHListSummaryTableViewCell *)self mindfulnessSessionsStatistics];
-  v6 = [v5 formattedSessionCount];
-  [(_CHWorkoutSummaryTabbedLabelContainer *)self->_numberOfWorkoutsLabel setTotalText:v6];
+  mindfulnessSessionsStatistics = [(CHListSummaryTableViewCell *)self mindfulnessSessionsStatistics];
+  formattedSessionCount = [mindfulnessSessionsStatistics formattedSessionCount];
+  [(_CHWorkoutSummaryTabbedLabelContainer *)self->_numberOfWorkoutsLabel setTotalText:formattedSessionCount];
 
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"TOTAL_TIME" value:&stru_1008680E8 table:@"Localizable"];
   [(_CHWorkoutSummaryTabbedLabelContainer *)self->_durationLabel setTitleText:v8];
 
-  v11 = [(CHListSummaryTableViewCell *)self mindfulnessSessionsStatistics];
-  v9 = [(CHListSummaryTableViewCell *)self formattingManager];
-  v10 = [v11 formattedTotalDurationWithFormattingManager:v9];
+  mindfulnessSessionsStatistics2 = [(CHListSummaryTableViewCell *)self mindfulnessSessionsStatistics];
+  formattingManager = [(CHListSummaryTableViewCell *)self formattingManager];
+  v10 = [mindfulnessSessionsStatistics2 formattedTotalDurationWithFormattingManager:formattingManager];
   [(_CHWorkoutSummaryTabbedLabelContainer *)self->_durationLabel setTotalText:v10];
 }
 
@@ -515,8 +515,8 @@ LABEL_10:
   else
   {
     [(UILabel *)self->_totalHeaderLabel sizeToFit];
-    v8 = [(UILabel *)self->_totalHeaderLabel font];
-    [v8 _scaledValueForValue:10.0];
+    font = [(UILabel *)self->_totalHeaderLabel font];
+    [font _scaledValueForValue:10.0];
 
     v9 = +[UIScreen mainScreen];
     UIRoundToScreenScale();
@@ -532,8 +532,8 @@ LABEL_10:
 
   [(UILabel *)self->_totalHeaderLabel setFrame:x, y, width, height];
   [(UILabel *)self->_averageHeaderLabel sizeToFit];
-  v11 = [(UILabel *)self->_averageHeaderLabel font];
-  [v11 _scaledValueForValue:10.0];
+  font2 = [(UILabel *)self->_averageHeaderLabel font];
+  [font2 _scaledValueForValue:10.0];
 
   v12 = +[UIScreen mainScreen];
   UIRoundToScreenScale();

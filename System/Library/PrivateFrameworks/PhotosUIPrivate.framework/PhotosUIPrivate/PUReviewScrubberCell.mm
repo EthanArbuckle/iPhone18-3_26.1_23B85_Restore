@@ -1,13 +1,13 @@
 @interface PUReviewScrubberCell
-- (PUReviewScrubberCell)initWithCoder:(id)a3;
-- (PUReviewScrubberCell)initWithFrame:(CGRect)a3;
+- (PUReviewScrubberCell)initWithCoder:(id)coder;
+- (PUReviewScrubberCell)initWithFrame:(CGRect)frame;
 - (void)_commonPUReviewScrubberCellInitialization;
 - (void)_updateFavoriteView;
 - (void)_updateSuggestedView;
 - (void)layoutSubviews;
-- (void)setFavorite:(BOOL)a3 animated:(BOOL)a4;
-- (void)setImage:(id)a3;
-- (void)setSuggested:(BOOL)a3 animated:(BOOL)a4;
+- (void)setFavorite:(BOOL)favorite animated:(BOOL)animated;
+- (void)setImage:(id)image;
+- (void)setSuggested:(BOOL)suggested animated:(BOOL)animated;
 @end
 
 @implementation PUReviewScrubberCell
@@ -43,14 +43,14 @@
   [(UIImageView *)checkmarkImageView setAlpha:v4];
 }
 
-- (void)setSuggested:(BOOL)a3 animated:(BOOL)a4
+- (void)setSuggested:(BOOL)suggested animated:(BOOL)animated
 {
-  if (self->_suggested != a3)
+  if (self->_suggested != suggested)
   {
     aBlock[7] = v4;
     aBlock[8] = v5;
-    v6 = a4;
-    self->_suggested = a3;
+    animatedCopy = animated;
+    self->_suggested = suggested;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __46__PUReviewScrubberCell_setSuggested_animated___block_invoke;
@@ -58,7 +58,7 @@
     aBlock[4] = self;
     v7 = _Block_copy(aBlock);
     v8 = v7;
-    if (v6)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] animateWithDuration:v7 animations:0.25];
     }
@@ -70,14 +70,14 @@
   }
 }
 
-- (void)setFavorite:(BOOL)a3 animated:(BOOL)a4
+- (void)setFavorite:(BOOL)favorite animated:(BOOL)animated
 {
-  if (self->_favorite != a3)
+  if (self->_favorite != favorite)
   {
     aBlock[7] = v4;
     aBlock[8] = v5;
-    v6 = a4;
-    self->_favorite = a3;
+    animatedCopy = animated;
+    self->_favorite = favorite;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __45__PUReviewScrubberCell_setFavorite_animated___block_invoke;
@@ -85,7 +85,7 @@
     aBlock[4] = self;
     v7 = _Block_copy(aBlock);
     v8 = v7;
-    if (v6)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] animateWithDuration:v7 animations:0.25];
     }
@@ -97,15 +97,15 @@
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(PUReviewScrubberCell *)self _updateThumbnailImageView];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
@@ -114,8 +114,8 @@
   v26.receiver = self;
   v26.super_class = PUReviewScrubberCell;
   [(PUReviewScrubberCell *)&v26 layoutSubviews];
-  v3 = [(PUReviewScrubberCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PUReviewScrubberCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -139,22 +139,22 @@
     v18 = 1.0 / v19 + 5.0;
   }
 
-  v20 = [(PUReviewScrubberCell *)self contentView];
-  [v20 frame];
+  contentView2 = [(PUReviewScrubberCell *)self contentView];
+  [contentView2 frame];
   v21 = v18 + CGRectGetMaxY(v27);
 
   [(UIImageView *)self->__suggestedImageView setFrame:v13, v21, v15, v17];
   suggestedImageView = self->__suggestedImageView;
-  v23 = [MEMORY[0x1E69DC888] labelColor];
-  v24 = [v23 colorWithAlphaComponent:0.25];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v24 = [labelColor colorWithAlphaComponent:0.25];
   [(UIImageView *)suggestedImageView setTintColor:v24];
 }
 
-- (PUReviewScrubberCell)initWithCoder:(id)a3
+- (PUReviewScrubberCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PUReviewScrubberCell;
-  v3 = [(PUReviewScrubberCell *)&v7 initWithCoder:a3];
+  v3 = [(PUReviewScrubberCell *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -165,11 +165,11 @@
   return v4;
 }
 
-- (PUReviewScrubberCell)initWithFrame:(CGRect)a3
+- (PUReviewScrubberCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PUReviewScrubberCell;
-  v3 = [(PUReviewScrubberCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUReviewScrubberCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -193,15 +193,15 @@
   v6 = +[PUScrubberSettings sharedInstance];
   [v6 lemonadeItemCornerRadius];
   v8 = v7;
-  v9 = [(UIImageView *)self->__thumbnailImageView layer];
-  [v9 setCornerRadius:v8];
+  layer = [(UIImageView *)self->__thumbnailImageView layer];
+  [layer setCornerRadius:v8];
 
   v10 = *MEMORY[0x1E69796E8];
-  v11 = [(UIImageView *)self->__thumbnailImageView layer];
-  [v11 setCornerCurve:v10];
+  layer2 = [(UIImageView *)self->__thumbnailImageView layer];
+  [layer2 setCornerCurve:v10];
 
-  v12 = [(PUReviewScrubberCell *)self contentView];
-  [v12 addSubview:self->__thumbnailImageView];
+  contentView = [(PUReviewScrubberCell *)self contentView];
+  [contentView addSubview:self->__thumbnailImageView];
 
   v13 = objc_alloc(MEMORY[0x1E69DCAE0]);
   v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark"];
@@ -209,8 +209,8 @@
   checkmarkImageView = self->__checkmarkImageView;
   self->__checkmarkImageView = v15;
 
-  v17 = [(PUReviewScrubberCell *)self contentView];
-  [v17 addSubview:self->__checkmarkImageView];
+  contentView2 = [(PUReviewScrubberCell *)self contentView];
+  [contentView2 addSubview:self->__checkmarkImageView];
 
   v18 = objc_alloc(MEMORY[0x1E69DCAE0]);
   v19 = [MEMORY[0x1E69DCAB8] pu_PhotosUIImageNamed:@"AvalancheReviewSuggestedDot.png"];
@@ -219,8 +219,8 @@
   suggestedImageView = self->__suggestedImageView;
   self->__suggestedImageView = v21;
 
-  v23 = [(PUReviewScrubberCell *)self contentView];
-  [v23 addSubview:self->__suggestedImageView];
+  contentView3 = [(PUReviewScrubberCell *)self contentView];
+  [contentView3 addSubview:self->__suggestedImageView];
 
   self->_favorite = 0;
   self->_suggested = 0;

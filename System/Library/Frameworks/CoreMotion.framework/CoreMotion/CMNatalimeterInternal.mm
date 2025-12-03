@@ -1,9 +1,9 @@
 @interface CMNatalimeterInternal
 - (CMNatalimeterInternal)init;
-- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)a3 withHandler:(id)a4;
-- (void)_queryAbsoluteNatalimetryDataSinceDataRecord:(id)a3 withHandler:(id)a4;
-- (void)_queryAbsoluteNatalimetryDataSinceRecord:(int64_t)a3 withHandler:(id)a4;
-- (void)_startAbsoluteNatalimetryDataUpdatesWithHandler:(id)a3;
+- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)response withHandler:(id)handler;
+- (void)_queryAbsoluteNatalimetryDataSinceDataRecord:(id)record withHandler:(id)handler;
+- (void)_queryAbsoluteNatalimetryDataSinceRecord:(int64_t)record withHandler:(id)handler;
+- (void)_startAbsoluteNatalimetryDataUpdatesWithHandler:(id)handler;
 - (void)_stopAbsoluteNatalimetryDataUpdates;
 - (void)_teardown;
 - (void)dealloc;
@@ -52,36 +52,36 @@
   self->fLocationdConnection = 0;
 }
 
-- (void)_queryAbsoluteNatalimetryDataSinceRecord:(int64_t)a3 withHandler:(id)a4
+- (void)_queryAbsoluteNatalimetryDataSinceRecord:(int64_t)record withHandler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_19B683120;
   block[3] = &unk_1E7534030;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = handler;
+  block[6] = record;
   block[4] = self;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)_queryAbsoluteNatalimetryDataSinceDataRecord:(id)a3 withHandler:(id)a4
+- (void)_queryAbsoluteNatalimetryDataSinceDataRecord:(id)record withHandler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_19B683378;
   block[3] = &unk_1E7532C08;
-  block[4] = a3;
+  block[4] = record;
   block[5] = self;
-  block[6] = a4;
+  block[6] = handler;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)a3 withHandler:(id)a4
+- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)response withHandler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = response.var1;
+  var0 = response.var0;
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = objc_opt_class();
@@ -138,7 +138,7 @@
   dispatch_async(MEMORY[0x1E69E96A0], v19);
 }
 
-- (void)_startAbsoluteNatalimetryDataUpdatesWithHandler:(id)a3
+- (void)_startAbsoluteNatalimetryDataUpdatesWithHandler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -146,7 +146,7 @@
   v4[2] = sub_19B683E20;
   v4[3] = &unk_1E7532B68;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_async(fInternalQueue, v4);
 }
 

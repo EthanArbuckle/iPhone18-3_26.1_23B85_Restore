@@ -2,77 +2,77 @@
 - (NSAttributedString)temperature;
 - (NSAttributedString)time;
 - (UIImage)conditionsImage;
-- (WATodayHourlyForecastView)initWithFrame:(CGRect)a3;
+- (WATodayHourlyForecastView)initWithFrame:(CGRect)frame;
 - (void)_setupConstraints;
-- (void)applyVibrancyToTimeWithEffect:(id)a3;
-- (void)setConditionsImage:(id)a3;
-- (void)setTemperature:(id)a3;
-- (void)setTime:(id)a3;
+- (void)applyVibrancyToTimeWithEffect:(id)effect;
+- (void)setConditionsImage:(id)image;
+- (void)setTemperature:(id)temperature;
+- (void)setTime:(id)time;
 @end
 
 @implementation WATodayHourlyForecastView
 
-- (WATodayHourlyForecastView)initWithFrame:(CGRect)a3
+- (WATodayHourlyForecastView)initWithFrame:(CGRect)frame
 {
   v39 = *MEMORY[0x277D85DE8];
   v36.receiver = self;
   v36.super_class = WATodayHourlyForecastView;
-  v3 = [(WATodayHourlyForecastView *)&v36 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WATodayHourlyForecastView *)&v36 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
     [(WATodayHourlyForecastView *)v3 setTemperatureLabel:v4];
 
-    v5 = [(WATodayHourlyForecastView *)v3 temperatureLabel];
-    [v5 setAdjustsFontForContentSizeCategory:1];
+    temperatureLabel = [(WATodayHourlyForecastView *)v3 temperatureLabel];
+    [temperatureLabel setAdjustsFontForContentSizeCategory:1];
 
-    v6 = [(WATodayHourlyForecastView *)v3 temperatureLabel];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    temperatureLabel2 = [(WATodayHourlyForecastView *)v3 temperatureLabel];
+    [temperatureLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v7 = objc_alloc_init(MEMORY[0x277D75D68]);
     [(WATodayHourlyForecastView *)v3 setTemperatureLabelVisualEffectView:v7];
 
-    v8 = [(WATodayHourlyForecastView *)v3 temperatureLabelVisualEffectView];
-    v9 = [v8 contentView];
-    v10 = [(WATodayHourlyForecastView *)v3 temperatureLabel];
-    [v9 addSubview:v10];
+    temperatureLabelVisualEffectView = [(WATodayHourlyForecastView *)v3 temperatureLabelVisualEffectView];
+    contentView = [temperatureLabelVisualEffectView contentView];
+    temperatureLabel3 = [(WATodayHourlyForecastView *)v3 temperatureLabel];
+    [contentView addSubview:temperatureLabel3];
 
     v11 = objc_opt_new();
     [(WATodayHourlyForecastView *)v3 setTimeLabel:v11];
 
-    v12 = [(WATodayHourlyForecastView *)v3 timeLabel];
-    [v12 setAdjustsFontForContentSizeCategory:1];
+    timeLabel = [(WATodayHourlyForecastView *)v3 timeLabel];
+    [timeLabel setAdjustsFontForContentSizeCategory:1];
 
-    v13 = [(WATodayHourlyForecastView *)v3 timeLabel];
-    [v13 setAdjustsFontSizeToFitWidth:1];
+    timeLabel2 = [(WATodayHourlyForecastView *)v3 timeLabel];
+    [timeLabel2 setAdjustsFontSizeToFitWidth:1];
 
-    v14 = [(WATodayHourlyForecastView *)v3 timeLabel];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+    timeLabel3 = [(WATodayHourlyForecastView *)v3 timeLabel];
+    [timeLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v15 = objc_alloc_init(MEMORY[0x277D75D68]);
     [(WATodayHourlyForecastView *)v3 setTimeLabelVisualEffectView:v15];
 
-    v16 = [(WATodayHourlyForecastView *)v3 timeLabelVisualEffectView];
-    v17 = [v16 contentView];
-    v18 = [(WATodayHourlyForecastView *)v3 timeLabel];
-    [v17 addSubview:v18];
+    timeLabelVisualEffectView = [(WATodayHourlyForecastView *)v3 timeLabelVisualEffectView];
+    contentView2 = [timeLabelVisualEffectView contentView];
+    timeLabel4 = [(WATodayHourlyForecastView *)v3 timeLabel];
+    [contentView2 addSubview:timeLabel4];
 
     v19 = objc_opt_new();
     [(WATodayHourlyForecastView *)v3 setConditionsImageView:v19];
 
-    v20 = [(WATodayHourlyForecastView *)v3 conditionsImageView];
-    [v20 setContentMode:2];
+    conditionsImageView = [(WATodayHourlyForecastView *)v3 conditionsImageView];
+    [conditionsImageView setContentMode:2];
 
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v21 = [(WATodayHourlyForecastView *)v3 temperatureLabelVisualEffectView];
-    v37[0] = v21;
-    v22 = [(WATodayHourlyForecastView *)v3 timeLabelVisualEffectView];
-    v37[1] = v22;
-    v23 = [(WATodayHourlyForecastView *)v3 conditionsImageView];
-    v37[2] = v23;
+    temperatureLabelVisualEffectView2 = [(WATodayHourlyForecastView *)v3 temperatureLabelVisualEffectView];
+    v37[0] = temperatureLabelVisualEffectView2;
+    timeLabelVisualEffectView2 = [(WATodayHourlyForecastView *)v3 timeLabelVisualEffectView];
+    v37[1] = timeLabelVisualEffectView2;
+    conditionsImageView2 = [(WATodayHourlyForecastView *)v3 conditionsImageView];
+    v37[2] = conditionsImageView2;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:3];
 
     v25 = [v24 countByEnumeratingWithState:&v32 objects:v38 count:16];
@@ -107,92 +107,92 @@
   return v3;
 }
 
-- (void)setTemperature:(id)a3
+- (void)setTemperature:(id)temperature
 {
-  v8 = a3;
-  v4 = [(WATodayHourlyForecastView *)self temperatureLabel];
-  v5 = [v4 attributedText];
-  v6 = [v5 isEqualToAttributedString:v8];
+  temperatureCopy = temperature;
+  temperatureLabel = [(WATodayHourlyForecastView *)self temperatureLabel];
+  attributedText = [temperatureLabel attributedText];
+  v6 = [attributedText isEqualToAttributedString:temperatureCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(WATodayHourlyForecastView *)self temperatureLabel];
-    [v7 setAttributedText:v8];
+    temperatureLabel2 = [(WATodayHourlyForecastView *)self temperatureLabel];
+    [temperatureLabel2 setAttributedText:temperatureCopy];
   }
 }
 
 - (NSAttributedString)temperature
 {
-  v2 = [(WATodayHourlyForecastView *)self temperatureLabel];
-  v3 = [v2 attributedText];
+  temperatureLabel = [(WATodayHourlyForecastView *)self temperatureLabel];
+  attributedText = [temperatureLabel attributedText];
 
-  return v3;
+  return attributedText;
 }
 
-- (void)setTime:(id)a3
+- (void)setTime:(id)time
 {
-  v8 = a3;
-  v4 = [(WATodayHourlyForecastView *)self timeLabel];
-  v5 = [v4 attributedText];
-  v6 = [v5 isEqualToAttributedString:v8];
+  timeCopy = time;
+  timeLabel = [(WATodayHourlyForecastView *)self timeLabel];
+  attributedText = [timeLabel attributedText];
+  v6 = [attributedText isEqualToAttributedString:timeCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(WATodayHourlyForecastView *)self timeLabel];
-    [v7 setAttributedText:v8];
+    timeLabel2 = [(WATodayHourlyForecastView *)self timeLabel];
+    [timeLabel2 setAttributedText:timeCopy];
   }
 }
 
 - (NSAttributedString)time
 {
-  v2 = [(WATodayHourlyForecastView *)self timeLabel];
-  v3 = [v2 attributedText];
+  timeLabel = [(WATodayHourlyForecastView *)self timeLabel];
+  attributedText = [timeLabel attributedText];
 
-  return v3;
+  return attributedText;
 }
 
-- (void)setConditionsImage:(id)a3
+- (void)setConditionsImage:(id)image
 {
-  v8 = a3;
-  v4 = [(WATodayHourlyForecastView *)self conditionsImageView];
-  v5 = [v4 image];
-  v6 = [v5 isEqual:v8];
+  imageCopy = image;
+  conditionsImageView = [(WATodayHourlyForecastView *)self conditionsImageView];
+  image = [conditionsImageView image];
+  v6 = [image isEqual:imageCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(WATodayHourlyForecastView *)self conditionsImageView];
-    [v7 setImage:v8];
+    conditionsImageView2 = [(WATodayHourlyForecastView *)self conditionsImageView];
+    [conditionsImageView2 setImage:imageCopy];
   }
 }
 
 - (UIImage)conditionsImage
 {
-  v2 = [(WATodayHourlyForecastView *)self conditionsImageView];
-  v3 = [v2 image];
+  conditionsImageView = [(WATodayHourlyForecastView *)self conditionsImageView];
+  image = [conditionsImageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)applyVibrancyToTimeWithEffect:(id)a3
+- (void)applyVibrancyToTimeWithEffect:(id)effect
 {
-  v4 = a3;
-  v5 = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
-  [v5 setEffect:v4];
+  effectCopy = effect;
+  timeLabelVisualEffectView = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
+  [timeLabelVisualEffectView setEffect:effectCopy];
 
-  v6 = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
-  [v6 setEffect:v4];
+  temperatureLabelVisualEffectView = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
+  [temperatureLabelVisualEffectView setEffect:effectCopy];
 }
 
 - (void)_setupConstraints
 {
   v96 = *MEMORY[0x277D85DE8];
-  v3 = [(WATodayHourlyForecastView *)self constraints];
+  constraints = [(WATodayHourlyForecastView *)self constraints];
 
-  if (v3)
+  if (constraints)
   {
     v4 = MEMORY[0x277CCAAD0];
-    v5 = [(WATodayHourlyForecastView *)self constraints];
-    [v4 deactivateConstraints:v5];
+    constraints2 = [(WATodayHourlyForecastView *)self constraints];
+    [v4 deactivateConstraints:constraints2];
 
     [(WATodayHourlyForecastView *)self setConstraints:0];
   }
@@ -201,104 +201,104 @@
   v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
   v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:v6];
   v9 = objc_opt_new();
-  v10 = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
-  v11 = [v10 lastBaselineAnchor];
-  v12 = [(WATodayHourlyForecastView *)self topAnchor];
+  timeLabelVisualEffectView = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
+  lastBaselineAnchor = [timeLabelVisualEffectView lastBaselineAnchor];
+  topAnchor = [(WATodayHourlyForecastView *)self topAnchor];
   [v7 _scaledValueForValue:28.0];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:?];
+  v13 = [lastBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   [v9 addObject:v13];
 
-  v14 = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
-  v15 = [v14 lastBaselineAnchor];
-  v16 = [(WATodayHourlyForecastView *)self conditionsImageView];
-  v17 = [v16 topAnchor];
+  timeLabelVisualEffectView2 = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
+  lastBaselineAnchor2 = [timeLabelVisualEffectView2 lastBaselineAnchor];
+  conditionsImageView = [(WATodayHourlyForecastView *)self conditionsImageView];
+  topAnchor2 = [conditionsImageView topAnchor];
   v90 = v7;
   [v7 _scaledValueForValue:12.0];
-  v19 = [v15 constraintEqualToAnchor:v17 constant:-v18];
+  v19 = [lastBaselineAnchor2 constraintEqualToAnchor:topAnchor2 constant:-v18];
   [v9 addObject:v19];
 
-  v20 = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
-  v21 = [v20 lastBaselineAnchor];
-  v22 = [(WATodayHourlyForecastView *)self conditionsImageView];
-  v23 = [v22 bottomAnchor];
+  temperatureLabelVisualEffectView = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
+  lastBaselineAnchor3 = [temperatureLabelVisualEffectView lastBaselineAnchor];
+  conditionsImageView2 = [(WATodayHourlyForecastView *)self conditionsImageView];
+  bottomAnchor = [conditionsImageView2 bottomAnchor];
   [v8 _scaledValueForValue:22.0];
-  v24 = [v21 constraintEqualToAnchor:v23 constant:?];
+  v24 = [lastBaselineAnchor3 constraintEqualToAnchor:bottomAnchor constant:?];
   [v9 addObject:v24];
 
-  v25 = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
-  v26 = [v25 lastBaselineAnchor];
-  v27 = [(WATodayHourlyForecastView *)self bottomAnchor];
+  temperatureLabelVisualEffectView2 = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
+  lastBaselineAnchor4 = [temperatureLabelVisualEffectView2 lastBaselineAnchor];
+  bottomAnchor2 = [(WATodayHourlyForecastView *)self bottomAnchor];
   v89 = v8;
   [v8 _scaledValueForValue:17.0];
-  v29 = [v26 constraintEqualToAnchor:v27 constant:-v28];
+  v29 = [lastBaselineAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:-v28];
   [v9 addObject:v29];
 
-  v30 = [(WATodayHourlyForecastView *)self timeLabel];
-  v31 = [v30 leadingAnchor];
-  v32 = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
-  v33 = [v32 leadingAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33];
+  timeLabel = [(WATodayHourlyForecastView *)self timeLabel];
+  leadingAnchor = [timeLabel leadingAnchor];
+  timeLabelVisualEffectView3 = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
+  leadingAnchor2 = [timeLabelVisualEffectView3 leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v9 addObject:v34];
 
-  v35 = [(WATodayHourlyForecastView *)self timeLabel];
-  v36 = [v35 trailingAnchor];
-  v37 = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
-  v38 = [v37 trailingAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38];
+  timeLabel2 = [(WATodayHourlyForecastView *)self timeLabel];
+  trailingAnchor = [timeLabel2 trailingAnchor];
+  timeLabelVisualEffectView4 = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
+  trailingAnchor2 = [timeLabelVisualEffectView4 trailingAnchor];
+  v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v9 addObject:v39];
 
-  v40 = [(WATodayHourlyForecastView *)self timeLabel];
-  v41 = [v40 topAnchor];
-  v42 = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
-  v43 = [v42 topAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
+  timeLabel3 = [(WATodayHourlyForecastView *)self timeLabel];
+  topAnchor3 = [timeLabel3 topAnchor];
+  timeLabelVisualEffectView5 = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
+  topAnchor4 = [timeLabelVisualEffectView5 topAnchor];
+  v44 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v9 addObject:v44];
 
-  v45 = [(WATodayHourlyForecastView *)self timeLabel];
-  v46 = [v45 bottomAnchor];
-  v47 = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
-  v48 = [v47 bottomAnchor];
-  v49 = [v46 constraintEqualToAnchor:v48];
+  timeLabel4 = [(WATodayHourlyForecastView *)self timeLabel];
+  bottomAnchor3 = [timeLabel4 bottomAnchor];
+  timeLabelVisualEffectView6 = [(WATodayHourlyForecastView *)self timeLabelVisualEffectView];
+  bottomAnchor4 = [timeLabelVisualEffectView6 bottomAnchor];
+  v49 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v9 addObject:v49];
 
-  v50 = [(WATodayHourlyForecastView *)self temperatureLabel];
-  v51 = [v50 leadingAnchor];
-  v52 = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
-  v53 = [v52 contentView];
-  v54 = [v53 leadingAnchor];
-  v55 = [v51 constraintEqualToAnchor:v54];
+  temperatureLabel = [(WATodayHourlyForecastView *)self temperatureLabel];
+  leadingAnchor3 = [temperatureLabel leadingAnchor];
+  temperatureLabelVisualEffectView3 = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
+  contentView = [temperatureLabelVisualEffectView3 contentView];
+  leadingAnchor4 = [contentView leadingAnchor];
+  v55 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v9 addObject:v55];
 
-  v56 = [(WATodayHourlyForecastView *)self temperatureLabel];
-  v57 = [v56 trailingAnchor];
-  v58 = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
-  v59 = [v58 contentView];
-  v60 = [v59 trailingAnchor];
-  v61 = [v57 constraintEqualToAnchor:v60];
+  temperatureLabel2 = [(WATodayHourlyForecastView *)self temperatureLabel];
+  trailingAnchor3 = [temperatureLabel2 trailingAnchor];
+  temperatureLabelVisualEffectView4 = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
+  contentView2 = [temperatureLabelVisualEffectView4 contentView];
+  trailingAnchor4 = [contentView2 trailingAnchor];
+  v61 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v9 addObject:v61];
 
-  v62 = [(WATodayHourlyForecastView *)self temperatureLabel];
-  v63 = [v62 topAnchor];
-  v64 = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
-  v65 = [v64 contentView];
-  v66 = [v65 topAnchor];
-  v67 = [v63 constraintEqualToAnchor:v66];
+  temperatureLabel3 = [(WATodayHourlyForecastView *)self temperatureLabel];
+  topAnchor5 = [temperatureLabel3 topAnchor];
+  temperatureLabelVisualEffectView5 = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
+  contentView3 = [temperatureLabelVisualEffectView5 contentView];
+  topAnchor6 = [contentView3 topAnchor];
+  v67 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   [v9 addObject:v67];
 
-  v68 = [(WATodayHourlyForecastView *)self temperatureLabel];
-  v69 = [v68 bottomAnchor];
-  v70 = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
-  v71 = [v70 contentView];
-  v72 = [v71 bottomAnchor];
-  v73 = [v69 constraintEqualToAnchor:v72];
+  temperatureLabel4 = [(WATodayHourlyForecastView *)self temperatureLabel];
+  bottomAnchor5 = [temperatureLabel4 bottomAnchor];
+  temperatureLabelVisualEffectView6 = [(WATodayHourlyForecastView *)self temperatureLabelVisualEffectView];
+  contentView4 = [temperatureLabelVisualEffectView6 contentView];
+  bottomAnchor6 = [contentView4 bottomAnchor];
+  v73 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   [v9 addObject:v73];
 
   v93 = 0u;
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v74 = [(WATodayHourlyForecastView *)self subviews];
-  v75 = [v74 countByEnumeratingWithState:&v91 objects:v95 count:16];
+  subviews = [(WATodayHourlyForecastView *)self subviews];
+  v75 = [subviews countByEnumeratingWithState:&v91 objects:v95 count:16];
   if (v75)
   {
     v76 = v75;
@@ -309,22 +309,22 @@
       {
         if (*v92 != v77)
         {
-          objc_enumerationMutation(v74);
+          objc_enumerationMutation(subviews);
         }
 
         v79 = *(*(&v91 + 1) + 8 * i);
-        v80 = [v79 centerXAnchor];
-        v81 = [(WATodayHourlyForecastView *)self centerXAnchor];
-        v82 = [v80 constraintEqualToAnchor:v81];
+        centerXAnchor = [v79 centerXAnchor];
+        centerXAnchor2 = [(WATodayHourlyForecastView *)self centerXAnchor];
+        v82 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         [v9 addObject:v82];
 
-        v83 = [(WATodayHourlyForecastView *)self widthAnchor];
-        v84 = [v79 widthAnchor];
-        v85 = [v83 constraintGreaterThanOrEqualToAnchor:v84 multiplier:1.0];
+        widthAnchor = [(WATodayHourlyForecastView *)self widthAnchor];
+        widthAnchor2 = [v79 widthAnchor];
+        v85 = [widthAnchor constraintGreaterThanOrEqualToAnchor:widthAnchor2 multiplier:1.0];
         [v9 addObject:v85];
       }
 
-      v76 = [v74 countByEnumeratingWithState:&v91 objects:v95 count:16];
+      v76 = [subviews countByEnumeratingWithState:&v91 objects:v95 count:16];
     }
 
     while (v76);
@@ -332,8 +332,8 @@
 
   [(WATodayHourlyForecastView *)self setConstraints:v9];
   v86 = MEMORY[0x277CCAAD0];
-  v87 = [(WATodayHourlyForecastView *)self constraints];
-  [v86 activateConstraints:v87];
+  constraints3 = [(WATodayHourlyForecastView *)self constraints];
+  [v86 activateConstraints:constraints3];
 
   v88 = *MEMORY[0x277D85DE8];
 }

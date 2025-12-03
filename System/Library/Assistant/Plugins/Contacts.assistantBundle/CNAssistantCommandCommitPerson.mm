@@ -2,7 +2,7 @@
 - (CNContactStore)contactStore;
 - (id)commitFromUpdatesCache;
 - (id)validate;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation CNAssistantCommandCommitPerson
@@ -22,9 +22,9 @@
   return contactStore;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7 = objc_msgSend_validate(self, v5, v6);
   if (!v7)
   {
@@ -33,7 +33,7 @@
 
   v11 = v7;
   v10 = objc_msgSend_dictionary(v7, v8, v9);
-  v4[2](v4, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
 - (id)validate

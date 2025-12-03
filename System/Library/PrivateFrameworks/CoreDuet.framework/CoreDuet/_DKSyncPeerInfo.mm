@@ -8,13 +8,13 @@
 
 - (void)transportsString
 {
-  if (a1)
+  if (self)
   {
-    a1 = [_DKSyncPeerStatusTracker stringForTransports:a1[3]];
+    self = [_DKSyncPeerStatusTracker stringForTransports:self[3]];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)description
@@ -23,8 +23,8 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   peer = self->_peer;
-  v7 = [(_DKSyncPeerInfo *)self transportsString];
-  v8 = [v3 stringWithFormat:@"<%@ %p: peer=%@, transports=%@>", v5, self, peer, v7];
+  transportsString = [(_DKSyncPeerInfo *)self transportsString];
+  v8 = [v3 stringWithFormat:@"<%@ %p: peer=%@, transports=%@>", v5, self, peer, transportsString];
 
   return v8;
 }
@@ -35,8 +35,8 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [(_DKSyncPeer *)self->_peer debugDescription];
-  v7 = [(_DKSyncPeerInfo *)self transportsString];
-  v8 = [v3 stringWithFormat:@"<%@ %p: peer=%@, transports=%@>", v5, self, v6, v7];
+  transportsString = [(_DKSyncPeerInfo *)self transportsString];
+  v8 = [v3 stringWithFormat:@"<%@ %p: peer=%@, transports=%@>", v5, self, v6, transportsString];
 
   return v8;
 }

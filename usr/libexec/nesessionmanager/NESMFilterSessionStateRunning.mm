@@ -1,7 +1,7 @@
 @interface NESMFilterSessionStateRunning
 - (BOOL)handleSleep;
 - (NESMFilterSessionStateRunning)init;
-- (void)enterWithSession:(id)a3;
+- (void)enterWithSession:(id)session;
 - (void)handleUpdateConfiguration;
 - (void)handleWakeup;
 @end
@@ -37,15 +37,15 @@
 
   else
   {
-    v17 = [0 configuration];
-    sub_100019EA0(0, v17);
+    configuration = [0 configuration];
+    sub_100019EA0(0, configuration);
 
     v12 = 0;
     v14 = 0;
   }
 
-  v15 = [v14 configuration];
-  sub_100019EA0(v12, v15);
+  configuration2 = [v14 configuration];
+  sub_100019EA0(v12, configuration2);
 
   sub_100068DD4(self, v16);
 }
@@ -116,11 +116,11 @@
   return 1;
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   v10.receiver = self;
   v10.super_class = NESMFilterSessionStateRunning;
-  [(NESMFilterSessionState *)&v10 enterWithSession:a3];
+  [(NESMFilterSessionState *)&v10 enterWithSession:session];
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);
@@ -131,7 +131,7 @@
     Property = 0;
   }
 
-  v7 = [Property server];
+  server = [Property server];
   if (self)
   {
     v8 = objc_getProperty(self, v6, 16, 1);
@@ -142,7 +142,7 @@
     v8 = 0;
   }
 
-  [v7 requestInstallForSession:v8 withParentSession:0 exclusive:1];
+  [server requestInstallForSession:v8 withParentSession:0 exclusive:1];
 
   sub_100068DD4(self, v9);
 }

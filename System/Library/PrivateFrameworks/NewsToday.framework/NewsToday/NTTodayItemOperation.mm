@@ -2,9 +2,9 @@
 - (BOOL)validateOperation;
 - (NTTodayItemOperation)init;
 - (id)_extractFeedItemsFromInputs;
-- (void)_fetchProtoitemsWithCompletion:(id)a3;
-- (void)_saveWithCompletion:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)_fetchProtoitemsWithCompletion:(id)completion;
+- (void)_saveWithCompletion:(id)completion;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)validateOperation;
 @end
@@ -20,23 +20,23 @@
 
 - (BOOL)validateOperation
 {
-  v3 = [(NTTodayItemOperation *)self catchUpOperationResultsBySectionDescriptor];
+  catchUpOperationResultsBySectionDescriptor = [(NTTodayItemOperation *)self catchUpOperationResultsBySectionDescriptor];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!catchUpOperationResultsBySectionDescriptor && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayItemOperation validateOperation];
   }
 
-  v4 = [(NTTodayItemOperation *)self appConfiguration];
+  appConfiguration = [(NTTodayItemOperation *)self appConfiguration];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!appConfiguration && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayItemOperation validateOperation];
   }
 
-  if (v3)
+  if (catchUpOperationResultsBySectionDescriptor)
   {
-    v5 = v4 == 0;
+    v5 = appConfiguration == 0;
   }
 
   else
@@ -45,38 +45,38 @@
   }
 
   v6 = !v5;
-  v7 = [(NTTodayItemOperation *)self contentContext];
+  contentContext = [(NTTodayItemOperation *)self contentContext];
 
-  if (!v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!contentContext && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayItemOperation validateOperation];
   }
 
-  if (!v7)
+  if (!contentContext)
   {
     v6 = 0;
   }
 
-  v8 = [(NTTodayItemOperation *)self feedPersonalizer];
+  feedPersonalizer = [(NTTodayItemOperation *)self feedPersonalizer];
 
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!feedPersonalizer && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayItemOperation validateOperation];
   }
 
-  if (!v8)
+  if (!feedPersonalizer)
   {
     v6 = 0;
   }
 
-  v9 = [(NTTodayItemOperation *)self operationInfo];
+  operationInfo = [(NTTodayItemOperation *)self operationInfo];
 
-  if (!v9 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!operationInfo && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayItemOperation validateOperation];
   }
 
-  if (v9)
+  if (operationInfo)
   {
     v10 = v6;
   }
@@ -86,31 +86,31 @@
     v10 = 0;
   }
 
-  v11 = [(NTTodayItemOperation *)self _extractFeedItemsFromInputs];
-  [(NTTodayItemOperation *)self setFeedItems:v11];
-  if ([v11 count])
+  _extractFeedItemsFromInputs = [(NTTodayItemOperation *)self _extractFeedItemsFromInputs];
+  [(NTTodayItemOperation *)self setFeedItems:_extractFeedItemsFromInputs];
+  if ([_extractFeedItemsFromInputs count])
   {
-    v12 = [(NTTodayItemOperation *)self forYouFetchInfo];
+    forYouFetchInfo = [(NTTodayItemOperation *)self forYouFetchInfo];
 
-    if (!v12 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+    if (!forYouFetchInfo && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [NTTodayItemOperation validateOperation];
     }
 
-    if (!v12)
+    if (!forYouFetchInfo)
     {
       v10 = 0;
     }
   }
 
-  v13 = [(NTTodayItemOperation *)self todayItemCompletion];
+  todayItemCompletion = [(NTTodayItemOperation *)self todayItemCompletion];
 
-  if (!v13 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!todayItemCompletion && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayItemOperation validateOperation];
   }
 
-  if (v13)
+  if (todayItemCompletion)
   {
     v14 = v10;
   }
@@ -316,40 +316,40 @@ id __40__NTTodayItemOperation_performOperation__block_invoke_2_31(void *a1, void
   return v9;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  v9 = [(NTTodayItemOperation *)self todayItemCompletion];
-  v5 = [(NTTodayItemOperation *)self resultTodayItemsBySectionDescriptor];
-  v6 = [(NTTodayItemOperation *)self resultAssetFileURLsByRemoteURL];
-  v7 = [(NTTodayItemOperation *)self resultRecordsHoldToken];
-  v8 = [(NTTodayItemOperation *)self resultAssetsHoldToken];
-  v9[2](v9, v5, v6, v7, v8, v4);
+  errorCopy = error;
+  todayItemCompletion = [(NTTodayItemOperation *)self todayItemCompletion];
+  resultTodayItemsBySectionDescriptor = [(NTTodayItemOperation *)self resultTodayItemsBySectionDescriptor];
+  resultAssetFileURLsByRemoteURL = [(NTTodayItemOperation *)self resultAssetFileURLsByRemoteURL];
+  resultRecordsHoldToken = [(NTTodayItemOperation *)self resultRecordsHoldToken];
+  resultAssetsHoldToken = [(NTTodayItemOperation *)self resultAssetsHoldToken];
+  todayItemCompletion[2](todayItemCompletion, resultTodayItemsBySectionDescriptor, resultAssetFileURLsByRemoteURL, resultRecordsHoldToken, resultAssetsHoldToken, errorCopy);
 }
 
-- (void)_saveWithCompletion:(id)a3
+- (void)_saveWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayItemOperation _saveWithCompletion:];
   }
 
-  v5 = [(NTTodayItemOperation *)self contentContext];
-  v6 = [v5 assetManager];
-  [v6 save];
+  contentContext = [(NTTodayItemOperation *)self contentContext];
+  assetManager = [contentContext assetManager];
+  [assetManager save];
 
-  v7 = [(NTTodayItemOperation *)self contentContext];
-  v8 = [v7 feedDatabase];
+  contentContext2 = [(NTTodayItemOperation *)self contentContext];
+  feedDatabase = [contentContext2 feedDatabase];
 
-  if (v8)
+  if (feedDatabase)
   {
-    [v8 saveWithCompletionHandler:v4];
+    [feedDatabase saveWithCompletionHandler:completionCopy];
   }
 
   else
   {
-    v9 = v4;
+    v9 = completionCopy;
     v9[2]();
   }
 }
@@ -401,47 +401,47 @@ void __51__NTTodayItemOperation__extractFeedItemsFromInputs__block_invoke_3(uint
   }
 }
 
-- (void)_fetchProtoitemsWithCompletion:(id)a3
+- (void)_fetchProtoitemsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayItemOperation _fetchProtoitemsWithCompletion:];
   }
 
-  v5 = [(NTTodayItemOperation *)self forYouFetchInfo];
-  v6 = [(NTTodayItemOperation *)self feedItems];
+  forYouFetchInfo = [(NTTodayItemOperation *)self forYouFetchInfo];
+  feedItems = [(NTTodayItemOperation *)self feedItems];
   v7 = objc_opt_new();
-  v8 = [(NTTodayItemOperation *)self appConfiguration];
-  [v7 setConfiguration:v8];
+  appConfiguration = [(NTTodayItemOperation *)self appConfiguration];
+  [v7 setConfiguration:appConfiguration];
 
-  v9 = [(NTTodayItemOperation *)self contentContext];
-  [v7 setContext:v9];
+  contentContext = [(NTTodayItemOperation *)self contentContext];
+  [v7 setContext:contentContext];
 
-  v10 = [(NTTodayItemOperation *)self feedPersonalizer];
-  [v7 setPersonalizer:v10];
+  feedPersonalizer = [(NTTodayItemOperation *)self feedPersonalizer];
+  [v7 setPersonalizer:feedPersonalizer];
 
-  [v7 setFeedItems:v6];
-  v11 = [v5 feedContextByFeedID];
-  [v7 setFeedContextByFeedID:v11];
+  [v7 setFeedItems:feedItems];
+  feedContextByFeedID = [forYouFetchInfo feedContextByFeedID];
+  [v7 setFeedContextByFeedID:feedContextByFeedID];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __55__NTTodayItemOperation__fetchProtoitemsWithCompletion___block_invoke;
   v22[3] = &unk_279982858;
-  v23 = v5;
-  v12 = v5;
+  v23 = forYouFetchInfo;
+  v12 = forYouFetchInfo;
   [v7 setRapidUpdateRefreshTest:v22];
   [v7 setShouldFilterHeadlinesWithoutSourceChannels:1];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __55__NTTodayItemOperation__fetchProtoitemsWithCompletion___block_invoke_2;
   v18 = &unk_279982960;
-  v19 = v6;
-  v20 = self;
-  v21 = v4;
-  v13 = v4;
-  v14 = v6;
+  v19 = feedItems;
+  selfCopy = self;
+  v21 = completionCopy;
+  v13 = completionCopy;
+  v14 = feedItems;
   [v7 setHeadlinesMapCompletionHandler:&v15];
   [(FCOperation *)self associateChildOperation:v7, v15, v16, v17, v18];
   [v7 start];

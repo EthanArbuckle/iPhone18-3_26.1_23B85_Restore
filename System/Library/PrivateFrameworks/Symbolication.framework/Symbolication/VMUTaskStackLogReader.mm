@@ -1,10 +1,10 @@
 @interface VMUTaskStackLogReader
-- ($61A80719B04F7407D3E47539F1B23CAA)liteMSLPayloadforMallocAddress:(unint64_t)a3 size:(unint64_t)a4;
-- ($61A80719B04F7407D3E47539F1B23CAA)liteMSLPayloadforVMregionAddress:(unint64_t)a3;
+- ($61A80719B04F7407D3E47539F1B23CAA)liteMSLPayloadforMallocAddress:(unint64_t)address size:(unint64_t)size;
+- ($61A80719B04F7407D3E47539F1B23CAA)liteMSLPayloadforVMregionAddress:(unint64_t)address;
 - (VMUTaskMemoryScanner)scanner;
 - (VMUVMRegionTracker)regionTracker;
-- (int)enumerateMSLRecordsAndPayloads:(id)a3;
-- (int64_t)getFramesForStackID:(unint64_t)a3 stackFramesBuffer:(unint64_t *)a4;
+- (int)enumerateMSLRecordsAndPayloads:(id)payloads;
+- (int64_t)getFramesForStackID:(unint64_t)d stackFramesBuffer:(unint64_t *)buffer;
 - (unint64_t)nodesInUniquingTable;
 - (void)dealloc;
 @end
@@ -42,12 +42,12 @@
   return regionTracker;
 }
 
-- ($61A80719B04F7407D3E47539F1B23CAA)liteMSLPayloadforMallocAddress:(unint64_t)a3 size:(unint64_t)a4
+- ($61A80719B04F7407D3E47539F1B23CAA)liteMSLPayloadforMallocAddress:(unint64_t)address size:(unint64_t)size
 {
-  if (a3 && a4)
+  if (address && size)
   {
     v8 = 0;
-    v5 = task_peek(self->super._task, a3, a4, &v8);
+    v5 = task_peek(self->super._task, address, size, &v8);
     if (v5)
     {
       NSLog(&cfstr_Vmutaskstacklo.isa, v5);
@@ -68,11 +68,11 @@
   }
 }
 
-- ($61A80719B04F7407D3E47539F1B23CAA)liteMSLPayloadforVMregionAddress:(unint64_t)a3
+- ($61A80719B04F7407D3E47539F1B23CAA)liteMSLPayloadforVMregionAddress:(unint64_t)address
 {
-  if (a3)
+  if (address)
   {
-    return MEMORY[0x1EEE1AD40](self->super._task, a3);
+    return MEMORY[0x1EEE1AD40](self->super._task, address);
   }
 
   else
@@ -81,17 +81,17 @@
   }
 }
 
-- (int64_t)getFramesForStackID:(unint64_t)a3 stackFramesBuffer:(unint64_t *)a4
+- (int64_t)getFramesForStackID:(unint64_t)d stackFramesBuffer:(unint64_t *)buffer
 {
   task = self->super._task;
   msl_uniquing_table_get_frames_from_task();
   return 0;
 }
 
-- (int)enumerateMSLRecordsAndPayloads:(id)a3
+- (int)enumerateMSLRecordsAndPayloads:(id)payloads
 {
-  v4 = a3;
-  v5 = v4;
+  payloadsCopy = payloads;
+  v5 = payloadsCopy;
   task = self->super._task;
   if (self->super._usesLiteMode)
   {
@@ -139,7 +139,7 @@
 
   else
   {
-    v14 = v4;
+    v14 = payloadsCopy;
     v12 = msl_disk_stack_logs_enumerate_from_task_with_block();
   }
 

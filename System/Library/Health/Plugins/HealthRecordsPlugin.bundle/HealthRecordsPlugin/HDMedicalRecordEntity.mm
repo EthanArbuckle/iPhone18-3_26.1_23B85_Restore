@@ -1,46 +1,46 @@
 @interface HDMedicalRecordEntity
-+ (BOOL)_enumerateEntitiesWithOriginalFHIRResourceROWID:(id)a3 database:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (BOOL)_insertMedicalRecords:(id)a3 accountIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)_insertOrReplaceMedicalRecord:(id)a3 existingRecord:(id)a4 accountIdentifier:(id)a5 profile:(id)a6 didInsert:(BOOL *)a7 didUpdate:(BOOL *)a8 error:(id *)a9;
-+ (Class)medicalRecordEntityForDataTypeCode:(id)a3;
-+ (id)_existingMedicalRecord:(id)a3 originalFHIRResourceRowID:(id)a4 database:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (id)_medicalRecordProvenanceForAccountIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)_medicalRecordsWithPredicate:(id)a3 withoutConceptIndex:(BOOL)a4 excludeSignedClinicalDataRecords:(BOOL)a5 database:(id)a6 profile:(id)a7 error:(id *)a8;
-+ (id)medicalRecordWithSourceBundleIdentifier:(id)a3 FHIRIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)processMedicalRecordsInExtractionResult:(id)a3 accountIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)processMedicalRecordsInExtractionResultItem:(id)a3 accountIdentifier:(id)a4 database:(id)a5 profile:(id)a6 error:(id *)a7;
-- (BOOL)_updateOriginalFHIRResourceROWID:(id)a3 database:(id)a4 error:(id *)a5;
++ (BOOL)_enumerateEntitiesWithOriginalFHIRResourceROWID:(id)d database:(id)database error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)_insertMedicalRecords:(id)records accountIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (BOOL)_insertOrReplaceMedicalRecord:(id)record existingRecord:(id)existingRecord accountIdentifier:(id)identifier profile:(id)profile didInsert:(BOOL *)insert didUpdate:(BOOL *)update error:(id *)error;
++ (Class)medicalRecordEntityForDataTypeCode:(id)code;
++ (id)_existingMedicalRecord:(id)record originalFHIRResourceRowID:(id)d database:(id)database profile:(id)profile error:(id *)error;
++ (id)_medicalRecordProvenanceForAccountIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)_medicalRecordsWithPredicate:(id)predicate withoutConceptIndex:(BOOL)index excludeSignedClinicalDataRecords:(BOOL)records database:(id)database profile:(id)profile error:(id *)error;
++ (id)medicalRecordWithSourceBundleIdentifier:(id)identifier FHIRIdentifier:(id)rIdentifier profile:(id)profile error:(id *)error;
++ (id)processMedicalRecordsInExtractionResult:(id)result accountIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)processMedicalRecordsInExtractionResultItem:(id)item accountIdentifier:(id)identifier database:(id)database profile:(id)profile error:(id *)error;
+- (BOOL)_updateOriginalFHIRResourceROWID:(id)d database:(id)database error:(id *)error;
 @end
 
 @implementation HDMedicalRecordEntity
 
-+ (id)medicalRecordWithSourceBundleIdentifier:(id)a3 FHIRIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)medicalRecordWithSourceBundleIdentifier:(id)identifier FHIRIdentifier:(id)rIdentifier profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  rIdentifierCopy = rIdentifier;
+  profileCopy = profile;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = sub_17E74;
   v30 = sub_17E84;
   v31 = 0;
-  v13 = [v12 database];
+  database = [profileCopy database];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_17E8C;
   v20[3] = &unk_106390;
-  v25 = a1;
-  v14 = v10;
+  selfCopy = self;
+  v14 = identifierCopy;
   v21 = v14;
-  v15 = v12;
+  v15 = profileCopy;
   v22 = v15;
-  v16 = v11;
+  v16 = rIdentifierCopy;
   v23 = v16;
   v24 = &v26;
-  LODWORD(a6) = [a1 performReadTransactionWithHealthDatabase:v13 error:a6 block:v20];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v20];
 
-  if (a6)
+  if (error)
   {
     v17 = v27[5];
   }
@@ -57,21 +57,21 @@
   return v18;
 }
 
-+ (id)processMedicalRecordsInExtractionResult:(id)a3 accountIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)processMedicalRecordsInExtractionResult:(id)result accountIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  resultCopy = result;
+  identifierCopy = identifier;
+  profileCopy = profile;
   _HKInitializeLogging();
   v13 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = NSStringFromClass(a1);
+    v15 = NSStringFromClass(self);
     *buf = 138543618;
     *&buf[4] = v15;
     *&buf[12] = 2114;
-    *&buf[14] = v10;
+    *&buf[14] = resultCopy;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ processing extraction result %{public}@", buf, 0x16u);
   }
 
@@ -79,15 +79,15 @@
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v37 = 0;
-  v16 = [v12 database];
+  database = [profileCopy database];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_18284;
   v30[3] = &unk_106390;
-  v35 = a1;
-  v31 = v10;
-  v32 = v11;
-  v33 = v12;
+  selfCopy = self;
+  v31 = resultCopy;
+  v32 = identifierCopy;
+  v33 = profileCopy;
   v34 = buf;
   v23 = _NSConcreteStackBlock;
   v24 = 3221225472;
@@ -99,7 +99,7 @@
   v28 = v18;
   v19 = v33;
   v29 = v19;
-  v20 = [a1 performWriteTransactionWithHealthDatabase:v16 error:a6 block:v30 inaccessibilityHandler:&v23];
+  v20 = [self performWriteTransactionWithHealthDatabase:database error:error block:v30 inaccessibilityHandler:&v23];
 
   if (v20)
   {
@@ -116,34 +116,34 @@
   return v21;
 }
 
-+ (id)processMedicalRecordsInExtractionResultItem:(id)a3 accountIdentifier:(id)a4 database:(id)a5 profile:(id)a6 error:(id *)a7
++ (id)processMedicalRecordsInExtractionResultItem:(id)item accountIdentifier:(id)identifier database:(id)database profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v57 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v12 originalFHIRResource];
-  v16 = [v15 existingRowID];
+  itemCopy = item;
+  identifierCopy = identifier;
+  databaseCopy = database;
+  profileCopy = profile;
+  originalFHIRResource = [itemCopy originalFHIRResource];
+  existingRowID = [originalFHIRResource existingRowID];
 
-  if (!v16)
+  if (!existingRowID)
   {
-    v38 = [v12 originalFHIRResource];
-    [NSError hk_assignError:a7 code:3 format:@"cannot process extraction result item for a resource that doesn't know its ROWID. Resource: %@", v38];
+    originalFHIRResource2 = [itemCopy originalFHIRResource];
+    [NSError hk_assignError:error code:3 format:@"cannot process extraction result item for a resource that doesn't know its ROWID. Resource: %@", originalFHIRResource2];
 
     v39 = 0;
     goto LABEL_32;
   }
 
-  v17 = [a1 _predicateForRecordsWithOriginalFHIRResourceROWID:v16];
-  v18 = [a1 _medicalRecordsWithPredicate:v17 withoutConceptIndex:1 excludeSignedClinicalDataRecords:0 database:v13 profile:v14 error:a7];
+  v17 = [self _predicateForRecordsWithOriginalFHIRResourceROWID:existingRowID];
+  v18 = [self _medicalRecordsWithPredicate:v17 withoutConceptIndex:1 excludeSignedClinicalDataRecords:0 database:databaseCopy profile:profileCopy error:error];
   if (v18)
   {
-    v53 = a1;
-    v54 = a7;
+    selfCopy = self;
+    errorCopy = error;
     v48 = v17;
-    v49 = v13;
-    v55 = v14;
-    v56 = v16;
+    v49 = databaseCopy;
+    v55 = profileCopy;
+    v56 = existingRowID;
     v47 = v18;
     v19 = [v18 hk_mapToDictionary:&stru_1063F8];
     v20 = [v19 mutableCopy];
@@ -152,8 +152,8 @@
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v50 = v12;
-    obj = [v12 units];
+    v50 = itemCopy;
+    obj = [itemCopy units];
     v21 = [obj countByEnumeratingWithState:&v58 objects:v66 count:16];
     if (v21)
     {
@@ -171,12 +171,12 @@
           }
 
           v26 = *(*(&v58 + 1) + 8 * i);
-          v27 = [v26 medicalRecord];
-          if (v27)
+          medicalRecord = [v26 medicalRecord];
+          if (medicalRecord)
           {
-            v28 = v27;
-            v29 = [v27 metadata];
-            v30 = [v29 mutableCopy];
+            v28 = medicalRecord;
+            metadata = [medicalRecord metadata];
+            v30 = [metadata mutableCopy];
             v31 = v30;
             if (v30)
             {
@@ -192,21 +192,21 @@
 
             [v34 setObject:v56 forKeyedSubscript:v52];
             [v28 _setMetadata:v34];
-            v35 = [v28 FHIRIdentifier];
-            if (!v35)
+            fHIRIdentifier = [v28 FHIRIdentifier];
+            if (!fHIRIdentifier)
             {
-              [NSError hk_assignError:v54 code:3 format:@"nil FHIR identifier on %@", v28];
+              [NSError hk_assignError:errorCopy code:3 format:@"nil FHIR identifier on %@", v28];
 LABEL_29:
 
               v39 = 0;
-              v13 = v49;
-              v12 = v50;
-              v14 = v55;
+              databaseCopy = v49;
+              itemCopy = v50;
+              profileCopy = v55;
               goto LABEL_30;
             }
 
-            v36 = [v20 objectForKeyedSubscript:v35];
-            v37 = [v53 _insertOrReplaceMedicalRecord:v28 existingRecord:v36 accountIdentifier:v57 profile:v55 didInsert:0 didUpdate:0 error:v54];
+            v36 = [v20 objectForKeyedSubscript:fHIRIdentifier];
+            v37 = [selfCopy _insertOrReplaceMedicalRecord:v28 existingRecord:v36 accountIdentifier:identifierCopy profile:v55 didInsert:0 didUpdate:0 error:errorCopy];
 
             if (!v37)
             {
@@ -214,7 +214,7 @@ LABEL_29:
             }
 
             ++v23;
-            [v20 removeObjectForKey:v35];
+            [v20 removeObjectForKey:fHIRIdentifier];
           }
 
           else
@@ -245,21 +245,21 @@ LABEL_29:
       v23 = 0;
     }
 
-    v13 = v49;
-    v12 = v50;
-    v14 = v55;
+    databaseCopy = v49;
+    itemCopy = v50;
+    profileCopy = v55;
     if ([v20 count])
     {
-      v40 = [v55 dataManager];
-      v41 = [v20 allValues];
-      v42 = [v40 deleteDataObjects:v41 restrictedSourceEntities:0 failIfNotFound:1 recursiveDeleteAuthorizationBlock:0 error:v54];
+      dataManager = [v55 dataManager];
+      allValues = [v20 allValues];
+      v42 = [dataManager deleteDataObjects:allValues restrictedSourceEntities:0 failIfNotFound:1 recursiveDeleteAuthorizationBlock:0 error:errorCopy];
 
       v39 = 0;
       if (!v42)
       {
 LABEL_30:
 
-        v16 = v56;
+        existingRowID = v56;
         v18 = v47;
         v17 = v48;
         goto LABEL_31;
@@ -272,7 +272,7 @@ LABEL_30:
         v44 = v43;
         v45 = [v20 count];
         *buf = 138543618;
-        v63 = v53;
+        v63 = selfCopy;
         v64 = 2048;
         v65 = v45;
         _os_log_impl(&dword_0, v44, OS_LOG_TYPE_INFO, "%{public}@ deleted %lu obsolete medical records", buf, 0x16u);
@@ -291,23 +291,23 @@ LABEL_32:
   return v39;
 }
 
-+ (BOOL)_insertOrReplaceMedicalRecord:(id)a3 existingRecord:(id)a4 accountIdentifier:(id)a5 profile:(id)a6 didInsert:(BOOL *)a7 didUpdate:(BOOL *)a8 error:(id *)a9
++ (BOOL)_insertOrReplaceMedicalRecord:(id)record existingRecord:(id)existingRecord accountIdentifier:(id)identifier profile:(id)profile didInsert:(BOOL *)insert didUpdate:(BOOL *)update error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = v15 != 0;
-  v53 = v15 != 0;
-  if (v15)
+  recordCopy = record;
+  existingRecordCopy = existingRecord;
+  identifierCopy = identifier;
+  profileCopy = profile;
+  v18 = existingRecordCopy != 0;
+  v53 = existingRecordCopy != 0;
+  if (existingRecordCopy)
   {
-    v19 = [v14 enteredInError];
-    if (v19)
+    enteredInError = [recordCopy enteredInError];
+    if (enteredInError)
     {
-      v51 = a7;
-      v20 = [v15 UUID];
+      insertCopy2 = insert;
+      uUID = [existingRecordCopy UUID];
       v63 = 0;
-      v21 = [HDMedicalDownloadableAttachmentEntity _deleteAttachmentsWithMedicalRecordIdentifier:v20 profile:v17 error:&v63];
+      v21 = [HDMedicalDownloadableAttachmentEntity _deleteAttachmentsWithMedicalRecordIdentifier:uUID profile:profileCopy error:&v63];
       v22 = v63;
 
       if ((v21 & 1) == 0)
@@ -324,16 +324,16 @@ LABEL_32:
 
     else
     {
-      if ([v15 isEquivalent:v14])
+      if ([existingRecordCopy isEquivalent:recordCopy])
       {
-        v23 = [v14 extractionVersion];
-        if (v23 <= [v15 extractionVersion])
+        extractionVersion = [recordCopy extractionVersion];
+        if (extractionVersion <= [existingRecordCopy extractionVersion])
         {
-          [v14 enteredInError];
+          [recordCopy enteredInError];
           v29 = 0;
           v18 = 0;
           obj = 0;
-          if (!a7)
+          if (!insert)
           {
             goto LABEL_33;
           }
@@ -343,10 +343,10 @@ LABEL_32:
       }
 
       v62 = 0;
-      v24 = [HDMedicalDownloadableAttachmentEntity _attachmentsAfterRelinkingFromMedicalRecord:v15 toMedicalRecord:v14 profile:v17 error:&v62];
+      v24 = [HDMedicalDownloadableAttachmentEntity _attachmentsAfterRelinkingFromMedicalRecord:existingRecordCopy toMedicalRecord:recordCopy profile:profileCopy error:&v62];
       v22 = v62;
       obj = v24;
-      v51 = a7;
+      insertCopy2 = insert;
       if (!v24)
       {
         _HKInitializeLogging();
@@ -357,44 +357,44 @@ LABEL_32:
       }
     }
 
-    v25 = [v17 dataManager];
-    v70 = v15;
+    dataManager = [profileCopy dataManager];
+    v70 = existingRecordCopy;
     v26 = [NSArray arrayWithObjects:&v70 count:1];
-    v27 = [v25 deleteDataObjects:v26 restrictedSourceEntities:0 failIfNotFound:1 recursiveDeleteAuthorizationBlock:0 error:a9];
+    v27 = [dataManager deleteDataObjects:v26 restrictedSourceEntities:0 failIfNotFound:1 recursiveDeleteAuthorizationBlock:0 error:error];
 
     if (!v27)
     {
       goto LABEL_36;
     }
 
-    a7 = v51;
-    v18 = v15 != 0;
+    insert = insertCopy2;
+    v18 = existingRecordCopy != 0;
   }
 
   else
   {
     obj = 0;
-    v19 = 0;
+    enteredInError = 0;
   }
 
-  v28 = [v14 enteredInError];
+  enteredInError2 = [recordCopy enteredInError];
   v29 = 0;
-  if (v19 & 1) != 0 || (v28)
+  if (enteredInError & 1) != 0 || (enteredInError2)
   {
     goto LABEL_31;
   }
 
-  v30 = [v14 metadata];
-  v31 = [v30 objectForKeyedSubscript:_HKPrivateMetadataKeyOriginalFHIRResourceROWID];
+  metadata = [recordCopy metadata];
+  v31 = [metadata objectForKeyedSubscript:_HKPrivateMetadataKeyOriginalFHIRResourceROWID];
 
   if (!v31)
   {
-    sub_9DC80(a2, a1);
+    sub_9DC80(a2, self);
   }
 
-  v69 = v14;
+  v69 = recordCopy;
   v32 = [NSArray arrayWithObjects:&v69 count:1];
-  v33 = [a1 _insertMedicalRecords:v32 accountIdentifier:v16 profile:v17 error:a9];
+  v33 = [self _insertMedicalRecords:v32 accountIdentifier:identifierCopy profile:profileCopy error:error];
 
   if (!v33)
   {
@@ -403,12 +403,12 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v50 = v15;
-  v52 = a7;
-  v48 = a8;
-  v49 = v16;
-  v47 = v17;
-  v34 = [v17 attachmentManager];
+  v50 = existingRecordCopy;
+  insertCopy3 = insert;
+  updateCopy = update;
+  v49 = identifierCopy;
+  v47 = profileCopy;
+  attachmentManager = [profileCopy attachmentManager];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
@@ -428,11 +428,11 @@ LABEL_36:
           objc_enumerationMutation(obj);
         }
 
-        v39 = [*(*(&v58 + 1) + 8 * i) hkAttachment];
-        v40 = [v14 attachmentObjectIdentifier];
-        v41 = [v14 attachmentSchemaIdentifier];
+        hkAttachment = [*(*(&v58 + 1) + 8 * i) hkAttachment];
+        attachmentObjectIdentifier = [recordCopy attachmentObjectIdentifier];
+        attachmentSchemaIdentifier = [recordCopy attachmentSchemaIdentifier];
         v57 = 0;
-        v42 = [v34 addReferenceWithAttachment:v39 toObjectWithIdentifier:v40 schemaIdentifier:v41 metadata:0 error:&v57];
+        v42 = [attachmentManager addReferenceWithAttachment:hkAttachment toObjectWithIdentifier:attachmentObjectIdentifier schemaIdentifier:attachmentSchemaIdentifier metadata:0 error:&v57];
         v43 = v57;
 
         if (!v42)
@@ -442,7 +442,7 @@ LABEL_36:
           if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543619;
-            v65 = a1;
+            selfCopy = self;
             v66 = 2113;
             v67 = v43;
             _os_log_error_impl(&dword_0, v44, OS_LOG_TYPE_ERROR, "%{public}@ Failed to recreate HKAttachmentReference for medical records being re-inserted with error: %{private}@", buf, 0x16u);
@@ -457,23 +457,23 @@ LABEL_36:
   }
 
   v29 = 1;
-  v16 = v49;
-  v15 = v50;
-  v17 = v47;
-  a8 = v48;
-  a7 = v52;
+  identifierCopy = v49;
+  existingRecordCopy = v50;
+  profileCopy = v47;
+  update = updateCopy;
+  insert = insertCopy3;
   v18 = v53;
 LABEL_31:
-  if (a7)
+  if (insert)
   {
 LABEL_32:
-    *a7 = v29 & !v18;
+    *insert = v29 & !v18;
   }
 
 LABEL_33:
-  if (a8)
+  if (update)
   {
-    *a8 = v18 & v29;
+    *update = v18 & v29;
   }
 
   v45 = 1;
@@ -482,20 +482,20 @@ LABEL_37:
   return v45;
 }
 
-+ (BOOL)_insertMedicalRecords:(id)a3 accountIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)_insertMedicalRecords:(id)records accountIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 count])
+  recordsCopy = records;
+  identifierCopy = identifier;
+  profileCopy = profile;
+  if ([recordsCopy count])
   {
-    v13 = [a1 _medicalRecordProvenanceForAccountIdentifier:v11 profile:v12 error:a6];
+    v13 = [self _medicalRecordProvenanceForAccountIdentifier:identifierCopy profile:profileCopy error:error];
     if (v13)
     {
-      v14 = [v12 dataManager];
-      v15 = [v10 firstObject];
-      [v15 _creationTimestamp];
-      v16 = [v14 insertDataObjects:v10 withProvenance:v13 creationDate:a6 error:?];
+      dataManager = [profileCopy dataManager];
+      firstObject = [recordsCopy firstObject];
+      [firstObject _creationTimestamp];
+      v16 = [dataManager insertDataObjects:recordsCopy withProvenance:v13 creationDate:error error:?];
     }
 
     else
@@ -506,71 +506,71 @@ LABEL_37:
 
   else
   {
-    [NSError hk_assignError:a6 code:3 description:@"No records given"];
+    [NSError hk_assignError:error code:3 description:@"No records given"];
     v16 = 0;
   }
 
   return v16;
 }
 
-+ (BOOL)_enumerateEntitiesWithOriginalFHIRResourceROWID:(id)a3 database:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)_enumerateEntitiesWithOriginalFHIRResourceROWID:(id)d database:(id)database error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [a1 _predicateForRecordsWithOriginalFHIRResourceROWID:a3];
-  v13 = [a1 queryWithDatabase:v11 predicate:v12];
+  handlerCopy = handler;
+  databaseCopy = database;
+  v12 = [self _predicateForRecordsWithOriginalFHIRResourceROWID:d];
+  v13 = [self queryWithDatabase:databaseCopy predicate:v12];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_190E0;
   v16[3] = &unk_106420;
-  v17 = v10;
-  v14 = v10;
-  LOBYTE(a5) = [v13 enumeratePersistentIDsAndProperties:0 error:a5 enumerationHandler:v16];
+  v17 = handlerCopy;
+  v14 = handlerCopy;
+  LOBYTE(error) = [v13 enumeratePersistentIDsAndProperties:0 error:error enumerationHandler:v16];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_updateOriginalFHIRResourceROWID:(id)a3 database:(id)a4 error:(id *)a5
+- (BOOL)_updateOriginalFHIRResourceROWID:(id)d database:(id)database error:(id *)error
 {
-  v8 = a3;
+  dCopy = d;
   v15 = HDMedicalRecordEntityPropertyOriginalFHIRResourceROWID;
-  v9 = a4;
+  databaseCopy = database;
   v10 = [NSArray arrayWithObjects:&v15 count:1];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_192F4;
   v13[3] = &unk_105B80;
-  v14 = v8;
-  v11 = v8;
-  LOBYTE(a5) = [(HDMedicalRecordEntity *)self updateProperties:v10 database:v9 error:a5 bindingHandler:v13];
+  v14 = dCopy;
+  v11 = dCopy;
+  LOBYTE(error) = [(HDMedicalRecordEntity *)self updateProperties:v10 database:databaseCopy error:error bindingHandler:v13];
 
-  return a5;
+  return error;
 }
 
-+ (Class)medicalRecordEntityForDataTypeCode:(id)a3
++ (Class)medicalRecordEntityForDataTypeCode:(id)code
 {
   v3 = qword_128820;
-  v4 = a3;
+  codeCopy = code;
   if (v3 != -1)
   {
     sub_9DCE4();
   }
 
-  v5 = [qword_128818 objectForKeyedSubscript:v4];
+  v5 = [qword_128818 objectForKeyedSubscript:codeCopy];
 
   return v5;
 }
 
-+ (id)_medicalRecordsWithPredicate:(id)a3 withoutConceptIndex:(BOOL)a4 excludeSignedClinicalDataRecords:(BOOL)a5 database:(id)a6 profile:(id)a7 error:(id *)a8
++ (id)_medicalRecordsWithPredicate:(id)predicate withoutConceptIndex:(BOOL)index excludeSignedClinicalDataRecords:(BOOL)records database:(id)database profile:(id)profile error:(id *)error
 {
-  v12 = a4;
-  v15 = a3;
-  v16 = a6;
-  v45 = a7;
+  indexCopy = index;
+  predicateCopy = predicate;
+  databaseCopy = database;
+  profileCopy = profile;
   v17 = objc_alloc_init(NSMutableDictionary);
-  v44 = a1;
-  v18 = [a1 queryWithDatabase:v16 predicate:v15];
+  selfCopy = self;
+  v18 = [self queryWithDatabase:databaseCopy predicate:predicateCopy];
   v42 = HDDataEntityPropertyDataID;
   v58[0] = HDDataEntityPropertyDataID;
   v58[1] = HDDataEntityPropertyType;
@@ -580,19 +580,19 @@ LABEL_37:
   v52[1] = 3221225472;
   v52[2] = sub_199A0;
   v52[3] = &unk_106468;
-  v54 = a5;
+  recordsCopy = records;
   v20 = v17;
   v53 = v20;
-  v43 = a8;
-  v21 = [v18 enumeratePersistentIDsAndProperties:v19 error:a8 enumerationHandler:v52];
+  errorCopy = error;
+  v21 = [v18 enumeratePersistentIDsAndProperties:v19 error:error enumerationHandler:v52];
 
   if (v21)
   {
-    v39 = v16;
-    v40 = v15;
+    v39 = databaseCopy;
+    v40 = predicateCopy;
     v41 = objc_alloc_init(NSMutableArray);
     v38 = v18;
-    if (v12)
+    if (indexCopy)
     {
       v56 = HDMedicalRecordEntityEncodingOptionSkipApplyingConceptIndex;
       v57 = &__kCFBooleanTrue;
@@ -625,20 +625,20 @@ LABEL_37:
           }
 
           v29 = *(*(&v48 + 1) + 8 * i);
-          v30 = [v44 medicalRecordEntityForDataTypeCode:v29];
+          v30 = [selfCopy medicalRecordEntityForDataTypeCode:v29];
           if (!v30)
           {
-            sub_9DCF8(a2, v44, v29);
+            sub_9DCF8(a2, selfCopy, v29);
           }
 
           v31 = [v24 objectForKeyedSubscript:v29];
           if (![v31 count])
           {
-            sub_9DD6C(a2, v44, v29);
+            sub_9DD6C(a2, selfCopy, v29);
           }
 
           v32 = [HDSQLiteContainsPredicate containsPredicateWithProperty:v42 values:v31];
-          v33 = [v30 entityEnumeratorWithProfile:v45];
+          v33 = [v30 entityEnumeratorWithProfile:profileCopy];
           [v33 setPredicate:v32];
           if (v22)
           {
@@ -650,7 +650,7 @@ LABEL_37:
           v46[2] = sub_19AE4;
           v46[3] = &unk_106490;
           v47 = v41;
-          v34 = [v33 enumerateWithError:v43 handler:v46];
+          v34 = [v33 enumerateWithError:errorCopy handler:v46];
 
           if (!v34)
           {
@@ -675,8 +675,8 @@ LABEL_37:
     v23 = [v41 copy];
 LABEL_22:
 
-    v16 = v39;
-    v15 = v40;
+    databaseCopy = v39;
+    predicateCopy = v40;
     v20 = v37;
     v18 = v38;
   }
@@ -689,19 +689,19 @@ LABEL_22:
   return v23;
 }
 
-+ (id)_medicalRecordProvenanceForAccountIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)_medicalRecordProvenanceForAccountIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 sourceManager];
+  identifierCopy = identifier;
+  profileCopy = profile;
+  sourceManager = [profileCopy sourceManager];
   v17 = 0;
-  v10 = [v9 privateSourceForClinicalAccountIdentifier:v7 provenance:0 createOrUpdateIfNecessary:0 nameOnCreateOrUpdate:0 error:&v17];
+  v10 = [sourceManager privateSourceForClinicalAccountIdentifier:identifierCopy provenance:0 createOrUpdateIfNecessary:0 nameOnCreateOrUpdate:0 error:&v17];
   v11 = v17;
 
   if (v10)
   {
-    v12 = [v8 dataProvenanceManager];
-    v13 = [v12 localDataProvenanceForSourceEntity:v10 version:0 deviceEntity:0];
+    dataProvenanceManager = [profileCopy dataProvenanceManager];
+    v13 = [dataProvenanceManager localDataProvenanceForSourceEntity:v10 version:0 deviceEntity:0];
 
     if (v13)
     {
@@ -710,7 +710,7 @@ LABEL_22:
 
     else
     {
-      [NSError hk_assignError:a5 code:100 description:@"Failed to get provenance for medical record source entity"];
+      [NSError hk_assignError:error code:100 description:@"Failed to get provenance for medical record source entity"];
     }
 
     goto LABEL_12;
@@ -718,11 +718,11 @@ LABEL_22:
 
   if (v11)
   {
-    if (a5)
+    if (error)
     {
       v15 = v11;
       v13 = 0;
-      *a5 = v11;
+      *error = v11;
       goto LABEL_12;
     }
 
@@ -731,7 +731,7 @@ LABEL_22:
 
   else
   {
-    [NSError hk_assignError:a5 code:100 format:@"no matching medical record source entity is present for account with identifier %@", v7];
+    [NSError hk_assignError:error code:100 format:@"no matching medical record source entity is present for account with identifier %@", identifierCopy];
   }
 
   v13 = 0;
@@ -740,23 +740,23 @@ LABEL_12:
   return v13;
 }
 
-+ (id)_existingMedicalRecord:(id)a3 originalFHIRResourceRowID:(id)a4 database:(id)a5 profile:(id)a6 error:(id *)a7
++ (id)_existingMedicalRecord:(id)record originalFHIRResourceRowID:(id)d database:(id)database profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  recordCopy = record;
+  dCopy = d;
   v12 = HDMedicalRecordEntityPropertyOriginalFHIRResourceROWID;
-  v13 = a6;
-  v14 = a5;
-  v15 = [HDSQLiteComparisonPredicate predicateWithProperty:v12 equalToValue:v11];
+  profileCopy = profile;
+  databaseCopy = database;
+  v15 = [HDSQLiteComparisonPredicate predicateWithProperty:v12 equalToValue:dCopy];
   v60[0] = v15;
-  v16 = [v10 FHIRIdentifier];
+  fHIRIdentifier = [recordCopy FHIRIdentifier];
   v17 = HDMedicalRecordEntityPredicateForFHIRIdentifier();
   v60[1] = v17;
   v18 = [NSArray arrayWithObjects:v60 count:2];
   v19 = [HDSQLiteCompoundPredicate predicateMatchingAllPredicates:v18];
 
   v49 = 0;
-  v20 = [HDMedicalRecordEntity _medicalRecordsWithPredicate:v19 withoutConceptIndex:1 excludeSignedClinicalDataRecords:0 database:v14 profile:v13 error:&v49];
+  v20 = [HDMedicalRecordEntity _medicalRecordsWithPredicate:v19 withoutConceptIndex:1 excludeSignedClinicalDataRecords:0 database:databaseCopy profile:profileCopy error:&v49];
 
   v21 = v49;
   if (!v20)
@@ -766,19 +766,19 @@ LABEL_12:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
     {
       log = v24;
-      v44 = [a1 debugDescription];
-      v34 = [v10 FHIRIdentifier];
-      v35 = [v34 identifier];
-      v36 = [v10 FHIRIdentifier];
-      v37 = [v36 resourceType];
+      v44 = [self debugDescription];
+      fHIRIdentifier2 = [recordCopy FHIRIdentifier];
+      identifier = [fHIRIdentifier2 identifier];
+      fHIRIdentifier3 = [recordCopy FHIRIdentifier];
+      resourceType = [fHIRIdentifier3 resourceType];
       *buf = 138544387;
       v51 = v44;
       v52 = 2113;
-      v53 = v35;
+      v53 = identifier;
       v54 = 2113;
-      v55 = v37;
+      v55 = resourceType;
       v56 = 2114;
-      v57 = v11;
+      v57 = dCopy;
       v58 = 2114;
       v59 = v21;
       _os_log_error_impl(&dword_0, log, OS_LOG_TYPE_ERROR, "%{public}@ Error quering for medicalRecord record with identifier: %{private}@, resourceType: %{private}@, originalFHIRResourceRowID: %{public}@. Error: %{public}@ ", buf, 0x34u);
@@ -792,16 +792,16 @@ LABEL_12:
     else if (v21)
     {
 LABEL_12:
-      v23 = 0;
+      firstObject = 0;
       goto LABEL_13;
     }
 
-    v25 = [a1 debugDescription];
-    v26 = [v10 FHIRIdentifier];
-    v27 = [v26 identifier];
-    v28 = [v10 FHIRIdentifier];
-    v29 = [v28 resourceType];
-    [NSError hk_assignError:a7 code:2000 format:@"%@ Error quering for medicalRecord record with identifier: %@, resourceType: %@, originalFHIRResourceRowID: %@", v25, v27, v29, v11];
+    v25 = [self debugDescription];
+    fHIRIdentifier4 = [recordCopy FHIRIdentifier];
+    identifier2 = [fHIRIdentifier4 identifier];
+    fHIRIdentifier5 = [recordCopy FHIRIdentifier];
+    resourceType2 = [fHIRIdentifier5 resourceType];
+    [NSError hk_assignError:error code:2000 format:@"%@ Error quering for medicalRecord record with identifier: %@, resourceType: %@, originalFHIRResourceRowID: %@", v25, identifier2, resourceType2, dCopy];
 
 LABEL_11:
     goto LABEL_12;
@@ -809,14 +809,14 @@ LABEL_11:
 
   if (![v20 count])
   {
-    v25 = [a1 debugDescription];
-    v26 = [v10 FHIRIdentifier];
-    v27 = [v26 identifier];
-    v28 = [v10 FHIRIdentifier];
-    [v28 resourceType];
+    v25 = [self debugDescription];
+    fHIRIdentifier4 = [recordCopy FHIRIdentifier];
+    identifier2 = [fHIRIdentifier4 identifier];
+    fHIRIdentifier5 = [recordCopy FHIRIdentifier];
+    [fHIRIdentifier5 resourceType];
     v30 = v19;
     v32 = v31 = v21;
-    [NSError hk_assignError:a7 code:118 format:@"%@ No found for medicalRecord record with identifier: %@, resourceType: %@, originalFHIRResourceRowID: %@", v25, v27, v32, v11];
+    [NSError hk_assignError:error code:118 format:@"%@ No found for medicalRecord record with identifier: %@, resourceType: %@, originalFHIRResourceRowID: %@", v25, identifier2, v32, dCopy];
 
     v21 = v31;
     v19 = v30;
@@ -830,30 +830,30 @@ LABEL_11:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_FAULT))
     {
       v38 = v22;
-      v39 = [a1 debugDescription];
-      v40 = [v10 FHIRIdentifier];
-      [v40 identifier];
+      v39 = [self debugDescription];
+      fHIRIdentifier6 = [recordCopy FHIRIdentifier];
+      [fHIRIdentifier6 identifier];
       v41 = v48 = v21;
-      v42 = [v10 FHIRIdentifier];
-      v43 = [v42 resourceType];
+      fHIRIdentifier7 = [recordCopy FHIRIdentifier];
+      resourceType3 = [fHIRIdentifier7 resourceType];
       *buf = 138544131;
       v51 = v39;
       v52 = 2113;
       v53 = v41;
       v54 = 2113;
-      v55 = v43;
+      v55 = resourceType3;
       v56 = 2114;
-      v57 = v11;
+      v57 = dCopy;
       _os_log_fault_impl(&dword_0, v38, OS_LOG_TYPE_FAULT, "%{public}@ More than one medicalRecord record found with identifier: %{private}@, resourceType: %{private}@, originalFHIRResourceRowID: %{public}@ found in the database.", buf, 0x2Au);
 
       v21 = v48;
     }
   }
 
-  v23 = [v20 firstObject];
+  firstObject = [v20 firstObject];
 LABEL_13:
 
-  return v23;
+  return firstObject;
 }
 
 @end

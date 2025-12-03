@@ -1,76 +1,76 @@
 @interface APSConnectionServer
-+ (id)environmentForNamedPort:(id)a3 userPreferences:(id)a4;
-+ (id)serverEnvironmentNamesForUserPreferences:(id)a3;
-+ (id)serversWithEnvironmentName:(id)a3 user:(id)a4 userPreferences:(id)a5 excludeServers:(id)a6 delegate:(id)a7;
-+ (void)serversWithEnvironmentName:(id)a3 user:(id)a4 userPreferences:(id)a5 excludeServers:(id)a6 delegate:(id)a7 returnServers:(id)a8;
-- (APSConnectionServer)initWithDelegate:(id)a3 user:(id)a4 userPreferences:(id)a5 enableDarkWake:(BOOL)a6 environmentName:(id)a7 connectionPortName:(id)a8 processName:(id)a9 connection:(id)a10;
++ (id)environmentForNamedPort:(id)port userPreferences:(id)preferences;
++ (id)serverEnvironmentNamesForUserPreferences:(id)preferences;
++ (id)serversWithEnvironmentName:(id)name user:(id)user userPreferences:(id)preferences excludeServers:(id)servers delegate:(id)delegate;
++ (void)serversWithEnvironmentName:(id)name user:(id)user userPreferences:(id)preferences excludeServers:(id)servers delegate:(id)delegate returnServers:(id)returnServers;
+- (APSConnectionServer)initWithDelegate:(id)delegate user:(id)user userPreferences:(id)preferences enableDarkWake:(BOOL)wake environmentName:(id)name connectionPortName:(id)portName processName:(id)processName connection:(id)self0;
 - (APSConnectionServerDelegate)delegate;
-- (BOOL)_containsInvalidTopic:(id)a3;
+- (BOOL)_containsInvalidTopic:(id)topic;
 - (BOOL)isConnected;
 - (NSString)debugDescription;
 - (NSString)description;
 - (OS_xpc_object)connection;
 - (id)JSONDebugState;
 - (id)aps_prettyDescription;
-- (id)processNameWithLabels:(BOOL)a3;
-- (void)_enqueueXPCMessage:(id)a3 wakingClient:(BOOL)a4 highPriority:(BOOL)a5 shouldBoostPriority:(BOOL)a6 withReply:(id)a7;
-- (void)_handleInvalidateTokenForInfo:(id)a3;
-- (void)_handleRequestTokenForInfo:(id)a3;
-- (void)_informTopicManagerOfChangedFilter:(int64_t)a3 newTopics:(id)a4 oldTopics:(id)a5;
+- (id)processNameWithLabels:(BOOL)labels;
+- (void)_enqueueXPCMessage:(id)message wakingClient:(BOOL)client highPriority:(BOOL)priority shouldBoostPriority:(BOOL)boostPriority withReply:(id)reply;
+- (void)_handleInvalidateTokenForInfo:(id)info;
+- (void)_handleRequestTokenForInfo:(id)info;
+- (void)_informTopicManagerOfChangedFilter:(int64_t)filter newTopics:(id)topics oldTopics:(id)oldTopics;
 - (void)_initiateConnectionIfNecessary;
 - (void)_lookUpMachPort;
 - (void)_migratePersistentTopicsIfNeeded;
 - (void)_redeliverCurrentPublicToken;
 - (void)_resumeQueue;
 - (void)_savePersistentConnection;
-- (void)_sendClientToken:(id)a3 forInfo:(id)a4;
+- (void)_sendClientToken:(id)token forInfo:(id)info;
 - (void)_suspendQueue;
-- (void)_warnIfOverlappingTopics:(id)a3 againstTopics:(id)a4 string:(id)a5;
-- (void)acknowledgeDidReceivePublicToken:(id)a3;
-- (void)appendPrettyStatusToStatusPrinter:(id)a3;
-- (void)appendPrettyStatusToStatusPrinter:(id)a3 forTopics:(id)a4 type:(id)a5;
+- (void)_warnIfOverlappingTopics:(id)topics againstTopics:(id)againstTopics string:(id)string;
+- (void)acknowledgeDidReceivePublicToken:(id)token;
+- (void)appendPrettyStatusToStatusPrinter:(id)printer;
+- (void)appendPrettyStatusToStatusPrinter:(id)printer forTopics:(id)topics type:(id)type;
 - (void)close;
 - (void)connectionHandshakeDidComplete;
 - (void)connectionInvalidated;
 - (void)dealloc;
-- (void)handleAckIncomingMessageWithGuid:(id)a3 topic:(id)a4 tracingUUID:(id)a5;
-- (void)handleCancelOutgoingMessageWithID:(unint64_t)a3;
-- (void)handleChannelSubscriptionFailures:(id)a3 forTopic:(id)a4;
-- (void)handleConnectionStatusChanged:(BOOL)a3;
-- (void)handleCurrentTokenForInfo:(id)a3;
-- (void)handleCurrentURLTokenForInfo:(id)a3;
-- (void)handleFakeMessage:(id)a3;
-- (void)handleIncomingMessageReceiptWithTopic:(id)a3 tracingUUID:(id)a4;
-- (void)handleInvalidatePerAppTokenForInfo:(id)a3;
-- (void)handleInvalidatePerAppTokenForTopic:(id)a3 identifier:(id)a4;
-- (void)handleInvalidateURLTokenForTopic:(id)a3;
+- (void)handleAckIncomingMessageWithGuid:(id)guid topic:(id)topic tracingUUID:(id)d;
+- (void)handleCancelOutgoingMessageWithID:(unint64_t)d;
+- (void)handleChannelSubscriptionFailures:(id)failures forTopic:(id)topic;
+- (void)handleConnectionStatusChanged:(BOOL)changed;
+- (void)handleCurrentTokenForInfo:(id)info;
+- (void)handleCurrentURLTokenForInfo:(id)info;
+- (void)handleFakeMessage:(id)message;
+- (void)handleIncomingMessageReceiptWithTopic:(id)topic tracingUUID:(id)d;
+- (void)handleInvalidatePerAppTokenForInfo:(id)info;
+- (void)handleInvalidatePerAppTokenForTopic:(id)topic identifier:(id)identifier;
+- (void)handleInvalidateURLTokenForTopic:(id)topic;
 - (void)handleNotificationAcknowledged;
-- (void)handlePublicTokenDeliveryReply:(id)a3;
-- (void)handleReceivedMessage:(id)a3;
-- (void)handleReceivedToken:(id)a3 forInfo:(id)a4;
-- (void)handleReceivedTokenError:(id)a3 forInfo:(id)a4;
-- (void)handleRequestPerAppTokenForTopic:(id)a3 identifier:(id)a4;
-- (void)handleRequestTokenForInfo:(id)a3;
-- (void)handleRequestURLTokenForInfo:(id)a3;
-- (void)handleResult:(id)a3 forSendingOutgoingMessage:(id)a4;
-- (void)handleResult:(id)a3 forSendingOutgoingMessageWithID:(unint64_t)a4 sendRTT:(unint64_t)a5 ackTimestamp:(unint64_t)a6;
-- (void)handleSendOutgoingMessage:(id)a3;
-- (void)handleSubscribeToChannels:(id)a3 forTopic:(id)a4;
-- (void)handleUnsubscribeFromChannels:(id)a3 forTopic:(id)a4;
+- (void)handlePublicTokenDeliveryReply:(id)reply;
+- (void)handleReceivedMessage:(id)message;
+- (void)handleReceivedToken:(id)token forInfo:(id)info;
+- (void)handleReceivedTokenError:(id)error forInfo:(id)info;
+- (void)handleRequestPerAppTokenForTopic:(id)topic identifier:(id)identifier;
+- (void)handleRequestTokenForInfo:(id)info;
+- (void)handleRequestURLTokenForInfo:(id)info;
+- (void)handleResult:(id)result forSendingOutgoingMessage:(id)message;
+- (void)handleResult:(id)result forSendingOutgoingMessageWithID:(unint64_t)d sendRTT:(unint64_t)t ackTimestamp:(unint64_t)timestamp;
+- (void)handleSendOutgoingMessage:(id)message;
+- (void)handleSubscribeToChannels:(id)channels forTopic:(id)topic;
+- (void)handleUnsubscribeFromChannels:(id)channels forTopic:(id)topic;
 - (void)saveAndUpdateDelegate;
-- (void)setConnection:(id)a3;
-- (void)setEnableCriticalReliability:(BOOL)a3;
-- (void)setEnableStatusChangeNotifications:(BOOL)a3;
-- (void)setEnabledTopics:(id)a3 ignoredTopics:(id)a4 opportunisticTopics:(id)a5 nonWakingTopics:(id)a6;
-- (void)setIsPublicTokenAcknowledged:(BOOL)a3;
-- (void)setKeepAliveConfiguration:(unint64_t)a3;
-- (void)setLargeMessageSize:(unint64_t)a3;
-- (void)setMessageSize:(unint64_t)a3;
-- (void)setPublicToken:(id)a3 needsAck:(BOOL)a4;
-- (void)setPushWakeTopics:(id)a3;
-- (void)setTrackActivityPresence:(BOOL)a3;
-- (void)setUltraConstrainedTopics:(id)a3;
-- (void)setUser:(id)a3;
+- (void)setConnection:(id)connection;
+- (void)setEnableCriticalReliability:(BOOL)reliability;
+- (void)setEnableStatusChangeNotifications:(BOOL)notifications;
+- (void)setEnabledTopics:(id)topics ignoredTopics:(id)ignoredTopics opportunisticTopics:(id)opportunisticTopics nonWakingTopics:(id)wakingTopics;
+- (void)setIsPublicTokenAcknowledged:(BOOL)acknowledged;
+- (void)setKeepAliveConfiguration:(unint64_t)configuration;
+- (void)setLargeMessageSize:(unint64_t)size;
+- (void)setMessageSize:(unint64_t)size;
+- (void)setPublicToken:(id)token needsAck:(BOOL)ack;
+- (void)setPushWakeTopics:(id)topics;
+- (void)setTrackActivityPresence:(BOOL)presence;
+- (void)setUltraConstrainedTopics:(id)topics;
+- (void)setUser:(id)user;
 @end
 
 @implementation APSConnectionServer
@@ -79,10 +79,10 @@
 {
   if (self->_connectionPortName)
   {
-    v3 = [(APSConnectionServer *)self userPreferences];
-    v4 = [v3 persistentTopics];
+    userPreferences = [(APSConnectionServer *)self userPreferences];
+    persistentTopics = [userPreferences persistentTopics];
 
-    if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v5 = [v4 mutableCopy]) == 0)
+    if (!persistentTopics || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v5 = [persistentTopics mutableCopy]) == 0)
     {
       v5 = objc_alloc_init(NSMutableDictionary);
     }
@@ -93,16 +93,16 @@
       v6 = objc_alloc_init(NSMutableDictionary);
       if ([(NSSet *)self->_enabledTopics count])
       {
-        v7 = [(NSSet *)self->_enabledTopics allObjects];
-        [v6 setObject:v7 forKey:@"enabled"];
+        allObjects = [(NSSet *)self->_enabledTopics allObjects];
+        [v6 setObject:allObjects forKey:@"enabled"];
       }
 
       if ([(NSSet *)self->_nonWakingTopics count])
       {
         v8 = [(NSSet *)self->_nonWakingTopics mutableCopy];
         [v8 minusSet:self->_enabledTopics];
-        v9 = [v8 allObjects];
-        [v6 setObject:v9 forKey:@"nonWaking"];
+        allObjects2 = [v8 allObjects];
+        [v6 setObject:allObjects2 forKey:@"nonWaking"];
       }
 
       if ([(NSSet *)self->_opportunisticTopics count])
@@ -110,8 +110,8 @@
         v10 = [(NSSet *)self->_opportunisticTopics mutableCopy];
         [v10 minusSet:self->_enabledTopics];
         [v10 minusSet:self->_nonWakingTopics];
-        v11 = [v10 allObjects];
-        [v6 setObject:v11 forKey:@"opportunistic"];
+        allObjects3 = [v10 allObjects];
+        [v6 setObject:allObjects3 forKey:@"opportunistic"];
       }
 
       if ([(NSSet *)self->_ignoredTopics count])
@@ -120,8 +120,8 @@
         [v12 minusSet:self->_enabledTopics];
         [v12 minusSet:self->_opportunisticTopics];
         [v12 minusSet:self->_nonWakingTopics];
-        v13 = [v12 allObjects];
-        [v6 setObject:v13 forKey:@"ignored"];
+        allObjects4 = [v12 allObjects];
+        [v6 setObject:allObjects4 forKey:@"ignored"];
       }
 
       [v6 setObject:self->_environmentName forKey:@"environment"];
@@ -139,14 +139,14 @@
 
       if ([(NSSet *)self->_pushWakeTopics count])
       {
-        v17 = [(NSSet *)self->_pushWakeTopics allObjects];
-        [v6 setObject:v17 forKey:@"pushWake"];
+        allObjects5 = [(NSSet *)self->_pushWakeTopics allObjects];
+        [v6 setObject:allObjects5 forKey:@"pushWake"];
       }
 
       if ([(NSSet *)self->_ultraConstrainedTopics count])
       {
-        v18 = [(NSSet *)self->_ultraConstrainedTopics allObjects];
-        [v6 setObject:v18 forKey:@"ultraConstrained"];
+        allObjects6 = [(NSSet *)self->_ultraConstrainedTopics allObjects];
+        [v6 setObject:allObjects6 forKey:@"ultraConstrained"];
       }
 
       if (self->_enableStatusChangeNotifications)
@@ -164,8 +164,8 @@
     }
 
     v20 = objc_autoreleasePoolPush();
-    v21 = [(APSConnectionServer *)self userPreferences];
-    [v21 setPersistentTopics:v22];
+    userPreferences2 = [(APSConnectionServer *)self userPreferences];
+    [userPreferences2 setPersistentTopics:v22];
 
     objc_autoreleasePoolPop(v20);
   }
@@ -196,16 +196,16 @@
 
 - (void)_initiateConnectionIfNecessary
 {
-  v3 = [(APSConnectionServer *)self connection];
+  connection = [(APSConnectionServer *)self connection];
 
-  if (!v3)
+  if (!connection)
   {
     v4 = +[APSLog connectionServer];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       connectionPortName = self->_connectionPortName;
       *buf = 138412290;
-      v16 = connectionPortName;
+      selfCopy = connectionPortName;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Pinging client via mach since we are not currently connected for port %@", buf, 0xCu);
     }
 
@@ -240,7 +240,7 @@
       {
         v11 = self->_connectionPortName;
         *buf = 138412546;
-        v16 = self;
+        selfCopy = self;
         v17 = 2112;
         v18 = v11;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ Invalid mach port - Cleaning up this named port's topics. %@", buf, 0x16u);
@@ -270,8 +270,8 @@
 
 - (void)_migratePersistentTopicsIfNeeded
 {
-  v18 = [(APSConnectionServer *)self user];
-  if ([v18 isDefaultUser])
+  user = [(APSConnectionServer *)self user];
+  if ([user isDefaultUser])
   {
 
     return;
@@ -284,16 +284,16 @@
     return;
   }
 
-  v4 = [(APSConnectionServer *)self userPreferences];
-  v5 = [v4 defaultUserPersistentTopics];
+  userPreferences = [(APSConnectionServer *)self userPreferences];
+  defaultUserPersistentTopics = [userPreferences defaultUserPersistentTopics];
 
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!defaultUserPersistentTopics || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v7 = 0;
     goto LABEL_11;
   }
 
-  v6 = [v5 mutableCopy];
+  v6 = [defaultUserPersistentTopics mutableCopy];
   v7 = v6;
   if (!v6)
   {
@@ -307,34 +307,34 @@ LABEL_11:
 
 LABEL_12:
   [v7 removeObjectForKey:self->_connectionPortName];
-  v10 = [(APSConnectionServer *)self userPreferences];
-  [v10 setDefaultUserPersistentTopics:v7];
+  userPreferences2 = [(APSConnectionServer *)self userPreferences];
+  [userPreferences2 setDefaultUserPersistentTopics:v7];
 
   if (v9)
   {
-    v11 = [(APSConnectionServer *)self userPreferences];
-    v12 = [v11 persistentTopics];
+    userPreferences3 = [(APSConnectionServer *)self userPreferences];
+    persistentTopics = [userPreferences3 persistentTopics];
 
-    if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v13 = [v12 mutableCopy]) == 0)
+    if (!persistentTopics || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v13 = [persistentTopics mutableCopy]) == 0)
     {
       v13 = objc_alloc_init(NSMutableDictionary);
     }
 
     [v13 setObject:v9 forKey:self->_connectionPortName];
-    v14 = [(APSConnectionServer *)self userPreferences];
-    [v14 setPersistentTopics:v13];
+    userPreferences4 = [(APSConnectionServer *)self userPreferences];
+    [userPreferences4 setPersistentTopics:v13];
 
     v15 = +[APSLog connectionServer];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = self->_connectionPortName;
-      v17 = [(APSConnectionServer *)self user];
+      user2 = [(APSConnectionServer *)self user];
       *buf = 138412802;
-      v20 = self;
+      selfCopy = self;
       v21 = 2112;
       v22 = v16;
       v23 = 2112;
-      v24 = v17;
+      v24 = user2;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@ Migrate persistent topics for %@ from Default to %@", buf, 0x20u);
     }
   }
@@ -363,19 +363,19 @@ LABEL_12:
 
 - (BOOL)isConnected
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v2) = [WeakRetained connectionDelegateIsConnectedToService:v2];
+  LOBYTE(selfCopy) = [WeakRetained connectionDelegateIsConnectedToService:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)connectionHandshakeDidComplete
 {
   [(APSConnectionServer *)self _resumeQueue];
-  v3 = [(APSConnectionServer *)self connectionPortName];
+  connectionPortName = [(APSConnectionServer *)self connectionPortName];
 
-  if (v3)
+  if (connectionPortName)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained connectionWasOpened:self];
@@ -401,29 +401,29 @@ LABEL_12:
   environmentName = self->_environmentName;
   connectionPortName = self->_connectionPortName;
   processName = self->_processName;
-  v7 = [(APSUser *)self->_user name];
-  v8 = [NSString stringWithFormat:@"<%@: %p %@/%@/%@ %@>", v3, self, environmentName, connectionPortName, processName, v7];;
+  name = [(APSUser *)self->_user name];
+  v8 = [NSString stringWithFormat:@"<%@: %p %@/%@/%@ %@>", v3, self, environmentName, connectionPortName, processName, name];;
 
   return v8;
 }
 
-+ (id)serverEnvironmentNamesForUserPreferences:(id)a3
++ (id)serverEnvironmentNamesForUserPreferences:(id)preferences
 {
-  v3 = a3;
+  preferencesCopy = preferences;
   v4 = +[NSMutableArray array];
-  v5 = [v3 persistentTopics];
-  if (v5)
+  persistentTopics = [preferencesCopy persistentTopics];
+  if (persistentTopics)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v5;
-      v15 = v3;
+      v14 = persistentTopics;
+      v15 = preferencesCopy;
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v6 = v5;
+      v6 = persistentTopics;
       v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
@@ -460,33 +460,33 @@ LABEL_12:
         while (v8);
       }
 
-      v5 = v14;
-      v3 = v15;
+      persistentTopics = v14;
+      preferencesCopy = v15;
     }
   }
 
   return v4;
 }
 
-+ (id)serversWithEnvironmentName:(id)a3 user:(id)a4 userPreferences:(id)a5 excludeServers:(id)a6 delegate:(id)a7
++ (id)serversWithEnvironmentName:(id)name user:(id)user userPreferences:(id)preferences excludeServers:(id)servers delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  userCopy = user;
+  preferencesCopy = preferences;
+  serversCopy = servers;
+  delegateCopy = delegate;
   v17 = +[NSMutableArray array];
   v18 = +[APSLog connectionServer];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412290;
-    v22 = v12;
+    v22 = nameCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "serversWithEnvironmentNames: %@", &v21, 0xCu);
   }
 
-  if (v12)
+  if (nameCopy)
   {
-    [a1 serversWithEnvironmentName:v12 user:v13 userPreferences:v14 excludeServers:v15 delegate:v16 returnServers:v17];
+    [self serversWithEnvironmentName:nameCopy user:userCopy userPreferences:preferencesCopy excludeServers:serversCopy delegate:delegateCopy returnServers:v17];
     v19 = v17;
   }
 
@@ -498,33 +498,33 @@ LABEL_12:
   return v19;
 }
 
-+ (void)serversWithEnvironmentName:(id)a3 user:(id)a4 userPreferences:(id)a5 excludeServers:(id)a6 delegate:(id)a7 returnServers:(id)a8
++ (void)serversWithEnvironmentName:(id)name user:(id)user userPreferences:(id)preferences excludeServers:(id)servers delegate:(id)delegate returnServers:(id)returnServers
 {
-  v12 = a3;
-  v73 = a4;
-  v13 = a5;
-  v59 = a7;
-  v57 = a8;
-  v14 = [v13 persistentTopics];
+  nameCopy = name;
+  userCopy = user;
+  preferencesCopy = preferences;
+  delegateCopy = delegate;
+  returnServersCopy = returnServers;
+  persistentTopics = [preferencesCopy persistentTopics];
   v15 = objc_alloc_init(NSMutableArray);
-  if (v14)
+  if (persistentTopics)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v58 = v13;
+      v58 = preferencesCopy;
       v77 = 0u;
       v78 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v55 = v14;
-      v16 = v14;
+      v55 = persistentTopics;
+      v16 = persistentTopics;
       v17 = [v16 countByEnumeratingWithState:&v75 objects:v85 count:16];
       if (v17)
       {
         v18 = v17;
         v19 = *v76;
-        v56 = v12;
+        v56 = nameCopy;
         v69 = v15;
         v70 = *v76;
         do
@@ -539,14 +539,14 @@ LABEL_12:
             }
 
             v21 = *(*(&v75 + 1) + 8 * v20);
-            v22 = [v16 objectForKey:{v21, v54}];
+            v22 = [v16 objectForKey:{v21, uTF8String}];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               v74 = 0;
-              v23 = [v73 bootstrapLookupForPortName:-[APSConnectionServer UTF8String](v21 outConnectionPort:{"UTF8String"), &v74}];
+              v23 = [userCopy bootstrapLookupForPortName:-[APSConnectionServer UTF8String](v21 outConnectionPort:{"UTF8String"), &v74}];
               getpid();
-              v54 = [(APSConnectionServer *)v21 UTF8String];
+              uTF8String = [(APSConnectionServer *)v21 UTF8String];
               if (sandbox_check())
               {
                 v24 = +[APSLog connectionServer];
@@ -579,13 +579,13 @@ LABEL_12:
                 v25 = [v22 objectForKey:@"environment"];
                 v72 = [v22 objectForKey:@"processName"];
                 v26 = [v22 objectForKey:@"tokenAcked"];
-                v27 = [v26 BOOLValue];
+                bOOLValue = [v26 BOOLValue];
 
                 objc_opt_class();
-                if ((objc_opt_isKindOfClass() & 1) != 0 && [v25 isEqualToString:v12])
+                if ((objc_opt_isKindOfClass() & 1) != 0 && [v25 isEqualToString:nameCopy])
                 {
-                  v28 = v12;
-                  v29 = [[APSConnectionServer alloc] initWithDelegate:v59 user:v73 userPreferences:v58 enableDarkWake:0 environmentName:v25 connectionPortName:v21 processName:v72 connection:0];
+                  v28 = nameCopy;
+                  v29 = [[APSConnectionServer alloc] initWithDelegate:delegateCopy user:userCopy userPreferences:v58 enableDarkWake:0 environmentName:v25 connectionPortName:v21 processName:v72 connection:0];
                   v30 = +[APSLog connectionServer];
                   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
                   {
@@ -594,13 +594,13 @@ LABEL_12:
                     v81 = 2112;
                     v82 = v21;
                     v83 = 2112;
-                    v84 = v73;
+                    v84 = userCopy;
                     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Creating server: %@ with connectionPortName: %@ user: %@", buf, 0x20u);
                   }
 
                   if (v29)
                   {
-                    [(APSConnectionServer *)v29 setIsPublicTokenAcknowledged:v27];
+                    [(APSConnectionServer *)v29 setIsPublicTokenAcknowledged:bOOLValue];
                     v31 = [v22 objectForKey:@"enabled"];
                     v32 = APSSafeArrayOfStrings();
 
@@ -696,12 +696,12 @@ LABEL_12:
                     }
 
                     [(APSConnectionServer *)v29 setUltraConstrainedTopics:v52];
-                    [v57 addObject:v29];
+                    [returnServersCopy addObject:v29];
 
                     v28 = v56;
                   }
 
-                  v12 = v28;
+                  nameCopy = v28;
                 }
 
                 v15 = v69;
@@ -721,26 +721,26 @@ LABEL_12:
         while (v18);
       }
 
-      v13 = v58;
-      v14 = v55;
+      preferencesCopy = v58;
+      persistentTopics = v55;
     }
   }
 
   if ([v15 count])
   {
-    v53 = [v14 mutableCopy];
+    v53 = [persistentTopics mutableCopy];
     [v53 removeObjectsForKeys:v15];
-    [v13 setPersistentTopics:v53];
+    [preferencesCopy setPersistentTopics:v53];
   }
 }
 
-- (void)_enqueueXPCMessage:(id)a3 wakingClient:(BOOL)a4 highPriority:(BOOL)a5 shouldBoostPriority:(BOOL)a6 withReply:(id)a7
+- (void)_enqueueXPCMessage:(id)message wakingClient:(BOOL)client highPriority:(BOOL)priority shouldBoostPriority:(BOOL)boostPriority withReply:(id)reply
 {
-  v8 = a6;
-  v10 = a4;
-  v12 = a3;
-  v13 = a7;
-  if (v12)
+  boostPriorityCopy = boostPriority;
+  clientCopy = client;
+  messageCopy = message;
+  replyCopy = reply;
+  if (messageCopy)
   {
     if (self->_enqueuedBlockCount >= 0x65)
     {
@@ -749,7 +749,7 @@ LABEL_12:
       {
         enqueuedBlockCount = self->_enqueuedBlockCount;
         *buf = 138412546;
-        v31 = self;
+        selfCopy = self;
         v32 = 2048;
         v33 = enqueuedBlockCount;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%@: _queue has too many operations %lu! Droping block.", buf, 0x16u);
@@ -764,10 +764,10 @@ LABEL_12:
     v24[2] = sub_100065A4C;
     v14 = v24[3] = &unk_100187B70;
     v25 = v14;
-    v26 = v12;
-    v28 = a5;
-    v27 = v13;
-    v29 = v8;
+    v26 = messageCopy;
+    priorityCopy = priority;
+    v27 = replyCopy;
+    v29 = boostPriorityCopy;
     v16 = objc_retainBlock(v24);
     v17 = v16;
     if (!self->_queue)
@@ -779,7 +779,7 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (v10)
+    if (clientCopy)
     {
       [(APSConnectionServer *)self _initiateConnectionIfNecessary];
     }
@@ -792,13 +792,13 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v19 = self;
-    objc_sync_enter(v19);
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
     ++self->_enqueuedBlockCount;
-    objc_sync_exit(v19);
+    objc_sync_exit(selfCopy2);
 
     queue = self->_queue;
-    if (v8)
+    if (boostPriorityCopy)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -814,22 +814,22 @@ LABEL_15:
       dispatch_async(queue, v17);
     }
 
-    p_numberNotificationsDropped = &v19->_numberNotificationsQueued;
+    p_numberNotificationsDropped = &selfCopy2->_numberNotificationsQueued;
     goto LABEL_15;
   }
 
 LABEL_18:
 }
 
-- (APSConnectionServer)initWithDelegate:(id)a3 user:(id)a4 userPreferences:(id)a5 enableDarkWake:(BOOL)a6 environmentName:(id)a7 connectionPortName:(id)a8 processName:(id)a9 connection:(id)a10
+- (APSConnectionServer)initWithDelegate:(id)delegate user:(id)user userPreferences:(id)preferences enableDarkWake:(BOOL)wake environmentName:(id)name connectionPortName:(id)portName processName:(id)processName connection:(id)self0
 {
-  v15 = a3;
-  v47 = a4;
-  v46 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
+  delegateCopy = delegate;
+  userCopy = user;
+  preferencesCopy = preferences;
+  nameCopy = name;
+  portNameCopy = portName;
+  processNameCopy = processName;
+  connectionCopy = connection;
   v48.receiver = self;
   v48.super_class = APSConnectionServer;
   v20 = [(APSConnectionServer *)&v48 init];
@@ -844,40 +844,40 @@ LABEL_18:
     *buf = 138413058;
     v50 = v20;
     v51 = 2112;
-    v52 = v16;
+    v52 = nameCopy;
     v53 = 2112;
-    v54 = v17;
+    v54 = portNameCopy;
     v55 = 2112;
-    v56 = v18;
+    v56 = processNameCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%@: Initializing connection server with environmentName '%@' and connectionPortName '%@' and processName '%@'", buf, 0x2Au);
   }
 
-  objc_storeStrong(&v20->_userPreferences, a5);
+  objc_storeStrong(&v20->_userPreferences, preferences);
   v20->_connectionLock._os_unfair_lock_opaque = 0;
-  if (v17)
+  if (portNameCopy)
   {
     v22 = [NSString alloc];
-    v23 = [v47 name];
-    v24 = [v22 initWithFormat:@"port=%@-user=%@-env=%@", v17, v23, v16];
+    name = [userCopy name];
+    nameCopy = [v22 initWithFormat:@"port=%@-user=%@-env=%@", portNameCopy, name, nameCopy];
 LABEL_8:
     name = v20->_name;
-    v20->_name = v24;
+    v20->_name = nameCopy;
 
     goto LABEL_9;
   }
 
-  if (v18)
+  if (processNameCopy)
   {
     v25 = [NSString alloc];
-    v23 = [v47 name];
-    v24 = [v25 initWithFormat:@"proc=%@-user=%@-env=%@", v18, v23, v16];
+    name = [userCopy name];
+    nameCopy = [v25 initWithFormat:@"proc=%@-user=%@-env=%@", processNameCopy, name, nameCopy];
     goto LABEL_8;
   }
 
 LABEL_9:
-  objc_storeStrong(&v20->_user, a4);
-  objc_storeWeak(&v20->_delegate, v15);
-  v27 = [v16 copy];
+  objc_storeStrong(&v20->_user, user);
+  objc_storeWeak(&v20->_delegate, delegateCopy);
+  v27 = [nameCopy copy];
   environmentName = v20->_environmentName;
   v20->_environmentName = v27;
 
@@ -886,7 +886,7 @@ LABEL_9:
   queue = v20->_queue;
   v20->_queue = v30;
 
-  v32 = [v18 copy];
+  v32 = [processNameCopy copy];
   processName = v20->_processName;
   v20->_processName = v32;
 
@@ -899,20 +899,20 @@ LABEL_9:
   [v36 timeIntervalSinceReferenceDate];
   v20->_dateCreated = v37;
 
-  v20->_enableDarkWake = a6;
-  if (v17)
+  v20->_enableDarkWake = wake;
+  if (portNameCopy)
   {
-    v38 = [v17 copy];
+    v38 = [portNameCopy copy];
     connectionPortName = v20->_connectionPortName;
     v20->_connectionPortName = v38;
 
     [(APSConnectionServer *)v20 _lookUpMachPort];
   }
 
-  if (v19)
+  if (connectionCopy)
   {
-    v20->_clientPID = xpc_connection_get_pid(v19);
-    objc_storeStrong(&v20->_connection, a10);
+    v20->_clientPID = xpc_connection_get_pid(connectionCopy);
+    objc_storeStrong(&v20->_connection, connection);
     [(APSConnectionServer *)v20 _migratePersistentTopicsIfNeeded];
   }
 
@@ -967,8 +967,8 @@ LABEL_20:
 - (void)_lookUpMachPort
 {
   v9 = 0;
-  v3 = [(APSConnectionServer *)self user];
-  v4 = [v3 bootstrapLookupForPortName:-[NSString UTF8String](self->_connectionPortName outConnectionPort:{"UTF8String"), &v9}];
+  user = [(APSConnectionServer *)self user];
+  v4 = [user bootstrapLookupForPortName:-[NSString UTF8String](self->_connectionPortName outConnectionPort:{"UTF8String"), &v9}];
 
   if (v9 - 1 > 0xFFFFFFFD)
   {
@@ -976,12 +976,12 @@ LABEL_20:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       connectionPortName = self->_connectionPortName;
-      v7 = [(APSConnectionServer *)self user];
+      user2 = [(APSConnectionServer *)self user];
       v8 = bootstrap_strerror(v4);
       *buf = 138412802;
       v11 = connectionPortName;
       v12 = 2112;
-      v13 = v7;
+      v13 = user2;
       v14 = 2080;
       v15 = v8;
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Unable to bootstrap_look_up connection port '%@' for user %@: %s", buf, 0x20u);
@@ -997,25 +997,25 @@ LABEL_20:
 - (void)close
 {
   self->_isClosed = 1;
-  v3 = [(APSConnectionServer *)self connection];
-  if (v3)
+  connection = [(APSConnectionServer *)self connection];
+  if (connection)
   {
-    connection = v3;
+    connection = connection;
     [(APSConnectionServer *)self _suspendQueue];
     xpc_connection_set_context(connection, 0);
     xpc_connection_cancel(connection);
     [(APSConnectionServer *)self setConnection:0];
-    v3 = connection;
+    connection = connection;
   }
 }
 
-- (id)processNameWithLabels:(BOOL)a3
+- (id)processNameWithLabels:(BOOL)labels
 {
   connectionPortName = self->_connectionPortName;
   if (connectionPortName)
   {
     v4 = &stru_10018F6A0;
-    if (a3)
+    if (labels)
     {
       v4 = @"portname=";
     }
@@ -1026,7 +1026,7 @@ LABEL_20:
   else
   {
     v5 = &stru_10018F6A0;
-    if (a3)
+    if (labels)
     {
       v5 = @"process=";
     }
@@ -1069,27 +1069,27 @@ LABEL_20:
 {
   v3 = [(APSConnectionServer *)self processNameWithLabels:1];
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
-  v6 = [v5 total];
-  v7 = [v6 count];
+  incomingCounts = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
+  total = [incomingCounts total];
+  v7 = [total count];
 
   if (v7)
   {
-    v8 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
-    v9 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCountsByTopic];
-    v10 = sub_100066840(v9, v8, v9);
+    incomingCounts2 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
+    incomingCountsByTopic = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCountsByTopic];
+    v10 = sub_100066840(incomingCountsByTopic, incomingCounts2, incomingCountsByTopic);
     [v4 setObject:v10 forKeyedSubscript:@"in"];
   }
 
-  v11 = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCounts];
-  v12 = [v11 total];
-  v13 = [v12 count];
+  outgoingCounts = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCounts];
+  total2 = [outgoingCounts total];
+  v13 = [total2 count];
 
   if (v13)
   {
-    v14 = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCounts];
-    v15 = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCountsByTopic];
-    v16 = sub_100066840(v15, v14, v15);
+    outgoingCounts2 = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCounts];
+    outgoingCountsByTopic = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCountsByTopic];
+    v16 = sub_100066840(outgoingCountsByTopic, outgoingCounts2, outgoingCountsByTopic);
     [v4 setObject:v16 forKeyedSubscript:@"out"];
   }
 
@@ -1117,26 +1117,26 @@ LABEL_20:
   return v27;
 }
 
-- (void)setUser:(id)a3
+- (void)setUser:(id)user
 {
-  if (self->_user != a3)
+  if (self->_user != user)
   {
     [(APSConnectionServer *)self _migratePersistentTopicsIfNeeded];
   }
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v5 = a3;
-  v6 = [(APSConnectionServer *)self connection];
+  connectionCopy = connection;
+  connection = [(APSConnectionServer *)self connection];
   v7 = +[APSLog connectionServer];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     connectionPortName = self->_connectionPortName;
     LODWORD(v11[0]) = 138413058;
-    *(v11 + 4) = v6;
+    *(v11 + 4) = connection;
     WORD6(v11[0]) = 2112;
-    *(v11 + 14) = v5;
+    *(v11 + 14) = connectionCopy;
     WORD3(v11[1]) = 2112;
     *(&v11[1] + 1) = self;
     v12 = 2112;
@@ -1144,9 +1144,9 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Replacing xpc conn %@ with %@ for %@ (%@)", v11, 0x2Au);
   }
 
-  if (v6 != v5)
+  if (connection != connectionCopy)
   {
-    if (v6)
+    if (connection)
     {
       v9 = +[APSLog connectionServer];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -1154,11 +1154,11 @@ LABEL_20:
         sub_100109FCC();
       }
 
-      xpc_connection_cancel(v6);
+      xpc_connection_cancel(connection);
     }
 
-    objc_storeStrong(&self->_connection, a3);
-    if (v5 && v6)
+    objc_storeStrong(&self->_connection, connection);
+    if (connectionCopy && connection)
     {
       memset(v11, 0, sizeof(v11));
       xpc_connection_get_audit_token();
@@ -1196,212 +1196,212 @@ LABEL_20:
   }
 }
 
-- (void)handleConnectionStatusChanged:(BOOL)a3
+- (void)handleConnectionStatusChanged:(BOOL)changed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100066EB0;
   v3[3] = &unk_100187B90;
-  v4 = a3;
+  changedCopy = changed;
   [(APSConnectionServer *)self _enqueueXPCMessage:v3 wakingClient:0 highPriority:0];
 }
 
-- (void)handleReceivedMessage:(id)a3
+- (void)handleReceivedMessage:(id)message
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100067464;
   v7[3] = &unk_100187BE0;
-  v4 = a3;
-  v8 = v4;
-  -[APSConnectionServer _enqueueXPCMessage:wakingClient:highPriority:](self, "_enqueueXPCMessage:wakingClient:highPriority:", v7, 1, [v4 priority] == 10);
+  messageCopy = message;
+  v8 = messageCopy;
+  -[APSConnectionServer _enqueueXPCMessage:wakingClient:highPriority:](self, "_enqueueXPCMessage:wakingClient:highPriority:", v7, 1, [messageCopy priority] == 10);
   v5 = +[APSLog PUSHTRACE];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 tracingUUID];
+    tracingUUID = [messageCopy tracingUUID];
     *buf = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = tracingUUID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: Sending push to client. UUID: %@", buf, 0x16u);
   }
 
-  [(APSPayloadMessageStats *)self->_payloadMessageStats payloadMessageReceived:v4];
+  [(APSPayloadMessageStats *)self->_payloadMessageStats payloadMessageReceived:messageCopy];
 }
 
-- (void)handleResult:(id)a3 forSendingOutgoingMessage:(id)a4
+- (void)handleResult:(id)result forSendingOutgoingMessage:(id)message
 {
-  v6 = a4;
-  v10 = a3;
-  v7 = [v6 messageID];
-  v8 = [v6 sendRTT];
-  v9 = [v6 ackTimestamp];
+  messageCopy = message;
+  resultCopy = result;
+  messageID = [messageCopy messageID];
+  sendRTT = [messageCopy sendRTT];
+  ackTimestamp = [messageCopy ackTimestamp];
 
-  [(APSConnectionServer *)self handleResult:v10 forSendingOutgoingMessageWithID:v7 sendRTT:v8 ackTimestamp:v9];
+  [(APSConnectionServer *)self handleResult:resultCopy forSendingOutgoingMessageWithID:messageID sendRTT:sendRTT ackTimestamp:ackTimestamp];
 }
 
-- (void)handleResult:(id)a3 forSendingOutgoingMessageWithID:(unint64_t)a4 sendRTT:(unint64_t)a5 ackTimestamp:(unint64_t)a6
+- (void)handleResult:(id)result forSendingOutgoingMessageWithID:(unint64_t)d sendRTT:(unint64_t)t ackTimestamp:(unint64_t)timestamp
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100067698;
   v11[3] = &unk_100187C08;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v10 = v12;
+  resultCopy = result;
+  dCopy = d;
+  tCopy = t;
+  timestampCopy = timestamp;
+  v10 = resultCopy;
   [(APSConnectionServer *)self _enqueueXPCMessage:v11 wakingClient:0 highPriority:1];
 }
 
-- (void)handleSendOutgoingMessage:(id)a3
+- (void)handleSendOutgoingMessage:(id)message
 {
-  v7 = a3;
+  messageCopy = message;
   if (_os_feature_enabled_impl())
   {
-    v4 = [v7 topic];
-    v5 = [v4 isEqualToString:@"com.apple.private.alloy.facetime.multi"];
+    topic = [messageCopy topic];
+    v5 = [topic isEqualToString:@"com.apple.private.alloy.facetime.multi"];
 
     if (v5)
     {
-      [v7 identifier];
+      [messageCopy identifier];
       kdebug_trace();
     }
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained connection:self didReceiveOutgoingMessageToSend:v7];
+  [WeakRetained connection:self didReceiveOutgoingMessageToSend:messageCopy];
 
-  [(APSPayloadMessageStats *)self->_payloadMessageStats payloadMessageSent:v7];
+  [(APSPayloadMessageStats *)self->_payloadMessageStats payloadMessageSent:messageCopy];
 }
 
-- (void)handleCancelOutgoingMessageWithID:(unint64_t)a3
+- (void)handleCancelOutgoingMessageWithID:(unint64_t)d
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained connection:self didReceiveCancellationForOutgoingMessageWithID:a3];
+  [WeakRetained connection:self didReceiveCancellationForOutgoingMessageWithID:d];
 }
 
-- (void)handleFakeMessage:(id)a3
+- (void)handleFakeMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained connection:self didReceiveFakeMessageToSend:v4];
+  [WeakRetained connection:self didReceiveFakeMessageToSend:messageCopy];
 }
 
-- (void)handleRequestPerAppTokenForTopic:(id)a3 identifier:(id)a4
+- (void)handleRequestPerAppTokenForTopic:(id)topic identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[APSAppTokenInfo alloc] initUnextendedAppTokenWithTopic:v7 identifier:v6];
+  identifierCopy = identifier;
+  topicCopy = topic;
+  v8 = [[APSAppTokenInfo alloc] initUnextendedAppTokenWithTopic:topicCopy identifier:identifierCopy];
 
   [(APSConnectionServer *)self _handleRequestTokenForInfo:v8];
 }
 
-- (void)handleRequestTokenForInfo:(id)a3
+- (void)handleRequestTokenForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[APSLog connectionServer];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: Received extended app token request for info %@", &v6, 0x16u);
   }
 
-  [(APSConnectionServer *)self _handleRequestTokenForInfo:v4];
+  [(APSConnectionServer *)self _handleRequestTokenForInfo:infoCopy];
 }
 
-- (void)handleRequestURLTokenForInfo:(id)a3
+- (void)handleRequestURLTokenForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[APSLog connectionServer];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: Received web token request for info %@", &v6, 0x16u);
   }
 
-  [(APSConnectionServer *)self _handleRequestTokenForInfo:v4];
+  [(APSConnectionServer *)self _handleRequestTokenForInfo:infoCopy];
 }
 
-- (void)_handleRequestTokenForInfo:(id)a3
+- (void)_handleRequestTokenForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(APSConnectionServer *)self _savePersistentConnectionTopics];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained connection:self didRequestTokenForInfo:v4];
+  [WeakRetained connection:self didRequestTokenForInfo:infoCopy];
 }
 
-- (void)handleReceivedToken:(id)a3 forInfo:(id)a4
+- (void)handleReceivedToken:(id)token forInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  infoCopy = info;
   v8 = +[APSLog connectionServer];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 debugDescription];
+    v9 = [tokenCopy debugDescription];
     v10 = 138412802;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v7;
+    v15 = infoCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@: Received token %@ for info %@", &v10, 0x20u);
   }
 
-  [(APSConnectionServer *)self _sendClientToken:v6 forInfo:v7];
+  [(APSConnectionServer *)self _sendClientToken:tokenCopy forInfo:infoCopy];
 }
 
-- (void)handleReceivedTokenError:(id)a3 forInfo:(id)a4
+- (void)handleReceivedTokenError:(id)error forInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 type] == 2)
+  errorCopy = error;
+  infoCopy = info;
+  if ([infoCopy type] == 2)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100067D98;
     v8[3] = &unk_100187C30;
-    v9 = v7;
-    v10 = v6;
+    v9 = infoCopy;
+    v10 = errorCopy;
     [(APSConnectionServer *)self _enqueueXPCMessage:v8 wakingClient:1 highPriority:0];
   }
 }
 
-- (void)handleCurrentTokenForInfo:(id)a3
+- (void)handleCurrentTokenForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained connection:self didRequestCurrentTokenForInfo:v4];
+  [WeakRetained connection:self didRequestCurrentTokenForInfo:infoCopy];
 }
 
-- (void)handleCurrentURLTokenForInfo:(id)a3
+- (void)handleCurrentURLTokenForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained connection:self didRequestCurrentTokenForInfo:v4];
+  [WeakRetained connection:self didRequestCurrentTokenForInfo:infoCopy];
 }
 
-- (void)_sendClientToken:(id)a3 forInfo:(id)a4
+- (void)_sendClientToken:(id)token forInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 type];
-  if (v8 == 2)
+  tokenCopy = token;
+  infoCopy = info;
+  type = [infoCopy type];
+  if (type == 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v11 = [WeakRetained connection:self createURLTokenForToken:v6];
+    v11 = [WeakRetained connection:self createURLTokenForToken:tokenCopy];
 
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000682D0;
     v12[3] = &unk_100187C30;
-    v13 = v7;
+    v13 = infoCopy;
     v14 = v11;
     v9 = v11;
     [(APSConnectionServer *)self _enqueueXPCMessage:v12 wakingClient:1 highPriority:0];
@@ -1409,28 +1409,28 @@ LABEL_20:
     goto LABEL_7;
   }
 
-  if (v8 == 1)
+  if (type == 1)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10006820C;
     v15[3] = &unk_100187C30;
-    v16 = v7;
-    v17 = v6;
+    v16 = infoCopy;
+    v17 = tokenCopy;
     [(APSConnectionServer *)self _enqueueXPCMessage:v15 wakingClient:1 highPriority:0];
 
     v9 = v16;
     goto LABEL_7;
   }
 
-  if (!v8)
+  if (!type)
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100068138;
     v18[3] = &unk_100187C30;
-    v19 = v7;
-    v20 = v6;
+    v19 = infoCopy;
+    v20 = tokenCopy;
     [(APSConnectionServer *)self _enqueueXPCMessage:v18 wakingClient:1 highPriority:0];
 
     v9 = v19;
@@ -1438,70 +1438,70 @@ LABEL_7:
   }
 }
 
-- (void)handleInvalidatePerAppTokenForTopic:(id)a3 identifier:(id)a4
+- (void)handleInvalidatePerAppTokenForTopic:(id)topic identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[APSAppTokenInfo alloc] initUnextendedAppTokenWithTopic:v7 identifier:v6];
+  identifierCopy = identifier;
+  topicCopy = topic;
+  v8 = [[APSAppTokenInfo alloc] initUnextendedAppTokenWithTopic:topicCopy identifier:identifierCopy];
 
   [(APSConnectionServer *)self _handleInvalidateTokenForInfo:v8];
 }
 
-- (void)handleInvalidateURLTokenForTopic:(id)a3
+- (void)handleInvalidateURLTokenForTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   v5 = +[APSLog connectionServer];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = topicCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: Received web token invalidate request for topic %@", &v7, 0x16u);
   }
 
-  v6 = [[APSURLTokenInfo alloc] initWithTopic:v4];
+  v6 = [[APSURLTokenInfo alloc] initWithTopic:topicCopy];
   [(APSConnectionServer *)self _handleInvalidateTokenForInfo:v6];
 }
 
-- (void)handleInvalidatePerAppTokenForInfo:(id)a3
+- (void)handleInvalidatePerAppTokenForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[APSLog connectionServer];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: Received extended app token invalidate request for info %@", &v6, 0x16u);
   }
 
-  [(APSConnectionServer *)self _handleInvalidateTokenForInfo:v4];
+  [(APSConnectionServer *)self _handleInvalidateTokenForInfo:infoCopy];
 }
 
-- (void)_handleInvalidateTokenForInfo:(id)a3
+- (void)_handleInvalidateTokenForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(APSConnectionServer *)self _savePersistentConnectionTopics];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained connection:self didInvalidateTokenForInfo:v4];
+  [WeakRetained connection:self didInvalidateTokenForInfo:infoCopy];
 }
 
-- (void)handleSubscribeToChannels:(id)a3 forTopic:(id)a4
+- (void)handleSubscribeToChannels:(id)channels forTopic:(id)topic
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APSConnectionServer *)self connectionPortName];
+  channelsCopy = channels;
+  topicCopy = topic;
+  connectionPortName = [(APSConnectionServer *)self connectionPortName];
 
-  if (!v8)
+  if (!connectionPortName)
   {
-    v21 = v7;
+    v21 = topicCopy;
     v9 = +[APSLog connectionServer];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v28 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: Adding incoming pubsub subscriptions to inMemory list", buf, 0xCu);
     }
 
@@ -1509,7 +1509,7 @@ LABEL_7:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = v6;
+    v10 = channelsCopy;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
@@ -1526,15 +1526,15 @@ LABEL_7:
           }
 
           v15 = [[PKPublicChannel alloc] initWithDictionary:*(*(&v22 + 1) + 8 * v14)];
-          v16 = [(APSConnectionServer *)self environmentName];
-          [v15 setEnvironment:v16];
+          environmentName = [(APSConnectionServer *)self environmentName];
+          [v15 setEnvironment:environmentName];
 
-          v17 = [(APSConnectionServer *)self user];
-          v18 = [v17 pubSubName];
-          [v15 setTokenName:v18];
+          user = [(APSConnectionServer *)self user];
+          pubSubName = [user pubSubName];
+          [v15 setTokenName:pubSubName];
 
-          v19 = [(APSConnectionServer *)self inMemorySubscriptions];
-          [v19 addObject:v15];
+          inMemorySubscriptions = [(APSConnectionServer *)self inMemorySubscriptions];
+          [inMemorySubscriptions addObject:v15];
 
           v14 = v14 + 1;
         }
@@ -1546,47 +1546,47 @@ LABEL_7:
       while (v12);
     }
 
-    v7 = v21;
+    topicCopy = v21;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained connection:self didReceiveSubscribeToChannels:v6 forTopic:v7];
+  [WeakRetained connection:self didReceiveSubscribeToChannels:channelsCopy forTopic:topicCopy];
 }
 
-- (void)handleUnsubscribeFromChannels:(id)a3 forTopic:(id)a4
+- (void)handleUnsubscribeFromChannels:(id)channels forTopic:(id)topic
 {
-  v6 = a4;
-  v7 = a3;
+  topicCopy = topic;
+  channelsCopy = channels;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained connection:self didReceiveUnsubscribeToChannels:v7 forTopic:v6];
+  [WeakRetained connection:self didReceiveUnsubscribeToChannels:channelsCopy forTopic:topicCopy];
 }
 
-- (void)handleIncomingMessageReceiptWithTopic:(id)a3 tracingUUID:(id)a4
+- (void)handleIncomingMessageReceiptWithTopic:(id)topic tracingUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  topicCopy = topic;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained connection:self didReceiveIncomingMessageReceiptWithTopic:v7 tracingUUID:v6];
+  [WeakRetained connection:self didReceiveIncomingMessageReceiptWithTopic:topicCopy tracingUUID:dCopy];
 }
 
-- (void)handleAckIncomingMessageWithGuid:(id)a3 topic:(id)a4 tracingUUID:(id)a5
+- (void)handleAckIncomingMessageWithGuid:(id)guid topic:(id)topic tracingUUID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  dCopy = d;
+  topicCopy = topic;
+  guidCopy = guid;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained connection:self handleAckIncomingMessageWithGuid:v10 topic:v9 tracingUUID:v8];
+  [WeakRetained connection:self handleAckIncomingMessageWithGuid:guidCopy topic:topicCopy tracingUUID:dCopy];
 }
 
-- (void)setPublicToken:(id)a3 needsAck:(BOOL)a4
+- (void)setPublicToken:(id)token needsAck:(BOOL)ack
 {
-  v6 = a3;
-  v7 = v6;
+  tokenCopy = token;
+  v7 = tokenCopy;
   publicToken = self->_publicToken;
-  if (publicToken == v6 || publicToken && [(NSData *)v6 isEqualToData:?])
+  if (publicToken == tokenCopy || publicToken && [(NSData *)tokenCopy isEqualToData:?])
   {
     v9 = 0;
-    if (a4)
+    if (ack)
     {
       goto LABEL_12;
     }
@@ -1599,7 +1599,7 @@ LABEL_7:
     self->_publicToken = v10;
 
     v9 = 1;
-    if (a4)
+    if (ack)
     {
 LABEL_12:
       v14 = 1;
@@ -1612,10 +1612,10 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v12 = [(APSConnectionServer *)self connection];
+  connection = [(APSConnectionServer *)self connection];
 
   v13 = v9 ^ 1;
-  if (!v12)
+  if (!connection)
   {
     v13 = 1;
   }
@@ -1643,13 +1643,13 @@ LABEL_13:
   }
 }
 
-- (void)handlePublicTokenDeliveryReply:(id)a3
+- (void)handlePublicTokenDeliveryReply:(id)reply
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  replyCopy = reply;
+  v5 = replyCopy;
+  if (replyCopy)
   {
-    type = xpc_get_type(v4);
+    type = xpc_get_type(replyCopy);
     if (type == &_xpc_type_dictionary)
     {
       v14 = APSGetXPCDataFromDictionary();
@@ -1663,16 +1663,16 @@ LABEL_13:
     v8 = +[APSLog connectionServer];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(APSConnectionServer *)self connectionPortName];
-      v10 = [(APSConnectionServer *)self publicToken];
+      connectionPortName = [(APSConnectionServer *)self connectionPortName];
+      publicToken = [(APSConnectionServer *)self publicToken];
       v15 = 138413058;
       v16 = v7;
       v17 = 2112;
-      v18 = v9;
+      v18 = connectionPortName;
       v19 = 2112;
-      v20 = v10;
+      publicTokenDeliveryRetries2 = publicToken;
       v21 = 2048;
-      v22 = [(APSConnectionServer *)self publicTokenDeliveryRetries];
+      publicTokenDeliveryRetries = [(APSConnectionServer *)self publicTokenDeliveryRetries];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received %@ when updating public token. {connectionPort:%@, token: %@, retries: %ld}", &v15, 0x2Au);
     }
   }
@@ -1682,20 +1682,20 @@ LABEL_13:
     v8 = +[APSLog connectionServer];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(APSConnectionServer *)self connectionPortName];
-      v12 = [(APSConnectionServer *)self publicToken];
+      connectionPortName2 = [(APSConnectionServer *)self connectionPortName];
+      publicToken2 = [(APSConnectionServer *)self publicToken];
       v15 = 138412802;
-      v16 = v11;
+      v16 = connectionPortName2;
       v17 = 2112;
-      v18 = v12;
+      v18 = publicToken2;
       v19 = 2048;
-      v20 = [(APSConnectionServer *)self publicTokenDeliveryRetries];
+      publicTokenDeliveryRetries2 = [(APSConnectionServer *)self publicTokenDeliveryRetries];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "No reply received when updating public token. {connectionPort:%@, token: %@, retries: %ld}", &v15, 0x20u);
     }
   }
 
-  v13 = [(APSConnectionServer *)self publicTokenDeliveryRetries];
-  if (![(APSConnectionServer *)self isPublicTokenAcknowledged]&& v13 <= 2)
+  publicTokenDeliveryRetries3 = [(APSConnectionServer *)self publicTokenDeliveryRetries];
+  if (![(APSConnectionServer *)self isPublicTokenAcknowledged]&& publicTokenDeliveryRetries3 <= 2)
   {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_redeliverCurrentPublicToken" object:0];
     [(APSConnectionServer *)self publicTokenDeliveryDelay];
@@ -1711,7 +1711,7 @@ LABEL_11:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ scheduled public token delivery", &v4, 0xCu);
   }
 
@@ -1722,10 +1722,10 @@ LABEL_11:
   }
 }
 
-- (void)setIsPublicTokenAcknowledged:(BOOL)a3
+- (void)setIsPublicTokenAcknowledged:(BOOL)acknowledged
 {
   connectionPortName = self->_connectionPortName;
-  if (connectionPortName && (v5 = a3, [(NSString *)connectionPortName length]))
+  if (connectionPortName && (v5 = acknowledged, [(NSString *)connectionPortName length]))
   {
     if (self->_isPublicTokenAcknowledged != v5)
     {
@@ -1745,25 +1745,25 @@ LABEL_11:
   }
 }
 
-- (void)acknowledgeDidReceivePublicToken:(id)a3
+- (void)acknowledgeDidReceivePublicToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   connectionPortName = self->_connectionPortName;
-  if (!connectionPortName || (v6 = [(NSString *)connectionPortName length], !v4) || !v6)
+  if (!connectionPortName || (v6 = [(NSString *)connectionPortName length], !tokenCopy) || !v6)
   {
     v9 = +[APSLog connectionServer];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       processName = self->_processName;
       v12 = 138412290;
-      v13 = processName;
+      selfCopy = processName;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Ignoring token acknowledgement from %@", &v12, 0xCu);
     }
 
     goto LABEL_12;
   }
 
-  v7 = [(NSData *)self->_publicToken isEqualToData:v4];
+  v7 = [(NSData *)self->_publicToken isEqualToData:tokenCopy];
   v8 = +[APSLog connectionServer];
   v9 = v8;
   if (!v7)
@@ -1782,7 +1782,7 @@ LABEL_12:
   {
     v10 = self->_connectionPortName;
     v12 = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: Token acknowledged by %@", &v12, 0x16u);
@@ -1792,25 +1792,25 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)setMessageSize:(unint64_t)a3
+- (void)setMessageSize:(unint64_t)size
 {
-  if (self->_messageSize != a3)
+  if (self->_messageSize != size)
   {
     v14[14] = v3;
     v14[15] = v4;
-    self->_messageSize = a3;
-    v7 = [(APSConnectionServer *)self connectionPortName];
-    if (v7)
+    self->_messageSize = size;
+    connectionPortName = [(APSConnectionServer *)self connectionPortName];
+    if (connectionPortName)
     {
-      v8 = v7;
-      v9 = [(APSConnectionServer *)self enabledTopics];
-      if (![v9 count])
+      v8 = connectionPortName;
+      enabledTopics = [(APSConnectionServer *)self enabledTopics];
+      if (![enabledTopics count])
       {
-        v10 = [(APSConnectionServer *)self opportunisticTopics];
-        if (![v10 count])
+        opportunisticTopics = [(APSConnectionServer *)self opportunisticTopics];
+        if (![opportunisticTopics count])
         {
-          v12 = [(APSConnectionServer *)self ignoredTopics];
-          v13 = [v12 count];
+          ignoredTopics = [(APSConnectionServer *)self ignoredTopics];
+          v13 = [ignoredTopics count];
 
           if (!v13)
           {
@@ -1828,31 +1828,31 @@ LABEL_7:
     v14[1] = 3221225472;
     v14[2] = sub_100069368;
     v14[3] = &unk_100187C50;
-    v14[4] = a3;
+    v14[4] = size;
     v14[5] = largeMessageSize;
     [(APSConnectionServer *)self _enqueueXPCMessage:v14 wakingClient:0 highPriority:0];
   }
 }
 
-- (void)setLargeMessageSize:(unint64_t)a3
+- (void)setLargeMessageSize:(unint64_t)size
 {
-  if (self->_largeMessageSize != a3)
+  if (self->_largeMessageSize != size)
   {
     v14[14] = v3;
     v14[15] = v4;
-    self->_largeMessageSize = a3;
-    v7 = [(APSConnectionServer *)self connectionPortName];
-    if (v7)
+    self->_largeMessageSize = size;
+    connectionPortName = [(APSConnectionServer *)self connectionPortName];
+    if (connectionPortName)
     {
-      v8 = v7;
-      v9 = [(APSConnectionServer *)self enabledTopics];
-      if (![v9 count])
+      v8 = connectionPortName;
+      enabledTopics = [(APSConnectionServer *)self enabledTopics];
+      if (![enabledTopics count])
       {
-        v10 = [(APSConnectionServer *)self opportunisticTopics];
-        if (![v10 count])
+        opportunisticTopics = [(APSConnectionServer *)self opportunisticTopics];
+        if (![opportunisticTopics count])
         {
-          v12 = [(APSConnectionServer *)self ignoredTopics];
-          v13 = [v12 count];
+          ignoredTopics = [(APSConnectionServer *)self ignoredTopics];
+          v13 = [ignoredTopics count];
 
           if (!v13)
           {
@@ -1871,22 +1871,22 @@ LABEL_7:
     v14[2] = sub_100069538;
     v14[3] = &unk_100187C50;
     v14[4] = messageSize;
-    v14[5] = a3;
+    v14[5] = size;
     [(APSConnectionServer *)self _enqueueXPCMessage:v14 wakingClient:0 highPriority:0];
   }
 }
 
-- (void)handleChannelSubscriptionFailures:(id)a3 forTopic:(id)a4
+- (void)handleChannelSubscriptionFailures:(id)failures forTopic:(id)topic
 {
-  v6 = a3;
-  v7 = a4;
+  failuresCopy = failures;
+  topicCopy = topic;
   v8 = +[APSLog connectionServer];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v6;
+    v17 = failuresCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ Sending failures %@ to client", buf, 0x16u);
   }
 
@@ -1894,23 +1894,23 @@ LABEL_7:
   v11[1] = 3221225472;
   v11[2] = sub_10006972C;
   v11[3] = &unk_100187C30;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = topicCopy;
+  v13 = failuresCopy;
+  v9 = failuresCopy;
+  v10 = topicCopy;
   [(APSConnectionServer *)self _enqueueXPCMessage:v11 wakingClient:1 highPriority:0];
 }
 
-- (void)_warnIfOverlappingTopics:(id)a3 againstTopics:(id)a4 string:(id)a5
+- (void)_warnIfOverlappingTopics:(id)topics againstTopics:(id)againstTopics string:(id)string
 {
-  v8 = a3;
-  v9 = a4;
-  v19 = a5;
+  topicsCopy = topics;
+  againstTopicsCopy = againstTopics;
+  stringCopy = string;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v20 objects:v30 count:16];
+  v10 = [topicsCopy countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (v10)
   {
     v12 = v10;
@@ -1923,11 +1923,11 @@ LABEL_7:
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(topicsCopy);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        if ([v9 containsObject:{v15, v18}])
+        if ([againstTopicsCopy containsObject:{v15, v18}])
         {
           v16 = self->_processName;
           if (!v16)
@@ -1943,26 +1943,26 @@ LABEL_7:
             v26 = 2112;
             v27 = v15;
             v28 = 2112;
-            v29 = v19;
+            v29 = stringCopy;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Received request from %@ to put topic %@ into both %@ topic sets", buf, 0x20u);
           }
         }
       }
 
-      v12 = [v8 countByEnumeratingWithState:&v20 objects:v30 count:16];
+      v12 = [topicsCopy countByEnumeratingWithState:&v20 objects:v30 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)_informTopicManagerOfChangedFilter:(int64_t)a3 newTopics:(id)a4 oldTopics:(id)a5
+- (void)_informTopicManagerOfChangedFilter:(int64_t)filter newTopics:(id)topics oldTopics:(id)oldTopics
 {
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  topicsCopy = topics;
+  oldTopicsCopy = oldTopics;
+  if (oldTopicsCopy)
   {
-    if (v7)
+    if (topicsCopy)
     {
       goto LABEL_3;
     }
@@ -1970,23 +1970,23 @@ LABEL_7:
 
   else
   {
-    v8 = [NSMutableSet setWithCapacity:0];
-    if (v7)
+    oldTopicsCopy = [NSMutableSet setWithCapacity:0];
+    if (topicsCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v7 = [NSMutableSet setWithCapacity:0];
+  topicsCopy = [NSMutableSet setWithCapacity:0];
 LABEL_3:
-  v9 = [v8 mutableCopy];
-  [v9 minusSet:v7];
-  v10 = [v7 mutableCopy];
-  [v10 minusSet:v8];
-  v11 = [(APSConnectionServer *)self delegate];
-  v12 = [v11 topicManager];
+  v9 = [oldTopicsCopy mutableCopy];
+  [v9 minusSet:topicsCopy];
+  v10 = [topicsCopy mutableCopy];
+  [v10 minusSet:oldTopicsCopy];
+  delegate = [(APSConnectionServer *)self delegate];
+  topicManager = [delegate topicManager];
 
-  [v12 removeTopics:v9 connectionServer:self filter:a3];
+  [topicManager removeTopics:v9 connectionServer:self filter:filter];
   if ([v10 count])
   {
     v26 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v10 count]);
@@ -1999,11 +1999,11 @@ LABEL_3:
     if (v13)
     {
       v14 = v13;
-      v20 = v12;
+      v20 = topicManager;
       v21 = v10;
       v22 = v9;
-      v23 = v8;
-      v24 = v7;
+      v23 = oldTopicsCopy;
+      v24 = topicsCopy;
       v15 = 0;
       v16 = *v29;
       do
@@ -2018,7 +2018,7 @@ LABEL_3:
           }
 
           v19 = *(*(&v28 + 1) + 8 * v17);
-          v15 = [APSTopicAttributes topicAttributesWithFilter:a3 darkWakeEnabled:[(NSSet *)self->_darkWakeTopics containsObject:v19 pushWakeEnabled:v20 criticalWakeEnabled:v21 ultraConstrainedEnabled:v22, v23, v24], [(NSSet *)self->_pushWakeTopics containsObject:v19], [(NSSet *)self->_criticalWakeTopics containsObject:v19], [(NSSet *)self->_ultraConstrainedTopics containsObject:v19]];
+          v15 = [APSTopicAttributes topicAttributesWithFilter:filter darkWakeEnabled:[(NSSet *)self->_darkWakeTopics containsObject:v19 pushWakeEnabled:v20 criticalWakeEnabled:v21 ultraConstrainedEnabled:v22, v23, v24], [(NSSet *)self->_pushWakeTopics containsObject:v19], [(NSSet *)self->_criticalWakeTopics containsObject:v19], [(NSSet *)self->_ultraConstrainedTopics containsObject:v19]];
 
           [v26 setObject:v15 forKey:v19];
           v17 = v17 + 1;
@@ -2031,25 +2031,25 @@ LABEL_3:
 
       while (v14);
 
-      v8 = v23;
-      v7 = v24;
+      oldTopicsCopy = v23;
+      topicsCopy = v24;
       v10 = v21;
       v9 = v22;
-      v12 = v20;
+      topicManager = v20;
     }
 
-    [v12 addTopicsAndAttributes:v26 connectionServer:self];
+    [topicManager addTopicsAndAttributes:v26 connectionServer:self];
   }
 }
 
-- (BOOL)_containsInvalidTopic:(id)a3
+- (BOOL)_containsInvalidTopic:(id)topic
 {
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  topicCopy = topic;
+  v4 = [topicCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -2059,7 +2059,7 @@ LABEL_3:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(topicCopy);
         }
 
         if (![*(*(&v8 + 1) + 8 * i) length])
@@ -2069,7 +2069,7 @@ LABEL_3:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [topicCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -2084,29 +2084,29 @@ LABEL_11:
   return v4;
 }
 
-- (void)setEnabledTopics:(id)a3 ignoredTopics:(id)a4 opportunisticTopics:(id)a5 nonWakingTopics:(id)a6
+- (void)setEnabledTopics:(id)topics ignoredTopics:(id)ignoredTopics opportunisticTopics:(id)opportunisticTopics nonWakingTopics:(id)wakingTopics
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  [(APSConnectionServer *)self _warnIfOverlappingTopics:v10 againstTopics:v12 string:@"enabled and opportunistic"];
-  [(APSConnectionServer *)self _warnIfOverlappingTopics:v10 againstTopics:v11 string:@"enabled and ignored"];
-  [(APSConnectionServer *)self _warnIfOverlappingTopics:v11 againstTopics:v12 string:@"ignored and opportunistic"];
-  [(APSConnectionServer *)self _warnIfOverlappingTopics:v10 againstTopics:v13 string:@"enabled and nonWaking"];
-  [(APSConnectionServer *)self _warnIfOverlappingTopics:v11 againstTopics:v13 string:@"ignored and nonWaking"];
-  [(APSConnectionServer *)self _warnIfOverlappingTopics:v12 againstTopics:v13 string:@"opportunistic and nonWaking"];
-  v14 = [(APSConnectionServer *)self delegate];
-  v15 = [v14 topicManager];
-  [v15 beginTransaction];
+  topicsCopy = topics;
+  ignoredTopicsCopy = ignoredTopics;
+  opportunisticTopicsCopy = opportunisticTopics;
+  wakingTopicsCopy = wakingTopics;
+  [(APSConnectionServer *)self _warnIfOverlappingTopics:topicsCopy againstTopics:opportunisticTopicsCopy string:@"enabled and opportunistic"];
+  [(APSConnectionServer *)self _warnIfOverlappingTopics:topicsCopy againstTopics:ignoredTopicsCopy string:@"enabled and ignored"];
+  [(APSConnectionServer *)self _warnIfOverlappingTopics:ignoredTopicsCopy againstTopics:opportunisticTopicsCopy string:@"ignored and opportunistic"];
+  [(APSConnectionServer *)self _warnIfOverlappingTopics:topicsCopy againstTopics:wakingTopicsCopy string:@"enabled and nonWaking"];
+  [(APSConnectionServer *)self _warnIfOverlappingTopics:ignoredTopicsCopy againstTopics:wakingTopicsCopy string:@"ignored and nonWaking"];
+  [(APSConnectionServer *)self _warnIfOverlappingTopics:opportunisticTopicsCopy againstTopics:wakingTopicsCopy string:@"opportunistic and nonWaking"];
+  delegate = [(APSConnectionServer *)self delegate];
+  topicManager = [delegate topicManager];
+  [topicManager beginTransaction];
 
-  if (v10)
+  if (topicsCopy)
   {
-    if (sub_100003E14(v10, self->_enabledTopics))
+    if (sub_100003E14(topicsCopy, self->_enabledTopics))
     {
       v16 = 0;
-      v17 = v10;
-      if (!v12)
+      v17 = topicsCopy;
+      if (!opportunisticTopicsCopy)
       {
         goto LABEL_28;
       }
@@ -2119,14 +2119,14 @@ LABEL_11:
       {
         v20 = APSPrettyPrintCollection();
         *buf = 138412546;
-        v55 = self;
+        selfCopy5 = self;
         v56 = 2112;
-        v57 = v20;
+        ignoredTopicsCopy2 = v20;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%@: connection set enabled topics %@", buf, 0x16u);
       }
 
       v53 = 0;
-      v17 = [(APSConnectionServer *)self entitledTopicsFromSet:v10 unentitledTopics:&v53];
+      v17 = [(APSConnectionServer *)self entitledTopicsFromSet:topicsCopy unentitledTopics:&v53];
       v21 = v53;
 
       if (![v17 count] && objc_msgSend(v21, "count") || -[APSConnectionServer _containsInvalidTopic:](self, "_containsInvalidTopic:", v17))
@@ -2158,11 +2158,11 @@ LABEL_11:
         }
       }
 
-      if (!v12)
+      if (!opportunisticTopicsCopy)
       {
 LABEL_28:
         v18 = 0;
-        if (v11)
+        if (ignoredTopicsCopy)
         {
           goto LABEL_29;
         }
@@ -2176,16 +2176,16 @@ LABEL_28:
   {
     v16 = 0;
     v17 = 0;
-    if (!v12)
+    if (!opportunisticTopicsCopy)
     {
       goto LABEL_28;
     }
   }
 
-  if (sub_100003E14(v12, self->_opportunisticTopics))
+  if (sub_100003E14(opportunisticTopicsCopy, self->_opportunisticTopics))
   {
-    v18 = v12;
-    if (v11)
+    v18 = opportunisticTopicsCopy;
+    if (ignoredTopicsCopy)
     {
       goto LABEL_29;
     }
@@ -2198,14 +2198,14 @@ LABEL_28:
     {
       v25 = APSPrettyPrintCollection();
       *buf = 138412546;
-      v55 = self;
+      selfCopy5 = self;
       v56 = 2112;
-      v57 = v25;
+      ignoredTopicsCopy2 = v25;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%@: connection set opportuntistic topics %@", buf, 0x16u);
     }
 
     v52 = 0;
-    v18 = [(APSConnectionServer *)self entitledTopicsFromSet:v12 unentitledTopics:&v52];
+    v18 = [(APSConnectionServer *)self entitledTopicsFromSet:opportunisticTopicsCopy unentitledTopics:&v52];
     v26 = v52;
 
     if (![v18 count] && objc_msgSend(v26, "count") || -[APSConnectionServer _containsInvalidTopic:](self, "_containsInvalidTopic:", v18))
@@ -2235,14 +2235,14 @@ LABEL_28:
       }
     }
 
-    if (v11)
+    if (ignoredTopicsCopy)
     {
 LABEL_29:
-      if (sub_100003E14(v11, self->_ignoredTopics))
+      if (sub_100003E14(ignoredTopicsCopy, self->_ignoredTopics))
       {
         v30 = 0;
-        v31 = v11;
-        if (!v13)
+        v31 = ignoredTopicsCopy;
+        if (!wakingTopicsCopy)
         {
           goto LABEL_64;
         }
@@ -2255,14 +2255,14 @@ LABEL_29:
         {
           v33 = APSPrettyPrintCollection();
           *buf = 138412546;
-          v55 = self;
+          selfCopy5 = self;
           v56 = 2112;
-          v57 = v33;
+          ignoredTopicsCopy2 = v33;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%@: connection set ignored topics %@", buf, 0x16u);
         }
 
         v51 = 0;
-        v31 = [(APSConnectionServer *)self entitledTopicsFromSet:v11 unentitledTopics:&v51];
+        v31 = [(APSConnectionServer *)self entitledTopicsFromSet:ignoredTopicsCopy unentitledTopics:&v51];
         v34 = v51;
 
         if (![v31 count] && objc_msgSend(v34, "count") || -[APSConnectionServer _containsInvalidTopic:](self, "_containsInvalidTopic:", v31))
@@ -2284,9 +2284,9 @@ LABEL_29:
           {
             ignoredTopics = self->_ignoredTopics;
             *buf = 138412802;
-            v55 = self;
+            selfCopy5 = self;
             v56 = 2112;
-            v57 = ignoredTopics;
+            ignoredTopicsCopy2 = ignoredTopics;
             v58 = 2112;
             v59 = v31;
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%@: connection set ignored topics from %@ to %@", buf, 0x20u);
@@ -2310,7 +2310,7 @@ LABEL_29:
           }
         }
 
-        if (!v13)
+        if (!wakingTopicsCopy)
         {
           goto LABEL_64;
         }
@@ -2323,7 +2323,7 @@ LABEL_29:
 LABEL_47:
   v30 = 0;
   v31 = 0;
-  if (!v13)
+  if (!wakingTopicsCopy)
   {
 LABEL_64:
     v40 = 0;
@@ -2331,9 +2331,9 @@ LABEL_64:
   }
 
 LABEL_48:
-  if (sub_100003E14(v13, self->_nonWakingTopics))
+  if (sub_100003E14(wakingTopicsCopy, self->_nonWakingTopics))
   {
-    v40 = v13;
+    v40 = wakingTopicsCopy;
   }
 
   else
@@ -2343,14 +2343,14 @@ LABEL_48:
     {
       v42 = APSPrettyPrintCollection();
       *buf = 138412546;
-      v55 = self;
+      selfCopy5 = self;
       v56 = 2112;
-      v57 = v42;
+      ignoredTopicsCopy2 = v42;
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "%@: connection set nonWaking topics %@", buf, 0x16u);
     }
 
     v50 = 0;
-    v40 = [(APSConnectionServer *)self entitledTopicsFromSet:v13 unentitledTopics:&v50];
+    v40 = [(APSConnectionServer *)self entitledTopicsFromSet:wakingTopicsCopy unentitledTopics:&v50];
     v43 = v50;
 
     if (![v40 count] && objc_msgSend(v43, "count") || -[APSConnectionServer _containsInvalidTopic:](self, "_containsInvalidTopic:", v40))
@@ -2373,9 +2373,9 @@ LABEL_48:
   }
 
 LABEL_69:
-  v47 = [(APSConnectionServer *)self delegate];
-  v48 = [v47 topicManager];
-  [v48 endTransaction];
+  delegate2 = [(APSConnectionServer *)self delegate];
+  topicManager2 = [delegate2 topicManager];
+  [topicManager2 endTransaction];
 
   if (self->_enableDarkWake && !self->_hasChosenDarkWakeTopics)
   {
@@ -2392,37 +2392,37 @@ LABEL_69:
   }
 }
 
-- (void)setEnableCriticalReliability:(BOOL)a3
+- (void)setEnableCriticalReliability:(BOOL)reliability
 {
-  self->_enableCriticalReliability = a3;
+  self->_enableCriticalReliability = reliability;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained connectionChangedCriticalReliability:self];
 }
 
-- (void)setTrackActivityPresence:(BOOL)a3
+- (void)setTrackActivityPresence:(BOOL)presence
 {
-  self->_trackActivityPresence = a3;
+  self->_trackActivityPresence = presence;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained connectionChangedTrackActivityPresence:self];
 }
 
-- (void)setEnableStatusChangeNotifications:(BOOL)a3
+- (void)setEnableStatusChangeNotifications:(BOOL)notifications
 {
-  if (self->_enableStatusChangeNotifications != a3)
+  if (self->_enableStatusChangeNotifications != notifications)
   {
-    v3 = a3;
-    self->_enableStatusChangeNotifications = a3;
+    notificationsCopy = notifications;
+    self->_enableStatusChangeNotifications = notifications;
     v5 = +[APSLog connectionServer];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"Disabling";
-      if (v3)
+      if (notificationsCopy)
       {
         v6 = @"Enabling";
       }
 
       v7 = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
       v10 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: %@ status notifications for connection", &v7, 0x16u);
@@ -2430,28 +2430,28 @@ LABEL_69:
   }
 }
 
-+ (id)environmentForNamedPort:(id)a3 userPreferences:(id)a4
++ (id)environmentForNamedPort:(id)port userPreferences:(id)preferences
 {
-  v5 = a3;
-  v6 = a4;
+  portCopy = port;
+  preferencesCopy = preferences;
   v7 = +[APSLog connectionServer];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412546;
-    v19 = v5;
+    v19 = portCopy;
     v20 = 2112;
-    v21 = v6;
+    v21 = preferencesCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "environmentForNamedPort called for port %@ from user preferences %@", &v18, 0x16u);
   }
 
-  v8 = [v6 persistentTopics];
-  if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  persistentTopics = [preferencesCopy persistentTopics];
+  if (!persistentTopics || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v14 = 0;
     goto LABEL_18;
   }
 
-  v9 = [v8 objectForKey:v5];
+  v9 = [persistentTopics objectForKey:portCopy];
   if (v9)
   {
     objc_opt_class();
@@ -2470,7 +2470,7 @@ LABEL_11:
           v18 = 138412546;
           v19 = v12;
           v20 = 2112;
-          v21 = v6;
+          v21 = preferencesCopy;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Found persistent connection in environment %@ from user preferences %@", &v18, 0x16u);
         }
 
@@ -2503,13 +2503,13 @@ LABEL_18:
   return v14;
 }
 
-- (void)setPushWakeTopics:(id)a3
+- (void)setPushWakeTopics:(id)topics
 {
-  v4 = a3;
+  topicsCopy = topics;
   if (self->_enableDarkWake)
   {
-    v5 = [(APSConnectionServer *)self connection];
-    if (v5)
+    connection = [(APSConnectionServer *)self connection];
+    if (connection)
     {
       memset(buf, 0, 32);
       xpc_connection_get_audit_token();
@@ -2519,17 +2519,17 @@ LABEL_18:
         v6 = +[APSLog connectionServer];
         if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
         {
-          sub_10010A5F0(v5);
+          sub_10010A5F0(connection);
         }
 
-        v4 = 0;
+        topicsCopy = 0;
       }
     }
 
-    if ((sub_100003E14(self->_pushWakeTopics, v4) & 1) == 0)
+    if ((sub_100003E14(self->_pushWakeTopics, topicsCopy) & 1) == 0)
     {
-      v7 = [(APSConnectionServer *)self delegate];
-      v8 = [v7 topicManager];
+      delegate = [(APSConnectionServer *)self delegate];
+      topicManager = [delegate topicManager];
 
       v9 = +[APSLog connectionServer];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2546,18 +2546,18 @@ LABEL_18:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: connection set push wake topics from %@ to %@", buf, 0x20u);
       }
 
-      objc_storeStrong(&self->_pushWakeTopics, v4);
+      objc_storeStrong(&self->_pushWakeTopics, topicsCopy);
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v13 = [v8 topicStatesForConnectionServer:self];
+      v13 = [topicManager topicStatesForConnectionServer:self];
       v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v14)
       {
         v15 = v14;
-        v26 = v8;
-        v27 = v5;
+        v26 = topicManager;
+        v27 = connection;
         v16 = 0;
         v17 = *v29;
         do
@@ -2570,12 +2570,12 @@ LABEL_18:
             }
 
             v19 = *(*(&v28 + 1) + 8 * i);
-            v20 = [v19 topicName];
-            v21 = [v19 attributes];
-            v22 = [v4 containsObject:v20];
-            if (v22 != [v21 isPushWakeEnabled])
+            topicName = [v19 topicName];
+            attributes = [v19 attributes];
+            v22 = [topicsCopy containsObject:topicName];
+            if (v22 != [attributes isPushWakeEnabled])
             {
-              [v21 setPushWakeEnabled:v22];
+              [attributes setPushWakeEnabled:v22];
               v16 = 1;
             }
           }
@@ -2586,14 +2586,14 @@ LABEL_18:
         while (v15);
 
         [(APSConnectionServer *)self _savePersistentConnectionTopics];
-        v8 = v26;
-        v5 = v27;
+        topicManager = v26;
+        connection = v27;
         if (v16)
         {
-          v23 = [(APSConnectionServer *)self delegate];
-          v24 = [v23 topicManager];
-          v25 = [v24 policy];
-          [v25 filtersWillPotentiallyBeChangedBy:self];
+          delegate2 = [(APSConnectionServer *)self delegate];
+          topicManager2 = [delegate2 topicManager];
+          policy = [topicManager2 policy];
+          [policy filtersWillPotentiallyBeChangedBy:self];
         }
       }
 
@@ -2607,19 +2607,19 @@ LABEL_18:
 
   else
   {
-    v5 = +[APSLog connectionServer];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+    connection = +[APSLog connectionServer];
+    if (os_log_type_enabled(connection, OS_LOG_TYPE_FAULT))
     {
       sub_10010A558();
     }
   }
 }
 
-- (void)setUltraConstrainedTopics:(id)a3
+- (void)setUltraConstrainedTopics:(id)topics
 {
-  v4 = a3;
-  v5 = [(APSConnectionServer *)self connection];
-  if (v5)
+  topicsCopy = topics;
+  connection = [(APSConnectionServer *)self connection];
+  if (connection)
   {
     memset(buf, 0, 32);
     xpc_connection_get_audit_token();
@@ -2629,17 +2629,17 @@ LABEL_18:
       v6 = +[APSLog connectionServer];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
       {
-        sub_10010A674(v5);
+        sub_10010A674(connection);
       }
 
-      v4 = 0;
+      topicsCopy = 0;
     }
   }
 
-  if ((sub_100003E14(self->_ultraConstrainedTopics, v4) & 1) == 0)
+  if ((sub_100003E14(self->_ultraConstrainedTopics, topicsCopy) & 1) == 0)
   {
-    v7 = [(APSConnectionServer *)self delegate];
-    v8 = [v7 topicManager];
+    delegate = [(APSConnectionServer *)self delegate];
+    topicManager = [delegate topicManager];
 
     v9 = +[APSLog connectionServer];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2656,18 +2656,18 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: connection set ultra constrained topics from %@ to %@", buf, 0x20u);
     }
 
-    objc_storeStrong(&self->_ultraConstrainedTopics, v4);
+    objc_storeStrong(&self->_ultraConstrainedTopics, topicsCopy);
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v13 = [v8 topicStatesForConnectionServer:self];
+    v13 = [topicManager topicStatesForConnectionServer:self];
     v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v14)
     {
       v15 = v14;
-      v26 = v8;
-      v27 = v5;
+      v26 = topicManager;
+      v27 = connection;
       v16 = 0;
       v17 = *v29;
       do
@@ -2680,12 +2680,12 @@ LABEL_18:
           }
 
           v19 = *(*(&v28 + 1) + 8 * i);
-          v20 = [v19 topicName];
-          v21 = [v19 attributes];
-          v22 = [v4 containsObject:v20];
-          if (v22 != [v21 isUltraConstrainedEnabled])
+          topicName = [v19 topicName];
+          attributes = [v19 attributes];
+          v22 = [topicsCopy containsObject:topicName];
+          if (v22 != [attributes isUltraConstrainedEnabled])
           {
-            [v21 setUltraConstrainedEnabled:v22];
+            [attributes setUltraConstrainedEnabled:v22];
             v16 = 1;
           }
         }
@@ -2696,14 +2696,14 @@ LABEL_18:
       while (v15);
 
       [(APSConnectionServer *)self _savePersistentConnectionTopics];
-      v8 = v26;
-      v5 = v27;
+      topicManager = v26;
+      connection = v27;
       if (v16)
       {
-        v23 = [(APSConnectionServer *)self delegate];
-        v24 = [v23 topicManager];
-        v25 = [v24 policy];
-        [v25 filtersWillPotentiallyBeChangedBy:self];
+        delegate2 = [(APSConnectionServer *)self delegate];
+        topicManager2 = [delegate2 topicManager];
+        policy = [topicManager2 policy];
+        [policy filtersWillPotentiallyBeChangedBy:self];
       }
     }
 
@@ -2715,10 +2715,10 @@ LABEL_18:
   }
 }
 
-- (void)setKeepAliveConfiguration:(unint64_t)a3
+- (void)setKeepAliveConfiguration:(unint64_t)configuration
 {
-  v5 = [(APSConnectionServer *)self delegate];
-  [v5 connection:self setKeepAliveConfiguration:a3];
+  delegate = [(APSConnectionServer *)self delegate];
+  [delegate connection:self setKeepAliveConfiguration:configuration];
 }
 
 - (id)JSONDebugState
@@ -2784,11 +2784,11 @@ LABEL_18:
   [v6 setObject:v16 forKeyedSubscript:@"token"];
 
   v32[0] = @"enabled";
-  v18 = [(NSSet *)self->_enabledTopics allObjects];
-  v19 = v18;
-  if (v18)
+  allObjects = [(NSSet *)self->_enabledTopics allObjects];
+  v19 = allObjects;
+  if (allObjects)
   {
-    v20 = v18;
+    v20 = allObjects;
   }
 
   else
@@ -2798,11 +2798,11 @@ LABEL_18:
 
   v33[0] = v20;
   v32[1] = @"opportunistic";
-  v21 = [(NSSet *)self->_opportunisticTopics allObjects];
-  v22 = v21;
-  if (v21)
+  allObjects2 = [(NSSet *)self->_opportunisticTopics allObjects];
+  v22 = allObjects2;
+  if (allObjects2)
   {
-    v23 = v21;
+    v23 = allObjects2;
   }
 
   else
@@ -2812,11 +2812,11 @@ LABEL_18:
 
   v33[1] = v23;
   v32[2] = @"ignored";
-  v24 = [(NSSet *)self->_ignoredTopics allObjects];
-  v25 = v24;
-  if (v24)
+  allObjects3 = [(NSSet *)self->_ignoredTopics allObjects];
+  v25 = allObjects3;
+  if (allObjects3)
   {
-    v26 = v24;
+    v26 = allObjects3;
   }
 
   else
@@ -2826,11 +2826,11 @@ LABEL_18:
 
   v33[2] = v26;
   v32[3] = @"nonWaking";
-  v27 = [(NSSet *)self->_nonWakingTopics allObjects];
-  v28 = v27;
-  if (v27)
+  allObjects4 = [(NSSet *)self->_nonWakingTopics allObjects];
+  v28 = allObjects4;
+  if (allObjects4)
   {
-    v29 = v27;
+    v29 = allObjects4;
   }
 
   else
@@ -2845,9 +2845,9 @@ LABEL_18:
   return v6;
 }
 
-- (void)appendPrettyStatusToStatusPrinter:(id)a3
+- (void)appendPrettyStatusToStatusPrinter:(id)printer
 {
-  v4 = a3;
+  printerCopy = printer;
   if (![(NSSet *)self->_enabledTopics count]&& ![(NSSet *)self->_opportunisticTopics count]&& ![(NSSet *)self->_nonWakingTopics count])
   {
     v18 = @"No listening topics, will not send or receive push notifications";
@@ -2893,20 +2893,20 @@ LABEL_18:
     }
 
     v21 = +[APSWakeStateManager wakeStateManager];
-    v22 = [v21 inDarkWake];
+    inDarkWake = [v21 inDarkWake];
 
-    if (v22)
+    if (inDarkWake)
     {
       v18 = @"Not connected to service during dark wake";
       goto LABEL_40;
     }
 
     v28 = +[APSWakeStateManager wakeStateManager];
-    v29 = [v28 inFullWake];
+    inFullWake = [v28 inFullWake];
 
     v30 = @"Not connected to service during sleep";
 LABEL_34:
-    if (!v29)
+    if (!inFullWake)
     {
       v18 = v30;
     }
@@ -2926,16 +2926,16 @@ LABEL_34:
     }
 
     v23 = +[APSWakeStateManager wakeStateManager];
-    v24 = [v23 inDarkWake];
+    inDarkWake2 = [v23 inDarkWake];
 
-    if (v24)
+    if (inDarkWake2)
     {
       v18 = @"User not connected during dark wake";
       goto LABEL_40;
     }
 
     v31 = +[APSWakeStateManager wakeStateManager];
-    v29 = [v31 inFullWake];
+    inFullWake = [v31 inFullWake];
 
     v30 = @"User not connected during sleep";
     goto LABEL_34;
@@ -2945,8 +2945,8 @@ LABEL_34:
   [v10 unionSet:self->_enabledTopics];
   [v10 unionSet:self->_opportunisticTopics];
   [v10 unionSet:self->_nonWakingTopics];
-  v11 = [(APSConnectionServer *)self delegate];
-  v12 = [v11 topicManager];
+  delegate = [(APSConnectionServer *)self delegate];
+  topicManager = [delegate topicManager];
 
   v102 = 0u;
   v103 = 0u;
@@ -2970,7 +2970,7 @@ LABEL_34:
         objc_enumerationMutation(v13);
       }
 
-      if ([v12 hasListeningTopic:*(*(&v100 + 1) + 8 * i)])
+      if ([topicManager hasListeningTopic:*(*(&v100 + 1) + 8 * i)])
       {
 
         if (!self->_processName && !self->_connectionMachPort)
@@ -2979,20 +2979,20 @@ LABEL_34:
           goto LABEL_39;
         }
 
-        v25 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
-        v26 = [v25 total];
-        v27 = [v26 lastMessageTopic];
-        if (v27)
+        incomingCounts = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
+        total = [incomingCounts total];
+        lastMessageTopic = [total lastMessageTopic];
+        if (lastMessageTopic)
         {
         }
 
         else
         {
-          v32 = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCounts];
-          v33 = [v32 total];
-          v34 = [v33 lastMessageTopic];
+          outgoingCounts = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCounts];
+          total2 = [outgoingCounts total];
+          lastMessageTopic2 = [total2 lastMessageTopic];
 
-          if (!v34)
+          if (!lastMessageTopic2)
           {
             v18 = @"Waiting for push notifications";
             goto LABEL_39;
@@ -3021,36 +3021,36 @@ LABEL_39:
 LABEL_40:
   if (self->_connectionPortName)
   {
-    [v4 appendDescription:@"application port name" stringValue:?];
-    [v4 pushIndent];
+    [printerCopy appendDescription:@"application port name" stringValue:?];
+    [printerCopy pushIndent];
     if (self->_processName)
     {
-      [v4 appendDescription:@"process" stringValue:?];
+      [printerCopy appendDescription:@"process" stringValue:?];
     }
 
-    [v4 appendDescription:@"persistent connection status" stringValue:v18];
+    [printerCopy appendDescription:@"persistent connection status" stringValue:v18];
     v35 = @"persistent connection created";
   }
 
   else if (self->_processName)
   {
-    [v4 appendDescription:@"process" stringValue:?];
-    [v4 pushIndent];
-    [v4 appendDescription:@"process connection status" stringValue:v18];
+    [printerCopy appendDescription:@"process" stringValue:?];
+    [printerCopy pushIndent];
+    [printerCopy appendDescription:@"process connection status" stringValue:v18];
     v35 = @"process connected";
   }
 
   else
   {
-    [v4 appendDescription:@"name" stringValue:self->_name];
-    [v4 pushIndent];
+    [printerCopy appendDescription:@"name" stringValue:self->_name];
+    [printerCopy pushIndent];
     v35 = @"created";
   }
 
-  [v4 appendDescription:v35 timeIntervalValue:self->_dateCreated];
-  v36 = [(APSConnectionServer *)self user];
-  v37 = [v36 name];
-  [v4 appendDescription:@"user" stringValue:v37];
+  [printerCopy appendDescription:v35 timeIntervalValue:self->_dateCreated];
+  user = [(APSConnectionServer *)self user];
+  name = [user name];
+  [printerCopy appendDescription:@"user" stringValue:name];
 
   v38 = self->_publicToken;
   if (v38 && [(NSData *)v38 length])
@@ -3058,25 +3058,25 @@ LABEL_40:
     v39 = [(NSData *)self->_publicToken length];
     v40 = [(NSData *)self->_publicToken debugDescription];
     v41 = [NSString stringWithFormat:@"%@, {length = %lu, bytes=%@}", @"Yes", v39, v40];
-    [v4 appendDescription:@"token" stringValue:v41];
+    [printerCopy appendDescription:@"token" stringValue:v41];
   }
 
   else
   {
-    [v4 appendDescription:@"token" stringValue:@"Missing"];
+    [printerCopy appendDescription:@"token" stringValue:@"Missing"];
   }
 
-  [v4 appendDescription:@"status change notifications" enabledValue:self->_enableStatusChangeNotifications];
-  [v4 appendDescription:@"track acitivity presence" enabledValue:self->_trackActivityPresence];
-  v42 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
-  [v42 appendPrettyStatusToStatusPrinter:v4 total:1 direction:@"incoming"];
+  [printerCopy appendDescription:@"status change notifications" enabledValue:self->_enableStatusChangeNotifications];
+  [printerCopy appendDescription:@"track acitivity presence" enabledValue:self->_trackActivityPresence];
+  incomingCounts2 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
+  [incomingCounts2 appendPrettyStatusToStatusPrinter:printerCopy total:1 direction:@"incoming"];
 
-  v43 = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCounts];
-  [v43 appendPrettyStatusToStatusPrinter:v4 total:1 direction:@"reverse"];
+  outgoingCounts2 = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCounts];
+  [outgoingCounts2 appendPrettyStatusToStatusPrinter:printerCopy total:1 direction:@"reverse"];
 
-  [(APSConnectionServer *)self appendPrettyStatusToStatusPrinter:v4 forTopics:self->_enabledTopics type:@"enabled topics"];
-  [(APSConnectionServer *)self appendPrettyStatusToStatusPrinter:v4 forTopics:self->_opportunisticTopics type:@"opportunistic topics"];
-  [(APSConnectionServer *)self appendPrettyStatusToStatusPrinter:v4 forTopics:self->_nonWakingTopics type:@"nonwaking topics"];
+  [(APSConnectionServer *)self appendPrettyStatusToStatusPrinter:printerCopy forTopics:self->_enabledTopics type:@"enabled topics"];
+  [(APSConnectionServer *)self appendPrettyStatusToStatusPrinter:printerCopy forTopics:self->_opportunisticTopics type:@"opportunistic topics"];
+  [(APSConnectionServer *)self appendPrettyStatusToStatusPrinter:printerCopy forTopics:self->_nonWakingTopics type:@"nonwaking topics"];
   numberNotificationsSent = self->_numberNotificationsSent;
   if (numberNotificationsSent)
   {
@@ -3105,97 +3105,97 @@ LABEL_40:
     v46 = @"No ipc messages have been sent";
   }
 
-  [v4 appendDescription:@"ipc message queue status" stringValue:v46];
+  [printerCopy appendDescription:@"ipc message queue status" stringValue:v46];
   if (self->_numberNotifications >= 1)
   {
-    [v4 pushIndent];
-    v47 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
-    v48 = [v47 total];
-    [v4 appendDescription:@"push notifications" unsignedIntegerValue:{objc_msgSend(v48, "count")}];
+    [printerCopy pushIndent];
+    incomingCounts3 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
+    total3 = [incomingCounts3 total];
+    [printerCopy appendDescription:@"push notifications" unsignedIntegerValue:{objc_msgSend(total3, "count")}];
 
-    v49 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
-    v50 = [v49 total];
-    [v50 lastMessageTime];
+    incomingCounts4 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
+    total4 = [incomingCounts4 total];
+    [total4 lastMessageTime];
     v52 = v51;
 
     if (v52 != 0.0)
     {
-      v53 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
-      v54 = [v53 total];
-      [v54 lastMessageTime];
-      [v4 appendDescription:@"last push notification" timeIntervalValue:?];
+      incomingCounts5 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
+      total5 = [incomingCounts5 total];
+      [total5 lastMessageTime];
+      [printerCopy appendDescription:@"last push notification" timeIntervalValue:?];
     }
 
-    v55 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
-    v56 = [v55 total];
-    v57 = [v56 lastMessageTopic];
+    incomingCounts6 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
+    total6 = [incomingCounts6 total];
+    lastMessageTopic3 = [total6 lastMessageTopic];
 
-    if (v57)
+    if (lastMessageTopic3)
     {
-      v58 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
-      v59 = [v58 total];
-      v60 = [v59 lastMessageTopic];
-      [v4 appendDescription:@"last push notification topic" stringValue:v60];
+      incomingCounts7 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
+      total7 = [incomingCounts7 total];
+      lastMessageTopic4 = [total7 lastMessageTopic];
+      [printerCopy appendDescription:@"last push notification topic" stringValue:lastMessageTopic4];
     }
 
     numberNotifications = self->_numberNotifications;
-    v62 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
-    v63 = [v62 total];
-    [v63 lastMessageTime];
-    [v4 appendDescription:@"non-push ipc messages" unsignedIntegerValue:(numberNotifications - v64)];
+    incomingCounts8 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCounts];
+    total8 = [incomingCounts8 total];
+    [total8 lastMessageTime];
+    [printerCopy appendDescription:@"non-push ipc messages" unsignedIntegerValue:(numberNotifications - v64)];
 
     if (self->_lastNotificationTime != 0.0)
     {
-      [v4 appendDescription:@"last ipc action" timeIntervalValue:?];
+      [printerCopy appendDescription:@"last ipc action" timeIntervalValue:?];
     }
 
     if (self->_numberNotificationsLost >= 1)
     {
-      [v4 appendDescription:@"ipc messages lost" unsignedIntegerValue:?];
+      [printerCopy appendDescription:@"ipc messages lost" unsignedIntegerValue:?];
     }
 
-    [v4 appendDescription:@"ipc messages sent" unsignedIntegerValue:self->_numberNotificationsSent];
+    [printerCopy appendDescription:@"ipc messages sent" unsignedIntegerValue:self->_numberNotificationsSent];
     if (self->_lastNotificationSentTime != 0.0)
     {
-      [v4 appendDescription:@"last ipc message sent" timeIntervalValue:?];
+      [printerCopy appendDescription:@"last ipc message sent" timeIntervalValue:?];
     }
 
     if (self->_numberNotificationsQueued >= 1)
     {
-      [v4 appendDescription:@"ipc messages queued" unsignedIntegerValue:?];
+      [printerCopy appendDescription:@"ipc messages queued" unsignedIntegerValue:?];
     }
 
     if (self->_enqueuedBlockCount || self->_numberNotificationsQueued >= 1)
     {
-      [v4 appendDescription:@"ipc messages waiting in queue" unsignedIntegerValue:?];
+      [printerCopy appendDescription:@"ipc messages waiting in queue" unsignedIntegerValue:?];
     }
 
     if (self->_numberNotificationsDropped >= 1)
     {
-      [v4 appendDescription:@"ipc messages skipped" unsignedIntegerValue:?];
+      [printerCopy appendDescription:@"ipc messages skipped" unsignedIntegerValue:?];
     }
 
-    [v4 appendDescription:@"ipc messages acknowledged" unsignedIntegerValue:self->_numberNotificationsAcknowledged];
+    [printerCopy appendDescription:@"ipc messages acknowledged" unsignedIntegerValue:self->_numberNotificationsAcknowledged];
     if (self->_lastNotificationAcknowledgedTime != 0.0)
     {
-      [v4 appendDescription:@"last ack from application" timeIntervalValue:?];
+      [printerCopy appendDescription:@"last ack from application" timeIntervalValue:?];
     }
 
     v65 = self->_numberNotificationsSent;
     if (v65 >= 1)
     {
-      [v4 appendDescription:@"ipc delivery success rate" successRateWithSuccessCount:self->_numberNotificationsAcknowledged failureCount:v65 - self->_numberNotificationsAcknowledged];
+      [printerCopy appendDescription:@"ipc delivery success rate" successRateWithSuccessCount:self->_numberNotificationsAcknowledged failureCount:v65 - self->_numberNotificationsAcknowledged];
     }
 
-    [v4 popIndent];
+    [printerCopy popIndent];
   }
 
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v66 = [(NSSet *)self->_ignoredTopics allObjects];
-  v67 = [v66 sortedArrayUsingSelector:"compare:"];
+  allObjects = [(NSSet *)self->_ignoredTopics allObjects];
+  v67 = [allObjects sortedArrayUsingSelector:"compare:"];
 
   v68 = [v67 countByEnumeratingWithState:&v96 objects:v105 count:16];
   if (v68)
@@ -3211,7 +3211,7 @@ LABEL_40:
           objc_enumerationMutation(v67);
         }
 
-        [v4 appendDescription:@"ignored topic" stringValue:*(*(&v96 + 1) + 8 * j)];
+        [printerCopy appendDescription:@"ignored topic" stringValue:*(*(&v96 + 1) + 8 * j)];
       }
 
       v69 = [v67 countByEnumeratingWithState:&v96 objects:v105 count:16];
@@ -3220,13 +3220,13 @@ LABEL_40:
     while (v69);
   }
 
-  v72 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCountsByTopic];
-  v73 = [v72 allKeys];
-  v74 = [NSMutableSet setWithArray:v73];
+  incomingCountsByTopic = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCountsByTopic];
+  allKeys = [incomingCountsByTopic allKeys];
+  v74 = [NSMutableSet setWithArray:allKeys];
 
-  v75 = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCountsByTopic];
-  v76 = [v75 allKeys];
-  [v74 addObjectsFromArray:v76];
+  outgoingCountsByTopic = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCountsByTopic];
+  allKeys2 = [outgoingCountsByTopic allKeys];
+  [v74 addObjectsFromArray:allKeys2];
 
   v77 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v74 count]);
   [v77 unionSet:self->_enabledTopics];
@@ -3244,8 +3244,8 @@ LABEL_40:
     v92 = 0u;
     v93 = 0u;
     v88 = v78;
-    v79 = [v78 allObjects];
-    v80 = [v79 sortedArrayUsingSelector:"compare:"];
+    allObjects2 = [v78 allObjects];
+    v80 = [allObjects2 sortedArrayUsingSelector:"compare:"];
 
     obj = v80;
     v81 = [v80 countByEnumeratingWithState:&v92 objects:v104 count:16];
@@ -3263,14 +3263,14 @@ LABEL_40:
           }
 
           v85 = *(*(&v92 + 1) + 8 * k);
-          [v4 appendDescription:@"disabled topic" stringValue:v85];
-          [v4 pushIndent];
-          [v4 appendDescription:@"status" stringValue:{@"Topic disabled, unable to send or receive push notifications"}];
+          [printerCopy appendDescription:@"disabled topic" stringValue:v85];
+          [printerCopy pushIndent];
+          [printerCopy appendDescription:@"status" stringValue:{@"Topic disabled, unable to send or receive push notifications"}];
           v86 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCountsForTopic:v85];
-          [v86 appendPrettyStatusToStatusPrinter:v4 total:0 direction:@"incoming"];
+          [v86 appendPrettyStatusToStatusPrinter:printerCopy total:0 direction:@"incoming"];
           v87 = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCountsForTopic:v85];
-          [v87 appendPrettyStatusToStatusPrinter:v4 total:0 direction:@"reverse"];
-          [v4 popIndent];
+          [v87 appendPrettyStatusToStatusPrinter:printerCopy total:0 direction:@"reverse"];
+          [printerCopy popIndent];
         }
 
         v82 = [obj countByEnumeratingWithState:&v92 objects:v104 count:16];
@@ -3284,29 +3284,29 @@ LABEL_40:
     v78 = v88;
   }
 
-  [v4 popIndent];
+  [printerCopy popIndent];
 }
 
-- (void)appendPrettyStatusToStatusPrinter:(id)a3 forTopics:(id)a4 type:(id)a5
+- (void)appendPrettyStatusToStatusPrinter:(id)printer forTopics:(id)topics type:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count])
+  printerCopy = printer;
+  topicsCopy = topics;
+  typeCopy = type;
+  if ([topicsCopy count])
   {
-    v31 = v10;
-    [v8 appendDescription:v10 unsignedIntegerValue:{objc_msgSend(v9, "count")}];
-    [v8 pushIndent];
-    v11 = [(APSConnectionServer *)self delegate];
-    v36 = [v11 topicManager];
+    v31 = typeCopy;
+    [printerCopy appendDescription:typeCopy unsignedIntegerValue:{objc_msgSend(topicsCopy, "count")}];
+    [printerCopy pushIndent];
+    delegate = [(APSConnectionServer *)self delegate];
+    topicManager = [delegate topicManager];
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v32 = v9;
-    v12 = [v9 allObjects];
-    v13 = [v12 sortedArrayUsingSelector:"compare:"];
+    v32 = topicsCopy;
+    allObjects = [topicsCopy allObjects];
+    v13 = [allObjects sortedArrayUsingSelector:"compare:"];
 
     obj = v13;
     v14 = [v13 countByEnumeratingWithState:&v37 objects:v41 count:16];
@@ -3329,7 +3329,7 @@ LABEL_40:
         v17 = *(*(&v37 + 1) + 8 * i);
         v18 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCountsForTopic:v17];
         v19 = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCountsForTopic:v17];
-        if (![v36 hasListeningTopic:v17])
+        if (![topicManager hasListeningTopic:v17])
         {
           v22 = @"Paused, topic is redlisted";
           goto LABEL_22;
@@ -3337,12 +3337,12 @@ LABEL_40:
 
         if (v18)
         {
-          v20 = [v18 total];
-          v21 = [v20 lastMessageTopic];
-          v33 = v20;
-          if (v21)
+          total = [v18 total];
+          lastMessageTopic = [total lastMessageTopic];
+          v33 = total;
+          if (lastMessageTopic)
           {
-            v13 = v21;
+            v13 = lastMessageTopic;
 
 LABEL_19:
             v22 = @"Ok";
@@ -3364,14 +3364,14 @@ LABEL_19:
           goto LABEL_21;
         }
 
-        v23 = [v19 total];
-        v24 = [v23 lastMessageTopic];
+        total2 = [v19 total];
+        lastMessageTopic2 = [total2 lastMessageTopic];
 
         if (v18)
         {
         }
 
-        if (v24)
+        if (lastMessageTopic2)
         {
           goto LABEL_19;
         }
@@ -3379,49 +3379,49 @@ LABEL_19:
 LABEL_21:
         v22 = @"Waiting for push notifications";
 LABEL_22:
-        [v8 appendDescription:@"topic" stringValue:v17];
-        [v8 pushIndent];
-        [v8 appendDescription:@"status" stringValue:v22];
+        [printerCopy appendDescription:@"topic" stringValue:v17];
+        [printerCopy pushIndent];
+        [printerCopy appendDescription:@"status" stringValue:v22];
         if ([(NSSet *)self->_pushWakeTopics containsObject:v17])
         {
-          [v8 appendDescription:@"push-to-wake" BOOLValue:1];
+          [printerCopy appendDescription:@"push-to-wake" BOOLValue:1];
         }
 
         if ([(NSSet *)self->_darkWakeTopics containsObject:v17])
         {
-          [v8 appendDescription:@"dark-wake" BOOLValue:1];
+          [printerCopy appendDescription:@"dark-wake" BOOLValue:1];
         }
 
         if ([(NSSet *)self->_ultraConstrainedTopics containsObject:v17])
         {
-          [v8 appendDescription:@"ultra-constrained" BOOLValue:1];
+          [printerCopy appendDescription:@"ultra-constrained" BOOLValue:1];
         }
 
         if (v18)
         {
-          v25 = [v18 total];
-          v26 = [v25 lastMessageTopic];
+          total3 = [v18 total];
+          lastMessageTopic3 = [total3 lastMessageTopic];
 
-          if (v26)
+          if (lastMessageTopic3)
           {
             v27 = [(APSPayloadMessageStats *)self->_payloadMessageStats incomingCountsForTopic:v17];
-            [v27 appendPrettyStatusToStatusPrinter:v8 total:0 direction:@"incoming"];
+            [v27 appendPrettyStatusToStatusPrinter:printerCopy total:0 direction:@"incoming"];
           }
         }
 
         if (v19)
         {
-          v28 = [v19 total];
-          v29 = [v28 lastMessageTopic];
+          total4 = [v19 total];
+          lastMessageTopic4 = [total4 lastMessageTopic];
 
-          if (v29)
+          if (lastMessageTopic4)
           {
             v30 = [(APSPayloadMessageStats *)self->_payloadMessageStats outgoingCountsForTopic:v17];
-            [v30 appendPrettyStatusToStatusPrinter:v8 total:0 direction:@"reverse"];
+            [v30 appendPrettyStatusToStatusPrinter:printerCopy total:0 direction:@"reverse"];
           }
         }
 
-        [v8 popIndent];
+        [printerCopy popIndent];
       }
 
       v15 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
@@ -3429,9 +3429,9 @@ LABEL_22:
       {
 LABEL_36:
 
-        [v8 popIndent];
-        v10 = v31;
-        v9 = v32;
+        [printerCopy popIndent];
+        typeCopy = v31;
+        topicsCopy = v32;
         break;
       }
     }

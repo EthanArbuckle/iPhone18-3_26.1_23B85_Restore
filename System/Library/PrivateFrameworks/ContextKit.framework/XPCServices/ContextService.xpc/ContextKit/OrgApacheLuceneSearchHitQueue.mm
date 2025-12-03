@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneSearchHitQueue
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4;
+- (BOOL)lessThanWithId:(id)id withId:(id)withId;
 - (id)getSentinelObject;
 @end
 
@@ -12,18 +12,18 @@
   return v2;
 }
 
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4
+- (BOOL)lessThanWithId:(id)id withId:(id)withId
 {
-  if (!a3 || !a4)
+  if (!id || !withId)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
-  v5 = *(a4 + 2);
+  v4 = *(id + 2);
+  v5 = *(withId + 2);
   if (v4 == v5)
   {
-    return *(a3 + 3) > *(a4 + 3);
+    return *(id + 3) > *(withId + 3);
   }
 
   else

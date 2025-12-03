@@ -1,20 +1,20 @@
 @interface AKMarkupButtonContainerView
-- (AKMarkupButtonContainerView)initWithFrame:(CGRect)a3;
+- (AKMarkupButtonContainerView)initWithFrame:(CGRect)frame;
 - (CGSize)_buttonSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
-- (void)updateForMiniBarState:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
+- (void)updateForMiniBarState:(BOOL)state;
 @end
 
 @implementation AKMarkupButtonContainerView
 
-- (AKMarkupButtonContainerView)initWithFrame:(CGRect)a3
+- (AKMarkupButtonContainerView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = AKMarkupButtonContainerView;
-  v3 = [(AKMarkupButtonContainerView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AKMarkupButtonContainerView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D75220] buttonWithType:1];
@@ -40,25 +40,25 @@
   [(AKMarkupButtonContainerView *)self intrinsicContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(AKMarkupButtonContainerView *)self button];
-  [v7 setFrame:{0.0, 0.0, v4, v6}];
+  button = [(AKMarkupButtonContainerView *)self button];
+  [button setFrame:{0.0, 0.0, v4, v6}];
 
   [(AKMarkupButtonContainerView *)self bounds];
   v8 = CGRectGetWidth(v16) * 0.5;
   [(AKMarkupButtonContainerView *)self bounds];
   v9 = CGRectGetHeight(v17) * 0.5;
-  v10 = [(AKMarkupButtonContainerView *)self button];
-  [v10 setCenter:{v8, v9}];
+  button2 = [(AKMarkupButtonContainerView *)self button];
+  [button2 setCenter:{v8, v9}];
 
-  v11 = [(AKMarkupButtonContainerView *)self button];
-  [v11 bounds];
+  button3 = [(AKMarkupButtonContainerView *)self button];
+  [button3 bounds];
   v12 = CGRectGetWidth(v18) * 0.5;
-  v13 = [(AKMarkupButtonContainerView *)self button];
-  v14 = [v13 layer];
-  [v14 setCornerRadius:v12];
+  button4 = [(AKMarkupButtonContainerView *)self button];
+  layer = [button4 layer];
+  [layer setCornerRadius:v12];
 }
 
-- (void)updateForMiniBarState:(BOOL)a3
+- (void)updateForMiniBarState:(BOOL)state
 {
   [(AKMarkupButtonContainerView *)self setNeedsLayout];
 
@@ -73,7 +73,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   MEMORY[0x2821F9670](self, sel__buttonSize);
   result.height = v4;
@@ -81,14 +81,14 @@
   return result;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  self->_selected = a3;
+  selectedCopy = selected;
+  self->_selected = selected;
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v5 = [(AKMarkupButtonContainerView *)self button];
-  [v5 setSelected:v3];
+  button = [(AKMarkupButtonContainerView *)self button];
+  [button setSelected:selectedCopy];
 
   v6 = MEMORY[0x277CD9FF0];
 
@@ -97,11 +97,11 @@
 
 - (CGSize)_buttonSize
 {
-  v2 = [(AKMarkupButtonContainerView *)self traitCollection];
-  v3 = [v2 verticalSizeClass];
+  traitCollection = [(AKMarkupButtonContainerView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
   v4 = 28.0;
-  if (v3 == 1)
+  if (verticalSizeClass == 1)
   {
     v4 = 27.0;
   }

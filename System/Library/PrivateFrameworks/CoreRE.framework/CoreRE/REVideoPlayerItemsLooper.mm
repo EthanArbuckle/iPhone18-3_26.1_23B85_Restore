@@ -1,23 +1,23 @@
 @interface REVideoPlayerItemsLooper
-- (REVideoPlayerItemsLooper)initWithPlayer:(id)a3 assets:(id)a4;
+- (REVideoPlayerItemsLooper)initWithPlayer:(id)player assets:(id)assets;
 - (void)dealloc;
 - (void)enqueueAssetItems;
 - (void)observeLastAndEnqueueAssetItems;
-- (void)playerItemAtEnd:(id)a3;
+- (void)playerItemAtEnd:(id)end;
 @end
 
 @implementation REVideoPlayerItemsLooper
 
-- (REVideoPlayerItemsLooper)initWithPlayer:(id)a3 assets:(id)a4
+- (REVideoPlayerItemsLooper)initWithPlayer:(id)player assets:(id)assets
 {
-  v6 = a3;
-  v7 = a4;
+  playerCopy = player;
+  assetsCopy = assets;
   v8 = [(REVideoPlayerItemsLooper *)self init];
   v9 = v8;
   if (v8)
   {
-    [(REVideoPlayerItemsLooper *)v8 setPlayer:v6];
-    [(REVideoPlayerItemsLooper *)v9 setLoopedAssets:v7];
+    [(REVideoPlayerItemsLooper *)v8 setPlayer:playerCopy];
+    [(REVideoPlayerItemsLooper *)v9 setLoopedAssets:assetsCopy];
     [(REVideoPlayerItemsLooper *)v9 enqueueAssetItems];
     [(REVideoPlayerItemsLooper *)v9 observeLastAndEnqueueAssetItems];
   }
@@ -27,8 +27,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = REVideoPlayerItemsLooper;
@@ -42,8 +42,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(REVideoPlayerItemsLooper *)self loopedAssets];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  loopedAssets = [(REVideoPlayerItemsLooper *)self loopedAssets];
+  v4 = [loopedAssets countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -54,19 +54,19 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(loopedAssets);
         }
 
         v7 = *(*(&v10 + 1) + 8 * v6);
-        v8 = [(REVideoPlayerItemsLooper *)self player];
+        player = [(REVideoPlayerItemsLooper *)self player];
         v9 = [MEMORY[0x1E69880B0] playerItemWithAsset:v7];
-        [v8 insertItem:v9 afterItem:0];
+        [player insertItem:v9 afterItem:0];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [loopedAssets countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -75,21 +75,21 @@
 
 - (void)observeLastAndEnqueueAssetItems
 {
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  v3 = [(REVideoPlayerItemsLooper *)self player];
-  v4 = [v3 items];
-  v5 = [v4 lastObject];
-  [v6 addObserver:self selector:sel_playerItemAtEnd_ name:*MEMORY[0x1E6987A10] object:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  player = [(REVideoPlayerItemsLooper *)self player];
+  items = [player items];
+  lastObject = [items lastObject];
+  [defaultCenter addObserver:self selector:sel_playerItemAtEnd_ name:*MEMORY[0x1E6987A10] object:lastObject];
 
   [(REVideoPlayerItemsLooper *)self enqueueAssetItems];
-  v7 = [(REVideoPlayerItemsLooper *)self player];
-  [v7 play];
+  player2 = [(REVideoPlayerItemsLooper *)self player];
+  [player2 play];
 }
 
-- (void)playerItemAtEnd:(id)a3
+- (void)playerItemAtEnd:(id)end
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(REVideoPlayerItemsLooper *)self observeLastAndEnqueueAssetItems];
 }

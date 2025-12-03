@@ -1,7 +1,7 @@
 @interface CCRapportDevice
-- (BOOL)isEqual:(id)a3;
-- (CCRapportDevice)initWithCoder:(id)a3;
-- (CCRapportDevice)initWithRPCompanionLinkDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CCRapportDevice)initWithCoder:(id)coder;
+- (CCRapportDevice)initWithRPCompanionLinkDevice:(id)device;
 - (NSArray)serviceTypes;
 - (id)description;
 - (id)model;
@@ -9,30 +9,30 @@
 - (id)prefix;
 - (int64_t)platform;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleInvalidationWithError:(id)a3;
-- (void)invalidateClientWithError:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleInvalidationWithError:(id)error;
+- (void)invalidateClientWithError:(id)error;
 @end
 
 @implementation CCRapportDevice
 
-- (CCRapportDevice)initWithRPCompanionLinkDevice:(id)a3
+- (CCRapportDevice)initWithRPCompanionLinkDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = CCRapportDevice;
   v6 = [(CCRapportDevice *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
-    v8 = [v5 CC_companionLinkDeviceIdentifier];
+    objc_storeStrong(&v6->_device, device);
+    cC_companionLinkDeviceIdentifier = [deviceCopy CC_companionLinkDeviceIdentifier];
     rapportIdentifier = v7->_rapportIdentifier;
-    v7->_rapportIdentifier = v8;
+    v7->_rapportIdentifier = cC_companionLinkDeviceIdentifier;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     requestQueue = v7->_requestQueue;
-    v7->_requestQueue = v10;
+    v7->_requestQueue = array;
   }
 
   return v7;
@@ -40,85 +40,85 @@
 
 - (id)prefix
 {
-  v3 = [(CCRapportDevice *)self rapportIdentifier];
-  if ([v3 length] >= 9)
+  rapportIdentifier = [(CCRapportDevice *)self rapportIdentifier];
+  if ([rapportIdentifier length] >= 9)
   {
-    v4 = [v3 substringToIndex:8];
+    v4 = [rapportIdentifier substringToIndex:8];
 
-    v3 = v4;
+    rapportIdentifier = v4;
   }
 
   v5 = MEMORY[0x1E696AEC0];
   [(CCRapportDevice *)self platform];
   v6 = BMDevicePlatformToString();
-  v7 = [v5 stringWithFormat:@"%@[%@]", v6, v3];
+  v7 = [v5 stringWithFormat:@"%@[%@]", v6, rapportIdentifier];
 
   return v7;
 }
 
 - (id)name
 {
-  v2 = [(CCRapportDevice *)self device];
-  v3 = [v2 name];
+  device = [(CCRapportDevice *)self device];
+  name = [device name];
 
-  return v3;
+  return name;
 }
 
 - (id)model
 {
-  v2 = [(CCRapportDevice *)self device];
-  v3 = [v2 model];
+  device = [(CCRapportDevice *)self device];
+  model = [device model];
 
-  return v3;
+  return model;
 }
 
 - (NSArray)serviceTypes
 {
-  v2 = [(CCRapportDevice *)self device];
-  v3 = [v2 serviceTypes];
+  device = [(CCRapportDevice *)self device];
+  serviceTypes = [device serviceTypes];
 
-  return v3;
+  return serviceTypes;
 }
 
 - (int64_t)platform
 {
-  v2 = [(CCRapportDevice *)self device];
-  v3 = [v2 model];
+  device = [(CCRapportDevice *)self device];
+  model = [device model];
   v4 = BMDevicePlatformFromModelString();
 
   return v4;
 }
 
-- (void)invalidateClientWithError:(id)a3
+- (void)invalidateClientWithError:(id)error
 {
   client = self->_client;
   if (client)
   {
-    v6 = a3;
-    v5 = [(RPCompanionLinkClient *)client dispatchQueue];
-    dispatch_assert_queue_V2(v5);
+    errorCopy = error;
+    dispatchQueue = [(RPCompanionLinkClient *)client dispatchQueue];
+    dispatch_assert_queue_V2(dispatchQueue);
 
     [(RPCompanionLinkClient *)self->_client setInvalidationHandler:0];
     [(RPCompanionLinkClient *)self->_client invalidate];
-    [(CCRapportDevice *)self handleInvalidationWithError:v6];
+    [(CCRapportDevice *)self handleInvalidationWithError:errorCopy];
   }
 }
 
-- (void)handleInvalidationWithError:(id)a3
+- (void)handleInvalidationWithError:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   client = self->_client;
   if (client)
   {
-    v6 = [(RPCompanionLinkClient *)client dispatchQueue];
-    dispatch_assert_queue_V2(v6);
+    dispatchQueue = [(RPCompanionLinkClient *)client dispatchQueue];
+    dispatch_assert_queue_V2(dispatchQueue);
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = self;
+    selfCopy = self;
     v7 = self->_requestQueue;
     v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
@@ -138,9 +138,9 @@
           v13 = v12;
           if (v12)
           {
-            if (v4)
+            if (errorCopy)
             {
-              (*(v12 + 16))(v12, 0, 0, v4);
+              (*(v12 + 16))(v12, 0, 0, errorCopy);
             }
 
             else
@@ -157,29 +157,29 @@
       while (v9);
     }
 
-    [(NSMutableArray *)v18->_requestQueue removeAllObjects];
-    v15 = v18->_client;
-    v18->_client = 0;
+    [(NSMutableArray *)selfCopy->_requestQueue removeAllObjects];
+    v15 = selfCopy->_client;
+    selfCopy->_client = 0;
 
     v16 = __biome_log_for_category();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      [CCRapportDevice handleInvalidationWithError:v18];
+      [CCRapportDevice handleInvalidationWithError:selfCopy];
     }
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 rapportIdentifier];
-    v6 = [(CCRapportDevice *)self rapportIdentifier];
-    v7 = [v5 isEqual:v6];
+    rapportIdentifier = [equalCopy rapportIdentifier];
+    rapportIdentifier2 = [(CCRapportDevice *)self rapportIdentifier];
+    v7 = [rapportIdentifier isEqual:rapportIdentifier2];
   }
 
   else
@@ -192,8 +192,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CCRapportDevice *)self rapportIdentifier];
-  v3 = [v2 hash];
+  rapportIdentifier = [(CCRapportDevice *)self rapportIdentifier];
+  v3 = [rapportIdentifier hash];
 
   return v3;
 }
@@ -201,39 +201,39 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(CCRapportDevice *)self prefix];
-  v5 = [(CCRapportDevice *)self device];
-  v6 = [(CCRapportDevice *)self cascadeDeviceUUID];
-  if (v6)
+  prefix = [(CCRapportDevice *)self prefix];
+  device = [(CCRapportDevice *)self device];
+  cascadeDeviceUUID = [(CCRapportDevice *)self cascadeDeviceUUID];
+  if (cascadeDeviceUUID)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(CCRapportDevice *)self cascadeDeviceUUID];
-    v9 = [v7 stringWithFormat:@" CascadeDeviceUUID: %@", v8];
-    v10 = [v3 initWithFormat:@"%@: %@%@", v4, v5, v9];
+    cascadeDeviceUUID2 = [(CCRapportDevice *)self cascadeDeviceUUID];
+    v9 = [v7 stringWithFormat:@" CascadeDeviceUUID: %@", cascadeDeviceUUID2];
+    v10 = [v3 initWithFormat:@"%@: %@%@", prefix, device, v9];
   }
 
   else
   {
-    v10 = [v3 initWithFormat:@"%@: %@%@", v4, v5, &stru_1F55F1328];
+    v10 = [v3 initWithFormat:@"%@: %@%@", prefix, device, &stru_1F55F1328];
   }
 
   return v10;
 }
 
-- (CCRapportDevice)initWithCoder:(id)a3
+- (CCRapportDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"device"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"device"];
 
   v6 = [(CCRapportDevice *)self initWithRPCompanionLinkDevice:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CCRapportDevice *)self device];
-  [v4 encodeObject:v5 forKey:@"device"];
+  coderCopy = coder;
+  device = [(CCRapportDevice *)self device];
+  [coderCopy encodeObject:device forKey:@"device"];
 }
 
 - (void)handleInvalidationWithError:(void *)a1 .cold.1(void *a1)

@@ -1,10 +1,10 @@
 @interface CKGlassSendButton
 + (CGSize)buttonSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKGlassSendButton)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKGlassSendButton)initWithCoder:(id)coder;
 - (char)ckTintColor;
-- (void)setCkTintColor:(char)a3;
+- (void)setCkTintColor:(char)color;
 @end
 
 @implementation CKGlassSendButton
@@ -25,15 +25,15 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setCkTintColor:(char)a3
+- (void)setCkTintColor:(char)color
 {
   v5 = OBJC_IVAR___CKGlassSendButton_ckTintColor;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.isa + v5) = color;
   [(CKGlassSendButton *)self setNeedsUpdateConfiguration];
 }
 
-- (CKGlassSendButton)initWithCoder:(id)a3
+- (CKGlassSendButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKGlassSendButton_ckTintColor) = 1;
   result = sub_190D58510();
@@ -41,7 +41,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 38.0;
   v4 = 28.0;

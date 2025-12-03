@@ -1,38 +1,38 @@
 @interface MailboxListViewControllerBase
 - (MailboxListViewControllerBase)init;
-- (id)_ntsMailboxesForAccount:(id)a3;
-- (id)indexPathForMailbox:(id)a3;
+- (id)_ntsMailboxesForAccount:(id)account;
+- (id)indexPathForMailbox:(id)mailbox;
 - (id)indexPathForSelection;
-- (id)mailboxForIndexPath:(id)a3;
+- (id)mailboxForIndexPath:(id)path;
 - (id)mailboxSelectionTarget;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_loadMailboxes:(BOOL)a3;
-- (void)_loadMailboxesForcibly:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_loadMailboxes:(BOOL)mailboxes;
+- (void)_loadMailboxesForcibly:(id)forcibly;
 - (void)_popToMailboxListViewController;
 - (void)dealloc;
-- (void)didSelectMailbox:(id)a3 changed:(BOOL)a4 animated:(BOOL)a5;
-- (void)mailboxListingChanged:(id)a3;
-- (void)setAccount:(id)a3;
-- (void)setSelectedMailbox:(id)a3 forceChange:(BOOL)a4 animated:(BOOL)a5;
-- (void)setViewingContext:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)didSelectMailbox:(id)mailbox changed:(BOOL)changed animated:(BOOL)animated;
+- (void)mailboxListingChanged:(id)changed;
+- (void)setAccount:(id)account;
+- (void)setSelectedMailbox:(id)mailbox forceChange:(BOOL)change animated:(BOOL)animated;
+- (void)setViewingContext:(id)context;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillFirstAppear:(BOOL)a3;
-- (void)viewWillReappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillFirstAppear:(BOOL)appear;
+- (void)viewWillReappear:(BOOL)reappear;
 @end
 
 @implementation MailboxListViewControllerBase
 
 - (MailboxListViewControllerBase)init
 {
-  v3 = [objc_opt_class() tableViewStyle];
+  tableViewStyle = [objc_opt_class() tableViewStyle];
   v7.receiver = self;
   v7.super_class = MailboxListViewControllerBase;
-  v4 = [(MailboxListViewControllerBase *)&v7 initWithStyle:v3];
+  v4 = [(MailboxListViewControllerBase *)&v7 initWithStyle:tableViewStyle];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -52,46 +52,46 @@
   [(MailboxListViewControllerBase *)&v4 dealloc];
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v5 = a3;
-  if (self->_account != v5)
+  accountCopy = account;
+  if (self->_account != accountCopy)
   {
-    objc_storeStrong(&self->_account, a3);
+    objc_storeStrong(&self->_account, account);
     [(MailboxListViewControllerBase *)self setSortedMailboxes:0];
   }
 }
 
-- (id)mailboxForIndexPath:(id)a3
+- (id)mailboxForIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   [(MailboxListViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MailboxListViewControllerBase mailboxForIndexPath:]", "MailboxListViewControllerBase.m", 58, "0");
 }
 
-- (id)indexPathForMailbox:(id)a3
+- (id)indexPathForMailbox:(id)mailbox
 {
-  v5 = a3;
+  mailboxCopy = mailbox;
   [(MailboxListViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MailboxListViewControllerBase indexPathForMailbox:]", "MailboxListViewControllerBase.m", 62, "0");
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (self->_preventNextScrollbarFlash)
   {
-    v5 = [(MailboxListViewControllerBase *)self tableView];
-    [v5 setScrollEnabled:0];
+    tableView = [(MailboxListViewControllerBase *)self tableView];
+    [tableView setScrollEnabled:0];
   }
 
   v7.receiver = self;
   v7.super_class = MailboxListViewControllerBase;
-  [(MailboxListViewControllerBase *)&v7 viewDidAppear:v3];
+  [(MailboxListViewControllerBase *)&v7 viewDidAppear:appearCopy];
   if (self->_preventNextScrollbarFlash)
   {
-    v6 = [(MailboxListViewControllerBase *)self tableView];
-    [v6 setScrollEnabled:1];
+    tableView2 = [(MailboxListViewControllerBase *)self tableView];
+    [tableView2 setScrollEnabled:1];
 
     self->_preventNextScrollbarFlash = 0;
   }
@@ -102,54 +102,54 @@
   v4.receiver = self;
   v4.super_class = MailboxListViewControllerBase;
   [(MailboxListViewControllerBase *)&v4 viewDidLoad];
-  v3 = [(MailboxListViewControllerBase *)self tableView];
-  [v3 setAllowsSelectionDuringEditing:1];
+  tableView = [(MailboxListViewControllerBase *)self tableView];
+  [tableView setAllowsSelectionDuringEditing:1];
 }
 
-- (void)setViewingContext:(id)a3
+- (void)setViewingContext:(id)context
 {
-  v6 = a3;
-  v4 = [v6 account];
-  [(MailboxListViewControllerBase *)self setAccount:v4];
+  contextCopy = context;
+  account = [contextCopy account];
+  [(MailboxListViewControllerBase *)self setAccount:account];
 
-  v5 = [v6 selectionTarget];
-  objc_storeWeak(&self->_mailboxSelectionTarget, v5);
+  selectionTarget = [contextCopy selectionTarget];
+  objc_storeWeak(&self->_mailboxSelectionTarget, selectionTarget);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(MailboxListViewControllerBase *)self isReappearing])
   {
-    [(MailboxListViewControllerBase *)self viewWillReappear:v3];
+    [(MailboxListViewControllerBase *)self viewWillReappear:appearCopy];
   }
 
   else
   {
-    [(MailboxListViewControllerBase *)self viewWillFirstAppear:v3];
+    [(MailboxListViewControllerBase *)self viewWillFirstAppear:appearCopy];
   }
 
   v5.receiver = self;
   v5.super_class = MailboxListViewControllerBase;
-  [(MailboxListViewControllerBase *)&v5 viewWillAppear:v3];
+  [(MailboxListViewControllerBase *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = MailboxListViewControllerBase;
-  [(MailboxListViewControllerBase *)&v6 viewWillDisappear:a3];
+  [(MailboxListViewControllerBase *)&v6 viewWillDisappear:disappear];
   self->_interactiveTransitionWasCancelled = 0;
-  v4 = [(MailboxListViewControllerBase *)self transitionCoordinator];
+  transitionCoordinator = [(MailboxListViewControllerBase *)self transitionCoordinator];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000E82C4;
   v5[3] = &unk_10064CC00;
   v5[4] = self;
-  [v4 notifyWhenInteractionChangesUsingBlock:v5];
+  [transitionCoordinator notifyWhenInteractionChangesUsingBlock:v5];
 }
 
-- (void)viewWillFirstAppear:(BOOL)a3
+- (void)viewWillFirstAppear:(BOOL)appear
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_loadMailboxes" object:0];
   [(MailboxListViewControllerBase *)self setSortedMailboxes:0];
@@ -159,15 +159,15 @@
   [v5 addInvocation:v4];
 }
 
-- (void)viewWillReappear:(BOOL)a3
+- (void)viewWillReappear:(BOOL)reappear
 {
-  v3 = a3;
+  reappearCopy = reappear;
   [(MailboxListViewControllerBase *)self _loadMailboxes];
-  v8 = [(MailboxListViewControllerBase *)self selectedMailbox];
-  if (v8)
+  selectedMailbox = [(MailboxListViewControllerBase *)self selectedMailbox];
+  if (selectedMailbox)
   {
-    v5 = [(MailboxListViewControllerBase *)self presentedViewController];
-    if (v5)
+    presentedViewController = [(MailboxListViewControllerBase *)self presentedViewController];
+    if (presentedViewController)
     {
       goto LABEL_3;
     }
@@ -176,21 +176,21 @@
 
     if (!interactiveTransitionWasCancelled)
     {
-      v8 = [(MailboxListViewControllerBase *)self indexPathForSelection];
-      if (!v8)
+      selectedMailbox = [(MailboxListViewControllerBase *)self indexPathForSelection];
+      if (!selectedMailbox)
       {
         goto LABEL_4;
       }
 
-      v5 = [(MailboxListViewControllerBase *)self tableView];
-      if (![v5 numberOfSections])
+      presentedViewController = [(MailboxListViewControllerBase *)self tableView];
+      if (![presentedViewController numberOfSections])
       {
-        [v5 reloadData];
+        [presentedViewController reloadData];
       }
 
-      [v5 scrollToRowAtIndexPath:v8 atScrollPosition:0 animated:0];
-      [v5 selectRowAtIndexPath:v8 animated:0 scrollPosition:0];
-      [v5 deselectRowAtIndexPath:v8 animated:v3];
+      [presentedViewController scrollToRowAtIndexPath:selectedMailbox atScrollPosition:0 animated:0];
+      [presentedViewController selectRowAtIndexPath:selectedMailbox animated:0 scrollPosition:0];
+      [presentedViewController deselectRowAtIndexPath:selectedMailbox animated:reappearCopy];
 LABEL_3:
 
 LABEL_4:
@@ -202,54 +202,54 @@ LABEL_4:
   [v9 addInvocation:v6];
 }
 
-- (void)setSelectedMailbox:(id)a3 forceChange:(BOOL)a4 animated:(BOOL)a5
+- (void)setSelectedMailbox:(id)mailbox forceChange:(BOOL)change animated:(BOOL)animated
 {
-  v7 = a3;
-  if (self->_selectedMailbox != v7)
+  mailboxCopy = mailbox;
+  if (self->_selectedMailbox != mailboxCopy)
   {
-    objc_storeStrong(&self->_selectedMailbox, a3);
+    objc_storeStrong(&self->_selectedMailbox, mailbox);
   }
 
   [MailboxListViewControllerBase didSelectMailbox:"didSelectMailbox:changed:animated:" changed:? animated:?];
 }
 
-- (void)didSelectMailbox:(id)a3 changed:(BOOL)a4 animated:(BOOL)a5
+- (void)didSelectMailbox:(id)mailbox changed:(BOOL)changed animated:(BOOL)animated
 {
-  v5 = a4;
-  v8 = a3;
-  v7 = [(MailboxListViewControllerBase *)self mailboxSelectionTarget];
-  if (v8 && v7 && v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  changedCopy = changed;
+  mailboxCopy = mailbox;
+  mailboxSelectionTarget = [(MailboxListViewControllerBase *)self mailboxSelectionTarget];
+  if (mailboxCopy && mailboxSelectionTarget && changedCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 mailboxList:self didSelectMailbox:v8];
+    [mailboxSelectionTarget mailboxList:self didSelectMailbox:mailboxCopy];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = [(MailboxListViewControllerBase *)self mailboxForIndexPath:a4];
+  v5 = [(MailboxListViewControllerBase *)self mailboxForIndexPath:path];
   [MailboxListViewControllerBase setSelectedMailbox:"setSelectedMailbox:forceChange:animated:" forceChange:? animated:?];
 }
 
-- (id)_ntsMailboxesForAccount:(id)a3
+- (id)_ntsMailboxesForAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   [(MailboxListViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MailboxListViewControllerBase _ntsMailboxesForAccount:]", "MailboxListViewControllerBase.m", 172, "0");
 }
 
-- (void)_loadMailboxesForcibly:(id)a3
+- (void)_loadMailboxesForcibly:(id)forcibly
 {
-  v13 = a3;
+  forciblyCopy = forcibly;
   if (!+[NSThread isMainThread])
   {
     __assert_rtn("[MailboxListViewControllerBase _loadMailboxesForcibly:]", "MailboxListViewControllerBase.m", 180, "[NSThread isMainThread]");
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  if (([v13 BOOLValue] & 1) == 0)
+  if (([forciblyCopy BOOLValue] & 1) == 0)
   {
-    v5 = [(MailboxListViewControllerBase *)self sortedMailboxes];
-    if ([v5 count])
+    sortedMailboxes = [(MailboxListViewControllerBase *)self sortedMailboxes];
+    if ([sortedMailboxes count])
     {
       v6 = Current - *&qword_1006DCFE8;
 
@@ -270,12 +270,12 @@ LABEL_4:
   [(MailboxListViewControllerBase *)self setSortedMailboxes:v7];
 
   [(MailboxListViewControllerBase *)self _loadExtraMailboxes];
-  v8 = [(MailboxListViewControllerBase *)self selectedMailbox];
-  if (v8)
+  selectedMailbox = [(MailboxListViewControllerBase *)self selectedMailbox];
+  if (selectedMailbox)
   {
-    v9 = [(MailboxListViewControllerBase *)self sortedMailboxes];
-    v10 = [(MailboxListViewControllerBase *)self selectedMailbox];
-    v11 = [v9 containsObject:v10];
+    sortedMailboxes2 = [(MailboxListViewControllerBase *)self sortedMailboxes];
+    selectedMailbox2 = [(MailboxListViewControllerBase *)self selectedMailbox];
+    v11 = [sortedMailboxes2 containsObject:selectedMailbox2];
 
     if ((v11 & 1) == 0)
     {
@@ -284,15 +284,15 @@ LABEL_4:
   }
 
   *(self + 8) &= ~1u;
-  v12 = [(MailboxListViewControllerBase *)self tableView];
-  [v12 reloadData];
+  tableView = [(MailboxListViewControllerBase *)self tableView];
+  [tableView reloadData];
 
 LABEL_11:
 }
 
-- (void)_loadMailboxes:(BOOL)a3
+- (void)_loadMailboxes:(BOOL)mailboxes
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:mailboxes];
   if (+[NSThread isMainThread])
   {
     [(MailboxListViewControllerBase *)self _loadMailboxesForcibly:v4];
@@ -308,8 +308,8 @@ LABEL_11:
 {
   if (+[NSThread isMainThread])
   {
-    v5 = [(MailboxListViewControllerBase *)self navigationController];
-    v4 = [v5 popToViewController:self animated:1];
+    navigationController = [(MailboxListViewControllerBase *)self navigationController];
+    v4 = [navigationController popToViewController:self animated:1];
   }
 
   else
@@ -319,15 +319,15 @@ LABEL_11:
   }
 }
 
-- (void)mailboxListingChanged:(id)a3
+- (void)mailboxListingChanged:(id)changed
 {
-  v14 = a3;
+  changedCopy = changed;
   if ((*(self + 8) & 1) == 0)
   {
-    v4 = [v14 object];
-    v5 = [v4 account];
-    v6 = v5;
-    if (!v4 || self->_account == v5 || (+[LocalAccount localAccount], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == v6))
+    object = [changedCopy object];
+    account = [object account];
+    v6 = account;
+    if (!object || self->_account == account || (+[LocalAccount localAccount], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == v6))
     {
       [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_loadMailboxesAfterMailboxListingChanged" object:0];
       [(MailboxListViewControllerBase *)self performSelector:"_loadMailboxesAfterMailboxListingChanged" withObject:0 afterDelay:0.3];
@@ -336,27 +336,27 @@ LABEL_11:
     *(self + 8) &= ~1u;
   }
 
-  v8 = [(MailboxListViewControllerBase *)self selectedMailbox];
-  if (v8)
+  selectedMailbox = [(MailboxListViewControllerBase *)self selectedMailbox];
+  if (selectedMailbox)
   {
-    v9 = [(MailboxListViewControllerBase *)self navigationController];
-    v10 = [v9 topViewController];
-    if (v10 != self)
+    navigationController = [(MailboxListViewControllerBase *)self navigationController];
+    topViewController = [navigationController topViewController];
+    if (topViewController != self)
     {
-      v11 = [(MailboxListViewControllerBase *)self isEditing];
+      isEditing = [(MailboxListViewControllerBase *)self isEditing];
 
-      if (v11)
+      if (isEditing)
       {
         goto LABEL_14;
       }
 
-      v12 = [v14 userInfo];
-      v9 = [v12 objectForKey:@"OldChildren"];
+      userInfo = [changedCopy userInfo];
+      navigationController = [userInfo objectForKey:@"OldChildren"];
 
-      v13 = [v14 userInfo];
-      v10 = [v13 objectForKey:@"NewChildren"];
+      userInfo2 = [changedCopy userInfo];
+      topViewController = [userInfo2 objectForKey:@"NewChildren"];
 
-      if ([v9 containsObject:v8] && (-[MailboxListViewControllerBase containsObject:](v10, "containsObject:", v8) & 1) == 0)
+      if ([navigationController containsObject:selectedMailbox] && (-[MailboxListViewControllerBase containsObject:](topViewController, "containsObject:", selectedMailbox) & 1) == 0)
       {
         [(MailboxListViewControllerBase *)self _popToMailboxListViewController];
       }
@@ -366,17 +366,17 @@ LABEL_11:
 LABEL_14:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   [(MailboxListViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MailboxListViewControllerBase tableView:cellForRowAtIndexPath:]", "MailboxListViewControllerBase.m", 249, "0");
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MailboxListViewControllerBase *)self sortedMailboxes:a3];
+  v4 = [(MailboxListViewControllerBase *)self sortedMailboxes:view];
   v5 = [v4 count];
 
   return v5;
@@ -384,11 +384,11 @@ LABEL_14:
 
 - (id)indexPathForSelection
 {
-  v3 = [(MailboxListViewControllerBase *)self selectedMailbox];
-  if (v3)
+  selectedMailbox = [(MailboxListViewControllerBase *)self selectedMailbox];
+  if (selectedMailbox)
   {
-    v4 = [(MailboxListViewControllerBase *)self selectedMailbox];
-    v5 = [(MailboxListViewControllerBase *)self indexPathForMailbox:v4];
+    selectedMailbox2 = [(MailboxListViewControllerBase *)self selectedMailbox];
+    v5 = [(MailboxListViewControllerBase *)self indexPathForMailbox:selectedMailbox2];
   }
 
   else

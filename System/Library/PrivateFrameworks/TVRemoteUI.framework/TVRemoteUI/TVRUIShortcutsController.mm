@@ -1,5 +1,5 @@
 @interface TVRUIShortcutsController
-- (BOOL)itemIsEnabledWithIdentifier:(id)a3;
+- (BOOL)itemIsEnabledWithIdentifier:(id)identifier;
 - (NSArray)allShortcuts;
 - (NSArray)availableShortcuts;
 - (NSArray)disabledShortcuts;
@@ -8,64 +8,64 @@
 - (id)_allItems;
 - (id)_loadDisabledShortcutIdentifiers;
 - (void)_invalidateFilteredShortcuts;
-- (void)_persistDisabledShortcutIdentifiers:(id)a3;
-- (void)disableShortcutForIdentifier:(id)a3;
-- (void)enableShortcutForIdentifier:(id)a3;
-- (void)toggleItemEnablementWithIdentifier:(id)a3;
+- (void)_persistDisabledShortcutIdentifiers:(id)identifiers;
+- (void)disableShortcutForIdentifier:(id)identifier;
+- (void)enableShortcutForIdentifier:(id)identifier;
+- (void)toggleItemEnablementWithIdentifier:(id)identifier;
 @end
 
 @implementation TVRUIShortcutsController
 
-- (BOOL)itemIsEnabledWithIdentifier:(id)a3
+- (BOOL)itemIsEnabledWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TVRUIShortcutsController *)self disabledShortcutIdentifiers];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  disabledShortcutIdentifiers = [(TVRUIShortcutsController *)self disabledShortcutIdentifiers];
+  v6 = [disabledShortcutIdentifiers containsObject:identifierCopy];
 
   return v6 ^ 1;
 }
 
-- (void)enableShortcutForIdentifier:(id)a3
+- (void)enableShortcutForIdentifier:(id)identifier
 {
-  v6 = a3;
-  if ([v6 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v4 = [(TVRUIShortcutsController *)self disabledShortcutIdentifiers];
-    v5 = [v4 mutableCopy];
+    disabledShortcutIdentifiers = [(TVRUIShortcutsController *)self disabledShortcutIdentifiers];
+    v5 = [disabledShortcutIdentifiers mutableCopy];
 
-    [v5 removeObject:v6];
+    [v5 removeObject:identifierCopy];
     [(TVRUIShortcutsController *)self setDisabledShortcutIdentifiers:v5];
     [(TVRUIShortcutsController *)self _invalidateFilteredShortcuts];
   }
 }
 
-- (void)disableShortcutForIdentifier:(id)a3
+- (void)disableShortcutForIdentifier:(id)identifier
 {
-  v6 = a3;
-  if ([v6 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v4 = [(TVRUIShortcutsController *)self disabledShortcutIdentifiers];
-    v5 = [v4 mutableCopy];
+    disabledShortcutIdentifiers = [(TVRUIShortcutsController *)self disabledShortcutIdentifiers];
+    v5 = [disabledShortcutIdentifiers mutableCopy];
 
-    [v5 addObject:v6];
+    [v5 addObject:identifierCopy];
     [(TVRUIShortcutsController *)self setDisabledShortcutIdentifiers:v5];
     [(TVRUIShortcutsController *)self _invalidateFilteredShortcuts];
   }
 }
 
-- (void)toggleItemEnablementWithIdentifier:(id)a3
+- (void)toggleItemEnablementWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    if ([(TVRUIShortcutsController *)self itemIsEnabledWithIdentifier:v4])
+    if ([(TVRUIShortcutsController *)self itemIsEnabledWithIdentifier:identifierCopy])
     {
-      [(TVRUIShortcutsController *)self disableShortcutForIdentifier:v4];
+      [(TVRUIShortcutsController *)self disableShortcutForIdentifier:identifierCopy];
     }
 
     else
     {
-      [(TVRUIShortcutsController *)self enableShortcutForIdentifier:v4];
+      [(TVRUIShortcutsController *)self enableShortcutForIdentifier:identifierCopy];
     }
   }
 }
@@ -75,9 +75,9 @@
   allShortcuts = self->_allShortcuts;
   if (!allShortcuts)
   {
-    v4 = [(TVRUIShortcutsController *)self _allItems];
+    _allItems = [(TVRUIShortcutsController *)self _allItems];
     v5 = self->_allShortcuts;
-    self->_allShortcuts = v4;
+    self->_allShortcuts = _allItems;
 
     allShortcuts = self->_allShortcuts;
   }
@@ -91,14 +91,14 @@
   availableShortcuts = self->_availableShortcuts;
   if (!availableShortcuts)
   {
-    v4 = [(TVRUIShortcutsController *)self _allItems];
-    v5 = [(TVRUIShortcutsController *)self disabledShortcutIdentifiers];
+    _allItems = [(TVRUIShortcutsController *)self _allItems];
+    disabledShortcutIdentifiers = [(TVRUIShortcutsController *)self disabledShortcutIdentifiers];
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v4;
+    v7 = _allItems;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
@@ -114,8 +114,8 @@
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 identifier];
-          v14 = [v5 containsObject:v13];
+          identifier = [v12 identifier];
+          v14 = [disabledShortcutIdentifiers containsObject:identifier];
 
           if ((v14 & 1) == 0)
           {
@@ -144,14 +144,14 @@
   disabledShortcuts = self->_disabledShortcuts;
   if (!disabledShortcuts)
   {
-    v4 = [(TVRUIShortcutsController *)self _allItems];
-    v5 = [(TVRUIShortcutsController *)self disabledShortcutIdentifiers];
+    _allItems = [(TVRUIShortcutsController *)self _allItems];
+    disabledShortcutIdentifiers = [(TVRUIShortcutsController *)self disabledShortcutIdentifiers];
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v4;
+    v7 = _allItems;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
@@ -167,8 +167,8 @@
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 identifier];
-          v14 = [v5 containsObject:v13];
+          identifier = [v12 identifier];
+          v14 = [disabledShortcutIdentifiers containsObject:identifier];
 
           if (v14)
           {
@@ -197,13 +197,13 @@
   internalShortcuts = self->_internalShortcuts;
   if (!internalShortcuts)
   {
-    v4 = [(TVRUIShortcutsController *)self _allItems];
+    _allItems = [(TVRUIShortcutsController *)self _allItems];
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = _allItems;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -242,15 +242,15 @@
 
 - (void)_invalidateFilteredShortcuts
 {
-  v3 = [(TVRUIShortcutsController *)self disabledShortcutIdentifiers];
-  v4 = [v3 allObjects];
-  [(TVRUIShortcutsController *)self _persistDisabledShortcutIdentifiers:v4];
+  disabledShortcutIdentifiers = [(TVRUIShortcutsController *)self disabledShortcutIdentifiers];
+  allObjects = [disabledShortcutIdentifiers allObjects];
+  [(TVRUIShortcutsController *)self _persistDisabledShortcutIdentifiers:allObjects];
 
   [(TVRUIShortcutsController *)self setAvailableShortcuts:0];
   [(TVRUIShortcutsController *)self setDisabledShortcuts:0];
   [(TVRUIShortcutsController *)self setInternalShortcuts:0];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"TVRUIShortcutsControllerShortcutsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"TVRUIShortcutsControllerShortcutsDidChangeNotification" object:0];
 }
 
 - (id)_allItems
@@ -291,8 +291,8 @@
   disabledShortcutIdentifiers = self->_disabledShortcutIdentifiers;
   if (!disabledShortcutIdentifiers)
   {
-    v4 = [(TVRUIShortcutsController *)self _loadDisabledShortcutIdentifiers];
-    v5 = [MEMORY[0x277CBEB98] setWithArray:v4];
+    _loadDisabledShortcutIdentifiers = [(TVRUIShortcutsController *)self _loadDisabledShortcutIdentifiers];
+    v5 = [MEMORY[0x277CBEB98] setWithArray:_loadDisabledShortcutIdentifiers];
     v6 = self->_disabledShortcutIdentifiers;
     self->_disabledShortcutIdentifiers = v5;
 
@@ -302,18 +302,18 @@
   return disabledShortcutIdentifiers;
 }
 
-- (void)_persistDisabledShortcutIdentifiers:(id)a3
+- (void)_persistDisabledShortcutIdentifiers:(id)identifiers
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 setObject:v4 forKey:@"disabledShortcutIdentifiers"];
+  identifiersCopy = identifiers;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults setObject:identifiersCopy forKey:@"disabledShortcutIdentifiers"];
 }
 
 - (id)_loadDisabledShortcutIdentifiers
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"disabledShortcutIdentifiers"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"disabledShortcutIdentifiers"];
 
   if (v3)
   {

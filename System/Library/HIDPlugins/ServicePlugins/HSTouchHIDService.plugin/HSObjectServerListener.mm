@@ -1,12 +1,12 @@
 @interface HSObjectServerListener
-- (HSObjectServerListener)initWithSocket:(FileDescriptor *)a3 config:(const HSObjectServerConfig *)a4;
+- (HSObjectServerListener)initWithSocket:(FileDescriptor *)socket config:(const HSObjectServerConfig *)config;
 @end
 
 @implementation HSObjectServerListener
 
-- (HSObjectServerListener)initWithSocket:(FileDescriptor *)a3 config:(const HSObjectServerConfig *)a4
+- (HSObjectServerListener)initWithSocket:(FileDescriptor *)socket config:(const HSObjectServerConfig *)config
 {
-  if (a3->_fd < 0)
+  if (socket->_fd < 0)
   {
     v17 = +[NSAssertionHandler currentHandler];
     [v17 handleFailureInMethod:a2 object:self file:@"HSRemoteObject+Additions.mm" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"socket"}];
@@ -14,7 +14,7 @@
 
   v21.receiver = self;
   v21.super_class = HSObjectServerListener;
-  v7 = [(HSObjectServer *)&v21 initWithConfig:a4];
+  v7 = [(HSObjectServer *)&v21 initWithConfig:config];
   if (v7)
   {
     v8 = dispatch_queue_create("HSObjectServerListener queue", 0);
@@ -29,7 +29,7 @@
     v18[2] = __48__HSObjectServerListener_initWithSocket_config___block_invoke;
     v18[3] = &unk_10A318;
     objc_copyWeak(&v19, &location);
-    v12 = [(HSSocketListener *)v10 initWithSocket:a3 queue:v11 clientHandler:v18];
+    v12 = [(HSSocketListener *)v10 initWithSocket:socket queue:v11 clientHandler:v18];
     listener = v7->_listener;
     v7->_listener = v12;
 

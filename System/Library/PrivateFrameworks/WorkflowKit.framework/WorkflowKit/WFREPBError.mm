@@ -1,37 +1,37 @@
 @interface WFREPBError
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFREPBError
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(WFREPBError *)self setDomain:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_code = v4[1];
-  if (v4[3])
+  self->_code = fromCopy[1];
+  if (fromCopy[3])
   {
     [(WFREPBError *)self setLocalizedDescription:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(WFREPBError *)self setLocalizedFailureReason:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -43,13 +43,13 @@
   return v4 ^ v5 ^ [(NSString *)self->_localizedFailureReason hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | v4[2])) || -[NSString isEqual:](domain, "isEqual:")) && self->_code == v4[1] && ((localizedDescription = self->_localizedDescription, !(localizedDescription | v4[3])) || -[NSString isEqual:](localizedDescription, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | equalCopy[2])) || -[NSString isEqual:](domain, "isEqual:")) && self->_code == equalCopy[1] && ((localizedDescription = self->_localizedDescription, !(localizedDescription | equalCopy[3])) || -[NSString isEqual:](localizedDescription, "isEqual:")))
   {
     localizedFailureReason = self->_localizedFailureReason;
-    if (localizedFailureReason | v4[4])
+    if (localizedFailureReason | equalCopy[4])
     {
       v8 = [(NSString *)localizedFailureReason isEqual:?];
     }
@@ -68,53 +68,53 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_domain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_domain copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
   v5[1] = self->_code;
-  v8 = [(NSString *)self->_localizedDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_localizedDescription copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_localizedFailureReason copyWithZone:a3];
+  v10 = [(NSString *)self->_localizedFailureReason copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setDomain:self->_domain];
-  v4 = v5;
-  v5[1] = self->_code;
+  toCopy = to;
+  [toCopy setDomain:self->_domain];
+  v4 = toCopy;
+  toCopy[1] = self->_code;
   if (self->_localizedDescription)
   {
-    [v5 setLocalizedDescription:?];
-    v4 = v5;
+    [toCopy setLocalizedDescription:?];
+    v4 = toCopy;
   }
 
   if (self->_localizedFailureReason)
   {
-    [v5 setLocalizedFailureReason:?];
-    v4 = v5;
+    [toCopy setLocalizedFailureReason:?];
+    v4 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_domain)
   {
     __assert_rtn("[WFREPBError writeTo:]", "WFREPBError.m", 109, "nil != self->_domain");
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteStringField();
   code = self->_code;
   PBDataWriterWriteInt64Field();
@@ -131,12 +131,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_code];
@@ -163,8 +163,8 @@
   v8.receiver = self;
   v8.super_class = WFREPBError;
   v4 = [(WFREPBError *)&v8 description];
-  v5 = [(WFREPBError *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFREPBError *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

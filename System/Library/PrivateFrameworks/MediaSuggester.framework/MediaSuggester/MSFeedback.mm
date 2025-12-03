@@ -1,21 +1,21 @@
 @interface MSFeedback
-- (BOOL)isEqual:(id)a3;
-- (MSFeedback)initWithAction:(id)a3 requestInterval:(double)a4 options:(id)a5 suggestions:(id)a6 numberOfVisibleSuggestions:(int)a7 sessionIdentifier:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (MSFeedback)initWithAction:(id)action requestInterval:(double)interval options:(id)options suggestions:(id)suggestions numberOfVisibleSuggestions:(int)visibleSuggestions sessionIdentifier:(id)identifier;
 - (MSFeedbackAction)action;
 - (MSSuggesterRequestOptions)options;
 - (NSArray)suggestions;
 - (NSString)sessionIdentifier;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int)indexOfEngagedSuggestion;
 - (int64_t)hash;
 - (void)donate;
 - (void)donateToBiome;
-- (void)encodeWithCoder:(id)a3;
-- (void)sendEventForAnalyticsLazyWithEventName:(id)a3 payloadBuilder:(id)a4;
-- (void)setAction:(id)a3;
-- (void)setOptions:(id)a3;
-- (void)setSessionIdentifier:(id)a3;
-- (void)setSuggestions:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)sendEventForAnalyticsLazyWithEventName:(id)name payloadBuilder:(id)builder;
+- (void)setAction:(id)action;
+- (void)setOptions:(id)options;
+- (void)setSessionIdentifier:(id)identifier;
+- (void)setSuggestions:(id)suggestions;
 - (void)uploadAnalytics;
 @end
 
@@ -28,11 +28,11 @@
   return v2;
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
-  sub_22C9CCBFC(v4);
+  actionCopy = action;
+  selfCopy = self;
+  sub_22C9CCBFC(actionCopy);
 }
 
 - (MSSuggesterRequestOptions)options
@@ -42,11 +42,11 @@
   return v2;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  v4 = a3;
-  v5 = self;
-  sub_22C9CCD0C(v4);
+  optionsCopy = options;
+  selfCopy = self;
+  sub_22C9CCD0C(optionsCopy);
 }
 
 - (NSArray)suggestions
@@ -58,11 +58,11 @@
   return v2;
 }
 
-- (void)setSuggestions:(id)a3
+- (void)setSuggestions:(id)suggestions
 {
   type metadata accessor for MSSuggestion(0);
   v4 = sub_22CA20EC0();
-  v5 = self;
+  selfCopy = self;
   sub_22C9CCDF4(v4);
 }
 
@@ -82,9 +82,9 @@
   return v3;
 }
 
-- (void)setSessionIdentifier:(id)a3
+- (void)setSessionIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_22CA20E20();
     v6 = v5;
@@ -96,17 +96,17 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_22C9CCF88(v4, v6);
 }
 
-- (MSFeedback)initWithAction:(id)a3 requestInterval:(double)a4 options:(id)a5 suggestions:(id)a6 numberOfVisibleSuggestions:(int)a7 sessionIdentifier:(id)a8
+- (MSFeedback)initWithAction:(id)action requestInterval:(double)interval options:(id)options suggestions:(id)suggestions numberOfVisibleSuggestions:(int)visibleSuggestions sessionIdentifier:(id)identifier
 {
   type metadata accessor for MSSuggestion(0);
   v13 = sub_22CA20EC0();
-  if (a8)
+  if (identifier)
   {
-    a8 = sub_22CA20E20();
+    identifier = sub_22CA20E20();
     v15 = v14;
   }
 
@@ -115,20 +115,20 @@
     v15 = 0;
   }
 
-  return MSFeedback.init(action:requestInterval:options:suggestions:numberOfVisibleSuggestions:sessionIdentifier:)(a3, a5, v13, a7, a8, v15, a4);
+  return MSFeedback.init(action:requestInterval:options:suggestions:numberOfVisibleSuggestions:sessionIdentifier:)(action, options, v13, visibleSuggestions, identifier, v15, interval);
 }
 
 - (int)indexOfEngagedSuggestion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_22C9CD1FC();
 
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   MSFeedback.copy(with:)(v6);
 
   sub_22C9D05CC(v6, v6[3]);
@@ -137,18 +137,18 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  MSFeedback.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  MSFeedback.encode(with:)(coderCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_22CA21130();
     swift_unknownObjectRelease();
@@ -157,7 +157,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = MSFeedback.isEqual(_:)(v8);
@@ -168,7 +168,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MSFeedback.hash.getter();
 
   return v3;
@@ -176,30 +176,30 @@
 
 - (void)donate
 {
-  v2 = self;
+  selfCopy = self;
   MSFeedback.donate()();
 }
 
 - (void)uploadAnalytics
 {
-  v2 = self;
+  selfCopy = self;
   sub_22C9CF204(sub_22C9CE288);
 }
 
-- (void)sendEventForAnalyticsLazyWithEventName:(id)a3 payloadBuilder:(id)a4
+- (void)sendEventForAnalyticsLazyWithEventName:(id)name payloadBuilder:(id)builder
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(builder);
   v6 = sub_22CA20E20();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   sub_22C9CEE38(v6, v8, sub_22C9D0474, v9);
 }
 
 - (void)donateToBiome
 {
-  v2 = self;
+  selfCopy = self;
   sub_22C9CF204(sub_22C9CF260);
 }
 

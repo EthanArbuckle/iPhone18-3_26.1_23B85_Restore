@@ -4,7 +4,7 @@
 - (BOOL)_presentMigrationAlertIfNeeded;
 - (BOOL)_supportsTripleClick;
 - (BOOL)consumeTriplePressUp;
-- (SBAccessibilityHardwareButtonInteraction)initWithButtonType:(unint64_t)a3;
+- (SBAccessibilityHardwareButtonInteraction)initWithButtonType:(unint64_t)type;
 - (__CFString)_speedChangedNotificationName;
 - (double)_downToDownInterval;
 - (id)hardwareButtonGestureParameters;
@@ -31,7 +31,7 @@
   return v2;
 }
 
-- (SBAccessibilityHardwareButtonInteraction)initWithButtonType:(unint64_t)a3
+- (SBAccessibilityHardwareButtonInteraction)initWithButtonType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = SBAccessibilityHardwareButtonInteraction;
@@ -39,7 +39,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_buttonType = a3;
+    v4->_buttonType = type;
     [(SBAccessibilityHardwareButtonInteraction *)v4 _registerAsNotificationObserver];
   }
 
@@ -76,13 +76,13 @@
 
 - (BOOL)consumeTriplePressUp
 {
-  v3 = [(SBAccessibilityHardwareButtonInteraction *)self _supportsTripleClick];
-  if (v3 && ![(SBAccessibilityHardwareButtonInteraction *)self _presentMigrationAlertIfNeeded])
+  _supportsTripleClick = [(SBAccessibilityHardwareButtonInteraction *)self _supportsTripleClick];
+  if (_supportsTripleClick && ![(SBAccessibilityHardwareButtonInteraction *)self _presentMigrationAlertIfNeeded])
   {
     _AXSHandleTripleClickHomeButtonPress();
   }
 
-  return v3;
+  return _supportsTripleClick;
 }
 
 - (__CFString)_speedChangedNotificationName
@@ -107,18 +107,18 @@
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _SBAXButtonPrefsDidChangeNotification, *MEMORY[0x277D81E58], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  v4 = [(SBAccessibilityHardwareButtonInteraction *)self _speedChangedNotificationName];
+  _speedChangedNotificationName = [(SBAccessibilityHardwareButtonInteraction *)self _speedChangedNotificationName];
 
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _SBAXButtonPrefsDidChangeNotification, v4, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _SBAXButtonPrefsDidChangeNotification, _speedChangedNotificationName, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 - (void)_unregisterAsNotificationObserver
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x277D81E58], 0);
-  v4 = [(SBAccessibilityHardwareButtonInteraction *)self _speedChangedNotificationName];
+  _speedChangedNotificationName = [(SBAccessibilityHardwareButtonInteraction *)self _speedChangedNotificationName];
 
-  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, v4, 0);
+  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, _speedChangedNotificationName, 0);
 }
 
 - (void)_accessibilityPrefsDidChange
@@ -188,9 +188,9 @@ void __72__SBAccessibilityHardwareButtonInteraction__accessibilityPrefsDidChange
 - (BOOL)_presentMigrationAlertIfNeeded
 {
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 sosDefaults];
+  sosDefaults = [v3 sosDefaults];
 
-  if (([v4 performedCheckForTripleClickSOSMigrationAlert] & 1) == 0 && -[SBAccessibilityHardwareButtonInteraction _supportsTripleClick](self, "_supportsTripleClick") && objc_msgSend(MEMORY[0x277D495A8], "currentSOSTriggerMechanism") == 1 && SBFEffectiveHomeButtonType() == 2)
+  if (([sosDefaults performedCheckForTripleClickSOSMigrationAlert] & 1) == 0 && -[SBAccessibilityHardwareButtonInteraction _supportsTripleClick](self, "_supportsTripleClick") && objc_msgSend(MEMORY[0x277D495A8], "currentSOSTriggerMechanism") == 1 && SBFEffectiveHomeButtonType() == 2)
   {
     v5 = SBLogButtonsInteraction();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -211,7 +211,7 @@ void __72__SBAccessibilityHardwareButtonInteraction__accessibilityPrefsDidChange
     v8 = 0;
   }
 
-  [v4 setPerformedCheckForTripleClickSOSMigrationAlert:1];
+  [sosDefaults setPerformedCheckForTripleClickSOSMigrationAlert:1];
 
   return v8;
 }
@@ -220,7 +220,7 @@ void __72__SBAccessibilityHardwareButtonInteraction__accessibilityPrefsDidChange
 {
   v3 = *MEMORY[0x277D85DE8];
   v2[0] = 67109120;
-  v2[1] = a1 & 1;
+  v2[1] = self & 1;
   _os_log_debug_impl(&dword_21ED4E000, a2, OS_LOG_TYPE_DEBUG, "AX supports triple click:%{BOOL}u", v2, 8u);
 }
 

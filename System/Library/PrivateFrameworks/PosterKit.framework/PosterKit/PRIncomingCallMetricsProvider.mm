@@ -1,10 +1,10 @@
 @interface PRIncomingCallMetricsProvider
-+ (BOOL)canApplyKashidaToText:(id)a3 withFont:(id)a4;
++ (BOOL)canApplyKashidaToText:(id)text withFont:(id)font;
 + (CGRect)maximumHorizontalTextBounds;
 + (CGRect)maximumVerticalTextBounds;
 + (double)_deviceTopMargin;
 + (double)horizontalTextEdgePadding;
-+ (double)horizontalTextEdgePaddingForContentSizeCategory:(id)a3;
++ (double)horizontalTextEdgePaddingForContentSizeCategory:(id)category;
 + (double)maxHorizontalTextWidth;
 + (double)maxVerticalTextHeight;
 + (id)_contentSizeCategoryToFactorMap;
@@ -16,7 +16,7 @@
 
 + (unint64_t)maximumVerticalTextLength
 {
-  [a1 maximumVerticalTextBounds];
+  [self maximumVerticalTextBounds];
   Height = CGRectGetHeight(v5);
 
   return [PRVerticalLabel maximumTextLengthForHeight:Height];
@@ -24,15 +24,15 @@
 
 + (CGRect)maximumVerticalTextBounds
 {
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   Height = CGRectGetHeight(v13);
 
-  [a1 maximumHorizontalTextBounds];
+  [self maximumHorizontalTextBounds];
   Width = CGRectGetWidth(v14);
-  [a1 verticalTextMaxYScreenHeightMultiplier];
+  [self verticalTextMaxYScreenHeightMultiplier];
   v7 = v6;
-  [a1 verticalTextMinYScreenHeightMultiplier];
+  [self verticalTextMinYScreenHeightMultiplier];
   v9 = Height * (v7 - v8);
   v10 = 0.0;
   v11 = 0.0;
@@ -44,24 +44,24 @@
   return result;
 }
 
-+ (BOOL)canApplyKashidaToText:(id)a3 withFont:(id)a4
++ (BOOL)canApplyKashidaToText:(id)text withFont:(id)font
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AAB0];
-  v7 = a4;
-  v8 = a3;
+  fontCopy = font;
+  textCopy = text;
   v9 = [v6 alloc];
   v15 = *MEMORY[0x1E69DB648];
-  v16[0] = v7;
+  v16[0] = fontCopy;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
-  v11 = [v9 initWithString:v8 attributes:v10];
+  v11 = [v9 initWithString:textCopy attributes:v10];
   [v11 size];
   v13 = v12;
-  [a1 maximumHorizontalTextBounds];
-  LOBYTE(a1) = v13 < CGRectGetWidth(v17);
+  [self maximumHorizontalTextBounds];
+  LOBYTE(self) = v13 < CGRectGetWidth(v17);
 
-  return a1;
+  return self;
 }
 
 + (id)_contentSizeCategoryToFactorMap
@@ -151,11 +151,11 @@ void __49__PRIncomingCallMetricsProvider__deviceTopMargin__block_invoke()
   _deviceTopMargin_deviceTopMargin = *&v2;
 }
 
-+ (double)horizontalTextEdgePaddingForContentSizeCategory:(id)a3
++ (double)horizontalTextEdgePaddingForContentSizeCategory:(id)category
 {
-  v4 = a3;
-  v5 = [a1 _contentSizeCategoryToFactorMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  categoryCopy = category;
+  _contentSizeCategoryToFactorMap = [self _contentSizeCategoryToFactorMap];
+  v6 = [_contentSizeCategoryToFactorMap objectForKeyedSubscript:categoryCopy];
 
   v7 = &unk_1F1C6B9E0;
   if (v6)
@@ -166,9 +166,9 @@ void __49__PRIncomingCallMetricsProvider__deviceTopMargin__block_invoke()
   v8 = v7;
 
   v9 = [v8 unsignedIntegerValue] * 4.0 + 44.0;
-  v10 = [MEMORY[0x1E69DCEB0] mainScreen];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
 
-  [v10 bounds];
+  [mainScreen bounds];
   Width = CGRectGetWidth(v13);
 
   result = v9 + -4.0;
@@ -201,8 +201,8 @@ void __49__PRIncomingCallMetricsProvider__deviceTopMargin__block_invoke()
 
 + (double)horizontalTextEdgePadding
 {
-  v3 = [a1 preferredContentSizeCategory];
-  [a1 horizontalTextEdgePaddingForContentSizeCategory:v3];
+  preferredContentSizeCategory = [self preferredContentSizeCategory];
+  [self horizontalTextEdgePaddingForContentSizeCategory:preferredContentSizeCategory];
   v5 = v4;
 
   return v5;
@@ -210,19 +210,19 @@ void __49__PRIncomingCallMetricsProvider__deviceTopMargin__block_invoke()
 
 + (CGRect)maximumHorizontalTextBounds
 {
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   Width = CGRectGetWidth(v16);
 
-  [a1 horizontalTextEdgePadding];
+  [self horizontalTextEdgePadding];
   v6 = Width + v5 * -2.0;
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 bounds];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 bounds];
   Height = CGRectGetHeight(v17);
 
   [objc_opt_class() _deviceTopMargin];
   v10 = v9;
-  [a1 horizontalTextMaxYScreenHeightMultiplier];
+  [self horizontalTextMaxYScreenHeightMultiplier];
   v12 = -(v10 - Height * v11);
   v13 = 0.0;
   v14 = 0.0;
@@ -236,14 +236,14 @@ void __49__PRIncomingCallMetricsProvider__deviceTopMargin__block_invoke()
 
 + (double)maxVerticalTextHeight
 {
-  [a1 maximumVerticalTextBounds];
+  [self maximumVerticalTextBounds];
 
   return CGRectGetHeight(*&v2);
 }
 
 + (double)maxHorizontalTextWidth
 {
-  [a1 maximumHorizontalTextBounds];
+  [self maximumHorizontalTextBounds];
 
   return CGRectGetWidth(*&v2);
 }

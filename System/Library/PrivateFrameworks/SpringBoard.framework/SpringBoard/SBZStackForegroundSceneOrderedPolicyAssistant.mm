@@ -1,15 +1,15 @@
 @interface SBZStackForegroundSceneOrderedPolicyAssistant
-- (SBZStackForegroundSceneOrderedPolicyAssistant)initWithDelegate:(id)a3;
-- (SBZStackForegroundSceneOrderedPolicyAssistant)initWithParticipant:(id)a3;
+- (SBZStackForegroundSceneOrderedPolicyAssistant)initWithDelegate:(id)delegate;
+- (SBZStackForegroundSceneOrderedPolicyAssistant)initWithParticipant:(id)participant;
 - (id)_foregroundScenes;
 - (id)observedSceneSettings;
-- (int64_t)resolveProposedPoliciesForForegroundScenes:(id)a3;
-- (void)_didUpdateClientSettings:(id)a3;
+- (int64_t)resolveProposedPoliciesForForegroundScenes:(id)scenes;
+- (void)_didUpdateClientSettings:(id)settings;
 - (void)_invokePropertyResolution;
 - (void)dealloc;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)setForegroundScenes:(id)a3;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings;
+- (void)setForegroundScenes:(id)scenes;
 @end
 
 @implementation SBZStackForegroundSceneOrderedPolicyAssistant
@@ -21,8 +21,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(NSArray *)self->_foregroundScenes reverseObjectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  reverseObjectEnumerator = [(NSArray *)self->_foregroundScenes reverseObjectEnumerator];
+  v3 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -34,22 +34,22 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [v8 sceneIfExists];
-          if (v9)
+          sceneIfExists = [v8 sceneIfExists];
+          if (sceneIfExists)
           {
             if (!v5)
             {
               v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
             }
 
-            [v5 addObject:v9];
+            [v5 addObject:sceneIfExists];
           }
         }
 
@@ -64,7 +64,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -80,8 +80,8 @@
 
 - (void)_invokePropertyResolution
 {
-  v3 = [(SBZStackForegroundSceneOrderedPolicyAssistant *)self _foregroundScenes];
-  v4 = [(SBZStackForegroundSceneOrderedPolicyAssistant *)self resolveProposedPoliciesForForegroundScenes:v3];
+  _foregroundScenes = [(SBZStackForegroundSceneOrderedPolicyAssistant *)self _foregroundScenes];
+  v4 = [(SBZStackForegroundSceneOrderedPolicyAssistant *)self resolveProposedPoliciesForForegroundScenes:_foregroundScenes];
 
   if (v4 == 1)
   {
@@ -94,38 +94,38 @@
   }
 }
 
-- (SBZStackForegroundSceneOrderedPolicyAssistant)initWithDelegate:(id)a3
+- (SBZStackForegroundSceneOrderedPolicyAssistant)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = SBZStackForegroundSceneOrderedPolicyAssistant;
   v6 = [(SBZStackForegroundSceneOrderedPolicyAssistant *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!delegateCopy)
     {
       [(SBZStackForegroundSceneOrderedPolicyAssistant *)a2 initWithDelegate:v6];
     }
 
-    objc_storeWeak(&v6->_delegate, v5);
-    v8 = [(SBZStackForegroundSceneOrderedPolicyAssistant *)v7 observedSceneSettings];
+    objc_storeWeak(&v6->_delegate, delegateCopy);
+    observedSceneSettings = [(SBZStackForegroundSceneOrderedPolicyAssistant *)v7 observedSceneSettings];
     observedSceneSettingSelectors = v7->_observedSceneSettingSelectors;
-    v7->_observedSceneSettingSelectors = v8;
+    v7->_observedSceneSettingSelectors = observedSceneSettings;
   }
 
   return v7;
 }
 
-- (SBZStackForegroundSceneOrderedPolicyAssistant)initWithParticipant:(id)a3
+- (SBZStackForegroundSceneOrderedPolicyAssistant)initWithParticipant:(id)participant
 {
-  v5 = a3;
+  participantCopy = participant;
   v12.receiver = self;
   v12.super_class = SBZStackForegroundSceneOrderedPolicyAssistant;
   v6 = [(SBZStackForegroundSceneOrderedPolicyAssistant *)&v12 init];
   if (v6)
   {
-    v7 = v5;
+    v7 = participantCopy;
     if (!v7)
     {
       [(SBZStackForegroundSceneOrderedPolicyAssistant *)a2 initWithParticipant:v6];
@@ -140,9 +140,9 @@
     }
 
     objc_storeWeak(&v6->_zStackParticipant, v8);
-    v9 = [(SBZStackForegroundSceneOrderedPolicyAssistant *)v6 observedSceneSettings];
+    observedSceneSettings = [(SBZStackForegroundSceneOrderedPolicyAssistant *)v6 observedSceneSettings];
     observedSceneSettingSelectors = v6->_observedSceneSettingSelectors;
-    v6->_observedSceneSettingSelectors = v9;
+    v6->_observedSceneSettingSelectors = observedSceneSettings;
   }
 
   return v6;
@@ -186,12 +186,12 @@
   [(SBZStackForegroundSceneOrderedPolicyAssistant *)&v8 dealloc];
 }
 
-- (void)setForegroundScenes:(id)a3
+- (void)setForegroundScenes:(id)scenes
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 count])
+  scenesCopy = scenes;
+  v5 = scenesCopy;
+  if (scenesCopy && ![scenesCopy count])
   {
 
     v5 = 0;
@@ -268,21 +268,21 @@
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v6 = a4;
-  if ([(NSArray *)self->_foregroundScenes containsObject:a3])
+  settingsCopy = settings;
+  if ([(NSArray *)self->_foregroundScenes containsObject:scene])
   {
-    [(SBZStackForegroundSceneOrderedPolicyAssistant *)self _didUpdateClientSettings:v6];
+    [(SBZStackForegroundSceneOrderedPolicyAssistant *)self _didUpdateClientSettings:settingsCopy];
   }
 }
 
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings
 {
-  v6 = a4;
-  if ([(NSArray *)self->_foregroundScenes containsObject:a3])
+  settingsCopy = settings;
+  if ([(NSArray *)self->_foregroundScenes containsObject:handle])
   {
-    [(SBZStackForegroundSceneOrderedPolicyAssistant *)self _didUpdateClientSettings:v6];
+    [(SBZStackForegroundSceneOrderedPolicyAssistant *)self _didUpdateClientSettings:settingsCopy];
   }
 }
 
@@ -299,7 +299,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"SBZStackForegroundSceneOrderedPolicyAssistant.m";
     v17 = 1024;
@@ -315,9 +315,9 @@
   return result;
 }
 
-- (int64_t)resolveProposedPoliciesForForegroundScenes:(id)a3
+- (int64_t)resolveProposedPoliciesForForegroundScenes:(id)scenes
 {
-  v5 = a3;
+  scenesCopy = scenes;
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"subclass plz implement me"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -329,7 +329,7 @@
     v13 = 2114;
     v14 = v9;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"SBZStackForegroundSceneOrderedPolicyAssistant.m";
     v19 = 1024;
@@ -345,10 +345,10 @@
   return result;
 }
 
-- (void)_didUpdateClientSettings:(id)a3
+- (void)_didUpdateClientSettings:(id)settings
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [a3 settingsDiff];
+  settingsDiff = [settings settingsDiff];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -369,7 +369,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([v4 containsProperty:{objc_msgSend(*(*(&v10 + 1) + 8 * v9), "pointerValue", v10)}])
+        if ([settingsDiff containsProperty:{objc_msgSend(*(*(&v10 + 1) + 8 * v9), "pointerValue", v10)}])
         {
 
           [(SBZStackForegroundSceneOrderedPolicyAssistant *)self _invokePropertyResolution];

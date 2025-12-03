@@ -1,28 +1,28 @@
 @interface PXPhotoLibraryProcessingProgressReport
-+ (id)_highlightEnrichmentProgressDescription:(id *)a3;
-+ (id)_processingProgressDescription:(id *)a3;
-+ (id)_syndicationProgressDescription:(id *)a3;
-+ (id)highlightEnrichmentProgressImageWithProgressReport:(id *)a3;
-+ (id)syndicationProgressImageWithProgressReport:(id *)a3;
-+ (void)requestBriefDescriptionForLibrary:(id)a3 resultBlock:(id)a4;
-+ (void)requestFullDescriptionForLibrary:(id)a3 resultBlock:(id)a4;
++ (id)_highlightEnrichmentProgressDescription:(id *)description;
++ (id)_processingProgressDescription:(id *)description;
++ (id)_syndicationProgressDescription:(id *)description;
++ (id)highlightEnrichmentProgressImageWithProgressReport:(id *)report;
++ (id)syndicationProgressImageWithProgressReport:(id *)report;
++ (void)requestBriefDescriptionForLibrary:(id)library resultBlock:(id)block;
++ (void)requestFullDescriptionForLibrary:(id)library resultBlock:(id)block;
 @end
 
 @implementation PXPhotoLibraryProcessingProgressReport
 
-+ (id)syndicationProgressImageWithProgressReport:(id *)a3
++ (id)syndicationProgressImageWithProgressReport:(id *)report
 {
   v4 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{150.0, 40.0}];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __85__PXPhotoLibraryProcessingProgressReport_syndicationProgressImageWithProgressReport___block_invoke;
   v17[3] = &__block_descriptor_192_e40_v16__0__UIGraphicsImageRendererContext_8l;
-  v5 = *&a3->var4;
-  v6 = *&a3->var6;
-  v7 = *&a3->var0;
-  v20 = *&a3->var2;
+  v5 = *&report->var4;
+  v6 = *&report->var6;
+  v7 = *&report->var0;
+  v20 = *&report->var2;
   v21 = v5;
-  v8 = *&a3->var8;
+  v8 = *&report->var8;
   v22 = v6;
   v23 = v8;
   v18 = xmmword_1A5313D30;
@@ -135,22 +135,22 @@ void __85__PXPhotoLibraryProcessingProgressReport_syndicationProgressImageWithPr
   CGPathRelease(Mutable);
 }
 
-+ (id)highlightEnrichmentProgressImageWithProgressReport:(id *)a3
++ (id)highlightEnrichmentProgressImageWithProgressReport:(id *)report
 {
   v5 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{150.0, 40.0}];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
-  v6 = *&a3->var0;
-  v7 = *&a3->var2;
+  v6 = *&report->var0;
+  v7 = *&report->var2;
   v19 = xmmword_1A5313D30;
   v20 = v6;
-  v8 = *&a3->var4;
-  v9 = *&a3->var6;
+  v8 = *&report->var4;
+  v9 = *&report->var6;
   v21 = v7;
   v22 = v8;
   v18[2] = __93__PXPhotoLibraryProcessingProgressReport_highlightEnrichmentProgressImageWithProgressReport___block_invoke;
   v18[3] = &__block_descriptor_184_e40_v16__0__UIGraphicsImageRendererContext_8l;
-  v18[4] = a1;
+  v18[4] = self;
   v23 = v9;
   v24 = xmmword_1A5313D40;
   __asm { FMOV            V0.2D, #4.0 }
@@ -236,31 +236,31 @@ void __93__PXPhotoLibraryProcessingProgressReport_highlightEnrichmentProgressIma
   CGPathRelease(Mutable);
 }
 
-+ (id)_highlightEnrichmentProgressDescription:(id *)a3
++ (id)_highlightEnrichmentProgressDescription:(id *)description
 {
   v52[1] = *MEMORY[0x1E69E9840];
   v5 = 0x1E696A000uLL;
-  if (a3->var0 - a3->var1 < 1)
+  if (description->var0 - description->var1 < 1)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%%\n", @"Highlights:", *&a3->var6, v39, v40];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%%\n", @"Highlights:", *&description->var6, v39, v40];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%% (%lu/%lu pending)\n", @"Highlights:", *&a3->var6, a3->var0 - a3->var1, a3->var0];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%% (%lu/%lu pending)\n", @"Highlights:", *&description->var6, description->var0 - description->var1, description->var0];
   }
   v42 = ;
   v6 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v42];
   v41 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n"];
   [v6 appendAttributedString:?];
   v7 = MEMORY[0x1E69DB650];
-  if (a3->var5 >= 1)
+  if (description->var5 >= 1)
   {
     v8 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\tNot Enriched: %lu\n", a3->var5];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\tNot Enriched: %lu\n", description->var5];
     v51 = *v7;
-    v10 = [a1 colorForNotEnriched];
-    v52[0] = v10;
+    colorForNotEnriched = [self colorForNotEnriched];
+    v52[0] = colorForNotEnriched;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:&v51 count:1];
     v12 = [v8 initWithString:v9 attributes:v11];
 
@@ -268,13 +268,13 @@ void __93__PXPhotoLibraryProcessingProgressReport_highlightEnrichmentProgressIma
     [v6 appendAttributedString:v12];
   }
 
-  if (a3->var4 >= 1)
+  if (description->var4 >= 1)
   {
     v13 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\tMetadata Only: %lu\n", a3->var4];
+    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\tMetadata Only: %lu\n", description->var4];
     v49 = *v7;
-    v15 = [a1 colorForDefault];
-    v50 = v15;
+    colorForDefault = [self colorForDefault];
+    v50 = colorForDefault;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
     v17 = [v13 initWithString:v14 attributes:v16];
 
@@ -282,13 +282,13 @@ void __93__PXPhotoLibraryProcessingProgressReport_highlightEnrichmentProgressIma
     [v6 appendAttributedString:v17];
   }
 
-  if (a3->var3 >= 1)
+  if (description->var3 >= 1)
   {
     v18 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\tMetadata and Score: %lu\n", a3->var3];
+    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\tMetadata and Score: %lu\n", description->var3];
     v47 = *v7;
-    v20 = [a1 colorForPartial];
-    v48 = v20;
+    colorForPartial = [self colorForPartial];
+    v48 = colorForPartial;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     v22 = [v18 initWithString:v19 attributes:v21];
 
@@ -296,7 +296,7 @@ void __93__PXPhotoLibraryProcessingProgressReport_highlightEnrichmentProgressIma
     [v6 appendAttributedString:v22];
   }
 
-  if (a3->var2 <= 0)
+  if (description->var2 <= 0)
   {
     v25 = *v7;
   }
@@ -304,11 +304,11 @@ void __93__PXPhotoLibraryProcessingProgressReport_highlightEnrichmentProgressIma
   else
   {
     v23 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\tMetadata and Scenes: %lu\n", a3->var2];
+    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\tMetadata and Scenes: %lu\n", description->var2];
     v25 = *v7;
     v45 = v25;
-    v26 = [a1 colorForSceneComplete];
-    v46 = v26;
+    colorForSceneComplete = [self colorForSceneComplete];
+    v46 = colorForSceneComplete;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
     v28 = [v23 initWithString:v24 attributes:v27];
 
@@ -317,17 +317,17 @@ void __93__PXPhotoLibraryProcessingProgressReport_highlightEnrichmentProgressIma
   }
 
   v29 = objc_alloc(MEMORY[0x1E696AAB0]);
-  [*(v5 + 3776) stringWithFormat:@"\tComplete: %lu\n", a3->var1];
+  [*(v5 + 3776) stringWithFormat:@"\tComplete: %lu\n", description->var1];
   v31 = v30 = v5;
   v43 = v25;
-  v32 = [a1 colorForComplete];
-  v44 = v32;
+  colorForComplete = [self colorForComplete];
+  v44 = colorForComplete;
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
   v34 = [v29 initWithString:v31 attributes:v33];
 
   [v6 appendAttributedString:v34];
   v35 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v36 = [*(v30 + 3776) stringWithFormat:@"\tTotal: %lu\n", a3->var0];
+  v36 = [*(v30 + 3776) stringWithFormat:@"\tTotal: %lu\n", description->var0];
   v37 = [v35 initWithString:v36];
 
   [v6 appendAttributedString:v37];
@@ -335,7 +335,7 @@ void __93__PXPhotoLibraryProcessingProgressReport_highlightEnrichmentProgressIma
   return v6;
 }
 
-+ (id)_syndicationProgressDescription:(id *)a3
++ (id)_syndicationProgressDescription:(id *)description
 {
   v4 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:@"Syndication Summary:\n"];
   aBlock = MEMORY[0x1E69E9820];
@@ -345,44 +345,44 @@ void __93__PXPhotoLibraryProcessingProgressReport_highlightEnrichmentProgressIma
   v5 = v4;
   v34 = v5;
   v6 = _Block_copy(&aBlock);
-  var1 = a3->var1;
-  v8 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
-  v6[2](v6, -6, var1, v8);
+  var1 = description->var1;
+  systemDarkGrayColor = [MEMORY[0x1E69DC888] systemDarkGrayColor];
+  v6[2](v6, -6, var1, systemDarkGrayColor);
 
-  var2 = a3->var2;
-  v10 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
-  v6[2](v6, -5, var2, v10);
+  var2 = description->var2;
+  systemDarkGrayColor2 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
+  v6[2](v6, -5, var2, systemDarkGrayColor2);
 
-  var3 = a3->var3;
-  v12 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
-  v6[2](v6, -4, var3, v12);
+  var3 = description->var3;
+  systemDarkGrayColor3 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
+  v6[2](v6, -4, var3, systemDarkGrayColor3);
 
-  var4 = a3->var4;
-  v14 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
-  v6[2](v6, -3, var4, v14);
+  var4 = description->var4;
+  systemDarkGrayColor4 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
+  v6[2](v6, -3, var4, systemDarkGrayColor4);
 
-  var5 = a3->var5;
-  v16 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
-  v6[2](v6, -2, var5, v16);
+  var5 = description->var5;
+  systemDarkGrayColor5 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
+  v6[2](v6, -2, var5, systemDarkGrayColor5);
 
-  var6 = a3->var6;
-  v18 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
-  v6[2](v6, -1, var6, v18);
+  var6 = description->var6;
+  systemDarkGrayColor6 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
+  v6[2](v6, -1, var6, systemDarkGrayColor6);
 
-  var7 = a3->var7;
-  v20 = [MEMORY[0x1E69DC888] systemDarkRedColor];
-  v6[2](v6, 0, var7, v20);
+  var7 = description->var7;
+  systemDarkRedColor = [MEMORY[0x1E69DC888] systemDarkRedColor];
+  v6[2](v6, 0, var7, systemDarkRedColor);
 
-  var8 = a3->var8;
-  v22 = [MEMORY[0x1E69DC888] systemDarkTealColor];
-  v6[2](v6, 1, var8, v22);
+  var8 = description->var8;
+  systemDarkTealColor = [MEMORY[0x1E69DC888] systemDarkTealColor];
+  v6[2](v6, 1, var8, systemDarkTealColor);
 
-  var9 = a3->var9;
-  v24 = [MEMORY[0x1E69DC888] systemDarkGreenColor];
-  v6[2](v6, 2, var9, v24);
+  var9 = description->var9;
+  systemDarkGreenColor = [MEMORY[0x1E69DC888] systemDarkGreenColor];
+  v6[2](v6, 2, var9, systemDarkGreenColor);
 
   v25 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\tTotal: %lu\n", a3->var0, aBlock, v31, v32, v33];
+  v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\tTotal: %lu\n", description->var0, aBlock, v31, v32, v33];
   v27 = [v25 initWithString:v26];
 
   [v5 appendAttributedString:v27];
@@ -408,47 +408,47 @@ void __74__PXPhotoLibraryProcessingProgressReport__syndicationProgressDescriptio
   [*(a1 + 32) appendAttributedString:v13];
 }
 
-+ (id)_processingProgressDescription:(id *)a3
++ (id)_processingProgressDescription:(id *)description
 {
-  if (a3->var0 - a3->var2 < 1)
+  if (description->var0 - description->var2 < 1)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%%\n", @"Scenes 🏞:", *&a3->var6, v16, v20];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%%\n", @"Scenes 🏞:", *&description->var6, v16, v20];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%% (%lu/%lu pending)\n", @"Scenes 🏞:", *&a3->var6, a3->var0 - a3->var2, a3->var0];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%% (%lu/%lu pending)\n", @"Scenes 🏞:", *&description->var6, description->var0 - description->var2, description->var0];
   }
   v4 = ;
-  if (a3->var0 - a3->var3 < 1)
+  if (description->var0 - description->var3 < 1)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%%\n", @"Faces 🧑:", *&a3->var7, v17, v21];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%%\n", @"Faces 🧑:", *&description->var7, v17, v21];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%% (%lu/%lu pending)\n", @"Faces 🧑:", *&a3->var7, a3->var0 - a3->var3, a3->var0];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%% (%lu/%lu pending)\n", @"Faces 🧑:", *&description->var7, description->var0 - description->var3, description->var0];
   }
   v5 = ;
-  if (a3->var0 - a3->var4 < 1)
+  if (description->var0 - description->var4 < 1)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%%\n", @"MediaAnalysis (image):", *&a3->var8, v18, v22];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%%\n", @"MediaAnalysis (image):", *&description->var8, v18, v22];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%% (%lu/%lu pending)\n", @"MediaAnalysis (image):", *&a3->var8, a3->var0 - a3->var4, a3->var0];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%% (%lu/%lu pending)\n", @"MediaAnalysis (image):", *&description->var8, description->var0 - description->var4, description->var0];
   }
   v6 = ;
-  var1 = a3->var1;
-  if (var1 - a3->var5 < 1)
+  var1 = description->var1;
+  if (var1 - description->var5 < 1)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%%\n", @"MediaAnalysis (video):", *&a3->var9, v19, v23];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%%\n", @"MediaAnalysis (video):", *&description->var9, v19, v23];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%% (%lu/%lu pending)\n", @"MediaAnalysis (video):", *&a3->var9, var1 - a3->var5, var1];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\t%2.1f%% (%lu/%lu pending)\n", @"MediaAnalysis (video):", *&description->var9, var1 - description->var5, var1];
   }
   v8 = ;
   v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n"];
@@ -473,20 +473,20 @@ void __74__PXPhotoLibraryProcessingProgressReport__syndicationProgressDescriptio
   return v10;
 }
 
-+ (void)requestFullDescriptionForLibrary:(id)a3 resultBlock:(id)a4
++ (void)requestFullDescriptionForLibrary:(id)library resultBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  blockCopy = block;
   v8 = MEMORY[0x1E69C1560];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __87__PXPhotoLibraryProcessingProgressReport_requestFullDescriptionForLibrary_resultBlock___block_invoke;
   v11[3] = &unk_1E773F108;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = blockCopy;
+  selfCopy = self;
+  v12 = libraryCopy;
+  v9 = libraryCopy;
+  v10 = blockCopy;
   [v8 requestProcessingProgressForLibrary:v9 result:v11];
 }
 
@@ -596,20 +596,20 @@ void __87__PXPhotoLibraryProcessingProgressReport_requestFullDescriptionForLibra
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)requestBriefDescriptionForLibrary:(id)a3 resultBlock:(id)a4
++ (void)requestBriefDescriptionForLibrary:(id)library resultBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  blockCopy = block;
   v8 = MEMORY[0x1E69C1560];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__PXPhotoLibraryProcessingProgressReport_requestBriefDescriptionForLibrary_resultBlock___block_invoke;
   v11[3] = &unk_1E773F108;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v13 = blockCopy;
+  selfCopy = self;
+  v12 = libraryCopy;
+  v9 = blockCopy;
+  v10 = libraryCopy;
   [v8 requestProcessingProgressForLibrary:v10 result:v11];
 }
 

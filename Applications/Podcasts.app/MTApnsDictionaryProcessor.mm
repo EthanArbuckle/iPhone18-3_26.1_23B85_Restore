@@ -1,26 +1,26 @@
 @interface MTApnsDictionaryProcessor
-- (MTApnsDictionaryProcessor)initWithDictionary:(id)a3;
-- (id)dataForSetTransaction:(id)a3 key:(id)a4 version:(id *)a5;
+- (MTApnsDictionaryProcessor)initWithDictionary:(id)dictionary;
+- (id)dataForSetTransaction:(id)transaction key:(id)key version:(id *)version;
 @end
 
 @implementation MTApnsDictionaryProcessor
 
-- (MTApnsDictionaryProcessor)initWithDictionary:(id)a3
+- (MTApnsDictionaryProcessor)initWithDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = MTApnsDictionaryProcessor;
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = [(MTApnsDictionaryProcessor *)&v6 init];
-  [(MTApnsDictionaryProcessor *)v4 setDictionary:v3, v6.receiver, v6.super_class];
+  [(MTApnsDictionaryProcessor *)v4 setDictionary:dictionaryCopy, v6.receiver, v6.super_class];
 
   return v4;
 }
 
-- (id)dataForSetTransaction:(id)a3 key:(id)a4 version:(id *)a5
+- (id)dataForSetTransaction:(id)transaction key:(id)key version:(id *)version
 {
-  v6 = a4;
-  v7 = [(MTApnsDictionaryProcessor *)self dictionary];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  dictionary = [(MTApnsDictionaryProcessor *)self dictionary];
+  v8 = [dictionary objectForKeyedSubscript:keyCopy];
 
   if (v8)
   {
@@ -35,7 +35,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = keyCopy;
       v11 = "Processor was asked for value for key %@ that doesn't conform to NSCoding!";
 LABEL_9:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, v11, &v13, 0xCu);
@@ -48,7 +48,7 @@ LABEL_9:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = keyCopy;
       v11 = "Processor was asked for key %@ that's missing from the provided dictionary!";
       goto LABEL_9;
     }

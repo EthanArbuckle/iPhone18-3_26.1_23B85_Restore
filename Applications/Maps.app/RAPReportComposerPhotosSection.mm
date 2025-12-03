@@ -1,31 +1,31 @@
 @interface RAPReportComposerPhotosSection
-- (RAPReportComposerPhotosSection)initWithQuestion:(id)a3;
-- (id)cellForRowAtIndex:(int64_t)a3;
+- (RAPReportComposerPhotosSection)initWithQuestion:(id)question;
+- (id)cellForRowAtIndex:(int64_t)index;
 - (id)headerTitle;
-- (void)_startPickingPhotoFromView:(id)a3 sourceType:(int64_t)a4;
-- (void)photoCarouselController:(id)a3 requestsRemovingImageForIdentifier:(id)a4 completion:(id)a5;
-- (void)photoCarouselControllerRequestsAddingNewPhoto:(id)a3 forSourceType:(int64_t)a4;
+- (void)_startPickingPhotoFromView:(id)view sourceType:(int64_t)type;
+- (void)photoCarouselController:(id)controller requestsRemovingImageForIdentifier:(id)identifier completion:(id)completion;
+- (void)photoCarouselControllerRequestsAddingNewPhoto:(id)photo forSourceType:(int64_t)type;
 @end
 
 @implementation RAPReportComposerPhotosSection
 
-- (void)photoCarouselController:(id)a3 requestsRemovingImageForIdentifier:(id)a4 completion:(id)a5
+- (void)photoCarouselController:(id)controller requestsRemovingImageForIdentifier:(id)identifier completion:(id)completion
 {
   question = self->_question;
-  v7 = a5;
-  v7[2](v7, [(RAPCommentQuestion *)question removePhotoForIdentifier:a4]);
+  completionCopy = completion;
+  completionCopy[2](completionCopy, [(RAPCommentQuestion *)question removePhotoForIdentifier:identifier]);
 }
 
-- (void)photoCarouselControllerRequestsAddingNewPhoto:(id)a3 forSourceType:(int64_t)a4
+- (void)photoCarouselControllerRequestsAddingNewPhoto:(id)photo forSourceType:(int64_t)type
 {
-  v6 = a3;
+  photoCopy = photo;
   picker = self->_picker;
   if (!picker)
   {
     v8 = [RAPPhotoPickerController alloc];
-    v9 = [(RAPCommentQuestion *)self->_question photos];
-    v10 = [v9 firstObject];
-    v11 = [(RAPPhotoPickerController *)v8 initWithInitialPhoto:v10];
+    photos = [(RAPCommentQuestion *)self->_question photos];
+    firstObject = [photos firstObject];
+    v11 = [(RAPPhotoPickerController *)v8 initWithInitialPhoto:firstObject];
     v12 = self->_picker;
     self->_picker = v11;
 
@@ -46,31 +46,31 @@
   }
 
   [(RAPPhotoPickerController *)picker clearSelectedPhoto:v19];
-  v18 = [v6 anchoringView];
-  [(RAPReportComposerPhotosSection *)self _startPickingPhotoFromView:v18 sourceType:a4];
+  anchoringView = [photoCopy anchoringView];
+  [(RAPReportComposerPhotosSection *)self _startPickingPhotoFromView:anchoringView sourceType:type];
 }
 
-- (void)_startPickingPhotoFromView:(id)a3 sourceType:(int64_t)a4
+- (void)_startPickingPhotoFromView:(id)view sourceType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(RAPTablePartSection *)self presentingViewController];
-  [(RAPPhotoPickerController *)self->_picker setPresentingViewController:v7];
+  viewCopy = view;
+  presentingViewController = [(RAPTablePartSection *)self presentingViewController];
+  [(RAPPhotoPickerController *)self->_picker setPresentingViewController:presentingViewController];
 
-  [(RAPPhotoPickerController *)self->_picker setAnchoringView:v6];
+  [(RAPPhotoPickerController *)self->_picker setAnchoringView:viewCopy];
   picker = self->_picker;
 
-  [(RAPPhotoPickerController *)picker startPickingWithSourceType:a4];
+  [(RAPPhotoPickerController *)picker startPickingWithSourceType:type];
 }
 
-- (id)cellForRowAtIndex:(int64_t)a3
+- (id)cellForRowAtIndex:(int64_t)index
 {
   v4 = [(RAPTablePartSection *)self dequeueCellWithNamespacedReuseIdentifier:@"PhotoCell"];
   if (!v4)
   {
     v4 = [[RAPPhotoCarouselTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"PhotoCell"];
     [(RAPPhotoCarouselTableViewCell *)v4 setPhotoCarouselController:self->_carouselViewModel];
-    v5 = [(RAPTablePartSection *)self presentingViewController];
-    [(UGCPhotoCarouselController *)self->_carouselViewModel setPresentingViewController:v5];
+    presentingViewController = [(RAPTablePartSection *)self presentingViewController];
+    [(UGCPhotoCarouselController *)self->_carouselViewModel setPresentingViewController:presentingViewController];
   }
 
   return v4;
@@ -84,17 +84,17 @@
   return v3;
 }
 
-- (RAPReportComposerPhotosSection)initWithQuestion:(id)a3
+- (RAPReportComposerPhotosSection)initWithQuestion:(id)question
 {
-  v5 = a3;
+  questionCopy = question;
   v27.receiver = self;
   v27.super_class = RAPReportComposerPhotosSection;
   v6 = [(RAPTablePartSection *)&v27 init];
   v7 = v6;
   if (v6)
   {
-    v22 = v5;
-    objc_storeStrong(&v6->_question, a3);
+    v22 = questionCopy;
+    objc_storeStrong(&v6->_question, question);
     v8 = [[UGCPhotoCarouselController alloc] initWithDelegate:v7 maximumNumberOfPhotos:[(RAPCommentQuestion *)v7->_question maximumNumberOfPhotos] prefersMenu:1];
     carouselViewModel = v7->_carouselViewModel;
     v7->_carouselViewModel = v8;
@@ -103,8 +103,8 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = [(RAPCommentQuestion *)v7->_question photos];
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    photos = [(RAPCommentQuestion *)v7->_question photos];
+    v11 = [photos countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v11)
     {
       v12 = v11;
@@ -115,31 +115,31 @@
         {
           if (*v24 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(photos);
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
           v16 = v7->_carouselViewModel;
-          v17 = [v15 photo];
-          v18 = [v15 _maps_diffableDataSourceIdentifier];
-          [(UGCPhotoCarouselController *)v16 addImage:v17 forIdentifier:v18];
+          photo = [v15 photo];
+          _maps_diffableDataSourceIdentifier = [v15 _maps_diffableDataSourceIdentifier];
+          [(UGCPhotoCarouselController *)v16 addImage:photo forIdentifier:_maps_diffableDataSourceIdentifier];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v12 = [photos countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v12);
     }
 
-    v5 = v22;
+    questionCopy = v22;
     if ([(RAPCommentQuestion *)v7->_question emphasis]== 1)
     {
-      v19 = [v22 localizedPhotosPickerLabel];
-      [(RAPTablePartSection *)v7 setHeaderTitle:v19];
+      localizedPhotosPickerLabel = [v22 localizedPhotosPickerLabel];
+      [(RAPTablePartSection *)v7 setHeaderTitle:localizedPhotosPickerLabel];
     }
 
-    v20 = [v22 localizedPhotosPickerExplanation];
-    [(RAPTablePartSection *)v7 setFooterTitle:v20];
+    localizedPhotosPickerExplanation = [v22 localizedPhotosPickerExplanation];
+    [(RAPTablePartSection *)v7 setFooterTitle:localizedPhotosPickerExplanation];
   }
 
   return v7;

@@ -1,17 +1,17 @@
 @interface CRLPKImageRendererContainer
-- (BOOL)isCandidateForSize:(CGSize)a3 sixChannelBlending:(BOOL)a4 transparentBlending:(BOOL)a5;
+- (BOOL)isCandidateForSize:(CGSize)size sixChannelBlending:(BOOL)blending transparentBlending:(BOOL)transparentBlending;
 - (CGSize)size;
-- (CRLPKImageRendererContainer)initWithSize:(CGSize)a3 sixChannelBlending:(BOOL)a4 transparentBlending:(BOOL)a5;
+- (CRLPKImageRendererContainer)initWithSize:(CGSize)size sixChannelBlending:(BOOL)blending transparentBlending:(BOOL)transparentBlending;
 - (PKImageRenderer)imageRenderer;
 @end
 
 @implementation CRLPKImageRendererContainer
 
-- (CRLPKImageRendererContainer)initWithSize:(CGSize)a3 sixChannelBlending:(BOOL)a4 transparentBlending:(BOOL)a5
+- (CRLPKImageRendererContainer)initWithSize:(CGSize)size sixChannelBlending:(BOOL)blending transparentBlending:(BOOL)transparentBlending
 {
-  v6 = a4;
-  height = a3.height;
-  width = a3.width;
+  blendingCopy = blending;
+  height = size.height;
+  width = size.width;
   v14.receiver = self;
   v14.super_class = CRLPKImageRendererContainer;
   v9 = [(CRLPKImageRendererContainer *)&v14 init];
@@ -20,9 +20,9 @@
   {
     v9->_size.width = width;
     v9->_size.height = height;
-    v9->_sixChannelBlending = v6;
-    v9->_transparentBlending = a5;
-    v11 = [[PKImageRenderer alloc] initWithSize:0 scale:v6 renderQueue:width sixChannelBlending:{height, 1.0}];
+    v9->_sixChannelBlending = blendingCopy;
+    v9->_transparentBlending = transparentBlending;
+    v11 = [[PKImageRenderer alloc] initWithSize:0 scale:blendingCopy renderQueue:width sixChannelBlending:{height, 1.0}];
     imageRenderer = v10->_imageRenderer;
     v10->_imageRenderer = v11;
 
@@ -42,11 +42,11 @@
   return imageRenderer;
 }
 
-- (BOOL)isCandidateForSize:(CGSize)a3 sixChannelBlending:(BOOL)a4 transparentBlending:(BOOL)a5
+- (BOOL)isCandidateForSize:(CGSize)size sixChannelBlending:(BOOL)blending transparentBlending:(BOOL)transparentBlending
 {
-  v6 = a4;
-  height = a3.height;
-  width = a3.width;
+  blendingCopy = blending;
+  height = size.height;
+  width = size.width;
   [(CRLPKImageRendererContainer *)self size];
   v11 = v10;
   v13 = v12;
@@ -54,9 +54,9 @@
   result = 0;
   if (v14 && v11 >= width && v13 >= height)
   {
-    if ([(CRLPKImageRendererContainer *)self sixChannelBlending]== v6)
+    if ([(CRLPKImageRendererContainer *)self sixChannelBlending]== blendingCopy)
     {
-      return [(CRLPKImageRendererContainer *)self transparentBlending]^ a5 ^ 1;
+      return [(CRLPKImageRendererContainer *)self transparentBlending]^ transparentBlending ^ 1;
     }
 
     else

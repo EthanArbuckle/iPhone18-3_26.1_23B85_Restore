@@ -1,6 +1,6 @@
 @interface StoreKitExternalNotificationService
 - (StoreKitExternalNotificationService)init;
-- (void)presentSheetIfNeededForProcessHandle:(id)a3 completion:(id)a4;
+- (void)presentSheetIfNeededForProcessHandle:(id)handle completion:(id)completion;
 @end
 
 @implementation StoreKitExternalNotificationService
@@ -29,10 +29,10 @@
   return v2;
 }
 
-- (void)presentSheetIfNeededForProcessHandle:(id)a3 completion:(id)a4
+- (void)presentSheetIfNeededForProcessHandle:(id)handle completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  completionCopy = completion;
   v8 = sub_100003B90();
   dispatchQueue = self->_dispatchQueue;
   v13[0] = _NSConcreteStackBlock;
@@ -40,11 +40,11 @@
   v13[2] = sub_100353E7C;
   v13[3] = &unk_10051C7A8;
   v14 = v8;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = handleCopy;
+  selfCopy = self;
+  v17 = completionCopy;
+  v10 = completionCopy;
+  v11 = handleCopy;
   v12 = v8;
   sub_100005D90(dispatchQueue, v13);
 }

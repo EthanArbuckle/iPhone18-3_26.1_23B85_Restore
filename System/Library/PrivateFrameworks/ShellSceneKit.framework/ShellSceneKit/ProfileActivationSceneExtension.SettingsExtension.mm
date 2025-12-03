@@ -1,15 +1,15 @@
 @interface ProfileActivationSceneExtension.SettingsExtension
-+ (void)configureSetting:(id)a3;
++ (void)configureSetting:(id)setting;
 @end
 
 @implementation ProfileActivationSceneExtension.SettingsExtension
 
-+ (void)configureSetting:(id)a3
++ (void)configureSetting:(id)setting
 {
   swift_unknownObjectRetain();
-  if ([a3 matchesProperty_])
+  if ([setting matchesProperty_])
   {
-    [a3 setPropagating_];
+    [setting setPropagating_];
 
     swift_unknownObjectRelease();
   }

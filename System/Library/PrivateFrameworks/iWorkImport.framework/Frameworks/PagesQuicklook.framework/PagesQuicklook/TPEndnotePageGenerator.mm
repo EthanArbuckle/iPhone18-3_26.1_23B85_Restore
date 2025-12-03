@@ -1,21 +1,21 @@
 @interface TPEndnotePageGenerator
-- (BOOL)wantsPageInSectionHint:(id)a3 withState:(id)a4;
-- (TPEndnotePageGenerator)initWithFootnoteLayoutController:(id)a3;
-- (void)createOrUpdatePageHintInSectionHint:(id)a3 withState:(id)a4;
+- (BOOL)wantsPageInSectionHint:(id)hint withState:(id)state;
+- (TPEndnotePageGenerator)initWithFootnoteLayoutController:(id)controller;
+- (void)createOrUpdatePageHintInSectionHint:(id)hint withState:(id)state;
 @end
 
 @implementation TPEndnotePageGenerator
 
-- (TPEndnotePageGenerator)initWithFootnoteLayoutController:(id)a3
+- (TPEndnotePageGenerator)initWithFootnoteLayoutController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v32.receiver = self;
   v32.super_class = TPEndnotePageGenerator;
   v6 = [(TPEndnotePageGenerator *)&v32 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_footnoteLayoutController, a3);
+    objc_storeStrong(&v6->_footnoteLayoutController, controller);
     if (!v7->_footnoteLayoutController)
     {
       v13 = MEMORY[0x277D81150];
@@ -31,26 +31,26 @@
   return v7;
 }
 
-- (BOOL)wantsPageInSectionHint:(id)a3 withState:(id)a4
+- (BOOL)wantsPageInSectionHint:(id)hint withState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   footnoteLayoutController = self->_footnoteLayoutController;
-  v8 = a3;
-  v14 = objc_msgSend_sectionCharRange(v6, v9, v10, v11, v12, v13);
+  hintCopy = hint;
+  v14 = objc_msgSend_sectionCharRange(stateCopy, v9, v10, v11, v12, v13);
   v16 = v15;
-  Section = objc_msgSend_onLastSection(v6, v15, v17, v18, v19, v20);
-  isLastSection_sectionHint = objc_msgSend_endnoteRangeForSectionCharRange_isLastSection_sectionHint_(footnoteLayoutController, v22, v23, v24, v25, v26, v14, v16, Section, v8);
+  Section = objc_msgSend_onLastSection(stateCopy, v15, v17, v18, v19, v20);
+  isLastSection_sectionHint = objc_msgSend_endnoteRangeForSectionCharRange_isLastSection_sectionHint_(footnoteLayoutController, v22, v23, v24, v25, v26, v14, v16, Section, hintCopy);
   v29 = v28;
 
-  v35 = isLastSection_sectionHint != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend_footnoteIndex(v6, v30, v31, v32, v33, v34) < (isLastSection_sectionHint + v29);
+  v35 = isLastSection_sectionHint != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend_footnoteIndex(stateCopy, v30, v31, v32, v33, v34) < (isLastSection_sectionHint + v29);
   return v35;
 }
 
-- (void)createOrUpdatePageHintInSectionHint:(id)a3 withState:(id)a4
+- (void)createOrUpdatePageHintInSectionHint:(id)hint withState:(id)state
 {
-  v5 = a3;
-  v11 = objc_msgSend_pageIndex(a4, v6, v7, v8, v9, v10);
-  v22 = objc_msgSend_pageHintForPageIndex_(v5, v12, v13, v14, v15, v16, v11);
+  hintCopy = hint;
+  v11 = objc_msgSend_pageIndex(state, v6, v7, v8, v9, v10);
+  v22 = objc_msgSend_pageHintForPageIndex_(hintCopy, v12, v13, v14, v15, v16, v11);
 
   objc_msgSend_setPageKind_(v22, v17, v18, v19, v20, v21, 4);
 }

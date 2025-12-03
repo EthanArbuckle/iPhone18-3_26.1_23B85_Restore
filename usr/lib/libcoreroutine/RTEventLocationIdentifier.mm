@@ -1,9 +1,9 @@
 @interface RTEventLocationIdentifier
-+ (BOOL)areCalendarIdentifiersEqual:(id)a3 otherCalendarId:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (RTEventLocationIdentifier)initWithEvent:(id)a3 source:(unint64_t)a4 useCalendarIdentifier:(BOOL)a5;
-- (RTEventLocationIdentifier)initWithName:(id)a3 source:(unint64_t)a4 calendarIdentifier:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)areCalendarIdentifiersEqual:(id)equal otherCalendarId:(id)id;
+- (BOOL)isEqual:(id)equal;
+- (RTEventLocationIdentifier)initWithEvent:(id)event source:(unint64_t)source useCalendarIdentifier:(BOOL)identifier;
+- (RTEventLocationIdentifier)initWithName:(id)name source:(unint64_t)source calendarIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)normalize;
 - (unint64_t)hash;
@@ -13,41 +13,41 @@
 
 - (id)normalize
 {
-  v3 = [(RTEventLocationIdentifier *)self name];
-  v4 = [v3 lowercaseString];
+  name = [(RTEventLocationIdentifier *)self name];
+  lowercaseString = [name lowercaseString];
 
-  v5 = [v4 stringByRemovingAllWhitespaceAndPunctuation];
-  [(RTEventLocationIdentifier *)self setName:v5];
+  stringByRemovingAllWhitespaceAndPunctuation = [lowercaseString stringByRemovingAllWhitespaceAndPunctuation];
+  [(RTEventLocationIdentifier *)self setName:stringByRemovingAllWhitespaceAndPunctuation];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(RTEventLocationIdentifier *)self name];
-  v4 = [v3 hash];
+  name = [(RTEventLocationIdentifier *)self name];
+  v4 = [name hash];
   v5 = [(RTEventLocationIdentifier *)self source]+ v4;
-  v6 = [(RTEventLocationIdentifier *)self calendarIdentifier];
-  v7 = [v6 hash];
+  calendarIdentifier = [(RTEventLocationIdentifier *)self calendarIdentifier];
+  v7 = [calendarIdentifier hash];
 
   return v5 + v7;
 }
 
-- (RTEventLocationIdentifier)initWithName:(id)a3 source:(unint64_t)a4 calendarIdentifier:(id)a5
+- (RTEventLocationIdentifier)initWithName:(id)name source:(unint64_t)source calendarIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = RTEventLocationIdentifier;
   v10 = [(RTEventLocationIdentifier *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v11;
 
-    v10->_source = a4;
-    v13 = [v9 copy];
+    v10->_source = source;
+    v13 = [identifierCopy copy];
     calendarIdentifier = v10->_calendarIdentifier;
     v10->_calendarIdentifier = v13;
   }
@@ -55,43 +55,43 @@
   return v10;
 }
 
-- (RTEventLocationIdentifier)initWithEvent:(id)a3 source:(unint64_t)a4 useCalendarIdentifier:(BOOL)a5
+- (RTEventLocationIdentifier)initWithEvent:(id)event source:(unint64_t)source useCalendarIdentifier:(BOOL)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  switch(a4)
+  eventCopy = event;
+  v9 = eventCopy;
+  switch(source)
   {
     case 2uLL:
-      v12 = [v8 title];
-      if (a5)
+      title = [eventCopy title];
+      if (identifier)
       {
-        v13 = [v9 calendar];
-        v14 = [v13 calendarIdentifier];
-        v15 = [(RTEventLocationIdentifier *)self initWithName:v12 source:2 calendarIdentifier:v14];
+        calendar = [v9 calendar];
+        calendarIdentifier = [calendar calendarIdentifier];
+        v15 = [(RTEventLocationIdentifier *)self initWithName:title source:2 calendarIdentifier:calendarIdentifier];
         goto LABEL_12;
       }
 
-      v16 = [(RTEventLocationIdentifier *)self initWithName:v12 source:2 calendarIdentifier:0];
+      v16 = [(RTEventLocationIdentifier *)self initWithName:title source:2 calendarIdentifier:0];
 LABEL_15:
       self = v16;
       goto LABEL_16;
     case 1uLL:
-      v12 = [v8 locationWithoutPrediction];
-      if (a5)
+      title = [eventCopy locationWithoutPrediction];
+      if (identifier)
       {
-        v13 = [v9 calendar];
-        v14 = [v13 calendarIdentifier];
-        v15 = [(RTEventLocationIdentifier *)self initWithName:v12 source:1 calendarIdentifier:v14];
+        calendar = [v9 calendar];
+        calendarIdentifier = [calendar calendarIdentifier];
+        v15 = [(RTEventLocationIdentifier *)self initWithName:title source:1 calendarIdentifier:calendarIdentifier];
 LABEL_12:
         self = v15;
 
 LABEL_16:
-        v11 = self;
+        selfCopy = self;
         goto LABEL_17;
       }
 
-      v16 = [(RTEventLocationIdentifier *)self initWithName:v12 source:1 calendarIdentifier:0];
+      v16 = [(RTEventLocationIdentifier *)self initWithName:title source:1 calendarIdentifier:0];
       goto LABEL_15;
     case 0uLL:
       v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -107,29 +107,29 @@ LABEL_16:
       break;
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_17:
 
-  return v11;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(RTEventLocationIdentifier *)self name];
-  v6 = [(RTEventLocationIdentifier *)self source];
-  v7 = [(RTEventLocationIdentifier *)self calendarIdentifier];
-  v8 = [v4 initWithName:v5 source:v6 calendarIdentifier:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  name = [(RTEventLocationIdentifier *)self name];
+  source = [(RTEventLocationIdentifier *)self source];
+  calendarIdentifier = [(RTEventLocationIdentifier *)self calendarIdentifier];
+  v8 = [v4 initWithName:name source:source calendarIdentifier:calendarIdentifier];
 
   return v8;
 }
 
-+ (BOOL)areCalendarIdentifiersEqual:(id)a3 otherCalendarId:(id)a4
++ (BOOL)areCalendarIdentifiersEqual:(id)equal otherCalendarId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 == v6)
+  equalCopy = equal;
+  idCopy = id;
+  v7 = idCopy;
+  if (equalCopy == idCopy)
   {
     v8 = 1;
   }
@@ -137,33 +137,33 @@ LABEL_17:
   else
   {
     v8 = 0;
-    if (v5 && v6)
+    if (equalCopy && idCopy)
     {
-      v8 = [v5 isEqualToString:v6];
+      v8 = [equalCopy isEqualToString:idCopy];
     }
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(RTEventLocationIdentifier *)self source];
-    if (v6 == [v5 source])
+    v5 = equalCopy;
+    source = [(RTEventLocationIdentifier *)self source];
+    if (source == [v5 source])
     {
-      v7 = [(RTEventLocationIdentifier *)self name];
-      v8 = [v5 name];
-      if ([v7 isEqualToString:v8])
+      name = [(RTEventLocationIdentifier *)self name];
+      name2 = [v5 name];
+      if ([name isEqualToString:name2])
       {
         v9 = objc_opt_class();
-        v10 = [(RTEventLocationIdentifier *)self calendarIdentifier];
-        v11 = [v5 calendarIdentifier];
-        v12 = [v9 areCalendarIdentifiersEqual:v10 otherCalendarId:v11];
+        calendarIdentifier = [(RTEventLocationIdentifier *)self calendarIdentifier];
+        calendarIdentifier2 = [v5 calendarIdentifier];
+        v12 = [v9 areCalendarIdentifiersEqual:calendarIdentifier otherCalendarId:calendarIdentifier2];
       }
 
       else
@@ -189,10 +189,10 @@ LABEL_17:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTEventLocationIdentifier *)self name];
-  v5 = [(RTEventLocationIdentifier *)self source];
-  v6 = [(RTEventLocationIdentifier *)self calendarIdentifier];
-  v7 = [v3 stringWithFormat:@"name, %@, source, %lu, calendarIdentifier, %@", v4, v5, v6];
+  name = [(RTEventLocationIdentifier *)self name];
+  source = [(RTEventLocationIdentifier *)self source];
+  calendarIdentifier = [(RTEventLocationIdentifier *)self calendarIdentifier];
+  v7 = [v3 stringWithFormat:@"name, %@, source, %lu, calendarIdentifier, %@", name, source, calendarIdentifier];
 
   return v7;
 }

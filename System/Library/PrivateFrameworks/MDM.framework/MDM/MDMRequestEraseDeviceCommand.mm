@@ -1,27 +1,27 @@
 @interface MDMRequestEraseDeviceCommand
-+ (id)requestWithPreserveDataPlan:(id)a3 disallowProximitySetup:(id)a4 PIN:(id)a5 obliterationBehavior:(id)a6 returnToService:(id)a7;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)_eraseDeviceFailedToEraseErrorWithUnderlayingError:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
-- (void)processRequest:(id)a3 completionHandler:(id)a4;
++ (id)requestWithPreserveDataPlan:(id)plan disallowProximitySetup:(id)setup PIN:(id)n obliterationBehavior:(id)behavior returnToService:(id)service;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)_eraseDeviceFailedToEraseErrorWithUnderlayingError:(id)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
+- (void)processRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation MDMRequestEraseDeviceCommand
 
-+ (id)requestWithPreserveDataPlan:(id)a3 disallowProximitySetup:(id)a4 PIN:(id)a5 obliterationBehavior:(id)a6 returnToService:(id)a7
++ (id)requestWithPreserveDataPlan:(id)plan disallowProximitySetup:(id)setup PIN:(id)n obliterationBehavior:(id)behavior returnToService:(id)service
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  serviceCopy = service;
+  behaviorCopy = behavior;
+  nCopy = n;
+  setupCopy = setup;
+  planCopy = plan;
   v16 = objc_opt_new();
   v17 = v16;
   v18 = MEMORY[0x277CBEC28];
-  if (v15)
+  if (planCopy)
   {
-    v19 = v15;
+    v19 = planCopy;
   }
 
   else
@@ -31,9 +31,9 @@
 
   [v16 setCommandPreserveDataPlan:v19];
 
-  if (v14)
+  if (setupCopy)
   {
-    v20 = v14;
+    v20 = setupCopy;
   }
 
   else
@@ -43,21 +43,21 @@
 
   [v17 setCommandDisallowProximitySetup:v20];
 
-  [v17 setCommandPIN:v13];
-  [v17 setCommandObliterationBehavior:v12];
+  [v17 setCommandPIN:nCopy];
+  [v17 setCommandObliterationBehavior:behaviorCopy];
 
-  [v17 setCommandReturnToService:v11];
+  [v17 setCommandReturnToService:serviceCopy];
 
   return v17;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
-  if ([(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"PreserveDataPlan" forKeyPath:@"commandPreserveDataPlan" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"DisallowProximitySetup" forKeyPath:@"commandDisallowProximitySetup" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"PIN" forKeyPath:@"commandPIN" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"ObliterationBehavior" forKeyPath:@"commandObliterationBehavior" isRequired:0 defaultValue:0 error:a5])
+  dictionaryCopy = dictionary;
+  if ([(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"PreserveDataPlan" forKeyPath:@"commandPreserveDataPlan" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"DisallowProximitySetup" forKeyPath:@"commandDisallowProximitySetup" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"PIN" forKeyPath:@"commandPIN" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ObliterationBehavior" forKeyPath:@"commandObliterationBehavior" isRequired:0 defaultValue:0 error:error])
   {
-    LOWORD(v11) = a4;
-    v9 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"ReturnToService" forKeyPath:@"commandReturnToService" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v11 error:a5];
+    LOWORD(v11) = type;
+    v9 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"ReturnToService" forKeyPath:@"commandReturnToService" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v11 error:error];
   }
 
   else
@@ -68,40 +68,40 @@
   return v9;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(MDMRequestEraseDeviceCommand *)self commandPreserveDataPlan];
+  commandPreserveDataPlan = [(MDMRequestEraseDeviceCommand *)self commandPreserveDataPlan];
   v7 = MEMORY[0x277CBEC28];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"PreserveDataPlan" value:v6 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"PreserveDataPlan" value:commandPreserveDataPlan isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v8 = [(MDMRequestEraseDeviceCommand *)self commandDisallowProximitySetup];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"DisallowProximitySetup" value:v8 isRequired:0 defaultValue:v7];
+  commandDisallowProximitySetup = [(MDMRequestEraseDeviceCommand *)self commandDisallowProximitySetup];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"DisallowProximitySetup" value:commandDisallowProximitySetup isRequired:0 defaultValue:v7];
 
-  v9 = [(MDMRequestEraseDeviceCommand *)self commandPIN];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"PIN" value:v9 isRequired:0 defaultValue:0];
+  commandPIN = [(MDMRequestEraseDeviceCommand *)self commandPIN];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"PIN" value:commandPIN isRequired:0 defaultValue:0];
 
-  v10 = [(MDMRequestEraseDeviceCommand *)self commandObliterationBehavior];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"ObliterationBehavior" value:v10 isRequired:0 defaultValue:0];
+  commandObliterationBehavior = [(MDMRequestEraseDeviceCommand *)self commandObliterationBehavior];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"ObliterationBehavior" value:commandObliterationBehavior isRequired:0 defaultValue:0];
 
-  v11 = [(MDMRequestEraseDeviceCommand *)self commandReturnToService];
+  commandReturnToService = [(MDMRequestEraseDeviceCommand *)self commandReturnToService];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __50__MDMRequestEraseDeviceCommand_serializeWithType___block_invoke;
   v14[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v15 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"ReturnToService" value:v11 dictSerializer:v14 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"ReturnToService" value:commandReturnToService dictSerializer:v14 isRequired:0 defaultValue:0];
 
   v12 = [v5 copy];
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16.receiver = self;
   v16.super_class = MDMRequestEraseDeviceCommand;
-  v4 = [(RMModelPayloadBase *)&v16 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v16 copyWithZone:zone];
   v5 = [(NSNumber *)self->_commandPreserveDataPlan copy];
   v6 = v4[6];
   v4[6] = v5;
@@ -125,19 +125,19 @@
   return v4;
 }
 
-- (void)processRequest:(id)a3 completionHandler:(id)a4
+- (void)processRequest:(id)request completionHandler:(id)handler
 {
-  v27 = a3;
-  v6 = a4;
-  v7 = [(MDMRequestEraseDeviceCommand *)self commandPreserveDataPlan];
-  v8 = [v7 BOOLValue];
+  requestCopy = request;
+  handlerCopy = handler;
+  commandPreserveDataPlan = [(MDMRequestEraseDeviceCommand *)self commandPreserveDataPlan];
+  bOOLValue = [commandPreserveDataPlan BOOLValue];
 
-  v9 = [(MDMRequestEraseDeviceCommand *)self commandDisallowProximitySetup];
-  v10 = [v9 BOOLValue];
+  commandDisallowProximitySetup = [(MDMRequestEraseDeviceCommand *)self commandDisallowProximitySetup];
+  bOOLValue2 = [commandDisallowProximitySetup BOOLValue];
 
-  v11 = [(MDMRequestEraseDeviceCommand *)self commandReturnToService];
-  v12 = [v11 commandEnabled];
-  v13 = [v12 BOOLValue];
+  commandReturnToService = [(MDMRequestEraseDeviceCommand *)self commandReturnToService];
+  commandEnabled = [commandReturnToService commandEnabled];
+  bOOLValue3 = [commandEnabled BOOLValue];
 
   v32 = 0;
   v33 = &v32;
@@ -161,27 +161,27 @@
   v28[3] = &unk_27982BA78;
   v28[4] = self;
   v17 = _Block_copy(v28);
-  if (v13)
+  if (bOOLValue3)
   {
-    v25 = v10;
-    v26 = v8;
-    v18 = [(MDMRequestEraseDeviceCommand *)self commandReturnToService];
-    v19 = [v18 commandMDMProfileData];
-    v20 = [(MDMRequestEraseDeviceCommand *)self commandReturnToService];
-    v21 = [v20 commandWiFiProfileData];
-    v22 = [(MDMRequestEraseDeviceCommand *)self commandReturnToService];
-    v23 = [v22 commandBootstrapToken];
-    [MDMReturnToServiceUtilities triggerReturnToServiceObliterationWithPreserveDataPlan:v26 disallowProximitySetup:v25 mdmProfileData:v19 wifiProfileData:v21 bootstrapToken:v23 preObliterationAction:v17 completionHandler:v16];
+    v25 = bOOLValue2;
+    v26 = bOOLValue;
+    commandReturnToService2 = [(MDMRequestEraseDeviceCommand *)self commandReturnToService];
+    commandMDMProfileData = [commandReturnToService2 commandMDMProfileData];
+    commandReturnToService3 = [(MDMRequestEraseDeviceCommand *)self commandReturnToService];
+    commandWiFiProfileData = [commandReturnToService3 commandWiFiProfileData];
+    commandReturnToService4 = [(MDMRequestEraseDeviceCommand *)self commandReturnToService];
+    commandBootstrapToken = [commandReturnToService4 commandBootstrapToken];
+    [MDMReturnToServiceUtilities triggerReturnToServiceObliterationWithPreserveDataPlan:v26 disallowProximitySetup:v25 mdmProfileData:commandMDMProfileData wifiProfileData:commandWiFiProfileData bootstrapToken:commandBootstrapToken preObliterationAction:v17 completionHandler:v16];
   }
 
   else
   {
-    [MDMObliterationUtilities obliterateDeviceWithPreserveDataPlan:v8 disallowProximitySetup:v10 preObliterationAction:v17 completionHander:v16];
+    [MDMObliterationUtilities obliterateDeviceWithPreserveDataPlan:bOOLValue disallowProximitySetup:bOOLValue2 preObliterationAction:v17 completionHander:v16];
   }
 
   dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
   v24 = [(MDMAbstractTunnelParser *)MDMParser responseWithError:v33[5]];
-  v6[2](v6, v24);
+  handlerCopy[2](handlerCopy, v24);
 
   _Block_object_dispose(&v32, 8);
 }
@@ -222,13 +222,13 @@ void __74__MDMRequestEraseDeviceCommand_Handler__processRequest_completionHandle
   [v2 willTerminateProcess:v1];
 }
 
-- (id)_eraseDeviceFailedToEraseErrorWithUnderlayingError:(id)a3
+- (id)_eraseDeviceFailedToEraseErrorWithUnderlayingError:(id)error
 {
   v3 = MEMORY[0x277CCA9B8];
   v4 = *MEMORY[0x277D03480];
-  v5 = a3;
+  errorCopy = error;
   v6 = DMCErrorArray();
-  v7 = [v3 DMCErrorWithDomain:v4 code:12089 descriptionArray:v6 underlyingError:v5 errorType:{*MEMORY[0x277D032F8], 0}];
+  v7 = [v3 DMCErrorWithDomain:v4 code:12089 descriptionArray:v6 underlyingError:errorCopy errorType:{*MEMORY[0x277D032F8], 0}];
 
   return v7;
 }

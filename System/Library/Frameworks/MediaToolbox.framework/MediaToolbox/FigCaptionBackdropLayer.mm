@@ -2,7 +2,7 @@
 - (FigCaptionBackdropLayer)init;
 - (void)configure;
 - (void)dealloc;
-- (void)insertBackdropAsSublayerToLayer:(id)a3 below:(id)a4;
+- (void)insertBackdropAsSublayerToLayer:(id)layer below:(id)below;
 @end
 
 @implementation FigCaptionBackdropLayer
@@ -50,14 +50,14 @@
   -[FigCaptionBackdropLayer setFilters:](self, "setFilters:", [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1]);
 }
 
-- (void)insertBackdropAsSublayerToLayer:(id)a3 below:(id)a4
+- (void)insertBackdropAsSublayerToLayer:(id)layer below:(id)below
 {
-  if (a3)
+  if (layer)
   {
-    if (a4)
+    if (below)
     {
 
-      [a3 insertSublayer:self below:?];
+      [layer insertSublayer:self below:?];
     }
 
     else

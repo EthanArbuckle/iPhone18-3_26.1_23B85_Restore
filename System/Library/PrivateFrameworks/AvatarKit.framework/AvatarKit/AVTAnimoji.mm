@@ -1,25 +1,25 @@
 @interface AVTAnimoji
-+ (id)_scenePathForPuppetNamed:(id)a3;
-+ (id)_sceneURLForPuppetDirectoryURL:(id)a3;
-+ (id)animojiNamed:(id)a3;
++ (id)_scenePathForPuppetNamed:(id)named;
++ (id)_sceneURLForPuppetDirectoryURL:(id)l;
++ (id)animojiNamed:(id)named;
 + (id)animojiNames;
-+ (id)animojiWithContentsOfURL:(id)a3;
-+ (id)thumbnailForAnimojiNamed:(id)a3 options:(id)a4;
-+ (void)preloadAnimojiNamed:(id)a3;
-- (AVTAnimoji)initWithCoder:(id)a3;
-- (AVTAnimoji)initWithDescriptor:(id)a3 usageIntent:(unint64_t)a4 error:(id *)a5;
-- (AVTAnimoji)initWithName:(id)a3 error:(id *)p_isa;
++ (id)animojiWithContentsOfURL:(id)l;
++ (id)thumbnailForAnimojiNamed:(id)named options:(id)options;
++ (void)preloadAnimojiNamed:(id)named;
+- (AVTAnimoji)initWithCoder:(id)coder;
+- (AVTAnimoji)initWithDescriptor:(id)descriptor usageIntent:(unint64_t)intent error:(id *)error;
+- (AVTAnimoji)initWithName:(id)name error:(id *)p_isa;
 - (id)_sceneURL;
 - (id)avatarNode;
 - (id)cameraNode;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)lightingNode;
 - (id)newDescriptor;
 - (void)_load;
 - (void)configureForBestAnimationQuality;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadIfNeeded;
-- (void)updateWithOptions:(unint64_t)a3;
+- (void)updateWithOptions:(unint64_t)options;
 @end
 
 @implementation AVTAnimoji
@@ -42,21 +42,21 @@ void __26__AVTAnimoji_animojiNames__block_invoke()
   animojiNames_names = &unk_1F39D95C8;
 }
 
-+ (id)_scenePathForPuppetNamed:(id)a3
++ (id)_scenePathForPuppetNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = +[AVTResourceLocator sharedResourceLocator];
   v5 = [AVTResourceLocator pathForAnimojiResource:v4 ofType:? inDirectory:? isDirectory:?];
 
   return v5;
 }
 
-+ (id)_sceneURLForPuppetDirectoryURL:(id)a3
++ (id)_sceneURLForPuppetDirectoryURL:(id)l
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:0 error:0];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:0 error:0];
 
   v24 = 0u;
   v25 = 0u;
@@ -78,15 +78,15 @@ void __26__AVTAnimoji_animojiNames__block_invoke()
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v11 lastPathComponent];
-        v13 = [v12 stringByDeletingPathExtension];
-        v14 = [v3 lastPathComponent];
-        v15 = [v13 isEqualToString:v14];
+        lastPathComponent = [v11 lastPathComponent];
+        stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+        lastPathComponent2 = [lCopy lastPathComponent];
+        v15 = [stringByDeletingPathExtension isEqualToString:lastPathComponent2];
 
         if (v15)
         {
-          v16 = [v11 pathExtension];
-          if ([v16 isEqualToString:@"vfxz-world"])
+          pathExtension = [v11 pathExtension];
+          if ([pathExtension isEqualToString:@"vfxz-world"])
           {
 
 LABEL_13:
@@ -94,8 +94,8 @@ LABEL_13:
             goto LABEL_14;
           }
 
-          v17 = [v11 pathExtension];
-          v18 = [v17 isEqualToString:@"vfx-world"];
+          pathExtension2 = [v11 pathExtension];
+          v18 = [pathExtension2 isEqualToString:@"vfx-world"];
 
           if (v18)
           {
@@ -147,18 +147,18 @@ LABEL_14:
 - (void)_load
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(AVTAnimoji *)self _sceneURL];
-  if (v3)
+  _sceneURL = [(AVTAnimoji *)self _sceneURL];
+  if (_sceneURL)
   {
     v20 = 0;
-    v4 = [MEMORY[0x1E69DF388] avt_rootNodeForWorldAtURL:v3 options:0 error:&v20];
+    v4 = [MEMORY[0x1E69DF388] avt_rootNodeForWorldAtURL:_sceneURL options:0 error:&v20];
     v5 = v20;
     if (v5)
     {
       v6 = avt_default_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        [(AVTAvatarPoseAnimation *)v3 initWithSceneKitSceneAtURL:v5 usdaMetadata:v6];
+        [(AVTAvatarPoseAnimation *)_sceneURL initWithSceneKitSceneAtURL:v5 usdaMetadata:v6];
       }
     }
 
@@ -234,28 +234,28 @@ LABEL_14:
   return avatarNode;
 }
 
-- (void)updateWithOptions:(unint64_t)a3
+- (void)updateWithOptions:(unint64_t)options
 {
-  v3 = [(AVTAnimoji *)self avatarNode];
+  avatarNode = [(AVTAnimoji *)self avatarNode];
 }
 
-+ (id)animojiWithContentsOfURL:(id)a3
++ (id)animojiWithContentsOfURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setUrl:v3];
+  [v4 setUrl:lCopy];
 
   return v4;
 }
 
-- (AVTAnimoji)initWithName:(id)a3 error:(id *)p_isa
+- (AVTAnimoji)initWithName:(id)name error:(id *)p_isa
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v8 = [objc_opt_class() animojiNames];
-    v9 = [v8 containsObject:v7];
+    animojiNames = [objc_opt_class() animojiNames];
+    v9 = [animojiNames containsObject:nameCopy];
 
     if (v9)
     {
@@ -271,7 +271,7 @@ LABEL_6:
         goto LABEL_17;
       }
 
-      objc_storeStrong(&v10->_name, a3);
+      objc_storeStrong(&v10->_name, name);
       v11 = [objc_opt_class() _scenePathForPuppetNamed:self->_name];
       if (v11)
       {
@@ -292,8 +292,8 @@ LABEL_6:
       {
         v22 = MEMORY[0x1E696ABC0];
         v41 = *MEMORY[0x1E696A578];
-        v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown Animoji name %@", v7];
-        v42 = v23;
+        nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown Animoji name %@", nameCopy];
+        v42 = nameCopy;
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
         *p_isa = [v22 errorWithDomain:@"AVTErrorDomain" code:3 userInfo:v24];
       }
@@ -301,7 +301,7 @@ LABEL_6:
       v25 = avt_default_log();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        [(AVTAnimoji *)v7 initWithName:v25 error:v26, v27, v28, v29, v30, v31];
+        [(AVTAnimoji *)nameCopy initWithName:v25 error:v26, v27, v28, v29, v30, v31];
       }
     }
 
@@ -333,10 +333,10 @@ LABEL_17:
   return p_isa;
 }
 
-+ (id)animojiNamed:(id)a3
++ (id)animojiNamed:(id)named
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithName:v3 error:0];
+  namedCopy = named;
+  v4 = [objc_alloc(objc_opt_class()) initWithName:namedCopy error:0];
 
   return v4;
 }
@@ -348,27 +348,27 @@ LABEL_17:
   return [(AVTAnimojiDescriptor *)v3 initWithAnimoji:self];
 }
 
-- (AVTAnimoji)initWithDescriptor:(id)a3 usageIntent:(unint64_t)a4 error:(id *)a5
+- (AVTAnimoji)initWithDescriptor:(id)descriptor usageIntent:(unint64_t)intent error:(id *)error
 {
-  v7 = [a3 name];
-  v8 = [(AVTAnimoji *)self initWithName:v7 error:a5];
+  name = [descriptor name];
+  v8 = [(AVTAnimoji *)self initWithName:name error:error];
 
   return v8;
 }
 
-+ (id)thumbnailForAnimojiNamed:(id)a3 options:(id)a4
++ (id)thumbnailForAnimojiNamed:(id)named options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"AVTAnimojiThumbnailLargeSizeKey"];
+  namedCopy = named;
+  optionsCopy = options;
+  v7 = [optionsCopy objectForKeyedSubscript:@"AVTAnimojiThumbnailLargeSizeKey"];
 
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"AVTAnimojiThumbnailLargeSizeKey"];
+    v8 = [optionsCopy objectForKeyedSubscript:@"AVTAnimojiThumbnailLargeSizeKey"];
 
-    v9 = [(__CFString *)v8 BOOLValue];
+    bOOLValue = [(__CFString *)v8 BOOLValue];
     v10 = AVTFramingModeCamera;
-    if (!v9)
+    if (!bOOLValue)
     {
       v10 = AVTFramingModeGrid;
     }
@@ -378,7 +378,7 @@ LABEL_17:
 
   else
   {
-    v8 = [v6 objectForKeyedSubscript:@"AVTAnimojiThumbnailCameraKey"];
+    v8 = [optionsCopy objectForKeyedSubscript:@"AVTAnimojiThumbnailCameraKey"];
 
     v11 = @"cameraGrid";
     if (v8)
@@ -389,7 +389,7 @@ LABEL_17:
 
   v12 = v11;
 
-  v13 = [v5 stringByAppendingString:@"-"];
+  v13 = [namedCopy stringByAppendingString:@"-"];
   v14 = [v13 stringByAppendingString:v12];
 
   v15 = +[AVTResourceLocator sharedResourceLocator];
@@ -400,7 +400,7 @@ LABEL_17:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   [(AVTAnimoji *)self loadIfNeeded];
   v4 = objc_alloc_init(objc_opt_class());
@@ -409,8 +409,8 @@ LABEL_17:
   v6 = v4[35];
   v4[35] = v5;
 
-  v7 = [(AVTAnimoji *)self avatarNode];
-  v8 = AVTCloneNodesAndMaterials(v7);
+  avatarNode = [(AVTAnimoji *)self avatarNode];
+  v8 = AVTCloneNodesAndMaterials(avatarNode);
   v9 = v4[33];
   v4[33] = v8;
 
@@ -421,38 +421,38 @@ LABEL_17:
   [v4 _avatarNodeAndHeadNodeAreNowAvailable];
   [v4 resetCustomBehaviours];
   [v4 updateBindings];
-  v12 = [(VFXNode *)self->_lightingNode clone];
+  clone = [(VFXNode *)self->_lightingNode clone];
   v13 = v4[31];
-  v4[31] = v12;
+  v4[31] = clone;
 
-  v14 = [(VFXNode *)self->_cameraNode clone];
+  clone2 = [(VFXNode *)self->_cameraNode clone];
   v15 = v4[34];
-  v4[34] = v14;
+  v4[34] = clone2;
 
   [v4[33] enumerateHierarchyUsingBlock:&__block_literal_global_189];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AVTAnimoji *)self newDescriptor];
-  [v4 encodeObject:v5 forKey:@"descriptor"];
+  coderCopy = coder;
+  newDescriptor = [(AVTAnimoji *)self newDescriptor];
+  [coderCopy encodeObject:newDescriptor forKey:@"descriptor"];
 }
 
-- (AVTAnimoji)initWithCoder:(id)a3
+- (AVTAnimoji)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
 
   v6 = [(AVTAnimoji *)self initWithDescriptor:v5 usageIntent:0 error:0];
   return v6;
 }
 
-+ (void)preloadAnimojiNamed:(id)a3
++ (void)preloadAnimojiNamed:(id)named
 {
-  v4 = [AVTAnimoji puppetNamed:a3 options:0];
-  [a1 preloadPuppet:v4];
+  v4 = [AVTAnimoji puppetNamed:named options:0];
+  [self preloadPuppet:v4];
 }
 
 - (id)lightingNode
@@ -473,15 +473,15 @@ LABEL_17:
 
 - (void)configureForBestAnimationQuality
 {
-  v3 = [(AVTAnimoji *)self name];
-  if ([v3 isEqualToString:@"shark"])
+  name = [(AVTAnimoji *)self name];
+  if ([name isEqualToString:@"shark"])
   {
   }
 
   else
   {
-    v4 = [(AVTAnimoji *)self name];
-    v5 = [v4 isEqualToString:@"lion"];
+    name2 = [(AVTAnimoji *)self name];
+    v5 = [name2 isEqualToString:@"lion"];
 
     if (!v5)
     {

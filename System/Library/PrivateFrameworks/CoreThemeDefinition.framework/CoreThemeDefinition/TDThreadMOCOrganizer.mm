@@ -1,33 +1,33 @@
 @interface TDThreadMOCOrganizer
-- (TDThreadMOCOrganizer)initWithDocument:(id)a3 mainThread:(id)a4;
+- (TDThreadMOCOrganizer)initWithDocument:(id)document mainThread:(id)thread;
 - (id)mainMOC;
 - (id)mainThread;
 - (id)threadMOC;
-- (void)setThreadMOC:(id)a3;
+- (void)setThreadMOC:(id)c;
 @end
 
 @implementation TDThreadMOCOrganizer
 
-- (void)setThreadMOC:(id)a3
+- (void)setThreadMOC:(id)c
 {
   if (!self->mainThread)
   {
     [(TDThreadMOCOrganizer *)a2 setThreadMOC:?];
   }
 
-  v5 = [MEMORY[0x277CCACC8] currentThread];
-  if (!a3 || v5 == [(TDThreadMOCOrganizer *)self mainThread])
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  if (!c || currentThread == [(TDThreadMOCOrganizer *)self mainThread])
   {
-    v7 = [v5 threadDictionary];
+    threadDictionary = [currentThread threadDictionary];
 
-    [v7 removeObjectForKey:@"TDThreadMOC"];
+    [threadDictionary removeObjectForKey:@"TDThreadMOC"];
   }
 
   else
   {
-    v6 = [v5 threadDictionary];
+    threadDictionary2 = [currentThread threadDictionary];
 
-    [v6 setObject:a3 forKey:@"TDThreadMOC"];
+    [threadDictionary2 setObject:c forKey:@"TDThreadMOC"];
   }
 }
 
@@ -45,15 +45,15 @@
 
 - (id)mainMOC
 {
-  v2 = [(TDThreadMOCOrganizer *)self document];
+  document = [(TDThreadMOCOrganizer *)self document];
 
-  return [v2 managedObjectContext];
+  return [document managedObjectContext];
 }
 
 - (id)threadMOC
 {
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  if (v3 == [(TDThreadMOCOrganizer *)self mainThread])
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  if (currentThread == [(TDThreadMOCOrganizer *)self mainThread])
   {
 
     return [(TDThreadMOCOrganizer *)self mainMOC];
@@ -61,7 +61,7 @@
 
   else
   {
-    v4 = [objc_msgSend(v3 "threadDictionary")];
+    v4 = [objc_msgSend(currentThread "threadDictionary")];
     if (!v4)
     {
       v4 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
@@ -74,15 +74,15 @@
   }
 }
 
-- (TDThreadMOCOrganizer)initWithDocument:(id)a3 mainThread:(id)a4
+- (TDThreadMOCOrganizer)initWithDocument:(id)document mainThread:(id)thread
 {
   v9.receiver = self;
   v9.super_class = TDThreadMOCOrganizer;
   v7 = [(TDThreadMOCOrganizer *)&v9 init];
-  if (!a3)
+  if (!document)
   {
     [TDThreadMOCOrganizer initWithDocument:a2 mainThread:v7];
-    if (a4)
+    if (thread)
     {
       goto LABEL_3;
     }
@@ -92,14 +92,14 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!thread)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v7->mainThread = a4;
-  v7->document = a3;
+  v7->mainThread = thread;
+  v7->document = document;
   return v7;
 }
 

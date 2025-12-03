@@ -1,10 +1,10 @@
 @interface SUCreditCardReaderViewController
 - (void)_cancelButtonPressed;
-- (void)_returnCameraOutput:(id)a3 error:(id)a4;
-- (void)cameraReader:(id)a3 didRecognizeObjects:(id)a4;
-- (void)cameraReaderDidEnd:(id)a3;
+- (void)_returnCameraOutput:(id)output error:(id)error;
+- (void)cameraReader:(id)reader didRecognizeObjects:(id)objects;
+- (void)cameraReaderDidEnd:(id)end;
 - (void)didReceiveMemoryWarning;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -16,17 +16,17 @@
   v20.receiver = self;
   v20.super_class = SUCreditCardReaderViewController;
   [(SUCreditCardReaderViewController *)&v20 viewDidLoad];
-  v3 = [(SUCreditCardReaderViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SUCreditCardReaderViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonPressed];
-  v6 = [(SUCreditCardReaderViewController *)self navigationItem];
-  [v6 setLeftBarButtonItem:v5];
+  navigationItem = [(SUCreditCardReaderViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v5];
 
   v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__cancelButtonPressed];
-  v8 = [(SUCreditCardReaderViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  navigationItem2 = [(SUCreditCardReaderViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v7];
 
   if ([objc_opt_class() cameraSupported])
   {
@@ -42,9 +42,9 @@
 
     [(SUCreditCardReaderViewController *)self addChildViewController:self->cameraController];
     [(CRCameraReader *)self->cameraController didMoveToParentViewController:self];
-    v13 = [(SUCreditCardReaderViewController *)self view];
-    v14 = [(CRCameraReader *)self->cameraController view];
-    [v13 addSubview:v14];
+    view2 = [(SUCreditCardReaderViewController *)self view];
+    view3 = [(CRCameraReader *)self->cameraController view];
+    [view2 addSubview:view3];
   }
 
   v15 = [SUCreditCardReaderInfoView alloc];
@@ -52,23 +52,23 @@
   captureInfoView = self->captureInfoView;
   self->captureInfoView = v16;
 
-  v18 = [(SUCreditCardReaderViewController *)self view];
-  [v18 addSubview:self->captureInfoView];
+  view4 = [(SUCreditCardReaderViewController *)self view];
+  [view4 addSubview:self->captureInfoView];
 
-  v19 = [(SUCreditCardReaderViewController *)self view];
-  [v19 bringSubviewToFront:self->captureInfoView];
+  view5 = [(SUCreditCardReaderViewController *)self view];
+  [view5 bringSubviewToFront:self->captureInfoView];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SUCreditCardReaderViewController;
-  [(SUCreditCardReaderViewController *)&v5 viewDidDisappear:a3];
+  [(SUCreditCardReaderViewController *)&v5 viewDidDisappear:disappear];
   [(CRCameraReader *)self->cameraController setDelegate:0];
   [(CRCameraReader *)self->cameraController cancel];
   [(CRCameraReader *)self->cameraController willMoveToParentViewController:0];
-  v4 = [(CRCameraReader *)self->cameraController view];
-  [v4 removeFromSuperview];
+  view = [(CRCameraReader *)self->cameraController view];
+  [view removeFromSuperview];
 
   [(CRCameraReader *)self->cameraController removeFromParentViewController];
 }
@@ -78,19 +78,19 @@
   v21.receiver = self;
   v21.super_class = SUCreditCardReaderViewController;
   [(SUCreditCardReaderViewController *)&v21 viewDidLayoutSubviews];
-  v3 = [(SUCreditCardReaderViewController *)self view];
-  [v3 bounds];
+  view = [(SUCreditCardReaderViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   v12 = v11 * 0.66;
-  v13 = [(CRCameraReader *)self->cameraController view];
-  [v13 setFrame:{v5, v7, v9, v12}];
+  view2 = [(CRCameraReader *)self->cameraController view];
+  [view2 setFrame:{v5, v7, v9, v12}];
 
-  v14 = [(SUCreditCardReaderViewController *)self view];
-  [v14 bounds];
+  view3 = [(SUCreditCardReaderViewController *)self view];
+  [view3 bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -105,10 +105,10 @@
   [(SUCreditCardReaderViewController *)&v6 didReceiveMemoryWarning];
   if ([(SUCreditCardReaderViewController *)self isViewLoaded])
   {
-    v3 = [(SUCreditCardReaderViewController *)self view];
-    v4 = [v3 window];
+    view = [(SUCreditCardReaderViewController *)self view];
+    window = [view window];
 
-    if (!v4)
+    if (!window)
     {
       [(SUCreditCardReaderViewController *)self setView:0];
       cameraController = self->cameraController;
@@ -124,28 +124,28 @@
   [(SUCreditCardReaderViewController *)self _returnCameraOutput:v3 error:0];
 }
 
-- (void)_returnCameraOutput:(id)a3 error:(id)a4
+- (void)_returnCameraOutput:(id)output error:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 setError:v7];
-  if (v7)
+  outputCopy = output;
+  errorCopy = error;
+  [outputCopy setError:errorCopy];
+  if (errorCopy)
   {
-    v8 = [MEMORY[0x1E69D4938] sharedConfig];
-    v9 = [v8 shouldLog];
-    if ([v8 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 &= 2u;
     }
@@ -155,7 +155,7 @@
       *location = 138543618;
       *&location[4] = objc_opt_class();
       v21 = 2114;
-      v22 = v7;
+      v22 = errorCopy;
       v12 = *&location[4];
       LODWORD(v16) = 22;
       v13 = _os_log_send_and_compose_impl();
@@ -167,7 +167,7 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, location, v16}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, location, v16}];
       free(v13);
       SSFileLog();
     }
@@ -182,8 +182,8 @@ LABEL_12:
   block[2] = __62__SUCreditCardReaderViewController__returnCameraOutput_error___block_invoke;
   block[3] = &unk_1E8164948;
   objc_copyWeak(&v19, location);
-  v18 = v6;
-  v14 = v6;
+  v18 = outputCopy;
+  v14 = outputCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   pendingOutput = self->pendingOutput;
   self->pendingOutput = 0;
@@ -228,17 +228,17 @@ void __62__SUCreditCardReaderViewController__returnCameraOutput_error___block_in
   [WeakRetained dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)cameraReader:(id)a3 didRecognizeObjects:(id)a4
+- (void)cameraReader:(id)reader didRecognizeObjects:(id)objects
 {
-  v28 = self;
+  selfCopy = self;
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  objectsCopy = objects;
   v5 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v4;
+  obj = objectsCopy;
   v6 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v6)
   {
@@ -257,41 +257,41 @@ void __62__SUCreditCardReaderViewController__returnCameraOutput_error___block_in
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        v14 = [v13 type];
-        v15 = [v14 isEqual:v9];
+        type = [v13 type];
+        v15 = [type isEqual:v9];
 
         if (v15)
         {
-          v16 = [v13 stringValue];
-          [(SUCreditCardReaderOutput *)v5 setCardNumber:v16];
+          stringValue = [v13 stringValue];
+          [(SUCreditCardReaderOutput *)v5 setCardNumber:stringValue];
         }
 
-        v17 = [v13 type];
-        v18 = [v17 isEqual:v10];
+        type2 = [v13 type];
+        v18 = [type2 isEqual:v10];
 
         if (v18)
         {
-          v19 = [v13 stringValue];
-          [(SUCreditCardReaderOutput *)v5 setCardCardholderName:v19];
+          stringValue2 = [v13 stringValue];
+          [(SUCreditCardReaderOutput *)v5 setCardCardholderName:stringValue2];
         }
 
-        v20 = [v13 type];
-        v21 = [v20 isEqual:v11];
+        type3 = [v13 type];
+        v21 = [type3 isEqual:v11];
 
         if (v21)
         {
           v22 = v13;
-          v23 = [v22 dayValue];
-          [(SUCreditCardReaderOutput *)v5 setCardExpirationDay:v23];
+          dayValue = [v22 dayValue];
+          [(SUCreditCardReaderOutput *)v5 setCardExpirationDay:dayValue];
 
-          v24 = [v22 monthValue];
-          [(SUCreditCardReaderOutput *)v5 setCardExpirationMonth:v24];
+          monthValue = [v22 monthValue];
+          [(SUCreditCardReaderOutput *)v5 setCardExpirationMonth:monthValue];
 
-          v25 = [v22 yearValue];
-          [(SUCreditCardReaderOutput *)v5 setCardExpirationYear:v25];
+          yearValue = [v22 yearValue];
+          [(SUCreditCardReaderOutput *)v5 setCardExpirationYear:yearValue];
 
-          v26 = [v22 stringValue];
-          [(SUCreditCardReaderOutput *)v5 setCardExpirationStringValue:v26];
+          stringValue3 = [v22 stringValue];
+          [(SUCreditCardReaderOutput *)v5 setCardExpirationStringValue:stringValue3];
         }
       }
 
@@ -301,11 +301,11 @@ void __62__SUCreditCardReaderViewController__returnCameraOutput_error___block_in
     while (v7);
   }
 
-  pendingOutput = v28->pendingOutput;
-  v28->pendingOutput = v5;
+  pendingOutput = selfCopy->pendingOutput;
+  selfCopy->pendingOutput = v5;
 }
 
-- (void)cameraReaderDidEnd:(id)a3
+- (void)cameraReaderDidEnd:(id)end
 {
   pendingOutput = self->pendingOutput;
   if (pendingOutput)

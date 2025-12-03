@@ -1,25 +1,25 @@
 @interface TimeDurationPickerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (id)automationElements;
 @end
 
 @implementation TimeDurationPickerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SleepHealthUI.TimeDurationPicker" hasInstanceMethod:@"accessibilityDurationLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.TimeDurationPicker" hasInstanceMethod:@"increase" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SleepHealthUI.TimeDurationPicker" hasInstanceMethod:@"decrease" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SleepHealthUI.TimeDurationPicker" hasInstanceMethod:@"accessibilityDurationLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.TimeDurationPicker" hasInstanceMethod:@"increase" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.TimeDurationPicker" hasInstanceMethod:@"decrease" withFullSignature:{"v", 0}];
 }
 
 - (id)automationElements
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 subviews];
-  v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_1];
+  subviews = [v2 subviews];
+  v4 = [subviews ax_filteredArrayUsingBlock:&__block_literal_global_1];
 
   return v4;
 }
@@ -39,9 +39,9 @@ uint64_t __53__TimeDurationPickerAccessibility_automationElements__block_invoke(
   v3 = [(TimeDurationPickerAccessibility *)self safeValueForKey:@"accessibilityDurationLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  return v5;
+  return accessibilityLabel;
 }
 
 @end

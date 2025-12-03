@@ -1,17 +1,17 @@
 @interface SBDashBoardPluginController
-- (BOOL)handleEvent:(id)a3;
-- (BOOL)pluginManager:(id)a3 plugin:(id)a4 handleAction:(id)a5;
+- (BOOL)handleEvent:(id)event;
+- (BOOL)pluginManager:(id)manager plugin:(id)plugin handleAction:(id)action;
 - (NSSet)components;
 - (NSString)coverSheetIdentifier;
-- (SBDashBoardPluginController)initWithCoverSheetViewController:(id)a3;
+- (SBDashBoardPluginController)initWithCoverSheetViewController:(id)controller;
 - (void)_activate;
 - (void)_deactivate;
-- (void)_dismissPluginViewController:(id)a3 withStyle:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)_presentPluginViewController:(id)a3 withStyle:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)_setPluginViewController:(id)a3;
+- (void)_dismissPluginViewController:(id)controller withStyle:(int64_t)style animated:(BOOL)animated completion:(id)completion;
+- (void)_presentPluginViewController:(id)controller withStyle:(int64_t)style animated:(BOOL)animated completion:(id)completion;
+- (void)_setPluginViewController:(id)controller;
 - (void)dealloc;
-- (void)pluginManager:(id)a3 displayedPluginDidChangeFromPlugin:(id)a4 toPlugin:(id)a5;
-- (void)pluginManager:(id)a3 displayedPluginDidUpdateAppearance:(id)a4;
+- (void)pluginManager:(id)manager displayedPluginDidChangeFromPlugin:(id)plugin toPlugin:(id)toPlugin;
+- (void)pluginManager:(id)manager displayedPluginDidUpdateAppearance:(id)appearance;
 @end
 
 @implementation SBDashBoardPluginController
@@ -24,16 +24,16 @@
   [(SBLockScreenPluginManager *)pluginManager setEnabled:0];
 }
 
-- (SBDashBoardPluginController)initWithCoverSheetViewController:(id)a3
+- (SBDashBoardPluginController)initWithCoverSheetViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = SBDashBoardPluginController;
   v6 = [(SBDashBoardPluginController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coverSheetViewController, a3);
+    objc_storeStrong(&v6->_coverSheetViewController, controller);
     v8 = objc_alloc_init(SBLockScreenPluginManager);
     pluginManager = v7->_pluginManager;
     v7->_pluginManager = v8;
@@ -62,18 +62,18 @@
   [(SBLockScreenPluginManager *)pluginManager setEnabled:1];
 }
 
-- (void)_setPluginViewController:(id)a3
+- (void)_setPluginViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   pluginViewController = self->_pluginViewController;
-  if (pluginViewController != v5)
+  if (pluginViewController != controllerCopy)
   {
     if (pluginViewController || ([(CSCoverSheetViewController *)self->_coverSheetViewController registerExternalAppearanceProvider:self], [(CSCoverSheetViewController *)self->_coverSheetViewController registerExternalBehaviorProvider:self], self->_pluginViewController))
     {
       v7 = SBLogDashBoard();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        [SBDashBoardPluginController _setPluginViewController:v5];
+        [SBDashBoardPluginController _setPluginViewController:controllerCopy];
       }
 
       v8 = self->_pluginViewController;
@@ -83,11 +83,11 @@
       v13[2] = __56__SBDashBoardPluginController__setPluginViewController___block_invoke;
       v13[3] = &unk_2783A8C18;
       v13[4] = self;
-      [(SBDashBoardPluginController *)self _dismissPluginViewController:v8 withStyle:pluginViewControllerPresentationStyle animated:v5 == 0 completion:v13];
+      [(SBDashBoardPluginController *)self _dismissPluginViewController:v8 withStyle:pluginViewControllerPresentationStyle animated:controllerCopy == 0 completion:v13];
     }
 
-    objc_storeStrong(&self->_pluginViewController, a3);
-    self->_pluginViewControllerPresentationStyle = [(SBDashBoardPluginViewController *)v5 presentationStyle];
+    objc_storeStrong(&self->_pluginViewController, controller);
+    self->_pluginViewControllerPresentationStyle = [(SBDashBoardPluginViewController *)controllerCopy presentationStyle];
     if (!self->_pluginViewController)
     {
       goto LABEL_11;
@@ -96,7 +96,7 @@
     v10 = SBLogDashBoard();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [SBDashBoardPluginController _setPluginViewController:v5];
+      [SBDashBoardPluginController _setPluginViewController:controllerCopy];
     }
 
     v11 = self->_pluginViewControllerPresentationStyle;
@@ -105,7 +105,7 @@
     v12[2] = __56__SBDashBoardPluginController__setPluginViewController___block_invoke_3;
     v12[3] = &unk_2783A8C18;
     v12[4] = self;
-    [(SBDashBoardPluginController *)self _presentPluginViewController:v5 withStyle:v11 animated:1 completion:v12];
+    [(SBDashBoardPluginController *)self _presentPluginViewController:controllerCopy withStyle:v11 animated:1 completion:v12];
     if (!self->_pluginViewController)
     {
 LABEL_11:
@@ -133,22 +133,22 @@ void __56__SBDashBoardPluginController__setPluginViewController___block_invoke_3
   }
 }
 
-- (void)_dismissPluginViewController:(id)a3 withStyle:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_dismissPluginViewController:(id)controller withStyle:(int64_t)style animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  v12 = [(SBDashBoardPluginViewController *)self->_pluginViewController plugin];
-  if (a4)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  plugin = [(SBDashBoardPluginViewController *)self->_pluginViewController plugin];
+  if (style)
   {
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __90__SBDashBoardPluginController__dismissPluginViewController_withStyle_animated_completion___block_invoke;
     v22[3] = &unk_2783B1320;
-    v13 = v10;
+    v13 = controllerCopy;
     v23 = v13;
-    v25 = v11;
-    v14 = v12;
+    v25 = completionCopy;
+    v14 = plugin;
     v24 = v14;
     v15 = MEMORY[0x223D6F7F0](v22);
     v17 = MEMORY[0x277D85DD0];
@@ -157,21 +157,21 @@ void __56__SBDashBoardPluginController__setPluginViewController___block_invoke_3
     v20 = &unk_2783BCCC0;
     v21 = v14;
     [v21 enumerateLifecycleObserversUsingBlock:&v17];
-    if (a4 == 1)
+    if (style == 1)
     {
       v16 = [(CSCoverSheetViewController *)self->_coverSheetViewController mainPagePresentationViewController:v17];
-      [v16 dismissContentViewController:v13 animated:v7 completion:v15];
+      [v16 dismissContentViewController:v13 animated:animatedCopy completion:v15];
     }
 
-    else if (a4 == 2)
+    else if (style == 2)
     {
-      [(CSCoverSheetViewController *)self->_coverSheetViewController _dismissModalViewController:v13 animated:v7 completion:v15, v17, v18, v19, v20];
+      [(CSCoverSheetViewController *)self->_coverSheetViewController _dismissModalViewController:v13 animated:animatedCopy completion:v15, v17, v18, v19, v20];
     }
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    v11[2](v11);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -193,20 +193,20 @@ void __90__SBDashBoardPluginController__dismissPluginViewController_withStyle_an
   [v5 enumerateLifecycleObserversUsingBlock:v4];
 }
 
-- (void)_presentPluginViewController:(id)a3 withStyle:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_presentPluginViewController:(id)controller withStyle:(int64_t)style animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 plugin];
-  if (a4)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  plugin = [controllerCopy plugin];
+  if (style)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __90__SBDashBoardPluginController__presentPluginViewController_withStyle_animated_completion___block_invoke;
     v18[3] = &unk_2783A9878;
-    v20 = v11;
-    v13 = v12;
+    v20 = completionCopy;
+    v13 = plugin;
     v19 = v13;
     v14 = MEMORY[0x223D6F7F0](v18);
     v16[0] = MEMORY[0x277D85DD0];
@@ -215,21 +215,21 @@ void __90__SBDashBoardPluginController__dismissPluginViewController_withStyle_an
     v16[3] = &unk_2783BCCC0;
     v17 = v13;
     [v17 enumerateLifecycleObserversUsingBlock:v16];
-    if (a4 == 1)
+    if (style == 1)
     {
-      v15 = [(CSCoverSheetViewController *)self->_coverSheetViewController mainPagePresentationViewController];
-      [v15 presentContentViewController:v10 animated:v7 completion:v14];
+      mainPagePresentationViewController = [(CSCoverSheetViewController *)self->_coverSheetViewController mainPagePresentationViewController];
+      [mainPagePresentationViewController presentContentViewController:controllerCopy animated:animatedCopy completion:v14];
     }
 
-    else if (a4 == 2)
+    else if (style == 2)
     {
-      [(CSCoverSheetViewController *)self->_coverSheetViewController _presentModalViewController:v10 animated:v7 completion:v14];
+      [(CSCoverSheetViewController *)self->_coverSheetViewController _presentModalViewController:controllerCopy animated:animatedCopy completion:v14];
     }
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    v11[2](v11);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -260,28 +260,28 @@ void __90__SBDashBoardPluginController__presentPluginViewController_withStyle_an
 - (NSSet)components
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v4 = [(SBDashBoardPluginViewController *)self->_pluginViewController plugin];
-  v5 = [v4 coverSheetAppearance];
-  v6 = [v5 componentForType:1 property:16];
+  plugin = [(SBDashBoardPluginViewController *)self->_pluginViewController plugin];
+  coverSheetAppearance = [plugin coverSheetAppearance];
+  v6 = [coverSheetAppearance componentForType:1 property:16];
 
   if (v6)
   {
     [v3 addObject:v6];
   }
 
-  v7 = [(SBDashBoardPluginViewController *)self->_pluginViewController plugin];
-  v8 = [v7 hidesLockScreenComplications];
+  plugin2 = [(SBDashBoardPluginViewController *)self->_pluginViewController plugin];
+  hidesLockScreenComplications = [plugin2 hidesLockScreenComplications];
 
-  if (v8)
+  if (hidesLockScreenComplications)
   {
-    v9 = [MEMORY[0x277D02BC8] complicationSidebar];
-    v10 = [(SBDashBoardPluginController *)self appearanceIdentifier];
-    v11 = [v9 identifier:v10];
+    complicationSidebar = [MEMORY[0x277D02BC8] complicationSidebar];
+    appearanceIdentifier = [(SBDashBoardPluginController *)self appearanceIdentifier];
+    v11 = [complicationSidebar identifier:appearanceIdentifier];
     v12 = [v11 hidden:1];
 
-    v13 = [MEMORY[0x277D02BC8] complicationContainer];
-    v14 = [(SBDashBoardPluginController *)self appearanceIdentifier];
-    v15 = [v13 identifier:v14];
+    complicationContainer = [MEMORY[0x277D02BC8] complicationContainer];
+    appearanceIdentifier2 = [(SBDashBoardPluginController *)self appearanceIdentifier];
+    v15 = [complicationContainer identifier:appearanceIdentifier2];
     v16 = [v15 hidden:1];
 
     [v3 addObject:v12];
@@ -291,27 +291,27 @@ void __90__SBDashBoardPluginController__presentPluginViewController_withStyle_an
   return v3;
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = 0;
-  if (v5 > 7)
+  eventCopy = event;
+  type = [eventCopy type];
+  isConsumable = 0;
+  if (type > 7)
   {
-    if (v5 != 8)
+    if (type != 8)
     {
-      if (v5 == 12)
+      if (type == 12)
       {
         if (![(SBLockScreenPluginManager *)self->_pluginManager handleEvent:1])
         {
-          v6 = 0;
+          isConsumable = 0;
           goto LABEL_11;
         }
 
         goto LABEL_10;
       }
 
-      if (v5 != 9)
+      if (type != 9)
       {
         goto LABEL_11;
       }
@@ -324,29 +324,29 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v5 == 3)
+  if (type == 3)
   {
     goto LABEL_9;
   }
 
-  if (v5 == 6)
+  if (type == 6)
   {
 LABEL_8:
     [(SBDashBoardPluginController *)self _deactivate];
 LABEL_10:
-    v6 = [v4 isConsumable];
+    isConsumable = [eventCopy isConsumable];
   }
 
 LABEL_11:
 
-  return v6;
+  return isConsumable;
 }
 
-- (void)pluginManager:(id)a3 displayedPluginDidUpdateAppearance:(id)a4
+- (void)pluginManager:(id)manager displayedPluginDidUpdateAppearance:(id)appearance
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  appearanceCopy = appearance;
   p_pluginViewController = &self->_pluginViewController;
   pluginViewController = self->_pluginViewController;
   if (!pluginViewController)
@@ -355,9 +355,9 @@ LABEL_11:
     pluginViewController = *buf;
   }
 
-  v11 = [(SBDashBoardPluginViewController *)pluginViewController plugin];
+  plugin = [(SBDashBoardPluginViewController *)pluginViewController plugin];
 
-  if (v11 != v8)
+  if (plugin != appearanceCopy)
   {
     [SBDashBoardPluginController pluginManager:a2 displayedPluginDidUpdateAppearance:self];
   }
@@ -366,7 +366,7 @@ LABEL_11:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    *&buf[4] = v8;
+    *&buf[4] = appearanceCopy;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_INFO, "Active uplugin changed it's appearance style: %@", buf, 0xCu);
   }
 
@@ -379,7 +379,7 @@ LABEL_11:
     v15[2] = __80__SBDashBoardPluginController_pluginManager_displayedPluginDidUpdateAppearance___block_invoke;
     v15[3] = &unk_2783A92D8;
     v15[4] = self;
-    v16 = v8;
+    v16 = appearanceCopy;
     [v14 performWithoutAnimation:v15];
   }
 }
@@ -408,12 +408,12 @@ uint64_t __80__SBDashBoardPluginController_pluginManager_displayedPluginDidUpdat
   return [*(a1 + 32) _presentPluginViewController:*(*(a1 + 32) + 16) withStyle:*(*(a1 + 32) + 24) animated:0 completion:0];
 }
 
-- (void)pluginManager:(id)a3 displayedPluginDidChangeFromPlugin:(id)a4 toPlugin:(id)a5
+- (void)pluginManager:(id)manager displayedPluginDidChangeFromPlugin:(id)plugin toPlugin:(id)toPlugin
 {
-  v7 = a5;
-  if (v7)
+  toPluginCopy = toPlugin;
+  if (toPluginCopy)
   {
-    v6 = [[SBDashBoardPluginViewController alloc] initWithLockScreenPlugin:v7];
+    v6 = [[SBDashBoardPluginViewController alloc] initWithLockScreenPlugin:toPluginCopy];
     [(SBDashBoardPluginController *)self _setPluginViewController:v6];
   }
 
@@ -423,12 +423,12 @@ uint64_t __80__SBDashBoardPluginController_pluginManager_displayedPluginDidUpdat
   }
 }
 
-- (BOOL)pluginManager:(id)a3 plugin:(id)a4 handleAction:(id)a5
+- (BOOL)pluginManager:(id)manager plugin:(id)plugin handleAction:(id)action
 {
-  v7 = a5;
-  v8 = a4;
+  actionCopy = action;
+  pluginCopy = plugin;
   v9 = +[SBLockScreenActionContextFactory sharedInstance];
-  v10 = [v9 lockScreenActionContextForAction:v7 fromPlugin:v8];
+  v10 = [v9 lockScreenActionContextForAction:actionCopy fromPlugin:pluginCopy];
 
   if (v10 && self->_pluginViewController)
   {
@@ -444,7 +444,7 @@ uint64_t __80__SBDashBoardPluginController_pluginManager_displayedPluginDidUpdat
     v13 = 0;
   }
 
-  [v7 sendResponseWithSuccess:v13];
+  [actionCopy sendResponseWithSuccess:v13];
 
   return v13;
 }

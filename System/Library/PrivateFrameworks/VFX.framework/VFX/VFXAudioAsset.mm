@@ -1,14 +1,14 @@
 @interface VFXAudioAsset
-- (void)didDetachFromWorld:(id)a3;
+- (void)didDetachFromWorld:(id)world;
 @end
 
 @implementation VFXAudioAsset
 
-- (void)didDetachFromWorld:(id)a3
+- (void)didDetachFromWorld:(id)world
 {
-  v6 = objc_msgSend_scene(a3, a2, a3, v3);
+  v6 = objc_msgSend_scene(world, a2, world, v3);
 
-  MEMORY[0x1EEE66B58](v6, sel_willRemoveAudioAsset_fromWorld_, self, a3);
+  MEMORY[0x1EEE66B58](v6, sel_willRemoveAudioAsset_fromWorld_, self, world);
 }
 
 @end

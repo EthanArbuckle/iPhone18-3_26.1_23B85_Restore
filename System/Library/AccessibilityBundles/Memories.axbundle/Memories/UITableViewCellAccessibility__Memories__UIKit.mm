@@ -1,23 +1,23 @@
 @interface UITableViewCellAccessibility__Memories__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation UITableViewCellAccessibility__Memories__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UICollectionViewControllerWrapperView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"subviews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UICollectionViewControllerWrapperView" hasInstanceMethod:@"_collectionViewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UICollectionViewControllerWrapperView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"subviews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UICollectionViewControllerWrapperView" hasInstanceMethod:@"_collectionViewController" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements
 {
   v27 = *MEMORY[0x29EDCA608];
-  v3 = [(UITableViewCellAccessibility__Memories__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AccessibilityMiroTitleCollectionCell"];
+  accessibilityIdentification = [(UITableViewCellAccessibility__Memories__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AccessibilityMiroTitleCollectionCell"];
 
   if (v4)
   {
@@ -59,9 +59,9 @@
               abort();
             }
 
-            v16 = [v15 collectionView];
-            v25 = v16;
-            v13 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v25 count:1];
+            collectionView = [v15 collectionView];
+            v25 = collectionView;
+            accessibilityElements = [MEMORY[0x29EDB8D80] arrayWithObjects:&v25 count:1];
 
             goto LABEL_15;
           }
@@ -80,11 +80,11 @@
 
   v19.receiver = self;
   v19.super_class = UITableViewCellAccessibility__Memories__UIKit;
-  v13 = [(UITableViewCellAccessibility__Memories__UIKit *)&v19 accessibilityElements];
+  accessibilityElements = [(UITableViewCellAccessibility__Memories__UIKit *)&v19 accessibilityElements];
 LABEL_15:
   v17 = *MEMORY[0x29EDCA608];
 
-  return v13;
+  return accessibilityElements;
 }
 
 @end

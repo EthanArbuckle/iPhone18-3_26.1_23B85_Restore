@@ -1,18 +1,18 @@
 @interface CAHostingToken
-+ (id)_newTokenWithPort:(int)a3 sid:(int)a4 cid:;
-+ (id)tokenFromXPCRepresentation:(id)a3 error:(id *)a4;
-+ (id)tokenWithPort:(unsigned int)a3 data:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (CAHostingToken)initWithCoder:(id)a3;
-- (id)_initWithPort:(_DWORD *)a3 data:;
-- (id)_initWithPort:(_DWORD *)a3 data:(char)a4 lenient:(void *)a5 error:;
-- (id)_initWithXPCRepresentation:(char)a3 lenient:(void *)a4 error:;
++ (id)_newTokenWithPort:(int)port sid:(int)sid cid:;
++ (id)tokenFromXPCRepresentation:(id)representation error:(id *)error;
++ (id)tokenWithPort:(unsigned int)port data:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (CAHostingToken)initWithCoder:(id)coder;
+- (id)_initWithPort:(_DWORD *)port data:;
+- (id)_initWithPort:(_DWORD *)port data:(char)data lenient:(void *)lenient error:;
+- (id)_initWithXPCRepresentation:(char)representation lenient:(void *)lenient error:;
 - (id)createXPCRepresentation;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithBlock:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAHostingToken
@@ -63,15 +63,15 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"<CAHostingToken:%u-%i-%x %@>", self->_data.sid, self->_data.pid, self->_data.cid, v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
   v5 = objc_opt_class();
-  if (v5 != objc_opt_class() || self->_data.cid != *(a3 + 6) || self->_data.type != *(a3 + 7) || self->_data.sid != *(a3 + 4) || self->_data.pid != *(a3 + 5))
+  if (v5 != objc_opt_class() || self->_data.cid != *(equal + 6) || self->_data.type != *(equal + 7) || self->_data.sid != *(equal + 4) || self->_data.pid != *(equal + 5))
   {
     return 0;
   }
@@ -79,12 +79,12 @@
   port = self->_port;
   if (port + 1 >= 2)
   {
-    return port == *(a3 + 8);
+    return port == *(equal + 8);
   }
 
   else
   {
-    return (*(a3 + 8) + 1) < 2;
+    return (*(equal + 8) + 1) < 2;
   }
 }
 
@@ -102,10 +102,10 @@
   }
 }
 
-- (CAHostingToken)initWithCoder:(id)a3
+- (CAHostingToken)initWithCoder:(id)coder
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = objc_autoreleasePoolPush(), v6 = [a3 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"x"], v7 = v6, objc_autoreleasePoolPop(v5), v6))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = objc_autoreleasePoolPush(), v6 = [coder decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"x"], v7 = v6, objc_autoreleasePoolPop(v5), v6))
   {
     v8 = [(CAHostingToken *)self _initWithXPCRepresentation:v6 lenient:1 error:0];
 
@@ -114,12 +114,12 @@
 
   else
   {
-    v10 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"f"];
+    v10 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"f"];
     if (v10 && (v11 = v10, [v10 length] == 16))
     {
-      v12 = [v11 bytes];
+      bytes = [v11 bytes];
 
-      return [(CAHostingToken *)self _initWithPort:v12 data:1 lenient:0 error:?];
+      return [(CAHostingToken *)self _initWithPort:bytes data:1 lenient:0 error:?];
     }
 
     else
@@ -130,18 +130,18 @@
   }
 }
 
-- (id)_initWithXPCRepresentation:(char)a3 lenient:(void *)a4 error:
+- (id)_initWithXPCRepresentation:(char)representation lenient:(void *)lenient error:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   if (!a2 || object_getClass(a2) != MEMORY[0x1E69E9E80] || (value = xpc_dictionary_get_value(a2, "p"), (v10 = xpc_dictionary_get_value(a2, "d")) == 0) || (v11 = v10, object_getClass(v10) != MEMORY[0x1E69E9E70]) || xpc_data_get_length(v11) != 16)
   {
-    if (a4)
+    if (lenient)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4866 userInfo:0];
+      *lenient = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4866 userInfo:0];
     }
 
     return 0;
@@ -149,32 +149,32 @@
 
   bytes_ptr = xpc_data_get_bytes_ptr(v11);
 
-  return [(CAHostingToken *)a1 _initWithPort:bytes_ptr data:a3 lenient:a4 error:?];
+  return [(CAHostingToken *)self _initWithPort:bytes_ptr data:representation lenient:lenient error:?];
 }
 
-- (id)_initWithPort:(_DWORD *)a3 data:(char)a4 lenient:(void *)a5 error:
+- (id)_initWithPort:(_DWORD *)port data:(char)data lenient:(void *)lenient error:
 {
   v15 = *MEMORY[0x1E69E9840];
   if (result)
   {
-    if (!a3)
+    if (!port)
     {
       __assert_rtn("[CAHostingToken _initWithPort:data:lenient:error:]", "CAHostingToken.m", 146, "data");
     }
 
     v9 = result;
-    if (!CAHostingTokenDataIsValid(a3))
+    if (!CAHostingTokenDataIsValid(port))
     {
       goto LABEL_9;
     }
 
-    if (a3[3] == 1886351988)
+    if (port[3] == 1886351988)
     {
       if (a2)
       {
-        if (a4)
+        if (data)
         {
-          return [(CAHostingToken *)v9 _initWithPort:a2 data:a3];
+          return [(CAHostingToken *)v9 _initWithPort:a2 data:port];
         }
 
         right = xpc_mach_send_get_right();
@@ -193,11 +193,11 @@
 
           if ((ptype & 0x10000) != 0)
           {
-            return [(CAHostingToken *)v9 _initWithPort:a2 data:a3];
+            return [(CAHostingToken *)v9 _initWithPort:a2 data:port];
           }
         }
 
-        if (!a5)
+        if (!lenient)
         {
           goto LABEL_12;
         }
@@ -209,7 +209,7 @@
       }
 
 LABEL_9:
-      if (!a5)
+      if (!lenient)
       {
 LABEL_12:
 
@@ -220,7 +220,7 @@ LABEL_12:
       v11 = *MEMORY[0x1E696A250];
       v12 = 4866;
 LABEL_11:
-      *a5 = [v10 errorWithDomain:v11 code:v12 userInfo:0];
+      *lenient = [v10 errorWithDomain:v11 code:v12 userInfo:0];
       goto LABEL_12;
     }
 
@@ -229,29 +229,29 @@ LABEL_11:
       goto LABEL_9;
     }
 
-    return [(CAHostingToken *)v9 _initWithPort:a3 data:?];
+    return [(CAHostingToken *)v9 _initWithPort:port data:?];
   }
 
   return result;
 }
 
-- (id)_initWithPort:(_DWORD *)a3 data:
+- (id)_initWithPort:(_DWORD *)port data:
 {
-  v3 = a1;
+  selfCopy = self;
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (!a3)
+    if (!port)
     {
       __assert_rtn("[CAHostingToken _initWithPort:data:]", "CAHostingToken.m", 87, "data");
     }
 
-    if (!CAHostingTokenDataIsValid(a3))
+    if (!CAHostingTokenDataIsValid(port))
     {
       __assert_rtn("[CAHostingToken _initWithPort:data:]", "CAHostingToken.m", 88, "CAHostingTokenDataIsValid (data)");
     }
 
-    if (a3[3] == 1886351988)
+    if (port[3] == 1886351988)
     {
       if (!a2)
       {
@@ -264,7 +264,7 @@ LABEL_11:
       __assert_rtn("[CAHostingToken _initWithPort:data:]", "CAHostingToken.m", 92, "!xPort");
     }
 
-    v9.receiver = v3;
+    v9.receiver = selfCopy;
     v9.super_class = CAHostingToken;
     v6 = objc_msgSendSuper2(&v9, sel_init);
     if (!v6)
@@ -272,7 +272,7 @@ LABEL_11:
       __assert_rtn("[CAHostingToken _initWithPort:data:]", "CAHostingToken.m", 95, "self");
     }
 
-    v3 = v6;
+    selfCopy = v6;
     if (a2)
     {
       v6[1] = xpc_retain(a2);
@@ -282,27 +282,27 @@ LABEL_11:
     else
     {
       right = 0;
-      *(v3 + 1) = 0;
+      *(selfCopy + 1) = 0;
     }
 
-    *(v3 + 8) = right;
-    *(v3 + 1) = *a3;
+    *(selfCopy + 8) = right;
+    *(selfCopy + 1) = *port;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CAHostingToken *)self createXPCRepresentation];
-    if (v5)
+    createXPCRepresentation = [(CAHostingToken *)self createXPCRepresentation];
+    if (createXPCRepresentation)
     {
-      v6 = v5;
-      [a3 encodeXPCObject:v5 forKey:@"x"];
+      v6 = createXPCRepresentation;
+      [coder encodeXPCObject:createXPCRepresentation forKey:@"x"];
 
       xpc_release(v6);
     }
@@ -314,13 +314,13 @@ LABEL_11:
     cid = self->_data.cid;
     v10 = 561541219;
     v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&v8 length:16];
-    [a3 encodeObject:v7 forKey:@"f"];
+    [coder encodeObject:v7 forKey:@"f"];
   }
 }
 
-- (void)encodeWithBlock:(id)a3
+- (void)encodeWithBlock:(id)block
 {
-  if (!a3)
+  if (!block)
   {
     __assert_rtn("[CAHostingToken encodeWithBlock:]", "CAHostingToken.m", 307, "block");
   }
@@ -340,7 +340,7 @@ LABEL_11:
 
   v7 = 0;
 LABEL_6:
-  (*(a3 + 2))(a3, v7, v6);
+  (*(block + 2))(block, v7, v6);
 
   objc_autoreleasePoolPop(v5);
 }
@@ -359,17 +359,17 @@ LABEL_6:
   return v4;
 }
 
-+ (id)tokenWithPort:(unsigned int)a3 data:(id)a4 error:(id *)a5
++ (id)tokenWithPort:(unsigned int)port data:(id)data error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!port)
   {
     v7 = 0;
     goto LABEL_10;
   }
 
   ptype = 0;
-  if (mach_port_type(*MEMORY[0x1E69E9A60], a3, &ptype))
+  if (mach_port_type(*MEMORY[0x1E69E9A60], port, &ptype))
   {
     __assert_rtn("+[CAHostingToken tokenWithPort:data:error:]", "CAHostingToken.m", 340, "r == KERN_SUCCESS");
   }
@@ -399,13 +399,13 @@ LABEL_9:
   }
 
 LABEL_10:
-  if (a4 && [a4 length] == 16)
+  if (data && [data length] == 16)
   {
-    v8 = [a4 bytes];
-    v9 = v8;
+    bytes = [data bytes];
+    v9 = bytes;
     if (!v7)
     {
-      if (*(v8 + 12) == 1886351988)
+      if (*(bytes + 12) == 1886351988)
       {
         v7 = xpc_mach_send_create();
       }
@@ -416,7 +416,7 @@ LABEL_10:
       }
     }
 
-    v12 = [[CAHostingToken alloc] _initWithPort:v7 data:v9 lenient:0 error:a5];
+    v12 = [[CAHostingToken alloc] _initWithPort:v7 data:v9 lenient:0 error:error];
     if (v7)
     {
       xpc_release(v7);
@@ -432,11 +432,11 @@ LABEL_10:
       xpc_release(v7);
     }
 
-    if (a5)
+    if (error)
     {
       v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4866 userInfo:0];
       result = 0;
-      *a5 = v10;
+      *error = v10;
     }
 
     else
@@ -448,18 +448,18 @@ LABEL_10:
   return result;
 }
 
-+ (id)tokenFromXPCRepresentation:(id)a3 error:(id *)a4
++ (id)tokenFromXPCRepresentation:(id)representation error:(id *)error
 {
-  v4 = [[CAHostingToken alloc] _initWithXPCRepresentation:a3 lenient:0 error:a4];
+  v4 = [[CAHostingToken alloc] _initWithXPCRepresentation:representation lenient:0 error:error];
 
   return v4;
 }
 
-+ (id)_newTokenWithPort:(int)a3 sid:(int)a4 cid:
++ (id)_newTokenWithPort:(int)port sid:(int)sid cid:
 {
   v11 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  if (!a4)
+  if (!sid)
   {
     __assert_rtn("+[CAHostingToken _newTokenWithPort:sid:cid:]", "CAHostingToken.m", 208, "cid != 0");
   }
@@ -471,9 +471,9 @@ LABEL_10:
   }
 
   v7 = v6;
-  v10[0] = a3;
+  v10[0] = port;
   v10[1] = getpid();
-  v10[2] = a4;
+  v10[2] = sid;
   v10[3] = 1886351988;
   v8 = [[CAHostingToken alloc] _initWithPort:v7 data:v10];
   xpc_release(v7);

@@ -1,15 +1,15 @@
 @interface IMSharedUtilitiesProtoCloudKitEncryptedLocationShareStatusChange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasShareStatus:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasShareStatus:(BOOL)status;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IMSharedUtilitiesProtoCloudKitEncryptedLocationShareStatusChange
@@ -23,9 +23,9 @@
   [(IMSharedUtilitiesProtoCloudKitEncryptedLocationShareStatusChange *)&v3 dealloc];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasShareStatus:(BOOL)a3
+- (void)setHasShareStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -62,11 +62,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_version), @"version"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_version), @"version"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -85,30 +85,30 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", self->_shareStatus), @"share_status"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", self->_shareStatus), @"share_status"}];
   if (*&self->_has)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", self->_shareDirection), @"share_direction"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", self->_shareDirection), @"share_direction"}];
   }
 
 LABEL_5:
   otherHandle = self->_otherHandle;
   if (otherHandle)
   {
-    [v3 setObject:otherHandle forKey:@"other_handle"];
+    [dictionary setObject:otherHandle forKey:@"other_handle"];
   }
 
   padding = self->_padding;
   if (padding)
   {
-    [v3 setObject:padding forKey:@"padding"];
+    [dictionary setObject:padding forKey:@"padding"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -152,13 +152,13 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 10) = self->_version;
-    *(a3 + 44) |= 4u;
+    *(to + 10) = self->_version;
+    *(to + 44) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -177,31 +177,31 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 2) = self->_shareStatus;
-  *(a3 + 44) |= 2u;
+  *(to + 2) = self->_shareStatus;
+  *(to + 44) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    *(a3 + 1) = self->_shareDirection;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = self->_shareDirection;
+    *(to + 44) |= 1u;
   }
 
 LABEL_5:
   if (self->_otherHandle)
   {
-    [a3 setOtherHandle:?];
+    [to setOtherHandle:?];
   }
 
   if (self->_padding)
   {
 
-    [a3 setPadding:?];
+    [to setPadding:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) == 0)
@@ -240,25 +240,25 @@ LABEL_4:
 
 LABEL_5:
 
-  *(v6 + 24) = [(NSString *)self->_otherHandle copyWithZone:a3];
-  *(v6 + 32) = [(NSData *)self->_padding copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_otherHandle copyWithZone:zone];
+  *(v6 + 32) = [(NSData *)self->_padding copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 44) & 4) == 0 || self->_version != *(a3 + 10))
+      if ((*(equal + 44) & 4) == 0 || self->_version != *(equal + 10))
       {
         goto LABEL_21;
       }
     }
 
-    else if ((*(a3 + 44) & 4) != 0)
+    else if ((*(equal + 44) & 4) != 0)
     {
 LABEL_21:
       LOBYTE(v5) = 0;
@@ -267,35 +267,35 @@ LABEL_21:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 44) & 2) == 0 || self->_shareStatus != *(a3 + 2))
+      if ((*(equal + 44) & 2) == 0 || self->_shareStatus != *(equal + 2))
       {
         goto LABEL_21;
       }
     }
 
-    else if ((*(a3 + 44) & 2) != 0)
+    else if ((*(equal + 44) & 2) != 0)
     {
       goto LABEL_21;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 44) & 1) == 0 || self->_shareDirection != *(a3 + 1))
+      if ((*(equal + 44) & 1) == 0 || self->_shareDirection != *(equal + 1))
       {
         goto LABEL_21;
       }
     }
 
-    else if (*(a3 + 44))
+    else if (*(equal + 44))
     {
       goto LABEL_21;
     }
 
     otherHandle = self->_otherHandle;
-    if (!(otherHandle | *(a3 + 3)) || (v5 = [(NSString *)otherHandle isEqual:?]) != 0)
+    if (!(otherHandle | *(equal + 3)) || (v5 = [(NSString *)otherHandle isEqual:?]) != 0)
     {
       padding = self->_padding;
-      if (padding | *(a3 + 4))
+      if (padding | *(equal + 4))
       {
 
         LOBYTE(v5) = [(NSData *)padding isEqual:?];
@@ -353,14 +353,14 @@ LABEL_8:
   return v6 ^ [(NSData *)self->_padding hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if ((v5 & 4) != 0)
   {
-    self->_version = *(a3 + 10);
+    self->_version = *(from + 10);
     *&self->_has |= 4u;
-    v5 = *(a3 + 44);
+    v5 = *(from + 44);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -373,27 +373,27 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 44) & 2) == 0)
+  else if ((*(from + 44) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_shareStatus = *(a3 + 2);
+  self->_shareStatus = *(from + 2);
   *&self->_has |= 2u;
-  if (*(a3 + 44))
+  if (*(from + 44))
   {
 LABEL_4:
-    self->_shareDirection = *(a3 + 1);
+    self->_shareDirection = *(from + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_5:
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedLocationShareStatusChange *)self setOtherHandle:?];
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
 
     [(IMSharedUtilitiesProtoCloudKitEncryptedLocationShareStatusChange *)self setPadding:?];

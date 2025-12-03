@@ -1,8 +1,8 @@
 @interface AXSDSecureControllerImplementation
 - (NSSet)currentDetectionTypes;
-- (void)addWithListenType:(id)a3;
+- (void)addWithListenType:(id)type;
 - (void)removeAllListenTypes;
-- (void)removeWithListenType:(id)a3;
+- (void)removeWithListenType:(id)type;
 - (void)startListening;
 - (void)stopListening;
 @end
@@ -11,7 +11,7 @@
 
 - (NSSet)currentDetectionTypes
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D6633C0();
 
   type metadata accessor for AXSDSoundDetectionType();
@@ -21,35 +21,35 @@
   return v3;
 }
 
-- (void)addWithListenType:(id)a3
+- (void)addWithListenType:(id)type
 {
-  v4 = a3;
-  v5 = self;
-  sub_23D6638E0(v4);
+  typeCopy = type;
+  selfCopy = self;
+  sub_23D6638E0(typeCopy);
 }
 
-- (void)removeWithListenType:(id)a3
+- (void)removeWithListenType:(id)type
 {
-  v4 = a3;
-  v5 = self;
-  sub_23D6639DC(v4);
+  typeCopy = type;
+  selfCopy = self;
+  sub_23D6639DC(typeCopy);
 }
 
 - (void)removeAllListenTypes
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D66E5F8();
 }
 
 - (void)startListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D66E7C8();
 }
 
 - (void)stopListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D66E9C4();
 }
 

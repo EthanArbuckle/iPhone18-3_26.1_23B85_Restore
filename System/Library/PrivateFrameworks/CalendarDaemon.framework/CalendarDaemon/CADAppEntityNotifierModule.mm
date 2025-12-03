@@ -1,32 +1,32 @@
 @interface CADAppEntityNotifierModule
-- (CADAppEntityNotifierModule)initWithAppEntityNotifier:(id)a3;
-- (void)receivedNotificationNamed:(id)a3;
+- (CADAppEntityNotifierModule)initWithAppEntityNotifier:(id)notifier;
+- (void)receivedNotificationNamed:(id)named;
 @end
 
 @implementation CADAppEntityNotifierModule
 
-- (CADAppEntityNotifierModule)initWithAppEntityNotifier:(id)a3
+- (CADAppEntityNotifierModule)initWithAppEntityNotifier:(id)notifier
 {
-  v5 = a3;
+  notifierCopy = notifier;
   v9.receiver = self;
   v9.super_class = CADAppEntityNotifierModule;
   v6 = [(CADAppEntityNotifierModule *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notifier, a3);
+    objc_storeStrong(&v6->_notifier, notifier);
   }
 
   return v7;
 }
 
-- (void)receivedNotificationNamed:(id)a3
+- (void)receivedNotificationNamed:(id)named
 {
-  v4 = a3;
-  v5 = v4;
+  namedCopy = named;
+  v5 = namedCopy;
   if (self->_isActive)
   {
-    if ([v4 isEqualToString:*MEMORY[0x277CF7908]])
+    if ([namedCopy isEqualToString:*MEMORY[0x277CF7908]])
     {
       v6 = CADAppEntityHandle;
       if (os_log_type_enabled(CADAppEntityHandle, OS_LOG_TYPE_DEFAULT))

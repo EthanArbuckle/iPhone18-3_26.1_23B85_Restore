@@ -1,5 +1,5 @@
 @interface TSDRep
-- (BOOL)allowsAction:(int)a3;
+- (BOOL)allowsAction:(int)action;
 - (id)popUpInfo;
 - (int)performanceMode;
 - (int)pressableAction;
@@ -70,7 +70,7 @@
   }
 }
 
-- (BOOL)allowsAction:(int)a3
+- (BOOL)allowsAction:(int)action
 {
   objc_opt_class();
   v5 = TSUDynamicCast();
@@ -83,7 +83,7 @@
   [(TSDRep *)self infoForPressable];
   v9 = TSUProtocolCast();
   v10 = v9;
-  if (a3 == 2)
+  if (action == 2)
   {
     v12 = (TSUPhoneUI() & 1) != 0 || [v10 popUpInfo] == 0;
     return (v8 | v5 | v6) == 0 && v12;
@@ -91,7 +91,7 @@
 
   else
   {
-    return a3 != 1 || !v7 && [v9 popUpInfo] != 0;
+    return action != 1 || !v7 && [v9 popUpInfo] != 0;
   }
 }
 

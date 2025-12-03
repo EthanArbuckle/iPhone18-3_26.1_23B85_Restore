@@ -1,26 +1,26 @@
 @interface MediaControlsRelativeVolumeStepper
-- (MediaControlsRelativeVolumeStepper)initWithFrame:(CGRect)a3;
-- (void)decreaseButtonHoldBegan:(id)a3;
-- (void)decreaseButtonHoldReleased:(id)a3;
-- (void)increaseButtonHoldBegan:(id)a3;
-- (void)increaseButtonHoldReleased:(id)a3;
+- (MediaControlsRelativeVolumeStepper)initWithFrame:(CGRect)frame;
+- (void)decreaseButtonHoldBegan:(id)began;
+- (void)decreaseButtonHoldReleased:(id)released;
+- (void)increaseButtonHoldBegan:(id)began;
+- (void)increaseButtonHoldReleased:(id)released;
 - (void)layoutSubviews;
-- (void)setVisualStylingProvider:(id)a3;
+- (void)setVisualStylingProvider:(id)provider;
 @end
 
 @implementation MediaControlsRelativeVolumeStepper
 
-- (MediaControlsRelativeVolumeStepper)initWithFrame:(CGRect)a3
+- (MediaControlsRelativeVolumeStepper)initWithFrame:(CGRect)frame
 {
   v45[8] = *MEMORY[0x1E69E9840];
   v44.receiver = self;
   v44.super_class = MediaControlsRelativeVolumeStepper;
-  v3 = [(MediaControlsRelativeVolumeStepper *)&v44 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MediaControlsRelativeVolumeStepper *)&v44 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+    mediaControlsBundle = [MEMORY[0x1E696AAE8] mediaControlsBundle];
     mediaControlsBundle = v3->_mediaControlsBundle;
-    v3->_mediaControlsBundle = v4;
+    v3->_mediaControlsBundle = mediaControlsBundle;
 
     v6 = [MEMORY[0x1E69AE158] materialViewWithRecipe:4 configuration:4];
     decreaseBackground = v3->_decreaseBackground;
@@ -60,38 +60,38 @@
     [(MPButton *)v3->_increaseButton addTarget:v3 action:sel_increaseTouchUpInside_ forControlEvents:64];
     [(MPButton *)v3->_increaseButton addTarget:v3 action:sel_increaseButtonHoldBegan_ forControlEvents:0x1000000];
     [(MPButton *)v3->_increaseButton addTarget:v3 action:sel_increaseButtonHoldReleased_ forControlEvents:0x2000000];
-    v18 = [(MPButton *)v3->_increaseButton trailingAnchor];
-    v19 = [(MediaControlsRelativeVolumeStepper *)v3 trailingAnchor];
-    v43 = [v18 constraintEqualToAnchor:v19];
+    trailingAnchor = [(MPButton *)v3->_increaseButton trailingAnchor];
+    trailingAnchor2 = [(MediaControlsRelativeVolumeStepper *)v3 trailingAnchor];
+    v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
     LODWORD(v20) = 1148829696;
     [v43 setPriority:v20];
     v34 = MEMORY[0x1E696ACD8];
-    v42 = [(MPButton *)v3->_decreaseButton leadingAnchor];
-    v41 = [(MediaControlsRelativeVolumeStepper *)v3 leadingAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    leadingAnchor = [(MPButton *)v3->_decreaseButton leadingAnchor];
+    leadingAnchor2 = [(MediaControlsRelativeVolumeStepper *)v3 leadingAnchor];
+    v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v45[0] = v40;
-    v39 = [(MPButton *)v3->_decreaseButton heightAnchor];
-    v38 = [v39 constraintEqualToConstant:28.0];
+    heightAnchor = [(MPButton *)v3->_decreaseButton heightAnchor];
+    v38 = [heightAnchor constraintEqualToConstant:28.0];
     v45[1] = v38;
-    v37 = [(MPButton *)v3->_decreaseButton centerYAnchor];
-    v36 = [(MediaControlsRelativeVolumeStepper *)v3 centerYAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    centerYAnchor = [(MPButton *)v3->_decreaseButton centerYAnchor];
+    centerYAnchor2 = [(MediaControlsRelativeVolumeStepper *)v3 centerYAnchor];
+    v35 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v45[2] = v35;
-    v33 = [(MPButton *)v3->_decreaseButton widthAnchor];
-    v32 = [(MPButton *)v3->_increaseButton widthAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    widthAnchor = [(MPButton *)v3->_decreaseButton widthAnchor];
+    widthAnchor2 = [(MPButton *)v3->_increaseButton widthAnchor];
+    v31 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v45[3] = v31;
-    v21 = [(MPButton *)v3->_increaseButton leadingAnchor];
-    v22 = [(MPButton *)v3->_decreaseButton trailingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:7.0];
+    leadingAnchor3 = [(MPButton *)v3->_increaseButton leadingAnchor];
+    trailingAnchor3 = [(MPButton *)v3->_decreaseButton trailingAnchor];
+    v23 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:7.0];
     v45[4] = v23;
-    v24 = [(MPButton *)v3->_increaseButton heightAnchor];
-    v25 = [v24 constraintEqualToConstant:28.0];
+    heightAnchor2 = [(MPButton *)v3->_increaseButton heightAnchor];
+    v25 = [heightAnchor2 constraintEqualToConstant:28.0];
     v45[5] = v25;
-    v26 = [(MPButton *)v3->_increaseButton centerYAnchor];
-    v27 = [(MediaControlsRelativeVolumeStepper *)v3 centerYAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    centerYAnchor3 = [(MPButton *)v3->_increaseButton centerYAnchor];
+    centerYAnchor4 = [(MediaControlsRelativeVolumeStepper *)v3 centerYAnchor];
+    v28 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v45[6] = v28;
     v45[7] = v43;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:8];
@@ -116,7 +116,7 @@
   [(MTMaterialView *)self->_increaseBackground _setContinuousCornerRadius:CGRectGetHeight(v5) * 0.5];
 }
 
-- (void)decreaseButtonHoldBegan:(id)a3
+- (void)decreaseButtonHoldBegan:(id)began
 {
   if (objc_opt_respondsToSelector())
   {
@@ -126,7 +126,7 @@
   }
 }
 
-- (void)decreaseButtonHoldReleased:(id)a3
+- (void)decreaseButtonHoldReleased:(id)released
 {
   if ([(MPButton *)self->_decreaseButton isHolding]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -136,7 +136,7 @@
   }
 }
 
-- (void)increaseButtonHoldBegan:(id)a3
+- (void)increaseButtonHoldBegan:(id)began
 {
   if (objc_opt_respondsToSelector())
   {
@@ -146,7 +146,7 @@
   }
 }
 
-- (void)increaseButtonHoldReleased:(id)a3
+- (void)increaseButtonHoldReleased:(id)released
 {
   if ([(MPButton *)self->_increaseButton isHolding]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -156,30 +156,30 @@
   }
 }
 
-- (void)setVisualStylingProvider:(id)a3
+- (void)setVisualStylingProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   visualStylingProvider = self->_visualStylingProvider;
-  if (visualStylingProvider != v5)
+  if (visualStylingProvider != providerCopy)
   {
-    v14 = v5;
-    v7 = [(MPButton *)self->_decreaseButton imageView];
-    [(MTVisualStylingProvider *)visualStylingProvider stopAutomaticallyUpdatingView:v7];
+    v14 = providerCopy;
+    imageView = [(MPButton *)self->_decreaseButton imageView];
+    [(MTVisualStylingProvider *)visualStylingProvider stopAutomaticallyUpdatingView:imageView];
 
     v8 = self->_visualStylingProvider;
-    v9 = [(MPButton *)self->_increaseButton imageView];
-    [(MTVisualStylingProvider *)v8 stopAutomaticallyUpdatingView:v9];
+    imageView2 = [(MPButton *)self->_increaseButton imageView];
+    [(MTVisualStylingProvider *)v8 stopAutomaticallyUpdatingView:imageView2];
 
-    objc_storeStrong(&self->_visualStylingProvider, a3);
+    objc_storeStrong(&self->_visualStylingProvider, provider);
     v10 = self->_visualStylingProvider;
-    v11 = [(MPButton *)self->_decreaseButton imageView];
-    [(MTVisualStylingProvider *)v10 automaticallyUpdateView:v11 withStyle:0];
+    imageView3 = [(MPButton *)self->_decreaseButton imageView];
+    [(MTVisualStylingProvider *)v10 automaticallyUpdateView:imageView3 withStyle:0];
 
     v12 = self->_visualStylingProvider;
-    v13 = [(MPButton *)self->_increaseButton imageView];
-    [(MTVisualStylingProvider *)v12 automaticallyUpdateView:v13 withStyle:0];
+    imageView4 = [(MPButton *)self->_increaseButton imageView];
+    [(MTVisualStylingProvider *)v12 automaticallyUpdateView:imageView4 withStyle:0];
 
-    v5 = v14;
+    providerCopy = v14;
   }
 }
 

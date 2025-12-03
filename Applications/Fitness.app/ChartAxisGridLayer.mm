@@ -1,12 +1,12 @@
 @interface ChartAxisGridLayer
 - (_TtC10FitnessApp18ChartAxisGridLayer)init;
-- (_TtC10FitnessApp18ChartAxisGridLayer)initWithLayer:(id)a3;
+- (_TtC10FitnessApp18ChartAxisGridLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
 @implementation ChartAxisGridLayer
 
-- (_TtC10FitnessApp18ChartAxisGridLayer)initWithLayer:(id)a3
+- (_TtC10FitnessApp18ChartAxisGridLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -16,7 +16,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_100216480();
 }
 

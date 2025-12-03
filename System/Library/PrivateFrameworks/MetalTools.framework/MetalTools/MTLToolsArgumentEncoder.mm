@@ -2,73 +2,73 @@
 - (MTLDevice)device;
 - (NSString)label;
 - (_MTLIndirectArgumentBufferLayout)layout;
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3;
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index;
 - (unint64_t)alignment;
 - (unint64_t)encodedLength;
-- (void)constantDataAtIndex:(unint64_t)a3;
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4;
-- (void)setArgumentBuffer:(id)a3 offset:(unint64_t)a4;
-- (void)setArgumentBuffer:(id)a3 startOffset:(unint64_t)a4 arrayElement:(unint64_t)a5;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setDepthStencilState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setDepthStencilStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTable:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setIntersectionFunctionTables:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setLabel:(id)a3;
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTable:(id)a3 atIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withRange:(_NSRange)a4;
+- (void)constantDataAtIndex:(unint64_t)index;
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index;
+- (void)setArgumentBuffer:(id)buffer offset:(unint64_t)offset;
+- (void)setArgumentBuffer:(id)buffer startOffset:(unint64_t)offset arrayElement:(unint64_t)element;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range;
+- (void)setDepthStencilState:(id)state atIndex:(unint64_t)index;
+- (void)setDepthStencilStates:(const void *)states withRange:(_NSRange)range;
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index;
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range;
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTable:(id)table atIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setIntersectionFunctionTables:(const void *)tables withRange:(_NSRange)range;
+- (void)setLabel:(id)label;
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range;
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVisibleFunctionTable:(id)table atIndex:(unint64_t)index;
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setVisibleFunctionTables:(const void *)tables withRange:(_NSRange)range;
 @end
 
 @implementation MTLToolsArgumentEncoder
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
 - (unint64_t)encodedLength
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 encodedLength];
+  return [baseObject encodedLength];
 }
 
-- (void)constantDataAtIndex:(unint64_t)a3
+- (void)constantDataAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 constantDataAtIndex:a3];
+  return [baseObject constantDataAtIndex:index];
 }
 
 - (unint64_t)alignment
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 alignment];
+  return [baseObject alignment];
 }
 
 - (MTLDevice)device
@@ -84,67 +84,67 @@
 
 - (_MTLIndirectArgumentBufferLayout)layout
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 layout];
+  return [baseObject layout];
 }
 
-- (void)setArgumentBuffer:(id)a3 offset:(unint64_t)a4
+- (void)setArgumentBuffer:(id)buffer offset:(unint64_t)offset
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v6 setArgumentBuffer:v7 offset:a4];
+  [baseObject setArgumentBuffer:baseObject2 offset:offset];
 }
 
-- (void)setArgumentBuffer:(id)a3 startOffset:(unint64_t)a4 arrayElement:(unint64_t)a5
+- (void)setArgumentBuffer:(id)buffer startOffset:(unint64_t)offset arrayElement:(unint64_t)element
 {
-  v8 = [(MTLToolsObject *)self baseObject];
-  v9 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v8 setArgumentBuffer:v9 startOffset:a4 arrayElement:a5];
+  [baseObject setArgumentBuffer:baseObject2 startOffset:offset arrayElement:element];
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = [(MTLToolsObject *)self baseObject];
-  v9 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v8 setBuffer:v9 offset:a4 atIndex:a5];
+  [baseObject setBuffer:baseObject2 offset:offset atIndex:index];
 }
 
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setTexture:(id)texture atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
 
-  [v6 setTexture:v7 atIndex:a4];
+  [baseObject setTexture:baseObject2 atIndex:index];
 }
 
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v6 setSamplerState:v7 atIndex:a4];
+  [baseObject setSamplerState:baseObject2 atIndex:index];
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  std::vector<objc_object  {objcproto9MTLBuffer}*>::vector[abi:ne200100](__p, a5.length);
+  length = range.length;
+  location = range.location;
+  std::vector<objc_object  {objcproto9MTLBuffer}*>::vector[abi:ne200100](__p, range.length);
   if (length)
   {
     for (i = 0; i != length; ++i)
     {
-      v11 = [a3[i] baseObject];
-      *(__p[0] + i) = v11;
+      baseObject = [buffers[i] baseObject];
+      *(__p[0] + i) = baseObject;
     }
   }
 
-  v12 = [(MTLToolsObject *)self baseObject];
-  [v12 setBuffers:__p[0] offsets:a4 withRange:{location, length}];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 setBuffers:__p[0] offsets:offsets withRange:{location, length}];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -152,22 +152,22 @@
   }
 }
 
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  std::vector<objc_object  {objcproto10MTLTexture}*>::vector[abi:ne200100](__p, a4.length);
+  length = range.length;
+  location = range.location;
+  std::vector<objc_object  {objcproto10MTLTexture}*>::vector[abi:ne200100](__p, range.length);
   if (length)
   {
     for (i = 0; i != length; ++i)
     {
-      v9 = [a3[i] baseObject];
-      *(__p[0] + i) = v9;
+      baseObject = [textures[i] baseObject];
+      *(__p[0] + i) = baseObject;
     }
   }
 
-  v10 = [(MTLToolsObject *)self baseObject];
-  [v10 setTextures:__p[0] withRange:{location, length}];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 setTextures:__p[0] withRange:{location, length}];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -175,22 +175,22 @@
   }
 }
 
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  std::vector<objc_object  {objcproto15MTLSamplerState}*>::vector[abi:ne200100](__p, a4.length);
+  length = range.length;
+  location = range.location;
+  std::vector<objc_object  {objcproto15MTLSamplerState}*>::vector[abi:ne200100](__p, range.length);
   if (length)
   {
     for (i = 0; i != length; ++i)
     {
-      v9 = [a3[i] baseObject];
-      *(__p[0] + i) = v9;
+      baseObject = [states[i] baseObject];
+      *(__p[0] + i) = baseObject;
     }
   }
 
-  v10 = [(MTLToolsObject *)self baseObject];
-  [v10 setSamplerStates:__p[0] withRange:{location, length}];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 setSamplerStates:__p[0] withRange:{location, length}];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -198,23 +198,23 @@
   }
 }
 
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v6 setRenderPipelineState:v7 atIndex:a4];
+  [baseObject setRenderPipelineState:baseObject2 atIndex:index];
 }
 
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *states++;
       [(MTLToolsArgumentEncoder *)self setRenderPipelineState:v8 atIndex:location++];
       --length;
     }
@@ -223,23 +223,23 @@
   }
 }
 
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v6 setComputePipelineState:v7 atIndex:a4];
+  [baseObject setComputePipelineState:baseObject2 atIndex:index];
 }
 
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *states++;
       [(MTLToolsArgumentEncoder *)self setComputePipelineState:v8 atIndex:location++];
       --length;
     }
@@ -248,23 +248,23 @@
   }
 }
 
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v6 setIndirectCommandBuffer:v7 atIndex:a4];
+  [baseObject setIndirectCommandBuffer:baseObject2 atIndex:index];
 }
 
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *buffers++;
       [(MTLToolsArgumentEncoder *)self setIndirectCommandBuffer:v8 atIndex:location++];
       --length;
     }
@@ -273,7 +273,7 @@
   }
 }
 
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -287,31 +287,31 @@
   return result;
 }
 
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [structure baseObject];
 
-  [v6 setAccelerationStructure:v7 atIndex:a4];
+  [baseObject setAccelerationStructure:baseObject2 atIndex:index];
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [table baseObject];
 
-  [v6 setVisibleFunctionTable:v7 atBufferIndex:a4];
+  [baseObject setVisibleFunctionTable:baseObject2 atBufferIndex:index];
 }
 
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLToolsArgumentEncoder *)self setVisibleFunctionTable:v8 atBufferIndex:location++];
       --length;
     }
@@ -320,23 +320,23 @@
   }
 }
 
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [table baseObject];
 
-  [v6 setIntersectionFunctionTable:v7 atBufferIndex:a4];
+  [baseObject setIntersectionFunctionTable:baseObject2 atBufferIndex:index];
 }
 
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLToolsArgumentEncoder *)self setIntersectionFunctionTable:v8 atBufferIndex:location++];
       --length;
     }
@@ -345,23 +345,23 @@
   }
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [table baseObject];
 
-  [v6 setVisibleFunctionTable:v7 atIndex:a4];
+  [baseObject setVisibleFunctionTable:baseObject2 atIndex:index];
 }
 
-- (void)setVisibleFunctionTables:(const void *)a3 withRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLToolsArgumentEncoder *)self setVisibleFunctionTable:v8 atIndex:location++];
       --length;
     }
@@ -370,23 +370,23 @@
   }
 }
 
-- (void)setIntersectionFunctionTable:(id)a3 atIndex:(unint64_t)a4
+- (void)setIntersectionFunctionTable:(id)table atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [table baseObject];
 
-  [v6 setIntersectionFunctionTable:v7 atIndex:a4];
+  [baseObject setIntersectionFunctionTable:baseObject2 atIndex:index];
 }
 
-- (void)setIntersectionFunctionTables:(const void *)a3 withRange:(_NSRange)a4
+- (void)setIntersectionFunctionTables:(const void *)tables withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLToolsArgumentEncoder *)self setIntersectionFunctionTable:v8 atIndex:location++];
       --length;
     }
@@ -395,30 +395,30 @@
   }
 }
 
-- (void)setDepthStencilState:(id)a3 atIndex:(unint64_t)a4
+- (void)setDepthStencilState:(id)state atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v6 setDepthStencilState:v7 atIndex:a4];
+  [baseObject setDepthStencilState:baseObject2 atIndex:index];
 }
 
-- (void)setDepthStencilStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setDepthStencilStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  std::vector<objc_object  {objcproto20MTLDepthStencilState}*>::vector[abi:ne200100](__p, a4.length);
+  length = range.length;
+  location = range.location;
+  std::vector<objc_object  {objcproto20MTLDepthStencilState}*>::vector[abi:ne200100](__p, range.length);
   if (length)
   {
     for (i = 0; i != length; ++i)
     {
-      v9 = [a3[i] baseObject];
-      *(__p[0] + i) = v9;
+      baseObject = [states[i] baseObject];
+      *(__p[0] + i) = baseObject;
     }
   }
 
-  v10 = [(MTLToolsObject *)self baseObject];
-  [v10 setDepthStencilStates:__p[0] withRange:{location, length}];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 setDepthStencilStates:__p[0] withRange:{location, length}];
   if (__p[0])
   {
     __p[1] = __p[0];

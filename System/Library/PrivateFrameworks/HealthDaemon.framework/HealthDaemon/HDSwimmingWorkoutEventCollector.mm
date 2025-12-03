@@ -1,10 +1,10 @@
 @interface HDSwimmingWorkoutEventCollector
 + (BOOL)isAvailableInCurrentHardware;
-- (HDSwimmingWorkoutEventCollector)initWithProfile:(id)a3 delegate:(id)a4;
-- (void)_queue_errorOccurred:(void *)a1;
-- (void)_queue_querySwimDataWithCompletion:(uint64_t)a1;
-- (void)requestPendingEventsThroughDate:(id)a3 completion:(id)a4;
-- (void)startWithSessionId:(id)a3;
+- (HDSwimmingWorkoutEventCollector)initWithProfile:(id)profile delegate:(id)delegate;
+- (void)_queue_errorOccurred:(void *)occurred;
+- (void)_queue_querySwimDataWithCompletion:(uint64_t)completion;
+- (void)requestPendingEventsThroughDate:(id)date completion:(id)completion;
+- (void)startWithSessionId:(id)id;
 - (void)stop;
 @end
 
@@ -19,42 +19,42 @@
 
   else
   {
-    return MEMORY[0x2821208B0](a1, a2);
+    return MEMORY[0x2821208B0](self, a2);
   }
 }
 
-- (HDSwimmingWorkoutEventCollector)initWithProfile:(id)a3 delegate:(id)a4
+- (HDSwimmingWorkoutEventCollector)initWithProfile:(id)profile delegate:(id)delegate
 {
   v12.receiver = self;
   v12.super_class = HDSwimmingWorkoutEventCollector;
-  v4 = [(HDWorkoutEventCollector *)&v12 initWithProfile:a3 delegate:a4];
+  v4 = [(HDWorkoutEventCollector *)&v12 initWithProfile:profile delegate:delegate];
   if (v4)
   {
     v5 = HKCreateSerialDispatchQueue();
     workoutEventQueue = v4->_workoutEventQueue;
     v4->_workoutEventQueue = v5;
 
-    v7 = [(HDWorkoutEventCollector *)v4 profile];
-    v8 = [v7 workoutManager];
-    v9 = [v8 newCMSwimTracker];
+    profile = [(HDWorkoutEventCollector *)v4 profile];
+    workoutManager = [profile workoutManager];
+    newCMSwimTracker = [workoutManager newCMSwimTracker];
     swimTracker = v4->_swimTracker;
-    v4->_swimTracker = v9;
+    v4->_swimTracker = newCMSwimTracker;
   }
 
   return v4;
 }
 
-- (void)startWithSessionId:(id)a3
+- (void)startWithSessionId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   workoutEventQueue = self->_workoutEventQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HDSwimmingWorkoutEventCollector_startWithSessionId___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_sync(workoutEventQueue, v7);
 }
 
@@ -145,20 +145,20 @@ id __39__HDSwimmingWorkoutEventCollector_stop__block_invoke(id result)
   return result;
 }
 
-- (void)requestPendingEventsThroughDate:(id)a3 completion:(id)a4
+- (void)requestPendingEventsThroughDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   workoutEventQueue = self->_workoutEventQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__HDSwimmingWorkoutEventCollector_requestPendingEventsThroughDate_completion___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dateCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dateCopy;
   dispatch_async(workoutEventQueue, block);
 }
 
@@ -313,19 +313,19 @@ LABEL_19:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_querySwimDataWithCompletion:(uint64_t)a1
+- (void)_queue_querySwimDataWithCompletion:(uint64_t)completion
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (completion)
   {
-    v5 = *(a1 + 32);
-    v6 = *(a1 + 40);
+    v5 = *(completion + 32);
+    v6 = *(completion + 40);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __70__HDSwimmingWorkoutEventCollector__queue_querySwimDataWithCompletion___block_invoke;
     v7[3] = &unk_27861B2F8;
-    v7[4] = a1;
+    v7[4] = completion;
     v8 = v3;
     [v5 querySwimUpdatesFromRecord:v6 handler:v7];
   }
@@ -365,11 +365,11 @@ void __72__HDSwimmingWorkoutEventCollector__startUpdatesFromRecordHandler_error_
   }
 }
 
-- (void)_queue_errorOccurred:(void *)a1
+- (void)_queue_errorOccurred:(void *)occurred
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (occurred)
   {
     _HKInitializeLogging();
     v4 = *MEMORY[0x277CCC330];
@@ -385,11 +385,11 @@ void __72__HDSwimmingWorkoutEventCollector__startUpdatesFromRecordHandler_error_
     }
 
     v5 = objc_alloc(MEMORY[0x277CCDE58]);
-    v6 = [a1 sessionId];
-    v7 = [v5 initWithSessionId:v6 error:v3];
+    sessionId = [occurred sessionId];
+    v7 = [v5 initWithSessionId:sessionId error:v3];
 
-    v8 = [a1 delegate];
-    [v8 receivedWorkoutEvent:v7];
+    delegate = [occurred delegate];
+    [delegate receivedWorkoutEvent:v7];
   }
 
   v9 = *MEMORY[0x277D85DE8];

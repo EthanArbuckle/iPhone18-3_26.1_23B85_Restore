@@ -1,6 +1,6 @@
 @interface DSDeviceEnrollmentsDataClassPlugIn
 + (id)dataclasses;
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6;
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass;
 - (DSDeviceEnrollmentsDataClassPlugIn)init;
 @end
 
@@ -20,18 +20,18 @@
   return v5.super.isa;
 }
 
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass
 {
-  if (a5)
+  if (children)
   {
     sub_6538();
   }
 
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = self;
-  v14 = _s31DeviceEnrollmentDataClassPlugIn0a11EnrollmentscdeF0C7perform_3for12withChildren0I9DataclassSbSo17ACDataclassActionCSg_So9ACAccountCSgSayypGSgSo0oL0aSgtF_0(a3);
+  actionCopy = action;
+  accountCopy = account;
+  dataclassCopy = dataclass;
+  selfCopy = self;
+  v14 = _s31DeviceEnrollmentDataClassPlugIn0a11EnrollmentscdeF0C7perform_3for12withChildren0I9DataclassSbSo17ACDataclassActionCSg_So9ACAccountCSgSayypGSgSo0oL0aSgtF_0(action);
 
   return v14 & 1;
 }

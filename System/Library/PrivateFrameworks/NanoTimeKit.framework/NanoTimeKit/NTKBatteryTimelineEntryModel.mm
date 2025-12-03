@@ -1,35 +1,35 @@
 @interface NTKBatteryTimelineEntryModel
 - (id)_graphicExtraLargeCircularTemplate;
 - (id)_levelTintColor;
-- (id)_newBatteryTemplateForFamily:(int64_t)a3;
+- (id)_newBatteryTemplateForFamily:(int64_t)family;
 - (id)_newUtilitarianLargeTemplate;
 - (id)_newUtilitarianSmallFlatTemplate;
 - (id)_ringTextProvider;
 - (id)_signatureBezelTemplate;
 - (id)_signatureCircularTemplate;
 - (id)_signatureCornerTemplate;
-- (id)templateForComplicationFamily:(int64_t)a3;
+- (id)templateForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NTKBatteryTimelineEntryModel
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
   v5 = 0;
-  if (a3 > 6)
+  if (family > 6)
   {
-    if (a3 > 8)
+    if (family > 8)
     {
-      switch(a3)
+      switch(family)
       {
         case 9:
-          v6 = [(NTKBatteryTimelineEntryModel *)self _signatureBezelTemplate];
+          _signatureBezelTemplate = [(NTKBatteryTimelineEntryModel *)self _signatureBezelTemplate];
           break;
         case 10:
-          v6 = [(NTKBatteryTimelineEntryModel *)self _signatureCircularTemplate];
+          _signatureBezelTemplate = [(NTKBatteryTimelineEntryModel *)self _signatureCircularTemplate];
           break;
         case 12:
-          v6 = [(NTKBatteryTimelineEntryModel *)self _graphicExtraLargeCircularTemplate];
+          _signatureBezelTemplate = [(NTKBatteryTimelineEntryModel *)self _graphicExtraLargeCircularTemplate];
           break;
         default:
           goto LABEL_19;
@@ -38,50 +38,50 @@
       goto LABEL_18;
     }
 
-    if (a3 != 7)
+    if (family != 7)
     {
-      v6 = [(NTKBatteryTimelineEntryModel *)self _signatureCornerTemplate];
+      _signatureBezelTemplate = [(NTKBatteryTimelineEntryModel *)self _signatureCornerTemplate];
 LABEL_18:
-      v5 = v6;
+      v5 = _signatureBezelTemplate;
       goto LABEL_19;
     }
 
     goto LABEL_17;
   }
 
-  if (a3 > 2)
+  if (family > 2)
   {
-    if (a3 == 3)
+    if (family == 3)
     {
-      v6 = [(NTKBatteryTimelineEntryModel *)self _newUtilitarianLargeTemplate];
+      _signatureBezelTemplate = [(NTKBatteryTimelineEntryModel *)self _newUtilitarianLargeTemplate];
       goto LABEL_18;
     }
 
-    if (a3 != 4)
+    if (family != 4)
     {
-      if (a3 != 6)
+      if (family != 6)
       {
         goto LABEL_19;
       }
 
-      v6 = [(NTKBatteryTimelineEntryModel *)self _newUtilitarianSmallFlatTemplate];
+      _signatureBezelTemplate = [(NTKBatteryTimelineEntryModel *)self _newUtilitarianSmallFlatTemplate];
       goto LABEL_18;
     }
 
     goto LABEL_17;
   }
 
-  if (!a3 || a3 == 2)
+  if (!family || family == 2)
   {
 LABEL_17:
-    v6 = [(NTKBatteryTimelineEntryModel *)self _newBatteryTemplateForFamily:a3];
+    _signatureBezelTemplate = [(NTKBatteryTimelineEntryModel *)self _newBatteryTemplateForFamily:family];
     goto LABEL_18;
   }
 
 LABEL_19:
-  if (*MEMORY[0x277CBB668] == a3)
+  if (*MEMORY[0x277CBB668] == family)
   {
-    v7 = [(NTKBatteryTimelineEntryModel *)self _newBatteryTemplateForFamily:a3];
+    v7 = [(NTKBatteryTimelineEntryModel *)self _newBatteryTemplateForFamily:family];
 
     v5 = v7;
   }
@@ -105,8 +105,8 @@ LABEL_19:
   *&v2 = self->_level;
   v4 = [NTKRing fillFractionStringWithSymbolForFillFraction:v2];
   v5 = [NTKBatteryUtilities chargingStringForState:self->_state];
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 uppercaseStringWithLocale:v6];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 uppercaseStringWithLocale:currentLocale];
 
   v8 = NTKClockFaceLocalizedString(@"BATTERY_FORMAT", @"%@ %@");
   v9 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v8, v4, v7];
@@ -158,31 +158,31 @@ id __60__NTKBatteryTimelineEntryModel__newUtilitarianLargeTemplate__block_invoke
   return v9;
 }
 
-- (id)_newBatteryTemplateForFamily:(int64_t)a3
+- (id)_newBatteryTemplateForFamily:(int64_t)family
 {
   v5 = MEMORY[0x277CBB730];
-  v6 = [(NTKBatteryTimelineEntryModel *)self _ringTextProvider];
+  _ringTextProvider = [(NTKBatteryTimelineEntryModel *)self _ringTextProvider];
   [(NTKBatteryTimelineEntryModel *)self level];
-  v8 = [v5 templateWithFamily:a3 textProvider:v6 level:+[NTKBatteryUtilities chargingForState:](NTKBatteryUtilities charging:{"chargingForState:", -[NTKBatteryTimelineEntryModel state](self, "state")), v7}];
+  v8 = [v5 templateWithFamily:family textProvider:_ringTextProvider level:+[NTKBatteryUtilities chargingForState:](NTKBatteryUtilities charging:{"chargingForState:", -[NTKBatteryTimelineEntryModel state](self, "state")), v7}];
 
   return v8;
 }
 
 - (id)_signatureCornerTemplate
 {
-  v3 = [(NTKBatteryTimelineEntryModel *)self _levelTintColor];
-  v4 = v3;
-  if (v3)
+  _levelTintColor = [(NTKBatteryTimelineEntryModel *)self _levelTintColor];
+  v4 = _levelTintColor;
+  if (_levelTintColor)
   {
-    v5 = v3;
+    systemGreenColor = _levelTintColor;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] systemGreenColor];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
   }
 
-  v6 = v5;
+  v6 = systemGreenColor;
 
   v7 = MEMORY[0x277CBBB78];
   [(NTKBatteryTimelineEntryModel *)self level];
@@ -197,19 +197,19 @@ id __60__NTKBatteryTimelineEntryModel__newUtilitarianLargeTemplate__block_invoke
 
 - (id)_signatureCircularTemplate
 {
-  v3 = [(NTKBatteryTimelineEntryModel *)self _levelTintColor];
-  v4 = v3;
-  if (v3)
+  _levelTintColor = [(NTKBatteryTimelineEntryModel *)self _levelTintColor];
+  v4 = _levelTintColor;
+  if (_levelTintColor)
   {
-    v5 = v3;
+    systemGreenColor = _levelTintColor;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] systemGreenColor];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
   }
 
-  v6 = v5;
+  v6 = systemGreenColor;
 
   v7 = MEMORY[0x277CBBB78];
   [(NTKBatteryTimelineEntryModel *)self level];
@@ -224,19 +224,19 @@ id __60__NTKBatteryTimelineEntryModel__newUtilitarianLargeTemplate__block_invoke
 
 - (id)_graphicExtraLargeCircularTemplate
 {
-  v3 = [(NTKBatteryTimelineEntryModel *)self _levelTintColor];
-  v4 = v3;
-  if (v3)
+  _levelTintColor = [(NTKBatteryTimelineEntryModel *)self _levelTintColor];
+  v4 = _levelTintColor;
+  if (_levelTintColor)
   {
-    v5 = v3;
+    systemGreenColor = _levelTintColor;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] systemGreenColor];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
   }
 
-  v6 = v5;
+  v6 = systemGreenColor;
 
   v7 = MEMORY[0x277CBBB78];
   [(NTKBatteryTimelineEntryModel *)self level];
@@ -252,8 +252,8 @@ id __60__NTKBatteryTimelineEntryModel__newUtilitarianLargeTemplate__block_invoke
 - (id)_signatureBezelTemplate
 {
   v2 = MEMORY[0x277CBB810];
-  v3 = [(NTKBatteryTimelineEntryModel *)self _signatureCircularTemplate];
-  v4 = [v2 templateWithCircularTemplate:v3];
+  _signatureCircularTemplate = [(NTKBatteryTimelineEntryModel *)self _signatureCircularTemplate];
+  v4 = [v2 templateWithCircularTemplate:_signatureCircularTemplate];
 
   return v4;
 }
@@ -262,10 +262,10 @@ id __60__NTKBatteryTimelineEntryModel__newUtilitarianLargeTemplate__block_invoke
 {
   [(NTKBatteryTimelineEntryModel *)self level];
   v4 = v3;
-  v5 = [(NTKBatteryTimelineEntryModel *)self state];
+  state = [(NTKBatteryTimelineEntryModel *)self state];
   LODWORD(v6) = v4;
 
-  return [NTKBatteryUtilities colorForLevel:v5 andState:v6];
+  return [NTKBatteryUtilities colorForLevel:state andState:v6];
 }
 
 - (id)_ringTextProvider

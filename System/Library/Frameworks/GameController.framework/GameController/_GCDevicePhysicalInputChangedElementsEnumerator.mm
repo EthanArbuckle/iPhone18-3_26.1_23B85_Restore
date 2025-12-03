@@ -22,9 +22,9 @@
   }
 
   while (![(_GCDevicePhysicalInputTransaction *)self->_implementation updateContextForElementAtIndex:v4 size:0 onlyIfChanged:1]);
-  v5 = [(_GCDevicePhysicalInputBase *)self->_implementation elements];
+  elements = [(_GCDevicePhysicalInputBase *)self->_implementation elements];
 
-  return [v5 objectAtIndexedSubscript:v4];
+  return [elements objectAtIndexedSubscript:v4];
 }
 
 - (uint64_t)implementation

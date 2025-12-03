@@ -1,13 +1,13 @@
 @interface PHSceneClassification
-+ (id)_fetchSceneClassificationsGroupedByAssetLocalIdentifierForAssets:(id)a3 includeTemporalClassifications:(BOOL)a4 sceneClassificationTypePredicate:(id)a5;
++ (id)_fetchSceneClassificationsGroupedByAssetLocalIdentifierForAssets:(id)assets includeTemporalClassifications:(BOOL)classifications sceneClassificationTypePredicate:(id)predicate;
 + (id)allSupportedSceneClassificationTypes;
-+ (id)fetchSceneClassificationsGroupedByAssetLocalIdentifierForAssets:(id)a3 sceneClassificationType:(int64_t)a4 includeTemporalClassifications:(BOOL)a5;
-- (BOOL)_validateStartTime:(double)a3 duration:(double)a4 classificationType:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSceneClassification:(id)a3;
++ (id)fetchSceneClassificationsGroupedByAssetLocalIdentifierForAssets:(id)assets sceneClassificationType:(int64_t)type includeTemporalClassifications:(BOOL)classifications;
+- (BOOL)_validateStartTime:(double)time duration:(double)duration classificationType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSceneClassification:(id)classification;
 - (CGRect)boundingBox;
-- (PHSceneClassification)initWithDictionaryRepresentation:(id)a3;
-- (PHSceneClassification)initWithExtendedSceneIdentifier:(unint64_t)a3 confidence:(double)a4 boundingBox:(CGRect)a5 startTime:(double)a6 duration:(double)a7 classificationType:(int64_t)a8 thumbnailIdentifier:(id)a9;
+- (PHSceneClassification)initWithDictionaryRepresentation:(id)representation;
+- (PHSceneClassification)initWithExtendedSceneIdentifier:(unint64_t)identifier confidence:(double)confidence boundingBox:(CGRect)box startTime:(double)time duration:(double)duration classificationType:(int64_t)type thumbnailIdentifier:(id)thumbnailIdentifier;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unsigned)sceneIdentifier;
@@ -60,13 +60,13 @@
   return result;
 }
 
-- (PHSceneClassification)initWithDictionaryRepresentation:(id)a3
+- (PHSceneClassification)initWithDictionaryRepresentation:(id)representation
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  representationCopy = representation;
   v4 = MEMORY[0x1E696ACD0];
   v5 = objc_opt_class();
-  v6 = [v3 objectForKeyedSubscript:@"packedBoundingBoxRect"];
+  v6 = [representationCopy objectForKeyedSubscript:@"packedBoundingBoxRect"];
   v34 = 0;
   v7 = [v4 unarchivedObjectOfClass:v5 fromData:v6 error:&v34];
   v8 = v34;
@@ -86,21 +86,21 @@
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v3 objectForKeyedSubscript:@"sceneIdentifier"];
-  v32 = [v17 unsignedLongLongValue];
-  v18 = [v3 objectForKeyedSubscript:@"confidence"];
+  v17 = [representationCopy objectForKeyedSubscript:@"sceneIdentifier"];
+  unsignedLongLongValue = [v17 unsignedLongLongValue];
+  v18 = [representationCopy objectForKeyedSubscript:@"confidence"];
   [v18 doubleValue];
   v20 = v19;
-  v21 = [v3 objectForKeyedSubscript:@"startTime"];
+  v21 = [representationCopy objectForKeyedSubscript:@"startTime"];
   [v21 doubleValue];
   v23 = v22;
-  v24 = [v3 objectForKeyedSubscript:@"duration"];
+  v24 = [representationCopy objectForKeyedSubscript:@"duration"];
   [v24 doubleValue];
   v26 = v25;
-  v27 = [v3 objectForKeyedSubscript:@"classificationType"];
-  v28 = [v27 integerValue];
-  v29 = [v3 objectForKeyedSubscript:@"thumbnailIdentifier"];
-  v30 = [(PHSceneClassification *)self initWithExtendedSceneIdentifier:v32 confidence:v28 boundingBox:v29 startTime:v20 duration:v10 classificationType:v12 thumbnailIdentifier:v14, v16, v23, v26];
+  v27 = [representationCopy objectForKeyedSubscript:@"classificationType"];
+  integerValue = [v27 integerValue];
+  v29 = [representationCopy objectForKeyedSubscript:@"thumbnailIdentifier"];
+  v30 = [(PHSceneClassification *)self initWithExtendedSceneIdentifier:unsignedLongLongValue confidence:integerValue boundingBox:v29 startTime:v20 duration:v10 classificationType:v12 thumbnailIdentifier:v14, v16, v23, v26];
 
   return v30;
 }
@@ -156,10 +156,10 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -167,19 +167,19 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PHSceneClassification *)self isEqualToSceneClassification:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PHSceneClassification *)self isEqualToSceneClassification:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToSceneClassification:(id)a3
+- (BOOL)isEqualToSceneClassification:(id)classification
 {
-  v4 = a3;
+  classificationCopy = classification;
   classificationType = self->_classificationType;
-  if (classificationType == [v4 classificationType] && (extendedSceneIdentifier = self->_extendedSceneIdentifier, extendedSceneIdentifier == objc_msgSend(v4, "extendedSceneIdentifier")) && (confidence = self->_confidence, objc_msgSend(v4, "confidence"), confidence == v8))
+  if (classificationType == [classificationCopy classificationType] && (extendedSceneIdentifier = self->_extendedSceneIdentifier, extendedSceneIdentifier == objc_msgSend(classificationCopy, "extendedSceneIdentifier")) && (confidence = self->_confidence, objc_msgSend(classificationCopy, "confidence"), confidence == v8))
   {
-    [v4 boundingBox];
+    [classificationCopy boundingBox];
     v15.origin.x = v9;
     v15.origin.y = v10;
     v15.size.width = v11;
@@ -195,19 +195,19 @@
   return v13;
 }
 
-- (PHSceneClassification)initWithExtendedSceneIdentifier:(unint64_t)a3 confidence:(double)a4 boundingBox:(CGRect)a5 startTime:(double)a6 duration:(double)a7 classificationType:(int64_t)a8 thumbnailIdentifier:(id)a9
+- (PHSceneClassification)initWithExtendedSceneIdentifier:(unint64_t)identifier confidence:(double)confidence boundingBox:(CGRect)box startTime:(double)time duration:(double)duration classificationType:(int64_t)type thumbnailIdentifier:(id)thumbnailIdentifier
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v21 = a9;
-  if (![(PHSceneClassification *)self _validateStartTime:a8 duration:a6 classificationType:a7]|| (v43.receiver = self, v43.super_class = PHSceneClassification, (v22 = [(PHSceneClassification *)&v43 init]) == 0))
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  thumbnailIdentifierCopy = thumbnailIdentifier;
+  if (![(PHSceneClassification *)self _validateStartTime:type duration:time classificationType:duration]|| (v43.receiver = self, v43.super_class = PHSceneClassification, (v22 = [(PHSceneClassification *)&v43 init]) == 0))
   {
     v31 = MEMORY[0x1E695DF30];
     v32 = *MEMORY[0x1E695D940];
-    v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid combination of parameters for PHSceneClassification (id: %llu) - startTime: %g, duration: %g, classificationType: %ld", a3, *&a6, *&a7, a8];
-    v34 = [v31 exceptionWithName:v32 reason:v33 userInfo:0];
+    type = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid combination of parameters for PHSceneClassification (id: %llu) - startTime: %g, duration: %g, classificationType: %ld", identifier, *&time, *&duration, type];
+    v34 = [v31 exceptionWithName:v32 reason:type userInfo:0];
     v35 = v34;
 
     objc_exception_throw(v34);
@@ -216,17 +216,17 @@
   v23 = v22;
   v22->_boundingBox.origin.x = x;
   p_x = &v22->_boundingBox.origin.x;
-  v22->_extendedSceneIdentifier = a3;
-  v22->_confidence = a4;
+  v22->_extendedSceneIdentifier = identifier;
+  v22->_confidence = confidence;
   v22->_boundingBox.origin.y = y;
   v22->_boundingBox.size.width = width;
   v22->_boundingBox.size.height = height;
-  v22->_startTime = a6;
-  v22->_duration = a7;
-  v22->_classificationType = a8;
-  if (v21)
+  v22->_startTime = time;
+  v22->_duration = duration;
+  v22->_classificationType = type;
+  if (thumbnailIdentifierCopy)
   {
-    objc_storeStrong(&v22->_thumbnailIdentifier, a9);
+    objc_storeStrong(&v22->_thumbnailIdentifier, thumbnailIdentifier);
   }
 
   v25 = *MEMORY[0x1E695F058];
@@ -266,7 +266,7 @@
     v37 = *MEMORY[0x1E695D940];
     v38 = MEMORY[0x1E696AEC0];
     v39 = NSStringFromSelector(a2);
-    v40 = [v38 stringWithFormat:@"Invalid CGRect for PHSceneClassification (id: %llu) passed to %@, rect must be non-zero normalized or CGRectNull", a3, v39];
+    v40 = [v38 stringWithFormat:@"Invalid CGRect for PHSceneClassification (id: %llu) passed to %@, rect must be non-zero normalized or CGRectNull", identifier, v39];
     v41 = [v36 exceptionWithName:v37 reason:v40 userInfo:0];
     v42 = v41;
 
@@ -278,16 +278,16 @@
   return v23;
 }
 
-- (BOOL)_validateStartTime:(double)a3 duration:(double)a4 classificationType:(int64_t)a5
+- (BOOL)_validateStartTime:(double)time duration:(double)duration classificationType:(int64_t)type
 {
-  v5 = a3 == 0.0;
-  if (a4 != 0.0)
+  v5 = time == 0.0;
+  if (duration != 0.0)
   {
     v5 = 0;
   }
 
-  v6 = ((1 << a5) & 0xC) != 0 && a4 > 0.0;
-  if (((1 << a5) & 0xF1) != 0)
+  v6 = ((1 << type) & 0xC) != 0 && duration > 0.0;
+  if (((1 << type) & 0xF1) != 0)
   {
     v7 = v5;
   }
@@ -297,48 +297,48 @@
     v7 = v6;
   }
 
-  return a5 <= 7 && v7;
+  return type <= 7 && v7;
 }
 
 + (id)allSupportedSceneClassificationTypes
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; i != 8; ++i)
   {
     if ((i - 2) < 6 || i == 0)
     {
       v5 = [MEMORY[0x1E696AD98] numberWithInteger:i];
-      [v2 addObject:v5];
+      [array addObject:v5];
     }
   }
 
-  v6 = [v2 copy];
+  v6 = [array copy];
 
   return v6;
 }
 
-+ (id)_fetchSceneClassificationsGroupedByAssetLocalIdentifierForAssets:(id)a3 includeTemporalClassifications:(BOOL)a4 sceneClassificationTypePredicate:(id)a5
++ (id)_fetchSceneClassificationsGroupedByAssetLocalIdentifierForAssets:(id)assets includeTemporalClassifications:(BOOL)classifications sceneClassificationTypePredicate:(id)predicate
 {
-  v6 = a4;
+  classificationsCopy = classifications;
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v24 = a5;
+  assetsCopy = assets;
+  predicateCopy = predicate;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__22301;
   v36 = __Block_byref_object_dispose__22302;
   v37 = 0;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  array = [MEMORY[0x1E695DF70] array];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = v7;
+  v10 = assetsCopy;
   v11 = [v10 countByEnumeratingWithState:&v28 objects:v38 count:16];
-  v23 = v6;
-  v12 = 0;
+  v23 = classificationsCopy;
+  v18PhotoLibrary = 0;
   if (v11)
   {
     v13 = *v29;
@@ -352,15 +352,15 @@
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
-        v16 = [v15 objectID];
-        [v8 addObject:v16];
-        v17 = [v15 localIdentifier];
-        [v9 setObject:v17 forKey:v16];
+        objectID = [v15 objectID];
+        [array addObject:objectID];
+        localIdentifier = [v15 localIdentifier];
+        [strongToStrongObjectsMapTable setObject:localIdentifier forKey:objectID];
 
-        if (!v12)
+        if (!v18PhotoLibrary)
         {
-          v18 = [v15 photoLibrary];
-          v12 = [v18 photoLibrary];
+          photoLibrary = [v15 photoLibrary];
+          v18PhotoLibrary = [photoLibrary photoLibrary];
         }
       }
 
@@ -376,9 +376,9 @@
   v25[2] = __154__PHSceneClassification__fetchSceneClassificationsGroupedByAssetLocalIdentifierForAssets_includeTemporalClassifications_sceneClassificationTypePredicate___block_invoke;
   v25[3] = &unk_1E75A6CD8;
   v27 = &v32;
-  v20 = v9;
+  v20 = strongToStrongObjectsMapTable;
   v26 = v20;
-  [v19 batchFetchScenesByAssetObjectIDWithAssetObjectIDs:v8 library:v12 includeTemporalClassifications:v23 sceneClassificationTypePredicate:v24 completion:v25];
+  [v19 batchFetchScenesByAssetObjectIDWithAssetObjectIDs:array library:v18PhotoLibrary includeTemporalClassifications:v23 sceneClassificationTypePredicate:predicateCopy completion:v25];
   v21 = v33[5];
 
   _Block_object_dispose(&v32, 8);
@@ -467,13 +467,13 @@ void __154__PHSceneClassification__fetchSceneClassificationsGroupedByAssetLocalI
   [*(*(*(v27 + 40) + 8) + 40) setObject:v31 forKeyedSubscript:v26];
 }
 
-+ (id)fetchSceneClassificationsGroupedByAssetLocalIdentifierForAssets:(id)a3 sceneClassificationType:(int64_t)a4 includeTemporalClassifications:(BOOL)a5
++ (id)fetchSceneClassificationsGroupedByAssetLocalIdentifierForAssets:(id)assets sceneClassificationType:(int64_t)type includeTemporalClassifications:(BOOL)classifications
 {
-  v5 = a5;
+  classificationsCopy = classifications;
   v8 = MEMORY[0x1E696AE18];
-  v9 = a3;
-  v10 = [v8 predicateWithFormat:@"%K = %ld", @"classificationType", a4];
-  v11 = [a1 _fetchSceneClassificationsGroupedByAssetLocalIdentifierForAssets:v9 includeTemporalClassifications:v5 sceneClassificationTypePredicate:v10];
+  assetsCopy = assets;
+  type = [v8 predicateWithFormat:@"%K = %ld", @"classificationType", type];
+  v11 = [self _fetchSceneClassificationsGroupedByAssetLocalIdentifierForAssets:assetsCopy includeTemporalClassifications:classificationsCopy sceneClassificationTypePredicate:type];
 
   return v11;
 }

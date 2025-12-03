@@ -1,13 +1,13 @@
 @interface TCMessageEntry
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (TCMessageEntry)initWithTag:(int)a3 affectedObject:(id)a4 text:(id)a5 parameters:(char *)a6;
+- (BOOL)isEqual:(id)equal;
+- (TCMessageEntry)initWithTag:(int)tag affectedObject:(id)object text:(id)text parameters:(char *)parameters;
 - (id)description;
-- (id)getParameter:(unsigned int)a3;
-- (int64_t)timeStampCompare:(id)a3;
-- (void)addAffectedObject:(id)a3;
+- (id)getParameter:(unsigned int)parameter;
+- (int64_t)timeStampCompare:(id)compare;
+- (void)addAffectedObject:(id)object;
 - (void)dealloc;
-- (void)mergeEntries:(id)a3;
+- (void)mergeEntries:(id)entries;
 @end
 
 @implementation TCMessageEntry
@@ -23,27 +23,27 @@
   }
 }
 
-- (TCMessageEntry)initWithTag:(int)a3 affectedObject:(id)a4 text:(id)a5 parameters:(char *)a6
+- (TCMessageEntry)initWithTag:(int)tag affectedObject:(id)object text:(id)text parameters:(char *)parameters
 {
   v9 = [(TCMessageEntry *)self init];
   v10 = v9;
   if (v9)
   {
-    v9->m_tag = a3;
+    v9->m_tag = tag;
     v9->m_count = 1;
-    [(TCMessageEntry *)v9 addAffectedObject:a4];
-    v22 = a6;
-    v10->m_text = [[NSString alloc] initWithFormat:a5 arguments:a6];
-    [a5 length];
-    v11 = [a5 rangeOfCharacterFromSet:qword_567968];
+    [(TCMessageEntry *)v9 addAffectedObject:object];
+    parametersCopy = parameters;
+    v10->m_text = [[NSString alloc] initWithFormat:text arguments:parameters];
+    [text length];
+    v11 = [text rangeOfCharacterFromSet:qword_567968];
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = 0;
       do
       {
         v14 = &v11[v12];
-        v15 = [a5 length];
-        v16 = [a5 characterAtIndex:v14];
+        v15 = [text length];
+        v16 = [text characterAtIndex:v14];
         if (v16 != 37)
         {
           if (v16 != 64)
@@ -54,7 +54,7 @@
           ++v13;
         }
 
-        v11 = [a5 rangeOfCharacterFromSet:qword_567968 options:0 range:{v14 + 1, v15 - (v14 + 1)}];
+        v11 = [text rangeOfCharacterFromSet:qword_567968 options:0 range:{v14 + 1, v15 - (v14 + 1)}];
       }
 
       while (v11 != 0x7FFFFFFFFFFFFFFFLL);
@@ -63,12 +63,12 @@
         v10->m_parameters = objc_alloc_init(NSMutableArray);
         do
         {
-          v17 = a6;
-          a6 += 8;
+          parametersCopy2 = parameters;
+          parameters += 8;
           m_parameters = v10->m_parameters;
-          if (*v17)
+          if (*parametersCopy2)
           {
-            v19 = [*v17 description];
+            v19 = [*parametersCopy2 description];
             v20 = m_parameters;
           }
 
@@ -97,16 +97,16 @@
   [(TCMessageEntry *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
-  if (v5 == objc_opt_class() && self->m_tag == *(a3 + 4))
+  if (v5 == objc_opt_class() && self->m_tag == *(equal + 4))
   {
-    v6 = [(NSString *)self->m_text isEqualToString:*(a3 + 3)];
+    v6 = [(NSString *)self->m_text isEqualToString:*(equal + 3)];
     if (v6)
     {
       m_parameters = self->m_parameters;
-      if (m_parameters == *(a3 + 4))
+      if (m_parameters == *(equal + 4))
       {
         LOBYTE(v6) = 1;
       }
@@ -127,22 +127,22 @@
   return v6;
 }
 
-- (id)getParameter:(unsigned int)a3
+- (id)getParameter:(unsigned int)parameter
 {
-  if ([(NSArray *)self->m_parameters count]<= a3)
+  if ([(NSArray *)self->m_parameters count]<= parameter)
   {
     return 0;
   }
 
   m_parameters = self->m_parameters;
 
-  return [(NSArray *)m_parameters objectAtIndex:a3];
+  return [(NSArray *)m_parameters objectAtIndex:parameter];
 }
 
-- (int64_t)timeStampCompare:(id)a3
+- (int64_t)timeStampCompare:(id)compare
 {
   m_timeStamp = self->m_timeStamp;
-  v4 = *(a3 + 1);
+  v4 = *(compare + 1);
   v5 = m_timeStamp >= v4;
   v6 = m_timeStamp > v4;
   if (v5)
@@ -170,11 +170,11 @@
   }
 }
 
-- (void)mergeEntries:(id)a3
+- (void)mergeEntries:(id)entries
 {
-  self->m_count += [a3 getCount];
-  v5 = [a3 affectedObjects];
-  if ([v5 count])
+  self->m_count += [entries getCount];
+  affectedObjects = [entries affectedObjects];
+  if ([affectedObjects count])
   {
     m_affectedObjects = self->m_affectedObjects;
     if (!m_affectedObjects)
@@ -183,13 +183,13 @@
       self->m_affectedObjects = m_affectedObjects;
     }
 
-    [(NSMutableArray *)m_affectedObjects addObjectsFromArray:v5];
+    [(NSMutableArray *)m_affectedObjects addObjectsFromArray:affectedObjects];
   }
 }
 
-- (void)addAffectedObject:(id)a3
+- (void)addAffectedObject:(id)object
 {
-  if (a3)
+  if (object)
   {
     m_affectedObjects = self->m_affectedObjects;
     if (!m_affectedObjects)
@@ -198,7 +198,7 @@
       self->m_affectedObjects = m_affectedObjects;
     }
 
-    [(NSMutableArray *)m_affectedObjects addObject:a3];
+    [(NSMutableArray *)m_affectedObjects addObject:object];
   }
 }
 

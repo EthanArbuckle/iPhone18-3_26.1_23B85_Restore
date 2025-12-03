@@ -1,43 +1,43 @@
 @interface SECC2MPGenericEventMetricValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDoubleValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDoubleValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SECC2MPGenericEventMetricValue
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(SECC2MPGenericEventMetricValue *)self setStringValue:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) != 0)
   {
-    self->_doubleValue = *(v4 + 2);
+    self->_doubleValue = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
   }
 
   if (v5)
   {
-    self->_dateValue = *(v4 + 1);
+    self->_dateValue = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   errorValue = self->_errorValue;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   if (errorValue)
   {
     if (v7)
@@ -103,16 +103,16 @@
   return v6 ^ v3 ^ v10 ^ [(SECC2MPError *)self->_errorValue hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   stringValue = self->_stringValue;
-  if (stringValue | *(v4 + 4))
+  if (stringValue | *(equalCopy + 4))
   {
     if (![(NSString *)stringValue isEqual:?])
     {
@@ -120,16 +120,16 @@
     }
   }
 
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_doubleValue != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_doubleValue != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_16:
     v8 = 0;
@@ -138,19 +138,19 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_dateValue != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_dateValue != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_16;
   }
 
   errorValue = self->_errorValue;
-  if (errorValue | *(v4 + 3))
+  if (errorValue | *(equalCopy + 3))
   {
     v8 = [(SECC2MPError *)errorValue isEqual:?];
   }
@@ -165,10 +165,10 @@ LABEL_17:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_stringValue copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -186,52 +186,52 @@ LABEL_17:
     *(v5 + 40) |= 1u;
   }
 
-  v9 = [(SECC2MPError *)self->_errorValue copyWithZone:a3];
+  v9 = [(SECC2MPError *)self->_errorValue copyWithZone:zone];
   v10 = v5[3];
   v5[3] = v9;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_stringValue)
   {
-    [v4 setStringValue:?];
-    v4 = v6;
+    [toCopy setStringValue:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_doubleValue;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 2) = *&self->_doubleValue;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = self->_dateValue;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_dateValue;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_errorValue)
   {
     [v6 setErrorValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_stringValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -239,7 +239,7 @@ LABEL_17:
   {
     doubleValue = self->_doubleValue;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -247,13 +247,13 @@ LABEL_17:
   {
     dateValue = self->_dateValue;
     PBDataWriterWriteUint64Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_errorValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
@@ -285,8 +285,8 @@ LABEL_17:
   errorValue = self->_errorValue;
   if (errorValue)
   {
-    v10 = [(SECC2MPError *)errorValue dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"error_value"];
+    dictionaryRepresentation = [(SECC2MPError *)errorValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"error_value"];
   }
 
   return v4;
@@ -297,15 +297,15 @@ LABEL_17:
   v7.receiver = self;
   v7.super_class = SECC2MPGenericEventMetricValue;
   v3 = [(SECC2MPGenericEventMetricValue *)&v7 description];
-  v4 = [(SECC2MPGenericEventMetricValue *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SECC2MPGenericEventMetricValue *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasDoubleValue:(BOOL)a3
+- (void)setHasDoubleValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }

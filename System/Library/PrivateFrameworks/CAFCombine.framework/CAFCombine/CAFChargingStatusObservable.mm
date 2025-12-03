@@ -1,19 +1,19 @@
 @interface CAFChargingStatusObservable
 - (NSString)description;
-- (void)chargingStatusService:(id)a3 didUpdateCableState:(unsigned __int8)a4;
-- (void)chargingStatusService:(id)a3 didUpdateChargingModeIdentifier:(id)a4;
-- (void)chargingStatusService:(id)a3 didUpdateChargingState:(unsigned __int8)a4;
-- (void)chargingStatusService:(id)a3 didUpdatePortSideIndicator:(unsigned __int8)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)chargingStatusService:(id)service didUpdateCableState:(unsigned __int8)state;
+- (void)chargingStatusService:(id)service didUpdateChargingModeIdentifier:(id)identifier;
+- (void)chargingStatusService:(id)service didUpdateChargingState:(unsigned __int8)state;
+- (void)chargingStatusService:(id)service didUpdatePortSideIndicator:(unsigned __int8)indicator;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFChargingStatusObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFChargingStatusObservable.description.getter();
   v5 = v4;
 
@@ -22,58 +22,58 @@
   return v6;
 }
 
-- (void)chargingStatusService:(id)a3 didUpdateChargingModeIdentifier:(id)a4
+- (void)chargingStatusService:(id)service didUpdateChargingModeIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFChargingStatusObservable.chargingStatusService(_:didUpdateChargingModeIdentifier:)();
 }
 
-- (void)chargingStatusService:(id)a3 didUpdateChargingState:(unsigned __int8)a4
+- (void)chargingStatusService:(id)service didUpdateChargingState:(unsigned __int8)state
 {
-  v6 = a3;
-  v7 = self;
-  CAFChargingStatusObservable.chargingStatusService(_:didUpdateChargingState:)(v7, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFChargingStatusObservable.chargingStatusService(_:didUpdateChargingState:)(selfCopy, state);
 }
 
-- (void)chargingStatusService:(id)a3 didUpdateCableState:(unsigned __int8)a4
+- (void)chargingStatusService:(id)service didUpdateCableState:(unsigned __int8)state
 {
-  v6 = a3;
-  v7 = self;
-  CAFChargingStatusObservable.chargingStatusService(_:didUpdateCableState:)(v7, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFChargingStatusObservable.chargingStatusService(_:didUpdateCableState:)(selfCopy, state);
 }
 
-- (void)chargingStatusService:(id)a3 didUpdatePortSideIndicator:(unsigned __int8)a4
+- (void)chargingStatusService:(id)service didUpdatePortSideIndicator:(unsigned __int8)indicator
 {
-  v6 = a3;
-  v7 = self;
-  CAFChargingStatusObservable.chargingStatusService(_:didUpdatePortSideIndicator:)(v7, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFChargingStatusObservable.chargingStatusService(_:didUpdatePortSideIndicator:)(selfCopy, indicator);
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFChargingStatusObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFChargingStatusObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFChargingStatusObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFChargingStatusObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFChargingStatusObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

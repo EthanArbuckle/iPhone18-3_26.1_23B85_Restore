@@ -1,16 +1,16 @@
 @interface PBASimpleLockScreenStackItemView
-- (PBASimpleLockScreenStackItemView)initWithFrame:(CGRect)a3;
-- (void)setItem:(id)a3;
-- (void)setShowSeparator:(BOOL)a3;
+- (PBASimpleLockScreenStackItemView)initWithFrame:(CGRect)frame;
+- (void)setItem:(id)item;
+- (void)setShowSeparator:(BOOL)separator;
 @end
 
 @implementation PBASimpleLockScreenStackItemView
 
-- (PBASimpleLockScreenStackItemView)initWithFrame:(CGRect)a3
+- (PBASimpleLockScreenStackItemView)initWithFrame:(CGRect)frame
 {
   v58.receiver = self;
   v58.super_class = PBASimpleLockScreenStackItemView;
-  v3 = [(PBASimpleLockScreenStackItemView *)&v58 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PBASimpleLockScreenStackItemView *)&v58 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -26,8 +26,8 @@
 
     [(UIView *)v3->_separator setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PBASimpleLockScreenStackItemView *)v3 addSubview:v3->_separator];
-    v9 = [(UIView *)v3->_separator heightAnchor];
-    v10 = [v9 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIView *)v3->_separator heightAnchor];
+    v10 = [heightAnchor constraintEqualToConstant:0.0];
     separatorHeightConstraint = v3->_separatorHeightConstraint;
     v3->_separatorHeightConstraint = v10;
 
@@ -51,55 +51,55 @@
     [(UILabel *)v3->_titleLabel setContentCompressionResistancePriority:1 forAxis:v18];
     [(UILabel *)v3->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PBASimpleLockScreenStackItemView *)v3 addSubview:v3->_titleLabel];
-    v57 = [(UIImageView *)v3->_iconImageView leadingAnchor];
-    v56 = [(PBASimpleLockScreenStackItemView *)v3 leadingAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56 constant:16.0];
+    leadingAnchor = [(UIImageView *)v3->_iconImageView leadingAnchor];
+    leadingAnchor2 = [(PBASimpleLockScreenStackItemView *)v3 leadingAnchor];
+    v55 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v59[0] = v55;
-    v54 = [(UIImageView *)v3->_iconImageView topAnchor];
-    v53 = [(PBASimpleLockScreenStackItemView *)v3 topAnchor];
-    v52 = [v54 constraintGreaterThanOrEqualToAnchor:v53 constant:12.0];
+    topAnchor = [(UIImageView *)v3->_iconImageView topAnchor];
+    topAnchor2 = [(PBASimpleLockScreenStackItemView *)v3 topAnchor];
+    v52 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:12.0];
     v59[1] = v52;
-    v51 = [(UIImageView *)v3->_iconImageView bottomAnchor];
-    v50 = [(PBASimpleLockScreenStackItemView *)v3 bottomAnchor];
-    v49 = [v51 constraintLessThanOrEqualToAnchor:v50 constant:-12.0];
+    bottomAnchor = [(UIImageView *)v3->_iconImageView bottomAnchor];
+    bottomAnchor2 = [(PBASimpleLockScreenStackItemView *)v3 bottomAnchor];
+    v49 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-12.0];
     v59[2] = v49;
-    v48 = [(UIImageView *)v3->_iconImageView centerYAnchor];
-    v47 = [(UILabel *)v3->_titleLabel centerYAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    centerYAnchor = [(UIImageView *)v3->_iconImageView centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v3->_titleLabel centerYAnchor];
+    v46 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v59[3] = v46;
-    v45 = [(UIImageView *)v3->_iconImageView heightAnchor];
-    v44 = [v45 constraintEqualToConstant:24.0];
+    heightAnchor2 = [(UIImageView *)v3->_iconImageView heightAnchor];
+    v44 = [heightAnchor2 constraintEqualToConstant:24.0];
     v59[4] = v44;
-    v43 = [(UIImageView *)v3->_iconImageView widthAnchor];
-    v42 = [v43 constraintEqualToConstant:24.0];
+    widthAnchor = [(UIImageView *)v3->_iconImageView widthAnchor];
+    v42 = [widthAnchor constraintEqualToConstant:24.0];
     v59[5] = v42;
-    v41 = [(UILabel *)v3->_titleLabel leadingAnchor];
-    v40 = [(UIImageView *)v3->_iconImageView trailingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40 constant:16.0];
+    leadingAnchor3 = [(UILabel *)v3->_titleLabel leadingAnchor];
+    trailingAnchor = [(UIImageView *)v3->_iconImageView trailingAnchor];
+    v39 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:16.0];
     v59[6] = v39;
-    v38 = [(UILabel *)v3->_titleLabel topAnchor];
-    v37 = [(PBASimpleLockScreenStackItemView *)v3 topAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37 constant:12.0];
+    topAnchor3 = [(UILabel *)v3->_titleLabel topAnchor];
+    topAnchor4 = [(PBASimpleLockScreenStackItemView *)v3 topAnchor];
+    v36 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:12.0];
     v59[7] = v36;
-    v35 = [(UILabel *)v3->_titleLabel trailingAnchor];
-    v34 = [(PBASimpleLockScreenStackItemView *)v3 trailingAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34 constant:-16.0];
+    trailingAnchor2 = [(UILabel *)v3->_titleLabel trailingAnchor];
+    trailingAnchor3 = [(PBASimpleLockScreenStackItemView *)v3 trailingAnchor];
+    v33 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-16.0];
     v59[8] = v33;
-    v32 = [(UILabel *)v3->_titleLabel bottomAnchor];
-    v31 = [(UIView *)v3->_separator topAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31 constant:-12.0];
+    bottomAnchor3 = [(UILabel *)v3->_titleLabel bottomAnchor];
+    topAnchor5 = [(UIView *)v3->_separator topAnchor];
+    v30 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5 constant:-12.0];
     v59[9] = v30;
-    v29 = [(UIView *)v3->_separator leadingAnchor];
-    v19 = [(UILabel *)v3->_titleLabel leadingAnchor];
-    v20 = [v29 constraintEqualToAnchor:v19];
+    leadingAnchor4 = [(UIView *)v3->_separator leadingAnchor];
+    leadingAnchor5 = [(UILabel *)v3->_titleLabel leadingAnchor];
+    v20 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v59[10] = v20;
-    v21 = [(UIView *)v3->_separator trailingAnchor];
-    v22 = [(PBASimpleLockScreenStackItemView *)v3 trailingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    trailingAnchor4 = [(UIView *)v3->_separator trailingAnchor];
+    trailingAnchor5 = [(PBASimpleLockScreenStackItemView *)v3 trailingAnchor];
+    v23 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v59[11] = v23;
-    v24 = [(UIView *)v3->_separator bottomAnchor];
-    v25 = [(PBASimpleLockScreenStackItemView *)v3 bottomAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    bottomAnchor4 = [(UIView *)v3->_separator bottomAnchor];
+    bottomAnchor5 = [(PBASimpleLockScreenStackItemView *)v3 bottomAnchor];
+    v26 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v59[12] = v26;
     v59[13] = v3->_separatorHeightConstraint;
     v27 = [NSArray arrayWithObjects:v59 count:14];
@@ -109,29 +109,29 @@
   return v3;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v10 = a3;
+  itemCopy = item;
   if (![(PBASimpleLockScreenStackItem *)self->_item isEqual:?])
   {
-    objc_storeStrong(&self->_item, a3);
+    objc_storeStrong(&self->_item, item);
     iconImageView = self->_iconImageView;
-    v6 = [v10 iconSystemName];
-    v7 = [UIImage _systemImageNamed:v6];
+    iconSystemName = [itemCopy iconSystemName];
+    v7 = [UIImage _systemImageNamed:iconSystemName];
     [(UIImageView *)iconImageView setImage:v7];
 
     titleLabel = self->_titleLabel;
-    v9 = [v10 title];
-    [(UILabel *)titleLabel setText:v9];
+    title = [itemCopy title];
+    [(UILabel *)titleLabel setText:title];
   }
 }
 
-- (void)setShowSeparator:(BOOL)a3
+- (void)setShowSeparator:(BOOL)separator
 {
-  if (self->_showSeparator != a3)
+  if (self->_showSeparator != separator)
   {
-    self->_showSeparator = a3;
-    [(NSLayoutConstraint *)self->_separatorHeightConstraint setConstant:a3];
+    self->_showSeparator = separator;
+    [(NSLayoutConstraint *)self->_separatorHeightConstraint setConstant:separator];
   }
 }
 

@@ -8,9 +8,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(BCSCoachingMessageViewAccessibility *)self _accessibilityDescendantOfType:objc_opt_class()];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits

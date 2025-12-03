@@ -1,35 +1,35 @@
 @interface AXMIDIManager
-- (AXMIDIManager)initWithIdentifier:(id)a3 eventHandler:(id)a4;
-- (id)_deviceForMidiDevice:(unsigned int)a3 addIfNeeded:(BOOL)a4;
-- (id)_nameForMidiObjectType:(int)a3;
-- (void)_addMidiDestination:(unsigned int)a3;
-- (void)_addMidiEntity:(unsigned int)a3;
-- (void)_addMidiSource:(unsigned int)a3;
-- (void)_handleIOErrorNotification:(MIDIIOErrorNotification *)a3;
-- (void)_handleObjectAddedNotification:(MIDIObjectAddRemoveNotification *)a3;
-- (void)_handleObjectRemovedNotification:(MIDIObjectAddRemoveNotification *)a3;
-- (void)_handlePropertyChangedNotification:(MIDIObjectPropertyChangeNotification *)a3;
-- (void)_handleSerialPortOwnerChangedNotification:(MIDIObjectPropertyChangeNotification *)a3;
-- (void)_handleThruConnectionsChangedNotification:(MIDIObjectPropertyChangeNotification *)a3;
-- (void)_removeMidiDestination:(unsigned int)a3;
-- (void)_removeMidiDevice:(unsigned int)a3;
-- (void)_removeMidiEntity:(unsigned int)a3;
-- (void)_removeMidiSource:(unsigned int)a3;
+- (AXMIDIManager)initWithIdentifier:(id)identifier eventHandler:(id)handler;
+- (id)_deviceForMidiDevice:(unsigned int)device addIfNeeded:(BOOL)needed;
+- (id)_nameForMidiObjectType:(int)type;
+- (void)_addMidiDestination:(unsigned int)destination;
+- (void)_addMidiEntity:(unsigned int)entity;
+- (void)_addMidiSource:(unsigned int)source;
+- (void)_handleIOErrorNotification:(MIDIIOErrorNotification *)notification;
+- (void)_handleObjectAddedNotification:(MIDIObjectAddRemoveNotification *)notification;
+- (void)_handleObjectRemovedNotification:(MIDIObjectAddRemoveNotification *)notification;
+- (void)_handlePropertyChangedNotification:(MIDIObjectPropertyChangeNotification *)notification;
+- (void)_handleSerialPortOwnerChangedNotification:(MIDIObjectPropertyChangeNotification *)notification;
+- (void)_handleThruConnectionsChangedNotification:(MIDIObjectPropertyChangeNotification *)notification;
+- (void)_removeMidiDestination:(unsigned int)destination;
+- (void)_removeMidiDevice:(unsigned int)device;
+- (void)_removeMidiEntity:(unsigned int)entity;
+- (void)_removeMidiSource:(unsigned int)source;
 - (void)_resetAndDetectDevices;
 - (void)dealloc;
-- (void)device:(id)a3 entity:(id)a4 didAddSource:(id)a5;
-- (void)device:(id)a3 entity:(id)a4 didRemoveSource:(id)a5;
+- (void)device:(id)device entity:(id)entity didAddSource:(id)source;
+- (void)device:(id)device entity:(id)entity didRemoveSource:(id)source;
 - (void)printAttachedDevices;
 @end
 
 @implementation AXMIDIManager
 
-- (AXMIDIManager)initWithIdentifier:(id)a3 eventHandler:(id)a4
+- (AXMIDIManager)initWithIdentifier:(id)identifier eventHandler:(id)handler
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!identifierCopy)
   {
 
 LABEL_9:
@@ -46,11 +46,11 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
-  v11 = [v6 stringByAppendingFormat:@"-%@", v10];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v11 = [identifierCopy stringByAppendingFormat:@"-%@", uUIDString];
 
-  [(AXMIDIManager *)v8 setEventHandler:v7];
+  [(AXMIDIManager *)v8 setEventHandler:handlerCopy];
   v12 = objc_alloc_init(AXMIDIParser);
   parser = v8->_parser;
   v8->_parser = v12;
@@ -76,8 +76,8 @@ LABEL_9:
   objc_copyWeak(&v36, &location);
   v17 = MIDIClientCreateWithBlock(v11, &v8->_midiClientRef, notifyBlock);
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [(AXMIDIManager *)v8 clientIdentifier];
-  v20 = [v18 stringWithFormat:@"Error creating MIDI client with identifier: %@", v19];
+  clientIdentifier = [(AXMIDIManager *)v8 clientIdentifier];
+  v20 = [v18 stringWithFormat:@"Error creating MIDI client with identifier: %@", clientIdentifier];
   v21 = _AXMIDIHandleErrorOSStatus(v17, 1, v20);
 
   if (v21)
@@ -97,8 +97,8 @@ LABEL_9:
     v23 = MIDIInputPortCreateWithBlock(midiClientRef, @"Input", &v8->_midiInputPortRef, &readBlock);
     v24 = MEMORY[0x1E696AEC0];
     v25 = objc_loadWeakRetained(&location);
-    v26 = [v25 clientIdentifier];
-    v27 = [v24 stringWithFormat:@"Error creating MIDI client input port with identifier: %@", v26, readBlock, v31, v32, v33];
+    clientIdentifier2 = [v25 clientIdentifier];
+    v27 = [v24 stringWithFormat:@"Error creating MIDI client input port with identifier: %@", clientIdentifier2, readBlock, v31, v32, v33];
     v28 = _AXMIDIHandleErrorOSStatus(v23, 3, v27);
 
     if (v28)
@@ -312,9 +312,9 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
   v3 = AXLogMIDI();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(AXMIDIManager *)self clientIdentifier];
+    clientIdentifier = [(AXMIDIManager *)self clientIdentifier];
     *buf = 138412290;
-    v12 = v4;
+    v12 = clientIdentifier;
     _os_log_impl(&dword_18B15E000, v3, OS_LOG_TYPE_INFO, "Will dispose of MIDI client with identifier: %@", buf, 0xCu);
   }
 
@@ -323,8 +323,8 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
   {
     v6 = MIDIClientDispose(midiClientRef);
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(AXMIDIManager *)self clientIdentifier];
-    v9 = [v7 stringWithFormat:@"Error disposing MIDI client with identifier: %@", v8];
+    clientIdentifier2 = [(AXMIDIManager *)self clientIdentifier];
+    v9 = [v7 stringWithFormat:@"Error disposing MIDI client with identifier: %@", clientIdentifier2];
     _AXMIDIHandleErrorOSStatus(v6, 2, v9);
   }
 
@@ -336,10 +336,10 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
 - (void)printAttachedDevices
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(AXMIDIManager *)self devices];
-  v3 = [v2 allObjects];
+  devices = [(AXMIDIManager *)self devices];
+  allObjects = [devices allObjects];
 
-  v4 = [v3 count];
+  v4 = [allObjects count];
   v5 = AXLogMIDI();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -368,7 +368,7 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
       v11 = AXLogMIDI();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [v3 objectAtIndex:i];
+        v12 = [allObjects objectAtIndex:i];
         *buf = 138412290;
         v14 = v12;
         _os_log_impl(&dword_18B15E000, v11, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
@@ -377,45 +377,45 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
   }
 }
 
-- (id)_nameForMidiObjectType:(int)a3
+- (id)_nameForMidiObjectType:(int)type
 {
-  if ((a3 + 1) > 0x14)
+  if ((type + 1) > 0x14)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E71EC8C0[a3 + 1];
+    return off_1E71EC8C0[type + 1];
   }
 }
 
-- (void)_handleObjectAddedNotification:(MIDIObjectAddRemoveNotification *)a3
+- (void)_handleObjectAddedNotification:(MIDIObjectAddRemoveNotification *)notification
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (notification)
   {
     v5 = AXLogMIDI();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(AXMIDIManager *)self _nameForMidiObjectType:a3->childType];
+      v6 = [(AXMIDIManager *)self _nameForMidiObjectType:notification->childType];
       v11 = 138412290;
       v12 = v6;
       _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_INFO, "MIDI Notification: add object: %@", &v11, 0xCu);
     }
 
-    childType = a3->childType;
+    childType = notification->childType;
     if (childType > kMIDIObjectType_Entity)
     {
       if (childType == kMIDIObjectType_Source)
       {
-        [(AXMIDIManager *)self _addMidiSource:a3->child];
+        [(AXMIDIManager *)self _addMidiSource:notification->child];
         return;
       }
 
       if (childType == kMIDIObjectType_Destination)
       {
-        [(AXMIDIManager *)self _addMidiDestination:a3->child];
+        [(AXMIDIManager *)self _addMidiDestination:notification->child];
         return;
       }
     }
@@ -424,13 +424,13 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
     {
       if (childType == kMIDIObjectType_Device)
       {
-        v10 = [(AXMIDIManager *)self _deviceForMidiDevice:a3->child addIfNeeded:1];
+        v10 = [(AXMIDIManager *)self _deviceForMidiDevice:notification->child addIfNeeded:1];
         return;
       }
 
       if (childType == kMIDIObjectType_Entity)
       {
-        [(AXMIDIManager *)self _addMidiEntity:a3->child];
+        [(AXMIDIManager *)self _addMidiEntity:notification->child];
         return;
       }
     }
@@ -438,7 +438,7 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
     v8 = AXLogMIDI();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(AXMIDIManager *)self _nameForMidiObjectType:a3->childType];
+      v9 = [(AXMIDIManager *)self _nameForMidiObjectType:notification->childType];
       v11 = 138412290;
       v12 = v9;
       _os_log_impl(&dword_18B15E000, v8, OS_LOG_TYPE_INFO, "Unhandled Object added: %@", &v11, 0xCu);
@@ -446,32 +446,32 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
   }
 }
 
-- (void)_handleObjectRemovedNotification:(MIDIObjectAddRemoveNotification *)a3
+- (void)_handleObjectRemovedNotification:(MIDIObjectAddRemoveNotification *)notification
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (notification)
   {
     v5 = AXLogMIDI();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(AXMIDIManager *)self _nameForMidiObjectType:a3->childType];
+      v6 = [(AXMIDIManager *)self _nameForMidiObjectType:notification->childType];
       v10 = 138412290;
       v11 = v6;
       _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_INFO, "MIDI Notification: Remove object: %@", &v10, 0xCu);
     }
 
-    childType = a3->childType;
+    childType = notification->childType;
     if (childType > kMIDIObjectType_Entity)
     {
       if (childType == kMIDIObjectType_Source)
       {
-        [(AXMIDIManager *)self _removeMidiSource:a3->child];
+        [(AXMIDIManager *)self _removeMidiSource:notification->child];
         return;
       }
 
       if (childType == kMIDIObjectType_Destination)
       {
-        [(AXMIDIManager *)self _removeMidiDestination:a3->child];
+        [(AXMIDIManager *)self _removeMidiDestination:notification->child];
         return;
       }
     }
@@ -480,13 +480,13 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
     {
       if (childType == kMIDIObjectType_Device)
       {
-        [(AXMIDIManager *)self _removeMidiDevice:a3->child];
+        [(AXMIDIManager *)self _removeMidiDevice:notification->child];
         return;
       }
 
       if (childType == kMIDIObjectType_Entity)
       {
-        [(AXMIDIManager *)self _removeMidiEntity:a3->child];
+        [(AXMIDIManager *)self _removeMidiEntity:notification->child];
         return;
       }
     }
@@ -494,7 +494,7 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
     v8 = AXLogMIDI();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(AXMIDIManager *)self _nameForMidiObjectType:a3->childType];
+      v9 = [(AXMIDIManager *)self _nameForMidiObjectType:notification->childType];
       v10 = 138412290;
       v11 = v9;
       _os_log_impl(&dword_18B15E000, v8, OS_LOG_TYPE_INFO, "Unhandled Object removed: %@", &v10, 0xCu);
@@ -502,16 +502,16 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
   }
 }
 
-- (void)_handlePropertyChangedNotification:(MIDIObjectPropertyChangeNotification *)a3
+- (void)_handlePropertyChangedNotification:(MIDIObjectPropertyChangeNotification *)notification
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (notification)
   {
     v5 = AXLogMIDI();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(AXMIDIManager *)self _nameForMidiObjectType:a3->objectType];
-      propertyName = a3->propertyName;
+      v6 = [(AXMIDIManager *)self _nameForMidiObjectType:notification->objectType];
+      propertyName = notification->propertyName;
       v8 = 138412546;
       v9 = v6;
       v10 = 2112;
@@ -521,7 +521,7 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
   }
 }
 
-- (void)_handleThruConnectionsChangedNotification:(MIDIObjectPropertyChangeNotification *)a3
+- (void)_handleThruConnectionsChangedNotification:(MIDIObjectPropertyChangeNotification *)notification
 {
   v3 = AXLogMIDI();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -531,7 +531,7 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
   }
 }
 
-- (void)_handleSerialPortOwnerChangedNotification:(MIDIObjectPropertyChangeNotification *)a3
+- (void)_handleSerialPortOwnerChangedNotification:(MIDIObjectPropertyChangeNotification *)notification
 {
   v3 = AXLogMIDI();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -541,22 +541,22 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
   }
 }
 
-- (void)_handleIOErrorNotification:(MIDIIOErrorNotification *)a3
+- (void)_handleIOErrorNotification:(MIDIIOErrorNotification *)notification
 {
-  if (a3)
+  if (notification)
   {
-    v3 = a3;
-    v5 = [(AXMIDIManager *)self _deviceForMidiDevice:a3->driverDevice addIfNeeded:0];
-    LODWORD(v3) = v3->errorCode;
+    notificationCopy = notification;
+    v5 = [(AXMIDIManager *)self _deviceForMidiDevice:notification->driverDevice addIfNeeded:0];
+    LODWORD(notificationCopy) = notificationCopy->errorCode;
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MIDI Notification: MIDI I/O error. Device: %@", v5];
-    _AXMIDIHandleErrorOSStatus(v3, 6, v4);
+    _AXMIDIHandleErrorOSStatus(notificationCopy, 6, v4);
   }
 }
 
 - (void)_resetAndDetectDevices
 {
-  v3 = [(AXMIDIManager *)self devices];
-  [v3 removeAllObjects];
+  devices = [(AXMIDIManager *)self devices];
+  [devices removeAllObjects];
 
   v4 = MIDIGetNumberOfDevices();
   if (v4)
@@ -569,10 +569,10 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
   }
 }
 
-- (void)_removeMidiDevice:(unsigned int)a3
+- (void)_removeMidiDevice:(unsigned int)device
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = [(AXMIDIManager *)self _deviceForMidiDevice:*&a3 addIfNeeded:0];
+  v4 = [(AXMIDIManager *)self _deviceForMidiDevice:*&device addIfNeeded:0];
   if (v4)
   {
     v5 = AXLogMIDI();
@@ -583,22 +583,22 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
       _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_INFO, "Removing device: %@", &v7, 0xCu);
     }
 
-    v6 = [(AXMIDIManager *)self devices];
-    [v6 removeObject:v4];
+    devices = [(AXMIDIManager *)self devices];
+    [devices removeObject:v4];
   }
 }
 
-- (id)_deviceForMidiDevice:(unsigned int)a3 addIfNeeded:(BOOL)a4
+- (id)_deviceForMidiDevice:(unsigned int)device addIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v5 = *&a3;
+  neededCopy = needed;
+  v5 = *&device;
   v24 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(AXMIDIManager *)self devices];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  devices = [(AXMIDIManager *)self devices];
+  v8 = [devices countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -609,7 +609,7 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(devices);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -621,7 +621,7 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v9 = [devices countByEnumeratingWithState:&v17 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -631,11 +631,11 @@ void __49__AXMIDIManager_initWithIdentifier_eventHandler___block_invoke_15(uint6
     }
   }
 
-  if (v4)
+  if (neededCopy)
   {
     v13 = [[AXMIDIDevice alloc] initWithMIDIDevice:v5 delegate:self];
-    v14 = [(AXMIDIManager *)self devices];
-    [v14 addObject:v13];
+    devices2 = [(AXMIDIManager *)self devices];
+    [devices2 addObject:v13];
 
     v15 = AXLogMIDI();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -658,10 +658,10 @@ LABEL_15:
   return v13;
 }
 
-- (void)_addMidiEntity:(unsigned int)a3
+- (void)_addMidiEntity:(unsigned int)entity
 {
-  v3 = *&a3;
-  v5 = AXMIDIDeviceForEntity(a3);
+  v3 = *&entity;
+  v5 = AXMIDIDeviceForEntity(entity);
   if (v5)
   {
     v7 = v5;
@@ -672,10 +672,10 @@ LABEL_15:
   }
 }
 
-- (void)_removeMidiEntity:(unsigned int)a3
+- (void)_removeMidiEntity:(unsigned int)entity
 {
-  v3 = *&a3;
-  v5 = AXMIDIDeviceForEntity(a3);
+  v3 = *&entity;
+  v5 = AXMIDIDeviceForEntity(entity);
   if (v5)
   {
     v7 = v5;
@@ -686,10 +686,10 @@ LABEL_15:
   }
 }
 
-- (void)_addMidiSource:(unsigned int)a3
+- (void)_addMidiSource:(unsigned int)source
 {
-  v3 = *&a3;
-  v5 = AXMIDIDeviceForEndpoint(a3);
+  v3 = *&source;
+  v5 = AXMIDIDeviceForEndpoint(source);
   if (v5)
   {
     v7 = v5;
@@ -700,10 +700,10 @@ LABEL_15:
   }
 }
 
-- (void)_removeMidiSource:(unsigned int)a3
+- (void)_removeMidiSource:(unsigned int)source
 {
-  v3 = *&a3;
-  v5 = AXMIDIDeviceForEndpoint(a3);
+  v3 = *&source;
+  v5 = AXMIDIDeviceForEndpoint(source);
   if (v5)
   {
     v7 = v5;
@@ -714,10 +714,10 @@ LABEL_15:
   }
 }
 
-- (void)_addMidiDestination:(unsigned int)a3
+- (void)_addMidiDestination:(unsigned int)destination
 {
-  v3 = *&a3;
-  v5 = AXMIDIDeviceForEndpoint(a3);
+  v3 = *&destination;
+  v5 = AXMIDIDeviceForEndpoint(destination);
   if (v5)
   {
     v7 = v5;
@@ -728,10 +728,10 @@ LABEL_15:
   }
 }
 
-- (void)_removeMidiDestination:(unsigned int)a3
+- (void)_removeMidiDestination:(unsigned int)destination
 {
-  v3 = *&a3;
-  v5 = AXMIDIDeviceForEndpoint(a3);
+  v3 = *&destination;
+  v5 = AXMIDIDeviceForEndpoint(destination);
   if (v5)
   {
     v7 = v5;
@@ -742,17 +742,17 @@ LABEL_15:
   }
 }
 
-- (void)device:(id)a3 entity:(id)a4 didAddSource:(id)a5
+- (void)device:(id)device entity:(id)entity didAddSource:(id)source
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = MIDIPortConnectSource(self->_midiInputPortRef, [v6 midiEndpoint], v6);
+  sourceCopy = source;
+  v7 = MIDIPortConnectSource(self->_midiInputPortRef, [sourceCopy midiEndpoint], sourceCopy);
   v8 = AXLogMIDI();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInt:v7];
     v11 = 138412546;
-    v12 = v6;
+    v12 = sourceCopy;
     v13 = 2112;
     v14 = v9;
     _os_log_impl(&dword_18B15E000, v8, OS_LOG_TYPE_INFO, "Did attempt to connect inputPort to source: %@. result: %@", &v11, 0x16u);
@@ -762,17 +762,17 @@ LABEL_15:
   _AXMIDIHandleErrorOSStatus(v7, 4, v10);
 }
 
-- (void)device:(id)a3 entity:(id)a4 didRemoveSource:(id)a5
+- (void)device:(id)device entity:(id)entity didRemoveSource:(id)source
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = MIDIPortDisconnectSource(self->_midiInputPortRef, [v6 midiEndpoint]);
+  sourceCopy = source;
+  v7 = MIDIPortDisconnectSource(self->_midiInputPortRef, [sourceCopy midiEndpoint]);
   v8 = AXLogMIDI();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInt:v7];
     v10 = 138412546;
-    v11 = v6;
+    v11 = sourceCopy;
     v12 = 2112;
     v13 = v9;
     _os_log_impl(&dword_18B15E000, v8, OS_LOG_TYPE_INFO, "Did attempt to disconnect inputPort from source: %@. result: %@", &v10, 0x16u);

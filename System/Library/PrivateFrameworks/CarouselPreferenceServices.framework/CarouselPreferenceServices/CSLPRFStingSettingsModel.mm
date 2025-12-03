@@ -2,29 +2,29 @@
 + (BOOL)IsHermes;
 + (BOOL)activePairedWatchSupportsControls;
 + (BOOL)activePairedWatchSupportsMoonstoneActions;
-+ (id)actionNameForActionType:(unint64_t)a3;
-+ (id)alternateActionNameForActionType:(unint64_t)a3;
-+ (id)sfSymbolAssetNameForActionType:(unint64_t)a3;
-- (BOOL)_lock_isLinkActionSupportedForIdentifier:(id)a3;
++ (id)actionNameForActionType:(unint64_t)type;
++ (id)alternateActionNameForActionType:(unint64_t)type;
++ (id)sfSymbolAssetNameForActionType:(unint64_t)type;
+- (BOOL)_lock_isLinkActionSupportedForIdentifier:(id)identifier;
 - (CSLPRFStingSettingsModel)init;
-- (id)_buildActionIdentifierToSupportedBundleIDsMap:(id)a3;
+- (id)_buildActionIdentifierToSupportedBundleIDsMap:(id)map;
 - (id)_buildDefaultActionTypeItems;
-- (id)_modelItemWithActionType:(unint64_t)a3;
-- (id)bundleIDsForActionType:(unint64_t)a3;
+- (id)_modelItemWithActionType:(unint64_t)type;
+- (id)bundleIDsForActionType:(unint64_t)type;
 - (id)controlItems;
 - (id)defaultQuickActionItems;
 - (id)quickActionItems;
 - (id)shortcutItems;
-- (id)startWorkoutsListForBundleID:(id)a3;
+- (id)startWorkoutsListForBundleID:(id)d;
 - (void)_lock_rebuildModels;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)rebuildModel;
-- (void)twoWaySyncSettingDidUpdate:(id)a3;
+- (void)twoWaySyncSettingDidUpdate:(id)update;
 @end
 
 @implementation CSLPRFStingSettingsModel
 
-- (void)twoWaySyncSettingDidUpdate:(id)a3
+- (void)twoWaySyncSettingDidUpdate:(id)update
 {
   v4 = cslprf_sting_settings_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -38,12 +38,12 @@
 
 - (void)_lock_rebuildModels
 {
-  v3 = [(CSLPRFStingSystemSettings *)self->_stingSystemSettings read];
+  read = [(CSLPRFStingSystemSettings *)self->_stingSystemSettings read];
   settingsData = self->_settingsData;
-  self->_settingsData = v3;
+  self->_settingsData = read;
 
-  v7 = [(CSLPRFStingSettingsModelData *)self->_settingsData actionsDictionary];
-  v5 = [(CSLPRFStingSettingsModel *)self _buildActionIdentifierToSupportedBundleIDsMap:v7];
+  actionsDictionary = [(CSLPRFStingSettingsModelData *)self->_settingsData actionsDictionary];
+  v5 = [(CSLPRFStingSettingsModel *)self _buildActionIdentifierToSupportedBundleIDsMap:actionsDictionary];
   actionIdentifierToSupportedBundleIDsMap = self->_actionIdentifierToSupportedBundleIDsMap;
   self->_actionIdentifierToSupportedBundleIDsMap = v5;
 }
@@ -56,79 +56,79 @@
   v4[3] = &unk_278745368;
   v4[4] = self;
   [(CSLPRFStingSettingsModel *)self _withLock:v4];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"CSLPRFStingSettingsModelDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"CSLPRFStingSettingsModelDidChangeNotification" object:self];
 }
 
-- (BOOL)_lock_isLinkActionSupportedForIdentifier:(id)a3
+- (BOOL)_lock_isLinkActionSupportedForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (CSLIdentifierToLinkActionType(v4) == 2)
+  identifierCopy = identifier;
+  if (CSLIdentifierToLinkActionType(identifierCopy) == 2)
   {
-    v5 = [(CSLPRFStingSettingsModelData *)self->_settingsData shortcutsDictionary];
+    shortcutsDictionary = [(CSLPRFStingSettingsModelData *)self->_settingsData shortcutsDictionary];
   }
 
-  else if (CSLIdentifierToLinkActionType(v4) == 42)
+  else if (CSLIdentifierToLinkActionType(identifierCopy) == 42)
   {
-    v5 = [(CSLPRFStingSettingsModelData *)self->_settingsData controlsDictionary];
+    shortcutsDictionary = [(CSLPRFStingSettingsModelData *)self->_settingsData controlsDictionary];
   }
 
   else
   {
-    if (CSLIdentifierToLinkActionType(v4) == 38)
+    if (CSLIdentifierToLinkActionType(identifierCopy) == 38)
     {
       [(CSLPRFStingSettingsModelData *)self->_settingsData accessibilityShortcutsArray];
     }
 
     else
     {
-      [(NSDictionary *)self->_actionIdentifierToSupportedBundleIDsMap objectForKeyedSubscript:v4];
+      [(NSDictionary *)self->_actionIdentifierToSupportedBundleIDsMap objectForKeyedSubscript:identifierCopy];
     }
-    v5 = ;
+    shortcutsDictionary = ;
   }
 
-  v6 = v5;
-  v7 = [v5 count];
+  v6 = shortcutsDictionary;
+  v7 = [shortcutsDictionary count];
 
   return v7 != 0;
 }
 
-- (id)_modelItemWithActionType:(unint64_t)a3
+- (id)_modelItemWithActionType:(unint64_t)type
 {
   v4 = [CSLPRFStingSettingsModel actionNameForActionType:?];
-  v5 = [CSLPRFStingSettingsModel sfSymbolAssetNameForActionType:a3];
-  if (a3 - 1 > 0x29)
+  v5 = [CSLPRFStingSettingsModel sfSymbolAssetNameForActionType:type];
+  if (type - 1 > 0x29)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_278744510[a3 - 1];
+    v6 = off_278744510[type - 1];
   }
 
   v7 = v6;
   v8 = [CSLPRFStingSettingsItem alloc];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v10 = [(CSLPRFStingSettingsItem *)v8 initWithIdentifier:v7 title:v4 actionType:v9 assetName:v5];
 
   return v10;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_buildActionIdentifierToSupportedBundleIDsMap:(id)a3
+- (id)_buildActionIdentifierToSupportedBundleIDsMap:(id)map
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  mapCopy = map;
   v5 = objc_alloc_init(v3);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -136,7 +136,7 @@
   v10[3] = &unk_2787449B0;
   v6 = v5;
   v11 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v10];
+  [mapCopy enumerateKeysAndObjectsUsingBlock:v10];
 
   v7 = cslprf_sting_settings_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -313,7 +313,7 @@ void __74__CSLPRFStingSettingsModel__buildActionIdentifierToSupportedBundleIDsMa
   {
     v4 = v12[5];
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v4;
     _os_log_impl(&dword_22CE92000, v3, OS_LOG_TYPE_INFO, "%{public}@: quickActionItems %@", buf, 0x16u);
@@ -467,9 +467,9 @@ void __41__CSLPRFStingSettingsModel_shortcutItems__block_invoke_2(uint64_t a1, v
   [*(*(*(a1 + 32) + 8) + 40) setObject:v8 forKeyedSubscript:v7];
 }
 
-- (id)startWorkoutsListForBundleID:(id)a3
+- (id)startWorkoutsListForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -477,14 +477,14 @@ void __41__CSLPRFStingSettingsModel_shortcutItems__block_invoke_2(uint64_t a1, v
   v16 = __Block_byref_object_dispose__2062;
   v17 = 0;
   objc_initWeak(&location, self);
-  if (v4)
+  if (dCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __57__CSLPRFStingSettingsModel_startWorkoutsListForBundleID___block_invoke;
     v7[3] = &unk_278744988;
     objc_copyWeak(&v10, &location);
-    v8 = v4;
+    v8 = dCopy;
     v9 = &v12;
     [(CSLPRFStingSettingsModel *)self _withLock:v7];
 
@@ -545,16 +545,16 @@ void __51__CSLPRFStingSettingsModel_defaultQuickActionItems__block_invoke(uint64
   *(v4 + 40) = v3;
 }
 
-- (id)bundleIDsForActionType:(unint64_t)a3
+- (id)bundleIDsForActionType:(unint64_t)type
 {
-  if (a3 - 1 > 0x29)
+  if (type - 1 > 0x29)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_278744510[a3 - 1];
+    v4 = off_278744510[type - 1];
   }
 
   v5 = v4;
@@ -608,9 +608,9 @@ void __51__CSLPRFStingSettingsModel_bundleIDsForActionType___block_invoke(uint64
     v3->_stingSystemSettings = v4;
 
     [(CSLPRFStingSystemSettings *)v3->_stingSystemSettings setDelegate:v3];
-    v6 = [(CSLPRFStingSettingsModel *)v3 _buildDefaultActionTypeItems];
+    _buildDefaultActionTypeItems = [(CSLPRFStingSettingsModel *)v3 _buildDefaultActionTypeItems];
     defaultActionTypeItems = v3->_defaultActionTypeItems;
-    v3->_defaultActionTypeItems = v6;
+    v3->_defaultActionTypeItems = _buildDefaultActionTypeItems;
 
     [(CSLPRFStingSettingsModel *)v3 rebuildModel];
   }
@@ -618,14 +618,14 @@ void __51__CSLPRFStingSettingsModel_bundleIDsForActionType___block_invoke(uint64
   return v3;
 }
 
-+ (id)alternateActionNameForActionType:(unint64_t)a3
++ (id)alternateActionNameForActionType:(unint64_t)type
 {
   v3 = 0;
-  if (a3 <= 13)
+  if (type <= 13)
   {
-    if (a3 <= 11)
+    if (type <= 11)
     {
-      if (a3 == 7)
+      if (type == 7)
       {
         v4 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CarouselPreferenceServices"];
         v5 = v4;
@@ -634,7 +634,7 @@ void __51__CSLPRFStingSettingsModel_bundleIDsForActionType___block_invoke(uint64
 
       else
       {
-        if (a3 != 8)
+        if (type != 8)
         {
           goto LABEL_19;
         }
@@ -647,7 +647,7 @@ void __51__CSLPRFStingSettingsModel_bundleIDsForActionType___block_invoke(uint64
       goto LABEL_17;
     }
 
-    if (a3 != 12)
+    if (type != 12)
     {
       v4 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CarouselPreferenceServices"];
       v5 = v4;
@@ -658,9 +658,9 @@ void __51__CSLPRFStingSettingsModel_bundleIDsForActionType___block_invoke(uint64
     goto LABEL_14;
   }
 
-  if (a3 <= 15)
+  if (type <= 15)
   {
-    if (a3 != 14)
+    if (type != 14)
     {
       v4 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CarouselPreferenceServices"];
       v5 = v4;
@@ -677,7 +677,7 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  if (a3 == 16)
+  if (type == 16)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CarouselPreferenceServices"];
     v5 = v4;
@@ -685,7 +685,7 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  if (a3 != 30)
+  if (type != 30)
   {
     goto LABEL_19;
   }
@@ -702,10 +702,10 @@ LABEL_19:
   return v3;
 }
 
-+ (id)actionNameForActionType:(unint64_t)a3
++ (id)actionNameForActionType:(unint64_t)type
 {
   v3 = 0;
-  switch(a3)
+  switch(type)
   {
     case 1uLL:
     case 0x13uLL:
@@ -807,15 +807,15 @@ LABEL_16:
   return v3;
 }
 
-+ (id)sfSymbolAssetNameForActionType:(unint64_t)a3
++ (id)sfSymbolAssetNameForActionType:(unint64_t)type
 {
-  v4 = a3 - 12;
-  v5 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v6 = [v5 getActivePairedDevice];
+  v4 = type - 12;
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
   if (v4 > 2)
   {
-    if (a3 > 0x2B)
+    if (type > 0x2B)
     {
       v9 = @"figure.run";
       goto LABEL_7;
@@ -825,12 +825,12 @@ LABEL_16:
   }
 
   v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"622B6312-95FA-4F09-9148-69E286A9C31F"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [getActivePairedDevice supportsCapability:v7];
 
   if (v8)
   {
 LABEL_5:
-    v9 = off_2787449D0[a3];
+    v9 = off_2787449D0[type];
     goto LABEL_7;
   }
 

@@ -7,7 +7,7 @@
 - (id)_IF_decodeObjectOfClass:()IconFoundationAdditions forKey:
 {
   v6 = a4;
-  v7 = [a1 decodeObjectOfClass:a3 forKey:v6];
+  v7 = [self decodeObjectOfClass:a3 forKey:v6];
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;

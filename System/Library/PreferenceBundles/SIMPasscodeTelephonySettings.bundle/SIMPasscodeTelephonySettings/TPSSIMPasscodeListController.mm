@@ -5,21 +5,21 @@
 - (TPSSIMPasscodeListController)init;
 - (TPSSubscriberTelephonyController)subscriberController;
 - (id)_popoverPresentationView;
-- (id)isSIMPasscodeProtected:(id)a3;
+- (id)isSIMPasscodeProtected:(id)protected;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_dismissChangeController;
 - (void)_dismissUnlockController;
-- (void)changePIN:(id)a3;
+- (void)changePIN:(id)n;
 - (void)dealloc;
-- (void)handleUIApplicationSuspendedNotification:(id)a3;
-- (void)handleUIApplicationWillEnterForegroundNotification:(id)a3;
-- (void)popoverControllerDidDismissPopover:(id)a3;
+- (void)handleUIApplicationSuspendedNotification:(id)notification;
+- (void)handleUIApplicationWillEnterForegroundNotification:(id)notification;
+- (void)popoverControllerDidDismissPopover:(id)popover;
 - (void)presentSIMPasscodeAlert;
-- (void)setSIMPasscodeProtected:(id)a3 specifier:(id)a4;
-- (void)setSIMStatus:(id)a3;
-- (void)subscriberController:(id)a3 SIMPasscodeLockEnabledDidChange:(BOOL)a4;
-- (void)subscriberController:(id)a3 SIMStatusDidChange:(id)a4;
+- (void)setSIMPasscodeProtected:(id)protected specifier:(id)specifier;
+- (void)setSIMStatus:(id)status;
+- (void)subscriberController:(id)controller SIMPasscodeLockEnabledDidChange:(BOOL)change;
+- (void)subscriberController:(id)controller SIMStatusDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -71,8 +71,8 @@
   if (!subscriberController)
   {
     v4 = [TPSSubscriberTelephonyController alloc];
-    v5 = [(TPSSIMPasscodeListController *)self subscriptionContext];
-    v6 = [v4 initWithSubscriptionContext:v5];
+    subscriptionContext = [(TPSSIMPasscodeListController *)self subscriptionContext];
+    v6 = [v4 initWithSubscriptionContext:subscriptionContext];
     v7 = self->_subscriberController;
     self->_subscriberController = v6;
 
@@ -114,84 +114,84 @@
   return v4;
 }
 
-- (id)isSIMPasscodeProtected:(id)a3
+- (id)isSIMPasscodeProtected:(id)protected
 {
-  v3 = [(TPSSIMPasscodeListController *)self isSIMPasscodeProtected];
+  isSIMPasscodeProtected = [(TPSSIMPasscodeListController *)self isSIMPasscodeProtected];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:isSIMPasscodeProtected];
 }
 
-- (void)setSIMPasscodeProtected:(id)a3 specifier:(id)a4
+- (void)setSIMPasscodeProtected:(id)protected specifier:(id)specifier
 {
-  v5 = a3;
+  protectedCopy = protected;
   v6 = TPSSIMPasscodeLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v32 = 138412290;
-    v33 = v5;
+    v33 = protectedCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "User requested to set passcode protection to %@", &v32, 0xCu);
   }
 
   v7 = [(TPSSIMPasscodeListController *)self setControlEnabled:0 atIndex:1];
-  if (v5)
+  if (protectedCopy)
   {
-    v8 = [(TPSSIMPasscodeListController *)self unlockPINViewController];
+    unlockPINViewController = [(TPSSIMPasscodeListController *)self unlockPINViewController];
 
-    if (!v8)
+    if (!unlockPINViewController)
     {
-      v9 = [(TPSSIMPasscodeListController *)self unlockPINViewController];
-      [v9 setDelegate:0];
+      unlockPINViewController2 = [(TPSSIMPasscodeListController *)self unlockPINViewController];
+      [unlockPINViewController2 setDelegate:0];
 
       v10 = [TPSSIMPasscodeUnlockViewController alloc];
-      v11 = [(TPSSIMPasscodeListController *)self subscriberController];
-      v12 = -[TPSSIMPasscodeUnlockViewController initWithSubscriberController:forLocking:](v10, "initWithSubscriberController:forLocking:", v11, [v5 BOOLValue]);
+      subscriberController = [(TPSSIMPasscodeListController *)self subscriberController];
+      v12 = -[TPSSIMPasscodeUnlockViewController initWithSubscriberController:forLocking:](v10, "initWithSubscriberController:forLocking:", subscriberController, [protectedCopy BOOLValue]);
       [(TPSSIMPasscodeListController *)self setUnlockPINViewController:v12];
 
-      v13 = [(TPSSIMPasscodeListController *)self unlockPINViewController];
-      [v13 setDelegate:self];
+      unlockPINViewController3 = [(TPSSIMPasscodeListController *)self unlockPINViewController];
+      [unlockPINViewController3 setDelegate:self];
 
       v14 = [TPPortraitOnlyNavigationController alloc];
-      v15 = [(TPSSIMPasscodeListController *)self unlockPINViewController];
-      v16 = [v14 initWithRootViewController:v15];
+      unlockPINViewController4 = [(TPSSIMPasscodeListController *)self unlockPINViewController];
+      v16 = [v14 initWithRootViewController:unlockPINViewController4];
       [(TPSSIMPasscodeListController *)self setUnlockPINNavigationController:v16];
 
       v17 = +[UIDevice currentDevice];
-      v18 = [v17 userInterfaceIdiom];
+      userInterfaceIdiom = [v17 userInterfaceIdiom];
 
-      v19 = [(TPSSIMPasscodeListController *)self unlockPINNavigationController];
-      v20 = v19;
-      if (v18 == &dword_0 + 1)
+      unlockPINNavigationController = [(TPSSIMPasscodeListController *)self unlockPINNavigationController];
+      unlockPINPopoverController2 = unlockPINNavigationController;
+      if (userInterfaceIdiom == &dword_0 + 1)
       {
-        [v19 setPreferredContentSize:{320.0, 480.0}];
+        [unlockPINNavigationController setPreferredContentSize:{320.0, 480.0}];
 
         v21 = [UIPopoverController alloc];
-        v22 = [(TPSSIMPasscodeListController *)self unlockPINNavigationController];
-        v23 = [v21 initWithContentViewController:v22];
+        unlockPINNavigationController2 = [(TPSSIMPasscodeListController *)self unlockPINNavigationController];
+        v23 = [v21 initWithContentViewController:unlockPINNavigationController2];
         [(TPSSIMPasscodeListController *)self setUnlockPINPopoverController:v23];
 
-        v24 = [(TPSSIMPasscodeListController *)self unlockPINPopoverController];
-        [v24 setDelegate:self];
+        unlockPINPopoverController = [(TPSSIMPasscodeListController *)self unlockPINPopoverController];
+        [unlockPINPopoverController setDelegate:self];
 
         v25 = +[UIApplication sharedApplication];
-        v26 = [v25 keyWindow];
-        [v26 frame];
+        keyWindow = [v25 keyWindow];
+        [keyWindow frame];
         v28 = v27;
         v30 = v29;
 
-        v20 = [(TPSSIMPasscodeListController *)self unlockPINPopoverController];
-        v31 = [(TPSSIMPasscodeListController *)self _popoverPresentationView];
-        [v20 presentPopoverFromRect:v31 inView:0 permittedArrowDirections:1 animated:{v28 * 0.5, v30 * 0.5, 1.0, 1.0}];
+        unlockPINPopoverController2 = [(TPSSIMPasscodeListController *)self unlockPINPopoverController];
+        _popoverPresentationView = [(TPSSIMPasscodeListController *)self _popoverPresentationView];
+        [unlockPINPopoverController2 presentPopoverFromRect:_popoverPresentationView inView:0 permittedArrowDirections:1 animated:{v28 * 0.5, v30 * 0.5, 1.0, 1.0}];
       }
 
       else
       {
-        [(TPSSIMPasscodeListController *)self presentViewController:v19 animated:1 completion:0];
+        [(TPSSIMPasscodeListController *)self presentViewController:unlockPINNavigationController animated:1 completion:0];
       }
     }
   }
 }
 
-- (void)changePIN:(id)a3
+- (void)changePIN:(id)n
 {
   v4 = TPSSIMPasscodeLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -202,57 +202,57 @@
 
   if ([(TPSSIMPasscodeListController *)self isSIMPasscodeChangeAllowed])
   {
-    v5 = [(TPSSIMPasscodeListController *)self changePINViewController];
+    changePINViewController = [(TPSSIMPasscodeListController *)self changePINViewController];
 
-    if (!v5)
+    if (!changePINViewController)
     {
-      v6 = [(TPSSIMPasscodeListController *)self changePINViewController];
-      [v6 setDelegate:0];
+      changePINViewController2 = [(TPSSIMPasscodeListController *)self changePINViewController];
+      [changePINViewController2 setDelegate:0];
 
       v7 = [TPSSIMPasscodeChangeViewController alloc];
-      v8 = [(TPSSIMPasscodeListController *)self subscriberController];
-      v9 = [(TPSSIMPasscodeChangeViewController *)v7 initWithSubscriberController:v8];
+      subscriberController = [(TPSSIMPasscodeListController *)self subscriberController];
+      v9 = [(TPSSIMPasscodeChangeViewController *)v7 initWithSubscriberController:subscriberController];
       [(TPSSIMPasscodeListController *)self setChangePINViewController:v9];
 
-      v10 = [(TPSSIMPasscodeListController *)self changePINViewController];
-      [v10 setDelegate:self];
+      changePINViewController3 = [(TPSSIMPasscodeListController *)self changePINViewController];
+      [changePINViewController3 setDelegate:self];
 
       v11 = [TPPortraitOnlyNavigationController alloc];
-      v12 = [(TPSSIMPasscodeListController *)self changePINViewController];
-      v13 = [v11 initWithRootViewController:v12];
+      changePINViewController4 = [(TPSSIMPasscodeListController *)self changePINViewController];
+      v13 = [v11 initWithRootViewController:changePINViewController4];
       [(TPSSIMPasscodeListController *)self setChangePINNavigationController:v13];
 
       v14 = +[UIDevice currentDevice];
-      v15 = [v14 userInterfaceIdiom];
+      userInterfaceIdiom = [v14 userInterfaceIdiom];
 
-      v16 = [(TPSSIMPasscodeListController *)self changePINNavigationController];
-      v17 = v16;
-      if (v15 == &dword_0 + 1)
+      changePINNavigationController = [(TPSSIMPasscodeListController *)self changePINNavigationController];
+      changePINPopoverController2 = changePINNavigationController;
+      if (userInterfaceIdiom == &dword_0 + 1)
       {
-        [v16 setPreferredContentSize:{320.0, 480.0}];
+        [changePINNavigationController setPreferredContentSize:{320.0, 480.0}];
 
         v18 = [UIPopoverController alloc];
-        v19 = [(TPSSIMPasscodeListController *)self changePINNavigationController];
-        v20 = [v18 initWithContentViewController:v19];
+        changePINNavigationController2 = [(TPSSIMPasscodeListController *)self changePINNavigationController];
+        v20 = [v18 initWithContentViewController:changePINNavigationController2];
         [(TPSSIMPasscodeListController *)self setChangePINPopoverController:v20];
 
-        v21 = [(TPSSIMPasscodeListController *)self changePINPopoverController];
-        [v21 setDelegate:self];
+        changePINPopoverController = [(TPSSIMPasscodeListController *)self changePINPopoverController];
+        [changePINPopoverController setDelegate:self];
 
         v22 = +[UIApplication sharedApplication];
-        v23 = [v22 keyWindow];
-        [v23 frame];
+        keyWindow = [v22 keyWindow];
+        [keyWindow frame];
         v25 = v24;
         v27 = v26;
 
-        v17 = [(TPSSIMPasscodeListController *)self changePINPopoverController];
-        v28 = [(TPSSIMPasscodeListController *)self _popoverPresentationView];
-        [v17 presentPopoverFromRect:v28 inView:0 permittedArrowDirections:1 animated:{v25 * 0.5, v27 * 0.5, 1.0, 1.0}];
+        changePINPopoverController2 = [(TPSSIMPasscodeListController *)self changePINPopoverController];
+        _popoverPresentationView = [(TPSSIMPasscodeListController *)self _popoverPresentationView];
+        [changePINPopoverController2 presentPopoverFromRect:_popoverPresentationView inView:0 permittedArrowDirections:1 animated:{v25 * 0.5, v27 * 0.5, 1.0, 1.0}];
       }
 
       else
       {
-        [(TPSSIMPasscodeListController *)self presentViewController:v16 animated:1 completion:0];
+        [(TPSSIMPasscodeListController *)self presentViewController:changePINNavigationController animated:1 completion:0];
       }
     }
   }
@@ -270,15 +270,15 @@
 - (void)_dismissUnlockController
 {
   [(TPSSIMPasscodeListController *)self reloadSpecifiers];
-  v3 = [(TPSSIMPasscodeListController *)self unlockPINPopoverController];
+  unlockPINPopoverController = [(TPSSIMPasscodeListController *)self unlockPINPopoverController];
 
-  if (v3)
+  if (unlockPINPopoverController)
   {
-    v4 = [(TPSSIMPasscodeListController *)self unlockPINPopoverController];
-    [v4 dismissPopoverAnimated:1];
+    unlockPINPopoverController2 = [(TPSSIMPasscodeListController *)self unlockPINPopoverController];
+    [unlockPINPopoverController2 dismissPopoverAnimated:1];
 
-    v5 = [(TPSSIMPasscodeListController *)self unlockPINPopoverController];
-    [v5 setDelegate:0];
+    unlockPINPopoverController3 = [(TPSSIMPasscodeListController *)self unlockPINPopoverController];
+    [unlockPINPopoverController3 setDelegate:0];
 
     [(TPSSIMPasscodeListController *)self setUnlockPINPopoverController:0];
   }
@@ -289,8 +289,8 @@
   }
 
   [(TPSSIMPasscodeListController *)self setUnlockPINNavigationController:0];
-  v6 = [(TPSSIMPasscodeListController *)self unlockPINViewController];
-  [v6 setDelegate:0];
+  unlockPINViewController = [(TPSSIMPasscodeListController *)self unlockPINViewController];
+  [unlockPINViewController setDelegate:0];
 
   [(TPSSIMPasscodeListController *)self setUnlockPINViewController:0];
 }
@@ -298,15 +298,15 @@
 - (void)_dismissChangeController
 {
   [(TPSSIMPasscodeListController *)self reloadSpecifiers];
-  v3 = [(TPSSIMPasscodeListController *)self changePINPopoverController];
+  changePINPopoverController = [(TPSSIMPasscodeListController *)self changePINPopoverController];
 
-  if (v3)
+  if (changePINPopoverController)
   {
-    v4 = [(TPSSIMPasscodeListController *)self changePINPopoverController];
-    [v4 dismissPopoverAnimated:1];
+    changePINPopoverController2 = [(TPSSIMPasscodeListController *)self changePINPopoverController];
+    [changePINPopoverController2 dismissPopoverAnimated:1];
 
-    v5 = [(TPSSIMPasscodeListController *)self changePINPopoverController];
-    [v5 setDelegate:0];
+    changePINPopoverController3 = [(TPSSIMPasscodeListController *)self changePINPopoverController];
+    [changePINPopoverController3 setDelegate:0];
 
     [(TPSSIMPasscodeListController *)self setChangePINPopoverController:0];
   }
@@ -317,63 +317,63 @@
   }
 
   [(TPSSIMPasscodeListController *)self setChangePINNavigationController:0];
-  v6 = [(TPSSIMPasscodeListController *)self changePINViewController];
-  [v6 setDelegate:0];
+  changePINViewController = [(TPSSIMPasscodeListController *)self changePINViewController];
+  [changePINViewController setDelegate:0];
 
   [(TPSSIMPasscodeListController *)self setChangePINViewController:0];
 }
 
 - (id)_popoverPresentationView
 {
-  v3 = [(TPSSIMPasscodeListController *)self navigationController];
-  v4 = [v3 presentingViewController];
-  v5 = [v4 view];
+  navigationController = [(TPSSIMPasscodeListController *)self navigationController];
+  presentingViewController = [navigationController presentingViewController];
+  view = [presentingViewController view];
 
-  if (!v5)
+  if (!view)
   {
-    v6 = [(TPSSIMPasscodeListController *)self navigationController];
-    v7 = [v6 parentViewController];
-    v5 = [v7 view];
+    navigationController2 = [(TPSSIMPasscodeListController *)self navigationController];
+    parentViewController = [navigationController2 parentViewController];
+    view = [parentViewController view];
   }
 
-  return v5;
+  return view;
 }
 
-- (void)popoverControllerDidDismissPopover:(id)a3
+- (void)popoverControllerDidDismissPopover:(id)popover
 {
   [(TPSSIMPasscodeListController *)self _dismissChangeController];
 
   [(TPSSIMPasscodeListController *)self _dismissUnlockController];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  viewCopy = view;
+  pathCopy = path;
+  if (pathCopy)
   {
     v16.receiver = self;
     v16.super_class = TPSSIMPasscodeListController;
-    v8 = [(TPSSIMPasscodeListController *)&v16 tableView:v6 cellForRowAtIndexPath:v7];
+    v8 = [(TPSSIMPasscodeListController *)&v16 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v8 = v8;
-      v9 = [v8 specifier];
-      v10 = [v9 identifier];
-      v11 = [v10 isEqualToString:@"SET_SIM_PIN_ID"];
+      specifier = [v8 specifier];
+      identifier = [specifier identifier];
+      v11 = [identifier isEqualToString:@"SET_SIM_PIN_ID"];
 
       if (v11)
       {
         [v8 setCellEnabled:{-[TPSSIMPasscodeListController isSIMLockAllowed](self, "isSIMLockAllowed")}];
-        v12 = [v9 propertyForKey:PSControlKey];
+        v12 = [specifier propertyForKey:PSControlKey];
         [v12 setEnabled:{-[TPSSIMPasscodeListController isSIMLockAllowed](self, "isSIMLockAllowed")}];
       }
 
       else
       {
-        v13 = [v9 identifier];
-        v14 = [v13 isEqualToString:@"CHANGE_PIN_ID"];
+        identifier2 = [specifier identifier];
+        v14 = [identifier2 isEqualToString:@"CHANGE_PIN_ID"];
 
         if (v14)
         {
@@ -394,40 +394,40 @@
 
 - (BOOL)isSIMLockAllowed
 {
-  v2 = [(TPSSIMPasscodeListController *)self subscriberController];
-  v3 = [v2 SIMStatus];
-  v4 = [v3 isEqualToString:kCTSIMSupportSIMStatusReady];
+  subscriberController = [(TPSSIMPasscodeListController *)self subscriberController];
+  sIMStatus = [subscriberController SIMStatus];
+  v4 = [sIMStatus isEqualToString:kCTSIMSupportSIMStatusReady];
 
   return v4;
 }
 
 - (BOOL)isSIMPasscodeChangeAllowed
 {
-  v3 = [(TPSSIMPasscodeListController *)self isSIMLockAllowed];
-  if (v3)
+  isSIMLockAllowed = [(TPSSIMPasscodeListController *)self isSIMLockAllowed];
+  if (isSIMLockAllowed)
   {
 
-    LOBYTE(v3) = [(TPSSIMPasscodeListController *)self isSIMPasscodeProtected];
+    LOBYTE(isSIMLockAllowed) = [(TPSSIMPasscodeListController *)self isSIMPasscodeProtected];
   }
 
-  return v3;
+  return isSIMLockAllowed;
 }
 
 - (BOOL)isSIMPasscodeProtected
 {
-  v2 = [(TPSSIMPasscodeListController *)self subscriberController];
-  v3 = [v2 isSIMPasscodeLockEnabled];
+  subscriberController = [(TPSSIMPasscodeListController *)self subscriberController];
+  isSIMPasscodeLockEnabled = [subscriberController isSIMPasscodeLockEnabled];
 
-  return v3;
+  return isSIMPasscodeLockEnabled;
 }
 
-- (void)setSIMStatus:(id)a3
+- (void)setSIMStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   SIMStatus = self->_SIMStatus;
-  if (SIMStatus != v4)
+  if (SIMStatus != statusCopy)
   {
-    v9 = v4;
+    v9 = statusCopy;
     v6 = SIMStatus;
     v7 = [(NSString *)v9 copy];
     v8 = self->_SIMStatus;
@@ -455,23 +455,23 @@
   v3 = TPSSIMPasscodeLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(TPSSIMPasscodeListController *)self subscriptionContext];
+    subscriptionContext = [(TPSSIMPasscodeListController *)self subscriptionContext];
     v6 = 138412290;
-    v7 = v4;
+    v7 = subscriptionContext;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Authentication is required in order to proceed; presenting passcode alert for subscription context %@.", &v6, 0xCu);
   }
 
-  v5 = [(TPSSIMPasscodeListController *)self subscriberController];
-  [v5 presentSIMPasscodeAlert];
+  subscriberController = [(TPSSIMPasscodeListController *)self subscriberController];
+  [subscriberController presentSIMPasscodeAlert];
 }
 
-- (void)subscriberController:(id)a3 SIMPasscodeLockEnabledDidChange:(BOOL)a4
+- (void)subscriberController:(id)controller SIMPasscodeLockEnabledDidChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   v6 = TPSSIMPasscodeLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (changeCopy)
     {
       v7 = @"enabled";
     }
@@ -481,50 +481,50 @@
       v7 = @"disabled";
     }
 
-    v8 = [(TPSSIMPasscodeListController *)self subscriptionContext];
+    subscriptionContext = [(TPSSIMPasscodeListController *)self subscriptionContext];
     v9 = 138412546;
     v10 = v7;
     v11 = 2112;
-    v12 = v8;
+    v12 = subscriptionContext;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "SIM passcode protection changed to %@ for subscription context %@.", &v9, 0x16u);
   }
 
   [(TPSSIMPasscodeListController *)self reloadSpecifiers];
 }
 
-- (void)subscriberController:(id)a3 SIMStatusDidChange:(id)a4
+- (void)subscriberController:(id)controller SIMStatusDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v6 = TPSSIMPasscodeLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(TPSSIMPasscodeListController *)self subscriptionContext];
+    subscriptionContext = [(TPSSIMPasscodeListController *)self subscriptionContext];
     v8 = 138412546;
-    v9 = v5;
+    v9 = changeCopy;
     v10 = 2112;
-    v11 = v7;
+    v11 = subscriptionContext;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "SIM status changed to %@ for subscription context %@.", &v8, 0x16u);
   }
 
-  [(TPSSIMPasscodeListController *)self setSIMStatus:v5];
+  [(TPSSIMPasscodeListController *)self setSIMStatus:changeCopy];
 }
 
-- (void)handleUIApplicationWillEnterForegroundNotification:(id)a3
+- (void)handleUIApplicationWillEnterForegroundNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = TPSSIMPasscodeLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
     v10 = objc_opt_class();
     v11 = 2112;
-    v12 = v4;
+    v12 = notificationCopy;
     v6 = v10;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@.", &v9, 0x16u);
   }
 
-  v7 = [(TPSSIMPasscodeListController *)self SIMStatus];
-  v8 = [v7 isEqualToString:kCTSIMSupportSIMStatusPINLocked];
+  sIMStatus = [(TPSSIMPasscodeListController *)self SIMStatus];
+  v8 = [sIMStatus isEqualToString:kCTSIMSupportSIMStatusPINLocked];
 
   if (v8)
   {
@@ -532,16 +532,16 @@
   }
 }
 
-- (void)handleUIApplicationSuspendedNotification:(id)a3
+- (void)handleUIApplicationSuspendedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = TPSSIMPasscodeLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
     v8 = objc_opt_class();
     v9 = 2112;
-    v10 = v4;
+    v10 = notificationCopy;
     v6 = v8;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@.", &v7, 0x16u);
   }

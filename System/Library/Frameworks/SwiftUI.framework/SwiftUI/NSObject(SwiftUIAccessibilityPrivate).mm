@@ -19,7 +19,7 @@
     return 0;
   }
 
-  return [a1 _accessibilityIsMacVisualAppearance];
+  return [self _accessibilityIsMacVisualAppearance];
 }
 
 - (uint64_t)swiftUI_accessibilityCanBeConsideredMediaAnalysisElement
@@ -29,7 +29,7 @@
     return 0;
   }
 
-  return [a1 _accessibilityCanBeConsideredMediaAnalysisElement];
+  return [self _accessibilityCanBeConsideredMediaAnalysisElement];
 }
 
 - (uint64_t)swiftUI_accessibilityIsSwiftUIHostingCellView
@@ -39,7 +39,7 @@
     return 0;
   }
 
-  return [a1 _accessibilityIsSwiftUIHostingCellView];
+  return [self _accessibilityIsSwiftUIHostingCellView];
 }
 
 - (id)swiftUI_accessibilityFindAncestor:()SwiftUIAccessibilityPrivate startWithSelf:
@@ -47,7 +47,7 @@
   v6 = a3;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [a1 _accessibilityFindAncestor:v6 startWithSelf:a4];
+    v7 = [self _accessibilityFindAncestor:v6 startWithSelf:a4];
   }
 
   else
@@ -62,60 +62,60 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel = [self accessibilityUserDefinedLabel];
   }
 
   else
   {
-    v2 = 0;
+    accessibilityUserDefinedLabel = 0;
   }
 
-  return v2;
+  return accessibilityUserDefinedLabel;
 }
 
 - (id)swiftUI_accessibilityUserDefinedValue
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 accessibilityUserDefinedValue];
+    accessibilityUserDefinedValue = [self accessibilityUserDefinedValue];
   }
 
   else
   {
-    v2 = 0;
+    accessibilityUserDefinedValue = 0;
   }
 
-  return v2;
+  return accessibilityUserDefinedValue;
 }
 
 - (id)swiftUI_accessibilityAttributedLabel
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 _internalAccessibilityAttributedLabel];
+    _internalAccessibilityAttributedLabel = [self _internalAccessibilityAttributedLabel];
   }
 
   else
   {
-    v2 = 0;
+    _internalAccessibilityAttributedLabel = 0;
   }
 
-  return v2;
+  return _internalAccessibilityAttributedLabel;
 }
 
 - (id)swiftUI_accessibilityAttributedValue
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 _internalAccessibilityAttributedValue];
+    _internalAccessibilityAttributedValue = [self _internalAccessibilityAttributedValue];
   }
 
   else
   {
-    v2 = 0;
+    _internalAccessibilityAttributedValue = 0;
   }
 
-  return v2;
+  return _internalAccessibilityAttributedValue;
 }
 
 - (uint64_t)swiftUI_accessibilityShowContextMenuForElement:()SwiftUIAccessibilityPrivate targetPointValue:
@@ -124,7 +124,7 @@
   v7 = a4;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [a1 _accessibilityShowContextMenuForElement:v6 targetPointValue:v7];
+    v8 = [self _accessibilityShowContextMenuForElement:v6 targetPointValue:v7];
   }
 
   else

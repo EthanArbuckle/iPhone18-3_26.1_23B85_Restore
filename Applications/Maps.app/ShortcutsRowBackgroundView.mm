@@ -1,5 +1,5 @@
 @interface ShortcutsRowBackgroundView
-- (ShortcutsRowBackgroundView)initWithCollectionView:(id)a3;
+- (ShortcutsRowBackgroundView)initWithCollectionView:(id)view;
 - (UICollectionView)collectionView;
 - (void)layoutSubviews;
 @end
@@ -28,7 +28,7 @@
 
   else
   {
-    v10 = [(ShortcutsRowBackgroundView *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(ShortcutsRowBackgroundView *)self effectiveUserInterfaceLayoutDirection];
     WeakRetained = objc_loadWeakRetained(&self->_collectionView);
     [WeakRetained contentOffset];
     v13 = v12;
@@ -64,7 +64,7 @@
     v30.size.width = v23;
     v30.size.height = v25;
     Height = CGRectGetHeight(v30);
-    if (v10 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       [(ShortcutsRowBackgroundView *)self bounds];
       MaxX = CGRectGetMaxX(v31);
@@ -84,19 +84,19 @@
   [(UIView *)self->_platterView setFrame:v3, y, v7, Height];
 }
 
-- (ShortcutsRowBackgroundView)initWithCollectionView:(id)a3
+- (ShortcutsRowBackgroundView)initWithCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = ShortcutsRowBackgroundView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v8 = [(ShortcutsRowBackgroundView *)&v16 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(ShortcutsRowBackgroundView *)&v16 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    objc_storeWeak(&v8->_collectionView, v4);
+    objc_storeWeak(&height->_collectionView, viewCopy);
     v10 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     platterView = v9->_platterView;
     v9->_platterView = v10;
@@ -109,8 +109,8 @@
     v9->_myPlacesFeaturesEnabled = v13;
     if (v13)
     {
-      v14 = [(UIView *)v9->_platterView layer];
-      [v14 setMaskedCorners:0];
+      layer = [(UIView *)v9->_platterView layer];
+      [layer setMaskedCorners:0];
     }
 
     [(ShortcutsRowBackgroundView *)v9 addSubview:v9->_platterView];

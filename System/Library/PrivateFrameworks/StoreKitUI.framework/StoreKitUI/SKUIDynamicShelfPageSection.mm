@@ -1,57 +1,57 @@
 @interface SKUIDynamicShelfPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SKUIDynamicShelfPageSection)initWithPageComponent:(id)a3;
-- (SKUIDynamicShelfPageSection)initWithPageComponent:(id)a3 configuration:(id)a4;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SKUIDynamicShelfPageSection)initWithPageComponent:(id)component;
+- (SKUIDynamicShelfPageSection)initWithPageComponent:(id)component configuration:(id)configuration;
 - (SKUIScrollViewDelegateObserver)scrollViewDelegateObserver;
 - (UIEdgeInsets)sectionContentInset;
-- (id)_normalizedShelfItemIndexPathFromActualIndexPath:(id)a3;
-- (id)_viewElementForEntityAtGlobalIndex:(int64_t)a3;
-- (id)backgroundColorForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)_normalizedShelfItemIndexPathFromActualIndexPath:(id)path;
+- (id)_viewElementForEntityAtGlobalIndex:(int64_t)index;
+- (id)backgroundColorForIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)relevantEntityProviders;
-- (int64_t)applyUpdateType:(int64_t)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)applyUpdateType:(int64_t)type;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_reloadViewElementProperties;
-- (void)_setContext:(id)a3;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
-- (void)collectionView:(id)a3 didConfirmButtonElement:(id)a4 withClickInfo:(id)a5 forItemAtIndexPath:(id)a6;
-- (void)collectionView:(id)a3 layout:(id)a4 willApplyLayoutAttributes:(id)a5;
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3;
+- (void)_setContext:(id)context;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
+- (void)collectionView:(id)view didConfirmButtonElement:(id)element withClickInfo:(id)info forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view layout:(id)layout willApplyLayoutAttributes:(id)attributes;
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes;
 - (void)dealloc;
-- (void)deselectItemsAnimated:(BOOL)a3;
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4;
+- (void)deselectItemsAnimated:(BOOL)animated;
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context;
 - (void)invalidateCachedLayoutInformation;
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setSectionIndex:(int64_t)a3;
-- (void)setTopSection:(BOOL)a3;
-- (void)willAppearInContext:(id)a3;
-- (void)willHideInContext:(id)a3;
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setSectionIndex:(int64_t)index;
+- (void)setTopSection:(BOOL)section;
+- (void)willAppearInContext:(id)context;
+- (void)willHideInContext:(id)context;
 @end
 
 @implementation SKUIDynamicShelfPageSection
 
-- (SKUIDynamicShelfPageSection)initWithPageComponent:(id)a3
+- (SKUIDynamicShelfPageSection)initWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDynamicShelfPageSection initWithPageComponent:];
   }
 
-  v5 = [(SKUIDynamicShelfPageSection *)self initWithPageComponent:v4 configuration:0];
+  v5 = [(SKUIDynamicShelfPageSection *)self initWithPageComponent:componentCopy configuration:0];
 
   return v5;
 }
 
-- (SKUIDynamicShelfPageSection)initWithPageComponent:(id)a3 configuration:(id)a4
+- (SKUIDynamicShelfPageSection)initWithPageComponent:(id)component configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  configurationCopy = configuration;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDynamicShelfPageSection initWithPageComponent:configuration:];
@@ -59,12 +59,12 @@
 
   v12.receiver = self;
   v12.super_class = SKUIDynamicShelfPageSection;
-  v8 = [(SKUIStorePageSection *)&v12 initWithPageComponent:v6];
+  v8 = [(SKUIStorePageSection *)&v12 initWithPageComponent:componentCopy];
   if (v8)
   {
-    if (v7)
+    if (configurationCopy)
     {
-      v9 = v7;
+      v9 = configurationCopy;
     }
 
     else
@@ -97,7 +97,7 @@
   [(SKUIStorePageSection *)&v4 dealloc];
 }
 
-- (int64_t)applyUpdateType:(int64_t)a3
+- (int64_t)applyUpdateType:(int64_t)type
 {
   [(SKUIDynamicShelfPageSection *)self _reloadViewElementProperties];
   if (![(SKUIShelfPageSectionConfiguration *)self->_configuration needsShelfCollectionViewReload])
@@ -107,30 +107,30 @@
 
   v6.receiver = self;
   v6.super_class = SKUIDynamicShelfPageSection;
-  return [(SKUIStorePageSection *)&v6 applyUpdateType:a3];
+  return [(SKUIStorePageSection *)&v6 applyUpdateType:type];
 }
 
-- (id)backgroundColorForIndexPath:(id)a3
+- (id)backgroundColorForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [(SKUIShelfPageSectionConfiguration *)self->_configuration backgroundColorForShelfViewElement:self->_dynamicShelfViewElement];
   if (!v5)
   {
     v7.receiver = self;
     v7.super_class = SKUIDynamicShelfPageSection;
-    v5 = [(SKUIStorePageSection *)&v7 backgroundColorForIndexPath:v4];
+    v5 = [(SKUIStorePageSection *)&v7 backgroundColorForIndexPath:pathCopy];
   }
 
   return v5;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
   configuration = self->_configuration;
   dynamicShelfViewElement = self->_dynamicShelfViewElement;
   dynamicPageSectionIndexMapper = self->_dynamicPageSectionIndexMapper;
-  v6 = a3;
-  [(SKUIShelfPageSectionConfiguration *)configuration cellSizeForShelfViewElement:dynamicShelfViewElement indexPath:v6 numberOfShelfItems:[(SKUIDynamicPageSectionIndexMapper *)dynamicPageSectionIndexMapper totalNumberOfEntities]];
+  pathCopy = path;
+  [(SKUIShelfPageSectionConfiguration *)configuration cellSizeForShelfViewElement:dynamicShelfViewElement indexPath:pathCopy numberOfShelfItems:[(SKUIDynamicPageSectionIndexMapper *)dynamicPageSectionIndexMapper totalNumberOfEntities]];
   v8 = v7;
   v10 = v9;
 
@@ -141,26 +141,26 @@
   return result;
 }
 
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes
 {
   v5.receiver = self;
   v5.super_class = SKUIDynamicShelfPageSection;
-  v4 = a3;
-  [(SKUIStorePageSection *)&v5 collectionViewWillApplyLayoutAttributes:v4];
-  [(SKUIShelfPageSectionConfiguration *)self->_configuration collectionViewWillApplyLayoutAttributes:v4, v5.receiver, v5.super_class];
+  attributesCopy = attributes;
+  [(SKUIStorePageSection *)&v5 collectionViewWillApplyLayoutAttributes:attributesCopy];
+  [(SKUIShelfPageSectionConfiguration *)self->_configuration collectionViewWillApplyLayoutAttributes:attributesCopy, v5.receiver, v5.super_class];
 }
 
-- (void)deselectItemsAnimated:(BOOL)a3
+- (void)deselectItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(SKUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-  v6 = [v5 indexPathsForSelectedItems];
+  existingShelfCollectionView = [(SKUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+  indexPathsForSelectedItems = [existingShelfCollectionView indexPathsForSelectedItems];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -172,14 +172,14 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
-        [v5 deselectItemAtIndexPath:*(*(&v12 + 1) + 8 * v10++) animated:v3];
+        [existingShelfCollectionView deselectItemAtIndexPath:*(*(&v12 + 1) + 8 * v10++) animated:animatedCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -187,24 +187,24 @@
 
   v11.receiver = self;
   v11.super_class = SKUIDynamicShelfPageSection;
-  [(SKUIStorePageSection *)&v11 deselectItemsAnimated:v3];
+  [(SKUIStorePageSection *)&v11 deselectItemsAnimated:animatedCopy];
 }
 
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context
 {
-  if (self->_entityProvider == a3)
+  if (self->_entityProvider == provider)
   {
     [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper reloadData];
-    v6 = [(SKUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-    [v6 reloadData];
+    existingShelfCollectionView = [(SKUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+    [existingShelfCollectionView reloadData];
   }
 }
 
 - (void)invalidateCachedLayoutInformation
 {
   [(SKUIShelfPageSectionConfiguration *)self->_configuration setNeedsShelfCollectionViewLayout:1];
-  v3 = [(SKUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-  [v3 reloadData];
+  existingShelfCollectionView = [(SKUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+  [existingShelfCollectionView reloadData];
 
   v4.receiver = self;
   v4.super_class = SKUIDynamicShelfPageSection;
@@ -215,13 +215,13 @@
 {
   v7.receiver = self;
   v7.super_class = SKUIDynamicShelfPageSection;
-  v3 = [(SKUIStorePageSection *)&v7 relevantEntityProviders];
-  v4 = v3;
+  relevantEntityProviders = [(SKUIStorePageSection *)&v7 relevantEntityProviders];
+  v4 = relevantEntityProviders;
   if (self->_entityProvider)
   {
-    if (v3)
+    if (relevantEntityProviders)
     {
-      v5 = [v3 setByAddingObject:?];
+      v5 = [relevantEntityProviders setByAddingObject:?];
 
       v4 = v5;
     }
@@ -249,27 +249,27 @@
   return result;
 }
 
-- (void)setTopSection:(BOOL)a3
+- (void)setTopSection:(BOOL)section
 {
-  v3 = a3;
+  sectionCopy = section;
   v5.receiver = self;
   v5.super_class = SKUIDynamicShelfPageSection;
   [(SKUIStorePageSection *)&v5 setTopSection:?];
-  [(SKUIShelfPageSectionConfiguration *)self->_configuration setTopSection:v3];
+  [(SKUIShelfPageSectionConfiguration *)self->_configuration setTopSection:sectionCopy];
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [(SKUIShelfPageSectionConfiguration *)self->_configuration registerReusableClassesForCollectionView:v5];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [(SKUIShelfPageSectionConfiguration *)self->_configuration registerReusableClassesForCollectionView:collectionView];
   v6 = +[SKUIItemStateCenter defaultCenter];
   [v6 addObserver:self];
 
   v7 = [SKUIViewElementTextLayoutCache alloc];
-  v8 = [v4 textLayoutCache];
-  v9 = [(SKUIViewElementTextLayoutCache *)v7 initWithLayoutCache:v8];
+  textLayoutCache = [contextCopy textLayoutCache];
+  v9 = [(SKUIViewElementTextLayoutCache *)v7 initWithLayoutCache:textLayoutCache];
   labelLayoutCache = self->_labelLayoutCache;
   self->_labelLayoutCache = v9;
 
@@ -285,33 +285,33 @@
     cellLayoutContext = self->_cellLayoutContext;
   }
 
-  v14 = [v4 clientContext];
-  [(SKUIViewElementLayoutContext *)cellLayoutContext setClientContext:v14];
+  clientContext = [contextCopy clientContext];
+  [(SKUIViewElementLayoutContext *)cellLayoutContext setClientContext:clientContext];
 
   [(SKUIViewElementLayoutContext *)self->_cellLayoutContext setContainerViewElementType:[(SKUIDynamicShelfViewElement *)self->_dynamicShelfViewElement elementType]];
   [(SKUIViewElementLayoutContext *)self->_cellLayoutContext setLabelLayoutCache:self->_labelLayoutCache];
   v15 = self->_cellLayoutContext;
-  v16 = [v4 parentViewController];
-  [(SKUIViewElementLayoutContext *)v15 setParentViewController:v16];
+  parentViewController = [contextCopy parentViewController];
+  [(SKUIViewElementLayoutContext *)v15 setParentViewController:parentViewController];
 
   v17 = self->_cellLayoutContext;
-  v18 = [v4 placeholderColor];
-  [(SKUIViewElementLayoutContext *)v17 setPlaceholderColor:v18];
+  placeholderColor = [contextCopy placeholderColor];
+  [(SKUIViewElementLayoutContext *)v17 setPlaceholderColor:placeholderColor];
 
   v19 = self->_cellLayoutContext;
-  v20 = [v4 resourceLoader];
-  [(SKUIViewElementLayoutContext *)v19 setResourceLoader:v20];
+  resourceLoader = [contextCopy resourceLoader];
+  [(SKUIViewElementLayoutContext *)v19 setResourceLoader:resourceLoader];
 
   v21 = self->_cellLayoutContext;
-  v22 = [v5 tintColor];
-  [(SKUIViewElementLayoutContext *)v21 setTintColor:v22];
+  tintColor = [collectionView tintColor];
+  [(SKUIViewElementLayoutContext *)v21 setTintColor:tintColor];
 
   [(SKUIShelfPageSectionConfiguration *)self->_configuration setCellLayoutContext:self->_cellLayoutContext];
-  v23 = [(SKUIDynamicShelfViewElement *)self->_dynamicShelfViewElement cellTemplateViewElement];
-  v24 = v23;
-  if (v23)
+  cellTemplateViewElement = [(SKUIDynamicShelfViewElement *)self->_dynamicShelfViewElement cellTemplateViewElement];
+  v24 = cellTemplateViewElement;
+  if (cellTemplateViewElement)
   {
-    v27[0] = v23;
+    v27[0] = cellTemplateViewElement;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
   }
 
@@ -324,50 +324,50 @@
   [(SKUIShelfPageSectionConfiguration *)self->_configuration setNeedsShelfCollectionViewLayout:1];
   v26.receiver = self;
   v26.super_class = SKUIDynamicShelfPageSection;
-  [(SKUIStorePageSection *)&v26 willAppearInContext:v4];
+  [(SKUIStorePageSection *)&v26 willAppearInContext:contextCopy];
 }
 
-- (void)willHideInContext:(id)a3
+- (void)willHideInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[SKUIItemStateCenter defaultCenter];
   [v5 removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = SKUIDynamicShelfPageSection;
-  [(SKUIStorePageSection *)&v6 willHideInContext:v4];
+  [(SKUIStorePageSection *)&v6 willHideInContext:contextCopy];
 }
 
-- (void)setSectionIndex:(int64_t)a3
+- (void)setSectionIndex:(int64_t)index
 {
   v5.receiver = self;
   v5.super_class = SKUIDynamicShelfPageSection;
   [(SKUIStorePageSection *)&v5 setSectionIndex:?];
-  [(SKUIShelfPageSectionConfiguration *)self->_configuration setSectionIndex:a3];
+  [(SKUIShelfPageSectionConfiguration *)self->_configuration setSectionIndex:index];
 }
 
-- (void)_setContext:(id)a3
+- (void)_setContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = SKUIDynamicShelfPageSection;
-  v4 = a3;
-  [(SKUIStorePageSection *)&v5 _setContext:v4];
-  [(SKUIShelfPageSectionConfiguration *)self->_configuration setPageSectionContext:v4, v5.receiver, v5.super_class];
+  contextCopy = context;
+  [(SKUIStorePageSection *)&v5 _setContext:contextCopy];
+  [(SKUIShelfPageSectionConfiguration *)self->_configuration setPageSectionContext:contextCopy, v5.receiver, v5.super_class];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-  v9 = [v8 indexPathsForVisibleItems];
+  requestCopy = request;
+  imageCopy = image;
+  existingShelfCollectionView = [(SKUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+  indexPathsForVisibleItems = [existingShelfCollectionView indexPathsForVisibleItems];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v9;
+  obj = indexPathsForVisibleItems;
   v10 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -384,10 +384,10 @@
         }
 
         v14 = *(*(&v18 + 1) + 8 * v13);
-        v15 = [(SKUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-        v16 = [v15 cellForItemAtIndexPath:v14];
+        existingShelfCollectionView2 = [(SKUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+        v16 = [existingShelfCollectionView2 cellForItemAtIndexPath:v14];
 
-        [v16 setImage:v7 forArtworkRequest:v6 context:self->_cellLayoutContext];
+        [v16 setImage:imageCopy forArtworkRequest:requestCopy context:self->_cellLayoutContext];
         ++v13;
       }
 
@@ -399,16 +399,16 @@
   }
 }
 
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__SKUIDynamicShelfPageSection_itemStateCenter_itemStatesChanged___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -492,136 +492,136 @@ LABEL_17:
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(SKUIDynamicShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:v5];
+  pathCopy = path;
+  v6 = [(SKUIDynamicShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:pathCopy];
   v7 = -[SKUIDynamicShelfPageSection _viewElementForEntityAtGlobalIndex:](self, "_viewElementForEntityAtGlobalIndex:", [v6 item]);
-  v8 = [(SKUIShelfPageSectionConfiguration *)self->_configuration cellForShelfItemViewElement:v7 indexPath:v5];
+  v8 = [(SKUIShelfPageSectionConfiguration *)self->_configuration cellForShelfItemViewElement:v7 indexPath:pathCopy];
 
   return v8;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   configuration = self->_configuration;
-  v5 = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper totalNumberOfEntities:a3];
+  v5 = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper totalNumberOfEntities:view];
 
   return [(SKUIShelfPageSectionConfiguration *)configuration numberOfCellsForNumberOfShelfItems:v5];
 }
 
-- (void)collectionView:(id)a3 didConfirmButtonElement:(id)a4 withClickInfo:(id)a5 forItemAtIndexPath:(id)a6
+- (void)collectionView:(id)view didConfirmButtonElement:(id)element withClickInfo:(id)info forItemAtIndexPath:(id)path
 {
-  v9 = a5;
-  v10 = a4;
-  v12 = [(SKUIDynamicShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:a6];
+  infoCopy = info;
+  elementCopy = element;
+  v12 = [(SKUIDynamicShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:path];
   v11 = [MEMORY[0x277CCAA70] indexPathForItem:objc_msgSend(v12 inSection:{"item"), -[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
-  [(SKUIStorePageSection *)self collectionViewDidConfirmButtonElement:v10 withClickInfo:v9 forItemAtIndexPath:v11];
+  [(SKUIStorePageSection *)self collectionViewDidConfirmButtonElement:elementCopy withClickInfo:infoCopy forItemAtIndexPath:v11];
 }
 
-- (void)collectionView:(id)a3 layout:(id)a4 willApplyLayoutAttributes:(id)a5
+- (void)collectionView:(id)view layout:(id)layout willApplyLayoutAttributes:(id)attributes
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v7 indexPath];
-  v12 = [(SKUIDynamicShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:v9];
+  attributesCopy = attributes;
+  viewCopy = view;
+  indexPath = [attributesCopy indexPath];
+  v12 = [(SKUIDynamicShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:indexPath];
 
-  v10 = [v12 item];
-  v11 = [(SKUIDynamicShelfPageSection *)self _viewElementForEntityAtGlobalIndex:v10];
-  [(SKUIShelfPageSectionConfiguration *)self->_configuration shelfItemsCollectionView:v8 willApplyLayoutAttributes:v7 forViewElement:v11 withItemIndex:v10];
+  item = [v12 item];
+  v11 = [(SKUIDynamicShelfPageSection *)self _viewElementForEntityAtGlobalIndex:item];
+  [(SKUIShelfPageSectionConfiguration *)self->_configuration shelfItemsCollectionView:viewCopy willApplyLayoutAttributes:attributesCopy forViewElement:v11 withItemIndex:item];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v5 = a3;
+  deceleratingCopy = decelerating;
   WeakRetained = objc_loadWeakRetained(&self->_scrollViewDelegateObserver);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained observedScrollViewDidEndDecelerating:v5];
+    [WeakRetained observedScrollViewDidEndDecelerating:deceleratingCopy];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v6 = a3;
+  scrollCopy = scroll;
   if ([(SKUIShelfPageSectionConfiguration *)self->_configuration rendersWithParallax])
   {
-    v4 = [(SKUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-    SKUICollectionViewUpdatePerspectiveCells(v4, 0);
+    existingShelfCollectionView = [(SKUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+    SKUICollectionViewUpdatePerspectiveCells(existingShelfCollectionView, 0);
   }
 
-  [(SKUIShelfPageSectionConfiguration *)self->_configuration scrollViewDidScroll:v6];
+  [(SKUIShelfPageSectionConfiguration *)self->_configuration scrollViewDidScroll:scrollCopy];
   WeakRetained = objc_loadWeakRetained(&self->_scrollViewDelegateObserver);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained observedScrollViewDidScroll:v6];
+    [WeakRetained observedScrollViewDidScroll:scrollCopy];
   }
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
-  v5 = a3;
+  deceleratingCopy = decelerating;
   WeakRetained = objc_loadWeakRetained(&self->_scrollViewDelegateObserver);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained observedScrollViewWillBeginDecelerating:v5];
+    [WeakRetained observedScrollViewWillBeginDecelerating:deceleratingCopy];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v5 = a3;
+  draggingCopy = dragging;
   WeakRetained = objc_loadWeakRetained(&self->_scrollViewDelegateObserver);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained observedScrollViewWillBeginDragging:v5];
+    [WeakRetained observedScrollViewWillBeginDragging:draggingCopy];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
   WeakRetained = objc_loadWeakRetained(&self->_scrollViewDelegateObserver);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained observedScrollViewWillEndDragging:v10 withVelocity:x targetContentOffset:{y, a5->x, a5->y}];
+    [WeakRetained observedScrollViewWillEndDragging:draggingCopy withVelocity:x targetContentOffset:{y, offset->x, offset->y}];
   }
 }
 
-- (id)_normalizedShelfItemIndexPathFromActualIndexPath:(id)a3
+- (id)_normalizedShelfItemIndexPathFromActualIndexPath:(id)path
 {
   configuration = self->_configuration;
   dynamicPageSectionIndexMapper = self->_dynamicPageSectionIndexMapper;
-  v5 = a3;
-  v6 = [(SKUIShelfPageSectionConfiguration *)configuration normalizedShelfItemIndexPathFromActualIndexPath:v5 numberOfShelfItems:[(SKUIDynamicPageSectionIndexMapper *)dynamicPageSectionIndexMapper totalNumberOfEntities]];
+  pathCopy = path;
+  v6 = [(SKUIShelfPageSectionConfiguration *)configuration normalizedShelfItemIndexPathFromActualIndexPath:pathCopy numberOfShelfItems:[(SKUIDynamicPageSectionIndexMapper *)dynamicPageSectionIndexMapper totalNumberOfEntities]];
 
   return v6;
 }
 
 - (void)_reloadViewElementProperties
 {
-  v3 = [(SKUIStorePageSection *)self pageComponent];
-  v4 = [v3 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
   dynamicShelfViewElement = self->_dynamicShelfViewElement;
-  self->_dynamicShelfViewElement = v4;
+  self->_dynamicShelfViewElement = viewElement;
 
   [(SKUIShelfPageSectionConfiguration *)self->_configuration setRendersWithPerspective:[(SKUIViewElement *)self->_dynamicShelfViewElement rendersWithPerspective]];
   [(SKUIShelfPageSectionConfiguration *)self->_configuration setRendersWithParallax:[(SKUIViewElement *)self->_dynamicShelfViewElement rendersWithParallax]];
   configuration = self->_configuration;
-  v7 = [(SKUIDynamicShelfViewElement *)self->_dynamicShelfViewElement style];
-  [(SKUIShelfPageSectionConfiguration *)configuration setShelfViewElementStyle:v7];
+  style = [(SKUIDynamicShelfViewElement *)self->_dynamicShelfViewElement style];
+  [(SKUIShelfPageSectionConfiguration *)configuration setShelfViewElementStyle:style];
 
   v8 = self->_configuration;
   v9 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:{-[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
   v10 = [(SKUIDynamicShelfPageSection *)self backgroundColorForIndexPath:v9];
   [(SKUIShelfPageSectionConfiguration *)v8 setShelfCollectionViewBackgroundColor:v10];
 
-  v11 = [(SKUIViewElement *)self->_dynamicShelfViewElement entityProvider];
+  entityProvider = [(SKUIViewElement *)self->_dynamicShelfViewElement entityProvider];
   entityProvider = self->_entityProvider;
-  obj = v11;
-  if (entityProvider != v11 && ([(SKUIEntityProviding *)entityProvider isEqual:v11]& 1) == 0)
+  obj = entityProvider;
+  if (entityProvider != entityProvider && ([(SKUIEntityProviding *)entityProvider isEqual:entityProvider]& 1) == 0)
   {
     objc_storeStrong(&self->_entityProvider, obj);
     dynamicPageSectionIndexMapper = self->_dynamicPageSectionIndexMapper;
@@ -640,14 +640,14 @@ LABEL_17:
   [(SKUIShelfPageSectionConfiguration *)self->_configuration reloadLockupTypeForShelfViewElement:self->_dynamicShelfViewElement];
 }
 
-- (id)_viewElementForEntityAtGlobalIndex:(int64_t)a3
+- (id)_viewElementForEntityAtGlobalIndex:(int64_t)index
 {
-  v4 = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper entityIndexPathForGlobalIndex:a3];
+  v4 = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper entityIndexPathForGlobalIndex:index];
   v5 = [(SKUIEntityProviding *)self->_entityProvider entityValueProviderAtIndexPath:v4];
-  v6 = [(SKUIDynamicShelfViewElement *)self->_dynamicShelfViewElement cellTemplateViewElement];
-  [v6 setEntityValueProvider:v5];
+  cellTemplateViewElement = [(SKUIDynamicShelfViewElement *)self->_dynamicShelfViewElement cellTemplateViewElement];
+  [cellTemplateViewElement setEntityValueProvider:v5];
 
-  return v6;
+  return cellTemplateViewElement;
 }
 
 - (SKUIScrollViewDelegateObserver)scrollViewDelegateObserver

@@ -2,7 +2,7 @@
 - (BSXPCServiceConnectionContext)init;
 - (NSString)endpointDescription;
 - (id)description;
-- (void)_initWithProem:(void *)a1;
+- (void)_initWithProem:(void *)proem;
 @end
 
 @implementation BSXPCServiceConnectionContext
@@ -21,7 +21,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSXPCServiceConnectionContext.m";
     v18 = 1024;
@@ -38,10 +38,10 @@
   return result;
 }
 
-- (void)_initWithProem:(void *)a1
+- (void)_initWithProem:(void *)proem
 {
   v3 = a2;
-  v8.receiver = a1;
+  v8.receiver = proem;
   v8.super_class = BSXPCServiceConnectionContext;
   v4 = objc_msgSendSuper2(&v8, sel_init);
   if (v4)
@@ -75,8 +75,8 @@
 
   v4 = MEMORY[0x1E696AEC0];
   v5 = proem;
-  v6 = [(BSXPCServiceConnectionContext *)self endpointDescription];
-  v7 = [v4 stringWithFormat:@"%@%@", v5, v6];
+  endpointDescription = [(BSXPCServiceConnectionContext *)self endpointDescription];
+  v7 = [v4 stringWithFormat:@"%@%@", v5, endpointDescription];
 
   return v7;
 }

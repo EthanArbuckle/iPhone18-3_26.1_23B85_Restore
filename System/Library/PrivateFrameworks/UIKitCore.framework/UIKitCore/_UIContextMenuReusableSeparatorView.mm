@@ -1,14 +1,14 @@
 @interface _UIContextMenuReusableSeparatorView
-- (_UIContextMenuReusableSeparatorView)initWithFrame:(CGRect)a3;
+- (_UIContextMenuReusableSeparatorView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation _UIContextMenuReusableSeparatorView
 
-- (_UIContextMenuReusableSeparatorView)initWithFrame:(CGRect)a3
+- (_UIContextMenuReusableSeparatorView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UIContextMenuReusableSeparatorView;
-  v3 = [(UICollectionReusableView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionReusableView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

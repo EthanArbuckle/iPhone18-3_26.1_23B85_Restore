@@ -26,8 +26,8 @@
 
 - (NSURL)cachesPath
 {
-  v2 = [(BSSystemContainerForCurrentProcessPathProvider *)self libraryPath];
-  v3 = [v2 URLByAppendingPathComponent:@"Caches"];
+  libraryPath = [(BSSystemContainerForCurrentProcessPathProvider *)self libraryPath];
+  v3 = [libraryPath URLByAppendingPathComponent:@"Caches"];
 
   return v3;
 }

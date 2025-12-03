@@ -1,33 +1,33 @@
 @interface RMSNowPlayingInfoMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCanSkipNext:(BOOL)a3;
-- (void)setHasCanSkipPrevious:(BOOL)a3;
-- (void)setHasCanWishlist:(BOOL)a3;
-- (void)setHasHasChapterData:(BOOL)a3;
-- (void)setHasItemID:(BOOL)a3;
-- (void)setHasLikeable:(BOOL)a3;
-- (void)setHasLikedState:(BOOL)a3;
-- (void)setHasMediaKind:(BOOL)a3;
-- (void)setHasPlaybackState:(BOOL)a3;
-- (void)setHasRevisionNumber:(BOOL)a3;
-- (void)setHasScrubbableState:(BOOL)a3;
-- (void)setHasTimeRemaining:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTotalDuration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCanSkipNext:(BOOL)next;
+- (void)setHasCanSkipPrevious:(BOOL)previous;
+- (void)setHasCanWishlist:(BOOL)wishlist;
+- (void)setHasHasChapterData:(BOOL)data;
+- (void)setHasItemID:(BOOL)d;
+- (void)setHasLikeable:(BOOL)likeable;
+- (void)setHasLikedState:(BOOL)state;
+- (void)setHasMediaKind:(BOOL)kind;
+- (void)setHasPlaybackState:(BOOL)state;
+- (void)setHasRevisionNumber:(BOOL)number;
+- (void)setHasScrubbableState:(BOOL)state;
+- (void)setHasTimeRemaining:(BOOL)remaining;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTotalDuration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RMSNowPlayingInfoMessage
 
-- (void)setHasItemID:(BOOL)a3
+- (void)setHasItemID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 8;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasTimeRemaining:(BOOL)a3
+- (void)setHasTimeRemaining:(BOOL)remaining
 {
-  if (a3)
+  if (remaining)
   {
     v3 = 4;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasTotalDuration:(BOOL)a3
+- (void)setHasTotalDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 16;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRevisionNumber:(BOOL)a3
+- (void)setHasRevisionNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 256;
   }
@@ -100,9 +100,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasMediaKind:(BOOL)a3
+- (void)setHasMediaKind:(BOOL)kind
 {
-  if (a3)
+  if (kind)
   {
     v3 = 64;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasPlaybackState:(BOOL)a3
+- (void)setHasPlaybackState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 128;
   }
@@ -130,9 +130,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasLikedState:(BOOL)a3
+- (void)setHasLikedState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 32;
   }
@@ -145,9 +145,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasScrubbableState:(BOOL)a3
+- (void)setHasScrubbableState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 512;
   }
@@ -160,9 +160,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasCanSkipNext:(BOOL)a3
+- (void)setHasCanSkipNext:(BOOL)next
 {
-  if (a3)
+  if (next)
   {
     v3 = 1024;
   }
@@ -175,9 +175,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasCanSkipPrevious:(BOOL)a3
+- (void)setHasCanSkipPrevious:(BOOL)previous
 {
-  if (a3)
+  if (previous)
   {
     v3 = 2048;
   }
@@ -190,9 +190,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasLikeable:(BOOL)a3
+- (void)setHasLikeable:(BOOL)likeable
 {
-  if (a3)
+  if (likeable)
   {
     v3 = 0x4000;
   }
@@ -205,9 +205,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasCanWishlist:(BOOL)a3
+- (void)setHasCanWishlist:(BOOL)wishlist
 {
-  if (a3)
+  if (wishlist)
   {
     v3 = 4096;
   }
@@ -220,9 +220,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasHasChapterData:(BOOL)a3
+- (void)setHasHasChapterData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 0x2000;
   }
@@ -241,20 +241,20 @@
   v8.receiver = self;
   v8.super_class = RMSNowPlayingInfoMessage;
   v4 = [(RMSNowPlayingInfoMessage *)&v8 description];
-  v5 = [(RMSNowPlayingInfoMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(RMSNowPlayingInfoMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_itemID];
-    [v3 setObject:v5 forKey:@"itemID"];
+    [dictionary setObject:v5 forKey:@"itemID"];
 
     has = self->_has;
   }
@@ -262,32 +262,32 @@
   if (has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_databaseID];
-    [v3 setObject:v6 forKey:@"databaseID"];
+    [dictionary setObject:v6 forKey:@"databaseID"];
   }
 
   trackName = self->_trackName;
   if (trackName)
   {
-    [v3 setObject:trackName forKey:@"trackName"];
+    [dictionary setObject:trackName forKey:@"trackName"];
   }
 
   artistName = self->_artistName;
   if (artistName)
   {
-    [v3 setObject:artistName forKey:@"artistName"];
+    [dictionary setObject:artistName forKey:@"artistName"];
   }
 
   albumName = self->_albumName;
   if (albumName)
   {
-    [v3 setObject:albumName forKey:@"albumName"];
+    [dictionary setObject:albumName forKey:@"albumName"];
   }
 
   v10 = self->_has;
   if ((v10 & 8) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timestamp];
-    [v3 setObject:v13 forKey:@"timestamp"];
+    [dictionary setObject:v13 forKey:@"timestamp"];
 
     v10 = self->_has;
     if ((v10 & 4) == 0)
@@ -308,7 +308,7 @@ LABEL_13:
   }
 
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeRemaining];
-  [v3 setObject:v14 forKey:@"timeRemaining"];
+  [dictionary setObject:v14 forKey:@"timeRemaining"];
 
   v10 = self->_has;
   if ((v10 & 0x10) == 0)
@@ -324,7 +324,7 @@ LABEL_14:
 
 LABEL_30:
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalDuration];
-  [v3 setObject:v15 forKey:@"totalDuration"];
+  [dictionary setObject:v15 forKey:@"totalDuration"];
 
   v10 = self->_has;
   if ((v10 & 0x100) == 0)
@@ -340,7 +340,7 @@ LABEL_15:
 
 LABEL_31:
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_revisionNumber];
-  [v3 setObject:v16 forKey:@"revisionNumber"];
+  [dictionary setObject:v16 forKey:@"revisionNumber"];
 
   v10 = self->_has;
   if ((v10 & 0x40) == 0)
@@ -356,7 +356,7 @@ LABEL_16:
 
 LABEL_32:
   v17 = [MEMORY[0x277CCABB0] numberWithInt:self->_mediaKind];
-  [v3 setObject:v17 forKey:@"mediaKind"];
+  [dictionary setObject:v17 forKey:@"mediaKind"];
 
   v10 = self->_has;
   if ((v10 & 0x80) == 0)
@@ -372,7 +372,7 @@ LABEL_17:
 
 LABEL_33:
   v18 = [MEMORY[0x277CCABB0] numberWithInt:self->_playbackState];
-  [v3 setObject:v18 forKey:@"playbackState"];
+  [dictionary setObject:v18 forKey:@"playbackState"];
 
   v10 = self->_has;
   if ((v10 & 0x20) == 0)
@@ -388,7 +388,7 @@ LABEL_18:
 
 LABEL_34:
   v19 = [MEMORY[0x277CCABB0] numberWithInt:self->_likedState];
-  [v3 setObject:v19 forKey:@"likedState"];
+  [dictionary setObject:v19 forKey:@"likedState"];
 
   v10 = self->_has;
   if ((v10 & 0x200) == 0)
@@ -404,7 +404,7 @@ LABEL_19:
 
 LABEL_35:
   v20 = [MEMORY[0x277CCABB0] numberWithInt:self->_scrubbableState];
-  [v3 setObject:v20 forKey:@"scrubbableState"];
+  [dictionary setObject:v20 forKey:@"scrubbableState"];
 
   v10 = self->_has;
   if ((v10 & 0x400) == 0)
@@ -420,7 +420,7 @@ LABEL_20:
 
 LABEL_36:
   v21 = [MEMORY[0x277CCABB0] numberWithBool:self->_canSkipNext];
-  [v3 setObject:v21 forKey:@"canSkipNext"];
+  [dictionary setObject:v21 forKey:@"canSkipNext"];
 
   v10 = self->_has;
   if ((v10 & 0x800) == 0)
@@ -436,7 +436,7 @@ LABEL_21:
 
 LABEL_37:
   v22 = [MEMORY[0x277CCABB0] numberWithBool:self->_canSkipPrevious];
-  [v3 setObject:v22 forKey:@"canSkipPrevious"];
+  [dictionary setObject:v22 forKey:@"canSkipPrevious"];
 
   v10 = self->_has;
   if ((v10 & 0x4000) == 0)
@@ -452,7 +452,7 @@ LABEL_22:
 
 LABEL_38:
   v23 = [MEMORY[0x277CCABB0] numberWithBool:self->_likeable];
-  [v3 setObject:v23 forKey:@"likeable"];
+  [dictionary setObject:v23 forKey:@"likeable"];
 
   v10 = self->_has;
   if ((v10 & 0x1000) == 0)
@@ -468,23 +468,23 @@ LABEL_23:
 
 LABEL_39:
   v24 = [MEMORY[0x277CCABB0] numberWithBool:self->_canWishlist];
-  [v3 setObject:v24 forKey:@"canWishlist"];
+  [dictionary setObject:v24 forKey:@"canWishlist"];
 
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_24:
     v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_hasChapterData];
-    [v3 setObject:v11 forKey:@"hasChapterData"];
+    [dictionary setObject:v11 forKey:@"hasChapterData"];
   }
 
 LABEL_25:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -684,47 +684,47 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_itemID;
-    *(v4 + 52) |= 2u;
+    toCopy[2] = self->_itemID;
+    *(toCopy + 52) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[1] = self->_databaseID;
-    *(v4 + 52) |= 1u;
+    toCopy[1] = self->_databaseID;
+    *(toCopy + 52) |= 1u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_trackName)
   {
-    [v4 setTrackName:?];
-    v4 = v7;
+    [toCopy setTrackName:?];
+    toCopy = v7;
   }
 
   if (self->_artistName)
   {
     [v7 setArtistName:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_albumName)
   {
     [v7 setAlbumName:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
-    v4[4] = *&self->_timestamp;
-    *(v4 + 52) |= 8u;
+    toCopy[4] = *&self->_timestamp;
+    *(toCopy + 52) |= 8u;
     v6 = self->_has;
     if ((v6 & 4) == 0)
     {
@@ -743,8 +743,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v4[3] = *&self->_timeRemaining;
-  *(v4 + 52) |= 4u;
+  toCopy[3] = *&self->_timeRemaining;
+  *(toCopy + 52) |= 4u;
   v6 = self->_has;
   if ((v6 & 0x10) == 0)
   {
@@ -758,8 +758,8 @@ LABEL_14:
   }
 
 LABEL_30:
-  v4[5] = *&self->_totalDuration;
-  *(v4 + 52) |= 0x10u;
+  toCopy[5] = *&self->_totalDuration;
+  *(toCopy + 52) |= 0x10u;
   v6 = self->_has;
   if ((v6 & 0x100) == 0)
   {
@@ -773,8 +773,8 @@ LABEL_15:
   }
 
 LABEL_31:
-  *(v4 + 19) = self->_revisionNumber;
-  *(v4 + 52) |= 0x100u;
+  *(toCopy + 19) = self->_revisionNumber;
+  *(toCopy + 52) |= 0x100u;
   v6 = self->_has;
   if ((v6 & 0x40) == 0)
   {
@@ -788,8 +788,8 @@ LABEL_16:
   }
 
 LABEL_32:
-  *(v4 + 17) = self->_mediaKind;
-  *(v4 + 52) |= 0x40u;
+  *(toCopy + 17) = self->_mediaKind;
+  *(toCopy + 52) |= 0x40u;
   v6 = self->_has;
   if ((v6 & 0x80) == 0)
   {
@@ -803,8 +803,8 @@ LABEL_17:
   }
 
 LABEL_33:
-  *(v4 + 18) = self->_playbackState;
-  *(v4 + 52) |= 0x80u;
+  *(toCopy + 18) = self->_playbackState;
+  *(toCopy + 52) |= 0x80u;
   v6 = self->_has;
   if ((v6 & 0x20) == 0)
   {
@@ -818,8 +818,8 @@ LABEL_18:
   }
 
 LABEL_34:
-  *(v4 + 16) = self->_likedState;
-  *(v4 + 52) |= 0x20u;
+  *(toCopy + 16) = self->_likedState;
+  *(toCopy + 52) |= 0x20u;
   v6 = self->_has;
   if ((v6 & 0x200) == 0)
   {
@@ -833,8 +833,8 @@ LABEL_19:
   }
 
 LABEL_35:
-  *(v4 + 20) = self->_scrubbableState;
-  *(v4 + 52) |= 0x200u;
+  *(toCopy + 20) = self->_scrubbableState;
+  *(toCopy + 52) |= 0x200u;
   v6 = self->_has;
   if ((v6 & 0x400) == 0)
   {
@@ -848,8 +848,8 @@ LABEL_20:
   }
 
 LABEL_36:
-  *(v4 + 96) = self->_canSkipNext;
-  *(v4 + 52) |= 0x400u;
+  *(toCopy + 96) = self->_canSkipNext;
+  *(toCopy + 52) |= 0x400u;
   v6 = self->_has;
   if ((v6 & 0x800) == 0)
   {
@@ -863,8 +863,8 @@ LABEL_21:
   }
 
 LABEL_37:
-  *(v4 + 97) = self->_canSkipPrevious;
-  *(v4 + 52) |= 0x800u;
+  *(toCopy + 97) = self->_canSkipPrevious;
+  *(toCopy + 52) |= 0x800u;
   v6 = self->_has;
   if ((v6 & 0x4000) == 0)
   {
@@ -878,8 +878,8 @@ LABEL_22:
   }
 
 LABEL_38:
-  *(v4 + 100) = self->_likeable;
-  *(v4 + 52) |= 0x4000u;
+  *(toCopy + 100) = self->_likeable;
+  *(toCopy + 52) |= 0x4000u;
   v6 = self->_has;
   if ((v6 & 0x1000) == 0)
   {
@@ -893,21 +893,21 @@ LABEL_23:
   }
 
 LABEL_39:
-  *(v4 + 98) = self->_canWishlist;
-  *(v4 + 52) |= 0x1000u;
+  *(toCopy + 98) = self->_canWishlist;
+  *(toCopy + 52) |= 0x1000u;
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_24:
-    *(v4 + 99) = self->_hasChapterData;
-    *(v4 + 52) |= 0x2000u;
+    *(toCopy + 99) = self->_hasChapterData;
+    *(toCopy + 52) |= 0x2000u;
   }
 
 LABEL_25:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -923,15 +923,15 @@ LABEL_25:
     *(v5 + 104) |= 1u;
   }
 
-  v8 = [(NSString *)self->_trackName copyWithZone:a3];
+  v8 = [(NSString *)self->_trackName copyWithZone:zone];
   v9 = *(v6 + 88);
   *(v6 + 88) = v8;
 
-  v10 = [(NSString *)self->_artistName copyWithZone:a3];
+  v10 = [(NSString *)self->_artistName copyWithZone:zone];
   v11 = *(v6 + 56);
   *(v6 + 56) = v10;
 
-  v12 = [(NSString *)self->_albumName copyWithZone:a3];
+  v12 = [(NSString *)self->_albumName copyWithZone:zone];
   v13 = *(v6 + 48);
   *(v6 + 48) = v12;
 
@@ -1120,19 +1120,19 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_97;
   }
 
   has = self->_has;
-  v6 = *(v4 + 52);
+  v6 = *(equalCopy + 52);
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_itemID != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_itemID != *(equalCopy + 2))
     {
       goto LABEL_97;
     }
@@ -1145,7 +1145,7 @@ LABEL_18:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_databaseID != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_databaseID != *(equalCopy + 1))
     {
       goto LABEL_97;
     }
@@ -1157,13 +1157,13 @@ LABEL_18:
   }
 
   trackName = self->_trackName;
-  if (trackName | *(v4 + 11) && ![(NSString *)trackName isEqual:?])
+  if (trackName | *(equalCopy + 11) && ![(NSString *)trackName isEqual:?])
   {
     goto LABEL_97;
   }
 
   artistName = self->_artistName;
-  if (artistName | *(v4 + 7))
+  if (artistName | *(equalCopy + 7))
   {
     if (![(NSString *)artistName isEqual:?])
     {
@@ -1172,7 +1172,7 @@ LABEL_18:
   }
 
   albumName = self->_albumName;
-  if (albumName | *(v4 + 6))
+  if (albumName | *(equalCopy + 6))
   {
     if (![(NSString *)albumName isEqual:?])
     {
@@ -1181,10 +1181,10 @@ LABEL_18:
   }
 
   v10 = self->_has;
-  v11 = *(v4 + 52);
+  v11 = *(equalCopy + 52);
   if ((v10 & 8) != 0)
   {
-    if ((v11 & 8) == 0 || self->_timestamp != *(v4 + 4))
+    if ((v11 & 8) == 0 || self->_timestamp != *(equalCopy + 4))
     {
       goto LABEL_97;
     }
@@ -1197,7 +1197,7 @@ LABEL_18:
 
   if ((v10 & 4) != 0)
   {
-    if ((v11 & 4) == 0 || self->_timeRemaining != *(v4 + 3))
+    if ((v11 & 4) == 0 || self->_timeRemaining != *(equalCopy + 3))
     {
       goto LABEL_97;
     }
@@ -1210,7 +1210,7 @@ LABEL_18:
 
   if ((v10 & 0x10) != 0)
   {
-    if ((v11 & 0x10) == 0 || self->_totalDuration != *(v4 + 5))
+    if ((v11 & 0x10) == 0 || self->_totalDuration != *(equalCopy + 5))
     {
       goto LABEL_97;
     }
@@ -1223,20 +1223,20 @@ LABEL_18:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 52) & 0x100) == 0 || self->_revisionNumber != *(v4 + 19))
+    if ((*(equalCopy + 52) & 0x100) == 0 || self->_revisionNumber != *(equalCopy + 19))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 52) & 0x100) != 0)
+  else if ((*(equalCopy + 52) & 0x100) != 0)
   {
     goto LABEL_97;
   }
 
   if ((v10 & 0x40) != 0)
   {
-    if ((v11 & 0x40) == 0 || self->_mediaKind != *(v4 + 17))
+    if ((v11 & 0x40) == 0 || self->_mediaKind != *(equalCopy + 17))
     {
       goto LABEL_97;
     }
@@ -1249,7 +1249,7 @@ LABEL_18:
 
   if ((v10 & 0x80) != 0)
   {
-    if ((v11 & 0x80) == 0 || self->_playbackState != *(v4 + 18))
+    if ((v11 & 0x80) == 0 || self->_playbackState != *(equalCopy + 18))
     {
       goto LABEL_97;
     }
@@ -1262,7 +1262,7 @@ LABEL_18:
 
   if ((v10 & 0x20) != 0)
   {
-    if ((v11 & 0x20) == 0 || self->_likedState != *(v4 + 16))
+    if ((v11 & 0x20) == 0 || self->_likedState != *(equalCopy + 16))
     {
       goto LABEL_97;
     }
@@ -1275,134 +1275,134 @@ LABEL_18:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 52) & 0x200) == 0 || self->_scrubbableState != *(v4 + 20))
+    if ((*(equalCopy + 52) & 0x200) == 0 || self->_scrubbableState != *(equalCopy + 20))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 52) & 0x200) != 0)
+  else if ((*(equalCopy + 52) & 0x200) != 0)
   {
     goto LABEL_97;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 52) & 0x400) == 0)
+    if ((*(equalCopy + 52) & 0x400) == 0)
     {
       goto LABEL_97;
     }
 
     if (self->_canSkipNext)
     {
-      if ((*(v4 + 96) & 1) == 0)
+      if ((*(equalCopy + 96) & 1) == 0)
       {
         goto LABEL_97;
       }
     }
 
-    else if (*(v4 + 96))
+    else if (*(equalCopy + 96))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 52) & 0x400) != 0)
+  else if ((*(equalCopy + 52) & 0x400) != 0)
   {
     goto LABEL_97;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 52) & 0x800) == 0)
+    if ((*(equalCopy + 52) & 0x800) == 0)
     {
       goto LABEL_97;
     }
 
     if (self->_canSkipPrevious)
     {
-      if ((*(v4 + 97) & 1) == 0)
+      if ((*(equalCopy + 97) & 1) == 0)
       {
         goto LABEL_97;
       }
     }
 
-    else if (*(v4 + 97))
+    else if (*(equalCopy + 97))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 52) & 0x800) != 0)
+  else if ((*(equalCopy + 52) & 0x800) != 0)
   {
     goto LABEL_97;
   }
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 52) & 0x4000) == 0)
+    if ((*(equalCopy + 52) & 0x4000) == 0)
     {
       goto LABEL_97;
     }
 
     if (self->_likeable)
     {
-      if ((*(v4 + 100) & 1) == 0)
+      if ((*(equalCopy + 100) & 1) == 0)
       {
         goto LABEL_97;
       }
     }
 
-    else if (*(v4 + 100))
+    else if (*(equalCopy + 100))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 52) & 0x4000) != 0)
+  else if ((*(equalCopy + 52) & 0x4000) != 0)
   {
     goto LABEL_97;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 52) & 0x1000) == 0)
+    if ((*(equalCopy + 52) & 0x1000) == 0)
     {
       goto LABEL_97;
     }
 
     if (self->_canWishlist)
     {
-      if ((*(v4 + 98) & 1) == 0)
+      if ((*(equalCopy + 98) & 1) == 0)
       {
         goto LABEL_97;
       }
     }
 
-    else if (*(v4 + 98))
+    else if (*(equalCopy + 98))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 52) & 0x1000) != 0)
+  else if ((*(equalCopy + 52) & 0x1000) != 0)
   {
     goto LABEL_97;
   }
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 52) & 0x2000) != 0)
+    if ((*(equalCopy + 52) & 0x2000) != 0)
     {
       if (self->_hasChapterData)
       {
-        if (*(v4 + 99))
+        if (*(equalCopy + 99))
         {
           goto LABEL_99;
         }
       }
 
-      else if (!*(v4 + 99))
+      else if (!*(equalCopy + 99))
       {
 LABEL_99:
         v12 = 1;
@@ -1687,48 +1687,48 @@ LABEL_40:
   return v5 ^ v4 ^ v6 ^ v7 ^ v8 ^ v12 ^ v16 ^ v20 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29 ^ v30 ^ v31 ^ v32 ^ v33;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 52);
+  fromCopy = from;
+  v5 = *(fromCopy + 52);
   if ((v5 & 2) != 0)
   {
-    self->_itemID = *(v4 + 2);
+    self->_itemID = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
   }
 
   if (v5)
   {
-    self->_databaseID = *(v4 + 1);
+    self->_databaseID = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  v7 = v4;
-  if (*(v4 + 11))
+  v7 = fromCopy;
+  if (*(fromCopy + 11))
   {
     [(RMSNowPlayingInfoMessage *)self setTrackName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(RMSNowPlayingInfoMessage *)self setArtistName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(RMSNowPlayingInfoMessage *)self setAlbumName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 8) != 0)
   {
-    self->_timestamp = *(v4 + 4);
+    self->_timestamp = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v6 = *(v4 + 52);
+    v6 = *(fromCopy + 52);
     if ((v6 & 4) == 0)
     {
 LABEL_13:
@@ -1746,9 +1746,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  self->_timeRemaining = *(v4 + 3);
+  self->_timeRemaining = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x10) == 0)
   {
 LABEL_14:
@@ -1761,9 +1761,9 @@ LABEL_14:
   }
 
 LABEL_30:
-  self->_totalDuration = *(v4 + 5);
+  self->_totalDuration = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x100) == 0)
   {
 LABEL_15:
@@ -1776,9 +1776,9 @@ LABEL_15:
   }
 
 LABEL_31:
-  self->_revisionNumber = *(v4 + 19);
+  self->_revisionNumber = *(fromCopy + 19);
   *&self->_has |= 0x100u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x40) == 0)
   {
 LABEL_16:
@@ -1791,9 +1791,9 @@ LABEL_16:
   }
 
 LABEL_32:
-  self->_mediaKind = *(v4 + 17);
+  self->_mediaKind = *(fromCopy + 17);
   *&self->_has |= 0x40u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x80) == 0)
   {
 LABEL_17:
@@ -1806,9 +1806,9 @@ LABEL_17:
   }
 
 LABEL_33:
-  self->_playbackState = *(v4 + 18);
+  self->_playbackState = *(fromCopy + 18);
   *&self->_has |= 0x80u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x20) == 0)
   {
 LABEL_18:
@@ -1821,9 +1821,9 @@ LABEL_18:
   }
 
 LABEL_34:
-  self->_likedState = *(v4 + 16);
+  self->_likedState = *(fromCopy + 16);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x200) == 0)
   {
 LABEL_19:
@@ -1836,9 +1836,9 @@ LABEL_19:
   }
 
 LABEL_35:
-  self->_scrubbableState = *(v4 + 20);
+  self->_scrubbableState = *(fromCopy + 20);
   *&self->_has |= 0x200u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x400) == 0)
   {
 LABEL_20:
@@ -1851,9 +1851,9 @@ LABEL_20:
   }
 
 LABEL_36:
-  self->_canSkipNext = *(v4 + 96);
+  self->_canSkipNext = *(fromCopy + 96);
   *&self->_has |= 0x400u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x800) == 0)
   {
 LABEL_21:
@@ -1866,9 +1866,9 @@ LABEL_21:
   }
 
 LABEL_37:
-  self->_canSkipPrevious = *(v4 + 97);
+  self->_canSkipPrevious = *(fromCopy + 97);
   *&self->_has |= 0x800u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x4000) == 0)
   {
 LABEL_22:
@@ -1881,9 +1881,9 @@ LABEL_22:
   }
 
 LABEL_38:
-  self->_likeable = *(v4 + 100);
+  self->_likeable = *(fromCopy + 100);
   *&self->_has |= 0x4000u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x1000) == 0)
   {
 LABEL_23:
@@ -1896,12 +1896,12 @@ LABEL_23:
   }
 
 LABEL_39:
-  self->_canWishlist = *(v4 + 98);
+  self->_canWishlist = *(fromCopy + 98);
   *&self->_has |= 0x1000u;
-  if ((*(v4 + 52) & 0x2000) != 0)
+  if ((*(fromCopy + 52) & 0x2000) != 0)
   {
 LABEL_24:
-    self->_hasChapterData = *(v4 + 99);
+    self->_hasChapterData = *(fromCopy + 99);
     *&self->_has |= 0x2000u;
   }
 

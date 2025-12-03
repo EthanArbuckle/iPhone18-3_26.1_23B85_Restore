@@ -1,16 +1,16 @@
 @interface DOMNodeAccessibility
-- (void)handleKeyWebEvent:(id)a3;
+- (void)handleKeyWebEvent:(id)event;
 @end
 
 @implementation DOMNodeAccessibility
 
-- (void)handleKeyWebEvent:(id)a3
+- (void)handleKeyWebEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = DOMNodeAccessibility;
-  v3 = a3;
-  [(DOMNodeAccessibility *)&v4 handleKeyWebEvent:v3];
-  sendNotificationAfterHandlingWebKeyEventIfNeeded(v3);
+  eventCopy = event;
+  [(DOMNodeAccessibility *)&v4 handleKeyWebEvent:eventCopy];
+  sendNotificationAfterHandlingWebKeyEventIfNeeded(eventCopy);
 }
 
 @end

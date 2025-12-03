@@ -1,21 +1,21 @@
 @interface IMInfoHUD
 - (CGRect)anchorRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UILabel)textLabel;
 - (id)_backgroundView;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation IMInfoHUD
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (self->_textLabel == a6)
+  if (self->_textLabel == context)
   {
 
-    [(IMInfoHUD *)self setNeedsLayout:a3];
+    [(IMInfoHUD *)self setNeedsLayout:path];
   }
 
   else
@@ -24,7 +24,7 @@
     v10 = v7;
     v8.receiver = self;
     v8.super_class = IMInfoHUD;
-    [(IMInfoHUD *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(IMInfoHUD *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -36,9 +36,9 @@
   [(IMInfoHUD *)&v3 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(IMInfoHUD *)self superview:a3.width];
+  v4 = [(IMInfoHUD *)self superview:fits.width];
   [v4 bounds];
   v6 = v5;
   v8 = v7;
@@ -105,7 +105,7 @@
   [(IMInfoHUD *)self sizeThatFits:v7, v9];
   v12 = v11;
   v14 = v13;
-  v21 = [(IMInfoHUD *)self _backgroundView];
+  _backgroundView = [(IMInfoHUD *)self _backgroundView];
   v23.origin.x = v4;
   v23.origin.y = v6;
   v23.size.width = v8;
@@ -116,16 +116,16 @@
   v24.size.width = v8;
   v24.size.height = v10;
   v16 = round((CGRectGetHeight(v24) - v14) * 0.5);
-  [v21 setFrame:{v15, v16, v12, v14}];
-  v17 = [(IMInfoHUD *)self textLabel];
-  v18 = [(IMInfoHUD *)self textLabel];
-  [v18 setFrame:{v15 + 10.0, v16 + 5.0, v12 + -20.0, v14 + -10.0}];
+  [_backgroundView setFrame:{v15, v16, v12, v14}];
+  textLabel = [(IMInfoHUD *)self textLabel];
+  textLabel2 = [(IMInfoHUD *)self textLabel];
+  [textLabel2 setFrame:{v15 + 10.0, v16 + 5.0, v12 + -20.0, v14 + -10.0}];
 
-  v19 = [v17 text];
-  v20 = [v19 length] == 0;
+  text = [textLabel text];
+  v20 = [text length] == 0;
 
-  [v21 setHidden:v20];
-  [v17 setHidden:v20];
+  [_backgroundView setHidden:v20];
+  [textLabel setHidden:v20];
 }
 
 - (UILabel)textLabel
@@ -169,15 +169,15 @@
     [(UIView *)self->_backgroundView setContentMode:0];
     [(UIView *)self->_backgroundView setAutoresizingMask:18];
     v6 = [UIColor colorWithWhite:1.0 alpha:0.9];
-    v7 = [v6 CGColor];
-    v8 = [(UIView *)self->_backgroundView layer];
-    [v8 setBackgroundColor:v7];
+    cGColor = [v6 CGColor];
+    layer = [(UIView *)self->_backgroundView layer];
+    [layer setBackgroundColor:cGColor];
 
-    v9 = [(UIView *)self->_backgroundView layer];
-    [v9 setCornerRadius:5.0];
+    layer2 = [(UIView *)self->_backgroundView layer];
+    [layer2 setCornerRadius:5.0];
 
-    v10 = [(UIView *)self->_backgroundView layer];
-    [v10 setMasksToBounds:1];
+    layer3 = [(UIView *)self->_backgroundView layer];
+    [layer3 setMasksToBounds:1];
 
     [(IMInfoHUD *)self insertSubview:self->_backgroundView atIndex:0];
     backgroundView = self->_backgroundView;

@@ -2,21 +2,21 @@
 + (id)sharedHandler;
 + (id)sharedHandlerDisabledOnDeviceCompilation;
 - (CSAttSiriMitigationAssetHandler)init;
-- (CSAttSiriMitigationAssetHandler)initWithAssetManager:(id)a3 withUAFAssetManager:(id)a4 withUAFDownloadMonitor:(id)a5 withLanguageCodeUpdateMonitor:(id)a6 withAssetOverrideFlag:(BOOL)a7 withOverrideAssetPath:(id)a8 disableOnDeviceCompilation:(BOOL)a9;
+- (CSAttSiriMitigationAssetHandler)initWithAssetManager:(id)manager withUAFAssetManager:(id)assetManager withUAFDownloadMonitor:(id)monitor withLanguageCodeUpdateMonitor:(id)updateMonitor withAssetOverrideFlag:(BOOL)flag withOverrideAssetPath:(id)path disableOnDeviceCompilation:(BOOL)compilation;
 - (CSAttSiriMitigationAssetHandler)initWithDisableOnDeviceCompilation;
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4;
-- (void)CSVoiceTriggerEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4;
-- (void)_getMitigationAssetWithEndpointId:(id)a3 completion:(id)a4;
-- (void)_getPreinstalledMitigationAssetForCurrentLocale:(id)a3;
-- (void)_receivedNewAssetUpdate:(id)a3;
-- (void)assetDownloadMonitorDelegate:(id)a3 assetType:(unint64_t)a4;
-- (void)getMitigationAssetWithEndpointId:(id)a3 completion:(id)a4;
-- (void)notifyObservers:(id)a3 endpointId:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)setCachedAssetWithOverride:(id)a3;
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed;
+- (void)CSVoiceTriggerEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled;
+- (void)_getMitigationAssetWithEndpointId:(id)id completion:(id)completion;
+- (void)_getPreinstalledMitigationAssetForCurrentLocale:(id)locale;
+- (void)_receivedNewAssetUpdate:(id)update;
+- (void)assetDownloadMonitorDelegate:(id)delegate assetType:(unint64_t)type;
+- (void)getMitigationAssetWithEndpointId:(id)id completion:(id)completion;
+- (void)notifyObservers:(id)observers endpointId:(id)id;
+- (void)registerObserver:(id)observer;
+- (void)setCachedAssetWithOverride:(id)override;
 - (void)start;
 - (void)triggerAssetRefresh;
-- (void)unregisterObserver:(id)a3;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CSAttSiriMitigationAssetHandler
@@ -44,11 +44,11 @@
   dispatch_async(queue, block);
 }
 
-- (void)CSVoiceTriggerEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4
+- (void)CSVoiceTriggerEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 && self->_onDeviceCompilationHandler)
+  enabledCopy = enabled;
+  monitorCopy = monitor;
+  if (enabledCopy && self->_onDeviceCompilationHandler)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -60,16 +60,16 @@
   }
 }
 
-- (void)_getPreinstalledMitigationAssetForCurrentLocale:(id)a3
+- (void)_getPreinstalledMitigationAssetForCurrentLocale:(id)locale
 {
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_10004FDBC;
   v24[3] = &unk_100252198;
-  v4 = a3;
-  v25 = v4;
+  localeCopy = locale;
+  v25 = localeCopy;
   v5 = objc_retainBlock(v24);
-  v6 = [(CSAttSiriMitigationAssetHandler *)self _siriLanguageCode];
+  _siriLanguageCode = [(CSAttSiriMitigationAssetHandler *)self _siriLanguageCode];
   v7 = +[CSAsset fallBackAssetResourcePath];
   v8 = [v7 stringByAppendingPathComponent:@"/PreinstalledAssets/preinstalledMeta.json"];
 
@@ -79,11 +79,11 @@
   if (v10)
   {
     v11 = [CSAsset decodeJson:v8];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    v12 = [v11 objectForKeyedSubscript:_siriLanguageCode];
     if (v12)
     {
       CSSystemRootDirectory();
-      v13 = v23 = v6;
+      v13 = v23 = _siriLanguageCode;
       v26[0] = v13;
       v14 = [v12 objectForKeyedSubscript:@"resourcePath"];
       v26[1] = v14;
@@ -95,7 +95,7 @@
       v18 = [CSAsset assetForAssetType:6 resourcePath:v16 configVersion:v17 assetProvider:0];
       (v5[2])(v5, v18, 0);
 
-      v6 = v23;
+      _siriLanguageCode = v23;
     }
 
     else
@@ -106,7 +106,7 @@
         *buf = 136315650;
         v28 = "[CSAttSiriMitigationAssetHandler _getPreinstalledMitigationAssetForCurrentLocale:]";
         v29 = 2112;
-        v30 = v6;
+        v30 = _siriLanguageCode;
         v31 = 2112;
         v32 = v11;
         _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%s Could not find AssetMeta for current locale: %@, preinstalledAssetMeta: %@. No mitigation functionality", buf, 0x20u);
@@ -136,23 +136,23 @@
   }
 }
 
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed
 {
-  [(CSAttSiriMitigationAssetHandler *)self setCachedAssetWithOverride:0, a4];
+  [(CSAttSiriMitigationAssetHandler *)self setCachedAssetWithOverride:0, changed];
   uafAssetManager = self->_uafAssetManager;
-  v6 = [(CSAttSiriMitigationAssetHandler *)self _siriLanguageCode];
+  _siriLanguageCode = [(CSAttSiriMitigationAssetHandler *)self _siriLanguageCode];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004FE80;
   v7[3] = &unk_100252F10;
   v7[4] = self;
-  [(CSUAFAssetManager *)uafAssetManager getInstalledAssetofType:6 forLocale:v6 completion:v7];
+  [(CSUAFAssetManager *)uafAssetManager getInstalledAssetofType:6 forLocale:_siriLanguageCode completion:v7];
 }
 
-- (void)assetDownloadMonitorDelegate:(id)a3 assetType:(unint64_t)a4
+- (void)assetDownloadMonitorDelegate:(id)delegate assetType:(unint64_t)type
 {
-  v6 = a3;
-  if (a4 == 6)
+  delegateCopy = delegate;
+  if (type == 6)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -171,17 +171,17 @@
       *buf = 136315394;
       v11 = "[CSAttSiriMitigationAssetHandler assetDownloadMonitorDelegate:assetType:]";
       v12 = 2048;
-      v13 = a4;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Ignore Trial asset update for type: %lu", buf, 0x16u);
     }
   }
 }
 
-- (void)_receivedNewAssetUpdate:(id)a3
+- (void)_receivedNewAssetUpdate:(id)update
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 assetProvider] != 2)
+  updateCopy = update;
+  v5 = updateCopy;
+  if (updateCopy && [updateCopy assetProvider] != 2)
   {
     v10 = CSLogCategoryAsset;
     if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
@@ -215,15 +215,15 @@ LABEL_7:
   }
 }
 
-- (void)_getMitigationAssetWithEndpointId:(id)a3 completion:(id)a4
+- (void)_getMitigationAssetWithEndpointId:(id)id completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100050538;
   v16[3] = &unk_100252198;
-  v6 = v5;
+  v6 = completionCopy;
   v17 = v6;
   v7 = objc_retainBlock(v16);
   v8 = v7;
@@ -238,14 +238,14 @@ LABEL_7:
     uafAssetManager = self->_uafAssetManager;
     if (uafAssetManager)
     {
-      v11 = [(CSAttSiriMitigationAssetHandler *)self _siriLanguageCode];
+      _siriLanguageCode = [(CSAttSiriMitigationAssetHandler *)self _siriLanguageCode];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_100050550;
       v14[3] = &unk_100252878;
       v14[4] = self;
       v15 = v8;
-      [(CSUAFAssetManager *)uafAssetManager getInstalledAssetofType:6 forLocale:v11 completion:v14];
+      [(CSUAFAssetManager *)uafAssetManager getInstalledAssetofType:6 forLocale:_siriLanguageCode completion:v14];
     }
 
     else
@@ -257,26 +257,26 @@ LABEL_7:
   }
 }
 
-- (void)getMitigationAssetWithEndpointId:(id)a3 completion:(id)a4
+- (void)getMitigationAssetWithEndpointId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000506D0;
   block[3] = &unk_1002533A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)setCachedAssetWithOverride:(id)a3
+- (void)setCachedAssetWithOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   if (self->_overrideEnabled)
   {
     v5 = +[NSFileManager defaultManager];
@@ -284,8 +284,8 @@ LABEL_7:
 
     if (v6)
     {
-      v7 = [(NSString *)self->_overridePath stringByDeletingLastPathComponent];
-      v8 = [CSAsset assetForAssetType:6 resourcePath:v7 configVersion:@"override-asset" assetProvider:2];
+      stringByDeletingLastPathComponent = [(NSString *)self->_overridePath stringByDeletingLastPathComponent];
+      v8 = [CSAsset assetForAssetType:6 resourcePath:stringByDeletingLastPathComponent configVersion:@"override-asset" assetProvider:2];
       v9 = qword_10029E0C8;
       qword_10029E0C8 = v8;
 
@@ -304,7 +304,7 @@ LABEL_7:
   v11 = qword_10029E0C8;
   if (!qword_10029E0C8)
   {
-    v11 = v4;
+    v11 = overrideCopy;
   }
 
   v12 = v11;
@@ -330,48 +330,48 @@ LABEL_7:
   }
 }
 
-- (void)notifyObservers:(id)a3 endpointId:(id)a4
+- (void)notifyObservers:(id)observers endpointId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  observersCopy = observers;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000509AC;
   block[3] = &unk_100253680;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = idCopy;
+  v13 = observersCopy;
+  v9 = observersCopy;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100050B6C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100050C10;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -383,14 +383,14 @@ LABEL_7:
   [v3 addObserver:self];
 }
 
-- (CSAttSiriMitigationAssetHandler)initWithAssetManager:(id)a3 withUAFAssetManager:(id)a4 withUAFDownloadMonitor:(id)a5 withLanguageCodeUpdateMonitor:(id)a6 withAssetOverrideFlag:(BOOL)a7 withOverrideAssetPath:(id)a8 disableOnDeviceCompilation:(BOOL)a9
+- (CSAttSiriMitigationAssetHandler)initWithAssetManager:(id)manager withUAFAssetManager:(id)assetManager withUAFDownloadMonitor:(id)monitor withLanguageCodeUpdateMonitor:(id)updateMonitor withAssetOverrideFlag:(BOOL)flag withOverrideAssetPath:(id)path disableOnDeviceCompilation:(BOOL)compilation
 {
-  v10 = a7;
-  v36 = a3;
-  v35 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  flagCopy = flag;
+  managerCopy = manager;
+  assetManagerCopy = assetManager;
+  monitorCopy = monitor;
+  updateMonitorCopy = updateMonitor;
+  pathCopy = path;
   v37.receiver = self;
   v37.super_class = CSAttSiriMitigationAssetHandler;
   v19 = [(CSAttSiriMitigationAssetHandler *)&v37 init];
@@ -400,15 +400,15 @@ LABEL_7:
     queue = v19->_queue;
     v19->_queue = v20;
 
-    objc_storeStrong(&v19->_assetManager, a3);
+    objc_storeStrong(&v19->_assetManager, manager);
     if (!v19->_assetManager)
     {
-      v22 = [CSAssetManager sharedManager:v35];
+      v22 = [CSAssetManager sharedManager:assetManagerCopy];
       assetManager = v19->_assetManager;
       v19->_assetManager = v22;
     }
 
-    objc_storeStrong(&v19->_uafDownloadMonitor, a5);
+    objc_storeStrong(&v19->_uafDownloadMonitor, monitor);
     if (!v19->_uafDownloadMonitor)
     {
       v24 = +[CSUAFDownloadMonitor sharedInstance];
@@ -416,7 +416,7 @@ LABEL_7:
       v19->_uafDownloadMonitor = v24;
     }
 
-    objc_storeStrong(&v19->_uafAssetManager, a4);
+    objc_storeStrong(&v19->_uafAssetManager, assetManager);
     if (!v19->_uafAssetManager)
     {
       v26 = +[CSUAFAssetManager sharedInstance];
@@ -424,16 +424,16 @@ LABEL_7:
       v19->_uafAssetManager = v26;
     }
 
-    v19->_overrideEnabled = v10;
-    if (v10)
+    v19->_overrideEnabled = flagCopy;
+    if (flagCopy)
     {
-      objc_storeStrong(&v19->_overridePath, a8);
+      objc_storeStrong(&v19->_overridePath, path);
     }
 
-    objc_storeStrong(&v19->_languageCodeUpdateMonitor, a6);
+    objc_storeStrong(&v19->_languageCodeUpdateMonitor, updateMonitor);
     if (v19->_languageCodeUpdateMonitor)
     {
-      if (a9)
+      if (compilation)
       {
         goto LABEL_16;
       }
@@ -445,10 +445,10 @@ LABEL_7:
       languageCodeUpdateMonitor = v19->_languageCodeUpdateMonitor;
       v19->_languageCodeUpdateMonitor = v28;
 
-      if (a9)
+      if (compilation)
       {
 LABEL_16:
-        [(CSAttSiriMitigationAssetHandler *)v19 setCachedAssetWithOverride:0, v35];
+        [(CSAttSiriMitigationAssetHandler *)v19 setCachedAssetWithOverride:0, assetManagerCopy];
         [(CSAttSiriMitigationAssetHandler *)v19 start];
         v32 = +[NSHashTable weakObjectsHashTable];
         observers = v19->_observers;
@@ -476,11 +476,11 @@ LABEL_17:
 - (CSAttSiriMitigationAssetHandler)initWithDisableOnDeviceCompilation
 {
   v3 = +[CSFPreferences sharedPreferences];
-  v4 = [v3 isMitigationAssetOverridingEnabled];
+  isMitigationAssetOverridingEnabled = [v3 isMitigationAssetOverridingEnabled];
   v5 = +[CSFPreferences sharedPreferences];
-  v6 = [v5 fakeMitigationAssetPath];
+  fakeMitigationAssetPath = [v5 fakeMitigationAssetPath];
   LOBYTE(v9) = 1;
-  v7 = [(CSAttSiriMitigationAssetHandler *)self initWithAssetManager:0 withUAFAssetManager:0 withUAFDownloadMonitor:0 withLanguageCodeUpdateMonitor:0 withAssetOverrideFlag:v4 withOverrideAssetPath:v6 disableOnDeviceCompilation:v9];
+  v7 = [(CSAttSiriMitigationAssetHandler *)self initWithAssetManager:0 withUAFAssetManager:0 withUAFDownloadMonitor:0 withLanguageCodeUpdateMonitor:0 withAssetOverrideFlag:isMitigationAssetOverridingEnabled withOverrideAssetPath:fakeMitigationAssetPath disableOnDeviceCompilation:v9];
 
   return v7;
 }
@@ -488,10 +488,10 @@ LABEL_17:
 - (CSAttSiriMitigationAssetHandler)init
 {
   v3 = +[CSFPreferences sharedPreferences];
-  v4 = [v3 isMitigationAssetOverridingEnabled];
+  isMitigationAssetOverridingEnabled = [v3 isMitigationAssetOverridingEnabled];
   v5 = +[CSFPreferences sharedPreferences];
-  v6 = [v5 fakeMitigationAssetPath];
-  v7 = [(CSAttSiriMitigationAssetHandler *)self initWithAssetManager:0 withUAFAssetManager:0 withUAFDownloadMonitor:0 withLanguageCodeUpdateMonitor:0 withAssetOverrideFlag:v4 withOverrideAssetPath:v6];
+  fakeMitigationAssetPath = [v5 fakeMitigationAssetPath];
+  v7 = [(CSAttSiriMitigationAssetHandler *)self initWithAssetManager:0 withUAFAssetManager:0 withUAFDownloadMonitor:0 withLanguageCodeUpdateMonitor:0 withAssetOverrideFlag:isMitigationAssetOverridingEnabled withOverrideAssetPath:fakeMitigationAssetPath];
 
   return v7;
 }

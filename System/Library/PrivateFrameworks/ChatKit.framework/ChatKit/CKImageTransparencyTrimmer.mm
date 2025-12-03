@@ -6,9 +6,9 @@
 - (double)trimmedLeft;
 - (double)trimmedRight;
 - (double)trimmedTop;
-- (id)trimTransparencyFromImage:(id)a3;
+- (id)trimTransparencyFromImage:(id)image;
 - (void)dealloc;
-- (void)setBitmap:(char *)a3;
+- (void)setBitmap:(char *)bitmap;
 @end
 
 @implementation CKImageTransparencyTrimmer
@@ -33,7 +33,7 @@
   return v5 < 2.0;
 }
 
-- (void)setBitmap:(char *)a3
+- (void)setBitmap:(char *)bitmap
 {
   bitmap = self->_bitmap;
   if (bitmap)
@@ -41,7 +41,7 @@
     free(bitmap);
   }
 
-  self->_bitmap = a3;
+  self->_bitmap = bitmap;
 }
 
 - (double)trimmedTop
@@ -269,13 +269,13 @@ LABEL_6:
   return result;
 }
 
-- (id)trimTransparencyFromImage:(id)a3
+- (id)trimTransparencyFromImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  imageCopy = image;
+  v5 = imageCopy;
+  if (imageCopy)
   {
-    v6 = v4;
+    v6 = imageCopy;
     [(CKImageTransparencyTrimmer *)self setImage:v6];
     [v6 size];
     [(CKImageTransparencyTrimmer *)self setSize:?];
@@ -291,13 +291,13 @@ LABEL_6:
       v12 = v11;
       [(CKImageTransparencyTrimmer *)self height];
       [(CKImageTransparencyTrimmer *)self setBitmap:malloc_type_calloc((v12 * v13), 1uLL, 0x100004077774924uLL)];
-      v14 = [(CKImageTransparencyTrimmer *)self bitmap];
+      bitmap = [(CKImageTransparencyTrimmer *)self bitmap];
       [(CKImageTransparencyTrimmer *)self width];
       v16 = v15;
       [(CKImageTransparencyTrimmer *)self height];
-      v18 = CGBitmapContextCreate(v14, v16, v17, 8uLL, [(CKImageTransparencyTrimmer *)self bytesPerRow], 0, 7u);
-      v19 = [(CKImageTransparencyTrimmer *)self image];
-      v20 = [v19 CGImage];
+      v18 = CGBitmapContextCreate(bitmap, v16, v17, 8uLL, [(CKImageTransparencyTrimmer *)self bytesPerRow], 0, 7u);
+      image = [(CKImageTransparencyTrimmer *)self image];
+      cGImage = [image CGImage];
 
       [(CKImageTransparencyTrimmer *)self width];
       v22 = v21;
@@ -307,7 +307,7 @@ LABEL_6:
       v40.origin.y = 0.0;
       v40.size.width = v22;
       v40.size.height = v24;
-      CGContextDrawImage(v18, v40, v20);
+      CGContextDrawImage(v18, v40, cGImage);
       [(CKImageTransparencyTrimmer *)self trimmedFrame];
       v26 = v25;
       v28 = v27;

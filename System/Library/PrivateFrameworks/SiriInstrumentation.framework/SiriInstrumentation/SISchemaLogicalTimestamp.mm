@@ -1,33 +1,33 @@
 @interface SISchemaLogicalTimestamp
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaLogicalTimestamp)initWithDictionary:(id)a3;
-- (SISchemaLogicalTimestamp)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaLogicalTimestamp)initWithDictionary:(id)dictionary;
+- (SISchemaLogicalTimestamp)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaLogicalTimestamp
 
-- (SISchemaLogicalTimestamp)initWithDictionary:(id)a3
+- (SISchemaLogicalTimestamp)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = SISchemaLogicalTimestamp;
   v5 = [(SISchemaLogicalTimestamp *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"timestampInNanoseconds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"timestampInNanoseconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaLogicalTimestamp setTimestampInNanoseconds:](v5, "setTimestampInNanoseconds:", [v6 longLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"clockIdentifier"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"clockIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (SISchemaLogicalTimestamp)initWithJSON:(id)a3
+- (SISchemaLogicalTimestamp)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaLogicalTimestamp *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaLogicalTimestamp *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaLogicalTimestamp *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,32 +77,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_clockIdentifier)
   {
-    v4 = [(SISchemaLogicalTimestamp *)self clockIdentifier];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    clockIdentifier = [(SISchemaLogicalTimestamp *)self clockIdentifier];
+    dictionaryRepresentation = [clockIdentifier dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"clockIdentifier"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"clockIdentifier"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"clockIdentifier"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"clockIdentifier"];
     }
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[SISchemaLogicalTimestamp timestampInNanoseconds](self, "timestampInNanoseconds")}];
-    [v3 setObject:v7 forKeyedSubscript:@"timestampInNanoseconds"];
+    [dictionary setObject:v7 forKeyedSubscript:@"timestampInNanoseconds"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -120,22 +120,22 @@
   return [(SISchemaUUID *)self->_clockIdentifier hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (timestampInNanoseconds = self->_timestampInNanoseconds, timestampInNanoseconds == [v4 timestampInNanoseconds]))
+      if ((*&self->_has & 1) == 0 || (timestampInNanoseconds = self->_timestampInNanoseconds, timestampInNanoseconds == [equalCopy timestampInNanoseconds]))
       {
-        v6 = [(SISchemaLogicalTimestamp *)self clockIdentifier];
-        v7 = [v4 clockIdentifier];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        clockIdentifier = [(SISchemaLogicalTimestamp *)self clockIdentifier];
+        clockIdentifier2 = [equalCopy clockIdentifier];
+        v8 = clockIdentifier2;
+        if ((clockIdentifier != 0) != (clockIdentifier2 == 0))
         {
-          v9 = [(SISchemaLogicalTimestamp *)self clockIdentifier];
-          if (!v9)
+          clockIdentifier3 = [(SISchemaLogicalTimestamp *)self clockIdentifier];
+          if (!clockIdentifier3)
           {
 
 LABEL_13:
@@ -143,10 +143,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(SISchemaLogicalTimestamp *)self clockIdentifier];
-          v12 = [v4 clockIdentifier];
-          v13 = [v11 isEqual:v12];
+          v10 = clockIdentifier3;
+          clockIdentifier4 = [(SISchemaLogicalTimestamp *)self clockIdentifier];
+          clockIdentifier5 = [equalCopy clockIdentifier];
+          v13 = [clockIdentifier4 isEqual:clockIdentifier5];
 
           if (v13)
           {
@@ -167,37 +167,37 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
   }
 
-  v4 = [(SISchemaLogicalTimestamp *)self clockIdentifier];
+  clockIdentifier = [(SISchemaLogicalTimestamp *)self clockIdentifier];
 
-  v5 = v7;
-  if (v4)
+  v5 = toCopy;
+  if (clockIdentifier)
   {
-    v6 = [(SISchemaLogicalTimestamp *)self clockIdentifier];
+    clockIdentifier2 = [(SISchemaLogicalTimestamp *)self clockIdentifier];
     PBDataWriterWriteSubmessage();
 
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaLogicalTimestamp;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaLogicalTimestamp *)self clockIdentifier:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaLogicalTimestamp *)self deleteClockIdentifier];
   }

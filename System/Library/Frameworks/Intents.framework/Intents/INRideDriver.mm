@@ -1,42 +1,42 @@
 @interface INRideDriver
-- (BOOL)isEqual:(id)a3;
-- (INRideDriver)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INRideDriver)initWithCoder:(id)coder;
 - (INRideDriver)initWithHandle:(NSString *)handle displayName:(NSString *)displayName image:(INImage *)image rating:(NSString *)rating phoneNumber:(NSString *)phoneNumber;
 - (INRideDriver)initWithHandle:(NSString *)handle nameComponents:(NSPersonNameComponents *)nameComponents image:(INImage *)image rating:(NSString *)rating phoneNumber:(NSString *)phoneNumber;
 - (INRideDriver)initWithPhoneNumber:(NSString *)phoneNumber nameComponents:(NSPersonNameComponents *)nameComponents displayName:(NSString *)displayName image:(INImage *)image rating:(NSString *)rating;
 - (NSString)phoneNumber;
 - (id)_dictionaryRepresentation;
-- (id)_initWithUserInput:(id)a3 personHandle:(id)a4 nameComponents:(id)a5 displayName:(id)a6 image:(id)a7 contactIdentifier:(id)a8 rating:(id)a9 aliases:(id)a10;
-- (id)_initWithUserInput:(id)a3 personHandle:(id)a4 nameComponents:(id)a5 displayName:(id)a6 image:(id)a7 contactIdentifier:(id)a8 rating:(id)a9 phoneNumber:(id)a10;
+- (id)_initWithUserInput:(id)input personHandle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier rating:(id)rating aliases:(id)self0;
+- (id)_initWithUserInput:(id)input personHandle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier rating:(id)rating phoneNumber:(id)self0;
 - (unint64_t)hash;
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_injectProxiesForImages:(id)images completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INRideDriver
 
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4
+- (void)_injectProxiesForImages:(id)images completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  imagesCopy = images;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = [(INRideDriver *)self copy];
-    v9 = [(INPerson *)self image];
-    if (v9)
+    image = [(INPerson *)self image];
+    if (image)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __74__INRideDriver_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke;
       v10[3] = &unk_1E7285CD0;
       v10[4] = v8;
-      v11 = v7;
-      v6[2](v6, v9, v10);
+      v11 = completionCopy;
+      imagesCopy[2](imagesCopy, image, v10);
     }
 
     else
     {
-      (*(v7 + 2))(v7, v8);
+      (*(completionCopy + 2))(completionCopy, v8);
     }
   }
 }
@@ -56,31 +56,31 @@ uint64_t __74__INRideDriver_INImageProxyInjecting___injectProxiesForImages_compl
   v3 = MEMORY[0x1E695DF90];
   v13.receiver = self;
   v13.super_class = INRideDriver;
-  v4 = [(INPerson *)&v13 _dictionaryRepresentation];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  _dictionaryRepresentation = [(INPerson *)&v13 _dictionaryRepresentation];
+  v5 = [v3 dictionaryWithDictionary:_dictionaryRepresentation];
 
   v14[0] = @"rating";
   rating = self->_rating;
-  v7 = rating;
+  null = rating;
   if (!rating)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v14[1] = @"phoneNumber";
-  v15[0] = v7;
-  v8 = [(INRideDriver *)self phoneNumber];
-  v9 = v8;
-  if (!v8)
+  v15[0] = null;
+  phoneNumber = [(INRideDriver *)self phoneNumber];
+  null2 = phoneNumber;
+  if (!phoneNumber)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v9;
+  v15[1] = null2;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
   [v5 addEntriesFromDictionary:v10];
 
-  if (!v8)
+  if (!phoneNumber)
   {
   }
 
@@ -93,24 +93,24 @@ uint64_t __74__INRideDriver_INImageProxyInjecting___injectProxiesForImages_compl
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INRideDriver;
-  v4 = a3;
-  [(INPerson *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_rating forKey:{@"rating", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(INPerson *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_rating forKey:{@"rating", v5.receiver, v5.super_class}];
 }
 
-- (INRideDriver)initWithCoder:(id)a3
+- (INRideDriver)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = INRideDriver;
-  v5 = [(INPerson *)&v9 initWithCoder:v4];
+  v5 = [(INPerson *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rating"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rating"];
     rating = v5->_rating;
     v5->_rating = v6;
   }
@@ -118,13 +118,13 @@ uint64_t __74__INRideDriver_INImageProxyInjecting___injectProxiesForImages_compl
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = INRideDriver, [(INPerson *)&v9 isEqual:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = INRideDriver, [(INPerson *)&v9 isEqual:equalCopy]))
   {
-    v5 = v4;
+    v5 = equalCopy;
     rating = self->_rating;
     v7 = rating == v5[17] || [(NSString *)rating isEqual:?];
   }
@@ -145,25 +145,25 @@ uint64_t __74__INRideDriver_INImageProxyInjecting___injectProxiesForImages_compl
   return [(NSString *)self->_rating hash]^ v3;
 }
 
-- (id)_initWithUserInput:(id)a3 personHandle:(id)a4 nameComponents:(id)a5 displayName:(id)a6 image:(id)a7 contactIdentifier:(id)a8 rating:(id)a9 phoneNumber:(id)a10
+- (id)_initWithUserInput:(id)input personHandle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier rating:(id)rating phoneNumber:(id)self0
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v17 = a10;
-  v18 = v17;
-  if (v17)
+  numberCopy = number;
+  v18 = numberCopy;
+  if (numberCopy)
   {
-    v40 = v17;
-    v19 = a9;
-    v20 = a8;
-    v21 = a7;
-    v22 = a6;
-    v23 = a5;
-    v24 = a4;
-    v25 = a3;
+    v40 = numberCopy;
+    ratingCopy = rating;
+    identifierCopy = identifier;
+    imageCopy = image;
+    nameCopy = name;
+    componentsCopy = components;
+    handleCopy = handle;
+    inputCopy = input;
     v26 = [[INPersonHandle alloc] initWithValue:v40 type:2];
     v41[0] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
-    v28 = [(INRideDriver *)self _initWithUserInput:v25 personHandle:v24 nameComponents:v23 displayName:v22 image:v21 contactIdentifier:v20 rating:v19 aliases:v27];
+    v28 = [(INRideDriver *)self _initWithUserInput:inputCopy personHandle:handleCopy nameComponents:componentsCopy displayName:nameCopy image:imageCopy contactIdentifier:identifierCopy rating:ratingCopy aliases:v27];
 
     v29 = v28;
     v18 = v40;
@@ -171,14 +171,14 @@ uint64_t __74__INRideDriver_INImageProxyInjecting___injectProxiesForImages_compl
 
   else
   {
-    v30 = a9;
-    v31 = a8;
-    v32 = a7;
-    v33 = a6;
-    v34 = a5;
-    v35 = a4;
-    v36 = a3;
-    v37 = [(INRideDriver *)self _initWithUserInput:v36 personHandle:v35 nameComponents:v34 displayName:v33 image:v32 contactIdentifier:v31 rating:v30 aliases:0];
+    ratingCopy2 = rating;
+    identifierCopy2 = identifier;
+    imageCopy2 = image;
+    nameCopy2 = name;
+    componentsCopy2 = components;
+    handleCopy2 = handle;
+    inputCopy2 = input;
+    v37 = [(INRideDriver *)self _initWithUserInput:inputCopy2 personHandle:handleCopy2 nameComponents:componentsCopy2 displayName:nameCopy2 image:imageCopy2 contactIdentifier:identifierCopy2 rating:ratingCopy2 aliases:0];
 
     v29 = v37;
   }
@@ -187,17 +187,17 @@ uint64_t __74__INRideDriver_INImageProxyInjecting___injectProxiesForImages_compl
   return v29;
 }
 
-- (id)_initWithUserInput:(id)a3 personHandle:(id)a4 nameComponents:(id)a5 displayName:(id)a6 image:(id)a7 contactIdentifier:(id)a8 rating:(id)a9 aliases:(id)a10
+- (id)_initWithUserInput:(id)input personHandle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier rating:(id)rating aliases:(id)self0
 {
-  v17 = a9;
+  ratingCopy = rating;
   v24.receiver = self;
   v24.super_class = INRideDriver;
   v23 = 0;
   v22 = 0;
-  v18 = [(INPerson *)&v24 _initWithUserInput:a3 personHandle:a4 nameComponents:a5 displayName:a6 image:a7 contactIdentifier:a8 customIdentifier:0 relationship:0 aliases:a10 suggestionType:0 isMe:v22 scoredAlternatives:0 sourceAppBundleIdentifier:0 phonemeData:0 isContactSuggestion:v23 searchProvider:0];
+  v18 = [(INPerson *)&v24 _initWithUserInput:input personHandle:handle nameComponents:components displayName:name image:image contactIdentifier:identifier customIdentifier:0 relationship:0 aliases:aliases suggestionType:0 isMe:v22 scoredAlternatives:0 sourceAppBundleIdentifier:0 phonemeData:0 isContactSuggestion:v23 searchProvider:0];
   if (v18)
   {
-    v19 = [v17 copy];
+    v19 = [ratingCopy copy];
     v20 = v18[17];
     v18[17] = v19;
   }
@@ -233,20 +233,20 @@ uint64_t __74__INRideDriver_INImageProxyInjecting___injectProxiesForImages_compl
 - (NSString)phoneNumber
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(INPerson *)self personHandle];
-  v4 = [v3 value];
-  if (v4)
+  personHandle = [(INPerson *)self personHandle];
+  value = [personHandle value];
+  if (value)
   {
-    v5 = v4;
-    v6 = [(INPerson *)self personHandle];
-    v7 = [v6 type];
+    v5 = value;
+    personHandle2 = [(INPerson *)self personHandle];
+    type = [personHandle2 type];
 
-    if (v7 == 2)
+    if (type == 2)
     {
-      v8 = [(INPerson *)self personHandle];
-      v9 = v8;
+      personHandle3 = [(INPerson *)self personHandle];
+      aliases = personHandle3;
 LABEL_16:
-      v10 = [v8 value];
+      value2 = [personHandle3 value];
       goto LABEL_17;
     }
   }
@@ -259,37 +259,37 @@ LABEL_16:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(INPerson *)self aliases];
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
-  if (v10)
+  aliases = [(INPerson *)self aliases];
+  value2 = [aliases countByEnumeratingWithState:&v19 objects:v23 count:16];
+  if (value2)
   {
     v11 = *v20;
     while (2)
     {
-      for (i = 0; i != v10; i = i + 1)
+      for (i = 0; i != value2; i = i + 1)
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(aliases);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 value];
-        if (v14)
+        value3 = [v13 value];
+        if (value3)
         {
-          v15 = v14;
-          v16 = [v13 type];
+          v15 = value3;
+          type2 = [v13 type];
 
-          if (v16 == 2)
+          if (type2 == 2)
           {
-            v8 = v13;
+            personHandle3 = v13;
             goto LABEL_16;
           }
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
-      if (v10)
+      value2 = [aliases countByEnumeratingWithState:&v19 objects:v23 count:16];
+      if (value2)
       {
         continue;
       }
@@ -302,7 +302,7 @@ LABEL_17:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return value2;
 }
 
 - (INRideDriver)initWithHandle:(NSString *)handle nameComponents:(NSPersonNameComponents *)nameComponents image:(INImage *)image rating:(NSString *)rating phoneNumber:(NSString *)phoneNumber

@@ -1,7 +1,7 @@
 @interface Announcer
 - (_TtC11WorkoutCore9Announcer)init;
-- (double)estimateDurationOf:(id)a3;
-- (void)announceWithWorkoutEventType:(int64_t)a3;
+- (double)estimateDurationOf:(id)of;
+- (void)announceWithWorkoutEventType:(int64_t)type;
 - (void)dealloc;
 - (void)stopSpeaking;
 @end
@@ -13,36 +13,36 @@
   v3 = OBJC_IVAR____TtC11WorkoutCore9Announcer_ringerNotifyToken;
   swift_beginAccess();
   LODWORD(v3) = *(&self->super.isa + v3);
-  v4 = self;
+  selfCopy = self;
   notify_cancel(v3);
   v5 = OBJC_IVAR____TtC11WorkoutCore9Announcer_ringerStateToken;
   swift_beginAccess();
-  notify_cancel(*(&v4->super.isa + v5));
+  notify_cancel(*(&selfCopy->super.isa + v5));
   v6 = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveEveryObserver(v6, v4);
+  CFNotificationCenterRemoveEveryObserver(v6, selfCopy);
 
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for Announcer();
   [(Announcer *)&v7 dealloc];
 }
 
-- (void)announceWithWorkoutEventType:(int64_t)a3
+- (void)announceWithWorkoutEventType:(int64_t)type
 {
-  v4 = self;
-  Announcer.announce(workoutEventType:)(a3);
+  selfCopy = self;
+  Announcer.announce(workoutEventType:)(type);
 }
 
 - (void)stopSpeaking
 {
-  v2 = self;
+  selfCopy = self;
   Announcer.stopSpeaking()();
 }
 
-- (double)estimateDurationOf:(id)a3
+- (double)estimateDurationOf:(id)of
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   v9 = Announcer.estimateDuration(of:)(v8);

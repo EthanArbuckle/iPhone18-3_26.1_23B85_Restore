@@ -1,30 +1,30 @@
 @interface GameCenterDataUpdatePresenter
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4;
-- (void)refreshFriendContents:(id)a3;
-- (void)refreshFriendSuggestionContents:(id)a3;
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info;
+- (void)refreshFriendContents:(id)contents;
+- (void)refreshFriendSuggestionContents:(id)contents;
 @end
 
 @implementation GameCenterDataUpdatePresenter
 
-- (void)refreshFriendContents:(id)a3
+- (void)refreshFriendContents:(id)contents
 {
-  v4 = a3;
-  v5 = self;
+  contentsCopy = contents;
+  selfCopy = self;
   sub_24E0AD084();
 }
 
-- (void)refreshFriendSuggestionContents:(id)a3
+- (void)refreshFriendSuggestionContents:(id)contents
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E0AD14C(v4);
+  contentsCopy = contents;
+  selfCopy = self;
+  sub_24E0AD14C(contentsCopy);
 }
 
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info
 {
   v6 = sub_24E347C08();
-  v7 = self;
-  sub_24E0AD224(a3, v6);
+  selfCopy = self;
+  sub_24E0AD224(type, v6);
 }
 
 @end

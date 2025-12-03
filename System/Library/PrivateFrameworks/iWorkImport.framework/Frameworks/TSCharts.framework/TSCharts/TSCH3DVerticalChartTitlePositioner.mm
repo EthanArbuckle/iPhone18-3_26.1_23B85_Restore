@@ -3,7 +3,7 @@
 - (LabelTransform)mainTitleTransform;
 - (LabelTransform)valueAxisTitleTransform;
 - (float)categoryVerticalPadding;
-- (tvec2<float>)sizeOfValueAxisLabelsForAlignment:(unsigned int)a3;
+- (tvec2<float>)sizeOfValueAxisLabelsForAlignment:(unsigned int)alignment;
 @end
 
 @implementation TSCH3DVerticalChartTitlePositioner
@@ -171,13 +171,13 @@
   return result;
 }
 
-- (tvec2<float>)sizeOfValueAxisLabelsForAlignment:(unsigned int)a3
+- (tvec2<float>)sizeOfValueAxisLabelsForAlignment:(unsigned int)alignment
 {
   v9 = v3;
   v10 = objc_msgSend_scene(self, a2, v4, v5, v6);
   isFixedPositionForScene = objc_msgSend_isFixedPositionForScene_(TSCH3DChartValueAxisTitleSceneObject, v11, v12, v13, v14, v10);
 
-  if (isFixedPositionForScene || (objc_msgSend_scene(self, v16, v17, v18, v19), v20 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend_valueAxisLabelAlignmentForScene_(TSCH3DChartAxisLabelsSceneObject, v21, v22, v23, v24, v20), v20, v25 == a3))
+  if (isFixedPositionForScene || (objc_msgSend_scene(self, v16, v17, v18, v19), v20 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend_valueAxisLabelAlignmentForScene_(TSCH3DChartAxisLabelsSceneObject, v21, v22, v23, v24, v20), v20, v25 == alignment))
   {
 
     return objc_msgSend_sizeOfValueAxisLabels(self, v16, v17, v18, v19);

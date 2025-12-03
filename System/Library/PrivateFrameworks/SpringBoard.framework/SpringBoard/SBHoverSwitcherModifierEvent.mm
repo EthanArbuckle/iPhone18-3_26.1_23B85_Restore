@@ -1,22 +1,22 @@
 @interface SBHoverSwitcherModifierEvent
 - (CGPoint)position;
-- (SBHoverSwitcherModifierEvent)initWithPhase:(unint64_t)a3 position:(CGPoint)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBHoverSwitcherModifierEvent)initWithPhase:(unint64_t)phase position:(CGPoint)position;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBHoverSwitcherModifierEvent
 
-- (SBHoverSwitcherModifierEvent)initWithPhase:(unint64_t)a3 position:(CGPoint)a4
+- (SBHoverSwitcherModifierEvent)initWithPhase:(unint64_t)phase position:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   v8.receiver = self;
   v8.super_class = SBHoverSwitcherModifierEvent;
   result = [(SBWindowingModifierActivity *)&v8 init];
   if (result)
   {
-    result->_phase = a3;
+    result->_phase = phase;
     result->_position.x = x;
     result->_position.y = y;
   }
@@ -24,21 +24,21 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = SBHoverSwitcherModifierEvent;
-  result = [(SBChainableModifierEvent *)&v5 copyWithZone:a3];
+  result = [(SBChainableModifierEvent *)&v5 copyWithZone:zone];
   *(result + 4) = self->_phase;
   *(result + 40) = self->_position;
   return result;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v11.receiver = self;
   v11.super_class = SBHoverSwitcherModifierEvent;
-  v4 = [(SBSwitcherModifierEvent *)&v11 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBSwitcherModifierEvent *)&v11 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = v4;
   phase = self->_phase;
   v7 = @"Hovering";

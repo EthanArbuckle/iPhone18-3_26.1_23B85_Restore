@@ -17,10 +17,10 @@
 
 - (unint64_t)synchronizeCount
 {
-  v2 = [(CNUserDefaults *)self primitiveDefaults];
-  v3 = [v2 synchronizeCount];
+  primitiveDefaults = [(CNUserDefaults *)self primitiveDefaults];
+  synchronizeCount = [primitiveDefaults synchronizeCount];
 
-  return v3;
+  return synchronizeCount;
 }
 
 @end

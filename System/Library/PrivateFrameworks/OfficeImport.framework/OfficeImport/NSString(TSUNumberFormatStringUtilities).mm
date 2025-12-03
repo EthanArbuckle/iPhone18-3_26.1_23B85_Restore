@@ -30,20 +30,20 @@
 - (BOOL)tsu_isNumberFormatPattern
 {
   v2 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"0123456789@#"];
-  v3 = [a1 tsu_stringByRemovingEscapedCharactersFromNumberFormatPattern];
-  v4 = [v3 rangeOfCharacterFromSet:v2];
+  tsu_stringByRemovingEscapedCharactersFromNumberFormatPattern = [self tsu_stringByRemovingEscapedCharactersFromNumberFormatPattern];
+  v4 = [tsu_stringByRemovingEscapedCharactersFromNumberFormatPattern rangeOfCharacterFromSet:v2];
 
   return v4 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
 - (void)tsu_newRangesOfEscapedCharactersInNumberFormatPattern
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = 0;
   v4 = 0;
   do
   {
-    v5 = [a1 rangeOfString:@"'" options:0 range:{v3, v2 - v3}];
+    v5 = [self rangeOfString:@"'" options:0 range:{v3, v2 - v3}];
     v6 = v5;
     if (v5 == 0x7FFFFFFFFFFFFFFFLL || v5 == v2 - 1)
     {
@@ -56,7 +56,7 @@
 
     else
     {
-      v8 = [a1 rangeOfString:@"'" options:0 range:{v5 + 1, v2 - (v5 + 1)}];
+      v8 = [self rangeOfString:@"'" options:0 range:{v5 + 1, v2 - (v5 + 1)}];
     }
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -89,47 +89,47 @@
 
 - (id)tsu_stringByRemovingEscapedCharactersFromNumberFormatPattern
 {
-  v2 = [a1 tsu_newRangesOfEscapedCharactersInNumberFormatPattern];
-  if (v2)
+  tsu_newRangesOfEscapedCharactersInNumberFormatPattern = [self tsu_newRangesOfEscapedCharactersInNumberFormatPattern];
+  if (tsu_newRangesOfEscapedCharactersInNumberFormatPattern)
   {
-    v3 = [MEMORY[0x277CCAB68] stringWithString:a1];
-    v4 = [a1 length];
-    if ([v2 count])
+    selfCopy = [MEMORY[0x277CCAB68] stringWithString:self];
+    v4 = [self length];
+    if ([tsu_newRangesOfEscapedCharactersInNumberFormatPattern count])
     {
       v5 = 0;
       do
       {
-        v6 = [v2 objectAtIndex:v5];
-        v7 = [v6 rangeValue];
+        v6 = [tsu_newRangesOfEscapedCharactersInNumberFormatPattern objectAtIndex:v5];
+        rangeValue = [v6 rangeValue];
         v9 = v8;
 
-        [v3 replaceCharactersInRange:v7 - v4 + objc_msgSend(v3 withString:{"length"), v9, &stru_286EE1130}];
+        [selfCopy replaceCharactersInRange:rangeValue - v4 + objc_msgSend(selfCopy withString:{"length"), v9, &stru_286EE1130}];
         ++v5;
       }
 
-      while (v5 < [v2 count]);
+      while (v5 < [tsu_newRangesOfEscapedCharactersInNumberFormatPattern count]);
     }
   }
 
   else
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (unint64_t)tsu_indexOfNumberFormatSubpatternSeparator
 {
-  v2 = [a1 tsu_newRangesOfEscapedCharactersInNumberFormatPattern];
-  v3 = [a1 rangeOfString:@";" options:0 range:{0, objc_msgSend(a1, "length")}];
+  tsu_newRangesOfEscapedCharactersInNumberFormatPattern = [self tsu_newRangesOfEscapedCharactersInNumberFormatPattern];
+  v3 = [self rangeOfString:@";" options:0 range:{0, objc_msgSend(self, "length")}];
   v4 = 0x7FFFFFFFFFFFFFFFLL;
   if (v3 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = v3;
-    while (TSULocationInRanges(v4, v2))
+    while (TSULocationInRanges(v4, tsu_newRangesOfEscapedCharactersInNumberFormatPattern))
     {
-      v4 = [a1 rangeOfString:@";" options:0 range:{v4 + 1, objc_msgSend(a1, "length") - (v4 + 1)}];
+      v4 = [self rangeOfString:@";" options:0 range:{v4 + 1, objc_msgSend(self, "length") - (v4 + 1)}];
       if (v4 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v4 = 0x7FFFFFFFFFFFFFFFLL;
@@ -143,31 +143,31 @@
 
 - (id)tsu_positiveSubpatternOfNumberFormatPattern
 {
-  v2 = [a1 tsu_indexOfNumberFormatSubpatternSeparator];
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL)
+  tsu_indexOfNumberFormatSubpatternSeparator = [self tsu_indexOfNumberFormatSubpatternSeparator];
+  if (tsu_indexOfNumberFormatSubpatternSeparator == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [a1 substringToIndex:v2];
+    selfCopy = [self substringToIndex:tsu_indexOfNumberFormatSubpatternSeparator];
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (__CFString)tsu_negativeSubpatternOfNumberFormatPattern
 {
-  v2 = [a1 tsu_indexOfNumberFormatSubpatternSeparator];
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL)
+  tsu_indexOfNumberFormatSubpatternSeparator = [self tsu_indexOfNumberFormatSubpatternSeparator];
+  if (tsu_indexOfNumberFormatSubpatternSeparator == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = &stru_286EE1130;
   }
 
   else
   {
-    v3 = [a1 substringFromIndex:v2 + 1];
+    v3 = [self substringFromIndex:tsu_indexOfNumberFormatSubpatternSeparator + 1];
   }
 
   return v3;
@@ -175,27 +175,27 @@
 
 - (uint64_t)tsu_numberPortionOfNumberFormatSubpattern
 {
-  v2 = [a1 tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
-  v3 = [a1 tsu_indexOfLastNonSuffixCharacterInNumberFormatSubpattern] - v2 + 1;
+  tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern = [self tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
+  v3 = [self tsu_indexOfLastNonSuffixCharacterInNumberFormatSubpattern] - tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern + 1;
 
-  return [a1 substringWithRange:{v2, v3}];
+  return [self substringWithRange:{tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern, v3}];
 }
 
 - (uint64_t)tsu_indexOfLastNonSuffixCharacterInNumberFormatSubpattern
 {
-  v2 = [a1 tsu_newRangesOfEscapedCharactersInNumberFormatPattern];
-  v3 = [objc_opt_class() tsu_numberSymbols];
-  v4 = [a1 length];
+  tsu_newRangesOfEscapedCharactersInNumberFormatPattern = [self tsu_newRangesOfEscapedCharactersInNumberFormatPattern];
+  tsu_numberSymbols = [objc_opt_class() tsu_numberSymbols];
+  v4 = [self length];
   while (1)
   {
-    v5 = [a1 rangeOfCharacterFromSet:v3 options:4 range:{0, v4}];
+    v5 = [self rangeOfCharacterFromSet:tsu_numberSymbols options:4 range:{0, v4}];
     v4 = v5;
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
       break;
     }
 
-    if (!TSULocationInRanges(v5, v2))
+    if (!TSULocationInRanges(v5, tsu_newRangesOfEscapedCharactersInNumberFormatPattern))
     {
       goto LABEL_6;
     }
@@ -213,16 +213,16 @@ LABEL_6:
 
 - (uint64_t)tsu_suffixOfNumberFormatSubpattern
 {
-  v2 = [a1 tsu_indexOfLastNonSuffixCharacterInNumberFormatSubpattern] + 1;
+  v2 = [self tsu_indexOfLastNonSuffixCharacterInNumberFormatSubpattern] + 1;
 
-  return [a1 substringFromIndex:v2];
+  return [self substringFromIndex:v2];
 }
 
 - (unint64_t)tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern
 {
-  v2 = [a1 tsu_newRangesOfEscapedCharactersInNumberFormatPattern];
-  v3 = [objc_opt_class() tsu_numberSymbols];
-  v4 = [a1 rangeOfCharacterFromSet:v3 options:0 range:{0, objc_msgSend(a1, "length")}];
+  tsu_newRangesOfEscapedCharactersInNumberFormatPattern = [self tsu_newRangesOfEscapedCharactersInNumberFormatPattern];
+  tsu_numberSymbols = [objc_opt_class() tsu_numberSymbols];
+  v4 = [self rangeOfCharacterFromSet:tsu_numberSymbols options:0 range:{0, objc_msgSend(self, "length")}];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_5:
@@ -237,9 +237,9 @@ LABEL_5:
   else
   {
     v5 = v4;
-    while (TSULocationInRanges(v5, v2))
+    while (TSULocationInRanges(v5, tsu_newRangesOfEscapedCharactersInNumberFormatPattern))
     {
-      v5 = [a1 rangeOfCharacterFromSet:v3 options:0 range:{v5 + 1, objc_msgSend(a1, "length") - (v5 + 1)}];
+      v5 = [self rangeOfCharacterFromSet:tsu_numberSymbols options:0 range:{v5 + 1, objc_msgSend(self, "length") - (v5 + 1)}];
       if (v5 == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_5;
@@ -252,9 +252,9 @@ LABEL_5:
 
 - (uint64_t)tsu_prefixOfNumberFormatSubpattern
 {
-  v2 = [a1 tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
+  tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern = [self tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
 
-  return [a1 substringToIndex:v2];
+  return [self substringToIndex:tsu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
 }
 
 @end

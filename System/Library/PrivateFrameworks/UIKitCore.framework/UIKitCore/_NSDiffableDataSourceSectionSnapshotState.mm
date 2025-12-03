@@ -1,11 +1,11 @@
 @interface _NSDiffableDataSourceSectionSnapshotState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_NSDiffableDataSourceSectionSnapshotState)init;
-- (_NSDiffableDataSourceSectionSnapshotState)initWithSnapshotter:(id)a3 identifiers:(id)a4 identifiersHaveGuaranteedPerformance:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_NSDiffableDataSourceSectionSnapshotState)initWithSnapshotter:(id)snapshotter identifiers:(id)identifiers identifiersHaveGuaranteedPerformance:(BOOL)performance;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)snapshotterMutableCopy;
-- (int64_t)indexOfIdentifier:(id)a3;
+- (int64_t)indexOfIdentifier:(id)identifier;
 @end
 
 @implementation _NSDiffableDataSourceSectionSnapshotState
@@ -26,19 +26,19 @@
   return v2;
 }
 
-- (_NSDiffableDataSourceSectionSnapshotState)initWithSnapshotter:(id)a3 identifiers:(id)a4 identifiersHaveGuaranteedPerformance:(BOOL)a5
+- (_NSDiffableDataSourceSectionSnapshotState)initWithSnapshotter:(id)snapshotter identifiers:(id)identifiers identifiersHaveGuaranteedPerformance:(BOOL)performance
 {
-  v9 = a3;
-  v10 = a4;
+  snapshotterCopy = snapshotter;
+  identifiersCopy = identifiers;
   v14.receiver = self;
   v14.super_class = _NSDiffableDataSourceSectionSnapshotState;
   v11 = [(_NSDiffableDataSourceSectionSnapshotState *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_snapshotter, a3);
-    objc_storeStrong(&v12->_identifiers, a4);
-    if (a5 || [(NSOrderedSet *)v12->_identifiers count]<= 0xA)
+    objc_storeStrong(&v11->_snapshotter, snapshotter);
+    objc_storeStrong(&v12->_identifiers, identifiers);
+    if (performance || [(NSOrderedSet *)v12->_identifiers count]<= 0xA)
     {
       objc_storeStrong(&v12->_guaranteedPerformanceIdentifiers, v12->_identifiers);
     }
@@ -47,10 +47,10 @@
   return v12;
 }
 
-- (int64_t)indexOfIdentifier:(id)a3
+- (int64_t)indexOfIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     identifierLookupCount = self->_identifierLookupCount;
     if (identifierLookupCount < 0xA)
@@ -71,7 +71,7 @@
       identifiers = self->_identifiers;
     }
 
-    v8 = [(NSOrderedSet *)identifiers indexOfObject:v4];
+    v8 = [(NSOrderedSet *)identifiers indexOfObject:identifierCopy];
   }
 
   else
@@ -82,7 +82,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (!self->_guaranteedPerformanceIdentifiers)
   {
@@ -104,20 +104,20 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v7 = 1;
     }
 
     else
     {
-      v6 = v4;
+      v6 = equalCopy;
       objc_opt_class();
       v7 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UITreeDataSourceSnapshotter *)self->_snapshotter isEqual:v6->_snapshotter]&& [(NSOrderedSet *)self->_identifiers isEqualToOrderedSet:v6->_identifiers];
     }

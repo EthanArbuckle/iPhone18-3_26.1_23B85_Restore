@@ -1,16 +1,16 @@
 @interface DOCColumnViewSpecs
-+ (id)specWithBrowsingContextWithTraitCollection:(id)a3 columnBrowserSize:(CGSize)a4;
++ (id)specWithBrowsingContextWithTraitCollection:(id)collection columnBrowserSize:(CGSize)size;
 - (_TtC26DocumentManagerExecutables18DOCColumnViewSpecs)init;
 @end
 
 @implementation DOCColumnViewSpecs
 
-+ (id)specWithBrowsingContextWithTraitCollection:(id)a3 columnBrowserSize:(CGSize)a4
++ (id)specWithBrowsingContextWithTraitCollection:(id)collection columnBrowserSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  v7 = specialized static DOCColumnViewSpecs.specWithBrowsingContext(traitCollection:columnBrowserSize:)(v6, width, height);
+  height = size.height;
+  width = size.width;
+  collectionCopy = collection;
+  v7 = specialized static DOCColumnViewSpecs.specWithBrowsingContext(traitCollection:columnBrowserSize:)(collectionCopy, width, height);
 
   return v7;
 }

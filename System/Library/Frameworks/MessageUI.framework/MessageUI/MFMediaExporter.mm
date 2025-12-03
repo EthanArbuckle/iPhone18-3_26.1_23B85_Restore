@@ -1,7 +1,7 @@
 @interface MFMediaExporter
 + (id)log;
-+ (int)exportAsset:(id)a3 progressHandler:(id)a4 completion:(id)a5;
-+ (void)jpegRepresentationForImageData:(id)a3 inputContentType:(id)a4 completion:(id)a5;
++ (int)exportAsset:(id)asset progressHandler:(id)handler completion:(id)completion;
++ (void)jpegRepresentationForImageData:(id)data inputContentType:(id)type completion:(id)completion;
 @end
 
 @implementation MFMediaExporter
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __22__MFMediaExporter_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_7 != -1)
   {
     dispatch_once(&log_onceToken_7, block);
@@ -31,22 +31,22 @@ void __22__MFMediaExporter_log__block_invoke(uint64_t a1)
   log_log_7 = v1;
 }
 
-+ (int)exportAsset:(id)a3 progressHandler:(id)a4 completion:(id)a5
++ (int)exportAsset:(id)asset progressHandler:(id)handler completion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  handlerCopy = handler;
+  completionCopy = completion;
   v11 = +[MFMediaExporter log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 mf_localIdentifier];
+    mf_localIdentifier = [assetCopy mf_localIdentifier];
     *buf = 138543362;
-    v39 = v12;
+    v39 = mf_localIdentifier;
     _os_log_impl(&dword_1BE819000, v11, OS_LOG_TYPE_DEFAULT, "Exporting asset: %{public}@", buf, 0xCu);
   }
 
-  if ([v8 canPlayAutoloop])
+  if ([assetCopy canPlayAutoloop])
   {
     v13 = +[MFMediaExporter log];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -62,16 +62,16 @@ void __22__MFMediaExporter_log__block_invoke(uint64_t a1)
     v37[1] = 3221225472;
     v37[2] = __58__MFMediaExporter_exportAsset_progressHandler_completion___block_invoke;
     v37[3] = &unk_1E806FE78;
-    v37[4] = v9;
+    v37[4] = handlerCopy;
     [v14 setProgressHandler:v37];
-    v16 = [MEMORY[0x1E6978860] defaultManager];
+    defaultManager = [MEMORY[0x1E6978860] defaultManager];
     v17 = v36;
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __58__MFMediaExporter_exportAsset_progressHandler_completion___block_invoke_33;
     v36[3] = &unk_1E806FEC8;
-    v36[4] = v10;
-    v18 = [v16 requestURLForVideo:v8 options:0 resultHandler:v36];
+    v36[4] = completionCopy;
+    v18 = [defaultManager requestURLForVideo:assetCopy options:0 resultHandler:v36];
 LABEL_14:
     v23 = v18;
     v24 = (v15 + 4);
@@ -79,7 +79,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (![v8 isVideo])
+  if (![assetCopy isVideo])
   {
     v26 = +[MFMediaExporter log];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -94,19 +94,19 @@ LABEL_14:
     v29[1] = 3221225472;
     v29[2] = __58__MFMediaExporter_exportAsset_progressHandler_completion___block_invoke_50;
     v29[3] = &unk_1E806FE78;
-    v29[4] = v9;
+    v29[4] = handlerCopy;
     [v14 setProgressHandler:v29];
     [v14 setNetworkAccessAllowed:1];
     [v14 setDeliveryMode:1];
-    v16 = [MEMORY[0x1E6978860] defaultManager];
+    defaultManager = [MEMORY[0x1E6978860] defaultManager];
     v17 = v28;
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __58__MFMediaExporter_exportAsset_progressHandler_completion___block_invoke_51;
     v28[3] = &unk_1E806FF90;
-    v28[4] = v10;
-    v28[5] = a1;
-    v18 = [v16 requestImageDataAndOrientationForAsset:v8 options:v14 resultHandler:v28];
+    v28[4] = completionCopy;
+    v28[5] = self;
+    v18 = [defaultManager requestImageDataAndOrientationForAsset:assetCopy options:v14 resultHandler:v28];
     goto LABEL_14;
   }
 
@@ -122,25 +122,25 @@ LABEL_14:
   v34[1] = 3221225472;
   v34[2] = __58__MFMediaExporter_exportAsset_progressHandler_completion___block_invoke_40;
   v34[3] = &unk_1E806FE78;
-  v20 = v9;
+  v20 = handlerCopy;
   v35 = v20;
   [v14 setProgressHandler:v34];
   [v14 setNetworkAccessAllowed:1];
   [v14 setVersion:0];
-  v21 = [MEMORY[0x1E6978860] defaultManager];
+  defaultManager2 = [MEMORY[0x1E6978860] defaultManager];
   v22 = *MEMORY[0x1E6987320];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __58__MFMediaExporter_exportAsset_progressHandler_completion___block_invoke_41;
   v30[3] = &unk_1E806FF40;
   v32 = v20;
-  v33 = v10;
-  v31 = v8;
-  v23 = [v21 requestExportSessionForVideo:v31 options:v14 exportPreset:v22 resultHandler:v30];
+  v33 = completionCopy;
+  v31 = assetCopy;
+  v23 = [defaultManager2 requestExportSessionForVideo:v31 options:v14 exportPreset:v22 resultHandler:v30];
 
   v24 = &v35;
   v25 = &v32;
-  v16 = v33;
+  defaultManager = v33;
 LABEL_15:
 
   return v23;
@@ -465,11 +465,11 @@ void __58__MFMediaExporter_exportAsset_progressHandler_completion___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)jpegRepresentationForImageData:(id)a3 inputContentType:(id)a4 completion:(id)a5
++ (void)jpegRepresentationForImageData:(id)data inputContentType:(id)type completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  typeCopy = type;
+  completionCopy = completion;
   if (_imageConversionScheduler_onceToken != -1)
   {
     +[MFMediaExporter jpegRepresentationForImageData:inputContentType:completion:];
@@ -480,12 +480,12 @@ void __58__MFMediaExporter_exportAsset_progressHandler_completion___block_invoke
   v14[1] = 3221225472;
   v14[2] = __78__MFMediaExporter_jpegRepresentationForImageData_inputContentType_completion___block_invoke;
   v14[3] = &unk_1E806CA10;
-  v15 = v8;
-  v16 = v7;
-  v17 = v9;
-  v11 = v9;
-  v12 = v7;
-  v13 = v8;
+  v15 = typeCopy;
+  v16 = dataCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = dataCopy;
+  v13 = typeCopy;
   [v10 performBlock:v14];
 }
 

@@ -1,6 +1,6 @@
 @interface SiriSimpleActivationSource
 - (SiriSimpleActivationSource)init;
-- (void)activateFromSource:(int64_t)a3;
+- (void)activateFromSource:(int64_t)source;
 - (void)configureConnection;
 @end
 
@@ -24,10 +24,10 @@
 {
   v3 = MEMORY[0x1E698F498];
   v4 = +[SASBoardServicesConfiguration configuration];
-  v5 = [v4 machServiceIdentifier];
+  machServiceIdentifier = [v4 machServiceIdentifier];
   v6 = +[SASBoardServicesConfiguration configuration];
   v7 = [v6 identifierForService:1];
-  v8 = [v3 endpointForMachName:v5 service:v7 instance:0];
+  v8 = [v3 endpointForMachName:machServiceIdentifier service:v7 instance:0];
 
   v9 = [MEMORY[0x1E698F490] connectionWithEndpoint:v8];
   connection = self->super._connection;
@@ -140,12 +140,12 @@ void __49__SiriSimpleActivationSource_configureConnection__block_invoke_26(uint6
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activateFromSource:(int64_t)a3
+- (void)activateFromSource:(int64_t)source
 {
   os_unfair_lock_lock(&self->super._lock);
-  v5 = [(BSServiceConnection *)self->super._connection remoteTarget];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 activationRequestFromSimpleActivation:v6];
+  remoteTarget = [(BSServiceConnection *)self->super._connection remoteTarget];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:source];
+  [remoteTarget activationRequestFromSimpleActivation:v6];
 
   os_unfair_lock_unlock(&self->super._lock);
 }

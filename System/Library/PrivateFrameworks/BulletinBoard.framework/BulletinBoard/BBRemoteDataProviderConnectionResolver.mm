@@ -1,44 +1,44 @@
 @interface BBRemoteDataProviderConnectionResolver
-+ (id)resolverWithDelegate:(id)a3;
++ (id)resolverWithDelegate:(id)delegate;
 + (id)xpcInterface;
-- (BBRemoteDataProviderConnectionResolver)initWithDelegate:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)dataProviderForSectionID:(id)a3;
-- (id)dataProvidersForUniversalSectionID:(id)a3;
-- (id)debugDescriptionWithChildren:(unint64_t)a3;
+- (BBRemoteDataProviderConnectionResolver)initWithDelegate:(id)delegate;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)dataProviderForSectionID:(id)d;
+- (id)dataProvidersForUniversalSectionID:(id)d;
+- (id)debugDescriptionWithChildren:(unint64_t)children;
 - (void)_registerForPublicationNotification;
-- (void)_registerServiceName:(id)a3 appBundleID:(id)a4 completion:(id)a5;
-- (void)dataProviderStore:(id)a3 didAddDataProvider:(id)a4 performMigration:(BOOL)a5 completion:(id)a6;
-- (void)dataProviderStore:(id)a3 didAddParentSectionFactory:(id)a4;
-- (void)dataProviderStore:(id)a3 didRemoveDataProvider:(id)a4;
+- (void)_registerServiceName:(id)name appBundleID:(id)d completion:(id)completion;
+- (void)dataProviderStore:(id)store didAddDataProvider:(id)provider performMigration:(BOOL)migration completion:(id)completion;
+- (void)dataProviderStore:(id)store didAddParentSectionFactory:(id)factory;
+- (void)dataProviderStore:(id)store didRemoveDataProvider:(id)provider;
 - (void)dealloc;
-- (void)performBlockOnDataProviders:(id)a3;
-- (void)registerServiceName:(id)a3 appBundleID:(id)a4 completion:(id)a5;
-- (void)remoteDataProviderNeedsToWakeClient:(id)a3;
-- (void)removeDataProvider:(id)a3;
-- (void)wakeService:(id)a3 bundleID:(id)a4;
+- (void)performBlockOnDataProviders:(id)providers;
+- (void)registerServiceName:(id)name appBundleID:(id)d completion:(id)completion;
+- (void)remoteDataProviderNeedsToWakeClient:(id)client;
+- (void)removeDataProvider:(id)provider;
+- (void)wakeService:(id)service bundleID:(id)d;
 @end
 
 @implementation BBRemoteDataProviderConnectionResolver
 
-+ (id)resolverWithDelegate:(id)a3
++ (id)resolverWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [objc_alloc(objc_opt_class()) initWithDelegate:delegateCopy];
 
   return v4;
 }
 
-- (BBRemoteDataProviderConnectionResolver)initWithDelegate:(id)a3
+- (BBRemoteDataProviderConnectionResolver)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = BBRemoteDataProviderConnectionResolver;
   v6 = [(BBRemoteDataProviderConnectionResolver *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     dataProviderConnectionsByService = v7->_dataProviderConnectionsByService;
     v7->_dataProviderConnectionsByService = v8;
@@ -143,19 +143,19 @@ void __77__BBRemoteDataProviderConnectionResolver__registerForPublicationNotific
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)debugDescriptionWithChildren:(unint64_t)a3
+- (id)debugDescriptionWithChildren:(unint64_t)children
 {
   v5 = [MEMORY[0x277CCAB68] stringWithString:&stru_28541A970];
-  if (a3)
+  if (children)
   {
-    v6 = a3;
+    childrenCopy = children;
     do
     {
       [v5 appendString:@"    "];
-      --v6;
+      --childrenCopy;
     }
 
-    while (v6);
+    while (childrenCopy);
   }
 
   v7 = MEMORY[0x277CCAB68];
@@ -171,7 +171,7 @@ void __77__BBRemoteDataProviderConnectionResolver__registerForPublicationNotific
   block[4] = self;
   v12 = v10;
   v17 = v12;
-  v18 = a3;
+  childrenCopy2 = children;
   dispatch_sync(queue, block);
   v13 = v17;
   v14 = v12;
@@ -223,11 +223,11 @@ void __71__BBRemoteDataProviderConnectionResolver_debugDescriptionWithChildren__
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = BBLogConnection;
   if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_DEFAULT))
   {
@@ -237,24 +237,24 @@ void __71__BBRemoteDataProviderConnectionResolver_debugDescriptionWithChildren__
     *buf = 138543618;
     v26 = v11;
     v27 = 2114;
-    v28 = v7;
+    v28 = connectionCopy;
     _os_log_impl(&dword_241EFF000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ received connection request from %{public}@", buf, 0x16u);
   }
 
-  if (self->_listener == v6)
+  if (self->_listener == listenerCopy)
   {
-    v15 = [v7 valueForEntitlement:@"com.apple.bulletinboard.dataprovider"];
-    v16 = [v15 BOOLValue];
+    v15 = [connectionCopy valueForEntitlement:@"com.apple.bulletinboard.dataprovider"];
+    bOOLValue = [v15 BOOLValue];
 
-    if (v16)
+    if (bOOLValue)
     {
       queue = self->_queue;
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __77__BBRemoteDataProviderConnectionResolver_listener_shouldAcceptNewConnection___block_invoke;
       v22[3] = &unk_278D2A628;
-      v23 = v7;
-      v24 = self;
+      v23 = connectionCopy;
+      selfCopy = self;
       dispatch_async(queue, v22);
 
       v12 = 1;
@@ -270,7 +270,7 @@ void __71__BBRemoteDataProviderConnectionResolver_debugDescriptionWithChildren__
       *buf = 138543618;
       v26 = v21;
       v27 = 2114;
-      v28 = v7;
+      v28 = connectionCopy;
       _os_log_impl(&dword_241EFF000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ cancelling incoming data provider connection because it lacks proper entitlement: %{public}@", buf, 0x16u);
     }
   }
@@ -294,15 +294,15 @@ uint64_t __77__BBRemoteDataProviderConnectionResolver_listener_shouldAcceptNewCo
   return [v4 resume];
 }
 
-- (void)registerServiceName:(id)a3 appBundleID:(id)a4 completion:(id)a5
+- (void)registerServiceName:(id)name appBundleID:(id)d completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  dCopy = d;
+  completionCopy = completion;
+  if (nameCopy)
   {
-    [(BBRemoteDataProviderConnectionResolver *)self _registerServiceName:v8 appBundleID:v9 completion:v10];
+    [(BBRemoteDataProviderConnectionResolver *)self _registerServiceName:nameCopy appBundleID:dCopy completion:completionCopy];
   }
 
   else
@@ -316,7 +316,7 @@ uint64_t __77__BBRemoteDataProviderConnectionResolver_listener_shouldAcceptNewCo
       v16 = 138543618;
       v17 = v14;
       v18 = 2114;
-      v19 = v9;
+      v19 = dCopy;
       _os_log_impl(&dword_241EFF000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ failed to register for app bundle identifier %{public}@", &v16, 0x16u);
     }
   }
@@ -324,26 +324,26 @@ uint64_t __77__BBRemoteDataProviderConnectionResolver_listener_shouldAcceptNewCo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerServiceName:(id)a3 appBundleID:(id)a4 completion:(id)a5
+- (void)_registerServiceName:(id)name appBundleID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCAE80] currentConnection];
+  nameCopy = name;
+  dCopy = d;
+  completionCopy = completion;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   registerQueue = self->_registerQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__BBRemoteDataProviderConnectionResolver__registerServiceName_appBundleID_completion___block_invoke;
   block[3] = &unk_278D2B1D8;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v11;
-  v21 = v10;
-  v13 = v10;
-  v14 = v11;
-  v15 = v9;
-  v16 = v8;
+  v18 = nameCopy;
+  v19 = dCopy;
+  v20 = currentConnection;
+  v21 = completionCopy;
+  v13 = completionCopy;
+  v14 = currentConnection;
+  v15 = dCopy;
+  v16 = nameCopy;
   dispatch_async(registerQueue, block);
 }
 
@@ -507,16 +507,16 @@ uint64_t __54__BBRemoteDataProviderConnectionResolver_xpcInterface__block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)remoteDataProviderNeedsToWakeClient:(id)a3
+- (void)remoteDataProviderNeedsToWakeClient:(id)client
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 sectionIdentifier];
-  v5 = [(NSMutableDictionary *)self->_dataProviderConnectionsBySectionID objectForKeyedSubscript:v4];
-  v6 = [v5 serviceName];
-  v7 = v6;
+  sectionIdentifier = [client sectionIdentifier];
+  v5 = [(NSMutableDictionary *)self->_dataProviderConnectionsBySectionID objectForKeyedSubscript:sectionIdentifier];
+  serviceName = [v5 serviceName];
+  v7 = serviceName;
   if (v5)
   {
-    v8 = v6 == 0;
+    v8 = serviceName == 0;
   }
 
   else
@@ -526,9 +526,9 @@ uint64_t __54__BBRemoteDataProviderConnectionResolver_xpcInterface__block_invoke
 
   if (!v8)
   {
-    v13 = [v5 serviceName];
-    v14 = [v5 bundleID];
-    [(BBRemoteDataProviderConnectionResolver *)self wakeService:v13 bundleID:v14];
+    serviceName2 = [v5 serviceName];
+    bundleID = [v5 bundleID];
+    [(BBRemoteDataProviderConnectionResolver *)self wakeService:serviceName2 bundleID:bundleID];
 
 LABEL_13:
     goto LABEL_14;
@@ -536,7 +536,7 @@ LABEL_13:
 
   if (v5)
   {
-    v9 = v6 == 0;
+    v9 = serviceName == 0;
   }
 
   else
@@ -549,14 +549,14 @@ LABEL_13:
     v10 = BBLogConnection;
     if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = v10;
+      serviceName2 = v10;
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v16 = 138543618;
       v17 = v12;
       v18 = 2114;
-      v19 = v4;
-      _os_log_impl(&dword_241EFF000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ unable to wake client with no serviceName for sectionID %{public}@", &v16, 0x16u);
+      v19 = sectionIdentifier;
+      _os_log_impl(&dword_241EFF000, serviceName2, OS_LOG_TYPE_DEFAULT, "%{public}@ unable to wake client with no serviceName for sectionID %{public}@", &v16, 0x16u);
 
       goto LABEL_13;
     }
@@ -567,12 +567,12 @@ LABEL_14:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)wakeService:(id)a3 bundleID:(id)a4
+- (void)wakeService:(id)service bundleID:(id)d
 {
   v54 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  serviceCopy = service;
+  dCopy = d;
+  if (!serviceCopy)
   {
     [BBRemoteDataProviderConnectionResolver wakeService:a2 bundleID:self];
   }
@@ -585,11 +585,11 @@ LABEL_14:
   v45 = __Block_byref_object_copy__4;
   v46 = __Block_byref_object_dispose__4;
   v47 = 0;
-  if (v8)
+  if (dCopy)
   {
     dispatch_group_enter(v9);
     v11 = MEMORY[0x277D46F48];
-    v12 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifier:v8];
+    v12 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifier:dCopy];
     v13 = v43;
     obj = 0;
     v14 = [v11 handleForPredicate:v12 error:&obj];
@@ -606,7 +606,7 @@ LABEL_14:
         *buf = 138543874;
         v49 = v17;
         v50 = 2114;
-        v51 = v8;
+        v51 = dCopy;
         v52 = 2114;
         v53 = v18;
         _os_log_impl(&dword_241EFF000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ failed to get process handle for %{public}@; %{public}@", buf, 0x20u);
@@ -620,24 +620,24 @@ LABEL_14:
 
     else
     {
-      v20 = [v14 currentState];
-      v21 = [v20 process];
+      currentState = [v14 currentState];
+      process = [currentState process];
 
-      if (!v21 || [v21 pid] == -1)
+      if (!process || [process pid] == -1)
       {
         v26 = MEMORY[0x277CBEAC0];
         v27 = [MEMORY[0x277CCABB0] numberWithBool:1];
         v28 = [v26 dictionaryWithObject:v27 forKey:*MEMORY[0x277D0ABF0]];
 
         v29 = [MEMORY[0x277D0AD60] optionsWithDictionary:v28];
-        v30 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+        serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __63__BBRemoteDataProviderConnectionResolver_wakeService_bundleID___block_invoke;
         v38[3] = &unk_278D2B200;
         v40 = &v42;
         v39 = v10;
-        [v30 openApplication:v8 withOptions:v29 completion:v38];
+        [serviceWithDefaultShellEndpoint openApplication:dCopy withOptions:v29 completion:v38];
       }
 
       else
@@ -647,11 +647,11 @@ LABEL_14:
         {
           v23 = objc_opt_class();
           v24 = NSStringFromClass(v23);
-          v25 = [v21 pid];
+          v25 = [process pid];
           *buf = 138543874;
           v49 = v24;
           v50 = 2114;
-          v51 = v8;
+          v51 = dCopy;
           v52 = 1024;
           LODWORD(v53) = v25;
           _os_log_impl(&dword_241EFF000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ will not launch %{public}@ because it is already running with a pid of %d", buf, 0x1Cu);
@@ -667,10 +667,10 @@ LABEL_14:
   v34[1] = 3221225472;
   v34[2] = __63__BBRemoteDataProviderConnectionResolver_wakeService_bundleID___block_invoke_42;
   v34[3] = &unk_278D2A8D8;
-  v36 = self;
+  selfCopy = self;
   v37 = &v42;
-  v35 = v7;
-  v32 = v7;
+  v35 = serviceCopy;
+  v32 = serviceCopy;
   dispatch_group_notify(v10, queue, v34);
 
   _Block_object_dispose(&v42, 8);
@@ -727,9 +727,9 @@ LABEL_5:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dataProviderForSectionID:(id)a3
+- (id)dataProviderForSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -742,9 +742,9 @@ LABEL_5:
   block[2] = __67__BBRemoteDataProviderConnectionResolver_dataProviderForSectionID___block_invoke;
   block[3] = &unk_278D2B228;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -762,9 +762,9 @@ void __67__BBRemoteDataProviderConnectionResolver_dataProviderForSectionID___blo
   *(v3 + 40) = v2;
 }
 
-- (id)dataProvidersForUniversalSectionID:(id)a3
+- (id)dataProvidersForUniversalSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -772,10 +772,10 @@ void __67__BBRemoteDataProviderConnectionResolver_dataProviderForSectionID___blo
   block[2] = __77__BBRemoteDataProviderConnectionResolver_dataProvidersForUniversalSectionID___block_invoke;
   block[3] = &unk_278D2AB58;
   block[4] = self;
-  v13 = v4;
+  v13 = dCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
+  v8 = dCopy;
   dispatch_sync(queue, block);
   v9 = v14;
   v10 = v7;
@@ -822,17 +822,17 @@ void __77__BBRemoteDataProviderConnectionResolver_dataProvidersForUniversalSecti
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDataProvider:(id)a3
+- (void)removeDataProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__BBRemoteDataProviderConnectionResolver_removeDataProvider___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = providerCopy;
+  v6 = providerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -845,10 +845,10 @@ void __61__BBRemoteDataProviderConnectionResolver_removeDataProvider___block_inv
   [v4 removeDataProvider:*(a1 + 40)];
 }
 
-- (void)performBlockOnDataProviders:(id)a3
+- (void)performBlockOnDataProviders:(id)providers
 {
-  v5 = a3;
-  if (!v5)
+  providersCopy = providers;
+  if (!providersCopy)
   {
     [(BBRemoteDataProviderConnectionResolver *)a2 performBlockOnDataProviders:?];
   }
@@ -859,8 +859,8 @@ void __61__BBRemoteDataProviderConnectionResolver_removeDataProvider___block_inv
   v8[2] = __70__BBRemoteDataProviderConnectionResolver_performBlockOnDataProviders___block_invoke;
   v8[3] = &unk_278D2AC38;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = providersCopy;
+  v7 = providersCopy;
   dispatch_async(queue, v8);
 }
 
@@ -903,24 +903,24 @@ void __70__BBRemoteDataProviderConnectionResolver_performBlockOnDataProviders___
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataProviderStore:(id)a3 didAddDataProvider:(id)a4 performMigration:(BOOL)a5 completion:(id)a6
+- (void)dataProviderStore:(id)store didAddDataProvider:(id)provider performMigration:(BOOL)migration completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  storeCopy = store;
+  providerCopy = provider;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __107__BBRemoteDataProviderConnectionResolver_dataProviderStore_didAddDataProvider_performMigration_completion___block_invoke;
   block[3] = &unk_278D2ADF0;
   block[4] = self;
-  v18 = v11;
-  v21 = a5;
-  v19 = v10;
-  v20 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
+  v18 = providerCopy;
+  migrationCopy = migration;
+  v19 = storeCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = storeCopy;
+  v16 = providerCopy;
   dispatch_async(queue, block);
 }
 
@@ -948,17 +948,17 @@ void __107__BBRemoteDataProviderConnectionResolver_dataProviderStore_didAddDataP
   [*(*(a1 + 32) + 64) dataProviderStore:*(a1 + 32) didAddDataProvider:*(a1 + 40) performMigration:*(a1 + 64) completion:*(a1 + 56)];
 }
 
-- (void)dataProviderStore:(id)a3 didRemoveDataProvider:(id)a4
+- (void)dataProviderStore:(id)store didRemoveDataProvider:(id)provider
 {
-  v5 = a4;
+  providerCopy = provider;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __82__BBRemoteDataProviderConnectionResolver_dataProviderStore_didRemoveDataProvider___block_invoke;
   v8[3] = &unk_278D2A628;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = providerCopy;
+  v7 = providerCopy;
   dispatch_async(queue, v8);
 }
 
@@ -986,13 +986,13 @@ void __82__BBRemoteDataProviderConnectionResolver_dataProviderStore_didRemoveDat
   [*(*(a1 + 32) + 64) dataProviderStore:*(a1 + 32) didRemoveDataProvider:*(a1 + 40)];
 }
 
-- (void)dataProviderStore:(id)a3 didAddParentSectionFactory:(id)a4
+- (void)dataProviderStore:(id)store didAddParentSectionFactory:(id)factory
 {
-  v6 = a4;
+  factoryCopy = factory;
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(BBDataProviderStoreDelegate *)self->_delegate dataProviderStore:self didAddParentSectionFactory:v6];
+    [(BBDataProviderStoreDelegate *)self->_delegate dataProviderStore:self didAddParentSectionFactory:factoryCopy];
   }
 }
 

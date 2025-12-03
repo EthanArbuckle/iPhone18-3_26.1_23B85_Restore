@@ -1,7 +1,7 @@
 @interface SUUIUpdateOperationPurgeContext
 - (SUUIUpdateOperationPurgeContext)init;
 - (id)description;
-- (id)initAsUserRequest:(BOOL)a3 notifyUser:(BOOL)a4;
+- (id)initAsUserRequest:(BOOL)request notifyUser:(BOOL)user;
 @end
 
 @implementation SUUIUpdateOperationPurgeContext
@@ -15,11 +15,11 @@
   return v3;
 }
 
-- (id)initAsUserRequest:(BOOL)a3 notifyUser:(BOOL)a4
+- (id)initAsUserRequest:(BOOL)request notifyUser:(BOOL)user
 {
   v10 = a2;
-  v9 = a3;
-  v8 = a4;
+  requestCopy = request;
+  userCopy = user;
   v11 = 0;
   v7.receiver = self;
   v7.super_class = SUUIUpdateOperationPurgeContext;
@@ -28,8 +28,8 @@
   objc_storeStrong(&v11, v6);
   if (v6)
   {
-    v11->_notifyUser = v8;
-    v11->_userRequested = v9;
+    v11->_notifyUser = userCopy;
+    v11->_userRequested = requestCopy;
   }
 
   v5 = MEMORY[0x277D82BE0](v11);

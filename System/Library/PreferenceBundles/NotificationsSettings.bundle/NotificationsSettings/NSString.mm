@@ -1,12 +1,12 @@
 @interface NSString
-+ (id)deviceSpecificString:(id)a3;
++ (id)deviceSpecificString:(id)string;
 @end
 
 @implementation NSString
 
-+ (id)deviceSpecificString:(id)a3
++ (id)deviceSpecificString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = MGGetSInt32Answer();
   v5 = MGGetSInt32Answer();
   if (v4 > 8)
@@ -91,7 +91,7 @@
   }
 
 LABEL_25:
-  v8 = [v3 stringByAppendingString:v6];
+  v8 = [stringCopy stringByAppendingString:v6];
 
   return v8;
 }

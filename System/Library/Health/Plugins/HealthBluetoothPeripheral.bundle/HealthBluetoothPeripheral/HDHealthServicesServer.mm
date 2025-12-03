@@ -1,74 +1,74 @@
 @interface HDHealthServicesServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 + (id)requiredEntitlements;
-- (HDHealthServicesServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDHealthServicesServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)connectionInterrupted;
-- (void)remote_addPairingForHealthService:(id)a3 withCompletion:(id)a4;
-- (void)remote_addPeripheral:(id)a3 name:(id)a4 forServices:(id)a5 withCompletion:(id)a6;
-- (void)remote_beginBluetoothStatusUpdates:(id)a3;
+- (void)remote_addPairingForHealthService:(id)service withCompletion:(id)completion;
+- (void)remote_addPeripheral:(id)peripheral name:(id)name forServices:(id)services withCompletion:(id)completion;
+- (void)remote_beginBluetoothStatusUpdates:(id)updates;
 - (void)remote_endBluetoothStatusUpdates;
-- (void)remote_endHealthServiceDiscovery:(unint64_t)a3;
-- (void)remote_endHealthServiceSession:(unint64_t)a3;
-- (void)remote_fetchSupportedServiceIDsWithCompletion:(id)a3;
-- (void)remote_getEnabledStatusForPeripheral:(id)a3 withCompletion:(id)a4;
-- (void)remote_getHealthPeripheralsWithFilter:(unint64_t)a3 handler:(id)a4;
-- (void)remote_getHealthServiceProperty:(id)a3 forSession:(unint64_t)a4 withHandler:(id)a5;
-- (void)remote_getSupportedPropertyNamesWithHandler:(id)a3;
-- (void)remote_performHealthServiceOperation:(id)a3 onSession:(unint64_t)a4 withParameters:(id)a5 completion:(id)a6;
-- (void)remote_removePairingForHealthService:(id)a3 withCompletion:(id)a4;
-- (void)remote_removePeripheral:(id)a3 withCompletion:(id)a4;
-- (void)remote_setEnabledStatus:(BOOL)a3 forPeripheral:(id)a4 withCompletion:(id)a5;
-- (void)remote_startHealthServiceDiscovery:(int64_t)a3 withCompletion:(id)a4;
-- (void)remote_startHealthServiceSession:(id)a3 withCompletion:(id)a4;
+- (void)remote_endHealthServiceDiscovery:(unint64_t)discovery;
+- (void)remote_endHealthServiceSession:(unint64_t)session;
+- (void)remote_fetchSupportedServiceIDsWithCompletion:(id)completion;
+- (void)remote_getEnabledStatusForPeripheral:(id)peripheral withCompletion:(id)completion;
+- (void)remote_getHealthPeripheralsWithFilter:(unint64_t)filter handler:(id)handler;
+- (void)remote_getHealthServiceProperty:(id)property forSession:(unint64_t)session withHandler:(id)handler;
+- (void)remote_getSupportedPropertyNamesWithHandler:(id)handler;
+- (void)remote_performHealthServiceOperation:(id)operation onSession:(unint64_t)session withParameters:(id)parameters completion:(id)completion;
+- (void)remote_removePairingForHealthService:(id)service withCompletion:(id)completion;
+- (void)remote_removePeripheral:(id)peripheral withCompletion:(id)completion;
+- (void)remote_setEnabledStatus:(BOOL)status forPeripheral:(id)peripheral withCompletion:(id)completion;
+- (void)remote_startHealthServiceDiscovery:(int64_t)discovery withCompletion:(id)completion;
+- (void)remote_startHealthServiceSession:(id)session withCompletion:(id)completion;
 @end
 
 @implementation HDHealthServicesServer
 
-- (HDHealthServicesServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDHealthServicesServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a5;
+  clientCopy = client;
   v18.receiver = self;
   v18.super_class = HDHealthServicesServer;
-  v11 = [(HDHealthServicesServer *)&v18 initWithUUID:a3 configuration:a4 client:v10 delegate:a6];
+  v11 = [(HDHealthServicesServer *)&v18 initWithUUID:d configuration:configuration client:clientCopy delegate:delegate];
   if (v11)
   {
     v12 = HKCreateSerialDispatchQueue();
     queue = v11->_queue;
     v11->_queue = v12;
 
-    v14 = [v10 profile];
-    v15 = [v14 serviceManager];
+    profile = [clientCopy profile];
+    serviceManager = [profile serviceManager];
     healthServiceManager = v11->_healthServiceManager;
-    v11->_healthServiceManager = v15;
+    v11->_healthServiceManager = serviceManager;
   }
 
   return v11;
 }
 
-- (void)remote_fetchSupportedServiceIDsWithCompletion:(id)a3
+- (void)remote_fetchSupportedServiceIDsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v3 = HDHealthPeripheralProfiles();
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, v3, 0);
+    completionCopy[2](completionCopy, v3, 0);
   }
 }
 
-- (void)remote_startHealthServiceDiscovery:(int64_t)a3 withCompletion:(id)a4
+- (void)remote_startHealthServiceDiscovery:(int64_t)discovery withCompletion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    sub_2D60C(self, &v7, a3, v6);
+    sub_2D60C(self, &v7, discovery, completionCopy);
   }
 }
 
-- (void)remote_startHealthServiceSession:(id)a3 withCompletion:(id)a4
+- (void)remote_startHealthServiceSession:(id)session withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  sessionCopy = session;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v9 = [HDDaemonTransaction transactionWithOwner:self activityName:@"StartSession"];
     if (self)
@@ -85,9 +85,9 @@
     block[1] = 3221225472;
     block[2] = sub_AE70;
     block[3] = &unk_5CEF0;
-    v13 = v7;
-    v14 = self;
-    v16 = v8;
+    v13 = sessionCopy;
+    selfCopy = self;
+    v16 = completionCopy;
     v17 = a2;
     v15 = v9;
     v11 = v9;
@@ -95,40 +95,40 @@
   }
 }
 
-- (void)remote_getHealthPeripheralsWithFilter:(unint64_t)a3 handler:(id)a4
+- (void)remote_getHealthPeripheralsWithFilter:(unint64_t)filter handler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    sub_2D948(self, &v7, a3, v6);
+    sub_2D948(self, &v7, filter, handlerCopy);
   }
 }
 
-- (void)remote_addPairingForHealthService:(id)a3 withCompletion:(id)a4
+- (void)remote_addPairingForHealthService:(id)service withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  serviceCopy = service;
+  completionCopy = completion;
+  if (completionCopy)
   {
     sub_2DA10();
   }
 }
 
-- (void)remote_removePairingForHealthService:(id)a3 withCompletion:(id)a4
+- (void)remote_removePairingForHealthService:(id)service withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  serviceCopy = service;
+  completionCopy = completion;
+  if (completionCopy)
   {
     sub_2DAD4();
   }
 }
 
-- (void)remote_addPeripheral:(id)a3 name:(id)a4 forServices:(id)a5 withCompletion:(id)a6
+- (void)remote_addPeripheral:(id)peripheral name:(id)name forServices:(id)services withCompletion:(id)completion
 {
-  v9 = a5;
-  v10 = a6;
-  if (v10)
+  servicesCopy = services;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v11 = [HDDaemonTransaction transactionWithOwner:self activityName:@"AddPeripheral"];
     if (self)
@@ -145,9 +145,9 @@
     block[1] = 3221225472;
     block[2] = sub_BAE8;
     block[3] = &unk_5CEF0;
-    v15 = v9;
-    v16 = self;
-    v18 = v10;
+    v15 = servicesCopy;
+    selfCopy = self;
+    v18 = completionCopy;
     v19 = a2;
     v17 = v11;
     v13 = v11;
@@ -155,31 +155,31 @@
   }
 }
 
-- (void)remote_removePeripheral:(id)a3 withCompletion:(id)a4
+- (void)remote_removePeripheral:(id)peripheral withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  peripheralCopy = peripheral;
+  completionCopy = completion;
+  if (completionCopy)
   {
     sub_2DB98();
   }
 }
 
-- (void)remote_getEnabledStatusForPeripheral:(id)a3 withCompletion:(id)a4
+- (void)remote_getEnabledStatusForPeripheral:(id)peripheral withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  peripheralCopy = peripheral;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    sub_2DC5C(self, &v8, v6, v7);
+    sub_2DC5C(self, &v8, peripheralCopy, completionCopy);
   }
 }
 
-- (void)remote_setEnabledStatus:(BOOL)a3 forPeripheral:(id)a4 withCompletion:(id)a5
+- (void)remote_setEnabledStatus:(BOOL)status forPeripheral:(id)peripheral withCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  peripheralCopy = peripheral;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v10 = [HDDaemonTransaction transactionWithOwner:self activityName:@"SetPeripheralStatus"];
     if (self)
@@ -197,36 +197,36 @@
     block[2] = sub_2D0F0;
     block[3] = &unk_5CFA8;
     block[4] = self;
-    v17 = a3;
-    v14 = v8;
+    statusCopy = status;
+    v14 = peripheralCopy;
     v15 = v10;
-    v16 = v9;
+    v16 = completionCopy;
     v12 = v10;
     dispatch_async(queue, block);
   }
 }
 
-- (void)remote_getSupportedPropertyNamesWithHandler:(id)a3
+- (void)remote_getSupportedPropertyNamesWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    sub_2DD3C(self, v5, v4);
+    sub_2DD3C(self, v5, handlerCopy);
   }
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 serviceManager];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  serviceManager = [profile serviceManager];
 
-  if (v16)
+  if (serviceManager)
   {
-    v17 = [[HDHealthServicesServer alloc] initWithUUID:v11 configuration:v12 client:v13 delegate:v14];
+    v17 = [[HDHealthServicesServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
   }
 
   else
@@ -234,10 +234,10 @@
     v18 = +[NSError hk_featureUnavailableForProfileError];
     if (v18)
     {
-      if (a7)
+      if (error)
       {
         v19 = v18;
-        *a7 = v18;
+        *error = v18;
       }
 
       else
@@ -262,15 +262,15 @@
 
 - (void)connectionInterrupted
 {
-  if (a1)
+  if (self)
   {
-    [a1 remote_endBluetoothStatusUpdates];
+    [self remote_endBluetoothStatusUpdates];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v2 = [a1[4] allValues];
-    v3 = [v2 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    allValues = [self[4] allValues];
+    v3 = [allValues countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v3)
     {
       v4 = v3;
@@ -282,15 +282,15 @@
         {
           if (*v17 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(allValues);
           }
 
-          [a1 remote_endHealthServiceDiscovery:{objc_msgSend(*(*(&v16 + 1) + 8 * v6), "integerValue")}];
+          [self remote_endHealthServiceDiscovery:{objc_msgSend(*(*(&v16 + 1) + 8 * v6), "integerValue")}];
           v6 = v6 + 1;
         }
 
         while (v4 != v6);
-        v4 = [v2 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v4 = [allValues countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v4);
@@ -300,8 +300,8 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [a1[6] allValues];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v20 count:16];
+    allValues2 = [self[6] allValues];
+    v8 = [allValues2 countByEnumeratingWithState:&v12 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -313,15 +313,15 @@
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues2);
           }
 
-          [a1 remote_endHealthServiceSession:{objc_msgSend(*(*(&v12 + 1) + 8 * v11), "integerValue")}];
+          [self remote_endHealthServiceSession:{objc_msgSend(*(*(&v12 + 1) + 8 * v11), "integerValue")}];
           v11 = v11 + 1;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v20 count:16];
+        v9 = [allValues2 countByEnumeratingWithState:&v12 objects:v20 count:16];
       }
 
       while (v9);
@@ -329,9 +329,9 @@
   }
 }
 
-- (void)remote_beginBluetoothStatusUpdates:(id)a3
+- (void)remote_beginBluetoothStatusUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   [HDDaemonTransaction transactionWithOwner:self activityName:@"BeginStatusUpdates"];
   objc_claimAutoreleasedReturnValue();
   if (self)
@@ -348,7 +348,7 @@
   sub_7D04();
   v10 = v6;
   v7 = v6;
-  v8 = v4;
+  v8 = updatesCopy;
   sub_C2AC();
   dispatch_async(queue, v9);
 }
@@ -375,7 +375,7 @@
   dispatch_async(queue, v6);
 }
 
-- (void)remote_endHealthServiceDiscovery:(unint64_t)a3
+- (void)remote_endHealthServiceDiscovery:(unint64_t)discovery
 {
   [HDDaemonTransaction transactionWithOwner:self activityName:@"EndDiscovery"];
   objc_claimAutoreleasedReturnValue();
@@ -397,7 +397,7 @@
   dispatch_async(queue, v7);
 }
 
-- (void)remote_endHealthServiceSession:(unint64_t)a3
+- (void)remote_endHealthServiceSession:(unint64_t)session
 {
   [HDDaemonTransaction transactionWithOwner:self activityName:@"EndSession"];
   objc_claimAutoreleasedReturnValue();
@@ -419,10 +419,10 @@
   dispatch_async(queue, v7);
 }
 
-- (void)remote_getHealthServiceProperty:(id)a3 forSession:(unint64_t)a4 withHandler:(id)a5
+- (void)remote_getHealthServiceProperty:(id)property forSession:(unint64_t)session withHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  propertyCopy = property;
+  handlerCopy = handler;
   [HDDaemonTransaction transactionWithOwner:self activityName:@"GetProperty"];
   objc_claimAutoreleasedReturnValue();
   if (self)
@@ -439,17 +439,17 @@
   sub_7D04();
   v15 = v10;
   v11 = v10;
-  v12 = v8;
-  v13 = v7;
+  v12 = handlerCopy;
+  v13 = propertyCopy;
   sub_C2AC();
   dispatch_async(queue, v14);
 }
 
-- (void)remote_performHealthServiceOperation:(id)a3 onSession:(unint64_t)a4 withParameters:(id)a5 completion:(id)a6
+- (void)remote_performHealthServiceOperation:(id)operation onSession:(unint64_t)session withParameters:(id)parameters completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  operationCopy = operation;
+  parametersCopy = parameters;
+  completionCopy = completion;
   [HDDaemonTransaction transactionWithOwner:self activityName:@"PerformOperation"];
   objc_claimAutoreleasedReturnValue();
   if (self)
@@ -464,12 +464,12 @@
 
   sub_7C60();
   sub_7D74();
-  v19 = v10;
+  v19 = parametersCopy;
   v20 = v13;
   v14 = v13;
-  v15 = v11;
-  v16 = v10;
-  v17 = v9;
+  v15 = completionCopy;
+  v16 = parametersCopy;
+  v17 = operationCopy;
   sub_C2DC();
   dispatch_async(queue, v18);
 }

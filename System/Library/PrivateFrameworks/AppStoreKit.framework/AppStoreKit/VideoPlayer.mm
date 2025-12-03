@@ -1,7 +1,7 @@
 @interface VideoPlayer
 - (_TtC11AppStoreKit11VideoPlayer)init;
-- (_TtC11AppStoreKit11VideoPlayer)initWithPlayerItem:(id)a3;
-- (_TtC11AppStoreKit11VideoPlayer)initWithURL:(id)a3;
+- (_TtC11AppStoreKit11VideoPlayer)initWithPlayerItem:(id)item;
+- (_TtC11AppStoreKit11VideoPlayer)initWithURL:(id)l;
 - (void)pause;
 - (void)play;
 @end
@@ -10,7 +10,7 @@
 
 - (void)play
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E13FA4B0();
 }
 
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (_TtC11AppStoreKit11VideoPlayer)initWithURL:(id)a3
+- (_TtC11AppStoreKit11VideoPlayer)initWithURL:(id)l
 {
   v3 = sub_1E1AEFCCC();
   MEMORY[0x1EEE9AC00](v3 - 8);
@@ -42,7 +42,7 @@
   return result;
 }
 
-- (_TtC11AppStoreKit11VideoPlayer)initWithPlayerItem:(id)a3
+- (_TtC11AppStoreKit11VideoPlayer)initWithPlayerItem:(id)item
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

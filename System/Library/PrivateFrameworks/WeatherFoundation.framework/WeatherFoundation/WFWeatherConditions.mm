@@ -1,50 +1,50 @@
 @interface WFWeatherConditions
 + (NSCalendar)calendar;
 - (BOOL)wf_isDay;
-- (BOOL)wf_isDayIfSunrise:(id)a3 sunset:(id)a4;
+- (BOOL)wf_isDayIfSunrise:(id)sunrise sunset:(id)sunset;
 - (NSMutableDictionary)components;
 - (WFWeatherConditions)init;
-- (WFWeatherConditions)initWithCoder:(id)a3;
+- (WFWeatherConditions)initWithCoder:(id)coder;
 - (id)allComponents;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)valueForComponent:(id)a3;
-- (id)valueForComponentSync:(id)a3;
-- (void)editLinksWithLocale:(id)a3 trackingParameter:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setComponents:(id)a3;
-- (void)setLocation:(id)a3;
-- (void)setValue:(id)a3 forComponent:(id)a4;
-- (void)setValueSync:(id)a3 forComponent:(id)a4;
+- (id)valueForComponent:(id)component;
+- (id)valueForComponentSync:(id)sync;
+- (void)editLinksWithLocale:(id)locale trackingParameter:(id)parameter;
+- (void)encodeWithCoder:(id)coder;
+- (void)setComponents:(id)components;
+- (void)setLocation:(id)location;
+- (void)setValue:(id)value forComponent:(id)component;
+- (void)setValueSync:(id)sync forComponent:(id)component;
 @end
 
 @implementation WFWeatherConditions
 
-- (void)editLinksWithLocale:(id)a3 trackingParameter:(id)a4
+- (void)editLinksWithLocale:(id)locale trackingParameter:(id)parameter
 {
-  v19 = a4;
-  v6 = a3;
+  parameterCopy = parameter;
+  localeCopy = locale;
   v7 = [(WFWeatherConditions *)self valueForComponent:@"WFWeatherIOSLinkComponent"];
   v8 = [(WFWeatherConditions *)self valueForComponent:@"WFWeatherMobileLinkComponent"];
   v9 = [(WFWeatherConditions *)self valueForComponent:@"WFWeatherWebLinkComponent"];
-  if (v7 && ([v7 wf_URLHasParameter:v19] & 1) == 0)
+  if (v7 && ([v7 wf_URLHasParameter:parameterCopy] & 1) == 0)
   {
-    v10 = [v7 wf_URLWithTracking:v19];
+    v10 = [v7 wf_URLWithTracking:parameterCopy];
 
     [(WFWeatherConditions *)self setValue:v10 forComponent:@"WFWeatherIOSLinkComponent"];
     v7 = v10;
   }
 
-  v11 = [v6 objectForKey:*MEMORY[0x277CBE690]];
-  v12 = [v11 uppercaseString];
+  v11 = [localeCopy objectForKey:*MEMORY[0x277CBE690]];
+  uppercaseString = [v11 uppercaseString];
 
-  v13 = [v6 objectForKey:*MEMORY[0x277CBE6C8]];
+  v13 = [localeCopy objectForKey:*MEMORY[0x277CBE6C8]];
 
-  v14 = [v13 lowercaseString];
+  lowercaseString = [v13 lowercaseString];
 
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v14, v12];
-  v16 = [v19 stringByAppendingFormat:@"&locale=%@", v15];
+  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", lowercaseString, uppercaseString];
+  v16 = [parameterCopy stringByAppendingFormat:@"&locale=%@", v15];
   if (v8 && ([v8 wf_URLHasParameter:v16] & 1) == 0)
   {
     v17 = [v8 wf_URLWithTracking:v16];
@@ -79,9 +79,9 @@
   return v2;
 }
 
-- (WFWeatherConditions)initWithCoder:(id)a3
+- (WFWeatherConditions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WFWeatherConditions;
   v5 = [(WFWeatherConditions *)&v12 init];
@@ -92,16 +92,16 @@
       [WFWeatherConditions initWithCoder:];
     }
 
-    v6 = [v4 decodeObjectOfClasses:initWithCoder__classes_0 forKey:@"WFWeatherForecastComponentsDictionary"];
+    v6 = [coderCopy decodeObjectOfClasses:initWithCoder__classes_0 forKey:@"WFWeatherForecastComponentsDictionary"];
     v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v6 copyItems:1];
     components = v5->_components;
     v5->_components = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFWeatherForecastComponentsLocationKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFWeatherForecastComponentsLocationKey"];
     location = v5->_location;
     v5->_location = v9;
 
-    v5->_nightForecast = [v4 decodeBoolForKey:@"WFWeatherForecastComponentsIsNightForecastKey"];
+    v5->_nightForecast = [coderCopy decodeBoolForKey:@"WFWeatherForecastComponentsIsNightForecastKey"];
     [(WFWeatherConditions *)v5 _commonInit];
   }
 
@@ -125,31 +125,31 @@ uint64_t __37__WFWeatherConditions_initWithCoder___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(WFWeatherConditions *)self components];
-  [v6 encodeObject:v4 forKey:@"WFWeatherForecastComponentsDictionary"];
+  coderCopy = coder;
+  components = [(WFWeatherConditions *)self components];
+  [coderCopy encodeObject:components forKey:@"WFWeatherForecastComponentsDictionary"];
 
-  v5 = [(WFWeatherConditions *)self location];
-  [v6 encodeObject:v5 forKey:@"WFWeatherForecastComponentsLocationKey"];
+  location = [(WFWeatherConditions *)self location];
+  [coderCopy encodeObject:location forKey:@"WFWeatherForecastComponentsLocationKey"];
 
-  [v6 encodeBool:-[WFWeatherConditions isNightForecast](self forKey:{"isNightForecast"), @"WFWeatherForecastComponentsIsNightForecastKey"}];
+  [coderCopy encodeBool:-[WFWeatherConditions isNightForecast](self forKey:{"isNightForecast"), @"WFWeatherForecastComponentsIsNightForecastKey"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
   v5 = objc_alloc(MEMORY[0x277CBEB38]);
-  v6 = [(WFWeatherConditions *)self components];
-  v7 = [v5 initWithDictionary:v6 copyItems:1];
+  components = [(WFWeatherConditions *)self components];
+  v7 = [v5 initWithDictionary:components copyItems:1];
   v8 = *(v4 + 24);
   *(v4 + 24) = v7;
 
-  v9 = [(WFWeatherConditions *)self location];
+  location = [(WFWeatherConditions *)self location];
   v10 = *(v4 + 8);
-  *(v4 + 8) = v9;
+  *(v4 + 8) = location;
 
   *(v4 + 16) = [(WFWeatherConditions *)self isNightForecast];
   return v4;
@@ -160,7 +160,7 @@ uint64_t __37__WFWeatherConditions_initWithCoder___block_invoke()
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@: %p, ", objc_opt_class(), self];
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v4 setDateFormat:@"yyy-MM-dd'T'hh:mm:ss"];
-  v5 = [(WFWeatherConditions *)self components];
+  components = [(WFWeatherConditions *)self components];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __34__WFWeatherConditions_description__block_invoke;
@@ -169,7 +169,7 @@ uint64_t __37__WFWeatherConditions_initWithCoder___block_invoke()
   v14 = v3;
   v6 = v3;
   v7 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v12];
+  [components enumerateKeysAndObjectsUsingBlock:v12];
 
   v8 = MEMORY[0x277CCACA8];
   v9 = [v6 substringWithRange:{0, objc_msgSend(v6, "length") - 2}];
@@ -194,9 +194,9 @@ void __34__WFWeatherConditions_description__block_invoke(uint64_t a1, void *a2, 
   [*(a1 + 40) appendFormat:@"%@ = %@, ", v9, v6];
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  self->_location = [a3 copy];
+  self->_location = [location copy];
 
   MEMORY[0x2821F96F8]();
 }
@@ -210,11 +210,11 @@ void __34__WFWeatherConditions_description__block_invoke(uint64_t a1, void *a2, 
   return v3;
 }
 
-- (void)setComponents:(id)a3
+- (void)setComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   os_unfair_lock_lock_with_options();
-  v5 = [v4 copy];
+  v5 = [componentsCopy copy];
 
   components = self->_components;
   self->_components = v5;
@@ -222,23 +222,23 @@ void __34__WFWeatherConditions_description__block_invoke(uint64_t a1, void *a2, 
   os_unfair_lock_unlock(&self->_componentsLock);
 }
 
-- (id)valueForComponentSync:(id)a3
+- (id)valueForComponentSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_components valueForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_components valueForKey:syncCopy];
 
   os_unfair_lock_unlock(&self->_componentsLock);
 
   return v5;
 }
 
-- (void)setValueSync:(id)a3 forComponent:(id)a4
+- (void)setValueSync:(id)sync forComponent:(id)component
 {
-  v6 = a4;
-  v7 = a3;
+  componentCopy = component;
+  syncCopy = sync;
   os_unfair_lock_lock_with_options();
-  [(NSMutableDictionary *)self->_components setValue:v7 forKey:v6];
+  [(NSMutableDictionary *)self->_components setValue:syncCopy forKey:componentCopy];
 
   os_unfair_lock_unlock(&self->_componentsLock);
 }
@@ -246,12 +246,12 @@ void __34__WFWeatherConditions_description__block_invoke(uint64_t a1, void *a2, 
 - (id)allComponents
 {
   v2 = MEMORY[0x277CBEB58];
-  v3 = [(WFWeatherConditions *)self components];
-  v4 = [v3 allKeys];
-  v5 = v4;
-  if (v4)
+  components = [(WFWeatherConditions *)self components];
+  allKeys = [components allKeys];
+  v5 = allKeys;
+  if (allKeys)
   {
-    v6 = v4;
+    v6 = allKeys;
   }
 
   else
@@ -261,21 +261,21 @@ void __34__WFWeatherConditions_description__block_invoke(uint64_t a1, void *a2, 
 
   v7 = [v2 setWithArray:v6];
 
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
-- (id)valueForComponent:(id)a3
+- (id)valueForComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   if (valueForComponent__onceToken != -1)
   {
     [WFWeatherConditions valueForComponent:];
   }
 
-  v5 = [v4 hash];
-  v6 = [(WFWeatherConditions *)self valueForComponentSync:v4];
+  v5 = [componentCopy hash];
+  v6 = [(WFWeatherConditions *)self valueForComponentSync:componentCopy];
   v7 = v6;
   if (v6)
   {
@@ -318,7 +318,7 @@ LABEL_13:
   if (v5 != valueForComponent__sunriseTimeComponentHash && v5 != valueForComponent__sunsetTimeComponentHash && v5 != valueForComponent__sunriseDateComponentHash && v5 != valueForComponent__sunsetDateComponentHash)
   {
 LABEL_21:
-    v8 = [(WFWeatherConditions *)self valueForComponentSync:v4];
+    v8 = [(WFWeatherConditions *)self valueForComponentSync:componentCopy];
     goto LABEL_5;
   }
 
@@ -359,11 +359,11 @@ LABEL_21:
       goto LABEL_13;
     }
 
-    v27 = [(WFWeatherConditions *)self location];
-    v22 = [v27 timeZone];
+    location = [(WFWeatherConditions *)self location];
+    timeZone = [location timeZone];
     v23 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5D0]];
-    v24 = [v23 componentsInTimeZone:v22 fromDate:v12];
-    v25 = [v23 componentsInTimeZone:v22 fromDate:v20];
+    v24 = [v23 componentsInTimeZone:timeZone fromDate:v12];
+    v25 = [v23 componentsInTimeZone:timeZone fromDate:v20];
     [(WFWeatherConditions *)self setValueSync:v24 forComponent:@"WFWeatherSunriseTimeComponent"];
     [(WFWeatherConditions *)self setValueSync:v25 forComponent:@"WFWeatherSunsetTimeComponent"];
 
@@ -391,17 +391,17 @@ uint64_t __41__WFWeatherConditions_valueForComponent___block_invoke()
 - (id)dictionaryRepresentation
 {
   v2 = MEMORY[0x277CBEAC0];
-  v3 = [(WFWeatherConditions *)self components];
-  v4 = [v2 dictionaryWithDictionary:v3];
+  components = [(WFWeatherConditions *)self components];
+  v4 = [v2 dictionaryWithDictionary:components];
 
   return v4;
 }
 
-- (void)setValue:(id)a3 forComponent:(id)a4
+- (void)setValue:(id)value forComponent:(id)component
 {
-  if (a4)
+  if (component)
   {
-    [(WFWeatherConditions *)self setValueSync:a3 forComponent:?];
+    [(WFWeatherConditions *)self setValueSync:value forComponent:?];
   }
 }
 
@@ -425,20 +425,20 @@ uint64_t __41__WFWeatherConditions_valueForComponent___block_invoke()
   return v7;
 }
 
-- (BOOL)wf_isDayIfSunrise:(id)a3 sunset:(id)a4
+- (BOOL)wf_isDayIfSunrise:(id)sunrise sunset:(id)sunset
 {
-  v6 = a3;
-  v7 = a4;
+  sunriseCopy = sunrise;
+  sunsetCopy = sunset;
   v8 = [(WFWeatherConditions *)self valueForComponent:@"WFWeatherForecastDateComponent"];
   v9 = v8;
   v10 = 1;
-  if (v6 && v7 && v8)
+  if (sunriseCopy && sunsetCopy && v8)
   {
     [v8 timeIntervalSince1970];
     v12 = v11;
-    [v7 timeIntervalSince1970];
+    [sunsetCopy timeIntervalSince1970];
     v14 = v13;
-    [v6 timeIntervalSince1970];
+    [sunriseCopy timeIntervalSince1970];
     v16 = v12 <= v14;
     if (v12 >= v15)
     {

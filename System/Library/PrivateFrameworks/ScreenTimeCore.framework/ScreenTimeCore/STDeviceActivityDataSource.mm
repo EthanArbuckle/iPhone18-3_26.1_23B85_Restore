@@ -1,12 +1,12 @@
 @interface STDeviceActivityDataSource
-+ (BOOL)hasDataForUserWithAltDSID:(id)a3 userDeviceStates:(id)a4;
++ (BOOL)hasDataForUserWithAltDSID:(id)d userDeviceStates:(id)states;
 + (NSArray)allLocallyUsedBundleIdentifiers;
 + (NSDictionary)deviceIdentifiersByUserAltDSID;
-+ (id)lastUpdatedDateFor:(id)a3;
-+ (id)totalWeeklyUsageDuringDateInterval:(id)a3 userAltDSID:(id)a4 error:(id *)a5;
++ (id)lastUpdatedDateFor:(id)for;
++ (id)totalWeeklyUsageDuringDateInterval:(id)interval userAltDSID:(id)d error:(id *)error;
 + (void)downloadRemoteData;
-+ (void)refreshAndUploadLocalDataSinceDate:(id)a3 completionHandler:(id)a4;
-+ (void)setGenesisDate:(id)a3;
++ (void)refreshAndUploadLocalDataSinceDate:(id)date completionHandler:(id)handler;
++ (void)setGenesisDate:(id)date;
 - (_TtC14ScreenTimeCore26STDeviceActivityDataSource)init;
 @end
 
@@ -29,7 +29,7 @@
   return v2;
 }
 
-+ (void)setGenesisDate:(id)a3
++ (void)setGenesisDate:(id)date
 {
   v3 = sub_1B83DD94C();
   v4 = *(v3 - 8);
@@ -41,7 +41,7 @@
   (*(v4 + 8))(v7, v3);
 }
 
-+ (id)totalWeeklyUsageDuringDateInterval:(id)a3 userAltDSID:(id)a4 error:(id *)a5
++ (id)totalWeeklyUsageDuringDateInterval:(id)interval userAltDSID:(id)d error:(id *)error
 {
   v6 = sub_1B83DD82C();
   v7 = *(v6 - 8);
@@ -49,7 +49,7 @@
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1B83DD80C();
-  if (a4)
+  if (d)
   {
     v11 = sub_1B83DDCEC();
     v13 = v12;
@@ -67,7 +67,7 @@
   return v14;
 }
 
-+ (id)lastUpdatedDateFor:(id)a3
++ (id)lastUpdatedDateFor:(id)for
 {
   v3 = sub_1B83DD82C();
   v4 = *(v3 - 8);
@@ -95,7 +95,7 @@
   return v15;
 }
 
-+ (void)refreshAndUploadLocalDataSinceDate:(id)a3 completionHandler:(id)a4
++ (void)refreshAndUploadLocalDataSinceDate:(id)date completionHandler:(id)handler
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBA84D90, &qword_1B83E8B00);
   v7 = *(*(v6 - 8) + 64);
@@ -108,8 +108,8 @@
   v14 = &v25 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v13);
   v16 = &v25 - v15;
-  v17 = _Block_copy(a4);
-  if (a3)
+  v17 = _Block_copy(handler);
+  if (date)
   {
     sub_1B83DD93C();
     v18 = sub_1B83DD94C();
@@ -153,13 +153,13 @@
   (*(v3 + 8))(v6, v2);
 }
 
-+ (BOOL)hasDataForUserWithAltDSID:(id)a3 userDeviceStates:(id)a4
++ (BOOL)hasDataForUserWithAltDSID:(id)d userDeviceStates:(id)states
 {
-  if (a3)
+  if (d)
   {
     v5 = sub_1B83DDCEC();
     v7 = v6;
-    if (a4)
+    if (states)
     {
 LABEL_3:
       sub_1B83A1210(0, &qword_1EBA83718, off_1E7CE5FF8);
@@ -173,7 +173,7 @@ LABEL_3:
   {
     v5 = 0;
     v7 = 0;
-    if (a4)
+    if (states)
     {
       goto LABEL_3;
     }

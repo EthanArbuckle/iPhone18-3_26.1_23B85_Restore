@@ -1,36 +1,36 @@
 @interface PVFrameSet
-+ (PVFrameSet)frameSetWithARFrame:(id)a3 depthData:(id)a4 depthFreshness:(int)a5 frameDuration:(id *)a6;
-+ (PVFrameSet)frameSetWithARFrame:(id)a3 depthData:(id)a4 depthFreshness:(int)a5 frameDuration:(id *)a6 matte:(id)a7 dilatedDepth:(id)a8;
-+ (PVFrameSet)frameSetWithARFrame:(id)a3 frameDuration:(id *)a4;
-+ (PVFrameSet)frameSetWithARFrame:(id)a3 frameDuration:(id *)a4 matte:(id)a5 dilatedDepth:(id)a6;
-+ (PVFrameSet)frameSetWithARMetadata:(id)a3 depthData:(id)a4 depthFreshness:(int)a5 matte:(id)a6 dilatedDepth:(id)a7 timestamp:(id *)a8 frameDuration:(id *)a9 metadata:(id)a10;
++ (PVFrameSet)frameSetWithARFrame:(id)frame depthData:(id)data depthFreshness:(int)freshness frameDuration:(id *)duration;
++ (PVFrameSet)frameSetWithARFrame:(id)frame depthData:(id)data depthFreshness:(int)freshness frameDuration:(id *)duration matte:(id)matte dilatedDepth:(id)depth;
++ (PVFrameSet)frameSetWithARFrame:(id)frame frameDuration:(id *)duration;
++ (PVFrameSet)frameSetWithARFrame:(id)frame frameDuration:(id *)duration matte:(id)matte dilatedDepth:(id)depth;
++ (PVFrameSet)frameSetWithARMetadata:(id)metadata depthData:(id)data depthFreshness:(int)freshness matte:(id)matte dilatedDepth:(id)depth timestamp:(id *)timestamp frameDuration:(id *)duration metadata:(id)self0;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)presentationTimeStamp;
-- (PVFrameSet)initWithColorBuffer:(id)a3 depthData:(id)a4 metadata:(id)a5;
-- (PVFrameSet)initWithColorBuffer:(id)a3 depthData:(id)a4 metadata:(id)a5 matte:(id)a6 dilatedDepth:(id)a7;
-- (PVFrameSet)initWithColorBuffer:(id)a3 metadata:(id)a4;
+- (PVFrameSet)initWithColorBuffer:(id)buffer depthData:(id)data metadata:(id)metadata;
+- (PVFrameSet)initWithColorBuffer:(id)buffer depthData:(id)data metadata:(id)metadata matte:(id)matte dilatedDepth:(id)depth;
+- (PVFrameSet)initWithColorBuffer:(id)buffer metadata:(id)metadata;
 - (PVImageBuffer)colorImageBuffer;
 - (id)description;
 - (id)metadataDict;
-- (id)metadataObjectForKey:(id)a3;
-- (void)commonInitWithColorBuffer:(id)a3 depthData:(id)a4 metadata:(id)a5 matte:(id)a6 dilatedDepth:(id)a7;
-- (void)setMetadataDict:(id)a3;
-- (void)setMetadataObject:(id)a3 forKey:(id)a4;
+- (id)metadataObjectForKey:(id)key;
+- (void)commonInitWithColorBuffer:(id)buffer depthData:(id)data metadata:(id)metadata matte:(id)matte dilatedDepth:(id)depth;
+- (void)setMetadataDict:(id)dict;
+- (void)setMetadataObject:(id)object forKey:(id)key;
 @end
 
 @implementation PVFrameSet
 
-+ (PVFrameSet)frameSetWithARMetadata:(id)a3 depthData:(id)a4 depthFreshness:(int)a5 matte:(id)a6 dilatedDepth:(id)a7 timestamp:(id *)a8 frameDuration:(id *)a9 metadata:(id)a10
++ (PVFrameSet)frameSetWithARMetadata:(id)metadata depthData:(id)data depthFreshness:(int)freshness matte:(id)matte dilatedDepth:(id)depth timestamp:(id *)timestamp frameDuration:(id *)duration metadata:(id)self0
 {
-  v13 = *&a5;
+  v13 = *&freshness;
   v31[2] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
+  metadataCopy = metadata;
+  dataCopy = data;
+  matteCopy = matte;
+  depthCopy = depth;
   v19 = a10;
   v30[0] = @"kPVARMetadataKey";
   v30[1] = @"kPVARDepthFreshnessKey";
-  v31[0] = v15;
+  v31[0] = metadataCopy;
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v13];
   v31[1] = v20;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
@@ -46,158 +46,158 @@
     v22 = v21;
   }
 
-  v23 = +[PVImageBuffer imageWithCVPixelBuffer:](PVImageBuffer, "imageWithCVPixelBuffer:", [v15 imageBuffer]);
-  v28 = *&a8->var0;
-  var3 = a8->var3;
-  v27 = *a9;
+  v23 = +[PVImageBuffer imageWithCVPixelBuffer:](PVImageBuffer, "imageWithCVPixelBuffer:", [metadataCopy imageBuffer]);
+  v28 = *&timestamp->var0;
+  var3 = timestamp->var3;
+  v27 = *duration;
   v24 = [PVCMSampleBuffer sampleBufferWithPVImageBuffer:v23 timestamp:&v28 frameDuration:&v27];
-  v25 = [[PVFrameSet alloc] initWithColorBuffer:v24 depthData:v16 metadata:v22 matte:v17 dilatedDepth:v18];
+  v25 = [[PVFrameSet alloc] initWithColorBuffer:v24 depthData:dataCopy metadata:v22 matte:matteCopy dilatedDepth:depthCopy];
 
   return v25;
 }
 
-+ (PVFrameSet)frameSetWithARFrame:(id)a3 frameDuration:(id *)a4
++ (PVFrameSet)frameSetWithARFrame:(id)frame frameDuration:(id *)duration
 {
-  v6 = a3;
-  v7 = [v6 capturedDepthData];
-  v10 = *a4;
-  v8 = [a1 frameSetWithARFrame:v6 depthData:v7 depthFreshness:0 frameDuration:&v10];
+  frameCopy = frame;
+  capturedDepthData = [frameCopy capturedDepthData];
+  v10 = *duration;
+  v8 = [self frameSetWithARFrame:frameCopy depthData:capturedDepthData depthFreshness:0 frameDuration:&v10];
 
   return v8;
 }
 
-+ (PVFrameSet)frameSetWithARFrame:(id)a3 depthData:(id)a4 depthFreshness:(int)a5 frameDuration:(id *)a6
++ (PVFrameSet)frameSetWithARFrame:(id)frame depthData:(id)data depthFreshness:(int)freshness frameDuration:(id *)duration
 {
-  v7 = *&a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [[PVARMetadata alloc] initWithARFrame:v10 depthData:v11 depthFreshness:v7];
-  [v10 timestamp];
+  v7 = *&freshness;
+  frameCopy = frame;
+  dataCopy = data;
+  v12 = [[PVARMetadata alloc] initWithARFrame:frameCopy depthData:dataCopy depthFreshness:v7];
+  [frameCopy timestamp];
   CMTimeMakeWithSeconds(&v17, v13, 1000000000);
-  v16 = *a6;
-  v14 = [a1 frameSetWithARMetadata:v12 depthData:v11 depthFreshness:v7 matte:0 dilatedDepth:0 timestamp:&v17 frameDuration:&v16 metadata:0];
+  v16 = *duration;
+  v14 = [self frameSetWithARMetadata:v12 depthData:dataCopy depthFreshness:v7 matte:0 dilatedDepth:0 timestamp:&v17 frameDuration:&v16 metadata:0];
 
   return v14;
 }
 
-+ (PVFrameSet)frameSetWithARFrame:(id)a3 depthData:(id)a4 depthFreshness:(int)a5 frameDuration:(id *)a6 matte:(id)a7 dilatedDepth:(id)a8
++ (PVFrameSet)frameSetWithARFrame:(id)frame depthData:(id)data depthFreshness:(int)freshness frameDuration:(id *)duration matte:(id)matte dilatedDepth:(id)depth
 {
-  v11 = *&a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  v18 = [[PVARMetadata alloc] initWithARFrame:v14 depthData:v15 depthFreshness:v11];
-  [v14 timestamp];
+  v11 = *&freshness;
+  frameCopy = frame;
+  dataCopy = data;
+  matteCopy = matte;
+  depthCopy = depth;
+  v18 = [[PVARMetadata alloc] initWithARFrame:frameCopy depthData:dataCopy depthFreshness:v11];
+  [frameCopy timestamp];
   CMTimeMakeWithSeconds(&v23, v19, 1000000000);
-  v22 = *a6;
-  v20 = [a1 frameSetWithARMetadata:v18 depthData:v15 depthFreshness:v11 matte:v16 dilatedDepth:v17 timestamp:&v23 frameDuration:&v22 metadata:0];
+  v22 = *duration;
+  v20 = [self frameSetWithARMetadata:v18 depthData:dataCopy depthFreshness:v11 matte:matteCopy dilatedDepth:depthCopy timestamp:&v23 frameDuration:&v22 metadata:0];
 
   return v20;
 }
 
-+ (PVFrameSet)frameSetWithARFrame:(id)a3 frameDuration:(id *)a4 matte:(id)a5 dilatedDepth:(id)a6
++ (PVFrameSet)frameSetWithARFrame:(id)frame frameDuration:(id *)duration matte:(id)matte dilatedDepth:(id)depth
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 capturedDepthData];
-  v14 = [[PVARMetadata alloc] initWithARFrame:v10 depthData:v13 depthFreshness:0];
-  [v10 timestamp];
+  frameCopy = frame;
+  matteCopy = matte;
+  depthCopy = depth;
+  capturedDepthData = [frameCopy capturedDepthData];
+  v14 = [[PVARMetadata alloc] initWithARFrame:frameCopy depthData:capturedDepthData depthFreshness:0];
+  [frameCopy timestamp];
   CMTimeMakeWithSeconds(&v19, v15, 1000000000);
-  v18 = *a4;
-  v16 = [a1 frameSetWithARMetadata:v14 depthData:v13 depthFreshness:0 matte:v11 dilatedDepth:v12 timestamp:&v19 frameDuration:&v18 metadata:0];
+  v18 = *duration;
+  v16 = [self frameSetWithARMetadata:v14 depthData:capturedDepthData depthFreshness:0 matte:matteCopy dilatedDepth:depthCopy timestamp:&v19 frameDuration:&v18 metadata:0];
 
   return v16;
 }
 
-- (PVFrameSet)initWithColorBuffer:(id)a3 metadata:(id)a4
+- (PVFrameSet)initWithColorBuffer:(id)buffer metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  metadataCopy = metadata;
   v11.receiver = self;
   v11.super_class = PVFrameSet;
   v8 = [(PVFrameSet *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(PVFrameSet *)v8 commonInitWithColorBuffer:v6 depthData:0 metadata:v7 matte:0 dilatedDepth:0];
+    [(PVFrameSet *)v8 commonInitWithColorBuffer:bufferCopy depthData:0 metadata:metadataCopy matte:0 dilatedDepth:0];
   }
 
   return v9;
 }
 
-- (PVFrameSet)initWithColorBuffer:(id)a3 depthData:(id)a4 metadata:(id)a5
+- (PVFrameSet)initWithColorBuffer:(id)buffer depthData:(id)data metadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bufferCopy = buffer;
+  dataCopy = data;
+  metadataCopy = metadata;
   v14.receiver = self;
   v14.super_class = PVFrameSet;
   v11 = [(PVFrameSet *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(PVFrameSet *)v11 commonInitWithColorBuffer:v8 depthData:v9 metadata:v10 matte:0 dilatedDepth:0];
+    [(PVFrameSet *)v11 commonInitWithColorBuffer:bufferCopy depthData:dataCopy metadata:metadataCopy matte:0 dilatedDepth:0];
   }
 
   return v12;
 }
 
-- (PVFrameSet)initWithColorBuffer:(id)a3 depthData:(id)a4 metadata:(id)a5 matte:(id)a6 dilatedDepth:(id)a7
+- (PVFrameSet)initWithColorBuffer:(id)buffer depthData:(id)data metadata:(id)metadata matte:(id)matte dilatedDepth:(id)depth
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  bufferCopy = buffer;
+  dataCopy = data;
+  metadataCopy = metadata;
+  matteCopy = matte;
+  depthCopy = depth;
   v20.receiver = self;
   v20.super_class = PVFrameSet;
   v17 = [(PVFrameSet *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    [(PVFrameSet *)v17 commonInitWithColorBuffer:v12 depthData:v13 metadata:v14 matte:v15 dilatedDepth:v16];
+    [(PVFrameSet *)v17 commonInitWithColorBuffer:bufferCopy depthData:dataCopy metadata:metadataCopy matte:matteCopy dilatedDepth:depthCopy];
   }
 
   return v18;
 }
 
-- (void)commonInitWithColorBuffer:(id)a3 depthData:(id)a4 metadata:(id)a5 matte:(id)a6 dilatedDepth:(id)a7
+- (void)commonInitWithColorBuffer:(id)buffer depthData:(id)data metadata:(id)metadata matte:(id)matte dilatedDepth:(id)depth
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  objc_storeStrong(&self->_colorSampleBuffer, a3);
+  bufferCopy = buffer;
+  dataCopy = data;
+  metadataCopy = metadata;
+  matteCopy = matte;
+  depthCopy = depth;
+  objc_storeStrong(&self->_colorSampleBuffer, buffer);
   depthData = self->_depthData;
-  self->_depthData = v14;
-  v19 = v14;
+  self->_depthData = dataCopy;
+  v19 = dataCopy;
 
   alphaMaskImageBuffer = self->_alphaMaskImageBuffer;
   self->_alphaMaskImageBuffer = 0;
 
   matte = self->_matte;
-  self->_matte = v16;
-  v22 = v16;
+  self->_matte = matteCopy;
+  v22 = matteCopy;
 
   dilatedDepth = self->_dilatedDepth;
-  self->_dilatedDepth = v17;
+  self->_dilatedDepth = depthCopy;
 
   operator new();
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)presentationTimeStamp
 {
-  v9 = [(PVFrameSet *)self colorSampleBuffer];
-  if (v9)
+  colorSampleBuffer = [(PVFrameSet *)self colorSampleBuffer];
+  if (colorSampleBuffer)
   {
-    v5 = [(PVFrameSet *)self colorSampleBuffer];
-    v6 = v5;
-    if (v5)
+    colorSampleBuffer2 = [(PVFrameSet *)self colorSampleBuffer];
+    v6 = colorSampleBuffer2;
+    if (colorSampleBuffer2)
     {
-      [v5 presentationTimeStamp];
+      [colorSampleBuffer2 presentationTimeStamp];
     }
 
     else
@@ -220,33 +220,33 @@
 
 - (PVImageBuffer)colorImageBuffer
 {
-  v3 = [(PVFrameSet *)self colorSampleBuffer];
-  if (v3 && (v4 = v3, -[PVFrameSet colorSampleBuffer](self, "colorSampleBuffer"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 sampleBufferRef], v5, v4, v6))
+  colorSampleBuffer = [(PVFrameSet *)self colorSampleBuffer];
+  if (colorSampleBuffer && (v4 = colorSampleBuffer, -[PVFrameSet colorSampleBuffer](self, "colorSampleBuffer"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 sampleBufferRef], v5, v4, v6))
   {
-    v7 = [(PVFrameSet *)self colorSampleBuffer];
-    v8 = [v7 backingPVImageBuffer];
+    colorSampleBuffer2 = [(PVFrameSet *)self colorSampleBuffer];
+    backingPVImageBuffer = [colorSampleBuffer2 backingPVImageBuffer];
 
-    v9 = [(PVFrameSet *)self colorSampleBuffer];
-    v10 = v9;
-    if (v8)
+    colorSampleBuffer3 = [(PVFrameSet *)self colorSampleBuffer];
+    v10 = colorSampleBuffer3;
+    if (backingPVImageBuffer)
     {
-      v11 = [v9 backingPVImageBuffer];
+      backingPVImageBuffer2 = [colorSampleBuffer3 backingPVImageBuffer];
     }
 
     else
     {
-      ImageBuffer = CMSampleBufferGetImageBuffer([v9 sampleBufferRef]);
+      ImageBuffer = CMSampleBufferGetImageBuffer([colorSampleBuffer3 sampleBufferRef]);
 
-      v11 = [PVImageBuffer imageWithCVPixelBuffer:ImageBuffer];
+      backingPVImageBuffer2 = [PVImageBuffer imageWithCVPixelBuffer:ImageBuffer];
     }
   }
 
   else
   {
-    v11 = 0;
+    backingPVImageBuffer2 = 0;
   }
 
-  return v11;
+  return backingPVImageBuffer2;
 }
 
 - (id)metadataDict
@@ -279,18 +279,18 @@ void __26__PVFrameSet_metadataDict__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setMetadataDict:(id)a3
+- (void)setMetadataDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   ptr = self->_mdLock.__ptr_;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = *"";
   v8[2] = __30__PVFrameSet_setMetadataDict___block_invoke;
   v8[3] = &unk_279AA4E00;
-  v9 = v4;
-  v10 = self;
+  v9 = dictCopy;
+  selfCopy = self;
   v6 = *ptr;
-  v7 = v4;
+  v7 = dictCopy;
   dispatch_sync(v6, v8);
 }
 
@@ -312,9 +312,9 @@ void __30__PVFrameSet_setMetadataDict___block_invoke(uint64_t a1)
   *(v4 + 16) = v3;
 }
 
-- (id)metadataObjectForKey:(id)a3
+- (id)metadataObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -326,11 +326,11 @@ void __30__PVFrameSet_setMetadataDict___block_invoke(uint64_t a1)
   block[1] = *"";
   block[2] = __35__PVFrameSet_metadataObjectForKey___block_invoke;
   block[3] = &unk_279AA7B68;
-  v11 = v4;
+  v11 = keyCopy;
   v12 = &v13;
   block[4] = self;
   v6 = *ptr;
-  v7 = v4;
+  v7 = keyCopy;
   dispatch_sync(v6, block);
   v8 = v14[5];
 
@@ -347,21 +347,21 @@ void __35__PVFrameSet_metadataObjectForKey___block_invoke(void *a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setMetadataObject:(id)a3 forKey:(id)a4
+- (void)setMetadataObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   ptr = self->_mdLock.__ptr_;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = *"";
   block[2] = __39__PVFrameSet_setMetadataObject_forKey___block_invoke;
   block[3] = &unk_279AA7B90;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
+  v13 = objectCopy;
+  selfCopy = self;
+  v15 = keyCopy;
   v9 = *ptr;
-  v10 = v7;
-  v11 = v6;
+  v10 = keyCopy;
+  v11 = objectCopy;
   dispatch_sync(v9, block);
 }
 
@@ -386,8 +386,8 @@ uint64_t __39__PVFrameSet_setMetadataObject_forKey___block_invoke(void *a1)
   v8.receiver = self;
   v8.super_class = PVFrameSet;
   v4 = [(PVFrameSet *)&v8 description];
-  v5 = [(PVFrameSet *)self metadataDict];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  metadataDict = [(PVFrameSet *)self metadataDict];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, metadataDict];
 
   return v6;
 }

@@ -1,35 +1,35 @@
 @interface PXTilingControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axUpdateImageViewTile:(id)a3 withIndexPath:(PXSimpleIndexPath *)a4;
+- (void)_axUpdateImageViewTile:(id)tile withIndexPath:(PXSimpleIndexPath *)path;
 - (void)_updateTilesIfNeeded;
 @end
 
 @implementation PXTilingControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXTileStatePool"];
-  [v3 validateClass:@"PXAssetUIImageViewTile"];
-  [v3 validateClass:@"PXFocusableUIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXTileStatePool"];
+  [validationsCopy validateClass:@"PXAssetUIImageViewTile"];
+  [validationsCopy validateClass:@"PXFocusableUIImageView"];
   objc_opt_class();
-  [v3 validateClass:@"PXTilingController" hasInstanceVariable:@"_needsUpdateFlags" withType:__ax_verbose_encode_with_type_encoding_group_class()];
-  [v3 validateClass:@"PXAssetUIImageViewTile" hasInstanceVariable:@"_imageView" withType:"PXFocusableUIImageView"];
-  [v3 validateClass:@"PXTilingController" hasInstanceMethod:@"_tileStates" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXTilingController" hasInstanceMethod:@"_updateTilesIfNeeded" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PXTilingController" hasInstanceMethod:@"_invalidateTiles" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PXTileStatePool" hasInstanceMethod:@"enumerateStatesUsingBlock:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"PXTilingController" hasInstanceVariable:@"_needsUpdateFlags" withType:__ax_verbose_encode_with_type_encoding_group_class()];
+  [validationsCopy validateClass:@"PXAssetUIImageViewTile" hasInstanceVariable:@"_imageView" withType:"PXFocusableUIImageView"];
+  [validationsCopy validateClass:@"PXTilingController" hasInstanceMethod:@"_tileStates" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXTilingController" hasInstanceMethod:@"_updateTilesIfNeeded" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PXTilingController" hasInstanceMethod:@"_invalidateTiles" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PXTileStatePool" hasInstanceMethod:@"enumerateStatesUsingBlock:" withFullSignature:{"v", "@?", 0}];
 }
 
-- (void)_axUpdateImageViewTile:(id)a3 withIndexPath:(PXSimpleIndexPath *)a4
+- (void)_axUpdateImageViewTile:(id)tile withIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = [a3 safeValueForKey:@"_imageView"];
+  v5 = [tile safeValueForKey:@"_imageView"];
   MEMORY[0x29C2E6930](@"PXFocusableUIImageView");
   if (objc_opt_isKindOfClass())
   {
-    v6 = *&a4->item;
-    v7[0] = *&a4->dataSourceIdentifier;
+    v6 = *&path->item;
+    v7[0] = *&path->dataSourceIdentifier;
     v7[1] = v6;
     [v5 _axSetIndexPath:v7];
   }
@@ -61,7 +61,7 @@
         v10 = __55__PXTilingControllerAccessibility__updateTilesIfNeeded__block_invoke;
         v11 = &unk_29F2E6560;
         v12 = v6;
-        v13 = self;
+        selfCopy = self;
         AXPerformSafeBlock();
       }
     }

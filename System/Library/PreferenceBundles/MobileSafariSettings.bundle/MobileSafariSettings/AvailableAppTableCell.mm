@@ -1,6 +1,6 @@
 @interface AvailableAppTableCell
 + (id)lockupViewGroup;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AvailableAppTableCell
@@ -24,19 +24,19 @@ void __40__AvailableAppTableCell_lockupViewGroup__block_invoke(id a1)
   _objc_release_x1();
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v29.receiver = self;
   v29.super_class = AvailableAppTableCell;
-  [(AvailableAppTableCell *)&v29 refreshCellContentsWithSpecifier:v4];
-  v5 = [(AvailableAppTableCell *)self contentView];
+  [(AvailableAppTableCell *)&v29 refreshCellContentsWithSpecifier:specifierCopy];
+  contentView = [(AvailableAppTableCell *)self contentView];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [v5 subviews];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  subviews = [contentView subviews];
+  v7 = [subviews countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -48,7 +48,7 @@ void __40__AvailableAppTableCell_lockupViewGroup__block_invoke(id a1)
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v25 + 1) + 8 * v10) removeFromSuperview];
@@ -56,42 +56,42 @@ void __40__AvailableAppTableCell_lockupViewGroup__block_invoke(id a1)
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [v4 userInfo];
-  if (v11)
+  userInfo = [specifierCopy userInfo];
+  if (userInfo)
   {
     [(AvailableAppTableCell *)self setTranslatesAutoresizingMaskIntoConstraints:0];
     v12 = objc_alloc_init(UIStackView);
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v12 setAxis:1];
-    [v5 addSubview:v12];
-    v13 = [v12 topAnchor];
-    v14 = [v5 topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:8.0];
+    [contentView addSubview:v12];
+    topAnchor = [v12 topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
     [v15 setActive:1];
 
-    v16 = [v12 bottomAnchor];
-    v17 = [v5 bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:-8.0];
+    bottomAnchor = [v12 bottomAnchor];
+    bottomAnchor2 = [contentView bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
     [v18 setActive:1];
 
-    v19 = [v12 leadingAnchor];
-    v20 = [v5 leadingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:16.0];
+    leadingAnchor = [v12 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     [v21 setActive:1];
 
-    v22 = [v12 trailingAnchor];
-    v23 = [v5 trailingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:-16.0];
+    trailingAnchor = [v12 trailingAnchor];
+    trailingAnchor2 = [contentView trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     [v24 setActive:1];
 
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v12 addArrangedSubview:v11];
+    [userInfo setTranslatesAutoresizingMaskIntoConstraints:0];
+    [v12 addArrangedSubview:userInfo];
   }
 }
 

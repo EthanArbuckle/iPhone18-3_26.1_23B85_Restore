@@ -1,31 +1,31 @@
 @interface HKSharingRecipientIdentifier
-+ (id)sharingRecipientIdentifierFromStringRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HKSharingRecipientIdentifier)initWithCoder:(id)a3;
-- (id)_initWithRecipientIdentifierType:(unint64_t)a3 invitationUUID:(id)a4 clinicalAccountIdentifier:(id)a5;
++ (id)sharingRecipientIdentifierFromStringRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (HKSharingRecipientIdentifier)initWithCoder:(id)coder;
+- (id)_initWithRecipientIdentifierType:(unint64_t)type invitationUUID:(id)d clinicalAccountIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSharingRecipientIdentifier
 
-- (id)_initWithRecipientIdentifierType:(unint64_t)a3 invitationUUID:(id)a4 clinicalAccountIdentifier:(id)a5
+- (id)_initWithRecipientIdentifierType:(unint64_t)type invitationUUID:(id)d clinicalAccountIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = HKSharingRecipientIdentifier;
   v10 = [(HKSharingRecipientIdentifier *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v12 = [v8 copy];
+    v10->_type = type;
+    v12 = [dCopy copy];
     invitationUUID = v11->_invitationUUID;
     v11->_invitationUUID = v12;
 
-    v14 = [v9 copy];
+    v14 = [identifierCopy copy];
     clinicalAccountIdentifier = v11->_clinicalAccountIdentifier;
     v11->_clinicalAccountIdentifier = v14;
   }
@@ -57,29 +57,29 @@
   return v4 ^ [(NSString *)self->_clinicalAccountIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  if (self->_type != v4[1])
+  if (self->_type != equalCopy[1])
   {
     goto LABEL_9;
   }
 
   invitationUUID = self->_invitationUUID;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (invitationUUID != v6 && (!v6 || ![(NSUUID *)invitationUUID isEqual:?]))
   {
     goto LABEL_9;
   }
 
   clinicalAccountIdentifier = self->_clinicalAccountIdentifier;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (clinicalAccountIdentifier == v8)
   {
     v9 = 1;
@@ -102,32 +102,32 @@ LABEL_10:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"Type"];
-  [v5 encodeObject:self->_invitationUUID forKey:@"InvitationUUID"];
-  [v5 encodeObject:self->_clinicalAccountIdentifier forKey:@"ClinicalAccountIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"Type"];
+  [coderCopy encodeObject:self->_invitationUUID forKey:@"InvitationUUID"];
+  [coderCopy encodeObject:self->_clinicalAccountIdentifier forKey:@"ClinicalAccountIdentifier"];
 }
 
-- (HKSharingRecipientIdentifier)initWithCoder:(id)a3
+- (HKSharingRecipientIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"Type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"InvitationUUID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ClinicalAccountIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"Type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"InvitationUUID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ClinicalAccountIdentifier"];
 
   v8 = [(HKSharingRecipientIdentifier *)self _initWithRecipientIdentifierType:v5 invitationUUID:v6 clinicalAccountIdentifier:v7];
   return v8;
 }
 
-+ (id)sharingRecipientIdentifierFromStringRepresentation:(id)a3
++ (id)sharingRecipientIdentifierFromStringRepresentation:(id)representation
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"SharedSummary-"])
+  representationCopy = representation;
+  if ([representationCopy hasPrefix:@"SharedSummary-"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"SharedSummary-", "length")}];
+    v4 = [representationCopy substringFromIndex:{objc_msgSend(@"SharedSummary-", "length")}];
     v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v4];
     v6 = [[HKSharingRecipientIdentifier alloc] initForInvitationUUID:v5];
 
@@ -135,9 +135,9 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 hasPrefix:@"ClinicalAccount-"])
+  if ([representationCopy hasPrefix:@"ClinicalAccount-"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"ClinicalAccount-", "length")}];
+    v4 = [representationCopy substringFromIndex:{objc_msgSend(@"ClinicalAccount-", "length")}];
     v6 = [[HKSharingRecipientIdentifier alloc] initForClinicalAccountIdentifier:v4];
     goto LABEL_5;
   }

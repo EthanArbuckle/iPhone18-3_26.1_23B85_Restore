@@ -1,6 +1,6 @@
 @interface UserNotificationsCloudPushManager
 - (_TtC21UserNotificationsCore33UserNotificationsCloudPushManager)init;
-- (void)categoryRepository:(id)a3 didChangeCategoriesForBundleIdentifier:(id)a4;
+- (void)categoryRepository:(id)repository didChangeCategoriesForBundleIdentifier:(id)identifier;
 @end
 
 @implementation UserNotificationsCloudPushManager
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (void)categoryRepository:(id)a3 didChangeCategoriesForBundleIdentifier:(id)a4
+- (void)categoryRepository:(id)repository didChangeCategoriesForBundleIdentifier:(id)identifier
 {
   v6 = sub_1DA940A14();
   v8 = v7;
   swift_unknownObjectRetain();
-  v9 = self;
-  v12.super.isa = a3;
+  selfCopy = self;
+  v12.super.isa = repository;
   v12._repository = v6;
   v12._observable = v8;
   UserNotificationsCloudPushManager.categoryRepository(_:didChangeCategoriesForBundleIdentifier:)(v12, v10);

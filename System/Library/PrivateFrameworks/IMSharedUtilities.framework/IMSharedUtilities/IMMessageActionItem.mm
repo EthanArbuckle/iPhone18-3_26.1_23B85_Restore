@@ -1,11 +1,11 @@
 @interface IMMessageActionItem
-- (BOOL)isEqual:(id)a3;
-- (IMMessageActionItem)initWithCoder:(id)a3;
-- (IMMessageActionItem)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IMMessageActionItem)initWithCoder:(id)coder;
+- (IMMessageActionItem)initWithDictionary:(id)dictionary;
 - (id)copyDictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMMessageActionItem
@@ -21,95 +21,95 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = IMMessageActionItem;
-  v4 = [(IMItem *)&v10 copyWithZone:a3];
-  v5 = [(IMMessageActionItem *)self otherUnformattedID];
-  [v4 setOtherUnformattedID:v5];
+  v4 = [(IMItem *)&v10 copyWithZone:zone];
+  otherUnformattedID = [(IMMessageActionItem *)self otherUnformattedID];
+  [v4 setOtherUnformattedID:otherUnformattedID];
 
-  v6 = [(IMMessageActionItem *)self otherHandle];
-  [v4 setOtherHandle:v6];
+  otherHandle = [(IMMessageActionItem *)self otherHandle];
+  [v4 setOtherHandle:otherHandle];
 
-  v7 = [(IMMessageActionItem *)self otherCountryCode];
-  [v4 setOtherCountryCode:v7];
+  otherCountryCode = [(IMMessageActionItem *)self otherCountryCode];
+  [v4 setOtherCountryCode:otherCountryCode];
 
-  v8 = [(IMMessageActionItem *)self originalMessageGUID];
-  [v4 setOriginalMessageGUID:v8];
+  originalMessageGUID = [(IMMessageActionItem *)self originalMessageGUID];
+  [v4 setOriginalMessageGUID:originalMessageGUID];
 
   [v4 setActionType:{-[IMMessageActionItem actionType](self, "actionType")}];
   return v4;
 }
 
-- (IMMessageActionItem)initWithCoder:(id)a3
+- (IMMessageActionItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = IMMessageActionItem;
-  v5 = [(IMItem *)&v11 initWithCoder:v4];
+  v5 = [(IMItem *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"otherCountryCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"otherCountryCode"];
     [(IMMessageActionItem *)v5 setOtherCountryCode:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"otherHandle"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"otherHandle"];
     [(IMMessageActionItem *)v5 setOtherHandle:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"otherUnformattedID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"otherUnformattedID"];
     [(IMMessageActionItem *)v5 setOtherUnformattedID:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalMessageGUID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalMessageGUID"];
     [(IMMessageActionItem *)v5 setOriginalMessageGUID:v9];
 
-    v5->_actionType = [v4 decodeInt64ForKey:@"actionType"];
+    v5->_actionType = [coderCopy decodeInt64ForKey:@"actionType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = IMMessageActionItem;
-  v4 = a3;
-  [(IMItem *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(IMItem *)&v9 encodeWithCoder:coderCopy];
   v5 = [(IMMessageActionItem *)self otherCountryCode:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"otherCountryCode"];
+  [coderCopy encodeObject:v5 forKey:@"otherCountryCode"];
 
-  v6 = [(IMMessageActionItem *)self otherHandle];
-  [v4 encodeObject:v6 forKey:@"otherHandle"];
+  otherHandle = [(IMMessageActionItem *)self otherHandle];
+  [coderCopy encodeObject:otherHandle forKey:@"otherHandle"];
 
-  v7 = [(IMMessageActionItem *)self otherUnformattedID];
-  [v4 encodeObject:v7 forKey:@"otherUnformattedID"];
+  otherUnformattedID = [(IMMessageActionItem *)self otherUnformattedID];
+  [coderCopy encodeObject:otherUnformattedID forKey:@"otherUnformattedID"];
 
-  v8 = [(IMMessageActionItem *)self originalMessageGUID];
-  [v4 encodeObject:v8 forKey:@"originalMessageGUID"];
+  originalMessageGUID = [(IMMessageActionItem *)self originalMessageGUID];
+  [coderCopy encodeObject:originalMessageGUID forKey:@"originalMessageGUID"];
 
-  [v4 encodeInt64:self->_actionType forKey:@"actionType"];
+  [coderCopy encodeInt64:self->_actionType forKey:@"actionType"];
 }
 
-- (IMMessageActionItem)initWithDictionary:(id)a3
+- (IMMessageActionItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = IMMessageActionItem;
-  v5 = [(IMItem *)&v12 initWithDictionary:v4];
+  v5 = [(IMItem *)&v12 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"actionType"];
+    v6 = [dictionaryCopy objectForKey:@"actionType"];
     -[IMMessageActionItem setActionType:](v5, "setActionType:", [v6 longLongValue]);
 
-    v7 = [v4 objectForKey:@"otherCountryCode"];
+    v7 = [dictionaryCopy objectForKey:@"otherCountryCode"];
     [(IMMessageActionItem *)v5 setOtherCountryCode:v7];
 
-    v8 = [v4 objectForKey:@"otherHandle"];
+    v8 = [dictionaryCopy objectForKey:@"otherHandle"];
     [(IMMessageActionItem *)v5 setOtherHandle:v8];
 
-    v9 = [v4 objectForKey:@"otherUnformattedID"];
+    v9 = [dictionaryCopy objectForKey:@"otherUnformattedID"];
     [(IMMessageActionItem *)v5 setOtherUnformattedID:v9];
 
-    v10 = [v4 objectForKey:@"originalMessageGUID"];
+    v10 = [dictionaryCopy objectForKey:@"originalMessageGUID"];
     [(IMMessageActionItem *)v5 setOriginalMessageGUID:v10];
   }
 
@@ -120,46 +120,46 @@
 {
   v11.receiver = self;
   v11.super_class = IMMessageActionItem;
-  v3 = [(IMItem *)&v11 copyDictionaryRepresentation];
+  copyDictionaryRepresentation = [(IMItem *)&v11 copyDictionaryRepresentation];
   v4 = objc_autoreleasePoolPush();
   otherCountryCode = self->_otherCountryCode;
   if (otherCountryCode)
   {
-    CFDictionarySetValue(v3, @"otherCountryCode", otherCountryCode);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"otherCountryCode", otherCountryCode);
   }
 
   otherHandle = self->_otherHandle;
   if (otherHandle)
   {
-    CFDictionarySetValue(v3, @"otherHandle", otherHandle);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"otherHandle", otherHandle);
   }
 
   otherUnformattedID = self->_otherUnformattedID;
   if (otherUnformattedID)
   {
-    CFDictionarySetValue(v3, @"otherUnformattedID", otherUnformattedID);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"otherUnformattedID", otherUnformattedID);
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_actionType];
   if (v8)
   {
-    CFDictionarySetValue(v3, @"actionType", v8);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"actionType", v8);
   }
 
   originalMessageGUID = self->_originalMessageGUID;
   if (originalMessageGUID)
   {
-    CFDictionarySetValue(v3, @"originalMessageGUID", originalMessageGUID);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"originalMessageGUID", originalMessageGUID);
   }
 
   objc_autoreleasePoolPop(v4);
-  return v3;
+  return copyDictionaryRepresentation;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -169,7 +169,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v32.receiver = self;
       v32.super_class = IMMessageActionItem;
       if (![(IMItem *)&v32 isEqual:v5])
@@ -181,34 +181,34 @@ LABEL_34:
       }
 
       otherCountryCode = self->_otherCountryCode;
-      v7 = [(IMMessageActionItem *)v5 otherCountryCode];
-      if (otherCountryCode != v7)
+      otherCountryCode = [(IMMessageActionItem *)v5 otherCountryCode];
+      if (otherCountryCode != otherCountryCode)
       {
         v8 = self->_otherCountryCode;
-        v9 = [(IMMessageActionItem *)v5 otherCountryCode];
-        if (![(NSString *)v8 isEqualToString:v9])
+        otherCountryCode2 = [(IMMessageActionItem *)v5 otherCountryCode];
+        if (![(NSString *)v8 isEqualToString:otherCountryCode2])
         {
           v10 = 0;
           goto LABEL_32;
         }
 
-        v30 = v9;
+        v30 = otherCountryCode2;
       }
 
       otherHandle = self->_otherHandle;
-      v12 = [(IMMessageActionItem *)v5 otherHandle];
-      if (otherHandle != v12)
+      otherHandle = [(IMMessageActionItem *)v5 otherHandle];
+      if (otherHandle != otherHandle)
       {
         v13 = self->_otherHandle;
-        v14 = [(IMMessageActionItem *)v5 otherHandle];
-        if (![(NSString *)v13 isEqualToString:v14])
+        otherHandle2 = [(IMMessageActionItem *)v5 otherHandle];
+        if (![(NSString *)v13 isEqualToString:otherHandle2])
         {
           v10 = 0;
-          v9 = v30;
+          otherCountryCode2 = v30;
 LABEL_30:
 
 LABEL_31:
-          if (otherCountryCode == v7)
+          if (otherCountryCode == otherCountryCode)
           {
 LABEL_33:
 
@@ -220,13 +220,13 @@ LABEL_32:
           goto LABEL_33;
         }
 
-        v28 = v14;
+        v28 = otherHandle2;
       }
 
       otherUnformattedID = self->_otherUnformattedID;
-      v16 = [(IMMessageActionItem *)v5 otherUnformattedID];
+      otherUnformattedID = [(IMMessageActionItem *)v5 otherUnformattedID];
       v29 = otherUnformattedID;
-      if (otherUnformattedID == v16)
+      if (otherUnformattedID == otherUnformattedID)
       {
         v27 = otherHandle;
       }
@@ -234,16 +234,16 @@ LABEL_32:
       else
       {
         v17 = self->_otherUnformattedID;
-        v18 = [(IMMessageActionItem *)v5 otherUnformattedID];
-        if (![(NSString *)v17 isEqualToString:v18])
+        otherUnformattedID2 = [(IMMessageActionItem *)v5 otherUnformattedID];
+        if (![(NSString *)v17 isEqualToString:otherUnformattedID2])
         {
           v10 = 0;
-          v9 = v30;
+          otherCountryCode2 = v30;
 LABEL_28:
 
 LABEL_29:
-          v14 = v28;
-          if (otherHandle == v12)
+          otherHandle2 = v28;
+          if (otherHandle == otherHandle)
           {
             goto LABEL_31;
           }
@@ -251,25 +251,25 @@ LABEL_29:
           goto LABEL_30;
         }
 
-        v26 = v18;
+        v26 = otherUnformattedID2;
         v27 = otherHandle;
       }
 
       originalMessageGUID = self->_originalMessageGUID;
-      v20 = [(IMMessageActionItem *)v5 originalMessageGUID];
-      if (originalMessageGUID == v20 || (v21 = self->_originalMessageGUID, [(IMMessageActionItem *)v5 originalMessageGUID], v25 = objc_claimAutoreleasedReturnValue(), [(NSString *)v21 isEqualToString:?]))
+      originalMessageGUID = [(IMMessageActionItem *)v5 originalMessageGUID];
+      if (originalMessageGUID == originalMessageGUID || (v21 = self->_originalMessageGUID, [(IMMessageActionItem *)v5 originalMessageGUID], v25 = objc_claimAutoreleasedReturnValue(), [(NSString *)v21 isEqualToString:?]))
       {
         otherHandle = v27;
         actionType = self->_actionType;
         v10 = actionType == [(IMMessageActionItem *)v5 actionType];
-        if (originalMessageGUID == v20)
+        if (originalMessageGUID == originalMessageGUID)
         {
 
           v23 = v29;
-          v9 = v30;
+          otherCountryCode2 = v30;
 LABEL_27:
-          v18 = v26;
-          if (v23 == v16)
+          otherUnformattedID2 = v26;
+          if (v23 == otherUnformattedID)
           {
             goto LABEL_29;
           }
@@ -277,13 +277,13 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        v9 = v30;
+        otherCountryCode2 = v30;
       }
 
       else
       {
         v10 = 0;
-        v9 = v30;
+        otherCountryCode2 = v30;
         otherHandle = v27;
       }
 
@@ -293,7 +293,7 @@ LABEL_27:
 
     v31.receiver = self;
     v31.super_class = IMMessageActionItem;
-    v10 = [(IMItem *)&v31 isEqual:v4];
+    v10 = [(IMItem *)&v31 isEqual:equalCopy];
   }
 
 LABEL_35:

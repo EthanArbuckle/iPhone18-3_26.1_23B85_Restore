@@ -1,36 +1,36 @@
 @interface RCSServiceReachabilityDelegate
 - (BOOL)networkDataAvailable;
 - (_TtC3RCS30RCSServiceReachabilityDelegate)init;
-- (_TtC3RCS30RCSServiceReachabilityDelegate)initWithServiceSession:(id)a3;
-- (int64_t)maxChatParticipantsForContext:(id)a3;
+- (_TtC3RCS30RCSServiceReachabilityDelegate)initWithServiceSession:(id)session;
+- (int64_t)maxChatParticipantsForContext:(id)context;
 @end
 
 @implementation RCSServiceReachabilityDelegate
 
-- (int64_t)maxChatParticipantsForContext:(id)a3
+- (int64_t)maxChatParticipantsForContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_AA130(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_AA130(contextCopy);
 
   return v6;
 }
 
 - (BOOL)networkDataAvailable
 {
-  v2 = self;
-  v3 = [(RCSServiceReachabilityDelegate *)v2 serviceSession];
-  if (v3 && (v4 = v3, v5 = [v3 networkMonitor], v4, v5))
+  selfCopy = self;
+  serviceSession = [(RCSServiceReachabilityDelegate *)selfCopy serviceSession];
+  if (serviceSession && (v4 = serviceSession, v5 = [serviceSession networkMonitor], v4, v5))
   {
-    v6 = [v5 immediatelyReachable];
+    immediatelyReachable = [v5 immediatelyReachable];
   }
 
   else
   {
-    v6 = 0;
+    immediatelyReachable = 0;
   }
 
-  return v6;
+  return immediatelyReachable;
 }
 
 - (_TtC3RCS30RCSServiceReachabilityDelegate)init
@@ -40,7 +40,7 @@
   return result;
 }
 
-- (_TtC3RCS30RCSServiceReachabilityDelegate)initWithServiceSession:(id)a3
+- (_TtC3RCS30RCSServiceReachabilityDelegate)initWithServiceSession:(id)session
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -9,17 +9,17 @@
 
 - (uint64_t)hksp_isSerialized
 {
-  if ([a1 count] != 1)
+  if ([self count] != 1)
   {
     return 0;
   }
 
-  v2 = [a1 hksp_serializedKey];
+  hksp_serializedKey = [self hksp_serializedKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [a1 hksp_serializedKey];
-    v4 = [v3 hasPrefix:@"$"];
+    hksp_serializedKey2 = [self hksp_serializedKey];
+    v4 = [hksp_serializedKey2 hasPrefix:@"$"];
   }
 
   else
@@ -32,26 +32,26 @@
 
 - (id)hksp_serializedKey
 {
-  v1 = [a1 allKeys];
-  v2 = [v1 firstObject];
+  allKeys = [self allKeys];
+  firstObject = [allKeys firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (id)hksp_serializedClassName
 {
-  v1 = [a1 hksp_serializedKey];
-  v2 = [v1 substringFromIndex:1];
+  hksp_serializedKey = [self hksp_serializedKey];
+  v2 = [hksp_serializedKey substringFromIndex:1];
 
   return v2;
 }
 
 - (id)hksp_serializedProperties
 {
-  if ([a1 hksp_isSerialized])
+  if ([self hksp_isSerialized])
   {
-    v2 = [a1 hksp_serializedKey];
-    v3 = [a1 objectForKeyedSubscript:v2];
+    hksp_serializedKey = [self hksp_serializedKey];
+    v3 = [self objectForKeyedSubscript:hksp_serializedKey];
   }
 
   else

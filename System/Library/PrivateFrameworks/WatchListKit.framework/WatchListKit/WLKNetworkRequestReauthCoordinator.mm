@@ -4,7 +4,7 @@
 - (void)dealloc;
 - (void)lock;
 - (void)markPrompt;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)unlock;
 @end
 
@@ -41,8 +41,8 @@ uint64_t __49__WLKNetworkRequestReauthCoordinator_coordinator__block_invoke()
     v2->_lock = v3;
 
     [(NSLock *)v2->_lock setName:@"WLKNetworkRequestRetryLock"];
-    v5 = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
-    [v5 addObserver:v2 forKeyPath:@"operationCount" options:3 context:@"_WLKNetworkRequestReauthCoordinatorObservationContext"];
+    wlkDefaultConcurrentQueue = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
+    [wlkDefaultConcurrentQueue addObserver:v2 forKeyPath:@"operationCount" options:3 context:@"_WLKNetworkRequestReauthCoordinatorObservationContext"];
   }
 
   return v2;
@@ -50,8 +50,8 @@ uint64_t __49__WLKNetworkRequestReauthCoordinator_coordinator__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
-  [v3 removeObserver:self forKeyPath:@"operationCount"];
+  wlkDefaultConcurrentQueue = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
+  [wlkDefaultConcurrentQueue removeObserver:self forKeyPath:@"operationCount"];
 
   v4.receiver = self;
   v4.super_class = WLKNetworkRequestReauthCoordinator;
@@ -60,10 +60,10 @@ uint64_t __49__WLKNetworkRequestReauthCoordinator_coordinator__block_invoke()
 
 - (void)markPrompt
 {
-  v3 = [MEMORY[0x277CCABD8] currentQueue];
-  v4 = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
+  currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+  wlkDefaultConcurrentQueue = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
 
-  if (v3 == v4)
+  if (currentQueue == wlkDefaultConcurrentQueue)
   {
 
     [(WLKNetworkRequestReauthCoordinator *)self setSessionPrompt:1];
@@ -72,10 +72,10 @@ uint64_t __49__WLKNetworkRequestReauthCoordinator_coordinator__block_invoke()
 
 - (void)lock
 {
-  v3 = [MEMORY[0x277CCABD8] currentQueue];
-  v4 = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
+  currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+  wlkDefaultConcurrentQueue = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
 
-  if (v3 == v4)
+  if (currentQueue == wlkDefaultConcurrentQueue)
   {
     lock = self->_lock;
 
@@ -85,10 +85,10 @@ uint64_t __49__WLKNetworkRequestReauthCoordinator_coordinator__block_invoke()
 
 - (void)unlock
 {
-  v3 = [MEMORY[0x277CCABD8] currentQueue];
-  v4 = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
+  currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+  wlkDefaultConcurrentQueue = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
 
-  if (v3 == v4)
+  if (currentQueue == wlkDefaultConcurrentQueue)
   {
     lock = self->_lock;
 
@@ -96,11 +96,11 @@ uint64_t __49__WLKNetworkRequestReauthCoordinator_coordinator__block_invoke()
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"_WLKNetworkRequestReauthCoordinatorObservationContext")
+  if (context == @"_WLKNetworkRequestReauthCoordinatorObservationContext")
   {
-    v7 = [a5 objectForKeyedSubscript:{*MEMORY[0x277CCA2F0], a4}];
+    v7 = [change objectForKeyedSubscript:{*MEMORY[0x277CCA2F0], object}];
     if (![v7 unsignedIntegerValue])
     {
       [(WLKNetworkRequestReauthCoordinator *)self setSessionPrompt:0];
@@ -111,7 +111,7 @@ uint64_t __49__WLKNetworkRequestReauthCoordinator_coordinator__block_invoke()
   {
     v8.receiver = self;
     v8.super_class = WLKNetworkRequestReauthCoordinator;
-    [(WLKNetworkRequestReauthCoordinator *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(WLKNetworkRequestReauthCoordinator *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

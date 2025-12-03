@@ -1,9 +1,9 @@
 @interface _UIImageCIImageRenderer
 - (uint64_t)_targetColorSpaceForHDR:(uint64_t)result;
-- (void)_updateContextForHDRRendering:(uint64_t)a1;
-- (void)_updateSurfaceForSize:(double)a3 usingHDR:(double)a4;
+- (void)_updateContextForHDRRendering:(uint64_t)rendering;
+- (void)_updateSurfaceForSize:(double)size usingHDR:(double)r;
 - (void)dealloc;
-- (void)renderContent:(int)a3 usingHDR:(void *)a4 withEffects:;
+- (void)renderContent:(int)content usingHDR:(void *)r withEffects:;
 @end
 
 @implementation _UIImageCIImageRenderer
@@ -56,31 +56,31 @@
   return result;
 }
 
-- (void)_updateSurfaceForSize:(double)a3 usingHDR:(double)a4
+- (void)_updateSurfaceForSize:(double)size usingHDR:(double)r
 {
   v28[6] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     if (a2)
     {
-      v7 = 1;
+      _supportsDeepColor = 1;
     }
 
     else
     {
       v8 = +[UIDevice currentDevice];
-      v7 = [v8 _supportsDeepColor];
+      _supportsDeepColor = [v8 _supportsDeepColor];
     }
 
-    v9 = a3;
-    v10 = vcvtps_s32_f32(v9);
-    v11 = a4;
-    v12 = vcvtps_s32_f32(v11);
-    if ((*(a1 + 32) & 1) == 0 || v7 == ((*(a1 + 32) & 2) == 0) || *(a1 + 16) != v10 || *(a1 + 24) != v12)
+    sizeCopy = size;
+    v10 = vcvtps_s32_f32(sizeCopy);
+    rCopy = r;
+    v12 = vcvtps_s32_f32(rCopy);
+    if ((*(self + 32) & 1) == 0 || _supportsDeepColor == ((*(self + 32) & 2) == 0) || *(self + 16) != v10 || *(self + 24) != v12)
     {
-      *(a1 + 16) = v10;
-      *(a1 + 24) = v12;
-      if (v7)
+      *(self + 16) = v10;
+      *(self + 24) = v12;
+      if (_supportsDeepColor)
       {
         v13 = 1380411457;
       }
@@ -90,7 +90,7 @@
         v13 = 1380401729;
       }
 
-      if (v7)
+      if (_supportsDeepColor)
       {
         v14 = 8;
       }
@@ -122,15 +122,15 @@
       v28[5] = v22;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:6];
 
-      v24 = *(a1 + 8);
+      v24 = *(self + 8);
       if (v24)
       {
         CFRelease(v24);
       }
 
       v25 = IOSurfaceCreate(v23);
-      *(a1 + 8) = v25;
-      if (v7)
+      *(self + 8) = v25;
+      if (_supportsDeepColor)
       {
         v26 = 2;
       }
@@ -145,15 +145,15 @@
         ++v26;
       }
 
-      *(a1 + 32) = v26 | *(a1 + 32) & 0xFC;
+      *(self + 32) = v26 | *(self + 32) & 0xFC;
     }
   }
 }
 
-- (void)_updateContextForHDRRendering:(uint64_t)a1
+- (void)_updateContextForHDRRendering:(uint64_t)rendering
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (rendering)
   {
     if ((a2 & 1) != 0 || (+[UIDevice currentDevice](UIDevice, "currentDevice"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 _supportsDeepColor], v3, v4))
     {
@@ -166,7 +166,7 @@
     }
 
     v6 = *v5;
-    v7 = *(a1 + 40);
+    v7 = *(rendering + 40);
     if (!v7 || [v7 workingFormat] != v6)
     {
       v8 = MEMORY[0x1E695F620];
@@ -175,25 +175,25 @@
       v14[0] = v9;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
       v11 = [v8 contextWithOptions:v10];
-      v12 = *(a1 + 40);
-      *(a1 + 40) = v11;
+      v12 = *(rendering + 40);
+      *(rendering + 40) = v11;
     }
   }
 }
 
-- (void)renderContent:(int)a3 usingHDR:(void *)a4 withEffects:
+- (void)renderContent:(int)content usingHDR:(void *)r withEffects:
 {
-  v15 = a4;
-  if (a1)
+  rCopy = r;
+  if (self)
   {
-    v7 = [a2 CIImage];
-    v8 = v7;
-    if (v7)
+    cIImage = [a2 CIImage];
+    v8 = cIImage;
+    if (cIImage)
     {
-      v9 = v7;
-      if (v15 && (v15[2](), v10 = objc_claimAutoreleasedReturnValue(), v9, [v9 extent], objc_msgSend(v10, "imageByCroppingToRect:"), v9 = objc_claimAutoreleasedReturnValue(), v10, !v9))
+      v9 = cIImage;
+      if (rCopy && (rCopy[2](), v10 = objc_claimAutoreleasedReturnValue(), v9, [v9 extent], objc_msgSend(v10, "imageByCroppingToRect:"), v9 = objc_claimAutoreleasedReturnValue(), v10, !v9))
       {
-        *(a1 + 32) &= ~1u;
+        *(self + 32) &= ~1u;
       }
 
       else
@@ -201,18 +201,18 @@
         [v9 extent];
         v12 = v11;
         v14 = v13;
-        [(_UIImageCIImageRenderer *)a1 _updateSurfaceForSize:a3 usingHDR:v11, v13];
-        [(_UIImageCIImageRenderer *)a1 _updateContextForHDRRendering:a3];
-        if (*(a1 + 32))
+        [(_UIImageCIImageRenderer *)self _updateSurfaceForSize:content usingHDR:v11, v13];
+        [(_UIImageCIImageRenderer *)self _updateContextForHDRRendering:content];
+        if (*(self + 32))
         {
-          [*(a1 + 40) render:v9 toIOSurface:*(a1 + 8) bounds:-[_UIImageCIImageRenderer _targetColorSpaceForHDR:](a1 colorSpace:{a3), *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v12, v14}];
+          [*(self + 40) render:v9 toIOSurface:*(self + 8) bounds:-[_UIImageCIImageRenderer _targetColorSpaceForHDR:](self colorSpace:{content), *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v12, v14}];
         }
       }
     }
 
     else
     {
-      *(a1 + 32) &= ~1u;
+      *(self + 32) &= ~1u;
     }
   }
 }

@@ -1,18 +1,18 @@
 @interface HKPairedDeviceAppInstallationManager
-- (HKPairedDeviceAppInstallationManager)initWithBundleIdentifier:(id)a3;
-- (HKPairedDeviceAppInstallationManager)initWithBundleIdentifier:(id)a3 forPairedDeviceRegistry:(id)a4;
-- (id)handleErrorWithAppConduitFetch:(id)a3 errorOut:(id *)a4;
-- (id)isWatchAppInstalledWithError:(id *)a3;
-- (void)_watchAppInstallStateDidChange:(id)a3;
+- (HKPairedDeviceAppInstallationManager)initWithBundleIdentifier:(id)identifier;
+- (HKPairedDeviceAppInstallationManager)initWithBundleIdentifier:(id)identifier forPairedDeviceRegistry:(id)registry;
+- (id)handleErrorWithAppConduitFetch:(id)fetch errorOut:(id *)out;
+- (id)isWatchAppInstalledWithError:(id *)error;
+- (void)_watchAppInstallStateDidChange:(id)change;
 - (void)startObserving;
 - (void)stopObserving;
 @end
 
 @implementation HKPairedDeviceAppInstallationManager
 
-- (HKPairedDeviceAppInstallationManager)initWithBundleIdentifier:(id)a3
+- (HKPairedDeviceAppInstallationManager)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -31,32 +31,32 @@
 
   v6 = v5;
   _Block_object_dispose(&v11, 8);
-  v7 = [v5 sharedInstance];
-  v8 = [(HKPairedDeviceAppInstallationManager *)self initWithBundleIdentifier:v4 forPairedDeviceRegistry:v7];
+  sharedInstance = [v5 sharedInstance];
+  v8 = [(HKPairedDeviceAppInstallationManager *)self initWithBundleIdentifier:identifierCopy forPairedDeviceRegistry:sharedInstance];
 
   return v8;
 }
 
-- (HKPairedDeviceAppInstallationManager)initWithBundleIdentifier:(id)a3 forPairedDeviceRegistry:(id)a4
+- (HKPairedDeviceAppInstallationManager)initWithBundleIdentifier:(id)identifier forPairedDeviceRegistry:(id)registry
 {
-  v7 = a4;
+  registryCopy = registry;
   v11.receiver = self;
   v11.super_class = HKPairedDeviceAppInstallationManager;
-  v8 = [(HKWatchAppInstallationManager *)&v11 initWithBundleIdentifier:a3];
+  v8 = [(HKWatchAppInstallationManager *)&v11 initWithBundleIdentifier:identifier];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_pairedDeviceRegistry, a4);
+    objc_storeStrong(&v8->_pairedDeviceRegistry, registry);
   }
 
   return v9;
 }
 
-- (id)isWatchAppInstalledWithError:(id *)a3
+- (id)isWatchAppInstalledWithError:(id *)error
 {
   v19 = 0;
-  v5 = [self->_pairedDeviceRegistry getActivePairedDevice];
-  if (v5)
+  getActivePairedDevice = [self->_pairedDeviceRegistry getActivePairedDevice];
+  if (getActivePairedDevice)
   {
     v25 = 0;
     v26 = &v25;
@@ -82,22 +82,22 @@
       [HKPairedDeviceAppInstallationManager isWatchAppInstalledWithError:];
     }
 
-    v8 = [v5 valueForProperty:*v6];
-    v9 = [v8 BOOLValue];
+    v8 = [getActivePairedDevice valueForProperty:*v6];
+    bOOLValue = [v8 BOOLValue];
 
-    v10 = [MEMORY[0x1E698AB08] sharedDeviceConnection];
-    v11 = [(HKWatchAppInstallationManager *)self bundleIdentifier];
-    if (v9)
+    mEMORY[0x1E698AB08] = [MEMORY[0x1E698AB08] sharedDeviceConnection];
+    bundleIdentifier = [(HKWatchAppInstallationManager *)self bundleIdentifier];
+    if (bOOLValue)
     {
       v17 = 0;
-      v12 = [v10 getApplicationIsInstalled:&v19 withBundleID:v11 onPairedDevice:v5 error:&v17];
+      v12 = [mEMORY[0x1E698AB08] getApplicationIsInstalled:&v19 withBundleID:bundleIdentifier onPairedDevice:getActivePairedDevice error:&v17];
       v13 = v17;
     }
 
     else
     {
       v18 = 0;
-      v12 = [v10 getApplicationWithBundleID:v11 willInstallAfterPairing:&v19 onDevice:v5 error:&v18];
+      v12 = [mEMORY[0x1E698AB08] getApplicationWithBundleID:bundleIdentifier willInstallAfterPairing:&v19 onDevice:getActivePairedDevice error:&v18];
       v13 = v18;
     }
 
@@ -110,7 +110,7 @@
 
     else
     {
-      [(HKPairedDeviceAppInstallationManager *)self handleErrorWithAppConduitFetch:v15 errorOut:a3];
+      [(HKPairedDeviceAppInstallationManager *)self handleErrorWithAppConduitFetch:v15 errorOut:error];
     }
     v14 = ;
   }
@@ -123,21 +123,21 @@
   return v14;
 }
 
-- (id)handleErrorWithAppConduitFetch:(id)a3 errorOut:(id *)a4
+- (id)handleErrorWithAppConduitFetch:(id)fetch errorOut:(id *)out
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  fetchCopy = fetch;
+  v7 = fetchCopy;
+  if (fetchCopy)
   {
-    if (a4)
+    if (out)
     {
-      v8 = v6;
-      *a4 = v7;
+      v8 = fetchCopy;
+      *out = v7;
     }
 
     else
     {
-      _HKLogDroppedError(v6);
+      _HKLogDroppedError(fetchCopy);
     }
   }
 
@@ -159,13 +159,13 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting observation", &v6, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v4 addObserver:self selector:sel__watchAppInstallStateDidChange_ name:*MEMORY[0x1E698AAF0] object:0];
-  [v4 addObserver:self selector:sel__watchAppInstallStateDidChange_ name:*MEMORY[0x1E698AAF8] object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__watchAppInstallStateDidChange_ name:*MEMORY[0x1E698AAF0] object:0];
+  [defaultCenter addObserver:self selector:sel__watchAppInstallStateDidChange_ name:*MEMORY[0x1E698AAF8] object:0];
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -178,43 +178,43 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Stopping observation", &v6, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E698AAF0] object:0];
-  [v4 removeObserver:self name:*MEMORY[0x1E698AAF8] object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E698AAF0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E698AAF8] object:0];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_watchAppInstallStateDidChange:(id)a3
+- (void)_watchAppInstallStateDidChange:(id)change
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   _HKInitializeLogging();
   v5 = HKLogInfrastructure();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [changeCopy name];
     *buf = 138543618;
     v18 = v6;
     v19 = 2114;
-    v20 = v8;
+    v20 = name;
     _os_log_impl(&dword_19197B000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received pairing/active notification: %{public}@", buf, 0x16u);
   }
 
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E698AAE8]];
+  userInfo = [changeCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E698AAE8]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(HKWatchAppInstallationManager *)self bundleIdentifier];
-    v12 = [v10 containsObject:v11];
+    bundleIdentifier = [(HKWatchAppInstallationManager *)self bundleIdentifier];
+    v12 = [v10 containsObject:bundleIdentifier];
 
     if (v12)
     {

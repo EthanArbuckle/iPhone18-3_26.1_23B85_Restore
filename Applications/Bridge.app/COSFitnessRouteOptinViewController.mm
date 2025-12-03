@@ -7,16 +7,16 @@
 - (id)imageResource;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)selectedOptinChoice:(BOOL)a3;
+- (void)selectedOptinChoice:(BOOL)choice;
 @end
 
 @implementation COSFitnessRouteOptinViewController
 
 + (BOOL)controllerNeedsToRun
 {
-  v3 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v4 = [[NSUUID alloc] initWithUUIDString:@"7664BE48-77C3-48E5-BEE7-7EB383BA163C"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [activeWatch supportsCapability:v4];
 
   if (!v5)
   {
@@ -24,7 +24,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412290;
-      v22 = a1;
+      selfCopy2 = self;
       v9 = "Skipping (%@); Paired Watch does not have capability";
       goto LABEL_7;
     }
@@ -35,16 +35,16 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  v6 = [v3 valueForProperty:NRDevicePropertyGreenTeaDevice];
-  v7 = [v6 BOOLValue];
+  v6 = [activeWatch valueForProperty:NRDevicePropertyGreenTeaDevice];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = pbb_bridge_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412290;
-      v22 = a1;
+      selfCopy2 = self;
       v9 = "Skipping (%@); Not supported for Watch region";
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v9, &v21, 0xCu);
@@ -77,7 +77,7 @@ LABEL_7:
     v18 = [NSNumber numberWithBool:v12];
     v19 = [NSNumber numberWithBool:v15];
     v21 = 138412802;
-    v22 = v17;
+    selfCopy2 = v17;
     v23 = 2112;
     v24 = v18;
     v25 = 2112;
@@ -123,17 +123,17 @@ LABEL_15:
 
 - (id)imageResource
 {
-  v2 = [UIApp activeWatch];
-  v3 = sub_100059F28(v2);
+  activeWatch = [UIApp activeWatch];
+  v3 = sub_100059F28(activeWatch);
 
   return v3;
 }
 
-- (void)selectedOptinChoice:(BOOL)a3
+- (void)selectedOptinChoice:(BOOL)choice
 {
-  v3 = a3;
+  choiceCopy = choice;
   v5 = sub_1000E1E58();
-  if (v3)
+  if (choiceCopy)
   {
     v6 = 4;
   }
@@ -146,8 +146,8 @@ LABEL_15:
   v7 = [NSBundle bundleWithPath:@"/System/Library/LocationBundles/AppleWatchWorkout.bundle"];
   [v5 setAuthorizationStatusByType:v6 forBundle:v7];
 
-  v8 = [(COSFitnessRouteOptinViewController *)self delegate];
-  [v8 buddyControllerDone:self];
+  delegate = [(COSFitnessRouteOptinViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (id)suggestedButtonTitle

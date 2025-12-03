@@ -1,28 +1,28 @@
 @interface HDSampleIteratorQueryServer
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5;
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error;
 + (id)requiredEntitlements;
-- (HDSampleIteratorQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDSampleIteratorQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)objectTypes;
-- (void)_queue_deliverSamples:(void *)a3 queryCursor:(uint64_t)a4 deliverResults:;
+- (void)_queue_deliverSamples:(void *)samples queryCursor:(uint64_t)cursor deliverResults:;
 - (void)_queue_start;
 @end
 
 @implementation HDSampleIteratorQueryServer
 
-- (HDSampleIteratorQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDSampleIteratorQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = HDSampleIteratorQueryServer;
-  v11 = [(HDQueryServer *)&v16 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v16 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 queryCursor];
-    v13 = [v12 copy];
+    queryCursor = [configurationCopy queryCursor];
+    v13 = [queryCursor copy];
     queryCursor = v11->_queryCursor;
     v11->_queryCursor = v13;
 
-    v11->_limit = [v10 limit];
+    v11->_limit = [configurationCopy limit];
   }
 
   return v11;
@@ -38,15 +38,15 @@
   return v2;
 }
 
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error
 {
-  v6 = [a3 queryCursor];
-  v7 = [v6 queryDescriptors];
-  v8 = [v7 count];
+  queryCursor = [configuration queryCursor];
+  queryDescriptors = [queryCursor queryDescriptors];
+  v8 = [queryDescriptors count];
 
   if (!v8)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"Missing sample type for query"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Missing sample type for query"];
   }
 
   return v8 != 0;
@@ -54,8 +54,8 @@
 
 - (id)objectTypes
 {
-  v2 = [(HKSampleIteratorQueryCursor *)self->_queryCursor queryDescriptors];
-  v3 = [v2 hk_mapToSet:&__block_literal_global_160];
+  queryDescriptors = [(HKSampleIteratorQueryCursor *)self->_queryCursor queryDescriptors];
+  v3 = [queryDescriptors hk_mapToSet:&__block_literal_global_160];
 
   return v3;
 }
@@ -88,7 +88,7 @@
       }
 
       *buf = 138543362;
-      v18 = self;
+      selfCopy4 = self;
       v9 = "%{public}@: Canceled during enumeration";
     }
 
@@ -107,7 +107,7 @@
       }
 
       *buf = 138543362;
-      v18 = self;
+      selfCopy4 = self;
       v9 = "%{public}@: Suspended during enumeration";
     }
 
@@ -122,15 +122,15 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v18 = self;
+      selfCopy4 = self;
       v19 = 2114;
       v20 = v6;
       _os_log_error_impl(&dword_228986000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Encountered error enumerating update results: %{public}@", buf, 0x16u);
     }
 
-    v11 = [(HDQueryServer *)self clientProxy];
-    v12 = [(HDQueryServer *)self queryUUID];
-    [v11 client_deliverError:v6 forQuery:v12];
+    clientProxy = [(HDQueryServer *)self clientProxy];
+    queryUUID = [(HDQueryServer *)self queryUUID];
+    [clientProxy client_deliverError:v6 forQuery:queryUUID];
 
     goto LABEL_17;
   }
@@ -147,7 +147,7 @@ LABEL_17:
   if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v18 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_INFO, "%{public}@: Client no longer authorized", buf, 0xCu);
   }
 
@@ -167,18 +167,18 @@ void __43__HDSampleIteratorQueryServer__queue_start__block_invoke(uint64_t a1, u
   [(HDSampleIteratorQueryServer *)*(a1 + 32) _queue_deliverSamples:v11 queryCursor:v10 deliverResults:a6];
 }
 
-- (void)_queue_deliverSamples:(void *)a3 queryCursor:(uint64_t)a4 deliverResults:
+- (void)_queue_deliverSamples:(void *)samples queryCursor:(uint64_t)cursor deliverResults:
 {
-  if (a1)
+  if (self)
   {
-    v7 = a3;
+    samplesCopy = samples;
     v8 = a2;
-    v9 = [a1 queryQueue];
-    dispatch_assert_queue_V2(v9);
+    queryQueue = [self queryQueue];
+    dispatch_assert_queue_V2(queryQueue);
 
-    v11 = [a1 clientProxy];
-    v10 = [a1 queryUUID];
-    [v11 client_deliverSampleObjects:v8 queryCursor:v7 deliverResults:a4 query:v10];
+    clientProxy = [self clientProxy];
+    queryUUID = [self queryUUID];
+    [clientProxy client_deliverSampleObjects:v8 queryCursor:samplesCopy deliverResults:cursor query:queryUUID];
   }
 }
 

@@ -1,11 +1,11 @@
 @interface MFMailDebugUnreadIssueViewController
-- (id)_accountInformationFromAccounts:(id)a3;
-- (id)_accountUnreadCountFromAccounts:(id)a3;
+- (id)_accountInformationFromAccounts:(id)accounts;
+- (id)_accountUnreadCountFromAccounts:(id)accounts;
 - (id)_badgeCount;
 - (id)_mailboxUnreadCountInformations;
 - (void)_loadUnreadDebugInformation;
-- (void)selectAll:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)selectAll:(id)all;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -16,40 +16,40 @@
   v6.receiver = self;
   v6.super_class = MFMailDebugUnreadIssueViewController;
   [(MFMailDebugUnreadIssueViewController *)&v6 viewDidLoad];
-  v3 = [(MFMailDebugUnreadIssueViewController *)self view];
+  view = [(MFMailDebugUnreadIssueViewController *)self view];
   v4 = [UITextView alloc];
-  [v3 frame];
+  [view frame];
   v5 = [v4 initWithFrame:?];
   [v5 setAutoresizingMask:18];
   [v5 setEditable:0];
-  [v3 addSubview:v5];
+  [view addSubview:v5];
   [(MFMailDebugUnreadIssueViewController *)self setTextView:v5];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MFMailDebugUnreadIssueViewController;
-  [(MFMailDebugUnreadIssueViewController *)&v4 viewDidAppear:a3];
+  [(MFMailDebugUnreadIssueViewController *)&v4 viewDidAppear:appear];
   [(MFMailDebugUnreadIssueViewController *)self _loadUnreadDebugInformation];
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  v5 = a3;
-  v4 = [(MFMailDebugUnreadIssueViewController *)self textView];
-  [v4 selectAll:v5];
+  allCopy = all;
+  textView = [(MFMailDebugUnreadIssueViewController *)self textView];
+  [textView selectAll:allCopy];
 }
 
 - (void)_loadUnreadDebugInformation
 {
-  v3 = [(MFMailDebugUnreadIssueViewController *)self textView];
-  [v3 setText:@"fetching unread debug informations... be patient."];
+  textView = [(MFMailDebugUnreadIssueViewController *)self textView];
+  [textView setText:@"fetching unread debug informations... be patient."];
 
   v4 = dispatch_get_global_queue(0, 0);
   v5 = objc_alloc_init(NSMutableString);
-  v6 = [(MFMailDebugUnreadIssueViewController *)self _badgeCount];
-  [v5 appendFormat:@"%@\n\n", v6];
+  _badgeCount = [(MFMailDebugUnreadIssueViewController *)self _badgeCount];
+  [v5 appendFormat:@"%@\n\n", _badgeCount];
 
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
@@ -65,15 +65,15 @@
   objc_destroyWeak(&location);
 }
 
-- (id)_accountInformationFromAccounts:(id)a3
+- (id)_accountInformationFromAccounts:(id)accounts
 {
-  v12 = a3;
+  accountsCopy = accounts;
   v3 = objc_alloc_init(NSMutableString);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  obj = v12;
+  obj = accountsCopy;
   v4 = [obj countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
@@ -88,8 +88,8 @@
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
-        v8 = [v7 displayName];
-        v9 = [v7 uniqueID];
+        displayName = [v7 displayName];
+        uniqueID = [v7 uniqueID];
         if ([v7 isActive])
         {
           v10 = @"active";
@@ -100,7 +100,7 @@
           v10 = @"inactive";
         }
 
-        [v3 appendFormat:@"\n%@ : %@ - %@", v8, v9, v10];
+        [v3 appendFormat:@"\n%@ : %@ - %@", displayName, uniqueID, v10];
       }
 
       v4 = [obj countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -123,15 +123,15 @@
   return v3;
 }
 
-- (id)_accountUnreadCountFromAccounts:(id)a3
+- (id)_accountUnreadCountFromAccounts:(id)accounts
 {
-  v17 = a3;
+  accountsCopy = accounts;
   v3 = objc_alloc_init(NSMutableString);
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v17;
+  obj = accountsCopy;
   v4 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v4)
   {
@@ -149,15 +149,15 @@
         v6 = *(*(&v26 + 1) + 8 * i);
         if ([v6 isActive])
         {
-          v19 = [v6 allMailboxUids];
-          v7 = [v6 displayName];
-          [v3 appendFormat:@"%@:", v7];
+          allMailboxUids = [v6 allMailboxUids];
+          displayName = [v6 displayName];
+          [v3 appendFormat:@"%@:", displayName];
 
           v24 = 0u;
           v25 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v8 = v19;
+          v8 = allMailboxUids;
           v9 = [v8 countByEnumeratingWithState:&v22 objects:v30 count:16];
           if (v9)
           {
@@ -182,9 +182,9 @@
                   [v12 displayName];
                 }
                 v13 = ;
-                v14 = [v12 unreadCount];
-                v15 = [v12 uniqueId];
-                [v3 appendFormat:@"\n - %@ (%lu) %@", v13, v14, v15, v17];
+                unreadCount = [v12 unreadCount];
+                uniqueId = [v12 uniqueId];
+                [v3 appendFormat:@"\n - %@ (%lu) %@", v13, unreadCount, uniqueId, accountsCopy];
               }
 
               v9 = [v8 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -241,8 +241,8 @@
 
   v4 = objc_alloc_init(NSMutableString);
   v5 = +[MFMailMessageLibrary defaultInstance];
-  v6 = [v5 stringFromAllMailboxUnreadCount];
-  [v4 appendFormat:@"%@\n", v6];
+  stringFromAllMailboxUnreadCount = [v5 stringFromAllMailboxUnreadCount];
+  [v4 appendFormat:@"%@\n", stringFromAllMailboxUnreadCount];
 
   if ([v4 length])
   {

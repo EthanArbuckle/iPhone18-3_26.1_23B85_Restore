@@ -2,47 +2,47 @@
 + (BOOL)revision:(NSUInteger)requestRevision supportsConstellation:(VNRequestFaceLandmarksConstellation)constellation;
 + (const)dependentRequestCompatibility;
 + (const)dependentRequestMappingTable;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (BOOL)performBlinkDetection;
 - (BOOL)refineLeftEyeRegion;
 - (BOOL)refineMouthRegion;
 - (BOOL)refineRightEyeRegion;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (NSNumber)cascadeStepCount;
 - (NSString)description;
-- (VNDetectFaceLandmarksRequest)initWithCompletionHandler:(id)a3;
+- (VNDetectFaceLandmarksRequest)initWithCompletionHandler:(id)handler;
 - (VNRequestFaceLandmarksConstellation)constellation;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
 - (int64_t)dependencyProcessingOrdinality;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)a3;
-- (void)setCascadeStepCount:(id)a3;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)revision;
+- (void)setCascadeStepCount:(id)count;
 - (void)setConstellation:(VNRequestFaceLandmarksConstellation)constellation;
-- (void)setPerformBlinkDetection:(BOOL)a3;
-- (void)setProcessedResults:(id)a3;
-- (void)setRefineLeftEyeRegion:(BOOL)a3;
-- (void)setRefineMouthRegion:(BOOL)a3;
-- (void)setRefineRightEyeRegion:(BOOL)a3;
+- (void)setPerformBlinkDetection:(BOOL)detection;
+- (void)setProcessedResults:(id)results;
+- (void)setRefineLeftEyeRegion:(BOOL)region;
+- (void)setRefineMouthRegion:(BOOL)region;
+- (void)setRefineRightEyeRegion:(BOOL)region;
 @end
 
 @implementation VNDetectFaceLandmarksRequest
 
 - (BOOL)performBlinkDetection
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 performBlinkDetection];
+  configuration = [(VNRequest *)self configuration];
+  performBlinkDetection = [configuration performBlinkDetection];
 
-  return v3;
+  return performBlinkDetection;
 }
 
 - (VNRequestFaceLandmarksConstellation)constellation
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 constellation];
+  configuration = [(VNRequest *)self configuration];
+  constellation = [configuration constellation];
 
-  return v3;
+  return constellation;
 }
 
 + (id)privateRevisionsSet
@@ -57,9 +57,9 @@
   return v3;
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 == 3737841664)
+  if (revision == 3737841664)
   {
     v5 = @"VNDetectFaceLandmarksRequestPrivateRevisionANSTModel";
   }
@@ -68,7 +68,7 @@
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNDetectFaceLandmarksRequest;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
@@ -109,9 +109,9 @@ void __51__VNDetectFaceLandmarksRequest_privateRevisionsSet__block_invoke()
 
 + (BOOL)revision:(NSUInteger)requestRevision supportsConstellation:(VNRequestFaceLandmarksConstellation)constellation
 {
-  v6 = [a1 configurationClass];
+  configurationClass = [self configurationClass];
 
-  return [v6 revision:requestRevision supportsConstellation:constellation];
+  return [configurationClass revision:requestRevision supportsConstellation:constellation];
 }
 
 + (const)dependentRequestCompatibility
@@ -148,41 +148,41 @@ void __51__VNDetectFaceLandmarksRequest_privateRevisionsSet__block_invoke()
   return &+[VNDetectFaceLandmarksRequest dependentRequestCompatibility]::ourDependentRequestCompatibilityTable;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
+  contextCopy = context;
   VNValidatedLog(1, @"Processing DetectFaceLandmarks request\n", v9, v10, v11, v12, v13, v14, v23);
-  v15 = [(VNDetectFaceLandmarksRequest *)self applicableDetectorTypeForRevision:a3 error:a5];
+  v15 = [(VNDetectFaceLandmarksRequest *)self applicableDetectorTypeForRevision:revision error:error];
   if (!v15)
   {
     goto LABEL_11;
   }
 
-  v16 = [(VNDetectFaceLandmarksRequest *)self constellation];
-  if (([objc_opt_class() revision:a3 supportsConstellation:v16] & 1) == 0)
+  constellation = [(VNDetectFaceLandmarksRequest *)self constellation];
+  if (([objc_opt_class() revision:revision supportsConstellation:constellation] & 1) == 0)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_14;
     }
 
-    v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"VNDetectFaceLandmarksRequest revision %lu doesn't support constellation %lu", a3, v16];
-    *a5 = [VNError errorForInvalidArgumentWithLocalizedDescription:v21];
+    v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"VNDetectFaceLandmarksRequest revision %lu doesn't support constellation %lu", revision, constellation];
+    *error = [VNError errorForInvalidArgumentWithLocalizedDescription:v21];
 
 LABEL_11:
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_14;
   }
 
   v24 = 0;
-  v17 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v24 clippedToRegionOfInterest:1 error:a5];
+  v17 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v24 clippedToRegionOfInterest:1 error:error];
   v18 = v24;
   v19 = v18;
-  if (v17 && (v18 || ([(VNRequest *)self detectFacesInContext:v8 error:a5], (v19 = objc_claimAutoreleasedReturnValue()) != 0)))
+  if (v17 && (v18 || ([(VNRequest *)self detectFacesInContext:contextCopy error:error], (v19 = objc_claimAutoreleasedReturnValue()) != 0)))
   {
     [(VNImageBasedRequest *)self regionOfInterest];
-    v20 = [(VNRequest *)self processFaceObservations:v19 revision:a3 regionOfInterest:v15 detectorType:0 detectorOptions:&__block_literal_global_120 shouldAlignFaceBBox:&__block_literal_global_123 shouldRunDetectorBlock:v8 context:a5 error:?];
-    LOBYTE(a5) = v20 != 0;
+    v20 = [(VNRequest *)self processFaceObservations:v19 revision:revision regionOfInterest:v15 detectorType:0 detectorOptions:&__block_literal_global_120 shouldAlignFaceBBox:&__block_literal_global_123 shouldRunDetectorBlock:contextCopy context:error error:?];
+    LOBYTE(error) = v20 != 0;
     if (v20)
     {
       [(VNRequest *)self setResults:v20];
@@ -191,11 +191,11 @@ LABEL_11:
 
   else
   {
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
   }
 
 LABEL_14:
-  return a5;
+  return error;
 }
 
 BOOL __72__VNDetectFaceLandmarksRequest_internalPerformRevision_inContext_error___block_invoke_2(uint64_t a1, void *a2)
@@ -206,19 +206,19 @@ BOOL __72__VNDetectFaceLandmarksRequest_internalPerformRevision_inContext_error_
   return v3;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v12.receiver = self;
   v12.super_class = VNDetectFaceLandmarksRequest;
-  v6 = [(VNRequest *)&v12 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
-  v7 = [(VNDetectFaceLandmarksRequest *)self performBlinkDetection];
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v6 = [(VNRequest *)&v12 newDefaultDetectorOptionsForRequestRevision:revision session:session];
+  performBlinkDetection = [(VNDetectFaceLandmarksRequest *)self performBlinkDetection];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:performBlinkDetection];
   [v6 setObject:v8 forKeyedSubscript:@"VNFaceLandmarkDetectorProcessOption_BlinkDetection"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNDetectFaceLandmarksRequest constellation](self, "constellation")}];
   [v6 setObject:v9 forKeyedSubscript:@"VNFaceLandmarkDetectorDNNProcessOption_Constellation"];
 
-  if (a3 != 3 || v7)
+  if (revision != 3 || performBlinkDetection)
   {
     v10 = MEMORY[0x1E695E118];
   }
@@ -232,25 +232,25 @@ BOOL __72__VNDetectFaceLandmarksRequest_internalPerformRevision_inContext_error_
   return v6;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v6.receiver = self;
     v6.super_class = VNDetectFaceLandmarksRequest;
-    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(VNDetectFaceLandmarksRequest *)v4 cascadeStepCount];
-      [(VNDetectFaceLandmarksRequest *)self setCascadeStepCount:v5];
+      cascadeStepCount = [(VNDetectFaceLandmarksRequest *)requestCopy cascadeStepCount];
+      [(VNDetectFaceLandmarksRequest *)self setCascadeStepCount:cascadeStepCount];
 
-      [(VNDetectFaceLandmarksRequest *)self setRefineMouthRegion:[(VNDetectFaceLandmarksRequest *)v4 refineMouthRegion]];
-      [(VNDetectFaceLandmarksRequest *)self setRefineLeftEyeRegion:[(VNDetectFaceLandmarksRequest *)v4 refineLeftEyeRegion]];
-      [(VNDetectFaceLandmarksRequest *)self setRefineRightEyeRegion:[(VNDetectFaceLandmarksRequest *)v4 refineRightEyeRegion]];
-      [(VNDetectFaceLandmarksRequest *)self setPerformBlinkDetection:[(VNDetectFaceLandmarksRequest *)v4 performBlinkDetection]];
-      [(VNDetectFaceLandmarksRequest *)self setConstellation:[(VNDetectFaceLandmarksRequest *)v4 constellation]];
+      [(VNDetectFaceLandmarksRequest *)self setRefineMouthRegion:[(VNDetectFaceLandmarksRequest *)requestCopy refineMouthRegion]];
+      [(VNDetectFaceLandmarksRequest *)self setRefineLeftEyeRegion:[(VNDetectFaceLandmarksRequest *)requestCopy refineLeftEyeRegion]];
+      [(VNDetectFaceLandmarksRequest *)self setRefineRightEyeRegion:[(VNDetectFaceLandmarksRequest *)requestCopy refineRightEyeRegion]];
+      [(VNDetectFaceLandmarksRequest *)self setPerformBlinkDetection:[(VNDetectFaceLandmarksRequest *)requestCopy performBlinkDetection]];
+      [(VNDetectFaceLandmarksRequest *)self setConstellation:[(VNDetectFaceLandmarksRequest *)requestCopy constellation]];
     }
   }
 }
@@ -258,47 +258,47 @@ BOOL __72__VNDetectFaceLandmarksRequest_internalPerformRevision_inContext_error_
 - (int64_t)dependencyProcessingOrdinality
 {
   v3 = VNRequestDependencyProcessingOrdinalityAdjustedForConfiguredRequest(4000, self);
-  v4 = [(VNDetectFaceLandmarksRequest *)self cascadeStepCount];
-  v5 = v4;
-  if (v4)
+  cascadeStepCount = [(VNDetectFaceLandmarksRequest *)self cascadeStepCount];
+  v5 = cascadeStepCount;
+  if (cascadeStepCount)
   {
-    v3 = v3 - [v4 integerValue] + 20;
+    v3 = v3 - [cascadeStepCount integerValue] + 20;
   }
 
   return v3;
 }
 
-- (void)setProcessedResults:(id)a3
+- (void)setProcessedResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   if ([(VNRequest *)self resolvedRevision]== 1)
   {
-    v5 = [v4 indexesOfObjectsPassingTest:&__block_literal_global_101];
+    v5 = [resultsCopy indexesOfObjectsPassingTest:&__block_literal_global_101];
     if ([v5 count])
     {
-      v6 = [v4 mutableCopy];
+      v6 = [resultsCopy mutableCopy];
       [v6 removeObjectsAtIndexes:v5];
 
-      v4 = v6;
+      resultsCopy = v6;
     }
   }
 
   v7.receiver = self;
   v7.super_class = VNDetectFaceLandmarksRequest;
-  [(VNRequest *)&v7 setProcessedResults:v4];
+  [(VNRequest *)&v7 setProcessedResults:resultsCopy];
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNDetectFaceLandmarksRequest *)self cascadeStepCount];
-  v6 = [v4 cascadeStepCount];
-  v7 = v6;
-  if ((!v5 || !v6 || [v5 compare:v6] != 1) && (v8 = -[VNDetectFaceLandmarksRequest refineMouthRegion](self, "refineMouthRegion"), v8 == objc_msgSend(v4, "refineMouthRegion")) && (v9 = -[VNDetectFaceLandmarksRequest refineLeftEyeRegion](self, "refineLeftEyeRegion"), v9 == objc_msgSend(v4, "refineLeftEyeRegion")) && (v10 = -[VNDetectFaceLandmarksRequest refineRightEyeRegion](self, "refineRightEyeRegion"), v10 == objc_msgSend(v4, "refineRightEyeRegion")) && (v11 = -[VNDetectFaceLandmarksRequest constellation](self, "constellation"), v11 == objc_msgSend(v4, "constellation")) && (!-[VNDetectFaceLandmarksRequest performBlinkDetection](self, "performBlinkDetection") || objc_msgSend(v4, "performBlinkDetection")))
+  configurationCopy = configuration;
+  cascadeStepCount = [(VNDetectFaceLandmarksRequest *)self cascadeStepCount];
+  cascadeStepCount2 = [configurationCopy cascadeStepCount];
+  v7 = cascadeStepCount2;
+  if ((!cascadeStepCount || !cascadeStepCount2 || [cascadeStepCount compare:cascadeStepCount2] != 1) && (v8 = -[VNDetectFaceLandmarksRequest refineMouthRegion](self, "refineMouthRegion"), v8 == objc_msgSend(configurationCopy, "refineMouthRegion")) && (v9 = -[VNDetectFaceLandmarksRequest refineLeftEyeRegion](self, "refineLeftEyeRegion"), v9 == objc_msgSend(configurationCopy, "refineLeftEyeRegion")) && (v10 = -[VNDetectFaceLandmarksRequest refineRightEyeRegion](self, "refineRightEyeRegion"), v10 == objc_msgSend(configurationCopy, "refineRightEyeRegion")) && (v11 = -[VNDetectFaceLandmarksRequest constellation](self, "constellation"), v11 == objc_msgSend(configurationCopy, "constellation")) && (!-[VNDetectFaceLandmarksRequest performBlinkDetection](self, "performBlinkDetection") || objc_msgSend(configurationCopy, "performBlinkDetection")))
   {
     v14.receiver = self;
     v14.super_class = VNDetectFaceLandmarksRequest;
-    v12 = [(VNImageBasedRequest *)&v14 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v12 = [(VNImageBasedRequest *)&v14 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -309,15 +309,15 @@ BOOL __72__VNDetectFaceLandmarksRequest_internalPerformRevision_inContext_error_
   return v12;
 }
 
-- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)a3
+- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)revision
 {
   v5.receiver = self;
   v5.super_class = VNDetectFaceLandmarksRequest;
-  [(VNRequest *)&v5 resolvedRevisionDidChangeFromRevision:a3];
+  [(VNRequest *)&v5 resolvedRevisionDidChangeFromRevision:revision];
   if ([(VNRequest *)self revision]<= 2)
   {
-    v4 = [(VNRequest *)self configuration];
-    [v4 setConstellation:1];
+    configuration = [(VNRequest *)self configuration];
+    [configuration setConstellation:1];
   }
 }
 
@@ -325,83 +325,83 @@ BOOL __72__VNDetectFaceLandmarksRequest_internalPerformRevision_inContext_error_
 {
   if ([objc_opt_class() revision:-[VNRequest revision](self supportsConstellation:{"revision"), constellation}])
   {
-    v5 = [(VNRequest *)self configuration];
-    [v5 setConstellation:constellation];
+    configuration = [(VNRequest *)self configuration];
+    [configuration setConstellation:constellation];
   }
 }
 
-- (void)setPerformBlinkDetection:(BOOL)a3
+- (void)setPerformBlinkDetection:(BOOL)detection
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setPerformBlinkDetection:v3];
+  detectionCopy = detection;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setPerformBlinkDetection:detectionCopy];
 }
 
-- (void)setRefineRightEyeRegion:(BOOL)a3
+- (void)setRefineRightEyeRegion:(BOOL)region
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setRefineRightEyeRegion:v3];
+  regionCopy = region;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setRefineRightEyeRegion:regionCopy];
 }
 
 - (BOOL)refineRightEyeRegion
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 refineRightEyeRegion];
+  configuration = [(VNRequest *)self configuration];
+  refineRightEyeRegion = [configuration refineRightEyeRegion];
 
-  return v3;
+  return refineRightEyeRegion;
 }
 
-- (void)setRefineLeftEyeRegion:(BOOL)a3
+- (void)setRefineLeftEyeRegion:(BOOL)region
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setRefineLeftEyeRegion:v3];
+  regionCopy = region;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setRefineLeftEyeRegion:regionCopy];
 }
 
 - (BOOL)refineLeftEyeRegion
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 refineLeftEyeRegion];
+  configuration = [(VNRequest *)self configuration];
+  refineLeftEyeRegion = [configuration refineLeftEyeRegion];
 
-  return v3;
+  return refineLeftEyeRegion;
 }
 
-- (void)setRefineMouthRegion:(BOOL)a3
+- (void)setRefineMouthRegion:(BOOL)region
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setRefineMouthRegion:v3];
+  regionCopy = region;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setRefineMouthRegion:regionCopy];
 }
 
 - (BOOL)refineMouthRegion
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 refineMouthRegion];
+  configuration = [(VNRequest *)self configuration];
+  refineMouthRegion = [configuration refineMouthRegion];
 
-  return v3;
+  return refineMouthRegion;
 }
 
-- (void)setCascadeStepCount:(id)a3
+- (void)setCascadeStepCount:(id)count
 {
-  v5 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setCascadeStepCount:v5];
+  countCopy = count;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setCascadeStepCount:countCopy];
 }
 
 - (NSNumber)cascadeStepCount
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 cascadeStepCount];
+  configuration = [(VNRequest *)self configuration];
+  cascadeStepCount = [configuration cascadeStepCount];
 
-  return v3;
+  return cascadeStepCount;
 }
 
-- (VNDetectFaceLandmarksRequest)initWithCompletionHandler:(id)a3
+- (VNDetectFaceLandmarksRequest)initWithCompletionHandler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = VNDetectFaceLandmarksRequest;
-  v3 = [(VNRequest *)&v8 initWithCompletionHandler:a3];
+  v3 = [(VNRequest *)&v8 initWithCompletionHandler:handler];
   v4 = v3;
   if (v3)
   {
@@ -428,14 +428,14 @@ BOOL __72__VNDetectFaceLandmarksRequest_internalPerformRevision_inContext_error_
   v9.receiver = self;
   v9.super_class = VNDetectFaceLandmarksRequest;
   v4 = [(VNImageBasedRequest *)&v9 description];
-  v5 = [(VNDetectFaceLandmarksRequest *)self constellation];
+  constellation = [(VNDetectFaceLandmarksRequest *)self constellation];
   v6 = @"VNRequestFaceLandmarksConstellationNotDefined";
-  if (v5 == VNRequestFaceLandmarksConstellation65Points)
+  if (constellation == VNRequestFaceLandmarksConstellation65Points)
   {
     v6 = @"VNRequestFaceLandmarksConstellation65Points";
   }
 
-  if (v5 == VNRequestFaceLandmarksConstellation76Points)
+  if (constellation == VNRequestFaceLandmarksConstellation76Points)
   {
     v6 = @"VNRequestFaceLandmarksConstellation76Points";
   }

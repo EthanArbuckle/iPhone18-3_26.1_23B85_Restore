@@ -1,12 +1,12 @@
 @interface RPBServer_Listener
-- (BOOL)respondsToSelector:(SEL)a3;
-- (RPBServer_Listener)initWithServer:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (RPBServer_Listener)initWithServer:(id)server;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)remoteProcessingBlockServerDidStartRunning:(id)a3;
-- (void)remoteProcessingBlockServerDidStopRunning:(id)a3;
-- (void)remoteProcessingBlockServerWillStartRunning:(id)a3;
-- (void)remoteProcessingBlockServerWillStopRunning:(id)a3;
+- (void)remoteProcessingBlockServerDidStartRunning:(id)running;
+- (void)remoteProcessingBlockServerDidStopRunning:(id)running;
+- (void)remoteProcessingBlockServerWillStartRunning:(id)running;
+- (void)remoteProcessingBlockServerWillStopRunning:(id)running;
 @end
 
 @implementation RPBServer_Listener
@@ -20,7 +20,7 @@
   return self;
 }
 
-- (void)remoteProcessingBlockServerDidStopRunning:(id)a3
+- (void)remoteProcessingBlockServerDidStopRunning:(id)running
 {
   f = self->did_stop_running_callback.__f_.__f_;
   if (f)
@@ -29,7 +29,7 @@
   }
 }
 
-- (void)remoteProcessingBlockServerWillStopRunning:(id)a3
+- (void)remoteProcessingBlockServerWillStopRunning:(id)running
 {
   f = self->will_stop_running_callback.__f_.__f_;
   if (f)
@@ -38,7 +38,7 @@
   }
 }
 
-- (void)remoteProcessingBlockServerDidStartRunning:(id)a3
+- (void)remoteProcessingBlockServerDidStartRunning:(id)running
 {
   f = self->did_start_running_callback.__f_.__f_;
   if (f)
@@ -47,7 +47,7 @@
   }
 }
 
-- (void)remoteProcessingBlockServerWillStartRunning:(id)a3
+- (void)remoteProcessingBlockServerWillStartRunning:(id)running
 {
   f = self->will_start_running_callback.__f_.__f_;
   if (f)
@@ -56,26 +56,26 @@
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_remoteProcessingBlockServerWillStartRunning_ == a3)
+  if (sel_remoteProcessingBlockServerWillStartRunning_ == selector)
   {
     f = self->will_start_running_callback.__f_.__f_;
   }
 
-  else if (sel_remoteProcessingBlockServerDidStartRunning_ == a3)
+  else if (sel_remoteProcessingBlockServerDidStartRunning_ == selector)
   {
     f = self->did_start_running_callback.__f_.__f_;
   }
 
-  else if (sel_remoteProcessingBlockServerWillStopRunning_ == a3)
+  else if (sel_remoteProcessingBlockServerWillStopRunning_ == selector)
   {
     f = self->will_stop_running_callback.__f_.__f_;
   }
 
   else
   {
-    if (sel_remoteProcessingBlockServerDidStopRunning_ != a3)
+    if (sel_remoteProcessingBlockServerDidStopRunning_ != selector)
     {
       v8 = v3;
       v9 = v4;
@@ -100,17 +100,17 @@
   [(RPBServer_Listener *)&v4 dealloc];
 }
 
-- (RPBServer_Listener)initWithServer:(id)a3
+- (RPBServer_Listener)initWithServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v9.receiver = self;
   v9.super_class = RPBServer_Listener;
   v5 = [(RPBServer_Listener *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_server, v4);
-    [v4 addListener:v6];
+    v7 = objc_storeWeak(&v5->_server, serverCopy);
+    [serverCopy addListener:v6];
   }
 
   return v6;

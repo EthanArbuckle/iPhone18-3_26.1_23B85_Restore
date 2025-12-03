@@ -1,18 +1,18 @@
 @interface _UIStatusBarMultilineStringView
-- (_UIStatusBarMultilineStringView)initWithFrame:(CGRect)a3;
+- (_UIStatusBarMultilineStringView)initWithFrame:(CGRect)frame;
 - (id)viewForFirstBaselineLayout;
 - (id)viewForLastBaselineLayout;
-- (void)applyStyleAttributes:(id)a3;
-- (void)setNumberOfLines:(int64_t)a3;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)setNumberOfLines:(int64_t)lines;
 @end
 
 @implementation _UIStatusBarMultilineStringView
 
-- (_UIStatusBarMultilineStringView)initWithFrame:(CGRect)a3
+- (_UIStatusBarMultilineStringView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = _UIStatusBarMultilineStringView;
-  v3 = [(UIView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = [UIStackView alloc];
   [(UIView *)v3 bounds];
   v5 = [(UIStackView *)v4 initWithFrame:?];
@@ -22,40 +22,40 @@
   [(UIStackView *)v3->_stackView setAxis:1];
   [(UIStackView *)v3->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)v3 addSubview:v3->_stackView];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [(UIView *)v3 leadingAnchor];
-  v9 = [(UIView *)v3->_stackView leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
-  [v7 addObject:v10];
+  array = [MEMORY[0x1E695DF70] array];
+  leadingAnchor = [(UIView *)v3 leadingAnchor];
+  leadingAnchor2 = [(UIView *)v3->_stackView leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v10];
 
-  v11 = [(UIView *)v3 trailingAnchor];
-  v12 = [(UIView *)v3->_stackView trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
-  [v7 addObject:v13];
+  trailingAnchor = [(UIView *)v3 trailingAnchor];
+  trailingAnchor2 = [(UIView *)v3->_stackView trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v13];
 
-  v14 = [(UIView *)v3 topAnchor];
-  v15 = [(UIView *)v3->_stackView topAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
-  [v7 addObject:v16];
+  topAnchor = [(UIView *)v3 topAnchor];
+  topAnchor2 = [(UIView *)v3->_stackView topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v16];
 
-  v17 = [(UIView *)v3 bottomAnchor];
-  v18 = [(UIView *)v3->_stackView bottomAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
-  [v7 addObject:v19];
+  bottomAnchor = [(UIView *)v3 bottomAnchor];
+  bottomAnchor2 = [(UIView *)v3->_stackView bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v19];
 
-  [MEMORY[0x1E69977A0] activateConstraints:v7];
+  [MEMORY[0x1E69977A0] activateConstraints:array];
   return v3;
 }
 
-- (void)setNumberOfLines:(int64_t)a3
+- (void)setNumberOfLines:(int64_t)lines
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (self->_numberOfLines != a3)
+  if (self->_numberOfLines != lines)
   {
-    v3 = a3;
-    self->_numberOfLines = a3;
-    v5 = [(UIStackView *)self->_stackView arrangedSubviews];
-    v6 = [v5 copy];
+    linesCopy = lines;
+    self->_numberOfLines = lines;
+    arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+    v6 = [arrangedSubviews copy];
 
     v15 = 0u;
     v16 = 0u;
@@ -87,31 +87,31 @@
       while (v9);
     }
 
-    if (v3 >= 1)
+    if (linesCopy >= 1)
     {
       do
       {
         v12 = objc_alloc_init(_UIStatusBarStringView);
         [(UIStackView *)self->_stackView addArrangedSubview:v12];
 
-        --v3;
+        --linesCopy;
       }
 
-      while (v3);
+      while (linesCopy);
     }
   }
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(_UIStatusBarMultilineStringView *)self stringViews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  stringViews = [(_UIStatusBarMultilineStringView *)self stringViews];
+  v6 = [stringViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -123,14 +123,14 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(stringViews);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) applyStyleAttributes:v4];
+        [*(*(&v10 + 1) + 8 * v9++) applyStyleAttributes:attributesCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [stringViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -139,18 +139,18 @@
 
 - (id)viewForFirstBaselineLayout
 {
-  v2 = [(_UIStatusBarMultilineStringView *)self stringViews];
-  v3 = [v2 firstObject];
+  stringViews = [(_UIStatusBarMultilineStringView *)self stringViews];
+  firstObject = [stringViews firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)viewForLastBaselineLayout
 {
-  v2 = [(_UIStatusBarMultilineStringView *)self stringViews];
-  v3 = [v2 lastObject];
+  stringViews = [(_UIStatusBarMultilineStringView *)self stringViews];
+  lastObject = [stringViews lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 @end

@@ -2,7 +2,7 @@
 - (CGSize)intrinsicContentSize;
 - (ProfileIconButton)init;
 - (void)layoutSubviews;
-- (void)setIconName:(id)a3;
+- (void)setIconName:(id)name;
 - (void)tintColorDidChange;
 @end
 
@@ -16,12 +16,12 @@
   if (v2)
   {
     v3 = +[UIColor secondaryLabelColor];
-    v4 = [(ProfileIconButton *)v2 imageView];
-    [v4 setTintColor:v3];
+    imageView = [(ProfileIconButton *)v2 imageView];
+    [imageView setTintColor:v3];
 
-    v5 = [(ProfileIconButton *)v2 widthAnchor];
-    v6 = [(ProfileIconButton *)v2 heightAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6];
+    widthAnchor = [(ProfileIconButton *)v2 widthAnchor];
+    heightAnchor = [(ProfileIconButton *)v2 heightAnchor];
+    v7 = [widthAnchor constraintEqualToAnchor:heightAnchor];
     [v7 setActive:1];
 
     v8 = v2;
@@ -39,52 +39,52 @@
   {
     [(ProfileIconButton *)self bounds];
     v3 = CGRectGetHeight(v19) * 0.5;
-    v4 = [(ProfileIconButton *)self layer];
-    [v4 setCornerRadius:v3];
+    layer = [(ProfileIconButton *)self layer];
+    [layer setCornerRadius:v3];
 
-    v5 = [(ProfileIconButton *)self layer];
-    [v5 setBorderWidth:3.0];
+    layer2 = [(ProfileIconButton *)self layer];
+    [layer2 setBorderWidth:3.0];
 
-    v6 = [(ProfileIconButton *)self tintColor];
-    v7 = [(ProfileIconButton *)self imageView];
-    [v7 setTintColor:v6];
+    tintColor = [(ProfileIconButton *)self tintColor];
+    imageView = [(ProfileIconButton *)self imageView];
+    [imageView setTintColor:tintColor];
 
-    v8 = [(ProfileIconButton *)self tintColor];
-    v9 = [v8 CGColor];
-    v10 = [(ProfileIconButton *)self layer];
-    [v10 setBorderColor:v9];
+    tintColor2 = [(ProfileIconButton *)self tintColor];
+    cGColor = [tintColor2 CGColor];
+    layer3 = [(ProfileIconButton *)self layer];
+    [layer3 setBorderColor:cGColor];
 
-    v11 = [(ProfileIconButton *)self tintColor];
-    v12 = [v11 colorWithAlphaComponent:0.1];
-    v13 = [v12 cgColor];
-    v14 = [(ProfileIconButton *)self layer];
-    [v14 setBackgroundColor:v13];
+    tintColor3 = [(ProfileIconButton *)self tintColor];
+    imageView2 = [tintColor3 colorWithAlphaComponent:0.1];
+    cgColor = [imageView2 cgColor];
+    layer4 = [(ProfileIconButton *)self layer];
+    [layer4 setBackgroundColor:cgColor];
   }
 
   else
   {
-    v15 = [(ProfileIconButton *)self layer];
-    [v15 setBorderWidth:0.0];
+    layer5 = [(ProfileIconButton *)self layer];
+    [layer5 setBorderWidth:0.0];
 
-    v16 = [(ProfileIconButton *)self layer];
-    [v16 setBorderColor:0];
+    layer6 = [(ProfileIconButton *)self layer];
+    [layer6 setBorderColor:0];
 
-    v17 = [(ProfileIconButton *)self layer];
-    [v17 setBackgroundColor:0];
+    layer7 = [(ProfileIconButton *)self layer];
+    [layer7 setBackgroundColor:0];
 
-    v11 = +[UIColor secondaryLabelColor];
-    v12 = [(ProfileIconButton *)self imageView];
-    [v12 setTintColor:v11];
+    tintColor3 = +[UIColor secondaryLabelColor];
+    imageView2 = [(ProfileIconButton *)self imageView];
+    [imageView2 setTintColor:tintColor3];
   }
 }
 
-- (void)setIconName:(id)a3
+- (void)setIconName:(id)name
 {
-  v5 = a3;
-  if (self->_iconName != v5)
+  nameCopy = name;
+  if (self->_iconName != nameCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_iconName, a3);
+    v10 = nameCopy;
+    objc_storeStrong(&self->_iconName, name);
     if ([(NSString *)self->_iconName isEqualToString:@"ellipsis"])
     {
       v6 = 2;
@@ -100,7 +100,7 @@
     v9 = [UIImage _systemImageNamed:iconName withConfiguration:v8];
     [(ProfileIconButton *)self setImage:v9 forState:0];
 
-    v5 = v10;
+    nameCopy = v10;
   }
 }
 

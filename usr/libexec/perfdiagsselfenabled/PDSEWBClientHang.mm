@@ -10,11 +10,11 @@
 + (BOOL)wantsEnablement
 {
   v2 = +[HTPrefs sharedPrefs];
-  v3 = [v2 pdseWBClientHangPeriodDays];
+  pdseWBClientHangPeriodDays = [v2 pdseWBClientHangPeriodDays];
   v4 = sub_10000BE10(@"PDSEWBClientHang");
-  LOBYTE(v3) = sub_10000BB68(v3, 1, v4);
+  LOBYTE(pdseWBClientHangPeriodDays) = sub_10000BB68(pdseWBClientHangPeriodDays, 1, v4);
 
-  return v3;
+  return pdseWBClientHangPeriodDays;
 }
 
 + (BOOL)willEnableDiagnostics

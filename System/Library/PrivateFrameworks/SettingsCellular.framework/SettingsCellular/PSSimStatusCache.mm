@@ -1,26 +1,26 @@
 @interface PSSimStatusCache
 + (id)sharedInstance;
 - (BOOL)isDualSimCapable;
-- (BOOL)isSlotActiveDataSlot:(int64_t)a3;
-- (PSSimStatusCache)initWithCoreTelephonyClient:(id)a3;
+- (BOOL)isSlotActiveDataSlot:(int64_t)slot;
+- (PSSimStatusCache)initWithCoreTelephonyClient:(id)client;
 - (id)activeDataSubscriptionContext;
 - (id)defaultVoiceSubscriptionContext;
 - (id)initPrivate;
-- (id)simStatus:(id)a3;
-- (id)subscriptionContextsHasCacheLock:(BOOL)a3;
+- (id)simStatus:(id)status;
+- (id)subscriptionContextsHasCacheLock:(BOOL)lock;
 - (id)subscriptionsInUse;
-- (int64_t)simHardwareInfo:(id)a3;
+- (int64_t)simHardwareInfo:(id)info;
 - (void)clearSimHardwareInfoCache;
 - (void)clearSubscriptionContextCache;
 - (void)clearSubscriptionInfoAndSimStatusCache;
-- (void)currentDataSimChanged:(id)a3;
+- (void)currentDataSimChanged:(id)changed;
 - (void)fetchActiveDataSubscriptionContextIfNeeded;
 - (void)fetchDefaultVoiceSubscriptionContextIfNeeded;
-- (void)fetchSimHardwareInfoHasCacheLock:(BOOL)a3;
-- (void)fetchSimStatusHasCacheLock:(BOOL)a3;
-- (void)fetchSubscriptionContextsHasCacheLock:(BOOL)a3;
-- (void)preferredDataSimChanged:(id)a3;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
+- (void)fetchSimHardwareInfoHasCacheLock:(BOOL)lock;
+- (void)fetchSimStatusHasCacheLock:(BOOL)lock;
+- (void)fetchSubscriptionContextsHasCacheLock:(BOOL)lock;
+- (void)preferredDataSimChanged:(id)changed;
+- (void)simStatusDidChange:(id)change status:(id)status;
 - (void)subscriptionInfoDidChange;
 - (void)updateIsAnySimPresent;
 - (void)willEnterForeground;
@@ -57,9 +57,9 @@ uint64_t __34__PSSimStatusCache_sharedInstance__block_invoke()
   return v6;
 }
 
-- (PSSimStatusCache)initWithCoreTelephonyClient:(id)a3
+- (PSSimStatusCache)initWithCoreTelephonyClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = PSSimStatusCache;
   v6 = [(PSSimStatusCache *)&v15 init];
@@ -67,7 +67,7 @@ uint64_t __34__PSSimStatusCache_sharedInstance__block_invoke()
   if (v6)
   {
     v6->_cacheLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_coreTelephonyClient, a3);
+    objc_storeStrong(&v6->_coreTelephonyClient, client);
     [(CoreTelephonyClient *)v7->_coreTelephonyClient setDelegate:v7];
     subscriptionInfo = v7->_subscriptionInfo;
     v7->_subscriptionInfo = 0;
@@ -85,8 +85,8 @@ uint64_t __34__PSSimStatusCache_sharedInstance__block_invoke()
     v7->_simHardwareTypeDict = 0;
 
     [(PSSimStatusCache *)v7 updateIsAnySimPresent];
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v7 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
   }
 
   return v7;
@@ -94,11 +94,11 @@ uint64_t __34__PSSimStatusCache_sharedInstance__block_invoke()
 
 - (void)clearSubscriptionInfoAndSimStatusCache
 {
-  v3 = [(PSSimStatusCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSSimStatusCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Clearing subscription info and sim status cache", v4, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Clearing subscription info and sim status cache", v4, 2u);
   }
 
   os_unfair_lock_lock(&self->_cacheLock);
@@ -109,11 +109,11 @@ uint64_t __34__PSSimStatusCache_sharedInstance__block_invoke()
 
 - (void)clearSubscriptionContextCache
 {
-  v3 = [(PSSimStatusCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSSimStatusCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Clearing sim status cache", v4, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Clearing sim status cache", v4, 2u);
   }
 
   os_unfair_lock_lock(&self->_cacheLock);
@@ -124,11 +124,11 @@ uint64_t __34__PSSimStatusCache_sharedInstance__block_invoke()
 
 - (void)clearSimHardwareInfoCache
 {
-  v3 = [(PSSimStatusCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSSimStatusCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Clearing sim hardware info cache", v4, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Clearing sim hardware info cache", v4, 2u);
   }
 
   os_unfair_lock_lock(&self->_cacheLock);
@@ -138,11 +138,11 @@ uint64_t __34__PSSimStatusCache_sharedInstance__block_invoke()
 
 - (void)willEnterForeground
 {
-  v3 = [(PSSimStatusCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSSimStatusCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Entering foreground", v4, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Entering foreground", v4, 2u);
   }
 
   [(PSSimStatusCache *)self clearSubscriptionInfoAndSimStatusCache];
@@ -153,17 +153,17 @@ uint64_t __34__PSSimStatusCache_sharedInstance__block_invoke()
   [(PSSimStatusCache *)self updateIsAnySimPresent];
 }
 
-- (void)fetchSubscriptionContextsHasCacheLock:(BOOL)a3
+- (void)fetchSubscriptionContextsHasCacheLock:(BOOL)lock
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [(PSSimStatusCache *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSSimStatusCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658CA000, v5, OS_LOG_TYPE_DEFAULT, "executing fetch", buf, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "executing fetch", buf, 2u);
   }
 
-  if (!a3)
+  if (!lock)
   {
     os_unfair_lock_lock(&self->_cacheLock);
   }
@@ -172,18 +172,18 @@ uint64_t __34__PSSimStatusCache_sharedInstance__block_invoke()
   v12 = 0;
   v7 = [(CoreTelephonyClient *)coreTelephonyClient getSubscriptionInfoWithError:&v12];
   v8 = v12;
-  v9 = [(PSSimStatusCache *)self getLogger];
-  v10 = v9;
+  getLogger2 = [(PSSimStatusCache *)self getLogger];
+  v10 = getLogger2;
   if (v8)
   {
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v14 = v8;
       _os_log_error_impl(&dword_2658CA000, v10, OS_LOG_TYPE_ERROR, "fetch failed: %@", buf, 0xCu);
     }
 
-    if (!a3)
+    if (!lock)
     {
 LABEL_9:
       os_unfair_lock_unlock(&self->_cacheLock);
@@ -192,7 +192,7 @@ LABEL_9:
 
   else
   {
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v14 = v7;
@@ -200,7 +200,7 @@ LABEL_9:
     }
 
     [(PSSimStatusCache *)self setSubscriptionInfo:v7];
-    if (!a3)
+    if (!lock)
     {
       goto LABEL_9;
     }
@@ -213,18 +213,18 @@ LABEL_9:
 {
   v16 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_cacheLock);
-  v3 = [(PSSimStatusCache *)self currentDataSubscriptionContext];
+  currentDataSubscriptionContext = [(PSSimStatusCache *)self currentDataSubscriptionContext];
 
-  v4 = [(PSSimStatusCache *)self getLogger];
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  getLogger = [(PSSimStatusCache *)self getLogger];
+  v5 = os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT);
+  if (currentDataSubscriptionContext)
   {
     if (v5)
     {
-      v6 = [(PSSimStatusCache *)self currentDataSubscriptionContext];
+      currentDataSubscriptionContext2 = [(PSSimStatusCache *)self currentDataSubscriptionContext];
       *buf = 138412290;
-      v15 = v6;
-      _os_log_impl(&dword_2658CA000, v4, OS_LOG_TYPE_DEFAULT, "No fetch needed, active data subscription context is: %@", buf, 0xCu);
+      v15 = currentDataSubscriptionContext2;
+      _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "No fetch needed, active data subscription context is: %@", buf, 0xCu);
     }
 
     os_unfair_lock_unlock(&self->_cacheLock);
@@ -235,18 +235,18 @@ LABEL_9:
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&dword_2658CA000, v4, OS_LOG_TYPE_DEFAULT, "Executing fetch for active data subscription", buf, 2u);
+      _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Executing fetch for active data subscription", buf, 2u);
     }
 
     coreTelephonyClient = self->_coreTelephonyClient;
     v13 = 0;
     v8 = [(CoreTelephonyClient *)coreTelephonyClient getCurrentDataSubscriptionContextSync:&v13];
     v9 = v13;
-    v10 = [(PSSimStatusCache *)self getLogger];
-    v11 = v10;
+    getLogger2 = [(PSSimStatusCache *)self getLogger];
+    v11 = getLogger2;
     if (v9)
     {
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v15 = v9;
@@ -256,7 +256,7 @@ LABEL_9:
 
     else
     {
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v15 = v8;
@@ -276,18 +276,18 @@ LABEL_9:
 {
   v16 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_cacheLock);
-  v3 = [(PSSimStatusCache *)self userDefaultVoiceSubscriptionContext];
+  userDefaultVoiceSubscriptionContext = [(PSSimStatusCache *)self userDefaultVoiceSubscriptionContext];
 
-  v4 = [(PSSimStatusCache *)self getLogger];
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  getLogger = [(PSSimStatusCache *)self getLogger];
+  v5 = os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT);
+  if (userDefaultVoiceSubscriptionContext)
   {
     if (v5)
     {
-      v6 = [(PSSimStatusCache *)self userDefaultVoiceSubscriptionContext];
+      userDefaultVoiceSubscriptionContext2 = [(PSSimStatusCache *)self userDefaultVoiceSubscriptionContext];
       *buf = 138412290;
-      v15 = v6;
-      _os_log_impl(&dword_2658CA000, v4, OS_LOG_TYPE_DEFAULT, "No fetch needed, default voice subscription context is: %@", buf, 0xCu);
+      v15 = userDefaultVoiceSubscriptionContext2;
+      _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "No fetch needed, default voice subscription context is: %@", buf, 0xCu);
     }
 
     os_unfair_lock_unlock(&self->_cacheLock);
@@ -298,18 +298,18 @@ LABEL_9:
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&dword_2658CA000, v4, OS_LOG_TYPE_DEFAULT, "Executing fetch for default voice subscription", buf, 2u);
+      _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Executing fetch for default voice subscription", buf, 2u);
     }
 
     coreTelephonyClient = self->_coreTelephonyClient;
     v13 = 0;
     v8 = [(CoreTelephonyClient *)coreTelephonyClient getUserDefaultVoiceSubscriptionContext:&v13];
     v9 = v13;
-    v10 = [(PSSimStatusCache *)self getLogger];
-    v11 = v10;
+    getLogger2 = [(PSSimStatusCache *)self getLogger];
+    v11 = getLogger2;
     if (v9)
     {
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v15 = v9;
@@ -319,7 +319,7 @@ LABEL_9:
 
     else
     {
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v15 = v8;
@@ -335,56 +335,56 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)subscriptionContextsHasCacheLock:(BOOL)a3
+- (id)subscriptionContextsHasCacheLock:(BOOL)lock
 {
-  if (!a3)
+  if (!lock)
   {
     os_unfair_lock_lock(&self->_cacheLock);
   }
 
-  v5 = [(PSSimStatusCache *)self subscriptionInfo];
+  subscriptionInfo = [(PSSimStatusCache *)self subscriptionInfo];
 
-  if (!v5)
+  if (!subscriptionInfo)
   {
     [(PSSimStatusCache *)self fetchSubscriptionContextsHasCacheLock:1];
   }
 
-  v6 = [(PSSimStatusCache *)self subscriptionInfo];
-  v7 = [v6 subscriptions];
+  subscriptionInfo2 = [(PSSimStatusCache *)self subscriptionInfo];
+  subscriptions = [subscriptionInfo2 subscriptions];
 
-  if (!a3)
+  if (!lock)
   {
     os_unfair_lock_unlock(&self->_cacheLock);
   }
 
-  return v7;
+  return subscriptions;
 }
 
 - (id)subscriptionsInUse
 {
   os_unfair_lock_lock(&self->_cacheLock);
-  v3 = [(PSSimStatusCache *)self subscriptionInfo];
+  subscriptionInfo = [(PSSimStatusCache *)self subscriptionInfo];
 
-  if (!v3)
+  if (!subscriptionInfo)
   {
     [(PSSimStatusCache *)self fetchSubscriptionContextsHasCacheLock:1];
   }
 
-  v4 = [(PSSimStatusCache *)self subscriptionInfo];
-  v5 = [v4 subscriptionsInUse];
+  subscriptionInfo2 = [(PSSimStatusCache *)self subscriptionInfo];
+  subscriptionsInUse = [subscriptionInfo2 subscriptionsInUse];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 
-  return v5;
+  return subscriptionsInUse;
 }
 
 - (void)subscriptionInfoDidChange
 {
-  v3 = [(PSSimStatusCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSSimStatusCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658CA000, v3, OS_LOG_TYPE_DEFAULT, "Subscription info changed", v4, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Subscription info changed", v4, 2u);
   }
 
   [(PSSimStatusCache *)self fetchSubscriptionContextsHasCacheLock:0];
@@ -394,45 +394,45 @@ LABEL_9:
 {
   [(PSSimStatusCache *)self fetchDefaultVoiceSubscriptionContextIfNeeded];
   os_unfair_lock_lock(&self->_cacheLock);
-  v3 = [(PSSimStatusCache *)self userDefaultVoiceSubscriptionContext];
+  userDefaultVoiceSubscriptionContext = [(PSSimStatusCache *)self userDefaultVoiceSubscriptionContext];
   os_unfair_lock_unlock(&self->_cacheLock);
 
-  return v3;
+  return userDefaultVoiceSubscriptionContext;
 }
 
 - (id)activeDataSubscriptionContext
 {
   [(PSSimStatusCache *)self fetchActiveDataSubscriptionContextIfNeeded];
   os_unfair_lock_lock(&self->_cacheLock);
-  v3 = [(PSSimStatusCache *)self currentDataSubscriptionContext];
+  currentDataSubscriptionContext = [(PSSimStatusCache *)self currentDataSubscriptionContext];
   os_unfair_lock_unlock(&self->_cacheLock);
 
-  return v3;
+  return currentDataSubscriptionContext;
 }
 
-- (BOOL)isSlotActiveDataSlot:(int64_t)a3
+- (BOOL)isSlotActiveDataSlot:(int64_t)slot
 {
   [(PSSimStatusCache *)self fetchActiveDataSubscriptionContextIfNeeded];
   os_unfair_lock_lock(&self->_cacheLock);
-  v5 = [(PSSimStatusCache *)self currentDataSubscriptionContext];
-  LOBYTE(a3) = [v5 slotID] == a3;
+  currentDataSubscriptionContext = [(PSSimStatusCache *)self currentDataSubscriptionContext];
+  LOBYTE(slot) = [currentDataSubscriptionContext slotID] == slot;
 
   os_unfair_lock_unlock(&self->_cacheLock);
-  return a3;
+  return slot;
 }
 
-- (void)fetchSimStatusHasCacheLock:(BOOL)a3
+- (void)fetchSimStatusHasCacheLock:(BOOL)lock
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [(PSSimStatusCache *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSSimStatusCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658CA000, v5, OS_LOG_TYPE_DEFAULT, "Fetching SIM status", buf, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Fetching SIM status", buf, 2u);
   }
 
-  v20 = a3;
-  if (!a3)
+  lockCopy = lock;
+  if (!lock)
   {
     os_unfair_lock_lock(&self->_cacheLock);
   }
@@ -463,11 +463,11 @@ LABEL_9:
         v21 = 0;
         v15 = [(CoreTelephonyClient *)coreTelephonyClient getSIMStatus:v13 error:&v21];
         v16 = v21;
-        v17 = [(PSSimStatusCache *)self getLogger];
-        v18 = v17;
+        getLogger2 = [(PSSimStatusCache *)self getLogger];
+        v18 = getLogger2;
         if (v16)
         {
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
             v27 = v13;
@@ -479,7 +479,7 @@ LABEL_9:
 
         else
         {
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
             v27 = v13;
@@ -500,7 +500,7 @@ LABEL_9:
   }
 
   [(PSSimStatusCache *)self setSimStatusDict:v7];
-  if (!v20)
+  if (!lockCopy)
   {
     os_unfair_lock_unlock(&self->_cacheLock);
   }
@@ -508,19 +508,19 @@ LABEL_9:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)simStatus:(id)a3
+- (id)simStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   os_unfair_lock_lock(&self->_cacheLock);
-  v5 = [(PSSimStatusCache *)self simStatusDict];
+  simStatusDict = [(PSSimStatusCache *)self simStatusDict];
 
-  if (!v5)
+  if (!simStatusDict)
   {
     [(PSSimStatusCache *)self fetchSimStatusHasCacheLock:1];
   }
 
   simStatusDict = self->_simStatusDict;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(statusCopy, "slotID")}];
   v8 = [(NSMutableDictionary *)simStatusDict objectForKeyedSubscript:v7];
 
   os_unfair_lock_unlock(&self->_cacheLock);
@@ -528,18 +528,18 @@ LABEL_9:
   return v8;
 }
 
-- (void)fetchSimHardwareInfoHasCacheLock:(BOOL)a3
+- (void)fetchSimHardwareInfoHasCacheLock:(BOOL)lock
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [(PSSimStatusCache *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSSimStatusCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658CA000, v5, OS_LOG_TYPE_DEFAULT, "Fetching SIM hardware info", buf, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Fetching SIM hardware info", buf, 2u);
   }
 
-  v20 = a3;
-  if (!a3)
+  lockCopy = lock;
+  if (!lock)
   {
     os_unfair_lock_lock(&self->_cacheLock);
   }
@@ -570,11 +570,11 @@ LABEL_9:
         v22 = 0;
         v14 = [(CoreTelephonyClient *)coreTelephonyClient getSimHardwareInfo:v12 error:&v22];
         v15 = v22;
-        v16 = [(PSSimStatusCache *)self getLogger];
-        v17 = v16;
+        getLogger2 = [(PSSimStatusCache *)self getLogger];
+        v17 = getLogger2;
         if (v15)
         {
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
             v28 = v12;
@@ -586,7 +586,7 @@ LABEL_9:
 
         else
         {
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
             v28 = v12;
@@ -608,7 +608,7 @@ LABEL_9:
   }
 
   [(PSSimStatusCache *)self setSimHardwareTypeDict:v21];
-  if (!v20)
+  if (!lockCopy)
   {
     os_unfair_lock_unlock(&self->_cacheLock);
   }
@@ -616,30 +616,30 @@ LABEL_9:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)simHardwareInfo:(id)a3
+- (int64_t)simHardwareInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   os_unfair_lock_lock(&self->_cacheLock);
-  v5 = [(PSSimStatusCache *)self simHardwareTypeDict];
+  simHardwareTypeDict = [(PSSimStatusCache *)self simHardwareTypeDict];
 
-  if (!v5)
+  if (!simHardwareTypeDict)
   {
     [(PSSimStatusCache *)self fetchSimHardwareInfoHasCacheLock:1];
   }
 
   simHardwareTypeDict = self->_simHardwareTypeDict;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(infoCopy, "slotID")}];
   v8 = [(NSMutableDictionary *)simHardwareTypeDict objectForKeyedSubscript:v7];
 
-  v9 = [v8 intValue];
-  if (v9 == 1)
+  intValue = [v8 intValue];
+  if (intValue == 1)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = 2 * (v9 == 2);
+    v10 = 2 * (intValue == 2);
   }
 
   os_unfair_lock_unlock(&self->_cacheLock);
@@ -685,14 +685,14 @@ LABEL_9:
 
         v12 = *(*(&v19 + 1) + 8 * i);
         v13 = [(PSSimStatusCache *)self simStatus:v12, v18, v19];
-        v14 = [(PSSimStatusCache *)self getLogger];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        getLogger = [(PSSimStatusCache *)self getLogger];
+        if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v18;
           v24 = v12;
           v25 = 2114;
           v26 = v13;
-          _os_log_impl(&dword_2658CA000, v14, OS_LOG_TYPE_DEFAULT, "SIM status fetch succeeded: %@, %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "SIM status fetch succeeded: %@, %{public}@", buf, 0x16u);
         }
 
         if (([v9 isEqualToString:v13] & 1) == 0)
@@ -702,18 +702,18 @@ LABEL_9:
 
         if ([v10 isEqualToString:v13])
         {
-          v15 = [(PSSimStatusCache *)self getLogger];
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+          getLogger2 = [(PSSimStatusCache *)self getLogger];
+          if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 136315394;
             v24 = "[PSSimStatusCache updateIsAnySimPresent]";
             v25 = 2112;
             v26 = @"PSSimStatusChangedToReadyNotification";
-            _os_log_impl(&dword_2658CA000, v15, OS_LOG_TYPE_DEFAULT, "%s posting notification %@", buf, 0x16u);
+            _os_log_impl(&dword_2658CA000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s posting notification %@", buf, 0x16u);
           }
 
-          v16 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v16 postNotificationName:@"PSSimStatusChangedToReadyNotification" object:0];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter postNotificationName:@"PSSimStatusChangedToReadyNotification" object:0];
 
           goto LABEL_17;
         }
@@ -734,63 +734,63 @@ LABEL_17:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSSimStatusCache *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  changeCopy = change;
+  statusCopy = status;
+  getLogger = [(PSSimStatusCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v6;
+    v15 = changeCopy;
     v16 = 2114;
-    v17 = v7;
-    _os_log_impl(&dword_2658CA000, v8, OS_LOG_TYPE_DEFAULT, "Context: %@, status: %{public}@", &v14, 0x16u);
+    v17 = statusCopy;
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Context: %@, status: %{public}@", &v14, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_cacheLock);
   simStatusDict = self->_simStatusDict;
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{-[__CFString slotID](v6, "slotID")}];
-  [(NSMutableDictionary *)simStatusDict setObject:v7 forKeyedSubscript:v10];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{-[__CFString slotID](changeCopy, "slotID")}];
+  [(NSMutableDictionary *)simStatusDict setObject:statusCopy forKeyedSubscript:v10];
 
   os_unfair_lock_unlock(&self->_cacheLock);
   [(PSSimStatusCache *)self clearSubscriptionContextCache];
   [(PSSimStatusCache *)self clearSimHardwareInfoCache];
   [(PSSimStatusCache *)self updateIsAnySimPresent];
-  v11 = [(PSSimStatusCache *)self getLogger];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  getLogger2 = [(PSSimStatusCache *)self getLogger];
+  if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
     v15 = @"PSSimStatusChangedNotification";
-    _os_log_impl(&dword_2658CA000, v11, OS_LOG_TYPE_DEFAULT, "Posting notification %@", &v14, 0xCu);
+    _os_log_impl(&dword_2658CA000, getLogger2, OS_LOG_TYPE_DEFAULT, "Posting notification %@", &v14, 0xCu);
   }
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 postNotificationName:@"PSSimStatusChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"PSSimStatusChangedNotification" object:0];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)preferredDataSimChanged:(id)a3
+- (void)preferredDataSimChanged:(id)changed
 {
-  v4 = [(PSSimStatusCache *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSSimStatusCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
-    _os_log_impl(&dword_2658CA000, v4, OS_LOG_TYPE_DEFAULT, "Received Preferred Data SIM Changed, clearing cached subscription contexts", v5, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Received Preferred Data SIM Changed, clearing cached subscription contexts", v5, 2u);
   }
 
   [(PSSimStatusCache *)self clearSubscriptionContextCache];
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
-  v4 = [(PSSimStatusCache *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSSimStatusCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
-    _os_log_impl(&dword_2658CA000, v4, OS_LOG_TYPE_DEFAULT, "Recieved Current Data SIM Changed, clearing cached subscription contexts", v5, 2u);
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "Recieved Current Data SIM Changed, clearing cached subscription contexts", v5, 2u);
   }
 
   [(PSSimStatusCache *)self clearSubscriptionContextCache];

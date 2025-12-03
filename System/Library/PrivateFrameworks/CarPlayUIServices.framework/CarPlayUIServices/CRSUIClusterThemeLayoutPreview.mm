@@ -1,35 +1,35 @@
 @interface CRSUIClusterThemeLayoutPreview
-- (CRSUIClusterThemeLayoutPreview)initWithAsset:(id)a3 lightModeStateForPaletteID:(id)a4 darkModeStateForPaletteID:(id)a5 supportsDynamicAppearance:(BOOL)a6;
-- (CRSUIClusterThemeLayoutPreview)initWithBSXPCCoder:(id)a3;
-- (id)stateForPaletteIDWithInterfaceStyle:(int64_t)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (CRSUIClusterThemeLayoutPreview)initWithAsset:(id)asset lightModeStateForPaletteID:(id)d darkModeStateForPaletteID:(id)iD supportsDynamicAppearance:(BOOL)appearance;
+- (CRSUIClusterThemeLayoutPreview)initWithBSXPCCoder:(id)coder;
+- (id)stateForPaletteIDWithInterfaceStyle:(int64_t)style;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation CRSUIClusterThemeLayoutPreview
 
-- (CRSUIClusterThemeLayoutPreview)initWithAsset:(id)a3 lightModeStateForPaletteID:(id)a4 darkModeStateForPaletteID:(id)a5 supportsDynamicAppearance:(BOOL)a6
+- (CRSUIClusterThemeLayoutPreview)initWithAsset:(id)asset lightModeStateForPaletteID:(id)d darkModeStateForPaletteID:(id)iD supportsDynamicAppearance:(BOOL)appearance
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  assetCopy = asset;
+  dCopy = d;
+  iDCopy = iD;
   v17.receiver = self;
   v17.super_class = CRSUIClusterThemeLayoutPreview;
   v14 = [(CRSUIClusterThemeLayoutPreview *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_asset, a3);
-    objc_storeStrong(&v15->_lightModeStateForPaletteID, a4);
-    objc_storeStrong(&v15->_darkModeStateForPaletteID, a5);
-    v15->_supportsDynamicAppearance = a6;
+    objc_storeStrong(&v14->_asset, asset);
+    objc_storeStrong(&v15->_lightModeStateForPaletteID, d);
+    objc_storeStrong(&v15->_darkModeStateForPaletteID, iD);
+    v15->_supportsDynamicAppearance = appearance;
   }
 
   return v15;
 }
 
-- (id)stateForPaletteIDWithInterfaceStyle:(int64_t)a3
+- (id)stateForPaletteIDWithInterfaceStyle:(int64_t)style
 {
-  if (a3 == 2 && [(CRSUIClusterThemeLayoutPreview *)self supportsDynamicAppearance])
+  if (style == 2 && [(CRSUIClusterThemeLayoutPreview *)self supportsDynamicAppearance])
   {
     v4 = 16;
   }
@@ -44,14 +44,14 @@
   return v5;
 }
 
-- (CRSUIClusterThemeLayoutPreview)initWithBSXPCCoder:(id)a3
+- (CRSUIClusterThemeLayoutPreview)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"asset"];
-  v6 = [v4 decodeBoolForKey:@"supportsDynamicAppearance"];
-  if ([v4 containsValueForKey:@"lightModeStateForPaletteID"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"asset"];
+  v6 = [coderCopy decodeBoolForKey:@"supportsDynamicAppearance"];
+  if ([coderCopy containsValueForKey:@"lightModeStateForPaletteID"])
   {
-    v7 = [v4 decodeDictionaryOfClass:objc_opt_class() forKey:@"lightModeStateForPaletteID"];
+    v7 = [coderCopy decodeDictionaryOfClass:objc_opt_class() forKey:@"lightModeStateForPaletteID"];
   }
 
   else
@@ -60,9 +60,9 @@
   }
 
   v8 = v7;
-  if ([v4 containsValueForKey:@"darkModeStateForPaletteID"])
+  if ([coderCopy containsValueForKey:@"darkModeStateForPaletteID"])
   {
-    v9 = [v4 decodeDictionaryOfClass:objc_opt_class() forKey:@"darkModeStateForPaletteID"];
+    v9 = [coderCopy decodeDictionaryOfClass:objc_opt_class() forKey:@"darkModeStateForPaletteID"];
 LABEL_8:
     v10 = v9;
     goto LABEL_10;
@@ -76,7 +76,7 @@ LABEL_8:
 
   v10 = 0;
 LABEL_10:
-  v11 = 0;
+  selfCopy = 0;
   if (v10)
   {
     v12 = 0;
@@ -90,21 +90,21 @@ LABEL_10:
   if (v5 && v8 && (v12 & 1) == 0)
   {
     self = [(CRSUIClusterThemeLayoutPreview *)self initWithAsset:v5 lightModeStateForPaletteID:v8 darkModeStateForPaletteID:v10 supportsDynamicAppearance:v6];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CRSUIClusterThemeLayoutPreview *)self asset];
-  [v5 encodeObject:v4 forKey:@"asset"];
+  coderCopy = coder;
+  asset = [(CRSUIClusterThemeLayoutPreview *)self asset];
+  [coderCopy encodeObject:asset forKey:@"asset"];
 
-  [v5 encodeDictionary:self->_lightModeStateForPaletteID forKey:@"lightModeStateForPaletteID"];
-  [v5 encodeDictionary:self->_darkModeStateForPaletteID forKey:@"darkModeStateForPaletteID"];
-  [v5 encodeBool:-[CRSUIClusterThemeLayoutPreview supportsDynamicAppearance](self forKey:{"supportsDynamicAppearance"), @"supportsDynamicAppearance"}];
+  [coderCopy encodeDictionary:self->_lightModeStateForPaletteID forKey:@"lightModeStateForPaletteID"];
+  [coderCopy encodeDictionary:self->_darkModeStateForPaletteID forKey:@"darkModeStateForPaletteID"];
+  [coderCopy encodeBool:-[CRSUIClusterThemeLayoutPreview supportsDynamicAppearance](self forKey:{"supportsDynamicAppearance"), @"supportsDynamicAppearance"}];
 }
 
 @end

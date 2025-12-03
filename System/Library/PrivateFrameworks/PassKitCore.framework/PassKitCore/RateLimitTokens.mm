@@ -1,65 +1,65 @@
 @interface RateLimitTokens
-+ (id)_propertyValuesForTokens:(id)a3;
++ (id)_propertyValuesForTokens:(id)tokens;
 + (id)_setters;
-+ (id)insertOrUpdateTokens:(id)a3 inDatabase:(id)a4;
-+ (id)predicateForOperation:(int64_t)a3;
-+ (id)tokensForBundleIdentifier:(id)a3 operation:(int64_t)a4 inDatabase:(id)a5;
-- (RateLimitTokens)initWithTokens:(id)a3 inDatabase:(id)a4;
++ (id)insertOrUpdateTokens:(id)tokens inDatabase:(id)database;
++ (id)predicateForOperation:(int64_t)operation;
++ (id)tokensForBundleIdentifier:(id)identifier operation:(int64_t)operation inDatabase:(id)database;
+- (RateLimitTokens)initWithTokens:(id)tokens inDatabase:(id)database;
 - (id)tokens;
-- (void)updateWithTokens:(id)a3;
+- (void)updateWithTokens:(id)tokens;
 @end
 
 @implementation RateLimitTokens
 
-- (RateLimitTokens)initWithTokens:(id)a3 inDatabase:(id)a4
+- (RateLimitTokens)initWithTokens:(id)tokens inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _propertyValuesForTokens:v7];
+  databaseCopy = database;
+  tokensCopy = tokens;
+  v8 = [objc_opt_class() _propertyValuesForTokens:tokensCopy];
 
-  v9 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:v6];
+  v9 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:databaseCopy];
   return v9;
 }
 
-+ (id)insertOrUpdateTokens:(id)a3 inDatabase:(id)a4
++ (id)insertOrUpdateTokens:(id)tokens inDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bundleIdentifier];
-  v9 = [a1 tokensForBundleIdentifier:v8 operation:objc_msgSend(v6 inDatabase:{"operation"), v7}];
+  tokensCopy = tokens;
+  databaseCopy = database;
+  bundleIdentifier = [tokensCopy bundleIdentifier];
+  v9 = [self tokensForBundleIdentifier:bundleIdentifier operation:objc_msgSend(tokensCopy inDatabase:{"operation"), databaseCopy}];
 
   if (v9)
   {
-    [v9 updateWithTokens:v6];
+    [v9 updateWithTokens:tokensCopy];
   }
 
   else
   {
-    v9 = [[a1 alloc] initWithTokens:v6 inDatabase:v7];
+    v9 = [[self alloc] initWithTokens:tokensCopy inDatabase:databaseCopy];
   }
 
   return v9;
 }
 
-- (void)updateWithTokens:(id)a3
+- (void)updateWithTokens:(id)tokens
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _propertyValuesForTokens:v4];
+  tokensCopy = tokens;
+  v5 = [objc_opt_class() _propertyValuesForTokens:tokensCopy];
 
   [(SQLiteEntity *)self setValuesWithDictionary:v5];
 }
 
-+ (id)tokensForBundleIdentifier:(id)a3 operation:(int64_t)a4 inDatabase:(id)a5
++ (id)tokensForBundleIdentifier:(id)identifier operation:(int64_t)operation inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = [a1 predicateForBundleIdentifier:a3];
+  databaseCopy = database;
+  v9 = [self predicateForBundleIdentifier:identifier];
   v15[0] = v9;
-  v10 = [a1 predicateForOperation:a4];
+  v10 = [self predicateForOperation:operation];
   v15[1] = v10;
   v11 = [NSArray arrayWithObjects:v15 count:2];
 
   v12 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v11];
-  v13 = [objc_opt_class() anyInDatabase:v8 predicate:v12];
+  v13 = [objc_opt_class() anyInDatabase:databaseCopy predicate:v12];
 
   return v13;
 }
@@ -67,27 +67,27 @@
 - (id)tokens
 {
   v3 = objc_alloc_init(_TtC5passd27PDRateLimitTokens_Prototype);
-  v4 = [objc_opt_class() _setters];
-  v5 = [v4 allKeys];
+  _setters = [objc_opt_class() _setters];
+  allKeys = [_setters allKeys];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000F8D34;
   v10[3] = &unk_10083BEE0;
   v10[4] = self;
-  v11 = v4;
+  v11 = _setters;
   v12 = v3;
   v6 = v3;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v10];
+  v7 = _setters;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v10];
 
-  v8 = [(PDRateLimitTokens_Prototype *)v6 build];
+  build = [(PDRateLimitTokens_Prototype *)v6 build];
 
-  return v8;
+  return build;
 }
 
-+ (id)predicateForOperation:(int64_t)a3
++ (id)predicateForOperation:(int64_t)operation
 {
-  v3 = [NSNumber numberWithInteger:a3];
+  v3 = [NSNumber numberWithInteger:operation];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"b" equalToValue:v3];
 
   return v4;
@@ -108,20 +108,20 @@
   return v2;
 }
 
-+ (id)_propertyValuesForTokens:(id)a3
++ (id)_propertyValuesForTokens:(id)tokens
 {
-  v3 = a3;
+  tokensCopy = tokens;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 bundleIdentifier];
-  [v4 setObjectOrNull:v5 forKey:@"a"];
+  bundleIdentifier = [tokensCopy bundleIdentifier];
+  [v4 setObjectOrNull:bundleIdentifier forKey:@"a"];
 
-  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 operation]);
+  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [tokensCopy operation]);
   [v4 setObject:v6 forKey:@"b"];
 
-  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 tokenCount]);
+  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [tokensCopy tokenCount]);
   [v4 setObject:v7 forKey:@"c"];
 
-  v8 = [v3 lastRefillDate];
+  lastRefillDate = [tokensCopy lastRefillDate];
 
   v9 = _SQLValueForDate();
   [v4 setObjectOrNull:v9 forKey:@"d"];

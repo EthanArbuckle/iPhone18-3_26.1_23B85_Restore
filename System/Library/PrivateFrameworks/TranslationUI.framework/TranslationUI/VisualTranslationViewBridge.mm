@@ -1,27 +1,27 @@
 @interface VisualTranslationViewBridge
-+ (void)isTranslatable:(id)a3 completion:(id)a4;
++ (void)isTranslatable:(id)translatable completion:(id)completion;
 - (UIView)view;
 - (id)dismissHandler;
 - (void)dismissErrorUI;
-- (void)setDismissHandler:(id)a3;
-- (void)setPresentationAnchorWithRect:(CGRect)a3 contentRect:(CGRect)a4;
-- (void)setZoomScale:(double)a3;
+- (void)setDismissHandler:(id)handler;
+- (void)setPresentationAnchorWithRect:(CGRect)rect contentRect:(CGRect)contentRect;
+- (void)setZoomScale:(double)scale;
 - (void)showDebugMenu;
-- (void)translate:(id)a3 sourceLocale:(id)a4 targetLocale:(id)a5 completion:(id)a6;
+- (void)translate:(id)translate sourceLocale:(id)locale targetLocale:(id)targetLocale completion:(id)completion;
 @end
 
 @implementation VisualTranslationViewBridge
 
-- (void)setPresentationAnchorWithRect:(CGRect)a3 contentRect:(CGRect)a4
+- (void)setPresentationAnchorWithRect:(CGRect)rect contentRect:(CGRect)contentRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = contentRect.size.height;
+  width = contentRect.size.width;
+  y = contentRect.origin.y;
+  x = contentRect.origin.x;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_2806E0710, &qword_26F4A60A0);
   v14 = *(*(v13 - 8) + 64);
   MEMORY[0x28223BE20](v13 - 8);
@@ -40,7 +40,7 @@
   v18[10] = y;
   v18[11] = width;
   v18[12] = height;
-  v19 = self;
+  selfCopy = self;
   sub_26F40570C(0, 0, v16, &unk_26F4ABED8, v18);
 }
 
@@ -56,7 +56,7 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_26F40570C(0, 0, v6, &unk_26F4ABED0, v8);
 }
 
@@ -84,9 +84,9 @@
   return v4;
 }
 
-- (void)setDismissHandler:(id)a3
+- (void)setDismissHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -105,22 +105,22 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_26F3ACE98(v7);
 }
 
 - (UIView)view
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_26F493D60();
-  v4 = [v3 view];
+  view = [v3 view];
 
-  return v4;
+  return view;
 }
 
-+ (void)isTranslatable:(id)a3 completion:(id)a4
++ (void)isTranslatable:(id)translatable completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   sub_26F49C7FC();
   v5 = sub_26F49FAF8();
   v6 = swift_allocObject();
@@ -129,7 +129,7 @@
   static VisualTranslationService.isTranslatable(_:completion:)(v5, sub_26F480C04, v6);
 }
 
-- (void)translate:(id)a3 sourceLocale:(id)a4 targetLocale:(id)a5 completion:(id)a6
+- (void)translate:(id)translate sourceLocale:(id)locale targetLocale:(id)targetLocale completion:(id)completion
 {
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2806DEFD8, &qword_26F4A3670);
   v11 = *(*(v10 - 8) + 64);
@@ -137,10 +137,10 @@
   v13 = &v25 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v14);
   v16 = &v25 - v15;
-  v17 = _Block_copy(a6);
+  v17 = _Block_copy(completion);
   sub_26F49C7FC();
   v18 = sub_26F49FAF8();
-  if (a4)
+  if (locale)
   {
     sub_26F49DA18();
     v19 = sub_26F49DAB8();
@@ -153,7 +153,7 @@
     (*(*(v20 - 8) + 56))(v16, 1, 1, v20);
   }
 
-  if (a5)
+  if (targetLocale)
   {
     sub_26F49DA18();
     v21 = 0;
@@ -178,7 +178,7 @@
     v23 = 0;
   }
 
-  v24 = self;
+  selfCopy = self;
   VisualTranslationViewBridge.translate(_:sourceLocale:targetLocale:completion:)(v18, v16, v13, v17, v23);
   sub_26F3ACE98(v17);
 
@@ -188,10 +188,10 @@
 
 - (void)showDebugMenu
 {
-  v3 = self;
+  selfCopy = self;
   if (_LTIsInternalInstall())
   {
-    v2 = *(v3 + OBJC_IVAR____TtC13TranslationUI27VisualTranslationViewBridge_observable);
+    v2 = *(selfCopy + OBJC_IVAR____TtC13TranslationUI27VisualTranslationViewBridge_observable);
     swift_getKeyPath();
     swift_getKeyPath();
 
@@ -203,23 +203,23 @@
   }
 }
 
-- (void)setZoomScale:(double)a3
+- (void)setZoomScale:(double)scale
 {
   v5 = *(self + OBJC_IVAR____TtC13TranslationUI27VisualTranslationViewBridge_observable);
   type metadata accessor for VisualTranslationObservable(0);
   sub_26F49AAC4(&qword_2806E1668, type metadata accessor for VisualTranslationObservable);
-  v6 = self;
+  selfCopy = self;
   sub_26F49DD48();
   sub_26F49DD58();
 
   v7 = OBJC_IVAR____TtC13TranslationUI27VisualTranslationObservable_zoomScale;
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
-    a3 = COERCE_DOUBLE(1);
+    scale = COERCE_DOUBLE(1);
   }
 
   swift_beginAccess();
-  *(v5 + v7) = a3;
+  *(v5 + v7) = scale;
 }
 
 @end

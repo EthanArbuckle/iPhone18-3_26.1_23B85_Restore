@@ -1,21 +1,21 @@
 @interface FCPuzzlesConfiguration
-- (FCPuzzlesConfiguration)initWithConfigDictionary:(id)a3 storefrontID:(id)a4 defaultSupportedStorefronts:(id)a5;
+- (FCPuzzlesConfiguration)initWithConfigDictionary:(id)dictionary storefrontID:(id)d defaultSupportedStorefronts:(id)storefronts;
 @end
 
 @implementation FCPuzzlesConfiguration
 
-- (FCPuzzlesConfiguration)initWithConfigDictionary:(id)a3 storefrontID:(id)a4 defaultSupportedStorefronts:(id)a5
+- (FCPuzzlesConfiguration)initWithConfigDictionary:(id)dictionary storefrontID:(id)d defaultSupportedStorefronts:(id)storefronts
 {
   v108 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  storefrontsCopy = storefronts;
   v104.receiver = self;
   v104.super_class = FCPuzzlesConfiguration;
   v11 = [(FCPuzzlesConfiguration *)&v104 init];
   if (v11)
   {
-    if ([v10 containsObject:v9])
+    if ([storefrontsCopy containsObject:dCopy])
     {
       v12 = 0xFFFFFFFFLL;
     }
@@ -25,21 +25,21 @@
       v12 = 0;
     }
 
-    v82 = v10;
-    v83 = v9;
-    v13 = ([v10 containsObject:v9] & 1) != 0 || +[FCFeatureEnablementChecker enabledInConfig:forKey:withDefaultLevel:](FCFeatureEnablementChecker, "enabledInConfig:forKey:withDefaultLevel:", v8, @"puzzlesEnabled", v12);
+    v82 = storefrontsCopy;
+    v83 = dCopy;
+    v13 = ([storefrontsCopy containsObject:dCopy] & 1) != 0 || +[FCFeatureEnablementChecker enabledInConfig:forKey:withDefaultLevel:](FCFeatureEnablementChecker, "enabledInConfig:forKey:withDefaultLevel:", dictionaryCopy, @"puzzlesEnabled", v12);
     v11->_puzzlesEnabled = v13;
-    v11->_puzzlesArchiveAPIEnabled = [FCFeatureEnablementChecker enabledInConfig:v8 forKey:@"puzzlesArchiveAPIEnabled" withDefaultLevel:v12];
-    v11->_puzzleLeaderboardsEnabled = [FCFeatureEnablementChecker enabledInConfig:v8 forKey:@"puzzleLeaderboardsEnabled" withDefaultLevel:v12];
-    v14 = FCAppConfigurationStringValue(v8, @"puzzleHubTagId", 0);
+    v11->_puzzlesArchiveAPIEnabled = [FCFeatureEnablementChecker enabledInConfig:dictionaryCopy forKey:@"puzzlesArchiveAPIEnabled" withDefaultLevel:v12];
+    v11->_puzzleLeaderboardsEnabled = [FCFeatureEnablementChecker enabledInConfig:dictionaryCopy forKey:@"puzzleLeaderboardsEnabled" withDefaultLevel:v12];
+    v14 = FCAppConfigurationStringValue(dictionaryCopy, @"puzzleHubTagId", 0);
     puzzleHubTagID = v11->_puzzleHubTagID;
     v11->_puzzleHubTagID = v14;
 
-    v16 = FCAppConfigurationStringValue(v8, @"puzzleFullArchiveTagId", 0);
+    v16 = FCAppConfigurationStringValue(dictionaryCopy, @"puzzleFullArchiveTagId", 0);
     puzzleFullArchiveTagID = v11->_puzzleFullArchiveTagID;
     v11->_puzzleFullArchiveTagID = v16;
 
-    v18 = FCAppConfigurationArrayValueWithDefaultValue(v8, @"puzzleTypes", 0);
+    v18 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"puzzleTypes", 0);
     v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v18, "count")}];
     v100 = 0u;
     v101 = 0u;
@@ -80,20 +80,20 @@
     puzzleTypes = v11->_puzzleTypes;
     v11->_puzzleTypes = v26;
 
-    v11->_autoEnableNotificationMinimumPlayCount = FCAppConfigurationIntegerValue(v8, @"autoEnableNotificationMinimumPlayCount", 0x7FFFFFFFFFFFFFFFLL);
-    v11->_autoEnableNotificationPlayTimeInterval = FCAppConfigurationIntegerValue(v8, @"autoEnableNotificationPlayTimeInterval", 0);
-    v11->_autoDisableNotificationEngagementInterval = FCAppConfigurationIntegerValue(v8, @"autoDisableNotificationEngagementInterval", 2592000);
-    v11->_progressUpdateTimeInterval = FCAppConfigurationIntegerValue(v8, @"progressUpdateTimeInterval", 5);
-    v11->_badgingUpdateQuiesenceInterval = FCAppConfigurationIntegerValue(v8, @"badgingUpdateQuiesenceInterval", 21600);
-    v11->_numberOfHistoryPuzzlesToPrewarm = FCAppConfigurationIntegerValue(v8, @"numberOfHistoryPuzzlesToPrewarm", 5);
-    v11->_puzzleHistoryPrewarmTimeInterval = FCAppConfigurationDoubleValue(v8, @"puzzleHistoryPrewarmTimeInterval", 604800.0);
-    v11->_puzzlesPrewarmTimeInterval = FCAppConfigurationDoubleValue(v8, @"puzzlesPrewarmTimeInterval", 43200.0);
-    v11->_puzzlesEngineRefreshTimeInterval = FCAppConfigurationDoubleValue(v8, @"puzzlesEngineRefreshTimeInterval", 86400.0);
-    v11->_puzzlesCacheLifetime = FCAppConfigurationDoubleValue(v8, @"puzzlesCacheLifetime", 21600.0);
-    v11->_recentPuzzlesCacheLifetime = FCAppConfigurationDoubleValue(v8, @"recentPuzzlesCacheLifetime", 3600.0);
+    v11->_autoEnableNotificationMinimumPlayCount = FCAppConfigurationIntegerValue(dictionaryCopy, @"autoEnableNotificationMinimumPlayCount", 0x7FFFFFFFFFFFFFFFLL);
+    v11->_autoEnableNotificationPlayTimeInterval = FCAppConfigurationIntegerValue(dictionaryCopy, @"autoEnableNotificationPlayTimeInterval", 0);
+    v11->_autoDisableNotificationEngagementInterval = FCAppConfigurationIntegerValue(dictionaryCopy, @"autoDisableNotificationEngagementInterval", 2592000);
+    v11->_progressUpdateTimeInterval = FCAppConfigurationIntegerValue(dictionaryCopy, @"progressUpdateTimeInterval", 5);
+    v11->_badgingUpdateQuiesenceInterval = FCAppConfigurationIntegerValue(dictionaryCopy, @"badgingUpdateQuiesenceInterval", 21600);
+    v11->_numberOfHistoryPuzzlesToPrewarm = FCAppConfigurationIntegerValue(dictionaryCopy, @"numberOfHistoryPuzzlesToPrewarm", 5);
+    v11->_puzzleHistoryPrewarmTimeInterval = FCAppConfigurationDoubleValue(dictionaryCopy, @"puzzleHistoryPrewarmTimeInterval", 604800.0);
+    v11->_puzzlesPrewarmTimeInterval = FCAppConfigurationDoubleValue(dictionaryCopy, @"puzzlesPrewarmTimeInterval", 43200.0);
+    v11->_puzzlesEngineRefreshTimeInterval = FCAppConfigurationDoubleValue(dictionaryCopy, @"puzzlesEngineRefreshTimeInterval", 86400.0);
+    v11->_puzzlesCacheLifetime = FCAppConfigurationDoubleValue(dictionaryCopy, @"puzzlesCacheLifetime", 21600.0);
+    v11->_recentPuzzlesCacheLifetime = FCAppConfigurationDoubleValue(dictionaryCopy, @"recentPuzzlesCacheLifetime", 3600.0);
     v85 = v11;
-    v11->_puzzleTypeThumbnailsCacheLifetime = FCAppConfigurationDoubleValue(v8, @"puzzleTypeThumbnailsCacheLifetime", 86400.0);
-    v28 = FCAppConfigurationArrayValueWithDefaultValue(v8, @"puzzleDifficulties", 0);
+    v11->_puzzleTypeThumbnailsCacheLifetime = FCAppConfigurationDoubleValue(dictionaryCopy, @"puzzleTypeThumbnailsCacheLifetime", 86400.0);
+    v28 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"puzzleDifficulties", 0);
     v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v28, "count")}];
     v96 = 0u;
     v97 = 0u;
@@ -130,41 +130,41 @@
     difficultyDescriptions = v85->_difficultyDescriptions;
     v85->_difficultyDescriptions = v38;
 
-    v40 = FCAppConfigurationDictionaryValueWithDefaultValue(v8, @"puzzlesFullArchiveMenuConfig", 0);
-    v41 = [MEMORY[0x1E695DF90] dictionary];
+    v40 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"puzzlesFullArchiveMenuConfig", 0);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v94[0] = MEMORY[0x1E69E9820];
     v94[1] = 3221225472;
     v94[2] = __92__FCPuzzlesConfiguration_initWithConfigDictionary_storefrontID_defaultSupportedStorefronts___block_invoke;
     v94[3] = &unk_1E7C3F200;
-    v78 = v41;
+    v78 = dictionary;
     v79 = v40;
     v95 = v78;
     [v40 enumerateKeysAndObjectsUsingBlock:v94];
-    objc_storeStrong(&v85->_puzzleFullArchiveMenuOptionsConfigByPuzzleTypeID, v41);
-    v42 = [MEMORY[0x1E695DF90] dictionary];
-    v43 = FCAppConfigurationDictionaryValueWithDefaultValue(v8, @"puzzleTypeLeaderboards", 0);
+    objc_storeStrong(&v85->_puzzleFullArchiveMenuOptionsConfigByPuzzleTypeID, dictionary);
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    v43 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"puzzleTypeLeaderboards", 0);
     v92[0] = MEMORY[0x1E69E9820];
     v92[1] = 3221225472;
     v92[2] = __92__FCPuzzlesConfiguration_initWithConfigDictionary_storefrontID_defaultSupportedStorefronts___block_invoke_3;
     v92[3] = &unk_1E7C3F200;
-    v76 = v42;
+    v76 = dictionary2;
     v77 = v43;
     v93 = v76;
     [v43 enumerateKeysAndObjectsUsingBlock:v92];
-    objc_storeStrong(&v85->_puzzleTypeLeaderboards, v42);
-    v44 = FCAppConfigurationDictionaryValueWithDefaultValue(v8, @"puzzleTypeRanks", 0);
-    v45 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v85->_puzzleTypeLeaderboards, dictionary2);
+    v44 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"puzzleTypeRanks", 0);
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     v90[0] = MEMORY[0x1E69E9820];
     v90[1] = 3221225472;
     v90[2] = __92__FCPuzzlesConfiguration_initWithConfigDictionary_storefrontID_defaultSupportedStorefronts___block_invoke_4;
     v90[3] = &unk_1E7C3A5F0;
-    v74 = v45;
+    v74 = dictionary3;
     v75 = v44;
     v91 = v74;
     [v44 enumerateKeysAndObjectsUsingBlock:v90];
-    objc_storeStrong(&v85->_puzzleRanksByPuzzleTypeID, v45);
-    v84 = v8;
-    v46 = FCAppConfigurationArrayValueWithDefaultValue(v8, @"puzzleGameCenterActivities", 0);
+    objc_storeStrong(&v85->_puzzleRanksByPuzzleTypeID, dictionary3);
+    v84 = dictionaryCopy;
+    v46 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"puzzleGameCenterActivities", 0);
     v47 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v46, "count")}];
     v86 = 0u;
     v87 = 0u;
@@ -203,39 +203,39 @@
     puzzleGameCenterActivities = v85->_puzzleGameCenterActivities;
     v85->_puzzleGameCenterActivities = v54;
 
-    v9 = v83;
-    v8 = v84;
-    v10 = v82;
+    dCopy = v83;
+    dictionaryCopy = v84;
+    storefrontsCopy = v82;
   }
 
-  v11->_streakCheckLocalTimeInterval = FCAppConfigurationIntegerValue(v8, @"streakCheckLocalTimeInterval", 66600);
-  v11->_streakNotificationDeliveryLocalTime = FCAppConfigurationIntegerValue(v8, @"streakNotificationDeliveryLocalTime", 68400);
-  v11->_streakLapseNotificationMinimumStreakCount = FCAppConfigurationIntegerValue(v8, @"streakLapseNotificationMinimumStreakCount", 7);
+  v11->_streakCheckLocalTimeInterval = FCAppConfigurationIntegerValue(dictionaryCopy, @"streakCheckLocalTimeInterval", 66600);
+  v11->_streakNotificationDeliveryLocalTime = FCAppConfigurationIntegerValue(dictionaryCopy, @"streakNotificationDeliveryLocalTime", 68400);
+  v11->_streakLapseNotificationMinimumStreakCount = FCAppConfigurationIntegerValue(dictionaryCopy, @"streakLapseNotificationMinimumStreakCount", 7);
   v56 = FCBundle();
   v57 = [v56 localizedStringForKey:@"Apple News+ Puzzles" value:&stru_1F2DC7DC0 table:0];
-  v58 = FCAppConfigurationStringValue(v8, @"streakNotificationTitle", v57);
+  v58 = FCAppConfigurationStringValue(dictionaryCopy, @"streakNotificationTitle", v57);
   streakNotificationTitle = v11->_streakNotificationTitle;
   v11->_streakNotificationTitle = v58;
 
   v60 = FCBundle();
   v61 = [v60 localizedStringForKey:@"Keep your streak going by solving today’s %@." value:&stru_1F2DC7DC0 table:0];
-  v62 = FCAppConfigurationStringValue(v8, @"streakNotificationBodyOneStreak", v61);
+  v62 = FCAppConfigurationStringValue(dictionaryCopy, @"streakNotificationBodyOneStreak", v61);
   streakNotificationBodyOneStreak = v11->_streakNotificationBodyOneStreak;
   v11->_streakNotificationBodyOneStreak = v62;
 
   v64 = FCBundle();
   v65 = [v64 localizedStringForKey:@"Keep your streaks going by solving today’s %@ and %@." value:&stru_1F2DC7DC0 table:0];
-  v66 = FCAppConfigurationStringValue(v8, @"streakNotificationBodyTwoStreaks", v65);
+  v66 = FCAppConfigurationStringValue(dictionaryCopy, @"streakNotificationBodyTwoStreaks", v65);
   streakNotificationBodyTwoStreaks = v11->_streakNotificationBodyTwoStreaks;
   v11->_streakNotificationBodyTwoStreaks = v66;
 
   v68 = FCBundle();
   v69 = [v68 localizedStringForKey:@"Keep your streaks going by solving today’s puzzles." value:&stru_1F2DC7DC0 table:0];
-  v70 = FCAppConfigurationStringValue(v8, @"streakNotificationBodyMultipleStreaks", v69);
+  v70 = FCAppConfigurationStringValue(dictionaryCopy, @"streakNotificationBodyMultipleStreaks", v69);
   streakNotificationBodyMultipleStreaks = v11->_streakNotificationBodyMultipleStreaks;
   v11->_streakNotificationBodyMultipleStreaks = v70;
 
-  v11->_allowLowerProgressOnCompletedPuzzles = FCAppConfigurationBoolValue(v8, @"allowLowerProgressOnCompletedPuzzles", 0);
+  v11->_allowLowerProgressOnCompletedPuzzles = FCAppConfigurationBoolValue(dictionaryCopy, @"allowLowerProgressOnCompletedPuzzles", 0);
   v72 = *MEMORY[0x1E69E9840];
   return v11;
 }

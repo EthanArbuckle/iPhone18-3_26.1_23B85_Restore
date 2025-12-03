@@ -1,29 +1,29 @@
 @interface SLGoogleLegacyTokenMigrationRequest
-+ (id)urlRequestForAuthCodeFromAuthToken:(id)a3 clientID:(id)a4 scope:(id)a5;
-+ (id)urlRequestForAuthTokenFromLegacyClientToken:(id)a3 username:(id)a4 password:(id)a5;
++ (id)urlRequestForAuthCodeFromAuthToken:(id)token clientID:(id)d scope:(id)scope;
++ (id)urlRequestForAuthTokenFromLegacyClientToken:(id)token username:(id)username password:(id)password;
 @end
 
 @implementation SLGoogleLegacyTokenMigrationRequest
 
-+ (id)urlRequestForAuthTokenFromLegacyClientToken:(id)a3 username:(id)a4 password:(id)a5
++ (id)urlRequestForAuthTokenFromLegacyClientToken:(id)token username:(id)username password:(id)password
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  tokenCopy = token;
   v37[0] = @"accountType";
   v37[1] = @"Email";
   v38 = @"HOSTED_OR_GOOGLE";
-  v39 = a4;
-  v28 = a5;
-  v29 = v39;
+  usernameCopy = username;
+  passwordCopy = password;
+  v29 = usernameCopy;
   v37[2] = @"Passwd";
   v37[3] = @"service";
-  v40 = v28;
+  v40 = passwordCopy;
   v41 = @"lso";
   v37[4] = @"source";
   v37[5] = @"clientidtoken";
   v42 = @"AppleBootstrap";
-  v43 = v7;
-  v30 = v7;
+  v43 = tokenCopy;
+  v30 = tokenCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:v37 count:6];
   v9 = MEMORY[0x1E696AD68];
   v10 = [MEMORY[0x1E695DFF8] URLWithString:@"https://accounts.google.com/accounts/ClientLogin"];
@@ -78,23 +78,23 @@
   return v27;
 }
 
-+ (id)urlRequestForAuthCodeFromAuthToken:(id)a3 clientID:(id)a4 scope:(id)a5
++ (id)urlRequestForAuthCodeFromAuthToken:(id)token clientID:(id)d scope:(id)scope
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [a5 componentsJoinedByString:@" "];
+  dCopy = d;
+  tokenCopy = token;
+  v9 = [scope componentsJoinedByString:@" "];
   v10 = [v9 stringByAddingPercentEscapesUsingEncoding:4];
 
-  v11 = [v7 stringByAddingPercentEscapesUsingEncoding:4];
+  v11 = [dCopy stringByAddingPercentEscapesUsingEncoding:4];
 
   v12 = MEMORY[0x1E695DFF8];
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@?scope=%@&client_id=%@", @"https://accounts.google.com/o/oauth2/programmatic_auth", v10, v11];
   v14 = [v12 URLWithString:v13];
 
   v15 = [objc_alloc(MEMORY[0x1E696AD68]) initWithURL:v14];
-  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"GoogleLogin auth=%@", v8];
+  tokenCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"GoogleLogin auth=%@", tokenCopy];
 
-  [v15 setValue:v16 forHTTPHeaderField:@"Authorization"];
+  [v15 setValue:tokenCopy forHTTPHeaderField:@"Authorization"];
 
   return v15;
 }

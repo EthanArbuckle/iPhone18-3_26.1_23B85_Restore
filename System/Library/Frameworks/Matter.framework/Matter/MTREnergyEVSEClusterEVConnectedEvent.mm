@@ -1,6 +1,6 @@
 @interface MTREnergyEVSEClusterEVConnectedEvent
 - (MTREnergyEVSEClusterEVConnectedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREnergyEVSEClusterEVConnectedEvent);
-  v5 = [(MTREnergyEVSEClusterEVConnectedEvent *)self sessionID];
-  [(MTREnergyEVSEClusterEVConnectedEvent *)v4 setSessionID:v5];
+  sessionID = [(MTREnergyEVSEClusterEVConnectedEvent *)self sessionID];
+  [(MTREnergyEVSEClusterEVConnectedEvent *)v4 setSessionID:sessionID];
 
   return v4;
 }

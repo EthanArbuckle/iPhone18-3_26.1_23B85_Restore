@@ -1,59 +1,59 @@
 @interface MSVMarkdownTable
-+ (id)escapedString:(id)a3;
++ (id)escapedString:(id)string;
 - (MSVMarkdownTable)init;
 - (NSArray)columnHeaders;
 - (NSArray)rows;
-- (id)_formatString:(id)a3 withWidth:(int64_t)a4 alignment:(int64_t)a5;
-- (id)cellAtColumn:(int64_t)a3 row:(int64_t)a4;
-- (id)renderMarkdownWithOptions:(unint64_t)a3;
-- (int64_t)alignmentForColumnAtIndex:(int64_t)a3;
-- (void)addColumnWithHeader:(id)a3;
-- (void)addRow:(id)a3;
-- (void)insertColumnWithHeader:(id)a3 atIndex:(int64_t)a4;
-- (void)insertRow:(id)a3 atIndex:(int64_t)a4;
-- (void)removeColumnAtIndex:(int64_t)a3;
-- (void)setAlignment:(int64_t)a3 forColumnAtIndex:(int64_t)a4;
-- (void)setCell:(id)a3 atColumn:(int64_t)a4 row:(int64_t)a5;
+- (id)_formatString:(id)string withWidth:(int64_t)width alignment:(int64_t)alignment;
+- (id)cellAtColumn:(int64_t)column row:(int64_t)row;
+- (id)renderMarkdownWithOptions:(unint64_t)options;
+- (int64_t)alignmentForColumnAtIndex:(int64_t)index;
+- (void)addColumnWithHeader:(id)header;
+- (void)addRow:(id)row;
+- (void)insertColumnWithHeader:(id)header atIndex:(int64_t)index;
+- (void)insertRow:(id)row atIndex:(int64_t)index;
+- (void)removeColumnAtIndex:(int64_t)index;
+- (void)setAlignment:(int64_t)alignment forColumnAtIndex:(int64_t)index;
+- (void)setCell:(id)cell atColumn:(int64_t)column row:(int64_t)row;
 @end
 
 @implementation MSVMarkdownTable
 
-- (id)_formatString:(id)a3 withWidth:(int64_t)a4 alignment:(int64_t)a5
+- (id)_formatString:(id)string withWidth:(int64_t)width alignment:(int64_t)alignment
 {
-  v8 = a3;
-  v9 = v8;
-  if (a5 < 2)
+  stringCopy = string;
+  v9 = stringCopy;
+  if (alignment < 2)
   {
-    v5 = [v8 stringByPaddingToLength:a4 withString:@" " startingAtIndex:0];
+    v5 = [stringCopy stringByPaddingToLength:width withString:@" " startingAtIndex:0];
   }
 
-  else if (a5 == 2)
+  else if (alignment == 2)
   {
-    v11 = [&stru_1F214F018 stringByPaddingToLength:(a4 - objc_msgSend(v8 withString:"length")) >> 1 startingAtIndex:{@" ", 0}];
+    v11 = [&stru_1F214F018 stringByPaddingToLength:(width - objc_msgSend(stringCopy withString:"length")) >> 1 startingAtIndex:{@" ", 0}];
     v12 = [v11 stringByAppendingString:v9];
-    v5 = [v12 stringByPaddingToLength:a4 withString:@" " startingAtIndex:0];
+    v5 = [v12 stringByPaddingToLength:width withString:@" " startingAtIndex:0];
   }
 
-  else if (a5 == 3)
+  else if (alignment == 3)
   {
-    v10 = [&stru_1F214F018 stringByPaddingToLength:a4 - objc_msgSend(v8 withString:"length") startingAtIndex:{@" ", 0}];
+    v10 = [&stru_1F214F018 stringByPaddingToLength:width - objc_msgSend(stringCopy withString:"length") startingAtIndex:{@" ", 0}];
     v5 = [v10 stringByAppendingString:v9];
   }
 
   return v5;
 }
 
-- (id)renderMarkdownWithOptions:(unint64_t)a3
+- (id)renderMarkdownWithOptions:(unint64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v5 = [(NSMutableArray *)self->_columnHeaders count];
   if (v5)
   {
     v6 = v5;
-    v7 = v3 | 6;
-    if ((v3 & 6) != 0)
+    v7 = optionsCopy | 6;
+    if ((optionsCopy & 6) != 0)
     {
-      v7 = v3;
+      v7 = optionsCopy;
     }
 
     v47 = v5;
@@ -136,13 +136,13 @@
           if (v49)
           {
             v23 = [(NSMutableArray *)self->_columnAlignments objectAtIndexedSubscript:j];
-            v24 = [v23 integerValue];
+            integerValue = [v23 integerValue];
 
             v25 = [v48 objectAtIndexedSubscript:j];
-            v26 = [v25 integerValue];
+            integerValue2 = [v25 integerValue];
 
             v22 = [(NSMutableArray *)self->_columnHeaders objectAtIndexedSubscript:j];
-            v27 = [(MSVMarkdownTable *)self _formatString:v22 withWidth:v26 alignment:v24];
+            v27 = [(MSVMarkdownTable *)self _formatString:v22 withWidth:integerValue2 alignment:integerValue];
             [v20 appendString:v27];
           }
 
@@ -159,24 +159,24 @@
         for (k = 0; k != v47; ++k)
         {
           v29 = [(NSMutableArray *)self->_columnAlignments objectAtIndexedSubscript:k];
-          v30 = [v29 integerValue];
+          integerValue3 = [v29 integerValue];
 
-          if (v30 > 3)
+          if (integerValue3 > 3)
           {
             v31 = 0;
           }
 
           else
           {
-            v31 = off_1E7982710[v30];
+            v31 = off_1E7982710[integerValue3];
           }
 
           if (v49)
           {
             v32 = [v48 objectAtIndexedSubscript:k];
-            v33 = [v32 integerValue];
+            integerValue4 = [v32 integerValue];
 
-            v34 = [&stru_1F214F018 stringByPaddingToLength:v33 withString:@"-" startingAtIndex:0];
+            v34 = [&stru_1F214F018 stringByPaddingToLength:integerValue4 withString:@"-" startingAtIndex:0];
             v35 = [(__CFString *)v31 stringByReplacingCharactersInRange:1 withString:3, v34];
             [v20 appendString:v35];
           }
@@ -218,12 +218,12 @@
             if (v49)
             {
               v41 = [(NSMutableArray *)self->_columnAlignments objectAtIndexedSubscript:m];
-              v42 = [v41 integerValue];
+              integerValue5 = [v41 integerValue];
 
               v43 = [v48 objectAtIndexedSubscript:m];
-              v44 = [v43 integerValue];
+              integerValue6 = [v43 integerValue];
 
-              v45 = [(MSVMarkdownTable *)self _formatString:v39 withWidth:v44 alignment:v42];
+              v45 = [(MSVMarkdownTable *)self _formatString:v39 withWidth:integerValue6 alignment:integerValue5];
               [v20 appendString:v45];
 
               v6 = v47;
@@ -256,55 +256,55 @@
   return v8;
 }
 
-- (void)setCell:(id)a3 atColumn:(int64_t)a4 row:(int64_t)a5
+- (void)setCell:(id)cell atColumn:(int64_t)column row:(int64_t)row
 {
   rows = self->_rows;
-  v9 = a3;
-  v10 = [(NSMutableArray *)rows objectAtIndexedSubscript:a5];
+  cellCopy = cell;
+  v10 = [(NSMutableArray *)rows objectAtIndexedSubscript:row];
   v13 = [v10 mutableCopy];
 
-  v11 = [v9 copy];
-  [v13 setObject:v11 atIndexedSubscript:a4];
+  v11 = [cellCopy copy];
+  [v13 setObject:v11 atIndexedSubscript:column];
 
   v12 = [v13 copy];
-  [(NSMutableArray *)self->_rows setObject:v12 atIndexedSubscript:a5];
+  [(NSMutableArray *)self->_rows setObject:v12 atIndexedSubscript:row];
 }
 
-- (id)cellAtColumn:(int64_t)a3 row:(int64_t)a4
+- (id)cellAtColumn:(int64_t)column row:(int64_t)row
 {
-  v5 = [(NSMutableArray *)self->_rows objectAtIndexedSubscript:a4];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  v5 = [(NSMutableArray *)self->_rows objectAtIndexedSubscript:row];
+  v6 = [v5 objectAtIndexedSubscript:column];
 
   return v6;
 }
 
-- (void)insertRow:(id)a3 atIndex:(int64_t)a4
+- (void)insertRow:(id)row atIndex:(int64_t)index
 {
-  v11 = a3;
-  v7 = [v11 count];
+  rowCopy = row;
+  v7 = [rowCopy count];
   if (v7 != [(NSMutableArray *)self->_columnHeaders count])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MSVMarkdownTable.m" lineNumber:114 description:{@"Row elements must match current table column count: %ld", -[NSMutableArray count](self->_columnHeaders, "count")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVMarkdownTable.m" lineNumber:114 description:{@"Row elements must match current table column count: %ld", -[NSMutableArray count](self->_columnHeaders, "count")}];
   }
 
   rows = self->_rows;
-  v9 = [v11 copy];
-  [(NSMutableArray *)rows insertObject:v9 atIndex:a4];
+  v9 = [rowCopy copy];
+  [(NSMutableArray *)rows insertObject:v9 atIndex:index];
 }
 
-- (void)addRow:(id)a3
+- (void)addRow:(id)row
 {
-  v9 = a3;
-  v5 = [v9 count];
+  rowCopy = row;
+  v5 = [rowCopy count];
   if (v5 != [(NSMutableArray *)self->_columnHeaders count])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MSVMarkdownTable.m" lineNumber:108 description:{@"Row elements must match current table column count: %ld", -[NSMutableArray count](self->_columnHeaders, "count")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVMarkdownTable.m" lineNumber:108 description:{@"Row elements must match current table column count: %ld", -[NSMutableArray count](self->_columnHeaders, "count")}];
   }
 
   rows = self->_rows;
-  v7 = [v9 copy];
+  v7 = [rowCopy copy];
   [(NSMutableArray *)rows addObject:v7];
 }
 
@@ -315,24 +315,24 @@
   return v2;
 }
 
-- (void)setAlignment:(int64_t)a3 forColumnAtIndex:(int64_t)a4
+- (void)setAlignment:(int64_t)alignment forColumnAtIndex:(int64_t)index
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [(NSMutableArray *)self->_columnAlignments setObject:v6 atIndexedSubscript:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:alignment];
+  [(NSMutableArray *)self->_columnAlignments setObject:v6 atIndexedSubscript:index];
 }
 
-- (int64_t)alignmentForColumnAtIndex:(int64_t)a3
+- (int64_t)alignmentForColumnAtIndex:(int64_t)index
 {
-  v3 = [(NSMutableArray *)self->_columnAlignments objectAtIndexedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSMutableArray *)self->_columnAlignments objectAtIndexedSubscript:index];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)removeColumnAtIndex:(int64_t)a3
+- (void)removeColumnAtIndex:(int64_t)index
 {
   [(NSMutableArray *)self->_columnHeaders removeObjectAtIndex:?];
-  [(NSMutableArray *)self->_columnAlignments removeObjectAtIndex:a3];
+  [(NSMutableArray *)self->_columnAlignments removeObjectAtIndex:index];
   if ([(NSMutableArray *)self->_rows count])
   {
     v5 = 0;
@@ -341,7 +341,7 @@
       v6 = [(NSMutableArray *)self->_rows objectAtIndexedSubscript:v5];
       v7 = [v6 mutableCopy];
 
-      [v7 removeObjectAtIndex:a3];
+      [v7 removeObjectAtIndex:index];
       v8 = [v7 copy];
       [(NSMutableArray *)self->_rows setObject:v8 atIndexedSubscript:v5];
 
@@ -352,10 +352,10 @@
   }
 }
 
-- (void)insertColumnWithHeader:(id)a3 atIndex:(int64_t)a4
+- (void)insertColumnWithHeader:(id)header atIndex:(int64_t)index
 {
-  [(NSMutableArray *)self->_columnHeaders insertObject:a3 atIndex:?];
-  [(NSMutableArray *)self->_columnAlignments insertObject:&unk_1F215CBC0 atIndex:a4];
+  [(NSMutableArray *)self->_columnHeaders insertObject:header atIndex:?];
+  [(NSMutableArray *)self->_columnAlignments insertObject:&unk_1F215CBC0 atIndex:index];
   if ([(NSMutableArray *)self->_rows count])
   {
     v6 = 0;
@@ -364,7 +364,7 @@
       v7 = [(NSMutableArray *)self->_rows objectAtIndexedSubscript:v6];
       v8 = [v7 mutableCopy];
 
-      [v8 insertObject:&stru_1F214F018 atIndex:a4];
+      [v8 insertObject:&stru_1F214F018 atIndex:index];
       v9 = [v8 copy];
       [(NSMutableArray *)self->_rows setObject:v9 atIndexedSubscript:v6];
 
@@ -375,9 +375,9 @@
   }
 }
 
-- (void)addColumnWithHeader:(id)a3
+- (void)addColumnWithHeader:(id)header
 {
-  [(NSMutableArray *)self->_columnHeaders addObject:a3];
+  [(NSMutableArray *)self->_columnHeaders addObject:header];
   [(NSMutableArray *)self->_columnAlignments addObject:&unk_1F215CBC0];
   if ([(NSMutableArray *)self->_rows count])
   {
@@ -409,52 +409,52 @@
   v2 = [(MSVMarkdownTable *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     columnHeaders = v2->_columnHeaders;
-    v2->_columnHeaders = v3;
+    v2->_columnHeaders = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     columnAlignments = v2->_columnAlignments;
-    v2->_columnAlignments = v5;
+    v2->_columnAlignments = array2;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     rows = v2->_rows;
-    v2->_rows = v7;
+    v2->_rows = array3;
   }
 
   return v2;
 }
 
-+ (id)escapedString:(id)a3
++ (id)escapedString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v4 = 0;
     v5 = 0;
     while (1)
     {
-      v6 = [v3 characterAtIndex:v4];
+      v6 = [stringCopy characterAtIndex:v4];
       if (v6 == 95 && (v5 & 1) != 0)
       {
         break;
       }
 
       v5 |= v6 == 95;
-      if (++v4 >= [v3 length])
+      if (++v4 >= [stringCopy length])
       {
         goto LABEL_8;
       }
     }
 
-    v7 = [v3 stringByReplacingOccurrencesOfString:@"_" withString:@"\\_"];
+    v7 = [stringCopy stringByReplacingOccurrencesOfString:@"_" withString:@"\\_"];
 
-    v3 = v7;
+    stringCopy = v7;
   }
 
 LABEL_8:
 
-  return v3;
+  return stringCopy;
 }
 
 @end

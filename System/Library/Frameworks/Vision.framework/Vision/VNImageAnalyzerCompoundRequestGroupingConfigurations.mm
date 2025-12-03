@@ -1,11 +1,11 @@
 @interface VNImageAnalyzerCompoundRequestGroupingConfigurations
-- (VNImageAnalyzerCompoundRequestGroupingConfigurations)initWithDetectorModel:(unint64_t)a3;
-- (void)groupingConfigurationForRequest:(uint64_t)a3 kind:;
+- (VNImageAnalyzerCompoundRequestGroupingConfigurations)initWithDetectorModel:(unint64_t)model;
+- (void)groupingConfigurationForRequest:(uint64_t)request kind:;
 @end
 
 @implementation VNImageAnalyzerCompoundRequestGroupingConfigurations
 
-- (VNImageAnalyzerCompoundRequestGroupingConfigurations)initWithDetectorModel:(unint64_t)a3
+- (VNImageAnalyzerCompoundRequestGroupingConfigurations)initWithDetectorModel:(unint64_t)model
 {
   v9.receiver = self;
   v9.super_class = VNImageAnalyzerCompoundRequestGroupingConfigurations;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_detectorModel = a3;
+    v4->_detectorModel = model;
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     groupingConfigurations = v5->_groupingConfigurations;
     v5->_groupingConfigurations = v6;
@@ -22,22 +22,22 @@
   return v5;
 }
 
-- (void)groupingConfigurationForRequest:(uint64_t)a3 kind:
+- (void)groupingConfigurationForRequest:(uint64_t)request kind:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     [v5 regionOfInterest];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [v6 frameworkClass];
-    v16 = [v6 resolvedRevision];
-    v17 = [VNImageAnalyzerMultiDetector modelForRequestClass:v15 revision:v16];
+    frameworkClass = [v6 frameworkClass];
+    resolvedRevision = [v6 resolvedRevision];
+    v17 = [VNImageAnalyzerMultiDetector modelForRequestClass:frameworkClass revision:resolvedRevision];
     v37 = 0;
-    v18 = [v6 applicableDetectorClassAndOptions:&v37 forRevision:v16 error:0];
+    v18 = [v6 applicableDetectorClassAndOptions:&v37 forRevision:resolvedRevision error:0];
     v19 = v37;
     [VNError VNAssert:v18 != 0 log:@"detector class could not be resolved"];
     if (objc_opt_respondsToSelector())
@@ -72,13 +72,13 @@
     v22 = [v18 computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:v19 error:0];
     [VNError VNAssert:v22 != 0 log:@"main stage compute device could not be resolved"];
     v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"[%g, %g, %g, %g]:%@:%u:%u:%c", v8, v10, v12, v14, v22, v17, v20, v21];
-    v24 = [*(a1 + 8) objectForKeyedSubscript:v23];
+    v24 = [*(self + 8) objectForKeyedSubscript:v23];
     if (!v24)
     {
       v25 = [VNImageAnalyzerCompoundRequestGroupingConfiguration alloc];
       if (v25)
       {
-        v26 = *(a1 + 16);
+        v26 = *(self + 16);
         v38.receiver = v25;
         v38.super_class = VNImageAnalyzerCompoundRequestGroupingConfiguration;
         v27 = objc_msgSendSuper2(&v38, sel_init);
@@ -109,10 +109,10 @@
         v24 = 0;
       }
 
-      [*(a1 + 8) setObject:v24 forKeyedSubscript:v23];
+      [*(self + 8) setObject:v24 forKeyedSubscript:v23];
     }
 
-    [v24 addOriginalRequest:v6 forKind:a3];
+    [v24 addOriginalRequest:v6 forKind:request];
   }
 
   else

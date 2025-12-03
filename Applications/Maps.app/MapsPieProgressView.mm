@@ -1,38 +1,38 @@
 @interface MapsPieProgressView
-- (MapsPieProgressView)initWithFrame:(CGRect)a3;
+- (MapsPieProgressView)initWithFrame:(CGRect)frame;
 - (UIColor)progressColor;
 - (double)progress;
 - (double)progressLineWidth;
 - (double)progressPresentationValue;
-- (void)animateProgressCompletedWithCompletion:(id)a3;
+- (void)animateProgressCompletedWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)setProgress:(double)a3;
-- (void)setProgress:(double)a3 animated:(BOOL)a4 forced:(BOOL)a5 completion:(id)a6;
-- (void)setProgressColor:(id)a3;
-- (void)setProgressLineWidth:(double)a3;
+- (void)setProgress:(double)progress;
+- (void)setProgress:(double)progress animated:(BOOL)animated forced:(BOOL)forced completion:(id)completion;
+- (void)setProgressColor:(id)color;
+- (void)setProgressLineWidth:(double)width;
 @end
 
 @implementation MapsPieProgressView
 
 - (double)progressPresentationValue
 {
-  v2 = [(MapsPieProgressView *)self layer];
-  v3 = [v2 presentationLayer];
-  [v3 progress];
+  layer = [(MapsPieProgressView *)self layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer progress];
   v5 = v4;
 
   return v5;
 }
 
-- (void)animateProgressCompletedWithCompletion:(id)a3
+- (void)animateProgressCompletedWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v4 = &stru_101650300;
+    completionCopy = &stru_101650300;
   }
 
-  v6 = v4;
+  v6 = completionCopy;
   [(MapsPieProgressView *)self progressPresentationValue];
   if (v5 == 1.0)
   {
@@ -45,14 +45,14 @@
   }
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4 forced:(BOOL)a5 completion:(id)a6
+- (void)setProgress:(double)progress animated:(BOOL)animated forced:(BOOL)forced completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
-  if (v10)
+  forcedCopy = forced;
+  animatedCopy = animated;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v11 = v10;
+    v11 = completionCopy;
   }
 
   else
@@ -60,21 +60,21 @@
     v11 = &stru_1016502E0;
   }
 
-  v12 = [(MapsPieProgressView *)self layer];
-  [v12 progress];
+  layer = [(MapsPieProgressView *)self layer];
+  [layer progress];
   v14 = v13;
 
-  if (v14 == a3 && !v6)
+  if (v14 == progress && !forcedCopy)
   {
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!animatedCopy)
   {
-    v20 = [(MapsPieProgressView *)self layer];
-    [v20 removeAnimationForKey:@"MapsPieProgressViewAnimationKey"];
+    layer2 = [(MapsPieProgressView *)self layer];
+    [layer2 removeAnimationForKey:@"MapsPieProgressViewAnimationKey"];
 
-    [(MapsPieProgressView *)self setProgress:a3];
+    [(MapsPieProgressView *)self setProgress:progress];
 LABEL_13:
     v11->invoke(v11);
     goto LABEL_21;
@@ -82,7 +82,7 @@ LABEL_13:
 
   [(MapsPieProgressView *)self progressPresentationValue];
   v17 = v16;
-  v18 = vabdd_f64(a3, v16);
+  v18 = vabdd_f64(progress, v16);
   v19 = 1.0;
   if (v18 <= 0.9)
   {
@@ -101,9 +101,9 @@ LABEL_13:
     }
   }
 
-  v21 = [(MapsPieProgressView *)self layer];
-  v22 = [v21 animationKeys];
-  v23 = [v22 containsObject:@"MapsPieProgressViewAnimationKey"];
+  layer3 = [(MapsPieProgressView *)self layer];
+  animationKeys = [layer3 animationKeys];
+  v23 = [animationKeys containsObject:@"MapsPieProgressViewAnimationKey"];
 
   v24 = &kCAMediaTimingFunctionEaseOut;
   if (!v23)
@@ -112,7 +112,7 @@ LABEL_13:
   }
 
   v25 = *v24;
-  if (v17 < a3)
+  if (v17 < progress)
   {
     v26 = [CABasicAnimation animationWithKeyPath:@"progress"];
     v27 = [CAMediaTimingFunction functionWithName:v25];
@@ -123,7 +123,7 @@ LABEL_13:
     v28 = [NSNumber numberWithDouble:v17];
     [v26 setFromValue:v28];
 
-    v29 = [NSNumber numberWithDouble:a3];
+    v29 = [NSNumber numberWithDouble:progress];
     [v26 setToValue:v29];
 
     +[CATransaction begin];
@@ -133,27 +133,27 @@ LABEL_13:
     v31[3] = &unk_101661760;
     v32 = v11;
     [CATransaction setCompletionBlock:v31];
-    v30 = [(MapsPieProgressView *)self layer];
-    [v30 addAnimation:v26 forKey:@"MapsPieProgressViewAnimationKey"];
+    layer4 = [(MapsPieProgressView *)self layer];
+    [layer4 addAnimation:v26 forKey:@"MapsPieProgressViewAnimationKey"];
 
     +[CATransaction commit];
   }
 
-  [(MapsPieProgressView *)self setProgress:a3];
+  [(MapsPieProgressView *)self setProgress:progress];
 
 LABEL_21:
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v4 = [(MapsPieProgressView *)self layer];
-  [v4 setProgress:a3];
+  layer = [(MapsPieProgressView *)self layer];
+  [layer setProgress:progress];
 }
 
 - (double)progress
 {
-  v2 = [(MapsPieProgressView *)self layer];
-  [v2 progress];
+  layer = [(MapsPieProgressView *)self layer];
+  [layer progress];
   v4 = v3;
 
   return v4;
@@ -161,32 +161,32 @@ LABEL_21:
 
 - (double)progressLineWidth
 {
-  v2 = [(MapsPieProgressView *)self layer];
-  [v2 borderLineWidth];
+  layer = [(MapsPieProgressView *)self layer];
+  [layer borderLineWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setProgressLineWidth:(double)a3
+- (void)setProgressLineWidth:(double)width
 {
-  v4 = [(MapsPieProgressView *)self layer];
-  [v4 setBorderLineWidth:a3];
+  layer = [(MapsPieProgressView *)self layer];
+  [layer setBorderLineWidth:width];
 }
 
 - (UIColor)progressColor
 {
-  v2 = [(MapsPieProgressView *)self layer];
-  v3 = [v2 progressColor];
+  layer = [(MapsPieProgressView *)self layer];
+  progressColor = [layer progressColor];
 
-  return v3;
+  return progressColor;
 }
 
-- (void)setProgressColor:(id)a3
+- (void)setProgressColor:(id)color
 {
-  v4 = a3;
-  v5 = [(MapsPieProgressView *)self layer];
-  [v5 setProgressColor:v4];
+  colorCopy = color;
+  layer = [(MapsPieProgressView *)self layer];
+  [layer setProgressColor:colorCopy];
 }
 
 - (void)layoutSubviews
@@ -196,20 +196,20 @@ LABEL_21:
   [(MapsPieProgressView *)&v2 layoutSubviews];
 }
 
-- (MapsPieProgressView)initWithFrame:(CGRect)a3
+- (MapsPieProgressView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = MapsPieProgressView;
-  v3 = [(MapsPieProgressView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsPieProgressView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
     [(MapsPieProgressView *)v3 setBackgroundColor:v4];
 
-    v5 = [(MapsPieProgressView *)v3 layer];
+    layer = [(MapsPieProgressView *)v3 layer];
     v6 = +[UIScreen mainScreen];
     [v6 scale];
-    [v5 setContentsScale:?];
+    [layer setContentsScale:?];
   }
 
   return v3;

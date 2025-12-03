@@ -1,34 +1,34 @@
 @interface ICASCellularRadioAccessTechnology
-- (ICASCellularRadioAccessTechnology)initWithCellularRadioAccessTechnology:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASCellularRadioAccessTechnology)initWithCellularRadioAccessTechnology:(int64_t)technology;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASCellularRadioAccessTechnology
 
-- (ICASCellularRadioAccessTechnology)initWithCellularRadioAccessTechnology:(int64_t)a3
+- (ICASCellularRadioAccessTechnology)initWithCellularRadioAccessTechnology:(int64_t)technology
 {
   v5.receiver = self;
   v5.super_class = ICASCellularRadioAccessTechnology;
   result = [(ICASCellularRadioAccessTechnology *)&v5 init];
   if (result)
   {
-    result->_cellularRadioAccessTechnology = a3;
+    result->_cellularRadioAccessTechnology = technology;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASCellularRadioAccessTechnology *)self cellularRadioAccessTechnology];
-  if ((v3 - 1) > 2)
+  cellularRadioAccessTechnology = [(ICASCellularRadioAccessTechnology *)self cellularRadioAccessTechnology];
+  if ((cellularRadioAccessTechnology - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF8F0[v3 - 1];
+    return off_2799AF8F0[cellularRadioAccessTechnology - 1];
   }
 }
 

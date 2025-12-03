@@ -1,12 +1,12 @@
 @interface IMMomentShareCache
 + (IMMomentShareCache)sharedInstance;
 - (IMMomentShareCache)init;
-- (id)_momentShareForURLString:(id)a3 error:(id *)a4;
-- (id)momentShareForURLString:(id)a3 error:(id *)a4;
+- (id)_momentShareForURLString:(id)string error:(id *)error;
+- (id)momentShareForURLString:(id)string error:(id *)error;
 - (void)_ensureLibraryRegistration;
-- (void)_processFetchedMomentShare:(id)a3 forURLString:(id)a4 error:(id)a5 completionHandlers:(id)a6;
-- (void)momentShareForURLString:(id)a3 completionHandler:(id)a4;
-- (void)photoLibraryDidChange:(id)a3;
+- (void)_processFetchedMomentShare:(id)share forURLString:(id)string error:(id)error completionHandlers:(id)handlers;
+- (void)momentShareForURLString:(id)string completionHandler:(id)handler;
+- (void)photoLibraryDidChange:(id)change;
 @end
 
 @implementation IMMomentShareCache
@@ -54,12 +54,12 @@
   return v3;
 }
 
-- (void)momentShareForURLString:(id)a3 completionHandler:(id)a4
+- (void)momentShareForURLString:(id)string completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v9 = objc_msgSend_objectForKeyedSubscript_(self->_completionHandlers, v8, v6);
+  v9 = objc_msgSend_objectForKeyedSubscript_(self->_completionHandlers, v8, stringCopy);
   if (objc_msgSend_count(v9, v10, v11))
   {
     v13 = IMLogHandleForCategory();
@@ -68,24 +68,24 @@
       sub_1A84E49C4();
     }
 
-    v14 = _Block_copy(v7);
+    v14 = _Block_copy(handlerCopy);
     objc_msgSend_addObject_(v9, v15, v14);
   }
 
   else
   {
     v44 = 0;
-    v16 = objc_msgSend__momentShareForURLString_error_(self, v12, v6, &v44);
+    v16 = objc_msgSend__momentShareForURLString_error_(self, v12, stringCopy, &v44);
     v17 = v44;
     v14 = v17;
     if (v16)
     {
-      (*(v7 + 2))(v7, v16, 0);
+      (*(handlerCopy + 2))(handlerCopy, v16, 0);
     }
 
     else if (IMMomentShareCacheErrorIsPermanent(v17))
     {
-      (*(v7 + 2))(v7, 0, v14);
+      (*(handlerCopy + 2))(handlerCopy, 0, v14);
     }
 
     else
@@ -93,10 +93,10 @@
       if (!v9)
       {
         v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        objc_msgSend_setObject_forKeyedSubscript_(self->_completionHandlers, v18, v9, v6);
+        objc_msgSend_setObject_forKeyedSubscript_(self->_completionHandlers, v18, v9, stringCopy);
       }
 
-      v19 = _Block_copy(v7);
+      v19 = _Block_copy(handlerCopy);
       objc_msgSend_addObject_(v9, v20, v19);
 
       v21 = IMLogHandleForCategory();
@@ -105,7 +105,7 @@
         sub_1A84E4A2C();
       }
 
-      v23 = objc_msgSend_URLWithString_(MEMORY[0x1E695DFF8], v22, v6);
+      v23 = objc_msgSend_URLWithString_(MEMORY[0x1E695DFF8], v22, stringCopy);
       v26 = objc_msgSend__ensureLibraryRegistration(self, v24, v25);
       v29 = sub_1A83E1A48(v26, v27, v28);
       v32 = objc_msgSend_sharedMomentSharePhotoLibrary(v29, v30, v31);
@@ -117,7 +117,7 @@
       v41[2] = sub_1A83E204C;
       v41[3] = &unk_1E7814CA0;
       v41[4] = self;
-      v42 = v6;
+      v42 = stringCopy;
       v9 = v9;
       v43 = v9;
       objc_msgSend_fetchMomentShareFromShareURL_options_completionHandler_(v39, v40, v23, v35, v41);
@@ -125,17 +125,17 @@
   }
 }
 
-- (id)momentShareForURLString:(id)a3 error:(id *)a4
+- (id)momentShareForURLString:(id)string error:(id *)error
 {
-  v6 = a3;
+  stringCopy = string;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v8 = objc_msgSend_objectForKeyedSubscript_(self->_completionHandlers, v7, v6);
+  v8 = objc_msgSend_objectForKeyedSubscript_(self->_completionHandlers, v7, stringCopy);
   if (!objc_msgSend_count(v8, v9, v10))
   {
     v17 = 0;
-    v14 = objc_msgSend__momentShareForURLString_error_(self, v11, v6, &v17);
+    v14 = objc_msgSend__momentShareForURLString_error_(self, v11, stringCopy, &v17);
     v13 = v17;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -151,13 +151,13 @@
 
   v13 = sub_1A83E22A4(-1000, 0);
   v14 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_7:
     if (!v14)
     {
       v15 = v13;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -177,10 +177,10 @@ LABEL_9:
   }
 }
 
-- (id)_momentShareForURLString:(id)a3 error:(id *)a4
+- (id)_momentShareForURLString:(id)string error:(id *)error
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  stringCopy = string;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v59 = 0;
   v60 = &v59;
@@ -194,7 +194,7 @@ LABEL_9:
   v56 = sub_1A8259CC0;
   v57 = sub_1A825AF8C;
   v58 = 0;
-  v8 = objc_msgSend_objectForKeyedSubscript_(self->_cache, v7, v6);
+  v8 = objc_msgSend_objectForKeyedSubscript_(self->_cache, v7, stringCopy);
   v11 = v8;
   if (v8)
   {
@@ -208,7 +208,7 @@ LABEL_9:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
           v19 = objc_msgSend_uuid(v14, v17, v18);
-          sub_1A84E4AFC(v19, v6, buf, v16);
+          sub_1A84E4AFC(v19, stringCopy, buf, v16);
         }
       }
 
@@ -229,7 +229,7 @@ LABEL_9:
           *buf = 138412546;
           v67 = v21;
           v68 = 2112;
-          v69 = v6;
+          v69 = stringCopy;
           _os_log_impl(&dword_1A823F000, v46, OS_LOG_TYPE_DEFAULT, "Returning cached permanent error: %@, for URL: %@", buf, 0x16u);
         }
 
@@ -246,7 +246,7 @@ LABEL_9:
       sub_1A84E4B64();
     }
 
-    v14 = objc_msgSend_URLWithString_(MEMORY[0x1E695DFF8], v23, v6);
+    v14 = objc_msgSend_URLWithString_(MEMORY[0x1E695DFF8], v23, stringCopy);
     v26 = objc_msgSend__ensureLibraryRegistration(self, v24, v25);
     v29 = sub_1A83E1A48(v26, v27, v28);
     v32 = objc_msgSend_sharedMomentSharePhotoLibrary(v29, v30, v31);
@@ -265,13 +265,13 @@ LABEL_9:
     v42 = _Block_copy(v51);
     v65 = v42;
     v44 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v43, &v65, 1);
-    objc_msgSend__processFetchedMomentShare_forURLString_error_completionHandlers_(self, v45, v41, v6, v21, v44);
+    objc_msgSend__processFetchedMomentShare_forURLString_error_completionHandlers_(self, v45, v41, stringCopy, v21, v44);
   }
 
   v47 = v60[5];
-  if (a4 && !v47)
+  if (error && !v47)
   {
-    *a4 = v54[5];
+    *error = v54[5];
     v47 = v60[5];
   }
 
@@ -285,30 +285,30 @@ LABEL_9:
   return v48;
 }
 
-- (void)_processFetchedMomentShare:(id)a3 forURLString:(id)a4 error:(id)a5 completionHandlers:(id)a6
+- (void)_processFetchedMomentShare:(id)share forURLString:(id)string error:(id)error completionHandlers:(id)handlers
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  shareCopy = share;
+  stringCopy = string;
+  errorCopy = error;
+  handlersCopy = handlers;
+  if (shareCopy)
   {
-    v14 = sub_1A83E2B6C(v10);
-    objc_msgSend_setObject_forKeyedSubscript_(self->_cache, v15, v14, v11);
+    v14 = sub_1A83E2B6C(shareCopy);
+    objc_msgSend_setObject_forKeyedSubscript_(self->_cache, v15, v14, stringCopy);
 
     v16 = IMLogHandleForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      sub_1A84E4BCC(v10, v11, v16);
+      sub_1A84E4BCC(shareCopy, stringCopy, v16);
     }
 
-    v17 = v10;
+    v17 = shareCopy;
     v18 = 0;
   }
 
   else
   {
-    v19 = v12;
+    v19 = errorCopy;
     v22 = v19;
     v45 = 0;
     v46 = &v45;
@@ -351,7 +351,7 @@ LABEL_9:
     if (v28)
     {
       v31 = sub_1A83E2BC0(v30);
-      objc_msgSend_setObject_forKeyedSubscript_(self->_cache, v32, v31, v11);
+      objc_msgSend_setObject_forKeyedSubscript_(self->_cache, v32, v31, stringCopy);
     }
 
     v33 = IMLogHandleForCategory();
@@ -365,23 +365,23 @@ LABEL_9:
   v37[1] = 3221225472;
   v37[2] = sub_1A83E2C14;
   v37[3] = &unk_1E7814CF0;
-  v38 = v10;
+  v38 = shareCopy;
   v39 = v18;
   v34 = v18;
-  v35 = v10;
-  objc_msgSend_enumerateObjectsUsingBlock_(v13, v36, v37);
+  v35 = shareCopy;
+  objc_msgSend_enumerateObjectsUsingBlock_(handlersCopy, v36, v37);
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_1A83E2CC4;
   v6[3] = &unk_1E7810140;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

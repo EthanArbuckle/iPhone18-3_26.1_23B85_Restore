@@ -1,32 +1,32 @@
 @interface SBClientSettingObserverContext
-- (void)setOldClientSettings:(uint64_t)a1;
-- (void)setScene:(uint64_t)a1;
-- (void)setSceneHandle:(uint64_t)a1;
+- (void)setOldClientSettings:(uint64_t)settings;
+- (void)setScene:(uint64_t)scene;
+- (void)setSceneHandle:(uint64_t)handle;
 @end
 
 @implementation SBClientSettingObserverContext
 
-- (void)setScene:(uint64_t)a1
+- (void)setScene:(uint64_t)scene
 {
-  if (a1)
+  if (scene)
   {
-    OUTLINED_FUNCTION_3_32(a1, a2);
+    OUTLINED_FUNCTION_3_32(scene, a2);
   }
 }
 
-- (void)setSceneHandle:(uint64_t)a1
+- (void)setSceneHandle:(uint64_t)handle
 {
-  if (a1)
+  if (handle)
   {
-    OUTLINED_FUNCTION_2_36(a1, a2);
+    OUTLINED_FUNCTION_2_36(handle, a2);
   }
 }
 
-- (void)setOldClientSettings:(uint64_t)a1
+- (void)setOldClientSettings:(uint64_t)settings
 {
-  if (a1)
+  if (settings)
   {
-    OUTLINED_FUNCTION_1_34(a1, a2);
+    OUTLINED_FUNCTION_1_34(settings, a2);
   }
 }
 

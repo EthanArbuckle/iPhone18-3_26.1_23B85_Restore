@@ -24,9 +24,9 @@
 
 - (int64_t)callCount
 {
-  v2 = [(JFXCaptureCallObserver *)self callObserver];
-  v3 = [v2 calls];
-  v4 = [v3 count];
+  callObserver = [(JFXCaptureCallObserver *)self callObserver];
+  calls = [callObserver calls];
+  v4 = [calls count];
 
   return v4;
 }

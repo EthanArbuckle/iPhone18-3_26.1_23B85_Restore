@@ -2,42 +2,42 @@
 - (BOOL)_isAlarmsFull;
 - (BOOL)_isHouseholdFull;
 - (BOOL)_shouldUseKShotEnrollment;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
 - (DetectorsController)init;
-- (id)_customDetectorIsEnabledForSpec:(id)a3;
+- (id)_customDetectorIsEnabledForSpec:(id)spec;
 - (id)_internalSettingsButton;
-- (id)isDetectorEnabledForSpecifier:(id)a3;
-- (id)numberOfSoundRecordings:(id)a3;
+- (id)isDetectorEnabledForSpecifier:(id)specifier;
+- (id)numberOfSoundRecordings:(id)recordings;
 - (id)specifiers;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)_donePressed;
-- (void)_editPressed:(id)a3;
-- (void)_internalSettingsPressed:(id)a3;
+- (void)_editPressed:(id)pressed;
+- (void)_internalSettingsPressed:(id)pressed;
 - (void)_manageEditButton;
 - (void)_manageRecordCustomSoundButtons;
-- (void)_presentKShotOnboardingController:(id)a3;
-- (void)_presentKShotOnboardingControllerWithCategory:(id)a3;
-- (void)_presentKShotOnboardingControllerWithDetector:(id)a3;
-- (void)_presentKShotOnboardingWithSender:(id)a3;
+- (void)_presentKShotOnboardingController:(id)controller;
+- (void)_presentKShotOnboardingControllerWithCategory:(id)category;
+- (void)_presentKShotOnboardingControllerWithDetector:(id)detector;
+- (void)_presentKShotOnboardingWithSender:(id)sender;
 - (void)_reloadSettings;
-- (void)_startKShotOnboarding:(id)a3;
-- (void)_startRenameSoundFlow:(id)a3;
-- (void)cancelCustomDetectorTrainingForTarget:(id)a3;
+- (void)_startKShotOnboarding:(id)onboarding;
+- (void)_startRenameSoundFlow:(id)flow;
+- (void)cancelCustomDetectorTrainingForTarget:(id)target;
 - (void)dealloc;
 - (void)exitedOnboardingFlow;
 - (void)loadCustomDetectorsFromSettings;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)renameDetector:(id)a3 to:(id)a4;
-- (void)secureIntentViewControllerDidCancel:(id)a3;
-- (void)secureIntentViewControllerDidFinish:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)renameDetector:(id)detector to:(id)to;
+- (void)secureIntentViewControllerDidCancel:(id)cancel;
+- (void)secureIntentViewControllerDidFinish:(id)finish;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DetectorsController
@@ -138,7 +138,7 @@ void __27__DetectorsController_init__block_invoke_4(uint64_t a1)
 
   v68 = OBJC_IVAR___PSListController__specifiers;
   v67 = +[NSMutableArray array];
-  v69 = self;
+  selfCopy = self;
   v4 = [(DetectorsController *)self loadSpecifiersFromPlistName:@"DetectorSettings" target:self];
   v5 = [v4 mutableCopy];
 
@@ -167,9 +167,9 @@ void __27__DetectorsController_init__block_invoke_4(uint64_t a1)
           v12 = [v11 propertyForKey:@"AXSoundDetectionTypes"];
           if ([v12 count])
           {
-            v13 = [v12 firstObject];
+            firstObject = [v12 firstObject];
             v14 = +[AXSDSettings sharedInstance];
-            v15 = [v14 soundAlertTopicForSoundDetectionType:v13];
+            v15 = [v14 soundAlertTopicForSoundDetectionType:firstObject];
             [v11 setProperty:v15 forKey:@"accountIdentifier"];
           }
 
@@ -184,7 +184,7 @@ void __27__DetectorsController_init__block_invoke_4(uint64_t a1)
   }
 
   v16 = +[AXSDSettings sharedInstance];
-  v17 = [v16 supportedSoundDetectionTypes];
+  supportedSoundDetectionTypes = [v16 supportedSoundDetectionTypes];
 
   v70 = +[NSMutableArray array];
   v76 = 0u;
@@ -230,7 +230,7 @@ void __27__DetectorsController_init__block_invoke_4(uint64_t a1)
                   objc_enumerationMutation(v25);
                 }
 
-                if ([v17 containsObject:*(*(&v72 + 1) + 8 * k)])
+                if ([supportedSoundDetectionTypes containsObject:*(*(&v72 + 1) + 8 * k)])
                 {
 
                   goto LABEL_29;
@@ -263,7 +263,7 @@ LABEL_29:
   v30 = +[NSProcessInfo processInfo];
   if ([v30 physicalMemory] < 0x77359400)
   {
-    v32 = v69;
+    v32 = selfCopy;
 LABEL_51:
 
     goto LABEL_52;
@@ -271,12 +271,12 @@ LABEL_51:
 
   v31 = _os_feature_enabled_impl();
 
-  v32 = v69;
+  v32 = selfCopy;
   if (v31)
   {
-    [(DetectorsController *)v69 loadCustomDetectorsFromSettings];
+    [(DetectorsController *)selfCopy loadCustomDetectorsFromSettings];
     v33 = settingsLocString(@"CUSTOM_ALARM", @"SoundDetection");
-    v30 = [PSSpecifier preferenceSpecifierNamed:v33 target:v69 set:0 get:0 detail:0 cell:13 edit:0];
+    v30 = [PSSpecifier preferenceSpecifierNamed:v33 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
 
     [v30 setButtonAction:"_startKShotOnboarding:"];
     v34 = PSIDKey;
@@ -285,7 +285,7 @@ LABEL_51:
     v35 = PSAllowMultilineTitleKey;
     [v30 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
     v65 = v34;
-    if ([(DetectorsController *)v69 _isAlarmsFull])
+    if ([(DetectorsController *)selfCopy _isAlarmsFull])
     {
       v36 = 0;
     }
@@ -302,7 +302,7 @@ LABEL_51:
 
     v40 = [obj specifierForID:@"last_alarm_spec"];
     v41 = [obj specifierForID:@"alarms_group"];
-    if ([(DetectorsController *)v69 _isAlarmsFull])
+    if ([(DetectorsController *)selfCopy _isAlarmsFull])
     {
       v42 = settingsLocString(@"MAX_REACHED_ALARM", @"SoundDetection");
       v43 = PSFooterTextGroupKey;
@@ -322,13 +322,13 @@ LABEL_51:
 
     v66 = v40;
     v44 = settingsLocString(@"CUSTOM_APPLIANCE", @"SoundDetection");
-    v45 = [PSSpecifier preferenceSpecifierNamed:v44 target:v69 set:0 get:0 detail:0 cell:13 edit:0];
+    v45 = [PSSpecifier preferenceSpecifierNamed:v44 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
 
     [v45 setButtonAction:"_startKShotOnboarding:"];
     [v45 setProperty:@"RecordCustomHouseholdSpec" forKey:v65];
     [v45 setProperty:AXSDDetectorCategoryHousehold forKey:@"kCategoryKey"];
     [v45 setProperty:&__kCFBooleanTrue forKey:v35];
-    if ([(DetectorsController *)v69 _isHouseholdFull])
+    if ([(DetectorsController *)selfCopy _isHouseholdFull])
     {
       v46 = 0;
     }
@@ -344,7 +344,7 @@ LABEL_51:
 
     v49 = [obj specifierForID:@"last_household_spec"];
     v50 = [obj specifierForID:@"household_group"];
-    if ([(DetectorsController *)v69 _isHouseholdFull])
+    if ([(DetectorsController *)selfCopy _isHouseholdFull])
     {
       v51 = settingsLocString(@"MAX_REACHED_APPLIANCE", @"SoundDetection");
       [v50 setProperty:v51 forKey:v43];
@@ -360,12 +360,12 @@ LABEL_51:
       [obj ps_insertObject:v45 afterObject:v49];
     }
 
-    v52 = [(DetectorsController *)v69 customDetectors];
-    v53 = [v52 objectForKeyedSubscript:AXSDDetectorCategoryHousehold];
+    customDetectors = [(DetectorsController *)selfCopy customDetectors];
+    v53 = [customDetectors objectForKeyedSubscript:AXSDDetectorCategoryHousehold];
     [obj ps_insertObjectsFromArray:v53 afterObject:v49];
 
-    v54 = [(DetectorsController *)v69 customDetectors];
-    v55 = [v54 objectForKeyedSubscript:AXSDDetectorCategoryAlarm];
+    customDetectors2 = [(DetectorsController *)selfCopy customDetectors];
+    v55 = [customDetectors2 objectForKeyedSubscript:AXSDDetectorCategoryAlarm];
     [obj ps_insertObjectsFromArray:v55 afterObject:v66];
 
     goto LABEL_51;
@@ -380,13 +380,13 @@ LABEL_52:
     do
     {
       v59 = [obj objectAtIndexedSubscript:--v57];
-      v60 = [v59 cellType];
-      if (!(v58 | v60))
+      cellType = [v59 cellType];
+      if (!(v58 | cellType))
       {
         [obj removeObjectAtIndex:v57];
       }
 
-      v58 = v60;
+      v58 = cellType;
     }
 
     while (v57 > 0);
@@ -407,9 +407,9 @@ LABEL_58:
   return v3;
 }
 
-- (id)isDetectorEnabledForSpecifier:(id)a3
+- (id)isDetectorEnabledForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"AXSoundDetectionTypes"];
+  v3 = [specifier propertyForKey:@"AXSoundDetectionTypes"];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -432,8 +432,8 @@ LABEL_58:
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = +[AXSDSettings sharedInstance];
-        v12 = [v11 enabledSoundDetectionTypes];
-        LOBYTE(v10) = [v12 containsObject:v10];
+        enabledSoundDetectionTypes = [v11 enabledSoundDetectionTypes];
+        LOBYTE(v10) = [enabledSoundDetectionTypes containsObject:v10];
 
         v7 |= v10;
       }
@@ -480,7 +480,7 @@ LABEL_58:
   return v4;
 }
 
-- (void)_internalSettingsPressed:(id)a3
+- (void)_internalSettingsPressed:(id)pressed
 {
   v4 = [NSURL URLWithString:@"prefs:root=INTERNAL_SETTINGS&path=Accessibility/Assets"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];
@@ -492,29 +492,29 @@ LABEL_58:
   v5.receiver = self;
   v5.super_class = DetectorsController;
   [(DetectorsController *)&v5 viewDidLoad];
-  v3 = [(DetectorsController *)self table];
-  [v3 setAllowsSelectionDuringEditing:1];
+  table = [(DetectorsController *)self table];
+  [table setAllowsSelectionDuringEditing:1];
 
   [(DetectorsController *)self _manageEditButton];
   [(DetectorsController *)self _manageRecordCustomSoundButtons];
-  v4 = [(DetectorsController *)self navigationController];
-  [v4 setDelegate:self];
+  navigationController = [(DetectorsController *)self navigationController];
+  [navigationController setDelegate:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = DetectorsController;
-  [(DetectorsController *)&v4 viewWillAppear:a3];
+  [(DetectorsController *)&v4 viewWillAppear:appear];
   if (*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers])
   {
     [(DetectorsController *)self reloadSpecifiers];
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a4;
+  viewControllerCopy = viewController;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -525,29 +525,29 @@ LABEL_58:
   }
 }
 
-- (void)_presentKShotOnboardingWithSender:(id)a3
+- (void)_presentKShotOnboardingWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"AssociatedDetector"];
+  senderCopy = sender;
+  v5 = [senderCopy propertyForKey:@"AssociatedDetector"];
 
   if (v5)
   {
-    v6 = [v4 propertyForKey:@"AssociatedDetector"];
+    v6 = [senderCopy propertyForKey:@"AssociatedDetector"];
 
     [(DetectorsController *)self _presentKShotOnboardingControllerWithDetector:v6];
   }
 
   else
   {
-    v6 = [v4 propertyForKey:@"kCategoryKey"];
+    v6 = [senderCopy propertyForKey:@"kCategoryKey"];
 
     [(DetectorsController *)self _presentKShotOnboardingControllerWithCategory:v6];
   }
 }
 
-- (void)_startKShotOnboarding:(id)a3
+- (void)_startKShotOnboarding:(id)onboarding
 {
-  v4 = a3;
+  onboardingCopy = onboarding;
   if ([(DetectorsController *)self isEditing])
   {
     [(DetectorsController *)self setEditing:0 animated:1];
@@ -555,39 +555,39 @@ LABEL_58:
   }
 
   [(DetectorsController *)self _shouldUseKShotEnrollment];
-  [(DetectorsController *)self _presentKShotOnboardingWithSender:v4];
+  [(DetectorsController *)self _presentKShotOnboardingWithSender:onboardingCopy];
 }
 
-- (void)_presentKShotOnboardingControllerWithCategory:(id)a3
+- (void)_presentKShotOnboardingControllerWithCategory:(id)category
 {
-  v4 = a3;
-  v5 = [[CustomDetectorOnboardingController alloc] initWithCategory:v4];
+  categoryCopy = category;
+  v5 = [[CustomDetectorOnboardingController alloc] initWithCategory:categoryCopy];
 
   [(DetectorsController *)self _presentKShotOnboardingController:v5];
 }
 
-- (void)_presentKShotOnboardingControllerWithDetector:(id)a3
+- (void)_presentKShotOnboardingControllerWithDetector:(id)detector
 {
-  v4 = a3;
-  v5 = [[CustomDetectorOnboardingController alloc] initWithDetector:v4];
+  detectorCopy = detector;
+  v5 = [[CustomDetectorOnboardingController alloc] initWithDetector:detectorCopy];
 
   [(DetectorsController *)self _presentKShotOnboardingController:v5];
 }
 
-- (void)_presentKShotOnboardingController:(id)a3
+- (void)_presentKShotOnboardingController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v4 = +[UIApplication sharedApplication];
   [v4 setIdleTimerDisabled:1];
 
-  [v5 setCustomDetectorDelegate:self];
-  [(DetectorsController *)self presentViewController:v5 animated:1 completion:0];
+  [controllerCopy setCustomDetectorDelegate:self];
+  [(DetectorsController *)self presentViewController:controllerCopy animated:1 completion:0];
 }
 
-- (void)_startRenameSoundFlow:(id)a3
+- (void)_startRenameSoundFlow:(id)flow
 {
-  v4 = a3;
-  v5 = [[RenameDetectorFlowController alloc] initWithDetectorSpecifier:v4];
+  flowCopy = flow;
+  v5 = [[RenameDetectorFlowController alloc] initWithDetectorSpecifier:flowCopy];
 
   [(RenameDetectorFlowController *)v5 setRenameDetectorDelegate:self];
   [(DetectorsController *)self presentViewController:v5 animated:1 completion:0];
@@ -598,13 +598,13 @@ LABEL_58:
   v31 = +[NSMutableArray array];
   v30 = +[NSMutableArray array];
   v2 = +[AXSDDetectorStore sharedInstance];
-  v3 = [v2 customDetectors];
+  customDetectors = [v2 customDetectors];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v3;
+  obj = customDetectors;
   v4 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v4)
   {
@@ -634,9 +634,9 @@ LABEL_58:
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 recordings];
-          v14 = [v13 count];
-          if (v13)
+          recordings = [v11 recordings];
+          v14 = [recordings count];
+          if (recordings)
           {
             v15 = v14 > 4;
           }
@@ -648,33 +648,33 @@ LABEL_58:
 
           if (v15 || ([v12 isModelReady] & 1) != 0)
           {
-            v16 = [v12 name];
-            v17 = [PSSpecifier preferenceSpecifierNamed:v16 target:self set:0 get:"_customDetectorIsEnabledForSpec:" detail:objc_opt_class() cell:2 edit:0];
+            name = [v12 name];
+            v17 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:"_customDetectorIsEnabledForSpec:" detail:objc_opt_class() cell:2 edit:0];
           }
 
           else
           {
-            v18 = [v12 name];
-            v17 = [PSSpecifier preferenceSpecifierNamed:v18 target:self set:0 get:"numberOfSoundRecordings:" detail:0 cell:2 edit:0];
+            name2 = [v12 name];
+            v17 = [PSSpecifier preferenceSpecifierNamed:name2 target:self set:0 get:"numberOfSoundRecordings:" detail:0 cell:2 edit:0];
 
             [v17 setButtonAction:"_startKShotOnboarding:"];
             [v17 setProperty:kCFBooleanTrue forKey:v27];
           }
 
-          v19 = [v12 identifier];
-          [v17 setProperty:v19 forKey:v8];
+          identifier = [v12 identifier];
+          [v17 setProperty:identifier forKey:v8];
 
           [v17 setProperty:v12 forKey:@"AssociatedDetector"];
-          v20 = [v12 category];
-          [v17 setProperty:v20 forKey:@"kCategoryKey"];
+          category = [v12 category];
+          [v17 setProperty:category forKey:@"kCategoryKey"];
 
           [v17 setProperty:&__kCFBooleanTrue forKey:@"IsCustomSound"];
           [v17 setProperty:@"TLAlertTypeSoundRecognition" forKey:@"alertType"];
-          v21 = [v12 identifier];
-          [v17 setProperty:v21 forKey:@"accountIdentifier"];
+          identifier2 = [v12 identifier];
+          [v17 setProperty:identifier2 forKey:@"accountIdentifier"];
 
-          v22 = [v12 category];
-          v23 = [v22 isEqualToString:AXSDDetectorCategoryAlarm];
+          category2 = [v12 category];
+          v23 = [category2 isEqualToString:AXSDDetectorCategoryAlarm];
 
           if (v23)
           {
@@ -692,12 +692,12 @@ LABEL_58:
 
         else
         {
-          v13 = AXLogUltron();
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+          recordings = AXLogUltron();
+          if (os_log_type_enabled(recordings, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v37 = v10;
-            _os_log_error_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "Recieved a detector that was not a custom detector. Detector: %@", buf, 0xCu);
+            _os_log_error_impl(&dword_0, recordings, OS_LOG_TYPE_ERROR, "Recieved a detector that was not a custom detector. Detector: %@", buf, 0xCu);
           }
         }
       }
@@ -713,18 +713,18 @@ LABEL_58:
     v6 = 0;
   }
 
-  v25 = [(DetectorsController *)self customDetectors];
-  [v25 setObject:v31 forKey:AXSDDetectorCategoryAlarm];
+  customDetectors2 = [(DetectorsController *)self customDetectors];
+  [customDetectors2 setObject:v31 forKey:AXSDDetectorCategoryAlarm];
 
-  v26 = [(DetectorsController *)self customDetectors];
-  [v26 setObject:v30 forKey:AXSDDetectorCategoryHousehold];
+  customDetectors3 = [(DetectorsController *)self customDetectors];
+  [customDetectors3 setObject:v30 forKey:AXSDDetectorCategoryHousehold];
 }
 
-- (id)numberOfSoundRecordings:(id)a3
+- (id)numberOfSoundRecordings:(id)recordings
 {
-  v3 = [a3 propertyForKey:@"AssociatedDetector"];
-  v4 = [v3 recordings];
-  v5 = [v4 count];
+  v3 = [recordings propertyForKey:@"AssociatedDetector"];
+  recordings = [v3 recordings];
+  v5 = [recordings count];
 
   v6 = settingsLocString(@"OF_FIVE", @"SoundDetection");
   v7 = [NSString localizedStringWithFormat:v6, v5, 5];
@@ -734,8 +734,8 @@ LABEL_58:
 
 - (BOOL)_isAlarmsFull
 {
-  v2 = [(DetectorsController *)self customDetectors];
-  v3 = [v2 objectForKey:AXSDDetectorCategoryAlarm];
+  customDetectors = [(DetectorsController *)self customDetectors];
+  v3 = [customDetectors objectForKey:AXSDDetectorCategoryAlarm];
   v4 = [v3 count] > 9;
 
   return v4;
@@ -743,16 +743,16 @@ LABEL_58:
 
 - (BOOL)_isHouseholdFull
 {
-  v2 = [(DetectorsController *)self customDetectors];
-  v3 = [v2 objectForKey:AXSDDetectorCategoryHousehold];
+  customDetectors = [(DetectorsController *)self customDetectors];
+  v3 = [customDetectors objectForKey:AXSDDetectorCategoryHousehold];
   v4 = [v3 count] > 9;
 
   return v4;
 }
 
-- (id)_customDetectorIsEnabledForSpec:(id)a3
+- (id)_customDetectorIsEnabledForSpec:(id)spec
 {
-  v3 = [a3 propertyForKey:@"AssociatedDetector"];
+  v3 = [spec propertyForKey:@"AssociatedDetector"];
   if ([v3 modelFailed])
   {
     v4 = @"TRAINING_FAILED";
@@ -762,9 +762,9 @@ LABEL_58:
   else
   {
     v6 = +[AXSDSettings sharedInstance];
-    v7 = [v6 enabledKShotDetectorIdentifiers];
-    v8 = [v3 identifier];
-    v9 = [v7 containsObject:v8];
+    enabledKShotDetectorIdentifiers = [v6 enabledKShotDetectorIdentifiers];
+    identifier = [v3 identifier];
+    v9 = [enabledKShotDetectorIdentifiers containsObject:identifier];
 
     if (v9)
     {
@@ -787,8 +787,8 @@ LABEL_58:
 - (void)_manageEditButton
 {
   v3 = AXIsInternalInstall();
-  v4 = [(DetectorsController *)self customDetectors];
-  v5 = [v4 count];
+  customDetectors = [(DetectorsController *)self customDetectors];
+  v5 = [customDetectors count];
 
   if (v3)
   {
@@ -799,26 +799,26 @@ LABEL_58:
         return;
       }
 
-      v6 = [(DetectorsController *)self editButtonItem];
-      [v6 setAction:"_editPressed:"];
+      editButtonItem = [(DetectorsController *)self editButtonItem];
+      [editButtonItem setAction:"_editPressed:"];
 
-      v7 = [(DetectorsController *)self navigationItem];
-      v8 = [(DetectorsController *)self editButtonItem];
-      v17[0] = v8;
-      v9 = [(DetectorsController *)self _internalSettingsButton];
-      v17[1] = v9;
+      navigationItem = [(DetectorsController *)self navigationItem];
+      editButtonItem2 = [(DetectorsController *)self editButtonItem];
+      v17[0] = editButtonItem2;
+      _internalSettingsButton = [(DetectorsController *)self _internalSettingsButton];
+      v17[1] = _internalSettingsButton;
       v10 = [NSArray arrayWithObjects:v17 count:2];
-      [v7 setRightBarButtonItems:v10];
+      [navigationItem setRightBarButtonItems:v10];
     }
 
     else
     {
       [(DetectorsController *)self setEditing:0 animated:1];
-      v7 = [(DetectorsController *)self navigationItem];
-      v13 = [(DetectorsController *)self _internalSettingsButton];
-      v16 = v13;
+      navigationItem = [(DetectorsController *)self navigationItem];
+      _internalSettingsButton2 = [(DetectorsController *)self _internalSettingsButton];
+      v16 = _internalSettingsButton2;
       v14 = [NSArray arrayWithObjects:&v16 count:1];
-      [v7 setRightBarButtonItems:v14];
+      [navigationItem setRightBarButtonItems:v14];
     }
   }
 
@@ -831,19 +831,19 @@ LABEL_58:
         return;
       }
 
-      v11 = [(DetectorsController *)self editButtonItem];
-      [v11 setAction:"_editPressed:"];
+      editButtonItem3 = [(DetectorsController *)self editButtonItem];
+      [editButtonItem3 setAction:"_editPressed:"];
 
-      v15 = [(DetectorsController *)self navigationItem];
-      v12 = [(DetectorsController *)self editButtonItem];
-      [v15 setRightBarButtonItem:v12];
+      navigationItem2 = [(DetectorsController *)self navigationItem];
+      editButtonItem4 = [(DetectorsController *)self editButtonItem];
+      [navigationItem2 setRightBarButtonItem:editButtonItem4];
     }
 
     else
     {
       [(DetectorsController *)self setEditing:0 animated:1];
-      v15 = [(DetectorsController *)self navigationItem];
-      [v15 setRightBarButtonItem:0];
+      navigationItem2 = [(DetectorsController *)self navigationItem];
+      [navigationItem2 setRightBarButtonItem:0];
     }
   }
 }
@@ -851,9 +851,9 @@ LABEL_58:
 - (void)_manageRecordCustomSoundButtons
 {
   v3 = +[NSProcessInfo processInfo];
-  v4 = [v3 physicalMemory];
+  physicalMemory = [v3 physicalMemory];
 
-  if (v4 >= 0x77359400)
+  if (physicalMemory >= 0x77359400)
   {
     v13 = [(DetectorsController *)self specifierForID:@"RecordCustomAlarmSpec"];
     if ([(DetectorsController *)self _isAlarmsFull])
@@ -891,22 +891,22 @@ LABEL_58:
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v8.receiver = self;
   v8.super_class = DetectorsController;
   [DetectorsController setEditing:"setEditing:animated:" animated:?];
-  v7 = [(DetectorsController *)self table];
-  [v7 setEditing:v5 animated:v4];
+  table = [(DetectorsController *)self table];
+  [table setEditing:editingCopy animated:animatedCopy];
 }
 
-- (void)_editPressed:(id)a3
+- (void)_editPressed:(id)pressed
 {
   [(DetectorsController *)self setEditing:1 animated:1];
-  v4 = [(DetectorsController *)self editButtonItem];
-  [v4 setAction:"_donePressed"];
+  editButtonItem = [(DetectorsController *)self editButtonItem];
+  [editButtonItem setAction:"_donePressed"];
 }
 
 - (void)_donePressed
@@ -925,66 +925,66 @@ LABEL_58:
   [v3 setIdleTimerDisabled:0];
 }
 
-- (void)renameDetector:(id)a3 to:(id)a4
+- (void)renameDetector:(id)detector to:(id)to
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setName:v6];
-  [(DetectorsController *)self reloadSpecifier:v7];
-  v9 = [v7 propertyForKey:@"AssociatedDetector"];
+  toCopy = to;
+  detectorCopy = detector;
+  [detectorCopy setName:toCopy];
+  [(DetectorsController *)self reloadSpecifier:detectorCopy];
+  v9 = [detectorCopy propertyForKey:@"AssociatedDetector"];
 
   v8 = +[AXSDSettings sharedInstance];
-  [v8 editKShotDetectorName:v9 newName:v6];
+  [v8 editKShotDetectorName:v9 newName:toCopy];
 }
 
-- (void)cancelCustomDetectorTrainingForTarget:(id)a3
+- (void)cancelCustomDetectorTrainingForTarget:(id)target
 {
-  if (a3)
+  if (target)
   {
-    v4 = a3;
+    targetCopy = target;
     v5 = +[AXSDSettings sharedInstance];
-    [v5 removeKShotDetector:v4];
+    [v5 removeKShotDetector:targetCopy];
 
     [(DetectorsController *)self _reloadSettings];
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:a4]];
+  v4 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:path]];
   v5 = [v4 propertyForKey:@"IsCustomSound"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:a4]];
+  v4 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:path]];
   v5 = [v4 propertyForKey:@"IsCustomSound"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v4 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:a4]];
+  v4 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:path]];
   v5 = [v4 propertyForKey:@"IsCustomSound"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v13 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:a5]];
+  v13 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:path]];
   v7 = [v13 propertyForKey:@"AssociatedDetector"];
-  if (a4 == 1)
+  if (style == 1)
   {
-    v8 = [(DetectorsController *)self customDetectors];
+    customDetectors = [(DetectorsController *)self customDetectors];
     v9 = [v13 propertyForKey:@"kCategoryKey"];
-    v10 = [v8 objectForKey:v9];
+    v10 = [customDetectors objectForKey:v9];
     [v10 removeObject:v13];
 
     [(DetectorsController *)self removeSpecifier:v13 animated:1];
@@ -999,27 +999,27 @@ LABEL_58:
   [(DetectorsController *)self performSelector:"_manageEditButton" withObject:self afterDelay:0.1];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:a4]];
+  v5 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:path]];
   if ([(DetectorsController *)self isEditing])
   {
     v6 = [v5 propertyForKey:@"IsCustomSound"];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:v5]];
+  pathCopy = path;
+  v6 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:pathCopy]];
   if (-[DetectorsController isEditing](self, "isEditing") && ([v6 propertyForKey:@"IsCustomSound"], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "BOOLValue"), v7, !v8))
   {
     v9 = 0;
@@ -1027,17 +1027,17 @@ LABEL_58:
 
   else
   {
-    v9 = v5;
+    v9 = pathCopy;
   }
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:v7]];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(DetectorsController *)self specifierAtIndex:[(DetectorsController *)self indexForIndexPath:pathCopy]];
   if (-[DetectorsController isEditing](self, "isEditing") && ([v8 propertyForKey:@"IsCustomSound"], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, v10))
   {
     [(DetectorsController *)self _startRenameSoundFlow:v8];
@@ -1047,7 +1047,7 @@ LABEL_58:
   {
     v11.receiver = self;
     v11.super_class = DetectorsController;
-    [(DetectorsController *)&v11 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(DetectorsController *)&v11 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
@@ -1059,9 +1059,9 @@ LABEL_58:
   }
 
   v2 = +[AXSDSettings sharedInstance];
-  v3 = [v2 forceMedinaSupport];
+  forceMedinaSupport = [v2 forceMedinaSupport];
 
-  if (v3)
+  if (forceMedinaSupport)
   {
     return AXDeviceIsKShotMedinaEnabled() ^ 1;
   }
@@ -1072,7 +1072,7 @@ LABEL_58:
   }
 }
 
-- (void)secureIntentViewControllerDidCancel:(id)a3
+- (void)secureIntentViewControllerDidCancel:(id)cancel
 {
   v3 = AXLogUltronKShot();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1082,12 +1082,12 @@ LABEL_58:
   }
 }
 
-- (void)secureIntentViewControllerDidFinish:(id)a3
+- (void)secureIntentViewControllerDidFinish:(id)finish
 {
-  v4 = [a3 isEnrolled];
+  isEnrolled = [finish isEnrolled];
   v5 = AXLogUltronKShot();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (isEnrolled)
   {
     if (v6)
     {

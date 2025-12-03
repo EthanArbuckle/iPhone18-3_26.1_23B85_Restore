@@ -2,7 +2,7 @@
 + (MIDINetworkSession)defaultSession;
 - (BOOL)addConnection:(MIDINetworkConnection *)connection;
 - (BOOL)addContact:(MIDINetworkHost *)contact;
-- (BOOL)addOrRemoveConnection:(id)a3 add:(BOOL)a4;
+- (BOOL)addOrRemoveConnection:(id)connection add:(BOOL)add;
 - (BOOL)isEnabled;
 - (BOOL)removeConnection:(MIDINetworkConnection *)connection;
 - (BOOL)removeContact:(MIDINetworkHost *)contact;
@@ -27,15 +27,15 @@
 
 - (void)contactsChanged
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"MIDINetworkNotificationContactsDidChange" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"MIDINetworkNotificationContactsDidChange" object:self];
 }
 
 - (void)sessionChanged
 {
   [(MIDINetworkSession *)self updateFromEntity];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"MIDINetworkNotificationSessionDidChange" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"MIDINetworkNotificationSessionDidChange" object:self];
 }
 
 - (BOOL)removeContact:(MIDINetworkHost *)contact
@@ -165,9 +165,9 @@
   return v7;
 }
 
-- (BOOL)addOrRemoveConnection:(id)a3 add:(BOOL)a4
+- (BOOL)addOrRemoveConnection:(id)connection add:(BOOL)add
 {
-  v5 = ContactOrConnectionSet::AddOrRemoveItem(self->_imp + 4, a3, a4);
+  v5 = ContactOrConnectionSet::AddOrRemoveItem(self->_imp + 4, connection, add);
   if (v5)
   {
     [*(self->_imp + 3) setObject:v5 forKey:@"peers"];
@@ -242,14 +242,14 @@
 
   LOBYTE(v9) = v4;
   v5 = [*(self->_imp + 3) objectForKey:{@"join-policy", v8, v9}];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
   if (v4)
   {
     (*(*v3 + 24))(v3);
   }
 
-  return v6;
+  return intValue;
 }
 
 - (NSString)localName
@@ -315,14 +315,14 @@
 
   LOBYTE(v9) = v4;
   v5 = [*(self->_imp + 3) objectForKey:{@"port", v8, v9}];
-  v6 = [v5 unsignedIntValue];
+  unsignedIntValue = [v5 unsignedIntValue];
 
   if (v4)
   {
     (*(*v3 + 24))(v3);
   }
 
-  return v6;
+  return unsignedIntValue;
 }
 
 - (void)setEnabled:(BOOL)enabled
@@ -343,9 +343,9 @@
 
   LOBYTE(v13) = v6;
   v7 = [*(self->_imp + 3) objectForKey:{@"flags", v12, v13}];
-  v8 = [v7 unsignedIntValue];
+  unsignedIntValue = [v7 unsignedIntValue];
 
-  v9 = v8 & 0xFFFFFFFE;
+  v9 = unsignedIntValue & 0xFFFFFFFE;
   v10 = *(self->_imp + 3);
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v9 | v3];
   [v10 setObject:v11 forKey:@"flags"];
@@ -379,14 +379,14 @@
 
   LOBYTE(v9) = v4;
   v5 = [*(self->_imp + 3) objectForKey:{@"flags", v8, v9}];
-  v6 = [v5 unsignedIntValue];
+  unsignedIntValue = [v5 unsignedIntValue];
 
   if (v4)
   {
     (*(*v3 + 24))(v3);
   }
 
-  return v6 & 1;
+  return unsignedIntValue & 1;
 }
 
 - (void)dealloc
@@ -419,7 +419,7 @@
 
 - (void)refreshBonjourName
 {
-  v5 = [(MIDINetworkSession *)self networkName];
+  networkName = [(MIDINetworkSession *)self networkName];
   v3 = MGCopyAnswer();
   if (v3)
   {
@@ -431,7 +431,7 @@
     v4 = @"Unknown";
   }
 
-  if (!v5 || ([v5 isEqualToString:&stru_284A49B90] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", v4) & 1) == 0)
+  if (!networkName || ([networkName isEqualToString:&stru_284A49B90] & 1) != 0 || (objc_msgSend(networkName, "isEqualToString:", v4) & 1) == 0)
   {
     [*(self->_imp + 3) setObject:v4 forKey:@"dns-sd-name"];
     [(MIDINetworkSession *)self setStateToEntity];

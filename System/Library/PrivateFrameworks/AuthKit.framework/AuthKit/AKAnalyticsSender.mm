@@ -1,28 +1,28 @@
 @interface AKAnalyticsSender
-+ (void)sendAnalyticsEvent:(id)a3 context:(id)a4 account:(id)a5 error:(id)a6;
-+ (void)sendAnalyticsEvent:(id)a3 withError:(id)a4;
++ (void)sendAnalyticsEvent:(id)event context:(id)context account:(id)account error:(id)error;
++ (void)sendAnalyticsEvent:(id)event withError:(id)error;
 @end
 
 @implementation AKAnalyticsSender
 
-+ (void)sendAnalyticsEvent:(id)a3 context:(id)a4 account:(id)a5 error:(id)a6
++ (void)sendAnalyticsEvent:(id)event context:(id)context account:(id)account error:(id)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, context);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, account);
   v18 = 0;
-  objc_storeStrong(&v18, a6);
+  objc_storeStrong(&v18, error);
   if (location[0])
   {
     v13 = [AAFAnalyticsEvent ak_analyticsEventWithEventName:location[0] account:v19 error:v18];
-    v6 = [v20 telemetryFlowID];
+    telemetryFlowID = [v20 telemetryFlowID];
     [v13 setObject:? forKeyedSubscript:?];
-    _objc_release(v6);
+    _objc_release(telemetryFlowID);
     v7 = +[AKAnalyticsReporterRTC rtcAnalyticsReporter];
     [v7 sendEvent:v13];
     _objc_release(v7);
@@ -52,14 +52,14 @@
   objc_storeStrong(location, 0);
 }
 
-+ (void)sendAnalyticsEvent:(id)a3 withError:(id)a4
++ (void)sendAnalyticsEvent:(id)event withError:(id)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, error);
   if (location[0])
   {
     if (v11)

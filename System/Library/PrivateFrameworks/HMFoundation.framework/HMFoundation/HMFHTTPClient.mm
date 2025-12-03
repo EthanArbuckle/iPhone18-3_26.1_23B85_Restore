@@ -1,64 +1,64 @@
 @interface HMFHTTPClient
-+ (id)baseURLWithScheme:(id)a3 hostAddress:(id)a4 port:(unint64_t)a5;
++ (id)baseURLWithScheme:(id)scheme hostAddress:(id)address port:(unint64_t)port;
 + (id)logCategory;
 - (BOOL)isPinging;
 - (BOOL)isReachable;
-- (BOOL)requestClientReachabilityPingWithRetry:(BOOL)a3;
+- (BOOL)requestClientReachabilityPingWithRetry:(BOOL)retry;
 - (HMFHTTPClient)init;
-- (HMFHTTPClient)initWithBaseURL:(id)a3 configuration:(id)a4;
-- (HMFHTTPClient)initWithBaseURL:(id)a3 configuration:(id)a4 netManager:(id)a5;
-- (HMFHTTPClient)initWithBaseURL:(id)a3 configuration:(id)a4 session:(id)a5 reachabilityMonitor:(id)a6 netManager:(id)a7;
-- (HMFHTTPClient)initWithBaseURL:(id)a3 options:(unint64_t)a4;
-- (HMFHTTPClient)initWithNetService:(id)a3 options:(unint64_t)a4;
-- (HMFHTTPClient)initWithService:(id)a3 configuration:(id)a4;
-- (HMFHTTPClient)initWithService:(id)a3 configuration:(id)a4 netManager:(id)a5;
-- (HMFHTTPClient)initWithService:(id)a3 configuration:(id)a4 session:(id)a5 reachabilityMonitor:(id)a6 netManager:(id)a7;
+- (HMFHTTPClient)initWithBaseURL:(id)l configuration:(id)configuration;
+- (HMFHTTPClient)initWithBaseURL:(id)l configuration:(id)configuration netManager:(id)manager;
+- (HMFHTTPClient)initWithBaseURL:(id)l configuration:(id)configuration session:(id)session reachabilityMonitor:(id)monitor netManager:(id)manager;
+- (HMFHTTPClient)initWithBaseURL:(id)l options:(unint64_t)options;
+- (HMFHTTPClient)initWithNetService:(id)service options:(unint64_t)options;
+- (HMFHTTPClient)initWithService:(id)service configuration:(id)configuration;
+- (HMFHTTPClient)initWithService:(id)service configuration:(id)configuration netManager:(id)manager;
+- (HMFHTTPClient)initWithService:(id)service configuration:(id)configuration session:(id)session reachabilityMonitor:(id)monitor netManager:(id)manager;
 - (HMFHTTPClientConfiguration)configuration;
 - (HMFHTTPClientDelegate)delegate;
 - (NSString)debugDescription;
 - (NSURL)baseURL;
 - (id)attributeDescriptions;
-- (id)createNSURLSession:(id)a3;
+- (id)createNSURLSession:(id)session;
 - (id)logIdentifier;
 - (unint64_t)options;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)_sendRequest:(id)a3 baseURL:(id)a4 completionHandler:(id)a5;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)_sendRequest:(id)request baseURL:(id)l completionHandler:(id)handler;
 - (void)cancelPendingRequests;
 - (void)dealloc;
 - (void)finishCommonInitialization;
 - (void)invalidate;
-- (void)networkMonitorIsReachable:(id)a3;
-- (void)networkMonitorIsUnreachable:(id)a3;
-- (void)resolveWithCompletionHandler:(id)a3;
-- (void)sendRequest:(id)a3 completionHandler:(id)a4;
-- (void)setPinging:(BOOL)a3;
-- (void)setReachable:(BOOL)a3;
+- (void)networkMonitorIsReachable:(id)reachable;
+- (void)networkMonitorIsUnreachable:(id)unreachable;
+- (void)resolveWithCompletionHandler:(id)handler;
+- (void)sendRequest:(id)request completionHandler:(id)handler;
+- (void)setPinging:(BOOL)pinging;
+- (void)setReachable:(BOOL)reachable;
 - (void)startDelegatedPingTimer;
 - (void)startReachabilityProbe;
 - (void)stopDelegatedPingTimer;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMFHTTPClient
 
-+ (id)baseURLWithScheme:(id)a3 hostAddress:(id)a4 port:(unint64_t)a5
++ (id)baseURLWithScheme:(id)scheme hostAddress:(id)address port:(unint64_t)port
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  schemeCopy = scheme;
+  addressCopy = address;
+  v10 = addressCopy;
+  if (!schemeCopy)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy3 = self;
     v18 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_13;
     }
 
-    v19 = HMFGetLogIdentifier(v17);
+    v19 = HMFGetLogIdentifier(selfCopy3);
     *buf = 138543362;
     v28 = v19;
     v20 = "%{public}@Scheme is required";
@@ -68,31 +68,31 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!addressCopy)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy3 = self;
     v18 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_13;
     }
 
-    v19 = HMFGetLogIdentifier(v17);
+    v19 = HMFGetLogIdentifier(selfCopy3);
     *buf = 138543362;
     v28 = v19;
     v20 = "%{public}@Host address is required";
     goto LABEL_12;
   }
 
-  if (!a5)
+  if (!port)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy3 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = HMFGetLogIdentifier(v17);
+      v19 = HMFGetLogIdentifier(selfCopy3);
       *buf = 138543362;
       v28 = v19;
       v20 = "%{public}@Port is required";
@@ -106,23 +106,23 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v9 addressFamily] == 2)
+  if ([addressCopy addressFamily] == 2)
   {
-    v11 = [v10 addressString];
-    v12 = [v11 stringByReplacingOccurrencesOfString:@"%" withString:@"%25"];
+    addressString = [v10 addressString];
+    v12 = [addressString stringByReplacingOccurrencesOfString:@"%" withString:@"%25"];
 
     v13 = MEMORY[0x277CBEBC0];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@://[%@]:%tu", v8, v12, a5];
-    v15 = [v13 URLWithString:v14];
+    port = [MEMORY[0x277CCACA8] stringWithFormat:@"%@://[%@]:%tu", schemeCopy, v12, port];
+    v15 = [v13 URLWithString:port];
   }
 
   else
   {
     v23 = MEMORY[0x277CBEBC0];
     v24 = MEMORY[0x277CCACA8];
-    v25 = [v10 addressString];
-    v26 = [v24 stringWithFormat:@"%@://%@:%tu", v8, v25, a5];
-    v15 = [v23 URLWithString:v26];
+    addressString2 = [v10 addressString];
+    port2 = [v24 stringWithFormat:@"%@://%@:%tu", schemeCopy, addressString2, port];
+    v15 = [v23 URLWithString:port2];
   }
 
 LABEL_14:
@@ -145,22 +145,22 @@ LABEL_14:
   objc_exception_throw(v7);
 }
 
-- (HMFHTTPClient)initWithBaseURL:(id)a3 options:(unint64_t)a4
+- (HMFHTTPClient)initWithBaseURL:(id)l options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  lCopy = l;
   v7 = objc_alloc_init(HMFHTTPClientConfiguration);
   v8 = v7;
-  if ((v4 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
-    if ((v4 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
     [(HMFHTTPClientConfiguration *)v8 setMonitorsReachability:1];
-    if ((v4 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
       goto LABEL_5;
     }
@@ -169,63 +169,63 @@ LABEL_7:
   }
 
   [(HMFHTTPClientConfiguration *)v7 setRequiresEncryption:1];
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if ((v4 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
 LABEL_4:
     [(HMFHTTPClientConfiguration *)v8 setSupportsWakeOnLAN:1];
   }
 
 LABEL_5:
-  v9 = [(HMFHTTPClient *)self initWithBaseURL:v6 configuration:v8];
+  v9 = [(HMFHTTPClient *)self initWithBaseURL:lCopy configuration:v8];
 
   return v9;
 }
 
-- (HMFHTTPClient)initWithBaseURL:(id)a3 configuration:(id)a4
+- (HMFHTTPClient)initWithBaseURL:(id)l configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
+  configurationCopy = configuration;
+  lCopy = l;
   v8 = +[HMFNetManager sharedManager];
-  v9 = [(HMFHTTPClient *)self initWithBaseURL:v7 configuration:v6 netManager:v8];
+  v9 = [(HMFHTTPClient *)self initWithBaseURL:lCopy configuration:configurationCopy netManager:v8];
 
   return v9;
 }
 
-- (HMFHTTPClient)initWithBaseURL:(id)a3 configuration:(id)a4 netManager:(id)a5
+- (HMFHTTPClient)initWithBaseURL:(id)l configuration:(id)configuration netManager:(id)manager
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
-  v12 = [v11 scheme];
+  lCopy = l;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  v11 = lCopy;
+  scheme = [v11 scheme];
 
-  if (v12 && ([v11 host], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+  if (scheme && ([v11 host], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
-    v14 = [v11 port];
+    port = [v11 port];
 
-    if (v14)
+    if (port)
     {
-      v15 = [v11 baseURL];
+      baseURL = [v11 baseURL];
 
-      if (v15)
+      if (baseURL)
       {
-        v16 = [v11 baseURL];
+        baseURL2 = [v11 baseURL];
 
-        v11 = v16;
+        v11 = baseURL2;
       }
 
-      if ([v9 monitorsReachability])
+      if ([configurationCopy monitorsReachability])
       {
         v17 = [HMFNetAddress alloc];
-        v18 = [v11 host];
-        v19 = [(HMFNetAddress *)v17 initWithHostname:v18];
+        host = [v11 host];
+        v19 = [(HMFNetAddress *)v17 initWithHostname:host];
 
         v20 = [[HMFNetMonitor alloc] initWithNetAddress:v19];
       }
@@ -235,10 +235,10 @@ LABEL_5:
         v20 = 0;
       }
 
-      v26 = [(HMFHTTPClient *)self createNSURLSession:v9];
-      v22 = [(HMFHTTPClient *)self initWithBaseURL:v11 configuration:v9 session:v26 reachabilityMonitor:v20 netManager:v10];
+      v26 = [(HMFHTTPClient *)self createNSURLSession:configurationCopy];
+      selfCopy = [(HMFHTTPClient *)self initWithBaseURL:v11 configuration:configurationCopy session:v26 reachabilityMonitor:v20 netManager:managerCopy];
 
-      v25 = v22;
+      v25 = selfCopy;
       goto LABEL_14;
     }
   }
@@ -248,11 +248,11 @@ LABEL_5:
   }
 
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
-    v24 = HMFGetLogIdentifier(v22);
+    v24 = HMFGetLogIdentifier(selfCopy);
     v29 = 138543618;
     v30 = v24;
     v31 = 2112;
@@ -268,13 +268,13 @@ LABEL_14:
   return v25;
 }
 
-- (HMFHTTPClient)initWithBaseURL:(id)a3 configuration:(id)a4 session:(id)a5 reachabilityMonitor:(id)a6 netManager:(id)a7
+- (HMFHTTPClient)initWithBaseURL:(id)l configuration:(id)configuration session:(id)session reachabilityMonitor:(id)monitor netManager:(id)manager
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  configurationCopy = configuration;
+  sessionCopy = session;
+  monitorCopy = monitor;
+  managerCopy = manager;
   v27.receiver = self;
   v27.super_class = HMFHTTPClient;
   v17 = [(HMFHTTPClient *)&v27 init];
@@ -286,39 +286,39 @@ LABEL_14:
     queue = v18->_queue;
     v18->_queue = v20;
 
-    v22 = [v12 copy];
+    v22 = [lCopy copy];
     baseURL = v18->_baseURL;
     v18->_baseURL = v22;
 
-    v24 = [v13 copy];
+    v24 = [configurationCopy copy];
     configuration = v18->_configuration;
     v18->_configuration = v24;
 
-    objc_storeStrong(&v18->_session, a5);
-    objc_storeStrong(&v18->_reachabilityMonitor, a6);
-    objc_storeStrong(&v18->_netManager, a7);
+    objc_storeStrong(&v18->_session, session);
+    objc_storeStrong(&v18->_reachabilityMonitor, monitor);
+    objc_storeStrong(&v18->_netManager, manager);
     [(HMFHTTPClient *)v18 finishCommonInitialization];
   }
 
   return v18;
 }
 
-- (HMFHTTPClient)initWithNetService:(id)a3 options:(unint64_t)a4
+- (HMFHTTPClient)initWithNetService:(id)service options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  serviceCopy = service;
   v7 = objc_alloc_init(HMFHTTPClientConfiguration);
   v8 = v7;
-  if ((v4 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
-    if ((v4 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
     [(HMFHTTPClientConfiguration *)v8 setMonitorsReachability:1];
-    if ((v4 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
       goto LABEL_5;
     }
@@ -327,45 +327,45 @@ LABEL_7:
   }
 
   [(HMFHTTPClientConfiguration *)v7 setRequiresEncryption:1];
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if ((v4 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
 LABEL_4:
     [(HMFHTTPClientConfiguration *)v8 setSupportsWakeOnLAN:1];
   }
 
 LABEL_5:
-  v9 = [(HMFHTTPClient *)self initWithService:v6 configuration:v8];
+  v9 = [(HMFHTTPClient *)self initWithService:serviceCopy configuration:v8];
 
   return v9;
 }
 
-- (HMFHTTPClient)initWithService:(id)a3 configuration:(id)a4
+- (HMFHTTPClient)initWithService:(id)service configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
+  configurationCopy = configuration;
+  serviceCopy = service;
   v8 = +[HMFNetManager sharedManager];
-  v9 = [(HMFHTTPClient *)self initWithService:v7 configuration:v6 netManager:v8];
+  v9 = [(HMFHTTPClient *)self initWithService:serviceCopy configuration:configurationCopy netManager:v8];
 
   return v9;
 }
 
-- (HMFHTTPClient)initWithService:(id)a3 configuration:(id)a4 netManager:(id)a5
+- (HMFHTTPClient)initWithService:(id)service configuration:(id)configuration netManager:(id)manager
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  serviceCopy = service;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  if (serviceCopy)
   {
-    if ([v9 monitorsReachability])
+    if ([configurationCopy monitorsReachability])
     {
-      v11 = [[HMFNetMonitor alloc] initWithNetService:v8];
+      v11 = [[HMFNetMonitor alloc] initWithNetService:serviceCopy];
     }
 
     else
@@ -373,20 +373,20 @@ LABEL_5:
       v11 = 0;
     }
 
-    v17 = [(HMFHTTPClient *)self createNSURLSession:v9];
-    v13 = [(HMFHTTPClient *)self initWithService:v8 configuration:v9 session:v17 reachabilityMonitor:v11 netManager:v10];
+    v17 = [(HMFHTTPClient *)self createNSURLSession:configurationCopy];
+    selfCopy = [(HMFHTTPClient *)self initWithService:serviceCopy configuration:configurationCopy session:v17 reachabilityMonitor:v11 netManager:managerCopy];
 
-    v16 = v13;
+    v16 = selfCopy;
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = HMFGetLogIdentifier(v13);
+      v15 = HMFGetLogIdentifier(selfCopy);
       v20 = 138543362;
       v21 = v15;
       _os_log_impl(&dword_22ADEC000, v14, OS_LOG_TYPE_ERROR, "%{public}@Network service is required", &v20, 0xCu);
@@ -400,13 +400,13 @@ LABEL_5:
   return v16;
 }
 
-- (HMFHTTPClient)initWithService:(id)a3 configuration:(id)a4 session:(id)a5 reachabilityMonitor:(id)a6 netManager:(id)a7
+- (HMFHTTPClient)initWithService:(id)service configuration:(id)configuration session:(id)session reachabilityMonitor:(id)monitor netManager:(id)manager
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  serviceCopy = service;
+  configurationCopy = configuration;
+  sessionCopy = session;
+  monitorCopy = monitor;
+  managerCopy = manager;
   v30.receiver = self;
   v30.super_class = HMFHTTPClient;
   v18 = [(HMFHTTPClient *)&v30 init];
@@ -418,14 +418,14 @@ LABEL_5:
     queue = v19->_queue;
     v19->_queue = v21;
 
-    objc_storeStrong(&v19->_netService, a3);
-    v23 = [v14 copy];
+    objc_storeStrong(&v19->_netService, service);
+    v23 = [configurationCopy copy];
     configuration = v19->_configuration;
     v19->_configuration = v23;
 
-    objc_storeStrong(&v19->_session, a5);
-    objc_storeStrong(&v19->_reachabilityMonitor, a6);
-    objc_storeStrong(&v19->_netManager, a7);
+    objc_storeStrong(&v19->_session, session);
+    objc_storeStrong(&v19->_reachabilityMonitor, monitor);
+    objc_storeStrong(&v19->_netManager, manager);
     if (v19->_reachabilityMonitor)
     {
       v25 = objc_alloc_init(MEMORY[0x277CCABD8]);
@@ -446,23 +446,23 @@ LABEL_5:
   return v19;
 }
 
-- (id)createNSURLSession:(id)a3
+- (id)createNSURLSession:(id)session
 {
   v4 = MEMORY[0x277CBABC8];
-  v5 = a3;
-  v6 = [v4 defaultSessionConfiguration];
-  [v6 setHTTPCookieAcceptPolicy:1];
-  [v6 setHTTPCookieStorage:0];
-  [v6 setHTTPShouldSetCookies:0];
-  [v6 setURLCredentialStorage:0];
-  [v6 setURLCache:0];
-  [v6 setHTTPShouldUsePipelining:1];
-  v7 = [v5 allowsCellularAccess];
+  sessionCopy = session;
+  defaultSessionConfiguration = [v4 defaultSessionConfiguration];
+  [defaultSessionConfiguration setHTTPCookieAcceptPolicy:1];
+  [defaultSessionConfiguration setHTTPCookieStorage:0];
+  [defaultSessionConfiguration setHTTPShouldSetCookies:0];
+  [defaultSessionConfiguration setURLCredentialStorage:0];
+  [defaultSessionConfiguration setURLCache:0];
+  [defaultSessionConfiguration setHTTPShouldUsePipelining:1];
+  allowsCellularAccess = [sessionCopy allowsCellularAccess];
 
-  [v6 setAllowsCellularAccess:v7];
+  [defaultSessionConfiguration setAllowsCellularAccess:allowsCellularAccess];
   v8 = MEMORY[0x277CBABB8];
-  v9 = [MEMORY[0x277CCABD8] mainQueue];
-  v10 = [v8 sessionWithConfiguration:v6 delegate:self delegateQueue:v9];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+  v10 = [v8 sessionWithConfiguration:defaultSessionConfiguration delegate:self delegateQueue:mainQueue];
 
   return v10;
 }
@@ -478,18 +478,18 @@ LABEL_5:
   if ([(HMFHTTPClientConfiguration *)self->_configuration supportsWakeOnLAN])
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = HMFGetLogIdentifier(v5);
+      v7 = HMFGetLogIdentifier(selfCopy);
       v9 = 138543362;
       v10 = v7;
       _os_log_impl(&dword_22ADEC000, v6, OS_LOG_TYPE_INFO, "%{public}@Registering for WOW assertion", &v9, 0xCu);
     }
 
     objc_autoreleasePoolPop(v4);
-    [(HMFNetManager *)v5->_netManager registerWoWAssertionForObject:v5];
+    [(HMFNetManager *)selfCopy->_netManager registerWoWAssertionForObject:selfCopy];
   }
 
   [(HMFHTTPClient *)self resolveWithCompletionHandler:0];
@@ -515,9 +515,9 @@ HMFExponentialBackoffTimer *__43__HMFHTTPClient_finishCommonInitialization__bloc
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v3 = [HMFAttributeDescription alloc];
-  v4 = [(HMFHTTPClient *)self baseURL];
+  baseURL = [(HMFHTTPClient *)self baseURL];
   v5 = +[HMFPrivateObjectFormatter defaultFormatter];
-  v6 = [(HMFAttributeDescription *)v3 initWithName:@"URL" value:v4 options:0 formatter:v5];
+  v6 = [(HMFAttributeDescription *)v3 initWithName:@"URL" value:baseURL options:0 formatter:v5];
   v10[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
 
@@ -529,11 +529,11 @@ HMFExponentialBackoffTimer *__43__HMFHTTPClient_finishCommonInitialization__bloc
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMFHTTPClient *)self baseURL];
-  v6 = [(HMFHTTPClient *)self session];
-  v7 = [v6 description];
-  v8 = [v3 stringWithFormat:@"<%@ URL = %@, Session = %@, active = %d, pinging = %d, proxy = %d, reachable = %d>", v4, v5, v7, -[HMFHTTPClient isActive](self, "isActive"), -[HMFHTTPClient isPinging](self, "isPinging"), -[HMFHTTPClient isProxy](self, "isProxy"), -[HMFHTTPClient isReachable](self, "isReachable")];
+  shortDescription = [objc_opt_class() shortDescription];
+  baseURL = [(HMFHTTPClient *)self baseURL];
+  session = [(HMFHTTPClient *)self session];
+  v7 = [session description];
+  v8 = [v3 stringWithFormat:@"<%@ URL = %@, Session = %@, active = %d, pinging = %d, proxy = %d, reachable = %d>", shortDescription, baseURL, v7, -[HMFHTTPClient isActive](self, "isActive"), -[HMFHTTPClient isPinging](self, "isPinging"), -[HMFHTTPClient isProxy](self, "isProxy"), -[HMFHTTPClient isReachable](self, "isReachable")];
 
   return v8;
 }
@@ -547,20 +547,20 @@ HMFExponentialBackoffTimer *__43__HMFHTTPClient_finishCommonInitialization__bloc
 
 - (unint64_t)options
 {
-  v3 = [(HMFHTTPClientConfiguration *)self->_configuration requiresEncryption];
+  requiresEncryption = [(HMFHTTPClientConfiguration *)self->_configuration requiresEncryption];
   if ([(HMFHTTPClientConfiguration *)self->_configuration monitorsReachability])
   {
-    v3 |= 2uLL;
+    requiresEncryption |= 2uLL;
   }
 
   if ([(HMFHTTPClientConfiguration *)self->_configuration supportsWakeOnLAN])
   {
-    return v3 | 4;
+    return requiresEncryption | 4;
   }
 
   else
   {
-    return v3;
+    return requiresEncryption;
   }
 }
 
@@ -570,12 +570,12 @@ HMFExponentialBackoffTimer *__43__HMFHTTPClient_finishCommonInitialization__bloc
   netService = self->_netService;
   if (netService)
   {
-    v4 = [(HMFNetService *)netService hostName];
-    v5 = [(HMFNetService *)self->_netService addresses];
-    v6 = [(HMFNetService *)self->_netService port];
-    if ([v5 count])
+    hostName = [(HMFNetService *)netService hostName];
+    addresses = [(HMFNetService *)self->_netService addresses];
+    port = [(HMFNetService *)self->_netService port];
+    if ([addresses count])
     {
-      v7 = v6 == -1;
+      v7 = port == -1;
     }
 
     else
@@ -600,24 +600,24 @@ HMFExponentialBackoffTimer *__43__HMFHTTPClient_finishCommonInitialization__bloc
         v10 = @"http";
       }
 
-      if (v4)
+      if (hostName)
       {
-        v11 = v4;
+        firstObject = hostName;
       }
 
       else
       {
-        v11 = [v5 firstObject];
+        firstObject = [addresses firstObject];
       }
 
-      v12 = v11;
+      v12 = firstObject;
       if ([(HMFHTTPClientConfiguration *)self->_configuration supportsWakeOnLAN])
       {
         v29 = 0u;
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v13 = v5;
+        v13 = addresses;
         v14 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v14)
         {
@@ -659,11 +659,11 @@ LABEL_26:
         if ([v12 addressFamily] != 1)
         {
           v20 = objc_autoreleasePoolPush();
-          v21 = self;
+          selfCopy = self;
           v22 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
-            v23 = HMFGetLogIdentifier(v21);
+            v23 = HMFGetLogIdentifier(selfCopy);
             *buf = 138543618;
             v32 = v23;
             v33 = 2112;
@@ -675,7 +675,7 @@ LABEL_26:
         }
       }
 
-      v8 = [HMFHTTPClient baseURLWithScheme:v10 hostAddress:v12 port:v6];
+      v8 = [HMFHTTPClient baseURLWithScheme:v10 hostAddress:v12 port:port];
     }
   }
 
@@ -697,12 +697,12 @@ LABEL_26:
   return reachable;
 }
 
-- (void)setReachable:(BOOL)a3
+- (void)setReachable:(BOOL)reachable
 {
-  v3 = a3;
+  reachableCopy = reachable;
   v19 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  if (self->_reachable == v3)
+  if (self->_reachable == reachableCopy)
   {
     v5 = *MEMORY[0x277D85DE8];
 
@@ -711,23 +711,23 @@ LABEL_26:
 
   else
   {
-    self->_reachable = v3;
-    if (!v3)
+    self->_reachable = reachableCopy;
+    if (!reachableCopy)
     {
       self->_active = 0;
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    v6 = self;
+    selfCopy = self;
     v7 = objc_autoreleasePoolPush();
-    v8 = v6;
+    v8 = selfCopy;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier(v8);
       v11 = v10;
       v12 = @"unreachable";
-      if (v3)
+      if (reachableCopy)
       {
         v12 = @"reachable";
       }
@@ -740,18 +740,18 @@ LABEL_26:
     }
 
     objc_autoreleasePoolPop(v7);
-    v13 = [(HMFHTTPClient *)v8 delegate];
-    if (v3)
+    delegate = [(HMFHTTPClient *)v8 delegate];
+    if (reachableCopy)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v13 clientDidBecomeReachable:v8];
+        [delegate clientDidBecomeReachable:v8];
       }
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [v13 clientDidBecomeUnreachable:v8];
+      [delegate clientDidBecomeUnreachable:v8];
     }
 
     v14 = *MEMORY[0x277D85DE8];
@@ -766,10 +766,10 @@ LABEL_26:
   return pinging;
 }
 
-- (void)setPinging:(BOOL)a3
+- (void)setPinging:(BOOL)pinging
 {
   os_unfair_lock_lock_with_options();
-  self->_pinging = a3;
+  self->_pinging = pinging;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -969,23 +969,23 @@ void __39__HMFHTTPClient_startReachabilityProbe__block_invoke_75(uint64_t a1, vo
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)requestClientReachabilityPingWithRetry:(BOOL)a3
+- (BOOL)requestClientReachabilityPingWithRetry:(BOOL)retry
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(HMFHTTPClient *)self delegate];
+  delegate = [(HMFHTTPClient *)self delegate];
   v6 = objc_opt_respondsToSelector();
   if (v6)
   {
-    v7 = [(HMFHTTPClient *)self isPinging];
+    isPinging = [(HMFHTTPClient *)self isPinging];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-    if (v7)
+    if (isPinging)
     {
       if (v11)
       {
-        v12 = HMFGetLogIdentifier(v9);
+        v12 = HMFGetLogIdentifier(selfCopy);
         *buf = 138543362;
         v20 = v12;
         _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_INFO, "%{public}@Client ping in progress, dropping ping request", buf, 0xCu);
@@ -998,22 +998,22 @@ void __39__HMFHTTPClient_startReachabilityProbe__block_invoke_75(uint64_t a1, vo
     {
       if (v11)
       {
-        v13 = HMFGetLogIdentifier(v9);
+        v13 = HMFGetLogIdentifier(selfCopy);
         *buf = 138543362;
         v20 = v13;
         _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_INFO, "%{public}@Requesting client to perform a ping", buf, 0xCu);
       }
 
       objc_autoreleasePoolPop(v8);
-      [(HMFHTTPClient *)v9 setPinging:1];
-      objc_initWeak(buf, v9);
+      [(HMFHTTPClient *)selfCopy setPinging:1];
+      objc_initWeak(buf, selfCopy);
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __56__HMFHTTPClient_requestClientReachabilityPingWithRetry___block_invoke;
       v16[3] = &unk_2786E7938;
       objc_copyWeak(&v17, buf);
-      v18 = a3;
-      [v5 client:v9 didRequestPingWithCompletionHandler:v16];
+      retryCopy = retry;
+      [delegate client:selfCopy didRequestPingWithCompletionHandler:v16];
       objc_destroyWeak(&v17);
       objc_destroyWeak(buf);
     }
@@ -1158,20 +1158,20 @@ uint64_t __39__HMFHTTPClient_stopDelegatedPingTimer__block_invoke(uint64_t a1)
   return [v3 setDelegatedPingTimer:0];
 }
 
-- (void)sendRequest:(id)a3 completionHandler:(id)a4
+- (void)sendRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__HMFHTTPClient_sendRequest_completionHandler___block_invoke;
   block[3] = &unk_2786E79B0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_async(queue, block);
 }
 
@@ -1369,34 +1369,34 @@ LABEL_18:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendRequest:(id)a3 baseURL:(id)a4 completionHandler:(id)a5
+- (void)_sendRequest:(id)request baseURL:(id)l completionHandler:(id)handler
 {
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 urlRequest];
-  v12 = [v11 mutableCopy];
+  requestCopy = request;
+  lCopy = l;
+  handlerCopy = handler;
+  urlRequest = [requestCopy urlRequest];
+  v12 = [urlRequest mutableCopy];
 
   [v12 setAllowsCellularAccess:{-[HMFHTTPClientConfiguration allowsCellularAccess](self->_configuration, "allowsCellularAccess")}];
   v13 = MEMORY[0x277CBEBC0];
   v14 = [v12 URL];
-  v15 = [v14 relativePath];
-  v16 = [v13 URLWithString:v15 relativeToURL:v9];
+  relativePath = [v14 relativePath];
+  v16 = [v13 URLWithString:relativePath relativeToURL:lCopy];
 
-  v17 = [v16 baseURL];
+  baseURL = [v16 baseURL];
   v18 = [v12 URL];
-  v19 = [v18 baseURL];
-  v20 = [v17 isEqual:v19];
+  baseURL2 = [v18 baseURL];
+  v20 = [baseURL isEqual:baseURL2];
 
   if ((v20 & 1) == 0)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      v24 = HMFGetLogIdentifier(v22);
+      v24 = HMFGetLogIdentifier(selfCopy);
       *buf = 138543618;
       v47 = v24;
       v48 = 2112;
@@ -1412,18 +1412,18 @@ LABEL_18:
 
   if (!v25)
   {
-    v26 = [MEMORY[0x277CCACE0] componentsWithURL:v9 resolvingAgainstBaseURL:0];
-    v27 = [v26 host];
+    v26 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
+    host = [v26 host];
 
-    [v12 setValue:v27 forHTTPHeaderField:@"Host"];
+    [v12 setValue:host forHTTPHeaderField:@"Host"];
   }
 
   v28 = objc_autoreleasePoolPush();
-  v29 = self;
+  selfCopy2 = self;
   v30 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = HMFGetLogIdentifier(v29);
+    v31 = HMFGetLogIdentifier(selfCopy2);
     *buf = 138543618;
     v47 = v31;
     v48 = 2112;
@@ -1432,20 +1432,20 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v28);
-  v32 = [(HMFHTTPClient *)v29 session];
+  session = [(HMFHTTPClient *)selfCopy2 session];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __56__HMFHTTPClient__sendRequest_baseURL_completionHandler___block_invoke;
   v43[3] = &unk_2786E79D8;
-  v43[4] = v29;
-  v33 = v8;
+  v43[4] = selfCopy2;
+  v33 = requestCopy;
   v44 = v33;
-  v34 = v10;
+  v34 = handlerCopy;
   v45 = v34;
-  v35 = [v32 dataTaskWithRequest:v12 completionHandler:v43];
+  v35 = [session dataTaskWithRequest:v12 completionHandler:v43];
 
   v36 = objc_autoreleasePoolPush();
-  v37 = v29;
+  v37 = selfCopy2;
   v38 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
   {
@@ -1458,9 +1458,9 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v36);
-  v40 = [v33 internal];
-  v41 = [v40 activity];
-  [v41 markWithReason:@"Sending"];
+  internal = [v33 internal];
+  activity = [internal activity];
+  [activity markWithReason:@"Sending"];
 
   [v35 resume];
   v42 = *MEMORY[0x277D85DE8];
@@ -1713,10 +1713,10 @@ void __27__HMFHTTPClient_invalidate__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resolveWithCompletionHandler:(id)a3
+- (void)resolveWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_netService)
   {
     objc_initWeak(&location, self);
@@ -1733,9 +1733,9 @@ void __27__HMFHTTPClient_invalidate__block_invoke(uint64_t a1)
     objc_destroyWeak(&location);
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -1788,22 +1788,22 @@ uint64_t __28__HMFHTTPClient_logCategory__block_invoke()
   if (netService)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(HMFNetService *)netService domain];
-    v6 = [(HMFNetService *)self->_netService type];
-    v7 = [(HMFNetService *)self->_netService name];
-    v8 = [v4 stringWithFormat:@"%@%@%@", v5, v6, v7];
+    domain = [(HMFNetService *)netService domain];
+    type = [(HMFNetService *)self->_netService type];
+    name = [(HMFNetService *)self->_netService name];
+    absoluteString = [v4 stringWithFormat:@"%@%@%@", domain, type, name];
   }
 
   else
   {
-    v5 = [(HMFHTTPClient *)self baseURL];
-    v8 = [v5 absoluteString];
+    domain = [(HMFHTTPClient *)self baseURL];
+    absoluteString = [domain absoluteString];
   }
 
-  return v8;
+  return absoluteString;
 }
 
-- (void)networkMonitorIsReachable:(id)a3
+- (void)networkMonitorIsReachable:(id)reachable
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1844,7 +1844,7 @@ void __43__HMFHTTPClient_networkMonitorIsReachable___block_invoke(uint64_t a1)
   }
 }
 
-- (void)networkMonitorIsUnreachable:(id)a3
+- (void)networkMonitorIsUnreachable:(id)unreachable
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1885,29 +1885,29 @@ void __45__HMFHTTPClient_networkMonitorIsUnreachable___block_invoke(uint64_t a1)
   }
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = HMFGetLogIdentifier(v6);
+    v8 = HMFGetLogIdentifier(selfCopy);
     v15 = 138543362;
     v16 = v8;
     _os_log_impl(&dword_22ADEC000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Delegated ping timer fired", &v15, 0xCu);
   }
 
   objc_autoreleasePoolPop(v5);
-  [v4 suspend];
-  netService = v6->_netService;
+  [fireCopy suspend];
+  netService = selfCopy->_netService;
   if (!netService || [(HMFNetService *)netService isPublishing])
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = v6;
+    v11 = selfCopy;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -1927,21 +1927,21 @@ void __45__HMFHTTPClient_networkMonitorIsUnreachable___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = HMFGetLogIdentifier(v9);
+    v11 = HMFGetLogIdentifier(selfCopy);
     v13 = 138543618;
     v14 = v11;
     v15 = 2112;
-    v16 = v7;
+    v16 = errorCopy;
     _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Session did become invalid with error: %@", &v13, 0x16u);
   }
 
@@ -1949,30 +1949,30 @@ void __45__HMFHTTPClient_networkMonitorIsUnreachable___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = HMFGetLogIdentifier(v12);
+    v14 = HMFGetLogIdentifier(selfCopy);
     v23 = 138543618;
     v24 = v14;
     v25 = 2112;
-    v26 = v9;
+    v26 = challengeCopy;
     _os_log_impl(&dword_22ADEC000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Received challenge: %@", &v23, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
-  if ([(HMFHTTPClientConfiguration *)v12->_configuration allowsAnonymousConnection]|| [(HMFHTTPClient *)v12 allowAnonymousConnection])
+  if ([(HMFHTTPClientConfiguration *)selfCopy->_configuration allowsAnonymousConnection]|| [(HMFHTTPClient *)selfCopy allowAnonymousConnection])
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v12;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -1984,14 +1984,14 @@ void __45__HMFHTTPClient_networkMonitorIsUnreachable___block_invoke(uint64_t a1)
 
     objc_autoreleasePoolPop(v15);
     v19 = MEMORY[0x277CBAB80];
-    v20 = [v9 protectionSpace];
-    v21 = [v19 credentialForTrust:{objc_msgSend(v20, "serverTrust")}];
-    v10[2](v10, 0, v21);
+    protectionSpace = [challengeCopy protectionSpace];
+    v21 = [v19 credentialForTrust:{objc_msgSend(protectionSpace, "serverTrust")}];
+    handlerCopy[2](handlerCopy, 0, v21);
   }
 
   else
   {
-    v10[2](v10, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   v22 = *MEMORY[0x277D85DE8];

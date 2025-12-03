@@ -1,6 +1,6 @@
 @interface BKAudioTrackNumberLocation
-- (BKAudioTrackNumberLocation)initWithOrdinal:(int64_t)a3 offset:(double)a4 persistentID:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
+- (BKAudioTrackNumberLocation)initWithOrdinal:(int64_t)ordinal offset:(double)offset persistentID:(unint64_t)d;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)stringValue;
 - (unint64_t)hash;
@@ -8,14 +8,14 @@
 
 @implementation BKAudioTrackNumberLocation
 
-- (BKAudioTrackNumberLocation)initWithOrdinal:(int64_t)a3 offset:(double)a4 persistentID:(unint64_t)a5
+- (BKAudioTrackNumberLocation)initWithOrdinal:(int64_t)ordinal offset:(double)offset persistentID:(unint64_t)d
 {
   v7.receiver = self;
   v7.super_class = BKAudioTrackNumberLocation;
-  result = [(BKAudioLocation *)&v7 initWithOrdinal:a3 offset:a4];
+  result = [(BKAudioLocation *)&v7 initWithOrdinal:ordinal offset:offset];
   if (result)
   {
-    result->_persistentID = a5;
+    result->_persistentID = d;
   }
 
   return result;
@@ -32,11 +32,11 @@
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = BKAudioTrackNumberLocation, -[BKAudioLocation isEqual:](&v7, "isEqual:", v4)) && [v4 persistentID] == self->_persistentID;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = BKAudioTrackNumberLocation, -[BKAudioLocation isEqual:](&v7, "isEqual:", equalCopy)) && [equalCopy persistentID] == self->_persistentID;
 
   return v5;
 }
@@ -45,8 +45,8 @@
 {
   v6.receiver = self;
   v6.super_class = BKAudioTrackNumberLocation;
-  v3 = [(BKAudioLocation *)&v6 stringValue];
-  v4 = [NSString stringWithFormat:@"{ %@, persistentID:%llu }", v3, self->_persistentID];
+  stringValue = [(BKAudioLocation *)&v6 stringValue];
+  v4 = [NSString stringWithFormat:@"{ %@, persistentID:%llu }", stringValue, self->_persistentID];
 
   return v4;
 }

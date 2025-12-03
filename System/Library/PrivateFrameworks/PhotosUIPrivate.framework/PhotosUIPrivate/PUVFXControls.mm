@@ -1,13 +1,13 @@
 @interface PUVFXControls
-+ (id)createViewControllerWithSettingsData:(id)a3 update:(id)a4;
++ (id)createViewControllerWithSettingsData:(id)data update:(id)update;
 @end
 
 @implementation PUVFXControls
 
-+ (id)createViewControllerWithSettingsData:(id)a3 update:(id)a4
++ (id)createViewControllerWithSettingsData:(id)data update:(id)update
 {
-  v5 = _Block_copy(a4);
-  v6 = a3;
+  v5 = _Block_copy(update);
+  dataCopy = data;
   v7 = sub_1B3C980A8();
   v9 = v8;
 

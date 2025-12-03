@@ -1,47 +1,47 @@
 @interface ENTestResultCertificateRequest
-+ (id)certificateRequestWithToken:(id)a3 temporaryExposureKeys:(id)a4 APIKey:(id)a5 requestURL:(id)a6 URLSession:(id)a7 queue:(id)a8 error:(id *)a9;
-+ (id)deriveHMACForTemporaryExposureKeys:(id)a3 symmetricKey:(id)a4;
++ (id)certificateRequestWithToken:(id)token temporaryExposureKeys:(id)keys APIKey:(id)key requestURL:(id)l URLSession:(id)session queue:(id)queue error:(id *)error;
++ (id)deriveHMACForTemporaryExposureKeys:(id)keys symmetricKey:(id)key;
 - (id)bodyJSON;
-- (id)handleResponse:(id)a3 body:(id)a4;
+- (id)handleResponse:(id)response body:(id)body;
 @end
 
 @implementation ENTestResultCertificateRequest
 
-+ (id)certificateRequestWithToken:(id)a3 temporaryExposureKeys:(id)a4 APIKey:(id)a5 requestURL:(id)a6 URLSession:(id)a7 queue:(id)a8 error:(id *)a9
++ (id)certificateRequestWithToken:(id)token temporaryExposureKeys:(id)keys APIKey:(id)key requestURL:(id)l URLSession:(id)session queue:(id)queue error:(id *)error
 {
-  v15 = a9;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
+  errorCopy = error;
+  tokenCopy = token;
+  keysCopy = keys;
+  keyCopy = key;
+  lCopy = l;
+  sessionCopy = session;
+  queueCopy = queue;
   v22 = NSRandomData();
   v23 = 0;
   if (v22)
   {
-    v15 = [[a1 alloc] initWithRequestURL:v19 URLSession:v20 queue:v21];
-    [v15 setAPIKey:v18];
-    v24 = [v16 copy];
-    v25 = v15[10];
-    v15[10] = v24;
+    errorCopy = [[self alloc] initWithRequestURL:lCopy URLSession:sessionCopy queue:queueCopy];
+    [errorCopy setAPIKey:keyCopy];
+    v24 = [tokenCopy copy];
+    v25 = errorCopy[10];
+    errorCopy[10] = v24;
 
     v26 = [v22 copy];
-    v27 = v15[11];
-    v15[11] = v26;
+    v27 = errorCopy[11];
+    errorCopy[11] = v26;
 
-    v28 = [objc_opt_class() deriveHMACForTemporaryExposureKeys:v17 symmetricKey:v22];
-    v29 = v15[12];
-    v15[12] = v28;
+    v28 = [objc_opt_class() deriveHMACForTemporaryExposureKeys:keysCopy symmetricKey:v22];
+    v29 = errorCopy[12];
+    errorCopy[12] = v28;
   }
 
-  else if (a9)
+  else if (error)
   {
     ENNestedErrorF();
-    *a9 = v15 = 0;
+    *error = errorCopy = 0;
   }
 
-  return v15;
+  return errorCopy;
 }
 
 - (id)bodyJSON
@@ -60,9 +60,9 @@
   return v4;
 }
 
-- (id)handleResponse:(id)a3 body:(id)a4
+- (id)handleResponse:(id)response body:(id)body
 {
-  v5 = a4;
+  bodyCopy = body;
   CFStringGetTypeID();
   v6 = CFDictionaryGetTypedValue();
 
@@ -80,17 +80,17 @@
   return v7;
 }
 
-+ (id)deriveHMACForTemporaryExposureKeys:(id)a3 symmetricKey:(id)a4
++ (id)deriveHMACForTemporaryExposureKeys:(id)keys symmetricKey:(id)key
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v29 = a4;
+  keysCopy = keys;
+  keyCopy = key;
   v6 = objc_alloc_init(MEMORY[0x277CBEB30]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v7 = v5;
+  v7 = keysCopy;
   v8 = [v7 countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v8)
   {
@@ -106,8 +106,8 @@
         }
 
         v12 = *(*(&v35 + 1) + 8 * i);
-        v13 = [v12 keyData];
-        v14 = [v13 base64EncodedStringWithOptions:0];
+        keyData = [v12 keyData];
+        v14 = [keyData base64EncodedStringWithOptions:0];
 
         [v6 setObject:v12 forKeyedSubscript:v14];
       }
@@ -121,8 +121,8 @@
   v28 = v7;
 
   v15 = objc_alloc_init(MEMORY[0x277CCAB60]);
-  v16 = [v6 allKeys];
-  v17 = [v16 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v6 allKeys];
+  v17 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v33 = 0u;
   v34 = 0u;
@@ -159,12 +159,12 @@
     while (v19);
   }
 
-  v24 = [v15 UTF8String];
+  uTF8String = [v15 UTF8String];
   memset(v39, 0, sizeof(v39));
   ccsha256_di();
-  [v29 length];
-  [v29 bytes];
-  strlen(v24);
+  [keyCopy length];
+  [keyCopy bytes];
+  strlen(uTF8String);
   cchmac();
   v25 = [MEMORY[0x277CBEA98] dataWithBytes:v39 length:32];
 

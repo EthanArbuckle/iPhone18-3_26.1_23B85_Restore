@@ -1,32 +1,32 @@
 @interface SLODLDInputTokenParams
-- (SLODLDInputTokenParams)initWithShape:(id)a3;
+- (SLODLDInputTokenParams)initWithShape:(id)shape;
 - (void)_initWithDefaults;
-- (void)populateWithTokens:(id)a3 error:(id *)a4;
+- (void)populateWithTokens:(id)tokens error:(id *)error;
 @end
 
 @implementation SLODLDInputTokenParams
 
-- (void)populateWithTokens:(id)a3 error:(id *)a4
+- (void)populateWithTokens:(id)tokens error:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  tokensCopy = tokens;
   shape = self->_shape;
   if (shape)
   {
     if ([(NSArray *)shape count]> 1)
     {
       v13 = [(NSArray *)self->_shape objectAtIndexedSubscript:1];
-      v14 = [v13 unsignedIntegerValue];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
 
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __51__SLODLDInputTokenParams_populateWithTokens_error___block_invoke;
       v18[3] = &unk_279C0E860;
       v18[4] = self;
-      v18[5] = v14;
-      [v6 enumerateObjectsUsingBlock:v18];
-      v15 = [v6 count];
-      if (v15 < v14)
+      v18[5] = unsignedIntegerValue;
+      [tokensCopy enumerateObjectsUsingBlock:v18];
+      v15 = [tokensCopy count];
+      if (v15 < unsignedIntegerValue)
       {
         v16 = v15;
         do
@@ -37,11 +37,11 @@
           [(NSMutableArray *)self->_mlPadMask setObject:&unk_2878A76D0 atIndexedSubscript:v16++];
         }
 
-        while (v14 != v16);
+        while (unsignedIntegerValue != v16);
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v8 = objc_alloc(MEMORY[0x277CCA9B8]);
       v19 = *MEMORY[0x277CCA450];
@@ -51,11 +51,11 @@
       v11 = &v19;
 LABEL_7:
       v12 = [v9 dictionaryWithObjects:v10 forKeys:v11 count:1];
-      *a4 = [v8 initWithDomain:@"com.apple.sl" code:116 userInfo:v12];
+      *error = [v8 initWithDomain:@"com.apple.sl" code:116 userInfo:v12];
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = objc_alloc(MEMORY[0x277CCA9B8]);
     v21 = *MEMORY[0x277CCA450];
@@ -93,27 +93,27 @@ uint64_t __51__SLODLDInputTokenParams_populateWithTokens_error___block_invoke(ui
 - (void)_initWithDefaults
 {
   v3 = [(NSArray *)self->_shape objectAtIndexedSubscript:1];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:unsignedIntegerValue];
   mlInputIds = self->_mlInputIds;
   self->_mlInputIds = v5;
 
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4];
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:unsignedIntegerValue];
   mlTypeIds = self->_mlTypeIds;
   self->_mlTypeIds = v7;
 
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4];
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:unsignedIntegerValue];
   mlAttnMask = self->_mlAttnMask;
   self->_mlAttnMask = v9;
 
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4];
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:unsignedIntegerValue];
   mlPadMask = self->_mlPadMask;
   self->_mlPadMask = v11;
 
-  if (v4)
+  if (unsignedIntegerValue)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != unsignedIntegerValue; ++i)
     {
       [(NSMutableArray *)self->_mlInputIds setObject:&unk_2878A76C0 atIndexedSubscript:i];
       [(NSMutableArray *)self->_mlTypeIds setObject:&unk_2878A76C0 atIndexedSubscript:i];
@@ -123,10 +123,10 @@ uint64_t __51__SLODLDInputTokenParams_populateWithTokens_error___block_invoke(ui
   }
 }
 
-- (SLODLDInputTokenParams)initWithShape:(id)a3
+- (SLODLDInputTokenParams)initWithShape:(id)shape
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  shapeCopy = shape;
   v13.receiver = self;
   v13.super_class = SLODLDInputTokenParams;
   v6 = [(SLODLDInputTokenParams *)&v13 init];
@@ -135,9 +135,9 @@ uint64_t __51__SLODLDInputTokenParams_populateWithTokens_error___block_invoke(ui
     goto LABEL_4;
   }
 
-  if ([v5 count] == 2)
+  if ([shapeCopy count] == 2)
   {
-    objc_storeStrong(&v6->_shape, a3);
+    objc_storeStrong(&v6->_shape, shape);
     [(SLODLDInputTokenParams *)v6 _initWithDefaults];
 LABEL_4:
     v7 = v6;
@@ -148,7 +148,7 @@ LABEL_4:
   if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
   {
     v11 = v8;
-    v12 = [v5 count];
+    v12 = [shapeCopy count];
     *buf = 136315394;
     v15 = "[SLODLDInputTokenParams initWithShape:]";
     v16 = 2048;

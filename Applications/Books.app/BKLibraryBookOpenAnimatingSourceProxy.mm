@@ -1,5 +1,5 @@
 @interface BKLibraryBookOpenAnimatingSourceProxy
-- (BKLibraryBookOpenAnimatingSourceProxy)initWithLibraryAsset:(id)a3 coverHost:(id)a4;
+- (BKLibraryBookOpenAnimatingSourceProxy)initWithLibraryAsset:(id)asset coverHost:(id)host;
 - (BOOL)coverAnimationSourceUseLargeCover;
 - (CGRect)coverAnimationSourceFrame;
 - (id)coverAnimationSourceImage;
@@ -12,18 +12,18 @@
 
 @implementation BKLibraryBookOpenAnimatingSourceProxy
 
-- (BKLibraryBookOpenAnimatingSourceProxy)initWithLibraryAsset:(id)a3 coverHost:(id)a4
+- (BKLibraryBookOpenAnimatingSourceProxy)initWithLibraryAsset:(id)asset coverHost:(id)host
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  hostCopy = host;
   v12.receiver = self;
   v12.super_class = BKLibraryBookOpenAnimatingSourceProxy;
   v9 = [(BKLibraryBookOpenAnimatingSourceProxy *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_libraryAsset, a3);
-    objc_storeStrong(&v10->_coverHost, a4);
+    objc_storeStrong(&v9->_libraryAsset, asset);
+    objc_storeStrong(&v10->_coverHost, host);
   }
 
   return v10;
@@ -31,44 +31,44 @@
 
 - (BOOL)coverAnimationSourceUseLargeCover
 {
-  v3 = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
-  v4 = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
-  v5 = [v3 coverAnimationSourceUseLargeCoverForLibraryAsset:v4];
+  coverHost = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
+  libraryAsset = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
+  v5 = [coverHost coverAnimationSourceUseLargeCoverForLibraryAsset:libraryAsset];
 
   return v5;
 }
 
 - (id)coverAnimationSourceImage
 {
-  v3 = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
-  v4 = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
-  v5 = [v3 coverImageForLibraryAsset:v4];
+  coverHost = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
+  libraryAsset = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
+  v5 = [coverHost coverImageForLibraryAsset:libraryAsset];
 
   return v5;
 }
 
 - (id)coverAnimationSourceView
 {
-  v3 = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
-  v4 = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
-  v5 = [v3 coverAnimationSourceViewForLibraryAsset:v4];
+  coverHost = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
+  libraryAsset = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
+  v5 = [coverHost coverAnimationSourceViewForLibraryAsset:libraryAsset];
 
   return v5;
 }
 
 - (int64_t)coverAnimationSourceAlignment
 {
-  v2 = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
-  v3 = [v2 coverAnimationSourceAlignment];
+  coverHost = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
+  coverAnimationSourceAlignment = [coverHost coverAnimationSourceAlignment];
 
-  return v3;
+  return coverAnimationSourceAlignment;
 }
 
 - (CGRect)coverAnimationSourceFrame
 {
-  v3 = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
-  v4 = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
-  [v3 coverRectForLibraryAsset:v4];
+  coverHost = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
+  libraryAsset = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
+  [coverHost coverRectForLibraryAsset:libraryAsset];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -87,25 +87,25 @@
 
 - (id)coverAnimationSourceReferenceView
 {
-  v3 = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
-  v4 = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
-  v5 = [v3 coverAnimationSourceReferenceViewForLibraryAsset:v4];
+  coverHost = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
+  libraryAsset = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
+  v5 = [coverHost coverAnimationSourceReferenceViewForLibraryAsset:libraryAsset];
 
   return v5;
 }
 
 - (void)coverAnimationSourcePrepare
 {
-  v4 = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
-  v3 = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
-  [v4 coverAnimationSourcePrepareForLibraryAsset:v3];
+  coverHost = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
+  libraryAsset = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
+  [coverHost coverAnimationSourcePrepareForLibraryAsset:libraryAsset];
 }
 
 - (void)coverAnimationSourceFinalize
 {
-  v4 = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
-  v3 = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
-  [v4 coverAnimationSourceFinalizeForLibraryAsset:v3];
+  coverHost = [(BKLibraryBookOpenAnimatingSourceProxy *)self coverHost];
+  libraryAsset = [(BKLibraryBookOpenAnimatingSourceProxy *)self libraryAsset];
+  [coverHost coverAnimationSourceFinalizeForLibraryAsset:libraryAsset];
 }
 
 @end

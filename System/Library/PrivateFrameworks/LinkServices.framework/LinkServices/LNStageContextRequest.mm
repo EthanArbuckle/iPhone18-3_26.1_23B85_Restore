@@ -1,8 +1,8 @@
 @interface LNStageContextRequest
 + (id)xpcClasses;
-- (LNStageContextRequest)initWithCoder:(id)a3;
-- (LNStageContextRequest)initWithMetadata:(id)a3 entities:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (LNStageContextRequest)initWithCoder:(id)coder;
+- (LNStageContextRequest)initWithMetadata:(id)metadata entities:(id)entities;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNStageContextRequest
@@ -15,16 +15,16 @@
   return [v2 setWithObjects:{v3, v4, objc_opt_class(), 0}];
 }
 
-- (LNStageContextRequest)initWithCoder:(id)a3
+- (LNStageContextRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"metadata"];
-  v6 = [v4 decodeObjectForKey:@"entities"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"metadata"];
+  v6 = [coderCopy decodeObjectForKey:@"entities"];
 
   if (v5 && v6)
   {
     self = [(LNStageContextRequest *)self initWithMetadata:v5 entities:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -36,35 +36,35 @@
       _os_log_impl(&dword_19763D000, v8, OS_LOG_TYPE_ERROR, "empty LNStageContextRequest from coder", v10, 2u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNStageContextRequest *)self metadata];
-  [v4 encodeObject:v5 forKey:@"metadata"];
+  coderCopy = coder;
+  metadata = [(LNStageContextRequest *)self metadata];
+  [coderCopy encodeObject:metadata forKey:@"metadata"];
 
-  v6 = [(LNStageContextRequest *)self entities];
-  [v4 encodeObject:v6 forKey:@"entities"];
+  entities = [(LNStageContextRequest *)self entities];
+  [coderCopy encodeObject:entities forKey:@"entities"];
 }
 
-- (LNStageContextRequest)initWithMetadata:(id)a3 entities:(id)a4
+- (LNStageContextRequest)initWithMetadata:(id)metadata entities:(id)entities
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  entitiesCopy = entities;
   v13.receiver = self;
   v13.super_class = LNStageContextRequest;
   v8 = [(LNStageContextRequest *)&v13 init];
   metadata = v8->_metadata;
-  v8->_metadata = v6;
-  v10 = v6;
+  v8->_metadata = metadataCopy;
+  v10 = metadataCopy;
 
   entities = v8->_entities;
-  v8->_entities = v7;
+  v8->_entities = entitiesCopy;
 
   return v8;
 }

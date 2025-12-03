@@ -1,6 +1,6 @@
 @interface SCATCameraSwitchSourceController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SCATCameraSwitchSourceController
@@ -40,20 +40,20 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = SCATCameraSwitchSourceController;
-  v5 = [(SCATCameraSwitchSourceController *)&v13 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 specifier];
-  v7 = [v6 identifier];
+  v5 = [(SCATCameraSwitchSourceController *)&v13 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v5 specifier];
+  identifier = [specifier identifier];
 
-  if (([v7 isEqualToString:@"HeadGesturesIdentifier"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"HandGesturesIdentifier"))
+  if (([identifier isEqualToString:@"HeadGesturesIdentifier"] & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", @"HandGesturesIdentifier"))
   {
     v8 = objc_opt_new();
     [v8 setParentController:self];
-    v9 = [(SCATCameraSwitchSourceController *)self rootController];
-    [v8 setRootController:v9];
+    rootController = [(SCATCameraSwitchSourceController *)self rootController];
+    [v8 setRootController:rootController];
 
     v10 = AXParameterizedLocalizedString();
     v11 = [PSSpecifier preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:0 cell:-1 edit:0];
@@ -62,8 +62,8 @@
     [(SCATCameraSwitchSourceController *)self showController:v8 animate:1];
     if (v8)
     {
-      v12 = [(SCATSettingsCompletionController *)self completion];
-      [v8 setCompletion:v12];
+      completion = [(SCATSettingsCompletionController *)self completion];
+      [v8 setCompletion:completion];
     }
   }
 }

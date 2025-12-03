@@ -3,9 +3,9 @@
 - (BOOL)_effectivelyWantsFullscreen;
 - (BOOL)_effectivelyWantsPreservedLayout;
 - (BOOL)_effectivelyWantsProminence;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (void)_setQuickLookSceneConfiguration:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (void)_setQuickLookSceneConfiguration:(id)configuration;
 - (void)setPlacement:(UIWindowScenePlacement *)placement;
 @end
 
@@ -31,20 +31,20 @@
   self->_placement = v6;
 }
 
-- (void)_setQuickLookSceneConfiguration:(id)a3
+- (void)_setQuickLookSceneConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  configurationCopy = configuration;
+  v6 = configurationCopy;
+  if (configurationCopy)
   {
-    v7 = [(UISceneConfiguration *)v5 role];
-    v8 = [v7 isEqualToString:@"UISceneSessionRoleQuickLook"];
+    role = [(UISceneConfiguration *)configurationCopy role];
+    v8 = [role isEqualToString:@"UISceneSessionRoleQuickLook"];
 
     if ((v8 & 1) == 0)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      v11 = [(UISceneConfiguration *)v6 role];
-      [v10 handleFailureInMethod:a2 object:self file:@"UIWindowSceneActivationRequestOptions.m" lineNumber:42 description:{@"BUG IN CLIENT OF UIKIT: Attempting to set an internal scene configuration with an incorrect role. Expected %@, Received: %@", @"UISceneSessionRoleQuickLook", v11}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      role2 = [(UISceneConfiguration *)v6 role];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIWindowSceneActivationRequestOptions.m" lineNumber:42 description:{@"BUG IN CLIENT OF UIKIT: Attempting to set an internal scene configuration with an incorrect role. Expected %@, Received: %@", @"UISceneSessionRoleQuickLook", role2}];
     }
   }
 
@@ -52,24 +52,24 @@
   self->_quickLookSceneConfiguration = v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = UIWindowSceneActivationRequestOptions;
-  v4 = [(UISceneActivationRequestOptions *)&v12 copyWithZone:a3];
+  v4 = [(UISceneActivationRequestOptions *)&v12 copyWithZone:zone];
   [v4 setPreferredPresentationStyle:{-[UIWindowSceneActivationRequestOptions preferredPresentationStyle](self, "preferredPresentationStyle")}];
   [v4 _setPreferredSizeCategory:{-[UIWindowSceneActivationRequestOptions _preferredSizeCategory](self, "_preferredSizeCategory")}];
   [v4 _setPreserveLayout:{-[UIWindowSceneActivationRequestOptions _preserveLayout](self, "_preserveLayout")}];
-  v5 = [(UIWindowSceneActivationRequestOptions *)self _quickLookSceneConfiguration];
-  v6 = [v5 copy];
+  _quickLookSceneConfiguration = [(UIWindowSceneActivationRequestOptions *)self _quickLookSceneConfiguration];
+  v6 = [_quickLookSceneConfiguration copy];
   [v4 _setQuickLookSceneConfiguration:v6];
 
-  v7 = [(UIWindowSceneActivationRequestOptions *)self placement];
-  v8 = [v7 copy];
+  placement = [(UIWindowSceneActivationRequestOptions *)self placement];
+  v8 = [placement copy];
   [v4 setPlacement:v8];
 
-  v9 = [(UIWindowSceneActivationRequestOptions *)self _interactionIdentifier];
-  v10 = [v9 copy];
+  _interactionIdentifier = [(UIWindowSceneActivationRequestOptions *)self _interactionIdentifier];
+  v10 = [_interactionIdentifier copy];
   [v4 _setInteractionIdentifier:v10];
 
   return v4;
@@ -77,83 +77,83 @@
 
 - (BOOL)_effectivelyWantsProminence
 {
-  v3 = [(UIWindowSceneActivationRequestOptions *)self placement];
-  v4 = v3;
-  if (v3)
+  placement = [(UIWindowSceneActivationRequestOptions *)self placement];
+  v4 = placement;
+  if (placement)
   {
-    v5 = [v3 _requestCenterSlot];
+    _requestCenterSlot = [placement _requestCenterSlot];
   }
 
   else
   {
-    v5 = [(UIWindowSceneActivationRequestOptions *)self preferredPresentationStyle]== UIWindowScenePresentationStyleProminent;
+    _requestCenterSlot = [(UIWindowSceneActivationRequestOptions *)self preferredPresentationStyle]== UIWindowScenePresentationStyleProminent;
   }
 
-  return v5;
+  return _requestCenterSlot;
 }
 
 - (BOOL)_effectivelyWantsFullscreen
 {
-  v3 = [(UIWindowSceneActivationRequestOptions *)self placement];
-  v4 = v3;
-  if (v3)
+  placement = [(UIWindowSceneActivationRequestOptions *)self placement];
+  v4 = placement;
+  if (placement)
   {
-    v5 = [v3 _requestFullscreen];
+    _requestFullscreen = [placement _requestFullscreen];
   }
 
   else
   {
-    v5 = [(UIWindowSceneActivationRequestOptions *)self _preferredSizeCategory]== 1;
+    _requestFullscreen = [(UIWindowSceneActivationRequestOptions *)self _preferredSizeCategory]== 1;
   }
 
-  return v5;
+  return _requestFullscreen;
 }
 
 - (BOOL)_effectivelyWantsPreservedLayout
 {
-  v3 = [(UIWindowSceneActivationRequestOptions *)self placement];
-  v4 = v3;
-  if (!v3)
+  selfCopy = [(UIWindowSceneActivationRequestOptions *)self placement];
+  v4 = selfCopy;
+  if (!selfCopy)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  v5 = [v3 _preserveLayout];
+  _preserveLayout = [selfCopy _preserveLayout];
 
-  return v5;
+  return _preserveLayout;
 }
 
 - (BOOL)_effectivelyWantsBackground
 {
-  v2 = [(UIWindowSceneActivationRequestOptions *)self placement];
-  v3 = v2;
-  if (v2)
+  placement = [(UIWindowSceneActivationRequestOptions *)self placement];
+  v3 = placement;
+  if (placement)
   {
-    v4 = [v2 _requestBackground];
+    _requestBackground = [placement _requestBackground];
   }
 
   else
   {
-    v4 = 0;
+    _requestBackground = 0;
   }
 
-  return v4;
+  return _requestBackground;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v12.receiver = self;
   v12.super_class = UIWindowSceneActivationRequestOptions;
-  v4 = a3;
-  v5 = [(UISceneActivationRequestOptions *)&v12 descriptionBuilderWithMultilinePrefix:v4];
+  prefixCopy = prefix;
+  v5 = [(UISceneActivationRequestOptions *)&v12 descriptionBuilderWithMultilinePrefix:prefixCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79__UIWindowSceneActivationRequestOptions_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E70F35B8;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:&stru_1EFB14550 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:&stru_1EFB14550 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

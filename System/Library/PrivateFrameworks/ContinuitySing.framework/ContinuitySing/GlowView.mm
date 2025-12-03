@@ -1,17 +1,17 @@
 @interface GlowView
-- (_TtC14ContinuitySing8GlowView)initWithCoder:(id)a3;
-- (_TtC14ContinuitySing8GlowView)initWithFrame:(CGRect)a3;
+- (_TtC14ContinuitySing8GlowView)initWithCoder:(id)coder;
+- (_TtC14ContinuitySing8GlowView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation GlowView
 
-- (_TtC14ContinuitySing8GlowView)initWithFrame:(CGRect)a3
+- (_TtC14ContinuitySing8GlowView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_244257BB8();
   sub_244257BA8();
   sub_244257B68();
@@ -25,7 +25,7 @@
   return v7;
 }
 
-- (_TtC14ContinuitySing8GlowView)initWithCoder:(id)a3
+- (_TtC14ContinuitySing8GlowView)initWithCoder:(id)coder
 {
   sub_244257BB8();
   sub_244257BA8();
@@ -52,14 +52,14 @@
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for GlowView();
-  v3 = self;
+  selfCopy = self;
   [(GlowView *)&v13 layoutSubviews];
-  v4 = *(&v3->super.super.super.isa + OBJC_IVAR____TtC14ContinuitySing8GlowView_micaPlayer);
+  v4 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC14ContinuitySing8GlowView_micaPlayer);
   v5 = *MEMORY[0x277CDA708];
   v6 = sub_24424F3C4();
   v7 = MEMORY[0x277D85000];
   v8 = (*((*MEMORY[0x277D85000] & *v4) + 0xD0))(v5, v6 & 1);
-  v9 = (*((*v7 & v3->super.super.super.isa) + 0x58))(v8);
+  v9 = (*((*v7 & selfCopy->super.super.super.isa) + 0x58))(v8);
   if (v9)
   {
     v10 = v9;

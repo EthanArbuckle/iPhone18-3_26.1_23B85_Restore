@@ -1,8 +1,8 @@
 @interface CarHostingViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC4Maps24CarHostingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)externalDeviceDidUpdate:(id)a3;
-- (void)updateHeaderWithTitle:(id)a3 primaryAccessory:(id)a4 secondaryAccessory:(id)a5 leadingImage:(id)a6 handler:(id)a7;
+- (_TtC4Maps24CarHostingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)externalDeviceDidUpdate:(id)update;
+- (void)updateHeaderWithTitle:(id)title primaryAccessory:(id)accessory secondaryAccessory:(id)secondaryAccessory leadingImage:(id)image handler:(id)handler;
 - (void)viewDidLoad;
 @end
 
@@ -10,18 +10,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CarHostingViewController.viewDidLoad()();
 }
 
-- (void)updateHeaderWithTitle:(id)a3 primaryAccessory:(id)a4 secondaryAccessory:(id)a5 leadingImage:(id)a6 handler:(id)a7
+- (void)updateHeaderWithTitle:(id)title primaryAccessory:(id)accessory secondaryAccessory:(id)secondaryAccessory leadingImage:(id)image handler:(id)handler
 {
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(handler);
   v13 = v12;
-  if (a3)
+  if (title)
   {
     v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v15;
+    title = v15;
     if (v13)
     {
 LABEL_3:
@@ -43,11 +43,11 @@ LABEL_3:
 
   v16 = 0;
 LABEL_6:
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = self;
-  CarHostingViewController.updateHeader(title:primaryAccessory:secondaryAccessory:leadingImage:handler:)(v14, a3, v17, a5, a6, v13, v16);
+  accessoryCopy = accessory;
+  secondaryAccessoryCopy = secondaryAccessory;
+  imageCopy = image;
+  selfCopy = self;
+  CarHostingViewController.updateHeader(title:primaryAccessory:secondaryAccessory:leadingImage:handler:)(v14, title, accessoryCopy, secondaryAccessory, image, v13, v16);
   sub_1000588AC(v13);
 }
 
@@ -69,9 +69,9 @@ LABEL_6:
   return v5.super.isa;
 }
 
-- (_TtC4Maps24CarHostingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps24CarHostingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -83,18 +83,18 @@ LABEL_6:
     v7 = 0;
   }
 
-  v8 = a4;
-  return CarHostingViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return CarHostingViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (void)externalDeviceDidUpdate:(id)a3
+- (void)externalDeviceDidUpdate:(id)update
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10017D524();
 
   (*(v5 + 8))(v7, v4);

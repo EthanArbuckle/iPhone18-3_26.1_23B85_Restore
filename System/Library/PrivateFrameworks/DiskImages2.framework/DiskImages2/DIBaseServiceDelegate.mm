@@ -1,5 +1,5 @@
 @interface DIBaseServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (DIBaseServiceDelegate)init;
 - (void)createListener;
 - (void)startXPClistener;
@@ -59,10 +59,10 @@
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = *__error();
   if (DIForwardLogs())
   {
@@ -73,9 +73,9 @@
     v15 = 2080;
     v16 = "[DIBaseServiceDelegate listener:shouldAcceptNewConnection:]";
     v17 = 1024;
-    v18 = [v5 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v19 = 1024;
-    v20 = [v5 effectiveUserIdentifier];
+    effectiveUserIdentifier = [connectionCopy effectiveUserIdentifier];
     v21 = 1024;
     v22 = geteuid();
     v8 = _os_log_send_and_compose_impl();
@@ -97,9 +97,9 @@
       v15 = 2080;
       v16 = "[DIBaseServiceDelegate listener:shouldAcceptNewConnection:]";
       v17 = 1024;
-      v18 = [v5 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       v19 = 1024;
-      v20 = [v5 effectiveUserIdentifier];
+      effectiveUserIdentifier = [connectionCopy effectiveUserIdentifier];
       v21 = 1024;
       v22 = geteuid();
       _os_log_impl(&dword_248DE0000, v9, OS_LOG_TYPE_DEFAULT, "%.*s: Received connection from pid %d with euid %d. Our euid is %d", buf, 0x24u);
@@ -107,8 +107,8 @@
   }
 
   *__error() = v6;
-  v10 = [(DIBaseServiceDelegate *)self setupNewConnection:v5];
-  [v5 resume];
+  v10 = [(DIBaseServiceDelegate *)self setupNewConnection:connectionCopy];
+  [connectionCopy resume];
   [(DIBaseServiceDelegate *)self validateConnection];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -117,18 +117,18 @@
 
 - (void)createListener
 {
-  v3 = [MEMORY[0x277CCAE98] serviceListener];
-  [(DIBaseServiceDelegate *)self setListener:v3];
+  serviceListener = [MEMORY[0x277CCAE98] serviceListener];
+  [(DIBaseServiceDelegate *)self setListener:serviceListener];
 }
 
 - (void)startXPClistener
 {
   [(DIBaseServiceDelegate *)self createListener];
-  v3 = [(DIBaseServiceDelegate *)self listener];
-  [v3 setDelegate:self];
+  listener = [(DIBaseServiceDelegate *)self listener];
+  [listener setDelegate:self];
 
-  v4 = [(DIBaseServiceDelegate *)self listener];
-  [v4 resume];
+  listener2 = [(DIBaseServiceDelegate *)self listener];
+  [listener2 resume];
 }
 
 @end

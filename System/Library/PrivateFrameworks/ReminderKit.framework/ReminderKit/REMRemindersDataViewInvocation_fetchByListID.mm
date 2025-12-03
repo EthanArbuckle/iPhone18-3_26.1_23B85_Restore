@@ -1,85 +1,85 @@
 @interface REMRemindersDataViewInvocation_fetchByListID
-- (BOOL)isEqual:(id)a3;
-- (REMRemindersDataViewInvocation_fetchByListID)initWithCoder:(id)a3;
-- (REMRemindersDataViewInvocation_fetchByListID)initWithListID:(id)a3 includingSubtasks:(BOOL)a4 includingCompleted:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (REMRemindersDataViewInvocation_fetchByListID)initWithCoder:(id)coder;
+- (REMRemindersDataViewInvocation_fetchByListID)initWithListID:(id)d includingSubtasks:(BOOL)subtasks includingCompleted:(BOOL)completed;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMRemindersDataViewInvocation_fetchByListID
 
-- (REMRemindersDataViewInvocation_fetchByListID)initWithListID:(id)a3 includingSubtasks:(BOOL)a4 includingCompleted:(BOOL)a5
+- (REMRemindersDataViewInvocation_fetchByListID)initWithListID:(id)d includingSubtasks:(BOOL)subtasks includingCompleted:(BOOL)completed
 {
-  v9 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = REMRemindersDataViewInvocation_fetchByListID;
   v10 = [(REMStoreInvocationValueStorage *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_listID, a3);
-    v11->_includingSubtasks = a4;
-    v11->_includingCompleted = a5;
+    objc_storeStrong(&v10->_listID, d);
+    v11->_includingSubtasks = subtasks;
+    v11->_includingCompleted = completed;
   }
 
   return v11;
 }
 
-- (REMRemindersDataViewInvocation_fetchByListID)initWithCoder:(id)a3
+- (REMRemindersDataViewInvocation_fetchByListID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"listID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"includingSubtasks"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"includingCompleted"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"listID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"includingSubtasks"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"includingCompleted"];
 
   if (v5)
   {
     self = -[REMRemindersDataViewInvocation_fetchByListID initWithListID:includingSubtasks:includingCompleted:](self, "initWithListID:includingSubtasks:includingCompleted:", v5, [v6 BOOLValue], objc_msgSend(v7, "BOOLValue"));
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMRemindersDataViewInvocation_fetchByListID *)self listID];
-  [v4 encodeObject:v5 forKey:@"listID"];
+  coderCopy = coder;
+  listID = [(REMRemindersDataViewInvocation_fetchByListID *)self listID];
+  [coderCopy encodeObject:listID forKey:@"listID"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[REMRemindersDataViewInvocation_fetchByListID includingSubtasks](self, "includingSubtasks")}];
-  [v4 encodeObject:v6 forKey:@"includingSubtasks"];
+  [coderCopy encodeObject:v6 forKey:@"includingSubtasks"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[REMRemindersDataViewInvocation_fetchByListID includingCompleted](self, "includingCompleted")}];
-  [v4 encodeObject:v7 forKey:@"includingCompleted"];
+  [coderCopy encodeObject:v7 forKey:@"includingCompleted"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v5 = [(REMRemindersDataViewInvocation_fetchByListID *)self listID];
-  v6 = [v4 listID];
-  v7 = v6;
-  if (v5 == v6)
+  listID = [(REMRemindersDataViewInvocation_fetchByListID *)self listID];
+  listID2 = [equalCopy listID];
+  v7 = listID2;
+  if (listID == listID2)
   {
   }
 
   else
   {
-    v8 = [(REMRemindersDataViewInvocation_fetchByListID *)self listID];
-    v9 = [v4 listID];
-    v10 = [v8 isEqual:v9];
+    listID3 = [(REMRemindersDataViewInvocation_fetchByListID *)self listID];
+    listID4 = [equalCopy listID];
+    v10 = [listID3 isEqual:listID4];
 
     if (!v10)
     {
@@ -87,11 +87,11 @@
     }
   }
 
-  v11 = [(REMRemindersDataViewInvocation_fetchByListID *)self includingSubtasks];
-  if (v11 == [v4 includingSubtasks])
+  includingSubtasks = [(REMRemindersDataViewInvocation_fetchByListID *)self includingSubtasks];
+  if (includingSubtasks == [equalCopy includingSubtasks])
   {
-    v14 = [(REMRemindersDataViewInvocation_fetchByListID *)self includingCompleted];
-    v12 = v14 ^ [v4 includingCompleted] ^ 1;
+    includingCompleted = [(REMRemindersDataViewInvocation_fetchByListID *)self includingCompleted];
+    v12 = includingCompleted ^ [equalCopy includingCompleted] ^ 1;
     goto LABEL_8;
   }
 
@@ -104,8 +104,8 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v3 = [(REMRemindersDataViewInvocation_fetchByListID *)self listID];
-  v4 = [v3 hash];
+  listID = [(REMRemindersDataViewInvocation_fetchByListID *)self listID];
+  v4 = [listID hash];
   v5 = v4 + [(REMRemindersDataViewInvocation_fetchByListID *)self includingSubtasks];
   v6 = v5 + [(REMRemindersDataViewInvocation_fetchByListID *)self includingCompleted];
 

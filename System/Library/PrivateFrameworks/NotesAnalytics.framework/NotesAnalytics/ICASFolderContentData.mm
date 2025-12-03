@@ -1,20 +1,20 @@
 @interface ICASFolderContentData
-- (ICASFolderContentData)initWithNoteCount:(id)a3;
+- (ICASFolderContentData)initWithNoteCount:(id)count;
 - (id)toDict;
 @end
 
 @implementation ICASFolderContentData
 
-- (ICASFolderContentData)initWithNoteCount:(id)a3
+- (ICASFolderContentData)initWithNoteCount:(id)count
 {
-  v5 = a3;
+  countCopy = count;
   v9.receiver = self;
   v9.super_class = ICASFolderContentData;
   v6 = [(ICASFolderContentData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_noteCount, a3);
+    objc_storeStrong(&v6->_noteCount, count);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"noteCount";
-  v3 = [(ICASFolderContentData *)self noteCount];
-  if (v3)
+  noteCount = [(ICASFolderContentData *)self noteCount];
+  if (noteCount)
   {
-    v4 = [(ICASFolderContentData *)self noteCount];
+    noteCount2 = [(ICASFolderContentData *)self noteCount];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    noteCount2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = noteCount2;
+  v10[0] = noteCount2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

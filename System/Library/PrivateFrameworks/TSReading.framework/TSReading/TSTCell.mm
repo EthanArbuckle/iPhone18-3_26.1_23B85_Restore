@@ -1,10 +1,10 @@
 @interface TSTCell
 + (id)cell;
-- (BOOL)isCellContentsEqualToCell:(id)a3;
+- (BOOL)isCellContentsEqualToCell:(id)cell;
 - (TSTCell)init;
-- (TSTCell)initWithCell:(id)a3;
-- (TSTCell)initWithStorageRef:(TSTCellStorage *)a3 dataStore:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSTCell)initWithCell:(id)cell;
+- (TSTCell)initWithStorageRef:(TSTCellStorage *)ref dataStore:(id)store;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
@@ -48,24 +48,24 @@
   return result;
 }
 
-- (TSTCell)initWithCell:(id)a3
+- (TSTCell)initWithCell:(id)cell
 {
   v4 = [(TSTCell *)self init];
   if (v4)
   {
-    TSTCellCopy(a3, v4);
+    TSTCellCopy(cell, v4);
   }
 
   return v4;
 }
 
-- (TSTCell)initWithStorageRef:(TSTCellStorage *)a3 dataStore:(id)a4
+- (TSTCell)initWithStorageRef:(TSTCellStorage *)ref dataStore:(id)store
 {
   v6 = [(TSTCell *)self init];
   v7 = v6;
   if (v6)
   {
-    [(TSTCell *)v6 inflateFromStorageRef:a3 dataStore:a4];
+    [(TSTCell *)v6 inflateFromStorageRef:ref dataStore:store];
   }
 
   return v7;
@@ -79,19 +79,19 @@
   [(TSTCell *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TSTCell allocWithZone:a3];
+  v4 = [TSTCell allocWithZone:zone];
 
   return [(TSTCell *)v4 initWithCell:self];
 }
 
-- (BOOL)isCellContentsEqualToCell:(id)a3
+- (BOOL)isCellContentsEqualToCell:(id)cell
 {
   if (!self)
   {
     v5 = 0;
-    if (a3)
+    if (cell)
     {
       goto LABEL_3;
     }
@@ -102,13 +102,13 @@ LABEL_5:
   }
 
   v5 = *(&self->mPrivate + 1);
-  if (!a3)
+  if (!cell)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v6 = *(a3 + 9);
+  v6 = *(cell + 9);
 LABEL_6:
   if (v5 != v6)
   {
@@ -131,11 +131,11 @@ LABEL_6:
         if (v7 == 6)
         {
           mDouble = self->mPrivate.mValue.mDouble;
-          if (a3 && *(a3 + 9))
+          if (cell && *(cell + 9))
           {
-            if (*(a3 + 9) == 6)
+            if (*(cell + 9) == 6)
             {
-              if ((mDouble != 0.0) != (*(a3 + 2) != 0.0))
+              if ((mDouble != 0.0) != (*(cell + 2) != 0.0))
               {
                 return 0;
               }
@@ -143,9 +143,9 @@ LABEL_6:
               goto LABEL_67;
             }
 
-            v42 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler = [MEMORY[0x277D6C290] currentHandler];
             v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"BOOL TSTCellBoolValue(TSTCell *)"];
-            [v42 handleFailureInFunction:v43 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 925, @"can't get BOOL value from non-BOOL cell: %p", a3}];
+            [currentHandler handleFailureInFunction:v43 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 925, @"can't get BOOL value from non-BOOL cell: %p", cell}];
           }
 
           if (mDouble != 0.0)
@@ -158,8 +158,8 @@ LABEL_67:
           v51 = *&self->mPrivate.mCellFormats.mCurrentCellFormat.mFormatType;
           v52 = v39;
           v53 = *(&self->mPrivate.mCellFormats.mCurrentCellFormat.var0.mMultipleChoiceListFormatStruct + 3);
-          v13 = (a3 + 104);
-          if (!a3)
+          v13 = (cell + 104);
+          if (!cell)
           {
             v13 = &TSUInvalidFormat;
           }
@@ -176,17 +176,17 @@ LABEL_29:
       }
 
       mDate = self->mPrivate.mValue.mDate;
-      if (a3 && *(a3 + 9))
+      if (cell && *(cell + 9))
       {
-        if (*(a3 + 9) == 5)
+        if (*(cell + 9) == 5)
         {
-          v20 = *(a3 + 2);
+          v20 = *(cell + 2);
           goto LABEL_66;
         }
 
-        v37 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSDate *TSTCellDateValue(TSTCell *)"];
-        [v37 handleFailureInFunction:v38 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 1021, @"can't get date value from a non-date cell: %p", a3}];
+        [currentHandler2 handleFailureInFunction:v38 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 1021, @"can't get date value from a non-date cell: %p", cell}];
       }
 
       v20 = 0;
@@ -207,9 +207,9 @@ LABEL_66:
       }
 
       mRichTextPayload = self->mPrivate.mRichTextPayload;
-      if (a3)
+      if (cell)
       {
-        v18 = *(a3 + 9);
+        v18 = *(cell + 9);
       }
 
       else
@@ -231,27 +231,27 @@ LABEL_66:
 
     v54 = 0.0;
     v55 = 0uLL;
-    if (a3)
+    if (cell)
     {
-      v22 = *(a3 + 9);
+      v22 = *(cell + 9);
       *&v55 = 0x1000000001;
       *(&v55 + 1) = v21;
       if (v22)
       {
         if (v22 == 7)
         {
-          v54 = *(a3 + 2);
-          if (*(a3 + 26) == 268)
+          v54 = *(cell + 2);
+          if (*(cell + 26) == 268)
           {
-            v55 = *(a3 + 7);
+            v55 = *(cell + 7);
           }
 
           goto LABEL_72;
         }
 
-        v40 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
         v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"TSTDurationWrapper TSTCellDurationValue(TSTCell *)"];
-        [v40 handleFailureInFunction:v41 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 1064, @"can't get duration value from a non-duration cell: %p", a3}];
+        [currentHandler3 handleFailureInFunction:v41 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 1064, @"can't get duration value from a non-duration cell: %p", cell}];
       }
     }
 
@@ -294,9 +294,9 @@ LABEL_25:
     v51 = *&p_mCurrentCellFormat->mFormatType;
     v52 = v15;
     v53 = *(&p_mCurrentCellFormat->var0.mMultipleChoiceListFormatStruct + 3);
-    if (a3)
+    if (cell)
     {
-      v13 = (a3 + 104);
+      v13 = (cell + 104);
     }
 
     goto LABEL_29;
@@ -308,8 +308,8 @@ LABEL_25:
     v51 = *&self->mPrivate.mCellFormats.mCurrentCellFormat.mFormatType;
     v52 = v23;
     v53 = *(&self->mPrivate.mCellFormats.mCurrentCellFormat.var0.mMultipleChoiceListFormatStruct + 3);
-    v24 = (a3 + 104);
-    if (!a3)
+    v24 = (cell + 104);
+    if (!cell)
     {
       v24 = &TSUInvalidFormat;
     }
@@ -331,18 +331,18 @@ LABEL_25:
         v28 = 0.0;
         if (v27)
         {
-          v29 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
           v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"double TSTCellDoubleValue(TSTCell *)"];
-          [v29 handleFailureInFunction:v30 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 897, @"can't get value from non-value cell: %p", self}];
+          [currentHandler4 handleFailureInFunction:v30 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 897, @"can't get value from non-value cell: %p", self}];
         }
       }
 
-      if (a3)
+      if (cell)
       {
-        v32 = *(a3 + 2);
+        v32 = *(cell + 2);
         if ((v32 & 0xFB00) == 0x200 || (v33 = BYTE1(v32), v33 == 7))
         {
-          v34 = *(a3 + 2);
+          v34 = *(cell + 2);
         }
 
         else
@@ -350,18 +350,18 @@ LABEL_25:
           v34 = 0.0;
           if (v33)
           {
-            v35 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler5 = [MEMORY[0x277D6C290] currentHandler];
             v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"double TSTCellDoubleValue(TSTCell *)"];
-            [v35 handleFailureInFunction:v36 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 897, @"can't get value from non-value cell: %p", a3}];
+            [currentHandler5 handleFailureInFunction:v36 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 897, @"can't get value from non-value cell: %p", cell}];
           }
         }
       }
 
       else
       {
-        v44 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler6 = [MEMORY[0x277D6C290] currentHandler];
         v45 = [MEMORY[0x277CCACA8] stringWithUTF8String:"double TSTCellDoubleValue(TSTCell *)"];
-        [v44 handleFailureInFunction:v45 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 889, @"invalid nil value for '%s'", "cell"}];
+        [currentHandler6 handleFailureInFunction:v45 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 889, @"invalid nil value for '%s'", "cell"}];
         v34 = 0.0;
       }
 
@@ -377,33 +377,33 @@ LABEL_25:
   }
 
   mString = self->mPrivate.mValue.mString.mString;
-  if (a3 && (v11 = *(a3 + 9), *(a3 + 9)))
+  if (cell && (v11 = *(cell + 9), *(cell + 9)))
   {
     if (v11 == 9)
     {
-      v12 = [*(a3 + 9) string];
+      string = [*(cell + 9) string];
     }
 
     else if (v11 == 3)
     {
-      v12 = *(a3 + 3);
+      string = *(cell + 3);
     }
 
     else
     {
-      v46 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler7 = [MEMORY[0x277D6C290] currentHandler];
       v47 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *TSTCellStringValue(TSTCell *)"];
-      [v46 handleFailureInFunction:v47 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 972, @"can't get string from non-string cell: %p", a3}];
-      v12 = 0;
+      [currentHandler7 handleFailureInFunction:v47 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 972, @"can't get string from non-string cell: %p", cell}];
+      string = 0;
     }
   }
 
   else
   {
-    v12 = &stru_287D36338;
+    string = &stru_287D36338;
   }
 
-  return [(NSString *)mString isEqualToString:v12];
+  return [(NSString *)mString isEqualToString:string];
 }
 
 - (id)description
@@ -423,17 +423,17 @@ LABEL_25:
     {
       if (BYTE1(mPrivate) == 3)
       {
-        v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"<string: '%@'>", self->mPrivate.mValue.mString.mString];
+        mDate = [MEMORY[0x277CCACA8] stringWithFormat:@"<string: '%@'>", self->mPrivate.mValue.mString.mString];
         v8 = @"String";
-        return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, v7];
+        return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, mDate];
       }
 
       if (BYTE1(mPrivate) == 4)
       {
         v8 = @"DEPRECATED";
 LABEL_26:
-        v7 = @"<unknown cell type>";
-        return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, v7];
+        mDate = @"<unknown cell type>";
+        return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, mDate];
       }
 
       goto LABEL_25;
@@ -452,14 +452,14 @@ LABEL_26:
         else
         {
           mDate = 0;
-          v11 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"double TSTCellDoubleValue(TSTCell *)"];
-          [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 897, @"can't get value from non-value cell: %p", self}];
+          [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 897, @"can't get value from non-value cell: %p", self}];
         }
 
-        v7 = [v9 stringWithFormat:@"<number: %f>", mDate];
+        mDate = [v9 stringWithFormat:@"<number: %f>", mDate];
         v8 = @"Number";
-        return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, v7];
+        return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, mDate];
       }
 
 LABEL_25:
@@ -468,9 +468,9 @@ LABEL_25:
     }
 
 LABEL_13:
-    v7 = @"<empty>";
+    mDate = @"<empty>";
     v8 = @"No content";
-    return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, v7];
+    return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, mDate];
   }
 
   if (BYTE1(mPrivate) > 6u)
@@ -478,17 +478,17 @@ LABEL_13:
     switch(BYTE1(mPrivate))
     {
       case 7u:
-        v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"<duration: %f>", self->mPrivate.mValue.mDate];
+        mDate = [MEMORY[0x277CCACA8] stringWithFormat:@"<duration: %f>", self->mPrivate.mValue.mDate];
         v8 = @"Duration";
-        return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, v7];
+        return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, mDate];
       case 8u:
-        v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"<error>"];
+        mDate = [MEMORY[0x277CCACA8] stringWithFormat:@"<error>"];
         v8 = @"FormulaError";
-        return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, v7];
+        return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, mDate];
       case 9u:
-        v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"<rich text: '%@'>", -[TSTRichTextPayload string](self->mPrivate.mRichTextPayload, "string")];
+        mDate = [MEMORY[0x277CCACA8] stringWithFormat:@"<rich text: '%@'>", -[TSTRichTextPayload string](self->mPrivate.mRichTextPayload, "string")];
         v8 = @"RichText";
-        return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, v7];
+        return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, mDate];
     }
 
     goto LABEL_25;
@@ -496,9 +496,9 @@ LABEL_13:
 
   if (BYTE1(mPrivate) == 5)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"<date: '%@'>", -[NSDate description](self->mPrivate.mValue.mDate, "description")];
+    mDate = [MEMORY[0x277CCACA8] stringWithFormat:@"<date: '%@'>", -[NSDate description](self->mPrivate.mValue.mDate, "description")];
     v8 = @"Date";
-    return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, v7];
+    return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, mDate];
   }
 
   if (BYTE1(mPrivate) != 6)
@@ -518,15 +518,15 @@ LABEL_13:
 
   else
   {
-    v14 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"double TSTCellDoubleValue(TSTCell *)"];
-    [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 897, @"can't get value from non-value cell: %p", self}];
+    [currentHandler2 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCell.h"), 897, @"can't get value from non-value cell: %p", self}];
     v16 = @"FALSE";
   }
 
-  v7 = [v13 stringWithFormat:@"<BOOL: '%@'>", v16];
+  mDate = [v13 stringWithFormat:@"<BOOL: '%@'>", v16];
   v8 = @"Bool";
-  return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, v7];
+  return [v3 stringWithFormat:@"<%@:%p: value type %@ value %@>", v5, self, v8, mDate];
 }
 
 @end

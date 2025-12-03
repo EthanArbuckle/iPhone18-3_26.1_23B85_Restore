@@ -2,8 +2,8 @@
 - (CHRecognizerInferenceCache)init;
 - (id)debugDescription;
 - (id)description;
-- (id)retrieveActivationMatrixForDrawing:(id)a3 recognitionEngineCachingKey:(id)a4 outStrokeIndexMapping:(id *)a5 outStrokeEndings:(id *)a6 outPrincipalPoints:(id *)a7;
-- (void)cacheActivationMatrix:(id)a3 strokeIndexMapping:(id)a4 strokeEndings:(id)a5 principalPoints:(id)a6 drawing:(id)a7 recognitionEngineCachingKey:(id)a8;
+- (id)retrieveActivationMatrixForDrawing:(id)drawing recognitionEngineCachingKey:(id)key outStrokeIndexMapping:(id *)mapping outStrokeEndings:(id *)endings outPrincipalPoints:(id *)points;
+- (void)cacheActivationMatrix:(id)matrix strokeIndexMapping:(id)mapping strokeEndings:(id)endings principalPoints:(id)points drawing:(id)drawing recognitionEngineCachingKey:(id)key;
 - (void)clearCache;
 @end
 
@@ -40,45 +40,45 @@
   return v3;
 }
 
-- (void)cacheActivationMatrix:(id)a3 strokeIndexMapping:(id)a4 strokeEndings:(id)a5 principalPoints:(id)a6 drawing:(id)a7 recognitionEngineCachingKey:(id)a8
+- (void)cacheActivationMatrix:(id)matrix strokeIndexMapping:(id)mapping strokeEndings:(id)endings principalPoints:(id)points drawing:(id)drawing recognitionEngineCachingKey:(id)key
 {
-  v32 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v21 = a8;
-  if (v32)
+  matrixCopy = matrix;
+  mappingCopy = mapping;
+  endingsCopy = endings;
+  pointsCopy = points;
+  drawingCopy = drawing;
+  keyCopy = key;
+  if (matrixCopy)
   {
-    if (v15)
+    if (endingsCopy)
     {
-      objc_msgSend_setObject_forKeyedSubscript_(self->_cachedActivationMatrices, v18, v32, v21, v19, v20);
-      objc_msgSend_setObject_forKeyedSubscript_(self->_cachedStrokeIndexMappings, v22, v14, v21, v23, v24);
-      objc_msgSend_setObject_forKeyedSubscript_(self->_cachedStrokeEndings, v25, v15, v21, v26, v27);
-      if (v16)
+      objc_msgSend_setObject_forKeyedSubscript_(self->_cachedActivationMatrices, v18, matrixCopy, keyCopy, v19, v20);
+      objc_msgSend_setObject_forKeyedSubscript_(self->_cachedStrokeIndexMappings, v22, mappingCopy, keyCopy, v23, v24);
+      objc_msgSend_setObject_forKeyedSubscript_(self->_cachedStrokeEndings, v25, endingsCopy, keyCopy, v26, v27);
+      if (pointsCopy)
       {
-        objc_msgSend_setObject_forKeyedSubscript_(self->_cachedPrincipalPoints, v28, v16, v21, v29, v30);
+        objc_msgSend_setObject_forKeyedSubscript_(self->_cachedPrincipalPoints, v28, pointsCopy, keyCopy, v29, v30);
       }
     }
   }
 
   lastDrawing = self->_lastDrawing;
-  self->_lastDrawing = v17;
+  self->_lastDrawing = drawingCopy;
 }
 
-- (id)retrieveActivationMatrixForDrawing:(id)a3 recognitionEngineCachingKey:(id)a4 outStrokeIndexMapping:(id *)a5 outStrokeEndings:(id *)a6 outPrincipalPoints:(id *)a7
+- (id)retrieveActivationMatrixForDrawing:(id)drawing recognitionEngineCachingKey:(id)key outStrokeIndexMapping:(id *)mapping outStrokeEndings:(id *)endings outPrincipalPoints:(id *)points
 {
-  v11 = a3;
-  v12 = a4;
-  v44 = v11;
-  if (!objc_msgSend_isEqualToDrawing_(v11, v13, self->_lastDrawing, v14, v15, v16))
+  drawingCopy = drawing;
+  keyCopy = key;
+  v44 = drawingCopy;
+  if (!objc_msgSend_isEqualToDrawing_(drawingCopy, v13, self->_lastDrawing, v14, v15, v16))
   {
     objc_msgSend_clearCache(self, v17, v18, v19, v20, v21);
     v32 = 0;
     v37 = 0;
     v27 = 0;
     v22 = 0;
-    if (!a5)
+    if (!mapping)
     {
       goto LABEL_7;
     }
@@ -86,20 +86,20 @@
     goto LABEL_6;
   }
 
-  if (v12)
+  if (keyCopy)
   {
-    v22 = objc_msgSend_objectForKeyedSubscript_(self->_cachedActivationMatrices, v17, v12, v19, v20, v21);
-    v27 = objc_msgSend_objectForKeyedSubscript_(self->_cachedStrokeIndexMappings, v23, v12, v24, v25, v26);
-    v32 = objc_msgSend_objectForKeyedSubscript_(self->_cachedStrokeEndings, v28, v12, v29, v30, v31);
-    v37 = objc_msgSend_objectForKeyedSubscript_(self->_cachedPrincipalPoints, v33, v12, v34, v35, v36);
-    if (!a5)
+    v22 = objc_msgSend_objectForKeyedSubscript_(self->_cachedActivationMatrices, v17, keyCopy, v19, v20, v21);
+    v27 = objc_msgSend_objectForKeyedSubscript_(self->_cachedStrokeIndexMappings, v23, keyCopy, v24, v25, v26);
+    v32 = objc_msgSend_objectForKeyedSubscript_(self->_cachedStrokeEndings, v28, keyCopy, v29, v30, v31);
+    v37 = objc_msgSend_objectForKeyedSubscript_(self->_cachedPrincipalPoints, v33, keyCopy, v34, v35, v36);
+    if (!mapping)
     {
       goto LABEL_7;
     }
 
 LABEL_6:
     v38 = v27;
-    *a5 = v27;
+    *mapping = v27;
     goto LABEL_7;
   }
 
@@ -107,22 +107,22 @@ LABEL_6:
   v37 = 0;
   v27 = 0;
   v22 = 0;
-  if (a5)
+  if (mapping)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
-  if (a6)
+  if (endings)
   {
     v39 = v32;
-    *a6 = v32;
+    *endings = v32;
   }
 
-  if (a7)
+  if (points)
   {
     v40 = v37;
-    *a7 = v37;
+    *points = v37;
   }
 
   v41 = v22;

@@ -1,32 +1,32 @@
 @interface IMOneTimeCodeUtilities
-- (BOOL)isValidOneTimeCode:(id)a3;
-- (id)createOTCFromMessageBody:(id)a3 sender:(id)a4 guid:(id)a5;
+- (BOOL)isValidOneTimeCode:(id)code;
+- (id)createOTCFromMessageBody:(id)body sender:(id)sender guid:(id)guid;
 @end
 
 @implementation IMOneTimeCodeUtilities
 
-- (BOOL)isValidOneTimeCode:(id)a3
+- (BOOL)isValidOneTimeCode:(id)code
 {
-  v5 = a3;
-  if (v5)
+  codeCopy = code;
+  if (codeCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 objectForKeyedSubscript:@"handle"];
+      v6 = [codeCopy objectForKeyedSubscript:@"handle"];
       if (v6)
       {
-        v7 = [v5 objectForKeyedSubscript:@"code"];
+        v7 = [codeCopy objectForKeyedSubscript:@"code"];
         if (v7)
         {
           goto LABEL_5;
         }
 
-        v14 = [v5 objectForKeyedSubscript:@"machineReadableCode"];
+        v14 = [codeCopy objectForKeyedSubscript:@"machineReadableCode"];
         if (v14)
         {
           v3 = v14;
-          v15 = [v5 objectForKeyedSubscript:@"domain"];
+          v15 = [codeCopy objectForKeyedSubscript:@"domain"];
           if (!v15)
           {
             v13 = 0;
@@ -35,15 +35,15 @@
 
           v4 = v15;
 LABEL_5:
-          v8 = [v5 objectForKeyedSubscript:@"displayCode"];
+          v8 = [codeCopy objectForKeyedSubscript:@"displayCode"];
           if (v8)
           {
             v9 = v8;
-            v10 = [v5 objectForKeyedSubscript:@"guid"];
+            v10 = [codeCopy objectForKeyedSubscript:@"guid"];
             if (v10)
             {
               v11 = v10;
-              v12 = [v5 objectForKeyedSubscript:@"timeStamp"];
+              v12 = [codeCopy objectForKeyedSubscript:@"timeStamp"];
               v13 = v12 != 0;
 
               if (!v7)
@@ -83,27 +83,27 @@ LABEL_21:
   return v13;
 }
 
-- (id)createOTCFromMessageBody:(id)a3 sender:(id)a4 guid:(id)a5
+- (id)createOTCFromMessageBody:(id)body sender:(id)sender guid:(id)guid
 {
   v76 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v64 = a4;
-  v8 = a5;
+  bodyCopy = body;
+  senderCopy = sender;
+  guidCopy = guid;
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = v8;
+      *&buf[4] = guidCopy;
       _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "Checking MessageBody with GUID:%@ for OTC", buf, 0xCu);
     }
   }
 
-  if (v7 && v64 && v8)
+  if (bodyCopy && senderCopy && guidCopy)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    if ([v7 length] > 0x264)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if ([bodyCopy length] > 0x264)
     {
       v28 = 0;
 LABEL_26:
@@ -113,15 +113,15 @@ LABEL_26:
       v73 = sub_1A8602034;
       v74 = sub_1A860220C;
       v75 = 0;
-      v30 = [v7 length];
+      v30 = [bodyCopy length];
       v31 = *MEMORY[0x1E69A5FF0];
       v65[0] = MEMORY[0x1E69E9820];
       v65[1] = 3221225472;
       v65[2] = sub_1A86FCC60;
       v65[3] = &unk_1E7827DE8;
       v65[4] = buf;
-      [v7 enumerateAttribute:v31 inRange:0 options:v30 usingBlock:{0, v65}];
-      if (!*(*&buf[8] + 40) && ![v10 count])
+      [bodyCopy enumerateAttribute:v31 inRange:0 options:v30 usingBlock:{0, v65}];
+      if (!*(*&buf[8] + 40) && ![dictionary count])
       {
         goto LABEL_44;
       }
@@ -148,12 +148,12 @@ LABEL_26:
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
           *v70 = 138412290;
-          v71 = v8;
+          v71 = guidCopy;
           _os_log_impl(&dword_1A85E5000, v35, OS_LOG_TYPE_INFO, "Detected code for GUID:%@ but it does not appear to be valid", v70, 0xCu);
         }
       }
 
-      if ([v10 count])
+      if ([dictionary count])
       {
 LABEL_36:
         v36 = [*(*&buf[8] + 40) objectForKeyedSubscript:@"displayCode"];
@@ -174,7 +174,7 @@ LABEL_36:
             if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
             {
               *v70 = 138412290;
-              v71 = v8;
+              v71 = guidCopy;
               _os_log_impl(&dword_1A85E5000, v40, OS_LOG_TYPE_INFO, "TAN found for guid %@", v70, 0xCu);
             }
           }
@@ -193,21 +193,21 @@ LABEL_36:
           if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
           {
             *v70 = 138412290;
-            v71 = v8;
+            v71 = guidCopy;
             _os_log_impl(&dword_1A85E5000, v46, OS_LOG_TYPE_INFO, "OTC found for guid %@", v70, 0xCu);
           }
         }
 
         v47 = [*(*&buf[8] + 40) objectForKeyedSubscript:@"code"];
-        [v10 setObject:v47 forKeyedSubscript:@"code"];
+        [dictionary setObject:v47 forKeyedSubscript:@"code"];
 
-        [v10 setObject:v28 forKeyedSubscript:@"displayCode"];
-        [v10 setObject:v64 forKeyedSubscript:@"handle"];
-        [v10 setObject:v8 forKeyedSubscript:@"guid"];
-        v48 = [MEMORY[0x1E695DF00] date];
-        [v10 setObject:v48 forKeyedSubscript:@"timeStamp"];
+        [dictionary setObject:v28 forKeyedSubscript:@"displayCode"];
+        [dictionary setObject:senderCopy forKeyedSubscript:@"handle"];
+        [dictionary setObject:guidCopy forKeyedSubscript:@"guid"];
+        date = [MEMORY[0x1E695DF00] date];
+        [dictionary setObject:date forKeyedSubscript:@"timeStamp"];
 
-        v45 = [v10 copy];
+        v45 = [dictionary copy];
       }
 
       else
@@ -221,12 +221,12 @@ LABEL_44:
       goto LABEL_78;
     }
 
-    v11 = [v7 string];
-    v12 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v13 = [v11 componentsSeparatedByCharactersInSet:v12];
+    string = [bodyCopy string];
+    newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    v13 = [string componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
-    v14 = [v13 lastObject];
-    if (!v14)
+    lastObject = [v13 lastObject];
+    if (!lastObject)
     {
       v28 = 0;
 LABEL_25:
@@ -234,29 +234,29 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v63 = [MEMORY[0x1E695DF70] array];
-    v15 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:v14];
+    array = [MEMORY[0x1E695DF70] array];
+    v15 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:lastObject];
     [v15 setCharactersToBeSkipped:0];
     if ([v15 scanString:@"@" intoString:0])
     {
       v62 = [v15 scanString:@"@" intoString:0];
-      v16 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
       v69 = 0;
-      v17 = [v15 scanUpToCharactersFromSet:v16 intoString:&v69];
+      v17 = [v15 scanUpToCharactersFromSet:whitespaceCharacterSet intoString:&v69];
       v18 = v69;
 
       if (v17)
       {
-        v19 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v20 = [v15 scanCharactersFromSet:v19 intoString:0];
+        whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v20 = [v15 scanCharactersFromSet:whitespaceCharacterSet2 intoString:0];
 
         if (v20)
         {
           if ([v15 scanString:@"#" intoString:0])
           {
-            v21 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+            whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
             v68 = 0;
-            v22 = [v15 scanUpToCharactersFromSet:v21 intoString:&v68];
+            v22 = [v15 scanUpToCharactersFromSet:whitespaceAndNewlineCharacterSet intoString:&v68];
             v61 = v68;
 
             if (!v22)
@@ -268,16 +268,16 @@ LABEL_70:
               goto LABEL_23;
             }
 
-            v23 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-            v24 = [v15 scanCharactersFromSet:v23 intoString:0];
+            whitespaceCharacterSet3 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+            v24 = [v15 scanCharactersFromSet:whitespaceCharacterSet3 intoString:0];
 
             if (v24)
             {
               if ([v15 scanString:@"%" intoString:0])
               {
-                v25 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+                whitespaceAndNewlineCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
                 v67 = 0;
-                v26 = [v15 scanUpToCharactersFromSet:v25 intoString:&v67];
+                v26 = [v15 scanUpToCharactersFromSet:whitespaceAndNewlineCharacterSet2 intoString:&v67];
                 v27 = v67;
 
                 if (!v26)
@@ -292,29 +292,29 @@ LABEL_57:
                   if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
                   {
                     *buf = 138412290;
-                    *&buf[4] = v8;
+                    *&buf[4] = guidCopy;
                     _os_log_impl(&dword_1A85E5000, v54, OS_LOG_TYPE_INFO, "Found formatted domain and code for GUID %@", buf, 0xCu);
                   }
                 }
 
-                [v10 setObject:v61 forKeyedSubscript:@"machineReadableCode"];
-                [v10 setObject:v18 forKeyedSubscript:@"domain"];
+                [dictionary setObject:v61 forKeyedSubscript:@"machineReadableCode"];
+                [dictionary setObject:v18 forKeyedSubscript:@"domain"];
                 if (v62)
                 {
-                  [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"domainStrict"];
+                  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"domainStrict"];
                 }
 
                 if (v27)
                 {
-                  [v10 setObject:v27 forKeyedSubscript:@"embeddedDomain"];
+                  [dictionary setObject:v27 forKeyedSubscript:@"embeddedDomain"];
                 }
 
-                else if ([v63 count])
+                else if ([array count])
                 {
-                  v55 = [v63 firstObject];
-                  [v10 setObject:v55 forKeyedSubscript:@"embeddedDomain"];
+                  firstObject = [array firstObject];
+                  [dictionary setObject:firstObject forKeyedSubscript:@"embeddedDomain"];
 
-                  [v10 setObject:v63 forKeyedSubscript:@"embeddedDomains"];
+                  [dictionary setObject:array forKeyedSubscript:@"embeddedDomains"];
                 }
 
                 v28 = v61;
@@ -324,9 +324,9 @@ LABEL_57:
               for (i = [v15 isAtEnd]; (i & 1) == 0 && objc_msgSend(v15, "scanString:intoString:", @"@", 0); i = objc_msgSend(v15, "isAtEnd"))
               {
                 v59 = [v15 scanString:@"@" intoString:0];
-                v50 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+                whitespaceCharacterSet4 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
                 v66 = 0;
-                v51 = [v15 scanUpToCharactersFromSet:v50 intoString:&v66];
+                v51 = [v15 scanUpToCharactersFromSet:whitespaceCharacterSet4 intoString:&v66];
                 v60 = v66;
 
                 if ((v51 & 1) == 0)
@@ -335,12 +335,12 @@ LABEL_57:
                   goto LABEL_69;
                 }
 
-                [v63 addObject:v60];
+                [array addObject:v60];
                 v52 = [MEMORY[0x1E696AD98] numberWithBool:v59];
-                [v63 addObject:v52];
+                [array addObject:v52];
 
-                v53 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-                [v15 scanCharactersFromSet:v53 intoString:0];
+                whitespaceAndNewlineCharacterSet3 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+                [v15 scanCharactersFromSet:whitespaceAndNewlineCharacterSet3 intoString:0];
               }
             }
 
@@ -374,16 +374,16 @@ LABEL_24:
     {
       v57 = @"NO";
       *buf = 138412802;
-      if (!v7)
+      if (!bodyCopy)
       {
         v57 = @"YES";
       }
 
       *&buf[4] = v57;
       *&buf[12] = 2112;
-      *&buf[14] = v64;
+      *&buf[14] = senderCopy;
       *&buf[22] = 2112;
-      v73 = v8;
+      v73 = guidCopy;
       _os_log_impl(&dword_1A85E5000, v56, OS_LOG_TYPE_INFO, "createOTCFromMessageBody called with bad arguments, aborting create. messagesBodyNil:%@ sender:%@ guid:%@", buf, 0x20u);
     }
   }

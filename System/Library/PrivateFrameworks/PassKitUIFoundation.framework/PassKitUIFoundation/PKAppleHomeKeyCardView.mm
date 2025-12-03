@@ -1,28 +1,28 @@
 @interface PKAppleHomeKeyCardView
-- (PKAppleHomeKeyCardView)initWithStyle:(int64_t)a3 text:(id)a4 font:(id)a5 textColor:(id)a6;
+- (PKAppleHomeKeyCardView)initWithStyle:(int64_t)style text:(id)text font:(id)font textColor:(id)color;
 - (void)layoutSubviews;
 @end
 
 @implementation PKAppleHomeKeyCardView
 
-- (PKAppleHomeKeyCardView)initWithStyle:(int64_t)a3 text:(id)a4 font:(id)a5 textColor:(id)a6
+- (PKAppleHomeKeyCardView)initWithStyle:(int64_t)style text:(id)text font:(id)font textColor:(id)color
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  textCopy = text;
+  fontCopy = font;
+  colorCopy = color;
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v14 = [v13 URLForResource:@"homekey-metalness" withExtension:@"png"];
   v15 = [v13 URLForResource:@"homekey-normal" withExtension:@"png"];
-  if (a3 > 3)
+  if (style > 3)
   {
     v18 = 0;
 LABEL_22:
-    v27 = 0;
+    selfCopy = 0;
     goto LABEL_30;
   }
 
-  v16 = dword_25E0D5C00[a3];
-  v17 = [v13 URLForResource:off_2799FFDA0[a3] withExtension:@"png"];
+  v16 = dword_25E0D5C00[style];
+  v17 = [v13 URLForResource:off_2799FFDA0[style] withExtension:@"png"];
   v18 = v17;
   if (v17)
   {
@@ -105,19 +105,19 @@ LABEL_27:
     v26[57] = v29;
 
     [v26[57] setNumberOfLines:1];
-    [v26[57] setFont:v11];
-    [v26[57] setText:v10];
-    [v26[57] setTextColor:v12];
+    [v26[57] setFont:fontCopy];
+    [v26[57] setText:textCopy];
+    [v26[57] setTextColor:colorCopy];
     [v26[57] setAdjustsFontSizeToFitWidth:1];
     [v26[57] setMinimumScaleFactor:0.8];
     [v26 addSubview:v26[57]];
   }
 
   self = v26;
-  v27 = self;
+  selfCopy = self;
 LABEL_30:
 
-  return v27;
+  return selfCopy;
 }
 
 id *__60__PKAppleHomeKeyCardView_initWithStyle_text_font_textColor___block_invoke(uint64_t a1, void *a2)

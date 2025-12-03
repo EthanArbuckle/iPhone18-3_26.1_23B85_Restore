@@ -1,8 +1,8 @@
 @interface HMMTagSessionProcessorList
-- (HMMTagSessionProcessorList)initWithWorkQueue:(id)a3;
+- (HMMTagSessionProcessorList)initWithWorkQueue:(id)queue;
 - (id)objectForChildActivity;
-- (void)addProcessor:(id)a3;
-- (void)removeProcessor:(id)a3;
+- (void)addProcessor:(id)processor;
+- (void)removeProcessor:(id)processor;
 @end
 
 @implementation HMMTagSessionProcessorList
@@ -17,42 +17,42 @@
   v8[3] = &unk_2786F9038;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_async(workQueue, v8);
   v6 = v5;
 
   return v5;
 }
 
-- (void)removeProcessor:(id)a3
+- (void)removeProcessor:(id)processor
 {
   v4 = MEMORY[0x277CBEB18];
   processors = self->_processors;
-  v6 = a3;
+  processorCopy = processor;
   v9 = [v4 arrayWithArray:processors];
-  [v9 removeObjectIdenticalTo:v6];
+  [v9 removeObjectIdenticalTo:processorCopy];
 
   v7 = [v9 copy];
   v8 = self->_processors;
   self->_processors = v7;
 }
 
-- (void)addProcessor:(id)a3
+- (void)addProcessor:(id)processor
 {
   v4 = MEMORY[0x277CBEB18];
   processors = self->_processors;
-  v6 = a3;
+  processorCopy = processor;
   v9 = [v4 arrayWithArray:processors];
-  [v9 addObject:v6];
+  [v9 addObject:processorCopy];
 
   v7 = [v9 copy];
   v8 = self->_processors;
   self->_processors = v7;
 }
 
-- (HMMTagSessionProcessorList)initWithWorkQueue:(id)a3
+- (HMMTagSessionProcessorList)initWithWorkQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = HMMTagSessionProcessorList;
   v6 = [(HMMTagSessionProcessorList *)&v10 init];
@@ -62,7 +62,7 @@
     processors = v6->_processors;
     v6->_processors = MEMORY[0x277CBEBF8];
 
-    objc_storeStrong(&v7->_workQueue, a3);
+    objc_storeStrong(&v7->_workQueue, queue);
   }
 
   return v7;

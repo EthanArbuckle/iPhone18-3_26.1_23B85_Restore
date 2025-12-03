@@ -35,12 +35,12 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WKNavigationAction *)self navigationType];
-  v7 = [(WKNavigationAction *)self _syntheticClickType];
+  navigationType = [(WKNavigationAction *)self navigationType];
+  _syntheticClickType = [(WKNavigationAction *)self _syntheticClickType];
   [(WKNavigationAction *)self _clickLocationInRootViewCoordinates];
   v9 = v8;
   [(WKNavigationAction *)self _clickLocationInRootViewCoordinates];
-  return [v3 stringWithFormat:@"<%@: %p; navigationType = %ld; syntheticClickType = %ld; position x = %.2f y = %.2f request = %@; sourceFrame = %@; targetFrame = %@>", v5, self, v6, v7, v9, v10, -[WKNavigationAction request](self, "request"), -[WKNavigationAction sourceFrame](self, "sourceFrame"), -[WKNavigationAction targetFrame](self, "targetFrame")];
+  return [v3 stringWithFormat:@"<%@: %p; navigationType = %ld; syntheticClickType = %ld; position x = %.2f y = %.2f request = %@; sourceFrame = %@; targetFrame = %@>", v5, self, navigationType, _syntheticClickType, v9, v10, -[WKNavigationAction request](self, "request"), -[WKNavigationAction sourceFrame](self, "sourceFrame"), -[WKNavigationAction targetFrame](self, "targetFrame")];
 }
 
 - (WKFrameInfo)sourceFrame

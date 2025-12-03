@@ -1,26 +1,26 @@
 @interface TSDRepTileProvider
-- (TSDRepTileProvider)initWithRep:(id)a3;
-- (void)drawTargetInLayer:(id)a3 context:(CGContext *)a4;
+- (TSDRepTileProvider)initWithRep:(id)rep;
+- (void)drawTargetInLayer:(id)layer context:(CGContext *)context;
 @end
 
 @implementation TSDRepTileProvider
 
-- (TSDRepTileProvider)initWithRep:(id)a3
+- (TSDRepTileProvider)initWithRep:(id)rep
 {
-  v5 = [a3 interactiveCanvasController];
-  v6 = [a3 i_queueForTileProvider];
-  v7 = [v5 i_tileStorage];
-  v8 = [v5 accessController];
+  interactiveCanvasController = [rep interactiveCanvasController];
+  i_queueForTileProvider = [rep i_queueForTileProvider];
+  i_tileStorage = [interactiveCanvasController i_tileStorage];
+  accessController = [interactiveCanvasController accessController];
 
-  return [(TSDTileProvider *)self initWithTarget:a3 queue:v6 storage:v7 accessController:v8];
+  return [(TSDTileProvider *)self initWithTarget:rep queue:i_queueForTileProvider storage:i_tileStorage accessController:accessController];
 }
 
-- (void)drawTargetInLayer:(id)a3 context:(CGContext *)a4
+- (void)drawTargetInLayer:(id)layer context:(CGContext *)context
 {
   mTarget = self->super.mTarget;
-  v7 = [mTarget interactiveCanvasController];
+  interactiveCanvasController = [mTarget interactiveCanvasController];
 
-  [v7 i_drawRepWithReadLock:mTarget inContext:a4 forLayer:a3];
+  [interactiveCanvasController i_drawRepWithReadLock:mTarget inContext:context forLayer:layer];
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface BMMediaAnalysisPerLibrary
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMediaAnalysisPerLibrary)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMMediaAnalysisPerLibrary)initWithLibraryType:(id)a3 imageAssetCount:(id)a4 livePhotoAssetCount:(id)a5 movieAssetCount:(id)a6 movieAssetDurations:(id)a7 editedMovieCount:(id)a8 sharedMovieCount:(id)a9 favoritedMovieCount:(id)a10 spatialMoviePercentage:(id)a11 cinematicMoviePercentage:(id)a12 slomoMoviePercentage:(id)a13 timelapsePercentage:(id)a14 portraitModePercentage:(id)a15 landscapeModePercentage:(id)a16 withHighlightsPercentage:(id)a17 withPeoplePercentage:(id)a18 withPetsPercentage:(id)a19 withNatureOrNaturalLandmarksPercentage:(id)a20 withSkylinePercentage:(id)a21 wthLandmarksPercentage:(id)a22 withActionPercentage:(id)a23 withHighMotionPercentage:(id)a24 highlightsWithPeoplePercentage:(id)a25 highlightsWithPetsPercentage:(id)a26 highlightsWithNatureOrNaturalLandmarksPercentage:(id)a27 highlightsWithSkylinePercentage:(id)a28 highlightsWithLandmarksPercentage:(id)a29 highlightsWithActionPercentage:(id)a30 highlightsWithHighMotionPercentage:(id)a31;
-- (BOOL)isEqual:(id)a3;
+- (BMMediaAnalysisPerLibrary)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMMediaAnalysisPerLibrary)initWithLibraryType:(id)type imageAssetCount:(id)count livePhotoAssetCount:(id)assetCount movieAssetCount:(id)movieAssetCount movieAssetDurations:(id)durations editedMovieCount:(id)movieCount sharedMovieCount:(id)sharedMovieCount favoritedMovieCount:(id)self0 spatialMoviePercentage:(id)self1 cinematicMoviePercentage:(id)self2 slomoMoviePercentage:(id)self3 timelapsePercentage:(id)self4 portraitModePercentage:(id)self5 landscapeModePercentage:(id)self6 withHighlightsPercentage:(id)self7 withPeoplePercentage:(id)self8 withPetsPercentage:(id)self9 withNatureOrNaturalLandmarksPercentage:(id)landmarksPercentage withSkylinePercentage:(id)skylinePercentage wthLandmarksPercentage:(id)wthLandmarksPercentage withActionPercentage:(id)actionPercentage withHighMotionPercentage:(id)motionPercentage highlightsWithPeoplePercentage:(id)withPeoplePercentage highlightsWithPetsPercentage:(id)withPetsPercentage highlightsWithNatureOrNaturalLandmarksPercentage:(id)naturalLandmarksPercentage highlightsWithSkylinePercentage:(id)withSkylinePercentage highlightsWithLandmarksPercentage:(id)withLandmarksPercentage highlightsWithActionPercentage:(id)type0 highlightsWithHighMotionPercentage:(id)type1;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMediaAnalysisPerLibrary
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMediaAnalysisPerLibrary *)self libraryType];
-    v7 = [v5 libraryType];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    libraryType = [(BMMediaAnalysisPerLibrary *)self libraryType];
+    libraryType2 = [v5 libraryType];
+    v8 = libraryType2;
+    if (libraryType == libraryType2)
     {
     }
 
     else
     {
-      v9 = [(BMMediaAnalysisPerLibrary *)self libraryType];
-      v10 = [v5 libraryType];
-      v11 = [v9 isEqual:v10];
+      libraryType3 = [(BMMediaAnalysisPerLibrary *)self libraryType];
+      libraryType4 = [v5 libraryType];
+      v11 = [libraryType3 isEqual:libraryType4];
 
       if (!v11)
       {
@@ -102,8 +102,8 @@
 
                                                           if (-[BMMediaAnalysisPerLibrary hasHighlightsWithHighMotionPercentage](self, "hasHighlightsWithHighMotionPercentage") && [v5 hasHighlightsWithHighMotionPercentage])
                                                           {
-                                                            v40 = [(BMMediaAnalysisPerLibrary *)self highlightsWithHighMotionPercentage];
-                                                            v12 = v40 == [v5 highlightsWithHighMotionPercentage];
+                                                            highlightsWithHighMotionPercentage = [(BMMediaAnalysisPerLibrary *)self highlightsWithHighMotionPercentage];
+                                                            v12 = highlightsWithHighMotionPercentage == [v5 highlightsWithHighMotionPercentage];
 LABEL_148:
 
                                                             goto LABEL_149;
@@ -150,7 +150,7 @@ LABEL_149:
 - (id)jsonDictionary
 {
   v100[29] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMediaAnalysisPerLibrary *)self libraryType];
+  libraryType = [(BMMediaAnalysisPerLibrary *)self libraryType];
   if ([(BMMediaAnalysisPerLibrary *)self hasImageAssetCount])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaAnalysisPerLibrary imageAssetCount](self, "imageAssetCount")}];
@@ -432,270 +432,270 @@ LABEL_149:
   }
 
   v99[0] = @"libraryType";
-  v10 = v3;
-  if (!v3)
+  null = libraryType;
+  if (!libraryType)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v69 = v10;
-  v100[0] = v10;
+  v69 = null;
+  v100[0] = null;
   v99[1] = @"imageAssetCount";
-  v11 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v68 = v11;
-  v100[1] = v11;
+  v68 = null2;
+  v100[1] = null2;
   v99[2] = @"livePhotoAssetCount";
-  v12 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v67 = v12;
-  v100[2] = v12;
+  v67 = null3;
+  v100[2] = null3;
   v99[3] = @"movieAssetCount";
-  v13 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v66 = v13;
-  v100[3] = v13;
+  v66 = null4;
+  v100[3] = null4;
   v99[4] = @"movieAssetDurations";
-  v14 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v65 = v14;
-  v100[4] = v14;
+  v65 = null5;
+  v100[4] = null5;
   v99[5] = @"editedMovieCount";
-  v15 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v64 = v15;
-  v100[5] = v15;
+  v64 = null6;
+  v100[5] = null6;
   v99[6] = @"sharedMovieCount";
-  v16 = v9;
+  null7 = v9;
   if (!v9)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v63 = v16;
-  v100[6] = v16;
+  v63 = null7;
+  v100[6] = null7;
   v99[7] = @"favoritedMovieCount";
-  v17 = v98;
+  null8 = v98;
   if (!v98)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v100[7] = v17;
+  v100[7] = null8;
   v99[8] = @"spatialMoviePercentage";
-  v18 = v97;
+  null9 = v97;
   if (!v97)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
   v19 = v9;
-  v100[8] = v18;
+  v100[8] = null9;
   v99[9] = @"cinematicMoviePercentage";
-  v20 = v96;
+  null10 = v96;
   if (!v96)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
   v21 = v4;
-  v60 = v20;
-  v100[9] = v20;
+  v60 = null10;
+  v100[9] = null10;
   v99[10] = @"slomoMoviePercentage";
-  v22 = v95;
+  null11 = v95;
   if (!v95)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
   v23 = v5;
-  v72 = v22;
-  v100[10] = v22;
+  v72 = null11;
+  v100[10] = null11;
   v99[11] = @"timelapsePercentage";
-  v24 = v94;
+  null12 = v94;
   if (!v94)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v3;
-  v71 = v24;
-  v100[11] = v24;
+  v25 = libraryType;
+  v71 = null12;
+  v100[11] = null12;
   v99[12] = @"portraitModePercentage";
-  v26 = v93;
+  null13 = v93;
   if (!v93)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v26;
-  v100[12] = v26;
+  v27 = null13;
+  v100[12] = null13;
   v99[13] = @"landscapeModePercentage";
-  v28 = v92;
+  null14 = v92;
   if (!v92)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v59 = v28;
-  v100[13] = v28;
+  v59 = null14;
+  v100[13] = null14;
   v99[14] = @"withHighlightsPercentage";
-  v29 = v91;
+  null15 = v91;
   if (!v91)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v58 = v29;
-  v100[14] = v29;
+  v58 = null15;
+  v100[14] = null15;
   v99[15] = @"withPeoplePercentage";
-  v30 = v90;
+  null16 = v90;
   if (!v90)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v57 = v30;
-  v100[15] = v30;
+  v57 = null16;
+  v100[15] = null16;
   v99[16] = @"withPetsPercentage";
-  v31 = v89;
+  null17 = v89;
   if (!v89)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null17 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v56 = v31;
-  v100[16] = v31;
+  v56 = null17;
+  v100[16] = null17;
   v99[17] = @"withNatureOrNaturalLandmarksPercentage";
-  v32 = v88;
+  null18 = v88;
   if (!v88)
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v55 = v32;
-  v100[17] = v32;
+  v55 = null18;
+  v100[17] = null18;
   v99[18] = @"withSkylinePercentage";
-  v33 = v87;
+  null19 = v87;
   if (!v87)
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null19 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v54 = v33;
-  v100[18] = v33;
+  v54 = null19;
+  v100[18] = null19;
   v99[19] = @"wthLandmarksPercentage";
-  v34 = v86;
+  null20 = v86;
   if (!v86)
   {
-    v34 = [MEMORY[0x1E695DFB0] null];
+    null20 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v53 = v34;
-  v100[19] = v34;
+  v53 = null20;
+  v100[19] = null20;
   v99[20] = @"withActionPercentage";
-  v35 = v85;
+  null21 = v85;
   if (!v85)
   {
-    v35 = [MEMORY[0x1E695DFB0] null];
+    null21 = [MEMORY[0x1E695DFB0] null];
   }
 
   v74 = v8;
-  v52 = v35;
-  v100[20] = v35;
+  v52 = null21;
+  v100[20] = null21;
   v99[21] = @"withHighMotionPercentage";
-  v36 = v84;
+  null22 = v84;
   if (!v84)
   {
-    v36 = [MEMORY[0x1E695DFB0] null];
+    null22 = [MEMORY[0x1E695DFB0] null];
   }
 
   v76 = v25;
-  v51 = v36;
-  v100[21] = v36;
+  v51 = null22;
+  v100[21] = null22;
   v99[22] = @"highlightsWithPeoplePercentage";
-  v37 = v83;
+  null23 = v83;
   if (!v83)
   {
-    v37 = [MEMORY[0x1E695DFB0] null];
+    null23 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v61 = v18;
+  v61 = null9;
   v75 = v6;
-  v49 = v37;
-  v100[22] = v37;
+  v49 = null23;
+  v100[22] = null23;
   v99[23] = @"highlightsWithPetsPercentage";
-  v38 = v82;
+  null24 = v82;
   v39 = v23;
   if (!v82)
   {
-    v38 = [MEMORY[0x1E695DFB0] null];
+    null24 = [MEMORY[0x1E695DFB0] null];
   }
 
   v73 = v21;
-  v100[23] = v38;
+  v100[23] = null24;
   v99[24] = @"highlightsWithNatureOrNaturalLandmarksPercentage";
-  v40 = v81;
+  null25 = v81;
   if (!v81)
   {
-    v40 = [MEMORY[0x1E695DFB0] null];
+    null25 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v62 = v17;
-  v100[24] = v40;
+  v62 = null8;
+  v100[24] = null25;
   v99[25] = @"highlightsWithSkylinePercentage";
-  v41 = v80;
+  null26 = v80;
   if (!v80)
   {
-    v41 = [MEMORY[0x1E695DFB0] null];
+    null26 = [MEMORY[0x1E695DFB0] null];
   }
 
   v42 = v39;
-  v100[25] = v41;
+  v100[25] = null26;
   v99[26] = @"highlightsWithLandmarksPercentage";
-  v43 = v79;
+  null27 = v79;
   if (!v79)
   {
-    v43 = [MEMORY[0x1E695DFB0] null];
+    null27 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v100[26] = v43;
+  v100[26] = null27;
   v99[27] = @"highlightsWithActionPercentage";
-  v44 = v78;
+  null28 = v78;
   if (!v78)
   {
-    v44 = [MEMORY[0x1E695DFB0] null];
+    null28 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v100[27] = v44;
+  v100[27] = null28;
   v99[28] = @"highlightsWithHighMotionPercentage";
-  v45 = v77;
+  null29 = v77;
   if (!v77)
   {
-    v45 = [MEMORY[0x1E695DFB0] null];
+    null29 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v100[28] = v45;
+  v100[28] = null29;
   v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v100 forKeys:v99 count:{29, v49}];
   if (!v77)
   {
@@ -913,22 +913,22 @@ LABEL_193:
   return v70;
 }
 
-- (BMMediaAnalysisPerLibrary)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMediaAnalysisPerLibrary)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v318[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"libraryType"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"libraryType"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v259 = 0;
 LABEL_4:
-    v7 = [v5 objectForKeyedSubscript:@"imageAssetCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"imageAssetCount"];
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v258 = 0;
           v61 = 0;
@@ -945,7 +945,7 @@ LABEL_4:
         v9 = v68;
         v258 = 0;
         v61 = 0;
-        *a4 = [v66 initWithDomain:v69 code:2 userInfo:v8];
+        *error = [v66 initWithDomain:v69 code:2 userInfo:v8];
         goto LABEL_127;
       }
 
@@ -957,13 +957,13 @@ LABEL_4:
       v258 = 0;
     }
 
-    v8 = [v5 objectForKeyedSubscript:@"livePhotoAssetCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"livePhotoAssetCount"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v9 = 0;
           v61 = 0;
@@ -979,7 +979,7 @@ LABEL_4:
         v72 = [v70 initWithDomain:v71 code:2 userInfo:v59];
         v9 = 0;
         v61 = 0;
-        *a4 = v72;
+        *error = v72;
 LABEL_126:
 
 LABEL_127:
@@ -994,14 +994,14 @@ LABEL_127:
       v9 = 0;
     }
 
-    v10 = [v5 objectForKeyedSubscript:@"movieAssetCount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"movieAssetCount"];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v59 = v10;
-        if (!a4)
+        if (!error)
         {
           v256 = 0;
           v61 = 0;
@@ -1011,30 +1011,30 @@ LABEL_127:
         v257 = objc_alloc(MEMORY[0x1E696ABC0]);
         v253 = *MEMORY[0x1E698F240];
         v311 = *MEMORY[0x1E696A578];
-        v73 = a4;
+        errorCopy = error;
         v254 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"movieAssetCount"];
         v312 = v254;
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v312 forKeys:&v311 count:1];
         v74 = [v257 initWithDomain:v253 code:2 userInfo:v11];
         v256 = 0;
         v61 = 0;
-        *v73 = v74;
+        *errorCopy = v74;
         goto LABEL_125;
       }
 
-      v251 = a4;
+      errorCopy3 = error;
       v252 = v10;
       v256 = v10;
     }
 
     else
     {
-      v251 = a4;
+      errorCopy3 = error;
       v252 = v10;
       v256 = 0;
     }
 
-    v11 = [v5 objectForKeyedSubscript:@"movieAssetDurations"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"movieAssetDurations"];
     if (v11)
     {
       objc_opt_class();
@@ -1049,7 +1049,7 @@ LABEL_127:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v251)
+          if (!errorCopy3)
           {
             v254 = 0;
             v61 = 0;
@@ -1070,7 +1070,7 @@ LABEL_127:
           v78 = [v255 initWithDomain:v77 code:2 userInfo:?];
           v254 = 0;
           v61 = 0;
-          *v251 = v78;
+          *errorCopy3 = v78;
           v59 = v252;
 LABEL_124:
 
@@ -1088,7 +1088,7 @@ LABEL_125:
       v248 = 0;
     }
 
-    v12 = [v5 objectForKeyedSubscript:@"editedMovieCount"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"editedMovieCount"];
     v254 = v11;
     v250 = v12;
     if (v12 && (v13 = v12, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -1096,7 +1096,7 @@ LABEL_125:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v251)
+        if (!errorCopy3)
         {
           v249 = 0;
           v61 = 0;
@@ -1117,7 +1117,7 @@ LABEL_125:
         v247 = v81;
         v249 = 0;
         v61 = 0;
-        *v251 = [v79 initWithDomain:v82 code:2 userInfo:?];
+        *errorCopy3 = [v79 initWithDomain:v82 code:2 userInfo:?];
         goto LABEL_183;
       }
 
@@ -1129,7 +1129,7 @@ LABEL_125:
       v249 = 0;
     }
 
-    v14 = [v5 objectForKeyedSubscript:@"sharedMovieCount"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"sharedMovieCount"];
     v247 = v14;
     if (!v14 || (v15 = v14, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -1142,20 +1142,20 @@ LABEL_125:
     {
       v246 = v15;
 LABEL_33:
-      v16 = [v5 objectForKeyedSubscript:@"favoritedMovieCount"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"favoritedMovieCount"];
       if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v216 = v16;
         v244 = 0;
 LABEL_36:
-        v17 = [v5 objectForKeyedSubscript:@"spatialMoviePercentage"];
+        v17 = [dictionaryCopy objectForKeyedSubscript:@"spatialMoviePercentage"];
         v218 = v17;
         if (v17 && (v18 = v17, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v251)
+            if (!errorCopy3)
             {
               v217 = 0;
               v61 = 0;
@@ -1177,7 +1177,7 @@ LABEL_36:
             v215 = v93;
             v217 = 0;
             v61 = 0;
-            *v251 = [v91 initWithDomain:v94 code:2 userInfo:?];
+            *errorCopy3 = [v91 initWithDomain:v94 code:2 userInfo:?];
             goto LABEL_200;
           }
 
@@ -1189,7 +1189,7 @@ LABEL_36:
           v217 = 0;
         }
 
-        v19 = [v5 objectForKeyedSubscript:@"cinematicMoviePercentage"];
+        v19 = [dictionaryCopy objectForKeyedSubscript:@"cinematicMoviePercentage"];
         v215 = v19;
         if (!v19 || (v20 = v19, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
@@ -1202,7 +1202,7 @@ LABEL_36:
         {
           v214 = v20;
 LABEL_42:
-          v21 = [v5 objectForKeyedSubscript:@"slomoMoviePercentage"];
+          v21 = [dictionaryCopy objectForKeyedSubscript:@"slomoMoviePercentage"];
           v213 = v21;
           if (!v21 || (v22 = v21, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
@@ -1215,7 +1215,7 @@ LABEL_42:
           {
             v212 = v22;
 LABEL_45:
-            v23 = [v5 objectForKeyedSubscript:@"timelapsePercentage"];
+            v23 = [dictionaryCopy objectForKeyedSubscript:@"timelapsePercentage"];
             v211 = v23;
             if (!v23 || (v24 = v23, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
@@ -1228,7 +1228,7 @@ LABEL_45:
             {
               v210 = v24;
 LABEL_48:
-              v25 = [v5 objectForKeyedSubscript:@"portraitModePercentage"];
+              v25 = [dictionaryCopy objectForKeyedSubscript:@"portraitModePercentage"];
               v209 = v25;
               if (!v25 || (v26 = v25, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
@@ -1241,7 +1241,7 @@ LABEL_48:
               {
                 v208 = v26;
 LABEL_51:
-                v27 = [v5 objectForKeyedSubscript:@"landscapeModePercentage"];
+                v27 = [dictionaryCopy objectForKeyedSubscript:@"landscapeModePercentage"];
                 v207 = v27;
                 if (!v27 || (v28 = v27, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
@@ -1254,7 +1254,7 @@ LABEL_51:
                 {
                   v206 = v28;
 LABEL_54:
-                  v29 = [v5 objectForKeyedSubscript:@"withHighlightsPercentage"];
+                  v29 = [dictionaryCopy objectForKeyedSubscript:@"withHighlightsPercentage"];
                   v205 = v29;
                   if (!v29 || (v30 = v29, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                   {
@@ -1267,7 +1267,7 @@ LABEL_54:
                   {
                     v204 = v30;
 LABEL_57:
-                    v31 = [v5 objectForKeyedSubscript:@"withPeoplePercentage"];
+                    v31 = [dictionaryCopy objectForKeyedSubscript:@"withPeoplePercentage"];
                     v203 = v31;
                     if (!v31 || (v32 = v31, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
@@ -1280,7 +1280,7 @@ LABEL_57:
                     {
                       v202 = v32;
 LABEL_60:
-                      v33 = [v5 objectForKeyedSubscript:@"withPetsPercentage"];
+                      v33 = [dictionaryCopy objectForKeyedSubscript:@"withPetsPercentage"];
                       v200 = v33;
                       if (!v33 || (v34 = v33, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                       {
@@ -1293,7 +1293,7 @@ LABEL_60:
                       {
                         v201 = v34;
 LABEL_63:
-                        v35 = [v5 objectForKeyedSubscript:@"withNatureOrNaturalLandmarksPercentage"];
+                        v35 = [dictionaryCopy objectForKeyedSubscript:@"withNatureOrNaturalLandmarksPercentage"];
                         v198 = v35;
                         if (!v35 || (v36 = v35, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                         {
@@ -1306,7 +1306,7 @@ LABEL_63:
                         {
                           v199 = v36;
 LABEL_66:
-                          v37 = [v5 objectForKeyedSubscript:@"withSkylinePercentage"];
+                          v37 = [dictionaryCopy objectForKeyedSubscript:@"withSkylinePercentage"];
                           v196 = v37;
                           if (!v37 || (v38 = v37, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                           {
@@ -1319,7 +1319,7 @@ LABEL_66:
                           {
                             v197 = v38;
 LABEL_69:
-                            v39 = [v5 objectForKeyedSubscript:@"wthLandmarksPercentage"];
+                            v39 = [dictionaryCopy objectForKeyedSubscript:@"wthLandmarksPercentage"];
                             v194 = v39;
                             if (!v39 || (v40 = v39, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                             {
@@ -1332,7 +1332,7 @@ LABEL_69:
                             {
                               v195 = v40;
 LABEL_72:
-                              v41 = [v5 objectForKeyedSubscript:@"withActionPercentage"];
+                              v41 = [dictionaryCopy objectForKeyedSubscript:@"withActionPercentage"];
                               v192 = v41;
                               if (!v41 || (v42 = v41, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                               {
@@ -1345,7 +1345,7 @@ LABEL_72:
                               {
                                 v193 = v42;
 LABEL_75:
-                                v43 = [v5 objectForKeyedSubscript:@"withHighMotionPercentage"];
+                                v43 = [dictionaryCopy objectForKeyedSubscript:@"withHighMotionPercentage"];
                                 v190 = v43;
                                 if (!v43 || (v44 = v43, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                 {
@@ -1358,7 +1358,7 @@ LABEL_75:
                                 {
                                   v191 = v44;
 LABEL_78:
-                                  v45 = [v5 objectForKeyedSubscript:@"highlightsWithPeoplePercentage"];
+                                  v45 = [dictionaryCopy objectForKeyedSubscript:@"highlightsWithPeoplePercentage"];
                                   v188 = v45;
                                   if (!v45 || (v46 = v45, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                   {
@@ -1371,7 +1371,7 @@ LABEL_78:
                                   {
                                     v189 = v46;
 LABEL_81:
-                                    v47 = [v5 objectForKeyedSubscript:@"highlightsWithPetsPercentage"];
+                                    v47 = [dictionaryCopy objectForKeyedSubscript:@"highlightsWithPetsPercentage"];
                                     v186 = v47;
                                     if (!v47 || (v48 = v47, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                     {
@@ -1384,7 +1384,7 @@ LABEL_81:
                                     {
                                       v187 = v48;
 LABEL_84:
-                                      v49 = [v5 objectForKeyedSubscript:@"highlightsWithNatureOrNaturalLandmarksPercentage"];
+                                      v49 = [dictionaryCopy objectForKeyedSubscript:@"highlightsWithNatureOrNaturalLandmarksPercentage"];
                                       v184 = v49;
                                       if (!v49 || (v50 = v49, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                       {
@@ -1397,7 +1397,7 @@ LABEL_84:
                                       {
                                         v185 = v50;
 LABEL_87:
-                                        v51 = [v5 objectForKeyedSubscript:@"highlightsWithSkylinePercentage"];
+                                        v51 = [dictionaryCopy objectForKeyedSubscript:@"highlightsWithSkylinePercentage"];
                                         v181 = v51;
                                         if (!v51 || (v52 = v51, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                         {
@@ -1410,7 +1410,7 @@ LABEL_87:
                                         {
                                           v183 = v52;
 LABEL_90:
-                                          v53 = [v5 objectForKeyedSubscript:@"highlightsWithLandmarksPercentage"];
+                                          v53 = [dictionaryCopy objectForKeyedSubscript:@"highlightsWithLandmarksPercentage"];
                                           v179 = v53;
                                           if (!v53 || (v54 = v53, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                           {
@@ -1423,7 +1423,7 @@ LABEL_90:
                                           {
                                             v182 = v54;
 LABEL_93:
-                                            v55 = [v5 objectForKeyedSubscript:@"highlightsWithActionPercentage"];
+                                            v55 = [dictionaryCopy objectForKeyedSubscript:@"highlightsWithActionPercentage"];
                                             v178 = v55;
                                             if (!v55 || (v56 = v55, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                             {
@@ -1436,7 +1436,7 @@ LABEL_93:
                                             {
                                               v180 = v56;
 LABEL_96:
-                                              v57 = [v5 objectForKeyedSubscript:@"highlightsWithHighMotionPercentage"];
+                                              v57 = [dictionaryCopy objectForKeyedSubscript:@"highlightsWithHighMotionPercentage"];
                                               v177 = v57;
                                               if (v57)
                                               {
@@ -1448,7 +1448,7 @@ LABEL_96:
                                                   v59 = v252;
                                                   if ((objc_opt_isKindOfClass() & 1) == 0)
                                                   {
-                                                    if (v251)
+                                                    if (errorCopy3)
                                                     {
                                                       v171 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                       v243 = v9;
@@ -1461,7 +1461,7 @@ LABEL_96:
                                                       v59 = v252;
                                                       v176 = v172;
                                                       v9 = v243;
-                                                      *v251 = [v175 initWithDomain:v176 code:2 userInfo:v174];
+                                                      *errorCopy3 = [v175 initWithDomain:v176 code:2 userInfo:v174];
                                                     }
 
                                                     v60 = 0;
@@ -1521,7 +1521,7 @@ LABEL_123:
                                               goto LABEL_124;
                                             }
 
-                                            if (v251)
+                                            if (errorCopy3)
                                             {
                                               v167 = objc_alloc(MEMORY[0x1E696ABC0]);
                                               v242 = v9;
@@ -1535,7 +1535,7 @@ LABEL_123:
                                               v177 = v169;
                                               v180 = 0;
                                               v61 = 0;
-                                              *v251 = [v167 initWithDomain:v170 code:2 userInfo:?];
+                                              *errorCopy3 = [v167 initWithDomain:v170 code:2 userInfo:?];
                                               v59 = v252;
                                               goto LABEL_101;
                                             }
@@ -1549,7 +1549,7 @@ LABEL_285:
                                             goto LABEL_102;
                                           }
 
-                                          if (v251)
+                                          if (errorCopy3)
                                           {
                                             v163 = objc_alloc(MEMORY[0x1E696ABC0]);
                                             v241 = v9;
@@ -1563,7 +1563,7 @@ LABEL_285:
                                             v178 = v165;
                                             v182 = 0;
                                             v61 = 0;
-                                            *v251 = [v163 initWithDomain:v166 code:2 userInfo:?];
+                                            *errorCopy3 = [v163 initWithDomain:v166 code:2 userInfo:?];
                                             goto LABEL_285;
                                           }
 
@@ -1576,7 +1576,7 @@ LABEL_283:
                                           goto LABEL_103;
                                         }
 
-                                        if (v251)
+                                        if (errorCopy3)
                                         {
                                           v159 = objc_alloc(MEMORY[0x1E696ABC0]);
                                           v240 = v9;
@@ -1590,7 +1590,7 @@ LABEL_283:
                                           v179 = v161;
                                           v183 = 0;
                                           v61 = 0;
-                                          *v251 = [v159 initWithDomain:v162 code:2 userInfo:?];
+                                          *errorCopy3 = [v159 initWithDomain:v162 code:2 userInfo:?];
                                           goto LABEL_283;
                                         }
 
@@ -1603,7 +1603,7 @@ LABEL_281:
                                         goto LABEL_104;
                                       }
 
-                                      if (v251)
+                                      if (errorCopy3)
                                       {
                                         v155 = objc_alloc(MEMORY[0x1E696ABC0]);
                                         v239 = v9;
@@ -1617,7 +1617,7 @@ LABEL_281:
                                         v181 = v157;
                                         v185 = 0;
                                         v61 = 0;
-                                        *v251 = [v155 initWithDomain:v158 code:2 userInfo:?];
+                                        *errorCopy3 = [v155 initWithDomain:v158 code:2 userInfo:?];
                                         goto LABEL_281;
                                       }
 
@@ -1630,7 +1630,7 @@ LABEL_279:
                                       goto LABEL_105;
                                     }
 
-                                    if (v251)
+                                    if (errorCopy3)
                                     {
                                       v151 = objc_alloc(MEMORY[0x1E696ABC0]);
                                       v238 = v9;
@@ -1644,7 +1644,7 @@ LABEL_279:
                                       v184 = v153;
                                       v187 = 0;
                                       v61 = 0;
-                                      *v251 = [v151 initWithDomain:v154 code:2 userInfo:?];
+                                      *errorCopy3 = [v151 initWithDomain:v154 code:2 userInfo:?];
                                       goto LABEL_279;
                                     }
 
@@ -1657,7 +1657,7 @@ LABEL_277:
                                     goto LABEL_106;
                                   }
 
-                                  if (v251)
+                                  if (errorCopy3)
                                   {
                                     v147 = objc_alloc(MEMORY[0x1E696ABC0]);
                                     v237 = v9;
@@ -1671,7 +1671,7 @@ LABEL_277:
                                     v186 = v149;
                                     v189 = 0;
                                     v61 = 0;
-                                    *v251 = [v147 initWithDomain:v150 code:2 userInfo:?];
+                                    *errorCopy3 = [v147 initWithDomain:v150 code:2 userInfo:?];
                                     goto LABEL_277;
                                   }
 
@@ -1684,7 +1684,7 @@ LABEL_272:
                                   goto LABEL_107;
                                 }
 
-                                if (v251)
+                                if (errorCopy3)
                                 {
                                   v143 = objc_alloc(MEMORY[0x1E696ABC0]);
                                   v236 = v9;
@@ -1698,7 +1698,7 @@ LABEL_272:
                                   v188 = v145;
                                   v191 = 0;
                                   v61 = 0;
-                                  *v251 = [v143 initWithDomain:v146 code:2 userInfo:?];
+                                  *errorCopy3 = [v143 initWithDomain:v146 code:2 userInfo:?];
                                   goto LABEL_272;
                                 }
 
@@ -1711,7 +1711,7 @@ LABEL_268:
                                 goto LABEL_108;
                               }
 
-                              if (v251)
+                              if (errorCopy3)
                               {
                                 v139 = objc_alloc(MEMORY[0x1E696ABC0]);
                                 v235 = v9;
@@ -1725,7 +1725,7 @@ LABEL_268:
                                 v190 = v141;
                                 v193 = 0;
                                 v61 = 0;
-                                *v251 = [v139 initWithDomain:v142 code:2 userInfo:?];
+                                *errorCopy3 = [v139 initWithDomain:v142 code:2 userInfo:?];
                                 goto LABEL_268;
                               }
 
@@ -1738,7 +1738,7 @@ LABEL_264:
                               goto LABEL_109;
                             }
 
-                            if (v251)
+                            if (errorCopy3)
                             {
                               v135 = objc_alloc(MEMORY[0x1E696ABC0]);
                               v234 = v9;
@@ -1752,7 +1752,7 @@ LABEL_264:
                               v192 = v137;
                               v195 = 0;
                               v61 = 0;
-                              *v251 = [v135 initWithDomain:v138 code:2 userInfo:?];
+                              *errorCopy3 = [v135 initWithDomain:v138 code:2 userInfo:?];
                               goto LABEL_264;
                             }
 
@@ -1765,7 +1765,7 @@ LABEL_260:
                             goto LABEL_110;
                           }
 
-                          if (v251)
+                          if (errorCopy3)
                           {
                             v131 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v233 = v9;
@@ -1779,7 +1779,7 @@ LABEL_260:
                             v194 = v133;
                             v197 = 0;
                             v61 = 0;
-                            *v251 = [v131 initWithDomain:v134 code:2 userInfo:?];
+                            *errorCopy3 = [v131 initWithDomain:v134 code:2 userInfo:?];
                             goto LABEL_260;
                           }
 
@@ -1792,7 +1792,7 @@ LABEL_254:
                           goto LABEL_111;
                         }
 
-                        if (v251)
+                        if (errorCopy3)
                         {
                           v127 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v232 = v9;
@@ -1806,7 +1806,7 @@ LABEL_254:
                           v196 = v129;
                           v199 = 0;
                           v61 = 0;
-                          *v251 = [v127 initWithDomain:v130 code:2 userInfo:?];
+                          *errorCopy3 = [v127 initWithDomain:v130 code:2 userInfo:?];
                           goto LABEL_254;
                         }
 
@@ -1819,7 +1819,7 @@ LABEL_248:
                         goto LABEL_112;
                       }
 
-                      if (v251)
+                      if (errorCopy3)
                       {
                         v123 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v231 = v9;
@@ -1833,7 +1833,7 @@ LABEL_248:
                         v198 = v125;
                         v201 = 0;
                         v61 = 0;
-                        *v251 = [v123 initWithDomain:v126 code:2 userInfo:?];
+                        *errorCopy3 = [v123 initWithDomain:v126 code:2 userInfo:?];
                         goto LABEL_248;
                       }
 
@@ -1846,7 +1846,7 @@ LABEL_242:
                       goto LABEL_113;
                     }
 
-                    if (v251)
+                    if (errorCopy3)
                     {
                       v119 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v230 = v9;
@@ -1860,7 +1860,7 @@ LABEL_242:
                       v200 = v121;
                       v202 = 0;
                       v61 = 0;
-                      *v251 = [v119 initWithDomain:v122 code:2 userInfo:?];
+                      *errorCopy3 = [v119 initWithDomain:v122 code:2 userInfo:?];
                       goto LABEL_242;
                     }
 
@@ -1873,7 +1873,7 @@ LABEL_236:
                     goto LABEL_114;
                   }
 
-                  if (v251)
+                  if (errorCopy3)
                   {
                     v115 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v229 = v9;
@@ -1887,7 +1887,7 @@ LABEL_236:
                     v203 = v117;
                     v204 = 0;
                     v61 = 0;
-                    *v251 = [v115 initWithDomain:v118 code:2 userInfo:?];
+                    *errorCopy3 = [v115 initWithDomain:v118 code:2 userInfo:?];
                     goto LABEL_236;
                   }
 
@@ -1900,7 +1900,7 @@ LABEL_230:
                   goto LABEL_115;
                 }
 
-                if (v251)
+                if (errorCopy3)
                 {
                   v111 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v228 = v9;
@@ -1914,7 +1914,7 @@ LABEL_230:
                   v205 = v113;
                   v206 = 0;
                   v61 = 0;
-                  *v251 = [v111 initWithDomain:v114 code:2 userInfo:?];
+                  *errorCopy3 = [v111 initWithDomain:v114 code:2 userInfo:?];
                   goto LABEL_230;
                 }
 
@@ -1927,7 +1927,7 @@ LABEL_224:
                 goto LABEL_116;
               }
 
-              if (v251)
+              if (errorCopy3)
               {
                 v107 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v227 = v9;
@@ -1941,7 +1941,7 @@ LABEL_224:
                 v207 = v109;
                 v208 = 0;
                 v61 = 0;
-                *v251 = [v107 initWithDomain:v110 code:2 userInfo:?];
+                *errorCopy3 = [v107 initWithDomain:v110 code:2 userInfo:?];
                 goto LABEL_224;
               }
 
@@ -1954,7 +1954,7 @@ LABEL_218:
               goto LABEL_117;
             }
 
-            if (v251)
+            if (errorCopy3)
             {
               v103 = objc_alloc(MEMORY[0x1E696ABC0]);
               v226 = v9;
@@ -1968,7 +1968,7 @@ LABEL_218:
               v209 = v105;
               v210 = 0;
               v61 = 0;
-              *v251 = [v103 initWithDomain:v106 code:2 userInfo:?];
+              *errorCopy3 = [v103 initWithDomain:v106 code:2 userInfo:?];
               goto LABEL_218;
             }
 
@@ -1981,7 +1981,7 @@ LABEL_212:
             goto LABEL_118;
           }
 
-          if (v251)
+          if (errorCopy3)
           {
             v99 = objc_alloc(MEMORY[0x1E696ABC0]);
             v225 = v9;
@@ -1995,7 +1995,7 @@ LABEL_212:
             v211 = v101;
             v212 = 0;
             v61 = 0;
-            *v251 = [v99 initWithDomain:v102 code:2 userInfo:?];
+            *errorCopy3 = [v99 initWithDomain:v102 code:2 userInfo:?];
             goto LABEL_212;
           }
 
@@ -2008,7 +2008,7 @@ LABEL_206:
           goto LABEL_119;
         }
 
-        if (v251)
+        if (errorCopy3)
         {
           v95 = objc_alloc(MEMORY[0x1E696ABC0]);
           v224 = v9;
@@ -2022,7 +2022,7 @@ LABEL_206:
           v213 = v97;
           v214 = 0;
           v61 = 0;
-          *v251 = [v95 initWithDomain:v98 code:2 userInfo:?];
+          *errorCopy3 = [v95 initWithDomain:v98 code:2 userInfo:?];
           goto LABEL_206;
         }
 
@@ -2043,7 +2043,7 @@ LABEL_200:
         goto LABEL_36;
       }
 
-      if (v251)
+      if (errorCopy3)
       {
         v245 = objc_alloc(MEMORY[0x1E696ABC0]);
         v222 = v9;
@@ -2058,7 +2058,7 @@ LABEL_200:
         v90 = [v245 initWithDomain:v89 code:2 userInfo:?];
         v244 = 0;
         v61 = 0;
-        *v251 = v90;
+        *errorCopy3 = v90;
         v59 = v252;
         v11 = v248;
         goto LABEL_121;
@@ -2072,7 +2072,7 @@ LABEL_189:
       goto LABEL_122;
     }
 
-    if (v251)
+    if (errorCopy3)
     {
       v83 = objc_alloc(MEMORY[0x1E696ABC0]);
       v221 = v9;
@@ -2085,7 +2085,7 @@ LABEL_189:
       v9 = v221;
       v246 = 0;
       v61 = 0;
-      *v251 = [v83 initWithDomain:v86 code:2 userInfo:v85];
+      *errorCopy3 = [v83 initWithDomain:v86 code:2 userInfo:v85];
       v16 = v85;
       goto LABEL_189;
     }
@@ -2105,7 +2105,7 @@ LABEL_183:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v259 = 0;
     v61 = 0;
@@ -2120,7 +2120,7 @@ LABEL_183:
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v318 forKeys:&v317 count:1];
   v259 = 0;
   v61 = 0;
-  *a4 = [v64 initWithDomain:v65 code:2 userInfo:v7];
+  *error = [v64 initWithDomain:v65 code:2 userInfo:v7];
 LABEL_128:
 
 LABEL_129:
@@ -2132,221 +2132,221 @@ LABEL_129:
 {
   v3 = objc_opt_new();
   [(BMMediaAnalysisPerLibrary *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v33 = v4;
+  toCopy = to;
+  v33 = toCopy;
   if (self->_libraryType)
   {
     PBDataWriterWriteStringField();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasImageAssetCount)
   {
     imageAssetCount = self->_imageAssetCount;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasLivePhotoAssetCount)
   {
     livePhotoAssetCount = self->_livePhotoAssetCount;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasMovieAssetCount)
   {
     movieAssetCount = self->_movieAssetCount;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasMovieAssetDurations)
   {
     movieAssetDurations = self->_movieAssetDurations;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasEditedMovieCount)
   {
     editedMovieCount = self->_editedMovieCount;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasSharedMovieCount)
   {
     sharedMovieCount = self->_sharedMovieCount;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasFavoritedMovieCount)
   {
     favoritedMovieCount = self->_favoritedMovieCount;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasSpatialMoviePercentage)
   {
     spatialMoviePercentage = self->_spatialMoviePercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasCinematicMoviePercentage)
   {
     cinematicMoviePercentage = self->_cinematicMoviePercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasSlomoMoviePercentage)
   {
     slomoMoviePercentage = self->_slomoMoviePercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasTimelapsePercentage)
   {
     timelapsePercentage = self->_timelapsePercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasPortraitModePercentage)
   {
     portraitModePercentage = self->_portraitModePercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasLandscapeModePercentage)
   {
     landscapeModePercentage = self->_landscapeModePercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasWithHighlightsPercentage)
   {
     withHighlightsPercentage = self->_withHighlightsPercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasWithPeoplePercentage)
   {
     withPeoplePercentage = self->_withPeoplePercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasWithPetsPercentage)
   {
     withPetsPercentage = self->_withPetsPercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasWithNatureOrNaturalLandmarksPercentage)
   {
     withNatureOrNaturalLandmarksPercentage = self->_withNatureOrNaturalLandmarksPercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasWithSkylinePercentage)
   {
     withSkylinePercentage = self->_withSkylinePercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasWthLandmarksPercentage)
   {
     wthLandmarksPercentage = self->_wthLandmarksPercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasWithActionPercentage)
   {
     withActionPercentage = self->_withActionPercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasWithHighMotionPercentage)
   {
     withHighMotionPercentage = self->_withHighMotionPercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasHighlightsWithPeoplePercentage)
   {
     highlightsWithPeoplePercentage = self->_highlightsWithPeoplePercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasHighlightsWithPetsPercentage)
   {
     highlightsWithPetsPercentage = self->_highlightsWithPetsPercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasHighlightsWithNatureOrNaturalLandmarksPercentage)
   {
     highlightsWithNatureOrNaturalLandmarksPercentage = self->_highlightsWithNatureOrNaturalLandmarksPercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasHighlightsWithSkylinePercentage)
   {
     highlightsWithSkylinePercentage = self->_highlightsWithSkylinePercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasHighlightsWithLandmarksPercentage)
   {
     highlightsWithLandmarksPercentage = self->_highlightsWithLandmarksPercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasHighlightsWithActionPercentage)
   {
     highlightsWithActionPercentage = self->_highlightsWithActionPercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 
   if (self->_hasHighlightsWithHighMotionPercentage)
   {
     highlightsWithHighMotionPercentage = self->_highlightsWithHighMotionPercentage;
     PBDataWriterWriteInt32Field();
-    v4 = v33;
+    toCopy = v33;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v215.receiver = self;
   v215.super_class = BMMediaAnalysisPerLibrary;
   v5 = [(BMEventBase *)&v215 init];
@@ -2359,8 +2359,8 @@ LABEL_388:
 
   while (1)
   {
-    v6 = [v4 position];
-    if (v6 >= [v4 length] || (objc_msgSend(v4, "hasError") & 1) != 0)
+    position = [fromCopy position];
+    if (position >= [fromCopy length] || (objc_msgSend(fromCopy, "hasError") & 1) != 0)
     {
       break;
     }
@@ -2371,18 +2371,18 @@ LABEL_388:
     while (1)
     {
       v216 = 0;
-      v10 = [v4 position] + 1;
-      if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+      v10 = [fromCopy position] + 1;
+      if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
       {
-        v12 = [v4 data];
-        [v12 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+        data = [fromCopy data];
+        [data getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v9 |= (v216 & 0x7F) << v7;
@@ -2400,9 +2400,9 @@ LABEL_388:
       }
     }
 
-    v14 = [v4 hasError] ? 0 : v9;
+    v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-    if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+    if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
     {
       break;
     }
@@ -2423,18 +2423,18 @@ LABEL_16:
         while (1)
         {
           v216 = 0;
-          v111 = [v4 position] + 1;
-          if (v111 >= [v4 position] && (v112 = objc_msgSend(v4, "position") + 1, v112 <= objc_msgSend(v4, "length")))
+          v111 = [fromCopy position] + 1;
+          if (v111 >= [fromCopy position] && (v112 = objc_msgSend(fromCopy, "position") + 1, v112 <= objc_msgSend(fromCopy, "length")))
           {
-            v113 = [v4 data];
-            [v113 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v110 |= (v216 & 0x7F) << v108;
@@ -2452,7 +2452,7 @@ LABEL_16:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v114 = 0;
         }
@@ -2473,18 +2473,18 @@ LABEL_329:
         while (1)
         {
           v216 = 0;
-          v83 = [v4 position] + 1;
-          if (v83 >= [v4 position] && (v84 = objc_msgSend(v4, "position") + 1, v84 <= objc_msgSend(v4, "length")))
+          v83 = [fromCopy position] + 1;
+          if (v83 >= [fromCopy position] && (v84 = objc_msgSend(fromCopy, "position") + 1, v84 <= objc_msgSend(fromCopy, "length")))
           {
-            v85 = [v4 data];
-            [v85 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v82 |= (v216 & 0x7F) << v80;
@@ -2502,7 +2502,7 @@ LABEL_329:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v86 = 0;
         }
@@ -2523,18 +2523,18 @@ LABEL_313:
         while (1)
         {
           v216 = 0;
-          v97 = [v4 position] + 1;
-          if (v97 >= [v4 position] && (v98 = objc_msgSend(v4, "position") + 1, v98 <= objc_msgSend(v4, "length")))
+          v97 = [fromCopy position] + 1;
+          if (v97 >= [fromCopy position] && (v98 = objc_msgSend(fromCopy, "position") + 1, v98 <= objc_msgSend(fromCopy, "length")))
           {
-            v99 = [v4 data];
-            [v99 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v96 |= (v216 & 0x7F) << v94;
@@ -2552,7 +2552,7 @@ LABEL_313:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v100 = 0;
         }
@@ -2573,18 +2573,18 @@ LABEL_321:
         while (1)
         {
           v216 = 0;
-          v48 = [v4 position] + 1;
-          if (v48 >= [v4 position] && (v49 = objc_msgSend(v4, "position") + 1, v49 <= objc_msgSend(v4, "length")))
+          v48 = [fromCopy position] + 1;
+          if (v48 >= [fromCopy position] && (v49 = objc_msgSend(fromCopy, "position") + 1, v49 <= objc_msgSend(fromCopy, "length")))
           {
-            v50 = [v4 data];
-            [v50 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v47 |= (v216 & 0x7F) << v45;
@@ -2602,7 +2602,7 @@ LABEL_321:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v51 = 0;
         }
@@ -2623,18 +2623,18 @@ LABEL_293:
         while (1)
         {
           v216 = 0;
-          v132 = [v4 position] + 1;
-          if (v132 >= [v4 position] && (v133 = objc_msgSend(v4, "position") + 1, v133 <= objc_msgSend(v4, "length")))
+          v132 = [fromCopy position] + 1;
+          if (v132 >= [fromCopy position] && (v133 = objc_msgSend(fromCopy, "position") + 1, v133 <= objc_msgSend(fromCopy, "length")))
           {
-            v134 = [v4 data];
-            [v134 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v131 |= (v216 & 0x7F) << v129;
@@ -2652,7 +2652,7 @@ LABEL_293:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v135 = 0;
         }
@@ -2673,18 +2673,18 @@ LABEL_341:
         while (1)
         {
           v216 = 0;
-          v153 = [v4 position] + 1;
-          if (v153 >= [v4 position] && (v154 = objc_msgSend(v4, "position") + 1, v154 <= objc_msgSend(v4, "length")))
+          v153 = [fromCopy position] + 1;
+          if (v153 >= [fromCopy position] && (v154 = objc_msgSend(fromCopy, "position") + 1, v154 <= objc_msgSend(fromCopy, "length")))
           {
-            v155 = [v4 data];
-            [v155 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data7 = [fromCopy data];
+            [data7 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v152 |= (v216 & 0x7F) << v150;
@@ -2702,7 +2702,7 @@ LABEL_341:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v156 = 0;
         }
@@ -2723,18 +2723,18 @@ LABEL_353:
         while (1)
         {
           v216 = 0;
-          v104 = [v4 position] + 1;
-          if (v104 >= [v4 position] && (v105 = objc_msgSend(v4, "position") + 1, v105 <= objc_msgSend(v4, "length")))
+          v104 = [fromCopy position] + 1;
+          if (v104 >= [fromCopy position] && (v105 = objc_msgSend(fromCopy, "position") + 1, v105 <= objc_msgSend(fromCopy, "length")))
           {
-            v106 = [v4 data];
-            [v106 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data8 = [fromCopy data];
+            [data8 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v103 |= (v216 & 0x7F) << v101;
@@ -2752,7 +2752,7 @@ LABEL_353:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v107 = 0;
         }
@@ -2773,18 +2773,18 @@ LABEL_325:
         while (1)
         {
           v216 = 0;
-          v174 = [v4 position] + 1;
-          if (v174 >= [v4 position] && (v175 = objc_msgSend(v4, "position") + 1, v175 <= objc_msgSend(v4, "length")))
+          v174 = [fromCopy position] + 1;
+          if (v174 >= [fromCopy position] && (v175 = objc_msgSend(fromCopy, "position") + 1, v175 <= objc_msgSend(fromCopy, "length")))
           {
-            v176 = [v4 data];
-            [v176 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data9 = [fromCopy data];
+            [data9 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v173 |= (v216 & 0x7F) << v171;
@@ -2802,7 +2802,7 @@ LABEL_325:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v177 = 0;
         }
@@ -2823,18 +2823,18 @@ LABEL_365:
         while (1)
         {
           v216 = 0;
-          v62 = [v4 position] + 1;
-          if (v62 >= [v4 position] && (v63 = objc_msgSend(v4, "position") + 1, v63 <= objc_msgSend(v4, "length")))
+          v62 = [fromCopy position] + 1;
+          if (v62 >= [fromCopy position] && (v63 = objc_msgSend(fromCopy, "position") + 1, v63 <= objc_msgSend(fromCopy, "length")))
           {
-            v64 = [v4 data];
-            [v64 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data10 = [fromCopy data];
+            [data10 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v61 |= (v216 & 0x7F) << v59;
@@ -2852,7 +2852,7 @@ LABEL_365:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v65 = 0;
         }
@@ -2873,18 +2873,18 @@ LABEL_301:
         while (1)
         {
           v216 = 0;
-          v167 = [v4 position] + 1;
-          if (v167 >= [v4 position] && (v168 = objc_msgSend(v4, "position") + 1, v168 <= objc_msgSend(v4, "length")))
+          v167 = [fromCopy position] + 1;
+          if (v167 >= [fromCopy position] && (v168 = objc_msgSend(fromCopy, "position") + 1, v168 <= objc_msgSend(fromCopy, "length")))
           {
-            v169 = [v4 data];
-            [v169 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data11 = [fromCopy data];
+            [data11 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v166 |= (v216 & 0x7F) << v164;
@@ -2902,7 +2902,7 @@ LABEL_301:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v170 = 0;
         }
@@ -2923,18 +2923,18 @@ LABEL_361:
         while (1)
         {
           v216 = 0;
-          v41 = [v4 position] + 1;
-          if (v41 >= [v4 position] && (v42 = objc_msgSend(v4, "position") + 1, v42 <= objc_msgSend(v4, "length")))
+          v41 = [fromCopy position] + 1;
+          if (v41 >= [fromCopy position] && (v42 = objc_msgSend(fromCopy, "position") + 1, v42 <= objc_msgSend(fromCopy, "length")))
           {
-            v43 = [v4 data];
-            [v43 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data12 = [fromCopy data];
+            [data12 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v40 |= (v216 & 0x7F) << v38;
@@ -2952,7 +2952,7 @@ LABEL_361:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v44 = 0;
         }
@@ -2973,18 +2973,18 @@ LABEL_289:
         while (1)
         {
           v216 = 0;
-          v55 = [v4 position] + 1;
-          if (v55 >= [v4 position] && (v56 = objc_msgSend(v4, "position") + 1, v56 <= objc_msgSend(v4, "length")))
+          v55 = [fromCopy position] + 1;
+          if (v55 >= [fromCopy position] && (v56 = objc_msgSend(fromCopy, "position") + 1, v56 <= objc_msgSend(fromCopy, "length")))
           {
-            v57 = [v4 data];
-            [v57 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data13 = [fromCopy data];
+            [data13 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v54 |= (v216 & 0x7F) << v52;
@@ -3002,7 +3002,7 @@ LABEL_289:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v58 = 0;
         }
@@ -3023,18 +3023,18 @@ LABEL_297:
         while (1)
         {
           v216 = 0;
-          v146 = [v4 position] + 1;
-          if (v146 >= [v4 position] && (v147 = objc_msgSend(v4, "position") + 1, v147 <= objc_msgSend(v4, "length")))
+          v146 = [fromCopy position] + 1;
+          if (v146 >= [fromCopy position] && (v147 = objc_msgSend(fromCopy, "position") + 1, v147 <= objc_msgSend(fromCopy, "length")))
           {
-            v148 = [v4 data];
-            [v148 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data14 = [fromCopy data];
+            [data14 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v145 |= (v216 & 0x7F) << v143;
@@ -3052,7 +3052,7 @@ LABEL_297:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v149 = 0;
         }
@@ -3073,18 +3073,18 @@ LABEL_349:
         while (1)
         {
           v216 = 0;
-          v34 = [v4 position] + 1;
-          if (v34 >= [v4 position] && (v35 = objc_msgSend(v4, "position") + 1, v35 <= objc_msgSend(v4, "length")))
+          v34 = [fromCopy position] + 1;
+          if (v34 >= [fromCopy position] && (v35 = objc_msgSend(fromCopy, "position") + 1, v35 <= objc_msgSend(fromCopy, "length")))
           {
-            v36 = [v4 data];
-            [v36 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data15 = [fromCopy data];
+            [data15 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v33 |= (v216 & 0x7F) << v31;
@@ -3102,7 +3102,7 @@ LABEL_349:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v37 = 0;
         }
@@ -3123,18 +3123,18 @@ LABEL_285:
         while (1)
         {
           v216 = 0;
-          v90 = [v4 position] + 1;
-          if (v90 >= [v4 position] && (v91 = objc_msgSend(v4, "position") + 1, v91 <= objc_msgSend(v4, "length")))
+          v90 = [fromCopy position] + 1;
+          if (v90 >= [fromCopy position] && (v91 = objc_msgSend(fromCopy, "position") + 1, v91 <= objc_msgSend(fromCopy, "length")))
           {
-            v92 = [v4 data];
-            [v92 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data16 = [fromCopy data];
+            [data16 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v89 |= (v216 & 0x7F) << v87;
@@ -3152,7 +3152,7 @@ LABEL_285:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v93 = 0;
         }
@@ -3173,18 +3173,18 @@ LABEL_317:
         while (1)
         {
           v216 = 0;
-          v27 = [v4 position] + 1;
-          if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+          v27 = [fromCopy position] + 1;
+          if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
           {
-            v29 = [v4 data];
-            [v29 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data17 = [fromCopy data];
+            [data17 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v26 |= (v216 & 0x7F) << v24;
@@ -3202,7 +3202,7 @@ LABEL_317:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v30 = 0;
         }
@@ -3223,18 +3223,18 @@ LABEL_281:
         while (1)
         {
           v216 = 0;
-          v118 = [v4 position] + 1;
-          if (v118 >= [v4 position] && (v119 = objc_msgSend(v4, "position") + 1, v119 <= objc_msgSend(v4, "length")))
+          v118 = [fromCopy position] + 1;
+          if (v118 >= [fromCopy position] && (v119 = objc_msgSend(fromCopy, "position") + 1, v119 <= objc_msgSend(fromCopy, "length")))
           {
-            v120 = [v4 data];
-            [v120 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data18 = [fromCopy data];
+            [data18 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v117 |= (v216 & 0x7F) << v115;
@@ -3252,7 +3252,7 @@ LABEL_281:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v121 = 0;
         }
@@ -3273,18 +3273,18 @@ LABEL_333:
         while (1)
         {
           v216 = 0;
-          v160 = [v4 position] + 1;
-          if (v160 >= [v4 position] && (v161 = objc_msgSend(v4, "position") + 1, v161 <= objc_msgSend(v4, "length")))
+          v160 = [fromCopy position] + 1;
+          if (v160 >= [fromCopy position] && (v161 = objc_msgSend(fromCopy, "position") + 1, v161 <= objc_msgSend(fromCopy, "length")))
           {
-            v162 = [v4 data];
-            [v162 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data19 = [fromCopy data];
+            [data19 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v159 |= (v216 & 0x7F) << v157;
@@ -3302,7 +3302,7 @@ LABEL_333:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v163 = 0;
         }
@@ -3323,18 +3323,18 @@ LABEL_357:
         while (1)
         {
           v216 = 0;
-          v188 = [v4 position] + 1;
-          if (v188 >= [v4 position] && (v189 = objc_msgSend(v4, "position") + 1, v189 <= objc_msgSend(v4, "length")))
+          v188 = [fromCopy position] + 1;
+          if (v188 >= [fromCopy position] && (v189 = objc_msgSend(fromCopy, "position") + 1, v189 <= objc_msgSend(fromCopy, "length")))
           {
-            v190 = [v4 data];
-            [v190 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data20 = [fromCopy data];
+            [data20 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v187 |= (v216 & 0x7F) << v185;
@@ -3352,7 +3352,7 @@ LABEL_357:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v191 = 0;
         }
@@ -3373,18 +3373,18 @@ LABEL_373:
         while (1)
         {
           v216 = 0;
-          v125 = [v4 position] + 1;
-          if (v125 >= [v4 position] && (v126 = objc_msgSend(v4, "position") + 1, v126 <= objc_msgSend(v4, "length")))
+          v125 = [fromCopy position] + 1;
+          if (v125 >= [fromCopy position] && (v126 = objc_msgSend(fromCopy, "position") + 1, v126 <= objc_msgSend(fromCopy, "length")))
           {
-            v127 = [v4 data];
-            [v127 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data21 = [fromCopy data];
+            [data21 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v124 |= (v216 & 0x7F) << v122;
@@ -3402,7 +3402,7 @@ LABEL_373:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v128 = 0;
         }
@@ -3423,18 +3423,18 @@ LABEL_337:
         while (1)
         {
           v216 = 0;
-          v139 = [v4 position] + 1;
-          if (v139 >= [v4 position] && (v140 = objc_msgSend(v4, "position") + 1, v140 <= objc_msgSend(v4, "length")))
+          v139 = [fromCopy position] + 1;
+          if (v139 >= [fromCopy position] && (v140 = objc_msgSend(fromCopy, "position") + 1, v140 <= objc_msgSend(fromCopy, "length")))
           {
-            v141 = [v4 data];
-            [v141 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data22 = [fromCopy data];
+            [data22 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v138 |= (v216 & 0x7F) << v136;
@@ -3452,7 +3452,7 @@ LABEL_337:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v142 = 0;
         }
@@ -3473,18 +3473,18 @@ LABEL_345:
         while (1)
         {
           v216 = 0;
-          v181 = [v4 position] + 1;
-          if (v181 >= [v4 position] && (v182 = objc_msgSend(v4, "position") + 1, v182 <= objc_msgSend(v4, "length")))
+          v181 = [fromCopy position] + 1;
+          if (v181 >= [fromCopy position] && (v182 = objc_msgSend(fromCopy, "position") + 1, v182 <= objc_msgSend(fromCopy, "length")))
           {
-            v183 = [v4 data];
-            [v183 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data23 = [fromCopy data];
+            [data23 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v180 |= (v216 & 0x7F) << v178;
@@ -3502,7 +3502,7 @@ LABEL_345:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v184 = 0;
         }
@@ -3523,18 +3523,18 @@ LABEL_369:
         while (1)
         {
           v216 = 0;
-          v195 = [v4 position] + 1;
-          if (v195 >= [v4 position] && (v196 = objc_msgSend(v4, "position") + 1, v196 <= objc_msgSend(v4, "length")))
+          v195 = [fromCopy position] + 1;
+          if (v195 >= [fromCopy position] && (v196 = objc_msgSend(fromCopy, "position") + 1, v196 <= objc_msgSend(fromCopy, "length")))
           {
-            v197 = [v4 data];
-            [v197 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data24 = [fromCopy data];
+            [data24 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v194 |= (v216 & 0x7F) << v192;
@@ -3552,7 +3552,7 @@ LABEL_369:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v198 = 0;
         }
@@ -3573,18 +3573,18 @@ LABEL_377:
         while (1)
         {
           v216 = 0;
-          v76 = [v4 position] + 1;
-          if (v76 >= [v4 position] && (v77 = objc_msgSend(v4, "position") + 1, v77 <= objc_msgSend(v4, "length")))
+          v76 = [fromCopy position] + 1;
+          if (v76 >= [fromCopy position] && (v77 = objc_msgSend(fromCopy, "position") + 1, v77 <= objc_msgSend(fromCopy, "length")))
           {
-            v78 = [v4 data];
-            [v78 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data25 = [fromCopy data];
+            [data25 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v75 |= (v216 & 0x7F) << v73;
@@ -3602,7 +3602,7 @@ LABEL_377:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v79 = 0;
         }
@@ -3623,18 +3623,18 @@ LABEL_309:
         while (1)
         {
           v216 = 0;
-          v69 = [v4 position] + 1;
-          if (v69 >= [v4 position] && (v70 = objc_msgSend(v4, "position") + 1, v70 <= objc_msgSend(v4, "length")))
+          v69 = [fromCopy position] + 1;
+          if (v69 >= [fromCopy position] && (v70 = objc_msgSend(fromCopy, "position") + 1, v70 <= objc_msgSend(fromCopy, "length")))
           {
-            v71 = [v4 data];
-            [v71 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data26 = [fromCopy data];
+            [data26 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v68 |= (v216 & 0x7F) << v66;
@@ -3652,7 +3652,7 @@ LABEL_309:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v72 = 0;
         }
@@ -3673,18 +3673,18 @@ LABEL_305:
         while (1)
         {
           v216 = 0;
-          v209 = [v4 position] + 1;
-          if (v209 >= [v4 position] && (v210 = objc_msgSend(v4, "position") + 1, v210 <= objc_msgSend(v4, "length")))
+          v209 = [fromCopy position] + 1;
+          if (v209 >= [fromCopy position] && (v210 = objc_msgSend(fromCopy, "position") + 1, v210 <= objc_msgSend(fromCopy, "length")))
           {
-            v211 = [v4 data];
-            [v211 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data27 = [fromCopy data];
+            [data27 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v208 |= (v216 & 0x7F) << v206;
@@ -3702,7 +3702,7 @@ LABEL_305:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v212 = 0;
         }
@@ -3723,18 +3723,18 @@ LABEL_385:
         while (1)
         {
           v216 = 0;
-          v20 = [v4 position] + 1;
-          if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+          v20 = [fromCopy position] + 1;
+          if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
           {
-            v22 = [v4 data];
-            [v22 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+            data28 = [fromCopy data];
+            [data28 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v19 |= (v216 & 0x7F) << v17;
@@ -3752,7 +3752,7 @@ LABEL_385:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v23 = 0;
         }
@@ -3783,18 +3783,18 @@ LABEL_277:
     while (1)
     {
       v216 = 0;
-      v202 = [v4 position] + 1;
-      if (v202 >= [v4 position] && (v203 = objc_msgSend(v4, "position") + 1, v203 <= objc_msgSend(v4, "length")))
+      v202 = [fromCopy position] + 1;
+      if (v202 >= [fromCopy position] && (v203 = objc_msgSend(fromCopy, "position") + 1, v203 <= objc_msgSend(fromCopy, "length")))
       {
-        v204 = [v4 data];
-        [v204 getBytes:&v216 range:{objc_msgSend(v4, "position"), 1}];
+        data29 = [fromCopy data];
+        [data29 getBytes:&v216 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v201 |= (v216 & 0x7F) << v199;
@@ -3812,7 +3812,7 @@ LABEL_277:
       }
     }
 
-    if ([v4 hasError])
+    if ([fromCopy hasError])
     {
       v205 = 0;
     }
@@ -3826,7 +3826,7 @@ LABEL_381:
     v5->_highlightsWithHighMotionPercentage = v205;
   }
 
-  if (([v4 hasError] & 1) == 0)
+  if (([fromCopy hasError] & 1) == 0)
   {
     goto LABEL_388;
   }
@@ -3841,7 +3841,7 @@ LABEL_389:
 - (NSString)description
 {
   v19 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v34 = [(BMMediaAnalysisPerLibrary *)self libraryType];
+  libraryType = [(BMMediaAnalysisPerLibrary *)self libraryType];
   v33 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaAnalysisPerLibrary imageAssetCount](self, "imageAssetCount")}];
   v32 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaAnalysisPerLibrary livePhotoAssetCount](self, "livePhotoAssetCount")}];
   v31 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaAnalysisPerLibrary movieAssetCount](self, "movieAssetCount")}];
@@ -3870,413 +3870,413 @@ LABEL_389:
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaAnalysisPerLibrary highlightsWithLandmarksPercentage](self, "highlightsWithLandmarksPercentage")}];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaAnalysisPerLibrary highlightsWithActionPercentage](self, "highlightsWithActionPercentage")}];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaAnalysisPerLibrary highlightsWithHighMotionPercentage](self, "highlightsWithHighMotionPercentage")}];
-  v20 = [v19 initWithFormat:@"BMMediaAnalysisPerLibrary with libraryType: %@, imageAssetCount: %@, livePhotoAssetCount: %@, movieAssetCount: %@, movieAssetDurations: %@, editedMovieCount: %@, sharedMovieCount: %@, favoritedMovieCount: %@, spatialMoviePercentage: %@, cinematicMoviePercentage: %@, slomoMoviePercentage: %@, timelapsePercentage: %@, portraitModePercentage: %@, landscapeModePercentage: %@, withHighlightsPercentage: %@, withPeoplePercentage: %@, withPetsPercentage: %@, withNatureOrNaturalLandmarksPercentage: %@, withSkylinePercentage: %@, wthLandmarksPercentage: %@, withActionPercentage: %@, withHighMotionPercentage: %@, highlightsWithPeoplePercentage: %@, highlightsWithPetsPercentage: %@, highlightsWithNatureOrNaturalLandmarksPercentage: %@, highlightsWithSkylinePercentage: %@, highlightsWithLandmarksPercentage: %@, highlightsWithActionPercentage: %@, highlightsWithHighMotionPercentage: %@", v34, v33, v32, v31, v30, v29, v28, v27, v26, v25, v24, v23, v22, v21, v18, v17, v16, v15, v14, v13, v12, v11, v10, v9, v8, v7, v3, v4, v5];
+  v20 = [v19 initWithFormat:@"BMMediaAnalysisPerLibrary with libraryType: %@, imageAssetCount: %@, livePhotoAssetCount: %@, movieAssetCount: %@, movieAssetDurations: %@, editedMovieCount: %@, sharedMovieCount: %@, favoritedMovieCount: %@, spatialMoviePercentage: %@, cinematicMoviePercentage: %@, slomoMoviePercentage: %@, timelapsePercentage: %@, portraitModePercentage: %@, landscapeModePercentage: %@, withHighlightsPercentage: %@, withPeoplePercentage: %@, withPetsPercentage: %@, withNatureOrNaturalLandmarksPercentage: %@, withSkylinePercentage: %@, wthLandmarksPercentage: %@, withActionPercentage: %@, withHighMotionPercentage: %@, highlightsWithPeoplePercentage: %@, highlightsWithPetsPercentage: %@, highlightsWithNatureOrNaturalLandmarksPercentage: %@, highlightsWithSkylinePercentage: %@, highlightsWithLandmarksPercentage: %@, highlightsWithActionPercentage: %@, highlightsWithHighMotionPercentage: %@", libraryType, v33, v32, v31, v30, v29, v28, v27, v26, v25, v24, v23, v22, v21, v18, v17, v16, v15, v14, v13, v12, v11, v10, v9, v8, v7, v3, v4, v5];
 
   return v20;
 }
 
-- (BMMediaAnalysisPerLibrary)initWithLibraryType:(id)a3 imageAssetCount:(id)a4 livePhotoAssetCount:(id)a5 movieAssetCount:(id)a6 movieAssetDurations:(id)a7 editedMovieCount:(id)a8 sharedMovieCount:(id)a9 favoritedMovieCount:(id)a10 spatialMoviePercentage:(id)a11 cinematicMoviePercentage:(id)a12 slomoMoviePercentage:(id)a13 timelapsePercentage:(id)a14 portraitModePercentage:(id)a15 landscapeModePercentage:(id)a16 withHighlightsPercentage:(id)a17 withPeoplePercentage:(id)a18 withPetsPercentage:(id)a19 withNatureOrNaturalLandmarksPercentage:(id)a20 withSkylinePercentage:(id)a21 wthLandmarksPercentage:(id)a22 withActionPercentage:(id)a23 withHighMotionPercentage:(id)a24 highlightsWithPeoplePercentage:(id)a25 highlightsWithPetsPercentage:(id)a26 highlightsWithNatureOrNaturalLandmarksPercentage:(id)a27 highlightsWithSkylinePercentage:(id)a28 highlightsWithLandmarksPercentage:(id)a29 highlightsWithActionPercentage:(id)a30 highlightsWithHighMotionPercentage:(id)a31
+- (BMMediaAnalysisPerLibrary)initWithLibraryType:(id)type imageAssetCount:(id)count livePhotoAssetCount:(id)assetCount movieAssetCount:(id)movieAssetCount movieAssetDurations:(id)durations editedMovieCount:(id)movieCount sharedMovieCount:(id)sharedMovieCount favoritedMovieCount:(id)self0 spatialMoviePercentage:(id)self1 cinematicMoviePercentage:(id)self2 slomoMoviePercentage:(id)self3 timelapsePercentage:(id)self4 portraitModePercentage:(id)self5 landscapeModePercentage:(id)self6 withHighlightsPercentage:(id)self7 withPeoplePercentage:(id)self8 withPetsPercentage:(id)self9 withNatureOrNaturalLandmarksPercentage:(id)landmarksPercentage withSkylinePercentage:(id)skylinePercentage wthLandmarksPercentage:(id)wthLandmarksPercentage withActionPercentage:(id)actionPercentage withHighMotionPercentage:(id)motionPercentage highlightsWithPeoplePercentage:(id)withPeoplePercentage highlightsWithPetsPercentage:(id)withPetsPercentage highlightsWithNatureOrNaturalLandmarksPercentage:(id)naturalLandmarksPercentage highlightsWithSkylinePercentage:(id)withSkylinePercentage highlightsWithLandmarksPercentage:(id)withLandmarksPercentage highlightsWithActionPercentage:(id)type0 highlightsWithHighMotionPercentage:(id)type1
 {
-  v77 = a3;
-  v95 = a4;
-  v96 = a5;
-  v94 = a6;
-  v93 = a7;
-  v92 = a8;
-  v91 = a9;
-  v90 = a10;
-  v89 = a11;
-  v88 = a12;
-  v87 = a13;
-  v86 = a14;
-  v85 = a15;
-  v84 = a16;
-  v83 = a17;
-  v82 = a18;
-  v81 = a19;
-  v80 = a20;
-  v79 = a21;
-  v78 = a22;
-  v36 = a23;
-  v37 = a24;
-  v38 = a25;
-  v39 = a26;
-  v40 = a27;
-  v41 = a28;
-  v42 = a29;
-  v43 = a30;
-  v44 = a31;
+  typeCopy = type;
+  countCopy = count;
+  assetCountCopy = assetCount;
+  movieAssetCountCopy = movieAssetCount;
+  durationsCopy = durations;
+  movieCountCopy = movieCount;
+  sharedMovieCountCopy = sharedMovieCount;
+  favoritedMovieCountCopy = favoritedMovieCount;
+  percentageCopy = percentage;
+  moviePercentageCopy = moviePercentage;
+  slomoMoviePercentageCopy = slomoMoviePercentage;
+  timelapsePercentageCopy = timelapsePercentage;
+  modePercentageCopy = modePercentage;
+  landscapeModePercentageCopy = landscapeModePercentage;
+  highlightsPercentageCopy = highlightsPercentage;
+  peoplePercentageCopy = peoplePercentage;
+  petsPercentageCopy = petsPercentage;
+  landmarksPercentageCopy = landmarksPercentage;
+  skylinePercentageCopy = skylinePercentage;
+  wthLandmarksPercentageCopy = wthLandmarksPercentage;
+  actionPercentageCopy = actionPercentage;
+  motionPercentageCopy = motionPercentage;
+  withPeoplePercentageCopy = withPeoplePercentage;
+  withPetsPercentageCopy = withPetsPercentage;
+  naturalLandmarksPercentageCopy = naturalLandmarksPercentage;
+  withSkylinePercentageCopy = withSkylinePercentage;
+  withLandmarksPercentageCopy = withLandmarksPercentage;
+  withActionPercentageCopy = withActionPercentage;
+  highMotionPercentageCopy = highMotionPercentage;
   v97.receiver = self;
   v97.super_class = BMMediaAnalysisPerLibrary;
   v45 = [(BMEventBase *)&v97 init];
   if (v45)
   {
     v45->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v45->_libraryType, a3);
-    if (v95)
+    objc_storeStrong(&v45->_libraryType, type);
+    if (countCopy)
     {
       v45->_hasImageAssetCount = 1;
-      v46 = [v95 intValue];
+      intValue = [countCopy intValue];
     }
 
     else
     {
       v45->_hasImageAssetCount = 0;
-      v46 = -1;
+      intValue = -1;
     }
 
-    v45->_imageAssetCount = v46;
-    if (v96)
+    v45->_imageAssetCount = intValue;
+    if (assetCountCopy)
     {
       v45->_hasLivePhotoAssetCount = 1;
-      v47 = [v96 intValue];
+      intValue2 = [assetCountCopy intValue];
     }
 
     else
     {
       v45->_hasLivePhotoAssetCount = 0;
-      v47 = -1;
+      intValue2 = -1;
     }
 
-    v45->_livePhotoAssetCount = v47;
-    if (v94)
+    v45->_livePhotoAssetCount = intValue2;
+    if (movieAssetCountCopy)
     {
       v45->_hasMovieAssetCount = 1;
-      v48 = [v94 intValue];
+      intValue3 = [movieAssetCountCopy intValue];
     }
 
     else
     {
       v45->_hasMovieAssetCount = 0;
-      v48 = -1;
+      intValue3 = -1;
     }
 
-    v45->_movieAssetCount = v48;
-    if (v93)
+    v45->_movieAssetCount = intValue3;
+    if (durationsCopy)
     {
       v45->_hasMovieAssetDurations = 1;
-      v49 = [v93 intValue];
+      intValue4 = [durationsCopy intValue];
     }
 
     else
     {
       v45->_hasMovieAssetDurations = 0;
-      v49 = -1;
+      intValue4 = -1;
     }
 
-    v45->_movieAssetDurations = v49;
-    if (v92)
+    v45->_movieAssetDurations = intValue4;
+    if (movieCountCopy)
     {
       v45->_hasEditedMovieCount = 1;
-      v50 = [v92 intValue];
+      intValue5 = [movieCountCopy intValue];
     }
 
     else
     {
       v45->_hasEditedMovieCount = 0;
-      v50 = -1;
+      intValue5 = -1;
     }
 
-    v45->_editedMovieCount = v50;
-    if (v91)
+    v45->_editedMovieCount = intValue5;
+    if (sharedMovieCountCopy)
     {
       v45->_hasSharedMovieCount = 1;
-      v51 = [v91 intValue];
+      intValue6 = [sharedMovieCountCopy intValue];
     }
 
     else
     {
       v45->_hasSharedMovieCount = 0;
-      v51 = -1;
+      intValue6 = -1;
     }
 
-    v45->_sharedMovieCount = v51;
-    if (v90)
+    v45->_sharedMovieCount = intValue6;
+    if (favoritedMovieCountCopy)
     {
       v45->_hasFavoritedMovieCount = 1;
-      v52 = [v90 intValue];
+      intValue7 = [favoritedMovieCountCopy intValue];
     }
 
     else
     {
       v45->_hasFavoritedMovieCount = 0;
-      v52 = -1;
+      intValue7 = -1;
     }
 
-    v45->_favoritedMovieCount = v52;
-    if (v89)
+    v45->_favoritedMovieCount = intValue7;
+    if (percentageCopy)
     {
       v45->_hasSpatialMoviePercentage = 1;
-      v53 = [v89 intValue];
+      intValue8 = [percentageCopy intValue];
     }
 
     else
     {
       v45->_hasSpatialMoviePercentage = 0;
-      v53 = -1;
+      intValue8 = -1;
     }
 
-    v45->_spatialMoviePercentage = v53;
-    if (v88)
+    v45->_spatialMoviePercentage = intValue8;
+    if (moviePercentageCopy)
     {
       v45->_hasCinematicMoviePercentage = 1;
-      v54 = [v88 intValue];
+      intValue9 = [moviePercentageCopy intValue];
     }
 
     else
     {
       v45->_hasCinematicMoviePercentage = 0;
-      v54 = -1;
+      intValue9 = -1;
     }
 
-    v45->_cinematicMoviePercentage = v54;
-    if (v87)
+    v45->_cinematicMoviePercentage = intValue9;
+    if (slomoMoviePercentageCopy)
     {
       v45->_hasSlomoMoviePercentage = 1;
-      v55 = [v87 intValue];
+      intValue10 = [slomoMoviePercentageCopy intValue];
     }
 
     else
     {
       v45->_hasSlomoMoviePercentage = 0;
-      v55 = -1;
+      intValue10 = -1;
     }
 
-    v45->_slomoMoviePercentage = v55;
-    if (v86)
+    v45->_slomoMoviePercentage = intValue10;
+    if (timelapsePercentageCopy)
     {
       v45->_hasTimelapsePercentage = 1;
-      v56 = [v86 intValue];
+      intValue11 = [timelapsePercentageCopy intValue];
     }
 
     else
     {
       v45->_hasTimelapsePercentage = 0;
-      v56 = -1;
+      intValue11 = -1;
     }
 
-    v45->_timelapsePercentage = v56;
-    if (v85)
+    v45->_timelapsePercentage = intValue11;
+    if (modePercentageCopy)
     {
       v45->_hasPortraitModePercentage = 1;
-      v57 = [v85 intValue];
+      intValue12 = [modePercentageCopy intValue];
     }
 
     else
     {
       v45->_hasPortraitModePercentage = 0;
-      v57 = -1;
+      intValue12 = -1;
     }
 
-    v45->_portraitModePercentage = v57;
-    if (v84)
+    v45->_portraitModePercentage = intValue12;
+    if (landscapeModePercentageCopy)
     {
       v45->_hasLandscapeModePercentage = 1;
-      v58 = [v84 intValue];
+      intValue13 = [landscapeModePercentageCopy intValue];
     }
 
     else
     {
       v45->_hasLandscapeModePercentage = 0;
-      v58 = -1;
+      intValue13 = -1;
     }
 
-    v45->_landscapeModePercentage = v58;
-    if (v83)
+    v45->_landscapeModePercentage = intValue13;
+    if (highlightsPercentageCopy)
     {
       v45->_hasWithHighlightsPercentage = 1;
-      v59 = [v83 intValue];
+      intValue14 = [highlightsPercentageCopy intValue];
     }
 
     else
     {
       v45->_hasWithHighlightsPercentage = 0;
-      v59 = -1;
+      intValue14 = -1;
     }
 
-    v45->_withHighlightsPercentage = v59;
-    if (v82)
+    v45->_withHighlightsPercentage = intValue14;
+    if (peoplePercentageCopy)
     {
       v45->_hasWithPeoplePercentage = 1;
-      v60 = [v82 intValue];
+      intValue15 = [peoplePercentageCopy intValue];
     }
 
     else
     {
       v45->_hasWithPeoplePercentage = 0;
-      v60 = -1;
+      intValue15 = -1;
     }
 
-    v45->_withPeoplePercentage = v60;
-    if (v81)
+    v45->_withPeoplePercentage = intValue15;
+    if (petsPercentageCopy)
     {
       v45->_hasWithPetsPercentage = 1;
-      v61 = [v81 intValue];
+      intValue16 = [petsPercentageCopy intValue];
     }
 
     else
     {
       v45->_hasWithPetsPercentage = 0;
-      v61 = -1;
+      intValue16 = -1;
     }
 
-    v45->_withPetsPercentage = v61;
-    if (v80)
+    v45->_withPetsPercentage = intValue16;
+    if (landmarksPercentageCopy)
     {
       v45->_hasWithNatureOrNaturalLandmarksPercentage = 1;
-      v62 = [v80 intValue];
+      intValue17 = [landmarksPercentageCopy intValue];
     }
 
     else
     {
       v45->_hasWithNatureOrNaturalLandmarksPercentage = 0;
-      v62 = -1;
+      intValue17 = -1;
     }
 
-    v45->_withNatureOrNaturalLandmarksPercentage = v62;
-    if (v79)
+    v45->_withNatureOrNaturalLandmarksPercentage = intValue17;
+    if (skylinePercentageCopy)
     {
       v45->_hasWithSkylinePercentage = 1;
-      v63 = [v79 intValue];
+      intValue18 = [skylinePercentageCopy intValue];
     }
 
     else
     {
       v45->_hasWithSkylinePercentage = 0;
-      v63 = -1;
+      intValue18 = -1;
     }
 
-    v45->_withSkylinePercentage = v63;
-    if (v78)
+    v45->_withSkylinePercentage = intValue18;
+    if (wthLandmarksPercentageCopy)
     {
       v45->_hasWthLandmarksPercentage = 1;
-      v64 = [v78 intValue];
+      intValue19 = [wthLandmarksPercentageCopy intValue];
     }
 
     else
     {
       v45->_hasWthLandmarksPercentage = 0;
-      v64 = -1;
+      intValue19 = -1;
     }
 
-    v45->_wthLandmarksPercentage = v64;
-    if (v36)
+    v45->_wthLandmarksPercentage = intValue19;
+    if (actionPercentageCopy)
     {
       v45->_hasWithActionPercentage = 1;
-      v65 = [v36 intValue];
+      intValue20 = [actionPercentageCopy intValue];
     }
 
     else
     {
       v45->_hasWithActionPercentage = 0;
-      v65 = -1;
+      intValue20 = -1;
     }
 
-    v45->_withActionPercentage = v65;
-    if (v37)
+    v45->_withActionPercentage = intValue20;
+    if (motionPercentageCopy)
     {
       v45->_hasWithHighMotionPercentage = 1;
-      v66 = [v37 intValue];
+      intValue21 = [motionPercentageCopy intValue];
     }
 
     else
     {
       v45->_hasWithHighMotionPercentage = 0;
-      v66 = -1;
+      intValue21 = -1;
     }
 
-    v45->_withHighMotionPercentage = v66;
-    if (v38)
+    v45->_withHighMotionPercentage = intValue21;
+    if (withPeoplePercentageCopy)
     {
       v45->_hasHighlightsWithPeoplePercentage = 1;
-      v67 = [v38 intValue];
+      intValue22 = [withPeoplePercentageCopy intValue];
     }
 
     else
     {
       v45->_hasHighlightsWithPeoplePercentage = 0;
-      v67 = -1;
+      intValue22 = -1;
     }
 
-    v45->_highlightsWithPeoplePercentage = v67;
-    if (v39)
+    v45->_highlightsWithPeoplePercentage = intValue22;
+    if (withPetsPercentageCopy)
     {
       v45->_hasHighlightsWithPetsPercentage = 1;
-      v68 = [v39 intValue];
+      intValue23 = [withPetsPercentageCopy intValue];
     }
 
     else
     {
       v45->_hasHighlightsWithPetsPercentage = 0;
-      v68 = -1;
+      intValue23 = -1;
     }
 
-    v45->_highlightsWithPetsPercentage = v68;
-    if (v40)
+    v45->_highlightsWithPetsPercentage = intValue23;
+    if (naturalLandmarksPercentageCopy)
     {
       v45->_hasHighlightsWithNatureOrNaturalLandmarksPercentage = 1;
-      v69 = [v40 intValue];
+      intValue24 = [naturalLandmarksPercentageCopy intValue];
     }
 
     else
     {
       v45->_hasHighlightsWithNatureOrNaturalLandmarksPercentage = 0;
-      v69 = -1;
+      intValue24 = -1;
     }
 
-    v45->_highlightsWithNatureOrNaturalLandmarksPercentage = v69;
-    if (v41)
+    v45->_highlightsWithNatureOrNaturalLandmarksPercentage = intValue24;
+    if (withSkylinePercentageCopy)
     {
       v45->_hasHighlightsWithSkylinePercentage = 1;
-      v70 = [v41 intValue];
+      intValue25 = [withSkylinePercentageCopy intValue];
     }
 
     else
     {
       v45->_hasHighlightsWithSkylinePercentage = 0;
-      v70 = -1;
+      intValue25 = -1;
     }
 
-    v45->_highlightsWithSkylinePercentage = v70;
-    if (v42)
+    v45->_highlightsWithSkylinePercentage = intValue25;
+    if (withLandmarksPercentageCopy)
     {
       v45->_hasHighlightsWithLandmarksPercentage = 1;
-      v71 = [v42 intValue];
+      intValue26 = [withLandmarksPercentageCopy intValue];
     }
 
     else
     {
       v45->_hasHighlightsWithLandmarksPercentage = 0;
-      v71 = -1;
+      intValue26 = -1;
     }
 
-    v45->_highlightsWithLandmarksPercentage = v71;
-    if (v43)
+    v45->_highlightsWithLandmarksPercentage = intValue26;
+    if (withActionPercentageCopy)
     {
       v45->_hasHighlightsWithActionPercentage = 1;
-      v72 = [v43 intValue];
+      intValue27 = [withActionPercentageCopy intValue];
     }
 
     else
     {
       v45->_hasHighlightsWithActionPercentage = 0;
-      v72 = -1;
+      intValue27 = -1;
     }
 
-    v45->_highlightsWithActionPercentage = v72;
-    if (v44)
+    v45->_highlightsWithActionPercentage = intValue27;
+    if (highMotionPercentageCopy)
     {
       v45->_hasHighlightsWithHighMotionPercentage = 1;
-      v73 = [v44 intValue];
+      intValue28 = [highMotionPercentageCopy intValue];
     }
 
     else
     {
       v45->_hasHighlightsWithHighMotionPercentage = 0;
-      v73 = -1;
+      intValue28 = -1;
     }
 
-    v45->_highlightsWithHighMotionPercentage = v73;
+    v45->_highlightsWithHighMotionPercentage = intValue28;
   }
 
   return v45;
@@ -4418,9 +4418,9 @@ LABEL_389:
   return v11;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -4428,8 +4428,8 @@ LABEL_389:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMediaAnalysisPerLibrary alloc] initByReadFrom:v7];
     v4 = v8;

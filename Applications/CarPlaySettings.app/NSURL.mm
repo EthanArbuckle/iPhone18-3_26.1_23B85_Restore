@@ -6,7 +6,7 @@
 
 - (BOOL)isDevicePickerURL
 {
-  v2 = self;
+  selfCopy = self;
   v3 = NSURL.isDevicePickerURL.getter();
 
   return v3 & 1;

@@ -26,9 +26,9 @@
 - (TUContactsDataSource)contactsDataSource
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 contactStore];
+  contactStore = [v2 contactStore];
 
-  return v3;
+  return contactStore;
 }
 
 - (IntentHandlerVoicemailDataSource)voicemailDataSource
@@ -65,9 +65,9 @@
 {
   v2 = !+[TUCallCapabilities supportsPrimaryCalling](TUCallCapabilities, "supportsPrimaryCalling") || (+[TUCallCapabilities supportsTelephonyCalls]& 1) == 0;
   v3 = +[FaceTimeUtilities sharedInstance];
-  v4 = [v3 isFaceTimeEnabledInSettings];
+  isFaceTimeEnabledInSettings = [v3 isFaceTimeEnabledInSettings];
 
-  if ((v4 & 1) == 0)
+  if ((isFaceTimeEnabledInSettings & 1) == 0)
   {
     return v2 | 6;
   }

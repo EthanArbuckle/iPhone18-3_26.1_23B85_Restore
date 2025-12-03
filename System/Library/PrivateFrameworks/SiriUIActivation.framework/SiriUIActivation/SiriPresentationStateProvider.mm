@@ -1,43 +1,43 @@
 @interface SiriPresentationStateProvider
-- (SiriPresentationStateProvider)initWithSiriPresentationIdentifier:(int64_t)a3 delegate:(id)a4;
+- (SiriPresentationStateProvider)initWithSiriPresentationIdentifier:(int64_t)identifier delegate:(id)delegate;
 - (SiriPresentationStateProviderDelegate)delegate;
-- (void)_dispatchedDiffAndApplyMutatedStatus:(id)a3;
-- (void)_invokeOnDispatchQueue:(id)a3;
-- (void)_setupProviderForSiriPresentationIdentifier:(int64_t)a3;
-- (void)barrierWithCompletion:(id)a3;
-- (void)stopProvidingPresentationStateUpdatesAndResendLastUpdateOnResumption:(BOOL)a3;
+- (void)_dispatchedDiffAndApplyMutatedStatus:(id)status;
+- (void)_invokeOnDispatchQueue:(id)queue;
+- (void)_setupProviderForSiriPresentationIdentifier:(int64_t)identifier;
+- (void)barrierWithCompletion:(id)completion;
+- (void)stopProvidingPresentationStateUpdatesAndResendLastUpdateOnResumption:(BOOL)resumption;
 @end
 
 @implementation SiriPresentationStateProvider
 
-- (SiriPresentationStateProvider)initWithSiriPresentationIdentifier:(int64_t)a3 delegate:(id)a4
+- (SiriPresentationStateProvider)initWithSiriPresentationIdentifier:(int64_t)identifier delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = SiriPresentationStateProvider;
   v7 = [(SiriPresentationStateProvider *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v10 = dispatch_queue_create("SiriPresentationStateProvider", v9);
     dispatchQueue = v8->_dispatchQueue;
     v8->_dispatchQueue = v10;
 
-    [(SiriPresentationStateProvider *)v8 _setupProviderForSiriPresentationIdentifier:a3];
+    [(SiriPresentationStateProvider *)v8 _setupProviderForSiriPresentationIdentifier:identifier];
   }
 
   return v8;
 }
 
-- (void)_setupProviderForSiriPresentationIdentifier:(int64_t)a3
+- (void)_setupProviderForSiriPresentationIdentifier:(int64_t)identifier
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __77__SiriPresentationStateProvider__setupProviderForSiriPresentationIdentifier___block_invoke;
   v3[3] = &__block_descriptor_40_e39_v16__0__SiriPresentationStateProvider_8l;
-  v3[4] = a3;
+  v3[4] = identifier;
   [(SiriPresentationStateProvider *)self _invokeOnDispatchQueue:v3];
 }
 
@@ -88,13 +88,13 @@ void __71__SiriPresentationStateProvider_beginProvidingPresentationStateUpdates_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopProvidingPresentationStateUpdatesAndResendLastUpdateOnResumption:(BOOL)a3
+- (void)stopProvidingPresentationStateUpdatesAndResendLastUpdateOnResumption:(BOOL)resumption
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __102__SiriPresentationStateProvider_stopProvidingPresentationStateUpdatesAndResendLastUpdateOnResumption___block_invoke;
   v3[3] = &__block_descriptor_33_e39_v16__0__SiriPresentationStateProvider_8l;
-  v4 = a3;
+  resumptionCopy = resumption;
   [(SiriPresentationStateProvider *)self _invokeOnDispatchQueue:v3];
 }
 
@@ -122,16 +122,16 @@ void __102__SiriPresentationStateProvider_stopProvidingPresentationStateUpdatesA
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)barrierWithCompletion:(id)a3
+- (void)barrierWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__SiriPresentationStateProvider_barrierWithCompletion___block_invoke;
   block[3] = &unk_278430020;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(dispatchQueue, block);
 }
 
@@ -156,13 +156,13 @@ uint64_t __55__SiriPresentationStateProvider_barrierWithCompletion___block_invok
   return result;
 }
 
-- (void)_dispatchedDiffAndApplyMutatedStatus:(id)a3
+- (void)_dispatchedDiffAndApplyMutatedStatus:(id)status
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (([(SASPresentationState *)self->_presentationState isEqual:v5]& 1) == 0)
+  statusCopy = status;
+  if (([(SASPresentationState *)self->_presentationState isEqual:statusCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_presentationState, a3);
+    objc_storeStrong(&self->_presentationState, status);
     v6 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
@@ -177,8 +177,8 @@ uint64_t __55__SiriPresentationStateProvider_barrierWithCompletion___block_invok
     [(SiriPresentationStateProvider *)self setUpdatesAvailable:1];
     if ([(SiriPresentationStateProvider *)self shouldProvideUpdates])
     {
-      v8 = [(SiriPresentationStateProvider *)self delegate];
-      [v8 presentationStateProvider:self presentationStateDidChange:self->_presentationState];
+      delegate = [(SiriPresentationStateProvider *)self delegate];
+      [delegate presentationStateProvider:self presentationStateDidChange:self->_presentationState];
 
       [(SiriPresentationStateProvider *)self setUpdatesAvailable:0];
     }
@@ -187,10 +187,10 @@ uint64_t __55__SiriPresentationStateProvider_barrierWithCompletion___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invokeOnDispatchQueue:(id)a3
+- (void)_invokeOnDispatchQueue:(id)queue
 {
-  v4 = a3;
-  if (v4)
+  queueCopy = queue;
+  if (queueCopy)
   {
     objc_initWeak(&location, self);
     dispatchQueue = self->_dispatchQueue;
@@ -199,7 +199,7 @@ uint64_t __55__SiriPresentationStateProvider_barrierWithCompletion___block_invok
     block[2] = __56__SiriPresentationStateProvider__invokeOnDispatchQueue___block_invoke;
     block[3] = &unk_278430048;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = queueCopy;
     dispatch_async(dispatchQueue, block);
 
     objc_destroyWeak(&v8);

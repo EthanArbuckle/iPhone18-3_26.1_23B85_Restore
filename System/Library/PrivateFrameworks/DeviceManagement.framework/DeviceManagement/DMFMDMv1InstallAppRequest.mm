@@ -1,89 +1,89 @@
 @interface DMFMDMv1InstallAppRequest
-- (DMFMDMv1InstallAppRequest)initWithCoder:(id)a3;
+- (DMFMDMv1InstallAppRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFMDMv1InstallAppRequest
 
-- (DMFMDMv1InstallAppRequest)initWithCoder:(id)a3
+- (DMFMDMv1InstallAppRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v64.receiver = self;
   v64.super_class = DMFMDMv1InstallAppRequest;
-  v5 = [(DMFInstallAppRequest *)&v64 initWithCoder:v4];
+  v5 = [(DMFInstallAppRequest *)&v64 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"redemptionCode"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"redemptionCode"];
     redemptionCode = v5->_redemptionCode;
     v5->_redemptionCode = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manage"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manage"];
     v5->_manage = [v9 BOOLValue];
 
     v10 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"originator"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"originator"];
     originator = v5->_originator;
     v5->_originator = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"managementOptions"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"managementOptions"];
     v5->_managementOptions = [v13 integerValue];
 
     v14 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"VPNUUIDString"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"VPNUUIDString"];
     VPNUUIDString = v5->_VPNUUIDString;
     v5->_VPNUUIDString = v15;
 
     v17 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"cellularSliceUUIDString"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"cellularSliceUUIDString"];
     cellularSliceUUIDString = v5->_cellularSliceUUIDString;
     v5->_cellularSliceUUIDString = v18;
 
     v20 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"contentFilterUUIDString"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"contentFilterUUIDString"];
     contentFilterUUIDString = v5->_contentFilterUUIDString;
     v5->_contentFilterUUIDString = v21;
 
     v23 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"DNSProxyUUIDString"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"DNSProxyUUIDString"];
     DNSProxyUUIDString = v5->_DNSProxyUUIDString;
     v5->_DNSProxyUUIDString = v24;
 
     v26 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"relayUUIDString"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"relayUUIDString"];
     relayUUIDString = v5->_relayUUIDString;
     v5->_relayUUIDString = v27;
 
     v29 = MEMORY[0x1E695DFD8];
     v30 = objc_opt_class();
     v31 = [v29 setWithObjects:{v30, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"associatedDomains"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"associatedDomains"];
     associatedDomains = v5->_associatedDomains;
     v5->_associatedDomains = v32;
 
     v34 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"associatedDomainsEnableDirectDownloads"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"associatedDomainsEnableDirectDownloads"];
     associatedDomainsEnableDirectDownloads = v5->_associatedDomainsEnableDirectDownloads;
     v5->_associatedDomainsEnableDirectDownloads = v35;
 
     v37 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"removable"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"removable"];
     removable = v5->_removable;
     v5->_removable = v38;
 
     v40 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v41 = [v4 decodeObjectOfClasses:v40 forKey:@"tapToPayScreenLock"];
+    v41 = [coderCopy decodeObjectOfClasses:v40 forKey:@"tapToPayScreenLock"];
     tapToPayScreenLock = v5->_tapToPayScreenLock;
     v5->_tapToPayScreenLock = v41;
 
     v43 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v44 = [v4 decodeObjectOfClasses:v43 forKey:@"allowUserToHide"];
+    v44 = [coderCopy decodeObjectOfClasses:v43 forKey:@"allowUserToHide"];
     allowUserToHide = v5->_allowUserToHide;
     v5->_allowUserToHide = v44;
 
     v46 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v47 = [v4 decodeObjectOfClasses:v46 forKey:@"allowUserToLock"];
+    v47 = [coderCopy decodeObjectOfClasses:v46 forKey:@"allowUserToLock"];
     allowUserToLock = v5->_allowUserToLock;
     v5->_allowUserToLock = v47;
 
@@ -99,7 +99,7 @@
     v55 = objc_opt_class();
     v56 = objc_opt_class();
     v57 = [v63 setWithObjects:{v62, v61, v49, v50, v51, v52, v53, v54, v55, v56, objc_opt_class(), 0}];
-    v58 = [v4 decodeObjectOfClasses:v57 forKey:@"configuration"];
+    v58 = [coderCopy decodeObjectOfClasses:v57 forKey:@"configuration"];
     configuration = v5->_configuration;
     v5->_configuration = v58;
   }
@@ -107,59 +107,59 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v21.receiver = self;
   v21.super_class = DMFMDMv1InstallAppRequest;
-  v4 = a3;
-  [(DMFInstallAppRequest *)&v21 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(DMFInstallAppRequest *)&v21 encodeWithCoder:coderCopy];
   v5 = [(DMFMDMv1InstallAppRequest *)self redemptionCode:v21.receiver];
-  [v4 encodeObject:v5 forKey:@"redemptionCode"];
+  [coderCopy encodeObject:v5 forKey:@"redemptionCode"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFMDMv1InstallAppRequest manage](self, "manage")}];
-  [v4 encodeObject:v6 forKey:@"manage"];
+  [coderCopy encodeObject:v6 forKey:@"manage"];
 
-  v7 = [(DMFMDMv1InstallAppRequest *)self originator];
-  [v4 encodeObject:v7 forKey:@"originator"];
+  originator = [(DMFMDMv1InstallAppRequest *)self originator];
+  [coderCopy encodeObject:originator forKey:@"originator"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[DMFMDMv1InstallAppRequest managementOptions](self, "managementOptions")}];
-  [v4 encodeObject:v8 forKey:@"managementOptions"];
+  [coderCopy encodeObject:v8 forKey:@"managementOptions"];
 
-  v9 = [(DMFMDMv1InstallAppRequest *)self VPNUUIDString];
-  [v4 encodeObject:v9 forKey:@"VPNUUIDString"];
+  vPNUUIDString = [(DMFMDMv1InstallAppRequest *)self VPNUUIDString];
+  [coderCopy encodeObject:vPNUUIDString forKey:@"VPNUUIDString"];
 
-  v10 = [(DMFMDMv1InstallAppRequest *)self cellularSliceUUIDString];
-  [v4 encodeObject:v10 forKey:@"cellularSliceUUIDString"];
+  cellularSliceUUIDString = [(DMFMDMv1InstallAppRequest *)self cellularSliceUUIDString];
+  [coderCopy encodeObject:cellularSliceUUIDString forKey:@"cellularSliceUUIDString"];
 
-  v11 = [(DMFMDMv1InstallAppRequest *)self contentFilterUUIDString];
-  [v4 encodeObject:v11 forKey:@"contentFilterUUIDString"];
+  contentFilterUUIDString = [(DMFMDMv1InstallAppRequest *)self contentFilterUUIDString];
+  [coderCopy encodeObject:contentFilterUUIDString forKey:@"contentFilterUUIDString"];
 
-  v12 = [(DMFMDMv1InstallAppRequest *)self DNSProxyUUIDString];
-  [v4 encodeObject:v12 forKey:@"DNSProxyUUIDString"];
+  dNSProxyUUIDString = [(DMFMDMv1InstallAppRequest *)self DNSProxyUUIDString];
+  [coderCopy encodeObject:dNSProxyUUIDString forKey:@"DNSProxyUUIDString"];
 
-  v13 = [(DMFMDMv1InstallAppRequest *)self relayUUIDString];
-  [v4 encodeObject:v13 forKey:@"relayUUIDString"];
+  relayUUIDString = [(DMFMDMv1InstallAppRequest *)self relayUUIDString];
+  [coderCopy encodeObject:relayUUIDString forKey:@"relayUUIDString"];
 
-  v14 = [(DMFMDMv1InstallAppRequest *)self associatedDomains];
-  [v4 encodeObject:v14 forKey:@"associatedDomains"];
+  associatedDomains = [(DMFMDMv1InstallAppRequest *)self associatedDomains];
+  [coderCopy encodeObject:associatedDomains forKey:@"associatedDomains"];
 
-  v15 = [(DMFMDMv1InstallAppRequest *)self associatedDomainsEnableDirectDownloads];
-  [v4 encodeObject:v15 forKey:@"associatedDomainsEnableDirectDownloads"];
+  associatedDomainsEnableDirectDownloads = [(DMFMDMv1InstallAppRequest *)self associatedDomainsEnableDirectDownloads];
+  [coderCopy encodeObject:associatedDomainsEnableDirectDownloads forKey:@"associatedDomainsEnableDirectDownloads"];
 
-  v16 = [(DMFMDMv1InstallAppRequest *)self removable];
-  [v4 encodeObject:v16 forKey:@"removable"];
+  removable = [(DMFMDMv1InstallAppRequest *)self removable];
+  [coderCopy encodeObject:removable forKey:@"removable"];
 
-  v17 = [(DMFMDMv1InstallAppRequest *)self tapToPayScreenLock];
-  [v4 encodeObject:v17 forKey:@"tapToPayScreenLock"];
+  tapToPayScreenLock = [(DMFMDMv1InstallAppRequest *)self tapToPayScreenLock];
+  [coderCopy encodeObject:tapToPayScreenLock forKey:@"tapToPayScreenLock"];
 
-  v18 = [(DMFMDMv1InstallAppRequest *)self allowUserToHide];
-  [v4 encodeObject:v18 forKey:@"allowUserToHide"];
+  allowUserToHide = [(DMFMDMv1InstallAppRequest *)self allowUserToHide];
+  [coderCopy encodeObject:allowUserToHide forKey:@"allowUserToHide"];
 
-  v19 = [(DMFMDMv1InstallAppRequest *)self allowUserToLock];
-  [v4 encodeObject:v19 forKey:@"allowUserToLock"];
+  allowUserToLock = [(DMFMDMv1InstallAppRequest *)self allowUserToLock];
+  [coderCopy encodeObject:allowUserToLock forKey:@"allowUserToLock"];
 
-  v20 = [(DMFMDMv1InstallAppRequest *)self configuration];
-  [v4 encodeObject:v20 forKey:@"configuration"];
+  configuration = [(DMFMDMv1InstallAppRequest *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"configuration"];
 }
 
 - (id)description

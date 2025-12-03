@@ -1,38 +1,38 @@
 @interface PLSearchIndexingEngine
-- (BOOL)hasRebuildWorkToDoForLibrary:(id)a3;
-- (PLSearchIndexingEngine)initWithLibraryServicesManager:(id)a3;
-- (PLSearchIndexingEngine)initWithLibraryServicesProvider:(id)a3;
-- (id)_clientStateFailureResultAndLogWithErrorCode:(unint64_t)a3 debugDescription:(id)a4 underlyingError:(id)a5;
+- (BOOL)hasRebuildWorkToDoForLibrary:(id)library;
+- (PLSearchIndexingEngine)initWithLibraryServicesManager:(id)manager;
+- (PLSearchIndexingEngine)initWithLibraryServicesProvider:(id)provider;
+- (id)_clientStateFailureResultAndLogWithErrorCode:(unint64_t)code debugDescription:(id)description underlyingError:(id)error;
 - (id)_spotlightIndexName;
-- (id)indexAssetsIfNeededWithObjectIDs:(id)a3 library:(id)a4 completion:(id)a5;
-- (id)indexAssetsWithUUIDs:(id)a3 partialUpdateMask:(unint64_t)a4 completion:(id)a5;
-- (id)processBatchOfJobsWithType:(signed __int16)a3 flags:(int64_t)a4 library:(id)a5 completion:(id)a6;
-- (id)sceneTaxonomyDigestsForSearchIndexingRebuildEngine:(id)a3;
-- (unint64_t)_errorCodeForSpotlightClientStateError:(id)a3 debugDescription:(id *)a4;
-- (void)_dropSearchIndexWithSourceName:(id)a3 reasons:(unint64_t)a4 completion:(id)a5;
-- (void)_inLibraryPerform_donateAssets:(id)a3 library:(id)a4 progress:(id)a5 completion:(id)a6;
-- (void)_inLibraryPerform_donateManagedObjects:(id)a3 partialUpdateMasks:(id)a4 entity:(unint64_t)a5 deleteIdentifiers:(id)a6 identifiersRequiringAdditionalWorkByEntity:(id)a7 library:(id)a8 progress:(id)a9 completion:(id)a10;
+- (id)indexAssetsIfNeededWithObjectIDs:(id)ds library:(id)library completion:(id)completion;
+- (id)indexAssetsWithUUIDs:(id)ds partialUpdateMask:(unint64_t)mask completion:(id)completion;
+- (id)processBatchOfJobsWithType:(signed __int16)type flags:(int64_t)flags library:(id)library completion:(id)completion;
+- (id)sceneTaxonomyDigestsForSearchIndexingRebuildEngine:(id)engine;
+- (unint64_t)_errorCodeForSpotlightClientStateError:(id)error debugDescription:(id *)description;
+- (void)_dropSearchIndexWithSourceName:(id)name reasons:(unint64_t)reasons completion:(id)completion;
+- (void)_inLibraryPerform_donateAssets:(id)assets library:(id)library progress:(id)progress completion:(id)completion;
+- (void)_inLibraryPerform_donateManagedObjects:(id)objects partialUpdateMasks:(id)masks entity:(unint64_t)entity deleteIdentifiers:(id)identifiers identifiersRequiringAdditionalWorkByEntity:(id)byEntity library:(id)library progress:(id)progress completion:(id)self0;
 - (void)_inq_acquireSpotlightSandboxExtensionIfNeeded;
 - (void)_inq_close;
-- (void)_inq_donatePSIObjectsByType:(id)a3 spotlightItemsByBundleID:(id)a4 deleteIdentifiers:(id)a5 spotlightClientState:(id)a6 completion:(id)a7;
-- (void)_inq_dropSearchIndexWithSourceName:(id)a3 reasons:(unint64_t)a4 completion:(id)a5;
-- (void)_inq_handleClientStateValidationError:(id)a3 library:(id)a4;
+- (void)_inq_donatePSIObjectsByType:(id)type spotlightItemsByBundleID:(id)d deleteIdentifiers:(id)identifiers spotlightClientState:(id)state completion:(id)completion;
+- (void)_inq_dropSearchIndexWithSourceName:(id)name reasons:(unint64_t)reasons completion:(id)completion;
+- (void)_inq_handleClientStateValidationError:(id)error library:(id)library;
 - (void)_inq_open;
 - (void)_inq_releaseSpotlightSandboxExtension;
-- (void)_inq_validateSpotlightClientStateAgainstExpectedClientState:(id)a3 completion:(id)a4;
-- (void)_safePerformBlock:(id)a3;
-- (void)_safePerformBlockWithPSIDatabase:(id)a3 sync:(BOOL)a4;
+- (void)_inq_validateSpotlightClientStateAgainstExpectedClientState:(id)state completion:(id)completion;
+- (void)_safePerformBlock:(id)block;
+- (void)_safePerformBlockWithPSIDatabase:(id)database sync:(BOOL)sync;
 - (void)close;
 - (void)disableUISearch;
-- (void)fetchRemainingWorkWithLibrary:(id)a3 completion:(id)a4;
-- (void)openWithCompletion:(id)a3;
+- (void)fetchRemainingWorkWithLibrary:(id)library completion:(id)completion;
+- (void)openWithCompletion:(id)completion;
 - (void)pauseProcessingIncrementalUpdates;
-- (void)pauseSearchIndexRebuildWithSourceName:(id)a3;
+- (void)pauseSearchIndexRebuildWithSourceName:(id)name;
 - (void)removeUnusedGroupsFromPSI;
-- (void)reportFeatureProcessingSnapshot:(id)a3 library:(id)a4 completion:(id)a5;
-- (void)resetSearchIndexWithReason:(int64_t)a3 library:(id)a4 dropCompletion:(id)a5 completion:(id)a6;
-- (void)resumeProcessingIncrementalUpdatesInLibrary:(id)a3 completion:(id)a4;
-- (void)resumeSearchIndexRebuildIfNeededForLibrary:(id)a3 calledBy:(id)a4 completion:(id)a5;
+- (void)reportFeatureProcessingSnapshot:(id)snapshot library:(id)library completion:(id)completion;
+- (void)resetSearchIndexWithReason:(int64_t)reason library:(id)library dropCompletion:(id)completion completion:(id)a6;
+- (void)resumeProcessingIncrementalUpdatesInLibrary:(id)library completion:(id)completion;
+- (void)resumeSearchIndexRebuildIfNeededForLibrary:(id)library calledBy:(id)by completion:(id)completion;
 @end
 
 @implementation PLSearchIndexingEngine
@@ -75,21 +75,21 @@ uint64_t __51__PLSearchIndexingEngine_removeUnusedGroupsFromPSI__block_invoke(ui
   return [*(*(a1 + 32) + 16) removeUser];
 }
 
-- (void)_safePerformBlockWithPSIDatabase:(id)a3 sync:(BOOL)a4
+- (void)_safePerformBlockWithPSIDatabase:(id)database sync:(BOOL)sync
 {
-  v4 = a4;
-  v6 = a3;
+  syncCopy = sync;
+  databaseCopy = database;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __64__PLSearchIndexingEngine__safePerformBlockWithPSIDatabase_sync___block_invoke;
   v14 = &unk_1E7577C08;
-  v15 = self;
-  v7 = v6;
+  selfCopy = self;
+  v7 = databaseCopy;
   v16 = v7;
   v8 = _Block_copy(&v11);
   v9 = [PLConcurrencyLimiter sharedLimiter:v11];
   v10 = v9;
-  if (v4)
+  if (syncCopy)
   {
     [v9 sync:v8 identifyingBlock:0 library:0];
   }
@@ -161,35 +161,35 @@ LABEL_9:
   return [*(*(a1 + 32) + 16) removeUser];
 }
 
-- (id)sceneTaxonomyDigestsForSearchIndexingRebuildEngine:(id)a3
+- (id)sceneTaxonomyDigestsForSearchIndexingRebuildEngine:(id)engine
 {
-  v3 = [(PLSearchIndexConfiguration *)self->_configuration sceneTaxonomyProvider];
-  v4 = [v3 digests];
+  sceneTaxonomyProvider = [(PLSearchIndexConfiguration *)self->_configuration sceneTaxonomyProvider];
+  digests = [sceneTaxonomyProvider digests];
 
-  return v4;
+  return digests;
 }
 
 - (id)_spotlightIndexName
 {
-  v2 = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider libraryIdentifier];
+  libraryIdentifier = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider libraryIdentifier];
 
-  return [PLSpotlightDonationUtilities domainIdentifierForPhotoLibraryIdentifier:v2];
+  return [PLSpotlightDonationUtilities domainIdentifierForPhotoLibraryIdentifier:libraryIdentifier];
 }
 
-- (void)_inLibraryPerform_donateManagedObjects:(id)a3 partialUpdateMasks:(id)a4 entity:(unint64_t)a5 deleteIdentifiers:(id)a6 identifiersRequiringAdditionalWorkByEntity:(id)a7 library:(id)a8 progress:(id)a9 completion:(id)a10
+- (void)_inLibraryPerform_donateManagedObjects:(id)objects partialUpdateMasks:(id)masks entity:(unint64_t)entity deleteIdentifiers:(id)identifiers identifiersRequiringAdditionalWorkByEntity:(id)byEntity library:(id)library progress:(id)progress completion:(id)self0
 {
   v117 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v59 = a4;
-  v16 = a6;
-  v17 = a7;
-  v71 = a8;
-  v18 = a9;
-  v70 = a10;
-  v75 = v15;
-  v74 = [v15 count];
-  v65 = v16;
-  v73 = [v16 count];
+  objectsCopy = objects;
+  masksCopy = masks;
+  identifiersCopy = identifiers;
+  byEntityCopy = byEntity;
+  libraryCopy = library;
+  progressCopy = progress;
+  completionCopy = completion;
+  v75 = objectsCopy;
+  v74 = [objectsCopy count];
+  v65 = identifiersCopy;
+  v73 = [identifiersCopy count];
   v19 = PLSearchBackendIndexingEngineGetLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -236,8 +236,8 @@ LABEL_9:
     v107 = 0u;
     v104 = 0u;
     v105 = 0u;
-    v28 = [v17 allKeys];
-    v29 = [v28 countByEnumeratingWithState:&v104 objects:v116 count:16];
+    allKeys = [byEntityCopy allKeys];
+    v29 = [allKeys countByEnumeratingWithState:&v104 objects:v116 count:16];
     if (v29)
     {
       v30 = *v105;
@@ -247,32 +247,32 @@ LABEL_9:
         {
           if (*v105 != v30)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(allKeys);
           }
 
-          v32 = [v17 objectForKeyedSubscript:*(*(&v104 + 1) + 8 * i)];
+          v32 = [byEntityCopy objectForKeyedSubscript:*(*(&v104 + 1) + 8 * i)];
           v33 = [v32 count];
 
           v27 += v33;
         }
 
-        v29 = [v28 countByEnumeratingWithState:&v104 objects:v116 count:16];
+        v29 = [allKeys countByEnumeratingWithState:&v104 objects:v116 count:16];
       }
 
       while (v29);
     }
   }
 
-  [v18 setTotalUnitCount:v27];
+  [progressCopy setTotalUnitCount:v27];
   v64 = [MEMORY[0x1E695DF00] now];
-  v34 = [(PLSearchIndexingEngine *)self configuration];
-  v35 = [v71 managedObjectContext];
-  [v34 inLibraryPerform_refreshSharedLibraryEnabledWithManagedObjectContext:v35];
+  configuration = [(PLSearchIndexingEngine *)self configuration];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  [configuration inLibraryPerform_refreshSharedLibraryEnabledWithManagedObjectContext:managedObjectContext];
 
-  v36 = [v18 isCancelled];
-  if (a5 == 1)
+  isCancelled = [progressCopy isCancelled];
+  if (entity == 1)
   {
-    v37 = v36;
+    v37 = isCancelled;
   }
 
   else
@@ -288,8 +288,8 @@ LABEL_9:
   else
   {
     v38 = objc_alloc_init(PLSearchIndexingEmbeddingsFetcher);
-    v39 = [(PLSearchIndexConfiguration *)self->_configuration indexingContext];
-    [(PLSearchIndexingEmbeddingsFetcher *)v38 prefetchEmbeddingsForAssets:v75 indexingContext:v39];
+    indexingContext = [(PLSearchIndexConfiguration *)self->_configuration indexingContext];
+    [(PLSearchIndexingEmbeddingsFetcher *)v38 prefetchEmbeddingsForAssets:v75 indexingContext:indexingContext];
   }
 
   *buf = 0;
@@ -304,12 +304,12 @@ LABEL_9:
   v95[1] = 3221225472;
   v95[2] = __180__PLSearchIndexingEngine__inLibraryPerform_donateManagedObjects_partialUpdateMasks_entity_deleteIdentifiers_identifiersRequiringAdditionalWorkByEntity_library_progress_completion___block_invoke;
   v95[3] = &unk_1E756E128;
-  v42 = v18;
+  v42 = progressCopy;
   v96 = v42;
-  v60 = v59;
+  v60 = masksCopy;
   v97 = v60;
-  v98 = self;
-  v72 = v71;
+  selfCopy = self;
+  v72 = libraryCopy;
   v99 = v72;
   v43 = v40;
   v100 = v43;
@@ -326,7 +326,7 @@ LABEL_9:
     v93[2] = __180__PLSearchIndexingEngine__inLibraryPerform_donateManagedObjects_partialUpdateMasks_entity_deleteIdentifiers_identifiersRequiringAdditionalWorkByEntity_library_progress_completion___block_invoke_339;
     v93[3] = &unk_1E756E150;
     v94 = v43;
-    [v17 enumerateKeysAndObjectsUsingBlock:v93];
+    [byEntityCopy enumerateKeysAndObjectsUsingBlock:v93];
   }
 
   v45 = v63;
@@ -344,7 +344,7 @@ LABEL_9:
   if (([v42 isCancelled] & 1) != 0 || (v48 = *(*&buf[8] + 40)) == 0)
   {
     v49 = 0;
-    v51 = 0;
+    result = 0;
   }
 
   else
@@ -353,7 +353,7 @@ LABEL_9:
     v50 = [PLGlobalValues searchIndexSpotlightClientStateDataWithDictionary:v49];
     if ([v50 isSuccess])
     {
-      v51 = [v50 result];
+      result = [v50 result];
     }
 
     else
@@ -361,15 +361,15 @@ LABEL_9:
       v52 = PLSearchBackendIndexingEngineGetLog();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
-        v53 = [v50 error];
+        error = [v50 error];
         *v108 = 138412290;
-        v109 = v53;
-        v68 = v53;
+        v109 = error;
+        v68 = error;
         _os_log_impl(&dword_19BF1F000, v52, OS_LOG_TYPE_ERROR, "Error serializing Spotlight client state: %@", v108, 0xCu);
       }
 
       v49 = 0;
-      v51 = 0;
+      result = 0;
     }
   }
 
@@ -387,7 +387,7 @@ LABEL_9:
     v56 = MEMORY[0x1E69BF2D0];
     v57 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
     v58 = [v56 failureWithError:v57];
-    v70[2](v70, v58);
+    completionCopy[2](completionCopy, v58);
   }
 
   else
@@ -397,11 +397,11 @@ LABEL_9:
     v76[2] = __180__PLSearchIndexingEngine__inLibraryPerform_donateManagedObjects_partialUpdateMasks_entity_deleteIdentifiers_identifiersRequiringAdditionalWorkByEntity_library_progress_completion___block_invoke_341;
     v76[3] = &unk_1F0F04668;
     v77 = v64;
-    v78 = self;
+    selfCopy2 = self;
     v79 = v43;
     v80 = v44;
     v81 = v65;
-    v82 = v51;
+    v82 = result;
     v89 = v66;
     v90 = spid;
     v91 = v74;
@@ -411,7 +411,7 @@ LABEL_9:
     v85 = v47;
     v88 = buf;
     v86 = v42;
-    v87 = v70;
+    v87 = completionCopy;
     [(PLSearchIndexingEngine *)self _safePerformBlock:v76];
 
     v57 = v77;
@@ -643,26 +643,26 @@ void __180__PLSearchIndexingEngine__inLibraryPerform_donateManagedObjects_partia
   (*(*(a1 + 72) + 16))();
 }
 
-- (void)_inq_dropSearchIndexWithSourceName:(id)a3 reasons:(unint64_t)a4 completion:(id)a5
+- (void)_inq_dropSearchIndexWithSourceName:(id)name reasons:(unint64_t)reasons completion:(id)completion
 {
   v66 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  completionCopy = completion;
   v53 = MEMORY[0x1E69E9820];
   v54 = 3221225472;
   v55 = __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_completion___block_invoke;
   v56 = &unk_1E75781E8;
-  v57 = self;
+  selfCopy = self;
   PLSafeRunWithUnfairLock();
   v10 = PLSearchBackendIndexingEngineGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = PLSearchIndexRebuildReasonsDescriptionWithSpotlightReason(a4, 0);
+    v11 = PLSearchIndexRebuildReasonsDescriptionWithSpotlightReason(reasons, 0);
     libraryServicesProvider = self->_libraryServicesProvider;
     [(PLSearchIndexingEngineLibraryServicesProvider *)libraryServicesProvider libraryIdentifier];
     v13 = PLStringFromWellKnownPhotoLibraryIdentifier();
     *buf = 138544130;
-    v59 = v8;
+    v59 = nameCopy;
     v60 = 2114;
     v61 = v11;
     v62 = 2112;
@@ -676,7 +676,7 @@ void __180__PLSearchIndexingEngine__inLibraryPerform_donateManagedObjects_partia
   v15 = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider libraryWithName:"[PLSearchIndexingEngine _inq_dropSearchIndexWithSourceName:reasons:completion:]"];
   if ([(PLSearchIndexingEngine *)self supportsSpotlightDelete])
   {
-    v16 = v8;
+    v16 = nameCopy;
     v17 = +[PLSpotlightDonationUtilities photosBundleIdentifier];
     v18 = [(PLTimedDispatchGroup *)v14 enterWithTimeout:@"drop spotlight" name:60.0];
     queue_spotlightIndex = self->_queue_spotlightIndex;
@@ -687,8 +687,8 @@ void __180__PLSearchIndexingEngine__inLibraryPerform_donateManagedObjects_partia
     v20 = v18;
     v52 = v20;
     [(CSSearchableIndex *)queue_spotlightIndex deleteAllSearchableItemsWithProtectionClass:0 forBundleID:v17 options:32 completionHandler:v51];
-    v21 = [v15 globalValues];
-    v22 = [v21 shouldDropGlobalSpotlightIndexForLibraryIdentifier:{-[PLSearchIndexingEngineLibraryServicesProvider libraryIdentifier](self->_libraryServicesProvider, "libraryIdentifier")}];
+    globalValues = [v15 globalValues];
+    v22 = [globalValues shouldDropGlobalSpotlightIndexForLibraryIdentifier:{-[PLSearchIndexingEngineLibraryServicesProvider libraryIdentifier](self->_libraryServicesProvider, "libraryIdentifier")}];
 
     if (v22)
     {
@@ -700,8 +700,8 @@ void __180__PLSearchIndexingEngine__inLibraryPerform_donateManagedObjects_partia
       }
 
       v24 = objc_alloc(MEMORY[0x1E6964E78]);
-      v25 = [(PLSearchIndexingEngine *)self _spotlightIndexName];
-      v26 = [v24 initWithName:v25 options:32];
+      _spotlightIndexName = [(PLSearchIndexingEngine *)self _spotlightIndexName];
+      v26 = [v24 initWithName:_spotlightIndexName options:32];
 
       v27 = [(PLTimedDispatchGroup *)v14 enterWithTimeout:@"drop spotlight global" name:60.0];
       v49[0] = MEMORY[0x1E69E9820];
@@ -713,7 +713,7 @@ void __180__PLSearchIndexingEngine__inLibraryPerform_donateManagedObjects_partia
       [v26 deleteAllSearchableItemsWithProtectionClass:0 forBundleID:v17 options:32 completionHandler:v49];
     }
 
-    v8 = v16;
+    nameCopy = v16;
   }
 
   if ([(PLSearchIndexingEngine *)self supportsPSI])
@@ -735,19 +735,19 @@ void __180__PLSearchIndexingEngine__inLibraryPerform_donateManagedObjects_partia
     else
     {
       [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider pathManager];
-      v39 = a4;
-      v34 = v33 = v8;
-      v35 = [v34 searchIndexDatabaseFilePath];
+      reasonsCopy = reasons;
+      v34 = v33 = nameCopy;
+      searchIndexDatabaseFilePath = [v34 searchIndexDatabaseFilePath];
       v45[0] = MEMORY[0x1E69E9820];
       v45[1] = 3221225472;
       v45[2] = __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_completion___block_invoke_3;
       v45[3] = &unk_1E7575FA8;
       v32 = &v46;
       v46 = v30;
-      [PSIDatabase dropDatabaseAtPath:v35 withCompletion:v45];
+      [PSIDatabase dropDatabaseAtPath:searchIndexDatabaseFilePath withCompletion:v45];
 
-      v8 = v33;
-      a4 = v39;
+      nameCopy = v33;
+      reasons = reasonsCopy;
     }
   }
 
@@ -757,10 +757,10 @@ void __180__PLSearchIndexingEngine__inLibraryPerform_donateManagedObjects_partia
   v40[3] = &unk_1E7576190;
   v40[4] = self;
   v41 = v14;
-  v43 = v9;
-  v44 = a4;
+  v43 = completionCopy;
+  reasonsCopy2 = reasons;
   v42 = v15;
-  v36 = v9;
+  v36 = completionCopy;
   v37 = v15;
   v38 = v14;
   [(PLTimedDispatchGroup *)v38 notify:v40];
@@ -976,14 +976,14 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
   dispatch_group_leave(v5);
 }
 
-- (void)_inq_donatePSIObjectsByType:(id)a3 spotlightItemsByBundleID:(id)a4 deleteIdentifiers:(id)a5 spotlightClientState:(id)a6 completion:(id)a7
+- (void)_inq_donatePSIObjectsByType:(id)type spotlightItemsByBundleID:(id)d deleteIdentifiers:(id)identifiers spotlightClientState:(id)state completion:(id)completion
 {
   v129[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v77 = a6;
-  v15 = a7;
+  typeCopy = type;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  stateCopy = state;
+  completionCopy = completion;
   if ([(PLSearchIndexingEngine *)self supportsPSI])
   {
     v16 = self->_queue_psiDatabase == 0;
@@ -1038,7 +1038,7 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v129 forKeys:&v128 count:1];
     v25 = [v23 errorWithDomain:*MEMORY[0x1E69BFF48] code:46502 userInfo:v24];
     v26 = [v22 failureWithError:v25];
-    v15[2](v15, v26);
+    completionCopy[2](completionCopy, v26);
   }
 
   else
@@ -1047,7 +1047,7 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
     v115 = 3221225472;
     v116 = __129__PLSearchIndexingEngine__inq_donatePSIObjectsByType_spotlightItemsByBundleID_deleteIdentifiers_spotlightClientState_completion___block_invoke;
     v117 = &unk_1E7573368;
-    v118 = self;
+    selfCopy = self;
     if (PLBoolResultWithUnfairLock())
     {
       v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Search index unavailable, drop in progress"];
@@ -1066,12 +1066,12 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v127 forKeys:&v126 count:1];
       v32 = [v30 errorWithDomain:*MEMORY[0x1E69BFF48] code:46502 userInfo:v31];
       v33 = [v29 failureWithError:v32];
-      v15[2](v15, v33);
+      completionCopy[2](completionCopy, v33);
     }
 
     else
     {
-      v72 = [v14 count];
+      v72 = [identifiersCopy count];
       *&buf = 0;
       *(&buf + 1) = &buf;
       v124 = 0x2020000000;
@@ -1098,7 +1098,7 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
       v76 = [[PLTimedDispatchGroup alloc] initWithQueue:self->_queue name:@"donate"];
       if ([(PLSearchIndexingEngine *)self supportsPSI])
       {
-        v38 = [v12 objectForKeyedSubscript:&unk_1F0FBCE68];
+        v38 = [typeCopy objectForKeyedSubscript:&unk_1F0FBCE68];
         if ([v38 count])
         {
           v39 = [(PLTimedDispatchGroup *)v76 enterWithName:@"psi assets"];
@@ -1114,7 +1114,7 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
         }
 
         v71 = [v38 count];
-        v42 = [v12 objectForKeyedSubscript:&unk_1F0FBCE80];
+        v42 = [typeCopy objectForKeyedSubscript:&unk_1F0FBCE80];
         if ([v42 count])
         {
           v43 = [(PLTimedDispatchGroup *)v76 enterWithName:@"psi collections"];
@@ -1130,7 +1130,7 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
         }
 
         v70 = [v42 count];
-        v46 = [v12 objectForKeyedSubscript:&unk_1F0FBCE98];
+        v46 = [typeCopy objectForKeyedSubscript:&unk_1F0FBCE98];
         if ([v46 count])
         {
           v47 = [(PLTimedDispatchGroup *)v76 enterWithName:@"psi groups"];
@@ -1146,7 +1146,7 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
         }
 
         v69 = [v46 count];
-        if ([v14 count])
+        if ([identifiersCopy count])
         {
           v68 = v38;
           v50 = [(PLTimedDispatchGroup *)v76 enterWithName:@"psi delete assets"];
@@ -1159,7 +1159,7 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
           v103 = v52;
           v53 = v50;
           v104 = v53;
-          [(PSIDatabase *)v51 removeAssetsWithUUIDs:v14 deferRemovingUnusedGroups:1 completion:v102];
+          [(PSIDatabase *)v51 removeAssetsWithUUIDs:identifiersCopy deferRemovingUnusedGroups:1 completion:v102];
 
           v54 = [(PLTimedDispatchGroup *)v76 enterWithName:@"psi delete collections"];
           v55 = self->_queue_psiDatabase;
@@ -1170,7 +1170,7 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
           v100 = v52;
           v56 = v54;
           v101 = v56;
-          [(PSIDatabase *)v55 removeCollectionsWithUUIDs:v14 deferRemovingUnusedGroups:1 completion:v99];
+          [(PSIDatabase *)v55 removeCollectionsWithUUIDs:identifiersCopy deferRemovingUnusedGroups:1 completion:v99];
 
           v38 = v68;
         }
@@ -1184,7 +1184,7 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
       }
 
       v57 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      if (-[PLSearchIndexingEngine supportsSpotlightDonate](self, "supportsSpotlightDonate") && [v13 count])
+      if (-[PLSearchIndexingEngine supportsSpotlightDonate](self, "supportsSpotlightDonate") && [dCopy count])
       {
         v92[0] = MEMORY[0x1E69E9820];
         v92[1] = 3221225472;
@@ -1192,19 +1192,19 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
         v92[3] = &unk_1E756E100;
         v93 = v76;
         v94 = v57;
-        v95 = v77;
-        v96 = self;
+        v95 = stateCopy;
+        selfCopy2 = self;
         v97 = v75;
         p_buf = &buf;
-        [v13 enumerateKeysAndObjectsUsingBlock:v92];
+        [dCopy enumerateKeysAndObjectsUsingBlock:v92];
       }
 
-      if (-[PLSearchIndexingEngine supportsSpotlightDelete](self, "supportsSpotlightDelete") && [v14 count])
+      if (-[PLSearchIndexingEngine supportsSpotlightDelete](self, "supportsSpotlightDelete") && [identifiersCopy count])
       {
         v58 = PLSearchBackendIndexingEngineGetLog();
         if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
         {
-          v59 = [v14 count];
+          v59 = [identifiersCopy count];
           v60 = +[PLSpotlightDonationUtilities photosBundleIdentifier];
           *v119 = 134218242;
           v120 = v59;
@@ -1224,7 +1224,7 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
         v90 = v75;
         v64 = v61;
         v91 = v64;
-        [(CSSearchableIndex *)queue_spotlightIndex indexSearchableItems:0 deleteSearchableItemsWithIdentifiers:v14 clientState:0 clientStateName:0 protectionClass:0 forBundleID:v63 options:32 completionHandler:v89];
+        [(CSSearchableIndex *)queue_spotlightIndex indexSearchableItems:0 deleteSearchableItemsWithIdentifiers:identifiersCopy clientState:0 clientStateName:0 protectionClass:0 forBundleID:v63 options:32 completionHandler:v89];
       }
 
       v78[0] = MEMORY[0x1E69E9820];
@@ -1241,7 +1241,7 @@ void __80__PLSearchIndexingEngine__inq_dropSearchIndexWithSourceName_reasons_com
       v88 = v72;
       v66 = v57;
       v79 = v66;
-      v81 = v15;
+      v81 = completionCopy;
       v67 = v76;
       v80 = v67;
       [(PLTimedDispatchGroup *)v67 notify:v78];
@@ -1541,29 +1541,29 @@ void __129__PLSearchIndexingEngine__inq_donatePSIObjectsByType_spotlightItemsByB
   [*(a1 + 40) leaveWithResult:v6];
 }
 
-- (void)_inq_validateSpotlightClientStateAgainstExpectedClientState:(id)a3 completion:(id)a4
+- (void)_inq_validateSpotlightClientStateAgainstExpectedClientState:(id)state completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  stateCopy = state;
+  completionCopy = completion;
+  if (!stateCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLSearchIndexingEngine.m" lineNumber:814 description:{@"Invalid parameter not satisfying: %@", @"expectedClientState != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSearchIndexingEngine.m" lineNumber:814 description:{@"Invalid parameter not satisfying: %@", @"expectedClientState != nil"}];
   }
 
   queue_spotlightIndex = self->_queue_spotlightIndex;
   v10 = +[PLSpotlightDonationUtilities photosBundleIdentifier];
-  v11 = [(PLSearchIndexingEngine *)self _spotlightIndexName];
+  _spotlightIndexName = [(PLSearchIndexingEngine *)self _spotlightIndexName];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __97__PLSearchIndexingEngine__inq_validateSpotlightClientStateAgainstExpectedClientState_completion___block_invoke;
   v15[3] = &unk_1E756E0B0;
-  v16 = v7;
-  v17 = self;
-  v18 = v8;
-  v12 = v8;
-  v13 = v7;
-  [(CSSearchableIndex *)queue_spotlightIndex fetchLastClientStateWithProtectionClass:0 forBundleID:v10 clientStateName:v11 options:131104 completionHandler:v15];
+  v16 = stateCopy;
+  selfCopy = self;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = stateCopy;
+  [(CSSearchableIndex *)queue_spotlightIndex fetchLastClientStateWithProtectionClass:0 forBundleID:v10 clientStateName:_spotlightIndexName options:131104 completionHandler:v15];
 }
 
 void __97__PLSearchIndexingEngine__inq_validateSpotlightClientStateAgainstExpectedClientState_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1669,36 +1669,36 @@ void __97__PLSearchIndexingEngine__inq_validateSpotlightClientStateAgainstExpect
   (*(*(a1 + 48) + 16))();
 }
 
-- (unint64_t)_errorCodeForSpotlightClientStateError:(id)a3 debugDescription:(id *)a4
+- (unint64_t)_errorCodeForSpotlightClientStateError:(id)error debugDescription:(id *)description
 {
-  v5 = a3;
-  v6 = [v5 domain];
-  v7 = [v6 isEqualToString:*MEMORY[0x1E6963AD8]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v7 = [domain isEqualToString:*MEMORY[0x1E6963AD8]];
 
   if (!v7)
   {
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [v5 domain];
-    v9 = [v11 stringWithFormat:@"Unexpected error domain %@ code %ld fetching spotlight client state", v12, objc_msgSend(v5, "code")];
+    domain2 = [errorCopy domain];
+    v9 = [v11 stringWithFormat:@"Unexpected error domain %@ code %ld fetching spotlight client state", domain2, objc_msgSend(errorCopy, "code")];
 
     v10 = 4;
-    if (!a4)
+    if (!description)
     {
       goto LABEL_7;
     }
 
 LABEL_6:
     v13 = v9;
-    *a4 = v9;
+    *description = v9;
     goto LABEL_7;
   }
 
-  v8 = [v5 code] + 2013;
+  v8 = [errorCopy code] + 2013;
   if (v8 < 5)
   {
     v9 = off_1E756E1C0[v8];
     v10 = qword_19C60BE70[v8];
-    if (!a4)
+    if (!description)
     {
       goto LABEL_7;
     }
@@ -1706,18 +1706,18 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if ([v5 code] == -1)
+  if ([errorCopy code] == -1)
   {
     v9 = @"Unknown error fetching client state";
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected error code %ld fetching spotlight client state", objc_msgSend(v5, "code")];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected error code %ld fetching spotlight client state", objc_msgSend(errorCopy, "code")];
   }
 
   v10 = 1;
-  if (a4)
+  if (description)
   {
     goto LABEL_6;
   }
@@ -1727,29 +1727,29 @@ LABEL_7:
   return v10;
 }
 
-- (id)_clientStateFailureResultAndLogWithErrorCode:(unint64_t)a3 debugDescription:(id)a4 underlyingError:(id)a5
+- (id)_clientStateFailureResultAndLogWithErrorCode:(unint64_t)code debugDescription:(id)description underlyingError:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  descriptionCopy = description;
+  errorCopy = error;
   v10 = PLSearchBackendIndexingEngineGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     libraryServicesProvider = self->_libraryServicesProvider;
     v17 = 138543874;
-    v18 = v8;
+    v18 = descriptionCopy;
     v19 = 2112;
     v20 = libraryServicesProvider;
     v21 = 2112;
-    v22 = v9;
+    v22 = errorCopy;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "%{public}@ for library: %@, error: %@", &v17, 0x20u);
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v12 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A278]];
-  [v12 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+  [v12 setObject:descriptionCopy forKeyedSubscript:*MEMORY[0x1E696A278]];
+  [v12 setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
   v13 = MEMORY[0x1E69BF2D0];
-  v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PLSearchIndexSpotlightClientStateErrorDomain" code:a3 userInfo:v12];
+  v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PLSearchIndexSpotlightClientStateErrorDomain" code:code userInfo:v12];
   v15 = [v13 failureWithError:v14];
 
   return v15;
@@ -1795,8 +1795,8 @@ LABEL_7:
   queue_updateEngine = self->_queue_updateEngine;
   self->_queue_updateEngine = 0;
 
-  v13 = [(PLSearchIndexingEngine *)self configuration];
-  [v13 releaseIndexingContext];
+  configuration = [(PLSearchIndexingEngine *)self configuration];
+  [configuration releaseIndexingContext];
 
   [(PLSearchIndexingEngine *)self _inq_releaseSpotlightSandboxExtension];
 }
@@ -1817,13 +1817,13 @@ LABEL_7:
   {
     if ([PLSpotlightDonationUtilities shouldUseSpotlightPrivateIndexForLibraryIdentifier:[(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider libraryIdentifier]])
     {
-      v5 = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider pathManager];
-      queue_spotlightIndex = [v5 spotlightSearchIndexPath];
+      pathManager = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider pathManager];
+      queue_spotlightIndex = [pathManager spotlightSearchIndexPath];
 
-      v7 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v39 = 0;
-      v8 = [v7 createDirectoryAtPath:queue_spotlightIndex withIntermediateDirectories:1 attributes:0 error:&v39];
-      v9 = v39;
+      v8 = [defaultManager createDirectoryAtPath:queue_spotlightIndex withIntermediateDirectories:1 attributes:0 error:&v39];
+      _spotlightIndexName2 = v39;
 
       if (v8)
       {
@@ -1837,8 +1837,8 @@ LABEL_7:
         }
 
         v11 = objc_alloc(MEMORY[0x1E6964E38]);
-        v12 = [(PLSearchIndexingEngine *)self _spotlightIndexName];
-        v13 = [v11 initWithName:v12 protectionClass:0 path:queue_spotlightIndex];
+        _spotlightIndexName = [(PLSearchIndexingEngine *)self _spotlightIndexName];
+        v13 = [v11 initWithName:_spotlightIndexName protectionClass:0 path:queue_spotlightIndex];
 
         v14 = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider libraryIdentifier]== 1;
         v36[0] = MEMORY[0x1E69E9820];
@@ -1863,7 +1863,7 @@ LABEL_7:
           *buf = 138412546;
           *&buf[4] = v19;
           v41 = 2112;
-          v42 = v9;
+          v42 = _spotlightIndexName2;
           _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Failed to create Spotlight index directory for %@, error: %@", buf, 0x16u);
         }
       }
@@ -1882,8 +1882,8 @@ LABEL_7:
     else
     {
       v17 = objc_alloc(MEMORY[0x1E6964E78]);
-      v9 = [(PLSearchIndexingEngine *)self _spotlightIndexName];
-      v18 = [v17 initWithName:v9 options:32];
+      _spotlightIndexName2 = [(PLSearchIndexingEngine *)self _spotlightIndexName];
+      v18 = [v17 initWithName:_spotlightIndexName2 options:32];
       queue_spotlightIndex = self->_queue_spotlightIndex;
       self->_queue_spotlightIndex = v18;
     }
@@ -1892,8 +1892,8 @@ LABEL_7:
   if ([(PLSearchIndexingEngine *)self supportsPSI])
   {
     v21 = [PSIDatabase alloc];
-    v22 = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider pathManager];
-    v23 = [(PSIDatabase *)v21 initWithPathManager:v22 options:2];
+    pathManager2 = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider pathManager];
+    v23 = [(PSIDatabase *)v21 initWithPathManager:pathManager2 options:2];
     queue_psiDatabase = self->_queue_psiDatabase;
     self->_queue_psiDatabase = v23;
   }
@@ -1910,10 +1910,10 @@ LABEL_7:
   v29 = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider libraryWithName:"[PLSearchIndexingEngine _inq_open]"];
   if ([(PLSearchIndexingEngine *)self supportsSpotlightClientState])
   {
-    v30 = [v29 globalValues];
-    v31 = [v30 searchIndexSpotlightClientState];
+    globalValues = [v29 globalValues];
+    searchIndexSpotlightClientState = [globalValues searchIndexSpotlightClientState];
 
-    if (v31)
+    if (searchIndexSpotlightClientState)
     {
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
@@ -1921,7 +1921,7 @@ LABEL_7:
       v34[3] = &unk_1E756E060;
       v34[4] = self;
       v35 = v29;
-      [(PLSearchIndexingEngine *)self _inq_validateSpotlightClientStateAgainstExpectedClientState:v31 completion:v34];
+      [(PLSearchIndexingEngine *)self _inq_validateSpotlightClientStateAgainstExpectedClientState:searchIndexSpotlightClientState completion:v34];
     }
   }
 
@@ -2026,26 +2026,26 @@ void __35__PLSearchIndexingEngine__inq_open__block_invoke_2(uint64_t a1)
   if (!self->_queue_spotlightSandboxExtension)
   {
     v4 = [PLSearchSpotlightSandboxExtension alloc];
-    v7 = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider pathManager];
-    v5 = [(PLSearchSpotlightSandboxExtension *)v4 initWithPathManager:v7];
+    pathManager = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider pathManager];
+    v5 = [(PLSearchSpotlightSandboxExtension *)v4 initWithPathManager:pathManager];
     queue_spotlightSandboxExtension = self->_queue_spotlightSandboxExtension;
     self->_queue_spotlightSandboxExtension = v5;
   }
 }
 
-- (void)_inq_handleClientStateValidationError:(id)a3 library:(id)a4
+- (void)_inq_handleClientStateValidationError:(id)error library:(id)library
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 code];
-  if (v8 == 2)
+  errorCopy = error;
+  libraryCopy = library;
+  code = [errorCopy code];
+  if (code == 2)
   {
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __72__PLSearchIndexingEngine__inq_handleClientStateValidationError_library___block_invoke_204;
     v23[3] = &unk_1E75781E8;
-    v24 = v7;
+    v24 = libraryCopy;
     [(PLTimedDispatchGroup *)v24 performTransactionAndWait:v23];
     v11 = v24;
 LABEL_13:
@@ -2053,7 +2053,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v8 == 1)
+  if (code == 1)
   {
     v9 = PLSearchBackendIndexingEngineGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -2066,22 +2066,22 @@ LABEL_13:
 
     v11 = [[PLTimedDispatchGroup alloc] initWithQueue:self->_queue name:@"countSpotlightAssetsQuery"];
     v12 = [PLSpotlightQueryUtilities countAssetsQueryStringForLibraryIdentifier:[(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider libraryIdentifier]];
-    v13 = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider libraryIdentifier];
-    v14 = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider pathManager];
-    v15 = [PLSpotlightQueryUtilities searchQueryForLibraryIdentifier:v13 pathManager:v14 queryString:v12];
+    libraryIdentifier = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider libraryIdentifier];
+    pathManager = [(PLSearchIndexingEngineLibraryServicesProvider *)self->_libraryServicesProvider pathManager];
+    v15 = [PLSpotlightQueryUtilities searchQueryForLibraryIdentifier:libraryIdentifier pathManager:pathManager queryString:v12];
 
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __72__PLSearchIndexingEngine__inq_handleClientStateValidationError_library___block_invoke;
     v28[3] = &unk_1E756E060;
     v28[4] = self;
-    v29 = v6;
+    v29 = errorCopy;
     [PLSpotlightQueryUtilities countForSearchQuery:v15 timedDispatchGroup:v11 completion:v28];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __72__PLSearchIndexingEngine__inq_handleClientStateValidationError_library___block_invoke_203;
     v26[3] = &unk_1E75781E8;
-    v16 = v7;
+    v16 = libraryCopy;
     v27 = v16;
     [v16 performTransactionAndWait:v26];
     v17 = PLSearchBackendIndexingEngineGetLog();
@@ -2092,10 +2092,10 @@ LABEL_13:
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "%s - in Resetting search index availability", buf, 0xCu);
     }
 
-    v18 = [v16 libraryServicesManager];
-    v19 = [v18 availabilityComputer];
+    libraryServicesManager = [v16 libraryServicesManager];
+    availabilityComputer = [libraryServicesManager availabilityComputer];
     v25 = 0;
-    v20 = [v19 didDropSearchIndexForPhotoLibrary:v16 error:&v25];
+    v20 = [availabilityComputer didDropSearchIndexForPhotoLibrary:v16 error:&v25];
     v21 = v25;
 
     if ((v20 & 1) == 0)
@@ -2205,20 +2205,20 @@ void __72__PLSearchIndexingEngine__inq_handleClientStateValidationError_library_
   }
 }
 
-- (void)_inLibraryPerform_donateAssets:(id)a3 library:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)_inLibraryPerform_donateAssets:(id)assets library:(id)library progress:(id)progress completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v23 = a4;
-  v11 = a5;
-  v12 = a6;
+  assetsCopy = assets;
+  libraryCopy = library;
+  progressCopy = progress;
+  completionCopy = completion;
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v15 = v10;
+  v15 = assetsCopy;
   v16 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v16)
   {
@@ -2241,8 +2241,8 @@ void __72__PLSearchIndexingEngine__inq_handleClientStateValidationError_library_
 
         else
         {
-          v21 = [v20 uuid];
-          [v14 addObject:v21];
+          uuid = [v20 uuid];
+          [v14 addObject:uuid];
         }
       }
 
@@ -2258,9 +2258,9 @@ void __72__PLSearchIndexingEngine__inq_handleClientStateValidationError_library_
   v24[2] = __85__PLSearchIndexingEngine__inLibraryPerform_donateAssets_library_progress_completion___block_invoke;
   v24[3] = &unk_1E756E010;
   v24[4] = self;
-  v25 = v12;
-  v22 = v12;
-  [(PLSearchIndexingEngine *)self _inLibraryPerform_donateManagedObjects:v13 partialUpdateMasks:0 entity:1 deleteIdentifiers:v14 identifiersRequiringAdditionalWorkByEntity:0 library:v23 progress:v11 completion:v24];
+  v25 = completionCopy;
+  v22 = completionCopy;
+  [(PLSearchIndexingEngine *)self _inLibraryPerform_donateManagedObjects:v13 partialUpdateMasks:0 entity:1 deleteIdentifiers:v14 identifiersRequiringAdditionalWorkByEntity:0 library:libraryCopy progress:progressCopy completion:v24];
 }
 
 void __85__PLSearchIndexingEngine__inLibraryPerform_donateAssets_library_progress_completion___block_invoke(uint64_t a1, void *a2)
@@ -2271,10 +2271,10 @@ void __85__PLSearchIndexingEngine__inLibraryPerform_donateAssets_library_progres
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_safePerformBlock:(id)a3
+- (void)_safePerformBlock:(id)block
 {
-  v4 = a3;
-  v3 = v4;
+  blockCopy = block;
+  v3 = blockCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -2303,15 +2303,15 @@ void __44__PLSearchIndexingEngine__safePerformBlock___block_invoke(uint64_t a1)
   }
 }
 
-- (void)reportFeatureProcessingSnapshot:(id)a3 library:(id)a4 completion:(id)a5
+- (void)reportFeatureProcessingSnapshot:(id)snapshot library:(id)library completion:(id)completion
 {
   v6 = MEMORY[0x1E69BF2D0];
   v7 = MEMORY[0x1E695DFB0];
-  v8 = a5;
-  v9 = [v7 null];
-  v10 = [v6 successWithResult:v9];
+  completionCopy = completion;
+  null = [v7 null];
+  v10 = [v6 successWithResult:null];
 
-  (*(a5 + 2))(v8, v10);
+  (*(completion + 2))(completionCopy, v10);
 }
 
 - (void)pauseProcessingIncrementalUpdates
@@ -2334,11 +2334,11 @@ void __44__PLSearchIndexingEngine__safePerformBlock___block_invoke(uint64_t a1)
   [(PLSearchIndexingEngine *)self _safePerformBlock:v5];
 }
 
-- (void)resumeProcessingIncrementalUpdatesInLibrary:(id)a3 completion:(id)a4
+- (void)resumeProcessingIncrementalUpdatesInLibrary:(id)library completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  completionCopy = completion;
   v8 = PLSearchBackendIndexingEngineGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2353,10 +2353,10 @@ void __44__PLSearchIndexingEngine__safePerformBlock___block_invoke(uint64_t a1)
   v12[2] = __81__PLSearchIndexingEngine_resumeProcessingIncrementalUpdatesInLibrary_completion___block_invoke;
   v12[3] = &unk_1E7576F38;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = libraryCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = libraryCopy;
   [(PLSearchIndexingEngine *)self _safePerformBlock:v12];
 }
 
@@ -2383,27 +2383,27 @@ uint64_t __81__PLSearchIndexingEngine_resumeProcessingIncrementalUpdatesInLibrar
   return [v2 removeUser];
 }
 
-- (id)processBatchOfJobsWithType:(signed __int16)a3 flags:(int64_t)a4 library:(id)a5 completion:(id)a6
+- (id)processBatchOfJobsWithType:(signed __int16)type flags:(int64_t)flags library:(id)library completion:(id)completion
 {
-  v8 = a3;
+  typeCopy = type;
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  libraryCopy = library;
+  completionCopy = completion;
   v12 = PLSearchBackendIndexingEngineGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    if (v8 > 0xA)
+    if (typeCopy > 0xA)
     {
       v13 = @"unknown";
     }
 
     else
     {
-      v13 = off_1E756F240[v8];
+      v13 = off_1E756F240[typeCopy];
     }
 
     v14 = v13;
-    v15 = PLBackgroundJobWorkerSearchJobFlagsDescription(a4);
+    v15 = PLBackgroundJobWorkerSearchJobFlagsDescription(flags);
     libraryServicesProvider = self->_libraryServicesProvider;
     *buf = 138543874;
     v31 = v14;
@@ -2419,15 +2419,15 @@ uint64_t __81__PLSearchIndexingEngine_resumeProcessingIncrementalUpdatesInLibrar
   v24[1] = 3221225472;
   v24[2] = __78__PLSearchIndexingEngine_processBatchOfJobsWithType_flags_library_completion___block_invoke;
   v24[3] = &unk_1E756DFE8;
-  v29 = v8;
-  v28 = a4;
+  v29 = typeCopy;
+  flagsCopy = flags;
   v24[4] = self;
-  v25 = v10;
+  v25 = libraryCopy;
   v18 = v17;
   v26 = v18;
-  v27 = v11;
-  v19 = v11;
-  v20 = v10;
+  v27 = completionCopy;
+  v19 = completionCopy;
+  v20 = libraryCopy;
   [(PLSearchIndexingEngine *)self _safePerformBlock:v24];
   v21 = v27;
   v22 = v18;
@@ -2461,10 +2461,10 @@ uint64_t __78__PLSearchIndexingEngine_processBatchOfJobsWithType_flags_library_c
   return [v2 removeUser];
 }
 
-- (void)fetchRemainingWorkWithLibrary:(id)a3 completion:(id)a4
+- (void)fetchRemainingWorkWithLibrary:(id)library completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  completionCopy = completion;
   v8 = PLSearchBackendIndexingEngineGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -2477,10 +2477,10 @@ uint64_t __78__PLSearchIndexingEngine_processBatchOfJobsWithType_flags_library_c
   v11[2] = __67__PLSearchIndexingEngine_fetchRemainingWorkWithLibrary_completion___block_invoke;
   v11[3] = &unk_1E7576F38;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = libraryCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = libraryCopy;
   [(PLSearchIndexingEngine *)self _safePerformBlock:v11];
 }
 
@@ -2612,29 +2612,29 @@ uint64_t __67__PLSearchIndexingEngine_fetchRemainingWorkWithLibrary_completion__
   return [*(a1[4] + 16) removeUser];
 }
 
-- (void)resetSearchIndexWithReason:(int64_t)a3 library:(id)a4 dropCompletion:(id)a5 completion:(id)a6
+- (void)resetSearchIndexWithReason:(int64_t)reason library:(id)library dropCompletion:(id)completion completion:(id)a6
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
+  libraryCopy = library;
+  completionCopy = completion;
   v12 = a6;
   v13 = PLSearchBackendIndexRebuildGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    if ((a3 - 1) > 9)
+    if ((reason - 1) > 9)
     {
       v14 = @"PLSearchIndexRebuildReasonNone";
     }
 
     else
     {
-      v14 = off_1E756E170[a3 - 1];
+      v14 = off_1E756E170[reason - 1];
     }
 
     *buf = 138543618;
     v24 = v14;
     v25 = 2050;
-    v26 = a3;
+    reasonCopy = reason;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Received request to drop and rebuild search index with reason: %{public}@ (%{public}ld)", buf, 0x16u);
   }
 
@@ -2644,12 +2644,12 @@ uint64_t __67__PLSearchIndexingEngine_fetchRemainingWorkWithLibrary_completion__
   v19[2] = __87__PLSearchIndexingEngine_resetSearchIndexWithReason_library_dropCompletion_completion___block_invoke;
   v19[3] = &unk_1E756DF70;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
+  v20 = libraryCopy;
+  v21 = completionCopy;
   v22 = v12;
   v16 = v12;
-  v17 = v10;
-  v18 = v11;
+  v17 = libraryCopy;
+  v18 = completionCopy;
   [(PLSearchIndexingEngine *)self dropSearchIndexWithSourceName:v15 completion:v19];
 }
 
@@ -2695,10 +2695,10 @@ uint64_t __87__PLSearchIndexingEngine_resetSearchIndexWithReason_library_dropCom
   return result;
 }
 
-- (void)pauseSearchIndexRebuildWithSourceName:(id)a3
+- (void)pauseSearchIndexRebuildWithSourceName:(id)name
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = PLSearchBackendIndexingEngineGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2713,17 +2713,17 @@ uint64_t __87__PLSearchIndexingEngine_resetSearchIndexWithReason_library_dropCom
   v8[2] = __64__PLSearchIndexingEngine_pauseSearchIndexRebuildWithSourceName___block_invoke;
   v8[3] = &unk_1E7578848;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = nameCopy;
+  v7 = nameCopy;
   [(PLSearchIndexingEngine *)self _safePerformBlock:v8];
 }
 
-- (void)resumeSearchIndexRebuildIfNeededForLibrary:(id)a3 calledBy:(id)a4 completion:(id)a5
+- (void)resumeSearchIndexRebuildIfNeededForLibrary:(id)library calledBy:(id)by completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  libraryCopy = library;
+  byCopy = by;
+  completionCopy = completion;
   v11 = PLSearchBackendIndexingEngineGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -2738,12 +2738,12 @@ uint64_t __87__PLSearchIndexingEngine_resetSearchIndexWithReason_library_dropCom
   v16[2] = __89__PLSearchIndexingEngine_resumeSearchIndexRebuildIfNeededForLibrary_calledBy_completion___block_invoke;
   v16[3] = &unk_1E7573C00;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v17 = libraryCopy;
+  v18 = byCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = byCopy;
+  v15 = libraryCopy;
   [(PLSearchIndexingEngine *)self _safePerformBlock:v16];
 }
 
@@ -2771,31 +2771,31 @@ uint64_t __89__PLSearchIndexingEngine_resumeSearchIndexRebuildIfNeededForLibrary
   return [v2 removeUser];
 }
 
-- (BOOL)hasRebuildWorkToDoForLibrary:(id)a3
+- (BOOL)hasRebuildWorkToDoForLibrary:(id)library
 {
   libraryServicesProvider = self->_libraryServicesProvider;
-  v5 = a3;
-  v6 = [(PLSearchIndexingEngineLibraryServicesProvider *)libraryServicesProvider libraryIdentifier];
-  v7 = [(PLSearchIndexConfiguration *)self->_configuration sceneTaxonomyProvider];
-  v8 = [v7 digests];
-  v9 = [PLSearchIndexingRebuildEngine hasRebuildWorkToDoForLibrary:v5 identifier:v6 sceneTaxonomyDigests:v8];
+  libraryCopy = library;
+  libraryIdentifier = [(PLSearchIndexingEngineLibraryServicesProvider *)libraryServicesProvider libraryIdentifier];
+  sceneTaxonomyProvider = [(PLSearchIndexConfiguration *)self->_configuration sceneTaxonomyProvider];
+  digests = [sceneTaxonomyProvider digests];
+  v9 = [PLSearchIndexingRebuildEngine hasRebuildWorkToDoForLibrary:libraryCopy identifier:libraryIdentifier sceneTaxonomyDigests:digests];
 
   return v9;
 }
 
-- (void)_dropSearchIndexWithSourceName:(id)a3 reasons:(unint64_t)a4 completion:(id)a5
+- (void)_dropSearchIndexWithSourceName:(id)name reasons:(unint64_t)reasons completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  completionCopy = completion;
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __76__PLSearchIndexingEngine__dropSearchIndexWithSourceName_reasons_completion___block_invoke;
   v21 = &unk_1E756DEF8;
-  v22 = self;
-  v10 = v8;
+  selfCopy = self;
+  v10 = nameCopy;
   v23 = v10;
-  v11 = v9;
+  v11 = completionCopy;
   v24 = v11;
   if ((PLBoolResultWithUnfairLock() & 1) == 0)
   {
@@ -2816,7 +2816,7 @@ uint64_t __89__PLSearchIndexingEngine_resumeSearchIndexRebuildIfNeededForLibrary
     v14[3] = &unk_1E7576078;
     v14[4] = self;
     v15 = v10;
-    v17 = a4;
+    reasonsCopy = reasons;
     v16 = v11;
     [(PLSearchIndexingEngine *)self _safePerformBlock:v14];
   }
@@ -2977,25 +2977,25 @@ LABEL_6:
   }
 }
 
-- (id)indexAssetsIfNeededWithObjectIDs:(id)a3 library:(id)a4 completion:(id)a5
+- (id)indexAssetsIfNeededWithObjectIDs:(id)ds library:(id)library completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  libraryCopy = library;
+  completionCopy = completion;
   v11 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:1];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __78__PLSearchIndexingEngine_indexAssetsIfNeededWithObjectIDs_library_completion___block_invoke;
   v19[3] = &unk_1E7576EE8;
-  v20 = v8;
-  v21 = self;
-  v22 = v9;
+  v20 = dsCopy;
+  selfCopy = self;
+  v22 = libraryCopy;
   v12 = v11;
   v23 = v12;
-  v24 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v24 = completionCopy;
+  v13 = completionCopy;
+  v14 = libraryCopy;
+  v15 = dsCopy;
   [(PLSearchIndexingEngine *)self _safePerformBlock:v19];
   v16 = v24;
   v17 = v12;
@@ -3278,22 +3278,22 @@ void __78__PLSearchIndexingEngine_indexAssetsIfNeededWithObjectIDs_library_compl
   [*(a1 + 32) leaveWithResult:v3];
 }
 
-- (id)indexAssetsWithUUIDs:(id)a3 partialUpdateMask:(unint64_t)a4 completion:(id)a5
+- (id)indexAssetsWithUUIDs:(id)ds partialUpdateMask:(unint64_t)mask completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{objc_msgSend(v7, "count")}];
+  dsCopy = ds;
+  completionCopy = completion;
+  v9 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{objc_msgSend(dsCopy, "count")}];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __76__PLSearchIndexingEngine_indexAssetsWithUUIDs_partialUpdateMask_completion___block_invoke;
   v16[3] = &unk_1E7573C00;
-  v17 = v7;
-  v18 = self;
-  v20 = v8;
+  v17 = dsCopy;
+  selfCopy = self;
+  v20 = completionCopy;
   v10 = v9;
   v19 = v10;
-  v11 = v8;
-  v12 = v7;
+  v11 = completionCopy;
+  v12 = dsCopy;
   [(PLSearchIndexingEngine *)self _safePerformBlock:v16];
   v13 = v19;
   v14 = v10;
@@ -3364,16 +3364,16 @@ void __76__PLSearchIndexingEngine_indexAssetsWithUUIDs_partialUpdateMask_complet
   dispatch_sync(queue, block);
 }
 
-- (void)openWithCompletion:(id)a3
+- (void)openWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__PLSearchIndexingEngine_openWithCompletion___block_invoke;
   v6[3] = &unk_1E7577C08;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(PLSearchIndexingEngine *)self _safePerformBlock:v6];
 }
 
@@ -3399,10 +3399,10 @@ uint64_t __45__PLSearchIndexingEngine_openWithCompletion___block_invoke(uint64_t
   return [*(*(a1 + 32) + 16) removeUser];
 }
 
-- (PLSearchIndexingEngine)initWithLibraryServicesProvider:(id)a3
+- (PLSearchIndexingEngine)initWithLibraryServicesProvider:(id)provider
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  providerCopy = provider;
   v38.receiver = self;
   v38.super_class = PLSearchIndexingEngine;
   v6 = [(PLSearchIndexingEngine *)&v38 init];
@@ -3412,15 +3412,15 @@ uint64_t __45__PLSearchIndexingEngine_openWithCompletion___block_invoke(uint64_t
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v40 = v5;
+      v40 = providerCopy;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "Initializing search indexing engine for %@", buf, 0xCu);
     }
 
-    v8 = [v5 pathManager];
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v8 searchIndexDirectory];
+    pathManager = [providerCopy pathManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    searchIndexDirectory = [pathManager searchIndexDirectory];
     v37 = 0;
-    v11 = [v9 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v37];
+    v11 = [defaultManager createDirectoryAtPath:searchIndexDirectory withIntermediateDirectories:1 attributes:0 error:&v37];
     v12 = v37;
 
     if (v11)
@@ -3428,15 +3428,15 @@ uint64_t __45__PLSearchIndexingEngine_openWithCompletion___block_invoke(uint64_t
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
       v15 = v14;
-      v16 = [v14 UTF8String];
+      uTF8String = [v14 UTF8String];
       v17 = qos_class_self();
       v18 = dispatch_queue_attr_make_with_qos_class(0, v17, 0);
-      v19 = dispatch_queue_create(v16, v18);
+      v19 = dispatch_queue_create(uTF8String, v18);
       queue = v6->_queue;
       v6->_queue = v19;
 
-      objc_storeStrong(&v6->_libraryServicesProvider, a3);
-      v21 = [[PLSearchIndexConfiguration alloc] initWithPathManager:v8];
+      objc_storeStrong(&v6->_libraryServicesProvider, provider);
+      v21 = [[PLSearchIndexConfiguration alloc] initWithPathManager:pathManager];
       configuration = v6->_configuration;
       v6->_configuration = v21;
 
@@ -3500,10 +3500,10 @@ void __58__PLSearchIndexingEngine_initWithLibraryServicesProvider___block_invoke
   [WeakRetained _inq_close];
 }
 
-- (PLSearchIndexingEngine)initWithLibraryServicesManager:(id)a3
+- (PLSearchIndexingEngine)initWithLibraryServicesManager:(id)manager
 {
-  v4 = a3;
-  v5 = [[PLSearchIndexingEngineLibraryServicesProvider alloc] initWithLSM:v4];
+  managerCopy = manager;
+  v5 = [[PLSearchIndexingEngineLibraryServicesProvider alloc] initWithLSM:managerCopy];
 
   v6 = [(PLSearchIndexingEngine *)self initWithLibraryServicesProvider:v5];
   return v6;

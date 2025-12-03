@@ -36,8 +36,8 @@
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v8 = [(TIDPNamedEntityTokenRecorder *)self records];
-        v9 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        records = [(TIDPNamedEntityTokenRecorder *)self records];
+        v9 = [records countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v9)
         {
           v10 = v9;
@@ -49,17 +49,17 @@
             {
               if (*v21 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(records);
               }
 
-              v13 = [*(*(&v20 + 1) + 8 * v12) toDPWordRecord];
-              [v7 addObject:v13];
+              toDPWordRecord = [*(*(&v20 + 1) + 8 * v12) toDPWordRecord];
+              [v7 addObject:toDPWordRecord];
 
               ++v12;
             }
 
             while (v10 != v12);
-            v10 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v10 = [records countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v10);
@@ -68,8 +68,8 @@
         v14 = [v7 copy];
         if ([v14 count])
         {
-          v15 = [(TIDPNamedEntityTokenRecorder *)self delegate];
-          [v15 record:v14];
+          delegate = [(TIDPNamedEntityTokenRecorder *)self delegate];
+          [delegate record:v14];
         }
 
         ++v5;
@@ -89,43 +89,43 @@
 - (id)records
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(TIDPRecorder *)self typingSessionAligned];
-  v5 = [v4 alignedEntries];
-  v6 = [v5 count];
+  typingSessionAligned = [(TIDPRecorder *)self typingSessionAligned];
+  alignedEntries = [typingSessionAligned alignedEntries];
+  v6 = [alignedEntries count];
 
   if (v6)
   {
     v7 = 0;
-    v8 = 0;
+    acceptedString = 0;
     v9 = 0;
     do
     {
-      v10 = v8;
+      v10 = acceptedString;
       v11 = v7;
-      v12 = [(TIDPRecorder *)self typingSessionAligned];
-      v13 = [v12 alignedEntries];
-      v7 = [v13 objectAtIndexedSubscript:v9];
+      typingSessionAligned2 = [(TIDPRecorder *)self typingSessionAligned];
+      alignedEntries2 = [typingSessionAligned2 alignedEntries];
+      v7 = [alignedEntries2 objectAtIndexedSubscript:v9];
 
-      v14 = [v7 originalWord];
-      v8 = [v14 acceptedString];
+      originalWord = [v7 originalWord];
+      acceptedString = [originalWord acceptedString];
 
-      v15 = [v7 originalWord];
-      v16 = [v15 acceptedCandidate];
+      originalWord2 = [v7 originalWord];
+      acceptedCandidate = [originalWord2 acceptedCandidate];
 
-      v17 = v16;
-      LODWORD(v16) = [v17 sourceMask] & 8;
-      LODWORD(v16) = v16 | [v17 sourceMask] & 0x10;
+      v17 = acceptedCandidate;
+      LODWORD(acceptedCandidate) = [v17 sourceMask] & 8;
+      LODWORD(acceptedCandidate) = acceptedCandidate | [v17 sourceMask] & 0x10;
 
-      if (v16)
+      if (acceptedCandidate)
       {
-        v18 = [TIDPWordRecord word:v8 atPosition:&unk_28400BE20];
+        v18 = [TIDPWordRecord word:acceptedString atPosition:&unk_28400BE20];
         [v3 addObject:v18];
       }
 
       ++v9;
-      v19 = [(TIDPRecorder *)self typingSessionAligned];
-      v20 = [v19 alignedEntries];
-      v21 = [v20 count];
+      typingSessionAligned3 = [(TIDPRecorder *)self typingSessionAligned];
+      alignedEntries3 = [typingSessionAligned3 alignedEntries];
+      v21 = [alignedEntries3 count];
     }
 
     while (v9 < v21);
@@ -138,8 +138,8 @@
 
 - (id)recordingKey
 {
-  v2 = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
-  v3 = [@"com.apple.TextInput.AddressBookNameMatch." stringByAppendingString:v2];
+  recordingKeyLocaleSubstring = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
+  v3 = [@"com.apple.TextInput.AddressBookNameMatch." stringByAppendingString:recordingKeyLocaleSubstring];
 
   return v3;
 }
@@ -148,13 +148,13 @@
 {
   v11.receiver = self;
   v11.super_class = TIDPNamedEntityTokenRecorder;
-  v3 = [(TIDPRecorder *)&v11 delegate];
+  delegate = [(TIDPRecorder *)&v11 delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     v4 = objc_alloc(MEMORY[0x277D05320]);
-    v5 = [(TIDPNamedEntityTokenRecorder *)self recordingKey];
-    v6 = [v4 initWithKey:v5];
+    recordingKey = [(TIDPNamedEntityTokenRecorder *)self recordingKey];
+    v6 = [v4 initWithKey:recordingKey];
 
     v10.receiver = self;
     v10.super_class = TIDPNamedEntityTokenRecorder;
@@ -163,9 +163,9 @@
 
   v9.receiver = self;
   v9.super_class = TIDPNamedEntityTokenRecorder;
-  v7 = [(TIDPRecorder *)&v9 delegate];
+  delegate2 = [(TIDPRecorder *)&v9 delegate];
 
-  return v7;
+  return delegate2;
 }
 
 @end

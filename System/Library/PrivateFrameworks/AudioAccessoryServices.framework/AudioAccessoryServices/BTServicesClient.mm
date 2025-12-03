@@ -3,10 +3,10 @@
 - (id)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)diagnosticControl:(id)a3 completion:(id)a4;
-- (void)diagnosticShow:(id)a3 completion:(id)a4;
+- (void)diagnosticControl:(id)control completion:(id)completion;
+- (void)diagnosticShow:(id)show completion:(id)completion;
 - (void)invalidate;
-- (void)showHIDConnectedBannerAperture:(id)a3 completion:(id)a4;
+- (void)showHIDConnectedBannerAperture:(id)aperture completion:(id)completion;
 @end
 
 @implementation BTServicesClient
@@ -170,20 +170,20 @@ uint64_t __30__BTServicesClient_invalidate__block_invoke(uint64_t result)
   }
 }
 
-- (void)diagnosticControl:(id)a3 completion:(id)a4
+- (void)diagnosticControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__BTServicesClient_diagnosticControl_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v12 = v6;
-  v13 = v7;
+  v12 = controlCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = controlCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -208,20 +208,20 @@ void __49__BTServicesClient_diagnosticControl_completion___block_invoke(uint64_t
   }
 }
 
-- (void)diagnosticShow:(id)a3 completion:(id)a4
+- (void)diagnosticShow:(id)show completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  showCopy = show;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__BTServicesClient_diagnosticShow_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v12 = v6;
-  v13 = v7;
+  v12 = showCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = showCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -246,20 +246,20 @@ void __46__BTServicesClient_diagnosticShow_completion___block_invoke(uint64_t a1
   }
 }
 
-- (void)showHIDConnectedBannerAperture:(id)a3 completion:(id)a4
+- (void)showHIDConnectedBannerAperture:(id)aperture completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  apertureCopy = aperture;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__BTServicesClient_showHIDConnectedBannerAperture_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v12 = v6;
-  v13 = v7;
+  v12 = apertureCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = apertureCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 

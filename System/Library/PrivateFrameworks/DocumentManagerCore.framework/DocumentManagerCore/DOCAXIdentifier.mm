@@ -9,45 +9,45 @@
 + (NSString)sortByMenuButton;
 + (NSString)tagEditorContainer;
 + (NSString)viewOptionsRoot;
-+ (id)browsingRootIdentifierForSourceIdentifier:(id)a3;
-+ (id)groupByMenuItemForGrouping:(id)a3;
-+ (id)groupBySectionToggleIdentifier:(id)a3 sectionIdentifier:(id)a4 expanded:(BOOL)a5;
-+ (id)itemCollectionMenuButtonShowing:(id)a3;
-+ (id)searchMenuButtonShowing:(id)a3;
-+ (id)sizeSettingMenuItemForSize:(id)a3;
-+ (id)sortByHeaderButtonForSortIdentifier:(id)a3 ascending:(BOOL)a4 active:(BOOL)a5;
-+ (id)sortByMenuButtonForSortIdentifier:(id)a3 ascending:(BOOL)a4 active:(BOOL)a5;
-+ (id)sortByMenuItemForSortMode:(id)a3;
++ (id)browsingRootIdentifierForSourceIdentifier:(id)identifier;
++ (id)groupByMenuItemForGrouping:(id)grouping;
++ (id)groupBySectionToggleIdentifier:(id)identifier sectionIdentifier:(id)sectionIdentifier expanded:(BOOL)expanded;
++ (id)itemCollectionMenuButtonShowing:(id)showing;
++ (id)searchMenuButtonShowing:(id)showing;
++ (id)sizeSettingMenuItemForSize:(id)size;
++ (id)sortByHeaderButtonForSortIdentifier:(id)identifier ascending:(BOOL)ascending active:(BOOL)active;
++ (id)sortByMenuButtonForSortIdentifier:(id)identifier ascending:(BOOL)ascending active:(BOOL)active;
++ (id)sortByMenuItemForSortMode:(id)mode;
 @end
 
 @implementation DOCAXIdentifier
 
 + (NSString)browsingModeTabBar
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"browsingModeTabBar");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"browsingModeTabBar");
 
   return v3;
 }
 
 + (NSString)browsingRoot
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"browsingRoot");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"browsingRoot");
 
   return v3;
 }
 
-+ (id)browsingRootIdentifierForSourceIdentifier:(id)a3
++ (id)browsingRootIdentifierForSourceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x277CBEB18];
-  v6 = [a1 browsingRoot];
-  v7 = [v5 arrayWithObject:v6];
+  browsingRoot = [self browsingRoot];
+  v7 = [v5 arrayWithObject:browsingRoot];
 
-  if ([v4 length])
+  if ([identifierCopy length])
   {
-    [v7 addObject:v4];
+    [v7 addObject:identifierCopy];
   }
 
   v8 = [v7 componentsJoinedByString:@" "];
@@ -55,15 +55,15 @@
   return v8;
 }
 
-+ (id)searchMenuButtonShowing:(id)a3
++ (id)searchMenuButtonShowing:(id)showing
 {
-  v4 = a3;
-  v5 = [a1 idBase];
-  v6 = composedID(v5, @"searchMenuButton");
+  showingCopy = showing;
+  idBase = [self idBase];
+  v6 = composedID(idBase, @"searchMenuButton");
 
-  if (v4)
+  if (showingCopy)
   {
-    v7 = composedID(v6, v4);
+    v7 = composedID(v6, showingCopy);
 
     v6 = v7;
   }
@@ -71,25 +71,25 @@
   return v6;
 }
 
-+ (id)itemCollectionMenuButtonShowing:(id)a3
++ (id)itemCollectionMenuButtonShowing:(id)showing
 {
-  v4 = a3;
-  v5 = [a1 idBase];
-  v6 = composedID(v5, @"itemCollectionMenuButton");
-  v7 = composedID(v6, v4);
+  showingCopy = showing;
+  idBase = [self idBase];
+  v6 = composedID(idBase, @"itemCollectionMenuButton");
+  v7 = composedID(v6, showingCopy);
 
   return v7;
 }
 
-+ (id)sortByHeaderButtonForSortIdentifier:(id)a3 ascending:(BOOL)a4 active:(BOOL)a5
++ (id)sortByHeaderButtonForSortIdentifier:(id)identifier ascending:(BOOL)ascending active:(BOOL)active
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [MEMORY[0x277CBEB18] arrayWithObject:a3];
+  activeCopy = active;
+  ascendingCopy = ascending;
+  v8 = [MEMORY[0x277CBEB18] arrayWithObject:identifier];
   v9 = v8;
-  if (v5)
+  if (activeCopy)
   {
-    if (v6)
+    if (ascendingCopy)
     {
       v10 = @"ascending";
     }
@@ -102,23 +102,23 @@
     [v8 addObject:v10];
   }
 
-  v11 = [a1 idBase];
-  v12 = composedID(v11, @"sortHeaderButton");
+  idBase = [self idBase];
+  v12 = composedID(idBase, @"sortHeaderButton");
   v13 = [v9 componentsJoinedByString:@"."];
   v14 = composedID(v12, v13);
 
   return v14;
 }
 
-+ (id)sortByMenuButtonForSortIdentifier:(id)a3 ascending:(BOOL)a4 active:(BOOL)a5
++ (id)sortByMenuButtonForSortIdentifier:(id)identifier ascending:(BOOL)ascending active:(BOOL)active
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [MEMORY[0x277CBEB18] arrayWithObject:a3];
+  activeCopy = active;
+  ascendingCopy = ascending;
+  v8 = [MEMORY[0x277CBEB18] arrayWithObject:identifier];
   v9 = v8;
-  if (v5)
+  if (activeCopy)
   {
-    if (v6)
+    if (ascendingCopy)
     {
       v10 = @"ascending";
     }
@@ -131,8 +131,8 @@
     [v8 addObject:v10];
   }
 
-  v11 = [a1 idBase];
-  v12 = composedID(v11, @"sortMenuButton");
+  idBase = [self idBase];
+  v12 = composedID(idBase, @"sortMenuButton");
   v13 = [v9 componentsJoinedByString:@"."];
   v14 = composedID(v12, v13);
 
@@ -141,54 +141,54 @@
 
 + (NSString)sizeSettingMenuButton
 {
-  v2 = [a1 sizeSettingPrefix];
-  v3 = composedID(@"DOCMenuPresentingButton", v2);
+  sizeSettingPrefix = [self sizeSettingPrefix];
+  v3 = composedID(@"DOCMenuPresentingButton", sizeSettingPrefix);
 
   return v3;
 }
 
 + (NSString)sizeSettingSlider
 {
-  v2 = [a1 sizeSettingPrefix];
-  v3 = composedID(@"DOCSizeSettingSlider", v2);
+  sizeSettingPrefix = [self sizeSettingPrefix];
+  v3 = composedID(@"DOCSizeSettingSlider", sizeSettingPrefix);
 
   return v3;
 }
 
-+ (id)sizeSettingMenuItemForSize:(id)a3
++ (id)sizeSettingMenuItemForSize:(id)size
 {
-  v4 = a3;
-  v5 = [a1 idBase];
-  v6 = composedID(v5, @"sizeSettingMenuItemButton");
-  v7 = composedID(v6, v4);
+  sizeCopy = size;
+  idBase = [self idBase];
+  v6 = composedID(idBase, @"sizeSettingMenuItemButton");
+  v7 = composedID(v6, sizeCopy);
 
   return v7;
 }
 
 + (NSString)groupByMenuButton
 {
-  v2 = [a1 groupByPrefix];
-  v3 = composedID(@"DOCMenuPresentingButton", v2);
+  groupByPrefix = [self groupByPrefix];
+  v3 = composedID(@"DOCMenuPresentingButton", groupByPrefix);
 
   return v3;
 }
 
-+ (id)groupByMenuItemForGrouping:(id)a3
++ (id)groupByMenuItemForGrouping:(id)grouping
 {
-  v4 = a3;
-  v5 = [a1 idBase];
-  v6 = composedID(v5, @"groupMenuItemButton");
-  v7 = composedID(v6, v4);
+  groupingCopy = grouping;
+  idBase = [self idBase];
+  v6 = composedID(idBase, @"groupMenuItemButton");
+  v7 = composedID(v6, groupingCopy);
 
   return v7;
 }
 
-+ (id)groupBySectionToggleIdentifier:(id)a3 sectionIdentifier:(id)a4 expanded:(BOOL)a5
++ (id)groupBySectionToggleIdentifier:(id)identifier sectionIdentifier:(id)sectionIdentifier expanded:(BOOL)expanded
 {
-  v5 = a5;
-  v7 = [MEMORY[0x277CBEB18] arrayWithObjects:{a3, a4, 0}];
+  expandedCopy = expanded;
+  v7 = [MEMORY[0x277CBEB18] arrayWithObjects:{identifier, sectionIdentifier, 0}];
   v8 = v7;
-  if (v5)
+  if (expandedCopy)
   {
     v9 = @"expanded";
   }
@@ -199,8 +199,8 @@
   }
 
   [v7 addObject:v9];
-  v10 = [a1 idBase];
-  v11 = composedID(v10, @"groupByExpansionToggle");
+  idBase = [self idBase];
+  v11 = composedID(idBase, @"groupByExpansionToggle");
   v12 = [v8 componentsJoinedByString:@"."];
   v13 = composedID(v11, v12);
 
@@ -209,50 +209,50 @@
 
 + (NSString)sortByMenuButton
 {
-  v2 = [a1 sortByPrefix];
-  v3 = composedID(@"DOCMenuPresentingButton", v2);
+  sortByPrefix = [self sortByPrefix];
+  v3 = composedID(@"DOCMenuPresentingButton", sortByPrefix);
 
   return v3;
 }
 
-+ (id)sortByMenuItemForSortMode:(id)a3
++ (id)sortByMenuItemForSortMode:(id)mode
 {
-  v4 = a3;
-  v5 = [a1 idBase];
-  v6 = composedID(v5, @"sortMenuItemButton");
-  v7 = composedID(v6, v4);
+  modeCopy = mode;
+  idBase = [self idBase];
+  v6 = composedID(idBase, @"sortMenuItemButton");
+  v7 = composedID(v6, modeCopy);
 
   return v7;
 }
 
 + (NSString)inlineRenameField
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"inlineRenameField");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"inlineRenameField");
 
   return v3;
 }
 
 + (NSString)itemInfoNavigationRoot
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"itemInfoNavigationRoot");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"itemInfoNavigationRoot");
 
   return v3;
 }
 
 + (NSString)tagEditorContainer
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"tagEditorContainer");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"tagEditorContainer");
 
   return v3;
 }
 
 + (NSString)viewOptionsRoot
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"viewOptionsRoot");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"viewOptionsRoot");
 
   return v3;
 }

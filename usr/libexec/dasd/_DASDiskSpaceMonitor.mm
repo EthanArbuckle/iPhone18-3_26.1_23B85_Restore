@@ -1,14 +1,14 @@
 @interface _DASDiskSpaceMonitor
-+ (id)sharedMonitorWithDaemon:(id)a3;
-- (BOOL)isDiskSpaceAvailableForActivity:(id)a3;
-- (_DASDiskSpaceMonitor)initWithDaemon:(id)a3;
-- (void)fetchPurgeableSpaceInfoForVolume:(id)a3;
++ (id)sharedMonitorWithDaemon:(id)daemon;
+- (BOOL)isDiskSpaceAvailableForActivity:(id)activity;
+- (_DASDiskSpaceMonitor)initWithDaemon:(id)daemon;
+- (void)fetchPurgeableSpaceInfoForVolume:(id)volume;
 - (void)handleCacheDeletePurgeableSpaceNotification;
 - (void)registerForCacheDeletePurgeableSpaceNotifications;
-- (void)registerForDiskVolumeMonitoring:(id)a3;
-- (void)registerForPurgeableSpaceWithActivity:(id)a3;
-- (void)unregisterForDiskVolumeMonitoring:(id)a3;
-- (void)unregisterForPurgeableSpaceWithActivity:(id)a3;
+- (void)registerForDiskVolumeMonitoring:(id)monitoring;
+- (void)registerForPurgeableSpaceWithActivity:(id)activity;
+- (void)unregisterForDiskVolumeMonitoring:(id)monitoring;
+- (void)unregisterForPurgeableSpaceWithActivity:(id)activity;
 @end
 
 @implementation _DASDiskSpaceMonitor
@@ -51,8 +51,8 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = [(_DASDiskSpaceMonitor *)self pendingActivities];
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v30 count:16];
+    pendingActivities = [(_DASDiskSpaceMonitor *)self pendingActivities];
+    v11 = [pendingActivities countByEnumeratingWithState:&v20 objects:v30 count:16];
     if (v11)
     {
       v12 = v11;
@@ -63,7 +63,7 @@
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(pendingActivities);
           }
 
           v15 = *(*(&v20 + 1) + 8 * j);
@@ -73,7 +73,7 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v20 objects:v30 count:16];
+        v12 = [pendingActivities countByEnumeratingWithState:&v20 objects:v30 count:16];
       }
 
       while (v12);
@@ -101,16 +101,16 @@
   }
 }
 
-- (_DASDiskSpaceMonitor)initWithDaemon:(id)a3
+- (_DASDiskSpaceMonitor)initWithDaemon:(id)daemon
 {
-  v5 = a3;
+  daemonCopy = daemon;
   v14.receiver = self;
   v14.super_class = _DASDiskSpaceMonitor;
   v6 = [(_DASDiskSpaceMonitor *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_daemon, a3);
+    objc_storeStrong(&v6->_daemon, daemon);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.duetactivityscheduler.diskspacemonitor", v8);
     queue = v7->_queue;
@@ -127,16 +127,16 @@
   return v7;
 }
 
-+ (id)sharedMonitorWithDaemon:(id)a3
++ (id)sharedMonitorWithDaemon:(id)daemon
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000FD31C;
   v9[3] = &unk_1001B6250;
-  v10 = a3;
-  v11 = a1;
+  daemonCopy = daemon;
+  selfCopy = self;
   v4 = qword_10020B838;
-  v5 = v10;
+  v5 = daemonCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_10020B838, v9);
@@ -148,11 +148,11 @@
   return v6;
 }
 
-- (void)registerForPurgeableSpaceWithActivity:(id)a3
+- (void)registerForPurgeableSpaceWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = +[_DASDiskSpacePolicy policyInstance];
-  v6 = [v5 appliesToActivity:v4];
+  v6 = [v5 appliesToActivity:activityCopy];
 
   if (v6)
   {
@@ -162,7 +162,7 @@
     v10[2] = sub_1000FD460;
     v10[3] = &unk_1001B56E0;
     v10[4] = self;
-    v8 = v4;
+    v8 = activityCopy;
     v11 = v8;
     dispatch_sync(queue, v10);
     log = self->_log;
@@ -173,11 +173,11 @@
   }
 }
 
-- (void)unregisterForPurgeableSpaceWithActivity:(id)a3
+- (void)unregisterForPurgeableSpaceWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = +[_DASDiskSpacePolicy policyInstance];
-  v6 = [v5 appliesToActivity:v4];
+  v6 = [v5 appliesToActivity:activityCopy];
 
   if (v6)
   {
@@ -187,7 +187,7 @@
     v10[2] = sub_1000FD5F4;
     v10[3] = &unk_1001B56E0;
     v10[4] = self;
-    v8 = v4;
+    v8 = activityCopy;
     v11 = v8;
     dispatch_sync(queue, v10);
     log = self->_log;
@@ -198,11 +198,11 @@
   }
 }
 
-- (void)registerForDiskVolumeMonitoring:(id)a3
+- (void)registerForDiskVolumeMonitoring:(id)monitoring
 {
-  v8 = a3;
-  v4 = [(_DASDiskSpaceMonitor *)self queue];
-  dispatch_assert_queue_V2(v4);
+  monitoringCopy = monitoring;
+  queue = [(_DASDiskSpaceMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   diskVolumes = self->_diskVolumes;
   if (!diskVolumes)
@@ -214,46 +214,46 @@
     diskVolumes = self->_diskVolumes;
   }
 
-  [(NSCountedSet *)diskVolumes addObject:v8];
-  if ([(NSCountedSet *)self->_diskVolumes countForObject:v8]== 1)
+  [(NSCountedSet *)diskVolumes addObject:monitoringCopy];
+  if ([(NSCountedSet *)self->_diskVolumes countForObject:monitoringCopy]== 1)
   {
-    [(_DASDiskSpaceMonitor *)self fetchPurgeableSpaceInfoForVolume:v8];
+    [(_DASDiskSpaceMonitor *)self fetchPurgeableSpaceInfoForVolume:monitoringCopy];
   }
 }
 
-- (void)unregisterForDiskVolumeMonitoring:(id)a3
+- (void)unregisterForDiskVolumeMonitoring:(id)monitoring
 {
-  v6 = a3;
-  v4 = [(_DASDiskSpaceMonitor *)self queue];
-  dispatch_assert_queue_V2(v4);
+  monitoringCopy = monitoring;
+  queue = [(_DASDiskSpaceMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   diskVolumes = self->_diskVolumes;
   if (diskVolumes)
   {
-    [(NSCountedSet *)diskVolumes removeObject:v6];
-    if (([(NSCountedSet *)self->_diskVolumes containsObject:v6]& 1) == 0)
+    [(NSCountedSet *)diskVolumes removeObject:monitoringCopy];
+    if (([(NSCountedSet *)self->_diskVolumes containsObject:monitoringCopy]& 1) == 0)
     {
       os_unfair_recursive_lock_lock_with_options();
-      [(NSMutableDictionary *)self->_purgeableSpaceMap removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_purgeableSpaceMap removeObjectForKey:monitoringCopy];
       os_unfair_recursive_lock_unlock();
     }
   }
 }
 
-- (BOOL)isDiskSpaceAvailableForActivity:(id)a3
+- (BOOL)isDiskSpaceAvailableForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   os_unfair_recursive_lock_lock_with_options();
   if (self->_purgeableSpaceMap)
   {
-    v5 = [(_DASDiskSpaceMonitor *)self purgeableSpaceMap];
-    v6 = [v4 diskVolume];
-    v7 = [v5 objectForKey:v6];
-    v8 = [v7 unsignedLongLongValue];
+    purgeableSpaceMap = [(_DASDiskSpaceMonitor *)self purgeableSpaceMap];
+    diskVolume = [activityCopy diskVolume];
+    v7 = [purgeableSpaceMap objectForKey:diskVolume];
+    unsignedLongLongValue = [v7 unsignedLongLongValue];
 
-    if (v8)
+    if (unsignedLongLongValue)
     {
-      LOBYTE(v8) = v8 >= [v4 downloadSize] << 10;
+      LOBYTE(unsignedLongLongValue) = unsignedLongLongValue >= [activityCopy downloadSize] << 10;
     }
   }
 
@@ -265,23 +265,23 @@
       sub_10012C9AC(log);
     }
 
-    LOBYTE(v8) = 0;
+    LOBYTE(unsignedLongLongValue) = 0;
   }
 
   os_unfair_recursive_lock_unlock();
 
-  return v8;
+  return unsignedLongLongValue;
 }
 
-- (void)fetchPurgeableSpaceInfoForVolume:(id)a3
+- (void)fetchPurgeableSpaceInfoForVolume:(id)volume
 {
-  v4 = a3;
-  v5 = [(_DASDiskSpaceMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  volumeCopy = volume;
+  queue = [(_DASDiskSpaceMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v13[0] = @"CACHE_DELETE_VOLUME";
   v13[1] = @"CACHE_DELETE_URGENCY";
-  v14[0] = v4;
+  v14[0] = volumeCopy;
   v14[1] = &off_1001CA528;
   v6 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
   v7 = CacheDeleteCopyPurgeableSpaceWithInfo();
@@ -307,7 +307,7 @@
     }
 
     v12 = [v7 objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
-    [(NSMutableDictionary *)self->_purgeableSpaceMap setObject:v12 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_purgeableSpaceMap setObject:v12 forKeyedSubscript:volumeCopy];
 
     os_unfair_recursive_lock_unlock();
   }

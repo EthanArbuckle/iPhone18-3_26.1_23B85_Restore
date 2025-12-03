@@ -1,29 +1,29 @@
 @interface CWFNetworkSignature
-+ (id)createHexStringFromBytes:(id)a3;
-- (CWFNetworkSignature)initWithCoder:(id)a3;
-- (CWFNetworkSignature)initWithIPv4NetworkSignature:(id)a3 IPv6NetworkSignature:(id)a4;
-- (CWFNetworkSignature)initWithIPv4NetworkSignatureBytes:(id)a3 IPv6NetworkSignatureBytes:(id)a4;
-- (CWFNetworkSignature)initWithNetworkSignatureWithString:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)createHexStringFromBytes:(id)bytes;
+- (CWFNetworkSignature)initWithCoder:(id)coder;
+- (CWFNetworkSignature)initWithIPv4NetworkSignature:(id)signature IPv6NetworkSignature:(id)networkSignature;
+- (CWFNetworkSignature)initWithIPv4NetworkSignatureBytes:(id)bytes IPv6NetworkSignatureBytes:(id)signatureBytes;
+- (CWFNetworkSignature)initWithNetworkSignatureWithString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFNetworkSignature
 
-- (CWFNetworkSignature)initWithIPv4NetworkSignature:(id)a3 IPv6NetworkSignature:(id)a4
+- (CWFNetworkSignature)initWithIPv4NetworkSignature:(id)signature IPv6NetworkSignature:(id)networkSignature
 {
-  v7 = a3;
-  v8 = a4;
+  signatureCopy = signature;
+  networkSignatureCopy = networkSignature;
   v14.receiver = self;
   v14.super_class = CWFNetworkSignature;
   v9 = [(CWFNetworkSignature *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    if (v7 | v8)
+    if (signatureCopy | networkSignatureCopy)
     {
-      objc_storeStrong(&v9->_IPv4NetworkSignature, a3);
-      v11 = v8;
+      objc_storeStrong(&v9->_IPv4NetworkSignature, signature);
+      v11 = networkSignatureCopy;
       IPv6NetworkSignature = v10->_IPv6NetworkSignature;
       v10->_IPv6NetworkSignature = v11;
     }
@@ -43,16 +43,16 @@
   return v10;
 }
 
-- (CWFNetworkSignature)initWithNetworkSignatureWithString:(id)a3
+- (CWFNetworkSignature)initWithNetworkSignatureWithString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (!stringCopy)
   {
     goto LABEL_7;
   }
 
-  if (![v4 hasPrefix:@"IPv4"])
+  if (![stringCopy hasPrefix:@"IPv4"])
   {
     if ([v5 hasPrefix:@"IPv6"])
     {
@@ -61,56 +61,56 @@
     }
 
 LABEL_7:
-    v7 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
   v6 = [(CWFNetworkSignature *)self initWithIPv4NetworkSignature:v5];
 LABEL_6:
   self = v6;
-  v7 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v7;
+  return selfCopy;
 }
 
-- (CWFNetworkSignature)initWithIPv4NetworkSignatureBytes:(id)a3 IPv6NetworkSignatureBytes:(id)a4
+- (CWFNetworkSignature)initWithIPv4NetworkSignatureBytes:(id)bytes IPv6NetworkSignatureBytes:(id)signatureBytes
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 length] == 20 || v7 && objc_msgSend(v7, "length") == 20)
+  bytesCopy = bytes;
+  signatureBytesCopy = signatureBytes;
+  if (bytesCopy && [bytesCopy length] == 20 || signatureBytesCopy && objc_msgSend(signatureBytesCopy, "length") == 20)
   {
-    v8 = [CWFNetworkSignature createHexStringFromBytes:v6];
-    v9 = [CWFNetworkSignature createHexStringFromBytes:v7];
+    v8 = [CWFNetworkSignature createHexStringFromBytes:bytesCopy];
+    v9 = [CWFNetworkSignature createHexStringFromBytes:signatureBytesCopy];
     self = [(CWFNetworkSignature *)self initWithIPv4NetworkSignature:v8 IPv6NetworkSignature:v9];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-+ (id)createHexStringFromBytes:(id)a3
++ (id)createHexStringFromBytes:(id)bytes
 {
-  v3 = a3;
+  bytesCopy = bytes;
   v4 = objc_opt_new();
-  if ([v3 length] == 20)
+  if ([bytesCopy length] == 20)
   {
-    v5 = [v3 bytes];
-    if ([v3 length])
+    bytes = [bytesCopy bytes];
+    if ([bytesCopy length])
     {
       v6 = 0;
       do
       {
-        [v4 appendFormat:@"%02X", *(v5 + v6++)];
+        [v4 appendFormat:@"%02X", *(bytes + v6++)];
       }
 
-      while (v6 < [v3 length]);
+      while (v6 < [bytesCopy length]);
     }
   }
 
@@ -127,7 +127,7 @@ LABEL_8:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFNetworkSignature allocWithZone:?]];
   [(CWFNetworkSignature *)v4 setIPv4NetworkSignature:self->_IPv4NetworkSignature];
@@ -135,19 +135,19 @@ LABEL_8:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   IPv4NetworkSignature = self->_IPv4NetworkSignature;
-  v5 = a3;
-  [v5 encodeObject:IPv4NetworkSignature forKey:@"_IPv4NetworkSignature"];
-  [v5 encodeObject:self->_IPv6NetworkSignature forKey:@"_IPv6NetworkSignature"];
+  coderCopy = coder;
+  [coderCopy encodeObject:IPv4NetworkSignature forKey:@"_IPv4NetworkSignature"];
+  [coderCopy encodeObject:self->_IPv6NetworkSignature forKey:@"_IPv6NetworkSignature"];
 }
 
-- (CWFNetworkSignature)initWithCoder:(id)a3
+- (CWFNetworkSignature)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_IPv4NetworkSignature"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_IPv6NetworkSignature"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_IPv4NetworkSignature"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_IPv6NetworkSignature"];
 
   v7 = [(CWFNetworkSignature *)self initWithIPv4NetworkSignature:v5 IPv6NetworkSignature:v6];
   return v7;

@@ -1,16 +1,16 @@
 @interface SKUIConfigurationPreloader
 - (BOOL)hasExistingConfigurationCache;
 - (SKUIConfigurationPreloader)init;
-- (SKUIConfigurationPreloader)initWithConfigurationCachePath:(id)a3;
-- (void)finishPreloadingConfiguration:(id)a3 error:(id)a4;
-- (void)preloadConfigurationForPurpose:(int64_t)a3 withCompletionBlock:(id)a4;
+- (SKUIConfigurationPreloader)initWithConfigurationCachePath:(id)path;
+- (void)finishPreloadingConfiguration:(id)configuration error:(id)error;
+- (void)preloadConfigurationForPurpose:(int64_t)purpose withCompletionBlock:(id)block;
 @end
 
 @implementation SKUIConfigurationPreloader
 
-- (SKUIConfigurationPreloader)initWithConfigurationCachePath:(id)a3
+- (SKUIConfigurationPreloader)initWithConfigurationCachePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIConfigurationPreloader initWithConfigurationCachePath:];
@@ -21,7 +21,7 @@
   v5 = [(SKUIConfigurationPreloader *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     configurationCachePath = v5->_configurationCachePath;
     v5->_configurationCachePath = v6;
 
@@ -48,45 +48,45 @@
 
 - (BOOL)hasExistingConfigurationCache
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(SKUIConfigurationPreloader *)self configurationCachePath];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  configurationCachePath = [(SKUIConfigurationPreloader *)self configurationCachePath];
+  v5 = [defaultManager fileExistsAtPath:configurationCachePath];
 
   return v5;
 }
 
-- (void)preloadConfigurationForPurpose:(int64_t)a3 withCompletionBlock:(id)a4
+- (void)preloadConfigurationForPurpose:(int64_t)purpose withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(SKUIConfigurationPreloader *)self loadedConfiguration];
+  blockCopy = block;
+  loadedConfiguration = [(SKUIConfigurationPreloader *)self loadedConfiguration];
 
-  if (v7)
+  if (loadedConfiguration)
   {
-    v8 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __81__SKUIConfigurationPreloader_preloadConfigurationForPurpose_withCompletionBlock___block_invoke_3;
     v20[3] = &unk_2781F9B48;
     v20[4] = self;
-    v21 = v6;
-    [v8 addOperationWithBlock:v20];
+    v21 = blockCopy;
+    [mainQueue addOperationWithBlock:v20];
   }
 
-  else if (a3 || ![(SKUIConfigurationPreloader *)self hasExistingConfigurationCache])
+  else if (purpose || ![(SKUIConfigurationPreloader *)self hasExistingConfigurationCache])
   {
-    v9 = [(SKUIConfigurationPreloader *)self completionBlocks];
-    v10 = [v6 copy];
+    completionBlocks = [(SKUIConfigurationPreloader *)self completionBlocks];
+    v10 = [blockCopy copy];
     v11 = _Block_copy(v10);
-    [v9 addObject:v11];
+    [completionBlocks addObject:v11];
 
-    v12 = [(SKUIConfigurationPreloader *)self pendingReloadOperation];
+    pendingReloadOperation = [(SKUIConfigurationPreloader *)self pendingReloadOperation];
 
-    if (!v12)
+    if (!pendingReloadOperation)
     {
-      v13 = [(SKUIConfigurationPreloader *)self newReloadConfigurationOperation];
-      [(SKUIConfigurationPreloader *)self setPendingReloadOperation:v13];
+      newReloadConfigurationOperation = [(SKUIConfigurationPreloader *)self newReloadConfigurationOperation];
+      [(SKUIConfigurationPreloader *)self setPendingReloadOperation:newReloadConfigurationOperation];
 
-      if (a3 == 2)
+      if (purpose == 2)
       {
         v14 = [MEMORY[0x277D69C90] contextWithBagType:0];
         v15 = SSVDefaultUserAgent();
@@ -102,12 +102,12 @@
       v22[2] = __81__SKUIConfigurationPreloader_preloadConfigurationForPurpose_withCompletionBlock___block_invoke;
       v22[3] = &unk_2781FA0F0;
       objc_copyWeak(&v23, &location);
-      v17 = [(SKUIConfigurationPreloader *)self pendingReloadOperation];
-      [v17 setOutputBlock:v22];
+      pendingReloadOperation2 = [(SKUIConfigurationPreloader *)self pendingReloadOperation];
+      [pendingReloadOperation2 setOutputBlock:v22];
 
-      v18 = [(SKUIConfigurationPreloader *)self workQueue];
-      v19 = [(SKUIConfigurationPreloader *)self pendingReloadOperation];
-      [v18 addOperation:v19];
+      workQueue = [(SKUIConfigurationPreloader *)self workQueue];
+      pendingReloadOperation3 = [(SKUIConfigurationPreloader *)self pendingReloadOperation];
+      [workQueue addOperation:pendingReloadOperation3];
 
       objc_destroyWeak(&v23);
       objc_destroyWeak(&location);
@@ -116,7 +116,7 @@
 
   else
   {
-    (*(v6 + 2))(v6, MEMORY[0x277CBEC10], 0);
+    (*(blockCopy + 2))(blockCopy, MEMORY[0x277CBEC10], 0);
   }
 }
 
@@ -146,19 +146,19 @@ void __81__SKUIConfigurationPreloader_preloadConfigurationForPurpose_withComplet
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)finishPreloadingConfiguration:(id)a3 error:(id)a4
+- (void)finishPreloadingConfiguration:(id)configuration error:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(SKUIConfigurationPreloader *)self setLoadedConfiguration:v6];
+  configurationCopy = configuration;
+  errorCopy = error;
+  [(SKUIConfigurationPreloader *)self setLoadedConfiguration:configurationCopy];
   [(SKUIConfigurationPreloader *)self setPendingReloadOperation:0];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(SKUIConfigurationPreloader *)self completionBlocks];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  completionBlocks = [(SKUIConfigurationPreloader *)self completionBlocks];
+  v9 = [completionBlocks countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -170,21 +170,21 @@ void __81__SKUIConfigurationPreloader_preloadConfigurationForPurpose_withComplet
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(completionBlocks);
         }
 
         (*(*(*(&v14 + 1) + 8 * v12++) + 16))();
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [completionBlocks countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [(SKUIConfigurationPreloader *)self completionBlocks];
-  [v13 removeAllObjects];
+  completionBlocks2 = [(SKUIConfigurationPreloader *)self completionBlocks];
+  [completionBlocks2 removeAllObjects];
 }
 
 - (void)initWithConfigurationCachePath:.cold.1()

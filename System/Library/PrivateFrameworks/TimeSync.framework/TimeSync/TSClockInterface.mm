@@ -1,29 +1,29 @@
 @interface TSClockInterface
-- (TSClockInterface)initWithClockIdentifier:(unint64_t)a3;
-- (void)didChangeClockMasterForClock:(id)a3;
-- (void)didChangeLocalPortWithGrandmasterID:(unint64_t)a3 localPort:(unsigned __int16)a4 forClock:(id)a5;
-- (void)didChangeLockStateTo:(int)a3 forClock:(id)a4;
-- (void)didEndClockGrandmasterChangeForClock:(id)a3;
-- (void)didEndClockGrandmasterChangeWithGrandmasterID:(unint64_t)a3 localPort:(unsigned __int16)a4 forClock:(id)a5;
-- (void)setLockStateNotificationCallback:(void *)a3 refcon:(void *)a4;
-- (void)setMasterChangeNotificationCallback:(void *)a3 refcon:(void *)a4;
-- (void)setTimeSyncTimeChangeNotificationCallback:(void *)a3 refcon:(void *)a4;
-- (void)setgPTPGrandmasterIDAndPortNotificationCallback:(void *)a3 refcon:(void *)a4;
-- (void)setgPTPGrandmasterNotificationCallback:(void *)a3 refcon:(void *)a4;
-- (void)setgPTPLocalPortNotificationCallback:(void *)a3 refcon:(void *)a4;
+- (TSClockInterface)initWithClockIdentifier:(unint64_t)identifier;
+- (void)didChangeClockMasterForClock:(id)clock;
+- (void)didChangeLocalPortWithGrandmasterID:(unint64_t)d localPort:(unsigned __int16)port forClock:(id)clock;
+- (void)didChangeLockStateTo:(int)to forClock:(id)clock;
+- (void)didEndClockGrandmasterChangeForClock:(id)clock;
+- (void)didEndClockGrandmasterChangeWithGrandmasterID:(unint64_t)d localPort:(unsigned __int16)port forClock:(id)clock;
+- (void)setLockStateNotificationCallback:(void *)callback refcon:(void *)refcon;
+- (void)setMasterChangeNotificationCallback:(void *)callback refcon:(void *)refcon;
+- (void)setTimeSyncTimeChangeNotificationCallback:(void *)callback refcon:(void *)refcon;
+- (void)setgPTPGrandmasterIDAndPortNotificationCallback:(void *)callback refcon:(void *)refcon;
+- (void)setgPTPGrandmasterNotificationCallback:(void *)callback refcon:(void *)refcon;
+- (void)setgPTPLocalPortNotificationCallback:(void *)callback refcon:(void *)refcon;
 @end
 
 @implementation TSClockInterface
 
-- (TSClockInterface)initWithClockIdentifier:(unint64_t)a3
+- (TSClockInterface)initWithClockIdentifier:(unint64_t)identifier
 {
   v15.receiver = self;
   v15.super_class = TSClockInterface;
   v4 = [(TSClockInterface *)&v15 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.timesync.TSClockInterface.0x%016llx.notifications", a3];
-    v6 = dispatch_queue_create([v5 UTF8String], 0);
+    identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.timesync.TSClockInterface.0x%016llx.notifications", identifier];
+    v6 = dispatch_queue_create([identifier UTF8String], 0);
     notificationsQueue = v4->_notificationsQueue;
     v4->_notificationsQueue = v6;
 
@@ -31,7 +31,7 @@
     while (1)
     {
       v9 = +[TSClockManager sharedClockManager];
-      v10 = [v9 clockWithClockIdentifier:a3];
+      v10 = [v9 clockWithClockIdentifier:identifier];
       clock = v4->_clock;
       v4->_clock = v10;
 
@@ -60,7 +60,7 @@
   return v4;
 }
 
-- (void)setLockStateNotificationCallback:(void *)a3 refcon:(void *)a4
+- (void)setLockStateNotificationCallback:(void *)callback refcon:(void *)refcon
 {
   notificationsQueue = self->_notificationsQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -68,8 +68,8 @@
   block[2] = __60__TSClockInterface_setLockStateNotificationCallback_refcon___block_invoke;
   block[3] = &unk_279DBDF78;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = refcon;
   dispatch_sync(notificationsQueue, block);
 }
 
@@ -80,7 +80,7 @@ void *__60__TSClockInterface_setLockStateNotificationCallback_refcon___block_inv
   return result;
 }
 
-- (void)setMasterChangeNotificationCallback:(void *)a3 refcon:(void *)a4
+- (void)setMasterChangeNotificationCallback:(void *)callback refcon:(void *)refcon
 {
   notificationsQueue = self->_notificationsQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -88,8 +88,8 @@ void *__60__TSClockInterface_setLockStateNotificationCallback_refcon___block_inv
   block[2] = __63__TSClockInterface_setMasterChangeNotificationCallback_refcon___block_invoke;
   block[3] = &unk_279DBDF78;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = refcon;
   dispatch_sync(notificationsQueue, block);
 }
 
@@ -100,7 +100,7 @@ void *__63__TSClockInterface_setMasterChangeNotificationCallback_refcon___block_
   return result;
 }
 
-- (void)setTimeSyncTimeChangeNotificationCallback:(void *)a3 refcon:(void *)a4
+- (void)setTimeSyncTimeChangeNotificationCallback:(void *)callback refcon:(void *)refcon
 {
   notificationsQueue = self->_notificationsQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -108,8 +108,8 @@ void *__63__TSClockInterface_setMasterChangeNotificationCallback_refcon___block_
   block[2] = __69__TSClockInterface_setTimeSyncTimeChangeNotificationCallback_refcon___block_invoke;
   block[3] = &unk_279DBDF78;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = refcon;
   dispatch_sync(notificationsQueue, block);
 }
 
@@ -146,7 +146,7 @@ void __69__TSClockInterface_setTimeSyncTimeChangeNotificationCallback_refcon___b
   }
 }
 
-- (void)setgPTPGrandmasterNotificationCallback:(void *)a3 refcon:(void *)a4
+- (void)setgPTPGrandmasterNotificationCallback:(void *)callback refcon:(void *)refcon
 {
   notificationsQueue = self->_notificationsQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -154,8 +154,8 @@ void __69__TSClockInterface_setTimeSyncTimeChangeNotificationCallback_refcon___b
   block[2] = __66__TSClockInterface_setgPTPGrandmasterNotificationCallback_refcon___block_invoke;
   block[3] = &unk_279DBDF78;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = refcon;
   dispatch_sync(notificationsQueue, block);
 }
 
@@ -166,7 +166,7 @@ void *__66__TSClockInterface_setgPTPGrandmasterNotificationCallback_refcon___blo
   return result;
 }
 
-- (void)setgPTPGrandmasterIDAndPortNotificationCallback:(void *)a3 refcon:(void *)a4
+- (void)setgPTPGrandmasterIDAndPortNotificationCallback:(void *)callback refcon:(void *)refcon
 {
   notificationsQueue = self->_notificationsQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -174,8 +174,8 @@ void *__66__TSClockInterface_setgPTPGrandmasterNotificationCallback_refcon___blo
   block[2] = __75__TSClockInterface_setgPTPGrandmasterIDAndPortNotificationCallback_refcon___block_invoke;
   block[3] = &unk_279DBDF78;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = refcon;
   dispatch_sync(notificationsQueue, block);
 }
 
@@ -186,7 +186,7 @@ void *__75__TSClockInterface_setgPTPGrandmasterIDAndPortNotificationCallback_ref
   return result;
 }
 
-- (void)setgPTPLocalPortNotificationCallback:(void *)a3 refcon:(void *)a4
+- (void)setgPTPLocalPortNotificationCallback:(void *)callback refcon:(void *)refcon
 {
   notificationsQueue = self->_notificationsQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -194,8 +194,8 @@ void *__75__TSClockInterface_setgPTPGrandmasterIDAndPortNotificationCallback_ref
   block[2] = __64__TSClockInterface_setgPTPLocalPortNotificationCallback_refcon___block_invoke;
   block[3] = &unk_279DBDF78;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = refcon;
   dispatch_sync(notificationsQueue, block);
 }
 
@@ -206,22 +206,22 @@ void *__64__TSClockInterface_setgPTPLocalPortNotificationCallback_refcon___block
   return result;
 }
 
-- (void)didChangeClockMasterForClock:(id)a3
+- (void)didChangeClockMasterForClock:(id)clock
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clockCopy = clock;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = [(TSClockInterface *)self description];
     *buf = 136315394;
-    v13 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v14 = 2048;
-    v15 = [(TSClock *)v4 clockIdentifier];
+    clockIdentifier = [(TSClock *)clockCopy clockIdentifier];
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s didChangeClockMasterForClock:0x%016llx\n", buf, 0x16u);
   }
 
   notificationsQueue = self->_notificationsQueue;
-  if (self->_clock == v4)
+  if (self->_clock == clockCopy)
   {
     v7 = block;
     block[0] = MEMORY[0x277D85DD0];
@@ -335,33 +335,33 @@ void __49__TSClockInterface_didChangeClockMasterForClock___block_invoke_71(uint6
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didChangeLockStateTo:(int)a3 forClock:(id)a4
+- (void)didChangeLockStateTo:(int)to forClock:(id)clock
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  clockCopy = clock;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v7 = [(TSClockInterface *)self description];
     *buf = 136315650;
-    v16 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     v17 = 1024;
-    *v18 = a3;
+    *v18 = to;
     *&v18[4] = 2048;
-    *&v18[6] = [v6 clockIdentifier];
+    *&v18[6] = [clockCopy clockIdentifier];
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s didChangeLockStateTo:%d forClock:0x%016llx\n", buf, 0x1Cu);
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8 = [(TSClockInterface *)self description];
-    v9 = [v8 UTF8String];
-    v10 = [v6 clockIdentifier];
+    uTF8String2 = [v8 UTF8String];
+    clockIdentifier = [clockCopy clockIdentifier];
     *buf = 136315650;
-    v16 = v9;
+    uTF8String = uTF8String2;
     v17 = 2048;
-    *v18 = v10;
+    *v18 = clockIdentifier;
     *&v18[8] = 1024;
-    *&v18[10] = a3;
+    *&v18[10] = to;
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "[Lock state] Client %s received lock state change for clock 0x%016llx to %d", buf, 0x1Cu);
   }
 
@@ -371,7 +371,7 @@ void __49__TSClockInterface_didChangeClockMasterForClock___block_invoke_71(uint6
   v13[2] = __50__TSClockInterface_didChangeLockStateTo_forClock___block_invoke;
   v13[3] = &unk_279DBD7D0;
   v13[4] = self;
-  v14 = a3;
+  toCopy = to;
   dispatch_async(notificationsQueue, v13);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -428,32 +428,32 @@ void __50__TSClockInterface_didChangeLockStateTo_forClock___block_invoke(uint64_
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didEndClockGrandmasterChangeForClock:(id)a3
+- (void)didEndClockGrandmasterChangeForClock:(id)clock
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clockCopy = clock;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = [(TSClockInterface *)self description];
     *buf = 136315394;
-    v16 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v17 = 2048;
-    v18 = [v4 clockIdentifier];
+    clockIdentifier = [clockCopy clockIdentifier];
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s didEndClockGrandmasterChangeForClock:0x%016llx\n", buf, 0x16u);
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = [(TSClockInterface *)self description];
-    v7 = [v6 UTF8String];
-    v8 = [v4 clockIdentifier];
-    v9 = [v4 grandmasterIdentity];
+    uTF8String2 = [v6 UTF8String];
+    clockIdentifier2 = [clockCopy clockIdentifier];
+    grandmasterIdentity = [clockCopy grandmasterIdentity];
     *buf = 136315650;
-    v16 = v7;
+    uTF8String = uTF8String2;
     v17 = 2048;
-    v18 = v8;
+    clockIdentifier = clockIdentifier2;
     v19 = 2048;
-    v20 = v9;
+    v20 = grandmasterIdentity;
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "[GM Change] Client %s received GM change callback for clock 0x%016llx to GMID 0x%016llx", buf, 0x20u);
   }
 
@@ -463,8 +463,8 @@ void __50__TSClockInterface_didChangeLockStateTo_forClock___block_invoke(uint64_
   v13[2] = __57__TSClockInterface_didEndClockGrandmasterChangeForClock___block_invoke;
   v13[3] = &unk_279DBD738;
   v13[4] = self;
-  v14 = v4;
-  v11 = v4;
+  v14 = clockCopy;
+  v11 = clockCopy;
   dispatch_async(notificationsQueue, v13);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -527,38 +527,38 @@ void __57__TSClockInterface_didEndClockGrandmasterChangeForClock___block_invoke(
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didEndClockGrandmasterChangeWithGrandmasterID:(unint64_t)a3 localPort:(unsigned __int16)a4 forClock:(id)a5
+- (void)didEndClockGrandmasterChangeWithGrandmasterID:(unint64_t)d localPort:(unsigned __int16)port forClock:(id)clock
 {
-  v5 = a4;
+  portCopy = port;
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  clockCopy = clock;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = [(TSClockInterface *)self description];
     *buf = 136315906;
-    v21 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v22 = 2048;
-    v23 = a3;
+    dCopy = d;
     v24 = 1024;
-    v25 = v5;
+    v25 = portCopy;
     v26 = 2048;
-    v27 = [v8 clockIdentifier];
+    dCopy2 = [clockCopy clockIdentifier];
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s didEndClockGrandmasterChangeWithGrandmasterID:0x%016llx localPort:%hu forClock:0x%016llx\n", buf, 0x26u);
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v10 = [(TSClockInterface *)self description];
-    v11 = [v10 UTF8String];
-    v12 = [v8 clockIdentifier];
+    uTF8String2 = [v10 UTF8String];
+    clockIdentifier = [clockCopy clockIdentifier];
     *buf = 136315906;
-    v21 = v11;
+    uTF8String = uTF8String2;
     v22 = 2048;
-    v23 = v12;
+    dCopy = clockIdentifier;
     v24 = 1024;
-    v25 = v5;
+    v25 = portCopy;
     v26 = 2048;
-    v27 = a3;
+    dCopy2 = d;
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "[GM Change] Client %s received GM change callback for clock 0x%016llx, port %hu, to GMID 0x%016llx", buf, 0x26u);
   }
 
@@ -568,10 +568,10 @@ void __57__TSClockInterface_didEndClockGrandmasterChangeForClock___block_invoke(
   v16[2] = __85__TSClockInterface_didEndClockGrandmasterChangeWithGrandmasterID_localPort_forClock___block_invoke;
   v16[3] = &unk_279DBDFA0;
   v16[4] = self;
-  v17 = v8;
-  v18 = a3;
-  v19 = v5;
-  v14 = v8;
+  v17 = clockCopy;
+  dCopy3 = d;
+  v19 = portCopy;
+  v14 = clockCopy;
   dispatch_async(notificationsQueue, v16);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -640,22 +640,22 @@ void __85__TSClockInterface_didEndClockGrandmasterChangeWithGrandmasterID_localP
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didChangeLocalPortWithGrandmasterID:(unint64_t)a3 localPort:(unsigned __int16)a4 forClock:(id)a5
+- (void)didChangeLocalPortWithGrandmasterID:(unint64_t)d localPort:(unsigned __int16)port forClock:(id)clock
 {
-  v5 = a4;
+  portCopy = port;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  clockCopy = clock;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = [(TSClockInterface *)self description];
     *buf = 136315906;
-    v18 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v19 = 2048;
-    v20 = a3;
+    dCopy = d;
     v21 = 1024;
-    v22 = v5;
+    v22 = portCopy;
     v23 = 2048;
-    v24 = [v8 clockIdentifier];
+    clockIdentifier = [clockCopy clockIdentifier];
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s didChangeLocalPortWithGrandmasterID:0x%016llx localPort:%hu forClock:0x%016llx\n", buf, 0x26u);
   }
 
@@ -665,10 +665,10 @@ void __85__TSClockInterface_didEndClockGrandmasterChangeWithGrandmasterID_localP
   v13[2] = __75__TSClockInterface_didChangeLocalPortWithGrandmasterID_localPort_forClock___block_invoke;
   v13[3] = &unk_279DBDFA0;
   v13[4] = self;
-  v14 = v8;
-  v15 = a3;
-  v16 = v5;
-  v11 = v8;
+  v14 = clockCopy;
+  dCopy2 = d;
+  v16 = portCopy;
+  v11 = clockCopy;
   dispatch_async(notificationsQueue, v13);
 
   v12 = *MEMORY[0x277D85DE8];

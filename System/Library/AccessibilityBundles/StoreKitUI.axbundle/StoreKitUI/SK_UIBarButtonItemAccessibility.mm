@@ -16,7 +16,7 @@
   v9 = 3221225472;
   v10 = __53__SK_UIBarButtonItemAccessibility_accessibilityLabel__block_invoke;
   v11 = &unk_29F304190;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   AXPerformSafeBlock();
   v3 = v15[5];
@@ -24,17 +24,17 @@
 
   if ([v3 isEqualToString:@"_shareButtonAction:"])
   {
-    v4 = UIKitAccessibilityLocalizedString();
+    accessibilityLabel = UIKitAccessibilityLocalizedString();
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SK_UIBarButtonItemAccessibility;
-    v4 = [(SK_UIBarButtonItemAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(SK_UIBarButtonItemAccessibility *)&v7 accessibilityLabel];
   }
 
-  v5 = v4;
+  v5 = accessibilityLabel;
 
   return v5;
 }

@@ -1,35 +1,35 @@
 @interface MSVPair
-+ (id)pairWithFirst:(id)a3 second:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (MSVPair)initWithCoder:(id)a3;
-- (MSVPair)initWithFirst:(id)a3 second:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)pairWithFirst:(id)first second:(id)second;
+- (BOOL)isEqual:(id)equal;
+- (MSVPair)initWithCoder:(id)coder;
+- (MSVPair)initWithFirst:(id)first second:(id)second;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSVPair
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   first = self->_first;
-  v5 = a3;
-  [v5 encodeObject:first forKey:@"first"];
-  [v5 encodeObject:self->_second forKey:@"second"];
+  coderCopy = coder;
+  [coderCopy encodeObject:first forKey:@"first"];
+  [coderCopy encodeObject:self->_second forKey:@"second"];
 }
 
-- (MSVPair)initWithCoder:(id)a3
+- (MSVPair)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"first"];
-  v6 = [v4 decodeObjectForKey:@"second"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"first"];
+  v6 = [coderCopy decodeObjectForKey:@"second"];
 
   v7 = [(MSVPair *)self initWithFirst:v5 second:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -39,7 +39,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       first = self->_first;
       if (first == v5->_first || [first isEqual:?])
       {
@@ -70,28 +70,28 @@
   return v8;
 }
 
-- (MSVPair)initWithFirst:(id)a3 second:(id)a4
+- (MSVPair)initWithFirst:(id)first second:(id)second
 {
-  v7 = a3;
-  v8 = a4;
+  firstCopy = first;
+  secondCopy = second;
   v12.receiver = self;
   v12.super_class = MSVPair;
   v9 = [(MSVPair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_first, a3);
-    objc_storeStrong(&v10->_second, a4);
+    objc_storeStrong(&v9->_first, first);
+    objc_storeStrong(&v10->_second, second);
   }
 
   return v10;
 }
 
-+ (id)pairWithFirst:(id)a3 second:(id)a4
++ (id)pairWithFirst:(id)first second:(id)second
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithFirst:v7 second:v6];
+  secondCopy = second;
+  firstCopy = first;
+  v8 = [[self alloc] initWithFirst:firstCopy second:secondCopy];
 
   return v8;
 }

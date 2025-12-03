@@ -1,52 +1,52 @@
 @interface CAValueFunction
 + (CAValueFunction)functionWithName:(CAValueFunctionName)name;
-+ (void)CAMLParserStartElement:(id)a3;
-- (BOOL)apply:(const double *)a3 result:(double *)a4;
-- (BOOL)apply:(const double *)a3 result:(double *)a4 parameterFunction:(void *)a5 context:(void *)a6;
-- (CAValueFunction)initWithCoder:(id)a3;
++ (void)CAMLParserStartElement:(id)element;
+- (BOOL)apply:(const double *)apply result:(double *)result;
+- (BOOL)apply:(const double *)apply result:(double *)result parameterFunction:(void *)function context:(void *)context;
+- (CAValueFunction)initWithCoder:(id)coder;
 - (CAValueFunctionName)name;
 - (Object)CA_copyRenderValue;
-- (id)_initWithName:(int)a3;
+- (id)_initWithName:(int)name;
 - (unint64_t)inputCount;
 - (unint64_t)outputCount;
 - (void)dealloc;
-- (void)encodeWithCAMLWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCAMLWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAValueFunction
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
-  v4 = [(CAValueFunction *)self name];
-  if (v4)
+  name = [(CAValueFunction *)self name];
+  if (name)
   {
 
-    [a3 setElementAttribute:v4 forKey:@"name"];
+    [writer setElementAttribute:name forKey:@"name"];
   }
 }
 
-- (CAValueFunction)initWithCoder:(id)a3
+- (CAValueFunction)initWithCoder:(id)coder
 {
-  v5 = [a3 containsValueForKey:@"CAValueFunctionName"];
+  v5 = [coder containsValueForKey:@"CAValueFunctionName"];
 
   if (!v5)
   {
     return 0;
   }
 
-  v6 = +[CAValueFunction functionWithName:](CAValueFunction, "functionWithName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"CAValueFunctionName"]);
+  v6 = +[CAValueFunction functionWithName:](CAValueFunction, "functionWithName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"CAValueFunctionName"]);
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (!self->_string)
   {
-    v5 = [(CAValueFunction *)self name];
+    name = [(CAValueFunction *)self name];
 
-    [a3 encodeObject:v5 forKey:@"CAValueFunctionName"];
+    [coder encodeObject:name forKey:@"CAValueFunctionName"];
   }
 }
 
@@ -66,15 +66,15 @@
   return result;
 }
 
-- (BOOL)apply:(const double *)a3 result:(double *)a4 parameterFunction:(void *)a5 context:(void *)a6
+- (BOOL)apply:(const double *)apply result:(double *)result parameterFunction:(void *)function context:(void *)context
 {
   v9[2] = *MEMORY[0x1E69E9840];
   impl = self->_impl;
   if (impl)
   {
-    v9[0] = a5;
-    v9[1] = a6;
-    if (a5)
+    v9[0] = function;
+    v9[1] = context;
+    if (function)
     {
       v7 = param_fun;
     }
@@ -84,18 +84,18 @@
       v7 = 0;
     }
 
-    LOBYTE(impl) = (*(*impl + 128))(impl, 1, a3, 0, a4, 0, v7, v9);
+    LOBYTE(impl) = (*(*impl + 128))(impl, 1, apply, 0, result, 0, v7, v9);
   }
 
   return impl;
 }
 
-- (BOOL)apply:(const double *)a3 result:(double *)a4
+- (BOOL)apply:(const double *)apply result:(double *)result
 {
   impl = self->_impl;
   if (impl)
   {
-    LOBYTE(impl) = (*(*impl + 128))(impl, 1, a3, 0, a4, 0, 0, 0);
+    LOBYTE(impl) = (*(*impl + 128))(impl, 1, apply, 0, result, 0, 0, 0);
   }
 
   return impl;
@@ -156,7 +156,7 @@
   [(CAValueFunction *)&v4 dealloc];
 }
 
-- (id)_initWithName:(int)a3
+- (id)_initWithName:(int)name
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -164,7 +164,7 @@
   v4 = [(CAValueFunction *)&v7 init];
   if (v4)
   {
-    v5 = CA::Render::NamedFunction::new_function(a3);
+    v5 = CA::Render::NamedFunction::new_function(name);
     v4->_impl = v5;
     if (!v5)
     {
@@ -176,22 +176,22 @@
   return v4;
 }
 
-+ (void)CAMLParserStartElement:(id)a3
++ (void)CAMLParserStartElement:(id)element
 {
-  v5 = [a3 attributeForKey:@"name" remove:1];
+  v5 = [element attributeForKey:@"name" remove:1];
   if (v5)
   {
     v6 = v5;
-    v7 = [a1 functionWithName:v5];
+    v7 = [self functionWithName:v5];
     if (v7)
     {
 
-      [a3 setElementValue:v7];
+      [element setElementValue:v7];
     }
 
     else
     {
-      [a3 parserError:{@"Unknown function: %@", v6}];
+      [element parserError:{@"Unknown function: %@", v6}];
     }
   }
 }

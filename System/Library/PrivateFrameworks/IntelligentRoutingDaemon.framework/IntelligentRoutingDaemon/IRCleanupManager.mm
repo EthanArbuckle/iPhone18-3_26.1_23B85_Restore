@@ -1,32 +1,32 @@
 @interface IRCleanupManager
 - (IRBackgroundActivitiesManager)backgroundActivitiesManager;
-- (IRCleanupManager)initWithBackgroundActivitiesManager:(id)a3;
+- (IRCleanupManager)initWithBackgroundActivitiesManager:(id)manager;
 - (id)_getDateIntervalOfBuildsToDiscard;
 - (void)_handleCleanupXPCActivity;
 @end
 
 @implementation IRCleanupManager
 
-- (IRCleanupManager)initWithBackgroundActivitiesManager:(id)a3
+- (IRCleanupManager)initWithBackgroundActivitiesManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = IRCleanupManager;
   v5 = [(IRCleanupManager *)&v13 init];
   if (v5)
   {
     v6 = +[IRPreferences shared];
-    v7 = [v6 cleanupXPCActivityInterval];
-    v8 = [v7 longLongValue];
+    cleanupXPCActivityInterval = [v6 cleanupXPCActivityInterval];
+    longLongValue = [cleanupXPCActivityInterval longLongValue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __56__IRCleanupManager_initWithBackgroundActivitiesManager___block_invoke;
     v11[3] = &unk_2797E0BA8;
     v9 = v5;
     v12 = v9;
-    [v4 registerForRepeatingBackgroundXPCActivityWithIdentifier:@"com.apple.intelligentroutingd.DBCleanupXPCActivityIdentifier" interval:v8 isDiskIntensive:1 isMemoryIntensive:1 handler:v11];
+    [managerCopy registerForRepeatingBackgroundXPCActivityWithIdentifier:@"com.apple.intelligentroutingd.DBCleanupXPCActivityIdentifier" interval:longLongValue isDiskIntensive:1 isMemoryIntensive:1 handler:v11];
 
-    [(IRCleanupManager *)v9 setBackgroundActivitiesManager:v4];
+    [(IRCleanupManager *)v9 setBackgroundActivitiesManager:managerCopy];
   }
 
   return v5;
@@ -34,14 +34,14 @@
 
 - (void)_handleCleanupXPCActivity
 {
-  v3 = [(IRCleanupManager *)self backgroundActivitiesManager];
-  v4 = [v3 server];
+  backgroundActivitiesManager = [(IRCleanupManager *)self backgroundActivitiesManager];
+  server = [backgroundActivitiesManager server];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __45__IRCleanupManager__handleCleanupXPCActivity__block_invoke;
   v5[3] = &unk_2797E1308;
   v5[4] = self;
-  [v4 performXPCActivityUnderServerContext:v5];
+  [server performXPCActivityUnderServerContext:v5];
 }
 
 void __45__IRCleanupManager__handleCleanupXPCActivity__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -253,7 +253,7 @@ void __45__IRCleanupManager__handleCleanupXPCActivity__block_invoke_2(void *a1, 
 - (id)_getDateIntervalOfBuildsToDiscard
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = [(IRCleanupManager *)self _getListOfBuildsToDiscard];
+  _getListOfBuildsToDiscard = [(IRCleanupManager *)self _getListOfBuildsToDiscard];
   v4 = MEMORY[0x277D21260];
   v5 = *MEMORY[0x277D21260];
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_INFO))
@@ -263,10 +263,10 @@ void __45__IRCleanupManager__handleCleanupXPCActivity__block_invoke_2(void *a1, 
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(IRCleanupManager *)self backgroundActivitiesManager];
-  v8 = [v7 server];
-  v9 = [v8 biomeProvider];
-  v10 = [v9 fetchLatestEventsOfEventType:3 numEvents:0];
+  backgroundActivitiesManager = [(IRCleanupManager *)self backgroundActivitiesManager];
+  server = [backgroundActivitiesManager server];
+  biomeProvider = [server biomeProvider];
+  v10 = [biomeProvider fetchLatestEventsOfEventType:3 numEvents:0];
 
   *buf = 0;
   v41 = buf;
@@ -276,7 +276,7 @@ void __45__IRCleanupManager__handleCleanupXPCActivity__block_invoke_2(void *a1, 
   v36[1] = 3221225472;
   v36[2] = __53__IRCleanupManager__getDateIntervalOfBuildsToDiscard__block_invoke;
   v36[3] = &unk_2797E1330;
-  v11 = v3;
+  v11 = _getListOfBuildsToDiscard;
   v37 = v11;
   v12 = v6;
   v38 = v12;
@@ -299,24 +299,24 @@ void __45__IRCleanupManager__handleCleanupXPCActivity__block_invoke_2(void *a1, 
     v19 = [v17 arrayWithArray:v18];
 
     v20 = MEMORY[0x277CBEAA8];
-    v21 = [v19 firstObject];
-    [v21 doubleValue];
+    firstObject = [v19 firstObject];
+    [firstObject doubleValue];
     v22 = [v20 dateWithTimeIntervalSinceReferenceDate:?];
 
     v23 = MEMORY[0x277CBEAA8];
-    v24 = [v19 lastObject];
-    [v24 doubleValue];
+    lastObject = [v19 lastObject];
+    [lastObject doubleValue];
     v25 = [v23 dateWithTimeIntervalSinceReferenceDate:?];
 
     v26 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v22 endDate:v25];
     v27 = *v4;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
-      v28 = [v19 firstObject];
-      [v28 doubleValue];
+      firstObject2 = [v19 firstObject];
+      [firstObject2 doubleValue];
       v30 = v29;
-      v31 = [v19 lastObject];
-      [v31 doubleValue];
+      lastObject2 = [v19 lastObject];
+      [lastObject2 doubleValue];
       *v44 = 134218240;
       v45 = v30;
       v46 = 2048;

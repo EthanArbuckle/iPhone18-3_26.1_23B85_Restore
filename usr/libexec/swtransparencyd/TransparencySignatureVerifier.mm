@@ -1,16 +1,16 @@
 @interface TransparencySignatureVerifier
-+ (BOOL)verifyMessage:(id)a3 signature:(id)a4 spkiHash:(id)a5 trustedKeys:(id)a6 algorithm:(__CFString *)a7 error:(id *)a8;
-+ (__CFString)secKeyAlgorithmForProtoAlgorithm:(int)a3;
-+ (int)protoAlgorithmForSecKeyAlgorithm:(__CFString *)a3;
-- (BOOL)verifyMessage:(id)a3 signature:(id)a4 spkiHash:(id)a5 algorithm:(__CFString *)a6 error:(id *)a7;
-- (TransparencySignatureVerifier)initWithTrustedKeys:(id)a3;
++ (BOOL)verifyMessage:(id)message signature:(id)signature spkiHash:(id)hash trustedKeys:(id)keys algorithm:(__CFString *)algorithm error:(id *)error;
++ (__CFString)secKeyAlgorithmForProtoAlgorithm:(int)algorithm;
++ (int)protoAlgorithmForSecKeyAlgorithm:(__CFString *)algorithm;
+- (BOOL)verifyMessage:(id)message signature:(id)signature spkiHash:(id)hash algorithm:(__CFString *)algorithm error:(id *)error;
+- (TransparencySignatureVerifier)initWithTrustedKeys:(id)keys;
 @end
 
 @implementation TransparencySignatureVerifier
 
-+ (__CFString)secKeyAlgorithmForProtoAlgorithm:(int)a3
++ (__CFString)secKeyAlgorithmForProtoAlgorithm:(int)algorithm
 {
-  if (a3 == 1)
+  if (algorithm == 1)
   {
     return kSecKeyAlgorithmECDSASignatureMessageX962SHA256;
   }
@@ -24,17 +24,17 @@
   if (os_log_type_enabled(qword_100156018, OS_LOG_TYPE_ERROR))
   {
     v6[0] = 67109120;
-    v6[1] = a3;
+    v6[1] = algorithm;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Unknown signature algorithm: %d", v6, 8u);
   }
 
   return 0;
 }
 
-+ (int)protoAlgorithmForSecKeyAlgorithm:(__CFString *)a3
++ (int)protoAlgorithmForSecKeyAlgorithm:(__CFString *)algorithm
 {
-  v3 = a3;
-  if (([(__CFString *)v3 isEqualToString:kSecKeyAlgorithmECDSASignatureMessageX962SHA256]& 1) != 0)
+  algorithmCopy = algorithm;
+  if (([(__CFString *)algorithmCopy isEqualToString:kSecKeyAlgorithmECDSASignatureMessageX962SHA256]& 1) != 0)
   {
     v4 = 1;
   }
@@ -50,7 +50,7 @@
     if (os_log_type_enabled(qword_100156018, OS_LOG_TYPE_ERROR))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = algorithmCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Unknown signature algorithm: %@", &v7, 0xCu);
     }
 
@@ -60,29 +60,29 @@
   return v4;
 }
 
-- (TransparencySignatureVerifier)initWithTrustedKeys:(id)a3
+- (TransparencySignatureVerifier)initWithTrustedKeys:(id)keys
 {
-  v5 = a3;
+  keysCopy = keys;
   v9.receiver = self;
   v9.super_class = TransparencySignatureVerifier;
   v6 = [(TransparencySignatureVerifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_trustedKeys, a3);
+    objc_storeStrong(&v6->_trustedKeys, keys);
   }
 
   return v7;
 }
 
-- (BOOL)verifyMessage:(id)a3 signature:(id)a4 spkiHash:(id)a5 algorithm:(__CFString *)a6 error:(id *)a7
+- (BOOL)verifyMessage:(id)message signature:(id)signature spkiHash:(id)hash algorithm:(__CFString *)algorithm error:(id *)error
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(TransparencySignatureVerifier *)self trustedKeys];
+  hashCopy = hash;
+  signatureCopy = signature;
+  messageCopy = message;
+  trustedKeys = [(TransparencySignatureVerifier *)self trustedKeys];
   v20 = 0;
-  v16 = [TransparencySignatureVerifier verifyMessage:v14 signature:v13 spkiHash:v12 trustedKeys:v15 algorithm:a6 error:&v20];
+  v16 = [TransparencySignatureVerifier verifyMessage:messageCopy signature:signatureCopy spkiHash:hashCopy trustedKeys:trustedKeys algorithm:algorithm error:&v20];
 
   v17 = v20;
   if (!v16 && [TransparencyError hasUnknownSPKIHashError:v17])
@@ -90,30 +90,30 @@
     [(TransparencySignatureVerifier *)self setNeedsRefresh:1];
   }
 
-  if (a7 && v17)
+  if (error && v17)
   {
     v18 = v17;
-    *a7 = v17;
+    *error = v17;
   }
 
   return v16;
 }
 
-+ (BOOL)verifyMessage:(id)a3 signature:(id)a4 spkiHash:(id)a5 trustedKeys:(id)a6 algorithm:(__CFString *)a7 error:(id *)a8
++ (BOOL)verifyMessage:(id)message signature:(id)signature spkiHash:(id)hash trustedKeys:(id)keys algorithm:(__CFString *)algorithm error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = v16;
-  if (a7)
+  messageCopy = message;
+  signatureCopy = signature;
+  hashCopy = hash;
+  keysCopy = keys;
+  v17 = keysCopy;
+  if (algorithm)
   {
-    v18 = [v16 objectForKey:v15];
+    v18 = [keysCopy objectForKey:hashCopy];
     if (v18)
     {
       error = 0;
-      v19 = SecKeyVerifySignature(v18, a7, v13, v14, &error) == 1;
-      v20 = error;
+      v19 = SecKeyVerifySignature(v18, algorithm, messageCopy, signatureCopy, &error) == 1;
+      errorCopy = error;
       if (error)
       {
         if (qword_100156010 != -1)
@@ -125,28 +125,28 @@
         if (os_log_type_enabled(qword_100156018, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v33 = v20;
+          v33 = errorCopy;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Signature verification failed: %@", buf, 0xCu);
         }
 
-        if (a8)
+        if (error)
         {
-          v22 = v20;
+          v22 = errorCopy;
 LABEL_13:
-          *a8 = v20;
+          *error = errorCopy;
         }
       }
     }
 
     else
     {
-      v25 = [v15 base64EncodedStringWithOptions:0];
-      v20 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-9 description:@"Unable to find trusted key for SPKI hash: %@", v25];
+      v25 = [hashCopy base64EncodedStringWithOptions:0];
+      errorCopy = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-9 description:@"Unable to find trusted key for SPKI hash: %@", v25];
 
-      if (a8 && v20)
+      if (error && errorCopy)
       {
-        v26 = v20;
-        *a8 = v20;
+        v26 = errorCopy;
+        *error = errorCopy;
       }
 
       if (qword_100156010 != -1)
@@ -158,7 +158,7 @@ LABEL_13:
       if (os_log_type_enabled(qword_100156018, OS_LOG_TYPE_ERROR))
       {
         v28 = v27;
-        v29 = [v15 base64EncodedStringWithOptions:0];
+        v29 = [hashCopy base64EncodedStringWithOptions:0];
         *buf = 138543362;
         v33 = v29;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Unable to find trusted key for SPKI hash: %{public}@", buf, 0xCu);
@@ -171,9 +171,9 @@ LABEL_13:
   else
   {
     v23 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-136 description:@"Unknown signature algorithm"];
-    v20 = v23;
+    errorCopy = v23;
     v19 = 0;
-    if (a8 && v23)
+    if (error && v23)
     {
       v24 = v23;
       v19 = 0;

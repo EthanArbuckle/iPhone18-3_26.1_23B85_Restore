@@ -1,15 +1,15 @@
 @interface ScrollNewContactTest
-- (BOOL)prepareForTestWithOptions:(id)a3;
+- (BOOL)prepareForTestWithOptions:(id)options;
 - (void)performTest;
 @end
 
 @implementation ScrollNewContactTest
 
-- (BOOL)prepareForTestWithOptions:(id)a3
+- (BOOL)prepareForTestWithOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = ScrollNewContactTest;
-  v4 = [(ContactsTest *)&v8 prepareForTestWithOptions:a3];
+  v4 = [(ContactsTest *)&v8 prepareForTestWithOptions:options];
   if (v4)
   {
     v7[0] = _NSConcreteStackBlock;
@@ -26,11 +26,11 @@
 
 - (void)performTest
 {
-  v3 = [(ContactsTest *)self contactNavigationController];
-  [v3 addContact:0 animated:1];
+  contactNavigationController = [(ContactsTest *)self contactNavigationController];
+  [contactNavigationController addContact:0 animated:1];
 
-  v4 = [(ContactsTest *)self contactNavigationController];
-  v5 = [v4 visibleViewController];
+  contactNavigationController2 = [(ContactsTest *)self contactNavigationController];
+  visibleViewController = [contactNavigationController2 visibleViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -40,8 +40,8 @@
     v7[1] = 3221225472;
     v7[2] = sub_1000096D8;
     v7[3] = &unk_100020580;
-    v8 = v5;
-    v9 = self;
+    v8 = visibleViewController;
+    selfCopy = self;
     dispatch_after(v6, &_dispatch_main_q, v7);
   }
 }

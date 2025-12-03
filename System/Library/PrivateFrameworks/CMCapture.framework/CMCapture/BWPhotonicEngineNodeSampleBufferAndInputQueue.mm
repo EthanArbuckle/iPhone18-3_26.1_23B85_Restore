@@ -1,9 +1,9 @@
 @interface BWPhotonicEngineNodeSampleBufferAndInputQueue
 - (BWPhotonicEngineNodeSampleBufferAndInputQueue)init;
 - (id)newDequeuedSampleBufferAndInput;
-- (id)newSampleBuffersAndInputsWithPredicate:(id)a3;
+- (id)newSampleBuffersAndInputsWithPredicate:(id)predicate;
 - (void)dealloc;
-- (void)enqueue:(id)a3;
+- (void)enqueue:(id)enqueue;
 @end
 
 @implementation BWPhotonicEngineNodeSampleBufferAndInputQueue
@@ -35,37 +35,37 @@
   os_unfair_lock_lock(&self->_sampleBufferAndInputQueueLock);
   if ([(NSMutableArray *)self->_sampleBufferAndInputQueue count])
   {
-    v3 = [(NSMutableArray *)self->_sampleBufferAndInputQueue firstObject];
+    firstObject = [(NSMutableArray *)self->_sampleBufferAndInputQueue firstObject];
     [(NSMutableArray *)self->_sampleBufferAndInputQueue removeObjectAtIndex:0];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
   os_unfair_lock_unlock(&self->_sampleBufferAndInputQueueLock);
-  return v3;
+  return firstObject;
 }
 
-- (void)enqueue:(id)a3
+- (void)enqueue:(id)enqueue
 {
   os_unfair_lock_lock(&self->_sampleBufferAndInputQueueLock);
-  [(NSMutableArray *)self->_sampleBufferAndInputQueue addObject:a3];
+  [(NSMutableArray *)self->_sampleBufferAndInputQueue addObject:enqueue];
 
   os_unfair_lock_unlock(&self->_sampleBufferAndInputQueueLock);
 }
 
-- (id)newSampleBuffersAndInputsWithPredicate:(id)a3
+- (id)newSampleBuffersAndInputsWithPredicate:(id)predicate
 {
-  v3 = a3;
-  if (a3)
+  predicateCopy = predicate;
+  if (predicate)
   {
     os_unfair_lock_lock(&self->_sampleBufferAndInputQueueLock);
     v5 = objc_autoreleasePoolPush();
-    v3 = [(NSMutableArray *)self->_sampleBufferAndInputQueue filteredArrayUsingPredicate:v3];
+    predicateCopy = [(NSMutableArray *)self->_sampleBufferAndInputQueue filteredArrayUsingPredicate:predicateCopy];
     objc_autoreleasePoolPop(v5);
-    [(NSMutableArray *)self->_sampleBufferAndInputQueue removeObjectsInArray:v3];
+    [(NSMutableArray *)self->_sampleBufferAndInputQueue removeObjectsInArray:predicateCopy];
     os_unfair_lock_unlock(&self->_sampleBufferAndInputQueueLock);
   }
 
@@ -74,7 +74,7 @@
     [BWPhotonicEngineNodeSampleBufferAndInputQueue newSampleBuffersAndInputsWithPredicate:];
   }
 
-  return v3;
+  return predicateCopy;
 }
 
 @end

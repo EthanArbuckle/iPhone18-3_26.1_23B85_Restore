@@ -1,22 +1,22 @@
 @interface RENowPlayingRelevanceProviderManager
 + (id)_features;
-- (RENowPlayingRelevanceProviderManager)initWithQueue:(id)a3;
-- (id)_valueForProvider:(id)a3 feature:(id)a4;
+- (RENowPlayingRelevanceProviderManager)initWithQueue:(id)queue;
+- (id)_valueForProvider:(id)provider feature:(id)feature;
 - (void)_updateActiveRoute;
 - (void)_updatePlaybackState;
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4;
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement;
 - (void)pause;
 - (void)resume;
 @end
 
 @implementation RENowPlayingRelevanceProviderManager
 
-- (RENowPlayingRelevanceProviderManager)initWithQueue:(id)a3
+- (RENowPlayingRelevanceProviderManager)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = RENowPlayingRelevanceProviderManager;
-  v5 = [(RERelevanceProviderManager *)&v11 initWithQueue:v4];
+  v5 = [(RERelevanceProviderManager *)&v11 initWithQueue:queueCopy];
   if (v5)
   {
     v13 = 0;
@@ -62,13 +62,13 @@
   return v5;
 }
 
-- (id)_valueForProvider:(id)a3 feature:(id)a4
+- (id)_valueForProvider:(id)provider feature:(id)feature
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  providerCopy = provider;
+  featureCopy = feature;
+  v8 = providerCopy;
   v9 = +[REFeature nowPlayingStateFeature];
-  v10 = [v7 isEqual:v9];
+  v10 = [featureCopy isEqual:v9];
 
   if (v10)
   {
@@ -79,80 +79,80 @@ LABEL_35:
   }
 
   v12 = +[REFeature currentlyPlayingFromAppFeature];
-  v13 = [v7 isEqual:v12];
+  v13 = [featureCopy isEqual:v12];
 
   if (!v13)
   {
     if (self->_state == 1 && ([v8 bundleIdentifier], v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
     {
-      v21 = [(MPRequestResponseController *)self->_requestResponseController response];
-      v22 = [v21 playerPath];
-      v23 = [v22 representedBundleID];
+      response = [(MPRequestResponseController *)self->_requestResponseController response];
+      playerPath = [response playerPath];
+      representedBundleID = [playerPath representedBundleID];
 
-      v24 = [v8 bundleIdentifier];
-      LODWORD(v22) = [v23 isEqualToString:v24];
+      bundleIdentifier = [v8 bundleIdentifier];
+      LODWORD(playerPath) = [representedBundleID isEqualToString:bundleIdentifier];
 
-      if (v22)
+      if (playerPath)
       {
-        v25 = [v8 itemIdentifer];
-        if (v25)
+        itemIdentifer = [v8 itemIdentifer];
+        if (itemIdentifer)
         {
-          v50 = [(MPRequestResponseController *)self->_requestResponseController response];
-          v49 = [v50 tracklist];
-          v26 = [v49 playingItem];
-          v27 = [v26 metadataObject];
-          v28 = [v27 song];
-          v29 = [v28 title];
-          if (v25 == v29 || ([v25 isEqual:v29] & 1) != 0)
+          response2 = [(MPRequestResponseController *)self->_requestResponseController response];
+          tracklist = [response2 tracklist];
+          playingItem = [tracklist playingItem];
+          metadataObject = [playingItem metadataObject];
+          song = [metadataObject song];
+          title = [song title];
+          if (itemIdentifer == title || ([itemIdentifer isEqual:title] & 1) != 0)
           {
             v30 = 1;
           }
 
           else
           {
-            v48 = [(MPRequestResponseController *)self->_requestResponseController response];
-            v47 = [v48 tracklist];
-            v46 = [v47 playingItem];
-            v45 = [v46 metadataObject];
-            v44 = [v45 song];
-            v32 = [v44 album];
-            if (v25 == v32)
+            response3 = [(MPRequestResponseController *)self->_requestResponseController response];
+            tracklist2 = [response3 tracklist];
+            playingItem2 = [tracklist2 playingItem];
+            metadataObject2 = [playingItem2 metadataObject];
+            song2 = [metadataObject2 song];
+            album = [song2 album];
+            if (itemIdentifer == album)
             {
               v30 = 1;
             }
 
             else
             {
-              v43 = v32;
-              if ([v25 isEqual:v32])
+              v43 = album;
+              if ([itemIdentifer isEqual:album])
               {
                 v30 = 1;
               }
 
               else
               {
-                v39 = [(MPRequestResponseController *)self->_requestResponseController response];
-                v42 = [v39 tracklist];
-                v41 = [v42 playingItem];
-                v40 = [v41 metadataObject];
-                v38 = [v40 song];
-                v33 = [v38 artist];
-                v34 = [v33 name];
-                if (v25 == v34)
+                response4 = [(MPRequestResponseController *)self->_requestResponseController response];
+                tracklist3 = [response4 tracklist];
+                playingItem3 = [tracklist3 playingItem];
+                metadataObject3 = [playingItem3 metadataObject];
+                song3 = [metadataObject3 song];
+                artist = [song3 artist];
+                name = [artist name];
+                if (itemIdentifer == name)
                 {
                   v30 = 1;
                 }
 
                 else
                 {
-                  v35 = v34;
-                  v36 = [v25 isEqual:v34];
-                  v34 = v35;
+                  v35 = name;
+                  v36 = [itemIdentifer isEqual:name];
+                  name = v35;
                   v30 = v36;
                 }
               }
 
-              v32 = v43;
+              album = v43;
             }
           }
         }
@@ -178,17 +178,17 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  v14 = [(MPRequestResponseController *)self->_requestResponseController response];
-  v15 = [v14 playerPath];
-  v16 = [v15 representedBundleID];
+  response5 = [(MPRequestResponseController *)self->_requestResponseController response];
+  playerPath2 = [response5 playerPath];
+  representedBundleID2 = [playerPath2 representedBundleID];
 
   if (self->_state == 1)
   {
-    v17 = [v8 bundleIdentifier];
-    if (v17)
+    bundleIdentifier2 = [v8 bundleIdentifier];
+    if (bundleIdentifier2)
     {
-      v18 = [v8 bundleIdentifier];
-      v19 = [v16 isEqualToString:v18];
+      bundleIdentifier3 = [v8 bundleIdentifier];
+      v19 = [representedBundleID2 isEqualToString:bundleIdentifier3];
     }
 
     else
@@ -214,9 +214,9 @@ LABEL_36:
   [(MPRequestResponseController *)self->_requestResponseController beginAutomaticResponseLoading];
   if (MediaPlayerLibraryCore())
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = getMPAVRoutingControllerActiveSystemRouteDidChangeNotification();
-    [v3 addObserver:self selector:sel__handleRoutingControllerActiveSystemRouteDidChange_ name:v4 object:0];
+    [defaultCenter addObserver:self selector:sel__handleRoutingControllerActiveSystemRouteDidChange_ name:v4 object:0];
   }
 
   [(RENowPlayingRelevanceProviderManager *)self _updateActiveRoute];
@@ -227,17 +227,17 @@ LABEL_36:
   [(MPRequestResponseController *)self->_requestResponseController endAutomaticResponseLoading];
   if (MediaPlayerLibraryCore())
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v3 = getMPAVRoutingControllerActiveSystemRouteDidChangeNotification();
-    [v4 removeObserver:self name:v3 object:0];
+    [defaultCenter removeObserver:self name:v3 object:0];
   }
 }
 
 - (void)_updatePlaybackState
 {
   [(RERelevanceProviderManager *)self beginFetchingData];
-  v3 = [(MPRequestResponseController *)self->_requestResponseController response];
-  self->_playbackState = [v3 state];
+  response = [(MPRequestResponseController *)self->_requestResponseController response];
+  self->_playbackState = [response state];
 
   v4 = self->_playbackState - 1;
   if (v4 <= 5 && ((0x2Bu >> v4) & 1) != 0)
@@ -337,16 +337,16 @@ void __58__RENowPlayingRelevanceProviderManager__updateActiveRoute__block_invoke
   [*(*(a1 + 40) + 112) setRequest:v4];
 }
 
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement
 {
-  v5 = a4;
+  replacementCopy = replacement;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__RENowPlayingRelevanceProviderManager_controller_defersResponseReplacement___block_invoke;
   v7[3] = &unk_2785FA150;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = replacementCopy;
+  v6 = replacementCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 

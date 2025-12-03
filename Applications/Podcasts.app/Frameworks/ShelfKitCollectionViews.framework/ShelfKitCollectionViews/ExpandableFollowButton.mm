@@ -2,9 +2,9 @@
 - (BOOL)isHighlighted;
 - (CGSize)intrinsicContentSize;
 - (NSString)accessibilityLabel;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (void)didTapButton;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation ExpandableFollowButton
@@ -34,13 +34,13 @@
   return [(ExpandableFollowButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_A9D94(a3);
+  selfCopy = self;
+  sub_A9D94(highlighted);
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   sub_124C4(0, &qword_400A88);
   v4 = swift_allocObject();
@@ -52,7 +52,7 @@
 
 - (void)didTapButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_AA78C();
 }
 

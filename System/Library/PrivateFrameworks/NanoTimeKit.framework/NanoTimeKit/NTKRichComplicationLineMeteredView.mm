@@ -1,19 +1,19 @@
 @interface NTKRichComplicationLineMeteredView
-- (CGPoint)_pointAtProgress:(float)a3;
-- (void)_setupShapeLayer:(id)a3;
+- (CGPoint)_pointAtProgress:(float)progress;
+- (void)_setupShapeLayer:(id)layer;
 - (void)_updateGradient;
-- (void)colorMetersWithProgress:(double)a3;
-- (void)setProgress:(double)a3;
+- (void)colorMetersWithProgress:(double)progress;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation NTKRichComplicationLineMeteredView
 
-- (void)_setupShapeLayer:(id)a3
+- (void)_setupShapeLayer:(id)layer
 {
   v3 = MEMORY[0x277CBBAE8];
-  v4 = a3;
-  v5 = [v3 currentDevice];
-  ___LayoutConstants_block_invoke_9(v5, v5);
+  layerCopy = layer;
+  currentDevice = [v3 currentDevice];
+  ___LayoutConstants_block_invoke_9(currentDevice, currentDevice);
   CDGenerateMeterLayersOnLayer();
 }
 
@@ -38,12 +38,12 @@ void __55__NTKRichComplicationLineMeteredView__setupShapeLayer___block_invoke(ui
   [v11 setPosition:v7 * 0.5 + v14];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationLineMeteredView;
   [(CDRichComplicationShapeView *)&v5 setProgress:?];
-  [(NTKRichComplicationLineMeteredView *)self colorMetersWithProgress:a3];
+  [(NTKRichComplicationLineMeteredView *)self colorMetersWithProgress:progress];
 }
 
 - (void)_updateGradient
@@ -55,11 +55,11 @@ void __55__NTKRichComplicationLineMeteredView__setupShapeLayer___block_invoke(ui
   [(NTKRichComplicationLineMeteredView *)self colorMetersWithProgress:?];
 }
 
-- (void)colorMetersWithProgress:(double)a3
+- (void)colorMetersWithProgress:(double)progress
 {
-  v4 = [(NTKRichComplicationLineMeteredView *)self meterLayers];
+  meterLayers = [(NTKRichComplicationLineMeteredView *)self meterLayers];
 
-  if (v4)
+  if (meterLayers)
   {
     [(NTKRichComplicationLineMeteredView *)self meterLayers];
     objc_claimAutoreleasedReturnValue();
@@ -69,10 +69,10 @@ void __55__NTKRichComplicationLineMeteredView__setupShapeLayer___block_invoke(ui
   }
 }
 
-- (CGPoint)_pointAtProgress:(float)a3
+- (CGPoint)_pointAtProgress:(float)progress
 {
   [(NTKRichComplicationLineMeteredView *)self bounds];
-  v5 = v4 * a3;
+  v5 = v4 * progress;
   v7 = v6 * 0.5;
   result.y = v7;
   result.x = v5;

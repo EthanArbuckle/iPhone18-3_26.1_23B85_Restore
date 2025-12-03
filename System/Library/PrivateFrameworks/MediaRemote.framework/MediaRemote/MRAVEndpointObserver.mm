@@ -1,16 +1,16 @@
 @interface MRAVEndpointObserver
-- (MRAVEndpointObserver)initWithOutputDeviceUID:(id)a3 label:(id)a4 callback:(id)a5;
+- (MRAVEndpointObserver)initWithOutputDeviceUID:(id)d label:(id)label callback:(id)callback;
 - (id)_initializeDiscoverySession;
 - (id)debugDescription;
 - (id)description;
 - (id)endpointChangedCallback;
-- (void)_endpointContainingOutputDevice:(void *)a1;
-- (void)_handleEndpointsDidChange:(void *)a1;
+- (void)_endpointContainingOutputDevice:(void *)device;
+- (void)_handleEndpointsDidChange:(void *)change;
 - (void)_reevaluateEndpoint;
 - (void)begin;
 - (void)dealloc;
 - (void)end;
-- (void)setEndpointChangedCallback:(id)a3;
+- (void)setEndpointChangedCallback:(id)callback;
 @end
 
 @implementation MRAVEndpointObserver
@@ -18,30 +18,30 @@
 - (void)end
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_didBegin)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_didBegin)
   {
     v3 = _MRLogForCategory(0);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v2;
+      v8 = selfCopy;
       _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRAVEndpointObserver] End Observing %@", &v7, 0xCu);
     }
 
-    v2->_didBegin = 0;
-    if (v2->_outputDeviceUID)
+    selfCopy->_didBegin = 0;
+    if (selfCopy->_outputDeviceUID)
     {
-      [(MRAVRoutingDiscoverySession *)v2->_discoverySession setDiscoveryMode:0];
+      [(MRAVRoutingDiscoverySession *)selfCopy->_discoverySession setDiscoveryMode:0];
     }
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v5 = +[MRAVOutputContext sharedAudioPresentationContext];
-    [v4 removeObserver:v2 name:@"kMRAVOutputContextDevicesDidChangeNotification" object:v5];
+    [defaultCenter removeObserver:selfCopy name:@"kMRAVOutputContextDevicesDidChangeNotification" object:v5];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -73,9 +73,9 @@
       discoverySession = obj->_discoverySession;
       if (!discoverySession)
       {
-        v5 = [(MRAVEndpointObserver *)obj _initializeDiscoverySession];
+        _initializeDiscoverySession = [(MRAVEndpointObserver *)obj _initializeDiscoverySession];
         v6 = obj->_discoverySession;
-        obj->_discoverySession = v5;
+        obj->_discoverySession = _initializeDiscoverySession;
 
         discoverySession = obj->_discoverySession;
       }
@@ -83,9 +83,9 @@
       [(MRAVRoutingDiscoverySession *)discoverySession setDiscoveryMode:2];
     }
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v8 = +[MRAVOutputContext sharedAudioPresentationContext];
-    [v7 addObserver:obj selector:sel__handleOutputContextDidChangeNotification name:@"kMRAVOutputContextDevicesDidChangeNotification" object:v8];
+    [defaultCenter addObserver:obj selector:sel__handleOutputContextDidChangeNotification name:@"kMRAVOutputContextDevicesDidChangeNotification" object:v8];
 
     objc_sync_exit(obj);
     [(MRAVEndpointObserver *)obj _reevaluateEndpoint];
@@ -116,18 +116,18 @@
 {
   objc_sync_exit(obj);
 
-  if (a1)
+  if (self)
   {
-    (a1)[2](a1, a2);
+    (self)[2](self, a2);
   }
 }
 
 - (id)_initializeDiscoverySession
 {
-  if (a1)
+  if (self)
   {
     v2 = [MRAVRoutingDiscoverySession discoverySessionWithEndpointFeatures:8];
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __51__MRAVEndpointObserver__initializeDiscoverySession__block_invoke;
@@ -157,20 +157,20 @@ void __51__MRAVEndpointObserver__initializeDiscoverySession__block_invoke(uint64
   }
 }
 
-- (MRAVEndpointObserver)initWithOutputDeviceUID:(id)a3 label:(id)a4 callback:(id)a5
+- (MRAVEndpointObserver)initWithOutputDeviceUID:(id)d label:(id)label callback:(id)callback
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  labelCopy = label;
+  callbackCopy = callback;
   v18.receiver = self;
   v18.super_class = MRAVEndpointObserver;
   v12 = [(MRAVEndpointObserver *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_outputDeviceUID, a3);
-    objc_storeStrong(&v13->_label, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_outputDeviceUID, d);
+    objc_storeStrong(&v13->_label, label);
+    v14 = [callbackCopy copy];
     endpointChangedCallback = v13->_endpointChangedCallback;
     v13->_endpointChangedCallback = v14;
 
@@ -188,7 +188,7 @@ void __51__MRAVEndpointObserver__initializeDiscoverySession__block_invoke(uint64
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRAVEndpointObserver] Dealloc %@", buf, 0xCu);
   }
 
@@ -203,13 +203,13 @@ void __51__MRAVEndpointObserver__initializeDiscoverySession__block_invoke(uint64
 
 - (id)debugDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  outputDeviceUID = v2->_outputDeviceUID;
-  label = v2->_label;
-  if (v2->_didBegin)
+  outputDeviceUID = selfCopy->_outputDeviceUID;
+  label = selfCopy->_label;
+  if (selfCopy->_didBegin)
   {
     v7 = @"YES";
   }
@@ -219,62 +219,62 @@ void __51__MRAVEndpointObserver__initializeDiscoverySession__block_invoke(uint64
     v7 = @"NO";
   }
 
-  v8 = MEMORY[0x1A58E3570](v2->_endpointChangedCallback);
-  v9 = [(MRAVEndpoint *)v2->_endpoint debugName];
-  v10 = MRCreateIndentedDebugDescriptionFromObject(v9);
-  v11 = MRCreateIndentedDebugDescriptionFromObject(v2->_discoverySession);
-  v12 = [v3 initWithFormat:@"<%@ %p {\n   outputDevice=%@\n   label=%@\n   observing=%@\n   callback=%@\n   endpoint=%@\n   discoverySession=%@\n}>\n", v4, v2, outputDeviceUID, label, v7, v8, v10, v11];
+  v8 = MEMORY[0x1A58E3570](selfCopy->_endpointChangedCallback);
+  debugName = [(MRAVEndpoint *)selfCopy->_endpoint debugName];
+  v10 = MRCreateIndentedDebugDescriptionFromObject(debugName);
+  v11 = MRCreateIndentedDebugDescriptionFromObject(selfCopy->_discoverySession);
+  v12 = [v3 initWithFormat:@"<%@ %p {\n   outputDevice=%@\n   label=%@\n   observing=%@\n   callback=%@\n   endpoint=%@\n   discoverySession=%@\n}>\n", v4, selfCopy, outputDeviceUID, label, v7, v8, v10, v11];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (void)setEndpointChangedCallback:(id)a3
+- (void)setEndpointChangedCallback:(id)callback
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  endpointChangedCallback = v4->_endpointChangedCallback;
-  v4->_endpointChangedCallback = v5;
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [callbackCopy copy];
+  endpointChangedCallback = selfCopy->_endpointChangedCallback;
+  selfCopy->_endpointChangedCallback = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)endpointChangedCallback
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [v2->_endpointChangedCallback copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [selfCopy->_endpointChangedCallback copy];
+  objc_sync_exit(selfCopy);
 
   v4 = MEMORY[0x1A58E3570](v3);
 
   return v4;
 }
 
-- (void)_handleEndpointsDidChange:(void *)a1
+- (void)_handleEndpointsDidChange:(void *)change
 {
   v4 = a2;
-  if (a1)
+  if (change)
   {
-    v3 = a1;
-    objc_sync_enter(v3);
-    -[MRAVEndpointObserver _handleEndpointsDidChange:].cold.1(v3, [v4 copy]);
+    changeCopy = change;
+    objc_sync_enter(changeCopy);
+    -[MRAVEndpointObserver _handleEndpointsDidChange:].cold.1(changeCopy, [v4 copy]);
   }
 }
 
-- (void)_endpointContainingOutputDevice:(void *)a1
+- (void)_endpointContainingOutputDevice:(void *)device
 {
   v38 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (device)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [v4 addObjectsFromArray:a1[2]];
-    a1 = OUTLINED_FUNCTION_0_15(v5, v6, v7, v8, v9, v10, v11, v12, 0, 0, 0, 0, 0, 0, 0, 0, v34, v36);
-    if (a1)
+    v5 = [v4 addObjectsFromArray:device[2]];
+    device = OUTLINED_FUNCTION_0_15(v5, v6, v7, v8, v9, v10, v11, v12, 0, 0, 0, 0, 0, 0, 0, 0, v34, v36);
+    if (device)
     {
       v13 = *v28;
       while (2)
@@ -291,16 +291,16 @@ void __51__MRAVEndpointObserver__initializeDiscoverySession__block_invoke(uint64
           v16 = [v15 containsOutputDeviceWithUID:v3];
           if (v16)
           {
-            a1 = v15;
+            device = v15;
             goto LABEL_12;
           }
 
           v14 = (v14 + 1);
         }
 
-        while (a1 != v14);
-        a1 = OUTLINED_FUNCTION_0_15(v16, v17, v18, v19, v20, v21, v22, v23, v26, v27, v28, v29, v30, v31, v32, v33, v35, v37);
-        if (a1)
+        while (device != v14);
+        device = OUTLINED_FUNCTION_0_15(v16, v17, v18, v19, v20, v21, v22, v23, v26, v27, v28, v29, v30, v31, v32, v33, v35, v37);
+        if (device)
         {
           continue;
         }
@@ -314,7 +314,7 @@ LABEL_12:
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return device;
 }
 
 - (void)_handleEndpointsDidChange:(void *)a1 .cold.1(void *a1, uint64_t a2)

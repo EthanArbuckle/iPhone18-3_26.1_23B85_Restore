@@ -1,17 +1,17 @@
 @interface FCReferenceToMembership
-- (FCReferenceToMembership)initWithIdentifier:(id)a3;
-- (FCReferenceToMembership)initWithIdentifier:(id)a3 dictionaryRepresentation:(id)a4;
-- (FCReferenceToMembership)initWithRecord:(id)a3;
+- (FCReferenceToMembership)initWithIdentifier:(id)identifier;
+- (FCReferenceToMembership)initWithIdentifier:(id)identifier dictionaryRepresentation:(id)representation;
+- (FCReferenceToMembership)initWithRecord:(id)record;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation FCReferenceToMembership
 
-- (FCReferenceToMembership)initWithIdentifier:(id)a3
+- (FCReferenceToMembership)initWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  if (!identifierCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "identifier != nil"];
     *buf = 136315906;
@@ -31,9 +31,9 @@
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (identifierCopy)
     {
-      objc_storeStrong(&v6->_identifier, a3);
+      objc_storeStrong(&v6->_identifier, identifier);
     }
 
     else
@@ -47,16 +47,16 @@
   return v7;
 }
 
-- (FCReferenceToMembership)initWithRecord:(id)a3
+- (FCReferenceToMembership)initWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 recordID];
-  v6 = [v5 recordName];
-  v7 = [(FCReferenceToMembership *)self initWithIdentifier:v6];
+  recordCopy = record;
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  v7 = [(FCReferenceToMembership *)self initWithIdentifier:recordName];
 
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:@"membershipID"];
+    v8 = [recordCopy objectForKeyedSubscript:@"membershipID"];
     membershipID = v7->_membershipID;
     v7->_membershipID = v8;
   }
@@ -64,13 +64,13 @@
   return v7;
 }
 
-- (FCReferenceToMembership)initWithIdentifier:(id)a3 dictionaryRepresentation:(id)a4
+- (FCReferenceToMembership)initWithIdentifier:(id)identifier dictionaryRepresentation:(id)representation
 {
-  v6 = a4;
-  v7 = [(FCReferenceToMembership *)self initWithIdentifier:a3];
+  representationCopy = representation;
+  v7 = [(FCReferenceToMembership *)self initWithIdentifier:identifier];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"membershipID"];
+    v8 = [representationCopy objectForKeyedSubscript:@"membershipID"];
     membershipID = v7->_membershipID;
     v7->_membershipID = v8;
   }
@@ -80,16 +80,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(FCReferenceToMembership *)self membershipID];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  membershipID = [(FCReferenceToMembership *)self membershipID];
 
-  if (v4)
+  if (membershipID)
   {
-    v5 = [(FCReferenceToMembership *)self membershipID];
-    [v3 setObject:v5 forKey:@"membershipID"];
+    membershipID2 = [(FCReferenceToMembership *)self membershipID];
+    [dictionary setObject:membershipID2 forKey:@"membershipID"];
   }
 
-  v6 = [v3 copy];
+  v6 = [dictionary copy];
 
   return v6;
 }

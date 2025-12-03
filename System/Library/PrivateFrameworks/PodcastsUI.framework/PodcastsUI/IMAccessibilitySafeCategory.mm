@@ -1,26 +1,26 @@
 @interface IMAccessibilitySafeCategory
-+ (void)_addCategoryMethod:(objc_method *)a3 toClass:(Class)a4 isClass:(BOOL)a5;
-+ (void)installCategoryOnClassNamed:(id)a3;
++ (void)_addCategoryMethod:(objc_method *)method toClass:(Class)class isClass:(BOOL)isClass;
++ (void)installCategoryOnClassNamed:(id)named;
 @end
 
 @implementation IMAccessibilitySafeCategory
 
-+ (void)installCategoryOnClassNamed:(id)a3
++ (void)installCategoryOnClassNamed:(id)named
 {
-  v4 = a3;
-  v5 = NSClassFromString(v4);
+  namedCopy = named;
+  v5 = NSClassFromString(namedCopy);
   if (!v5)
   {
     v11 = MEMORY[0x277CCACA8];
-    v12 = NSStringFromClass(a1);
-    v13 = [v11 stringWithFormat:@"UIAccessibility Error installing %@ on %@.  %@ does not exist in runtime.", v12, v4, v4];
+    v12 = NSStringFromClass(self);
+    namedCopy = [v11 stringWithFormat:@"UIAccessibility Error installing %@ on %@.  %@ does not exist in runtime.", v12, namedCopy, namedCopy];
 
     goto LABEL_21;
   }
 
   v6 = v5;
   outCount = 0;
-  v7 = class_copyMethodList(a1, &outCount);
+  v7 = class_copyMethodList(self, &outCount);
   v8 = v7;
   if (v7 && outCount)
   {
@@ -32,7 +32,7 @@
         break;
       }
 
-      [a1 _addCategoryMethod:v10 toClass:v6 isClass:0];
+      [self _addCategoryMethod:v10 toClass:v6 isClass:0];
     }
   }
 
@@ -43,7 +43,7 @@
 
   free(v8);
 LABEL_11:
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   v15 = class_copyMethodList(Class, &outCount);
   v16 = v15;
   if (v15 && outCount)
@@ -58,7 +58,7 @@ LABEL_11:
 
       if (method_getName(v18) != sel_load)
       {
-        [a1 _addCategoryMethod:v16[j] toClass:object_getClass(v6) isClass:1];
+        [self _addCategoryMethod:v16[j] toClass:object_getClass(v6) isClass:1];
       }
     }
 
@@ -74,11 +74,11 @@ LABEL_20:
 LABEL_21:
 }
 
-+ (void)_addCategoryMethod:(objc_method *)a3 toClass:(Class)a4 isClass:(BOOL)a5
++ (void)_addCategoryMethod:(objc_method *)method toClass:(Class)class isClass:(BOOL)isClass
 {
-  v5 = a5;
-  Name = method_getName(a3);
-  InstanceMethod = class_getInstanceMethod(a4, Name);
+  isClassCopy = isClass;
+  Name = method_getName(method);
+  InstanceMethod = class_getInstanceMethod(class, Name);
   v11 = InstanceMethod;
   if (InstanceMethod)
   {
@@ -90,11 +90,11 @@ LABEL_21:
     Implementation = 0;
   }
 
-  v13 = method_getImplementation(a3);
-  TypeEncoding = method_getTypeEncoding(a3);
-  if (!class_addMethod(a4, Name, v13, TypeEncoding))
+  v13 = method_getImplementation(method);
+  TypeEncoding = method_getTypeEncoding(method);
+  if (!class_addMethod(class, Name, v13, TypeEncoding))
   {
-    v15 = method_getImplementation(a3);
+    v15 = method_getImplementation(method);
     method_setImplementation(v11, v15);
   }
 
@@ -102,14 +102,14 @@ LABEL_21:
   {
     if (Implementation)
     {
-      Superclass = class_getSuperclass(a1);
+      Superclass = class_getSuperclass(self);
       if (Superclass)
       {
         Class = Superclass;
         v18 = class_getSuperclass(Superclass);
         if (v18 == objc_opt_class())
         {
-          if (v5)
+          if (isClassCopy)
           {
             Class = object_getClass(Class);
           }
@@ -118,7 +118,7 @@ LABEL_21:
           if (!class_addMethod(Class, Name, Implementation, v19))
           {
             v20 = MEMORY[0x277CCACA8];
-            if (v5)
+            if (isClassCopy)
             {
               v21 = @"+";
             }
@@ -128,7 +128,7 @@ LABEL_21:
               v21 = @"-";
             }
 
-            v22 = NSStringFromClass(a4);
+            v22 = NSStringFromClass(class);
             v23 = NSStringFromSelector(Name);
             v24 = [v20 stringWithFormat:@"UIAccessibility Error adding %@[%@ %@]", v21, v22, v23];
           }

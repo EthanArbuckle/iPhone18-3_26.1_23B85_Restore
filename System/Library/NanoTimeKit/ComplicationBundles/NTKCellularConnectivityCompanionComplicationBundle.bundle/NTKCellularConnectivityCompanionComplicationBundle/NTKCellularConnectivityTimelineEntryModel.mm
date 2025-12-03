@@ -1,52 +1,52 @@
 @interface NTKCellularConnectivityTimelineEntryModel
-- (BOOL)_needsPlatterForComplicationFamily:(int64_t)a3;
-- (double)_imageAlphaForComplicationFamily:(int64_t)a3;
-- (double)_platterAlphaForComplicationFamily:(int64_t)a3;
-- (id)_cellImageSizeForComplicationFamily:(int64_t)a3;
+- (BOOL)_needsPlatterForComplicationFamily:(int64_t)family;
+- (double)_imageAlphaForComplicationFamily:(int64_t)family;
+- (double)_platterAlphaForComplicationFamily:(int64_t)family;
+- (id)_cellImageSizeForComplicationFamily:(int64_t)family;
 - (id)_circularMediumTemplate;
 - (id)_circularSmallTemplate;
-- (id)_dotConstraintsForComplicationFamily:(int64_t)a3;
+- (id)_dotConstraintsForComplicationFamily:(int64_t)family;
 - (id)_extraLargeTemplate;
 - (id)_graphicBezelTemplate;
 - (id)_graphicCircularTemplate;
 - (id)_graphicCornerTemplate;
 - (id)_graphicExtraLargeTemplate;
-- (id)_imageOverrideColorForComplicationFamily:(int64_t)a3;
-- (id)_imageProviderForComplicationFamily:(int64_t)a3;
+- (id)_imageOverrideColorForComplicationFamily:(int64_t)family;
+- (id)_imageProviderForComplicationFamily:(int64_t)family;
 - (id)_modularSmallTemplate;
-- (id)_platterOverrideColorForComplicationFamily:(int64_t)a3;
+- (id)_platterOverrideColorForComplicationFamily:(int64_t)family;
 - (id)_utilitarianSmallTemplate;
-- (id)templateForComplicationFamily:(int64_t)a3;
+- (id)templateForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NTKCellularConnectivityTimelineEntryModel
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
   v5 = 0;
-  if (a3 > 7)
+  if (family > 7)
   {
-    if (a3 > 9)
+    if (family > 9)
     {
-      if (a3 == 10)
+      if (family == 10)
       {
-        v6 = [(NTKCellularConnectivityTimelineEntryModel *)self _graphicCircularTemplate];
+        _graphicCircularTemplate = [(NTKCellularConnectivityTimelineEntryModel *)self _graphicCircularTemplate];
       }
 
       else
       {
-        if (a3 != 12)
+        if (family != 12)
         {
           goto LABEL_21;
         }
 
-        v6 = [(NTKCellularConnectivityTimelineEntryModel *)self _graphicExtraLargeTemplate];
+        _graphicCircularTemplate = [(NTKCellularConnectivityTimelineEntryModel *)self _graphicExtraLargeTemplate];
       }
     }
 
     else
     {
-      if (a3 == 8)
+      if (family == 8)
       {
         [(NTKCellularConnectivityTimelineEntryModel *)self _graphicCornerTemplate];
       }
@@ -55,53 +55,53 @@
       {
         [(NTKCellularConnectivityTimelineEntryModel *)self _graphicBezelTemplate];
       }
-      v6 = ;
+      _graphicCircularTemplate = ;
     }
   }
 
-  else if (a3 > 3)
+  else if (family > 3)
   {
-    if (a3 == 4)
+    if (family == 4)
     {
-      v6 = [(NTKCellularConnectivityTimelineEntryModel *)self _circularSmallTemplate];
+      _graphicCircularTemplate = [(NTKCellularConnectivityTimelineEntryModel *)self _circularSmallTemplate];
     }
 
     else
     {
-      if (a3 != 7)
+      if (family != 7)
       {
         goto LABEL_21;
       }
 
-      v6 = [(NTKCellularConnectivityTimelineEntryModel *)self _extraLargeTemplate];
+      _graphicCircularTemplate = [(NTKCellularConnectivityTimelineEntryModel *)self _extraLargeTemplate];
     }
   }
 
-  else if (a3)
+  else if (family)
   {
-    if (a3 != 2)
+    if (family != 2)
     {
       goto LABEL_21;
     }
 
-    v6 = [(NTKCellularConnectivityTimelineEntryModel *)self _utilitarianSmallTemplate];
+    _graphicCircularTemplate = [(NTKCellularConnectivityTimelineEntryModel *)self _utilitarianSmallTemplate];
   }
 
   else
   {
-    v6 = [(NTKCellularConnectivityTimelineEntryModel *)self _modularSmallTemplate];
+    _graphicCircularTemplate = [(NTKCellularConnectivityTimelineEntryModel *)self _modularSmallTemplate];
   }
 
-  v5 = v6;
+  v5 = _graphicCircularTemplate;
 LABEL_21:
-  if (CLKComplicationFamilyCircularMedium == a3)
+  if (CLKComplicationFamilyCircularMedium == family)
   {
-    v7 = [(NTKCellularConnectivityTimelineEntryModel *)self _circularMediumTemplate];
+    _circularMediumTemplate = [(NTKCellularConnectivityTimelineEntryModel *)self _circularMediumTemplate];
 
-    v5 = v7;
+    v5 = _circularMediumTemplate;
   }
 
-  if (self->_cellularConnectivityState > 2 || a3 != 7 && a3)
+  if (self->_cellularConnectivityState > 2 || family != 7 && family)
   {
     v8 = +[UIColor systemGreenColor];
   }
@@ -117,12 +117,12 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)_needsPlatterForComplicationFamily:(int64_t)a3
+- (BOOL)_needsPlatterForComplicationFamily:(int64_t)family
 {
   LOBYTE(v3) = 1;
-  if (a3 != 2 && a3 != 4)
+  if (family != 2 && family != 4)
   {
-    if (CLKComplicationFamilyCircularMedium == a3)
+    if (CLKComplicationFamilyCircularMedium == family)
     {
       LOBYTE(v3) = 1;
     }
@@ -131,9 +131,9 @@ LABEL_21:
     {
       cellularConnectivityState = self->_cellularConnectivityState;
       LOBYTE(v3) = cellularConnectivityState < 3;
-      if ((a3 - 8) <= 4)
+      if ((family - 8) <= 4)
       {
-        v3 = (0x17u >> (a3 - 8)) | (cellularConnectivityState < 3);
+        v3 = (0x17u >> (family - 8)) | (cellularConnectivityState < 3);
       }
     }
   }
@@ -141,7 +141,7 @@ LABEL_21:
   return v3 & 1;
 }
 
-- (double)_platterAlphaForComplicationFamily:(int64_t)a3
+- (double)_platterAlphaForComplicationFamily:(int64_t)family
 {
   v5 = NTKIsRichComplicationFamily();
   cellularConnectivityState = self->_cellularConnectivityState;
@@ -160,12 +160,12 @@ LABEL_21:
     if (cellularConnectivityState != 2)
     {
       result = 0.119999997;
-      if (a3 != 4 && CLKComplicationFamilyCircularMedium != a3)
+      if (family != 4 && CLKComplicationFamilyCircularMedium != family)
       {
         result = 1.0;
-        if ((a3 - 8) <= 4)
+        if ((family - 8) <= 4)
         {
-          return dbl_6058[a3 - 8];
+          return dbl_6058[family - 8];
         }
       }
     }
@@ -174,11 +174,11 @@ LABEL_21:
   else
   {
     result = 0.119999997;
-    if (a3 != 4 && CLKComplicationFamilyCircularMedium != a3)
+    if (family != 4 && CLKComplicationFamilyCircularMedium != family)
     {
-      if (a3)
+      if (family)
       {
-        v8 = a3 == 7;
+        v8 = family == 7;
       }
 
       else
@@ -197,10 +197,10 @@ LABEL_21:
   return result;
 }
 
-- (id)_platterOverrideColorForComplicationFamily:(int64_t)a3
+- (id)_platterOverrideColorForComplicationFamily:(int64_t)family
 {
   v5 = 0;
-  if (a3 <= 0xC && ((1 << a3) & 0x1704) != 0)
+  if (family <= 0xC && ((1 << family) & 0x1704) != 0)
   {
     cellularConnectivityState = self->_cellularConnectivityState;
     if (cellularConnectivityState >= 2)
@@ -223,7 +223,7 @@ LABEL_21:
   }
 
 LABEL_9:
-  if ((a3 - 8) < 3 || a3 == 12)
+  if ((family - 8) < 3 || family == 12)
   {
     if (self->_cellularConnectivityState < 3)
     {
@@ -234,7 +234,7 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  if (a3 == 2 && self->_cellularConnectivityState >= 3)
+  if (family == 2 && self->_cellularConnectivityState >= 3)
   {
     v8 = [UIColor colorWithWhite:0.100000001 alpha:1.0];
 LABEL_16:
@@ -248,9 +248,9 @@ LABEL_17:
   return v5;
 }
 
-- (double)_imageAlphaForComplicationFamily:(int64_t)a3
+- (double)_imageAlphaForComplicationFamily:(int64_t)family
 {
-  if (CLKComplicationFamilyCircularMedium == a3 || (result = 1.0, a3 <= 7) && ((1 << a3) & 0x91) != 0)
+  if (CLKComplicationFamilyCircularMedium == family || (result = 1.0, family <= 7) && ((1 << family) & 0x91) != 0)
   {
     result = 0.400000006;
     if (self->_cellularConnectivityState >= 2)
@@ -262,14 +262,14 @@ LABEL_17:
   return result;
 }
 
-- (id)_imageOverrideColorForComplicationFamily:(int64_t)a3
+- (id)_imageOverrideColorForComplicationFamily:(int64_t)family
 {
   cellularConnectivityState = self->_cellularConnectivityState;
   if (cellularConnectivityState > 1)
   {
     if (cellularConnectivityState == 3)
     {
-      if (a3 != 4 && a3 != 2)
+      if (family != 4 && family != 2)
       {
         v5 = 0.5;
         goto LABEL_5;
@@ -292,7 +292,7 @@ LABEL_17:
   else
   {
     v4 = 0;
-    if (a3 <= 0xC && ((1 << a3) & 0x1704) != 0)
+    if (family <= 0xC && ((1 << family) & 0x1704) != 0)
     {
       v5 = 0.400000006;
 LABEL_5:
@@ -303,23 +303,23 @@ LABEL_5:
   return v4;
 }
 
-- (id)_cellImageSizeForComplicationFamily:(int64_t)a3
+- (id)_cellImageSizeForComplicationFamily:(int64_t)family
 {
   v4 = +[CLKDevice currentDevice];
   v5 = sub_1400(v4, v4);
 
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:family];
   v7 = [v5 objectForKey:v6];
 
   return v7;
 }
 
-- (id)_dotConstraintsForComplicationFamily:(int64_t)a3
+- (id)_dotConstraintsForComplicationFamily:(int64_t)family
 {
   v4 = +[CLKDevice currentDevice];
   v5 = sub_17D0(v4, v4);
 
-  v6 = [[NSNumber alloc] initWithUnsignedInteger:a3];
+  v6 = [[NSNumber alloc] initWithUnsignedInteger:family];
   v7 = [v5 objectForKey:v6];
 
   if (v7)
@@ -335,35 +335,35 @@ LABEL_5:
   return v8;
 }
 
-- (id)_imageProviderForComplicationFamily:(int64_t)a3
+- (id)_imageProviderForComplicationFamily:(int64_t)family
 {
   v5 = objc_alloc_init(NTKCellularConnectivityImageProvider);
-  [(NTKCellularConnectivityImageProvider *)v5 setNeedsPlatter:[(NTKCellularConnectivityTimelineEntryModel *)self _needsPlatterForComplicationFamily:a3]];
-  [(NTKCellularConnectivityTimelineEntryModel *)self _platterAlphaForComplicationFamily:a3];
+  [(NTKCellularConnectivityImageProvider *)v5 setNeedsPlatter:[(NTKCellularConnectivityTimelineEntryModel *)self _needsPlatterForComplicationFamily:family]];
+  [(NTKCellularConnectivityTimelineEntryModel *)self _platterAlphaForComplicationFamily:family];
   [(NTKCellularConnectivityImageProvider *)v5 setPlatterAlpha:?];
-  [(NTKCellularConnectivityImageProvider *)v5 setCutoutImageFromPlatter:[(NTKCellularConnectivityTimelineEntryModel *)self _cutoutImageFromPlatterForComplicationFamily:a3]];
-  v6 = [(NTKCellularConnectivityTimelineEntryModel *)self _platterOverrideColorForComplicationFamily:a3];
+  [(NTKCellularConnectivityImageProvider *)v5 setCutoutImageFromPlatter:[(NTKCellularConnectivityTimelineEntryModel *)self _cutoutImageFromPlatterForComplicationFamily:family]];
+  v6 = [(NTKCellularConnectivityTimelineEntryModel *)self _platterOverrideColorForComplicationFamily:family];
   [(NTKCellularConnectivityImageProvider *)v5 setPlatterOverrideColor:v6];
 
-  v7 = [(NTKCellularConnectivityTimelineEntryModel *)self _tritiumPlatterColorForComplicationFamily:a3];
+  v7 = [(NTKCellularConnectivityTimelineEntryModel *)self _tritiumPlatterColorForComplicationFamily:family];
   [(NTKCellularConnectivityImageProvider *)v5 setTritiumPlatterColor:v7];
 
   [(NTKCellularConnectivityImageProvider *)v5 setShowsAsDots:self->_cellularConnectivityState > 2];
   [(NTKCellularConnectivityImageProvider *)v5 setDisconnected:self->_cellularConnectivityState < 5];
-  v8 = [(NTKCellularConnectivityTimelineEntryModel *)self _cellImageSizeForComplicationFamily:a3];
+  v8 = [(NTKCellularConnectivityTimelineEntryModel *)self _cellImageSizeForComplicationFamily:family];
   [(NTKCellularConnectivityImageProvider *)v5 setImageSize:v8];
 
   [(NTKCellularConnectivityImageProvider *)v5 setImageVerticalOffsetScaleFromWidth:&off_8670];
-  [(NTKCellularConnectivityTimelineEntryModel *)self _imageAlphaForComplicationFamily:a3];
+  [(NTKCellularConnectivityTimelineEntryModel *)self _imageAlphaForComplicationFamily:family];
   [(NTKCellularConnectivityImageProvider *)v5 setImageAlpha:?];
-  v9 = [(NTKCellularConnectivityTimelineEntryModel *)self _imageOverrideColorForComplicationFamily:a3];
+  v9 = [(NTKCellularConnectivityTimelineEntryModel *)self _imageOverrideColorForComplicationFamily:family];
   [(NTKCellularConnectivityImageProvider *)v5 setImageOverrideColor:v9];
 
-  v10 = [(NTKCellularConnectivityTimelineEntryModel *)self _dotConstraintsForComplicationFamily:a3];
+  v10 = [(NTKCellularConnectivityTimelineEntryModel *)self _dotConstraintsForComplicationFamily:family];
   [(NTKCellularConnectivityImageProvider *)v5 setDotLayoutConstraints:v10];
 
   v11 = objc_alloc_init(NTKExplorerDotColorOptions);
-  if (a3 == 4 || a3 == 2)
+  if (family == 4 || family == 2)
   {
     v12 = +[UIColor whiteColor];
   }

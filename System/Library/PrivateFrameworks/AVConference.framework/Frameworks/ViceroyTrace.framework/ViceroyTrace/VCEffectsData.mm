@@ -2,9 +2,9 @@
 - (VCEffectsData)init;
 - (void)dealloc;
 - (void)init;
-- (void)updateDataWithTime:(double)a3;
-- (void)updateReport:(id)a3;
-- (void)updateStateWithPayload:(id)a3 withTime:(double)a4;
+- (void)updateDataWithTime:(double)time;
+- (void)updateReport:(id)report;
+- (void)updateStateWithPayload:(id)payload withTime:(double)time;
 @end
 
 @implementation VCEffectsData
@@ -132,34 +132,34 @@ LABEL_5:
   [(VCEffectsData *)&v4 dealloc];
 }
 
-- (void)updateStateWithPayload:(id)a3 withTime:(double)a4
+- (void)updateStateWithPayload:(id)payload withTime:(double)time
 {
-  if ([a3 objectForKeyedSubscript:@"VCEMEffectsType"])
+  if ([payload objectForKeyedSubscript:@"VCEMEffectsType"])
   {
-    [(VCEffectsData *)self updateDataWithTime:a4];
-    self->_effectsType = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCEMEffectsType", "intValue"}];
+    [(VCEffectsData *)self updateDataWithTime:time];
+    self->_effectsType = [objc_msgSend(payload objectForKeyedSubscript:{@"VCEMEffectsType", "intValue"}];
   }
 }
 
-- (void)updateDataWithTime:(double)a3
+- (void)updateDataWithTime:(double)time
 {
   startTime = self->_startTime;
   if (startTime != 0.0)
   {
-    LODWORD(v3) = vcvtad_u64_f64((a3 - startTime) * 1000.0);
+    LODWORD(v3) = vcvtad_u64_f64((time - startTime) * 1000.0);
     [(VCHistogram *)self->_effectsDurationsThermalHistograms[self->_effectsType] addOnlyExactMatchingValue:self->_thermalLevel increment:v3];
   }
 
-  self->_startTime = a3;
+  self->_startTime = time;
 }
 
-- (void)updateReport:(id)a3
+- (void)updateReport:(id)report
 {
   v4 = 0;
   effectsDurationsThermalHistograms = self->_effectsDurationsThermalHistograms;
   do
   {
-    [a3 setObject:-[VCHistogram description](effectsDurationsThermalHistograms[v4] forKeyedSubscript:{"description"), updateReport__effectsAggregationKeys[v4]}];
+    [report setObject:-[VCHistogram description](effectsDurationsThermalHistograms[v4] forKeyedSubscript:{"description"), updateReport__effectsAggregationKeys[v4]}];
     ++v4;
   }
 

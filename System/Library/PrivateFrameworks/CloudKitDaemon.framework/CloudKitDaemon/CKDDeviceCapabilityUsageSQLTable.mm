@@ -1,22 +1,22 @@
 @interface CKDDeviceCapabilityUsageSQLTable
 + (id)dbProperties;
-- (BOOL)_deleteUsageForIDString:(id)a3 itemType:(unint64_t)a4 withError:(id *)a5;
-- (BOOL)_setUsage:(id)a3 forIDString:(id)a4 forItemType:(unint64_t)a5 withError:(id *)a6;
-- (BOOL)deleteRecordWithUnknownShareUsageForRecordID:(id)a3 withError:(id *)a4;
-- (BOOL)deleteShareUsageForShareID:(id)a3 withError:(id *)a4;
-- (BOOL)deleteZoneUsageForZoneID:(id)a3 withError:(id *)a4;
-- (BOOL)setRecordWithUnknownShareUsage:(id)a3 forRecordID:(id)a4 withError:(id *)a5;
-- (BOOL)setShareUsage:(id)a3 forShareID:(id)a4 withError:(id *)a5;
-- (BOOL)setZoneUsage:(id)a3 forZoneID:(id)a4 withError:(id *)a5;
-- (CKDDeviceCapabilityUsageSQLTable)initWithContainerID:(id)a3;
-- (id)_usageEntriesForContainerID:(id)a3 itemType:(unint64_t)a4 maxCount:(unint64_t)a5 withError:(id *)a6;
-- (id)_usageForIDString:(id)a3 itemType:(unint64_t)a4 withError:(id *)a5;
-- (id)recordWithUnknownShareUsageForRecordID:(id)a3 withError:(id *)a4;
-- (id)recordWithUnknownShareUsagesForContainerID:(id)a3 maxCount:(unint64_t)a4 withError:(id *)a5;
-- (id)shareUsageForShareID:(id)a3 withError:(id *)a4;
-- (id)shareUsagesForContainerID:(id)a3 maxCount:(unint64_t)a4 withError:(id *)a5;
-- (id)zoneUsageForZoneID:(id)a3 withError:(id *)a4;
-- (id)zoneUsagesForContainerID:(id)a3 maxCount:(unint64_t)a4 withError:(id *)a5;
+- (BOOL)_deleteUsageForIDString:(id)string itemType:(unint64_t)type withError:(id *)error;
+- (BOOL)_setUsage:(id)usage forIDString:(id)string forItemType:(unint64_t)type withError:(id *)error;
+- (BOOL)deleteRecordWithUnknownShareUsageForRecordID:(id)d withError:(id *)error;
+- (BOOL)deleteShareUsageForShareID:(id)d withError:(id *)error;
+- (BOOL)deleteZoneUsageForZoneID:(id)d withError:(id *)error;
+- (BOOL)setRecordWithUnknownShareUsage:(id)usage forRecordID:(id)d withError:(id *)error;
+- (BOOL)setShareUsage:(id)usage forShareID:(id)d withError:(id *)error;
+- (BOOL)setZoneUsage:(id)usage forZoneID:(id)d withError:(id *)error;
+- (CKDDeviceCapabilityUsageSQLTable)initWithContainerID:(id)d;
+- (id)_usageEntriesForContainerID:(id)d itemType:(unint64_t)type maxCount:(unint64_t)count withError:(id *)error;
+- (id)_usageForIDString:(id)string itemType:(unint64_t)type withError:(id *)error;
+- (id)recordWithUnknownShareUsageForRecordID:(id)d withError:(id *)error;
+- (id)recordWithUnknownShareUsagesForContainerID:(id)d maxCount:(unint64_t)count withError:(id *)error;
+- (id)shareUsageForShareID:(id)d withError:(id *)error;
+- (id)shareUsagesForContainerID:(id)d maxCount:(unint64_t)count withError:(id *)error;
+- (id)zoneUsageForZoneID:(id)d withError:(id *)error;
+- (id)zoneUsagesForContainerID:(id)d maxCount:(unint64_t)count withError:(id *)error;
 @end
 
 @implementation CKDDeviceCapabilityUsageSQLTable
@@ -44,72 +44,72 @@
   return v2;
 }
 
-- (CKDDeviceCapabilityUsageSQLTable)initWithContainerID:(id)a3
+- (CKDDeviceCapabilityUsageSQLTable)initWithContainerID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = CKDDeviceCapabilityUsageSQLTable;
   v6 = [(CKSQLiteCacheTable *)&v9 initWithLogicalTableName:@"UsageTable" entryCountLimit:100000 dataSizeLimit:0 expirationTime:0.0 expireDelay:86400.0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_containerID, a3);
+    objc_storeStrong(&v6->_containerID, d);
   }
 
   return v7;
 }
 
-- (id)zoneUsageForZoneID:(id)a3 withError:(id *)a4
+- (id)zoneUsageForZoneID:(id)d withError:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  dCopy = d;
+  if (!dCopy)
   {
     v14 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 114, @"zoneID must not be nil");
   }
 
-  v10 = objc_msgSend_sqliteRepresentation(v9, v7, v8);
-  v12 = objc_msgSend__usageForIDString_itemType_withError_(self, v11, v10, 1, a4);
+  v10 = objc_msgSend_sqliteRepresentation(dCopy, v7, v8);
+  v12 = objc_msgSend__usageForIDString_itemType_withError_(self, v11, v10, 1, error);
 
   return v12;
 }
 
-- (id)shareUsageForShareID:(id)a3 withError:(id *)a4
+- (id)shareUsageForShareID:(id)d withError:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  dCopy = d;
+  if (!dCopy)
   {
     v14 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 120, @"shareID must not be nil");
   }
 
-  v10 = objc_msgSend_sqliteRepresentation(v9, v7, v8);
-  v12 = objc_msgSend__usageForIDString_itemType_withError_(self, v11, v10, 2, a4);
+  v10 = objc_msgSend_sqliteRepresentation(dCopy, v7, v8);
+  v12 = objc_msgSend__usageForIDString_itemType_withError_(self, v11, v10, 2, error);
 
   return v12;
 }
 
-- (id)recordWithUnknownShareUsageForRecordID:(id)a3 withError:(id *)a4
+- (id)recordWithUnknownShareUsageForRecordID:(id)d withError:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  dCopy = d;
+  if (!dCopy)
   {
     v20 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v20, v21, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 126, @"recordID must not be nil");
   }
 
-  v10 = objc_msgSend_sqliteRepresentation(v9, v7, v8);
+  v10 = objc_msgSend_sqliteRepresentation(dCopy, v7, v8);
   v22 = 0;
   v12 = objc_msgSend__usageForIDString_itemType_withError_(self, v11, v10, 3, &v22);
   v13 = v22;
 
   if (v13)
   {
-    if (a4)
+    if (error)
     {
       v16 = v13;
       v17 = 0;
-      *a4 = v13;
+      *error = v13;
     }
 
     else
@@ -136,11 +136,11 @@
   return v17;
 }
 
-- (id)_usageForIDString:(id)a3 itemType:(unint64_t)a4 withError:(id *)a5
+- (id)_usageForIDString:(id)string itemType:(unint64_t)type withError:(id *)error
 {
   v43[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  if (!v11)
+  stringCopy = string;
+  if (!stringCopy)
   {
     v27 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v9, v10);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v27, v28, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 140, @"IDString must not be nil");
@@ -148,8 +148,8 @@
 
   v42[0] = @"IDString";
   v42[1] = @"itemType";
-  v43[0] = v11;
-  v12 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v9, a4);
+  v43[0] = stringCopy;
+  v12 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v9, type);
   v43[1] = v12;
   v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v13, v43, v42, 2);
 
@@ -194,22 +194,22 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v39 = v11;
+    v39 = stringCopy;
     v40 = 2112;
     v41 = v19;
     _os_log_error_impl(&dword_22506F000, v20, OS_LOG_TYPE_ERROR, "Failed to fetch usage for IDString %@: %@", buf, 0x16u);
-    if (a5)
+    if (error)
     {
       goto LABEL_8;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
 LABEL_8:
     v21 = v19;
     v22 = 0;
-    *a5 = v19;
+    *error = v19;
     goto LABEL_15;
   }
 
@@ -222,11 +222,11 @@ LABEL_15:
   return v22;
 }
 
-- (id)zoneUsagesForContainerID:(id)a3 maxCount:(unint64_t)a4 withError:(id *)a5
+- (id)zoneUsagesForContainerID:(id)d maxCount:(unint64_t)count withError:(id *)error
 {
   v88 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  if (!v11)
+  dCopy = d;
+  if (!dCopy)
   {
     v63 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v9, v10);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v63, v64, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 170, @"containerID must not be nil");
@@ -234,16 +234,16 @@ LABEL_15:
 
   v68 = objc_opt_new();
   v79 = 0;
-  v13 = objc_msgSend__usageEntriesForContainerID_itemType_maxCount_withError_(self, v12, v11, 1, a4, &v79);
+  v13 = objc_msgSend__usageEntriesForContainerID_itemType_maxCount_withError_(self, v12, dCopy, 1, count, &v79);
   v14 = v79;
   v17 = v14;
   if (v14)
   {
-    if (a5)
+    if (error)
     {
       v18 = v14;
       v19 = 0;
-      *a5 = v17;
+      *error = v17;
     }
 
     else
@@ -255,8 +255,8 @@ LABEL_15:
   else if (v13 && objc_msgSend_count(v13, v15, v16))
   {
     v65 = 0;
-    v70 = self;
-    v67 = v11;
+    selfCopy = self;
+    v67 = dCopy;
     v20 = objc_opt_new();
     v75 = 0u;
     v76 = 0u;
@@ -350,7 +350,7 @@ LABEL_15:
           }
 
           v54 = *(*(&v71 + 1) + 8 * v53);
-          v55 = objc_msgSend_deleteObject_(v70, v50, v54, v65);
+          v55 = objc_msgSend_deleteObject_(selfCopy, v50, v54, v65);
           if (v55)
           {
             if (*MEMORY[0x277CBC880] != -1)
@@ -384,7 +384,7 @@ LABEL_15:
     }
 
     v19 = v68;
-    v11 = v67;
+    dCopy = v67;
     v17 = v65;
     v13 = v66;
   }
@@ -399,11 +399,11 @@ LABEL_15:
   return v19;
 }
 
-- (id)shareUsagesForContainerID:(id)a3 maxCount:(unint64_t)a4 withError:(id *)a5
+- (id)shareUsagesForContainerID:(id)d maxCount:(unint64_t)count withError:(id *)error
 {
   v88 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  if (!v11)
+  dCopy = d;
+  if (!dCopy)
   {
     v63 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v9, v10);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v63, v64, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 219, @"containerID must not be nil");
@@ -411,16 +411,16 @@ LABEL_15:
 
   v68 = objc_opt_new();
   v79 = 0;
-  v13 = objc_msgSend__usageEntriesForContainerID_itemType_maxCount_withError_(self, v12, v11, 2, a4, &v79);
+  v13 = objc_msgSend__usageEntriesForContainerID_itemType_maxCount_withError_(self, v12, dCopy, 2, count, &v79);
   v14 = v79;
   v17 = v14;
   if (v14)
   {
-    if (a5)
+    if (error)
     {
       v18 = v14;
       v19 = 0;
-      *a5 = v17;
+      *error = v17;
     }
 
     else
@@ -432,8 +432,8 @@ LABEL_15:
   else if (v13 && objc_msgSend_count(v13, v15, v16))
   {
     v65 = 0;
-    v70 = self;
-    v67 = v11;
+    selfCopy = self;
+    v67 = dCopy;
     v20 = objc_opt_new();
     v75 = 0u;
     v76 = 0u;
@@ -527,7 +527,7 @@ LABEL_15:
           }
 
           v54 = *(*(&v71 + 1) + 8 * v53);
-          v55 = objc_msgSend_deleteObject_(v70, v50, v54, v65);
+          v55 = objc_msgSend_deleteObject_(selfCopy, v50, v54, v65);
           if (v55)
           {
             if (*MEMORY[0x277CBC880] != -1)
@@ -561,7 +561,7 @@ LABEL_15:
     }
 
     v19 = v68;
-    v11 = v67;
+    dCopy = v67;
     v17 = v65;
     v13 = v66;
   }
@@ -576,11 +576,11 @@ LABEL_15:
   return v19;
 }
 
-- (id)recordWithUnknownShareUsagesForContainerID:(id)a3 maxCount:(unint64_t)a4 withError:(id *)a5
+- (id)recordWithUnknownShareUsagesForContainerID:(id)d maxCount:(unint64_t)count withError:(id *)error
 {
   v88 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  if (!v11)
+  dCopy = d;
+  if (!dCopy)
   {
     v63 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v9, v10);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v63, v64, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 268, @"containerID must not be nil");
@@ -588,16 +588,16 @@ LABEL_15:
 
   v68 = objc_opt_new();
   v79 = 0;
-  v13 = objc_msgSend__usageEntriesForContainerID_itemType_maxCount_withError_(self, v12, v11, 3, a4, &v79);
+  v13 = objc_msgSend__usageEntriesForContainerID_itemType_maxCount_withError_(self, v12, dCopy, 3, count, &v79);
   v14 = v79;
   v17 = v14;
   if (v14)
   {
-    if (a5)
+    if (error)
     {
       v18 = v14;
       v19 = 0;
-      *a5 = v17;
+      *error = v17;
     }
 
     else
@@ -609,8 +609,8 @@ LABEL_15:
   else if (v13 && objc_msgSend_count(v13, v15, v16))
   {
     v65 = 0;
-    v70 = self;
-    v67 = v11;
+    selfCopy = self;
+    v67 = dCopy;
     v20 = objc_opt_new();
     v75 = 0u;
     v76 = 0u;
@@ -704,7 +704,7 @@ LABEL_15:
           }
 
           v54 = *(*(&v71 + 1) + 8 * v53);
-          v55 = objc_msgSend_deleteObject_(v70, v50, v54, v65);
+          v55 = objc_msgSend_deleteObject_(selfCopy, v50, v54, v65);
           if (v55)
           {
             if (*MEMORY[0x277CBC880] != -1)
@@ -738,7 +738,7 @@ LABEL_15:
     }
 
     v19 = v68;
-    v11 = v67;
+    dCopy = v67;
     v17 = v65;
     v13 = v66;
   }
@@ -753,11 +753,11 @@ LABEL_15:
   return v19;
 }
 
-- (id)_usageEntriesForContainerID:(id)a3 itemType:(unint64_t)a4 maxCount:(unint64_t)a5 withError:(id *)a6
+- (id)_usageEntriesForContainerID:(id)d itemType:(unint64_t)type maxCount:(unint64_t)count withError:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  if (!v13)
+  dCopy = d;
+  if (!dCopy)
   {
     v25 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v11, v12);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v25, v26, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 317, @"containerID must not be nil");
@@ -770,7 +770,7 @@ LABEL_15:
   v35 = sub_22507350C;
   v36 = 0;
   v41 = @"itemType";
-  v14 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v11, a4);
+  v14 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v11, type);
   v42[0] = v14;
   v16 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v15, v42, &v41, 1);
 
@@ -782,7 +782,7 @@ LABEL_15:
   v17 = v16;
   v28 = v17;
   v29 = &v31;
-  v30 = a5;
+  countCopy = count;
   v19 = objc_msgSend_performInTransaction_(self, v18, v27);
   if (v19)
   {
@@ -795,22 +795,22 @@ LABEL_15:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v38 = v13;
+      v38 = dCopy;
       v39 = 2112;
       v40 = v19;
       _os_log_error_impl(&dword_22506F000, v20, OS_LOG_TYPE_ERROR, "Failed to fetch usage for containerID %@: %@", buf, 0x16u);
-      if (a6)
+      if (error)
       {
         goto LABEL_8;
       }
     }
 
-    else if (a6)
+    else if (error)
     {
 LABEL_8:
       v21 = v19;
       v22 = 0;
-      *a6 = v19;
+      *error = v19;
       goto LABEL_12;
     }
 
@@ -830,60 +830,60 @@ LABEL_12:
   return v22;
 }
 
-- (BOOL)setZoneUsage:(id)a3 forZoneID:(id)a4 withError:(id *)a5
+- (BOOL)setZoneUsage:(id)usage forZoneID:(id)d withError:(id *)error
 {
-  v9 = a3;
-  v12 = a4;
-  if (!v12)
+  usageCopy = usage;
+  dCopy = d;
+  if (!dCopy)
   {
     v17 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v10, v11);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v17, v18, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 355, @"zoneID must not be nil");
   }
 
-  v13 = objc_msgSend_sqliteRepresentation(v12, v10, v11);
-  v15 = objc_msgSend__setUsage_forIDString_forItemType_withError_(self, v14, v9, v13, 1, a5);
+  v13 = objc_msgSend_sqliteRepresentation(dCopy, v10, v11);
+  v15 = objc_msgSend__setUsage_forIDString_forItemType_withError_(self, v14, usageCopy, v13, 1, error);
 
   return v15;
 }
 
-- (BOOL)setShareUsage:(id)a3 forShareID:(id)a4 withError:(id *)a5
+- (BOOL)setShareUsage:(id)usage forShareID:(id)d withError:(id *)error
 {
-  v9 = a3;
-  v12 = a4;
-  if (!v12)
+  usageCopy = usage;
+  dCopy = d;
+  if (!dCopy)
   {
     v17 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v10, v11);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v17, v18, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 361, @"shareID must not be nil");
   }
 
-  v13 = objc_msgSend_sqliteRepresentation(v12, v10, v11);
-  v15 = objc_msgSend__setUsage_forIDString_forItemType_withError_(self, v14, v9, v13, 2, a5);
+  v13 = objc_msgSend_sqliteRepresentation(dCopy, v10, v11);
+  v15 = objc_msgSend__setUsage_forIDString_forItemType_withError_(self, v14, usageCopy, v13, 2, error);
 
   return v15;
 }
 
-- (BOOL)setRecordWithUnknownShareUsage:(id)a3 forRecordID:(id)a4 withError:(id *)a5
+- (BOOL)setRecordWithUnknownShareUsage:(id)usage forRecordID:(id)d withError:(id *)error
 {
-  v9 = a3;
-  v12 = a4;
-  if (!v12)
+  usageCopy = usage;
+  dCopy = d;
+  if (!dCopy)
   {
     v17 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v10, v11);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v17, v18, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 367, @"recordID must not be nil");
   }
 
-  v13 = objc_msgSend_sqliteRepresentation(v12, v10, v11);
-  v15 = objc_msgSend__setUsage_forIDString_forItemType_withError_(self, v14, v9, v13, 3, a5);
+  v13 = objc_msgSend_sqliteRepresentation(dCopy, v10, v11);
+  v15 = objc_msgSend__setUsage_forIDString_forItemType_withError_(self, v14, usageCopy, v13, 3, error);
 
   return v15;
 }
 
-- (BOOL)_setUsage:(id)a3 forIDString:(id)a4 forItemType:(unint64_t)a5 withError:(id *)a6
+- (BOOL)_setUsage:(id)usage forIDString:(id)string forItemType:(unint64_t)type withError:(id *)error
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v14 = a4;
-  if (!v14)
+  usageCopy = usage;
+  stringCopy = string;
+  if (!stringCopy)
   {
     v26 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v12, v13);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v26, v27, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 373, @"IDString must not be nil");
@@ -891,8 +891,8 @@ LABEL_12:
 
   v33[0] = @"IDString";
   v33[1] = @"itemType";
-  v34[0] = v14;
-  v15 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v12, a5);
+  v34[0] = stringCopy;
+  v15 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v12, type);
   v34[1] = v15;
   v17 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v16, v34, v33, 2);
 
@@ -902,17 +902,17 @@ LABEL_12:
   v28[3] = &unk_278545F38;
   v28[4] = self;
   v29 = v17;
-  v31 = v11;
-  v32 = a5;
-  v30 = v14;
-  v18 = v11;
-  v19 = v14;
+  v31 = usageCopy;
+  typeCopy = type;
+  v30 = stringCopy;
+  v18 = usageCopy;
+  v19 = stringCopy;
   v20 = v17;
   v22 = objc_msgSend_performTransaction_(self, v21, v28);
-  if (a6 && v22)
+  if (error && v22)
   {
     v22 = v22;
-    *a6 = v22;
+    *error = v22;
   }
 
   v23 = v22 == 0;
@@ -921,56 +921,56 @@ LABEL_12:
   return v23;
 }
 
-- (BOOL)deleteZoneUsageForZoneID:(id)a3 withError:(id *)a4
+- (BOOL)deleteZoneUsageForZoneID:(id)d withError:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  dCopy = d;
+  if (!dCopy)
   {
     v14 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 417, @"zoneID must not be nil");
   }
 
-  v10 = objc_msgSend_sqliteRepresentation(v9, v7, v8);
-  v12 = objc_msgSend__deleteUsageForIDString_itemType_withError_(self, v11, v10, 1, a4);
+  v10 = objc_msgSend_sqliteRepresentation(dCopy, v7, v8);
+  v12 = objc_msgSend__deleteUsageForIDString_itemType_withError_(self, v11, v10, 1, error);
 
   return v12;
 }
 
-- (BOOL)deleteShareUsageForShareID:(id)a3 withError:(id *)a4
+- (BOOL)deleteShareUsageForShareID:(id)d withError:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  dCopy = d;
+  if (!dCopy)
   {
     v14 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 423, @"shareID must not be nil");
   }
 
-  v10 = objc_msgSend_sqliteRepresentation(v9, v7, v8);
-  v12 = objc_msgSend__deleteUsageForIDString_itemType_withError_(self, v11, v10, 2, a4);
+  v10 = objc_msgSend_sqliteRepresentation(dCopy, v7, v8);
+  v12 = objc_msgSend__deleteUsageForIDString_itemType_withError_(self, v11, v10, 2, error);
 
   return v12;
 }
 
-- (BOOL)deleteRecordWithUnknownShareUsageForRecordID:(id)a3 withError:(id *)a4
+- (BOOL)deleteRecordWithUnknownShareUsageForRecordID:(id)d withError:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  dCopy = d;
+  if (!dCopy)
   {
     v14 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 429, @"recordID must not be nil");
   }
 
-  v10 = objc_msgSend_sqliteRepresentation(v9, v7, v8);
-  v12 = objc_msgSend__deleteUsageForIDString_itemType_withError_(self, v11, v10, 3, a4);
+  v10 = objc_msgSend_sqliteRepresentation(dCopy, v7, v8);
+  v12 = objc_msgSend__deleteUsageForIDString_itemType_withError_(self, v11, v10, 3, error);
 
   return v12;
 }
 
-- (BOOL)_deleteUsageForIDString:(id)a3 itemType:(unint64_t)a4 withError:(id *)a5
+- (BOOL)_deleteUsageForIDString:(id)string itemType:(unint64_t)type withError:(id *)error
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  if (!v11)
+  stringCopy = string;
+  if (!stringCopy)
   {
     v25 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v9, v10);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v25, v26, a2, self, @"CKDDeviceCapabilityUsageSQLTable.m", 435, @"IDString must not be nil");
@@ -978,8 +978,8 @@ LABEL_12:
 
   v34[0] = @"IDString";
   v34[1] = @"itemType";
-  v35[0] = v11;
-  v12 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v9, a4);
+  v35[0] = stringCopy;
+  v12 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v9, type);
   v35[1] = v12;
   v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v13, v35, v34, 2);
 
@@ -999,14 +999,14 @@ LABEL_12:
       v21 = v17;
       v24 = objc_msgSend_containerID(self, v22, v23);
       *buf = 138412802;
-      v29 = v11;
+      v29 = stringCopy;
       v30 = 2112;
       v31 = v24;
       v32 = 2112;
       v33 = v16;
       _os_log_error_impl(&dword_22506F000, v21, OS_LOG_TYPE_ERROR, "Failed to delete usage entry for IDString %@ in DeviceCapabilityUsageSQLTable for containerID %@: %@", buf, 0x20u);
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -1014,11 +1014,11 @@ LABEL_12:
       goto LABEL_8;
     }
 
-    if (a5)
+    if (error)
     {
 LABEL_8:
       v18 = v16;
-      *a5 = v16;
+      *error = v16;
     }
   }
 

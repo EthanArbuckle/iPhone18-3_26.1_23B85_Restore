@@ -1,21 +1,21 @@
 @interface SPCoreSpotlightIndexerTask
-- (SPCoreSpotlightIndexerTask)initWithIndexJob:(id)a3 indexers:(id)a4;
+- (SPCoreSpotlightIndexerTask)initWithIndexJob:(id)job indexers:(id)indexers;
 @end
 
 @implementation SPCoreSpotlightIndexerTask
 
-- (SPCoreSpotlightIndexerTask)initWithIndexJob:(id)a3 indexers:(id)a4
+- (SPCoreSpotlightIndexerTask)initWithIndexJob:(id)job indexers:(id)indexers
 {
-  v7 = a3;
-  v8 = a4;
+  jobCopy = job;
+  indexersCopy = indexers;
   v12.receiver = self;
   v12.super_class = SPCoreSpotlightIndexerTask;
   v9 = [(SPCoreSpotlightIndexerTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_job, a3);
-    objc_storeStrong(&v10->_indexers, a4);
+    objc_storeStrong(&v9->_job, job);
+    objc_storeStrong(&v10->_indexers, indexers);
   }
 
   return v10;

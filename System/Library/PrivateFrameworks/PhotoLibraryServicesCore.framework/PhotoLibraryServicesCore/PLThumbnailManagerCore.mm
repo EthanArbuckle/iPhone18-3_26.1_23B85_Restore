@@ -1,35 +1,35 @@
 @interface PLThumbnailManagerCore
-+ (BOOL)_hasTableChangesOnlyFromFormatIDs:(id)a3 toFormatIDs:(id)a4;
-+ (BOOL)_hasTableFormatsAndAllAreCompressedForFormatIDs:(id)a3;
-+ (BOOL)_isSuppressingTargetConfigComparedToSavedConfigForPathManager:(id)a3;
-+ (BOOL)hasThumbnailConfigMismatchWithPathManager:(id)a3 comparedToConfigPhase:(int64_t)a4;
-+ (BOOL)isMissingThumbnailTablesWithPathManager:(id)a3;
-+ (BOOL)isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:(id)a3;
-+ (BOOL)wantsTableOnlyRebuildForThumbnailConfigDict:(id)a3;
-+ (id)_configurationThumbnailFormatIDsWithPathManager:(id)a3;
-+ (id)_formatIDsForIthmbFilesWithPathManager:(id)a3;
-+ (id)_generateTableFormatsFromFormatIDs:(id)a3;
-+ (id)_generateUncompressedImageTableSpecificationsForRunningConfigWithPathManager:(id)a3;
-+ (id)_thumbnailFormatsFromIDs:(id)a3;
-+ (id)supportedThumbnailFormatIDsForDeviceConfiguration:(id)a3;
-+ (id)tableThumbnailFormatsForConfigPhase:(int64_t)a3 withPathManager:(id)a4;
-+ (id)thumbnailConfigurationDictWithPathManager:(id)a3;
-+ (id)thumbnailConfigurationPathWithPathManager:(id)a3;
-+ (id)thumbnailFormatIDsForConfigPhase:(int64_t)a3 withPathManager:(id)a4;
-+ (id)thumbnailFormatsForConfigPhase:(int64_t)a3 withPathManager:(id)a4;
-+ (int)configurationThumbnailVersionWithPathManager:(id)a3;
-+ (int)thumbnailVersionForConfigPhase:(int64_t)a3 withPathManager:(id)a4;
-+ (int64_t)allocatedFileSizeOfThumbnailTablesWithPathManager:(id)a3;
-+ (int64_t)requiredThumbnailResetTypeWithPathManager:(id)a3 comparedToConfigPhase:(int64_t)a4;
-+ (void)enumerateThumbnailTablesWithPathManager:(id)a3 fileManager:(id)a4 handler:(id)a5;
++ (BOOL)_hasTableChangesOnlyFromFormatIDs:(id)ds toFormatIDs:(id)iDs;
++ (BOOL)_hasTableFormatsAndAllAreCompressedForFormatIDs:(id)ds;
++ (BOOL)_isSuppressingTargetConfigComparedToSavedConfigForPathManager:(id)manager;
++ (BOOL)hasThumbnailConfigMismatchWithPathManager:(id)manager comparedToConfigPhase:(int64_t)phase;
++ (BOOL)isMissingThumbnailTablesWithPathManager:(id)manager;
++ (BOOL)isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:(id)manager;
++ (BOOL)wantsTableOnlyRebuildForThumbnailConfigDict:(id)dict;
++ (id)_configurationThumbnailFormatIDsWithPathManager:(id)manager;
++ (id)_formatIDsForIthmbFilesWithPathManager:(id)manager;
++ (id)_generateTableFormatsFromFormatIDs:(id)ds;
++ (id)_generateUncompressedImageTableSpecificationsForRunningConfigWithPathManager:(id)manager;
++ (id)_thumbnailFormatsFromIDs:(id)ds;
++ (id)supportedThumbnailFormatIDsForDeviceConfiguration:(id)configuration;
++ (id)tableThumbnailFormatsForConfigPhase:(int64_t)phase withPathManager:(id)manager;
++ (id)thumbnailConfigurationDictWithPathManager:(id)manager;
++ (id)thumbnailConfigurationPathWithPathManager:(id)manager;
++ (id)thumbnailFormatIDsForConfigPhase:(int64_t)phase withPathManager:(id)manager;
++ (id)thumbnailFormatsForConfigPhase:(int64_t)phase withPathManager:(id)manager;
++ (int)configurationThumbnailVersionWithPathManager:(id)manager;
++ (int)thumbnailVersionForConfigPhase:(int64_t)phase withPathManager:(id)manager;
++ (int64_t)allocatedFileSizeOfThumbnailTablesWithPathManager:(id)manager;
++ (int64_t)requiredThumbnailResetTypeWithPathManager:(id)manager comparedToConfigPhase:(int64_t)phase;
++ (void)enumerateThumbnailTablesWithPathManager:(id)manager fileManager:(id)fileManager handler:(id)handler;
 + (void)invalidateCachedConfig;
-+ (void)invalidateIsSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:(id)a3;
-+ (void)removeThumbnailTablesUnsupportedOnly:(BOOL)a3 withPathManager:(id)a4 fileManagerDelegate:(id)a5;
-+ (void)stampThumbnailConfiguration:(id)a3 toFile:(BOOL)a4 withPathManager:(id)a5;
-- (PLThumbnailManagerCore)initWithPhotoLibraryPathManager:(id)a3;
-- (id)_thumbManagerForFormatID:(unsigned __int16)a3;
++ (void)invalidateIsSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:(id)manager;
++ (void)removeThumbnailTablesUnsupportedOnly:(BOOL)only withPathManager:(id)manager fileManagerDelegate:(id)delegate;
++ (void)stampThumbnailConfiguration:(id)configuration toFile:(BOOL)file withPathManager:(id)manager;
+- (PLThumbnailManagerCore)initWithPhotoLibraryPathManager:(id)manager;
+- (id)_thumbManagerForFormatID:(unsigned __int16)d;
 - (id)fastThumbPersistenceManagers;
-- (id)thumbManagerForFormatID:(unsigned __int16)a3 thumbFileManagerClass:(Class)a4 readOnly:(BOOL)a5;
+- (id)thumbManagerForFormatID:(unsigned __int16)d thumbFileManagerClass:(Class)class readOnly:(BOOL)only;
 - (void)dealloc;
 @end
 
@@ -42,10 +42,10 @@
   if (!self->_fastImageTables)
   {
     v3 = objc_opt_class();
-    v4 = [(PLThumbnailManagerCore *)self pathManager];
-    v5 = [v3 tableThumbnailFormatsForConfigPhase:1 withPathManager:v4];
+    pathManager = [(PLThumbnailManagerCore *)self pathManager];
+    v5 = [v3 tableThumbnailFormatsForConfigPhase:1 withPathManager:pathManager];
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -69,7 +69,7 @@
           v12 = -[PLThumbnailManagerCore _thumbManagerForFormatID:](self, "_thumbManagerForFormatID:", [*(*(&v19 + 1) + 8 * v11) formatID]);
           if (v12)
           {
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
 
           ++v11;
@@ -82,7 +82,7 @@
       while (v9);
     }
 
-    v13 = [v6 copy];
+    v13 = [array copy];
     fastImageTables = self->_fastImageTables;
     self->_fastImageTables = v13;
 
@@ -102,46 +102,46 @@
   return v17;
 }
 
-- (id)thumbManagerForFormatID:(unsigned __int16)a3 thumbFileManagerClass:(Class)a4 readOnly:(BOOL)a5
+- (id)thumbManagerForFormatID:(unsigned __int16)d thumbFileManagerClass:(Class)class readOnly:(BOOL)only
 {
-  v5 = a5;
-  v7 = a3;
+  onlyCopy = only;
+  dCopy = d;
   [(NSLock *)self->_thumbManagersLock lock];
-  if (self->_lastUsedThumbManagerFormatID != v7 || (v9 = self->_lastUsedThumbManager) == 0)
+  if (self->_lastUsedThumbManagerFormatID != dCopy || (v9 = self->_lastUsedThumbManager) == 0)
   {
-    v10 = [(PLThumbnailManagerCore *)self thumbManagersByFormat];
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v7];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    thumbManagersByFormat = [(PLThumbnailManagerCore *)self thumbManagersByFormat];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:dCopy];
+    v12 = [thumbManagersByFormat objectForKeyedSubscript:v11];
 
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v12 == v13)
+    if (v12 == null)
     {
-      v14 = [PLImageFormat formatWithID:v7];
+      v14 = [PLImageFormat formatWithID:dCopy];
       if ([v14 isTable])
       {
-        v15 = [(PLThumbnailManagerCore *)self pathManager];
-        v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d.%@", v7, @"ithmb"];
-        v17 = [v15 photoDirectoryWithType:11 createIfNeeded:1 error:0];
-        v18 = [v17 stringByAppendingPathComponent:v16];
+        pathManager = [(PLThumbnailManagerCore *)self pathManager];
+        v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d.%@", dCopy, @"ithmb"];
+        v17 = [pathManager photoDirectoryWithType:11 createIfNeeded:1 error:0];
+        pathManager2 = [v17 stringByAppendingPathComponent:v16];
 
-        v19 = [v14 createTableWithPath:v18 readOnly:v5 format:v14];
+        v19 = [v14 createTableWithPath:pathManager2 readOnly:onlyCopy format:v14];
       }
 
       else
       {
-        v20 = [a4 alloc];
-        v18 = [(PLThumbnailManagerCore *)self pathManager];
-        v19 = [v20 initWithImageFormat:v14 pathManager:v18];
+        v20 = [class alloc];
+        pathManager2 = [(PLThumbnailManagerCore *)self pathManager];
+        v19 = [v20 initWithImageFormat:v14 pathManager:pathManager2];
       }
 
       v9 = v19;
 
       if (v9)
       {
-        v21 = [(PLThumbnailManagerCore *)self thumbManagersByFormat];
-        v22 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v7];
-        [v21 setObject:v9 forKeyedSubscript:v22];
+        thumbManagersByFormat2 = [(PLThumbnailManagerCore *)self thumbManagersByFormat];
+        v22 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:dCopy];
+        [thumbManagersByFormat2 setObject:v9 forKeyedSubscript:v22];
 
         v23 = v9;
       }
@@ -153,7 +153,7 @@
     }
 
     objc_storeStrong(&self->_lastUsedThumbManager, v9);
-    self->_lastUsedThumbManagerFormatID = v7;
+    self->_lastUsedThumbManagerFormatID = dCopy;
   }
 
   [(NSLock *)self->_thumbManagersLock unlock];
@@ -171,14 +171,14 @@
   [(PLThumbnailManagerCore *)&v4 dealloc];
 }
 
-- (PLThumbnailManagerCore)initWithPhotoLibraryPathManager:(id)a3
+- (PLThumbnailManagerCore)initWithPhotoLibraryPathManager:(id)manager
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLThumbnailManagerCore.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLThumbnailManagerCore.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
   }
 
   v30.receiver = self;
@@ -186,9 +186,9 @@
   v7 = [(PLThumbnailManagerCore *)&v30 init];
   if (v7)
   {
-    obj = a3;
+    obj = manager;
     v8 = MEMORY[0x1E695DF20];
-    v9 = [PLThumbnailManagerCore thumbnailFormatIDsForConfigPhase:1 withPathManager:v6];
+    v9 = [PLThumbnailManagerCore thumbnailFormatIDsForConfigPhase:1 withPathManager:managerCopy];
     v10 = [v8 sharedKeySetForKeys:v9];
 
     v11 = [MEMORY[0x1E695DF90] dictionaryWithSharedKeySet:v10];
@@ -212,8 +212,8 @@
           }
 
           v17 = *(*(&v26 + 1) + 8 * i);
-          v18 = [MEMORY[0x1E695DFB0] null];
-          [(NSMutableDictionary *)v11 setObject:v18 forKey:v17];
+          null = [MEMORY[0x1E695DFB0] null];
+          [(NSMutableDictionary *)v11 setObject:null forKey:v17];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -237,46 +237,46 @@
   return v7;
 }
 
-- (id)_thumbManagerForFormatID:(unsigned __int16)a3
+- (id)_thumbManagerForFormatID:(unsigned __int16)d
 {
-  v3 = a3;
+  dCopy = d;
   v5 = objc_opt_class();
   pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
   v6 = ((PLIsReallyAssetsd_isAssetsd | __PLIsAssetsdProxyService) & 1) == 0;
 
-  return [(PLThumbnailManagerCore *)self thumbManagerForFormatID:v3 thumbFileManagerClass:v5 readOnly:v6];
+  return [(PLThumbnailManagerCore *)self thumbManagerForFormatID:dCopy thumbFileManagerClass:v5 readOnly:v6];
 }
 
-+ (id)supportedThumbnailFormatIDsForDeviceConfiguration:(id)a3
++ (id)supportedThumbnailFormatIDsForDeviceConfiguration:(id)configuration
 {
-  v3 = a3;
-  if ([v3 shouldUseNanoThumbnailFormats])
+  configurationCopy = configuration;
+  if ([configurationCopy shouldUseNanoThumbnailFormats])
   {
-    v4 = [v3 supportsASTC];
+    supportsASTC = [configurationCopy supportsASTC];
     v5 = &unk_1F1F91100;
     v6 = &unk_1F1F910E8;
   }
 
   else
   {
-    if ([v3 isTV])
+    if ([configurationCopy isTV])
     {
       v7 = &unk_1F1F91118;
       goto LABEL_10;
     }
 
-    if ([v3 isPad])
+    if ([configurationCopy isPad])
     {
       v7 = &unk_1F1F91130;
       goto LABEL_10;
     }
 
-    v4 = [v3 isMac];
+    supportsASTC = [configurationCopy isMac];
     v5 = &unk_1F1F91160;
     v6 = &unk_1F1F91148;
   }
 
-  if (v4)
+  if (supportsASTC)
   {
     v7 = v6;
   }
@@ -291,40 +291,40 @@ LABEL_10:
   return v7;
 }
 
-+ (void)stampThumbnailConfiguration:(id)a3 toFile:(BOOL)a4 withPathManager:(id)a5
++ (void)stampThumbnailConfiguration:(id)configuration toFile:(BOOL)file withPathManager:(id)manager
 {
-  v6 = a4;
-  v14 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a1, "thumbnailVersionForConfigPhase:withPathManager:", 2, v8)}];
-  [v14 setObject:v9 forKey:@"PLThumbnailManagerVersionKey"];
+  fileCopy = file;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(self, "thumbnailVersionForConfigPhase:withPathManager:", 2, managerCopy)}];
+  [configurationCopy setObject:v9 forKey:@"PLThumbnailManagerVersionKey"];
 
-  v10 = [a1 thumbnailFormatIDsForConfigPhase:2 withPathManager:v8];
-  v11 = [v10 firstObject];
-  [v14 setObject:v11 forKey:@"PLThumbnailManagerThumbnailFormatKey"];
+  v10 = [self thumbnailFormatIDsForConfigPhase:2 withPathManager:managerCopy];
+  firstObject = [v10 firstObject];
+  [configurationCopy setObject:firstObject forKey:@"PLThumbnailManagerThumbnailFormatKey"];
 
-  [v14 setObject:v10 forKey:@"PLThumbnailManagerThumbnailFormatsKey"];
-  if (v6)
+  [configurationCopy setObject:v10 forKey:@"PLThumbnailManagerThumbnailFormatsKey"];
+  if (fileCopy)
   {
-    v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:v14 format:100 options:0 error:0];
-    v13 = [a1 thumbnailConfigurationPathWithPathManager:v8];
+    v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:configurationCopy format:100 options:0 error:0];
+    v13 = [self thumbnailConfigurationPathWithPathManager:managerCopy];
     [v12 writeToFile:v13 options:1073741825 error:0];
   }
 }
 
-+ (BOOL)hasThumbnailConfigMismatchWithPathManager:(id)a3 comparedToConfigPhase:(int64_t)a4
++ (BOOL)hasThumbnailConfigMismatchWithPathManager:(id)manager comparedToConfigPhase:(int64_t)phase
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 thumbnailFormatIDsForConfigPhase:0 withPathManager:v6];
-  v8 = [a1 thumbnailFormatIDsForConfigPhase:a4 withPathManager:v6];
-  v9 = [a1 configurationThumbnailVersionWithPathManager:v6];
+  managerCopy = manager;
+  v7 = [self thumbnailFormatIDsForConfigPhase:0 withPathManager:managerCopy];
+  v8 = [self thumbnailFormatIDsForConfigPhase:phase withPathManager:managerCopy];
+  v9 = [self configurationThumbnailVersionWithPathManager:managerCopy];
   if (v9 <= 29)
   {
     if ([v8 count])
     {
-      v10 = [v8 firstObject];
-      v26[0] = v10;
+      firstObject = [v8 firstObject];
+      v26[0] = firstObject;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
     }
 
@@ -335,8 +335,8 @@ LABEL_10:
 
     if ([v7 count])
     {
-      v13 = [v7 firstObject];
-      v25 = v13;
+      firstObject2 = [v7 firstObject];
+      v25 = firstObject2;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
     }
 
@@ -345,7 +345,7 @@ LABEL_10:
       v14 = MEMORY[0x1E695E0F0];
     }
 
-    if (v9 == [a1 thumbnailVersionForConfigPhase:a4 withPathManager:v6] && (objc_msgSend(v14, "isEqualToArray:", v11) & 1) != 0)
+    if (v9 == [self thumbnailVersionForConfigPhase:phase withPathManager:managerCopy] && (objc_msgSend(v14, "isEqualToArray:", v11) & 1) != 0)
     {
       v12 = 0;
     }
@@ -358,7 +358,7 @@ LABEL_10:
         v17 = 67109890;
         v18 = v9;
         v19 = 1024;
-        v20 = [a1 thumbnailVersionForConfigPhase:a4 withPathManager:v6];
+        v20 = [self thumbnailVersionForConfigPhase:phase withPathManager:managerCopy];
         v21 = 2114;
         v22 = v7;
         v23 = 2114;
@@ -373,7 +373,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v9 != [a1 thumbnailVersionForConfigPhase:a4 withPathManager:v6] || (objc_msgSend(v7, "isEqualToArray:", v8) & 1) == 0)
+  if (v9 != [self thumbnailVersionForConfigPhase:phase withPathManager:managerCopy] || (objc_msgSend(v7, "isEqualToArray:", v8) & 1) == 0)
   {
     v11 = PLThumbnailsGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -381,7 +381,7 @@ LABEL_21:
       v17 = 67109890;
       v18 = v9;
       v19 = 1024;
-      v20 = [a1 thumbnailVersionForConfigPhase:a4 withPathManager:v6];
+      v20 = [self thumbnailVersionForConfigPhase:phase withPathManager:managerCopy];
       v21 = 2114;
       v22 = v7;
       v23 = 2114;
@@ -399,29 +399,29 @@ LABEL_22:
   return v12;
 }
 
-+ (int)configurationThumbnailVersionWithPathManager:(id)a3
++ (int)configurationThumbnailVersionWithPathManager:(id)manager
 {
-  v3 = [a1 thumbnailConfigurationDictWithPathManager:a3];
+  v3 = [self thumbnailConfigurationDictWithPathManager:manager];
   v4 = [v3 objectForKey:@"PLThumbnailManagerVersionKey"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  return v5;
+  return intValue;
 }
 
-+ (BOOL)wantsTableOnlyRebuildForThumbnailConfigDict:(id)a3
++ (BOOL)wantsTableOnlyRebuildForThumbnailConfigDict:(id)dict
 {
-  v3 = [a3 objectForKeyedSubscript:@"PLThumbnailManagerRebuildingTablesOnly"];
-  v4 = [v3 BOOLValue];
+  v3 = [dict objectForKeyedSubscript:@"PLThumbnailManagerRebuildingTablesOnly"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)thumbnailConfigurationDictWithPathManager:(id)a3
++ (id)thumbnailConfigurationDictWithPathManager:(id)manager
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  managerCopy = manager;
   v6 = [v4 alloc];
-  v7 = [a1 thumbnailConfigurationPathWithPathManager:v5];
+  v7 = [self thumbnailConfigurationPathWithPathManager:managerCopy];
 
   v8 = [v6 initWithContentsOfFile:v7];
   if (!v8)
@@ -432,23 +432,23 @@ LABEL_22:
   return v8;
 }
 
-+ (id)thumbnailConfigurationPathWithPathManager:(id)a3
++ (id)thumbnailConfigurationPathWithPathManager:(id)manager
 {
-  v3 = [a3 photoDirectoryWithType:11 createIfNeeded:1 error:0];
+  v3 = [manager photoDirectoryWithType:11 createIfNeeded:1 error:0];
   v4 = [v3 stringByAppendingPathComponent:@"thumbnailConfiguration"];
 
   return v4;
 }
 
-+ (void)enumerateThumbnailTablesWithPathManager:(id)a3 fileManager:(id)a4 handler:(id)a5
++ (void)enumerateThumbnailTablesWithPathManager:(id)manager fileManager:(id)fileManager handler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v29 = a5;
-  if (v8)
+  managerCopy = manager;
+  fileManagerCopy = fileManager;
+  handlerCopy = handler;
+  if (managerCopy)
   {
-    if (v9)
+    if (fileManagerCopy)
     {
       goto LABEL_3;
     }
@@ -456,30 +456,30 @@ LABEL_22:
 
   else
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"PLThumbnailManagerCore.m" lineNumber:491 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLThumbnailManagerCore.m" lineNumber:491 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
-    if (v9)
+    if (fileManagerCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:a1 file:@"PLThumbnailManagerCore.m" lineNumber:492 description:{@"Invalid parameter not satisfying: %@", @"fileManager"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLThumbnailManagerCore.m" lineNumber:492 description:{@"Invalid parameter not satisfying: %@", @"fileManager"}];
 
 LABEL_3:
-  if (!v29)
+  if (!handlerCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"PLThumbnailManagerCore.m" lineNumber:493 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLThumbnailManagerCore.m" lineNumber:493 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
-  v10 = v8;
+  v10 = managerCopy;
   objc_sync_enter(v10);
   v28 = v10;
   v11 = [v10 photoDirectoryWithType:11 createIfNeeded:1 error:0];
-  [v9 contentsOfDirectoryAtPath:v11 error:0];
+  [fileManagerCopy contentsOfDirectoryAtPath:v11 error:0];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -500,22 +500,22 @@ LABEL_3:
         v15 = *(*(&v32 + 1) + 8 * i);
         v16 = [v11 stringByAppendingPathComponent:v15];
         v31 = 0;
-        if ([v9 fileExistsAtPath:v16 isDirectory:&v31])
+        if ([fileManagerCopy fileExistsAtPath:v16 isDirectory:&v31])
         {
           if ((v31 & 1) == 0)
           {
-            v17 = [v15 pathExtension];
-            v18 = [v17 isEqualToString:@"ithmb"];
+            pathExtension = [v15 pathExtension];
+            v18 = [pathExtension isEqualToString:@"ithmb"];
 
             if (v18)
             {
-              v19 = [v15 stringByDeletingPathExtension];
-              v20 = [v19 integerValue];
-              v21 = [a1 thumbnailFormatIDsForConfigPhase:1 withPathManager:v28];
-              v22 = [MEMORY[0x1E696AD98] numberWithInteger:v20];
+              stringByDeletingPathExtension = [v15 stringByDeletingPathExtension];
+              integerValue = [stringByDeletingPathExtension integerValue];
+              v21 = [self thumbnailFormatIDsForConfigPhase:1 withPathManager:v28];
+              v22 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
               v23 = [v21 containsObject:v22];
 
-              v29[2](v29, v16, v23 ^ 1u);
+              handlerCopy[2](handlerCopy, v16, v23 ^ 1u);
             }
           }
         }
@@ -530,10 +530,10 @@ LABEL_3:
   objc_sync_exit(v28);
 }
 
-+ (int64_t)allocatedFileSizeOfThumbnailTablesWithPathManager:(id)a3
++ (int64_t)allocatedFileSizeOfThumbnailTablesWithPathManager:(id)manager
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(MEMORY[0x1E696AC08]);
   v17[0] = *MEMORY[0x1E695DC58];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
@@ -548,7 +548,7 @@ LABEL_3:
   v7 = v6;
   v11 = v7;
   v12 = &v13;
-  [a1 enumerateThumbnailTablesWithPathManager:v4 fileManager:v5 handler:v10];
+  [self enumerateThumbnailTablesWithPathManager:managerCopy fileManager:v5 handler:v10];
   v8 = v14[3];
 
   _Block_object_dispose(&v13, 8);
@@ -568,22 +568,22 @@ void __76__PLThumbnailManagerCore_allocatedFileSizeOfThumbnailTablesWithPathMana
   *(*(*(a1 + 40) + 8) + 24) += v7;
 }
 
-+ (void)removeThumbnailTablesUnsupportedOnly:(BOOL)a3 withPathManager:(id)a4 fileManagerDelegate:(id)a5
++ (void)removeThumbnailTablesUnsupportedOnly:(BOOL)only withPathManager:(id)manager fileManagerDelegate:(id)delegate
 {
   v8 = MEMORY[0x1E696AC08];
-  v9 = a5;
-  v10 = a4;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v11 = objc_alloc_init(v8);
-  [v11 setDelegate:v9];
+  [v11 setDelegate:delegateCopy];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __99__PLThumbnailManagerCore_removeThumbnailTablesUnsupportedOnly_withPathManager_fileManagerDelegate___block_invoke;
   v13[3] = &unk_1E792F928;
-  v15 = a3;
+  onlyCopy = only;
   v14 = v11;
   v12 = v11;
-  [a1 enumerateThumbnailTablesWithPathManager:v10 fileManager:v12 handler:v13];
+  [self enumerateThumbnailTablesWithPathManager:managerCopy fileManager:v12 handler:v13];
 }
 
 uint64_t __99__PLThumbnailManagerCore_removeThumbnailTablesUnsupportedOnly_withPathManager_fileManagerDelegate___block_invoke(uint64_t result, uint64_t a2, int a3)
@@ -596,17 +596,17 @@ uint64_t __99__PLThumbnailManagerCore_removeThumbnailTablesUnsupportedOnly_withP
   return result;
 }
 
-+ (BOOL)isMissingThumbnailTablesWithPathManager:(id)a3
++ (BOOL)isMissingThumbnailTablesWithPathManager:(id)manager
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v23 = [MEMORY[0x1E696AC08] defaultManager];
-  v24 = v4;
+  managerCopy = manager;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v24 = managerCopy;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [a1 thumbnailFormatIDsForConfigPhase:1 withPathManager:v4];
+  v5 = [self thumbnailFormatIDsForConfigPhase:1 withPathManager:managerCopy];
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v6)
   {
@@ -625,24 +625,24 @@ uint64_t __99__PLThumbnailManagerCore_removeThumbnailTablesUnsupportedOnly_withP
         v11 = +[PLImageFormat formatWithID:](PLImageFormat, "formatWithID:", [v10 intValue]);
         if ([v11 isTable])
         {
-          v12 = [v10 intValue];
+          intValue = [v10 intValue];
           v13 = MEMORY[0x1E696AEC0];
-          v14 = v12;
+          v14 = intValue;
           v15 = v24;
           v16 = [v13 stringWithFormat:@"%d.%@", v14, @"ithmb"];
           v17 = [v15 photoDirectoryWithType:11 createIfNeeded:1 error:0];
 
           v18 = [v17 stringByAppendingPathComponent:v16];
 
-          LOBYTE(v16) = [v23 fileExistsAtPath:v18];
+          LOBYTE(v16) = [defaultManager fileExistsAtPath:v18];
           if ((v16 & 1) == 0)
           {
             v20 = PLThumbnailsGetLog();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
-              v21 = [v10 intValue];
+              intValue2 = [v10 intValue];
               *buf = 67109120;
-              v30 = v21;
+              v30 = intValue2;
               _os_log_impl(&dword_1AA9BD000, v20, OS_LOG_TYPE_DEFAULT, "Missing thumbnail table for format %d", buf, 8u);
             }
 
@@ -668,24 +668,24 @@ LABEL_14:
   return v19;
 }
 
-+ (int64_t)requiredThumbnailResetTypeWithPathManager:(id)a3 comparedToConfigPhase:(int64_t)a4
++ (int64_t)requiredThumbnailResetTypeWithPathManager:(id)manager comparedToConfigPhase:(int64_t)phase
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([a1 hasThumbnailConfigMismatchWithPathManager:v6 comparedToConfigPhase:a4])
+  managerCopy = manager;
+  if ([self hasThumbnailConfigMismatchWithPathManager:managerCopy comparedToConfigPhase:phase])
   {
     pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
     if ((PLIsReallyAssetsd_isAssetsd & 1) != 0 || (__PLIsAssetsdProxyService & 1) != 0 || PFProcessIsLaunchedToExecuteTests())
     {
-      v7 = [a1 thumbnailVersionForConfigPhase:0 withPathManager:v6];
-      v8 = [a1 thumbnailVersionForConfigPhase:a4 withPathManager:v6];
-      v9 = [a1 thumbnailFormatIDsForConfigPhase:0 withPathManager:v6];
-      v10 = [a1 thumbnailFormatIDsForConfigPhase:a4 withPathManager:v6];
-      v11 = [a1 _hasTableChangesOnlyFromFormatIDs:v9 toFormatIDs:v10];
+      v7 = [self thumbnailVersionForConfigPhase:0 withPathManager:managerCopy];
+      v8 = [self thumbnailVersionForConfigPhase:phase withPathManager:managerCopy];
+      v9 = [self thumbnailFormatIDsForConfigPhase:0 withPathManager:managerCopy];
+      v10 = [self thumbnailFormatIDsForConfigPhase:phase withPathManager:managerCopy];
+      v11 = [self _hasTableChangesOnlyFromFormatIDs:v9 toFormatIDs:v10];
       v12 = v11;
       if (v11)
       {
-        LOBYTE(v11) = [a1 _hasTableFormatsAndAllAreCompressedForFormatIDs:v10];
+        LOBYTE(v11) = [self _hasTableFormatsAndAllAreCompressedForFormatIDs:v10];
       }
 
       v14 = v7 == 30 && v8 > 30;
@@ -731,12 +731,12 @@ LABEL_14:
   return v16;
 }
 
-+ (BOOL)_hasTableFormatsAndAllAreCompressedForFormatIDs:(id)a3
++ (BOOL)_hasTableFormatsAndAllAreCompressedForFormatIDs:(id)ds
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  dsCopy = ds;
   v5 = [v3 predicateWithBlock:&__block_literal_global_44_673];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [dsCopy filteredArrayUsingPredicate:v5];
 
   v7 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_46];
   v8 = [v6 filteredArrayUsingPredicate:v7];
@@ -771,17 +771,17 @@ uint64_t __74__PLThumbnailManagerCore__hasTableFormatsAndAllAreCompressedForForm
   return v3;
 }
 
-+ (BOOL)_hasTableChangesOnlyFromFormatIDs:(id)a3 toFormatIDs:(id)a4
++ (BOOL)_hasTableChangesOnlyFromFormatIDs:(id)ds toFormatIDs:(id)iDs
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 firstObject];
-  v8 = [v6 firstObject];
-  v9 = [v7 isEqualToNumber:v8];
+  dsCopy = ds;
+  iDsCopy = iDs;
+  firstObject = [dsCopy firstObject];
+  firstObject2 = [iDsCopy firstObject];
+  v9 = [firstObject isEqualToNumber:firstObject2];
 
   if (v9)
   {
-    v10 = [v5 isEqualToArray:v6] ^ 1;
+    v10 = [dsCopy isEqualToArray:iDsCopy] ^ 1;
   }
 
   else
@@ -792,17 +792,17 @@ uint64_t __74__PLThumbnailManagerCore__hasTableFormatsAndAllAreCompressedForForm
   return v10;
 }
 
-+ (id)tableThumbnailFormatsForConfigPhase:(int64_t)a3 withPathManager:(id)a4
++ (id)tableThumbnailFormatsForConfigPhase:(int64_t)phase withPathManager:(id)manager
 {
-  v6 = a4;
-  if (a3 == 2 || (v7 = [a1 isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:v6], a3 == 1) && (v7 & 1) == 0)
+  managerCopy = manager;
+  if (phase == 2 || (v7 = [self isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:managerCopy], phase == 1) && (v7 & 1) == 0)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __78__PLThumbnailManagerCore_tableThumbnailFormatsForConfigPhase_withPathManager___block_invoke;
     v11[3] = &unk_1E792F8E0;
-    v13 = a1;
-    v12 = v6;
+    selfCopy = self;
+    v12 = managerCopy;
     if (tableThumbnailFormatsForConfigPhase_withPathManager__s_onceToken != -1)
     {
       dispatch_once(&tableThumbnailFormatsForConfigPhase_withPathManager__s_onceToken, v11);
@@ -813,8 +813,8 @@ uint64_t __74__PLThumbnailManagerCore__hasTableFormatsAndAllAreCompressedForForm
 
   else
   {
-    v9 = [a1 thumbnailFormatIDsForConfigPhase:a3 withPathManager:v6];
-    v8 = [a1 _generateTableFormatsFromFormatIDs:v9];
+    v9 = [self thumbnailFormatIDsForConfigPhase:phase withPathManager:managerCopy];
+    v8 = [self _generateTableFormatsFromFormatIDs:v9];
   }
 
   return v8;
@@ -829,17 +829,17 @@ void __78__PLThumbnailManagerCore_tableThumbnailFormatsForConfigPhase_withPathMa
   tableThumbnailFormatsForConfigPhase_withPathManager__s_cachedFormats = v2;
 }
 
-+ (id)thumbnailFormatsForConfigPhase:(int64_t)a3 withPathManager:(id)a4
++ (id)thumbnailFormatsForConfigPhase:(int64_t)phase withPathManager:(id)manager
 {
-  v6 = a4;
-  if (a3 == 2 || (v7 = [a1 isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:v6], a3 == 1) && (v7 & 1) == 0)
+  managerCopy = manager;
+  if (phase == 2 || (v7 = [self isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:managerCopy], phase == 1) && (v7 & 1) == 0)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __73__PLThumbnailManagerCore_thumbnailFormatsForConfigPhase_withPathManager___block_invoke;
     v11[3] = &unk_1E792F8E0;
-    v13 = a1;
-    v12 = v6;
+    selfCopy = self;
+    v12 = managerCopy;
     if (thumbnailFormatsForConfigPhase_withPathManager__s_onceToken != -1)
     {
       dispatch_once(&thumbnailFormatsForConfigPhase_withPathManager__s_onceToken, v11);
@@ -850,8 +850,8 @@ void __78__PLThumbnailManagerCore_tableThumbnailFormatsForConfigPhase_withPathMa
 
   else
   {
-    v9 = [a1 thumbnailFormatIDsForConfigPhase:a3 withPathManager:v6];
-    v8 = [a1 _thumbnailFormatsFromIDs:v9];
+    v9 = [self thumbnailFormatIDsForConfigPhase:phase withPathManager:managerCopy];
+    v8 = [self _thumbnailFormatsFromIDs:v9];
   }
 
   return v8;
@@ -866,16 +866,16 @@ void __73__PLThumbnailManagerCore_thumbnailFormatsForConfigPhase_withPathManager
   thumbnailFormatsForConfigPhase_withPathManager__s_cachedFormats = v2;
 }
 
-+ (id)thumbnailFormatIDsForConfigPhase:(int64_t)a3 withPathManager:(id)a4
++ (id)thumbnailFormatIDsForConfigPhase:(int64_t)phase withPathManager:(id)manager
 {
-  v6 = a4;
-  if (a3 == 2)
+  managerCopy = manager;
+  if (phase == 2)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __75__PLThumbnailManagerCore_thumbnailFormatIDsForConfigPhase_withPathManager___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (thumbnailFormatIDsForConfigPhase_withPathManager__s_onceToken != -1)
     {
       dispatch_once(&thumbnailFormatIDsForConfigPhase_withPathManager__s_onceToken, block);
@@ -884,32 +884,32 @@ void __73__PLThumbnailManagerCore_thumbnailFormatsForConfigPhase_withPathManager
     v7 = thumbnailFormatIDsForConfigPhase_withPathManager__s_cachedTargetFormatIDs;
   }
 
-  else if (a3 == 1)
+  else if (phase == 1)
   {
-    if ([a1 isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:v6])
+    if ([self isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:managerCopy])
     {
-      v8 = a1;
+      selfCopy2 = self;
       v9 = 0;
     }
 
     else
     {
-      v8 = a1;
+      selfCopy2 = self;
       v9 = 2;
     }
 
-    v7 = [v8 thumbnailFormatIDsForConfigPhase:v9 withPathManager:v6];
+    v7 = [selfCopy2 thumbnailFormatIDsForConfigPhase:v9 withPathManager:managerCopy];
   }
 
   else
   {
-    if (a3)
+    if (phase)
     {
       v10 = 0;
       goto LABEL_14;
     }
 
-    v7 = [a1 _configurationThumbnailFormatIDsWithPathManager:v6];
+    v7 = [self _configurationThumbnailFormatIDsWithPathManager:managerCopy];
   }
 
   v10 = v7;
@@ -927,31 +927,31 @@ void __75__PLThumbnailManagerCore_thumbnailFormatIDsForConfigPhase_withPathManag
   thumbnailFormatIDsForConfigPhase_withPathManager__s_cachedTargetFormatIDs = v2;
 }
 
-+ (int)thumbnailVersionForConfigPhase:(int64_t)a3 withPathManager:(id)a4
++ (int)thumbnailVersionForConfigPhase:(int64_t)phase withPathManager:(id)manager
 {
-  v6 = a4;
-  switch(a3)
+  managerCopy = manager;
+  switch(phase)
   {
     case 2:
       v10 = 31;
       break;
     case 1:
-      if ([a1 isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:v6])
+      if ([self isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:managerCopy])
       {
-        v8 = a1;
+        selfCopy2 = self;
         v9 = 0;
       }
 
       else
       {
-        v8 = a1;
+        selfCopy2 = self;
         v9 = 2;
       }
 
-      v7 = [v8 thumbnailVersionForConfigPhase:v9 withPathManager:v6];
+      v7 = [selfCopy2 thumbnailVersionForConfigPhase:v9 withPathManager:managerCopy];
       goto LABEL_11;
     case 0:
-      v7 = [a1 configurationThumbnailVersionWithPathManager:v6];
+      v7 = [self configurationThumbnailVersionWithPathManager:managerCopy];
 LABEL_11:
       v10 = v7;
       break;
@@ -963,9 +963,9 @@ LABEL_11:
   return v10;
 }
 
-+ (void)invalidateIsSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:(id)a3
++ (void)invalidateIsSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:(id)manager
 {
-  v3 = [a3 photoDirectoryWithType:1];
+  v3 = [manager photoDirectoryWithType:1];
   if (v3)
   {
     v4 = v3;
@@ -976,18 +976,18 @@ LABEL_11:
   }
 }
 
-+ (BOOL)isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:(id)a3
++ (BOOL)isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:(id)manager
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 photoDirectoryWithType:1];
+  managerCopy = manager;
+  v5 = [managerCopy photoDirectoryWithType:1];
   if (v5)
   {
     os_unfair_lock_lock(&s_isSupressingLock);
     v6 = [s_isSuppressingTargetConfigByBundleDirectory objectForKeyedSubscript:v5];
     if (!v6)
     {
-      v7 = objc_initWeak(location, a1);
+      v7 = objc_initWeak(location, self);
 
       v8 = [PLLazyObject alloc];
       v15 = MEMORY[0x1E69E9820];
@@ -995,7 +995,7 @@ LABEL_11:
       v17 = __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager___block_invoke;
       v18 = &unk_1E792FFC0;
       objc_copyWeak(&v20, location);
-      v19 = v4;
+      v19 = managerCopy;
       v6 = [(PLLazyObject *)v8 initWithBlock:&v15];
 
       objc_destroyWeak(&v20);
@@ -1003,9 +1003,9 @@ LABEL_11:
       v9 = s_isSuppressingTargetConfigByBundleDirectory;
       if (!s_isSuppressingTargetConfigByBundleDirectory)
       {
-        v10 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v11 = s_isSuppressingTargetConfigByBundleDirectory;
-        s_isSuppressingTargetConfigByBundleDirectory = v10;
+        s_isSuppressingTargetConfigByBundleDirectory = dictionary;
 
         v9 = s_isSuppressingTargetConfigByBundleDirectory;
       }
@@ -1014,8 +1014,8 @@ LABEL_11:
     }
 
     os_unfair_lock_unlock(&s_isSupressingLock);
-    v12 = [v6 objectValue];
-    v13 = [v12 BOOLValue];
+    objectValue = [v6 objectValue];
+    bOOLValue = [objectValue BOOLValue];
   }
 
   else
@@ -1024,14 +1024,14 @@ LABEL_11:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v4;
+      *(location + 4) = managerCopy;
       _os_log_impl(&dword_1AA9BD000, v6, OS_LOG_TYPE_ERROR, "Unable to determine thumbnail manager target config suppression state, can't determine libraryKey from path manager: %@", location, 0xCu);
     }
 
-    v13 = 0;
+    bOOLValue = 0;
   }
 
-  return v13;
+  return bOOLValue;
 }
 
 id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager___block_invoke(uint64_t a1)
@@ -1059,18 +1059,18 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
   os_unfair_lock_unlock(&s_isSupressingLock);
 }
 
-+ (BOOL)_isSuppressingTargetConfigComparedToSavedConfigForPathManager:(id)a3
++ (BOOL)_isSuppressingTargetConfigComparedToSavedConfigForPathManager:(id)manager
 {
-  v4 = a3;
-  v5 = [a1 thumbnailVersionForConfigPhase:0 withPathManager:v4];
-  v6 = [a1 thumbnailFormatIDsForConfigPhase:0 withPathManager:v4];
-  v7 = [a1 thumbnailVersionForConfigPhase:2 withPathManager:v4];
-  v8 = [a1 thumbnailFormatIDsForConfigPhase:2 withPathManager:v4];
+  managerCopy = manager;
+  v5 = [self thumbnailVersionForConfigPhase:0 withPathManager:managerCopy];
+  v6 = [self thumbnailFormatIDsForConfigPhase:0 withPathManager:managerCopy];
+  v7 = [self thumbnailVersionForConfigPhase:2 withPathManager:managerCopy];
+  v8 = [self thumbnailFormatIDsForConfigPhase:2 withPathManager:managerCopy];
 
-  v9 = [a1 _hasTableChangesOnlyFromFormatIDs:v6 toFormatIDs:v8];
+  v9 = [self _hasTableChangesOnlyFromFormatIDs:v6 toFormatIDs:v8];
   if (v9)
   {
-    LOBYTE(v9) = [a1 _hasTableFormatsAndAllAreCompressedForFormatIDs:v8];
+    LOBYTE(v9) = [self _hasTableFormatsAndAllAreCompressedForFormatIDs:v8];
   }
 
   v10 = (v5 == 30) & ~v9;
@@ -1084,12 +1084,12 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
   return v11 & 1;
 }
 
-+ (id)_formatIDsForIthmbFilesWithPathManager:(id)a3
++ (id)_formatIDsForIthmbFilesWithPathManager:(id)manager
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v20 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  managerCopy = manager;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = managerCopy;
   objc_sync_enter(v4);
   obj = v4;
   v5 = objc_alloc_init(MEMORY[0x1E696AC08]);
@@ -1119,17 +1119,17 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
         {
           if ((v21 & 1) == 0)
           {
-            v13 = [v11 pathExtension];
-            v14 = [v13 isEqualToString:@"ithmb"];
+            pathExtension = [v11 pathExtension];
+            v14 = [pathExtension isEqualToString:@"ithmb"];
 
             if (v14)
             {
-              v15 = [v11 stringByDeletingPathExtension];
-              v16 = [v15 integerValue];
-              if (v16 >= 1)
+              stringByDeletingPathExtension = [v11 stringByDeletingPathExtension];
+              integerValue = [stringByDeletingPathExtension integerValue];
+              if (integerValue >= 1)
               {
-                v17 = [MEMORY[0x1E696AD98] numberWithInteger:v16];
-                [v20 addObject:v17];
+                v17 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
+                [array addObject:v17];
               }
             }
           }
@@ -1144,15 +1144,15 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
 
   objc_sync_exit(obj);
 
-  return v20;
+  return array;
 }
 
-+ (id)_generateUncompressedImageTableSpecificationsForRunningConfigWithPathManager:(id)a3
++ (id)_generateUncompressedImageTableSpecificationsForRunningConfigWithPathManager:(id)manager
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [a1 tableThumbnailFormatsForConfigPhase:1 withPathManager:v4];
+  v6 = [self tableThumbnailFormatsForConfigPhase:1 withPathManager:managerCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1174,8 +1174,8 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
         v11 = *(*(&v14 + 1) + 8 * i);
         if ([v11 thumbnailKind] == 1)
         {
-          v12 = [v11 thumbnailSpecification];
-          [v5 addObject:v12];
+          thumbnailSpecification = [v11 thumbnailSpecification];
+          [v5 addObject:thumbnailSpecification];
         }
       }
 
@@ -1188,13 +1188,13 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
   return v5;
 }
 
-+ (id)_configurationThumbnailFormatIDsWithPathManager:(id)a3
++ (id)_configurationThumbnailFormatIDsWithPathManager:(id)manager
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  managerCopy = manager;
+  if (managerCopy)
   {
-    v5 = [objc_opt_class() thumbnailConfigurationDictWithPathManager:v4];
+    v5 = [objc_opt_class() thumbnailConfigurationDictWithPathManager:managerCopy];
     v6 = [v5 objectForKey:@"PLThumbnailManagerThumbnailFormatsKey"];
     v7 = v6;
     if (v6)
@@ -1205,13 +1205,13 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
     else
     {
       v9 = [v5 objectForKey:@"PLThumbnailManagerThumbnailFormatKey"];
-      v10 = [v9 intValue];
+      intValue = [v9 intValue];
 
-      v11 = [MEMORY[0x1E695DF70] array];
-      v12 = [PLImageFormat formatWithID:v10];
+      array = [MEMORY[0x1E695DF70] array];
+      v12 = [PLImageFormat formatWithID:intValue];
       if (v12)
       {
-        [v11 addObject:v12];
+        [array addObject:v12];
       }
 
       v27 = v12;
@@ -1221,7 +1221,7 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
         v37 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v13 = [a1 _formatIDsForIthmbFilesWithPathManager:{v4, v12}];
+        v13 = [self _formatIDsForIthmbFilesWithPathManager:{managerCopy, v12}];
         v14 = [v13 countByEnumeratingWithState:&v34 objects:v39 count:16];
         if (v14)
         {
@@ -1239,7 +1239,7 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
               v18 = +[PLImageFormat formatWithID:](PLImageFormat, "formatWithID:", [*(*(&v34 + 1) + 8 * i) integerValue]);
               if (v18)
               {
-                [v11 addObject:v18];
+                [array addObject:v18];
               }
             }
 
@@ -1251,7 +1251,7 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
       }
 
       v29 = v5;
-      v19 = [v11 sortedArrayUsingComparator:{&__block_literal_global_16, v27}];
+      v19 = [array sortedArrayUsingComparator:{&__block_literal_global_16, v27}];
       v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v19, "count")}];
       v30 = 0u;
       v31 = 0u;
@@ -1294,16 +1294,16 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
   return v8;
 }
 
-+ (id)_generateTableFormatsFromFormatIDs:(id)a3
++ (id)_generateTableFormatsFromFormatIDs:(id)ds
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  dsCopy = ds;
+  array = [MEMORY[0x1E695DF70] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v35 objects:v48 count:16];
   if (v6)
   {
@@ -1321,7 +1321,7 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
         v10 = +[PLImageFormat formatWithID:](PLImageFormat, "formatWithID:", [*(*(&v35 + 1) + 8 * i) intValue]);
         if ([v10 isTable])
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -1333,8 +1333,8 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
 
   v29 = v5;
 
-  v30 = v4;
-  v11 = [v4 sortedArrayUsingComparator:&__block_literal_global_682];
+  v30 = array;
+  v11 = [array sortedArrayUsingComparator:&__block_literal_global_682];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -1357,20 +1357,20 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
         v17 = PLThumbnailsGetLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          v18 = [v16 shortDescription];
+          shortDescription = [v16 shortDescription];
           [v16 size];
           v20 = v19;
           [v16 size];
           v22 = v21;
-          v23 = [v16 isCropped];
+          isCropped = [v16 isCropped];
           *buf = 138413058;
-          v40 = v18;
+          v40 = shortDescription;
           v41 = 1024;
           v42 = v20;
           v43 = 1024;
           v44 = v22;
           v45 = 1024;
-          v46 = v23;
+          v46 = isCropped;
           _os_log_impl(&dword_1AA9BD000, v17, OS_LOG_TYPE_DEBUG, "#### Format %@ : %d x %d, crop %d", buf, 0x1Eu);
         }
       }
@@ -1402,16 +1402,16 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
   return v24;
 }
 
-+ (id)_thumbnailFormatsFromIDs:(id)a3
++ (id)_thumbnailFormatsFromIDs:(id)ds
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  dsCopy = ds;
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -1427,7 +1427,7 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
         }
 
         v10 = +[PLImageFormat formatWithID:](PLImageFormat, "formatWithID:", [*(*(&v13 + 1) + 8 * i) intValue]);
-        [v4 addObject:v10];
+        [array addObject:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1436,7 +1436,7 @@ id __92__PLThumbnailManagerCore_isSuppressingTargetConfigDueToPendingThumbMigrat
     while (v7);
   }
 
-  v11 = [v4 copy];
+  v11 = [array copy];
 
   return v11;
 }

@@ -1,24 +1,24 @@
 @interface SBIconListGridLayoutConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)listSizeForIconSpacingCalculation;
-- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)a3 orientation:(id)a4;
+- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)class orientation:(id)orientation;
 - (SBIconListGridLayoutConfiguration)init;
 - (UIEdgeInsets)landscapeAdditionalWidgetLayoutInsets;
 - (UIEdgeInsets)landscapeLayoutInsets;
 - (UIEdgeInsets)portraitAdditionalWidgetLayoutInsets;
 - (UIEdgeInsets)portraitLayoutInsets;
 - (UIEdgeInsets)widgetContentMargins;
-- (double)editingAnimationStrengthForGridSizeClass:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)iconLabelVisualConfigurationForContentSizeCategory:(id)a3;
+- (double)editingAnimationStrengthForGridSizeClass:(id)class;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)iconLabelVisualConfigurationForContentSizeCategory:(id)category;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)setEditingAnimationStrength:(double)a3 forGridSizeClass:(id)a4;
-- (void)setEditingAnimationStrengths:(id)a3;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3 forGridSizeClass:(id)a4 orientation:(int64_t)a5;
-- (void)setIconLabelVisualConfiguration:(id)a3 forContentSizeCategory:(id)a4;
+- (void)setEditingAnimationStrength:(double)strength forGridSizeClass:(id)class;
+- (void)setEditingAnimationStrengths:(id)strengths;
+- (void)setIconImageInfo:(SBIconImageInfo *)info forGridSizeClass:(id)class orientation:(int64_t)orientation;
+- (void)setIconLabelVisualConfiguration:(id)configuration forContentSizeCategory:(id)category;
 @end
 
 @implementation SBIconListGridLayoutConfiguration
@@ -126,10 +126,10 @@
   return result;
 }
 
-- (id)iconLabelVisualConfigurationForContentSizeCategory:(id)a3
+- (id)iconLabelVisualConfigurationForContentSizeCategory:(id)category
 {
-  v4 = a3;
-  v5 = v4;
+  categoryCopy = category;
+  v5 = categoryCopy;
   if (!self->_iconLabelVisualConfigurations)
   {
 LABEL_18:
@@ -138,7 +138,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v6 = SBHContentSizeCategoryClip(v4, *MEMORY[0x1E69DDC70], *MEMORY[0x1E69DDC20]);
+  v6 = SBHContentSizeCategoryClip(categoryCopy, *MEMORY[0x1E69DDC70], *MEMORY[0x1E69DDC20]);
 
   v7 = [(NSMutableDictionary *)self->_iconLabelVisualConfigurations objectForKey:v6];
   v8 = v7 == 0;
@@ -197,10 +197,10 @@ LABEL_19:
   return v10;
 }
 
-- (void)setIconLabelVisualConfiguration:(id)a3 forContentSizeCategory:(id)a4
+- (void)setIconLabelVisualConfiguration:(id)configuration forContentSizeCategory:(id)category
 {
-  v11 = a3;
-  v6 = SBHContentSizeCategoryClip(a4, *MEMORY[0x1E69DDC70], *MEMORY[0x1E69DDC20]);
+  configurationCopy = configuration;
+  v6 = SBHContentSizeCategoryClip(category, *MEMORY[0x1E69DDC70], *MEMORY[0x1E69DDC20]);
   iconLabelVisualConfigurations = self->_iconLabelVisualConfigurations;
   if (!iconLabelVisualConfigurations)
   {
@@ -211,32 +211,32 @@ LABEL_19:
     iconLabelVisualConfigurations = self->_iconLabelVisualConfigurations;
   }
 
-  v10 = [v11 copy];
+  v10 = [configurationCopy copy];
   [(NSMutableDictionary *)iconLabelVisualConfigurations setObject:v10 forKey:v6];
 }
 
-- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)a3 orientation:(id)a4
+- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)class orientation:(id)orientation
 {
-  v7 = a4;
-  if ((a5 - 3) > 1 || (p_iconGridSizeClassIconImageInfos = &self->_landscapeIconGridSizeClassIconImageInfos, ![(SBHIconGridSizeClassIconImageInfoMap *)self->_landscapeIconGridSizeClassIconImageInfos hasIconImageInfoForGridSizeClass:v7]))
+  orientationCopy = orientation;
+  if ((a5 - 3) > 1 || (p_iconGridSizeClassIconImageInfos = &self->_landscapeIconGridSizeClassIconImageInfos, ![(SBHIconGridSizeClassIconImageInfoMap *)self->_landscapeIconGridSizeClassIconImageInfos hasIconImageInfoForGridSizeClass:orientationCopy]))
   {
     p_iconGridSizeClassIconImageInfos = &self->_iconGridSizeClassIconImageInfos;
   }
 
-  [(SBHIconGridSizeClassIconImageInfoMap *)*p_iconGridSizeClassIconImageInfos iconImageInfoForGridSizeClass:v7];
+  [(SBHIconGridSizeClassIconImageInfoMap *)*p_iconGridSizeClassIconImageInfos iconImageInfoForGridSizeClass:orientationCopy];
 
   return result;
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3 forGridSizeClass:(id)a4 orientation:(int64_t)a5
+- (void)setIconImageInfo:(SBIconImageInfo *)info forGridSizeClass:(id)class orientation:(int64_t)orientation
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v15 = a3;
-  v22 = v15;
-  if (a4 - 3 <= 1)
+  infoCopy = info;
+  v22 = infoCopy;
+  if (class - 3 <= 1)
   {
     landscapeIconGridSizeClassIconImageInfos = self->_landscapeIconGridSizeClassIconImageInfos;
     p_landscapeIconGridSizeClassIconImageInfos = &self->_landscapeIconGridSizeClassIconImageInfos;
@@ -260,16 +260,16 @@ LABEL_3:
     *p_landscapeIconGridSizeClassIconImageInfos = v19;
 
     v16 = *p_landscapeIconGridSizeClassIconImageInfos;
-    v15 = v22;
+    infoCopy = v22;
   }
 
 LABEL_4:
-  [(SBHMutableIconGridSizeClassIconImageInfoMap *)v16 setIconImageInfo:v15 forGridSizeClass:v13, v12, v11, v10];
+  [(SBHMutableIconGridSizeClassIconImageInfoMap *)v16 setIconImageInfo:infoCopy forGridSizeClass:v13, v12, v11, v10];
 }
 
-- (double)editingAnimationStrengthForGridSizeClass:(id)a3
+- (double)editingAnimationStrengthForGridSizeClass:(id)class
 {
-  v3 = [(NSMutableDictionary *)self->_iconGridSizeClassEditingAnimationStrengths objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_iconGridSizeClassEditingAnimationStrengths objectForKey:class];
   v4 = v3;
   if (v3)
   {
@@ -285,25 +285,25 @@ LABEL_4:
   return v6;
 }
 
-- (void)setEditingAnimationStrength:(double)a3 forGridSizeClass:(id)a4
+- (void)setEditingAnimationStrength:(double)strength forGridSizeClass:(id)class
 {
   iconGridSizeClassEditingAnimationStrengths = self->_iconGridSizeClassEditingAnimationStrengths;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithDouble:a3];
-  [(NSMutableDictionary *)iconGridSizeClassEditingAnimationStrengths setObject:v8 forKey:v7];
+  classCopy = class;
+  v8 = [v6 numberWithDouble:strength];
+  [(NSMutableDictionary *)iconGridSizeClassEditingAnimationStrengths setObject:v8 forKey:classCopy];
 }
 
-- (void)setEditingAnimationStrengths:(id)a3
+- (void)setEditingAnimationStrengths:(id)strengths
 {
-  v4 = [a3 mutableCopy];
+  v4 = [strengths mutableCopy];
   iconGridSizeClassEditingAnimationStrengths = self->_iconGridSizeClassEditingAnimationStrengths;
   self->_iconGridSizeClassEditingAnimationStrengths = v4;
 
   MEMORY[0x1EEE66BB8](v4, iconGridSizeClassEditingAnimationStrengths);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   v6 = v5;
@@ -313,15 +313,15 @@ LABEL_4:
     v5[7] = self->_numberOfPortraitRows;
     v5[8] = self->_numberOfLandscapeColumns;
     v5[9] = self->_numberOfLandscapeRows;
-    v7 = [(SBHIconGridSizeClassSizeMap *)self->_iconGridSizeClassSizes copyWithZone:a3];
+    v7 = [(SBHIconGridSizeClassSizeMap *)self->_iconGridSizeClassSizes copyWithZone:zone];
     v8 = v6[10];
     v6[10] = v7;
 
-    v9 = [(SBHIconGridSizeClassSizeMap *)self->_rotatedIconGridSizeClassSizes copyWithZone:a3];
+    v9 = [(SBHIconGridSizeClassSizeMap *)self->_rotatedIconGridSizeClassSizes copyWithZone:zone];
     v10 = v6[11];
     v6[11] = v9;
 
-    v11 = [(SBHIconGridSizeClassSet *)self->_supportedIconGridSizeClasses copyWithZone:a3];
+    v11 = [(SBHIconGridSizeClassSet *)self->_supportedIconGridSizeClasses copyWithZone:zone];
     v12 = v6[12];
     v6[12] = v11;
 
@@ -342,50 +342,50 @@ LABEL_4:
     *(v6 + 21) = v17;
     *(v6 + 40) = self->_showsLabels;
     *(v6 + 41) = self->_showsTooltipsOnHover;
-    v18 = [(SBHIconGridSizeClassIconImageInfoMap *)self->_iconGridSizeClassIconImageInfos mutableCopyWithZone:a3];
+    v18 = [(SBHIconGridSizeClassIconImageInfoMap *)self->_iconGridSizeClassIconImageInfos mutableCopyWithZone:zone];
     v19 = v6[2];
     v6[2] = v18;
 
-    v20 = [(SBHIconGridSizeClassIconImageInfoMap *)self->_landscapeIconGridSizeClassIconImageInfos mutableCopyWithZone:a3];
+    v20 = [(SBHIconGridSizeClassIconImageInfoMap *)self->_landscapeIconGridSizeClassIconImageInfos mutableCopyWithZone:zone];
     v21 = v6[3];
     v6[3] = v20;
 
-    v22 = [(NSMutableDictionary *)self->_iconGridSizeClassEditingAnimationStrengths mutableCopyWithZone:a3];
+    v22 = [(NSMutableDictionary *)self->_iconGridSizeClassEditingAnimationStrengths mutableCopyWithZone:zone];
     v23 = v6[4];
     v6[4] = v22;
 
     objc_storeStrong(v6 + 13, self->_rotatedLayoutClusterGridSizeClass);
     *(v6 + 11) = self->_listSizeForIconSpacingCalculation;
     v6[14] = self->_iconSpacingAxisMatchingBehavior;
-    v24 = [(SBHIconAccessoryVisualConfiguration *)self->_iconAccessoryVisualConfiguration copyWithZone:a3];
+    v24 = [(SBHIconAccessoryVisualConfiguration *)self->_iconAccessoryVisualConfiguration copyWithZone:zone];
     v25 = v6[15];
     v6[15] = v24;
 
-    v26 = [(NSMutableDictionary *)self->_iconLabelVisualConfigurations copyWithZone:a3];
+    v26 = [(NSMutableDictionary *)self->_iconLabelVisualConfigurations copyWithZone:zone];
     v27 = v6[1];
     v6[1] = v26;
 
-    v28 = [(SBHFolderIconVisualConfiguration *)self->_folderIconVisualConfiguration copyWithZone:a3];
+    v28 = [(SBHFolderIconVisualConfiguration *)self->_folderIconVisualConfiguration copyWithZone:zone];
     v29 = v6[16];
     v6[16] = v28;
 
-    v30 = [(SBHFloatyFolderVisualConfiguration *)self->_floatyFolderVisualConfiguration copyWithZone:a3];
+    v30 = [(SBHFloatyFolderVisualConfiguration *)self->_floatyFolderVisualConfiguration copyWithZone:zone];
     v31 = v6[17];
     v6[17] = v30;
 
-    v32 = [(SBHSidebarVisualConfiguration *)self->_sidebarVisualConfiguration copyWithZone:a3];
+    v32 = [(SBHSidebarVisualConfiguration *)self->_sidebarVisualConfiguration copyWithZone:zone];
     v33 = v6[19];
     v6[19] = v32;
 
-    v34 = [(SBHRootFolderVisualConfiguration *)self->_rootFolderVisualConfiguration copyWithZone:a3];
+    v34 = [(SBHRootFolderVisualConfiguration *)self->_rootFolderVisualConfiguration copyWithZone:zone];
     v35 = v6[20];
     v6[20] = v34;
 
-    v36 = [(SBHAppLibraryVisualConfiguration *)self->_appLibraryVisualConfiguration copyWithZone:a3];
+    v36 = [(SBHAppLibraryVisualConfiguration *)self->_appLibraryVisualConfiguration copyWithZone:zone];
     v37 = v6[18];
     v6[18] = v36;
 
-    v38 = [(SBHFloatingDockVisualConfiguration *)self->_floatingDockVisualConfiguration copyWithZone:a3];
+    v38 = [(SBHFloatingDockVisualConfiguration *)self->_floatingDockVisualConfiguration copyWithZone:zone];
     v39 = v6[21];
     v6[21] = v38;
   }
@@ -393,10 +393,10 @@ LABEL_4:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -408,7 +408,7 @@ LABEL_4:
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = v7;
       if (self->_numberOfPortraitColumns != v7->_numberOfPortraitColumns)
       {
@@ -546,41 +546,41 @@ LABEL_36:
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconListGridLayoutConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconListGridLayoutConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconListGridLayoutConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconListGridLayoutConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBIconListGridLayoutConfiguration *)self succinctDescriptionBuilder];
-  v5 = [v4 appendUnsignedInteger:self->_numberOfPortraitColumns withName:@"numberOfPortraitColumns"];
-  v6 = [v4 appendUnsignedInteger:self->_numberOfPortraitRows withName:@"numberOfPortraitRows"];
-  v7 = [v4 appendUnsignedInteger:self->_numberOfLandscapeColumns withName:@"numberOfLandscapeColumns"];
-  v8 = [v4 appendUnsignedInteger:self->_numberOfLandscapeRows withName:@"numberOfLandscapeRows"];
+  succinctDescriptionBuilder = [(SBIconListGridLayoutConfiguration *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendUnsignedInteger:self->_numberOfPortraitColumns withName:@"numberOfPortraitColumns"];
+  v6 = [succinctDescriptionBuilder appendUnsignedInteger:self->_numberOfPortraitRows withName:@"numberOfPortraitRows"];
+  v7 = [succinctDescriptionBuilder appendUnsignedInteger:self->_numberOfLandscapeColumns withName:@"numberOfLandscapeColumns"];
+  v8 = [succinctDescriptionBuilder appendUnsignedInteger:self->_numberOfLandscapeRows withName:@"numberOfLandscapeRows"];
   v9 = NSStringFromUIEdgeInsets(self->_portraitLayoutInsets);
-  [v4 appendString:v9 withName:@"portraitLayoutInsets"];
+  [succinctDescriptionBuilder appendString:v9 withName:@"portraitLayoutInsets"];
 
   v10 = NSStringFromUIEdgeInsets(self->_landscapeLayoutInsets);
-  [v4 appendString:v10 withName:@"landscapeLayoutInsets"];
+  [succinctDescriptionBuilder appendString:v10 withName:@"landscapeLayoutInsets"];
 
   v11 = NSStringFromUIEdgeInsets(self->_widgetContentMargins);
-  [v4 appendString:v11 withName:@"widgetContentMargins"];
+  [succinctDescriptionBuilder appendString:v11 withName:@"widgetContentMargins"];
 
   v12 = NSStringFromUIEdgeInsets(self->_portraitAdditionalWidgetLayoutInsets);
-  [v4 appendString:v12 withName:@"portraitAdditionalWidgetLayoutInsets"];
+  [succinctDescriptionBuilder appendString:v12 withName:@"portraitAdditionalWidgetLayoutInsets"];
 
   v13 = NSStringFromUIEdgeInsets(self->_landscapeAdditionalWidgetLayoutInsets);
-  [v4 appendString:v13 withName:@"landscapeAdditionalWidgetLayoutInsets"];
+  [succinctDescriptionBuilder appendString:v13 withName:@"landscapeAdditionalWidgetLayoutInsets"];
 
   [(SBIconListGridLayoutConfiguration *)self iconImageInfo];
   v15 = v14;
@@ -591,7 +591,7 @@ LABEL_36:
   v42[1] = 3221225472;
   v42[2] = __75__SBIconListGridLayoutConfiguration_descriptionBuilderWithMultilinePrefix___block_invoke;
   v42[3] = &unk_1E8088EC8;
-  v22 = v4;
+  v22 = succinctDescriptionBuilder;
   v43 = v22;
   v44 = v15;
   v45 = v17;

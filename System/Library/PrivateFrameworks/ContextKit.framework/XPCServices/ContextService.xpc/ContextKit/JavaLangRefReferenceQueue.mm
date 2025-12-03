@@ -2,9 +2,9 @@
 + (void)initialize;
 - (JavaLangRefReferenceQueue)init;
 - (id)poll;
-- (id)removeWithLong:(int64_t)a3;
+- (id)removeWithLong:(int64_t)long;
 - (void)dealloc;
-- (void)enqueueWithJavaLangRefReference:(id)a3;
+- (void)enqueueWithJavaLangRefReference:(id)reference;
 @end
 
 @implementation JavaLangRefReferenceQueue
@@ -43,10 +43,10 @@
   return head;
 }
 
-- (id)removeWithLong:(int64_t)a3
+- (id)removeWithLong:(int64_t)long
 {
   objc_sync_enter(self);
-  if (a3 < 0)
+  if (long < 0)
   {
     v19 = JreStrcat("$J", v5, v6, v7, v8, v9, v10, v11, @"timeout < 0: ");
     v20 = new_JavaLangIllegalArgumentException_initWithNSString_(v19);
@@ -55,13 +55,13 @@
 
   if (!self->head_)
   {
-    if ((a3 - 0x8637BD05AF7) >= 0xFFFFF79C842FA50ALL)
+    if ((long - 0x8637BD05AF7) >= 0xFFFFF79C842FA50ALL)
     {
       v14 = JavaLangSystem_nanoTime();
       v15 = 0;
-      for (i = 1000000 * a3; ; v15 = (v14 - v17 + i) % 0xF4240)
+      for (i = 1000000 * long; ; v15 = (v14 - v17 + i) % 0xF4240)
       {
-        [(JavaLangRefReferenceQueue *)self waitWithLong:a3 withInt:v15];
+        [(JavaLangRefReferenceQueue *)self waitWithLong:long withInt:v15];
         if (self->head_)
         {
           break;
@@ -74,7 +74,7 @@
           break;
         }
 
-        a3 = v18 / 0xF4240uLL;
+        long = v18 / 0xF4240uLL;
       }
     }
 
@@ -89,20 +89,20 @@
     }
   }
 
-  v12 = [(JavaLangRefReferenceQueue *)self poll];
+  poll = [(JavaLangRefReferenceQueue *)self poll];
   objc_sync_exit(self);
-  return v12;
+  return poll;
 }
 
-- (void)enqueueWithJavaLangRefReference:(id)a3
+- (void)enqueueWithJavaLangRefReference:(id)reference
 {
   objc_sync_enter(self);
   head = self->head_;
   if (head)
   {
-    if (a3)
+    if (reference)
     {
-      JreVolatileStrongAssign(a3 + 3, head);
+      JreVolatileStrongAssign(reference + 3, head);
       goto LABEL_6;
     }
 
@@ -110,14 +110,14 @@ LABEL_9:
     JreThrowNullPointerException();
   }
 
-  if (!a3)
+  if (!reference)
   {
     goto LABEL_9;
   }
 
-  JreVolatileStrongAssign(a3 + 3, self->SENTINEL_);
+  JreVolatileStrongAssign(reference + 3, self->SENTINEL_);
 LABEL_6:
-  JreStrongAssign(&self->head_, a3);
+  JreStrongAssign(&self->head_, reference);
   [(JavaLangRefReferenceQueue *)self notify];
 
   objc_sync_exit(self);
@@ -132,7 +132,7 @@ LABEL_6:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssign(&JavaLangRefReferenceQueue_unenqueued_, 0);
     atomic_store(1u, JavaLangRefReferenceQueue__initialized);

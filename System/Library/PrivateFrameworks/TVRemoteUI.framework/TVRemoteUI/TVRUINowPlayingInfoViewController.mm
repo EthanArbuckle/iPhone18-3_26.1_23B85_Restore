@@ -4,27 +4,27 @@
 - (BOOL)_isCurrentlyDoubleInfoLineLayout;
 - (BOOL)_isCurrentlyStackedLayout;
 - (TVRUIActionProviding)actionProvider;
-- (TVRUINowPlayingInfoViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_animateButtonFromHighlightState:(id)a3;
-- (void)_animateButtonToHighlightState:(id)a3;
+- (TVRUINowPlayingInfoViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_animateButtonFromHighlightState:(id)state;
+- (void)_animateButtonToHighlightState:(id)state;
 - (void)_playHaptic;
-- (void)_updateConstraintsForInfoLineUsingDoubleLineLayout:(BOOL)a3;
-- (void)_updateContraintsForStackedLayout:(BOOL)a3;
+- (void)_updateConstraintsForInfoLineUsingDoubleLineLayout:(BOOL)layout;
+- (void)_updateContraintsForStackedLayout:(BOOL)layout;
 - (void)configureHierarchy;
 - (void)openProductPage;
-- (void)setNowPlayingInfo:(id)a3;
-- (void)updateFromNowPlayingInfo:(id)a3;
+- (void)setNowPlayingInfo:(id)info;
+- (void)updateFromNowPlayingInfo:(id)info;
 - (void)updateViewConstraints;
 - (void)viewDidLoad;
 @end
 
 @implementation TVRUINowPlayingInfoViewController
 
-- (TVRUINowPlayingInfoViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TVRUINowPlayingInfoViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = TVRUINowPlayingInfoViewController;
-  v4 = [(TVRUINowPlayingInfoViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(TVRUINowPlayingInfoViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(TVREventHaptic);
@@ -48,11 +48,11 @@
   v236 = *MEMORY[0x277D85DE8];
   v3 = +[TVRUIFeatures isSolariumEnabled];
   val = self;
-  v200 = [(TVRUINowPlayingInfoViewController *)self view];
+  view = [(TVRUINowPlayingInfoViewController *)self view];
   v4 = objc_alloc_init(MEMORY[0x277D759D8]);
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   v202 = v4;
-  [v200 addSubview:v4];
+  [view addSubview:v4];
   if (v3)
   {
     [MEMORY[0x277D75230] clearGlassButtonConfiguration];
@@ -81,8 +81,8 @@
 
   else
   {
-    v9 = [v199 background];
-    [v9 setCornerRadius:8.0];
+    background = [v199 background];
+    [background setCornerRadius:8.0];
 
     v8 = v199;
   }
@@ -116,8 +116,8 @@
 
   else
   {
-    v14 = [v198 background];
-    [v14 setCornerRadius:8.0];
+    background2 = [v198 background];
+    [background2 setCornerRadius:8.0];
 
     v13 = v198;
   }
@@ -168,8 +168,8 @@
         }
 
         v21 = *(*(&v217 + 1) + 8 * i);
-        v22 = [MEMORY[0x277D75348] whiteColor];
-        [v21 setTintColor:v22];
+        whiteColor = [MEMORY[0x277D75348] whiteColor];
+        [v21 setTintColor:whiteColor];
 
         [v21 addTarget:val action:sel__animateButtonToHighlightState_ forControlEvents:1];
         [v21 addTarget:val action:sel__animateButtonFromHighlightState_ forControlEvents:448];
@@ -184,43 +184,43 @@
   v23 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76988] variant:1024];
   [v203 setFont:v23];
 
-  v24 = [MEMORY[0x277D75348] whiteColor];
-  [v203 setTextColor:v24];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  [v203 setTextColor:whiteColor2];
 
   [v207 setEditable:0];
-  v25 = [v207 textContainer];
-  [v25 setLineFragmentPadding:0.0];
+  textContainer = [v207 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   v26 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
   [v207 setFont:v26];
 
-  v27 = [MEMORY[0x277D75348] whiteColor];
-  [v207 setTextColor:v27];
+  whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+  [v207 setTextColor:whiteColor3];
 
   [v207 setAdjustsFontForContentSizeCategory:1];
-  v28 = [MEMORY[0x277D75348] clearColor];
-  [v207 setBackgroundColor:v28];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v207 setBackgroundColor:clearColor];
 
   [v207 textContainerInset];
   [v207 setTextContainerInset:0.0];
-  v29 = [MEMORY[0x277D75348] lightGrayColor];
+  lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
   v196 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76968] variant:1024];
   [v204 setFont:v196];
-  [v204 setTextColor:v29];
+  [v204 setTextColor:lightGrayColor];
   [v204 setNumberOfLines:0];
   [v201 setFont:v196];
-  [v201 setTextColor:v29];
+  [v201 setTextColor:lightGrayColor];
   [v201 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v30 = v29;
-  v31 = [v29 CGColor];
-  v32 = [v208 layer];
-  [v32 setBorderColor:v31];
+  v30 = lightGrayColor;
+  cGColor = [lightGrayColor CGColor];
+  layer = [v208 layer];
+  [layer setBorderColor:cGColor];
 
-  v33 = [v208 layer];
-  [v33 setBorderWidth:1.0];
+  layer2 = [v208 layer];
+  [layer2 setBorderWidth:1.0];
 
-  v34 = [v208 layer];
-  [v34 setCornerRadius:4.0];
+  layer3 = [v208 layer];
+  [layer3 setCornerRadius:4.0];
 
   [v209 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v202 addSubview:v209];
@@ -265,216 +265,216 @@
     while (v36);
   }
 
-  v41 = [(TVRUINowPlayingInfoViewController *)val styleProvider];
-  [v41 solariumDefaultButtonHeight];
+  styleProvider = [(TVRUINowPlayingInfoViewController *)val styleProvider];
+  [styleProvider solariumDefaultButtonHeight];
   v43 = v42;
 
-  v44 = [v207 heightAnchor];
-  v197 = [v44 constraintEqualToConstant:40.0];
+  heightAnchor = [v207 heightAnchor];
+  v197 = [heightAnchor constraintEqualToConstant:40.0];
 
   LODWORD(v45) = 1132068864;
   [v197 setPriority:v45];
   v89 = MEMORY[0x277CCAAD0];
-  v46 = [v200 topAnchor];
-  v189 = [v202 topAnchor];
-  v184 = [v46 constraintEqualToAnchor:v189];
+  topAnchor = [view topAnchor];
+  topAnchor2 = [v202 topAnchor];
+  v184 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v231[0] = v184;
-  v180 = [v200 bottomAnchor];
-  v176 = [v202 bottomAnchor];
-  v172 = [v180 constraintEqualToAnchor:v176];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [v202 bottomAnchor];
+  v172 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v231[1] = v172;
-  v169 = [v200 leadingAnchor];
-  v166 = [v202 leadingAnchor];
-  v163 = [v169 constraintEqualToAnchor:v166];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [v202 leadingAnchor];
+  v163 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v231[2] = v163;
-  v160 = [v200 trailingAnchor];
-  v157 = [v202 trailingAnchor];
-  v154 = [v160 constraintEqualToAnchor:v157];
+  trailingAnchor = [view trailingAnchor];
+  trailingAnchor2 = [v202 trailingAnchor];
+  v154 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v231[3] = v154;
-  v151 = [v202 topAnchor];
-  v148 = [v209 topAnchor];
-  v145 = [v151 constraintEqualToAnchor:v148];
+  topAnchor3 = [v202 topAnchor];
+  topAnchor4 = [v209 topAnchor];
+  v145 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v231[4] = v145;
-  v142 = [v202 bottomAnchor];
-  v139 = [v209 bottomAnchor];
-  v136 = [v142 constraintEqualToAnchor:v139];
+  bottomAnchor3 = [v202 bottomAnchor];
+  bottomAnchor4 = [v209 bottomAnchor];
+  v136 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v231[5] = v136;
-  v133 = [v202 leadingAnchor];
-  v131 = [v209 leadingAnchor];
-  v129 = [v133 constraintEqualToAnchor:v131];
+  leadingAnchor3 = [v202 leadingAnchor];
+  leadingAnchor4 = [v209 leadingAnchor];
+  v129 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v231[6] = v129;
-  v127 = [v202 trailingAnchor];
-  v125 = [v209 trailingAnchor];
-  v123 = [v127 constraintEqualToAnchor:v125];
+  trailingAnchor3 = [v202 trailingAnchor];
+  trailingAnchor4 = [v209 trailingAnchor];
+  v123 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v231[7] = v123;
-  v121 = [v209 widthAnchor];
-  v120 = [v200 widthAnchor];
-  v119 = [v121 constraintEqualToAnchor:v120 constant:-40.0];
+  widthAnchor = [v209 widthAnchor];
+  widthAnchor2 = [view widthAnchor];
+  v119 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:-40.0];
   v231[8] = v119;
-  v118 = [v209 centerXAnchor];
-  v117 = [v200 centerXAnchor];
-  v116 = [v118 constraintEqualToAnchor:v117];
+  centerXAnchor = [v209 centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v116 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v231[9] = v116;
-  v115 = [v203 topAnchor];
-  v114 = [v209 topAnchor];
-  v113 = [v115 constraintEqualToAnchor:v114 constant:10.0];
+  topAnchor5 = [v203 topAnchor];
+  topAnchor6 = [v209 topAnchor];
+  v113 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:10.0];
   v231[10] = v113;
-  v112 = [v203 leadingAnchor];
-  v111 = [v209 leadingAnchor];
-  v110 = [v112 constraintEqualToAnchor:v111 constant:10.0];
+  leadingAnchor5 = [v203 leadingAnchor];
+  leadingAnchor6 = [v209 leadingAnchor];
+  v110 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:10.0];
   v231[11] = v110;
-  v109 = [v203 trailingAnchor];
-  v108 = [v209 trailingAnchor];
-  v107 = [v109 constraintEqualToAnchor:v108 constant:-10.0];
+  trailingAnchor5 = [v203 trailingAnchor];
+  trailingAnchor6 = [v209 trailingAnchor];
+  v107 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-10.0];
   v231[12] = v107;
-  v106 = [v207 topAnchor];
-  v105 = [v203 bottomAnchor];
-  v104 = [v106 constraintEqualToAnchor:v105 constant:10.0];
+  topAnchor7 = [v207 topAnchor];
+  bottomAnchor5 = [v203 bottomAnchor];
+  v104 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5 constant:10.0];
   v231[13] = v104;
-  v103 = [v207 leadingAnchor];
-  v102 = [v203 leadingAnchor];
-  v101 = [v103 constraintEqualToAnchor:v102];
+  leadingAnchor7 = [v207 leadingAnchor];
+  leadingAnchor8 = [v203 leadingAnchor];
+  v101 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v231[14] = v101;
-  v100 = [v207 trailingAnchor];
-  v99 = [v203 trailingAnchor];
-  v98 = [v100 constraintEqualToAnchor:v99];
+  trailingAnchor7 = [v207 trailingAnchor];
+  trailingAnchor8 = [v203 trailingAnchor];
+  v98 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v231[15] = v98;
   v231[16] = v197;
-  v97 = [v204 topAnchor];
-  v96 = [v207 bottomAnchor];
-  v95 = [v97 constraintEqualToAnchor:v96 constant:10.0];
+  topAnchor8 = [v204 topAnchor];
+  bottomAnchor6 = [v207 bottomAnchor];
+  v95 = [topAnchor8 constraintEqualToAnchor:bottomAnchor6 constant:10.0];
   v231[17] = v95;
-  v94 = [v201 leadingAnchor];
-  v93 = [v208 leadingAnchor];
-  v92 = [v94 constraintEqualToAnchor:v93 constant:3.0];
+  leadingAnchor9 = [v201 leadingAnchor];
+  leadingAnchor10 = [v208 leadingAnchor];
+  v92 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:3.0];
   v231[18] = v92;
-  v91 = [v201 trailingAnchor];
-  v90 = [v208 trailingAnchor];
-  v47 = [v91 constraintEqualToAnchor:v90 constant:-3.0];
+  trailingAnchor9 = [v201 trailingAnchor];
+  trailingAnchor10 = [v208 trailingAnchor];
+  v47 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-3.0];
   v231[19] = v47;
-  v48 = [v201 topAnchor];
-  v49 = [v208 topAnchor];
-  v50 = [v48 constraintEqualToAnchor:v49];
+  topAnchor9 = [v201 topAnchor];
+  topAnchor10 = [v208 topAnchor];
+  v50 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
   v231[20] = v50;
-  v51 = [v201 bottomAnchor];
-  v52 = [v208 bottomAnchor];
-  v53 = [v51 constraintEqualToAnchor:v52];
+  bottomAnchor7 = [v201 bottomAnchor];
+  bottomAnchor8 = [v208 bottomAnchor];
+  v53 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v231[21] = v53;
   v54 = [MEMORY[0x277CBEA60] arrayWithObjects:v231 count:22];
   [v89 activateConstraints:v54];
 
-  v190 = [v206 topAnchor];
-  v185 = [v208 bottomAnchor];
-  v181 = [v190 constraintEqualToAnchor:v185 constant:20.0];
+  topAnchor11 = [v206 topAnchor];
+  bottomAnchor9 = [v208 bottomAnchor];
+  v181 = [topAnchor11 constraintEqualToAnchor:bottomAnchor9 constant:20.0];
   v230[0] = v181;
-  v177 = [v206 leadingAnchor];
-  v173 = [v209 leadingAnchor];
-  v170 = [v177 constraintEqualToAnchor:v173 constant:10.0];
+  leadingAnchor11 = [v206 leadingAnchor];
+  leadingAnchor12 = [v209 leadingAnchor];
+  v170 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12 constant:10.0];
   v230[1] = v170;
-  v167 = [v206 trailingAnchor];
-  v164 = [v205 leadingAnchor];
-  v161 = [v167 constraintEqualToAnchor:v164 constant:-10.0];
+  trailingAnchor11 = [v206 trailingAnchor];
+  leadingAnchor13 = [v205 leadingAnchor];
+  v161 = [trailingAnchor11 constraintEqualToAnchor:leadingAnchor13 constant:-10.0];
   v230[2] = v161;
-  v158 = [v206 heightAnchor];
-  v155 = [v158 constraintGreaterThanOrEqualToConstant:v43];
+  heightAnchor2 = [v206 heightAnchor];
+  v155 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:v43];
   v230[3] = v155;
-  v152 = [v206 bottomAnchor];
-  v149 = [v209 bottomAnchor];
-  v146 = [v152 constraintEqualToAnchor:v149 constant:-30.0];
+  bottomAnchor10 = [v206 bottomAnchor];
+  bottomAnchor11 = [v209 bottomAnchor];
+  v146 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11 constant:-30.0];
   v230[4] = v146;
-  v143 = [v205 topAnchor];
-  v140 = [v208 bottomAnchor];
-  v137 = [v143 constraintEqualToAnchor:v140 constant:20.0];
+  topAnchor12 = [v205 topAnchor];
+  bottomAnchor12 = [v208 bottomAnchor];
+  v137 = [topAnchor12 constraintEqualToAnchor:bottomAnchor12 constant:20.0];
   v230[5] = v137;
-  v134 = [v205 trailingAnchor];
-  v132 = [v209 trailingAnchor];
-  v130 = [v134 constraintEqualToAnchor:v132 constant:-10.0];
+  trailingAnchor12 = [v205 trailingAnchor];
+  trailingAnchor13 = [v209 trailingAnchor];
+  v130 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13 constant:-10.0];
   v230[6] = v130;
-  v128 = [v205 heightAnchor];
-  v126 = [v128 constraintGreaterThanOrEqualToConstant:v43];
+  heightAnchor3 = [v205 heightAnchor];
+  v126 = [heightAnchor3 constraintGreaterThanOrEqualToConstant:v43];
   v230[7] = v126;
-  v124 = [v205 widthAnchor];
-  v122 = [v206 widthAnchor];
-  v55 = [v124 constraintEqualToAnchor:v122];
+  widthAnchor3 = [v205 widthAnchor];
+  widthAnchor4 = [v206 widthAnchor];
+  v55 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
   v230[8] = v55;
-  v56 = [v205 bottomAnchor];
-  v57 = [v209 bottomAnchor];
-  v58 = [v56 constraintEqualToAnchor:v57 constant:-30.0];
+  bottomAnchor13 = [v205 bottomAnchor];
+  bottomAnchor14 = [v209 bottomAnchor];
+  v58 = [bottomAnchor13 constraintEqualToAnchor:bottomAnchor14 constant:-30.0];
   v230[9] = v58;
-  v59 = [v209 bottomAnchor];
-  v60 = [v200 bottomAnchor];
-  v61 = [v59 constraintLessThanOrEqualToAnchor:v60];
+  bottomAnchor15 = [v209 bottomAnchor];
+  bottomAnchor16 = [view bottomAnchor];
+  v61 = [bottomAnchor15 constraintLessThanOrEqualToAnchor:bottomAnchor16];
   v230[10] = v61;
   v62 = [MEMORY[0x277CBEA60] arrayWithObjects:v230 count:11];
   [(TVRUINowPlayingInfoViewController *)val setStandardLayoutConstraints:v62];
 
-  v191 = [v206 topAnchor];
-  v186 = [v208 bottomAnchor];
-  v182 = [v191 constraintEqualToAnchor:v186 constant:20.0];
+  topAnchor13 = [v206 topAnchor];
+  bottomAnchor17 = [v208 bottomAnchor];
+  v182 = [topAnchor13 constraintEqualToAnchor:bottomAnchor17 constant:20.0];
   v229[0] = v182;
-  v178 = [v206 leadingAnchor];
-  v174 = [v209 leadingAnchor];
-  v171 = [v178 constraintEqualToAnchor:v174 constant:10.0];
+  leadingAnchor14 = [v206 leadingAnchor];
+  leadingAnchor15 = [v209 leadingAnchor];
+  v171 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15 constant:10.0];
   v229[1] = v171;
-  v168 = [v206 trailingAnchor];
-  v165 = [v209 trailingAnchor];
-  v162 = [v168 constraintEqualToAnchor:v165 constant:-10.0];
+  trailingAnchor14 = [v206 trailingAnchor];
+  trailingAnchor15 = [v209 trailingAnchor];
+  v162 = [trailingAnchor14 constraintEqualToAnchor:trailingAnchor15 constant:-10.0];
   v229[2] = v162;
-  v159 = [v206 heightAnchor];
-  v156 = [v159 constraintGreaterThanOrEqualToConstant:v43];
+  heightAnchor4 = [v206 heightAnchor];
+  v156 = [heightAnchor4 constraintGreaterThanOrEqualToConstant:v43];
   v229[3] = v156;
-  v153 = [v205 topAnchor];
-  v150 = [v206 bottomAnchor];
-  v147 = [v153 constraintEqualToAnchor:v150 constant:20.0];
+  topAnchor14 = [v205 topAnchor];
+  bottomAnchor18 = [v206 bottomAnchor];
+  v147 = [topAnchor14 constraintEqualToAnchor:bottomAnchor18 constant:20.0];
   v229[4] = v147;
-  v144 = [v205 leadingAnchor];
-  v141 = [v209 leadingAnchor];
-  v138 = [v144 constraintEqualToAnchor:v141 constant:10.0];
+  leadingAnchor16 = [v205 leadingAnchor];
+  leadingAnchor17 = [v209 leadingAnchor];
+  v138 = [leadingAnchor16 constraintEqualToAnchor:leadingAnchor17 constant:10.0];
   v229[5] = v138;
-  v135 = [v205 trailingAnchor];
-  v63 = [v209 trailingAnchor];
-  v64 = [v135 constraintEqualToAnchor:v63 constant:-10.0];
+  trailingAnchor16 = [v205 trailingAnchor];
+  trailingAnchor17 = [v209 trailingAnchor];
+  v64 = [trailingAnchor16 constraintEqualToAnchor:trailingAnchor17 constant:-10.0];
   v229[6] = v64;
-  v65 = [v205 heightAnchor];
-  v66 = [v65 constraintGreaterThanOrEqualToConstant:v43];
+  heightAnchor5 = [v205 heightAnchor];
+  v66 = [heightAnchor5 constraintGreaterThanOrEqualToConstant:v43];
   v229[7] = v66;
-  v67 = [v205 bottomAnchor];
-  v68 = [v209 bottomAnchor];
-  v69 = [v67 constraintEqualToAnchor:v68 constant:-30.0];
+  bottomAnchor19 = [v205 bottomAnchor];
+  bottomAnchor20 = [v209 bottomAnchor];
+  v69 = [bottomAnchor19 constraintEqualToAnchor:bottomAnchor20 constant:-30.0];
   v229[8] = v69;
   v70 = [MEMORY[0x277CBEA60] arrayWithObjects:v229 count:9];
   [(TVRUINowPlayingInfoViewController *)val setStackedLayoutConstraints:v70];
 
-  v192 = [v204 leadingAnchor];
-  v187 = [v209 leadingAnchor];
-  v71 = [v192 constraintEqualToAnchor:v187 constant:10.0];
+  leadingAnchor18 = [v204 leadingAnchor];
+  leadingAnchor19 = [v209 leadingAnchor];
+  v71 = [leadingAnchor18 constraintEqualToAnchor:leadingAnchor19 constant:10.0];
   v228[0] = v71;
-  v72 = [v208 topAnchor];
-  v73 = [v204 topAnchor];
-  v74 = [v72 constraintEqualToAnchor:v73];
+  topAnchor15 = [v208 topAnchor];
+  topAnchor16 = [v204 topAnchor];
+  v74 = [topAnchor15 constraintEqualToAnchor:topAnchor16];
   v228[1] = v74;
-  v75 = [v208 leadingAnchor];
-  v76 = [v204 trailingAnchor];
-  v77 = [v75 constraintEqualToAnchor:v76 constant:10.0];
+  leadingAnchor20 = [v208 leadingAnchor];
+  trailingAnchor18 = [v204 trailingAnchor];
+  v77 = [leadingAnchor20 constraintEqualToAnchor:trailingAnchor18 constant:10.0];
   v228[2] = v77;
   v78 = [MEMORY[0x277CBEA60] arrayWithObjects:v228 count:3];
   [(TVRUINowPlayingInfoViewController *)val setSingleLineInfoLayoutConstraints:v78];
 
-  v193 = [v204 leadingAnchor];
-  v188 = [v209 leadingAnchor];
-  v183 = [v193 constraintEqualToAnchor:v188 constant:10.0];
+  leadingAnchor21 = [v204 leadingAnchor];
+  leadingAnchor22 = [v209 leadingAnchor];
+  v183 = [leadingAnchor21 constraintEqualToAnchor:leadingAnchor22 constant:10.0];
   v227[0] = v183;
-  v179 = [v204 trailingAnchor];
-  v175 = [v209 trailingAnchor];
-  v79 = [v179 constraintEqualToAnchor:v175 constant:-10.0];
+  trailingAnchor19 = [v204 trailingAnchor];
+  trailingAnchor20 = [v209 trailingAnchor];
+  v79 = [trailingAnchor19 constraintEqualToAnchor:trailingAnchor20 constant:-10.0];
   v227[1] = v79;
-  v80 = [v208 topAnchor];
-  v81 = [v204 bottomAnchor];
-  v82 = [v80 constraintEqualToAnchor:v81 constant:10.0];
+  topAnchor17 = [v208 topAnchor];
+  bottomAnchor21 = [v204 bottomAnchor];
+  v82 = [topAnchor17 constraintEqualToAnchor:bottomAnchor21 constant:10.0];
   v227[2] = v82;
-  v83 = [v208 leadingAnchor];
-  v84 = [v204 leadingAnchor];
-  v85 = [v83 constraintEqualToAnchor:v84];
+  leadingAnchor23 = [v208 leadingAnchor];
+  leadingAnchor24 = [v204 leadingAnchor];
+  v85 = [leadingAnchor23 constraintEqualToAnchor:leadingAnchor24];
   v227[3] = v85;
   v86 = [MEMORY[0x277CBEA60] arrayWithObjects:v227 count:4];
   [(TVRUINowPlayingInfoViewController *)val setDoubleLineInfoLayoutConstraints:v86];
@@ -570,32 +570,32 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
 
 - (void)updateViewConstraints
 {
-  v3 = [(TVRUINowPlayingInfoViewController *)self _currentTraitsSizeCategoryRequiresStackedLayout];
-  if (v3 != [(TVRUINowPlayingInfoViewController *)self _isCurrentlyStackedLayout])
+  _currentTraitsSizeCategoryRequiresStackedLayout = [(TVRUINowPlayingInfoViewController *)self _currentTraitsSizeCategoryRequiresStackedLayout];
+  if (_currentTraitsSizeCategoryRequiresStackedLayout != [(TVRUINowPlayingInfoViewController *)self _isCurrentlyStackedLayout])
   {
-    [(TVRUINowPlayingInfoViewController *)self _updateContraintsForStackedLayout:v3];
+    [(TVRUINowPlayingInfoViewController *)self _updateContraintsForStackedLayout:_currentTraitsSizeCategoryRequiresStackedLayout];
   }
 
-  v4 = [(TVRUINowPlayingInfoViewController *)self detailsTextView];
-  [v4 infoview_computedHeight];
+  detailsTextView = [(TVRUINowPlayingInfoViewController *)self detailsTextView];
+  [detailsTextView infoview_computedHeight];
   v6 = v5;
 
   if (v6 > 0.0)
   {
-    if (v3 && v6 > 250.0)
+    if (_currentTraitsSizeCategoryRequiresStackedLayout && v6 > 250.0)
     {
       v6 = 250.0;
     }
 
-    v7 = [(TVRUINowPlayingInfoViewController *)self detailsTextHeightConstraint];
-    [v7 setConstant:v6];
+    detailsTextHeightConstraint = [(TVRUINowPlayingInfoViewController *)self detailsTextHeightConstraint];
+    [detailsTextHeightConstraint setConstant:v6];
   }
 
-  v8 = [(TVRUINowPlayingInfoViewController *)self _isCurrentlyDoubleInfoLineLayout];
-  v9 = [(TVRUINowPlayingInfoViewController *)self _infoLineRequiresDoubleLayout];
-  if (v8 != v9)
+  _isCurrentlyDoubleInfoLineLayout = [(TVRUINowPlayingInfoViewController *)self _isCurrentlyDoubleInfoLineLayout];
+  _infoLineRequiresDoubleLayout = [(TVRUINowPlayingInfoViewController *)self _infoLineRequiresDoubleLayout];
+  if (_isCurrentlyDoubleInfoLineLayout != _infoLineRequiresDoubleLayout)
   {
-    [(TVRUINowPlayingInfoViewController *)self _updateConstraintsForInfoLineUsingDoubleLineLayout:v9];
+    [(TVRUINowPlayingInfoViewController *)self _updateConstraintsForInfoLineUsingDoubleLineLayout:_infoLineRequiresDoubleLayout];
   }
 
   v10.receiver = self;
@@ -603,13 +603,13 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
   [(TVRUINowPlayingInfoViewController *)&v10 updateViewConstraints];
 }
 
-- (void)_updateContraintsForStackedLayout:(BOOL)a3
+- (void)_updateContraintsForStackedLayout:(BOOL)layout
 {
   v4 = MEMORY[0x277CCAAD0];
-  if (a3)
+  if (layout)
   {
-    v5 = [(TVRUINowPlayingInfoViewController *)self stackedLayoutConstraints];
-    [v4 activateConstraints:v5];
+    stackedLayoutConstraints = [(TVRUINowPlayingInfoViewController *)self stackedLayoutConstraints];
+    [v4 activateConstraints:stackedLayoutConstraints];
 
     v6 = MEMORY[0x277CCAAD0];
     [(TVRUINowPlayingInfoViewController *)self standardLayoutConstraints];
@@ -617,8 +617,8 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
 
   else
   {
-    v7 = [(TVRUINowPlayingInfoViewController *)self standardLayoutConstraints];
-    [v4 activateConstraints:v7];
+    standardLayoutConstraints = [(TVRUINowPlayingInfoViewController *)self standardLayoutConstraints];
+    [v4 activateConstraints:standardLayoutConstraints];
 
     v6 = MEMORY[0x277CCAAD0];
     [(TVRUINowPlayingInfoViewController *)self stackedLayoutConstraints];
@@ -627,13 +627,13 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
   [v6 deactivateConstraints:?];
 }
 
-- (void)_updateConstraintsForInfoLineUsingDoubleLineLayout:(BOOL)a3
+- (void)_updateConstraintsForInfoLineUsingDoubleLineLayout:(BOOL)layout
 {
   v4 = MEMORY[0x277CCAAD0];
-  if (a3)
+  if (layout)
   {
-    v5 = [(TVRUINowPlayingInfoViewController *)self doubleLineInfoLayoutConstraints];
-    [v4 activateConstraints:v5];
+    doubleLineInfoLayoutConstraints = [(TVRUINowPlayingInfoViewController *)self doubleLineInfoLayoutConstraints];
+    [v4 activateConstraints:doubleLineInfoLayoutConstraints];
 
     v6 = MEMORY[0x277CCAAD0];
     [(TVRUINowPlayingInfoViewController *)self singleLineInfoLayoutConstraints];
@@ -641,8 +641,8 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
 
   else
   {
-    v7 = [(TVRUINowPlayingInfoViewController *)self singleLineInfoLayoutConstraints];
-    [v4 activateConstraints:v7];
+    singleLineInfoLayoutConstraints = [(TVRUINowPlayingInfoViewController *)self singleLineInfoLayoutConstraints];
+    [v4 activateConstraints:singleLineInfoLayoutConstraints];
 
     v6 = MEMORY[0x277CCAAD0];
     [(TVRUINowPlayingInfoViewController *)self doubleLineInfoLayoutConstraints];
@@ -653,30 +653,30 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
 
 - (BOOL)_isCurrentlyStackedLayout
 {
-  v2 = [(TVRUINowPlayingInfoViewController *)self stackedLayoutConstraints];
-  v3 = [v2 firstObject];
+  stackedLayoutConstraints = [(TVRUINowPlayingInfoViewController *)self stackedLayoutConstraints];
+  firstObject = [stackedLayoutConstraints firstObject];
 
-  LOBYTE(v2) = [v3 isActive];
-  return v2;
+  LOBYTE(stackedLayoutConstraints) = [firstObject isActive];
+  return stackedLayoutConstraints;
 }
 
-- (void)setNowPlayingInfo:(id)a3
+- (void)setNowPlayingInfo:(id)info
 {
-  objc_storeStrong(&self->_nowPlayingInfo, a3);
-  v5 = a3;
-  [(TVRUINowPlayingInfoViewController *)self updateFromNowPlayingInfo:v5];
+  objc_storeStrong(&self->_nowPlayingInfo, info);
+  infoCopy = info;
+  [(TVRUINowPlayingInfoViewController *)self updateFromNowPlayingInfo:infoCopy];
 }
 
-- (void)updateFromNowPlayingInfo:(id)a3
+- (void)updateFromNowPlayingInfo:(id)info
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 metadata];
-  v6 = v5;
-  if (v5)
+  infoCopy = info;
+  metadata = [infoCopy metadata];
+  v6 = metadata;
+  if (metadata)
   {
-    v7 = [v5 kind];
-    if (v7 == 2)
+    kind = [metadata kind];
+    if (kind == 2)
     {
       [v6 tvrui_secondaryTitle];
     }
@@ -686,43 +686,43 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
       [v6 title];
     }
     v8 = ;
-    v9 = [(TVRUINowPlayingInfoViewController *)self titleLabel];
-    [v9 setText:v8];
+    titleLabel = [(TVRUINowPlayingInfoViewController *)self titleLabel];
+    [titleLabel setText:v8];
 
-    v10 = [v6 extendedDescription];
-    v11 = [(TVRUINowPlayingInfoViewController *)self detailsTextView];
-    [v11 setText:v10];
+    extendedDescription = [v6 extendedDescription];
+    detailsTextView = [(TVRUINowPlayingInfoViewController *)self detailsTextView];
+    [detailsTextView setText:extendedDescription];
 
-    v12 = [v6 tvrui_formattedInfo];
-    v13 = [(TVRUINowPlayingInfoViewController *)self infoLabel];
-    [v13 setText:v12];
+    tvrui_formattedInfo = [v6 tvrui_formattedInfo];
+    infoLabel = [(TVRUINowPlayingInfoViewController *)self infoLabel];
+    [infoLabel setText:tvrui_formattedInfo];
 
-    v14 = [v6 ratingDescription];
-    v15 = [v14 length];
+    ratingDescription = [v6 ratingDescription];
+    v15 = [ratingDescription length];
 
     if (v15)
     {
-      v16 = [(TVRUINowPlayingInfoViewController *)self ratingsContainer];
-      [v16 setHidden:0];
+      ratingsContainer = [(TVRUINowPlayingInfoViewController *)self ratingsContainer];
+      [ratingsContainer setHidden:0];
 
-      v17 = [v6 ratingDescription];
-      v18 = [(TVRUINowPlayingInfoViewController *)self ratingsLabel];
-      [v18 setText:v17];
+      ratingDescription2 = [v6 ratingDescription];
+      ratingsLabel = [(TVRUINowPlayingInfoViewController *)self ratingsLabel];
+      [ratingsLabel setText:ratingDescription2];
     }
 
     else
     {
-      v19 = [(TVRUINowPlayingInfoViewController *)self ratingsLabel];
-      [v19 setText:0];
+      ratingsLabel2 = [(TVRUINowPlayingInfoViewController *)self ratingsLabel];
+      [ratingsLabel2 setText:0];
 
-      v17 = [(TVRUINowPlayingInfoViewController *)self ratingsContainer];
-      [v17 setHidden:1];
+      ratingDescription2 = [(TVRUINowPlayingInfoViewController *)self ratingsContainer];
+      [ratingDescription2 setHidden:1];
     }
 
-    v20 = [(TVRUINowPlayingInfoViewController *)self view];
-    [v20 setNeedsUpdateConstraints];
+    view = [(TVRUINowPlayingInfoViewController *)self view];
+    [view setNeedsUpdateConstraints];
 
-    if (v7 == 4)
+    if (kind == 4)
     {
       v21 = @"TVRUIDetailsSportingEvent";
     }
@@ -735,22 +735,22 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
     v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v23 = [v22 localizedStringForKey:v21 value:&stru_287E6AEF8 table:@"Localizable"];
 
-    v24 = [(TVRUINowPlayingInfoViewController *)self detailsButton];
-    [v24 setTitle:v23 forState:0];
+    detailsButton = [(TVRUINowPlayingInfoViewController *)self detailsButton];
+    [detailsButton setTitle:v23 forState:0];
   }
 
-  v25 = [v4 tvrui_mediaIsStopped];
+  tvrui_mediaIsStopped = [infoCopy tvrui_mediaIsStopped];
   v50 = v6;
-  v51 = v4;
-  if (v25)
+  v51 = infoCopy;
+  if (tvrui_mediaIsStopped)
   {
-    v26 = [(TVRUINowPlayingInfoViewController *)self styleProvider];
-    v27 = [v26 inactiveMediaTextColor];
+    styleProvider = [(TVRUINowPlayingInfoViewController *)self styleProvider];
+    inactiveMediaTextColor = [styleProvider inactiveMediaTextColor];
   }
 
   else
   {
-    v27 = [MEMORY[0x277D75348] whiteColor];
+    inactiveMediaTextColor = [MEMORY[0x277D75348] whiteColor];
   }
 
   v58 = 0u;
@@ -760,15 +760,15 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
   [(TVRUINowPlayingInfoViewController *)self titleLabel];
   v29 = v28 = self;
   v62[0] = v29;
-  v30 = [(TVRUINowPlayingInfoViewController *)v28 detailsTextView];
-  v62[1] = v30;
-  v31 = [(TVRUINowPlayingInfoViewController *)v28 ratingsLabel];
-  v62[2] = v31;
-  v32 = [(TVRUINowPlayingInfoViewController *)v28 playFromStartButton];
-  v62[3] = v32;
+  detailsTextView2 = [(TVRUINowPlayingInfoViewController *)v28 detailsTextView];
+  v62[1] = detailsTextView2;
+  ratingsLabel3 = [(TVRUINowPlayingInfoViewController *)v28 ratingsLabel];
+  v62[2] = ratingsLabel3;
+  playFromStartButton = [(TVRUINowPlayingInfoViewController *)v28 playFromStartButton];
+  v62[3] = playFromStartButton;
   v49 = v28;
-  v33 = [(TVRUINowPlayingInfoViewController *)v28 detailsButton];
-  v62[4] = v33;
+  detailsButton2 = [(TVRUINowPlayingInfoViewController *)v28 detailsButton];
+  v62[4] = detailsButton2;
   v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:5];
 
   v35 = [v34 countByEnumeratingWithState:&v56 objects:v63 count:16];
@@ -789,12 +789,12 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          [v39 setTextColor:v27];
+          [v39 setTextColor:inactiveMediaTextColor];
         }
 
         else
         {
-          [v39 setTintColor:v27];
+          [v39 setTintColor:inactiveMediaTextColor];
         }
       }
 
@@ -808,10 +808,10 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v40 = [(TVRUINowPlayingInfoViewController *)v49 infoLabel];
-  v60[0] = v40;
-  v41 = [(TVRUINowPlayingInfoViewController *)v49 ratingsLabel];
-  v60[1] = v41;
+  infoLabel2 = [(TVRUINowPlayingInfoViewController *)v49 infoLabel];
+  v60[0] = infoLabel2;
+  ratingsLabel4 = [(TVRUINowPlayingInfoViewController *)v49 ratingsLabel];
+  v60[1] = ratingsLabel4;
   v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:2];
 
   v43 = [v42 countByEnumeratingWithState:&v52 objects:v61 count:16];
@@ -829,15 +829,15 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
         }
 
         v47 = *(*(&v52 + 1) + 8 * j);
-        if (v25)
+        if (tvrui_mediaIsStopped)
         {
-          [*(*(&v52 + 1) + 8 * j) setTextColor:v27];
+          [*(*(&v52 + 1) + 8 * j) setTextColor:inactiveMediaTextColor];
         }
 
         else
         {
-          v48 = [MEMORY[0x277D75348] lightGrayColor];
-          [v47 setTextColor:v48];
+          lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+          [v47 setTextColor:lightGrayColor];
         }
       }
 
@@ -850,32 +850,32 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
 
 - (BOOL)_currentTraitsSizeCategoryRequiresStackedLayout
 {
-  v2 = [(TVRUINowPlayingInfoViewController *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(TVRUINowPlayingInfoViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  LOBYTE(v2) = UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x277D76808]) == NSOrderedDescending;
-  return v2;
+  LOBYTE(traitCollection) = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D76808]) == NSOrderedDescending;
+  return traitCollection;
 }
 
 - (void)_playHaptic
 {
-  v2 = [(TVRUINowPlayingInfoViewController *)self eventHaptic];
-  [v2 playSelectionEventHaptic];
+  eventHaptic = [(TVRUINowPlayingInfoViewController *)self eventHaptic];
+  [eventHaptic playSelectionEventHaptic];
 }
 
 - (BOOL)_isCurrentlyDoubleInfoLineLayout
 {
-  v2 = [(TVRUINowPlayingInfoViewController *)self doubleLineInfoLayoutConstraints];
-  v3 = [v2 firstObject];
+  doubleLineInfoLayoutConstraints = [(TVRUINowPlayingInfoViewController *)self doubleLineInfoLayoutConstraints];
+  firstObject = [doubleLineInfoLayoutConstraints firstObject];
 
-  LOBYTE(v2) = [v3 isActive];
-  return v2;
+  LOBYTE(doubleLineInfoLayoutConstraints) = [firstObject isActive];
+  return doubleLineInfoLayoutConstraints;
 }
 
 - (BOOL)_infoLineRequiresDoubleLayout
 {
-  v3 = [(TVRUINowPlayingInfoViewController *)self detailsTextView];
-  [v3 bounds];
+  detailsTextView = [(TVRUINowPlayingInfoViewController *)self detailsTextView];
+  [detailsTextView bounds];
   v5 = v4;
   result = v5 != 0.0 && (-[TVRUINowPlayingInfoViewController infoLabel](self, "infoLabel"), v6 = ;
   return result;
@@ -883,28 +883,28 @@ void __55__TVRUINowPlayingInfoViewController_configureHierarchy__block_invoke_5(
 
 - (void)openProductPage
 {
-  v3 = [(TVRUINowPlayingInfoViewController *)self nowPlayingInfo];
-  v6 = [v3 metadata];
+  nowPlayingInfo = [(TVRUINowPlayingInfoViewController *)self nowPlayingInfo];
+  metadata = [nowPlayingInfo metadata];
 
-  v4 = [v6 productPageURL];
-  if (v4)
+  productPageURL = [metadata productPageURL];
+  if (productPageURL)
   {
-    v5 = [(TVRUINowPlayingInfoViewController *)self actionProvider];
-    [v5 openURL:v4];
+    actionProvider = [(TVRUINowPlayingInfoViewController *)self actionProvider];
+    [actionProvider openURL:productPageURL];
   }
 }
 
-- (void)_animateButtonToHighlightState:(id)a3
+- (void)_animateButtonToHighlightState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(TVRUINowPlayingInfoViewController *)self setUserInteractionInProgress:1];
   v5 = MEMORY[0x277D75D18];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__TVRUINowPlayingInfoViewController__animateButtonToHighlightState___block_invoke;
   v7[3] = &unk_279D87C20;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   [v5 animateWithDuration:v7 animations:0.2];
 }
 
@@ -916,17 +916,17 @@ uint64_t __68__TVRUINowPlayingInfoViewController__animateButtonToHighlightState_
   return [*(a1 + 32) setTransform:&v3];
 }
 
-- (void)_animateButtonFromHighlightState:(id)a3
+- (void)_animateButtonFromHighlightState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(TVRUINowPlayingInfoViewController *)self setUserInteractionInProgress:0];
   v5 = MEMORY[0x277D75D18];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__TVRUINowPlayingInfoViewController__animateButtonFromHighlightState___block_invoke;
   v7[3] = &unk_279D87C20;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   [v5 animateWithDuration:v7 animations:0.2];
 }
 

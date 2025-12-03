@@ -1,15 +1,15 @@
 @interface PFVideoMetadataAudioTrackFormatInfo
-+ (id)infoForFirstAudioTrackOfAsset:(id)a3 matchingCodecPredicate:(id)a4;
-- (BOOL)getHOAChannelCount:(int64_t *)a3 BEDChannelCount:(int64_t *)a4;
++ (id)infoForFirstAudioTrackOfAsset:(id)asset matchingCodecPredicate:(id)predicate;
+- (BOOL)getHOAChannelCount:(int64_t *)count BEDChannelCount:(int64_t *)channelCount;
 - (int64_t)channelCount;
 @end
 
 @implementation PFVideoMetadataAudioTrackFormatInfo
 
-- (BOOL)getHOAChannelCount:(int64_t *)a3 BEDChannelCount:(int64_t *)a4
+- (BOOL)getHOAChannelCount:(int64_t *)count BEDChannelCount:(int64_t *)channelCount
 {
-  *a3 = 0;
-  *a4 = 0;
+  *count = 0;
+  *channelCount = 0;
   if ([(PFVideoMetadataAudioTrackFormatInfo *)self channelLayoutUsesChannelDescriptions])
   {
     channelLayout = self->_channelLayout;
@@ -38,7 +38,7 @@
       while (mNumberChannelDescriptions);
       if (v9)
       {
-        *a3 = v9;
+        *count = v9;
       }
     }
 
@@ -48,19 +48,19 @@
       v10 = 0;
     }
 
-    *a4 = [(PFVideoMetadataAudioTrackFormatInfo *)self channelCount]- (v9 + v10);
+    *channelCount = [(PFVideoMetadataAudioTrackFormatInfo *)self channelCount]- (v9 + v10);
     goto LABEL_16;
   }
 
-  v16 = [(PFVideoMetadataAudioTrackFormatInfo *)self channelLayoutUsesHOA];
-  if (v16)
+  channelLayoutUsesHOA = [(PFVideoMetadataAudioTrackFormatInfo *)self channelLayoutUsesHOA];
+  if (channelLayoutUsesHOA)
   {
-    *a3 = self->_channelLayout->mChannelLayoutTag;
+    *count = self->_channelLayout->mChannelLayoutTag;
 LABEL_16:
-    LOBYTE(v16) = 1;
+    LOBYTE(channelLayoutUsesHOA) = 1;
   }
 
-  return v16;
+  return channelLayoutUsesHOA;
 }
 
 - (int64_t)channelCount
@@ -77,22 +77,22 @@ LABEL_16:
   }
 }
 
-+ (id)infoForFirstAudioTrackOfAsset:(id)a3 matchingCodecPredicate:(id)a4
++ (id)infoForFirstAudioTrackOfAsset:(id)asset matchingCodecPredicate:(id)predicate
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  predicateCopy = predicate;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = [PFMediaUtilities tracksWithMediaType:*MEMORY[0x1E69875A0] forAsset:v5];
+  v7 = [PFMediaUtilities tracksWithMediaType:*MEMORY[0x1E69875A0] forAsset:assetCopy];
   v8 = [v7 countByEnumeratingWithState:&v30 objects:v37 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v31;
-    v24 = v5;
+    v24 = assetCopy;
     v25 = v7;
     v23 = *v31;
     do
@@ -109,8 +109,8 @@ LABEL_16:
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v13 = [v12 formatDescriptions];
-        v14 = [v13 countByEnumeratingWithState:&v26 objects:v36 count:16];
+        formatDescriptions = [v12 formatDescriptions];
+        v14 = [formatDescriptions countByEnumeratingWithState:&v26 objects:v36 count:16];
         if (v14)
         {
           v15 = v14;
@@ -121,19 +121,19 @@ LABEL_16:
             {
               if (*v27 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(formatDescriptions);
               }
 
               v18 = *(*(&v26 + 1) + 8 * j);
               MediaSubType = CMFormatDescriptionGetMediaSubType(v18);
-              if (v6[2](v6, MediaSubType))
+              if (predicateCopy[2](predicateCopy, MediaSubType))
               {
                 v20 = objc_opt_new();
                 objc_storeStrong((v20 + 8), v12);
                 *(v20 + 16) = v18;
                 RichestDecodableFormat = CMAudioFormatDescriptionGetRichestDecodableFormat(v18);
                 *(v20 + 24) = RichestDecodableFormat;
-                v5 = v24;
+                assetCopy = v24;
                 if (!RichestDecodableFormat && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412290;
@@ -148,7 +148,7 @@ LABEL_16:
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v26 objects:v36 count:16];
+            v15 = [formatDescriptions countByEnumeratingWithState:&v26 objects:v36 count:16];
             if (v15)
             {
               continue;
@@ -164,7 +164,7 @@ LABEL_16:
 
       v9 = [v25 countByEnumeratingWithState:&v30 objects:v37 count:16];
       v20 = 0;
-      v5 = v24;
+      assetCopy = v24;
     }
 
     while (v9);

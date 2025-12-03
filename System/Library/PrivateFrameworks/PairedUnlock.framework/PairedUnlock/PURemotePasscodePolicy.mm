@@ -1,20 +1,20 @@
 @interface PURemotePasscodePolicy
-- (BOOL)isEqual:(id)a3;
-- (PURemotePasscodePolicy)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PURemotePasscodePolicy)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PURemotePasscodePolicy
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5 = -[PURemotePasscodePolicy isModificationAllowed](self, "isModificationAllowed"), v5 == [v4 isModificationAllowed]))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5 = -[PURemotePasscodePolicy isModificationAllowed](self, "isModificationAllowed"), v5 == [equalCopy isModificationAllowed]))
   {
-    v8 = [(PURemotePasscodePolicy *)self passcodeMinimumLength];
-    v6 = v8 == [v4 passcodeMinimumLength];
+    passcodeMinimumLength = [(PURemotePasscodePolicy *)self passcodeMinimumLength];
+    v6 = passcodeMinimumLength == [equalCopy passcodeMinimumLength];
   }
 
   else
@@ -30,9 +30,9 @@
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendBool:-[PURemotePasscodePolicy isModificationAllowed](self withName:{"isModificationAllowed"), @"isModificationAllowed"}];
   v5 = [v3 appendUnsignedInteger:-[PURemotePasscodePolicy passcodeMinimumLength](self withName:{"passcodeMinimumLength"), @"passcodeMinimumLength"}];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (unint64_t)hash
@@ -45,27 +45,27 @@
   return v6;
 }
 
-- (PURemotePasscodePolicy)initWithCoder:(id)a3
+- (PURemotePasscodePolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PURemotePasscodePolicy;
   v5 = [(PURemotePasscodePolicy *)&v7 init];
   if (v5)
   {
-    v5->_modificationAllowed = [v4 decodeBoolForKey:@"kPURemotePasscodePolicy_ModificationAllowed"];
-    v5->_passcodeMinimumLength = [v4 decodeIntegerForKey:@"kPURemotePasscodePolicy_MinimumLength"];
+    v5->_modificationAllowed = [coderCopy decodeBoolForKey:@"kPURemotePasscodePolicy_ModificationAllowed"];
+    v5->_passcodeMinimumLength = [coderCopy decodeIntegerForKey:@"kPURemotePasscodePolicy_MinimumLength"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modificationAllowed = self->_modificationAllowed;
-  v5 = a3;
-  [v5 encodeBool:modificationAllowed forKey:@"kPURemotePasscodePolicy_ModificationAllowed"];
-  [v5 encodeInteger:self->_passcodeMinimumLength forKey:@"kPURemotePasscodePolicy_MinimumLength"];
+  coderCopy = coder;
+  [coderCopy encodeBool:modificationAllowed forKey:@"kPURemotePasscodePolicy_ModificationAllowed"];
+  [coderCopy encodeInteger:self->_passcodeMinimumLength forKey:@"kPURemotePasscodePolicy_MinimumLength"];
 }
 
 @end

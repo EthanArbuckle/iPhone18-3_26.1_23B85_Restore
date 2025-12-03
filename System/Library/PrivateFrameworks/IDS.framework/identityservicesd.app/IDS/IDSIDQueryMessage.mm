@@ -1,13 +1,13 @@
 @interface IDSIDQueryMessage
-- (BOOL)hasRequiredKeys:(id *)a3;
+- (BOOL)hasRequiredKeys:(id *)keys;
 - (IDSIDQueryMessage)init;
 - (id)additionalMessageHeaders;
 - (id)additionalQueryStringParameters;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dataUsageBundleIdentifier;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSIDQueryMessage
@@ -26,24 +26,24 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = IDSIDQueryMessage;
-  v4 = [(IDSIDQueryMessage *)&v10 copyWithZone:a3];
-  v5 = [(IDSIDQueryMessage *)self uris];
-  [v4 setURIs:v5];
+  v4 = [(IDSIDQueryMessage *)&v10 copyWithZone:zone];
+  uris = [(IDSIDQueryMessage *)self uris];
+  [v4 setURIs:uris];
 
-  v6 = [(IDSIDQueryMessage *)self weight];
-  [v4 setWeight:v6];
+  weight = [(IDSIDQueryMessage *)self weight];
+  [v4 setWeight:weight];
 
-  v7 = [(IDSIDQueryMessage *)self responseIdentities];
-  [v4 setResponseIdentities:v7];
+  responseIdentities = [(IDSIDQueryMessage *)self responseIdentities];
+  [v4 setResponseIdentities:responseIdentities];
 
   [(IDSIDQueryMessage *)self timeout];
   [v4 setTimeout:?];
-  v8 = [(IDSIDQueryMessage *)self requiredForMessaging];
-  [v4 setRequiredForMessaging:v8];
+  requiredForMessaging = [(IDSIDQueryMessage *)self requiredForMessaging];
+  [v4 setRequiredForMessaging:requiredForMessaging];
 
   [v4 setResultExpected:{-[IDSIDQueryMessage resultExpected](self, "resultExpected")}];
   [v4 setIsForced:{-[IDSIDQueryMessage isForced](self, "isForced")}];
@@ -55,18 +55,18 @@
 {
   v7.receiver = self;
   v7.super_class = IDSIDQueryMessage;
-  v3 = [(IDSIDQueryMessage *)&v7 additionalQueryStringParameters];
-  Mutable = [v3 mutableCopy];
+  additionalQueryStringParameters = [(IDSIDQueryMessage *)&v7 additionalQueryStringParameters];
+  Mutable = [additionalQueryStringParameters mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSIDQueryMessage *)self weight];
-  if (v5)
+  weight = [(IDSIDQueryMessage *)self weight];
+  if (weight)
   {
-    CFDictionarySetValue(Mutable, @"weight", v5);
+    CFDictionarySetValue(Mutable, @"weight", weight);
   }
 
   return Mutable;
@@ -76,30 +76,30 @@
 {
   v9.receiver = self;
   v9.super_class = IDSIDQueryMessage;
-  v3 = [(IDSIDQueryMessage *)&v9 additionalMessageHeaders];
-  Mutable = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSIDQueryMessage *)&v9 additionalMessageHeaders];
+  Mutable = [additionalMessageHeaders mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSIDQueryMessage *)self service];
-  if (v5)
+  service = [(IDSIDQueryMessage *)self service];
+  if (service)
   {
-    CFDictionarySetValue(Mutable, @"x-id-service", v5);
+    CFDictionarySetValue(Mutable, @"x-id-service", service);
   }
 
-  v6 = [(IDSIDQueryMessage *)self subService];
-  if (v6)
+  subService = [(IDSIDQueryMessage *)self subService];
+  if (subService)
   {
-    CFDictionarySetValue(Mutable, @"x-id-sub-service", v6);
+    CFDictionarySetValue(Mutable, @"x-id-sub-service", subService);
   }
 
-  v7 = [(IDSIDQueryMessage *)self requiredForMessaging];
-  if (v7)
+  requiredForMessaging = [(IDSIDQueryMessage *)self requiredForMessaging];
+  if (requiredForMessaging)
   {
-    CFDictionarySetValue(Mutable, @"x-required-for-message", v7);
+    CFDictionarySetValue(Mutable, @"x-required-for-message", requiredForMessaging);
   }
 
   if (self->_resultExpected)
@@ -122,8 +122,8 @@
 
 - (id)dataUsageBundleIdentifier
 {
-  v2 = [(IDSIDQueryMessage *)self service];
-  v3 = [v2 isEqualToString:@"com.apple.madrid"];
+  service = [(IDSIDQueryMessage *)self service];
+  v3 = [service isEqualToString:@"com.apple.madrid"];
 
   if (v3)
   {
@@ -148,10 +148,10 @@
 - (id)messageBody
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(IDSIDQueryMessage *)self uris];
-  if (v4)
+  uris = [(IDSIDQueryMessage *)self uris];
+  if (uris)
   {
-    CFDictionarySetValue(v3, @"uris", v4);
+    CFDictionarySetValue(v3, @"uris", uris);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -162,28 +162,28 @@
   return v3;
 }
 
-- (BOOL)hasRequiredKeys:(id *)a3
+- (BOOL)hasRequiredKeys:(id *)keys
 {
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(IDSIDQueryMessage *)self selfURI];
+  selfURI = [(IDSIDQueryMessage *)self selfURI];
 
-  if (!v6)
+  if (!selfURI)
   {
     [v5 addObject:@"self URI"];
   }
 
-  v7 = [(IDSIDQueryMessage *)self uris];
-  v8 = [v7 count];
+  uris = [(IDSIDQueryMessage *)self uris];
+  v8 = [uris count];
 
   if (!v8)
   {
     [v5 addObject:@"uris"];
   }
 
-  if (*a3 && [v5 count])
+  if (*keys && [v5 count])
   {
     v9 = v5;
-    *a3 = v5;
+    *keys = v5;
   }
 
   if ([v5 count])
@@ -195,15 +195,15 @@
   {
     v12.receiver = self;
     v12.super_class = IDSIDQueryMessage;
-    v10 = [(IDSIDQueryMessage *)&v12 hasRequiredKeys:a3];
+    v10 = [(IDSIDQueryMessage *)&v12 hasRequiredKeys:keys];
   }
 
   return v10;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = [a3 _dictionaryForKey:@"results"];
+  v4 = [dictionary _dictionaryForKey:@"results"];
   v5 = v4;
   if (v4)
   {

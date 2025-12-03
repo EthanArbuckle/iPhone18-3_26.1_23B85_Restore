@@ -1,16 +1,16 @@
 @interface HMDDeviceNotificationHandler
 + (id)logCategory;
-- (HMDDeviceNotificationHandler)initWithDestination:(id)a3 watchDevice:(BOOL)a4 withRequestIdentifier:(id)a5 messageDispatcher:(id)a6 home:(id)a7 dataSource:(id)a8;
+- (HMDDeviceNotificationHandler)initWithDestination:(id)destination watchDevice:(BOOL)device withRequestIdentifier:(id)identifier messageDispatcher:(id)dispatcher home:(id)home dataSource:(id)source;
 - (HMDHome)home;
-- (id)_notificationUpdateWithRequestID:(id)a3 allowAdd:(BOOL)a4;
+- (id)_notificationUpdateWithRequestID:(id)d allowAdd:(BOOL)add;
 - (id)logIdentifier;
-- (void)_beginCoalesce:(BOOL)a3;
+- (void)_beginCoalesce:(BOOL)coalesce;
 - (void)_dispatchNotification;
-- (void)_dispatchNotificationUpdate:(id)a3;
-- (void)sendCoalescedRemoteNotificationForAccessories:(id)a3;
-- (void)sendNotificationForCharacteristicUpdates:(id)a3 withRequestIdentifier:(id)a4 notificationUpdateIdentifier:(id)a5 completion:(id)a6;
-- (void)sendNotificationForMediaProperties:(id)a3 withRequestIdentifier:(id)a4 notificationUpdateIdentifier:(id)a5;
-- (void)timerDidFire:(id)a3;
+- (void)_dispatchNotificationUpdate:(id)update;
+- (void)sendCoalescedRemoteNotificationForAccessories:(id)accessories;
+- (void)sendNotificationForCharacteristicUpdates:(id)updates withRequestIdentifier:(id)identifier notificationUpdateIdentifier:(id)updateIdentifier completion:(id)completion;
+- (void)sendNotificationForMediaProperties:(id)properties withRequestIdentifier:(id)identifier notificationUpdateIdentifier:(id)updateIdentifier;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDDeviceNotificationHandler
@@ -25,30 +25,30 @@
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDDeviceNotificationHandler *)self home];
-  v5 = [v4 uuid];
-  v6 = [(HMDDeviceNotificationHandler *)self destination];
-  v7 = [v3 stringWithFormat:@"%@/%@", v5, v6];
+  home = [(HMDDeviceNotificationHandler *)self home];
+  uuid = [home uuid];
+  destination = [(HMDDeviceNotificationHandler *)self destination];
+  v7 = [v3 stringWithFormat:@"%@/%@", uuid, destination];
 
   return v7;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDDeviceNotificationHandler *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HMDDeviceNotificationHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDDeviceNotificationHandler *)self coalesceTimer];
-  if ([v4 isEqual:v6])
+  coalesceTimer = [(HMDDeviceNotificationHandler *)self coalesceTimer];
+  if ([fireCopy isEqual:coalesceTimer])
   {
   }
 
   else
   {
-    v7 = [(HMDDeviceNotificationHandler *)self delayTimer];
-    v8 = [v4 isEqual:v7];
+    delayTimer = [(HMDDeviceNotificationHandler *)self delayTimer];
+    v8 = [fireCopy isEqual:delayTimer];
 
     if (!v8)
     {
@@ -57,7 +57,7 @@
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -65,37 +65,37 @@
     v14 = 138543618;
     v15 = v12;
     v16 = 2112;
-    v17 = v4;
+    v17 = fireCopy;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Notification timer fired %@", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMDDeviceNotificationHandler *)v10 _dispatchNotification];
+  [(HMDDeviceNotificationHandler *)selfCopy _dispatchNotification];
 LABEL_7:
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_dispatchNotificationUpdate:(id)a3
+- (void)_dispatchNotificationUpdate:(id)update
 {
   v80[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDDeviceNotificationHandler *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  updateCopy = update;
+  workQueue = [(HMDDeviceNotificationHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v4)
+  if (updateCopy)
   {
-    v6 = [v4 characteristicUpdateTuples];
-    v7 = [v4 characteristicUpdateTuples];
-    v59 = [v7 na_map:&__block_literal_global_71];
+    characteristicUpdateTuples = [updateCopy characteristicUpdateTuples];
+    characteristicUpdateTuples2 = [updateCopy characteristicUpdateTuples];
+    v59 = [characteristicUpdateTuples2 na_map:&__block_literal_global_71];
 
     [v59 na_each:&__block_literal_global_74_166528];
-    v58 = [v4 mediaProperties];
-    if ([v59 count] || objc_msgSend(v58, "count"))
+    mediaProperties = [updateCopy mediaProperties];
+    if ([v59 count] || objc_msgSend(mediaProperties, "count"))
     {
       v79 = @"kNotificationUpdateIdentifierKey";
-      v8 = [v4 notificationUpdateID];
-      v80[0] = v8;
+      notificationUpdateID = [updateCopy notificationUpdateID];
+      v80[0] = notificationUpdateID;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v80 forKeys:&v79 count:1];
       v57 = [v9 mutableCopy];
 
@@ -105,24 +105,24 @@ LABEL_7:
         [v57 setObject:v55 forKeyedSubscript:@"kCharacteristicNotificationsKey"];
       }
 
-      if ([v58 count])
+      if ([mediaProperties count])
       {
-        v10 = [HMDMediaPropertyResponse serializeResponses:v58];
+        v10 = [HMDMediaPropertyResponse serializeResponses:mediaProperties];
         if (v10)
         {
           [v57 setObject:v10 forKeyedSubscript:@"kMediaNotificationsKey"];
         }
       }
 
-      v56 = [v4 requestID];
-      if (v56)
+      requestID = [updateCopy requestID];
+      if (requestID)
       {
-        v11 = [(HMDDeviceNotificationHandler *)self destination];
-        v12 = [v56 isEqualToString:v11];
+        destination = [(HMDDeviceNotificationHandler *)self destination];
+        v12 = [requestID isEqualToString:destination];
 
         if ((v12 & 1) == 0)
         {
-          [v57 setObject:v56 forKeyedSubscript:@"kRequestIdentifierKey"];
+          [v57 setObject:requestID forKeyedSubscript:@"kRequestIdentifierKey"];
         }
       }
 
@@ -144,10 +144,10 @@ LABEL_7:
               objc_enumerationMutation(v13);
             }
 
-            v17 = [*(*(&v64 + 1) + 8 * i) characteristic];
-            v18 = [v17 service];
-            v19 = [(HMDDeviceNotificationHandler *)self destination];
-            v20 = [v18 shouldIncludePresenceForDeviceWithDestination:v19];
+            characteristic = [*(*(&v64 + 1) + 8 * i) characteristic];
+            service = [characteristic service];
+            destination2 = [(HMDDeviceNotificationHandler *)self destination];
+            v20 = [service shouldIncludePresenceForDeviceWithDestination:destination2];
 
             if (v20)
             {
@@ -169,39 +169,39 @@ LABEL_7:
       v21 = 0;
 LABEL_23:
 
-      v22 = [(HMDDeviceNotificationHandler *)self home];
-      v23 = v22;
-      if (v22)
+      home = [(HMDDeviceNotificationHandler *)self home];
+      v23 = home;
+      if (home)
       {
         if (v21)
         {
-          v24 = [v22 presenceMonitor];
-          v25 = [v24 currentHomePresence];
-          v51 = [v25 serializedUUIDDictionary];
+          presenceMonitor = [home presenceMonitor];
+          currentHomePresence = [presenceMonitor currentHomePresence];
+          serializedUUIDDictionary = [currentHomePresence serializedUUIDDictionary];
 
-          v26 = [v23 presenceMonitor];
-          v27 = [v26 currentHomePresence];
-          v50 = [v27 serializedIdentifierDictionary];
+          presenceMonitor2 = [v23 presenceMonitor];
+          currentHomePresence2 = [presenceMonitor2 currentHomePresence];
+          serializedIdentifierDictionary = [currentHomePresence2 serializedIdentifierDictionary];
 
-          [v57 setObject:v51 forKeyedSubscript:@"kPresenceDictionaryForNotificationKey"];
-          [v57 setObject:v50 forKeyedSubscript:@"kPresencePairingIdentifierDictionaryForNotificationKey"];
+          [v57 setObject:serializedUUIDDictionary forKeyedSubscript:@"kPresenceDictionaryForNotificationKey"];
+          [v57 setObject:serializedIdentifierDictionary forKeyedSubscript:@"kPresencePairingIdentifierDictionaryForNotificationKey"];
         }
 
         else
         {
-          v50 = 0;
-          v51 = 0;
+          serializedIdentifierDictionary = 0;
+          serializedUUIDDictionary = 0;
         }
 
-        v32 = [(HMDDeviceNotificationHandler *)self destination];
-        v53 = [HMDDeviceHandle deviceHandleForDestination:v32];
+        destination3 = [(HMDDeviceNotificationHandler *)self destination];
+        v53 = [HMDDeviceHandle deviceHandleForDestination:destination3];
 
         v33 = +[HMDAccountRegistry sharedRegistry];
         v54 = [v33 deviceForHandle:v53];
 
         v34 = [HMDRemoteDeviceMessageDestination alloc];
-        v35 = [v23 uuid];
-        v52 = [(HMDRemoteDeviceMessageDestination *)v34 initWithTarget:v35 device:v54];
+        uuid = [v23 uuid];
+        v52 = [(HMDRemoteDeviceMessageDestination *)v34 initWithTarget:uuid device:v54];
 
         v36 = [[HMDRemoteMessage alloc] initWithName:@"kCharacterisiticsChangedInternalNotificationKey" qualityOfService:17 destination:v52 payload:v57 type:3 timeout:1 secure:0.0];
         if ([v23 isResidentFirstAccessoryCommunicationEnabled])
@@ -214,41 +214,41 @@ LABEL_23:
         }
 
         context = objc_autoreleasePoolPush();
-        v38 = self;
+        selfCopy = self;
         v39 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
         {
           v40 = HMFGetLogIdentifier();
-          v41 = [(HMDRemoteMessage *)v36 identifier];
+          identifier = [(HMDRemoteMessage *)v36 identifier];
           v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v13, "count")}];
-          v43 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v58, "count")}];
-          v44 = [(HMDRemoteMessage *)v36 messagePayload];
+          v43 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(mediaProperties, "count")}];
+          messagePayload = [(HMDRemoteMessage *)v36 messagePayload];
           *buf = 138544386;
           v69 = v40;
           v70 = 2112;
-          v71 = v41;
+          v71 = identifier;
           v72 = 2112;
           v73 = v42;
           v74 = 2112;
           v75 = v43;
           v76 = 2112;
-          v77 = v44;
+          v77 = messagePayload;
           _os_log_impl(&dword_2531F8000, v39, OS_LOG_TYPE_INFO, "%{public}@Dispatching remote notification %@ with characteristics[%@], media properties[%@], payload: %@", buf, 0x34u);
         }
 
         objc_autoreleasePoolPop(context);
-        v45 = [v23 workQueue];
-        objc_initWeak(buf, v38);
-        v46 = [(HMDDeviceNotificationHandler *)v38 messageDispatcher];
+        workQueue2 = [v23 workQueue];
+        objc_initWeak(buf, selfCopy);
+        messageDispatcher = [(HMDDeviceNotificationHandler *)selfCopy messageDispatcher];
         v60[0] = MEMORY[0x277D85DD0];
         v60[1] = 3221225472;
         v60[2] = __60__HMDDeviceNotificationHandler__dispatchNotificationUpdate___block_invoke_82;
         v60[3] = &unk_279731988;
         objc_copyWeak(&v63, buf);
-        v47 = v45;
+        v47 = workQueue2;
         v61 = v47;
-        v62 = v4;
-        [v46 sendMessage:v36 completionHandler:v60];
+        v62 = updateCopy;
+        [messageDispatcher sendMessage:v36 completionHandler:v60];
 
         objc_destroyWeak(&v63);
         objc_destroyWeak(buf);
@@ -257,7 +257,7 @@ LABEL_23:
       else
       {
         v28 = objc_autoreleasePoolPush();
-        v29 = self;
+        selfCopy2 = self;
         v30 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
@@ -265,7 +265,7 @@ LABEL_23:
           *buf = 138543618;
           v69 = v31;
           v70 = 2112;
-          v71 = v4;
+          v71 = updateCopy;
           _os_log_impl(&dword_2531F8000, v30, OS_LOG_TYPE_ERROR, "%{public}@Unable to dispatch notification update %@ due to no home", buf, 0x16u);
         }
 
@@ -335,14 +335,14 @@ void *__60__HMDDeviceNotificationHandler__dispatchNotificationUpdate___block_inv
 - (void)_dispatchNotification
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDDeviceNotificationHandler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDDeviceNotificationHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDDeviceNotificationHandler *)self delayTimer];
-  [v4 cancel];
+  delayTimer = [(HMDDeviceNotificationHandler *)self delayTimer];
+  [delayTimer cancel];
 
-  v5 = [(HMDDeviceNotificationHandler *)self coalesceTimer];
-  [v5 cancel];
+  coalesceTimer = [(HMDDeviceNotificationHandler *)self coalesceTimer];
+  [coalesceTimer cancel];
 
   [(HMDDeviceNotificationHandler *)self setDelayTimer:0];
   [(HMDDeviceNotificationHandler *)self setCoalesceTimer:0];
@@ -350,8 +350,8 @@ void *__60__HMDDeviceNotificationHandler__dispatchNotificationUpdate___block_inv
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(HMDDeviceNotificationHandler *)self deviceNotificationsByRequestIDs];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  deviceNotificationsByRequestIDs = [(HMDDeviceNotificationHandler *)self deviceNotificationsByRequestIDs];
+  v7 = [deviceNotificationsByRequestIDs countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -363,7 +363,7 @@ void *__60__HMDDeviceNotificationHandler__dispatchNotificationUpdate___block_inv
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(deviceNotificationsByRequestIDs);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
@@ -374,52 +374,52 @@ void *__60__HMDDeviceNotificationHandler__dispatchNotificationUpdate___block_inv
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [deviceNotificationsByRequestIDs countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [(HMDDeviceNotificationHandler *)self deviceNotificationsByRequestIDs];
-  [v13 removeAllObjects];
+  deviceNotificationsByRequestIDs2 = [(HMDDeviceNotificationHandler *)self deviceNotificationsByRequestIDs];
+  [deviceNotificationsByRequestIDs2 removeAllObjects];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_beginCoalesce:(BOOL)a3
+- (void)_beginCoalesce:(BOOL)coalesce
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (coalesce)
   {
-    v4 = [(HMDDeviceNotificationHandler *)self coalesceTimer];
+    coalesceTimer = [(HMDDeviceNotificationHandler *)self coalesceTimer];
 
-    if (!v4)
+    if (!coalesceTimer)
     {
-      v5 = [(HMDDeviceNotificationHandler *)self dataSource];
-      v6 = [v5 timerWithType:0];
+      dataSource = [(HMDDeviceNotificationHandler *)self dataSource];
+      v6 = [dataSource timerWithType:0];
       [(HMDDeviceNotificationHandler *)self setCoalesceTimer:v6];
 
-      v7 = [(HMDDeviceNotificationHandler *)self coalesceTimer];
-      [v7 setDelegate:self];
+      coalesceTimer2 = [(HMDDeviceNotificationHandler *)self coalesceTimer];
+      [coalesceTimer2 setDelegate:self];
 
-      v8 = [(HMDDeviceNotificationHandler *)self workQueue];
-      v9 = [(HMDDeviceNotificationHandler *)self coalesceTimer];
-      [v9 setDelegateQueue:v8];
+      workQueue = [(HMDDeviceNotificationHandler *)self workQueue];
+      coalesceTimer3 = [(HMDDeviceNotificationHandler *)self coalesceTimer];
+      [coalesceTimer3 setDelegateQueue:workQueue];
 
-      v10 = [(HMDDeviceNotificationHandler *)self coalesceTimer];
-      [v10 resume];
+      coalesceTimer4 = [(HMDDeviceNotificationHandler *)self coalesceTimer];
+      [coalesceTimer4 resume];
 
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy2 = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v14 = HMFGetLogIdentifier();
-        v15 = [(HMDDeviceNotificationHandler *)v12 coalesceTimer];
+        coalesceTimer5 = [(HMDDeviceNotificationHandler *)selfCopy2 coalesceTimer];
         v26 = 138543618;
         v27 = v14;
         v28 = 2112;
-        v29 = v15;
+        v29 = coalesceTimer5;
         v16 = "%{public}@Running coalescence timer %@";
 LABEL_9:
         _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, v16, &v26, 0x16u);
@@ -435,35 +435,35 @@ LABEL_9:
 
   if ([(HMDDeviceNotificationHandler *)self delaySupported])
   {
-    v17 = [(HMDDeviceNotificationHandler *)self delayTimer];
+    delayTimer = [(HMDDeviceNotificationHandler *)self delayTimer];
 
-    if (!v17)
+    if (!delayTimer)
     {
-      v18 = [(HMDDeviceNotificationHandler *)self dataSource];
-      v19 = [v18 timerWithType:1];
+      dataSource2 = [(HMDDeviceNotificationHandler *)self dataSource];
+      v19 = [dataSource2 timerWithType:1];
       [(HMDDeviceNotificationHandler *)self setDelayTimer:v19];
 
-      v20 = [(HMDDeviceNotificationHandler *)self delayTimer];
-      [v20 setDelegate:self];
+      delayTimer2 = [(HMDDeviceNotificationHandler *)self delayTimer];
+      [delayTimer2 setDelegate:self];
 
-      v21 = [(HMDDeviceNotificationHandler *)self workQueue];
-      v22 = [(HMDDeviceNotificationHandler *)self delayTimer];
-      [v22 setDelegateQueue:v21];
+      workQueue2 = [(HMDDeviceNotificationHandler *)self workQueue];
+      delayTimer3 = [(HMDDeviceNotificationHandler *)self delayTimer];
+      [delayTimer3 setDelegateQueue:workQueue2];
 
-      v23 = [(HMDDeviceNotificationHandler *)self delayTimer];
-      [v23 resume];
+      delayTimer4 = [(HMDDeviceNotificationHandler *)self delayTimer];
+      [delayTimer4 resume];
 
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy2 = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v14 = HMFGetLogIdentifier();
-        v15 = [(HMDDeviceNotificationHandler *)v12 delayTimer];
+        coalesceTimer5 = [(HMDDeviceNotificationHandler *)selfCopy2 delayTimer];
         v26 = 138543618;
         v27 = v14;
         v28 = 2112;
-        v29 = v15;
+        v29 = coalesceTimer5;
         v16 = "%{public}@Running delay timer %@";
         goto LABEL_9;
       }
@@ -483,30 +483,30 @@ LABEL_11:
   [(HMDDeviceNotificationHandler *)self _dispatchNotification];
 }
 
-- (void)sendNotificationForMediaProperties:(id)a3 withRequestIdentifier:(id)a4 notificationUpdateIdentifier:(id)a5
+- (void)sendNotificationForMediaProperties:(id)properties withRequestIdentifier:(id)identifier notificationUpdateIdentifier:(id)updateIdentifier
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDDeviceNotificationHandler *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  propertiesCopy = properties;
+  identifierCopy = identifier;
+  updateIdentifierCopy = updateIdentifier;
+  workQueue = [(HMDDeviceNotificationHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([v8 count])
+  if ([propertiesCopy count])
   {
-    v12 = [(HMDDeviceNotificationHandler *)self _notificationUpdateWithRequestID:v9 allowAdd:1];
-    v13 = [(HMDDeviceNotificationHandler *)self home];
-    v14 = [v13 primaryResident];
-    [v14 device];
-    v15 = v29 = v10;
-    v16 = [v15 remoteDestinationString];
-    v17 = [(HMDDeviceNotificationHandler *)self destination];
-    v18 = [v16 isEqualToString:v17] ^ 1;
+    v12 = [(HMDDeviceNotificationHandler *)self _notificationUpdateWithRequestID:identifierCopy allowAdd:1];
+    home = [(HMDDeviceNotificationHandler *)self home];
+    primaryResident = [home primaryResident];
+    [primaryResident device];
+    v15 = v29 = updateIdentifierCopy;
+    remoteDestinationString = [v15 remoteDestinationString];
+    destination = [(HMDDeviceNotificationHandler *)self destination];
+    v18 = [remoteDestinationString isEqualToString:destination] ^ 1;
 
-    v10 = v29;
-    [v12 updateWithUpdatedMediaPropertiesByMediaResponses:v8 notificationUpdateID:v29 completion:0];
+    updateIdentifierCopy = v29;
+    [v12 updateWithUpdatedMediaPropertiesByMediaResponses:propertiesCopy notificationUpdateID:v29 completion:0];
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -515,24 +515,24 @@ LABEL_11:
       *buf = 138544130;
       v31 = v22;
       v32 = 2112;
-      v33 = v8;
+      v33 = propertiesCopy;
       v34 = 2112;
-      v35 = v9;
+      v35 = identifierCopy;
       v36 = 2112;
       v37 = v23;
       _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_INFO, "%{public}@Coalescing media notifications %@, id: %@, shouldCoalesce: %@", buf, 0x2Au);
 
-      v10 = v29;
+      updateIdentifierCopy = v29;
     }
 
     objc_autoreleasePoolPop(v19);
-    [(HMDDeviceNotificationHandler *)v20 _beginCoalesce:(v9 == 0) & v18];
+    [(HMDDeviceNotificationHandler *)selfCopy _beginCoalesce:(identifierCopy == 0) & v18];
   }
 
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy2 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
@@ -548,31 +548,31 @@ LABEL_11:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_notificationUpdateWithRequestID:(id)a3 allowAdd:(BOOL)a4
+- (id)_notificationUpdateWithRequestID:(id)d allowAdd:(BOOL)add
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HMDDeviceNotificationHandler *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  addCopy = add;
+  dCopy = d;
+  workQueue = [(HMDDeviceNotificationHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v6)
+  if (dCopy)
   {
-    v8 = v6;
+    destination = dCopy;
   }
 
   else
   {
-    v8 = [(HMDDeviceNotificationHandler *)self destination];
+    destination = [(HMDDeviceNotificationHandler *)self destination];
   }
 
-  v9 = v8;
+  v9 = destination;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__166546;
   v29 = __Block_byref_object_dispose__166547;
   v30 = 0;
-  v10 = [(HMDDeviceNotificationHandler *)self deviceNotificationsByRequestIDs];
+  deviceNotificationsByRequestIDs = [(HMDDeviceNotificationHandler *)self deviceNotificationsByRequestIDs];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __74__HMDDeviceNotificationHandler__notificationUpdateWithRequestID_allowAdd___block_invoke;
@@ -580,18 +580,18 @@ LABEL_11:
   v11 = v9;
   v23 = v11;
   v24 = &v25;
-  [v10 enumerateObjectsUsingBlock:&v19];
+  [deviceNotificationsByRequestIDs enumerateObjectsUsingBlock:&v19];
 
   v12 = v26[5];
-  if (!v12 && v4)
+  if (!v12 && addCopy)
   {
     v13 = [HMDDeviceNotificationUpdate alloc];
     v14 = [(HMDDeviceNotificationUpdate *)v13 initWithRequestID:v11, v19, v20, v21, v22];
     v15 = v26[5];
     v26[5] = v14;
 
-    v16 = [(HMDDeviceNotificationHandler *)self deviceNotificationsByRequestIDs];
-    [v16 addObject:v26[5]];
+    deviceNotificationsByRequestIDs2 = [(HMDDeviceNotificationHandler *)self deviceNotificationsByRequestIDs];
+    [deviceNotificationsByRequestIDs2 addObject:v26[5]];
 
     v12 = v26[5];
   }
@@ -618,30 +618,30 @@ void __74__HMDDeviceNotificationHandler__notificationUpdateWithRequestID_allowAd
   }
 }
 
-- (void)sendCoalescedRemoteNotificationForAccessories:(id)a3
+- (void)sendCoalescedRemoteNotificationForAccessories:(id)accessories
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDDeviceNotificationHandler *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  accessoriesCopy = accessories;
+  workQueue = [(HMDDeviceNotificationHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([v4 count])
+  if ([accessoriesCopy count])
   {
-    v6 = [(HMDDeviceNotificationHandler *)self deviceNotificationsByRequestIDs];
-    v7 = [v6 array];
+    deviceNotificationsByRequestIDs = [(HMDDeviceNotificationHandler *)self deviceNotificationsByRequestIDs];
+    array = [deviceNotificationsByRequestIDs array];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __78__HMDDeviceNotificationHandler_sendCoalescedRemoteNotificationForAccessories___block_invoke;
     v17[3] = &unk_279731140;
-    v8 = v4;
+    v8 = accessoriesCopy;
     v18 = v8;
-    v9 = [v7 na_filter:v17];
+    v9 = [array na_filter:v17];
 
     if ([v9 count])
     {
       v10 = [v8 na_map:&__block_literal_global_166588];
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
@@ -657,7 +657,7 @@ void __74__HMDDeviceNotificationHandler__notificationUpdateWithRequestID_allowAd
       }
 
       objc_autoreleasePoolPop(v11);
-      [(HMDDeviceNotificationHandler *)v12 _dispatchNotification];
+      [(HMDDeviceNotificationHandler *)selfCopy _dispatchNotification];
     }
   }
 
@@ -687,43 +687,43 @@ uint64_t __78__HMDDeviceNotificationHandler_sendCoalescedRemoteNotificationForAc
   return v5;
 }
 
-- (void)sendNotificationForCharacteristicUpdates:(id)a3 withRequestIdentifier:(id)a4 notificationUpdateIdentifier:(id)a5 completion:(id)a6
+- (void)sendNotificationForCharacteristicUpdates:(id)updates withRequestIdentifier:(id)identifier notificationUpdateIdentifier:(id)updateIdentifier completion:(id)completion
 {
   v68 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDDeviceNotificationHandler *)self workQueue];
-  dispatch_assert_queue_V2(v14);
+  updatesCopy = updates;
+  identifierCopy = identifier;
+  updateIdentifierCopy = updateIdentifier;
+  completionCopy = completion;
+  workQueue = [(HMDDeviceNotificationHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([v10 count])
+  if ([updatesCopy count])
   {
-    v51 = v13;
-    v52 = v12;
-    v15 = [(HMDDeviceNotificationHandler *)self _notificationUpdateWithRequestID:v11 allowAdd:1];
-    v16 = [(HMDDeviceNotificationHandler *)self home];
-    v17 = [v16 primaryResident];
-    v18 = [v17 device];
-    v19 = [v18 remoteDestinationString];
-    v50 = self;
-    v20 = [(HMDDeviceNotificationHandler *)self destination];
-    v21 = [v19 isEqualToString:v20] ^ 1;
+    v51 = completionCopy;
+    v52 = updateIdentifierCopy;
+    v15 = [(HMDDeviceNotificationHandler *)self _notificationUpdateWithRequestID:identifierCopy allowAdd:1];
+    home = [(HMDDeviceNotificationHandler *)self home];
+    primaryResident = [home primaryResident];
+    device = [primaryResident device];
+    remoteDestinationString = [device remoteDestinationString];
+    selfCopy = self;
+    destination = [(HMDDeviceNotificationHandler *)self destination];
+    v21 = [remoteDestinationString isEqualToString:destination] ^ 1;
 
-    v22 = (v11 == 0) & v21;
+    v22 = (identifierCopy == 0) & v21;
     v56 = +[HMDHAPMetadata getSharedInstance];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v53 = v10;
-    v23 = v10;
+    v53 = updatesCopy;
+    v23 = updatesCopy;
     v24 = [v23 countByEnumeratingWithState:&v57 objects:v67 count:16];
     if (v24)
     {
       v25 = v24;
       v48 = v15;
-      v49 = v11;
+      v49 = identifierCopy;
       v26 = 0;
       obj = v23;
       v55 = *v58;
@@ -736,16 +736,16 @@ uint64_t __78__HMDDeviceNotificationHandler_sendCoalescedRemoteNotificationForAc
             objc_enumerationMutation(obj);
           }
 
-          v28 = [*(*(&v57 + 1) + 8 * i) characteristic];
-          v29 = [v28 service];
-          v30 = [v28 type];
-          v31 = [v29 type];
-          v32 = [v56 shouldCoalesceCharacteristicNotifications:v30 forService:v31];
+          characteristic = [*(*(&v57 + 1) + 8 * i) characteristic];
+          service = [characteristic service];
+          type = [characteristic type];
+          type2 = [service type];
+          v32 = [v56 shouldCoalesceCharacteristicNotifications:type forService:type2];
 
           v22 = v32 & v22;
-          v33 = [v28 type];
-          v34 = [v29 type];
-          LOBYTE(v32) = [v56 requiresDeviceUnlock:v33 forService:v34];
+          type3 = [characteristic type];
+          type4 = [service type];
+          LOBYTE(v32) = [v56 requiresDeviceUnlock:type3 forService:type4];
 
           v26 |= v32;
         }
@@ -756,14 +756,14 @@ uint64_t __78__HMDDeviceNotificationHandler_sendCoalescedRemoteNotificationForAc
       while (v25);
 
       v15 = v48;
-      v13 = v51;
-      v12 = v52;
+      completionCopy = v51;
+      updateIdentifierCopy = v52;
       [v48 updateWithCharacteristicUpdates:obj notificationUpdateID:v52 completion:v51];
-      v11 = v49;
+      identifierCopy = v49;
       if (v26)
       {
         v35 = objc_autoreleasePoolPush();
-        v36 = v50;
+        v36 = selfCopy;
         v37 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
         {
@@ -778,16 +778,16 @@ uint64_t __78__HMDDeviceNotificationHandler_sendCoalescedRemoteNotificationForAc
         }
 
         objc_autoreleasePoolPop(v35);
-        v39 = [(HMDDeviceNotificationHandler *)v36 deviceNotificationsByRequestIDs];
-        v40 = [v39 indexOfObject:v48];
+        deviceNotificationsByRequestIDs = [(HMDDeviceNotificationHandler *)v36 deviceNotificationsByRequestIDs];
+        v40 = [deviceNotificationsByRequestIDs indexOfObject:v48];
 
         if (v40)
         {
-          v41 = [(HMDDeviceNotificationHandler *)v36 deviceNotificationsByRequestIDs];
-          [v41 removeObject:v48];
+          deviceNotificationsByRequestIDs2 = [(HMDDeviceNotificationHandler *)v36 deviceNotificationsByRequestIDs];
+          [deviceNotificationsByRequestIDs2 removeObject:v48];
 
-          v42 = [(HMDDeviceNotificationHandler *)v36 deviceNotificationsByRequestIDs];
-          [v42 insertObject:v48 atIndex:0];
+          deviceNotificationsByRequestIDs3 = [(HMDDeviceNotificationHandler *)v36 deviceNotificationsByRequestIDs];
+          [deviceNotificationsByRequestIDs3 insertObject:v48 atIndex:0];
         }
 
         [(HMDDeviceNotificationHandler *)v36 _dispatchNotification];
@@ -798,19 +798,19 @@ uint64_t __78__HMDDeviceNotificationHandler_sendCoalescedRemoteNotificationForAc
     else
     {
 
-      v12 = v52;
-      [v15 updateWithCharacteristicUpdates:v23 notificationUpdateID:v52 completion:v13];
+      updateIdentifierCopy = v52;
+      [v15 updateWithCharacteristicUpdates:v23 notificationUpdateID:v52 completion:completionCopy];
     }
 
-    [(HMDDeviceNotificationHandler *)v50 _beginCoalesce:v22];
+    [(HMDDeviceNotificationHandler *)selfCopy _beginCoalesce:v22];
 LABEL_21:
 
-    v10 = v53;
+    updatesCopy = v53;
     goto LABEL_22;
   }
 
   v43 = objc_autoreleasePoolPush();
-  v44 = self;
+  selfCopy2 = self;
   v45 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
   {
@@ -818,46 +818,46 @@ LABEL_21:
     *buf = 138543618;
     v62 = v46;
     v63 = 2112;
-    v64 = v11;
+    v64 = identifierCopy;
     _os_log_impl(&dword_2531F8000, v45, OS_LOG_TYPE_INFO, "%{public}@No characteristics updated for: %@, returning", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v43);
-  if (v13)
+  if (completionCopy)
   {
     v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    v13[2](v13, v15);
+    completionCopy[2](completionCopy, v15);
 LABEL_22:
   }
 
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDDeviceNotificationHandler)initWithDestination:(id)a3 watchDevice:(BOOL)a4 withRequestIdentifier:(id)a5 messageDispatcher:(id)a6 home:(id)a7 dataSource:(id)a8
+- (HMDDeviceNotificationHandler)initWithDestination:(id)destination watchDevice:(BOOL)device withRequestIdentifier:(id)identifier messageDispatcher:(id)dispatcher home:(id)home dataSource:(id)source
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  destinationCopy = destination;
+  dispatcherCopy = dispatcher;
+  homeCopy = home;
+  sourceCopy = source;
   v25.receiver = self;
   v25.super_class = HMDDeviceNotificationHandler;
   v18 = [(HMDDeviceNotificationHandler *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_destination, a3);
-    objc_storeWeak(&v19->_home, v16);
-    v19->_delaySupported = !a4;
-    v20 = [MEMORY[0x277CBEB40] orderedSet];
+    objc_storeStrong(&v18->_destination, destination);
+    objc_storeWeak(&v19->_home, homeCopy);
+    v19->_delaySupported = !device;
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     deviceNotificationsByRequestIDs = v19->_deviceNotificationsByRequestIDs;
-    v19->_deviceNotificationsByRequestIDs = v20;
+    v19->_deviceNotificationsByRequestIDs = orderedSet;
 
-    v22 = [v16 workQueue];
+    workQueue = [homeCopy workQueue];
     workQueue = v19->_workQueue;
-    v19->_workQueue = v22;
+    v19->_workQueue = workQueue;
 
-    objc_storeStrong(&v19->_messageDispatcher, a6);
-    objc_storeStrong(&v19->_dataSource, a8);
+    objc_storeStrong(&v19->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v19->_dataSource, source);
   }
 
   return v19;

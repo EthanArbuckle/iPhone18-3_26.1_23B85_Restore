@@ -1,7 +1,7 @@
 @interface DSTestAutomation
 + (id)sharedInstance;
-+ (void)postConfiguration:(id)a3;
-+ (void)postInteractiveTestEvent:(id)a3 info:(id)a4;
++ (void)postConfiguration:(id)configuration;
++ (void)postInteractiveTestEvent:(id)event info:(id)info;
 - (DSTestAutomation)init;
 @end
 
@@ -54,14 +54,14 @@ void __34__DSTestAutomation_sharedInstance__block_invoke(id a1)
   _objc_release_x1();
 }
 
-+ (void)postInteractiveTestEvent:(id)a3 info:(id)a4
++ (void)postInteractiveTestEvent:(id)event info:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  infoCopy = info;
   v7 = +[DSTestAutomation sharedInstance];
-  v8 = [v7 testAutomationEnabled];
+  testAutomationEnabled = [v7 testAutomationEnabled];
 
-  if (v8)
+  if (testAutomationEnabled)
   {
     v10[0] = @"event";
     v10[1] = @"type";
@@ -69,27 +69,27 @@ void __34__DSTestAutomation_sharedInstance__block_invoke(id a1)
     v11[1] = @"InteractiveTestEvent";
     v10[2] = @"interactiveEvent";
     v10[3] = @"info";
-    v11[2] = v5;
-    v11[3] = v6;
+    v11[2] = eventCopy;
+    v11[3] = infoCopy;
     v9 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:4];
     UIAccessibilityPostNotification(0xFA2u, v9);
   }
 }
 
-+ (void)postConfiguration:(id)a3
++ (void)postConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = +[DSTestAutomation sharedInstance];
-  v5 = [v4 testAutomationEnabled];
+  testAutomationEnabled = [v4 testAutomationEnabled];
 
-  if (v5)
+  if (testAutomationEnabled)
   {
     v7[0] = @"event";
     v7[1] = @"type";
     v8[0] = @"DSTestAutomationEvent";
     v8[1] = @"Configuration";
     v7[2] = @"info";
-    v8[2] = v3;
+    v8[2] = configurationCopy;
     v6 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:3];
     UIAccessibilityPostNotification(0xFA2u, v6);
   }

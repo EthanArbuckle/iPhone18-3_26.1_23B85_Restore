@@ -3,25 +3,25 @@
 - (CGPoint)_bottomMicCenter;
 - (CGPoint)_topMicCenter;
 - (CGSize)intrinsicContentSize;
-- (CSMicControl)initWithFrame:(CGRect)a3;
+- (CSMicControl)initWithFrame:(CGRect)frame;
 - (CSMicControlDelegate)delegate;
-- (void)_handleDidTap:(id)a3;
-- (void)_handlePanGesture:(id)a3;
+- (void)_handleDidTap:(id)tap;
+- (void)_handlePanGesture:(id)gesture;
 - (void)_setupGestureRecognizers;
 - (void)_setupViews;
 - (void)_updateMicViewForCurrentState;
 - (void)layoutSubviews;
-- (void)setButtonSlideProgress:(double)a3;
-- (void)setMicControlState:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setButtonSlideProgress:(double)progress;
+- (void)setMicControlState:(unint64_t)state animated:(BOOL)animated;
 @end
 
 @implementation CSMicControl
 
-- (CSMicControl)initWithFrame:(CGRect)a3
+- (CSMicControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CSMicControl;
-  v3 = [(CSMicControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSMicControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -84,71 +84,71 @@
   [(UIView *)self->_micView addSubview:self->_micSymbolView];
   [(CSMicControlSymbolView *)self->_micSymbolView setTranslatesAutoresizingMaskIntoConstraints:0];
   v47 = MEMORY[0x277CCAAD0];
-  v65 = [(UIImageView *)self->_micOnBackgroundView leadingAnchor];
-  v64 = [(UIView *)self->_micView leadingAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64];
+  leadingAnchor = [(UIImageView *)self->_micOnBackgroundView leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_micView leadingAnchor];
+  v63 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v70[0] = v63;
-  v62 = [(UIImageView *)self->_micOnBackgroundView trailingAnchor];
-  v61 = [(UIView *)self->_micView trailingAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  trailingAnchor = [(UIImageView *)self->_micOnBackgroundView trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_micView trailingAnchor];
+  v60 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v70[1] = v60;
-  v59 = [(UIImageView *)self->_micOnBackgroundView topAnchor];
-  v58 = [(UIView *)self->_micView topAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  topAnchor = [(UIImageView *)self->_micOnBackgroundView topAnchor];
+  topAnchor2 = [(UIView *)self->_micView topAnchor];
+  v57 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v70[2] = v57;
-  v56 = [(UIImageView *)self->_micOnBackgroundView bottomAnchor];
-  v55 = [(UIView *)self->_micView bottomAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  bottomAnchor = [(UIImageView *)self->_micOnBackgroundView bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_micView bottomAnchor];
+  v54 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v70[3] = v54;
-  v53 = [(UIImageView *)self->_micOffBackgroundView leadingAnchor];
-  v52 = [(UIView *)self->_micView leadingAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  leadingAnchor3 = [(UIImageView *)self->_micOffBackgroundView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_micView leadingAnchor];
+  v51 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v70[4] = v51;
-  v50 = [(UIImageView *)self->_micOffBackgroundView trailingAnchor];
-  v49 = [(UIView *)self->_micView trailingAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  trailingAnchor3 = [(UIImageView *)self->_micOffBackgroundView trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_micView trailingAnchor];
+  v48 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v70[5] = v48;
-  v46 = [(UIImageView *)self->_micOffBackgroundView topAnchor];
-  v45 = [(UIView *)self->_micView topAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  topAnchor3 = [(UIImageView *)self->_micOffBackgroundView topAnchor];
+  topAnchor4 = [(UIView *)self->_micView topAnchor];
+  v44 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v70[6] = v44;
-  v43 = [(UIImageView *)self->_micOffBackgroundView bottomAnchor];
-  v42 = [(UIView *)self->_micView bottomAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  bottomAnchor3 = [(UIImageView *)self->_micOffBackgroundView bottomAnchor];
+  bottomAnchor4 = [(UIView *)self->_micView bottomAnchor];
+  v41 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v70[7] = v41;
-  v40 = [(CSMicControlSymbolView *)self->_micSymbolView centerXAnchor];
-  v39 = [(UIView *)self->_micView centerXAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  centerXAnchor = [(CSMicControlSymbolView *)self->_micSymbolView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_micView centerXAnchor];
+  v38 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v70[8] = v38;
-  v37 = [(CSMicControlSymbolView *)self->_micSymbolView centerYAnchor];
-  v36 = [(UIView *)self->_micView topAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36 constant:77.0];
+  centerYAnchor = [(CSMicControlSymbolView *)self->_micSymbolView centerYAnchor];
+  topAnchor5 = [(UIView *)self->_micView topAnchor];
+  v35 = [centerYAnchor constraintEqualToAnchor:topAnchor5 constant:77.0];
   v70[9] = v35;
-  v34 = [(CSMicControlSymbolView *)self->_micSymbolView widthAnchor];
-  v33 = [v34 constraintEqualToConstant:37.0];
+  widthAnchor = [(CSMicControlSymbolView *)self->_micSymbolView widthAnchor];
+  v33 = [widthAnchor constraintEqualToConstant:37.0];
   v70[10] = v33;
-  v32 = [(CSMicControlSymbolView *)self->_micSymbolView heightAnchor];
-  v31 = [v32 constraintEqualToConstant:40.0];
+  heightAnchor = [(CSMicControlSymbolView *)self->_micSymbolView heightAnchor];
+  v31 = [heightAnchor constraintEqualToConstant:40.0];
   v70[11] = v31;
-  v30 = [(UIImageView *)self->_trackView centerXAnchor];
-  v29 = [(CSMicControl *)self centerXAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  centerXAnchor3 = [(UIImageView *)self->_trackView centerXAnchor];
+  centerXAnchor4 = [(CSMicControl *)self centerXAnchor];
+  v28 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v70[12] = v28;
-  v27 = [(UIImageView *)self->_trackView centerYAnchor];
-  v26 = [(CSMicControl *)self centerYAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  centerYAnchor2 = [(UIImageView *)self->_trackView centerYAnchor];
+  centerYAnchor3 = [(CSMicControl *)self centerYAnchor];
+  v25 = [centerYAnchor2 constraintEqualToAnchor:centerYAnchor3];
   v70[13] = v25;
-  v16 = [(UIImageView *)self->_trackView widthAnchor];
-  v17 = [v16 constraintEqualToConstant:124.0];
+  widthAnchor2 = [(UIImageView *)self->_trackView widthAnchor];
+  v17 = [widthAnchor2 constraintEqualToConstant:124.0];
   v70[14] = v17;
-  v18 = [(UIImageView *)self->_trackView heightAnchor];
-  v19 = [v18 constraintEqualToConstant:230.0];
+  heightAnchor2 = [(UIImageView *)self->_trackView heightAnchor];
+  v19 = [heightAnchor2 constraintEqualToConstant:230.0];
   v70[15] = v19;
-  v20 = [(CSMicControl *)self widthAnchor];
-  v21 = [v20 constraintEqualToConstant:104.0];
+  widthAnchor3 = [(CSMicControl *)self widthAnchor];
+  v21 = [widthAnchor3 constraintEqualToConstant:104.0];
   v70[16] = v21;
-  v22 = [(CSMicControl *)self heightAnchor];
-  v23 = [v22 constraintEqualToConstant:210.0];
+  heightAnchor3 = [(CSMicControl *)self heightAnchor];
+  v23 = [heightAnchor3 constraintEqualToConstant:210.0];
   v70[17] = v23;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:18];
   [v47 activateConstraints:v24];
@@ -178,14 +178,14 @@
   }
 }
 
-- (void)setMicControlState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setMicControlState:(unint64_t)state animated:(BOOL)animated
 {
   micState = self->_micState;
-  if (micState != a3)
+  if (micState != state)
   {
-    v5 = a4;
+    animatedCopy = animated;
     self->_previousState = micState;
-    self->_micState = a3;
+    self->_micState = state;
     v7 = ContinuitySingLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -194,11 +194,11 @@
       v21 = 2080;
       v22 = "[CSMicControl setMicControlState:animated:]";
       v23 = 2048;
-      v24 = [(CSMicControl *)self previousState];
+      previousState = [(CSMicControl *)self previousState];
       v25 = 2048;
-      v26 = [(CSMicControl *)self micState];
+      micState = [(CSMicControl *)self micState];
       v27 = 1024;
-      v28 = v5;
+      v28 = animatedCopy;
       _os_log_impl(&dword_2441FB000, v7, OS_LOG_TYPE_DEFAULT, "%s: %s set state (%zu -> %zu) animating: %d", buf, 0x30u);
     }
 
@@ -210,7 +210,7 @@
     objc_copyWeak(&v18, buf);
     v8 = _Block_copy(aBlock);
     v9 = v8;
-    if (v5)
+    if (animatedCopy)
     {
       self->_isAnimating = 1;
       nextInitialVelocityForAnimation = self->_nextInitialVelocityForAnimation;
@@ -235,8 +235,8 @@
       v8[2](v8);
     }
 
-    v12 = [(CSMicControl *)self delegate];
-    [v12 micControl:self didChangetoState:{-[CSMicControl micState](self, "micState")}];
+    delegate = [(CSMicControl *)self delegate];
+    [delegate micControl:self didChangetoState:{-[CSMicControl micState](self, "micState")}];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(buf);
@@ -263,16 +263,16 @@ void __44__CSMicControl_setMicControlState_animated___block_invoke_3(uint64_t a1
   }
 }
 
-- (void)setButtonSlideProgress:(double)a3
+- (void)setButtonSlideProgress:(double)progress
 {
-  self->_buttonSlideProgress = a3;
+  self->_buttonSlideProgress = progress;
   [(UIImageView *)self->_micOnBackgroundView setAlpha:?];
   [(CSMicControl *)self _topMicCenter];
   v6 = v5;
   v8 = v7;
   [(CSMicControl *)self _bottomMicCenter];
-  v10 = v9 + (v6 - v9) * a3;
-  v12 = v11 + (v8 - v11) * a3;
+  v10 = v9 + (v6 - v9) * progress;
+  v12 = v11 + (v8 - v11) * progress;
   micView = self->_micView;
 
   [(UIView *)micView setCenter:v10, v12];
@@ -334,7 +334,7 @@ void __44__CSMicControl_setMicControlState_animated___block_invoke_3(uint64_t a1
   return [(CSMicControl *)self isUserInteractionEnabled];
 }
 
-- (void)_handleDidTap:(id)a3
+- (void)_handleDidTap:(id)tap
 {
   v4 = ContinuitySingLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -344,16 +344,16 @@ void __44__CSMicControl_setMicControlState_animated___block_invoke_3(uint64_t a1
     v11 = 2080;
     v12 = "[CSMicControl _handleDidTap:]";
     v13 = 2048;
-    v14 = [(CSMicControl *)self micState];
+    micState = [(CSMicControl *)self micState];
     _os_log_impl(&dword_2441FB000, v4, OS_LOG_TYPE_DEFAULT, "%s: %s currentState: %zu", &v9, 0x20u);
   }
 
   if ([(CSMicControl *)self _isRespondingToGestures])
   {
-    v5 = [(CSMicControl *)self micState];
-    if (v5)
+    micState2 = [(CSMicControl *)self micState];
+    if (micState2)
     {
-      if (v5 != 1)
+      if (micState2 != 1)
       {
         return;
       }
@@ -374,30 +374,30 @@ void __44__CSMicControl_setMicControlState_animated___block_invoke_3(uint64_t a1
     WeakRetained = ContinuitySingLog();
     if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(CSMicControl *)self micState];
-      v8 = [(CSMicControl *)self isAnimating];
+      micState3 = [(CSMicControl *)self micState];
+      isAnimating = [(CSMicControl *)self isAnimating];
       v9 = 136315906;
       v10 = "[CSMicControl _handleDidTap:]";
       v11 = 2080;
       v12 = "[CSMicControl _handleDidTap:]";
       v13 = 2048;
-      v14 = v7;
+      micState = micState3;
       v15 = 1024;
-      v16 = v8;
+      v16 = isAnimating;
       _os_log_impl(&dword_2441FB000, WeakRetained, OS_LOG_TYPE_DEFAULT, "%s: %s not responding to gestures, micState: %zu isAnimating: %d", &v9, 0x26u);
     }
   }
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if (![(CSMicControl *)self _isRespondingToGestures])
   {
     goto LABEL_29;
   }
 
-  if ([v4 state] == 1)
+  if ([gestureCopy state] == 1)
   {
     v5 = ContinuitySingLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -407,7 +407,7 @@ void __44__CSMicControl_setMicControlState_animated___block_invoke_3(uint64_t a1
       v33 = 2080;
       v34 = "[CSMicControl _handlePanGesture:]";
       v35 = 2048;
-      v36 = [(CSMicControl *)self micState];
+      micState = [(CSMicControl *)self micState];
       _os_log_impl(&dword_2441FB000, v5, OS_LOG_TYPE_DEFAULT, "%s: %s starting in state: %zu", &v31, 0x20u);
     }
 
@@ -416,11 +416,11 @@ void __44__CSMicControl_setMicControlState_animated___block_invoke_3(uint64_t a1
     goto LABEL_29;
   }
 
-  if ([v4 state] != 2)
+  if ([gestureCopy state] != 2)
   {
-    if ([v4 state] != 3)
+    if ([gestureCopy state] != 3)
     {
-      if ([v4 state] != 4 && objc_msgSend(v4, "state") != 5)
+      if ([gestureCopy state] != 4 && objc_msgSend(gestureCopy, "state") != 5)
       {
         goto LABEL_29;
       }
@@ -428,7 +428,7 @@ void __44__CSMicControl_setMicControlState_animated___block_invoke_3(uint64_t a1
       goto LABEL_28;
     }
 
-    [v4 velocityInView:self];
+    [gestureCopy velocityInView:self];
     if (v15 <= 300.0)
     {
       if (v15 < -300.0)
@@ -436,9 +436,9 @@ void __44__CSMicControl_setMicControlState_animated___block_invoke_3(uint64_t a1
         goto LABEL_20;
       }
 
-      v19 = [v4 view];
-      v20 = [v19 superview];
-      [v4 translationInView:v20];
+      view = [gestureCopy view];
+      superview = [view superview];
+      [gestureCopy translationInView:superview];
       v22 = v21;
 
       [(CSMicControl *)self _topMicCenter];
@@ -474,7 +474,7 @@ LABEL_21:
       v33 = 2080;
       v34 = "[CSMicControl _handlePanGesture:]";
       v35 = 2112;
-      v36 = v28;
+      micState = v28;
       v37 = 2112;
       v38 = v29;
       _os_log_impl(&dword_2441FB000, v27, OS_LOG_TYPE_DEFAULT, "%s: %s ending. Requesting turning on: %@; turning off: %@", &v31, 0x2Au);
@@ -501,9 +501,9 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v6 = [v4 view];
-  v7 = [v6 superview];
-  [v4 translationInView:v7];
+  view2 = [gestureCopy view];
+  superview2 = [view2 superview];
+  [gestureCopy translationInView:superview2];
   v9 = v8;
 
   [(CSMicControl *)self _topMicCenter];

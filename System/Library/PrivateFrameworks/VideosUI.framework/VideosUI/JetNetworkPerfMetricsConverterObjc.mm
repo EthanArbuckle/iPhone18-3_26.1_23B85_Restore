@@ -1,13 +1,13 @@
 @interface JetNetworkPerfMetricsConverterObjc
-+ (id)toVideosJSDictionaryWithAmsURLResult:(id)a3;
++ (id)toVideosJSDictionaryWithAmsURLResult:(id)result;
 @end
 
 @implementation JetNetworkPerfMetricsConverterObjc
 
-+ (id)toVideosJSDictionaryWithAmsURLResult:(id)a3
++ (id)toVideosJSDictionaryWithAmsURLResult:(id)result
 {
-  v3 = a3;
-  static JetNetworkPerfMetricsConverterObjc.toVideosJSDictionary(amsURLResult:)(v3);
+  resultCopy = result;
+  static JetNetworkPerfMetricsConverterObjc.toVideosJSDictionary(amsURLResult:)(resultCopy);
 
   v4 = sub_1E4205C44();
 

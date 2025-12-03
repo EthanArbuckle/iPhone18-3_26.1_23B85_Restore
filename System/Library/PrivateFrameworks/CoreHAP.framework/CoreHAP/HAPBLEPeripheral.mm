@@ -1,66 +1,66 @@
 @interface HAPBLEPeripheral
-+ (id)uuidForBTLEPeripheral:(id)a3;
++ (id)uuidForBTLEPeripheral:(id)peripheral;
 - (BOOL)isBroadcasting;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isReachable;
-- (BOOL)updateWithPeripheral:(id)a3;
-- (HAPBLEPeripheral)initWithName:(id)a3 peripheralUUID:(id)a4 identifier:(id)a5 hapVersion:(id)a6 hkType:(id)a7 advInterval:(id)a8 statusFlags:(id)a9 category:(id)a10 stateNumber:(id)a11 configNumber:(id)a12 setupHash:(id)a13 encryptedPayload:(id)a14 whbStableIdentifier:(id)a15 advDeviceAddress:(id)a16;
+- (BOOL)updateWithPeripheral:(id)peripheral;
+- (HAPBLEPeripheral)initWithName:(id)name peripheralUUID:(id)d identifier:(id)identifier hapVersion:(id)version hkType:(id)type advInterval:(id)interval statusFlags:(id)flags category:(id)self0 stateNumber:(id)self1 configNumber:(id)self2 setupHash:(id)self3 encryptedPayload:(id)self4 whbStableIdentifier:(id)self5 advDeviceAddress:(id)self6;
 - (NSArray)peripheralUUIDs;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)shortDescription;
-- (int64_t)compareConfigNumber:(id)a3;
-- (int64_t)compareStateNumber:(id)a3;
+- (int64_t)compareConfigNumber:(id)number;
+- (int64_t)compareStateNumber:(id)number;
 - (unint64_t)hash;
-- (void)_updateAverageRSSIWithRSSI:(id)a3;
-- (void)connectedToCBPeripheral:(id)a3 error:(id)a4;
-- (void)disconnectedFromCBPeripheral:(id)a3 shouldRemove:(BOOL)a4;
-- (void)mergeWithPeripheral:(id)a3;
+- (void)_updateAverageRSSIWithRSSI:(id)i;
+- (void)connectedToCBPeripheral:(id)peripheral error:(id)error;
+- (void)disconnectedFromCBPeripheral:(id)peripheral shouldRemove:(BOOL)remove;
+- (void)mergeWithPeripheral:(id)peripheral;
 - (void)reset;
-- (void)updateStateNumber:(id)a3;
+- (void)updateStateNumber:(id)number;
 @end
 
 @implementation HAPBLEPeripheral
 
-- (void)disconnectedFromCBPeripheral:(id)a3 shouldRemove:(BOOL)a4
+- (void)disconnectedFromCBPeripheral:(id)peripheral shouldRemove:(BOOL)remove
 {
-  v4 = a4;
-  v8 = a3;
+  removeCopy = remove;
+  peripheralCopy = peripheral;
   [(HAPBLEPeripheral *)self setCbPeripheral:0];
-  if (v8 && v4)
+  if (peripheralCopy && removeCopy)
   {
     os_unfair_lock_lock_with_options();
     cbPeripheralUUIDs = self->_cbPeripheralUUIDs;
-    v7 = [v8 identifier];
-    [(NSMutableArray *)cbPeripheralUUIDs removeObject:v7];
+    identifier = [peripheralCopy identifier];
+    [(NSMutableArray *)cbPeripheralUUIDs removeObject:identifier];
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)connectedToCBPeripheral:(id)a3 error:(id)a4
+- (void)connectedToCBPeripheral:(id)peripheral error:(id)error
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = v14;
-  if (v6)
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  v7 = peripheralCopy;
+  if (errorCopy)
   {
     os_unfair_lock_lock_with_options();
-    v8 = [(HAPBLEPeripheral *)self cbPeripheral];
+    cbPeripheral = [(HAPBLEPeripheral *)self cbPeripheral];
 
-    if (v8)
+    if (cbPeripheral)
     {
       cbPeripheralUUIDs = self->_cbPeripheralUUIDs;
-      v10 = [(HAPBLEPeripheral *)self cbPeripheral];
-      v11 = [v10 identifier];
-      [(NSMutableArray *)cbPeripheralUUIDs removeObject:v11];
+      cbPeripheral2 = [(HAPBLEPeripheral *)self cbPeripheral];
+      identifier = [cbPeripheral2 identifier];
+      [(NSMutableArray *)cbPeripheralUUIDs removeObject:identifier];
     }
 
-    if (v14)
+    if (peripheralCopy)
     {
       v12 = self->_cbPeripheralUUIDs;
-      v13 = [v14 identifier];
-      [(NSMutableArray *)v12 removeObject:v13];
+      identifier2 = [peripheralCopy identifier];
+      [(NSMutableArray *)v12 removeObject:identifier2];
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -70,83 +70,83 @@
   [(HAPBLEPeripheral *)self setCbPeripheral:v7];
 }
 
-- (void)mergeWithPeripheral:(id)a3
+- (void)mergeWithPeripheral:(id)peripheral
 {
   v107 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (self == v4)
+  peripheralCopy = peripheral;
+  if (self == peripheralCopy)
   {
     goto LABEL_101;
   }
 
-  v5 = [(HAPBLEPeripheral *)self identifier];
-  v6 = [(HAPBLEPeripheral *)v4 identifier];
-  v7 = [v5 isEqualToString:v6];
+  identifier = [(HAPBLEPeripheral *)self identifier];
+  identifier2 = [(HAPBLEPeripheral *)peripheralCopy identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if (!v7)
   {
     goto LABEL_101;
   }
 
-  [(HAPBLEPeripheral *)v4 lastSeen];
+  [(HAPBLEPeripheral *)peripheralCopy lastSeen];
   v9 = v8;
   [(HAPBLEPeripheral *)self lastSeen];
   v11 = v10;
   if (v9 > v10)
   {
-    [(HAPBLEPeripheral *)v4 lastSeen];
+    [(HAPBLEPeripheral *)peripheralCopy lastSeen];
     [(HAPBLEPeripheral *)self setLastSeen:?];
-    v12 = [(HAPBLEPeripheral *)v4 encryptedPayload];
-    [(HAPBLEPeripheral *)self setEncryptedPayload:v12];
+    encryptedPayload = [(HAPBLEPeripheral *)peripheralCopy encryptedPayload];
+    [(HAPBLEPeripheral *)self setEncryptedPayload:encryptedPayload];
 
-    [(HAPBLEPeripheral *)self setIsCached:[(HAPBLEPeripheral *)v4 isCached]];
-    v13 = [(HAPBLEPeripheral *)v4 averageRSSI];
+    [(HAPBLEPeripheral *)self setIsCached:[(HAPBLEPeripheral *)peripheralCopy isCached]];
+    averageRSSI = [(HAPBLEPeripheral *)peripheralCopy averageRSSI];
 
-    if (v13)
+    if (averageRSSI)
     {
-      v14 = [(HAPBLEPeripheral *)v4 averageRSSI];
-      [(HAPBLEPeripheral *)self _updateAverageRSSIWithRSSI:v14];
+      averageRSSI2 = [(HAPBLEPeripheral *)peripheralCopy averageRSSI];
+      [(HAPBLEPeripheral *)self _updateAverageRSSIWithRSSI:averageRSSI2];
     }
 
-    v15 = [(HAPBLEPeripheral *)v4 cbPeripheral];
-    if (v15)
+    cbPeripheral = [(HAPBLEPeripheral *)peripheralCopy cbPeripheral];
+    if (cbPeripheral)
     {
-      v16 = v15;
-      v17 = [(HAPBLEPeripheral *)self cbPeripheral];
+      v16 = cbPeripheral;
+      cbPeripheral2 = [(HAPBLEPeripheral *)self cbPeripheral];
 
-      if (!v17)
+      if (!cbPeripheral2)
       {
         v18 = objc_autoreleasePoolPush();
-        v19 = self;
+        selfCopy = self;
         v20 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
           v21 = HMFGetLogIdentifier();
-          v22 = [(HAPBLEPeripheral *)v19 shortDescription];
-          v23 = [(HAPBLEPeripheral *)v4 cbPeripheral];
+          shortDescription = [(HAPBLEPeripheral *)selfCopy shortDescription];
+          cbPeripheral3 = [(HAPBLEPeripheral *)peripheralCopy cbPeripheral];
           *buf = 138543874;
           v102 = v21;
           v103 = 2112;
-          v104 = v22;
+          v104 = shortDescription;
           v105 = 2112;
-          v106 = v23;
+          v106 = cbPeripheral3;
           _os_log_impl(&dword_22AADC000, v20, OS_LOG_TYPE_INFO, "%{public}@Updating the BLE peripheral: %@ with CBPeripheral: %@", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v18);
-        v24 = [(HAPBLEPeripheral *)v4 cbPeripheral];
-        [(HAPBLEPeripheral *)v19 setCbPeripheral:v24];
+        cbPeripheral4 = [(HAPBLEPeripheral *)peripheralCopy cbPeripheral];
+        [(HAPBLEPeripheral *)selfCopy setCbPeripheral:cbPeripheral4];
       }
     }
   }
 
-  v25 = [(HAPBLEPeripheral *)v4 identifier];
-  v26 = v25;
-  if (v9 <= v11 && v25)
+  identifier3 = [(HAPBLEPeripheral *)peripheralCopy identifier];
+  v26 = identifier3;
+  if (v9 <= v11 && identifier3)
   {
-    v27 = [(HAPBLEPeripheral *)self identifier];
+    identifier4 = [(HAPBLEPeripheral *)self identifier];
 
-    if (!v27)
+    if (!identifier4)
     {
       goto LABEL_16;
     }
@@ -158,18 +158,18 @@
     if (v26)
     {
 LABEL_16:
-      v28 = [(HAPBLEPeripheral *)v4 identifier];
-      [(HAPBLEPeripheral *)self setIdentifier:v28];
+      identifier5 = [(HAPBLEPeripheral *)peripheralCopy identifier];
+      [(HAPBLEPeripheral *)self setIdentifier:identifier5];
     }
   }
 
-  v29 = [(HAPBLEPeripheral *)v4 whbStableIdentifier];
-  v30 = v29;
-  if (v9 <= v11 && v29)
+  whbStableIdentifier = [(HAPBLEPeripheral *)peripheralCopy whbStableIdentifier];
+  v30 = whbStableIdentifier;
+  if (v9 <= v11 && whbStableIdentifier)
   {
-    v31 = [(HAPBLEPeripheral *)self whbStableIdentifier];
+    whbStableIdentifier2 = [(HAPBLEPeripheral *)self whbStableIdentifier];
 
-    if (!v31)
+    if (!whbStableIdentifier2)
     {
       goto LABEL_22;
     }
@@ -181,18 +181,18 @@ LABEL_16:
     if (v30)
     {
 LABEL_22:
-      v32 = [(HAPBLEPeripheral *)v4 whbStableIdentifier];
-      [(HAPBLEPeripheral *)self setWhbStableIdentifier:v32];
+      whbStableIdentifier3 = [(HAPBLEPeripheral *)peripheralCopy whbStableIdentifier];
+      [(HAPBLEPeripheral *)self setWhbStableIdentifier:whbStableIdentifier3];
     }
   }
 
-  v33 = [(HAPBLEPeripheral *)v4 hkType];
-  v34 = v33;
-  if (v9 <= v11 && v33)
+  hkType = [(HAPBLEPeripheral *)peripheralCopy hkType];
+  v34 = hkType;
+  if (v9 <= v11 && hkType)
   {
-    v35 = [(HAPBLEPeripheral *)self hkType];
+    hkType2 = [(HAPBLEPeripheral *)self hkType];
 
-    if (!v35)
+    if (!hkType2)
     {
       goto LABEL_28;
     }
@@ -204,18 +204,18 @@ LABEL_22:
     if (v34)
     {
 LABEL_28:
-      v36 = [(HAPBLEPeripheral *)v4 hkType];
-      [(HAPBLEPeripheral *)self setHkType:v36];
+      hkType3 = [(HAPBLEPeripheral *)peripheralCopy hkType];
+      [(HAPBLEPeripheral *)self setHkType:hkType3];
     }
   }
 
-  v37 = [(HAPBLEPeripheral *)v4 advInterval];
-  v38 = v37;
-  if (v9 <= v11 && v37)
+  advInterval = [(HAPBLEPeripheral *)peripheralCopy advInterval];
+  v38 = advInterval;
+  if (v9 <= v11 && advInterval)
   {
-    v39 = [(HAPBLEPeripheral *)self advInterval];
+    advInterval2 = [(HAPBLEPeripheral *)self advInterval];
 
-    if (!v39)
+    if (!advInterval2)
     {
       goto LABEL_34;
     }
@@ -227,23 +227,23 @@ LABEL_28:
     if (v38)
     {
 LABEL_34:
-      v40 = [(HAPBLEPeripheral *)v4 advInterval];
-      [(HAPBLEPeripheral *)self setAdvInterval:v40];
+      advInterval3 = [(HAPBLEPeripheral *)peripheralCopy advInterval];
+      [(HAPBLEPeripheral *)self setAdvInterval:advInterval3];
     }
   }
 
-  if ([(HAPBLEPeripheral *)v4 advertisementFormat]&& (v9 > v11 || ![(HAPBLEPeripheral *)self advertisementFormat]))
+  if ([(HAPBLEPeripheral *)peripheralCopy advertisementFormat]&& (v9 > v11 || ![(HAPBLEPeripheral *)self advertisementFormat]))
   {
-    [(HAPBLEPeripheral *)self setAdvertisementFormat:[(HAPBLEPeripheral *)v4 advertisementFormat]];
+    [(HAPBLEPeripheral *)self setAdvertisementFormat:[(HAPBLEPeripheral *)peripheralCopy advertisementFormat]];
   }
 
-  v41 = [(HAPBLEPeripheral *)v4 statusFlags];
-  v42 = v41;
-  if (v9 <= v11 && v41)
+  statusFlags = [(HAPBLEPeripheral *)peripheralCopy statusFlags];
+  v42 = statusFlags;
+  if (v9 <= v11 && statusFlags)
   {
-    v43 = [(HAPBLEPeripheral *)self statusFlags];
+    statusFlags2 = [(HAPBLEPeripheral *)self statusFlags];
 
-    if (!v43)
+    if (!statusFlags2)
     {
       goto LABEL_44;
     }
@@ -255,18 +255,18 @@ LABEL_34:
     if (v42)
     {
 LABEL_44:
-      v44 = [(HAPBLEPeripheral *)v4 statusFlags];
-      [(HAPBLEPeripheral *)self setStatusFlags:v44];
+      statusFlags3 = [(HAPBLEPeripheral *)peripheralCopy statusFlags];
+      [(HAPBLEPeripheral *)self setStatusFlags:statusFlags3];
     }
   }
 
-  v45 = [(HAPBLEPeripheral *)v4 category];
-  v46 = v45;
-  if (v9 <= v11 && v45)
+  category = [(HAPBLEPeripheral *)peripheralCopy category];
+  v46 = category;
+  if (v9 <= v11 && category)
   {
-    v47 = [(HAPBLEPeripheral *)self category];
+    category2 = [(HAPBLEPeripheral *)self category];
 
-    if (!v47)
+    if (!category2)
     {
       goto LABEL_50;
     }
@@ -278,18 +278,18 @@ LABEL_44:
     if (v46)
     {
 LABEL_50:
-      v48 = [(HAPBLEPeripheral *)v4 category];
-      [(HAPBLEPeripheral *)self setCategory:v48];
+      category3 = [(HAPBLEPeripheral *)peripheralCopy category];
+      [(HAPBLEPeripheral *)self setCategory:category3];
     }
   }
 
-  v49 = [(HAPBLEPeripheral *)v4 stateNumber];
-  v50 = v49;
-  if (v9 <= v11 && v49)
+  stateNumber = [(HAPBLEPeripheral *)peripheralCopy stateNumber];
+  v50 = stateNumber;
+  if (v9 <= v11 && stateNumber)
   {
-    v51 = [(HAPBLEPeripheral *)self stateNumber];
+    stateNumber2 = [(HAPBLEPeripheral *)self stateNumber];
 
-    if (v51)
+    if (stateNumber2)
     {
       goto LABEL_59;
     }
@@ -304,20 +304,20 @@ LABEL_50:
     }
   }
 
-  if (![(HAPBLEPeripheral *)v4 isCached]|| ([(HAPBLEPeripheral *)v4 stateNumber], v52 = objc_claimAutoreleasedReturnValue(), v53 = [(HAPBLEPeripheral *)self compareStateNumber:v52], v52, v53 == -1))
+  if (![(HAPBLEPeripheral *)peripheralCopy isCached]|| ([(HAPBLEPeripheral *)peripheralCopy stateNumber], v52 = objc_claimAutoreleasedReturnValue(), v53 = [(HAPBLEPeripheral *)self compareStateNumber:v52], v52, v53 == -1))
   {
-    v54 = [(HAPBLEPeripheral *)v4 stateNumber];
-    [(HAPBLEPeripheral *)self setStateNumber:v54];
+    stateNumber3 = [(HAPBLEPeripheral *)peripheralCopy stateNumber];
+    [(HAPBLEPeripheral *)self setStateNumber:stateNumber3];
   }
 
 LABEL_59:
-  v55 = [(HAPBLEPeripheral *)v4 configNumber];
-  v56 = v55;
-  if (v9 <= v11 && v55)
+  configNumber = [(HAPBLEPeripheral *)peripheralCopy configNumber];
+  v56 = configNumber;
+  if (v9 <= v11 && configNumber)
   {
-    v57 = [(HAPBLEPeripheral *)self configNumber];
+    configNumber2 = [(HAPBLEPeripheral *)self configNumber];
 
-    if (v57)
+    if (configNumber2)
     {
       goto LABEL_67;
     }
@@ -332,20 +332,20 @@ LABEL_59:
     }
   }
 
-  if (![(HAPBLEPeripheral *)v4 isCached]|| ([(HAPBLEPeripheral *)v4 configNumber], v58 = objc_claimAutoreleasedReturnValue(), v59 = [(HAPBLEPeripheral *)self compareConfigNumber:v58], v58, v59 == -1))
+  if (![(HAPBLEPeripheral *)peripheralCopy isCached]|| ([(HAPBLEPeripheral *)peripheralCopy configNumber], v58 = objc_claimAutoreleasedReturnValue(), v59 = [(HAPBLEPeripheral *)self compareConfigNumber:v58], v58, v59 == -1))
   {
-    v60 = [(HAPBLEPeripheral *)v4 configNumber];
-    [(HAPBLEPeripheral *)self setConfigNumber:v60];
+    configNumber3 = [(HAPBLEPeripheral *)peripheralCopy configNumber];
+    [(HAPBLEPeripheral *)self setConfigNumber:configNumber3];
   }
 
 LABEL_67:
-  v61 = [(HAPBLEPeripheral *)v4 setupHash];
-  v62 = v61;
-  if (v9 <= v11 && v61)
+  setupHash = [(HAPBLEPeripheral *)peripheralCopy setupHash];
+  v62 = setupHash;
+  if (v9 <= v11 && setupHash)
   {
-    v63 = [(HAPBLEPeripheral *)self setupHash];
+    setupHash2 = [(HAPBLEPeripheral *)self setupHash];
 
-    if (!v63)
+    if (!setupHash2)
     {
       goto LABEL_72;
     }
@@ -357,18 +357,18 @@ LABEL_67:
     if (v62)
     {
 LABEL_72:
-      v64 = [(HAPBLEPeripheral *)v4 setupHash];
-      [(HAPBLEPeripheral *)self setSetupHash:v64];
+      setupHash3 = [(HAPBLEPeripheral *)peripheralCopy setupHash];
+      [(HAPBLEPeripheral *)self setSetupHash:setupHash3];
     }
   }
 
-  v65 = [(HAPBLEPeripheral *)v4 averageRSSI];
-  v66 = v65;
-  if (v9 <= v11 && v65)
+  averageRSSI3 = [(HAPBLEPeripheral *)peripheralCopy averageRSSI];
+  v66 = averageRSSI3;
+  if (v9 <= v11 && averageRSSI3)
   {
-    v67 = [(HAPBLEPeripheral *)self averageRSSI];
+    averageRSSI4 = [(HAPBLEPeripheral *)self averageRSSI];
 
-    if (!v67)
+    if (!averageRSSI4)
     {
       goto LABEL_78;
     }
@@ -380,61 +380,61 @@ LABEL_72:
     if (v66)
     {
 LABEL_78:
-      v68 = [(HAPBLEPeripheral *)v4 averageRSSI];
-      [(HAPBLEPeripheral *)self setAverageRSSI:v68];
+      averageRSSI5 = [(HAPBLEPeripheral *)peripheralCopy averageRSSI];
+      [(HAPBLEPeripheral *)self setAverageRSSI:averageRSSI5];
     }
   }
 
-  v69 = [(HAPBLEPeripheral *)self name];
-  v70 = [v69 length];
-  v71 = [(HAPBLEPeripheral *)v4 name];
-  v72 = [v71 length];
+  name = [(HAPBLEPeripheral *)self name];
+  v70 = [name length];
+  name2 = [(HAPBLEPeripheral *)peripheralCopy name];
+  v72 = [name2 length];
 
   if (v70 < v72)
   {
-    v73 = [(HAPBLEPeripheral *)v4 name];
-    [(HAPBLEPeripheral *)self setName:v73];
+    name3 = [(HAPBLEPeripheral *)peripheralCopy name];
+    [(HAPBLEPeripheral *)self setName:name3];
   }
 
-  v74 = [(HAPBLEPeripheral *)v4 peripheralUUIDs];
-  if (v74)
+  peripheralUUIDs = [(HAPBLEPeripheral *)peripheralCopy peripheralUUIDs];
+  if (peripheralUUIDs)
   {
-    v75 = v74;
-    v76 = [(HAPBLEPeripheral *)self peripheralUUIDs];
-    v77 = [(HAPBLEPeripheral *)v4 peripheralUUIDs];
-    v78 = [v76 isEqual:v77];
+    v75 = peripheralUUIDs;
+    peripheralUUIDs2 = [(HAPBLEPeripheral *)self peripheralUUIDs];
+    peripheralUUIDs3 = [(HAPBLEPeripheral *)peripheralCopy peripheralUUIDs];
+    v78 = [peripheralUUIDs2 isEqual:peripheralUUIDs3];
 
     if ((v78 & 1) == 0)
     {
       if (v9 <= v11)
       {
-        v79 = v4;
+        selfCopy2 = peripheralCopy;
       }
 
       else
       {
-        v79 = self;
+        selfCopy2 = self;
       }
 
       if (v9 <= v11)
       {
-        v80 = self;
+        selfCopy3 = self;
       }
 
       else
       {
-        v80 = v4;
+        selfCopy3 = peripheralCopy;
       }
 
-      v81 = [(HAPBLEPeripheral *)v79 peripheralUUIDs];
-      v82 = [v81 mutableCopy];
+      peripheralUUIDs4 = [(HAPBLEPeripheral *)selfCopy2 peripheralUUIDs];
+      v82 = [peripheralUUIDs4 mutableCopy];
 
       v98 = 0u;
       v99 = 0u;
       v96 = 0u;
       v97 = 0u;
-      v83 = [(HAPBLEPeripheral *)v80 peripheralUUIDs];
-      v84 = [v83 countByEnumeratingWithState:&v96 objects:v100 count:16];
+      peripheralUUIDs5 = [(HAPBLEPeripheral *)selfCopy3 peripheralUUIDs];
+      v84 = [peripheralUUIDs5 countByEnumeratingWithState:&v96 objects:v100 count:16];
       if (v84)
       {
         v85 = v84;
@@ -445,7 +445,7 @@ LABEL_78:
           {
             if (*v97 != v86)
             {
-              objc_enumerationMutation(v83);
+              objc_enumerationMutation(peripheralUUIDs5);
             }
 
             v88 = *(*(&v96 + 1) + 8 * i);
@@ -453,24 +453,24 @@ LABEL_78:
             [v82 addObject:v88];
           }
 
-          v85 = [v83 countByEnumeratingWithState:&v96 objects:v100 count:16];
+          v85 = [peripheralUUIDs5 countByEnumeratingWithState:&v96 objects:v100 count:16];
         }
 
         while (v85);
       }
 
-      v89 = [(HAPBLEPeripheral *)self cbPeripheral];
-      v90 = [v89 state];
+      cbPeripheral5 = [(HAPBLEPeripheral *)self cbPeripheral];
+      state = [cbPeripheral5 state];
 
-      if (v90)
+      if (state)
       {
-        v91 = [(HAPBLEPeripheral *)self cbPeripheral];
-        v92 = [v91 identifier];
-        [v82 removeObject:v92];
+        cbPeripheral6 = [(HAPBLEPeripheral *)self cbPeripheral];
+        identifier6 = [cbPeripheral6 identifier];
+        [v82 removeObject:identifier6];
 
-        v93 = [(HAPBLEPeripheral *)self cbPeripheral];
-        v94 = [v93 identifier];
-        [v82 addObject:v94];
+        cbPeripheral7 = [(HAPBLEPeripheral *)self cbPeripheral];
+        identifier7 = [cbPeripheral7 identifier];
+        [v82 addObject:identifier7];
       }
 
       if ([v82 count] >= 6)
@@ -504,23 +504,23 @@ LABEL_101:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HAPBLEPeripheral);
-  v5 = [(HAPBLEPeripheral *)self identifier];
+  identifier = [(HAPBLEPeripheral *)self identifier];
   identifier = v4->_identifier;
-  v4->_identifier = v5;
+  v4->_identifier = identifier;
 
-  v7 = [(HAPBLEPeripheral *)self uniqueBTIdentifier];
+  uniqueBTIdentifier = [(HAPBLEPeripheral *)self uniqueBTIdentifier];
   uniqueBTIdentifier = v4->_uniqueBTIdentifier;
-  v4->_uniqueBTIdentifier = v7;
+  v4->_uniqueBTIdentifier = uniqueBTIdentifier;
 
-  v9 = [(HAPBLEPeripheral *)self advDeviceAddress];
+  advDeviceAddress = [(HAPBLEPeripheral *)self advDeviceAddress];
   advDeviceAddress = v4->_advDeviceAddress;
-  v4->_advDeviceAddress = v9;
+  v4->_advDeviceAddress = advDeviceAddress;
 
-  v11 = [(HAPBLEPeripheral *)self peripheralUUIDs];
-  v12 = [v11 mutableCopy];
+  peripheralUUIDs = [(HAPBLEPeripheral *)self peripheralUUIDs];
+  v12 = [peripheralUUIDs mutableCopy];
   cbPeripheralUUIDs = v4->_cbPeripheralUUIDs;
   v4->_cbPeripheralUUIDs = v12;
 
@@ -531,9 +531,9 @@ LABEL_101:
 
   if ((HAPIsHH2Enabled_hh2Enabled & 1) == 0)
   {
-    v14 = [(HAPBLEPeripheral *)self cbPeripheral];
+    cbPeripheral = [(HAPBLEPeripheral *)self cbPeripheral];
     cbPeripheral = v4->_cbPeripheral;
-    v4->_cbPeripheral = v14;
+    v4->_cbPeripheral = cbPeripheral;
   }
 
   [(HAPBLEPeripheral *)v4 mergeWithPeripheral:self];
@@ -564,24 +564,24 @@ LABEL_101:
 
 - (BOOL)isBroadcasting
 {
-  v2 = [(HAPBLEPeripheral *)self encryptedPayload];
-  v3 = v2 != 0;
+  encryptedPayload = [(HAPBLEPeripheral *)self encryptedPayload];
+  v3 = encryptedPayload != 0;
 
   return v3;
 }
 
-- (void)_updateAverageRSSIWithRSSI:(id)a3
+- (void)_updateAverageRSSIWithRSSI:(id)i
 {
-  v4 = a3;
-  if (v4)
+  iCopy = i;
+  if (iCopy)
   {
-    v9 = v4;
-    v5 = [(HAPBLEPeripheral *)self averageRSSI];
-    if (v5)
+    v9 = iCopy;
+    averageRSSI = [(HAPBLEPeripheral *)self averageRSSI];
+    if (averageRSSI)
     {
       v6 = MEMORY[0x277CCABB0];
-      v7 = [(HAPBLEPeripheral *)self averageRSSI];
-      v8 = [v6 numberWithInteger:{(objc_msgSend(v9, "integerValue") + objc_msgSend(v7, "integerValue")) / 2}];
+      averageRSSI2 = [(HAPBLEPeripheral *)self averageRSSI];
+      v8 = [v6 numberWithInteger:{(objc_msgSend(v9, "integerValue") + objc_msgSend(averageRSSI2, "integerValue")) / 2}];
       [(HAPBLEPeripheral *)self setAverageRSSI:v8];
     }
 
@@ -590,31 +590,31 @@ LABEL_101:
       [(HAPBLEPeripheral *)self setAverageRSSI:v9];
     }
 
-    v4 = v9;
+    iCopy = v9;
   }
 }
 
-- (BOOL)updateWithPeripheral:(id)a3
+- (BOOL)updateWithPeripheral:(id)peripheral
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 length];
-  v7 = [(HAPBLEPeripheral *)self name];
-  v8 = [v7 length];
+  peripheralCopy = peripheral;
+  name = [peripheralCopy name];
+  v6 = [name length];
+  name2 = [(HAPBLEPeripheral *)self name];
+  v8 = [name2 length];
 
   if (v6 > v8)
   {
-    v9 = [v4 name];
-    [(HAPBLEPeripheral *)self setName:v9];
+    name3 = [peripheralCopy name];
+    [(HAPBLEPeripheral *)self setName:name3];
   }
 
-  v10 = [v4 encryptedPayload];
+  encryptedPayload = [peripheralCopy encryptedPayload];
 
-  if (v10)
+  if (encryptedPayload)
   {
-    v11 = [(HAPBLEPeripheral *)self encryptedPayload];
-    v12 = [v4 encryptedPayload];
-    v13 = [v11 isEqualToData:v12];
+    encryptedPayload2 = [(HAPBLEPeripheral *)self encryptedPayload];
+    encryptedPayload3 = [peripheralCopy encryptedPayload];
+    v13 = [encryptedPayload2 isEqualToData:encryptedPayload3];
 
     v14 = v13 ^ 1;
   }
@@ -622,18 +622,18 @@ LABEL_101:
   else
   {
     Current = CFAbsoluteTimeGetCurrent();
-    v16 = [(HAPBLEPeripheral *)self configNumber];
-    v17 = [v4 configNumber];
-    if ([v16 isEqual:v17])
+    configNumber = [(HAPBLEPeripheral *)self configNumber];
+    configNumber2 = [peripheralCopy configNumber];
+    if ([configNumber isEqual:configNumber2])
     {
-      v18 = [(HAPBLEPeripheral *)self stateNumber];
-      v19 = [v4 stateNumber];
-      if ([v18 isEqual:v19])
+      stateNumber = [(HAPBLEPeripheral *)self stateNumber];
+      stateNumber2 = [peripheralCopy stateNumber];
+      if ([stateNumber isEqual:stateNumber2])
       {
-        v20 = [(HAPBLEPeripheral *)self peripheralUUIDs];
-        v21 = [v4 peripheralUUIDs];
-        v22 = [v21 lastObject];
-        if ([v20 containsObject:v22])
+        peripheralUUIDs = [(HAPBLEPeripheral *)self peripheralUUIDs];
+        peripheralUUIDs2 = [peripheralCopy peripheralUUIDs];
+        lastObject = [peripheralUUIDs2 lastObject];
+        if ([peripheralUUIDs containsObject:lastObject])
         {
           [(HAPBLEPeripheral *)self lastSeen];
           v14 = Current - v23 >= 600.0;
@@ -658,57 +658,57 @@ LABEL_101:
     }
   }
 
-  [(HAPBLEPeripheral *)self mergeWithPeripheral:v4];
+  [(HAPBLEPeripheral *)self mergeWithPeripheral:peripheralCopy];
 
   return v14;
 }
 
-- (void)updateStateNumber:(id)a3
+- (void)updateStateNumber:(id)number
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(HAPBLEPeripheral *)self compareStateNumber:v4]== -1)
+  numberCopy = number;
+  if ([(HAPBLEPeripheral *)self compareStateNumber:numberCopy]== -1)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v8 = HMFGetLogIdentifier();
-      v9 = [(HAPBLEPeripheral *)v6 identifier];
-      v10 = [(HAPBLEPeripheral *)v6 stateNumber];
+      identifier = [(HAPBLEPeripheral *)selfCopy identifier];
+      stateNumber = [(HAPBLEPeripheral *)selfCopy stateNumber];
       v12 = 138544130;
       v13 = v8;
       v14 = 2112;
-      v15 = v9;
+      v15 = identifier;
       v16 = 2114;
-      v17 = v10;
+      v17 = stateNumber;
       v18 = 2114;
-      v19 = v4;
+      v19 = numberCopy;
       _os_log_impl(&dword_22AADC000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Updating state number for tracked peripheral of %@ to sync-up current/new: %{public}@/%{public}@", &v12, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v5);
-    [(HAPBLEPeripheral *)v6 setStateNumber:v4];
+    [(HAPBLEPeripheral *)selfCopy setStateNumber:numberCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)compareConfigNumber:(id)a3
+- (int64_t)compareConfigNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(HAPBLEPeripheral *)self configNumber];
-  v6 = HAPCompareStateNumberWithRollover(v5, v4, 0xFFuLL);
+  numberCopy = number;
+  configNumber = [(HAPBLEPeripheral *)self configNumber];
+  v6 = HAPCompareStateNumberWithRollover(configNumber, numberCopy, 0xFFuLL);
 
   return v6;
 }
 
-- (int64_t)compareStateNumber:(id)a3
+- (int64_t)compareStateNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(HAPBLEPeripheral *)self stateNumber];
-  v6 = HAPCompareStateNumberWithRollover(v5, v4, 0xFFuLL);
+  numberCopy = number;
+  stateNumber = [(HAPBLEPeripheral *)self stateNumber];
+  v6 = HAPCompareStateNumberWithRollover(stateNumber, numberCopy, 0xFFuLL);
 
   return v6;
 }
@@ -720,22 +720,22 @@ LABEL_101:
   v27 = HAPIsInternalBuild();
   if (v27)
   {
-    v28 = [(HAPBLEPeripheral *)self name];
+    name = [(HAPBLEPeripheral *)self name];
   }
 
   else
   {
-    v28 = @"<private>";
+    name = @"<private>";
   }
 
-  v26 = [(HAPBLEPeripheral *)self identifier];
-  v25 = [(HAPBLEPeripheral *)self advDeviceAddress];
-  v24 = [(HAPBLEPeripheral *)self statusFlags];
-  v19 = [v24 unsignedIntValue];
-  v29 = [(HAPBLEPeripheral *)self category];
-  v21 = [(HAPBLEPeripheral *)self stateNumber];
-  v3 = [(HAPBLEPeripheral *)self configNumber];
-  v18 = [(HAPBLEPeripheral *)self advertisementFormat];
+  identifier = [(HAPBLEPeripheral *)self identifier];
+  advDeviceAddress = [(HAPBLEPeripheral *)self advDeviceAddress];
+  statusFlags = [(HAPBLEPeripheral *)self statusFlags];
+  unsignedIntValue = [statusFlags unsignedIntValue];
+  category = [(HAPBLEPeripheral *)self category];
+  stateNumber = [(HAPBLEPeripheral *)self stateNumber];
+  configNumber = [(HAPBLEPeripheral *)self configNumber];
+  advertisementFormat = [(HAPBLEPeripheral *)self advertisementFormat];
   [(HAPBLEPeripheral *)self isCached];
   v20 = HMFBooleanToString();
   [(HAPBLEPeripheral *)self lastSeen];
@@ -751,15 +751,15 @@ LABEL_101:
   }
 
   v7 = MEMORY[0x277CCABB0];
-  v17 = [(HAPBLEPeripheral *)self peripheralUUIDs];
-  v16 = [v7 numberWithUnsignedInteger:{objc_msgSend(v17, "count")}];
-  v8 = [(HAPBLEPeripheral *)self cbPeripheral];
-  v9 = [v8 identifier];
-  v10 = [(HAPBLEPeripheral *)self cbPeripheral];
+  peripheralUUIDs = [(HAPBLEPeripheral *)self peripheralUUIDs];
+  v16 = [v7 numberWithUnsignedInteger:{objc_msgSend(peripheralUUIDs, "count")}];
+  cbPeripheral = [(HAPBLEPeripheral *)self cbPeripheral];
+  identifier2 = [cbPeripheral identifier];
+  cbPeripheral2 = [(HAPBLEPeripheral *)self cbPeripheral];
   v11 = MEMORY[0x277CCABB0];
-  v12 = [(HAPBLEPeripheral *)self cbPeripheral];
-  v13 = [v11 numberWithInteger:{objc_msgSend(v12, "state")}];
-  v23 = [v22 stringWithFormat:@"%@ (%@/%@/%p), sf: 0x%0x, c: %@, s#: %@, c#: %@, v: %tu, cached: %@, seen: '%@', periph[%@]: %@ (%p: %@)", v28, v26, v25, self, v19, v29, v21, v3, v18, v20, v6, v16, v9, v10, v13];
+  cbPeripheral3 = [(HAPBLEPeripheral *)self cbPeripheral];
+  v13 = [v11 numberWithInteger:{objc_msgSend(cbPeripheral3, "state")}];
+  v23 = [v22 stringWithFormat:@"%@ (%@/%@/%p), sf: 0x%0x, c: %@, s#: %@, c#: %@, v: %tu, cached: %@, seen: '%@', periph[%@]: %@ (%p: %@)", name, identifier, advDeviceAddress, self, unsignedIntValue, category, stateNumber, configNumber, advertisementFormat, v20, v6, v16, identifier2, cbPeripheral2, v13];
 
   if (v27)
   {
@@ -776,28 +776,28 @@ LABEL_101:
   v19 = HAPIsInternalBuild();
   if (v19)
   {
-    v18 = [(HAPBLEPeripheral *)self name];
+    name = [(HAPBLEPeripheral *)self name];
   }
 
   else
   {
-    v18 = @"<private>";
+    name = @"<private>";
   }
 
-  v14 = [(HAPBLEPeripheral *)self identifier];
-  v3 = [(HAPBLEPeripheral *)self stateNumber];
+  identifier = [(HAPBLEPeripheral *)self identifier];
+  stateNumber = [(HAPBLEPeripheral *)self stateNumber];
   [(HAPBLEPeripheral *)self isCached];
   v4 = HMFBooleanToString();
   v5 = MEMORY[0x277CCABB0];
-  v15 = [(HAPBLEPeripheral *)self peripheralUUIDs];
-  v6 = [v5 numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
-  v7 = [(HAPBLEPeripheral *)self cbPeripheral];
-  v8 = [v7 identifier];
-  v9 = [(HAPBLEPeripheral *)self cbPeripheral];
+  peripheralUUIDs = [(HAPBLEPeripheral *)self peripheralUUIDs];
+  v6 = [v5 numberWithUnsignedInteger:{objc_msgSend(peripheralUUIDs, "count")}];
+  cbPeripheral = [(HAPBLEPeripheral *)self cbPeripheral];
+  identifier2 = [cbPeripheral identifier];
+  cbPeripheral2 = [(HAPBLEPeripheral *)self cbPeripheral];
   v10 = MEMORY[0x277CCABB0];
-  v11 = [(HAPBLEPeripheral *)self cbPeripheral];
-  v12 = [v10 numberWithInteger:{objc_msgSend(v11, "state")}];
-  v17 = [v16 stringWithFormat:@"%@/%@ (%@, %@, %p) periph[%@] -> %@ (%p: %@)", v18, v14, v3, v4, self, v6, v8, v9, v12];
+  cbPeripheral3 = [(HAPBLEPeripheral *)self cbPeripheral];
+  v12 = [v10 numberWithInteger:{objc_msgSend(cbPeripheral3, "state")}];
+  v17 = [v16 stringWithFormat:@"%@/%@ (%@, %@, %p) periph[%@] -> %@ (%p: %@)", name, identifier, stateNumber, v4, self, v6, identifier2, cbPeripheral2, v12];
 
   if (v19)
   {
@@ -808,20 +808,20 @@ LABEL_101:
 
 - (unint64_t)hash
 {
-  v3 = [(HAPBLEPeripheral *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(HAPBLEPeripheral *)self whbStableIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HAPBLEPeripheral *)self advDeviceAddress];
-  v8 = [v7 hash];
+  identifier = [(HAPBLEPeripheral *)self identifier];
+  v4 = [identifier hash];
+  whbStableIdentifier = [(HAPBLEPeripheral *)self whbStableIdentifier];
+  v6 = [whbStableIdentifier hash] ^ v4;
+  advDeviceAddress = [(HAPBLEPeripheral *)self advDeviceAddress];
+  v8 = [advDeviceAddress hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -831,7 +831,7 @@ LABEL_101:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -842,8 +842,8 @@ LABEL_101:
     v6 = v5;
     if (v6 && ([(HAPBLEPeripheral *)self identifier], v7 = objc_claimAutoreleasedReturnValue(), [(HAPBLEPeripheral *)v6 identifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = HMFEqualObjects(), v8, v7, v9))
     {
-      v10 = [(HAPBLEPeripheral *)self uniqueBTIdentifier];
-      v11 = [(HAPBLEPeripheral *)v6 uniqueBTIdentifier];
+      uniqueBTIdentifier = [(HAPBLEPeripheral *)self uniqueBTIdentifier];
+      uniqueBTIdentifier2 = [(HAPBLEPeripheral *)v6 uniqueBTIdentifier];
       v12 = HMFEqualObjects();
     }
 
@@ -856,47 +856,47 @@ LABEL_101:
   return v12;
 }
 
-- (HAPBLEPeripheral)initWithName:(id)a3 peripheralUUID:(id)a4 identifier:(id)a5 hapVersion:(id)a6 hkType:(id)a7 advInterval:(id)a8 statusFlags:(id)a9 category:(id)a10 stateNumber:(id)a11 configNumber:(id)a12 setupHash:(id)a13 encryptedPayload:(id)a14 whbStableIdentifier:(id)a15 advDeviceAddress:(id)a16
+- (HAPBLEPeripheral)initWithName:(id)name peripheralUUID:(id)d identifier:(id)identifier hapVersion:(id)version hkType:(id)type advInterval:(id)interval statusFlags:(id)flags category:(id)self0 stateNumber:(id)self1 configNumber:(id)self2 setupHash:(id)self3 encryptedPayload:(id)self4 whbStableIdentifier:(id)self5 advDeviceAddress:(id)self6
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v48 = a3;
-  v21 = a4;
-  v37 = a5;
-  v47 = a5;
-  v22 = a6;
-  v46 = a7;
-  v36 = a8;
-  v45 = a8;
-  v44 = a9;
-  v43 = a10;
-  v42 = a11;
-  v41 = a12;
-  v40 = a13;
-  v39 = a14;
-  v23 = a15;
-  v24 = v22;
-  v25 = a16;
+  nameCopy = name;
+  dCopy = d;
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  versionCopy = version;
+  typeCopy = type;
+  intervalCopy = interval;
+  intervalCopy2 = interval;
+  flagsCopy = flags;
+  categoryCopy = category;
+  numberCopy = number;
+  configNumberCopy = configNumber;
+  hashCopy = hash;
+  payloadCopy = payload;
+  stableIdentifierCopy = stableIdentifier;
+  v24 = versionCopy;
+  addressCopy = address;
   v49.receiver = self;
   v49.super_class = HAPBLEPeripheral;
   v26 = [(HAPBLEPeripheral *)&v49 init];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_name, a3);
-    objc_storeStrong(&v27->_hkType, a7);
-    objc_storeStrong(&v27->_advInterval, v36);
+    objc_storeStrong(&v26->_name, name);
+    objc_storeStrong(&v27->_hkType, type);
+    objc_storeStrong(&v27->_advInterval, intervalCopy);
     v27->_advertisementFormat = [v24 unsignedIntegerValue];
-    objc_storeStrong(&v27->_statusFlags, a9);
-    objc_storeStrong(&v27->_identifier, v37);
-    objc_storeStrong(&v27->_category, a10);
-    objc_storeStrong(&v27->_stateNumber, a11);
-    objc_storeStrong(&v27->_configNumber, a12);
-    objc_storeStrong(&v27->_setupHash, a13);
-    objc_storeStrong(&v27->_encryptedPayload, a14);
+    objc_storeStrong(&v27->_statusFlags, flags);
+    objc_storeStrong(&v27->_identifier, identifierCopy);
+    objc_storeStrong(&v27->_category, category);
+    objc_storeStrong(&v27->_stateNumber, number);
+    objc_storeStrong(&v27->_configNumber, configNumber);
+    objc_storeStrong(&v27->_setupHash, hash);
+    objc_storeStrong(&v27->_encryptedPayload, payload);
     v27->_lastSeen = CFAbsoluteTimeGetCurrent();
-    objc_storeStrong(&v27->_whbStableIdentifier, a15);
-    objc_storeStrong(&v27->_advDeviceAddress, a16);
-    v50[0] = v21;
+    objc_storeStrong(&v27->_whbStableIdentifier, stableIdentifier);
+    objc_storeStrong(&v27->_advDeviceAddress, address);
+    v50[0] = dCopy;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:1];
     v29 = [v28 mutableCopy];
     cbPeripheralUUIDs = v27->_cbPeripheralUUIDs;
@@ -911,14 +911,14 @@ LABEL_101:
   return v27;
 }
 
-+ (id)uuidForBTLEPeripheral:(id)a3
++ (id)uuidForBTLEPeripheral:(id)peripheral
 {
-  v3 = a3;
-  v4 = [v3 uniqueBTIdentifier];
+  peripheralCopy = peripheral;
+  uniqueBTIdentifier = [peripheralCopy uniqueBTIdentifier];
 
-  if (v4)
+  if (uniqueBTIdentifier)
   {
-    v5 = [v3 uniqueBTIdentifier];
+    uniqueBTIdentifier2 = [peripheralCopy uniqueBTIdentifier];
   }
 
   else
@@ -928,34 +928,34 @@ LABEL_101:
       dispatch_once(&HAPIsHH2Enabled_onceToken, &__block_literal_global_12209);
     }
 
-    if (HAPIsHH2Enabled_hh2Enabled == 1 && ([v3 whbStableIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+    if (HAPIsHH2Enabled_hh2Enabled == 1 && ([peripheralCopy whbStableIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
     {
-      v7 = [v3 advDeviceAddress];
-      v8 = v7;
-      if (v7)
+      advDeviceAddress = [peripheralCopy advDeviceAddress];
+      v8 = advDeviceAddress;
+      if (advDeviceAddress)
       {
-        v9 = [v7 stringByReplacingOccurrencesOfString:@":" withString:&stru_283E79C60];
+        peripheralUUIDs = [advDeviceAddress stringByReplacingOccurrencesOfString:@":" withString:&stru_283E79C60];
       }
 
       else
       {
-        v10 = [v3 whbStableIdentifier];
-        v9 = [v10 stringByReplacingOccurrencesOfString:@":" withString:&stru_283E79C60];
+        whbStableIdentifier = [peripheralCopy whbStableIdentifier];
+        peripheralUUIDs = [whbStableIdentifier stringByReplacingOccurrencesOfString:@":" withString:&stru_283E79C60];
       }
 
       v11 = objc_alloc(MEMORY[0x277CCAD78]);
-      v12 = [@"8A0A9F67-9C4E-4BA0-9ECC-" stringByAppendingFormat:@"%@", v9];
-      v5 = [v11 initWithUUIDString:v12];
+      v12 = [@"8A0A9F67-9C4E-4BA0-9ECC-" stringByAppendingFormat:@"%@", peripheralUUIDs];
+      uniqueBTIdentifier2 = [v11 initWithUUIDString:v12];
     }
 
     else
     {
-      v9 = [v3 peripheralUUIDs];
-      v5 = [v9 lastObject];
+      peripheralUUIDs = [peripheralCopy peripheralUUIDs];
+      uniqueBTIdentifier2 = [peripheralUUIDs lastObject];
     }
   }
 
-  return v5;
+  return uniqueBTIdentifier2;
 }
 
 @end

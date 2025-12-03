@@ -1,24 +1,24 @@
 @interface CAMNightModeSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
-- (void)_axAdjustValue:(BOOL)a3;
+- (void)_axAdjustValue:(BOOL)value;
 @end
 
 @implementation CAMNightModeSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"valueText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"indexCount" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CAMNightModeSlider" isKindOfClass:@"CEKDiscreteSlider"];
-  [v3 validateClass:@"CAMNightModeSlider" hasInstanceMethod:@"_isPerformingCaptureAnimation" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMNightModeSlider" hasInstanceMethod:@"_selectedIndexBeforeCaptureAnimation" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController"];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_handleNightModeSliderDidChangeValue:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CAMNightModeSlider" hasInstanceMethod:@"setNightMode:" withFullSignature:{"v", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"valueText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"indexCount" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CAMNightModeSlider" isKindOfClass:@"CEKDiscreteSlider"];
+  [validationsCopy validateClass:@"CAMNightModeSlider" hasInstanceMethod:@"_isPerformingCaptureAnimation" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMNightModeSlider" hasInstanceMethod:@"_selectedIndexBeforeCaptureAnimation" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController"];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_handleNightModeSliderDidChangeValue:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CAMNightModeSlider" hasInstanceMethod:@"setNightMode:" withFullSignature:{"v", "Q", 0}];
 }
 
 - (id)accessibilityLabel
@@ -30,9 +30,9 @@
   return v4;
 }
 
-- (void)_axAdjustValue:(BOOL)a3
+- (void)_axAdjustValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -51,7 +51,7 @@
   v7 = v11[3];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v3)
+    if (valueCopy)
     {
       v8 = v7 + 1;
     }

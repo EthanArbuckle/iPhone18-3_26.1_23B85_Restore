@@ -10,22 +10,22 @@
 - (id)_br_watchedURLWithORPredicate1:()BRQueryItemAdditions_Private predicate2:
 {
   v5 = a4;
-  v6 = [a3 br_watchedURL];
-  v7 = [v5 br_watchedFileObjectID];
-  v8 = v7;
-  if (v6 && v7)
+  br_watchedURL = [a3 br_watchedURL];
+  br_watchedFileObjectID = [v5 br_watchedFileObjectID];
+  v8 = br_watchedFileObjectID;
+  if (br_watchedURL && br_watchedFileObjectID)
   {
-    v9 = v6;
+    v9 = br_watchedURL;
   }
 
   else
   {
-    v10 = [v5 br_urlWithWatchedChildren];
-    v11 = v10;
+    br_urlWithWatchedChildren = [v5 br_urlWithWatchedChildren];
+    v11 = br_urlWithWatchedChildren;
     v9 = 0;
-    if (v6 && v10)
+    if (br_watchedURL && br_urlWithWatchedChildren)
     {
-      if ([v6 isEqual:v10])
+      if ([br_watchedURL isEqual:br_urlWithWatchedChildren])
       {
         v9 = v11;
       }
@@ -43,22 +43,22 @@
 - (id)_br_watchedParentURLWithORPredicate1:()BRQueryItemAdditions_Private predicate2:
 {
   v5 = a4;
-  v6 = [a3 br_urlWithWatchedChildren];
-  v7 = [v5 br_fileObjectIDWithWatchedChildren];
-  v8 = v7;
-  if (v6 && v7)
+  br_urlWithWatchedChildren = [a3 br_urlWithWatchedChildren];
+  br_fileObjectIDWithWatchedChildren = [v5 br_fileObjectIDWithWatchedChildren];
+  v8 = br_fileObjectIDWithWatchedChildren;
+  if (br_urlWithWatchedChildren && br_fileObjectIDWithWatchedChildren)
   {
-    v9 = v6;
+    v9 = br_urlWithWatchedChildren;
   }
 
   else
   {
-    v10 = [v5 br_urlWithWatchedChildren];
-    v11 = v10;
+    br_urlWithWatchedChildren2 = [v5 br_urlWithWatchedChildren];
+    v11 = br_urlWithWatchedChildren2;
     v9 = 0;
-    if (v6 && v10)
+    if (br_urlWithWatchedChildren && br_urlWithWatchedChildren2)
     {
-      if ([v6 isEqual:v10])
+      if ([br_urlWithWatchedChildren isEqual:br_urlWithWatchedChildren2])
       {
         v9 = v11;
       }
@@ -76,14 +76,14 @@
 - (id)br_watchedURL
 {
   v21 = *MEMORY[0x1E69E9840];
-  if ([a1 compoundPredicateType] == 1)
+  if ([self compoundPredicateType] == 1)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v2 = [a1 subpredicates];
-    v3 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    subpredicates = [self subpredicates];
+    v3 = [subpredicates countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v3)
     {
       v4 = v3;
@@ -94,18 +94,18 @@
         {
           if (*v17 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(subpredicates);
           }
 
-          v7 = [*(*(&v16 + 1) + 8 * i) br_watchedURL];
-          if (v7)
+          br_watchedURL = [*(*(&v16 + 1) + 8 * i) br_watchedURL];
+          if (br_watchedURL)
           {
-            v13 = v7;
+            v13 = br_watchedURL;
             goto LABEL_19;
           }
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v4 = [subpredicates countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v4)
         {
           continue;
@@ -118,28 +118,28 @@
     goto LABEL_16;
   }
 
-  if ([a1 compoundPredicateType] != 2)
+  if ([self compoundPredicateType] != 2)
   {
 LABEL_17:
     v13 = 0;
     goto LABEL_20;
   }
 
-  v2 = [a1 subpredicates];
-  if ([v2 count] != 2)
+  subpredicates = [self subpredicates];
+  if ([subpredicates count] != 2)
   {
     goto LABEL_16;
   }
 
-  v8 = [v2 objectAtIndexedSubscript:0];
-  v9 = [v2 objectAtIndexedSubscript:1];
-  v10 = [a1 _br_watchedURLWithORPredicate1:v8 predicate2:v9];
+  v8 = [subpredicates objectAtIndexedSubscript:0];
+  v9 = [subpredicates objectAtIndexedSubscript:1];
+  v10 = [self _br_watchedURLWithORPredicate1:v8 predicate2:v9];
 
   if (!v10)
   {
-    v11 = [v2 objectAtIndexedSubscript:1];
-    v12 = [v2 objectAtIndexedSubscript:0];
-    v10 = [a1 _br_watchedURLWithORPredicate1:v11 predicate2:v12];
+    v11 = [subpredicates objectAtIndexedSubscript:1];
+    v12 = [subpredicates objectAtIndexedSubscript:0];
+    v10 = [self _br_watchedURLWithORPredicate1:v11 predicate2:v12];
 
     if (!v10)
     {
@@ -161,14 +161,14 @@ LABEL_20:
 - (id)br_urlWithWatchedChildren
 {
   v21 = *MEMORY[0x1E69E9840];
-  if ([a1 compoundPredicateType] == 1)
+  if ([self compoundPredicateType] == 1)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v2 = [a1 subpredicates];
-    v3 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    subpredicates = [self subpredicates];
+    v3 = [subpredicates countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v3)
     {
       v4 = v3;
@@ -179,18 +179,18 @@ LABEL_20:
         {
           if (*v17 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(subpredicates);
           }
 
-          v7 = [*(*(&v16 + 1) + 8 * i) br_urlWithWatchedChildren];
-          if (v7)
+          br_urlWithWatchedChildren = [*(*(&v16 + 1) + 8 * i) br_urlWithWatchedChildren];
+          if (br_urlWithWatchedChildren)
           {
-            v13 = v7;
+            v13 = br_urlWithWatchedChildren;
             goto LABEL_19;
           }
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v4 = [subpredicates countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v4)
         {
           continue;
@@ -203,28 +203,28 @@ LABEL_20:
     goto LABEL_16;
   }
 
-  if ([a1 compoundPredicateType] != 2)
+  if ([self compoundPredicateType] != 2)
   {
 LABEL_17:
     v13 = 0;
     goto LABEL_20;
   }
 
-  v2 = [a1 subpredicates];
-  if ([v2 count] != 2)
+  subpredicates = [self subpredicates];
+  if ([subpredicates count] != 2)
   {
     goto LABEL_16;
   }
 
-  v8 = [v2 objectAtIndexedSubscript:0];
-  v9 = [v2 objectAtIndexedSubscript:1];
-  v10 = [a1 _br_watchedParentURLWithORPredicate1:v8 predicate2:v9];
+  v8 = [subpredicates objectAtIndexedSubscript:0];
+  v9 = [subpredicates objectAtIndexedSubscript:1];
+  v10 = [self _br_watchedParentURLWithORPredicate1:v8 predicate2:v9];
 
   if (!v10)
   {
-    v11 = [v2 objectAtIndexedSubscript:1];
-    v12 = [v2 objectAtIndexedSubscript:0];
-    v10 = [a1 _br_watchedParentURLWithORPredicate1:v11 predicate2:v12];
+    v11 = [subpredicates objectAtIndexedSubscript:1];
+    v12 = [subpredicates objectAtIndexedSubscript:0];
+    v10 = [self _br_watchedParentURLWithORPredicate1:v11 predicate2:v12];
 
     if (!v10)
     {

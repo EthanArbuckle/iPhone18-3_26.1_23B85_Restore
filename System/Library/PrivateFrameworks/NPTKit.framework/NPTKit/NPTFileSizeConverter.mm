@@ -1,23 +1,23 @@
 @interface NPTFileSizeConverter
-+ (int)fileSizeFromInt:(int64_t)a3;
++ (int)fileSizeFromInt:(int64_t)int;
 @end
 
 @implementation NPTFileSizeConverter
 
-+ (int)fileSizeFromInt:(int64_t)a3
++ (int)fileSizeFromInt:(int64_t)int
 {
-  if (a3 <= 49)
+  if (int <= 49)
   {
-    if (a3 > 19)
+    if (int > 19)
     {
-      if (a3 > 29)
+      if (int > 29)
       {
-        if (a3 == 30)
+        if (int == 30)
         {
           return 30;
         }
 
-        if (a3 == 40)
+        if (int == 40)
         {
           return 40;
         }
@@ -25,26 +25,26 @@
 
       else
       {
-        if (a3 == 20)
+        if (int == 20)
         {
           return 20;
         }
 
-        if (a3 == 25)
+        if (int == 25)
         {
           return 25;
         }
       }
     }
 
-    else if (a3 > 4)
+    else if (int > 4)
     {
-      if (a3 == 5)
+      if (int == 5)
       {
         return 5;
       }
 
-      if (a3 == 10)
+      if (int == 10)
       {
         return 10;
       }
@@ -52,28 +52,28 @@
 
     else
     {
-      if (a3 == 1)
+      if (int == 1)
       {
         return 1;
       }
 
-      if (a3 == 2)
+      if (int == 2)
       {
         return 2;
       }
     }
   }
 
-  else if (a3 <= 89)
+  else if (int <= 89)
   {
-    if (a3 > 69)
+    if (int > 69)
     {
-      if (a3 == 70)
+      if (int == 70)
       {
         return 70;
       }
 
-      if (a3 == 80)
+      if (int == 80)
       {
         return 80;
       }
@@ -81,26 +81,26 @@
 
     else
     {
-      if (a3 == 50)
+      if (int == 50)
       {
         return 50;
       }
 
-      if (a3 == 60)
+      if (int == 60)
       {
         return 60;
       }
     }
   }
 
-  else if (a3 <= 249)
+  else if (int <= 249)
   {
-    if (a3 == 90)
+    if (int == 90)
     {
       return 90;
     }
 
-    if (a3 == 100)
+    if (int == 100)
     {
       return 100;
     }
@@ -108,7 +108,7 @@
 
   else
   {
-    switch(a3)
+    switch(int)
     {
       case 250:
         return 250;

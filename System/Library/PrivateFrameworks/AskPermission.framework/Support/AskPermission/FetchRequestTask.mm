@@ -1,30 +1,30 @@
 @interface FetchRequestTask
-- (FetchRequestTask)initWithIdentifier:(id)a3;
+- (FetchRequestTask)initWithIdentifier:(id)identifier;
 - (id)perform;
 @end
 
 @implementation FetchRequestTask
 
-- (FetchRequestTask)initWithIdentifier:(id)a3
+- (FetchRequestTask)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = FetchRequestTask;
   v5 = [(FetchRequestTask *)&v9 init];
   if (v5)
   {
-    if ([v4 containsString:@"_"])
+    if ([identifierCopy containsString:@"_"])
     {
-      v6 = [v4 componentsSeparatedByString:@"_"];
+      v6 = [identifierCopy componentsSeparatedByString:@"_"];
       if ([v6 count] >= 2)
       {
-        v7 = [v6 lastObject];
+        lastObject = [v6 lastObject];
 
-        v4 = v7;
+        identifierCopy = lastObject;
       }
     }
 
-    objc_storeStrong(&v5->_identifier, v4);
+    objc_storeStrong(&v5->_identifier, identifierCopy);
   }
 
   return v5;

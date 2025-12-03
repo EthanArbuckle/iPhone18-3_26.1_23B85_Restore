@@ -1,10 +1,10 @@
 @interface NTKSeltzerTimeView
-- (CGAffineTransform)_moonViewTransformForStyle:(SEL)a3;
+- (CGAffineTransform)_moonViewTransformForStyle:(SEL)style;
 - (CGSize)_cardinalSecondTickSize;
 - (CGSize)_hourTickSize;
 - (CGSize)_minuteTickSize;
 - (CGSize)_secondTickSize;
-- (NTKSeltzerTimeView)initWithFrame:(CGRect)a3 style:(unint64_t)a4 andDevice:(id)a5;
+- (NTKSeltzerTimeView)initWithFrame:(CGRect)frame style:(unint64_t)style andDevice:(id)device;
 - (double)_cardinalSecondTickInset;
 - (double)_hourTickInset;
 - (double)_minuteTickInset;
@@ -12,38 +12,38 @@
 - (id)_customDialBackgroundView;
 - (id)_digitalLabelFont;
 - (void)_setupAnalogHandsView;
-- (void)applyDataMode:(int64_t)a3;
-- (void)applyInteractiveModeProgress:(double)a3;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
+- (void)applyDataMode:(int64_t)mode;
+- (void)applyInteractiveModeProgress:(double)progress;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setPalette:(id)a3;
-- (void)setStyle:(unint64_t)a3;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setPalette:(id)palette;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation NTKSeltzerTimeView
 
-- (NTKSeltzerTimeView)initWithFrame:(CGRect)a3 style:(unint64_t)a4 andDevice:(id)a5
+- (NTKSeltzerTimeView)initWithFrame:(CGRect)frame style:(unint64_t)style andDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v34.receiver = self;
   v34.super_class = NTKSeltzerTimeView;
-  v12 = [(NTKSeltzerTimeView *)&v34 initWithFrame:a4 style:v11 andDevice:x, y, width, height];
-  if (v12)
+  height = [(NTKSeltzerTimeView *)&v34 initWithFrame:style style:deviceCopy andDevice:x, y, width, height];
+  if (height)
   {
-    sub_2078(v11, &v32);
+    sub_2078(deviceCopy, &v32);
     v13 = v33;
-    v14 = [NUNIAstronomyVistaConfiguration defaultConfigurationWithDevice:v11];
+    v14 = [NUNIAstronomyVistaConfiguration defaultConfigurationWithDevice:deviceCopy];
     v15 = [[NUNIAstronomyVistaView alloc] initWithFrame:v14 configuration:{0.0, 0.0, v13, v13}];
-    astronomyVistaView = v12->_astronomyVistaView;
-    v12->_astronomyVistaView = v15;
+    astronomyVistaView = height->_astronomyVistaView;
+    height->_astronomyVistaView = v15;
 
-    [(NUNIAstronomyVistaView *)v12->_astronomyVistaView setOpaque:0];
-    objc_initWeak(&location, v12);
+    [(NUNIAstronomyVistaView *)height->_astronomyVistaView setOpaque:0];
+    objc_initWeak(&location, height);
     v26 = _NSConcreteStackBlock;
     v27 = 3221225472;
     v28 = sub_1260;
@@ -52,26 +52,26 @@
     v17 = objc_retainBlock(&v26);
     v18 = [NUNIScene alloc];
     v19 = [v18 initWithSphereoids:24 currentDateBlock:{v17, v26, v27, v28, v29}];
-    [(NUNIAstronomyVistaView *)v12->_astronomyVistaView setScene:v19];
-    [(NUNIAstronomyVistaView *)v12->_astronomyVistaView applyVista:1 transitionStyle:0];
-    [(NUNIAstronomyVistaView *)v12->_astronomyVistaView setFrameInterval:3];
-    [(NUNIAstronomyVistaView *)v12->_astronomyVistaView updateSunLocationAnimated:0];
-    v20 = [(NTKSeltzerTimeView *)v12 dialBackgroundView];
-    [v20 addSubview:v12->_astronomyVistaView];
+    [(NUNIAstronomyVistaView *)height->_astronomyVistaView setScene:v19];
+    [(NUNIAstronomyVistaView *)height->_astronomyVistaView applyVista:1 transitionStyle:0];
+    [(NUNIAstronomyVistaView *)height->_astronomyVistaView setFrameInterval:3];
+    [(NUNIAstronomyVistaView *)height->_astronomyVistaView updateSunLocationAnimated:0];
+    dialBackgroundView = [(NTKSeltzerTimeView *)height dialBackgroundView];
+    [dialBackgroundView addSubview:height->_astronomyVistaView];
 
-    v21 = [(NTKSeltzerTimeView *)v12 dialBackgroundView];
-    [v21 sendSubviewToBack:v12->_astronomyVistaView];
+    dialBackgroundView2 = [(NTKSeltzerTimeView *)height dialBackgroundView];
+    [dialBackgroundView2 sendSubviewToBack:height->_astronomyVistaView];
 
     v22 = +[UIColor blackColor];
-    v23 = [(NTKSeltzerTimeView *)v12 analogHandsView];
-    v24 = [v23 secondHandView];
-    [v24 setHandDotColor:v22];
+    analogHandsView = [(NTKSeltzerTimeView *)height analogHandsView];
+    secondHandView = [analogHandsView secondHandView];
+    [secondHandView setHandDotColor:v22];
 
     objc_destroyWeak(&v30);
     objc_destroyWeak(&location);
   }
 
-  return v12;
+  return height;
 }
 
 - (void)layoutSubviews
@@ -79,52 +79,52 @@
   v4.receiver = self;
   v4.super_class = NTKSeltzerTimeView;
   [(NTKSeltzerTimeView *)&v4 layoutSubviews];
-  v3 = [(NTKSeltzerTimeView *)self dialBackgroundView];
-  [v3 bounds];
+  dialBackgroundView = [(NTKSeltzerTimeView *)self dialBackgroundView];
+  [dialBackgroundView bounds];
   CLKRectGetCenter();
   [(NUNIAstronomyVistaView *)self->_astronomyVistaView setCenter:?];
 }
 
-- (void)applyDataMode:(int64_t)a3
+- (void)applyDataMode:(int64_t)mode
 {
-  if (a3 == 4 || a3 == 2)
+  if (mode == 4 || mode == 2)
   {
     [(NUNIAstronomyVistaView *)self->_astronomyVistaView stopAnimation];
   }
 
-  else if (a3 == 1)
+  else if (mode == 1)
   {
     [(NUNIAstronomyVistaView *)self->_astronomyVistaView startAnimation];
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v7 = a3;
+  dateCopy = date;
   v8.receiver = self;
   v8.super_class = NTKSeltzerTimeView;
-  [(NTKSeltzerTimeView *)&v8 setOverrideDate:v7 duration:a4];
-  if (self->_overrideDate != v7 && ![(NSDate *)v7 isEqualToDate:?])
+  [(NTKSeltzerTimeView *)&v8 setOverrideDate:dateCopy duration:duration];
+  if (self->_overrideDate != dateCopy && ![(NSDate *)dateCopy isEqualToDate:?])
   {
-    objc_storeStrong(&self->_overrideDate, a3);
-    [(NUNIAstronomyVistaView *)self->_astronomyVistaView updateSunLocationAnimated:a4 > 0.0];
+    objc_storeStrong(&self->_overrideDate, date);
+    [(NUNIAstronomyVistaView *)self->_astronomyVistaView updateSunLocationAnimated:duration > 0.0];
   }
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
+  objc_storeStrong(&self->_palette, palette);
   [(NTKSeltzerTimeView *)self _applyColorToAnalogHands];
 
   [(NTKSeltzerTimeView *)self _applyColorToDigitalLabelAndTicks];
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
   v7.receiver = self;
   v7.super_class = NTKSeltzerTimeView;
   [(NTKSeltzerTimeView *)&v7 setStyle:?];
-  [(NTKSeltzerTimeView *)self _moonViewTransformForStyle:a3];
+  [(NTKSeltzerTimeView *)self _moonViewTransformForStyle:style];
   astronomyVistaView = self->_astronomyVistaView;
   v6[0] = v6[3];
   v6[1] = v6[4];
@@ -139,7 +139,7 @@
   return v2;
 }
 
-- (CGAffineTransform)_moonViewTransformForStyle:(SEL)a3
+- (CGAffineTransform)_moonViewTransformForStyle:(SEL)style
 {
   v15 = 0u;
   v16 = 0u;
@@ -161,7 +161,7 @@
   return CGAffineTransformMakeScale(retstr, v8, v8);
 }
 
-- (void)applyInteractiveModeProgress:(double)a3
+- (void)applyInteractiveModeProgress:(double)progress
 {
   [(NTKSeltzerTimeView *)self _moonViewTransformForStyle:[(NTKSeltzerTimeView *)self style]];
   v15 = *&CGAffineTransformIdentity.a;
@@ -177,8 +177,8 @@
   v7 = v6;
   if ([(NTKSeltzerTimeView *)self style])
   {
-    v8 = [(NTKSeltzerTimeView *)self digitalTicksContainerView];
-    [v8 setAlpha:v7];
+    digitalTicksContainerView = [(NTKSeltzerTimeView *)self digitalTicksContainerView];
+    [digitalTicksContainerView setAlpha:v7];
 
     CLKInterpolateBetweenFloatsClipped();
     v10 = v9;
@@ -187,8 +187,8 @@
 
   else
   {
-    v11 = [(NTKSeltzerTimeView *)self analogContainerView];
-    [v11 setAlpha:v7];
+    analogContainerView = [(NTKSeltzerTimeView *)self analogContainerView];
+    [analogContainerView setAlpha:v7];
 
     CLKInterpolateBetweenFloatsClipped();
     v10 = v12;
@@ -197,14 +197,14 @@
   v13 = ;
   [v13 setAlpha:v10];
 
-  if (a3 <= 0.0)
+  if (progress <= 0.0)
   {
     v14 = 3;
   }
 
   else
   {
-    if (a3 < 1.0)
+    if (progress < 1.0)
     {
       return;
     }
@@ -218,12 +218,12 @@
 - (void)_setupAnalogHandsView
 {
   v3 = [NTKSeltzerAnalogHandsView alloc];
-  v4 = [(NTKSeltzerTimeView *)self device];
-  v5 = [(NTKSeltzerAnalogHandsView *)v3 initForDevice:v4];
+  device = [(NTKSeltzerTimeView *)self device];
+  v5 = [(NTKSeltzerAnalogHandsView *)v3 initForDevice:device];
   [(NTKSeltzerTimeView *)self setAnalogHandsView:v5];
 
-  v6 = [(NTKSeltzerTimeView *)self analogHandsView];
-  [(NTKSeltzerTimeView *)self addSubview:v6];
+  analogHandsView = [(NTKSeltzerTimeView *)self analogHandsView];
+  [(NTKSeltzerTimeView *)self addSubview:analogHandsView];
 }
 
 - (double)_minuteTickInset
@@ -248,8 +248,8 @@
   v7 = 0u;
   v8 = 0u;
   v6 = 0u;
-  v3 = [(NTKSeltzerTimeView *)self device];
-  sub_2078(v3, &v6);
+  device = [(NTKSeltzerTimeView *)self device];
+  sub_2078(device, &v6);
 
   [(NTKSeltzerTimeView *)self bounds];
   MidY = CGRectGetMidY(v13);
@@ -258,8 +258,8 @@
 
 - (CGSize)_minuteTickSize
 {
-  v2 = [(NTKSeltzerTimeView *)self device];
-  sub_2078(v2, &v7);
+  device = [(NTKSeltzerTimeView *)self device];
+  sub_2078(device, &v7);
   v3 = v8;
   v4 = v9;
 
@@ -272,8 +272,8 @@
 
 - (CGSize)_hourTickSize
 {
-  v2 = [(NTKSeltzerTimeView *)self device];
-  sub_2078(v2, v7);
+  device = [(NTKSeltzerTimeView *)self device];
+  sub_2078(device, v7);
   v3 = v8;
   v4 = v9;
 
@@ -302,8 +302,8 @@
   v9 = 0u;
   v7 = 0u;
   memset(v6, 0, sizeof(v6));
-  v3 = [(NTKSeltzerTimeView *)self device];
-  sub_2078(v3, v6);
+  device = [(NTKSeltzerTimeView *)self device];
+  sub_2078(device, v6);
 
   [(NTKSeltzerTimeView *)self bounds];
   MidY = CGRectGetMidY(v12);
@@ -312,8 +312,8 @@
 
 - (CGSize)_secondTickSize
 {
-  v2 = [(NTKSeltzerTimeView *)self device];
-  sub_2078(v2, v7);
+  device = [(NTKSeltzerTimeView *)self device];
+  sub_2078(device, v7);
   v3 = v8;
   v4 = v9;
 
@@ -326,8 +326,8 @@
 
 - (CGSize)_cardinalSecondTickSize
 {
-  v2 = [(NTKSeltzerTimeView *)self device];
-  sub_2078(v2, v7);
+  device = [(NTKSeltzerTimeView *)self device];
+  sub_2078(device, v7);
   v3 = v8;
   v4 = v9;
 
@@ -340,16 +340,16 @@
 
 - (id)_digitalLabelFont
 {
-  v2 = [(NTKSeltzerTimeView *)self device];
-  sub_2078(v2, v5);
+  device = [(NTKSeltzerTimeView *)self device];
+  sub_2078(device, v5);
   v3 = [CLKFont compactSoftFontOfSize:v6 weight:UIFontWeightThin];
 
   return v3;
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
-  if (a4 != a5)
+  if (style != toStyle)
   {
     v47 = v14;
     v48 = v13;
@@ -361,7 +361,7 @@
     v54 = v7;
     v55 = v5;
     v56 = v6;
-    v16 = a4;
+    toStyleCopy = style;
     CLKMapFractionIntoRange();
     v20 = v19;
     CLKMapFractionIntoRange();
@@ -374,35 +374,35 @@
     CGAffineTransformMakeScale(&v46, v24, v24);
     memset(&v45, 0, sizeof(v45));
     CGAffineTransformMakeScale(&v45, v26, v26);
-    v27 = [(NTKSeltzerTimeView *)self analogContainerView];
-    [v27 setAlpha:v20];
+    analogContainerView = [(NTKSeltzerTimeView *)self analogContainerView];
+    [analogContainerView setAlpha:v20];
 
-    v28 = [(NTKSeltzerTimeView *)self analogHandsView];
-    [v28 setAlpha:v20];
+    analogHandsView = [(NTKSeltzerTimeView *)self analogHandsView];
+    [analogHandsView setAlpha:v20];
 
-    v29 = [(NTKSeltzerTimeView *)self digitalContainerView];
-    [v29 setAlpha:v22];
+    digitalContainerView = [(NTKSeltzerTimeView *)self digitalContainerView];
+    [digitalContainerView setAlpha:v22];
 
     v44 = v46;
-    v30 = [(NTKSeltzerTimeView *)self analogContainerView];
+    analogContainerView2 = [(NTKSeltzerTimeView *)self analogContainerView];
     v43 = v44;
-    [v30 setTransform:&v43];
+    [analogContainerView2 setTransform:&v43];
 
     v42 = v46;
-    v31 = [(NTKSeltzerTimeView *)self analogHandsView];
+    analogHandsView2 = [(NTKSeltzerTimeView *)self analogHandsView];
     v43 = v42;
-    [v31 setTransform:&v43];
+    [analogHandsView2 setTransform:&v43];
 
     v41 = v45;
-    v32 = [(NTKSeltzerTimeView *)self digitalContainerView];
+    digitalContainerView2 = [(NTKSeltzerTimeView *)self digitalContainerView];
     v43 = v41;
-    [v32 setTransform:&v43];
+    [digitalContainerView2 setTransform:&v43];
 
     CLKMapFractionIntoRange();
-    if (a3 >= 0.5)
+    if (fraction >= 0.5)
     {
       v34 = v33;
-      v16 = a5;
+      toStyleCopy = toStyle;
     }
 
     else
@@ -413,17 +413,17 @@
     CLKMapFractionIntoRange();
     memset(&v43, 0, sizeof(v43));
     CGAffineTransformMakeScale(&v43, v35, v35);
-    [(NTKSeltzerTimeView *)self _moonViewTransformForStyle:v16];
+    [(NTKSeltzerTimeView *)self _moonViewTransformForStyle:toStyleCopy];
     astronomyVistaView = self->_astronomyVistaView;
     v40[0] = v40[1];
     [(NUNIAstronomyVistaView *)astronomyVistaView setTransform:v40];
-    v37 = [(NTKSeltzerTimeView *)self dialBackgroundView];
-    [v37 setAlpha:v34];
+    dialBackgroundView = [(NTKSeltzerTimeView *)self dialBackgroundView];
+    [dialBackgroundView setAlpha:v34];
 
     v39 = v43;
-    v38 = [(NTKSeltzerTimeView *)self dialBackgroundView];
+    dialBackgroundView2 = [(NTKSeltzerTimeView *)self dialBackgroundView];
     v40[0] = v39;
-    [v38 setTransform:v40];
+    [dialBackgroundView2 setTransform:v40];
   }
 }
 

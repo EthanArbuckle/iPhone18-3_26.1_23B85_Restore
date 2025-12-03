@@ -1,28 +1,28 @@
 @interface PHVoicemailGreetingPlaybackCell
 + (double)rowHeight;
-- (PHVoicemailGreetingPlaybackCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PHVoicemailGreetingPlaybackCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (PHVoicemailGreetingPlaybackCellDelegate)delegate;
 - (void)_buildConstraints;
-- (void)_playStopButtonTapped:(id)a3;
-- (void)_recordStopButtonTapped:(id)a3;
+- (void)_playStopButtonTapped:(id)tapped;
+- (void)_recordStopButtonTapped:(id)tapped;
 - (void)_updateConstraints;
 - (void)_updateConstraintsConstants;
 - (void)_updateFonts;
 - (void)_updateRecordStopXConstraints;
 - (void)_updateTextColor;
 - (void)dealloc;
-- (void)handleContentSizeCategoryDidChangeNotification:(id)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)handleContentSizeCategoryDidChangeNotification:(id)notification;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 - (void)tintColorDidChange;
 @end
 
 @implementation PHVoicemailGreetingPlaybackCell
 
-- (PHVoicemailGreetingPlaybackCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PHVoicemailGreetingPlaybackCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v41.receiver = self;
   v41.super_class = PHVoicemailGreetingPlaybackCell;
-  v4 = [(PHVoicemailGreetingPlaybackCell *)&v41 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PHVoicemailGreetingPlaybackCell *)&v41 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -34,8 +34,8 @@
     [(PHVoicemailGreetingPlaybackCell *)v4 setSeparatorInset:UIEdgeInsetsZero.top, left, bottom, right];
     [(PHVoicemailGreetingPlaybackCell *)v4 setPreservesSuperviewLayoutMargins:0];
     [(PHVoicemailGreetingPlaybackCell *)v4 setLayoutMargins:UIEdgeInsetsZero.top, left, bottom, right];
-    v9 = [(PHVoicemailGreetingPlaybackCell *)v4 traitCollection];
-    v4->_accessibilityConstraintsEnabled = [v9 isPreferredContentSizeCategoryAccessible];
+    traitCollection = [(PHVoicemailGreetingPlaybackCell *)v4 traitCollection];
+    v4->_accessibilityConstraintsEnabled = [traitCollection isPreferredContentSizeCategoryAccessible];
 
     v10 = [UIButton buttonWithType:0];
     playStopButton = v4->_playStopButton;
@@ -57,8 +57,8 @@
     v17 = [UIImage systemImageNamed:@"play.fill"];
     [(UIButton *)v16 setImage:v17 forState:0];
 
-    v18 = [(PHVoicemailGreetingPlaybackCell *)v4 contentView];
-    [v18 addSubview:v4->_playStopButton];
+    contentView = [(PHVoicemailGreetingPlaybackCell *)v4 contentView];
+    [contentView addSubview:v4->_playStopButton];
 
     v19 = [UIButton buttonWithType:0];
     recordStopButton = v4->_recordStopButton;
@@ -81,8 +81,8 @@
     v27 = [v26 localizedStringForKey:@"RECORD" value:&stru_10028F310 table:@"Voicemail"];
     [(UIButton *)v25 setTitle:v27 forState:0];
 
-    v28 = [(PHVoicemailGreetingPlaybackCell *)v4 contentView];
-    [v28 addSubview:v4->_recordStopButton];
+    contentView2 = [(PHVoicemailGreetingPlaybackCell *)v4 contentView];
+    [contentView2 addSubview:v4->_recordStopButton];
 
     v29 = [UILabel alloc];
     [(PHVoicemailGreetingPlaybackCell *)v4 bounds];
@@ -105,8 +105,8 @@
     [(UILabel *)v4->_recordingLabel setFont:v38];
 
     [(UILabel *)v4->_recordingLabel setHidden:1];
-    v39 = [(PHVoicemailGreetingPlaybackCell *)v4 contentView];
-    [v39 addSubview:v4->_recordingLabel];
+    contentView3 = [(PHVoicemailGreetingPlaybackCell *)v4 contentView];
+    [contentView3 addSubview:v4->_recordingLabel];
 
     [(PHVoicemailGreetingPlaybackCell *)v4 _updateTextColor];
     [(PHVoicemailGreetingPlaybackCell *)v4 _updateFonts];
@@ -132,34 +132,34 @@
   if (![(PHVoicemailGreetingPlaybackCell *)self builtConstraints])
   {
     playStopButton = self->_playStopButton;
-    v4 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
-    v5 = [NSLayoutConstraint constraintWithItem:playStopButton attribute:10 relatedBy:0 toItem:v4 attribute:10 multiplier:1.0 constant:0.0];
+    contentView = [(PHVoicemailGreetingPlaybackCell *)self contentView];
+    v5 = [NSLayoutConstraint constraintWithItem:playStopButton attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
     playStopYConstraint = self->_playStopYConstraint;
     self->_playStopYConstraint = v5;
 
-    v7 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
-    [v7 addConstraint:self->_playStopYConstraint];
+    contentView2 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
+    [contentView2 addConstraint:self->_playStopYConstraint];
 
-    v8 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
+    contentView3 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
     v9 = self->_playStopButton;
-    v10 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
-    v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:4 relatedBy:-1 toItem:v10 attribute:4 multiplier:1.0 constant:0.0];
-    [v8 addConstraint:v11];
+    contentView4 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
+    v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:4 relatedBy:-1 toItem:contentView4 attribute:4 multiplier:1.0 constant:0.0];
+    [contentView3 addConstraint:v11];
 
-    v12 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
+    contentView5 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
     v13 = self->_playStopButton;
-    v14 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
-    v15 = [NSLayoutConstraint constraintWithItem:v13 attribute:1 relatedBy:0 toItem:v14 attribute:1 multiplier:1.0 constant:15.0];
-    [v12 addConstraint:v15];
+    contentView6 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
+    v15 = [NSLayoutConstraint constraintWithItem:v13 attribute:1 relatedBy:0 toItem:contentView6 attribute:1 multiplier:1.0 constant:15.0];
+    [contentView5 addConstraint:v15];
 
     recordStopButton = self->_recordStopButton;
-    v17 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
-    v18 = [NSLayoutConstraint constraintWithItem:recordStopButton attribute:10 relatedBy:0 toItem:v17 attribute:10 multiplier:1.0 constant:0.0];
+    contentView7 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
+    v18 = [NSLayoutConstraint constraintWithItem:recordStopButton attribute:10 relatedBy:0 toItem:contentView7 attribute:10 multiplier:1.0 constant:0.0];
     recordStopYConstraint = self->_recordStopYConstraint;
     self->_recordStopYConstraint = v18;
 
-    v20 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
-    [v20 addConstraint:self->_recordStopYConstraint];
+    contentView8 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
+    [contentView8 addConstraint:self->_recordStopYConstraint];
 
     [(PHVoicemailGreetingPlaybackCell *)self _updateRecordStopXConstraints];
 
@@ -171,13 +171,13 @@
 {
   if (self->_recordStopXConstraint)
   {
-    v3 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
-    [v3 removeConstraint:self->_recordStopXConstraint];
+    contentView = [(PHVoicemailGreetingPlaybackCell *)self contentView];
+    [contentView removeConstraint:self->_recordStopXConstraint];
   }
 
-  v4 = [(PHVoicemailGreetingPlaybackCell *)self accessibilityConstraintsEnabled];
+  accessibilityConstraintsEnabled = [(PHVoicemailGreetingPlaybackCell *)self accessibilityConstraintsEnabled];
   recordStopButton = self->_recordStopButton;
-  if (v4)
+  if (accessibilityConstraintsEnabled)
   {
     v6 = [NSLayoutConstraint constraintWithItem:self->_recordStopButton attribute:1 relatedBy:0 toItem:self->_playStopButton attribute:1 multiplier:1.0 constant:0.0];
     recordStopXConstraint = self->_recordStopXConstraint;
@@ -192,15 +192,15 @@
     self->_recordStopXConstraint = v8;
   }
 
-  v10 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
-  [v10 addConstraint:self->_recordStopXConstraint];
+  contentView2 = [(PHVoicemailGreetingPlaybackCell *)self contentView];
+  [contentView2 addConstraint:self->_recordStopXConstraint];
 }
 
 - (void)_updateConstraintsConstants
 {
-  v3 = [(PHVoicemailGreetingPlaybackCell *)self accessibilityConstraintsEnabled];
+  accessibilityConstraintsEnabled = [(PHVoicemailGreetingPlaybackCell *)self accessibilityConstraintsEnabled];
   recordStopXConstraint = self->_recordStopXConstraint;
-  if (v3)
+  if (accessibilityConstraintsEnabled)
   {
     [(NSLayoutConstraint *)recordStopXConstraint setConstant:0.0];
     [objc_opt_class() rowHeight];
@@ -236,43 +236,43 @@
 - (void)_updateFonts
 {
   v3 = +[UIFont telephonyUIBodyShortFont];
-  v4 = [(UIButton *)self->_playStopButton titleLabel];
-  [v4 setFont:v3];
+  titleLabel = [(UIButton *)self->_playStopButton titleLabel];
+  [titleLabel setFont:v3];
 
   v6 = +[UIFont telephonyUIBodyShortFont];
-  v5 = [(UIButton *)self->_recordStopButton titleLabel];
-  [v5 setFont:v6];
+  titleLabel2 = [(UIButton *)self->_recordStopButton titleLabel];
+  [titleLabel2 setFont:v6];
 }
 
-- (void)_playStopButtonTapped:(id)a3
+- (void)_playStopButtonTapped:(id)tapped
 {
-  v3 = [(PHVoicemailGreetingPlaybackCell *)self delegate];
-  [v3 playStopButtonTapped];
+  delegate = [(PHVoicemailGreetingPlaybackCell *)self delegate];
+  [delegate playStopButtonTapped];
 }
 
-- (void)_recordStopButtonTapped:(id)a3
+- (void)_recordStopButtonTapped:(id)tapped
 {
-  v3 = [(PHVoicemailGreetingPlaybackCell *)self delegate];
-  [v3 recordStopButtonTapped];
+  delegate = [(PHVoicemailGreetingPlaybackCell *)self delegate];
+  [delegate recordStopButtonTapped];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = PHVoicemailGreetingPlaybackCell;
   [(PHVoicemailGreetingPlaybackCell *)&v5 setUserInteractionEnabled:?];
-  [(UIButton *)self->_playStopButton setEnabled:v3];
-  [(UIButton *)self->_recordStopButton setEnabled:v3];
+  [(UIButton *)self->_playStopButton setEnabled:enabledCopy];
+  [(UIButton *)self->_recordStopButton setEnabled:enabledCopy];
 }
 
 + (double)rowHeight
 {
   v2 = +[UIScreen mainScreen];
-  v3 = [v2 traitCollection];
-  v4 = [v3 isPreferredContentSizeCategoryAccessible];
+  traitCollection = [v2 traitCollection];
+  isPreferredContentSizeCategoryAccessible = [traitCollection isPreferredContentSizeCategoryAccessible];
 
-  if (v4)
+  if (isPreferredContentSizeCategoryAccessible)
   {
     v5 = 86.0;
   }
@@ -289,14 +289,14 @@
   return v8;
 }
 
-- (void)handleContentSizeCategoryDidChangeNotification:(id)a3
+- (void)handleContentSizeCategoryDidChangeNotification:(id)notification
 {
-  v4 = [(PHVoicemailGreetingPlaybackCell *)self traitCollection];
-  v5 = [v4 isPreferredContentSizeCategoryAccessible];
+  traitCollection = [(PHVoicemailGreetingPlaybackCell *)self traitCollection];
+  isPreferredContentSizeCategoryAccessible = [traitCollection isPreferredContentSizeCategoryAccessible];
 
-  if (v5 != [(PHVoicemailGreetingPlaybackCell *)self accessibilityConstraintsEnabled])
+  if (isPreferredContentSizeCategoryAccessible != [(PHVoicemailGreetingPlaybackCell *)self accessibilityConstraintsEnabled])
   {
-    [(PHVoicemailGreetingPlaybackCell *)self setAccessibilityConstraintsEnabled:v5];
+    [(PHVoicemailGreetingPlaybackCell *)self setAccessibilityConstraintsEnabled:isPreferredContentSizeCategoryAccessible];
     [(PHVoicemailGreetingPlaybackCell *)self _updateRecordStopXConstraints];
   }
 
@@ -314,8 +314,8 @@
 - (void)_updateTextColor
 {
   playStopButton = self->_playStopButton;
-  v4 = [(PHVoicemailGreetingPlaybackCell *)self tintColor];
-  v5 = [(PHVoicemailGreetingPlaybackCell *)self _accessibilityHigherContrastTintColorForColor:v4];
+  tintColor = [(PHVoicemailGreetingPlaybackCell *)self tintColor];
+  v5 = [(PHVoicemailGreetingPlaybackCell *)self _accessibilityHigherContrastTintColorForColor:tintColor];
   [(UIButton *)playStopButton setTitleColor:v5 forState:0];
 
   v6 = self->_playStopButton;
@@ -324,8 +324,8 @@
   [(UIButton *)v6 setTitleColor:v8 forState:2];
 
   recordStopButton = self->_recordStopButton;
-  v10 = [(PHVoicemailGreetingPlaybackCell *)self tintColor];
-  v11 = [(PHVoicemailGreetingPlaybackCell *)self _accessibilityHigherContrastTintColorForColor:v10];
+  tintColor2 = [(PHVoicemailGreetingPlaybackCell *)self tintColor];
+  v11 = [(PHVoicemailGreetingPlaybackCell *)self _accessibilityHigherContrastTintColorForColor:tintColor2];
   [(UIButton *)recordStopButton setTitleColor:v11 forState:0];
 
   v12 = self->_recordStopButton;

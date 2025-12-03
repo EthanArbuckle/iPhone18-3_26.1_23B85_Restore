@@ -1,27 +1,27 @@
 @interface TXRFileDataSourceProvider
-- (TXRFileDataSourceProvider)initWithData:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6;
-- (TXRFileDataSourceProvider)initWithURL:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6;
+- (TXRFileDataSourceProvider)initWithData:(id)data bufferAllocator:(id)allocator options:(id)options error:(id *)error;
+- (TXRFileDataSourceProvider)initWithURL:(id)l bufferAllocator:(id)allocator options:(id)options error:(id *)error;
 - (id)provideTextureInfo;
-- (unint64_t)_determineFileType:(id)a3;
-- (void)_parseData:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6;
+- (unint64_t)_determineFileType:(id)type;
+- (void)_parseData:(id)data bufferAllocator:(id)allocator options:(id)options error:(id *)error;
 @end
 
 @implementation TXRFileDataSourceProvider
 
-- (TXRFileDataSourceProvider)initWithURL:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6
+- (TXRFileDataSourceProvider)initWithURL:(id)l bufferAllocator:(id)allocator options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  allocatorCopy = allocator;
+  optionsCopy = options;
   v28.receiver = self;
   v28.super_class = TXRFileDataSourceProvider;
   v13 = [(TXRFileDataSourceProvider *)&v28 init];
   if (v13)
   {
-    if ([v10 checkResourceIsReachableAndReturnError:0])
+    if ([lCopy checkResourceIsReachableAndReturnError:0])
     {
-      v14 = dispatch_queue_attr_make_with_qos_class(MEMORY[0x277D85CD8], QOS_CLASS_DEFAULT, 0);
-      v15 = dispatch_queue_create("com.apple.txrtextureloaderfileio", v14);
+      lastPathComponent = dispatch_queue_attr_make_with_qos_class(MEMORY[0x277D85CD8], QOS_CLASS_DEFAULT, 0);
+      v15 = dispatch_queue_create("com.apple.txrtextureloaderfileio", lastPathComponent);
       fileIOQueue = v13->_fileIOQueue;
       v13->_fileIOQueue = v15;
 
@@ -34,10 +34,10 @@
       block[1] = 3221225472;
       block[2] = __71__TXRFileDataSourceProvider_initWithURL_bufferAllocator_options_error___block_invoke;
       block[3] = &unk_279DBC078;
-      v24 = v10;
+      v24 = lCopy;
       v25 = v13;
-      v26 = v11;
-      v27 = v12;
+      v26 = allocatorCopy;
+      v27 = optionsCopy;
       dispatch_async(v19, block);
 
       v20 = v24;
@@ -46,12 +46,12 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    if (a6)
+    if (error)
     {
       v21 = MEMORY[0x277CCACA8];
-      v14 = [v10 lastPathComponent];
-      v20 = [v21 stringWithFormat:@"Could not find resource %@ at specified location.", v14];
-      *a6 = _newTXRErrorWithCodeAndErrorString(1, v20);
+      lastPathComponent = [lCopy lastPathComponent];
+      v20 = [v21 stringWithFormat:@"Could not find resource %@ at specified location.", lastPathComponent];
+      *error = _newTXRErrorWithCodeAndErrorString(1, v20);
       goto LABEL_6;
     }
   }
@@ -76,11 +76,11 @@ void __71__TXRFileDataSourceProvider_initWithURL_bufferAllocator_options_error__
   v9 = v10;
 }
 
-- (TXRFileDataSourceProvider)initWithData:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6
+- (TXRFileDataSourceProvider)initWithData:(id)data bufferAllocator:(id)allocator options:(id)options error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  allocatorCopy = allocator;
+  optionsCopy = options;
   v23.receiver = self;
   v23.super_class = TXRFileDataSourceProvider;
   v12 = [(TXRFileDataSourceProvider *)&v23 init];
@@ -97,9 +97,9 @@ void __71__TXRFileDataSourceProvider_initWithURL_bufferAllocator_options_error__
     v18[2] = __72__TXRFileDataSourceProvider_initWithData_bufferAllocator_options_error___block_invoke;
     v18[3] = &unk_279DBC078;
     v19 = v12;
-    v20 = v9;
-    v21 = v10;
-    v22 = v11;
+    v20 = dataCopy;
+    v21 = allocatorCopy;
+    v22 = optionsCopy;
     dispatch_async(v16, v18);
   }
 
@@ -123,9 +123,9 @@ id __72__TXRFileDataSourceProvider_initWithData_bufferAllocator_options_error___
   return result;
 }
 
-- (unint64_t)_determineFileType:(id)a3
+- (unint64_t)_determineFileType:(id)type
 {
-  if ([TXRParserKTX handlesData:a3])
+  if ([TXRParserKTX handlesData:type])
   {
     return 1;
   }
@@ -136,12 +136,12 @@ id __72__TXRFileDataSourceProvider_initWithData_bufferAllocator_options_error___
   }
 }
 
-- (void)_parseData:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6
+- (void)_parseData:(id)data bufferAllocator:(id)allocator options:(id)options error:(id *)error
 {
-  v18 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(TXRFileDataSourceProvider *)self _determineFileType:v18];
+  dataCopy = data;
+  allocatorCopy = allocator;
+  optionsCopy = options;
+  v12 = [(TXRFileDataSourceProvider *)self _determineFileType:dataCopy];
   if (v12 == 1)
   {
     v13 = off_279DBBF50;
@@ -161,11 +161,11 @@ id __72__TXRFileDataSourceProvider_initWithData_bufferAllocator_options_error___
   parser = self->_parser;
   self->_parser = v14;
 
-  if ([(TXRParser *)self->_parser parseData:v18 bufferAllocator:v10 options:v11 error:a6])
+  if ([(TXRParser *)self->_parser parseData:dataCopy bufferAllocator:allocatorCopy options:optionsCopy error:error])
   {
-    v16 = [(TXRParser *)self->_parser textureInfo];
+    textureInfo = [(TXRParser *)self->_parser textureInfo];
     textureInfo = self->_textureInfo;
-    self->_textureInfo = v16;
+    self->_textureInfo = textureInfo;
 
     dispatch_semaphore_signal(self->_infoLoaded);
   }

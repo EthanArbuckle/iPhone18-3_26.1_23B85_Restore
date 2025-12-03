@@ -1,5 +1,5 @@
 @interface PPSTimestampConverterRegistry
-+ (id)converterForFilepath:(id)a3;
++ (id)converterForFilepath:(id)filepath;
 + (id)sharedInstance;
 - (PPSTimestampConverterRegistry)init;
 @end
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __47__PPSTimestampConverterRegistry_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -47,20 +47,20 @@ uint64_t __47__PPSTimestampConverterRegistry_sharedInstance__block_invoke(uint64
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)converterForFilepath:(id)a3
++ (id)converterForFilepath:(id)filepath
 {
-  v3 = a3;
-  v4 = [objc_opt_class() sharedInstance];
-  v5 = [v4 converters];
-  v6 = [v5 objectForKey:v3];
+  filepathCopy = filepath;
+  sharedInstance = [objc_opt_class() sharedInstance];
+  converters = [sharedInstance converters];
+  v6 = [converters objectForKey:filepathCopy];
 
   if (!v6)
   {
-    v6 = [[PPSTimestampConverter alloc] initWithFilepath:v3];
+    v6 = [[PPSTimestampConverter alloc] initWithFilepath:filepathCopy];
     if (v6)
     {
-      v7 = [v4 converters];
-      [v7 setObject:v6 forKeyedSubscript:v3];
+      converters2 = [sharedInstance converters];
+      [converters2 setObject:v6 forKeyedSubscript:filepathCopy];
     }
   }
 

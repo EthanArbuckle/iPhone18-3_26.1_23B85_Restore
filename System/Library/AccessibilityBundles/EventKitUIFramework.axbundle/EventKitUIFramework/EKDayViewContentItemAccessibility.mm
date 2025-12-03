@@ -1,18 +1,18 @@
 @interface EKDayViewContentItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateOccurrenceView;
-- (void)setUnPinnedViewFrame:(CGRect)a3;
+- (void)setUnPinnedViewFrame:(CGRect)frame;
 @end
 
 @implementation EKDayViewContentItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKDayViewContentItem" hasInstanceMethod:@"setUnPinnedViewFrame:" withFullSignature:{"v", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"EKDayViewContentItem" hasInstanceMethod:@"unPinnedViewFrame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"EKDayViewContentItem" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKDayViewContentItem" hasInstanceMethod:@"setUnPinnedViewFrame:" withFullSignature:{"v", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"EKDayViewContentItem" hasInstanceMethod:@"unPinnedViewFrame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"EKDayViewContentItem" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
 }
 
 - (void)_axAnnotateOccurrenceView
@@ -41,11 +41,11 @@
   [(EKDayViewContentItemAccessibility *)self _axAnnotateOccurrenceView];
 }
 
-- (void)setUnPinnedViewFrame:(CGRect)a3
+- (void)setUnPinnedViewFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = EKDayViewContentItemAccessibility;
-  [(EKDayViewContentItemAccessibility *)&v4 setUnPinnedViewFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(EKDayViewContentItemAccessibility *)&v4 setUnPinnedViewFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(EKDayViewContentItemAccessibility *)self _axAnnotateOccurrenceView];
 }
 

@@ -1,18 +1,18 @@
 @interface AMSURLParserInternal
-+ (void)typeFor:(NSURL *)a3 bag:(AMSBagProtocol *)a4 completionHandler:(id)a5;
++ (void)typeFor:(NSURL *)for bag:(AMSBagProtocol *)bag completionHandler:(id)handler;
 @end
 
 @implementation AMSURLParserInternal
 
-+ (void)typeFor:(NSURL *)a3 bag:(AMSBagProtocol *)a4 completionHandler:(id)a5
++ (void)typeFor:(NSURL *)for bag:(AMSBagProtocol *)bag completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = for;
+  v9[3] = bag;
   v9[4] = v8;
-  v9[5] = a1;
-  v10 = a3;
+  v9[5] = self;
+  forCopy = for;
   swift_unknownObjectRetain();
 
   sub_1928FB3BC(&unk_192FCEC40, v9);

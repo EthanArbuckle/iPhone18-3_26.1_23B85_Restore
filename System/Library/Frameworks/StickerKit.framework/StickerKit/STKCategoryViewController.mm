@@ -1,8 +1,8 @@
 @interface STKCategoryViewController
-- (STKCategoryViewController)initWithCoder:(id)a3;
-- (STKCategoryViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)transitionerForConnectingHostingController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (STKCategoryViewController)initWithCoder:(id)coder;
+- (STKCategoryViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)transitionerForConnectingHostingController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -10,17 +10,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CategoryViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   _s10StickerKit22CategoryViewControllerC13viewDidAppearyySbF_0();
 }
 
-- (id)transitionerForConnectingHostingController:(id)a3
+- (id)transitionerForConnectingHostingController:(id)controller
 {
   v5[4] = sub_19A6D26D4;
   v5[5] = 0;
@@ -33,20 +33,20 @@
   return v3;
 }
 
-- (STKCategoryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (STKCategoryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     sub_19A7AB014();
-    a3 = v8;
+    name = v8;
   }
 
   sub_19A5F5028(0, &unk_1EAFCB0D0);
-  v9 = a4;
+  bundleCopy = bundle;
   sub_19A7AB664();
   *(&self->super.super.super.isa + OBJC_IVAR___STKCategoryViewController_keyboardSuppression) = 0;
-  if (a3)
+  if (name)
   {
     v10 = sub_19A7AAFE4();
   }
@@ -58,21 +58,21 @@
 
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v11 = [(STKCategoryViewController *)&v13 initWithNibName:v10 bundle:v9];
+  v11 = [(STKCategoryViewController *)&v13 initWithNibName:v10 bundle:bundleCopy];
 
   return v11;
 }
 
-- (STKCategoryViewController)initWithCoder:(id)a3
+- (STKCategoryViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   sub_19A5F5028(0, &unk_1EAFCB0D0);
-  v6 = a3;
+  coderCopy = coder;
   sub_19A7AB664();
   *(&self->super.super.super.isa + OBJC_IVAR___STKCategoryViewController_keyboardSuppression) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v7 = [(STKCategoryViewController *)&v9 initWithCoder:v6];
+  v7 = [(STKCategoryViewController *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

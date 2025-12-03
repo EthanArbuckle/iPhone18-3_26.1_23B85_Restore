@@ -1,14 +1,14 @@
 @interface CRKConcreteDistributedNotificationPublisher
-- (id)subscribeToNotificationWithName:(id)a3 handler:(id)a4;
+- (id)subscribeToNotificationWithName:(id)name handler:(id)handler;
 @end
 
 @implementation CRKConcreteDistributedNotificationPublisher
 
-- (id)subscribeToNotificationWithName:(id)a3 handler:(id)a4
+- (id)subscribeToNotificationWithName:(id)name handler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CRKConcreteDistributedNotificationSubscription alloc] initWithNotificationName:v6 handler:v5];
+  handlerCopy = handler;
+  nameCopy = name;
+  v7 = [[CRKConcreteDistributedNotificationSubscription alloc] initWithNotificationName:nameCopy handler:handlerCopy];
 
   [(CRKConcreteDistributedNotificationSubscription *)v7 resume];
 

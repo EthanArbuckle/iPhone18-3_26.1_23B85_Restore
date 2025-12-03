@@ -1,8 +1,8 @@
 @interface PLConcurrentQueue
 - (PLConcurrentQueue)init;
-- (PLConcurrentQueue)initWithTargetQueue:(id)a3 width:(int64_t)a4;
+- (PLConcurrentQueue)initWithTargetQueue:(id)queue width:(int64_t)width;
 - (void)_internalQueue_tryDispatchingNextPendingBlock;
-- (void)dispatchAsync:(id)a3;
+- (void)dispatchAsync:(id)async;
 @end
 
 @implementation PLConcurrentQueue
@@ -13,10 +13,10 @@
   {
     if (self->_internalQueue_usedWidth < self->_width)
     {
-      v3 = [(NSMutableArray *)self->_internalQueue_pendingBlocks firstObject];
+      firstObject = [(NSMutableArray *)self->_internalQueue_pendingBlocks firstObject];
       [(NSMutableArray *)self->_internalQueue_pendingBlocks removeObjectAtIndex:0];
       ++self->_internalQueue_usedWidth;
-      v4 = v3;
+      v4 = firstObject;
       pl_dispatch_async();
     }
   }
@@ -35,11 +35,11 @@ void __66__PLConcurrentQueue__internalQueue_tryDispatchingNextPendingBlock__bloc
   dispatch_async(v3, block);
 }
 
-- (void)dispatchAsync:(id)a3
+- (void)dispatchAsync:(id)async
 {
-  if (a3)
+  if (async)
   {
-    v4 = [a3 copy];
+    v4 = [async copy];
     internalQueue = self->_internalQueue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -63,17 +63,17 @@ uint64_t __35__PLConcurrentQueue_dispatchAsync___block_invoke(uint64_t a1)
   return [v4 _internalQueue_tryDispatchingNextPendingBlock];
 }
 
-- (PLConcurrentQueue)initWithTargetQueue:(id)a3 width:(int64_t)a4
+- (PLConcurrentQueue)initWithTargetQueue:(id)queue width:(int64_t)width
 {
-  v7 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = PLConcurrentQueue;
   v8 = [(PLConcurrentQueue *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_targetQueue, a3);
-    v9->_width = a4;
+    objc_storeStrong(&v8->_targetQueue, queue);
+    v9->_width = width;
     v10 = dispatch_queue_create("com.apple.photos.concurrent-queue-internal", 0);
     internalQueue = v9->_internalQueue;
     v9->_internalQueue = v10;
@@ -88,8 +88,8 @@ uint64_t __35__PLConcurrentQueue_dispatchAsync___block_invoke(uint64_t a1)
 
 - (PLConcurrentQueue)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PLConcurrentQueue.m" lineNumber:21 description:{@"%s is not a valid initializer", "-[PLConcurrentQueue init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLConcurrentQueue.m" lineNumber:21 description:{@"%s is not a valid initializer", "-[PLConcurrentQueue init]"}];
 
   return 0;
 }

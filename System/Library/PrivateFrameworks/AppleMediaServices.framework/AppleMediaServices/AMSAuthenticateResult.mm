@@ -1,26 +1,26 @@
 @interface AMSAuthenticateResult
-- (AMSAuthenticateResult)initWithAccount:(id)a3;
-- (AMSAuthenticateResult)initWithCoder:(id)a3;
+- (AMSAuthenticateResult)initWithAccount:(id)account;
+- (AMSAuthenticateResult)initWithCoder:(id)coder;
 - (NSDictionary)authenticationResults;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSAuthenticateResult
 
-- (AMSAuthenticateResult)initWithAccount:(id)a3
+- (AMSAuthenticateResult)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v11.receiver = self;
   v11.super_class = AMSAuthenticateResult;
   v6 = [(AMSAuthenticateResult *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
-    v8 = [v5 ams_lastAuthenticationServerResponse];
+    objc_storeStrong(&v6->_account, account);
+    ams_lastAuthenticationServerResponse = [accountCopy ams_lastAuthenticationServerResponse];
     serverResponse = v7->_serverResponse;
-    v7->_serverResponse = v8;
+    v7->_serverResponse = ams_lastAuthenticationServerResponse;
   }
 
   return v7;
@@ -28,59 +28,59 @@
 
 - (NSDictionary)authenticationResults
 {
-  v2 = [(AMSAuthenticateResult *)self authKitUpdateResult];
-  v3 = [v2 authenticationResults];
+  authKitUpdateResult = [(AMSAuthenticateResult *)self authKitUpdateResult];
+  authenticationResults = [authKitUpdateResult authenticationResults];
 
-  return v3;
+  return authenticationResults;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(AMSAuthenticateResult *)self account];
+  coderCopy = coder;
+  account = [(AMSAuthenticateResult *)self account];
 
-  if (v4)
+  if (account)
   {
-    v5 = [(AMSAuthenticateResult *)self account];
-    [v11 encodeObject:v5 forKey:@"kCodingKeyAccount"];
+    account2 = [(AMSAuthenticateResult *)self account];
+    [coderCopy encodeObject:account2 forKey:@"kCodingKeyAccount"];
   }
 
-  v6 = [(AMSAuthenticateResult *)self authKitUpdateResult];
+  authKitUpdateResult = [(AMSAuthenticateResult *)self authKitUpdateResult];
 
-  if (v6)
+  if (authKitUpdateResult)
   {
-    v7 = [(AMSAuthenticateResult *)self authKitUpdateResult];
-    [v11 encodeObject:v7 forKey:@"kCodingKeyAuthKitUpdateResult"];
+    authKitUpdateResult2 = [(AMSAuthenticateResult *)self authKitUpdateResult];
+    [coderCopy encodeObject:authKitUpdateResult2 forKey:@"kCodingKeyAuthKitUpdateResult"];
   }
 
-  v8 = [(AMSAuthenticateResult *)self serverResponse];
+  serverResponse = [(AMSAuthenticateResult *)self serverResponse];
 
-  v9 = v11;
-  if (v8)
+  v9 = coderCopy;
+  if (serverResponse)
   {
-    v10 = [(AMSAuthenticateResult *)self serverResponse];
-    [v11 encodeObject:v10 forKey:@"kCodingKeyServerResponse"];
+    serverResponse2 = [(AMSAuthenticateResult *)self serverResponse];
+    [coderCopy encodeObject:serverResponse2 forKey:@"kCodingKeyServerResponse"];
 
-    v9 = v11;
+    v9 = coderCopy;
   }
 }
 
-- (AMSAuthenticateResult)initWithCoder:(id)a3
+- (AMSAuthenticateResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AMSAuthenticateResult *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyAccount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyAccount"];
     account = v5->_account;
     v5->_account = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyAuthKitUpdateResult"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyAuthKitUpdateResult"];
     authKitUpdateResult = v5->_authKitUpdateResult;
     v5->_authKitUpdateResult = v8;
 
-    v10 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"kCodingKeyServerResponse"];
+    ams_JSONClasses = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v11 = [coderCopy decodeObjectOfClasses:ams_JSONClasses forKey:@"kCodingKeyServerResponse"];
     serverResponse = v5->_serverResponse;
     v5->_serverResponse = v11;
   }
@@ -91,14 +91,14 @@
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(AMSAuthenticateResult *)self account];
-  [v3 ams_setNullableObject:v4 forKey:@"account"];
+  account = [(AMSAuthenticateResult *)self account];
+  [v3 ams_setNullableObject:account forKey:@"account"];
 
-  v5 = [(AMSAuthenticateResult *)self authKitUpdateResult];
-  [v3 ams_setNullableObject:v5 forKey:@"authKitUpdateResult"];
+  authKitUpdateResult = [(AMSAuthenticateResult *)self authKitUpdateResult];
+  [v3 ams_setNullableObject:authKitUpdateResult forKey:@"authKitUpdateResult"];
 
-  v6 = [(AMSAuthenticateResult *)self serverResponse];
-  [v3 ams_setNullableObject:v6 forKey:@"serverResponse"];
+  serverResponse = [(AMSAuthenticateResult *)self serverResponse];
+  [v3 ams_setNullableObject:serverResponse forKey:@"serverResponse"];
 
   v7 = [self ams_generateDescriptionWithSubObjects:v3];
 

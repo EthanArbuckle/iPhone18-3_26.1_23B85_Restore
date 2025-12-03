@@ -1,43 +1,43 @@
 @interface CKVideoPlayerBalloonView
-- (BOOL)gestureIsOurGesture:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureIsOurGesture:(id)gesture;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (CKReusableVideoPlayer)reusablePlayer;
-- (CKVideoPlayerBalloonView)initWithFrame:(CGRect)a3;
+- (CKVideoPlayerBalloonView)initWithFrame:(CGRect)frame;
 - (CKVideoPlayerReusePool)playerPool;
 - (NSString)description;
 - (id)playerItem;
 - (id)playerViewController;
 - (void)cleanUpPlayerIfNeeded;
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6;
-- (void)doubleTapGestureRecognized:(id)a3;
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect;
+- (void)doubleTapGestureRecognized:(id)recognized;
 - (void)layoutSubviews;
 - (void)pausePlayback;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
 - (void)reusablePlayerDidStart;
 - (void)reusablePlayerDidStop;
-- (void)reusablePlayerWillBeginFullScreenPresentation:(id)a3;
-- (void)reusablePlayerWillEndFullScreenPresentation:(id)a3;
-- (void)setPlayerView:(id)a3;
+- (void)reusablePlayerWillBeginFullScreenPresentation:(id)presentation;
+- (void)reusablePlayerWillEndFullScreenPresentation:(id)presentation;
+- (void)setPlayerView:(id)view;
 - (void)showPlayerViewController;
 - (void)startPlayingInlineVideo;
-- (void)tapGestureRecognized:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)tapGestureRecognized:(id)recognized;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation CKVideoPlayerBalloonView
 
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect
 {
-  v6 = a6;
-  v7 = a5;
+  effectCopy = effect;
+  orientationCopy = orientation;
   v11.receiver = self;
   v11.super_class = CKVideoPlayerBalloonView;
-  v10 = a3;
-  [(CKImageBalloonView *)&v11 configureForMediaObject:v10 previewWidth:v7 orientation:v6 hasInvisibleInkEffect:a4];
-  [(CKVideoPlayerBalloonView *)self setMediaObject:v10, v11.receiver, v11.super_class];
+  objectCopy = object;
+  [(CKImageBalloonView *)&v11 configureForMediaObject:objectCopy previewWidth:orientationCopy orientation:effectCopy hasInvisibleInkEffect:width];
+  [(CKVideoPlayerBalloonView *)self setMediaObject:objectCopy, v11.receiver, v11.super_class];
 }
 
 - (NSString)description
@@ -46,36 +46,36 @@
   v8.receiver = self;
   v8.super_class = CKVideoPlayerBalloonView;
   v4 = [(CKImageBalloonView *)&v8 description];
-  v5 = [(CKVideoPlayerBalloonView *)self mediaObject];
-  v6 = [v3 stringWithFormat:@"%@ mediaObject: %@", v4, v5];
+  mediaObject = [(CKVideoPlayerBalloonView *)self mediaObject];
+  v6 = [v3 stringWithFormat:@"%@ mediaObject: %@", v4, mediaObject];
 
   return v6;
 }
 
-- (CKVideoPlayerBalloonView)initWithFrame:(CGRect)a3
+- (CKVideoPlayerBalloonView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CKVideoPlayerBalloonView;
-  v3 = [(CKImageBalloonView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKImageBalloonView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKBalloonView *)v3 doubleTapGestureRecognizer];
-    [v5 setDelegate:v4];
+    doubleTapGestureRecognizer = [(CKBalloonView *)v3 doubleTapGestureRecognizer];
+    [doubleTapGestureRecognizer setDelegate:v4];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v4 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDBC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDBC8] object:0];
   }
 
   return v4;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  if ([(CKVideoPlayerBalloonView *)self gestureIsOurGesture:a3]&& ([(CKVideoPlayerBalloonView *)self playerView], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  touchCopy = touch;
+  if ([(CKVideoPlayerBalloonView *)self gestureIsOurGesture:recognizer]&& ([(CKVideoPlayerBalloonView *)self playerView], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    [v6 preciseLocationInView:self];
+    [touchCopy preciseLocationInView:self];
     v8 = [(CKVideoPlayerBalloonView *)self hitTest:0 withEvent:?];
     objc_opt_class();
     v9 = objc_opt_isKindOfClass() ^ 1;
@@ -89,33 +89,33 @@
   return v9 & 1;
 }
 
-- (BOOL)gestureIsOurGesture:(id)a3
+- (BOOL)gestureIsOurGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(CKBalloonView *)self doubleTapGestureRecognizer];
-  if (v5 == v4)
+  gestureCopy = gesture;
+  doubleTapGestureRecognizer = [(CKBalloonView *)self doubleTapGestureRecognizer];
+  if (doubleTapGestureRecognizer == gestureCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v6 = [(CKBalloonView *)self tapGestureRecognizer];
-    v7 = v6 == v4;
+    tapGestureRecognizer = [(CKBalloonView *)self tapGestureRecognizer];
+    v7 = tapGestureRecognizer == gestureCopy;
   }
 
   return v7;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(CKVideoPlayerBalloonView *)self gestureIsOurGesture:v7];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v9 = [(CKVideoPlayerBalloonView *)self gestureIsOurGesture:recognizerCopy];
   if (v9)
   {
-    v4 = [v8 view];
-    if ([v4 isDescendantOfView:self])
+    view = [gestureRecognizerCopy view];
+    if ([view isDescendantOfView:self])
     {
       v10 = 1;
 LABEL_10:
@@ -123,15 +123,15 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    if (![(CKVideoPlayerBalloonView *)self gestureIsOurGesture:v8])
+    if (![(CKVideoPlayerBalloonView *)self gestureIsOurGesture:gestureRecognizerCopy])
     {
       v10 = 0;
       goto LABEL_10;
     }
 
 LABEL_7:
-    v11 = [v7 view];
-    v10 = [v11 isDescendantOfView:self];
+    view2 = [recognizerCopy view];
+    v10 = [view2 isDescendantOfView:self];
 
     if (!v9)
     {
@@ -141,7 +141,7 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if ([(CKVideoPlayerBalloonView *)self gestureIsOurGesture:v8])
+  if ([(CKVideoPlayerBalloonView *)self gestureIsOurGesture:gestureRecognizerCopy])
   {
     goto LABEL_7;
   }
@@ -154,28 +154,28 @@ LABEL_11:
 
 - (void)reusablePlayerDidStart
 {
-  v2 = [(CKBalloonView *)self invisibleInkEffectController];
-  [v2 setSuspended:1];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  [invisibleInkEffectController setSuspended:1];
 }
 
 - (void)reusablePlayerDidStop
 {
-  v2 = [(CKBalloonView *)self invisibleInkEffectController];
-  [v2 setSuspended:0];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  [invisibleInkEffectController setSuspended:0];
 }
 
-- (void)reusablePlayerWillBeginFullScreenPresentation:(id)a3
+- (void)reusablePlayerWillBeginFullScreenPresentation:(id)presentation
 {
   v3 = *MEMORY[0x1E69874E8];
-  v4 = [(CKVideoPlayerBalloonView *)self playerViewController];
-  [v4 setVideoGravity:v3];
+  playerViewController = [(CKVideoPlayerBalloonView *)self playerViewController];
+  [playerViewController setVideoGravity:v3];
 }
 
-- (void)reusablePlayerWillEndFullScreenPresentation:(id)a3
+- (void)reusablePlayerWillEndFullScreenPresentation:(id)presentation
 {
   v3 = *MEMORY[0x1E69874F0];
-  v4 = [(CKVideoPlayerBalloonView *)self playerViewController];
-  [v4 setVideoGravity:v3];
+  playerViewController = [(CKVideoPlayerBalloonView *)self playerViewController];
+  [playerViewController setVideoGravity:v3];
 }
 
 - (void)prepareForReuse
@@ -186,11 +186,11 @@ LABEL_11:
   [(CKImageBalloonView *)&v3 prepareForReuse];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v3.receiver = self;
   v3.super_class = CKVideoPlayerBalloonView;
-  [(CKVideoPlayerBalloonView *)&v3 willMoveToWindow:a3];
+  [(CKVideoPlayerBalloonView *)&v3 willMoveToWindow:window];
 }
 
 - (void)prepareForDisplay
@@ -228,24 +228,24 @@ void __45__CKVideoPlayerBalloonView_prepareForDisplay__block_invoke(uint64_t a1)
   reusablePlayer = self->_reusablePlayer;
   if (!reusablePlayer)
   {
-    v4 = [(CKVideoPlayerBalloonView *)self playerPool];
-    v5 = [v4 dequeueAvailableVideoPlayer];
+    playerPool = [(CKVideoPlayerBalloonView *)self playerPool];
+    dequeueAvailableVideoPlayer = [playerPool dequeueAvailableVideoPlayer];
     v6 = self->_reusablePlayer;
-    self->_reusablePlayer = v5;
+    self->_reusablePlayer = dequeueAvailableVideoPlayer;
 
-    v7 = [(CKMediaObject *)self->_mediaObject transferGUID];
-    [(CKReusableVideoPlayer *)self->_reusablePlayer setVideoTransferGUID:v7];
+    transferGUID = [(CKMediaObject *)self->_mediaObject transferGUID];
+    [(CKReusableVideoPlayer *)self->_reusablePlayer setVideoTransferGUID:transferGUID];
 
-    v8 = [(CKReusableVideoPlayer *)self->_reusablePlayer playerViewController];
-    [v8 setAllowsPictureInPicturePlayback:1];
+    playerViewController = [(CKReusableVideoPlayer *)self->_reusablePlayer playerViewController];
+    [playerViewController setAllowsPictureInPicturePlayback:1];
 
     v9 = *MEMORY[0x1E69874F0];
-    v10 = [(CKReusableVideoPlayer *)self->_reusablePlayer playerViewController];
-    [v10 setVideoGravity:v9];
+    playerViewController2 = [(CKReusableVideoPlayer *)self->_reusablePlayer playerViewController];
+    [playerViewController2 setVideoGravity:v9];
 
     v11 = self->_reusablePlayer;
-    v12 = [(CKVideoPlayerBalloonView *)self playerItem];
-    [(CKReusableVideoPlayer *)v11 configureWithPlayerItem:v12];
+    playerItem = [(CKVideoPlayerBalloonView *)self playerItem];
+    [(CKReusableVideoPlayer *)v11 configureWithPlayerItem:playerItem];
 
     [(CKReusableVideoPlayer *)self->_reusablePlayer setDelegate:self];
     reusablePlayer = self->_reusablePlayer;
@@ -254,21 +254,21 @@ void __45__CKVideoPlayerBalloonView_prepareForDisplay__block_invoke(uint64_t a1)
   return reusablePlayer;
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
-  v4 = a3;
+  recognizedCopy = recognized;
   if (![(CKObscurableBalloonView *)self isObscured])
   {
     if (self->_playerView && CKIsRunningInMacCatalyst())
     {
       v29.receiver = self;
       v29.super_class = CKVideoPlayerBalloonView;
-      [(CKImageBalloonView *)&v29 tapGestureRecognized:v4];
+      [(CKImageBalloonView *)&v29 tapGestureRecognized:recognizedCopy];
       goto LABEL_18;
     }
 
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 playButtonImage];
+    playButtonImage = [v5 playButtonImage];
 
     [(CKVideoPlayerBalloonView *)self bounds];
     [(CKVideoPlayerBalloonView *)self alignmentRectForFrame:?];
@@ -276,7 +276,7 @@ void __45__CKVideoPlayerBalloonView_prepareForDisplay__block_invoke(uint64_t a1)
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    [v6 size];
+    [playButtonImage size];
     v16 = v15;
     v18 = v17;
     if (CKMainScreenScale_once_23 != -1)
@@ -296,7 +296,7 @@ void __45__CKVideoPlayerBalloonView_prepareForDisplay__block_invoke(uint64_t a1)
 
       v22 = floor((v8 + (v12 - v16) * 0.5) * v21) / v21;
       v23 = floor((v10 + (v14 - v18) * 0.5) * v21) / v21;
-      [v4 locationInView:self];
+      [recognizedCopy locationInView:self];
       v31.x = v24;
       v31.y = v25;
       v32.origin.x = v22;
@@ -322,13 +322,13 @@ LABEL_17:
     {
       v28.receiver = self;
       v28.super_class = CKVideoPlayerBalloonView;
-      [(CKImageBalloonView *)&v28 tapGestureRecognized:v4];
+      [(CKImageBalloonView *)&v28 tapGestureRecognized:recognizedCopy];
     }
 
     else
     {
-      v27 = [(CKVideoPlayerBalloonView *)self playerViewController];
-      [v27 showFullScreenPresentationFromView:self completion:0];
+      playerViewController = [(CKVideoPlayerBalloonView *)self playerViewController];
+      [playerViewController showFullScreenPresentationFromView:self completion:0];
     }
 
     goto LABEL_17;
@@ -336,72 +336,72 @@ LABEL_17:
 
   v30.receiver = self;
   v30.super_class = CKVideoPlayerBalloonView;
-  [(CKImageBalloonView *)&v30 tapGestureRecognized:v4];
+  [(CKImageBalloonView *)&v30 tapGestureRecognized:recognizedCopy];
 LABEL_18:
 }
 
-- (void)doubleTapGestureRecognized:(id)a3
+- (void)doubleTapGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = [(CKVideoPlayerBalloonView *)self reusablePlayer];
-  v6 = [v5 isPictureInPictureActive];
+  recognizedCopy = recognized;
+  reusablePlayer = [(CKVideoPlayerBalloonView *)self reusablePlayer];
+  isPictureInPictureActive = [reusablePlayer isPictureInPictureActive];
 
-  if ((v6 & 1) == 0)
+  if ((isPictureInPictureActive & 1) == 0)
   {
-    v7 = [(CKVideoPlayerBalloonView *)self playerViewController];
-    v8 = [v7 player];
-    [v8 pause];
+    playerViewController = [(CKVideoPlayerBalloonView *)self playerViewController];
+    player = [playerViewController player];
+    [player pause];
   }
 
   v9.receiver = self;
   v9.super_class = CKVideoPlayerBalloonView;
-  [(CKBalloonView *)&v9 doubleTapGestureRecognized:v4];
+  [(CKBalloonView *)&v9 doubleTapGestureRecognized:recognizedCopy];
 }
 
 - (void)pausePlayback
 {
-  v3 = [(CKVideoPlayerBalloonView *)self playerViewController];
-  v2 = [v3 player];
-  [v2 pause];
+  playerViewController = [(CKVideoPlayerBalloonView *)self playerViewController];
+  player = [playerViewController player];
+  [player pause];
 }
 
 - (void)cleanUpPlayerIfNeeded
 {
   if (self->_reusablePlayer)
   {
-    v3 = [(CKVideoPlayerBalloonView *)self reusablePlayer];
-    [v3 willDisappear];
+    reusablePlayer = [(CKVideoPlayerBalloonView *)self reusablePlayer];
+    [reusablePlayer willDisappear];
 
-    v4 = [(CKVideoPlayerBalloonView *)self reusablePlayer];
-    v5 = [v4 isReadyForReuse];
+    reusablePlayer2 = [(CKVideoPlayerBalloonView *)self reusablePlayer];
+    isReadyForReuse = [reusablePlayer2 isReadyForReuse];
 
-    if (v5)
+    if (isReadyForReuse)
     {
-      v6 = [(CKVideoPlayerBalloonView *)self reusablePlayer];
-      v7 = [v6 playerViewController];
-      v8 = [v7 player];
-      [v8 pause];
+      reusablePlayer3 = [(CKVideoPlayerBalloonView *)self reusablePlayer];
+      playerViewController = [reusablePlayer3 playerViewController];
+      player = [playerViewController player];
+      [player pause];
     }
   }
 
-  v14 = [(CKVideoPlayerBalloonView *)self playerView];
-  v9 = [v14 superview];
+  playerView = [(CKVideoPlayerBalloonView *)self playerView];
+  superview = [playerView superview];
 
-  if (v9 == self)
+  if (superview == self)
   {
-    v10 = [(CKVideoPlayerBalloonView *)self playerViewController];
-    [v10 willMoveToParentViewController:0];
+    playerViewController2 = [(CKVideoPlayerBalloonView *)self playerViewController];
+    [playerViewController2 willMoveToParentViewController:0];
 
-    [v14 removeFromSuperview];
-    v11 = [(CKVideoPlayerBalloonView *)self playerViewController];
-    [v11 removeFromParentViewController];
+    [playerView removeFromSuperview];
+    playerViewController3 = [(CKVideoPlayerBalloonView *)self playerViewController];
+    [playerViewController3 removeFromParentViewController];
   }
 
   if (self->_reusablePlayer)
   {
-    v12 = [(CKVideoPlayerBalloonView *)self playerPool];
-    v13 = [(CKVideoPlayerBalloonView *)self reusablePlayer];
-    [v12 returnPlayerToPool:v13];
+    playerPool = [(CKVideoPlayerBalloonView *)self playerPool];
+    reusablePlayer4 = [(CKVideoPlayerBalloonView *)self reusablePlayer];
+    [playerPool returnPlayerToPool:reusablePlayer4];
   }
 
   [(CKVideoPlayerBalloonView *)self setReusablePlayer:0];
@@ -410,16 +410,16 @@ LABEL_18:
 
 - (void)showPlayerViewController
 {
-  v3 = [(CKBalloonView *)self delegate];
-  v4 = [v3 conformsToProtocol:&unk_1F0575DC0];
+  delegate = [(CKBalloonView *)self delegate];
+  v4 = [delegate conformsToProtocol:&unk_1F0575DC0];
 
   if (v4)
   {
-    v5 = [(CKBalloonView *)self delegate];
-    v6 = [(CKVideoPlayerBalloonView *)self reusablePlayer];
-    v7 = [v5 parentViewControllerForReusableVideoPlayer:v6];
+    delegate2 = [(CKBalloonView *)self delegate];
+    reusablePlayer = [(CKVideoPlayerBalloonView *)self reusablePlayer];
+    v7 = [delegate2 parentViewControllerForReusableVideoPlayer:reusablePlayer];
 
-    v8 = [(CKVideoPlayerBalloonView *)self playerViewController];
+    playerViewController = [(CKVideoPlayerBalloonView *)self playerViewController];
     v9 = +[CKUIBehavior sharedBehaviors];
     [v9 defaultAVPlayerViewContorllerControlsInsets];
     v11 = v10;
@@ -441,15 +441,15 @@ LABEL_18:
     *&v24[2] = v15;
     v24[3] = v17;
     v21 = [MEMORY[0x1E696B098] valueWithBytes:v24 objCType:"{UIEdgeInsets=dddd}"];
-    [v8 setOverrideLayoutMarginsWhenEmbeddedInline:v21];
+    [playerViewController setOverrideLayoutMarginsWhenEmbeddedInline:v21];
 
-    [v7 addChildViewController:v8];
-    v22 = [v8 view];
-    [(CKVideoPlayerBalloonView *)self setPlayerView:v22];
+    [v7 addChildViewController:playerViewController];
+    view = [playerViewController view];
+    [(CKVideoPlayerBalloonView *)self setPlayerView:view];
 
-    [v8 didMoveToParentViewController:v7];
-    v23 = [(CKBalloonView *)self invisibleInkEffectController];
-    [v23 setSuspended:1];
+    [playerViewController didMoveToParentViewController:v7];
+    invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+    [invisibleInkEffectController setSuspended:1];
   }
 }
 
@@ -474,10 +474,10 @@ void __51__CKVideoPlayerBalloonView_startPlayingInlineVideo__block_invoke(uint64
 
 - (id)playerViewController
 {
-  v2 = [(CKVideoPlayerBalloonView *)self reusablePlayer];
-  v3 = [v2 playerViewController];
+  reusablePlayer = [(CKVideoPlayerBalloonView *)self reusablePlayer];
+  playerViewController = [reusablePlayer playerViewController];
 
-  return v3;
+  return playerViewController;
 }
 
 - (CKVideoPlayerReusePool)playerPool
@@ -488,15 +488,15 @@ void __51__CKVideoPlayerBalloonView_startPlayingInlineVideo__block_invoke(uint64
     goto LABEL_4;
   }
 
-  v4 = [(CKBalloonView *)self delegate];
-  v5 = [v4 conformsToProtocol:&unk_1F0575DC0];
+  delegate = [(CKBalloonView *)self delegate];
+  v5 = [delegate conformsToProtocol:&unk_1F0575DC0];
 
   if (v5)
   {
-    v6 = [(CKBalloonView *)self delegate];
-    v7 = [v6 videoPlayerReusePool];
+    delegate2 = [(CKBalloonView *)self delegate];
+    videoPlayerReusePool = [delegate2 videoPlayerReusePool];
     v8 = self->_playerPool;
-    self->_playerPool = v7;
+    self->_playerPool = videoPlayerReusePool;
 
     playerPool = self->_playerPool;
 LABEL_4:
@@ -512,49 +512,49 @@ LABEL_5:
 
 - (id)playerItem
 {
-  v2 = [(CKVideoPlayerBalloonView *)self mediaObject];
-  v3 = [v2 fileURL];
+  mediaObject = [(CKVideoPlayerBalloonView *)self mediaObject];
+  fileURL = [mediaObject fileURL];
 
-  v4 = CKAVURLAssetForURL(v3);
+  v4 = CKAVURLAssetForURL(fileURL);
   v5 = [MEMORY[0x1E69880B0] playerItemWithAsset:v4];
 
   return v5;
 }
 
-- (void)setPlayerView:(id)a3
+- (void)setPlayerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   playerView = self->_playerView;
-  if (playerView != v5)
+  if (playerView != viewCopy)
   {
-    v14 = v5;
+    v14 = viewCopy;
     if ([(UIView *)playerView isDescendantOfView:self])
     {
       [(UIView *)self->_playerView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_playerView, a3);
+    objc_storeStrong(&self->_playerView, view);
     if (CKIsRunningInMacCatalyst())
     {
-      v7 = [MEMORY[0x1E69DC888] clearColor];
-      [(UIView *)self->_playerView setBackgroundColor:v7];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(UIView *)self->_playerView setBackgroundColor:clearColor];
     }
 
     else
     {
-      v7 = +[CKUIBehavior sharedBehaviors];
-      v8 = [v7 theme];
-      v9 = [v8 transcriptBackgroundColor];
-      [(UIView *)self->_playerView setBackgroundColor:v9];
+      clearColor = +[CKUIBehavior sharedBehaviors];
+      theme = [clearColor theme];
+      transcriptBackgroundColor = [theme transcriptBackgroundColor];
+      [(UIView *)self->_playerView setBackgroundColor:transcriptBackgroundColor];
     }
 
-    v10 = [(CKBalloonView *)self invisibleInkEffectController];
-    v11 = [v10 effectView];
+    invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+    effectView = [invisibleInkEffectController effectView];
 
     v12 = self->_playerView;
-    if (v11)
+    if (effectView)
     {
-      [(CKVideoPlayerBalloonView *)self insertSubview:v12 belowSubview:v11];
+      [(CKVideoPlayerBalloonView *)self insertSubview:v12 belowSubview:effectView];
     }
 
     else
@@ -570,21 +570,21 @@ LABEL_5:
     [(UIView *)self->_playerView setAlpha:1.0];
     [(CKVideoPlayerBalloonView *)self setNeedsLayout];
 
-    v5 = v14;
+    viewCopy = v14;
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = CKVideoPlayerBalloonView;
-  [(CKBalloonView *)&v7 traitCollectionDidChange:a3];
+  [(CKBalloonView *)&v7 traitCollectionDidChange:change];
   if (self->_playerView)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 theme];
-    v6 = [v5 transcriptBackgroundColor];
-    [(UIView *)self->_playerView setBackgroundColor:v6];
+    theme = [v4 theme];
+    transcriptBackgroundColor = [theme transcriptBackgroundColor];
+    [(UIView *)self->_playerView setBackgroundColor:transcriptBackgroundColor];
   }
 }
 
@@ -593,9 +593,9 @@ LABEL_5:
   v26.receiver = self;
   v26.super_class = CKVideoPlayerBalloonView;
   [(CKImageBalloonView *)&v26 layoutSubviews];
-  v3 = [(UIView *)self->_playerView superview];
+  superview = [(UIView *)self->_playerView superview];
 
-  if (v3 == self)
+  if (superview == self)
   {
     v24 = 0u;
     v25 = 0u;
@@ -635,8 +635,8 @@ LABEL_5:
     v13 = v21;
     [(CKBalloonMaskLayer *)videoPlayerMaskLayer updateDescriptor:&v10];
     v8 = self->_videoPlayerMaskLayer;
-    v9 = [(UIView *)self->_playerView layer];
-    [v9 setMask:v8];
+    layer = [(UIView *)self->_playerView layer];
+    [layer setMask:v8];
 
     [(UIView *)self->_playerView bounds];
     [(CKBalloonMaskLayer *)self->_videoPlayerMaskLayer setFrame:?];

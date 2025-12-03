@@ -1,23 +1,23 @@
 @interface LPEmailCompatibleHTMLLinkComponent
 + (id)baseRules;
-+ (id)ruleDictionaryForStyle:(id)a3;
-- (LPEmailCompatibleHTMLLinkComponent)initWithURL:(id)a3 generator:(id)a4;
++ (id)ruleDictionaryForStyle:(id)style;
+- (LPEmailCompatibleHTMLLinkComponent)initWithURL:(id)l generator:(id)generator;
 @end
 
 @implementation LPEmailCompatibleHTMLLinkComponent
 
-- (LPEmailCompatibleHTMLLinkComponent)initWithURL:(id)a3 generator:(id)a4
+- (LPEmailCompatibleHTMLLinkComponent)initWithURL:(id)l generator:(id)generator
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  generatorCopy = generator;
   v32.receiver = self;
   v32.super_class = LPEmailCompatibleHTMLLinkComponent;
-  v8 = [(LPHTMLComponent *)&v32 initWithTagName:@"a" themePath:&stru_1F2447CF0 generator:v7];
+  v8 = [(LPHTMLComponent *)&v32 initWithTagName:@"a" themePath:&stru_1F2447CF0 generator:generatorCopy];
   v10 = v8;
   if (v8)
   {
     LPWebLock(v8, v9);
-    if ([v7 applyCornerRadiusToLink])
+    if ([generatorCopy applyCornerRadiusToLink])
     {
       v11 = @"10px";
     }
@@ -27,41 +27,41 @@
       v11 = @"0";
     }
 
-    v12 = [v7 cssResolver];
-    v13 = [v12 localVariables];
-    [v13 setObject:v11 forKeyedSubscript:@"local-link-cornerRadius"];
+    cssResolver = [generatorCopy cssResolver];
+    localVariables = [cssResolver localVariables];
+    [localVariables setObject:v11 forKeyedSubscript:@"local-link-cornerRadius"];
 
-    v14 = [v7 rootWidth];
-    v15 = [v14 _lp_CSSText];
-    v16 = [v7 cssResolver];
-    v17 = [v16 localVariables];
-    [v17 setObject:v15 forKeyedSubscript:@"local-link-width"];
+    rootWidth = [generatorCopy rootWidth];
+    _lp_CSSText = [rootWidth _lp_CSSText];
+    cssResolver2 = [generatorCopy cssResolver];
+    localVariables2 = [cssResolver2 localVariables];
+    [localVariables2 setObject:_lp_CSSText forKeyedSubscript:@"local-link-width"];
 
-    v18 = [(LPHTMLComponent *)v10 generator];
-    v19 = [v18 cssResolver];
-    v20 = [(LPHTMLComponent *)v10 element];
-    [v19 addStyle:@"lp-rich-link" toElement:v20 inComponent:v10];
+    generator = [(LPHTMLComponent *)v10 generator];
+    cssResolver3 = [generator cssResolver];
+    element = [(LPHTMLComponent *)v10 element];
+    [cssResolver3 addStyle:@"lp-rich-link" toElement:element inComponent:v10];
 
-    v21 = [(LPHTMLComponent *)v10 element];
-    [v21 setAttribute:@"rel" value:@"nofollow"];
+    element2 = [(LPHTMLComponent *)v10 element];
+    [element2 setAttribute:@"rel" value:@"nofollow"];
 
-    v22 = [(LPHTMLComponent *)v10 element];
-    v23 = [v6 absoluteString];
-    [v22 setAttribute:@"href" value:v23];
+    element3 = [(LPHTMLComponent *)v10 element];
+    absoluteString = [lCopy absoluteString];
+    [element3 setAttribute:@"href" value:absoluteString];
 
-    v24 = [(LPHTMLComponent *)v10 element];
-    [v24 setAttribute:@"dir" value:@"ltr"];
+    element4 = [(LPHTMLComponent *)v10 element];
+    [element4 setAttribute:@"dir" value:@"ltr"];
 
-    v25 = [(LPHTMLComponent *)v10 element];
-    [v25 setAttribute:@"role" value:@"button"];
+    element5 = [(LPHTMLComponent *)v10 element];
+    [element5 setAttribute:@"role" value:@"button"];
 
-    v26 = [(LPHTMLComponent *)v10 element];
-    [v26 setAttribute:@"draggable" value:@"false"];
+    element6 = [(LPHTMLComponent *)v10 element];
+    [element6 setAttribute:@"draggable" value:@"false"];
 
-    v27 = [(LPHTMLComponent *)v10 element];
-    v28 = [v7 rootWidth];
-    v29 = [v28 _lp_HTMLAttributeText];
-    [v27 setAttribute:@"width" value:v29];
+    element7 = [(LPHTMLComponent *)v10 element];
+    rootWidth2 = [generatorCopy rootWidth];
+    _lp_HTMLAttributeText = [rootWidth2 _lp_HTMLAttributeText];
+    [element7 setAttribute:@"width" value:_lp_HTMLAttributeText];
 
     v30 = v10;
   }
@@ -99,11 +99,11 @@
   return v4;
 }
 
-+ (id)ruleDictionaryForStyle:(id)a3
++ (id)ruleDictionaryForStyle:(id)style
 {
-  v3 = [a1 baseRules];
+  baseRules = [self baseRules];
 
-  return v3;
+  return baseRules;
 }
 
 @end

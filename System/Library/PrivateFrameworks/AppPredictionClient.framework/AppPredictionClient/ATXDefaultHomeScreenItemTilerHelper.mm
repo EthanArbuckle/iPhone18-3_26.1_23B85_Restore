@@ -1,10 +1,10 @@
 @interface ATXDefaultHomeScreenItemTilerHelper
 - (ATXDefaultHomeScreenItemTilerHelper)init;
-- (BOOL)_isSpecialAvocadoDescriptorKind:(id)a3;
-- (BOOL)_isWidgetAlreadyUsed:(id)a3;
-- (id)filterForNextUnusedWidgetDescriptor:(id)a3;
-- (void)_markWidgetAsUsed:(id)a3;
-- (void)unmarkWidgetAsUsed:(id)a3;
+- (BOOL)_isSpecialAvocadoDescriptorKind:(id)kind;
+- (BOOL)_isWidgetAlreadyUsed:(id)used;
+- (id)filterForNextUnusedWidgetDescriptor:(id)descriptor;
+- (void)_markWidgetAsUsed:(id)used;
+- (void)unmarkWidgetAsUsed:(id)used;
 @end
 
 @implementation ATXDefaultHomeScreenItemTilerHelper
@@ -28,43 +28,43 @@
   return v2;
 }
 
-- (void)unmarkWidgetAsUsed:(id)a3
+- (void)unmarkWidgetAsUsed:(id)used
 {
-  v4 = a3;
-  if (v4)
+  usedCopy = used;
+  if (usedCopy)
   {
-    v12 = v4;
-    v5 = [v4 appBundleId];
-    if (v5)
+    v12 = usedCopy;
+    appBundleId = [usedCopy appBundleId];
+    if (appBundleId)
     {
-      [(NSMutableSet *)self->_usedBundleIds removeObject:v5];
+      [(NSMutableSet *)self->_usedBundleIds removeObject:appBundleId];
     }
 
     else
     {
-      v6 = [v12 avocadoDescriptor];
-      v7 = [v6 kind];
-      v8 = [(ATXDefaultHomeScreenItemTilerHelper *)self _isSpecialAvocadoDescriptorKind:v7];
+      avocadoDescriptor = [v12 avocadoDescriptor];
+      kind = [avocadoDescriptor kind];
+      v8 = [(ATXDefaultHomeScreenItemTilerHelper *)self _isSpecialAvocadoDescriptorKind:kind];
 
       if (v8)
       {
         usedSpecialKinds = self->_usedSpecialKinds;
-        v10 = [v12 avocadoDescriptor];
-        v11 = [v10 kind];
-        [(NSMutableSet *)usedSpecialKinds removeObject:v11];
+        avocadoDescriptor2 = [v12 avocadoDescriptor];
+        kind2 = [avocadoDescriptor2 kind];
+        [(NSMutableSet *)usedSpecialKinds removeObject:kind2];
       }
     }
 
-    v4 = v12;
+    usedCopy = v12;
   }
 }
 
-- (id)filterForNextUnusedWidgetDescriptor:(id)a3
+- (id)filterForNextUnusedWidgetDescriptor:(id)descriptor
 {
-  v4 = a3;
-  for (i = v4; ; v4 = i)
+  descriptorCopy = descriptor;
+  for (i = descriptorCopy; ; descriptorCopy = i)
   {
-    if (![v4 count])
+    if (![descriptorCopy count])
     {
       v6 = 0;
       goto LABEL_8;
@@ -72,9 +72,9 @@
 
     v6 = [i objectAtIndexedSubscript:0];
     [i removeObjectAtIndex:0];
-    v7 = [v6 avocadoDescriptor];
+    avocadoDescriptor = [v6 avocadoDescriptor];
 
-    if (v7)
+    if (avocadoDescriptor)
     {
       if (![(ATXDefaultHomeScreenItemTilerHelper *)self _isWidgetAlreadyUsed:v6])
       {
@@ -89,29 +89,29 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_isSpecialAvocadoDescriptorKind:(id)a3
+- (BOOL)_isSpecialAvocadoDescriptorKind:(id)kind
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SBHSpecialAvocadoDescriptorKindSiri"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"SBHSpecialAvocadoDescriptorKindFiles") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"SBHSpecialAvocadoDescriptorKindShortcutsSingle") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"SBHSpecialAvocadoDescriptorKindShortcutsFolder") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"SBHSpecialAvocadoDescriptorKindSmartStack"))
+  kindCopy = kind;
+  if ([kindCopy isEqualToString:@"SBHSpecialAvocadoDescriptorKindSiri"] & 1) != 0 || (objc_msgSend(kindCopy, "isEqualToString:", @"SBHSpecialAvocadoDescriptorKindFiles") & 1) != 0 || (objc_msgSend(kindCopy, "isEqualToString:", @"SBHSpecialAvocadoDescriptorKindShortcutsSingle") & 1) != 0 || (objc_msgSend(kindCopy, "isEqualToString:", @"SBHSpecialAvocadoDescriptorKindShortcutsFolder") & 1) != 0 || (objc_msgSend(kindCopy, "isEqualToString:", @"SBHSpecialAvocadoDescriptorKindSmartStack"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"SBHSpecialAvocadoDescriptorKindAppPredictions"];
+    v4 = [kindCopy isEqualToString:@"SBHSpecialAvocadoDescriptorKindAppPredictions"];
   }
 
   return v4;
 }
 
-- (BOOL)_isWidgetAlreadyUsed:(id)a3
+- (BOOL)_isWidgetAlreadyUsed:(id)used
 {
-  v4 = a3;
-  v5 = [v4 appBundleId];
-  if (v5)
+  usedCopy = used;
+  appBundleId = [usedCopy appBundleId];
+  if (appBundleId)
   {
-    if (([(NSMutableSet *)self->_usedBundleIds containsObject:v5]& 1) == 0)
+    if (([(NSMutableSet *)self->_usedBundleIds containsObject:appBundleId]& 1) == 0)
     {
 LABEL_7:
       v12 = 0;
@@ -121,9 +121,9 @@ LABEL_7:
 
   else
   {
-    v6 = [v4 avocadoDescriptor];
-    v7 = [v6 kind];
-    v8 = [(ATXDefaultHomeScreenItemTilerHelper *)self _isSpecialAvocadoDescriptorKind:v7];
+    avocadoDescriptor = [usedCopy avocadoDescriptor];
+    kind = [avocadoDescriptor kind];
+    v8 = [(ATXDefaultHomeScreenItemTilerHelper *)self _isSpecialAvocadoDescriptorKind:kind];
 
     if (!v8)
     {
@@ -131,9 +131,9 @@ LABEL_7:
     }
 
     usedSpecialKinds = self->_usedSpecialKinds;
-    v10 = [v4 avocadoDescriptor];
-    v11 = [v10 kind];
-    LOBYTE(usedSpecialKinds) = [(NSMutableSet *)usedSpecialKinds containsObject:v11];
+    avocadoDescriptor2 = [usedCopy avocadoDescriptor];
+    kind2 = [avocadoDescriptor2 kind];
+    LOBYTE(usedSpecialKinds) = [(NSMutableSet *)usedSpecialKinds containsObject:kind2];
 
     if ((usedSpecialKinds & 1) == 0)
     {
@@ -147,27 +147,27 @@ LABEL_8:
   return v12;
 }
 
-- (void)_markWidgetAsUsed:(id)a3
+- (void)_markWidgetAsUsed:(id)used
 {
-  v11 = a3;
-  v4 = [v11 appBundleId];
-  if (v4)
+  usedCopy = used;
+  appBundleId = [usedCopy appBundleId];
+  if (appBundleId)
   {
-    [(NSMutableSet *)self->_usedBundleIds addObject:v4];
+    [(NSMutableSet *)self->_usedBundleIds addObject:appBundleId];
   }
 
   else
   {
-    v5 = [v11 avocadoDescriptor];
-    v6 = [v5 kind];
-    v7 = [(ATXDefaultHomeScreenItemTilerHelper *)self _isSpecialAvocadoDescriptorKind:v6];
+    avocadoDescriptor = [usedCopy avocadoDescriptor];
+    kind = [avocadoDescriptor kind];
+    v7 = [(ATXDefaultHomeScreenItemTilerHelper *)self _isSpecialAvocadoDescriptorKind:kind];
 
     if (v7)
     {
       usedSpecialKinds = self->_usedSpecialKinds;
-      v9 = [v11 avocadoDescriptor];
-      v10 = [v9 kind];
-      [(NSMutableSet *)usedSpecialKinds addObject:v10];
+      avocadoDescriptor2 = [usedCopy avocadoDescriptor];
+      kind2 = [avocadoDescriptor2 kind];
+      [(NSMutableSet *)usedSpecialKinds addObject:kind2];
     }
   }
 }

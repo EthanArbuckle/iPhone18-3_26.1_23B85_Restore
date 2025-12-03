@@ -1,28 +1,28 @@
 @interface DDMapAction
-+ (BOOL)actionAvailableForContact:(id)a3;
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4;
-- (DDMapAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
++ (BOOL)actionAvailableForContact:(id)contact;
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result;
+- (DDMapAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context;
 - (id)menuActionClasses;
 - (id)previewActions;
 @end
 
 @implementation DDMapAction
 
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result
 {
-  v4 = DDMapsURLForUrlAndResult(a3, a4);
+  v4 = DDMapsURLForUrlAndResult(url, result);
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (DDMapAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
+- (DDMapAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
-  v8 = a5;
-  v9 = DDMapsURLForUrlAndResult(a3, a4);
+  contextCopy = context;
+  v9 = DDMapsURLForUrlAndResult(l, result);
   v18.receiver = self;
   v18.super_class = DDMapAction;
-  v10 = [(DDAction *)&v18 initWithURL:v9 result:a4 context:v8];
+  v10 = [(DDAction *)&v18 initWithURL:v9 result:result context:contextCopy];
 
   if (v10)
   {
@@ -122,13 +122,13 @@ LABEL_10:
 - (id)menuActionClasses
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(DDMapAction *)self previewActions];
+  array = [MEMORY[0x277CBEB18] array];
+  previewActions = [(DDMapAction *)self previewActions];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v5 = [previewActions countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -140,26 +140,26 @@ LABEL_10:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(previewActions);
         }
 
         v18 = *(*(&v14 + 1) + 8 * v8);
         v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
-        [v3 addObject:v9];
+        [array addObject:v9];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v6 = [previewActions countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v6);
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v10 = v3;
+    v10 = array;
   }
 
   else
@@ -173,9 +173,9 @@ LABEL_10:
   return v10;
 }
 
-+ (BOOL)actionAvailableForContact:(id)a3
++ (BOOL)actionAvailableForContact:(id)contact
 {
-  v3 = DDDefaultAddressForContact(a3);
+  v3 = DDDefaultAddressForContact(contact);
   v4 = v3 != 0;
 
   return v4;

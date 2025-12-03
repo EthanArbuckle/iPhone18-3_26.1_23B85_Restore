@@ -1,107 +1,107 @@
 @interface BKFaceDetectStateInfo
-- (BKFaceDetectStateInfo)initWithPresenceState:(BOOL)a3;
-- (BKFaceDetectStateInfo)initWithPresenceState:(BOOL)a3 details:(id)a4;
+- (BKFaceDetectStateInfo)initWithPresenceState:(BOOL)state;
+- (BKFaceDetectStateInfo)initWithPresenceState:(BOOL)state details:(id)details;
 - (id)dictionary;
-- (id)initFromDictionary:(id)a3;
-- (id)initFromFaceInfo:(id *)a3;
+- (id)initFromDictionary:(id)dictionary;
+- (id)initFromFaceInfo:(id *)info;
 @end
 
 @implementation BKFaceDetectStateInfo
 
-- (BKFaceDetectStateInfo)initWithPresenceState:(BOOL)a3
+- (BKFaceDetectStateInfo)initWithPresenceState:(BOOL)state
 {
   v5.receiver = self;
   v5.super_class = BKFaceDetectStateInfo;
   result = [(BKFaceDetectStateInfo *)&v5 init];
   if (result)
   {
-    result->_faceDetected = a3;
+    result->_faceDetected = state;
   }
 
   return result;
 }
 
-- (BKFaceDetectStateInfo)initWithPresenceState:(BOOL)a3 details:(id)a4
+- (BKFaceDetectStateInfo)initWithPresenceState:(BOOL)state details:(id)details
 {
-  v6 = a4;
+  detailsCopy = details;
   v36.receiver = self;
   v36.super_class = BKFaceDetectStateInfo;
   v7 = [(BKFaceDetectStateInfo *)&v36 init];
   v8 = v7;
   if (v7)
   {
-    v7->_faceDetected = a3;
-    v9 = [v6 objectForKeyedSubscript:@"BKStatusDetailFaceDetectPitch"];
+    v7->_faceDetected = state;
+    v9 = [detailsCopy objectForKeyedSubscript:@"BKStatusDetailFaceDetectPitch"];
     pitch = v8->_pitch;
     v8->_pitch = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"BKStatusDetailFaceDetectYaw"];
+    v11 = [detailsCopy objectForKeyedSubscript:@"BKStatusDetailFaceDetectYaw"];
     yaw = v8->_yaw;
     v8->_yaw = v11;
 
-    v13 = [v6 objectForKeyedSubscript:@"BKStatusDetailFaceDetectRoll"];
+    v13 = [detailsCopy objectForKeyedSubscript:@"BKStatusDetailFaceDetectRoll"];
     roll = v8->_roll;
     v8->_roll = v13;
 
-    v15 = [v6 objectForKeyedSubscript:@"BKStatusDetailFaceDistance"];
+    v15 = [detailsCopy objectForKeyedSubscript:@"BKStatusDetailFaceDistance"];
     distance = v8->_distance;
     v8->_distance = v15;
 
     v8->_orientation = 0;
-    v17 = [v6 objectForKeyedSubscript:@"BKStatusDetailFaceDetectOrientation"];
+    v17 = [detailsCopy objectForKeyedSubscript:@"BKStatusDetailFaceDetectOrientation"];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 unsignedIntegerValue];
-      if ((v19 - 1) >= 4)
+      unsignedIntegerValue = [v17 unsignedIntegerValue];
+      if ((unsignedIntegerValue - 1) >= 4)
       {
         v20 = 0;
       }
 
       else
       {
-        v20 = v19;
+        v20 = unsignedIntegerValue;
       }
 
       v8->_orientation = v20;
     }
 
     v8->_eyeReliefStatus = 0;
-    v21 = [v6 objectForKeyedSubscript:@"BKStatusDetailEyeReliefStatus"];
+    v21 = [detailsCopy objectForKeyedSubscript:@"BKStatusDetailEyeReliefStatus"];
     v22 = v21;
     if (v21)
     {
-      v23 = [v21 unsignedIntegerValue];
-      if ((v23 - 1) >= 5)
+      unsignedIntegerValue2 = [v21 unsignedIntegerValue];
+      if ((unsignedIntegerValue2 - 1) >= 5)
       {
         v24 = 0;
       }
 
       else
       {
-        v24 = v23;
+        v24 = unsignedIntegerValue2;
       }
 
       v8->_eyeReliefStatus = v24;
     }
 
-    v25 = [v6 objectForKeyedSubscript:@"BKStatusDetailFrameNumber"];
+    v25 = [detailsCopy objectForKeyedSubscript:@"BKStatusDetailFrameNumber"];
     frameNumber = v8->_frameNumber;
     v8->_frameNumber = v25;
 
-    v27 = [v6 objectForKeyedSubscript:@"BKStatusDetailAttentionScore"];
+    v27 = [detailsCopy objectForKeyedSubscript:@"BKStatusDetailAttentionScore"];
     attentionScore = v8->_attentionScore;
     v8->_attentionScore = v27;
 
-    v29 = [v6 objectForKeyedSubscript:@"BKStatusDetailFaceDetectionScore"];
+    v29 = [detailsCopy objectForKeyedSubscript:@"BKStatusDetailFaceDetectionScore"];
     faceDetectionScore = v8->_faceDetectionScore;
     v8->_faceDetectionScore = v29;
 
-    v31 = [v6 objectForKeyedSubscript:@"BKStatusDetailFaceOcclusionState"];
+    v31 = [detailsCopy objectForKeyedSubscript:@"BKStatusDetailFaceOcclusionState"];
     isCameraObstructed = v8->_isCameraObstructed;
     v8->_isCameraObstructed = v31;
 
-    v33 = [v6 objectForKeyedSubscript:@"BKStatusDetailFaceOcclusionScore"];
+    v33 = [detailsCopy objectForKeyedSubscript:@"BKStatusDetailFaceOcclusionScore"];
     cameraObstructionScore = v8->_cameraObstructionScore;
     v8->_cameraObstructionScore = v33;
   }
@@ -109,37 +109,37 @@
   return v8;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = BKFaceDetectStateInfo;
   v5 = [(BKFaceDetectStateInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"faceDetected"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"faceDetected"];
     v5->_faceDetected = [v6 BOOLValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"tooCloseToCamera"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"tooCloseToCamera"];
     v5->_tooCloseToCamera = [v7 BOOLValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"tooFarFromCamera"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"tooFarFromCamera"];
     v5->_tooFarFromCamera = [v8 BOOLValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"multipleFaces"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"multipleFaces"];
     v5->_multipleFaces = [v9 BOOLValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"flare"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"flare"];
     v5->_flare = [v10 BOOLValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"occlusion"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"occlusion"];
     v5->_occlusion = [v11 BOOLValue];
   }
 
   return v5;
 }
 
-- (id)initFromFaceInfo:(id *)a3
+- (id)initFromFaceInfo:(id *)info
 {
   v34.receiver = self;
   v34.super_class = BKFaceDetectStateInfo;
@@ -147,7 +147,7 @@
   v6 = v4;
   if (v4)
   {
-    v7 = *(&a3->var0 + 1);
+    v7 = *(&info->var0 + 1);
     v4->_faceDetected = (v7 & 4) == 0;
     v4->_tooCloseToCamera = (v7 & 0x20) != 0;
     v4->_tooFarFromCamera = (v7 & 0x40) != 0;
@@ -156,46 +156,46 @@
     v4->_occlusion = (v7 & 0x200) != 0;
     v4->_unsupportedGlasses = (v7 & 0x1000) != 0;
     v4->_glassesMismatch = (v7 & 0x2000) != 0;
-    LODWORD(v5) = *(&a3->var5 + 1);
+    LODWORD(v5) = *(&info->var5 + 1);
     v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
     pitch = v6->_pitch;
     v6->_pitch = v8;
 
-    *&v10 = *(&a3->var6 + 1);
+    *&v10 = *(&info->var6 + 1);
     v11 = [MEMORY[0x1E696AD98] numberWithFloat:v10];
     yaw = v6->_yaw;
     v6->_yaw = v11;
 
-    *&v13 = *(&a3->var7 + 1);
+    *&v13 = *(&info->var7 + 1);
     v14 = [MEMORY[0x1E696AD98] numberWithFloat:v13];
     roll = v6->_roll;
     v6->_roll = v14;
 
-    LOWORD(v16) = *(&a3->var1 + 1);
+    LOWORD(v16) = *(&info->var1 + 1);
     *&v17 = v16;
     v18 = [MEMORY[0x1E696AD98] numberWithFloat:v17];
     distance = v6->_distance;
     v6->_distance = v18;
 
-    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(&a3->var8 + 1)];
+    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(&info->var8 + 1)];
     frameNumber = v6->_frameNumber;
     v6->_frameNumber = v20;
 
-    LODWORD(v22) = *(&a3->var9 + 1);
+    LODWORD(v22) = *(&info->var9 + 1);
     v23 = [MEMORY[0x1E696AD98] numberWithFloat:v22];
     attentionScore = v6->_attentionScore;
     v6->_attentionScore = v23;
 
-    *&v25 = *(&a3->var10 + 1);
+    *&v25 = *(&info->var10 + 1);
     v26 = [MEMORY[0x1E696AD98] numberWithFloat:v25];
     faceDetectionScore = v6->_faceDetectionScore;
     v6->_faceDetectionScore = v26;
 
-    v28 = [MEMORY[0x1E696AD98] numberWithBool:BYTE1(a3->var11)];
+    v28 = [MEMORY[0x1E696AD98] numberWithBool:BYTE1(info->var11)];
     isCameraObstructed = v6->_isCameraObstructed;
     v6->_isCameraObstructed = v28;
 
-    *&v30 = *(&a3->var11 + 2);
+    *&v30 = *(&info->var11 + 2);
     v31 = [MEMORY[0x1E696AD98] numberWithFloat:v30];
     cameraObstructionScore = v6->_cameraObstructionScore;
     v6->_cameraObstructionScore = v31;

@@ -1,13 +1,13 @@
 @interface OTLAContextActualAdapter
-- (BOOL)setCredential:(id)a3 type:(int64_t)a4 laContext:(id *)a5 error:(id *)a6;
-- (void)discardPasscodeStashSecret:(unsigned __int8)a3;
+- (BOOL)setCredential:(id)credential type:(int64_t)type laContext:(id *)context error:(id *)error;
+- (void)discardPasscodeStashSecret:(unsigned __int8)secret;
 @end
 
 @implementation OTLAContextActualAdapter
 
-- (void)discardPasscodeStashSecret:(unsigned __int8)a3
+- (void)discardPasscodeStashSecret:(unsigned __int8)secret
 {
-  v3 = a3;
+  secretCopy = secret;
   v5 = +[NSData data];
   v15 = 0;
   v16 = 0;
@@ -36,7 +36,7 @@
     }
   }
 
-  if ((v3 - 1) <= 1)
+  if ((secretCopy - 1) <= 1)
   {
     v11 = sub_100006274("octagon");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -60,18 +60,18 @@
   }
 }
 
-- (BOOL)setCredential:(id)a3 type:(int64_t)a4 laContext:(id *)a5 error:(id *)a6
+- (BOOL)setCredential:(id)credential type:(int64_t)type laContext:(id *)context error:(id *)error
 {
-  v9 = a3;
+  credentialCopy = credential;
   v10 = objc_alloc_init(LAContext);
   v11 = v10;
-  if (a5)
+  if (context)
   {
     v12 = v10;
-    *a5 = v11;
+    *context = v11;
   }
 
-  v13 = [v11 setCredential:v9 type:a4 error:a6];
+  v13 = [v11 setCredential:credentialCopy type:type error:error];
 
   return v13;
 }

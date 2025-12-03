@@ -8,17 +8,17 @@
 - (id)schema
 {
   v2 = objc_opt_new();
-  [a1 coordinate];
-  if (v3 != 0.0 || ([a1 coordinate], v4 != 0.0))
+  [self coordinate];
+  if (v3 != 0.0 || ([self coordinate], v4 != 0.0))
   {
     [v2 setObject:@"http://schema.org/GeoCoordinates" forKeyedSubscript:@"@type"];
     v5 = MEMORY[0x277CCABB0];
-    [a1 coordinate];
+    [self coordinate];
     v6 = [v5 numberWithDouble:?];
     [v2 setObject:v6 forKeyedSubscript:@"latitude"];
 
     v7 = MEMORY[0x277CCABB0];
-    [a1 coordinate];
+    [self coordinate];
     v9 = [v7 numberWithDouble:v8];
     [v2 setObject:v9 forKeyedSubscript:@"longitude"];
   }

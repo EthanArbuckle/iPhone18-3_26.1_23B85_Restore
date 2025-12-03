@@ -1,15 +1,15 @@
 @interface RenderGraphDiagnostics
 - (_TtC3VFX22RenderGraphDiagnostics)init;
-- (void)addGenericRenderGraphErrorWithMessage:(id)a3;
+- (void)addGenericRenderGraphErrorWithMessage:(id)message;
 @end
 
 @implementation RenderGraphDiagnostics
 
-- (void)addGenericRenderGraphErrorWithMessage:(id)a3
+- (void)addGenericRenderGraphErrorWithMessage:(id)message
 {
   v4 = sub_1AFDFCEF8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1AF9A32D8(v4, v6);
 }
 

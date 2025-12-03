@@ -1,34 +1,34 @@
 @interface MTPlaybackIdentifierUtil
-+ (id)__queryStringToQueryDictionary:(id)a3;
-+ (id)__stringByRemovingPercentEscapes:(id)a3;
-+ (id)__stringWithPercentEscape:(id)a3;
-- (BOOL)isLocalSetPlaybackQueueURLString:(id)a3;
-- (BOOL)isSubscribeCommandURLString:(id)a3;
-- (BOOL)isUniversalPlaybackIdentifierURLString:(id)a3;
-- (_MRSystemAppPlaybackQueue)playbackQueueWithAccountInfoForIdentifiers:(id)a3;
-- (_MRSystemAppPlaybackQueue)playbackQueueWithDsid:(id)a3 forIdentifiers:(id)a4;
-- (id)_playbackRequestIdentifierWithHost:(id)a3 queryComponents:(id)a4;
-- (id)_playbackRequestIdentifierWithHost:(id)a3 queryKey:(id)a4 value:(id)a5;
-- (id)_universalPlaybackQueueIdentifierForPodcastUuid:(id)a3 podcastFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 episodeUuid:(id)a6 episodeGuid:(id)a7 episodeStoreId:(int64_t)a8 context:(int64_t)a9 contextSortType:(int64_t)a10 sampPlaybackOrder:(id)a11;
-- (id)localPlaybackQueueIdentifierForPodcastUuid:(id)a3 episodeUuid:(id)a4 sampPlaybackOrder:(id)a5;
-- (id)playbackQueueIdentifierForPlayMyPodcastsWithPlaybackOrder:(id)a3;
-- (id)playbackQueueIdentifierForPodcastAdamId:(id)a3 sampPlaybackOrder:(id)a4;
-- (id)playbackQueueIdentifierForSubscribeToPodcastFeedUrl:(id)a3;
-- (id)playbackRequestURLWithDSID:(id)a3 baseRequestURLString:(id)a4;
-- (id)playbackRequestURLWithPlayReason:(unint64_t)a3 baseRequestURLString:(id)a4;
-- (id)universalPlaybackQueueIdentifierForStationUuid:(id)a3 episodeUuid:(id)a4 episodeGuid:(id)a5 episodeStoreId:(int64_t)a6 podcastFeedUrl:(id)a7;
-- (int64_t)_episodeContextFromString:(id)a3;
-- (int64_t)_episodeContextSortFromString:(id)a3;
-- (int64_t)_episodeOrderFromString:(id)a3;
-- (unint64_t)_playQueueTypeForRequestURL:(id)a3;
-- (unint64_t)_playReasonFromString:(id)a3;
++ (id)__queryStringToQueryDictionary:(id)dictionary;
++ (id)__stringByRemovingPercentEscapes:(id)escapes;
++ (id)__stringWithPercentEscape:(id)escape;
+- (BOOL)isLocalSetPlaybackQueueURLString:(id)string;
+- (BOOL)isSubscribeCommandURLString:(id)string;
+- (BOOL)isUniversalPlaybackIdentifierURLString:(id)string;
+- (_MRSystemAppPlaybackQueue)playbackQueueWithAccountInfoForIdentifiers:(id)identifiers;
+- (_MRSystemAppPlaybackQueue)playbackQueueWithDsid:(id)dsid forIdentifiers:(id)identifiers;
+- (id)_playbackRequestIdentifierWithHost:(id)host queryComponents:(id)components;
+- (id)_playbackRequestIdentifierWithHost:(id)host queryKey:(id)key value:(id)value;
+- (id)_universalPlaybackQueueIdentifierForPodcastUuid:(id)uuid podcastFeedUrl:(id)url podcastStoreId:(int64_t)id episodeUuid:(id)episodeUuid episodeGuid:(id)guid episodeStoreId:(int64_t)storeId context:(int64_t)context contextSortType:(int64_t)self0 sampPlaybackOrder:(id)self1;
+- (id)localPlaybackQueueIdentifierForPodcastUuid:(id)uuid episodeUuid:(id)episodeUuid sampPlaybackOrder:(id)order;
+- (id)playbackQueueIdentifierForPlayMyPodcastsWithPlaybackOrder:(id)order;
+- (id)playbackQueueIdentifierForPodcastAdamId:(id)id sampPlaybackOrder:(id)order;
+- (id)playbackQueueIdentifierForSubscribeToPodcastFeedUrl:(id)url;
+- (id)playbackRequestURLWithDSID:(id)d baseRequestURLString:(id)string;
+- (id)playbackRequestURLWithPlayReason:(unint64_t)reason baseRequestURLString:(id)string;
+- (id)universalPlaybackQueueIdentifierForStationUuid:(id)uuid episodeUuid:(id)episodeUuid episodeGuid:(id)guid episodeStoreId:(int64_t)id podcastFeedUrl:(id)url;
+- (int64_t)_episodeContextFromString:(id)string;
+- (int64_t)_episodeContextSortFromString:(id)string;
+- (int64_t)_episodeOrderFromString:(id)string;
+- (unint64_t)_playQueueTypeForRequestURL:(id)l;
+- (unint64_t)_playReasonFromString:(id)string;
 @end
 
 @implementation MTPlaybackIdentifierUtil
 
-- (id)playbackRequestURLWithPlayReason:(unint64_t)a3 baseRequestURLString:(id)a4
+- (id)playbackRequestURLWithPlayReason:(unint64_t)reason baseRequestURLString:(id)string
 {
-  v5 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], a2, a4, a4, v4);
+  v5 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], a2, string, string, v4);
   v6 = objc_opt_class();
   v11 = objc_msgSend_query(v5, v7, v8, v9, v10);
   v15 = objc_msgSend___queryStringToQueryDictionary_(v6, v12, v11, v13, v14);
@@ -57,19 +57,19 @@
   return v48;
 }
 
-- (id)playbackRequestURLWithDSID:(id)a3 baseRequestURLString:(id)a4
+- (id)playbackRequestURLWithDSID:(id)d baseRequestURLString:(id)string
 {
-  v5 = a3;
-  v9 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], v6, a4, v7, v8);
+  dCopy = d;
+  v9 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], v6, string, v7, v8);
   v10 = objc_opt_class();
   v15 = objc_msgSend_query(v9, v11, v12, v13, v14);
   v19 = objc_msgSend___queryStringToQueryDictionary_(v10, v16, v15, v17, v18);
 
-  v24 = objc_msgSend_stringValue(v5, v20, v21, v22, v23);
+  v24 = objc_msgSend_stringValue(dCopy, v20, v21, v22, v23);
 
   if (v24)
   {
-    v29 = objc_msgSend_stringValue(v5, v25, v26, v27, v28);
+    v29 = objc_msgSend_stringValue(dCopy, v25, v26, v27, v28);
     objc_msgSend_setObject_forKey_(v19, v30, v29, @"enqueuerDSID", v31);
   }
 
@@ -94,9 +94,9 @@
   return v61;
 }
 
-- (BOOL)isLocalSetPlaybackQueueURLString:(id)a3
+- (BOOL)isLocalSetPlaybackQueueURLString:(id)string
 {
-  v5 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], a2, a3, v3, v4);
+  v5 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], a2, string, v3, v4);
   v10 = objc_msgSend_host(v5, v6, v7, v8, v9);
   if (objc_msgSend_length(v10, v11, v12, v13, v14))
   {
@@ -116,45 +116,45 @@
   return v18;
 }
 
-- (BOOL)isSubscribeCommandURLString:(id)a3
+- (BOOL)isSubscribeCommandURLString:(id)string
 {
-  v5 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], a2, a3, v3, v4);
+  v5 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], a2, string, v3, v4);
   v10 = objc_msgSend_host(v5, v6, v7, v8, v9);
   isEqualToString = objc_msgSend_isEqualToString_(v10, v11, @"subscribe", v12, v13);
 
   return isEqualToString;
 }
 
-- (BOOL)isUniversalPlaybackIdentifierURLString:(id)a3
+- (BOOL)isUniversalPlaybackIdentifierURLString:(id)string
 {
-  v5 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], a2, a3, v3, v4);
+  v5 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], a2, string, v3, v4);
   v10 = objc_msgSend_host(v5, v6, v7, v8, v9);
   isEqualToString = objc_msgSend_isEqualToString_(v10, v11, @"playItem", v12, v13);
 
   return isEqualToString;
 }
 
-- (id)playbackQueueIdentifierForPlayMyPodcastsWithPlaybackOrder:(id)a3
+- (id)playbackQueueIdentifierForPlayMyPodcastsWithPlaybackOrder:(id)order
 {
-  v5 = a3;
-  if (!v5)
+  orderCopy = order;
+  if (!orderCopy)
   {
-    v5 = *MEMORY[0x277D48610];
+    orderCopy = *MEMORY[0x277D48610];
   }
 
-  v6 = objc_msgSend__playbackRequestIdentifierWithHost_queryKey_value_(self, v4, @"playPodcasts", @"playbackOrder", v5);
+  v6 = objc_msgSend__playbackRequestIdentifierWithHost_queryKey_value_(self, v4, @"playPodcasts", @"playbackOrder", orderCopy);
 
   return v6;
 }
 
-- (id)localPlaybackQueueIdentifierForPodcastUuid:(id)a3 episodeUuid:(id)a4 sampPlaybackOrder:(id)a5
+- (id)localPlaybackQueueIdentifierForPodcastUuid:(id)uuid episodeUuid:(id)episodeUuid sampPlaybackOrder:(id)order
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (objc_msgSend_length(v8, v11, v12, v13, v14) || objc_msgSend_length(v9, v15, v16, v17, v18))
+  uuidCopy = uuid;
+  episodeUuidCopy = episodeUuid;
+  orderCopy = order;
+  if (objc_msgSend_length(uuidCopy, v11, v12, v13, v14) || objc_msgSend_length(episodeUuidCopy, v15, v16, v17, v18))
   {
-    v19 = objc_msgSend_universalPlaybackQueueIdentifierForPodcastUuid_podcastFeedUrl_podcastStoreId_episodeUuid_episodeGuid_episodeStoreId_sampPlaybackOrder_(self, v15, v8, 0, 0, v9, 0, 0, v10);
+    v19 = objc_msgSend_universalPlaybackQueueIdentifierForPodcastUuid_podcastFeedUrl_podcastStoreId_episodeUuid_episodeGuid_episodeStoreId_sampPlaybackOrder_(self, v15, uuidCopy, 0, 0, episodeUuidCopy, 0, 0, orderCopy);
   }
 
   else
@@ -165,56 +165,56 @@
   return v19;
 }
 
-- (id)_universalPlaybackQueueIdentifierForPodcastUuid:(id)a3 podcastFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 episodeUuid:(id)a6 episodeGuid:(id)a7 episodeStoreId:(int64_t)a8 context:(int64_t)a9 contextSortType:(int64_t)a10 sampPlaybackOrder:(id)a11
+- (id)_universalPlaybackQueueIdentifierForPodcastUuid:(id)uuid podcastFeedUrl:(id)url podcastStoreId:(int64_t)id episodeUuid:(id)episodeUuid episodeGuid:(id)guid episodeStoreId:(int64_t)storeId context:(int64_t)context contextSortType:(int64_t)self0 sampPlaybackOrder:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a11;
-  if (!objc_msgSend_length(v20, v21, v22, v23, v24))
+  uuidCopy = uuid;
+  urlCopy = url;
+  episodeUuidCopy = episodeUuid;
+  guidCopy = guid;
+  orderCopy = order;
+  if (!objc_msgSend_length(orderCopy, v21, v22, v23, v24))
   {
     v29 = *MEMORY[0x277D48610];
 
-    v20 = v29;
+    orderCopy = v29;
   }
 
-  v30 = objc_msgSend_length(v18, v25, v26, v27, v28);
-  v35 = objc_msgSend_length(v16, v31, v32, v33, v34);
+  v30 = objc_msgSend_length(episodeUuidCopy, v25, v26, v27, v28);
+  v35 = objc_msgSend_length(uuidCopy, v31, v32, v33, v34);
   v40 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v36, v37, v38, v39);
-  objc_msgSend_setObject_forKey_(v40, v41, v20, @"playbackOrder", v42);
+  objc_msgSend_setObject_forKey_(v40, v41, orderCopy, @"playbackOrder", v42);
   if (v35)
   {
-    objc_msgSend_setObject_forKey_(v40, v43, v16, @"uuid", v46);
+    objc_msgSend_setObject_forKey_(v40, v43, uuidCopy, @"uuid", v46);
   }
 
   if (v30)
   {
-    objc_msgSend_setObject_forKey_(v40, v43, v18, @"episodeUuid", v46);
+    objc_msgSend_setObject_forKey_(v40, v43, episodeUuidCopy, @"episodeUuid", v46);
   }
 
-  if (objc_msgSend_length(v17, v43, v44, v45, v46))
+  if (objc_msgSend_length(urlCopy, v43, v44, v45, v46))
   {
     v51 = objc_opt_class();
-    v55 = objc_msgSend___stringWithPercentEscape_(v51, v52, v17, v53, v54);
+    v55 = objc_msgSend___stringWithPercentEscape_(v51, v52, urlCopy, v53, v54);
     objc_msgSend_setObject_forKey_(v40, v56, v55, @"podcastFeedUrl", v57);
   }
 
-  if (objc_msgSend_length(v19, v47, v48, v49, v50))
+  if (objc_msgSend_length(guidCopy, v47, v48, v49, v50))
   {
-    objc_msgSend_setObject_forKey_(v40, v58, v19, @"episodeGuid", v60);
+    objc_msgSend_setObject_forKey_(v40, v58, guidCopy, @"episodeGuid", v60);
   }
 
   v61 = *MEMORY[0x277D3DD88];
-  if (a5 && v61 != a5)
+  if (id && v61 != id)
   {
-    v62 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v58, @"%llu", v59, v60, a5);
+    v62 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v58, @"%llu", v59, v60, id);
     objc_msgSend_setObject_forKey_(v40, v63, v62, @"storeCollectionId", v64);
   }
 
-  if (a8 && v61 != a8)
+  if (storeId && v61 != storeId)
   {
-    v65 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v58, @"%llu", v59, v60, a8);
+    v65 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v58, @"%llu", v59, v60, storeId);
     objc_msgSend_setObject_forKey_(v40, v66, v65, @"storeTrackId", v67);
   }
 
@@ -229,21 +229,21 @@
   return v76;
 }
 
-- (id)playbackQueueIdentifierForPodcastAdamId:(id)a3 sampPlaybackOrder:(id)a4
+- (id)playbackQueueIdentifierForPodcastAdamId:(id)id sampPlaybackOrder:(id)order
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (!v6)
+  orderCopy = order;
+  if (!orderCopy)
   {
-    v6 = *MEMORY[0x277D48610];
+    orderCopy = *MEMORY[0x277D48610];
   }
 
   v16[0] = @"storeCollectionId";
   v16[1] = @"playbackOrder";
-  v17[0] = a3;
-  v17[1] = v6;
+  v17[0] = id;
+  v17[1] = orderCopy;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a3;
+  idCopy = id;
   v10 = objc_msgSend_dictionaryWithObjects_forKeys_count_(v7, v9, v17, v16, 2);
   v13 = objc_msgSend__playbackRequestIdentifierWithHost_queryComponents_(self, v11, @"playPodcast", v10, v12);
 
@@ -252,41 +252,41 @@
   return v13;
 }
 
-- (id)playbackQueueIdentifierForSubscribeToPodcastFeedUrl:(id)a3
+- (id)playbackQueueIdentifierForSubscribeToPodcastFeedUrl:(id)url
 {
-  v4 = a3;
+  urlCopy = url;
   v5 = objc_opt_class();
-  v9 = objc_msgSend___stringWithPercentEscape_(v5, v6, v4, v7, v8);
+  v9 = objc_msgSend___stringWithPercentEscape_(v5, v6, urlCopy, v7, v8);
 
   v11 = objc_msgSend__playbackRequestIdentifierWithHost_queryKey_value_(self, v10, @"subscribe", @"podcastFeedUrl", v9);
 
   return v11;
 }
 
-- (id)universalPlaybackQueueIdentifierForStationUuid:(id)a3 episodeUuid:(id)a4 episodeGuid:(id)a5 episodeStoreId:(int64_t)a6 podcastFeedUrl:(id)a7
+- (id)universalPlaybackQueueIdentifierForStationUuid:(id)uuid episodeUuid:(id)episodeUuid episodeGuid:(id)guid episodeStoreId:(int64_t)id podcastFeedUrl:(id)url
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
+  episodeUuidCopy = episodeUuid;
+  guidCopy = guid;
+  urlCopy = url;
   v14 = MEMORY[0x277CBEB38];
-  v15 = a3;
+  uuidCopy = uuid;
   v19 = objc_msgSend_dictionaryWithCapacity_(v14, v16, 5, v17, v18);
-  objc_msgSend_setObject_forKey_(v19, v20, v15, @"uuid", v21);
+  objc_msgSend_setObject_forKey_(v19, v20, uuidCopy, @"uuid", v21);
 
-  if (objc_msgSend_length(v11, v22, v23, v24, v25))
+  if (objc_msgSend_length(episodeUuidCopy, v22, v23, v24, v25))
   {
-    objc_msgSend_setObject_forKey_(v19, v26, v11, @"episodeUuid", v29);
+    objc_msgSend_setObject_forKey_(v19, v26, episodeUuidCopy, @"episodeUuid", v29);
   }
 
-  if (objc_msgSend_length(v12, v26, v27, v28, v29))
+  if (objc_msgSend_length(guidCopy, v26, v27, v28, v29))
   {
-    objc_msgSend_setObject_forKey_(v19, v30, v12, @"episodeGuid", v33);
+    objc_msgSend_setObject_forKey_(v19, v30, guidCopy, @"episodeGuid", v33);
   }
 
-  if (objc_msgSend_length(v13, v30, v31, v32, v33))
+  if (objc_msgSend_length(urlCopy, v30, v31, v32, v33))
   {
     v36 = objc_opt_class();
-    v40 = objc_msgSend___stringWithPercentEscape_(v36, v37, v13, v38, v39);
+    v40 = objc_msgSend___stringWithPercentEscape_(v36, v37, urlCopy, v38, v39);
     objc_msgSend_setObject_forKey_(v19, v41, v40, @"podcastFeedUrl", v42);
   }
 
@@ -295,28 +295,28 @@
   return v43;
 }
 
-- (_MRSystemAppPlaybackQueue)playbackQueueWithAccountInfoForIdentifiers:(id)a3
+- (_MRSystemAppPlaybackQueue)playbackQueueWithAccountInfoForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9 = objc_msgSend_sharedInstance(MTAccountController, v5, v6, v7, v8);
   v14 = objc_msgSend_activeDsid(v9, v10, v11, v12, v13);
-  v17 = objc_msgSend_playbackQueueWithDsid_forIdentifiers_(self, v15, v14, v4, v16);
+  v17 = objc_msgSend_playbackQueueWithDsid_forIdentifiers_(self, v15, v14, identifiersCopy, v16);
 
   return v17;
 }
 
-- (_MRSystemAppPlaybackQueue)playbackQueueWithDsid:(id)a3 forIdentifiers:(id)a4
+- (_MRSystemAppPlaybackQueue)playbackQueueWithDsid:(id)dsid forIdentifiers:(id)identifiers
 {
   v5 = *MEMORY[0x277CBECE8];
-  v6 = a4;
+  identifiersCopy = identifiers;
   v7 = MRSystemAppPlaybackQueueCreate();
   MRSystemAppPlaybackQueueSetGenericTrackIdentifiers();
 
-  if (a3)
+  if (dsid)
   {
-    v10 = a3;
+    dsidCopy = dsid;
     keys = @"enqueuerDSID";
-    v8 = CFDictionaryCreate(0, &keys, &v10, 1, 0, MEMORY[0x277CBF150]);
+    v8 = CFDictionaryCreate(0, &keys, &dsidCopy, 1, 0, MEMORY[0x277CBF150]);
     MRSystemAppPlaybackQueueSetUserInfo();
     CFRelease(v8);
   }
@@ -324,17 +324,17 @@
   return v7;
 }
 
-- (unint64_t)_playQueueTypeForRequestURL:(id)a3
+- (unint64_t)_playQueueTypeForRequestURL:(id)l
 {
   v3 = qword_27DE0EBE0;
-  v8 = a3;
+  lCopy = l;
   if (v3 != -1)
   {
     sub_233538128();
   }
 
   v9 = qword_27DE0EBE8;
-  v10 = objc_msgSend_host(v8, v4, v5, v6, v7);
+  v10 = objc_msgSend_host(lCopy, v4, v5, v6, v7);
 
   v14 = objc_msgSend_objectForKeyedSubscript_(v9, v11, v10, v12, v13);
   v15 = v14;
@@ -350,41 +350,41 @@
   return v22;
 }
 
-- (id)_playbackRequestIdentifierWithHost:(id)a3 queryKey:(id)a4 value:(id)a5
+- (id)_playbackRequestIdentifierWithHost:(id)host queryKey:(id)key value:(id)value
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v19 = a4;
-  v20[0] = a5;
+  keyCopy = key;
+  v20[0] = value;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v13 = objc_msgSend_dictionaryWithObjects_forKeys_count_(v8, v12, v20, &v19, 1);
+  valueCopy = value;
+  keyCopy2 = key;
+  hostCopy = host;
+  v13 = objc_msgSend_dictionaryWithObjects_forKeys_count_(v8, v12, v20, &keyCopy, 1);
 
-  v16 = objc_msgSend__playbackRequestIdentifierWithHost_queryComponents_(self, v14, v11, v13, v15);
+  v16 = objc_msgSend__playbackRequestIdentifierWithHost_queryComponents_(self, v14, hostCopy, v13, v15);
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (id)_playbackRequestIdentifierWithHost:(id)a3 queryComponents:(id)a4
+- (id)_playbackRequestIdentifierWithHost:(id)host queryComponents:(id)components
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  hostCopy = host;
+  componentsCopy = components;
   v7 = objc_alloc_init(MEMORY[0x277CCACE0]);
   objc_msgSend_setScheme_(v7, v8, @"podcasts", v9, v10);
-  v53 = v5;
-  objc_msgSend_setHost_(v7, v11, v5, v12, v13);
+  v53 = hostCopy;
+  objc_msgSend_setHost_(v7, v11, hostCopy, v12, v13);
   v14 = MEMORY[0x277CBEB18];
-  v19 = objc_msgSend_count(v6, v15, v16, v17, v18);
+  v19 = objc_msgSend_count(componentsCopy, v15, v16, v17, v18);
   v23 = objc_msgSend_arrayWithCapacity_(v14, v20, v19, v21, v22);
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v24 = v6;
+  v24 = componentsCopy;
   v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(v24, v25, &v54, v58, 16);
   if (v26)
   {
@@ -421,15 +421,15 @@
   return v50;
 }
 
-- (int64_t)_episodeOrderFromString:(id)a3
+- (int64_t)_episodeOrderFromString:(id)string
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, *MEMORY[0x277D48618], v5, v6))
+  stringCopy = string;
+  if (objc_msgSend_isEqualToString_(stringCopy, v4, *MEMORY[0x277D48618], v5, v6))
   {
     v10 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, *MEMORY[0x277D48620], v8, v9))
+  else if (objc_msgSend_isEqualToString_(stringCopy, v7, *MEMORY[0x277D48620], v8, v9))
   {
     v10 = 2;
   }
@@ -442,10 +442,10 @@
   return v10;
 }
 
-- (unint64_t)_playReasonFromString:(id)a3
+- (unint64_t)_playReasonFromString:(id)string
 {
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5, v6, v7))
+  stringCopy = string;
+  if (objc_msgSend_length(stringCopy, v4, v5, v6, v7))
   {
     v8 = MTPlayReasonFromPersistentString();
   }
@@ -458,10 +458,10 @@
   return v8;
 }
 
-- (int64_t)_episodeContextFromString:(id)a3
+- (int64_t)_episodeContextFromString:(id)string
 {
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5, v6, v7))
+  stringCopy = string;
+  if (objc_msgSend_length(stringCopy, v4, v5, v6, v7))
   {
     v8 = MTEpisodeContextFromPersistentString();
   }
@@ -474,10 +474,10 @@
   return v8;
 }
 
-- (int64_t)_episodeContextSortFromString:(id)a3
+- (int64_t)_episodeContextSortFromString:(id)string
 {
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5, v6, v7))
+  stringCopy = string;
+  if (objc_msgSend_length(stringCopy, v4, v5, v6, v7))
   {
     v8 = MTEpisodeContextSortTypeFromPersistentString();
   }
@@ -490,24 +490,24 @@
   return v8;
 }
 
-+ (id)__stringWithPercentEscape:(id)a3
++ (id)__stringWithPercentEscape:(id)escape
 {
-  v3 = CFURLCreateStringByAddingPercentEscapes(0, a3, 0, @"\uFFFC!$&'()+,/:;=?@", 0x8000100u);
+  v3 = CFURLCreateStringByAddingPercentEscapes(0, escape, 0, @"\uFFFC!$&'()+,/:;=?@", 0x8000100u);
 
   return v3;
 }
 
-+ (id)__stringByRemovingPercentEscapes:(id)a3
++ (id)__stringByRemovingPercentEscapes:(id)escapes
 {
-  v3 = CFURLCreateStringByReplacingPercentEscapes(*MEMORY[0x277CBECE8], a3, &stru_2848DA188);
+  v3 = CFURLCreateStringByReplacingPercentEscapes(*MEMORY[0x277CBECE8], escapes, &stru_2848DA188);
 
   return v3;
 }
 
-+ (id)__queryStringToQueryDictionary:(id)a3
++ (id)__queryStringToQueryDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_componentsSeparatedByString_(a3, a2, @"&", v3, v4);
+  v5 = objc_msgSend_componentsSeparatedByString_(dictionary, a2, @"&", v3, v4);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v36 = 0u;
   v37 = 0u;

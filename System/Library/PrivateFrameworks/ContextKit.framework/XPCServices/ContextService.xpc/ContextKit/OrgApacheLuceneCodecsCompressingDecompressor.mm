@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneCodecsCompressingDecompressor
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation OrgApacheLuceneCodecsCompressingDecompressor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(OrgApacheLuceneCodecsCompressingDecompressor *)self clone];
+  clone = [(OrgApacheLuceneCodecsCompressingDecompressor *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

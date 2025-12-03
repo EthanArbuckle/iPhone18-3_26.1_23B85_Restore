@@ -1,21 +1,21 @@
 @interface NSStorage
 + (void)initialize;
-- (NSStorage)initWithElementSize:(unint64_t)a3 capacity:(unint64_t)a4;
+- (NSStorage)initWithElementSize:(unint64_t)size capacity:(unint64_t)capacity;
 - (id)description;
-- (void)addElement:(void *)a3;
+- (void)addElement:(void *)element;
 - (void)dealloc;
-- (void)enumerateElementsUsingBlock:(id)a3;
-- (void)insertElements:(void *)a3 count:(unint64_t)a4 atIndex:(unint64_t)a5;
+- (void)enumerateElementsUsingBlock:(id)block;
+- (void)insertElements:(void *)elements count:(unint64_t)count atIndex:(unint64_t)index;
 @end
 
 @implementation NSStorage
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
@@ -26,7 +26,7 @@
   [(NSStorage *)&v3 dealloc];
 }
 
-- (NSStorage)initWithElementSize:(unint64_t)a3 capacity:(unint64_t)a4
+- (NSStorage)initWithElementSize:(unint64_t)size capacity:(unint64_t)capacity
 {
   v6.receiver = self;
   v6.super_class = NSStorage;
@@ -35,22 +35,22 @@
   return v4;
 }
 
-- (void)insertElements:(void *)a3 count:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)insertElements:(void *)elements count:(unint64_t)count atIndex:(unint64_t)index
 {
   CFStorageInsertValues();
-  if (a3)
+  if (elements)
   {
     storage = self->_storage;
 
-    MEMORY[0x1EEDB77D0](storage, a5, a4, a3);
+    MEMORY[0x1EEDB77D0](storage, index, count, elements);
   }
 }
 
-- (void)addElement:(void *)a3
+- (void)addElement:(void *)element
 {
   v5 = [(NSStorage *)self count];
 
-  [(NSStorage *)self insertElements:a3 count:1 atIndex:v5];
+  [(NSStorage *)self insertElements:element count:1 atIndex:v5];
 }
 
 - (id)description
@@ -61,7 +61,7 @@
   return v3;
 }
 
-- (void)enumerateElementsUsingBlock:(id)a3
+- (void)enumerateElementsUsingBlock:(id)block
 {
   Count = CFStorageGetCount();
   if (Count)
@@ -72,7 +72,7 @@
     {
       v9 = 0;
       ValueAtIndex = CFStorageGetValueAtIndex();
-      (*(a3 + 2))(a3, ValueAtIndex, v5, &v9);
+      (*(block + 2))(block, ValueAtIndex, v5, &v9);
       if (v9)
       {
         break;

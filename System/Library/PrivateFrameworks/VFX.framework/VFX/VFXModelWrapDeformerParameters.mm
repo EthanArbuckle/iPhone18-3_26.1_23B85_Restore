@@ -1,19 +1,19 @@
 @interface VFXModelWrapDeformerParameters
-- (VFXModelWrapDeformerParameters)initWithCoder:(id)a3;
-- (VFXModelWrapDeformerParameters)initWithDrivingNode:(__n128)a3 deformedNode:(__n128)a4 bindingMode:(__n128)a5 bindingTransform:(uint64_t)a6 drivingNodeUVChannel:(uint64_t)a7 deformedNodeUVChannel:(uint64_t)a8;
-- (VFXModelWrapDeformerParameters)initWithInnerLayerNode:(__n128)a3 outerLayerNode:(__n128)a4 deformedNode:(__n128)a5 bindingMode:(uint64_t)a6 bindingTransform:(uint64_t)a7;
-- (id)extraLayerMeshesWithDrivingMesh0:(__CFXMesh *)a3 drivingMesh1:(__CFXMesh *)a4;
+- (VFXModelWrapDeformerParameters)initWithCoder:(id)coder;
+- (VFXModelWrapDeformerParameters)initWithDrivingNode:(__n128)node deformedNode:(__n128)deformedNode bindingMode:(__n128)mode bindingTransform:(uint64_t)transform drivingNodeUVChannel:(uint64_t)channel deformedNodeUVChannel:(uint64_t)vChannel;
+- (VFXModelWrapDeformerParameters)initWithInnerLayerNode:(__n128)node outerLayerNode:(__n128)layerNode deformedNode:(__n128)deformedNode bindingMode:(uint64_t)mode bindingTransform:(uint64_t)transform;
+- (id)extraLayerMeshesWithDrivingMesh0:(__CFXMesh *)mesh0 drivingMesh1:(__CFXMesh *)mesh1;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)initParametersIfNeededWithDrivingNodeRef:(__CFXNode *)a3 deformedNodeRef:(__CFXNode *)a4;
-- (void)initParametersIfNeededWithInnerLayerNodeRef:(__CFXNode *)a3 outerLayerNodeRef:(__CFXNode *)a4 deformedNodeRef:(__CFXNode *)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)initParametersIfNeededWithDrivingNodeRef:(__CFXNode *)ref deformedNodeRef:(__CFXNode *)nodeRef;
+- (void)initParametersIfNeededWithInnerLayerNodeRef:(__CFXNode *)ref outerLayerNodeRef:(__CFXNode *)nodeRef deformedNodeRef:(__CFXNode *)deformedNodeRef;
 @end
 
 @implementation VFXModelWrapDeformerParameters
 
-- (VFXModelWrapDeformerParameters)initWithDrivingNode:(__n128)a3 deformedNode:(__n128)a4 bindingMode:(__n128)a5 bindingTransform:(uint64_t)a6 drivingNodeUVChannel:(uint64_t)a7 deformedNodeUVChannel:(uint64_t)a8
+- (VFXModelWrapDeformerParameters)initWithDrivingNode:(__n128)node deformedNode:(__n128)deformedNode bindingMode:(__n128)mode bindingTransform:(uint64_t)transform drivingNodeUVChannel:(uint64_t)channel deformedNodeUVChannel:(uint64_t)vChannel
 {
-  v34.receiver = a1;
+  v34.receiver = self;
   v34.super_class = VFXModelWrapDeformerParameters;
   v16 = [(VFXModelWrapDeformerParameters *)&v34 init];
   v20 = v16;
@@ -22,9 +22,9 @@
     v16->_isLegacySingleLayerDeformer = 1;
     v16->_bindingMode = a9;
     *v16->_anon_a0 = a2;
-    *&v16->_anon_a0[16] = a3;
-    *&v16->_anon_a0[32] = a4;
-    *&v16->_anon_a0[48] = a5;
+    *&v16->_anon_a0[16] = node;
+    *&v16->_anon_a0[32] = deformedNode;
+    *&v16->_anon_a0[48] = mode;
     v16->_legacyDrivingNodeUVChannel = a10;
     v16->_legacyDeformedNodeUVChannel = a11;
     objc_msgSend_begin(VFXTransaction, v17, v18, v19);
@@ -34,18 +34,18 @@
     v33[2] = sub_1AF1DF56C;
     v33[3] = &unk_1E7A7C078;
     v33[4] = v20;
-    v33[5] = a7;
-    v33[6] = a8;
-    objc_msgSend_enqueueCommandForObject_immediateTransactionBlock_(VFXTransaction, v24, a8, v33);
+    v33[5] = channel;
+    v33[6] = vChannel;
+    objc_msgSend_enqueueCommandForObject_immediateTransactionBlock_(VFXTransaction, v24, vChannel, v33);
     objc_msgSend_commit(VFXTransaction, v25, v26, v27);
   }
 
   return v20;
 }
 
-- (VFXModelWrapDeformerParameters)initWithInnerLayerNode:(__n128)a3 outerLayerNode:(__n128)a4 deformedNode:(__n128)a5 bindingMode:(uint64_t)a6 bindingTransform:(uint64_t)a7
+- (VFXModelWrapDeformerParameters)initWithInnerLayerNode:(__n128)node outerLayerNode:(__n128)layerNode deformedNode:(__n128)deformedNode bindingMode:(uint64_t)mode bindingTransform:(uint64_t)transform
 {
-  v32.receiver = a1;
+  v32.receiver = self;
   v32.super_class = VFXModelWrapDeformerParameters;
   v14 = [(VFXModelWrapDeformerParameters *)&v32 init];
   v18 = v14;
@@ -53,9 +53,9 @@
   {
     v14->_bindingMode = a10;
     *v14->_anon_a0 = a2;
-    *&v14->_anon_a0[16] = a3;
-    *&v14->_anon_a0[32] = a4;
-    *&v14->_anon_a0[48] = a5;
+    *&v14->_anon_a0[16] = node;
+    *&v14->_anon_a0[32] = layerNode;
+    *&v14->_anon_a0[48] = deformedNode;
     objc_msgSend_begin(VFXTransaction, v15, v16, v17);
     objc_msgSend_setAnimationDuration_(VFXTransaction, v19, v20, v21, 0.0);
     v31[0] = MEMORY[0x1E69E9820];
@@ -63,7 +63,7 @@
     v31[2] = sub_1AF1DF6C8;
     v31[3] = &unk_1E7A7C0A0;
     v31[4] = v18;
-    v31[5] = a7;
+    v31[5] = transform;
     v31[6] = a8;
     v31[7] = a9;
     objc_msgSend_enqueueCommandForObject_immediateTransactionBlock_(VFXTransaction, v22, a9, v31);
@@ -88,89 +88,89 @@
   [(VFXModelWrapDeformerParameters *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeInt32_forKey_(a3, a2, self->_vertexCount, @"vertexCount");
-  objc_msgSend_encodeInt32_forKey_(a3, v5, LODWORD(self->_bindingMode), @"bindingMode");
-  objc_msgSend_encodeInt32_forKey_(a3, v6, LODWORD(self->_bindingData.pointIndicesStride), @"bindingPointIndicesStride");
-  objc_msgSend_encodeInt32_forKey_(a3, v7, LODWORD(self->_bindingData.barycentricCoordsStride), @"bindingBarycentricCoordsStride");
-  objc_msgSend_encodeInt32_forKey_(a3, v8, LODWORD(self->_bindingData.pointIndicesFormat), @"bindingPointIndicesFormat");
-  objc_msgSend_encodeInt32_forKey_(a3, v9, LODWORD(self->_bindingData.barycentricCoordsFormat), @"bindingBarycentricCoordsFormat");
-  objc_msgSend_encodeBytes_length_forKey_(a3, v10, self->_bindingData.pointIndices, self->_bindingData.pointIndicesStride * self->_vertexCount, @"bindingPointIndices");
-  objc_msgSend_encodeBytes_length_forKey_(a3, v11, self->_bindingData.barycentricCoords, self->_bindingData.barycentricCoordsStride * self->_vertexCount, @"bindingBarycentricCoords");
+  objc_msgSend_encodeInt32_forKey_(coder, a2, self->_vertexCount, @"vertexCount");
+  objc_msgSend_encodeInt32_forKey_(coder, v5, LODWORD(self->_bindingMode), @"bindingMode");
+  objc_msgSend_encodeInt32_forKey_(coder, v6, LODWORD(self->_bindingData.pointIndicesStride), @"bindingPointIndicesStride");
+  objc_msgSend_encodeInt32_forKey_(coder, v7, LODWORD(self->_bindingData.barycentricCoordsStride), @"bindingBarycentricCoordsStride");
+  objc_msgSend_encodeInt32_forKey_(coder, v8, LODWORD(self->_bindingData.pointIndicesFormat), @"bindingPointIndicesFormat");
+  objc_msgSend_encodeInt32_forKey_(coder, v9, LODWORD(self->_bindingData.barycentricCoordsFormat), @"bindingBarycentricCoordsFormat");
+  objc_msgSend_encodeBytes_length_forKey_(coder, v10, self->_bindingData.pointIndices, self->_bindingData.pointIndicesStride * self->_vertexCount, @"bindingPointIndices");
+  objc_msgSend_encodeBytes_length_forKey_(coder, v11, self->_bindingData.barycentricCoords, self->_bindingData.barycentricCoordsStride * self->_vertexCount, @"bindingBarycentricCoords");
   if (self->_isLegacySingleLayerDeformer)
   {
-    objc_msgSend_encodeBool_forKey_(a3, v12, 1, @"isLegacySingleLayerDeformer");
+    objc_msgSend_encodeBool_forKey_(coder, v12, 1, @"isLegacySingleLayerDeformer");
     legacyOffsetsOrTransformsLength = self->_bindingData.legacyOffsetsOrTransformsLength;
     p_legacyOffsetsOrTransformsLength = &self->_bindingData.legacyOffsetsOrTransformsLength;
-    objc_msgSend_encodeBytes_length_forKey_(a3, v15, *(p_legacyOffsetsOrTransformsLength - 1), legacyOffsetsOrTransformsLength, @"bindingOffsetsOrTransforms");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v15, *(p_legacyOffsetsOrTransformsLength - 1), legacyOffsetsOrTransformsLength, @"bindingOffsetsOrTransforms");
     v17 = @"bindingOffsetsOrTransformsLength";
   }
 
   else
   {
-    objc_msgSend_encodeBytes_length_forKey_(a3, v12, self->_bindingData.innerLayerInfluences, self->_bindingData.innerLayerInfluencesLength, @"bindingInnerLayerInfluences");
-    objc_msgSend_encodeInt32_forKey_(a3, v18, LODWORD(self->_bindingData.innerLayerInfluencesLength), @"bindingInnerLayerInfluencesLength");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v12, self->_bindingData.innerLayerInfluences, self->_bindingData.innerLayerInfluencesLength, @"bindingInnerLayerInfluences");
+    objc_msgSend_encodeInt32_forKey_(coder, v18, LODWORD(self->_bindingData.innerLayerInfluencesLength), @"bindingInnerLayerInfluencesLength");
     if (self->_bindingMode != 1)
     {
       return;
     }
 
-    objc_msgSend_encodeBytes_length_forKey_(a3, v19, self->_bindingData.innerLayerTNBs, self->_bindingData.tnbMatricesLength, @"bindingInnerTNBs");
-    objc_msgSend_encodeBytes_length_forKey_(a3, v20, self->_bindingData.outerLayerTNBs, self->_bindingData.tnbMatricesLength, @"bindingOuterTNBs");
-    objc_msgSend_encodeInt32_forKey_(a3, v21, LODWORD(self->_bindingData.tnbMatricesLength), @"bindingSpaceVectorsLength");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v19, self->_bindingData.innerLayerTNBs, self->_bindingData.tnbMatricesLength, @"bindingInnerTNBs");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v20, self->_bindingData.outerLayerTNBs, self->_bindingData.tnbMatricesLength, @"bindingOuterTNBs");
+    objc_msgSend_encodeInt32_forKey_(coder, v21, LODWORD(self->_bindingData.tnbMatricesLength), @"bindingSpaceVectorsLength");
     offsetsLength = self->_bindingData.offsetsLength;
     p_legacyOffsetsOrTransformsLength = &self->_bindingData.offsetsLength;
-    objc_msgSend_encodeBytes_length_forKey_(a3, v23, *(p_legacyOffsetsOrTransformsLength - 2), offsetsLength, @"bindingInnerOffsets");
-    objc_msgSend_encodeBytes_length_forKey_(a3, v24, *(p_legacyOffsetsOrTransformsLength - 1), *p_legacyOffsetsOrTransformsLength, @"bindingOuterOffsets");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v23, *(p_legacyOffsetsOrTransformsLength - 2), offsetsLength, @"bindingInnerOffsets");
+    objc_msgSend_encodeBytes_length_forKey_(coder, v24, *(p_legacyOffsetsOrTransformsLength - 1), *p_legacyOffsetsOrTransformsLength, @"bindingOuterOffsets");
     v17 = @"bindingOffsetsLength";
   }
 
   v25 = *p_legacyOffsetsOrTransformsLength;
 
-  objc_msgSend_encodeInt32_forKey_(a3, v16, v25, v17);
+  objc_msgSend_encodeInt32_forKey_(coder, v16, v25, v17);
 }
 
-- (VFXModelWrapDeformerParameters)initWithCoder:(id)a3
+- (VFXModelWrapDeformerParameters)initWithCoder:(id)coder
 {
   v54.receiver = self;
   v54.super_class = VFXModelWrapDeformerParameters;
   v6 = [(VFXModelWrapDeformerParameters *)&v54 init];
   if (v6)
   {
-    v6->_vertexCount = objc_msgSend_decodeInt32ForKey_(a3, v4, @"vertexCount", v5);
-    v6->_bindingMode = objc_msgSend_decodeInt32ForKey_(a3, v7, @"bindingMode", v8);
-    v6->_bindingData.pointIndicesStride = objc_msgSend_decodeInt32ForKey_(a3, v9, @"bindingPointIndicesStride", v10);
-    v6->_bindingData.barycentricCoordsStride = objc_msgSend_decodeInt32ForKey_(a3, v11, @"bindingBarycentricCoordsStride", v12);
-    v6->_bindingData.pointIndicesFormat = objc_msgSend_decodeIntegerForKey_(a3, v13, @"bindingPointIndicesFormat", v14);
-    v6->_bindingData.barycentricCoordsFormat = objc_msgSend_decodeIntegerForKey_(a3, v15, @"bindingBarycentricCoordsFormat", v16);
+    v6->_vertexCount = objc_msgSend_decodeInt32ForKey_(coder, v4, @"vertexCount", v5);
+    v6->_bindingMode = objc_msgSend_decodeInt32ForKey_(coder, v7, @"bindingMode", v8);
+    v6->_bindingData.pointIndicesStride = objc_msgSend_decodeInt32ForKey_(coder, v9, @"bindingPointIndicesStride", v10);
+    v6->_bindingData.barycentricCoordsStride = objc_msgSend_decodeInt32ForKey_(coder, v11, @"bindingBarycentricCoordsStride", v12);
+    v6->_bindingData.pointIndicesFormat = objc_msgSend_decodeIntegerForKey_(coder, v13, @"bindingPointIndicesFormat", v14);
+    v6->_bindingData.barycentricCoordsFormat = objc_msgSend_decodeIntegerForKey_(coder, v15, @"bindingBarycentricCoordsFormat", v16);
     vertexCount = v6->_vertexCount;
     v18 = v6->_bindingData.pointIndicesStride * vertexCount;
     v19 = v6->_bindingData.barycentricCoordsStride * vertexCount;
     v6->_bindingData.pointIndices = malloc_type_malloc(v18, 0xBEB32C07uLL);
     v6->_bindingData.barycentricCoords = malloc_type_malloc(v19, 0x3421AD62uLL);
     __n = 0;
-    v21 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v20, @"bindingPointIndices", &__n);
+    v21 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v20, @"bindingPointIndices", &__n);
     if (__n == v18)
     {
       memcpy(v6->_bindingData.pointIndices, v21, v18);
     }
 
-    v23 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v22, @"bindingBarycentricCoords", &__n);
+    v23 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v22, @"bindingBarycentricCoords", &__n);
     if (__n == v19)
     {
       memcpy(v6->_bindingData.barycentricCoords, v23, v19);
     }
 
-    v26 = objc_msgSend_decodeBoolForKey_(a3, v24, @"isLegacySingleLayerDeformer", v25);
+    v26 = objc_msgSend_decodeBoolForKey_(coder, v24, @"isLegacySingleLayerDeformer", v25);
     v6->_isLegacySingleLayerDeformer = v26;
     if (v26)
     {
-      v29 = objc_msgSend_decodeInt32ForKey_(a3, v27, @"bindingOffsetsOrTransformsLength", v28);
+      v29 = objc_msgSend_decodeInt32ForKey_(coder, v27, @"bindingOffsetsOrTransformsLength", v28);
       v6->_bindingData.legacyOffsetsOrTransformsLength = v29;
       v6->_bindingData.legacyOffsetsOrTransforms = malloc_type_malloc(v29, 0x100004052888210uLL);
       __n = 0;
-      v31 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v30, @"bindingOffsetsOrTransforms", &__n);
+      v31 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v30, @"bindingOffsetsOrTransforms", &__n);
       v32 = __n;
       if (__n == v6->_bindingData.legacyOffsetsOrTransformsLength)
       {
@@ -183,11 +183,11 @@ LABEL_20:
 
     else
     {
-      v35 = objc_msgSend_decodeInt32ForKey_(a3, v27, @"bindingInnerLayerInfluencesLength", v28);
+      v35 = objc_msgSend_decodeInt32ForKey_(coder, v27, @"bindingInnerLayerInfluencesLength", v28);
       v6->_bindingData.innerLayerInfluencesLength = v35;
       v6->_bindingData.innerLayerInfluences = malloc_type_malloc(v35, 0x100004052888210uLL);
       __n = 0;
-      v37 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v36, @"bindingInnerLayerInfluences", &__n);
+      v37 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v36, @"bindingInnerLayerInfluences", &__n);
       if (__n == v6->_bindingData.innerLayerInfluencesLength)
       {
         memcpy(v6->_bindingData.innerLayerInfluences, v37, __n);
@@ -195,34 +195,34 @@ LABEL_20:
 
       if (v6->_bindingMode == 1)
       {
-        v40 = objc_msgSend_decodeInt32ForKey_(a3, v38, @"bindingSpaceVectorsLength", v39);
+        v40 = objc_msgSend_decodeInt32ForKey_(coder, v38, @"bindingSpaceVectorsLength", v39);
         v6->_bindingData.tnbMatricesLength = v40;
         v6->_bindingData.innerLayerTNBs = malloc_type_malloc(v40, 0x100004052888210uLL);
         v6->_bindingData.outerLayerTNBs = malloc_type_malloc(v6->_bindingData.tnbMatricesLength, 0x100004052888210uLL);
         __n = 0;
-        v42 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v41, @"bindingInnerTNBs", &__n);
+        v42 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v41, @"bindingInnerTNBs", &__n);
         if (__n == v6->_bindingData.tnbMatricesLength)
         {
           memcpy(v6->_bindingData.innerLayerTNBs, v42, __n);
         }
 
-        v44 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v43, @"bindingOuterTNBs", &__n);
+        v44 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v43, @"bindingOuterTNBs", &__n);
         if (__n == v6->_bindingData.tnbMatricesLength)
         {
           memcpy(v6->_bindingData.outerLayerTNBs, v44, __n);
         }
 
-        v47 = objc_msgSend_decodeInt32ForKey_(a3, v45, @"bindingOffsetsLength", v46);
+        v47 = objc_msgSend_decodeInt32ForKey_(coder, v45, @"bindingOffsetsLength", v46);
         v6->_bindingData.offsetsLength = v47;
         v6->_bindingData.innerLayerOffsets = malloc_type_malloc(v47, 0x100004052888210uLL);
         v6->_bindingData.outerLayerOffsets = malloc_type_malloc(v6->_bindingData.offsetsLength, 0x100004052888210uLL);
-        v49 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v48, @"bindingInnerOffsets", &__n);
+        v49 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v48, @"bindingInnerOffsets", &__n);
         if (__n == v6->_bindingData.offsetsLength)
         {
           memcpy(v6->_bindingData.innerLayerOffsets, v49, __n);
         }
 
-        v51 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v50, @"bindingOuterOffsets", &__n);
+        v51 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v50, @"bindingOuterOffsets", &__n);
         v32 = __n;
         if (__n == v6->_bindingData.offsetsLength)
         {
@@ -237,16 +237,16 @@ LABEL_20:
   return v6;
 }
 
-- (void)initParametersIfNeededWithDrivingNodeRef:(__CFXNode *)a3 deformedNodeRef:(__CFXNode *)a4
+- (void)initParametersIfNeededWithDrivingNodeRef:(__CFXNode *)ref deformedNodeRef:(__CFXNode *)nodeRef
 {
   if (!self->_vertexCount)
   {
     free(self->_bindingData.pointIndices);
     free(self->_bindingData.barycentricCoords);
     free(self->_bindingData.legacyOffsetsOrTransforms);
-    v7 = sub_1AF1B75A0(a3);
+    v7 = sub_1AF1B75A0(ref);
     v8 = sub_1AF1B2C1C(v7);
-    v9 = sub_1AF1B75A0(a4);
+    v9 = sub_1AF1B75A0(nodeRef);
     v10 = sub_1AF1B2C1C(v9);
     v11 = sub_1AF1A4CE8(v8, 0);
     v12 = sub_1AF1A4CE8(v10, 0);
@@ -346,7 +346,7 @@ LABEL_20:
   }
 }
 
-- (void)initParametersIfNeededWithInnerLayerNodeRef:(__CFXNode *)a3 outerLayerNodeRef:(__CFXNode *)a4 deformedNodeRef:(__CFXNode *)a5
+- (void)initParametersIfNeededWithInnerLayerNodeRef:(__CFXNode *)ref outerLayerNodeRef:(__CFXNode *)nodeRef deformedNodeRef:(__CFXNode *)deformedNodeRef
 {
   if (!self->_vertexCount)
   {
@@ -357,11 +357,11 @@ LABEL_20:
     free(self->_bindingData.outerLayerTNBs);
     free(self->_bindingData.innerLayerOffsets);
     free(self->_bindingData.outerLayerOffsets);
-    v9 = sub_1AF1B75A0(a3);
+    v9 = sub_1AF1B75A0(ref);
     v10 = sub_1AF1B2C1C(v9);
-    v11 = sub_1AF1B75A0(a4);
+    v11 = sub_1AF1B75A0(nodeRef);
     v12 = sub_1AF1B2C1C(v11);
-    v13 = sub_1AF1B75A0(a5);
+    v13 = sub_1AF1B75A0(deformedNodeRef);
     v14 = sub_1AF1B2C1C(v13);
     v41 = sub_1AF1A4CE8(v10, 0);
     v40 = sub_1AF1A4CE8(v12, 0);
@@ -471,13 +471,13 @@ LABEL_20:
   }
 }
 
-- (id)extraLayerMeshesWithDrivingMesh0:(__CFXMesh *)a3 drivingMesh1:(__CFXMesh *)a4
+- (id)extraLayerMeshesWithDrivingMesh0:(__CFXMesh *)mesh0 drivingMesh1:(__CFXMesh *)mesh1
 {
-  v6 = sub_1AF1A4CE8(a3, 0);
-  v7 = sub_1AF1A4CE8(a4, 0);
+  v6 = sub_1AF1A4CE8(mesh0, 0);
+  v7 = sub_1AF1A4CE8(mesh1, 0);
   v8 = sub_1AF1AE6EC(v6);
-  v35 = a3;
-  v34 = sub_1AF1A4C6C(a3, 0, 0);
+  mesh0Copy = mesh0;
+  v34 = sub_1AF1A4C6C(mesh0, 0, 0);
   v36 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v9, 39, v10);
   v11 = *MEMORY[0x1E695E480];
   bytesDeallocator = *MEMORY[0x1E695E488];
@@ -512,7 +512,7 @@ LABEL_20:
     values = sub_1AF1ADBE4(v26, 0, v8, 3, 1);
     v27 = CFArrayCreate(v11, &values, 1, MEMORY[0x1E695E9C0]);
     v39 = v34;
-    v28 = sub_1AF1A516C(v35, 0);
+    v28 = sub_1AF1A516C(mesh0Copy, 0);
     v29 = sub_1AF27B22C(v27, v28, &v39);
     objc_msgSend_addObject_(v36, v30, v29, v31);
     CFRelease(v29);

@@ -1,19 +1,19 @@
 @interface TSCH3DTexCoordTilingShaderEffect
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)effect;
 + (void)initialize;
-- (id)transformedTexcoordBuffer:(id)a3 effectsStates:(id)a4;
-- (void)addVariables:(id)a3;
-- (void)injectCommonShaderInto:(id)a3 context:(id)a4;
-- (void)uploadData:(id)a3 effectsStates:(id)a4;
+- (id)transformedTexcoordBuffer:(id)buffer effectsStates:(id)states;
+- (void)addVariables:(id)variables;
+- (void)injectCommonShaderInto:(id)into context:(id)context;
+- (void)uploadData:(id)data effectsStates:(id)states;
 @end
 
 @implementation TSCH3DTexCoordTilingShaderEffect
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSCH3DTexCoordTilingShaderEffect;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_2761ACD6C;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A46930 != -1)
   {
     dispatch_once(&qword_280A46930, block);
@@ -35,7 +35,7 @@
   return v2;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "+[TSCH3DTexCoordTilingShaderEffect allocWithZone:]");
@@ -64,9 +64,9 @@
   }
 }
 
-- (void)addVariables:(id)a3
+- (void)addVariables:(id)variables
 {
-  v57 = a3;
+  variablesCopy = variables;
   if (!qword_280A468F8[0])
   {
     v7 = MEMORY[0x277D81150];
@@ -99,16 +99,16 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v49, v50, v51, v52);
     }
 
-    objc_msgSend_addUniformVariable_(v57, v3, v4, v5, v6, qword_280A468F8[i]);
-    objc_msgSend_addUniformVariable_(v57, v53, v54, v55, v56, qword_280A46910[i]);
+    objc_msgSend_addUniformVariable_(variablesCopy, v3, v4, v5, v6, qword_280A468F8[i]);
+    objc_msgSend_addUniformVariable_(variablesCopy, v53, v54, v55, v56, qword_280A46910[i]);
   }
 }
 
-- (id)transformedTexcoordBuffer:(id)a3 effectsStates:(id)a4
+- (id)transformedTexcoordBuffer:(id)buffer effectsStates:(id)states
 {
-  v6 = a3;
-  v8 = a4;
-  if (!v6)
+  bufferCopy = buffer;
+  statesCopy = states;
+  if (!bufferCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCH3DTexCoordTilingShaderEffect transformedTexcoordBuffer:effectsStates:]");
@@ -118,7 +118,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  if (!v8)
+  if (!statesCopy)
   {
     v27 = MEMORY[0x277D81150];
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCH3DTexCoordTilingShaderEffect transformedTexcoordBuffer:effectsStates:]");
@@ -129,10 +129,10 @@
   }
 
   v42 = objc_msgSend_stateSharingID(self, v7, v9, v10, v11);
-  sub_2761AD5AC(v8, v42, &v74);
+  sub_2761AD5AC(statesCopy, v42, &v74);
 
-  v43 = sub_2761654D0(v6);
-  v48 = objc_msgSend_count(v6, v44, v45, v46, v47);
+  v43 = sub_2761654D0(bufferCopy);
+  v48 = objc_msgSend_count(bufferCopy, v44, v45, v46, v47);
   v53 = objc_msgSend_bufferWithCapacity_(TSCH3Dvec2DataBuffer, v49, v50, v51, v52, v48);
   v58 = objc_msgSend_container(v53, v54, v55, v56, v57);
   v59 = *v43;
@@ -178,29 +178,29 @@
   return v53;
 }
 
-- (void)injectCommonShaderInto:(id)a3 context:(id)a4
+- (void)injectCommonShaderInto:(id)into context:(id)context
 {
-  v12 = a3;
-  objc_msgSend_addFunctionString_name_(v12, v4, v5, v6, v7, @"tsch_mediump_vec2 OffsetAndScaleTexCoord(\n      tsch_mediump_vec4 tc,\n      tsch_mediump_vec2 offset0, tsch_mediump_vec2 scale0,\n      tsch_mediump_vec2 offset1, tsch_mediump_vec2 scale1,\n      tsch_mediump_vec2 offset2, tsch_mediump_vec2 scale2)\n{\n  tsch_mediump_float b0 = tc[2];\n  tsch_mediump_float b1 = tc[3];\n  tsch_mediump_float f0 = b0*b1;\n  tsch_mediump_float f1 = (1.0-b0)*b1;\n  tsch_mediump_float f2 = (1.0-b1)*b0;\n  tsch_mediump_vec2 tc0 = f0*(offset0 + tsch_vec2(tc.xy) * scale0);\n  tsch_mediump_vec2 tc1 = f1*(offset1 + tsch_vec2(tc.xy) * scale1);\n  tsch_mediump_vec2 tc2 = f2*(offset2 + tsch_vec2(tc.xy) * scale2);\n  return tc0 + tc1 + tc2;\n}\n", @"OffsetAndScaleTexCoord");
-  objc_msgSend_addDeclaration_statement_(v12, v8, v9, v10, v11, qword_280A465D8, qword_280A468F8[0], qword_280A46910[0], unk_280A46900, *algn_280A46918, qword_280A46908, qword_280A46920);
+  intoCopy = into;
+  objc_msgSend_addFunctionString_name_(intoCopy, v4, v5, v6, v7, @"tsch_mediump_vec2 OffsetAndScaleTexCoord(\n      tsch_mediump_vec4 tc,\n      tsch_mediump_vec2 offset0, tsch_mediump_vec2 scale0,\n      tsch_mediump_vec2 offset1, tsch_mediump_vec2 scale1,\n      tsch_mediump_vec2 offset2, tsch_mediump_vec2 scale2)\n{\n  tsch_mediump_float b0 = tc[2];\n  tsch_mediump_float b1 = tc[3];\n  tsch_mediump_float f0 = b0*b1;\n  tsch_mediump_float f1 = (1.0-b0)*b1;\n  tsch_mediump_float f2 = (1.0-b1)*b0;\n  tsch_mediump_vec2 tc0 = f0*(offset0 + tsch_vec2(tc.xy) * scale0);\n  tsch_mediump_vec2 tc1 = f1*(offset1 + tsch_vec2(tc.xy) * scale1);\n  tsch_mediump_vec2 tc2 = f2*(offset2 + tsch_vec2(tc.xy) * scale2);\n  return tc0 + tc1 + tc2;\n}\n", @"OffsetAndScaleTexCoord");
+  objc_msgSend_addDeclaration_statement_(intoCopy, v8, v9, v10, v11, qword_280A465D8, qword_280A468F8[0], qword_280A46910[0], unk_280A46900, *algn_280A46918, qword_280A46908, qword_280A46920);
 }
 
-- (void)uploadData:(id)a3 effectsStates:(id)a4
+- (void)uploadData:(id)data effectsStates:(id)states
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  statesCopy = states;
   v12 = objc_msgSend_stateSharingID(self, v8, v9, v10, v11);
-  sub_2761AD5AC(v7, v12, v32);
+  sub_2761AD5AC(statesCopy, v12, v32);
 
   v16 = 0;
   do
   {
     v17 = qword_280A46910[v16];
     v18 = sub_2761AD7AC(v32, v16, v13, v14, v15);
-    objc_msgSend_uniform_vec2_(v6, v19, v20, v21, v22, v17, v18);
+    objc_msgSend_uniform_vec2_(dataCopy, v19, v20, v21, v22, v17, v18);
     v23 = qword_280A468F8[v16];
     v27 = sub_2761AD6D0(v32, v16, v24, v25, v26);
-    objc_msgSend_uniform_vec2_(v6, v28, v29, v30, v31, v23, v27);
+    objc_msgSend_uniform_vec2_(dataCopy, v28, v29, v30, v31, v23, v27);
     ++v16;
   }
 

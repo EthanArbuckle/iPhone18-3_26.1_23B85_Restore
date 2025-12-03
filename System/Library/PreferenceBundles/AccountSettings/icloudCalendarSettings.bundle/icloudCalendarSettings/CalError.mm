@@ -1,22 +1,22 @@
 @interface CalError
-- (CalError)initWithDictionary:(id)a3;
+- (CalError)initWithDictionary:(id)dictionary;
 @end
 
 @implementation CalError
 
-- (CalError)initWithDictionary:(id)a3
+- (CalError)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = CalError;
   v5 = [(CalError *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"errorTitle"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"errorTitle"];
     errorTitle = v5->_errorTitle;
     v5->_errorTitle = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"errorMessage"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"errorMessage"];
     errorMessage = v5->_errorMessage;
     v5->_errorMessage = v8;
   }

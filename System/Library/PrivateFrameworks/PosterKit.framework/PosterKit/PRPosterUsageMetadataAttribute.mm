@@ -1,10 +1,10 @@
 @interface PRPosterUsageMetadataAttribute
-+ (id)decodeObjectWithJSON:(id)a3;
++ (id)decodeObjectWithJSON:(id)n;
 - (NSString)description;
 - (PRPosterUsageMetadataAttribute)init;
 - (id)encodeJSON;
-- (id)usageMetadataForUpdatedLastActivatedDate:(id)a3;
-- (id)usageMetadataForUpdatedLastModifiedDate:(id)a3;
+- (id)usageMetadataForUpdatedLastActivatedDate:(id)date;
+- (id)usageMetadataForUpdatedLastModifiedDate:(id)date;
 - (id)usageMetadataWithUpdatedLastActivatedDate;
 - (id)usageMetadataWithUpdatedLastModifiedDate;
 - (id)usageMetadataWithUpdatedLastSelectedDate;
@@ -19,9 +19,9 @@
   v2 = [(PRPosterUsageMetadataAttribute *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v2->_creationDate;
-    v2->_creationDate = v3;
+    v2->_creationDate = date;
   }
 
   return v2;
@@ -34,9 +34,9 @@
   v5 = v3[1];
   v3[1] = v4;
 
-  v6 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v7 = v3[2];
-  v3[2] = v6;
+  v3[2] = date;
 
   v8 = [(NSDate *)self->_lastSelectedDate copy];
   v9 = v3[3];
@@ -60,9 +60,9 @@
   v7 = v3[2];
   v3[2] = v6;
 
-  v8 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v9 = v3[3];
-  v3[3] = v8;
+  v3[3] = date;
 
   v10 = [(NSDate *)self->_lastActivatedDate copy];
   v11 = v3[4];
@@ -86,19 +86,19 @@
   v9 = v3[3];
   v3[3] = v8;
 
-  v10 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v11 = v3[4];
-  v3[4] = v10;
+  v3[4] = date;
 
   return v3;
 }
 
-- (id)usageMetadataForUpdatedLastActivatedDate:(id)a3
+- (id)usageMetadataForUpdatedLastActivatedDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_opt_new();
-  v6 = [(NSDate *)self->_creationDate compare:v4];
-  creationDate = v4;
+  v6 = [(NSDate *)self->_creationDate compare:dateCopy];
+  creationDate = dateCopy;
   if (v6 == NSOrderedDescending)
   {
     creationDate = self->_creationDate;
@@ -116,22 +116,22 @@
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSDate *)v4 copy];
+  v14 = [(NSDate *)dateCopy copy];
   v15 = v5[4];
   v5[4] = v14;
 
   return v5;
 }
 
-- (id)usageMetadataForUpdatedLastModifiedDate:(id)a3
+- (id)usageMetadataForUpdatedLastModifiedDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_opt_new();
   v6 = [(NSDate *)self->_creationDate copy];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [v4 copy];
+  v8 = [dateCopy copy];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -149,28 +149,28 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(PRPosterUsageMetadataAttribute *)self creationDate];
-  v5 = [v3 appendObject:v4 withName:@"creationDate"];
+  creationDate = [(PRPosterUsageMetadataAttribute *)self creationDate];
+  v5 = [v3 appendObject:creationDate withName:@"creationDate"];
 
-  v6 = [(PRPosterUsageMetadataAttribute *)self lastModifiedDate];
-  v7 = [v3 appendObject:v6 withName:@"lastModifiedDate"];
+  lastModifiedDate = [(PRPosterUsageMetadataAttribute *)self lastModifiedDate];
+  v7 = [v3 appendObject:lastModifiedDate withName:@"lastModifiedDate"];
 
-  v8 = [(PRPosterUsageMetadataAttribute *)self lastSelectedDate];
-  v9 = [v3 appendObject:v8 withName:@"lastSelectedDate"];
+  lastSelectedDate = [(PRPosterUsageMetadataAttribute *)self lastSelectedDate];
+  v9 = [v3 appendObject:lastSelectedDate withName:@"lastSelectedDate"];
 
-  v10 = [(PRPosterUsageMetadataAttribute *)self lastActivatedDate];
-  v11 = [v3 appendObject:v10 withName:@"lastActivatedDate"];
+  lastActivatedDate = [(PRPosterUsageMetadataAttribute *)self lastActivatedDate];
+  v11 = [v3 appendObject:lastActivatedDate withName:@"lastActivatedDate"];
 
-  v12 = [v3 build];
+  build = [v3 build];
 
-  return v12;
+  return build;
 }
 
-+ (id)decodeObjectWithJSON:(id)a3
++ (id)decodeObjectWithJSON:(id)n
 {
-  if (a3)
+  if (n)
   {
-    v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:16 error:0];
+    v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:16 error:0];
     if ([v3 count])
     {
       v4 = [v3 objectForKeyedSubscript:@"creationDate"];
@@ -268,8 +268,8 @@
     [v3 setObject:v15 forKeyedSubscript:@"lastActivatedDate"];
   }
 
-  v16 = [(PRPosterUsageMetadataAttribute *)self attributeType];
-  [v3 setObject:v16 forKey:@"attributeType"];
+  attributeType = [(PRPosterUsageMetadataAttribute *)self attributeType];
+  [v3 setObject:attributeType forKey:@"attributeType"];
 
   v17 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:0 error:0];
 

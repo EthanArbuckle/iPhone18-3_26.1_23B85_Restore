@@ -1,65 +1,65 @@
 @interface CAMFocusLockWithLensPositionCommand
-- (CAMFocusLockWithLensPositionCommand)initWithCoder:(id)a3;
-- (CAMFocusLockWithLensPositionCommand)initWithLensPosition:(float)a3 completionBlock:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMFocusLockWithLensPositionCommand)initWithCoder:(id)coder;
+- (CAMFocusLockWithLensPositionCommand)initWithLensPosition:(float)position completionBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMFocusLockWithLensPositionCommand
 
-- (CAMFocusLockWithLensPositionCommand)initWithLensPosition:(float)a3 completionBlock:(id)a4
+- (CAMFocusLockWithLensPositionCommand)initWithLensPosition:(float)position completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = CAMFocusLockWithLensPositionCommand;
   v7 = [(CAMCaptureCommand *)&v12 initWithSubcommands:0];
   v9 = v7;
   if (v7)
   {
-    *&v8 = a3;
+    *&v8 = position;
     [(CAMFocusLockWithLensPositionCommand *)v7 _setLensPosition:v8];
-    [(CAMFocusLockWithLensPositionCommand *)v9 _setCompletionBlock:v6];
+    [(CAMFocusLockWithLensPositionCommand *)v9 _setCompletionBlock:blockCopy];
     v10 = v9;
   }
 
   return v9;
 }
 
-- (CAMFocusLockWithLensPositionCommand)initWithCoder:(id)a3
+- (CAMFocusLockWithLensPositionCommand)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CAMFocusLockWithLensPositionCommand;
-  [(CAMCaptureCommand *)&v3 encodeWithCoder:a3];
+  [(CAMCaptureCommand *)&v3 encodeWithCoder:coder];
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CAMFocusLockWithLensPositionCommand;
-  v4 = [(CAMCaptureCommand *)&v7 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v7 copyWithZone:zone];
   [(CAMFocusLockWithLensPositionCommand *)self _lensPosition];
   [v4 _setLensPosition:?];
-  v5 = [(CAMFocusLockWithLensPositionCommand *)self _completionBlock];
-  [v4 _setCompletionBlock:v5];
+  _completionBlock = [(CAMFocusLockWithLensPositionCommand *)self _completionBlock];
+  [v4 _setCompletionBlock:_completionBlock];
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentVideoDevice];
-  if ([v5 isLockingFocusWithCustomLensPositionSupported])
+  contextCopy = context;
+  currentVideoDevice = [contextCopy currentVideoDevice];
+  if ([currentVideoDevice isLockingFocusWithCustomLensPositionSupported])
   {
     [(CAMFocusLockWithLensPositionCommand *)self _lensPosition];
     v7 = v6;
@@ -86,7 +86,7 @@
       }
     }
 
-    objc_initWeak(buf, v5);
+    objc_initWeak(buf, currentVideoDevice);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __58__CAMFocusLockWithLensPositionCommand_executeWithContext___block_invoke;
@@ -94,7 +94,7 @@
     v14[4] = self;
     objc_copyWeak(&v15, buf);
     *&v13 = v9;
-    [v5 setFocusModeLockedWithLensPosition:v14 completionHandler:v13];
+    [currentVideoDevice setFocusModeLockedWithLensPosition:v14 completionHandler:v13];
     objc_destroyWeak(&v15);
     objc_destroyWeak(buf);
   }
@@ -104,13 +104,13 @@
     v11 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(CAMFocusLockWithLensPositionCommand *)v5 executeWithContext:v11];
+      [(CAMFocusLockWithLensPositionCommand *)currentVideoDevice executeWithContext:v11];
     }
 
     completionBlock = self->__completionBlock;
     if (completionBlock)
     {
-      [v5 lensPosition];
+      [currentVideoDevice lensPosition];
       completionBlock[2](completionBlock);
     }
   }

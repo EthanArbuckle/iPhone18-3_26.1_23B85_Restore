@@ -1,8 +1,8 @@
 @interface TSUCFSetEnumerator
-- (TSUCFSetEnumerator)initWithCFSet:(__CFSet *)a3;
+- (TSUCFSetEnumerator)initWithCFSet:(__CFSet *)set;
 - (id)allObjects;
 - (id)nextObject;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
 @end
 
@@ -31,15 +31,15 @@
   [(TSUCFSetEnumerator *)&v5 dealloc];
 }
 
-- (TSUCFSetEnumerator)initWithCFSet:(__CFSet *)a3
+- (TSUCFSetEnumerator)initWithCFSet:(__CFSet *)set
 {
   v4 = [(TSUCFSetEnumerator *)self init];
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (set)
     {
-      Count = CFSetGetCount(a3);
+      Count = CFSetGetCount(set);
       v5->mCount = Count;
       if (Count > 15)
       {
@@ -52,7 +52,7 @@
       }
 
       v5->mObjects = mInlineObjects;
-      CFSetGetValues(a3, mInlineObjects);
+      CFSetGetValues(set, mInlineObjects);
     }
 
     else
@@ -85,17 +85,17 @@
   return v3;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (a3->var0)
+  if (state->var0)
   {
     return 0;
   }
 
   mObjects = self->mObjects;
-  a3->var0 = 1;
-  a3->var1 = mObjects;
-  a3->var2 = a3->var3;
+  state->var0 = 1;
+  state->var1 = mObjects;
+  state->var2 = state->var3;
   return self->mCount;
 }
 

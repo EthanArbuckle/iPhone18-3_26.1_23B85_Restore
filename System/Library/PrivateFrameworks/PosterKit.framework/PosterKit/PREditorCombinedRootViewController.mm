@@ -1,12 +1,12 @@
 @interface PREditorCombinedRootViewController
 - (int64_t)_windowInterfaceOrientation;
 - (void)_updateCounterRotationLayout;
-- (void)_updateScrollViewClipping:(BOOL)a3;
+- (void)_updateScrollViewClipping:(BOOL)clipping;
 - (void)loadView;
-- (void)setOverlayHostViewController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)setOverlayHostViewController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PREditorCombinedRootViewController
@@ -16,8 +16,8 @@
   v26.receiver = self;
   v26.super_class = PREditorCombinedRootViewController;
   [(PREditorRootViewController *)&v26 loadView];
-  v3 = [(PREditorCombinedRootViewController *)self view];
-  [v3 bounds];
+  view = [(PREditorCombinedRootViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -37,17 +37,17 @@
   v20 = 3221225472;
   v21 = __46__PREditorCombinedRootViewController_loadView__block_invoke_2;
   v22 = &unk_1E78443F0;
-  v23 = self;
+  selfCopy = self;
   v24 = v13;
   v14 = v13;
   [(PREditorLookViews *)v12 enumerateViewsUsingBlock:&v19];
   v15 = [(PREditorRootViewController *)self contentOverlayView:v19];
   [v15 removeFromSuperview];
 
-  v16 = [(PREditorRootViewController *)self contentOverlayView];
-  v17 = [(PREditorRootViewController *)self contentOverlayContainerView];
-  v18 = [MEMORY[0x1E69DC888] systemBlackColor];
-  v14[2](v14, v16, v17, v18);
+  contentOverlayView = [(PREditorRootViewController *)self contentOverlayView];
+  contentOverlayContainerView = [(PREditorRootViewController *)self contentOverlayContainerView];
+  systemBlackColor = [MEMORY[0x1E69DC888] systemBlackColor];
+  v14[2](v14, contentOverlayView, contentOverlayContainerView, systemBlackColor);
 
   [(PREditorCombinedRootViewController *)self _updateCounterRotationLayout];
 }
@@ -91,27 +91,27 @@ LABEL_9:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PREditorCombinedRootViewController;
-  [(PREditorCombinedRootViewController *)&v4 viewWillAppear:a3];
+  [(PREditorCombinedRootViewController *)&v4 viewWillAppear:appear];
   [(PREditorCombinedRootViewController *)self _updateCounterRotationLayout];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PREditorCombinedRootViewController;
-  [(PREditorRootViewController *)&v4 viewDidAppear:a3];
+  [(PREditorRootViewController *)&v4 viewDidAppear:appear];
   [(PREditorRootViewController *)self updateReticleViewFrames];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(PREditorCombinedRootViewController *)self _updateScrollViewClipping:0];
   v9[4] = self;
   v10[0] = MEMORY[0x1E69E9820];
@@ -123,10 +123,10 @@ LABEL_9:
   v9[1] = 3221225472;
   v9[2] = __89__PREditorCombinedRootViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v9[3] = &unk_1E78442B8;
-  [v7 animateAlongsideTransition:v10 completion:v9];
+  [coordinatorCopy animateAlongsideTransition:v10 completion:v9];
   v8.receiver = self;
   v8.super_class = PREditorCombinedRootViewController;
-  [(PREditorRootViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PREditorRootViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 uint64_t __89__PREditorCombinedRootViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -147,19 +147,19 @@ uint64_t __89__PREditorCombinedRootViewController_viewWillTransitionToSize_withT
 
 - (void)_updateCounterRotationLayout
 {
-  v3 = [(PREditorRootViewController *)self editor];
-  if ([v3 _editorDynamicRotationIsActive])
+  editor = [(PREditorRootViewController *)self editor];
+  if ([editor _editorDynamicRotationIsActive])
   {
-    v4 = [(PREditorCombinedRootViewController *)self _windowInterfaceOrientation];
+    _windowInterfaceOrientation = [(PREditorCombinedRootViewController *)self _windowInterfaceOrientation];
   }
 
   else
   {
-    v4 = 1;
+    _windowInterfaceOrientation = 1;
   }
 
-  v5 = [(PREditorCombinedRootViewController *)self view];
-  [v5 bounds];
+  view = [(PREditorCombinedRootViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -173,9 +173,9 @@ uint64_t __89__PREditorCombinedRootViewController_viewWillTransitionToSize_withT
   v20[5] = v9;
   v20[6] = v11;
   v20[7] = v13;
-  v20[8] = v4;
+  v20[8] = _windowInterfaceOrientation;
   v14 = MEMORY[0x1AC574C60](v20);
-  v15 = [(PREditorCombinedRootViewController *)self views];
+  views = [(PREditorCombinedRootViewController *)self views];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __66__PREditorCombinedRootViewController__updateCounterRotationLayout__block_invoke_2;
@@ -183,10 +183,10 @@ uint64_t __89__PREditorCombinedRootViewController_viewWillTransitionToSize_withT
   v18[4] = self;
   v19 = v14;
   v16 = v14;
-  [v15 enumerateViewsUsingBlock:v18];
+  [views enumerateViewsUsingBlock:v18];
 
-  v17 = [(PREditorRootViewController *)self contentOverlayContainerView];
-  v16[2](v16, v17);
+  contentOverlayContainerView = [(PREditorRootViewController *)self contentOverlayContainerView];
+  v16[2](v16, contentOverlayContainerView);
 }
 
 void __66__PREditorCombinedRootViewController__updateCounterRotationLayout__block_invoke(uint64_t a1, void *a2)
@@ -243,34 +243,34 @@ LABEL_9:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_updateScrollViewClipping:(BOOL)a3
+- (void)_updateScrollViewClipping:(BOOL)clipping
 {
-  v3 = a3;
-  v4 = [(PREditorRootViewController *)self scrollView];
-  [v4 setClipsToBounds:v3];
+  clippingCopy = clipping;
+  scrollView = [(PREditorRootViewController *)self scrollView];
+  [scrollView setClipsToBounds:clippingCopy];
 }
 
 - (int64_t)_windowInterfaceOrientation
 {
-  v3 = [(PREditorCombinedRootViewController *)self view];
-  v4 = [v3 window];
-  v5 = v4;
-  if (!v4)
+  view = [(PREditorCombinedRootViewController *)self view];
+  window = [view window];
+  v5 = window;
+  if (!window)
   {
-    v4 = [(PREditorCombinedRootViewController *)self performSelector:sel__window];
+    window = [(PREditorCombinedRootViewController *)self performSelector:sel__window];
   }
 
-  v6 = v4;
+  v6 = window;
 
-  v7 = [v6 _windowInterfaceOrientation];
-  return v7;
+  _windowInterfaceOrientation = [v6 _windowInterfaceOrientation];
+  return _windowInterfaceOrientation;
 }
 
-- (void)setOverlayHostViewController:(id)a3
+- (void)setOverlayHostViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PREditorRootViewController *)self portaledFloatingContainerView];
-  [(PREditorRootViewController *)self _setOverlayHostViewController:v4 insertingAboveSubview:v5];
+  controllerCopy = controller;
+  portaledFloatingContainerView = [(PREditorRootViewController *)self portaledFloatingContainerView];
+  [(PREditorRootViewController *)self _setOverlayHostViewController:controllerCopy insertingAboveSubview:portaledFloatingContainerView];
 }
 
 @end

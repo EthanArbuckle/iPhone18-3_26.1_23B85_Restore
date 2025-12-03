@@ -1,39 +1,39 @@
 @interface DebugHierarchyRequestExecutionContext
-+ (id)contextWithRequest:(id)a3;
-- (BOOL)hasAlreadyFetchedDebugHierarchyObject:(id)a3;
-- (DebugHierarchyRequestExecutionContext)initWithRequest:(id)a3;
++ (id)contextWithRequest:(id)request;
+- (BOOL)hasAlreadyFetchedDebugHierarchyObject:(id)object;
+- (DebugHierarchyRequestExecutionContext)initWithRequest:(id)request;
 - (id)globalRuntimeInfo;
 - (id)recursiveDescription;
 - (id)requestResponse;
-- (id)runtimeTypeWithName:(id)a3;
-- (void)_addDebugHierarchyObject:(id)a3 withDict:(id)a4 toTopLevelGroupWithID:(id)a5;
-- (void)_addDebugHierarchyObjectDict:(id)a3 toGroupWithID:(id)a4 asDirectChild:(BOOL)a5 belowParent:(id)a6;
-- (void)_collectRuntimeInformationForObjectType:(id)a3;
-- (void)addDebugHierarchyObject:(id)a3 withVisibility:(int64_t)a4 fetchStatus:(int64_t)a5 toGroupWithID:(id)a6 asDirectChild:(BOOL)a7 belowParent:(id)a8;
-- (void)addProperties:(id)a3 toObject:(id)a4;
-- (void)logRequestErrorWithTitle:(id)a3 message:(id)a4 fromMethod:(const char *)a5;
+- (id)runtimeTypeWithName:(id)name;
+- (void)_addDebugHierarchyObject:(id)object withDict:(id)dict toTopLevelGroupWithID:(id)d;
+- (void)_addDebugHierarchyObjectDict:(id)dict toGroupWithID:(id)d asDirectChild:(BOOL)child belowParent:(id)parent;
+- (void)_collectRuntimeInformationForObjectType:(id)type;
+- (void)addDebugHierarchyObject:(id)object withVisibility:(int64_t)visibility fetchStatus:(int64_t)status toGroupWithID:(id)d asDirectChild:(BOOL)child belowParent:(id)parent;
+- (void)addProperties:(id)properties toObject:(id)object;
+- (void)logRequestErrorWithTitle:(id)title message:(id)message fromMethod:(const char *)method;
 @end
 
 @implementation DebugHierarchyRequestExecutionContext
 
-+ (id)contextWithRequest:(id)a3
++ (id)contextWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRequest:v4];
+  requestCopy = request;
+  v5 = [[self alloc] initWithRequest:requestCopy];
 
   return v5;
 }
 
-- (DebugHierarchyRequestExecutionContext)initWithRequest:(id)a3
+- (DebugHierarchyRequestExecutionContext)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v19.receiver = self;
   v19.super_class = DebugHierarchyRequestExecutionContext;
   v6 = [(DebugHierarchyRequestExecutionContext *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
     v8 = +[NSMutableDictionary dictionary];
     topLevelGroups = v7->_topLevelGroups;
     v7->_topLevelGroups = v8;
@@ -58,11 +58,11 @@
   return v7;
 }
 
-- (BOOL)hasAlreadyFetchedDebugHierarchyObject:(id)a3
+- (BOOL)hasAlreadyFetchedDebugHierarchyObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v4 = CFStringCreateWithFormat(0, 0, @"%p", a3);
+    v4 = CFStringCreateWithFormat(0, 0, @"%p", object);
   }
 
   else
@@ -70,59 +70,59 @@
     v4 = 0;
   }
 
-  v5 = [(DebugHierarchyRequestExecutionContext *)self identifierToObjectDescriptionMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierToObjectDescriptionMap = [(DebugHierarchyRequestExecutionContext *)self identifierToObjectDescriptionMap];
+  v6 = [identifierToObjectDescriptionMap objectForKeyedSubscript:v4];
   v7 = v6 != 0;
 
   return v7;
 }
 
-- (void)addDebugHierarchyObject:(id)a3 withVisibility:(int64_t)a4 fetchStatus:(int64_t)a5 toGroupWithID:(id)a6 asDirectChild:(BOOL)a7 belowParent:(id)a8
+- (void)addDebugHierarchyObject:(id)object withVisibility:(int64_t)visibility fetchStatus:(int64_t)status toGroupWithID:(id)d asDirectChild:(BOOL)child belowParent:(id)parent
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
-  if (v14)
+  objectCopy = object;
+  dCopy = d;
+  parentCopy = parent;
+  if (objectCopy)
   {
-    v25 = a7;
-    v17 = CFStringCreateWithFormat(0, 0, @"%p", v14);
+    childCopy = child;
+    v17 = CFStringCreateWithFormat(0, 0, @"%p", objectCopy);
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    [(DebugHierarchyRequestExecutionContext *)self _collectRuntimeInformationForObjectType:v14];
+    [(DebugHierarchyRequestExecutionContext *)self _collectRuntimeInformationForObjectType:objectCopy];
     v26[0] = @"objectID";
     v26[1] = @"className";
     v27[0] = v17;
     v27[1] = v19;
     v26[2] = @"fetchStatus";
-    v20 = [NSNumber numberWithLong:a5];
+    v20 = [NSNumber numberWithLong:status];
     v27[2] = v20;
     v26[3] = @"visibility";
-    v21 = [NSNumber numberWithLong:a4];
+    v21 = [NSNumber numberWithLong:visibility];
     v27[3] = v21;
     v22 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:4];
 
     v23 = [v22 mutableCopy];
-    if (v16)
+    if (parentCopy)
     {
-      if (v25)
+      if (childCopy)
       {
-        [(DebugHierarchyRequestExecutionContext *)self _addDebugHierarchyObjectDict:v23 toGroupWithID:v15 asDirectChild:1 belowParent:v16];
+        [(DebugHierarchyRequestExecutionContext *)self _addDebugHierarchyObjectDict:v23 toGroupWithID:dCopy asDirectChild:1 belowParent:parentCopy];
       }
 
       else
       {
-        [(DebugHierarchyRequestExecutionContext *)self _addDebugHierarchyObject:v14 withDict:v23 toTopLevelGroupWithID:v15];
-        [(DebugHierarchyRequestExecutionContext *)self addReferencedDebugHierarchyObject:v14 withVisibility:a4 toGroupWithID:v15 asDirectChild:0 belowParent:v16];
+        [(DebugHierarchyRequestExecutionContext *)self _addDebugHierarchyObject:objectCopy withDict:v23 toTopLevelGroupWithID:dCopy];
+        [(DebugHierarchyRequestExecutionContext *)self addReferencedDebugHierarchyObject:objectCopy withVisibility:visibility toGroupWithID:dCopy asDirectChild:0 belowParent:parentCopy];
       }
     }
 
     else
     {
-      [(DebugHierarchyRequestExecutionContext *)self _addDebugHierarchyObject:v14 withDict:v23 toTopLevelGroupWithID:v15];
+      [(DebugHierarchyRequestExecutionContext *)self _addDebugHierarchyObject:objectCopy withDict:v23 toTopLevelGroupWithID:dCopy];
     }
 
-    v24 = [(DebugHierarchyRequestExecutionContext *)self identifierToObjectDescriptionMap];
-    [v24 setObject:v23 forKeyedSubscript:v17];
+    identifierToObjectDescriptionMap = [(DebugHierarchyRequestExecutionContext *)self identifierToObjectDescriptionMap];
+    [identifierToObjectDescriptionMap setObject:v23 forKeyedSubscript:v17];
   }
 
   else
@@ -132,18 +132,18 @@
   }
 }
 
-- (void)_addDebugHierarchyObject:(id)a3 withDict:(id)a4 toTopLevelGroupWithID:(id)a5
+- (void)_addDebugHierarchyObject:(id)object withDict:(id)dict toTopLevelGroupWithID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DebugHierarchyRequestExecutionContext *)self topLevelGroups];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  objectCopy = object;
+  dictCopy = dict;
+  dCopy = d;
+  topLevelGroups = [(DebugHierarchyRequestExecutionContext *)self topLevelGroups];
+  v12 = [topLevelGroups objectForKeyedSubscript:dCopy];
 
   if (v12)
   {
     v13 = [v12 objectForKeyedSubscript:@"debugHierarchyObjects"];
-    [v13 addObject:v9];
+    [v13 addObject:dictCopy];
     v14 = objc_opt_class();
     v15 = v14;
     if (v14)
@@ -161,25 +161,25 @@
 
     v18 = [(DebugHierarchyRequestExecutionContext *)self runtimeTypeWithName:v15];
 
-    v19 = [v18 closestTypeVendingAChildGroupingID];
-    v20 = [v19 childGroupingID];
-    v21 = [v20 length];
+    closestTypeVendingAChildGroupingID = [v18 closestTypeVendingAChildGroupingID];
+    childGroupingID = [closestTypeVendingAChildGroupingID childGroupingID];
+    v21 = [childGroupingID length];
 
     if (v21)
     {
-      v22 = [v19 name];
-      v23 = NSClassFromString(v22);
+      name = [closestTypeVendingAChildGroupingID name];
+      v23 = NSClassFromString(name);
 
-      v24 = [v19 childGroupingID];
+      childGroupingID2 = [closestTypeVendingAChildGroupingID childGroupingID];
       v58 = 0;
-      v21 = [DebugHierarchyObjectProtocolHelper debugHierarchyObjectsInGroupWithID:v24 outOptions:&v58 vendingClass:v23 onObject:v8];
+      v21 = [DebugHierarchyObjectProtocolHelper debugHierarchyObjectsInGroupWithID:childGroupingID2 outOptions:&v58 vendingClass:v23 onObject:objectCopy];
     }
 
     if ([v21 count])
     {
       v48 = v12;
-      v49 = v8;
-      v50 = v10;
+      v49 = objectCopy;
+      v50 = dCopy;
       v57 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v21 count]);
       v56 = v21;
       if ([v21 count])
@@ -215,8 +215,8 @@
       {
         v30 = 0;
         v52 = v13;
-        v53 = v9;
-        v51 = v19;
+        v53 = dictCopy;
+        v51 = closestTypeVendingAChildGroupingID;
         do
         {
           v31 = [v13 objectAtIndexedSubscript:v30];
@@ -225,8 +225,8 @@
           v34 = v33;
           if (v33)
           {
-            v35 = [v33 unsignedIntegerValue];
-            v36 = [v9 objectForKeyedSubscript:@"childGroup"];
+            unsignedIntegerValue = [v33 unsignedIntegerValue];
+            v36 = [dictCopy objectForKeyedSubscript:@"childGroup"];
             if (v36)
             {
               v37 = v36;
@@ -241,8 +241,8 @@
                   v41 = [v40 objectForKeyedSubscript:@"objectID"];
                   v42 = [v57 objectForKeyedSubscript:v41];
 
-                  v43 = [v42 unsignedIntegerValue];
-                  if (v43 > v35)
+                  unsignedIntegerValue2 = [v42 unsignedIntegerValue];
+                  if (unsignedIntegerValue2 > unsignedIntegerValue)
                   {
                     break;
                   }
@@ -276,8 +276,8 @@ LABEL_24:
               v13 = v52;
               v32 = v55;
 
-              v9 = v53;
-              v19 = v51;
+              dictCopy = v53;
+              closestTypeVendingAChildGroupingID = v51;
             }
 
             else
@@ -285,7 +285,7 @@ LABEL_24:
               v44 = [NSMutableArray arrayWithObject:v31];
               v37 = DBGGroupDict(v50, v44);
 
-              [v9 setObject:v37 forKeyedSubscript:@"childGroup"];
+              [dictCopy setObject:v37 forKeyedSubscript:@"childGroup"];
             }
 
             [v54 addIndex:v30];
@@ -299,8 +299,8 @@ LABEL_24:
 
       [v13 removeObjectsAtIndexes:v54];
 
-      v8 = v49;
-      v10 = v50;
+      objectCopy = v49;
+      dCopy = v50;
       v18 = v47;
       v12 = v48;
       v21 = v56;
@@ -309,25 +309,25 @@ LABEL_24:
 
   else
   {
-    v13 = [NSMutableArray arrayWithObject:v9];
-    v16 = DBGGroupDict(v10, v13);
+    v13 = [NSMutableArray arrayWithObject:dictCopy];
+    v16 = DBGGroupDict(dCopy, v13);
     v12 = [v16 mutableCopy];
 
-    v17 = [(DebugHierarchyRequestExecutionContext *)self topLevelGroups];
-    [v17 setObject:v12 forKeyedSubscript:v10];
+    topLevelGroups2 = [(DebugHierarchyRequestExecutionContext *)self topLevelGroups];
+    [topLevelGroups2 setObject:v12 forKeyedSubscript:dCopy];
   }
 }
 
-- (void)_addDebugHierarchyObjectDict:(id)a3 toGroupWithID:(id)a4 asDirectChild:(BOOL)a5 belowParent:(id)a6
+- (void)_addDebugHierarchyObjectDict:(id)dict toGroupWithID:(id)d asDirectChild:(BOOL)child belowParent:(id)parent
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
-  if (v12)
+  childCopy = child;
+  dictCopy = dict;
+  dCopy = d;
+  parentCopy = parent;
+  v13 = parentCopy;
+  if (parentCopy)
   {
-    v14 = CFStringCreateWithFormat(0, 0, @"%p", v12);
+    v14 = CFStringCreateWithFormat(0, 0, @"%p", parentCopy);
   }
 
   else
@@ -335,20 +335,20 @@ LABEL_24:
     v14 = 0;
   }
 
-  v15 = [(DebugHierarchyRequestExecutionContext *)self identifierToObjectDescriptionMap];
-  v16 = [v15 objectForKeyedSubscript:v14];
+  identifierToObjectDescriptionMap = [(DebugHierarchyRequestExecutionContext *)self identifierToObjectDescriptionMap];
+  v16 = [identifierToObjectDescriptionMap objectForKeyedSubscript:v14];
 
   if (v16)
   {
-    if (v7)
+    if (childCopy)
     {
       v17 = [v16 objectForKeyedSubscript:@"childGroup"];
       v18 = [v17 objectForKeyedSubscript:@"debugHierarchyObjects"];
       if (!v17)
       {
-        v32 = [NSMutableArray arrayWithObject:v10];
+        v32 = [NSMutableArray arrayWithObject:dictCopy];
 
-        v17 = DBGGroupDict(v11, v32);
+        v17 = DBGGroupDict(dCopy, v32);
         [v16 setObject:v17 forKeyedSubscript:@"childGroup"];
         v18 = v32;
 LABEL_48:
@@ -373,22 +373,22 @@ LABEL_48:
 
       v31 = [(DebugHierarchyRequestExecutionContext *)self runtimeTypeWithName:v20];
 
-      v33 = [v31 closestTypeVendingAChildGroupingID];
-      v34 = [v33 childGroupingID];
-      v52 = v34;
-      if ([v34 length])
+      closestTypeVendingAChildGroupingID = [v31 closestTypeVendingAChildGroupingID];
+      childGroupingID = [closestTypeVendingAChildGroupingID childGroupingID];
+      v52 = childGroupingID;
+      if ([childGroupingID length])
       {
-        v49 = v33;
+        v49 = closestTypeVendingAChildGroupingID;
         v50 = v31;
         v54 = v16;
         v56 = v14;
-        v35 = [v33 name];
-        v36 = NSClassFromString(v35);
+        name = [closestTypeVendingAChildGroupingID name];
+        v36 = NSClassFromString(name);
 
         v61 = 0;
-        v37 = [DebugHierarchyObjectProtocolHelper debugHierarchyObjectsInGroupWithID:v34 outOptions:&v61 vendingClass:v36 onObject:v13];
+        v37 = [DebugHierarchyObjectProtocolHelper debugHierarchyObjectsInGroupWithID:childGroupingID outOptions:&v61 vendingClass:v36 onObject:v13];
         v38 = v61;
-        v39 = [v10 objectForKeyedSubscript:@"objectID"];
+        v39 = [dictCopy objectForKeyedSubscript:@"objectID"];
         if ([v37 count])
         {
           v47 = v38;
@@ -424,7 +424,7 @@ LABEL_48:
 
         v16 = v54;
         v14 = v56;
-        v33 = v49;
+        closestTypeVendingAChildGroupingID = v49;
         v31 = v50;
       }
 
@@ -444,7 +444,7 @@ LABEL_48:
         v46 = v40;
       }
 
-      [v18 insertObject:v10 atIndex:v46];
+      [v18 insertObject:dictCopy atIndex:v46];
 
 LABEL_47:
       goto LABEL_48;
@@ -456,7 +456,7 @@ LABEL_47:
     {
       v53 = v16;
       v55 = v14;
-      v51 = v10;
+      v51 = dictCopy;
       v59 = 0u;
       v60 = 0u;
       v57 = 0u;
@@ -478,7 +478,7 @@ LABEL_14:
 
           v28 = *(*(&v57 + 1) + 8 * v27);
           v29 = [v28 objectForKeyedSubscript:@"groupingID"];
-          v30 = [v29 isEqualToString:v11];
+          v30 = [v29 isEqualToString:dCopy];
 
           if (v30)
           {
@@ -505,7 +505,7 @@ LABEL_14:
         }
 
         v31 = [v18 objectForKeyedSubscript:@"debugHierarchyObjects"];
-        v10 = v51;
+        dictCopy = v51;
         [v31 addObject:v51];
         v16 = v53;
         v14 = v55;
@@ -515,7 +515,7 @@ LABEL_14:
 LABEL_20:
 
 LABEL_23:
-      v10 = v51;
+      dictCopy = v51;
       v16 = v53;
       v14 = v55;
       v23 = OBJC_CLASS___DebugHierarchyCrawler_ptr;
@@ -527,8 +527,8 @@ LABEL_23:
       [v16 setObject:v17 forKeyedSubscript:@"additionalGroups"];
     }
 
-    v31 = [(__objc2_class *)v23[45] arrayWithObject:v10];
-    v18 = DBGGroupDict(v11, v31);
+    v31 = [(__objc2_class *)v23[45] arrayWithObject:dictCopy];
+    v18 = DBGGroupDict(dCopy, v31);
 LABEL_27:
     if (([v17 containsObject:v18] & 1) == 0)
     {
@@ -538,21 +538,21 @@ LABEL_27:
     goto LABEL_47;
   }
 
-  v21 = [NSString stringWithFormat:@"Unable to find parent object in identifierToObjectDescriptionMap. DebugHierarchyObject dictionary will be ignored: %@ | Parent Object: %@", v10, v13];
+  v21 = [NSString stringWithFormat:@"Unable to find parent object in identifierToObjectDescriptionMap. DebugHierarchyObject dictionary will be ignored: %@ | Parent Object: %@", dictCopy, v13];
   [(DebugHierarchyRequestExecutionContext *)self logRequestErrorWithTitle:@"Unable to find DebugHierarchyObject." message:v21 fromMethod:"[DebugHierarchyRequestExecutionContext _addDebugHierarchyObjectDict:toGroupWithID:asDirectChild:belowParent:]"];
 
 LABEL_49:
 }
 
-- (void)addProperties:(id)a3 toObject:(id)a4
+- (void)addProperties:(id)properties toObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  propertiesCopy = properties;
+  objectCopy = object;
+  if ([propertiesCopy count])
   {
-    if (v7)
+    if (objectCopy)
     {
-      v8 = CFStringCreateWithFormat(0, 0, @"%p", v7);
+      v8 = CFStringCreateWithFormat(0, 0, @"%p", objectCopy);
     }
 
     else
@@ -560,20 +560,20 @@ LABEL_49:
       v8 = 0;
     }
 
-    v9 = [(DebugHierarchyRequestExecutionContext *)self identifierToObjectDescriptionMap];
-    v10 = [v9 objectForKeyedSubscript:v8];
+    identifierToObjectDescriptionMap = [(DebugHierarchyRequestExecutionContext *)self identifierToObjectDescriptionMap];
+    v10 = [identifierToObjectDescriptionMap objectForKeyedSubscript:v8];
 
     if (v10)
     {
       v11 = [v10 objectForKeyedSubscript:@"properties"];
       if ([v11 count])
       {
-        v12 = [v11 arrayByAddingObjectsFromArray:v6];
+        v12 = [v11 arrayByAddingObjectsFromArray:propertiesCopy];
       }
 
       else
       {
-        v12 = v6;
+        v12 = propertiesCopy;
       }
 
       v22 = v12;
@@ -583,14 +583,14 @@ LABEL_49:
 
     else
     {
-      v23 = v7;
+      v23 = objectCopy;
       v13 = v8;
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v24 = v6;
-      obj = v6;
+      v24 = propertiesCopy;
+      obj = propertiesCopy;
       v14 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v14)
       {
@@ -609,8 +609,8 @@ LABEL_49:
             v19 = [v18 objectForKeyedSubscript:@"propertyName"];
             v20 = [NSString stringWithFormat:@"%@.%@", v13, v19];
 
-            v21 = [(DebugHierarchyRequestExecutionContext *)self topLevelPropertyDescriptions];
-            [v21 setObject:v18 forKeyedSubscript:v20];
+            topLevelPropertyDescriptions = [(DebugHierarchyRequestExecutionContext *)self topLevelPropertyDescriptions];
+            [topLevelPropertyDescriptions setObject:v18 forKeyedSubscript:v20];
           }
 
           v15 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -619,23 +619,23 @@ LABEL_49:
         while (v15);
       }
 
-      v7 = v23;
-      v6 = v24;
+      objectCopy = v23;
+      propertiesCopy = v24;
       v8 = v13;
       v10 = 0;
     }
   }
 }
 
-- (void)logRequestErrorWithTitle:(id)a3 message:(id)a4 fromMethod:(const char *)a5
+- (void)logRequestErrorWithTitle:(id)title message:(id)message fromMethod:(const char *)method
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [NSString stringWithCString:a5 encoding:4];
-  v12 = [DebugHierarchyLogEntry errorLogEntryWithTitle:v9 message:v8 methodSignature:v10];
+  messageCopy = message;
+  titleCopy = title;
+  v10 = [NSString stringWithCString:method encoding:4];
+  v12 = [DebugHierarchyLogEntry errorLogEntryWithTitle:titleCopy message:messageCopy methodSignature:v10];
 
-  v11 = [(DebugHierarchyRequestExecutionContext *)self request];
-  [v11 addLogEntry:v12];
+  request = [(DebugHierarchyRequestExecutionContext *)self request];
+  [request addLogEntry:v12];
 }
 
 - (id)requestResponse
@@ -644,22 +644,22 @@ LABEL_49:
   v3 = [NSNumber numberWithDouble:2.0];
   v14[0] = v3;
   v13[1] = @"request";
-  v4 = [(DebugHierarchyRequestExecutionContext *)self request];
-  v5 = [v4 dictionaryRepresentation];
-  v14[1] = v5;
+  request = [(DebugHierarchyRequestExecutionContext *)self request];
+  dictionaryRepresentation = [request dictionaryRepresentation];
+  v14[1] = dictionaryRepresentation;
   v13[2] = @"metaData";
-  v6 = [(DebugHierarchyRequestExecutionContext *)self metaData];
-  v14[2] = v6;
+  metaData = [(DebugHierarchyRequestExecutionContext *)self metaData];
+  v14[2] = metaData;
   v13[3] = @"classInformation";
-  v7 = [(DebugHierarchyRequestExecutionContext *)self contextRuntimeInfo];
-  v8 = [v7 serializedRepresentation];
-  v14[3] = v8;
+  contextRuntimeInfo = [(DebugHierarchyRequestExecutionContext *)self contextRuntimeInfo];
+  serializedRepresentation = [contextRuntimeInfo serializedRepresentation];
+  v14[3] = serializedRepresentation;
   v13[4] = @"topLevelGroups";
-  v9 = [(DebugHierarchyRequestExecutionContext *)self topLevelGroups];
-  v14[4] = v9;
+  topLevelGroups = [(DebugHierarchyRequestExecutionContext *)self topLevelGroups];
+  v14[4] = topLevelGroups;
   v13[5] = @"topLevelPropertyDescriptions";
-  v10 = [(DebugHierarchyRequestExecutionContext *)self topLevelPropertyDescriptions];
-  v14[5] = v10;
+  topLevelPropertyDescriptions = [(DebugHierarchyRequestExecutionContext *)self topLevelPropertyDescriptions];
+  v14[5] = topLevelPropertyDescriptions;
   v11 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:6];
 
   return v11;
@@ -668,8 +668,8 @@ LABEL_49:
 - (id)recursiveDescription
 {
   v6 = @"topLevelGroups";
-  v2 = [(DebugHierarchyRequestExecutionContext *)self topLevelGroups];
-  v7 = v2;
+  topLevelGroups = [(DebugHierarchyRequestExecutionContext *)self topLevelGroups];
+  v7 = topLevelGroups;
   v3 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
   v4 = [v3 generateJSONStringWithError:0];
 
@@ -679,29 +679,29 @@ LABEL_49:
 - (id)globalRuntimeInfo
 {
   v2 = +[DebugHierarchyTargetHub sharedHub];
-  v3 = [v2 runtimeInfo];
+  runtimeInfo = [v2 runtimeInfo];
 
-  return v3;
+  return runtimeInfo;
 }
 
-- (id)runtimeTypeWithName:(id)a3
+- (id)runtimeTypeWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(DebugHierarchyRequestExecutionContext *)self contextRuntimeInfo];
-  v6 = [v5 typeWithName:v4];
+  nameCopy = name;
+  contextRuntimeInfo = [(DebugHierarchyRequestExecutionContext *)self contextRuntimeInfo];
+  v6 = [contextRuntimeInfo typeWithName:nameCopy];
 
   if (!v6)
   {
-    v7 = [(DebugHierarchyRequestExecutionContext *)self globalRuntimeInfo];
-    v6 = [v7 typeWithName:v4];
+    globalRuntimeInfo = [(DebugHierarchyRequestExecutionContext *)self globalRuntimeInfo];
+    v6 = [globalRuntimeInfo typeWithName:nameCopy];
   }
 
   return v6;
 }
 
-- (void)_collectRuntimeInformationForObjectType:(id)a3
+- (void)_collectRuntimeInformationForObjectType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_opt_class();
   if (v5 && (v6 = v5, object_isClass(v5)))
   {
@@ -713,16 +713,16 @@ LABEL_49:
     v7 = 0;
   }
 
-  v8 = [(DebugHierarchyRequestExecutionContext *)self globalRuntimeInfo];
-  v9 = [v8 typeWithName:v7];
+  globalRuntimeInfo = [(DebugHierarchyRequestExecutionContext *)self globalRuntimeInfo];
+  v9 = [globalRuntimeInfo typeWithName:v7];
   if (v9)
   {
   }
 
   else
   {
-    v10 = [(DebugHierarchyRequestExecutionContext *)self contextRuntimeInfo];
-    v11 = [v10 typeWithName:v7];
+    contextRuntimeInfo = [(DebugHierarchyRequestExecutionContext *)self contextRuntimeInfo];
+    v11 = [contextRuntimeInfo typeWithName:v7];
 
     if (!v11)
     {
@@ -751,18 +751,18 @@ LABEL_49:
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v18 = [v12 reverseObjectEnumerator];
-      v19 = [v18 countByEnumeratingWithState:&v51 objects:v56 count:16];
+      reverseObjectEnumerator = [v12 reverseObjectEnumerator];
+      v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v51 objects:v56 count:16];
       if (v19)
       {
         v20 = v19;
         v38 = v12;
         v39 = v7;
-        v40 = v4;
-        v41 = v18;
+        v40 = typeCopy;
+        v41 = reverseObjectEnumerator;
         v21 = 0;
         v46 = *v52;
-        v42 = self;
+        selfCopy = self;
         do
         {
           v22 = 0;
@@ -771,7 +771,7 @@ LABEL_49:
           {
             if (*v52 != v46)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v23 = *(*(&v51 + 1) + 8 * v22);
@@ -785,8 +785,8 @@ LABEL_49:
               v24 = 0;
             }
 
-            v25 = [(DebugHierarchyRequestExecutionContext *)self contextRuntimeInfo];
-            v26 = [v25 typeWithName:v24];
+            contextRuntimeInfo2 = [(DebugHierarchyRequestExecutionContext *)self contextRuntimeInfo];
+            v26 = [contextRuntimeInfo2 typeWithName:v24];
 
             if (v26)
             {
@@ -837,13 +837,13 @@ LABEL_49:
                   while (v33);
                 }
 
-                v18 = v41;
-                self = v42;
+                reverseObjectEnumerator = v41;
+                self = selfCopy;
                 v21 = v44;
               }
 
-              v37 = [(DebugHierarchyRequestExecutionContext *)self contextRuntimeInfo];
-              [v37 addType:v28 toParentType:v21];
+              contextRuntimeInfo3 = [(DebugHierarchyRequestExecutionContext *)self contextRuntimeInfo];
+              [contextRuntimeInfo3 addType:v28 toParentType:v21];
 
               v21 = v28;
               v20 = v43;
@@ -854,13 +854,13 @@ LABEL_49:
           }
 
           while (v22 != v20);
-          v20 = [v18 countByEnumeratingWithState:&v51 objects:v56 count:16];
+          v20 = [reverseObjectEnumerator countByEnumeratingWithState:&v51 objects:v56 count:16];
         }
 
         while (v20);
 
         v7 = v39;
-        v4 = v40;
+        typeCopy = v40;
         v12 = v38;
       }
     }

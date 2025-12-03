@@ -1,28 +1,28 @@
 @interface CRLFreehandDrawingIntelligenceProvider
 + (BOOL)isRefineAvailable;
 + (NSString)deleteStrokesActionString;
-+ (id)snapToShapeActionStringWithPlural:(BOOL)a3;
++ (id)snapToShapeActionStringWithPlural:(BOOL)plural;
 - (BOOL)canSnapToShapeSelectedStrokes;
-- (BOOL)isDetectionDecoratorViewHitAtScaledPoint:(CGPoint)a3;
-- (BOOL)isGestureRecognizerFromDescendantOfDetectorView:(id)a3;
+- (BOOL)isDetectionDecoratorViewHitAtScaledPoint:(CGPoint)point;
+- (BOOL)isGestureRecognizerFromDescendantOfDetectorView:(id)view;
 - (NSArray)decoratorOverlayRenderables;
 - (NSArray)decoratorOverlayViews;
 - (PKRecognitionController)pkRecognitionController;
 - (_TtC8Freeform38CRLFreehandDrawingIntelligenceProvider)init;
-- (_TtC8Freeform38CRLFreehandDrawingIntelligenceProvider)initWithInteractiveCanvasController:(id)a3;
+- (_TtC8Freeform38CRLFreehandDrawingIntelligenceProvider)initWithInteractiveCanvasController:(id)controller;
 - (int64_t)snapToShapeSelectedStrokesCount;
-- (void)canRefineHandwritingInSelectedStrokesWithCompletionHandler:(id)a3;
-- (void)copyAsTextSelectedStrokesWithCompletionHandler:(id)a3;
-- (void)deleteStrokes:(id)a3 selectDeletedStrokesOnUndo:(BOOL)a4;
+- (void)canRefineHandwritingInSelectedStrokesWithCompletionHandler:(id)handler;
+- (void)copyAsTextSelectedStrokesWithCompletionHandler:(id)handler;
+- (void)deleteStrokes:(id)strokes selectDeletedStrokesOnUndo:(BOOL)undo;
 - (void)documentModeDidChange;
-- (void)pathBySnappingFillPathToShape:(id)a3 completion:(id)a4;
-- (void)pkStrokesContainingAllDrawingsForEntireCanvasDidChange:(id)a3;
-- (void)recognizedTextInSelectedStrokesWithCompletionHandler:(id)a3;
-- (void)refineHandwritingInSelectedStrokesWithCompletionHandler:(id)a3;
-- (void)registerRecentlyCreatedLocalStroke:(PKStroke *)a3 completionHandler:(id)a4;
-- (void)setPencilKitCanvasViewController:(id)a3;
-- (void)snapToShapeSelectedStrokesWithCompletionHandler:(id)a3;
-- (void)straightenHandwritingInSelectedStrokesWithCompletionHandler:(id)a3;
+- (void)pathBySnappingFillPathToShape:(id)shape completion:(id)completion;
+- (void)pkStrokesContainingAllDrawingsForEntireCanvasDidChange:(id)change;
+- (void)recognizedTextInSelectedStrokesWithCompletionHandler:(id)handler;
+- (void)refineHandwritingInSelectedStrokesWithCompletionHandler:(id)handler;
+- (void)registerRecentlyCreatedLocalStroke:(PKStroke *)stroke completionHandler:(id)handler;
+- (void)setPencilKitCanvasViewController:(id)controller;
+- (void)snapToShapeSelectedStrokesWithCompletionHandler:(id)handler;
+- (void)straightenHandwritingInSelectedStrokesWithCompletionHandler:(id)handler;
 - (void)tearDown;
 - (void)willBeginDynamicOperation;
 @end
@@ -31,14 +31,14 @@
 
 - (void)willBeginDynamicOperation
 {
-  v1 = a1;
+  selfCopy = self;
   sub_10119D1E4();
 }
 
-- (_TtC8Freeform38CRLFreehandDrawingIntelligenceProvider)initWithInteractiveCanvasController:(id)a3
+- (_TtC8Freeform38CRLFreehandDrawingIntelligenceProvider)initWithInteractiveCanvasController:(id)controller
 {
-  v3 = a3;
-  v4 = sub_1011A2358(v3);
+  controllerCopy = controller;
+  v4 = sub_1011A2358(controllerCopy);
 
   return v4;
 }
@@ -56,22 +56,22 @@
 
 - (void)tearDown
 {
-  v2 = self;
+  selfCopy = self;
   sub_10117E948();
 }
 
 - (PKRecognitionController)pkRecognitionController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10117FB18();
 
   return v3;
 }
 
-- (void)setPencilKitCanvasViewController:(id)a3
+- (void)setPencilKitCanvasViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   if (sub_10098EABC(&_mh_execute_header, "setPencilKitCanvasViewController(_:)", 36, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingIntelligenceProvider.swift", 109, 2, 142))
   {
     swift_unknownObjectWeakAssign();
@@ -79,14 +79,14 @@
   }
 }
 
-- (void)registerRecentlyCreatedLocalStroke:(PKStroke *)a3 completionHandler:(id)a4
+- (void)registerRecentlyCreatedLocalStroke:(PKStroke *)stroke completionHandler:(id)handler
 {
   v7 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = stroke;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -101,12 +101,12 @@
   v14[3] = 0;
   v14[4] = &unk_1014CE360;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  strokeCopy = stroke;
+  selfCopy = self;
   sub_10119D67C(0, 0, v9, &unk_1014CE368, v14);
 }
 
-+ (id)snapToShapeActionStringWithPlural:(BOOL)a3
++ (id)snapToShapeActionStringWithPlural:(BOOL)plural
 {
   sub_1011A35C0();
   v3 = String._bridgeToObjectiveC()();
@@ -116,7 +116,7 @@
 
 - (BOOL)canSnapToShapeSelectedStrokes
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_101180810();
 
   return v3 != 0;
@@ -124,18 +124,18 @@
 
 - (int64_t)snapToShapeSelectedStrokesCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_101180810();
 
   return v3;
 }
 
-- (void)snapToShapeSelectedStrokesWithCompletionHandler:(id)a3
+- (void)snapToShapeSelectedStrokesWithCompletionHandler:(id)handler
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -151,42 +151,42 @@
   v12[3] = 0;
   v12[4] = &unk_1014CE320;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10119D67C(0, 0, v7, &unk_1014CE328, v12);
 }
 
-- (void)pathBySnappingFillPathToShape:(id)a3 completion:(id)a4
+- (void)pathBySnappingFillPathToShape:(id)shape completion:(id)completion
 {
   v7 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v7 - 8);
   v9 = &v18 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = type metadata accessor for TaskPriority();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   type metadata accessor for MainActor();
-  v13 = a3;
-  v14 = self;
-  v15 = v13;
+  shapeCopy = shape;
+  selfCopy = self;
+  v15 = shapeCopy;
 
   v16 = static MainActor.shared.getter();
   v17 = swift_allocObject();
   v17[2] = v16;
   v17[3] = &protocol witness table for MainActor;
-  v17[4] = v14;
+  v17[4] = selfCopy;
   v17[5] = v15;
   v17[6] = sub_1011A6804;
   v17[7] = v11;
   sub_10064191C(0, 0, v9, &unk_1014CE2F8, v17);
 }
 
-- (void)straightenHandwritingInSelectedStrokesWithCompletionHandler:(id)a3
+- (void)straightenHandwritingInSelectedStrokesWithCompletionHandler:(id)handler
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -202,7 +202,7 @@
   v12[3] = 0;
   v12[4] = &unk_1014CE2D8;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10119D67C(0, 0, v7, &unk_1014CE2E0, v12);
 }
 
@@ -219,12 +219,12 @@
   return v6 & 1;
 }
 
-- (void)canRefineHandwritingInSelectedStrokesWithCompletionHandler:(id)a3
+- (void)canRefineHandwritingInSelectedStrokesWithCompletionHandler:(id)handler
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -240,16 +240,16 @@
   v12[3] = 0;
   v12[4] = &unk_1014CE2B0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10119D67C(0, 0, v7, &unk_1014CE2B8, v12);
 }
 
-- (void)refineHandwritingInSelectedStrokesWithCompletionHandler:(id)a3
+- (void)refineHandwritingInSelectedStrokesWithCompletionHandler:(id)handler
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -265,7 +265,7 @@
   v12[3] = 0;
   v12[4] = &unk_1014CE288;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10119D67C(0, 0, v7, &unk_1014CE290, v12);
 }
 
@@ -277,42 +277,42 @@
   return v2;
 }
 
-- (void)deleteStrokes:(id)a3 selectDeletedStrokesOnUndo:(BOOL)a4
+- (void)deleteStrokes:(id)strokes selectDeletedStrokesOnUndo:(BOOL)undo
 {
-  v4 = a4;
+  undoCopy = undo;
   type metadata accessor for PKStroke();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = self;
-  sub_101198BC0(v6, v4);
+  selfCopy = self;
+  sub_101198BC0(v6, undoCopy);
 }
 
 - (void)documentModeDidChange
 {
-  v2 = self;
+  selfCopy = self;
   if (sub_10098EABC(&_mh_execute_header, "documentModeDidChange()", 23, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingIntelligenceProvider.swift", 109, 2, 1282))
   {
     sub_101198F8C();
   }
 }
 
-- (BOOL)isDetectionDecoratorViewHitAtScaledPoint:(CGPoint)a3
+- (BOOL)isDetectionDecoratorViewHitAtScaledPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
   v6 = sub_1011990F4(x, y);
 
   return v6 & 1;
 }
 
-- (BOOL)isGestureRecognizerFromDescendantOfDetectorView:(id)a3
+- (BOOL)isGestureRecognizerFromDescendantOfDetectorView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  if ((sub_10098EABC(&_mh_execute_header, "isGestureRecognizerFromDescendantOfDetectorView(_:)", 51, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingIntelligenceProvider.swift", 109, 2, 1317) & 1) != 0 && (v6 = [v4 view]) != 0)
+  viewCopy = view;
+  selfCopy = self;
+  if ((sub_10098EABC(&_mh_execute_header, "isGestureRecognizerFromDescendantOfDetectorView(_:)", 51, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingIntelligenceProvider.swift", 109, 2, 1317) & 1) != 0 && (v6 = [viewCopy view]) != 0)
   {
     v7 = v6;
-    v8 = *(&v5->super.isa + OBJC_IVAR____TtC8Freeform38CRLFreehandDrawingIntelligenceProvider_dataDetectorDecorationView);
+    v8 = *(&selfCopy->super.isa + OBJC_IVAR____TtC8Freeform38CRLFreehandDrawingIntelligenceProvider_dataDetectorDecorationView);
     v9 = [v7 isDescendantOfView:v8];
   }
 
@@ -324,12 +324,12 @@
   return v9;
 }
 
-- (void)recognizedTextInSelectedStrokesWithCompletionHandler:(id)a3
+- (void)recognizedTextInSelectedStrokesWithCompletionHandler:(id)handler
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -345,16 +345,16 @@
   v12[3] = 0;
   v12[4] = &unk_1014CE268;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10119D67C(0, 0, v7, &unk_1014CE270, v12);
 }
 
-- (void)copyAsTextSelectedStrokesWithCompletionHandler:(id)a3
+- (void)copyAsTextSelectedStrokesWithCompletionHandler:(id)handler
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -370,15 +370,15 @@
   v12[3] = 0;
   v12[4] = &unk_1014938A0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10119D67C(0, 0, v7, &unk_101470870, v12);
 }
 
-- (void)pkStrokesContainingAllDrawingsForEntireCanvasDidChange:(id)a3
+- (void)pkStrokesContainingAllDrawingsForEntireCanvasDidChange:(id)change
 {
   type metadata accessor for PKStroke();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_10119BE94(v4);
 }
 
@@ -392,7 +392,7 @@
 
 - (NSArray)decoratorOverlayViews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10119CD20();
 
   sub_100006370(0, &qword_1019F6D00);

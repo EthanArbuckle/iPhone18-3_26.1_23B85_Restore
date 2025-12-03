@@ -1,11 +1,11 @@
 @interface CheckmarkButtonView
-- (_TtC9MomentsUI19CheckmarkButtonView)initWithCoder:(id)a3;
+- (_TtC9MomentsUI19CheckmarkButtonView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation CheckmarkButtonView
 
-- (_TtC9MomentsUI19CheckmarkButtonView)initWithCoder:(id)a3
+- (_TtC9MomentsUI19CheckmarkButtonView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI19CheckmarkButtonView_checkmarkColor;
   *(&self->super.super.super.isa + v4) = [objc_opt_self() systemBlueColor];
@@ -20,7 +20,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CheckmarkButtonView.layoutSubviews()();
 }
 

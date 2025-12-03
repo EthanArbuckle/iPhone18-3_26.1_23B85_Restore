@@ -1,27 +1,27 @@
 @interface DOCTag
-+ (BOOL)areTags:(id)a3 equalByNameAndColorTo:(id)a4;
++ (BOOL)areTags:(id)tags equalByNameAndColorTo:(id)to;
 + (id)tagsLoadedFromUserDefaults;
-+ (id)untitledTagForRendering:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTag:(id)a3;
-- (DOCTag)initWithCoder:(id)a3;
-- (DOCTag)initWithDisplayName:(id)a3 labelIndex:(int64_t)a4 type:(int64_t)a5 itemCount:(int64_t)a6 sidebarVisible:(id)a7 sidebarPinned:(id)a8;
-- (DOCTag)initWithICloudTagAttributes:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)untitledTagForRendering:(int64_t)rendering;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTag:(id)tag;
+- (DOCTag)initWithCoder:(id)coder;
+- (DOCTag)initWithDisplayName:(id)name labelIndex:(int64_t)index type:(int64_t)type itemCount:(int64_t)count sidebarVisible:(id)visible sidebarPinned:(id)pinned;
+- (DOCTag)initWithICloudTagAttributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)iCloudTagAttributes;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeWithTag:(id)a3 options:(int64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeWithTag:(id)tag options:(int64_t)options;
 @end
 
 @implementation DOCTag
 
 - (unint64_t)hash
 {
-  v2 = [(DOCTag *)self displayName];
-  v3 = [v2 precomposedStringWithCanonicalMapping];
-  v4 = [v3 hash];
+  displayName = [(DOCTag *)self displayName];
+  precomposedStringWithCanonicalMapping = [displayName precomposedStringWithCanonicalMapping];
+  v4 = [precomposedStringWithCanonicalMapping hash];
 
   return v4;
 }
@@ -65,15 +65,15 @@
         v16 = v15;
         if (v15)
         {
-          v17 = [v15 integerValue];
+          integerValue = [v15 integerValue];
         }
 
         else
         {
-          v17 = 0;
+          integerValue = 0;
         }
 
-        v18 = [[DOCTag alloc] initWithDisplayName:v14 labelIndex:v17 type:1];
+        v18 = [[DOCTag alloc] initWithDisplayName:v14 labelIndex:integerValue type:1];
         [v8 addObject:v18];
       }
 
@@ -88,40 +88,40 @@
   return v8;
 }
 
-+ (BOOL)areTags:(id)a3 equalByNameAndColorTo:(id)a4
++ (BOOL)areTags:(id)tags equalByNameAndColorTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  if (!(v5 | v6))
+  tagsCopy = tags;
+  toCopy = to;
+  if (!(tagsCopy | toCopy))
   {
     goto LABEL_2;
   }
 
-  if (![v5 isEqualToOrderedSet:v6])
+  if (![tagsCopy isEqualToOrderedSet:toCopy])
   {
 LABEL_12:
     LOBYTE(v7) = 0;
     goto LABEL_13;
   }
 
-  v8 = [v5 count];
+  v8 = [tagsCopy count];
   if (v8)
   {
     v9 = 0;
     v10 = v8 - 1;
     while (1)
     {
-      v11 = [v5 objectAtIndexedSubscript:v9];
-      v12 = [v6 objectAtIndexedSubscript:v9];
-      v13 = [v11 labelIndex];
-      if (v13 != [v12 labelIndex])
+      v11 = [tagsCopy objectAtIndexedSubscript:v9];
+      v12 = [toCopy objectAtIndexedSubscript:v9];
+      labelIndex = [v11 labelIndex];
+      if (labelIndex != [v12 labelIndex])
       {
         break;
       }
 
-      v14 = [v11 displayName];
-      v15 = [v12 displayName];
-      v7 = [v14 isEqualToString:v15];
+      displayName = [v11 displayName];
+      displayName2 = [v12 displayName];
+      v7 = [displayName isEqualToString:displayName2];
 
       if (v7)
       {
@@ -144,49 +144,49 @@ LABEL_13:
   return v7;
 }
 
-+ (id)untitledTagForRendering:(int64_t)a3
++ (id)untitledTagForRendering:(int64_t)rendering
 {
-  v3 = [[DOCTag alloc] initWithDisplayName:&stru_285C6EEF8 labelIndex:a3 type:1];
+  v3 = [[DOCTag alloc] initWithDisplayName:&stru_285C6EEF8 labelIndex:rendering type:1];
 
   return v3;
 }
 
-- (DOCTag)initWithICloudTagAttributes:(id)a3
+- (DOCTag)initWithICloudTagAttributes:(id)attributes
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"n"];
+  attributesCopy = attributes;
+  v6 = [attributesCopy objectForKeyedSubscript:@"n"];
 
   if (!v6)
   {
     [(DOCTag *)a2 initWithICloudTagAttributes:?];
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"n"];
-  v8 = [v5 objectForKeyedSubscript:@"l"];
-  v9 = [v8 integerValue];
-  v10 = [v5 objectForKeyedSubscript:@"v"];
-  v11 = [v5 objectForKeyedSubscript:@"p"];
+  v7 = [attributesCopy objectForKeyedSubscript:@"n"];
+  v8 = [attributesCopy objectForKeyedSubscript:@"l"];
+  integerValue = [v8 integerValue];
+  v10 = [attributesCopy objectForKeyedSubscript:@"v"];
+  v11 = [attributesCopy objectForKeyedSubscript:@"p"];
 
-  v12 = [(DOCTag *)self initWithDisplayName:v7 labelIndex:v9 type:1 itemCount:-1 sidebarVisible:v10 sidebarPinned:v11];
+  v12 = [(DOCTag *)self initWithDisplayName:v7 labelIndex:integerValue type:1 itemCount:-1 sidebarVisible:v10 sidebarPinned:v11];
   return v12;
 }
 
-- (DOCTag)initWithDisplayName:(id)a3 labelIndex:(int64_t)a4 type:(int64_t)a5 itemCount:(int64_t)a6 sidebarVisible:(id)a7 sidebarPinned:(id)a8
+- (DOCTag)initWithDisplayName:(id)name labelIndex:(int64_t)index type:(int64_t)type itemCount:(int64_t)count sidebarVisible:(id)visible sidebarPinned:(id)pinned
 {
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
+  nameCopy = name;
+  visibleCopy = visible;
+  pinnedCopy = pinned;
   v20.receiver = self;
   v20.super_class = DOCTag;
   v17 = [(DOCTag *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_displayName, a3);
-    v18->_labelIndex = a4;
-    v18->_type = a5;
-    objc_storeStrong(&v18->_sidebarVisible, a7);
-    objc_storeStrong(&v18->_sidebarPinned, a8);
+    objc_storeStrong(&v17->_displayName, name);
+    v18->_labelIndex = index;
+    v18->_type = type;
+    objc_storeStrong(&v18->_sidebarVisible, visible);
+    objc_storeStrong(&v18->_sidebarPinned, pinned);
   }
 
   return v18;
@@ -194,14 +194,14 @@ LABEL_13:
 
 - (id)description
 {
-  v3 = [(DOCTag *)self type];
+  type = [(DOCTag *)self type];
   v4 = @"unexpected tag type";
-  if (!v3)
+  if (!type)
   {
     v4 = @"discovered";
   }
 
-  if (v3 == 1)
+  if (type == 1)
   {
     v5 = @"user";
   }
@@ -215,8 +215,8 @@ LABEL_13:
   v11.receiver = self;
   v11.super_class = DOCTag;
   v7 = [(DOCTag *)&v11 description];
-  v8 = [(DOCTag *)self displayName];
-  v9 = [v6 stringWithFormat:@"%@: %@, labelIndex: %ld, type: %@", v7, v8, -[DOCTag labelIndex](self, "labelIndex"), v5];
+  displayName = [(DOCTag *)self displayName];
+  v9 = [v6 stringWithFormat:@"%@: %@, labelIndex: %ld, type: %@", v7, displayName, -[DOCTag labelIndex](self, "labelIndex"), v5];
 
   return v9;
 }
@@ -245,104 +245,104 @@ LABEL_13:
   return v4;
 }
 
-- (void)mergeWithTag:(id)a3 options:(int64_t)a4
+- (void)mergeWithTag:(id)tag options:(int64_t)options
 {
-  v4 = a4;
-  v13 = a3;
+  optionsCopy = options;
+  tagCopy = tag;
   displayName = self->_displayName;
-  v7 = [v13 displayName];
-  LODWORD(displayName) = [(NSString *)displayName isEqualToString:v7];
+  displayName = [tagCopy displayName];
+  LODWORD(displayName) = [(NSString *)displayName isEqualToString:displayName];
 
-  v8 = v13;
+  v8 = tagCopy;
   if (displayName)
   {
-    if ([v13 type] > self->_type)
+    if ([tagCopy type] > self->_type)
     {
-      self->_type = [v13 type];
+      self->_type = [tagCopy type];
     }
 
-    if ((v4 & 2) != 0 || !self->_labelIndex)
+    if ((optionsCopy & 2) != 0 || !self->_labelIndex)
     {
-      self->_labelIndex = [v13 labelIndex];
+      self->_labelIndex = [tagCopy labelIndex];
     }
 
-    v8 = v13;
-    if ((v4 & 4) != 0 || self->_itemCount == -1)
+    v8 = tagCopy;
+    if ((optionsCopy & 4) != 0 || self->_itemCount == -1)
     {
-      self->_itemCount = [v13 itemCount];
-      v8 = v13;
+      self->_itemCount = [tagCopy itemCount];
+      v8 = tagCopy;
     }
 
     if (!self->_sidebarVisible)
     {
-      v9 = [v13 sidebarVisible];
+      sidebarVisible = [tagCopy sidebarVisible];
       sidebarVisible = self->_sidebarVisible;
-      self->_sidebarVisible = v9;
+      self->_sidebarVisible = sidebarVisible;
 
-      v8 = v13;
+      v8 = tagCopy;
     }
 
     if (!self->_sidebarPinned)
     {
-      v11 = [v13 sidebarPinned];
+      sidebarPinned = [tagCopy sidebarPinned];
       sidebarPinned = self->_sidebarPinned;
-      self->_sidebarPinned = v11;
+      self->_sidebarPinned = sidebarPinned;
 
-      v8 = v13;
+      v8 = tagCopy;
     }
   }
 }
 
-- (DOCTag)initWithCoder:(id)a3
+- (DOCTag)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
-  v6 = [v4 decodeIntegerForKey:@"labelIndex"];
-  v7 = [v4 decodeIntegerForKey:@"type"];
-  v8 = [v4 decodeIntegerForKey:@"itemCount"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sidebarVisible"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sidebarPinned"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+  v6 = [coderCopy decodeIntegerForKey:@"labelIndex"];
+  v7 = [coderCopy decodeIntegerForKey:@"type"];
+  v8 = [coderCopy decodeIntegerForKey:@"itemCount"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sidebarVisible"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sidebarPinned"];
 
   v11 = [(DOCTag *)self initWithDisplayName:v5 labelIndex:v6 type:v7 itemCount:v8 sidebarVisible:v9 sidebarPinned:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   displayName = self->_displayName;
-  v5 = a3;
-  [v5 encodeObject:displayName forKey:@"displayName"];
-  [v5 encodeInteger:self->_labelIndex forKey:@"labelIndex"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeInteger:self->_itemCount forKey:@"itemCount"];
-  [v5 encodeObject:self->_sidebarVisible forKey:@"sidebarVisible"];
-  [v5 encodeObject:self->_sidebarPinned forKey:@"sidebarPinned"];
+  coderCopy = coder;
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
+  [coderCopy encodeInteger:self->_labelIndex forKey:@"labelIndex"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_itemCount forKey:@"itemCount"];
+  [coderCopy encodeObject:self->_sidebarVisible forKey:@"sidebarVisible"];
+  [coderCopy encodeObject:self->_sidebarPinned forKey:@"sidebarPinned"];
 }
 
-- (BOOL)isEqualToTag:(id)a3
+- (BOOL)isEqualToTag:(id)tag
 {
-  v4 = a3;
-  if (v4)
+  tagCopy = tag;
+  if (tagCopy)
   {
-    v5 = [(DOCTag *)self displayName];
-    if (v5)
+    displayName = [(DOCTag *)self displayName];
+    if (displayName)
     {
     }
 
     else
     {
-      v7 = [v4 displayName];
+      displayName2 = [tagCopy displayName];
 
-      if (!v7)
+      if (!displayName2)
       {
         v6 = 1;
         goto LABEL_7;
       }
     }
 
-    v8 = [(DOCTag *)self displayName];
-    v9 = [v4 displayName];
-    v6 = [v8 compare:v9 options:129] == 0;
+    displayName3 = [(DOCTag *)self displayName];
+    displayName4 = [tagCopy displayName];
+    v6 = [displayName3 compare:displayName4 options:129] == 0;
   }
 
   else
@@ -355,10 +355,10 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -366,21 +366,21 @@ LABEL_7:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DOCTag *)self isEqualToTag:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DOCTag *)self isEqualToTag:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [DOCTag alloc];
-  v6 = [(NSString *)self->_displayName copyWithZone:a3];
+  v6 = [(NSString *)self->_displayName copyWithZone:zone];
   labelIndex = self->_labelIndex;
   type = self->_type;
   itemCount = self->_itemCount;
-  v10 = [(NSNumber *)self->_sidebarPinned copyWithZone:a3];
-  v11 = [(NSNumber *)self->_sidebarVisible copyWithZone:a3];
+  v10 = [(NSNumber *)self->_sidebarPinned copyWithZone:zone];
+  v11 = [(NSNumber *)self->_sidebarVisible copyWithZone:zone];
   v12 = [(DOCTag *)v5 initWithDisplayName:v6 labelIndex:labelIndex type:type itemCount:itemCount sidebarVisible:v10 sidebarPinned:v11];
 
   return v12;

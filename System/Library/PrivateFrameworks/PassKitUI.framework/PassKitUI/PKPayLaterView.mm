@@ -1,26 +1,26 @@
 @interface PKPayLaterView
-+ (void)showSpinnerView:(BOOL)a3 spinnerView:(id)a4 showWebView:(BOOL)a5 webView:(id)a6 animate:(BOOL)a7 completion:(id)a8;
++ (void)showSpinnerView:(BOOL)view spinnerView:(id)spinnerView showWebView:(BOOL)webView webView:(id)a6 animate:(BOOL)animate completion:(id)completion;
 - (CGSize)intrinsicContentSize;
 - (PKPayLaterView)initWithAmount:(NSDecimalNumber *)amount currencyCode:(NSString *)currencyCode;
 - (id)_configuration;
-- (id)_javaScriptQueryForUpdatedConfigurationProperty:(unint64_t)a3 configuration:(id)a4;
+- (id)_javaScriptQueryForUpdatedConfigurationProperty:(unint64_t)property configuration:(id)configuration;
 - (id)_webViewConfiguration;
-- (void)_recalculateSizeWithCompletion:(id)a3;
+- (void)_recalculateSizeWithCompletion:(id)completion;
 - (void)_registerForUserInterfaceStyleChanges;
-- (void)_reloadViewContentsForProperty:(unint64_t)a3 completion:(id)a4;
-- (void)_setupWebView:(id)a3 completion:(id)a4;
+- (void)_reloadViewContentsForProperty:(unint64_t)property completion:(id)completion;
+- (void)_setupWebView:(id)view completion:(id)completion;
 - (void)clearWebViewCache;
 - (void)didMoveToWindow;
 - (void)setAction:(PKPayLaterAction)action;
 - (void)setAmount:(NSDecimalNumber *)amount;
 - (void)setCurrencyCode:(NSString *)currencyCode;
 - (void)setDisplayStyle:(PKPayLaterDisplayStyle)displayStyle;
-- (void)setEnvironmentType:(unint64_t)a3;
-- (void)setTheme:(unint64_t)a3;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webViewDidClose:(id)a3;
+- (void)setEnvironmentType:(unint64_t)type;
+- (void)setTheme:(unint64_t)theme;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webViewDidClose:(id)close;
 @end
 
 @implementation PKPayLaterView
@@ -45,10 +45,10 @@
       _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Creating PKPayLaterView with amount %@ and currencyCode %@", buf, 0x16u);
     }
 
-    v11 = [MEMORY[0x1E69B8B38] sharedInstance];
+    mEMORY[0x1E69B8B38] = [MEMORY[0x1E69B8B38] sharedInstance];
     v24 = v7;
     utilities = v9->_utilities;
-    v9->_utilities = v11;
+    v9->_utilities = mEMORY[0x1E69B8B38];
 
     [(PKPayLaterView *)v9 _registerForUserInterfaceStyleChanges];
     v13 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
@@ -67,13 +67,13 @@
     v9->_theme = 0;
     v9->_environmentType = 0;
     v15 = MEMORY[0x1E696ACD8];
-    v16 = [(UIActivityIndicatorView *)v9->_spinner centerXAnchor];
-    v17 = [(PKPayLaterView *)v9 centerXAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    centerXAnchor = [(UIActivityIndicatorView *)v9->_spinner centerXAnchor];
+    centerXAnchor2 = [(PKPayLaterView *)v9 centerXAnchor];
+    v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v26[0] = v18;
-    v19 = [(UIActivityIndicatorView *)v9->_spinner centerYAnchor];
-    v20 = [(PKPayLaterView *)v9 centerYAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    centerYAnchor = [(UIActivityIndicatorView *)v9->_spinner centerYAnchor];
+    centerYAnchor2 = [(PKPayLaterView *)v9 centerYAnchor];
+    v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v26[1] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
     [v15 activateConstraints:v22];
@@ -184,12 +184,12 @@ LABEL_11:
   }
 }
 
-- (void)setTheme:(unint64_t)a3
+- (void)setTheme:(unint64_t)theme
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (self->_theme != a3)
+  if (self->_theme != theme)
   {
-    self->_theme = a3;
+    self->_theme = theme;
     v4 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -203,12 +203,12 @@ LABEL_11:
   }
 }
 
-- (void)setEnvironmentType:(unint64_t)a3
+- (void)setEnvironmentType:(unint64_t)type
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (self->_environmentType != a3)
+  if (self->_environmentType != type)
   {
-    self->_environmentType = a3;
+    self->_environmentType = type;
     v4 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -222,15 +222,15 @@ LABEL_11:
   }
 }
 
-- (void)_reloadViewContentsForProperty:(unint64_t)a3 completion:(id)a4
+- (void)_reloadViewContentsForProperty:(unint64_t)property completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PKPayLaterView *)self window];
+  completionCopy = completion;
+  window = [(PKPayLaterView *)self window];
 
-  if (v7)
+  if (window)
   {
-    v8 = [(PKPayLaterView *)self _configuration];
+    _configuration = [(PKPayLaterView *)self _configuration];
     v9 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -238,7 +238,7 @@ LABEL_11:
       *buf = 138412546;
       v19 = v10;
       v20 = 2112;
-      v21 = v8;
+      v21 = _configuration;
       _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "PKPayLaterView reloading for property %@ and configuration %@", buf, 0x16u);
     }
 
@@ -248,12 +248,12 @@ LABEL_11:
     aBlock[2] = __60__PKPayLaterView__reloadViewContentsForProperty_completion___block_invoke;
     aBlock[3] = &unk_1E8026EB0;
     objc_copyWeak(&v17, buf);
-    v16 = v6;
+    v16 = completionCopy;
     v11 = _Block_copy(aBlock);
     objc_copyWeak(v14, buf);
     v13 = v11;
-    v14[1] = a3;
-    v12 = v8;
+    v14[1] = property;
+    v12 = _configuration;
     PKPayLaterValidateConfiguration();
 
     objc_destroyWeak(v14);
@@ -417,10 +417,10 @@ void __60__PKPayLaterView__reloadViewContentsForProperty_completion___block_invo
     _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "PKPayLaterView clearing website data store cache", buf, 2u);
   }
 
-  v4 = [MEMORY[0x1E69853B8] defaultDataStore];
+  defaultDataStore = [MEMORY[0x1E69853B8] defaultDataStore];
   v5 = [MEMORY[0x1E695DFD8] setWithObjects:{*MEMORY[0x1E6985440], *MEMORY[0x1E6985458], 0}];
   v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:0.0];
-  [v4 removeDataOfTypes:v5 modifiedSince:v6 completionHandler:&__block_literal_global_257];
+  [defaultDataStore removeDataOfTypes:v5 modifiedSince:v6 completionHandler:&__block_literal_global_257];
 
   [(PKPayLaterMerchandisingUtilities *)self->_utilities clearWebRequestCache];
 }
@@ -430,9 +430,9 @@ void __60__PKPayLaterView__reloadViewContentsForProperty_completion___block_invo
   v7.receiver = self;
   v7.super_class = PKPayLaterView;
   [(PKPayLaterView *)&v7 didMoveToWindow];
-  v3 = [(PKPayLaterView *)self window];
+  window = [(PKPayLaterView *)self window];
 
-  if (v3)
+  if (window)
   {
     objc_initWeak(&location, self);
     v4[0] = MEMORY[0x1E69E9820];
@@ -542,10 +542,10 @@ LABEL_10:
   return result;
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  navigationCopy = navigation;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -576,7 +576,7 @@ void __46__PKPayLaterView_webView_didFinishNavigation___block_invoke(uint64_t a1
   }
 }
 
-- (void)webViewDidClose:(id)a3
+- (void)webViewDidClose:(id)close
 {
   v3 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -586,17 +586,17 @@ void __46__PKPayLaterView_webView_didFinishNavigation___block_invoke(uint64_t a1
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  handlerCopy = handler;
   utilities = self->_utilities;
   environmentType = self->_environmentType;
-  v10 = a4;
+  actionCopy = action;
   v11 = [(PKPayLaterMerchandisingUtilities *)utilities merchandisingBaseURLForEnviornmentType:environmentType];
-  v12 = [v10 request];
+  request = [actionCopy request];
 
-  v13 = [v12 URL];
+  v13 = [request URL];
 
   v14 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -606,12 +606,12 @@ void __46__PKPayLaterView_webView_didFinishNavigation___block_invoke(uint64_t a1
     _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "PKPayLaterView deciding policy for action: %@", &v22, 0xCu);
   }
 
-  v15 = [v13 host];
-  v16 = [v11 host];
-  v17 = v15;
-  v18 = v16;
+  host = [v13 host];
+  host2 = [v11 host];
+  defaultWorkspace = host;
+  v18 = host2;
   v19 = v18;
-  if (v17 == v18)
+  if (defaultWorkspace == v18)
   {
 
     v21 = 1;
@@ -620,13 +620,13 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (!v17 || !v18)
+  if (!defaultWorkspace || !v18)
   {
 
     goto LABEL_10;
   }
 
-  v20 = [v17 isEqualToString:v18];
+  v20 = [defaultWorkspace isEqualToString:v18];
 
   if ((v20 & 1) == 0)
   {
@@ -637,36 +637,36 @@ LABEL_10:
       goto LABEL_14;
     }
 
-    v17 = [MEMORY[0x1E6963608] defaultWorkspace];
-    [v17 openURL:v13 withOptions:0];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    [defaultWorkspace openURL:v13 withOptions:0];
     v21 = 0;
     goto LABEL_12;
   }
 
   v21 = 1;
 LABEL_14:
-  v7[2](v7, v21);
+  handlerCopy[2](handlerCopy, v21);
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 name];
+  messageCopy = message;
+  name = [messageCopy name];
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138412290;
-    v27 = v6;
+    v27 = name;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "PKPayLaterView received script message with name %@", &v26, 0xCu);
   }
 
-  v8 = v6;
+  v8 = name;
   v9 = v8;
   if (v8 == @"applePayDetails" || v8 && (v10 = [(__CFString *)v8 isEqualToString:@"applePayDetails"], v9, v10))
   {
-    v11 = [v5 body];
-    if (v11)
+    body = [messageCopy body];
+    if (body)
     {
       v12 = *MEMORY[0x1E69BC050];
       v13 = v9;
@@ -676,7 +676,7 @@ LABEL_14:
       {
 
 LABEL_16:
-        v17 = v11;
+        v17 = body;
         if (v17 != @"show-modal")
         {
           v18 = v17;
@@ -689,23 +689,23 @@ LABEL_16:
         }
 
         v20 = [PKPayLaterMerchandisingModalViewController alloc];
-        v21 = [(PKPayLaterView *)self _configuration];
-        v13 = [(PKPayLaterMerchandisingModalViewController *)v20 initWithConfiguration:v21];
+        _configuration = [(PKPayLaterView *)self _configuration];
+        v13 = [(PKPayLaterMerchandisingModalViewController *)v20 initWithConfiguration:_configuration];
 
         v22 = [[PKNavigationController alloc] initWithRootViewController:v13];
         v23 = PKUIKeyWindow();
         v24 = v23;
         if (v23)
         {
-          v25 = [v23 rootViewController];
+          rootViewController = [v23 rootViewController];
           if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
           {
             v26 = 138412290;
-            v27 = v25;
+            v27 = rootViewController;
             _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "PKPayLaterView presenting modal view controller with rootVC %@", &v26, 0xCu);
           }
 
-          [v25 presentViewController:v22 animated:1 completion:0];
+          [rootViewController presentViewController:v22 animated:1 completion:0];
         }
 
         else
@@ -716,7 +716,7 @@ LABEL_16:
             _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "PKPayLaterView cannot find window to present modal view controller", &v26, 2u);
           }
 
-          v25 = v7;
+          rootViewController = v7;
         }
 
         goto LABEL_27;
@@ -752,19 +752,19 @@ LABEL_28:
   }
 }
 
-- (id)_javaScriptQueryForUpdatedConfigurationProperty:(unint64_t)a3 configuration:(id)a4
+- (id)_javaScriptQueryForUpdatedConfigurationProperty:(unint64_t)property configuration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (a3)
+  if (property)
   {
     v8 = 1;
     v9 = 1;
     do
     {
-      if ((v9 & a3) != 0)
+      if ((v9 & property) != 0)
       {
-        v10 = [v6 stringValueForProperty:v9];
+        v10 = [configurationCopy stringValueForProperty:v9];
         v11 = PKPayLaterMerchandisingConfigurationPropertyToString();
         v12 = [(PKPayLaterMerchandisingUtilities *)self->_utilities generateJavaScriptQueryForUpdatedProperty:v11 newValue:v10];
         [v7 safelyAddObject:v12];
@@ -773,7 +773,7 @@ LABEL_28:
       v9 = 1 << v8++;
     }
 
-    while (v9 <= a3);
+    while (v9 <= property);
   }
 
   v13 = [v7 componentsJoinedByString:@" "];
@@ -835,33 +835,33 @@ void __55__PKPayLaterView__registerForUserInterfaceStyleChanges__block_invoke(ui
   }
 }
 
-+ (void)showSpinnerView:(BOOL)a3 spinnerView:(id)a4 showWebView:(BOOL)a5 webView:(id)a6 animate:(BOOL)a7 completion:(id)a8
++ (void)showSpinnerView:(BOOL)view spinnerView:(id)spinnerView showWebView:(BOOL)webView webView:(id)a6 animate:(BOOL)animate completion:(id)completion
 {
-  v9 = a7;
-  v11 = a5;
-  v12 = a3;
-  v13 = a4;
+  animateCopy = animate;
+  webViewCopy = webView;
+  viewCopy = view;
+  spinnerViewCopy = spinnerView;
   v14 = a6;
-  v15 = a8;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__PKPayLaterView_showSpinnerView_spinnerView_showWebView_webView_animate_completion___block_invoke;
   aBlock[3] = &unk_1E8026F50;
   v16 = v14;
   v29 = v16;
-  v31 = v11;
-  v17 = v13;
+  v31 = webViewCopy;
+  v17 = spinnerViewCopy;
   v30 = v17;
-  v32 = v12;
+  v32 = viewCopy;
   v18 = _Block_copy(aBlock);
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __85__PKPayLaterView_showSpinnerView_spinnerView_showWebView_webView_animate_completion___block_invoke_2;
   v26[3] = &unk_1E8010B50;
-  v19 = v15;
+  v19 = completionCopy;
   v27 = v19;
   v20 = _Block_copy(v26);
-  if (v9)
+  if (animateCopy)
   {
     v21 = MEMORY[0x1E69DD250];
     v24[0] = MEMORY[0x1E69E9820];
@@ -928,29 +928,29 @@ uint64_t __85__PKPayLaterView_showSpinnerView_spinnerView_showWebView_webView_an
   [v5 setPreferences:v7];
 
   [v5 setUserContentController:v4];
-  v8 = [v5 defaultWebpagePreferences];
-  [v8 setAllowsContentJavaScript:1];
+  defaultWebpagePreferences = [v5 defaultWebpagePreferences];
+  [defaultWebpagePreferences setAllowsContentJavaScript:1];
 
   return v5;
 }
 
-- (void)_setupWebView:(id)a3 completion:(id)a4
+- (void)_setupWebView:(id)view completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  completionCopy = completion;
   v8 = [(PKPayLaterMerchandisingUtilities *)self->_utilities merchandisingBaseURLForEnviornmentType:self->_environmentType];
   utilities = self->_utilities;
-  v10 = [(PKPayLaterView *)self _configuration];
+  _configuration = [(PKPayLaterView *)self _configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __43__PKPayLaterView__setupWebView_completion___block_invoke;
   v13[3] = &unk_1E80132D8;
-  v14 = v6;
+  v14 = viewCopy;
   v15 = v8;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  [(PKPayLaterMerchandisingUtilities *)utilities merchandisingWidgetHTMLWithConfiguration:v10 completion:v13];
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = viewCopy;
+  [(PKPayLaterMerchandisingUtilities *)utilities merchandisingWidgetHTMLWithConfiguration:_configuration completion:v13];
 }
 
 void __43__PKPayLaterView__setupWebView_completion___block_invoke(uint64_t a1, void *a2)
@@ -996,9 +996,9 @@ void __43__PKPayLaterView__setupWebView_completion___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_recalculateSizeWithCompletion:(id)a3
+- (void)_recalculateSizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3010000000;
@@ -1028,16 +1028,16 @@ void __43__PKPayLaterView__setupWebView_completion___block_invoke_2(uint64_t a1)
   objc_copyWeak(&v14, &location);
   v13[5] = v19;
   [v5 addOperation:v13];
-  v6 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__PKPayLaterView__recalculateSizeWithCompletion___block_invoke_75;
   v9[3] = &unk_1E8026F78;
   objc_copyWeak(&v12, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v10 = v7;
   v11 = v19;
-  v8 = [v5 evaluateWithInput:v6 completion:v9];
+  v8 = [v5 evaluateWithInput:null completion:v9];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&v14);
@@ -1279,9 +1279,9 @@ void __49__PKPayLaterView__recalculateSizeWithCompletion___block_invoke_75(uint6
 - (id)_configuration
 {
   v3 = objc_alloc(MEMORY[0x1E69B8B30]);
-  v4 = [(PKPayLaterView *)self amount];
-  v5 = [(PKPayLaterView *)self currencyCode];
-  v6 = [v3 initWithAmount:v4 currency:v5 displayStyle:-[PKPayLaterView displayStyle](self action:"displayStyle") theme:-[PKPayLaterView action](self environmentType:{"action"), -[PKPayLaterView theme](self, "theme"), -[PKPayLaterView environmentType](self, "environmentType")}];
+  amount = [(PKPayLaterView *)self amount];
+  currencyCode = [(PKPayLaterView *)self currencyCode];
+  v6 = [v3 initWithAmount:amount currency:currencyCode displayStyle:-[PKPayLaterView displayStyle](self action:"displayStyle") theme:-[PKPayLaterView action](self environmentType:{"action"), -[PKPayLaterView theme](self, "theme"), -[PKPayLaterView environmentType](self, "environmentType")}];
 
   return v6;
 }

@@ -1,14 +1,14 @@
 @interface _DKNotificationEventIdentifier
-+ (id)withNotificationEvent:(id)a3;
++ (id)withNotificationEvent:(id)event;
 @end
 
 @implementation _DKNotificationEventIdentifier
 
-+ (id)withNotificationEvent:(id)a3
++ (id)withNotificationEvent:(id)event
 {
-  v4 = a3;
-  v5 = [a1 type];
-  v6 = [_DKIdentifier identifierWithString:v4 type:v5];
+  eventCopy = event;
+  type = [self type];
+  v6 = [_DKIdentifier identifierWithString:eventCopy type:type];
 
   return v6;
 }

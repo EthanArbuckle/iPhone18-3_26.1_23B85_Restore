@@ -1,17 +1,17 @@
 @interface PLPersistedFolderMetadata
-+ (BOOL)isValidPath:(id)a3;
-+ (void)updateChildrenOrderingInFolder:(id)a3 usingChildUUIDs:(id)a4 sourceDescription:(id)a5 includePendingChanges:(BOOL)a6;
++ (BOOL)isValidPath:(id)path;
++ (void)updateChildrenOrderingInFolder:(id)folder usingChildUUIDs:(id)ds sourceDescription:(id)description includePendingChanges:(BOOL)changes;
 - (BOOL)_readMetadata;
 - (BOOL)isProjectAlbumRootFolder;
 - (BOOL)isRootFolder;
 - (PLPersistedFolderMetadata)init;
-- (PLPersistedFolderMetadata)initWithPLManagedFolder:(id)a3 pathManager:(id)a4;
-- (PLPersistedFolderMetadata)initWithPersistedDataAtURL:(id)a3;
+- (PLPersistedFolderMetadata)initWithPLManagedFolder:(id)folder pathManager:(id)manager;
+- (PLPersistedFolderMetadata)initWithPersistedDataAtURL:(id)l;
 - (id)description;
-- (id)insertFolderFromDataInManagedObjectContext:(id)a3;
+- (id)insertFolderFromDataInManagedObjectContext:(id)context;
 - (void)_saveMetadata;
 - (void)removePersistedData;
-- (void)updateChildrenOrderingInFolder:(id)a3 includePendingChanges:(BOOL)a4;
+- (void)updateChildrenOrderingInFolder:(id)folder includePendingChanges:(BOOL)changes;
 @end
 
 @implementation PLPersistedFolderMetadata
@@ -31,74 +31,74 @@
     folder = self;
   }
 
-  v6 = [folder title];
-  if (v6)
+  title = [folder title];
+  if (title)
   {
-    [v4 encodeObject:v6 forKey:@"title"];
+    [v4 encodeObject:title forKey:@"title"];
   }
 
   if (self->_folder)
   {
-    v7 = self->_folder;
+    selfCopy = self->_folder;
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  v8 = [v7 kind];
-  if (v8)
+  kind = [selfCopy kind];
+  if (kind)
   {
-    [v4 encodeObject:v8 forKey:@"kind"];
+    [v4 encodeObject:kind forKey:@"kind"];
   }
 
   if (self->_folder)
   {
-    v9 = self->_folder;
+    selfCopy2 = self->_folder;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
   }
 
-  v10 = [v9 uuid];
-  if (v10)
+  uuid = [selfCopy2 uuid];
+  if (uuid)
   {
-    [v4 encodeObject:v10 forKey:@"uuid"];
+    [v4 encodeObject:uuid forKey:@"uuid"];
   }
 
-  v58 = v10;
-  v59 = v8;
+  v58 = uuid;
+  v59 = kind;
   if (self->_folder)
   {
-    v11 = self->_folder;
+    selfCopy3 = self->_folder;
   }
 
   else
   {
-    v11 = self;
+    selfCopy3 = self;
   }
 
-  v12 = [v11 cloudGUID];
-  if (v12)
+  cloudGUID = [selfCopy3 cloudGUID];
+  if (cloudGUID)
   {
-    [v4 encodeObject:v12 forKey:@"cloudGUID"];
+    [v4 encodeObject:cloudGUID forKey:@"cloudGUID"];
   }
 
-  v57 = v12;
+  v57 = cloudGUID;
   if (self->_folder)
   {
-    v13 = self->_folder;
+    selfCopy4 = self->_folder;
   }
 
   else
   {
-    v13 = self;
+    selfCopy4 = self;
   }
 
-  v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v13, "isPinned")}];
+  v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(selfCopy4, "isPinned")}];
   if (v14)
   {
     [v4 encodeObject:v14 forKey:@"isPinned"];
@@ -107,15 +107,15 @@
   v56 = v14;
   if (self->_folder)
   {
-    v15 = self->_folder;
+    selfCopy5 = self->_folder;
   }
 
   else
   {
-    v15 = self;
+    selfCopy5 = self;
   }
 
-  v16 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v15, "isPrototype")}];
+  v16 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(selfCopy5, "isPrototype")}];
   if (v16)
   {
     [v4 encodeObject:v16 forKey:@"isPrototype"];
@@ -124,15 +124,15 @@
   v55 = v16;
   if (self->_folder)
   {
-    v17 = self->_folder;
+    selfCopy6 = self->_folder;
   }
 
   else
   {
-    v17 = self;
+    selfCopy6 = self;
   }
 
-  v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v17, "isInTrash")}];
+  v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(selfCopy6, "isInTrash")}];
   if (v18)
   {
     [v4 encodeObject:v18 forKey:@"isInTrash"];
@@ -141,15 +141,15 @@
   v54 = v18;
   if (self->_folder)
   {
-    v19 = self->_folder;
+    selfCopy7 = self->_folder;
   }
 
   else
   {
-    v19 = self;
+    selfCopy7 = self;
   }
 
-  v20 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v19, "customSortAscending")}];
+  v20 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(selfCopy7, "customSortAscending")}];
   if (v20)
   {
     [v4 encodeObject:v20 forKey:@"customSortAscending"];
@@ -157,15 +157,15 @@
 
   if (self->_folder)
   {
-    v21 = self->_folder;
+    selfCopy8 = self->_folder;
   }
 
   else
   {
-    v21 = self;
+    selfCopy8 = self;
   }
 
-  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v21, "customSortKey")}];
+  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(selfCopy8, "customSortKey")}];
   if (v22)
   {
     [v4 encodeObject:v22 forKey:@"customSortKey"];
@@ -173,30 +173,30 @@
 
   if (self->_folder)
   {
-    v23 = self->_folder;
+    selfCopy9 = self->_folder;
   }
 
   else
   {
-    v23 = self;
+    selfCopy9 = self;
   }
 
-  v24 = [v23 lastModifiedDate];
-  if (v24)
+  lastModifiedDate = [selfCopy9 lastModifiedDate];
+  if (lastModifiedDate)
   {
-    [v4 encodeObject:v24 forKey:@"lastModifiedDate"];
+    [v4 encodeObject:lastModifiedDate forKey:@"lastModifiedDate"];
   }
 
   v53 = v20;
   v25 = self->_folder;
   if (v25)
   {
-    v50 = v24;
+    v50 = lastModifiedDate;
     v51 = v22;
-    v52 = v6;
+    v52 = title;
     v49 = v3;
-    v26 = [(PLManagedFolder *)v25 albums];
-    v27 = [v26 count];
+    albums = [(PLManagedFolder *)v25 albums];
+    v27 = [albums count];
     v60 = malloc_type_malloc(16 * v27, 0x603215ACuLL);
     if (v27)
     {
@@ -205,9 +205,9 @@
       do
       {
         v30 = MEMORY[0x1E69BF320];
-        v31 = [v26 objectAtIndex:v28];
-        v32 = [v31 uuid];
-        [v30 parseUUIDString:v32 uuidBuffer:v29];
+        v31 = [albums objectAtIndex:v28];
+        uuid2 = [v31 uuid];
+        [v30 parseUUIDString:uuid2 uuidBuffer:v29];
 
         ++v28;
         v29 += 16;
@@ -221,8 +221,8 @@
 
   else
   {
-    v33 = [(PLPersistedFolderMetadata *)self childUUIDs];
-    v27 = [v33 count];
+    childUUIDs = [(PLPersistedFolderMetadata *)self childUUIDs];
+    v27 = [childUUIDs count];
 
     v34 = malloc_type_malloc(16 * v27, 0xD9E20C35uLL);
     v35 = v34;
@@ -231,9 +231,9 @@
       goto LABEL_61;
     }
 
-    v50 = v24;
+    v50 = lastModifiedDate;
     v51 = v22;
-    v52 = v6;
+    v52 = title;
     v36 = v3;
     v37 = 0;
     v60 = v34;
@@ -241,8 +241,8 @@
     do
     {
       v39 = MEMORY[0x1E69BF320];
-      v40 = [(PLPersistedFolderMetadata *)self childUUIDs];
-      v41 = [v40 objectAtIndex:v37];
+      childUUIDs2 = [(PLPersistedFolderMetadata *)self childUUIDs];
+      v41 = [childUUIDs2 objectAtIndex:v37];
       [v39 parseUUIDString:v41 uuidBuffer:v38];
 
       ++v37;
@@ -254,22 +254,22 @@
   }
 
   v22 = v51;
-  v6 = v52;
-  v24 = v50;
+  title = v52;
+  lastModifiedDate = v50;
   v35 = v60;
 LABEL_61:
   v42 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v35 length:16 * v27 freeWhenDone:1];
   [v4 encodeObject:v42 forKey:@"assetUUIDs"];
 
   v43 = MEMORY[0x1E69BF230];
-  v44 = [v4 encodedData];
-  v45 = [(PLPersistedFolderMetadata *)self metadataURL];
-  [v43 persistMetadata:v44 fileURL:v45];
+  encodedData = [v4 encodedData];
+  metadataURL = [(PLPersistedFolderMetadata *)self metadataURL];
+  [v43 persistMetadata:encodedData fileURL:metadataURL];
 
   v46 = MEMORY[0x1E69BF238];
-  v47 = [(PLPersistedFolderMetadata *)self metadataURL];
-  v48 = [v47 path];
-  [v46 changeFileOwnerToMobileAtPath:v48 error:0];
+  metadataURL2 = [(PLPersistedFolderMetadata *)self metadataURL];
+  path = [metadataURL2 path];
+  [v46 changeFileOwnerToMobileAtPath:path error:0];
 
   objc_autoreleasePoolPop(v3);
 }
@@ -278,8 +278,8 @@ LABEL_61:
 {
   v30 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DEF0];
-  v4 = [(PLPersistedFolderMetadata *)self metadataURL];
-  v5 = [v3 dataWithContentsOfURL:v4];
+  metadataURL = [(PLPersistedFolderMetadata *)self metadataURL];
+  v5 = [v3 dataWithContentsOfURL:metadataURL];
 
   if (v5)
   {
@@ -323,10 +323,10 @@ LABEL_61:
       v21 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:v19 >> 4];
       [(PLPersistedFolderMetadata *)self setChildUUIDs:v21];
 
-      v22 = [v18 bytes];
+      bytes = [v18 bytes];
       if (v19 >= 0x10)
       {
-        v23 = v22;
+        v23 = bytes;
         v24 = 0;
         v25 = 1;
         do
@@ -354,118 +354,118 @@ LABEL_61:
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   if (self->_folder)
   {
     self = self->_folder;
   }
 
-  v29 = [(PLPersistedFolderMetadata *)self title];
-  if (v2->_folder)
+  title = [(PLPersistedFolderMetadata *)self title];
+  if (selfCopy->_folder)
   {
-    folder = v2->_folder;
+    folder = selfCopy->_folder;
   }
 
   else
   {
-    folder = v2;
+    folder = selfCopy;
   }
 
-  v31 = [folder kind];
-  if (v2->_folder)
+  kind = [folder kind];
+  if (selfCopy->_folder)
   {
-    v4 = v2->_folder;
-  }
-
-  else
-  {
-    v4 = v2;
-  }
-
-  v30 = [v4 uuid];
-  if (v2->_folder)
-  {
-    v5 = v2->_folder;
+    v4 = selfCopy->_folder;
   }
 
   else
   {
-    v5 = v2;
+    v4 = selfCopy;
   }
 
-  v28 = [v5 cloudGUID];
-  if (v2->_folder)
+  uuid = [v4 uuid];
+  if (selfCopy->_folder)
   {
-    v6 = v2->_folder;
+    v5 = selfCopy->_folder;
   }
 
   else
   {
-    v6 = v2;
+    v5 = selfCopy;
+  }
+
+  cloudGUID = [v5 cloudGUID];
+  if (selfCopy->_folder)
+  {
+    v6 = selfCopy->_folder;
+  }
+
+  else
+  {
+    v6 = selfCopy;
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v6, "isPinned")}];
-  if (v2->_folder)
+  if (selfCopy->_folder)
   {
-    v8 = v2->_folder;
+    v8 = selfCopy->_folder;
   }
 
   else
   {
-    v8 = v2;
+    v8 = selfCopy;
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v8, "isPrototype")}];
-  if (v2->_folder)
+  if (selfCopy->_folder)
   {
-    v10 = v2->_folder;
+    v10 = selfCopy->_folder;
   }
 
   else
   {
-    v10 = v2;
+    v10 = selfCopy;
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v10, "isInTrash")}];
-  if (v2->_folder)
+  if (selfCopy->_folder)
   {
-    v12 = v2->_folder;
+    v12 = selfCopy->_folder;
   }
 
   else
   {
-    v12 = v2;
+    v12 = selfCopy;
   }
 
-  v13 = [v12 lastModifiedDate];
-  if (v2->_folder)
+  lastModifiedDate = [v12 lastModifiedDate];
+  if (selfCopy->_folder)
   {
-    v14 = v2->_folder;
+    v14 = selfCopy->_folder;
   }
 
   else
   {
-    v14 = v2;
+    v14 = selfCopy;
   }
 
   v15 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v14, "customSortAscending")}];
-  if (v2->_folder)
+  if (selfCopy->_folder)
   {
-    v16 = v2->_folder;
+    v16 = selfCopy->_folder;
   }
 
   else
   {
-    v16 = v2;
+    v16 = selfCopy;
   }
 
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v16, "customSortKey")}];
-  v18 = v2->_folder;
+  v18 = selfCopy->_folder;
   if (v18)
   {
-    v19 = [(PLGenericAlbum *)v18 isFolder];
-    v20 = v2->_folder;
-    if (v19)
+    isFolder = [(PLGenericAlbum *)v18 isFolder];
+    v20 = selfCopy->_folder;
+    if (isFolder)
     {
       [(PLManagedFolder *)v20 albums];
     }
@@ -474,43 +474,43 @@ LABEL_61:
     {
       [(PLManagedFolder *)v20 assets];
     }
-    v21 = ;
+    childUUIDs = ;
   }
 
   else
   {
-    v21 = [(PLPersistedFolderMetadata *)v2 childUUIDs];
+    childUUIDs = [(PLPersistedFolderMetadata *)selfCopy childUUIDs];
   }
 
-  v22 = v21;
-  v23 = [v21 count];
+  v22 = childUUIDs;
+  v23 = [childUUIDs count];
 
-  v32.receiver = v2;
+  v32.receiver = selfCopy;
   v32.super_class = PLPersistedFolderMetadata;
   v24 = [(PLPersistedFolderMetadata *)&v32 description];
-  v25 = [(PLManagedFolder *)v2->_folder objectID];
-  v27 = [v24 stringByAppendingFormat:@" album %@ : title:%@, uuid:%@, cloudGUID:%@, kind:%@, pin:%@, prototype:%@, trash:%@, sort:%@ asc:%@, lastModifiedDate:%@, childCount:%lu", v25, v29, v30, v28, v31, v7, v9, v11, v15, v17, v13, v23];
+  objectID = [(PLManagedFolder *)selfCopy->_folder objectID];
+  v27 = [v24 stringByAppendingFormat:@" album %@ : title:%@, uuid:%@, cloudGUID:%@, kind:%@, pin:%@, prototype:%@, trash:%@, sort:%@ asc:%@, lastModifiedDate:%@, childCount:%lu", objectID, title, uuid, cloudGUID, kind, v7, v9, v11, v15, v17, lastModifiedDate, v23];
 
   return v27;
 }
 
-- (void)updateChildrenOrderingInFolder:(id)a3 includePendingChanges:(BOOL)a4
+- (void)updateChildrenOrderingInFolder:(id)folder includePendingChanges:(BOOL)changes
 {
-  v4 = a4;
-  v6 = a3;
+  changesCopy = changes;
+  folderCopy = folder;
   v7 = objc_opt_class();
-  v10 = [(PLPersistedFolderMetadata *)self childUUIDs];
-  v8 = [(PLPersistedFolderMetadata *)self metadataURL];
-  v9 = [v8 path];
-  [v7 updateChildrenOrderingInFolder:v6 usingChildUUIDs:v10 sourceDescription:v9 includePendingChanges:v4];
+  childUUIDs = [(PLPersistedFolderMetadata *)self childUUIDs];
+  metadataURL = [(PLPersistedFolderMetadata *)self metadataURL];
+  path = [metadataURL path];
+  [v7 updateChildrenOrderingInFolder:folderCopy usingChildUUIDs:childUUIDs sourceDescription:path includePendingChanges:changesCopy];
 }
 
-- (id)insertFolderFromDataInManagedObjectContext:(id)a3
+- (id)insertFolderFromDataInManagedObjectContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSNumber *)self->_kind intValue];
-  if ((v5 - 3998) < 2)
+  contextCopy = context;
+  intValue = [(NSNumber *)self->_kind intValue];
+  if ((intValue - 3998) < 2)
   {
     v10 = PLMigrationGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -522,23 +522,23 @@ LABEL_61:
 
   else
   {
-    if (v5 == 1553)
+    if (intValue == 1553)
     {
       title = self->_title;
-      v7 = [v4 photoLibrary];
+      photoLibrary = [contextCopy photoLibrary];
       v8 = title;
       v9 = 1553;
       goto LABEL_8;
     }
 
-    if (v5 == 4000)
+    if (intValue == 4000)
     {
       v6 = self->_title;
-      v7 = [v4 photoLibrary];
+      photoLibrary = [contextCopy photoLibrary];
       v8 = v6;
       v9 = 4000;
 LABEL_8:
-      v12 = [PLManagedFolder insertNewFolderWithTitle:v8 kind:v9 intoLibrary:v7];
+      v12 = [PLManagedFolder insertNewFolderWithTitle:v8 kind:v9 intoLibrary:photoLibrary];
 
       goto LABEL_12;
     }
@@ -547,11 +547,11 @@ LABEL_8:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       kind = self->_kind;
-      v14 = [(NSURL *)self->_metadataURL path];
+      path = [(NSURL *)self->_metadataURL path];
       v16 = 138412546;
       v17 = kind;
       v18 = 2112;
-      v19 = v14;
+      v19 = path;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Unknown Folder Kind %@ at %@", &v16, 0x16u);
     }
   }
@@ -593,25 +593,25 @@ LABEL_12:
 - (void)removePersistedData
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   metadataURL = self->_metadataURL;
   v11 = 0;
-  v5 = [v3 removeItemAtURL:metadataURL error:&v11];
+  v5 = [defaultManager removeItemAtURL:metadataURL error:&v11];
   v6 = v11;
 
   if ((v5 & 1) == 0)
   {
     v7 = PLUnderlyingPOSIXError();
-    v8 = [v7 code];
+    code = [v7 code];
 
-    if (v8 != 2)
+    if (code != 2)
     {
       v9 = PLMigrationGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(NSURL *)self->_metadataURL path];
+        path = [(NSURL *)self->_metadataURL path];
         *buf = 138412546;
-        v13 = v10;
+        v13 = path;
         v14 = 2112;
         v15 = v6;
         _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "Failed to remove persisted folder metadata %@ %@", buf, 0x16u);
@@ -622,28 +622,28 @@ LABEL_12:
 
 - (BOOL)isProjectAlbumRootFolder
 {
-  v2 = [(PLPersistedFolderMetadata *)self kind];
-  v3 = [v2 intValue] == 3998;
+  kind = [(PLPersistedFolderMetadata *)self kind];
+  v3 = [kind intValue] == 3998;
 
   return v3;
 }
 
 - (BOOL)isRootFolder
 {
-  v2 = [(PLPersistedFolderMetadata *)self kind];
-  v3 = [v2 intValue] == 3999;
+  kind = [(PLPersistedFolderMetadata *)self kind];
+  v3 = [kind intValue] == 3999;
 
   return v3;
 }
 
-- (PLPersistedFolderMetadata)initWithPersistedDataAtURL:(id)a3
+- (PLPersistedFolderMetadata)initWithPersistedDataAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = PLPersistedFolderMetadata;
   v5 = [(PLPersistedFolderMetadata *)&v9 init];
   v6 = v5;
-  if (v5 && ([(PLPersistedFolderMetadata *)v5 setMetadataURL:v4], ![(PLPersistedFolderMetadata *)v6 _readMetadata]))
+  if (v5 && ([(PLPersistedFolderMetadata *)v5 setMetadataURL:lCopy], ![(PLPersistedFolderMetadata *)v6 _readMetadata]))
   {
     v7 = 0;
   }
@@ -656,27 +656,27 @@ LABEL_12:
   return v7;
 }
 
-- (PLPersistedFolderMetadata)initWithPLManagedFolder:(id)a3 pathManager:(id)a4
+- (PLPersistedFolderMetadata)initWithPLManagedFolder:(id)folder pathManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  folderCopy = folder;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = PLPersistedFolderMetadata;
   v9 = [(PLPersistedFolderMetadata *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_folder, a3);
+    objc_storeStrong(&v9->_folder, folder);
     [(PLPersistedFolderMetadata *)v10 setInTrash:0];
     v11 = MEMORY[0x1E695DFF8];
-    v12 = [v8 privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
+    v12 = [managerCopy privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
     v13 = [v11 fileURLWithPath:v12 isDirectory:1];
 
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [(PLManagedFolder *)v10->_folder uuid];
-    v16 = [v14 stringWithFormat:@"%@.%@", v15, PLFolderMetadataExtension];
+    uuid = [(PLManagedFolder *)v10->_folder uuid];
+    pLFolderMetadataExtension = [v14 stringWithFormat:@"%@.%@", uuid, PLFolderMetadataExtension];
 
-    v17 = [v13 URLByAppendingPathComponent:v16];
+    v17 = [v13 URLByAppendingPathComponent:pLFolderMetadataExtension];
     [(PLPersistedFolderMetadata *)v10 setMetadataURL:v17];
   }
 
@@ -685,23 +685,23 @@ LABEL_12:
 
 - (PLPersistedFolderMetadata)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PLPersistedFolderMetadata.m" lineNumber:69 description:@"Can't initialize a PLPersistedFolderMetadata object using -init."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistedFolderMetadata.m" lineNumber:69 description:@"Can't initialize a PLPersistedFolderMetadata object using -init."];
 
   return 0;
 }
 
-+ (void)updateChildrenOrderingInFolder:(id)a3 usingChildUUIDs:(id)a4 sourceDescription:(id)a5 includePendingChanges:(BOOL)a6
++ (void)updateChildrenOrderingInFolder:(id)folder usingChildUUIDs:(id)ds sourceDescription:(id)description includePendingChanges:(BOOL)changes
 {
-  v6 = a6;
+  changesCopy = changes;
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 childCollections];
-  v13 = [v12 valueForKey:@"uuid"];
+  folderCopy = folder;
+  dsCopy = ds;
+  descriptionCopy = description;
+  childCollections = [folderCopy childCollections];
+  v13 = [childCollections valueForKey:@"uuid"];
 
-  v14 = [v10 isEqual:v13];
+  v14 = [dsCopy isEqual:v13];
   v15 = PLMigrationGetLog();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
   if (v14)
@@ -709,11 +709,11 @@ LABEL_12:
     if (v16)
     {
       v17 = [v13 count];
-      v18 = [v9 uuid];
+      uuid = [folderCopy uuid];
       *buf = 67109378;
       *v34 = v17;
       *&v34[4] = 2112;
-      *&v34[6] = v18;
+      *&v34[6] = uuid;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "Persisted child collection UUIDs (%d total) match database ordering for folder %@", buf, 0x12u);
     }
   }
@@ -722,11 +722,11 @@ LABEL_12:
   {
     if (v16)
     {
-      v19 = [v9 uuid];
+      uuid2 = [folderCopy uuid];
       *buf = 138412546;
-      *v34 = v19;
+      *v34 = uuid2;
       *&v34[8] = 2112;
-      *&v34[10] = v11;
+      *&v34[10] = descriptionCopy;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "Updating children in folder %@ to match persisted UUID ordering from %@", buf, 0x16u);
     }
 
@@ -735,18 +735,18 @@ LABEL_12:
     v15 = [v20 fetchRequestWithEntityName:v21];
 
     v22 = MEMORY[0x1E696AE18];
-    v23 = [v10 array];
-    v24 = [v22 predicateWithFormat:@"uuid in %@", v23];
+    array = [dsCopy array];
+    v24 = [v22 predicateWithFormat:@"uuid in %@", array];
     [v15 setPredicate:v24];
 
-    if (v6)
+    if (changesCopy)
     {
       [v15 setIncludesPendingChanges:1];
     }
 
-    v25 = [v9 managedObjectContext];
+    managedObjectContext = [folderCopy managedObjectContext];
     v32 = 0;
-    v26 = [v25 executeFetchRequest:v15 error:&v32];
+    v26 = [managedObjectContext executeFetchRequest:v15 error:&v32];
     v27 = v32;
 
     if (v26)
@@ -755,11 +755,11 @@ LABEL_12:
       v30[1] = 3221225472;
       v30[2] = __116__PLPersistedFolderMetadata_updateChildrenOrderingInFolder_usingChildUUIDs_sourceDescription_includePendingChanges___block_invoke;
       v30[3] = &unk_1E756EF00;
-      v31 = v10;
+      v31 = dsCopy;
       v28 = [v26 sortedArrayUsingComparator:v30];
 
       v29 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v28];
-      [v9 addChildCollections:v29];
+      [folderCopy addChildCollections:v29];
     }
   }
 }
@@ -786,10 +786,10 @@ uint64_t __116__PLPersistedFolderMetadata_updateChildrenOrderingInFolder_usingCh
   }
 }
 
-+ (BOOL)isValidPath:(id)a3
++ (BOOL)isValidPath:(id)path
 {
-  v3 = [a3 pathExtension];
-  v4 = [v3 isEqualToString:PLFolderMetadataExtension];
+  pathExtension = [path pathExtension];
+  v4 = [pathExtension isEqualToString:PLFolderMetadataExtension];
 
   return v4;
 }

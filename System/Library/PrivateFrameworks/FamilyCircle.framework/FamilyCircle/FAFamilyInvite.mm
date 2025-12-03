@@ -1,13 +1,13 @@
 @interface FAFamilyInvite
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation FAFamilyInvite
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -17,8 +17,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(FAFamilyInvite *)v4 organizerEmail];
-      v6 = [v5 isEqualToString:self->_organizerEmail];
+      organizerEmail = [(FAFamilyInvite *)equalCopy organizerEmail];
+      v6 = [organizerEmail isEqualToString:self->_organizerEmail];
     }
 
     else

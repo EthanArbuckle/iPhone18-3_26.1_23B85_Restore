@@ -1,7 +1,7 @@
 @interface PKRoundedPath
-+ (id)pathWithRoundedRect:(CGRect)a3 cornerRadius:(double)a4;
-- (PKRoundedPath)initWithRect:(CGRect)a3 withRoundedCorners:(int)a4 cornerRadii:(id)a5 smoothPillShapes:(BOOL)a6;
-- (void)addContinuousCornerToPath:(CGPath *)a3 trueCorner:(CGPoint)a4 cornerRadius:(CGSize)a5 corners:(unint64_t)a6 portion:(unint64_t)a7 clockwise:(BOOL)a8 fullRadius:(BOOL)a9;
++ (id)pathWithRoundedRect:(CGRect)rect cornerRadius:(double)radius;
+- (PKRoundedPath)initWithRect:(CGRect)rect withRoundedCorners:(int)corners cornerRadii:(id)radii smoothPillShapes:(BOOL)shapes;
+- (void)addContinuousCornerToPath:(CGPath *)path trueCorner:(CGPoint)corner cornerRadius:(CGSize)radius corners:(unint64_t)corners portion:(unint64_t)portion clockwise:(BOOL)clockwise fullRadius:(BOOL)fullRadius;
 - (void)dealloc;
 @end
 
@@ -15,15 +15,15 @@
   [(PKRoundedPath *)&v3 dealloc];
 }
 
-+ (id)pathWithRoundedRect:(CGRect)a3 cornerRadius:(double)a4
++ (id)pathWithRoundedRect:(CGRect)rect cornerRadius:(double)radius
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v14[4] = *MEMORY[0x1E69E9840];
-  v9 = [MEMORY[0x1E696B098] valueWithSize:{a4, a4}];
-  v10 = [a1 alloc];
+  v9 = [MEMORY[0x1E696B098] valueWithSize:{radius, radius}];
+  v10 = [self alloc];
   v14[0] = v9;
   v14[1] = v9;
   v14[2] = v9;
@@ -34,46 +34,46 @@
   return v12;
 }
 
-- (PKRoundedPath)initWithRect:(CGRect)a3 withRoundedCorners:(int)a4 cornerRadii:(id)a5 smoothPillShapes:(BOOL)a6
+- (PKRoundedPath)initWithRect:(CGRect)rect withRoundedCorners:(int)corners cornerRadii:(id)radii smoothPillShapes:(BOOL)shapes
 {
-  v6 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  v12 = a5;
+  shapesCopy = shapes;
+  height = rect.size.height;
+  width = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
+  radiiCopy = radii;
   v70.receiver = self;
   v70.super_class = PKRoundedPath;
   v13 = [(PKRoundedPath *)&v70 init];
   if (v13)
   {
     Mutable = CGPathCreateMutable();
-    v15 = [v12 objectAtIndex:0];
+    v15 = [radiiCopy objectAtIndex:0];
     [v15 sizeValue];
     v17 = v16 * 1.528665;
-    v18 = [v12 objectAtIndex:0];
+    v18 = [radiiCopy objectAtIndex:0];
     [v18 sizeValue];
     v63 = v19;
 
-    v20 = [v12 objectAtIndex:1];
+    v20 = [radiiCopy objectAtIndex:1];
     [v20 sizeValue];
     v22 = v21 * 1.528665;
-    v23 = [v12 objectAtIndex:1];
+    v23 = [radiiCopy objectAtIndex:1];
     [v23 sizeValue];
     y = v24;
 
     v25 = 3;
-    v26 = [v12 objectAtIndex:3];
+    v26 = [radiiCopy objectAtIndex:3];
     [v26 sizeValue];
     v68 = v27 * 1.528665;
-    v28 = [v12 objectAtIndex:3];
+    v28 = [radiiCopy objectAtIndex:3];
     [v28 sizeValue];
     v61 = v29;
 
-    v30 = [v12 objectAtIndex:2];
+    v30 = [radiiCopy objectAtIndex:2];
     [v30 sizeValue];
     v69 = v31 * 1.528665;
-    v32 = [v12 objectAtIndex:2];
+    v32 = [radiiCopy objectAtIndex:2];
     [v32 sizeValue];
     v34 = v33;
 
@@ -136,10 +136,10 @@
     v42 = v40 | v25 | v36 | v39;
     if (!v42)
     {
-      v6 = 0;
+      shapesCopy = 0;
     }
 
-    v43 = v35 && v6;
+    v43 = v35 && shapesCopy;
     v71.origin.x = v10;
     v71.origin.y = v9;
     v71.size.width = width;
@@ -193,7 +193,7 @@
     else
     {
       v49 = v67;
-      if (v41 && v6)
+      if (v41 && shapesCopy)
       {
         MinY = MinY + v57 * 0.05;
         MaxY = MaxY - v59 * 0.05;
@@ -239,42 +239,42 @@
   return v13;
 }
 
-- (void)addContinuousCornerToPath:(CGPath *)a3 trueCorner:(CGPoint)a4 cornerRadius:(CGSize)a5 corners:(unint64_t)a6 portion:(unint64_t)a7 clockwise:(BOOL)a8 fullRadius:(BOOL)a9
+- (void)addContinuousCornerToPath:(CGPath *)path trueCorner:(CGPoint)corner cornerRadius:(CGSize)radius corners:(unint64_t)corners portion:(unint64_t)portion clockwise:(BOOL)clockwise fullRadius:(BOOL)fullRadius
 {
-  v9 = a8;
-  v10 = a7;
-  x = a4.x;
-  if (a5.width < a5.height)
+  clockwiseCopy = clockwise;
+  portionCopy = portion;
+  x = corner.x;
+  if (radius.width < radius.height)
   {
-    a5.height = a5.width;
+    radius.height = radius.width;
   }
 
   v14 = 0.980263;
-  if (a9)
+  if (fullRadius)
   {
     v14 = 1.0;
   }
 
-  height = a5.height;
-  if (a9)
+  height = radius.height;
+  if (fullRadius)
   {
-    v15 = a5.height;
+    v15 = radius.height;
   }
 
   else
   {
-    v15 = a5.height * 0.95;
+    v15 = radius.height * 0.95;
   }
 
   v95 = v14;
   v16 = 0.0;
-  if (a6 - 1 <= 3)
+  if (corners - 1 <= 3)
   {
-    v16 = dbl_1ADB9AAD8[a6 - 1];
+    v16 = dbl_1ADB9AAD8[corners - 1];
   }
 
   v17 = v15 * (1.0 - v14);
-  if (a7 == 2)
+  if (portion == 2)
   {
     v96 = v16;
     v18 = -v17;
@@ -282,7 +282,7 @@
     v19 = *MEMORY[0x1E695EFF8];
   }
 
-  else if (a7 == 1)
+  else if (portion == 1)
   {
     v96 = v16 + 20.0;
     v19 = -v17;
@@ -290,7 +290,7 @@
     v18 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  else if (a7)
+  else if (portion)
   {
     v96 = v16 + 20.0;
     v94 = 50.0;
@@ -307,7 +307,7 @@
     v19 = -v17;
   }
 
-  v20 = _interiorPointForCorner(a6, v19, v18, *MEMORY[0x1E695EFF8]);
+  v20 = _interiorPointForCorner(corners, v19, v18, *MEMORY[0x1E695EFF8]);
   v91 = v21;
   v92 = v20;
   v22 = v15 * 0.33 * 0.666666667;
@@ -318,40 +318,40 @@
   v27 = v23 + v23 + v25;
   v28 = v23 + v23 + v27;
   v29 = v25 + v24 * 0.33;
-  v89 = _interiorPointForCorner(a6, v27, 0.0, x);
+  v89 = _interiorPointForCorner(corners, v27, 0.0, x);
   v90 = v30;
-  v87 = _interiorPointForCorner(a6, v26, 0.0, x);
+  v87 = _interiorPointForCorner(corners, v26, 0.0, x);
   v88 = v31;
-  v32 = _interiorPointForCorner(a6, v29, v24, x);
+  v32 = _interiorPointForCorner(corners, v29, v24, x);
   v79 = v33;
   v80 = v32;
-  v34 = _interiorPointForCorner(a6, v24, v29, x);
+  v34 = _interiorPointForCorner(corners, v24, v29, x);
   v75 = v35;
   v76 = v34;
-  v85 = _interiorPointForCorner(a6, 0.0, v26, x);
+  v85 = _interiorPointForCorner(corners, 0.0, v26, x);
   v86 = v36;
-  v83 = _interiorPointForCorner(a6, 0.0, v27, x);
+  v83 = _interiorPointForCorner(corners, 0.0, v27, x);
   v84 = v37;
-  v38 = _interiorPointForCorner(a6, 0.0, v28, x);
+  v38 = _interiorPointForCorner(corners, 0.0, v28, x);
   v81 = v39;
   v82 = v38;
-  v40 = _interiorPointForCorner(a6, v28, 0.0, x);
+  v40 = _interiorPointForCorner(corners, v28, 0.0, x);
   v77 = v41;
   v78 = v40;
-  v42 = _interiorPointForCorner(a6, v15, v15, x);
+  v42 = _interiorPointForCorner(corners, v15, v15, x);
   v44 = v43;
-  v45 = _interiorPointForCorner(a6, height, 0.0, x);
+  v45 = _interiorPointForCorner(corners, height, 0.0, x);
   v47 = v46;
-  v48 = _interiorPointForCorner(a6, 0.0, height, x);
+  v48 = _interiorPointForCorner(corners, 0.0, height, x);
   v50 = v49;
   memset(&m, 0, sizeof(m));
   CGAffineTransformMakeTranslation(&m, v92, v91);
-  if (v9)
+  if (clockwiseCopy)
   {
-    if (v10)
+    if (portionCopy)
     {
       p_m = &m;
-      v51 = a3;
+      pathCopy2 = path;
       v53 = v83;
       v54 = v84;
       v55 = v85;
@@ -362,7 +362,7 @@
 
     else
     {
-      v51 = a3;
+      pathCopy2 = path;
       p_m = 0;
       v53 = v48;
       v54 = v50;
@@ -372,12 +372,12 @@
       v58 = v50;
     }
 
-    CGPathAddCurveToPoint(v51, p_m, v53, v54, v55, v56, v57, v58);
-    CGPathAddArc(a3, &m, v42, v44, v95 * v15, (v94 + v96) * 0.0174532925, v96 * 0.0174532925, 1);
-    if ((v10 & 2) != 0)
+    CGPathAddCurveToPoint(pathCopy2, p_m, v53, v54, v55, v56, v57, v58);
+    CGPathAddArc(path, &m, v42, v44, v95 * v15, (v94 + v96) * 0.0174532925, v96 * 0.0174532925, 1);
+    if ((portionCopy & 2) != 0)
     {
       v68 = &m;
-      v67 = a3;
+      pathCopy8 = path;
       v69 = v87;
       v70 = v88;
       v71 = v89;
@@ -388,7 +388,7 @@
 
     else
     {
-      v67 = a3;
+      pathCopy8 = path;
       v68 = 0;
       v69 = v45;
       v70 = v47;
@@ -401,10 +401,10 @@
 
   else
   {
-    if (v10)
+    if (portionCopy)
     {
       v60 = &m;
-      v59 = a3;
+      pathCopy6 = path;
       v61 = v89;
       v62 = v90;
       v63 = v87;
@@ -415,7 +415,7 @@
 
     else
     {
-      v59 = a3;
+      pathCopy6 = path;
       v60 = 0;
       v61 = v45;
       v62 = v47;
@@ -425,12 +425,12 @@
       v66 = v47;
     }
 
-    CGPathAddCurveToPoint(v59, v60, v61, v62, v63, v64, v65, v66);
-    CGPathAddArc(a3, &m, v42, v44, v95 * v15, v96 * 0.0174532925, (v94 + v96) * 0.0174532925, 0);
-    if ((v10 & 2) != 0)
+    CGPathAddCurveToPoint(pathCopy6, v60, v61, v62, v63, v64, v65, v66);
+    CGPathAddArc(path, &m, v42, v44, v95 * v15, v96 * 0.0174532925, (v94 + v96) * 0.0174532925, 0);
+    if ((portionCopy & 2) != 0)
     {
       v68 = &m;
-      v67 = a3;
+      pathCopy8 = path;
       v69 = v85;
       v70 = v86;
       v71 = v83;
@@ -441,7 +441,7 @@
 
     else
     {
-      v67 = a3;
+      pathCopy8 = path;
       v68 = 0;
       v69 = v48;
       v70 = v50;
@@ -452,7 +452,7 @@
     }
   }
 
-  CGPathAddCurveToPoint(v67, v68, v69, v70, v71, v72, v73, v74);
+  CGPathAddCurveToPoint(pathCopy8, v68, v69, v70, v71, v72, v73, v74);
 }
 
 @end

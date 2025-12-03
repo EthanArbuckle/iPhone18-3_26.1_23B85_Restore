@@ -1,19 +1,19 @@
 @interface SCNGeometryWrapDeformerParameters
-- (SCNGeometryWrapDeformerParameters)initWithCoder:(id)a3;
-- (SCNGeometryWrapDeformerParameters)initWithDrivingNode:(__n128)a3 deformedNode:(__n128)a4 bindingMode:(__n128)a5 bindingTransform:(uint64_t)a6 drivingNodeUVChannel:(uint64_t)a7 deformedNodeUVChannel:(uint64_t)a8;
-- (SCNGeometryWrapDeformerParameters)initWithInnerLayerNode:(__n128)a3 outerLayerNode:(__n128)a4 deformedNode:(__n128)a5 bindingMode:(uint64_t)a6 bindingTransform:(uint64_t)a7;
-- (id)extraLayerMeshesWithDrivingMesh0:(__C3DMesh *)a3 drivingMesh1:(__C3DMesh *)a4;
+- (SCNGeometryWrapDeformerParameters)initWithCoder:(id)coder;
+- (SCNGeometryWrapDeformerParameters)initWithDrivingNode:(__n128)node deformedNode:(__n128)deformedNode bindingMode:(__n128)mode bindingTransform:(uint64_t)transform drivingNodeUVChannel:(uint64_t)channel deformedNodeUVChannel:(uint64_t)vChannel;
+- (SCNGeometryWrapDeformerParameters)initWithInnerLayerNode:(__n128)node outerLayerNode:(__n128)layerNode deformedNode:(__n128)deformedNode bindingMode:(uint64_t)mode bindingTransform:(uint64_t)transform;
+- (id)extraLayerMeshesWithDrivingMesh0:(__C3DMesh *)mesh0 drivingMesh1:(__C3DMesh *)mesh1;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)initParametersIfNeededWithDrivingNodeRef:(__C3DNode *)a3 deformedNodeRef:;
-- (void)initParametersIfNeededWithInnerLayerNodeRef:(SCNGeometryWrapDeformerParameters *)self outerLayerNodeRef:(SEL)a2 deformedNodeRef:(__C3DNode *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)initParametersIfNeededWithDrivingNodeRef:(__C3DNode *)ref deformedNodeRef:;
+- (void)initParametersIfNeededWithInnerLayerNodeRef:(SCNGeometryWrapDeformerParameters *)self outerLayerNodeRef:(SEL)ref deformedNodeRef:(__C3DNode *)nodeRef;
 @end
 
 @implementation SCNGeometryWrapDeformerParameters
 
-- (SCNGeometryWrapDeformerParameters)initWithDrivingNode:(__n128)a3 deformedNode:(__n128)a4 bindingMode:(__n128)a5 bindingTransform:(uint64_t)a6 drivingNodeUVChannel:(uint64_t)a7 deformedNodeUVChannel:(uint64_t)a8
+- (SCNGeometryWrapDeformerParameters)initWithDrivingNode:(__n128)node deformedNode:(__n128)deformedNode bindingMode:(__n128)mode bindingTransform:(uint64_t)transform drivingNodeUVChannel:(uint64_t)channel deformedNodeUVChannel:(uint64_t)vChannel
 {
-  v24.receiver = a1;
+  v24.receiver = self;
   v24.super_class = SCNGeometryWrapDeformerParameters;
   v16 = [(SCNGeometryWrapDeformerParameters *)&v24 init];
   v17 = v16;
@@ -22,9 +22,9 @@
     v16->_isLegacySingleLayerDeformer = 1;
     v16->_bindingMode = a9;
     *v16->_anon_a0 = a2;
-    *&v16->_anon_a0[16] = a3;
-    *&v16->_anon_a0[32] = a4;
-    *&v16->_anon_a0[48] = a5;
+    *&v16->_anon_a0[16] = node;
+    *&v16->_anon_a0[32] = deformedNode;
+    *&v16->_anon_a0[48] = mode;
     v16->_legacyDrivingNodeUVChannel = a10;
     v16->_legacyDeformedNodeUVChannel = a11;
     +[SCNTransaction begin];
@@ -34,9 +34,9 @@
     v23[2] = __142__SCNGeometryWrapDeformerParameters_initWithDrivingNode_deformedNode_bindingMode_bindingTransform_drivingNodeUVChannel_deformedNodeUVChannel___block_invoke;
     v23[3] = &unk_2782FE3E0;
     v23[4] = v17;
-    v23[5] = a7;
-    v23[6] = a8;
-    [SCNTransaction enqueueCommandForObject:a8 immediateTransactionBlock:v23];
+    v23[5] = channel;
+    v23[6] = vChannel;
+    [SCNTransaction enqueueCommandForObject:vChannel immediateTransactionBlock:v23];
     +[SCNTransaction commit];
   }
 
@@ -52,9 +52,9 @@ uint64_t __142__SCNGeometryWrapDeformerParameters_initWithDrivingNode_deformedNo
   return [v2 initParametersIfNeededWithDrivingNodeRef:v3 deformedNodeRef:v4];
 }
 
-- (SCNGeometryWrapDeformerParameters)initWithInnerLayerNode:(__n128)a3 outerLayerNode:(__n128)a4 deformedNode:(__n128)a5 bindingMode:(uint64_t)a6 bindingTransform:(uint64_t)a7
+- (SCNGeometryWrapDeformerParameters)initWithInnerLayerNode:(__n128)node outerLayerNode:(__n128)layerNode deformedNode:(__n128)deformedNode bindingMode:(uint64_t)mode bindingTransform:(uint64_t)transform
 {
-  v22.receiver = a1;
+  v22.receiver = self;
   v22.super_class = SCNGeometryWrapDeformerParameters;
   v14 = [(SCNGeometryWrapDeformerParameters *)&v22 init];
   v15 = v14;
@@ -62,9 +62,9 @@ uint64_t __142__SCNGeometryWrapDeformerParameters_initWithDrivingNode_deformedNo
   {
     v14->_bindingMode = a10;
     *v14->_anon_a0 = a2;
-    *&v14->_anon_a0[16] = a3;
-    *&v14->_anon_a0[32] = a4;
-    *&v14->_anon_a0[48] = a5;
+    *&v14->_anon_a0[16] = node;
+    *&v14->_anon_a0[32] = layerNode;
+    *&v14->_anon_a0[48] = deformedNode;
     +[SCNTransaction begin];
     [SCNTransaction setAnimationDuration:0.0];
     v21[0] = MEMORY[0x277D85DD0];
@@ -72,7 +72,7 @@ uint64_t __142__SCNGeometryWrapDeformerParameters_initWithDrivingNode_deformedNo
     v21[2] = __117__SCNGeometryWrapDeformerParameters_initWithInnerLayerNode_outerLayerNode_deformedNode_bindingMode_bindingTransform___block_invoke;
     v21[3] = &unk_2782FE408;
     v21[4] = v15;
-    v21[5] = a7;
+    v21[5] = transform;
     v21[6] = a8;
     v21[7] = a9;
     [SCNTransaction enqueueCommandForObject:a9 immediateTransactionBlock:v21];
@@ -107,91 +107,91 @@ uint64_t __117__SCNGeometryWrapDeformerParameters_initWithInnerLayerNode_outerLa
   [(SCNGeometryWrapDeformerParameters *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt32:self->_vertexCount forKey:@"vertexCount"];
-  [a3 encodeInt32:LODWORD(self->_bindingMode) forKey:@"bindingMode"];
-  [a3 encodeInt32:LODWORD(self->_bindingData.pointIndicesStride) forKey:@"bindingPointIndicesStride"];
-  [a3 encodeInt32:LODWORD(self->_bindingData.barycentricCoordsStride) forKey:@"bindingBarycentricCoordsStride"];
-  [a3 encodeInt32:LODWORD(self->_bindingData.pointIndicesFormat) forKey:@"bindingPointIndicesFormat"];
-  [a3 encodeInt32:LODWORD(self->_bindingData.barycentricCoordsFormat) forKey:@"bindingBarycentricCoordsFormat"];
-  [a3 encodeBytes:self->_bindingData.pointIndices length:self->_bindingData.pointIndicesStride * self->_vertexCount forKey:@"bindingPointIndices"];
-  [a3 encodeBytes:self->_bindingData.barycentricCoords length:self->_bindingData.barycentricCoordsStride * self->_vertexCount forKey:@"bindingBarycentricCoords"];
+  [coder encodeInt32:self->_vertexCount forKey:@"vertexCount"];
+  [coder encodeInt32:LODWORD(self->_bindingMode) forKey:@"bindingMode"];
+  [coder encodeInt32:LODWORD(self->_bindingData.pointIndicesStride) forKey:@"bindingPointIndicesStride"];
+  [coder encodeInt32:LODWORD(self->_bindingData.barycentricCoordsStride) forKey:@"bindingBarycentricCoordsStride"];
+  [coder encodeInt32:LODWORD(self->_bindingData.pointIndicesFormat) forKey:@"bindingPointIndicesFormat"];
+  [coder encodeInt32:LODWORD(self->_bindingData.barycentricCoordsFormat) forKey:@"bindingBarycentricCoordsFormat"];
+  [coder encodeBytes:self->_bindingData.pointIndices length:self->_bindingData.pointIndicesStride * self->_vertexCount forKey:@"bindingPointIndices"];
+  [coder encodeBytes:self->_bindingData.barycentricCoords length:self->_bindingData.barycentricCoordsStride * self->_vertexCount forKey:@"bindingBarycentricCoords"];
   if (self->_isLegacySingleLayerDeformer)
   {
-    [a3 encodeBool:1 forKey:@"isLegacySingleLayerDeformer"];
+    [coder encodeBool:1 forKey:@"isLegacySingleLayerDeformer"];
     legacyOffsetsOrTransformsLength = self->_bindingData.legacyOffsetsOrTransformsLength;
     p_legacyOffsetsOrTransformsLength = &self->_bindingData.legacyOffsetsOrTransformsLength;
-    [a3 encodeBytes:*(p_legacyOffsetsOrTransformsLength - 1) length:legacyOffsetsOrTransformsLength forKey:@"bindingOffsetsOrTransforms"];
+    [coder encodeBytes:*(p_legacyOffsetsOrTransformsLength - 1) length:legacyOffsetsOrTransformsLength forKey:@"bindingOffsetsOrTransforms"];
     v7 = @"bindingOffsetsOrTransformsLength";
   }
 
   else
   {
-    [a3 encodeBytes:self->_bindingData.innerLayerInfluences length:self->_bindingData.innerLayerInfluencesLength forKey:@"bindingInnerLayerInfluences"];
-    [a3 encodeInt32:LODWORD(self->_bindingData.innerLayerInfluencesLength) forKey:@"bindingInnerLayerInfluencesLength"];
+    [coder encodeBytes:self->_bindingData.innerLayerInfluences length:self->_bindingData.innerLayerInfluencesLength forKey:@"bindingInnerLayerInfluences"];
+    [coder encodeInt32:LODWORD(self->_bindingData.innerLayerInfluencesLength) forKey:@"bindingInnerLayerInfluencesLength"];
     if (self->_bindingMode != 1)
     {
       return;
     }
 
-    [a3 encodeBytes:self->_bindingData.innerLayerTNBs length:self->_bindingData.tnbMatricesLength forKey:@"bindingInnerTNBs"];
-    [a3 encodeBytes:self->_bindingData.outerLayerTNBs length:self->_bindingData.tnbMatricesLength forKey:@"bindingOuterTNBs"];
-    [a3 encodeInt32:LODWORD(self->_bindingData.tnbMatricesLength) forKey:@"bindingSpaceVectorsLength"];
+    [coder encodeBytes:self->_bindingData.innerLayerTNBs length:self->_bindingData.tnbMatricesLength forKey:@"bindingInnerTNBs"];
+    [coder encodeBytes:self->_bindingData.outerLayerTNBs length:self->_bindingData.tnbMatricesLength forKey:@"bindingOuterTNBs"];
+    [coder encodeInt32:LODWORD(self->_bindingData.tnbMatricesLength) forKey:@"bindingSpaceVectorsLength"];
     offsetsLength = self->_bindingData.offsetsLength;
     p_legacyOffsetsOrTransformsLength = &self->_bindingData.offsetsLength;
-    [a3 encodeBytes:*(p_legacyOffsetsOrTransformsLength - 2) length:offsetsLength forKey:@"bindingInnerOffsets"];
-    [a3 encodeBytes:*(p_legacyOffsetsOrTransformsLength - 1) length:*p_legacyOffsetsOrTransformsLength forKey:@"bindingOuterOffsets"];
+    [coder encodeBytes:*(p_legacyOffsetsOrTransformsLength - 2) length:offsetsLength forKey:@"bindingInnerOffsets"];
+    [coder encodeBytes:*(p_legacyOffsetsOrTransformsLength - 1) length:*p_legacyOffsetsOrTransformsLength forKey:@"bindingOuterOffsets"];
     v7 = @"bindingOffsetsLength";
   }
 
   v9 = *p_legacyOffsetsOrTransformsLength;
 
-  [a3 encodeInt32:v9 forKey:v7];
+  [coder encodeInt32:v9 forKey:v7];
 }
 
-- (SCNGeometryWrapDeformerParameters)initWithCoder:(id)a3
+- (SCNGeometryWrapDeformerParameters)initWithCoder:(id)coder
 {
   v26.receiver = self;
   v26.super_class = SCNGeometryWrapDeformerParameters;
   v4 = [(SCNGeometryWrapDeformerParameters *)&v26 init];
   if (v4)
   {
-    v4->_vertexCount = [a3 decodeInt32ForKey:@"vertexCount"];
-    v4->_bindingMode = [a3 decodeInt32ForKey:@"bindingMode"];
-    v4->_bindingData.pointIndicesStride = [a3 decodeInt32ForKey:@"bindingPointIndicesStride"];
-    v4->_bindingData.barycentricCoordsStride = [a3 decodeInt32ForKey:@"bindingBarycentricCoordsStride"];
-    v4->_bindingData.pointIndicesFormat = [a3 decodeIntegerForKey:@"bindingPointIndicesFormat"];
-    v4->_bindingData.barycentricCoordsFormat = [a3 decodeIntegerForKey:@"bindingBarycentricCoordsFormat"];
+    v4->_vertexCount = [coder decodeInt32ForKey:@"vertexCount"];
+    v4->_bindingMode = [coder decodeInt32ForKey:@"bindingMode"];
+    v4->_bindingData.pointIndicesStride = [coder decodeInt32ForKey:@"bindingPointIndicesStride"];
+    v4->_bindingData.barycentricCoordsStride = [coder decodeInt32ForKey:@"bindingBarycentricCoordsStride"];
+    v4->_bindingData.pointIndicesFormat = [coder decodeIntegerForKey:@"bindingPointIndicesFormat"];
+    v4->_bindingData.barycentricCoordsFormat = [coder decodeIntegerForKey:@"bindingBarycentricCoordsFormat"];
     vertexCount = v4->_vertexCount;
     v6 = v4->_bindingData.pointIndicesStride * vertexCount;
     v7 = v4->_bindingData.barycentricCoordsStride * vertexCount;
     v4->_bindingData.pointIndices = malloc_type_malloc(v6, 0x2E606E5BuLL);
     v4->_bindingData.barycentricCoords = malloc_type_malloc(v7, 0xE5BE4130uLL);
     __n = 0;
-    v8 = [a3 decodeBytesForKey:@"bindingPointIndices" returnedLength:&__n];
+    v8 = [coder decodeBytesForKey:@"bindingPointIndices" returnedLength:&__n];
     if (__n != v6)
     {
       [SCNGeometryWrapDeformerParameters initWithCoder:];
     }
 
     memcpy(v4->_bindingData.pointIndices, v8, v6);
-    v9 = [a3 decodeBytesForKey:@"bindingBarycentricCoords" returnedLength:&__n];
+    v9 = [coder decodeBytesForKey:@"bindingBarycentricCoords" returnedLength:&__n];
     if (__n != v7)
     {
       [SCNGeometryWrapDeformerParameters initWithCoder:];
     }
 
     memcpy(v4->_bindingData.barycentricCoords, v9, v7);
-    v10 = [a3 decodeBoolForKey:@"isLegacySingleLayerDeformer"];
+    v10 = [coder decodeBoolForKey:@"isLegacySingleLayerDeformer"];
     v4->_isLegacySingleLayerDeformer = v10;
     if (v10)
     {
-      v11 = [a3 decodeInt32ForKey:@"bindingOffsetsOrTransformsLength"];
+      v11 = [coder decodeInt32ForKey:@"bindingOffsetsOrTransformsLength"];
       v4->_bindingData.legacyOffsetsOrTransformsLength = v11;
       v4->_bindingData.legacyOffsetsOrTransforms = malloc_type_malloc(v11, 0x100004052888210uLL);
       __n = 0;
-      v12 = [a3 decodeBytesForKey:@"bindingOffsetsOrTransforms" returnedLength:&__n];
+      v12 = [coder decodeBytesForKey:@"bindingOffsetsOrTransforms" returnedLength:&__n];
       v13 = __n;
       if (__n != v4->_bindingData.legacyOffsetsOrTransformsLength)
       {
@@ -205,11 +205,11 @@ LABEL_14:
       return v4;
     }
 
-    v16 = [a3 decodeInt32ForKey:@"bindingInnerLayerInfluencesLength"];
+    v16 = [coder decodeInt32ForKey:@"bindingInnerLayerInfluencesLength"];
     v4->_bindingData.innerLayerInfluencesLength = v16;
     v4->_bindingData.innerLayerInfluences = malloc_type_malloc(v16, 0x100004052888210uLL);
     __n = 0;
-    v17 = [a3 decodeBytesForKey:@"bindingInnerLayerInfluences" returnedLength:&__n];
+    v17 = [coder decodeBytesForKey:@"bindingInnerLayerInfluences" returnedLength:&__n];
     if (__n != v4->_bindingData.innerLayerInfluencesLength)
     {
       [SCNGeometryWrapDeformerParameters initWithCoder:];
@@ -218,37 +218,37 @@ LABEL_14:
     memcpy(v4->_bindingData.innerLayerInfluences, v17, __n);
     if (v4->_bindingMode == 1)
     {
-      v18 = [a3 decodeInt32ForKey:@"bindingSpaceVectorsLength"];
+      v18 = [coder decodeInt32ForKey:@"bindingSpaceVectorsLength"];
       v4->_bindingData.tnbMatricesLength = v18;
       v4->_bindingData.innerLayerTNBs = malloc_type_malloc(v18, 0x100004052888210uLL);
       v4->_bindingData.outerLayerTNBs = malloc_type_malloc(v4->_bindingData.tnbMatricesLength, 0x100004052888210uLL);
       __n = 0;
-      v19 = [a3 decodeBytesForKey:@"bindingInnerTNBs" returnedLength:&__n];
+      v19 = [coder decodeBytesForKey:@"bindingInnerTNBs" returnedLength:&__n];
       if (__n != v4->_bindingData.tnbMatricesLength)
       {
         [SCNGeometryWrapDeformerParameters initWithCoder:];
       }
 
       memcpy(v4->_bindingData.innerLayerTNBs, v19, __n);
-      v20 = [a3 decodeBytesForKey:@"bindingOuterTNBs" returnedLength:&__n];
+      v20 = [coder decodeBytesForKey:@"bindingOuterTNBs" returnedLength:&__n];
       if (__n != v4->_bindingData.tnbMatricesLength)
       {
         [SCNGeometryWrapDeformerParameters initWithCoder:];
       }
 
       memcpy(v4->_bindingData.outerLayerTNBs, v20, __n);
-      v21 = [a3 decodeInt32ForKey:@"bindingOffsetsLength"];
+      v21 = [coder decodeInt32ForKey:@"bindingOffsetsLength"];
       v4->_bindingData.offsetsLength = v21;
       v4->_bindingData.innerLayerOffsets = malloc_type_malloc(v21, 0x100004052888210uLL);
       v4->_bindingData.outerLayerOffsets = malloc_type_malloc(v4->_bindingData.offsetsLength, 0x100004052888210uLL);
-      v22 = [a3 decodeBytesForKey:@"bindingInnerOffsets" returnedLength:&__n];
+      v22 = [coder decodeBytesForKey:@"bindingInnerOffsets" returnedLength:&__n];
       if (__n != v4->_bindingData.offsetsLength)
       {
         [SCNGeometryWrapDeformerParameters initWithCoder:];
       }
 
       memcpy(v4->_bindingData.innerLayerOffsets, v22, __n);
-      v23 = [a3 decodeBytesForKey:@"bindingOuterOffsets" returnedLength:&__n];
+      v23 = [coder decodeBytesForKey:@"bindingOuterOffsets" returnedLength:&__n];
       v13 = __n;
       if (__n != v4->_bindingData.offsetsLength)
       {
@@ -264,7 +264,7 @@ LABEL_14:
   return v4;
 }
 
-- (void)initParametersIfNeededWithDrivingNodeRef:(__C3DNode *)a3 deformedNodeRef:
+- (void)initParametersIfNeededWithDrivingNodeRef:(__C3DNode *)ref deformedNodeRef:
 {
   if (!self->_vertexCount)
   {
@@ -272,7 +272,7 @@ LABEL_14:
     free(self->_bindingData.pointIndices);
     free(self->_bindingData.barycentricCoords);
     free(self->_bindingData.legacyOffsetsOrTransforms);
-    Geometry = C3DNodeGetGeometry(a3);
+    Geometry = C3DNodeGetGeometry(ref);
     Mesh = C3DGeometryGetMesh(Geometry);
     v9 = C3DNodeGetGeometry(v4);
     v10 = C3DGeometryGetMesh(v9);
@@ -374,7 +374,7 @@ LABEL_14:
   }
 }
 
-- (void)initParametersIfNeededWithInnerLayerNodeRef:(SCNGeometryWrapDeformerParameters *)self outerLayerNodeRef:(SEL)a2 deformedNodeRef:(__C3DNode *)a3
+- (void)initParametersIfNeededWithInnerLayerNodeRef:(SCNGeometryWrapDeformerParameters *)self outerLayerNodeRef:(SEL)ref deformedNodeRef:(__C3DNode *)nodeRef
 {
   if (!self->_vertexCount)
   {
@@ -387,7 +387,7 @@ LABEL_14:
     free(self->_bindingData.outerLayerTNBs);
     free(self->_bindingData.innerLayerOffsets);
     free(self->_bindingData.outerLayerOffsets);
-    Geometry = C3DNodeGetGeometry(a3);
+    Geometry = C3DNodeGetGeometry(nodeRef);
     Mesh = C3DGeometryGetMesh(Geometry);
     v11 = C3DNodeGetGeometry(v6);
     v12 = C3DGeometryGetMesh(v11);
@@ -501,13 +501,13 @@ LABEL_14:
   }
 }
 
-- (id)extraLayerMeshesWithDrivingMesh0:(__C3DMesh *)a3 drivingMesh1:(__C3DMesh *)a4
+- (id)extraLayerMeshesWithDrivingMesh0:(__C3DMesh *)mesh0 drivingMesh1:(__C3DMesh *)mesh1
 {
-  PositionSource = C3DMeshGetPositionSource(a3, 0);
-  v7 = C3DMeshGetPositionSource(a4, 0);
+  PositionSource = C3DMeshGetPositionSource(mesh0, 0);
+  v7 = C3DMeshGetPositionSource(mesh1, 0);
   Count = C3DMeshSourceGetCount(PositionSource);
-  v27 = a3;
-  ChannelForSourceWithSemanticAtIndex = C3DMeshGetChannelForSourceWithSemanticAtIndex(a3, 0, 0);
+  mesh0Copy = mesh0;
+  ChannelForSourceWithSemanticAtIndex = C3DMeshGetChannelForSourceWithSemanticAtIndex(mesh0, 0, 0);
   v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:39];
   v9 = *MEMORY[0x277CBECE8];
   bytesDeallocator = *MEMORY[0x277CBECF0];
@@ -542,7 +542,7 @@ LABEL_14:
     values = C3DMeshSourceCreate(v20, 0, Count, 3, 1);
     v21 = CFArrayCreate(v9, &values, 1, MEMORY[0x277CBF128]);
     v31 = ChannelForSourceWithSemanticAtIndex;
-    MeshElements = C3DMeshGetMeshElements(v27, 0);
+    MeshElements = C3DMeshGetMeshElements(mesh0Copy, 0);
     v23 = C3DMeshCreateWithMeshSourcesAndMeshElements(v21, MeshElements, &v31);
     [v28 addObject:v23];
     CFRelease(v23);

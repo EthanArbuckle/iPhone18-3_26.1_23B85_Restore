@@ -7,31 +7,31 @@
 
 - (uint64_t)itk_isUndoingOrRedoing
 {
-  if ([a1 isUndoing])
+  if ([self isUndoing])
   {
     return 1;
   }
 
-  return [a1 isRedoing];
+  return [self isRedoing];
 }
 
 - (void)itk_performUndoGroupWithActionName:()ITK undoGroup:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 groupsByEvent];
-  [a1 setGroupsByEvent:0];
-  [a1 beginUndoGrouping];
+  groupsByEvent = [self groupsByEvent];
+  [self setGroupsByEvent:0];
+  [self beginUndoGrouping];
   v7[2](v7);
 
   if ([v6 length])
   {
-    [a1 setActionName:v6];
+    [self setActionName:v6];
   }
 
-  if ([a1 groupingLevel])
+  if ([self groupingLevel])
   {
-    [a1 endUndoGrouping];
+    [self endUndoGrouping];
   }
 
   else
@@ -43,7 +43,7 @@
     }
   }
 
-  [a1 setGroupsByEvent:v8];
+  [self setGroupsByEvent:groupsByEvent];
 }
 
 @end

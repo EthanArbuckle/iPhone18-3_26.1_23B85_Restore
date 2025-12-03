@@ -1,29 +1,29 @@
 @interface HFPresenceEventBuilder
-+ (id)_selectedUsersForPresenceEvent:(id)a3;
-- (HFPresenceEventBuilder)initWithEvent:(id)a3;
++ (id)_selectedUsersForPresenceEvent:(id)event;
+- (HFPresenceEventBuilder)initWithEvent:(id)event;
 - (NSString)description;
 - (id)buildNewEventsFromCurrentState;
-- (id)compareToObject:(id)a3;
+- (id)compareToObject:(id)object;
 - (id)comparisonKey;
-- (id)naturalLanguageNameWithOptions:(id)a3;
+- (id)naturalLanguageNameWithOptions:(id)options;
 - (unint64_t)presenceEventType;
 - (unint64_t)presenceUserType;
 @end
 
 @implementation HFPresenceEventBuilder
 
-+ (id)_selectedUsersForPresenceEvent:(id)a3
++ (id)_selectedUsersForPresenceEvent:(id)event
 {
-  v3 = a3;
-  v4 = HFSelectedUserCollectionTypeFromPresenceEventUserType([v3 presenceUserType]);
+  eventCopy = event;
+  v4 = HFSelectedUserCollectionTypeFromPresenceEventUserType([eventCopy presenceUserType]);
   v5 = MEMORY[0x277CBEB98];
   if (v4 == 2)
   {
-    v6 = [v3 users];
-    v7 = v6;
-    if (v6)
+    users = [eventCopy users];
+    v7 = users;
+    if (users)
     {
-      v8 = v6;
+      v8 = users;
     }
 
     else
@@ -44,31 +44,31 @@
   return v10;
 }
 
-- (HFPresenceEventBuilder)initWithEvent:(id)a3
+- (HFPresenceEventBuilder)initWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = HFPresenceEventBuilder;
-  v5 = [(HFEventBuilder *)&v10 initWithEvent:v4];
+  v5 = [(HFEventBuilder *)&v10 initWithEvent:eventCopy];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (eventCopy)
     {
-      -[HFPresenceEventBuilder setLocationEventType:](v5, "setLocationEventType:", [MEMORY[0x277CD1D20] hf_locationEventTypeForPresenceEventType:{objc_msgSend(v4, "presenceEventType")}]);
-      v7 = [objc_opt_class() _selectedUsersForPresenceEvent:v4];
+      -[HFPresenceEventBuilder setLocationEventType:](v5, "setLocationEventType:", [MEMORY[0x277CD1D20] hf_locationEventTypeForPresenceEventType:{objc_msgSend(eventCopy, "presenceEventType")}]);
+      v7 = [objc_opt_class() _selectedUsersForPresenceEvent:eventCopy];
       [(HFPresenceEventBuilder *)v6 setUsers:v7];
 
-      v8 = [v4 hf_activationGranularity];
+      hf_activationGranularity = [eventCopy hf_activationGranularity];
     }
 
     else
     {
       [(HFPresenceEventBuilder *)v5 setLocationEventType:0];
-      v8 = 0;
+      hf_activationGranularity = 0;
     }
 
-    [(HFPresenceEventBuilder *)v6 setActivationGranularity:v8];
+    [(HFPresenceEventBuilder *)v6 setActivationGranularity:hf_activationGranularity];
   }
 
   return v6;
@@ -76,16 +76,16 @@
 
 - (unint64_t)presenceEventType
 {
-  v3 = [(HFPresenceEventBuilder *)self locationEventType];
-  if (v3 == 1)
+  locationEventType = [(HFPresenceEventBuilder *)self locationEventType];
+  if (locationEventType == 1)
   {
-    v6 = [(HFPresenceEventBuilder *)self activationGranularity];
-    if (v6 == 1)
+    activationGranularity = [(HFPresenceEventBuilder *)self activationGranularity];
+    if (activationGranularity == 1)
     {
       return 3;
     }
 
-    if (!v6)
+    if (!activationGranularity)
     {
       return 1;
     }
@@ -98,15 +98,15 @@ LABEL_8:
     return 1;
   }
 
-  if (v3 != 2)
+  if (locationEventType != 2)
   {
     goto LABEL_8;
   }
 
-  v4 = [(HFPresenceEventBuilder *)self activationGranularity];
-  if (v4 != 1)
+  activationGranularity2 = [(HFPresenceEventBuilder *)self activationGranularity];
+  if (activationGranularity2 != 1)
   {
-    if (!v4)
+    if (!activationGranularity2)
     {
       return 2;
     }
@@ -119,36 +119,36 @@ LABEL_8:
 
 - (unint64_t)presenceUserType
 {
-  v3 = [(HFPresenceEventBuilder *)self users];
+  users = [(HFPresenceEventBuilder *)self users];
 
-  if (!v3)
+  if (!users)
   {
     return 2;
   }
 
-  v4 = [(HFPresenceEventBuilder *)self users];
-  v5 = HMPresenceEventUserTypeFromSelectedUserCollectionType([v4 type]);
+  users2 = [(HFPresenceEventBuilder *)self users];
+  v5 = HMPresenceEventUserTypeFromSelectedUserCollectionType([users2 type]);
 
   return v5;
 }
 
 - (id)buildNewEventsFromCurrentState
 {
-  v3 = [(HFPresenceEventBuilder *)self presenceUserType];
+  presenceUserType = [(HFPresenceEventBuilder *)self presenceUserType];
   v4 = objc_alloc(MEMORY[0x277CD1D20]);
-  v5 = [(HFPresenceEventBuilder *)self presenceEventType];
-  v6 = [(HFPresenceEventBuilder *)self presenceUserType];
-  if (v3 == 3)
+  presenceEventType = [(HFPresenceEventBuilder *)self presenceEventType];
+  presenceUserType2 = [(HFPresenceEventBuilder *)self presenceUserType];
+  if (presenceUserType == 3)
   {
-    v7 = [(HFPresenceEventBuilder *)self users];
-    v8 = [v7 specificUsers];
-    v9 = [v8 allObjects];
-    v10 = [v4 initWithPresenceEventType:v5 presenceUserType:v6 users:v9];
+    users = [(HFPresenceEventBuilder *)self users];
+    specificUsers = [users specificUsers];
+    allObjects = [specificUsers allObjects];
+    v10 = [v4 initWithPresenceEventType:presenceEventType presenceUserType:presenceUserType2 users:allObjects];
   }
 
   else
   {
-    v10 = [v4 initWithPresenceEventType:v5 presenceUserType:v6];
+    v10 = [v4 initWithPresenceEventType:presenceEventType presenceUserType:presenceUserType2];
   }
 
   v11 = [MEMORY[0x277CBEB98] setWithObject:v10];
@@ -165,20 +165,20 @@ LABEL_8:
   v5 = NSStringFromHFPresenceEventActivationGranularity([(HFPresenceEventBuilder *)self activationGranularity]);
   [v3 appendString:v5 withName:@"activationGranularity"];
 
-  v6 = [(HFPresenceEventBuilder *)self users];
-  v7 = [v6 type];
+  users = [(HFPresenceEventBuilder *)self users];
+  type = [users type];
 
-  if (v7 == 2)
+  if (type == 2)
   {
-    v8 = [(HFPresenceEventBuilder *)self users];
-    v9 = [v8 specificUsers];
-    v10 = [v9 allObjects];
-    [v3 appendArraySection:v10 withName:@"specificUsers" skipIfEmpty:0];
+    users2 = [(HFPresenceEventBuilder *)self users];
+    specificUsers = [users2 specificUsers];
+    allObjects = [specificUsers allObjects];
+    [v3 appendArraySection:allObjects withName:@"specificUsers" skipIfEmpty:0];
   }
 
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
 - (id)comparisonKey
@@ -186,44 +186,44 @@ LABEL_8:
   v3 = MEMORY[0x277CCACA8];
   v7.receiver = self;
   v7.super_class = HFPresenceEventBuilder;
-  v4 = [(HFEventBuilder *)&v7 comparisonKey];
-  v5 = [v3 stringWithFormat:@"%@-%lu:%lu", v4, -[HFPresenceEventBuilder presenceEventType](self, "presenceEventType"), -[HFPresenceEventBuilder presenceUserType](self, "presenceUserType")];
+  comparisonKey = [(HFEventBuilder *)&v7 comparisonKey];
+  v5 = [v3 stringWithFormat:@"%@-%lu:%lu", comparisonKey, -[HFPresenceEventBuilder presenceEventType](self, "presenceEventType"), -[HFPresenceEventBuilder presenceUserType](self, "presenceUserType")];
 
   return v5;
 }
 
-- (id)naturalLanguageNameWithOptions:(id)a3
+- (id)naturalLanguageNameWithOptions:(id)options
 {
   v4 = MEMORY[0x277CD19F8];
-  v5 = a3;
-  v6 = [(HFPresenceEventBuilder *)self buildNewEventsFromCurrentState];
-  v7 = [v6 anyObject];
-  v8 = [v4 hf_naturalLanguageNameWithOptions:v5 presenceEvent:v7];
+  optionsCopy = options;
+  buildNewEventsFromCurrentState = [(HFPresenceEventBuilder *)self buildNewEventsFromCurrentState];
+  anyObject = [buildNewEventsFromCurrentState anyObject];
+  v8 = [v4 hf_naturalLanguageNameWithOptions:optionsCopy presenceEvent:anyObject];
 
   return v8;
 }
 
-- (id)compareToObject:(id)a3
+- (id)compareToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v16.receiver = self;
   v16.super_class = HFPresenceEventBuilder;
-  v5 = [(HFEventBuilder *)&v16 compareToObject:v4];
+  v5 = [(HFEventBuilder *)&v16 compareToObject:objectCopy];
   if (([v5 containsCriticalDifference] & 1) == 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HFPresenceEventBuilder presenceEventType](self, "presenceEventType")}];
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "presenceEventType")}];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objectCopy, "presenceEventType")}];
     v8 = [HFPropertyDifference compareObjectA:v6 toObjectB:v7 key:@"presenceEventType" priority:3];
     [v5 add:v8];
 
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HFPresenceEventBuilder activationGranularity](self, "activationGranularity")}];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "activationGranularity")}];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objectCopy, "activationGranularity")}];
     v11 = [HFPropertyDifference compareObjectA:v9 toObjectB:v10 key:@"activationGranularity" priority:2];
     [v5 add:v11];
 
-    v12 = [(HFPresenceEventBuilder *)self users];
-    v13 = [v4 users];
-    v14 = [HFPropertyDifference compareObjectA:v12 toObjectB:v13 key:@"users" priority:3];
+    users = [(HFPresenceEventBuilder *)self users];
+    users2 = [objectCopy users];
+    v14 = [HFPropertyDifference compareObjectA:users toObjectB:users2 key:@"users" priority:3];
     [v5 add:v14];
   }
 

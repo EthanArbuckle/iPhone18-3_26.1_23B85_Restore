@@ -1,40 +1,40 @@
 @interface SAAlarmSleepAlarm
 - (id)_ad_alarm;
-- (void)_ad_setAlarm:(id)a3;
+- (void)_ad_setAlarm:(id)alarm;
 @end
 
 @implementation SAAlarmSleepAlarm
 
-- (void)_ad_setAlarm:(id)a3
+- (void)_ad_setAlarm:(id)alarm
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = sub_10024AE44(v5);
+  alarmCopy = alarm;
+  identifier = [alarmCopy identifier];
+  v6 = sub_10024AE44(identifier);
   [(SAAlarmSleepAlarm *)self setIdentifier:v6];
 
-  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isEnabled]);
+  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [alarmCopy isEnabled]);
   [(SAAlarmSleepAlarm *)self setEnabled:v7];
 
-  v8 = sub_10024B83C([v4 daysOfWeek]);
+  v8 = sub_10024B83C([alarmCopy daysOfWeek]);
   [(SAAlarmSleepAlarm *)self setFrequency:v8];
 
-  v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 hourOfDay]);
+  v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [alarmCopy hourOfDay]);
   [(SAAlarmSleepAlarm *)self setHour:v9];
 
-  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 minuteOfHour]);
+  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [alarmCopy minuteOfHour]);
   [(SAAlarmSleepAlarm *)self setMinute:v10];
 
-  v11 = [v4 label];
-  [(SAAlarmSleepAlarm *)self setLabel:v11];
+  label = [alarmCopy label];
+  [(SAAlarmSleepAlarm *)self setLabel:label];
 
-  v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isOverrideAlarm]);
+  v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [alarmCopy isOverrideAlarm]);
   [(SAAlarmSleepAlarm *)self setIsOverride:v12];
 
-  v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 bedtimeHour]);
+  v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [alarmCopy bedtimeHour]);
   [(SAAlarmSleepAlarm *)self setBedtimeHour:v13];
 
-  v14 = [v4 bedtimeMinute];
-  v15 = [NSNumber numberWithInteger:v14];
+  bedtimeMinute = [alarmCopy bedtimeMinute];
+  v15 = [NSNumber numberWithInteger:bedtimeMinute];
   [(SAAlarmSleepAlarm *)self setBedtimeMinute:v15];
 
   [(SAAlarmSleepAlarm *)self setIsFiringNext:&__kCFBooleanFalse];
@@ -44,9 +44,9 @@
 {
   v4.receiver = self;
   v4.super_class = SAAlarmSleepAlarm;
-  v2 = [(SAAlarmSleepAlarm *)&v4 _ad_alarm];
+  _ad_alarm = [(SAAlarmSleepAlarm *)&v4 _ad_alarm];
 
-  return v2;
+  return _ad_alarm;
 }
 
 @end

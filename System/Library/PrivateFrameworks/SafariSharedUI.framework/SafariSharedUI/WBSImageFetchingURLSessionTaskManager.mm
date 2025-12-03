@@ -1,13 +1,13 @@
 @interface WBSImageFetchingURLSessionTaskManager
 + (id)sharedManager;
 - (WBSImageFetchingURLSessionTaskManager)init;
-- (id)_urlSessionWithOptions:(unint64_t)a3;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)_downloadFirstValidImageWithURLs:(id)a3 inURLSession:(id)a4 failedURLDownloadsToErrorsDictionary:(id)a5 options:(unint64_t)a6 completionHandler:(id)a7;
-- (void)_wbsImageFromImageData:(id)a3 completionHandler:(id)a4;
-- (void)downloadFirstValidImageWithURLs:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)downloadImageWithURL:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)downloadImageWithURL:(id)a3 options:(unint64_t)a4 completionHandlerIncludingErrors:(id)a5;
+- (id)_urlSessionWithOptions:(unint64_t)options;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)_downloadFirstValidImageWithURLs:(id)ls inURLSession:(id)session failedURLDownloadsToErrorsDictionary:(id)dictionary options:(unint64_t)options completionHandler:(id)handler;
+- (void)_wbsImageFromImageData:(id)data completionHandler:(id)handler;
+- (void)downloadFirstValidImageWithURLs:(id)ls options:(unint64_t)options completionHandler:(id)handler;
+- (void)downloadImageWithURL:(id)l options:(unint64_t)options completionHandler:(id)handler;
+- (void)downloadImageWithURL:(id)l options:(unint64_t)options completionHandlerIncludingErrors:(id)errors;
 @end
 
 @implementation WBSImageFetchingURLSessionTaskManager
@@ -38,9 +38,9 @@ void __54__WBSImageFetchingURLSessionTaskManager_sharedManager__block_invoke()
   v2 = [(WBSImageFetchingURLSessionTaskManager *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     urlSessionsByType = v2->_urlSessionsByType;
-    v2->_urlSessionsByType = v3;
+    v2->_urlSessionsByType = dictionary;
 
     v5 = objc_alloc_init(WBSWebViewPoolManager);
     webViewPoolManager = v2->_webViewPoolManager;
@@ -52,14 +52,14 @@ void __54__WBSImageFetchingURLSessionTaskManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)downloadFirstValidImageWithURLs:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)downloadFirstValidImageWithURLs:(id)ls options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count])
+  lsCopy = ls;
+  handlerCopy = handler;
+  if ([lsCopy count])
   {
-    v17 = [(WBSImageFetchingURLSessionTaskManager *)self _urlSessionWithOptions:a4];
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    v17 = [(WBSImageFetchingURLSessionTaskManager *)self _urlSessionWithOptions:options];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v11 = dispatch_group_create();
     v37[0] = 0;
     v37[1] = v37;
@@ -96,9 +96,9 @@ void __54__WBSImageFetchingURLSessionTaskManager_sharedManager__block_invoke()
     v26 = v11;
     v27 = v37;
     v12 = v11;
-    v13 = self;
+    selfCopy = self;
     v14 = v17;
-    [(WBSImageFetchingURLSessionTaskManager *)v13 _downloadFirstValidImageWithURLs:v8 inURLSession:v17 failedURLDownloadsToErrorsDictionary:v10 options:a4 completionHandler:v25];
+    [(WBSImageFetchingURLSessionTaskManager *)selfCopy _downloadFirstValidImageWithURLs:lsCopy inURLSession:v17 failedURLDownloadsToErrorsDictionary:dictionary options:options completionHandler:v25];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __99__WBSImageFetchingURLSessionTaskManager_downloadFirstValidImageWithURLs_options_completionHandler___block_invoke_2;
@@ -107,10 +107,10 @@ void __54__WBSImageFetchingURLSessionTaskManager_sharedManager__block_invoke()
     v22 = v35;
     v23 = v33;
     v24 = v31;
-    v19 = v10;
-    v20 = v9;
-    v15 = v10;
-    v16 = v9;
+    v19 = dictionary;
+    v20 = handlerCopy;
+    v15 = dictionary;
+    v16 = handlerCopy;
     dispatch_group_notify(v12, MEMORY[0x1E69E96A0], block);
 
     _Block_object_dispose(v31, 8);
@@ -126,8 +126,8 @@ void __54__WBSImageFetchingURLSessionTaskManager_sharedManager__block_invoke()
     v39[1] = 3221225472;
     v39[2] = __99__WBSImageFetchingURLSessionTaskManager_downloadFirstValidImageWithURLs_options_completionHandler___block_invoke;
     v39[3] = &unk_1E8283428;
-    v40 = v9;
-    v14 = v9;
+    v40 = handlerCopy;
+    v14 = handlerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v39);
   }
 }
@@ -161,49 +161,49 @@ void __99__WBSImageFetchingURLSessionTaskManager_downloadFirstValidImageWithURLs
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)downloadImageWithURL:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)downloadImageWithURL:(id)l options:(unint64_t)options completionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v14[0] = v8;
+  lCopy = l;
+  handlerCopy = handler;
+  v14[0] = lCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __88__WBSImageFetchingURLSessionTaskManager_downloadImageWithURL_options_completionHandler___block_invoke;
   v12[3] = &unk_1E8285930;
-  v11 = v9;
+  v11 = handlerCopy;
   v13 = v11;
-  [(WBSImageFetchingURLSessionTaskManager *)self downloadFirstValidImageWithURLs:v10 options:a4 completionHandler:v12];
+  [(WBSImageFetchingURLSessionTaskManager *)self downloadFirstValidImageWithURLs:v10 options:options completionHandler:v12];
 }
 
-- (void)downloadImageWithURL:(id)a3 options:(unint64_t)a4 completionHandlerIncludingErrors:(id)a5
+- (void)downloadImageWithURL:(id)l options:(unint64_t)options completionHandlerIncludingErrors:(id)errors
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v14[0] = v8;
+  lCopy = l;
+  errorsCopy = errors;
+  v14[0] = lCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __103__WBSImageFetchingURLSessionTaskManager_downloadImageWithURL_options_completionHandlerIncludingErrors___block_invoke;
   v12[3] = &unk_1E8285930;
-  v11 = v9;
+  v11 = errorsCopy;
   v13 = v11;
-  [(WBSImageFetchingURLSessionTaskManager *)self downloadFirstValidImageWithURLs:v10 options:a4 completionHandler:v12];
+  [(WBSImageFetchingURLSessionTaskManager *)self downloadFirstValidImageWithURLs:v10 options:options completionHandler:v12];
 }
 
-- (void)_downloadFirstValidImageWithURLs:(id)a3 inURLSession:(id)a4 failedURLDownloadsToErrorsDictionary:(id)a5 options:(unint64_t)a6 completionHandler:(id)a7
+- (void)_downloadFirstValidImageWithURLs:(id)ls inURLSession:(id)session failedURLDownloadsToErrorsDictionary:(id)dictionary options:(unint64_t)options completionHandler:(id)handler
 {
-  v12 = a3;
-  v27 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = [v12 copy];
+  lsCopy = ls;
+  sessionCopy = session;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
+  v15 = [lsCopy copy];
 
   v16 = [v15 count];
-  v17 = [v15 firstObject];
-  v18 = [MEMORY[0x1E695AC68] safari_nonAppInitiatedRequestWithURL:v17];
+  firstObject = [v15 firstObject];
+  v18 = [MEMORY[0x1E695AC68] safari_nonAppInitiatedRequestWithURL:firstObject];
   v19 = [v18 mutableCopy];
 
   WKStringCreateWithUTF8CString();
@@ -211,7 +211,7 @@ void __99__WBSImageFetchingURLSessionTaskManager_downloadFirstValidImageWithURLs
   v20 = WKStringCopyCFString();
   [v19 setHTTPUserAgent:v20];
 
-  if ((a6 & 4) != 0)
+  if ((options & 4) != 0)
   {
     [v19 _setPrivacyProxyFailClosed:1];
   }
@@ -220,19 +220,19 @@ void __99__WBSImageFetchingURLSessionTaskManager_downloadFirstValidImageWithURLs
   v28[1] = 3221225472;
   v28[2] = __150__WBSImageFetchingURLSessionTaskManager__downloadFirstValidImageWithURLs_inURLSession_failedURLDownloadsToErrorsDictionary_options_completionHandler___block_invoke;
   v28[3] = &unk_1E82859A8;
-  v21 = v13;
+  v21 = dictionaryCopy;
   v29 = v21;
-  v22 = v17;
+  v22 = firstObject;
   v30 = v22;
-  v31 = self;
+  selfCopy = self;
   v35 = v16;
-  v23 = v14;
+  v23 = handlerCopy;
   v34 = v23;
   v24 = v15;
   v32 = v24;
-  v25 = v27;
+  v25 = sessionCopy;
   v33 = v25;
-  v36 = a6;
+  optionsCopy = options;
   v26 = [v25 dataTaskWithRequest:v19 completionHandler:v28];
   [v26 resume];
 }
@@ -306,7 +306,7 @@ void __150__WBSImageFetchingURLSessionTaskManager__downloadFirstValidImageWithUR
   }
 }
 
-- (id)_urlSessionWithOptions:(unint64_t)a3
+- (id)_urlSessionWithOptions:(unint64_t)options
 {
   urlSessionsByType = self->_urlSessionsByType;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -314,46 +314,46 @@ void __150__WBSImageFetchingURLSessionTaskManager__downloadFirstValidImageWithUR
 
   if (!v7)
   {
-    v8 = [MEMORY[0x1E695AC80] safari_ephemeralSessionConfiguration];
-    [v8 setAllowsCellularAccess:a3 & 1];
-    if ((a3 & 2) != 0)
+    safari_ephemeralSessionConfiguration = [MEMORY[0x1E695AC80] safari_ephemeralSessionConfiguration];
+    [safari_ephemeralSessionConfiguration setAllowsCellularAccess:options & 1];
+    if ((options & 2) != 0)
     {
-      [v8 setHTTPCookieStorage:0];
+      [safari_ephemeralSessionConfiguration setHTTPCookieStorage:0];
     }
 
-    if ((a3 & 4) != 0)
+    if ((options & 4) != 0)
     {
-      [v8 set_sourceApplicationSecondaryIdentifier:@"com.apple.Passwords.PRIconFetching"];
+      [safari_ephemeralSessionConfiguration set_sourceApplicationSecondaryIdentifier:@"com.apple.Passwords.PRIconFetching"];
     }
 
-    v7 = [MEMORY[0x1E695AC78] sessionWithConfiguration:v8 delegate:self delegateQueue:0];
+    v7 = [MEMORY[0x1E695AC78] sessionWithConfiguration:safari_ephemeralSessionConfiguration delegate:self delegateQueue:0];
     v9 = self->_urlSessionsByType;
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
     [(NSMutableDictionary *)v9 setObject:v7 forKeyedSubscript:v10];
   }
 
   return v7;
 }
 
-- (void)_wbsImageFromImageData:(id)a3 completionHandler:(id)a4
+- (void)_wbsImageFromImageData:(id)data completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  dataCopy = data;
+  handlerCopy = handler;
+  if ([dataCopy length])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __82__WBSImageFetchingURLSessionTaskManager__wbsImageFromImageData_completionHandler___block_invoke;
     block[3] = &unk_1E8283450;
     block[4] = self;
-    v9 = v6;
-    v10 = v7;
+    v9 = dataCopy;
+    v10 = handlerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -401,11 +401,11 @@ void __82__WBSImageFetchingURLSessionTaskManager__wbsImageFromImageData_completi
   (*(a1[6] + 16))();
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v9 = a5;
-  v7 = a6;
-  if ([v9 previousFailureCount] < 1)
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  if ([challengeCopy previousFailureCount] < 1)
   {
     v8 = 1;
   }
@@ -415,7 +415,7 @@ void __82__WBSImageFetchingURLSessionTaskManager__wbsImageFromImageData_completi
     v8 = 3;
   }
 
-  v7[2](v7, v8, 0);
+  handlerCopy[2](handlerCopy, v8, 0);
 }
 
 @end

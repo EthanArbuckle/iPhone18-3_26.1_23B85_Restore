@@ -1,10 +1,10 @@
 @interface ICQueryResultsControllerObjC
 - (ICQueryObjC)query;
 - (ICQueryResultsControllerObjC)init;
-- (ICQueryResultsControllerObjC)initWithManagedObjectContext:(id)a3 query:(id)a4;
+- (ICQueryResultsControllerObjC)initWithManagedObjectContext:(id)context query:(id)query;
 - (id)fetchRequest;
 - (id)performFetch;
-- (void)setQuery:(id)a3;
+- (void)setQuery:(id)query;
 @end
 
 @implementation ICQueryResultsControllerObjC
@@ -16,38 +16,38 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setQuery:(id)a3
+- (void)setQuery:(id)query
 {
   v5 = OBJC_IVAR___ICQueryResultsControllerObjC_query;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = query;
+  queryCopy = query;
 }
 
 - (id)fetchRequest
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ICQueryResultsController.fetchRequest.getter();
 
   return v3;
 }
 
-- (ICQueryResultsControllerObjC)initWithManagedObjectContext:(id)a3 query:(id)a4
+- (ICQueryResultsControllerObjC)initWithManagedObjectContext:(id)context query:(id)query
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___ICQueryResultsControllerObjC_managedObjectContext) = a3;
-  *(&self->super.isa + OBJC_IVAR___ICQueryResultsControllerObjC_query) = a4;
+  *(&self->super.isa + OBJC_IVAR___ICQueryResultsControllerObjC_managedObjectContext) = context;
+  *(&self->super.isa + OBJC_IVAR___ICQueryResultsControllerObjC_query) = query;
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v8 = a3;
-  v9 = a4;
+  contextCopy = context;
+  queryCopy = query;
   return [(ICQueryResultsControllerObjC *)&v11 init];
 }
 
 - (id)performFetch
 {
-  v2 = self;
+  selfCopy = self;
   ICQueryResultsController.performFetch()();
 
   sub_214D55670(0, &qword_27CA44A80);

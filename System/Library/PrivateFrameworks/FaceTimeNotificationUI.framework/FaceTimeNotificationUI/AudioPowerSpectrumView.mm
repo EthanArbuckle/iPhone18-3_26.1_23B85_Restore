@@ -1,6 +1,6 @@
 @interface AudioPowerSpectrumView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC22FaceTimeNotificationUI22AudioPowerSpectrumView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC22FaceTimeNotificationUI22AudioPowerSpectrumView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -22,7 +22,7 @@
   [v5 setFrame_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 90.0;
   v4 = 20.0;
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (_TtC22FaceTimeNotificationUI22AudioPowerSpectrumView)initWithFrame:(CGRect)a3
+- (_TtC22FaceTimeNotificationUI22AudioPowerSpectrumView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

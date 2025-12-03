@@ -1,13 +1,13 @@
 @interface TUIAppleAccountManager
-- (TUIAppleAccountManager)initWithAccountStore:(id)a3;
-- (void)silentRenewAppleAccountWithCompletionHandler:(id)a3;
+- (TUIAppleAccountManager)initWithAccountStore:(id)store;
+- (void)silentRenewAppleAccountWithCompletionHandler:(id)handler;
 @end
 
 @implementation TUIAppleAccountManager
 
-- (TUIAppleAccountManager)initWithAccountStore:(id)a3
+- (TUIAppleAccountManager)initWithAccountStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_2 != -1)
   {
     [TUIAppleAccountManager initWithAccountStore:];
@@ -24,7 +24,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountStore, a3);
+    objc_storeStrong(&v6->_accountStore, store);
   }
 
   return v7;
@@ -37,10 +37,10 @@ uint64_t __47__TUIAppleAccountManager_initWithAccountStore___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)silentRenewAppleAccountWithCompletionHandler:(id)a3
+- (void)silentRenewAppleAccountWithCompletionHandler:(id)handler
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_2 != -1)
   {
     [TUIAppleAccountManager silentRenewAppleAccountWithCompletionHandler:];
@@ -51,7 +51,7 @@ uint64_t __47__TUIAppleAccountManager_initWithAccountStore___block_invoke()
     [TUIAppleAccountManager silentRenewAppleAccountWithCompletionHandler:];
   }
 
-  v5 = [(ACAccountStore *)self->_accountStore aida_accountForPrimaryiCloudAccount];
+  aida_accountForPrimaryiCloudAccount = [(ACAccountStore *)self->_accountStore aida_accountForPrimaryiCloudAccount];
   v6 = *MEMORY[0x277CB90A0];
   v15[0] = *MEMORY[0x277CB9098];
   v15[1] = v6;
@@ -65,9 +65,9 @@ uint64_t __47__TUIAppleAccountManager_initWithAccountStore___block_invoke()
   v11[2] = __71__TUIAppleAccountManager_silentRenewAppleAccountWithCompletionHandler___block_invoke_5;
   v11[3] = &unk_279DDAE20;
   objc_copyWeak(&v13, &location);
-  v9 = v4;
+  v9 = handlerCopy;
   v12 = v9;
-  [(ACAccountStore *)accountStore renewCredentialsForAccount:v5 options:v7 completion:v11];
+  [(ACAccountStore *)accountStore renewCredentialsForAccount:aida_accountForPrimaryiCloudAccount options:v7 completion:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);

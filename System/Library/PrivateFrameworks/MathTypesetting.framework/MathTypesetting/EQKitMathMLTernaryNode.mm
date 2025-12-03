@@ -1,23 +1,23 @@
 @interface EQKitMathMLTernaryNode
 - (BOOL)isBaseFontNameUsed;
-- (EQKitMathMLTernaryNode)initWithFirst:(id)a3 second:(id)a4 third:(id)a5;
+- (EQKitMathMLTernaryNode)initWithFirst:(id)first second:(id)second third:(id)third;
 - (id)children;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLTernaryNode
 
-- (EQKitMathMLTernaryNode)initWithFirst:(id)a3 second:(id)a4 third:(id)a5
+- (EQKitMathMLTernaryNode)initWithFirst:(id)first second:(id)second third:(id)third
 {
   v10.receiver = self;
   v10.super_class = EQKitMathMLTernaryNode;
   v8 = [(EQKitMathMLTernaryNode *)&v10 init];
   if (v8)
   {
-    v8->mFirst = a3;
-    v8->mSecond = a4;
-    v8->mThird = a5;
+    v8->mFirst = first;
+    v8->mSecond = second;
+    v8->mThird = third;
     [(EQKitMathMLNode *)v8->mFirst setParent:v8];
     [(EQKitMathMLNode *)v8->mSecond setParent:v8];
     [(EQKitMathMLNode *)v8->mThird setParent:v8];
@@ -33,9 +33,9 @@
   [(EQKitMathMLTernaryNode *)&v3 dealloc];
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v7 = [a4 parseChildrenAsArrayFromXMLNode:?];
+  v7 = [parser parseChildrenAsArrayFromXMLNode:?];
   if ([v7 count] == 3)
   {
     v8 = [v7 objectAtIndex:0];
@@ -47,7 +47,7 @@
 
   else
   {
-    [a4 reportError:5 withNode:a3];
+    [parser reportError:5 withNode:node];
 
     return 0;
   }

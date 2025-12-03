@@ -1,9 +1,9 @@
 @interface AFBulletin
-- (BOOL)contentTypeMatchesNotificationType:(id)a3;
+- (BOOL)contentTypeMatchesNotificationType:(id)type;
 - (id)_source;
 - (id)saNotificationObject;
 - (id)saOnDeviceNotificationObject;
-- (void)_setStandardFieldsOnNotificationObject:(id)a3;
+- (void)_setStandardFieldsOnNotificationObject:(id)object;
 @end
 
 @implementation AFBulletin
@@ -39,13 +39,13 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)contentTypeMatchesNotificationType:(id)a3
+- (BOOL)contentTypeMatchesNotificationType:(id)type
 {
-  v4 = a3;
-  v5 = [(AFBulletin *)self bbBulletin];
-  v6 = [v5 contentType];
+  typeCopy = type;
+  bbBulletin = [(AFBulletin *)self bbBulletin];
+  contentType = [bbBulletin contentType];
 
-  if (![v4 isEqualToString:SANotificationTypeIncomingCallNotificationValue])
+  if (![typeCopy isEqualToString:SANotificationTypeIncomingCallNotificationValue])
   {
     v8 = 1;
     goto LABEL_7;
@@ -70,7 +70,7 @@ LABEL_9:
   _Block_object_dispose(&v13, 8);
   if (v7)
   {
-    v8 = [v6 isEqualToString:*v7];
+    v8 = [contentType isEqualToString:*v7];
 LABEL_7:
 
     return v8;
@@ -86,10 +86,10 @@ LABEL_7:
 
 - (id)saOnDeviceNotificationObject
 {
-  v3 = [(AFBulletin *)self sectionID];
-  v4 = [(AFBulletin *)self bulletinID];
-  v5 = v4;
-  if (v3 && v4)
+  sectionID = [(AFBulletin *)self sectionID];
+  bulletinID = [(AFBulletin *)self bulletinID];
+  v5 = bulletinID;
+  if (sectionID && bulletinID)
   {
     v6 = objc_alloc_init(SANotificationOnDeviceObject);
     [(AFBulletin *)self _setStandardFieldsOnNotificationObject:v6];
@@ -105,44 +105,44 @@ LABEL_7:
     }
 
     [v6 setAnnouncementType:v8];
-    v10 = [(AFBulletin *)self message];
-    [v6 setBody:v10];
+    message = [(AFBulletin *)self message];
+    [v6 setBody:message];
 
-    v11 = [(AFBulletin *)self subtitle];
-    [v6 setSubtitle:v11];
+    subtitle = [(AFBulletin *)self subtitle];
+    [v6 setSubtitle:subtitle];
 
-    v12 = [(AFBulletin *)self title];
-    [v6 setTitle:v12];
+    title = [(AFBulletin *)self title];
+    [v6 setTitle:title];
 
-    v13 = [(AFBulletin *)self summary];
+    summary = [(AFBulletin *)self summary];
 
-    if (v13)
+    if (summary)
     {
-      v14 = [(AFBulletin *)self summary];
-      [v6 setSummary:v14];
+      summary2 = [(AFBulletin *)self summary];
+      [v6 setSummary:summary2];
     }
 
     else
     {
-      v14 = [(AFBulletin *)self bbBulletin];
-      v15 = [v14 summary];
-      v16 = [v15 string];
-      [v6 setSummary:v16];
+      summary2 = [(AFBulletin *)self bbBulletin];
+      v14Summary = [summary2 summary];
+      string = [v14Summary string];
+      [v6 setSummary:string];
     }
 
-    v17 = [(AFBulletin *)self bbBulletin];
-    v18 = [v17 threadSummary];
-    v19 = [v18 string];
-    [v6 setThreadSummary:v19];
+    bbBulletin = [(AFBulletin *)self bbBulletin];
+    threadSummary = [bbBulletin threadSummary];
+    string2 = [threadSummary string];
+    [v6 setThreadSummary:string2];
 
     v20 = [NSNumber numberWithBool:[(AFBulletin *)self isHighlight]];
     [v6 setIsHighlight:v20];
 
-    v21 = [(AFBulletin *)self notificationRequest];
+    notificationRequest = [(AFBulletin *)self notificationRequest];
 
-    if (v21)
+    if (notificationRequest)
     {
-      v22 = [(AFBulletin *)self notificationRequest];
+      notificationRequest2 = [(AFBulletin *)self notificationRequest];
       v30 = 0;
       v23 = &v30;
       v24 = &v30;
@@ -150,13 +150,13 @@ LABEL_7:
 
     else
     {
-      v22 = [(AFBulletin *)self bbBulletin];
+      notificationRequest2 = [(AFBulletin *)self bbBulletin];
       v29 = 0;
       v23 = &v29;
       v24 = &v29;
     }
 
-    v25 = [NSKeyedArchiver archivedDataWithRootObject:v22 requiringSecureCoding:1 error:v24, v29, v30];
+    v25 = [NSKeyedArchiver archivedDataWithRootObject:notificationRequest2 requiringSecureCoding:1 error:v24, v29, v30];
     v26 = *v23;
 
     if (v26)
@@ -183,7 +183,7 @@ LABEL_7:
       *buf = 136315650;
       v32 = "[AFBulletin(SANotificationObject) saOnDeviceNotificationObject]";
       v33 = 2112;
-      v34 = v3;
+      v34 = sectionID;
       v35 = 2112;
       v36 = v5;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s Invalid notification. applicationID %@, bulletinID %@", buf, 0x20u);
@@ -197,10 +197,10 @@ LABEL_7:
 
 - (id)saNotificationObject
 {
-  v3 = [(AFBulletin *)self sectionID];
-  v4 = [(AFBulletin *)self bulletinID];
-  v5 = v4;
-  if (v3 && v4)
+  sectionID = [(AFBulletin *)self sectionID];
+  bulletinID = [(AFBulletin *)self bulletinID];
+  v5 = bulletinID;
+  if (sectionID && bulletinID)
   {
     v6 = objc_alloc_init(SANotificationObject);
     [(AFBulletin *)self _setStandardFieldsOnNotificationObject:v6];
@@ -214,7 +214,7 @@ LABEL_7:
       v9 = 136315650;
       v10 = "[AFBulletin(SANotificationObject) saNotificationObject]";
       v11 = 2112;
-      v12 = v3;
+      v12 = sectionID;
       v13 = 2112;
       v14 = v5;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s Invalid notification. applicationID %@, bulletinID %@", &v9, 0x20u);
@@ -226,35 +226,35 @@ LABEL_7:
   return v6;
 }
 
-- (void)_setStandardFieldsOnNotificationObject:(id)a3
+- (void)_setStandardFieldsOnNotificationObject:(id)object
 {
-  v4 = a3;
-  v31 = [(AFBulletin *)self sectionID];
-  v5 = [(AFBulletin *)self bulletinID];
+  objectCopy = object;
+  sectionID = [(AFBulletin *)self sectionID];
+  bulletinID = [(AFBulletin *)self bulletinID];
   v6 = [NSString alloc];
   v7 = +[NSCharacterSet URLPathAllowedCharacterSet];
-  v30 = v5;
-  v8 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:v7];
+  v30 = bulletinID;
+  v8 = [bulletinID stringByAddingPercentEncodingWithAllowedCharacters:v7];
   v9 = [v6 initWithFormat:@"x-apple-siri-notification://%@", v8];
 
   v29 = v9;
   v10 = [[NSURL alloc] initWithString:v9];
-  v11 = [(AFBulletin *)self displayName];
-  v12 = [(AFBulletin *)self date];
+  displayName = [(AFBulletin *)self displayName];
+  date = [(AFBulletin *)self date];
   v13 = [NSNumber numberWithBool:[(AFBulletin *)self isAllDay]];
-  v14 = [(AFBulletin *)self endDate];
-  v28 = [(AFBulletin *)self recencyDate];
-  v15 = [(AFBulletin *)self timeZone];
-  v27 = [(AFBulletin *)self previewRestricted];
-  v16 = [(AFBulletin *)self bbBulletin];
-  v17 = [v16 publicationDate];
+  endDate = [(AFBulletin *)self endDate];
+  recencyDate = [(AFBulletin *)self recencyDate];
+  timeZone = [(AFBulletin *)self timeZone];
+  previewRestricted = [(AFBulletin *)self previewRestricted];
+  bbBulletin = [(AFBulletin *)self bbBulletin];
+  publicationDate = [bbBulletin publicationDate];
 
-  if (v17)
+  if (publicationDate)
   {
-    v18 = [(AFBulletin *)self bbBulletin];
-    v19 = [v18 publicationDate];
+    bbBulletin2 = [(AFBulletin *)self bbBulletin];
+    publicationDate2 = [bbBulletin2 publicationDate];
 
-    v12 = v19;
+    date = publicationDate2;
   }
 
   else
@@ -265,37 +265,37 @@ LABEL_7:
       *buf = 136315650;
       v33 = "[AFBulletin(SANotificationObject) _setStandardFieldsOnNotificationObject:]";
       v34 = 2112;
-      v21 = v31;
+      v21 = sectionID;
       v35 = v30;
       v36 = 2112;
-      v37 = v31;
+      v37 = sectionID;
       _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%s BBBulletin with id %@ for applicationId %@ does not have a publicationDate field, falling back to date field instead.", buf, 0x20u);
       goto LABEL_5;
     }
   }
 
-  v21 = v31;
+  v21 = sectionID;
 LABEL_5:
-  [v4 setApplicationId:v21];
-  [v4 setIdentifier:v10];
-  [v4 setType:v11];
-  [v4 setDate:v12];
-  [v4 setDateIsAllDay:v13];
-  [v4 setEndDate:v14];
-  [v4 setRecencyDate:v28];
-  v22 = v15;
-  [v4 setTimeZoneId:v15];
-  v23 = [(AFBulletin *)self publisherBulletinID];
-  [v4 setNotificationId:v23];
+  [objectCopy setApplicationId:v21];
+  [objectCopy setIdentifier:v10];
+  [objectCopy setType:displayName];
+  [objectCopy setDate:date];
+  [objectCopy setDateIsAllDay:v13];
+  [objectCopy setEndDate:endDate];
+  [objectCopy setRecencyDate:recencyDate];
+  v22 = timeZone;
+  [objectCopy setTimeZoneId:timeZone];
+  publisherBulletinID = [(AFBulletin *)self publisherBulletinID];
+  [objectCopy setNotificationId:publisherBulletinID];
 
-  v24 = [NSNumber numberWithBool:v27];
-  [v4 setPreviewRestricted:v24];
+  v24 = [NSNumber numberWithBool:previewRestricted];
+  [objectCopy setPreviewRestricted:v24];
 
-  v25 = [(AFBulletin *)self threadID];
-  [v4 setThreadIdentifier:v25];
+  threadID = [(AFBulletin *)self threadID];
+  [objectCopy setThreadIdentifier:threadID];
 
-  v26 = [(AFBulletin *)self _source];
-  [v4 setSource:v26];
+  _source = [(AFBulletin *)self _source];
+  [objectCopy setSource:_source];
 }
 
 @end

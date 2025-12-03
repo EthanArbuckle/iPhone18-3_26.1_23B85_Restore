@@ -1,8 +1,8 @@
 @interface FTSpan
 - (BOOL)do_not_translate;
-- (FTSpan)initWithFlatbuffData:(id)a3 root:(const Span *)a4 verify:(BOOL)a5;
+- (FTSpan)initWithFlatbuffData:(id)data root:(const Span *)root verify:(BOOL)verify;
 - (NSString)meta_info;
-- (Offset<siri::speech::schema_fb::Span>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::Span>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int)end_index;
 - (int)start_index;
@@ -10,10 +10,10 @@
 
 @implementation FTSpan
 
-- (FTSpan)initWithFlatbuffData:(id)a3 root:(const Span *)a4 verify:(BOOL)a5
+- (FTSpan)initWithFlatbuffData:(id)data root:(const Span *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTSpan;
   v10 = [(FTSpan *)&v25 init];
@@ -22,35 +22,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -136,31 +136,31 @@ LABEL_13:
   return v6;
 }
 
-- (Offset<siri::speech::schema_fb::Span>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::Span>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTSpan *)self start_index];
-  v6 = [(FTSpan *)self end_index];
-  v7 = [(FTSpan *)self do_not_translate];
-  v8 = [(FTSpan *)self meta_info];
-  v9 = v8;
-  if (!v8)
+  start_index = [(FTSpan *)self start_index];
+  end_index = [(FTSpan *)self end_index];
+  do_not_translate = [(FTSpan *)self do_not_translate];
+  meta_info = [(FTSpan *)self meta_info];
+  v9 = meta_info;
+  if (!meta_info)
   {
-    v8 = &stru_284834138;
+    meta_info = &stru_284834138;
   }
 
-  v10 = [(__CFString *)v8 UTF8String];
-  v11 = strlen(v10);
-  LODWORD(v10) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v10, v11);
+  uTF8String = [(__CFString *)meta_info UTF8String];
+  v11 = strlen(uTF8String);
+  LODWORD(uTF8String) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v11);
 
-  *(a3 + 70) = 1;
-  v12 = *(a3 + 10);
-  v13 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v5, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v6, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 8, v7, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v10);
+  *(buffer + 70) = 1;
+  v12 = *(buffer + 10);
+  v13 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, start_index, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, end_index, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 8, do_not_translate, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, uTF8String);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v13 + v12);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v13 + v12);
 }
 
 - (id)flatbuffData

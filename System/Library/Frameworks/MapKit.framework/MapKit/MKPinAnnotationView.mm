@@ -4,24 +4,24 @@
 + (CGPoint)_perceivedAnchorPoint;
 + (CGPoint)_rightCalloutOffset;
 + (CGPoint)_shadowAnchorPoint;
-+ (CGRect)_pinFrameForPosition:(CGPoint)a3;
++ (CGRect)_pinFrameForPosition:(CGPoint)position;
 + (CGSize)_perceivedSize;
 + (UIColor)purplePinColor;
 + (id)_bounceAnimation;
 + (id)_dropBounceAnimation;
 + (id)_imageCache;
-+ (id)_imageForLayer:(int64_t)a3 state:(int64_t)a4 mapType:(unint64_t)a5 traits:(id)a6;
-+ (id)_imageForState:(int64_t)a3 mapType:(unint64_t)a4 pinColor:(id)a5 traits:(id)a6;
-+ (id)_pinsWithMapType:(unint64_t)a3 pinColor:(id)a4 traits:(id)a5;
++ (id)_imageForLayer:(int64_t)layer state:(int64_t)state mapType:(unint64_t)type traits:(id)traits;
++ (id)_imageForState:(int64_t)state mapType:(unint64_t)type pinColor:(id)color traits:(id)traits;
++ (id)_pinsWithMapType:(unint64_t)type pinColor:(id)color traits:(id)traits;
 + (id)_shadowImage;
 - (BOOL)isHighlighted;
 - (CGPoint)_draggingDropOffset;
 - (CGRect)_significantBounds;
 - (MKPinAnnotationColor)pinColor;
-- (MKPinAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
+- (MKPinAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)_defaultCollisionAlignmentRectInsets;
 - (_MKPinAnnotationViewDelegate)_delegate;
-- (id)_bounceAnimation:(BOOL)a3 withDelay:(double)a4 addToLayer:(BOOL)a5;
+- (id)_bounceAnimation:(BOOL)animation withDelay:(double)delay addToLayer:(BOOL)layer;
 - (id)_floatingImage;
 - (id)_highlightedImage;
 - (id)_image;
@@ -31,25 +31,25 @@
 - (id)description;
 - (void)_cleanupAfterPinDropAnimation;
 - (void)_didUpdatePosition;
-- (void)_dropAfterDraggingAndRevertPosition:(BOOL)a3 animated:(BOOL)a4;
-- (void)_dropFromDistance:(double)a3 maxDistance:(double)a4 withDelay:(double)a5;
+- (void)_dropAfterDraggingAndRevertPosition:(BOOL)position animated:(BOOL)animated;
+- (void)_dropFromDistance:(double)distance maxDistance:(double)maxDistance withDelay:(double)delay;
 - (void)_invalidateImage;
-- (void)_liftDidEnd:(id)a3;
-- (void)_liftForDraggingAfterBounceAnimated:(BOOL)a3;
-- (void)_liftForDraggingAnimated:(BOOL)a3;
+- (void)_liftDidEnd:(id)end;
+- (void)_liftForDraggingAfterBounceAnimated:(BOOL)animated;
+- (void)_liftForDraggingAnimated:(BOOL)animated;
 - (void)_removeAllAnimations;
-- (void)_setMapType:(unint64_t)a3;
-- (void)_setRotationRadians:(double)a3 withAnimation:(id)a4;
-- (void)_updateAnchorPosition:(CGPoint)a3 alignToPixels:(BOOL)a4;
+- (void)_setMapType:(unint64_t)type;
+- (void)_setRotationRadians:(double)radians withAnimation:(id)animation;
+- (void)_updateAnchorPosition:(CGPoint)position alignToPixels:(BOOL)pixels;
 - (void)_updateShadowLayer;
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)setCenter:(CGPoint)a3;
-- (void)setDragState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)setCenter:(CGPoint)center;
+- (void)setDragState:(unint64_t)state animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)setPinColor:(MKPinAnnotationColor)pinColor;
 - (void)setPinTintColor:(UIColor *)pinTintColor;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 @end
 
 @implementation MKPinAnnotationView
@@ -61,7 +61,7 @@
   return WeakRetained;
 }
 
-- (void)_updateAnchorPosition:(CGPoint)a3 alignToPixels:(BOOL)a4
+- (void)_updateAnchorPosition:(CGPoint)position alignToPixels:(BOOL)pixels
 {
   if (self->_state != 4)
   {
@@ -69,7 +69,7 @@
     v8 = v5;
     v6.receiver = self;
     v6.super_class = MKPinAnnotationView;
-    [(MKAnnotationView *)&v6 _updateAnchorPosition:a4 alignToPixels:a3.x, a3.y];
+    [(MKAnnotationView *)&v6 _updateAnchorPosition:pixels alignToPixels:position.x, position.y];
   }
 }
 
@@ -85,16 +85,16 @@
   return [(MKAnnotationView *)&v4 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v11.receiver = self;
   v11.super_class = MKPinAnnotationView;
-  if ([(MKAnnotationView *)&v11 isHighlighted]!= a3)
+  if ([(MKAnnotationView *)&v11 isHighlighted]!= highlighted)
   {
     v10.receiver = self;
     v10.super_class = MKPinAnnotationView;
-    [(MKAnnotationView *)&v10 setHighlighted:v3];
+    [(MKAnnotationView *)&v10 setHighlighted:highlightedCopy];
     if ([(MKAnnotationView *)self dragState]== MKAnnotationViewDragStateNone)
     {
       state = self->_state;
@@ -102,7 +102,7 @@
       v7 = (1 << state) & 0x34;
       if (v6 || v7 == 0)
       {
-        if (v3)
+        if (highlightedCopy)
         {
           [(MKPinAnnotationView *)self _highlightedImage];
         }
@@ -118,7 +118,7 @@
   }
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   [(MKAnnotationView *)self setHidden:0];
   shadowView = self->_shadowView;
@@ -126,13 +126,13 @@
   [(UIImageView *)shadowView setHidden:0];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = a3;
+  stopCopy = stop;
   state = self->_state;
   if (state == 2 || state == 5)
   {
-    v8 = v5;
+    v8 = stopCopy;
     [(MKPinAnnotationView *)self _cleanupAfterPinDropAnimation];
   }
 
@@ -144,23 +144,23 @@
     }
 
     self->_state = 3;
-    v8 = v5;
+    v8 = stopCopy;
     [(MKPinAnnotationView *)self _liftForDraggingAfterBounceAnimated:1];
   }
 
-  v5 = v8;
+  stopCopy = v8;
 LABEL_10:
 }
 
-- (void)_liftDidEnd:(id)a3
+- (void)_liftDidEnd:(id)end
 {
-  v5 = a3;
+  endCopy = end;
   self->_state = 4;
   if ([(MKAnnotationView *)self dragState]== MKAnnotationViewDragStateStarting)
   {
-    -[MKPinAnnotationView setDragState:animated:](self, "setDragState:animated:", 2, [v5 length] != 0);
-    v4 = [(MKPinAnnotationView *)self _floatingImage];
-    [(MKAnnotationView *)self setImage:v4];
+    -[MKPinAnnotationView setDragState:animated:](self, "setDragState:animated:", 2, [endCopy length] != 0);
+    _floatingImage = [(MKPinAnnotationView *)self _floatingImage];
+    [(MKAnnotationView *)self setImage:_floatingImage];
   }
 
   else
@@ -169,53 +169,53 @@ LABEL_10:
   }
 }
 
-- (void)_liftForDraggingAfterBounceAnimated:(BOOL)a3
+- (void)_liftForDraggingAfterBounceAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   self->_state = 3;
   [(CALayer *)self->super._imageLayer removeAnimationForKey:@"contents"];
-  v5 = [(MKPinAnnotationView *)self _floatingImage];
-  [(MKAnnotationView *)self setImage:v5];
+  _floatingImage = [(MKPinAnnotationView *)self _floatingImage];
+  [(MKAnnotationView *)self setImage:_floatingImage];
 
-  v6 = [(MKPinAnnotationView *)self layer];
-  [v6 position];
+  layer = [(MKPinAnnotationView *)self layer];
+  [layer position];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(UIImageView *)self->_shadowView superview];
+  superview = [(UIImageView *)self->_shadowView superview];
 
-  if (v11)
+  if (superview)
   {
     [(UIImageView *)self->_shadowView removeFromSuperview];
   }
 
-  v12 = [(UIImageView *)self->_shadowView layer];
-  [v12 removeAllAnimations];
+  layer2 = [(UIImageView *)self->_shadowView layer];
+  [layer2 removeAllAnimations];
 
-  v13 = [(MKPinAnnotationView *)self superview];
-  [v13 insertSubview:self->_shadowView atIndex:0];
+  superview2 = [(MKPinAnnotationView *)self superview];
+  [superview2 insertSubview:self->_shadowView atIndex:0];
 
   [(UIImageView *)self->_shadowView setCenter:v8, v10];
-  v14 = [(MKPinAnnotationView *)self superview];
-  [(MKPinAnnotationView *)self convertPoint:v14 fromView:v8, v10];
+  superview3 = [(MKPinAnnotationView *)self superview];
+  [(MKPinAnnotationView *)self convertPoint:superview3 fromView:v8, v10];
   v16 = v15;
   v18 = v17;
 
   v19 = v18 + -40.0;
   v20 = v16 + tan(0.820304751) * 40.0;
   v21 = v19 + -40.0;
-  v22 = [(MKPinAnnotationView *)self superview];
-  [v22 convertPoint:self fromView:{v16, v19}];
+  superview4 = [(MKPinAnnotationView *)self superview];
+  [superview4 convertPoint:self fromView:{v16, v19}];
   v24 = v23;
   v26 = v25;
 
-  v27 = [(MKPinAnnotationView *)self superview];
-  [v27 convertPoint:self fromView:{v20, v21}];
+  superview5 = [(MKPinAnnotationView *)self superview];
+  [superview5 convertPoint:self fromView:{v20, v21}];
   v29 = v28;
   v31 = v30;
 
   v32 = 0.200000003;
-  if (!v3)
+  if (!animatedCopy)
   {
     v32 = 0.0;
   }
@@ -234,7 +234,7 @@ LABEL_10:
   v33[2] = __59__MKPinAnnotationView__liftForDraggingAfterBounceAnimated___block_invoke_2;
   v33[3] = &unk_1E76CCF40;
   v33[4] = self;
-  v34 = v3;
+  v34 = animatedCopy;
   [MEMORY[0x1E69DD250] animateWithDuration:v35 animations:v33 completion:v32];
 }
 
@@ -286,10 +286,10 @@ uint64_t __59__MKPinAnnotationView__liftForDraggingAfterBounceAnimated___block_i
   return [*(a1 + 32) _liftDidEnd:v1];
 }
 
-- (void)_liftForDraggingAnimated:(BOOL)a3
+- (void)_liftForDraggingAnimated:(BOOL)animated
 {
   self->_state = 6;
-  if (a3)
+  if (animated)
   {
     v4 = [(MKPinAnnotationView *)self _bounceAnimation:0 withDelay:1 addToLayer:0.0];
   }
@@ -301,34 +301,34 @@ uint64_t __59__MKPinAnnotationView__liftForDraggingAfterBounceAnimated___block_i
   }
 }
 
-- (void)setDragState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setDragState:(unint64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v8.receiver = self;
   v8.super_class = MKPinAnnotationView;
-  if ([(MKAnnotationView *)&v8 dragState]!= a3)
+  if ([(MKAnnotationView *)&v8 dragState]!= state)
   {
     v7.receiver = self;
     v7.super_class = MKPinAnnotationView;
-    [(MKAnnotationView *)&v7 setDragState:a3 animated:v4];
-    if (a3 == 1)
+    [(MKAnnotationView *)&v7 setDragState:state animated:animatedCopy];
+    if (state == 1)
     {
-      [(MKPinAnnotationView *)self _liftForDraggingAnimated:v4];
+      [(MKPinAnnotationView *)self _liftForDraggingAnimated:animatedCopy];
     }
 
-    else if (a3 - 3 <= 1)
+    else if (state - 3 <= 1)
     {
-      [(MKPinAnnotationView *)self _dropAfterDraggingAndRevertPosition:a3 == 3 animated:v4];
+      [(MKPinAnnotationView *)self _dropAfterDraggingAndRevertPosition:state == 3 animated:animatedCopy];
     }
   }
 }
 
-- (void)_dropAfterDraggingAndRevertPosition:(BOOL)a3 animated:(BOOL)a4
+- (void)_dropAfterDraggingAndRevertPosition:(BOOL)position animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(MKAnnotationView *)self _containerView];
+  animatedCopy = animated;
+  _containerView = [(MKAnnotationView *)self _containerView];
   [(MKAnnotationView *)self coordinate];
-  [v7 pointForCoordinate:?];
+  [_containerView pointForCoordinate:?];
   v9 = v8;
   v11 = v10;
 
@@ -336,8 +336,8 @@ uint64_t __59__MKPinAnnotationView__liftForDraggingAfterBounceAnimated___block_i
   v13 = v9 + v12;
   [(MKAnnotationView *)self centerOffset];
   v15 = v11 + v14;
-  v16 = [(MKPinAnnotationView *)self _floatingImage];
-  [(MKAnnotationView *)self setImage:v16];
+  _floatingImage = [(MKPinAnnotationView *)self _floatingImage];
+  [(MKAnnotationView *)self setImage:_floatingImage];
 
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
@@ -349,7 +349,7 @@ uint64_t __59__MKPinAnnotationView__liftForDraggingAfterBounceAnimated___block_i
   v48[1] = 3221225472;
   v48[2] = __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated___block_invoke_2;
   v48[3] = &unk_1E76C8230;
-  v52 = v4;
+  v52 = animatedCopy;
   v48[4] = self;
   v50 = v13;
   v51 = v15;
@@ -357,7 +357,7 @@ uint64_t __59__MKPinAnnotationView__liftForDraggingAfterBounceAnimated___block_i
   v49 = v18;
   v19 = MEMORY[0x1A58E9F30](v48);
   v20 = v19;
-  if (a3)
+  if (position)
   {
     (*(v19 + 16))(v19);
   }
@@ -367,26 +367,26 @@ uint64_t __59__MKPinAnnotationView__liftForDraggingAfterBounceAnimated___block_i
     [(MKPinAnnotationView *)self center];
     v22 = v21;
     v24 = v23;
-    v25 = [(MKPinAnnotationView *)self superview];
-    [(MKPinAnnotationView *)self convertPoint:v25 fromView:v22, v24];
+    superview = [(MKPinAnnotationView *)self superview];
+    [(MKPinAnnotationView *)self convertPoint:superview fromView:v22, v24];
     v27 = v26;
     v29 = v28;
 
     v30 = v29 + -36.0;
     v31 = v27 + tan(0.820304751) * 40.0;
     v32 = v30 + -40.0;
-    v33 = [(MKPinAnnotationView *)self superview];
-    [v33 convertPoint:self fromView:{v27, v30}];
+    superview2 = [(MKPinAnnotationView *)self superview];
+    [superview2 convertPoint:self fromView:{v27, v30}];
     v35 = v34;
     v37 = v36;
 
-    v38 = [(MKPinAnnotationView *)self superview];
-    [v38 convertPoint:self fromView:{v31, v32}];
+    superview3 = [(MKPinAnnotationView *)self superview];
+    [superview3 convertPoint:self fromView:{v31, v32}];
     v40 = v39;
     v42 = v41;
 
     v43 = MEMORY[0x1E69DD250];
-    if (v4)
+    if (animatedCopy)
     {
       v44 = 0.200000003;
     }
@@ -498,33 +498,33 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
   return result;
 }
 
-- (void)_dropFromDistance:(double)a3 maxDistance:(double)a4 withDelay:(double)a5
+- (void)_dropFromDistance:(double)distance maxDistance:(double)maxDistance withDelay:(double)delay
 {
   v55[2] = *MEMORY[0x1E69E9840];
-  v9 = [(MKPinAnnotationView *)self superview];
-  if (v9)
+  superview = [(MKPinAnnotationView *)self superview];
+  if (superview)
   {
     self->_state = 2;
-    v10 = [(MKPinAnnotationView *)self _floatingImage];
-    [(MKAnnotationView *)self setImage:v10];
-    v11 = [(MKPinAnnotationView *)self layer];
-    [v10 size];
+    _floatingImage = [(MKPinAnnotationView *)self _floatingImage];
+    [(MKAnnotationView *)self setImage:_floatingImage];
+    layer = [(MKPinAnnotationView *)self layer];
+    [_floatingImage size];
     v13 = v12;
-    v47 = v10;
-    [v10 size];
-    v46 = v11;
-    [v11 setBounds:{0.0, 0.0, v13, v14}];
-    v15 = [(UIImageView *)self->_shadowView layer];
-    v48 = v9;
-    [v9 insertSubview:self->_shadowView atIndex:0];
+    v47 = _floatingImage;
+    [_floatingImage size];
+    v46 = layer;
+    [layer setBounds:{0.0, 0.0, v13, v14}];
+    layer2 = [(UIImageView *)self->_shadowView layer];
+    v48 = superview;
+    [superview insertSubview:self->_shadowView atIndex:0];
     [(MKPinAnnotationView *)self center];
-    v49 = v15;
-    [v15 setPosition:?];
-    v16 = [(MKAnnotationView *)self _contentLayer];
-    v17 = v16;
-    if (v16)
+    v49 = layer2;
+    [layer2 setPosition:?];
+    _contentLayer = [(MKAnnotationView *)self _contentLayer];
+    v17 = _contentLayer;
+    if (_contentLayer)
     {
-      [v16 affineTransform];
+      [_contentLayer affineTransform];
     }
 
     else
@@ -537,18 +537,18 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
     v51[0] = v52;
     v51[1] = v53;
     v51[2] = v54;
-    [v15 setAffineTransform:v51];
+    [layer2 setAffineTransform:v51];
 
     [(MKAnnotationView *)self setHidden:1];
     [(UIImageView *)self->_shadowView setHidden:1];
     v18 = CACurrentMediaTime();
     UIAnimationDragCoefficient();
-    v20 = v18 + v19 * a5;
-    v21 = fmin((a3 / a4 + (1.0 - a3 / a4) * 0.5) * 0.349999994, 3.0);
+    v20 = v18 + v19 * delay;
+    v21 = fmin((distance / maxDistance + (1.0 - distance / maxDistance) * 0.5) * 0.349999994, 3.0);
     v22 = +[MKPinAnnotationView _dropBounceAnimation];
     [v22 setDuration:v21 + 0.116666667];
-    v23 = [(MKPinAnnotationView *)self layer];
-    [v23 convertTime:0 fromLayer:v20];
+    layer3 = [(MKPinAnnotationView *)self layer];
+    [layer3 convertTime:0 fromLayer:v20];
     [v22 setBeginTime:?];
 
     [v22 setDelegate:self];
@@ -558,41 +558,41 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
     [v24 setTimingFunction:v26];
 
     [v24 setDuration:v21];
-    v27 = [MEMORY[0x1E696AD98] numberWithDouble:-4.0 - a3];
-    [v24 setFromValue:v27];
+    distance = [MEMORY[0x1E696AD98] numberWithDouble:-4.0 - distance];
+    [v24 setFromValue:distance];
 
     [v24 setToValue:&unk_1F16113F8];
     v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
     [v28 addObject:v24];
     v29 = [(MKPinAnnotationView *)self _bounceAnimation:1 withDelay:0 addToLayer:v21];
-    v30 = [(MKPinAnnotationView *)self layer];
-    [v30 convertTime:0 fromLayer:v21 + v20];
+    layer4 = [(MKPinAnnotationView *)self layer];
+    [layer4 convertTime:0 fromLayer:v21 + v20];
     [v29 setBeginTime:?];
 
     v45 = v28;
     [v22 setAnimations:v28];
-    v31 = [MEMORY[0x1E6979308] animation];
+    animation = [MEMORY[0x1E6979308] animation];
     v32 = [MEMORY[0x1E69793D0] functionWithName:v25];
-    [v31 setTimingFunction:v32];
+    [animation setTimingFunction:v32];
 
-    [v31 setDuration:v21];
+    [animation setDuration:v21];
     [v49 convertTime:0 fromLayer:v20];
-    [v31 setBeginTime:?];
-    [v31 setRemovedOnCompletion:1];
+    [animation setBeginTime:?];
+    [animation setRemovedOnCompletion:1];
     v33 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.translation.x"];
-    v34 = [MEMORY[0x1E696AD98] numberWithDouble:-((-4.0 - a3) * tan(0.820304751))];
+    v34 = [MEMORY[0x1E696AD98] numberWithDouble:-((-4.0 - distance) * tan(0.820304751))];
     [v33 setFromValue:v34];
 
     [v33 setToValue:&unk_1F16113F8];
     v35 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.translation.y"];
-    v36 = [MEMORY[0x1E696AD98] numberWithDouble:-4.0 - a3];
-    [v35 setFromValue:v36];
+    distance2 = [MEMORY[0x1E696AD98] numberWithDouble:-4.0 - distance];
+    [v35 setFromValue:distance2];
 
     [v35 setToValue:&unk_1F16113F8];
     v55[0] = v33;
     v55[1] = v35;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:2];
-    [v31 setAnimations:v37];
+    [animation setAnimations:v37];
 
     v38 = v22;
     UIAnimationDragCoefficient();
@@ -610,7 +610,7 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
       [v40 setSpeed:v41];
     }
 
-    v42 = v31;
+    v42 = animation;
     UIAnimationDragCoefficient();
     if (*&v43 != 0.0 && *&v43 != 1.0)
     {
@@ -618,8 +618,8 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
       [v42 setSpeed:v43];
     }
 
-    v44 = [(MKPinAnnotationView *)self layer];
-    [v44 addAnimation:v38 forKey:@"dropGroup"];
+    layer5 = [(MKPinAnnotationView *)self layer];
+    [layer5 addAnimation:v38 forKey:@"dropGroup"];
 
     [(CALayer *)self->super._imageLayer addAnimation:v40 forKey:@"contents"];
     v50[0] = MEMORY[0x1E69E9820];
@@ -629,18 +629,18 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
     v50[4] = self;
     [v49 _mapkit_addAnimation:v42 forKey:@"position" completion:v50];
 
-    v9 = v48;
+    superview = v48;
   }
 }
 
-- (id)_bounceAnimation:(BOOL)a3 withDelay:(double)a4 addToLayer:(BOOL)a5
+- (id)_bounceAnimation:(BOOL)animation withDelay:(double)delay addToLayer:(BOOL)layer
 {
-  v9 = [objc_opt_class() _bounceAnimation];
-  if (v9)
+  _bounceAnimation = [objc_opt_class() _bounceAnimation];
+  if (_bounceAnimation)
   {
-    v10 = v9;
-    [v9 setDelegate:self];
-    if (a3)
+    v10 = _bounceAnimation;
+    [_bounceAnimation setDelegate:self];
+    if (animation)
     {
       [(MKPinAnnotationView *)self _pinBounceImages];
     }
@@ -655,10 +655,10 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
     [v10 setDuration:0.116666667];
     [v10 setRemovedOnCompletion:0];
     [v10 setFillMode:*MEMORY[0x1E69797E8]];
-    if (a5)
+    if (layer)
     {
-      v13 = [(MKPinAnnotationView *)self layer];
-      [v13 convertTime:0 fromLayer:CACurrentMediaTime() + a4];
+      layer = [(MKPinAnnotationView *)self layer];
+      [layer convertTime:0 fromLayer:CACurrentMediaTime() + delay];
       [v10 setBeginTime:?];
 
       [(CALayer *)self->super._imageLayer addAnimation:v10 forKey:@"contents"];
@@ -667,7 +667,7 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
 
     else
     {
-      [v10 setBeginTime:a4];
+      [v10 setBeginTime:delay];
       v11 = [v10 copy];
     }
   }
@@ -689,8 +689,8 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
 
   self->_state = 0;
   [(MKPinAnnotationView *)self _removeAllAnimations];
-  v3 = [(MKPinAnnotationView *)self _image];
-  [(MKAnnotationView *)self setImage:v3];
+  _image = [(MKPinAnnotationView *)self _image];
+  [(MKAnnotationView *)self setImage:_image];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained pinDidDrop:self animated:1];
@@ -698,16 +698,16 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
 
 - (void)_removeAllAnimations
 {
-  v5 = [(MKPinAnnotationView *)self layer];
+  layer = [(MKPinAnnotationView *)self layer];
   [(CALayer *)self->super._imageLayer removeAnimationForKey:@"contents"];
   [(CALayer *)self->super._imageLayer removeAnimationForKey:@"jump"];
-  [v5 removeAnimationForKey:@"dropGroup"];
-  [v5 removeAnimationForKey:@"jump"];
-  v3 = [(UIImageView *)self->_shadowView layer];
-  [v3 removeAnimationForKey:@"position"];
+  [layer removeAnimationForKey:@"dropGroup"];
+  [layer removeAnimationForKey:@"jump"];
+  layer2 = [(UIImageView *)self->_shadowView layer];
+  [layer2 removeAnimationForKey:@"position"];
 
-  v4 = [(UIImageView *)self->_shadowView layer];
-  [v4 removeAnimationForKey:@"jump"];
+  layer3 = [(UIImageView *)self->_shadowView layer];
+  [layer3 removeAnimationForKey:@"jump"];
 }
 
 - (void)_didUpdatePosition
@@ -718,10 +718,10 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
   [(MKPinAnnotationView *)self _updateShadowLayer];
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   [(MKPinAnnotationView *)self _removeAllAnimations];
   if ((self->_state - 3) >= 2)
   {
@@ -741,12 +741,12 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
 
 - (void)_updateShadowLayer
 {
-  v3 = [(UIImageView *)self->_shadowView superview];
+  superview = [(UIImageView *)self->_shadowView superview];
 
-  if (v3)
+  if (superview)
   {
-    v4 = [(MKPinAnnotationView *)self layer];
-    [v4 position];
+    layer = [(MKPinAnnotationView *)self layer];
+    [layer position];
     v6 = v5;
     v8 = v7;
 
@@ -756,48 +756,48 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
       v8 = v8 + -40.0;
     }
 
-    v9 = [(UIImageView *)self->_shadowView layer];
-    [v9 setPosition:{v6, v8}];
+    layer2 = [(UIImageView *)self->_shadowView layer];
+    [layer2 setPosition:{v6, v8}];
   }
 }
 
-- (void)_setRotationRadians:(double)a3 withAnimation:(id)a4
+- (void)_setRotationRadians:(double)radians withAnimation:(id)animation
 {
   v32.receiver = self;
   v32.super_class = MKPinAnnotationView;
-  [(MKAnnotationView *)&v32 _setRotationRadians:a4 withAnimation:a3];
-  v5 = [(UIImageView *)self->_shadowView superview];
-  if (v5)
+  [(MKAnnotationView *)&v32 _setRotationRadians:animation withAnimation:radians];
+  superview = [(UIImageView *)self->_shadowView superview];
+  if (superview)
   {
-    v6 = v5;
+    v6 = superview;
     v31.receiver = self;
     v31.super_class = MKPinAnnotationView;
-    v7 = [(MKAnnotationView *)&v31 dragState];
+    dragState = [(MKAnnotationView *)&v31 dragState];
 
-    if (v7 == 2)
+    if (dragState == 2)
     {
       [(MKPinAnnotationView *)self center];
       v9 = v8;
       v11 = v10;
-      v12 = [(MKPinAnnotationView *)self superview];
-      [(MKPinAnnotationView *)self convertPoint:v12 fromView:v9, v11];
+      superview2 = [(MKPinAnnotationView *)self superview];
+      [(MKPinAnnotationView *)self convertPoint:superview2 fromView:v9, v11];
       v14 = v13;
       v16 = v15;
 
       v17 = v14 + tan(0.820304751) * 40.0;
-      v18 = [(MKPinAnnotationView *)self superview];
-      [v18 convertPoint:self fromView:{v17, v16 + -40.0}];
+      superview3 = [(MKPinAnnotationView *)self superview];
+      [superview3 convertPoint:self fromView:{v17, v16 + -40.0}];
       v20 = v19;
       v22 = v21;
 
-      v23 = [(UIImageView *)self->_shadowView layer];
-      [v23 setPosition:{v20, v22}];
+      layer = [(UIImageView *)self->_shadowView layer];
+      [layer setPosition:{v20, v22}];
 
-      v24 = [(MKAnnotationView *)self _contentLayer];
-      v25 = v24;
-      if (v24)
+      _contentLayer = [(MKAnnotationView *)self _contentLayer];
+      v25 = _contentLayer;
+      if (_contentLayer)
       {
-        [v24 affineTransform];
+        [_contentLayer affineTransform];
       }
 
       else
@@ -807,97 +807,97 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
         v28 = 0u;
       }
 
-      v26 = [(UIImageView *)self->_shadowView layer];
+      layer2 = [(UIImageView *)self->_shadowView layer];
       v27[0] = v28;
       v27[1] = v29;
       v27[2] = v30;
-      [v26 setAffineTransform:v27];
+      [layer2 setAffineTransform:v27];
     }
   }
 }
 
 - (void)_invalidateImage
 {
-  v3 = [(MKPinAnnotationView *)self _image];
-  [(MKAnnotationView *)self setImage:v3];
+  _image = [(MKPinAnnotationView *)self _image];
+  [(MKAnnotationView *)self setImage:_image];
 }
 
 - (id)_pinJumpImages
 {
-  v2 = [(MKPinAnnotationView *)self _pins];
+  _pins = [(MKPinAnnotationView *)self _pins];
   v15 = MEMORY[0x1E695DEC8];
-  v16 = [v2 objectForKey:&unk_1F1611368];
-  v14 = [v16 CGImage];
-  v3 = [v2 objectForKey:&unk_1F16113B0];
-  v4 = [v3 CGImage];
-  v5 = [v2 objectForKey:&unk_1F16113C8];
-  v6 = [v5 CGImage];
-  v7 = [v2 objectForKey:&unk_1F16113E0];
-  v8 = [v7 CGImage];
-  v9 = [v2 objectForKey:&unk_1F16113C8];
-  v10 = [v9 CGImage];
-  v11 = [v2 objectForKey:&unk_1F16113B0];
-  v12 = [v15 arrayWithObjects:{v14, v4, v6, v8, v10, objc_msgSend(v11, "CGImage"), 0}];
+  v16 = [_pins objectForKey:&unk_1F1611368];
+  cGImage = [v16 CGImage];
+  v3 = [_pins objectForKey:&unk_1F16113B0];
+  cGImage2 = [v3 CGImage];
+  v5 = [_pins objectForKey:&unk_1F16113C8];
+  cGImage3 = [v5 CGImage];
+  v7 = [_pins objectForKey:&unk_1F16113E0];
+  cGImage4 = [v7 CGImage];
+  v9 = [_pins objectForKey:&unk_1F16113C8];
+  cGImage5 = [v9 CGImage];
+  v11 = [_pins objectForKey:&unk_1F16113B0];
+  v12 = [v15 arrayWithObjects:{cGImage, cGImage2, cGImage3, cGImage4, cGImage5, objc_msgSend(v11, "CGImage"), 0}];
 
   return v12;
 }
 
 - (id)_pinBounceImages
 {
-  v2 = [(MKPinAnnotationView *)self _pins];
+  _pins = [(MKPinAnnotationView *)self _pins];
   v15 = MEMORY[0x1E695DEC8];
-  v16 = [v2 objectForKey:&unk_1F1611368];
-  v14 = [v16 CGImage];
-  v3 = [v2 objectForKey:&unk_1F16113B0];
-  v4 = [v3 CGImage];
-  v5 = [v2 objectForKey:&unk_1F16113C8];
-  v6 = [v5 CGImage];
-  v7 = [v2 objectForKey:&unk_1F16113E0];
-  v8 = [v7 CGImage];
-  v9 = [v2 objectForKey:&unk_1F16113C8];
-  v10 = [v9 CGImage];
-  v11 = [v2 objectForKey:&unk_1F16113B0];
-  v12 = [v15 arrayWithObjects:{v14, v4, v6, v8, v10, objc_msgSend(v11, "CGImage"), 0}];
+  v16 = [_pins objectForKey:&unk_1F1611368];
+  cGImage = [v16 CGImage];
+  v3 = [_pins objectForKey:&unk_1F16113B0];
+  cGImage2 = [v3 CGImage];
+  v5 = [_pins objectForKey:&unk_1F16113C8];
+  cGImage3 = [v5 CGImage];
+  v7 = [_pins objectForKey:&unk_1F16113E0];
+  cGImage4 = [v7 CGImage];
+  v9 = [_pins objectForKey:&unk_1F16113C8];
+  cGImage5 = [v9 CGImage];
+  v11 = [_pins objectForKey:&unk_1F16113B0];
+  v12 = [v15 arrayWithObjects:{cGImage, cGImage2, cGImage3, cGImage4, cGImage5, objc_msgSend(v11, "CGImage"), 0}];
 
   return v12;
 }
 
 - (id)_floatingImage
 {
-  v2 = [(MKPinAnnotationView *)self _pins];
-  v3 = [v2 objectForKey:&unk_1F1611398];
+  _pins = [(MKPinAnnotationView *)self _pins];
+  v3 = [_pins objectForKey:&unk_1F1611398];
 
   return v3;
 }
 
 - (id)_highlightedImage
 {
-  v2 = [(MKPinAnnotationView *)self _pins];
-  v3 = [v2 objectForKey:&unk_1F1611380];
+  _pins = [(MKPinAnnotationView *)self _pins];
+  v3 = [_pins objectForKey:&unk_1F1611380];
 
   return v3;
 }
 
 - (id)_image
 {
-  v2 = [(MKPinAnnotationView *)self _pins];
-  v3 = [v2 objectForKey:&unk_1F1611368];
+  _pins = [(MKPinAnnotationView *)self _pins];
+  v3 = [_pins objectForKey:&unk_1F1611368];
 
   return v3;
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v17 = a4;
-  v5 = [(MKPinAnnotationView *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
-  if (v6 == [v17 userInterfaceIdiom])
+  collectionCopy = collection;
+  traitCollection = [(MKPinAnnotationView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  if (userInterfaceIdiom == [collectionCopy userInterfaceIdiom])
   {
-    v7 = [(MKPinAnnotationView *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
-    v9 = [v17 userInterfaceStyle];
+    traitCollection2 = [(MKPinAnnotationView *)self traitCollection];
+    userInterfaceStyle = [traitCollection2 userInterfaceStyle];
+    userInterfaceStyle2 = [collectionCopy userInterfaceStyle];
 
-    if (v8 == v9)
+    if (userInterfaceStyle == userInterfaceStyle2)
     {
       goto LABEL_11;
     }
@@ -909,22 +909,22 @@ uint64_t __68__MKPinAnnotationView__dropAfterDraggingAndRevertPosition_animated_
 
   [(MKPinAnnotationView *)self _removeAllAnimations];
   [(MKPinAnnotationView *)self _invalidateImage];
-  v10 = [(MKPinAnnotationView *)self traitCollection];
-  v11 = [v10 userInterfaceIdiom];
-  v12 = [v17 userInterfaceIdiom];
+  traitCollection3 = [(MKPinAnnotationView *)self traitCollection];
+  userInterfaceIdiom2 = [traitCollection3 userInterfaceIdiom];
+  userInterfaceIdiom3 = [collectionCopy userInterfaceIdiom];
 
-  if (v11 != v12)
+  if (userInterfaceIdiom2 != userInterfaceIdiom3)
   {
-    v13 = [(MKPinAnnotationView *)self traitCollection];
-    v14 = [v13 userInterfaceIdiom];
+    traitCollection4 = [(MKPinAnnotationView *)self traitCollection];
+    userInterfaceIdiom4 = [traitCollection4 userInterfaceIdiom];
     v15 = 8.0;
-    if (v14 == 3)
+    if (userInterfaceIdiom4 == 3)
     {
       v15 = 7.5;
     }
 
     v16 = -15.0;
-    if (v14 == 3)
+    if (userInterfaceIdiom4 == 3)
     {
       v16 = -13.5;
     }
@@ -937,26 +937,26 @@ LABEL_11:
 
 - (id)_pins
 {
-  v3 = [(MKAnnotationView *)self _mapType];
-  v4 = [(MKPinAnnotationView *)self pinTintColor];
-  v5 = [(MKPinAnnotationView *)self traitCollection];
-  v6 = [MKPinAnnotationView _pinsWithMapType:v3 pinColor:v4 traits:v5];
+  _mapType = [(MKAnnotationView *)self _mapType];
+  pinTintColor = [(MKPinAnnotationView *)self pinTintColor];
+  traitCollection = [(MKPinAnnotationView *)self traitCollection];
+  v6 = [MKPinAnnotationView _pinsWithMapType:_mapType pinColor:pinTintColor traits:traitCollection];
 
   return v6;
 }
 
 - (id)description
 {
-  v3 = [(MKPinAnnotationView *)self superview];
-  v4 = [v3 superview];
+  superview = [(MKPinAnnotationView *)self superview];
+  v3Superview = [superview superview];
 
   [(MKPinAnnotationView *)self bounds];
-  [v4 convertRect:self fromView:?];
+  [v3Superview convertRect:self fromView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 bounds];
+  [v3Superview bounds];
   v29.origin.x = v13;
   v29.origin.y = v14;
   v29.size.width = v15;
@@ -970,21 +970,21 @@ LABEL_11:
   v26.receiver = self;
   v26.super_class = MKPinAnnotationView;
   v19 = [(MKPinAnnotationView *)&v26 description];
-  v20 = [(MKAnnotationView *)self annotation];
-  [v20 coordinate];
+  annotation = [(MKAnnotationView *)self annotation];
+  [annotation coordinate];
   v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%+.8f, %+.8f", v21, v22];
   v24 = [v18 stringWithFormat:@"%@ visible:%d %@", v19, v17, v23];
 
   return v24;
 }
 
-- (void)_setMapType:(unint64_t)a3
+- (void)_setMapType:(unint64_t)type
 {
-  if ([(MKAnnotationView *)self _mapType]!= a3)
+  if ([(MKAnnotationView *)self _mapType]!= type)
   {
     v5.receiver = self;
     v5.super_class = MKPinAnnotationView;
-    [(MKAnnotationView *)&v5 _setMapType:a3];
+    [(MKAnnotationView *)&v5 _setMapType:type];
     [(MKPinAnnotationView *)self _removeAllAnimations];
     [(MKPinAnnotationView *)self _invalidateImage];
   }
@@ -1025,16 +1025,16 @@ LABEL_11:
   {
     if (v8)
     {
-      v6 = v8;
+      redPinColor = v8;
     }
 
     else
     {
-      v6 = [objc_opt_class() redPinColor];
+      redPinColor = [objc_opt_class() redPinColor];
     }
 
     v7 = self->_pinTintColor;
-    self->_pinTintColor = v6;
+    self->_pinTintColor = redPinColor;
 
     [(MKPinAnnotationView *)self _removeAllAnimations];
     [(MKPinAnnotationView *)self _invalidateImage];
@@ -1044,18 +1044,18 @@ LABEL_11:
 
 - (MKPinAnnotationColor)pinColor
 {
-  v3 = [(MKPinAnnotationView *)self pinTintColor];
-  v4 = [objc_opt_class() greenPinColor];
-  v5 = [v3 isEqual:v4];
+  pinTintColor = [(MKPinAnnotationView *)self pinTintColor];
+  greenPinColor = [objc_opt_class() greenPinColor];
+  v5 = [pinTintColor isEqual:greenPinColor];
 
   if (v5)
   {
     return 1;
   }
 
-  v7 = [(MKPinAnnotationView *)self pinTintColor];
-  v8 = [objc_opt_class() purplePinColor];
-  v9 = [v7 isEqual:v8];
+  pinTintColor2 = [(MKPinAnnotationView *)self pinTintColor];
+  purplePinColor = [objc_opt_class() purplePinColor];
+  v9 = [pinTintColor2 isEqual:purplePinColor];
 
   if (v9)
   {
@@ -1073,7 +1073,7 @@ LABEL_11:
   v5 = objc_opt_class();
   if (pinColor == MKPinAnnotationColorPurple)
   {
-    v6 = [v5 purplePinColor];
+    purplePinColor = [v5 purplePinColor];
   }
 
   else
@@ -1087,29 +1087,29 @@ LABEL_11:
     {
       [v5 redPinColor];
     }
-    v6 = ;
+    purplePinColor = ;
   }
 
-  v7 = v6;
-  [(MKPinAnnotationView *)self setPinTintColor:v6];
+  v7 = purplePinColor;
+  [(MKPinAnnotationView *)self setPinTintColor:purplePinColor];
 }
 
-- (MKPinAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (MKPinAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
   v23[2] = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = MKPinAnnotationView;
-  v4 = [(MKAnnotationView *)&v22 initWithAnnotation:a3 reuseIdentifier:a4];
+  v4 = [(MKAnnotationView *)&v22 initWithAnnotation:annotation reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_class();
-    v6 = [v5 redPinColor];
+    redPinColor = [v5 redPinColor];
     pinTintColor = v4->_pinTintColor;
-    v4->_pinTintColor = v6;
+    v4->_pinTintColor = redPinColor;
 
     v8 = objc_alloc(MEMORY[0x1E69DCAE0]);
-    v9 = [v5 _shadowImage];
-    v10 = [v8 initWithImage:v9];
+    _shadowImage = [v5 _shadowImage];
+    v10 = [v8 initWithImage:_shadowImage];
     shadowView = v4->_shadowView;
     v4->_shadowView = v10;
 
@@ -1120,22 +1120,22 @@ LABEL_11:
     [(MKAnnotationView *)v4 setLeftCalloutOffset:?];
     [v5 _rightCalloutOffset];
     [(MKAnnotationView *)v4 setRightCalloutOffset:?];
-    v12 = [(MKPinAnnotationView *)v4 layer];
-    [v12 setHitOffset:{-8.0, -2.0}];
-    [v12 setHitOutset:{0.0, 5.0}];
-    v13 = [(MKPinAnnotationView *)v4 _image];
-    [(MKAnnotationView *)v4 setImage:v13];
+    layer = [(MKPinAnnotationView *)v4 layer];
+    [layer setHitOffset:{-8.0, -2.0}];
+    [layer setHitOutset:{0.0, 5.0}];
+    _image = [(MKPinAnnotationView *)v4 _image];
+    [(MKAnnotationView *)v4 setImage:_image];
 
-    v14 = [(MKPinAnnotationView *)v4 traitCollection];
-    v15 = [v14 userInterfaceIdiom];
+    traitCollection = [(MKPinAnnotationView *)v4 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
     v16 = 8.0;
-    if (v15 == 3)
+    if (userInterfaceIdiom == 3)
     {
       v16 = 7.5;
     }
 
     v17 = -15.0;
-    if (v15 == 3)
+    if (userInterfaceIdiom == 3)
     {
       v17 = -13.5;
     }
@@ -1222,12 +1222,12 @@ LABEL_11:
   return v2;
 }
 
-+ (id)_pinsWithMapType:(unint64_t)a3 pinColor:(id)a4 traits:(id)a5
++ (id)_pinsWithMapType:(unint64_t)type pinColor:(id)color traits:(id)traits
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 _imageCache];
-  v11 = [v10 pinsWithMapType:a3 pinColor:v8 traits:v9];
+  colorCopy = color;
+  traitsCopy = traits;
+  _imageCache = [self _imageCache];
+  v11 = [_imageCache pinsWithMapType:type pinColor:colorCopy traits:traitsCopy];
   v12 = v11;
   if (v11)
   {
@@ -1239,7 +1239,7 @@ LABEL_11:
     v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:6];
     for (i = 0; i != 6; ++i)
     {
-      v15 = [a1 _imageForState:i mapType:a3 pinColor:v8 traits:v9];
+      v15 = [self _imageForState:i mapType:type pinColor:colorCopy traits:traitsCopy];
       if (v15)
       {
         v16 = [MEMORY[0x1E696AD98] numberWithInteger:i];
@@ -1247,7 +1247,7 @@ LABEL_11:
       }
     }
 
-    [v10 setPins:v13 forMapType:a3 pinColor:v8 traits:v9];
+    [_imageCache setPins:v13 forMapType:type pinColor:colorCopy traits:traitsCopy];
   }
 
   return v13;
@@ -1272,12 +1272,12 @@ void __34__MKPinAnnotationView__imageCache__block_invoke()
   _imageCache_imageCache = v0;
 }
 
-+ (id)_imageForState:(int64_t)a3 mapType:(unint64_t)a4 pinColor:(id)a5 traits:(id)a6
++ (id)_imageForState:(int64_t)state mapType:(unint64_t)type pinColor:(id)color traits:(id)traits
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [a1 _imageForLayer:0 state:a3 mapType:a4 traits:v11];
-  v13 = [a1 _imageForLayer:1 state:a3 mapType:a4 traits:v11];
+  colorCopy = color;
+  traitsCopy = traits;
+  v12 = [self _imageForLayer:0 state:state mapType:type traits:traitsCopy];
+  v13 = [self _imageForLayer:1 state:state mapType:type traits:traitsCopy];
   v14 = v13;
   v15 = 0;
   if (v12 && v13)
@@ -1286,17 +1286,17 @@ void __34__MKPinAnnotationView__imageCache__block_invoke()
     v22 = 3221225472;
     v23 = __62__MKPinAnnotationView__imageForState_mapType_pinColor_traits___block_invoke;
     v24 = &unk_1E76C81E0;
-    v25 = v10;
-    v26 = a3;
+    v25 = colorCopy;
+    stateCopy = state;
     v16 = MEMORY[0x1A58E9F30](&v21);
-    v17 = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
-    [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v11];
+    _currentTraitCollection = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
+    [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:traitsCopy];
     v18 = v16[2](v16, [v12 CGImage], objc_msgSend(v14, "CGImage"));
     v19 = objc_alloc(MEMORY[0x1E69DCAB8]);
     [v12 scale];
     v15 = [v19 initWithCGImage:v18 scale:0 orientation:?];
     CGImageRelease(v18);
-    [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v17];
+    [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:_currentTraitCollection];
   }
 
   return v15;
@@ -1367,19 +1367,19 @@ CGImageRef __62__MKPinAnnotationView__imageForState_mapType_pinColor_traits___bl
   return v14;
 }
 
-+ (id)_imageForLayer:(int64_t)a3 state:(int64_t)a4 mapType:(unint64_t)a5 traits:(id)a6
++ (id)_imageForLayer:(int64_t)layer state:(int64_t)state mapType:(unint64_t)type traits:(id)traits
 {
-  v9 = a6;
+  traitsCopy = traits;
   v10 = [MEMORY[0x1E696AD60] stringWithString:@"pin"];
   v11 = v10;
-  if ((a4 - 1) <= 3)
+  if ((state - 1) <= 3)
   {
-    [v10 appendString:off_1E76C8250[a4 - 1]];
+    [v10 appendString:off_1E76C8250[state - 1]];
   }
 
-  if (a3)
+  if (layer)
   {
-    if (a3 != 1)
+    if (layer != 1)
     {
       goto LABEL_8;
     }
@@ -1394,17 +1394,17 @@ CGImageRef __62__MKPinAnnotationView__imageForState_mapType_pinColor_traits___bl
 
   [v11 appendString:v12];
 LABEL_8:
-  if (a5 - 1 <= 3)
+  if (type - 1 <= 3)
   {
     [v11 appendString:@"_sat"];
   }
 
-  if ([v9 userInterfaceIdiom] == 3)
+  if ([traitsCopy userInterfaceIdiom] == 3)
   {
     [v11 appendString:@"_car"];
   }
 
-  v13 = [MEMORY[0x1E69DCAB8] _mapkit_imageNamed:v11 compatibleWithTraitCollection:v9];
+  v13 = [MEMORY[0x1E69DCAB8] _mapkit_imageNamed:v11 compatibleWithTraitCollection:traitsCopy];
 
   return v13;
 }
@@ -1414,11 +1414,11 @@ LABEL_8:
   v2 = _dropBounceAnimation__pinDropBounceAnimation;
   if (!_dropBounceAnimation__pinDropBounceAnimation)
   {
-    v3 = [MEMORY[0x1E6979308] animation];
-    [v3 setFillMode:*MEMORY[0x1E69797E8]];
-    [v3 setRemovedOnCompletion:0];
+    animation = [MEMORY[0x1E6979308] animation];
+    [animation setFillMode:*MEMORY[0x1E69797E8]];
+    [animation setRemovedOnCompletion:0];
     v4 = _dropBounceAnimation__pinDropBounceAnimation;
-    _dropBounceAnimation__pinDropBounceAnimation = v3;
+    _dropBounceAnimation__pinDropBounceAnimation = animation;
 
     v2 = _dropBounceAnimation__pinDropBounceAnimation;
   }
@@ -1433,14 +1433,14 @@ LABEL_8:
   v2 = _bounceAnimation__pinBounceAnimation;
   if (!_bounceAnimation__pinBounceAnimation)
   {
-    v3 = [MEMORY[0x1E6979390] animation];
-    [v3 setKeyPath:@"contents"];
-    [v3 setCalculationMode:*MEMORY[0x1E69795A0]];
+    animation = [MEMORY[0x1E6979390] animation];
+    [animation setKeyPath:@"contents"];
+    [animation setCalculationMode:*MEMORY[0x1E69795A0]];
     LODWORD(v4) = 1.0;
-    [v3 setRepeatCount:v4];
-    [v3 setDuration:0.116666667];
+    [animation setRepeatCount:v4];
+    [animation setDuration:0.116666667];
     v5 = _bounceAnimation__pinBounceAnimation;
-    _bounceAnimation__pinBounceAnimation = v3;
+    _bounceAnimation__pinBounceAnimation = animation;
 
     v2 = _bounceAnimation__pinBounceAnimation;
   }
@@ -1450,10 +1450,10 @@ LABEL_8:
   return v6;
 }
 
-+ (CGRect)_pinFrameForPosition:(CGPoint)a3
++ (CGRect)_pinFrameForPosition:(CGPoint)position
 {
-  v3 = a3.x + -8.0;
-  v4 = a3.y + -35.0;
+  v3 = position.x + -8.0;
+  v4 = position.y + -35.0;
   v5 = 35.0;
   v6 = 15.0;
   result.size.height = v5;

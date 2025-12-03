@@ -1,9 +1,9 @@
 @interface SBNetworkReselectionController
 + (SBNetworkReselectionController)sharedController;
 - (SBNetworkReselectionController)init;
-- (void)_handleNetworkReselectionNeeded:(BOOL)a3 forSlot:(int64_t)a4;
+- (void)_handleNetworkReselectionNeeded:(BOOL)needed forSlot:(int64_t)slot;
 - (void)dealloc;
-- (void)subscriptionInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4;
+- (void)subscriptionInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot;
 @end
 
 @implementation SBNetworkReselectionController
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __50__SBNetworkReselectionController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_sOnceToken != -1)
   {
     dispatch_once(&sharedController_sOnceToken, block);
@@ -39,20 +39,20 @@ void __50__SBNetworkReselectionController_sharedController__block_invoke(uint64_
   v2 = [(SBNetworkReselectionController *)&v9 init];
   if (v2)
   {
-    v3 = [SBApp telephonyStateProvider];
-    [v3 addObserver:v2];
-    v4 = [v3 subscriptionInfoForSlot:1];
-    v5 = [v4 isNetworkReselectionNeeded];
+    telephonyStateProvider = [SBApp telephonyStateProvider];
+    [telephonyStateProvider addObserver:v2];
+    v4 = [telephonyStateProvider subscriptionInfoForSlot:1];
+    isNetworkReselectionNeeded = [v4 isNetworkReselectionNeeded];
 
-    if (v5)
+    if (isNetworkReselectionNeeded)
     {
       [(SBNetworkReselectionController *)v2 _handleNetworkReselectionNeeded:1 forSlot:1];
     }
 
-    v6 = [v3 subscriptionInfoForSlot:2];
-    v7 = [v6 isNetworkReselectionNeeded];
+    v6 = [telephonyStateProvider subscriptionInfoForSlot:2];
+    isNetworkReselectionNeeded2 = [v6 isNetworkReselectionNeeded];
 
-    if (v7)
+    if (isNetworkReselectionNeeded2)
     {
       [(SBNetworkReselectionController *)v2 _handleNetworkReselectionNeeded:1 forSlot:2];
     }
@@ -63,24 +63,24 @@ void __50__SBNetworkReselectionController_sharedController__block_invoke(uint64_
 
 - (void)dealloc
 {
-  v3 = [SBApp telephonyStateProvider];
-  [v3 removeObserver:self];
+  telephonyStateProvider = [SBApp telephonyStateProvider];
+  [telephonyStateProvider removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBNetworkReselectionController;
   [(SBNetworkReselectionController *)&v4 dealloc];
 }
 
-- (void)subscriptionInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4
+- (void)subscriptionInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot
 {
-  v6 = [a3 subscriptionInfoForSlot:a4];
+  v6 = [provider subscriptionInfoForSlot:slot];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__SBNetworkReselectionController_subscriptionInfoDidChangeForStateProvider_slot___block_invoke;
   block[3] = &unk_2783AB2A8;
   block[4] = self;
   v9 = v6;
-  v10 = a4;
+  slotCopy = slot;
   v7 = v6;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
@@ -94,13 +94,13 @@ uint64_t __81__SBNetworkReselectionController_subscriptionInfoDidChangeForStateP
   return [v2 _handleNetworkReselectionNeeded:v3 forSlot:v4];
 }
 
-- (void)_handleNetworkReselectionNeeded:(BOOL)a3 forSlot:(int64_t)a4
+- (void)_handleNetworkReselectionNeeded:(BOOL)needed forSlot:(int64_t)slot
 {
-  v5 = a3;
+  neededCopy = needed;
   v28 = *MEMORY[0x277D85DE8];
   v6 = +[SBAlertItemsController sharedInstance];
   v7 = 0uLL;
-  if (v5)
+  if (neededCopy)
   {
     v24 = 0uLL;
     v25 = 0uLL;
@@ -121,7 +121,7 @@ LABEL_4:
           objc_enumerationMutation(v8);
         }
 
-        if ([*(*(&v22 + 1) + 8 * v12) slot] == a4)
+        if ([*(*(&v22 + 1) + 8 * v12) slot] == slot)
         {
           break;
         }
@@ -143,7 +143,7 @@ LABEL_4:
     {
 LABEL_10:
 
-      v8 = [[SBNetworkReselectionAlertItem alloc] initWithSlot:a4];
+      v8 = [[SBNetworkReselectionAlertItem alloc] initWithSlot:slot];
       [v6 activateAlertItem:v8];
     }
   }
@@ -170,7 +170,7 @@ LABEL_10:
           }
 
           v17 = *(*(&v18 + 1) + 8 * i);
-          if ([v17 slot] == a4)
+          if ([v17 slot] == slot)
           {
             [v6 deactivateAlertItem:v17];
           }

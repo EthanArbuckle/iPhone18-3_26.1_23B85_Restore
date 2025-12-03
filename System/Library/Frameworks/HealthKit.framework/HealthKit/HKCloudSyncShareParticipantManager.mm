@@ -1,11 +1,11 @@
 @interface HKCloudSyncShareParticipantManager
 + (id)serverInterface;
 + (id)taskIdentifier;
-- (HKCloudSyncShareParticipantManager)initWithHealthStore:(id)a3;
+- (HKCloudSyncShareParticipantManager)initWithHealthStore:(id)store;
 - (int64_t)lastKnownParticipantSharingStatus;
-- (void)fetchAllShareParticipantEmailAddressesForSharingType:(unint64_t)a3 completion:(id)a4;
-- (void)revokeAccessForAllShareParticipantsForSharingType:(unint64_t)a3 completion:(id)a4;
-- (void)tearDownHealthSharingForProfile:(id)a3 completion:(id)a4;
+- (void)fetchAllShareParticipantEmailAddressesForSharingType:(unint64_t)type completion:(id)completion;
+- (void)revokeAccessForAllShareParticipantsForSharingType:(unint64_t)type completion:(id)completion;
+- (void)tearDownHealthSharingForProfile:(id)profile completion:(id)completion;
 @end
 
 @implementation HKCloudSyncShareParticipantManager
@@ -49,20 +49,20 @@ void __71__HKCloudSyncShareParticipantManager_lastKnownParticipantSharingStatus_
   }
 }
 
-- (HKCloudSyncShareParticipantManager)initWithHealthStore:(id)a3
+- (HKCloudSyncShareParticipantManager)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = HKCloudSyncShareParticipantManager;
   v6 = [(HKCloudSyncShareParticipantManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = [HKTaskServerProxyProvider alloc];
-    v9 = [objc_opt_class() taskIdentifier];
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [(HKTaskServerProxyProvider *)v8 initWithHealthStore:v5 taskIdentifier:v9 exportedObject:v7 taskUUID:v10];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v11 = [(HKTaskServerProxyProvider *)v8 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v7 taskUUID:uUID];
     proxyProvider = v7->_proxyProvider;
     v7->_proxyProvider = v11;
 
@@ -90,22 +90,22 @@ void __71__HKCloudSyncShareParticipantManager_lastKnownParticipantSharingStatus_
   return v2;
 }
 
-- (void)fetchAllShareParticipantEmailAddressesForSharingType:(unint64_t)a3 completion:(id)a4
+- (void)fetchAllShareParticipantEmailAddressesForSharingType:(unint64_t)type completion:(id)completion
 {
-  v7 = a4;
-  if (!v7)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncShareParticipantManager fetchAllShareParticipantEmailAddressesForSharingType:a2 completion:self];
   }
 
-  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:v7];
+  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __102__HKCloudSyncShareParticipantManager_fetchAllShareParticipantEmailAddressesForSharingType_completion___block_invoke;
   v13[3] = &unk_1E7379D00;
-  v15 = a3;
+  typeCopy = type;
   v14 = v8;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -116,22 +116,22 @@ void __71__HKCloudSyncShareParticipantManager_lastKnownParticipantSharingStatus_
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)revokeAccessForAllShareParticipantsForSharingType:(unint64_t)a3 completion:(id)a4
+- (void)revokeAccessForAllShareParticipantsForSharingType:(unint64_t)type completion:(id)completion
 {
-  v7 = a4;
-  if (!v7)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncShareParticipantManager revokeAccessForAllShareParticipantsForSharingType:a2 completion:self];
   }
 
-  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v7];
+  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __99__HKCloudSyncShareParticipantManager_revokeAccessForAllShareParticipantsForSharingType_completion___block_invoke;
   v13[3] = &unk_1E7379D00;
-  v15 = a3;
+  typeCopy = type;
   v14 = v8;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -142,23 +142,23 @@ void __71__HKCloudSyncShareParticipantManager_lastKnownParticipantSharingStatus_
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)tearDownHealthSharingForProfile:(id)a3 completion:(id)a4
+- (void)tearDownHealthSharingForProfile:(id)profile completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  profileCopy = profile;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKCloudSyncShareParticipantManager tearDownHealthSharingForProfile:a2 completion:self];
   }
 
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v8];
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __81__HKCloudSyncShareParticipantManager_tearDownHealthSharingForProfile_completion___block_invoke;
   v15[3] = &unk_1E7379D28;
-  v16 = v7;
+  v16 = profileCopy;
   v17 = v9;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -166,7 +166,7 @@ void __71__HKCloudSyncShareParticipantManager_lastKnownParticipantSharingStatus_
   v13[3] = &unk_1E7376960;
   v14 = v17;
   v11 = v17;
-  v12 = v7;
+  v12 = profileCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v15 errorHandler:v13];
 }
 

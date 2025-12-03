@@ -1,5 +1,5 @@
 @interface GDRankedPersonEntityTags
-- (GDRankedPersonEntityTags)initWithIDValue:(int64_t)a3 scoredPersonEntityTags:(id)a4 entityRelevanceInferenceEventId:(int64_t)a5;
+- (GDRankedPersonEntityTags)initWithIDValue:(int64_t)value scoredPersonEntityTags:(id)tags entityRelevanceInferenceEventId:(int64_t)id;
 - (NSArray)scoredPersonEntityTags;
 @end
 
@@ -13,8 +13,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(GDScoreRankedPersonEntityTagsInner *)self->inner scoredPersonEntityTags];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  scoredPersonEntityTags = [(GDScoreRankedPersonEntityTagsInner *)self->inner scoredPersonEntityTags];
+  v5 = [scoredPersonEntityTags countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -25,18 +25,18 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(scoredPersonEntityTags);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         v10 = [GDScoredPersonEntityTagType alloc];
-        v11 = [v9 gdTag];
+        gdTag = [v9 gdTag];
         [v9 score];
-        v12 = [(GDScoredPersonEntityTagType *)v10 initWithTag:v11 score:?];
+        v12 = [(GDScoredPersonEntityTagType *)v10 initWithTag:gdTag score:?];
         [v3 addObject:v12];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [scoredPersonEntityTags countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -47,22 +47,22 @@
   return v3;
 }
 
-- (GDRankedPersonEntityTags)initWithIDValue:(int64_t)a3 scoredPersonEntityTags:(id)a4 entityRelevanceInferenceEventId:(int64_t)a5
+- (GDRankedPersonEntityTags)initWithIDValue:(int64_t)value scoredPersonEntityTags:(id)tags entityRelevanceInferenceEventId:(int64_t)id
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  tagsCopy = tags;
   v28.receiver = self;
   v28.super_class = GDRankedPersonEntityTags;
   v8 = [(GDRankedPersonEntityTags *)&v28 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(tagsCopy, "count")}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v23 = v7;
-    v10 = v7;
+    v23 = tagsCopy;
+    v10 = tagsCopy;
     v11 = [v10 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v11)
     {
@@ -91,11 +91,11 @@
       while (v12);
     }
 
-    v19 = [[GDScoreRankedPersonEntityTagsInner alloc] initWithIdValue:a3 scoredPersonEntityTags:v9 inferenceEventIdValue:0];
+    v19 = [[GDScoreRankedPersonEntityTagsInner alloc] initWithIdValue:value scoredPersonEntityTags:v9 inferenceEventIdValue:0];
     inner = v8->inner;
     v8->inner = v19;
 
-    v7 = v23;
+    tagsCopy = v23;
   }
 
   v21 = *MEMORY[0x1E69E9840];

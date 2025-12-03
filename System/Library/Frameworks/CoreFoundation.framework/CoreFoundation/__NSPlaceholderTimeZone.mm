@@ -1,32 +1,32 @@
 @interface __NSPlaceholderTimeZone
-- (BOOL)isDaylightSavingTimeForDate:(id)a3;
-- (__NSPlaceholderTimeZone)initWithName:(id)a3;
-- (__NSPlaceholderTimeZone)initWithName:(id)a3 data:(id)a4;
-- (double)daylightSavingTimeOffsetForDate:(id)a3;
-- (id)abbreviationForDate:(id)a3;
+- (BOOL)isDaylightSavingTimeForDate:(id)date;
+- (__NSPlaceholderTimeZone)initWithName:(id)name;
+- (__NSPlaceholderTimeZone)initWithName:(id)name data:(id)data;
+- (double)daylightSavingTimeOffsetForDate:(id)date;
+- (id)abbreviationForDate:(id)date;
 - (id)data;
 - (id)name;
-- (id)nextDaylightSavingTimeTransitionAfterDate:(id)a3;
-- (int64_t)secondsFromGMTForDate:(id)a3;
+- (id)nextDaylightSavingTimeTransitionAfterDate:(id)date;
+- (int64_t)secondsFromGMTForDate:(id)date;
 @end
 
 @implementation __NSPlaceholderTimeZone
 
-- (__NSPlaceholderTimeZone)initWithName:(id)a3 data:(id)a4
+- (__NSPlaceholderTimeZone)initWithName:(id)name data:(id)data
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  v4 = [NSTimeZone _timeZoneWithName:a3 data:a4];
+  v4 = [NSTimeZone _timeZoneWithName:name data:data];
 
   return v4;
 }
 
-- (__NSPlaceholderTimeZone)initWithName:(id)a3
+- (__NSPlaceholderTimeZone)initWithName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
@@ -54,7 +54,7 @@
   objc_exception_throw(v7);
 }
 
-- (int64_t)secondsFromGMTForDate:(id)a3
+- (int64_t)secondsFromGMTForDate:(id)date
 {
   v5 = __CFLookUpClass("NSTimeZone");
   v6 = __CFFullMethodName(v5, self, a2);
@@ -63,7 +63,7 @@
   objc_exception_throw(v8);
 }
 
-- (id)abbreviationForDate:(id)a3
+- (id)abbreviationForDate:(id)date
 {
   v5 = __CFLookUpClass("NSTimeZone");
   v6 = __CFFullMethodName(v5, self, a2);
@@ -72,7 +72,7 @@
   objc_exception_throw(v8);
 }
 
-- (BOOL)isDaylightSavingTimeForDate:(id)a3
+- (BOOL)isDaylightSavingTimeForDate:(id)date
 {
   v5 = __CFLookUpClass("NSTimeZone");
   v6 = __CFFullMethodName(v5, self, a2);
@@ -81,7 +81,7 @@
   objc_exception_throw(v8);
 }
 
-- (double)daylightSavingTimeOffsetForDate:(id)a3
+- (double)daylightSavingTimeOffsetForDate:(id)date
 {
   v5 = __CFLookUpClass("NSTimeZone");
   v6 = __CFFullMethodName(v5, self, a2);
@@ -90,7 +90,7 @@
   objc_exception_throw(v8);
 }
 
-- (id)nextDaylightSavingTimeTransitionAfterDate:(id)a3
+- (id)nextDaylightSavingTimeTransitionAfterDate:(id)date
 {
   v5 = __CFLookUpClass("NSTimeZone");
   v6 = __CFFullMethodName(v5, self, a2);

@@ -1,31 +1,31 @@
 @interface VCCaptionsTranscriptionSegment
-- (BOOL)isEqual:(id)a3;
-- (VCCaptionsTranscriptionSegment)initWithCoder:(id)a3;
-- (VCCaptionsTranscriptionSegment)initWithConfidence:(unsigned int)a3 text:(id)a4 range:(_NSRange)a5;
+- (BOOL)isEqual:(id)equal;
+- (VCCaptionsTranscriptionSegment)initWithCoder:(id)coder;
+- (VCCaptionsTranscriptionSegment)initWithConfidence:(unsigned int)confidence text:(id)text range:(_NSRange)range;
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VCCaptionsTranscriptionSegment
 
-- (VCCaptionsTranscriptionSegment)initWithConfidence:(unsigned int)a3 text:(id)a4 range:(_NSRange)a5
+- (VCCaptionsTranscriptionSegment)initWithConfidence:(unsigned int)confidence text:(id)text range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = VCCaptionsTranscriptionSegment;
   v9 = [(VCCaptionsTranscriptionSegment *)&v11 init];
   if (v9)
   {
-    v9->_text = [a4 copy];
+    v9->_text = [text copy];
     v9->_range.location = location;
     v9->_range.length = length;
-    v9->_confidence = a3;
-    if (a3 >= 0x65)
+    v9->_confidence = confidence;
+    if (confidence >= 0x65)
     {
 
       return 0;
@@ -44,9 +44,9 @@
   [(VCCaptionsTranscriptionSegment *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [VCCaptionsTranscriptionSegment allocWithZone:a3];
+  v4 = [VCCaptionsTranscriptionSegment allocWithZone:zone];
   confidence = self->_confidence;
   text = self->_text;
   location = self->_range.location;
@@ -55,17 +55,17 @@
   return [(VCCaptionsTranscriptionSegment *)v4 initWithConfidence:confidence text:text range:location, length];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_text forKey:@"segmentText"];
-  [a3 encodeInt32:self->_confidence forKey:@"segmentConfidence"];
-  [a3 encodeInt32:LODWORD(self->_range.length) forKey:@"segmentLength"];
+  [coder encodeObject:self->_text forKey:@"segmentText"];
+  [coder encodeInt32:self->_confidence forKey:@"segmentConfidence"];
+  [coder encodeInt32:LODWORD(self->_range.length) forKey:@"segmentLength"];
   location_low = LODWORD(self->_range.location);
 
-  [a3 encodeInt32:location_low forKey:@"segmentLocation"];
+  [coder encodeInt32:location_low forKey:@"segmentLocation"];
 }
 
-- (VCCaptionsTranscriptionSegment)initWithCoder:(id)a3
+- (VCCaptionsTranscriptionSegment)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -73,18 +73,18 @@
   v4 = [(VCCaptionsTranscriptionSegment *)&v6 init];
   if (v4)
   {
-    if ([a3 containsValueForKey:@"segmentConfidence"])
+    if ([coder containsValueForKey:@"segmentConfidence"])
     {
-      v4->_confidence = [a3 decodeInt32ForKey:@"segmentConfidence"];
-      if ([a3 containsValueForKey:@"segmentLength"])
+      v4->_confidence = [coder decodeInt32ForKey:@"segmentConfidence"];
+      if ([coder containsValueForKey:@"segmentLength"])
       {
-        v4->_range.length = [a3 decodeInt32ForKey:@"segmentLength"];
-        if ([a3 containsValueForKey:@"segmentLocation"])
+        v4->_range.length = [coder decodeInt32ForKey:@"segmentLength"];
+        if ([coder containsValueForKey:@"segmentLocation"])
         {
-          v4->_range.location = [a3 decodeInt32ForKey:@"segmentLocation"];
-          if ([a3 containsValueForKey:@"segmentText"])
+          v4->_range.location = [coder decodeInt32ForKey:@"segmentLocation"];
+          if ([coder containsValueForKey:@"segmentText"])
           {
-            v4->_text = [a3 decodeObjectForKey:@"segmentText"];
+            v4->_text = [coder decodeObjectForKey:@"segmentText"];
           }
 
           else
@@ -128,9 +128,9 @@
   return [v3 stringWithFormat:@"%@<%p> confidence=%u range=%@", v5, self, self->_confidence, NSStringFromRange(self->_range)];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -141,22 +141,22 @@
     return 0;
   }
 
-  v5 = [a3 confidence];
-  if (v5 != [(VCCaptionsTranscriptionSegment *)self confidence])
+  confidence = [equal confidence];
+  if (confidence != [(VCCaptionsTranscriptionSegment *)self confidence])
   {
     return 0;
   }
 
-  v6 = [a3 range];
+  range = [equal range];
   v8 = v7;
-  v10 = [(VCCaptionsTranscriptionSegment *)self range];
+  range2 = [(VCCaptionsTranscriptionSegment *)self range];
   result = 0;
-  if (v6 == v10 && v8 == v9)
+  if (range == range2 && v8 == v9)
   {
-    v12 = [a3 text];
-    v13 = [(VCCaptionsTranscriptionSegment *)self text];
+    text = [equal text];
+    text2 = [(VCCaptionsTranscriptionSegment *)self text];
 
-    return [v12 isEqual:v13];
+    return [text isEqual:text2];
   }
 
   return result;

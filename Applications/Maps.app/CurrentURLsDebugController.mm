@@ -1,24 +1,24 @@
 @interface CurrentURLsDebugController
 - (CurrentURLsDebugController)init;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 @end
 
 @implementation CurrentURLsDebugController
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v6 = a4;
-  if (([v6 section] & 0x8000000000000000) != 0 || (v7 = objc_msgSend(v6, "section"), v7 >= -[NSArray count](self->_urlTypes, "count")))
+  pathCopy = path;
+  if (([pathCopy section] & 0x8000000000000000) != 0 || (v7 = objc_msgSend(pathCopy, "section"), v7 >= -[NSArray count](self->_urlTypes, "count")))
   {
     v10 = 0;
   }
 
   else
   {
-    v8 = -[NSArray objectAtIndexedSubscript:](self->_urlTypes, "objectAtIndexedSubscript:", [v6 section]);
+    v8 = -[NSArray objectAtIndexedSubscript:](self->_urlTypes, "objectAtIndexedSubscript:", [pathCopy section]);
     [v8 integerValue];
 
     GEOURLString();
@@ -33,16 +33,16 @@
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = 0.0;
-  if (([v5 section] & 0x8000000000000000) == 0)
+  if (([pathCopy section] & 0x8000000000000000) == 0)
   {
-    v7 = [v5 section];
-    if (v7 < [(NSArray *)self->_urlTypes count])
+    section = [pathCopy section];
+    if (section < [(NSArray *)self->_urlTypes count])
     {
-      v8 = -[NSArray objectAtIndexedSubscript:](self->_urlTypes, "objectAtIndexedSubscript:", [v5 section]);
+      v8 = -[NSArray objectAtIndexedSubscript:](self->_urlTypes, "objectAtIndexedSubscript:", [pathCopy section]);
       [v8 integerValue];
 
       v9 = GEOURLString();
@@ -56,8 +56,8 @@
       v11 = [v10 mutableCopy];
 
       [v11 setLineBreakMode:1];
-      v12 = [(CurrentURLsDebugController *)self tableView];
-      [v12 bounds];
+      tableView = [(CurrentURLsDebugController *)self tableView];
+      [tableView bounds];
       v14 = v13 + -40.0;
       v26[0] = NSFontAttributeName;
       +[UIFont labelFontSize];
@@ -83,35 +83,35 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 section] & 0x8000000000000000) != 0 || (v8 = objc_msgSend(v7, "section"), v8 >= -[NSArray count](self->_urlTypes, "count")))
+  viewCopy = view;
+  pathCopy = path;
+  if (([pathCopy section] & 0x8000000000000000) != 0 || (v8 = objc_msgSend(pathCopy, "section"), v8 >= -[NSArray count](self->_urlTypes, "count")))
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = -[NSArray objectAtIndexedSubscript:](self->_urlTypes, "objectAtIndexedSubscript:", [v7 section]);
+    v9 = -[NSArray objectAtIndexedSubscript:](self->_urlTypes, "objectAtIndexedSubscript:", [pathCopy section]);
     [v9 integerValue];
 
-    v10 = [v6 dequeueReusableCellWithIdentifier:@"URLDebugCell"];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"URLDebugCell"];
     if (!v10)
     {
       v10 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"URLDebugCell"];
-      v11 = [v10 textLabel];
-      [v11 setLineBreakMode:1];
+      textLabel = [v10 textLabel];
+      [textLabel setLineBreakMode:1];
 
-      v12 = [v10 textLabel];
-      [v12 setNumberOfLines:0];
+      textLabel2 = [v10 textLabel];
+      [textLabel2 setNumberOfLines:0];
 
       [v10 setSelectionStyle:0];
       +[UIFont labelFontSize];
       v13 = [UIFont systemFontOfSize:?];
-      v14 = [v10 textLabel];
-      [v14 setFont:v13];
+      textLabel3 = [v10 textLabel];
+      [textLabel3 setFont:v13];
     }
 
     v15 = GEOURLStringWithSource();
@@ -125,38 +125,38 @@
       v16 = @"(none)";
     }
 
-    v17 = [v10 textLabel];
-    [v17 setText:v16];
+    textLabel4 = [v10 textLabel];
+    [textLabel4 setText:v16];
 
     v18 = +[UIColor secondaryLabelColor];
-    v19 = [v10 textLabel];
-    [v19 setTextColor:v18];
+    textLabel5 = [v10 textLabel];
+    [textLabel5 setTextColor:v18];
   }
 
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 < 0 || [(NSArray *)self->_urlTypes count]<= a4)
+  viewCopy = view;
+  if (section < 0 || [(NSArray *)self->_urlTypes count]<= section)
   {
     v10 = 0;
   }
 
   else
   {
-    v7 = [(NSArray *)self->_urlTypes objectAtIndexedSubscript:a4];
-    v8 = [v7 integerValue];
+    v7 = [(NSArray *)self->_urlTypes objectAtIndexedSubscript:section];
+    integerValue = [v7 integerValue];
 
-    if (v8 > 0x42)
+    if (integerValue > 0x42)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = off_101636FE0[v8];
+      v9 = off_101636FE0[integerValue];
     }
 
     v11 = GEOURLNeedsAuthForURLType();
@@ -240,8 +240,8 @@
 
     [v13 bounds];
     [v13 setBounds:{0.0, 0.0}];
-    v22 = [(CurrentURLsDebugController *)v2 tableView];
-    [v22 setTableHeaderView:v13];
+    tableView = [(CurrentURLsDebugController *)v2 tableView];
+    [tableView setTableHeaderView:v13];
 
     v23 = +[NSMutableArray array];
     for (i = 0; i != 67; ++i)

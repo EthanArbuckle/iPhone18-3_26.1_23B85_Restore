@@ -1,6 +1,6 @@
 @interface SCATModernMenuGestureFreehandStopSheet
 - (id)makeMenuItemsIfNeeded;
-- (void)menuItemWasActivated:(id)a3;
+- (void)menuItemWasActivated:(id)activated;
 @end
 
 @implementation SCATModernMenuGestureFreehandStopSheet
@@ -10,8 +10,8 @@
   if (AXDeviceIsPad())
   {
     v3 = sub_100042B24(@"FREEHAND_STOP_TWO_LINES");
-    v4 = [(SCATModernMenuGestureFreehandStopSheet *)self actionToStop];
-    v5 = [NSString stringWithFormat:v3, v4];
+    actionToStop = [(SCATModernMenuGestureFreehandStopSheet *)self actionToStop];
+    v5 = [NSString stringWithFormat:v3, actionToStop];
   }
 
   else
@@ -26,23 +26,23 @@
   return v7;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"freehand_stop"];
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  v6 = [identifier isEqualToString:@"freehand_stop"];
 
   if (v6)
   {
-    v7 = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
-    [v7 stopForFreehandSheet:self];
+    delegate = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
+    [delegate stopForFreehandSheet:self];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SCATModernMenuGestureFreehandStopSheet;
-    [(SCATModernMenuGestureFreehandSheetBase *)&v8 menuItemWasActivated:v4];
+    [(SCATModernMenuGestureFreehandSheetBase *)&v8 menuItemWasActivated:activatedCopy];
   }
 }
 

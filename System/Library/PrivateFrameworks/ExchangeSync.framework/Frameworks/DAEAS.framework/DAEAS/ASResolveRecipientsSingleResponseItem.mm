@@ -6,7 +6,7 @@
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
 - (id)description;
-- (void)addRecipient:(id)a3;
+- (void)addRecipient:(id)recipient;
 @end
 
 @implementation ASResolveRecipientsSingleResponseItem
@@ -20,7 +20,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_153 = v2;
     acceptsTopLevelLeaves___haveChecked_152 = 1;
   }
@@ -37,7 +37,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_155 = v2;
     parsingLeafNode___haveChecked_154 = 1;
   }
@@ -54,7 +54,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_157 = v2;
     parsingWithSubItems___haveChecked_156 = 1;
   }
@@ -71,7 +71,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_159 = v2;
     frontingBasicTypes___haveChecked_158 = 1;
   }
@@ -88,7 +88,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_161 = v2;
     notifyOfUnknownTokens___haveChecked_160 = 1;
   }
@@ -96,25 +96,25 @@
   return v2 & 1;
 }
 
-- (void)addRecipient:(id)a3
+- (void)addRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [(ASResolveRecipientsSingleResponseItem *)self mRecipients];
+  recipientCopy = recipient;
+  mRecipients = [(ASResolveRecipientsSingleResponseItem *)self mRecipients];
 
-  if (!v5)
+  if (!mRecipients)
   {
     v6 = objc_opt_new();
     [(ASResolveRecipientsSingleResponseItem *)self setMRecipients:v6];
   }
 
-  v7 = [(ASResolveRecipientsSingleResponseItem *)self mRecipients];
-  [v7 addObject:v4];
+  mRecipients2 = [(ASResolveRecipientsSingleResponseItem *)self mRecipients];
+  [mRecipients2 addObject:recipientCopy];
 }
 
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -133,7 +133,7 @@
     v5 = [v19 dictionaryWithObjectsAndKeys:{v18, v17, v16, v15, v14, v6, v7, v8, v9, v10, 0}];
 
     v11 = +[ASItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 
@@ -146,10 +146,10 @@
   v10.receiver = self;
   v10.super_class = ASResolveRecipientsSingleResponseItem;
   v4 = [(ASResolveRecipientsSingleResponseItem *)&v10 description];
-  v5 = [(ASResolveRecipientsSingleResponseItem *)self emailAddress];
-  v6 = [(ASResolveRecipientsSingleResponseItem *)self easStatus];
-  v7 = [(ASResolveRecipientsSingleResponseItem *)self recipients];
-  v8 = [v3 stringWithFormat:@"%@: emailAddress %@ easStatus %@ recipients %@", v4, v5, v6, v7];
+  emailAddress = [(ASResolveRecipientsSingleResponseItem *)self emailAddress];
+  easStatus = [(ASResolveRecipientsSingleResponseItem *)self easStatus];
+  recipients = [(ASResolveRecipientsSingleResponseItem *)self recipients];
+  v8 = [v3 stringWithFormat:@"%@: emailAddress %@ easStatus %@ recipients %@", v4, emailAddress, easStatus, recipients];
 
   return v8;
 }

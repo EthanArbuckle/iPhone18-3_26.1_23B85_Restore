@@ -1,7 +1,7 @@
 @interface ECServerMessage
-- (BOOL)isEqual:(id)a3;
-- (ECServerMessage)initWithIMAPServerMessageBuilder:(id)a3;
-- (ECServerMessage)initWithServerMessageBuilder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ECServerMessage)initWithIMAPServerMessageBuilder:(id)builder;
+- (ECServerMessage)initWithServerMessageBuilder:(id)builder;
 - (id)remoteIDObject;
 - (unint64_t)hash;
 - (unsigned)imapUID;
@@ -9,44 +9,44 @@
 
 @implementation ECServerMessage
 
-- (ECServerMessage)initWithServerMessageBuilder:(id)a3
+- (ECServerMessage)initWithServerMessageBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7.receiver = self;
   v7.super_class = ECServerMessage;
   v5 = [(ECServerMessage *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    builderCopy[2](builderCopy, v5);
   }
 
   return v5;
 }
 
-- (ECServerMessage)initWithIMAPServerMessageBuilder:(id)a3
+- (ECServerMessage)initWithIMAPServerMessageBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7.receiver = self;
   v7.super_class = ECServerMessage;
   v5 = [(ECServerMessage *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    builderCopy[2](builderCopy, v5);
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ECServerMessage *)self remoteID];
-    v7 = [v5 remoteID];
-    v8 = [v6 isEqualToString:v7];
+    v5 = equalCopy;
+    remoteID = [(ECServerMessage *)self remoteID];
+    remoteID2 = [v5 remoteID];
+    v8 = [remoteID isEqualToString:remoteID2];
   }
 
   else
@@ -59,8 +59,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(ECServerMessage *)self remoteID];
-  v3 = [v2 hash];
+  remoteID = [(ECServerMessage *)self remoteID];
+  v3 = [remoteID hash];
 
   return v3;
 }
@@ -70,8 +70,8 @@
   imapUID = self->_imapUID;
   if (!imapUID)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"ECServerMessage.m" lineNumber:62 description:@"Trying to get an IMAP UID from a server message with a string remote_id"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECServerMessage.m" lineNumber:62 description:@"Trying to get an IMAP UID from a server message with a string remote_id"];
 
     imapUID = self->_imapUID;
   }

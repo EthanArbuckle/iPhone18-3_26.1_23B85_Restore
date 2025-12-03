@@ -1,65 +1,65 @@
 @interface PREAMResponsesViewed
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAgeGroup:(id)a3;
+- (int)StringAsAgeGroup:(id)group;
 - (int)ageGroup;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsApricotDevice:(BOOL)a3;
-- (void)setHasLastViewedIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsApricotDevice:(BOOL)device;
+- (void)setHasLastViewedIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PREAMResponsesViewed
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 60) & 2) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 60) & 2) != 0)
   {
-    self->_lastViewedIndex = *(v4 + 8);
+    self->_lastViewedIndex = *(fromCopy + 8);
     *&self->_has |= 2u;
   }
 
-  v6 = v4;
-  if (*(v4 + 2))
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PREAMResponsesViewed *)self setExperimentId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PREAMResponsesViewed *)self setTreatmentId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PREAMResponsesViewed *)self setTreatmentModelName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PREAMResponsesViewed *)self setHostProcess:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 4) != 0)
   {
-    self->_isApricotDevice = *(v4 + 56);
+    self->_isApricotDevice = *(fromCopy + 56);
     *&self->_has |= 4u;
-    v5 = *(v4 + 60);
+    v5 = *(fromCopy + 60);
   }
 
   if (v5)
   {
-    self->_ageGroup = *(v4 + 2);
+    self->_ageGroup = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }
@@ -104,36 +104,36 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(equalCopy + 60);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_lastViewedIndex != *(v4 + 8))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_lastViewedIndex != *(equalCopy + 8))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_22;
   }
 
   experimentId = self->_experimentId;
-  if (experimentId | *(v4 + 2) && ![(NSString *)experimentId isEqual:?])
+  if (experimentId | *(equalCopy + 2) && ![(NSString *)experimentId isEqual:?])
   {
     goto LABEL_22;
   }
 
   treatmentId = self->_treatmentId;
-  if (treatmentId | *(v4 + 5))
+  if (treatmentId | *(equalCopy + 5))
   {
     if (![(NSString *)treatmentId isEqual:?])
     {
@@ -142,7 +142,7 @@ LABEL_6:
   }
 
   treatmentModelName = self->_treatmentModelName;
-  if (treatmentModelName | *(v4 + 6))
+  if (treatmentModelName | *(equalCopy + 6))
   {
     if (![(NSString *)treatmentModelName isEqual:?])
     {
@@ -151,7 +151,7 @@ LABEL_6:
   }
 
   hostProcess = self->_hostProcess;
-  if (hostProcess | *(v4 + 3))
+  if (hostProcess | *(equalCopy + 3))
   {
     if (![(NSString *)hostProcess isEqual:?])
     {
@@ -161,7 +161,7 @@ LABEL_6:
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 60) & 4) == 0)
+    if ((*(equalCopy + 60) & 4) == 0)
     {
       goto LABEL_17;
     }
@@ -171,30 +171,30 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ((*(v4 + 60) & 4) == 0)
+  if ((*(equalCopy + 60) & 4) == 0)
   {
     goto LABEL_22;
   }
 
-  v12 = *(v4 + 56);
+  v12 = *(equalCopy + 56);
   if (self->_isApricotDevice)
   {
-    if ((*(v4 + 56) & 1) == 0)
+    if ((*(equalCopy + 56) & 1) == 0)
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_22;
   }
 
 LABEL_17:
-  v10 = (*(v4 + 60) & 1) == 0;
+  v10 = (*(equalCopy + 60) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_ageGroup != *(v4 + 2))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_ageGroup != *(equalCopy + 2))
     {
       goto LABEL_22;
     }
@@ -207,9 +207,9 @@ LABEL_23:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -217,19 +217,19 @@ LABEL_23:
     *(v5 + 60) |= 2u;
   }
 
-  v7 = [(NSString *)self->_experimentId copyWithZone:a3];
+  v7 = [(NSString *)self->_experimentId copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
-  v9 = [(NSString *)self->_treatmentId copyWithZone:a3];
+  v9 = [(NSString *)self->_treatmentId copyWithZone:zone];
   v10 = *(v6 + 40);
   *(v6 + 40) = v9;
 
-  v11 = [(NSString *)self->_treatmentModelName copyWithZone:a3];
+  v11 = [(NSString *)self->_treatmentModelName copyWithZone:zone];
   v12 = *(v6 + 48);
   *(v6 + 48) = v11;
 
-  v13 = [(NSString *)self->_hostProcess copyWithZone:a3];
+  v13 = [(NSString *)self->_hostProcess copyWithZone:zone];
   v14 = *(v6 + 24);
   *(v6 + 24) = v13;
 
@@ -250,58 +250,58 @@ LABEL_23:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[8] = self->_lastViewedIndex;
-    *(v4 + 60) |= 2u;
+    toCopy[8] = self->_lastViewedIndex;
+    *(toCopy + 60) |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_experimentId)
   {
-    [v4 setExperimentId:?];
-    v4 = v6;
+    [toCopy setExperimentId:?];
+    toCopy = v6;
   }
 
   if (self->_treatmentId)
   {
     [v6 setTreatmentId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_treatmentModelName)
   {
     [v6 setTreatmentModelName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hostProcess)
   {
     [v6 setHostProcess:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 56) = self->_isApricotDevice;
-    *(v4 + 60) |= 4u;
+    *(toCopy + 56) = self->_isApricotDevice;
+    *(toCopy + 60) |= 4u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[2] = self->_ageGroup;
-    *(v4 + 60) |= 1u;
+    toCopy[2] = self->_ageGroup;
+    *(toCopy + 60) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     lastViewedIndex = self->_lastViewedIndex;
@@ -345,42 +345,42 @@ LABEL_23:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_lastViewedIndex];
-    [v3 setObject:v4 forKey:@"last_viewed_index"];
+    [dictionary setObject:v4 forKey:@"last_viewed_index"];
   }
 
   experimentId = self->_experimentId;
   if (experimentId)
   {
-    [v3 setObject:experimentId forKey:@"experiment_id"];
+    [dictionary setObject:experimentId forKey:@"experiment_id"];
   }
 
   treatmentId = self->_treatmentId;
   if (treatmentId)
   {
-    [v3 setObject:treatmentId forKey:@"treatment_id"];
+    [dictionary setObject:treatmentId forKey:@"treatment_id"];
   }
 
   treatmentModelName = self->_treatmentModelName;
   if (treatmentModelName)
   {
-    [v3 setObject:treatmentModelName forKey:@"treatment_model_name"];
+    [dictionary setObject:treatmentModelName forKey:@"treatment_model_name"];
   }
 
   hostProcess = self->_hostProcess;
   if (hostProcess)
   {
-    [v3 setObject:hostProcess forKey:@"host_process"];
+    [dictionary setObject:hostProcess forKey:@"host_process"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_isApricotDevice];
-    [v3 setObject:v10 forKey:@"is_apricot_device"];
+    [dictionary setObject:v10 forKey:@"is_apricot_device"];
 
     has = self->_has;
   }
@@ -398,10 +398,10 @@ LABEL_23:
       v12 = *(&off_279ABAC48 + ageGroup);
     }
 
-    [v3 setObject:v12 forKey:@"age_group"];
+    [dictionary setObject:v12 forKey:@"age_group"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -410,46 +410,46 @@ LABEL_23:
   v8.receiver = self;
   v8.super_class = PREAMResponsesViewed;
   v4 = [(PREAMResponsesViewed *)&v8 description];
-  v5 = [(PREAMResponsesViewed *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PREAMResponsesViewed *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsAgeGroup:(id)a3
+- (int)StringAsAgeGroup:(id)group
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GROUP_UNKNOWN"])
+  groupCopy = group;
+  if ([groupCopy isEqualToString:@"GROUP_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GROUP_0TO18"])
+  else if ([groupCopy isEqualToString:@"GROUP_0TO18"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GROUP_19TO30"])
+  else if ([groupCopy isEqualToString:@"GROUP_19TO30"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GROUP_31TO50"])
+  else if ([groupCopy isEqualToString:@"GROUP_31TO50"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GROUP_51TO65"])
+  else if ([groupCopy isEqualToString:@"GROUP_51TO65"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"GROUP_66TO75"])
+  else if ([groupCopy isEqualToString:@"GROUP_66TO75"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"GROUP_76UP"])
+  else if ([groupCopy isEqualToString:@"GROUP_76UP"])
   {
     v4 = 6;
   }
@@ -475,9 +475,9 @@ LABEL_23:
   }
 }
 
-- (void)setHasIsApricotDevice:(BOOL)a3
+- (void)setHasIsApricotDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 4;
   }
@@ -490,9 +490,9 @@ LABEL_23:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasLastViewedIndex:(BOOL)a3
+- (void)setHasLastViewedIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }

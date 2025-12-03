@@ -1,21 +1,21 @@
 @interface KGNodeChangeRequest
-- (KGNodeChangeRequest)initWithNode:(id)a3 properties:(id)a4;
+- (KGNodeChangeRequest)initWithNode:(id)node properties:(id)properties;
 @end
 
 @implementation KGNodeChangeRequest
 
-- (KGNodeChangeRequest)initWithNode:(id)a3 properties:(id)a4
+- (KGNodeChangeRequest)initWithNode:(id)node properties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
+  nodeCopy = node;
+  propertiesCopy = properties;
   v12.receiver = self;
   v12.super_class = KGNodeChangeRequest;
   v9 = [(KGNodeChangeRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_node, a3);
-    objc_storeStrong(&v10->_properties, a4);
+    objc_storeStrong(&v9->_node, node);
+    objc_storeStrong(&v10->_properties, properties);
   }
 
   return v10;

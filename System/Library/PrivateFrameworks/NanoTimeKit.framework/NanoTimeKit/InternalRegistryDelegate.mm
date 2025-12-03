@@ -1,15 +1,15 @@
 @interface InternalRegistryDelegate
 - (_TtC11NanoTimeKitP33_F7DE6988C78D97BE72288BDFFB479D9424InternalRegistryDelegate)init;
-- (void)registry:(id)a3 added:(id)a4;
-- (void)registry:(id)a3 removed:(id)a4;
+- (void)registry:(id)registry added:(id)added;
+- (void)registry:(id)registry removed:(id)removed;
 @end
 
 @implementation InternalRegistryDelegate
 
-- (void)registry:(id)a3 added:(id)a4
+- (void)registry:(id)registry added:(id)added
 {
   v4 = (self + OBJC_IVAR____TtC11NanoTimeKitP33_F7DE6988C78D97BE72288BDFFB479D9424InternalRegistryDelegate_callback);
-  v8 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v4);
   v6 = *&v4[2]._os_unfair_lock_opaque;
   v5 = *&v4[4]._os_unfair_lock_opaque;
@@ -21,7 +21,7 @@
   os_unfair_lock_unlock(v4);
 }
 
-- (void)registry:(id)a3 removed:(id)a4
+- (void)registry:(id)registry removed:(id)removed
 {
   v5 = sub_22DCB5B3C();
   v6 = *(v5 - 8);
@@ -29,7 +29,7 @@
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22DCB5B1C();
   v11 = (self + OBJC_IVAR____TtC11NanoTimeKitP33_F7DE6988C78D97BE72288BDFFB479D9424InternalRegistryDelegate_callback);
-  v12 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v11);
   v14 = *&v11[2]._os_unfair_lock_opaque;
   v13 = *&v11[4]._os_unfair_lock_opaque;

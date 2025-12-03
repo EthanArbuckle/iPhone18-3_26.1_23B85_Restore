@@ -1,27 +1,27 @@
 @interface CKKeyboardContentViewController
-- (CKKeyboardContentViewController)initWithViewController:(id)a3 identifier:(id)a4;
+- (CKKeyboardContentViewController)initWithViewController:(id)controller identifier:(id)identifier;
 - (void)loadView;
-- (void)setViewController:(id)a3;
+- (void)setViewController:(id)controller;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CKKeyboardContentViewController
 
-- (CKKeyboardContentViewController)initWithViewController:(id)a3 identifier:(id)a4
+- (CKKeyboardContentViewController)initWithViewController:(id)controller identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CKKeyboardContentViewController;
   v8 = [(UIInputViewController *)&v11 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    [(CKKeyboardContentViewController *)v8 setIdentifier:v7];
-    [(CKKeyboardContentViewController *)v9 setViewController:v6];
-    if ([v7 isEqualToString:*MEMORY[0x1E69A6A00]])
+    [(CKKeyboardContentViewController *)v8 setIdentifier:identifierCopy];
+    [(CKKeyboardContentViewController *)v9 setViewController:controllerCopy];
+    if ([identifierCopy isEqualToString:*MEMORY[0x1E69A6A00]])
     {
       [(UIInputViewController *)v9 _setAutosizeToCurrentKeyboard:1];
     }
@@ -32,8 +32,8 @@
 
 - (void)loadView
 {
-  v3 = [(CKKeyboardContentViewController *)self identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69A6A00]];
+  identifier = [(CKKeyboardContentViewController *)self identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x1E69A6A00]];
 
   if (v4)
   {
@@ -58,26 +58,26 @@
   v12.receiver = self;
   v12.super_class = CKKeyboardContentViewController;
   [(UIInputViewController *)&v12 viewDidLoad];
-  v3 = [(CKKeyboardContentViewController *)self viewController];
+  viewController = [(CKKeyboardContentViewController *)self viewController];
 
-  if (v3)
+  if (viewController)
   {
-    v4 = [(CKKeyboardContentViewController *)self viewController];
-    [(CKKeyboardContentViewController *)self addChildViewController:v4];
+    viewController2 = [(CKKeyboardContentViewController *)self viewController];
+    [(CKKeyboardContentViewController *)self addChildViewController:viewController2];
 
-    v5 = [(CKKeyboardContentViewController *)self view];
-    v6 = [(CKKeyboardContentViewController *)self viewController];
-    v7 = [v6 view];
-    [v5 addSubview:v7];
+    view = [(CKKeyboardContentViewController *)self view];
+    viewController3 = [(CKKeyboardContentViewController *)self viewController];
+    view2 = [viewController3 view];
+    [view addSubview:view2];
 
-    v8 = [(CKKeyboardContentViewController *)self viewController];
-    v9 = [v8 view];
-    v10 = [(CKKeyboardContentViewController *)self view];
-    [v10 bounds];
-    [v9 setBounds:?];
+    viewController4 = [(CKKeyboardContentViewController *)self viewController];
+    view3 = [viewController4 view];
+    view4 = [(CKKeyboardContentViewController *)self view];
+    [view4 bounds];
+    [view3 setBounds:?];
 
-    v11 = [(CKKeyboardContentViewController *)self viewController];
-    [v11 didMoveToParentViewController:self];
+    viewController5 = [(CKKeyboardContentViewController *)self viewController];
+    [viewController5 didMoveToParentViewController:self];
   }
 }
 
@@ -86,47 +86,47 @@
   v6.receiver = self;
   v6.super_class = CKKeyboardContentViewController;
   [(CKKeyboardContentViewController *)&v6 viewDidLayoutSubviews];
-  v3 = [(CKKeyboardContentViewController *)self viewController];
-  v4 = [v3 view];
-  v5 = [(CKKeyboardContentViewController *)self view];
-  [v5 bounds];
-  [v4 setFrame:?];
+  viewController = [(CKKeyboardContentViewController *)self viewController];
+  view = [viewController view];
+  view2 = [(CKKeyboardContentViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = CKKeyboardContentViewController;
-  [(CKKeyboardContentViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(CKKeyboardContentViewController *)self view];
-  [v5 invalidateIntrinsicContentSize];
+  [(CKKeyboardContentViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  view = [(CKKeyboardContentViewController *)self view];
+  [view invalidateIntrinsicContentSize];
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   viewController = self->_viewController;
-  v12 = v5;
-  if (viewController != v5)
+  v12 = controllerCopy;
+  if (viewController != controllerCopy)
   {
     [(UIViewController *)viewController removeFromParentViewController];
-    v7 = [(UIViewController *)self->_viewController view];
-    [v7 removeFromSuperview];
+    view = [(UIViewController *)self->_viewController view];
+    [view removeFromSuperview];
 
     [(UIViewController *)self->_viewController didMoveToParentViewController:0];
-    objc_storeStrong(&self->_viewController, a3);
+    objc_storeStrong(&self->_viewController, controller);
     if (self->_viewController)
     {
       [(CKKeyboardContentViewController *)self addChildViewController:?];
-      v8 = [(CKKeyboardContentViewController *)self view];
-      v9 = [(UIViewController *)self->_viewController view];
-      [v8 addSubview:v9];
+      view2 = [(CKKeyboardContentViewController *)self view];
+      view3 = [(UIViewController *)self->_viewController view];
+      [view2 addSubview:view3];
 
       [(UIViewController *)self->_viewController didMoveToParentViewController:self];
-      v10 = [(UIViewController *)self->_viewController view];
-      v11 = [(CKKeyboardContentViewController *)self view];
-      [v11 bounds];
-      [v10 setFrame:?];
+      view4 = [(UIViewController *)self->_viewController view];
+      view5 = [(CKKeyboardContentViewController *)self view];
+      [view5 bounds];
+      [view4 setFrame:?];
     }
   }
 }

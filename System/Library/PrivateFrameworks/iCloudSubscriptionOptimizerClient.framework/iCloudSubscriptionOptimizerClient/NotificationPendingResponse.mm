@@ -12,15 +12,15 @@
 {
   if (self->responseError[OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient27NotificationPendingResponse_maxDelayTsMillis])
   {
-    v3 = 0;
+    initWithLongLong_ = 0;
   }
 
   else
   {
-    v3 = [objc_allocWithZone(MEMORY[0x277CCABB0]) initWithLongLong_];
+    initWithLongLong_ = [objc_allocWithZone(MEMORY[0x277CCABB0]) initWithLongLong_];
   }
 
-  return v3;
+  return initWithLongLong_;
 }
 
 - (id)error
@@ -42,7 +42,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_275A346AC();
 
   v3 = sub_275A3D924();

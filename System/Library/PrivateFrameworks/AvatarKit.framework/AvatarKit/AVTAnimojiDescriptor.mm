@@ -1,22 +1,22 @@
 @interface AVTAnimojiDescriptor
-- (AVTAnimojiDescriptor)initWithAnimoji:(id)a3;
-- (AVTAnimojiDescriptor)initWithCoder:(id)a3;
-- (AVTAnimojiDescriptor)initWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (AVTAnimojiDescriptor)initWithName:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AVTAnimojiDescriptor)initWithAnimoji:(id)animoji;
+- (AVTAnimojiDescriptor)initWithCoder:(id)coder;
+- (AVTAnimojiDescriptor)initWithDictionaryRepresentation:(id)representation error:(id *)error;
+- (AVTAnimojiDescriptor)initWithName:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVTAnimojiDescriptor
 
-- (AVTAnimojiDescriptor)initWithName:(id)a3
+- (AVTAnimojiDescriptor)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = AVTAnimojiDescriptor;
   v5 = [(AVTAnimojiDescriptor *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
   }
@@ -24,12 +24,12 @@
   return v5;
 }
 
-- (AVTAnimojiDescriptor)initWithDictionaryRepresentation:(id)a3 error:(id *)a4
+- (AVTAnimojiDescriptor)initWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  representationCopy = representation;
   v13 = 0;
-  v7 = [v6 avt_objectForKey:@"animoji" ofClass:objc_opt_class() didFail:&v13 error:a4];
+  v7 = [representationCopy avt_objectForKey:@"animoji" ofClass:objc_opt_class() didFail:&v13 error:error];
   v8 = v7;
   if ((v13 & 1) != 0 || !v7)
   {
@@ -37,49 +37,49 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v6;
+      v15 = representationCopy;
       _os_log_impl(&dword_1BB472000, v10, OS_LOG_TYPE_DEFAULT, "can't unarchive animoji name from: %@", buf, 0xCu);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(AVTAnimojiDescriptor *)self initWithName:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return v9;
+  return selfCopy;
 }
 
-- (AVTAnimojiDescriptor)initWithAnimoji:(id)a3
+- (AVTAnimojiDescriptor)initWithAnimoji:(id)animoji
 {
-  v4 = [a3 name];
-  v5 = [(AVTAnimojiDescriptor *)self initWithName:v4];
+  name = [animoji name];
+  v5 = [(AVTAnimojiDescriptor *)self initWithName:name];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AVTAnimojiDescriptor;
-  v4 = a3;
-  [(AVTAvatarDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_name forKey:{@"name", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(AVTAvatarDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_name forKey:{@"name", v5.receiver, v5.super_class}];
 }
 
-- (AVTAnimojiDescriptor)initWithCoder:(id)a3
+- (AVTAnimojiDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AVTAnimojiDescriptor;
-  v5 = [(AVTAvatarDescriptor *)&v9 initWithCoder:v4];
+  v5 = [(AVTAvatarDescriptor *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
   }

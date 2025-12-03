@@ -1,17 +1,17 @@
 @interface GDFileOpen
-+ (BOOL)setFileLimitWithError:(id *)a3;
++ (BOOL)setFileLimitWithError:(id *)error;
 @end
 
 @implementation GDFileOpen
 
-+ (BOOL)setFileLimitWithError:(id *)a3
++ (BOOL)setFileLimitWithError:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
   v27.rlim_cur = 0;
   v27.rlim_max = 0;
   if (getrlimit(8, &v27))
   {
-    if (a3)
+    if (error)
     {
       v4 = objc_autoreleasePoolPush();
       v5 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -24,7 +24,7 @@
       v29 = v11;
       v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v13, &v29, &v28, 1);
       objc_msgSend_errorWithDomain_code_userInfo_(v12, v15, @"com.apple.IntelligencePlatform.IntelligencePlatformCompute", 2, v14);
-      *a3 = LABEL_4:;
+      *error = LABEL_4:;
 
       objc_autoreleasePoolPop(v4);
     }
@@ -38,7 +38,7 @@
       goto LABEL_11;
     }
 
-    if (a3)
+    if (error)
     {
       v4 = objc_autoreleasePoolPush();
       v17 = objc_alloc(MEMORY[0x1E696AEC0]);

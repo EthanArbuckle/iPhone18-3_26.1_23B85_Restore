@@ -15,13 +15,13 @@
 + (BOOL)simulate2FAFA;
 + (id)getCustodianInfo;
 + (void)isMultipleFullAccountsEnabled;
-+ (void)setCustodianInfo:(id)a3;
-+ (void)setCustomHealthCheckIntervalMinutes:(int64_t)a3;
-+ (void)setCustomHealthCheckVersion:(int64_t)a3;
-+ (void)setCustomHealthFailureReachabilityIntervalMinutes:(int64_t)a3;
-+ (void)setCustomMaintenanceIntervalMinutes:(int64_t)a3;
-+ (void)setHealthCheckTTREnabled:(BOOL)a3;
-+ (void)setShouldUseUnifiedLoginEndpoint:(BOOL)a3;
++ (void)setCustodianInfo:(id)info;
++ (void)setCustomHealthCheckIntervalMinutes:(int64_t)minutes;
++ (void)setCustomHealthCheckVersion:(int64_t)version;
++ (void)setCustomHealthFailureReachabilityIntervalMinutes:(int64_t)minutes;
++ (void)setCustomMaintenanceIntervalMinutes:(int64_t)minutes;
++ (void)setHealthCheckTTREnabled:(BOOL)enabled;
++ (void)setShouldUseUnifiedLoginEndpoint:(BOOL)endpoint;
 @end
 
 @implementation AAPreferences
@@ -47,9 +47,9 @@
   return v2;
 }
 
-+ (void)setShouldUseUnifiedLoginEndpoint:(BOOL)a3
++ (void)setShouldUseUnifiedLoginEndpoint:(BOOL)endpoint
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:!a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:!endpoint];
 
   CFPreferencesSetAppValue(@"AAUseLegacyLoginEndpoint", v3, @"com.apple.appleaccount");
 }
@@ -72,13 +72,13 @@
 
 + (BOOL)isExperimentalModeEnabled
 {
-  v2 = [MEMORY[0x1E6985E20] isInternalBuild];
-  if (v2)
+  isInternalBuild = [MEMORY[0x1E6985E20] isInternalBuild];
+  if (isInternalBuild)
   {
-    LOBYTE(v2) = CFPreferencesGetAppBooleanValue(@"AAExperimentalMode", @"com.apple.appleaccount", 0) != 0;
+    LOBYTE(isInternalBuild) = CFPreferencesGetAppBooleanValue(@"AAExperimentalMode", @"com.apple.appleaccount", 0) != 0;
   }
 
-  return v2;
+  return isInternalBuild;
 }
 
 + (BOOL)isHealthCheckTTREnabled
@@ -93,9 +93,9 @@
   return [v3 isInternalBuild];
 }
 
-+ (void)setHealthCheckTTREnabled:(BOOL)a3
++ (void)setHealthCheckTTREnabled:(BOOL)enabled
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:!a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:!enabled];
 
   CFPreferencesSetAppValue(@"AADisableHealthCheckTTR", v3, @"com.apple.appleaccount");
 }
@@ -126,23 +126,23 @@
   return AppBooleanValue;
 }
 
-+ (void)setCustomHealthCheckIntervalMinutes:(int64_t)a3
++ (void)setCustomHealthCheckIntervalMinutes:(int64_t)minutes
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithInteger:minutes];
 
   CFPreferencesSetAppValue(@"AACustomHealthCheckIntervalMinutes", v3, @"com.apple.appleaccount");
 }
 
-+ (void)setCustomHealthFailureReachabilityIntervalMinutes:(int64_t)a3
++ (void)setCustomHealthFailureReachabilityIntervalMinutes:(int64_t)minutes
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithInteger:minutes];
 
   CFPreferencesSetAppValue(@"AACustomHealthCheckReachabilityIntervalMinutes", v3, @"com.apple.appleaccount");
 }
 
-+ (void)setCustomHealthCheckVersion:(int64_t)a3
++ (void)setCustomHealthCheckVersion:(int64_t)version
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithInteger:version];
 
   CFPreferencesSetAppValue(@"AACustomHealthCheckversion", v3, @"com.apple.appleaccount");
 }
@@ -160,9 +160,9 @@
   return AppBooleanValue;
 }
 
-+ (void)setCustomMaintenanceIntervalMinutes:(int64_t)a3
++ (void)setCustomMaintenanceIntervalMinutes:(int64_t)minutes
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithInteger:minutes];
 
   CFPreferencesSetAppValue(@"AACustomMaintenanceIntervalMinutes", v3, @"com.apple.appleaccount");
 }
@@ -192,40 +192,40 @@
 
 + (BOOL)shouldSkipIdMSKeyUpdate
 {
-  v2 = [MEMORY[0x1E6985E20] isInternalBuild];
-  if (v2)
+  isInternalBuild = [MEMORY[0x1E6985E20] isInternalBuild];
+  if (isInternalBuild)
   {
-    LOBYTE(v2) = CFPreferencesGetAppBooleanValue(@"AASkipIdMSKeyUpdate", @"com.apple.appleaccount", 0) != 0;
+    LOBYTE(isInternalBuild) = CFPreferencesGetAppBooleanValue(@"AASkipIdMSKeyUpdate", @"com.apple.appleaccount", 0) != 0;
   }
 
-  return v2;
+  return isInternalBuild;
 }
 
 + (BOOL)shouldSkipIdMSFinalizeCustodian
 {
-  v2 = [MEMORY[0x1E6985E20] isInternalBuild];
-  if (v2)
+  isInternalBuild = [MEMORY[0x1E6985E20] isInternalBuild];
+  if (isInternalBuild)
   {
-    LOBYTE(v2) = CFPreferencesGetAppBooleanValue(@"AASkipIdMSFinalizeCustodian", @"com.apple.appleaccount", 0) != 0;
+    LOBYTE(isInternalBuild) = CFPreferencesGetAppBooleanValue(@"AASkipIdMSFinalizeCustodian", @"com.apple.appleaccount", 0) != 0;
   }
 
-  return v2;
+  return isInternalBuild;
 }
 
 + (BOOL)shouldSkipRecoveryInfoRecordStorage
 {
-  v2 = [MEMORY[0x1E6985E20] isInternalBuild];
-  if (v2)
+  isInternalBuild = [MEMORY[0x1E6985E20] isInternalBuild];
+  if (isInternalBuild)
   {
-    LOBYTE(v2) = CFPreferencesGetAppBooleanValue(@"AASkipRecoveryInfoRecordStorage", @"com.apple.appleaccount", 0) != 0;
+    LOBYTE(isInternalBuild) = CFPreferencesGetAppBooleanValue(@"AASkipRecoveryInfoRecordStorage", @"com.apple.appleaccount", 0) != 0;
   }
 
-  return v2;
+  return isInternalBuild;
 }
 
-+ (void)setCustodianInfo:(id)a3
++ (void)setCustodianInfo:(id)info
 {
-  CFPreferencesSetAppValue(@"AACustodianInfo", a3, @"com.apple.appleaccount");
+  CFPreferencesSetAppValue(@"AACustodianInfo", info, @"com.apple.appleaccount");
   v3 = *MEMORY[0x1E695E8B8];
   v4 = *MEMORY[0x1E695E898];
 
@@ -244,13 +244,13 @@
 
 + (BOOL)simulate2FAFA
 {
-  v2 = [MEMORY[0x1E6985E20] isInternalBuild];
-  if (v2)
+  isInternalBuild = [MEMORY[0x1E6985E20] isInternalBuild];
+  if (isInternalBuild)
   {
-    LOBYTE(v2) = CFPreferencesGetAppBooleanValue(@"AASimulate2FAFA", @"com.apple.appleaccount", 0) != 0;
+    LOBYTE(isInternalBuild) = CFPreferencesGetAppBooleanValue(@"AASimulate2FAFA", @"com.apple.appleaccount", 0) != 0;
   }
 
-  return v2;
+  return isInternalBuild;
 }
 
 + (BOOL)disableADPStateHealing
@@ -268,7 +268,7 @@
 {
   v6 = *MEMORY[0x1E69E9840];
   v2 = @"NO";
-  if (a1)
+  if (self)
   {
     v2 = @"YES";
   }

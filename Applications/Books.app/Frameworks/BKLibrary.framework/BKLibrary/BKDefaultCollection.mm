@@ -1,6 +1,6 @@
 @interface BKDefaultCollection
 - (BOOL)isDefaultCollection;
-- (BOOL)isEqualToCollection:(id)a3;
+- (BOOL)isEqualToCollection:(id)collection;
 - (BOOL)isSeriesCollection;
 - (NSString)description;
 - (NSString)title;
@@ -26,44 +26,44 @@
 
 - (BOOL)isSeriesCollection
 {
-  v2 = [(BKDefaultCollection *)self seriesID];
-  v3 = v2 != 0;
+  seriesID = [(BKDefaultCollection *)self seriesID];
+  v3 = seriesID != 0;
 
   return v3;
 }
 
-- (BOOL)isEqualToCollection:(id)a3
+- (BOOL)isEqualToCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(BKDefaultCollection *)self collectionID];
-  v6 = [v4 collectionID];
+  collectionCopy = collection;
+  collectionID = [(BKDefaultCollection *)self collectionID];
+  collectionID2 = [collectionCopy collectionID];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(collectionCopy) = [collectionID isEqualToString:collectionID2];
+  return collectionCopy;
 }
 
 - (BOOL)isDefaultCollection
 {
-  v2 = [(BKDefaultCollection *)self seriesID];
-  v3 = v2 == 0;
+  seriesID = [(BKDefaultCollection *)self seriesID];
+  v3 = seriesID == 0;
 
   return v3;
 }
 
 - (NSString)description
 {
-  v14 = [(BKDefaultCollection *)self title];
-  v15 = [(BKDefaultCollection *)self collectionID];
-  v3 = [(BKDefaultCollection *)self sortKey];
-  v4 = [(BKDefaultCollection *)self sortMode];
-  v5 = [(BKDefaultCollection *)self viewMode];
-  v13 = [(BKDefaultCollection *)self deletedFlag];
-  v6 = [(BKDefaultCollection *)self hidden];
-  v7 = [(BKDefaultCollection *)self lastModification];
-  v8 = [(BKDefaultCollection *)self members];
-  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 count]);
-  v10 = [(BKDefaultCollection *)self seriesID];
-  v11 = [NSString stringWithFormat:@"   %@ (%p) \n title: %@\n collectionID: %@\n sortKey: %@\n sortMode: %@\n viewMode: %@\n deletedFlag: %@\n hidden: %@\n lastModification: %@\n member count: %@\n seriesID: %@", @"self", self, v14, v15, v3, v4, v5, v13, v6, v7, v9, v10];
+  title = [(BKDefaultCollection *)self title];
+  collectionID = [(BKDefaultCollection *)self collectionID];
+  sortKey = [(BKDefaultCollection *)self sortKey];
+  sortMode = [(BKDefaultCollection *)self sortMode];
+  viewMode = [(BKDefaultCollection *)self viewMode];
+  deletedFlag = [(BKDefaultCollection *)self deletedFlag];
+  hidden = [(BKDefaultCollection *)self hidden];
+  lastModification = [(BKDefaultCollection *)self lastModification];
+  members = [(BKDefaultCollection *)self members];
+  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [members count]);
+  seriesID = [(BKDefaultCollection *)self seriesID];
+  v11 = [NSString stringWithFormat:@"   %@ (%p) \n title: %@\n collectionID: %@\n sortKey: %@\n sortMode: %@\n viewMode: %@\n deletedFlag: %@\n hidden: %@\n lastModification: %@\n member count: %@\n seriesID: %@", @"self", self, title, collectionID, sortKey, sortMode, viewMode, deletedFlag, hidden, lastModification, v9, seriesID];
 
   return v11;
 }

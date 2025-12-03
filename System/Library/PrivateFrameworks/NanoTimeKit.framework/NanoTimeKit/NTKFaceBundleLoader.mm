@@ -1,26 +1,26 @@
 @interface NTKFaceBundleLoader
-+ (id)faceBundleLoaderWithDirectories:(id)a3;
-- (NTKFaceBundleLoader)initWithURLs:(id)a3;
-- (id)loadFaceBundleWithIdentifier:(id)a3;
-- (id)loadLegacyFaceBundleForStyle:(int64_t)a3;
-- (void)_enumerateBundles:(id)a3;
-- (void)_loadClassesUsingBlock:(id)a3;
-- (void)enumerateFaceBundleClassesIgnoringCache:(BOOL)a3 withBlock:(id)a4;
++ (id)faceBundleLoaderWithDirectories:(id)directories;
+- (NTKFaceBundleLoader)initWithURLs:(id)ls;
+- (id)loadFaceBundleWithIdentifier:(id)identifier;
+- (id)loadLegacyFaceBundleForStyle:(int64_t)style;
+- (void)_enumerateBundles:(id)bundles;
+- (void)_loadClassesUsingBlock:(id)block;
+- (void)enumerateFaceBundleClassesIgnoringCache:(BOOL)cache withBlock:(id)block;
 @end
 
 @implementation NTKFaceBundleLoader
 
-+ (id)faceBundleLoaderWithDirectories:(id)a3
++ (id)faceBundleLoaderWithDirectories:(id)directories
 {
-  v3 = a3;
-  v4 = [[NTKFaceBundleLoader alloc] initWithURLs:v3];
+  directoriesCopy = directories;
+  v4 = [[NTKFaceBundleLoader alloc] initWithURLs:directoriesCopy];
 
   return v4;
 }
 
-- (NTKFaceBundleLoader)initWithURLs:(id)a3
+- (NTKFaceBundleLoader)initWithURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   v12.receiver = self;
   v12.super_class = NTKFaceBundleLoader;
   v5 = [(NTKFaceBundleLoader *)&v12 init];
@@ -33,7 +33,7 @@
     v6->_loader = v7;
 
     v6->_loaderLock._os_unfair_lock_opaque = 0;
-    v9 = [v4 copy];
+    v9 = [lsCopy copy];
     urls = v6->_urls;
     v6->_urls = v9;
   }
@@ -41,10 +41,10 @@
   return v6;
 }
 
-- (void)_enumerateBundles:(id)a3
+- (void)_enumerateBundles:(id)bundles
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bundlesCopy = bundles;
   kdebug_trace();
   os_unfair_lock_lock(&self->_loaderLock);
   v5 = self->_loader;
@@ -52,7 +52,7 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v21 = self;
+  selfCopy = self;
   obj = self->_urls;
   v23 = [(NSSet *)obj countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v23)
@@ -99,7 +99,7 @@
           v16 = v7;
           v17 = v6;
           v18 = v5;
-          v19 = v4;
+          v19 = bundlesCopy;
           v20 = _NTKLoggingObjectForDomain(0, "NTKLoggingDomainDefault");
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
@@ -110,7 +110,7 @@
             _os_log_error_impl(&dword_22D9C5000, v20, OS_LOG_TYPE_ERROR, "Error getting read status for URL %@ - %@", buf, 0x16u);
           }
 
-          v4 = v19;
+          bundlesCopy = v19;
           v5 = v18;
           v6 = v17;
           v7 = v16;
@@ -120,7 +120,7 @@
         v25[1] = 3221225472;
         v25[2] = __41__NTKFaceBundleLoader__enumerateBundles___block_invoke;
         v25[3] = &unk_278782058;
-        v26 = v4;
+        v26 = bundlesCopy;
         [(NTKBundleLoader *)v5 enumerateBundlesFromDirectoryURL:v9 enumerator:v25];
 
         objc_autoreleasePoolPop(context);
@@ -132,7 +132,7 @@
     while (v23);
   }
 
-  os_unfair_lock_unlock(&v21->_loaderLock);
+  os_unfair_lock_unlock(&selfCopy->_loaderLock);
   kdebug_trace();
 }
 
@@ -171,15 +171,15 @@ LABEL_7:
   return v6;
 }
 
-- (void)_loadClassesUsingBlock:(id)a3
+- (void)_loadClassesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__NTKFaceBundleLoader__loadClassesUsingBlock___block_invoke;
   v6[3] = &unk_2787826C8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(NTKFaceBundleLoader *)self _enumerateBundles:v6];
 }
 
@@ -220,9 +220,9 @@ void __46__NTKFaceBundleLoader__loadClassesUsingBlock___block_invoke(uint64_t a1
   }
 }
 
-- (id)loadFaceBundleWithIdentifier:(id)a3
+- (id)loadFaceBundleWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -233,7 +233,7 @@ void __46__NTKFaceBundleLoader__loadClassesUsingBlock___block_invoke(uint64_t a1
   v8[1] = 3221225472;
   v8[2] = __52__NTKFaceBundleLoader_loadFaceBundleWithIdentifier___block_invoke;
   v8[3] = &unk_278782080;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   v10 = &v11;
   [(NTKFaceBundleLoader *)self _enumerateBundles:v8];
@@ -353,7 +353,7 @@ LABEL_24:
   }
 }
 
-- (id)loadLegacyFaceBundleForStyle:(int64_t)a3
+- (id)loadLegacyFaceBundleForStyle:(int64_t)style
 {
   v6 = 0;
   v7 = &v6;
@@ -366,7 +366,7 @@ LABEL_24:
   v5[2] = __52__NTKFaceBundleLoader_loadLegacyFaceBundleForStyle___block_invoke;
   v5[3] = &unk_2787826F0;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = style;
   [(NTKFaceBundleLoader *)self _enumerateBundles:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -487,18 +487,18 @@ LABEL_24:
   }
 }
 
-- (void)enumerateFaceBundleClassesIgnoringCache:(BOOL)a3 withBlock:(id)a4
+- (void)enumerateFaceBundleClassesIgnoringCache:(BOOL)cache withBlock:(id)block
 {
-  v4 = a3;
+  cacheCopy = cache;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     os_unfair_lock_lock(&self->_cacheLock);
     cachedFaceBundles = self->_cachedFaceBundles;
     if (cachedFaceBundles)
     {
-      v8 = !v4;
+      v8 = !cacheCopy;
     }
 
     else
@@ -514,14 +514,14 @@ LABEL_24:
     else
     {
       v9 = [MEMORY[0x277CBEB58] set];
-      v10 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __73__NTKFaceBundleLoader_enumerateFaceBundleClassesIgnoringCache_withBlock___block_invoke;
       v24[3] = &unk_278782718;
       v25 = v9;
-      v26 = v10;
-      v11 = v10;
+      v26 = array;
+      v11 = array;
       v12 = v9;
       [(NTKFaceBundleLoader *)self _loadClassesUsingBlock:v24];
       v13 = [v11 copy];
@@ -550,7 +550,7 @@ LABEL_24:
             objc_enumerationMutation(v15);
           }
 
-          v6[2](v6, *(*(&v20 + 1) + 8 * v19++));
+          blockCopy[2](blockCopy, *(*(&v20 + 1) + 8 * v19++));
         }
 
         while (v17 != v19);

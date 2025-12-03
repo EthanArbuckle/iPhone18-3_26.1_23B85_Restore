@@ -8,16 +8,16 @@
 {
   v3 = a3;
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [(SRError *)a3 domain];
-  if ([v4 isEqualToString:SRErrorDomain])
+  domain = [(SRError *)a3 domain];
+  if ([domain isEqualToString:SRErrorDomain])
   {
-    v5 = [(SRError *)v3 code];
-    if (v5 == 8196)
+    code = [(SRError *)v3 code];
+    if (code == 8196)
     {
       v6 = [SRError errorWithCode:8196];
     }
 
-    else if (v5 == 8201)
+    else if (code == 8201)
     {
       v6 = [SRError errorWithCode:8201];
       v7 = qword_1EE02ABA8;

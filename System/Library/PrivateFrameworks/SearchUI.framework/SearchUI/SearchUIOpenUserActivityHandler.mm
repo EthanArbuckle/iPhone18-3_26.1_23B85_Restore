@@ -1,20 +1,20 @@
 @interface SearchUIOpenUserActivityHandler
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUIOpenUserActivityHandler
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
-  v7 = a5;
+  environmentCopy = environment;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__SearchUIOpenUserActivityHandler_performCommand_triggerEvent_environment___block_invoke;
   v9[3] = &unk_1E85B3B00;
-  v10 = v7;
-  v11 = self;
-  v8 = v7;
-  [(SearchUIOpenUserActivityHandler *)self getUserActivityForCommand:a3 environment:v8 completionHandler:v9];
+  v10 = environmentCopy;
+  selfCopy = self;
+  v8 = environmentCopy;
+  [(SearchUIOpenUserActivityHandler *)self getUserActivityForCommand:command environment:v8 completionHandler:v9];
 }
 
 void __75__SearchUIOpenUserActivityHandler_performCommand_triggerEvent_environment___block_invoke(uint64_t a1, void *a2, void *a3)

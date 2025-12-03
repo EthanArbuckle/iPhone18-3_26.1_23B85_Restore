@@ -1,18 +1,18 @@
 @interface PGMemoryTriggerUpcomingPersonCentricHoliday
-- (id)allSingleMomentMemoryNodesInGraph:(id)a3;
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
-- (id)singleMomentMemoryNodesWithRelevantPersonNodes:(id)a3 inGraph:(id)a4;
+- (id)allSingleMomentMemoryNodesInGraph:(id)graph;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
+- (id)singleMomentMemoryNodesWithRelevantPersonNodes:(id)nodes inGraph:(id)graph;
 @end
 
 @implementation PGMemoryTriggerUpcomingPersonCentricHoliday
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -28,56 +28,56 @@
 
   else
   {
-    v40 = v10;
-    v12 = [v9 infoNode];
-    v13 = [v12 locale];
+    v40 = reporterCopy;
+    infoNode = [graphCopy infoNode];
+    locale = [infoNode locale];
 
-    if (!v13)
+    if (!locale)
     {
-      v13 = [MEMORY[0x277CBEAF8] currentLocale];
+      locale = [MEMORY[0x277CBEAF8] currentLocale];
     }
 
-    v14 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v9];
-    v15 = [v14 partnerPersonNodes];
-    v16 = [v14 motherPersonNodes];
-    v17 = [v14 fatherPersonNodes];
-    v41 = v15;
-    if ([v15 count] || objc_msgSend(v16, "count") || objc_msgSend(v17, "count"))
+    v14 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graphCopy];
+    partnerPersonNodes = [v14 partnerPersonNodes];
+    motherPersonNodes = [v14 motherPersonNodes];
+    fatherPersonNodes = [v14 fatherPersonNodes];
+    v41 = partnerPersonNodes;
+    if ([partnerPersonNodes count] || objc_msgSend(motherPersonNodes, "count") || objc_msgSend(fatherPersonNodes, "count"))
     {
       v35 = v14;
-      v18 = [v8 localDate];
-      v39 = v8;
-      v19 = [v8 timeZone];
-      v36 = v18;
-      v20 = [MEMORY[0x277D27690] universalDateFromLocalDate:v18 inTimeZone:v19];
+      localDate = [contextCopy localDate];
+      v39 = contextCopy;
+      timeZone = [contextCopy timeZone];
+      v36 = localDate;
+      v20 = [MEMORY[0x277D27690] universalDateFromLocalDate:localDate inTimeZone:timeZone];
       v33 = [MEMORY[0x277D27690] dateByAddingDays:1 toDate:v20];
       v21 = [MEMORY[0x277D27690] localDateFromUniversalDate:? inTimeZone:?];
       v34 = v20;
       v32 = [MEMORY[0x277D27690] dateByAddingDays:7 toDate:v20];
       v22 = [MEMORY[0x277D27690] localDateFromUniversalDate:? inTimeZone:?];
       v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v24 = [(PGHolidayMemoryTrigger *)self holidayService];
-      v38 = v13;
-      v25 = [v13 countryCode];
+      holidayService = [(PGHolidayMemoryTrigger *)self holidayService];
+      v38 = locale;
+      countryCode = [locale countryCode];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __100__PGMemoryTriggerUpcomingPersonCentricHoliday_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke;
       v42[3] = &unk_278883FD8;
       v42[4] = self;
-      v43 = v19;
+      v43 = timeZone;
       v44 = v41;
-      v45 = v9;
+      v45 = graphCopy;
       v26 = v23;
       v27 = v21;
       v28 = v26;
       v46 = v26;
-      v37 = v16;
-      v47 = v16;
-      v48 = v17;
-      v29 = v19;
-      [v24 enumerateEventRulesBetweenLocalDate:v21 andLocalDate:v22 supportedCountryCode:v25 usingBlock:v42];
+      v37 = motherPersonNodes;
+      v47 = motherPersonNodes;
+      v48 = fatherPersonNodes;
+      v29 = timeZone;
+      [holidayService enumerateEventRulesBetweenLocalDate:v21 andLocalDate:v22 supportedCountryCode:countryCode usingBlock:v42];
 
-      v10 = v40;
+      reporterCopy = v40;
       if ([v40 isCancelledWithProgress:1.0])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -97,17 +97,17 @@
         v11 = v28;
       }
 
-      v13 = v38;
+      locale = v38;
       v14 = v35;
 
-      v8 = v39;
-      v16 = v37;
+      contextCopy = v39;
+      motherPersonNodes = v37;
     }
 
     else
     {
       v11 = MEMORY[0x277CBEBF8];
-      v10 = v40;
+      reporterCopy = v40;
     }
   }
 
@@ -221,26 +221,26 @@ LABEL_23:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)singleMomentMemoryNodesWithRelevantPersonNodes:(id)a3 inGraph:(id)a4
+- (id)singleMomentMemoryNodesWithRelevantPersonNodes:(id)nodes inGraph:(id)graph
 {
-  v6 = a3;
-  v7 = [(PGMemoryTriggerUpcomingPersonCentricHoliday *)self allSingleMomentMemoryNodesInGraph:a4];
-  v8 = [v6 featureNodeCollection];
+  nodesCopy = nodes;
+  v7 = [(PGMemoryTriggerUpcomingPersonCentricHoliday *)self allSingleMomentMemoryNodesInGraph:graph];
+  featureNodeCollection = [nodesCopy featureNodeCollection];
 
-  v9 = [v8 momentNodes];
-  v10 = [v9 memoryNodes];
+  momentNodes = [featureNodeCollection momentNodes];
+  memoryNodes = [momentNodes memoryNodes];
 
-  v11 = [v7 collectionByIntersecting:v10];
+  v11 = [v7 collectionByIntersecting:memoryNodes];
 
   return v11;
 }
 
-- (id)allSingleMomentMemoryNodesInGraph:(id)a3
+- (id)allSingleMomentMemoryNodesInGraph:(id)graph
 {
   allSingleMomentMemoryNodes = self->_allSingleMomentMemoryNodes;
   if (!allSingleMomentMemoryNodes)
   {
-    v5 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:1 inGraph:a3];
+    v5 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:1 inGraph:graph];
     v6 = self->_allSingleMomentMemoryNodes;
     self->_allSingleMomentMemoryNodes = v5;
 

@@ -1,11 +1,11 @@
 @interface HoverTextAXUIService
-+ (id)requiredEntitlementForProcessingMessageWithIdentifier:(int64_t)a3;
++ (id)requiredEntitlementForProcessingMessageWithIdentifier:(int64_t)identifier;
 + (id)sharedInstance;
 - (HoverTextAXUIService)init;
-- (id)processMessage:(id)a3 withIdentifier:(int64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6;
-- (id)styleProviderForAlertWithIdentifier:(id)a3;
-- (void)externalDisplaySceneConnected:(id)a3;
-- (void)externalDisplaySceneDisconnected:(id)a3;
+- (id)processMessage:(id)message withIdentifier:(int64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error;
+- (id)styleProviderForAlertWithIdentifier:(id)identifier;
+- (void)externalDisplaySceneConnected:(id)connected;
+- (void)externalDisplaySceneDisconnected:(id)disconnected;
 @end
 
 @implementation HoverTextAXUIService
@@ -18,9 +18,9 @@
   return v2;
 }
 
-- (id)processMessage:(id)a3 withIdentifier:(int64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6
+- (id)processMessage:(id)message withIdentifier:(int64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error
 {
-  if (a3)
+  if (message)
   {
     v8 = sub_470C();
   }
@@ -32,36 +32,36 @@
 
   v9 = sub_473C();
   v11 = v10;
-  v12 = self;
-  sub_1878(v8, a4, v9, v11);
+  selfCopy = self;
+  sub_1878(v8, identifier, v9, v11);
 
   v13.super.isa = sub_46FC().super.isa;
 
   return v13.super.isa;
 }
 
-+ (id)requiredEntitlementForProcessingMessageWithIdentifier:(int64_t)a3
++ (id)requiredEntitlementForProcessingMessageWithIdentifier:(int64_t)identifier
 {
   v3 = sub_472C();
 
   return v3;
 }
 
-- (void)externalDisplaySceneConnected:(id)a3
+- (void)externalDisplaySceneConnected:(id)connected
 {
-  v5 = a3;
-  v6 = self;
-  sub_2DBC(a3, "External display scene connected", &unk_8498, &unk_4F08);
+  connectedCopy = connected;
+  selfCopy = self;
+  sub_2DBC(connected, "External display scene connected", &unk_8498, &unk_4F08);
 }
 
-- (void)externalDisplaySceneDisconnected:(id)a3
+- (void)externalDisplaySceneDisconnected:(id)disconnected
 {
-  v5 = a3;
-  v6 = self;
-  sub_2DBC(a3, "External display scene disconnected", &unk_8420, &unk_4EE0);
+  disconnectedCopy = disconnected;
+  selfCopy = self;
+  sub_2DBC(disconnected, "External display scene disconnected", &unk_8420, &unk_4EE0);
 }
 
-- (id)styleProviderForAlertWithIdentifier:(id)a3
+- (id)styleProviderForAlertWithIdentifier:(id)identifier
 {
   v3 = [objc_allocWithZone(type metadata accessor for AXUIHoverTextAlertStyleProvider()) init];
 

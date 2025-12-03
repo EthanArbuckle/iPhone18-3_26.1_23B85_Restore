@@ -1,78 +1,78 @@
 @interface AKPrivateEmailController
 - (AKPrivateEmailController)init;
-- (AKPrivateEmailController)initWithXPCSession:(id)a3;
-- (void)configureRemoteInterface:(id)a3;
-- (void)deletePrivateEmailDatabaseWithCompletion:(id)a3;
-- (void)fetchPrivateEmailForAltDSID:(id)a3 withKey:(id)a4 completion:(id)a5;
-- (void)fetchPrivateEmailWithContext:(id)a3 completion:(id)a4;
-- (void)fetchSignInWithApplePrivateEmailWithContext:(id)a3 completion:(id)a4;
-- (void)getContextForRequestContext:(id)a3 completion:(id)a4;
-- (void)listAllPrivateEmailsForAltDSID:(id)a3 completion:(id)a4;
-- (void)lookupPrivateEmailForAltDSID:(id)a3 withKey:(id)a4 completion:(id)a5;
-- (void)lookupPrivateEmailWithContext:(id)a3 completion:(id)a4;
-- (void)privateEmailListVersionWithCompletion:(id)a3;
-- (void)registerPrivateEmailForAltDSID:(id)a3 withKey:(id)a4 completion:(id)a5;
-- (void)registerPrivateEmailWithContext:(id)a3 completion:(id)a4;
-- (void)removePrivateEmailKey:(id)a3 completion:(id)a4;
-- (void)setUiProvider:(id)a3;
+- (AKPrivateEmailController)initWithXPCSession:(id)session;
+- (void)configureRemoteInterface:(id)interface;
+- (void)deletePrivateEmailDatabaseWithCompletion:(id)completion;
+- (void)fetchPrivateEmailForAltDSID:(id)d withKey:(id)key completion:(id)completion;
+- (void)fetchPrivateEmailWithContext:(id)context completion:(id)completion;
+- (void)fetchSignInWithApplePrivateEmailWithContext:(id)context completion:(id)completion;
+- (void)getContextForRequestContext:(id)context completion:(id)completion;
+- (void)listAllPrivateEmailsForAltDSID:(id)d completion:(id)completion;
+- (void)lookupPrivateEmailForAltDSID:(id)d withKey:(id)key completion:(id)completion;
+- (void)lookupPrivateEmailWithContext:(id)context completion:(id)completion;
+- (void)privateEmailListVersionWithCompletion:(id)completion;
+- (void)registerPrivateEmailForAltDSID:(id)d withKey:(id)key completion:(id)completion;
+- (void)registerPrivateEmailWithContext:(id)context completion:(id)completion;
+- (void)removePrivateEmailKey:(id)key completion:(id)completion;
+- (void)setUiProvider:(id)provider;
 @end
 
 @implementation AKPrivateEmailController
 
 - (AKPrivateEmailController)init
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [objc_alloc(MEMORY[0x1E6985E18]) initWithServiceName:@"com.apple.ak.privateemail.xpc" remoteProtocol:&unk_1F07C2A30 exportedProtocol:&unk_1F07D19D8 options:0];
   v2 = objc_alloc(MEMORY[0x1E6985E10]);
-  v6 = [v2 initWithRemoteServiceConfig:v7[0] delegate:v8];
-  v3 = v8;
-  v8 = 0;
-  v8 = [(AKPrivateEmailController *)v3 initWithXPCSession:v6];
-  objc_storeStrong(&v8, v8);
-  v5 = MEMORY[0x1E69E5928](v8);
+  v6 = [v2 initWithRemoteServiceConfig:v7[0] delegate:selfCopy];
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKPrivateEmailController *)v3 initWithXPCSession:v6];
+  objc_storeStrong(&selfCopy, selfCopy);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(v7, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKPrivateEmailController)initWithXPCSession:(id)a3
+- (AKPrivateEmailController)initWithXPCSession:(id)session
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v10;
-  v10 = 0;
+  objc_storeStrong(location, session);
+  v3 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v3;
   v8.super_class = AKPrivateEmailController;
-  v10 = [(AKPrivateEmailController *)&v8 init];
-  objc_storeStrong(&v10, v10);
-  if (v10)
+  selfCopy = [(AKPrivateEmailController *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = objc_alloc_init(AKPrivateEmailClientImpl);
-    clientImpl = v10->_clientImpl;
-    v10->_clientImpl = v4;
+    clientImpl = selfCopy->_clientImpl;
+    selfCopy->_clientImpl = v4;
     MEMORY[0x1E69E5920](clientImpl);
-    objc_storeStrong(&v10->_remoteService, location[0]);
-    [(AAFXPCSession *)v10->_remoteService resume];
+    objc_storeStrong(&selfCopy->_remoteService, location[0]);
+    [(AAFXPCSession *)selfCopy->_remoteService resume];
   }
 
-  v7 = MEMORY[0x1E69E5928](v10);
+  v7 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)configureRemoteInterface:(id)a3
+- (void)configureRemoteInterface:(id)interface
 {
   location[2] = self;
   location[1] = a2;
   v11 = location;
   v12 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, interface);
   v7 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v4 = objc_opt_class();
@@ -91,51 +91,51 @@
   objc_storeStrong(v11, v12);
 }
 
-- (void)setUiProvider:(id)a3
+- (void)setUiProvider:(id)provider
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKPrivateEmailClientImpl *)v4->_clientImpl setUiProvider:location[0]];
+  objc_storeStrong(location, provider);
+  [(AKPrivateEmailClientImpl *)selfCopy->_clientImpl setUiProvider:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)lookupPrivateEmailForAltDSID:(id)a3 withKey:(id)a4 completion:(id)a5
+- (void)lookupPrivateEmailForAltDSID:(id)d withKey:(id)key completion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, key);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
+  objc_storeStrong(&v9, completion);
   v5 = [AKPrivateEmailContext alloc];
   v8 = [(AKPrivateEmailContext *)v5 initWithKey:v10 altDSID:location[0]];
-  [(AKPrivateEmailController *)v12 lookupPrivateEmailWithContext:v8 completion:v9];
+  [(AKPrivateEmailController *)selfCopy lookupPrivateEmailWithContext:v8 completion:v9];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)lookupPrivateEmailWithContext:(id)a3 completion:(id)a4
+- (void)lookupPrivateEmailWithContext:(id)context completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v37[0] = 0;
   v37[1] = v37;
   v38 = 838860800;
   v39 = 48;
   v40 = __Block_byref_object_copy__8;
   v41 = __Block_byref_object_dispose__8;
-  v42 = MEMORY[0x1E69E5928](v45);
+  v42 = MEMORY[0x1E69E5928](selfCopy);
   v35 = _os_activity_create(&dword_193225000, "private-email-authkit/lookup-email", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v36 = v35;
   state.opaque[0] = 0;
@@ -178,7 +178,7 @@
   v24 = v32;
   v23[0] = MEMORY[0x1E69E5928](v43);
   v25 = MEMORY[0x193B165F0](&v18);
-  remoteService = v45->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -268,24 +268,24 @@ void __69__AKPrivateEmailController_lookupPrivateEmailWithContext_completion___b
   *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchPrivateEmailForAltDSID:(id)a3 withKey:(id)a4 completion:(id)a5
+- (void)fetchPrivateEmailForAltDSID:(id)d withKey:(id)key completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v46 = 0;
-  objc_storeStrong(&v46, a4);
+  objc_storeStrong(&v46, key);
   v45 = 0;
-  objc_storeStrong(&v45, a5);
+  objc_storeStrong(&v45, completion);
   v39[0] = 0;
   v39[1] = v39;
   v40 = 838860800;
   v41 = 48;
   v42 = __Block_byref_object_copy__8;
   v43 = __Block_byref_object_dispose__8;
-  v44 = MEMORY[0x1E69E5928](v48);
+  v44 = MEMORY[0x1E69E5928](selfCopy);
   v37 = _os_activity_create(&dword_193225000, "private-email-authkit/fetch-email", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v38 = v37;
   state.opaque[0] = 0;
@@ -328,7 +328,7 @@ void __69__AKPrivateEmailController_lookupPrivateEmailWithContext_completion___b
   v26 = v34;
   v25[0] = MEMORY[0x1E69E5928](v45);
   v27 = MEMORY[0x193B165F0](&v20);
-  remoteService = v48->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -419,24 +419,24 @@ void __75__AKPrivateEmailController_fetchPrivateEmailForAltDSID_withKey_completi
   *MEMORY[0x1E69E9840];
 }
 
-- (void)registerPrivateEmailForAltDSID:(id)a3 withKey:(id)a4 completion:(id)a5
+- (void)registerPrivateEmailForAltDSID:(id)d withKey:(id)key completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v46 = 0;
-  objc_storeStrong(&v46, a4);
+  objc_storeStrong(&v46, key);
   v45 = 0;
-  objc_storeStrong(&v45, a5);
+  objc_storeStrong(&v45, completion);
   v39[0] = 0;
   v39[1] = v39;
   v40 = 838860800;
   v41 = 48;
   v42 = __Block_byref_object_copy__8;
   v43 = __Block_byref_object_dispose__8;
-  v44 = MEMORY[0x1E69E5928](v48);
+  v44 = MEMORY[0x1E69E5928](selfCopy);
   v37 = _os_activity_create(&dword_193225000, "private-email-authkit/register-email", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v38 = v37;
   state.opaque[0] = 0;
@@ -479,7 +479,7 @@ void __75__AKPrivateEmailController_fetchPrivateEmailForAltDSID_withKey_completi
   v26 = v34;
   v25[0] = MEMORY[0x1E69E5928](v45);
   v27 = MEMORY[0x193B165F0](&v20);
-  remoteService = v48->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -570,22 +570,22 @@ void __78__AKPrivateEmailController_registerPrivateEmailForAltDSID_withKey_compl
   *MEMORY[0x1E69E9840];
 }
 
-- (void)registerPrivateEmailWithContext:(id)a3 completion:(id)a4
+- (void)registerPrivateEmailWithContext:(id)context completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v37[0] = 0;
   v37[1] = v37;
   v38 = 838860800;
   v39 = 48;
   v40 = __Block_byref_object_copy__8;
   v41 = __Block_byref_object_dispose__8;
-  v42 = MEMORY[0x1E69E5928](v45);
+  v42 = MEMORY[0x1E69E5928](selfCopy);
   v35 = _os_activity_create(&dword_193225000, "private-email-authkit/register-email", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v36 = v35;
   state.opaque[0] = 0;
@@ -628,7 +628,7 @@ void __78__AKPrivateEmailController_registerPrivateEmailForAltDSID_withKey_compl
   v24 = v32;
   v23[0] = MEMORY[0x1E69E5928](v43);
   v25 = MEMORY[0x193B165F0](&v18);
-  remoteService = v45->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -718,22 +718,22 @@ void __71__AKPrivateEmailController_registerPrivateEmailWithContext_completion__
   *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchPrivateEmailWithContext:(id)a3 completion:(id)a4
+- (void)fetchPrivateEmailWithContext:(id)context completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v37[0] = 0;
   v37[1] = v37;
   v38 = 838860800;
   v39 = 48;
   v40 = __Block_byref_object_copy__8;
   v41 = __Block_byref_object_dispose__8;
-  v42 = MEMORY[0x1E69E5928](v45);
+  v42 = MEMORY[0x1E69E5928](selfCopy);
   v35 = _os_activity_create(&dword_193225000, "private-email-authkit/fetch-with-context", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v36 = v35;
   state.opaque[0] = 0;
@@ -776,7 +776,7 @@ void __71__AKPrivateEmailController_registerPrivateEmailWithContext_completion__
   v24 = v32;
   v23[0] = MEMORY[0x1E69E5928](v43);
   v25 = MEMORY[0x193B165F0](&v18);
-  remoteService = v45->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -866,14 +866,14 @@ void __68__AKPrivateEmailController_fetchPrivateEmailWithContext_completion___bl
   *MEMORY[0x1E69E9840];
 }
 
-- (void)getContextForRequestContext:(id)a3 completion:(id)a4
+- (void)getContextForRequestContext:(id)context completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, completion);
   v27 = _os_activity_create(&dword_193225000, "authkit/PrivateEmailContext", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v28 = v27;
   state.opaque[0] = 0;
@@ -885,7 +885,7 @@ void __68__AKPrivateEmailController_fetchPrivateEmailWithContext_completion___bl
   v22 = 48;
   v23 = __Block_byref_object_copy__8;
   v24 = __Block_byref_object_dispose__8;
-  v25 = MEMORY[0x1E69E5928](v31);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -894,7 +894,7 @@ void __68__AKPrivateEmailController_fetchPrivateEmailWithContext_completion___bl
   v18[0] = MEMORY[0x1E69E5928](v29);
   v18[1] = v20;
   v19 = MEMORY[0x193B165F0](&v13);
-  remoteService = v31->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -976,20 +976,20 @@ void __67__AKPrivateEmailController_getContextForRequestContext_completion___blo
   *MEMORY[0x1E69E9840];
 }
 
-- (void)deletePrivateEmailDatabaseWithCompletion:(id)a3
+- (void)deletePrivateEmailDatabaseWithCompletion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v35[0] = 0;
   v35[1] = v35;
   v36 = 838860800;
   v37 = 48;
   v38 = __Block_byref_object_copy__8;
   v39 = __Block_byref_object_dispose__8;
-  v40 = MEMORY[0x1E69E5928](v42);
+  v40 = MEMORY[0x1E69E5928](selfCopy);
   v33 = _os_activity_create(&dword_193225000, "private-email-authkit/delete-db", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v34 = v33;
   state.opaque[0] = 0;
@@ -1032,7 +1032,7 @@ void __67__AKPrivateEmailController_getContextForRequestContext_completion___blo
   v22 = v30;
   v21[0] = MEMORY[0x1E69E5928](location[0]);
   v23 = MEMORY[0x193B165F0](&v16);
-  remoteService = v42->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v9 = MEMORY[0x1E69E9820];
   v10 = -1073741824;
   v11 = 0;
@@ -1110,20 +1110,20 @@ void __69__AKPrivateEmailController_deletePrivateEmailDatabaseWithCompletion___b
   *MEMORY[0x1E69E9840];
 }
 
-- (void)privateEmailListVersionWithCompletion:(id)a3
+- (void)privateEmailListVersionWithCompletion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v35[0] = 0;
   v35[1] = v35;
   v36 = 838860800;
   v37 = 48;
   v38 = __Block_byref_object_copy__8;
   v39 = __Block_byref_object_dispose__8;
-  v40 = MEMORY[0x1E69E5928](v42);
+  v40 = MEMORY[0x1E69E5928](selfCopy);
   v33 = _os_activity_create(&dword_193225000, "private-email-authkit/list-version", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v34 = v33;
   state.opaque[0] = 0;
@@ -1166,7 +1166,7 @@ void __69__AKPrivateEmailController_deletePrivateEmailDatabaseWithCompletion___b
   v22 = v30;
   v21[0] = MEMORY[0x1E69E5928](location[0]);
   v23 = MEMORY[0x193B165F0](&v16);
-  remoteService = v42->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v9 = MEMORY[0x1E69E9820];
   v10 = -1073741824;
   v11 = 0;
@@ -1246,22 +1246,22 @@ void __66__AKPrivateEmailController_privateEmailListVersionWithCompletion___bloc
   *MEMORY[0x1E69E9840];
 }
 
-- (void)removePrivateEmailKey:(id)a3 completion:(id)a4
+- (void)removePrivateEmailKey:(id)key completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v37[0] = 0;
   v37[1] = v37;
   v38 = 838860800;
   v39 = 48;
   v40 = __Block_byref_object_copy__8;
   v41 = __Block_byref_object_dispose__8;
-  v42 = MEMORY[0x1E69E5928](v45);
+  v42 = MEMORY[0x1E69E5928](selfCopy);
   v35 = _os_activity_create(&dword_193225000, "private-email-authkit/remove-key", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v36 = v35;
   state.opaque[0] = 0;
@@ -1304,7 +1304,7 @@ void __66__AKPrivateEmailController_privateEmailListVersionWithCompletion___bloc
   v24 = v32;
   v23[0] = MEMORY[0x1E69E5928](v43);
   v25 = MEMORY[0x193B165F0](&v18);
-  remoteService = v45->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -1382,22 +1382,22 @@ void __61__AKPrivateEmailController_removePrivateEmailKey_completion___block_inv
   *MEMORY[0x1E69E9840];
 }
 
-- (void)listAllPrivateEmailsForAltDSID:(id)a3 completion:(id)a4
+- (void)listAllPrivateEmailsForAltDSID:(id)d completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v37[0] = 0;
   v37[1] = v37;
   v38 = 838860800;
   v39 = 48;
   v40 = __Block_byref_object_copy__8;
   v41 = __Block_byref_object_dispose__8;
-  v42 = MEMORY[0x1E69E5928](v45);
+  v42 = MEMORY[0x1E69E5928](selfCopy);
   v35 = _os_activity_create(&dword_193225000, "private-email-authkit/fetch-email-list", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v36 = v35;
   state.opaque[0] = 0;
@@ -1440,7 +1440,7 @@ void __61__AKPrivateEmailController_removePrivateEmailKey_completion___block_inv
   v24 = v32;
   v23[0] = MEMORY[0x1E69E5928](v43);
   v25 = MEMORY[0x193B165F0](&v18);
-  remoteService = v45->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -1531,22 +1531,22 @@ void __70__AKPrivateEmailController_listAllPrivateEmailsForAltDSID_completion___
   *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchSignInWithApplePrivateEmailWithContext:(id)a3 completion:(id)a4
+- (void)fetchSignInWithApplePrivateEmailWithContext:(id)context completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v37[0] = 0;
   v37[1] = v37;
   v38 = 838860800;
   v39 = 48;
   v40 = __Block_byref_object_copy__8;
   v41 = __Block_byref_object_dispose__8;
-  v42 = MEMORY[0x1E69E5928](v45);
+  v42 = MEMORY[0x1E69E5928](selfCopy);
   v35 = _os_activity_create(&dword_193225000, "private-email-authkit/fetch-siwahme-with-context", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v36 = v35;
   state.opaque[0] = 0;
@@ -1589,7 +1589,7 @@ void __70__AKPrivateEmailController_listAllPrivateEmailsForAltDSID_completion___
   v24 = v32;
   v23[0] = MEMORY[0x1E69E5928](v43);
   v25 = MEMORY[0x193B165F0](&v18);
-  remoteService = v45->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;

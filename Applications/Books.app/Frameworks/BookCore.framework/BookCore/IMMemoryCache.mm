@@ -1,26 +1,26 @@
 @interface IMMemoryCache
-- (BOOL)_removeItemFromItemsDictionaryIfReady:(unint64_t)a3;
-- (BOOL)hasObjectForKey:(id)a3;
+- (BOOL)_removeItemFromItemsDictionaryIfReady:(unint64_t)ready;
+- (BOOL)hasObjectForKey:(id)key;
 - (IMMemoryCache)init;
 - (id)allKeys;
 - (id)delegate;
 - (id)description;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (int64_t)numberOfCachedItems;
-- (unint64_t)costForObjectWithKey:(id)a3;
-- (void)_addItem:(id)a3 forKey:(id)a4;
+- (unint64_t)costForObjectWithKey:(id)key;
+- (void)_addItem:(id)item forKey:(id)key;
 - (void)_checkLimits;
 - (void)_checkLimitsAndEvictObjects;
-- (void)_removeObjectForKey:(id)a3;
-- (void)_willEvict:(id)a3;
+- (void)_removeObjectForKey:(id)key;
+- (void)_willEvict:(id)evict;
 - (void)checkLimitsAndEvictObjects;
 - (void)dealloc;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectsForKeyWithPrefix:(id)a3;
-- (void)removeObjectsForKeyWithPrefix:(id)a3 andSuffix:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4 cost:(unint64_t)a5;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectsForKeyWithPrefix:(id)prefix;
+- (void)removeObjectsForKeyWithPrefix:(id)prefix andSuffix:(id)suffix;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key cost:(unint64_t)cost;
 @end
 
 @implementation IMMemoryCache
@@ -87,9 +87,9 @@
   return v3;
 }
 
-- (BOOL)hasObjectForKey:(id)a3
+- (BOOL)hasObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -101,10 +101,10 @@
   block[1] = 3221225472;
   block[2] = sub_184404;
   block[3] = &unk_2C7BC0;
-  v9 = v4;
+  v9 = keyCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(accessQueue, block);
   LOBYTE(accessQueue) = v12[5] != 0;
 
@@ -112,9 +112,9 @@
   return accessQueue;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -127,9 +127,9 @@
   block[2] = sub_184564;
   block[3] = &unk_2C8838;
   block[4] = self;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -138,25 +138,25 @@
   return v7;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = [_IMMemoryCacheItem cacheItemWithItem:a3 key:v6 cost:0];
-  [(IMMemoryCache *)self _addItem:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [_IMMemoryCacheItem cacheItemWithItem:object key:keyCopy cost:0];
+  [(IMMemoryCache *)self _addItem:v7 forKey:keyCopy];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 cost:(unint64_t)a5
+- (void)setObject:(id)object forKey:(id)key cost:(unint64_t)cost
 {
-  v8 = a4;
-  v9 = [_IMMemoryCacheItem cacheItemWithItem:a3 key:v8 cost:a5];
-  [(IMMemoryCache *)self _addItem:v9 forKey:v8];
+  keyCopy = key;
+  v9 = [_IMMemoryCacheItem cacheItemWithItem:object key:keyCopy cost:cost];
+  [(IMMemoryCache *)self _addItem:v9 forKey:keyCopy];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy)
   {
     accessQueue = self->_accessQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -164,7 +164,7 @@
     v7[2] = sub_184878;
     v7[3] = &unk_2C7BE8;
     v7[4] = self;
-    v8 = v4;
+    v8 = keyCopy;
     dispatch_sync(accessQueue, v7);
   }
 }
@@ -180,12 +180,12 @@
   dispatch_sync(accessQueue, block);
 }
 
-- (void)removeObjectsForKeyWithPrefix:(id)a3 andSuffix:(id)a4
+- (void)removeObjectsForKeyWithPrefix:(id)prefix andSuffix:(id)suffix
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  prefixCopy = prefix;
+  suffixCopy = suffix;
+  v8 = suffixCopy;
+  if (prefixCopy && suffixCopy)
   {
     accessQueue = self->_accessQueue;
     block[0] = _NSConcreteStackBlock;
@@ -193,17 +193,17 @@
     block[2] = sub_184A18;
     block[3] = &unk_2C89F8;
     block[4] = self;
-    v11 = v6;
+    v11 = prefixCopy;
     v12 = v8;
     dispatch_sync(accessQueue, block);
   }
 }
 
-- (void)removeObjectsForKeyWithPrefix:(id)a3
+- (void)removeObjectsForKeyWithPrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  prefixCopy = prefix;
+  v5 = prefixCopy;
+  if (prefixCopy)
   {
     accessQueue = self->_accessQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -211,14 +211,14 @@
     v7[2] = sub_184BE8;
     v7[3] = &unk_2C7BE8;
     v7[4] = self;
-    v8 = v4;
+    v8 = prefixCopy;
     dispatch_sync(accessQueue, v7);
   }
 }
 
-- (BOOL)_removeItemFromItemsDictionaryIfReady:(unint64_t)a3
+- (BOOL)_removeItemFromItemsDictionaryIfReady:(unint64_t)ready
 {
-  v4 = [(NSMutableArray *)self->_itemsArray objectAtIndex:a3];
+  v4 = [(NSMutableArray *)self->_itemsArray objectAtIndex:ready];
   if ([v4 conformsToProtocol] && (objc_msgSend(v4, "item"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "discardContentIfPossible"), v5, objc_msgSend(v4, "item"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isContentDiscarded"), v6, !v7))
   {
     v11 = 0;
@@ -240,14 +240,14 @@
   return v11;
 }
 
-- (void)_willEvict:(id)a3
+- (void)_willEvict:(id)evict
 {
-  v6 = a3;
-  v4 = [(IMMemoryCache *)self delegate];
+  evictCopy = evict;
+  delegate = [(IMMemoryCache *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v6 item];
-    [v4 cache:self willEvictObject:v5];
+    item = [evictCopy item];
+    [delegate cache:self willEvictObject:item];
   }
 }
 
@@ -344,9 +344,9 @@
   }
 }
 
-- (unint64_t)costForObjectWithKey:(id)a3
+- (unint64_t)costForObjectWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -357,9 +357,9 @@
   block[2] = sub_185214;
   block[3] = &unk_2C8838;
   block[4] = self;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[3];
 
@@ -408,33 +408,33 @@
   return v3;
 }
 
-- (void)_addItem:(id)a3 forKey:(id)a4
+- (void)_addItem:(id)item forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  keyCopy = key;
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1855E8;
   block[3] = &unk_2C89F8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = keyCopy;
+  v13 = itemCopy;
+  v9 = itemCopy;
+  v10 = keyCopy;
   dispatch_sync(accessQueue, block);
 }
 
-- (void)_removeObjectForKey:(id)a3
+- (void)_removeObjectForKey:(id)key
 {
-  v9 = a3;
+  keyCopy = key;
   v4 = [(NSMutableDictionary *)self->_items objectForKey:?];
   v5 = v4;
   if (v4)
   {
     --self->_count;
     self->_totalCost -= [v4 cost];
-    [(NSMutableDictionary *)self->_items removeObjectForKey:v9];
+    [(NSMutableDictionary *)self->_items removeObjectForKey:keyCopy];
     itemsArray = self->_itemsArray;
     v7 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v5 timeStamp]);
     v8 = [(NSMutableArray *)itemsArray bu_indexOfObjectWithValue:v7 forKeyPath:@"timeStamp"];

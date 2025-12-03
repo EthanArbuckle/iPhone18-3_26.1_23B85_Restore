@@ -1,51 +1,51 @@
 @interface PRPosterDescriptorGalleryTitleStyle
-- (PRPosterDescriptorGalleryTitleStyle)initWithCoder:(id)a3;
-- (PRPosterDescriptorGalleryTitleStyle)initWithPreferredTimeMaxYPortrait:(double)a3 preferredTimeMaxYLandscape:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PRPosterDescriptorGalleryTitleStyle)initWithCoder:(id)coder;
+- (PRPosterDescriptorGalleryTitleStyle)initWithPreferredTimeMaxYPortrait:(double)portrait preferredTimeMaxYLandscape:(double)landscape;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterDescriptorGalleryTitleStyle
 
-- (PRPosterDescriptorGalleryTitleStyle)initWithPreferredTimeMaxYPortrait:(double)a3 preferredTimeMaxYLandscape:(double)a4
+- (PRPosterDescriptorGalleryTitleStyle)initWithPreferredTimeMaxYPortrait:(double)portrait preferredTimeMaxYLandscape:(double)landscape
 {
   v7.receiver = self;
   v7.super_class = PRPosterDescriptorGalleryTitleStyle;
   result = [(PRPosterDescriptorGalleryTitleStyle *)&v7 init];
   if (result)
   {
-    result->_preferredTimeMaxYPortrait = a3;
-    result->_preferredTimeMaxYLandscape = a4;
+    result->_preferredTimeMaxYPortrait = portrait;
+    result->_preferredTimeMaxYLandscape = landscape;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   preferredTimeMaxYPortrait = self->_preferredTimeMaxYPortrait;
-  v7 = a3;
+  coderCopy = coder;
   *&v5 = preferredTimeMaxYPortrait;
-  [v7 encodeFloat:@"_preferredTimeMaxYPortrait" forKey:v5];
+  [coderCopy encodeFloat:@"_preferredTimeMaxYPortrait" forKey:v5];
   preferredTimeMaxYLandscape = self->_preferredTimeMaxYLandscape;
   *&preferredTimeMaxYLandscape = preferredTimeMaxYLandscape;
-  [v7 encodeFloat:@"_preferredTimeMaxYLandscape" forKey:preferredTimeMaxYLandscape];
+  [coderCopy encodeFloat:@"_preferredTimeMaxYLandscape" forKey:preferredTimeMaxYLandscape];
 }
 
-- (PRPosterDescriptorGalleryTitleStyle)initWithCoder:(id)a3
+- (PRPosterDescriptorGalleryTitleStyle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"_preferredTimeMaxYPortrait"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"_preferredTimeMaxYPortrait"];
   v6 = v5;
-  [v4 decodeFloatForKey:@"_preferredTimeMaxYLandscape"];
+  [coderCopy decodeFloatForKey:@"_preferredTimeMaxYLandscape"];
   v8 = v7;
 
   return [(PRPosterDescriptorGalleryTitleStyle *)self initWithPreferredTimeMaxYPortrait:v6 preferredTimeMaxYLandscape:v8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   preferredTimeMaxYPortrait = self->_preferredTimeMaxYPortrait;
   preferredTimeMaxYLandscape = self->_preferredTimeMaxYLandscape;
 

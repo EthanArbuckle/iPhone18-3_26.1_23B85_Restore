@@ -1,11 +1,11 @@
 @interface SFPasswordSavingRemoteViewController
 + (id)passwordServiceViewControllerName;
 - (id)_accountAuthenticationModificationController;
-- (id)presentationAnchorForAccountAuthenticationModificationController:(id)a3;
-- (void)accountAuthenticationModificationController:(id)a3 didFailRequest:(id)a4 withError:(id)a5;
-- (void)accountAuthenticationModificationController:(id)a3 didSuccessfullyCompleteRequest:(id)a4 withUserInfo:(id)a5;
-- (void)performUpgradeToSignInWithAppleForCredential:(id)a3 serviceIdentifier:(id)a4;
-- (void)performUpgradeToStrongPasswordForCredential:(id)a3 serviceIdentifier:(id)a4;
+- (id)presentationAnchorForAccountAuthenticationModificationController:(id)controller;
+- (void)accountAuthenticationModificationController:(id)controller didFailRequest:(id)request withError:(id)error;
+- (void)accountAuthenticationModificationController:(id)controller didSuccessfullyCompleteRequest:(id)request withUserInfo:(id)info;
+- (void)performUpgradeToSignInWithAppleForCredential:(id)credential serviceIdentifier:(id)identifier;
+- (void)performUpgradeToStrongPasswordForCredential:(id)credential serviceIdentifier:(id)identifier;
 @end
 
 @implementation SFPasswordSavingRemoteViewController
@@ -17,32 +17,32 @@
   return NSStringFromClass(v2);
 }
 
-- (void)performUpgradeToSignInWithAppleForCredential:(id)a3 serviceIdentifier:(id)a4
+- (void)performUpgradeToSignInWithAppleForCredential:(id)credential serviceIdentifier:(id)identifier
 {
   v6 = MEMORY[0x1E695A910];
-  v7 = a4;
-  v8 = a3;
+  identifierCopy = identifier;
+  credentialCopy = credential;
   v9 = [v6 alloc];
-  v10 = [v8 user];
-  v11 = [v8 password];
+  user = [credentialCopy user];
+  password = [credentialCopy password];
 
-  v13 = [v9 initWithUser:v10 password:v11 extension:0 serviceIdentifier:v7 userInfo:0];
-  v12 = [(SFPasswordSavingRemoteViewController *)self _accountAuthenticationModificationController];
-  [v12 performRequest:v13];
+  v13 = [v9 initWithUser:user password:password extension:0 serviceIdentifier:identifierCopy userInfo:0];
+  _accountAuthenticationModificationController = [(SFPasswordSavingRemoteViewController *)self _accountAuthenticationModificationController];
+  [_accountAuthenticationModificationController performRequest:v13];
 }
 
-- (void)performUpgradeToStrongPasswordForCredential:(id)a3 serviceIdentifier:(id)a4
+- (void)performUpgradeToStrongPasswordForCredential:(id)credential serviceIdentifier:(id)identifier
 {
   v6 = MEMORY[0x1E695A918];
-  v7 = a4;
-  v8 = a3;
+  identifierCopy = identifier;
+  credentialCopy = credential;
   v9 = [v6 alloc];
-  v10 = [v8 user];
-  v11 = [v8 password];
+  user = [credentialCopy user];
+  password = [credentialCopy password];
 
-  v13 = [v9 initWithUser:v10 password:v11 extension:0 serviceIdentifier:v7 userInfo:0];
-  v12 = [(SFPasswordSavingRemoteViewController *)self _accountAuthenticationModificationController];
-  [v12 performRequest:v13];
+  v13 = [v9 initWithUser:user password:password extension:0 serviceIdentifier:identifierCopy userInfo:0];
+  _accountAuthenticationModificationController = [(SFPasswordSavingRemoteViewController *)self _accountAuthenticationModificationController];
+  [_accountAuthenticationModificationController performRequest:v13];
 }
 
 - (id)_accountAuthenticationModificationController
@@ -62,10 +62,10 @@
   return accountAuthenticationModificationController;
 }
 
-- (void)accountAuthenticationModificationController:(id)a3 didSuccessfullyCompleteRequest:(id)a4 withUserInfo:(id)a5
+- (void)accountAuthenticationModificationController:(id)controller didSuccessfullyCompleteRequest:(id)request withUserInfo:(id)info
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -73,28 +73,28 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = v7;
-      v9 = [v6 serviceIdentifier];
-      v10 = [v9 identifier];
+      serviceIdentifier = [requestCopy serviceIdentifier];
+      identifier = [serviceIdentifier identifier];
       *buf = 138477827;
-      v23 = v10;
+      v23 = identifier;
       _os_log_impl(&dword_1D4644000, v8, OS_LOG_TYPE_INFO, "Completed Sign in with Apple upgrade for %{private}@", buf, 0xCu);
     }
 
-    v11 = [(SFPasswordRemoteViewController *)self delegate];
-    [v11 remoteViewControllerWillDismiss:self];
+    delegate = [(SFPasswordRemoteViewController *)self delegate];
+    [delegate remoteViewControllerWillDismiss:self];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [MEMORY[0x1E696AAE8] mainBundle];
-    v11 = [v12 objectForInfoDictionaryKey:*MEMORY[0x1E695E4F8]];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    delegate = [mainBundle objectForInfoDictionaryKey:*MEMORY[0x1E695E4F8]];
 
     v13 = MEMORY[0x1E69DC650];
     v14 = MEMORY[0x1E696AEC0];
     v15 = _WBSLocalizedString();
-    v16 = [v14 stringWithFormat:v15, v11];
+    v16 = [v14 stringWithFormat:v15, delegate];
     v17 = [v13 alertControllerWithTitle:0 message:v16 preferredStyle:1];
 
     v18 = MEMORY[0x1E69DC648];
@@ -118,12 +118,12 @@ void __128__SFPasswordSavingRemoteViewController_accountAuthenticationModificati
   [v2 remoteViewControllerWillDismiss:*(a1 + 32)];
 }
 
-- (void)accountAuthenticationModificationController:(id)a3 didFailRequest:(id)a4 withError:(id)a5
+- (void)accountAuthenticationModificationController:(id)controller didFailRequest:(id)request withError:(id)error
 {
-  if ([a5 code] == 1)
+  if ([error code] == 1)
   {
-    v14 = [(SFPasswordRemoteViewController *)self delegate];
-    [v14 remoteViewControllerWillDismiss:self];
+    delegate = [(SFPasswordRemoteViewController *)self delegate];
+    [delegate remoteViewControllerWillDismiss:self];
   }
 
   else
@@ -154,12 +154,12 @@ void __109__SFPasswordSavingRemoteViewController_accountAuthenticationModificati
   [v2 remoteViewControllerWillDismiss:*(a1 + 32)];
 }
 
-- (id)presentationAnchorForAccountAuthenticationModificationController:(id)a3
+- (id)presentationAnchorForAccountAuthenticationModificationController:(id)controller
 {
-  v3 = [(SFPasswordSavingRemoteViewController *)self view];
-  v4 = [v3 window];
+  view = [(SFPasswordSavingRemoteViewController *)self view];
+  window = [view window];
 
-  return v4;
+  return window;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface RPCompanionLinkDevice
-- (BOOL)isEqualToDevice:(id)a3;
-- (BOOL)isEqualToDeviceBasic:(id)a3;
+- (BOOL)isEqualToDevice:(id)device;
+- (BOOL)isEqualToDeviceBasic:(id)basic;
 - (NSString)effectiveIdentifier;
 - (NSString)fileTransferTargetID;
 - (RPCompanionLinkDevice)init;
-- (RPCompanionLinkDevice)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (unsigned)updateWithBonjourDevice:(id)a3;
-- (unsigned)updateWithSFDevice:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFileTransferTargetID:(id)a3;
+- (RPCompanionLinkDevice)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
+- (unsigned)updateWithBonjourDevice:(id)device;
+- (unsigned)updateWithSFDevice:(id)device;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFileTransferTargetID:(id)d;
 @end
 
 @implementation RPCompanionLinkDevice
@@ -42,15 +42,15 @@
   return identifier;
 }
 
-- (RPCompanionLinkDevice)initWithCoder:(id)a3
+- (RPCompanionLinkDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = RPCompanionLinkDevice;
-  v5 = [(RPEndpoint *)&v21 initWithCoder:v4];
+  v5 = [(RPEndpoint *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -170,152 +170,152 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = RPCompanionLinkDevice;
-  [(RPEndpoint *)&v25 encodeWithCoder:v4];
+  [(RPEndpoint *)&v25 encodeWithCoder:coderCopy];
   activeUserAltDSID = self->_activeUserAltDSID;
   if (activeUserAltDSID)
   {
-    [v4 encodeObject:activeUserAltDSID forKey:@"altDSID"];
+    [coderCopy encodeObject:activeUserAltDSID forKey:@"altDSID"];
   }
 
   deviceCapabilityFlags = self->_deviceCapabilityFlags;
   if (deviceCapabilityFlags)
   {
-    [v4 encodeInt64:deviceCapabilityFlags forKey:@"dCapF"];
+    [coderCopy encodeInt64:deviceCapabilityFlags forKey:@"dCapF"];
   }
 
   deviceColor = self->_deviceColor;
   if (deviceColor)
   {
-    [v4 encodeObject:deviceColor forKey:@"dCl"];
+    [coderCopy encodeObject:deviceColor forKey:@"dCl"];
   }
 
   if (self->_deviceFlags)
   {
-    [v4 encodeInteger:? forKey:?];
+    [coderCopy encodeInteger:? forKey:?];
   }
 
   fileTransferTargetID = self->_fileTransferTargetID;
   if (fileTransferTargetID)
   {
-    [v4 encodeObject:fileTransferTargetID forKey:@"dFtTID"];
+    [coderCopy encodeObject:fileTransferTargetID forKey:@"dFtTID"];
   }
 
   flags = self->_flags;
   if (flags)
   {
-    [v4 encodeInt64:flags forKey:@"flags"];
+    [coderCopy encodeInt64:flags forKey:@"flags"];
   }
 
   homeKitIdentifier = self->_homeKitIdentifier;
   if (homeKitIdentifier)
   {
-    [v4 encodeObject:homeKitIdentifier forKey:@"hkID"];
+    [coderCopy encodeObject:homeKitIdentifier forKey:@"hkID"];
   }
 
   idsCorrelationIdentifier = self->super._idsCorrelationIdentifier;
   if (idsCorrelationIdentifier)
   {
-    [v4 encodeObject:idsCorrelationIdentifier forKey:@"idsCID"];
+    [coderCopy encodeObject:idsCorrelationIdentifier forKey:@"idsCID"];
   }
 
   idsPersonalDeviceIdentifier = self->_idsPersonalDeviceIdentifier;
   if (idsPersonalDeviceIdentifier)
   {
-    [v4 encodeObject:idsPersonalDeviceIdentifier forKey:@"idsP"];
+    [coderCopy encodeObject:idsPersonalDeviceIdentifier forKey:@"idsP"];
   }
 
   listeningPort = self->_listeningPort;
   if (listeningPort)
   {
-    [v4 encodeInteger:listeningPort forKey:@"lP"];
+    [coderCopy encodeInteger:listeningPort forKey:@"lP"];
   }
 
   mediaAccessControlSetting = self->_mediaAccessControlSetting;
   if (mediaAccessControlSetting)
   {
-    [v4 encodeInteger:mediaAccessControlSetting forKey:@"MAc"];
+    [coderCopy encodeInteger:mediaAccessControlSetting forKey:@"MAc"];
   }
 
   mediaSystemIdentifier = self->_mediaSystemIdentifier;
   if (mediaSystemIdentifier)
   {
-    [v4 encodeObject:mediaSystemIdentifier forKey:@"MSi"];
+    [coderCopy encodeObject:mediaSystemIdentifier forKey:@"MSi"];
   }
 
   mediaSystemName = self->_mediaSystemName;
   if (mediaSystemName)
   {
-    [v4 encodeObject:mediaSystemName forKey:@"MSn"];
+    [coderCopy encodeObject:mediaSystemName forKey:@"MSn"];
   }
 
   mediaSystemRole = self->_mediaSystemRole;
   if (mediaSystemRole)
   {
-    [v4 encodeInteger:mediaSystemRole forKey:@"MSr"];
+    [coderCopy encodeInteger:mediaSystemRole forKey:@"MSr"];
   }
 
   mediaSystemState = self->_mediaSystemState;
   if (mediaSystemState)
   {
-    [v4 encodeInteger:mediaSystemState forKey:@"MSs"];
+    [coderCopy encodeInteger:mediaSystemState forKey:@"MSs"];
   }
 
   if (self->_personal)
   {
-    [v4 encodeBool:1 forKey:@"pers"];
+    [coderCopy encodeBool:1 forKey:@"pers"];
   }
 
   personalDeviceState = self->_personalDeviceState;
   if (personalDeviceState)
   {
-    [v4 encodeInteger:personalDeviceState forKey:@"pds"];
+    [coderCopy encodeInteger:personalDeviceState forKey:@"pds"];
   }
 
   personalRequestsState = self->_personalRequestsState;
   if (personalRequestsState)
   {
-    [v4 encodeInteger:personalRequestsState forKey:@"prs"];
+    [coderCopy encodeInteger:personalRequestsState forKey:@"prs"];
   }
 
   publicIdentifier = self->_publicIdentifier;
   if (publicIdentifier)
   {
-    [v4 encodeObject:publicIdentifier forKey:@"pubID"];
+    [coderCopy encodeObject:publicIdentifier forKey:@"pubID"];
   }
 
   role = self->_role;
   if (role)
   {
-    [v4 encodeObject:role forKey:@"role"];
+    [coderCopy encodeObject:role forKey:@"role"];
   }
 
   roomName = self->_roomName;
   if (roomName)
   {
-    [v4 encodeObject:roomName forKey:@"rn"];
+    [coderCopy encodeObject:roomName forKey:@"rn"];
   }
 
   siriInfo = self->_siriInfo;
   if (siriInfo)
   {
-    [v4 encodeObject:siriInfo forKey:@"siriInfo"];
+    [coderCopy encodeObject:siriInfo forKey:@"siriInfo"];
   }
 
   if (self->_standaloneWatch)
   {
-    [v4 encodeInteger:? forKey:?];
+    [coderCopy encodeInteger:? forKey:?];
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v116[3] = *MEMORY[0x1E69E9840];
-  if (a3 <= 49)
+  if (level <= 49)
   {
     v5 = 100;
   }
@@ -418,13 +418,13 @@ LABEL_16:
 
   v110.receiver = self;
   v110.super_class = RPCompanionLinkDevice;
-  v18 = [(RPEndpoint *)&v110 activityLevel];
-  if (v18)
+  activityLevel = [(RPEndpoint *)&v110 activityLevel];
+  if (activityLevel)
   {
     v109 = v11;
-    if (v18 <= 0xE)
+    if (activityLevel <= 0xE)
     {
-      v19 = off_1E7C93870[v18 - 1];
+      v19 = off_1E7C93870[activityLevel - 1];
     }
 
     NSAppendPrintF();
@@ -433,7 +433,7 @@ LABEL_16:
     v11 = v20;
   }
 
-  if (a3 <= 20)
+  if (level <= 20)
   {
     v21 = self->super._accountID;
     if (v21)
@@ -597,7 +597,7 @@ LABEL_16:
     v11 = v45;
   }
 
-  if (a3 <= 20)
+  if (level <= 20)
   {
     if (self->super._hotspotInfo)
     {
@@ -619,7 +619,7 @@ LABEL_16:
     v49 = v48;
     if (v48)
     {
-      v92 = [(NSUUID *)v48 UUIDString];
+      uUIDString = [(NSUUID *)v48 UUIDString];
       NSAppendPrintF();
       v50 = v11;
 
@@ -827,20 +827,20 @@ LABEL_16:
   return v3;
 }
 
-- (void)setFileTransferTargetID:(id)a3
+- (void)setFileTransferTargetID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   fileTransferTargetID = self->_fileTransferTargetID;
   self->_fileTransferTargetID = v4;
 }
 
-- (unsigned)updateWithBonjourDevice:(id)a3
+- (unsigned)updateWithBonjourDevice:(id)device
 {
   v19.receiver = self;
   v19.super_class = RPCompanionLinkDevice;
-  v4 = a3;
-  v5 = [(RPEndpoint *)&v19 updateWithBonjourDevice:v4];
-  v6 = [v4 txtDictionary];
+  deviceCopy = device;
+  v5 = [(RPEndpoint *)&v19 updateWithBonjourDevice:deviceCopy];
+  txtDictionary = [deviceCopy txtDictionary];
 
   Int64 = CFDictionaryGetInt64();
   flags = self->_flags;
@@ -903,11 +903,11 @@ LABEL_11:
   return v5;
 }
 
-- (unsigned)updateWithSFDevice:(id)a3
+- (unsigned)updateWithSFDevice:(id)device
 {
   v9.receiver = self;
   v9.super_class = RPCompanionLinkDevice;
-  v4 = [(RPEndpoint *)&v9 updateWithSFDevice:a3];
+  v4 = [(RPEndpoint *)&v9 updateWithSFDevice:device];
   flags = self->_flags;
   v6 = self->super._model;
   if ([(NSString *)v6 hasPrefix:@"AudioAccessory1, "]|| [(NSString *)v6 hasPrefix:@"AudioAccessory5, "]|| [(NSString *)v6 hasPrefix:@"AudioAccessory6, "]|| [(NSString *)v6 hasPrefix:@"HomePod"])
@@ -936,17 +936,17 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)isEqualToDevice:(id)a3
+- (BOOL)isEqualToDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5)
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    v6 = v5;
-    v7 = [v4 identifier];
+    v6 = identifier;
+    identifier2 = [deviceCopy identifier];
     v36.receiver = self;
     v36.super_class = RPCompanionLinkDevice;
-    v8 = [(RPEndpoint *)&v36 compareWithDeviceIdentifier:v7];
+    v8 = [(RPEndpoint *)&v36 compareWithDeviceIdentifier:identifier2];
 
     if (v8)
     {
@@ -954,14 +954,14 @@ LABEL_11:
     }
   }
 
-  v9 = [v4 idsDeviceIdentifier];
-  if (v9)
+  idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+  if (idsDeviceIdentifier)
   {
-    v10 = v9;
-    v11 = [v4 idsDeviceIdentifier];
+    v10 = idsDeviceIdentifier;
+    idsDeviceIdentifier2 = [deviceCopy idsDeviceIdentifier];
     v35.receiver = self;
     v35.super_class = RPCompanionLinkDevice;
-    v12 = [(RPEndpoint *)&v35 compareWithDeviceIdentifier:v11];
+    v12 = [(RPEndpoint *)&v35 compareWithDeviceIdentifier:idsDeviceIdentifier2];
 
     if (v12)
     {
@@ -969,16 +969,16 @@ LABEL_11:
     }
   }
 
-  if (([v4 statusFlags] & 0x2000) == 0 && (self->super._statusFlags & 0x2000) == 0)
+  if (([deviceCopy statusFlags] & 0x2000) == 0 && (self->super._statusFlags & 0x2000) == 0)
   {
-    v13 = [v4 verifiedIdentity];
-    if (v13)
+    verifiedIdentity = [deviceCopy verifiedIdentity];
+    if (verifiedIdentity)
     {
-      v14 = v13;
-      v15 = [v4 verifiedIdentity];
+      v14 = verifiedIdentity;
+      verifiedIdentity2 = [deviceCopy verifiedIdentity];
       v34.receiver = self;
       v34.super_class = RPCompanionLinkDevice;
-      v16 = [(RPEndpoint *)&v34 compareWithDeviceIdentifier:v15];
+      v16 = [(RPEndpoint *)&v34 compareWithDeviceIdentifier:verifiedIdentity2];
 
       if (v16)
       {
@@ -987,14 +987,14 @@ LABEL_11:
     }
   }
 
-  v17 = [v4 publicIdentifier];
-  if (v17)
+  publicIdentifier = [deviceCopy publicIdentifier];
+  if (publicIdentifier)
   {
-    v18 = v17;
-    v19 = [v4 publicIdentifier];
+    v18 = publicIdentifier;
+    publicIdentifier2 = [deviceCopy publicIdentifier];
     v33.receiver = self;
     v33.super_class = RPCompanionLinkDevice;
-    v20 = [(RPEndpoint *)&v33 compareWithDeviceIdentifier:v19];
+    v20 = [(RPEndpoint *)&v33 compareWithDeviceIdentifier:publicIdentifier2];
 
     if (v20)
     {
@@ -1002,16 +1002,16 @@ LABEL_11:
     }
   }
 
-  v21 = [v4 bleDevice];
-  v22 = [v21 rapportIdentifier];
-  if (v22)
+  bleDevice = [deviceCopy bleDevice];
+  rapportIdentifier = [bleDevice rapportIdentifier];
+  if (rapportIdentifier)
   {
-    v23 = v22;
-    v24 = [v4 bleDevice];
-    v25 = [v24 rapportIdentifier];
+    v23 = rapportIdentifier;
+    bleDevice2 = [deviceCopy bleDevice];
+    rapportIdentifier2 = [bleDevice2 rapportIdentifier];
     v32.receiver = self;
     v32.super_class = RPCompanionLinkDevice;
-    v26 = [(RPEndpoint *)&v32 compareWithDeviceIdentifier:v25];
+    v26 = [(RPEndpoint *)&v32 compareWithDeviceIdentifier:rapportIdentifier2];
 
     if (v26)
     {
@@ -1025,13 +1025,13 @@ LABEL_13:
   {
   }
 
-  v28 = [v4 sessionPairingIdentifier];
-  if (v28)
+  sessionPairingIdentifier = [deviceCopy sessionPairingIdentifier];
+  if (sessionPairingIdentifier)
   {
-    v29 = [v4 sessionPairingIdentifier];
+    sessionPairingIdentifier2 = [deviceCopy sessionPairingIdentifier];
     v31.receiver = self;
     v31.super_class = RPCompanionLinkDevice;
-    v27 = [(RPEndpoint *)&v31 compareWithDeviceIdentifier:v29];
+    v27 = [(RPEndpoint *)&v31 compareWithDeviceIdentifier:sessionPairingIdentifier2];
   }
 
   else
@@ -1043,29 +1043,29 @@ LABEL_19:
   return v27;
 }
 
-- (BOOL)isEqualToDeviceBasic:(id)a3
+- (BOOL)isEqualToDeviceBasic:(id)basic
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->super._idsDeviceIdentifier && ([v4 idsDeviceIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  basicCopy = basic;
+  v5 = basicCopy;
+  if (self->super._idsDeviceIdentifier && ([basicCopy idsDeviceIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     idsDeviceIdentifier = self->super._idsDeviceIdentifier;
-    v8 = [v5 idsDeviceIdentifier];
+    idsDeviceIdentifier = [v5 idsDeviceIdentifier];
   }
 
   else if (self->super._identifier && ([v5 identifier], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
     idsDeviceIdentifier = self->super._identifier;
-    v8 = [v5 identifier];
+    idsDeviceIdentifier = [v5 identifier];
   }
 
   else
   {
     idsDeviceIdentifier = self->_publicIdentifier;
-    v8 = [v5 publicIdentifier];
+    idsDeviceIdentifier = [v5 publicIdentifier];
   }
 
-  v10 = v8;
+  v10 = idsDeviceIdentifier;
   v11 = idsDeviceIdentifier;
   v12 = v10;
   v13 = v12;

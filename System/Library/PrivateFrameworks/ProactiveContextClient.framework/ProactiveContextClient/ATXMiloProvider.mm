@@ -1,16 +1,16 @@
 @interface ATXMiloProvider
-- (ATXMiloProvider)initWithInferredModeStream:(id)a3;
-- (BOOL)_isInferredModeEventEligibleForHistoricalLabelDonations:(id)a3;
-- (BOOL)_isInferredModeEventEligibleForMicrolocationLabelDonation:(id)a3;
-- (BOOL)_isUserFocusComputedModeEventEligibleForHistoricalLabelDonations:(id)a3;
-- (BOOL)_isUserFocusComputedModeEventEligibleForMicrolocationLabelDonation:(id)a3;
-- (id)_schedulerForStreamName:(id)a3;
-- (id)_truthLabelForMode:(int)a3;
+- (ATXMiloProvider)initWithInferredModeStream:(id)stream;
+- (BOOL)_isInferredModeEventEligibleForHistoricalLabelDonations:(id)donations;
+- (BOOL)_isInferredModeEventEligibleForMicrolocationLabelDonation:(id)donation;
+- (BOOL)_isUserFocusComputedModeEventEligibleForHistoricalLabelDonations:(id)donations;
+- (BOOL)_isUserFocusComputedModeEventEligibleForMicrolocationLabelDonation:(id)donation;
+- (id)_schedulerForStreamName:(id)name;
+- (id)_truthLabelForMode:(int)mode;
 - (void)_subscribeToModeChanges;
-- (void)_subscribeToStreamWithPublisher:(id)a3 scheduler:(id)a4 sink:(id)a5;
-- (void)_triggerHistoricalLabelDonationAtModeEndWithStoreEvent:(id)a3;
-- (void)_triggerMicroLocationHistoricalLabelDonationWithStartDate:(id)a3 endDate:(id)a4;
-- (void)_triggerMicrolocationLabelingAtModeStartWithStoreEvent:(id)a3;
+- (void)_subscribeToStreamWithPublisher:(id)publisher scheduler:(id)scheduler sink:(id)sink;
+- (void)_triggerHistoricalLabelDonationAtModeEndWithStoreEvent:(id)event;
+- (void)_triggerMicroLocationHistoricalLabelDonationWithStartDate:(id)date endDate:(id)endDate;
+- (void)_triggerMicrolocationLabelingAtModeStartWithStoreEvent:(id)event;
 - (void)_triggerPredictionRequest;
 - (void)_userDidEnterModeOrModeWasPredicted;
 - (void)_userDidExitModeOrModeWasNoLongerPredicted;
@@ -20,9 +20,9 @@
 
 @implementation ATXMiloProvider
 
-- (ATXMiloProvider)initWithInferredModeStream:(id)a3
+- (ATXMiloProvider)initWithInferredModeStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v36.receiver = self;
   v36.super_class = ATXMiloProvider;
   v6 = [(ATXMiloProvider *)&v36 init];
@@ -67,7 +67,7 @@
     coalescingTimerForPrediction = v6->_coalescingTimerForPrediction;
     v6->_coalescingTimerForPrediction = v20;
 
-    objc_storeStrong(&v6->_inferredModeStream, a3);
+    objc_storeStrong(&v6->_inferredModeStream, stream);
     v22 = objc_alloc(MEMORY[0x277CBEBD0]);
     v23 = [v22 initWithSuiteName:{@"com.apple.DuetExpertCenter.AppPredictionExpert", v26, v27, v28, v29}];
     [v23 doubleForKey:@"ATXMiloProviderTimeBufferKey"];
@@ -144,10 +144,10 @@ void __46__ATXMiloProvider_initWithInferredModeStream___block_invoke_3(uint64_t 
 {
   v31 = *MEMORY[0x277D85DE8];
   v4 = BiomeLibrary();
-  v5 = [v4 UserFocus];
-  v6 = [v5 ComputedMode];
+  userFocus = [v4 UserFocus];
+  computedMode = [userFocus ComputedMode];
   userFocusComputedModeStream = self->_userFocusComputedModeStream;
-  self->_userFocusComputedModeStream = v6;
+  self->_userFocusComputedModeStream = computedMode;
 
   v8 = __atxlog_handle_modes();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -155,34 +155,34 @@ void __46__ATXMiloProvider_initWithInferredModeStream___block_invoke_3(uint64_t 
     v9 = objc_opt_class();
     v10 = v9;
     v11 = NSStringFromSelector(a2);
-    v12 = [(BMStream *)self->_inferredModeStream identifier];
-    v13 = [(BMStream *)self->_userFocusComputedModeStream identifier];
+    identifier = [(BMStream *)self->_inferredModeStream identifier];
+    identifier2 = [(BMStream *)self->_userFocusComputedModeStream identifier];
     v23 = 138413058;
     v24 = v9;
     v25 = 2112;
     v26 = v11;
     v27 = 2112;
-    v28 = v12;
+    v28 = identifier;
     v29 = 2112;
-    v30 = v13;
+    v30 = identifier2;
     _os_log_impl(&dword_260C9F000, v8, OS_LOG_TYPE_DEFAULT, "[%@][%@] subscribing to %@ and %@ streams", &v23, 0x2Au);
   }
 
-  v14 = [(BMStream *)self->_inferredModeStream identifier];
-  v15 = [(ATXMiloProvider *)self _schedulerForStreamName:v14];
+  identifier3 = [(BMStream *)self->_inferredModeStream identifier];
+  v15 = [(ATXMiloProvider *)self _schedulerForStreamName:identifier3];
   inferredModeScheduler = self->_inferredModeScheduler;
   self->_inferredModeScheduler = v15;
 
-  v17 = [(BMStream *)self->_userFocusComputedModeStream identifier];
-  v18 = [(ATXMiloProvider *)self _schedulerForStreamName:v17];
+  identifier4 = [(BMStream *)self->_userFocusComputedModeStream identifier];
+  v18 = [(ATXMiloProvider *)self _schedulerForStreamName:identifier4];
   userComputedModeScheduler = self->_userComputedModeScheduler;
   self->_userComputedModeScheduler = v18;
 
-  v20 = [(BMStream *)self->_inferredModeStream DSLPublisher];
-  [(ATXMiloProvider *)self _subscribeToStreamWithPublisher:v20 scheduler:self->_inferredModeScheduler sink:self->_inferredModeStreamSink];
+  dSLPublisher = [(BMStream *)self->_inferredModeStream DSLPublisher];
+  [(ATXMiloProvider *)self _subscribeToStreamWithPublisher:dSLPublisher scheduler:self->_inferredModeScheduler sink:self->_inferredModeStreamSink];
 
-  v21 = [(BMStream *)self->_userFocusComputedModeStream DSLPublisher];
-  [(ATXMiloProvider *)self _subscribeToStreamWithPublisher:v21 scheduler:self->_userComputedModeScheduler sink:self->_userComputedModeStreamSink];
+  dSLPublisher2 = [(BMStream *)self->_userFocusComputedModeStream DSLPublisher];
+  [(ATXMiloProvider *)self _subscribeToStreamWithPublisher:dSLPublisher2 scheduler:self->_userComputedModeScheduler sink:self->_userComputedModeStreamSink];
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -196,35 +196,35 @@ void __46__ATXMiloProvider_initWithInferredModeStream___block_invoke_3(uint64_t 
   [(ATXMiloProvider *)&v3 dealloc];
 }
 
-- (void)_subscribeToStreamWithPublisher:(id)a3 scheduler:(id)a4 sink:(id)a5
+- (void)_subscribeToStreamWithPublisher:(id)publisher scheduler:(id)scheduler sink:(id)sink
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  publisherCopy = publisher;
+  schedulerCopy = scheduler;
+  sinkCopy = sink;
+  if (!sinkCopy)
   {
     v12 = __atxlog_handle_modes();
     v13 = v12;
-    if (v9)
+    if (publisherCopy)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v14 = objc_opt_class();
         v15 = v14;
         v16 = NSStringFromSelector(a2);
-        v17 = [v9 rootStreamIdentifiers];
+        rootStreamIdentifiers = [publisherCopy rootStreamIdentifiers];
         *buf = 138412802;
         v27 = v14;
         v28 = 2112;
         v29 = v16;
         v30 = 2112;
-        v31 = v17;
+        v31 = rootStreamIdentifiers;
         _os_log_impl(&dword_260C9F000, v13, OS_LOG_TYPE_DEFAULT, "[%@][%@] listening to stream %@ for mode start events", buf, 0x20u);
       }
 
       objc_initWeak(buf, self);
-      v18 = [v9 subscribeOn:v10];
+      v18 = [publisherCopy subscribeOn:schedulerCopy];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __66__ATXMiloProvider__subscribeToStreamWithPublisher_scheduler_sink___block_invoke;
@@ -237,10 +237,10 @@ void __46__ATXMiloProvider_initWithInferredModeStream___block_invoke_3(uint64_t 
       v21[3] = &unk_279AB7F30;
       objc_copyWeak(v23, buf);
       v23[1] = a2;
-      v22 = v9;
-      v11 = [v18 sinkWithCompletion:v24 receiveInput:v21];
+      v22 = publisherCopy;
+      sinkCopy = [v18 sinkWithCompletion:v24 receiveInput:v21];
 
-      if (!v11)
+      if (!sinkCopy)
       {
         v19 = __atxlog_handle_modes();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -261,7 +261,7 @@ void __46__ATXMiloProvider_initWithInferredModeStream___block_invoke_3(uint64_t 
         [ATXMiloProvider _subscribeToStreamWithPublisher:a2 scheduler:v13 sink:?];
       }
 
-      v11 = 0;
+      sinkCopy = 0;
     }
   }
 
@@ -338,17 +338,17 @@ void __66__ATXMiloProvider__subscribeToStreamWithPublisher_scheduler_sink___bloc
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_triggerMicrolocationLabelingAtModeStartWithStoreEvent:(id)a3
+- (void)_triggerMicrolocationLabelingAtModeStartWithStoreEvent:(id)event
 {
-  v11 = a3;
-  v4 = [v11 eventBody];
+  eventCopy = event;
+  eventBody = [eventCopy eventBody];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = [v11 eventBody];
+  eventBody2 = [eventCopy eventBody];
   if (isKindOfClass)
   {
-    v7 = [(ATXMiloProvider *)self _isUserFocusComputedModeEventEligibleForMicrolocationLabelDonation:v6];
+    v7 = [(ATXMiloProvider *)self _isUserFocusComputedModeEventEligibleForMicrolocationLabelDonation:eventBody2];
 
     if (!v7)
     {
@@ -368,8 +368,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v9 = [v11 eventBody];
-  v10 = [(ATXMiloProvider *)self _isInferredModeEventEligibleForMicrolocationLabelDonation:v9];
+  eventBody3 = [eventCopy eventBody];
+  v10 = [(ATXMiloProvider *)self _isInferredModeEventEligibleForMicrolocationLabelDonation:eventBody3];
 
   if (v10)
   {
@@ -379,17 +379,17 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_triggerHistoricalLabelDonationAtModeEndWithStoreEvent:(id)a3
+- (void)_triggerHistoricalLabelDonationAtModeEndWithStoreEvent:(id)event
 {
-  v11 = a3;
-  v4 = [v11 eventBody];
+  eventCopy = event;
+  eventBody = [eventCopy eventBody];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = [v11 eventBody];
+  eventBody2 = [eventCopy eventBody];
   if (isKindOfClass)
   {
-    v7 = [(ATXMiloProvider *)self _isUserFocusComputedModeEventEligibleForHistoricalLabelDonations:v6];
+    v7 = [(ATXMiloProvider *)self _isUserFocusComputedModeEventEligibleForHistoricalLabelDonations:eventBody2];
 
     if (!v7)
     {
@@ -409,8 +409,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v9 = [v11 eventBody];
-  v10 = [(ATXMiloProvider *)self _isInferredModeEventEligibleForHistoricalLabelDonations:v9];
+  eventBody3 = [eventCopy eventBody];
+  v10 = [(ATXMiloProvider *)self _isInferredModeEventEligibleForHistoricalLabelDonations:eventBody3];
 
   if (v10)
   {
@@ -420,12 +420,12 @@ LABEL_6:
 LABEL_7:
 }
 
-- (BOOL)_isUserFocusComputedModeEventEligibleForMicrolocationLabelDonation:(id)a3
+- (BOOL)_isUserFocusComputedModeEventEligibleForMicrolocationLabelDonation:(id)donation
 {
-  v3 = a3;
-  if ([v3 starting])
+  donationCopy = donation;
+  if ([donationCopy starting])
   {
-    v4 = [v3 semanticType] == 6;
+    v4 = [donationCopy semanticType] == 6;
   }
 
   else
@@ -436,20 +436,20 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)_isUserFocusComputedModeEventEligibleForHistoricalLabelDonations:(id)a3
+- (BOOL)_isUserFocusComputedModeEventEligibleForHistoricalLabelDonations:(id)donations
 {
-  v3 = a3;
-  v4 = ([v3 starting] & 1) == 0 && objc_msgSend(v3, "semanticType") == 6;
+  donationsCopy = donations;
+  v4 = ([donationsCopy starting] & 1) == 0 && objc_msgSend(donationsCopy, "semanticType") == 6;
 
   return v4;
 }
 
-- (BOOL)_isInferredModeEventEligibleForMicrolocationLabelDonation:(id)a3
+- (BOOL)_isInferredModeEventEligibleForMicrolocationLabelDonation:(id)donation
 {
-  v3 = a3;
-  if ([v3 isStart])
+  donationCopy = donation;
+  if ([donationCopy isStart])
   {
-    v4 = [v3 modeType] == 4;
+    v4 = [donationCopy modeType] == 4;
   }
 
   else
@@ -460,23 +460,23 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)_isInferredModeEventEligibleForHistoricalLabelDonations:(id)a3
+- (BOOL)_isInferredModeEventEligibleForHistoricalLabelDonations:(id)donations
 {
-  v3 = a3;
-  v4 = ([v3 isStart] & 1) == 0 && objc_msgSend(v3, "modeType") == 4;
+  donationsCopy = donations;
+  v4 = ([donationsCopy isStart] & 1) == 0 && objc_msgSend(donationsCopy, "modeType") == 4;
 
   return v4;
 }
 
-- (id)_schedulerForStreamName:(id)a3
+- (id)_schedulerForStreamName:(id)name
 {
   v30 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCACA8];
   v6 = MEMORY[0x277CCAC38];
-  v7 = a3;
-  v8 = [v6 processInfo];
-  v9 = [v8 processName];
-  v10 = [v5 stringWithFormat:@"ATXMiloProvider.Modes.%@.%@", v9, v7];
+  nameCopy = name;
+  processInfo = [v6 processInfo];
+  processName = [processInfo processName];
+  nameCopy = [v5 stringWithFormat:@"ATXMiloProvider.Modes.%@.%@", processName, nameCopy];
 
   v11 = __atxlog_handle_modes();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -489,11 +489,11 @@ LABEL_7:
     v26 = 2112;
     v27 = v14;
     v28 = 2112;
-    v29 = v10;
+    v29 = nameCopy;
     _os_log_impl(&dword_260C9F000, v11, OS_LOG_TYPE_INFO, "[%@][%@] scheduler identifier: %@", buf, 0x20u);
   }
 
-  v15 = [objc_alloc(MEMORY[0x277CF1918]) initWithIdentifier:v10 targetQueue:self->_queue];
+  v15 = [objc_alloc(MEMORY[0x277CF1918]) initWithIdentifier:nameCopy targetQueue:self->_queue];
   v16 = v15;
   if (v15)
   {
@@ -513,7 +513,7 @@ LABEL_7:
       v26 = 2112;
       v27 = v23;
       v28 = 2112;
-      v29 = v10;
+      v29 = nameCopy;
       _os_log_error_impl(&dword_260C9F000, v18, OS_LOG_TYPE_ERROR, "[%@][%@] unable to initialize Biome Scheduler: %@", buf, 0x20u);
     }
   }
@@ -543,23 +543,23 @@ LABEL_7:
   v8 = self->_timeBuffer + 1.0;
   v9 = [MEMORY[0x277CBEAA8] now];
   v10 = [[ATXUserFocusComputedMode alloc] initWithStream:self->_userFocusComputedModeStream];
-  v11 = [(ATXUserFocusComputedMode *)v10 currentModeEvent];
+  currentModeEvent = [(ATXUserFocusComputedMode *)v10 currentModeEvent];
 
-  v12 = [v11 eventBody];
-  if ([(ATXMiloProvider *)self _isUserFocusComputedModeEventEligibleForMicrolocationLabelDonation:v12])
+  eventBody = [currentModeEvent eventBody];
+  if ([(ATXMiloProvider *)self _isUserFocusComputedModeEventEligibleForMicrolocationLabelDonation:eventBody])
   {
     [v9 timeIntervalSinceReferenceDate];
     v14 = v13;
-    [v11 timestamp];
+    [currentModeEvent timestamp];
     v16 = v14 - v15;
 
     if (v16 < v8)
     {
       v17 = MEMORY[0x277CCABB0];
-      v18 = [v11 eventBody];
-      v19 = BMUserFocusInferredModeTypeFromBMUserFocusModeComputedSemanticType([v18 semanticType]);
+      eventBody2 = [currentModeEvent eventBody];
+      modeType = BMUserFocusInferredModeTypeFromBMUserFocusModeComputedSemanticType([eventBody2 semanticType]);
 LABEL_10:
-      v26 = [v17 numberWithInt:v19];
+      v26 = [v17 numberWithInt:modeType];
       goto LABEL_12;
     }
   }
@@ -569,20 +569,20 @@ LABEL_10:
   }
 
   v20 = [[ATXUserFocusInferredMode alloc] initWithStream:self->_inferredModeStream];
-  v18 = [(ATXUserFocusInferredMode *)v20 currentMode];
+  eventBody2 = [(ATXUserFocusInferredMode *)v20 currentMode];
 
-  if ([(ATXMiloProvider *)self _isInferredModeEventEligibleForMicrolocationLabelDonation:v18])
+  if ([(ATXMiloProvider *)self _isInferredModeEventEligibleForMicrolocationLabelDonation:eventBody2])
   {
     [v9 timeIntervalSinceReferenceDate];
     v22 = v21;
-    v23 = [v18 absoluteTimestamp];
-    [v23 timeIntervalSinceReferenceDate];
+    absoluteTimestamp = [eventBody2 absoluteTimestamp];
+    [absoluteTimestamp timeIntervalSinceReferenceDate];
     v25 = v22 - v24;
 
     if (v25 < v8)
     {
       v17 = MEMORY[0x277CCABB0];
-      v19 = [v18 modeType];
+      modeType = [eventBody2 modeType];
       goto LABEL_10;
     }
   }
@@ -592,7 +592,7 @@ LABEL_12:
 
   if (v26)
   {
-    v27 = [v26 integerValue];
+    integerValue = [v26 integerValue];
     v28 = __atxlog_handle_modes();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
@@ -610,11 +610,11 @@ LABEL_12:
     }
 
     v33 = objc_alloc(MEMORY[0x277D287A0]);
-    v34 = [(ATXMiloProvider *)self _truthLabelForMode:v27];
+    v34 = [(ATXMiloProvider *)self _truthLabelForMode:integerValue];
     v35 = [v33 initWithName:v34];
 
-    v36 = [(ATXMiloProvider *)self connection];
-    [v36 addLabel:v35];
+    connection = [(ATXMiloProvider *)self connection];
+    [connection addLabel:v35];
   }
 
   else
@@ -650,9 +650,9 @@ LABEL_12:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_truthLabelForMode:(int)a3
+- (id)_truthLabelForMode:(int)mode
 {
-  if (a3 == 4)
+  if (mode == 4)
   {
     return @"C9FC4298-DE04-494A-9791-71AB71B52E27";
   }
@@ -663,11 +663,11 @@ LABEL_12:
   }
 }
 
-- (void)_triggerMicroLocationHistoricalLabelDonationWithStartDate:(id)a3 endDate:(id)a4
+- (void)_triggerMicroLocationHistoricalLabelDonationWithStartDate:(id)date endDate:(id)endDate
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v9 = __atxlog_handle_modes();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -679,19 +679,19 @@ LABEL_12:
     v19 = 2112;
     v20 = v12;
     v21 = 2112;
-    v22 = v7;
+    v22 = dateCopy;
     v23 = 2112;
-    v24 = v8;
+    v24 = endDateCopy;
     _os_log_impl(&dword_260C9F000, v9, OS_LOG_TYPE_DEFAULT, "[%@][%@] Labeling scans between startDate: %@ and endDate: %@ with work label", &v17, 0x2Au);
   }
 
-  v13 = [(ATXMiloProvider *)self connection];
+  connection = [(ATXMiloProvider *)self connection];
 
-  if (v13)
+  if (connection)
   {
     v14 = [objc_alloc(MEMORY[0x277D287A0]) initWithName:@"C9FC4298-DE04-494A-9791-71AB71B52E27"];
-    v15 = [(ATXMiloProvider *)self connection];
-    [v15 addLabel:v14 betweenStartDate:v7 andEndDate:v8];
+    connection2 = [(ATXMiloProvider *)self connection];
+    [connection2 addLabel:v14 betweenStartDate:dateCopy andEndDate:endDateCopy];
   }
 
   else

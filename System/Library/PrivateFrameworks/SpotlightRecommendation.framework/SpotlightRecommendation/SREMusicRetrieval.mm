@@ -1,40 +1,40 @@
 @interface SREMusicRetrieval
-- (BOOL)isMusicRecEligible:(id)a3;
-- (SREMusicRetrieval)initWithLocale:(id)a3 queue:(id)a4 error:(id *)a5;
-- (id)_parseQueryString:(id)a3;
-- (id)_removeRecentlyPlayedCandidateAdamIDs:(id)a3 recentPlayed:(id)a4;
-- (void)_callCompletionHandler:(id)a3;
-- (void)_callMetadataEndpointWithAdamIDs:(id)a3 queryIntent:(id)a4;
-- (void)retrieveMusicWithQuery:(id)a3 queryID:(unint64_t)a4;
+- (BOOL)isMusicRecEligible:(id)eligible;
+- (SREMusicRetrieval)initWithLocale:(id)locale queue:(id)queue error:(id *)error;
+- (id)_parseQueryString:(id)string;
+- (id)_removeRecentlyPlayedCandidateAdamIDs:(id)ds recentPlayed:(id)played;
+- (void)_callCompletionHandler:(id)handler;
+- (void)_callMetadataEndpointWithAdamIDs:(id)ds queryIntent:(id)intent;
+- (void)retrieveMusicWithQuery:(id)query queryID:(unint64_t)d;
 @end
 
 @implementation SREMusicRetrieval
 
-- (SREMusicRetrieval)initWithLocale:(id)a3 queue:(id)a4 error:(id *)a5
+- (SREMusicRetrieval)initWithLocale:(id)locale queue:(id)queue error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  localeCopy = locale;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = SREMusicRetrieval;
   v10 = [(SREMusicRetrieval *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_locale, a3);
-    objc_storeStrong(&v11->_queue, a4);
+    objc_storeStrong(&v10->_locale, locale);
+    objc_storeStrong(&v11->_queue, queue);
   }
 
   return v11;
 }
 
-- (BOOL)isMusicRecEligible:(id)a3
+- (BOOL)isMusicRecEligible:(id)eligible
 {
-  v4 = [(SREMusicRetrieval *)self _parseQueryString:a3];
+  v4 = [(SREMusicRetrieval *)self _parseQueryString:eligible];
   if (v4)
   {
-    v5 = [(SREMusicRetrieval *)self locale];
-    v6 = [v5 localeIdentifier];
-    v7 = [v6 isEqualToString:@"en_US"];
+    locale = [(SREMusicRetrieval *)self locale];
+    localeIdentifier = [locale localeIdentifier];
+    v7 = [localeIdentifier isEqualToString:@"en_US"];
   }
 
   else
@@ -45,17 +45,17 @@
   return v7;
 }
 
-- (void)retrieveMusicWithQuery:(id)a3 queryID:(unint64_t)a4
+- (void)retrieveMusicWithQuery:(id)query queryID:(unint64_t)d
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SREMusicRetrieval *)self locale];
-  v8 = [v7 localeIdentifier];
-  v9 = [v8 isEqualToString:@"en_US"];
+  queryCopy = query;
+  locale = [(SREMusicRetrieval *)self locale];
+  localeIdentifier = [locale localeIdentifier];
+  v9 = [localeIdentifier isEqualToString:@"en_US"];
 
   if (v9)
   {
-    v10 = [(SREMusicRetrieval *)self _parseQueryString:v6];
+    v10 = [(SREMusicRetrieval *)self _parseQueryString:queryCopy];
     v11 = logForCSLogCategoryRecs();
     v12 = v11;
     if (v10)
@@ -68,11 +68,11 @@
       v13 = objc_alloc_init(SREMusicFeatureExtraction);
       v14 = logForCSLogCategoryRecs();
       v15 = v14;
-      v16 = a4 - 1;
-      if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
+      v16 = d - 1;
+      if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_26B806000, v15, OS_SIGNPOST_INTERVAL_BEGIN, a4, "SREFeatureExtractionLatency", &unk_26B818409, buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_26B806000, v15, OS_SIGNPOST_INTERVAL_BEGIN, d, "SREFeatureExtractionLatency", &unk_26B818409, buf, 2u);
       }
 
       v49 = 0;
@@ -83,7 +83,7 @@
       if (v16 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_26B806000, v20, OS_SIGNPOST_INTERVAL_END, a4, "SREFeatureExtractionLatency", &unk_26B818409, buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_26B806000, v20, OS_SIGNPOST_INTERVAL_END, d, "SREFeatureExtractionLatency", &unk_26B818409, buf, 2u);
       }
 
       v21 = logForCSLogCategoryRecs();
@@ -109,14 +109,14 @@
         if (v23)
         {
           v47 = v13;
-          v24 = [v10 genres];
-          v25 = [v24 count];
+          genres = [v10 genres];
+          v25 = [genres count];
 
           if (v25)
           {
             memset(v48, 0, sizeof(v48));
-            v26 = [v10 genres];
-            if ([v26 countByEnumeratingWithState:v48 objects:v50 count:16])
+            genres2 = [v10 genres];
+            if ([genres2 countByEnumeratingWithState:v48 objects:v50 count:16])
             {
               v27 = **(&v48[0] + 1);
             }
@@ -137,7 +137,7 @@
           if (v16 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v32))
           {
             *buf = 0;
-            _os_signpost_emit_with_name_impl(&dword_26B806000, v33, OS_SIGNPOST_INTERVAL_BEGIN, a4, "SREModelInferrenceLatency", &unk_26B818409, buf, 2u);
+            _os_signpost_emit_with_name_impl(&dword_26B806000, v33, OS_SIGNPOST_INTERVAL_BEGIN, d, "SREModelInferrenceLatency", &unk_26B818409, buf, 2u);
           }
 
           v46 = v27;
@@ -149,7 +149,7 @@
           if (v16 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v35))
           {
             *buf = 0;
-            _os_signpost_emit_with_name_impl(&dword_26B806000, v36, OS_SIGNPOST_INTERVAL_END, a4, "SREModelInferrenceLatency", &unk_26B818409, buf, 2u);
+            _os_signpost_emit_with_name_impl(&dword_26B806000, v36, OS_SIGNPOST_INTERVAL_END, d, "SREModelInferrenceLatency", &unk_26B818409, buf, 2u);
           }
 
           v37 = logForCSLogCategoryRecs();
@@ -168,7 +168,7 @@
             if (v16 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v40))
             {
               *buf = 0;
-              _os_signpost_emit_with_name_impl(&dword_26B806000, v41, OS_SIGNPOST_INTERVAL_BEGIN, a4, "SREMedaDataFetchingLatency", &unk_26B818409, buf, 2u);
+              _os_signpost_emit_with_name_impl(&dword_26B806000, v41, OS_SIGNPOST_INTERVAL_BEGIN, d, "SREMedaDataFetchingLatency", &unk_26B818409, buf, 2u);
             }
 
             [(SREMusicRetrieval *)self _callMetadataEndpointWithAdamIDs:v39 queryIntent:v10];
@@ -177,7 +177,7 @@
             if (v16 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v42))
             {
               *buf = 0;
-              _os_signpost_emit_with_name_impl(&dword_26B806000, v43, OS_SIGNPOST_INTERVAL_END, a4, "SREMedaDataFetchingLatency", &unk_26B818409, buf, 2u);
+              _os_signpost_emit_with_name_impl(&dword_26B806000, v43, OS_SIGNPOST_INTERVAL_END, d, "SREMedaDataFetchingLatency", &unk_26B818409, buf, 2u);
             }
           }
 
@@ -225,10 +225,10 @@
     v28 = logForCSLogCategoryRecs();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [(SREMusicRetrieval *)self locale];
-      v30 = [v29 localeIdentifier];
+      locale2 = [(SREMusicRetrieval *)self locale];
+      localeIdentifier2 = [locale2 localeIdentifier];
       *buf = 138412290;
-      v52 = v30;
+      v52 = localeIdentifier2;
       _os_log_impl(&dword_26B806000, v28, OS_LOG_TYPE_DEFAULT, "Music recommendation skipped for locale: %@", buf, 0xCu);
     }
 
@@ -238,15 +238,15 @@
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_callMetadataEndpointWithAdamIDs:(id)a3 queryIntent:(id)a4
+- (void)_callMetadataEndpointWithAdamIDs:(id)ds queryIntent:(id)intent
 {
   v72 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  intentCopy = intent;
+  if ([dsCopy count])
   {
-    v8 = [v7 genres];
-    v9 = [v8 count];
+    genres = [intentCopy genres];
+    v9 = [genres count];
 
     if (v9)
     {
@@ -258,9 +258,9 @@
       v10 = 25;
     }
 
-    v11 = v6;
-    v48 = self;
-    v49 = v6;
+    v11 = dsCopy;
+    selfCopy = self;
+    v49 = dsCopy;
     if ([v11 count] > v10)
     {
       v12 = [v11 subarrayWithRange:{0, v10}];
@@ -273,7 +273,7 @@
     v47 = v11;
     v13 = [(SREMusicMetadataRetrieval *)v46 retrieveMusicMetadata:v11 error:&v61];
     v45 = v61;
-    v50 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
@@ -298,8 +298,8 @@
           v54 = 0u;
           v55 = 0u;
           v56 = 0u;
-          v18 = [v17 genreIDs];
-          v19 = [v18 countByEnumeratingWithState:&v53 objects:v70 count:16];
+          genreIDs = [v17 genreIDs];
+          v19 = [genreIDs countByEnumeratingWithState:&v53 objects:v70 count:16];
           if (v19)
           {
             v20 = v19;
@@ -310,12 +310,12 @@
               {
                 if (*v54 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(genreIDs);
                 }
 
                 v23 = *(*(&v53 + 1) + 8 * j);
-                v24 = [v7 genres];
-                LOBYTE(v23) = [v24 containsObject:v23];
+                genres2 = [intentCopy genres];
+                LOBYTE(v23) = [genres2 containsObject:v23];
 
                 if (v23)
                 {
@@ -324,7 +324,7 @@
                 }
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v53 objects:v70 count:16];
+              v20 = [genreIDs countByEnumeratingWithState:&v53 objects:v70 count:16];
               if (v20)
               {
                 continue;
@@ -337,23 +337,23 @@
           v25 = 1;
 LABEL_22:
 
-          v26 = [v7 genres];
-          v27 = [v26 count];
+          genres3 = [intentCopy genres];
+          v27 = [genres3 count];
 
           if (v25 && v27)
           {
             v28 = logForCSLogCategoryRecs();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
-              v29 = [v17 trackId];
-              v30 = [v17 trackName];
-              v31 = [v17 genresDebugString];
+              trackId = [v17 trackId];
+              trackName = [v17 trackName];
+              genresDebugString = [v17 genresDebugString];
               *buf = 134218498;
-              v63 = v29;
+              v63 = trackId;
               v64 = 2112;
-              v65 = v30;
+              v65 = trackName;
               v66 = 2112;
-              v67 = v31;
+              v67 = genresDebugString;
               _os_log_impl(&dword_26B806000, v28, OS_LOG_TYPE_DEFAULT, "Recommendation candidate got filtered by genre mismatch. ADAM ID: %ld  name:%@  genre:%@", buf, 0x20u);
             }
 
@@ -362,8 +362,8 @@ LABEL_33:
             continue;
           }
 
-          v32 = [v17 artworkURL];
-          v33 = [v32 length];
+          artworkURL = [v17 artworkURL];
+          v33 = [artworkURL length];
 
           v28 = logForCSLogCategoryRecs();
           v34 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
@@ -371,12 +371,12 @@ LABEL_33:
           {
             if (v34)
             {
-              v39 = [v17 trackId];
-              v40 = [v17 artworkURL];
+              trackId2 = [v17 trackId];
+              artworkURL2 = [v17 artworkURL];
               *buf = 134218242;
-              v63 = v39;
+              v63 = trackId2;
               v64 = 2112;
-              v65 = v40;
+              v65 = artworkURL2;
               _os_log_impl(&dword_26B806000, v28, OS_LOG_TYPE_DEFAULT, "Skipped recommendation candidate %lu with invalid artworkURL: %@", buf, 0x16u);
             }
 
@@ -385,23 +385,23 @@ LABEL_33:
 
           if (v34)
           {
-            v35 = [v17 trackId];
-            v36 = [v17 trackName];
-            v37 = [v17 genresDebugString];
-            v38 = [v17 artistName];
+            trackId3 = [v17 trackId];
+            trackName2 = [v17 trackName];
+            genresDebugString2 = [v17 genresDebugString];
+            artistName = [v17 artistName];
             *buf = 134218754;
-            v63 = v35;
+            v63 = trackId3;
             v64 = 2112;
-            v65 = v36;
+            v65 = trackName2;
             v66 = 2112;
-            v67 = v37;
+            v67 = genresDebugString2;
             v68 = 2112;
-            v69 = v38;
+            v69 = artistName;
             _os_log_impl(&dword_26B806000, v28, OS_LOG_TYPE_DEFAULT, "Music Recs Result: %ld %@ Genre=%@ ARTIST_NAME=%@", buf, 0x2Au);
           }
 
-          [v50 addObject:v17];
-          if ([v50 count] > 2)
+          [array addObject:v17];
+          if ([array count] > 2)
           {
             goto LABEL_36;
           }
@@ -421,14 +421,14 @@ LABEL_36:
       [SREMusicRetrieval _callMetadataEndpointWithAdamIDs:queryIntent:];
     }
 
-    v6 = v49;
-    if ([v50 count])
+    dsCopy = v49;
+    if ([array count])
     {
-      v42 = [(SREMusicRetrieval *)v48 candidatesHandler];
-      (v42)[2](v42, v50);
+      candidatesHandler = [(SREMusicRetrieval *)selfCopy candidatesHandler];
+      (candidatesHandler)[2](candidatesHandler, array);
     }
 
-    [(SREMusicRetrieval *)v48 _callCompletionHandler:0];
+    [(SREMusicRetrieval *)selfCopy _callCompletionHandler:0];
   }
 
   else
@@ -446,10 +446,10 @@ LABEL_36:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_parseQueryString:(id)a3
+- (id)_parseQueryString:(id)string
 {
   v25[164] = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  stringCopy = string;
   v3 = [SREQueryIntent queryIntentWithGenres:MEMORY[0x277CBEBF8]];
   v4 = [SREQueryIntent queryIntentWithGenres:&unk_287C44E08];
   v5 = [SREQueryIntent queryIntentWithGenres:&unk_287C44E20];
@@ -794,29 +794,29 @@ LABEL_36:
   v25[162] = v11;
   v25[163] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:164];
-  v13 = [v19 lowercaseString];
+  lowercaseString = [stringCopy lowercaseString];
 
-  v14 = [v12 objectForKey:v13];
+  v14 = [v12 objectForKey:lowercaseString];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-- (id)_removeRecentlyPlayedCandidateAdamIDs:(id)a3 recentPlayed:(id)a4
+- (id)_removeRecentlyPlayedCandidateAdamIDs:(id)ds recentPlayed:(id)played
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  playedCopy = played;
+  if ([playedCopy count])
   {
     v7 = [MEMORY[0x277CBEB58] setWithCapacity:10];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v24 = v6;
-    v8 = v6;
+    v24 = playedCopy;
+    v8 = playedCopy;
     v9 = [v8 countByEnumeratingWithState:&v29 objects:v36 count:16];
     if (v9)
     {
@@ -852,12 +852,12 @@ LABEL_4:
       }
     }
 
-    v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v15 = v5;
+    v15 = dsCopy;
     v16 = [v15 countByEnumeratingWithState:&v25 objects:v35 count:16];
     if (v16)
     {
@@ -896,12 +896,12 @@ LABEL_4:
       while (v17);
     }
 
-    v6 = v24;
+    playedCopy = v24;
   }
 
   else
   {
-    v14 = v5;
+    v14 = dsCopy;
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -909,17 +909,17 @@ LABEL_4:
   return v14;
 }
 
-- (void)_callCompletionHandler:(id)a3
+- (void)_callCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__SREMusicRetrieval__callCompletionHandler___block_invoke;
   v7[3] = &unk_279D04298;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 

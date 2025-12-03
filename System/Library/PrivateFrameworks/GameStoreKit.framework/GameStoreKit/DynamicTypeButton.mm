@@ -1,18 +1,18 @@
 @interface DynamicTypeButton
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC12GameStoreKit17DynamicTypeButton)initWithCoder:(id)a3;
-- (_TtC12GameStoreKit17DynamicTypeButton)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC12GameStoreKit17DynamicTypeButton)initWithCoder:(id)coder;
+- (_TtC12GameStoreKit17DynamicTypeButton)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DynamicTypeButton
 
-- (_TtC12GameStoreKit17DynamicTypeButton)initWithFrame:(CGRect)a3
+- (_TtC12GameStoreKit17DynamicTypeButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC12GameStoreKit17DynamicTypeButton_fontUseCaseContentSizeCategory) = 0;
   v8 = OBJC_IVAR____TtC12GameStoreKit17DynamicTypeButton_fontUseCase;
   v9 = sub_24F922378();
@@ -22,7 +22,7 @@
   return [(ImageAlignedButton *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC12GameStoreKit17DynamicTypeButton)initWithCoder:(id)a3
+- (_TtC12GameStoreKit17DynamicTypeButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC12GameStoreKit17DynamicTypeButton_fontUseCaseContentSizeCategory) = 0;
   v4 = OBJC_IVAR____TtC12GameStoreKit17DynamicTypeButton_fontUseCase;
@@ -33,21 +33,21 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v16.receiver = self;
   v16.super_class = type metadata accessor for DynamicTypeButton();
   v5 = v16.receiver;
   [(DynamicTypeButton *)&v16 sizeThatFits:width, height];
   v7 = v6;
   v9 = v8;
-  v10 = [v5 titleLabel];
-  if (v10)
+  titleLabel = [v5 titleLabel];
+  if (titleLabel)
   {
-    v11 = v10;
-    [v10 measurementsWithFitting:v5 in:{width, height}];
+    v11 = titleLabel;
+    [titleLabel measurementsWithFitting:v5 in:{width, height}];
     v13 = v12;
 
     if (v9 <= v13)
@@ -67,11 +67,11 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24EAB36F4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24EAB36F4(change);
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface SCNNodeAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
-- (CGRect)_accessibilityConvertRect:(CGRect)a3 toNode:(id)a4;
+- (CGRect)_accessibilityConvertRect:(CGRect)rect toNode:(id)node;
 - (CGRect)accessibilityFrame;
-- (id)_accessibilityConvertSCNVector3Points:(id)a3 toNode:(id)a4;
+- (id)_accessibilityConvertSCNVector3Points:(id)points toNode:(id)node;
 - (id)_accessibilitySCNVector3BoundingBoxPoints;
 - (id)accessibilityContainer;
 - (id)accessibilityElements;
@@ -13,12 +13,12 @@
 
 @implementation SCNNodeAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SCNNode" hasInstanceMethod:@"childNodes" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SCNNode" hasInstanceMethod:@"parentNode" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SCNNode" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SCNNode" hasInstanceMethod:@"childNodes" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SCNNode" hasInstanceMethod:@"parentNode" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SCNNode" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
 }
 
 - (void)dealloc
@@ -33,11 +33,11 @@
 {
   v8.receiver = self;
   v8.super_class = SCNNodeAccessibility;
-  v3 = [(SCNNodeAccessibility *)&v8 accessibilityElements];
-  v4 = v3;
-  if (v3)
+  accessibilityElements = [(SCNNodeAccessibility *)&v8 accessibilityElements];
+  v4 = accessibilityElements;
+  if (accessibilityElements)
   {
-    v5 = v3;
+    v5 = accessibilityElements;
   }
 
   else
@@ -54,11 +54,11 @@
 {
   v8.receiver = self;
   v8.super_class = SCNNodeAccessibility;
-  v3 = [(SCNNodeAccessibility *)&v8 accessibilityContainer];
-  v4 = v3;
-  if (v3)
+  accessibilityContainer = [(SCNNodeAccessibility *)&v8 accessibilityContainer];
+  v4 = accessibilityContainer;
+  if (accessibilityContainer)
   {
-    v5 = v3;
+    v5 = accessibilityContainer;
   }
 
   else
@@ -71,11 +71,11 @@
   return v6;
 }
 
-- (CGRect)_accessibilityConvertRect:(CGRect)a3 toNode:(id)a4
+- (CGRect)_accessibilityConvertRect:(CGRect)rect toNode:(id)node
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(SCNNodeAccessibility *)self convertPoint:a4 toNode:a3.origin.x, a3.origin.y];
+  height = rect.size.height;
+  width = rect.size.width;
+  [(SCNNodeAccessibility *)self convertPoint:node toNode:rect.origin.x, rect.origin.y];
   v8 = width;
   v9 = height;
   result.size.height = v9;
@@ -89,11 +89,11 @@
 {
   v6.receiver = self;
   v6.super_class = SCNNodeAccessibility;
-  v2 = [(SCNNodeAccessibility *)&v6 accessibilityPath];
-  v3 = v2;
-  if (v2)
+  accessibilityPath = [(SCNNodeAccessibility *)&v6 accessibilityPath];
+  v3 = accessibilityPath;
+  if (accessibilityPath)
   {
-    v4 = v2;
+    v4 = accessibilityPath;
   }
 
   return v3;
@@ -113,11 +113,11 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(SCNNodeAccessibility *)self accessibilityUserDefinedFrame];
-  v4 = v3;
-  if (v3)
+  accessibilityUserDefinedFrame = [(SCNNodeAccessibility *)self accessibilityUserDefinedFrame];
+  v4 = accessibilityUserDefinedFrame;
+  if (accessibilityUserDefinedFrame)
   {
-    [v3 CGRectValue];
+    [accessibilityUserDefinedFrame CGRectValue];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -127,16 +127,16 @@
   else
   {
     v13 = [(SCNNodeAccessibility *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
-    v14 = [(SCNNodeAccessibility *)self _accessibilitySCNVector3BoundingBoxPoints];
-    v15 = [(SCNNodeAccessibility *)self _accessibilityConvertSCNVector3Points:v14 toNode:0];
+    _accessibilitySCNVector3BoundingBoxPoints = [(SCNNodeAccessibility *)self _accessibilitySCNVector3BoundingBoxPoints];
+    v15 = [(SCNNodeAccessibility *)self _accessibilityConvertSCNVector3Points:_accessibilitySCNVector3BoundingBoxPoints toNode:0];
     objc_opt_class();
     v16 = __UIAccessibilityCastAsSafeCategory();
     v17 = [v16 accessibilityProjectSCNVector3Points:v15];
 
     if ([v17 count])
     {
-      v18 = [MEMORY[0x29EDC7948] accessibilityBezierPathWithSCNVector3Points:v17];
-      v19 = UIAccessibilityConvertPathToScreenCoordinates(v18, v13);
+      accessibilityContainer = [MEMORY[0x29EDC7948] accessibilityBezierPathWithSCNVector3Points:v17];
+      v19 = UIAccessibilityConvertPathToScreenCoordinates(accessibilityContainer, v13);
       [v19 bounds];
       v6 = v20;
       v8 = v21;
@@ -146,8 +146,8 @@
 
     else
     {
-      v18 = [(SCNNodeAccessibility *)self accessibilityContainer];
-      [(UIBezierPath *)v18 accessibilityFrame];
+      accessibilityContainer = [(SCNNodeAccessibility *)self accessibilityContainer];
+      [(UIBezierPath *)accessibilityContainer accessibilityFrame];
       v6 = v24;
       v8 = v25;
       v10 = v26;
@@ -257,11 +257,11 @@ uint64_t __65__SCNNodeAccessibility__accessibilitySCNVector3BoundingBoxPoints__b
   return result;
 }
 
-- (id)_accessibilityConvertSCNVector3Points:(id)a3 toNode:(id)a4
+- (id)_accessibilityConvertSCNVector3Points:(id)points toNode:(id)node
 {
   v36 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = a4;
+  pointsCopy = points;
+  nodeCopy = node;
   v7 = objc_opt_new();
   LOBYTE(v25) = 0;
   objc_opt_class();
@@ -270,7 +270,7 @@ uint64_t __65__SCNNodeAccessibility__accessibilitySCNVector3BoundingBoxPoints__b
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v5;
+  obj = pointsCopy;
   v9 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v9)
   {
@@ -292,7 +292,7 @@ uint64_t __65__SCNNodeAccessibility__accessibilitySCNVector3BoundingBoxPoints__b
         v29 = 0;
         v30 = 0;
         v23 = v8;
-        v24 = v6;
+        v24 = nodeCopy;
         AXPerformSafeBlock();
         v13 = *(v26 + 8);
         v14 = *(v26 + 9);

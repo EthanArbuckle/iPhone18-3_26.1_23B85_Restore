@@ -1,9 +1,9 @@
 @interface BMDeviceMetadataEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMDeviceMetadataEvent)initWithName:(id)a3 build:(id)a4 supplementalBuild:(id)a5 platform:(int64_t)a6 rapidSecurityResponsePreReboot:(BOOL)a7;
-- (BMDeviceMetadataEvent)initWithProto:(id)a3;
-- (BMDeviceMetadataEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMDeviceMetadataEvent)initWithName:(id)name build:(id)build supplementalBuild:(id)supplementalBuild platform:(int64_t)platform rapidSecurityResponsePreReboot:(BOOL)reboot;
+- (BMDeviceMetadataEvent)initWithProto:(id)proto;
+- (BMDeviceMetadataEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
@@ -13,48 +13,48 @@
 
 @implementation BMDeviceMetadataEvent
 
-- (BMDeviceMetadataEvent)initWithName:(id)a3 build:(id)a4 supplementalBuild:(id)a5 platform:(int64_t)a6 rapidSecurityResponsePreReboot:(BOOL)a7
+- (BMDeviceMetadataEvent)initWithName:(id)name build:(id)build supplementalBuild:(id)supplementalBuild platform:(int64_t)platform rapidSecurityResponsePreReboot:(BOOL)reboot
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  nameCopy = name;
+  buildCopy = build;
+  supplementalBuildCopy = supplementalBuild;
   v23.receiver = self;
   v23.super_class = BMDeviceMetadataEvent;
   v15 = [(BMEventBase *)&v23 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [nameCopy copy];
     name = v15->_name;
     v15->_name = v16;
 
-    v18 = [v13 copy];
+    v18 = [buildCopy copy];
     build = v15->_build;
     v15->_build = v18;
 
-    v20 = [v14 copy];
+    v20 = [supplementalBuildCopy copy];
     supplementalBuild = v15->_supplementalBuild;
     v15->_supplementalBuild = v20;
 
-    v15->_platform = a6;
-    v15->_rapidSecurityResponsePreReboot = a7;
+    v15->_platform = platform;
+    v15->_rapidSecurityResponsePreReboot = reboot;
   }
 
   return v15;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (!a4)
+  dataCopy = data;
+  if (!version)
   {
     goto LABEL_4;
   }
 
-  if (a4 == 1)
+  if (version == 1)
   {
-    a1 = BMDeviceMetadataEvent_v1;
+    self = BMDeviceMetadataEvent_v1;
 LABEL_4:
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
     goto LABEL_6;
   }
 
@@ -102,9 +102,9 @@ LABEL_6:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMDeviceMetadataEvent *)self jsonDict];
+  jsonDict = [(BMDeviceMetadataEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -121,19 +121,19 @@ LABEL_6:
 
 - (id)encodeAsProto
 {
-  v2 = [(BMDeviceMetadataEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMDeviceMetadataEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMDeviceMetadataEvent)initWithProto:(id)a3
+- (BMDeviceMetadataEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_8:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -149,70 +149,70 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v5 = v4;
-  v6 = [v5 name];
-  v7 = [v5 build];
-  v8 = [v5 supplementalBuild];
-  v9 = [v5 platform];
-  if (v9 > 8)
+  v5 = protoCopy;
+  name = [v5 name];
+  build = [v5 build];
+  supplementalBuild = [v5 supplementalBuild];
+  platform = [v5 platform];
+  if (platform > 8)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = qword_184D274A0[v9];
+    v10 = qword_184D274A0[platform];
   }
 
-  v13 = [v5 rapidSecurityResponsePreReboot];
+  rapidSecurityResponsePreReboot = [v5 rapidSecurityResponsePreReboot];
 
-  self = [(BMDeviceMetadataEvent *)self initWithName:v6 build:v7 supplementalBuild:v8 platform:v10 rapidSecurityResponsePreReboot:v13];
-  v12 = self;
+  self = [(BMDeviceMetadataEvent *)self initWithName:name build:build supplementalBuild:supplementalBuild platform:v10 rapidSecurityResponsePreReboot:rapidSecurityResponsePreReboot];
+  selfCopy = self;
 LABEL_11:
 
-  return v12;
+  return selfCopy;
 }
 
-- (BMDeviceMetadataEvent)initWithProtoData:(id)a3
+- (BMDeviceMetadataEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBDeviceMetadataEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBDeviceMetadataEvent alloc] initWithData:dataCopy];
 
     self = [(BMDeviceMetadataEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMDeviceMetadataEvent *)self name];
-  [v3 setName:v4];
+  name = [(BMDeviceMetadataEvent *)self name];
+  [v3 setName:name];
 
-  v5 = [(BMDeviceMetadataEvent *)self build];
-  [v3 setBuild:v5];
+  build = [(BMDeviceMetadataEvent *)self build];
+  [v3 setBuild:build];
 
-  v6 = [(BMDeviceMetadataEvent *)self supplementalBuild];
-  [v3 setSupplementalBuild:v6];
+  supplementalBuild = [(BMDeviceMetadataEvent *)self supplementalBuild];
+  [v3 setSupplementalBuild:supplementalBuild];
 
-  v7 = [(BMDeviceMetadataEvent *)self platform];
-  if (v7 > 8)
+  platform = [(BMDeviceMetadataEvent *)self platform];
+  if (platform > 8)
   {
     v8 = 7;
   }
 
   else
   {
-    v8 = dword_184D274E8[v7];
+    v8 = dword_184D274E8[platform];
   }
 
   [v3 setPlatform:v8];
@@ -233,23 +233,23 @@ LABEL_11:
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     build = self->_build;
-    v7 = [v5 build];
-    if ([(NSString *)build isEqualToString:v7])
+    build = [v5 build];
+    if ([(NSString *)build isEqualToString:build])
     {
       supplementalBuild = self->_supplementalBuild;
-      v9 = [v5 supplementalBuild];
-      if (-[NSString isEqualToString:](supplementalBuild, "isEqualToString:", v9) && (platform = self->_platform, platform == [v5 platform]))
+      supplementalBuild = [v5 supplementalBuild];
+      if (-[NSString isEqualToString:](supplementalBuild, "isEqualToString:", supplementalBuild) && (platform = self->_platform, platform == [v5 platform]))
       {
-        v11 = [(BMDeviceMetadataEvent *)self rapidSecurityResponsePreReboot];
-        v12 = v11 ^ [v5 rapidSecurityResponsePreReboot] ^ 1;
+        rapidSecurityResponsePreReboot = [(BMDeviceMetadataEvent *)self rapidSecurityResponsePreReboot];
+        v12 = rapidSecurityResponsePreReboot ^ [v5 rapidSecurityResponsePreReboot] ^ 1;
       }
 
       else

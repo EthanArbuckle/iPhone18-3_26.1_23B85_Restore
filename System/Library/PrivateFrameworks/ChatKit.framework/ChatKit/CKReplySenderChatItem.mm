@@ -1,51 +1,51 @@
 @interface CKReplySenderChatItem
-- (double)_calculateAdditionalOffsetForTapbackWithNextItem:(id)a3 previousItem:(id)a4 associatedChatItem:(id)a5;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (double)_calculateAdditionalOffsetForTapbackWithNextItem:(id)item previousItem:(id)previousItem associatedChatItem:(id)chatItem;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 @end
 
 @implementation CKReplySenderChatItem
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
   v46 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v11 = a5;
-  v37 = a6;
-  if (a4 < 1)
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  if (index < 1)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [v11 objectAtIndexedSubscript:{a4 - 1, v35, v37}];
+    v12 = [itemsCopy objectAtIndexedSubscript:{index - 1, environmentCopy, supplementryItemsCopy}];
   }
 
-  v13 = a4 + 1;
-  if (v13 >= [v11 count])
+  v13 = index + 1;
+  if (v13 >= [itemsCopy count])
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v11 objectAtIndexedSubscript:v13];
+    v14 = [itemsCopy objectAtIndexedSubscript:v13];
   }
 
-  v15 = [v12 layoutType];
-  if (v15 <= 12)
+  layoutType = [v12 layoutType];
+  if (layoutType <= 12)
   {
-    if (v15 > 4)
+    if (layoutType > 4)
     {
-      if ((v15 - 5) >= 2 && v15 != 8)
+      if ((layoutType - 5) >= 2 && layoutType != 8)
       {
         goto LABEL_43;
       }
     }
 
-    else if ((v15 - 2) >= 2)
+    else if ((layoutType - 2) >= 2)
     {
-      if (v15 != 1)
+      if (layoutType != 1)
       {
         goto LABEL_43;
       }
@@ -66,9 +66,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (v15 <= 15)
+  if (layoutType <= 15)
   {
-    if (v15 == 14)
+    if (layoutType == 14)
     {
       v16 = +[CKUIBehavior sharedBehaviors];
       [v16 largeTranscriptSpace];
@@ -78,7 +78,7 @@ LABEL_18:
     goto LABEL_14;
   }
 
-  switch(v15)
+  switch(layoutType)
   {
     case 19:
       v16 = +[CKUIBehavior sharedBehaviors];
@@ -87,8 +87,8 @@ LABEL_18:
     case 18:
       goto LABEL_17;
     case 16:
-      v27 = [(CKChatItem *)self itemIsFromMe];
-      if (v27 != [v12 itemIsFromMe])
+      itemIsFromMe = [(CKChatItem *)self itemIsFromMe];
+      if (itemIsFromMe != [v12 itemIsFromMe])
       {
         v16 = +[CKUIBehavior sharedBehaviors];
         [v16 minTranscriptSpace];
@@ -132,8 +132,8 @@ LABEL_20:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v19 = [v14 visibleAssociatedMessageChatItems];
-  v20 = [v19 countByEnumeratingWithState:&v38 objects:v45 count:16];
+  visibleAssociatedMessageChatItems = [v14 visibleAssociatedMessageChatItems];
+  v20 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v20)
   {
     v21 = *v39;
@@ -143,7 +143,7 @@ LABEL_20:
       {
         if (*v39 != v21)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(visibleAssociatedMessageChatItems);
         }
 
         v23 = *(*(&v38 + 1) + 8 * i);
@@ -166,7 +166,7 @@ LABEL_20:
         }
       }
 
-      v20 = [v19 countByEnumeratingWithState:&v38 objects:v45 count:16];
+      v20 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v38 objects:v45 count:16];
       if (v20)
       {
         continue;
@@ -183,10 +183,10 @@ LABEL_32:
   return v25;
 }
 
-- (double)_calculateAdditionalOffsetForTapbackWithNextItem:(id)a3 previousItem:(id)a4 associatedChatItem:(id)a5
+- (double)_calculateAdditionalOffsetForTapbackWithNextItem:(id)item previousItem:(id)previousItem associatedChatItem:(id)chatItem
 {
-  v7 = a5;
-  v8 = a3;
+  chatItemCopy = chatItem;
+  itemCopy = item;
   v9 = +[CKUIBehavior sharedBehaviors];
   [v9 messageAcknowledgmentTranscriptBalloonRelativePosition];
   v11 = v10;
@@ -194,7 +194,7 @@ LABEL_32:
 
   [(CKChatItem *)self size];
   v15 = v14;
-  [v8 size];
+  [itemCopy size];
   v17 = v16 - v11;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -202,7 +202,7 @@ LABEL_32:
   v19 = 0.0;
   if (v15 < v17 && (isKindOfClass & 1) != 0)
   {
-    [v7 size];
+    [chatItemCopy size];
     v21 = v13 + v20;
     [(CKChatItem *)self size];
     v23 = v21 - v22;

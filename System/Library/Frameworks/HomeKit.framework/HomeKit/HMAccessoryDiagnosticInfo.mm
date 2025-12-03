@@ -1,5 +1,5 @@
 @interface HMAccessoryDiagnosticInfo
-- (HMAccessoryDiagnosticInfo)initWithProtoData:(id)a3;
+- (HMAccessoryDiagnosticInfo)initWithProtoData:(id)data;
 - (HMSoftwareUpdateV2)softwareUpdate;
 - (id)description;
 @end
@@ -11,39 +11,39 @@
   v27 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v26 = NSStringFromClass(v3);
-  v25 = [(HMAccessoryDiagnosticInfo *)self cloudkitAccountStatusGood];
-  v24 = [(HMAccessoryDiagnosticInfo *)self cdpStatusGood];
-  v23 = [(HMAccessoryDiagnosticInfo *)self firstCloudImportDone];
-  v22 = [(HMAccessoryDiagnosticInfo *)self idsStatusGood];
-  v21 = [(HMAccessoryDiagnosticInfo *)self idsIdentifier];
-  v20 = [(HMAccessoryDiagnosticInfo *)self manufacturer];
-  v19 = [(HMAccessoryDiagnosticInfo *)self model];
-  v29 = [(HMAccessoryDiagnosticInfo *)self serialNumber];
-  v18 = [(HMAccessoryDiagnosticInfo *)self softwareVersion];
-  v17 = [(HMAccessoryDiagnosticInfo *)self softwareUpdateDescriptor];
-  v14 = [(HMAccessoryDiagnosticInfo *)self softwareUpdateProgress];
-  v16 = [(HMAccessoryDiagnosticInfo *)self isRunningHH2];
-  v15 = [(HMAccessoryDiagnosticInfo *)self numHomes];
-  v13 = [(HMAccessoryDiagnosticInfo *)self currentAccessoryUUID];
-  v12 = [(HMAccessoryDiagnosticInfo *)self currentAccessoryMediaRouteId];
-  v4 = [(HMAccessoryDiagnosticInfo *)self isPrimaryResident];
-  v11 = [(HMAccessoryDiagnosticInfo *)self wifiInfo];
-  v5 = [(HMAccessoryDiagnosticInfo *)self wifiRSSI];
+  cloudkitAccountStatusGood = [(HMAccessoryDiagnosticInfo *)self cloudkitAccountStatusGood];
+  cdpStatusGood = [(HMAccessoryDiagnosticInfo *)self cdpStatusGood];
+  firstCloudImportDone = [(HMAccessoryDiagnosticInfo *)self firstCloudImportDone];
+  idsStatusGood = [(HMAccessoryDiagnosticInfo *)self idsStatusGood];
+  idsIdentifier = [(HMAccessoryDiagnosticInfo *)self idsIdentifier];
+  manufacturer = [(HMAccessoryDiagnosticInfo *)self manufacturer];
+  model = [(HMAccessoryDiagnosticInfo *)self model];
+  serialNumber = [(HMAccessoryDiagnosticInfo *)self serialNumber];
+  softwareVersion = [(HMAccessoryDiagnosticInfo *)self softwareVersion];
+  softwareUpdateDescriptor = [(HMAccessoryDiagnosticInfo *)self softwareUpdateDescriptor];
+  softwareUpdateProgress = [(HMAccessoryDiagnosticInfo *)self softwareUpdateProgress];
+  isRunningHH2 = [(HMAccessoryDiagnosticInfo *)self isRunningHH2];
+  numHomes = [(HMAccessoryDiagnosticInfo *)self numHomes];
+  currentAccessoryUUID = [(HMAccessoryDiagnosticInfo *)self currentAccessoryUUID];
+  currentAccessoryMediaRouteId = [(HMAccessoryDiagnosticInfo *)self currentAccessoryMediaRouteId];
+  isPrimaryResident = [(HMAccessoryDiagnosticInfo *)self isPrimaryResident];
+  wifiInfo = [(HMAccessoryDiagnosticInfo *)self wifiInfo];
+  wifiRSSI = [(HMAccessoryDiagnosticInfo *)self wifiRSSI];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[HMAccessoryDiagnosticInfo wifiRequiresPassword](self, "wifiRequiresPassword")}];
-  v7 = [(HMAccessoryDiagnosticInfo *)self isEventRouterServerConnected];
-  v8 = [(HMAccessoryDiagnosticInfo *)self serverLastConnected];
-  v9 = [(HMAccessoryDiagnosticInfo *)self connectedClientsDescription];
-  v28 = [v27 stringWithFormat:@"<%@ [cloudkit=> accountStatus: %d, cdp: %d, firstImport: %d>] [ids=> status: %d identifier: %@ ] [device=> %@ - %@ - %@, s/w: %@, upd: (%@, %@)] hh2: %d, numHomes: %lu, uuid: %@, mediaRouteID: %@, isPrimary: %d, wifi: %@, wifiRSSI: %@, securityType: %@, [eventrouter=> connected: %d date: %@, clients: %@] >", v26, v25, v24, v23, v22, v21, v20, v19, v29, v18, v17, v14, v16, v15, v13, v12, v4, v11, v5, v6, v7, v8, v9];
+  isEventRouterServerConnected = [(HMAccessoryDiagnosticInfo *)self isEventRouterServerConnected];
+  serverLastConnected = [(HMAccessoryDiagnosticInfo *)self serverLastConnected];
+  connectedClientsDescription = [(HMAccessoryDiagnosticInfo *)self connectedClientsDescription];
+  v28 = [v27 stringWithFormat:@"<%@ [cloudkit=> accountStatus: %d, cdp: %d, firstImport: %d>] [ids=> status: %d identifier: %@ ] [device=> %@ - %@ - %@, s/w: %@, upd: (%@, %@)] hh2: %d, numHomes: %lu, uuid: %@, mediaRouteID: %@, isPrimary: %d, wifi: %@, wifiRSSI: %@, securityType: %@, [eventrouter=> connected: %d date: %@, clients: %@] >", v26, cloudkitAccountStatusGood, cdpStatusGood, firstCloudImportDone, idsStatusGood, idsIdentifier, manufacturer, model, serialNumber, softwareVersion, softwareUpdateDescriptor, softwareUpdateProgress, isRunningHH2, numHomes, currentAccessoryUUID, currentAccessoryMediaRouteId, isPrimaryResident, wifiInfo, wifiRSSI, v6, isEventRouterServerConnected, serverLastConnected, connectedClientsDescription];
 
   return v28;
 }
 
 - (HMSoftwareUpdateV2)softwareUpdate
 {
-  v2 = [(HMAccessoryDiagnosticInfo *)self softwareUpdateDescriptor];
-  if (v2)
+  softwareUpdateDescriptor = [(HMAccessoryDiagnosticInfo *)self softwareUpdateDescriptor];
+  if (softwareUpdateDescriptor)
   {
-    v3 = [HMSoftwareUpdateV2 softwareUpdateFromDescriptor:v2];
+    v3 = [HMSoftwareUpdateV2 softwareUpdateFromDescriptor:softwareUpdateDescriptor];
   }
 
   else
@@ -54,103 +54,103 @@
   return v3;
 }
 
-- (HMAccessoryDiagnosticInfo)initWithProtoData:(id)a3
+- (HMAccessoryDiagnosticInfo)initWithProtoData:(id)data
 {
   v81 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v79.receiver = self;
   v79.super_class = HMAccessoryDiagnosticInfo;
   v5 = [(HMAccessoryDiagnosticInfo *)&v79 init];
   if (v5)
   {
-    v6 = [[HMAccessoryDiagnosticInfoProtoDiagnosticInfo alloc] initWithData:v4];
+    v6 = [[HMAccessoryDiagnosticInfoProtoDiagnosticInfo alloc] initWithData:dataCopy];
     v7 = v6;
     if (v6)
     {
       v5->_version = [(HMAccessoryDiagnosticInfoProtoDiagnosticInfo *)v6 version];
       if ([(HMAccessoryDiagnosticInfoProtoDiagnosticInfo *)v7 hasAppleMediaAccessoryDiagnosticInfo])
       {
-        v8 = [(HMAccessoryDiagnosticInfoProtoDiagnosticInfo *)v7 appleMediaAccessoryDiagnosticInfo];
-        v9 = [v8 cloudInfo];
-        v5->_cloudkitAccountStatusGood = [v9 cloudState] == 1;
+        appleMediaAccessoryDiagnosticInfo = [(HMAccessoryDiagnosticInfoProtoDiagnosticInfo *)v7 appleMediaAccessoryDiagnosticInfo];
+        cloudInfo = [appleMediaAccessoryDiagnosticInfo cloudInfo];
+        v5->_cloudkitAccountStatusGood = [cloudInfo cloudState] == 1;
 
-        v10 = [v8 cloudInfo];
-        v5->_cdpStatusGood = [v10 octagonState] == 1;
+        cloudInfo2 = [appleMediaAccessoryDiagnosticInfo cloudInfo];
+        v5->_cdpStatusGood = [cloudInfo2 octagonState] == 1;
 
-        v11 = [v8 cloudInfo];
-        v5->_firstCloudImportDone = [v11 firstCloudImportComplete];
+        cloudInfo3 = [appleMediaAccessoryDiagnosticInfo cloudInfo];
+        v5->_firstCloudImportDone = [cloudInfo3 firstCloudImportComplete];
 
-        v12 = [v8 mediaRouteIdString];
+        mediaRouteIdString = [appleMediaAccessoryDiagnosticInfo mediaRouteIdString];
         currentAccessoryMediaRouteId = v5->_currentAccessoryMediaRouteId;
-        v5->_currentAccessoryMediaRouteId = v12;
+        v5->_currentAccessoryMediaRouteId = mediaRouteIdString;
 
-        v14 = [v8 currentAccessoryInfo];
+        currentAccessoryInfo = [appleMediaAccessoryDiagnosticInfo currentAccessoryInfo];
 
-        if (v14)
+        if (currentAccessoryInfo)
         {
-          v15 = [v8 currentAccessoryInfo];
-          v16 = [v15 uuidString];
+          currentAccessoryInfo2 = [appleMediaAccessoryDiagnosticInfo currentAccessoryInfo];
+          uuidString = [currentAccessoryInfo2 uuidString];
 
-          if (v16)
+          if (uuidString)
           {
             v17 = objc_alloc(MEMORY[0x1E696AFB0]);
-            v18 = [v8 currentAccessoryInfo];
-            v19 = [v18 uuidString];
-            v20 = [v17 initWithUUIDString:v19];
+            currentAccessoryInfo3 = [appleMediaAccessoryDiagnosticInfo currentAccessoryInfo];
+            uuidString2 = [currentAccessoryInfo3 uuidString];
+            v20 = [v17 initWithUUIDString:uuidString2];
             currentAccessoryUUID = v5->_currentAccessoryUUID;
             v5->_currentAccessoryUUID = v20;
           }
         }
 
-        v22 = [v8 idsInfo];
+        idsInfo = [appleMediaAccessoryDiagnosticInfo idsInfo];
 
-        if (v22)
+        if (idsInfo)
         {
-          v23 = [v8 idsInfo];
-          v24 = [v23 idsIdentifierString];
+          idsInfo2 = [appleMediaAccessoryDiagnosticInfo idsInfo];
+          idsIdentifierString = [idsInfo2 idsIdentifierString];
           idsIdentifier = v5->_idsIdentifier;
-          v5->_idsIdentifier = v24;
+          v5->_idsIdentifier = idsIdentifierString;
 
-          v26 = [v8 idsInfo];
-          v5->_idsStatusGood = [v26 idsState] == 1;
+          idsInfo3 = [appleMediaAccessoryDiagnosticInfo idsInfo];
+          v5->_idsStatusGood = [idsInfo3 idsState] == 1;
         }
 
-        v27 = [v8 eventRouterServerInfo];
+        eventRouterServerInfo = [appleMediaAccessoryDiagnosticInfo eventRouterServerInfo];
 
-        if (v27)
+        if (eventRouterServerInfo)
         {
-          v28 = [v8 eventRouterServerInfo];
-          v5->_isEventRouterServerConnected = [v28 connectionState] == 1;
+          eventRouterServerInfo2 = [appleMediaAccessoryDiagnosticInfo eventRouterServerInfo];
+          v5->_isEventRouterServerConnected = [eventRouterServerInfo2 connectionState] == 1;
 
-          v29 = [v8 eventRouterServerInfo];
-          v30 = [v29 hasLastConnected];
+          eventRouterServerInfo3 = [appleMediaAccessoryDiagnosticInfo eventRouterServerInfo];
+          hasLastConnected = [eventRouterServerInfo3 hasLastConnected];
 
-          if (v30)
+          if (hasLastConnected)
           {
             v31 = MEMORY[0x1E695DF00];
-            v32 = [v8 eventRouterServerInfo];
-            [v32 lastConnected];
+            eventRouterServerInfo4 = [appleMediaAccessoryDiagnosticInfo eventRouterServerInfo];
+            [eventRouterServerInfo4 lastConnected];
             v33 = [v31 dateWithTimeIntervalSinceReferenceDate:?];
             serverLastConnected = v5->_serverLastConnected;
             v5->_serverLastConnected = v33;
           }
 
-          v35 = [v8 eventRouterServerInfo];
-          v36 = [v35 connectedClients];
-          v37 = [v36 count];
+          eventRouterServerInfo5 = [appleMediaAccessoryDiagnosticInfo eventRouterServerInfo];
+          connectedClients = [eventRouterServerInfo5 connectedClients];
+          v37 = [connectedClients count];
 
           if (v37)
           {
             v73 = v7;
-            v74 = v4;
+            v74 = dataCopy;
             v77 = 0u;
             v78 = 0u;
             v75 = 0u;
             v76 = 0u;
-            v38 = [v8 eventRouterServerInfo];
-            v39 = [v38 connectedClients];
+            eventRouterServerInfo6 = [appleMediaAccessoryDiagnosticInfo eventRouterServerInfo];
+            connectedClients2 = [eventRouterServerInfo6 connectedClients];
 
-            v40 = [v39 countByEnumeratingWithState:&v75 objects:v80 count:16];
+            v40 = [connectedClients2 countByEnumeratingWithState:&v75 objects:v80 count:16];
             if (v40)
             {
               v41 = v40;
@@ -164,18 +164,18 @@
                 {
                   if (*v76 != v42)
                   {
-                    objc_enumerationMutation(v39);
+                    objc_enumerationMutation(connectedClients2);
                   }
 
-                  v46 = [*(*(&v75 + 1) + 8 * v44) connectedClientIdentifierString];
-                  v43 = [(__CFString *)v45 stringByAppendingFormat:@" %@", v46];
+                  connectedClientIdentifierString = [*(*(&v75 + 1) + 8 * v44) connectedClientIdentifierString];
+                  v43 = [(__CFString *)v45 stringByAppendingFormat:@" %@", connectedClientIdentifierString];
 
                   ++v44;
                   v45 = v43;
                 }
 
                 while (v41 != v44);
-                v41 = [v39 countByEnumeratingWithState:&v75 objects:v80 count:16];
+                v41 = [connectedClients2 countByEnumeratingWithState:&v75 objects:v80 count:16];
               }
 
               while (v41);
@@ -190,66 +190,66 @@
             v5->_connectedClientsDescription = &v43->isa;
 
             v7 = v73;
-            v4 = v74;
+            dataCopy = v74;
           }
         }
 
-        if ([v8 hasWifiInfo])
+        if ([appleMediaAccessoryDiagnosticInfo hasWifiInfo])
         {
-          v48 = [v8 wifiInfo];
-          v49 = [MEMORY[0x1E69A2A80] wifiNetworkInfoFromProto:v48];
+          wifiInfo = [appleMediaAccessoryDiagnosticInfo wifiInfo];
+          v49 = [MEMORY[0x1E69A2A80] wifiNetworkInfoFromProto:wifiInfo];
           wifiInfo = v5->_wifiInfo;
           v5->_wifiInfo = v49;
 
-          if ([v48 hasNetworkRSSI])
+          if ([wifiInfo hasNetworkRSSI])
           {
-            v51 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v48, "networkRSSI")}];
+            v51 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(wifiInfo, "networkRSSI")}];
             wifiRSSI = v5->_wifiRSSI;
             v5->_wifiRSSI = v51;
           }
 
           v5->_wifiRequiresPassword = 1;
-          if ([v48 hasRequiresPassword])
+          if ([wifiInfo hasRequiresPassword])
           {
-            v5->_wifiRequiresPassword = [v48 requiresPassword];
+            v5->_wifiRequiresPassword = [wifiInfo requiresPassword];
           }
         }
 
-        v53 = [v8 modelIdentifier];
+        modelIdentifier = [appleMediaAccessoryDiagnosticInfo modelIdentifier];
         model = v5->_model;
-        v5->_model = v53;
+        v5->_model = modelIdentifier;
 
-        v55 = [v8 manufacturer];
+        manufacturer = [appleMediaAccessoryDiagnosticInfo manufacturer];
         manufacturer = v5->_manufacturer;
-        v5->_manufacturer = v55;
+        v5->_manufacturer = manufacturer;
 
-        v57 = [v8 serialNumber];
+        serialNumber = [appleMediaAccessoryDiagnosticInfo serialNumber];
         serialNumber = v5->_serialNumber;
-        v5->_serialNumber = v57;
+        v5->_serialNumber = serialNumber;
 
-        if ([v8 hasSoftwareVersion])
+        if ([appleMediaAccessoryDiagnosticInfo hasSoftwareVersion])
         {
           v59 = objc_alloc(MEMORY[0x1E69A2A60]);
-          v60 = [v8 softwareVersion];
-          v61 = [v59 initWithString:v60];
+          softwareVersion = [appleMediaAccessoryDiagnosticInfo softwareVersion];
+          v61 = [v59 initWithString:softwareVersion];
           softwareVersion = v5->_softwareVersion;
           v5->_softwareVersion = v61;
         }
 
-        if ([v8 hasSoftwareUpdateDescriptor])
+        if ([appleMediaAccessoryDiagnosticInfo hasSoftwareUpdateDescriptor])
         {
           v63 = [HMSoftwareUpdateDescriptor alloc];
-          v64 = [v8 softwareUpdateDescriptor];
-          v65 = [(HMSoftwareUpdateDescriptor *)v63 initWithProtoPayload:v64];
+          softwareUpdateDescriptor = [appleMediaAccessoryDiagnosticInfo softwareUpdateDescriptor];
+          v65 = [(HMSoftwareUpdateDescriptor *)v63 initWithProtoPayload:softwareUpdateDescriptor];
           softwareUpdateDescriptor = v5->_softwareUpdateDescriptor;
           v5->_softwareUpdateDescriptor = v65;
         }
 
-        if ([v8 hasSoftwareUpdateProgress])
+        if ([appleMediaAccessoryDiagnosticInfo hasSoftwareUpdateProgress])
         {
           v67 = [HMSoftwareUpdateProgress alloc];
-          v68 = [v8 softwareUpdateProgress];
-          v69 = [(HMSoftwareUpdateProgress *)v67 initWithProtoPayload:v68];
+          softwareUpdateProgress = [appleMediaAccessoryDiagnosticInfo softwareUpdateProgress];
+          v69 = [(HMSoftwareUpdateProgress *)v67 initWithProtoPayload:softwareUpdateProgress];
           softwareUpdateProgress = v5->_softwareUpdateProgress;
           v5->_softwareUpdateProgress = v69;
         }

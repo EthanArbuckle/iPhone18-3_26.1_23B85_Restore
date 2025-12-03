@@ -2,66 +2,66 @@
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setIsExplicit:(BOOL)a3;
-- (void)setIsNowPlaying:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setIsExplicit:(BOOL)explicit;
+- (void)setIsNowPlaying:(BOOL)playing;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TrackCellView
 
-- (void)setIsExplicit:(BOOL)a3
+- (void)setIsExplicit:(BOOL)explicit
 {
-  v3 = a3;
+  explicitCopy = explicit;
   v5 = OBJC_IVAR____TtC16MusicMessagesApp13TrackCellView__explicitLabel;
   v6 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp13TrackCellView__explicitLabel);
-  v7 = self;
-  if ([v6 isHidden] == v3)
+  selfCopy = self;
+  if ([v6 isHidden] == explicitCopy)
   {
-    [*(&self->super.super.super.super.super.super.isa + v5) setHidden:v3 ^ 1u];
-    [(TrackCellView *)v7 setNeedsLayout];
+    [*(&self->super.super.super.super.super.super.isa + v5) setHidden:explicitCopy ^ 1u];
+    [(TrackCellView *)selfCopy setNeedsLayout];
   }
 }
 
-- (void)setIsNowPlaying:(BOOL)a3
+- (void)setIsNowPlaying:(BOOL)playing
 {
-  v3 = a3;
+  playingCopy = playing;
   v4 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp13TrackCellView__nowPlayingLabel);
-  v5 = self;
-  [v4 setHidden:!v3];
-  [*(&v5->super.super.super.super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp13TrackCellView__nowPlayingIndicatorDimmingView) setHidden:!v3];
-  [*(&v5->super.super.super.super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp13TrackCellView__nowPlayingIndicatorView) setHidden:!v3];
-  [(TrackCellView *)v5 setNeedsLayout];
+  selfCopy = self;
+  [v4 setHidden:!playingCopy];
+  [*(&selfCopy->super.super.super.super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp13TrackCellView__nowPlayingIndicatorDimmingView) setHidden:!playingCopy];
+  [*(&selfCopy->super.super.super.super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp13TrackCellView__nowPlayingIndicatorView) setHidden:!playingCopy];
+  [(TrackCellView *)selfCopy setNeedsLayout];
 }
 
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for TrackCellView();
   [(TrackCellView *)&v6 dealloc];
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001FF40();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100020294();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_100020AC0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100020AC0(change);
 }
 
 @end

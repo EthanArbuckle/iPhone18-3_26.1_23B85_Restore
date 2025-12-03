@@ -1,20 +1,20 @@
 @interface ATXClientModelCacheUpdate
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXClientModelCacheUpdate)initWithClientModelId:(id)a3 suggestions:(id)a4 feedbackMetadata:(id)a5 responseForRealTimeRequest:(id)a6;
-- (ATXClientModelCacheUpdate)initWithClientModelId:(id)a3 suggestions:(id)a4 feedbackMetadata:(id)a5 responseForRealTimeRequest:(id)a6 uuid:(id)a7 cacheCreationDate:(id)a8;
-- (ATXClientModelCacheUpdate)initWithCoder:(id)a3;
-- (ATXClientModelCacheUpdate)initWithProto:(id)a3;
-- (ATXClientModelCacheUpdate)initWithProtoData:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXClientModelCacheUpdate:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXClientModelCacheUpdate)initWithClientModelId:(id)id suggestions:(id)suggestions feedbackMetadata:(id)metadata responseForRealTimeRequest:(id)request;
+- (ATXClientModelCacheUpdate)initWithClientModelId:(id)id suggestions:(id)suggestions feedbackMetadata:(id)metadata responseForRealTimeRequest:(id)request uuid:(id)uuid cacheCreationDate:(id)date;
+- (ATXClientModelCacheUpdate)initWithCoder:(id)coder;
+- (ATXClientModelCacheUpdate)initWithProto:(id)proto;
+- (ATXClientModelCacheUpdate)initWithProtoData:(id)data;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXClientModelCacheUpdate:(id)update;
 - (NSDate)cacheCreationDate;
-- (id)_clientModelFromClientModelId:(id)a3 suggestions:(id)a4;
+- (id)_clientModelFromClientModelId:(id)id suggestions:(id)suggestions;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonRawData;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)proto;
 @end
 
@@ -22,18 +22,18 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXClientModelCacheUpdate *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXClientModelCacheUpdate *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
 - (id)proto
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  [v3 setUuidString:v4];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [v3 setUuidString:uUIDString];
 
   if (([v3 hasUuidString] & 1) == 0)
   {
@@ -65,17 +65,17 @@
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 proto];
-        if (v13)
+        proto = [v12 proto];
+        if (proto)
         {
-          v14 = [v12 proto];
-          [v6 addObject:v14];
+          proto2 = [v12 proto];
+          [v6 addObject:proto2];
         }
 
         else
         {
-          v14 = __atxlog_handle_blending();
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+          proto2 = __atxlog_handle_blending();
+          if (os_log_type_enabled(proto2, OS_LOG_TYPE_FAULT))
           {
             [(ATXClientModelCacheUpdate *)&v18 proto];
           }
@@ -92,8 +92,8 @@
   [v3 setFeedbackMetadata:self->_feedbackMetadata];
   [v3 setClientModelId:self->_clientModelId];
   [v3 setCacheCreationDate:self->_absoluteCacheCreationDate];
-  v15 = [(ATXSuggestionRequestResponse *)self->_suggestionRequestResponse proto];
-  [v3 setResponseForRequestForSuggestions:v15];
+  proto3 = [(ATXSuggestionRequestResponse *)self->_suggestionRequestResponse proto];
+  [v3 setResponseForRequestForSuggestions:proto3];
 
   v16 = *MEMORY[0x1E69E9840];
 
@@ -107,72 +107,72 @@
   return v2;
 }
 
-- (ATXClientModelCacheUpdate)initWithClientModelId:(id)a3 suggestions:(id)a4 feedbackMetadata:(id)a5 responseForRealTimeRequest:(id)a6
+- (ATXClientModelCacheUpdate)initWithClientModelId:(id)id suggestions:(id)suggestions feedbackMetadata:(id)metadata responseForRealTimeRequest:(id)request
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  requestCopy = request;
+  metadataCopy = metadata;
+  suggestionsCopy = suggestions;
+  idCopy = id;
   v14 = objc_opt_new();
   v15 = objc_opt_new();
-  v16 = [(ATXClientModelCacheUpdate *)self initWithClientModelId:v13 suggestions:v12 feedbackMetadata:v11 responseForRealTimeRequest:v10 uuid:v14 cacheCreationDate:v15];
+  v16 = [(ATXClientModelCacheUpdate *)self initWithClientModelId:idCopy suggestions:suggestionsCopy feedbackMetadata:metadataCopy responseForRealTimeRequest:requestCopy uuid:v14 cacheCreationDate:v15];
 
   return v16;
 }
 
-- (ATXClientModelCacheUpdate)initWithClientModelId:(id)a3 suggestions:(id)a4 feedbackMetadata:(id)a5 responseForRealTimeRequest:(id)a6 uuid:(id)a7 cacheCreationDate:(id)a8
+- (ATXClientModelCacheUpdate)initWithClientModelId:(id)id suggestions:(id)suggestions feedbackMetadata:(id)metadata responseForRealTimeRequest:(id)request uuid:(id)uuid cacheCreationDate:(id)date
 {
-  v24 = a3;
-  v23 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  idCopy = id;
+  suggestionsCopy = suggestions;
+  metadataCopy = metadata;
+  requestCopy = request;
+  uuidCopy = uuid;
+  dateCopy = date;
   v25.receiver = self;
   v25.super_class = ATXClientModelCacheUpdate;
   v19 = [(ATXClientModelCacheUpdate *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_suggestions, a4);
-    objc_storeStrong(&v20->_feedbackMetadata, a5);
-    objc_storeStrong(&v20->_uuid, a7);
-    objc_storeStrong(&v20->_clientModelId, a3);
-    [v18 timeIntervalSince1970];
+    objc_storeStrong(&v19->_suggestions, suggestions);
+    objc_storeStrong(&v20->_feedbackMetadata, metadata);
+    objc_storeStrong(&v20->_uuid, uuid);
+    objc_storeStrong(&v20->_clientModelId, id);
+    [dateCopy timeIntervalSince1970];
     v20->_absoluteCacheCreationDate = v21;
-    objc_storeStrong(&v20->_suggestionRequestResponse, a6);
+    objc_storeStrong(&v20->_suggestionRequestResponse, request);
   }
 
   return v20;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -184,45 +184,45 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXClientModelCacheUpdate *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXClientModelCacheUpdate *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXClientModelCacheUpdate)initWithCoder:(id)a3
+- (ATXClientModelCacheUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXClientModelCacheUpdate *)self initWithProtoData:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXClientModelCacheUpdate *)self isEqualToATXClientModelCacheUpdate:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXClientModelCacheUpdate *)self isEqualToATXClientModelCacheUpdate:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXClientModelCacheUpdate:(id)a3
+- (BOOL)isEqualToATXClientModelCacheUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = self->_uuid;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == updateCopy[2])
   {
   }
 
@@ -238,7 +238,7 @@ LABEL_7:
 
   v8 = self->_suggestions;
   v9 = v8;
-  if (v8 == v4[4])
+  if (v8 == updateCopy[4])
   {
   }
 
@@ -254,7 +254,7 @@ LABEL_7:
 
   v11 = self->_feedbackMetadata;
   v12 = v11;
-  if (v11 == v4[5])
+  if (v11 == updateCopy[5])
   {
   }
 
@@ -270,7 +270,7 @@ LABEL_7:
 
   v14 = self->_clientModelId;
   v15 = v14;
-  if (v14 == v4[3])
+  if (v14 == updateCopy[3])
   {
   }
 
@@ -286,7 +286,7 @@ LABEL_7:
 
   v17 = self->_suggestionRequestResponse;
   v18 = v17;
-  if (v17 == v4[6])
+  if (v17 == updateCopy[6])
   {
 
     goto LABEL_22;
@@ -297,7 +297,7 @@ LABEL_7:
   if (v19)
   {
 LABEL_22:
-    v20 = self->_absoluteCacheCreationDate == *(v4 + 1);
+    v20 = self->_absoluteCacheCreationDate == *(updateCopy + 1);
     goto LABEL_20;
   }
 
@@ -308,30 +308,30 @@ LABEL_20:
   return v20;
 }
 
-- (ATXClientModelCacheUpdate)initWithProtoData:(id)a3
+- (ATXClientModelCacheUpdate)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBClientModelCacheUpdate alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBClientModelCacheUpdate alloc] initWithData:dataCopy];
 
     self = [(ATXClientModelCacheUpdate *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXClientModelCacheUpdate)initWithProto:(id)a3
+- (ATXClientModelCacheUpdate)initWithProto:(id)proto
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -342,30 +342,30 @@ LABEL_20:
         [(ATXLightweightClientModelCacheUpdate *)self initWithProto:v5];
       }
 
-      v26 = 0;
+      selfCopy = 0;
       goto LABEL_29;
     }
 
-    v5 = v4;
+    v5 = protoCopy;
     if (([v5 hasUuidString]& 1) != 0)
     {
       v6 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v7 = [v5 uuidString];
-      v8 = [v6 initWithUUIDString:v7];
+      uuidString = [v5 uuidString];
+      v8 = [v6 initWithUUIDString:uuidString];
 
       if (v8)
       {
         v29 = v8;
         v9 = objc_alloc(MEMORY[0x1E695DF70]);
-        v10 = [v5 suggestions];
-        v11 = [v9 initWithCapacity:{objc_msgSend(v10, "count")}];
+        suggestions = [v5 suggestions];
+        v11 = [v9 initWithCapacity:{objc_msgSend(suggestions, "count")}];
 
         v32 = 0u;
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v12 = [v5 suggestions];
-        v13 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        suggestions2 = [v5 suggestions];
+        v13 = [suggestions2 countByEnumeratingWithState:&v30 objects:v34 count:16];
         if (v13)
         {
           v14 = v13;
@@ -376,7 +376,7 @@ LABEL_20:
             {
               if (*v31 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(suggestions2);
               }
 
               v17 = [[ATXProactiveSuggestion alloc] initWithProto:*(*(&v30 + 1) + 8 * i)];
@@ -388,7 +388,7 @@ LABEL_20:
                   [ATXClientModelCacheUpdate initWithProto:v20];
                 }
 
-                v26 = 0;
+                selfCopy = 0;
                 v8 = v29;
                 goto LABEL_27;
               }
@@ -397,7 +397,7 @@ LABEL_20:
               [v11 addObject:v17];
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
+            v14 = [suggestions2 countByEnumeratingWithState:&v30 objects:v34 count:16];
             if (v14)
             {
               continue;
@@ -407,9 +407,9 @@ LABEL_20:
           }
         }
 
-        v12 = [v5 feedbackMetadata];
-        v19 = [v5 clientModelId];
-        v20 = [(ATXClientModelCacheUpdate *)self _clientModelFromClientModelId:v19 suggestions:v11];
+        suggestions2 = [v5 feedbackMetadata];
+        clientModelId = [v5 clientModelId];
+        v20 = [(ATXClientModelCacheUpdate *)self _clientModelFromClientModelId:clientModelId suggestions:v11];
 
         v21 = objc_alloc(MEMORY[0x1E695DF00]);
         [v5 cacheCreationDate];
@@ -417,8 +417,8 @@ LABEL_20:
         if ([v5 hasResponseForRequestForSuggestions])
         {
           v23 = [ATXSuggestionRequestResponse alloc];
-          v24 = [v5 responseForRequestForSuggestions];
-          v25 = [(ATXSuggestionRequestResponse *)v23 initWithProto:v24];
+          responseForRequestForSuggestions = [v5 responseForRequestForSuggestions];
+          v25 = [(ATXSuggestionRequestResponse *)v23 initWithProto:responseForRequestForSuggestions];
         }
 
         else
@@ -427,9 +427,9 @@ LABEL_20:
         }
 
         v8 = v29;
-        self = [(ATXClientModelCacheUpdate *)self initWithClientModelId:v20 suggestions:v11 feedbackMetadata:v12 responseForRealTimeRequest:v25 uuid:v29 cacheCreationDate:v22];
+        self = [(ATXClientModelCacheUpdate *)self initWithClientModelId:v20 suggestions:v11 feedbackMetadata:suggestions2 responseForRealTimeRequest:v25 uuid:v29 cacheCreationDate:v22];
 
-        v26 = self;
+        selfCopy = self;
 LABEL_27:
 
         goto LABEL_28;
@@ -445,28 +445,28 @@ LABEL_27:
       }
     }
 
-    v26 = 0;
+    selfCopy = 0;
 LABEL_28:
 
 LABEL_29:
     goto LABEL_30;
   }
 
-  v26 = 0;
+  selfCopy = 0;
 LABEL_30:
 
   v27 = *MEMORY[0x1E69E9840];
-  return v26;
+  return selfCopy;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
     v7 = objc_autoreleasePoolPush();
     v12 = 0;
-    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:a1 fromData:v6 error:&v12];
+    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:self fromData:dataCopy error:&v12];
     v9 = v12;
     objc_autoreleasePoolPop(v7);
     v10 = 0;
@@ -478,7 +478,7 @@ LABEL_30:
 
   else
   {
-    v10 = [[a1 alloc] initWithProtoData:v6];
+    v10 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   return v10;
@@ -489,11 +489,11 @@ LABEL_30:
   v32[6] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
   v31[0] = @"clientModelId";
-  v4 = [(ATXClientModelCacheUpdate *)self clientModelId];
-  v5 = v4;
-  if (v4)
+  clientModelId = [(ATXClientModelCacheUpdate *)self clientModelId];
+  v5 = clientModelId;
+  if (clientModelId)
   {
-    v6 = v4;
+    v6 = clientModelId;
   }
 
   else
@@ -533,8 +533,8 @@ LABEL_30:
 
   v32[3] = v12;
   v31[4] = @"cacheCreationDate";
-  v13 = [(ATXClientModelCacheUpdate *)self cacheCreationDate];
-  v14 = [v13 description];
+  cacheCreationDate = [(ATXClientModelCacheUpdate *)self cacheCreationDate];
+  v14 = [cacheCreationDate description];
   v15 = v14;
   v31[5] = @"responseForRequest";
   if (self->_suggestionRequestResponse)
@@ -570,8 +570,8 @@ LABEL_30:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v26 + 1) + 8 * i) jsonRawData];
-        [v3 addObject:v23];
+        jsonRawData = [*(*(&v26 + 1) + 8 * i) jsonRawData];
+        [v3 addObject:jsonRawData];
       }
 
       v20 = [(NSArray *)v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -588,29 +588,29 @@ LABEL_30:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXClientModelCacheUpdate *)self jsonRawData];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonRawData = [(ATXClientModelCacheUpdate *)self jsonRawData];
+  v4 = [v2 dataWithJSONObject:jsonRawData options:1 error:0];
 
   return v4;
 }
 
-- (id)_clientModelFromClientModelId:(id)a3 suggestions:(id)a4
+- (id)_clientModelFromClientModelId:(id)id suggestions:(id)suggestions
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  idCopy = id;
+  v6 = idCopy;
+  if (idCopy)
   {
-    v7 = v5;
+    clientModelId = idCopy;
   }
 
   else
   {
-    v8 = [a4 firstObject];
-    v9 = [v8 clientModelSpecification];
-    v7 = [v9 clientModelId];
+    firstObject = [suggestions firstObject];
+    clientModelSpecification = [firstObject clientModelSpecification];
+    clientModelId = [clientModelSpecification clientModelId];
   }
 
-  return v7;
+  return clientModelId;
 }
 
 - (void)proto

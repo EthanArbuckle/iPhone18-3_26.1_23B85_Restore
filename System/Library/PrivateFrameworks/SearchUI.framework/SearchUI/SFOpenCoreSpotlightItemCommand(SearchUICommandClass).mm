@@ -6,8 +6,8 @@
 
 - (void)_searchUICommandHandlerClass
 {
-  v1 = [a1 applicationBundleIdentifier];
-  if ([SearchUIUtilities isAppInstalledWithBundleId:v1])
+  applicationBundleIdentifier = [self applicationBundleIdentifier];
+  if ([SearchUIUtilities isAppInstalledWithBundleId:applicationBundleIdentifier])
   {
     v2 = objc_opt_class();
   }

@@ -1,45 +1,45 @@
 @interface MTFeedIngester
-+ (unint64_t)_offerTypesAsFlagBits:(id)a3;
-+ (void)_markEpisodeAsFirstSeen:(id)a3;
-+ (void)_markLatestEpisodeAsUnplayedIfNeeded:(id)a3 latestEpisodeInPodcast:(id)a4;
-+ (void)_recalculateEpisodeLevel:(id)a3 episodeLevelCalculator:(id)a4 ctx:(id)a5;
-+ (void)_sendNotificationForNewlyEntitledEpisodesIfNeeded:(id)a3 latestEpisodeInPodcast:(id)a4 newlyEntitledEpisodeUUIDs:(id)a5 ctx:(id)a6;
-+ (void)_unsafeFinalizeIngestion:(id)a3 episodeLevelCalculator:(id)a4 storeInfoUpdater:(id)a5 updateAverageCalculator:(id)a6 ctx:(id)a7 didUpdateAnyEpisodes:(BOOL)a8 newlyEntitledEpisodeUUIDs:(id)a9;
++ (unint64_t)_offerTypesAsFlagBits:(id)bits;
++ (void)_markEpisodeAsFirstSeen:(id)seen;
++ (void)_markLatestEpisodeAsUnplayedIfNeeded:(id)needed latestEpisodeInPodcast:(id)podcast;
++ (void)_recalculateEpisodeLevel:(id)level episodeLevelCalculator:(id)calculator ctx:(id)ctx;
++ (void)_sendNotificationForNewlyEntitledEpisodesIfNeeded:(id)needed latestEpisodeInPodcast:(id)podcast newlyEntitledEpisodeUUIDs:(id)ds ctx:(id)ctx;
++ (void)_unsafeFinalizeIngestion:(id)ingestion episodeLevelCalculator:(id)calculator storeInfoUpdater:(id)updater updateAverageCalculator:(id)averageCalculator ctx:(id)ctx didUpdateAnyEpisodes:(BOOL)episodes newlyEntitledEpisodeUUIDs:(id)ds;
 - (BOOL)_localPodcastExists;
-- (BOOL)unsafeIngestShow:(id)a3;
-- (MTFeedIngester)initWithPodcast:(id)a3 ctx:(id)a4 storeInfoUpdater:(id)a5 imageDownloader:(id)a6 imageStore:(id)a7 syncController:(id)a8 library:(id)a9 downloadManager:(id)a10 episodeLevelCalculator:(id)a11 categoryIngester:(id)a12 chapterIngester:(id)a13 feedUpdateSource:(int64_t)a14 updaterJobUUID:(id)a15 canSendNotifications:(BOOL)a16;
-- (id)_unsafeIngestEpisode:(id)a3 localEpisode:(id)a4 isNew:(BOOL)a5;
-- (id)unsafeIngestNewEpisode:(id)a3;
-- (void)_handleAttributesAndRedownloadOnPriceTypeChangeIfNeeded:(id)a3 isNewEpisodeToCurrentDevice:(BOOL)a4 oldIsEntitled:(BOOL)a5 oldEnclosureURL:(id)a6 oldPriceType:(id)a7;
+- (BOOL)unsafeIngestShow:(id)show;
+- (MTFeedIngester)initWithPodcast:(id)podcast ctx:(id)ctx storeInfoUpdater:(id)updater imageDownloader:(id)downloader imageStore:(id)store syncController:(id)controller library:(id)library downloadManager:(id)self0 episodeLevelCalculator:(id)self1 categoryIngester:(id)self2 chapterIngester:(id)self3 feedUpdateSource:(int64_t)self4 updaterJobUUID:(id)self5 canSendNotifications:(BOOL)self6;
+- (id)_unsafeIngestEpisode:(id)episode localEpisode:(id)localEpisode isNew:(BOOL)new;
+- (id)unsafeIngestNewEpisode:(id)episode;
+- (void)_handleAttributesAndRedownloadOnPriceTypeChangeIfNeeded:(id)needed isNewEpisodeToCurrentDevice:(BOOL)device oldIsEntitled:(BOOL)entitled oldEnclosureURL:(id)l oldPriceType:(id)type;
 - (void)_reportMetrics;
-- (void)_setAttributesOfLocalEpisode:(id)a3 feedEpisode:(id)a4;
-- (void)_setPodcastArtwork:(id)a3;
+- (void)_setAttributesOfLocalEpisode:(id)episode feedEpisode:(id)feedEpisode;
+- (void)_setPodcastArtwork:(id)artwork;
 - (void)_updatePodcastArtworksIfNeeded;
 - (void)_updatePodcastArtworksIfNeeded_ImageProvider;
 - (void)_updatePodcastArtworksIfNeeded_ImageStore;
-- (void)unsafeDeleteChaptersForEpisode:(id)a3;
-- (void)unsafeDeleteFeedDeletedEpisode:(id)a3;
+- (void)unsafeDeleteChaptersForEpisode:(id)episode;
+- (void)unsafeDeleteFeedDeletedEpisode:(id)episode;
 - (void)unsafeFinalizeIngestion;
 - (void)unsafeIngestPage;
 @end
 
 @implementation MTFeedIngester
 
-- (MTFeedIngester)initWithPodcast:(id)a3 ctx:(id)a4 storeInfoUpdater:(id)a5 imageDownloader:(id)a6 imageStore:(id)a7 syncController:(id)a8 library:(id)a9 downloadManager:(id)a10 episodeLevelCalculator:(id)a11 categoryIngester:(id)a12 chapterIngester:(id)a13 feedUpdateSource:(int64_t)a14 updaterJobUUID:(id)a15 canSendNotifications:(BOOL)a16
+- (MTFeedIngester)initWithPodcast:(id)podcast ctx:(id)ctx storeInfoUpdater:(id)updater imageDownloader:(id)downloader imageStore:(id)store syncController:(id)controller library:(id)library downloadManager:(id)self0 episodeLevelCalculator:(id)self1 categoryIngester:(id)self2 chapterIngester:(id)self3 feedUpdateSource:(int64_t)self4 updaterJobUUID:(id)self5 canSendNotifications:(BOOL)self6
 {
-  v44 = a3;
-  obj = a4;
-  v43 = a4;
-  v42 = a5;
-  v41 = a6;
-  v40 = a7;
-  v39 = a8;
-  v38 = a9;
-  v37 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
-  v24 = a15;
+  podcastCopy = podcast;
+  obj = ctx;
+  ctxCopy = ctx;
+  updaterCopy = updater;
+  downloaderCopy = downloader;
+  storeCopy = store;
+  controllerCopy = controller;
+  libraryCopy = library;
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  ingesterCopy = ingester;
+  chapterIngesterCopy = chapterIngester;
+  dCopy = d;
   v45.receiver = self;
   v45.super_class = MTFeedIngester;
   v25 = [(MTFeedIngester *)&v45 init];
@@ -47,7 +47,7 @@
   if (v25)
   {
     objc_storeStrong(&v25->_ctx, obj);
-    objc_storeStrong(&v26->_localPodcast, a3);
+    objc_storeStrong(&v26->_localPodcast, podcast);
     v27 = +[NSMutableSet set];
     newlyEntitledEpisodeUUIDs = v26->_newlyEntitledEpisodeUUIDs;
     v26->_newlyEntitledEpisodeUUIDs = v27;
@@ -58,21 +58,21 @@
 
     v26->_latestEpisodeDate = 0.0;
     v26->_shouldMarkPlaylistsForUpdate = 0;
-    objc_storeStrong(&v26->_storeInfoUpdater, a5);
-    objc_storeStrong(&v26->_imageDownloader, a6);
-    objc_storeStrong(&v26->_imageStore, a7);
-    objc_storeStrong(&v26->_syncController, a8);
-    objc_storeStrong(&v26->_library, a9);
-    objc_storeStrong(&v26->_downloadManager, a10);
-    objc_storeStrong(&v26->_episodeLevelCalculator, a11);
-    objc_storeStrong(&v26->_categoryIngester, a12);
-    objc_storeStrong(&v26->_chapterIngester, a13);
-    v26->_feedUpdateSource = a14;
-    objc_storeStrong(&v26->_updaterJobUUID, a15);
+    objc_storeStrong(&v26->_storeInfoUpdater, updater);
+    objc_storeStrong(&v26->_imageDownloader, downloader);
+    objc_storeStrong(&v26->_imageStore, store);
+    objc_storeStrong(&v26->_syncController, controller);
+    objc_storeStrong(&v26->_library, library);
+    objc_storeStrong(&v26->_downloadManager, manager);
+    objc_storeStrong(&v26->_episodeLevelCalculator, calculator);
+    objc_storeStrong(&v26->_categoryIngester, ingester);
+    objc_storeStrong(&v26->_chapterIngester, chapterIngester);
+    v26->_feedUpdateSource = source;
+    objc_storeStrong(&v26->_updaterJobUUID, d);
     v26->_itemsInserted = 0;
     v26->_itemsIngested = 0;
     v26->_itemsDeleted = 0;
-    v26->_canSendNotifications = a16;
+    v26->_canSendNotifications = notifications;
     v31 = +[_TtC18PodcastsFoundation29FeedManagerLocalConfiguration platformSpecificConfiguration];
     configuration = v26->_configuration;
     v26->_configuration = v31;
@@ -81,22 +81,22 @@
   return v26;
 }
 
-- (id)unsafeIngestNewEpisode:(id)a3
+- (id)unsafeIngestNewEpisode:(id)episode
 {
-  v4 = a3;
+  episodeCopy = episode;
   if ([(MTFeedIngester *)self _localPodcastExists])
   {
     [(MTSyncControllerProtocol *)self->_syncController setUppSyncDirtyFlag:1];
     v5 = [MTEpisode insertNewEpisodeInManagedObjectContext:self->_ctx canSendNotifications:self->_canSendNotifications];
     [v5 setPodcast:self->_localPodcast];
     [v5 setImportSource:2];
-    v6 = [v4 pubDate];
-    [v6 timeIntervalSinceReferenceDate];
+    pubDate = [episodeCopy pubDate];
+    [pubDate timeIntervalSinceReferenceDate];
     v8 = v7;
     [(MTPodcast *)self->_localPodcast addedDate];
     v10 = v9;
 
-    v11 = [(MTPodcast *)self->_localPodcast importing];
+    importing = [(MTPodcast *)self->_localPodcast importing];
     if (v8 < v10)
     {
       v12 = 1;
@@ -104,7 +104,7 @@
 
     else
     {
-      v12 = v11;
+      v12 = importing;
     }
 
     if ((v12 & 1) != 0 || ([(MTPodcast *)self->_localPodcast subscribed]& 1) == 0)
@@ -117,23 +117,23 @@
       {
         if (v16)
         {
-          v17 = [(MTPodcast *)self->_localPodcast uuid];
-          v18 = [(MTPodcast *)self->_localPodcast title];
-          v19 = [v5 uuid];
-          v20 = [v5 sentNotification];
-          v21 = [(MTPodcast *)self->_localPodcast importing];
+          uuid = [(MTPodcast *)self->_localPodcast uuid];
+          title = [(MTPodcast *)self->_localPodcast title];
+          uuid2 = [v5 uuid];
+          sentNotification = [v5 sentNotification];
+          importing2 = [(MTPodcast *)self->_localPodcast importing];
           v38 = 138544642;
-          v39 = v17;
+          v39 = uuid;
           v40 = 2112;
-          v41 = v18;
+          v41 = title;
           v42 = 2114;
-          v43 = v19;
+          v43 = uuid2;
           v44 = 1024;
-          v45 = v20;
+          v45 = sentNotification;
           v46 = 1024;
           v47 = v12;
           v48 = 1024;
-          v49 = v21;
+          v49 = importing2;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Marking new feed episode as backCatalog. %{public}@, sentNotification: %d, isEpisodePublishedBeforeAddedDate: %d, podcastIsImporting: %d", &v38, 0x32u);
         }
 
@@ -147,24 +147,24 @@
       {
         if (v16)
         {
-          v26 = [(MTPodcast *)self->_localPodcast uuid];
-          v27 = [(MTPodcast *)self->_localPodcast title];
-          v28 = [v5 uuid];
-          v29 = [v5 sentNotification];
-          v30 = [(MTPodcast *)self->_localPodcast importing];
+          uuid3 = [(MTPodcast *)self->_localPodcast uuid];
+          title2 = [(MTPodcast *)self->_localPodcast title];
+          uuid4 = [v5 uuid];
+          sentNotification2 = [v5 sentNotification];
+          importing3 = [(MTPodcast *)self->_localPodcast importing];
           [v5 metadataTimestamp];
           v38 = 138544898;
-          v39 = v26;
+          v39 = uuid3;
           v40 = 2112;
-          v41 = v27;
+          v41 = title2;
           v42 = 2114;
-          v43 = v28;
+          v43 = uuid4;
           v44 = 1024;
-          v45 = v29;
+          v45 = sentNotification2;
           v46 = 1024;
           v47 = v12;
           v48 = 1024;
-          v49 = v30;
+          v49 = importing3;
           v50 = 2048;
           v51 = v31;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ New feed episode already has a metadataTimestamp. Setting isNew to false. %{public}@, sentNotification: %d, isEpisodePublishedBeforeAddedDate: %d, podcastIsImporting: %d, metadataTimestamp: %f", &v38, 0x3Cu);
@@ -180,34 +180,34 @@
     v32 = _MTLogCategoryFeedUpdateIngester();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [(MTPodcast *)self->_localPodcast uuid];
-      v34 = [(MTPodcast *)self->_localPodcast title];
-      v35 = [v5 uuid];
-      v36 = [v5 sentNotification];
+      uuid5 = [(MTPodcast *)self->_localPodcast uuid];
+      title3 = [(MTPodcast *)self->_localPodcast title];
+      uuid6 = [v5 uuid];
+      sentNotification3 = [v5 sentNotification];
       v38 = 138544130;
-      v39 = v33;
+      v39 = uuid5;
       v40 = 2112;
-      v41 = v34;
+      v41 = title3;
       v42 = 2114;
-      v43 = v35;
+      v43 = uuid6;
       v44 = 1024;
-      v45 = v36;
+      v45 = sentNotification3;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ new episode %{public}@, sentNotification: %d", &v38, 0x26u);
     }
 
     ++self->_itemsInserted;
-    v25 = [(MTFeedIngester *)self _unsafeIngestEpisode:v4 localEpisode:v5 isNew:1];
+    v25 = [(MTFeedIngester *)self _unsafeIngestEpisode:episodeCopy localEpisode:v5 isNew:1];
   }
 
   else
   {
-    v22 = [v4 episodeStoreId];
-    v23 = [v22 longLongValue];
+    episodeStoreId = [episodeCopy episodeStoreId];
+    longLongValue = [episodeStoreId longLongValue];
 
     v5 = _MTLogCategoryFeedUpdateIngester();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v24 = [NSNumber numberWithLongLong:v23];
+      v24 = [NSNumber numberWithLongLong:longLongValue];
       v38 = 138412290;
       v39 = v24;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%@ - could not ingest new feed episode because ingester local podcast does not exist", &v38, 0xCu);
@@ -219,123 +219,123 @@
   return v25;
 }
 
-- (id)_unsafeIngestEpisode:(id)a3 localEpisode:(id)a4 isNew:(BOOL)a5
+- (id)_unsafeIngestEpisode:(id)episode localEpisode:(id)localEpisode isNew:(BOOL)new
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  newCopy = new;
+  episodeCopy = episode;
+  localEpisodeCopy = localEpisode;
   v10 = _MTLogCategoryFeedUpdateIngester();
-  v121 = v9;
+  v121 = localEpisodeCopy;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 podcast];
-    v12 = [v11 uuid];
-    v13 = [v9 podcast];
-    v14 = [v13 title];
-    v15 = [v121 uuid];
+    podcast = [localEpisodeCopy podcast];
+    uuid = [podcast uuid];
+    podcast2 = [localEpisodeCopy podcast];
+    title = [podcast2 title];
+    uuid2 = [v121 uuid];
     [v121 title];
-    v17 = v16 = v5;
+    v17 = v16 = newCopy;
     *buf = 138544130;
-    v128 = v12;
+    v128 = uuid;
     v129 = 2112;
-    v130 = v14;
+    v130 = title;
     v131 = 2114;
-    v132 = v15;
+    v132 = uuid2;
     v133 = 2112;
     v134 = v17;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ updating episode %{public}@ - %@", buf, 0x2Au);
 
-    v5 = v16;
-    v9 = v121;
+    newCopy = v16;
+    localEpisodeCopy = v121;
   }
 
-  v18 = [v9 podcast];
-  v19 = [v18 uuid];
-  v20 = [(MTPodcast *)self->_localPodcast uuid];
-  v21 = [v19 isEqualToString:v20];
+  podcast3 = [localEpisodeCopy podcast];
+  uuid3 = [podcast3 uuid];
+  uuid4 = [(MTPodcast *)self->_localPodcast uuid];
+  v21 = [uuid3 isEqualToString:uuid4];
 
   if (v21)
   {
-    [(MTFeedIngester *)self _setAttributesOfLocalEpisode:v9 feedEpisode:v8];
-    v22 = [(MTPodcast *)self->_localPodcast channel];
+    [(MTFeedIngester *)self _setAttributesOfLocalEpisode:localEpisodeCopy feedEpisode:episodeCopy];
+    channel = [(MTPodcast *)self->_localPodcast channel];
 
-    v23 = v9;
-    if (v22)
+    v23 = localEpisodeCopy;
+    if (channel)
     {
-      v24 = [(MTPodcast *)self->_localPodcast channel];
-      v25 = [v24 subscriptionActive];
+      channel2 = [(MTPodcast *)self->_localPodcast channel];
+      subscriptionActive = [channel2 subscriptionActive];
     }
 
     else
     {
-      v25 = 0;
+      subscriptionActive = 0;
     }
 
-    v35 = [v9 isEntitled];
-    v26 = [v9 priceType];
-    v36 = [v9 enclosureURL];
-    [v8 entitledDuration];
+    isEntitled = [localEpisodeCopy isEntitled];
+    priceType = [localEpisodeCopy priceType];
+    enclosureURL = [localEpisodeCopy enclosureURL];
+    [episodeCopy entitledDuration];
     if (v37 > 0.0)
     {
-      [v8 entitledDuration];
+      [episodeCopy entitledDuration];
       [v23 setEntitledDuration:?];
     }
 
-    [v8 duration];
+    [episodeCopy duration];
     if (v38 > 0.0)
     {
-      [v8 duration];
+      [episodeCopy duration];
       [v23 setFreeDuration:?];
     }
 
-    v39 = [v8 entitledEnclosureURL];
-    [v23 setEntitledEnclosureURL:v39];
+    entitledEnclosureURL = [episodeCopy entitledEnclosureURL];
+    [v23 setEntitledEnclosureURL:entitledEnclosureURL];
 
-    v40 = [v8 resolvedEnclosureUrl];
-    [v23 setFreeEnclosureURL:v40];
+    resolvedEnclosureUrl = [episodeCopy resolvedEnclosureUrl];
+    [v23 setFreeEnclosureURL:resolvedEnclosureUrl];
 
-    v41 = [v8 priceType];
-    [v23 setFreePriceType:v41];
+    priceType2 = [episodeCopy priceType];
+    [v23 setFreePriceType:priceType2];
 
-    v42 = [v8 entitledPriceType];
-    [v23 setEntitledPriceType:v42];
+    entitledPriceType = [episodeCopy entitledPriceType];
+    [v23 setEntitledPriceType:entitledPriceType];
 
-    v43 = [v8 entitledTranscriptIdentifier];
-    [v23 setEntitledTranscriptIdentifier:v43];
+    entitledTranscriptIdentifier = [episodeCopy entitledTranscriptIdentifier];
+    [v23 setEntitledTranscriptIdentifier:entitledTranscriptIdentifier];
 
-    v44 = [v8 freeTranscriptIdentifier];
-    [v23 setFreeTranscriptIdentifier:v44];
+    freeTranscriptIdentifier = [episodeCopy freeTranscriptIdentifier];
+    [v23 setFreeTranscriptIdentifier:freeTranscriptIdentifier];
 
-    v45 = [v8 entitledTranscriptSnippet];
-    [v23 setEntitledTranscriptSnippet:v45];
+    entitledTranscriptSnippet = [episodeCopy entitledTranscriptSnippet];
+    [v23 setEntitledTranscriptSnippet:entitledTranscriptSnippet];
 
-    v46 = [v8 freeTranscriptSnippet];
-    [v23 setFreeTranscriptSnippet:v46];
+    freeTranscriptSnippet = [episodeCopy freeTranscriptSnippet];
+    [v23 setFreeTranscriptSnippet:freeTranscriptSnippet];
 
-    v47 = [v8 entitledTranscriptProvider];
-    [v23 setEntitledTranscriptProvider:v47];
+    entitledTranscriptProvider = [episodeCopy entitledTranscriptProvider];
+    [v23 setEntitledTranscriptProvider:entitledTranscriptProvider];
 
-    v48 = [v8 freeTranscriptProvider];
-    [v23 setFreeTranscriptProvider:v48];
+    freeTranscriptProvider = [episodeCopy freeTranscriptProvider];
+    [v23 setFreeTranscriptProvider:freeTranscriptProvider];
 
     if (os_feature_enabled_pando_chapters())
     {
-      v120 = v25;
-      v49 = [v8 chapters];
-      if (v49 && (v50 = v49, [v8 chapters], v51 = objc_claimAutoreleasedReturnValue(), v52 = objc_msgSend(v51, "count"), v51, v23 = v121, v50, v52))
+      v120 = subscriptionActive;
+      chapters = [episodeCopy chapters];
+      if (chapters && (v50 = chapters, [episodeCopy chapters], v51 = objc_claimAutoreleasedReturnValue(), v52 = objc_msgSend(v51, "count"), v51, v23 = v121, v50, v52))
       {
-        v115 = v35;
-        v116 = v36;
-        v117 = v26;
-        v118 = v5;
+        v115 = isEntitled;
+        v116 = enclosureURL;
+        v117 = priceType;
+        v118 = newCopy;
         v53 = _MTLogCategoryFeedUpdateIngester();
         if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
         {
-          v54 = [v121 uuid];
-          v55 = [v8 chapters];
-          v56 = [v55 count];
+          uuid5 = [v121 uuid];
+          chapters2 = [episodeCopy chapters];
+          v56 = [chapters2 count];
           *buf = 138543618;
-          v128 = v54;
+          v128 = uuid5;
           v129 = 2048;
           v130 = v56;
           _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "%{public}@ - Ingesting %lu chapters.", buf, 0x16u);
@@ -349,9 +349,9 @@
         v123 = 0u;
         v124 = 0u;
         v125 = 0u;
-        v119 = v8;
-        v58 = [v8 chapters];
-        v59 = [v58 countByEnumeratingWithState:&v122 objects:v126 count:16];
+        v119 = episodeCopy;
+        chapters3 = [episodeCopy chapters];
+        v59 = [chapters3 countByEnumeratingWithState:&v122 objects:v126 count:16];
         if (v59)
         {
           v60 = v59;
@@ -362,7 +362,7 @@
             {
               if (*v123 != v61)
               {
-                objc_enumerationMutation(v58);
+                objc_enumerationMutation(chapters3);
               }
 
               v63 = *(*(&v122 + 1) + 8 * i);
@@ -375,10 +375,10 @@
                 v66 = _MTLogCategoryFeedUpdateIngester();
                 if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
                 {
-                  v67 = [v23 uuid];
+                  uuid6 = [v23 uuid];
                   v68 = [v65 id];
                   *buf = 138543618;
-                  v128 = v67;
+                  v128 = uuid6;
                   v129 = 2112;
                   v130 = v68;
                   _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEFAULT, "%{public}@ - Related chapter (%@) to episode.", buf, 0x16u);
@@ -392,10 +392,10 @@
                 v66 = _MTLogCategoryFeedUpdateIngester();
                 if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
                 {
-                  v69 = [v23 uuid];
+                  uuid7 = [v23 uuid];
                   v70 = [v63 id];
                   *buf = 138543618;
-                  v128 = v69;
+                  v128 = uuid7;
                   v129 = 2112;
                   v130 = v70;
                   _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEFAULT, "%{public}@ - Could not ingest chapter (%@) for episode.", buf, 0x16u);
@@ -405,7 +405,7 @@
               }
             }
 
-            v60 = [v58 countByEnumeratingWithState:&v122 objects:v126 count:16];
+            v60 = [chapters3 countByEnumeratingWithState:&v122 objects:v126 count:16];
           }
 
           while (v60);
@@ -414,10 +414,10 @@
         v71 = _MTLogCategoryFeedUpdateIngester();
         if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
         {
-          v72 = [v23 uuid];
+          uuid8 = [v23 uuid];
           v73 = [v57 count];
           *buf = 138543618;
-          v128 = v72;
+          v128 = uuid8;
           v129 = 2048;
           v130 = v73;
           _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, "%{public}@ - Finished ingesting %lu chapters.", buf, 0x16u);
@@ -428,14 +428,14 @@
         v74 = [v57 copy];
         [v23 setChapters:v74];
 
-        v8 = v119;
-        v75 = [v119 chapterSource];
-        [v23 setChapterSource:v75];
+        episodeCopy = v119;
+        chapterSource = [v119 chapterSource];
+        [v23 setChapterSource:chapterSource];
 
-        v5 = v118;
-        v36 = v116;
-        v26 = v117;
-        v35 = v115;
+        newCopy = v118;
+        enclosureURL = v116;
+        priceType = v117;
+        isEntitled = v115;
       }
 
       else
@@ -443,9 +443,9 @@
         v76 = _MTLogCategoryFeedUpdateIngester();
         if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
         {
-          v77 = [v23 uuid];
+          uuid9 = [v23 uuid];
           *buf = 138543362;
-          v128 = v77;
+          v128 = uuid9;
           _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEFAULT, "%{public}@ - Show has no chapters.", buf, 0xCu);
 
           v23 = v121;
@@ -458,30 +458,30 @@
         [v23 setChapterSource:0];
       }
 
-      v25 = v120;
+      subscriptionActive = v120;
     }
 
-    if (v25)
+    if (subscriptionActive)
     {
-      [v8 entitledDuration];
+      [episodeCopy entitledDuration];
       if (v79 > 0.0)
       {
-        [v8 entitledDuration];
+        [episodeCopy entitledDuration];
         [v23 setDuration:?];
       }
 
-      v80 = [v8 entitledEnclosureURL];
+      entitledEnclosureURL2 = [episodeCopy entitledEnclosureURL];
 
-      if (v80)
+      if (entitledEnclosureURL2)
       {
-        v81 = [v8 entitledEnclosureURL];
-        [v23 setEnclosureURL:v81];
+        entitledEnclosureURL3 = [episodeCopy entitledEnclosureURL];
+        [v23 setEnclosureURL:entitledEnclosureURL3];
       }
 
-      v82 = [v8 entitledPriceType];
-      [v23 setPriceType:v82];
+      entitledPriceType2 = [episodeCopy entitledPriceType];
+      [v23 setPriceType:entitledPriceType2];
 
-      v83 = [v8 entitledTranscriptIdentifier];
+      entitledTranscriptIdentifier2 = [episodeCopy entitledTranscriptIdentifier];
     }
 
     else
@@ -493,72 +493,72 @@
         [v23 setDuration:?];
       }
 
-      v85 = [v23 freeEnclosureURL];
-      [v23 setEnclosureURL:v85];
+      freeEnclosureURL = [v23 freeEnclosureURL];
+      [v23 setEnclosureURL:freeEnclosureURL];
 
-      v86 = [v23 freePriceType];
-      [v23 setPriceType:v86];
+      freePriceType = [v23 freePriceType];
+      [v23 setPriceType:freePriceType];
 
-      v83 = [v23 freeTranscriptIdentifier];
+      entitledTranscriptIdentifier2 = [v23 freeTranscriptIdentifier];
     }
 
-    v87 = v83;
-    [v23 setTranscriptIdentifier:v83];
+    v87 = entitledTranscriptIdentifier2;
+    [v23 setTranscriptIdentifier:entitledTranscriptIdentifier2];
 
-    [(MTFeedIngester *)self _handleAttributesAndRedownloadOnPriceTypeChangeIfNeeded:v23 isNewEpisodeToCurrentDevice:v5 oldIsEntitled:v35 oldEnclosureURL:v36 oldPriceType:v26];
-    if (v5)
+    [(MTFeedIngester *)self _handleAttributesAndRedownloadOnPriceTypeChangeIfNeeded:v23 isNewEpisodeToCurrentDevice:newCopy oldIsEntitled:isEntitled oldEnclosureURL:enclosureURL oldPriceType:priceType];
+    if (newCopy)
     {
       [v23 updateEntitlementState];
       v88 = _MTLogCategoryFeedUpdateIngester();
       if (os_log_type_enabled(v88, OS_LOG_TYPE_DEFAULT))
       {
-        v89 = [v23 uuid];
-        v90 = [v121 entitlementState];
+        uuid10 = [v23 uuid];
+        entitlementState = [v121 entitlementState];
         *buf = 138543618;
-        v128 = v89;
+        v128 = uuid10;
         v129 = 2048;
-        v130 = v90;
+        v130 = entitlementState;
         _os_log_impl(&_mh_execute_header, v88, OS_LOG_TYPE_DEFAULT, "%{public}@ - set entitlement state for inserted episode to %lld for new episode from unsafeIngestEpisode", buf, 0x16u);
 
         v23 = v121;
       }
     }
 
-    v91 = [v8 pubDate];
-    [v91 timeIntervalSinceReferenceDate];
+    pubDate = [episodeCopy pubDate];
+    [pubDate timeIntervalSinceReferenceDate];
     v93 = v92;
     [(MTPodcast *)self->_localPodcast addedDate];
     v95 = v94;
 
-    if (v5)
+    if (newCopy)
     {
       if (v93 >= v95)
       {
         if ([v23 isEntitled])
         {
-          v96 = [(MTPodcast *)self->_localPodcast isDark];
-          v97 = [(MTPodcast *)self->_localPodcast darkCount];
-          [(MTPodcast *)self->_localPodcast setDarkCount:v97 + 1];
-          v98 = v97 + 1;
+          isDark = [(MTPodcast *)self->_localPodcast isDark];
+          darkCount = [(MTPodcast *)self->_localPodcast darkCount];
+          [(MTPodcast *)self->_localPodcast setDarkCount:darkCount + 1];
+          v98 = darkCount + 1;
           v23 = v121;
           [(MTPodcast *)self->_localPodcast setDarkCountLocal:v98];
           [(MTPodcast *)self->_localPodcast markPlaylistsForUpdate];
-          if (v96 != [(MTPodcast *)self->_localPodcast isDark])
+          if (isDark != [(MTPodcast *)self->_localPodcast isDark])
           {
-            v99 = [(MTPodcast *)self->_localPodcast isDark];
-            v100 = [(MTPodcast *)self->_localPodcast latestExitFromDarkDownloads];
-            if (v100)
+            isDark2 = [(MTPodcast *)self->_localPodcast isDark];
+            latestExitFromDarkDownloads = [(MTPodcast *)self->_localPodcast latestExitFromDarkDownloads];
+            if (latestExitFromDarkDownloads)
             {
-              v101 = [PFAnalyticsEvent darkDownloadsChangeWithWasDark:v96 isDark:v99 reason:2 previousExit:v100];
+              v101 = [PFAnalyticsEvent darkDownloadsChangeWithWasDark:isDark isDark:isDark2 reason:2 previousExit:latestExitFromDarkDownloads];
             }
 
             else
             {
               +[NSDate now];
-              v103 = v102 = v36;
-              v101 = [PFAnalyticsEvent darkDownloadsChangeWithWasDark:v96 isDark:v99 reason:2 previousExit:v103];
+              v103 = v102 = enclosureURL;
+              v101 = [PFAnalyticsEvent darkDownloadsChangeWithWasDark:isDark isDark:isDark2 reason:2 previousExit:v103];
 
-              v36 = v102;
+              enclosureURL = v102;
             }
 
             v104 = objc_opt_new();
@@ -588,14 +588,14 @@
     v111 = _MTLogCategoryFeedUpdateIngester();
     if (os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT))
     {
-      v112 = [v33 uuid];
-      v113 = [v33 title];
+      uuid11 = [v33 uuid];
+      title2 = [v33 title];
       *buf = 138543874;
-      v128 = v112;
+      v128 = uuid11;
       v129 = 2112;
-      v130 = v113;
+      v130 = title2;
       v131 = 1024;
-      LODWORD(v132) = v5;
+      LODWORD(v132) = newCopy;
       _os_log_impl(&_mh_execute_header, v111, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ updated episode from feed - isNew %x", buf, 0x1Cu);
     }
 
@@ -605,24 +605,24 @@
 
   else
   {
-    v26 = _MTLogCategoryFeedUpdateIngester();
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+    priceType = _MTLogCategoryFeedUpdateIngester();
+    if (os_log_type_enabled(priceType, OS_LOG_TYPE_ERROR))
     {
-      v27 = [v121 podcast];
-      v28 = [v27 uuid];
-      v29 = [v121 podcast];
-      v30 = [v29 title];
-      v31 = [(MTPodcast *)self->_localPodcast uuid];
-      v32 = [(MTPodcast *)self->_localPodcast title];
+      podcast4 = [v121 podcast];
+      uuid12 = [podcast4 uuid];
+      podcast5 = [v121 podcast];
+      title3 = [podcast5 title];
+      uuid13 = [(MTPodcast *)self->_localPodcast uuid];
+      title4 = [(MTPodcast *)self->_localPodcast title];
       *buf = 138544130;
-      v128 = v28;
+      v128 = uuid12;
       v129 = 2112;
-      v130 = v30;
+      v130 = title3;
       v131 = 2114;
-      v132 = v31;
+      v132 = uuid13;
       v133 = 2112;
-      v134 = v32;
-      _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%{public}@ - %@ podcast for episode does not match podcast for ingester %{public}@ - %@", buf, 0x2Au);
+      v134 = title4;
+      _os_log_impl(&_mh_execute_header, priceType, OS_LOG_TYPE_ERROR, "%{public}@ - %@ podcast for episode does not match podcast for ingester %{public}@ - %@", buf, 0x2Au);
 
       v33 = v121;
       v34 = 0;
@@ -638,19 +638,19 @@
   return v34;
 }
 
-- (void)unsafeDeleteChaptersForEpisode:(id)a3
+- (void)unsafeDeleteChaptersForEpisode:(id)episode
 {
-  v4 = a3;
-  v5 = [v4 chapters];
-  v6 = v5;
-  if (v5 && [v5 count])
+  episodeCopy = episode;
+  chapters = [episodeCopy chapters];
+  v6 = chapters;
+  if (chapters && [chapters count])
   {
     v7 = _MTLogCategoryFeedUpdateIngester();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 uuid];
+      uuid = [episodeCopy uuid];
       *buf = 138543618;
-      v16 = v8;
+      v16 = uuid;
       v17 = 2048;
       v18 = [v6 count];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ - Deleted %lu chapters.", buf, 0x16u);
@@ -665,58 +665,58 @@
       v11 = _MTLogCategoryFeedUpdate();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v4 uuid];
-        v13 = [v10 localizedDescription];
+        uuid2 = [episodeCopy uuid];
+        localizedDescription = [v10 localizedDescription];
         *buf = 138543618;
-        v16 = v12;
+        v16 = uuid2;
         v17 = 2112;
-        v18 = v13;
+        v18 = localizedDescription;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%{public}@ Unable to delete chapters with error %@.", buf, 0x16u);
       }
     }
   }
 }
 
-- (void)unsafeDeleteFeedDeletedEpisode:(id)a3
+- (void)unsafeDeleteFeedDeletedEpisode:(id)episode
 {
-  v4 = a3;
+  episodeCopy = episode;
   v5 = _MTLogCategoryFeedUpdateIngester();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTPodcast *)self->_localPodcast uuid];
-    v7 = [(MTPodcast *)self->_localPodcast title];
-    v8 = [v4 uuid];
-    v9 = [v4 title];
+    uuid = [(MTPodcast *)self->_localPodcast uuid];
+    title = [(MTPodcast *)self->_localPodcast title];
+    uuid2 = [episodeCopy uuid];
+    title2 = [episodeCopy title];
     v10 = 138544130;
-    v11 = v6;
+    v11 = uuid;
     v12 = 2112;
-    v13 = v7;
+    v13 = title;
     v14 = 2114;
-    v15 = v8;
+    v15 = uuid2;
     v16 = 2112;
-    v17 = v9;
+    v17 = title2;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ deleting episode removed from feed %{public}@ - %@", &v10, 0x2Au);
   }
 
-  [v4 setFeedDeleted:1];
+  [episodeCopy setFeedDeleted:1];
   self->_shouldMarkPlaylistsForUpdate = 1;
   ++self->_itemsDeleted;
 }
 
-- (BOOL)unsafeIngestShow:(id)a3
+- (BOOL)unsafeIngestShow:(id)show
 {
-  v4 = a3;
-  if (!v4)
+  showCopy = show;
+  if (!showCopy)
   {
-    v7 = _MTLogCategoryFeedUpdate();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    updatedFeedURL = _MTLogCategoryFeedUpdate();
+    if (os_log_type_enabled(updatedFeedURL, OS_LOG_TYPE_ERROR))
     {
-      v40 = [(MTPodcast *)self->_localPodcast uuid];
+      uuid = [(MTPodcast *)self->_localPodcast uuid];
       *buf = 138543362;
-      v114 = v40;
+      v114 = uuid;
       v41 = "%{public}@ failed to update because feed was nil";
 LABEL_27:
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, v41, buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, updatedFeedURL, OS_LOG_TYPE_ERROR, v41, buf, 0xCu);
     }
 
 LABEL_28:
@@ -726,12 +726,12 @@ LABEL_28:
 
   if (![(MTFeedIngester *)self _localPodcastExists])
   {
-    v7 = _MTLogCategoryFeedUpdateIngester();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    updatedFeedURL = _MTLogCategoryFeedUpdateIngester();
+    if (os_log_type_enabled(updatedFeedURL, OS_LOG_TYPE_ERROR))
     {
-      v40 = [v4 podcastStoreId];
+      uuid = [showCopy podcastStoreId];
       *buf = 138412290;
-      v114 = v40;
+      v114 = uuid;
       v41 = "%@ - could not ingest feed podcast because ingester local podcast does not exist";
       goto LABEL_27;
     }
@@ -739,142 +739,142 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v5 = [v4 podcastStoreId];
-  v6 = [v5 longLongValue];
+  podcastStoreId = [showCopy podcastStoreId];
+  longLongValue = [podcastStoreId longLongValue];
 
-  if ([MTStoreIdentifier isNotEmpty:v6])
+  if ([MTStoreIdentifier isNotEmpty:longLongValue])
   {
-    [(MTPodcast *)self->_localPodcast setStoreCollectionId:v6];
+    [(MTPodcast *)self->_localPodcast setStoreCollectionId:longLongValue];
   }
 
-  v7 = [v4 updatedFeedURL];
-  if ([MTDBUtil isSupportedUrlString:v7])
+  updatedFeedURL = [showCopy updatedFeedURL];
+  if ([MTDBUtil isSupportedUrlString:updatedFeedURL])
   {
-    v8 = [(MTPodcast *)self->_localPodcast currentFeedURL];
-    v9 = [v8 absoluteString];
-    v10 = [v7 isEqualToString:v9];
+    currentFeedURL = [(MTPodcast *)self->_localPodcast currentFeedURL];
+    absoluteString = [currentFeedURL absoluteString];
+    v10 = [updatedFeedURL isEqualToString:absoluteString];
 
     if ((v10 & 1) == 0)
     {
       v11 = _MTLogCategoryFeedUpdateIngester();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(MTPodcast *)self->_localPodcast currentFeedURL];
-        v13 = [v12 absoluteString];
+        currentFeedURL2 = [(MTPodcast *)self->_localPodcast currentFeedURL];
+        absoluteString2 = [currentFeedURL2 absoluteString];
         *buf = 134218498;
-        v114 = v6;
+        v114 = longLongValue;
         v115 = 2112;
-        v116 = v7;
+        v116 = updatedFeedURL;
         v117 = 2112;
-        v118 = v13;
+        v118 = absoluteString2;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%lld Found different updatedFeedURL %@ from %@", buf, 0x20u);
       }
 
-      [(MTPodcast *)self->_localPodcast setUpdatedFeedURL:v7];
+      [(MTPodcast *)self->_localPodcast setUpdatedFeedURL:updatedFeedURL];
       self->_didUpdateFeedUrl = 1;
     }
   }
 
-  v14 = [v4 resolvedFeedURL];
-  if ([v14 length])
+  resolvedFeedURL = [showCopy resolvedFeedURL];
+  if ([resolvedFeedURL length])
   {
-    v15 = [(MTPodcast *)self->_localPodcast currentFeedURL];
-    v16 = [v15 absoluteString];
-    v17 = [v14 isEqualToString:v16];
+    currentFeedURL3 = [(MTPodcast *)self->_localPodcast currentFeedURL];
+    absoluteString3 = [currentFeedURL3 absoluteString];
+    v17 = [resolvedFeedURL isEqualToString:absoluteString3];
 
     if ((v17 & 1) == 0)
     {
       v18 = _MTLogCategoryFeedUpdateIngester();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(MTPodcast *)self->_localPodcast currentFeedURL];
-        v20 = [v19 absoluteString];
+        currentFeedURL4 = [(MTPodcast *)self->_localPodcast currentFeedURL];
+        absoluteString4 = [currentFeedURL4 absoluteString];
         *buf = 134218498;
-        v114 = v6;
+        v114 = longLongValue;
         v115 = 2112;
-        v116 = v14;
+        v116 = resolvedFeedURL;
         v117 = 2112;
-        v118 = v20;
+        v118 = absoluteString4;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%lld Found different feedURL %@ from %@", buf, 0x20u);
       }
 
-      [(MTPodcast *)self->_localPodcast setUpdatedFeedURL:v14];
+      [(MTPodcast *)self->_localPodcast setUpdatedFeedURL:resolvedFeedURL];
       self->_didUpdateFeedUrl = 1;
     }
   }
 
   localPodcast = self->_localPodcast;
-  v22 = [v4 title];
-  v23 = [v22 stringByStrippingHTML];
-  v24 = [v23 stringByRemovingNewlineCharacters];
-  [(MTPodcast *)localPodcast setTitle:v24];
+  title = [showCopy title];
+  stringByStrippingHTML = [title stringByStrippingHTML];
+  stringByRemovingNewlineCharacters = [stringByStrippingHTML stringByRemovingNewlineCharacters];
+  [(MTPodcast *)localPodcast setTitle:stringByRemovingNewlineCharacters];
 
   v25 = self->_localPodcast;
-  v26 = [v4 author];
-  v27 = [v26 stringByStrippingHTML];
-  [(MTPodcast *)v25 setAuthor:v27];
+  author = [showCopy author];
+  stringByStrippingHTML2 = [author stringByStrippingHTML];
+  [(MTPodcast *)v25 setAuthor:stringByStrippingHTML2];
 
   v28 = self->_localPodcast;
-  v29 = [v4 provider];
-  v30 = [v29 stringByStrippingHTML];
-  [(MTPodcast *)v28 setProvider:v30];
+  provider = [showCopy provider];
+  stringByStrippingHTML3 = [provider stringByStrippingHTML];
+  [(MTPodcast *)v28 setProvider:stringByStrippingHTML3];
 
-  -[MTPodcast setIsExplicit:](self->_localPodcast, "setIsExplicit:", [v4 isExplicit]);
+  -[MTPodcast setIsExplicit:](self->_localPodcast, "setIsExplicit:", [showCopy isExplicit]);
   v31 = self->_localPodcast;
-  v32 = [v4 feedDescription];
-  [(MTPodcast *)v31 setItemDescription:v32];
+  feedDescription = [showCopy feedDescription];
+  [(MTPodcast *)v31 setItemDescription:feedDescription];
 
-  v33 = [v4 showType];
-  v34 = [MTPodcast showTypeFromString:v33];
-  v35 = [(MTPodcast *)self->_localPodcast showTypeInFeed];
-  v36 = [MTPodcast showTypeFromString:v35];
+  showType = [showCopy showType];
+  v34 = [MTPodcast showTypeFromString:showType];
+  showTypeInFeed = [(MTPodcast *)self->_localPodcast showTypeInFeed];
+  v36 = [MTPodcast showTypeFromString:showTypeInFeed];
 
   v38 = v34 == 2 && v36 != 2;
   v39 = v34 == 1 && [(MTPodcast *)self->_localPodcast showTypeSetting]== 2;
-  v43 = [(MTPodcast *)self->_localPodcast subscribed];
-  [(MTPodcast *)self->_localPodcast setShowTypeInFeed:v33];
-  if (v38 || (v43 & 1) == 0 || v39)
+  subscribed = [(MTPodcast *)self->_localPodcast subscribed];
+  [(MTPodcast *)self->_localPodcast setShowTypeInFeed:showType];
+  if (v38 || (subscribed & 1) == 0 || v39)
   {
     [(MTPodcast *)self->_localPodcast setShowTypeSetting:v34];
   }
 
   v44 = self->_localPodcast;
-  v45 = [v4 category];
-  [(MTPodcast *)v44 setCategory:v45];
+  category = [showCopy category];
+  [(MTPodcast *)v44 setCategory:category];
 
   v46 = self->_localPodcast;
-  v47 = [v4 webpageURL];
-  [(MTPodcast *)v46 setWebpageURL:v47];
+  webpageURL = [showCopy webpageURL];
+  [(MTPodcast *)v46 setWebpageURL:webpageURL];
 
   v48 = self->_localPodcast;
-  v49 = [v4 shareURL];
-  [(MTPodcast *)v48 setStoreCleanURL:v49];
+  shareURL = [showCopy shareURL];
+  [(MTPodcast *)v48 setStoreCleanURL:shareURL];
 
   v50 = self->_localPodcast;
-  v51 = [v4 showSpecificUpsellCopy];
-  [(MTPodcast *)v50 setShowSpecificUpsellCopy:v51];
+  showSpecificUpsellCopy = [showCopy showSpecificUpsellCopy];
+  [(MTPodcast *)v50 setShowSpecificUpsellCopy:showSpecificUpsellCopy];
 
-  -[MTPodcast setOfferTypes:](self->_localPodcast, "setOfferTypes:", [objc_opt_class() _offerTypesAsFlagBits:v4]);
-  v52 = [v4 displayType];
-  if (v52)
+  -[MTPodcast setOfferTypes:](self->_localPodcast, "setOfferTypes:", [objc_opt_class() _offerTypesAsFlagBits:showCopy]);
+  displayType = [showCopy displayType];
+  if (displayType)
   {
-    v53 = v52;
-    v54 = [v4 displayType];
-    v55 = [v54 isNotEmpty];
+    v53 = displayType;
+    displayType2 = [showCopy displayType];
+    isNotEmpty = [displayType2 isNotEmpty];
 
-    if (v55)
+    if (isNotEmpty)
     {
-      v56 = [v4 displayType];
-      [(MTPodcast *)self->_localPodcast setDisplayType:v56];
+      displayType3 = [showCopy displayType];
+      [(MTPodcast *)self->_localPodcast setDisplayType:displayType3];
     }
   }
 
-  v57 = [v4 channelItem];
+  channelItem = [showCopy channelItem];
 
-  if (v57)
+  if (channelItem)
   {
-    v58 = [v4 channelItem];
-    v59 = [MTChannel createOrFindChannelFromFeedChannelItem:v58 personalizedRequest:0 context:self->_ctx];
+    channelItem2 = [showCopy channelItem];
+    v59 = [MTChannel createOrFindChannelFromFeedChannelItem:channelItem2 personalizedRequest:0 context:self->_ctx];
 
     [(MTPodcast *)self->_localPodcast setChannel:v59];
     v60 = -[NSManagedObjectContext unsafeInterestForAdamID:](self->_ctx, "unsafeInterestForAdamID:", [v59 storeId]);
@@ -890,21 +890,21 @@ LABEL_28:
     [(MTPodcast *)self->_localPodcast setChannel:0];
   }
 
-  [(MTFeedIngester *)self _setPodcastArtwork:v4];
-  v61 = [v4 categories];
-  if (v61 && (v62 = v61, [v4 categories], v63 = objc_claimAutoreleasedReturnValue(), v64 = objc_msgSend(v63, "count"), v63, v62, v64))
+  [(MTFeedIngester *)self _setPodcastArtwork:showCopy];
+  categories = [showCopy categories];
+  if (categories && (v62 = categories, [showCopy categories], v63 = objc_claimAutoreleasedReturnValue(), v64 = objc_msgSend(v63, "count"), v63, v62, v64))
   {
-    v100 = v33;
-    v101 = v14;
-    v102 = v7;
+    v100 = showType;
+    v101 = resolvedFeedURL;
+    v102 = updatedFeedURL;
     v65 = _MTLogCategoryFeedUpdateIngester();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
     {
-      v66 = [(MTPodcast *)self->_localPodcast uuid];
-      v67 = [v4 categories];
-      v68 = [v67 count];
+      uuid2 = [(MTPodcast *)self->_localPodcast uuid];
+      categories2 = [showCopy categories];
+      v68 = [categories2 count];
       *buf = 138543618;
-      v114 = v66;
+      v114 = uuid2;
       v115 = 2048;
       v116 = v68;
       _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "%{public}@ - Ingesting %lu categories.", buf, 0x16u);
@@ -915,9 +915,9 @@ LABEL_28:
     v108 = 0u;
     v109 = 0u;
     v110 = 0u;
-    v99 = v4;
-    v70 = [v4 categories];
-    v71 = [v70 countByEnumeratingWithState:&v107 objects:v112 count:16];
+    v99 = showCopy;
+    categories3 = [showCopy categories];
+    v71 = [categories3 countByEnumeratingWithState:&v107 objects:v112 count:16];
     if (v71)
     {
       v72 = v71;
@@ -928,15 +928,15 @@ LABEL_28:
         {
           if (*v108 != v73)
           {
-            objc_enumerationMutation(v70);
+            objc_enumerationMutation(categories3);
           }
 
           v75 = [(MTCategoryIngesterProtocol *)self->_categoryIngester unsafeIngestFeedCategory:*(*(&v107 + 1) + 8 * i) ctx:self->_ctx];
           if (v75)
           {
             [v69 addObject:v75];
-            v76 = [v75 podcasts];
-            v77 = [v76 setByAddingObject:self->_localPodcast];
+            podcasts = [v75 podcasts];
+            v77 = [podcasts setByAddingObject:self->_localPodcast];
             [v75 setPodcasts:v77];
 
             v78 = _MTLogCategoryFeedUpdateIngester();
@@ -945,12 +945,12 @@ LABEL_28:
               goto LABEL_56;
             }
 
-            v79 = [(MTPodcast *)self->_localPodcast uuid];
-            v80 = [v75 adamID];
+            uuid3 = [(MTPodcast *)self->_localPodcast uuid];
+            adamID = [v75 adamID];
             *buf = 138543618;
-            v114 = v79;
+            v114 = uuid3;
             v115 = 2048;
-            v116 = v80;
+            v116 = adamID;
             v81 = v78;
             v82 = "%{public}@ - Related category to show. Category ID: %llu";
           }
@@ -963,12 +963,12 @@ LABEL_28:
               goto LABEL_56;
             }
 
-            v79 = [(MTPodcast *)self->_localPodcast uuid];
-            v83 = [0 adamID];
+            uuid3 = [(MTPodcast *)self->_localPodcast uuid];
+            adamID2 = [0 adamID];
             *buf = 138543618;
-            v114 = v79;
+            v114 = uuid3;
             v115 = 2048;
-            v116 = v83;
+            v116 = adamID2;
             v81 = v78;
             v82 = "%{public}@ - Could not ingest category for show. Category ID: %llu";
           }
@@ -978,17 +978,17 @@ LABEL_28:
 LABEL_56:
         }
 
-        v72 = [v70 countByEnumeratingWithState:&v107 objects:v112 count:16];
+        v72 = [categories3 countByEnumeratingWithState:&v107 objects:v112 count:16];
       }
 
       while (v72);
     }
 
     [(MTPodcast *)self->_localPodcast setCategories:v69];
-    v84 = [v69 firstObject];
-    [(MTPodcast *)self->_localPodcast setPrimaryCategory:v84];
+    firstObject = [v69 firstObject];
+    [(MTPodcast *)self->_localPodcast setPrimaryCategory:firstObject];
 
-    v4 = v99;
+    showCopy = v99;
   }
 
   else
@@ -996,9 +996,9 @@ LABEL_56:
     v85 = _MTLogCategoryFeedUpdateIngester();
     if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
     {
-      v86 = [(MTPodcast *)self->_localPodcast uuid];
+      uuid4 = [(MTPodcast *)self->_localPodcast uuid];
       *buf = 138543362;
-      v114 = v86;
+      v114 = uuid4;
       _os_log_impl(&_mh_execute_header, v85, OS_LOG_TYPE_DEFAULT, "%{public}@ - Show has no categories. Disassociating categories if needed.", buf, 0xCu);
     }
 
@@ -1018,10 +1018,10 @@ LABEL_56:
     }
 
     v89 = v88;
-    v100 = v33;
-    v101 = v14;
-    v102 = v7;
-    v90 = v4;
+    v100 = showType;
+    v101 = resolvedFeedURL;
+    v102 = updatedFeedURL;
+    v90 = showCopy;
     v91 = *v104;
     do
     {
@@ -1033,8 +1033,8 @@ LABEL_56:
         }
 
         v93 = *(*(&v103 + 1) + 8 * j);
-        v94 = [v93 podcasts];
-        v95 = [NSMutableSet setWithSet:v94];
+        podcasts2 = [v93 podcasts];
+        v95 = [NSMutableSet setWithSet:podcasts2];
 
         [v95 removeObject:self->_localPodcast];
         [v93 setPodcasts:v95];
@@ -1044,20 +1044,20 @@ LABEL_56:
     }
 
     while (v89);
-    v4 = v90;
+    showCopy = v90;
   }
 
-  v14 = v101;
-  v7 = v102;
-  v33 = v100;
+  resolvedFeedURL = v101;
+  updatedFeedURL = v102;
+  showType = v100;
 LABEL_70:
 
   v96 = _MTLogCategoryFeedUpdateIngester();
   if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
   {
-    v97 = [(MTPodcast *)self->_localPodcast uuid];
+    uuid5 = [(MTPodcast *)self->_localPodcast uuid];
     *buf = 138543362;
-    v114 = v97;
+    v114 = uuid5;
     _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_DEFAULT, "%{public}@ - updated podcast from feed", buf, 0xCu);
   }
 
@@ -1085,9 +1085,9 @@ LABEL_73:
   v6 = _MTLogCategoryFeedUpdateIngester();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MTPodcast *)self->_localPodcast uuid];
+    uuid = [(MTPodcast *)self->_localPodcast uuid];
     v8 = 138543362;
-    v9 = v7;
+    v9 = uuid;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ - finished ingestion of page of podcast from feed", &v8, 0xCu);
   }
 }
@@ -1103,18 +1103,18 @@ LABEL_73:
   [MTFeedIngester _unsafeFinalizeIngestion:self->_localPodcast episodeLevelCalculator:self->_episodeLevelCalculator storeInfoUpdater:self->_storeInfoUpdater updateAverageCalculator:self->_updateAverageCalculator ctx:self->_ctx didUpdateAnyEpisodes:[(NSMutableSet *)self->_updatedEpisodeUUIDs count]!= 0 newlyEntitledEpisodeUUIDs:self->_newlyEntitledEpisodeUUIDs];
 }
 
-+ (void)_unsafeFinalizeIngestion:(id)a3 episodeLevelCalculator:(id)a4 storeInfoUpdater:(id)a5 updateAverageCalculator:(id)a6 ctx:(id)a7 didUpdateAnyEpisodes:(BOOL)a8 newlyEntitledEpisodeUUIDs:(id)a9
++ (void)_unsafeFinalizeIngestion:(id)ingestion episodeLevelCalculator:(id)calculator storeInfoUpdater:(id)updater updateAverageCalculator:(id)averageCalculator ctx:(id)ctx didUpdateAnyEpisodes:(BOOL)episodes newlyEntitledEpisodeUUIDs:(id)ds
 {
-  v9 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
-  if (v9)
+  episodesCopy = episodes;
+  ingestionCopy = ingestion;
+  calculatorCopy = calculator;
+  updaterCopy = updater;
+  averageCalculatorCopy = averageCalculator;
+  ctxCopy = ctx;
+  dsCopy = ds;
+  if (episodesCopy)
   {
-    [MTFeedIngester _recalculateEpisodeLevel:v14 episodeLevelCalculator:v15 ctx:v18];
+    [MTFeedIngester _recalculateEpisodeLevel:ingestionCopy episodeLevelCalculator:calculatorCopy ctx:ctxCopy];
   }
 
   else
@@ -1122,71 +1122,71 @@ LABEL_73:
     v20 = _MTLogCategoryFeedUpdate();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [v14 uuid];
+      uuid = [ingestionCopy uuid];
       *buf = 138543362;
-      v39 = v21;
+      v39 = uuid;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%{public}@ - no episodes processed, skipping episode level recalculation", buf, 0xCu);
     }
   }
 
-  v22 = [v14 newestEpisodeByAvailabiltyTime];
+  newestEpisodeByAvailabiltyTime = [ingestionCopy newestEpisodeByAvailabiltyTime];
   v23 = _MTLogCategoryFeedUpdateIngester();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v14 uuid];
-    [v14 title];
-    v36 = v15;
-    v25 = v37 = v16;
-    [v22 uuid];
-    v26 = v19;
-    v27 = v18;
-    v29 = v28 = v17;
-    v30 = [v22 title];
-    v31 = [v22 storeTrackId];
+    uuid2 = [ingestionCopy uuid];
+    [ingestionCopy title];
+    v36 = calculatorCopy;
+    v25 = v37 = updaterCopy;
+    [newestEpisodeByAvailabiltyTime uuid];
+    v26 = dsCopy;
+    v27 = ctxCopy;
+    v29 = v28 = averageCalculatorCopy;
+    title = [newestEpisodeByAvailabiltyTime title];
+    storeTrackId = [newestEpisodeByAvailabiltyTime storeTrackId];
     *buf = 138544386;
-    v39 = v24;
+    v39 = uuid2;
     v40 = 2112;
     v41 = v25;
     v42 = 2114;
     v43 = v29;
     v44 = 2112;
-    v45 = v30;
+    v45 = title;
     v46 = 2048;
-    v47 = v31;
+    v47 = storeTrackId;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ marking latest episode as unplayed if needed %{public}@ - %@ - %lld", buf, 0x34u);
 
-    v17 = v28;
-    v18 = v27;
-    v19 = v26;
+    averageCalculatorCopy = v28;
+    ctxCopy = v27;
+    dsCopy = v26;
 
-    v15 = v36;
-    v16 = v37;
+    calculatorCopy = v36;
+    updaterCopy = v37;
   }
 
-  [MTFeedIngester _markLatestEpisodeAsUnplayedIfNeeded:v14 latestEpisodeInPodcast:v22];
-  [MTFeedIngester _sendNotificationForNewlyEntitledEpisodesIfNeeded:v14 latestEpisodeInPodcast:v22 newlyEntitledEpisodeUUIDs:v19 ctx:v18];
-  [v22 firstTimeAvailable];
-  [v14 setLatestEpisodeAvailabilityTime:?];
-  [v14 setAuthenticatedDark:0];
-  [v14 setFeedUpdateNeedsRetry:0];
-  if (+[MTStoreIdentifier isEmpty:](MTStoreIdentifier, "isEmpty:", [v14 storeCollectionId]))
+  [MTFeedIngester _markLatestEpisodeAsUnplayedIfNeeded:ingestionCopy latestEpisodeInPodcast:newestEpisodeByAvailabiltyTime];
+  [MTFeedIngester _sendNotificationForNewlyEntitledEpisodesIfNeeded:ingestionCopy latestEpisodeInPodcast:newestEpisodeByAvailabiltyTime newlyEntitledEpisodeUUIDs:dsCopy ctx:ctxCopy];
+  [newestEpisodeByAvailabiltyTime firstTimeAvailable];
+  [ingestionCopy setLatestEpisodeAvailabilityTime:?];
+  [ingestionCopy setAuthenticatedDark:0];
+  [ingestionCopy setFeedUpdateNeedsRetry:0];
+  if (+[MTStoreIdentifier isEmpty:](MTStoreIdentifier, "isEmpty:", [ingestionCopy storeCollectionId]))
   {
-    v32 = [v14 uuid];
-    [v16 updateStoreInfoForPodcast:v32];
+    uuid3 = [ingestionCopy uuid];
+    [updaterCopy updateStoreInfoForPodcast:uuid3];
   }
 
-  v33 = [v14 latestExitFromDarkDownloads];
-  if (v33)
+  latestExitFromDarkDownloads = [ingestionCopy latestExitFromDarkDownloads];
+  if (latestExitFromDarkDownloads)
   {
-    [v14 suppressEpisodesWithBasisDate:v33];
+    [ingestionCopy suppressEpisodesWithBasisDate:latestExitFromDarkDownloads];
   }
 
   v34 = _MTLogCategoryFeedUpdateIngester();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [v14 uuid];
+    uuid4 = [ingestionCopy uuid];
     *buf = 138543362;
-    v39 = v35;
+    v39 = uuid4;
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%{public}@ - finished ingestion of podcast from feed", buf, 0xCu);
   }
 }
@@ -1202,176 +1202,176 @@ LABEL_73:
   v4 = _MTLogCategoryFeedUpdateIngester();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    v5 = [(MTPodcast *)self->_localPodcast uuid];
+    uuid = [(MTPodcast *)self->_localPodcast uuid];
     v7 = 138543362;
-    v8 = v5;
+    v8 = uuid;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "%{public}@ - local podcast was deleted. Cannot ingest", &v7, 0xCu);
   }
 
   return 0;
 }
 
-- (void)_setAttributesOfLocalEpisode:(id)a3 feedEpisode:(id)a4
+- (void)_setAttributesOfLocalEpisode:(id)episode feedEpisode:(id)feedEpisode
 {
-  v55 = a3;
-  v6 = a4;
-  [v55 setFeedDeleted:0];
-  v7 = [v6 guid];
-  [v55 setGuid:v7];
+  episodeCopy = episode;
+  feedEpisodeCopy = feedEpisode;
+  [episodeCopy setFeedDeleted:0];
+  guid = [feedEpisodeCopy guid];
+  [episodeCopy setGuid:guid];
 
-  v8 = [v6 episodeStoreId];
-  v9 = [v8 longLongValue];
+  episodeStoreId = [feedEpisodeCopy episodeStoreId];
+  longLongValue = [episodeStoreId longLongValue];
 
-  if ([MTStoreIdentifier isNotEmpty:v9])
+  if ([MTStoreIdentifier isNotEmpty:longLongValue])
   {
-    [v55 setStoreTrackId:v9];
+    [episodeCopy setStoreTrackId:longLongValue];
   }
 
-  v10 = [v6 title];
-  v11 = [v10 stringByStrippingHTML];
+  title = [feedEpisodeCopy title];
+  stringByStrippingHTML = [title stringByStrippingHTML];
 
-  [v55 setTitle:v11];
-  v12 = [v6 itunesTitle];
-  [v55 setItunesTitle:v12];
+  [episodeCopy setTitle:stringByStrippingHTML];
+  itunesTitle = [feedEpisodeCopy itunesTitle];
+  [episodeCopy setItunesTitle:itunesTitle];
 
-  v13 = [(MTFeedIngester *)self configuration];
-  LODWORD(v12) = [v13 usesCleanEpisodeTitles];
+  configuration = [(MTFeedIngester *)self configuration];
+  LODWORD(itunesTitle) = [configuration usesCleanEpisodeTitles];
 
-  if (v12)
+  if (itunesTitle)
   {
-    v14 = [v55 podcast];
-    v15 = [v14 title];
-    v16 = [v11 cleanedTitleStringWithPrefix:v15];
-    [v55 setCleanedTitle:v16];
+    podcast = [episodeCopy podcast];
+    title2 = [podcast title];
+    v16 = [stringByStrippingHTML cleanedTitleStringWithPrefix:title2];
+    [episodeCopy setCleanedTitle:v16];
   }
 
-  v17 = [v6 itemDescription];
-  [v55 setItemDescription:v17];
+  itemDescription = [feedEpisodeCopy itemDescription];
+  [episodeCopy setItemDescription:itemDescription];
 
-  v18 = [v6 itemSummary];
-  [v55 setItunesSubtitle:v18];
+  itemSummary = [feedEpisodeCopy itemSummary];
+  [episodeCopy setItunesSubtitle:itemSummary];
 
-  v19 = [v6 author];
-  [v55 setAuthor:v19];
+  author = [feedEpisodeCopy author];
+  [episodeCopy setAuthor:author];
 
-  [v55 setByteSize:{objc_msgSend(v6, "byteSize")}];
-  v20 = [v6 uti];
-  [v55 setUti:v20];
+  [episodeCopy setByteSize:{objc_msgSend(feedEpisodeCopy, "byteSize")}];
+  v20 = [feedEpisodeCopy uti];
+  [episodeCopy setUti:v20];
 
-  v21 = [v6 pubDate];
-  if (v21)
+  pubDate = [feedEpisodeCopy pubDate];
+  if (pubDate)
   {
-    v22 = v21;
-    [v55 pubDate];
+    v22 = pubDate;
+    [episodeCopy pubDate];
     v24 = v23;
-    v25 = [v6 pubDate];
-    [v25 timeIntervalSinceReferenceDate];
+    pubDate2 = [feedEpisodeCopy pubDate];
+    [pubDate2 timeIntervalSinceReferenceDate];
     v27 = v26;
 
     if (v24 != v27)
     {
-      v28 = [v6 pubDate];
-      [v28 timeIntervalSinceReferenceDate];
-      [v55 setPubDate:?];
+      pubDate3 = [feedEpisodeCopy pubDate];
+      [pubDate3 timeIntervalSinceReferenceDate];
+      [episodeCopy setPubDate:?];
     }
   }
 
-  v29 = [v6 firstTimeAvailableAsPaid];
-  if (v29)
+  firstTimeAvailableAsPaid = [feedEpisodeCopy firstTimeAvailableAsPaid];
+  if (firstTimeAvailableAsPaid)
   {
-    v30 = v29;
-    [v55 firstTimeAvailableAsPaid];
+    v30 = firstTimeAvailableAsPaid;
+    [episodeCopy firstTimeAvailableAsPaid];
     v32 = v31;
-    v33 = [v6 firstTimeAvailableAsPaid];
-    [v33 timeIntervalSinceReferenceDate];
+    firstTimeAvailableAsPaid2 = [feedEpisodeCopy firstTimeAvailableAsPaid];
+    [firstTimeAvailableAsPaid2 timeIntervalSinceReferenceDate];
     v35 = v34;
 
     if (v32 != v35)
     {
-      v36 = [v6 firstTimeAvailableAsPaid];
-      [v36 timeIntervalSinceReferenceDate];
-      [v55 setFirstTimeAvailableAsPaid:?];
+      firstTimeAvailableAsPaid3 = [feedEpisodeCopy firstTimeAvailableAsPaid];
+      [firstTimeAvailableAsPaid3 timeIntervalSinceReferenceDate];
+      [episodeCopy setFirstTimeAvailableAsPaid:?];
     }
   }
 
-  v37 = [v6 firstTimeAvailableAsFree];
-  if (v37)
+  firstTimeAvailableAsFree = [feedEpisodeCopy firstTimeAvailableAsFree];
+  if (firstTimeAvailableAsFree)
   {
-    v38 = v37;
-    [v55 firstTimeAvailableAsFree];
+    v38 = firstTimeAvailableAsFree;
+    [episodeCopy firstTimeAvailableAsFree];
     v40 = v39;
-    v41 = [v6 firstTimeAvailableAsFree];
-    [v41 timeIntervalSinceReferenceDate];
+    firstTimeAvailableAsFree2 = [feedEpisodeCopy firstTimeAvailableAsFree];
+    [firstTimeAvailableAsFree2 timeIntervalSinceReferenceDate];
     v43 = v42;
 
     if (v40 != v43)
     {
-      v44 = [v6 firstTimeAvailableAsFree];
-      [v44 timeIntervalSinceReferenceDate];
-      [v55 setFirstTimeAvailableAsFree:?];
+      firstTimeAvailableAsFree3 = [feedEpisodeCopy firstTimeAvailableAsFree];
+      [firstTimeAvailableAsFree3 timeIntervalSinceReferenceDate];
+      [episodeCopy setFirstTimeAvailableAsFree:?];
     }
   }
 
-  if ([v6 trackNum])
+  if ([feedEpisodeCopy trackNum])
   {
-    [v55 setTrackNum:{objc_msgSend(v6, "trackNum")}];
+    [episodeCopy setTrackNum:{objc_msgSend(feedEpisodeCopy, "trackNum")}];
   }
 
-  [v55 setExplicit:{objc_msgSend(v6, "isExplicit")}];
-  v45 = [v6 episodeType];
-  [v55 setEpisodeType:v45];
+  [episodeCopy setExplicit:{objc_msgSend(feedEpisodeCopy, "isExplicit")}];
+  episodeType = [feedEpisodeCopy episodeType];
+  [episodeCopy setEpisodeType:episodeType];
 
-  v46 = [v55 episodeNumber];
-  if (v46 != [v6 episodeNumber])
+  episodeNumber = [episodeCopy episodeNumber];
+  if (episodeNumber != [feedEpisodeCopy episodeNumber])
   {
-    [v55 setEpisodeNumber:{objc_msgSend(v6, "episodeNumber")}];
+    [episodeCopy setEpisodeNumber:{objc_msgSend(feedEpisodeCopy, "episodeNumber")}];
   }
 
-  v47 = [v55 seasonNumber];
-  if (v47 != [v6 seasonNumber])
+  seasonNumber = [episodeCopy seasonNumber];
+  if (seasonNumber != [feedEpisodeCopy seasonNumber])
   {
-    [v55 setSeasonNumber:{objc_msgSend(v6, "seasonNumber")}];
+    [episodeCopy setSeasonNumber:{objc_msgSend(feedEpisodeCopy, "seasonNumber")}];
   }
 
-  v48 = [v6 webpageURL];
-  [v55 setWebpageURL:v48];
+  webpageURL = [feedEpisodeCopy webpageURL];
+  [episodeCopy setWebpageURL:webpageURL];
 
-  [v55 setIsHidden:0];
-  v49 = [v6 artworkTemplateURL];
-  [v55 setArtworkTemplateURL:v49];
+  [episodeCopy setIsHidden:0];
+  artworkTemplateURL = [feedEpisodeCopy artworkTemplateURL];
+  [episodeCopy setArtworkTemplateURL:artworkTemplateURL];
 
-  [v6 artworkWidth];
-  [v55 setArtworkWidth:?];
-  [v6 artworkHeight];
-  [v55 setArtworkHeight:?];
-  v50 = [v6 artworkBackgroundColor];
-  [v55 setArtworkBackgroundColor:v50];
+  [feedEpisodeCopy artworkWidth];
+  [episodeCopy setArtworkWidth:?];
+  [feedEpisodeCopy artworkHeight];
+  [episodeCopy setArtworkHeight:?];
+  artworkBackgroundColor = [feedEpisodeCopy artworkBackgroundColor];
+  [episodeCopy setArtworkBackgroundColor:artworkBackgroundColor];
 
-  v51 = [v6 artworkTextPrimaryColor];
-  [v55 setArtworkTextPrimaryColor:v51];
+  artworkTextPrimaryColor = [feedEpisodeCopy artworkTextPrimaryColor];
+  [episodeCopy setArtworkTextPrimaryColor:artworkTextPrimaryColor];
 
-  v52 = [v6 artworkTextSecondaryColor];
-  [v55 setArtworkTextSecondaryColor:v52];
+  artworkTextSecondaryColor = [feedEpisodeCopy artworkTextSecondaryColor];
+  [episodeCopy setArtworkTextSecondaryColor:artworkTextSecondaryColor];
 
-  v53 = [v6 artworkTextTertiaryColor];
-  [v55 setArtworkTextTertiaryColor:v53];
+  artworkTextTertiaryColor = [feedEpisodeCopy artworkTextTertiaryColor];
+  [episodeCopy setArtworkTextTertiaryColor:artworkTextTertiaryColor];
 
-  v54 = [v6 artworkTextQuaternaryColor];
-  [v55 setArtworkTextQuaternaryColor:v54];
+  artworkTextQuaternaryColor = [feedEpisodeCopy artworkTextQuaternaryColor];
+  [episodeCopy setArtworkTextQuaternaryColor:artworkTextQuaternaryColor];
 }
 
-- (void)_setPodcastArtwork:(id)a3
+- (void)_setPodcastArtwork:(id)artwork
 {
-  v4 = a3;
-  v5 = [v4 imageURL];
-  if ([v5 length])
+  artworkCopy = artwork;
+  imageURL = [artworkCopy imageURL];
+  if ([imageURL length])
   {
-    [v4 imageURL];
+    [artworkCopy imageURL];
   }
 
   else
   {
-    [v4 globalImageURL];
+    [artworkCopy globalImageURL];
   }
   v6 = ;
 
@@ -1385,20 +1385,20 @@ LABEL_73:
 
   if (v6)
   {
-    v9 = [(MTPodcast *)self->_localPodcast imageURL];
-    v10 = [v9 isEqualToString:v6];
+    imageURL2 = [(MTPodcast *)self->_localPodcast imageURL];
+    v10 = [imageURL2 isEqualToString:v6];
 
     if ((v10 & 1) == 0)
     {
       v11 = _MTLogCategoryFeedUpdateIngester();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(MTPodcast *)self->_localPodcast uuid];
-        v13 = [(MTPodcast *)self->_localPodcast title];
+        uuid = [(MTPodcast *)self->_localPodcast uuid];
+        title = [(MTPodcast *)self->_localPodcast title];
         v27 = 138543874;
-        v28 = v12;
+        v28 = uuid;
         v29 = 2112;
-        v30 = v13;
+        v30 = title;
         v31 = 2112;
         v32 = v6;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ artwork url did change %@", &v27, 0x20u);
@@ -1411,41 +1411,41 @@ LABEL_73:
   }
 
   [(MTPodcast *)self->_localPodcast setImageURL:v6];
-  v15 = [v4 artworkTemplateURL];
-  [(MTPodcast *)self->_localPodcast setArtworkTemplateURL:v15];
+  artworkTemplateURL = [artworkCopy artworkTemplateURL];
+  [(MTPodcast *)self->_localPodcast setArtworkTemplateURL:artworkTemplateURL];
 
-  v16 = [v4 artworkPrimaryColor];
-  [(MTPodcast *)self->_localPodcast setArtworkPrimaryColor:v16];
+  artworkPrimaryColor = [artworkCopy artworkPrimaryColor];
+  [(MTPodcast *)self->_localPodcast setArtworkPrimaryColor:artworkPrimaryColor];
 
-  v17 = [v4 artworkTextPrimaryColor];
-  [(MTPodcast *)self->_localPodcast setArtworkTextPrimaryColor:v17];
+  artworkTextPrimaryColor = [artworkCopy artworkTextPrimaryColor];
+  [(MTPodcast *)self->_localPodcast setArtworkTextPrimaryColor:artworkTextPrimaryColor];
 
-  v18 = [v4 artworkTextSecondaryColor];
-  [(MTPodcast *)self->_localPodcast setArtworkTextSecondaryColor:v18];
+  artworkTextSecondaryColor = [artworkCopy artworkTextSecondaryColor];
+  [(MTPodcast *)self->_localPodcast setArtworkTextSecondaryColor:artworkTextSecondaryColor];
 
-  v19 = [v4 artworkTextTertiaryColor];
-  [(MTPodcast *)self->_localPodcast setArtworkTextTertiaryColor:v19];
+  artworkTextTertiaryColor = [artworkCopy artworkTextTertiaryColor];
+  [(MTPodcast *)self->_localPodcast setArtworkTextTertiaryColor:artworkTextTertiaryColor];
 
-  v20 = [v4 artworkTextQuaternaryColor];
-  [(MTPodcast *)self->_localPodcast setArtworkTextQuaternaryColor:v20];
+  artworkTextQuaternaryColor = [artworkCopy artworkTextQuaternaryColor];
+  [(MTPodcast *)self->_localPodcast setArtworkTextQuaternaryColor:artworkTextQuaternaryColor];
 
-  v21 = [v4 uberBackgroundImageURL];
-  [(MTPodcast *)self->_localPodcast setUberBackgroundImageURL:v21];
+  uberBackgroundImageURL = [artworkCopy uberBackgroundImageURL];
+  [(MTPodcast *)self->_localPodcast setUberBackgroundImageURL:uberBackgroundImageURL];
 
-  v22 = [v4 uberBackgroundJoeColor];
-  [(MTPodcast *)self->_localPodcast setUberBackgroundJoeColor:v22];
+  uberBackgroundJoeColor = [artworkCopy uberBackgroundJoeColor];
+  [(MTPodcast *)self->_localPodcast setUberBackgroundJoeColor:uberBackgroundJoeColor];
 
-  v23 = [v4 uberArtworkTextPrimaryColor];
-  [(MTPodcast *)self->_localPodcast setUberArtworkTextPrimaryColor:v23];
+  uberArtworkTextPrimaryColor = [artworkCopy uberArtworkTextPrimaryColor];
+  [(MTPodcast *)self->_localPodcast setUberArtworkTextPrimaryColor:uberArtworkTextPrimaryColor];
 
-  v24 = [v4 uberArtworkTextSecondaryColor];
-  [(MTPodcast *)self->_localPodcast setUberArtworkTextSecondaryColor:v24];
+  uberArtworkTextSecondaryColor = [artworkCopy uberArtworkTextSecondaryColor];
+  [(MTPodcast *)self->_localPodcast setUberArtworkTextSecondaryColor:uberArtworkTextSecondaryColor];
 
-  v25 = [v4 uberArtworkTextTertiaryColor];
-  [(MTPodcast *)self->_localPodcast setUberArtworkTextTertiaryColor:v25];
+  uberArtworkTextTertiaryColor = [artworkCopy uberArtworkTextTertiaryColor];
+  [(MTPodcast *)self->_localPodcast setUberArtworkTextTertiaryColor:uberArtworkTextTertiaryColor];
 
-  v26 = [v4 uberArtworkTextQuaternaryColor];
-  [(MTPodcast *)self->_localPodcast setUberArtworkTextQuaternaryColor:v26];
+  uberArtworkTextQuaternaryColor = [artworkCopy uberArtworkTextQuaternaryColor];
+  [(MTPodcast *)self->_localPodcast setUberArtworkTextQuaternaryColor:uberArtworkTextQuaternaryColor];
 }
 
 - (void)_reportMetrics
@@ -1486,9 +1486,9 @@ LABEL_73:
   v12 = _MTLogCategoryFeedUpdate();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(MTPodcast *)self->_localPodcast uuid];
+    uuid = [(MTPodcast *)self->_localPodcast uuid];
     *buf = 138543618;
-    v23 = v13;
+    v23 = uuid;
     v24 = 2112;
     v25 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ - processed feed page and found new episodes: %@", buf, 0x16u);
@@ -1498,23 +1498,23 @@ LABEL_73:
   [IMMetrics recordUserAction:v14 dataSource:0 withData:v11];
 }
 
-+ (void)_recalculateEpisodeLevel:(id)a3 episodeLevelCalculator:(id)a4 ctx:(id)a5
++ (void)_recalculateEpisodeLevel:(id)level episodeLevelCalculator:(id)calculator ctx:(id)ctx
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 uuid];
-  if (v10)
+  levelCopy = level;
+  calculatorCopy = calculator;
+  ctxCopy = ctx;
+  uuid = [levelCopy uuid];
+  if (uuid)
   {
     v11 = _MTLogCategoryFeedUpdate();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v13 = 138543362;
-      v14 = v10;
+      storeCollectionId = uuid;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%{public}@ - recalculating episode levels", &v13, 0xCu);
     }
 
-    [v8 unsafeUpdateEpisodeLevelsWithShowUUID:v10 on:v9];
+    [calculatorCopy unsafeUpdateEpisodeLevelsWithShowUUID:uuid on:ctxCopy];
   }
 
   else
@@ -1523,39 +1523,39 @@ LABEL_73:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = 134217984;
-      v14 = [v7 storeCollectionId];
+      storeCollectionId = [levelCopy storeCollectionId];
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%lld - can't process episode levels, uuid missing", &v13, 0xCu);
     }
   }
 }
 
-+ (void)_markLatestEpisodeAsUnplayedIfNeeded:(id)a3 latestEpisodeInPodcast:(id)a4
++ (void)_markLatestEpisodeAsUnplayedIfNeeded:(id)needed latestEpisodeInPodcast:(id)podcast
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  neededCopy = needed;
+  podcastCopy = podcast;
+  v7 = podcastCopy;
+  if (podcastCopy)
   {
-    [v6 metadataTimestamp];
-    if (fabs(v8) <= 2.22044605e-16 && [v5 subscribed])
+    [podcastCopy metadataTimestamp];
+    if (fabs(v8) <= 2.22044605e-16 && [neededCopy subscribed])
     {
       v9 = _MTLogCategoryFeedUpdateIngester();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v5 uuid];
-        v11 = [v5 title];
-        v12 = [v7 uuid];
-        v13 = [v7 title];
+        uuid = [neededCopy uuid];
+        title = [neededCopy title];
+        uuid2 = [v7 uuid];
+        title2 = [v7 title];
         v16 = 138544386;
-        v17 = v10;
+        v17 = uuid;
         v18 = 2112;
-        v19 = v11;
+        v19 = title;
         v20 = 2114;
-        v21 = v12;
+        v21 = uuid2;
         v22 = 2112;
-        v23 = v13;
+        v23 = title2;
         v24 = 2048;
-        v25 = [v7 storeTrackId];
+        storeTrackId = [v7 storeTrackId];
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ marking latest episode as unplayed %{public}@ - %@ - %lld", &v16, 0x34u);
       }
 
@@ -1571,121 +1571,121 @@ LABEL_73:
     v14 = _MTLogCategoryFeedUpdate();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [v5 uuid];
+      uuid3 = [neededCopy uuid];
       v16 = 138543362;
-      v17 = v15;
+      v17 = uuid3;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%{public}@ - Could not get the latest episode. Not marking anything as unplayed.", &v16, 0xCu);
     }
   }
 }
 
-+ (void)_sendNotificationForNewlyEntitledEpisodesIfNeeded:(id)a3 latestEpisodeInPodcast:(id)a4 newlyEntitledEpisodeUUIDs:(id)a5 ctx:(id)a6
++ (void)_sendNotificationForNewlyEntitledEpisodesIfNeeded:(id)needed latestEpisodeInPodcast:(id)podcast newlyEntitledEpisodeUUIDs:(id)ds ctx:(id)ctx
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v11 count])
+  neededCopy = needed;
+  podcastCopy = podcast;
+  dsCopy = ds;
+  ctxCopy = ctx;
+  if ([dsCopy count])
   {
-    v13 = [v9 uuid];
-    v14 = [v9 managedObjectContext];
-    v15 = [MTRecencyUtil upNextForPodcastUuid:v13 ctx:v14];
-    v16 = [v15 episodeUuid];
+    uuid = [neededCopy uuid];
+    managedObjectContext = [neededCopy managedObjectContext];
+    v15 = [MTRecencyUtil upNextForPodcastUuid:uuid ctx:managedObjectContext];
+    episodeUuid = [v15 episodeUuid];
 
-    if (v16)
+    if (episodeUuid)
     {
-      v17 = v16;
+      uuid2 = episodeUuid;
     }
 
     else
     {
-      v17 = [v10 uuid];
+      uuid2 = [podcastCopy uuid];
     }
 
-    v18 = v17;
+    uuid6 = uuid2;
     v20 = _MTLogCategoryFeedUpdateIngester();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v9 uuid];
-      v22 = [v9 title];
-      v23 = [v10 uuid];
+      uuid3 = [neededCopy uuid];
+      title = [neededCopy title];
+      uuid4 = [podcastCopy uuid];
       *buf = 138544130;
-      v36 = v21;
+      v36 = uuid3;
       v37 = 2112;
-      v38 = v22;
+      v38 = title;
       v39 = 2114;
-      v40 = v16;
+      v40 = episodeUuid;
       v41 = 2114;
-      v42 = v23;
+      v42 = uuid4;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Up Next Episode: %{public}@. Latest Episode: %{public}@", buf, 0x2Au);
     }
 
-    if ([v11 containsObject:v18])
+    if ([dsCopy containsObject:uuid6])
     {
-      v19 = [v12 objectForUuid:v16 entityName:kMTEpisodeEntityName];
+      title4 = [ctxCopy objectForUuid:episodeUuid entityName:kMTEpisodeEntityName];
       v24 = _MTLogCategoryFeedUpdateIngester();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        [v9 uuid];
-        v25 = v33 = v10;
-        v26 = [v9 title];
-        v27 = [v19 uuid];
-        [v19 title];
-        v28 = v34 = v12;
-        v29 = [v19 isNew];
+        [neededCopy uuid];
+        v25 = v33 = podcastCopy;
+        title2 = [neededCopy title];
+        uuid5 = [title4 uuid];
+        [title4 title];
+        v28 = v34 = ctxCopy;
+        isNew = [title4 isNew];
         *buf = 138544386;
         v36 = v25;
         v37 = 2112;
-        v38 = v26;
+        v38 = title2;
         v39 = 2114;
-        v40 = v27;
+        v40 = uuid5;
         v41 = 2112;
         v42 = v28;
         v43 = 1024;
-        v44 = v29;
+        v44 = isNew;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Found new smart play episode from episode entitlement changed %{public}@ - %@. episode isNew: %d", buf, 0x30u);
 
-        v12 = v34;
-        v10 = v33;
+        ctxCopy = v34;
+        podcastCopy = v33;
       }
 
-      [MTFeedIngester _markEpisodeAsFirstSeen:v19];
-      [v19 setSentNotification:0];
+      [MTFeedIngester _markEpisodeAsFirstSeen:title4];
+      [title4 setSentNotification:0];
     }
 
     else
     {
-      v19 = _MTLogCategoryFeedUpdateIngester();
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      title4 = _MTLogCategoryFeedUpdateIngester();
+      if (os_log_type_enabled(title4, OS_LOG_TYPE_DEFAULT))
       {
-        [v9 uuid];
-        v31 = v30 = v12;
-        v32 = [v9 title];
+        [neededCopy uuid];
+        v31 = v30 = ctxCopy;
+        title3 = [neededCopy title];
         *buf = 138543874;
         v36 = v31;
         v37 = 2112;
-        v38 = v32;
+        v38 = title3;
         v39 = 2114;
-        v40 = v18;
-        _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Smart Play Episode is not newly entitled. Not setting eligible for notifications: %{public}@.", buf, 0x20u);
+        v40 = uuid6;
+        _os_log_impl(&_mh_execute_header, title4, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Smart Play Episode is not newly entitled. Not setting eligible for notifications: %{public}@.", buf, 0x20u);
 
-        v12 = v30;
+        ctxCopy = v30;
       }
     }
 
     goto LABEL_15;
   }
 
-  v16 = _MTLogCategoryFeedUpdateIngester();
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  episodeUuid = _MTLogCategoryFeedUpdateIngester();
+  if (os_log_type_enabled(episodeUuid, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v9 uuid];
-    v19 = [v9 title];
+    uuid6 = [neededCopy uuid];
+    title4 = [neededCopy title];
     *buf = 138543618;
-    v36 = v18;
+    v36 = uuid6;
     v37 = 2112;
-    v38 = v19;
-    _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ No newly entitled episodes. Not marking any episodes eligibile for notifications.", buf, 0x16u);
+    v38 = title4;
+    _os_log_impl(&_mh_execute_header, episodeUuid, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ No newly entitled episodes. Not marking any episodes eligibile for notifications.", buf, 0x16u);
 LABEL_15:
   }
 }
@@ -1723,7 +1723,7 @@ LABEL_15:
   localPodcast = self->_localPodcast;
   if (localPodcast)
   {
-    v4 = [(MTPodcast *)localPodcast uuid];
+    uuid = [(MTPodcast *)localPodcast uuid];
     v5 = kMTPreferredArtworkSize;
     v6 = +[PFObjCCachingImageContentProviderBridge extensionBridge];
     v7 = self->_localPodcast;
@@ -1731,8 +1731,8 @@ LABEL_15:
     v9[1] = 3221225472;
     v9[2] = sub_1000AC390;
     v9[3] = &unk_1004DAC18;
-    v10 = v4;
-    v8 = v4;
+    v10 = uuid;
+    v8 = uuid;
     [v6 artworkForPodcast:v7 size:v9 completionHandler:{v5, v5}];
   }
 
@@ -1748,47 +1748,47 @@ LABEL_15:
 
 - (void)_updatePodcastArtworksIfNeeded_ImageStore
 {
-  v3 = [(MTPodcast *)self->_localPodcast requestsAreNonAppInitiated];
+  requestsAreNonAppInitiated = [(MTPodcast *)self->_localPodcast requestsAreNonAppInitiated];
   if (([(MTPodcast *)self->_localPodcast needsArtworkUpdate]& 1) != 0 || ([(MTPodcast *)self->_localPodcast uuid], (v4 = objc_claimAutoreleasedReturnValue()) != 0) && (v5 = v4, imageStore = self->_imageStore, [(MTPodcast *)self->_localPodcast uuid], v7 = objc_claimAutoreleasedReturnValue(), LOBYTE(imageStore) = [(MTImageStoreProtocol *)imageStore hasItemForKey:v7], v7, v5, (imageStore & 1) == 0))
   {
     v8 = [_TtC18PodcastsFoundation22DownloadableURLOptions alloc];
-    v9 = [(MTPodcast *)self->_localPodcast imageURL];
-    v10 = [v8 init:v9 nonAppInitiated:v3];
+    imageURL = [(MTPodcast *)self->_localPodcast imageURL];
+    v10 = [v8 init:imageURL nonAppInitiated:requestsAreNonAppInitiated];
 
     imageDownloader = self->_imageDownloader;
-    v12 = [(MTPodcast *)self->_localPodcast uuid];
-    [(MTFeedIngesterImageDownloaderProtocol *)imageDownloader downloadImageForPodcastUuid:v12 urlOptions:v10 userInitiated:0 useBackgroundFetch:1];
+    uuid = [(MTPodcast *)self->_localPodcast uuid];
+    [(MTFeedIngesterImageDownloaderProtocol *)imageDownloader downloadImageForPodcastUuid:uuid urlOptions:v10 userInitiated:0 useBackgroundFetch:1];
   }
 
-  v13 = [(MTPodcast *)self->_localPodcast uberBackgroundImageURL];
-  if (v13)
+  uberBackgroundImageURL = [(MTPodcast *)self->_localPodcast uberBackgroundImageURL];
+  if (uberBackgroundImageURL)
   {
-    v14 = v13;
+    v14 = uberBackgroundImageURL;
     v15 = self->_imageStore;
-    v16 = [(MTPodcast *)self->_localPodcast uberBackgroundImageURL];
-    LOBYTE(v15) = [(MTImageStoreProtocol *)v15 hasItemForKey:v16];
+    uberBackgroundImageURL2 = [(MTPodcast *)self->_localPodcast uberBackgroundImageURL];
+    LOBYTE(v15) = [(MTImageStoreProtocol *)v15 hasItemForKey:uberBackgroundImageURL2];
 
     if ((v15 & 1) == 0)
     {
-      v17 = [(MTPodcast *)self->_localPodcast uberBackgroundImageURL];
-      v21 = [PFArtworkFormatter formatArtworkUrlWithString:v17 for:@"sr" cropCode:@"png" fileExtension:kMTPreferredShowUberArtworkWidth, kMTPreferredShowUberArtworkHeight];
+      uberBackgroundImageURL3 = [(MTPodcast *)self->_localPodcast uberBackgroundImageURL];
+      kMTPreferredShowUberArtworkHeight = [PFArtworkFormatter formatArtworkUrlWithString:uberBackgroundImageURL3 for:@"sr" cropCode:@"png" fileExtension:kMTPreferredShowUberArtworkWidth, kMTPreferredShowUberArtworkHeight];
 
-      v18 = [[_TtC18PodcastsFoundation22DownloadableURLOptions alloc] initWithUrl:v21 nonAppInitiated:v3];
+      v18 = [[_TtC18PodcastsFoundation22DownloadableURLOptions alloc] initWithUrl:kMTPreferredShowUberArtworkHeight nonAppInitiated:requestsAreNonAppInitiated];
       v19 = self->_imageDownloader;
-      v20 = [(MTPodcast *)self->_localPodcast uberBackgroundImageURL];
-      [(MTFeedIngesterImageDownloaderProtocol *)v19 downloadImageUrl:v18 cacheKey:v20 userInitiated:0 backgroundFetch:1];
+      uberBackgroundImageURL4 = [(MTPodcast *)self->_localPodcast uberBackgroundImageURL];
+      [(MTFeedIngesterImageDownloaderProtocol *)v19 downloadImageUrl:v18 cacheKey:uberBackgroundImageURL4 userInitiated:0 backgroundFetch:1];
     }
   }
 }
 
-+ (unint64_t)_offerTypesAsFlagBits:(id)a3
++ (unint64_t)_offerTypesAsFlagBits:(id)bits
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a3 offers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  offers = [bits offers];
+  v4 = [offers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1800,13 +1800,13 @@ LABEL_15:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(offers);
         }
 
         v6 |= [*(*(&v10 + 1) + 8 * i) offerTypeAsFlagBit];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [offers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -1820,124 +1820,124 @@ LABEL_15:
   return v6;
 }
 
-+ (void)_markEpisodeAsFirstSeen:(id)a3
++ (void)_markEpisodeAsFirstSeen:(id)seen
 {
-  v3 = a3;
-  [v3 unsuppressAutomaticDownloadsIfNeeded];
-  [v3 setIsNew:1];
+  seenCopy = seen;
+  [seenCopy unsuppressAutomaticDownloadsIfNeeded];
+  [seenCopy setIsNew:1];
 }
 
-- (void)_handleAttributesAndRedownloadOnPriceTypeChangeIfNeeded:(id)a3 isNewEpisodeToCurrentDevice:(BOOL)a4 oldIsEntitled:(BOOL)a5 oldEnclosureURL:(id)a6 oldPriceType:(id)a7
+- (void)_handleAttributesAndRedownloadOnPriceTypeChangeIfNeeded:(id)needed isNewEpisodeToCurrentDevice:(BOOL)device oldIsEntitled:(BOOL)entitled oldEnclosureURL:(id)l oldPriceType:(id)type
 {
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v12 priceType];
-  if (!v15 || (v16 = v15, [v12 enclosureURL], v17 = objc_claimAutoreleasedReturnValue(), v17, v16, !v17))
+  entitledCopy = entitled;
+  deviceCopy = device;
+  neededCopy = needed;
+  lCopy = l;
+  typeCopy = type;
+  priceType = [neededCopy priceType];
+  if (!priceType || (v16 = priceType, [neededCopy enclosureURL], v17 = objc_claimAutoreleasedReturnValue(), v17, v16, !v17))
   {
-    v33 = _MTLogCategoryFeedUpdateIngester();
-    if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+    enclosureURL2 = _MTLogCategoryFeedUpdateIngester();
+    if (!os_log_type_enabled(enclosureURL2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_30;
     }
 
-    v55 = [v12 uuid];
-    v56 = [v12 priceType];
-    v57 = [v12 enclosureURL];
+    uuid = [neededCopy uuid];
+    priceType2 = [neededCopy priceType];
+    enclosureURL = [neededCopy enclosureURL];
     *buf = 138413314;
-    v70 = v55;
+    v70 = uuid;
     v71 = 2112;
-    *v72 = v56;
+    *v72 = priceType2;
     *&v72[8] = 2112;
-    v73 = v14;
+    v73 = typeCopy;
     v74 = 2112;
-    v75 = v57;
+    v75 = enclosureURL;
     v76 = 2112;
-    v77 = v13;
-    _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Nil attribute detected for episode %@. Not handling priceType change. priceType: %@, oldPriceType: %@, enclosureUrl: %@, oldEnclosureUrl: %@", buf, 0x34u);
+    v77 = lCopy;
+    _os_log_impl(&_mh_execute_header, enclosureURL2, OS_LOG_TYPE_ERROR, "Nil attribute detected for episode %@. Not handling priceType change. priceType: %@, oldPriceType: %@, enclosureUrl: %@, oldEnclosureUrl: %@", buf, 0x34u);
 
     goto LABEL_27;
   }
 
-  v64 = v14;
+  v64 = typeCopy;
   v18 = _MTLogCategoryFeedUpdateIngester();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v12 uuid];
-    v20 = [v12 priceType];
-    [v12 enclosureURL];
+    uuid2 = [neededCopy uuid];
+    priceType3 = [neededCopy priceType];
+    [neededCopy enclosureURL];
     v21 = v63 = self;
-    v59 = [v12 entitlementState];
-    v61 = [v12 podcast];
-    [v61 channel];
-    v60 = v62 = v9;
-    v22 = v10;
-    v23 = [v60 storeId];
-    v24 = [v12 podcast];
-    v25 = [v24 channel];
+    entitlementState = [neededCopy entitlementState];
+    podcast = [neededCopy podcast];
+    [podcast channel];
+    v60 = v62 = entitledCopy;
+    v22 = deviceCopy;
+    storeId = [v60 storeId];
+    podcast2 = [neededCopy podcast];
+    channel = [podcast2 channel];
     *buf = 138414082;
-    v70 = v19;
+    v70 = uuid2;
     v71 = 2112;
-    *v72 = v20;
+    *v72 = priceType3;
     *&v72[8] = 2112;
     v73 = v64;
     v74 = 2112;
     v75 = v21;
     v76 = 2112;
-    v77 = v13;
+    v77 = lCopy;
     v78 = 2048;
-    v79 = v59;
+    v79 = entitlementState;
     v80 = 2048;
-    v81 = v23;
-    v10 = v22;
+    v81 = storeId;
+    deviceCopy = v22;
     v82 = 1024;
-    v83 = [v25 subscriptionActive];
+    subscriptionActive = [channel subscriptionActive];
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Handling attributes and redownload on priceType change if needed for episode: %@. priceType: %@, oldPriceType: %@, enclosureUrl: %@, oldEnclosureUrl: %@, oldEntitlementState: %lld, channel: %lld, subscriptionActive: %d", buf, 0x4Eu);
 
-    v9 = v62;
+    entitledCopy = v62;
     self = v63;
   }
 
-  [v12 updateEntitlementState];
+  [neededCopy updateEntitlementState];
   v26 = _MTLogCategoryFeedUpdateIngester();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [v12 entitlementState];
-    v28 = [v12 uuid];
+    entitlementState2 = [neededCopy entitlementState];
+    uuid3 = [neededCopy uuid];
     *buf = 134218242;
-    v70 = v27;
+    v70 = entitlementState2;
     v71 = 2112;
-    *v72 = v28;
+    *v72 = uuid3;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Updated entitlementState to: %lld for episode %@", buf, 0x16u);
   }
 
   v29 = 0;
-  v14 = v64;
-  if (!v64 && v10)
+  typeCopy = v64;
+  if (!v64 && deviceCopy)
   {
-    v30 = [v12 priceType];
-    v29 = v30 != 0;
+    priceType4 = [neededCopy priceType];
+    v29 = priceType4 != 0;
   }
 
-  v31 = [v12 priceType];
-  v32 = [v31 isEqualToString:v64];
+  priceType5 = [neededCopy priceType];
+  v32 = [priceType5 isEqualToString:v64];
 
-  v33 = _MTLogCategoryFeedUpdateIngester();
-  v34 = os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT);
+  enclosureURL2 = _MTLogCategoryFeedUpdateIngester();
+  v34 = os_log_type_enabled(enclosureURL2, OS_LOG_TYPE_DEFAULT);
   if ((v32 & 1) != 0 || v29)
   {
     if (v34)
     {
-      v58 = [v12 uuid];
+      uuid4 = [neededCopy uuid];
       *buf = 138412802;
-      v70 = v58;
+      v70 = uuid4;
       v71 = 1024;
       *v72 = v32;
       *&v72[4] = 1024;
       *&v72[6] = v29;
-      _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "priceType did not actually change for episode %@. priceTypeValueDidNotChange: %d - isNewEpisodeAndPriceTypeDidNotChange: %d", buf, 0x18u);
+      _os_log_impl(&_mh_execute_header, enclosureURL2, OS_LOG_TYPE_DEFAULT, "priceType did not actually change for episode %@. priceTypeValueDidNotChange: %d - isNewEpisodeAndPriceTypeDidNotChange: %d", buf, 0x18u);
     }
 
     goto LABEL_30;
@@ -1945,96 +1945,96 @@ LABEL_15:
 
   if (v34)
   {
-    v35 = [v12 uuid];
-    v36 = [v12 priceType];
+    uuid5 = [neededCopy uuid];
+    priceType6 = [neededCopy priceType];
     *buf = 138412802;
-    v70 = v35;
+    v70 = uuid5;
     v71 = 2112;
     *v72 = v64;
     *&v72[8] = 2112;
-    v73 = v36;
-    _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "PriceType changed for episode uuid %@ from priceType: %@ to %@", buf, 0x20u);
+    v73 = priceType6;
+    _os_log_impl(&_mh_execute_header, enclosureURL2, OS_LOG_TYPE_DEFAULT, "PriceType changed for episode uuid %@ from priceType: %@ to %@", buf, 0x20u);
   }
 
   +[NSDate timeIntervalSinceReferenceDate];
-  [v12 setPriceTypeChangedDate:?];
-  if ([v12 isEntitled] && objc_msgSend(v12, "isEntitled") != v9)
+  [neededCopy setPriceTypeChangedDate:?];
+  if ([neededCopy isEntitled] && objc_msgSend(neededCopy, "isEntitled") != entitledCopy)
   {
     v37 = _MTLogCategoryFeedUpdateIngester();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = [v12 uuid];
+      uuid6 = [neededCopy uuid];
       *buf = 138412290;
-      v70 = v38;
+      v70 = uuid6;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Episode %@ is newly entitled.", buf, 0xCu);
     }
 
-    v39 = [(MTFeedIngester *)self newlyEntitledEpisodeUUIDs];
-    v40 = [v12 uuid];
-    [v39 addObject:v40];
+    newlyEntitledEpisodeUUIDs = [(MTFeedIngester *)self newlyEntitledEpisodeUUIDs];
+    uuid7 = [neededCopy uuid];
+    [newlyEntitledEpisodeUUIDs addObject:uuid7];
   }
 
-  v33 = [v12 enclosureURL];
-  if (([v33 isEqualToString:v13]& 1) != 0)
+  enclosureURL2 = [neededCopy enclosureURL];
+  if (([enclosureURL2 isEqualToString:lCopy]& 1) != 0)
   {
 LABEL_30:
 
     goto LABEL_31;
   }
 
-  v41 = [v12 assetURL];
-  v42 = [v41 length];
+  assetURL = [neededCopy assetURL];
+  v42 = [assetURL length];
 
   if (v42)
   {
     v43 = _MTLogCategoryFeedUpdateIngester();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
-      v44 = [v12 enclosureURL];
-      v45 = [v12 uuid];
+      enclosureURL3 = [neededCopy enclosureURL];
+      uuid8 = [neededCopy uuid];
       *buf = 138412546;
-      v70 = v44;
+      v70 = enclosureURL3;
       v71 = 2112;
-      *v72 = v45;
+      *v72 = uuid8;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Found new enclosureURL %@ for downloaded asset for episode %@", buf, 0x16u);
     }
 
     if (self->_downloadManager)
     {
       library = self->_library;
-      v47 = [v12 uuid];
-      v68 = v47;
+      uuid9 = [neededCopy uuid];
+      v68 = uuid9;
       v48 = [NSArray arrayWithObjects:&v68 count:1];
       v49 = [NSSet setWithArray:v48];
       [(MTFeedIngesterLibraryProtocol *)library removeDownloadAssetsForEpisodeUuids:v49];
 
-      v50 = [v12 uuid];
+      uuid10 = [neededCopy uuid];
       downloadManager = self->_downloadManager;
-      v52 = [v12 uuid];
-      v67 = v52;
+      uuid11 = [neededCopy uuid];
+      v67 = uuid11;
       v53 = [NSArray arrayWithObjects:&v67 count:1];
       v54 = [NSSet setWithArray:v53];
       v65[0] = _NSConcreteStackBlock;
       v65[1] = 3221225472;
       v65[2] = sub_1000AD000;
       v65[3] = &unk_1004DAC40;
-      v66 = v50;
-      v33 = v50;
+      v66 = uuid10;
+      enclosureURL2 = uuid10;
       [(MTFeedIngesterDownloadManagerProtocol *)downloadManager restoreDownloadedEpisodes:v54 completion:v65];
 
       goto LABEL_30;
     }
 
-    v33 = _MTLogCategoryFeedUpdateIngester();
-    if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+    enclosureURL2 = _MTLogCategoryFeedUpdateIngester();
+    if (!os_log_type_enabled(enclosureURL2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_30;
     }
 
-    v55 = [v12 uuid];
+    uuid = [neededCopy uuid];
     *buf = 138412290;
-    v70 = v55;
-    _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Missing Download Manager. Failed to re-download %@", buf, 0xCu);
+    v70 = uuid;
+    _os_log_impl(&_mh_execute_header, enclosureURL2, OS_LOG_TYPE_ERROR, "Missing Download Manager. Failed to re-download %@", buf, 0xCu);
 LABEL_27:
 
     goto LABEL_30;

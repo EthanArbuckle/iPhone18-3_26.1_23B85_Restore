@@ -1,33 +1,33 @@
 @interface UIViewPrintFormatter
-- (CGRect)rectForPageAtIndex:(int64_t)a3;
-- (id)_initWithView:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CGRect)rectForPageAtIndex:(int64_t)index;
+- (id)_initWithView:(id)view;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)_recalcPageCount;
-- (void)drawInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4;
+- (void)drawInRect:(CGRect)rect forPageAtIndex:(int64_t)index;
 @end
 
 @implementation UIViewPrintFormatter
 
-- (id)_initWithView:(id)a3
+- (id)_initWithView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = UIViewPrintFormatter;
   v6 = [(UIPrintFormatter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_view, a3);
+    objc_storeStrong(&v6->_view, view);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = UIViewPrintFormatter;
-  v4 = [(UIPrintFormatter *)&v7 copyWithZone:a3];
+  v4 = [(UIPrintFormatter *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -68,7 +68,7 @@
   return v6;
 }
 
-- (CGRect)rectForPageAtIndex:(int64_t)a3
+- (CGRect)rectForPageAtIndex:(int64_t)index
 {
   v31.receiver = self;
   v31.super_class = UIViewPrintFormatter;
@@ -80,8 +80,8 @@
   [(UIView *)self->_view bounds];
   v14 = v13;
   v16 = v15;
-  v17 = [(UIPrintFormatter *)self startPage];
-  if (v17 == a3)
+  startPage = [(UIPrintFormatter *)self startPage];
+  if (startPage == index)
   {
     v18 = v6;
     v19 = v8;
@@ -95,14 +95,14 @@
 
   else
   {
-    v26 = v17;
+    v26 = startPage;
     v30.receiver = self;
     v30.super_class = UIViewPrintFormatter;
     [(UIPrintFormatter *)&v30 _pageContentRect:0];
     v23 = v27;
     v24 = v28;
     v25 = v29;
-    v19 = v27 - (v12 + v29 * (~v26 + a3));
+    v19 = v27 - (v12 + v29 * (~v26 + index));
     v20 = v14;
     v21 = v16;
     v22 = v18;
@@ -111,12 +111,12 @@
   return CGRectIntersection(*&v18, *&v22);
 }
 
-- (void)drawInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4
+- (void)drawInRect:(CGRect)rect forPageAtIndex:(int64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   v17.origin.x = x;
@@ -125,9 +125,9 @@
   v17.size.height = height;
   CGContextClipToRect(CurrentContext, v17);
   CGContextTranslateCTM(CurrentContext, x, y);
-  v11 = [(UIPrintFormatter *)self startPage];
-  v12 = a4 - v11 - 1;
-  if (a4 - v11 < 1)
+  startPage = [(UIPrintFormatter *)self startPage];
+  v12 = index - startPage - 1;
+  if (index - startPage < 1)
   {
     v14 = 0.0;
   }

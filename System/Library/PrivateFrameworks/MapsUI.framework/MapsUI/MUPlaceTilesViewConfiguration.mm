@@ -1,6 +1,6 @@
 @interface MUPlaceTilesViewConfiguration
 + (id)annotatedListConfiguration;
-+ (id)configurationFromModuleConfiguration:(id)a3;
++ (id)configurationFromModuleConfiguration:(id)configuration;
 + (id)hikingTrailsConfiguration;
 - (MUPlaceTilesViewConfiguration)init;
 @end
@@ -26,31 +26,31 @@
   return v2;
 }
 
-+ (id)configurationFromModuleConfiguration:(id)a3
++ (id)configurationFromModuleConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = objc_alloc_init(MUPlaceTilesViewConfiguration);
   v5 = v4;
-  if (!v3)
+  if (!configurationCopy)
   {
     [(MUPlaceTilesViewConfiguration *)v4 setVertical:0];
-    v6 = [(MUPlaceTilesViewConfiguration *)v5 cellConfiguration];
-    [v6 setShowIcon:1];
-    [v6 setShowCuratedPhoto:1];
-    [v6 setVariant:0];
+    cellConfiguration = [(MUPlaceTilesViewConfiguration *)v5 cellConfiguration];
+    [cellConfiguration setShowIcon:1];
+    [cellConfiguration setShowCuratedPhoto:1];
+    [cellConfiguration setVariant:0];
     goto LABEL_17;
   }
 
-  v6 = [(MUPlaceTilesViewConfiguration *)v4 cellConfiguration];
-  v7 = [v3 layoutVariant];
+  cellConfiguration = [(MUPlaceTilesViewConfiguration *)v4 cellConfiguration];
+  layoutVariant = [configurationCopy layoutVariant];
   v8 = 0;
   v9 = 1;
   v10 = 1;
-  if (v7 <= 1)
+  if (layoutVariant <= 1)
   {
-    if (v7)
+    if (layoutVariant)
     {
-      if (v7 != 1)
+      if (layoutVariant != 1)
       {
         goto LABEL_14;
       }
@@ -60,13 +60,13 @@
     }
 
 LABEL_13:
-    [v6 setShowIcon:v9];
-    [v6 setShowCuratedPhoto:v10];
-    [v6 setVariant:v8];
+    [cellConfiguration setShowIcon:v9];
+    [cellConfiguration setShowCuratedPhoto:v10];
+    [cellConfiguration setVariant:v8];
     goto LABEL_14;
   }
 
-  switch(v7)
+  switch(layoutVariant)
   {
     case 2:
       goto LABEL_13;
@@ -83,13 +83,13 @@ LABEL_12:
   }
 
 LABEL_14:
-  if ([v3 isVertical])
+  if ([configurationCopy isVertical])
   {
-    [v6 setVariant:2];
+    [cellConfiguration setVariant:2];
   }
 
-  -[MUPlaceTilesViewConfiguration setVertical:](v5, "setVertical:", [v3 isVertical]);
-  -[MUPlaceTilesViewConfiguration setNumberOfRows:](v5, "setNumberOfRows:", [v3 numberOfRows]);
+  -[MUPlaceTilesViewConfiguration setVertical:](v5, "setVertical:", [configurationCopy isVertical]);
+  -[MUPlaceTilesViewConfiguration setNumberOfRows:](v5, "setNumberOfRows:", [configurationCopy numberOfRows]);
 LABEL_17:
 
   return v5;
@@ -99,10 +99,10 @@ LABEL_17:
 {
   v2 = objc_alloc_init(MUPlaceTilesViewConfiguration);
   [(MUPlaceTilesViewConfiguration *)v2 setVertical:0];
-  v3 = [(MUPlaceTilesViewConfiguration *)v2 cellConfiguration];
-  [v3 setShowIcon:0];
-  [v3 setShowCuratedPhoto:1];
-  [v3 setVariant:0];
+  cellConfiguration = [(MUPlaceTilesViewConfiguration *)v2 cellConfiguration];
+  [cellConfiguration setShowIcon:0];
+  [cellConfiguration setShowCuratedPhoto:1];
+  [cellConfiguration setVariant:0];
 
   return v2;
 }
@@ -111,10 +111,10 @@ LABEL_17:
 {
   v2 = objc_alloc_init(MUPlaceTilesViewConfiguration);
   [(MUPlaceTilesViewConfiguration *)v2 setVertical:0];
-  v3 = [(MUPlaceTilesViewConfiguration *)v2 cellConfiguration];
-  [v3 setShowIcon:0];
-  [v3 setShowCuratedPhoto:1];
-  [v3 setVariant:0];
+  cellConfiguration = [(MUPlaceTilesViewConfiguration *)v2 cellConfiguration];
+  [cellConfiguration setShowIcon:0];
+  [cellConfiguration setShowCuratedPhoto:1];
+  [cellConfiguration setVariant:0];
 
   return v2;
 }

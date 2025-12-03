@@ -1,23 +1,23 @@
 @interface VMUProcessDescription
-+ (_CSTypeRef)symbolicatorFromBinaryImagesDescription:(id)a3;
-+ (_CSTypeRef)symbolicatorFromBinaryImagesDescription:(id)a3 withArchitecture:(_CSArchitecture)a4;
-+ (id)parseBinaryImagesDescription:(id)a3;
++ (_CSTypeRef)symbolicatorFromBinaryImagesDescription:(id)description;
++ (_CSTypeRef)symbolicatorFromBinaryImagesDescription:(id)description withArchitecture:(_CSArchitecture)architecture;
++ (id)parseBinaryImagesDescription:(id)description;
 - (BOOL)initFromCorpseOrCore;
-- (VMUProcessDescription)initWithVMUTaskMemoryCache:(id)a3 getBinariesList:(BOOL)a4;
-- (id)_binaryImagesDescriptionForRanges:(id)a3;
+- (VMUProcessDescription)initWithVMUTaskMemoryCache:(id)cache getBinariesList:(BOOL)list;
+- (id)_binaryImagesDescriptionForRanges:(id)ranges;
 - (id)_buildInfoDescription;
 - (id)_bundleLock;
 - (id)_cpuTypeDescription;
-- (id)_extractInfoPlistFromSymbolOwner:(_CSTypeRef)a3 withMemory:(id)a4;
+- (id)_extractInfoPlistFromSymbolOwner:(_CSTypeRef)owner withMemory:(id)memory;
 - (id)_osVersionDictionary;
-- (id)_rangesOfBinaryImages:(id)a3 forBacktraces:(id)a4;
-- (id)_readDataFromMemory:(id)a3 atAddress:(unint64_t)a4 size:(unint64_t)a5;
-- (id)_sanitizeVersion:(id)a3;
+- (id)_rangesOfBinaryImages:(id)images forBacktraces:(id)backtraces;
+- (id)_readDataFromMemory:(id)memory atAddress:(unint64_t)address size:(unint64_t)size;
+- (id)_sanitizeVersion:(id)version;
 - (id)_systemVersionDescription;
-- (id)binaryImageDictionaryForAddress:(unint64_t)a3;
+- (id)binaryImageDictionaryForAddress:(unint64_t)address;
 - (id)binaryImages;
 - (id)binaryImagesDescription;
-- (id)binaryImagesDescriptionForBacktraces:(id)a3;
+- (id)binaryImagesDescriptionForBacktraces:(id)backtraces;
 - (id)dateAndVersionDescription;
 - (id)description;
 - (id)processDescriptionHeader;
@@ -25,8 +25,8 @@
 - (id)processStatisticsDescription;
 - (id)processVersion;
 - (id)processVersionDictionary;
-- (id)valueForEnvVar:(id)a3;
-- (void)_libraryLoaded:(_CSTypeRef)a3;
+- (id)valueForEnvVar:(id)var;
+- (void)_libraryLoaded:(_CSTypeRef)loaded;
 - (void)dealloc;
 - (void)initFromLiveProcess;
 - (void)setCrashReporterInfo;
@@ -36,41 +36,41 @@
 
 - (id)binaryImages
 {
-  v2 = self;
+  selfCopy = self;
   [(VMUProcessDescription *)self setCrashReporterInfo];
-  if (!v2->_binaryImagePostProcessingComplete)
+  if (!selfCopy->_binaryImagePostProcessingComplete)
   {
-    v3 = [(VMUProcessDescription *)v2 _bundleLock];
-    [v3 lock];
+    _bundleLock = [(VMUProcessDescription *)selfCopy _bundleLock];
+    [_bundleLock lock];
 
-    v4 = v2->_binaryImages;
+    v4 = selfCopy->_binaryImages;
     objc_sync_enter(v4);
-    v5 = [(NSMutableArray *)v2->_binaryImages mutableCopy];
+    v5 = [(NSMutableArray *)selfCopy->_binaryImages mutableCopy];
     objc_sync_exit(v4);
 
-    v33 = [v5 objectEnumerator];
+    objectEnumerator = [v5 objectEnumerator];
     v6 = 0;
     allocator = *MEMORY[0x1E695E480];
     v32 = v5;
     while (1)
     {
-      v7 = [v33 nextObject];
+      nextObject = [objectEnumerator nextObject];
 
-      if (!v7)
+      if (!nextObject)
       {
         [v5 sortUsingFunction:_compareBinaryImageDicts context:0];
-        v2->_binaryImagePostProcessingComplete = 1;
-        objc_storeStrong(&v2->_sortedBinaryImages, v5);
-        v28 = [(VMUProcessDescription *)v2 _bundleLock];
-        [v28 unlock];
+        selfCopy->_binaryImagePostProcessingComplete = 1;
+        objc_storeStrong(&selfCopy->_sortedBinaryImages, v5);
+        _bundleLock2 = [(VMUProcessDescription *)selfCopy _bundleLock];
+        [_bundleLock2 unlock];
 
         goto LABEL_40;
       }
 
-      v8 = [v7 objectForKey:@"ExecutablePath"];
-      v9 = v2;
-      v10 = [(NSDictionary *)v2->_binaryImageHints objectForKey:v8];
-      v11 = [v7 objectForKey:@"ShortVersionString"];
+      v8 = [nextObject objectForKey:@"ExecutablePath"];
+      v9 = selfCopy;
+      v10 = [(NSDictionary *)selfCopy->_binaryImageHints objectForKey:v8];
+      v11 = [nextObject objectForKey:@"ShortVersionString"];
       if (v11)
       {
         goto LABEL_5;
@@ -107,7 +107,7 @@
 
       CFRelease(v14);
 LABEL_12:
-      v20 = [v7 objectForKey:@"SourceVersion"];
+      v20 = [nextObject objectForKey:@"SourceVersion"];
       v21 = v20;
       if (!v12 && v20)
       {
@@ -116,17 +116,17 @@ LABEL_12:
 
       if (v13 || ([(__CFString *)v8 lastPathComponent], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        [v7 setObject:v13 forKey:@"Identifier"];
+        [nextObject setObject:v13 forKey:@"Identifier"];
       }
 
       if (v12)
       {
-        [v7 setObject:v12 forKey:@"Version"];
+        [nextObject setObject:v12 forKey:@"Version"];
       }
 
       if (v11)
       {
-        [v7 setObject:v11 forKey:@"ShortVersionString"];
+        [nextObject setObject:v11 forKey:@"ShortVersionString"];
       }
 
       v22 = [v10 objectForKey:@"IsAppleCode"];
@@ -134,20 +134,20 @@ LABEL_12:
       if (v22)
       {
         v23 = [v10 objectForKey:@"IsAppleCode"];
-        v24 = [v23 BOOLValue];
+        bOOLValue = [v23 BOOLValue];
       }
 
       else
       {
-        v24 = ([v13 hasPrefix:@"com.apple."] & 1) != 0 || (objc_msgSend(v13, "hasPrefix:", @"commpage") & 1) != 0 || (objc_msgSend(v13, "isEqualToString:", @"Ozone") & 1) != 0 || objc_msgSend(v13, "isEqualToString:", @"Motion");
+        bOOLValue = ([v13 hasPrefix:@"com.apple."] & 1) != 0 || (objc_msgSend(v13, "hasPrefix:", @"commpage") & 1) != 0 || (objc_msgSend(v13, "isEqualToString:", @"Ozone") & 1) != 0 || objc_msgSend(v13, "isEqualToString:", @"Motion");
         if (([(__CFString *)v8 hasPrefix:@"/System"]& 1) != 0 || [(__CFString *)v8 hasPrefix:@"/usr/lib"])
         {
-          v24 = 1;
+          bOOLValue = 1;
         }
       }
 
-      v25 = [MEMORY[0x1E696AD98] numberWithBool:v24];
-      [v7 setObject:v25 forKey:@"IsAppleCode"];
+      v25 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
+      [nextObject setObject:v25 forKey:@"IsAppleCode"];
 
       v26 = [v10 objectForKey:@"DisplayName"];
 
@@ -163,12 +163,12 @@ LABEL_12:
       v27 = ;
       if (v27)
       {
-        [v7 setObject:v27 forKey:@"DisplayName"];
+        [nextObject setObject:v27 forKey:@"DisplayName"];
       }
 
-      v6 = v7;
+      v6 = nextObject;
       v5 = v32;
-      v2 = v9;
+      selfCopy = v9;
     }
 
     v11 = 0;
@@ -179,9 +179,9 @@ LABEL_5:
   }
 
 LABEL_40:
-  [(VMUProcessDescription *)v2 cleansePathsIncludingBinaryImageList:1];
-  [(VMUProcessDescription *)v2 clearCrashReporterInfo];
-  sortedBinaryImages = v2->_sortedBinaryImages;
+  [(VMUProcessDescription *)selfCopy cleansePathsIncludingBinaryImageList:1];
+  [(VMUProcessDescription *)selfCopy clearCrashReporterInfo];
+  sortedBinaryImages = selfCopy->_sortedBinaryImages;
 
   return sortedBinaryImages;
 }
@@ -243,12 +243,12 @@ LABEL_40:
   objc_autoreleasePoolPop(v3);
 }
 
-+ (id)parseBinaryImagesDescription:(id)a3
++ (id)parseBinaryImagesDescription:(id)description
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:v3];
-  v6 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  descriptionCopy = description;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:descriptionCopy];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
   while (1)
   {
     [v5 scanUpToString:@"/" intoString:0];
@@ -258,7 +258,7 @@ LABEL_40:
     }
 
     v12 = 0;
-    [v5 scanUpToCharactersFromSet:v6 intoString:&v12];
+    [v5 scanUpToCharactersFromSet:newlineCharacterSet intoString:&v12];
     v7 = v12;
     v8 = v7;
     if (v7)
@@ -269,18 +269,18 @@ LABEL_40:
         v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
         [v10 setObject:v8 forKey:@"ExecutablePath"];
         [v10 setObject:v9 forKey:@"DisplayName"];
-        [v4 addObject:v10];
+        [array addObject:v10];
       }
     }
   }
 
-  return v4;
+  return array;
 }
 
-+ (_CSTypeRef)symbolicatorFromBinaryImagesDescription:(id)a3
++ (_CSTypeRef)symbolicatorFromBinaryImagesDescription:(id)description
 {
-  v4 = a3;
-  v5 = [a1 symbolicatorFromBinaryImagesDescription:v4 withArchitecture:MEMORY[0x1C695D930]()];
+  descriptionCopy = description;
+  v5 = [self symbolicatorFromBinaryImagesDescription:descriptionCopy withArchitecture:MEMORY[0x1C695D930]()];
   v7 = v6;
 
   v8 = v5;
@@ -290,9 +290,9 @@ LABEL_40:
   return result;
 }
 
-+ (_CSTypeRef)symbolicatorFromBinaryImagesDescription:(id)a3 withArchitecture:(_CSArchitecture)a4
++ (_CSTypeRef)symbolicatorFromBinaryImagesDescription:(id)description withArchitecture:(_CSArchitecture)architecture
 {
-  v5 = a3;
+  descriptionCopy = description;
   v38 = 0;
   v39 = &v38;
   v40 = 0x4812000000;
@@ -311,7 +311,7 @@ LABEL_40:
   v36 = 0;
   v37 = 0;
   __p = 0;
-  v6 = objc_msgSend(v5, "containsString:", @"(");
+  v6 = objc_msgSend(descriptionCopy, "containsString:", @"(");
   if (v6)
   {
     v7 = @"(0x[a-fA-F0-9]*)\\s*-\\s*(0x[a-fA-F0-9]*)\\s*(\\S*)\\s*\\(([0-9\\- \\.\\?]*)\\)\\s*<(\\S{36})>\\s*(.*)";
@@ -323,17 +323,17 @@ LABEL_40:
   }
 
   v8 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:v7 options:1 error:0];
-  v9 = [v5 length];
+  v9 = [descriptionCopy length];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __82__VMUProcessDescription_symbolicatorFromBinaryImagesDescription_withArchitecture___block_invoke;
   v23[3] = &unk_1E8278170;
-  v10 = v5;
+  v10 = descriptionCopy;
   v24 = v10;
   v25 = &v29;
   v28 = v6;
   v26 = &v38;
-  v27 = a4;
+  architectureCopy = architecture;
   [v8 enumerateMatchesInString:v10 options:0 range:0 usingBlock:{v9, v23}];
   v11 = v39[6];
   v12 = v39[7];
@@ -612,11 +612,11 @@ LABEL_35:
   v72 = *MEMORY[0x1E69E9840];
 }
 
-- (VMUProcessDescription)initWithVMUTaskMemoryCache:(id)a3 getBinariesList:(BOOL)a4
+- (VMUProcessDescription)initWithVMUTaskMemoryCache:(id)cache getBinariesList:(BOOL)list
 {
-  v4 = a4;
+  listCopy = list;
   v72 = *MEMORY[0x1E69E9840];
-  v54 = a3;
+  cacheCopy = cache;
   v69.receiver = self;
   v69.super_class = VMUProcessDescription;
   v7 = [(VMUProcessDescription *)&v69 init];
@@ -625,16 +625,16 @@ LABEL_35:
     goto LABEL_61;
   }
 
-  v8 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   date = v7->_date;
-  v7->_date = v8;
+  v7->_date = date;
 
-  if (v54)
+  if (cacheCopy)
   {
-    objc_storeStrong(&v7->_memoryCache, a3);
-    v10 = [(VMUTaskMemoryCache *)v7->_memoryCache representsCore];
+    objc_storeStrong(&v7->_memoryCache, cache);
+    representsCore = [(VMUTaskMemoryCache *)v7->_memoryCache representsCore];
     memoryCache = v7->_memoryCache;
-    if (v10)
+    if (representsCore)
     {
       if ([(VMUTaskMemoryCache *)memoryCache isKernel])
       {
@@ -704,7 +704,7 @@ LABEL_11:
           [(VMUTaskMemoryCache *)v7->_memoryCache taskPort];
           if (CSTaskHasNotStarted())
           {
-            v4 = 0;
+            listCopy = 0;
           }
         }
 
@@ -714,15 +714,15 @@ LABEL_11:
           binaryImages = v7->_binaryImages;
           v7->_binaryImages = v22;
 
-          if (v4)
+          if (listCopy)
           {
             taskType = v7->_taskType;
             FlagsForNoSymbolOrSourceInfoData = CSSymbolicatorGetFlagsForNoSymbolOrSourceInfoData();
             v26 = taskType == 0;
             objc_initWeak(location, v7);
-            v27 = [(VMUTaskMemoryCache *)v7->_memoryCache representsCore];
+            representsCore2 = [(VMUTaskMemoryCache *)v7->_memoryCache representsCore];
             v28 = v7->_memoryCache;
-            if (v27)
+            if (representsCore2)
             {
               v7->_symbolicator._opaque_1 = [(VMUTaskMemoryCache *)v7->_memoryCache createSymbolicatorWithFlags:0 andNotification:?];
               v7->_symbolicator._opaque_2 = v29;
@@ -832,7 +832,7 @@ LABEL_55:
         CSSymbolicatorGetAOutSymbolOwner();
         if (CSIsNull())
         {
-          if (![(VMUTaskMemoryCache *)v54 isExclave])
+          if (![(VMUTaskMemoryCache *)cacheCopy isExclave])
           {
             v59 = 0;
             v60 = 0;
@@ -991,17 +991,17 @@ void __68__VMUProcessDescription_initWithVMUTaskMemoryCache_getBinariesList___bl
     goto LABEL_25;
   }
 
-  v12 = [(VMUProcInfo *)v10 cpuType];
-  self->_cpuType = v12;
+  cpuType = [(VMUProcInfo *)v10 cpuType];
+  self->_cpuType = cpuType;
   if (self->_is64Bit)
   {
     v13 = 16777223;
-    if (v12 == 18)
+    if (cpuType == 18)
     {
       v13 = 16777234;
     }
 
-    else if (v12 != 7)
+    else if (cpuType != 7)
     {
       goto LABEL_20;
     }
@@ -1012,10 +1012,10 @@ void __68__VMUProcessDescription_initWithVMUTaskMemoryCache_getBinariesList___bl
 LABEL_20:
   if (self->_processNameNeedsCorrection || ![(NSString *)self->_processName length])
   {
-    v14 = [(VMUProcInfo *)v11 name];
-    if (v14)
+    name = [(VMUProcInfo *)v11 name];
+    if (name)
     {
-      objc_storeStrong(&self->_processName, v14);
+      objc_storeStrong(&self->_processName, name);
       self->_processNameNeedsCorrection = 0;
     }
   }
@@ -1034,22 +1034,22 @@ LABEL_25:
   v74 = 0u;
   *obj = 0u;
   *v72 = 0u;
-  v3 = [(VMUTaskMemoryCache *)self->_memoryCache representsCore];
+  representsCore = [(VMUTaskMemoryCache *)self->_memoryCache representsCore];
   memoryCache = self->_memoryCache;
-  if (v3)
+  if (representsCore)
   {
     v5 = memoryCache;
-    v6 = [(VMUTaskMemoryCache *)v5 coreFileProcName];
-    obj[0] = [v6 copy];
+    coreFileProcName = [(VMUTaskMemoryCache *)v5 coreFileProcName];
+    obj[0] = [coreFileProcName copy];
 
-    v7 = [(VMUTaskMemoryCache *)v5 coreFileProcPath];
-    obj[1] = [v7 copy];
+    coreFileProcPath = [(VMUTaskMemoryCache *)v5 coreFileProcPath];
+    obj[1] = [coreFileProcPath copy];
 
-    v8 = [(VMUTaskMemoryCache *)v5 coreFileParentProcName];
-    v72[0] = [v8 copy];
+    coreFileParentProcName = [(VMUTaskMemoryCache *)v5 coreFileParentProcName];
+    v72[0] = [coreFileParentProcName copy];
 
-    v9 = [(VMUTaskMemoryCache *)v5 coreFileParentProcPath];
-    v72[1] = [v9 copy];
+    coreFileParentProcPath = [(VMUTaskMemoryCache *)v5 coreFileParentProcPath];
+    v72[1] = [coreFileParentProcPath copy];
 
     if ([VMUTaskMemoryCache getCoreFileProcStarttimeSec:v5]|| [VMUTaskMemoryCache getCoreFileProcStarttimeUSec:v5]|| [VMUTaskMemoryCache getCoreFileUserstack:v5]|| [VMUTaskMemoryCache getCoreFileProcFlags:v5]|| [VMUTaskMemoryCache getCoreFileArgsLen:v5]|| [VMUTaskMemoryCache getCoreFileProcArgc:v5]|| [VMUTaskMemoryCache getCoreFileLedgerPhysFootprint:v5]|| [VMUTaskMemoryCache getCoreFileLedgerPhysFootprintLifetimeMax:v5]|| [VMUTaskMemoryCache getCoreFilePid:v5]|| [VMUTaskMemoryCache getCoreFilePPid:v5]|| [(VMUTaskMemoryCache *)v5 getCoreFileCPUType:&v73 + 4])
     {
@@ -1069,11 +1069,11 @@ LABEL_25:
 
   else
   {
-    v11 = [(VMUTaskMemoryCache *)memoryCache taskPort];
+    taskPort = [(VMUTaskMemoryCache *)memoryCache taskPort];
     kcd_addr_begin = 0;
     kcd_size = 0;
     v12 = MEMORY[0x1E69E9A60];
-    v10 = task_map_corpse_info_64(*MEMORY[0x1E69E9A60], v11, &kcd_addr_begin, &kcd_size);
+    v10 = task_map_corpse_info_64(*MEMORY[0x1E69E9A60], taskPort, &kcd_addr_begin, &kcd_size);
     if (!v10)
     {
       v13 = kcd_addr_begin;
@@ -1284,18 +1284,18 @@ LABEL_25:
   self->_proc_starttime.tv_usec = DWORD2(v36);
   v38 = HIDWORD(v75);
   objc_storeStrong(&self->_executablePath, obj[1]);
-  v39 = [(NSString *)self->_executablePath lastPathComponent];
-  if ([v39 length])
+  lastPathComponent = [(NSString *)self->_executablePath lastPathComponent];
+  if ([lastPathComponent length])
   {
-    objc_storeStrong(&self->_processName, v39);
+    objc_storeStrong(&self->_processName, lastPathComponent);
   }
 
   objc_storeStrong(&self->_parentExecutablePath, v72[1]);
   objc_storeStrong(&self->_parentProcessName, v72[0]);
-  v40 = [(NSString *)self->_parentExecutablePath lastPathComponent];
-  if ([v40 length])
+  lastPathComponent2 = [(NSString *)self->_parentExecutablePath lastPathComponent];
+  if ([lastPathComponent2 length])
   {
-    objc_storeStrong(&self->_parentProcessName, v40);
+    objc_storeStrong(&self->_parentProcessName, lastPathComponent2);
   }
 
   v41 = DWORD1(v73);
@@ -1461,26 +1461,26 @@ LABEL_114:
   return v35;
 }
 
-- (id)_readDataFromMemory:(id)a3 atAddress:(unint64_t)a4 size:(unint64_t)a5
+- (id)_readDataFromMemory:(id)memory atAddress:(unint64_t)address size:(unint64_t)size
 {
-  v7 = a3;
+  memoryCopy = memory;
   __src = 0;
-  if ([v7 mapAddress:a4 size:a5 returnedAddress:&__src returnedSize:0])
+  if ([memoryCopy mapAddress:address size:size returnedAddress:&__src returnedSize:0])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF88] dataWithLength:a5];
-    v9 = [v8 mutableBytes];
-    memcpy(v9, __src, a5);
+    v8 = [MEMORY[0x1E695DF88] dataWithLength:size];
+    mutableBytes = [v8 mutableBytes];
+    memcpy(mutableBytes, __src, size);
   }
 
   return v8;
 }
 
-- (id)_extractInfoPlistFromSymbolOwner:(_CSTypeRef)a3 withMemory:(id)a4
+- (id)_extractInfoPlistFromSymbolOwner:(_CSTypeRef)owner withMemory:(id)memory
 {
   v8 = 0;
   v9 = &v8;
@@ -1488,8 +1488,8 @@ LABEL_114:
   v11 = __Block_byref_object_copy__65;
   v12 = __Block_byref_object_dispose__66;
   v13 = 0;
-  v7 = a4;
-  v4 = v7;
+  memoryCopy = memory;
+  v4 = memoryCopy;
   CSSymbolOwnerForeachSection();
   v5 = v9[5];
 
@@ -1523,12 +1523,12 @@ void __69__VMUProcessDescription__extractInfoPlistFromSymbolOwner_withMemory___b
   }
 }
 
-- (void)_libraryLoaded:(_CSTypeRef)a3
+- (void)_libraryLoaded:(_CSTypeRef)loaded
 {
-  opaque_2 = a3._opaque_2;
-  opaque_1 = a3._opaque_1;
+  opaque_2 = loaded._opaque_2;
+  opaque_1 = loaded._opaque_1;
   v6 = objc_autoreleasePoolPush();
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   Name = CSSymbolOwnerGetName();
   if (Name)
   {
@@ -1547,7 +1547,7 @@ void __69__VMUProcessDescription__extractInfoPlistFromSymbolOwner_withMemory___b
       }
     }
 
-    [v7 setObject:v9 forKey:@"Identifier"];
+    [dictionary setObject:v9 forKey:@"Identifier"];
   }
 
   Path = CSSymbolOwnerGetPath();
@@ -1568,16 +1568,16 @@ void __69__VMUProcessDescription__extractInfoPlistFromSymbolOwner_withMemory___b
       }
     }
 
-    v14 = [(__CFString *)v12 stringByStandardizingPath];
+    stringByStandardizingPath = [(__CFString *)v12 stringByStandardizingPath];
 
-    [v7 setObject:v14 forKey:@"ExecutablePath"];
+    [dictionary setObject:stringByStandardizingPath forKey:@"ExecutablePath"];
   }
 
   CFUUIDBytes = CSSymbolOwnerGetCFUUIDBytes();
   if (CFUUIDBytes)
   {
     v16 = [MEMORY[0x1E695DEF0] dataWithBytes:CFUUIDBytes length:16];
-    [v7 setObject:v16 forKey:@"BinaryInfoDwarfUUIDKey"];
+    [dictionary setObject:v16 forKey:@"BinaryInfoDwarfUUIDKey"];
   }
 
   Architecture = CSSymbolOwnerGetArchitecture();
@@ -1585,7 +1585,7 @@ void __69__VMUProcessDescription__extractInfoPlistFromSymbolOwner_withMemory___b
   if (v18)
   {
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v18];
-    [v7 setObject:v19 forKey:@"BinaryInfoArchitectureKey"];
+    [dictionary setObject:v19 forKey:@"BinaryInfoArchitectureKey"];
   }
 
   v39 = 0;
@@ -1606,10 +1606,10 @@ void __69__VMUProcessDescription__extractInfoPlistFromSymbolOwner_withMemory___b
   if (v40[3] || v36[3])
   {
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{v29, 3221225472, __40__VMUProcessDescription__libraryLoaded___block_invoke, &unk_1E8278210, &v39, &v35}];
-    [v7 setObject:v20 forKey:@"StartAddress"];
+    [dictionary setObject:v20 forKey:@"StartAddress"];
 
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v36[3] - v40[3] + 1];
-    [v7 setObject:v21 forKey:@"Size"];
+    [dictionary setObject:v21 forKey:@"Size"];
   }
 
   v22 = [(VMUProcessDescription *)self _extractInfoPlistFromSymbolOwner:opaque_1 withMemory:opaque_2, self->_memoryCache, v29, v30, v31, v32, v33, v34];
@@ -1619,14 +1619,14 @@ void __69__VMUProcessDescription__extractInfoPlistFromSymbolOwner_withMemory___b
     v24 = [v22 objectForKey:@"CFBundleShortVersionString"];
     if (v24)
     {
-      [v7 setObject:v24 forKey:@"ShortVersionString"];
+      [dictionary setObject:v24 forKey:@"ShortVersionString"];
     }
 
     v25 = [v23 objectForKey:@"CFBundleVersion"];
 
     if (v25)
     {
-      [v7 setObject:v25 forKey:@"Version"];
+      [dictionary setObject:v25 forKey:@"Version"];
     }
   }
 
@@ -1636,13 +1636,13 @@ void __69__VMUProcessDescription__extractInfoPlistFromSymbolOwner_withMemory___b
     v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:Version];
     if (v27)
     {
-      [v7 setObject:v27 forKey:@"SourceVersion"];
+      [dictionary setObject:v27 forKey:@"SourceVersion"];
     }
   }
 
   v28 = self->_binaryImages;
   objc_sync_enter(v28);
-  [(NSMutableArray *)self->_binaryImages addObject:v7];
+  [(NSMutableArray *)self->_binaryImages addObject:dictionary];
   self->_binaryImagePostProcessingComplete = 0;
   objc_sync_exit(v28);
 
@@ -1677,21 +1677,21 @@ unint64_t __40__VMUProcessDescription__libraryLoaded___block_invoke(uint64_t a1)
 
 - (id)processIdentifier
 {
-  v3 = [(VMUProcessDescription *)self binaryImages];
-  v4 = v3;
-  if (!v3 || ![v3 count] || (objc_msgSend(v4, "objectAtIndexedSubscript:", 0), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForKey:", @"Identifier"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  binaryImages = [(VMUProcessDescription *)self binaryImages];
+  v4 = binaryImages;
+  if (!binaryImages || ![binaryImages count] || (objc_msgSend(v4, "objectAtIndexedSubscript:", 0), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForKey:", @"Identifier"), processName = objc_claimAutoreleasedReturnValue(), v5, !processName))
   {
-    v6 = [(VMUProcessDescription *)self processName];
+    processName = [(VMUProcessDescription *)self processName];
   }
 
-  return v6;
+  return processName;
 }
 
 - (id)processVersionDictionary
 {
-  v2 = [(VMUProcessDescription *)self binaryImages];
-  v3 = v2;
-  if (v2 && [v2 count])
+  binaryImages = [(VMUProcessDescription *)self binaryImages];
+  v3 = binaryImages;
+  if (binaryImages && [binaryImages count])
   {
     v4 = [v3 objectAtIndexedSubscript:0];
     v5 = [v4 objectForKey:@"Version"];
@@ -1720,15 +1720,15 @@ unint64_t __40__VMUProcessDescription__libraryLoaded___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)_sanitizeVersion:(id)a3
+- (id)_sanitizeVersion:(id)version
 {
-  v3 = a3;
-  if ([v3 length])
+  versionCopy = version;
+  if ([versionCopy length])
   {
-    v4 = objc_msgSend(v3, "stringByReplacingOccurrencesOfString:withString:", @"("), CFSTR("[");
+    v4 = objc_msgSend(versionCopy, "stringByReplacingOccurrencesOfString:withString:", @"("), CFSTR("[");
 
     v5 = [v4 stringByReplacingOccurrencesOfString:@"" withString:?], @"]");
-    v3 = v4;
+    versionCopy = v4;
   }
 
   else
@@ -1741,9 +1741,9 @@ unint64_t __40__VMUProcessDescription__libraryLoaded___block_invoke(uint64_t a1)
 
 - (id)processVersion
 {
-  v3 = [(VMUProcessDescription *)self processVersionDictionary];
-  v4 = [v3 objectForKey:@"version"];
-  v5 = [v3 objectForKey:@"shortVersion"];
+  processVersionDictionary = [(VMUProcessDescription *)self processVersionDictionary];
+  v4 = [processVersionDictionary objectForKey:@"version"];
+  v5 = [processVersionDictionary objectForKey:@"shortVersion"];
   v6 = MEMORY[0x1E696AEC0];
   if (v5)
   {
@@ -1780,51 +1780,51 @@ void __36__VMUProcessDescription__bundleLock__block_invoke()
   [VMUProcessDescription _bundleLock]::_bundleLock = v0;
 }
 
-- (id)binaryImageDictionaryForAddress:(unint64_t)a3
+- (id)binaryImageDictionaryForAddress:(unint64_t)address
 {
-  v4 = [(VMUProcessDescription *)self binaryImages];
-  v5 = [v4 objectEnumerator];
+  binaryImages = [(VMUProcessDescription *)self binaryImages];
+  objectEnumerator = [binaryImages objectEnumerator];
 
   v6 = 0;
   while (1)
   {
-    v7 = [v5 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v7)
+    if (!nextObject)
     {
       break;
     }
 
-    v8 = [v7 objectForKey:@"StartAddress"];
-    v9 = [v8 unsignedLongLongValue];
+    v8 = [nextObject objectForKey:@"StartAddress"];
+    unsignedLongLongValue = [v8 unsignedLongLongValue];
 
-    v10 = [v7 objectForKey:@"Size"];
-    v11 = [v10 unsignedLongLongValue];
+    v10 = [nextObject objectForKey:@"Size"];
+    unsignedLongLongValue2 = [v10 unsignedLongLongValue];
 
-    v6 = v7;
-    if (v9 <= a3)
+    v6 = nextObject;
+    if (unsignedLongLongValue <= address)
     {
-      v6 = v7;
-      if (v11 + v9 >= a3)
+      v6 = nextObject;
+      if (unsignedLongLongValue2 + unsignedLongLongValue >= address)
       {
         break;
       }
     }
   }
 
-  return v7;
+  return nextObject;
 }
 
-- (id)valueForEnvVar:(id)a3
+- (id)valueForEnvVar:(id)var
 {
   v27 = *MEMORY[0x1E69E9840];
-  v21 = a3;
+  varCopy = var;
   if ((!self || !self->_taskType) && !self->_environment)
   {
     context = objc_autoreleasePoolPush();
     v19 = [[VMUProcInfo alloc] initWithPid:self->_pid];
-    v20 = [(VMUProcInfo *)v19 envVars];
-    if ([v20 count])
+    envVars = [(VMUProcInfo *)v19 envVars];
+    if ([envVars count])
     {
       v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
       environment = self->_environment;
@@ -1834,7 +1834,7 @@ void __36__VMUProcessDescription__bundleLock__block_invoke()
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v6 = v20;
+      v6 = envVars;
       v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:{16, context}];
       if (v7)
       {
@@ -1878,11 +1878,11 @@ void __36__VMUProcessDescription__bundleLock__block_invoke()
     objc_autoreleasePoolPop(context);
   }
 
-  v15 = [(NSMutableDictionary *)self->_environment objectForKeyedSubscript:v21, context];
+  context = [(NSMutableDictionary *)self->_environment objectForKeyedSubscript:varCopy, context];
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return context;
 }
 
 void *__52__VMUProcessDescription_targetUsesExtraPointerBits___block_invoke()
@@ -1916,9 +1916,9 @@ void *__52__VMUProcessDescription_targetUsesExtraPointerBits___block_invoke()
     }
 
 LABEL_16:
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%08X", cpuType];
+    cpuType = [MEMORY[0x1E696AEC0] stringWithFormat:@"%08X", cpuType];
 LABEL_17:
-    v6 = v9;
+    v6 = cpuType;
     goto LABEL_21;
   }
 
@@ -1969,7 +1969,7 @@ LABEL_17:
 
     if (self->_taskIsTranslated)
     {
-      v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ (translated)", v6];
+      cpuType = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ (translated)", v6];
       goto LABEL_17;
     }
   }
@@ -1979,80 +1979,80 @@ LABEL_21:
   return v6;
 }
 
-- (id)_binaryImagesDescriptionForRanges:(id)a3
+- (id)_binaryImagesDescriptionForRanges:(id)ranges
 {
-  v4 = a3;
-  v34 = self;
+  rangesCopy = ranges;
+  selfCopy = self;
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
   self = (self + 72);
   CSRelease();
   self->super.isa = 0;
   self->_memoryCache = 0;
-  v33 = [MEMORY[0x1E696AD60] string];
-  if ([(NSArray *)v34->_unreadableBinaryImagePaths count])
+  string = [MEMORY[0x1E696AD60] string];
+  if ([(NSArray *)selfCopy->_unreadableBinaryImagePaths count])
   {
-    [v33 appendString:@"Unreadable Binary Images:\n"];
-    v7 = [(NSArray *)v34->_unreadableBinaryImagePaths componentsJoinedByString:@"\n"];
-    [v33 appendString:v7];
+    [string appendString:@"Unreadable Binary Images:\n"];
+    v7 = [(NSArray *)selfCopy->_unreadableBinaryImagePaths componentsJoinedByString:@"\n"];
+    [string appendString:v7];
   }
 
-  v8 = [(VMUProcessDescription *)v34 binaryImages];
-  v9 = [v8 count];
+  binaryImages = [(VMUProcessDescription *)selfCopy binaryImages];
+  v9 = [binaryImages count];
 
   if (v9)
   {
-    [v33 appendString:@"Binary Images:\n"];
-    v10 = [(VMUProcessDescription *)v34 binaryImages];
-    v35 = [v10 objectEnumerator];
+    [string appendString:@"Binary Images:\n"];
+    binaryImages2 = [(VMUProcessDescription *)selfCopy binaryImages];
+    objectEnumerator = [binaryImages2 objectEnumerator];
 
-    v11 = 0;
-    v32 = v4;
+    nextObject = 0;
+    v32 = rangesCopy;
     while (1)
     {
-      v12 = v11;
-      v11 = [v35 nextObject];
+      v12 = nextObject;
+      nextObject = [objectEnumerator nextObject];
 
-      if (!v11)
+      if (!nextObject)
       {
         break;
       }
 
       v13 = objc_autoreleasePoolPush();
-      v37 = [v11 objectForKey:@"Identifier"];
-      v36 = [v11 objectForKey:@"ExecutablePath"];
-      v14 = [v11 objectForKey:@"BinaryInfoDwarfUUIDKey"];
-      v15 = [v11 objectForKey:@"Size"];
-      v16 = [v15 unsignedLongLongValue];
+      v37 = [nextObject objectForKey:@"Identifier"];
+      v36 = [nextObject objectForKey:@"ExecutablePath"];
+      v14 = [nextObject objectForKey:@"BinaryInfoDwarfUUIDKey"];
+      v15 = [nextObject objectForKey:@"Size"];
+      unsignedLongLongValue = [v15 unsignedLongLongValue];
 
-      v17 = [v11 objectForKey:@"IsAppleCode"];
-      v18 = [v17 BOOLValue];
+      v17 = [nextObject objectForKey:@"IsAppleCode"];
+      bOOLValue = [v17 BOOLValue];
 
-      v19 = [v11 objectForKey:@"StartAddress"];
+      v19 = [nextObject objectForKey:@"StartAddress"];
       v20 = v19;
       if (v19)
       {
-        v21 = [v19 unsignedLongLongValue];
-        if (!v4 || [v4 indexForLocation:v21] != 0x7FFFFFFFFFFFFFFFLL)
+        unsignedLongLongValue2 = [v19 unsignedLongLongValue];
+        if (!rangesCopy || [rangesCopy indexForLocation:unsignedLongLongValue2] != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v22 = [MEMORY[0x1E696AD60] string];
+          string2 = [MEMORY[0x1E696AD60] string];
           if ([v14 length])
           {
-            [v22 appendString:@"<"];
-            v23 = [v14 bytes];
+            [string2 appendString:@"<"];
+            bytes = [v14 bytes];
             for (i = 0; [v14 length] > i; ++i)
             {
-              [v22 appendFormat:@"%02x", *(v23 + i)];
+              [string2 appendFormat:@"%02x", *(bytes + i)];
             }
 
-            [v22 appendString:@"> "];
+            [string2 appendString:@"> "];
           }
 
-          v25 = [v11 objectForKey:@"BinaryInfoArchitectureKey"];
+          v25 = [nextObject objectForKey:@"BinaryInfoArchitectureKey"];
           v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ ", v25];
           v27 = v26;
           v28 = @"+";
-          if (v18)
+          if (bOOLValue)
           {
             v28 = @" ";
           }
@@ -2063,7 +2063,7 @@ LABEL_21:
             v29 = @"???";
           }
 
-          if (v34->_is64Bit)
+          if (selfCopy->_is64Bit)
           {
             v30 = @"%#18qx - %#18qx %@%@ %@%@ %@%@\n";
           }
@@ -2073,9 +2073,9 @@ LABEL_21:
             v30 = @"%#10lx - %#10lx %@%@ %@%@ %@%@\n";
           }
 
-          [v33 appendFormat:v30, v21, v16 + v21 - 1, v28, v29, v26, &stru_1F461F9C8, v22, v36];
+          [string appendFormat:v30, unsignedLongLongValue2, unsignedLongLongValue + unsignedLongLongValue2 - 1, v28, v29, v26, &stru_1F461F9C8, string2, v36];
 
-          v4 = v32;
+          rangesCopy = v32;
         }
       }
 
@@ -2085,18 +2085,18 @@ LABEL_21:
 
   else
   {
-    [v33 appendString:@"Binary images description not available\n\n"];
+    [string appendString:@"Binary images description not available\n\n"];
   }
 
-  return v33;
+  return string;
 }
 
-- (id)_rangesOfBinaryImages:(id)a3 forBacktraces:(id)a4
+- (id)_rangesOfBinaryImages:(id)images forBacktraces:(id)backtraces
 {
   v49 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v5 = a4;
-  if (!v5)
+  imagesCopy = images;
+  backtracesCopy = backtraces;
+  if (!backtracesCopy)
   {
     goto LABEL_30;
   }
@@ -2107,7 +2107,7 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v33 = v5;
+      v33 = backtracesCopy;
       goto LABEL_6;
     }
 
@@ -2116,7 +2116,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v6 = [MEMORY[0x1E695DEC8] arrayWithObject:v5];
+  v6 = [MEMORY[0x1E695DEC8] arrayWithObject:backtracesCopy];
 
   v33 = v6;
 LABEL_6:
@@ -2126,7 +2126,7 @@ LABEL_6:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v34;
+  obj = imagesCopy;
   v8 = [obj countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v8)
   {
@@ -2145,11 +2145,11 @@ LABEL_6:
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 unsignedLongLongValue];
+          unsignedLongLongValue = [v12 unsignedLongLongValue];
           v15 = [v11 objectForKey:@"Size"];
-          v16 = [v15 unsignedLongLongValue];
+          unsignedLongLongValue2 = [v15 unsignedLongLongValue];
 
-          [(VMURangeArray *)v7 addRange:v14, v16];
+          [(VMURangeArray *)v7 addRange:unsignedLongLongValue, unsignedLongLongValue2];
         }
       }
 
@@ -2184,15 +2184,15 @@ LABEL_6:
         if (objc_opt_isKindOfClass())
         {
           v21 = v20;
-          v22 = [v21 backtrace];
-          v23 = [v21 backtraceLength];
+          backtrace = [v21 backtrace];
+          backtraceLength = [v21 backtraceLength];
           v24 = v18;
-          if (v23)
+          if (backtraceLength)
           {
-            v25 = v23;
+            v25 = backtraceLength;
             do
             {
-              v26 = *v22++;
+              v26 = *backtrace++;
               v27 = [(VMURangeArray *)v7 indexForLocation:v26];
               if (v27 != 0x7FFFFFFFFFFFFFFFLL)
               {
@@ -2222,7 +2222,7 @@ LABEL_6:
     while (v17);
   }
 
-  v5 = obja;
+  backtracesCopy = obja;
 LABEL_31:
 
   v31 = *MEMORY[0x1E69E9840];
@@ -2230,12 +2230,12 @@ LABEL_31:
   return v38;
 }
 
-- (id)binaryImagesDescriptionForBacktraces:(id)a3
+- (id)binaryImagesDescriptionForBacktraces:(id)backtraces
 {
-  v4 = a3;
+  backtracesCopy = backtraces;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(VMUProcessDescription *)self binaryImages];
-  v7 = [(VMUProcessDescription *)self _rangesOfBinaryImages:v6 forBacktraces:v4];
+  binaryImages = [(VMUProcessDescription *)self binaryImages];
+  v7 = [(VMUProcessDescription *)self _rangesOfBinaryImages:binaryImages forBacktraces:backtracesCopy];
 
   v8 = [(VMUProcessDescription *)self _binaryImagesDescriptionForRanges:v7];
 
@@ -2255,21 +2255,21 @@ LABEL_31:
 
 - (id)_buildInfoDescription
 {
-  v3 = [(VMUProcessDescription *)self _buildVersionDictionary];
+  _buildVersionDictionary = [(VMUProcessDescription *)self _buildVersionDictionary];
 
-  if (v3)
+  if (_buildVersionDictionary)
   {
-    v4 = [(VMUProcessDescription *)self _buildVersionDictionary];
-    v5 = [v4 objectForKey:@"ProjectName"];
+    _buildVersionDictionary2 = [(VMUProcessDescription *)self _buildVersionDictionary];
+    v5 = [_buildVersionDictionary2 objectForKey:@"ProjectName"];
 
-    v6 = [(VMUProcessDescription *)self _buildVersionDictionary];
-    v7 = [v6 objectForKey:@"SourceVersion"];
+    _buildVersionDictionary3 = [(VMUProcessDescription *)self _buildVersionDictionary];
+    v7 = [_buildVersionDictionary3 objectForKey:@"SourceVersion"];
 
-    v8 = [(VMUProcessDescription *)self _buildVersionDictionary];
-    v9 = [v8 objectForKey:@"BuildVersion"];
+    _buildVersionDictionary4 = [(VMUProcessDescription *)self _buildVersionDictionary];
+    v9 = [_buildVersionDictionary4 objectForKey:@"BuildVersion"];
 
-    v10 = [(VMUProcessDescription *)self _buildVersionDictionary];
-    v11 = [v10 objectForKey:@"ProductBuildVersion"];
+    _buildVersionDictionary5 = [(VMUProcessDescription *)self _buildVersionDictionary];
+    v11 = [_buildVersionDictionary5 objectForKey:@"ProductBuildVersion"];
 
     v12 = @"Unknown";
     if (v5)
@@ -2319,15 +2319,15 @@ LABEL_31:
   osVersionDictionary = self->_osVersionDictionary;
   if (!osVersionDictionary)
   {
-    v4 = [(VMUProcessDescription *)self _bundleLock];
-    [v4 lock];
+    _bundleLock = [(VMUProcessDescription *)self _bundleLock];
+    [_bundleLock lock];
 
     v5 = _CRGetOSVersionDictionary();
     v6 = self->_osVersionDictionary;
     self->_osVersionDictionary = v5;
 
-    v7 = [(VMUProcessDescription *)self _bundleLock];
-    [v7 unlock];
+    _bundleLock2 = [(VMUProcessDescription *)self _bundleLock];
+    [_bundleLock2 unlock];
 
     osVersionDictionary = self->_osVersionDictionary;
   }
@@ -2337,10 +2337,10 @@ LABEL_31:
 
 - (id)_systemVersionDescription
 {
-  v2 = [(VMUProcessDescription *)self _osVersionDictionary];
-  v3 = [v2 objectForKey:*MEMORY[0x1E695E208]];
-  v4 = [v2 objectForKey:*MEMORY[0x1E695E1F0]];
-  v5 = [v2 objectForKey:*MEMORY[0x1E695E1E8]];
+  _osVersionDictionary = [(VMUProcessDescription *)self _osVersionDictionary];
+  v3 = [_osVersionDictionary objectForKey:*MEMORY[0x1E695E208]];
+  v4 = [_osVersionDictionary objectForKey:*MEMORY[0x1E695E1F0]];
+  v5 = [_osVersionDictionary objectForKey:*MEMORY[0x1E695E1E8]];
   v6 = @"???";
   if (v4)
   {
@@ -2374,8 +2374,8 @@ LABEL_31:
 
 - (id)processDescriptionHeader
 {
-  v31 = [MEMORY[0x1E696AD60] string];
-  [v31 appendFormat:@"Hardware Model:  %@\n", self->_hardwareModel];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"Hardware Model:  %@\n", self->_hardwareModel];
   if (self->_taskType)
   {
     if ([(VMUTaskMemoryCache *)self->_memoryCache representsCore])
@@ -2395,9 +2395,9 @@ LABEL_31:
   }
 
   v4 = [MEMORY[0x1E696AD60] stringWithString:v3];
-  v5 = [(VMUProcessDescription *)self _cpuTypeDescription];
+  _cpuTypeDescription = [(VMUProcessDescription *)self _cpuTypeDescription];
   v39 = v4;
-  if ([v5 isEqualToString:@"ARM64E"])
+  if ([_cpuTypeDescription isEqualToString:@"ARM64E"])
   {
     v6 = [(VMUProcessDescription *)self targetUsesExtraPointerBits:[(VMUTaskMemoryCache *)self->_memoryCache taskPort]];
 
@@ -2411,18 +2411,18 @@ LABEL_31:
   {
   }
 
-  v7 = [(VMUProcessDescription *)self _buildInfoDescription];
-  v30 = v7;
-  v29 = [(VMUProcessDescription *)self processName];
-  v8 = [v29 length];
+  _buildInfoDescription = [(VMUProcessDescription *)self _buildInfoDescription];
+  v30 = _buildInfoDescription;
+  processName = [(VMUProcessDescription *)self processName];
+  v8 = [processName length];
   if (v8)
   {
-    v36 = [(VMUProcessDescription *)self processName];
+    processName2 = [(VMUProcessDescription *)self processName];
   }
 
   else
   {
-    v36 = @"???";
+    processName2 = @"???";
   }
 
   pid = self->_pid;
@@ -2438,37 +2438,37 @@ LABEL_31:
   }
 
   v27 = pid;
-  v26 = [(VMUProcessDescription *)self executablePath];
-  v10 = [v26 length];
+  executablePath = [(VMUProcessDescription *)self executablePath];
+  v10 = [executablePath length];
   if (v10)
   {
-    v34 = [(VMUProcessDescription *)self executablePath];
+    executablePath2 = [(VMUProcessDescription *)self executablePath];
   }
 
   else
   {
-    v34 = @"???";
+    executablePath2 = @"???";
   }
 
   executableLoadAddress = self->_executableLoadAddress;
   v25 = v10;
-  v24 = [(VMUProcessDescription *)self processIdentifier];
-  v38 = [v24 length];
+  processIdentifier = [(VMUProcessDescription *)self processIdentifier];
+  v38 = [processIdentifier length];
   if (v38)
   {
-    v33 = [(VMUProcessDescription *)self processIdentifier];
+    processIdentifier2 = [(VMUProcessDescription *)self processIdentifier];
   }
 
   else
   {
-    v33 = @"???";
+    processIdentifier2 = @"???";
   }
 
-  v37 = [(VMUProcessDescription *)self processVersion];
-  v11 = [v7 length];
+  processVersion = [(VMUProcessDescription *)self processVersion];
+  v11 = [_buildInfoDescription length];
   if (v11)
   {
-    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Build Info:      %@\n", v7];
+    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Build Info:      %@\n", _buildInfoDescription];
   }
 
   else
@@ -2476,7 +2476,7 @@ LABEL_31:
     v32 = &stru_1F461F9C8;
   }
 
-  v12 = [(VMUProcessDescription *)self _cpuTypeDescription];
+  _cpuTypeDescription2 = [(VMUProcessDescription *)self _cpuTypeDescription];
   platform = self->_platform;
   if (platform)
   {
@@ -2490,16 +2490,16 @@ LABEL_31:
     v15 = &stru_1F461F9C8;
   }
 
-  v16 = [(VMUProcessDescription *)self parentProcessName];
-  v17 = [v16 length];
+  parentProcessName = [(VMUProcessDescription *)self parentProcessName];
+  v17 = [parentProcessName length];
   if (v17)
   {
-    v18 = [(VMUProcessDescription *)self parentProcessName];
+    parentProcessName2 = [(VMUProcessDescription *)self parentProcessName];
   }
 
   else
   {
-    v18 = @"???";
+    parentProcessName2 = @"???";
   }
 
   ppid = self->_ppid;
@@ -2513,7 +2513,7 @@ LABEL_31:
     v20 = @"Unknown";
   }
 
-  [v31 appendFormat:@"Process:         %@ [%@]\nPath:            %@\nLoad Address:    %#qx\nIdentifier:      %@\nVersion:         %@\n%@Code Type:       %@\n%@Parent Process:  %@ [%@]\nTarget Type:     %@\n", v36, v35, v34, executableLoadAddress, v33, v37, v32, v12, v15, v18, v20, v39];
+  [string appendFormat:@"Process:         %@ [%@]\nPath:            %@\nLoad Address:    %#qx\nIdentifier:      %@\nVersion:         %@\n%@Code Type:       %@\n%@Parent Process:  %@ [%@]\nTarget Type:     %@\n", processName2, v35, executablePath2, executableLoadAddress, processIdentifier2, processVersion, v32, _cpuTypeDescription2, v15, parentProcessName2, v20, v39];
   if (ppid)
   {
   }
@@ -2546,7 +2546,7 @@ LABEL_31:
   {
   }
 
-  return v31;
+  return string;
 }
 
 - (id)dateAndVersionDescription
@@ -2554,12 +2554,12 @@ LABEL_31:
   v3 = objc_opt_new();
   [v3 setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS ZZZ"];
   v4 = [v3 stringFromDate:self->_date];
-  v5 = [(VMUProcessDescription *)self launchTime];
-  v6 = [v3 stringFromDate:v5];
+  launchTime = [(VMUProcessDescription *)self launchTime];
+  v6 = [v3 stringFromDate:launchTime];
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(VMUProcessDescription *)self _systemVersionDescription];
-  v9 = [v7 stringWithFormat:@"Date/Time:       %@\nLaunch Time:     %@\nOS Version:      %@\nReport Version:  %d\n", v4, v6, v8, 104];
+  _systemVersionDescription = [(VMUProcessDescription *)self _systemVersionDescription];
+  v9 = [v7 stringWithFormat:@"Date/Time:       %@\nLaunch Time:     %@\nOS Version:      %@\nReport Version:  %d\n", v4, v6, _systemVersionDescription, 104];
 
   return v9;
 }
@@ -2663,28 +2663,28 @@ LABEL_15:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_autoreleasePoolPush();
-  v5 = [(VMUProcessDescription *)self processDescriptionHeader];
-  [v3 appendString:v5];
+  processDescriptionHeader = [(VMUProcessDescription *)self processDescriptionHeader];
+  [string appendString:processDescriptionHeader];
 
-  [v3 appendString:@"\n"];
-  v6 = [(VMUProcessDescription *)self dateAndVersionDescription];
-  [v3 appendString:v6];
+  [string appendString:@"\n"];
+  dateAndVersionDescription = [(VMUProcessDescription *)self dateAndVersionDescription];
+  [string appendString:dateAndVersionDescription];
 
-  v7 = [(VMUProcessDescription *)self processStatisticsDescription];
-  if ([v7 length])
+  processStatisticsDescription = [(VMUProcessDescription *)self processStatisticsDescription];
+  if ([processStatisticsDescription length])
   {
-    [v3 appendString:@"\n"];
-    [v3 appendString:v7];
+    [string appendString:@"\n"];
+    [string appendString:processStatisticsDescription];
   }
 
-  [v3 appendString:@"----\n"];
-  [v3 appendString:@"\n"];
+  [string appendString:@"----\n"];
+  [string appendString:@"\n"];
 
   objc_autoreleasePoolPop(v4);
 
-  return v3;
+  return string;
 }
 
 @end

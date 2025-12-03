@@ -1,13 +1,13 @@
 @interface BLSAlwaysOnTimelineUnconfiguredEntry
-+ (id)entryForPresentationTime:(id)a3 withRequestedFidelity:(int64_t)a4;
++ (id)entryForPresentationTime:(id)time withRequestedFidelity:(int64_t)fidelity;
 @end
 
 @implementation BLSAlwaysOnTimelineUnconfiguredEntry
 
-+ (id)entryForPresentationTime:(id)a3 withRequestedFidelity:(int64_t)a4
++ (id)entryForPresentationTime:(id)time withRequestedFidelity:(int64_t)fidelity
 {
-  v5 = a3;
-  v6 = [[BLSAlwaysOnTimelineUnconfiguredEntry alloc] initWithPresentationTime:v5 requestedFidelity:a4 animated:0 duration:0 timelineIdentifier:0 userObject:0.2];
+  timeCopy = time;
+  v6 = [[BLSAlwaysOnTimelineUnconfiguredEntry alloc] initWithPresentationTime:timeCopy requestedFidelity:fidelity animated:0 duration:0 timelineIdentifier:0 userObject:0.2];
 
   return v6;
 }

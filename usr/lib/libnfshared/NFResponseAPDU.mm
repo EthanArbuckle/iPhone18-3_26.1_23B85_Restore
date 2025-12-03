@@ -1,46 +1,46 @@
 @interface NFResponseAPDU
-+ (id)responseWithData:(id)a3;
-- (NFResponseAPDU)initWithData:(id)a3;
++ (id)responseWithData:(id)data;
+- (NFResponseAPDU)initWithData:(id)data;
 - (NSData)response;
-- (unsigned)decodeUnderlyingAppletError:(id *)a3;
+- (unsigned)decodeUnderlyingAppletError:(id *)error;
 @end
 
 @implementation NFResponseAPDU
 
-+ (id)responseWithData:(id)a3
++ (id)responseWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = [NFResponseAPDU alloc];
-  v6 = objc_msgSend_initWithData_(v4, v5, v3);
+  v6 = objc_msgSend_initWithData_(v4, v5, dataCopy);
 
   return v6;
 }
 
-- (NFResponseAPDU)initWithData:(id)a3
+- (NFResponseAPDU)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v20.receiver = self;
   v20.super_class = NFResponseAPDU;
   v7 = [(NFResponseAPDU *)&v20 init];
   if (v7)
   {
     v19 = 0;
-    v8 = objc_msgSend_length(v4, v5, v6);
+    v8 = objc_msgSend_length(dataCopy, v5, v6);
     if ((v8 & 0xFFFFFFFE) != 0)
     {
       v10 = v8;
-      objc_msgSend_getBytes_range_(v4, v9, &v19 + 1, (v8 - 2), 1);
-      objc_msgSend_getBytes_range_(v4, v11, &v19, (v10 - 1), 1);
+      objc_msgSend_getBytes_range_(dataCopy, v9, &v19 + 1, (v8 - 2), 1);
+      objc_msgSend_getBytes_range_(dataCopy, v11, &v19, (v10 - 1), 1);
       v7->_status = v19 | (HIBYTE(v19) << 8);
       v12 = objc_opt_class();
-      if (objc_msgSend_isMemberOfClass_(v4, v13, v12))
+      if (objc_msgSend_isMemberOfClass_(dataCopy, v13, v12))
       {
-        v16 = v4;
+        v16 = dataCopy;
       }
 
       else
       {
-        v16 = objc_msgSend_copy(v4, v14, v15);
+        v16 = objc_msgSend_copy(dataCopy, v14, v15);
       }
 
       data = v7->_data;
@@ -65,12 +65,12 @@
   return objc_msgSend_subdataWithRange_(data, v4, 0, v5);
 }
 
-- (unsigned)decodeUnderlyingAppletError:(id *)a3
+- (unsigned)decodeUnderlyingAppletError:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
   status = self->_status;
   v41 = 0;
-  if (objc_msgSend_length(self->_data, a2, a3) >= 9 && (self->_status & 0xFFF0) == 0x69F0)
+  if (objc_msgSend_length(self->_data, a2, error) >= 9 && (self->_status & 0xFFF0) == 0x69F0)
   {
     v42 = 0;
     data = self->_data;
@@ -141,10 +141,10 @@
       goto LABEL_17;
     }
 
-    if (a3)
+    if (error)
     {
       v22 = objc_msgSend_subdataWithRange_(self->_data, v21, 1, v41);
-      *a3 = objc_msgSend_NF_asHexString(v22, v23, v24);
+      *error = objc_msgSend_NF_asHexString(v22, v23, v24);
 LABEL_17:
     }
   }

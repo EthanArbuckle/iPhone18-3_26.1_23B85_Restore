@@ -24,8 +24,8 @@
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"UIStoryboardSegue.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"source"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIStoryboardSegue.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"source"}];
 
     if (v12)
     {
@@ -33,8 +33,8 @@
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"UIStoryboardSegue.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"destination"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIStoryboardSegue.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"destination"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -61,11 +61,11 @@ LABEL_3:
   v14 = performHandler;
   if (!v14)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"UIStoryboardSegue.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"performHandler != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIStoryboardSegue.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"performHandler != NULL"}];
   }
 
-  v15 = [[a1 alloc] initWithIdentifier:v11 source:v12 destination:v13];
+  v15 = [[self alloc] initWithIdentifier:v11 source:v12 destination:v13];
   [v15 setPerformHandler:v14];
 
   return v15;
@@ -89,8 +89,8 @@ LABEL_3:
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D930];
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(UIStoryboardSegue *)self identifier];
-    v10 = [v8 stringWithFormat:@"Could not perform segue with identifier '%@'. A segue must either have a performHandler or it must override -perform.", v9];
+    identifier = [(UIStoryboardSegue *)self identifier];
+    v10 = [v8 stringWithFormat:@"Could not perform segue with identifier '%@'. A segue must either have a performHandler or it must override -perform.", identifier];
     v11 = [v6 exceptionWithName:v7 reason:v10 userInfo:0];
     v12 = v11;
 

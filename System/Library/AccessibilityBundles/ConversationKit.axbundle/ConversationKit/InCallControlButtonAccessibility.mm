@@ -1,5 +1,5 @@
 @interface InCallControlButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_axGetLabelSubview;
 - (id)accessibilityLabel;
@@ -8,20 +8,20 @@
 
 @implementation InCallControlButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.InCallControlButton" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ConversationKit.InCallControlButton" hasSwiftField:@"cnkContentAlpha" withSwiftType:"CGFloat"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.InCallControlButton" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ConversationKit.InCallControlButton" hasSwiftField:@"cnkContentAlpha" withSwiftType:"CGFloat"];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(InCallControlButtonAccessibility *)self isAccessibilityUserDefinedElement];
-  v4 = v3;
-  if (v3)
+  isAccessibilityUserDefinedElement = [(InCallControlButtonAccessibility *)self isAccessibilityUserDefinedElement];
+  v4 = isAccessibilityUserDefinedElement;
+  if (isAccessibilityUserDefinedElement)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [isAccessibilityUserDefinedElement BOOLValue];
   }
 
   else
@@ -35,89 +35,89 @@
       if ([v7 _accessibilityViewIsVisible])
       {
         [(InCallControlButtonAccessibility *)self safeSwiftCGFloatForKey:@"cnkContentAlpha"];
-        v5 = v8 > 0.0;
+        bOOLValue = v8 > 0.0;
       }
 
       else
       {
-        v5 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
-      v5 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(InCallControlButtonAccessibility *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:@"viewAppButton"])
+  accessibilityIdentifier = [(InCallControlButtonAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"viewAppButton"])
   {
     v4 = @"view.app";
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"openAppButton"])
+  if ([accessibilityIdentifier isEqualToString:@"openAppButton"])
   {
     v4 = @"open.app";
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"tvRemoteButton"])
+  if ([accessibilityIdentifier isEqualToString:@"tvRemoteButton"])
   {
     v4 = @"tv.remote";
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"reviewButton"])
+  if ([accessibilityIdentifier isEqualToString:@"reviewButton"])
   {
     v4 = @"review.join.request";
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"approveRequestButton"])
+  if ([accessibilityIdentifier isEqualToString:@"approveRequestButton"])
   {
 LABEL_10:
     v4 = @"approve.join.request";
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"dismissRequestButton"])
+  if ([accessibilityIdentifier isEqualToString:@"dismissRequestButton"])
   {
     goto LABEL_12;
   }
 
-  if ([v3 isEqualToString:@"lmiApproveButton"])
+  if ([accessibilityIdentifier isEqualToString:@"lmiApproveButton"])
   {
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"lmiRejectButton"])
+  if ([accessibilityIdentifier isEqualToString:@"lmiRejectButton"])
   {
 LABEL_12:
     v4 = @"reject.join.request";
     goto LABEL_13;
   }
 
-  if (![v3 isEqualToString:@"kickMemberButton"])
+  if (![accessibilityIdentifier isEqualToString:@"kickMemberButton"])
   {
     v9.receiver = self;
     v9.super_class = InCallControlButtonAccessibility;
-    v7 = [(InCallControlButtonAccessibility *)&v9 accessibilityLabel];
-    if ([v7 length])
+    accessibilityLabel = [(InCallControlButtonAccessibility *)&v9 accessibilityLabel];
+    if ([accessibilityLabel length])
     {
-      v5 = v7;
+      text = accessibilityLabel;
     }
 
     else
     {
-      v8 = [(InCallControlButtonAccessibility *)self _axGetLabelSubview];
-      v5 = [v8 text];
+      _axGetLabelSubview = [(InCallControlButtonAccessibility *)self _axGetLabelSubview];
+      text = [_axGetLabelSubview text];
     }
 
     goto LABEL_14;
@@ -125,10 +125,10 @@ LABEL_12:
 
   v4 = @"kick.member";
 LABEL_13:
-  v5 = accessibilityLocalizedString(v4);
+  text = accessibilityLocalizedString(v4);
 LABEL_14:
 
-  return v5;
+  return text;
 }
 
 - (unint64_t)accessibilityTraits

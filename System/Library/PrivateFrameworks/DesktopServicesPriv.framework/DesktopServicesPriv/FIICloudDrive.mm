@@ -20,8 +20,8 @@
     v13 = 0;
   }
 
-  v4 = [(FIICloudDrive *)self _libraries];
-  if (v4)
+  _libraries = [(FIICloudDrive *)self _libraries];
+  if (_libraries)
   {
     [(FIICloudDrive *)self _documents];
   }

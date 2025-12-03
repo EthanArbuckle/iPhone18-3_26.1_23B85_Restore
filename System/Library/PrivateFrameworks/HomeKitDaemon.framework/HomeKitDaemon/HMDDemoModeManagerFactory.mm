@@ -1,5 +1,5 @@
 @interface HMDDemoModeManagerFactory
-+ (id)demoManagerWithHomeManager:(id)a3 messageDispatcher:(id)a4;
++ (id)demoManagerWithHomeManager:(id)manager messageDispatcher:(id)dispatcher;
 + (void)loadDemoModeConfiguration;
 + (void)saveDemoModeConfiguration;
 - (HMDDemoModeManagerFactory)init;
@@ -7,11 +7,11 @@
 
 @implementation HMDDemoModeManagerFactory
 
-+ (id)demoManagerWithHomeManager:(id)a3 messageDispatcher:(id)a4
++ (id)demoManagerWithHomeManager:(id)manager messageDispatcher:(id)dispatcher
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_22988EE64(v5, v6);
+  managerCopy = manager;
+  dispatcherCopy = dispatcher;
+  v7 = sub_22988EE64(managerCopy, dispatcherCopy);
 
   return v7;
 }

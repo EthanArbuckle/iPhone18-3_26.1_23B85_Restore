@@ -4,15 +4,15 @@
 + (GKBehavior)behaviorWithGoals:(NSArray *)goals andWeights:(NSArray *)weights;
 + (GKBehavior)behaviorWithWeightedGoals:(NSDictionary *)weightedGoals;
 - (GKBehavior)init;
-- (GKBehavior)initWithGoal:(id)a3 weight:(float)a4;
-- (GKBehavior)initWithGoals:(id)a3;
-- (GKBehavior)initWithGoals:(id)a3 andWeights:(id)a4;
-- (GKBehavior)initWithWeightedGoals:(id)a3;
+- (GKBehavior)initWithGoal:(id)goal weight:(float)weight;
+- (GKBehavior)initWithGoals:(id)goals;
+- (GKBehavior)initWithGoals:(id)goals andWeights:(id)weights;
+- (GKBehavior)initWithWeightedGoals:(id)goals;
 - (NSNumber)objectForKeyedSubscript:(GKGoal *)goal;
-- (__n128)getTotalForce:(uint64_t)a3 agent:(void *)a4;
+- (__n128)getTotalForce:(uint64_t)force agent:(void *)agent;
 - (float)weightForGoal:(GKGoal *)goal;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)removeAllGoals;
 - (void)removeGoal:(GKGoal *)goal;
 - (void)setObject:(NSNumber *)weight forKeyedSubscript:(GKGoal *)goal;
@@ -21,10 +21,10 @@
 
 @implementation GKBehavior
 
-- (__n128)getTotalForce:(uint64_t)a3 agent:(void *)a4
+- (__n128)getTotalForce:(uint64_t)force agent:(void *)agent
 {
-  v6 = a4;
-  if ([a1 goalCount] < 1)
+  agentCopy = agent;
+  if ([self goalCount] < 1)
   {
     v13 = 0u;
   }
@@ -32,25 +32,25 @@
   else
   {
     v7 = 0;
-    [a1[1] objectAtIndex:{0, 0, 0}];
+    [self[1] objectAtIndex:{0, 0, 0}];
     while (1)
       v8 = {;
-      v9 = [a1[2] objectAtIndex:v7];
+      v9 = [self[2] objectAtIndex:v7];
       [v9 floatValue];
       v14 = v10;
 
       if (v8)
       {
-        [v8 getForce:v6 agent:a2];
+        [v8 getForce:agentCopy agent:a2];
         v13 = vmlaq_n_f32(v13, v11, v14);
       }
 
-      if ([a1 goalCount] <= ++v7)
+      if ([self goalCount] <= ++v7)
       {
         break;
       }
 
-      [a1[1] objectAtIndex:{v7, *&v13}];
+      [self[1] objectAtIndex:{v7, *&v13}];
     }
   }
 
@@ -64,13 +64,13 @@
   v2 = [(GKBehavior *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     goals = v2->_goals;
-    v2->_goals = v3;
+    v2->_goals = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     weights = v2->_weights;
-    v2->_weights = v5;
+    v2->_weights = array2;
   }
 
   return v2;
@@ -86,15 +86,15 @@
   return v8;
 }
 
-- (GKBehavior)initWithGoal:(id)a3 weight:(float)a4
+- (GKBehavior)initWithGoal:(id)goal weight:(float)weight
 {
-  v6 = a3;
+  goalCopy = goal;
   v7 = [(GKBehavior *)self init];
   v9 = v7;
   if (v7)
   {
-    *&v8 = a4;
-    [(GKBehavior *)v7 setWeight:v6 forGoal:v8];
+    *&v8 = weight;
+    [(GKBehavior *)v7 setWeight:goalCopy forGoal:v8];
   }
 
   return v9;
@@ -103,15 +103,15 @@
 + (GKBehavior)behaviorWithGoals:(NSArray *)goals
 {
   v4 = goals;
-  v5 = [[a1 alloc] initWithGoals:v4];
+  v5 = [[self alloc] initWithGoals:v4];
 
   return v5;
 }
 
-- (GKBehavior)initWithGoals:(id)a3
+- (GKBehavior)initWithGoals:(id)goals
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  goalsCopy = goals;
   v5 = [(GKBehavior *)self init];
   if (v5)
   {
@@ -119,7 +119,7 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = goalsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -155,32 +155,32 @@
 {
   v6 = weights;
   v7 = goals;
-  v8 = [[a1 alloc] initWithGoals:v7 andWeights:v6];
+  v8 = [[self alloc] initWithGoals:v7 andWeights:v6];
 
   return v8;
 }
 
-- (GKBehavior)initWithGoals:(id)a3 andWeights:(id)a4
+- (GKBehavior)initWithGoals:(id)goals andWeights:(id)weights
 {
-  v6 = a3;
-  v7 = a4;
+  goalsCopy = goals;
+  weightsCopy = weights;
   v8 = [(GKBehavior *)self init];
-  if (v8 && [v6 count])
+  if (v8 && [goalsCopy count])
   {
     v9 = 0;
     do
     {
-      v10 = [v7 objectAtIndexedSubscript:v9];
+      v10 = [weightsCopy objectAtIndexedSubscript:v9];
       [v10 floatValue];
       v12 = v11;
-      v13 = [v6 objectAtIndexedSubscript:v9];
+      v13 = [goalsCopy objectAtIndexedSubscript:v9];
       LODWORD(v14) = v12;
       [(GKBehavior *)v8 setWeight:v13 forGoal:v14];
 
       ++v9;
     }
 
-    while ([v6 count] > v9);
+    while ([goalsCopy count] > v9);
   }
 
   return v8;
@@ -189,35 +189,35 @@
 + (GKBehavior)behaviorWithWeightedGoals:(NSDictionary *)weightedGoals
 {
   v4 = weightedGoals;
-  v5 = [[a1 alloc] initWithWeightedGoals:v4];
+  v5 = [[self alloc] initWithWeightedGoals:v4];
 
   return v5;
 }
 
-- (GKBehavior)initWithWeightedGoals:(id)a3
+- (GKBehavior)initWithWeightedGoals:(id)goals
 {
-  v4 = a3;
+  goalsCopy = goals;
   v5 = [(GKBehavior *)self init];
   if (v5)
   {
-    v6 = [v4 allKeys];
-    v7 = [v4 allValues];
-    if ([v6 count])
+    allKeys = [goalsCopy allKeys];
+    allValues = [goalsCopy allValues];
+    if ([allKeys count])
     {
       v8 = 0;
       do
       {
-        v9 = [v7 objectAtIndexedSubscript:v8];
+        v9 = [allValues objectAtIndexedSubscript:v8];
         [v9 floatValue];
         v11 = v10;
-        v12 = [v6 objectAtIndexedSubscript:v8];
+        v12 = [allKeys objectAtIndexedSubscript:v8];
         LODWORD(v13) = v11;
         [(GKBehavior *)v5 setWeight:v12 forGoal:v13];
 
         ++v8;
       }
 
-      while ([v6 count] > v8);
+      while ([allKeys count] > v8);
     }
   }
 
@@ -312,7 +312,7 @@
   return [(GKBehavior *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(GKBehavior);
   v5 = [MEMORY[0x277CBEB18] arrayWithArray:self->_goals];

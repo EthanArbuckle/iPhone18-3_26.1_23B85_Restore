@@ -1,24 +1,24 @@
 @interface RunningBoardAssertion
 - (_TtC16MusicRecognition21RunningBoardAssertion)init;
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4;
-- (void)assertionWillInvalidate:(id)a3;
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error;
+- (void)assertionWillInvalidate:(id)invalidate;
 @end
 
 @implementation RunningBoardAssertion
 
-- (void)assertionWillInvalidate:(id)a3
+- (void)assertionWillInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000CEC2C(v4);
+  invalidateCopy = invalidate;
+  selfCopy = self;
+  sub_1000CEC2C(invalidateCopy);
 }
 
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_1000CED68(v6, a4);
+  assertionCopy = assertion;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1000CED68(assertionCopy, error);
 }
 
 - (_TtC16MusicRecognition21RunningBoardAssertion)init

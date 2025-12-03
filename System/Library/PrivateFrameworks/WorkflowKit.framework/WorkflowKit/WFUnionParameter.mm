@@ -1,8 +1,8 @@
 @interface WFUnionParameter
 - (NSArray)subparameters;
 - (WFAction)action;
-- (WFUnionParameter)initWithDefinition:(id)a3;
-- (id)subdefinitionForType:(id)a3;
+- (WFUnionParameter)initWithDefinition:(id)definition;
+- (id)subdefinitionForType:(id)type;
 @end
 
 @implementation WFUnionParameter
@@ -16,17 +16,17 @@
 
 - (NSArray)subparameters
 {
-  v2 = [(WFUnionParameter *)self subdefinitions];
-  v3 = [v2 if_compactMap:&__block_literal_global_8330];
+  subdefinitions = [(WFUnionParameter *)self subdefinitions];
+  v3 = [subdefinitions if_compactMap:&__block_literal_global_8330];
 
   return v3;
 }
 
-- (id)subdefinitionForType:(id)a3
+- (id)subdefinitionForType:(id)type
 {
-  v4 = a3;
-  v5 = [(WFUnionParameter *)self subtypes];
-  v6 = [v5 indexOfObject:v4];
+  typeCopy = type;
+  subtypes = [(WFUnionParameter *)self subtypes];
+  v6 = [subtypes indexOfObject:typeCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -35,27 +35,27 @@
 
   else
   {
-    v8 = [(WFUnionParameter *)self subdefinitions];
-    v7 = [v8 objectAtIndex:v6];
+    subdefinitions = [(WFUnionParameter *)self subdefinitions];
+    v7 = [subdefinitions objectAtIndex:v6];
   }
 
   return v7;
 }
 
-- (WFUnionParameter)initWithDefinition:(id)a3
+- (WFUnionParameter)initWithDefinition:(id)definition
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  definitionCopy = definition;
   v66.receiver = self;
   v66.super_class = WFUnionParameter;
-  v5 = [(WFParameter *)&v66 initWithDefinition:v4];
+  v5 = [(WFParameter *)&v66 initWithDefinition:definitionCopy];
   if (!v5)
   {
     goto LABEL_37;
   }
 
-  v52 = v4;
-  v6 = [v4 objectForKey:@"WFUnionTypes"];
+  v52 = definitionCopy;
+  v6 = [definitionCopy objectForKey:@"WFUnionTypes"];
   v7 = objc_opt_class();
   v8 = WFEnforceClass_8337(v6, v7);
   subtypes = v5->_subtypes;
@@ -133,7 +133,7 @@ LABEL_15:
   while (v12);
 LABEL_17:
 
-  v22 = [v4 objectForKey:@"WFUnionDefinitions"];
+  v22 = [definitionCopy objectForKey:@"WFUnionDefinitions"];
   v23 = objc_opt_class();
   v24 = WFEnforceClass_8337(v22, v23);
   subdefinitions = v51->_subdefinitions;
@@ -225,7 +225,7 @@ LABEL_17:
   v51->_parameterMetadataByType = v53;
 
   v48 = v51;
-  v4 = v52;
+  definitionCopy = v52;
 LABEL_37:
 
   v49 = *MEMORY[0x1E69E9840];

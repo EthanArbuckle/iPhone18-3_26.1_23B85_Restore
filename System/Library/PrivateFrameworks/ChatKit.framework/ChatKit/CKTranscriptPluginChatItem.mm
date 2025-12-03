@@ -7,12 +7,12 @@
 - (BOOL)hasTail;
 - (BOOL)isPlayed;
 - (BOOL)isSaved;
-- (BOOL)shouldAllowExtraTallHeightForBundleID:(id)a3;
+- (BOOL)shouldAllowExtraTallHeightForBundleID:(id)d;
 - (BOOL)shouldShowGroupAvatar;
 - (BOOL)shouldSnapshot;
 - (BOOL)wantsPendingMessageStyle;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
-- (CKTranscriptPluginChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
+- (CKTranscriptPluginChatItem)initWithIMChatItem:(id)item maxWidth:(double)width;
 - (Class)balloonViewClass;
 - (NSString)bundleIdentifier;
 - (UIEdgeInsets)contentInsets;
@@ -20,28 +20,28 @@
 - (UIEdgeInsets)textAlignmentInsets;
 - (char)transcriptOrientation;
 - (double)balloonCornerRadius;
-- (id)balloonControllerForContext:(id)a3;
+- (id)balloonControllerForContext:(id)context;
 - (id)cellIdentifier;
-- (id)compositionWithContext:(id)a3;
+- (id)compositionWithContext:(id)context;
 - (id)contact;
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 - (id)dragItemProvider;
-- (id)extensibleViewControllerForContext:(id)a3;
-- (id)extensibleViewForContext:(id)a3;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)extensibleViewControllerForContext:(id)context;
+- (id)extensibleViewForContext:(id)context;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 - (id)loadTranscriptDrawerText;
 - (id)message;
-- (id)pluginDisplayContainerForContext:(id)a3;
-- (id)rtfDocumentItemsWithFormatString:(id)a3 selectedTextRange:(_NSRange)a4;
+- (id)pluginDisplayContainerForContext:(id)context;
+- (id)rtfDocumentItemsWithFormatString:(id)string selectedTextRange:(_NSRange)range;
 - (id)sender;
-- (id)snapshotGUIDForPluginPayload:(id)a3;
+- (id)snapshotGUIDForPluginPayload:(id)payload;
 - (unint64_t)layoutType;
-- (void)_cacheConversationID:(id)a3 recipients:(id)a4 isBusiness:(BOOL)a5;
-- (void)_configureBalloonController:(id)a3 conversationID:(id)a4 recipients:(id)a5 isBusiness:(BOOL)a6;
-- (void)configureWithConversationID:(id)a3 recipients:(id)a4 isBusiness:(BOOL)a5 context:(id)a6;
-- (void)performHostAppResumeWithContext:(id)a3;
-- (void)releaseBalloonControllerIfNeededForContext:(id)a3;
-- (void)relinquishBalloonControllerForContext:(id)a3;
+- (void)_cacheConversationID:(id)d recipients:(id)recipients isBusiness:(BOOL)business;
+- (void)_configureBalloonController:(id)controller conversationID:(id)d recipients:(id)recipients isBusiness:(BOOL)business;
+- (void)configureWithConversationID:(id)d recipients:(id)recipients isBusiness:(BOOL)business context:(id)context;
+- (void)performHostAppResumeWithContext:(id)context;
+- (void)releaseBalloonControllerIfNeededForContext:(id)context;
+- (void)relinquishBalloonControllerForContext:(id)context;
 @end
 
 @implementation CKTranscriptPluginChatItem
@@ -59,24 +59,24 @@
   }
 }
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
-  height = a7.height;
-  width = a7.width;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  height = override.height;
+  width = override.width;
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
   if ([(CKTranscriptPluginChatItem *)self isAppearing])
   {
-    if (a4 >= 1 && ([v14 objectAtIndex:a4 - 1], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (index >= 1 && ([itemsCopy objectAtIndex:index - 1], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v17 = v16;
-      v18 = [CKChatItemLayoutUtilities transcriptVerticalEdgeSpacingForChatItem:self previousChatItem:v16 topSpacing:0.0 bottomSpacing:0.0];
+      height = [CKChatItemLayoutUtilities transcriptVerticalEdgeSpacingForChatItem:self previousChatItem:v16 topSpacing:0.0 bottomSpacing:0.0];
     }
 
     else
     {
-      v18 = 0;
+      height = 0;
     }
   }
 
@@ -84,44 +84,44 @@
   {
     v20.receiver = self;
     v20.super_class = CKTranscriptPluginChatItem;
-    v18 = [(CKChatItem *)&v20 layoutItemSpacingWithEnvironment:v13 datasourceItemIndex:a4 allDatasourceItems:v14 supplementryItems:v15 sizeOverride:width, height];
+    height = [(CKChatItem *)&v20 layoutItemSpacingWithEnvironment:environmentCopy datasourceItemIndex:index allDatasourceItems:itemsCopy supplementryItems:supplementryItemsCopy sizeOverride:width, height];
   }
 
-  return v18;
+  return height;
 }
 
-- (id)compositionWithContext:(id)a3
+- (id)compositionWithContext:(id)context
 {
-  v3 = [(CKTranscriptPluginChatItem *)self pluginDisplayContainerForContext:a3];
+  v3 = [(CKTranscriptPluginChatItem *)self pluginDisplayContainerForContext:context];
   v4 = [CKComposition compositionWithPluginDisplayContainer:v3 subject:0];
 
   return v4;
 }
 
-- (CKTranscriptPluginChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4
+- (CKTranscriptPluginChatItem)initWithIMChatItem:(id)item maxWidth:(double)width
 {
-  v6 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = CKTranscriptPluginChatItem;
-  v7 = [(CKMessagePartChatItem *)&v11 initWithIMChatItem:v6 maxWidth:a4];
+  v7 = [(CKMessagePartChatItem *)&v11 initWithIMChatItem:itemCopy maxWidth:width];
   v8 = v7;
   if (v7)
   {
-    [(CKTranscriptPluginChatItem *)v7 setImTranscriptPluginChatItem:v6];
-    v9 = [v6 type];
-    v8->_isHandwriting = [v9 isEqualToString:*MEMORY[0x1E69A69E0]];
+    [(CKTranscriptPluginChatItem *)v7 setImTranscriptPluginChatItem:itemCopy];
+    type = [itemCopy type];
+    v8->_isHandwriting = [type isEqualToString:*MEMORY[0x1E69A69E0]];
   }
 
   return v8;
 }
 
-- (id)extensibleViewForContext:(id)a3
+- (id)extensibleViewForContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v5 = [(CKTranscriptPluginChatItem *)self balloonControllerForContext:v4];
-    v6 = [v5 pluginContentView];
+    v5 = [(CKTranscriptPluginChatItem *)self balloonControllerForContext:contextCopy];
+    pluginContentView = [v5 pluginContentView];
   }
 
   else
@@ -136,52 +136,52 @@
       }
     }
 
-    v6 = 0;
+    pluginContentView = 0;
   }
 
-  return v6;
+  return pluginContentView;
 }
 
-- (id)extensibleViewControllerForContext:(id)a3
+- (id)extensibleViewControllerForContext:(id)context
 {
-  v3 = [(CKTranscriptPluginChatItem *)self balloonControllerForContext:a3];
+  v3 = [(CKTranscriptPluginChatItem *)self balloonControllerForContext:context];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 pluginContentViewController];
+    pluginContentViewController = [v3 pluginContentViewController];
   }
 
   else
   {
-    v4 = 0;
+    pluginContentViewController = 0;
   }
 
-  return v4;
+  return pluginContentViewController;
 }
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
-  v3 = [(CKTranscriptPluginChatItem *)self balloonControllerForContext:a3];
+  v3 = [(CKTranscriptPluginChatItem *)self balloonControllerForContext:context];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 contentViewController];
+    contentViewController = [v3 contentViewController];
   }
 
   else
   {
-    v4 = 0;
+    contentViewController = 0;
   }
 
-  return v4;
+  return contentViewController;
 }
 
 - (double)balloonCornerRadius
 {
-  v3 = [(CKTranscriptPluginChatItem *)self imTranscriptPluginChatItem];
-  v4 = [v3 dataSource];
+  imTranscriptPluginChatItem = [(CKTranscriptPluginChatItem *)self imTranscriptPluginChatItem];
+  dataSource = [imTranscriptPluginChatItem dataSource];
 
-  v5 = [v4 bundleID];
+  bundleID = [dataSource bundleID];
   v6 = IMBalloonExtensionIDWithSuffix();
-  v7 = [v5 isEqualToString:v6];
+  v7 = [bundleID isEqualToString:v6];
 
   if (v7)
   {
@@ -201,20 +201,20 @@
   return v10;
 }
 
-- (id)balloonControllerForContext:(id)a3
+- (id)balloonControllerForContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v5 = [MEMORY[0x1E69A5AD0] sharedInstance];
-    v6 = [(CKTranscriptPluginChatItem *)self imTranscriptPluginChatItem];
-    v7 = [v5 balloonControllerForIMChatItem:v6 contextIdentifier:v4];
+    mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+    imTranscriptPluginChatItem = [(CKTranscriptPluginChatItem *)self imTranscriptPluginChatItem];
+    v7 = [mEMORY[0x1E69A5AD0] balloonControllerForIMChatItem:imTranscriptPluginChatItem contextIdentifier:contextCopy];
 
     if (v7)
     {
-      v8 = [(CKTranscriptPluginChatItem *)self conversationID];
-      v9 = [(CKTranscriptPluginChatItem *)self recipients];
-      [(CKTranscriptPluginChatItem *)self _configureBalloonController:v7 conversationID:v8 recipients:v9 isBusiness:[(CKTranscriptPluginChatItem *)self isBusiness]];
+      conversationID = [(CKTranscriptPluginChatItem *)self conversationID];
+      recipients = [(CKTranscriptPluginChatItem *)self recipients];
+      [(CKTranscriptPluginChatItem *)self _configureBalloonController:v7 conversationID:conversationID recipients:recipients isBusiness:[(CKTranscriptPluginChatItem *)self isBusiness]];
 
       v10 = v7;
     }
@@ -248,81 +248,81 @@
   return v7;
 }
 
-- (void)configureWithConversationID:(id)a3 recipients:(id)a4 isBusiness:(BOOL)a5 context:(id)a6
+- (void)configureWithConversationID:(id)d recipients:(id)recipients isBusiness:(BOOL)business context:(id)context
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  [(CKTranscriptPluginChatItem *)self _cacheConversationID:v12 recipients:v11 isBusiness:v6];
-  v13 = [(CKTranscriptPluginChatItem *)self balloonControllerForContext:v10];
+  businessCopy = business;
+  contextCopy = context;
+  recipientsCopy = recipients;
+  dCopy = d;
+  [(CKTranscriptPluginChatItem *)self _cacheConversationID:dCopy recipients:recipientsCopy isBusiness:businessCopy];
+  v13 = [(CKTranscriptPluginChatItem *)self balloonControllerForContext:contextCopy];
 
-  [(CKTranscriptPluginChatItem *)self _configureBalloonController:v13 conversationID:v12 recipients:v11 isBusiness:v6];
+  [(CKTranscriptPluginChatItem *)self _configureBalloonController:v13 conversationID:dCopy recipients:recipientsCopy isBusiness:businessCopy];
 }
 
-- (void)_configureBalloonController:(id)a3 conversationID:(id)a4 recipients:(id)a5 isBusiness:(BOOL)a6
+- (void)_configureBalloonController:(id)controller conversationID:(id)d recipients:(id)recipients isBusiness:(BOOL)business
 {
-  v6 = a6;
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v6)
+  businessCopy = business;
+  controllerCopy = controller;
+  dCopy = d;
+  recipientsCopy = recipients;
+  if (businessCopy)
   {
-    v12 = [(CKChatItem *)self IMChatItem];
-    v13 = [v12 isAllowlistedRichLinkSender];
+    iMChatItem = [(CKChatItem *)self IMChatItem];
+    isAllowlistedRichLinkSender = [iMChatItem isAllowlistedRichLinkSender];
 
-    if (v13)
+    if (isAllowlistedRichLinkSender)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v14 setAllowsOpeningSensitiveURLs:1];
+        [controllerCopy setAllowsOpeningSensitiveURLs:1];
       }
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v14 configureWithConversationID:v10 recipients:v11];
+    [controllerCopy configureWithConversationID:dCopy recipients:recipientsCopy];
   }
 }
 
-- (void)_cacheConversationID:(id)a3 recipients:(id)a4 isBusiness:(BOOL)a5
+- (void)_cacheConversationID:(id)d recipients:(id)recipients isBusiness:(BOOL)business
 {
-  v5 = a5;
-  v8 = a4;
-  [(CKTranscriptPluginChatItem *)self setConversationID:a3];
-  [(CKTranscriptPluginChatItem *)self setRecipients:v8];
+  businessCopy = business;
+  recipientsCopy = recipients;
+  [(CKTranscriptPluginChatItem *)self setConversationID:d];
+  [(CKTranscriptPluginChatItem *)self setRecipients:recipientsCopy];
 
-  [(CKTranscriptPluginChatItem *)self setIsBusiness:v5];
+  [(CKTranscriptPluginChatItem *)self setIsBusiness:businessCopy];
 }
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 dataSource];
-  v4 = [v3 pluginPayload];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  dataSource = [iMChatItem dataSource];
+  pluginPayload = [dataSource pluginPayload];
 
-  v5 = [v4 pluginBundleID];
+  pluginBundleID = [pluginPayload pluginBundleID];
 
-  return v5;
+  return pluginBundleID;
 }
 
 - (BOOL)canPerformQuickAction
 {
-  v3 = [(CKChatItem *)self IMChatItem];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(CKChatItem *)self IMChatItem];
-    v6 = [v5 messageItem];
+    iMChatItem2 = [(CKChatItem *)self IMChatItem];
+    messageItem = [iMChatItem2 messageItem];
 
-    v7 = [v6 swyBundleID];
-    if (v7)
+    swyBundleID = [messageItem swyBundleID];
+    if (swyBundleID)
     {
-      v8 = [MEMORY[0x1E69A8288] sharedManager];
-      v9 = [v8 showPinningStatusTextForBundleID:v7];
+      mEMORY[0x1E69A8288] = [MEMORY[0x1E69A8288] sharedManager];
+      v9 = [mEMORY[0x1E69A8288] showPinningStatusTextForBundleID:swyBundleID];
 
       v10 = ![(CKChatItem *)self isHighlighted]& v9;
     }
@@ -343,9 +343,9 @@
 
 - (BOOL)canCopy
 {
-  v3 = [(CKChatItem *)self IMChatItem];
-  v4 = [v3 type];
-  v5 = [v4 containsString:*MEMORY[0x1E69A69F0]];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  type = [iMChatItem type];
+  v5 = [type containsString:*MEMORY[0x1E69A69F0]];
 
   if (v5)
   {
@@ -359,9 +359,9 @@
 
 - (BOOL)canForward
 {
-  v3 = [(CKChatItem *)self IMChatItem];
-  v4 = [v3 type];
-  v5 = [v4 containsString:*MEMORY[0x1E69A69F0]];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  type = [iMChatItem type];
+  v5 = [type containsString:*MEMORY[0x1E69A69F0]];
 
   if (v5)
   {
@@ -375,8 +375,8 @@
 
 - (BOOL)canInlineReply
 {
-  v3 = [(CKChatItem *)self IMChatItem];
-  if ([v3 canReply])
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  if ([iMChatItem canReply])
   {
     if ([(CKMessagePartChatItem *)self isReply])
     {
@@ -385,9 +385,9 @@
 
     else
     {
-      v5 = [(CKChatItem *)self IMChatItem];
-      v6 = [v5 type];
-      v4 = [v6 containsString:*MEMORY[0x1E69A6A18]];
+      iMChatItem2 = [(CKChatItem *)self IMChatItem];
+      type = [iMChatItem2 type];
+      v4 = [type containsString:*MEMORY[0x1E69A6A18]];
     }
   }
 
@@ -401,17 +401,17 @@
 
 - (id)message
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 message];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  message = [iMChatItem message];
 
-  return v3;
+  return message;
 }
 
-- (id)pluginDisplayContainerForContext:(id)a3
+- (id)pluginDisplayContainerForContext:(id)context
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -430,11 +430,11 @@ LABEL_25:
     goto LABEL_35;
   }
 
-  v5 = [(CKChatItem *)self IMChatItem];
-  v6 = [v5 dataSource];
-  v7 = [v6 pluginPayload];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  dataSource = [iMChatItem dataSource];
+  pluginPayload = [dataSource pluginPayload];
 
-  if (!v7)
+  if (!pluginPayload)
   {
     if (IMOSLoggingEnabled())
     {
@@ -453,19 +453,19 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v8 = [v7 cleansedCopy];
+  cleansedCopy = [pluginPayload cleansedCopy];
 
-  v9 = [(CKTranscriptPluginChatItem *)self snapshotGUIDForPluginPayload:v8];
+  v9 = [(CKTranscriptPluginChatItem *)self snapshotGUIDForPluginPayload:cleansedCopy];
   v10 = [CKSnapshotUtilities snapshotForGUID:v9];
-  v11 = [v10 image];
+  image = [v10 image];
 
-  if (v11 && ([v10 image], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (image && ([v10 image], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v14 = [(CKTranscriptPluginChatItem *)self extensibleViewForContext:v4];
+    v14 = [(CKTranscriptPluginChatItem *)self extensibleViewForContext:contextCopy];
     v15 = v14;
     if (!v14 || ([v14 bounds], v17 == *MEMORY[0x1E695F060]) && v16 == *(MEMORY[0x1E695F060] + 8))
     {
@@ -504,14 +504,14 @@ LABEL_24:
       [v15 bounds];
       v25 = v24;
       v27 = v26;
-      v28 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v28 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v30 = v29;
       v81.width = v25;
       v81.height = v27;
       UIGraphicsBeginImageContextWithOptions(v81, 0, v30);
 
-      v57 = [(CKTranscriptPluginChatItem *)self balloonControllerForContext:v4];
+      v57 = [(CKTranscriptPluginChatItem *)self balloonControllerForContext:contextCopy];
       if ((objc_opt_respondsToSelector() & 1) != 0 && ([v57 messageTintColor], (v31 = objc_claimAutoreleasedReturnValue()) != 0) || (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v32, "theme"), v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v33, "balloonColorsForColorType:", 0xFFFFFFFFLL), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "lastObject"), v31 = objc_claimAutoreleasedReturnValue(), v34, v33, v32, v31))
       {
         CurrentContext = UIGraphicsGetCurrentContext();
@@ -541,9 +541,9 @@ LABEL_24:
   v38 = +[CKUIBehavior sharedBehaviors];
   [v38 balloonCornerRadius];
   v40 = v39;
-  v41 = [(CKChatItem *)self transcriptTraitCollection];
-  v42 = CKBackgroundLevelForTraitCollection(v41);
-  v43 = [v41 userInterfaceStyle];
+  transcriptTraitCollection = [(CKChatItem *)self transcriptTraitCollection];
+  v42 = CKBackgroundLevelForTraitCollection(transcriptTraitCollection);
+  userInterfaceStyle = [transcriptTraitCollection userInterfaceStyle];
   v44 = *MEMORY[0x1E69A6E08];
   v45 = *(MEMORY[0x1E69A6E08] + 8);
   v46 = *(MEMORY[0x1E69A6E08] + 16);
@@ -566,7 +566,7 @@ LABEL_24:
   v68 = v46;
   v69 = v47;
   v70 = 0;
-  v72 = v43;
+  v72 = userInterfaceStyle;
   v73 = v42;
   v75 = 0;
   v74 = 0;
@@ -585,48 +585,48 @@ LABEL_24:
 
   UIGraphicsEndImageContext();
 LABEL_34:
-  v23 = [CKPluginDisplayContainer pluginDisplayContainerWithPluginPayload:v8 composeImage:v55];
+  v23 = [CKPluginDisplayContainer pluginDisplayContainerWithPluginPayload:cleansedCopy composeImage:v55];
 
 LABEL_35:
 
   return v23;
 }
 
-- (id)rtfDocumentItemsWithFormatString:(id)a3 selectedTextRange:(_NSRange)a4
+- (id)rtfDocumentItemsWithFormatString:(id)string selectedTextRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [(CKChatItem *)self transcriptIdentifier];
-  v9 = [(CKTranscriptPluginChatItem *)self pluginDisplayContainerForContext:v8];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  transcriptIdentifier = [(CKChatItem *)self transcriptIdentifier];
+  v9 = [(CKTranscriptPluginChatItem *)self pluginDisplayContainerForContext:transcriptIdentifier];
 
-  v10 = [v9 rtfDocumentItemsWithFormatString:v7 selectedTextRange:{location, length}];
+  v10 = [v9 rtfDocumentItemsWithFormatString:stringCopy selectedTextRange:{location, length}];
 
   return v10;
 }
 
 - (id)sender
 {
-  v2 = [(CKTranscriptPluginChatItem *)self message];
-  v3 = [v2 sender];
+  message = [(CKTranscriptPluginChatItem *)self message];
+  sender = [message sender];
 
-  return v3;
+  return sender;
 }
 
 - (id)contact
 {
-  v2 = [(CKTranscriptPluginChatItem *)self sender];
-  v3 = [[CKEntity alloc] initWithIMHandle:v2];
-  v4 = [(CKEntity *)v3 cnContact];
+  sender = [(CKTranscriptPluginChatItem *)self sender];
+  v3 = [[CKEntity alloc] initWithIMHandle:sender];
+  cnContact = [(CKEntity *)v3 cnContact];
 
-  return v4;
+  return cnContact;
 }
 
 - (id)cellIdentifier
 {
-  v2 = [(CKTranscriptPluginChatItem *)self balloonViewClass];
+  balloonViewClass = [(CKTranscriptPluginChatItem *)self balloonViewClass];
 
-  return NSStringFromClass(v2);
+  return NSStringFromClass(balloonViewClass);
 }
 
 - (Class)balloonViewClass
@@ -643,31 +643,31 @@ LABEL_35:
 
 - (BOOL)hasTail
 {
-  v3 = [(CKTranscriptPluginChatItem *)self imTranscriptPluginChatItem];
-  v4 = [v3 dataSource];
+  imTranscriptPluginChatItem = [(CKTranscriptPluginChatItem *)self imTranscriptPluginChatItem];
+  dataSource = [imTranscriptPluginChatItem dataSource];
 
-  v5 = [v4 pluginPayload];
-  v6 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v7 = [v5 pluginBundleID];
-  v8 = [v6 balloonPluginForBundleID:v7];
+  pluginPayload = [dataSource pluginPayload];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  pluginBundleID = [pluginPayload pluginBundleID];
+  v8 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:pluginBundleID];
 
-  v9 = [v4 bundleID];
+  bundleID = [dataSource bundleID];
   v10 = IMBalloonExtensionIDWithSuffix();
-  v11 = [v9 isEqualToString:v10];
+  v11 = [bundleID isEqualToString:v10];
 
   if (v11 & 1) != 0 || ([v8 linkedBeforeSDKVersion:@"19.0"])
   {
-    v12 = 0;
+    hasTail = 0;
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = CKTranscriptPluginChatItem;
-    v12 = [(CKChatItem *)&v14 hasTail];
+    hasTail = [(CKChatItem *)&v14 hasTail];
   }
 
-  return v12;
+  return hasTail;
 }
 
 - (BOOL)shouldShowGroupAvatar
@@ -679,16 +679,16 @@ LABEL_35:
 
 - (BOOL)shouldSnapshot
 {
-  v3 = [(CKChatItem *)self IMChatItem];
-  v4 = [v3 dataSource];
-  v5 = [v4 pluginPayload];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  dataSource = [iMChatItem dataSource];
+  pluginPayload = [dataSource pluginPayload];
 
-  v6 = [(CKTranscriptPluginChatItem *)self imTranscriptPluginChatItem];
-  v7 = [v6 dataSource];
-  v8 = [v7 supportsDynamicSize];
+  imTranscriptPluginChatItem = [(CKTranscriptPluginChatItem *)self imTranscriptPluginChatItem];
+  dataSource2 = [imTranscriptPluginChatItem dataSource];
+  supportsDynamicSize = [dataSource2 supportsDynamicSize];
 
-  v9 = [(CKTranscriptPluginChatItem *)self snapshotGUIDForPluginPayload:v5];
-  v10 = (v8 & 1) == 0 && [CKSnapshotUtilities snapshotExistsForGUID:v9];
+  v9 = [(CKTranscriptPluginChatItem *)self snapshotGUIDForPluginPayload:pluginPayload];
+  v10 = (supportsDynamicSize & 1) == 0 && [CKSnapshotUtilities snapshotExistsForGUID:v9];
 
   return v10;
 }
@@ -706,23 +706,23 @@ LABEL_35:
   return result;
 }
 
-- (id)snapshotGUIDForPluginPayload:(id)a3
+- (id)snapshotGUIDForPluginPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 messageGUID];
-  v5 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v6 = [v3 pluginBundleID];
+  payloadCopy = payload;
+  messageGUID = [payloadCopy messageGUID];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  pluginBundleID = [payloadCopy pluginBundleID];
 
-  v7 = [v5 balloonPluginForBundleID:v6];
+  v7 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:pluginBundleID];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
-    v9 = [v8 isEnabled];
+    isEnabled = [v8 isEnabled];
     if (CKShouldShowSURF())
     {
-      if (v9)
+      if (isEnabled)
       {
 LABEL_10:
         v11 = @"-enabled";
@@ -732,14 +732,14 @@ LABEL_10:
 
     else
     {
-      v10 = [v8 identifier];
-      if (![v10 hasSuffix:*MEMORY[0x1E69A6A38]])
+      identifier = [v8 identifier];
+      if (![identifier hasSuffix:*MEMORY[0x1E69A6A38]])
       {
-        v12 = [v8 identifier];
-        v13 = [v12 hasSuffix:*MEMORY[0x1E69A6A40]];
+        identifier2 = [v8 identifier];
+        v13 = [identifier2 hasSuffix:*MEMORY[0x1E69A6A40]];
 
         v11 = @"-disabled";
-        if (v13 & 1) != 0 || ((v9 ^ 1))
+        if (v13 & 1) != 0 || ((isEnabled ^ 1))
         {
           goto LABEL_11;
         }
@@ -750,20 +750,20 @@ LABEL_10:
 
     v11 = @"-disabled";
 LABEL_11:
-    v14 = [v4 stringByAppendingString:v11];
+    v14 = [messageGUID stringByAppendingString:v11];
 
-    v4 = v14;
+    messageGUID = v14;
   }
 
-  return v4;
+  return messageGUID;
 }
 
 - (char)transcriptOrientation
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isFromMe];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isFromMe = [iMChatItem isFromMe];
 
-  if (v3)
+  if (isFromMe)
   {
     return 2;
   }
@@ -776,26 +776,26 @@ LABEL_11:
 
 - (BOOL)wantsPendingMessageStyle
 {
-  v3 = [(CKMessagePartChatItem *)self messageItem];
-  v4 = [v3 isPendingSatelliteSend];
+  messageItem = [(CKMessagePartChatItem *)self messageItem];
+  isPendingSatelliteSend = [messageItem isPendingSatelliteSend];
 
-  if (v4)
+  if (isPendingSatelliteSend)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v6 = [(CKMessagePartChatItem *)self messageItem];
-    v7 = [v6 scheduleType];
+    messageItem2 = [(CKMessagePartChatItem *)self messageItem];
+    scheduleType = [messageItem2 scheduleType];
 
-    if (v7 == 2)
+    if (scheduleType == 2)
     {
-      v8 = [(CKMessagePartChatItem *)self messageItem];
-      v9 = [v8 scheduleState];
+      messageItem3 = [(CKMessagePartChatItem *)self messageItem];
+      scheduleState = [messageItem3 scheduleState];
 
-      v5 = 0x36u >> v9;
-      if (v9 > 5)
+      v5 = 0x36u >> scheduleState;
+      if (scheduleState > 5)
       {
         LOBYTE(v5) = 0;
       }
@@ -841,36 +841,36 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v66 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (insets)
   {
     v7 = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = v7;
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = v7;
   }
 
-  v8 = [(CKChatItem *)self IMChatItem];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(CKChatItem *)self IMChatItem];
+    iMChatItem2 = [(CKChatItem *)self IMChatItem];
   }
 
   else
   {
-    v9 = 0;
+    iMChatItem2 = 0;
   }
 
-  v10 = [v9 chatInScrutinyMode];
-  if (v10)
+  chatInScrutinyMode = [iMChatItem2 chatInScrutinyMode];
+  if (chatInScrutinyMode)
   {
-    v11 = [v9 guid];
-    v12 = [v9 guid];
-    v13 = [v11 substringWithRange:{3, objc_msgSend(v12, "length") - 3}];
+    guid = [iMChatItem2 guid];
+    guid2 = [iMChatItem2 guid];
+    v13 = [guid substringWithRange:{3, objc_msgSend(guid2, "length") - 3}];
 
     [MEMORY[0x1E69A5AE0] storeGUIDInAttemptingListInScrutinyMode:v13];
     if (IMOSLoggingEnabled())
@@ -890,22 +890,22 @@ LABEL_11:
     v13 = 0;
   }
 
-  v15 = [MEMORY[0x1E69A60F0] sharedInstance];
-  if (![v15 isInternalInstall]|| !IMGetCachedDomainBoolForKey())
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  if (![mEMORY[0x1E69A60F0] isInternalInstall]|| !IMGetCachedDomainBoolForKey())
   {
     goto LABEL_25;
   }
 
-  if (v9)
+  if (iMChatItem2)
   {
     if (IMOSLoggingEnabled())
     {
       v16 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v17 = [v9 isCorrupt];
+        isCorrupt = [iMChatItem2 isCorrupt];
         v18 = @"NO";
-        if (v17)
+        if (isCorrupt)
         {
           v18 = @"YES";
         }
@@ -918,9 +918,9 @@ LABEL_11:
       }
     }
 
-    v19 = [v9 isCorrupt];
+    isCorrupt2 = [iMChatItem2 isCorrupt];
     v20 = IMOSLoggingEnabled();
-    if (!v19)
+    if (!isCorrupt2)
     {
       if (v20)
       {
@@ -933,28 +933,28 @@ LABEL_11:
 
     if (v20)
     {
-      v15 = OSLogHandleForIMFoundationCategory();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+      mEMORY[0x1E69A60F0] = OSLogHandleForIMFoundationCategory();
+      if (os_log_type_enabled(mEMORY[0x1E69A60F0], OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_INFO, "Plugin: We are corrupt already, not crashing", buf, 2u);
+        _os_log_impl(&dword_19020E000, mEMORY[0x1E69A60F0], OS_LOG_TYPE_INFO, "Plugin: We are corrupt already, not crashing", buf, 2u);
       }
 
 LABEL_25:
     }
   }
 
-  v21 = [(CKTranscriptPluginChatItem *)self imTranscriptPluginChatItem];
-  v22 = [v21 dataSource];
+  imTranscriptPluginChatItem = [(CKTranscriptPluginChatItem *)self imTranscriptPluginChatItem];
+  dataSource = [imTranscriptPluginChatItem dataSource];
 
-  if ([v22 supportsDynamicSize])
+  if ([dataSource supportsDynamicSize])
   {
     v23 = 0;
   }
 
   else
   {
-    v23 = [v22 parentChatHasAllUnknownRecipients] ^ 1;
+    v23 = [dataSource parentChatHasAllUnknownRecipients] ^ 1;
   }
 
   v24 = +[CKChatItemSizeCache sharedInstance];
@@ -965,7 +965,7 @@ LABEL_25:
   {
     if (v13)
     {
-      v26 = v10;
+      v26 = chatInScrutinyMode;
     }
 
     else
@@ -994,8 +994,8 @@ LABEL_25:
 
   else
   {
-    v30 = [v22 bundleID];
-    v31 = [(CKTranscriptPluginChatItem *)self shouldAllowExtraWidthForBundleID:v30];
+    bundleID = [dataSource bundleID];
+    v31 = [(CKTranscriptPluginChatItem *)self shouldAllowExtraWidthForBundleID:bundleID];
 
     if (v31)
     {
@@ -1013,15 +1013,15 @@ LABEL_25:
     *&buf[16] = 0x3010000000;
     v64 = &unk_190F92BB2;
     v65 = v52;
-    if (v22)
+    if (dataSource)
     {
       v34 = objc_opt_class();
       v55[0] = MEMORY[0x1E69E9820];
       v55[1] = 3221225472;
       v55[2] = __67__CKTranscriptPluginChatItem_loadSizeThatFits_textAlignmentInsets___block_invoke;
       v55[3] = &unk_1E72F88B0;
-      v56 = v22;
-      v57 = self;
+      v56 = dataSource;
+      selfCopy = self;
       v59 = v33;
       v58 = buf;
       v53[0] = MEMORY[0x1E69E9820];
@@ -1032,30 +1032,30 @@ LABEL_25:
       CKEnforceAveragePerformanceOfBlock(20, v34, v55, v53, 2.0);
     }
 
-    v35 = [(CKMessagePartChatItem *)self suggestedActionsList];
-    if (v35)
+    suggestedActionsList = [(CKMessagePartChatItem *)self suggestedActionsList];
+    if (suggestedActionsList)
     {
       v36 = *(*&buf[8] + 40) == v25[1] && *(*&buf[8] + 32) == *v25;
 
       if (!v36)
       {
-        v37 = [(CKTranscriptPluginChatItem *)self cachedChatBotActionButton];
-        v38 = v37 == 0;
+        cachedChatBotActionButton = [(CKTranscriptPluginChatItem *)self cachedChatBotActionButton];
+        v38 = cachedChatBotActionButton == 0;
 
         if (v38)
         {
           v39 = [CKChatBotActionButton alloc];
-          v40 = [(CKMessagePartChatItem *)self suggestedActionsList];
-          v41 = [(CKChatBotActionButton *)v39 initWithActions:v40 delegate:self backgroundStyle:1 showTitle:1];
+          suggestedActionsList2 = [(CKMessagePartChatItem *)self suggestedActionsList];
+          v41 = [(CKChatBotActionButton *)v39 initWithActions:suggestedActionsList2 delegate:self backgroundStyle:1 showTitle:1];
           [(CKTranscriptPluginChatItem *)self setCachedChatBotActionButton:v41];
         }
 
-        v42 = [(CKTranscriptPluginChatItem *)self cachedChatBotActionButton];
-        [v42 setBounds:{0.0, 0.0, width, height}];
+        cachedChatBotActionButton2 = [(CKTranscriptPluginChatItem *)self cachedChatBotActionButton];
+        [cachedChatBotActionButton2 setBounds:{0.0, 0.0, width, height}];
 
         v43 = +[CKUIBehavior sharedBehaviors];
-        v44 = [(CKTranscriptPluginChatItem *)self cachedChatBotActionButton];
-        [v43 suggestedActionsMenuAdditionalHeightWithChatBotActionButton:v44];
+        cachedChatBotActionButton3 = [(CKTranscriptPluginChatItem *)self cachedChatBotActionButton];
+        [v43 suggestedActionsMenuAdditionalHeightWithChatBotActionButton:cachedChatBotActionButton3];
         v52 = v45;
 
         v46.f64[0] = 0.0;
@@ -1071,7 +1071,7 @@ LABEL_25:
 
     if (v13)
     {
-      v47 = v10;
+      v47 = chatInScrutinyMode;
     }
 
     else
@@ -1159,9 +1159,9 @@ void __67__CKTranscriptPluginChatItem_loadSizeThatFits_textAlignmentInsets___blo
 
 - (BOOL)canSendTapbacks
 {
-  v3 = [(CKTranscriptPluginChatItem *)self bundleIdentifier];
+  bundleIdentifier = [(CKTranscriptPluginChatItem *)self bundleIdentifier];
   v4 = IMBalloonExtensionIDWithSuffix();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [bundleIdentifier isEqualToString:v4];
 
   if (v5)
   {
@@ -1173,11 +1173,11 @@ void __67__CKTranscriptPluginChatItem_loadSizeThatFits_textAlignmentInsets___blo
   return [(CKMessagePartChatItem *)&v7 canSendTapbacks];
 }
 
-- (BOOL)shouldAllowExtraTallHeightForBundleID:(id)a3
+- (BOOL)shouldAllowExtraTallHeightForBundleID:(id)d
 {
   v11[6] = *MEMORY[0x1E69E9840];
   v11[0] = *MEMORY[0x1E69A68E8];
-  v3 = a3;
+  dCopy = d;
   v4 = IMBalloonExtensionIDWithSuffix();
   v11[1] = v4;
   v5 = IMBalloonExtensionIDWithSuffix();
@@ -1190,7 +1190,7 @@ void __67__CKTranscriptPluginChatItem_loadSizeThatFits_textAlignmentInsets___blo
   v11[5] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:6];
 
-  LOBYTE(v4) = [v9 containsObject:v3];
+  LOBYTE(v4) = [v9 containsObject:dCopy];
   return v4;
 }
 
@@ -1198,17 +1198,17 @@ void __67__CKTranscriptPluginChatItem_loadSizeThatFits_textAlignmentInsets___blo
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 timestampDateFormatter];
+  timestampDateFormatter = [v3 timestampDateFormatter];
 
-  v5 = [(CKMessagePartChatItem *)self time];
-  v6 = [v4 stringFromDate:v5];
+  time = [(CKMessagePartChatItem *)self time];
+  v6 = [timestampDateFormatter stringFromDate:time];
 
   v7 = +[CKUIBehavior sharedBehaviors];
-  v8 = [v7 drawerTranscriptTextAttributes];
+  drawerTranscriptTextAttributes = [v7 drawerTranscriptTextAttributes];
 
   if (v6)
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6 attributes:v8];
+    v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6 attributes:drawerTranscriptTextAttributes];
   }
 
   else
@@ -1218,13 +1218,13 @@ void __67__CKTranscriptPluginChatItem_loadSizeThatFits_textAlignmentInsets___blo
       v10 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [(CKMessagePartChatItem *)self time];
-        v12 = [(CKChatItem *)self IMChatItem];
-        v13 = [v12 guid];
+        time2 = [(CKMessagePartChatItem *)self time];
+        iMChatItem = [(CKChatItem *)self IMChatItem];
+        guid = [iMChatItem guid];
         v15 = 138412546;
-        v16 = v11;
+        v16 = time2;
         v17 = 2112;
-        v18 = v13;
+        v18 = guid;
         _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "loadTranscriptDrawerText: nil timestamp for time: %@, IMChatItem guid: %@", &v15, 0x16u);
       }
     }
@@ -1262,44 +1262,44 @@ void __67__CKTranscriptPluginChatItem_loadSizeThatFits_textAlignmentInsets___blo
 - (id)dragItemProvider
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(CKChatItem *)self IMChatItem];
-  v4 = [v3 dataSource];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  dataSource = [iMChatItem dataSource];
 
-  if (v4)
+  if (dataSource)
   {
-    v5 = [v4 pluginPayload];
-    v6 = v5;
-    if (v5)
+    pluginPayload = [dataSource pluginPayload];
+    v6 = pluginPayload;
+    if (pluginPayload)
     {
-      v7 = [v5 pluginBundleID];
-      v8 = [v7 isEqualToString:*MEMORY[0x1E69A6A18]];
+      pluginBundleID = [pluginPayload pluginBundleID];
+      v8 = [pluginBundleID isEqualToString:*MEMORY[0x1E69A6A18]];
 
-      v9 = [v6 pluginBundleID];
-      LODWORD(v7) = [v9 isEqualToString:*MEMORY[0x1E69A69A8]];
+      pluginBundleID2 = [v6 pluginBundleID];
+      LODWORD(pluginBundleID) = [pluginBundleID2 isEqualToString:*MEMORY[0x1E69A69A8]];
 
-      v10 = [v6 pluginBundleID];
-      v11 = [v10 isEqualToString:*MEMORY[0x1E69A69E0]];
+      pluginBundleID3 = [v6 pluginBundleID];
+      v11 = [pluginBundleID3 isEqualToString:*MEMORY[0x1E69A69E0]];
 
-      if (((v8 | v7) & 1) != 0 || v11)
+      if (((v8 | pluginBundleID) & 1) != 0 || v11)
       {
-        v12 = [(CKChatItem *)self transcriptIdentifier];
-        v13 = [(CKTranscriptPluginChatItem *)self pluginDisplayContainerForContext:v12];
+        transcriptIdentifier = [(CKChatItem *)self transcriptIdentifier];
+        v13 = [(CKTranscriptPluginChatItem *)self pluginDisplayContainerForContext:transcriptIdentifier];
 
         if (!v13 && IMOSLoggingEnabled())
         {
           v14 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
-            v15 = [(CKChatItem *)self transcriptIdentifier];
+            transcriptIdentifier2 = [(CKChatItem *)self transcriptIdentifier];
             v21 = 138412546;
-            v22 = v4;
+            v22 = dataSource;
             v23 = 2112;
-            v24 = v15;
+            v24 = transcriptIdentifier2;
             _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Got nil displayContainer for datasource %@ identifier %@", &v21, 0x16u);
           }
         }
 
-        v16 = [v13 pasteboardItemProvider];
+        pasteboardItemProvider = [v13 pasteboardItemProvider];
         if (IMOSLoggingEnabled())
         {
           v17 = OSLogHandleForIMFoundationCategory();
@@ -1308,14 +1308,14 @@ void __67__CKTranscriptPluginChatItem_loadSizeThatFits_textAlignmentInsets___blo
             v21 = 136315650;
             v22 = "[CKTranscriptPluginChatItem dragItemProvider]";
             v23 = 2112;
-            v24 = v16;
+            v24 = pasteboardItemProvider;
             v25 = 2112;
-            v26 = v4;
+            v26 = dataSource;
             _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "%s generated itemProvider %@ for %@", &v21, 0x20u);
           }
         }
 
-        if (v16)
+        if (pasteboardItemProvider)
         {
           goto LABEL_29;
         }
@@ -1327,7 +1327,7 @@ void __67__CKTranscriptPluginChatItem_loadSizeThatFits_textAlignmentInsets___blo
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
           v21 = 138412290;
-          v22 = v4;
+          v22 = dataSource;
           _os_log_impl(&dword_19020E000, v18, OS_LOG_TYPE_INFO, "Got nil item provider from %@", &v21, 0xCu);
         }
 
@@ -1347,7 +1347,7 @@ LABEL_27:
       goto LABEL_27;
     }
 
-    v16 = 0;
+    pasteboardItemProvider = 0;
 LABEL_29:
 
     goto LABEL_30;
@@ -1363,87 +1363,87 @@ LABEL_29:
     }
   }
 
-  v16 = 0;
+  pasteboardItemProvider = 0;
 LABEL_30:
 
-  return v16;
+  return pasteboardItemProvider;
 }
 
 - (BOOL)isPlayed
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isPlayed];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isPlayed = [iMChatItem isPlayed];
 
-  return v3;
+  return isPlayed;
 }
 
 - (BOOL)isSaved
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isSaved];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isSaved = [iMChatItem isSaved];
 
-  return v3;
+  return isSaved;
 }
 
-- (void)relinquishBalloonControllerForContext:(id)a3
+- (void)relinquishBalloonControllerForContext:(id)context
 {
-  v12 = a3;
-  v4 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v5 = [(CKChatItem *)self IMChatItem];
-  v6 = [v5 type];
-  v7 = [v4 balloonPluginForBundleID:v6];
+  contextCopy = context;
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  type = [iMChatItem type];
+  v7 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:type];
 
-  v8 = [(CKChatItem *)self IMChatItem];
-  v9 = [v8 dataSource];
-  v10 = [v9 messageGUID];
-  v11 = [v7 existingBalloonControllerWithMessageGUID:v10 contextIdentifier:v12];
+  iMChatItem2 = [(CKChatItem *)self IMChatItem];
+  dataSource = [iMChatItem2 dataSource];
+  messageGUID = [dataSource messageGUID];
+  v11 = [v7 existingBalloonControllerWithMessageGUID:messageGUID contextIdentifier:contextCopy];
 
   if (v11)
   {
     if ([v7 supportsControllerReuse])
     {
-      [v4 pluginChatItem:v5 didRelinquishReusableController:v11 contextIdentifier:v12];
+      [mEMORY[0x1E69A5AD0] pluginChatItem:iMChatItem didRelinquishReusableController:v11 contextIdentifier:contextCopy];
     }
 
     else if (CKIsRunningInMessagesTranscriptExtension())
     {
-      [v4 pluginChatItem:v5 didRelenquishNonResuableController:v11 contextIdentifier:v12];
+      [mEMORY[0x1E69A5AD0] pluginChatItem:iMChatItem didRelenquishNonResuableController:v11 contextIdentifier:contextCopy];
     }
   }
 }
 
-- (void)releaseBalloonControllerIfNeededForContext:(id)a3
+- (void)releaseBalloonControllerIfNeededForContext:(id)context
 {
-  v12 = a3;
-  v4 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v5 = [(CKChatItem *)self IMChatItem];
-  v6 = [v5 type];
-  v7 = [v4 balloonPluginForBundleID:v6];
+  contextCopy = context;
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  type = [iMChatItem type];
+  v7 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:type];
 
-  v8 = [(CKChatItem *)self IMChatItem];
-  v9 = [v8 dataSource];
-  v10 = [v9 messageGUID];
-  v11 = [v7 existingBalloonControllerWithMessageGUID:v10 contextIdentifier:v12];
+  iMChatItem2 = [(CKChatItem *)self IMChatItem];
+  dataSource = [iMChatItem2 dataSource];
+  messageGUID = [dataSource messageGUID];
+  v11 = [v7 existingBalloonControllerWithMessageGUID:messageGUID contextIdentifier:contextCopy];
 
   if (v11 && ([v7 supportsControllerReuse] & 1) == 0)
   {
-    [v4 pluginChatItem:v5 didRelenquishNonResuableController:v11 contextIdentifier:v12];
+    [mEMORY[0x1E69A5AD0] pluginChatItem:iMChatItem didRelenquishNonResuableController:v11 contextIdentifier:contextCopy];
   }
 }
 
-- (void)performHostAppResumeWithContext:(id)a3
+- (void)performHostAppResumeWithContext:(id)context
 {
   v4 = MEMORY[0x1E69A5AD0];
-  v5 = a3;
-  v13 = [v4 sharedInstance];
-  v6 = [(CKChatItem *)self IMChatItem];
-  v7 = [v6 type];
-  v8 = [v13 balloonPluginForBundleID:v7];
+  contextCopy = context;
+  sharedInstance = [v4 sharedInstance];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  type = [iMChatItem type];
+  v8 = [sharedInstance balloonPluginForBundleID:type];
 
-  v9 = [(CKChatItem *)self IMChatItem];
-  v10 = [v9 dataSource];
-  v11 = [v10 messageGUID];
-  v12 = [v8 existingBalloonControllerWithMessageGUID:v11 contextIdentifier:v5];
+  iMChatItem2 = [(CKChatItem *)self IMChatItem];
+  dataSource = [iMChatItem2 dataSource];
+  messageGUID = [dataSource messageGUID];
+  v12 = [v8 existingBalloonControllerWithMessageGUID:messageGUID contextIdentifier:contextCopy];
 
   if (objc_opt_respondsToSelector())
   {

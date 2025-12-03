@@ -1,5 +1,5 @@
 @interface AlbumCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
 - (unint64_t)accessibilityTraits;
@@ -7,13 +7,13 @@
 
 @implementation AlbumCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.AlbumCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.AlbumCell" hasInstanceMethod:@"artistName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.AlbumCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicApplication.AlbumCell" hasInstanceMethod:@"accessibilityRankString" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.AlbumCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.AlbumCell" hasInstanceMethod:@"artistName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.AlbumCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicApplication.AlbumCell" hasInstanceMethod:@"accessibilityRankString" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

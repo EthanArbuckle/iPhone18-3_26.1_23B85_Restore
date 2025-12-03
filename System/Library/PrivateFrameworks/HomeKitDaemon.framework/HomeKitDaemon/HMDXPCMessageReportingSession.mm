@@ -1,6 +1,6 @@
 @interface HMDXPCMessageReportingSession
 - (HMDXPCClientConnection)xpcClientConnection;
-- (HMDXPCMessageReportingSession)initWithUUID:(id)a3 reportContext:(id)a4 xpcClientConnection:(id)a5;
+- (HMDXPCMessageReportingSession)initWithUUID:(id)d reportContext:(id)context xpcClientConnection:(id)connection;
 @end
 
 @implementation HMDXPCMessageReportingSession
@@ -12,26 +12,26 @@
   return WeakRetained;
 }
 
-- (HMDXPCMessageReportingSession)initWithUUID:(id)a3 reportContext:(id)a4 xpcClientConnection:(id)a5
+- (HMDXPCMessageReportingSession)initWithUUID:(id)d reportContext:(id)context xpcClientConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dCopy = d;
+  contextCopy = context;
+  connectionCopy = connection;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!contextCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = connectionCopy;
+  if (!connectionCopy)
   {
 LABEL_9:
     v20 = _HMFPreconditionFailure();
@@ -44,18 +44,18 @@ LABEL_9:
   v12 = [(HMDXPCMessageReportingSession *)&v22 init];
   if (v12)
   {
-    v13 = [v8 copy];
+    v13 = [dCopy copy];
     UUID = v12->_UUID;
     v12->_UUID = v13;
 
-    v15 = [v9 copy];
+    v15 = [contextCopy copy];
     reportContext = v12->_reportContext;
     v12->_reportContext = v15;
 
     objc_storeWeak(&v12->_xpcClientConnection, v11);
-    v17 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     responseMessagePayloads = v12->_responseMessagePayloads;
-    v12->_responseMessagePayloads = v17;
+    v12->_responseMessagePayloads = array;
   }
 
   return v12;

@@ -1,50 +1,50 @@
 @interface CSSGenerateApplicationIconsOperation
 - (BOOL)isGeneratingCalendarIcons;
 - (CSSCalendarIcons)calendarIcons;
-- (CSSGenerateApplicationIconsOperation)initWithDescriptor:(id)a3;
-- (CSSGenerateApplicationIconsOperation)initWithDescriptor:(id)a3 sourceIcon:(id)a4;
-- (CSSGenerateApplicationIconsOperation)initWithDescriptor:(id)a3 webClip:(id)a4;
+- (CSSGenerateApplicationIconsOperation)initWithDescriptor:(id)descriptor;
+- (CSSGenerateApplicationIconsOperation)initWithDescriptor:(id)descriptor sourceIcon:(id)icon;
+- (CSSGenerateApplicationIconsOperation)initWithDescriptor:(id)descriptor webClip:(id)clip;
 - (id)bundleIdentifier;
-- (void)fetchBadgeIconDataWithCompletion:(id)a3;
-- (void)fetchFullSizeIconDataWithCompletion:(id)a3;
-- (void)fetchIconDataWithISImageDescriptorName:(id)a3 completion:(id)a4;
+- (void)fetchBadgeIconDataWithCompletion:(id)completion;
+- (void)fetchFullSizeIconDataWithCompletion:(id)completion;
+- (void)fetchIconDataWithISImageDescriptorName:(id)name completion:(id)completion;
 - (void)main;
 @end
 
 @implementation CSSGenerateApplicationIconsOperation
 
-- (CSSGenerateApplicationIconsOperation)initWithDescriptor:(id)a3
+- (CSSGenerateApplicationIconsOperation)initWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = [ISIcon alloc];
-  v6 = [v4 bundleIdentifier];
-  v7 = [v5 initWithBundleIdentifier:v6];
+  bundleIdentifier = [descriptorCopy bundleIdentifier];
+  v7 = [v5 initWithBundleIdentifier:bundleIdentifier];
 
-  v8 = [(CSSGenerateApplicationIconsOperation *)self initWithDescriptor:v4 sourceIcon:v7];
+  v8 = [(CSSGenerateApplicationIconsOperation *)self initWithDescriptor:descriptorCopy sourceIcon:v7];
   return v8;
 }
 
-- (CSSGenerateApplicationIconsOperation)initWithDescriptor:(id)a3 webClip:(id)a4
+- (CSSGenerateApplicationIconsOperation)initWithDescriptor:(id)descriptor webClip:(id)clip
 {
-  v6 = a3;
-  v7 = [ISIcon css_iconWithWebClip:a4];
-  v8 = [(CSSGenerateApplicationIconsOperation *)self initWithDescriptor:v6 sourceIcon:v7];
+  descriptorCopy = descriptor;
+  v7 = [ISIcon css_iconWithWebClip:clip];
+  v8 = [(CSSGenerateApplicationIconsOperation *)self initWithDescriptor:descriptorCopy sourceIcon:v7];
 
   return v8;
 }
 
-- (CSSGenerateApplicationIconsOperation)initWithDescriptor:(id)a3 sourceIcon:(id)a4
+- (CSSGenerateApplicationIconsOperation)initWithDescriptor:(id)descriptor sourceIcon:(id)icon
 {
-  v7 = a3;
-  v8 = a4;
+  descriptorCopy = descriptor;
+  iconCopy = icon;
   v12.receiver = self;
   v12.super_class = CSSGenerateApplicationIconsOperation;
   v9 = [(CSSGenerateApplicationIconsOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_descriptor, a3);
-    objc_storeStrong(&v10->_sourceIcon, a4);
+    objc_storeStrong(&v9->_descriptor, descriptor);
+    objc_storeStrong(&v10->_sourceIcon, icon);
   }
 
   return v10;
@@ -65,10 +65,10 @@
   v15[3] = sub_1000015D0;
   v15[4] = sub_1000015E0;
   v16 = 0;
-  v4 = [(CSSGenerateApplicationIconsOperation *)self descriptor];
-  v5 = [v4 includeIcon];
+  descriptor = [(CSSGenerateApplicationIconsOperation *)self descriptor];
+  includeIcon = [descriptor includeIcon];
 
-  if (v5)
+  if (includeIcon)
   {
     dispatch_group_enter(v3);
     v12[0] = _NSConcreteStackBlock;
@@ -81,10 +81,10 @@
     [(CSSGenerateApplicationIconsOperation *)self fetchFullSizeIconDataWithCompletion:v12];
   }
 
-  v6 = [(CSSGenerateApplicationIconsOperation *)self descriptor];
-  v7 = [v6 includeBadgeIcon];
+  descriptor2 = [(CSSGenerateApplicationIconsOperation *)self descriptor];
+  includeBadgeIcon = [descriptor2 includeBadgeIcon];
 
-  if (v7)
+  if (includeBadgeIcon)
   {
     dispatch_group_enter(v3);
     v9[0] = _NSConcreteStackBlock;
@@ -110,9 +110,9 @@
   _Block_object_dispose(v17, 8);
 }
 
-- (void)fetchFullSizeIconDataWithCompletion:(id)a3
+- (void)fetchFullSizeIconDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CSSGenerateApplicationIconsOperation *)self isGeneratingCalendarIcons])
   {
     v5[0] = _NSConcreteStackBlock;
@@ -120,19 +120,19 @@
     v5[2] = sub_10000186C;
     v5[3] = &unk_10000C4E0;
     v5[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     dispatch_async(&_dispatch_main_q, v5);
   }
 
   else
   {
-    [(CSSGenerateApplicationIconsOperation *)self fetchIconDataWithISImageDescriptorName:kISImageDescriptorLargeHomeScreen completion:v4];
+    [(CSSGenerateApplicationIconsOperation *)self fetchIconDataWithISImageDescriptorName:kISImageDescriptorLargeHomeScreen completion:completionCopy];
   }
 }
 
-- (void)fetchBadgeIconDataWithCompletion:(id)a3
+- (void)fetchBadgeIconDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CSSGenerateApplicationIconsOperation *)self isGeneratingCalendarIcons])
   {
     v5[0] = _NSConcreteStackBlock;
@@ -140,34 +140,34 @@
     v5[2] = sub_100001998;
     v5[3] = &unk_10000C4E0;
     v5[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     dispatch_async(&_dispatch_main_q, v5);
   }
 
   else
   {
-    [(CSSGenerateApplicationIconsOperation *)self fetchIconDataWithISImageDescriptorName:kISImageDescriptorTableUIName completion:v4];
+    [(CSSGenerateApplicationIconsOperation *)self fetchIconDataWithISImageDescriptorName:kISImageDescriptorTableUIName completion:completionCopy];
   }
 }
 
-- (void)fetchIconDataWithISImageDescriptorName:(id)a3 completion:(id)a4
+- (void)fetchIconDataWithISImageDescriptorName:(id)name completion:(id)completion
 {
-  v6 = a4;
-  v7 = [ISImageDescriptor imageDescriptorNamed:a3];
-  v8 = [(CSSGenerateApplicationIconsOperation *)self sourceIcon];
+  completionCopy = completion;
+  v7 = [ISImageDescriptor imageDescriptorNamed:name];
+  sourceIcon = [(CSSGenerateApplicationIconsOperation *)self sourceIcon];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100001ADC;
   v10[3] = &unk_10000C508;
-  v11 = v6;
-  v9 = v6;
-  [v8 getImageForImageDescriptor:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [sourceIcon getImageForImageDescriptor:v7 completion:v10];
 }
 
 - (BOOL)isGeneratingCalendarIcons
 {
-  v2 = [(CSSGenerateApplicationIconsOperation *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.mobilecal"];
+  bundleIdentifier = [(CSSGenerateApplicationIconsOperation *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.mobilecal"];
 
   return v3;
 }
@@ -189,10 +189,10 @@
 
 - (id)bundleIdentifier
 {
-  v2 = [(CSSGenerateApplicationIconsOperation *)self descriptor];
-  v3 = [v2 bundleIdentifier];
+  descriptor = [(CSSGenerateApplicationIconsOperation *)self descriptor];
+  bundleIdentifier = [descriptor bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

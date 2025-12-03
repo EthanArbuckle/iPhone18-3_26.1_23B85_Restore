@@ -1,23 +1,23 @@
 @interface CAMExposureSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
-- (void)_axAdjustValue:(BOOL)a3;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)_axAdjustValue:(BOOL)value;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation CAMExposureSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"valueText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"indexCount" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CAMExposureSlider" isKindOfClass:@"CEKDiscreteSlider"];
-  [v3 validateClass:@"CAMViewfinderViewController"];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_handleExposureSliderDidChangeValue:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CAMExposureSlider" hasInstanceMethod:@"exposureValue" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"valueText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"indexCount" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CAMExposureSlider" isKindOfClass:@"CEKDiscreteSlider"];
+  [validationsCopy validateClass:@"CAMViewfinderViewController"];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_handleExposureSliderDidChangeValue:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CAMExposureSlider" hasInstanceMethod:@"exposureValue" withFullSignature:{"d", 0}];
 }
 
 - (id)accessibilityLabel
@@ -29,9 +29,9 @@
   return v4;
 }
 
-- (void)_axAdjustValue:(BOOL)a3
+- (void)_axAdjustValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -40,7 +40,7 @@
   v6 = v10[3];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v3)
+    if (valueCopy)
     {
       v7 = v6 + 1;
     }
@@ -77,14 +77,14 @@ void __49__CAMExposureSliderAccessibility__axAdjustValue___block_invoke_2(uint64
   [v2 _handleExposureSliderDidChangeValue:*(a1 + 32)];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   [(CAMExposureSliderAccessibility *)self safeDoubleForKey:@"exposureValue"];
   v6 = v5;
   v9.receiver = self;
   v9.super_class = CAMExposureSliderAccessibility;
-  [(CAMExposureSliderAccessibility *)&v9 scrollViewDidScroll:v4];
+  [(CAMExposureSliderAccessibility *)&v9 scrollViewDidScroll:scrollCopy];
 
   [(CAMExposureSliderAccessibility *)self safeDoubleForKey:@"exposureValue"];
   if (v6 != v7)

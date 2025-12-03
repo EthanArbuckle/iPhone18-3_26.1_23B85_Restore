@@ -1,14 +1,14 @@
 @interface CDUnrecognizedUserDidFinishAuthRequest
-- (CDUnrecognizedUserDidFinishAuthRequest)initWithRapportDictionary:(id)a3;
+- (CDUnrecognizedUserDidFinishAuthRequest)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDUnrecognizedUserDidFinishAuthRequest
 
-- (CDUnrecognizedUserDidFinishAuthRequest)initWithRapportDictionary:(id)a3
+- (CDUnrecognizedUserDidFinishAuthRequest)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = CDUnrecognizedUserDidFinishAuthRequest;
   v5 = [(CDUnrecognizedUserDidFinishAuthRequest *)&v17 init];
@@ -28,7 +28,7 @@
     v5->_deviceName = v9;
 
     v11 = objc_opt_self();
-    v12 = v4;
+    v12 = dictionaryCopy;
     v13 = [NSSet setWithObject:v11];
     v14 = sub_100017500(v12, @"authError", v13);
 
@@ -67,9 +67,9 @@
   v6 = [(NSError *)self->_error description];
   [v3 appendString:v6 withName:@"error" skipIfEmpty:1];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

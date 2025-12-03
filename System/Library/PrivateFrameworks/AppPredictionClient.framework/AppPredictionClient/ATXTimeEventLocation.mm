@@ -1,75 +1,75 @@
 @interface ATXTimeEventLocation
-- (ATXTimeEventLocation)initWithCoder:(id)a3;
-- (ATXTimeEventLocation)initWithLocation:(id)a3 title:(id)a4 type:(int64_t)a5;
-- (BOOL)isApproximatelyEqualTo:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXTimeEventLocation)initWithCoder:(id)coder;
+- (ATXTimeEventLocation)initWithLocation:(id)location title:(id)title type:(int64_t)type;
+- (BOOL)isApproximatelyEqualTo:(id)to;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXTimeEventLocation
 
-- (ATXTimeEventLocation)initWithLocation:(id)a3 title:(id)a4 type:(int64_t)a5
+- (ATXTimeEventLocation)initWithLocation:(id)location title:(id)title type:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  locationCopy = location;
+  titleCopy = title;
   v16.receiver = self;
   v16.super_class = ATXTimeEventLocation;
   v10 = [(ATXTimeEventLocation *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [locationCopy copy];
     geoLocation = v10->_geoLocation;
     v10->_geoLocation = v11;
 
-    v13 = [v9 copy];
+    v13 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v13;
 
-    v10->_destinationLOIType = a5;
+    v10->_destinationLOIType = type;
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   geoLocation = self->_geoLocation;
-  v5 = a3;
-  [v5 encodeObject:geoLocation forKey:@"geoLocation"];
-  [v5 encodeObject:self->_title forKey:@"locationTitle"];
-  [v5 encodeInteger:self->_destinationLOIType forKey:@"LOIType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:geoLocation forKey:@"geoLocation"];
+  [coderCopy encodeObject:self->_title forKey:@"locationTitle"];
+  [coderCopy encodeInteger:self->_destinationLOIType forKey:@"LOIType"];
 }
 
-- (ATXTimeEventLocation)initWithCoder:(id)a3
+- (ATXTimeEventLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ATXTimeEventLocation;
   v5 = [(ATXTimeEventLocation *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"geoLocation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"geoLocation"];
     geoLocation = v5->_geoLocation;
     v5->_geoLocation = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationTitle"];
     title = v5->_title;
     v5->_title = v8;
 
-    v5->_destinationLOIType = [v4 decodeIntegerForKey:@"LOIType"];
+    v5->_destinationLOIType = [coderCopy decodeIntegerForKey:@"LOIType"];
   }
 
   return v5;
 }
 
-- (BOOL)isApproximatelyEqualTo:(id)a3
+- (BOOL)isApproximatelyEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = [v4 geoLocation];
-  if (v5 && (v6 = v5, [(ATXTimeEventLocation *)self geoLocation], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  toCopy = to;
+  geoLocation = [toCopy geoLocation];
+  if (geoLocation && (v6 = geoLocation, [(ATXTimeEventLocation *)self geoLocation], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [v4 geoLocation];
-    v9 = [(ATXTimeEventLocation *)self geoLocation];
-    [v8 distanceFromLocation:v9];
+    geoLocation2 = [toCopy geoLocation];
+    geoLocation3 = [(ATXTimeEventLocation *)self geoLocation];
+    [geoLocation2 distanceFromLocation:geoLocation3];
     v11 = v10 < 1000.0;
   }
 

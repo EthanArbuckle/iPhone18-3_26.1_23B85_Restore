@@ -2,7 +2,7 @@
 - (CGPoint)position;
 - (CGSize)size;
 - (void)dealloc;
-- (void)setBackgroundColor:(CGColor *)a3;
+- (void)setBackgroundColor:(CGColor *)color;
 @end
 
 @implementation MPLayerGroupInternal
@@ -28,7 +28,7 @@
   [(MPLayerGroupInternal *)&v4 dealloc];
 }
 
-- (void)setBackgroundColor:(CGColor *)a3
+- (void)setBackgroundColor:(CGColor *)color
 {
   backgroundColor = self->backgroundColor;
   if (backgroundColor)
@@ -36,7 +36,7 @@
     CGColorRelease(backgroundColor);
   }
 
-  self->backgroundColor = CGColorRetain(a3);
+  self->backgroundColor = CGColorRetain(color);
 }
 
 - (CGPoint)position

@@ -6,8 +6,8 @@
 
 - (id)tvp_subtitleLanguageCode
 {
-  v2 = [a1 objectForKey:*MEMORY[0x277CBE6C8]];
-  v3 = [a1 objectForKey:*MEMORY[0x277CBE6F8]];
+  v2 = [self objectForKey:*MEMORY[0x277CBE6C8]];
+  v3 = [self objectForKey:*MEMORY[0x277CBE6F8]];
   v4 = objc_opt_new();
   if ([v2 length])
   {

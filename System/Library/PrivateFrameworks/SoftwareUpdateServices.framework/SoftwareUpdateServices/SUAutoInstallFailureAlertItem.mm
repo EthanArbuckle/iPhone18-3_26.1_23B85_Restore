@@ -1,5 +1,5 @@
 @interface SUAutoInstallFailureAlertItem
-- (SUAutoInstallFailureAlertItem)initWithError:(id)a3 buildNumber:(id)a4;
+- (SUAutoInstallFailureAlertItem)initWithError:(id)error buildNumber:(id)number;
 - (id)_okButton;
 - (id)_radarButton;
 - (id)buttons;
@@ -7,21 +7,21 @@
 
 @implementation SUAutoInstallFailureAlertItem
 
-- (SUAutoInstallFailureAlertItem)initWithError:(id)a3 buildNumber:(id)a4
+- (SUAutoInstallFailureAlertItem)initWithError:(id)error buildNumber:(id)number
 {
-  v7 = a3;
-  v8 = a4;
+  errorCopy = error;
+  numberCopy = number;
   v71.receiver = self;
   v71.super_class = SUAutoInstallFailureAlertItem;
   v9 = [(SUBaseAlertItem *)&v71 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_error, a3);
-    objc_storeStrong(&v10->_buildNumber, a4);
-    v11 = v7;
-    v69 = v8;
-    v12 = v8;
+    objc_storeStrong(&v9->_error, error);
+    objc_storeStrong(&v10->_buildNumber, number);
+    v11 = errorCopy;
+    v69 = numberCopy;
+    v12 = numberCopy;
     v65 = MGGetBoolAnswer();
     v13 = MGCopyAnswer();
     if (!v13)
@@ -31,7 +31,7 @@
     }
 
     v66 = v13;
-    v70 = v7;
+    v70 = errorCopy;
     v68 = v12;
     if (v12)
     {
@@ -71,14 +71,14 @@ LABEL_31:
       message = v10->_message;
       v10->_message = v52;
 
-      v8 = v69;
-      v7 = v70;
+      numberCopy = v69;
+      errorCopy = v70;
       goto LABEL_32;
     }
 
-    v26 = [v11 code];
+    code = [v11 code];
     v27 = v66;
-    switch(v26)
+    switch(code)
     {
       case 47:
         v43 = MEMORY[0x277CCACA8];
@@ -104,25 +104,25 @@ LABEL_28:
 
         goto LABEL_29;
       case 20:
-        v28 = [v25 userInfo];
+        userInfo = [v25 userInfo];
 
-        if (!v28)
+        if (!userInfo)
         {
           v39 = v15;
           goto LABEL_31;
         }
 
-        v29 = [v25 userInfo];
-        v30 = [v29 objectForKey:@"SUInstallationConstraintsUnmet"];
+        userInfo2 = [v25 userInfo];
+        v30 = [userInfo2 objectForKey:@"SUInstallationConstraintsUnmet"];
 
         if (v30)
         {
-          v31 = [v30 longValue];
+          longValue = [v30 longValue];
           v32 = v66;
           v33 = MGGetBoolAnswer();
-          if (v31)
+          if (longValue)
           {
-            if ((v31 & 2) != 0)
+            if ((longValue & 2) != 0)
             {
               v35 = MEMORY[0x277CCACA8];
               v37 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/PrivateFrameworks/SoftwareUpdateServices.framework"];
@@ -139,10 +139,10 @@ LABEL_40:
               goto LABEL_30;
             }
 
-            if ((v31 & 4) == 0)
+            if ((longValue & 4) == 0)
             {
               v34 = v33;
-              if (v31)
+              if (longValue)
               {
                 v60 = MEMORY[0x277CCACA8];
                 v37 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/PrivateFrameworks/SoftwareUpdateServices.framework"];
@@ -156,14 +156,14 @@ LABEL_40:
 
               else
               {
-                if ((v31 & 8) == 0)
+                if ((longValue & 8) == 0)
                 {
-                  if ((v31 & 0x10) == 0)
+                  if ((longValue & 0x10) == 0)
                   {
                     v35 = MEMORY[0x277CCACA8];
                     v36 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/PrivateFrameworks/SoftwareUpdateServices.framework"];
                     v37 = v36;
-                    if ((v31 & 0x20) != 0)
+                    if ((longValue & 0x20) != 0)
                     {
                       v62 = v35;
                       v39 = v67;
@@ -268,12 +268,12 @@ LABEL_32:
 
 - (id)buttons
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(SUAutoInstallFailureAlertItem *)self _okButton];
-  [v3 addObject:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  _okButton = [(SUAutoInstallFailureAlertItem *)self _okButton];
+  [array addObject:_okButton];
 
   MGGetBoolAnswer();
-  v5 = [v3 copy];
+  v5 = [array copy];
 
   return v5;
 }

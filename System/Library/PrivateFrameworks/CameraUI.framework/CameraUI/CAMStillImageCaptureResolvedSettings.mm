@@ -1,11 +1,11 @@
 @interface CAMStillImageCaptureResolvedSettings
-- (CAMStillImageCaptureResolvedSettings)initWithHDREnabled:(BOOL)a3 portraitEffectEnabled:(BOOL)a4 nightModeCaptureTime:(double)a5 nightModePreviewColorEstimate:(CGColor *)a6 nightModeCaptureHasInitialPreviewFeedbackSensitivity:(BOOL)a7 nightModeCaptureHasConstantPreviewFeedbackSensitivity:(BOOL)a8 captureBeforeResolvingSettingsEnabled:(BOOL)a9;
+- (CAMStillImageCaptureResolvedSettings)initWithHDREnabled:(BOOL)enabled portraitEffectEnabled:(BOOL)effectEnabled nightModeCaptureTime:(double)time nightModePreviewColorEstimate:(CGColor *)estimate nightModeCaptureHasInitialPreviewFeedbackSensitivity:(BOOL)sensitivity nightModeCaptureHasConstantPreviewFeedbackSensitivity:(BOOL)feedbackSensitivity captureBeforeResolvingSettingsEnabled:(BOOL)settingsEnabled;
 - (void)dealloc;
 @end
 
 @implementation CAMStillImageCaptureResolvedSettings
 
-- (CAMStillImageCaptureResolvedSettings)initWithHDREnabled:(BOOL)a3 portraitEffectEnabled:(BOOL)a4 nightModeCaptureTime:(double)a5 nightModePreviewColorEstimate:(CGColor *)a6 nightModeCaptureHasInitialPreviewFeedbackSensitivity:(BOOL)a7 nightModeCaptureHasConstantPreviewFeedbackSensitivity:(BOOL)a8 captureBeforeResolvingSettingsEnabled:(BOOL)a9
+- (CAMStillImageCaptureResolvedSettings)initWithHDREnabled:(BOOL)enabled portraitEffectEnabled:(BOOL)effectEnabled nightModeCaptureTime:(double)time nightModePreviewColorEstimate:(CGColor *)estimate nightModeCaptureHasInitialPreviewFeedbackSensitivity:(BOOL)sensitivity nightModeCaptureHasConstantPreviewFeedbackSensitivity:(BOOL)feedbackSensitivity captureBeforeResolvingSettingsEnabled:(BOOL)settingsEnabled
 {
   v20.receiver = self;
   v20.super_class = CAMStillImageCaptureResolvedSettings;
@@ -13,13 +13,13 @@
   v17 = v16;
   if (v16)
   {
-    v16->_HDREnabled = a3;
-    v16->_portraitEffectEnabled = a4;
-    v16->_nightModeCaptureTime = a5;
-    v16->_nightModePreviewColorEstimate = CGColorRetain(a6);
-    v17->_nightModeCaptureHasInitialPreviewFeedbackSensitivity = a7;
-    v17->_nightModeCaptureHasConstantPreviewFeedbackSensitivity = a8;
-    v17->_captureBeforeResolvingSettingsEnabled = a9;
+    v16->_HDREnabled = enabled;
+    v16->_portraitEffectEnabled = effectEnabled;
+    v16->_nightModeCaptureTime = time;
+    v16->_nightModePreviewColorEstimate = CGColorRetain(estimate);
+    v17->_nightModeCaptureHasInitialPreviewFeedbackSensitivity = sensitivity;
+    v17->_nightModeCaptureHasConstantPreviewFeedbackSensitivity = feedbackSensitivity;
+    v17->_captureBeforeResolvingSettingsEnabled = settingsEnabled;
     v18 = v17;
   }
 

@@ -1,8 +1,8 @@
 @interface HFUserItem
 + (NSMutableDictionary)_fakeHMSettings;
-- (BOOL)_hasDismissalExpired:(id)a3;
+- (BOOL)_hasDismissalExpired:(id)expired;
 - (BOOL)_hasValidPrivateSettings;
-- (BOOL)_isSettingsValueForKeyPath:(id)a3 atMaximumValue:(int64_t)a4 settingsType:(unint64_t)a5;
+- (BOOL)_isSettingsValueForKeyPath:(id)path atMaximumValue:(int64_t)value settingsType:(unint64_t)type;
 - (BOOL)hasDismissedAudioAnalysisOnboardingOnThisDevice;
 - (BOOL)hasDismissedCameraUpgradeBanner;
 - (BOOL)hasDismissedHomeHubMigrationBanner;
@@ -12,23 +12,23 @@
 - (HFHomeKitSettingsAdapterManager)hf_settingsAdapterManager;
 - (HFHomeKitSettingsValueManager)hf_settingsValueManager;
 - (HFUserItem)init;
-- (HFUserItem)initWithHome:(id)a3 user:(id)a4 nameStyle:(unint64_t)a5;
-- (HFUserItem)initWithHome:(id)a3 user:(id)a4 nameStyle:(unint64_t)a5 userDefaults:(id)a6;
+- (HFUserItem)initWithHome:(id)home user:(id)user nameStyle:(unint64_t)style;
+- (HFUserItem)initWithHome:(id)home user:(id)user nameStyle:(unint64_t)style userDefaults:(id)defaults;
 - (HMSettings)settings;
 - (NSSet)hf_dependentHomeKitObjectsForDownstreamItems;
 - (NSSet)homekitObjectIdentifiers;
 - (NSString)description;
 - (id)_accessDescription;
-- (id)_getSettingsValueForKeyPath:(id)a3 defaultValue:(id)a4 settingsType:(unint64_t)a5 block:(id)a6;
-- (id)_hasDismissedWalletKeyFeatureOnboardingForKeyPath:(id)a3 onThisDeviceKeyPath:(id)a4;
-- (id)_incrementSettingsValueForKeyPath:(id)a3 stepValue:(int64_t)a4 maximumValue:(int64_t)a5 settingsType:(unint64_t)a6;
+- (id)_getSettingsValueForKeyPath:(id)path defaultValue:(id)value settingsType:(unint64_t)type block:(id)block;
+- (id)_hasDismissedWalletKeyFeatureOnboardingForKeyPath:(id)path onThisDeviceKeyPath:(id)keyPath;
+- (id)_incrementSettingsValueForKeyPath:(id)path stepValue:(int64_t)value maximumValue:(int64_t)maximumValue settingsType:(unint64_t)type;
 - (id)_privateSettings;
 - (id)_privateSettingsValueManager;
-- (id)_setSettingsValueForKeyPath:(id)a3 settingsType:(unint64_t)a4 usingBlock:(id)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)setDismissedHomeHubMigrationBanner:(BOOL)a3;
-- (id)setEnableAnnounce:(BOOL)a3;
+- (id)_setSettingsValueForKeyPath:(id)path settingsType:(unint64_t)type usingBlock:(id)block;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)setDismissedHomeHubMigrationBanner:(BOOL)banner;
+- (id)setEnableAnnounce:(BOOL)announce;
 - (unint64_t)nameStyle;
 @end
 
@@ -36,47 +36,47 @@
 
 - (HFUserItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_user_nameStyle_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFUserItem.m" lineNumber:60 description:{@"%s is unavailable; use %@ instead", "-[HFUserItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFUserItem.m" lineNumber:60 description:{@"%s is unavailable; use %@ instead", "-[HFUserItem init]", v5}];
 
   return 0;
 }
 
-- (HFUserItem)initWithHome:(id)a3 user:(id)a4 nameStyle:(unint64_t)a5
+- (HFUserItem)initWithHome:(id)home user:(id)user nameStyle:(unint64_t)style
 {
   v8 = MEMORY[0x277CBEBD0];
-  v9 = a4;
-  v10 = a3;
+  userCopy = user;
+  homeCopy = home;
   v11 = [[v8 alloc] initWithSuiteName:@"com.apple.Home.group"];
-  v12 = [(HFUserItem *)self initWithHome:v10 user:v9 nameStyle:a5 userDefaults:v11];
+  v12 = [(HFUserItem *)self initWithHome:homeCopy user:userCopy nameStyle:style userDefaults:v11];
 
   return v12;
 }
 
-- (HFUserItem)initWithHome:(id)a3 user:(id)a4 nameStyle:(unint64_t)a5 userDefaults:(id)a6
+- (HFUserItem)initWithHome:(id)home user:(id)user nameStyle:(unint64_t)style userDefaults:(id)defaults
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  homeCopy = home;
+  userCopy = user;
+  defaultsCopy = defaults;
   v21.receiver = self;
   v21.super_class = HFUserItem;
   v14 = [(HFUserItem *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_home, a3);
+    objc_storeStrong(&v14->_home, home);
     objc_storeStrong(&v15->_hf_home, v15->_home);
-    objc_storeStrong(&v15->_user, a4);
-    v16 = [[HFUserNameFormatter alloc] initWithHome:v11];
+    objc_storeStrong(&v15->_user, user);
+    v16 = [[HFUserNameFormatter alloc] initWithHome:homeCopy];
     userNameFormatter = v15->_userNameFormatter;
     v15->_userNameFormatter = v16;
 
-    [(HFUserNameFormatter *)v15->_userNameFormatter setStyle:a5];
-    objc_storeStrong(&v15->_userDefaults, a6);
-    v18 = [MEMORY[0x277CCAD78] UUID];
+    [(HFUserNameFormatter *)v15->_userNameFormatter setStyle:style];
+    objc_storeStrong(&v15->_userDefaults, defaults);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uniqueIdentifier = v15->_uniqueIdentifier;
-    v15->_uniqueIdentifier = v18;
+    v15->_uniqueIdentifier = uUID;
 
     v15->_isItemGroup = 0;
     v15->_isContainedWithinItemGroup = 0;
@@ -107,46 +107,46 @@ void __29__HFUserItem__fakeHMSettings__block_invoke_2()
 
 - (unint64_t)nameStyle
 {
-  v2 = [(HFUserItem *)self userNameFormatter];
-  v3 = [v2 style];
+  userNameFormatter = [(HFUserItem *)self userNameFormatter];
+  style = [userNameFormatter style];
 
-  return v3;
+  return style;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HFUserItem allocWithZone:a3];
-  v5 = [(HFUserItem *)self home];
-  v6 = [(HFUserItem *)self user];
-  v7 = [(HFUserItem *)v4 initWithHome:v5 user:v6 nameStyle:[(HFUserItem *)self nameStyle]];
+  v4 = [HFUserItem allocWithZone:zone];
+  home = [(HFUserItem *)self home];
+  user = [(HFUserItem *)self user];
+  v7 = [(HFUserItem *)v4 initWithHome:home user:user nameStyle:[(HFUserItem *)self nameStyle]];
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_alloc_init(HFMutableItemUpdateOutcome);
-  v5 = [(HFUserItem *)self home];
-  v6 = [(HFUserItem *)self user];
-  v7 = [v5 hf_handleForUser:v6];
+  home = [(HFUserItem *)self home];
+  user = [(HFUserItem *)self user];
+  v7 = [home hf_handleForUser:user];
 
   if (v7)
   {
-    v8 = [(HFUserItem *)self userNameFormatter];
-    [v8 stringForObjectValue:v7];
+    userNameFormatter = [(HFUserItem *)self userNameFormatter];
+    [userNameFormatter stringForObjectValue:v7];
   }
 
   else
   {
-    v8 = [(HFUserItem *)self user];
-    [v8 name];
+    userNameFormatter = [(HFUserItem *)self user];
+    [userNameFormatter name];
   }
   v9 = ;
 
   [(HFMutableItemUpdateOutcome *)v4 setObject:v7 forKeyedSubscript:@"userID"];
   [(HFMutableItemUpdateOutcome *)v4 setObject:v9 forKeyedSubscript:@"title"];
-  v10 = [(HFUserItem *)self _accessDescription];
-  [(HFMutableItemUpdateOutcome *)v4 setObject:v10 forKeyedSubscript:@"userAccessDescription"];
+  _accessDescription = [(HFUserItem *)self _accessDescription];
+  [(HFMutableItemUpdateOutcome *)v4 setObject:_accessDescription forKeyedSubscript:@"userAccessDescription"];
 
   [(HFMutableItemUpdateOutcome *)v4 setObject:@"Home.HomeSettings.UserHandle" forKeyedSubscript:@"HFResultDisplayAccessibilityIDKey"];
   v11 = [MEMORY[0x277D2C900] futureWithResult:v4];
@@ -156,11 +156,11 @@ void __29__HFUserItem__fakeHMSettings__block_invoke_2()
 
 - (NSString)description
 {
-  v3 = [(HFUserItem *)self home];
-  v4 = [v3 currentUser];
-  v5 = [(HFUserItem *)self user];
+  home = [(HFUserItem *)self home];
+  currentUser = [home currentUser];
+  user = [(HFUserItem *)self user];
 
-  if (v4 == v5)
+  if (currentUser == user)
   {
     v11.receiver = self;
     v11.super_class = HFUserItem;
@@ -170,8 +170,8 @@ void __29__HFUserItem__fakeHMSettings__block_invoke_2()
   else
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(HFItem *)self latestResults];
-    v8 = [v7 objectForKeyedSubscript:@"title"];
+    latestResults = [(HFItem *)self latestResults];
+    v8 = [latestResults objectForKeyedSubscript:@"title"];
     v9 = [v6 stringWithFormat:@"<HFUserItem: %p> %{sensitive}@ (non-current user)", self, v8];
   }
 
@@ -181,9 +181,9 @@ void __29__HFUserItem__fakeHMSettings__block_invoke_2()
 - (id)_accessDescription
 {
   v3 = _HFLocalizedStringWithDefaultValue(@"HFUserAccessDescription", @"HFUserAccessDescription", 1);
-  v4 = [(HFUserItem *)self home];
-  v5 = [(HFUserItem *)self user];
-  v6 = [v4 hf_userIsOwner:v5];
+  home = [(HFUserItem *)self home];
+  user = [(HFUserItem *)self user];
+  v6 = [home hf_userIsOwner:user];
 
   if (v6)
   {
@@ -197,9 +197,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [(HFUserItem *)self home];
-  v9 = [(HFUserItem *)self user];
-  v10 = [v8 hf_userIsAdministrator:v9];
+  home2 = [(HFUserItem *)self home];
+  user2 = [(HFUserItem *)self user];
+  v10 = [home2 hf_userIsAdministrator:user2];
 
   if (v10)
   {
@@ -207,24 +207,24 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  v14 = [(HFUserItem *)self home];
-  v15 = [(HFUserItem *)self user];
-  v16 = [v14 hf_userIsRestrictedGuest:v15];
+  home3 = [(HFUserItem *)self home];
+  user3 = [(HFUserItem *)self user];
+  v16 = [home3 hf_userIsRestrictedGuest:user3];
 
   if (v16)
   {
-    v17 = [(HFUserItem *)self home];
-    v18 = [(HFUserItem *)self user];
-    v11 = [v17 homeAccessControlForUser:v18];
+    home4 = [(HFUserItem *)self home];
+    user4 = [(HFUserItem *)self user];
+    v11 = [home4 homeAccessControlForUser:user4];
 
-    v19 = [v11 restrictedGuestAccessSettings];
-    v20 = [v19 guestAccessSchedule];
-    v21 = [HFScheduleBuilder scheduleBuilderFromHomeAccessSchedule:v20];
-    v22 = [v21 build];
+    restrictedGuestAccessSettings = [v11 restrictedGuestAccessSettings];
+    guestAccessSchedule = [restrictedGuestAccessSettings guestAccessSchedule];
+    v21 = [HFScheduleBuilder scheduleBuilderFromHomeAccessSchedule:guestAccessSchedule];
+    build = [v21 build];
 
-    v12 = [HFScheduleUtilities localizedStringForSchedule:v22];
+    v12 = [HFScheduleUtilities localizedStringForSchedule:build];
 
-    v3 = v19;
+    v3 = restrictedGuestAccessSettings;
     goto LABEL_6;
   }
 
@@ -237,11 +237,11 @@ LABEL_7:
 {
   v3 = objc_opt_new();
   [v3 addObject:self];
-  v4 = [(HFUserItem *)self settings];
-  [v3 na_safeAddObject:v4];
+  settings = [(HFUserItem *)self settings];
+  [v3 na_safeAddObject:settings];
 
-  v5 = [(HFUserItem *)self _privateSettings];
-  [v3 na_safeAddObject:v5];
+  _privateSettings = [(HFUserItem *)self _privateSettings];
+  [v3 na_safeAddObject:_privateSettings];
 
   return v3;
 }
@@ -260,107 +260,107 @@ LABEL_7:
 
 - (HFHomeKitSettingsValueManager)hf_settingsValueManager
 {
-  v4 = [(HFUserItem *)self settings];
+  settings = [(HFUserItem *)self settings];
 
-  if (v4)
+  if (settings)
   {
-    v4 = objc_getAssociatedObject(self, a2);
-    if (!v4)
+    settings = objc_getAssociatedObject(self, a2);
+    if (!settings)
     {
       v5 = [HFHomeKitSettingsValueManager alloc];
-      v6 = [(HFUserItem *)self settings];
-      v7 = [(HFUserItem *)self homekitObjectIdentifiers];
-      v4 = [(HFHomeKitSettingsValueManager *)v5 initWithSettings:v6 homeKitObjectIdentifiers:v7];
+      settings2 = [(HFUserItem *)self settings];
+      homekitObjectIdentifiers = [(HFUserItem *)self homekitObjectIdentifiers];
+      settings = [(HFHomeKitSettingsValueManager *)v5 initWithSettings:settings2 homeKitObjectIdentifiers:homekitObjectIdentifiers];
 
-      objc_setAssociatedObject(self, a2, v4, 1);
+      objc_setAssociatedObject(self, a2, settings, 1);
     }
   }
 
-  return v4;
+  return settings;
 }
 
 - (HMSettings)settings
 {
-  v3 = [(HFUserItem *)self user];
-  v4 = [(HFUserItem *)self home];
-  v5 = [v3 userSettingsForHome:v4];
+  user = [(HFUserItem *)self user];
+  home = [(HFUserItem *)self home];
+  v5 = [user userSettingsForHome:home];
 
-  v6 = [v5 settings];
+  settings = [v5 settings];
 
-  return v6;
+  return settings;
 }
 
 - (BOOL)hasValidSettings
 {
-  v2 = [(HFUserItem *)self settings];
-  v3 = [v2 rootGroup];
-  v4 = v3 != 0;
+  settings = [(HFUserItem *)self settings];
+  rootGroup = [settings rootGroup];
+  v4 = rootGroup != 0;
 
   return v4;
 }
 
 - (id)_privateSettingsValueManager
 {
-  v4 = [(HFUserItem *)self _privateSettings];
+  _privateSettings = [(HFUserItem *)self _privateSettings];
 
-  if (v4)
+  if (_privateSettings)
   {
-    v4 = objc_getAssociatedObject(self, a2);
-    if (!v4)
+    _privateSettings = objc_getAssociatedObject(self, a2);
+    if (!_privateSettings)
     {
       v5 = [HFHomeKitSettingsValueManager alloc];
-      v6 = [(HFUserItem *)self _privateSettings];
-      v7 = [(HFUserItem *)self homekitObjectIdentifiers];
-      v4 = [(HFHomeKitSettingsValueManager *)v5 initWithSettings:v6 homeKitObjectIdentifiers:v7];
+      _privateSettings2 = [(HFUserItem *)self _privateSettings];
+      homekitObjectIdentifiers = [(HFUserItem *)self homekitObjectIdentifiers];
+      _privateSettings = [(HFHomeKitSettingsValueManager *)v5 initWithSettings:_privateSettings2 homeKitObjectIdentifiers:homekitObjectIdentifiers];
 
-      objc_setAssociatedObject(self, a2, v4, 1);
+      objc_setAssociatedObject(self, a2, _privateSettings, 1);
     }
   }
 
-  return v4;
+  return _privateSettings;
 }
 
 - (id)_privateSettings
 {
-  v3 = [(HFUserItem *)self user];
-  v4 = [(HFUserItem *)self home];
-  v5 = [v3 userSettingsForHome:v4];
+  user = [(HFUserItem *)self user];
+  home = [(HFUserItem *)self home];
+  v5 = [user userSettingsForHome:home];
 
-  v6 = [v5 privateSettings];
+  privateSettings = [v5 privateSettings];
 
-  return v6;
+  return privateSettings;
 }
 
 - (BOOL)_hasValidPrivateSettings
 {
-  v2 = [(HFUserItem *)self _privateSettings];
-  v3 = [v2 rootGroup];
-  v4 = v3 != 0;
+  _privateSettings = [(HFUserItem *)self _privateSettings];
+  rootGroup = [_privateSettings rootGroup];
+  v4 = rootGroup != 0;
 
   return v4;
 }
 
-- (id)_getSettingsValueForKeyPath:(id)a3 defaultValue:(id)a4 settingsType:(unint64_t)a5 block:(id)a6
+- (id)_getSettingsValueForKeyPath:(id)path defaultValue:(id)value settingsType:(unint64_t)type block:(id)block
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (a5)
+  pathCopy = path;
+  valueCopy = value;
+  blockCopy = block;
+  if (type)
   {
-    v13 = [(HFUserItem *)self _privateSettings];
-    v14 = [(HFUserItem *)self _privateSettingsValueManager];
+    _privateSettings = [(HFUserItem *)self _privateSettings];
+    _privateSettingsValueManager = [(HFUserItem *)self _privateSettingsValueManager];
     if (![(HFUserItem *)self _hasValidPrivateSettings])
     {
       v15 = HFLogForCategory(0x3EuLL);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v26 = 138412802;
-        v27 = self;
+        selfCopy4 = self;
         v28 = 2112;
-        v29 = v10;
+        v29 = pathCopy;
         v30 = 2112;
-        v31 = v11;
+        v31 = valueCopy;
         v16 = "%@ Read setting %@ failed - invalid private settings, returning default value %@";
 LABEL_19:
         _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, v16, &v26, 0x20u);
@@ -371,14 +371,14 @@ LABEL_19:
     }
 
 LABEL_6:
-    if (!v14)
+    if (!_privateSettingsValueManager)
     {
       NSLog(&cfstr_ValueManagerWa.isa);
     }
 
-    v17 = [v13 hf_accessorySettingAtKeyPath:v10];
+    v17 = [_privateSettings hf_accessorySettingAtKeyPath:pathCopy];
     objc_opt_class();
-    v18 = [v14 valueForSetting:v17];
+    v18 = [_privateSettingsValueManager valueForSetting:v17];
     if (objc_opt_isKindOfClass())
     {
       v19 = v18;
@@ -398,18 +398,18 @@ LABEL_6:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         v26 = 138413058;
-        v27 = self;
+        selfCopy4 = self;
         v28 = 2112;
         v29 = v17;
         v30 = 2112;
-        v31 = v10;
+        v31 = pathCopy;
         v32 = 2112;
         v33 = v20;
         _os_log_impl(&dword_20D9BF000, v22, OS_LOG_TYPE_DEFAULT, "Read setting item '%@/%@/%@' : value: %@", &v26, 0x2Au);
       }
 
       v23 = v20;
-      if (!v12)
+      if (!blockCopy)
       {
         goto LABEL_16;
       }
@@ -420,31 +420,31 @@ LABEL_6:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         v26 = 138413058;
-        v27 = self;
+        selfCopy4 = self;
         v28 = 2112;
         v29 = v17;
         v30 = 2112;
-        v31 = v10;
+        v31 = pathCopy;
         v32 = 2112;
-        v33 = v11;
+        v33 = valueCopy;
         _os_log_error_impl(&dword_20D9BF000, v22, OS_LOG_TYPE_ERROR, "READ HMSETTING FAILED '%@/%@/%@' - returning default value: %@", &v26, 0x2Au);
       }
 
-      v18 = v11;
-      if (!v12)
+      v18 = valueCopy;
+      if (!blockCopy)
       {
         goto LABEL_16;
       }
     }
 
-    v12[2](v12, v17, v14);
+    blockCopy[2](blockCopy, v17, _privateSettingsValueManager);
 LABEL_16:
 
     goto LABEL_21;
   }
 
-  v13 = [(HFUserItem *)self settings];
-  v14 = [(HFUserItem *)self hf_settingsValueManager];
+  _privateSettings = [(HFUserItem *)self settings];
+  _privateSettingsValueManager = [(HFUserItem *)self hf_settingsValueManager];
   if ([(HFUserItem *)self hasValidSettings])
   {
     goto LABEL_6;
@@ -454,18 +454,18 @@ LABEL_16:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138412802;
-    v27 = self;
+    selfCopy4 = self;
     v28 = 2112;
-    v29 = v10;
+    v29 = pathCopy;
     v30 = 2112;
-    v31 = v11;
+    v31 = valueCopy;
     v16 = "%@ Read setting %@ failed - invalid settings, returning default value %@";
     goto LABEL_19;
   }
 
 LABEL_20:
 
-  v18 = v11;
+  v18 = valueCopy;
 LABEL_21:
 
   v24 = *MEMORY[0x277D85DE8];
@@ -473,30 +473,30 @@ LABEL_21:
   return v18;
 }
 
-- (id)_setSettingsValueForKeyPath:(id)a3 settingsType:(unint64_t)a4 usingBlock:(id)a5
+- (id)_setSettingsValueForKeyPath:(id)path settingsType:(unint64_t)type usingBlock:(id)block
 {
   *&v33[11] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  if (a4)
+  pathCopy = path;
+  blockCopy = block;
+  if (type)
   {
-    v11 = [(HFUserItem *)self _privateSettings];
-    v12 = [(HFUserItem *)self _privateSettingsValueManager];
-    v13 = [(HFUserItem *)self _hasValidPrivateSettings];
+    _privateSettings = [(HFUserItem *)self _privateSettings];
+    _privateSettingsValueManager = [(HFUserItem *)self _privateSettingsValueManager];
+    _hasValidPrivateSettings = [(HFUserItem *)self _hasValidPrivateSettings];
   }
 
   else
   {
-    v11 = [(HFUserItem *)self settings];
-    v12 = [(HFUserItem *)self hf_settingsValueManager];
-    v13 = [(HFUserItem *)self hasValidSettings];
+    _privateSettings = [(HFUserItem *)self settings];
+    _privateSettingsValueManager = [(HFUserItem *)self hf_settingsValueManager];
+    _hasValidPrivateSettings = [(HFUserItem *)self hasValidSettings];
   }
 
-  v14 = v13;
-  if (v13 && v12)
+  v14 = _hasValidPrivateSettings;
+  if (_hasValidPrivateSettings && _privateSettingsValueManager)
   {
-    v15 = [v11 hf_accessorySettingAtKeyPath:v9];
-    v16 = v10[2](v10, v15, v12);
+    v15 = [_privateSettings hf_accessorySettingAtKeyPath:pathCopy];
+    v16 = blockCopy[2](blockCopy, v15, _privateSettingsValueManager);
     v17 = HFLogForCategory(0x3EuLL);
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
     if (v16)
@@ -504,17 +504,17 @@ LABEL_21:
       if (v18)
       {
         v26 = 138413058;
-        v27 = self;
+        selfCopy2 = self;
         v28 = 2112;
         v29 = v15;
         v30 = 2112;
-        v31 = v9;
+        selfCopy3 = pathCopy;
         v32 = 2112;
         *v33 = v16;
         _os_log_impl(&dword_20D9BF000, v17, OS_LOG_TYPE_DEFAULT, "Updating setting item '%@/%@/%@' to value: %@", &v26, 0x2Au);
       }
 
-      v19 = [v12 changeValueForSetting:v15 toValue:v16];
+      futureWithNoResult = [_privateSettingsValueManager changeValueForSetting:v15 toValue:v16];
     }
 
     else
@@ -522,18 +522,18 @@ LABEL_21:
       if (v18)
       {
         v26 = 138412802;
-        v27 = self;
+        selfCopy2 = self;
         v28 = 2112;
         v29 = v15;
         v30 = 2112;
-        v31 = v9;
+        selfCopy3 = pathCopy;
         _os_log_impl(&dword_20D9BF000, v17, OS_LOG_TYPE_DEFAULT, "Setting item '%@/%@/%@' not updated", &v26, 0x20u);
       }
 
-      v19 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
-    v21 = v19;
+    futureWithNoResult2 = futureWithNoResult;
   }
 
   else
@@ -544,48 +544,48 @@ LABEL_21:
       v24 = NSStringFromSelector(a2);
       v26 = 138413314;
       v25 = @"private";
-      v27 = v24;
+      selfCopy2 = v24;
       v28 = 2112;
-      if (!a4)
+      if (!type)
       {
         v25 = @"public";
       }
 
       v29 = v25;
       v30 = 2112;
-      v31 = self;
+      selfCopy3 = self;
       v32 = 1024;
       *v33 = v14;
       v33[2] = 2112;
-      *&v33[3] = v12;
+      *&v33[3] = _privateSettingsValueManager;
       _os_log_error_impl(&dword_20D9BF000, v20, OS_LOG_TYPE_ERROR, "%@: No valid %@ settings or value manager found on user: %@ - valid settings %{BOOL}d, value manager %@", &v26, 0x30u);
     }
 
-    v21 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult2 = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return futureWithNoResult2;
 }
 
-- (BOOL)_isSettingsValueForKeyPath:(id)a3 atMaximumValue:(int64_t)a4 settingsType:(unint64_t)a5
+- (BOOL)_isSettingsValueForKeyPath:(id)path atMaximumValue:(int64_t)value settingsType:(unint64_t)type
 {
-  v6 = [(HFUserItem *)self _getSettingsValueForKeyPath:a3 defaultValue:&unk_282524240 settingsType:a5 block:0];
-  v7 = [v6 integerValue];
+  v6 = [(HFUserItem *)self _getSettingsValueForKeyPath:path defaultValue:&unk_282524240 settingsType:type block:0];
+  integerValue = [v6 integerValue];
 
-  return v7 >= a4;
+  return integerValue >= value;
 }
 
-- (id)_incrementSettingsValueForKeyPath:(id)a3 stepValue:(int64_t)a4 maximumValue:(int64_t)a5 settingsType:(unint64_t)a6
+- (id)_incrementSettingsValueForKeyPath:(id)path stepValue:(int64_t)value maximumValue:(int64_t)maximumValue settingsType:(unint64_t)type
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __84__HFUserItem__incrementSettingsValueForKeyPath_stepValue_maximumValue_settingsType___block_invoke;
   v8[3] = &__block_descriptor_48_e63___NSNumber_24__0__HMSetting_8__HFHomeKitSettingsValueManager_16l;
-  v8[4] = a5;
-  v8[5] = a4;
-  v6 = [(HFUserItem *)self _setSettingsValueForKeyPath:a3 settingsType:a6 usingBlock:v8];
+  v8[4] = maximumValue;
+  v8[5] = value;
+  v6 = [(HFUserItem *)self _setSettingsValueForKeyPath:path settingsType:type usingBlock:v8];
 
   return v6;
 }
@@ -632,8 +632,8 @@ LABEL_7:
 - (BOOL)hasDismissedWelcomeUIBanner
 {
   v3 = +[HFLocalSettingCachingUtility sharedInstance];
-  v4 = [(HFUserItem *)self hf_home];
-  v5 = [v3 getWelcomeBannerDismissedLocalCachedValue:v4];
+  hf_home = [(HFUserItem *)self hf_home];
+  v5 = [v3 getWelcomeBannerDismissedLocalCachedValue:hf_home];
 
   if (v5)
   {
@@ -643,11 +643,11 @@ LABEL_7:
   return [(HFUserItem *)self _getBoolSettingsValueForKeyPath:@"root.home.dismissedWelcomeUI" defaultValue:0 settingsType:1];
 }
 
-- (id)setEnableAnnounce:(BOOL)a3
+- (id)setEnableAnnounce:(BOOL)announce
 {
-  v5 = [(HFUserItem *)self home];
-  v6 = [(HFUserItem *)self user];
-  v7 = [v5 homeAccessControlForUser:v6];
+  home = [(HFUserItem *)self home];
+  user = [(HFUserItem *)self user];
+  v7 = [home homeAccessControlForUser:user];
 
   v8 = MEMORY[0x277D2C900];
   v12[0] = MEMORY[0x277D85DD0];
@@ -655,7 +655,7 @@ LABEL_7:
   v12[2] = __32__HFUserItem_setEnableAnnounce___block_invoke;
   v12[3] = &unk_277DF4EF0;
   v13 = v7;
-  v14 = a3;
+  announceCopy = announce;
   v9 = v7;
   v10 = [v8 futureWithBlock:v12];
 
@@ -690,30 +690,30 @@ uint64_t __32__HFUserItem_setEnableAnnounce___block_invoke_2(uint64_t a1, uint64
 
 - (BOOL)isAnnounceEnabled
 {
-  v3 = [(HFUserItem *)self home];
-  v4 = [(HFUserItem *)self user];
-  v5 = [v3 homeAccessControlForUser:v4];
+  home = [(HFUserItem *)self home];
+  user = [(HFUserItem *)self user];
+  v5 = [home homeAccessControlForUser:user];
 
-  LOBYTE(v4) = [v5 isAnnounceAccessAllowed];
-  return v4;
+  LOBYTE(user) = [v5 isAnnounceAccessAllowed];
+  return user;
 }
 
-- (id)_hasDismissedWalletKeyFeatureOnboardingForKeyPath:(id)a3 onThisDeviceKeyPath:(id)a4
+- (id)_hasDismissedWalletKeyFeatureOnboardingForKeyPath:(id)path onThisDeviceKeyPath:(id)keyPath
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([(HFUserItem *)self _getBoolSettingsValueForKeyPath:a3 defaultValue:1 settingsType:1])
+  keyPathCopy = keyPath;
+  if ([(HFUserItem *)self _getBoolSettingsValueForKeyPath:path defaultValue:1 settingsType:1])
   {
-    v7 = [(HFUserItem *)self home];
-    v8 = [v7 hf_walletKeyUUID];
+    home = [(HFUserItem *)self home];
+    hf_walletKeyUUID = [home hf_walletKeyUUID];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __84__HFUserItem__hasDismissedWalletKeyFeatureOnboardingForKeyPath_onThisDeviceKeyPath___block_invoke;
     v13[3] = &unk_277DFCB20;
     v13[4] = self;
-    v14 = v6;
+    v14 = keyPathCopy;
     v15 = 1;
-    v9 = [v8 flatMap:v13];
+    v9 = [hf_walletKeyUUID flatMap:v13];
   }
 
   else
@@ -1052,17 +1052,17 @@ id __112__HFUserItem__setDismissWalletKeyFeatureOnboarding_forWalletKeyUUID_feat
 - (NSSet)homekitObjectIdentifiers
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFUserItem *)self user];
-  v4 = [v3 uniqueIdentifier];
-  v5 = [v2 na_setWithSafeObject:v4];
+  user = [(HFUserItem *)self user];
+  uniqueIdentifier = [user uniqueIdentifier];
+  v5 = [v2 na_setWithSafeObject:uniqueIdentifier];
 
   return v5;
 }
 
 - (BOOL)hasDismissedAudioAnalysisOnboardingOnThisDevice
 {
-  v3 = [(HFUserItem *)self userDefaults];
-  if (!v3)
+  userDefaults = [(HFUserItem *)self userDefaults];
+  if (!userDefaults)
   {
     v4 = HFLogForCategory(0x3EuLL);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1072,11 +1072,11 @@ id __112__HFUserItem__setDismissWalletKeyFeatureOnboarding_forWalletKeyUUID_feat
     }
   }
 
-  v5 = [v3 dictionaryForKey:@"HFUserHasDismissedAudioAnalysisOnboarding"];
-  v6 = [(HFUserItem *)self home];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v7 UUIDString];
-  v9 = [v5 hmf_BOOLForKey:v8];
+  v5 = [userDefaults dictionaryForKey:@"HFUserHasDismissedAudioAnalysisOnboarding"];
+  home = [(HFUserItem *)self home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v9 = [v5 hmf_BOOLForKey:uUIDString];
 
   return v9;
 }
@@ -1084,8 +1084,8 @@ id __112__HFUserItem__setDismissWalletKeyFeatureOnboarding_forWalletKeyUUID_feat
 - (BOOL)hasDismissedHomeHubMigrationBanner
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [(HFUserItem *)self userDefaults];
-  if (!v3)
+  userDefaults = [(HFUserItem *)self userDefaults];
+  if (!userDefaults)
   {
     v4 = HFLogForCategory(0x3EuLL);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1095,7 +1095,7 @@ id __112__HFUserItem__setDismissWalletKeyFeatureOnboarding_forWalletKeyUUID_feat
     }
   }
 
-  v5 = [v3 dictionaryForKey:@"HFUserHasDismissedHomeHubMigrationBannerForThisDevice"];
+  v5 = [userDefaults dictionaryForKey:@"HFUserHasDismissedHomeHubMigrationBannerForThisDevice"];
   v6 = v5;
   if (v5)
   {
@@ -1136,11 +1136,11 @@ LABEL_17:
       goto LABEL_16;
     }
 
-    v16 = [MEMORY[0x277CCAC38] processInfo];
-    v17 = v16;
-    if (v16)
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v17 = processInfo;
+    if (processInfo)
     {
-      [v16 operatingSystemVersion];
+      [processInfo operatingSystemVersion];
     }
 
     v18 = v11 < 0 && v7 == 0;
@@ -1165,7 +1165,7 @@ LABEL_17:
     }
 
     objc_opt_class();
-    v19 = [v3 valueForKey:@"HFUserHasDismissedHomeHubMigrationBannerDismissalDate"];
+    v19 = [userDefaults valueForKey:@"HFUserHasDismissedHomeHubMigrationBannerDismissalDate"];
     if (objc_opt_isKindOfClass())
     {
       v20 = v19;
@@ -1238,11 +1238,11 @@ LABEL_18:
   return v10;
 }
 
-- (id)setDismissedHomeHubMigrationBanner:(BOOL)a3
+- (id)setDismissedHomeHubMigrationBanner:(BOOL)banner
 {
-  v3 = a3;
-  v4 = [(HFUserItem *)self userDefaults];
-  if (!v4)
+  bannerCopy = banner;
+  userDefaults = [(HFUserItem *)self userDefaults];
+  if (!userDefaults)
   {
     v5 = HFLogForCategory(0x3EuLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1252,21 +1252,21 @@ LABEL_18:
     }
   }
 
-  v6 = [v4 dictionaryForKey:@"HFUserHasDismissedHomeHubMigrationBannerForThisDevice"];
-  v7 = [v6 mutableCopy];
+  v6 = [userDefaults dictionaryForKey:@"HFUserHasDismissedHomeHubMigrationBannerForThisDevice"];
+  dictionary = [v6 mutableCopy];
 
-  if (!v7)
+  if (!dictionary)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
   v16 = 0;
   v17 = 0;
-  v8 = [MEMORY[0x277CCAC38] processInfo];
-  v9 = v8;
-  if (v8)
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  v9 = processInfo;
+  if (processInfo)
   {
-    [v8 operatingSystemVersion];
+    [processInfo operatingSystemVersion];
   }
 
   else
@@ -1277,36 +1277,36 @@ LABEL_18:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:v15];
-  [v7 setObject:v10 forKey:@"majorVersion"];
+  [dictionary setObject:v10 forKey:@"majorVersion"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:v16];
-  [v7 setObject:v11 forKey:@"minorVersion"];
+  [dictionary setObject:v11 forKey:@"minorVersion"];
 
-  [v4 setObject:v7 forKey:@"HFUserHasDismissedHomeHubMigrationBannerForThisDevice"];
-  if (v3)
+  [userDefaults setObject:dictionary forKey:@"HFUserHasDismissedHomeHubMigrationBannerForThisDevice"];
+  if (bannerCopy)
   {
-    v12 = [MEMORY[0x277CBEAA8] date];
-    [v4 setObject:v12 forKey:@"HFUserHasDismissedHomeHubMigrationBannerDismissalDate"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [userDefaults setObject:date forKey:@"HFUserHasDismissedHomeHubMigrationBannerDismissalDate"];
   }
 
-  v13 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
-  return v13;
+  return futureWithNoResult;
 }
 
-- (BOOL)_hasDismissalExpired:(id)a3
+- (BOOL)_hasDismissalExpired:(id)expired
 {
-  v3 = a3;
-  if (!v3)
+  expiredCopy = expired;
+  if (!expiredCopy)
   {
     v4 = MEMORY[0x277CBEAA8];
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v3 = [v4 hf_dateByAddingDays:-20 toDate:v5];
+    date = [MEMORY[0x277CBEAA8] date];
+    expiredCopy = [v4 hf_dateByAddingDays:-20 toDate:date];
   }
 
   v6 = MEMORY[0x277CBEAA8];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v6 hf_daysBetweenDates:v3 endDate:v7];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v8 = [v6 hf_daysBetweenDates:expiredCopy endDate:date2];
 
   return v8 > 13;
 }

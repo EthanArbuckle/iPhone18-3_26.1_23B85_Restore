@@ -1,15 +1,15 @@
 @interface HKCodableHealthChartsSeries
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)shapeTypeAsString:(int)a3;
-- (int)StringAsShapeType:(id)a3;
+- (id)shapeTypeAsString:(int)string;
+- (int)StringAsShapeType:(id)type;
 - (int)shapeType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableHealthChartsSeries
@@ -27,55 +27,55 @@
   }
 }
 
-- (id)shapeTypeAsString:(int)a3
+- (id)shapeTypeAsString:(int)string
 {
-  if (a3 >= 7)
+  if (string >= 7)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E81BADB0[a3];
+    v4 = off_1E81BADB0[string];
   }
 
   return v4;
 }
 
-- (int)StringAsShapeType:(id)a3
+- (int)StringAsShapeType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"datePoint"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"datePoint"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"dateRange"])
+  else if ([typeCopy isEqualToString:@"dateRange"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"dateSpan"])
+  else if ([typeCopy isEqualToString:@"dateSpan"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"dateMinMax"])
+  else if ([typeCopy isEqualToString:@"dateMinMax"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"scalarPoint"])
+  else if ([typeCopy isEqualToString:@"scalarPoint"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"scalarRange"])
+  else if ([typeCopy isEqualToString:@"scalarRange"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"empty"])
+  else if ([typeCopy isEqualToString:@"empty"])
   {
     v4 = 6;
   }
@@ -94,15 +94,15 @@
   v8.receiver = self;
   v8.super_class = HKCodableHealthChartsSeries;
   v4 = [(HKCodableHealthChartsSeries *)&v8 description];
-  v5 = [(HKCodableHealthChartsSeries *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableHealthChartsSeries *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     shapeType = self->_shapeType;
@@ -116,56 +116,56 @@
       v5 = off_1E81BADB0[shapeType];
     }
 
-    [v3 setObject:v5 forKey:@"shapeType"];
+    [dictionary setObject:v5 forKey:@"shapeType"];
   }
 
   seriesData = self->_seriesData;
   if (seriesData)
   {
-    v7 = [(HKCodableHealthChartsSeriesData *)seriesData dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"seriesData"];
+    dictionaryRepresentation = [(HKCodableHealthChartsSeriesData *)seriesData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"seriesData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_seriesData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_shapeType;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_shapeType;
+    *(toCopy + 20) |= 1u;
   }
 
   if (self->_seriesData)
   {
-    v5 = v4;
-    [v4 setSeriesData:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setSeriesData:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -173,30 +173,30 @@
     *(v5 + 20) |= 1u;
   }
 
-  v7 = [(HKCodableHealthChartsSeriesData *)self->_seriesData copyWithZone:a3];
+  v7 = [(HKCodableHealthChartsSeriesData *)self->_seriesData copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_shapeType != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_shapeType != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v6 = 0;
@@ -204,7 +204,7 @@ LABEL_9:
   }
 
   seriesData = self->_seriesData;
-  if (seriesData | *(v4 + 1))
+  if (seriesData | *(equalCopy + 1))
   {
     v6 = [(HKCodableHealthChartsSeriesData *)seriesData isEqual:?];
   }
@@ -234,13 +234,13 @@ LABEL_10:
   return [(HKCodableHealthChartsSeriesData *)self->_seriesData hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
-    self->_shapeType = v4[4];
+    self->_shapeType = fromCopy[4];
     *&self->_has |= 1u;
   }
 

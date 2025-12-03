@@ -1,20 +1,20 @@
 @interface HDCloudSyncPullReferenceTombstonesOperation
-- (BOOL)performWithError:(id *)a3;
+- (BOOL)performWithError:(id *)error;
 @end
 
 @implementation HDCloudSyncPullReferenceTombstonesOperation
 
-- (BOOL)performWithError:(id *)a3
+- (BOOL)performWithError:(id *)error
 {
   v66 = 0;
   v67 = &v66;
   v68 = 0x2020000000;
-  v5 = [(HDCloudSyncOperation *)self configuration];
-  v6 = [v5 repository];
-  v7 = [v6 profile];
-  v8 = [v7 legacyRepositoryProfile];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  profile = [repository profile];
+  legacyRepositoryProfile = [profile legacyRepositoryProfile];
   v65 = 0;
-  v9 = HDCloudSyncAttachmentReferenceTombstoneEpoch(v8, &v65);
+  v9 = HDCloudSyncAttachmentReferenceTombstoneEpoch(legacyRepositoryProfile, &v65);
   v10 = v65;
 
   v69 = v9;
@@ -30,14 +30,14 @@
 
   if (v11)
   {
-    v12 = [(HDCloudSyncOperation *)self configuration];
-    v13 = [v12 cachedCloudState];
-    v14 = [(HDCloudSyncOperation *)self configuration];
-    v15 = [v14 repository];
-    v16 = [v15 primaryCKContainer];
-    v17 = [v16 containerIdentifier];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    cachedCloudState = [configuration2 cachedCloudState];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration3 repository];
+    primaryCKContainer = [repository2 primaryCKContainer];
+    containerIdentifier = [primaryCKContainer containerIdentifier];
     v64 = 0;
-    v52 = [v13 attachmentZoneForContainerID:v17 error:&v64];
+    v52 = [cachedCloudState attachmentZoneForContainerID:containerIdentifier error:&v64];
     v18 = v64;
 
     v19 = v52;
@@ -45,11 +45,11 @@
     {
       v20 = v18;
       v21 = v20;
-      if (a3)
+      if (error)
       {
         v22 = v20;
         v23 = 0;
-        *a3 = v21;
+        *error = v21;
       }
 
       else
@@ -64,12 +64,12 @@
 
     if (!v52)
     {
-      v26 = [(HDCloudSyncOperation *)self configuration];
-      v27 = [v26 repository];
-      v28 = [v27 profileType];
+      configuration4 = [(HDCloudSyncOperation *)self configuration];
+      repository3 = [configuration4 repository];
+      profileType = [repository3 profileType];
 
       v19 = 0;
-      if (v28 != 1)
+      if (profileType != 1)
       {
         v23 = 1;
 LABEL_33:
@@ -87,17 +87,17 @@ LABEL_33:
     v63 = &v66;
     v50 = v29;
     v61 = v50;
-    v62 = self;
+    selfCopy = self;
     v30 = _Block_copy(aBlock);
     v31 = +[HDMutableDatabaseTransactionContext contextForWritingProtectedData];
-    v32 = [(HDCloudSyncOperation *)self configuration];
-    v33 = [v32 accessibilityAssertion];
-    v51 = [v31 contextWithAccessibilityAssertion:v33];
+    configuration5 = [(HDCloudSyncOperation *)self configuration];
+    accessibilityAssertion = [configuration5 accessibilityAssertion];
+    v51 = [v31 contextWithAccessibilityAssertion:accessibilityAssertion];
 
-    v34 = [(HDCloudSyncOperation *)self configuration];
-    v35 = [v34 repository];
-    v36 = [v35 profile];
-    v37 = [v36 database];
+    configuration6 = [(HDCloudSyncOperation *)self configuration];
+    repository4 = [configuration6 repository];
+    profile2 = [repository4 profile];
+    database = [profile2 database];
     v58 = 0;
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
@@ -110,18 +110,18 @@ LABEL_33:
     v54[3] = &unk_278618968;
     v49 = v57;
     v55 = v49;
-    LODWORD(v32) = [v37 performTransactionWithContext:v51 error:&v58 block:v56 inaccessibilityHandler:v54];
+    LODWORD(configuration5) = [database performTransactionWithContext:v51 error:&v58 block:v56 inaccessibilityHandler:v54];
     v38 = v58;
 
-    if (v32)
+    if (configuration5)
     {
       v39 = v67[3];
-      v40 = [(HDCloudSyncOperation *)self configuration];
-      v41 = [v40 repository];
-      v42 = [v41 profile];
-      v43 = [v42 legacyRepositoryProfile];
+      configuration7 = [(HDCloudSyncOperation *)self configuration];
+      repository5 = [configuration7 repository];
+      profile3 = [repository5 profile];
+      legacyRepositoryProfile2 = [profile3 legacyRepositoryProfile];
       v53 = v10;
-      LOBYTE(v39) = HDSetCloudSyncAttachmentReferenceTombstoneEpoch(v39, v43, &v53);
+      LOBYTE(v39) = HDSetCloudSyncAttachmentReferenceTombstoneEpoch(v39, legacyRepositoryProfile2, &v53);
       v44 = v53;
 
       if (v39)
@@ -141,7 +141,7 @@ LABEL_32:
       v45 = v46;
       if (v46)
       {
-        if (!a3)
+        if (!error)
         {
           _HKLogDroppedError();
           v23 = 0;
@@ -161,7 +161,7 @@ LABEL_32:
       v45 = v38;
       if (v45)
       {
-        if (!a3)
+        if (!error)
         {
           _HKLogDroppedError();
           v23 = 0;
@@ -173,7 +173,7 @@ LABEL_30:
 LABEL_26:
         v47 = v45;
         v23 = 0;
-        *a3 = v45;
+        *error = v45;
         goto LABEL_30;
       }
     }
@@ -184,11 +184,11 @@ LABEL_26:
 
   v24 = v10;
   v18 = v24;
-  if (a3)
+  if (error)
   {
     v25 = v24;
     v23 = 0;
-    *a3 = v18;
+    *error = v18;
   }
 
   else

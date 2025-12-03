@@ -1,17 +1,17 @@
 @interface LCSSessionURLBuilder
-+ (id)_bundleRecordForBundleIdentifier:(id)a3;
-+ (id)_containerBundleIdentifierForBundleProvider:(id)a3;
-+ (id)_containerURLForBundleIdentifier:(id)a3;
++ (id)_bundleRecordForBundleIdentifier:(id)identifier;
++ (id)_containerBundleIdentifierForBundleProvider:(id)provider;
++ (id)_containerURLForBundleIdentifier:(id)identifier;
 + (id)_libraryURLForCurrentApplication;
 + (void)_libraryURLForCurrentApplication;
-- (LCSSessionURLBuilder)initWithTypeIdentifier:(id)a3;
-- (id)_finalizedSessionURLsInContainerDirectory:(id)a3;
-- (id)_nonContainerizedLibraryURLForBundleIdentifier:(id)a3;
-- (id)_nonContainerizedStagingContainerURLForBundleIdentifier:(id)a3;
-- (id)finalizationStagingSessionURLForBundleProvider:(id)a3 fromTemporaryURL:(id)a4;
-- (id)finalizedSessionURLForBundleProvider:(id)a3 fromSessionURL:(id)a4;
-- (id)finalizedSessionURLsForBundleIdentifier:(id)a3;
-- (id)finalizedSessionURLsForBundleProvider:(id)a3;
+- (LCSSessionURLBuilder)initWithTypeIdentifier:(id)identifier;
+- (id)_finalizedSessionURLsInContainerDirectory:(id)directory;
+- (id)_nonContainerizedLibraryURLForBundleIdentifier:(id)identifier;
+- (id)_nonContainerizedStagingContainerURLForBundleIdentifier:(id)identifier;
+- (id)finalizationStagingSessionURLForBundleProvider:(id)provider fromTemporaryURL:(id)l;
+- (id)finalizedSessionURLForBundleProvider:(id)provider fromSessionURL:(id)l;
+- (id)finalizedSessionURLsForBundleIdentifier:(id)identifier;
+- (id)finalizedSessionURLsForBundleProvider:(id)provider;
 - (id)finalizedSessionURLsForCurrentApplication;
 - (id)finalizedSessionsContainerURLForCurrentApplication;
 - (id)temporarySessionURL;
@@ -19,11 +19,11 @@
 
 @implementation LCSSessionURLBuilder
 
-+ (id)_containerBundleIdentifierForBundleProvider:(id)a3
++ (id)_containerBundleIdentifierForBundleProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [v3 containerBundleIdentifier];
-  if (!v4)
+  providerCopy = provider;
+  containerBundleIdentifier = [providerCopy containerBundleIdentifier];
+  if (!containerBundleIdentifier)
   {
     v5 = LCSLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -32,33 +32,33 @@
     }
   }
 
-  return v4;
+  return containerBundleIdentifier;
 }
 
-+ (id)_bundleRecordForBundleIdentifier:(id)a3
++ (id)_bundleRecordForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v8 = 0;
-  v4 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v3 allowPlaceholder:0 error:&v8];
+  v4 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v8];
   v5 = v8;
   if (!v4)
   {
     v6 = LCSLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(LCSCaptureApplicationMonitor *)v3 _bundleRecordForBundleIdentifier:v5, v6];
+      [(LCSCaptureApplicationMonitor *)identifierCopy _bundleRecordForBundleIdentifier:v5, v6];
     }
   }
 
   return v4;
 }
 
-+ (id)_containerURLForBundleIdentifier:(id)a3
++ (id)_containerURLForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _bundleRecordForBundleIdentifier:v4];
-  v6 = [v5 dataContainerURL];
-  if (!v6)
+  identifierCopy = identifier;
+  v5 = [self _bundleRecordForBundleIdentifier:identifierCopy];
+  dataContainerURL = [v5 dataContainerURL];
+  if (!dataContainerURL)
   {
     v7 = LCSLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -67,7 +67,7 @@
     }
   }
 
-  return v6;
+  return dataContainerURL;
 }
 
 + (id)_libraryURLForCurrentApplication
@@ -81,13 +81,13 @@
     }
   }
 
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 URLsForDirectory:5 inDomains:1];
-  v5 = [v4 firstObject];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager URLsForDirectory:5 inDomains:1];
+  firstObject = [v4 firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = v5;
+    v6 = firstObject;
   }
 
   else
@@ -99,19 +99,19 @@
     }
   }
 
-  return v5;
+  return firstObject;
 }
 
-- (LCSSessionURLBuilder)initWithTypeIdentifier:(id)a3
+- (LCSSessionURLBuilder)initWithTypeIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = LCSSessionURLBuilder;
   v6 = [(LCSSessionURLBuilder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_typeIdentifier, a3);
+    objc_storeStrong(&v6->_typeIdentifier, identifier);
   }
 
   return v7;
@@ -120,14 +120,14 @@
 - (id)temporarySessionURL
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 temporaryDirectory];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
 
-  v5 = [(LCSSessionURLBuilder *)self typeIdentifier];
-  v6 = [v4 URLByAppendingPathComponent:v5];
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
-  v9 = [v6 URLByAppendingPathComponent:v8];
+  typeIdentifier = [(LCSSessionURLBuilder *)self typeIdentifier];
+  v6 = [temporaryDirectory URLByAppendingPathComponent:typeIdentifier];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v9 = [v6 URLByAppendingPathComponent:uUIDString];
 
   v10 = LCSLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -142,25 +142,25 @@
   return v9;
 }
 
-- (id)finalizationStagingSessionURLForBundleProvider:(id)a3 fromTemporaryURL:(id)a4
+- (id)finalizationStagingSessionURLForBundleProvider:(id)provider fromTemporaryURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _containerBundleIdentifierForBundleProvider:v7];
+  lCopy = l;
+  providerCopy = provider;
+  v8 = [objc_opt_class() _containerBundleIdentifierForBundleProvider:providerCopy];
 
   v9 = [objc_opt_class() _containerURLForBundleIdentifier:v8];
   v10 = [v9 URLByAppendingPathComponent:@"tmp"];
-  v11 = [(LCSSessionURLBuilder *)self typeIdentifier];
-  v12 = [v10 URLByAppendingPathComponent:v11];
+  typeIdentifier = [(LCSSessionURLBuilder *)self typeIdentifier];
+  v12 = [v10 URLByAppendingPathComponent:typeIdentifier];
 
   if (!v12)
   {
     v12 = [(LCSSessionURLBuilder *)self _nonContainerizedStagingContainerURLForBundleIdentifier:v8];
   }
 
-  v13 = [v6 lastPathComponent];
-  v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v13];
-  if (!v14)
+  lastPathComponent = [lCopy lastPathComponent];
+  uUID = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:lastPathComponent];
+  if (!uUID)
   {
     v15 = LCSLogCommon();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -168,11 +168,11 @@
       [LCSSessionURLBuilder finalizationStagingSessionURLForBundleProvider:fromTemporaryURL:];
     }
 
-    v14 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
   }
 
-  v16 = [v14 UUIDString];
-  v17 = [v12 URLByAppendingPathComponent:v16];
+  uUIDString = [uUID UUIDString];
+  v17 = [v12 URLByAppendingPathComponent:uUIDString];
 
   v18 = LCSLogCommon();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -183,19 +183,19 @@
   return v17;
 }
 
-- (id)_nonContainerizedStagingContainerURLForBundleIdentifier:(id)a3
+- (id)_nonContainerizedStagingContainerURLForBundleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CBEBC0];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [v4 fileURLWithPath:@"/var/mobile/tmp"];
-  v7 = [v6 URLByAppendingPathComponent:v5];
+  v7 = [v6 URLByAppendingPathComponent:identifierCopy];
 
-  v8 = [(LCSSessionURLBuilder *)self typeIdentifier];
-  v9 = [v7 URLByAppendingPathComponent:v8];
+  typeIdentifier = [(LCSSessionURLBuilder *)self typeIdentifier];
+  v9 = [v7 URLByAppendingPathComponent:typeIdentifier];
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v7 path];
-  v12 = [v10 isWritableFileAtPath:v11];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v7 path];
+  v12 = [defaultManager isWritableFileAtPath:path];
 
   if (v12)
   {
@@ -212,12 +212,12 @@
   return v13;
 }
 
-- (id)finalizedSessionURLForBundleProvider:(id)a3 fromSessionURL:(id)a4
+- (id)finalizedSessionURLForBundleProvider:(id)provider fromSessionURL:(id)l
 {
-  v6 = a3;
-  v7 = [a4 lastPathComponent];
-  v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
-  if (!v8)
+  providerCopy = provider;
+  lastPathComponent = [l lastPathComponent];
+  uUID = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:lastPathComponent];
+  if (!uUID)
   {
     v9 = LCSLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -225,10 +225,10 @@
       [LCSSessionURLBuilder finalizationStagingSessionURLForBundleProvider:fromTemporaryURL:];
     }
 
-    v8 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
   }
 
-  v10 = [objc_opt_class() _containerBundleIdentifierForBundleProvider:v6];
+  v10 = [objc_opt_class() _containerBundleIdentifierForBundleProvider:providerCopy];
 
   v11 = [objc_opt_class() _containerURLForBundleIdentifier:v10];
   v12 = [v11 URLByAppendingPathComponent:@"Library"];
@@ -237,10 +237,10 @@
     v12 = [(LCSSessionURLBuilder *)self _nonContainerizedLibraryURLForBundleIdentifier:v10];
   }
 
-  v13 = [(LCSSessionURLBuilder *)self typeIdentifier];
-  v14 = [v12 URLByAppendingPathComponent:v13];
-  v15 = [v8 UUIDString];
-  v16 = [v14 URLByAppendingPathComponent:v15];
+  typeIdentifier = [(LCSSessionURLBuilder *)self typeIdentifier];
+  v14 = [v12 URLByAppendingPathComponent:typeIdentifier];
+  uUIDString = [uUID UUIDString];
+  v16 = [v14 URLByAppendingPathComponent:uUIDString];
 
   v17 = LCSLogCommon();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -251,16 +251,16 @@
   return v16;
 }
 
-- (id)_nonContainerizedLibraryURLForBundleIdentifier:(id)a3
+- (id)_nonContainerizedLibraryURLForBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [v3 fileURLWithPath:@"/var/mobile/Library"];
-  v6 = [v5 URLByAppendingPathComponent:v4];
+  v6 = [v5 URLByAppendingPathComponent:identifierCopy];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 isWritableFileAtPath:v8];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v6 path];
+  v9 = [defaultManager isWritableFileAtPath:path];
 
   if (v9)
   {
@@ -277,10 +277,10 @@
   return v10;
 }
 
-- (id)finalizedSessionURLsForBundleProvider:(id)a3
+- (id)finalizedSessionURLsForBundleProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _containerBundleIdentifierForBundleProvider:v4];
+  providerCopy = provider;
+  v5 = [objc_opt_class() _containerBundleIdentifierForBundleProvider:providerCopy];
 
   v6 = [(LCSSessionURLBuilder *)self finalizedSessionURLsForBundleIdentifier:v5];
 
@@ -289,25 +289,25 @@
 
 - (id)finalizedSessionsContainerURLForCurrentApplication
 {
-  v3 = [objc_opt_class() _libraryURLForCurrentApplication];
-  v4 = [(LCSSessionURLBuilder *)self typeIdentifier];
-  v5 = [v3 URLByAppendingPathComponent:v4];
+  _libraryURLForCurrentApplication = [objc_opt_class() _libraryURLForCurrentApplication];
+  typeIdentifier = [(LCSSessionURLBuilder *)self typeIdentifier];
+  v5 = [_libraryURLForCurrentApplication URLByAppendingPathComponent:typeIdentifier];
 
   return v5;
 }
 
 - (id)finalizedSessionURLsForCurrentApplication
 {
-  v3 = [objc_opt_class() _libraryURLForCurrentApplication];
-  v4 = [(LCSSessionURLBuilder *)self _finalizedSessionURLsInContainerDirectory:v3];
+  _libraryURLForCurrentApplication = [objc_opt_class() _libraryURLForCurrentApplication];
+  v4 = [(LCSSessionURLBuilder *)self _finalizedSessionURLsInContainerDirectory:_libraryURLForCurrentApplication];
 
   return v4;
 }
 
-- (id)finalizedSessionURLsForBundleIdentifier:(id)a3
+- (id)finalizedSessionURLsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _containerURLForBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [objc_opt_class() _containerURLForBundleIdentifier:identifierCopy];
 
   if (v5)
   {
@@ -323,15 +323,15 @@
   return v7;
 }
 
-- (id)_finalizedSessionURLsInContainerDirectory:(id)a3
+- (id)_finalizedSessionURLsInContainerDirectory:(id)directory
 {
   v49[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(LCSSessionURLBuilder *)self typeIdentifier];
-  v6 = [v4 URLByAppendingPathComponent:v5];
+  directoryCopy = directory;
+  typeIdentifier = [(LCSSessionURLBuilder *)self typeIdentifier];
+  v6 = [directoryCopy URLByAppendingPathComponent:typeIdentifier];
 
-  v33 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  array = [MEMORY[0x277CBEB18] array];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v8 = *MEMORY[0x277CBE868];
   v9 = *MEMORY[0x277CBE7C0];
   v49[0] = *MEMORY[0x277CBE868];
@@ -341,10 +341,10 @@
   v43[1] = 3221225472;
   v43[2] = __66__LCSSessionURLBuilder__finalizedSessionURLsInContainerDirectory___block_invoke;
   v43[3] = &unk_279824EC8;
-  v31 = v4;
+  v31 = directoryCopy;
   v32 = v6;
   v44 = v31;
-  v11 = [v7 enumeratorAtURL:v6 includingPropertiesForKeys:v10 options:7 errorHandler:v43];
+  v11 = [defaultManager enumeratorAtURL:v6 includingPropertiesForKeys:v10 options:7 errorHandler:v43];
 
   v41 = 0u;
   v42 = 0u;
@@ -395,12 +395,12 @@
           v22 = v9;
           v23 = v8;
           v24 = [v19 objectForKeyedSubscript:v8];
-          v25 = [v24 BOOLValue];
+          bOOLValue = [v24 BOOLValue];
 
           v21 = [v19 objectForKeyedSubscript:v15];
           v26 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v21];
 
-          if (v25)
+          if (bOOLValue)
           {
             v27 = v26 == 0;
           }
@@ -412,7 +412,7 @@
 
           if (!v27)
           {
-            [v33 addObject:v17];
+            [array addObject:v17];
           }
 
           v8 = v23;
@@ -432,7 +432,7 @@
     while (v13);
   }
 
-  v28 = [v33 sortedArrayUsingComparator:&__block_literal_global_1];
+  v28 = [array sortedArrayUsingComparator:&__block_literal_global_1];
 
   v29 = *MEMORY[0x277D85DE8];
 

@@ -1,42 +1,42 @@
 @interface AXLanguageTag
-+ (AXLanguageTag)tagWithDialects:(id)a3 range:(_NSRange)a4 content:(id)a5 predictedByTagger:(BOOL)a6;
++ (AXLanguageTag)tagWithDialects:(id)dialects range:(_NSRange)range content:(id)content predictedByTagger:(BOOL)tagger;
 - (AXDialectMap)dialect;
 - (AXDialectMap)preferredAmbiguousDialect;
 - (AXDialectMap)preferredUnambiguousDialect;
-- (BOOL)canBeSpokenByDialect:(id)a3;
-- (BOOL)canBeSpokenByLanguage:(id)a3;
+- (BOOL)canBeSpokenByDialect:(id)dialect;
+- (BOOL)canBeSpokenByLanguage:(id)language;
 - (BOOL)hasAmbigiousDialects;
 - (NSString)content;
 - (NSString)contentSubstring;
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addAmbiguousDialect:(id)a3;
-- (void)addAmbiguousDialects:(id)a3;
-- (void)addPredictedSecondaryDialects:(id)a3;
-- (void)addUnambiguousDialect:(id)a3;
+- (void)addAmbiguousDialect:(id)dialect;
+- (void)addAmbiguousDialects:(id)dialects;
+- (void)addPredictedSecondaryDialects:(id)dialects;
+- (void)addUnambiguousDialect:(id)dialect;
 - (void)contentSubstring;
 @end
 
 @implementation AXLanguageTag
 
-+ (AXLanguageTag)tagWithDialects:(id)a3 range:(_NSRange)a4 content:(id)a5 predictedByTagger:(BOOL)a6
++ (AXLanguageTag)tagWithDialects:(id)dialects range:(_NSRange)range content:(id)content predictedByTagger:(BOOL)tagger
 {
-  v6 = a6;
-  length = a4.length;
-  location = a4.location;
+  taggerCopy = tagger;
+  length = range.length;
+  location = range.location;
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  dialectsCopy = dialects;
+  contentCopy = content;
   v12 = objc_alloc_init(AXLanguageTag);
-  [(AXLanguageTag *)v12 setContent:v11];
+  [(AXLanguageTag *)v12 setContent:contentCopy];
   [(AXLanguageTag *)v12 setRange:location, length];
-  [(AXLanguageTag *)v12 setWasPredicted:v6];
+  [(AXLanguageTag *)v12 setWasPredicted:taggerCopy];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v13 = v10;
+  v13 = dialectsCopy;
   v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v14)
   {
@@ -52,10 +52,10 @@
         }
 
         v18 = *(*(&v22 + 1) + 8 * i);
-        v19 = [v18 langMap];
-        v20 = [v19 isAmbiguous];
+        langMap = [v18 langMap];
+        isAmbiguous = [langMap isAmbiguous];
 
-        if (v20)
+        if (isAmbiguous)
         {
           [(AXLanguageTag *)v12 addAmbiguousDialect:v18];
         }
@@ -77,21 +77,21 @@
 
 - (BOOL)hasAmbigiousDialects
 {
-  v2 = [(AXLanguageTag *)self ambiguousDialects];
-  v3 = [v2 count] != 0;
+  ambiguousDialects = [(AXLanguageTag *)self ambiguousDialects];
+  v3 = [ambiguousDialects count] != 0;
 
   return v3;
 }
 
 - (AXDialectMap)preferredAmbiguousDialect
 {
-  v3 = [(AXLanguageTag *)self ambiguousDialects];
-  v4 = [v3 count];
+  ambiguousDialects = [(AXLanguageTag *)self ambiguousDialects];
+  v4 = [ambiguousDialects count];
 
   if (v4)
   {
-    v5 = [(AXLanguageTag *)self ambiguousDialects];
-    v6 = [v5 objectAtIndex:0];
+    ambiguousDialects2 = [(AXLanguageTag *)self ambiguousDialects];
+    v6 = [ambiguousDialects2 objectAtIndex:0];
   }
 
   else
@@ -104,13 +104,13 @@
 
 - (AXDialectMap)preferredUnambiguousDialect
 {
-  v3 = [(AXLanguageTag *)self unambiguousDialects];
-  v4 = [v3 count];
+  unambiguousDialects = [(AXLanguageTag *)self unambiguousDialects];
+  v4 = [unambiguousDialects count];
 
   if (v4)
   {
-    v5 = [(AXLanguageTag *)self unambiguousDialects];
-    v6 = [v5 objectAtIndex:0];
+    unambiguousDialects2 = [(AXLanguageTag *)self unambiguousDialects];
+    v6 = [unambiguousDialects2 objectAtIndex:0];
   }
 
   else
@@ -123,10 +123,10 @@
 
 - (NSString)contentSubstring
 {
-  v3 = [(AXLanguageTag *)self range];
-  v5 = v3 + v4;
-  v6 = [(AXLanguageTag *)self content];
-  v7 = [v6 length];
+  range = [(AXLanguageTag *)self range];
+  v5 = range + v4;
+  content = [(AXLanguageTag *)self content];
+  v7 = [content length];
 
   if (v5 > v7)
   {
@@ -137,16 +137,16 @@
     }
   }
 
-  v9 = [(AXLanguageTag *)self range];
-  v11 = v9 + v10;
-  v12 = [(AXLanguageTag *)self content];
-  v13 = [v12 length];
+  range2 = [(AXLanguageTag *)self range];
+  v11 = range2 + v10;
+  content2 = [(AXLanguageTag *)self content];
+  v13 = [content2 length];
 
   if (v11 <= v13)
   {
-    v15 = [(AXLanguageTag *)self content];
-    v16 = [(AXLanguageTag *)self range];
-    v14 = [v15 substringWithRange:{v16, v17}];
+    content3 = [(AXLanguageTag *)self content];
+    range3 = [(AXLanguageTag *)self range];
+    v14 = [content3 substringWithRange:{range3, v17}];
   }
 
   else
@@ -159,70 +159,70 @@
 
 - (AXDialectMap)dialect
 {
-  v3 = [(AXLanguageTag *)self unambiguousDialects];
+  unambiguousDialects = [(AXLanguageTag *)self unambiguousDialects];
 
-  if (v3)
+  if (unambiguousDialects)
   {
-    v4 = [(AXLanguageTag *)self preferredUnambiguousDialect];
+    preferredUnambiguousDialect = [(AXLanguageTag *)self preferredUnambiguousDialect];
   }
 
   else
   {
-    v5 = [(AXLanguageTag *)self preferredAmbiguousDialect];
+    preferredAmbiguousDialect = [(AXLanguageTag *)self preferredAmbiguousDialect];
 
-    if (v5)
+    if (preferredAmbiguousDialect)
     {
-      v4 = [(AXLanguageTag *)self preferredAmbiguousDialect];
+      preferredUnambiguousDialect = [(AXLanguageTag *)self preferredAmbiguousDialect];
     }
 
     else
     {
-      v4 = 0;
+      preferredUnambiguousDialect = 0;
     }
   }
 
-  return v4;
+  return preferredUnambiguousDialect;
 }
 
-- (void)addUnambiguousDialect:(id)a3
+- (void)addUnambiguousDialect:(id)dialect
 {
-  v4 = a3;
-  v5 = [(AXLanguageTag *)self unambiguousDialects];
+  dialectCopy = dialect;
+  unambiguousDialects = [(AXLanguageTag *)self unambiguousDialects];
 
-  if (!v5)
+  if (!unambiguousDialects)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     [(AXLanguageTag *)self setUnambiguousDialects:v6];
   }
 
-  v7 = [(AXLanguageTag *)self unambiguousDialects];
-  [v7 addObject:v4];
+  unambiguousDialects2 = [(AXLanguageTag *)self unambiguousDialects];
+  [unambiguousDialects2 addObject:dialectCopy];
 }
 
-- (void)addAmbiguousDialect:(id)a3
+- (void)addAmbiguousDialect:(id)dialect
 {
-  v4 = a3;
-  v5 = [(AXLanguageTag *)self ambiguousDialects];
+  dialectCopy = dialect;
+  ambiguousDialects = [(AXLanguageTag *)self ambiguousDialects];
 
-  if (!v5)
+  if (!ambiguousDialects)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     [(AXLanguageTag *)self setAmbiguousDialects:v6];
   }
 
-  v7 = [(AXLanguageTag *)self ambiguousDialects];
-  [v7 addObject:v4];
+  ambiguousDialects2 = [(AXLanguageTag *)self ambiguousDialects];
+  [ambiguousDialects2 addObject:dialectCopy];
 }
 
-- (void)addAmbiguousDialects:(id)a3
+- (void)addAmbiguousDialects:(id)dialects
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dialectsCopy = dialects;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [dialectsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -234,88 +234,88 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dialectsCopy);
         }
 
         [(AXLanguageTag *)self addAmbiguousDialect:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [dialectsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addPredictedSecondaryDialects:(id)a3
+- (void)addPredictedSecondaryDialects:(id)dialects
 {
-  v4 = a3;
-  v5 = [(AXLanguageTag *)self predictedSecondaryDialects];
+  dialectsCopy = dialects;
+  predictedSecondaryDialects = [(AXLanguageTag *)self predictedSecondaryDialects];
 
-  if (!v5)
+  if (!predictedSecondaryDialects)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     [(AXLanguageTag *)self setPredictedSecondaryDialects:v6];
   }
 
-  v7 = [(AXLanguageTag *)self predictedSecondaryDialects];
-  [v7 unionOrderedSet:v4];
+  predictedSecondaryDialects2 = [(AXLanguageTag *)self predictedSecondaryDialects];
+  [predictedSecondaryDialects2 unionOrderedSet:dialectsCopy];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AXLanguageTag *)self dialect];
-  v5 = [v4 specificLanguageID];
-  v6 = [(AXLanguageTag *)self contentSubstring];
-  v7 = [v6 stringByReplacingOccurrencesOfString:@"\n" withString:@"$"];
-  v8 = [v3 stringWithFormat:@"%@ - %@", v5, v7];
+  dialect = [(AXLanguageTag *)self dialect];
+  specificLanguageID = [dialect specificLanguageID];
+  contentSubstring = [(AXLanguageTag *)self contentSubstring];
+  v7 = [contentSubstring stringByReplacingOccurrencesOfString:@"\n" withString:@"$"];
+  v8 = [v3 stringWithFormat:@"%@ - %@", specificLanguageID, v7];
 
   return v8;
 }
 
-- (BOOL)canBeSpokenByDialect:(id)a3
+- (BOOL)canBeSpokenByDialect:(id)dialect
 {
-  if (!a3)
+  if (!dialect)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(AXLanguageTag *)self contentSubstring];
-  v6 = [v4 canSpeakString:v5 allowsTransliteration:0];
+  dialectCopy = dialect;
+  contentSubstring = [(AXLanguageTag *)self contentSubstring];
+  v6 = [dialectCopy canSpeakString:contentSubstring allowsTransliteration:0];
 
   return v6;
 }
 
-- (BOOL)canBeSpokenByLanguage:(id)a3
+- (BOOL)canBeSpokenByLanguage:(id)language
 {
-  if (!a3)
+  if (!language)
   {
     return 0;
   }
 
-  v4 = a3;
+  languageCopy = language;
   v5 = +[AXLanguageManager sharedInstance];
-  v6 = [v5 dialectForLanguageID:v4];
+  v6 = [v5 dialectForLanguageID:languageCopy];
 
   LOBYTE(self) = [(AXLanguageTag *)self canBeSpokenByDialect:v6];
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 48) = self->_range;
   WeakRetained = objc_loadWeakRetained(&self->_content);
   objc_storeWeak((v5 + 16), WeakRetained);
 
-  v7 = [(NSMutableOrderedSet *)self->_unambiguousDialects mutableCopyWithZone:a3];
+  v7 = [(NSMutableOrderedSet *)self->_unambiguousDialects mutableCopyWithZone:zone];
   v8 = *(v5 + 24);
   *(v5 + 24) = v7;
 
-  v9 = [(NSMutableOrderedSet *)self->_ambiguousDialects mutableCopyWithZone:a3];
+  v9 = [(NSMutableOrderedSet *)self->_ambiguousDialects mutableCopyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
@@ -342,9 +342,9 @@
 - (void)contentSubstring
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [a1 content];
+  content = [self content];
   v4 = 138412290;
-  v5 = v3;
+  v5 = content;
   _os_log_fault_impl(&dword_18B15E000, a2, OS_LOG_TYPE_FAULT, "The range of the tagged chunk is greater than the content. Something went awry %@", &v4, 0xCu);
 }
 

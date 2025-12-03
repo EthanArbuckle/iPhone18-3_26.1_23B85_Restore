@@ -1,36 +1,36 @@
 @interface TSDTilingLimitedQueue
 - (TSDTilingLimitedQueue)init;
-- (TSDTilingLimitedQueue)initWithLimit:(unint64_t)a3;
+- (TSDTilingLimitedQueue)initWithLimit:(unint64_t)limit;
 - (void)dealloc;
-- (void)performAsync:(id)a3;
+- (void)performAsync:(id)async;
 @end
 
 @implementation TSDTilingLimitedQueue
 
 - (TSDTilingLimitedQueue)init
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTilingLimitedQueue init]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTilingLayer.m"), 1374, @"-initWithLimit: is the designated initializer"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTilingLayer.m"), 1374, @"-initWithLimit: is the designated initializer"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"-initWithLimit: is the designated initializer", "-[TSDTilingLimitedQueue init]"), 0}]);
 }
 
-- (TSDTilingLimitedQueue)initWithLimit:(unint64_t)a3
+- (TSDTilingLimitedQueue)initWithLimit:(unint64_t)limit
 {
   v9.receiver = self;
   v9.super_class = TSDTilingLimitedQueue;
   v4 = [(TSDTilingLimitedQueue *)&v9 init];
   if (v4)
   {
-    if (!a3)
+    if (!limit)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTilingLimitedQueue initWithLimit:]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTilingLayer.m"), 1382, @"Queue limit shoudl be at least one."}];
-      a3 = 1;
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTilingLayer.m"), 1382, @"Queue limit shoudl be at least one."}];
+      limit = 1;
     }
 
-    v4->mLimit = a3;
+    v4->mLimit = limit;
     v4->mManagerQueue = dispatch_queue_create("com.apple.iwork.limitedqueue.manager", 0);
     v7 = dispatch_queue_create("com.apple.iwork.limitedqueue", MEMORY[0x277D85CD8]);
     v4->mTargetQueue = v7;
@@ -52,7 +52,7 @@
   [(TSDTilingLimitedQueue *)&v3 dealloc];
 }
 
-- (void)performAsync:(id)a3
+- (void)performAsync:(id)async
 {
   mManagerQueue = self->mManagerQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -60,7 +60,7 @@
   v4[2] = __38__TSDTilingLimitedQueue_performAsync___block_invoke;
   v4[3] = &unk_279D48DA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = async;
   dispatch_async(mManagerQueue, v4);
 }
 

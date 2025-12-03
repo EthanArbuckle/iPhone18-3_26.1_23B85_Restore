@@ -1,43 +1,43 @@
 @interface AACustodianshipInfo
-- (AACustodianshipInfo)initWithCoder:(id)a3;
-- (AACustodianshipInfo)initWithID:(id)a3 status:(int64_t)a4 ownerHandle:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AACustodianshipInfo)initWithCoder:(id)coder;
+- (AACustodianshipInfo)initWithID:(id)d status:(int64_t)status ownerHandle:(id)handle;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)statusDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AACustodianshipInfo
 
-- (AACustodianshipInfo)initWithID:(id)a3 status:(int64_t)a4 ownerHandle:(id)a5
+- (AACustodianshipInfo)initWithID:(id)d status:(int64_t)status ownerHandle:(id)handle
 {
-  v9 = a3;
-  v10 = a5;
+  dCopy = d;
+  handleCopy = handle;
   v14.receiver = self;
   v14.super_class = AACustodianshipInfo;
   v11 = [(AACustodianshipInfo *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_custodianID, a3);
-    v12->_status = a4;
-    objc_storeStrong(&v12->_ownerHandle, a5);
+    objc_storeStrong(&v11->_custodianID, d);
+    v12->_status = status;
+    objc_storeStrong(&v12->_ownerHandle, handle);
   }
 
   return v12;
 }
 
-- (AACustodianshipInfo)initWithCoder:(id)a3
+- (AACustodianshipInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AACustodianshipInfo *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_custodianID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_custodianID"];
     custodianID = v5->_custodianID;
     v5->_custodianID = v6;
 
-    v5->_status = [v4 decodeIntegerForKey:@"_status"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_ownerHandle"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"_status"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_ownerHandle"];
     ownerHandle = v5->_ownerHandle;
     v5->_ownerHandle = v8;
   }
@@ -45,16 +45,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   custodianID = self->_custodianID;
-  v5 = a3;
-  [v5 encodeObject:custodianID forKey:@"_custodianID"];
-  [v5 encodeInteger:self->_status forKey:@"_status"];
-  [v5 encodeObject:self->_ownerHandle forKey:@"_ownerHandle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:custodianID forKey:@"_custodianID"];
+  [coderCopy encodeInteger:self->_status forKey:@"_status"];
+  [coderCopy encodeObject:self->_ownerHandle forKey:@"_ownerHandle"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = [(NSUUID *)self->_custodianID copy];
@@ -71,15 +71,15 @@
 
 - (id)statusDescription
 {
-  v2 = [(AACustodianshipInfo *)self status];
-  if ((v2 + 1) > 5)
+  status = [(AACustodianshipInfo *)self status];
+  if ((status + 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E7C9B848 + v2 + 1);
+    return *(&off_1E7C9B848 + status + 1);
   }
 }
 

@@ -1,56 +1,56 @@
 @interface PKInstallmentPlanSummary
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInstallmentPlanSummary:(id)a3;
-- (PKInstallmentPlanSummary)initWithCoder:(id)a3;
-- (PKInstallmentPlanSummary)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInstallmentPlanSummary:(id)summary;
+- (PKInstallmentPlanSummary)initWithCoder:(id)coder;
+- (PKInstallmentPlanSummary)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKInstallmentPlanSummary
 
-- (PKInstallmentPlanSummary)initWithDictionary:(id)a3
+- (PKInstallmentPlanSummary)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = PKInstallmentPlanSummary;
   v5 = [(PKInstallmentPlanSummary *)&v25 init];
   if (v5)
   {
-    v6 = [v4 PKDateForKey:@"startDate"];
+    v6 = [dictionaryCopy PKDateForKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v6;
 
-    v8 = [v4 PKDateForKey:@"originalEndDate"];
+    v8 = [dictionaryCopy PKDateForKey:@"originalEndDate"];
     originalEndDate = v5->_originalEndDate;
     v5->_originalEndDate = v8;
 
-    v10 = [v4 PKDateForKey:@"currentEndDate"];
+    v10 = [dictionaryCopy PKDateForKey:@"currentEndDate"];
     currentEndDate = v5->_currentEndDate;
     v5->_currentEndDate = v10;
 
-    v12 = [v4 PKDecimalNumberFromStringForKey:@"currentBalance"];
+    v12 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"currentBalance"];
     currentBalance = v5->_currentBalance;
     v5->_currentBalance = v12;
 
-    v14 = [v4 PKStringForKey:@"currencyCode"];
+    v14 = [dictionaryCopy PKStringForKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v14;
 
-    v16 = [v4 PKDecimalNumberFromStringForKey:@"minimumDue"];
+    v16 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"minimumDue"];
     minimumDue = v5->_minimumDue;
     v5->_minimumDue = v16;
 
-    v18 = [v4 PKDateForKey:@"minimumDueDate"];
+    v18 = [dictionaryCopy PKDateForKey:@"minimumDueDate"];
     minimumDueDate = v5->_minimumDueDate;
     v5->_minimumDueDate = v18;
 
-    v20 = [v4 PKDecimalNumberFromStringForKey:@"interestCharged"];
+    v20 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"interestCharged"];
     interestCharged = v5->_interestCharged;
     v5->_interestCharged = v20;
 
-    v22 = [v4 PKDecimalNumberFromStringForKey:@"paymentsToDateAmount"];
+    v22 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"paymentsToDateAmount"];
     paymentsToDateAmount = v5->_paymentsToDateAmount;
     v5->_paymentsToDateAmount = v22;
   }
@@ -58,33 +58,33 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKInstallmentPlanSummary *)self isEqualToInstallmentPlanSummary:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKInstallmentPlanSummary *)self isEqualToInstallmentPlanSummary:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToInstallmentPlanSummary:(id)a3
+- (BOOL)isEqualToInstallmentPlanSummary:(id)summary
 {
-  v4 = a3;
-  if (!v4)
+  summaryCopy = summary;
+  if (!summaryCopy)
   {
     goto LABEL_47;
   }
 
   startDate = self->_startDate;
-  v6 = v4[1];
+  v6 = summaryCopy[1];
   if (startDate)
   {
     v7 = v6 == 0;
@@ -109,7 +109,7 @@
   }
 
   originalEndDate = self->_originalEndDate;
-  v9 = v4[2];
+  v9 = summaryCopy[2];
   if (originalEndDate && v9)
   {
     if (([(NSDate *)originalEndDate isEqual:?]& 1) == 0)
@@ -124,7 +124,7 @@
   }
 
   currentEndDate = self->_currentEndDate;
-  v11 = v4[3];
+  v11 = summaryCopy[3];
   if (currentEndDate && v11)
   {
     if (([(NSDate *)currentEndDate isEqual:?]& 1) == 0)
@@ -139,7 +139,7 @@
   }
 
   currentBalance = self->_currentBalance;
-  v13 = v4[4];
+  v13 = summaryCopy[4];
   if (currentBalance && v13)
   {
     if (([(NSDecimalNumber *)currentBalance isEqual:?]& 1) == 0)
@@ -154,7 +154,7 @@
   }
 
   currencyCode = self->_currencyCode;
-  v15 = v4[5];
+  v15 = summaryCopy[5];
   if (currencyCode && v15)
   {
     if (([(NSString *)currencyCode isEqual:?]& 1) == 0)
@@ -169,7 +169,7 @@
   }
 
   minimumDue = self->_minimumDue;
-  v17 = v4[6];
+  v17 = summaryCopy[6];
   if (minimumDue && v17)
   {
     if (([(NSDecimalNumber *)minimumDue isEqual:?]& 1) == 0)
@@ -184,7 +184,7 @@
   }
 
   minimumDueDate = self->_minimumDueDate;
-  v19 = v4[7];
+  v19 = summaryCopy[7];
   if (minimumDueDate && v19)
   {
     if (([(NSDate *)minimumDueDate isEqual:?]& 1) == 0)
@@ -199,7 +199,7 @@
   }
 
   interestCharged = self->_interestCharged;
-  v21 = v4[8];
+  v21 = summaryCopy[8];
   if (!interestCharged || !v21)
   {
     if (interestCharged == v21)
@@ -219,7 +219,7 @@ LABEL_47:
 
 LABEL_43:
   paymentsToDateAmount = self->_paymentsToDateAmount;
-  v23 = v4[9];
+  v23 = summaryCopy[9];
   if (paymentsToDateAmount && v23)
   {
     v24 = [(NSDecimalNumber *)paymentsToDateAmount isEqual:?];
@@ -252,47 +252,47 @@ LABEL_48:
   return v4;
 }
 
-- (PKInstallmentPlanSummary)initWithCoder:(id)a3
+- (PKInstallmentPlanSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = PKInstallmentPlanSummary;
   v5 = [(PKInstallmentPlanSummary *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalEndDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalEndDate"];
     originalEndDate = v5->_originalEndDate;
     v5->_originalEndDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentEndDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentEndDate"];
     currentEndDate = v5->_currentEndDate;
     v5->_currentEndDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentBalance"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentBalance"];
     currentBalance = v5->_currentBalance;
     v5->_currentBalance = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minimumDue"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minimumDue"];
     minimumDue = v5->_minimumDue;
     v5->_minimumDue = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minimumDueDate"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minimumDueDate"];
     minimumDueDate = v5->_minimumDueDate;
     v5->_minimumDueDate = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interestCharged"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interestCharged"];
     interestCharged = v5->_interestCharged;
     v5->_interestCharged = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentsToDateAmount"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentsToDateAmount"];
     paymentsToDateAmount = v5->_paymentsToDateAmount;
     v5->_paymentsToDateAmount = v22;
   }
@@ -300,57 +300,57 @@ LABEL_48:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startDate = self->_startDate;
-  v5 = a3;
-  [v5 encodeObject:startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_originalEndDate forKey:@"originalEndDate"];
-  [v5 encodeObject:self->_currentEndDate forKey:@"currentEndDate"];
-  [v5 encodeObject:self->_currentBalance forKey:@"currentBalance"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v5 encodeObject:self->_minimumDue forKey:@"minimumDue"];
-  [v5 encodeObject:self->_minimumDueDate forKey:@"minimumDueDate"];
-  [v5 encodeObject:self->_interestCharged forKey:@"interestCharged"];
-  [v5 encodeObject:self->_paymentsToDateAmount forKey:@"paymentsToDateAmount"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_originalEndDate forKey:@"originalEndDate"];
+  [coderCopy encodeObject:self->_currentEndDate forKey:@"currentEndDate"];
+  [coderCopy encodeObject:self->_currentBalance forKey:@"currentBalance"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeObject:self->_minimumDue forKey:@"minimumDue"];
+  [coderCopy encodeObject:self->_minimumDueDate forKey:@"minimumDueDate"];
+  [coderCopy encodeObject:self->_interestCharged forKey:@"interestCharged"];
+  [coderCopy encodeObject:self->_paymentsToDateAmount forKey:@"paymentsToDateAmount"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSDate *)self->_startDate copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSDate *)self->_startDate copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSDate *)self->_originalEndDate copyWithZone:a3];
+  v8 = [(NSDate *)self->_originalEndDate copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSDate *)self->_currentEndDate copyWithZone:a3];
+  v10 = [(NSDate *)self->_currentEndDate copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSDecimalNumber *)self->_currentBalance copyWithZone:a3];
+  v12 = [(NSDecimalNumber *)self->_currentBalance copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v14 = [(NSString *)self->_currencyCode copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
-  v16 = [(NSDecimalNumber *)self->_minimumDue copyWithZone:a3];
+  v16 = [(NSDecimalNumber *)self->_minimumDue copyWithZone:zone];
   v17 = v5[6];
   v5[6] = v16;
 
-  v18 = [(NSDate *)self->_minimumDueDate copyWithZone:a3];
+  v18 = [(NSDate *)self->_minimumDueDate copyWithZone:zone];
   v19 = v5[7];
   v5[7] = v18;
 
-  v20 = [(NSDecimalNumber *)self->_interestCharged copyWithZone:a3];
+  v20 = [(NSDecimalNumber *)self->_interestCharged copyWithZone:zone];
   v21 = v5[8];
   v5[8] = v20;
 
-  v22 = [(NSDecimalNumber *)self->_paymentsToDateAmount copyWithZone:a3];
+  v22 = [(NSDecimalNumber *)self->_paymentsToDateAmount copyWithZone:zone];
   v23 = v5[9];
   v5[9] = v22;
 

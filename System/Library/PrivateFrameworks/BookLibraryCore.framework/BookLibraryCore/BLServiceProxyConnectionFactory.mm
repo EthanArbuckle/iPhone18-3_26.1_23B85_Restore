@@ -1,14 +1,14 @@
 @interface BLServiceProxyConnectionFactory
-+ (id)connectionWithMachServiceName:(id)a3 options:(unint64_t)a4;
++ (id)connectionWithMachServiceName:(id)name options:(unint64_t)options;
 @end
 
 @implementation BLServiceProxyConnectionFactory
 
-+ (id)connectionWithMachServiceName:(id)a3 options:(unint64_t)a4
++ (id)connectionWithMachServiceName:(id)name options:(unint64_t)options
 {
   v5 = MEMORY[0x277CCAE80];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithMachServiceName:v6 options:a4];
+  nameCopy = name;
+  v7 = [[v5 alloc] initWithMachServiceName:nameCopy options:options];
 
   return v7;
 }

@@ -1,22 +1,22 @@
 @interface MobileTimerAssistantTimerSnippetCell
-- (MobileTimerAssistantTimerSnippetCell)initWithFrame:(CGRect)a3;
+- (MobileTimerAssistantTimerSnippetCell)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)handleTimerStateChanged;
 - (void)layoutSubviews;
 - (void)markStale;
 - (void)reloadTimerState;
-- (void)setTimer:(id)a3;
+- (void)setTimer:(id)timer;
 - (void)updateDisplay;
 @end
 
 @implementation MobileTimerAssistantTimerSnippetCell
 
-- (MobileTimerAssistantTimerSnippetCell)initWithFrame:(CGRect)a3
+- (MobileTimerAssistantTimerSnippetCell)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = MobileTimerAssistantTimerSnippetCell;
-  v3 = [(MobileTimerAssistantTimerSnippetCell *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MobileTimerAssistantTimerSnippetCell *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -65,32 +65,32 @@
 {
   if (!self->_stale)
   {
-    v3 = [(MTTimerManager *)self->_timerManager currentTimer];
+    currentTimer = [(MTTimerManager *)self->_timerManager currentTimer];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_631C;
     v5[3] = &unk_106C8;
     v5[4] = self;
-    v4 = [v3 addCompletionBlock:v5];
+    v4 = [currentTimer addCompletionBlock:v5];
   }
 }
 
-- (void)setTimer:(id)a3
+- (void)setTimer:(id)timer
 {
-  v5 = a3;
-  if (self->_timer != v5)
+  timerCopy = timer;
+  if (self->_timer != timerCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_timer, a3);
-    v6 = [(SATimerObject *)self->_timer state];
-    v7 = [v6 isEqualToString:SATimerStateUndefinedValue];
+    v10 = timerCopy;
+    objc_storeStrong(&self->_timer, timer);
+    state = [(SATimerObject *)self->_timer state];
+    v7 = [state isEqualToString:SATimerStateUndefinedValue];
 
     if (v7)
     {
       self->_deviceTimer = 0;
       timeView = self->_timeView;
-      v9 = [(SATimerObject *)self->_timer timerValue];
-      -[TimerSnippetTimeView setRemainingTime:](timeView, "setRemainingTime:", [v9 intValue]);
+      timerValue = [(SATimerObject *)self->_timer timerValue];
+      -[TimerSnippetTimeView setRemainingTime:](timeView, "setRemainingTime:", [timerValue intValue]);
     }
 
     else
@@ -100,7 +100,7 @@
     }
 
     [(MobileTimerAssistantTimerSnippetCell *)self setNeedsLayout];
-    v5 = v10;
+    timerCopy = v10;
   }
 }
 
@@ -119,8 +119,8 @@
   if (!self->_stale)
   {
     self->_stale = 1;
-    v3 = [(SATimerObject *)self->_timer state];
-    v4 = [v3 isEqualToString:SATimerStateUndefinedValue];
+    state = [(SATimerObject *)self->_timer state];
+    v4 = [state isEqualToString:SATimerStateUndefinedValue];
 
     if ((v4 & 1) == 0)
     {
@@ -147,9 +147,9 @@
 
 - (void)didMoveToSuperview
 {
-  v3 = [(MobileTimerAssistantTimerSnippetCell *)self superview];
+  superview = [(MobileTimerAssistantTimerSnippetCell *)self superview];
 
-  if (!v3)
+  if (!superview)
   {
     [(CADisplayLink *)self->_displayLink invalidate];
     displayLink = self->_displayLink;

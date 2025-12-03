@@ -1,15 +1,15 @@
 @interface PLReadyForAnalysis
-- (BOOL)_lock_isReadyForAnalysisState:(unsigned __int16)a3;
+- (BOOL)_lock_isReadyForAnalysisState:(unsigned __int16)state;
 - (BOOL)isReadyForAnalysis;
-- (PLReadyForAnalysis)initWithLibraryServicesManager:(id)a3;
+- (PLReadyForAnalysis)initWithLibraryServicesManager:(id)manager;
 - (id)stateCaptureDictionary;
-- (void)_lock_checkCPLInitialDownloadStatusForState:(unsigned __int16)a3;
-- (void)_lock_checkComputeCacheStatusForState:(unsigned __int16)a3;
-- (void)_lock_checkIsReadyForAnalysisForState:(unsigned __int16)a3;
-- (void)_lock_checkReadyForCPLStatusForState:(unsigned __int16)a3;
-- (void)_lock_logIfPermittedWithString:(id)a3;
-- (void)_lock_updateAndLogStatusWithString:(id)a3;
-- (void)_lock_updateCheckLevelIfNeeded:(char)a3;
+- (void)_lock_checkCPLInitialDownloadStatusForState:(unsigned __int16)state;
+- (void)_lock_checkComputeCacheStatusForState:(unsigned __int16)state;
+- (void)_lock_checkIsReadyForAnalysisForState:(unsigned __int16)state;
+- (void)_lock_checkReadyForCPLStatusForState:(unsigned __int16)state;
+- (void)_lock_logIfPermittedWithString:(id)string;
+- (void)_lock_updateAndLogStatusWithString:(id)string;
+- (void)_lock_updateCheckLevelIfNeeded:(char)needed;
 - (void)_lock_updateStateCaptureData;
 - (void)dealloc;
 @end
@@ -51,39 +51,39 @@ uint64_t __40__PLReadyForAnalysis_isReadyForAnalysis__block_invoke(uint64_t a1)
 
 - (id)stateCaptureDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = atomic_load(&self->_atomic_readyState);
   v5 = PLStringFromReadyForAnalysisState(v4);
-  [v3 setObject:v5 forKeyedSubscript:@"analysisState"];
+  [dictionary setObject:v5 forKeyedSubscript:@"analysisState"];
 
   v6 = atomic_load(&self->_atomic_checkLevel);
   v7 = PLStringFromReadyForAnalysisCheckLevelShort(v6);
-  [v3 setObject:v7 forKeyedSubscript:@"checkLevel"];
+  [dictionary setObject:v7 forKeyedSubscript:@"checkLevel"];
 
   [(PLLibraryServicesManager *)self->_lsm wellKnownPhotoLibraryIdentifier];
   v8 = PLStringFromWellKnownPhotoLibraryIdentifier();
-  [v3 setObject:v8 forKeyedSubscript:@"wellKnownIdentifier"];
+  [dictionary setObject:v8 forKeyedSubscript:@"wellKnownIdentifier"];
 
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", self->_lsm];
-  [v3 setObject:v9 forKeyedSubscript:@"LSM"];
+  [dictionary setObject:v9 forKeyedSubscript:@"LSM"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_lock_checkComputeCacheStatusForState:(unsigned __int16)a3
+- (void)_lock_checkComputeCacheStatusForState:(unsigned __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   os_unfair_lock_assert_owner(&self->_lock);
-  if ((v3 & 4) != 0)
+  if ((stateCopy & 4) != 0)
   {
     if ([(PLReadyForAnalysis *)self _lock_isReadyForAnalysisState:2])
     {
       if (![(PLReadyForAnalysis *)self _lock_isReadyForAnalysisState:4])
       {
-        v5 = [(PLLibraryServicesManager *)self->_lsm computeCacheManager];
-        v6 = [v5 isReadyForAnalysis];
+        computeCacheManager = [(PLLibraryServicesManager *)self->_lsm computeCacheManager];
+        isReadyForAnalysis = [computeCacheManager isReadyForAnalysis];
 
-        if (v6)
+        if (isReadyForAnalysis)
         {
           self->_lock_readyState |= 4u;
 
@@ -94,16 +94,16 @@ uint64_t __40__PLReadyForAnalysis_isReadyForAnalysis__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_lock_checkCPLInitialDownloadStatusForState:(unsigned __int16)a3
+- (void)_lock_checkCPLInitialDownloadStatusForState:(unsigned __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   os_unfair_lock_assert_owner(&self->_lock);
-  if ((v3 & 2) != 0 && ![(PLReadyForAnalysis *)self _lock_isReadyForAnalysisState:2])
+  if ((stateCopy & 2) != 0 && ![(PLReadyForAnalysis *)self _lock_isReadyForAnalysisState:2])
   {
-    v5 = [(PLLibraryServicesManager *)self->_lsm cloudPhotoLibraryManager];
-    v6 = [v5 isReadyForAnalysis];
+    cloudPhotoLibraryManager = [(PLLibraryServicesManager *)self->_lsm cloudPhotoLibraryManager];
+    isReadyForAnalysis = [cloudPhotoLibraryManager isReadyForAnalysis];
 
-    if (v6)
+    if (isReadyForAnalysis)
     {
       self->_lock_readyState |= 2u;
 
@@ -112,14 +112,14 @@ uint64_t __40__PLReadyForAnalysis_isReadyForAnalysis__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_lock_checkReadyForCPLStatusForState:(unsigned __int16)a3
+- (void)_lock_checkReadyForCPLStatusForState:(unsigned __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   os_unfair_lock_assert_owner(&self->_lock);
-  if ((v3 & 1) != 0 && ![(PLReadyForAnalysis *)self _lock_isReadyForAnalysisState:1])
+  if ((stateCopy & 1) != 0 && ![(PLReadyForAnalysis *)self _lock_isReadyForAnalysisState:1])
   {
-    v5 = [(PLLibraryServicesManager *)self->_lsm cplReadiness];
-    v6 = [v5 isReadyForCloudPhotoLibraryWithStatus:0];
+    cplReadiness = [(PLLibraryServicesManager *)self->_lsm cplReadiness];
+    v6 = [cplReadiness isReadyForCloudPhotoLibraryWithStatus:0];
 
     if (v6)
     {
@@ -130,36 +130,36 @@ uint64_t __40__PLReadyForAnalysis_isReadyForAnalysis__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_lock_checkIsReadyForAnalysisForState:(unsigned __int16)a3
+- (void)_lock_checkIsReadyForAnalysisForState:(unsigned __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   os_unfair_lock_assert_owner(&self->_lock);
   if ((~self->_lock_readyState & 7) != 0)
   {
-    [(PLReadyForAnalysis *)self _lock_checkReadyForCPLStatusForState:v3];
+    [(PLReadyForAnalysis *)self _lock_checkReadyForCPLStatusForState:stateCopy];
     v5 = [(PLReadyForAnalysis *)self _lock_isReadyForAnalysisState:1];
-    if ((v3 & 1) == 0 || v5)
+    if ((stateCopy & 1) == 0 || v5)
     {
       if ([(PLLibraryServicesManager *)self->_lsm isCloudPhotoLibraryEnabled])
       {
-        if (v3 == 6)
+        if (stateCopy == 6)
         {
           if ([(PLReadyForAnalysis *)self _lock_isReadyForAnalysisState:6])
           {
             return;
           }
 
-          v6 = [(PLReadyForAnalysis *)self appPrivateData];
-          v7 = [v6 getCachedIsReadyForAnalysisFromSavedState];
+          appPrivateData = [(PLReadyForAnalysis *)self appPrivateData];
+          getCachedIsReadyForAnalysisFromSavedState = [appPrivateData getCachedIsReadyForAnalysisFromSavedState];
 
-          if (v7)
+          if (getCachedIsReadyForAnalysisFromSavedState)
           {
             self->_lock_readyState |= 6u;
             return;
           }
         }
 
-        [(PLReadyForAnalysis *)self _lock_checkCPLInitialDownloadStatusForState:v3];
+        [(PLReadyForAnalysis *)self _lock_checkCPLInitialDownloadStatusForState:stateCopy];
       }
 
       else
@@ -168,41 +168,41 @@ uint64_t __40__PLReadyForAnalysis_isReadyForAnalysis__block_invoke(uint64_t a1)
         [(PLReadyForAnalysis *)self _lock_updateAndLogStatusWithString:@"CPLDownloadCompleted (iCPL Disabled)"];
       }
 
-      [(PLReadyForAnalysis *)self _lock_checkComputeCacheStatusForState:v3];
-      if ((v3 & 6) != 0)
+      [(PLReadyForAnalysis *)self _lock_checkComputeCacheStatusForState:stateCopy];
+      if ((stateCopy & 6) != 0)
       {
-        v8 = [(PLReadyForAnalysis *)self appPrivateData];
-        [v8 saveCachedIsReadyForAnalysis:-[PLReadyForAnalysis _lock_isReadyForAnalysisState:](self libraryServicesManager:{"_lock_isReadyForAnalysisState:", 6), self->_lsm}];
+        appPrivateData2 = [(PLReadyForAnalysis *)self appPrivateData];
+        [appPrivateData2 saveCachedIsReadyForAnalysis:-[PLReadyForAnalysis _lock_isReadyForAnalysisState:](self libraryServicesManager:{"_lock_isReadyForAnalysisState:", 6), self->_lsm}];
       }
     }
   }
 }
 
-- (BOOL)_lock_isReadyForAnalysisState:(unsigned __int16)a3
+- (BOOL)_lock_isReadyForAnalysisState:(unsigned __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   os_unfair_lock_assert_owner(&self->_lock);
-  return (v3 & ~self->_lock_readyState) == 0;
+  return (stateCopy & ~self->_lock_readyState) == 0;
 }
 
-- (void)_lock_updateCheckLevelIfNeeded:(char)a3
+- (void)_lock_updateCheckLevelIfNeeded:(char)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (self->_lock_checkLevel < v3)
+  if (self->_lock_checkLevel < neededCopy)
   {
-    self->_lock_checkLevel = v3;
+    self->_lock_checkLevel = neededCopy;
   }
 }
 
-- (void)_lock_logIfPermittedWithString:(id)a3
+- (void)_lock_logIfPermittedWithString:(id)string
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   os_unfair_lock_assert_owner(&self->_lock);
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(PLReadyForAnalysis *)self _statusLogPrefix];
-  v7 = [v5 stringWithFormat:@"%@: [%@]: %@", v6, v4, self->_lock_status];
+  _statusLogPrefix = [(PLReadyForAnalysis *)self _statusLogPrefix];
+  v7 = [v5 stringWithFormat:@"%@: [%@]: %@", _statusLogPrefix, stringCopy, self->_lock_status];
 
   v8 = [MEMORY[0x1E695DF00] now];
   [v8 timeIntervalSinceDate:self->_lock_lastLogDate];
@@ -236,27 +236,27 @@ uint64_t __40__PLReadyForAnalysis_isReadyForAnalysis__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_lock_updateAndLogStatusWithString:(id)a3
+- (void)_lock_updateAndLogStatusWithString:(id)string
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  stringCopy = string;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (!v6)
+  if (!stringCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLReadyForAnalysis.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"status"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLReadyForAnalysis.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"status"}];
   }
 
-  if (![(NSString *)self->_lock_status isEqualToString:v6])
+  if (![(NSString *)self->_lock_status isEqualToString:stringCopy])
   {
-    objc_storeStrong(&self->_lock_status, a3);
+    objc_storeStrong(&self->_lock_status, string);
     v7 = PLBackendGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(PLReadyForAnalysis *)self _statusLogPrefix];
+      _statusLogPrefix = [(PLReadyForAnalysis *)self _statusLogPrefix];
       lock_status = self->_lock_status;
       *buf = 138543618;
-      v12 = v8;
+      v12 = _statusLogPrefix;
       v13 = 2114;
       v14 = lock_status;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@", buf, 0x16u);
@@ -313,9 +313,9 @@ uint64_t __50__PLReadyForAnalysis_isReadyForAnalysisQuickCheck__block_invoke(uin
   [(PLReadyForAnalysis *)&v3 dealloc];
 }
 
-- (PLReadyForAnalysis)initWithLibraryServicesManager:(id)a3
+- (PLReadyForAnalysis)initWithLibraryServicesManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v23.receiver = self;
   v23.super_class = PLReadyForAnalysis;
   v6 = [(PLReadyForAnalysis *)&v23 init];
@@ -324,7 +324,7 @@ uint64_t __50__PLReadyForAnalysis_isReadyForAnalysisQuickCheck__block_invoke(uin
   {
     v6->_lock_readyState = 0;
     v6->_lock_checkLevel = 0;
-    objc_storeStrong(&v6->_lsm, a3);
+    objc_storeStrong(&v6->_lsm, manager);
     v8 = objc_initWeak(&location, v7);
 
     v9 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -333,7 +333,7 @@ uint64_t __50__PLReadyForAnalysis_isReadyForAnalysisQuickCheck__block_invoke(uin
     v19[2] = __53__PLReadyForAnalysis_initWithLibraryServicesManager___block_invoke;
     v19[3] = &unk_1E7573318;
     objc_copyWeak(&v21, &location);
-    v20 = v5;
+    v20 = managerCopy;
     v10 = [v9 initWithBlock:v19];
 
     objc_destroyWeak(&v21);

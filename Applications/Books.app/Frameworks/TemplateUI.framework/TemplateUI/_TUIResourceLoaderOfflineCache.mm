@@ -2,15 +2,15 @@
 + (id)sharedOfflineCache;
 - (NSURLCache)urlCache;
 - (_TUIResourceLoaderOfflineCache)init;
-- (id)_loadCacheFromCandidatePaths:(id)a3;
-- (id)valueForKey:(id)a3;
+- (id)_loadCacheFromCandidatePaths:(id)paths;
+- (id)valueForKey:(id)key;
 - (void)_aq_loadPostLaunchCaches;
 - (void)_aq_saveOfflineCache;
-- (void)_saveOfflineCache:(id)a3;
+- (void)_saveOfflineCache:(id)cache;
 - (void)dealloc;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
 - (void)incrementPostLaunchCacheCount;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation _TUIResourceLoaderOfflineCache
@@ -51,12 +51,12 @@
   v2->_postLaunchCacheCount = -1;
   v7 = +[TUIOfflineCache provider];
   v2->_generateOfflineCache = [v7 generateCache];
-  v8 = [v7 runFromCache];
-  v2->_runFromOfflineCache = v8;
-  if ((v2->_generateOfflineCache || v8) && (v12 = dispatch_queue_create("TUIResourceLoader.access", 0), accessQueue = v2->_accessQueue, v2->_accessQueue = v12, accessQueue, v2->_runFromOfflineCache))
+  runFromCache = [v7 runFromCache];
+  v2->_runFromOfflineCache = runFromCache;
+  if ((v2->_generateOfflineCache || runFromCache) && (v12 = dispatch_queue_create("TUIResourceLoader.access", 0), accessQueue = v2->_accessQueue, v2->_accessQueue = v12, accessQueue, v2->_runFromOfflineCache))
   {
-    v11 = [v7 cacheFileCandidatesForPreLaunch];
-    v14 = [(_TUIResourceLoaderOfflineCache *)v2 _loadCacheFromCandidatePaths:v11];
+    cacheFileCandidatesForPreLaunch = [v7 cacheFileCandidatesForPreLaunch];
+    v14 = [(_TUIResourceLoaderOfflineCache *)v2 _loadCacheFromCandidatePaths:cacheFileCandidatesForPreLaunch];
     cache = v2->_cache;
     v2->_cache = v14;
 
@@ -92,8 +92,8 @@
     v10 = v2->_cache;
     v2->_cache = v9;
 
-    v11 = +[NSNotificationCenter defaultCenter];
-    [v11 addObserver:v2 selector:"_saveOfflineCache:" name:UIApplicationDidEnterBackgroundNotification object:0];
+    cacheFileCandidatesForPreLaunch = +[NSNotificationCenter defaultCenter];
+    [cacheFileCandidatesForPreLaunch addObserver:v2 selector:"_saveOfflineCache:" name:UIApplicationDidEnterBackgroundNotification object:0];
   }
 
 LABEL_13:
@@ -140,13 +140,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)_loadCacheFromCandidatePaths:(id)a3
+- (id)_loadCacheFromCandidatePaths:(id)paths
 {
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = a3;
+  obj = paths;
   v3 = [obj countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v3)
   {
@@ -165,8 +165,8 @@ LABEL_13:
         }
 
         v8 = *(*(&v31 + 1) + 8 * v7);
-        v9 = [v6[449] defaultManager];
-        v10 = [v9 fileExistsAtPath:v8];
+        defaultManager = [v6[449] defaultManager];
+        v10 = [defaultManager fileExistsAtPath:v8];
 
         if (v10)
         {
@@ -267,7 +267,7 @@ LABEL_22:
 {
   v3 = +[NSFileManager defaultManager];
   v4 = +[TUIOfflineCache provider];
-  v5 = [v4 cacheDirCandidatesForPostLaunch];
+  cacheDirCandidatesForPostLaunch = [v4 cacheDirCandidatesForPostLaunch];
 
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
@@ -275,10 +275,10 @@ LABEL_22:
   v32[3] = &unk_260818;
   v6 = v3;
   v33 = v6;
-  v7 = [v5 indexOfObjectPassingTest:v32];
+  v7 = [cacheDirCandidatesForPostLaunch indexOfObjectPassingTest:v32];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [v5 objectAtIndexedSubscript:v7];
+    v8 = [cacheDirCandidatesForPostLaunch objectAtIndexedSubscript:v7];
     if (v8)
     {
       v9 = v8;
@@ -297,7 +297,7 @@ LABEL_22:
       }
 
       v24 = v6;
-      v25 = v5;
+      v25 = cacheDirCandidatesForPostLaunch;
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
@@ -348,15 +348,15 @@ LABEL_22:
       }
 
       v6 = v24;
-      v5 = v25;
+      cacheDirCandidatesForPostLaunch = v25;
     }
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   if (self->_generateOfflineCache)
   {
     accessQueue = self->_accessQueue;
@@ -365,16 +365,16 @@ LABEL_22:
     block[2] = sub_90C1C;
     block[3] = &unk_25E7C0;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = objectCopy;
+    v11 = keyCopy;
     dispatch_async(accessQueue, block);
   }
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   v6 = 0;
   v13 = 0;
   v14 = &v13;
@@ -391,7 +391,7 @@ LABEL_22:
     block[3] = &unk_25ED40;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = keyCopy;
     dispatch_sync(accessQueue, block);
 
     v6 = v14[5];
@@ -403,21 +403,21 @@ LABEL_22:
   return v8;
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_90E44;
   v7[3] = &unk_25EA78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (void)_saveOfflineCache:(id)a3
+- (void)_saveOfflineCache:(id)cache
 {
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
@@ -447,22 +447,22 @@ LABEL_22:
 
   if (self->_postLaunchCacheCount < 0)
   {
-    v8 = [v3 cacheFileCandidatesForPreLaunch];
-    v11 = [v8 objectAtIndexedSubscript:0];
+    cacheFileCandidatesForPreLaunch = [v3 cacheFileCandidatesForPreLaunch];
+    v11 = [cacheFileCandidatesForPreLaunch objectAtIndexedSubscript:0];
   }
 
   else
   {
-    v7 = [v3 cacheDirCandidatesForPostLaunch];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    cacheDirCandidatesForPostLaunch = [v3 cacheDirCandidatesForPostLaunch];
+    cacheFileCandidatesForPreLaunch = [cacheDirCandidatesForPostLaunch objectAtIndexedSubscript:0];
 
-    if (v8)
+    if (cacheFileCandidatesForPreLaunch)
     {
       v9 = +[NSFileManager defaultManager];
-      [v9 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:0];
+      [v9 createDirectoryAtPath:cacheFileCandidatesForPreLaunch withIntermediateDirectories:1 attributes:0 error:0];
 
       v10 = [NSString stringWithFormat:@"%02ld.plist", self->_postLaunchCacheCount];
-      v11 = [v8 stringByAppendingPathComponent:v10];
+      v11 = [cacheFileCandidatesForPreLaunch stringByAppendingPathComponent:v10];
     }
 
     else

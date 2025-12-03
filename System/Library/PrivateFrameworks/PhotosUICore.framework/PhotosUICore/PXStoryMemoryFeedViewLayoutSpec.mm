@@ -2,14 +2,14 @@
 - (BOOL)wantsFirstItemFullscreen;
 - (BOOL)wantsItemHoverEvents;
 - (PXStoryMemoryFeedViewLayoutSpec)init;
-- (PXStoryMemoryFeedViewLayoutSpec)initWithMemoriesSpec:(id)a3;
+- (PXStoryMemoryFeedViewLayoutSpec)initWithMemoriesSpec:(id)spec;
 - (UIEdgeInsets)horizontalScrollIndicatorInsets;
 - (UIEdgeInsets)placeholderMargins;
 - (UIEdgeInsets)subtitleInsets;
 - (UIEdgeInsets)verticalScrollIndicatorInsets;
 - (UIEdgeInsets)viewOutsets;
-- (id)_fullscreenLayoutGeneratorWithReferenceSize:(CGSize)a3;
-- (id)layoutGeneratorWithReferenceSize:(CGSize)a3;
+- (id)_fullscreenLayoutGeneratorWithReferenceSize:(CGSize)size;
+- (id)layoutGeneratorWithReferenceSize:(CGSize)size;
 - (int64_t)rootLayoutOrientation;
 @end
 
@@ -41,7 +41,7 @@
   return result;
 }
 
-- (id)_fullscreenLayoutGeneratorWithReferenceSize:(CGSize)a3
+- (id)_fullscreenLayoutGeneratorWithReferenceSize:(CGSize)size
 {
   [(PXStoryMemoryFeedViewLayoutSpec *)self memoriesSpec];
   objc_claimAutoreleasedReturnValue();
@@ -51,17 +51,17 @@
   PXVisionScaledFloat();
 }
 
-- (id)layoutGeneratorWithReferenceSize:(CGSize)a3
+- (id)layoutGeneratorWithReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (![(PXStoryMemoryFeedViewLayoutSpec *)self wantsFirstItemFullscreen])
   {
-    v7 = [(PXStoryMemoryFeedViewLayoutSpec *)self memoriesSpec];
+    memoriesSpec = [(PXStoryMemoryFeedViewLayoutSpec *)self memoriesSpec];
     v8 = +[PXStorySettings sharedInstance];
-    v9 = [v7 userInterfaceIdiom];
-    v11 = [(PXStoryMemoryFeedViewLayoutSpec *)self rootLayoutOrientation]== 2 || v9 == 4;
-    v12 = [v7 sizeClass];
+    userInterfaceIdiom = [memoriesSpec userInterfaceIdiom];
+    v11 = [(PXStoryMemoryFeedViewLayoutSpec *)self rootLayoutOrientation]== 2 || userInterfaceIdiom == 4;
+    sizeClass = [memoriesSpec sizeClass];
     if (v11)
     {
       v13 = 2;
@@ -72,7 +72,7 @@
       v13 = 1;
     }
 
-    if (v12 == 2)
+    if (sizeClass == 2)
     {
       v14 = 2;
     }
@@ -82,7 +82,7 @@
       v14 = 0;
     }
 
-    if (v12 >= 2)
+    if (sizeClass >= 2)
     {
       v15 = v14;
     }
@@ -103,15 +103,15 @@
       [v8 feedCardPortraitAspectRatio];
     }
 
-    [v7 feedInteritemSpacing];
-    [v7 feedEntryEdgeInsets];
-    [v7 safeAreaInsets];
+    [memoriesSpec feedInteritemSpacing];
+    [memoriesSpec feedEntryEdgeInsets];
+    [memoriesSpec safeAreaInsets];
     PXEdgeInsetsMax();
   }
 
-  v6 = [(PXStoryMemoryFeedViewLayoutSpec *)self _fullscreenLayoutGeneratorWithReferenceSize:width, height];
+  height = [(PXStoryMemoryFeedViewLayoutSpec *)self _fullscreenLayoutGeneratorWithReferenceSize:width, height];
 
-  return v6;
+  return height;
 }
 
 - (int64_t)rootLayoutOrientation
@@ -119,9 +119,9 @@
   result = self->_rootLayoutOrientation;
   if (!result)
   {
-    v4 = [(PXStoryMemoryFeedViewLayoutSpec *)self memoriesSpec];
-    v5 = [v4 rootExtendedTraitCollection];
-    self->_rootLayoutOrientation = [v5 layoutOrientation];
+    memoriesSpec = [(PXStoryMemoryFeedViewLayoutSpec *)self memoriesSpec];
+    rootExtendedTraitCollection = [memoriesSpec rootExtendedTraitCollection];
+    self->_rootLayoutOrientation = [rootExtendedTraitCollection layoutOrientation];
 
     return self->_rootLayoutOrientation;
   }
@@ -145,17 +145,17 @@
 - (BOOL)wantsItemHoverEvents
 {
   v2 = +[PXStorySettings sharedInstance];
-  v3 = [v2 showFeedChromeOnHover];
+  showFeedChromeOnHover = [v2 showFeedChromeOnHover];
 
-  return v3;
+  return showFeedChromeOnHover;
 }
 
 - (BOOL)wantsFirstItemFullscreen
 {
   v2 = +[PXStorySettings sharedInstance];
-  v3 = [v2 wantsFullscreenFeedExperience];
+  wantsFullscreenFeedExperience = [v2 wantsFullscreenFeedExperience];
 
-  return v3;
+  return wantsFullscreenFeedExperience;
 }
 
 - (UIEdgeInsets)verticalScrollIndicatorInsets
@@ -184,13 +184,13 @@
   return result;
 }
 
-- (PXStoryMemoryFeedViewLayoutSpec)initWithMemoriesSpec:(id)a3
+- (PXStoryMemoryFeedViewLayoutSpec)initWithMemoriesSpec:(id)spec
 {
-  v6 = a3;
-  if (!v6)
+  specCopy = spec;
+  if (!specCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedViewLayoutSpecManager.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"memoriesSpec != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedViewLayoutSpecManager.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"memoriesSpec != nil"}];
   }
 
   v17.receiver = self;
@@ -199,7 +199,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_memoriesSpec, a3);
+    objc_storeStrong(&v7->_memoriesSpec, spec);
     v9 = [off_1E7721880 normalBehaviorWithAxis:1];
     scrollBehavior = v8->_scrollBehavior;
     v8->_scrollBehavior = v9;
@@ -209,16 +209,16 @@
     v8->_itemCornerRadius = v12;
     if ([v11 wantsFeedItemShadow])
     {
-      v13 = [v11 feedItemShadow];
+      feedItemShadow = [v11 feedItemShadow];
     }
 
     else
     {
-      v13 = 0;
+      feedItemShadow = 0;
     }
 
     itemShadow = v8->_itemShadow;
-    v8->_itemShadow = v13;
+    v8->_itemShadow = feedItemShadow;
   }
 
   return v8;
@@ -226,8 +226,8 @@
 
 - (PXStoryMemoryFeedViewLayoutSpec)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedViewLayoutSpecManager.m" lineNumber:105 description:{@"%s is not available as initializer", "-[PXStoryMemoryFeedViewLayoutSpec init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedViewLayoutSpecManager.m" lineNumber:105 description:{@"%s is not available as initializer", "-[PXStoryMemoryFeedViewLayoutSpec init]"}];
 
   abort();
 }

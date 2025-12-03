@@ -1,9 +1,9 @@
 @interface AXPhoenixAnalytics
 - (AXPhoenixAnalytics)init;
-- (AXPhoenixAnalytics)initWithConfiguration:(id)a3 modelVersion:(id)a4 assetVersion:(unint64_t)a5;
-- (id)_descriptionForEventType:(int64_t)a3;
-- (void)_sendEvent:(id)a3 completion:(id)a4;
-- (void)logEventWithType:(int64_t)a3 machAbsoluteTime:(unint64_t)a4 context:(id)a5 completion:(id)a6;
+- (AXPhoenixAnalytics)initWithConfiguration:(id)configuration modelVersion:(id)version assetVersion:(unint64_t)assetVersion;
+- (id)_descriptionForEventType:(int64_t)type;
+- (void)_sendEvent:(id)event completion:(id)completion;
+- (void)logEventWithType:(int64_t)type machAbsoluteTime:(unint64_t)time context:(id)context completion:(id)completion;
 @end
 
 @implementation AXPhoenixAnalytics
@@ -15,74 +15,74 @@
   return 0;
 }
 
-- (AXPhoenixAnalytics)initWithConfiguration:(id)a3 modelVersion:(id)a4 assetVersion:(unint64_t)a5
+- (AXPhoenixAnalytics)initWithConfiguration:(id)configuration modelVersion:(id)version assetVersion:(unint64_t)assetVersion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  v16 = a5;
-  v5 = v19;
-  v19 = 0;
+  objc_storeStrong(&v17, version);
+  assetVersionCopy = assetVersion;
+  v5 = selfCopy;
+  selfCopy = 0;
   v15.receiver = v5;
   v15.super_class = AXPhoenixAnalytics;
-  v19 = [(AXPhoenixAnalytics *)&v15 init];
-  objc_storeStrong(&v19, v19);
-  if (v19)
+  selfCopy = [(AXPhoenixAnalytics *)&v15 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     if (v17)
     {
-      objc_storeStrong(&v19->_modelVersion, v17);
+      objc_storeStrong(&selfCopy->_modelVersion, v17);
     }
 
     else
     {
-      objc_storeStrong(&v19->_modelVersion, &stru_287032B48);
+      objc_storeStrong(&selfCopy->_modelVersion, &stru_287032B48);
     }
 
-    v19->_assetVersion = v16;
+    selfCopy->_assetVersion = assetVersionCopy;
     v6 = objc_alloc_init(MEMORY[0x277CCA968]);
-    dateFormatter = v19->_dateFormatter;
-    v19->_dateFormatter = v6;
+    dateFormatter = selfCopy->_dateFormatter;
+    selfCopy->_dateFormatter = v6;
     MEMORY[0x277D82BD8](dateFormatter);
-    [(NSDateFormatter *)v19->_dateFormatter setDateFormat:@"yyyy-MM-dd'_'HH:mm:ss:SSS"];
-    objc_storeStrong(&v19->_configuration, location[0]);
+    [(NSDateFormatter *)selfCopy->_dateFormatter setDateFormat:@"yyyy-MM-dd'_'HH:mm:ss:SSS"];
+    objc_storeStrong(&selfCopy->_configuration, location[0]);
     v14 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
     v8 = dispatch_queue_create("com.apple.accessibility.analyticswriter", v14);
-    queue = v19->_queue;
-    v19->_queue = v8;
+    queue = selfCopy->_queue;
+    selfCopy->_queue = v8;
     MEMORY[0x277D82BD8](queue);
     objc_storeStrong(&v14, 0);
   }
 
-  v11 = MEMORY[0x277D82BE0](v19);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
-- (void)logEventWithType:(int64_t)a3 machAbsoluteTime:(unint64_t)a4 context:(id)a5 completion:(id)a6
+- (void)logEventWithType:(int64_t)type machAbsoluteTime:(unint64_t)time context:(id)context completion:(id)completion
 {
   v46 = *MEMORY[0x277D85DE8];
-  v39 = self;
+  selfCopy = self;
   v38 = a2;
-  v37 = a3;
-  location[1] = a4;
+  typeCopy = type;
+  location[1] = time;
   location[0] = 0;
-  objc_storeStrong(location, a5);
+  objc_storeStrong(location, context);
   v35 = 0;
-  objc_storeStrong(&v35, a6);
+  objc_storeStrong(&v35, completion);
   if ([MEMORY[0x277CCAAA0] isValidJSONObject:location[0]])
   {
     v21 = objc_alloc(MEMORY[0x277CBEB38]);
     v41[0] = @"configFileMajorVersion";
-    v22 = [(AXPhoenixConfiguration *)v39->_configuration majorVersion];
-    if (v22)
+    majorVersion = [(AXPhoenixConfiguration *)selfCopy->_configuration majorVersion];
+    if (majorVersion)
     {
-      v20 = v22;
+      v20 = majorVersion;
     }
 
     else
@@ -92,10 +92,10 @@
 
     v42[0] = v20;
     v41[1] = @"configFileMinorVersion";
-    v19 = [(AXPhoenixConfiguration *)v39->_configuration minorVersion];
-    if (v19)
+    minorVersion = [(AXPhoenixConfiguration *)selfCopy->_configuration minorVersion];
+    if (minorVersion)
     {
-      v18 = v19;
+      v18 = minorVersion;
     }
 
     else
@@ -105,21 +105,21 @@
 
     v42[1] = v18;
     v41[2] = @"assetVersion";
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v39->_assetVersion];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:selfCopy->_assetVersion];
     v42[2] = v15;
     v41[3] = @"eventType";
-    v14 = [(AXPhoenixAnalytics *)v39 _descriptionForEventType:v37];
+    v14 = [(AXPhoenixAnalytics *)selfCopy _descriptionForEventType:typeCopy];
     v42[3] = v14;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:4];
     v31 = [v21 initWithDictionary:?];
     MEMORY[0x277D82BD8](v13);
     MEMORY[0x277D82BD8](v14);
     MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](minorVersion);
+    MEMORY[0x277D82BD8](majorVersion);
     memset(__b, 0, sizeof(__b));
-    v16 = [location[0] allKeys];
-    v17 = [v16 countByEnumeratingWithState:__b objects:v40 count:16];
+    allKeys = [location[0] allKeys];
+    v17 = [allKeys countByEnumeratingWithState:__b objects:v40 count:16];
     if (v17)
     {
       v10 = *__b[2];
@@ -130,7 +130,7 @@
         v9 = v11;
         if (*__b[2] != v10)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allKeys);
         }
 
         v30 = *(__b[1] + 8 * v11);
@@ -142,7 +142,7 @@
         if (v9 + 1 >= v12)
         {
           v11 = 0;
-          v12 = [v16 countByEnumeratingWithState:__b objects:v40 count:16];
+          v12 = [allKeys countByEnumeratingWithState:__b objects:v40 count:16];
           if (!v12)
           {
             break;
@@ -151,10 +151,10 @@
       }
     }
 
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](allKeys);
     v6 = [AXPhoenixAnalyticsEvent alloc];
-    v28 = [(AXPhoenixAnalyticsEvent *)v6 initWithEventType:v37 eventInfo:v31];
-    [(AXPhoenixAnalytics *)v39 _sendEvent:v28 completion:v35];
+    v28 = [(AXPhoenixAnalyticsEvent *)v6 initWithEventType:typeCopy eventInfo:v31];
+    [(AXPhoenixAnalytics *)selfCopy _sendEvent:v28 completion:v35];
     objc_storeStrong(&v28, 0);
     objc_storeStrong(&v31, 0);
     v32 = 0;
@@ -192,15 +192,15 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendEvent:(id)a3 completion:(id)a4
+- (void)_sendEvent:(id)event completion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, completion);
   v8 = [location[0] description];
   v7 = AXLogBackTap();
   v6 = OS_LOG_TYPE_INFO;
@@ -225,9 +225,9 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (id)_descriptionForEventType:(int64_t)a3
+- (id)_descriptionForEventType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 1:
       v4 = MEMORY[0x277D82BE0](@"AXPhoenixAnalyticsEventTypeDoubleTap");

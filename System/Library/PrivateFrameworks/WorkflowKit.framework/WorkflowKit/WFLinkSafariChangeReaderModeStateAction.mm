@@ -1,6 +1,6 @@
 @interface WFLinkSafariChangeReaderModeStateAction
-- (id)localizedCategoryWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedCategoryWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
 - (id)overrideDefaultValuesByParameter;
 - (id)parameterOverrides;
 - (id)parameterSummary;
@@ -13,8 +13,8 @@
   v17[1] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = WFLinkSafariChangeReaderModeStateAction;
-  v2 = [(WFOverridableLinkAction *)&v12 parameterOverrides];
-  v3 = [v2 mutableCopy];
+  parameterOverrides = [(WFOverridableLinkAction *)&v12 parameterOverrides];
+  v3 = [parameterOverrides mutableCopy];
 
   v16 = @"ItemDisplayNames";
   v4 = WFLocalizedStringResourceWithKey(@"Hide (changeOperation)", @"Hide");
@@ -43,31 +43,31 @@
   v9[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = WFLinkSafariChangeReaderModeStateAction;
-  v2 = [(WFLinkChangeBinarySettingAction *)&v7 overrideDefaultValuesByParameter];
+  overrideDefaultValuesByParameter = [(WFLinkChangeBinarySettingAction *)&v7 overrideDefaultValuesByParameter];
   v8 = @"setting";
   v9[0] = @"reader";
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  v4 = [v2 if_dictionaryByAddingEntriesFromDictionary:v3];
+  v4 = [overrideDefaultValuesByParameter if_dictionaryByAddingEntriesFromDictionary:v3];
 
   v5 = *MEMORY[0x1E69E9840];
 
   return v4;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"WFLinkSafariChangeReaderModeStateAction - Action Name", @"Show/Hide Reader in Safari");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-- (id)localizedCategoryWithContext:(id)a3
+- (id)localizedCategoryWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"SafariSubcategorySafariReader", @"Safari Reader");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

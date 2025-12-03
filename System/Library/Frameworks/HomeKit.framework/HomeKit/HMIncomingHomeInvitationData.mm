@@ -1,10 +1,10 @@
 @interface HMIncomingHomeInvitationData
-- (HMIncomingHomeInvitationData)initWithCoder:(id)a3;
-- (HMIncomingHomeInvitationData)initWithInviterUserID:(id)a3 invitationIdentifier:(id)a4 inviterName:(id)a5 invitationState:(int64_t)a6 homeName:(id)a7 homeUUID:(id)a8 expiryDate:(id)a9;
+- (HMIncomingHomeInvitationData)initWithCoder:(id)coder;
+- (HMIncomingHomeInvitationData)initWithInviterUserID:(id)d invitationIdentifier:(id)identifier inviterName:(id)name invitationState:(int64_t)state homeName:(id)homeName homeUUID:(id)iD expiryDate:(id)date;
 - (NSString)inviterName;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setInviterName:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setInviterName:(id)name;
 @end
 
 @implementation HMIncomingHomeInvitationData
@@ -14,75 +14,75 @@
   v14.receiver = self;
   v14.super_class = HMIncomingHomeInvitationData;
   v3 = [(HMHomeInvitationData *)&v14 description];
-  v4 = [(HMIncomingHomeInvitationData *)self inviterUserID];
-  v5 = [(HMIncomingHomeInvitationData *)self inviterUUID];
-  v6 = [v5 UUIDString];
-  v7 = [(HMIncomingHomeInvitationData *)self inviterName];
-  v8 = [(HMIncomingHomeInvitationData *)self inviterMergeID];
-  v9 = [(HMIncomingHomeInvitationData *)self homeName];
-  v10 = [(HMIncomingHomeInvitationData *)self homeUUID];
-  v11 = [v10 UUIDString];
-  v12 = [v3 stringByAppendingFormat:@", [ inviterUserID = %@, inviterUUID = %@, inviterName = %@, inviterMergeID = %@, home = %@, homeUUID = %@ ]", v4, v6, v7, v8, v9, v11];
+  inviterUserID = [(HMIncomingHomeInvitationData *)self inviterUserID];
+  inviterUUID = [(HMIncomingHomeInvitationData *)self inviterUUID];
+  uUIDString = [inviterUUID UUIDString];
+  inviterName = [(HMIncomingHomeInvitationData *)self inviterName];
+  inviterMergeID = [(HMIncomingHomeInvitationData *)self inviterMergeID];
+  homeName = [(HMIncomingHomeInvitationData *)self homeName];
+  homeUUID = [(HMIncomingHomeInvitationData *)self homeUUID];
+  uUIDString2 = [homeUUID UUIDString];
+  v12 = [v3 stringByAppendingFormat:@", [ inviterUserID = %@, inviterUUID = %@, inviterName = %@, inviterMergeID = %@, home = %@, homeUUID = %@ ]", inviterUserID, uUIDString, inviterName, inviterMergeID, homeName, uUIDString2];
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = HMIncomingHomeInvitationData;
-  v4 = a3;
-  [(HMHomeInvitationData *)&v11 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMHomeInvitationData *)&v11 encodeWithCoder:coderCopy];
   v5 = [(HMIncomingHomeInvitationData *)self inviterUserID:v11.receiver];
-  [v4 encodeObject:v5 forKey:@"HM.inviterUserID"];
+  [coderCopy encodeObject:v5 forKey:@"HM.inviterUserID"];
 
-  v6 = [(HMIncomingHomeInvitationData *)self homeName];
-  [v4 encodeObject:v6 forKey:@"homeName"];
+  homeName = [(HMIncomingHomeInvitationData *)self homeName];
+  [coderCopy encodeObject:homeName forKey:@"homeName"];
 
-  v7 = [(HMIncomingHomeInvitationData *)self homeUUID];
-  [v4 encodeObject:v7 forKey:@"homeUUID"];
+  homeUUID = [(HMIncomingHomeInvitationData *)self homeUUID];
+  [coderCopy encodeObject:homeUUID forKey:@"homeUUID"];
 
-  v8 = [(HMIncomingHomeInvitationData *)self inviterUUID];
-  [v4 encodeObject:v8 forKey:@"userUUID"];
+  inviterUUID = [(HMIncomingHomeInvitationData *)self inviterUUID];
+  [coderCopy encodeObject:inviterUUID forKey:@"userUUID"];
 
-  v9 = [(HMIncomingHomeInvitationData *)self inviterName];
-  [v4 encodeObject:v9 forKey:@"userDisplayName"];
+  inviterName = [(HMIncomingHomeInvitationData *)self inviterName];
+  [coderCopy encodeObject:inviterName forKey:@"userDisplayName"];
 
-  v10 = [(HMIncomingHomeInvitationData *)self inviterMergeID];
-  [v4 encodeObject:v10 forKey:@"mergeID"];
+  inviterMergeID = [(HMIncomingHomeInvitationData *)self inviterMergeID];
+  [coderCopy encodeObject:inviterMergeID forKey:@"mergeID"];
 }
 
-- (HMIncomingHomeInvitationData)initWithCoder:(id)a3
+- (HMIncomingHomeInvitationData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = HMIncomingHomeInvitationData;
-  v5 = [(HMHomeInvitationData *)&v21 initWithCoder:v4];
+  v5 = [(HMHomeInvitationData *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeName"];
-    v7 = [v6 hm_truncatedNameString];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeName"];
+    hm_truncatedNameString = [v6 hm_truncatedNameString];
     homeName = v5->_homeName;
-    v5->_homeName = v7;
+    v5->_homeName = hm_truncatedNameString;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeUUID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeUUID"];
     homeUUID = v5->_homeUUID;
     v5->_homeUUID = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.inviterUserID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.inviterUserID"];
     inviterUserID = v5->_inviterUserID;
     v5->_inviterUserID = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userUUID"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userUUID"];
     inviterUUID = v5->_inviterUUID;
     v5->_inviterUUID = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userDisplayName"];
-    v16 = [v15 hm_truncatedNameString];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userDisplayName"];
+    hm_truncatedNameString2 = [v15 hm_truncatedNameString];
     inviterName = v5->_inviterName;
-    v5->_inviterName = v16;
+    v5->_inviterName = hm_truncatedNameString2;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mergeID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mergeID"];
     inviterMergeID = v5->_inviterMergeID;
     v5->_inviterMergeID = v18;
   }
@@ -90,12 +90,12 @@
   return v5;
 }
 
-- (void)setInviterName:(id)a3
+- (void)setInviterName:(id)name
 {
-  v7 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
-  v4 = [v7 hm_truncatedNameString];
-  v5 = [v4 copy];
+  hm_truncatedNameString = [nameCopy hm_truncatedNameString];
+  v5 = [hm_truncatedNameString copy];
   inviterName = self->_inviterName;
   self->_inviterName = v5;
 
@@ -111,18 +111,18 @@
   return v3;
 }
 
-- (HMIncomingHomeInvitationData)initWithInviterUserID:(id)a3 invitationIdentifier:(id)a4 inviterName:(id)a5 invitationState:(int64_t)a6 homeName:(id)a7 homeUUID:(id)a8 expiryDate:(id)a9
+- (HMIncomingHomeInvitationData)initWithInviterUserID:(id)d invitationIdentifier:(id)identifier inviterName:(id)name invitationState:(int64_t)state homeName:(id)homeName homeUUID:(id)iD expiryDate:(id)date
 {
   v64 = *MEMORY[0x1E69E9840];
-  v56 = a3;
-  v15 = a4;
-  v55 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = [MEMORY[0x1E695DF00] date];
-  [v18 timeIntervalSinceDate:v19];
-  if (v18)
+  dCopy = d;
+  identifierCopy = identifier;
+  nameCopy = name;
+  homeNameCopy = homeName;
+  iDCopy = iD;
+  dateCopy = date;
+  date = [MEMORY[0x1E695DF00] date];
+  [dateCopy timeIntervalSinceDate:date];
+  if (dateCopy)
   {
     v21 = v20;
     if (v20 <= 10800.0)
@@ -138,12 +138,12 @@
           *buf = 138543618;
           v59 = v37;
           v60 = 2112;
-          v61 = v18;
+          v61 = dateCopy;
           _os_log_impl(&dword_19BB39000, v33, OS_LOG_TYPE_INFO, "%{public}@Setting home invitation expiry date to %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v32);
-        v36 = v18;
+        v36 = dateCopy;
       }
 
       else
@@ -154,12 +154,12 @@
           *buf = 138543618;
           v59 = v35;
           v60 = 2112;
-          v61 = v18;
+          v61 = dateCopy;
           _os_log_impl(&dword_19BB39000, v33, OS_LOG_TYPE_INFO, "%{public}@Home invitation expiry date is already in the past, expiryDate: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v32);
-        v36 = v19;
+        v36 = date;
       }
 
       v25 = [v36 copy];
@@ -167,7 +167,7 @@
 
     else
     {
-      v53 = a6;
+      stateCopy = state;
       v22 = objc_autoreleasePoolPush();
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
@@ -178,67 +178,67 @@
         v60 = 2048;
         v61 = 0x40C5180000000000;
         v62 = 2112;
-        v63 = v18;
+        v63 = dateCopy;
         _os_log_impl(&dword_19BB39000, v23, OS_LOG_TYPE_INFO, "%{public}@Capping home invitation expiry duration to %g seconds from now, original expiry date: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v22);
-      v25 = [v19 dateByAddingTimeInterval:10800.0];
-      a6 = v53;
+      v25 = [date dateByAddingTimeInterval:10800.0];
+      state = stateCopy;
     }
   }
 
   else
   {
-    v26 = self;
-    v27 = a6;
-    v25 = [v19 dateByAddingTimeInterval:10800.0];
+    selfCopy = self;
+    stateCopy2 = state;
+    v25 = [date dateByAddingTimeInterval:10800.0];
     v28 = objc_autoreleasePoolPush();
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
-      v54 = v15;
-      v31 = v30 = v17;
+      v54 = identifierCopy;
+      v31 = v30 = iDCopy;
       *buf = 138543618;
       v59 = v31;
       v60 = 2112;
       v61 = v25;
       _os_log_impl(&dword_19BB39000, v29, OS_LOG_TYPE_INFO, "%{public}@Setting home invitation expiry date to maximum allowed: %@", buf, 0x16u);
 
-      v17 = v30;
-      v15 = v54;
+      iDCopy = v30;
+      identifierCopy = v54;
     }
 
     objc_autoreleasePoolPop(v28);
-    a6 = v27;
-    self = v26;
+    state = stateCopy2;
+    self = selfCopy;
   }
 
   v57.receiver = self;
   v57.super_class = HMIncomingHomeInvitationData;
-  v38 = [(HMHomeInvitationData *)&v57 initWithInvitationState:a6 invitationIdentifier:v15 endDate:v25];
+  v38 = [(HMHomeInvitationData *)&v57 initWithInvitationState:state invitationIdentifier:identifierCopy endDate:v25];
   if (v38)
   {
-    v39 = [v56 copy];
+    v39 = [dCopy copy];
     inviterUserID = v38->_inviterUserID;
     v38->_inviterUserID = v39;
 
-    v41 = [v16 hm_truncatedNameString];
-    v42 = [v41 copy];
+    hm_truncatedNameString = [homeNameCopy hm_truncatedNameString];
+    v42 = [hm_truncatedNameString copy];
     homeName = v38->_homeName;
     v38->_homeName = v42;
 
-    v44 = [v17 copy];
+    v44 = [iDCopy copy];
     homeUUID = v38->_homeUUID;
     v38->_homeUUID = v44;
 
-    v46 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     inviterUUID = v38->_inviterUUID;
-    v38->_inviterUUID = v46;
+    v38->_inviterUUID = uUID;
 
-    v48 = [v55 hm_truncatedNameString];
-    v49 = [v48 copy];
+    hm_truncatedNameString2 = [nameCopy hm_truncatedNameString];
+    v49 = [hm_truncatedNameString2 copy];
     inviterName = v38->_inviterName;
     v38->_inviterName = v49;
 

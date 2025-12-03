@@ -1,11 +1,11 @@
 @interface _DASRemoteDeviceActivityMonitor
-+ (id)sharedMonitorWithDaemon:(id)a3;
++ (id)sharedMonitorWithDaemon:(id)daemon;
 - (BOOL)anyRemoteDeviceActive;
-- (_DASRemoteDeviceActivityMonitor)initWithDaemon:(id)a3;
+- (_DASRemoteDeviceActivityMonitor)initWithDaemon:(id)daemon;
 - (id)state;
 - (void)clearRemoteDeviceActiveSet;
-- (void)registerForRemoteDeviceActiveNotificationsWithChange:(id)a3;
-- (void)runUpdateRecentlyUsedPhotosAppDevicesTask:(id)a3;
+- (void)registerForRemoteDeviceActiveNotificationsWithChange:(id)change;
+- (void)runUpdateRecentlyUsedPhotosAppDevicesTask:(id)task;
 - (void)scheduleUpdateRecentlyUsedPhotosAppDevices;
 - (void)unregisterForRemoteDeviceActiveNotifications;
 @end
@@ -37,16 +37,16 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)registerForRemoteDeviceActiveNotificationsWithChange:(id)a3
+- (void)registerForRemoteDeviceActiveNotificationsWithChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ([(NSMutableDictionary *)self->_recentlyUsedPhotosAppDevices count])
   {
     contextSyncClient = self->_contextSyncClient;
     remoteDSL = self->_remoteDSL;
-    v7 = [(NSMutableDictionary *)self->_recentlyUsedPhotosAppDevices allKeys];
+    allKeys = [(NSMutableDictionary *)self->_recentlyUsedPhotosAppDevices allKeys];
     v19 = 0;
-    [(ContextSyncClient *)contextSyncClient registerForUpdates:remoteDSL withIdentifier:@"com.apple.duetactivityscheduler.remotedeviceactivitymonitor" forUseCase:@"PhotosIntentSyncRemoteDeviceActivity" withOptions:3 forDevices:v7 withError:&v19];
+    [(ContextSyncClient *)contextSyncClient registerForUpdates:remoteDSL withIdentifier:@"com.apple.duetactivityscheduler.remotedeviceactivitymonitor" forUseCase:@"PhotosIntentSyncRemoteDeviceActivity" withOptions:3 forDevices:allKeys withError:&v19];
     v8 = v19;
 
     os_unfair_lock_lock(&self->_lock);
@@ -57,9 +57,9 @@
     v10 = +[_DASDaemonLogger defaultCategory];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(NSMutableDictionary *)self->_recentlyUsedPhotosAppDevices allKeys];
+      allKeys2 = [(NSMutableDictionary *)self->_recentlyUsedPhotosAppDevices allKeys];
       *buf = 138412290;
-      v21 = v11;
+      v21 = allKeys2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "DASContext: Registering for remote device activity for devices: %@", buf, 0xCu);
     }
 
@@ -69,7 +69,7 @@
     v17[2] = sub_100118A80;
     v17[3] = &unk_1001B9050;
     v17[4] = self;
-    v18 = v4;
+    v18 = changeCopy;
     v13 = [v12 sinkWithCompletion:&stru_1001B9028 receiveInput:v17];
 
     scheduler = self->_scheduler;
@@ -98,9 +98,9 @@
   remoteDSL = self->_remoteDSL;
   if (v3)
   {
-    v6 = [(NSMutableDictionary *)self->_recentlyUsedPhotosAppDevices allKeys];
+    allKeys = [(NSMutableDictionary *)self->_recentlyUsedPhotosAppDevices allKeys];
     v12 = 0;
-    [(ContextSyncClient *)contextSyncClient unregisterForUpdates:remoteDSL withIdentifier:@"com.apple.duetactivityscheduler.remotedeviceactivitymonitor" forUseCase:@"PhotosIntentSyncRemoteDeviceActivity" forDevices:v6 withError:&v12];
+    [(ContextSyncClient *)contextSyncClient unregisterForUpdates:remoteDSL withIdentifier:@"com.apple.duetactivityscheduler.remotedeviceactivitymonitor" forUseCase:@"PhotosIntentSyncRemoteDeviceActivity" forDevices:allKeys withError:&v12];
     v7 = v12;
   }
 
@@ -118,9 +118,9 @@
   v8 = +[_DASDaemonLogger defaultCategory];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NSMutableDictionary *)self->_recentlyUsedPhotosAppDevices allKeys];
+    allKeys2 = [(NSMutableDictionary *)self->_recentlyUsedPhotosAppDevices allKeys];
     *buf = 138412290;
-    v15 = v9;
+    v15 = allKeys2;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "DASContext: Unregistering for remote device activity for devices: %@", buf, 0xCu);
   }
 
@@ -132,9 +132,9 @@
   self->_scheduler = 0;
 }
 
-- (void)runUpdateRecentlyUsedPhotosAppDevicesTask:(id)a3
+- (void)runUpdateRecentlyUsedPhotosAppDevicesTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = +[_DASDaemonLogger defaultCategory];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -151,7 +151,7 @@
   v38[2] = sub_10011944C;
   v38[3] = &unk_1001B5798;
   v38[4] = buf;
-  [v4 setExpirationHandler:v38];
+  [taskCopy setExpirationHandler:v38];
   if (![(_DASRemoteDeviceActivityMonitor *)self isRegistered])
   {
     os_unfair_lock_lock(&self->_lock);
@@ -181,18 +181,18 @@
       if (v40[40] == 1)
       {
         v36 = 0;
-        v15 = [v4 setTaskExpiredWithRetryAfter:&v36 error:0.0];
+        v15 = [taskCopy setTaskExpiredWithRetryAfter:&v36 error:0.0];
         v14 = v36;
         if ((v15 & 1) == 0)
         {
           v16 = +[_DASDaemonLogger defaultCategory];
           if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
           {
-            v17 = [v4 identifier];
-            sub_10012DBE4(v17, v14, v43);
+            identifier = [taskCopy identifier];
+            sub_10012DBE4(identifier, v14, v43);
           }
 
-          [v4 setTaskCompleted];
+          [taskCopy setTaskCompleted];
         }
       }
 
@@ -202,7 +202,7 @@
         v19 = v18;
         v20 = BiomeLibrary();
         v21 = [v20 App];
-        v22 = [v21 InFocus];
+        inFocus = [v21 InFocus];
 
         v23 = +[_DASDaemonLogger defaultCategory];
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -212,15 +212,15 @@
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "DASContext: Remote devices from stream: %@", v43, 0xCu);
         }
 
-        v24 = [v22 publishersForDevices:v12 withUseCase:@"PhotosIntentSyncRemoteDeviceAppInFocus" startTime:0 includeLocal:&stru_1001B90D0 pipeline:v19 + -345600.0];
-        v25 = [v24 publishers];
+        v24 = [inFocus publishersForDevices:v12 withUseCase:@"PhotosIntentSyncRemoteDeviceAppInFocus" startTime:0 includeLocal:&stru_1001B90D0 pipeline:v19 + -345600.0];
+        publishers = [v24 publishers];
         v33[0] = _NSConcreteStackBlock;
         v33[1] = 3221225472;
         v33[2] = sub_10011955C;
         v33[3] = &unk_1001B9160;
         v34 = v12;
-        v35 = self;
-        [v25 enumerateObjectsUsingBlock:v33];
+        selfCopy = self;
+        [publishers enumerateObjectsUsingBlock:v33];
 
         v26 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.duetactivityscheduler"];
         [v26 setObject:self->_recentlyUsedPhotosAppDevices forKey:@"recentlyusedphotosappdevices"];
@@ -239,24 +239,24 @@
         if (v40[40] == 1)
         {
           v32 = 0;
-          v29 = [v4 setTaskExpiredWithRetryAfter:&v32 error:0.0];
+          v29 = [taskCopy setTaskExpiredWithRetryAfter:&v32 error:0.0];
           v14 = v32;
           if ((v29 & 1) == 0)
           {
             v30 = +[_DASDaemonLogger defaultCategory];
             if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
             {
-              v31 = [v4 identifier];
-              sub_10012DBE4(v31, v14, v43);
+              identifier2 = [taskCopy identifier];
+              sub_10012DBE4(identifier2, v14, v43);
             }
 
-            [v4 setTaskCompleted];
+            [taskCopy setTaskCompleted];
           }
         }
 
         else
         {
-          [v4 setTaskCompleted];
+          [taskCopy setTaskCompleted];
           v14 = 0;
         }
       }
@@ -264,7 +264,7 @@
       goto LABEL_12;
     }
 
-    [v4 setTaskCompleted];
+    [taskCopy setTaskCompleted];
     v14 = 0;
 LABEL_12:
 
@@ -278,7 +278,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "DASContext: Will not update recently used Photos App remote devices while currently registered to a set of devices", v43, 2u);
   }
 
-  [v4 setTaskCompleted];
+  [taskCopy setTaskCompleted];
 LABEL_13:
   _Block_object_dispose(buf, 8);
 }
@@ -320,16 +320,16 @@ LABEL_13:
   }
 }
 
-- (_DASRemoteDeviceActivityMonitor)initWithDaemon:(id)a3
+- (_DASRemoteDeviceActivityMonitor)initWithDaemon:(id)daemon
 {
-  v5 = a3;
+  daemonCopy = daemon;
   v36.receiver = self;
   v36.super_class = _DASRemoteDeviceActivityMonitor;
   v6 = [(_DASRemoteDeviceActivityMonitor *)&v36 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_daemon, a3);
+    objc_storeStrong(&v6->_daemon, daemon);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.duetactivityscheduler.remotedeviceactivitymonitor", v8);
     queue = v7->_queue;
@@ -345,19 +345,19 @@ LABEL_13:
     v7->_remoteDeviceActivityState = v13;
 
     v15 = BiomeLibrary();
-    v16 = [v15 Activity];
-    v17 = [v16 Level];
-    v18 = [v17 DSLPublisher];
-    v19 = [v18 filterWithKeyPath:@"eventBody.inUseStatus" comparison:0 value:&off_1001CAA20];
+    activity = [v15 Activity];
+    level = [activity Level];
+    dSLPublisher = [level DSLPublisher];
+    v19 = [dSLPublisher filterWithKeyPath:@"eventBody.inUseStatus" comparison:0 value:&off_1001CAA20];
     remoteDSL = v7->_remoteDSL;
     v7->_remoteDSL = v19;
 
     v21 = BiomeLibrary();
-    v22 = [v21 ContextSync];
-    v23 = [v22 DeviceActivityLevel];
-    v24 = [v23 DSLPublisher];
+    contextSync = [v21 ContextSync];
+    deviceActivityLevel = [contextSync DeviceActivityLevel];
+    dSLPublisher2 = [deviceActivityLevel DSLPublisher];
     localDSL = v7->_localDSL;
-    v7->_localDSL = v24;
+    v7->_localDSL = dSLPublisher2;
 
     v26 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.duetactivityscheduler"];
     v27 = [v26 dictionaryForKey:@"recentlyusedphotosappdevices"];
@@ -395,16 +395,16 @@ LABEL_13:
   return v7;
 }
 
-+ (id)sharedMonitorWithDaemon:(id)a3
++ (id)sharedMonitorWithDaemon:(id)daemon
 {
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_100119D74;
   v12 = &unk_1001B6250;
-  v13 = a3;
-  v14 = a1;
+  daemonCopy = daemon;
+  selfCopy = self;
   v4 = qword_10020B980;
-  v5 = v13;
+  v5 = daemonCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_10020B980, &v9);

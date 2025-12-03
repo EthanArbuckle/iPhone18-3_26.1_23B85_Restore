@@ -1,63 +1,63 @@
 @interface AppStateControllerSessionObserver
-- (void)controller:(id)a3 didUpdateDownlinkAudioPower:(float)a4;
-- (void)manager:(id)a3 didReceiveIncomingPendingSession:(id)a4;
-- (void)manager:(id)a3 didUpdateActiveSession:(id)a4;
-- (void)serverDisconnectedForDropInCenter:(id)a3;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateParticipants:(id)a4;
-- (void)session:(id)a3 didUpdateSessionEndDate:(id)a4;
-- (void)session:(id)a3 didUpdateState:(unint64_t)a4 reason:(unint64_t)a5;
+- (void)controller:(id)controller didUpdateDownlinkAudioPower:(float)power;
+- (void)manager:(id)manager didReceiveIncomingPendingSession:(id)session;
+- (void)manager:(id)manager didUpdateActiveSession:(id)session;
+- (void)serverDisconnectedForDropInCenter:(id)center;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateParticipants:(id)participants;
+- (void)session:(id)session didUpdateSessionEndDate:(id)date;
+- (void)session:(id)session didUpdateState:(unint64_t)state reason:(unint64_t)reason;
 @end
 
 @implementation AppStateControllerSessionObserver
 
-- (void)manager:(id)a3 didReceiveIncomingPendingSession:(id)a4
+- (void)manager:(id)manager didReceiveIncomingPendingSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_249DC9F74(v8, v7, &unk_285D022C8, &unk_249DDF800);
+  managerCopy = manager;
+  sessionCopy = session;
+  selfCopy = self;
+  sub_249DC9F74(selfCopy, sessionCopy, &unk_285D022C8, &unk_249DDF800);
 }
 
-- (void)manager:(id)a3 didUpdateActiveSession:(id)a4
+- (void)manager:(id)manager didUpdateActiveSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_249DC9F74(v8, v7, &unk_285D022A0, &unk_249DDF7F0);
+  managerCopy = manager;
+  sessionCopy = session;
+  selfCopy = self;
+  sub_249DC9F74(selfCopy, sessionCopy, &unk_285D022A0, &unk_249DDF7F0);
 }
 
-- (void)session:(id)a3 didUpdateState:(unint64_t)a4 reason:(unint64_t)a5
+- (void)session:(id)session didUpdateState:(unint64_t)state reason:(unint64_t)reason
 {
-  v8 = a3;
-  v9 = self;
-  sub_249DCA2D0(v8, a4, a5);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_249DCA2D0(sessionCopy, state, reason);
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_249DCA62C(v6, v8);
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  sub_249DCA62C(sessionCopy, errorCopy);
 }
 
-- (void)session:(id)a3 didUpdateParticipants:(id)a4
+- (void)session:(id)session didUpdateParticipants:(id)participants
 {
   sub_249DC96C0();
   v6 = sub_249DDC908();
-  v7 = a3;
-  v8 = self;
-  sub_249DCA980(v7, v6);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_249DCA980(sessionCopy, v6);
 }
 
-- (void)session:(id)a3 didUpdateSessionEndDate:(id)a4
+- (void)session:(id)session didUpdateSessionEndDate:(id)date
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EF21578, &qword_249DDF7A0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v15 - v9;
-  if (a4)
+  if (date)
   {
     sub_249DDC648();
     v11 = sub_249DDC668();
@@ -71,25 +71,25 @@
   }
 
   __swift_storeEnumTagSinglePayload(v10, v12, 1, v11);
-  v13 = a3;
-  v14 = self;
-  sub_249DCAD38(v13, v10);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_249DCAD38(sessionCopy, v10);
 
   sub_249DCBAB4(v10);
 }
 
-- (void)serverDisconnectedForDropInCenter:(id)a3
+- (void)serverDisconnectedForDropInCenter:(id)center
 {
-  v4 = a3;
-  v5 = self;
+  centerCopy = center;
+  selfCopy = self;
   sub_249DCB2A0();
 }
 
-- (void)controller:(id)a3 didUpdateDownlinkAudioPower:(float)a4
+- (void)controller:(id)controller didUpdateDownlinkAudioPower:(float)power
 {
-  v6 = a3;
-  v7 = self;
-  sub_249DCB4E8(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_249DCB4E8(power);
 }
 
 @end

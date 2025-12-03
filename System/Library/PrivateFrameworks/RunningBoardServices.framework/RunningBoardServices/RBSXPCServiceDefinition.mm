@@ -1,10 +1,10 @@
 @interface RBSXPCServiceDefinition
-+ (id)definitionWithIdentifier:(id)a3 variant:(int64_t)a4 scope:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)definitionWithIdentifier:(id)identifier variant:(int64_t)variant scope:(int64_t)scope;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSXPCServiceDefinition)initWithRBSXPCCoder:(id)a3;
+- (RBSXPCServiceDefinition)initWithRBSXPCCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSXPCServiceDefinition
@@ -18,17 +18,17 @@
   return v6 ^ v3 ^ (v6 >> 31);
 }
 
-+ (id)definitionWithIdentifier:(id)a3 variant:(int64_t)a4 scope:(int64_t)a5
++ (id)definitionWithIdentifier:(id)identifier variant:(int64_t)variant scope:(int64_t)scope
 {
-  v8 = a3;
-  v9 = objc_alloc_init(a1);
-  v10 = [v8 copy];
+  identifierCopy = identifier;
+  v9 = objc_alloc_init(self);
+  v10 = [identifierCopy copy];
 
   v11 = v9[1];
   v9[1] = v10;
 
-  v9[2] = a4;
-  v9[3] = a5;
+  v9[2] = variant;
+  v9[3] = scope;
 
   return v9;
 }
@@ -60,16 +60,16 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@[%@][%@]", self->_identifier, v3, v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   identifier = self->_identifier;
-  v6 = [v4 identifier];
-  v7 = v6;
-  if ((identifier == v6 || (identifier ? (v8 = v6 == 0) : (v8 = 1), !v8 && -[NSString isEqual:](identifier, "isEqual:", v6))) && (variant = self->_variant, variant == [v4 variant]))
+  identifier = [equalCopy identifier];
+  v7 = identifier;
+  if ((identifier == identifier || (identifier ? (v8 = identifier == 0) : (v8 = 1), !v8 && -[NSString isEqual:](identifier, "isEqual:", identifier))) && (variant = self->_variant, variant == [equalCopy variant]))
   {
     scope = self->_scope;
-    v11 = scope == [v4 scope];
+    v11 = scope == [equalCopy scope];
   }
 
   else
@@ -80,27 +80,27 @@
   return v11;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"_identifier"];
-  [v5 encodeInt64:self->_variant forKey:@"_variant"];
-  [v5 encodeInt64:self->_scope forKey:@"_scope"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"_identifier"];
+  [coderCopy encodeInt64:self->_variant forKey:@"_variant"];
+  [coderCopy encodeInt64:self->_scope forKey:@"_scope"];
 }
 
-- (RBSXPCServiceDefinition)initWithRBSXPCCoder:(id)a3
+- (RBSXPCServiceDefinition)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RBSXPCServiceDefinition *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_variant = [v4 decodeInt64ForKey:@"_variant"];
-    v5->_scope = [v4 decodeInt64ForKey:@"_scope"];
+    v5->_variant = [coderCopy decodeInt64ForKey:@"_variant"];
+    v5->_scope = [coderCopy decodeInt64ForKey:@"_scope"];
   }
 
   return v5;

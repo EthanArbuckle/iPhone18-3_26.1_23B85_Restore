@@ -1,16 +1,16 @@
 @interface AMSDialog
-+ (id)dialogWithTitle:(id)a3 message:(id)a4 style:(int64_t)a5;
-- (AMSDialog)initWithTitle:(id)a3 message:(id)a4 style:(int64_t)a5;
-- (void)addButton:(id)a3;
-- (void)addTextField:(id)a3;
++ (id)dialogWithTitle:(id)title message:(id)message style:(int64_t)style;
+- (AMSDialog)initWithTitle:(id)title message:(id)message style:(int64_t)style;
+- (void)addButton:(id)button;
+- (void)addTextField:(id)field;
 @end
 
 @implementation AMSDialog
 
-- (AMSDialog)initWithTitle:(id)a3 message:(id)a4 style:(int64_t)a5
+- (AMSDialog)initWithTitle:(id)title message:(id)message style:(int64_t)style
 {
-  v9 = a3;
-  v10 = a4;
+  titleCopy = title;
+  messageCopy = message;
   v15.receiver = self;
   v15.super_class = AMSDialog;
   v11 = [(AMSDialog *)&v15 init];
@@ -20,28 +20,28 @@
     systemDialogQueue = v11->_systemDialogQueue;
     v11->_systemDialogQueue = v12;
 
-    objc_storeStrong(&v11->_title, a3);
-    objc_storeStrong(&v11->_message, a4);
-    v11->_style = a5;
+    objc_storeStrong(&v11->_title, title);
+    objc_storeStrong(&v11->_message, message);
+    v11->_style = style;
   }
 
   return v11;
 }
 
-+ (id)dialogWithTitle:(id)a3 message:(id)a4 style:(int64_t)a5
++ (id)dialogWithTitle:(id)title message:(id)message style:(int64_t)style
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[AMSDialog alloc] initWithTitle:v8 message:v7 style:a5];
+  messageCopy = message;
+  titleCopy = title;
+  v9 = [[AMSDialog alloc] initWithTitle:titleCopy message:messageCopy style:style];
 
   return v9;
 }
 
-- (void)addButton:(id)a3
+- (void)addButton:(id)button
 {
-  v4 = a3;
-  v5 = [(AMSDialog *)self buttons];
-  v6 = [v5 mutableCopy];
+  buttonCopy = button;
+  buttons = [(AMSDialog *)self buttons];
+  v6 = [buttons mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -55,15 +55,15 @@
 
   v9 = v8;
 
-  [v9 addObject:v4];
+  [v9 addObject:buttonCopy];
   [(AMSDialog *)self setButtons:v9];
 }
 
-- (void)addTextField:(id)a3
+- (void)addTextField:(id)field
 {
-  v4 = a3;
-  v5 = [(AMSDialog *)self textFields];
-  v6 = [v5 mutableCopy];
+  fieldCopy = field;
+  textFields = [(AMSDialog *)self textFields];
+  v6 = [textFields mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -77,7 +77,7 @@
 
   v9 = v8;
 
-  [v9 addObject:v4];
+  [v9 addObject:fieldCopy];
   [(AMSDialog *)self setTextFields:v9];
 }
 

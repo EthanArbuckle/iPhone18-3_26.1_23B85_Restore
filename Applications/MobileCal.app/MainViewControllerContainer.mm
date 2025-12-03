@@ -1,15 +1,15 @@
 @interface MainViewControllerContainer
-- (BOOL)allEventsIndividuallyRepresented:(id)a3;
+- (BOOL)allEventsIndividuallyRepresented:(id)represented;
 - (BOOL)allowsOverriddenRightNavigationBarItems;
 - (BOOL)allowsOverriddenToolbarItems;
 - (BOOL)currentChildViewControllerIsLoaded;
-- (BOOL)isDateVisible:(id)a3;
+- (BOOL)isDateVisible:(id)visible;
 - (BOOL)isTodayVisible;
 - (BOOL)isWaitingForBackgroundLoadingOfSelectedEventOccurrenceView;
 - (BOOL)mainViewControllerCanChangeSelectedDate;
 - (BOOL)mainViewControllerCanChangeSelectedEvent;
-- (BOOL)performModalDialogsIfNeededWithContinue:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)performModalDialogsIfNeededWithContinue:(id)continue;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (BOOL)shouldAdaptEventViewControllers;
 - (BOOL)shouldInvalidateManagedNavigationControllerOnPresentationDismissal;
 - (BOOL)shouldJournalMainViewControllerParent;
@@ -22,10 +22,10 @@
 - (BOOL)useContainingPalette;
 - (BOOL)useSolariumNavigationBarAppearance;
 - (BOOL)wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder;
-- (MainViewControllerContainer)initWithModel:(id)a3 window:(id)a4;
+- (MainViewControllerContainer)initWithModel:(id)model window:(id)window;
 - (NSString)description;
 - (double)leftBarButtonBlankFixedSpaceWidth;
-- (id)_childViewControllerForTraitCollection:(id)a3;
+- (id)_childViewControllerForTraitCollection:(id)collection;
 - (id)_todaysDate;
 - (id)bestDateForNewEvent;
 - (id)currentChildViewController;
@@ -34,14 +34,14 @@
 - (id)navigationBarDisplayedDateString;
 - (id)preferredPreSizeClassTransitionSelectedDate;
 - (id)sceneTitle;
-- (id)updateBackButtonWhileTopViewControllerToDate:(id)a3;
+- (id)updateBackButtonWhileTopViewControllerToDate:(id)date;
 - (id)viewControllerToShowFrom;
 - (int)supportedToggleMode;
 - (int64_t)presentationStyleOverrideForChildViewControllers;
 - (void)_addChildViewControllerForCurrentTraits;
 - (void)_removeChildViewControllerForCurrentTraits;
 - (void)_updateForCurrentTraits;
-- (void)currentlyVisibleDateRangeFromStartDate:(id *)a3 toEndDate:(id *)a4;
+- (void)currentlyVisibleDateRangeFromStartDate:(id *)date toEndDate:(id *)endDate;
 - (void)disableGestureRecognizers;
 - (void)enableGestureRecognizers;
 - (void)invalidateManagedNavigationController;
@@ -49,29 +49,29 @@
 - (void)moveSelectedOccurrenceLeft;
 - (void)moveSelectedOccurrenceRight;
 - (void)moveSelectedOccurrenceUp;
-- (void)navigateToNextDateComponentUnitAnimated:(BOOL)a3;
+- (void)navigateToNextDateComponentUnitAnimated:(BOOL)animated;
 - (void)navigateToNextSelectableItem;
-- (void)navigateToPreviousDateComponentUnitAnimated:(BOOL)a3;
+- (void)navigateToPreviousDateComponentUnitAnimated:(BOOL)animated;
 - (void)navigateToPreviousSelectableItem;
-- (void)selectDate:(id)a3 andTime:(BOOL)a4 animated:(BOOL)a5;
-- (void)selectDate:(id)a3 animated:(BOOL)a4;
-- (void)setShouldRespondToApplicationDidBecomeActiveStateChange:(BOOL)a3;
+- (void)selectDate:(id)date andTime:(BOOL)time animated:(BOOL)animated;
+- (void)selectDate:(id)date animated:(BOOL)animated;
+- (void)setShouldRespondToApplicationDidBecomeActiveStateChange:(BOOL)change;
 - (void)setupForViewAppearance;
-- (void)setupUIForTraitCollection:(id)a3;
+- (void)setupUIForTraitCollection:(id)collection;
 - (void)showDetailsForCurrentSelectableItem;
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6;
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context;
 - (void)showNextOccurrenceOfSelectableItem;
-- (void)showNowAnimated:(BOOL)a3;
+- (void)showNowAnimated:(BOOL)animated;
 - (void)showPreviousOccurrenceOfSelectableItem;
-- (void)showTodayAnimated:(BOOL)a3;
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)updateBackButtonToDate:(id)a3;
+- (void)showTodayAnimated:(BOOL)animated;
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion;
+- (void)updateBackButtonToDate:(id)date;
 - (void)updateNavigationBarDisplayedDateString;
-- (void)updatePalette:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updatePalette:(id)palette;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -79,15 +79,15 @@
 
 - (BOOL)currentChildViewControllerIsLoaded
 {
-  v3 = [(MainViewControllerContainer *)self childViewControllers];
-  v4 = [v3 firstObject];
+  childViewControllers = [(MainViewControllerContainer *)self childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
-  v5 = [(MainViewControllerContainer *)self childViewControllers];
-  if ([v5 count] && objc_msgSend(v4, "isViewLoaded"))
+  childViewControllers2 = [(MainViewControllerContainer *)self childViewControllers];
+  if ([childViewControllers2 count] && objc_msgSend(firstObject, "isViewLoaded"))
   {
-    v6 = [v4 view];
-    v7 = [v6 superview];
-    v8 = v7 != 0;
+    view = [firstObject view];
+    superview = [view superview];
+    v8 = superview != 0;
   }
 
   else
@@ -105,8 +105,8 @@
     [(MainViewControllerContainer *)self _updateForCurrentTraits];
   }
 
-  v3 = [(MainViewControllerContainer *)self childViewControllers];
-  v4 = [v3 count];
+  childViewControllers = [(MainViewControllerContainer *)self childViewControllers];
+  v4 = [childViewControllers count];
 
   if (v4 >= 2)
   {
@@ -114,34 +114,34 @@
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
     {
       v6 = v5;
-      v7 = [(MainViewControllerContainer *)self childViewControllers];
+      childViewControllers2 = [(MainViewControllerContainer *)self childViewControllers];
       v11 = 138412290;
-      v12 = v7;
+      v12 = childViewControllers2;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Extra calendar view children detected: %@", &v11, 0xCu);
     }
   }
 
-  v8 = [(MainViewControllerContainer *)self childViewControllers];
-  v9 = [v8 firstObject];
+  childViewControllers3 = [(MainViewControllerContainer *)self childViewControllers];
+  firstObject = [childViewControllers3 firstObject];
 
-  return v9;
+  return firstObject;
 }
 
 - (void)_updateForCurrentTraits
 {
-  v3 = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
+  ekui_futureTraitCollection = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
 
-  if (v3)
+  if (ekui_futureTraitCollection)
   {
-    v4 = [(MainViewControllerContainer *)self navigationItem];
-    v5 = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
-    v6 = [(MainViewControllerContainer *)self _childViewControllerForTraitCollection:v5];
+    navigationItem = [(MainViewControllerContainer *)self navigationItem];
+    ekui_futureTraitCollection2 = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
+    v6 = [(MainViewControllerContainer *)self _childViewControllerForTraitCollection:ekui_futureTraitCollection2];
 
     if (v6)
     {
-      v7 = [(MainViewControllerContainer *)self emptyChildViewController];
+      emptyChildViewController = [(MainViewControllerContainer *)self emptyChildViewController];
 
-      if (v6 != v7)
+      if (v6 != emptyChildViewController)
       {
         goto LABEL_15;
       }
@@ -149,24 +149,24 @@
 
     if ([(MainViewControllerContainer *)self shouldRemoveSelfFromNavigationStackIfTraitCollectionIsUnsupported])
     {
-      v8 = [(MainViewControllerContainer *)self navigationController];
-      v9 = [v8 viewControllers];
+      navigationController = [(MainViewControllerContainer *)self navigationController];
+      viewControllers = [navigationController viewControllers];
 
-      v25 = self;
-      v10 = [NSArray arrayWithObjects:&v25 count:1];
-      v11 = [v9 arrayByExcludingObjectsInArray:v10];
+      selfCopy = self;
+      v10 = [NSArray arrayWithObjects:&selfCopy count:1];
+      v11 = [viewControllers arrayByExcludingObjectsInArray:v10];
 
       [(MainViewControllerContainer *)self beginAppearanceTransition:0 animated:0];
-      v12 = [(MainViewControllerContainer *)self navigationController];
-      [v12 setViewControllers:v11];
+      navigationController2 = [(MainViewControllerContainer *)self navigationController];
+      [navigationController2 setViewControllers:v11];
 
       [(MainViewControllerContainer *)self endAppearanceTransition];
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v13 = [v11 reverseObjectEnumerator];
-      v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      reverseObjectEnumerator = [v11 reverseObjectEnumerator];
+      v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v14)
       {
         v15 = *v21;
@@ -176,7 +176,7 @@
           {
             if (*v21 != v15)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v17 = *(*(&v20 + 1) + 8 * i);
@@ -188,7 +188,7 @@
             }
           }
 
-          v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v14)
           {
             continue;
@@ -205,10 +205,10 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v18 = [(MainViewControllerContainer *)self childViewControllerForUnknownTraits];
+    childViewControllerForUnknownTraits = [(MainViewControllerContainer *)self childViewControllerForUnknownTraits];
 
-    v6 = v18;
-    if (v18)
+    v6 = childViewControllerForUnknownTraits;
+    if (childViewControllerForUnknownTraits)
     {
 LABEL_15:
       if (v6 != self->_currentChildViewController)
@@ -220,8 +220,8 @@ LABEL_15:
     }
 
 LABEL_19:
-    v19 = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
-    [(MainViewController *)v6 setEkui_futureTraitCollection:v19];
+    ekui_futureTraitCollection3 = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
+    [(MainViewController *)v6 setEkui_futureTraitCollection:ekui_futureTraitCollection3];
   }
 }
 
@@ -231,9 +231,9 @@ LABEL_19:
   if (!emptyChildViewController)
   {
     v4 = [EmptyMainViewController alloc];
-    v5 = [(MainViewController *)self window];
-    v6 = [(MainViewController *)self model];
-    v7 = [(MainViewController *)v4 initWithWindow:v5 model:v6];
+    window = [(MainViewController *)self window];
+    model = [(MainViewController *)self model];
+    v7 = [(MainViewController *)v4 initWithWindow:window model:model];
     v8 = self->_emptyChildViewController;
     self->_emptyChildViewController = v7;
 
@@ -245,8 +245,8 @@ LABEL_19:
 
 - (void)_addChildViewControllerForCurrentTraits
 {
-  v3 = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
-  v4 = [(MainViewControllerContainer *)self _childViewControllerForTraitCollection:v3];
+  ekui_futureTraitCollection = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
+  v4 = [(MainViewControllerContainer *)self _childViewControllerForTraitCollection:ekui_futureTraitCollection];
 
   if (v4)
   {
@@ -264,8 +264,8 @@ LABEL_19:
   if (currentChildViewController)
   {
     [(MainViewController *)currentChildViewController willMoveToParentViewController:0];
-    v4 = [(MainViewController *)self->_currentChildViewController view];
-    [v4 removeFromSuperview];
+    view = [(MainViewController *)self->_currentChildViewController view];
+    [view removeFromSuperview];
 
     v5 = self->_currentChildViewController;
 
@@ -275,7 +275,7 @@ LABEL_19:
 
 - (BOOL)allowsOverriddenRightNavigationBarItems
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -283,15 +283,15 @@ LABEL_19:
     return 0;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 allowsOverriddenRightNavigationBarItems];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  allowsOverriddenRightNavigationBarItems = [currentChildViewController2 allowsOverriddenRightNavigationBarItems];
 
-  return v6;
+  return allowsOverriddenRightNavigationBarItems;
 }
 
 - (int)supportedToggleMode
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -299,154 +299,154 @@ LABEL_19:
     return 0;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 supportedToggleMode];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  supportedToggleMode = [currentChildViewController2 supportedToggleMode];
 
-  return v6;
+  return supportedToggleMode;
 }
 
 - (void)setupForViewAppearance
 {
-  v3 = [(MainViewControllerContainer *)self view];
-  v4 = [v3 subviews];
-  v5 = [v4 count];
+  view = [(MainViewControllerContainer *)self view];
+  subviews = [view subviews];
+  v5 = [subviews count];
 
   if (!v5)
   {
-    v6 = [(MainViewControllerContainer *)self navigationController];
-    v7 = [v6 view];
-    v8 = [v7 window];
+    navigationController = [(MainViewControllerContainer *)self navigationController];
+    view2 = [navigationController view];
+    window = [view2 window];
 
-    if (v8)
+    if (window)
     {
-      v9 = [(MainViewControllerContainer *)self navigationController];
-      v10 = [v9 view];
-      v11 = [v10 window];
+      navigationController2 = [(MainViewControllerContainer *)self navigationController];
+      view3 = [navigationController2 view];
+      window2 = [view3 window];
       EKUIPushFallbackSizingContextWithViewHierarchy();
     }
 
-    v12 = [(MainViewControllerContainer *)self view];
-    [v12 frame];
+    view4 = [(MainViewControllerContainer *)self view];
+    [view4 frame];
     v14 = v13;
-    v15 = [(MainViewControllerContainer *)self view];
-    [v15 frame];
+    view5 = [(MainViewControllerContainer *)self view];
+    [view5 frame];
     v17 = v16;
 
-    v18 = [(MainViewController *)self->_currentChildViewController view];
-    [v18 setFrame:{0.0, 0.0, v14, v17}];
+    view6 = [(MainViewController *)self->_currentChildViewController view];
+    [view6 setFrame:{0.0, 0.0, v14, v17}];
 
     currentChildViewController = self->_currentChildViewController;
-    v20 = [(MainViewController *)self model];
-    v21 = [v20 selectedDate];
-    [(MainViewController *)currentChildViewController selectDate:v21 animated:0];
+    model = [(MainViewController *)self model];
+    selectedDate = [model selectedDate];
+    [(MainViewController *)currentChildViewController selectDate:selectedDate animated:0];
 
     [(MainViewControllerContainer *)self setEdgesForExtendedLayout:[(MainViewController *)self->_currentChildViewController edgesForExtendedLayout]];
-    v22 = [(MainViewController *)self->_currentChildViewController view];
-    v23 = [v22 superview];
+    view7 = [(MainViewController *)self->_currentChildViewController view];
+    superview = [view7 superview];
 
-    if (v23)
+    if (superview)
     {
-      v24 = [(MainViewController *)self->_currentChildViewController view];
-      [v24 removeFromSuperview];
+      view8 = [(MainViewController *)self->_currentChildViewController view];
+      [view8 removeFromSuperview];
     }
 
-    v25 = [(MainViewController *)self->_currentChildViewController view];
-    [v25 setAlpha:1.0];
+    view9 = [(MainViewController *)self->_currentChildViewController view];
+    [view9 setAlpha:1.0];
 
-    v26 = [(MainViewControllerContainer *)self view];
-    v27 = [(MainViewController *)self->_currentChildViewController view];
-    [v26 addSubview:v27];
+    view10 = [(MainViewControllerContainer *)self view];
+    view11 = [(MainViewController *)self->_currentChildViewController view];
+    [view10 addSubview:view11];
 
     if ((CalSolariumEnabled() & 1) != 0 || CalUIKitNavBarEnabled())
     {
       v28 = +[UIDevice currentDevice];
-      v29 = [v28 userInterfaceIdiom];
+      userInterfaceIdiom = [v28 userInterfaceIdiom];
 
-      if (v29)
+      if (userInterfaceIdiom)
       {
         v30 = self->_currentChildViewController;
         if (v30)
         {
           if ([(MainViewController *)v30 intendedSizeClass]== 2)
           {
-            v31 = [(MainViewController *)self->_currentChildViewController view];
-            [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
+            view12 = [(MainViewController *)self->_currentChildViewController view];
+            [view12 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-            v66 = [(MainViewController *)self->_currentChildViewController view];
-            v78 = [v66 leadingAnchor];
-            v80 = [(MainViewControllerContainer *)self view];
-            v76 = [v80 safeAreaLayoutGuide];
-            v74 = [v76 leadingAnchor];
-            v72 = [v78 constraintEqualToAnchor:v74];
+            view13 = [(MainViewController *)self->_currentChildViewController view];
+            leadingAnchor = [view13 leadingAnchor];
+            view14 = [(MainViewControllerContainer *)self view];
+            safeAreaLayoutGuide = [view14 safeAreaLayoutGuide];
+            leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+            v72 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
             v83[0] = v72;
-            v70 = [(MainViewController *)self->_currentChildViewController view];
-            v64 = [v70 trailingAnchor];
-            v68 = [(MainViewControllerContainer *)self view];
-            v62 = [v68 safeAreaLayoutGuide];
-            v60 = [v62 trailingAnchor];
-            v58 = [v64 constraintEqualToAnchor:v60];
+            view15 = [(MainViewController *)self->_currentChildViewController view];
+            trailingAnchor = [view15 trailingAnchor];
+            view16 = [(MainViewControllerContainer *)self view];
+            safeAreaLayoutGuide2 = [view16 safeAreaLayoutGuide];
+            trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+            v58 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
             v83[1] = v58;
-            v56 = [(MainViewController *)self->_currentChildViewController view];
-            v52 = [v56 topAnchor];
-            v54 = [(MainViewControllerContainer *)self view];
-            v32 = [v54 topAnchor];
-            v33 = [v52 constraintEqualToAnchor:v32];
+            view17 = [(MainViewController *)self->_currentChildViewController view];
+            topAnchor = [view17 topAnchor];
+            view18 = [(MainViewControllerContainer *)self view];
+            topAnchor2 = [view18 topAnchor];
+            v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
             v83[2] = v33;
-            v34 = [(MainViewController *)self->_currentChildViewController view];
-            v35 = [v34 bottomAnchor];
-            v36 = [(MainViewControllerContainer *)self view];
-            v37 = [v36 bottomAnchor];
-            v38 = [v35 constraintEqualToAnchor:v37];
+            view19 = [(MainViewController *)self->_currentChildViewController view];
+            bottomAnchor = [view19 bottomAnchor];
+            view20 = [(MainViewControllerContainer *)self view];
+            bottomAnchor2 = [view20 bottomAnchor];
+            v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
             v83[3] = v38;
             v39 = [NSArray arrayWithObjects:v83 count:4];
             [NSLayoutConstraint activateConstraints:v39];
 
-            v40 = v66;
+            view29 = view13;
           }
 
           else
           {
-            v81 = [(MainViewController *)self->_currentChildViewController view];
-            v77 = [v81 leadingAnchor];
-            v79 = [(MainViewControllerContainer *)self view];
-            v75 = [v79 safeAreaLayoutGuide];
-            v73 = [v75 leadingAnchor];
-            v71 = [v77 constraintEqualToAnchor:v73];
+            view21 = [(MainViewController *)self->_currentChildViewController view];
+            leadingAnchor3 = [view21 leadingAnchor];
+            view22 = [(MainViewControllerContainer *)self view];
+            safeAreaLayoutGuide3 = [view22 safeAreaLayoutGuide];
+            leadingAnchor4 = [safeAreaLayoutGuide3 leadingAnchor];
+            v71 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
             v82[0] = v71;
-            v69 = [(MainViewController *)self->_currentChildViewController view];
-            v65 = [v69 trailingAnchor];
-            v67 = [(MainViewControllerContainer *)self view];
-            v63 = [v67 safeAreaLayoutGuide];
-            v61 = [v63 trailingAnchor];
-            v59 = [v65 constraintEqualToAnchor:v61];
+            view23 = [(MainViewController *)self->_currentChildViewController view];
+            trailingAnchor3 = [view23 trailingAnchor];
+            view24 = [(MainViewControllerContainer *)self view];
+            safeAreaLayoutGuide4 = [view24 safeAreaLayoutGuide];
+            trailingAnchor4 = [safeAreaLayoutGuide4 trailingAnchor];
+            v59 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
             v82[1] = v59;
-            v57 = [(MainViewController *)self->_currentChildViewController view];
-            v53 = [v57 topAnchor];
-            v55 = [(MainViewControllerContainer *)self view];
-            v51 = [v55 topAnchor];
-            v41 = [v53 constraintEqualToAnchor:v51];
+            view25 = [(MainViewController *)self->_currentChildViewController view];
+            topAnchor3 = [view25 topAnchor];
+            view26 = [(MainViewControllerContainer *)self view];
+            topAnchor4 = [view26 topAnchor];
+            v41 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
             v82[2] = v41;
-            v42 = [(MainViewController *)self->_currentChildViewController view];
-            v43 = [v42 bottomAnchor];
-            v44 = [(MainViewControllerContainer *)self view];
-            v45 = [v44 bottomAnchor];
-            v46 = [v43 constraintEqualToAnchor:v45];
+            view27 = [(MainViewController *)self->_currentChildViewController view];
+            bottomAnchor3 = [view27 bottomAnchor];
+            view28 = [(MainViewControllerContainer *)self view];
+            bottomAnchor4 = [view28 bottomAnchor];
+            v46 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
             v82[3] = v46;
             v47 = [NSArray arrayWithObjects:v82 count:4];
             [NSLayoutConstraint deactivateConstraints:v47];
 
-            v40 = [(MainViewController *)self->_currentChildViewController view];
-            [v40 setTranslatesAutoresizingMaskIntoConstraints:1];
+            view29 = [(MainViewController *)self->_currentChildViewController view];
+            [view29 setTranslatesAutoresizingMaskIntoConstraints:1];
           }
         }
       }
     }
 
-    if (v8)
+    if (window)
     {
-      v48 = [(MainViewControllerContainer *)self navigationController];
-      v49 = [v48 view];
-      v50 = [v49 window];
+      navigationController3 = [(MainViewControllerContainer *)self navigationController];
+      view30 = [navigationController3 view];
+      window3 = [view30 window];
       EKUIPopFallbackSizingContextWithViewHierarchy();
     }
   }
@@ -460,15 +460,15 @@ LABEL_19:
   v3 = objc_autoreleasePoolPush();
   [(MainViewControllerContainer *)self _updateForCurrentTraits];
   [(MainViewControllerContainer *)self setupForViewAppearance];
-  v4 = [(MainViewControllerContainer *)self view];
-  [v4 setNeedsLayout];
+  view = [(MainViewControllerContainer *)self view];
+  [view setNeedsLayout];
 
   objc_autoreleasePoolPop(v3);
 }
 
 - (BOOL)allowsOverriddenToolbarItems
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -476,15 +476,15 @@ LABEL_19:
     return 0;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 allowsOverriddenToolbarItems];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  allowsOverriddenToolbarItems = [currentChildViewController2 allowsOverriddenToolbarItems];
 
-  return v6;
+  return allowsOverriddenToolbarItems;
 }
 
 - (BOOL)shouldUpdateOwnBackButtonWhenTopViewController
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -492,10 +492,10 @@ LABEL_19:
     return 0;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 shouldUpdateOwnBackButtonWhenTopViewController];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  shouldUpdateOwnBackButtonWhenTopViewController = [currentChildViewController2 shouldUpdateOwnBackButtonWhenTopViewController];
 
-  return v6;
+  return shouldUpdateOwnBackButtonWhenTopViewController;
 }
 
 - (void)viewWillLayoutSubviews
@@ -506,31 +506,31 @@ LABEL_19:
   [(MainViewControllerContainer *)&v3 viewWillLayoutSubviews];
 }
 
-- (MainViewControllerContainer)initWithModel:(id)a3 window:(id)a4
+- (MainViewControllerContainer)initWithModel:(id)model window:(id)window
 {
   v8.receiver = self;
   v8.super_class = MainViewControllerContainer;
-  v4 = [(MainViewController *)&v8 initWithWindow:a4 model:a3];
+  v4 = [(MainViewController *)&v8 initWithWindow:window model:model];
   v5 = v4;
   if (v4)
   {
-    v6 = [(MainViewControllerContainer *)v4 navigationItem];
+    navigationItem = [(MainViewControllerContainer *)v4 navigationItem];
     if (objc_opt_respondsToSelector())
     {
-      [v6 _setAllowsInteractivePop:0];
+      [navigationItem _setAllowsInteractivePop:0];
     }
   }
 
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if ("copy:" == a3 || "paste:" == a3 || "cut:" == a3)
+  if ("copy:" == selector || "paste:" == selector || "cut:" == selector)
   {
     v11.receiver = self;
     v11.super_class = MainViewControllerContainer;
-    return [(MainViewControllerContainer *)&v11 respondsToSelector:a3];
+    return [(MainViewControllerContainer *)&v11 respondsToSelector:selector];
   }
 
   else
@@ -543,8 +543,8 @@ LABEL_19:
 
     else
     {
-      v9 = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
-      v10 = [(objc_class *)[(MainViewControllerContainer *)self childViewControllerClassForTraits:v9] instancesRespondToSelector:a3];
+      ekui_futureTraitCollection = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
+      v10 = [(objc_class *)[(MainViewControllerContainer *)self childViewControllerClassForTraits:ekui_futureTraitCollection] instancesRespondToSelector:selector];
 
       return v10;
     }
@@ -554,24 +554,24 @@ LABEL_19:
 - (NSString)description
 {
   v12 = objc_opt_class();
-  v3 = [(MainViewControllerContainer *)self traitCollection];
-  v4 = [v3 horizontalSizeClass];
-  v5 = [(MainViewControllerContainer *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
-  v7 = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
-  v8 = [v7 horizontalSizeClass];
-  v9 = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
-  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p  WidthClass: %ld  HeightClass: %ld  FutureWidthClass: %ld  FutureHeightClass: %ld  Showing %@ %p>", v12, self, v4, v6, v8, [v9 verticalSizeClass], objc_opt_class(), self->_currentChildViewController);
+  traitCollection = [(MainViewControllerContainer *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  traitCollection2 = [(MainViewControllerContainer *)self traitCollection];
+  verticalSizeClass = [traitCollection2 verticalSizeClass];
+  ekui_futureTraitCollection = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
+  horizontalSizeClass2 = [ekui_futureTraitCollection horizontalSizeClass];
+  ekui_futureTraitCollection2 = [(MainViewControllerContainer *)self ekui_futureTraitCollection];
+  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p  WidthClass: %ld  HeightClass: %ld  FutureWidthClass: %ld  FutureHeightClass: %ld  Showing %@ %p>", v12, self, horizontalSizeClass, verticalSizeClass, horizontalSizeClass2, [ekui_futureTraitCollection2 verticalSizeClass], objc_opt_class(), self->_currentChildViewController);
 
   return v10;
 }
 
-- (BOOL)performModalDialogsIfNeededWithContinue:(id)a3
+- (BOOL)performModalDialogsIfNeededWithContinue:(id)continue
 {
-  v4 = a3;
+  continueCopy = continue;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(MainViewController *)self->_currentChildViewController performModalDialogsIfNeededWithContinue:v4];
+    v5 = [(MainViewController *)self->_currentChildViewController performModalDialogsIfNeededWithContinue:continueCopy];
   }
 
   else
@@ -582,240 +582,240 @@ LABEL_19:
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MainViewControllerContainer;
-  [(MainViewControllerContainer *)&v4 viewWillAppear:a3];
+  [(MainViewControllerContainer *)&v4 viewWillAppear:appear];
   [(MainViewControllerContainer *)self setupForViewAppearance];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = MainViewControllerContainer;
   [(MainViewControllerContainer *)&v6 viewWillDisappear:?];
   if ([(MainViewControllerContainer *)self currentChildViewControllerIsLoaded])
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v5 beginAppearanceTransition:0 animated:v3];
+    currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController beginAppearanceTransition:0 animated:disappearCopy];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MainViewControllerContainer;
-  [(MainViewControllerContainer *)&v5 viewDidDisappear:a3];
+  [(MainViewControllerContainer *)&v5 viewDidDisappear:disappear];
   if ([(MainViewControllerContainer *)self currentChildViewControllerIsLoaded])
   {
-    v4 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v4 endAppearanceTransition];
+    currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController endAppearanceTransition];
   }
 }
 
-- (void)setupUIForTraitCollection:(id)a3
+- (void)setupUIForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   [(MainViewControllerContainer *)self _updateForCurrentTraits];
-  [(MainViewController *)self->_currentChildViewController setupUIForTraitCollection:v4];
+  [(MainViewController *)self->_currentChildViewController setupUIForTraitCollection:collectionCopy];
 
-  v5 = [(MainViewControllerContainer *)self view];
-  [v5 setNeedsLayout];
+  view = [(MainViewControllerContainer *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(MainViewControllerContainer *)self currentChildViewController];
-  [v13 showViewController:v12 sender:v11 animated:v6 completion:v10];
+  animatedCopy = animated;
+  completionCopy = completion;
+  senderCopy = sender;
+  controllerCopy = controller;
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+  [currentChildViewController showViewController:controllerCopy sender:senderCopy animated:animatedCopy completion:completionCopy];
 }
 
 - (int64_t)presentationStyleOverrideForChildViewControllers
 {
-  v2 = [(MainViewControllerContainer *)self currentChildViewController];
-  v3 = [v2 presentationStyleOverrideForChildViewControllers];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+  presentationStyleOverrideForChildViewControllers = [currentChildViewController presentationStyleOverrideForChildViewControllers];
 
-  return v3;
+  return presentationStyleOverrideForChildViewControllers;
 }
 
 - (id)viewControllerToShowFrom
 {
-  v2 = [(MainViewControllerContainer *)self currentChildViewController];
-  v3 = [v2 viewControllerToShowFrom];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+  viewControllerToShowFrom = [currentChildViewController viewControllerToShowFrom];
 
-  return v3;
+  return viewControllerToShowFrom;
 }
 
-- (id)_childViewControllerForTraitCollection:(id)a3
+- (id)_childViewControllerForTraitCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 horizontalSizeClass] == 2 && objc_msgSend(v4, "verticalSizeClass") == 2)
+  collectionCopy = collection;
+  if ([collectionCopy horizontalSizeClass] == 2 && objc_msgSend(collectionCopy, "verticalSizeClass") == 2)
   {
-    v5 = [(MainViewControllerContainer *)self childViewControllerForRegularWidthRegularHeight];
+    childViewControllerForRegularWidthRegularHeight = [(MainViewControllerContainer *)self childViewControllerForRegularWidthRegularHeight];
   }
 
-  else if ([v4 horizontalSizeClass] == 2 && objc_msgSend(v4, "verticalSizeClass") == 1)
+  else if ([collectionCopy horizontalSizeClass] == 2 && objc_msgSend(collectionCopy, "verticalSizeClass") == 1)
   {
-    v5 = [(MainViewControllerContainer *)self childViewControllerForRegularWidthCompactHeight];
+    childViewControllerForRegularWidthRegularHeight = [(MainViewControllerContainer *)self childViewControllerForRegularWidthCompactHeight];
   }
 
-  else if ([v4 horizontalSizeClass] == 1 && objc_msgSend(v4, "verticalSizeClass") == 2)
+  else if ([collectionCopy horizontalSizeClass] == 1 && objc_msgSend(collectionCopy, "verticalSizeClass") == 2)
   {
-    v5 = [(MainViewControllerContainer *)self childViewControllerForCompactWidthRegularHeight];
+    childViewControllerForRegularWidthRegularHeight = [(MainViewControllerContainer *)self childViewControllerForCompactWidthRegularHeight];
   }
 
-  else if ([v4 horizontalSizeClass] == 1 && objc_msgSend(v4, "verticalSizeClass") == 1)
+  else if ([collectionCopy horizontalSizeClass] == 1 && objc_msgSend(collectionCopy, "verticalSizeClass") == 1)
   {
-    v5 = [(MainViewControllerContainer *)self childViewControllerForCompactWidthCompactHeight];
+    childViewControllerForRegularWidthRegularHeight = [(MainViewControllerContainer *)self childViewControllerForCompactWidthCompactHeight];
   }
 
   else
   {
-    v5 = [(MainViewControllerContainer *)self emptyChildViewController];
+    childViewControllerForRegularWidthRegularHeight = [(MainViewControllerContainer *)self emptyChildViewController];
   }
 
-  v6 = v5;
+  v6 = childViewControllerForRegularWidthRegularHeight;
 
   return v6;
 }
 
 - (id)managedNavigationController
 {
-  v2 = [(MainViewControllerContainer *)self currentChildViewController];
-  v3 = [v2 managedNavigationController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+  managedNavigationController = [currentChildViewController managedNavigationController];
 
-  return v3;
+  return managedNavigationController;
 }
 
 - (void)invalidateManagedNavigationController
 {
-  v2 = [(MainViewControllerContainer *)self currentChildViewController];
-  [v2 invalidateManagedNavigationController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+  [currentChildViewController invalidateManagedNavigationController];
 }
 
 - (BOOL)shouldInvalidateManagedNavigationControllerOnPresentationDismissal
 {
-  v2 = [(MainViewControllerContainer *)self currentChildViewController];
-  v3 = [v2 shouldInvalidateManagedNavigationControllerOnPresentationDismissal];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+  shouldInvalidateManagedNavigationControllerOnPresentationDismissal = [currentChildViewController shouldInvalidateManagedNavigationControllerOnPresentationDismissal];
 
-  return v3;
+  return shouldInvalidateManagedNavigationControllerOnPresentationDismissal;
 }
 
 - (BOOL)shouldModallyPresentFirstShownViewController
 {
-  v2 = [(MainViewControllerContainer *)self currentChildViewController];
-  v3 = [v2 shouldModallyPresentFirstShownViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+  shouldModallyPresentFirstShownViewController = [currentChildViewController shouldModallyPresentFirstShownViewController];
 
-  return v3;
+  return shouldModallyPresentFirstShownViewController;
 }
 
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context
 {
-  v8 = a4;
-  v14 = a3;
-  v10 = a6;
-  v11 = [(MainViewControllerContainer *)self currentChildViewController];
+  animatedCopy = animated;
+  eventCopy = event;
+  contextCopy = context;
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v13 showEvent:v14 animated:v8 showMode:a5 context:v10];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 showEvent:eventCopy animated:animatedCopy showMode:mode context:contextCopy];
   }
 }
 
-- (void)selectDate:(id)a3 animated:(BOOL)a4
+- (void)selectDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(MainViewControllerContainer *)self currentChildViewController];
+  animatedCopy = animated;
+  dateCopy = date;
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v8 selectDate:v9 animated:v4];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 selectDate:dateCopy animated:animatedCopy];
   }
 }
 
-- (void)selectDate:(id)a3 andTime:(BOOL)a4 animated:(BOOL)a5
+- (void)selectDate:(id)date andTime:(BOOL)time animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v11 = a3;
-  if (v6 && ([(MainViewControllerContainer *)self currentChildViewController], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, (v9 & 1) != 0))
+  animatedCopy = animated;
+  timeCopy = time;
+  dateCopy = date;
+  if (timeCopy && ([(MainViewControllerContainer *)self currentChildViewController], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, (v9 & 1) != 0))
   {
-    v10 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v10 selectDate:v11 andTime:1 animated:v5];
+    currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController selectDate:dateCopy andTime:1 animated:animatedCopy];
   }
 
   else
   {
-    v10 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v10 selectDate:v11 animated:v5];
+    currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController selectDate:dateCopy animated:animatedCopy];
   }
 }
 
-- (BOOL)isDateVisible:(id)a3
+- (BOOL)isDateVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 isDateVisible:v4];
+  visibleCopy = visible;
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+  v6 = [currentChildViewController isDateVisible:visibleCopy];
 
   return v6;
 }
 
-- (void)currentlyVisibleDateRangeFromStartDate:(id *)a3 toEndDate:(id *)a4
+- (void)currentlyVisibleDateRangeFromStartDate:(id *)date toEndDate:(id *)endDate
 {
-  v6 = [(MainViewControllerContainer *)self currentChildViewController];
-  [v6 currentlyVisibleDateRangeFromStartDate:a3 toEndDate:a4];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+  [currentChildViewController currentlyVisibleDateRangeFromStartDate:date toEndDate:endDate];
 }
 
-- (void)showTodayAnimated:(BOOL)a3
+- (void)showTodayAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v9 = [(MainViewControllerContainer *)self _todaysDate];
-  v5 = [(MainViewControllerContainer *)self view];
+  animatedCopy = animated;
+  _todaysDate = [(MainViewControllerContainer *)self _todaysDate];
+  view = [(MainViewControllerContainer *)self view];
   IsCompactInViewHierarchy = EKUICurrentWidthSizeClassIsCompactInViewHierarchy();
 
   if (IsCompactInViewHierarchy && [(MainViewControllerContainer *)self shouldPushNextLevelViewControllerWhenTodayIsVisible]&& [(MainViewControllerContainer *)self isTodayVisible])
   {
-    v7 = [(MainViewController *)self model];
-    [v7 setSelectedDate:v9];
+    model = [(MainViewController *)self model];
+    [model setSelectedDate:_todaysDate];
 
-    v8 = [(MainViewControllerContainer *)self pushedNextLevelMainViewControllerContainerAnimated:v3];
+    v8 = [(MainViewControllerContainer *)self pushedNextLevelMainViewControllerContainerAnimated:animatedCopy];
   }
 
   else
   {
-    [(MainViewControllerContainer *)self selectDate:v9 animated:v3];
+    [(MainViewControllerContainer *)self selectDate:_todaysDate animated:animatedCopy];
   }
 }
 
 - (id)sceneTitle
 {
-  v2 = [(MainViewControllerContainer *)self currentChildViewController];
-  v3 = [v2 sceneTitle];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+  sceneTitle = [currentChildViewController sceneTitle];
 
-  return v3;
+  return sceneTitle;
 }
 
 - (id)preferredPreSizeClassTransitionSelectedDate
 {
-  v2 = [(MainViewControllerContainer *)self currentChildViewController];
-  v3 = [v2 preferredPreSizeClassTransitionSelectedDate];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+  preferredPreSizeClassTransitionSelectedDate = [currentChildViewController preferredPreSizeClassTransitionSelectedDate];
 
-  return v3;
+  return preferredPreSizeClassTransitionSelectedDate;
 }
 
 - (BOOL)mainViewControllerCanChangeSelectedEvent
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -823,15 +823,15 @@ LABEL_19:
     return 1;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 mainViewControllerCanChangeSelectedEvent];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  mainViewControllerCanChangeSelectedEvent = [currentChildViewController2 mainViewControllerCanChangeSelectedEvent];
 
-  return v6;
+  return mainViewControllerCanChangeSelectedEvent;
 }
 
 - (BOOL)mainViewControllerCanChangeSelectedDate
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -839,22 +839,22 @@ LABEL_19:
     return 1;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 mainViewControllerCanChangeSelectedDate];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  mainViewControllerCanChangeSelectedDate = [currentChildViewController2 mainViewControllerCanChangeSelectedDate];
 
-  return v6;
+  return mainViewControllerCanChangeSelectedDate;
 }
 
-- (BOOL)allEventsIndividuallyRepresented:(id)a3
+- (BOOL)allEventsIndividuallyRepresented:(id)represented
 {
-  v4 = a3;
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
+  representedCopy = represented;
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MainViewControllerContainer *)self currentChildViewController];
-    v8 = [v7 allEventsIndividuallyRepresented:v4];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    v8 = [currentChildViewController2 allEventsIndividuallyRepresented:representedCopy];
   }
 
   else
@@ -867,149 +867,149 @@ LABEL_19:
 
 - (void)moveSelectedOccurrenceUp
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v5 moveSelectedOccurrenceUp];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 moveSelectedOccurrenceUp];
   }
 }
 
 - (void)moveSelectedOccurrenceDown
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v5 moveSelectedOccurrenceDown];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 moveSelectedOccurrenceDown];
   }
 }
 
 - (void)moveSelectedOccurrenceLeft
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v5 moveSelectedOccurrenceLeft];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 moveSelectedOccurrenceLeft];
   }
 }
 
 - (void)moveSelectedOccurrenceRight
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v5 moveSelectedOccurrenceRight];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 moveSelectedOccurrenceRight];
   }
 }
 
 - (BOOL)wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder
 {
-  v2 = [(MainViewControllerContainer *)self currentChildViewController];
-  v3 = [v2 wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+  wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder = [currentChildViewController wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder];
 
-  return v3;
+  return wantsToRespondToLinearNavigationCommandsWhenNotFirstResponder;
 }
 
 - (void)navigateToNextSelectableItem
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v5 navigateToNextSelectableItem];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 navigateToNextSelectableItem];
   }
 }
 
 - (void)navigateToPreviousSelectableItem
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v5 navigateToPreviousSelectableItem];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 navigateToPreviousSelectableItem];
   }
 }
 
 - (void)showNextOccurrenceOfSelectableItem
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v5 showNextOccurrenceOfSelectableItem];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 showNextOccurrenceOfSelectableItem];
   }
 }
 
 - (void)showPreviousOccurrenceOfSelectableItem
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v5 showPreviousOccurrenceOfSelectableItem];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 showPreviousOccurrenceOfSelectableItem];
   }
 }
 
 - (void)showDetailsForCurrentSelectableItem
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v5 showDetailsForCurrentSelectableItem];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 showDetailsForCurrentSelectableItem];
   }
 }
 
-- (void)navigateToNextDateComponentUnitAnimated:(BOOL)a3
+- (void)navigateToNextDateComponentUnitAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
+  animatedCopy = animated;
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v7 navigateToNextDateComponentUnitAnimated:v3];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 navigateToNextDateComponentUnitAnimated:animatedCopy];
   }
 }
 
-- (void)navigateToPreviousDateComponentUnitAnimated:(BOOL)a3
+- (void)navigateToPreviousDateComponentUnitAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
+  animatedCopy = animated;
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v7 navigateToPreviousDateComponentUnitAnimated:v3];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 navigateToPreviousDateComponentUnitAnimated:animatedCopy];
   }
 }
 
 - (BOOL)shouldRespondToApplicationDidBecomeActiveStateChange
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1017,28 +1017,28 @@ LABEL_19:
     return 0;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 shouldRespondToApplicationDidBecomeActiveStateChange];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  shouldRespondToApplicationDidBecomeActiveStateChange = [currentChildViewController2 shouldRespondToApplicationDidBecomeActiveStateChange];
 
-  return v6;
+  return shouldRespondToApplicationDidBecomeActiveStateChange;
 }
 
-- (void)setShouldRespondToApplicationDidBecomeActiveStateChange:(BOOL)a3
+- (void)setShouldRespondToApplicationDidBecomeActiveStateChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
+  changeCopy = change;
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v7 setShouldRespondToApplicationDidBecomeActiveStateChange:v3];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 setShouldRespondToApplicationDidBecomeActiveStateChange:changeCopy];
   }
 }
 
 - (BOOL)shouldPushNextLevelViewControllerWhenTodayIsVisible
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) != 0 && (-[MainViewControllerContainer currentChildViewController](self, "currentChildViewController"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 shouldPushNextLevelViewControllerWhenTodayIsVisible], v5, v6))
@@ -1057,7 +1057,7 @@ LABEL_19:
 
 - (BOOL)isTodayVisible
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1065,64 +1065,64 @@ LABEL_19:
     return 1;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 isTodayVisible];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  isTodayVisible = [currentChildViewController2 isTodayVisible];
 
-  return v6;
+  return isTodayVisible;
 }
 
 - (id)_todaysDate
 {
   v3 = CUIKTodayDate();
-  v4 = [(MainViewController *)self model];
-  v5 = [v4 eventStore];
-  v6 = [v5 timeZone];
+  model = [(MainViewController *)self model];
+  eventStore = [model eventStore];
+  timeZone = [eventStore timeZone];
 
-  v7 = [EKCalendarDate calendarDateWithDate:v3 timeZone:v6];
+  v7 = [EKCalendarDate calendarDateWithDate:v3 timeZone:timeZone];
 
   return v7;
 }
 
-- (void)showNowAnimated:(BOOL)a3
+- (void)showNowAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
+  animatedCopy = animated;
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v7 showNowAnimated:v3];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 showNowAnimated:animatedCopy];
   }
 }
 
 - (void)enableGestureRecognizers
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v5 enableGestureRecognizers];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 enableGestureRecognizers];
   }
 }
 
 - (void)disableGestureRecognizers
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v5 disableGestureRecognizers];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 disableGestureRecognizers];
   }
 }
 
 - (double)leftBarButtonBlankFixedSpaceWidth
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1130,29 +1130,29 @@ LABEL_19:
     return 0.0;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  [v5 leftBarButtonBlankFixedSpaceWidth];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  [currentChildViewController2 leftBarButtonBlankFixedSpaceWidth];
   v7 = v6;
 
   return v7;
 }
 
-- (void)updatePalette:(id)a3
+- (void)updatePalette:(id)palette
 {
-  v7 = a3;
-  v4 = [(MainViewControllerContainer *)self currentChildViewController];
+  paletteCopy = palette;
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v6 updatePalette:v7];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 updatePalette:paletteCopy];
   }
 }
 
 - (BOOL)useContainingPalette
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1160,34 +1160,34 @@ LABEL_19:
     return 0;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 useContainingPalette];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  useContainingPalette = [currentChildViewController2 useContainingPalette];
 
-  return v6;
+  return useContainingPalette;
 }
 
 - (id)bestDateForNewEvent
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    v6 = [v5 bestDateForNewEvent];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    bestDateForNewEvent = [currentChildViewController2 bestDateForNewEvent];
   }
 
   else
   {
-    v6 = 0;
+    bestDateForNewEvent = 0;
   }
 
-  return v6;
+  return bestDateForNewEvent;
 }
 
 - (BOOL)showEventDetailsWhenNewEventAdded
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1195,15 +1195,15 @@ LABEL_19:
     return 0;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 showEventDetailsWhenNewEventAdded];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  showEventDetailsWhenNewEventAdded = [currentChildViewController2 showEventDetailsWhenNewEventAdded];
 
-  return v6;
+  return showEventDetailsWhenNewEventAdded;
 }
 
 - (BOOL)shouldJournalMainViewControllerParent
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1211,15 +1211,15 @@ LABEL_19:
     return 1;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 shouldJournalMainViewControllerParent];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  shouldJournalMainViewControllerParent = [currentChildViewController2 shouldJournalMainViewControllerParent];
 
-  return v6;
+  return shouldJournalMainViewControllerParent;
 }
 
 - (BOOL)shouldAdaptEventViewControllers
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1227,15 +1227,15 @@ LABEL_19:
     return 0;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 shouldAdaptEventViewControllers];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  shouldAdaptEventViewControllers = [currentChildViewController2 shouldAdaptEventViewControllers];
 
-  return v6;
+  return shouldAdaptEventViewControllers;
 }
 
 - (BOOL)useSolariumNavigationBarAppearance
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1243,47 +1243,47 @@ LABEL_19:
     return 0;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 useSolariumNavigationBarAppearance];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  useSolariumNavigationBarAppearance = [currentChildViewController2 useSolariumNavigationBarAppearance];
 
-  return v6;
+  return useSolariumNavigationBarAppearance;
 }
 
 - (id)navigationBarDisplayedDateString
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    v6 = [v5 navigationBarDisplayedDateString];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    navigationBarDisplayedDateString = [currentChildViewController2 navigationBarDisplayedDateString];
   }
 
   else
   {
-    v6 = 0;
+    navigationBarDisplayedDateString = 0;
   }
 
-  return v6;
+  return navigationBarDisplayedDateString;
 }
 
 - (void)updateNavigationBarDisplayedDateString
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v5 updateNavigationBarDisplayedDateString];
+    currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController2 updateNavigationBarDisplayedDateString];
   }
 }
 
-- (void)updateBackButtonToDate:(id)a3
+- (void)updateBackButtonToDate:(id)date
 {
-  v6 = a3;
-  v4 = [(MainViewControllerContainer *)self currentChildViewController];
+  dateCopy = date;
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   if (objc_opt_respondsToSelector())
   {
     v5 = CalSolariumEnabled();
@@ -1293,8 +1293,8 @@ LABEL_19:
       goto LABEL_5;
     }
 
-    v4 = [(MainViewControllerContainer *)self currentChildViewController];
-    [v4 updateBackButtonToDate:v6];
+    currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+    [currentChildViewController updateBackButtonToDate:dateCopy];
   }
 
 LABEL_5:
@@ -1302,7 +1302,7 @@ LABEL_5:
 
 - (BOOL)shouldShowNavigationTitleWhenTopViewController
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1310,16 +1310,16 @@ LABEL_5:
     return 1;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 shouldUpdateOwnBackButtonWhenTopViewController];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  shouldUpdateOwnBackButtonWhenTopViewController = [currentChildViewController2 shouldUpdateOwnBackButtonWhenTopViewController];
 
-  return v6;
+  return shouldUpdateOwnBackButtonWhenTopViewController;
 }
 
-- (id)updateBackButtonWhileTopViewControllerToDate:(id)a3
+- (id)updateBackButtonWhileTopViewControllerToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
+  dateCopy = date;
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   if (objc_opt_respondsToSelector())
   {
     v6 = CalSolariumEnabled();
@@ -1330,8 +1330,8 @@ LABEL_5:
       goto LABEL_7;
     }
 
-    v5 = [(MainViewControllerContainer *)self currentChildViewController];
-    v7 = [v5 updateBackButtonWhileTopViewControllerToDate:v4];
+    currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
+    v7 = [currentChildViewController updateBackButtonWhileTopViewControllerToDate:dateCopy];
   }
 
   else
@@ -1346,7 +1346,7 @@ LABEL_7:
 
 - (BOOL)isWaitingForBackgroundLoadingOfSelectedEventOccurrenceView
 {
-  v3 = [(MainViewControllerContainer *)self currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)self currentChildViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1354,10 +1354,10 @@ LABEL_7:
     return 0;
   }
 
-  v5 = [(MainViewControllerContainer *)self currentChildViewController];
-  v6 = [v5 isWaitingForBackgroundLoadingOfSelectedEventOccurrenceView];
+  currentChildViewController2 = [(MainViewControllerContainer *)self currentChildViewController];
+  isWaitingForBackgroundLoadingOfSelectedEventOccurrenceView = [currentChildViewController2 isWaitingForBackgroundLoadingOfSelectedEventOccurrenceView];
 
-  return v6;
+  return isWaitingForBackgroundLoadingOfSelectedEventOccurrenceView;
 }
 
 @end

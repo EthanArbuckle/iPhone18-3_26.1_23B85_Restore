@@ -1,21 +1,21 @@
 @interface SearchUIMobileTimerUtilities
-+ (void)getEnablementStatusForAlarmWithIdentifier:(id)a3 completion:(id)a4;
++ (void)getEnablementStatusForAlarmWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SearchUIMobileTimerUtilities
 
-+ (void)getEnablementStatusForAlarmWithIdentifier:(id)a3 completion:(id)a4
++ (void)getEnablementStatusForAlarmWithIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __85__SearchUIMobileTimerUtilities_getEnablementStatusForAlarmWithIdentifier_completion___block_invoke;
   v9[3] = &unk_1E85B2720;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = identifierCopy;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = identifierCopy;
   [SearchUIUtilities dispatchAsyncIfNecessary:v9];
 }
 

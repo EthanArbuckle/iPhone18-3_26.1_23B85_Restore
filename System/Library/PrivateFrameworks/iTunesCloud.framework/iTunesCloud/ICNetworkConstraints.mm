@@ -1,30 +1,30 @@
 @interface ICNetworkConstraints
-+ (id)constraintsForSystemApplicationType:(int64_t)a3;
-+ (id)mediaTypeNetworkConstraintsFromURLBag:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)shouldAllowDataForNetworkType:(int64_t)a3;
++ (id)constraintsForSystemApplicationType:(int64_t)type;
++ (id)mediaTypeNetworkConstraintsFromURLBag:(id)bag;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)shouldAllowDataForNetworkType:(int64_t)type;
 - (ICNetworkConstraints)init;
-- (ICNetworkConstraints)initWithBundleIdentifier:(id)a3;
-- (id)_copyWithClass:(Class)a3 zone:(_NSZone *)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)sizeLimitForNetworkType:(int64_t)a3;
+- (ICNetworkConstraints)initWithBundleIdentifier:(id)identifier;
+- (id)_copyWithClass:(Class)class zone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)sizeLimitForNetworkType:(int64_t)type;
 - (unint64_t)hash;
 @end
 
 @implementation ICNetworkConstraints
 
-- (id)_copyWithClass:(Class)a3 zone:(_NSZone *)a4
+- (id)_copyWithClass:(Class)class zone:(_NSZone *)zone
 {
-  v6 = [[(objc_class *)a3 allocWithZone:a4] init];
+  v6 = [[(objc_class *)class allocWithZone:zone] init];
   v7 = v6;
   if (v6)
   {
     *(v6 + 8) = self->_dataAllowedFallbackValue;
-    v8 = [(NSMutableDictionary *)self->_networkTypeToDataAllowed copyWithZone:a4];
+    v8 = [(NSMutableDictionary *)self->_networkTypeToDataAllowed copyWithZone:zone];
     v9 = *(v7 + 2);
     *(v7 + 2) = v8;
 
-    v10 = [(NSMutableDictionary *)self->_networkTypeToSizeLimit copyWithZone:a4];
+    v10 = [(NSMutableDictionary *)self->_networkTypeToSizeLimit copyWithZone:zone];
     v11 = *(v7 + 3);
     *(v7 + 3) = v10;
 
@@ -35,16 +35,16 @@
   return v7;
 }
 
-- (id)sizeLimitForNetworkType:(int64_t)a3
+- (id)sizeLimitForNetworkType:(int64_t)type
 {
   networkTypeToSizeLimit = self->_networkTypeToSizeLimit;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v5 = [(NSMutableDictionary *)networkTypeToSizeLimit objectForKey:v4];
 
   return v5;
 }
 
-- (BOOL)shouldAllowDataForNetworkType:(int64_t)a3
+- (BOOL)shouldAllowDataForNetworkType:(int64_t)type
 {
   networkTypeToDataAllowed = self->_networkTypeToDataAllowed;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -57,9 +57,9 @@
 
   else if (self->_dataAllowedFallbackValue)
   {
-    if ((a3 - 1) > 0x1F2)
+    if ((type - 1) > 0x1F2)
     {
-      cellularDataAllowedFallbackValue = (a3 - 1000) > 0x3E7 || self->_wiFiDataAllowedFallbackValue;
+      cellularDataAllowedFallbackValue = (type - 1000) > 0x3E7 || self->_wiFiDataAllowedFallbackValue;
     }
 
     else
@@ -76,25 +76,25 @@
   return cellularDataAllowedFallbackValue & 1;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(ICNetworkConstraints *)self _copyWithClass:v5 zone:a3];
+  return [(ICNetworkConstraints *)self _copyWithClass:v5 zone:zone];
 }
 
-+ (id)constraintsForSystemApplicationType:(int64_t)a3
++ (id)constraintsForSystemApplicationType:(int64_t)type
 {
-  v3 = ICBundleIdentifierForSystemApplicationType(a3);
+  v3 = ICBundleIdentifierForSystemApplicationType(type);
   v4 = [[ICNetworkConstraints alloc] initWithBundleIdentifier:v3];
 
   return v4;
 }
 
-+ (id)mediaTypeNetworkConstraintsFromURLBag:(id)a3
++ (id)mediaTypeNetworkConstraintsFromURLBag:(id)bag
 {
   v59 = *MEMORY[0x1E69E9840];
-  v3 = [a3 arrayForBagKey:@"mobile-network-constraints"];
+  v3 = [bag arrayForBagKey:@"mobile-network-constraints"];
   if (_NSIsNSArray())
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -189,10 +189,10 @@
             {
               if (objc_opt_respondsToSelector())
               {
-                v24 = [v23 longLongValue];
-                if (v24)
+                longLongValue = [v23 longLongValue];
+                if (longLongValue)
                 {
-                  v25 = v24;
+                  v25 = longLongValue;
                   v26 = v22;
                   if ([v26 isEqualToString:@"2G"])
                   {
@@ -328,22 +328,22 @@ LABEL_62:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
     goto LABEL_12;
   }
 
-  if (![(ICNetworkConstraints *)v4 isMemberOfClass:objc_opt_class()])
+  if (![(ICNetworkConstraints *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v11 = 0;
     goto LABEL_12;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   if (self->_dataAllowedFallbackValue != v5->_dataAllowedFallbackValue || self->_cellularDataAllowedFallbackValue != v5->_cellularDataAllowedFallbackValue || self->_wiFiDataAllowedFallbackValue != v5->_wiFiDataAllowedFallbackValue)
   {
@@ -565,10 +565,10 @@ LABEL_12:
   return (v105 + v106) ^ __ROR8__(v105, 47) ^ v108 ^ __ROR8__(v105 + v106, 32) ^ v108 ^ __ROR8__(v106 ^ v107, 43);
 }
 
-- (ICNetworkConstraints)initWithBundleIdentifier:(id)a3
+- (ICNetworkConstraints)initWithBundleIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(ICNetworkConstraints *)self init];
   if (v5)
   {

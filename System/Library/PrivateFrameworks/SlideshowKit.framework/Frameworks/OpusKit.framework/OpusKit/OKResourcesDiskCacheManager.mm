@@ -1,32 +1,32 @@
 @interface OKResourcesDiskCacheManager
 + (id)_sharedResourcesDirectoryURL;
 + (id)sharedManager;
-+ (id)temporaryManagerWithIdentifier:(id)a3;
-- (BOOL)_readCachedMediaItem:(id)a3 error:(id *)a4 byMetadataAccessor:(id)a5;
-- (BOOL)_readCachedMediaItem:(id)a3 resolution:(unint64_t)a4 error:(id *)a5 byThumbnailAccessor:(id)a6;
-- (BOOL)_writeCachedMediaItem:(id)a3 error:(id *)a4 byMetadataAccessor:(id)a5;
-- (BOOL)_writeCachedMediaItem:(id)a3 error:(id *)a4 byResourcesAccessor:(id)a5;
-- (BOOL)_writeCachedMediaItem:(id)a3 error:(id *)a4 byThumbnailsAccessor:(id)a5;
-- (BOOL)_writeCachedMediaItem:(id)a3 resolution:(unint64_t)a4 error:(id *)a5 byThumbnailAccessor:(id)a6;
-- (BOOL)hasMetadataForMediaItem:(id)a3 metadata:(id *)a4 error:(id *)a5;
-- (BOOL)hasThumbnailForMediaItem:(id)a3 resolution:(unint64_t)a4 thumbnail:(id *)a5 error:(id *)a6;
-- (BOOL)removeAllCaches:(id *)a3;
-- (BOOL)removeMediaItem:(id)a3 error:(id *)a4;
-- (BOOL)removeMetadataForMediaItem:(id)a3 error:(id *)a4;
-- (BOOL)removeThumbnailForMediaItem:(id)a3 resolution:(unint64_t)a4 error:(id *)a5;
-- (BOOL)removeThumbnailsForMediaItem:(id)a3 error:(id *)a4;
-- (BOOL)setMetadata:(id)a3 forMediaItem:(id)a4 error:(id *)a5;
-- (BOOL)setThumbnail:(id)a3 forMediaItem:(id)a4 resolution:(unint64_t)a5 error:(id *)a6;
++ (id)temporaryManagerWithIdentifier:(id)identifier;
+- (BOOL)_readCachedMediaItem:(id)item error:(id *)error byMetadataAccessor:(id)accessor;
+- (BOOL)_readCachedMediaItem:(id)item resolution:(unint64_t)resolution error:(id *)error byThumbnailAccessor:(id)accessor;
+- (BOOL)_writeCachedMediaItem:(id)item error:(id *)error byMetadataAccessor:(id)accessor;
+- (BOOL)_writeCachedMediaItem:(id)item error:(id *)error byResourcesAccessor:(id)accessor;
+- (BOOL)_writeCachedMediaItem:(id)item error:(id *)error byThumbnailsAccessor:(id)accessor;
+- (BOOL)_writeCachedMediaItem:(id)item resolution:(unint64_t)resolution error:(id *)error byThumbnailAccessor:(id)accessor;
+- (BOOL)hasMetadataForMediaItem:(id)item metadata:(id *)metadata error:(id *)error;
+- (BOOL)hasThumbnailForMediaItem:(id)item resolution:(unint64_t)resolution thumbnail:(id *)thumbnail error:(id *)error;
+- (BOOL)removeAllCaches:(id *)caches;
+- (BOOL)removeMediaItem:(id)item error:(id *)error;
+- (BOOL)removeMetadataForMediaItem:(id)item error:(id *)error;
+- (BOOL)removeThumbnailForMediaItem:(id)item resolution:(unint64_t)resolution error:(id *)error;
+- (BOOL)removeThumbnailsForMediaItem:(id)item error:(id *)error;
+- (BOOL)setMetadata:(id)metadata forMediaItem:(id)item error:(id *)error;
+- (BOOL)setThumbnail:(id)thumbnail forMediaItem:(id)item resolution:(unint64_t)resolution error:(id *)error;
 - (OKResourcesDiskCacheManager)init;
-- (OKResourcesDiskCacheManager)initWithBaseURL:(id)a3;
-- (id)_cacheResourceMetadataURLForMediaItem:(id)a3;
-- (id)_cacheResourceThumbnailURLForMediaItem:(id)a3 resolution:(unint64_t)a4;
-- (id)_cacheResourceThumbnailsURLForMediaItem:(id)a3;
-- (id)_cachedResourceDirectoryURLForMediaItem:(id)a3;
-- (id)cachedMediaItemURLs:(id *)a3;
-- (id)metadataForMediaItem:(id)a3 error:(id *)a4;
-- (id)thumbnailForMediaItem:(id)a3 resolution:(unint64_t)a4 error:(id *)a5;
-- (void)_performAsynchronousResourceAccessUsingBlock:(id)a3;
+- (OKResourcesDiskCacheManager)initWithBaseURL:(id)l;
+- (id)_cacheResourceMetadataURLForMediaItem:(id)item;
+- (id)_cacheResourceThumbnailURLForMediaItem:(id)item resolution:(unint64_t)resolution;
+- (id)_cacheResourceThumbnailsURLForMediaItem:(id)item;
+- (id)_cachedResourceDirectoryURLForMediaItem:(id)item;
+- (id)cachedMediaItemURLs:(id *)ls;
+- (id)metadataForMediaItem:(id)item error:(id *)error;
+- (id)thumbnailForMediaItem:(id)item resolution:(unint64_t)resolution error:(id *)error;
+- (void)_performAsynchronousResourceAccessUsingBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = __44__OKResourcesDiskCacheManager_sharedManager__block_invoke;
   block[3] = &unk_279C8E818;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -54,10 +54,10 @@ OKResourcesDiskCacheManager *__44__OKResourcesDiskCacheManager_sharedManager__bl
   return result;
 }
 
-+ (id)temporaryManagerWithIdentifier:(id)a3
++ (id)temporaryManagerWithIdentifier:(id)identifier
 {
   v4 = [OKResourcesDiskCacheManager alloc];
-  v5 = -[OKResourcesDiskCacheManager initWithBaseURL:](v4, "initWithBaseURL:", [MEMORY[0x277CBEBC0] fileURLWithPath:{-[NSString stringByAppendingPathComponent:](NSTemporaryDirectory(), "stringByAppendingPathComponent:", a3)}]);
+  v5 = -[OKResourcesDiskCacheManager initWithBaseURL:](v4, "initWithBaseURL:", [MEMORY[0x277CBEBC0] fileURLWithPath:{-[NSString stringByAppendingPathComponent:](NSTemporaryDirectory(), "stringByAppendingPathComponent:", identifier)}]);
 
   return v5;
 }
@@ -80,26 +80,26 @@ OKResourcesDiskCacheManager *__44__OKResourcesDiskCacheManager_sharedManager__bl
   return v3;
 }
 
-- (OKResourcesDiskCacheManager)initWithBaseURL:(id)a3
+- (OKResourcesDiskCacheManager)initWithBaseURL:(id)l
 {
   v4 = [(OKResourcesDiskCacheManager *)self init];
   if (v4)
   {
-    v4->_baseURL = [a3 copy];
+    v4->_baseURL = [l copy];
     v5 = objc_alloc_init(MEMORY[0x277CCAA00]);
     v8 = 0;
     v7 = 0;
-    if ([v5 fileExistsAtPath:objc_msgSend(a3 isDirectory:{"relativePath"), &v7}])
+    if ([v5 fileExistsAtPath:objc_msgSend(l isDirectory:{"relativePath"), &v7}])
     {
       if ((v7 & 1) == 0 && *MEMORY[0x277D62808] >= 4)
       {
-        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Caches/OKResourcesDiskCacheManager.m" line:109 andFormat:@"Failed to create resources disk cache base url %@: %@", a3, @"Destination path already exists as file instead of directory"];
+        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Caches/OKResourcesDiskCacheManager.m" line:109 andFormat:@"Failed to create resources disk cache base url %@: %@", l, @"Destination path already exists as file instead of directory"];
       }
     }
 
-    else if (([v5 createDirectoryAtURL:a3 withIntermediateDirectories:1 attributes:0 error:&v8] & 1) == 0 && *MEMORY[0x277D62808] >= 4)
+    else if (([v5 createDirectoryAtURL:l withIntermediateDirectories:1 attributes:0 error:&v8] & 1) == 0 && *MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Caches/OKResourcesDiskCacheManager.m" line:102 andFormat:@"Failed to create resources disk cache base url %@: %@", a3, objc_msgSend(v8, "localizedDescription")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Caches/OKResourcesDiskCacheManager.m" line:102 andFormat:@"Failed to create resources disk cache base url %@: %@", l, objc_msgSend(v8, "localizedDescription")];
     }
   }
 
@@ -134,9 +134,9 @@ OKResourcesDiskCacheManager *__44__OKResourcesDiskCacheManager_sharedManager__bl
   [(OKResourcesDiskCacheManager *)&v6 dealloc];
 }
 
-- (void)_performAsynchronousResourceAccessUsingBlock:(id)a3
+- (void)_performAsynchronousResourceAccessUsingBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     globalQueue = self->_globalQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -144,7 +144,7 @@ OKResourcesDiskCacheManager *__44__OKResourcesDiskCacheManager_sharedManager__bl
     block[2] = __76__OKResourcesDiskCacheManager__performAsynchronousResourceAccessUsingBlock___block_invoke;
     block[3] = &unk_279C8E670;
     block[4] = self;
-    block[5] = a3;
+    block[5] = block;
     dispatch_async(globalQueue, block);
   }
 
@@ -171,45 +171,45 @@ id __59__OKResourcesDiskCacheManager__sharedResourcesDirectoryURL__block_invoke(
   return result;
 }
 
-- (id)_cachedResourceDirectoryURLForMediaItem:(id)a3
+- (id)_cachedResourceDirectoryURLForMediaItem:(id)item
 {
   baseURL = self->_baseURL;
-  v4 = [a3 uniquePath];
+  uniquePath = [item uniquePath];
 
-  return [(NSURL *)baseURL URLByAppendingPathComponent:v4 isDirectory:1];
+  return [(NSURL *)baseURL URLByAppendingPathComponent:uniquePath isDirectory:1];
 }
 
-- (id)_cacheResourceMetadataURLForMediaItem:(id)a3
+- (id)_cacheResourceMetadataURLForMediaItem:(id)item
 {
-  v3 = [(OKResourcesDiskCacheManager *)self _cachedResourceDirectoryURLForMediaItem:a3];
+  v3 = [(OKResourcesDiskCacheManager *)self _cachedResourceDirectoryURLForMediaItem:item];
 
   return [v3 URLByAppendingPathComponent:@"metadata.plist" isDirectory:0];
 }
 
-- (id)_cacheResourceThumbnailsURLForMediaItem:(id)a3
+- (id)_cacheResourceThumbnailsURLForMediaItem:(id)item
 {
-  v3 = [(OKResourcesDiskCacheManager *)self _cachedResourceDirectoryURLForMediaItem:a3];
+  v3 = [(OKResourcesDiskCacheManager *)self _cachedResourceDirectoryURLForMediaItem:item];
 
   return [v3 URLByAppendingPathComponent:@"Thumbnails" isDirectory:0];
 }
 
-- (id)_cacheResourceThumbnailURLForMediaItem:(id)a3 resolution:(unint64_t)a4
+- (id)_cacheResourceThumbnailURLForMediaItem:(id)item resolution:(unint64_t)resolution
 {
-  v5 = [-[OKResourcesDiskCacheManager _cachedResourceDirectoryURLForMediaItem:](self _cachedResourceDirectoryURLForMediaItem:{a3), "URLByAppendingPathComponent:", @"Thumbnails"}];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a4];
+  v5 = [-[OKResourcesDiskCacheManager _cachedResourceDirectoryURLForMediaItem:](self _cachedResourceDirectoryURLForMediaItem:{item), "URLByAppendingPathComponent:", @"Thumbnails"}];
+  resolution = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", resolution];
 
-  return [v5 URLByAppendingPathComponent:v6 isDirectory:0];
+  return [v5 URLByAppendingPathComponent:resolution isDirectory:0];
 }
 
-- (BOOL)_writeCachedMediaItem:(id)a3 error:(id *)a4 byResourcesAccessor:(id)a5
+- (BOOL)_writeCachedMediaItem:(id)item error:(id *)error byResourcesAccessor:(id)accessor
 {
-  objc_sync_enter(a3);
-  (*(a5 + 2))(a5, [(OKResourcesDiskCacheManager *)self _cachedResourceDirectoryURLForMediaItem:a3]);
-  objc_sync_exit(a3);
+  objc_sync_enter(item);
+  (*(accessor + 2))(accessor, [(OKResourcesDiskCacheManager *)self _cachedResourceDirectoryURLForMediaItem:item]);
+  objc_sync_exit(item);
   return 1;
 }
 
-- (BOOL)removeAllCaches:(id *)a3
+- (BOOL)removeAllCaches:(id *)caches
 {
   v8 = 0;
   v9 = &v8;
@@ -221,13 +221,13 @@ id __59__OKResourcesDiskCacheManager__sharedResourcesDirectoryURL__block_invoke(
   block[2] = __47__OKResourcesDiskCacheManager_removeAllCaches___block_invoke;
   block[3] = &unk_279C90BF0;
   block[5] = &v8;
-  block[6] = a3;
+  block[6] = caches;
   block[4] = self;
   dispatch_barrier_sync(accessQueue, block);
   v5 = *(v9 + 24);
-  if (a3 && (v9[3] & 1) == 0 && !*a3)
+  if (caches && (v9[3] & 1) == 0 && !*caches)
   {
-    *a3 = [OKError errorForCode:-1];
+    *caches = [OKError errorForCode:-1];
   }
 
   _Block_object_dispose(&v8, 8);
@@ -250,14 +250,14 @@ void __47__OKResourcesDiskCacheManager_removeAllCaches___block_invoke_2(uint64_t
   *(*(*(a1 + 32) + 8) + 24) = [v4 removeItemAtURL:a2 error:*(a1 + 40)];
 }
 
-- (id)cachedMediaItemURLs:(id *)a3
+- (id)cachedMediaItemURLs:(id *)ls
 {
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   dispatch_barrier_sync(self->_accessQueue, &__block_literal_global_40_0);
-  return v4;
+  return array;
 }
 
-- (BOOL)removeMediaItem:(id)a3 error:(id *)a4
+- (BOOL)removeMediaItem:(id)item error:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -269,14 +269,14 @@ void __47__OKResourcesDiskCacheManager_removeAllCaches___block_invoke_2(uint64_t
   v8[2] = __53__OKResourcesDiskCacheManager_removeMediaItem_error___block_invoke;
   v8[3] = &unk_279C912E0;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = item;
   v8[6] = &v9;
-  v8[7] = a4;
+  v8[7] = error;
   dispatch_barrier_sync(accessQueue, v8);
   v6 = *(v10 + 24);
-  if (a4 && (v10[3] & 1) == 0 && !*a4)
+  if (error && (v10[3] & 1) == 0 && !*error)
   {
-    *a4 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -300,23 +300,23 @@ void __53__OKResourcesDiskCacheManager_removeMediaItem_error___block_invoke_2(ui
   *(*(*(a1 + 32) + 8) + 24) = [v4 removeItemAtURL:a2 error:*(a1 + 40)];
 }
 
-- (BOOL)_readCachedMediaItem:(id)a3 error:(id *)a4 byMetadataAccessor:(id)a5
+- (BOOL)_readCachedMediaItem:(id)item error:(id *)error byMetadataAccessor:(id)accessor
 {
-  objc_sync_enter(a3);
-  (*(a5 + 2))(a5, [(OKResourcesDiskCacheManager *)self _cacheResourceMetadataURLForMediaItem:a3]);
-  objc_sync_exit(a3);
+  objc_sync_enter(item);
+  (*(accessor + 2))(accessor, [(OKResourcesDiskCacheManager *)self _cacheResourceMetadataURLForMediaItem:item]);
+  objc_sync_exit(item);
   return 1;
 }
 
-- (BOOL)_writeCachedMediaItem:(id)a3 error:(id *)a4 byMetadataAccessor:(id)a5
+- (BOOL)_writeCachedMediaItem:(id)item error:(id *)error byMetadataAccessor:(id)accessor
 {
-  objc_sync_enter(a3);
-  (*(a5 + 2))(a5, [(OKResourcesDiskCacheManager *)self _cacheResourceMetadataURLForMediaItem:a3]);
-  objc_sync_exit(a3);
+  objc_sync_enter(item);
+  (*(accessor + 2))(accessor, [(OKResourcesDiskCacheManager *)self _cacheResourceMetadataURLForMediaItem:item]);
+  objc_sync_exit(item);
   return 1;
 }
 
-- (BOOL)hasMetadataForMediaItem:(id)a3 metadata:(id *)a4 error:(id *)a5
+- (BOOL)hasMetadataForMediaItem:(id)item metadata:(id *)metadata error:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -338,27 +338,27 @@ void __53__OKResourcesDiskCacheManager_removeMediaItem_error___block_invoke_2(ui
   block[2] = __70__OKResourcesDiskCacheManager_hasMetadataForMediaItem_metadata_error___block_invoke;
   block[3] = &unk_279C91330;
   block[4] = self;
-  block[5] = a3;
+  block[5] = item;
   block[6] = &v22;
   block[7] = &v18;
-  block[9] = a5;
-  block[10] = a4;
+  block[9] = error;
+  block[10] = metadata;
   block[8] = &v12;
   dispatch_sync(accessQueue, block);
   if (*(v23 + 24) && *(v19 + 24))
   {
     v8 = 1;
-    if (a4 && v13[5])
+    if (metadata && v13[5])
     {
       v9 = [OKMediaItemMetadata alloc];
-      *a4 = [(OKMediaItemMetadata *)v9 initWithDictionary:v13[5]];
+      *metadata = [(OKMediaItemMetadata *)v9 initWithDictionary:v13[5]];
     }
   }
 
-  else if (a5 && !*a5)
+  else if (error && !*error)
   {
     v8 = 0;
-    *a5 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
   }
 
   else
@@ -408,7 +408,7 @@ void __70__OKResourcesDiskCacheManager_hasMetadataForMediaItem_metadata_error___
   }
 }
 
-- (id)metadataForMediaItem:(id)a3 error:(id *)a4
+- (id)metadataForMediaItem:(id)item error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -426,9 +426,9 @@ void __70__OKResourcesDiskCacheManager_hasMetadataForMediaItem_metadata_error___
   block[2] = __58__OKResourcesDiskCacheManager_metadataForMediaItem_error___block_invoke;
   block[3] = &unk_279C91358;
   block[4] = self;
-  block[5] = a3;
+  block[5] = item;
   block[7] = &v11;
-  block[8] = a4;
+  block[8] = error;
   block[6] = &v17;
   dispatch_sync(accessQueue, block);
   if (*(v18 + 24) && v12[5])
@@ -446,10 +446,10 @@ void __70__OKResourcesDiskCacheManager_hasMetadataForMediaItem_metadata_error___
     }
   }
 
-  if (a4 && !*a4)
+  if (error && !*error)
   {
     v8 = 0;
-    *a4 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
   }
 
   else
@@ -485,7 +485,7 @@ uint64_t __58__OKResourcesDiskCacheManager_metadataForMediaItem_error___block_in
   return result;
 }
 
-- (BOOL)setMetadata:(id)a3 forMediaItem:(id)a4 error:(id *)a5
+- (BOOL)setMetadata:(id)metadata forMediaItem:(id)item error:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -497,15 +497,15 @@ uint64_t __58__OKResourcesDiskCacheManager_metadataForMediaItem_error___block_in
   block[2] = __62__OKResourcesDiskCacheManager_setMetadata_forMediaItem_error___block_invoke;
   block[3] = &unk_279C913A8;
   block[4] = self;
-  block[5] = a4;
+  block[5] = item;
   block[7] = &v10;
-  block[8] = a5;
-  block[6] = a3;
+  block[8] = error;
+  block[6] = metadata;
   dispatch_sync(accessQueue, block);
   v7 = *(v11 + 24);
-  if (a5 && (v11[3] & 1) == 0 && !*a5)
+  if (error && (v11[3] & 1) == 0 && !*error)
   {
-    *a5 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -534,7 +534,7 @@ uint64_t __62__OKResourcesDiskCacheManager_setMetadata_forMediaItem_error___bloc
   return result;
 }
 
-- (BOOL)removeMetadataForMediaItem:(id)a3 error:(id *)a4
+- (BOOL)removeMetadataForMediaItem:(id)item error:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -546,14 +546,14 @@ uint64_t __62__OKResourcesDiskCacheManager_setMetadata_forMediaItem_error___bloc
   v8[2] = __64__OKResourcesDiskCacheManager_removeMetadataForMediaItem_error___block_invoke;
   v8[3] = &unk_279C913D0;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = item;
   v8[6] = &v9;
-  v8[7] = a4;
+  v8[7] = error;
   dispatch_sync(accessQueue, v8);
   v6 = *(v10 + 24);
-  if (a4 && (v10[3] & 1) == 0 && !*a4)
+  if (error && (v10[3] & 1) == 0 && !*error)
   {
-    *a4 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -581,31 +581,31 @@ void __64__OKResourcesDiskCacheManager_removeMetadataForMediaItem_error___block_
   *(*(*(a1 + 32) + 8) + 24) = [v4 removeItemAtURL:a2 error:*(a1 + 40)];
 }
 
-- (BOOL)_readCachedMediaItem:(id)a3 resolution:(unint64_t)a4 error:(id *)a5 byThumbnailAccessor:(id)a6
+- (BOOL)_readCachedMediaItem:(id)item resolution:(unint64_t)resolution error:(id *)error byThumbnailAccessor:(id)accessor
 {
-  objc_sync_enter(a3);
-  (*(a6 + 2))(a6, [(OKResourcesDiskCacheManager *)self _cacheResourceThumbnailURLForMediaItem:a3 resolution:a4]);
-  objc_sync_exit(a3);
+  objc_sync_enter(item);
+  (*(accessor + 2))(accessor, [(OKResourcesDiskCacheManager *)self _cacheResourceThumbnailURLForMediaItem:item resolution:resolution]);
+  objc_sync_exit(item);
   return 1;
 }
 
-- (BOOL)_writeCachedMediaItem:(id)a3 resolution:(unint64_t)a4 error:(id *)a5 byThumbnailAccessor:(id)a6
+- (BOOL)_writeCachedMediaItem:(id)item resolution:(unint64_t)resolution error:(id *)error byThumbnailAccessor:(id)accessor
 {
-  objc_sync_enter(a3);
-  (*(a6 + 2))(a6, [(OKResourcesDiskCacheManager *)self _cacheResourceThumbnailURLForMediaItem:a3 resolution:a4]);
-  objc_sync_exit(a3);
+  objc_sync_enter(item);
+  (*(accessor + 2))(accessor, [(OKResourcesDiskCacheManager *)self _cacheResourceThumbnailURLForMediaItem:item resolution:resolution]);
+  objc_sync_exit(item);
   return 1;
 }
 
-- (BOOL)_writeCachedMediaItem:(id)a3 error:(id *)a4 byThumbnailsAccessor:(id)a5
+- (BOOL)_writeCachedMediaItem:(id)item error:(id *)error byThumbnailsAccessor:(id)accessor
 {
-  objc_sync_enter(a3);
-  (*(a5 + 2))(a5, [(OKResourcesDiskCacheManager *)self _cacheResourceThumbnailsURLForMediaItem:a3]);
-  objc_sync_exit(a3);
+  objc_sync_enter(item);
+  (*(accessor + 2))(accessor, [(OKResourcesDiskCacheManager *)self _cacheResourceThumbnailsURLForMediaItem:item]);
+  objc_sync_exit(item);
   return 1;
 }
 
-- (BOOL)hasThumbnailForMediaItem:(id)a3 resolution:(unint64_t)a4 thumbnail:(id *)a5 error:(id *)a6
+- (BOOL)hasThumbnailForMediaItem:(id)item resolution:(unint64_t)resolution thumbnail:(id *)thumbnail error:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -621,22 +621,22 @@ void __64__OKResourcesDiskCacheManager_removeMetadataForMediaItem_error___block_
   block[2] = __83__OKResourcesDiskCacheManager_hasThumbnailForMediaItem_resolution_thumbnail_error___block_invoke;
   block[3] = &unk_279C913F8;
   block[4] = self;
-  block[5] = a3;
-  block[8] = a4;
-  block[9] = a6;
+  block[5] = item;
+  block[8] = resolution;
+  block[9] = error;
   block[6] = &v15;
   block[7] = &v11;
-  block[10] = a5;
+  block[10] = thumbnail;
   dispatch_sync(accessQueue, block);
   if (*(v16 + 24) && (v12[3] & 1) != 0)
   {
     v8 = 1;
   }
 
-  else if (a6 && !*a6)
+  else if (error && !*error)
   {
     v8 = 0;
-    *a6 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
   }
 
   else
@@ -690,7 +690,7 @@ void __83__OKResourcesDiskCacheManager_hasThumbnailForMediaItem_resolution_thumb
   }
 }
 
-- (id)thumbnailForMediaItem:(id)a3 resolution:(unint64_t)a4 error:(id *)a5
+- (id)thumbnailForMediaItem:(id)item resolution:(unint64_t)resolution error:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -706,9 +706,9 @@ void __83__OKResourcesDiskCacheManager_hasThumbnailForMediaItem_resolution_thumb
   v10[2] = __70__OKResourcesDiskCacheManager_thumbnailForMediaItem_resolution_error___block_invoke;
   v10[3] = &unk_279C91420;
   v10[4] = self;
-  v10[5] = a3;
-  v10[8] = a4;
-  v10[9] = a5;
+  v10[5] = item;
+  v10[8] = resolution;
+  v10[9] = error;
   v10[6] = &v15;
   v10[7] = &v11;
   dispatch_sync(accessQueue, v10);
@@ -717,10 +717,10 @@ void __83__OKResourcesDiskCacheManager_hasThumbnailForMediaItem_resolution_thumb
     v8 = v7;
   }
 
-  else if (a5 && !*a5)
+  else if (error && !*error)
   {
     v8 = 0;
-    *a5 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
   }
 
   else
@@ -756,14 +756,14 @@ uint64_t __70__OKResourcesDiskCacheManager_thumbnailForMediaItem_resolution_erro
   return result;
 }
 
-- (BOOL)setThumbnail:(id)a3 forMediaItem:(id)a4 resolution:(unint64_t)a5 error:(id *)a6
+- (BOOL)setThumbnail:(id)thumbnail forMediaItem:(id)item resolution:(unint64_t)resolution error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 1;
-  AlphaInfo = CGImageGetAlphaInfo(a3);
-  CGImageRetain(a3);
+  AlphaInfo = CGImageGetAlphaInfo(thumbnail);
+  CGImageRetain(thumbnail);
   v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:{-[NSString stringByAppendingPathComponent:](NSTemporaryDirectory(), "stringByAppendingPathComponent:", objc_msgSend(objc_msgSend(MEMORY[0x277CCACA8], "generateUUID"), "stringByAppendingPathExtension:", @"tmp"}];
   if (AlphaInfo)
   {
@@ -781,17 +781,17 @@ uint64_t __70__OKResourcesDiskCacheManager_thumbnailForMediaItem_resolution_erro
   block[2] = __74__OKResourcesDiskCacheManager_setThumbnail_forMediaItem_resolution_error___block_invoke;
   block[3] = &unk_279C91470;
   block[4] = self;
-  block[5] = a4;
+  block[5] = item;
   block[8] = &v17;
-  block[9] = a5;
-  block[10] = a6;
+  block[9] = resolution;
+  block[10] = error;
   block[6] = v12;
-  block[7] = a3;
+  block[7] = thumbnail;
   dispatch_sync(accessQueue, block);
   v14 = *(v18 + 24);
-  if (a6 && (v18[3] & 1) == 0 && !*a6)
+  if (error && (v18[3] & 1) == 0 && !*error)
   {
-    *a6 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -849,7 +849,7 @@ LABEL_7:
   CGImageRelease(*(a1 + 40));
 }
 
-- (BOOL)removeThumbnailForMediaItem:(id)a3 resolution:(unint64_t)a4 error:(id *)a5
+- (BOOL)removeThumbnailForMediaItem:(id)item resolution:(unint64_t)resolution error:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -861,15 +861,15 @@ LABEL_7:
   block[2] = __76__OKResourcesDiskCacheManager_removeThumbnailForMediaItem_resolution_error___block_invoke;
   block[3] = &unk_279C91498;
   block[4] = self;
-  block[5] = a3;
+  block[5] = item;
   block[6] = &v10;
-  block[7] = a4;
-  block[8] = a5;
+  block[7] = resolution;
+  block[8] = error;
   dispatch_sync(accessQueue, block);
   v7 = *(v11 + 24);
-  if (a5 && (v11[3] & 1) == 0 && !*a5)
+  if (error && (v11[3] & 1) == 0 && !*error)
   {
-    *a5 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -898,7 +898,7 @@ void __76__OKResourcesDiskCacheManager_removeThumbnailForMediaItem_resolution_er
   *(*(*(a1 + 32) + 8) + 24) = [v4 removeItemAtURL:a2 error:*(a1 + 40)];
 }
 
-- (BOOL)removeThumbnailsForMediaItem:(id)a3 error:(id *)a4
+- (BOOL)removeThumbnailsForMediaItem:(id)item error:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -910,14 +910,14 @@ void __76__OKResourcesDiskCacheManager_removeThumbnailForMediaItem_resolution_er
   v8[2] = __66__OKResourcesDiskCacheManager_removeThumbnailsForMediaItem_error___block_invoke;
   v8[3] = &unk_279C913D0;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = item;
   v8[6] = &v9;
-  v8[7] = a4;
+  v8[7] = error;
   dispatch_sync(accessQueue, v8);
   v6 = *(v10 + 24);
-  if (a4 && (v10[3] & 1) == 0 && !*a4)
+  if (error && (v10[3] & 1) == 0 && !*error)
   {
-    *a4 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
   }
 
   _Block_object_dispose(&v9, 8);

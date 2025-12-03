@@ -1,34 +1,34 @@
 @interface CNContactStopSharingWithFamily
 - (BOOL)canPerformAction;
 - (id)title;
-- (void)performActionWithSender:(id)a3;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation CNContactStopSharingWithFamily
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
   v4 = *MEMORY[0x1E6996488];
-  v5 = [(CNContactAction *)self mutableContact];
-  [v5 setDowntimeWhitelist:v4];
+  mutableContact = [(CNContactAction *)self mutableContact];
+  [mutableContact setDowntimeWhitelist:v4];
 
-  v6 = [(CNContactAction *)self delegate];
-  [v6 actionDidFinish:self];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate actionDidFinish:self];
 }
 
 - (BOOL)canPerformAction
 {
-  v3 = [(CNContactStopSharingWithFamily *)self familySharedContainerExists];
-  if (v3)
+  familySharedContainerExists = [(CNContactStopSharingWithFamily *)self familySharedContainerExists];
+  if (familySharedContainerExists)
   {
     v4 = MEMORY[0x1E695CE70];
-    v5 = [(CNContactAction *)self contact];
-    LOBYTE(v4) = [v4 isWhitelistedContact:v5];
+    contact = [(CNContactAction *)self contact];
+    LOBYTE(v4) = [v4 isWhitelistedContact:contact];
 
-    LOBYTE(v3) = v4;
+    LOBYTE(familySharedContainerExists) = v4;
   }
 
-  return v3;
+  return familySharedContainerExists;
 }
 
 - (id)title

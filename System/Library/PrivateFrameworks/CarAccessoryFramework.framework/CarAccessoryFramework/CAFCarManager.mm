@@ -1,32 +1,32 @@
 @interface CAFCarManager
 - (BOOL)_isEntitled;
-- (BOOL)shouldAllocAccessoryType:(id)a3;
-- (BOOL)shouldAllocAccessoryType:(id)a3 serviceConfig:(id)a4;
-- (BOOL)shouldAllocAccessoryType:(id)a3 serviceType:(id)a4 characteristicType:(id)a5;
-- (BOOL)shouldAllocAccessoryType:(id)a3 serviceType:(id)a4 controlType:(id)a5;
-- (BOOL)shouldInitializeCharacteristic:(id)a3;
-- (BOOL)shouldInitializeControl:(id)a3;
+- (BOOL)shouldAllocAccessoryType:(id)type;
+- (BOOL)shouldAllocAccessoryType:(id)type serviceConfig:(id)config;
+- (BOOL)shouldAllocAccessoryType:(id)type serviceType:(id)serviceType characteristicType:(id)characteristicType;
+- (BOOL)shouldAllocAccessoryType:(id)type serviceType:(id)serviceType controlType:(id)controlType;
+- (BOOL)shouldInitializeCharacteristic:(id)characteristic;
+- (BOOL)shouldInitializeControl:(id)control;
 - (CAFCarManager)init;
-- (CAFCarManager)initWithConfig:(id)a3;
-- (CAFCarManager)initWithIdentifier:(id)a3;
-- (CAFCarManager)initWithRegistrationFilePath:(id)a3;
+- (CAFCarManager)initWithConfig:(id)config;
+- (CAFCarManager)initWithIdentifier:(id)identifier;
+- (CAFCarManager)initWithRegistrationFilePath:(id)path;
 - (NSString)description;
-- (void)_closeConnectionWithReason:(id)a3;
-- (void)_connectionDidInvalidateForProxy:(id)a3;
-- (void)_didReceiveLifecycleNotification:(id)a3;
-- (void)_locked_closeConnectionWithReason:(id)a3;
+- (void)_closeConnectionWithReason:(id)reason;
+- (void)_connectionDidInvalidateForProxy:(id)proxy;
+- (void)_didReceiveLifecycleNotification:(id)notification;
+- (void)_locked_closeConnectionWithReason:(id)reason;
 - (void)_setupCafdConnectionIfAvailable;
 - (void)_updateCar;
 - (void)dealloc;
-- (void)handleResponse:(id)a3 instanceID:(id)a4 response:(id)a5;
+- (void)handleResponse:(id)response instanceID:(id)d response:(id)a5;
 - (void)invalidate;
-- (void)notifyControl:(id)a3 value:(id)a4;
-- (void)performGroupedRequest:(id)a3 key:(id)a4 value:(id)a5 withResponse:(id)a6;
-- (void)readCharacteristic:(id)a3 response:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)requestControl:(id)a3 value:(id)a4 response:(id)a5;
-- (void)unregisterObserver:(id)a3;
-- (void)writeCharacteristic:(id)a3 value:(id)a4 response:(id)a5;
+- (void)notifyControl:(id)control value:(id)value;
+- (void)performGroupedRequest:(id)request key:(id)key value:(id)value withResponse:(id)response;
+- (void)readCharacteristic:(id)characteristic response:(id)response;
+- (void)registerObserver:(id)observer;
+- (void)requestControl:(id)control value:(id)value response:(id)response;
+- (void)unregisterObserver:(id)observer;
+- (void)writeCharacteristic:(id)characteristic value:(id)value response:(id)response;
 @end
 
 @implementation CAFCarManager
@@ -50,22 +50,22 @@
   return v5;
 }
 
-- (CAFCarManager)initWithIdentifier:(id)a3
+- (CAFCarManager)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = CAFCarManagerLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [CAFCarManager initWithIdentifier:];
   }
 
-  v6 = [[CAFCarManagerMutableConfiguration alloc] initWithIdentifier:v4];
+  v6 = [[CAFCarManagerMutableConfiguration alloc] initWithIdentifier:identifierCopy];
   v7 = [(CAFCarManager *)self initWithConfig:v6];
 
   return v7;
 }
 
-- (CAFCarManager)initWithRegistrationFilePath:(id)a3
+- (CAFCarManager)initWithRegistrationFilePath:(id)path
 {
   v4 = CAFCarManagerLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -79,10 +79,10 @@
   return v6;
 }
 
-- (CAFCarManager)initWithConfig:(id)a3
+- (CAFCarManager)initWithConfig:(id)config
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configCopy = config;
   v45.receiver = self;
   v45.super_class = CAFCarManager;
   v5 = [(CAFCarManager *)&v45 init];
@@ -95,7 +95,7 @@
     notifyQueue = v6->_notifyQueue;
     v6->_notifyQueue = v8;
 
-    v10 = [v4 copy];
+    v10 = [configCopy copy];
     config = v6->_config;
     v6->_config = v10;
 
@@ -104,13 +104,13 @@
     v6->_observers = v12;
 
     objc_initWeak(&location, v6);
-    v14 = [(CAFCarManager *)v6 notifyQueue];
+    notifyQueue = [(CAFCarManager *)v6 notifyQueue];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __32__CAFCarManager_initWithConfig___block_invoke;
     handler[3] = &unk_27890D928;
     objc_copyWeak(&v43, &location);
-    v15 = notify_register_dispatch("com.apple.private.caraccessoryframework.cardata.available", &v6->_carDataToken, v14, handler);
+    v15 = notify_register_dispatch("com.apple.private.caraccessoryframework.cardata.available", &v6->_carDataToken, notifyQueue, handler);
 
     if (v15)
     {
@@ -132,11 +132,11 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v18 = [(CAFCarManager *)v6 config];
-    v19 = [v18 registrations];
-    v20 = [v19 treeLogLines];
+    config = [(CAFCarManager *)v6 config];
+    registrations = [config registrations];
+    treeLogLines = [registrations treeLogLines];
 
-    v21 = [v20 countByEnumeratingWithState:&v38 objects:v49 count:16];
+    v21 = [treeLogLines countByEnumeratingWithState:&v38 objects:v49 count:16];
     if (v21)
     {
       v23 = *v39;
@@ -149,7 +149,7 @@
         {
           if (*v39 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(treeLogLines);
           }
 
           v25 = *(*(&v38 + 1) + 8 * v24);
@@ -165,13 +165,13 @@
         }
 
         while (v21 != v24);
-        v21 = [v20 countByEnumeratingWithState:&v38 objects:v49 count:16];
+        v21 = [treeLogLines countByEnumeratingWithState:&v38 objects:v49 count:16];
       }
 
       while (v21);
     }
 
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -189,7 +189,7 @@
             objc_enumerationMutation(&unk_284682FB8);
           }
 
-          [v27 addObserver:v6 selector:sel__didReceiveLifecycleNotification_ name:*(*(&v34 + 1) + 8 * i) object:{0, v33}];
+          [defaultCenter addObserver:v6 selector:sel__didReceiveLifecycleNotification_ name:*(*(&v34 + 1) + 8 * i) object:{0, v33}];
         }
 
         v28 = [&unk_284682FB8 countByEnumeratingWithState:&v34 objects:v46 count:16];
@@ -221,37 +221,37 @@ void __32__CAFCarManager_initWithConfig___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_didReceiveLifecycleNotification:(id)a3
+- (void)_didReceiveLifecycleNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = CAFCarManagerLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(CAFCarManager *)self _didReceiveLifecycleNotification:v4];
+    [(CAFCarManager *)self _didReceiveLifecycleNotification:notificationCopy];
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFCarManager *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFCarManager *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFCarManager *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFCarManager *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFCarManager *)self config];
-  v6 = [(CAFCarManager *)self currentCar];
-  v7 = [v3 stringWithFormat:@"<%@: %p config=[%@] car=%@>", v4, self, v5, v6];
+  config = [(CAFCarManager *)self config];
+  currentCar = [(CAFCarManager *)self currentCar];
+  v7 = [v3 stringWithFormat:@"<%@: %p config=[%@] car=%@>", v4, self, config, currentCar];
 
   return v7;
 }
@@ -266,9 +266,9 @@ void __32__CAFCarManager_initWithConfig___block_invoke(uint64_t a1)
 
 - (BOOL)_isEntitled
 {
-  v2 = [MEMORY[0x277CF0CD0] processHandle];
+  processHandle = [MEMORY[0x277CF0CD0] processHandle];
   objc_opt_class();
-  v3 = [v2 valueForEntitlement:@"com.apple.security.exception.mach-lookup.global-name"];
+  v3 = [processHandle valueForEntitlement:@"com.apple.security.exception.mach-lookup.global-name"];
   if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v4 = v3;
@@ -290,7 +290,7 @@ void __32__CAFCarManager_initWithConfig___block_invoke(uint64_t a1)
     goto LABEL_12;
   }
 
-  if (([v2 hasEntitlement:@"com.apple.private.carp"] & 1) == 0)
+  if (([processHandle hasEntitlement:@"com.apple.private.carp"] & 1) == 0)
   {
     v6 = CAFGeneralLogging();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -319,38 +319,38 @@ LABEL_13:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_closeConnectionWithReason:(id)a3
+- (void)_closeConnectionWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_connectionLock);
-  [(CAFCarManager *)self _locked_closeConnectionWithReason:v4];
+  [(CAFCarManager *)self _locked_closeConnectionWithReason:reasonCopy];
 
   os_unfair_lock_unlock(&self->_connectionLock);
 }
 
-- (void)_locked_closeConnectionWithReason:(id)a3
+- (void)_locked_closeConnectionWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(CAFCarManager *)self currentCar];
+  reasonCopy = reason;
+  currentCar = [(CAFCarManager *)self currentCar];
 
-  if (v5)
+  if (currentCar)
   {
-    v6 = [(CAFCarManager *)self observers];
-    [v6 carManagerWillUpdateCar:self];
+    observers = [(CAFCarManager *)self observers];
+    [observers carManagerWillUpdateCar:self];
 
-    v7 = [(CAFCarManager *)self currentCar];
-    [v7 invalidate];
+    currentCar2 = [(CAFCarManager *)self currentCar];
+    [currentCar2 invalidate];
 
     [(CAFCarManager *)self setCurrentCar:0];
-    v8 = [(CAFCarManager *)self observers];
-    [v8 carManager:self didUpdateCurrentCar:0];
+    observers2 = [(CAFCarManager *)self observers];
+    [observers2 carManager:self didUpdateCurrentCar:0];
   }
 
-  v9 = [(CAFCarManager *)self connectionProxy];
-  [v9 setCarManager:0];
+  connectionProxy = [(CAFCarManager *)self connectionProxy];
+  [connectionProxy setCarManager:0];
 
-  v10 = [(CAFCarManager *)self connectionProxy];
-  [v10 invalidate];
+  connectionProxy2 = [(CAFCarManager *)self connectionProxy];
+  [connectionProxy2 invalidate];
 
   v11 = CAFCarManagerLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -359,19 +359,19 @@ LABEL_13:
   }
 }
 
-- (BOOL)shouldAllocAccessoryType:(id)a3
+- (BOOL)shouldAllocAccessoryType:(id)type
 {
-  v4 = a3;
-  v5 = [(CAFCarManager *)self config];
-  if (([v5 sparseTree] & 1) == 0)
+  typeCopy = type;
+  config = [(CAFCarManager *)self config];
+  if (([config sparseTree] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v6 = [(CAFCarManager *)self config];
-  v7 = [v6 registrations];
-  v8 = [v7 hasAccessory:v4];
+  config2 = [(CAFCarManager *)self config];
+  registrations = [config2 registrations];
+  v8 = [registrations hasAccessory:typeCopy];
 
   if (v8)
   {
@@ -383,7 +383,7 @@ LABEL_7:
   v9 = CAFRegistrationLogging();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [CAFCarManager shouldAllocAccessoryType:v4];
+    [CAFCarManager shouldAllocAccessoryType:typeCopy];
   }
 
   v10 = 0;
@@ -392,21 +392,21 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)shouldAllocAccessoryType:(id)a3 serviceConfig:(id)a4
+- (BOOL)shouldAllocAccessoryType:(id)type serviceConfig:(id)config
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [CAFCarConfiguration getType:v7];
+  typeCopy = type;
+  configCopy = config;
+  v8 = [CAFCarConfiguration getType:configCopy];
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
-  v9 = [(CAFCarManager *)self config];
-  if ([v9 sparseTree])
+  config = [(CAFCarManager *)self config];
+  if ([config sparseTree])
   {
-    v10 = [(CAFCarManager *)self config];
-    v11 = [v10 registrations];
-    v12 = [v11 hasAccessory:v6 service:v8];
+    config2 = [(CAFCarManager *)self config];
+    registrations = [config2 registrations];
+    v12 = [registrations hasAccessory:typeCopy service:v8];
   }
 
   else
@@ -420,20 +420,20 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v13 = [(CAFCarManager *)self config];
-  v14 = [v13 registrations];
-  v15 = [v14 nodeForAccessory:v6 serviceType:v8];
+  config3 = [(CAFCarManager *)self config];
+  registrations2 = [config3 registrations];
+  v15 = [registrations2 nodeForAccessory:typeCopy serviceType:v8];
 
-  v16 = [v15 children];
+  children = [v15 children];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __56__CAFCarManager_shouldAllocAccessoryType_serviceConfig___block_invoke;
   v22[3] = &unk_27890D978;
-  v23 = v7;
-  v24 = v6;
+  v23 = configCopy;
+  v24 = typeCopy;
   v25 = v8;
   v26 = &v27;
-  [v16 enumerateKeysAndObjectsUsingBlock:v22];
+  [children enumerateKeysAndObjectsUsingBlock:v22];
 
   if (v28[3])
   {
@@ -446,7 +446,7 @@ LABEL_7:
     v18 = CAFRegistrationLogging();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      v19 = [CAFAccessoryTypes accessoryNameForType:v6];
+      v19 = [CAFAccessoryTypes accessoryNameForType:typeCopy];
       [CAFServiceTypes serviceNameForType:v8];
       objc_claimAutoreleasedReturnValue();
       [CAFCarManager shouldAllocAccessoryType:serviceConfig:];
@@ -569,22 +569,22 @@ void __56__CAFCarManager_shouldAllocAccessoryType_serviceConfig___block_invoke_1
   }
 }
 
-- (BOOL)shouldAllocAccessoryType:(id)a3 serviceType:(id)a4 characteristicType:(id)a5
+- (BOOL)shouldAllocAccessoryType:(id)type serviceType:(id)serviceType characteristicType:(id)characteristicType
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CAFCarManager *)self config];
-  if (([v11 sparseTree] & 1) == 0)
+  typeCopy = type;
+  serviceTypeCopy = serviceType;
+  characteristicTypeCopy = characteristicType;
+  config = [(CAFCarManager *)self config];
+  if (([config sparseTree] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v12 = [(CAFCarManager *)self config];
-  v13 = [v12 registrations];
-  v14 = [v13 hasAccessory:v8 service:v9 characteristic:v10];
+  config2 = [(CAFCarManager *)self config];
+  registrations = [config2 registrations];
+  v14 = [registrations hasAccessory:typeCopy service:serviceTypeCopy characteristic:characteristicTypeCopy];
 
   if (v14)
   {
@@ -596,9 +596,9 @@ LABEL_7:
   v15 = CAFRegistrationLogging();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [CAFAccessoryTypes accessoryNameForType:v8];
-    v20 = [CAFServiceTypes serviceNameForType:v9];
-    v21 = [CAFCharacteristicTypes characteristicNameForType:v10];
+    v19 = [CAFAccessoryTypes accessoryNameForType:typeCopy];
+    v20 = [CAFServiceTypes serviceNameForType:serviceTypeCopy];
+    v21 = [CAFCharacteristicTypes characteristicNameForType:characteristicTypeCopy];
     v22 = 138543874;
     v23 = v19;
     v24 = 2114;
@@ -615,22 +615,22 @@ LABEL_8:
   return v16;
 }
 
-- (BOOL)shouldAllocAccessoryType:(id)a3 serviceType:(id)a4 controlType:(id)a5
+- (BOOL)shouldAllocAccessoryType:(id)type serviceType:(id)serviceType controlType:(id)controlType
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CAFCarManager *)self config];
-  if (([v11 sparseTree] & 1) == 0)
+  typeCopy = type;
+  serviceTypeCopy = serviceType;
+  controlTypeCopy = controlType;
+  config = [(CAFCarManager *)self config];
+  if (([config sparseTree] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v12 = [(CAFCarManager *)self config];
-  v13 = [v12 registrations];
-  v14 = [v13 hasAccessory:v8 service:v9 control:v10];
+  config2 = [(CAFCarManager *)self config];
+  registrations = [config2 registrations];
+  v14 = [registrations hasAccessory:typeCopy service:serviceTypeCopy control:controlTypeCopy];
 
   if (v14)
   {
@@ -642,9 +642,9 @@ LABEL_7:
   v15 = CAFRegistrationLogging();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [CAFAccessoryTypes accessoryNameForType:v8];
-    v20 = [CAFServiceTypes serviceNameForType:v9];
-    v21 = [CAFControlTypes controlNameForType:v10];
+    v19 = [CAFAccessoryTypes accessoryNameForType:typeCopy];
+    v20 = [CAFServiceTypes serviceNameForType:serviceTypeCopy];
+    v21 = [CAFControlTypes controlNameForType:controlTypeCopy];
     v22 = 138543874;
     v23 = v19;
     v24 = 2114;
@@ -661,52 +661,52 @@ LABEL_8:
   return v16;
 }
 
-- (BOOL)shouldInitializeCharacteristic:(id)a3
+- (BOOL)shouldInitializeCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(CAFCarManager *)self config];
-  v6 = [v5 registrations];
-  v7 = [v4 accessory];
-  v8 = [v7 categoryType];
-  v9 = [v4 service];
-  v10 = [v9 serviceType];
-  v11 = [v4 characteristicType];
+  characteristicCopy = characteristic;
+  config = [(CAFCarManager *)self config];
+  registrations = [config registrations];
+  accessory = [characteristicCopy accessory];
+  categoryType = [accessory categoryType];
+  service = [characteristicCopy service];
+  serviceType = [service serviceType];
+  characteristicType = [characteristicCopy characteristicType];
 
-  LOBYTE(v4) = [v6 hasAccessory:v8 service:v10 characteristic:v11];
-  return v4;
+  LOBYTE(characteristicCopy) = [registrations hasAccessory:categoryType service:serviceType characteristic:characteristicType];
+  return characteristicCopy;
 }
 
-- (BOOL)shouldInitializeControl:(id)a3
+- (BOOL)shouldInitializeControl:(id)control
 {
-  v4 = a3;
-  v5 = [(CAFCarManager *)self config];
-  v6 = [v5 registrations];
-  v7 = [v4 accessory];
-  v8 = [v7 categoryType];
-  v9 = [v4 service];
-  v10 = [v9 serviceType];
-  v11 = [v4 controlType];
+  controlCopy = control;
+  config = [(CAFCarManager *)self config];
+  registrations = [config registrations];
+  accessory = [controlCopy accessory];
+  categoryType = [accessory categoryType];
+  service = [controlCopy service];
+  serviceType = [service serviceType];
+  controlType = [controlCopy controlType];
 
-  LOBYTE(v4) = [v6 hasAccessory:v8 service:v10 control:v11];
-  return v4;
+  LOBYTE(controlCopy) = [registrations hasAccessory:categoryType service:serviceType control:controlType];
+  return controlCopy;
 }
 
-- (void)_connectionDidInvalidateForProxy:(id)a3
+- (void)_connectionDidInvalidateForProxy:(id)proxy
 {
-  v4 = a3;
-  if (v4)
+  proxyCopy = proxy;
+  if (proxyCopy)
   {
-    v9 = v4;
-    v5 = [v4 uniqueIdentifier];
-    v6 = [(CAFCarManager *)self connectionProxy];
-    v7 = [v6 uniqueIdentifier];
+    v9 = proxyCopy;
+    uniqueIdentifier = [proxyCopy uniqueIdentifier];
+    connectionProxy = [(CAFCarManager *)self connectionProxy];
+    uniqueIdentifier2 = [connectionProxy uniqueIdentifier];
     v8 = BSEqualObjects();
 
-    v4 = v9;
+    proxyCopy = v9;
     if (v8)
     {
       [(CAFCarManager *)self _closeConnectionWithReason:@"proxy connection did invalidate"];
-      v4 = v9;
+      proxyCopy = v9;
     }
   }
 }
@@ -720,72 +720,72 @@ LABEL_8:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestControl:(id)a3 value:(id)a4 response:(id)a5
+- (void)requestControl:(id)control value:(id)value response:(id)response
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  controlCopy = control;
+  responseCopy = response;
+  valueCopy = value;
   v11 = CAFRequestResponseLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [CAFCarManager requestControl:value:response:];
   }
 
-  v12 = [(CAFCarManager *)self connectionProxy];
-  v13 = [v12 remoteProxy];
-  v14 = [v8 pluginID];
-  v15 = [v8 instanceID];
-  v16 = [v8 priority];
-  [v13 requestPluginID:v14 instanceID:v15 value:v10 priority:v16 withResponse:v9];
+  connectionProxy = [(CAFCarManager *)self connectionProxy];
+  remoteProxy = [connectionProxy remoteProxy];
+  pluginID = [controlCopy pluginID];
+  instanceID = [controlCopy instanceID];
+  priority = [controlCopy priority];
+  [remoteProxy requestPluginID:pluginID instanceID:instanceID value:valueCopy priority:priority withResponse:responseCopy];
 }
 
-- (void)notifyControl:(id)a3 value:(id)a4
+- (void)notifyControl:(id)control value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  valueCopy = value;
   v8 = CAFRequestResponseLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [CAFCarManager notifyControl:value:];
   }
 
-  v9 = [(CAFCarManager *)self connectionProxy];
-  v10 = [v9 remoteProxy];
-  v11 = [v6 pluginID];
-  v12 = [v6 instanceID];
-  v13 = [v6 priority];
-  [v10 notifyPluginID:v11 instanceID:v12 value:v7 priority:v13];
+  connectionProxy = [(CAFCarManager *)self connectionProxy];
+  remoteProxy = [connectionProxy remoteProxy];
+  pluginID = [controlCopy pluginID];
+  instanceID = [controlCopy instanceID];
+  priority = [controlCopy priority];
+  [remoteProxy notifyPluginID:pluginID instanceID:instanceID value:valueCopy priority:priority];
 }
 
-- (void)handleResponse:(id)a3 instanceID:(id)a4 response:(id)a5
+- (void)handleResponse:(id)response instanceID:(id)d response:(id)a5
 {
-  v17 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dCopy = d;
   v8 = a5;
   if (v8)
   {
-    if (v17)
+    if (responseCopy)
     {
-      v9 = [v17 error];
+      error = [responseCopy error];
 
-      if (v9)
+      if (error)
       {
         v10 = [CAFCharacteristicValue alloc];
-        v11 = [v17 error];
-        v12 = [(CAFCharacteristicValue *)v10 initWithValue:0 error:v11];
+        error2 = [responseCopy error];
+        v12 = [(CAFCharacteristicValue *)v10 initWithValue:0 error:error2];
       }
 
       else
       {
-        v13 = [v17 values];
+        values = [responseCopy values];
 
-        if (!v13)
+        if (!values)
         {
           goto LABEL_8;
         }
 
-        v11 = [v17 values];
-        v12 = [v11 objectForKeyedSubscript:v7];
+        error2 = [responseCopy values];
+        v12 = [error2 objectForKeyedSubscript:dCopy];
       }
 
       v14 = v12;
@@ -810,31 +810,31 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)readCharacteristic:(id)a3 response:(id)a4
+- (void)readCharacteristic:(id)characteristic response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  characteristicCopy = characteristic;
+  responseCopy = response;
   v8 = CAFRequestResponseLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [CAFCarManager readCharacteristic:response:];
   }
 
-  v9 = [(CAFCarManager *)self connectionProxy];
-  v10 = [v9 remoteProxy];
-  v11 = [v6 pluginID];
-  v12 = [v6 readInstanceIDs];
-  v13 = [v6 priority];
+  connectionProxy = [(CAFCarManager *)self connectionProxy];
+  remoteProxy = [connectionProxy remoteProxy];
+  pluginID = [characteristicCopy pluginID];
+  readInstanceIDs = [characteristicCopy readInstanceIDs];
+  priority = [characteristicCopy priority];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __45__CAFCarManager_readCharacteristic_response___block_invoke;
   v16[3] = &unk_27890D9A0;
   v16[4] = self;
-  v17 = v6;
-  v18 = v7;
-  v14 = v7;
-  v15 = v6;
-  [v10 readFromPluginID:v11 instanceIDs:v12 priority:v13 withResponse:v16];
+  v17 = characteristicCopy;
+  v18 = responseCopy;
+  v14 = responseCopy;
+  v15 = characteristicCopy;
+  [remoteProxy readFromPluginID:pluginID instanceIDs:readInstanceIDs priority:priority withResponse:v16];
 }
 
 void __45__CAFCarManager_readCharacteristic_response___block_invoke(void *a1, void *a2)
@@ -846,44 +846,44 @@ void __45__CAFCarManager_readCharacteristic_response___block_invoke(void *a1, vo
   [v3 handleResponse:v5 instanceID:v6 response:a1[6]];
 }
 
-- (void)writeCharacteristic:(id)a3 value:(id)a4 response:(id)a5
+- (void)writeCharacteristic:(id)characteristic value:(id)value response:(id)response
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  responseCopy = response;
   v11 = CAFRequestResponseLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [CAFCarManager writeCharacteristic:value:response:];
   }
 
-  v21 = [(CAFCarManager *)self connectionProxy];
-  v12 = [v21 remoteProxy];
-  v13 = [v8 pluginID];
-  v14 = [v8 instanceID];
-  v25 = v14;
-  v15 = v9;
-  if (!v9)
+  connectionProxy = [(CAFCarManager *)self connectionProxy];
+  remoteProxy = [connectionProxy remoteProxy];
+  pluginID = [characteristicCopy pluginID];
+  instanceID = [characteristicCopy instanceID];
+  v25 = instanceID;
+  null = valueCopy;
+  if (!valueCopy)
   {
-    v15 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v26[0] = v15;
+  v26[0] = null;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-  v17 = [v8 priority];
+  priority = [characteristicCopy priority];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __52__CAFCarManager_writeCharacteristic_value_response___block_invoke;
   v22[3] = &unk_27890D9A0;
   v22[4] = self;
-  v23 = v8;
-  v24 = v10;
-  v18 = v10;
-  v19 = v8;
-  [v12 writeToPluginID:v13 values:v16 priority:v17 withResponse:v22];
+  v23 = characteristicCopy;
+  v24 = responseCopy;
+  v18 = responseCopy;
+  v19 = characteristicCopy;
+  [remoteProxy writeToPluginID:pluginID values:v16 priority:priority withResponse:v22];
 
-  if (!v9)
+  if (!valueCopy)
   {
   }
 
@@ -935,12 +935,12 @@ void __62__CAFCarManager_enableNotificationForControl_enable_response___block_in
   [v3 handleResponse:v5 instanceID:v6 response:a1[6]];
 }
 
-- (void)performGroupedRequest:(id)a3 key:(id)a4 value:(id)a5 withResponse:(id)a6
+- (void)performGroupedRequest:(id)request key:(id)key value:(id)value withResponse:(id)response
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  keyCopy = key;
+  valueCopy = value;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -950,11 +950,11 @@ void __62__CAFCarManager_enableNotificationForControl_enable_response___block_in
       [CAFCarManager performGroupedRequest:key:value:withResponse:];
     }
 
-    v15 = [(CAFCarManager *)self connectionProxy];
-    v16 = [v15 remoteProxy];
-    v17 = [v11 pluginID];
-    v18 = [v11 priority];
-    [v16 readFromPluginID:v17 instanceIDs:v12 priority:v18 withResponse:v13];
+    connectionProxy = [(CAFCarManager *)self connectionProxy];
+    remoteProxy = [connectionProxy remoteProxy];
+    pluginID = [keyCopy pluginID];
+    priority = [keyCopy priority];
+    [remoteProxy readFromPluginID:pluginID instanceIDs:valueCopy priority:priority withResponse:responseCopy];
 LABEL_17:
 
     goto LABEL_18;
@@ -969,11 +969,11 @@ LABEL_17:
       [CAFCarManager performGroupedRequest:key:value:withResponse:];
     }
 
-    v15 = [(CAFCarManager *)self connectionProxy];
-    v16 = [v15 remoteProxy];
-    v17 = [v11 pluginID];
-    v18 = [v11 priority];
-    [v16 addRegistrationToPluginID:v17 instanceIDs:v12 priority:v18 withResponse:v13];
+    connectionProxy = [(CAFCarManager *)self connectionProxy];
+    remoteProxy = [connectionProxy remoteProxy];
+    pluginID = [keyCopy pluginID];
+    priority = [keyCopy priority];
+    [remoteProxy addRegistrationToPluginID:pluginID instanceIDs:valueCopy priority:priority withResponse:responseCopy];
     goto LABEL_17;
   }
 
@@ -986,11 +986,11 @@ LABEL_17:
       [CAFCarManager performGroupedRequest:key:value:withResponse:];
     }
 
-    v15 = [(CAFCarManager *)self connectionProxy];
-    v16 = [v15 remoteProxy];
-    v17 = [v11 pluginID];
-    v18 = [v11 priority];
-    [v16 removeRegistrationFromPluginID:v17 instanceIDs:v12 priority:v18 withResponse:v13];
+    connectionProxy = [(CAFCarManager *)self connectionProxy];
+    remoteProxy = [connectionProxy remoteProxy];
+    pluginID = [keyCopy pluginID];
+    priority = [keyCopy priority];
+    [remoteProxy removeRegistrationFromPluginID:pluginID instanceIDs:valueCopy priority:priority withResponse:responseCopy];
     goto LABEL_17;
   }
 
@@ -1003,11 +1003,11 @@ LABEL_17:
       [CAFCarManager performGroupedRequest:key:value:withResponse:];
     }
 
-    v15 = [(CAFCarManager *)self connectionProxy];
-    v16 = [v15 remoteProxy];
-    v17 = [v11 pluginID];
-    v18 = [v11 priority];
-    [v16 writeToPluginID:v17 values:v12 priority:v18 withResponse:v13];
+    connectionProxy = [(CAFCarManager *)self connectionProxy];
+    remoteProxy = [connectionProxy remoteProxy];
+    pluginID = [keyCopy pluginID];
+    priority = [keyCopy priority];
+    [remoteProxy writeToPluginID:pluginID values:valueCopy priority:priority withResponse:responseCopy];
     goto LABEL_17;
   }
 

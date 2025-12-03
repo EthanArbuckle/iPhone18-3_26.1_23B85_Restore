@@ -1,62 +1,62 @@
 @interface FCMockPaymentTransactionManager
-+ (id)mockPaymentTransactionWithFailForProductID:(id)a3 transactionState:(int64_t)a4 transactionError:(id)a5;
-+ (id)mockPaymentTransactionWithSuccessForProductID:(id)a3;
++ (id)mockPaymentTransactionWithFailForProductID:(id)d transactionState:(int64_t)state transactionError:(id)error;
++ (id)mockPaymentTransactionWithSuccessForProductID:(id)d;
 - (FCPaymentTransactionManagerDelegate)delegate;
-- (void)startPurchaseWithTagID:(id)a3 productID:(id)a4 purchaseID:(id)a5 bundleID:(id)a6 appAdamID:(id)a7 storeExternalVersion:(id)a8 price:(id)a9 webAccessOptIn:(BOOL)a10 payment:(id)a11;
+- (void)startPurchaseWithTagID:(id)d productID:(id)iD purchaseID:(id)purchaseID bundleID:(id)bundleID appAdamID:(id)adamID storeExternalVersion:(id)version price:(id)price webAccessOptIn:(BOOL)self0 payment:(id)self1;
 @end
 
 @implementation FCMockPaymentTransactionManager
 
-+ (id)mockPaymentTransactionWithSuccessForProductID:(id)a3
++ (id)mockPaymentTransactionWithSuccessForProductID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(FCMockPaymentTransactionManager);
-  [(FCMockPaymentTransactionManager *)v4 setProductID:v3];
+  [(FCMockPaymentTransactionManager *)v4 setProductID:dCopy];
 
   [(FCMockPaymentTransactionManager *)v4 setTransactionExpectation:0];
 
   return v4;
 }
 
-+ (id)mockPaymentTransactionWithFailForProductID:(id)a3 transactionState:(int64_t)a4 transactionError:(id)a5
++ (id)mockPaymentTransactionWithFailForProductID:(id)d transactionState:(int64_t)state transactionError:(id)error
 {
-  v7 = a5;
-  v8 = a3;
+  errorCopy = error;
+  dCopy = d;
   v9 = objc_alloc_init(FCMockPaymentTransactionManager);
-  [(FCMockPaymentTransactionManager *)v9 setProductID:v8];
+  [(FCMockPaymentTransactionManager *)v9 setProductID:dCopy];
 
-  [(FCMockPaymentTransactionManager *)v9 setTransactionState:a4];
-  [(FCMockPaymentTransactionManager *)v9 setTransactionError:v7];
+  [(FCMockPaymentTransactionManager *)v9 setTransactionState:state];
+  [(FCMockPaymentTransactionManager *)v9 setTransactionError:errorCopy];
 
   [(FCMockPaymentTransactionManager *)v9 setTransactionExpectation:1];
 
   return v9;
 }
 
-- (void)startPurchaseWithTagID:(id)a3 productID:(id)a4 purchaseID:(id)a5 bundleID:(id)a6 appAdamID:(id)a7 storeExternalVersion:(id)a8 price:(id)a9 webAccessOptIn:(BOOL)a10 payment:(id)a11
+- (void)startPurchaseWithTagID:(id)d productID:(id)iD purchaseID:(id)purchaseID bundleID:(id)bundleID appAdamID:(id)adamID storeExternalVersion:(id)version price:(id)price webAccessOptIn:(BOOL)self0 payment:(id)self1
 {
-  if ([(FCMockPaymentTransactionManager *)self transactionExpectation:a3])
+  if ([(FCMockPaymentTransactionManager *)self transactionExpectation:d])
   {
     if ([(FCMockPaymentTransactionManager *)self transactionExpectation]!= 1)
     {
       return;
     }
 
-    v17 = [(FCMockPaymentTransactionManager *)self delegate];
-    v12 = [(FCMockPaymentTransactionManager *)self productID];
-    v13 = [(FCMockPaymentTransactionManager *)self transactionState];
-    v14 = [(FCMockPaymentTransactionManager *)self transactionError];
-    [(FCCompletedPaymentTransaction *)v17 transactionFailedWithProductID:v12 transactionState:v13 transactionError:v14];
+    delegate = [(FCMockPaymentTransactionManager *)self delegate];
+    productID = [(FCMockPaymentTransactionManager *)self productID];
+    transactionState = [(FCMockPaymentTransactionManager *)self transactionState];
+    transactionError = [(FCMockPaymentTransactionManager *)self transactionError];
+    [(FCCompletedPaymentTransaction *)delegate transactionFailedWithProductID:productID transactionState:transactionState transactionError:transactionError];
   }
 
   else
   {
     v15 = [FCCompletedPaymentTransaction alloc];
-    v16 = [(FCMockPaymentTransactionManager *)self productID];
-    v17 = [(FCCompletedPaymentTransaction *)v15 initWithProductID:v16 receipt:0 appleIDAccountDetails:0];
+    productID2 = [(FCMockPaymentTransactionManager *)self productID];
+    delegate = [(FCCompletedPaymentTransaction *)v15 initWithProductID:productID2 receipt:0 appleIDAccountDetails:0];
 
-    v12 = [(FCMockPaymentTransactionManager *)self delegate];
-    [v12 transactionPurchased:v17];
+    productID = [(FCMockPaymentTransactionManager *)self delegate];
+    [productID transactionPurchased:delegate];
   }
 }
 

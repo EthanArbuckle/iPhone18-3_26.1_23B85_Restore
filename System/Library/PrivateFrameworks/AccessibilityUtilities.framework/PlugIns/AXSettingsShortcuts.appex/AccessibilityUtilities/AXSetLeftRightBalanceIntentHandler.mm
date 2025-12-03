@@ -1,34 +1,34 @@
 @interface AXSetLeftRightBalanceIntentHandler
-- (void)handleSetLeftRightBalance:(id)a3 completion:(id)a4;
-- (void)resolveOperationForSetLeftRightBalance:(id)a3 withCompletion:(id)a4;
-- (void)resolveParameterForSetLeftRightBalance:(id)a3 withCompletion:(id)a4;
-- (void)resolveValueForSetLeftRightBalance:(id)a3 withCompletion:(id)a4;
+- (void)handleSetLeftRightBalance:(id)balance completion:(id)completion;
+- (void)resolveOperationForSetLeftRightBalance:(id)balance withCompletion:(id)completion;
+- (void)resolveParameterForSetLeftRightBalance:(id)balance withCompletion:(id)completion;
+- (void)resolveValueForSetLeftRightBalance:(id)balance withCompletion:(id)completion;
 @end
 
 @implementation AXSetLeftRightBalanceIntentHandler
 
-- (void)handleSetLeftRightBalance:(id)a3 completion:(id)a4
+- (void)handleSetLeftRightBalance:(id)balance completion:(id)completion
 {
-  v16 = a3;
-  v5 = a4;
-  if ([v16 operation] == 1)
+  balanceCopy = balance;
+  completionCopy = completion;
+  if ([balanceCopy operation] == 1)
   {
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 leftRightBalanceEnabled];
+    leftRightBalanceEnabled = [v6 leftRightBalanceEnabled];
 
     v8 = +[AXSettings sharedInstance];
-    [v8 setLeftRightBalanceEnabled:v7 ^ 1];
+    [v8 setLeftRightBalanceEnabled:leftRightBalanceEnabled ^ 1];
   }
 
   else
   {
-    if ([v16 operation] != 2)
+    if ([balanceCopy operation] != 2)
     {
       goto LABEL_6;
     }
 
-    v9 = [v16 value];
-    [v9 floatValue];
+    value = [balanceCopy value];
+    [value floatValue];
 
     AXSLogarithmicValueForLinearValue();
     v11 = v10;
@@ -43,32 +43,32 @@
   }
 
   v15 = [[AXSetLeftRightBalanceIntentResponse alloc] initWithCode:4 userActivity:0];
-  v5[2](v5, v15);
+  completionCopy[2](completionCopy, v15);
 
 LABEL_6:
 }
 
-- (void)resolveOperationForSetLeftRightBalance:(id)a3 withCompletion:(id)a4
+- (void)resolveOperationForSetLeftRightBalance:(id)balance withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXLeftRightBalanceOperationResolutionResult successWithResolvedLeftRightBalanceOperation:](AXLeftRightBalanceOperationResolutionResult, "successWithResolvedLeftRightBalanceOperation:", [a3 operation]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXLeftRightBalanceOperationResolutionResult successWithResolvedLeftRightBalanceOperation:](AXLeftRightBalanceOperationResolutionResult, "successWithResolvedLeftRightBalanceOperation:", [balance operation]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)resolveParameterForSetLeftRightBalance:(id)a3 withCompletion:(id)a4
+- (void)resolveParameterForSetLeftRightBalance:(id)balance withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXStateResolutionResult successWithResolvedState:](AXStateResolutionResult, "successWithResolvedState:", [a3 parameter]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXStateResolutionResult successWithResolvedState:](AXStateResolutionResult, "successWithResolvedState:", [balance parameter]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)resolveValueForSetLeftRightBalance:(id)a3 withCompletion:(id)a4
+- (void)resolveValueForSetLeftRightBalance:(id)balance withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = [a3 value];
-  [v8 doubleValue];
+  completionCopy = completion;
+  value = [balance value];
+  [value doubleValue];
   v7 = [AXSetLeftRightBalanceValueResolutionResult successWithResolvedValue:?];
-  (*(a4 + 2))(v6, v7);
+  (*(completion + 2))(completionCopy, v7);
 }
 
 @end

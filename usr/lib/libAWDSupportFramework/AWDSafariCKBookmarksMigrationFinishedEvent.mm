@@ -1,20 +1,20 @@
 @interface AWDSafariCKBookmarksMigrationFinishedEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMigratorType:(id)a3;
-- (int)StringAsResult:(id)a3;
+- (int)StringAsMigratorType:(id)type;
+- (int)StringAsResult:(id)result;
 - (int)migratorType;
 - (int)result;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMigratorType:(BOOL)a3;
-- (void)setHasResult:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasMigratorType:(BOOL)type;
+- (void)setHasResult:(BOOL)result;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSafariCKBookmarksMigrationFinishedEvent
@@ -28,9 +28,9 @@
   [(AWDSafariCKBookmarksMigrationFinishedEvent *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -56,9 +56,9 @@
   }
 }
 
-- (void)setHasMigratorType:(BOOL)a3
+- (void)setHasMigratorType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -71,16 +71,16 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsMigratorType:(id)a3
+- (int)StringAsMigratorType:(id)type
 {
-  if ([a3 isEqualToString:@"PRIMARY_MIGRATOR"])
+  if ([type isEqualToString:@"PRIMARY_MIGRATOR"])
   {
     return 0;
   }
 
   else
   {
-    return [a3 isEqualToString:@"SECONDARY_MIGRATOR"];
+    return [type isEqualToString:@"SECONDARY_MIGRATOR"];
   }
 }
 
@@ -97,9 +97,9 @@
   }
 }
 
-- (void)setHasResult:(BOOL)a3
+- (void)setHasResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 8;
   }
@@ -112,16 +112,16 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsResult:(id)a3
+- (int)StringAsResult:(id)result
 {
-  if ([a3 isEqualToString:@"MIGRATION_SUCCESSFUL"])
+  if ([result isEqualToString:@"MIGRATION_SUCCESSFUL"])
   {
     return 0;
   }
 
   else
   {
-    return [a3 isEqualToString:@"MIGRATION_FAILED"];
+    return [result isEqualToString:@"MIGRATION_FAILED"];
   }
 }
 
@@ -134,11 +134,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -176,7 +176,7 @@ LABEL_3:
     v6 = @"PRIMARY_MIGRATOR";
   }
 
-  [v3 setObject:v6 forKey:@"migratorType"];
+  [dictionary setObject:v6 forKey:@"migratorType"];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -190,7 +190,7 @@ LABEL_4:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
   if ((*&self->_has & 8) == 0)
   {
     goto LABEL_20;
@@ -216,24 +216,24 @@ LABEL_14:
     v8 = @"MIGRATION_SUCCESSFUL";
   }
 
-  [v3 setObject:v8 forKey:@"result"];
+  [dictionary setObject:v8 forKey:@"result"];
 LABEL_20:
   errorDomain = self->_errorDomain;
   if (errorDomain)
   {
-    [v3 setObject:errorDomain forKey:@"errorDomain"];
+    [dictionary setObject:errorDomain forKey:@"errorDomain"];
   }
 
   errorCode = self->_errorCode;
   if (errorCode)
   {
-    [v3 setObject:errorCode forKey:@"errorCode"];
+    [dictionary setObject:errorCode forKey:@"errorCode"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -295,13 +295,13 @@ LABEL_6:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 48) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 48) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -320,8 +320,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 10) = self->_migratorType;
-  *(a3 + 48) |= 4u;
+  *(to + 10) = self->_migratorType;
+  *(to + 48) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -335,31 +335,31 @@ LABEL_4:
   }
 
 LABEL_14:
-  *(a3 + 1) = self->_duration;
-  *(a3 + 48) |= 1u;
+  *(to + 1) = self->_duration;
+  *(to + 48) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    *(a3 + 11) = self->_result;
-    *(a3 + 48) |= 8u;
+    *(to + 11) = self->_result;
+    *(to + 48) |= 8u;
   }
 
 LABEL_6:
   if (self->_errorDomain)
   {
-    [a3 setErrorDomain:?];
+    [to setErrorDomain:?];
   }
 
   if (self->_errorCode)
   {
 
-    [a3 setErrorCode:?];
+    [to setErrorCode:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -410,26 +410,26 @@ LABEL_5:
 
 LABEL_6:
 
-  *(v6 + 32) = [(NSString *)self->_errorDomain copyWithZone:a3];
-  *(v6 + 24) = [(NSString *)self->_errorCode copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_errorDomain copyWithZone:zone];
+  *(v6 + 24) = [(NSString *)self->_errorCode copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 48);
+    v6 = *(equal + 48);
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 48) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 48) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 48) & 2) != 0)
+    else if ((*(equal + 48) & 2) != 0)
     {
 LABEL_26:
       LOBYTE(v5) = 0;
@@ -438,48 +438,48 @@ LABEL_26:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 48) & 4) == 0 || self->_migratorType != *(a3 + 10))
+      if ((*(equal + 48) & 4) == 0 || self->_migratorType != *(equal + 10))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 48) & 4) != 0)
+    else if ((*(equal + 48) & 4) != 0)
     {
       goto LABEL_26;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 48) & 1) == 0 || self->_duration != *(a3 + 1))
+      if ((*(equal + 48) & 1) == 0 || self->_duration != *(equal + 1))
       {
         goto LABEL_26;
       }
     }
 
-    else if (*(a3 + 48))
+    else if (*(equal + 48))
     {
       goto LABEL_26;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 48) & 8) == 0 || self->_result != *(a3 + 11))
+      if ((*(equal + 48) & 8) == 0 || self->_result != *(equal + 11))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 48) & 8) != 0)
+    else if ((*(equal + 48) & 8) != 0)
     {
       goto LABEL_26;
     }
 
     errorDomain = self->_errorDomain;
-    if (!(errorDomain | *(a3 + 4)) || (v5 = [(NSString *)errorDomain isEqual:?]) != 0)
+    if (!(errorDomain | *(equal + 4)) || (v5 = [(NSString *)errorDomain isEqual:?]) != 0)
     {
       errorCode = self->_errorCode;
-      if (errorCode | *(a3 + 3))
+      if (errorCode | *(equal + 3))
       {
 
         LOBYTE(v5) = [(NSString *)errorCode isEqual:?];
@@ -551,14 +551,14 @@ LABEL_10:
   return v7 ^ [(NSString *)self->_errorCode hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 48);
+    v5 = *(from + 48);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -571,14 +571,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 48) & 4) == 0)
+  else if ((*(from + 48) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_migratorType = *(a3 + 10);
+  self->_migratorType = *(from + 10);
   *&self->_has |= 4u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 1) == 0)
   {
 LABEL_4:
@@ -591,22 +591,22 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_duration = *(a3 + 1);
+  self->_duration = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 48) & 8) != 0)
+  if ((*(from + 48) & 8) != 0)
   {
 LABEL_5:
-    self->_result = *(a3 + 11);
+    self->_result = *(from + 11);
     *&self->_has |= 8u;
   }
 
 LABEL_6:
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDSafariCKBookmarksMigrationFinishedEvent *)self setErrorDomain:?];
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
 
     [(AWDSafariCKBookmarksMigrationFinishedEvent *)self setErrorCode:?];

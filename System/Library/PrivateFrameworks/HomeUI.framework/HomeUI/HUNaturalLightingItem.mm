@@ -1,35 +1,35 @@
 @interface HUNaturalLightingItem
 - (HFHomeKitObject)homeKitObject;
 - (HMRoom)hf_parentRoom;
-- (HUNaturalLightingItem)initWithSourceItem:(id)a3 defaultSelected:(BOOL)a4;
+- (HUNaturalLightingItem)initWithSourceItem:(id)item defaultSelected:(BOOL)selected;
 - (NSSet)lightProfiles;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)accessory;
 @end
 
 @implementation HUNaturalLightingItem
 
-- (HUNaturalLightingItem)initWithSourceItem:(id)a3 defaultSelected:(BOOL)a4
+- (HUNaturalLightingItem)initWithSourceItem:(id)item defaultSelected:(BOOL)selected
 {
-  v4 = a4;
+  selectedCopy = selected;
   v11.receiver = self;
   v11.super_class = HUNaturalLightingItem;
-  v5 = [(HFTransformItem *)&v11 initWithSourceItem:a3 resultKeyExclusionFilter:MEMORY[0x277CBEBF8]];
+  v5 = [(HFTransformItem *)&v11 initWithSourceItem:item resultKeyExclusionFilter:MEMORY[0x277CBEBF8]];
   v6 = v5;
   if (v5)
   {
-    v7 = [(HUNaturalLightingItem *)v5 accessory];
-    v8 = [v7 hasOnboardedForNaturalLighting];
+    accessory = [(HUNaturalLightingItem *)v5 accessory];
+    hasOnboardedForNaturalLighting = [accessory hasOnboardedForNaturalLighting];
 
-    if (v8)
+    if (hasOnboardedForNaturalLighting)
     {
-      v9 = [(HUNaturalLightingItem *)v6 lightProfiles];
-      -[HUNaturalLightingItem setSelected:](v6, "setSelected:", [v9 na_all:&__block_literal_global_166]);
+      lightProfiles = [(HUNaturalLightingItem *)v6 lightProfiles];
+      -[HUNaturalLightingItem setSelected:](v6, "setSelected:", [lightProfiles na_all:&__block_literal_global_166]);
     }
 
     else
     {
-      [(HUNaturalLightingItem *)v6 setSelected:v4];
+      [(HUNaturalLightingItem *)v6 setSelected:selectedCopy];
     }
   }
 
@@ -46,10 +46,10 @@ uint64_t __60__HUNaturalLightingItem_initWithSourceItem_defaultSelected___block_
 
 - (HMRoom)hf_parentRoom
 {
-  v2 = [(HUNaturalLightingItem *)self homeKitObject];
-  if ([v2 conformsToProtocol:&unk_282547DB8])
+  homeKitObject = [(HUNaturalLightingItem *)self homeKitObject];
+  if ([homeKitObject conformsToProtocol:&unk_282547DB8])
   {
-    v3 = v2;
+    v3 = homeKitObject;
   }
 
   else
@@ -59,24 +59,24 @@ uint64_t __60__HUNaturalLightingItem_initWithSourceItem_defaultSelected___block_
 
   v4 = v3;
 
-  v5 = [v4 hf_parentRoom];
+  hf_parentRoom = [v4 hf_parentRoom];
 
-  return v5;
+  return hf_parentRoom;
 }
 
 - (HFHomeKitObject)homeKitObject
 {
-  v2 = [(HFTransformItem *)self sourceItem];
-  v3 = [v2 homeKitObject];
+  sourceItem = [(HFTransformItem *)self sourceItem];
+  homeKitObject = [sourceItem homeKitObject];
 
-  return v3;
+  return homeKitObject;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = HUNaturalLightingItem;
-  v4 = [(HFTransformItem *)&v8 _subclass_updateWithOptions:a3];
+  v4 = [(HFTransformItem *)&v8 _subclass_updateWithOptions:options];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__HUNaturalLightingItem__subclass_updateWithOptions___block_invoke;
@@ -104,29 +104,29 @@ id __53__HUNaturalLightingItem__subclass_updateWithOptions___block_invoke(uint64
 
 - (NSSet)lightProfiles
 {
-  v3 = [(HUNaturalLightingItem *)self accessory];
+  accessory = [(HUNaturalLightingItem *)self accessory];
 
-  if (v3)
+  if (accessory)
   {
-    v4 = [(HUNaturalLightingItem *)self accessory];
-    v5 = [v4 lightProfiles];
+    accessory2 = [(HUNaturalLightingItem *)self accessory];
+    lightProfiles = [accessory2 lightProfiles];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB98] set];
+    lightProfiles = [MEMORY[0x277CBEB98] set];
   }
 
-  return v5;
+  return lightProfiles;
 }
 
 - (id)accessory
 {
   objc_opt_class();
-  v3 = [(HUNaturalLightingItem *)self homeKitObject];
+  homeKitObject = [(HUNaturalLightingItem *)self homeKitObject];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = homeKitObject;
   }
 
   else
@@ -137,10 +137,10 @@ id __53__HUNaturalLightingItem__subclass_updateWithOptions___block_invoke(uint64
   v5 = v4;
 
   objc_opt_class();
-  v6 = [(HUNaturalLightingItem *)self homeKitObject];
+  homeKitObject2 = [(HUNaturalLightingItem *)self homeKitObject];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = homeKitObject2;
   }
 
   else
@@ -152,15 +152,15 @@ id __53__HUNaturalLightingItem__subclass_updateWithOptions___block_invoke(uint64
 
   if (v5)
   {
-    v9 = [v5 accessory];
+    accessory = [v5 accessory];
   }
 
   else
   {
-    v9 = v8;
+    accessory = v8;
   }
 
-  v10 = v9;
+  v10 = accessory;
 
   return v10;
 }

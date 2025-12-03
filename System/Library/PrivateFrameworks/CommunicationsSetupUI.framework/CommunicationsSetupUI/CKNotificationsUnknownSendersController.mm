@@ -2,11 +2,11 @@
 - (CKNotificationsUnknownSendersController)init;
 - (id)specifiers;
 - (void)applicationDidResume;
-- (void)setPersonalEnabled:(id)a3 specifier:(id)a4;
-- (void)setPromotionsEnabled:(id)a3 specifier:(id)a4;
-- (void)setTimeSensitiveEnabled:(id)a3 specifier:(id)a4;
-- (void)setTransactionsEnabled:(id)a3 specifier:(id)a4;
-- (void)setVerificationCodesEnabled:(id)a3 specifier:(id)a4;
+- (void)setPersonalEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPromotionsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setTimeSensitiveEnabled:(id)enabled specifier:(id)specifier;
+- (void)setTransactionsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setVerificationCodesEnabled:(id)enabled specifier:(id)specifier;
 - (void)updateDataSource;
 @end
 
@@ -186,44 +186,44 @@ uint64_t __59__CKNotificationsUnknownSendersController_updateDataSource__block_i
   return v3;
 }
 
-- (void)setTimeSensitiveEnabled:(id)a3 specifier:(id)a4
+- (void)setTimeSensitiveEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  self->_timeSensitiveEnabled = [v5 BOOLValue];
+  enabledCopy = enabled;
+  self->_timeSensitiveEnabled = [enabledCopy BOOLValue];
   v6 = +[CKSettingsMessagesController syncedSettingsManager];
-  [v6 setSettingValue:v5 forKey:5];
+  [v6 setSettingValue:enabledCopy forKey:5];
 }
 
-- (void)setVerificationCodesEnabled:(id)a3 specifier:(id)a4
+- (void)setVerificationCodesEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  self->_verificationCodesEnabled = [v5 BOOLValue];
+  enabledCopy = enabled;
+  self->_verificationCodesEnabled = [enabledCopy BOOLValue];
   v6 = +[CKSettingsMessagesController syncedSettingsManager];
-  [v6 setSettingValue:v5 forKey:11];
+  [v6 setSettingValue:enabledCopy forKey:11];
 }
 
-- (void)setPersonalEnabled:(id)a3 specifier:(id)a4
+- (void)setPersonalEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  self->_personalEnabled = [v5 BOOLValue];
+  enabledCopy = enabled;
+  self->_personalEnabled = [enabledCopy BOOLValue];
   v6 = +[CKSettingsMessagesController syncedSettingsManager];
-  [v6 setSettingValue:v5 forKey:6];
+  [v6 setSettingValue:enabledCopy forKey:6];
 }
 
-- (void)setTransactionsEnabled:(id)a3 specifier:(id)a4
+- (void)setTransactionsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  self->_transactionsEnabled = [v5 BOOLValue];
+  enabledCopy = enabled;
+  self->_transactionsEnabled = [enabledCopy BOOLValue];
   v6 = +[CKSettingsMessagesController syncedSettingsManager];
-  [v6 setSettingValue:v5 forKey:7];
+  [v6 setSettingValue:enabledCopy forKey:7];
 }
 
-- (void)setPromotionsEnabled:(id)a3 specifier:(id)a4
+- (void)setPromotionsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  self->_promotionsEnabled = [v5 BOOLValue];
+  enabledCopy = enabled;
+  self->_promotionsEnabled = [enabledCopy BOOLValue];
   v6 = +[CKSettingsMessagesController syncedSettingsManager];
-  [v6 setSettingValue:v5 forKey:8];
+  [v6 setSettingValue:enabledCopy forKey:8];
 }
 
 @end

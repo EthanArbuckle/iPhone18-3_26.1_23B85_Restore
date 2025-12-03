@@ -1,18 +1,18 @@
 @interface BWSynchronizerNode
-- (BWSynchronizerNode)initWithMediaType:(unsigned int)a3;
-- (CMSampleBufferRef)_newRetimedVideoSampleBuffer:(int)a3 updatePTSSyncHistory:;
+- (BWSynchronizerNode)initWithMediaType:(unsigned int)type;
+- (CMSampleBufferRef)_newRetimedVideoSampleBuffer:(int)buffer updatePTSSyncHistory:;
 - (OpaqueCMClock)masterClock;
 - (OpaqueCMClock)sourceClock;
-- (__n128)_updatePTSSyncHistoryWithSourceTime:(__n128 *)a3 syncedTime:;
-- (uint64_t)_synchronizeDetectedFaces:(uint64_t)a3 metadata:(int32_t)a4 timescale:;
-- (void)_getSyncedTimeForSourceTime:(uint64_t)a3@<X8>;
+- (__n128)_updatePTSSyncHistoryWithSourceTime:(__n128 *)time syncedTime:;
+- (uint64_t)_synchronizeDetectedFaces:(uint64_t)faces metadata:(int32_t)metadata timescale:;
+- (void)_getSyncedTimeForSourceTime:(uint64_t)time@<X8>;
 - (void)dealloc;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setMasterClock:(OpaqueCMClock *)a3;
-- (void)setQuantizationFrameDuration:(id *)a3;
-- (void)setSourceClock:(OpaqueCMClock *)a3;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setMasterClock:(OpaqueCMClock *)clock;
+- (void)setQuantizationFrameDuration:(id *)duration;
+- (void)setSourceClock:(OpaqueCMClock *)clock;
 @end
 
 @implementation BWSynchronizerNode
@@ -25,9 +25,9 @@
   }
 }
 
-- (BWSynchronizerNode)initWithMediaType:(unsigned int)a3
+- (BWSynchronizerNode)initWithMediaType:(unsigned int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v11.receiver = self;
   v11.super_class = BWSynchronizerNode;
   v4 = [(BWNode *)&v11 init];
@@ -99,13 +99,13 @@
   return sourceClock;
 }
 
-- (void)setSourceClock:(OpaqueCMClock *)a3
+- (void)setSourceClock:(OpaqueCMClock *)clock
 {
   sourceClock = self->_sourceClock;
-  self->_sourceClock = a3;
-  if (a3)
+  self->_sourceClock = clock;
+  if (clock)
   {
-    CFRetain(a3);
+    CFRetain(clock);
   }
 
   if (sourceClock)
@@ -127,13 +127,13 @@
   return masterClock;
 }
 
-- (void)setMasterClock:(OpaqueCMClock *)a3
+- (void)setMasterClock:(OpaqueCMClock *)clock
 {
   masterClock = self->_masterClock;
-  self->_masterClock = a3;
-  if (a3)
+  self->_masterClock = clock;
+  if (clock)
   {
-    CFRetain(a3);
+    CFRetain(clock);
   }
 
   if (masterClock)
@@ -143,12 +143,12 @@
   }
 }
 
-- (void)setQuantizationFrameDuration:(id *)a3
+- (void)setQuantizationFrameDuration:(id *)duration
 {
-  if (a3->var2)
+  if (duration->var2)
   {
-    var3 = a3->var3;
-    *&self->_quantizationFrameDuration.value = *&a3->var0;
+    var3 = duration->var3;
+    *&self->_quantizationFrameDuration.value = *&duration->var0;
     self->_quantizationFrameDuration.epoch = var3;
     self->_oldestPTSSyncHistoryElement = -1;
     self->_newestPTSSyncHistoryElement = -1;
@@ -172,11 +172,11 @@
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   flags = self->_quantizationFrameDuration.flags;
   v7 = FigCFEqual();
-  if (a3)
+  if (buffer)
   {
     if (v7)
     {
@@ -195,11 +195,11 @@
       goto LABEL_13;
     }
 
-    v9 = [(BWSynchronizerNode *)self _newRetimedVideoSampleBuffer:a3 updatePTSSyncHistory:1];
+    v9 = [(BWSynchronizerNode *)self _newRetimedVideoSampleBuffer:buffer updatePTSSyncHistory:1];
     if (v9)
     {
       v10 = v9;
-      AttachedMedia = BWSampleBufferGetAttachedMedia(a3, @"SynchronizedSlaveFrame");
+      AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, @"SynchronizedSlaveFrame");
       if (AttachedMedia)
       {
         v12 = [(BWSynchronizerNode *)self _newRetimedVideoSampleBuffer:0 updatePTSSyncHistory:?];
@@ -218,9 +218,9 @@
       }
 
       BWSynchronizeSmartStyleAttachedMediaPTS(v10);
-      a3 = v10;
+      buffer = v10;
 LABEL_13:
-      [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+      [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
       if (v10)
       {
         CFRelease(v10);
@@ -246,7 +246,7 @@ LABEL_13:
   if (flags)
   {
     memset(&v16, 0, sizeof(v16));
-    CMSampleBufferGetPresentationTimeStamp(&v16, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v16, buffer);
     v15 = v16;
     v13 = [BWDroppedSample newDroppedSampleWithReason:0x1F219C1F0 pts:&v15];
     [(BWNodeOutput *)self->super._output emitDroppedSample:v13];
@@ -256,11 +256,11 @@ LABEL_13:
   {
     output = self->super._output;
 
-    [(BWNodeOutput *)output emitSampleBuffer:a3];
+    [(BWNodeOutput *)output emitSampleBuffer:buffer];
   }
 }
 
-- (CMSampleBufferRef)_newRetimedVideoSampleBuffer:(int)a3 updatePTSSyncHistory:
+- (CMSampleBufferRef)_newRetimedVideoSampleBuffer:(int)buffer updatePTSSyncHistory:
 {
   if (result)
   {
@@ -533,7 +533,7 @@ LABEL_20:
         epoch = v69.epoch;
 LABEL_21:
         timingArrayOut.presentationTimeStamp.epoch = epoch;
-        if (a3)
+        if (buffer)
         {
           lhs = rhs;
           time = timingArrayOut.presentationTimeStamp;
@@ -562,7 +562,7 @@ LABEL_21:
   return result;
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
   if (FigCFEqual())
   {
@@ -570,9 +570,9 @@ LABEL_21:
   }
 
   memset(&v13, 0, sizeof(v13));
-  if (a3)
+  if (sample)
   {
-    [a3 pts];
+    [sample pts];
   }
 
   memset(&v12, 0, sizeof(v12));
@@ -585,40 +585,40 @@ LABEL_21:
   if (!CMTimeCompare(&time, &v10))
   {
 LABEL_2:
-    [(BWNodeOutput *)self->super._output emitDroppedSample:a3];
+    [(BWNodeOutput *)self->super._output emitDroppedSample:sample];
   }
 
   else
   {
-    v8 = [a3 reason];
+    reason = [sample reason];
     time = v12;
-    v9 = [BWDroppedSample newDroppedSampleWithReason:v8 pts:&time];
+    v9 = [BWDroppedSample newDroppedSampleWithReason:reason pts:&time];
     [(BWNodeOutput *)self->super._output emitDroppedSample:v9];
   }
 }
 
-- (void)_getSyncedTimeForSourceTime:(uint64_t)a3@<X8>
+- (void)_getSyncedTimeForSourceTime:(uint64_t)time@<X8>
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 944) == -1)
+    if (*(self + 944) == -1)
     {
 LABEL_15:
-      v15 = *(a1 + 128);
-      v16 = *(a1 + 136);
+      v15 = *(self + 128);
+      v16 = *(self + 136);
       time1 = *a2;
-      CMSyncConvertTime(a3, &time1, v15, v16);
+      CMSyncConvertTime(time, &time1, v15, v16);
     }
 
     else
     {
-      v6 = *(a1 + 948);
+      v6 = *(self + 948);
       v7 = -1;
       while (1)
       {
         v8 = v6;
         time1 = *a2;
-        v22 = *(a1 + 176 + 48 * v6);
+        v22 = *(self + 176 + 48 * v6);
         v9 = CMTimeCompare(&time1, &v22);
         if (!v9)
         {
@@ -642,7 +642,7 @@ LABEL_15:
 
         v7 = v6;
         v6 += v10;
-        if (v8 == *(a1 + 944))
+        if (v8 == *(self + 944))
         {
           goto LABEL_15;
         }
@@ -653,23 +653,23 @@ LABEL_15:
         goto LABEL_15;
       }
 
-      time1 = *(a1 + 176 + 48 * v6);
+      time1 = *(self + 176 + 48 * v6);
       Seconds = CMTimeGetSeconds(&time1);
-      time1 = *(a1 + 176 + 48 * v7);
+      time1 = *(self + 176 + 48 * v7);
       v12 = CMTimeGetSeconds(&time1);
       time1 = *a2;
       v13 = (CMTimeGetSeconds(&time1) - Seconds) / (v12 - Seconds);
       if (v13 < 0.01)
       {
 LABEL_13:
-        v14 = a1 + 176 + 48 * v6;
+        v14 = self + 176 + 48 * v6;
 LABEL_14:
-        *a3 = *(v14 + 24);
-        *(a3 + 16) = *(v14 + 40);
+        *time = *(v14 + 24);
+        *(time + 16) = *(v14 + 40);
         return;
       }
 
-      v17 = a1 + 176;
+      v17 = self + 176;
       if (v13 > 0.99)
       {
         v14 = v17 + 48 * v7;
@@ -678,37 +678,37 @@ LABEL_14:
 
       time1 = *(v17 + 48 * v6 + 24);
       v18 = CMTimeGetSeconds(&time1);
-      time1 = *(a1 + 176 + 48 * v7 + 24);
+      time1 = *(self + 176 + 48 * v7 + 24);
       v19 = CMTimeGetSeconds(&time1);
-      v20 = a1 + 176 + 48 * v6;
+      v20 = self + 176 + 48 * v6;
       v21 = *(v20 + 32);
-      *(a3 + 8) = 0;
-      *(a3 + 16) = 0;
-      *a3 = 0;
+      *(time + 8) = 0;
+      *(time + 16) = 0;
+      *time = 0;
       CMTimeMake(&time1, (v13 * (v19 - v18) * v21), v21);
       v22 = *(v20 + 24);
-      CMTimeAdd(a3, &v22, &time1);
+      CMTimeAdd(time, &v22, &time1);
     }
   }
 
   else
   {
-    *a3 = 0;
-    *(a3 + 8) = 0;
-    *(a3 + 16) = 0;
+    *time = 0;
+    *(time + 8) = 0;
+    *(time + 16) = 0;
   }
 }
 
-- (__n128)_updatePTSSyncHistoryWithSourceTime:(__n128 *)a3 syncedTime:
+- (__n128)_updatePTSSyncHistoryWithSourceTime:(__n128 *)time syncedTime:
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 944) == -1)
+    if (*(self + 944) == -1)
     {
       goto LABEL_7;
     }
 
-    v6 = (a1 + 176 + 48 * *(a1 + 948));
+    v6 = (self + 176 + 48 * *(self + 948));
     time1 = *a2;
     v14 = *v6;
     v7 = CMTimeCompare(&time1, &v14);
@@ -720,35 +720,35 @@ LABEL_14:
     if (v7 < 0)
     {
 LABEL_7:
-      *(a1 + 944) = 0;
-      *(a1 + 948) = 0;
+      *(self + 944) = 0;
+      *(self + 948) = 0;
     }
 
     else
     {
-      *(a1 + 948) = (*(a1 + 948) + 1) % 16;
-      v9 = *(a1 + 948);
-      if (v9 == *(a1 + 944))
+      *(self + 948) = (*(self + 948) + 1) % 16;
+      v9 = *(self + 948);
+      if (v9 == *(self + 944))
       {
-        *(a1 + 944) = (v9 + 1) % 16;
+        *(self + 944) = (v9 + 1) % 16;
       }
     }
 
-    v10 = a1 + 176 + 48 * *(a1 + 948);
+    v10 = self + 176 + 48 * *(self + 948);
     epoch = a2->epoch;
     *v10 = *&a2->value;
     *(v10 + 16) = epoch;
-    v12 = a1 + 176 + 48 * *(a1 + 948);
-    v13 = a3[1].n128_u64[0];
-    result = *a3;
-    *(v12 + 24) = *a3;
+    v12 = self + 176 + 48 * *(self + 948);
+    v13 = time[1].n128_u64[0];
+    result = *time;
+    *(v12 + 24) = *time;
     *(v12 + 40) = v13;
   }
 
   return result;
 }
 
-- (uint64_t)_synchronizeDetectedFaces:(uint64_t)a3 metadata:(int32_t)a4 timescale:
+- (uint64_t)_synchronizeDetectedFaces:(uint64_t)faces metadata:(int32_t)metadata timescale:
 {
   v37 = result;
   if (result)
@@ -761,7 +761,7 @@ LABEL_7:
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v14 = OUTLINED_FUNCTION_1_101(v6, v7, v8, v9, v10, v11, v12, v13, v33, a3, v37, v39, v41, v43.value, *&v43.timescale, v43.epoch, time2.value, *&time2.timescale, time2.epoch, v45, time1.value, *&time1.timescale, time1.epoch, v47, time.value, *&time.timescale, time.epoch, v49.value, *&v49.timescale, v49.epoch, v50);
+    v14 = OUTLINED_FUNCTION_1_101(v6, v7, v8, v9, v10, v11, v12, v13, v33, faces, v37, v39, v41, v43.value, *&v43.timescale, v43.epoch, time2.value, *&time2.timescale, time2.epoch, v45, time1.value, *&time1.timescale, time1.epoch, v47, time.value, *&time.timescale, time.epoch, v49.value, *&v49.timescale, v49.epoch, v50);
     if (v14)
     {
       v15 = v14;
@@ -780,7 +780,7 @@ LABEL_7:
 
           v19 = *(*(&v51 + 1) + 8 * i);
           v20 = [v19 objectForKeyedSubscript:v17];
-          if (v20 && (v21 = v20, memset(&v49, 0, sizeof(v49)), [v20 longLongValue], v22 = FigHostTimeToNanoseconds(), CMTimeMake(&time, v22, 1000000000), CMTimeConvertScale(&v49, &time, a4, kCMTimeRoundingMethod_RoundHalfAwayFromZero), (v49.flags & 1) != 0) && ((memset(&time, 0, sizeof(time)), time1 = v56, time2 = v49, !CMTimeCompare(&time1, &time2)) ? (time = v55) : (time1 = v49, -[BWSynchronizerNode _getSyncedTimeForSourceTime:](v38, &time1, &time), v56 = v49, v55 = time), time1 = time, CMTimeConvertScale(&v43, &time1, 1000000000, kCMTimeRoundingMethod_RoundHalfAwayFromZero), v23 = objc_msgSend(MEMORY[0x1E696AD98], "numberWithLongLong:", FigNanosecondsToHostTime()), v24 = objc_msgSend(objc_alloc(MEMORY[0x1E695DF90]), "initWithCapacity:", objc_msgSend(v19, "count") + 1), objc_msgSend(v24, "addEntriesFromDictionary:", v19), objc_msgSend(v24, "setObject:forKeyedSubscript:", v23, v17), objc_msgSend(v24, "setObject:forKeyedSubscript:", v21, v40), v5 = v42, v24))
+          if (v20 && (v21 = v20, memset(&v49, 0, sizeof(v49)), [v20 longLongValue], v22 = FigHostTimeToNanoseconds(), CMTimeMake(&time, v22, 1000000000), CMTimeConvertScale(&v49, &time, metadata, kCMTimeRoundingMethod_RoundHalfAwayFromZero), (v49.flags & 1) != 0) && ((memset(&time, 0, sizeof(time)), time1 = v56, time2 = v49, !CMTimeCompare(&time1, &time2)) ? (time = v55) : (time1 = v49, -[BWSynchronizerNode _getSyncedTimeForSourceTime:](v38, &time1, &time), v56 = v49, v55 = time), time1 = time, CMTimeConvertScale(&v43, &time1, 1000000000, kCMTimeRoundingMethod_RoundHalfAwayFromZero), v23 = objc_msgSend(MEMORY[0x1E696AD98], "numberWithLongLong:", FigNanosecondsToHostTime()), v24 = objc_msgSend(objc_alloc(MEMORY[0x1E695DF90]), "initWithCapacity:", objc_msgSend(v19, "count") + 1), objc_msgSend(v24, "addEntriesFromDictionary:", v19), objc_msgSend(v24, "setObject:forKeyedSubscript:", v23, v17), objc_msgSend(v24, "setObject:forKeyedSubscript:", v21, v40), v5 = v42, v24))
           {
             [v6 addObject:v24];
           }

@@ -27,13 +27,13 @@
   v4 = MEMORY[0x277D75858];
   v5 = MEMORY[0x277D75B90];
   v6 = a3;
-  v7 = [[v5 alloc] initWithView:a1];
+  v7 = [[v5 alloc] initWithView:self];
   v8 = [v4 effectWithPreview:v7];
 
-  v9 = [a1 imageView];
-  [v9 frame];
+  imageView = [self imageView];
+  [imageView frame];
   UIRectGetCenter();
-  [v6 convertPoint:a1 fromView:?];
+  [v6 convertPoint:self fromView:?];
 
   [v6 mui_currentScreenScale];
   UIRectCenteredAboutPointScale();

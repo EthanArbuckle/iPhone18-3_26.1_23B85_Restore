@@ -1,25 +1,25 @@
 @interface HUAboutResidentDeviceFooterView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (HUAboutResidentDeviceFooterView)initWithCoder:(id)a3;
-- (HUAboutResidentDeviceFooterView)initWithFrame:(CGRect)a3;
-- (HUAboutResidentDeviceFooterView)initWithReuseIdentifier:(id)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (HUAboutResidentDeviceFooterView)initWithCoder:(id)coder;
+- (HUAboutResidentDeviceFooterView)initWithFrame:(CGRect)frame;
+- (HUAboutResidentDeviceFooterView)initWithReuseIdentifier:(id)identifier;
 - (HUAboutResidentDeviceFooterViewDelegate)delegate;
 - (UIEdgeInsets)messageInsets;
 - (id)_linkTextAttributes;
 - (id)_textAttributes;
 - (void)_setupViews;
-- (void)setMessageInsets:(UIEdgeInsets)a3;
+- (void)setMessageInsets:(UIEdgeInsets)insets;
 - (void)updateConstraints;
 @end
 
 @implementation HUAboutResidentDeviceFooterView
 
-- (HUAboutResidentDeviceFooterView)initWithReuseIdentifier:(id)a3
+- (HUAboutResidentDeviceFooterView)initWithReuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = HUAboutResidentDeviceFooterView;
-  v3 = [(HUAboutResidentDeviceFooterView *)&v6 initWithReuseIdentifier:a3];
+  v3 = [(HUAboutResidentDeviceFooterView *)&v6 initWithReuseIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -29,11 +29,11 @@
   return v4;
 }
 
-- (HUAboutResidentDeviceFooterView)initWithCoder:(id)a3
+- (HUAboutResidentDeviceFooterView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HUAboutResidentDeviceFooterView;
-  v3 = [(HUAboutResidentDeviceFooterView *)&v6 initWithCoder:a3];
+  v3 = [(HUAboutResidentDeviceFooterView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -43,11 +43,11 @@
   return v4;
 }
 
-- (HUAboutResidentDeviceFooterView)initWithFrame:(CGRect)a3
+- (HUAboutResidentDeviceFooterView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HUAboutResidentDeviceFooterView;
-  v3 = [(HUAboutResidentDeviceFooterView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUAboutResidentDeviceFooterView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -57,16 +57,16 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(HUAboutResidentDeviceFooterView *)self messageInsets];
   v7 = v6;
   [(HUAboutResidentDeviceFooterView *)self messageInsets];
   v9 = width - (v7 + v8);
-  v10 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  [v10 sizeThatFits:{v9, height}];
+  messageView = [(HUAboutResidentDeviceFooterView *)self messageView];
+  [messageView sizeThatFits:{v9, height}];
   v12 = v11;
   v14 = v13;
 
@@ -77,93 +77,93 @@
   return result;
 }
 
-- (void)setMessageInsets:(UIEdgeInsets)a3
+- (void)setMessageInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_messageInsets.top), vceqq_f64(v4, *&self->_messageInsets.bottom)))) & 1) == 0)
   {
-    self->_messageInsets = a3;
+    self->_messageInsets = insets;
     [(HUAboutResidentDeviceFooterView *)self setNeedsUpdateConstraints];
   }
 }
 
 - (void)updateConstraints
 {
-  v3 = [(HUAboutResidentDeviceFooterView *)self constraints];
+  constraints = [(HUAboutResidentDeviceFooterView *)self constraints];
 
-  if (v3)
+  if (constraints)
   {
     v4 = MEMORY[0x277CCAAD0];
-    v5 = [(HUAboutResidentDeviceFooterView *)self constraints];
-    [v4 deactivateConstraints:v5];
+    constraints2 = [(HUAboutResidentDeviceFooterView *)self constraints];
+    [v4 deactivateConstraints:constraints2];
 
-    v6 = [(HUAboutResidentDeviceFooterView *)self constraints];
-    [v6 removeAllObjects];
+    constraints3 = [(HUAboutResidentDeviceFooterView *)self constraints];
+    [constraints3 removeAllObjects];
   }
 
   else
   {
-    v6 = objc_opt_new();
-    [(HUAboutResidentDeviceFooterView *)self setConstraints:v6];
+    constraints3 = objc_opt_new();
+    [(HUAboutResidentDeviceFooterView *)self setConstraints:constraints3];
   }
 
-  v7 = [(HUAboutResidentDeviceFooterView *)self constraints];
-  v8 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  v9 = [v8 leadingAnchor];
-  v10 = [(HUAboutResidentDeviceFooterView *)self contentView];
-  v11 = [v10 leadingAnchor];
+  constraints4 = [(HUAboutResidentDeviceFooterView *)self constraints];
+  messageView = [(HUAboutResidentDeviceFooterView *)self messageView];
+  leadingAnchor = [messageView leadingAnchor];
+  contentView = [(HUAboutResidentDeviceFooterView *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
   [(HUAboutResidentDeviceFooterView *)self messageInsets];
-  v13 = [v9 constraintEqualToAnchor:v11 constant:v12];
-  [v7 addObject:v13];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v12];
+  [constraints4 addObject:v13];
 
-  v14 = [(HUAboutResidentDeviceFooterView *)self constraints];
-  v15 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  v16 = [v15 trailingAnchor];
-  v17 = [(HUAboutResidentDeviceFooterView *)self contentView];
-  v18 = [v17 trailingAnchor];
+  constraints5 = [(HUAboutResidentDeviceFooterView *)self constraints];
+  messageView2 = [(HUAboutResidentDeviceFooterView *)self messageView];
+  trailingAnchor = [messageView2 trailingAnchor];
+  contentView2 = [(HUAboutResidentDeviceFooterView *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
   [(HUAboutResidentDeviceFooterView *)self messageInsets];
-  v20 = [v16 constraintEqualToAnchor:v18 constant:-v19];
-  [v14 addObject:v20];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v19];
+  [constraints5 addObject:v20];
 
-  v21 = [(HUAboutResidentDeviceFooterView *)self constraints];
-  v22 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  v23 = [v22 topAnchor];
-  v24 = [(HUAboutResidentDeviceFooterView *)self contentView];
-  v25 = [v24 topAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
-  [v21 addObject:v26];
+  constraints6 = [(HUAboutResidentDeviceFooterView *)self constraints];
+  messageView3 = [(HUAboutResidentDeviceFooterView *)self messageView];
+  topAnchor = [messageView3 topAnchor];
+  contentView3 = [(HUAboutResidentDeviceFooterView *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [constraints6 addObject:v26];
 
-  v27 = [(HUAboutResidentDeviceFooterView *)self constraints];
-  v28 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  v29 = [v28 bottomAnchor];
-  v30 = [(HUAboutResidentDeviceFooterView *)self contentView];
-  v31 = [v30 bottomAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
-  [v27 addObject:v32];
+  constraints7 = [(HUAboutResidentDeviceFooterView *)self constraints];
+  messageView4 = [(HUAboutResidentDeviceFooterView *)self messageView];
+  bottomAnchor = [messageView4 bottomAnchor];
+  contentView4 = [(HUAboutResidentDeviceFooterView *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [constraints7 addObject:v32];
 
   v33 = MEMORY[0x277CCAAD0];
-  v34 = [(HUAboutResidentDeviceFooterView *)self constraints];
-  [v33 activateConstraints:v34];
+  constraints8 = [(HUAboutResidentDeviceFooterView *)self constraints];
+  [v33 activateConstraints:constraints8];
 
   v35.receiver = self;
   v35.super_class = HUAboutResidentDeviceFooterView;
   [(HUAboutResidentDeviceFooterView *)&v35 updateConstraints];
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  lCopy = l;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v7;
+    v14 = lCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v11, 0x16u);
   }
 
@@ -179,53 +179,53 @@
   v4 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(HUAboutResidentDeviceFooterView *)self setMessageView:v4];
 
-  v5 = [MEMORY[0x277D75348] clearColor];
-  v6 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  [v6 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  messageView = [(HUAboutResidentDeviceFooterView *)self messageView];
+  [messageView setBackgroundColor:clearColor];
 
   v7 = *MEMORY[0x277D768C8];
   v8 = *(MEMORY[0x277D768C8] + 8);
   v9 = *(MEMORY[0x277D768C8] + 16);
   v10 = *(MEMORY[0x277D768C8] + 24);
-  v11 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  [v11 setContentInset:{v7, v8, v9, v10}];
+  messageView2 = [(HUAboutResidentDeviceFooterView *)self messageView];
+  [messageView2 setContentInset:{v7, v8, v9, v10}];
 
-  v12 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  v13 = [v12 textContainer];
-  [v13 setLineFragmentPadding:0.0];
+  messageView3 = [(HUAboutResidentDeviceFooterView *)self messageView];
+  textContainer = [messageView3 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
-  v14 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  [v14 setEditable:0];
+  messageView4 = [(HUAboutResidentDeviceFooterView *)self messageView];
+  [messageView4 setEditable:0];
 
-  v15 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  [v15 setScrollEnabled:0];
+  messageView5 = [(HUAboutResidentDeviceFooterView *)self messageView];
+  [messageView5 setScrollEnabled:0];
 
-  v16 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  [v16 setDelegate:self];
+  messageView6 = [(HUAboutResidentDeviceFooterView *)self messageView];
+  [messageView6 setDelegate:self];
 
-  v17 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+  messageView7 = [(HUAboutResidentDeviceFooterView *)self messageView];
+  [messageView7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v18 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  [v18 _setInteractiveTextSelectionDisabled:1];
+  messageView8 = [(HUAboutResidentDeviceFooterView *)self messageView];
+  [messageView8 _setInteractiveTextSelectionDisabled:1];
 
   v28 = _HULocalizedStringWithDefaultValue(@"HUUsersAccessWithoutRemoteCapabilityFooter", @"HUUsersAccessWithoutRemoteCapabilityFooter", 1);
   v19 = _HULocalizedStringWithDefaultValue(@"HUUsersAccessWithoutRemoteCapabilityFooterLearnMore", @"HUUsersAccessWithoutRemoteCapabilityFooterLearnMore", 1);
-  v20 = [(HUAboutResidentDeviceFooterView *)self _textAttributes];
-  v21 = [v20 mutableCopy];
+  _textAttributes = [(HUAboutResidentDeviceFooterView *)self _textAttributes];
+  v21 = [_textAttributes mutableCopy];
 
   v22 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v28 attributes:v21];
-  v23 = [(HUAboutResidentDeviceFooterView *)self _linkTextAttributes];
-  [v21 addEntriesFromDictionary:v23];
+  _linkTextAttributes = [(HUAboutResidentDeviceFooterView *)self _linkTextAttributes];
+  [v21 addEntriesFromDictionary:_linkTextAttributes];
   v24 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v19 attributes:v21];
   [v22 appendAttributedString:v24];
   [(UITextView *)self->_messageView setAttributedText:v22];
-  v25 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  [v25 setLinkTextAttributes:v23];
+  messageView9 = [(HUAboutResidentDeviceFooterView *)self messageView];
+  [messageView9 setLinkTextAttributes:_linkTextAttributes];
 
-  v26 = [(HUAboutResidentDeviceFooterView *)self contentView];
-  v27 = [(HUAboutResidentDeviceFooterView *)self messageView];
-  [v26 addSubview:v27];
+  contentView = [(HUAboutResidentDeviceFooterView *)self contentView];
+  messageView10 = [(HUAboutResidentDeviceFooterView *)self messageView];
+  [contentView addSubview:messageView10];
 }
 
 - (id)_textAttributes
@@ -241,8 +241,8 @@
   v5 = *MEMORY[0x277D740C0];
   v9[1] = v4;
   v9[2] = v5;
-  v6 = [MEMORY[0x277D75348] systemGrayColor];
-  v10[2] = v6;
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  v10[2] = systemGrayColor;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   return v7;
@@ -252,15 +252,15 @@
 {
   v9[3] = *MEMORY[0x277D85DE8];
   v8[0] = *MEMORY[0x277D740C0];
-  v2 = [MEMORY[0x277D75348] hf_keyColor];
+  hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
   v3 = *MEMORY[0x277D741F0];
-  v9[0] = v2;
+  v9[0] = hf_keyColor;
   v9[1] = &unk_282491970;
   v4 = *MEMORY[0x277D740E8];
   v8[1] = v3;
   v8[2] = v4;
-  v5 = [MEMORY[0x277D14C80] aboutResidentDeviceURL];
-  v9[2] = v5;
+  aboutResidentDeviceURL = [MEMORY[0x277D14C80] aboutResidentDeviceURL];
+  v9[2] = aboutResidentDeviceURL;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:3];
 
   return v6;

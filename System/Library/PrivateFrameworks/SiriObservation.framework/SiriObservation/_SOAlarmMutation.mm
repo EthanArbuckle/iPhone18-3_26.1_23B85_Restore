@@ -1,7 +1,7 @@
 @interface _SOAlarmMutation
 - (BOOL)getIsEnabled;
 - (BOOL)getIsFiring;
-- (_SOAlarmMutation)initWithBase:(id)a3;
+- (_SOAlarmMutation)initWithBase:(id)base;
 - (id)getAlarmID;
 - (id)getAlarmURL;
 - (id)getTitle;
@@ -81,57 +81,57 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_title;
+    title = self->_title;
   }
 
   else
   {
-    v2 = [(SOAlarm *)self->_base title];
+    title = [(SOAlarm *)self->_base title];
   }
 
-  return v2;
+  return title;
 }
 
 - (id)getAlarmURL
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_alarmURL;
+    alarmURL = self->_alarmURL;
   }
 
   else
   {
-    v2 = [(SOAlarm *)self->_base alarmURL];
+    alarmURL = [(SOAlarm *)self->_base alarmURL];
   }
 
-  return v2;
+  return alarmURL;
 }
 
 - (id)getAlarmID
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_alarmID;
+    alarmID = self->_alarmID;
   }
 
   else
   {
-    v2 = [(SOAlarm *)self->_base alarmID];
+    alarmID = [(SOAlarm *)self->_base alarmID];
   }
 
-  return v2;
+  return alarmID;
 }
 
-- (_SOAlarmMutation)initWithBase:(id)a3
+- (_SOAlarmMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _SOAlarmMutation;
   v6 = [(_SOAlarmMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

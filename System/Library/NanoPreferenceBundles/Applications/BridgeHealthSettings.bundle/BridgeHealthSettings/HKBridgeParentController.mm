@@ -23,9 +23,9 @@
     v3 = +[NRPairedDeviceRegistry sharedInstance];
     v4 = +[NRPairedDeviceRegistry activeDeviceSelectorBlock];
     v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     activeTinkerDevice = v2->_activeTinkerDevice;
-    v2->_activeTinkerDevice = v6;
+    v2->_activeTinkerDevice = firstObject;
 
     v8 = [(NRDevice *)v2->_activeTinkerDevice valueForProperty:NRDevicePropertyIsAltAccount];
     v2->_isTinkerDevice = [v8 BOOLValue];
@@ -72,8 +72,8 @@
 
 - (id)specifiers
 {
-  v3 = [(HKBridgeParentController *)self localizedPaneTitle];
-  [(HKBridgeParentController *)self setTitle:v3];
+  localizedPaneTitle = [(HKBridgeParentController *)self localizedPaneTitle];
+  [(HKBridgeParentController *)self setTitle:localizedPaneTitle];
 
   return &__NSArray0__struct;
 }
@@ -115,12 +115,12 @@
 
     [(UIActivityIndicatorView *)self->_tinkerLoadingActivityIndicator setHidesWhenStopped:1];
     [(UIActivityIndicatorView *)self->_tinkerLoadingActivityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(HKBridgeParentController *)self view];
-    [v6 addSubview:self->_tinkerLoadingActivityIndicator];
+    view = [(HKBridgeParentController *)self view];
+    [view addSubview:self->_tinkerLoadingActivityIndicator];
 
     v7 = self->_tinkerLoadingActivityIndicator;
-    v8 = [(HKBridgeParentController *)self view];
-    [(UIActivityIndicatorView *)v7 hk_alignCenterConstraintsWithView:v8];
+    view2 = [(HKBridgeParentController *)self view];
+    [(UIActivityIndicatorView *)v7 hk_alignCenterConstraintsWithView:view2];
 
     tinkerLoadingActivityIndicator = self->_tinkerLoadingActivityIndicator;
   }
@@ -155,13 +155,13 @@
   if (self->_currentBridgeViewController)
   {
     [(HKBridgeParentController *)self addChildViewController:?];
-    v5 = [(HKBridgeParentController *)self view];
-    v6 = [(UIViewController *)self->_currentBridgeViewController view];
-    [v5 addSubview:v6];
+    view = [(HKBridgeParentController *)self view];
+    view2 = [(UIViewController *)self->_currentBridgeViewController view];
+    [view addSubview:view2];
 
-    v7 = [(UIViewController *)self->_currentBridgeViewController view];
-    v8 = [(HKBridgeParentController *)self view];
-    [v7 hk_alignConstraintsWithView:v8];
+    view3 = [(UIViewController *)self->_currentBridgeViewController view];
+    view4 = [(HKBridgeParentController *)self view];
+    [view3 hk_alignConstraintsWithView:view4];
 
     v9 = self->_currentBridgeViewController;
 
@@ -172,8 +172,8 @@
 - (void)didSuccessfullyTearDownSharing
 {
   [(UIViewController *)self->_currentBridgeViewController willMoveToParentViewController:0];
-  v3 = [(UIViewController *)self->_currentBridgeViewController view];
-  [v3 removeFromSuperview];
+  view = [(UIViewController *)self->_currentBridgeViewController view];
+  [view removeFromSuperview];
 
   [(UIViewController *)self->_currentBridgeViewController removeFromParentViewController];
   currentBridgeViewController = self->_currentBridgeViewController;

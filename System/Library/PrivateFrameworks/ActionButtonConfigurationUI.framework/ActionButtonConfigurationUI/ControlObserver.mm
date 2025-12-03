@@ -16,7 +16,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   v5.receiver = self;

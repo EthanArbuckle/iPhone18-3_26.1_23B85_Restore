@@ -1,13 +1,13 @@
 @interface CCHIInterface
-- (BOOL)start:(id *)a3;
+- (BOOL)start:(id *)start;
 - (CCHIInterface)init;
 - (id)getBootPerformanceStats;
 - (id)getPMUFaultInfo;
-- (id)getPowerStats:(BOOL)a3;
+- (id)getPowerStats:(BOOL)stats;
 - (id)getSiKPublicKey;
 - (id)hello;
-- (id)sendCommand:(id)a3 gid:(unsigned __int8)a4 oid:(unsigned __int8)a5;
-- (id)shell:(id)a3;
+- (id)sendCommand:(id)command gid:(unsigned __int8)gid oid:(unsigned __int8)oid;
+- (id)shell:(id)shell;
 - (void)dealloc;
 - (void)log;
 - (void)stop;
@@ -68,12 +68,12 @@
   }
 }
 
-- (id)sendCommand:(id)a3 gid:(unsigned __int8)a4 oid:(unsigned __int8)a5
+- (id)sendCommand:(id)command gid:(unsigned __int8)gid oid:(unsigned __int8)oid
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
-  if ([v9 length] >= 0x3F9)
+  oidCopy = oid;
+  gidCopy = gid;
+  commandCopy = command;
+  if ([commandCopy length] >= 0x3F9)
   {
     sub_10002EA80();
 LABEL_17:
@@ -83,7 +83,7 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  v10 = [v9 length] + 8;
+  v10 = [commandCopy length] + 8;
   v11 = malloc_type_calloc(1uLL, v10, 0x1966C672uLL);
   if (!v11)
   {
@@ -93,12 +93,12 @@ LABEL_17:
 
   v12 = v11;
   *v11 = v10;
-  v11[2] = v6;
-  v11[3] = v5;
+  v11[2] = gidCopy;
+  v11[3] = oidCopy;
   txSeq = self->_txSeq;
   self->_txSeq = txSeq + 1;
   v11[4] = txSeq;
-  [v9 getBytes:v11 + 8 length:{objc_msgSend(v9, "length")}];
+  [commandCopy getBytes:v11 + 8 length:{objc_msgSend(commandCopy, "length")}];
   v14 = [NSData dataWithBytesNoCopy:v12 length:v10 freeWhenDone:0];
   if (!v14)
   {
@@ -128,8 +128,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v17 = [v16 bytes];
-  v18 = *v17;
+  bytes = [v16 bytes];
+  v18 = *bytes;
   if ([v16 length] != v18)
   {
     v23 = sub_100025204();
@@ -142,7 +142,7 @@ LABEL_26:
 
     v24 = [objc_opt_class() description];
     v25 = NSStringFromSelector(a2);
-    v26 = *v17;
+    v26 = *bytes;
     v39 = 138544130;
     v40 = v24;
     v41 = 2114;
@@ -160,7 +160,7 @@ LABEL_33:
     goto LABEL_26;
   }
 
-  v19 = v17[4];
+  v19 = bytes[4];
   if (v19 != self->_rxSeq)
   {
     v23 = sub_100025204();
@@ -168,7 +168,7 @@ LABEL_33:
     {
       v30 = [objc_opt_class() description];
       v31 = NSStringFromSelector(a2);
-      v32 = v17[4];
+      v32 = bytes[4];
       rxSeq = self->_rxSeq;
       v39 = 138544130;
       v40 = v30;
@@ -185,7 +185,7 @@ LABEL_33:
   }
 
   self->_rxSeq = v19 + 1;
-  if (v17[2] != v6)
+  if (bytes[2] != gidCopy)
   {
     v23 = sub_100025204();
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -195,7 +195,7 @@ LABEL_33:
 
     v24 = [objc_opt_class() description];
     v25 = NSStringFromSelector(a2);
-    v35 = v17[2];
+    v35 = bytes[2];
     v39 = 138544130;
     v40 = v24;
     v41 = 2114;
@@ -203,21 +203,21 @@ LABEL_33:
     v43 = 1024;
     v44 = v35;
     v45 = 1024;
-    LODWORD(v46) = v6;
+    LODWORD(v46) = gidCopy;
     v27 = "%{public}@::%{public}@: received gid %u, expected %u";
     v28 = v23;
     v29 = 34;
     goto LABEL_33;
   }
 
-  if (v17[3] != v5)
+  if (bytes[3] != oidCopy)
   {
     v34 = sub_100025204();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       v36 = [objc_opt_class() description];
       v37 = NSStringFromSelector(a2);
-      v38 = v17[3];
+      v38 = bytes[3];
       v39 = 138544130;
       v40 = v36;
       v41 = 2114;
@@ -225,14 +225,14 @@ LABEL_33:
       v43 = 1024;
       v44 = v38;
       v45 = 1024;
-      LODWORD(v46) = v5;
+      LODWORD(v46) = oidCopy;
       _os_log_error_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: received oid %u, expected %u", &v39, 0x22u);
     }
 
     goto LABEL_31;
   }
 
-  if (v17[5])
+  if (bytes[5])
   {
     sub_10002E744();
     goto LABEL_31;
@@ -536,9 +536,9 @@ LABEL_50:
       goto LABEL_44;
     }
 
-    v19 = [v16 bytes];
-    v20 = v19;
-    v21 = *v19;
+    bytes = [v16 bytes];
+    v20 = bytes;
+    v21 = *bytes;
     if (v21 != v126)
     {
       v43 = sub_100025204();
@@ -565,7 +565,7 @@ LABEL_49:
       goto LABEL_50;
     }
 
-    v22 = v19[1];
+    v22 = bytes[1];
     if (v22 < v21)
     {
       v43 = sub_100025204();
@@ -591,7 +591,7 @@ LABEL_49:
     }
 
     v121 = v14;
-    v23 = v19[2];
+    v23 = bytes[2];
     if (v23 < v22)
     {
       v43 = sub_100025204();
@@ -618,7 +618,7 @@ LABEL_49:
 
     if (v17 < 0xC)
     {
-      if (*v19)
+      if (*bytes)
       {
         v43 = sub_100025204();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -642,9 +642,9 @@ LABEL_61:
 
       else
       {
-        if (!v19[1])
+        if (!bytes[1])
         {
-          if (!v19[2])
+          if (!bytes[2])
           {
             v24 = 0;
             goto LABEL_27;
@@ -729,7 +729,7 @@ LABEL_65:
       goto LABEL_66;
     }
 
-    if (*v19)
+    if (*bytes)
     {
       if (v23 >= v13)
       {
@@ -763,7 +763,7 @@ LABEL_64:
     }
 
 LABEL_17:
-    v25 = (v19 + 4);
+    v25 = (bytes + 4);
     if (v18 <= 1)
     {
       v26 = 1;
@@ -818,8 +818,8 @@ LABEL_27:
     {
       v32 = [objc_opt_class() description];
       v33 = NSStringFromSelector(a2);
-      v34 = [v125 allObjects];
-      v35 = [v34 componentsJoinedByString:{@", "}];
+      allObjects = [v125 allObjects];
+      v35 = [allObjects componentsJoinedByString:{@", "}];
       *buf = 138543874;
       v128 = v32;
       v129 = 2114;
@@ -838,8 +838,8 @@ LABEL_27:
     {
       v37 = [objc_opt_class() description];
       v38 = NSStringFromSelector(a2);
-      v39 = [v123 allObjects];
-      v40 = [v39 componentsJoinedByString:{@", "}];
+      allObjects2 = [v123 allObjects];
+      v40 = [allObjects2 componentsJoinedByString:{@", "}];
       *buf = 138543874;
       v128 = v37;
       v129 = 2114;
@@ -859,7 +859,7 @@ LABEL_37:
   return v41;
 }
 
-- (BOOL)start:(id *)a3
+- (BOOL)start:(id *)start
 {
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -874,7 +874,7 @@ LABEL_37:
 
   if (self->_started)
   {
-    *a3 = @"alreadyStarted";
+    *start = @"alreadyStarted";
     v10 = sub_100025204();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -891,7 +891,7 @@ LABEL_37:
 
   else
   {
-    v9 = [(AirshipInterface *)self->_airshipInterface start:a3];
+    v9 = [(AirshipInterface *)self->_airshipInterface start:start];
     if (v9)
     {
       self->_rxSeq = 0;
@@ -935,9 +935,9 @@ LABEL_4:
   return v6;
 }
 
-- (id)shell:(id)a3
+- (id)shell:(id)shell
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [shell dataUsingEncoding:4];
   v5 = [(CCHIInterface *)self sendCommand:v4 gid:0 oid:1];
   if (v5)
   {
@@ -975,7 +975,7 @@ LABEL_28:
       v16 = NSStringFromSelector(v15);
       [v4 length];
       *buf = 138543874;
-      v18 = self;
+      selfCopy = self;
       sub_10001D058();
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: unexpected response size %lu", buf, 0x20u);
     }
@@ -983,15 +983,15 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v5 = [v4 bytes];
+  bytes = [v4 bytes];
   v6 = objc_alloc_init(NSMutableString);
   v7 = v6;
-  v8 = *v5;
-  if (*v5)
+  v8 = *bytes;
+  if (*bytes)
   {
     [v6 appendFormat:@"%@UnderVoltageShutdown", @"|"];
-    v8 = *v5;
-    if ((*v5 & 2) == 0)
+    v8 = *bytes;
+    if ((*bytes & 2) == 0)
     {
 LABEL_5:
       if ((v8 & 4) == 0)
@@ -1003,14 +1003,14 @@ LABEL_5:
     }
   }
 
-  else if ((*v5 & 2) == 0)
+  else if ((*bytes & 2) == 0)
   {
     goto LABEL_5;
   }
 
   [v7 appendFormat:@"%@OverTempShutdown", @"|"];
-  v8 = *v5;
-  if ((*v5 & 4) == 0)
+  v8 = *bytes;
+  if ((*bytes & 4) == 0)
   {
 LABEL_6:
     if ((v8 & 8) == 0)
@@ -1023,8 +1023,8 @@ LABEL_6:
 
 LABEL_15:
   [v7 appendFormat:@"%@PowerOnReset", @"|"];
-  v8 = *v5;
-  if ((*v5 & 8) == 0)
+  v8 = *bytes;
+  if ((*bytes & 8) == 0)
   {
 LABEL_7:
     if ((v8 & 0x10) == 0)
@@ -1037,8 +1037,8 @@ LABEL_7:
 
 LABEL_16:
   [v7 appendFormat:@"%@SystemReset", @"|"];
-  v8 = *v5;
-  if ((*v5 & 0x10) == 0)
+  v8 = *bytes;
+  if ((*bytes & 0x10) == 0)
   {
 LABEL_8:
     if ((v8 & 0x20) == 0)
@@ -1051,8 +1051,8 @@ LABEL_8:
 
 LABEL_17:
   [v7 appendFormat:@"%@NACKTimeout", @"|"];
-  v8 = *v5;
-  if ((*v5 & 0x20) == 0)
+  v8 = *bytes;
+  if ((*bytes & 0x20) == 0)
   {
 LABEL_9:
     if ((v8 & 0x40) == 0)
@@ -1062,7 +1062,7 @@ LABEL_9:
 
 LABEL_19:
     [v7 appendFormat:@"%@ShortResetPulse", @"|"];
-    if ((*v5 & 0x80) == 0)
+    if ((*bytes & 0x80) == 0)
     {
       goto LABEL_11;
     }
@@ -1072,8 +1072,8 @@ LABEL_19:
 
 LABEL_18:
   [v7 appendFormat:@"%@SPMITargetCommandOff", @"|"];
-  v8 = *v5;
-  if ((*v5 & 0x40) != 0)
+  v8 = *bytes;
+  if ((*bytes & 0x40) != 0)
   {
     goto LABEL_19;
   }
@@ -1088,7 +1088,7 @@ LABEL_20:
   [v7 appendFormat:@"%@SOCWatchdog", @"|"];
 LABEL_11:
   v9 = [v7 length];
-  v10 = *v5;
+  v10 = *bytes;
   if (v9)
   {
     v11 = [v7 substringFromIndex:{objc_msgSend(@"|", "length")}];
@@ -1105,10 +1105,10 @@ LABEL_22:
   return v12;
 }
 
-- (id)getPowerStats:(BOOL)a3
+- (id)getPowerStats:(BOOL)stats
 {
-  v44 = a3;
-  [NSData dataWithBytes:&v44 length:1];
+  statsCopy = stats;
+  [NSData dataWithBytes:&statsCopy length:1];
   objc_claimAutoreleasedReturnValue();
   v5 = [sub_10001D084() sendCommand:? gid:? oid:?];
   v6 = v5;
@@ -1116,105 +1116,105 @@ LABEL_22:
   {
     if ([v5 length] == 1016)
     {
-      v7 = [v6 bytes];
+      bytes = [v6 bytes];
       v8 = +[NSMutableDictionary dictionary];
-      v9 = [NSNumber numberWithUnsignedLongLong:*v7];
+      v9 = [NSNumber numberWithUnsignedLongLong:*bytes];
       sub_10001D040();
 
-      v10 = [NSNumber numberWithUnsignedLongLong:v7[1]];
+      v10 = [NSNumber numberWithUnsignedLongLong:bytes[1]];
       sub_10001D040();
 
-      v11 = [NSNumber numberWithUnsignedLongLong:v7[2]];
+      v11 = [NSNumber numberWithUnsignedLongLong:bytes[2]];
       sub_10001D040();
 
-      v12 = [NSNumber numberWithUnsignedLongLong:v7[3]];
+      v12 = [NSNumber numberWithUnsignedLongLong:bytes[3]];
       sub_10001D040();
 
-      v13 = [NSNumber numberWithUnsignedLongLong:v7[4]];
+      v13 = [NSNumber numberWithUnsignedLongLong:bytes[4]];
       sub_10001D040();
 
-      v14 = [NSNumber numberWithUnsignedLongLong:v7[5]];
+      v14 = [NSNumber numberWithUnsignedLongLong:bytes[5]];
       sub_10001D040();
 
-      v15 = [NSNumber numberWithUnsignedLongLong:v7[6]];
+      v15 = [NSNumber numberWithUnsignedLongLong:bytes[6]];
       sub_10001D040();
 
-      v16 = [NSNumber numberWithUnsignedLongLong:v7[7]];
+      v16 = [NSNumber numberWithUnsignedLongLong:bytes[7]];
       sub_10001D040();
 
-      v17 = [NSNumber numberWithUnsignedLongLong:v7[8]];
+      v17 = [NSNumber numberWithUnsignedLongLong:bytes[8]];
       sub_10001D040();
 
-      v18 = [NSNumber numberWithUnsignedLongLong:v7[9]];
+      v18 = [NSNumber numberWithUnsignedLongLong:bytes[9]];
       sub_10001D040();
 
-      v19 = [NSNumber numberWithUnsignedLongLong:v7[10]];
+      v19 = [NSNumber numberWithUnsignedLongLong:bytes[10]];
       sub_10001D040();
 
-      v20 = [NSNumber numberWithUnsignedLongLong:v7[11]];
+      v20 = [NSNumber numberWithUnsignedLongLong:bytes[11]];
       sub_10001D040();
 
-      v21 = [NSNumber numberWithUnsignedLongLong:v7[12]];
+      v21 = [NSNumber numberWithUnsignedLongLong:bytes[12]];
       sub_10001D040();
 
-      v22 = [NSNumber numberWithUnsignedLongLong:v7[13]];
+      v22 = [NSNumber numberWithUnsignedLongLong:bytes[13]];
       sub_10001D040();
 
-      v23 = [NSNumber numberWithUnsignedLongLong:v7[14]];
+      v23 = [NSNumber numberWithUnsignedLongLong:bytes[14]];
       sub_10001D040();
 
-      v24 = [NSNumber numberWithUnsignedLongLong:v7[15]];
+      v24 = [NSNumber numberWithUnsignedLongLong:bytes[15]];
       sub_10001D040();
 
-      v25 = [NSNumber numberWithUnsignedLongLong:v7[16]];
+      v25 = [NSNumber numberWithUnsignedLongLong:bytes[16]];
       sub_10001D040();
 
-      v26 = [NSNumber numberWithUnsignedLongLong:v7[17]];
+      v26 = [NSNumber numberWithUnsignedLongLong:bytes[17]];
       sub_10001D040();
 
-      v27 = [NSNumber numberWithUnsignedLongLong:v7[18]];
+      v27 = [NSNumber numberWithUnsignedLongLong:bytes[18]];
       sub_10001D040();
 
-      v28 = [NSNumber numberWithUnsignedLongLong:v7[19]];
+      v28 = [NSNumber numberWithUnsignedLongLong:bytes[19]];
       sub_10001D040();
 
-      v29 = [NSNumber numberWithUnsignedLongLong:v7[20]];
+      v29 = [NSNumber numberWithUnsignedLongLong:bytes[20]];
       sub_10001D040();
 
-      v30 = [NSNumber numberWithUnsignedLongLong:v7[21]];
+      v30 = [NSNumber numberWithUnsignedLongLong:bytes[21]];
       sub_10001D040();
 
-      v31 = [NSNumber numberWithUnsignedLongLong:v7[22]];
+      v31 = [NSNumber numberWithUnsignedLongLong:bytes[22]];
       sub_10001D040();
 
-      v32 = [NSNumber numberWithUnsignedLongLong:v7[23]];
+      v32 = [NSNumber numberWithUnsignedLongLong:bytes[23]];
       sub_10001D040();
 
-      v33 = [NSNumber numberWithUnsignedLongLong:v7[24]];
+      v33 = [NSNumber numberWithUnsignedLongLong:bytes[24]];
       sub_10001D040();
 
-      v34 = [NSNumber numberWithUnsignedLongLong:v7[25]];
+      v34 = [NSNumber numberWithUnsignedLongLong:bytes[25]];
       sub_10001D040();
 
-      v35 = [NSNumber numberWithUnsignedLongLong:v7[26]];
+      v35 = [NSNumber numberWithUnsignedLongLong:bytes[26]];
       sub_10001D040();
 
-      v36 = [NSNumber numberWithUnsignedLongLong:v7[27]];
+      v36 = [NSNumber numberWithUnsignedLongLong:bytes[27]];
       sub_10001D040();
 
-      v37 = [NSNumber numberWithUnsignedLongLong:v7[28]];
+      v37 = [NSNumber numberWithUnsignedLongLong:bytes[28]];
       sub_10001D040();
 
-      v38 = [NSNumber numberWithUnsignedLongLong:v7[29]];
+      v38 = [NSNumber numberWithUnsignedLongLong:bytes[29]];
       sub_10001D040();
 
-      v39 = [NSNumber numberWithUnsignedLongLong:v7[30]];
+      v39 = [NSNumber numberWithUnsignedLongLong:bytes[30]];
       sub_10001D040();
 
-      v40 = [NSNumber numberWithUnsignedLongLong:v7[31]];
+      v40 = [NSNumber numberWithUnsignedLongLong:bytes[31]];
       sub_10001D040();
 
-      v41 = [NSNumber numberWithUnsignedLongLong:v7[32]];
+      v41 = [NSNumber numberWithUnsignedLongLong:bytes[32]];
       [v8 setObject:v41 forKey:@"PCIeL3Duration"];
     }
 

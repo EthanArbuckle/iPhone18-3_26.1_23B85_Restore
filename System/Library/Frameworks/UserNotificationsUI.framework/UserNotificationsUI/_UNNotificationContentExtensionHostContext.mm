@@ -1,23 +1,23 @@
 @interface _UNNotificationContentExtensionHostContext
 - (CGRect)playPauseMediaButtonFrame;
-- (_UNNotificationContentExtensionHostContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
+- (_UNNotificationContentExtensionHostContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
 - (_UNNotificationContentExtensionHostContextDelegate)delegate;
-- (void)_extensionDidCompleteNotificationResponse:(id)a3 withOption:(unint64_t)a4;
-- (void)_extensionDidUpdateNotificationActions:(id)a3;
+- (void)_extensionDidCompleteNotificationResponse:(id)response withOption:(unint64_t)option;
+- (void)_extensionDidUpdateNotificationActions:(id)actions;
 - (void)_extensionDidUpdatePlayPauseMediaButton;
-- (void)_extensionDidUpdateTitle:(id)a3;
+- (void)_extensionDidUpdateTitle:(id)title;
 - (void)_extensionMediaPlayingPaused;
 - (void)_extensionMediaPlayingStarted;
 - (void)_extensionRequestsDefaultAction;
 - (void)_extensionRequestsDismiss;
-- (void)_extensionSetPlayPauseMediaButtonColor:(id)a3;
-- (void)_extensionSetPlayPauseMediaButtonFrame:(CGRect)a3;
-- (void)_extensionSetPlayPauseMediaButtonType:(unint64_t)a3;
-- (void)_extensionWantsToBecomeFirstResponder:(BOOL)a3;
-- (void)_extensionWantsToReceiveActionResponses:(BOOL)a3;
-- (void)_hostDidReceiveNotification:(id)a3;
-- (void)_hostDidReceiveNotificationResponse:(id)a3;
-- (void)_hostDidReceiveNotificationResponse:(id)a3 completionHandler:(id)a4;
+- (void)_extensionSetPlayPauseMediaButtonColor:(id)color;
+- (void)_extensionSetPlayPauseMediaButtonFrame:(CGRect)frame;
+- (void)_extensionSetPlayPauseMediaButtonType:(unint64_t)type;
+- (void)_extensionWantsToBecomeFirstResponder:(BOOL)responder;
+- (void)_extensionWantsToReceiveActionResponses:(BOOL)responses;
+- (void)_hostDidReceiveNotification:(id)notification;
+- (void)_hostDidReceiveNotificationResponse:(id)response;
+- (void)_hostDidReceiveNotificationResponse:(id)response completionHandler:(id)handler;
 - (void)_hostWantsMediaToPause;
 - (void)_hostWantsMediaToPlay;
 - (void)_hostWantsToPreserveInputViews;
@@ -25,16 +25,16 @@
 - (void)_hostWantsToUpdateMediaPlayPauseButton;
 - (void)_resumeDelegateQueueIfNecessary;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _UNNotificationContentExtensionHostContext
 
-- (_UNNotificationContentExtensionHostContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (_UNNotificationContentExtensionHostContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
   v10.receiver = self;
   v10.super_class = _UNNotificationContentExtensionHostContext;
-  v5 = [(_UNNotificationContentExtensionHostContext *)&v10 initWithInputItems:a3 listenerEndpoint:a4 contextUUID:a5];
+  v5 = [(_UNNotificationContentExtensionHostContext *)&v10 initWithInputItems:items listenerEndpoint:endpoint contextUUID:d];
   if (v5)
   {
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -57,74 +57,74 @@
   [(_UNNotificationContentExtensionHostContext *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
-  if (a3)
+  objc_storeWeak(&self->_delegate, delegate);
+  if (delegate)
   {
 
     [(_UNNotificationContentExtensionHostContext *)self _resumeDelegateQueueIfNecessary];
   }
 }
 
-- (void)_hostDidReceiveNotification:(id)a3
+- (void)_hostDidReceiveNotification:(id)notification
 {
-  v4 = a3;
-  v6 = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 _hostDidReceiveNotification:v4];
+  notificationCopy = notification;
+  _auxiliaryConnection = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
+  [remoteObjectProxy _hostDidReceiveNotification:notificationCopy];
 }
 
-- (void)_hostDidReceiveNotificationResponse:(id)a3
+- (void)_hostDidReceiveNotificationResponse:(id)response
 {
-  v4 = a3;
-  v6 = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 _hostDidReceiveNotificationResponse:v4];
+  responseCopy = response;
+  _auxiliaryConnection = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
+  [remoteObjectProxy _hostDidReceiveNotificationResponse:responseCopy];
 }
 
-- (void)_hostDidReceiveNotificationResponse:(id)a3 completionHandler:(id)a4
+- (void)_hostDidReceiveNotificationResponse:(id)response completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 _hostDidReceiveNotificationResponse:v7 completionHandler:v6];
+  handlerCopy = handler;
+  responseCopy = response;
+  _auxiliaryConnection = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
+  [remoteObjectProxy _hostDidReceiveNotificationResponse:responseCopy completionHandler:handlerCopy];
 }
 
 - (void)_hostWantsMediaToPause
 {
-  v3 = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 _hostWantsMediaToPause];
+  _auxiliaryConnection = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
+  [remoteObjectProxy _hostWantsMediaToPause];
 }
 
 - (void)_hostWantsMediaToPlay
 {
-  v3 = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 _hostWantsMediaToPlay];
+  _auxiliaryConnection = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
+  [remoteObjectProxy _hostWantsMediaToPlay];
 }
 
 - (void)_hostWantsToUpdateMediaPlayPauseButton
 {
-  v3 = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 _hostWantsToUpdateMediaPlayPauseButton];
+  _auxiliaryConnection = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
+  [remoteObjectProxy _hostWantsToUpdateMediaPlayPauseButton];
 }
 
 - (void)_hostWantsToPreserveInputViews
 {
-  v3 = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 _hostWantsToPreserveInputViews];
+  _auxiliaryConnection = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
+  [remoteObjectProxy _hostWantsToPreserveInputViews];
 }
 
 - (void)_hostWantsToRestoreInputViews
 {
-  v3 = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 _hostWantsToRestoreInputViews];
+  _auxiliaryConnection = [(_UNNotificationContentExtensionHostContext *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
+  [remoteObjectProxy _hostWantsToRestoreInputViews];
 }
 
 - (void)_extensionDidUpdatePlayPauseMediaButton
@@ -137,75 +137,75 @@
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_extensionWantsToReceiveActionResponses:(BOOL)a3
+- (void)_extensionWantsToReceiveActionResponses:(BOOL)responses
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __86___UNNotificationContentExtensionHostContext__extensionWantsToReceiveActionResponses___block_invoke;
   v3[3] = &unk_278B71780;
   v3[4] = self;
-  v4 = a3;
+  responsesCopy = responses;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
-- (void)_extensionWantsToBecomeFirstResponder:(BOOL)a3
+- (void)_extensionWantsToBecomeFirstResponder:(BOOL)responder
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __84___UNNotificationContentExtensionHostContext__extensionWantsToBecomeFirstResponder___block_invoke;
   v3[3] = &unk_278B71780;
   v3[4] = self;
-  v4 = a3;
+  responderCopy = responder;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
-- (void)_extensionSetPlayPauseMediaButtonType:(unint64_t)a3
+- (void)_extensionSetPlayPauseMediaButtonType:(unint64_t)type
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __84___UNNotificationContentExtensionHostContext__extensionSetPlayPauseMediaButtonType___block_invoke;
   v3[3] = &unk_278B717A8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = type;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
-- (void)_extensionSetPlayPauseMediaButtonFrame:(CGRect)a3
+- (void)_extensionSetPlayPauseMediaButtonFrame:(CGRect)frame
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85___UNNotificationContentExtensionHostContext__extensionSetPlayPauseMediaButtonFrame___block_invoke;
   block[3] = &unk_278B717D0;
   block[4] = self;
-  v4 = a3;
+  frameCopy = frame;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_extensionSetPlayPauseMediaButtonColor:(id)a3
+- (void)_extensionSetPlayPauseMediaButtonColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __85___UNNotificationContentExtensionHostContext__extensionSetPlayPauseMediaButtonColor___block_invoke;
   v6[3] = &unk_278B717F8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = colorCopy;
+  v5 = colorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)_extensionDidCompleteNotificationResponse:(id)a3 withOption:(unint64_t)a4
+- (void)_extensionDidCompleteNotificationResponse:(id)response withOption:(unint64_t)option
 {
-  v6 = a3;
+  responseCopy = response;
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __99___UNNotificationContentExtensionHostContext__extensionDidCompleteNotificationResponse_withOption___block_invoke;
   block[3] = &unk_278B71820;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = responseCopy;
+  optionCopy = option;
+  v8 = responseCopy;
   dispatch_async(delegateQueue, block);
 }
 
@@ -253,24 +253,24 @@
   dispatch_async(delegateQueue, block);
 }
 
-- (void)_extensionDidUpdateTitle:(id)a3
+- (void)_extensionDidUpdateTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   delegateQueue = self->_delegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71___UNNotificationContentExtensionHostContext__extensionDidUpdateTitle___block_invoke;
   v7[3] = &unk_278B717F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = titleCopy;
+  v6 = titleCopy;
   dispatch_async(delegateQueue, v7);
 }
 
-- (void)_extensionDidUpdateNotificationActions:(id)a3
+- (void)_extensionDidUpdateNotificationActions:(id)actions
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  actionsCopy = actions;
+  array = [MEMORY[0x277CBEB18] array];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -278,8 +278,8 @@
     v10[1] = 3221225472;
     v10[2] = __85___UNNotificationContentExtensionHostContext__extensionDidUpdateNotificationActions___block_invoke;
     v10[3] = &unk_278B71848;
-    v11 = v5;
-    [v4 enumerateObjectsUsingBlock:v10];
+    v11 = array;
+    [actionsCopy enumerateObjectsUsingBlock:v10];
   }
 
   delegateQueue = self->_delegateQueue;
@@ -288,8 +288,8 @@
   block[2] = __85___UNNotificationContentExtensionHostContext__extensionDidUpdateNotificationActions___block_invoke_2;
   block[3] = &unk_278B717F8;
   block[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = array;
+  v7 = array;
   dispatch_async(delegateQueue, block);
 }
 

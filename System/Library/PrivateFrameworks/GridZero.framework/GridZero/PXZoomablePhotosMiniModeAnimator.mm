@@ -1,21 +1,21 @@
 @interface PXZoomablePhotosMiniModeAnimator
-- ($54B668FA3CFF7C50914A1C899F2834C0)collapseProgressForNormalizedYPosition:(SEL)a3;
+- ($54B668FA3CFF7C50914A1C899F2834C0)collapseProgressForNormalizedYPosition:(SEL)position;
 - (NSString)description;
 - (PXZoomablePhotosMiniModeAnimator)init;
 - (double)gridBackgroundVisibilityPercentage;
 - (double)gridExpansionPercentage;
 - (double)gridMiniChromeVisibilityPercentage;
 - (double)gridMiniStylingPercentage;
-- (void)_applyAnimationValue:(id *)a3 toAnimator:(id)a4 animateImmediately:(BOOL)a5;
+- (void)_applyAnimationValue:(id *)value toAnimator:(id)animator animateImmediately:(BOOL)immediately;
 - (void)_updateAnimator;
 - (void)_updateIsAnimating;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performAnimated:(BOOL)a3 changes:(id)a4;
-- (void)setInteractionProgress:(double)a3;
-- (void)setIsAnimating:(BOOL)a3;
-- (void)setIsContentAnimating:(BOOL)a3;
-- (void)setTargetState:(unint64_t)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performAnimated:(BOOL)animated changes:(id)changes;
+- (void)setInteractionProgress:(double)progress;
+- (void)setIsAnimating:(BOOL)animating;
+- (void)setIsContentAnimating:(BOOL)animating;
+- (void)setTargetState:(unint64_t)state;
 @end
 
 @implementation PXZoomablePhotosMiniModeAnimator
@@ -64,8 +64,8 @@
 
 - (double)gridMiniStylingPercentage
 {
-  v2 = [(PXZoomablePhotosMiniModeAnimator *)self gridMiniStylingAnimator];
-  [v2 presentationValue];
+  gridMiniStylingAnimator = [(PXZoomablePhotosMiniModeAnimator *)self gridMiniStylingAnimator];
+  [gridMiniStylingAnimator presentationValue];
   v4 = v3;
 
   return v4 * v4;
@@ -73,8 +73,8 @@
 
 - (double)gridMiniChromeVisibilityPercentage
 {
-  v2 = [(PXZoomablePhotosMiniModeAnimator *)self gridMiniChromeVisibilityAnimator];
-  [v2 presentationValue];
+  gridMiniChromeVisibilityAnimator = [(PXZoomablePhotosMiniModeAnimator *)self gridMiniChromeVisibilityAnimator];
+  [gridMiniChromeVisibilityAnimator presentationValue];
   v4 = v3;
 
   return v4;
@@ -84,7 +84,7 @@
 {
   if (-[PXZoomablePhotosMiniModeAnimator targetState](self, "targetState") == 2 || -[PXZoomablePhotosMiniModeAnimator targetState](self, "targetState") == 3 || (-[PXZoomablePhotosMiniModeAnimator gridMiniStylingAnimator](self, "gridMiniStylingAnimator"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 isAnimating], v3, (v4 & 1) != 0))
   {
-    v5 = 1;
+    isAnimating = 1;
     [(PXZoomablePhotosMiniModeAnimator *)self setIsContentAnimating:1];
     goto LABEL_5;
   }
@@ -94,8 +94,8 @@
   {
     [(PXZoomablePhotosMiniModeAnimator *)self setIsContentAnimating:0];
 LABEL_11:
-    v7 = [(PXZoomablePhotosMiniModeAnimator *)self gridBackgroundVisibilityAnimator];
-    v5 = [v7 isAnimating];
+    gridBackgroundVisibilityAnimator = [(PXZoomablePhotosMiniModeAnimator *)self gridBackgroundVisibilityAnimator];
+    isAnimating = [gridBackgroundVisibilityAnimator isAnimating];
 
     goto LABEL_5;
   }
@@ -108,47 +108,47 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v5 = 1;
+  isAnimating = 1;
 LABEL_5:
 
-  [(PXZoomablePhotosMiniModeAnimator *)self setIsAnimating:v5];
+  [(PXZoomablePhotosMiniModeAnimator *)self setIsAnimating:isAnimating];
 }
 
-- (void)_applyAnimationValue:(id *)a3 toAnimator:(id)a4 animateImmediately:(BOOL)a5
+- (void)_applyAnimationValue:(id *)value toAnimator:(id)animator animateImmediately:(BOOL)immediately
 {
-  v8 = a4;
-  [v8 value];
-  if (v9 != a3->var0)
+  animatorCopy = animator;
+  [animatorCopy value];
+  if (v9 != value->var0)
   {
-    if (a3->var5 && self->_performAnimated)
+    if (value->var5 && self->_performAnimated)
     {
-      if (a3->var3)
+      if (value->var3)
       {
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __87__PXZoomablePhotosMiniModeAnimator__applyAnimationValue_toAnimator_animateImmediately___block_invoke_2;
         v27[3] = &unk_278298500;
-        v10 = v8;
+        v10 = animatorCopy;
         v28 = v10;
         [v10 performChangesWithoutAnimation:v27];
-        var4 = a3->var4;
-        var3 = a3->var3;
+        var4 = value->var4;
+        var3 = value->var3;
         v22[0] = MEMORY[0x277D85DD0];
         v22[1] = 3221225472;
         v22[2] = __87__PXZoomablePhotosMiniModeAnimator__applyAnimationValue_toAnimator_animateImmediately___block_invoke_3;
         v22[3] = &__block_descriptor_81_e35_v16__0___PXMutableNumberAnimator__8l;
-        v13 = *&a3->var2;
-        v23 = *&a3->var0;
+        v13 = *&value->var2;
+        v23 = *&value->var0;
         v24 = v13;
-        v25 = *&a3->var4;
-        v26 = a5;
+        v25 = *&value->var4;
+        immediatelyCopy = immediately;
         [v10 performChangesWithDuration:var3 curve:v22 changes:var4];
       }
 
       else
       {
-        var1 = a3->var1;
-        var2 = a3->var2;
+        var1 = value->var1;
+        var2 = value->var2;
         if (var2 == 0.0)
         {
           var2 = 300.0;
@@ -158,12 +158,12 @@ LABEL_5:
         v29[1] = 3221225472;
         v29[2] = __87__PXZoomablePhotosMiniModeAnimator__applyAnimationValue_toAnimator_animateImmediately___block_invoke;
         v29[3] = &__block_descriptor_81_e35_v16__0___PXMutableNumberAnimator__8l;
-        v17 = *&a3->var2;
-        v30 = *&a3->var0;
+        v17 = *&value->var2;
+        v30 = *&value->var0;
         v31 = v17;
-        v32 = *&a3->var4;
-        v33 = a5;
-        [v8 performChangesUsingSpringAnimationWithStiffness:v29 dampingRatio:var2 initialVelocity:1.0 changes:var1];
+        v32 = *&value->var4;
+        immediatelyCopy2 = immediately;
+        [animatorCopy performChangesUsingSpringAnimationWithStiffness:v29 dampingRatio:var2 initialVelocity:1.0 changes:var1];
       }
     }
 
@@ -173,11 +173,11 @@ LABEL_5:
       v18[1] = 3221225472;
       v18[2] = __87__PXZoomablePhotosMiniModeAnimator__applyAnimationValue_toAnimator_animateImmediately___block_invoke_4;
       v18[3] = &__block_descriptor_80_e35_v16__0___PXMutableNumberAnimator__8l;
-      v14 = *&a3->var2;
-      v19 = *&a3->var0;
+      v14 = *&value->var2;
+      v19 = *&value->var0;
       v20 = v14;
-      v21 = *&a3->var4;
-      [v8 performChangesWithDuration:1 curve:v18 changes:0.0];
+      v21 = *&value->var4;
+      [animatorCopy performChangesWithDuration:1 curve:v18 changes:0.0];
     }
   }
 }
@@ -192,8 +192,8 @@ void __87__PXZoomablePhotosMiniModeAnimator__applyAnimationValue_toAnimator_anim
 
 - (void)_updateAnimator
 {
-  v3 = [(PXZoomablePhotosMiniModeAnimator *)self targetState];
-  v4 = [(PXZoomablePhotosMiniModeAnimator *)self currentChanges];
+  targetState = [(PXZoomablePhotosMiniModeAnimator *)self targetState];
+  currentChanges = [(PXZoomablePhotosMiniModeAnimator *)self currentChanges];
   [(PXZoomablePhotosMiniModeAnimator *)self interactionProgress];
   v6 = 0;
   v31[0] = 0;
@@ -201,11 +201,11 @@ void __87__PXZoomablePhotosMiniModeAnimator__applyAnimationValue_toAnimator_anim
   v30[0] = 0;
   v7 = 0;
   *(v30 + 3) = 0;
-  if (v3 > 1)
+  if (targetState > 1)
   {
     v15 = v5;
-    v8 = (v4 >> 2) & 1;
-    if (v3 == 3 || v3 == 2)
+    v8 = (currentChanges >> 2) & 1;
+    if (targetState == 3 || targetState == 2)
     {
       v6 = 0;
       v22 = 1.0;
@@ -221,9 +221,9 @@ void __87__PXZoomablePhotosMiniModeAnimator__applyAnimationValue_toAnimator_anim
     goto LABEL_8;
   }
 
-  if (v3)
+  if (targetState)
   {
-    if (v3 == 1)
+    if (targetState == 1)
     {
       LOBYTE(v8) = 1;
       v22 = 1.0;
@@ -269,7 +269,7 @@ LABEL_8:
   v15 = 1.0;
 LABEL_11:
   v17 = [(PXZoomablePhotosMiniModeAnimator *)self previousState]== 2 || [(PXZoomablePhotosMiniModeAnimator *)self previousState]== 3;
-  v18 = [(PXZoomablePhotosMiniModeAnimator *)self gridExpansionAnimator];
+  gridExpansionAnimator = [(PXZoomablePhotosMiniModeAnimator *)self gridExpansionAnimator];
   v23 = v15;
   v24 = v7;
   v25 = *&v9;
@@ -277,9 +277,9 @@ LABEL_11:
   v27 = 0;
   v28 = v6;
   memset(v29, 0, sizeof(v29));
-  [(PXZoomablePhotosMiniModeAnimator *)self _applyAnimationValue:&v23 toAnimator:v18 animateImmediately:v17];
+  [(PXZoomablePhotosMiniModeAnimator *)self _applyAnimationValue:&v23 toAnimator:gridExpansionAnimator animateImmediately:v17];
 
-  v19 = [(PXZoomablePhotosMiniModeAnimator *)self gridMiniStylingAnimator];
+  gridMiniStylingAnimator = [(PXZoomablePhotosMiniModeAnimator *)self gridMiniStylingAnimator];
   v23 = v14;
   v24 = 0;
   v25 = *&v10;
@@ -288,9 +288,9 @@ LABEL_11:
   v28 = v8;
   *v29 = v31[0];
   *&v29[3] = *(v31 + 3);
-  [(PXZoomablePhotosMiniModeAnimator *)self _applyAnimationValue:&v23 toAnimator:v19 animateImmediately:v17];
+  [(PXZoomablePhotosMiniModeAnimator *)self _applyAnimationValue:&v23 toAnimator:gridMiniStylingAnimator animateImmediately:v17];
 
-  v20 = [(PXZoomablePhotosMiniModeAnimator *)self gridMiniChromeVisibilityAnimator];
+  gridMiniChromeVisibilityAnimator = [(PXZoomablePhotosMiniModeAnimator *)self gridMiniChromeVisibilityAnimator];
   v23 = v13;
   v24 = 0;
   v25 = *&v12;
@@ -299,9 +299,9 @@ LABEL_11:
   v28 = v8;
   *v29 = v30[0];
   *&v29[3] = *(v30 + 3);
-  [(PXZoomablePhotosMiniModeAnimator *)self _applyAnimationValue:&v23 toAnimator:v20 animateImmediately:v17];
+  [(PXZoomablePhotosMiniModeAnimator *)self _applyAnimationValue:&v23 toAnimator:gridMiniChromeVisibilityAnimator animateImmediately:v17];
 
-  v21 = [(PXZoomablePhotosMiniModeAnimator *)self gridBackgroundVisibilityAnimator];
+  gridBackgroundVisibilityAnimator = [(PXZoomablePhotosMiniModeAnimator *)self gridBackgroundVisibilityAnimator];
   v23 = v22;
   v24 = 0;
   v25 = v11;
@@ -309,7 +309,7 @@ LABEL_11:
   v27 = 0;
   v28 = v8;
   memset(v29, 0, sizeof(v29));
-  [(PXZoomablePhotosMiniModeAnimator *)self _applyAnimationValue:&v23 toAnimator:v21 animateImmediately:v17];
+  [(PXZoomablePhotosMiniModeAnimator *)self _applyAnimationValue:&v23 toAnimator:gridBackgroundVisibilityAnimator animateImmediately:v17];
 }
 
 - (void)didPerformChanges
@@ -320,24 +320,24 @@ LABEL_11:
   [(PXUpdater *)self->_updater updateIfNeeded];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (PXZoomablePhotosMiniModeAnimatorGridExpansionContext != a5 && PXZoomablePhotosMiniModeAnimatorGridMiniStylingContext != a5 && PXZoomablePhotosMiniModeAnimatorGridMiniChromeVisibilityContext != a5 && PXZoomablePhotosMiniModeAnimatorGridBackgroundVisibilityContext != a5)
+  observableCopy = observable;
+  if (PXZoomablePhotosMiniModeAnimatorGridExpansionContext != context && PXZoomablePhotosMiniModeAnimatorGridMiniStylingContext != context && PXZoomablePhotosMiniModeAnimatorGridMiniChromeVisibilityContext != context && PXZoomablePhotosMiniModeAnimatorGridBackgroundVisibilityContext != context)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosMiniModeAnimator.m" lineNumber:244 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosMiniModeAnimator.m" lineNumber:244 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v13 = v9;
+  v13 = observableCopy;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__PXZoomablePhotosMiniModeAnimator_observable_didChange_context___block_invoke;
   v15[3] = &unk_2782984B8;
   v15[4] = self;
-  v15[5] = a4;
+  v15[5] = change;
   [(PXZoomablePhotosMiniModeAnimator *)self performChanges:v15];
 }
 
@@ -357,7 +357,7 @@ void __65__PXZoomablePhotosMiniModeAnimator_observable_didChange_context___block
   }
 }
 
-- ($54B668FA3CFF7C50914A1C899F2834C0)collapseProgressForNormalizedYPosition:(SEL)a3
+- ($54B668FA3CFF7C50914A1C899F2834C0)collapseProgressForNormalizedYPosition:(SEL)position
 {
   v7 = 1.0;
   v8 = 1.0 - a4;
@@ -424,8 +424,8 @@ void __65__PXZoomablePhotosMiniModeAnimator_observable_didChange_context___block
 
 - (double)gridBackgroundVisibilityPercentage
 {
-  v2 = [(PXZoomablePhotosMiniModeAnimator *)self gridBackgroundVisibilityAnimator];
-  [v2 presentationValue];
+  gridBackgroundVisibilityAnimator = [(PXZoomablePhotosMiniModeAnimator *)self gridBackgroundVisibilityAnimator];
+  [gridBackgroundVisibilityAnimator presentationValue];
   v4 = v3;
 
   return v4 * (2.0 - v4) * (2.0 - v4 * (2.0 - v4));
@@ -433,36 +433,36 @@ void __65__PXZoomablePhotosMiniModeAnimator_observable_didChange_context___block
 
 - (double)gridExpansionPercentage
 {
-  v2 = [(PXZoomablePhotosMiniModeAnimator *)self gridExpansionAnimator];
-  [v2 presentationValue];
+  gridExpansionAnimator = [(PXZoomablePhotosMiniModeAnimator *)self gridExpansionAnimator];
+  [gridExpansionAnimator presentationValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setIsContentAnimating:(BOOL)a3
+- (void)setIsContentAnimating:(BOOL)animating
 {
-  if (self->_isContentAnimating != a3)
+  if (self->_isContentAnimating != animating)
   {
-    self->_isContentAnimating = a3;
+    self->_isContentAnimating = animating;
     [(PXZoomablePhotosMiniModeAnimator *)self signalChange:2];
   }
 }
 
-- (void)setIsAnimating:(BOOL)a3
+- (void)setIsAnimating:(BOOL)animating
 {
-  if (self->_isAnimating != a3)
+  if (self->_isAnimating != animating)
   {
-    self->_isAnimating = a3;
+    self->_isAnimating = animating;
     [(PXZoomablePhotosMiniModeAnimator *)self signalChange:2];
   }
 }
 
-- (void)setInteractionProgress:(double)a3
+- (void)setInteractionProgress:(double)progress
 {
-  if (self->_interactionProgress != a3)
+  if (self->_interactionProgress != progress)
   {
-    self->_interactionProgress = a3;
+    self->_interactionProgress = progress;
     [(PXZoomablePhotosMiniModeAnimator *)self _invalidateAnimator];
     [(PXZoomablePhotosMiniModeAnimator *)self _invalidateIsAnimating];
 
@@ -470,13 +470,13 @@ void __65__PXZoomablePhotosMiniModeAnimator_observable_didChange_context___block
   }
 }
 
-- (void)setTargetState:(unint64_t)a3
+- (void)setTargetState:(unint64_t)state
 {
   targetState = self->_targetState;
-  if (targetState != a3)
+  if (targetState != state)
   {
     self->_previousState = targetState;
-    self->_targetState = a3;
+    self->_targetState = state;
     [(PXZoomablePhotosMiniModeAnimator *)self signalChange:4];
     [(PXZoomablePhotosMiniModeAnimator *)self _invalidateIsAnimating];
 
@@ -484,13 +484,13 @@ void __65__PXZoomablePhotosMiniModeAnimator_observable_didChange_context___block
   }
 }
 
-- (void)performAnimated:(BOOL)a3 changes:(id)a4
+- (void)performAnimated:(BOOL)animated changes:(id)changes
 {
   performAnimated = self->_performAnimated;
-  self->_performAnimated = a3;
+  self->_performAnimated = animated;
   v6.receiver = self;
   v6.super_class = PXZoomablePhotosMiniModeAnimator;
-  [(PXZoomablePhotosMiniModeAnimator *)&v6 performChanges:a4];
+  [(PXZoomablePhotosMiniModeAnimator *)&v6 performChanges:changes];
   self->_performAnimated = performAnimated;
 }
 

@@ -2,34 +2,34 @@
 - (WiFiSmartCoverStateObserver)init;
 - (void)dispatchSmartCoverCallback;
 - (void)registerSmartCoverStateCallback;
-- (void)smartCoverStateDidChange:(int64_t)a3;
+- (void)smartCoverStateDidChange:(int64_t)change;
 @end
 
 @implementation WiFiSmartCoverStateObserver
 
-- (void)smartCoverStateDidChange:(int64_t)a3
+- (void)smartCoverStateDidChange:(int64_t)change
 {
-  if ((a3 - 1) > 2)
+  if ((change - 1) > 2)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = off_1002629B8[a3 - 1];
+    v5 = off_1002629B8[change - 1];
   }
 
   v6 = +[WiFiUsageMonitor sharedInstance];
   [v6 setSmartCoverState:v5];
 
-  [(WiFiSmartCoverStateObserver *)self setSmartCoverState:a3];
-  v7 = [(WiFiSmartCoverStateObserver *)self queue];
+  [(WiFiSmartCoverStateObserver *)self setSmartCoverState:change];
+  queue = [(WiFiSmartCoverStateObserver *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010A440;
   block[3] = &unk_10025E9B8;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(queue, block);
 }
 
 - (WiFiSmartCoverStateObserver)init

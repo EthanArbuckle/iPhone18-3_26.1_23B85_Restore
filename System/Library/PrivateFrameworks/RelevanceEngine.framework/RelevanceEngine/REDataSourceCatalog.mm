@@ -1,43 +1,43 @@
 @interface REDataSourceCatalog
-- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)minimumSupportedSystemVersionForDataSourceWithIdentifier:(SEL)a3;
-- (BOOL)imageForDataSourceWithIdentifier:(id)a3 completion:(id)a4;
-- (BOOL)requiresLocationInUseAssertonForDataSourceWithIdentifier:(id)a3;
-- (BOOL)wantsApplicationPrewarmForDataSourceWithIdentifier:(id)a3;
-- (REDataSourceCatalog)initWithDataSourceManager:(id)a3;
-- (id)applicationIdentifierForDataSourceWithIdentifier:(id)a3;
-- (id)localAndRemoteAppIdentifiersForDataSourceIdentifiers:(id)a3;
-- (id)localizedNameForApplicationWithIdentifier:(id)a3;
-- (id)localizedNameForDataSourceWithIdentifier:(id)a3;
+- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)minimumSupportedSystemVersionForDataSourceWithIdentifier:(SEL)identifier;
+- (BOOL)imageForDataSourceWithIdentifier:(id)identifier completion:(id)completion;
+- (BOOL)requiresLocationInUseAssertonForDataSourceWithIdentifier:(id)identifier;
+- (BOOL)wantsApplicationPrewarmForDataSourceWithIdentifier:(id)identifier;
+- (REDataSourceCatalog)initWithDataSourceManager:(id)manager;
+- (id)applicationIdentifierForDataSourceWithIdentifier:(id)identifier;
+- (id)localAndRemoteAppIdentifiersForDataSourceIdentifiers:(id)identifiers;
+- (id)localizedNameForApplicationWithIdentifier:(id)identifier;
+- (id)localizedNameForDataSourceWithIdentifier:(id)identifier;
 - (void)_applicationsStatesDidChange;
 - (void)dealloc;
-- (void)donatedAppIdentifiersWithCompletion:(id)a3;
-- (void)enumerateDataSources:(id)a3;
-- (void)imageForApplicationWithIdentifier:(id)a3 completion:(id)a4;
+- (void)donatedAppIdentifiersWithCompletion:(id)completion;
+- (void)enumerateDataSources:(id)sources;
+- (void)imageForApplicationWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation REDataSourceCatalog
 
-- (REDataSourceCatalog)initWithDataSourceManager:(id)a3
+- (REDataSourceCatalog)initWithDataSourceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = REDataSourceCatalog;
   v6 = [(REDataSourceCatalog *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSourceManager, a3);
+    objc_storeStrong(&v6->_dataSourceManager, manager);
     v8 = objc_alloc_init(MEMORY[0x277CBEA78]);
     iconCache = v7->_iconCache;
     v7->_iconCache = v8;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     localizedNameCache = v7->_localizedNameCache;
-    v7->_localizedNameCache = v10;
+    v7->_localizedNameCache = dictionary;
 
-    v12 = [v5 queue];
+    queue = [managerCopy queue];
     queue = v7->_queue;
-    v7->_queue = v12;
+    v7->_queue = queue;
 
     v14 = +[(RESingleton *)REAppIconCache];
     appIconCache = v7->_appIconCache;
@@ -47,8 +47,8 @@
     appNameCache = v7->_appNameCache;
     v7->_appNameCache = v16;
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v7 selector:sel__applicationsStatesDidChange name:@"REApplicationStateDidChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__applicationsStatesDidChange name:@"REApplicationStateDidChange" object:0];
   }
 
   return v7;
@@ -56,8 +56,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = REDataSourceCatalog;
@@ -82,18 +82,18 @@ uint64_t __51__REDataSourceCatalog__applicationsStatesDidChange__block_invoke(ui
   return [v2 removeAllObjects];
 }
 
-- (void)enumerateDataSources:(id)a3
+- (void)enumerateDataSources:(id)sources
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  sourcesCopy = sources;
+  if (sourcesCopy)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(REDataSourceManager *)self->_dataSourceManager currentDataSources];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    currentDataSources = [(REDataSourceManager *)self->_dataSourceManager currentDataSources];
+    v6 = [currentDataSources countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -105,14 +105,14 @@ uint64_t __51__REDataSourceCatalog__applicationsStatesDidChange__block_invoke(ui
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(currentDataSources);
           }
 
-          v4[2](v4, *(*(&v11 + 1) + 8 * v9++));
+          sourcesCopy[2](sourcesCopy, *(*(&v11 + 1) + 8 * v9++));
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [currentDataSources countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -122,14 +122,14 @@ uint64_t __51__REDataSourceCatalog__applicationsStatesDidChange__block_invoke(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)donatedAppIdentifiersWithCompletion:(id)a3
+- (void)donatedAppIdentifiersWithCompletion:(id)completion
 {
-  v3 = a3;
-  if (v3)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v4 = [MEMORY[0x277CBEB58] set];
     v5 = +[(RESingleton *)REDuetKnowledgeStore];
-    v6 = [v5 queryForAllRelevantShortcuts];
+    queryForAllRelevantShortcuts = [v5 queryForAllRelevantShortcuts];
 
     v7 = +[(RESingleton *)REDuetKnowledgeStore];
     v13[0] = MEMORY[0x277D85DD0];
@@ -138,14 +138,14 @@ uint64_t __51__REDataSourceCatalog__applicationsStatesDidChange__block_invoke(ui
     v13[3] = &unk_2785FC4A0;
     v8 = v4;
     v14 = v8;
-    [v7 executeQuerySynchronouslyWithBatching:v6 completion:v13];
+    [v7 executeQuerySynchronouslyWithBatching:queryForAllRelevantShortcuts completion:v13];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__REDataSourceCatalog_donatedAppIdentifiersWithCompletion___block_invoke_2;
     block[3] = &unk_2785FA150;
     v11 = v8;
-    v12 = v3;
+    v12 = completionCopy;
     v9 = v8;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
@@ -208,16 +208,16 @@ void __59__REDataSourceCatalog_donatedAppIdentifiersWithCompletion___block_invok
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)localAndRemoteAppIdentifiersForDataSourceIdentifiers:(id)a3
+- (id)localAndRemoteAppIdentifiersForDataSourceIdentifiers:(id)identifiers
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [MEMORY[0x277CBEB58] set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -232,11 +232,11 @@ void __59__REDataSourceCatalog_donatedAppIdentifiersWithCompletion___block_invok
           objc_enumerationMutation(v6);
         }
 
-        v11 = [(objc_class *)[(REDataSourceManager *)self->_dataSourceManager classForDataSourceIdentifier:*(*(&v16 + 1) + 8 * i) applicationBundleIdentifier];
-        if (v11)
+        applicationBundleIdentifier = [(objc_class *)[(REDataSourceManager *)self->_dataSourceManager classForDataSourceIdentifier:*(*(&v16 + 1) + 8 * i) applicationBundleIdentifier];
+        if (applicationBundleIdentifier)
         {
-          [v5 addObject:v11];
-          v12 = RELocalApplicationIdentifierForRemoteApplication(v11);
+          [v5 addObject:applicationBundleIdentifier];
+          v12 = RELocalApplicationIdentifierForRemoteApplication(applicationBundleIdentifier);
           if (v12)
           {
             [v5 addObject:v12];
@@ -256,14 +256,14 @@ void __59__REDataSourceCatalog_donatedAppIdentifiersWithCompletion___block_invok
   return v13;
 }
 
-- (void)imageForApplicationWithIdentifier:(id)a3 completion:(id)a4
+- (void)imageForApplicationWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    if (v6)
+    if (identifierCopy)
     {
       v9 = +[(RESingleton *)REAppIconCache];
       v12[0] = MEMORY[0x277D85DD0];
@@ -272,7 +272,7 @@ void __59__REDataSourceCatalog_donatedAppIdentifiersWithCompletion___block_invok
       v12[3] = &unk_2785FC4C8;
       v10 = &v13;
       v13 = v8;
-      [v9 iconForApplicationWithIdentifier:v6 completion:v12];
+      [v9 iconForApplicationWithIdentifier:identifierCopy completion:v12];
     }
 
     else
@@ -283,58 +283,58 @@ void __59__REDataSourceCatalog_donatedAppIdentifiersWithCompletion___block_invok
       block[2] = __68__REDataSourceCatalog_imageForApplicationWithIdentifier_completion___block_invoke;
       block[3] = &unk_2785FA040;
       v10 = &v15;
-      v15 = v7;
+      v15 = completionCopy;
       dispatch_async(queue, block);
     }
   }
 }
 
-- (BOOL)imageForDataSourceWithIdentifier:(id)a3 completion:(id)a4
+- (BOOL)imageForDataSourceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!identifierCopy)
     {
       queue = self->_queue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __67__REDataSourceCatalog_imageForDataSourceWithIdentifier_completion___block_invoke;
       block[3] = &unk_2785FA040;
-      v25 = v7;
+      v25 = completionCopy;
       dispatch_async(queue, block);
       v11 = 0;
-      v10 = v25;
+      overrideDataSourceImage = v25;
       goto LABEL_15;
     }
 
-    v9 = [(NSCache *)self->_iconCache objectForKey:v6];
+    v9 = [(NSCache *)self->_iconCache objectForKey:identifierCopy];
     if (v9)
     {
-      v10 = v9;
+      overrideDataSourceImage = v9;
 LABEL_5:
-      (v8)[2](v8, v10);
+      (v8)[2](v8, overrideDataSourceImage);
       v11 = 1;
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    v13 = [(REDataSourceManager *)self->_dataSourceManager classForDataSourceIdentifier:v6];
+    v13 = [(REDataSourceManager *)self->_dataSourceManager classForDataSourceIdentifier:identifierCopy];
     if (v13)
     {
       v14 = v13;
-      v10 = [(objc_class *)v13 overrideDataSourceImage];
-      if (v10)
+      overrideDataSourceImage = [(objc_class *)v13 overrideDataSourceImage];
+      if (overrideDataSourceImage)
       {
-        [(NSCache *)self->_iconCache setObject:v10 forKey:v6];
+        [(NSCache *)self->_iconCache setObject:overrideDataSourceImage forKey:identifierCopy];
         goto LABEL_5;
       }
 
-      v15 = [(objc_class *)v14 applicationBundleIdentifier];
-      if (!v15)
+      applicationBundleIdentifier = [(objc_class *)v14 applicationBundleIdentifier];
+      if (!applicationBundleIdentifier)
       {
         v18 = self->_queue;
         v22[0] = MEMORY[0x277D85DD0];
@@ -350,7 +350,7 @@ LABEL_15:
 
     else
     {
-      v15 = v6;
+      applicationBundleIdentifier = identifierCopy;
     }
 
     v19[0] = MEMORY[0x277D85DD0];
@@ -358,10 +358,10 @@ LABEL_15:
     v19[2] = __67__REDataSourceCatalog_imageForDataSourceWithIdentifier_completion___block_invoke_3;
     v19[3] = &unk_2785FA6C0;
     v19[4] = self;
-    v20 = v15;
+    v20 = applicationBundleIdentifier;
     v21 = v8;
-    v10 = v15;
-    [(REDataSourceCatalog *)self imageForApplicationWithIdentifier:v10 completion:v19];
+    overrideDataSourceImage = applicationBundleIdentifier;
+    [(REDataSourceCatalog *)self imageForApplicationWithIdentifier:overrideDataSourceImage completion:v19];
 
     v16 = v20;
 LABEL_14:
@@ -388,15 +388,15 @@ void __67__REDataSourceCatalog_imageForDataSourceWithIdentifier_completion___blo
   (*(a1[6] + 16))();
 }
 
-- (id)localizedNameForApplicationWithIdentifier:(id)a3
+- (id)localizedNameForApplicationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     goto LABEL_7;
   }
 
-  v5 = [(REAppNameCache *)self->_appNameCache localizedNameForApplicationWithIdentifier:v4];
+  v5 = [(REAppNameCache *)self->_appNameCache localizedNameForApplicationWithIdentifier:identifierCopy];
   if (v5)
   {
     goto LABEL_8;
@@ -409,7 +409,7 @@ void __67__REDataSourceCatalog_imageForDataSourceWithIdentifier_completion___blo
 
   if (_isInternalDevice_2 == 1)
   {
-    v5 = v4;
+    v5 = identifierCopy;
   }
 
   else
@@ -430,35 +430,35 @@ uint64_t __65__REDataSourceCatalog_localizedNameForApplicationWithIdentifier___b
   return result;
 }
 
-- (id)localizedNameForDataSourceWithIdentifier:(id)a3
+- (id)localizedNameForDataSourceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_localizedNameCache objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_localizedNameCache objectForKeyedSubscript:identifierCopy];
     if (v5)
     {
       goto LABEL_7;
     }
 
-    v6 = [(REDataSourceManager *)self->_dataSourceManager classForDataSourceIdentifier:v4];
+    v6 = [(REDataSourceManager *)self->_dataSourceManager classForDataSourceIdentifier:identifierCopy];
     if (v6)
     {
       v7 = v6;
-      v8 = [(objc_class *)v6 overrideLocalizedDataSourceName];
-      if (v8)
+      overrideLocalizedDataSourceName = [(objc_class *)v6 overrideLocalizedDataSourceName];
+      if (overrideLocalizedDataSourceName)
       {
-        v5 = v8;
-        [(NSMutableDictionary *)self->_localizedNameCache setObject:v8 forKeyedSubscript:v4];
+        v5 = overrideLocalizedDataSourceName;
+        [(NSMutableDictionary *)self->_localizedNameCache setObject:overrideLocalizedDataSourceName forKeyedSubscript:identifierCopy];
       }
 
       else
       {
-        v10 = [(objc_class *)v7 applicationBundleIdentifier];
-        if (v10)
+        applicationBundleIdentifier = [(objc_class *)v7 applicationBundleIdentifier];
+        if (applicationBundleIdentifier)
         {
-          v5 = [(REDataSourceCatalog *)self localizedNameForApplicationWithIdentifier:v10];
-          [(NSMutableDictionary *)self->_localizedNameCache setObject:v5 forKeyedSubscript:v10];
+          v5 = [(REDataSourceCatalog *)self localizedNameForApplicationWithIdentifier:applicationBundleIdentifier];
+          [(NSMutableDictionary *)self->_localizedNameCache setObject:v5 forKeyedSubscript:applicationBundleIdentifier];
         }
 
         else
@@ -477,7 +477,7 @@ LABEL_7:
   return v5;
 }
 
-- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)minimumSupportedSystemVersionForDataSourceWithIdentifier:(SEL)a3
+- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)minimumSupportedSystemVersionForDataSourceWithIdentifier:(SEL)identifier
 {
   result = self->_dataSourceManager;
   if (result)
@@ -491,36 +491,36 @@ LABEL_7:
   return result;
 }
 
-- (id)applicationIdentifierForDataSourceWithIdentifier:(id)a3
+- (id)applicationIdentifierForDataSourceWithIdentifier:(id)identifier
 {
-  v3 = [(REDataSourceManager *)self->_dataSourceManager classForDataSourceIdentifier:a3];
+  v3 = [(REDataSourceManager *)self->_dataSourceManager classForDataSourceIdentifier:identifier];
 
   return [(objc_class *)v3 applicationBundleIdentifier];
 }
 
-- (BOOL)wantsApplicationPrewarmForDataSourceWithIdentifier:(id)a3
+- (BOOL)wantsApplicationPrewarmForDataSourceWithIdentifier:(id)identifier
 {
   dataSourceManager = self->_dataSourceManager;
-  v5 = a3;
-  v6 = [(REDataSourceManager *)dataSourceManager classForDataSourceIdentifier:v5];
-  v7 = [(REDataSourceCatalog *)self applicationIdentifierForDataSourceWithIdentifier:v5];
+  identifierCopy = identifier;
+  v6 = [(REDataSourceManager *)dataSourceManager classForDataSourceIdentifier:identifierCopy];
+  v7 = [(REDataSourceCatalog *)self applicationIdentifierForDataSourceWithIdentifier:identifierCopy];
 
   if (v7)
   {
-    v8 = [(objc_class *)v6 wantsAppPrewarm];
+    wantsAppPrewarm = [(objc_class *)v6 wantsAppPrewarm];
   }
 
   else
   {
-    v8 = 0;
+    wantsAppPrewarm = 0;
   }
 
-  return v8;
+  return wantsAppPrewarm;
 }
 
-- (BOOL)requiresLocationInUseAssertonForDataSourceWithIdentifier:(id)a3
+- (BOOL)requiresLocationInUseAssertonForDataSourceWithIdentifier:(id)identifier
 {
-  v3 = [(REDataSourceManager *)self->_dataSourceManager classForDataSourceIdentifier:a3];
+  v3 = [(REDataSourceManager *)self->_dataSourceManager classForDataSourceIdentifier:identifier];
 
   return [(objc_class *)v3 wantsLocationInUseAsserton];
 }

@@ -1,15 +1,15 @@
 @interface _UIKeyboardPopoverAffordance
-- (_UIKeyboardPopoverAffordance)initWithFrame:(CGRect)a3;
-- (void)updateForBackdropStyle:(int64_t)a3;
+- (_UIKeyboardPopoverAffordance)initWithFrame:(CGRect)frame;
+- (void)updateForBackdropStyle:(int64_t)style;
 @end
 
 @implementation _UIKeyboardPopoverAffordance
 
-- (_UIKeyboardPopoverAffordance)initWithFrame:(CGRect)a3
+- (_UIKeyboardPopoverAffordance)initWithFrame:(CGRect)frame
 {
   v34.receiver = self;
   v34.super_class = _UIKeyboardPopoverAffordance;
-  v3 = [(UIView *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -28,8 +28,8 @@
 
     +[UIKeyboardPopoverContainer pillCornerRadius];
     v13 = v12;
-    v14 = [(UIView *)v3->_pillView layer];
-    [v14 setCornerRadius:v13];
+    layer = [(UIView *)v3->_pillView layer];
+    [layer setCornerRadius:v13];
 
     +[UIKeyboardPopoverContainer pillSize];
     v16 = v15;
@@ -78,14 +78,14 @@
   return v3;
 }
 
-- (void)updateForBackdropStyle:(int64_t)a3
+- (void)updateForBackdropStyle:(int64_t)style
 {
-  if (a3 == 3904)
+  if (style == 3904)
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5 == 2)
+    if (userInterfaceStyle == 2)
     {
       v6 = +[UIColor whiteColor];
       v7 = 0.5;
@@ -102,7 +102,7 @@
 
     [(UIView *)self->_pillView setAlpha:v7];
     v11 = MEMORY[0x1E6979CF8];
-    if (v5 != 2)
+    if (userInterfaceStyle != 2)
     {
       v11 = MEMORY[0x1E6979CE8];
     }
@@ -120,8 +120,8 @@
     v10 = 0;
   }
 
-  v12 = [(UIView *)*p_pillView layer];
-  [v12 setCompositingFilter:v10];
+  layer = [(UIView *)*p_pillView layer];
+  [layer setCompositingFilter:v10];
 }
 
 @end

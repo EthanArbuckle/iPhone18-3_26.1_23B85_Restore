@@ -6,8 +6,8 @@
 
 - (BOOL)accessibilityIgnoresInvertColors
 {
-  v2 = [(UISwitchInvertColorsAccessibility *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] != &dword_4 + 1;
+  traitCollection = [(UISwitchInvertColorsAccessibility *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] != &dword_4 + 1;
 
   return v3;
 }

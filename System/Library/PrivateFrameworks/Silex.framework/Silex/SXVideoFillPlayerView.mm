@@ -1,39 +1,39 @@
 @interface SXVideoFillPlayerView
-- (SXVideoFillPlayerView)initWithVideoResource:(id)a3 imageView:(id)a4;
+- (SXVideoFillPlayerView)initWithVideoResource:(id)resource imageView:(id)view;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)play;
 - (void)playIfPossible;
 - (void)registerForHDRTraitChanges;
 - (void)reset;
-- (void)setFillMode:(unint64_t)a3;
+- (void)setFillMode:(unint64_t)mode;
 - (void)switchToPlayer;
 @end
 
 @implementation SXVideoFillPlayerView
 
-- (SXVideoFillPlayerView)initWithVideoResource:(id)a3 imageView:(id)a4
+- (SXVideoFillPlayerView)initWithVideoResource:(id)resource imageView:(id)view
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  resourceCopy = resource;
+  viewCopy = view;
   v28.receiver = self;
   v28.super_class = SXVideoFillPlayerView;
   v9 = [(SXVideoFillPlayerView *)&v28 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_videoResource, a3);
-    objc_storeStrong(&v10->_stillImageView, a4);
+    objc_storeStrong(&v9->_videoResource, resource);
+    objc_storeStrong(&v10->_stillImageView, view);
     stillImageView = v10->_stillImageView;
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [(SXImageView *)stillImageView setBackgroundColor:v12];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SXImageView *)stillImageView setBackgroundColor:clearColor];
 
     objc_initWeak(&location, v10);
     v13 = objc_alloc(MEMORY[0x1E6988168]);
-    v14 = [v7 URL];
+    v14 = [resourceCopy URL];
     v29 = *MEMORY[0x1E6987BF0];
     v30[0] = &unk_1F538A250;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
@@ -53,8 +53,8 @@
     v25[3] = &unk_1E8500ED0;
     objc_copyWeak(&v26, &location);
     [(SVAVPlayer *)v20 setPlaybackStatusBlock:v25];
-    v21 = [(SXVideoFillPlayerView *)v10 player];
-    v22 = [(AVPlayerLayer *)SXPlayerLayer playerLayerWithPlayer:v21];
+    player = [(SXVideoFillPlayerView *)v10 player];
+    v22 = [(AVPlayerLayer *)SXPlayerLayer playerLayerWithPlayer:player];
     playerLayer = v10->_playerLayer;
     v10->_playerLayer = v22;
 
@@ -98,22 +98,22 @@ void __57__SXVideoFillPlayerView_initWithVideoResource_imageView___block_invoke(
   v5.receiver = self;
   v5.super_class = SXVideoFillPlayerView;
   [(SXVideoFillPlayerView *)&v5 layoutSubviews];
-  v3 = [(SXVideoFillPlayerView *)self stillImageView];
+  stillImageView = [(SXVideoFillPlayerView *)self stillImageView];
   [(SXVideoFillPlayerView *)self bounds];
-  [v3 setFrame:?];
+  [stillImageView setFrame:?];
 
-  v4 = [(SXVideoFillPlayerView *)self playerLayer];
+  playerLayer = [(SXVideoFillPlayerView *)self playerLayer];
   [(SXVideoFillPlayerView *)self bounds];
-  [v4 setFrame:?];
+  [playerLayer setFrame:?];
 }
 
 - (void)play
 {
-  v3 = [(SXVideoFillPlayerView *)self player];
-  if ([v3 status] == 1)
+  player = [(SXVideoFillPlayerView *)self player];
+  if ([player status] == 1)
   {
-    v4 = [(SXVideoFillPlayerView *)self playerLayer];
-    if ([v4 isReadyForDisplay])
+    playerLayer = [(SXVideoFillPlayerView *)self playerLayer];
+    if ([playerLayer isReadyForDisplay])
     {
       IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
 
@@ -123,8 +123,8 @@ void __57__SXVideoFillPlayerView_initWithVideoResource_imageView___block_invoke(
       }
 
       [(SXVideoFillPlayerView *)self switchToPlayer];
-      v3 = [(SXVideoFillPlayerView *)self player];
-      [v3 play];
+      player = [(SXVideoFillPlayerView *)self player];
+      [player play];
     }
 
     else
@@ -139,50 +139,50 @@ LABEL_7:
 
 - (void)pause
 {
-  v3 = [(SXVideoFillPlayerView *)self player];
-  [v3 pause];
+  player = [(SXVideoFillPlayerView *)self player];
+  [player pause];
 
   [(SXVideoFillPlayerView *)self setHasRequestedPlayback:0];
 }
 
-- (void)setFillMode:(unint64_t)a3
+- (void)setFillMode:(unint64_t)mode
 {
-  self->_fillMode = a3;
-  v4 = [(SXVideoFillPlayerView *)self playerLayer];
-  v6 = v4;
+  self->_fillMode = mode;
+  playerLayer = [(SXVideoFillPlayerView *)self playerLayer];
+  v6 = playerLayer;
   v5 = MEMORY[0x1E69874E0];
-  if (a3 != 2)
+  if (mode != 2)
   {
     v5 = MEMORY[0x1E69874F0];
   }
 
-  [v4 setVideoGravity:*v5];
+  [playerLayer setVideoGravity:*v5];
 }
 
 - (void)reset
 {
-  v3 = [(SXVideoFillPlayerView *)self player];
-  v4 = [v3 status];
+  player = [(SXVideoFillPlayerView *)self player];
+  status = [player status];
 
-  if (v4 == 1)
+  if (status == 1)
   {
-    v5 = [(SXVideoFillPlayerView *)self player];
-    [v5 seekToStartWithCompletionBlock:0];
+    player2 = [(SXVideoFillPlayerView *)self player];
+    [player2 seekToStartWithCompletionBlock:0];
   }
 }
 
 - (void)switchToPlayer
 {
-  v3 = [(SXVideoFillPlayerView *)self stillImageView];
+  stillImageView = [(SXVideoFillPlayerView *)self stillImageView];
 
-  if (v3)
+  if (stillImageView)
   {
-    v4 = [(SXVideoFillPlayerView *)self layer];
-    v5 = [(SXVideoFillPlayerView *)self playerLayer];
-    [v4 insertSublayer:v5 atIndex:0];
+    layer = [(SXVideoFillPlayerView *)self layer];
+    playerLayer = [(SXVideoFillPlayerView *)self playerLayer];
+    [layer insertSublayer:playerLayer atIndex:0];
 
-    v6 = [(SXVideoFillPlayerView *)self stillImageView];
-    [v6 removeFromSuperview];
+    stillImageView2 = [(SXVideoFillPlayerView *)self stillImageView];
+    [stillImageView2 removeFromSuperview];
 
     [(SXVideoFillPlayerView *)self setStillImageView:0];
   }
@@ -192,13 +192,13 @@ LABEL_7:
 {
   if ([(SXVideoFillPlayerView *)self hasRequestedPlayback])
   {
-    v5 = [(SXVideoFillPlayerView *)self playerLayer];
-    if ([v5 isReadyForDisplay])
+    playerLayer = [(SXVideoFillPlayerView *)self playerLayer];
+    if ([playerLayer isReadyForDisplay])
     {
-      v3 = [(SXVideoFillPlayerView *)self player];
-      v4 = [v3 status];
+      player = [(SXVideoFillPlayerView *)self player];
+      status = [player status];
 
-      if (v4 == 1)
+      if (status == 1)
       {
 
         [(SXVideoFillPlayerView *)self play];
@@ -211,13 +211,13 @@ LABEL_7:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = [(SXVideoFillPlayerView *)self playerLayer];
+  pathCopy = path;
+  objectCopy = object;
+  playerLayer = [(SXVideoFillPlayerView *)self playerLayer];
 
-  if (v9 == v8 && [v11 isEqualToString:@"readyForDisplay"])
+  if (playerLayer == objectCopy && [pathCopy isEqualToString:@"readyForDisplay"])
   {
     IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
 
@@ -235,12 +235,12 @@ LABEL_7:
 
 - (void)dealloc
 {
-  v3 = [(SXVideoFillPlayerView *)self playerLayer];
+  playerLayer = [(SXVideoFillPlayerView *)self playerLayer];
 
-  if (v3)
+  if (playerLayer)
   {
-    v4 = [(SXVideoFillPlayerView *)self playerLayer];
-    [v4 removeObserver:self forKeyPath:@"readyForDisplay"];
+    playerLayer2 = [(SXVideoFillPlayerView *)self playerLayer];
+    [playerLayer2 removeObserver:self forKeyPath:@"readyForDisplay"];
   }
 
   v5.receiver = self;

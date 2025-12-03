@@ -1,9 +1,9 @@
 @interface HMDSignificantTimeEvent
 + (id)logCategory;
-+ (id)nextTimerDateFromHomeLocation:(id)a3 signifiantEvent:(id)a4 offset:(id)a5 loggingObject:(id)a6;
-- (BOOL)isCompatibleWithEvent:(id)a3;
-- (HMDSignificantTimeEvent)initWithCoder:(id)a3;
-- (HMDSignificantTimeEvent)initWithModel:(id)a3 home:(id)a4;
++ (id)nextTimerDateFromHomeLocation:(id)location signifiantEvent:(id)event offset:(id)offset loggingObject:(id)object;
+- (BOOL)isCompatibleWithEvent:(id)event;
+- (HMDSignificantTimeEvent)initWithCoder:(id)coder;
+- (HMDSignificantTimeEvent)initWithModel:(id)model home:(id)home;
 - (NSDateComponents)offset;
 - (NSString)description;
 - (NSString)significantEvent;
@@ -11,12 +11,12 @@
 - (id)analyticsTriggerEventData;
 - (id)createPayload;
 - (id)emptyModelObject;
-- (id)modelObjectWithChangeType:(unint64_t)a3;
-- (void)_handleUpdateRequest:(id)a3;
-- (void)_transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOffset:(id)a3;
-- (void)setSignificantEvent:(id)a3;
+- (id)modelObjectWithChangeType:(unint64_t)type;
+- (void)_handleUpdateRequest:(id)request;
+- (void)_transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOffset:(id)offset;
+- (void)setSignificantEvent:(id)event;
 @end
 
 @implementation HMDSignificantTimeEvent
@@ -26,11 +26,11 @@
   v3 = objc_alloc_init(HMDAnalyticsTriggerEventData);
   [(HMDAnalyticsTriggerEventData *)v3 setEndEvent:[(HMDEvent *)self isEndEvent]];
   v4 = objc_alloc_init(HMDAnalyticsSignificantTimeEventData);
-  v5 = [(HMDSignificantTimeEvent *)self significantEvent];
-  [(HMDAnalyticsSignificantTimeEventData *)v4 setSignificantEvent:v5];
+  significantEvent = [(HMDSignificantTimeEvent *)self significantEvent];
+  [(HMDAnalyticsSignificantTimeEventData *)v4 setSignificantEvent:significantEvent];
 
-  v6 = [(HMDSignificantTimeEvent *)self offset];
-  [(HMDAnalyticsSignificantTimeEventData *)v4 setOffsetPresent:v6 != 0];
+  offset = [(HMDSignificantTimeEvent *)self offset];
+  [(HMDAnalyticsSignificantTimeEventData *)v4 setOffsetPresent:offset != 0];
 
   [(HMDAnalyticsTriggerEventData *)v3 setSignificantTimeEvent:v4];
 
@@ -39,25 +39,25 @@
 
 - (id)_nextTimerDate
 {
-  v3 = [(HMDEvent *)self eventTrigger];
-  v4 = [v3 home];
-  v5 = [v4 homeLocationHandler];
-  v6 = [v5 location];
-  v7 = [(HMDSignificantTimeEvent *)self significantEvent];
-  v8 = [(HMDSignificantTimeEvent *)self offset];
-  v9 = [HMDSignificantTimeEvent nextTimerDateFromHomeLocation:v6 signifiantEvent:v7 offset:v8 loggingObject:self];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  home = [eventTrigger home];
+  homeLocationHandler = [home homeLocationHandler];
+  location = [homeLocationHandler location];
+  significantEvent = [(HMDSignificantTimeEvent *)self significantEvent];
+  offset = [(HMDSignificantTimeEvent *)self offset];
+  v9 = [HMDSignificantTimeEvent nextTimerDateFromHomeLocation:location signifiantEvent:significantEvent offset:offset loggingObject:self];
 
   return v9;
 }
 
-- (void)_transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)_transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -68,7 +68,7 @@
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = v9;
+  v15 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -84,10 +84,10 @@
 
   if (v17)
   {
-    if ([v17 propertyWasSet:@"significantEvent"] && (-[HMDSignificantTimeEvent significantEvent](v12, "significantEvent"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "significantEvent"), v19 = objc_claimAutoreleasedReturnValue(), v20 = HMFEqualObjects(), v19, v18, (v20 & 1) == 0))
+    if ([v17 propertyWasSet:@"significantEvent"] && (-[HMDSignificantTimeEvent significantEvent](selfCopy, "significantEvent"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "significantEvent"), v19 = objc_claimAutoreleasedReturnValue(), v20 = HMFEqualObjects(), v19, v18, (v20 & 1) == 0))
     {
-      v22 = [v17 significantEvent];
-      [(HMDSignificantTimeEvent *)v12 setSignificantEvent:v22];
+      significantEvent = [v17 significantEvent];
+      [(HMDSignificantTimeEvent *)selfCopy setSignificantEvent:significantEvent];
 
       v21 = 1;
     }
@@ -97,17 +97,17 @@
       v21 = 0;
     }
 
-    v23 = [v17 offset];
+    offset = [v17 offset];
 
-    if (v23)
+    if (offset)
     {
       v24 = MEMORY[0x277CBEAB8];
-      v25 = [v17 offset];
-      v26 = [v24 hmf_unarchiveFromData:v25 error:0];
+      offset2 = [v17 offset];
+      v26 = [v24 hmf_unarchiveFromData:offset2 error:0];
 
-      if (v26 && (-[HMDSignificantTimeEvent offset](v12, "offset"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 isEqual:v26], v27, (v28 & 1) == 0))
+      if (v26 && (-[HMDSignificantTimeEvent offset](selfCopy, "offset"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 isEqual:v26], v27, (v28 & 1) == 0))
       {
-        [(HMDSignificantTimeEvent *)v12 setOffset:v26];
+        [(HMDSignificantTimeEvent *)selfCopy setOffset:v26];
       }
 
       else
@@ -125,63 +125,63 @@
       goto LABEL_20;
     }
 
-    v29 = [(HMDEvent *)v12 eventTrigger];
-    [v29 markChangedForMessage:v10];
+    eventTrigger = [(HMDEvent *)selfCopy eventTrigger];
+    [eventTrigger markChangedForMessage:messageCopy];
 
 LABEL_20:
-    [v10 respondWithSuccess];
+    [messageCopy respondWithSuccess];
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3
+- (id)modelObjectWithChangeType:(unint64_t)type
 {
   v5 = [HMDSignificantTimeEventModel alloc];
-  v6 = [(HMDEvent *)self uuid];
-  v7 = [(HMDEvent *)self eventTrigger];
-  v8 = [v7 uuid];
-  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:a3 uuid:v6 parentUUID:v8];
+  uuid = [(HMDEvent *)self uuid];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  uuid2 = [eventTrigger uuid];
+  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:type uuid:uuid parentUUID:uuid2];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDEvent isEndEvent](self, "isEndEvent")}];
   [(HMDSignificantTimeEventModel *)v9 setEndEvent:v10];
 
-  v11 = [(HMDSignificantTimeEvent *)self significantEvent];
-  [(HMDSignificantTimeEventModel *)v9 setSignificantEvent:v11];
+  significantEvent = [(HMDSignificantTimeEvent *)self significantEvent];
+  [(HMDSignificantTimeEventModel *)v9 setSignificantEvent:significantEvent];
 
-  v12 = [(HMDSignificantTimeEvent *)self offset];
+  offset = [(HMDSignificantTimeEvent *)self offset];
   v13 = encodeRootObject();
   [(HMDSignificantTimeEventModel *)v9 setOffset:v13];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = HMDSignificantTimeEvent;
-  v4 = a3;
-  [(HMDTimeEvent *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMDTimeEvent *)&v7 encodeWithCoder:coderCopy];
   v5 = [(HMDSignificantTimeEvent *)self significantEvent:v7.receiver];
-  [v4 encodeObject:v5 forKey:*MEMORY[0x277CD2688]];
+  [coderCopy encodeObject:v5 forKey:*MEMORY[0x277CD2688]];
 
-  v6 = [(HMDSignificantTimeEvent *)self offset];
-  [v4 encodeObject:v6 forKey:*MEMORY[0x277CD2680]];
+  offset = [(HMDSignificantTimeEvent *)self offset];
+  [coderCopy encodeObject:offset forKey:*MEMORY[0x277CD2680]];
 }
 
-- (HMDSignificantTimeEvent)initWithCoder:(id)a3
+- (HMDSignificantTimeEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HMDSignificantTimeEvent;
-  v5 = [(HMDTimeEvent *)&v11 initWithCoder:v4];
+  v5 = [(HMDTimeEvent *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2688]];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2688]];
     significantEvent = v5->_significantEvent;
     v5->_significantEvent = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2680]];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2680]];
     offset = v5->_offset;
     v5->_offset = v8;
   }
@@ -189,19 +189,19 @@ LABEL_20:
   return v5;
 }
 
-- (BOOL)isCompatibleWithEvent:(id)a3
+- (BOOL)isCompatibleWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = HMDSignificantTimeEvent;
-  return [(HMDTimeEvent *)&v4 isCompatibleWithEvent:a3];
+  return [(HMDTimeEvent *)&v4 isCompatibleWithEvent:event];
 }
 
-- (void)setOffset:(id)a3
+- (void)setOffset:(id)offset
 {
-  v4 = a3;
+  offsetCopy = offset;
   os_unfair_lock_lock_with_options();
   offset = self->_offset;
-  self->_offset = v4;
+  self->_offset = offsetCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -215,12 +215,12 @@ LABEL_20:
   return v3;
 }
 
-- (void)setSignificantEvent:(id)a3
+- (void)setSignificantEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   os_unfair_lock_lock_with_options();
   significantEvent = self->_significantEvent;
-  self->_significantEvent = v4;
+  self->_significantEvent = eventCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -234,47 +234,47 @@ LABEL_20:
   return v3;
 }
 
-- (void)_handleUpdateRequest:(id)a3
+- (void)_handleUpdateRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = *MEMORY[0x277CD2688];
-  v6 = [v4 stringForKey:*MEMORY[0x277CD2688]];
+  v6 = [requestCopy stringForKey:*MEMORY[0x277CD2688]];
   v7 = *MEMORY[0x277CD2680];
-  v8 = [v4 dataForKey:*MEMORY[0x277CD2680]];
+  v8 = [requestCopy dataForKey:*MEMORY[0x277CD2680]];
   v9 = [MEMORY[0x277CBEAB8] hmf_unarchiveFromData:v8 error:0];
   if (v6 | v9)
   {
-    v11 = [(HMDSignificantTimeEvent *)self emptyModelObject];
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    emptyModelObject = [(HMDSignificantTimeEvent *)self emptyModelObject];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     if (v6)
     {
-      [v11 setSignificantEvent:v6];
-      [v12 setObject:v6 forKeyedSubscript:v5];
+      [emptyModelObject setSignificantEvent:v6];
+      [dictionary setObject:v6 forKeyedSubscript:v5];
     }
 
     v21 = v9;
     if (v8)
     {
-      [v11 setOffset:v8];
-      [v12 setObject:v8 forKeyedSubscript:v7];
+      [emptyModelObject setOffset:v8];
+      [dictionary setObject:v8 forKeyedSubscript:v7];
     }
 
-    v13 = [(HMDEvent *)self eventTrigger];
-    v14 = [v13 home];
-    v15 = [v14 backingStore];
-    [v4 name];
-    v16 = v20 = v11;
+    eventTrigger = [(HMDEvent *)self eventTrigger];
+    home = [eventTrigger home];
+    backingStore = [home backingStore];
+    [requestCopy name];
+    v16 = v20 = emptyModelObject;
     v17 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-    v18 = [v15 transaction:v16 options:v17];
+    v18 = [backingStore transaction:v16 options:v17];
 
     [v18 add:v20];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __48__HMDSignificantTimeEvent__handleUpdateRequest___block_invoke;
     v22[3] = &unk_27868A1D8;
-    v23 = v4;
-    v24 = v12;
-    v19 = v12;
+    v23 = requestCopy;
+    v24 = dictionary;
+    v19 = dictionary;
     [v18 run:v22];
 
     v9 = v21;
@@ -283,7 +283,7 @@ LABEL_20:
   else
   {
     v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    [v4 respondWithError:v10];
+    [requestCopy respondWithError:v10];
   }
 }
 
@@ -307,10 +307,10 @@ void __48__HMDSignificantTimeEvent__handleUpdateRequest___block_invoke(uint64_t 
 - (id)emptyModelObject
 {
   v3 = [HMDSignificantTimeEventModel alloc];
-  v4 = [(HMDEvent *)self uuid];
-  v5 = [(HMDEvent *)self eventTrigger];
-  v6 = [v5 uuid];
-  v7 = [(HMDBackingStoreModelObject *)v3 initWithObjectChangeType:2 uuid:v4 parentUUID:v6];
+  uuid = [(HMDEvent *)self uuid];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  uuid2 = [eventTrigger uuid];
+  v7 = [(HMDBackingStoreModelObject *)v3 initWithObjectChangeType:2 uuid:uuid parentUUID:uuid2];
 
   return v7;
 }
@@ -320,13 +320,13 @@ void __48__HMDSignificantTimeEvent__handleUpdateRequest___block_invoke(uint64_t 
   v3 = MEMORY[0x277CBEB38];
   v11.receiver = self;
   v11.super_class = HMDSignificantTimeEvent;
-  v4 = [(HMDEvent *)&v11 createPayload];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  createPayload = [(HMDEvent *)&v11 createPayload];
+  v5 = [v3 dictionaryWithDictionary:createPayload];
 
-  v6 = [(HMDSignificantTimeEvent *)self significantEvent];
-  [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277CD2688]];
+  significantEvent = [(HMDSignificantTimeEvent *)self significantEvent];
+  [v5 setObject:significantEvent forKeyedSubscript:*MEMORY[0x277CD2688]];
 
-  v7 = [(HMDSignificantTimeEvent *)self offset];
+  offset = [(HMDSignificantTimeEvent *)self offset];
   v8 = encodeRootObject();
   [v5 setObject:v8 forKeyedSubscript:*MEMORY[0x277CD2680]];
 
@@ -341,30 +341,30 @@ void __48__HMDSignificantTimeEvent__handleUpdateRequest___block_invoke(uint64_t 
   v10.receiver = self;
   v10.super_class = HMDSignificantTimeEvent;
   v4 = [(HMDEvent *)&v10 description];
-  v5 = [(HMDSignificantTimeEvent *)self significantEvent];
-  v6 = [(HMDSignificantTimeEvent *)self offset];
-  v7 = [v6 hmf_localTimeDescription];
-  v8 = [v3 stringWithFormat:@"[Sig-Event: %@ Type:%@, %@]", v4, v5, v7];
+  significantEvent = [(HMDSignificantTimeEvent *)self significantEvent];
+  offset = [(HMDSignificantTimeEvent *)self offset];
+  hmf_localTimeDescription = [offset hmf_localTimeDescription];
+  v8 = [v3 stringWithFormat:@"[Sig-Event: %@ Type:%@, %@]", v4, significantEvent, hmf_localTimeDescription];
 
   return v8;
 }
 
-- (HMDSignificantTimeEvent)initWithModel:(id)a3 home:(id)a4
+- (HMDSignificantTimeEvent)initWithModel:(id)model home:(id)home
 {
-  v6 = a3;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = HMDSignificantTimeEvent;
-  v7 = [(HMDTimeEvent *)&v14 initWithModel:v6 home:a4];
+  v7 = [(HMDTimeEvent *)&v14 initWithModel:modelCopy home:home];
   if (v7)
   {
-    v8 = [v6 significantEvent];
+    significantEvent = [modelCopy significantEvent];
     significantEvent = v7->_significantEvent;
-    v7->_significantEvent = v8;
+    v7->_significantEvent = significantEvent;
 
-    v10 = [v6 offset];
-    v11 = [v10 decodeDateComponents];
+    offset = [modelCopy offset];
+    decodeDateComponents = [offset decodeDateComponents];
     offset = v7->_offset;
-    v7->_offset = v11;
+    v7->_offset = decodeDateComponents;
 
     v7->_lock._os_unfair_lock_opaque = 0;
   }
@@ -372,18 +372,18 @@ void __48__HMDSignificantTimeEvent__handleUpdateRequest___block_invoke(uint64_t 
   return v7;
 }
 
-+ (id)nextTimerDateFromHomeLocation:(id)a3 signifiantEvent:(id)a4 offset:(id)a5 loggingObject:(id)a6
++ (id)nextTimerDateFromHomeLocation:(id)location signifiantEvent:(id)event offset:(id)offset loggingObject:(id)object
 {
   v83 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v9)
+  locationCopy = location;
+  eventCopy = event;
+  offsetCopy = offset;
+  objectCopy = object;
+  if (!locationCopy)
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v12;
-    v21 = v12;
+    v20 = objectCopy;
+    v21 = objectCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -395,13 +395,13 @@ void __48__HMDSignificantTimeEvent__handleUpdateRequest___block_invoke(uint64_t 
 
     objc_autoreleasePoolPop(v19);
     v24 = 0;
-    v12 = v20;
+    objectCopy = v20;
     goto LABEL_51;
   }
 
   v13 = [MEMORY[0x277CBEAA8] now];
   v14 = objc_autoreleasePoolPush();
-  v15 = v12;
+  v15 = objectCopy;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -409,27 +409,27 @@ void __48__HMDSignificantTimeEvent__handleUpdateRequest___block_invoke(uint64_t 
     *buf = 138543874;
     v78 = v17;
     v79 = 2112;
-    v80 = v9;
+    v80 = locationCopy;
     v81 = 2112;
     v82 = v13;
     _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Current Home Location & time : %@ / %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v14);
-  if ([v10 isEqualToString:*MEMORY[0x277CD0FA8]])
+  if ([eventCopy isEqualToString:*MEMORY[0x277CD0FA8]])
   {
-    v18 = [HMDLocation nextSunriseTimeForLocation:v9 date:v13];
+    v18 = [HMDLocation nextSunriseTimeForLocation:locationCopy date:v13];
   }
 
   else
   {
-    if (![v10 isEqualToString:*MEMORY[0x277CD0FB0]])
+    if (![eventCopy isEqualToString:*MEMORY[0x277CD0FB0]])
     {
       v25 = 0;
       goto LABEL_13;
     }
 
-    v18 = [HMDLocation nextSunsetTimeForLocation:v9 date:v13];
+    v18 = [HMDLocation nextSunsetTimeForLocation:locationCopy date:v13];
   }
 
   v25 = v18;
@@ -455,7 +455,7 @@ LABEL_13:
   v71 = v13;
   if (v25)
   {
-    v69 = v10;
+    v69 = eventCopy;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
       v34 = HMFGetLogIdentifier();
@@ -469,9 +469,9 @@ LABEL_13:
 
     objc_autoreleasePoolPop(v30);
     v70 = v25;
-    if (v11)
+    if (offsetCopy)
     {
-      v67 = v12;
+      v67 = objectCopy;
       v36 = objc_autoreleasePoolPush();
       v37 = v31;
       v38 = HMFGetOSLogHandle();
@@ -481,12 +481,12 @@ LABEL_13:
         *buf = 138543618;
         v78 = v39;
         v79 = 2112;
-        v80 = v11;
+        v80 = offsetCopy;
         _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_INFO, "%{public}@Adding offset %@ to the sun event dates", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v36);
-      v40 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v72 = 0u;
       v73 = 0u;
       v74 = 0u;
@@ -507,10 +507,10 @@ LABEL_13:
             }
 
             v46 = *(*(&v72 + 1) + 8 * i);
-            v47 = [MEMORY[0x277CBEA80] currentCalendar];
-            v48 = [v47 dateByAddingComponents:v11 toDate:v46 options:0];
+            currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+            v48 = [currentCalendar dateByAddingComponents:offsetCopy toDate:v46 options:0];
 
-            [v40 addObject:v48];
+            [array addObject:v48];
           }
 
           v43 = [v41 countByEnumeratingWithState:&v72 objects:v76 count:16];
@@ -519,25 +519,25 @@ LABEL_13:
         while (v43);
       }
 
-      v12 = v67;
+      objectCopy = v67;
       v25 = v70;
       v13 = v71;
     }
 
     else
     {
-      v40 = [v25 mutableCopy];
+      array = [v25 mutableCopy];
     }
 
-    [v40 addObject:v13];
-    v50 = [v40 sortedArrayUsingComparator:&__block_literal_global_25_102980];
+    [array addObject:v13];
+    v50 = [array sortedArrayUsingComparator:&__block_literal_global_25_102980];
     v51 = objc_autoreleasePoolPush();
     v52 = v31;
     v53 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
     {
       v54 = HMFGetLogIdentifier();
-      v55 = [v40 describeElements:&__block_literal_global_27_102981];
+      v55 = [array describeElements:&__block_literal_global_27_102981];
       *buf = 138543618;
       v78 = v54;
       v79 = 2112;
@@ -614,7 +614,7 @@ LABEL_13:
 
 LABEL_49:
 
-    v10 = v69;
+    eventCopy = v69;
   }
 
   else

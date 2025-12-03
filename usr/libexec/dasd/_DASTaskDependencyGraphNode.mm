@@ -1,38 +1,38 @@
 @interface _DASTaskDependencyGraphNode
-- (BOOL)isEqual:(id)a3;
-- (_DASTaskDependencyGraphNode)initWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_DASTaskDependencyGraphNode)initWithIdentifier:(id)identifier;
 @end
 
 @implementation _DASTaskDependencyGraphNode
 
-- (_DASTaskDependencyGraphNode)initWithIdentifier:(id)a3
+- (_DASTaskDependencyGraphNode)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = _DASTaskDependencyGraphNode;
   v6 = [(_DASTaskDependencyGraphNode *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_taskIdentifier, a3);
+    objc_storeStrong(&v6->_taskIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if ([(_DASTaskDependencyGraphNode *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(_DASTaskDependencyGraphNode *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     taskIdentifier = self->_taskIdentifier;
-    v6 = [(_DASTaskDependencyGraphNode *)v4 taskIdentifier];
-    v7 = [(NSString *)taskIdentifier isEqualToString:v6];
+    taskIdentifier = [(_DASTaskDependencyGraphNode *)equalCopy taskIdentifier];
+    v7 = [(NSString *)taskIdentifier isEqualToString:taskIdentifier];
   }
 
   else

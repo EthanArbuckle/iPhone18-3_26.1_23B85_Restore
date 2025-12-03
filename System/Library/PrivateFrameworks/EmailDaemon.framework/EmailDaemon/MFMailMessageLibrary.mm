@@ -1,22 +1,22 @@
 @interface MFMailMessageLibrary
-- (id)libraryMessagesForMessageIds:(id)a3 protectedDataAvailable:(BOOL *)a4;
-- (id)loadLibraryMessagesFromLibraryMatchingCriterion:(id)a3 count:(unint64_t)a4 protectedDataAvailable:(BOOL *)a5;
+- (id)libraryMessagesForMessageIds:(id)ids protectedDataAvailable:(BOOL *)available;
+- (id)loadLibraryMessagesFromLibraryMatchingCriterion:(id)criterion count:(unint64_t)count protectedDataAvailable:(BOOL *)available;
 @end
 
 @implementation MFMailMessageLibrary
 
-- (id)libraryMessagesForMessageIds:(id)a3 protectedDataAvailable:(BOOL *)a4
+- (id)libraryMessagesForMessageIds:(id)ids protectedDataAvailable:(BOOL *)available
 {
-  v19 = a3;
-  if ([v19 count])
+  idsCopy = ids;
+  if ([idsCopy count])
   {
-    v18 = self;
+    selfCopy = self;
     v6 = objc_alloc_init(NSMutableArray);
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v19;
+    v7 = idsCopy;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v8)
     {
@@ -32,11 +32,11 @@
 
           v11 = *(*(&v20 + 1) + 8 * i);
           v12 = [NSURL URLWithString:v11];
-          v13 = [v12 mf_messageCriterion];
+          mf_messageCriterion = [v12 mf_messageCriterion];
 
-          if (v13)
+          if (mf_messageCriterion)
           {
-            [v6 addObject:v13];
+            [v6 addObject:mf_messageCriterion];
           }
 
           else
@@ -61,7 +61,7 @@
     [v15 setCriterionType:25];
     [v15 setAllCriteriaMustBeSatisfied:0];
     [v15 setCriteria:v6];
-    v16 = [(MFMailMessageLibrary *)v18 loadLibraryMessagesFromLibraryMatchingCriterion:v15 count:0x7FFFFFFFFFFFFFFFLL protectedDataAvailable:a4];
+    v16 = [(MFMailMessageLibrary *)selfCopy loadLibraryMessagesFromLibraryMatchingCriterion:v15 count:0x7FFFFFFFFFFFFFFFLL protectedDataAvailable:available];
   }
 
   else
@@ -72,38 +72,38 @@
   return v16;
 }
 
-- (id)loadLibraryMessagesFromLibraryMatchingCriterion:(id)a3 count:(unint64_t)a4 protectedDataAvailable:(BOOL *)a5
+- (id)loadLibraryMessagesFromLibraryMatchingCriterion:(id)criterion count:(unint64_t)count protectedDataAvailable:(BOOL *)available
 {
-  v7 = a3;
-  if (a5)
+  criterionCopy = criterion;
+  if (available)
   {
     v8 = +[MFMailMessageLibrary defaultInstance];
-    *a5 = [v8 protectedDataAvailability] == 0;
+    *available = [v8 protectedDataAvailability] == 0;
   }
 
   v9 = +[MFMailMessageLibrary defaultInstance];
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (count == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v9 messagesMatchingCriterion:v7 options:6297791];
+    [v9 messagesMatchingCriterion:criterionCopy options:6297791];
   }
 
   else
   {
-    [v9 messagesMatchingCriterion:v7 options:6297791 range:{0, a4}];
+    [v9 messagesMatchingCriterion:criterionCopy options:6297791 range:{0, count}];
   }
   v10 = ;
 
-  if (a5)
+  if (available)
   {
     v11 = +[MFMailMessageLibrary defaultInstance];
-    v12 = [v11 protectedDataAvailability];
-    v13 = *a5;
-    if (v12)
+    protectedDataAvailability = [v11 protectedDataAvailability];
+    v13 = *available;
+    if (protectedDataAvailability)
     {
       v13 = 0;
     }
 
-    *a5 = v13;
+    *available = v13;
   }
 
   return v10;

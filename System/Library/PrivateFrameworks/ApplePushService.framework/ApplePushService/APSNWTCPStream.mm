@@ -1,34 +1,34 @@
 @interface APSNWTCPStream
-+ (unsigned)cachedServerCountForDomain:(id)a3;
-- (APSNWTCPStream)initWithEnvironment:(id)a3;
++ (unsigned)cachedServerCountForDomain:(id)domain;
+- (APSNWTCPStream)initWithEnvironment:(id)environment;
 - (APSTCPStreamDelegate)delegate;
 - (BOOL)isOffloadedConnection;
 - (BOOL)isOffloadingViable;
-- (BOOL)isPeerTrustedForTrust:(__SecTrust *)a3;
-- (BOOL)isTrust:(__SecTrust *)a3 validWithPolicy:(__SecPolicy *)a4 forPeer:(id)a5;
+- (BOOL)isPeerTrustedForTrust:(__SecTrust *)trust;
+- (BOOL)isTrust:(__SecTrust *)trust validWithPolicy:(__SecPolicy *)policy forPeer:(id)peer;
 - (NSString)connectionDebugInfo;
-- (id)_createParametersWithType:(int64_t)a3 onInterface:(id)a4 configureTLSBlock:(id)a5 configureTCPBlock:(id)a6 configureOffloadBlock:(id)a7;
+- (id)_createParametersWithType:(int64_t)type onInterface:(id)interface configureTLSBlock:(id)block configureTCPBlock:(id)pBlock configureOffloadBlock:(id)offloadBlock;
 - (id)_domain;
 - (id)_getTCPInfoData;
 - (id)tcpInfoDescription;
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length;
 - (void)_closeQuery;
-- (void)_connectToServerWithConfiguration:(id)a3;
-- (void)_connectToServerWithCount:(unsigned int)a3;
-- (void)_connectToServerWithPeerName:(id)a3;
+- (void)_connectToServerWithConfiguration:(id)configuration;
+- (void)_connectToServerWithCount:(unsigned int)count;
+- (void)_connectToServerWithPeerName:(id)name;
 - (void)_openWithTXTLookup;
 - (void)_receiveData;
 - (void)close;
 - (void)dealloc;
-- (void)handleState:(int)a3 error:(id)a4;
-- (void)openWithOffloadInfo:(id)a3;
-- (void)setCachedIPAddress:(id)a3;
-- (void)setForceWWANInterface:(BOOL)a3;
-- (void)setIsConnected:(BOOL)a3;
-- (void)setIsSuspended:(BOOL)a3;
-- (void)setRedirectHostname:(id)a3;
-- (void)setUseAlternatePort:(BOOL)a3;
-- (void)writeDataInBackground:(id)a3;
+- (void)handleState:(int)state error:(id)error;
+- (void)openWithOffloadInfo:(id)info;
+- (void)setCachedIPAddress:(id)address;
+- (void)setForceWWANInterface:(BOOL)interface;
+- (void)setIsConnected:(BOOL)connected;
+- (void)setIsSuspended:(BOOL)suspended;
+- (void)setRedirectHostname:(id)hostname;
+- (void)setUseAlternatePort:(BOOL)port;
+- (void)writeDataInBackground:(id)background;
 @end
 
 @implementation APSNWTCPStream
@@ -54,63 +54,63 @@
 
 - (BOOL)isOffloadedConnection
 {
-  v3 = [(APSNWTCPStream *)self parameters];
+  parameters = [(APSNWTCPStream *)self parameters];
 
-  if (v3)
+  if (parameters)
   {
-    v4 = [(APSNWTCPStream *)self parameters];
-    LODWORD(v3) = nw_parameters_get_use_aop2_offload();
+    parameters2 = [(APSNWTCPStream *)self parameters];
+    LODWORD(parameters) = nw_parameters_get_use_aop2_offload();
 
     v5 = +[APSLog stream];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (parameters)
       {
         v6 = @"YES";
       }
 
       v8 = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
       v11 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: Current connection is offloaded? %@", &v8, 0x16u);
     }
   }
 
-  return v3;
+  return parameters;
 }
 
-+ (unsigned)cachedServerCountForDomain:(id)a3
++ (unsigned)cachedServerCountForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
-  v6 = [qword_1001BF7D8 objectForKey:v4];
+  domainCopy = domain;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [qword_1001BF7D8 objectForKey:domainCopy];
   if (v6 && (+[NSDate timeIntervalSinceReferenceDate](NSDate, "timeIntervalSinceReferenceDate"), v8 = v7, [v6 ttlBegin], v8 > v9) && (objc_msgSend(v6, "ttlEnd"), v8 < v10))
   {
-    v11 = [v6 serverCount];
+    serverCount = [v6 serverCount];
   }
 
   else
   {
-    v11 = 0;
+    serverCount = 0;
   }
 
-  objc_sync_exit(v5);
-  return v11;
+  objc_sync_exit(selfCopy);
+  return serverCount;
 }
 
-- (APSNWTCPStream)initWithEnvironment:(id)a3
+- (APSNWTCPStream)initWithEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = APSNWTCPStream;
   v6 = [(APSNWTCPStream *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_environment, a3);
+    objc_storeStrong(&v6->_environment, environment);
     v7->_opened = 0;
   }
 
@@ -125,59 +125,59 @@
   [(APSNWTCPStream *)&v3 dealloc];
 }
 
-- (void)setForceWWANInterface:(BOOL)a3
+- (void)setForceWWANInterface:(BOOL)interface
 {
   if (self->_opened)
   {
     sub_10010B3DC();
   }
 
-  self->_forceWWANInterface = a3;
+  self->_forceWWANInterface = interface;
 }
 
-- (void)setUseAlternatePort:(BOOL)a3
+- (void)setUseAlternatePort:(BOOL)port
 {
   if (self->_opened)
   {
     sub_10010B448();
   }
 
-  self->_useAlternatePort = a3;
+  self->_useAlternatePort = port;
 }
 
-- (void)setRedirectHostname:(id)a3
+- (void)setRedirectHostname:(id)hostname
 {
-  v4 = a3;
-  v7 = v4;
+  hostnameCopy = hostname;
+  v7 = hostnameCopy;
   if (self->_opened)
   {
     sub_10010B4B4();
-    v4 = v7;
+    hostnameCopy = v7;
   }
 
-  v5 = [v4 copy];
+  v5 = [hostnameCopy copy];
   redirectHostname = self->_redirectHostname;
   self->_redirectHostname = v5;
 }
 
-- (void)setCachedIPAddress:(id)a3
+- (void)setCachedIPAddress:(id)address
 {
-  v4 = a3;
-  v7 = v4;
+  addressCopy = address;
+  v7 = addressCopy;
   if (self->_opened)
   {
     sub_10010B520();
-    v4 = v7;
+    addressCopy = v7;
   }
 
-  v5 = [v4 copy];
+  v5 = [addressCopy copy];
   cachedIPAddress = self->_cachedIPAddress;
   self->_cachedIPAddress = v5;
 }
 
-- (void)setIsConnected:(BOOL)a3
+- (void)setIsConnected:(BOOL)connected
 {
-  v3 = a3;
+  connectedCopy = connected;
   v5 = +[APSLog stream];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -193,8 +193,8 @@
     }
 
     v8 = 138412802;
-    v9 = self;
-    if (v3)
+    selfCopy = self;
+    if (connectedCopy)
     {
       v6 = @"YES";
     }
@@ -206,12 +206,12 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ asked to change isConnected=%@ to %@", &v8, 0x20u);
   }
 
-  self->_isConnected = v3;
+  self->_isConnected = connectedCopy;
 }
 
-- (void)setIsSuspended:(BOOL)a3
+- (void)setIsSuspended:(BOOL)suspended
 {
-  v3 = a3;
+  suspendedCopy = suspended;
   v5 = +[APSLog stream];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -227,8 +227,8 @@
     }
 
     v8 = 138412802;
-    v9 = self;
-    if (v3)
+    selfCopy = self;
+    if (suspendedCopy)
     {
       v6 = @"YES";
     }
@@ -240,19 +240,19 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ asked to change isSuspended=%@ to %@", &v8, 0x20u);
   }
 
-  self->_isSuspended = v3;
+  self->_isSuspended = suspendedCopy;
 }
 
 - (id)_domain
 {
-  v3 = [(APSEnvironment *)self->_environment domain];
-  v4 = [v3 hasSuffix:@"."];
+  domain = [(APSEnvironment *)self->_environment domain];
+  v4 = [domain hasSuffix:@"."];
 
-  v5 = [(APSEnvironment *)self->_environment domain];
-  v6 = v5;
+  domain2 = [(APSEnvironment *)self->_environment domain];
+  v6 = domain2;
   if ((v4 & 1) == 0)
   {
-    v7 = [v5 stringByAppendingString:@"."];
+    v7 = [domain2 stringByAppendingString:@"."];
 
     v6 = v7;
   }
@@ -260,20 +260,20 @@
   return v6;
 }
 
-- (void)openWithOffloadInfo:(id)a3
+- (void)openWithOffloadInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[APSLog stream];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     environment = self->_environment;
-    v7 = [(APSEnvironment *)environment name];
+    name = [(APSEnvironment *)environment name];
     *buf = 138412802;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = environment;
     v18 = 2112;
-    v19 = v7;
+    v19 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Opening %@ with environment %@[%@]", buf, 0x20u);
   }
 
@@ -286,15 +286,15 @@
   self->_hasSentPresence = 0;
   if (_os_feature_enabled_impl())
   {
-    [(APSNWTCPStream *)self setOffloadInfo:v4];
+    [(APSNWTCPStream *)self setOffloadInfo:infoCopy];
   }
 
   self->_generation = arc4random();
   if ([(APSEnvironment *)self->_environment debugHostname])
   {
-    v8 = [(APSEnvironment *)self->_environment hostname];
+    hostname = [(APSEnvironment *)self->_environment hostname];
     serverHostname = self->_serverHostname;
-    self->_serverHostname = v8;
+    self->_serverHostname = hostname;
 
     [(APSNWTCPStream *)self _connectToServerWithPeerName:self->_serverHostname];
   }
@@ -302,14 +302,14 @@
   else
   {
     forceWWANInterface = self->_forceWWANInterface;
-    v11 = [(APSNWTCPStream *)self configurationClass];
+    configurationClass = [(APSNWTCPStream *)self configurationClass];
     v12 = self->_environment;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10007BAF0;
     v13[3] = &unk_100188098;
     v13[4] = self;
-    [(objc_class *)v11 loadConfigurationForEnvironment:v12 connectionType:!forceWWANInterface block:v13];
+    [(objc_class *)configurationClass loadConfigurationForEnvironment:v12 connectionType:!forceWWANInterface block:v13];
   }
 }
 
@@ -317,33 +317,33 @@
 {
   if (![(APSEnvironment *)self->_environment isLoadBalanced])
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 0;
     goto LABEL_5;
   }
 
   v3 = objc_opt_class();
-  v4 = [(APSEnvironment *)self->_environment domain];
-  v5 = [v3 cachedServerCountForDomain:v4];
+  domain = [(APSEnvironment *)self->_environment domain];
+  v5 = [v3 cachedServerCountForDomain:domain];
 
   if (v5)
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = v5;
 LABEL_5:
 
-    [(APSNWTCPStream *)v6 _connectToServerWithCount:v7];
+    [(APSNWTCPStream *)selfCopy2 _connectToServerWithCount:v7];
     return;
   }
 
   if (self->_forceWWANInterface)
   {
     v8 = +[PCPersistentInterfaceManager sharedInstance];
-    v9 = [v8 WWANInterfaceName];
+    wWANInterfaceName = [v8 WWANInterfaceName];
 
-    if (v9)
+    if (wWANInterfaceName)
     {
-      v10 = if_nametoindex([v9 UTF8String]);
+      v10 = if_nametoindex([wWANInterfaceName UTF8String]);
     }
 
     else
@@ -360,16 +360,16 @@ LABEL_5:
   v11 = +[APSLog stream];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(APSNWTCPStream *)self _domain];
+    _domain = [(APSNWTCPStream *)self _domain];
     *buf = 138412546;
-    v20 = self;
+    selfCopy4 = self;
     v21 = 2112;
-    v22 = v12;
+    v22 = _domain;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ performing DNS lookup for %@", buf, 0x16u);
   }
 
-  v13 = [(APSNWTCPStream *)self _domain];
-  Record = DNSServiceQueryRecord(&self->_serviceQuery, 0, v10, [v13 UTF8String], 0x10u, 1u, sub_10007C698, self);
+  _domain2 = [(APSNWTCPStream *)self _domain];
+  Record = DNSServiceQueryRecord(&self->_serviceQuery, 0, v10, [_domain2 UTF8String], 0x10u, 1u, sub_10007C698, self);
 
   if (Record)
   {
@@ -377,7 +377,7 @@ LABEL_5:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@ DNS query failed!", buf, 0xCu);
     }
 
@@ -412,13 +412,13 @@ LABEL_5:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       environment = self->_environment;
-      v5 = [(APSEnvironment *)environment name];
+      name = [(APSEnvironment *)environment name];
       v8 = 138412802;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
       v11 = environment;
       v12 = 2112;
-      v13 = v5;
+      v13 = name;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Closing %@ with environment %@[%@]", &v8, 0x20u);
     }
 
@@ -436,10 +436,10 @@ LABEL_5:
   }
 }
 
-- (void)_connectToServerWithPeerName:(id)a3
+- (void)_connectToServerWithPeerName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
+  nameCopy = name;
+  v5 = nameCopy;
   if (self->_connection)
   {
     v6 = +[APSLog stream];
@@ -451,17 +451,17 @@ LABEL_5:
     goto LABEL_38;
   }
 
-  v7 = [(NSString *)v4 copy];
+  v7 = [(NSString *)nameCopy copy];
   peerName = self->_peerName;
   self->_peerName = v7;
 
-  v9 = [(APSEnvironment *)self->_environment port];
+  port = [(APSEnvironment *)self->_environment port];
   if (self->_useAlternatePort)
   {
-    v9 = [(APSEnvironment *)self->_environment alternatePort];
+    port = [(APSEnvironment *)self->_environment alternatePort];
   }
 
-  v10 = v9;
+  v10 = port;
   v11 = +[APSLog stream];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -477,7 +477,7 @@ LABEL_5:
       v13 = @"NO";
     }
 
-    v59 = self;
+    selfCopy3 = self;
     v60 = 2112;
     v61 = v5;
     v62 = 2048;
@@ -495,8 +495,8 @@ LABEL_5:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [(APSEnvironment *)self->_environment name];
-        v15 = [v6 objectForKey:v14];
+        name = [(APSEnvironment *)self->_environment name];
+        v15 = [v6 objectForKey:name];
 
         if (v15)
         {
@@ -516,7 +516,7 @@ LABEL_5:
             {
               v21 = self->_serverHostname;
               *buf = 138412546;
-              v59 = self;
+              selfCopy3 = self;
               v60 = 2112;
               v61 = v21;
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%@ Overriding server hostname/IP to %@", buf, 0x16u);
@@ -545,23 +545,23 @@ LABEL_5:
     v53 = nagleEnabled;
     objc_copyWeak(&v52, &location);
     v25 = objc_retainBlock(v51);
-    v26 = [(APSNWTCPStream *)self offloadInfo];
-    if (v26 && _os_feature_enabled_impl())
+    offloadInfo = [(APSNWTCPStream *)self offloadInfo];
+    if (offloadInfo && _os_feature_enabled_impl())
     {
-      v27 = [(APSNWTCPStream *)self isOffloadingViable];
+      isOffloadingViable = [(APSNWTCPStream *)self isOffloadingViable];
 
-      if (!v27)
+      if (!isOffloadingViable)
       {
         v28 = 0;
         goto LABEL_30;
       }
 
-      v26 = +[APSLog stream];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+      offloadInfo = +[APSLog stream];
+      if (os_log_type_enabled(offloadInfo, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v59 = self;
-        _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%@: Offload info exists, offloading to AOP.", buf, 0xCu);
+        selfCopy3 = self;
+        _os_log_impl(&_mh_execute_header, offloadInfo, OS_LOG_TYPE_DEFAULT, "%@: Offload info exists, offloading to AOP.", buf, 0xCu);
       }
 
       v28 = 1;
@@ -576,8 +576,8 @@ LABEL_30:
     v29 = [(APSNWTCPStream *)self _createParametersWithType:v28 onInterface:0 configureTLSBlock:v24 configureTCPBlock:v25 configureOffloadBlock:&stru_100188178];
     [(APSNWTCPStream *)self setParameters:v29];
 
-    v30 = [(APSNWTCPStream *)self parameters];
-    v31 = nw_connection_create(host_with_numeric_port, v30);
+    parameters = [(APSNWTCPStream *)self parameters];
+    v31 = nw_connection_create(host_with_numeric_port, parameters);
     connection = self->_connection;
     self->_connection = v31;
 
@@ -589,8 +589,8 @@ LABEL_30:
     if (sendData)
     {
       v36 = self->_connection;
-      v37 = [(NSMutableData *)sendData _createDispatchData];
-      nw_connection_send(v36, v37, _nw_content_context_default_message, 1, _nw_connection_send_idempotent_content);
+      _createDispatchData = [(NSMutableData *)sendData _createDispatchData];
+      nw_connection_send(v36, _createDispatchData, _nw_content_context_default_message, 1, _nw_connection_send_idempotent_content);
 
       v38 = self->_sendData;
       self->_sendData = 0;
@@ -654,30 +654,30 @@ LABEL_30:
 LABEL_38:
 }
 
-- (void)_connectToServerWithCount:(unsigned int)a3
+- (void)_connectToServerWithCount:(unsigned int)count
 {
   if ([(APSEnvironment *)self->_environment debugHostname])
   {
-    v5 = [(APSEnvironment *)self->_environment hostname];
-    v6 = [v5 copy];
+    hostname = [(APSEnvironment *)self->_environment hostname];
+    v6 = [hostname copy];
   }
 
   else
   {
     v7 = [NSString alloc];
-    v5 = [(APSEnvironment *)self->_environment hostname];
-    v8 = [(APSNWTCPStream *)self _domain];
-    v6 = [v7 initWithFormat:@"%@.%@", v5, v8];
+    hostname = [(APSEnvironment *)self->_environment hostname];
+    _domain = [(APSNWTCPStream *)self _domain];
+    v6 = [v7 initWithFormat:@"%@.%@", hostname, _domain];
   }
 
   if ([(APSEnvironment *)self->_environment isLoadBalanced])
   {
-    if (a3 <= 1)
+    if (count <= 1)
     {
-      a3 = 1;
+      count = 1;
     }
 
-    v9 = [[NSString alloc] initWithFormat:@"%u-%@", arc4random() % a3 + 1, v6];
+    v9 = [[NSString alloc] initWithFormat:@"%u-%@", arc4random() % count + 1, v6];
   }
 
   else
@@ -695,7 +695,7 @@ LABEL_38:
     {
       redirectHostname = self->_redirectHostname;
       *buf = 138412802;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = redirectHostname;
       v19 = 2112;
@@ -713,7 +713,7 @@ LABEL_38:
     {
       cachedIPAddress = self->_cachedIPAddress;
       *buf = 138412802;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = cachedIPAddress;
       v19 = 2112;
@@ -727,32 +727,32 @@ LABEL_38:
   [(APSNWTCPStream *)self _connectToServerWithPeerName:v6];
 }
 
-- (void)_connectToServerWithConfiguration:(id)a3
+- (void)_connectToServerWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(APSEnvironment *)self->_environment isLoadBalanced];
+  configurationCopy = configuration;
+  isLoadBalanced = [(APSEnvironment *)self->_environment isLoadBalanced];
   v6 = +[APSLog stream];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (isLoadBalanced)
   {
     if (v7)
     {
-      v8 = [v4 serverCount];
-      v9 = [v4 hostname];
+      serverCount = [configurationCopy serverCount];
+      hostname = [configurationCopy hostname];
       *buf = 138412802;
-      v26 = self;
+      selfCopy4 = self;
       v27 = 2048;
-      v28 = v8;
+      v28 = serverCount;
       v29 = 2112;
-      v30 = v9;
+      v30 = hostname;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ env isLoadBalanced, using server count %lu and hostname %@", buf, 0x20u);
     }
 
     v10 = arc4random();
-    v11 = v10 % ([v4 serverCount] + 1);
+    v11 = v10 % ([configurationCopy serverCount] + 1);
     v12 = [NSString alloc];
-    v13 = [v4 hostname];
-    v14 = [v12 initWithFormat:@"%u-%@", v11, v13];
+    hostname2 = [configurationCopy hostname];
+    v14 = [v12 initWithFormat:@"%u-%@", v11, hostname2];
     serverHostname = self->_serverHostname;
     self->_serverHostname = v14;
   }
@@ -761,17 +761,17 @@ LABEL_38:
   {
     if (v7)
     {
-      v16 = [v4 hostname];
+      hostname3 = [configurationCopy hostname];
       *buf = 138412546;
-      v26 = self;
+      selfCopy4 = self;
       v27 = 2112;
-      v28 = v16;
+      v28 = hostname3;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ env is not load balanced, using config's host name: %@", buf, 0x16u);
     }
 
-    v17 = [v4 hostname];
-    v13 = self->_serverHostname;
-    self->_serverHostname = v17;
+    hostname4 = [configurationCopy hostname];
+    hostname2 = self->_serverHostname;
+    self->_serverHostname = hostname4;
   }
 
   if (self->_redirectHostname)
@@ -780,13 +780,13 @@ LABEL_38:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       redirectHostname = self->_redirectHostname;
-      v20 = [v4 hostname];
+      hostname5 = [configurationCopy hostname];
       *buf = 138412802;
-      v26 = self;
+      selfCopy4 = self;
       v27 = 2112;
       v28 = redirectHostname;
       v29 = 2112;
-      v30 = v20;
+      v30 = hostname5;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@ courier redirect hostname is defined, using hostname %@ and peername %@", buf, 0x20u);
     }
 
@@ -799,49 +799,49 @@ LABEL_38:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       cachedIPAddress = self->_cachedIPAddress;
-      v23 = [v4 hostname];
+      hostname6 = [configurationCopy hostname];
       *buf = 138412802;
-      v26 = self;
+      selfCopy4 = self;
       v27 = 2112;
       v28 = cachedIPAddress;
       v29 = 2112;
-      v30 = v23;
+      v30 = hostname6;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%@ courier last cached ip address is defined, using hostname %@ and peername %@", buf, 0x20u);
     }
 
     objc_storeStrong(&self->_serverHostname, self->_cachedIPAddress);
   }
 
-  v24 = [v4 hostname];
-  [(APSNWTCPStream *)self _connectToServerWithPeerName:v24];
+  hostname7 = [configurationCopy hostname];
+  [(APSNWTCPStream *)self _connectToServerWithPeerName:hostname7];
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length
 {
   if (!self->_connection)
   {
     return 0;
   }
 
-  v5 = [[NSData alloc] initWithBytes:a3 length:a4];
+  v5 = [[NSData alloc] initWithBytes:write length:length];
   connection = self->_connection;
-  v7 = [v5 _createDispatchData];
-  nw_connection_send(connection, v7, _nw_content_context_default_message, 1, _nw_connection_send_idempotent_content);
+  _createDispatchData = [v5 _createDispatchData];
+  nw_connection_send(connection, _createDispatchData, _nw_content_context_default_message, 1, _nw_connection_send_idempotent_content);
 
   v8 = [v5 length];
   return v8;
 }
 
-- (void)writeDataInBackground:(id)a3
+- (void)writeDataInBackground:(id)background
 {
-  v4 = a3;
-  v5 = v4;
+  backgroundCopy = background;
+  v5 = backgroundCopy;
   connection = self->_connection;
-  v11 = v4;
+  v11 = backgroundCopy;
   if (connection)
   {
-    v7 = [v4 _createDispatchData];
-    nw_connection_send(connection, v7, _nw_content_context_default_message, 1, _nw_connection_send_idempotent_content);
+    _createDispatchData = [backgroundCopy _createDispatchData];
+    nw_connection_send(connection, _createDispatchData, _nw_content_context_default_message, 1, _nw_connection_send_idempotent_content);
   }
 
   else
@@ -861,12 +861,12 @@ LABEL_38:
   }
 }
 
-- (BOOL)isTrust:(__SecTrust *)a3 validWithPolicy:(__SecPolicy *)a4 forPeer:(id)a5
+- (BOOL)isTrust:(__SecTrust *)trust validWithPolicy:(__SecPolicy *)policy forPeer:(id)peer
 {
-  v7 = a5;
+  peerCopy = peer;
   if (!sub_10000712C() || (v8 = 1, v9 = sub_100004328(APSTrustAllHosts, 1), v10 = [v9 BOOLValue], v9, (v10 & 1) == 0))
   {
-    if (SecTrustSetPolicies(a3, a4))
+    if (SecTrustSetPolicies(trust, policy))
     {
       v11 = +[APSLog stream];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -880,7 +880,7 @@ LABEL_38:
     else
     {
       error = 0;
-      v8 = SecTrustEvaluateWithError(a3, &error);
+      v8 = SecTrustEvaluateWithError(trust, &error);
       if (!v8)
       {
         if (error)
@@ -908,9 +908,9 @@ LABEL_38:
   return v8;
 }
 
-- (BOOL)isPeerTrustedForTrust:(__SecTrust *)a3
+- (BOOL)isPeerTrustedForTrust:(__SecTrust *)trust
 {
-  if (!a3)
+  if (!trust)
   {
     return 0;
   }
@@ -953,7 +953,7 @@ LABEL_38:
   }
 
   v8 = ApplePushService;
-  v9 = [(APSNWTCPStream *)self isTrust:a3 validWithPolicy:ApplePushService forPeer:self->_peerName];
+  v9 = [(APSNWTCPStream *)self isTrust:trust validWithPolicy:ApplePushService forPeer:self->_peerName];
   CFRelease(v8);
   if ((v9 & 1) == 0)
   {
@@ -973,9 +973,9 @@ LABEL_20:
   return 1;
 }
 
-- (void)handleState:(int)a3 error:(id)a4
+- (void)handleState:(int)state error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   if (!self->_connection)
   {
     v8 = +[APSLog stream];
@@ -987,11 +987,11 @@ LABEL_20:
     goto LABEL_25;
   }
 
-  if (a3 > 3)
+  if (state > 3)
   {
-    if (a3 != 4)
+    if (state != 4)
     {
-      if (a3 == 5)
+      if (state == 5)
       {
         [(APSNWTCPStream *)self close];
       }
@@ -1002,7 +1002,7 @@ LABEL_20:
 LABEL_23:
     [(APSNWTCPStream *)self close];
     self->_hasError = 1;
-    v8 = nw_error_copy_cf_error(v6);
+    v8 = nw_error_copy_cf_error(errorCopy);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained tcpStream:self errorOccured:v8 disconnectReason:19];
 LABEL_24:
@@ -1011,12 +1011,12 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     goto LABEL_23;
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
     [(APSNWTCPStream *)self setHasEstablishedConnection:1];
     connection = self->_connection;
@@ -1111,23 +1111,23 @@ LABEL_25:
           if ([v28 count] == 3)
           {
             v30 = [v28 objectAtIndexedSubscript:1];
-            v40 = [v30 integerValue];
+            integerValue = [v30 integerValue];
 
             v31 = [v28 objectAtIndexedSubscript:2];
-            v32 = [v31 integerValue];
+            integerValue2 = [v31 integerValue];
           }
 
           else
           {
-            v32 = 0;
-            v40 = 0;
+            integerValue2 = 0;
+            integerValue = 0;
           }
         }
 
         else
         {
-          v32 = 0;
-          v40 = 0;
+          integerValue2 = 0;
+          integerValue = 0;
         }
 
         self->_hasSentPresence = 1;
@@ -1147,7 +1147,7 @@ LABEL_25:
         }
 
         v39 = objc_loadWeakRetained(&self->_delegate);
-        [v39 tcpStreamHasConnected:self context:v37 enabledPackedFormat:v41 maxEncoderTableSize:v40 maxDecoderTableSize:v32 secureHandshakeEnabled:1];
+        [v39 tcpStreamHasConnected:self context:v37 enabledPackedFormat:v41 maxEncoderTableSize:integerValue maxDecoderTableSize:integerValue2 secureHandshakeEnabled:1];
       }
     }
 
@@ -1157,20 +1157,20 @@ LABEL_25:
 LABEL_26:
 }
 
-- (id)_createParametersWithType:(int64_t)a3 onInterface:(id)a4 configureTLSBlock:(id)a5 configureTCPBlock:(id)a6 configureOffloadBlock:(id)a7
+- (id)_createParametersWithType:(int64_t)type onInterface:(id)interface configureTLSBlock:(id)block configureTCPBlock:(id)pBlock configureOffloadBlock:(id)offloadBlock
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (a3 == 1)
+  interfaceCopy = interface;
+  blockCopy = block;
+  pBlockCopy = pBlock;
+  offloadBlockCopy = offloadBlock;
+  if (type == 1)
   {
     offload_secure_tcp = nw_parameters_create_offload_secure_tcp();
   }
 
   else
   {
-    offload_secure_tcp = nw_parameters_create_secure_tcp(v13, v14);
+    offload_secure_tcp = nw_parameters_create_secure_tcp(blockCopy, pBlockCopy);
   }
 
   v17 = offload_secure_tcp;
@@ -1184,9 +1184,9 @@ LABEL_26:
     nw_parameters_set_allow_ultra_constrained();
   }
 
-  if (v12)
+  if (interfaceCopy)
   {
-    [v12 UTF8String];
+    [interfaceCopy UTF8String];
     v19 = nw_interface_create_with_name();
     nw_parameters_require_interface(v17, v19);
 
@@ -1194,9 +1194,9 @@ LABEL_26:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 138412546;
-      v29 = self;
+      selfCopy3 = self;
       v30 = 2112;
-      v31 = v12;
+      v31 = interfaceCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%@ binding connection to interface %@", &v28, 0x16u);
     }
   }
@@ -1216,15 +1216,15 @@ LABEL_26:
   }
 
   v23 = +[PCPersistentInterfaceManager sharedInstance];
-  v24 = [v23 allowBindingToWWAN];
+  allowBindingToWWAN = [v23 allowBindingToWWAN];
 
-  if (v24)
+  if (allowBindingToWWAN)
   {
     v25 = +[APSLog stream];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 138412290;
-      v29 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%@: binding stream to WWAN interface", &v28, 0xCu);
     }
 
@@ -1238,7 +1238,7 @@ LABEL_17:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 138412290;
-      v29 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%@: binding stream to non cellular interface", &v28, 0xCu);
     }
 
@@ -1250,9 +1250,9 @@ LABEL_17:
 
 - (BOOL)isOffloadingViable
 {
-  v3 = [(APSNWTCPStream *)self offloadPathEvaluator];
+  offloadPathEvaluator = [(APSNWTCPStream *)self offloadPathEvaluator];
 
-  if (!v3)
+  if (!offloadPathEvaluator)
   {
     v4 = [(APSNWTCPStream *)self _createParametersWithType:1 onInterface:0 configureTLSBlock:_nw_parameters_configure_protocol_default_configuration configureTCPBlock:_nw_parameters_configure_protocol_default_configuration configureOffloadBlock:_nw_parameters_configure_protocol_default_configuration];
     [(APSEnvironment *)self->_environment port];
@@ -1267,7 +1267,7 @@ LABEL_17:
     [(APSNWTCPStream *)self setOffloadPathEvaluator:evaluator_for_endpoint];
   }
 
-  v7 = [(APSNWTCPStream *)self offloadPathEvaluator];
+  offloadPathEvaluator2 = [(APSNWTCPStream *)self offloadPathEvaluator];
   v8 = nw_path_evaluator_copy_path();
 
   status = nw_path_get_status(v8);
@@ -1278,7 +1278,7 @@ LABEL_17:
     if (v11)
     {
       v14 = 138412290;
-      v15 = self;
+      selfCopy2 = self;
       v12 = "%@: Path evluator says AOP path is valid. Offloading.";
 LABEL_10:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, v12, &v14, 0xCu);
@@ -1288,7 +1288,7 @@ LABEL_10:
   else if (v11)
   {
     v14 = 138412290;
-    v15 = self;
+    selfCopy2 = self;
     v12 = "%@: Path evluator says AOP path is not. Not offloading.";
     goto LABEL_10;
   }
@@ -1337,11 +1337,11 @@ LABEL_10:
 
 - (id)tcpInfoDescription
 {
-  v2 = [(APSNWTCPStream *)self _getTCPInfoData];
-  if ([v2 length] == 424)
+  _getTCPInfoData = [(APSNWTCPStream *)self _getTCPInfoData];
+  if ([_getTCPInfoData length] == 424)
   {
-    v3 = [v2 bytes];
-    v4 = [NSString stringWithFormat:@" %u %x %u %u %x %u %u %u %u %u %u %u %u %u %u %u %u %d %u %llu %llu %llu %llu %llu %llu", *v3, v3[1], v3[2], v3[3], *(v3 + 1), *(v3 + 2), *(v3 + 3), *(v3 + 4), *(v3 + 5), *(v3 + 6), *(v3 + 7), *(v3 + 9), *(v3 + 10), *(v3 + 11), *(v3 + 12), *(v3 + 13), *(v3 + 14), *(v3 + 15), *(v3 + 16), *(v3 + 76), *(v3 + 92), *(v3 + 108), *(v3 + 116), *(v3 + 132)];
+    bytes = [_getTCPInfoData bytes];
+    v4 = [NSString stringWithFormat:@" %u %x %u %u %x %u %u %u %u %u %u %u %u %u %u %u %u %d %u %llu %llu %llu %llu %llu %llu", *bytes, bytes[1], bytes[2], bytes[3], *(bytes + 1), *(bytes + 2), *(bytes + 3), *(bytes + 4), *(bytes + 5), *(bytes + 6), *(bytes + 7), *(bytes + 9), *(bytes + 10), *(bytes + 11), *(bytes + 12), *(bytes + 13), *(bytes + 14), *(bytes + 15), *(bytes + 16), *(bytes + 76), *(bytes + 92), *(bytes + 108), *(bytes + 116), *(bytes + 132)];
   }
 
   else

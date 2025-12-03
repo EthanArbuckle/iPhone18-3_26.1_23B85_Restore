@@ -1,6 +1,6 @@
 @interface CommonPlist
 - (CommonPlist)init;
-- (int)readPlist:(id)a3;
+- (int)readPlist:(id)plist;
 @end
 
 @implementation CommonPlist
@@ -18,24 +18,24 @@
   return result;
 }
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
-  v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"FigMetalAllocatorType", v6);
+  plistCopy = plist;
+  v7 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v5, @"FigMetalAllocatorType", v6);
   v11 = v7;
   if (v7)
   {
     self->allocatorType = objc_msgSend_intValue(v7, v8, v9, v10);
   }
 
-  v14 = objc_msgSend_objectForKeyedSubscript_(v4, v12, @"FigMetalAllocatorAllowFallback", v13);
+  v14 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v12, @"FigMetalAllocatorAllowFallback", v13);
   v18 = v14;
   if (v14)
   {
     self->allowFallback = objc_msgSend_BOOLValue(v14, v15, v16, v17);
   }
 
-  v21 = objc_msgSend_objectForKeyedSubscript_(v4, v19, @"FigMetalAllocatorCompressionLevel", v20);
+  v21 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v19, @"FigMetalAllocatorCompressionLevel", v20);
   v25 = v21;
   if (v21)
   {

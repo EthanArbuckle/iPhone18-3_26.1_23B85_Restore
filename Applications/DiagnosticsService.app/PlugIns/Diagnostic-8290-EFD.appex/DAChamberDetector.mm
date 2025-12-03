@@ -1,19 +1,19 @@
 @interface DAChamberDetector
-- (BOOL)shouldStopAfterEventReceived:(id)a3;
-- (DAChamberDetector)initWithInputs:(id)a3;
+- (BOOL)shouldStopAfterEventReceived:(id)received;
+- (DAChamberDetector)initWithInputs:(id)inputs;
 - (DAChamberDetectorDelegate)delegate;
 - (void)checkChamberIsReady;
 - (void)dealloc;
-- (void)handleSensorEvent:(id)a3;
+- (void)handleSensorEvent:(id)event;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation DAChamberDetector
 
-- (DAChamberDetector)initWithInputs:(id)a3
+- (DAChamberDetector)initWithInputs:(id)inputs
 {
-  v5 = a3;
+  inputsCopy = inputs;
   v22.receiver = self;
   v22.super_class = DAChamberDetector;
   v6 = [(DAChamberDetector *)&v22 init];
@@ -21,7 +21,7 @@
   if (v6)
   {
     v6->_started = 0;
-    objc_storeStrong(&v6->_inputs, a3);
+    objc_storeStrong(&v6->_inputs, inputs);
     v8 = +[NSMutableSet set];
     sensors = v7->_sensors;
     v7->_sensors = v8;
@@ -63,12 +63,12 @@
     v18 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(DAChamberInputs *)v7->_inputs detectChamberReadyWaitTime];
-      v20 = [(DAChamberInputs *)v7->_inputs detectChamberSensor];
+      detectChamberReadyWaitTime = [(DAChamberInputs *)v7->_inputs detectChamberReadyWaitTime];
+      detectChamberSensor = [(DAChamberInputs *)v7->_inputs detectChamberSensor];
       *buf = 67109376;
-      v24 = v19;
+      v24 = detectChamberReadyWaitTime;
       v25 = 1024;
-      v26 = v20;
+      v26 = detectChamberSensor;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "DAChamberDetector: Setup parameters: detectChamberReadyWaitTime(%dsec), detectChamberSensor(%x)", buf, 0xEu);
     }
   }
@@ -78,17 +78,17 @@
 
 - (void)start
 {
-  v3 = [(DAChamberDetector *)self sensors];
-  v4 = [v3 count];
+  sensors = [(DAChamberDetector *)self sensors];
+  v4 = [sensors count];
 
   if (v4)
   {
     v5 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(DAChamberDetector *)self sensors];
+      sensors2 = [(DAChamberDetector *)self sensors];
       *buf = 138412290;
-      v26 = v6;
+      v26 = sensors2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "DAChamberDetector: Starting sensors: %@", buf, 0xCu);
     }
 
@@ -115,17 +115,17 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [(DAChamberDetector *)self expectations];
+            expectations = [(DAChamberDetector *)self expectations];
             v13 = [[DAChamberSensorEvent alloc] initWithSensorType:1 eventType:3];
-            [v12 addObject:v13];
+            [expectations addObject:v13];
           }
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [(DAChamberDetector *)self expectations];
+            expectations2 = [(DAChamberDetector *)self expectations];
             v15 = [[DAChamberSensorEvent alloc] initWithSensorType:0 eventType:2];
-            [v14 addObject:v15];
+            [expectations2 addObject:v15];
           }
 
           [v11 startMonitoring];
@@ -140,13 +140,13 @@
     v16 = dispatch_semaphore_create(0);
     [(DAChamberDetector *)self setChamberReadySemaphore:v16];
 
-    v17 = [(DAChamberDetector *)self eventQueue];
+    eventQueue = [(DAChamberDetector *)self eventQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100002BD8;
     block[3] = &unk_10001C5A0;
     block[4] = self;
-    dispatch_async(v17, block);
+    dispatch_async(eventQueue, block);
 
     [(DAChamberDetector *)self setStarted:1];
   }
@@ -167,8 +167,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(DAChamberDetector *)self sensors];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    sensors = [(DAChamberDetector *)self sensors];
+    v4 = [sensors countByEnumeratingWithState:&v10 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -180,7 +180,7 @@
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(sensors);
           }
 
           [*(*(&v10 + 1) + 8 * v7) stopMonitoring];
@@ -188,14 +188,14 @@
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v5 = [sensors countByEnumeratingWithState:&v10 objects:v15 count:16];
       }
 
       while (v5);
     }
 
-    v8 = [(DAChamberDetector *)self expectations];
-    [v8 removeAllObjects];
+    expectations = [(DAChamberDetector *)self expectations];
+    [expectations removeAllObjects];
 
     [(DAChamberDetector *)self setStarted:0];
   }
@@ -213,16 +213,16 @@
 
 - (void)checkChamberIsReady
 {
-  v8 = [(DAChamberDetector *)self expectations];
-  if ([v8 count])
+  expectations = [(DAChamberDetector *)self expectations];
+  if ([expectations count])
   {
   }
 
   else
   {
-    v3 = [(DAChamberDetector *)self started];
+    started = [(DAChamberDetector *)self started];
 
-    if (v3)
+    if (started)
     {
       v4 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -231,52 +231,52 @@
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "DAChamberDetector: Chamber is ready", buf, 2u);
       }
 
-      v5 = [(DAChamberDetector *)self chamberReadySemaphore];
+      chamberReadySemaphore = [(DAChamberDetector *)self chamberReadySemaphore];
 
-      if (v5)
+      if (chamberReadySemaphore)
       {
-        v6 = [(DAChamberDetector *)self chamberReadySemaphore];
-        dispatch_semaphore_signal(v6);
+        chamberReadySemaphore2 = [(DAChamberDetector *)self chamberReadySemaphore];
+        dispatch_semaphore_signal(chamberReadySemaphore2);
       }
 
-      v7 = [(DAChamberDetector *)self delegate];
-      [v7 handleChamberStatus:1];
+      delegate = [(DAChamberDetector *)self delegate];
+      [delegate handleChamberStatus:1];
     }
   }
 }
 
-- (BOOL)shouldStopAfterEventReceived:(id)a3
+- (BOOL)shouldStopAfterEventReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   if (![(DAChamberDetector *)self started])
   {
     goto LABEL_11;
   }
 
-  v5 = [(DAChamberDetector *)self expectations];
-  if (![v5 count])
+  expectations = [(DAChamberDetector *)self expectations];
+  if (![expectations count])
   {
-    v7 = [(DAChamberDetector *)self sensors];
-    if (![v7 count])
+    sensors = [(DAChamberDetector *)self sensors];
+    if (![sensors count])
     {
 
       goto LABEL_3;
     }
 
-    if ([v4 eventType] == 1)
+    if ([receivedCopy eventType] == 1)
     {
 
 LABEL_10:
       [(DAChamberDetector *)self stop];
-      v5 = [(DAChamberDetector *)self delegate];
-      [v5 handleChamberStatus:3];
+      expectations = [(DAChamberDetector *)self delegate];
+      [expectations handleChamberStatus:3];
       v6 = 1;
       goto LABEL_4;
     }
 
-    v8 = [v4 eventType];
+    eventType = [receivedCopy eventType];
 
-    if (v8 == 4)
+    if (eventType == 4)
     {
       goto LABEL_10;
     }
@@ -294,36 +294,36 @@ LABEL_12:
   return v6;
 }
 
-- (void)handleSensorEvent:(id)a3
+- (void)handleSensorEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = eventCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "DAChamberDetector: Received sensor event: %@", &v11, 0xCu);
   }
 
-  if (![(DAChamberDetector *)self shouldStopAfterEventReceived:v4])
+  if (![(DAChamberDetector *)self shouldStopAfterEventReceived:eventCopy])
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    v7 = [(DAChamberDetector *)v6 expectations];
-    [v7 removeObject:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    expectations = [(DAChamberDetector *)selfCopy expectations];
+    [expectations removeObject:eventCopy];
 
     v8 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(DAChamberDetector *)v6 expectations];
-      v10 = [v9 count];
+      expectations2 = [(DAChamberDetector *)selfCopy expectations];
+      v10 = [expectations2 count];
       v11 = 134217984;
       v12 = v10;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "DAChamberDetector: Expectations left: %lu", &v11, 0xCu);
     }
 
-    [(DAChamberDetector *)v6 checkChamberIsReady];
-    objc_sync_exit(v6);
+    [(DAChamberDetector *)selfCopy checkChamberIsReady];
+    objc_sync_exit(selfCopy);
   }
 }
 

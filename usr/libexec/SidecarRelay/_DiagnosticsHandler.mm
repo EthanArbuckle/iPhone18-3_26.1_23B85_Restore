@@ -1,15 +1,15 @@
 @interface _DiagnosticsHandler
 + (id)tmpDir;
-- (_DiagnosticsHandler)initWithSubsystem:(const char *)a3 category:(const char *)a4 provider:(id)a5;
-- (os_state_data_s)handler:(os_state_hints_s *)a3;
+- (_DiagnosticsHandler)initWithSubsystem:(const char *)subsystem category:(const char *)category provider:(id)provider;
+- (os_state_data_s)handler:(os_state_hints_s *)handler;
 - (void)dealloc;
 @end
 
 @implementation _DiagnosticsHandler
 
-- (os_state_data_s)handler:(os_state_hints_s *)a3
+- (os_state_data_s)handler:(os_state_hints_s *)handler
 {
-  if (a3->var2 != 3)
+  if (handler->var2 != 3)
   {
     return 0;
   }
@@ -45,15 +45,15 @@
   [(_DiagnosticsHandler *)&v4 dealloc];
 }
 
-- (_DiagnosticsHandler)initWithSubsystem:(const char *)a3 category:(const char *)a4 provider:(id)a5
+- (_DiagnosticsHandler)initWithSubsystem:(const char *)subsystem category:(const char *)category provider:(id)provider
 {
-  v8 = a5;
+  providerCopy = provider;
   v29.receiver = self;
   v29.super_class = _DiagnosticsHandler;
   v9 = [(_DiagnosticsHandler *)&v29 init];
-  asprintf(&v9->_path, "%s-%s", a3, a4);
-  asprintf(&v9->_title, "%s:%s", a3, a4);
-  v10 = [v8 copy];
+  asprintf(&v9->_path, "%s-%s", subsystem, category);
+  asprintf(&v9->_title, "%s:%s", subsystem, category);
+  v10 = [providerCopy copy];
   provider = v9->_provider;
   v9->_provider = v10;
 
@@ -74,10 +74,10 @@
   handler[1] = 3221225472;
   handler[2] = sub_100071B6C;
   handler[3] = &unk_1000916F0;
-  v23 = v8;
+  v23 = providerCopy;
   v16 = v12;
   v22 = v16;
-  v17 = v8;
+  v17 = providerCopy;
   dispatch_source_set_event_handler(v15, handler);
   dispatch_activate(v12->_signal);
   v18 = v22;

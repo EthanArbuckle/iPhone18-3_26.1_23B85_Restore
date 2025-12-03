@@ -1,9 +1,9 @@
 @interface MTRCommissionerControlClusterReverseOpenCommissioningWindowParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRCommissionerControlClusterReverseOpenCommissioningWindowParams)init;
-- (MTRCommissionerControlClusterReverseOpenCommissioningWindowParams)initWithDecodableStruct:(const void *)a3;
-- (MTRCommissionerControlClusterReverseOpenCommissioningWindowParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRCommissionerControlClusterReverseOpenCommissioningWindowParams)initWithDecodableStruct:(const void *)struct;
+- (MTRCommissionerControlClusterReverseOpenCommissioningWindowParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,9 +20,9 @@
     commissioningTimeout = v2->_commissioningTimeout;
     v2->_commissioningTimeout = &unk_284C3E4C8;
 
-    v5 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     pakePasscodeVerifier = v3->_pakePasscodeVerifier;
-    v3->_pakePasscodeVerifier = v5;
+    v3->_pakePasscodeVerifier = data;
 
     discriminator = v3->_discriminator;
     v3->_discriminator = &unk_284C3E4C8;
@@ -30,31 +30,31 @@
     iterations = v3->_iterations;
     v3->_iterations = &unk_284C3E4C8;
 
-    v9 = [MEMORY[0x277CBEA90] data];
+    data2 = [MEMORY[0x277CBEA90] data];
     salt = v3->_salt;
-    v3->_salt = v9;
+    v3->_salt = data2;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams);
-  v5 = [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self commissioningTimeout];
-  [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)v4 setCommissioningTimeout:v5];
+  commissioningTimeout = [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self commissioningTimeout];
+  [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)v4 setCommissioningTimeout:commissioningTimeout];
 
-  v6 = [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self pakePasscodeVerifier];
-  [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)v4 setPakePasscodeVerifier:v6];
+  pakePasscodeVerifier = [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self pakePasscodeVerifier];
+  [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)v4 setPakePasscodeVerifier:pakePasscodeVerifier];
 
-  v7 = [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self discriminator];
-  [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)v4 setDiscriminator:v7];
+  discriminator = [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self discriminator];
+  [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)v4 setDiscriminator:discriminator];
 
-  v8 = [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self iterations];
-  [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)v4 setIterations:v8];
+  iterations = [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self iterations];
+  [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)v4 setIterations:iterations];
 
-  v9 = [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self salt];
-  [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)v4 setSalt:v9];
+  salt = [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self salt];
+  [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)v4 setSalt:salt];
 
   return v4;
 }
@@ -74,9 +74,9 @@
   return v11;
 }
 
-- (MTRCommissionerControlClusterReverseOpenCommissioningWindowParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRCommissionerControlClusterReverseOpenCommissioningWindowParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v21.receiver = self;
   v21.super_class = MTRCommissionerControlClusterReverseOpenCommissioningWindowParams;
   v7 = [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)&v21 init];
@@ -86,7 +86,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:1873 commandID:2 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:1873 commandID:2 error:error];
   if (v20)
   {
     sub_2393C5AAC(v19);
@@ -113,7 +113,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -124,7 +124,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRCommissionerControlClusterReverseOpenCommissioningWindowParams)initWithDecodableStruct:(const void *)a3
+- (MTRCommissionerControlClusterReverseOpenCommissioningWindowParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRCommissionerControlClusterReverseOpenCommissioningWindowParams;
@@ -132,7 +132,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -148,21 +148,21 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*struct];
   [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self setCommissioningTimeout:v5];
 
-  v6 = [MEMORY[0x277CBEA90] dataWithBytes:*(a3 + 1) length:*(a3 + 2)];
+  v6 = [MEMORY[0x277CBEA90] dataWithBytes:*(struct + 1) length:*(struct + 2)];
   [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self setPakePasscodeVerifier:v6];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a3 + 12)];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(struct + 12)];
   [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self setDiscriminator:v7];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(a3 + 7)];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(struct + 7)];
   [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self setIterations:v8];
 
-  v9 = [MEMORY[0x277CBEA90] dataWithBytes:*(a3 + 4) length:*(a3 + 5)];
+  v9 = [MEMORY[0x277CBEA90] dataWithBytes:*(struct + 4) length:*(struct + 5)];
   [(MTRCommissionerControlClusterReverseOpenCommissioningWindowParams *)self setSalt:v9];
 
   v10 = 0;

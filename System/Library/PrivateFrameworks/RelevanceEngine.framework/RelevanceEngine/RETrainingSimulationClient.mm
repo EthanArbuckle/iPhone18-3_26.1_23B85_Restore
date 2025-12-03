@@ -1,68 +1,68 @@
 @interface RETrainingSimulationClient
-- (BOOL)relevanceEngine:(id)a3 performCommand:(id)a4 withOptions:(id)a5;
-- (BOOL)relevanceEngine:(id)a3 runActionOfElementWithDescription1:(id)a4;
-- (RETrainingSimulationClient)initWithConnection:(id)a3 delegate:(id)a4;
-- (RETrainingSimulationClient)initWithServiceName:(id)a3 delegate:(id)a4;
-- (RETrainingSimulationClient)initWithTargetProcessName:(id)a3 delegate:(id)a4;
+- (BOOL)relevanceEngine:(id)engine performCommand:(id)command withOptions:(id)options;
+- (BOOL)relevanceEngine:(id)engine runActionOfElementWithDescription1:(id)description1;
+- (RETrainingSimulationClient)initWithConnection:(id)connection delegate:(id)delegate;
+- (RETrainingSimulationClient)initWithServiceName:(id)name delegate:(id)delegate;
+- (RETrainingSimulationClient)initWithTargetProcessName:(id)name delegate:(id)delegate;
 - (RETrainingSimulationClientDelegate)delegate;
 - (id)availableRelevanceEngines;
-- (id)diagnosticLogFileForRelevanceEngine:(id)a3;
-- (id)fetchAllElementIdentifiersInRelevanceEngine:(id)a3;
-- (id)fetchAllElementsInRelevanceEngine:(id)a3;
-- (id)relevanceEngine:(id)a3 encodedObjectAtPath:(id)a4;
+- (id)diagnosticLogFileForRelevanceEngine:(id)engine;
+- (id)fetchAllElementIdentifiersInRelevanceEngine:(id)engine;
+- (id)fetchAllElementsInRelevanceEngine:(id)engine;
+- (id)relevanceEngine:(id)engine encodedObjectAtPath:(id)path;
 - (void)_handleInterruption;
 - (void)_handleInvalidation;
 - (void)availableRelevanceEngines;
 - (void)availableRelevanceEnginesDidChange;
 - (void)dealloc;
-- (void)relevanceEngine:(id)a3 createElementFromDescription:(id)a4;
+- (void)relevanceEngine:(id)engine createElementFromDescription:(id)description;
 @end
 
 @implementation RETrainingSimulationClient
 
-- (RETrainingSimulationClient)initWithServiceName:(id)a3 delegate:(id)a4
+- (RETrainingSimulationClient)initWithServiceName:(id)name delegate:(id)delegate
 {
   v6 = MEMORY[0x277CCAE80];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithServiceName:v8];
+  delegateCopy = delegate;
+  nameCopy = name;
+  v9 = [[v6 alloc] initWithServiceName:nameCopy];
 
-  v10 = [(RETrainingSimulationClient *)self initWithConnection:v9 delegate:v7];
+  v10 = [(RETrainingSimulationClient *)self initWithConnection:v9 delegate:delegateCopy];
   return v10;
 }
 
-- (RETrainingSimulationClient)initWithTargetProcessName:(id)a3 delegate:(id)a4
+- (RETrainingSimulationClient)initWithTargetProcessName:(id)name delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = RETrainingSimulationMachServiceForProcessName(v7);
+  nameCopy = name;
+  delegateCopy = delegate;
+  v9 = RETrainingSimulationMachServiceForProcessName(nameCopy);
   v10 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:v9 options:0];
-  v11 = [(RETrainingSimulationClient *)self initWithConnection:v10 delegate:v8];
+  v11 = [(RETrainingSimulationClient *)self initWithConnection:v10 delegate:delegateCopy];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_targetProcessName, a3);
+    objc_storeStrong(&v11->_targetProcessName, name);
   }
 
   return v11;
 }
 
-- (RETrainingSimulationClient)initWithConnection:(id)a3 delegate:(id)a4
+- (RETrainingSimulationClient)initWithConnection:(id)connection delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = RETrainingSimulationClient;
   v9 = [(RETrainingSimulationClient *)&v25 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v11 = dispatch_queue_create("com.apple.RelevanceEngine.TrainingSimulationClient", 0);
     queue = v10->_queue;
     v10->_queue = v11;
 
-    objc_storeStrong(&v10->_connection, a3);
+    objc_storeStrong(&v10->_connection, connection);
     connection = v10->_connection;
     v14 = RETrainingSimulationServerInterface();
     [(NSXPCConnection *)connection setRemoteObjectInterface:v14];
@@ -179,10 +179,10 @@ void __49__RETrainingSimulationClient__handleInvalidation__block_invoke(uint64_t
   }
 }
 
-- (void)relevanceEngine:(id)a3 createElementFromDescription:(id)a4
+- (void)relevanceEngine:(id)engine createElementFromDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  descriptionCopy = description;
   v13 = 0;
   v14[0] = &v13;
   v14[1] = 0x3032000000;
@@ -201,7 +201,7 @@ void __49__RETrainingSimulationClient__handleInvalidation__block_invoke(uint64_t
   v11[2] = __75__RETrainingSimulationClient_relevanceEngine_createElementFromDescription___block_invoke_2;
   v11[3] = &unk_2785FCF10;
   v11[4] = &v13;
-  [v9 relevanceEngine:v6 createElementFromDescription:v7 completion:v11];
+  [v9 relevanceEngine:engineCopy createElementFromDescription:descriptionCopy completion:v11];
   if (*(v14[0] + 40))
   {
     v10 = RELogForDomain(10);
@@ -214,11 +214,11 @@ void __49__RETrainingSimulationClient__handleInvalidation__block_invoke(uint64_t
   _Block_object_dispose(&v13, 8);
 }
 
-- (BOOL)relevanceEngine:(id)a3 performCommand:(id)a4 withOptions:(id)a5
+- (BOOL)relevanceEngine:(id)engine performCommand:(id)command withOptions:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  engineCopy = engine;
+  commandCopy = command;
+  optionsCopy = options;
   v18 = 0;
   v19[0] = &v18;
   v19[1] = 0x3032000000;
@@ -237,13 +237,13 @@ void __49__RETrainingSimulationClient__handleInvalidation__block_invoke(uint64_t
   v16[2] = __73__RETrainingSimulationClient_relevanceEngine_performCommand_withOptions___block_invoke_2;
   v16[3] = &unk_2785FCF10;
   v16[4] = &v18;
-  [v12 relevanceEngine:v8 performCommand:v9 withOptions:v10 completion:v16];
+  [v12 relevanceEngine:engineCopy performCommand:commandCopy withOptions:optionsCopy completion:v16];
   if (*(v19[0] + 40))
   {
     v13 = RELogForDomain(10);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [RETrainingSimulationClient relevanceEngine:v9 performCommand:v19 withOptions:v13];
+      [RETrainingSimulationClient relevanceEngine:commandCopy performCommand:v19 withOptions:v13];
     }
 
     v14 = *(v19[0] + 40) == 0;
@@ -317,10 +317,10 @@ void __55__RETrainingSimulationClient_availableRelevanceEngines__block_invoke_2(
   *(v9 + 40) = v6;
 }
 
-- (BOOL)relevanceEngine:(id)a3 runActionOfElementWithDescription1:(id)a4
+- (BOOL)relevanceEngine:(id)engine runActionOfElementWithDescription1:(id)description1
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  description1Copy = description1;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -344,7 +344,7 @@ void __55__RETrainingSimulationClient_availableRelevanceEngines__block_invoke_2(
   v13[3] = &unk_2785FCF60;
   v13[4] = &v18;
   v13[5] = &v15;
-  [v9 relevanceEngine:v6 runActionOfElementWithDescription1:v7 completion:v13];
+  [v9 relevanceEngine:engineCopy runActionOfElementWithDescription1:description1Copy completion:v13];
   if (*(v16[0] + 40))
   {
     v10 = RELogForDomain(10);
@@ -362,9 +362,9 @@ void __55__RETrainingSimulationClient_availableRelevanceEngines__block_invoke_2(
   return v11;
 }
 
-- (id)fetchAllElementIdentifiersInRelevanceEngine:(id)a3
+- (id)fetchAllElementIdentifiersInRelevanceEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -390,7 +390,7 @@ void __55__RETrainingSimulationClient_availableRelevanceEngines__block_invoke_2(
   v10[3] = &unk_2785FCF38;
   v10[4] = &v15;
   v10[5] = &v12;
-  [v6 fetchAllElementIdentifiersInRelevanceEngine:v4 completion:v10];
+  [v6 fetchAllElementIdentifiersInRelevanceEngine:engineCopy completion:v10];
   if (*(v13[0] + 40))
   {
     v7 = RELogForDomain(10);
@@ -422,9 +422,9 @@ void __74__RETrainingSimulationClient_fetchAllElementIdentifiersInRelevanceEngin
   *(v9 + 40) = v6;
 }
 
-- (id)fetchAllElementsInRelevanceEngine:(id)a3
+- (id)fetchAllElementsInRelevanceEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -450,7 +450,7 @@ void __74__RETrainingSimulationClient_fetchAllElementIdentifiersInRelevanceEngin
   v10[3] = &unk_2785FCF38;
   v10[4] = &v15;
   v10[5] = &v12;
-  [v6 fetchAllElementsInRelevanceEngine:v4 completion:v10];
+  [v6 fetchAllElementsInRelevanceEngine:engineCopy completion:v10];
   if (*(v13[0] + 40))
   {
     v7 = RELogForDomain(10);
@@ -482,9 +482,9 @@ void __64__RETrainingSimulationClient_fetchAllElementsInRelevanceEngine___block_
   *(v9 + 40) = v6;
 }
 
-- (id)diagnosticLogFileForRelevanceEngine:(id)a3
+- (id)diagnosticLogFileForRelevanceEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -510,7 +510,7 @@ void __64__RETrainingSimulationClient_fetchAllElementsInRelevanceEngine___block_
   v10[3] = &unk_2785FCF88;
   v10[4] = &v15;
   v10[5] = &v12;
-  [v6 gatherDiagnosticLogsForRelevanceEngine:v4 completion:v10];
+  [v6 gatherDiagnosticLogsForRelevanceEngine:engineCopy completion:v10];
   if (*(v13[0] + 40))
   {
     v7 = RELogForDomain(10);
@@ -548,10 +548,10 @@ void __66__RETrainingSimulationClient_diagnosticLogFileForRelevanceEngine___bloc
   }
 }
 
-- (id)relevanceEngine:(id)a3 encodedObjectAtPath:(id)a4
+- (id)relevanceEngine:(id)engine encodedObjectAtPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  pathCopy = path;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -576,7 +576,7 @@ void __66__RETrainingSimulationClient_diagnosticLogFileForRelevanceEngine___bloc
   v13[2] = __66__RETrainingSimulationClient_relevanceEngine_encodedObjectAtPath___block_invoke_2;
   v13[3] = &unk_2785FCFB0;
   v13[4] = &v18;
-  [v9 relevanceEngine:v6 encodedObjectAtPath:v7 completion:v13];
+  [v9 relevanceEngine:engineCopy encodedObjectAtPath:pathCopy completion:v13];
   if (*(v16[0] + 40))
   {
     v10 = RELogForDomain(10);
@@ -596,13 +596,13 @@ void __66__RETrainingSimulationClient_diagnosticLogFileForRelevanceEngine___bloc
 
 - (void)availableRelevanceEnginesDidChange
 {
-  v3 = [(RETrainingSimulationClient *)self delegate];
+  delegate = [(RETrainingSimulationClient *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(RETrainingSimulationClient *)self delegate];
-    [v5 availableRelevanceEnginesDidChangeForTrainingSimulationClient:self];
+    delegate2 = [(RETrainingSimulationClient *)self delegate];
+    [delegate2 availableRelevanceEnginesDidChangeForTrainingSimulationClient:self];
   }
 }
 
@@ -653,7 +653,7 @@ void __49__RETrainingSimulationClient__handleInvalidation__block_invoke_cold_1(u
 
 - (void)availableRelevanceEngines
 {
-  OUTLINED_FUNCTION_0_8(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_0_8(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_0_4(&dword_22859F000, v1, v2, "Unable to access engines: %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];

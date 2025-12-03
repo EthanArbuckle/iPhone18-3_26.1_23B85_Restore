@@ -1,14 +1,14 @@
 @interface FKAGridPointPickerViewController
 - (id)keyCommands;
-- (void)_handleD:(id)a3;
-- (void)_handleDownArrow:(id)a3;
-- (void)_handleEscape:(id)a3;
-- (void)_handleLeftArrow:(id)a3;
-- (void)_handleReturn:(id)a3;
-- (void)_handleRightArrow:(id)a3;
-- (void)_handleShiftReturn:(id)a3;
-- (void)_handleSpace:(id)a3;
-- (void)_handleUpArrow:(id)a3;
+- (void)_handleD:(id)d;
+- (void)_handleDownArrow:(id)arrow;
+- (void)_handleEscape:(id)escape;
+- (void)_handleLeftArrow:(id)arrow;
+- (void)_handleReturn:(id)return;
+- (void)_handleRightArrow:(id)arrow;
+- (void)_handleShiftReturn:(id)return;
+- (void)_handleSpace:(id)space;
+- (void)_handleUpArrow:(id)arrow;
 - (void)loadView;
 @end
 
@@ -22,9 +22,9 @@
 
 - (id)keyCommands
 {
-  v3 = [(FKAGridPointPickerViewController *)self cachedKeyCommands];
+  cachedKeyCommands = [(FKAGridPointPickerViewController *)self cachedKeyCommands];
 
-  if (!v3)
+  if (!cachedKeyCommands)
   {
     v15 = [UIKeyCommand keyCommandWithInput:@" " modifierFlags:0 action:"_handleSpace:"];
     v16[0] = v15;
@@ -48,12 +48,12 @@
     [(FKAGridPointPickerViewController *)self setCachedKeyCommands:v12];
   }
 
-  v13 = [(FKAGridPointPickerViewController *)self cachedKeyCommands];
+  cachedKeyCommands2 = [(FKAGridPointPickerViewController *)self cachedKeyCommands];
 
-  return v13;
+  return cachedKeyCommands2;
 }
 
-- (void)_handleSpace:(id)a3
+- (void)_handleSpace:(id)space
 {
   v4 = FKALogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -62,19 +62,19 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Handle space", v12, 2u);
   }
 
-  v5 = [(FKAGridPointPickerViewController *)self view];
-  [v5 selectedScreenPoint];
+  view = [(FKAGridPointPickerViewController *)self view];
+  [view selectedScreenPoint];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(FKAPointPickerViewController *)self delegate];
-  [v10 dismissPointPickerViewController:self];
+  delegate = [(FKAPointPickerViewController *)self delegate];
+  [delegate dismissPointPickerViewController:self];
 
-  v11 = [(FKAPointPickerViewController *)self delegate];
-  [v11 pointPickerViewController:self tapScreenPoint:{v7, v9}];
+  delegate2 = [(FKAPointPickerViewController *)self delegate];
+  [delegate2 pointPickerViewController:self tapScreenPoint:{v7, v9}];
 }
 
-- (void)_handleD:(id)a3
+- (void)_handleD:(id)d
 {
   v4 = FKALogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -83,19 +83,19 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Handle D", v12, 2u);
   }
 
-  v5 = [(FKAGridPointPickerViewController *)self view];
-  [v5 selectedScreenPoint];
+  view = [(FKAGridPointPickerViewController *)self view];
+  [view selectedScreenPoint];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(FKAPointPickerViewController *)self delegate];
-  [v10 dismissPointPickerViewController:self];
+  delegate = [(FKAPointPickerViewController *)self delegate];
+  [delegate dismissPointPickerViewController:self];
 
-  v11 = [(FKAPointPickerViewController *)self delegate];
-  [v11 pointPickerViewController:self doubleTapScreenPoint:{v7, v9}];
+  delegate2 = [(FKAPointPickerViewController *)self delegate];
+  [delegate2 pointPickerViewController:self doubleTapScreenPoint:{v7, v9}];
 }
 
-- (void)_handleReturn:(id)a3
+- (void)_handleReturn:(id)return
 {
   v4 = FKALogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -104,11 +104,11 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Handle return", v6, 2u);
   }
 
-  v5 = [(FKAGridPointPickerViewController *)self pointPickerView];
-  [v5 drillIn];
+  pointPickerView = [(FKAGridPointPickerViewController *)self pointPickerView];
+  [pointPickerView drillIn];
 }
 
-- (void)_handleShiftReturn:(id)a3
+- (void)_handleShiftReturn:(id)return
 {
   v4 = FKALogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -117,11 +117,11 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Handle shift return", v6, 2u);
   }
 
-  v5 = [(FKAGridPointPickerViewController *)self pointPickerView];
-  [v5 drillOut];
+  pointPickerView = [(FKAGridPointPickerViewController *)self pointPickerView];
+  [pointPickerView drillOut];
 }
 
-- (void)_handleLeftArrow:(id)a3
+- (void)_handleLeftArrow:(id)arrow
 {
   v4 = FKALogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -130,11 +130,11 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Handle left arrow", v6, 2u);
   }
 
-  v5 = [(FKAGridPointPickerViewController *)self pointPickerView];
-  [v5 moveSelectionLeft];
+  pointPickerView = [(FKAGridPointPickerViewController *)self pointPickerView];
+  [pointPickerView moveSelectionLeft];
 }
 
-- (void)_handleRightArrow:(id)a3
+- (void)_handleRightArrow:(id)arrow
 {
   v4 = FKALogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -143,11 +143,11 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Handle right arrow", v6, 2u);
   }
 
-  v5 = [(FKAGridPointPickerViewController *)self pointPickerView];
-  [v5 moveSelectionRight];
+  pointPickerView = [(FKAGridPointPickerViewController *)self pointPickerView];
+  [pointPickerView moveSelectionRight];
 }
 
-- (void)_handleUpArrow:(id)a3
+- (void)_handleUpArrow:(id)arrow
 {
   v4 = FKALogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -156,11 +156,11 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Handle up arrow", v6, 2u);
   }
 
-  v5 = [(FKAGridPointPickerViewController *)self pointPickerView];
-  [v5 moveSelectionUp];
+  pointPickerView = [(FKAGridPointPickerViewController *)self pointPickerView];
+  [pointPickerView moveSelectionUp];
 }
 
-- (void)_handleDownArrow:(id)a3
+- (void)_handleDownArrow:(id)arrow
 {
   v4 = FKALogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -169,11 +169,11 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Handle down arrow", v6, 2u);
   }
 
-  v5 = [(FKAGridPointPickerViewController *)self pointPickerView];
-  [v5 moveSelectionDown];
+  pointPickerView = [(FKAGridPointPickerViewController *)self pointPickerView];
+  [pointPickerView moveSelectionDown];
 }
 
-- (void)_handleEscape:(id)a3
+- (void)_handleEscape:(id)escape
 {
   v4 = FKALogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -182,8 +182,8 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Handle escape", v6, 2u);
   }
 
-  v5 = [(FKAPointPickerViewController *)self delegate];
-  [v5 dismissPointPickerViewController:self];
+  delegate = [(FKAPointPickerViewController *)self delegate];
+  [delegate dismissPointPickerViewController:self];
 }
 
 @end

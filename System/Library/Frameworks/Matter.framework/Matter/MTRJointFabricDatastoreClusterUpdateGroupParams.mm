@@ -1,8 +1,8 @@
 @interface MTRJointFabricDatastoreClusterUpdateGroupParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRJointFabricDatastoreClusterUpdateGroupParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -44,32 +44,32 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterUpdateGroupParams);
-  v5 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupID];
-  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setGroupID:v5];
+  groupID = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupID];
+  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setGroupID:groupID];
 
-  v6 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self friendlyName];
-  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setFriendlyName:v6];
+  friendlyName = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self friendlyName];
+  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setFriendlyName:friendlyName];
 
-  v7 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupKeySetID];
-  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setGroupKeySetID:v7];
+  groupKeySetID = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupKeySetID];
+  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setGroupKeySetID:groupKeySetID];
 
-  v8 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupCAT];
-  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setGroupCAT:v8];
+  groupCAT = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupCAT];
+  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setGroupCAT:groupCAT];
 
-  v9 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupCATVersion];
-  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setGroupCATVersion:v9];
+  groupCATVersion = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupCATVersion];
+  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setGroupCATVersion:groupCATVersion];
 
-  v10 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupPermission];
-  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setGroupPermission:v10];
+  groupPermission = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupPermission];
+  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setGroupPermission:groupPermission];
 
-  v11 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self timedInvokeTimeoutMs];
-  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setTimedInvokeTimeoutMs:v11];
+  timedInvokeTimeoutMs = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self timedInvokeTimeoutMs];
+  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v12 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self serverSideProcessingTimeout];
-  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setServerSideProcessingTimeout:v12];
+  serverSideProcessingTimeout = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self serverSideProcessingTimeout];
+  [(MTRJointFabricDatastoreClusterUpdateGroupParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -84,68 +84,68 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v31 = 0;
+  unsignedShortValue = 0;
   LOBYTE(v32) = 0;
   v33 = 0;
-  LOBYTE(v34) = 0;
+  LOBYTE(unsignedShortValue2) = 0;
   v35 = 0;
-  LOBYTE(v36) = 0;
+  LOBYTE(unsignedShortValue3) = 0;
   v37 = 0;
-  LOBYTE(v38) = 0;
+  LOBYTE(unsignedShortValue4) = 0;
   v39 = 0;
-  v40 = 0;
+  unsignedCharValue = 0;
   v30[0] = 0;
   v30[1] = 0;
   v29 = v30;
-  v5 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupID];
-  v31 = [v5 unsignedShortValue];
+  groupID = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupID];
+  unsignedShortValue = [groupID unsignedShortValue];
 
-  v6 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self friendlyName];
+  friendlyName = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self friendlyName];
 
-  if (v6)
+  if (friendlyName)
   {
     v32 = 0uLL;
     v33 = 1;
-    v7 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self friendlyName];
-    sub_238DB9BD8(v23, [v7 UTF8String], objc_msgSend(v7, "lengthOfBytesUsingEncoding:", 4));
+    friendlyName2 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self friendlyName];
+    sub_238DB9BD8(v23, [friendlyName2 UTF8String], objc_msgSend(friendlyName2, "lengthOfBytesUsingEncoding:", 4));
 
     v32 = v23[0];
   }
 
-  v8 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupKeySetID];
+  groupKeySetID = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupKeySetID];
 
-  if (v8)
+  if (groupKeySetID)
   {
-    v34 = 0;
+    unsignedShortValue2 = 0;
     v35 = 1;
-    v9 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupKeySetID];
-    v34 = [v9 unsignedShortValue];
+    groupKeySetID2 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupKeySetID];
+    unsignedShortValue2 = [groupKeySetID2 unsignedShortValue];
   }
 
-  v10 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupCAT];
+  groupCAT = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupCAT];
 
-  if (v10)
+  if (groupCAT)
   {
-    v36 = 0;
+    unsignedShortValue3 = 0;
     v37 = 1;
-    v11 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupCAT];
-    v36 = [v11 unsignedShortValue];
+    groupCAT2 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupCAT];
+    unsignedShortValue3 = [groupCAT2 unsignedShortValue];
   }
 
-  v12 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupCATVersion];
+  groupCATVersion = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupCATVersion];
 
-  if (v12)
+  if (groupCATVersion)
   {
-    v38 = 0;
+    unsignedShortValue4 = 0;
     v39 = 1;
-    v13 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupCATVersion];
-    v38 = [v13 unsignedShortValue];
+    groupCATVersion2 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupCATVersion];
+    unsignedShortValue4 = [groupCATVersion2 unsignedShortValue];
   }
 
-  v14 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupPermission];
-  v40 = [v14 unsignedCharValue];
+  groupPermission = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self groupPermission];
+  unsignedCharValue = [groupPermission unsignedCharValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v28);
   if (v28)
@@ -157,7 +157,7 @@
     v27 = 0;
     sub_238EA16C4(&v24, &v28, 0);
     sub_2393C7BF0(v23, &v24, 0xFFFFFFFF);
-    v15 = sub_238F1B198(&v31, v23, 0x100uLL);
+    v15 = sub_238F1B198(&unsignedShortValue, v23, 0x100uLL);
     v17 = v15;
     if (v15 || (v15 = sub_238DD2EFC(v23, &v28), v17 = v15, v15))
     {
@@ -166,8 +166,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v28);
-      v15 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v28);
+      v15 = sub_2393C7114(reader, 21, 256);
       v18 = v22;
       v17 = v15;
     }
@@ -195,19 +195,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRJointFabricDatastoreClusterUpdateGroupParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -218,7 +218,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x9BC900000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

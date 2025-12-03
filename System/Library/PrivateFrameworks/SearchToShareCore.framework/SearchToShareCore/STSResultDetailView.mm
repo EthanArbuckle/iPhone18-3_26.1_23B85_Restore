@@ -1,50 +1,50 @@
 @interface STSResultDetailView
-- (CGRect)contentFrameForBounds:(CGRect)a3 traitCollection:(id)a4;
+- (CGRect)contentFrameForBounds:(CGRect)bounds traitCollection:(id)collection;
 - (CGSize)contentSize;
 - (CGSize)providerIconSize;
 - (NSString)providerName;
-- (STSResultDetailView)initWithFrame:(CGRect)a3;
+- (STSResultDetailView)initWithFrame:(CGRect)frame;
 - (STSResultDetailViewDelegate)delegate;
 - (UIEdgeInsets)layoutMargins;
-- (void)_calculateFramesForBounds:(CGRect)a3 traitCollection:(id)a4 andSetFrames:(BOOL)a5 contentFrame:(CGRect *)a6;
-- (void)_didTapProvider:(id)a3;
-- (void)_didTapReportConcern:(id)a3;
-- (void)_didTapSend:(id)a3;
+- (void)_calculateFramesForBounds:(CGRect)bounds traitCollection:(id)collection andSetFrames:(BOOL)frames contentFrame:(CGRect *)frame;
+- (void)_didTapProvider:(id)provider;
+- (void)_didTapReportConcern:(id)concern;
+- (void)_didTapSend:(id)send;
 - (void)layoutSubviews;
-- (void)setCustomContentView:(id)a3;
-- (void)setIsFullscreen:(BOOL)a3;
-- (void)setProviderName:(id)a3;
-- (void)setShowReportConcern:(BOOL)a3;
-- (void)setUseBackgroundBlur:(BOOL)a3;
+- (void)setCustomContentView:(id)view;
+- (void)setIsFullscreen:(BOOL)fullscreen;
+- (void)setProviderName:(id)name;
+- (void)setShowReportConcern:(BOOL)concern;
+- (void)setUseBackgroundBlur:(BOOL)blur;
 - (void)updateReportConcernButtonTitle;
-- (void)updateWithThumbnail:(id)a3 orThumbnailInfo:(id)a4;
+- (void)updateWithThumbnail:(id)thumbnail orThumbnailInfo:(id)info;
 @end
 
 @implementation STSResultDetailView
 
-- (STSResultDetailView)initWithFrame:(CGRect)a3
+- (STSResultDetailView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = STSResultDetailView;
-  v3 = [(STSResultDetailView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STSResultDetailView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] sts_detailViewBackgroundColor];
-    [(STSResultDetailView *)v3 setBackgroundColor:v4];
+    sts_detailViewBackgroundColor = [MEMORY[0x277D75348] sts_detailViewBackgroundColor];
+    [(STSResultDetailView *)v3 setBackgroundColor:sts_detailViewBackgroundColor];
 
-    v5 = [MEMORY[0x277D75348] whiteColor];
-    [(STSResultDetailView *)v3 setTintColor:v5];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(STSResultDetailView *)v3 setTintColor:whiteColor];
 
     v6 = [STSResultDetailFooter alloc];
     v7 = [(STSResultDetailFooter *)v6 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     footer = v3->_footer;
     v3->_footer = v7;
 
-    v9 = [(STSResultDetailFooter *)v3->_footer providerButton];
-    [v9 addTarget:v3 action:sel__didTapProvider_ forControlEvents:64];
+    providerButton = [(STSResultDetailFooter *)v3->_footer providerButton];
+    [providerButton addTarget:v3 action:sel__didTapProvider_ forControlEvents:64];
 
-    v10 = [(STSResultDetailFooter *)v3->_footer sendButton];
-    [v10 addTarget:v3 action:sel__didTapSend_ forControlEvents:64];
+    sendButton = [(STSResultDetailFooter *)v3->_footer sendButton];
+    [sendButton addTarget:v3 action:sel__didTapSend_ forControlEvents:64];
 
     [(STSResultDetailView *)v3 addSubview:v3->_footer];
   }
@@ -59,24 +59,24 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(STSResultDetailView *)self traitCollection];
-  [(STSResultDetailView *)self _calculateFramesForBounds:v11 traitCollection:1 andSetFrames:0 contentFrame:v4, v6, v8, v10];
+  traitCollection = [(STSResultDetailView *)self traitCollection];
+  [(STSResultDetailView *)self _calculateFramesForBounds:traitCollection traitCollection:1 andSetFrames:0 contentFrame:v4, v6, v8, v10];
 }
 
-- (void)_calculateFramesForBounds:(CGRect)a3 traitCollection:(id)a4 andSetFrames:(BOOL)a5 contentFrame:(CGRect *)a6
+- (void)_calculateFramesForBounds:(CGRect)bounds traitCollection:(id)collection andSetFrames:(BOOL)frames contentFrame:(CGRect *)frame
 {
-  v7 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
+  framesCopy = frames;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  collectionCopy = collection;
   [(STSResultDetailView *)self layoutMargins];
   v51 = x;
   v52 = y;
   v16 = width - (v14 + v15);
   v19 = height - (v17 + v18);
-  if ([v13 horizontalSizeClass] == 1 || objc_msgSend(v13, "verticalSizeClass") == 1)
+  if ([collectionCopy horizontalSizeClass] == 1 || objc_msgSend(collectionCopy, "verticalSizeClass") == 1)
   {
     v50 = dbl_264EC5CB0[v16 < v19];
   }
@@ -185,14 +185,14 @@
     [(UIButton *)self->_reportConcernButton setFrame:v43, v45, v47];
   }
 
-  if (a6)
+  if (frame)
   {
     size = remainder.size;
-    a6->origin = remainder.origin;
-    a6->size = size;
+    frame->origin = remainder.origin;
+    frame->size = size;
   }
 
-  if (v7)
+  if (framesCopy)
   {
     [(UIVisualEffectView *)self->_backgroundView setFrame:v51, v52, width, height];
     [(UIView *)self->_customContentView setFrame:remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height];
@@ -214,38 +214,38 @@
   return result;
 }
 
-- (void)_didTapProvider:(id)a3
+- (void)_didTapProvider:(id)provider
 {
-  v4 = [(STSResultDetailView *)self delegate];
-  [v4 detailViewDidTapProvider:self];
+  delegate = [(STSResultDetailView *)self delegate];
+  [delegate detailViewDidTapProvider:self];
 }
 
-- (void)_didTapSend:(id)a3
+- (void)_didTapSend:(id)send
 {
-  v4 = [(STSResultDetailView *)self delegate];
-  [v4 detailViewDidTapSend:self];
+  delegate = [(STSResultDetailView *)self delegate];
+  [delegate detailViewDidTapSend:self];
 }
 
-- (void)_didTapReportConcern:(id)a3
+- (void)_didTapReportConcern:(id)concern
 {
-  v4 = [(STSResultDetailView *)self delegate];
-  [v4 detailViewDidTapReportConcern:self];
+  delegate = [(STSResultDetailView *)self delegate];
+  [delegate detailViewDidTapReportConcern:self];
 }
 
-- (void)setCustomContentView:(id)a3
+- (void)setCustomContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   customContentView = self->_customContentView;
-  v10 = v5;
-  if (customContentView != v5)
+  v10 = viewCopy;
+  if (customContentView != viewCopy)
   {
     [(UIView *)customContentView removeFromSuperview];
-    objc_storeStrong(&self->_customContentView, a3);
+    objc_storeStrong(&self->_customContentView, view);
     if (self->_customContentView)
     {
       p_thumbnailView = &self->_thumbnailView;
-      v8 = [(UIImageView *)self->_thumbnailView superview];
-      if (!v8)
+      superview = [(UIImageView *)self->_thumbnailView superview];
+      if (!superview)
       {
         p_thumbnailView = &self->_footer;
       }
@@ -259,14 +259,14 @@
   }
 }
 
-- (void)updateWithThumbnail:(id)a3 orThumbnailInfo:(id)a4
+- (void)updateWithThumbnail:(id)thumbnail orThumbnailInfo:(id)info
 {
-  v17 = a3;
-  v7 = a4;
-  if (*&self->_thumbnail != __PAIR128__(v7, v17))
+  thumbnailCopy = thumbnail;
+  infoCopy = info;
+  if (*&self->_thumbnail != __PAIR128__(infoCopy, thumbnailCopy))
   {
-    objc_storeStrong(&self->_thumbnail, a3);
-    objc_storeStrong(&self->_thumbnailInfo, a4);
+    objc_storeStrong(&self->_thumbnail, thumbnail);
+    objc_storeStrong(&self->_thumbnailInfo, info);
     if (self->_thumbnail || self->_thumbnailInfo)
     {
       thumbnailView = self->_thumbnailView;
@@ -278,8 +278,8 @@
         self->_thumbnailView = v10;
 
         v12 = self->_thumbnailView;
-        v13 = [MEMORY[0x277D75348] blackColor];
-        [(UIImageView *)v12 setBackgroundColor:v13];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        [(UIImageView *)v12 setBackgroundColor:blackColor];
 
         [(UIImageView *)self->_thumbnailView setContentMode:1];
         [(STSResultDetailView *)self insertSubview:self->_thumbnailView belowSubview:self->_footer];
@@ -288,8 +288,8 @@
         thumbnailView = self->_thumbnailView;
       }
 
-      v14 = [(UIImageView *)thumbnailView layer];
-      [v14 removeAllAnimations];
+      layer = [(UIImageView *)thumbnailView layer];
+      [layer removeAllAnimations];
 
       v15 = self->_thumbnailView;
       if (self->_thumbnailInfo)
@@ -313,12 +313,12 @@
   }
 }
 
-- (CGRect)contentFrameForBounds:(CGRect)a3 traitCollection:(id)a4
+- (CGRect)contentFrameForBounds:(CGRect)bounds traitCollection:(id)collection
 {
   v4 = *(MEMORY[0x277CBF3A0] + 16);
   v9 = *MEMORY[0x277CBF3A0];
   v10 = v4;
-  [(STSResultDetailView *)self _calculateFramesForBounds:a4 traitCollection:0 andSetFrames:&v9 contentFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(STSResultDetailView *)self _calculateFramesForBounds:collection traitCollection:0 andSetFrames:&v9 contentFrame:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v6 = *(&v9 + 1);
   v5 = *&v9;
   v8 = *(&v10 + 1);
@@ -340,41 +340,41 @@
 
 - (NSString)providerName
 {
-  v2 = [(STSResultDetailFooter *)self->_footer providerButton];
-  v3 = [v2 titleForState:0];
+  providerButton = [(STSResultDetailFooter *)self->_footer providerButton];
+  v3 = [providerButton titleForState:0];
 
   return v3;
 }
 
-- (void)setProviderName:(id)a3
+- (void)setProviderName:(id)name
 {
   footer = self->_footer;
-  v4 = a3;
-  v5 = [(STSResultDetailFooter *)footer providerButton];
-  [v5 setTitle:v4 forState:0];
+  nameCopy = name;
+  providerButton = [(STSResultDetailFooter *)footer providerButton];
+  [providerButton setTitle:nameCopy forState:0];
 }
 
-- (void)setIsFullscreen:(BOOL)a3
+- (void)setIsFullscreen:(BOOL)fullscreen
 {
-  if (self->_isFullscreen != a3)
+  if (self->_isFullscreen != fullscreen)
   {
-    self->_isFullscreen = a3;
+    self->_isFullscreen = fullscreen;
     [(STSResultDetailView *)self setNeedsLayout];
   }
 }
 
-- (void)setUseBackgroundBlur:(BOOL)a3
+- (void)setUseBackgroundBlur:(BOOL)blur
 {
-  if (self->_useBackgroundBlur != a3)
+  if (self->_useBackgroundBlur != blur)
   {
-    self->_useBackgroundBlur = a3;
-    if (a3)
+    self->_useBackgroundBlur = blur;
+    if (blur)
     {
-      v5 = [MEMORY[0x277D75348] clearColor];
-      [(STSResultDetailView *)self setBackgroundColor:v5];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(STSResultDetailView *)self setBackgroundColor:clearColor];
 
-      v10 = [MEMORY[0x277D75210] effectWithStyle:2];
-      v6 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v10];
+      sts_detailViewBackgroundColor = [MEMORY[0x277D75210] effectWithStyle:2];
+      v6 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:sts_detailViewBackgroundColor];
       backgroundView = self->_backgroundView;
       self->_backgroundView = v6;
 
@@ -391,22 +391,22 @@
       v9 = self->_backgroundView;
       self->_backgroundView = 0;
 
-      v10 = [MEMORY[0x277D75348] sts_detailViewBackgroundColor];
+      sts_detailViewBackgroundColor = [MEMORY[0x277D75348] sts_detailViewBackgroundColor];
       [(STSResultDetailView *)self setBackgroundColor:?];
     }
   }
 }
 
-- (void)setShowReportConcern:(BOOL)a3
+- (void)setShowReportConcern:(BOOL)concern
 {
-  if (self->_showReportConcern != a3)
+  if (self->_showReportConcern != concern)
   {
     v18 = v5;
     v19 = v4;
     v20 = v3;
-    self->_showReportConcern = a3;
+    self->_showReportConcern = concern;
     reportConcernButton = self->_reportConcernButton;
-    if (a3)
+    if (concern)
     {
       if (!reportConcernButton)
       {
@@ -415,13 +415,13 @@
         self->_reportConcernButton = v11;
 
         v13 = self->_reportConcernButton;
-        v14 = [MEMORY[0x277D75348] systemPinkColor];
-        [(UIButton *)v13 setTitleColor:v14 forState:0];
+        systemPinkColor = [MEMORY[0x277D75348] systemPinkColor];
+        [(UIButton *)v13 setTitleColor:systemPinkColor forState:0];
 
         [(UIButton *)self->_reportConcernButton setContentEdgeInsets:10.0, 0.0, 10.0, 0.0];
-        v15 = [(UIButton *)self->_reportConcernButton titleLabel];
+        titleLabel = [(UIButton *)self->_reportConcernButton titleLabel];
         v16 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-        [v15 setFont:v16];
+        [titleLabel setFont:v16];
 
         [(UIButton *)self->_reportConcernButton addTarget:self action:sel__didTapReportConcern_ forControlEvents:64];
         [(STSResultDetailView *)self addSubview:self->_reportConcernButton];

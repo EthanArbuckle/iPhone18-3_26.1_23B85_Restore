@@ -2,14 +2,14 @@
 - (SKUISettingsObjectStore)init;
 - (id)allObjects;
 - (id)description;
-- (id)visibleObjectAtIndex:(unint64_t)a3;
-- (unint64_t)indexOfVisibleObject:(id)a3;
+- (id)visibleObjectAtIndex:(unint64_t)index;
+- (unint64_t)indexOfVisibleObject:(id)object;
 - (void)_updateVisibleOrder;
-- (void)addObject:(id)a3 hidden:(BOOL)a4;
-- (void)enumerateVisibleObjects:(id)a3;
+- (void)addObject:(id)object hidden:(BOOL)hidden;
+- (void)enumerateVisibleObjects:(id)objects;
 - (void)init;
-- (void)removeObject:(id)a3;
-- (void)revealObject:(id)a3;
+- (void)removeObject:(id)object;
+- (void)revealObject:(id)object;
 @end
 
 @implementation SKUISettingsObjectStore
@@ -47,57 +47,57 @@
   return v2;
 }
 
-- (void)addObject:(id)a3 hidden:(BOOL)a4
+- (void)addObject:(id)object hidden:(BOOL)hidden
 {
-  v6 = a3;
+  objectCopy = object;
   [(NSMutableOrderedSet *)self->_allObjects addObject:?];
-  if (!a4)
+  if (!hidden)
   {
-    [(NSMutableOrderedSet *)self->_visibleObjects addObject:v6];
+    [(NSMutableOrderedSet *)self->_visibleObjects addObject:objectCopy];
   }
 }
 
-- (void)enumerateVisibleObjects:(id)a3
+- (void)enumerateVisibleObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   if (self->_dirty)
   {
     [(SKUISettingsObjectStore *)self _updateVisibleOrder];
   }
 
-  [(NSMutableOrderedSet *)self->_visibleObjects enumerateObjectsUsingBlock:v4];
+  [(NSMutableOrderedSet *)self->_visibleObjects enumerateObjectsUsingBlock:objectsCopy];
 }
 
-- (unint64_t)indexOfVisibleObject:(id)a3
+- (unint64_t)indexOfVisibleObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (self->_dirty)
   {
     [(SKUISettingsObjectStore *)self _updateVisibleOrder];
   }
 
-  v5 = [(NSMutableOrderedSet *)self->_visibleObjects indexOfObject:v4];
+  v5 = [(NSMutableOrderedSet *)self->_visibleObjects indexOfObject:objectCopy];
 
   return v5;
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
   allObjects = self->_allObjects;
-  v5 = a3;
-  [(NSMutableOrderedSet *)allObjects removeObject:v5];
-  [(NSMutableOrderedSet *)self->_visibleObjects removeObject:v5];
+  objectCopy = object;
+  [(NSMutableOrderedSet *)allObjects removeObject:objectCopy];
+  [(NSMutableOrderedSet *)self->_visibleObjects removeObject:objectCopy];
 }
 
-- (void)revealObject:(id)a3
+- (void)revealObject:(id)object
 {
   visibleObjects = self->_visibleObjects;
-  v5 = a3;
+  objectCopy = object;
   self->_dirty = [(NSMutableOrderedSet *)visibleObjects count]!= 0;
-  [(NSMutableOrderedSet *)self->_visibleObjects addObject:v5];
+  [(NSMutableOrderedSet *)self->_visibleObjects addObject:objectCopy];
 }
 
-- (id)visibleObjectAtIndex:(unint64_t)a3
+- (id)visibleObjectAtIndex:(unint64_t)index
 {
   if (self->_dirty)
   {
@@ -106,7 +106,7 @@
 
   visibleObjects = self->_visibleObjects;
 
-  return [(NSMutableOrderedSet *)visibleObjects objectAtIndex:a3];
+  return [(NSMutableOrderedSet *)visibleObjects objectAtIndex:index];
 }
 
 - (id)description

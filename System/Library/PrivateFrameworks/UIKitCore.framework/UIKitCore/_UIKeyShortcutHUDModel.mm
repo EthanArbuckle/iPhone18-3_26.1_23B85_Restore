@@ -1,23 +1,23 @@
 @interface _UIKeyShortcutHUDModel
 + (id)modelForCurrentMenu;
-- (BOOL)_isKeyCommandPerformable:(id)a3 outTarget:(id *)a4;
+- (BOOL)_isKeyCommandPerformable:(id)performable outTarget:(id *)target;
 - (_UIKeyShortcutHUDModel)init;
-- (_UIKeyShortcutHUDModel)initWithCoder:(id)a3;
-- (id)_finalizedHUDMenuFromValidatedHUDMenu:(id)a3;
-- (id)_menuByOmittingNonKeyCommandsInMenu:(id)a3;
-- (id)_responderBasedKeyCommandsStartingAtResponder:(id)a3;
+- (_UIKeyShortcutHUDModel)initWithCoder:(id)coder;
+- (id)_finalizedHUDMenuFromValidatedHUDMenu:(id)menu;
+- (id)_menuByOmittingNonKeyCommandsInMenu:(id)menu;
+- (id)_responderBasedKeyCommandsStartingAtResponder:(id)responder;
 - (id)_sanitizedMainMenu;
-- (id)_validatedHUDMenuFromUIMenu:(id)a3;
-- (id)menuWithAlternatesForModifierFlags:(int64_t)a3;
-- (id)modelKeyCommandsExcludingHUDCommands:(id)a3;
-- (id)originalTargetForSelectedKeyCommand:(id)a3;
-- (id)searchMenuWithSearchText:(id)a3 maxSearchResultEntries:(unint64_t)a4;
-- (void)_addShortcutsFromHUDMenu:(id)a3 toShortcutsArray:(id)a4;
+- (id)_validatedHUDMenuFromUIMenu:(id)menu;
+- (id)menuWithAlternatesForModifierFlags:(int64_t)flags;
+- (id)modelKeyCommandsExcludingHUDCommands:(id)commands;
+- (id)originalTargetForSelectedKeyCommand:(id)command;
+- (id)searchMenuWithSearchText:(id)text maxSearchResultEntries:(unint64_t)entries;
+- (void)_addShortcutsFromHUDMenu:(id)menu toShortcutsArray:(id)array;
 - (void)_buildMenu;
-- (void)_enumerateKeyCommandsInMenu:(id)a3 block:(id)a4;
-- (void)_validateBaseKeyCommand:(id)a3 usingAlternate:(id)a4;
-- (void)_validateKeyCommandAndAlternates:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_enumerateKeyCommandsInMenu:(id)menu block:(id)block;
+- (void)_validateBaseKeyCommand:(id)command usingAlternate:(id)alternate;
+- (void)_validateKeyCommandAndAlternates:(id)alternates;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIKeyShortcutHUDModel
@@ -45,20 +45,20 @@
     modelKeyCommandToModelShortcutMap = v2->_modelKeyCommandToModelShortcutMap;
     v2->_modelKeyCommandToModelShortcutMap = v5;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     modelKeyCommandToAppKeyCommandMap = v2->_modelKeyCommandToAppKeyCommandMap;
-    v2->_modelKeyCommandToAppKeyCommandMap = v7;
+    v2->_modelKeyCommandToAppKeyCommandMap = dictionary;
   }
 
   return v2;
 }
 
-- (id)modelKeyCommandsExcludingHUDCommands:(id)a3
+- (id)modelKeyCommandsExcludingHUDCommands:(id)commands
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [MEMORY[0x1E695DFD8] setWithArray:v4];
+  commandsCopy = commands;
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = [MEMORY[0x1E695DFD8] setWithArray:commandsCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -81,7 +81,7 @@
         v12 = *(*(&v14 + 1) + 8 * i);
         if (([v6 containsObject:{v12, v14}] & 1) == 0)
         {
-          [v5 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -91,17 +91,17 @@
     while (v9);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)searchMenuWithSearchText:(id)a3 maxSearchResultEntries:(unint64_t)a4
+- (id)searchMenuWithSearchText:(id)text maxSearchResultEntries:(unint64_t)entries
 {
   v58 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DF70];
-  v6 = a3;
-  v31 = [v5 array];
-  v7 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  textCopy = text;
+  array = [v5 array];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v8 = [textCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v41 = v8;
   if ([v8 length])
@@ -110,7 +110,7 @@
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v29 = self;
+    selfCopy = self;
     obj = [(_UIKeyShortcutHUDMenu *)self->_menu children];
     v33 = [obj countByEnumeratingWithState:&v51 objects:v57 count:16];
     if (v33)
@@ -126,21 +126,21 @@ LABEL_4:
           objc_enumerationMutation(obj);
         }
 
-        if (v9 + 1 >= a4)
+        if (v9 + 1 >= entries)
         {
           break;
         }
 
         v35 = v10;
         v11 = *(*(&v51 + 1) + 8 * v10);
-        v40 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
         v34 = v11;
-        v36 = [v11 children];
-        v38 = [v36 countByEnumeratingWithState:&v47 objects:v56 count:16];
+        children = [v11 children];
+        v38 = [children countByEnumeratingWithState:&v47 objects:v56 count:16];
         if (v38)
         {
           v37 = *v48;
@@ -150,22 +150,22 @@ LABEL_10:
           {
             if (*v48 != v37)
             {
-              objc_enumerationMutation(v36);
+              objc_enumerationMutation(children);
             }
 
-            if (v9 + 1 >= a4)
+            if (v9 + 1 >= entries)
             {
               break;
             }
 
             v39 = v12;
             v13 = *(*(&v47 + 1) + 8 * v12);
-            v14 = [v13 hudTitle];
-            v15 = [v14 localizedCaseInsensitiveContainsString:v41];
+            hudTitle = [v13 hudTitle];
+            v15 = [hudTitle localizedCaseInsensitiveContainsString:v41];
 
             if (v15)
             {
-              [v40 addObject:v13];
+              [array2 addObject:v13];
               ++v9;
             }
 
@@ -173,8 +173,8 @@ LABEL_10:
             v46 = 0u;
             v43 = 0u;
             v44 = 0u;
-            v16 = [v13 displayableAlternates];
-            v17 = [v16 countByEnumeratingWithState:&v43 objects:v55 count:16];
+            displayableAlternates = [v13 displayableAlternates];
+            v17 = [displayableAlternates countByEnumeratingWithState:&v43 objects:v55 count:16];
             if (v17)
             {
               v18 = v17;
@@ -185,30 +185,30 @@ LABEL_18:
               {
                 if (*v44 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(displayableAlternates);
                 }
 
-                if (v9 + 1 >= a4)
+                if (v9 + 1 >= entries)
                 {
                   break;
                 }
 
                 v21 = *(*(&v43 + 1) + 8 * v20);
-                v22 = [v13 alternatesMap];
-                v23 = [v22 objectForKeyedSubscript:v21];
+                alternatesMap = [v13 alternatesMap];
+                v23 = [alternatesMap objectForKeyedSubscript:v21];
 
-                v24 = [v23 hudTitle];
-                v25 = [v24 localizedCaseInsensitiveContainsString:v41];
+                hudTitle2 = [v23 hudTitle];
+                v25 = [hudTitle2 localizedCaseInsensitiveContainsString:v41];
 
                 if (v25)
                 {
-                  [v40 addObject:v23];
+                  [array2 addObject:v23];
                   ++v9;
                 }
 
                 if (v18 == ++v20)
                 {
-                  v18 = [v16 countByEnumeratingWithState:&v43 objects:v55 count:16];
+                  v18 = [displayableAlternates countByEnumeratingWithState:&v43 objects:v55 count:16];
                   if (v18)
                   {
                     goto LABEL_18;
@@ -222,7 +222,7 @@ LABEL_18:
             v12 = v39 + 1;
             if (v39 + 1 == v38)
             {
-              v38 = [v36 countByEnumeratingWithState:&v47 objects:v56 count:16];
+              v38 = [children countByEnumeratingWithState:&v47 objects:v56 count:16];
               if (v38)
               {
                 goto LABEL_10;
@@ -233,10 +233,10 @@ LABEL_18:
           }
         }
 
-        if ([v40 count])
+        if ([array2 count])
         {
-          v26 = [v34 menuByReplacingChildren:v40];
-          [v31 addObject:v26];
+          v26 = [v34 menuByReplacingChildren:array2];
+          [array addObject:v26];
           ++v9;
         }
 
@@ -254,32 +254,32 @@ LABEL_18:
       }
     }
 
-    self = v29;
+    self = selfCopy;
   }
 
-  v27 = [(_UIKeyShortcutHUDMenu *)self->_menu menuByReplacingChildren:v31];
+  v27 = [(_UIKeyShortcutHUDMenu *)self->_menu menuByReplacingChildren:array];
 
   return v27;
 }
 
-- (id)menuWithAlternatesForModifierFlags:(int64_t)a3
+- (id)menuWithAlternatesForModifierFlags:(int64_t)flags
 {
   v41 = *MEMORY[0x1E69E9840];
-  v27 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = [(_UIKeyShortcutHUDMenu *)self->_menu children];
-  v28 = [v5 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  children = [(_UIKeyShortcutHUDMenu *)self->_menu children];
+  v28 = [children countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (!v28)
   {
 
     goto LABEL_23;
   }
 
-  v24 = self;
-  obj = v5;
+  selfCopy = self;
+  obj = children;
   v6 = 0;
   v26 = *v36;
   do
@@ -293,15 +293,15 @@ LABEL_18:
 
       v8 = *(*(&v35 + 1) + 8 * i);
       v9 = MEMORY[0x1E695DF70];
-      v10 = [v8 children];
-      v11 = [v9 arrayWithCapacity:{objc_msgSend(v10, "count")}];
+      children2 = [v8 children];
+      v11 = [v9 arrayWithCapacity:{objc_msgSend(children2, "count")}];
 
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v12 = [v8 children];
-      v13 = [v12 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      children3 = [v8 children];
+      v13 = [children3 countByEnumeratingWithState:&v31 objects:v39 count:16];
       if (v13)
       {
         v14 = v13;
@@ -315,17 +315,17 @@ LABEL_18:
           {
             if (*v32 != v16)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(children3);
             }
 
             v18 = *(*(&v31 + 1) + 8 * j);
-            v19 = [v18 shortcutToDisplayForModifierFlags:a3];
+            v19 = [v18 shortcutToDisplayForModifierFlags:flags];
             v15 |= v19 != v18;
             v6 |= v19 != v18;
             [v11 addObject:v19];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v31 objects:v39 count:16];
+          v14 = [children3 countByEnumeratingWithState:&v31 objects:v39 count:16];
         }
 
         while (v14);
@@ -333,7 +333,7 @@ LABEL_18:
         if (v15)
         {
           v20 = [v29 menuByReplacingChildren:v11];
-          [v27 addObject:v20];
+          [array addObject:v20];
 
           i = v30;
           goto LABEL_18;
@@ -347,7 +347,7 @@ LABEL_18:
       {
       }
 
-      [v27 addObject:v8];
+      [array addObject:v8];
 LABEL_18:
     }
 
@@ -356,10 +356,10 @@ LABEL_18:
 
   while (v28);
 
-  self = v24;
+  self = selfCopy;
   if (v6)
   {
-    v21 = [(_UIKeyShortcutHUDMenu *)v24->_menu menuByReplacingChildren:v27];
+    v21 = [(_UIKeyShortcutHUDMenu *)selfCopy->_menu menuByReplacingChildren:array];
     goto LABEL_24;
   }
 
@@ -371,13 +371,13 @@ LABEL_24:
   return v22;
 }
 
-- (id)originalTargetForSelectedKeyCommand:(id)a3
+- (id)originalTargetForSelectedKeyCommand:(id)command
 {
-  v4 = [(NSMutableSet *)self->_modelKeyCommands member:a3];
+  v4 = [(NSMutableSet *)self->_modelKeyCommands member:command];
   v5 = [(_UIKeyShortcutHUDModel *)self modelShortcutForModelKeyCommand:v4];
-  v6 = [v5 originalTarget];
+  originalTarget = [v5 originalTarget];
 
-  return v6;
+  return originalTarget;
 }
 
 - (void)_buildMenu
@@ -386,9 +386,9 @@ LABEL_24:
   if (([UIApp _disableLayoutAwareShortcuts] & 1) == 0)
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [v3 _isHardwareKeyboardAvailable];
+    _isHardwareKeyboardAvailable = [v3 _isHardwareKeyboardAvailable];
 
-    if (v4)
+    if (_isHardwareKeyboardAvailable)
     {
       self->_gsKeyboard = [UIApp _hardwareKeyboard];
     }
@@ -410,23 +410,23 @@ LABEL_24:
   validator = self->_validator;
   self->_validator = v11;
 
-  v13 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = [MEMORY[0x1E695DFA8] set];
   equivalentKeyCommandsInPriorityAlreadyEnumerated = self->_equivalentKeyCommandsInPriorityAlreadyEnumerated;
   self->_equivalentKeyCommandsInPriorityAlreadyEnumerated = v14;
 
   v16 = [MEMORY[0x1E696AC70] hashTableWithOptions:517];
-  v17 = [UIApp _responderForKeyEvents];
-  v18 = [(_UIKeyShortcutHUDModel *)self _responderBasedKeyCommandsStartingAtResponder:v17];
+  _responderForKeyEvents = [UIApp _responderForKeyEvents];
+  v18 = [(_UIKeyShortcutHUDModel *)self _responderBasedKeyCommandsStartingAtResponder:_responderForKeyEvents];
 
-  v19 = [(_UIKeyShortcutHUDModel *)self _sanitizedMainMenu];
+  _sanitizedMainMenu = [(_UIKeyShortcutHUDModel *)self _sanitizedMainMenu];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __36___UIKeyShortcutHUDModel__buildMenu__block_invoke;
   aBlock[3] = &unk_1E710E040;
   v74 = v16;
   v99 = v74;
-  v77 = v13;
+  v77 = dictionary;
   v100 = v77;
   v20 = _Block_copy(aBlock);
   v94 = 0u;
@@ -457,13 +457,13 @@ LABEL_24:
     while (v23);
   }
 
-  v75 = v19;
-  [(_UIKeyShortcutHUDModel *)self _enumerateKeyCommandsInMenu:v19 block:v20];
-  v26 = [v77 allKeys];
+  v75 = _sanitizedMainMenu;
+  [(_UIKeyShortcutHUDModel *)self _enumerateKeyCommandsInMenu:_sanitizedMainMenu block:v20];
+  allKeys = [v77 allKeys];
   v27 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"self" ascending:0];
   v105 = v27;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v105 count:1];
-  v29 = [v26 sortedArrayUsingDescriptors:v28];
+  v29 = [allKeys sortedArrayUsingDescriptors:v28];
 
   v92 = 0u;
   v93 = 0u;
@@ -522,7 +522,7 @@ LABEL_24:
     while (v31);
   }
 
-  v40 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
@@ -545,7 +545,7 @@ LABEL_24:
         v46 = [(NSMapTable *)self->_displayableAppKeyCommandToModelShortcutMap objectForKey:*(*(&v82 + 1) + 8 * m)];
         if (v46)
         {
-          [v40 addObject:v46];
+          [array addObject:v46];
         }
       }
 
@@ -557,13 +557,13 @@ LABEL_24:
 
   v73 = v41;
 
-  v47 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v48 = [v75 children];
-  v49 = [v48 countByEnumeratingWithState:&v78 objects:v101 count:16];
+  children = [v75 children];
+  v49 = [children countByEnumeratingWithState:&v78 objects:v101 count:16];
   if (v49)
   {
     v50 = v49;
@@ -574,39 +574,39 @@ LABEL_24:
       {
         if (*v79 != v51)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(children);
         }
 
         v53 = [(_UIKeyShortcutHUDModel *)self _validatedHUDMenuFromUIMenu:*(*(&v78 + 1) + 8 * n)];
-        [v47 addObject:v53];
+        [array2 addObject:v53];
       }
 
-      v50 = [v48 countByEnumeratingWithState:&v78 objects:v101 count:16];
+      v50 = [children countByEnumeratingWithState:&v78 objects:v101 count:16];
     }
 
     while (v50);
   }
 
-  v54 = [v47 firstObject];
-  v55 = [v54 uiMenu];
-  v56 = [v55 identifier];
-  v57 = [v56 isEqualToString:@"com.apple.menu.application"];
+  firstObject = [array2 firstObject];
+  uiMenu = [firstObject uiMenu];
+  identifier = [uiMenu identifier];
+  v57 = [identifier isEqualToString:@"com.apple.menu.application"];
 
   if ((v57 & 1) == 0)
   {
-    v69 = [MEMORY[0x1E696AAA8] currentHandler];
-    v70 = [v54 uiMenu];
-    v71 = [v70 identifier];
-    [v69 handleFailureInMethod:a2 object:self file:@"_UIKeyShortcutHUDModel.m" lineNumber:371 description:{@"First root menu child was unexpectedly not the application menu. Actual identifier: %@", v71}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    uiMenu2 = [firstObject uiMenu];
+    identifier2 = [uiMenu2 identifier];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKeyShortcutHUDModel.m" lineNumber:371 description:{@"First root menu child was unexpectedly not the application menu. Actual identifier: %@", identifier2}];
   }
 
-  v58 = [v54 children];
-  v59 = [v40 arrayByAddingObjectsFromArray:v58];
+  children2 = [firstObject children];
+  v59 = [array arrayByAddingObjectsFromArray:children2];
 
-  v60 = [v54 menuByReplacingChildren:v59];
+  v60 = [firstObject menuByReplacingChildren:v59];
 
-  [v47 setObject:v60 atIndexedSubscript:0];
-  v61 = [_UIKeyShortcutHUDMenu menuWithUIMenu:v75 children:v47];
+  [array2 setObject:v60 atIndexedSubscript:0];
+  v61 = [_UIKeyShortcutHUDMenu menuWithUIMenu:v75 children:array2];
   v62 = [(_UIKeyShortcutHUDModel *)self _finalizedHUDMenuFromValidatedHUDMenu:v61];
   menu = self->_menu;
   self->_menu = v62;
@@ -631,18 +631,18 @@ LABEL_24:
   self->_validator = 0;
 }
 
-- (id)_responderBasedKeyCommandsStartingAtResponder:(id)a3
+- (id)_responderBasedKeyCommandsStartingAtResponder:(id)responder
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 array];
+  responderCopy = responder;
+  array = [v3 array];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72___UIKeyShortcutHUDModel__responderBasedKeyCommandsStartingAtResponder___block_invoke;
   v8[3] = &unk_1E710E068;
-  v6 = v5;
+  v6 = array;
   v9 = v6;
-  [v4 _enumerateKeyboardShortcutsInChainWithOptions:27 usingBlock:v8];
+  [responderCopy _enumerateKeyboardShortcutsInChainWithOptions:27 usingBlock:v8];
 
   return v6;
 }
@@ -651,14 +651,14 @@ LABEL_24:
 {
   v23 = *MEMORY[0x1E69E9840];
   v4 = +[UIMainMenuSystem sharedSystem];
-  v5 = [v4 _rootMenu];
+  _rootMenu = [v4 _rootMenu];
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [v5 children];
+  obj = [_rootMenu children];
   v7 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -679,7 +679,7 @@ LABEL_24:
         v16[2] = __44___UIKeyShortcutHUDModel__sanitizedMainMenu__block_invoke;
         v16[3] = &unk_1E710E090;
         v16[4] = self;
-        v17 = v6;
+        v17 = array;
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __44___UIKeyShortcutHUDModel__sanitizedMainMenu__block_invoke_2;
@@ -695,21 +695,21 @@ LABEL_24:
     while (v8);
   }
 
-  v12 = [v5 menuByReplacingChildren:v6];
+  v12 = [_rootMenu menuByReplacingChildren:array];
 
   return v12;
 }
 
-- (id)_menuByOmittingNonKeyCommandsInMenu:(id)a3
+- (id)_menuByOmittingNonKeyCommandsInMenu:(id)menu
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  menuCopy = menu;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [v4 children];
+  obj = [menuCopy children];
   v6 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -730,7 +730,7 @@ LABEL_24:
         v16[2] = __62___UIKeyShortcutHUDModel__menuByOmittingNonKeyCommandsInMenu___block_invoke;
         v16[3] = &unk_1E710E090;
         v16[4] = self;
-        v17 = v5;
+        v17 = array;
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __62___UIKeyShortcutHUDModel__menuByOmittingNonKeyCommandsInMenu___block_invoke_2;
@@ -745,20 +745,20 @@ LABEL_24:
     while (v7);
   }
 
-  v11 = [v4 menuByReplacingChildren:v5];
+  v11 = [menuCopy menuByReplacingChildren:array];
 
   return v11;
 }
 
-- (void)_enumerateKeyCommandsInMenu:(id)a3 block:(id)a4
+- (void)_enumerateKeyCommandsInMenu:(id)menu block:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = [a3 children];
+  obj = [menu children];
   v7 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -780,7 +780,7 @@ LABEL_24:
         v15[2] = __60___UIKeyShortcutHUDModel__enumerateKeyCommandsInMenu_block___block_invoke;
         v15[3] = &unk_1E710E108;
         v15[4] = self;
-        v16 = v6;
+        v16 = blockCopy;
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __60___UIKeyShortcutHUDModel__enumerateKeyCommandsInMenu_block___block_invoke_3;
@@ -799,17 +799,17 @@ LABEL_24:
   }
 }
 
-- (void)_validateKeyCommandAndAlternates:(id)a3
+- (void)_validateKeyCommandAndAlternates:(id)alternates
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(_UIKeyShortcutHUDModel *)self _validateBaseKeyCommand:v4 usingAlternate:0];
+  alternatesCopy = alternates;
+  [(_UIKeyShortcutHUDModel *)self _validateBaseKeyCommand:alternatesCopy usingAlternate:0];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [v4 _leafAlternates];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _leafAlternates = [alternatesCopy _leafAlternates];
+  v6 = [_leafAlternates countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -821,28 +821,28 @@ LABEL_24:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_leafAlternates);
         }
 
-        [(_UIKeyShortcutHUDModel *)self _validateBaseKeyCommand:v4 usingAlternate:*(*(&v10 + 1) + 8 * v9++)];
+        [(_UIKeyShortcutHUDModel *)self _validateBaseKeyCommand:alternatesCopy usingAlternate:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [_leafAlternates countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_validateBaseKeyCommand:(id)a3 usingAlternate:(id)a4
+- (void)_validateBaseKeyCommand:(id)command usingAlternate:(id)alternate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  commandCopy = command;
+  alternateCopy = alternate;
+  v8 = alternateCopy;
+  if (alternateCopy)
   {
-    v9 = [v7 alternateLeafWithBaseLeaf:v6];
+    v9 = [alternateCopy alternateLeafWithBaseLeaf:commandCopy];
     v10 = objc_opt_class();
     v11 = v9;
     if (v10)
@@ -873,7 +873,7 @@ LABEL_24:
 
   else
   {
-    v13 = v6;
+    v13 = commandCopy;
     if (!v13)
     {
       goto LABEL_31;
@@ -898,23 +898,23 @@ LABEL_24:
       [v17 setOriginalTarget:v15];
       [(NSMapTable *)self->_modelKeyCommandToModelShortcutMap setObject:v17 forKey:v16];
       [(NSMutableSet *)self->_modelKeyCommands addObject:v16];
-      v18 = [v17 uiKeyCommand];
-      v19 = [v18 discoverabilityTitle];
-      if ([v19 length])
+      uiKeyCommand = [v17 uiKeyCommand];
+      discoverabilityTitle = [uiKeyCommand discoverabilityTitle];
+      if ([discoverabilityTitle length])
       {
         v20 = 1;
       }
 
       else
       {
-        v21 = [v18 title];
-        v20 = [v21 length] != 0;
+        title = [uiKeyCommand title];
+        v20 = [title length] != 0;
       }
 
-      v22 = [v18 attributes];
-      v23 = [v18 attributes];
-      v24 = (v22 & 1) == 0 && v20;
-      v25 = (v23 & 4) == 0 && v24;
+      attributes = [uiKeyCommand attributes];
+      attributes2 = [uiKeyCommand attributes];
+      v24 = (attributes & 1) == 0 && v20;
+      v25 = (attributes2 & 4) == 0 && v24;
 
       if (v25)
       {
@@ -925,20 +925,20 @@ LABEL_24:
       v15 = v31;
       if (v8)
       {
-        v26 = [(NSMapTable *)self->_appKeyCommandToModelKeyCommandMap objectForKey:v6];
+        v26 = [(NSMapTable *)self->_appKeyCommandToModelKeyCommandMap objectForKey:commandCopy];
         v27 = [(NSMapTable *)self->_modelKeyCommandToModelShortcutMap objectForKey:v26];
         v28 = v27;
         if (v27)
         {
-          v29 = [v27 alternatesMap];
-          [v29 setObject:v17 forKeyedSubscript:v8];
+          alternatesMap = [v27 alternatesMap];
+          [alternatesMap setObject:v17 forKeyedSubscript:v8];
 
           [v17 setAlternateForBaseShortcut:v8];
           [v17 setBaseShortcutForAlternate:v28];
           if (v25)
           {
-            v30 = [v28 displayableAlternates];
-            [v30 addObject:v8];
+            displayableAlternates = [v28 displayableAlternates];
+            [displayableAlternates addObject:v8];
           }
         }
       }
@@ -948,23 +948,23 @@ LABEL_24:
 LABEL_31:
 }
 
-- (BOOL)_isKeyCommandPerformable:(id)a3 outTarget:(id *)a4
+- (BOOL)_isKeyCommandPerformable:(id)performable outTarget:(id *)target
 {
-  v6 = a3;
-  v7 = [UIApp _responderForKeyEvents];
-  v8 = [v6 _resolvedTargetFromFirstTarget:v7 sender:0];
+  performableCopy = performable;
+  _responderForKeyEvents = [UIApp _responderForKeyEvents];
+  v8 = [performableCopy _resolvedTargetFromFirstTarget:_responderForKeyEvents sender:0];
 
-  if (a4)
+  if (target)
   {
     v9 = v8;
-    *a4 = v8;
+    *target = v8;
   }
 
-  v10 = [(_UIMenuLeafValidator *)self->_validator validatedCommandForTarget:v8 command:v6 sender:0];
-  _UIMenuLeafCopyValidatablePropertiesFromValidatedLeaf(v6, v10);
+  v10 = [(_UIMenuLeafValidator *)self->_validator validatedCommandForTarget:v8 command:performableCopy sender:0];
+  _UIMenuLeafCopyValidatablePropertiesFromValidatedLeaf(performableCopy, v10);
   if (v8)
   {
-    v11 = ([v6 attributes] & 1) == 0;
+    v11 = ([performableCopy attributes] & 1) == 0;
   }
 
   else
@@ -975,16 +975,16 @@ LABEL_31:
   return v11;
 }
 
-- (id)_validatedHUDMenuFromUIMenu:(id)a3
+- (id)_validatedHUDMenuFromUIMenu:(id)menu
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  menuCopy = menu;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [v4 children];
+  obj = [menuCopy children];
   v6 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -1005,7 +1005,7 @@ LABEL_31:
         v16[2] = __54___UIKeyShortcutHUDModel__validatedHUDMenuFromUIMenu___block_invoke;
         v16[3] = &unk_1E710E090;
         v16[4] = self;
-        v17 = v5;
+        v17 = array;
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __54___UIKeyShortcutHUDModel__validatedHUDMenuFromUIMenu___block_invoke_2;
@@ -1021,22 +1021,22 @@ LABEL_31:
     while (v7);
   }
 
-  v11 = [_UIKeyShortcutHUDMenu menuWithUIMenu:v4 children:v5];
+  v11 = [_UIKeyShortcutHUDMenu menuWithUIMenu:menuCopy children:array];
 
   return v11;
 }
 
-- (id)_finalizedHUDMenuFromValidatedHUDMenu:(id)a3
+- (id)_finalizedHUDMenuFromValidatedHUDMenu:(id)menu
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  menuCopy = menu;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v4 children];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  children = [menuCopy children];
+  v7 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1047,7 +1047,7 @@ LABEL_31:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -1056,30 +1056,30 @@ LABEL_31:
         if ([v12 count])
         {
           v13 = [v11 menuByReplacingChildren:v12];
-          [v5 addObject:v13];
+          [array addObject:v13];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [v4 menuByReplacingChildren:v5];
+  v14 = [menuCopy menuByReplacingChildren:array];
 
   return v14;
 }
 
-- (void)_addShortcutsFromHUDMenu:(id)a3 toShortcutsArray:(id)a4
+- (void)_addShortcutsFromHUDMenu:(id)menu toShortcutsArray:(id)array
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  arrayCopy = array;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = [a3 children];
+  obj = [menu children];
   v7 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -1101,7 +1101,7 @@ LABEL_31:
         v15[2] = __68___UIKeyShortcutHUDModel__addShortcutsFromHUDMenu_toShortcutsArray___block_invoke;
         v15[3] = &unk_1E710E180;
         v15[4] = self;
-        v16 = v6;
+        v16 = arrayCopy;
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __68___UIKeyShortcutHUDModel__addShortcutsFromHUDMenu_toShortcutsArray___block_invoke_2;
@@ -1120,17 +1120,17 @@ LABEL_31:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  coderCopy = coder;
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMapTable *)self->_modelKeyCommandToModelShortcutMap objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_modelKeyCommandToModelShortcutMap objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1142,27 +1142,27 @@ LABEL_31:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [v5 addObject:*(*(&v11 + 1) + 8 * v10++)];
+        [array addObject:*(*(&v11 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 
-  [v4 encodeObject:v5 forKey:@"activeShortcuts"];
-  [v4 encodeObject:self->_menu forKey:@"menu"];
+  [coderCopy encodeObject:array forKey:@"activeShortcuts"];
+  [coderCopy encodeObject:self->_menu forKey:@"menu"];
 }
 
-- (_UIKeyShortcutHUDModel)initWithCoder:(id)a3
+- (_UIKeyShortcutHUDModel)initWithCoder:(id)coder
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIKeyShortcutHUDModel *)self init];
   if (v5)
   {
@@ -1170,7 +1170,7 @@ LABEL_31:
     v7 = objc_opt_self();
     v8 = objc_opt_self();
     v9 = [v6 setWithObjects:{v7, v8, 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"activeShortcuts"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"activeShortcuts"];
 
     v37 = 0u;
     v38 = 0u;
@@ -1193,12 +1193,12 @@ LABEL_31:
           }
 
           v16 = *(*(&v35 + 1) + 8 * v15);
-          v17 = [v16 uiKeyCommand];
-          v18 = [(_UIKeyShortcutHUDModel *)v5 modelKeyCommands];
-          [v18 addObject:v17];
+          uiKeyCommand = [v16 uiKeyCommand];
+          modelKeyCommands = [(_UIKeyShortcutHUDModel *)v5 modelKeyCommands];
+          [modelKeyCommands addObject:uiKeyCommand];
 
-          v19 = [(_UIKeyShortcutHUDModel *)v5 modelKeyCommandToModelShortcutMap];
-          [v19 setObject:v16 forKey:v17];
+          modelKeyCommandToModelShortcutMap = [(_UIKeyShortcutHUDModel *)v5 modelKeyCommandToModelShortcutMap];
+          [modelKeyCommandToModelShortcutMap setObject:v16 forKey:uiKeyCommand];
 
           ++v15;
         }
@@ -1211,16 +1211,16 @@ LABEL_31:
     }
 
     v20 = objc_opt_self();
-    v21 = [v4 decodeObjectOfClass:v20 forKey:@"menu"];
+    v21 = [coderCopy decodeObjectOfClass:v20 forKey:@"menu"];
     menu = v5->_menu;
     v5->_menu = v21;
 
     if (([UIApp _disableLayoutAwareShortcuts] & 1) == 0)
     {
       v23 = +[UIDevice currentDevice];
-      v24 = [v23 _isHardwareKeyboardAvailable];
+      _isHardwareKeyboardAvailable = [v23 _isHardwareKeyboardAvailable];
 
-      if (v24)
+      if (_isHardwareKeyboardAvailable)
       {
         v5->_gsKeyboard = [UIApp _hardwareKeyboard];
       }

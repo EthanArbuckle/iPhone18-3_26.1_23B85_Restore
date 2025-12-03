@@ -1,31 +1,31 @@
 @interface HMDAccessorySettingMergeHandler
-+ (BOOL)_extractMinMaxStep:(id)a3 minConstraint:(id *)a4 maxConstraint:(id *)a5 stepConstraint:(id *)a6 first:(id)a7;
-+ (BOOL)_isNumber:(id)a3 betweenStart:(id)a4 andEnd:(id)a5 first:(id)a6;
-+ (id)_mergeFirst:(id)a3 second:(id)a4 mergedConstraints:(id)a5 mergeStrategy:(id)a6;
-+ (id)_mergeRangeConstraintsFirst:(id)a3 second:(id)a4 shouldAddMissing:(BOOL)a5;
-+ (id)_mergeValidValueConstraintsFirst:(id)a3 second:(id)a4 shouldAddMissing:(BOOL)a5;
++ (BOOL)_extractMinMaxStep:(id)step minConstraint:(id *)constraint maxConstraint:(id *)maxConstraint stepConstraint:(id *)stepConstraint first:(id)first;
++ (BOOL)_isNumber:(id)number betweenStart:(id)start andEnd:(id)end first:(id)first;
++ (id)_mergeFirst:(id)first second:(id)second mergedConstraints:(id)constraints mergeStrategy:(id)strategy;
++ (id)_mergeRangeConstraintsFirst:(id)first second:(id)second shouldAddMissing:(BOOL)missing;
++ (id)_mergeValidValueConstraintsFirst:(id)first second:(id)second shouldAddMissing:(BOOL)missing;
 @end
 
 @implementation HMDAccessorySettingMergeHandler
 
-+ (id)_mergeValidValueConstraintsFirst:(id)a3 second:(id)a4 shouldAddMissing:(BOOL)a5
++ (id)_mergeValidValueConstraintsFirst:(id)first second:(id)second shouldAddMissing:(BOOL)missing
 {
-  v5 = a5;
+  missingCopy = missing;
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  firstCopy = first;
+  secondCopy = second;
   v9 = MEMORY[0x277CBEB98];
-  v10 = [v7 constraints];
-  v11 = [v9 setWithArray:v10];
+  constraints = [firstCopy constraints];
+  v11 = [v9 setWithArray:constraints];
   v12 = [v11 mutableCopy];
 
   v13 = MEMORY[0x277CBEB98];
-  v14 = [v8 constraints];
-  v15 = [v13 setWithArray:v14];
+  constraints2 = [secondCopy constraints];
+  v15 = [v13 setWithArray:constraints2];
   v16 = [v15 mutableCopy];
 
   v17 = objc_autoreleasePoolPush();
-  v18 = v7;
+  v18 = firstCopy;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
@@ -40,7 +40,7 @@
   }
 
   objc_autoreleasePoolPop(v17);
-  if (v5)
+  if (missingCopy)
   {
     [v12 unionSet:v16];
     v21 = objc_autoreleasePoolPush();
@@ -84,20 +84,20 @@
 
 LABEL_9:
   objc_autoreleasePoolPop(v21);
-  v29 = [v12 allObjects];
+  allObjects = [v12 allObjects];
 
   v30 = *MEMORY[0x277D85DE8];
 
-  return v29;
+  return allObjects;
 }
 
-+ (BOOL)_extractMinMaxStep:(id)a3 minConstraint:(id *)a4 maxConstraint:(id *)a5 stepConstraint:(id *)a6 first:(id)a7
++ (BOOL)_extractMinMaxStep:(id)step minConstraint:(id *)constraint maxConstraint:(id *)maxConstraint stepConstraint:(id *)stepConstraint first:(id)first
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a7;
-  v12 = v11;
-  if (!a4 || !a5 || !a6)
+  stepCopy = step;
+  firstCopy = first;
+  v12 = firstCopy;
+  if (!constraint || !maxConstraint || !stepConstraint)
   {
     v25 = objc_autoreleasePoolPush();
     v26 = v12;
@@ -113,12 +113,12 @@ LABEL_9:
     goto LABEL_28;
   }
 
-  v36 = v11;
+  v36 = firstCopy;
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v13 = v10;
+  v13 = stepCopy;
   v14 = [v13 countByEnumeratingWithState:&v38 objects:v50 count:16];
   if (v14)
   {
@@ -134,30 +134,30 @@ LABEL_9:
         }
 
         v18 = *(*(&v38 + 1) + 8 * i);
-        v19 = [v18 type];
-        v20 = a4;
-        if (v19 != 1)
+        type = [v18 type];
+        maxConstraintCopy = constraint;
+        if (type != 1)
         {
-          if (v19 == 3)
+          if (type == 3)
           {
-            v20 = a6;
+            maxConstraintCopy = stepConstraint;
           }
 
           else
           {
-            v20 = a5;
-            if (v19 != 2)
+            maxConstraintCopy = maxConstraint;
+            if (type != 2)
             {
               continue;
             }
           }
         }
 
-        v21 = [v18 value];
+        value = [v18 value];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = v21;
+          v22 = value;
         }
 
         else
@@ -167,7 +167,7 @@ LABEL_9:
 
         v23 = v22;
 
-        *v20 = v22;
+        *maxConstraintCopy = v22;
       }
 
       v15 = [v13 countByEnumeratingWithState:&v38 objects:v50 count:16];
@@ -176,7 +176,7 @@ LABEL_9:
     while (v15);
   }
 
-  if (!*a4 || !*a5 || !*a6)
+  if (!*constraint || !*maxConstraint || !*stepConstraint)
   {
     v25 = objc_autoreleasePoolPush();
     v12 = v36;
@@ -185,9 +185,9 @@ LABEL_9:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       v30 = HMFGetLogIdentifier();
-      v31 = *a4;
-      v32 = *a5;
-      v33 = *a6;
+      v31 = *constraint;
+      v32 = *maxConstraint;
+      v33 = *stepConstraint;
       *buf = 138544130;
       v43 = v30;
       v44 = 2112;
@@ -214,18 +214,18 @@ LABEL_29:
   return v24;
 }
 
-+ (id)_mergeRangeConstraintsFirst:(id)a3 second:(id)a4 shouldAddMissing:(BOOL)a5
++ (id)_mergeRangeConstraintsFirst:(id)first second:(id)second shouldAddMissing:(BOOL)missing
 {
-  v5 = a5;
+  missingCopy = missing;
   v96 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 constraints];
-  v10 = [v9 copy];
+  firstCopy = first;
+  secondCopy = second;
+  constraints = [firstCopy constraints];
+  v10 = [constraints copy];
   v86 = 0;
   v87 = 0;
   v85 = 0;
-  v11 = [HMDAccessorySettingMergeHandler _extractMinMaxStep:v10 minConstraint:&v87 maxConstraint:&v86 stepConstraint:&v85 first:v7];
+  v11 = [HMDAccessorySettingMergeHandler _extractMinMaxStep:v10 minConstraint:&v87 maxConstraint:&v86 stepConstraint:&v85 first:firstCopy];
   v81 = v87;
   v80 = v86;
   v12 = v85;
@@ -233,35 +233,35 @@ LABEL_29:
   if (!v11)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v7;
+    v14 = firstCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v14 constraints];
+      constraints2 = [v14 constraints];
       *buf = 138543618;
       v89 = v16;
       v90 = 2112;
-      v91 = *&v17;
+      v91 = *&constraints2;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_ERROR, "%{public}@Cannot extract min, max and step from this setting's constraints %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
-    if (!v5)
+    if (!missingCopy)
     {
       v59 = 0;
-      v18 = v8;
+      v18 = secondCopy;
       goto LABEL_51;
     }
   }
 
-  v18 = v8;
-  v19 = [v8 constraints];
-  v20 = [v19 copy];
+  v18 = secondCopy;
+  constraints3 = [secondCopy constraints];
+  v20 = [constraints3 copy];
   v83 = 0;
   v84 = 0;
   v82 = 0;
-  v21 = [HMDAccessorySettingMergeHandler _extractMinMaxStep:v20 minConstraint:&v84 maxConstraint:&v83 stepConstraint:&v82 first:v7];
+  v21 = [HMDAccessorySettingMergeHandler _extractMinMaxStep:v20 minConstraint:&v84 maxConstraint:&v83 stepConstraint:&v82 first:firstCopy];
   v22 = v84;
   v23 = v83;
   v79 = v82;
@@ -269,7 +269,7 @@ LABEL_29:
   if (!v21)
   {
     v60 = objc_autoreleasePoolPush();
-    v61 = v7;
+    v61 = firstCopy;
     v62 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
     {
@@ -290,7 +290,7 @@ LABEL_48:
   if (!v22 || !v23 || !v79)
   {
     v60 = objc_autoreleasePoolPush();
-    v61 = v7;
+    v61 = firstCopy;
     v62 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
     {
@@ -304,12 +304,12 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (v5)
+  if (missingCopy)
   {
     if (!v81)
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = v7;
+      v25 = firstCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
@@ -317,19 +317,19 @@ LABEL_48:
         *buf = 138543618;
         v89 = v27;
         v90 = 2112;
-        v91 = *&v8;
+        v91 = *&secondCopy;
         _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_INFO, "%{public}@Taking min constraint from %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v24);
       v81 = v22;
-      v18 = v8;
+      v18 = secondCopy;
     }
 
     if (!v80)
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = v7;
+      v29 = firstCopy;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
@@ -337,19 +337,19 @@ LABEL_48:
         *buf = 138543618;
         v89 = v31;
         v90 = 2112;
-        v91 = *&v8;
+        v91 = *&secondCopy;
         _os_log_impl(&dword_2531F8000, v30, OS_LOG_TYPE_INFO, "%{public}@Taking max constraint from %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v28);
       v80 = v23;
-      v18 = v8;
+      v18 = secondCopy;
     }
 
     if (!v12)
     {
       v32 = objc_autoreleasePoolPush();
-      v33 = v7;
+      v33 = firstCopy;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
@@ -372,7 +372,7 @@ LABEL_48:
   }
 
   v36 = objc_autoreleasePoolPush();
-  v37 = v7;
+  v37 = firstCopy;
   v38 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
   {
@@ -386,10 +386,10 @@ LABEL_48:
   }
 
   objc_autoreleasePoolPop(v36);
-  if (v5)
+  if (missingCopy)
   {
 LABEL_28:
-    v74 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if ([v81 compare:v22] == -1)
     {
       v40 = v22;
@@ -425,7 +425,7 @@ LABEL_28:
 
     v44 = v43;
     v45 = objc_autoreleasePoolPush();
-    v46 = a1;
+    selfCopy = self;
     v47 = HMFGetOSLogHandle();
     v78 = v44;
     if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
@@ -453,7 +453,7 @@ LABEL_28:
     {
       v67 = v41;
       v68 = objc_autoreleasePoolPush();
-      v69 = v46;
+      v69 = selfCopy;
       v70 = HMFGetOSLogHandle();
       v23 = v73;
       if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
@@ -478,17 +478,17 @@ LABEL_58:
       if (v54)
       {
         v55 = [objc_alloc(MEMORY[0x277CD1780]) initWithType:1 value:v41];
-        v56 = v74;
-        [v74 addObject:v55];
+        v56 = array;
+        [array addObject:v55];
 
         v57 = [objc_alloc(MEMORY[0x277CD1780]) initWithType:3 value:v76];
-        [v74 addObject:v57];
+        [array addObject:v57];
 
-        v18 = v8;
+        v18 = secondCopy;
         v58 = [objc_alloc(MEMORY[0x277CD1780]) initWithType:2 value:v78];
-        [v74 addObject:v58];
+        [array addObject:v58];
 
-        v59 = [v74 copy];
+        v59 = [array copy];
 LABEL_60:
 
         goto LABEL_50;
@@ -496,7 +496,7 @@ LABEL_60:
 
       v67 = v41;
       v68 = objc_autoreleasePoolPush();
-      v69 = v46;
+      v69 = selfCopy;
       v70 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
       {
@@ -512,7 +512,7 @@ LABEL_60:
 
     objc_autoreleasePoolPop(v68);
     v59 = 0;
-    v56 = v74;
+    v56 = array;
     v41 = v67;
     goto LABEL_60;
   }
@@ -527,17 +527,17 @@ LABEL_51:
   return v59;
 }
 
-+ (BOOL)_isNumber:(id)a3 betweenStart:(id)a4 andEnd:(id)a5 first:(id)a6
++ (BOOL)_isNumber:(id)number betweenStart:(id)start andEnd:(id)end first:(id)first
 {
   v22 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v9)
+  numberCopy = number;
+  startCopy = start;
+  endCopy = end;
+  firstCopy = first;
+  if (!numberCopy)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v12;
+    v15 = firstCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -551,7 +551,7 @@ LABEL_51:
     goto LABEL_10;
   }
 
-  if ([v10 compare:v9] != -1 && objc_msgSend(v10, "compare:", v9) || objc_msgSend(v9, "compare:", v11) != -1 && objc_msgSend(v9, "compare:", v11))
+  if ([startCopy compare:numberCopy] != -1 && objc_msgSend(startCopy, "compare:", numberCopy) || objc_msgSend(numberCopy, "compare:", endCopy) != -1 && objc_msgSend(numberCopy, "compare:", endCopy))
   {
 LABEL_10:
     v13 = 0;
@@ -565,18 +565,18 @@ LABEL_11:
   return v13;
 }
 
-+ (id)_mergeFirst:(id)a3 second:(id)a4 mergedConstraints:(id)a5 mergeStrategy:(id)a6
++ (id)_mergeFirst:(id)first second:(id)second mergedConstraints:(id)constraints mergeStrategy:(id)strategy
 {
   v101 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 value];
+  firstCopy = first;
+  secondCopy = second;
+  constraintsCopy = constraints;
+  strategyCopy = strategy;
+  value = [firstCopy value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v14;
+    v15 = value;
   }
 
   else
@@ -586,11 +586,11 @@ LABEL_11:
 
   v91 = v15;
 
-  v16 = [v11 value];
+  value2 = [secondCopy value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = v16;
+    v17 = value2;
   }
 
   else
@@ -603,14 +603,14 @@ LABEL_11:
   v95 = 0;
   v96 = 0;
   v94 = 0;
-  v19 = [a1 _extractMinMaxStep:v12 minConstraint:&v96 maxConstraint:&v95 stepConstraint:&v94 first:v10];
+  v19 = [self _extractMinMaxStep:constraintsCopy minConstraint:&v96 maxConstraint:&v95 stepConstraint:&v94 first:firstCopy];
   v20 = v96;
   v93 = v95;
   v92 = v94;
   if (v19)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = v10;
+    v22 = firstCopy;
     v23 = HMFGetOSLogHandle();
     v24 = v23;
     v90 = v20;
@@ -629,30 +629,30 @@ LABEL_11:
 
       objc_autoreleasePoolPop(v21);
 LABEL_20:
-      v38 = 0;
+      conflictValue = 0;
 LABEL_74:
       v20 = v90;
       goto LABEL_75;
     }
 
-    v25 = v13;
+    v25 = strategyCopy;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       v86 = v18;
-      v26 = v11;
+      v26 = secondCopy;
       v27 = HMFGetLogIdentifier();
       v28 = v25;
       v29 = v27;
       v30 = v28;
-      v31 = [v28 strategy];
-      if (v31 >= 5)
+      strategy = [v28 strategy];
+      if (strategy >= 5)
       {
-        v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown HMDAccessorySettingMergeStrategyType %tu", v31];
+        v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown HMDAccessorySettingMergeStrategyType %tu", strategy];
       }
 
       else
       {
-        v32 = off_2797255C0[v31];
+        v32 = off_2797255C0[strategy];
       }
 
       *buf = 138543618;
@@ -662,16 +662,16 @@ LABEL_74:
       _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_INFO, "%{public}@Merge strategy is %@", buf, 0x16u);
 
       v25 = v30;
-      v11 = v26;
+      secondCopy = v26;
       v18 = v86;
     }
 
     objc_autoreleasePoolPop(v21);
-    v41 = [v25 strategy];
-    if (v41 == 4)
+    strategy2 = [v25 strategy];
+    if (strategy2 == 4)
     {
-      v62 = [a1 _isNumber:v91 betweenStart:v90 andEnd:v93 first:v22];
-      v63 = [a1 _isNumber:v18 betweenStart:v90 andEnd:v93 first:v22];
+      v62 = [self _isNumber:v91 betweenStart:v90 andEnd:v93 first:v22];
+      v63 = [self _isNumber:v18 betweenStart:v90 andEnd:v93 first:v22];
       v64 = objc_autoreleasePoolPush();
       v51 = v22;
       v52 = HMFGetOSLogHandle();
@@ -693,7 +693,7 @@ LABEL_74:
         v69 = v51;
         v70 = HMFGetOSLogHandle();
         v71 = os_log_type_enabled(v70, OS_LOG_TYPE_INFO);
-        v13 = v25;
+        strategyCopy = v25;
         if (v67 != -1)
         {
           if (v71)
@@ -707,7 +707,7 @@ LABEL_74:
           }
 
           objc_autoreleasePoolPop(v68);
-          v38 = v91;
+          conflictValue = v91;
           v18 = v88;
           goto LABEL_74;
         }
@@ -730,7 +730,7 @@ LABEL_74:
       if (v62)
       {
         v73 = v64;
-        v13 = v25;
+        strategyCopy = v25;
         if (v65)
         {
 LABEL_52:
@@ -749,12 +749,12 @@ LABEL_53:
 LABEL_54:
         v76 = v75;
 LABEL_73:
-        v38 = v76;
+        conflictValue = v76;
         goto LABEL_74;
       }
 
       v78 = v64;
-      v13 = v25;
+      strategyCopy = v25;
       if (!v63)
       {
         if (v65)
@@ -780,16 +780,16 @@ LABEL_73:
       goto LABEL_65;
     }
 
-    if (v41 != 3)
+    if (strategy2 != 3)
     {
-      if (v41 == 1)
+      if (strategy2 == 1)
       {
-        v38 = [v25 conflictValue];
+        conflictValue = [v25 conflictValue];
         v42 = objc_autoreleasePoolPush();
         v43 = v22;
         v44 = HMFGetOSLogHandle();
         v45 = v44;
-        if (v38)
+        if (conflictValue)
         {
           if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
           {
@@ -798,16 +798,16 @@ LABEL_73:
             *buf = 138543618;
             v98 = v46;
             v99 = 2112;
-            v100 = v38;
+            v100 = conflictValue;
             _os_log_impl(&dword_2531F8000, v45, OS_LOG_TYPE_INFO, "%{public}@Using the conflict value %@ as a merged value", buf, 0x16u);
 
             v18 = v87;
           }
 
-          v13 = v25;
+          strategyCopy = v25;
 
           objc_autoreleasePoolPop(v42);
-          v47 = v38;
+          v47 = conflictValue;
         }
 
         else
@@ -823,7 +823,7 @@ LABEL_73:
             v18 = v89;
           }
 
-          v13 = v25;
+          strategyCopy = v25;
 
           objc_autoreleasePoolPop(v42);
         }
@@ -831,12 +831,12 @@ LABEL_73:
         goto LABEL_74;
       }
 
-      v13 = v25;
+      strategyCopy = v25;
       goto LABEL_20;
     }
 
-    v48 = [a1 _isNumber:v91 betweenStart:v90 andEnd:v93 first:v22];
-    v49 = [a1 _isNumber:v18 betweenStart:v90 andEnd:v93 first:v22];
+    v48 = [self _isNumber:v91 betweenStart:v90 andEnd:v93 first:v22];
+    v49 = [self _isNumber:v18 betweenStart:v90 andEnd:v93 first:v22];
     v50 = objc_autoreleasePoolPush();
     v51 = v22;
     v52 = HMFGetOSLogHandle();
@@ -858,7 +858,7 @@ LABEL_73:
       v58 = v51;
       v59 = HMFGetOSLogHandle();
       v60 = os_log_type_enabled(v59, OS_LOG_TYPE_INFO);
-      v13 = v25;
+      strategyCopy = v25;
       if (v56 == -1)
       {
         if (v60)
@@ -872,7 +872,7 @@ LABEL_73:
         }
 
         objc_autoreleasePoolPop(v57);
-        v38 = v91;
+        conflictValue = v91;
         v18 = v55;
         goto LABEL_74;
       }
@@ -895,7 +895,7 @@ LABEL_73:
     if (v48)
     {
       v73 = v50;
-      v13 = v25;
+      strategyCopy = v25;
       if (v53)
       {
         goto LABEL_52;
@@ -905,7 +905,7 @@ LABEL_73:
     }
 
     v78 = v50;
-    v13 = v25;
+    strategyCopy = v25;
     if (v49)
     {
       if (v53)
@@ -939,13 +939,13 @@ LABEL_72:
 
     objc_autoreleasePoolPop(v78);
     v20 = v90;
-    v38 = v90;
+    conflictValue = v90;
   }
 
   else
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = v10;
+    v34 = firstCopy;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
@@ -954,21 +954,21 @@ LABEL_72:
       *buf = 138543618;
       v98 = v37;
       v99 = 2112;
-      v100 = v12;
+      v100 = constraintsCopy;
       _os_log_impl(&dword_2531F8000, v35, OS_LOG_TYPE_ERROR, "%{public}@Cannot extract min, max and step from merged constraints %@", buf, 0x16u);
 
       v18 = v36;
     }
 
     objc_autoreleasePoolPop(v33);
-    v38 = 0;
+    conflictValue = 0;
   }
 
 LABEL_75:
 
   v82 = *MEMORY[0x277D85DE8];
 
-  return v38;
+  return conflictValue;
 }
 
 @end

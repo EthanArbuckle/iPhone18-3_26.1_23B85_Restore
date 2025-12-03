@@ -1,26 +1,26 @@
 @interface SBBookmark
-- (BOOL)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5;
-- (BOOL)isTimedOutForIcon:(id)a3;
+- (BOOL)icon:(id)icon launchFromLocation:(id)location context:(id)context;
+- (BOOL)isTimedOutForIcon:(id)icon;
 - (NSCopying)badgeValue;
-- (SBBookmark)initWithWebClip:(id)a3;
+- (SBBookmark)initWithWebClip:(id)clip;
 - (void)_noteIconDataSourceDidChange;
-- (void)setBadgeValue:(id)a3;
+- (void)setBadgeValue:(id)value;
 @end
 
 @implementation SBBookmark
 
-- (SBBookmark)initWithWebClip:(id)a3
+- (SBBookmark)initWithWebClip:(id)clip
 {
-  v4 = a3;
+  clipCopy = clip;
   v9.receiver = self;
   v9.super_class = SBBookmark;
-  v5 = [(SBHBookmark *)&v9 initWithWebClip:v4];
+  v5 = [(SBHBookmark *)&v9 initWithWebClip:clipCopy];
   if (v5)
   {
-    v6 = [v4 placeholderBundleIdentifier];
-    if (v6)
+    placeholderBundleIdentifier = [clipCopy placeholderBundleIdentifier];
+    if (placeholderBundleIdentifier)
     {
-      v7 = [MEMORY[0x277D0AC98] storeForApplication:v6];
+      v7 = [MEMORY[0x277D0AC98] storeForApplication:placeholderBundleIdentifier];
     }
 
     else
@@ -29,7 +29,7 @@
     }
 
     objc_storeStrong(&v5->_dataStore, v7);
-    if (v6)
+    if (placeholderBundleIdentifier)
     {
     }
   }
@@ -63,20 +63,20 @@
   return v2;
 }
 
-- (void)setBadgeValue:(id)a3
+- (void)setBadgeValue:(id)value
 {
-  v4 = a3;
-  v10 = v4;
-  if (!v4 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4 = v10, (isKindOfClass & 1) != 0) || (objc_opt_class(), v6 = objc_opt_isKindOfClass(), v4 = v10, (v6 & 1) != 0))
+  valueCopy = value;
+  v10 = valueCopy;
+  if (!valueCopy || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), valueCopy = v10, (isKindOfClass & 1) != 0) || (objc_opt_class(), v6 = objc_opt_isKindOfClass(), valueCopy = v10, (v6 & 1) != 0))
   {
-    if ([v4 isEqual:&unk_283372290])
+    if ([valueCopy isEqual:&unk_283372290])
     {
 
       v10 = 0;
     }
 
-    v7 = [(SBBookmark *)self badgeValue];
-    if (([v7 isEqual:v10] & 1) == 0)
+    badgeValue = [(SBBookmark *)self badgeValue];
+    if (([badgeValue isEqual:v10] & 1) == 0)
     {
       dataStore = self->_dataStore;
       if (v10 && dataStore)
@@ -97,24 +97,24 @@
   }
 }
 
-- (BOOL)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5
+- (BOOL)icon:(id)icon launchFromLocation:(id)location context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isBookmarkIcon])
+  iconCopy = icon;
+  locationCopy = location;
+  contextCopy = context;
+  if ([iconCopy isBookmarkIcon])
   {
-    v11 = [v8 applicationToLaunch];
-    if (v11 || (-[SBHBookmark webClip](self, "webClip"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isAppClip], v12, v13))
+    applicationToLaunch = [iconCopy applicationToLaunch];
+    if (applicationToLaunch || (-[SBHBookmark webClip](self, "webClip"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isAppClip], v12, v13))
     {
       if (objc_opt_respondsToSelector())
       {
-        v14 = [v10 actions];
+        actions = [contextCopy actions];
       }
 
       else
       {
-        v14 = 0;
+        actions = 0;
       }
 
       v15 = objc_opt_self();
@@ -122,47 +122,47 @@
 
       if (isKindOfClass)
       {
-        v17 = [v10 activationSettings];
+        activationSettings = [contextCopy activationSettings];
       }
 
       else
       {
-        v17 = 0;
+        activationSettings = 0;
       }
 
       v18 = +[SBUIController sharedInstance];
-      [v18 activateApplication:v11 fromIcon:v8 location:v9 activationSettings:v17 actions:v14];
+      [v18 activateApplication:applicationToLaunch fromIcon:iconCopy location:locationCopy activationSettings:activationSettings actions:actions];
     }
   }
 
   return 1;
 }
 
-- (BOOL)isTimedOutForIcon:(id)a3
+- (BOOL)isTimedOutForIcon:(id)icon
 {
-  v3 = [(SBHBookmark *)self webClip];
-  if ([v3 isAppClip])
+  webClip = [(SBHBookmark *)self webClip];
+  if ([webClip isAppClip])
   {
     v4 = +[SBApplicationController sharedInstance];
-    v5 = [v3 applicationBundleIdentifier];
-    v6 = [v4 applicationWithBundleIdentifier:v5];
-    v7 = [v6 info];
+    applicationBundleIdentifier = [webClip applicationBundleIdentifier];
+    v6 = [v4 applicationWithBundleIdentifier:applicationBundleIdentifier];
+    info = [v6 info];
 
-    v8 = [v7 isBlockedForScreenTimeExpiration];
+    isBlockedForScreenTimeExpiration = [info isBlockedForScreenTimeExpiration];
   }
 
   else
   {
-    v8 = 0;
+    isBlockedForScreenTimeExpiration = 0;
   }
 
-  return v8;
+  return isBlockedForScreenTimeExpiration;
 }
 
 - (void)_noteIconDataSourceDidChange
 {
-  v3 = [MEMORY[0x277CCAB98] sbh_leafIconDataSourceNotificationCenter];
-  [v3 postNotificationName:*MEMORY[0x277D66730] object:self userInfo:0];
+  sbh_leafIconDataSourceNotificationCenter = [MEMORY[0x277CCAB98] sbh_leafIconDataSourceNotificationCenter];
+  [sbh_leafIconDataSourceNotificationCenter postNotificationName:*MEMORY[0x277D66730] object:self userInfo:0];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface CBTwilightNightShiftAdaptationParams
-- (BOOL)loadParametersFromParser:(id)a3;
-- (CBTwilightNightShiftAdaptationParams)initWithParser:(id)a3;
+- (BOOL)loadParametersFromParser:(id)parser;
+- (CBTwilightNightShiftAdaptationParams)initWithParser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation CBTwilightNightShiftAdaptationParams
 
-- (BOOL)loadParametersFromParser:(id)a3
+- (BOOL)loadParametersFromParser:(id)parser
 {
   v142 = *MEMORY[0x1E69E9840];
-  v131 = self;
+  selfCopy = self;
   v130 = a2;
-  v129 = a3;
+  parserCopy = parser;
   if (self->_log)
   {
-    v75 = v131->_log;
+    v75 = selfCopy->_log;
   }
 
   else
@@ -42,27 +42,27 @@
     _os_log_impl(&dword_1DE8E5000, log, v73, "Initialization | Start", v126, 2u);
   }
 
-  if (v129)
+  if (parserCopy)
   {
     v122 = 0;
-    v121 = [v129 loadInt:@"use-tw-ns-adaptation" toDestination:&v122];
+    v121 = [parserCopy loadInt:@"use-tw-ns-adaptation" toDestination:&v122];
     if ((v121 & 1) != 0 && v122)
     {
       v117 = 6500.0;
-      v131->_cctTableSizeOG = [v129 loadFloatArray:@"tw-ns-cct-table" toDestination:&v131->_cctTableOG];
-      if (v131->_cctTableOG)
+      selfCopy->_cctTableSizeOG = [parserCopy loadFloatArray:@"tw-ns-cct-table" toDestination:&selfCopy->_cctTableOG];
+      if (selfCopy->_cctTableOG)
       {
-        if (v131->_cctTableSizeOG)
+        if (selfCopy->_cctTableSizeOG)
         {
-          if (float_equal(v131->_cctTableOG[v131->_cctTableSizeOG - 1], v117))
+          if (float_equal(selfCopy->_cctTableOG[selfCopy->_cctTableSizeOG - 1], v117))
           {
-            for (i = 0; i < v131->_cctTableSizeOG - 1; ++i)
+            for (i = 0; i < selfCopy->_cctTableSizeOG - 1; ++i)
             {
-              if (v131->_cctTableOG[i] > v131->_cctTableOG[i + 1])
+              if (selfCopy->_cctTableOG[i] > selfCopy->_cctTableOG[i + 1])
               {
-                if (v131->_log)
+                if (selfCopy->_log)
                 {
-                  v53 = v131->_log;
+                  v53 = selfCopy->_log;
                 }
 
                 else
@@ -95,22 +95,22 @@
               }
             }
 
-            v131->_twilightStrengthTableSizeOG = [v129 loadFloatArray:@"tw-ns-strength-table" toDestination:&v131->_twilightStrengthTableOG];
-            if (v131->_twilightStrengthTableOG)
+            selfCopy->_twilightStrengthTableSizeOG = [parserCopy loadFloatArray:@"tw-ns-strength-table" toDestination:&selfCopy->_twilightStrengthTableOG];
+            if (selfCopy->_twilightStrengthTableOG)
             {
-              if (v131->_twilightStrengthTableSizeOG >= 2)
+              if (selfCopy->_twilightStrengthTableSizeOG >= 2)
               {
-                if (float_equal(*v131->_twilightStrengthTableOG, 0.0))
+                if (float_equal(*selfCopy->_twilightStrengthTableOG, 0.0))
                 {
-                  if (float_equal(v131->_twilightStrengthTableOG[v131->_twilightStrengthTableSizeOG - 1], 1.0))
+                  if (float_equal(selfCopy->_twilightStrengthTableOG[selfCopy->_twilightStrengthTableSizeOG - 1], 1.0))
                   {
-                    for (j = 0; j < v131->_twilightStrengthTableSizeOG; ++j)
+                    for (j = 0; j < selfCopy->_twilightStrengthTableSizeOG; ++j)
                     {
-                      if (v131->_twilightStrengthTableOG[j] < 0.0 || v131->_twilightStrengthTableOG[j] > 1.0)
+                      if (selfCopy->_twilightStrengthTableOG[j] < 0.0 || selfCopy->_twilightStrengthTableOG[j] > 1.0)
                       {
-                        if (v131->_log)
+                        if (selfCopy->_log)
                         {
-                          v33 = v131->_log;
+                          v33 = selfCopy->_log;
                         }
 
                         else
@@ -132,7 +132,7 @@
                         v90 = OS_LOG_TYPE_ERROR;
                         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
                         {
-                          __os_log_helper_16_0_2_8_0_8_0(v140, j, COERCE__INT64(v131->_twilightStrengthTableOG[j]));
+                          __os_log_helper_16_0_2_8_0_8_0(v140, j, COERCE__INT64(selfCopy->_twilightStrengthTableOG[j]));
                           _os_log_error_impl(&dword_1DE8E5000, v91, v90, "Twilight strength table element #%lu with value %f is out of the valid [0, 1] range", v140, 0x16u);
                         }
 
@@ -141,13 +141,13 @@
                       }
                     }
 
-                    for (k = 0; k < v131->_twilightStrengthTableSizeOG - 1; ++k)
+                    for (k = 0; k < selfCopy->_twilightStrengthTableSizeOG - 1; ++k)
                     {
-                      if (v131->_twilightStrengthTableOG[k] > v131->_twilightStrengthTableOG[k + 1])
+                      if (selfCopy->_twilightStrengthTableOG[k] > selfCopy->_twilightStrengthTableOG[k + 1])
                       {
-                        if (v131->_log)
+                        if (selfCopy->_log)
                         {
-                          v31 = v131->_log;
+                          v31 = selfCopy->_log;
                         }
 
                         else
@@ -180,42 +180,42 @@
                       }
                     }
 
-                    v131->_cctDeltaTableSizeOG = [v129 loadFloatArray:@"tw-ns-cct-delta-table" toDestination:&v131->_cctDeltaTableOG];
-                    if (v131->_cctDeltaTableOG)
+                    selfCopy->_cctDeltaTableSizeOG = [parserCopy loadFloatArray:@"tw-ns-cct-delta-table" toDestination:&selfCopy->_cctDeltaTableOG];
+                    if (selfCopy->_cctDeltaTableOG)
                     {
-                      if (v131->_cctDeltaTableSizeOG == v131->_cctTableSizeOG * v131->_twilightStrengthTableSizeOG)
+                      if (selfCopy->_cctDeltaTableSizeOG == selfCopy->_cctTableSizeOG * selfCopy->_twilightStrengthTableSizeOG)
                       {
                         v82 = objc_alloc_init(MEMORY[0x1E696AD60]);
-                        for (m = 0; m < v131->_cctTableSizeOG; ++m)
+                        for (m = 0; m < selfCopy->_cctTableSizeOG; ++m)
                         {
-                          v3 = v131->_cctTableOG[m];
+                          v3 = selfCopy->_cctTableOG[m];
                           v4 = "";
-                          if (m != v131->_cctTableSizeOG - 1)
+                          if (m != selfCopy->_cctTableSizeOG - 1)
                           {
                             v4 = ",";
                           }
 
-                          [v82 appendFormat:@" %f%s", v131->_cctTableOG[m], v4];
+                          [v82 appendFormat:@" %f%s", selfCopy->_cctTableOG[m], v4];
                         }
 
                         [v82 appendString:@" "];
                         v80 = objc_alloc_init(MEMORY[0x1E696AD60]);
-                        for (n = 0; n < v131->_twilightStrengthTableSizeOG; ++n)
+                        for (n = 0; n < selfCopy->_twilightStrengthTableSizeOG; ++n)
                         {
-                          v5 = v131->_twilightStrengthTableOG[n];
+                          v5 = selfCopy->_twilightStrengthTableOG[n];
                           v6 = "";
-                          if (n != v131->_twilightStrengthTableSizeOG - 1)
+                          if (n != selfCopy->_twilightStrengthTableSizeOG - 1)
                           {
                             v6 = ",";
                           }
 
-                          [v80 appendFormat:@" %f%s", v131->_twilightStrengthTableOG[n], v6];
+                          [v80 appendFormat:@" %f%s", selfCopy->_twilightStrengthTableOG[n], v6];
                         }
 
                         [v80 appendString:@" "];
-                        if (v131->_log)
+                        if (selfCopy->_log)
                         {
-                          v21 = v131->_log;
+                          v21 = selfCopy->_log;
                         }
 
                         else
@@ -235,13 +235,13 @@
 
                         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
                         {
-                          __os_log_helper_16_0_1_8_0(v138, v131->_cctTableSizeOG);
+                          __os_log_helper_16_0_1_8_0(v138, selfCopy->_cctTableSizeOG);
                           _os_log_impl(&dword_1DE8E5000, v21, OS_LOG_TYPE_DEFAULT, "CCTTableSize=%lu", v138, 0xCu);
                         }
 
-                        if (v131->_log)
+                        if (selfCopy->_log)
                         {
-                          v19 = v131->_log;
+                          v19 = selfCopy->_log;
                         }
 
                         else
@@ -265,9 +265,9 @@
                           _os_log_impl(&dword_1DE8E5000, v19, OS_LOG_TYPE_DEFAULT, "CCTTable={%s}", v137, 0xCu);
                         }
 
-                        if (v131->_log)
+                        if (selfCopy->_log)
                         {
-                          v17 = v131->_log;
+                          v17 = selfCopy->_log;
                         }
 
                         else
@@ -287,13 +287,13 @@
 
                         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
                         {
-                          __os_log_helper_16_0_1_8_0(v136, v131->_twilightStrengthTableSizeOG);
+                          __os_log_helper_16_0_1_8_0(v136, selfCopy->_twilightStrengthTableSizeOG);
                           _os_log_impl(&dword_1DE8E5000, v17, OS_LOG_TYPE_DEFAULT, "TwilightStrengthTableSize=%lu", v136, 0xCu);
                         }
 
-                        if (v131->_log)
+                        if (selfCopy->_log)
                         {
-                          v15 = v131->_log;
+                          v15 = selfCopy->_log;
                         }
 
                         else
@@ -317,9 +317,9 @@
                           _os_log_impl(&dword_1DE8E5000, v15, OS_LOG_TYPE_DEFAULT, "TwilightStrengthTable={%s}", v135, 0xCu);
                         }
 
-                        if (v131->_log)
+                        if (selfCopy->_log)
                         {
-                          v13 = v131->_log;
+                          v13 = selfCopy->_log;
                         }
 
                         else
@@ -339,28 +339,28 @@
 
                         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
                         {
-                          __os_log_helper_16_0_1_8_0(v134, v131->_cctDeltaTableSizeOG);
+                          __os_log_helper_16_0_1_8_0(v134, selfCopy->_cctDeltaTableSizeOG);
                           _os_log_impl(&dword_1DE8E5000, v13, OS_LOG_TYPE_DEFAULT, "CCTDeltaTableSize=%lu", v134, 0xCu);
                         }
 
-                        for (ii = 0; ii < v131->_twilightStrengthTableSizeOG; ++ii)
+                        for (ii = 0; ii < selfCopy->_twilightStrengthTableSizeOG; ++ii)
                         {
                           v77 = objc_alloc_init(MEMORY[0x1E696AD60]);
-                          for (jj = 0; jj < v131->_cctTableSizeOG; ++jj)
+                          for (jj = 0; jj < selfCopy->_cctTableSizeOG; ++jj)
                           {
-                            v7 = v131->_cctDeltaTableOG[ii * v131->_cctTableSizeOG + jj];
+                            v7 = selfCopy->_cctDeltaTableOG[ii * selfCopy->_cctTableSizeOG + jj];
                             v8 = "";
-                            if (jj != v131->_cctTableSizeOG - 1)
+                            if (jj != selfCopy->_cctTableSizeOG - 1)
                             {
                               v8 = ",";
                             }
 
-                            [v77 appendFormat:@"%f%s ", v131->_cctDeltaTableOG[ii * v131->_cctTableSizeOG + jj], v8];
+                            [v77 appendFormat:@"%f%s ", selfCopy->_cctDeltaTableOG[ii * selfCopy->_cctTableSizeOG + jj], v8];
                           }
 
-                          if (v131->_log)
+                          if (selfCopy->_log)
                           {
-                            v11 = v131->_log;
+                            v11 = selfCopy->_log;
                           }
 
                           else
@@ -394,9 +394,9 @@
 
                       else
                       {
-                        if (v131->_log)
+                        if (selfCopy->_log)
                         {
-                          v23 = v131->_log;
+                          v23 = selfCopy->_log;
                         }
 
                         else
@@ -416,7 +416,7 @@
 
                         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
                         {
-                          __os_log_helper_16_0_3_8_0_8_0_8_0(v139, v131->_cctDeltaTableSizeOG, v131->_cctTableSizeOG, v131->_twilightStrengthTableSizeOG);
+                          __os_log_helper_16_0_3_8_0_8_0_8_0(v139, selfCopy->_cctDeltaTableSizeOG, selfCopy->_cctTableSizeOG, selfCopy->_twilightStrengthTableSizeOG);
                           _os_log_error_impl(&dword_1DE8E5000, v23, OS_LOG_TYPE_ERROR, "CCT delta table has wrong size %lu for CCT table size %lu and Twilight strength table size %lu", v139, 0x20u);
                         }
 
@@ -426,9 +426,9 @@
 
                     else
                     {
-                      if (v131->_log)
+                      if (selfCopy->_log)
                       {
-                        v27 = v131->_log;
+                        v27 = selfCopy->_log;
                       }
 
                       else
@@ -462,9 +462,9 @@
 
                   else
                   {
-                    if (v131->_log)
+                    if (selfCopy->_log)
                     {
-                      v37 = v131->_log;
+                      v37 = selfCopy->_log;
                     }
 
                     else
@@ -498,9 +498,9 @@
 
                 else
                 {
-                  if (v131->_log)
+                  if (selfCopy->_log)
                   {
-                    v41 = v131->_log;
+                    v41 = selfCopy->_log;
                   }
 
                   else
@@ -534,9 +534,9 @@
 
               else
               {
-                if (v131->_log)
+                if (selfCopy->_log)
                 {
-                  v45 = v131->_log;
+                  v45 = selfCopy->_log;
                 }
 
                 else
@@ -570,9 +570,9 @@
 
             else
             {
-              if (v131->_log)
+              if (selfCopy->_log)
               {
-                v49 = v131->_log;
+                v49 = selfCopy->_log;
               }
 
               else
@@ -606,9 +606,9 @@
 
           else
           {
-            if (v131->_log)
+            if (selfCopy->_log)
             {
-              v55 = v131->_log;
+              v55 = selfCopy->_log;
             }
 
             else
@@ -640,9 +640,9 @@
 
         else
         {
-          if (v131->_log)
+          if (selfCopy->_log)
           {
-            v59 = v131->_log;
+            v59 = selfCopy->_log;
           }
 
           else
@@ -676,9 +676,9 @@
 
       else
       {
-        if (v131->_log)
+        if (selfCopy->_log)
         {
-          v63 = v131->_log;
+          v63 = selfCopy->_log;
         }
 
         else
@@ -712,9 +712,9 @@
 
     else
     {
-      if (v131->_log)
+      if (selfCopy->_log)
       {
-        v67 = v131->_log;
+        v67 = selfCopy->_log;
       }
 
       else
@@ -748,9 +748,9 @@
 
   else
   {
-    if (v131->_log)
+    if (selfCopy->_log)
     {
-      v71 = v131->_log;
+      v71 = selfCopy->_log;
     }
 
     else
@@ -786,74 +786,74 @@ LABEL_227:
   return v132 & 1;
 }
 
-- (CBTwilightNightShiftAdaptationParams)initWithParser:(id)a3
+- (CBTwilightNightShiftAdaptationParams)initWithParser:(id)parser
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  parserCopy = parser;
   v14.receiver = self;
   v14.super_class = CBTwilightNightShiftAdaptationParams;
-  v17 = [(CBTwilightNightShiftAdaptationParams *)&v14 init];
-  if (v17)
+  selfCopy = [(CBTwilightNightShiftAdaptationParams *)&v14 init];
+  if (selfCopy)
   {
     v3 = os_log_create("com.apple.CoreBrightness.BacklightNode", "TwilightNightShiftAdaptation");
-    v17->_log = v3;
+    selfCopy->_log = v3;
     v13 = 0;
-    if ([(CBTwilightNightShiftAdaptationParams *)v17 loadParametersFromParser:v15])
+    if ([(CBTwilightNightShiftAdaptationParams *)selfCopy loadParametersFromParser:parserCopy])
     {
       v4 = [CBFloatArray alloc];
-      v5 = [(CBFloatArray *)v4 initWithValues:v17->_cctTableOG andCount:v17->_cctTableSizeOG];
-      v17->_cctTable = v5;
+      v5 = [(CBFloatArray *)v4 initWithValues:selfCopy->_cctTableOG andCount:selfCopy->_cctTableSizeOG];
+      selfCopy->_cctTable = v5;
       v6 = [CBFloatArray alloc];
-      v7 = [(CBFloatArray *)v6 initWithValues:v17->_twilightStrengthTableOG andCount:v17->_twilightStrengthTableSizeOG];
-      v17->_twilightStrengthTable = v7;
+      v7 = [(CBFloatArray *)v6 initWithValues:selfCopy->_twilightStrengthTableOG andCount:selfCopy->_twilightStrengthTableSizeOG];
+      selfCopy->_twilightStrengthTable = v7;
       v12 = [CBFloatArray2D alloc];
-      cctDeltaTableOG = v17->_cctDeltaTableOG;
-      v11 = [(CBFloatArray *)v17->_cctTable count];
-      v8 = [(CBFloatArray2D *)v12 initWithValues:cctDeltaTableOG andCountCols:v11 andRows:[(CBFloatArray *)v17->_twilightStrengthTable count]];
-      v17->_cctDeltaTable = v8;
+      cctDeltaTableOG = selfCopy->_cctDeltaTableOG;
+      v11 = [(CBFloatArray *)selfCopy->_cctTable count];
+      v8 = [(CBFloatArray2D *)v12 initWithValues:cctDeltaTableOG andCountCols:v11 andRows:[(CBFloatArray *)selfCopy->_twilightStrengthTable count]];
+      selfCopy->_cctDeltaTable = v8;
       v13 = 1;
     }
 
-    if (v17->_cctTableOG)
+    if (selfCopy->_cctTableOG)
     {
-      free(v17->_cctTableOG);
+      free(selfCopy->_cctTableOG);
     }
 
-    if (v17->_twilightStrengthTableOG)
+    if (selfCopy->_twilightStrengthTableOG)
     {
-      free(v17->_twilightStrengthTableOG);
+      free(selfCopy->_twilightStrengthTableOG);
     }
 
-    if (v17->_cctDeltaTableOG)
+    if (selfCopy->_cctDeltaTableOG)
     {
-      free(v17->_cctDeltaTableOG);
+      free(selfCopy->_cctDeltaTableOG);
     }
 
     if ((v13 & 1) == 0)
     {
-      MEMORY[0x1E69E5920](v17);
+      MEMORY[0x1E69E5920](selfCopy);
       return 0;
     }
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   MEMORY[0x1E69E5920](self->_cctTable);
-  MEMORY[0x1E69E5920](v5->_twilightStrengthTable);
-  v2 = MEMORY[0x1E69E5920](v5->_cctDeltaTable).n128_u64[0];
-  if (v5->_log)
+  MEMORY[0x1E69E5920](selfCopy->_twilightStrengthTable);
+  v2 = MEMORY[0x1E69E5920](selfCopy->_cctDeltaTable).n128_u64[0];
+  if (selfCopy->_log)
   {
-    v2 = MEMORY[0x1E69E5920](v5->_log).n128_u64[0];
-    v5->_log = 0;
+    v2 = MEMORY[0x1E69E5920](selfCopy->_log).n128_u64[0];
+    selfCopy->_log = 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBTwilightNightShiftAdaptationParams;
   [(CBTwilightNightShiftAdaptationParams *)&v3 dealloc];
 }

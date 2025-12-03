@@ -1,26 +1,26 @@
 @interface CKContainerOptions
-- (BOOL)getPersona:(id *)a3 error:(id *)a4;
+- (BOOL)getPersona:(id *)persona error:(id *)error;
 - (BOOL)isCloudCoreSession;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKContainerOptions)init;
-- (CKContainerOptions)initWithCoder:(id)a3;
-- (CKContainerOptions)initWithSqliteRepresentation:(id)a3;
+- (CKContainerOptions)initWithCoder:(id)coder;
+- (CKContainerOptions)initWithSqliteRepresentation:(id)representation;
 - (NSDictionary)fakeEntitlements;
 - (NSString)personaIdentifier;
 - (NSString)personaUniqueString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sqliteRepresentation;
 - (unint64_t)hash;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)ck_bindInStatement:(id)a3 atIndex:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setApplicationBundleIdentifierOverride:(id)a3;
-- (void)setFakeEntitlements:(id)a3;
-- (void)setPersonaIdentifier:(id)a3;
-- (void)setSupportedDeviceCapabilities:(id)a3;
-- (void)setUseMMCSEncryptionV2:(BOOL)a3;
-- (void)setUserPersona:(id)a3;
-- (void)setUserPersonaAttributes:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)ck_bindInStatement:(id)statement atIndex:(unint64_t)index;
+- (void)encodeWithCoder:(id)coder;
+- (void)setApplicationBundleIdentifierOverride:(id)override;
+- (void)setFakeEntitlements:(id)entitlements;
+- (void)setPersonaIdentifier:(id)identifier;
+- (void)setSupportedDeviceCapabilities:(id)capabilities;
+- (void)setUseMMCSEncryptionV2:(BOOL)v2;
+- (void)setUserPersona:(id)persona;
+- (void)setUserPersonaAttributes:(id)attributes;
 - (void)swizzleClass;
 @end
 
@@ -71,10 +71,10 @@
 
 - (NSDictionary)fakeEntitlements
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fakeEntitlements;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_fakeEntitlements;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -305,217 +305,217 @@
   return v266;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v178 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_captureResponseHTTPHeaders(self, v5, v6);
   v8 = NSStringFromSelector(sel_captureResponseHTTPHeaders);
-  objc_msgSend_encodeBool_forKey_(v178, v9, v7, v8);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v9, v7, v8);
 
   v12 = objc_msgSend_useZoneWidePCS(self, v10, v11);
   v13 = NSStringFromSelector(sel_useZoneWidePCS);
-  objc_msgSend_encodeBool_forKey_(v178, v14, v12, v13);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v14, v12, v13);
 
   v17 = objc_msgSend_holdAllOperations(self, v15, v16);
   v18 = NSStringFromSelector(sel_holdAllOperations);
-  objc_msgSend_encodeBool_forKey_(v178, v19, v17, v18);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v19, v17, v18);
 
   v22 = objc_msgSend_accountOverrideInfo(self, v20, v21);
   v23 = NSStringFromSelector(sel_accountOverrideInfo);
-  objc_msgSend_encodeObject_forKey_(v178, v24, v22, v23);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v24, v22, v23);
 
   v27 = objc_msgSend_qualityOfService(self, v25, v26);
   v28 = NSStringFromSelector(sel_qualityOfService);
-  objc_msgSend_encodeInteger_forKey_(v178, v29, v27, v28);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v29, v27, v28);
 
   v32 = objc_msgSend_returnPCSMetadata(self, v30, v31);
   v33 = NSStringFromSelector(sel_returnPCSMetadata);
-  objc_msgSend_encodeBool_forKey_(v178, v34, v32, v33);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v34, v32, v33);
 
   v37 = objc_msgSend_mmcsEncryptionSupport(self, v35, v36);
   v38 = NSStringFromSelector(sel_mmcsEncryptionSupport);
-  objc_msgSend_encodeInteger_forKey_(v178, v39, v37, v38);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v39, v37, v38);
 
   v42 = objc_msgSend_encryptionServiceName(self, v40, v41);
   v43 = NSStringFromSelector(sel_encryptionServiceName);
-  objc_msgSend_encodeObject_forKey_(v178, v44, v42, v43);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v44, v42, v43);
 
   isServiceManatee = objc_msgSend_isServiceManatee(self, v45, v46);
   v48 = NSStringFromSelector(sel_isServiceManatee);
-  objc_msgSend_encodeBool_forKey_(v178, v49, isServiceManatee, v48);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v49, isServiceManatee, v48);
 
   v52 = objc_msgSend_bypassPCSEncryption(self, v50, v51);
   v53 = NSStringFromSelector(sel_bypassPCSEncryption);
-  objc_msgSend_encodeBool_forKey_(v178, v54, v52, v53);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v54, v52, v53);
 
   v57 = objc_msgSend_enforceNamedOperationGroups(self, v55, v56);
   v58 = NSStringFromSelector(sel_enforceNamedOperationGroups);
-  objc_msgSend_encodeBool_forKey_(v178, v59, v57, v58);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v59, v57, v58);
 
   OnlyManatee = objc_msgSend_forceEnableReadOnlyManatee(self, v60, v61);
   v63 = NSStringFromSelector(sel_forceEnableReadOnlyManatee);
-  objc_msgSend_encodeBool_forKey_(v178, v64, OnlyManatee, v63);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v64, OnlyManatee, v63);
 
   v67 = objc_msgSend_uploadRequestConfiguration(self, v65, v66);
   v68 = NSStringFromSelector(sel_uploadRequestConfiguration);
-  objc_msgSend_encodeObject_forKey_(v178, v69, v67, v68);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v69, v67, v68);
 
   v72 = objc_msgSend_persona(self, v70, v71);
   v75 = objc_msgSend_identifier(v72, v73, v74);
   v76 = NSStringFromSelector(sel_personaIdentifier);
-  objc_msgSend_encodeObject_forKey_(v178, v77, v75, v76);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v77, v75, v76);
 
   v80 = objc_msgSend_persona(self, v78, v79);
   v83 = objc_msgSend_type(v80, v81, v82);
-  objc_msgSend_encodeInteger_forKey_(v178, v84, v83, @"personaType");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v84, v83, @"personaType");
 
   v87 = objc_msgSend_useClearAssetEncryption(self, v85, v86);
   v88 = NSStringFromSelector(sel_useClearAssetEncryption);
-  objc_msgSend_encodeBool_forKey_(v178, v89, v87, v88);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v89, v87, v88);
 
   v92 = objc_msgSend_applicationBundleIdentifierOverrideForContainerAccess(self, v90, v91);
   v93 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForContainerAccess);
-  objc_msgSend_encodeObject_forKey_(v178, v94, v92, v93);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v94, v92, v93);
 
   v97 = objc_msgSend_applicationBundleIdentifierOverrideForNetworkAttribution(self, v95, v96);
   v98 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForNetworkAttribution);
-  objc_msgSend_encodeObject_forKey_(v178, v99, v97, v98);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v99, v97, v98);
 
   v102 = objc_msgSend_applicationBundleIdentifierOverrideForPushTopicGeneration(self, v100, v101);
   v103 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForPushTopicGeneration);
-  objc_msgSend_encodeObject_forKey_(v178, v104, v102, v103);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v104, v102, v103);
 
   v107 = objc_msgSend_applicationBundleIdentifierOverrideForTCC(self, v105, v106);
   v108 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForTCC);
-  objc_msgSend_encodeObject_forKey_(v178, v109, v107, v108);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v109, v107, v108);
 
   v112 = objc_msgSend_fakeEntitlements(self, v110, v111);
   v113 = NSStringFromSelector(sel_fakeEntitlements);
-  objc_msgSend_encodeObject_forKey_(v178, v114, v112, v113);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v114, v112, v113);
 
   v117 = objc_msgSend_useAnonymousToServerShareParticipants(self, v115, v116);
   v118 = NSStringFromSelector(sel_useAnonymousToServerShareParticipants);
-  objc_msgSend_encodeBool_forKey_(v178, v119, v117, v118);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v119, v117, v118);
 
   v122 = objc_msgSend_encryptMergeableValueMetadata(self, v120, v121);
   v123 = NSStringFromSelector(sel_encryptMergeableValueMetadata);
-  objc_msgSend_encodeBool_forKey_(v178, v124, v122, v123);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v124, v122, v123);
 
   if (__sTestOverridesAvailable[0] == 1)
   {
     v127 = objc_msgSend_testDeviceReferenceProtocol(self, v125, v126);
     v128 = NSStringFromSelector(sel_testDeviceReferenceProtocol);
-    objc_msgSend_encodeObject_forKey_(v178, v129, v127, v128);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v129, v127, v128);
   }
 
   v130 = objc_msgSend_returnRequestOperationProto(self, v125, v126);
   v131 = NSStringFromSelector(sel_returnRequestOperationProto);
-  objc_msgSend_encodeBool_forKey_(v178, v132, v130, v131);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v132, v130, v131);
 
   v135 = objc_msgSend_maintainRecordUploadOrder(self, v133, v134);
   v136 = NSStringFromSelector(sel_maintainRecordUploadOrder);
-  objc_msgSend_encodeBool_forKey_(v178, v137, v135, v136);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v137, v135, v136);
 
   v140 = objc_msgSend_addDatabaseScopeToZoneIDs(self, v138, v139);
   v141 = NSStringFromSelector(sel_addDatabaseScopeToZoneIDs);
-  objc_msgSend_encodeBool_forKey_(v178, v142, v140, v141);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v142, v140, v141);
 
   ChangesForMergeableValues = objc_msgSend_fetchChangesForMergeableValues(self, v143, v144);
   v146 = NSStringFromSelector(sel_fetchChangesForMergeableValues);
-  objc_msgSend_encodeBool_forKey_(v178, v147, ChangesForMergeableValues, v146);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v147, ChangesForMergeableValues, v146);
 
   v150 = objc_msgSend_prefersHiddenAllowedSharingOptionsUI(self, v148, v149);
   v151 = NSStringFromSelector(sel_prefersHiddenAllowedSharingOptionsUI);
-  objc_msgSend_encodeBool_forKey_(v178, v152, v150, v151);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v152, v150, v151);
 
   v155 = objc_msgSend_acceptServerSignedRecords(self, v153, v154);
   v156 = NSStringFromSelector(sel_acceptServerSignedRecords);
-  objc_msgSend_encodeBool_forKey_(v178, v157, v155, v156);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v157, v155, v156);
 
   v160 = objc_msgSend_supportedDeviceCapabilities(self, v158, v159);
   v161 = NSStringFromSelector(sel_supportedDeviceCapabilities);
-  objc_msgSend_encodeObject_forKey_(v178, v162, v160, v161);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v162, v160, v161);
 
   v165 = objc_msgSend_immediateUseDatabaseScopeForTesting(self, v163, v164);
   v166 = NSStringFromSelector(sel_immediateUseDatabaseScopeForTesting);
-  objc_msgSend_encodeObject_forKey_(v178, v167, v165, v166);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v167, v165, v166);
 
   v170 = objc_msgSend_ckSessionConfiguration(self, v168, v169);
   v171 = NSStringFromSelector(sel_ckSessionConfiguration);
-  objc_msgSend_encodeObject_forKey_(v178, v172, v170, v171);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v172, v170, v171);
 
   v175 = objc_msgSend_ckSessionAcquiredInfo(self, v173, v174);
   v176 = NSStringFromSelector(sel_ckSessionAcquiredInfo);
-  objc_msgSend_encodeObject_forKey_(v178, v177, v175, v176);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v177, v175, v176);
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKContainerOptions)initWithCoder:(id)a3
+- (CKContainerOptions)initWithCoder:(id)coder
 {
   v134[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v133.receiver = self;
   v133.super_class = CKContainerOptions;
   v7 = [(CKContainerOptions *)&v133 init];
   if (v7)
   {
     v8 = NSStringFromSelector(sel_captureResponseHTTPHeaders);
-    v7->_captureResponseHTTPHeaders = objc_msgSend_decodeBoolForKey_(v4, v9, v8);
+    v7->_captureResponseHTTPHeaders = objc_msgSend_decodeBoolForKey_(coderCopy, v9, v8);
 
     v10 = NSStringFromSelector(sel_useZoneWidePCS);
-    v7->_useZoneWidePCS = objc_msgSend_decodeBoolForKey_(v4, v11, v10);
+    v7->_useZoneWidePCS = objc_msgSend_decodeBoolForKey_(coderCopy, v11, v10);
 
     v12 = NSStringFromSelector(sel_holdAllOperations);
-    v7->_holdAllOperations = objc_msgSend_decodeBoolForKey_(v4, v13, v12);
+    v7->_holdAllOperations = objc_msgSend_decodeBoolForKey_(coderCopy, v13, v12);
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_accountOverrideInfo);
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v14, v15);
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v14, v15);
     accountOverrideInfo = v7->_accountOverrideInfo;
     v7->_accountOverrideInfo = v17;
 
     v19 = NSStringFromSelector(sel_qualityOfService);
-    v7->_qualityOfService = objc_msgSend_decodeIntegerForKey_(v4, v20, v19);
+    v7->_qualityOfService = objc_msgSend_decodeIntegerForKey_(coderCopy, v20, v19);
 
     v21 = NSStringFromSelector(sel_returnPCSMetadata);
-    v7->_returnPCSMetadata = objc_msgSend_decodeBoolForKey_(v4, v22, v21);
+    v7->_returnPCSMetadata = objc_msgSend_decodeBoolForKey_(coderCopy, v22, v21);
 
     v23 = NSStringFromSelector(sel_mmcsEncryptionSupport);
-    v7->_mmcsEncryptionSupport = objc_msgSend_decodeIntegerForKey_(v4, v24, v23);
+    v7->_mmcsEncryptionSupport = objc_msgSend_decodeIntegerForKey_(coderCopy, v24, v23);
 
     v25 = objc_opt_class();
     v26 = NSStringFromSelector(sel_encryptionServiceName);
-    v28 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v27, v25, v26);
+    v28 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v27, v25, v26);
     encryptionServiceName = v7->_encryptionServiceName;
     v7->_encryptionServiceName = v28;
 
     v30 = NSStringFromSelector(sel_isServiceManatee);
-    v7->_isServiceManatee = objc_msgSend_decodeBoolForKey_(v4, v31, v30);
+    v7->_isServiceManatee = objc_msgSend_decodeBoolForKey_(coderCopy, v31, v30);
 
     v32 = NSStringFromSelector(sel_bypassPCSEncryption);
-    v7->_bypassPCSEncryption = objc_msgSend_decodeBoolForKey_(v4, v33, v32);
+    v7->_bypassPCSEncryption = objc_msgSend_decodeBoolForKey_(coderCopy, v33, v32);
 
     v34 = NSStringFromSelector(sel_enforceNamedOperationGroups);
-    v7->_enforceNamedOperationGroups = objc_msgSend_decodeBoolForKey_(v4, v35, v34);
+    v7->_enforceNamedOperationGroups = objc_msgSend_decodeBoolForKey_(coderCopy, v35, v34);
 
     v36 = NSStringFromSelector(sel_forceEnableReadOnlyManatee);
-    v7->_forceEnableReadOnlyManatee = objc_msgSend_decodeBoolForKey_(v4, v37, v36);
+    v7->_forceEnableReadOnlyManatee = objc_msgSend_decodeBoolForKey_(coderCopy, v37, v36);
 
     v38 = objc_opt_class();
     v39 = NSStringFromSelector(sel_uploadRequestConfiguration);
-    v41 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v40, v38, v39);
+    v41 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v40, v38, v39);
     uploadRequestConfiguration = v7->_uploadRequestConfiguration;
     v7->_uploadRequestConfiguration = v41;
 
     v43 = objc_opt_class();
     v44 = NSStringFromSelector(sel_personaIdentifier);
-    v46 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v45, v43, v44);
+    v46 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v45, v43, v44);
 
     if (v46)
     {
-      v49 = objc_msgSend_decodeIntegerForKey_(v4, v47, @"personaType");
+      v49 = objc_msgSend_decodeIntegerForKey_(coderCopy, v47, @"personaType");
       if (v49 || (objc_msgSend_personaWithIdentifier_error_(CKPersona, v48, v46, 0), (v52 = objc_claimAutoreleasedReturnValue()) == 0))
       {
         v50 = [CKPersona alloc];
@@ -527,29 +527,29 @@
     }
 
     v54 = NSStringFromSelector(sel_useClearAssetEncryption);
-    v7->_useClearAssetEncryption = objc_msgSend_decodeBoolForKey_(v4, v55, v54);
+    v7->_useClearAssetEncryption = objc_msgSend_decodeBoolForKey_(coderCopy, v55, v54);
 
     v56 = objc_opt_class();
     v57 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForContainerAccess);
-    v59 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v58, v56, v57);
+    v59 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v58, v56, v57);
     applicationBundleIdentifierOverrideForContainerAccess = v7->_applicationBundleIdentifierOverrideForContainerAccess;
     v7->_applicationBundleIdentifierOverrideForContainerAccess = v59;
 
     v61 = objc_opt_class();
     v62 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForNetworkAttribution);
-    v64 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v63, v61, v62);
+    v64 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v63, v61, v62);
     applicationBundleIdentifierOverrideForNetworkAttribution = v7->_applicationBundleIdentifierOverrideForNetworkAttribution;
     v7->_applicationBundleIdentifierOverrideForNetworkAttribution = v64;
 
     v66 = objc_opt_class();
     v67 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForPushTopicGeneration);
-    v69 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v68, v66, v67);
+    v69 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v68, v66, v67);
     applicationBundleIdentifierOverrideForPushTopicGeneration = v7->_applicationBundleIdentifierOverrideForPushTopicGeneration;
     v7->_applicationBundleIdentifierOverrideForPushTopicGeneration = v69;
 
     v71 = objc_opt_class();
     v72 = NSStringFromSelector(sel_applicationBundleIdentifierOverrideForTCC);
-    v74 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v73, v71, v72);
+    v74 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v73, v71, v72);
     applicationBundleIdentifierOverrideForTCC = v7->_applicationBundleIdentifierOverrideForTCC;
     v7->_applicationBundleIdentifierOverrideForTCC = v74;
 
@@ -562,42 +562,42 @@
     v78 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v77, v134, 5);
     v80 = objc_msgSend_setWithArray_(v76, v79, v78);
     v81 = NSStringFromSelector(sel_fakeEntitlements);
-    v83 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v82, v80, v81);
+    v83 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v82, v80, v81);
     fakeEntitlements = v7->_fakeEntitlements;
     v7->_fakeEntitlements = v83;
 
     v85 = NSStringFromSelector(sel_useAnonymousToServerShareParticipants);
-    v7->_useAnonymousToServerShareParticipants = objc_msgSend_decodeBoolForKey_(v4, v86, v85);
+    v7->_useAnonymousToServerShareParticipants = objc_msgSend_decodeBoolForKey_(coderCopy, v86, v85);
 
     v87 = NSStringFromSelector(sel_encryptMergeableValueMetadata);
-    v7->_encryptMergeableValueMetadata = objc_msgSend_decodeBoolForKey_(v4, v88, v87);
+    v7->_encryptMergeableValueMetadata = objc_msgSend_decodeBoolForKey_(coderCopy, v88, v87);
 
     if (__sTestOverridesAvailable[0] == 1)
     {
       v89 = sub_188518A68();
       v90 = NSStringFromSelector(sel_testDeviceReferenceProtocol);
-      v92 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v91, v89, v90);
+      v92 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v91, v89, v90);
       testDeviceReferenceProtocol = v7->_testDeviceReferenceProtocol;
       v7->_testDeviceReferenceProtocol = v92;
     }
 
     v94 = NSStringFromSelector(sel_returnRequestOperationProto);
-    v7->_returnRequestOperationProto = objc_msgSend_decodeBoolForKey_(v4, v95, v94);
+    v7->_returnRequestOperationProto = objc_msgSend_decodeBoolForKey_(coderCopy, v95, v94);
 
     v96 = NSStringFromSelector(sel_maintainRecordUploadOrder);
-    v7->_maintainRecordUploadOrder = objc_msgSend_decodeBoolForKey_(v4, v97, v96);
+    v7->_maintainRecordUploadOrder = objc_msgSend_decodeBoolForKey_(coderCopy, v97, v96);
 
     v98 = NSStringFromSelector(sel_addDatabaseScopeToZoneIDs);
-    v7->_addDatabaseScopeToZoneIDs = objc_msgSend_decodeBoolForKey_(v4, v99, v98);
+    v7->_addDatabaseScopeToZoneIDs = objc_msgSend_decodeBoolForKey_(coderCopy, v99, v98);
 
     v100 = NSStringFromSelector(sel_fetchChangesForMergeableValues);
-    v7->_fetchChangesForMergeableValues = objc_msgSend_decodeBoolForKey_(v4, v101, v100);
+    v7->_fetchChangesForMergeableValues = objc_msgSend_decodeBoolForKey_(coderCopy, v101, v100);
 
     v102 = NSStringFromSelector(sel_prefersHiddenAllowedSharingOptionsUI);
-    v7->_prefersHiddenAllowedSharingOptionsUI = objc_msgSend_decodeBoolForKey_(v4, v103, v102);
+    v7->_prefersHiddenAllowedSharingOptionsUI = objc_msgSend_decodeBoolForKey_(coderCopy, v103, v102);
 
     v104 = NSStringFromSelector(sel_acceptServerSignedRecords);
-    v7->_acceptServerSignedRecords = objc_msgSend_decodeBoolForKey_(v4, v105, v104);
+    v7->_acceptServerSignedRecords = objc_msgSend_decodeBoolForKey_(coderCopy, v105, v104);
 
     v106 = MEMORY[0x1E695DFD8];
     v107 = objc_opt_class();
@@ -605,25 +605,25 @@
     v109 = objc_opt_class();
     v111 = objc_msgSend_setWithObjects_(v106, v110, v107, v108, v109, 0);
     v112 = NSStringFromSelector(sel_supportedDeviceCapabilities);
-    v114 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v113, v111, v112);
+    v114 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v113, v111, v112);
     supportedDeviceCapabilities = v7->_supportedDeviceCapabilities;
     v7->_supportedDeviceCapabilities = v114;
 
     v116 = objc_opt_class();
     v117 = NSStringFromSelector(sel_immediateUseDatabaseScopeForTesting);
-    v119 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v118, v116, v117);
+    v119 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v118, v116, v117);
     immediateUseDatabaseScopeForTesting = v7->_immediateUseDatabaseScopeForTesting;
     v7->_immediateUseDatabaseScopeForTesting = v119;
 
     v121 = objc_opt_class();
     v122 = NSStringFromSelector(sel_ckSessionConfiguration);
-    v124 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v123, v121, v122);
+    v124 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v123, v121, v122);
     ckSessionConfiguration = v7->_ckSessionConfiguration;
     v7->_ckSessionConfiguration = v124;
 
     v126 = objc_opt_class();
     v127 = NSStringFromSelector(sel_ckSessionAcquiredInfo);
-    v129 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v128, v126, v127);
+    v129 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v128, v126, v127);
     ckSessionAcquiredInfo = v7->_ckSessionAcquiredInfo;
     v7->_ckSessionAcquiredInfo = v129;
   }
@@ -634,9 +634,9 @@
   return v7;
 }
 
-- (void)setUseMMCSEncryptionV2:(BOOL)a3
+- (void)setUseMMCSEncryptionV2:(BOOL)v2
 {
-  if (a3)
+  if (v2)
   {
     v3 = 2;
   }
@@ -659,9 +659,9 @@
   return v5;
 }
 
-- (void)setUserPersona:(id)a3
+- (void)setUserPersona:(id)persona
 {
-  v4 = objc_msgSend_personaFromUserPersona_(CKPersona, a2, a3);
+  v4 = objc_msgSend_personaFromUserPersona_(CKPersona, a2, persona);
   v5 = v4;
   if (v4)
   {
@@ -673,9 +673,9 @@
   MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)setUserPersonaAttributes:(id)a3
+- (void)setUserPersonaAttributes:(id)attributes
 {
-  v4 = objc_msgSend_personaFromUserPersonaAttributes_(CKPersona, a2, a3);
+  v4 = objc_msgSend_personaFromUserPersonaAttributes_(CKPersona, a2, attributes);
   v5 = v4;
   if (v4)
   {
@@ -687,10 +687,10 @@
   MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (BOOL)getPersona:(id *)a3 error:(id *)a4
+- (BOOL)getPersona:(id *)persona error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v7 = objc_msgSend_accountOverrideInfo(self, a2, a3);
+  v7 = objc_msgSend_accountOverrideInfo(self, a2, persona);
   v10 = objc_msgSend_copy(v7, v8, v9);
 
   if (v10)
@@ -714,14 +714,14 @@
   if (!v14)
   {
     v14 = v16;
-    if (!a3)
+    if (!persona)
     {
       goto LABEL_14;
     }
 
 LABEL_13:
     v28 = v14;
-    *a3 = v14;
+    *persona = v14;
     goto LABEL_14;
   }
 
@@ -740,7 +740,7 @@ LABEL_11:
 
     v14 = v27;
 LABEL_12:
-    if (!a3)
+    if (!persona)
     {
       goto LABEL_14;
     }
@@ -780,41 +780,41 @@ LABEL_12:
   v14 = 0;
   Persona_error = 0;
   v15 = v40;
-  if (a3)
+  if (persona)
   {
     goto LABEL_13;
   }
 
 LABEL_14:
-  if (a4)
+  if (error)
   {
     v29 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
   v30 = *MEMORY[0x1E69E9840];
   return Persona_error;
 }
 
-- (void)setApplicationBundleIdentifierOverride:(id)a3
+- (void)setApplicationBundleIdentifierOverride:(id)override
 {
-  v8 = a3;
-  objc_msgSend_setApplicationBundleIdentifierOverrideForContainerAccess_(self, v4, v8);
-  objc_msgSend_setApplicationBundleIdentifierOverrideForNetworkAttribution_(self, v5, v8);
-  objc_msgSend_setApplicationBundleIdentifierOverrideForPushTopicGeneration_(self, v6, v8);
-  objc_msgSend_setApplicationBundleIdentifierOverrideForTCC_(self, v7, v8);
+  overrideCopy = override;
+  objc_msgSend_setApplicationBundleIdentifierOverrideForContainerAccess_(self, v4, overrideCopy);
+  objc_msgSend_setApplicationBundleIdentifierOverrideForNetworkAttribution_(self, v5, overrideCopy);
+  objc_msgSend_setApplicationBundleIdentifierOverrideForPushTopicGeneration_(self, v6, overrideCopy);
+  objc_msgSend_setApplicationBundleIdentifierOverrideForTCC_(self, v7, overrideCopy);
 }
 
-- (void)setFakeEntitlements:(id)a3
+- (void)setFakeEntitlements:(id)entitlements
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_CKDeepCopy(v9, v5, v6);
-  fakeEntitlements = v4->_fakeEntitlements;
-  v4->_fakeEntitlements = v7;
+  entitlementsCopy = entitlements;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_CKDeepCopy(entitlementsCopy, v5, v6);
+  fakeEntitlements = selfCopy->_fakeEntitlements;
+  selfCopy->_fakeEntitlements = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)personaIdentifier
@@ -825,14 +825,14 @@ LABEL_14:
   return v6;
 }
 
-- (void)setPersonaIdentifier:(id)a3
+- (void)setPersonaIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v13 = 0;
-    v6 = objc_msgSend_personaWithIdentifier_error_(CKPersona, v4, v5, &v13);
+    v6 = objc_msgSend_personaWithIdentifier_error_(CKPersona, v4, identifierCopy, &v13);
     v8 = v13;
     if (!v6)
     {
@@ -845,14 +845,14 @@ LABEL_14:
       if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v15 = v5;
+        v15 = identifierCopy;
         v16 = 2112;
         v17 = v8;
         _os_log_debug_impl(&dword_1883EA000, v9, OS_LOG_TYPE_DEBUG, "Unable to resolve persona with identifier '%@' with error: %@", buf, 0x16u);
       }
 
       v10 = [CKPersona alloc];
-      v6 = objc_msgSend_initWithIdentifier_type_(v10, v11, v5, 0);
+      v6 = objc_msgSend_initWithIdentifier_type_(v10, v11, identifierCopy, 0);
     }
 
     objc_msgSend_setPersona_(self, v7, v6);
@@ -866,99 +866,99 @@ LABEL_14:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v139 = a3;
+  usingCopy = using;
   v6 = objc_msgSend_captureResponseHTTPHeaders(self, v4, v5);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v7, @"captureResponseHTTPHeaders", v6, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v7, @"captureResponseHTTPHeaders", v6, 0);
   v10 = objc_msgSend_useZoneWidePCS(self, v8, v9);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v11, @"useZoneWidePCS", v10, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v11, @"useZoneWidePCS", v10, 0);
   v14 = objc_msgSend_holdAllOperations(self, v12, v13);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v15, @"holdAllOperations", v14, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v15, @"holdAllOperations", v14, 0);
   v18 = objc_msgSend_accountOverrideInfo(self, v16, v17);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v139, v19, @"accountOverrideInfo", v18, 1);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v19, @"accountOverrideInfo", v18, 1);
 
   if (objc_msgSend_qualityOfService(self, v20, v21) != -1)
   {
     v24 = objc_msgSend_qualityOfService(self, v22, v23);
     v26 = CKStringForQOS(v24, v25);
-    objc_msgSend_addProperty_value_shouldRedact_(v139, v27, @"qualityOfService", v26, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v27, @"qualityOfService", v26, 0);
   }
 
   v28 = objc_msgSend_returnPCSMetadata(self, v22, v23);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v29, @"returnPCSMetadata", v28, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v29, @"returnPCSMetadata", v28, 0);
   if (objc_msgSend_mmcsEncryptionSupport(self, v30, v31) != 1)
   {
     v34 = objc_msgSend_mmcsEncryptionSupport(self, v32, v33);
     v35 = CKStringFromCKMMCSEncryptionSupport(v34);
-    objc_msgSend_addProperty_value_shouldRedact_(v139, v36, @"mmcsEncryptionSupport", v35, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v36, @"mmcsEncryptionSupport", v35, 0);
   }
 
   v37 = objc_msgSend_encryptionServiceName(self, v32, v33);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v139, v38, @"encryptionServiceName", v37, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v38, @"encryptionServiceName", v37, 0);
 
   isServiceManatee = objc_msgSend_isServiceManatee(self, v39, v40);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v42, @"isServiceManatee", isServiceManatee, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v42, @"isServiceManatee", isServiceManatee, 0);
   v45 = objc_msgSend_bypassPCSEncryption(self, v43, v44);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v46, @"bypassPCSEncryption", v45, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v46, @"bypassPCSEncryption", v45, 0);
   v49 = objc_msgSend_enforceNamedOperationGroups(self, v47, v48);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v50, @"enforceNamedOperationGroups", v49, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v50, @"enforceNamedOperationGroups", v49, 0);
   OnlyManatee = objc_msgSend_forceEnableReadOnlyManatee(self, v51, v52);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v54, @"forceEnableReadOnlyManatee", OnlyManatee, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v54, @"forceEnableReadOnlyManatee", OnlyManatee, 0);
   v57 = objc_msgSend_uploadRequestConfiguration(self, v55, v56);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v139, v58, @"uploadRequestConfiguration", v57, 1);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v58, @"uploadRequestConfiguration", v57, 1);
 
   v61 = objc_msgSend_forceEnableReadOnlyManatee(self, v59, v60);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v62, @"forceEnableReadOnlyManatee", v61, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v62, @"forceEnableReadOnlyManatee", v61, 0);
   v65 = objc_msgSend_persona(self, v63, v64);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v139, v66, @"persona", v65, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v66, @"persona", v65, 0);
 
   v69 = objc_msgSend_useClearAssetEncryption(self, v67, v68);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v70, @"useClearAssetEncryption", v69, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v70, @"useClearAssetEncryption", v69, 0);
   v73 = objc_msgSend_applicationBundleIdentifierOverrideForContainerAccess(self, v71, v72);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v139, v74, @"applicationBundleIdentifierOverrideForContainerAccess", v73, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v74, @"applicationBundleIdentifierOverrideForContainerAccess", v73, 0);
 
   v77 = objc_msgSend_applicationBundleIdentifierOverrideForNetworkAttribution(self, v75, v76);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v139, v78, @"applicationBundleIdentifierOverrideForNetworkAttribution", v77, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v78, @"applicationBundleIdentifierOverrideForNetworkAttribution", v77, 0);
 
   v81 = objc_msgSend_applicationBundleIdentifierOverrideForPushTopicGeneration(self, v79, v80);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v139, v82, @"applicationBundleIdentifierOverrideForPushTopicGeneration", v81, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v82, @"applicationBundleIdentifierOverrideForPushTopicGeneration", v81, 0);
 
   v85 = objc_msgSend_applicationBundleIdentifierOverrideForTCC(self, v83, v84);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v139, v86, @"applicationBundleIdentifierOverrideForTCC", v85, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v86, @"applicationBundleIdentifierOverrideForTCC", v85, 0);
 
   v89 = objc_msgSend_fakeEntitlements(self, v87, v88);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v139, v90, @"fakeEntitlements", v89, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v90, @"fakeEntitlements", v89, 0);
 
   v93 = objc_msgSend_useAnonymousToServerShareParticipants(self, v91, v92);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v94, @"useAnonymousToServerShareParticipants", v93, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v94, @"useAnonymousToServerShareParticipants", v93, 0);
   v97 = objc_msgSend_encryptMergeableValueMetadata(self, v95, v96);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v98, @"encryptMergeableValueMetadata", v97, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v98, @"encryptMergeableValueMetadata", v97, 0);
   v101 = objc_msgSend_testDeviceReferenceProtocol(self, v99, v100);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v139, v102, @"testDeviceReferenceProtocol", v101, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v102, @"testDeviceReferenceProtocol", v101, 0);
 
   v105 = objc_msgSend_returnRequestOperationProto(self, v103, v104);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v106, @"returnRequestOperationProto", v105, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v106, @"returnRequestOperationProto", v105, 0);
   v109 = objc_msgSend_maintainRecordUploadOrder(self, v107, v108);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v110, @"maintainRecordUploadOrder", v109, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v110, @"maintainRecordUploadOrder", v109, 0);
   v113 = objc_msgSend_addDatabaseScopeToZoneIDs(self, v111, v112);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v114, @"addDatabaseScopeToZoneIDs", v113, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v114, @"addDatabaseScopeToZoneIDs", v113, 0);
   ChangesForMergeableValues = objc_msgSend_fetchChangesForMergeableValues(self, v115, v116);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v118, @"fetchChangesForMergeableValues", ChangesForMergeableValues, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v118, @"fetchChangesForMergeableValues", ChangesForMergeableValues, 0);
   v121 = objc_msgSend_fetchChangesForMergeableValues(self, v119, v120);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v122, @"fetchChangesForMergeableValues", v121, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v122, @"fetchChangesForMergeableValues", v121, 0);
   v125 = objc_msgSend_prefersHiddenAllowedSharingOptionsUI(self, v123, v124);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v126, @"prefersHiddenAllowedSharingOptionsUI", v125, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v126, @"prefersHiddenAllowedSharingOptionsUI", v125, 0);
   v129 = objc_msgSend_acceptServerSignedRecords(self, v127, v128);
-  objc_msgSend_addBooleanProperty_value_defaultValue_(v139, v130, @"acceptServerSignedRecords", v129, 0);
+  objc_msgSend_addBooleanProperty_value_defaultValue_(usingCopy, v130, @"acceptServerSignedRecords", v129, 0);
   v133 = objc_msgSend_supportedDeviceCapabilities(self, v131, v132);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v139, v134, @"supportedDeviceCapabilities", v133, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v134, @"supportedDeviceCapabilities", v133, 0);
 
   v137 = objc_msgSend_immediateUseDatabaseScopeForTesting(self, v135, v136);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v139, v138, @"immediateUseDatabaseScopeForTesting", v137, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v138, @"immediateUseDatabaseScopeForTesting", v137, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v4[8] = objc_msgSend_captureResponseHTTPHeaders(self, v5, v6);
@@ -1069,10 +1069,10 @@ LABEL_14:
   return v25 ^ v31;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v198 = 1;
   }
@@ -1082,7 +1082,7 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_captureResponseHTTPHeaders(v5, v6, v7);
       if (v8 != objc_msgSend_captureResponseHTTPHeaders(self, v9, v10))
       {
@@ -1332,13 +1332,13 @@ LABEL_38:
   return v198;
 }
 
-- (CKContainerOptions)initWithSqliteRepresentation:(id)a3
+- (CKContainerOptions)initWithSqliteRepresentation:(id)representation
 {
   v206 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  representationCopy = representation;
+  if (objc_msgSend_length(representationCopy, v5, v6))
   {
-    v8 = objc_msgSend_dataUsingEncoding_(v4, v7, 4);
+    v8 = objc_msgSend_dataUsingEncoding_(representationCopy, v7, 4);
     v203 = 0;
     v10 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x1E696ACB0], v9, v8, 0, &v203);
     v11 = v203;
@@ -1357,7 +1357,7 @@ LABEL_38:
         _os_log_error_impl(&dword_1883EA000, v101, OS_LOG_TYPE_ERROR, "Error converting JSON data to CKContainerOptions: %@", buf, 0xCu);
       }
 
-      v100 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -1557,34 +1557,34 @@ LABEL_38:
 
       objc_msgSend_swizzleClass(v14, v12, v13);
       self = v14;
-      v100 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v100 = 0;
+    selfCopy = 0;
   }
 
   v200 = *MEMORY[0x1E69E9840];
-  return v100;
+  return selfCopy;
 }
 
-- (void)setSupportedDeviceCapabilities:(id)a3
+- (void)setSupportedDeviceCapabilities:(id)capabilities
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  capabilitiesCopy = capabilities;
+  if (capabilitiesCopy)
   {
-    v42 = self;
+    selfCopy = self;
     v5 = objc_opt_new();
     v45 = objc_opt_new();
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v43 = v4;
-    obj = v4;
+    v43 = capabilitiesCopy;
+    obj = capabilitiesCopy;
     v47 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v6, &v52, v57, 16);
     if (v47)
     {
@@ -1599,7 +1599,7 @@ LABEL_38:
           }
 
           v10 = *(*(&v52 + 1) + 8 * i);
-          v11 = objc_msgSend_name(v10, v7, v8, v42);
+          v11 = objc_msgSend_name(v10, v7, v8, selfCopy);
           v13 = objc_msgSend_objectForKey_(v5, v12, v11);
 
           if (v13)
@@ -1667,10 +1667,10 @@ LABEL_20:
       while (v47);
     }
 
-    supportedDeviceCapabilities = v42->_supportedDeviceCapabilities;
-    v42->_supportedDeviceCapabilities = v45;
+    supportedDeviceCapabilities = selfCopy->_supportedDeviceCapabilities;
+    selfCopy->_supportedDeviceCapabilities = v45;
 
-    v4 = v43;
+    capabilitiesCopy = v43;
   }
 
   else
@@ -1682,11 +1682,11 @@ LABEL_20:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ck_bindInStatement:(id)a3 atIndex:(unint64_t)a4
+- (void)ck_bindInStatement:(id)statement atIndex:(unint64_t)index
 {
-  v6 = a3;
+  statementCopy = statement;
   v10 = objc_msgSend_sqliteRepresentation(self, v7, v8);
-  objc_msgSend_bindText_atIndex_(v6, v9, v10, a4);
+  objc_msgSend_bindText_atIndex_(statementCopy, v9, v10, index);
 }
 
 @end

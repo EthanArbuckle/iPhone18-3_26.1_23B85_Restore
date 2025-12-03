@@ -1,46 +1,46 @@
 @interface VCAudioHALPluginDevice
 + (id)sharedAudioHALPluginNullDevice;
 + (id)sharedAudioServerDriverPlugin;
-- (BOOL)changeSamplingRate:(double)a3;
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8;
+- (BOOL)changeSamplingRate:(double)rate;
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client;
 - (BOOL)start;
 - (BOOL)stop;
-- (VCAudioHALPluginDevice)initWithConfig:(tagVCAudioHALPluginConfiguration *)a3;
+- (VCAudioHALPluginDevice)initWithConfig:(tagVCAudioHALPluginConfiguration *)config;
 - (id).cxx_construct;
 - (id)getZeroTimestampBlock;
 - (id)willDoReadInputBlock;
 - (id)willDoWriteMixBlock;
 - (int)performStartIO;
 - (int)performStopIO;
-- (unsigned)calculateIOBufferFrameSize:(unsigned int)a3;
-- (void)configureRemoteDeviceInfo:(id)a3;
+- (unsigned)calculateIOBufferFrameSize:(unsigned int)size;
+- (void)configureRemoteDeviceInfo:(id)info;
 - (void)dealloc;
 - (void)initialZeroTimestamp;
 - (void)invalidate;
 - (void)start;
 - (void)stop;
-- (void)updateZeroTimestamp:(unint64_t)a3;
+- (void)updateZeroTimestamp:(unint64_t)timestamp;
 @end
 
 @implementation VCAudioHALPluginDevice
 
-- (VCAudioHALPluginDevice)initWithConfig:(tagVCAudioHALPluginConfiguration *)a3
+- (VCAudioHALPluginDevice)initWithConfig:(tagVCAudioHALPluginConfiguration *)config
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a3 && [(VCAudioHALPluginRemoteDeviceInfo *)a3->remoteDeviceInfo deviceUID])
+  if (config && [(VCAudioHALPluginRemoteDeviceInfo *)config->remoteDeviceInfo deviceUID])
   {
-    v5 = [(VCAudioHALPluginRemoteDeviceInfo *)a3->remoteDeviceInfo deviceUID];
+    deviceUID = [(VCAudioHALPluginRemoteDeviceInfo *)config->remoteDeviceInfo deviceUID];
   }
 
   else
   {
-    v5 = @"CC4B9AAD-7DF1-4EEA-8E0A-EB7CEE94C512";
+    deviceUID = @"CC4B9AAD-7DF1-4EEA-8E0A-EB7CEE94C512";
   }
 
   v6 = +[VCAudioHALPluginDevice sharedAudioServerDriverPlugin];
   v20.receiver = self;
   v20.super_class = VCAudioHALPluginDevice;
-  v7 = [(ASDAudioDevice *)&v20 initWithDeviceUID:v5 withPlugin:v6];
+  v7 = [(ASDAudioDevice *)&v20 initWithDeviceUID:deviceUID withPlugin:v6];
   if (!v7)
   {
     goto LABEL_19;
@@ -65,7 +65,7 @@
     }
   }
 
-  if (!a3)
+  if (!config)
   {
     [VCAudioHALPluginDevice initWithConfig:v7];
     goto LABEL_19;
@@ -81,24 +81,24 @@
   [(ASDAudioDevice *)v7 setCanBeDefaultDevice:1];
   [(ASDAudioDevice *)v7 setCanBeDefaultSystemDevice:1];
   [(ASDAudioDevice *)v7 setCanChangeDeviceName:0];
-  v21 = [MEMORY[0x1E696AD98] numberWithDouble:a3->sinkFormat.format.mSampleRate];
+  v21 = [MEMORY[0x1E696AD98] numberWithDouble:config->sinkFormat.format.mSampleRate];
   -[ASDAudioDevice setSamplingRates:](v7, "setSamplingRates:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1]);
-  [(ASDAudioDevice *)v7 setSamplingRate:a3->sinkFormat.format.mSampleRate];
+  [(ASDAudioDevice *)v7 setSamplingRate:config->sinkFormat.format.mSampleRate];
   [(ASDAudioDevice *)v7 setInputSafetyOffset:0];
   [(ASDAudioDevice *)v7 setOutputSafetyOffset:0];
   [(ASDAudioDevice *)v7 setTransportType:1668506482];
-  v7->_samplesPerFrame = a3->sinkFormat.samplesPerFrame;
-  [(ASDAudioDevice *)v7 setTimestampPeriod:(a3->sinkFormat.format.mSampleRate * 0.26)];
-  [(VCAudioHALPluginDevice *)v7 configureRemoteDeviceInfo:a3->remoteDeviceInfo];
+  v7->_samplesPerFrame = config->sinkFormat.samplesPerFrame;
+  [(ASDAudioDevice *)v7 setTimestampPeriod:(config->sinkFormat.format.mSampleRate * 0.26)];
+  [(VCAudioHALPluginDevice *)v7 configureRemoteDeviceInfo:config->remoteDeviceInfo];
   *buf = 0xAAAAAAAAAAAAAAAALL;
   mach_timebase_info(buf);
   LODWORD(v10) = *&buf[4];
   LODWORD(v11) = *buf;
   v7->_clockFrequency = v10 / v11 * 1000000000.0;
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v6 bundleID];
+  bundleID = [v6 bundleID];
   v14 = objc_opt_class();
-  v15 = [objc_msgSend(v12 stringWithFormat:@"%@.%@.%@", v13, NSStringFromClass(v14), v5), "UTF8String"];
+  v15 = [objc_msgSend(v12 stringWithFormat:@"%@.%@.%@", bundleID, NSStringFromClass(v14), deviceUID), "UTF8String"];
   v16 = dispatch_queue_create(v15, 0);
   v7->_timeQueue = v16;
   if (!v16)
@@ -107,7 +107,7 @@
     goto LABEL_19;
   }
 
-  v17 = [[VCAudioHALPluginStream alloc] initWithDirection:1869968496 plugin:v6 withConfig:a3];
+  v17 = [[VCAudioHALPluginStream alloc] initWithDirection:1869968496 plugin:v6 withConfig:config];
   v7->_outputStream = v17;
   if (!v17)
   {
@@ -117,7 +117,7 @@
 
   [(ASDStream *)v17 setStreamName:@"AVConference Output Stream"];
   [(ASDAudioDevice *)v7 addOutputStream:v7->_outputStream];
-  v18 = [[VCAudioHALPluginMockAudioInject alloc] initWithConfig:a3];
+  v18 = [[VCAudioHALPluginMockAudioInject alloc] initWithConfig:config];
   v7->_mockAudioInject = v18;
   if (!v18)
   {
@@ -147,7 +147,7 @@ LABEL_19:
       v11 = 1024;
       v12 = 110;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginDevice-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -164,13 +164,13 @@ LABEL_19:
   [(ASDAudioDevice *)&v6 dealloc];
 }
 
-- (void)configureRemoteDeviceInfo:(id)a3
+- (void)configureRemoteDeviceInfo:(id)info
 {
   v53 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (info)
   {
-    -[ASDAudioDevice setDeviceName:](self, "setDeviceName:", [a3 deviceName]);
-    -[ASDAudioDevice setModelUID:](self, "setModelUID:", [a3 modelUID]);
+    -[ASDAudioDevice setDeviceName:](self, "setDeviceName:", [info deviceName]);
+    -[ASDAudioDevice setModelUID:](self, "setModelUID:", [info modelUID]);
   }
 
   else
@@ -187,12 +187,12 @@ LABEL_19:
       v7 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(ASDAudioDevice *)self deviceName];
-        v9 = [(ASDAudioDevice *)self deviceUID];
-        v10 = [(ASDAudioDevice *)self modelUID];
-        v11 = [(ASDAudioDevice *)self manufacturerName];
-        v12 = [(ASDAudioDevice *)self modelName];
-        v13 = [(ASDAudioDevice *)self configurationBundleID];
+        deviceName = [(ASDAudioDevice *)self deviceName];
+        deviceUID = [(ASDAudioDevice *)self deviceUID];
+        modelUID = [(ASDAudioDevice *)self modelUID];
+        manufacturerName = [(ASDAudioDevice *)self manufacturerName];
+        modelName = [(ASDAudioDevice *)self modelName];
+        configurationBundleID = [(ASDAudioDevice *)self configurationBundleID];
         [(ASDAudioDevice *)self samplingRate];
         *buf = 136317698;
         v28 = v6;
@@ -201,19 +201,19 @@ LABEL_19:
         v31 = 1024;
         v32 = 129;
         v33 = 2048;
-        v34 = a3;
+        infoCopy = info;
         v35 = 2112;
-        v36 = v8;
+        selfCopy = deviceName;
         v37 = 2112;
-        v38 = v9;
+        infoCopy2 = deviceUID;
         v39 = 2112;
-        v40 = v10;
+        v40 = modelUID;
         v41 = 2112;
-        v42 = v11;
+        v42 = manufacturerName;
         v43 = 2112;
-        v44 = v12;
+        v44 = modelName;
         v45 = 2112;
-        v46 = v13;
+        v46 = configurationBundleID;
         v47 = 2048;
         v48 = v14;
         v15 = " [%s] %s:%d remoteDeviceInfo=%p deviceName=%@ deviceUID=%@ modelUID=%@ manufacturerName=%@ modelName=%@ configurationBundleID=%@ samplingRate=%f";
@@ -243,12 +243,12 @@ LABEL_14:
       v19 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [(ASDAudioDevice *)self deviceName];
-        v20 = [(ASDAudioDevice *)self deviceUID];
-        v21 = [(ASDAudioDevice *)self modelUID];
-        v22 = [(ASDAudioDevice *)self manufacturerName];
-        v23 = [(ASDAudioDevice *)self modelName];
-        v24 = [(ASDAudioDevice *)self configurationBundleID];
+        deviceName2 = [(ASDAudioDevice *)self deviceName];
+        deviceUID2 = [(ASDAudioDevice *)self deviceUID];
+        modelUID2 = [(ASDAudioDevice *)self modelUID];
+        manufacturerName2 = [(ASDAudioDevice *)self manufacturerName];
+        modelName2 = [(ASDAudioDevice *)self modelName];
+        configurationBundleID2 = [(ASDAudioDevice *)self configurationBundleID];
         [(ASDAudioDevice *)self samplingRate];
         *buf = 136318210;
         v28 = v18;
@@ -257,23 +257,23 @@ LABEL_14:
         v31 = 1024;
         v32 = 129;
         v33 = 2112;
-        v34 = v5;
+        infoCopy = v5;
         v35 = 2048;
-        v36 = self;
+        selfCopy = self;
         v37 = 2048;
-        v38 = a3;
+        infoCopy2 = info;
         v39 = 2112;
-        v40 = v26;
+        v40 = deviceName2;
         v41 = 2112;
-        v42 = v20;
+        v42 = deviceUID2;
         v43 = 2112;
-        v44 = v21;
+        v44 = modelUID2;
         v45 = 2112;
-        v46 = v22;
+        v46 = manufacturerName2;
         v47 = 2112;
-        v48 = v23;
+        v48 = modelName2;
         v49 = 2112;
-        v50 = v24;
+        v50 = configurationBundleID2;
         v51 = 2048;
         v52 = v25;
         v15 = " [%s] %s:%d %@(%p) remoteDeviceInfo=%p deviceName=%@ deviceUID=%@ modelUID=%@ manufacturerName=%@ modelName=%@ configurationBundleID=%@ samplingRate=%f";
@@ -302,7 +302,7 @@ LABEL_14:
       v9 = 1024;
       v10 = 133;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginDevice-invalidate (%p)", &v5, 0x26u);
     }
   }
@@ -364,7 +364,7 @@ LABEL_11:
         v20 = 2112;
         v21 = v3;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -446,7 +446,7 @@ LABEL_11:
         WORD2(v15) = 2112;
         *(&v15 + 6) = v3;
         HIWORD(v15) = 2048;
-        v16 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -485,7 +485,7 @@ LABEL_15:
   v3[1] = 3221225472;
   v3[2] = __55__VCAudioHALPluginDevice_sharedAudioServerDriverPlugin__block_invoke;
   v3[3] = &unk_1E85F3778;
-  v3[4] = a1;
+  v3[4] = self;
   if (+[VCAudioHALPluginDevice sharedAudioServerDriverPlugin]::onceToken != -1)
   {
     dispatch_once(&+[VCAudioHALPluginDevice sharedAudioServerDriverPlugin]::onceToken, v3);
@@ -591,15 +591,15 @@ void __55__VCAudioHALPluginDevice_sharedAudioServerDriverPlugin__block_invoke_2(
       v14 = 1024;
       v15 = 195;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginDevice-performStartIO (%p)", buf, 0x26u);
     }
   }
 
   v9.receiver = self;
   v9.super_class = VCAudioHALPluginDevice;
-  v5 = [(ASDAudioDevice *)&v9 performStartIO];
-  if (!v5)
+  performStartIO = [(ASDAudioDevice *)&v9 performStartIO];
+  if (!performStartIO)
   {
     timeQueue = self->_timeQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -610,7 +610,7 @@ void __55__VCAudioHALPluginDevice_sharedAudioServerDriverPlugin__block_invoke_2(
     dispatch_async(timeQueue, block);
   }
 
-  return v5;
+  return performStartIO;
 }
 
 - (int)performStopIO
@@ -630,7 +630,7 @@ void __55__VCAudioHALPluginDevice_sharedAudioServerDriverPlugin__block_invoke_2(
       v13 = 1024;
       v14 = 207;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginDevice-performStopIO (%p)", buf, 0x26u);
     }
   }
@@ -729,7 +729,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v3;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -738,13 +738,13 @@ LABEL_11:
     }
   }
 
-  v11 = [(ASDAudioDevice *)self hasInput];
+  hasInput = [(ASDAudioDevice *)self hasInput];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __46__VCAudioHALPluginDevice_willDoReadInputBlock__block_invoke;
   v13[3] = &__block_descriptor_33_e14_i28__0I8_12_20l;
-  v14 = v11;
+  v14 = hasInput;
   result = [v13 copy];
   self->_willDoReadInputBlock = result;
   return result;
@@ -819,7 +819,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v3;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -828,13 +828,13 @@ LABEL_11:
     }
   }
 
-  v11 = [(ASDAudioDevice *)self hasOutput];
+  hasOutput = [(ASDAudioDevice *)self hasOutput];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __45__VCAudioHALPluginDevice_willDoWriteMixBlock__block_invoke;
   v13[3] = &__block_descriptor_33_e14_i28__0I8_12_20l;
-  v14 = v11;
+  v14 = hasOutput;
   result = [v13 copy];
   self->_willDoWriteMixBlock = result;
   return result;
@@ -856,7 +856,7 @@ uint64_t __45__VCAudioHALPluginDevice_willDoWriteMixBlock__block_invoke(uint64_t
   return result;
 }
 
-- (BOOL)changeSamplingRate:(double)a3
+- (BOOL)changeSamplingRate:(double)rate
 {
   v4[6] = *MEMORY[0x1E69E9840];
   v4[0] = MEMORY[0x1E69E9820];
@@ -864,7 +864,7 @@ uint64_t __45__VCAudioHALPluginDevice_willDoWriteMixBlock__block_invoke(uint64_t
   v4[2] = __45__VCAudioHALPluginDevice_changeSamplingRate___block_invoke;
   v4[3] = &unk_1E85F40E0;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = rate;
   [(ASDAudioDevice *)self requestConfigurationChange:v4];
   return 1;
 }
@@ -975,10 +975,10 @@ void *__46__VCAudioHALPluginDevice_initialZeroTimestamp__block_invoke(uint64_t a
   return result;
 }
 
-- (void)updateZeroTimestamp:(unint64_t)a3
+- (void)updateZeroTimestamp:(unint64_t)timestamp
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (self->_currentSeed == a3)
+  if (self->_currentSeed == timestamp)
   {
     v23.n128_u64[0] = -1;
     v23.n128_u64[1] = 0xAAAAAAAAAAAAAAAALL;
@@ -990,9 +990,9 @@ void *__46__VCAudioHALPluginDevice_initialZeroTimestamp__block_invoke(uint64_t a
     clockFrequency = self->_clockFrequency;
     [(ASDAudioDevice *)self samplingRate];
     v11 = clockFrequency / v10;
-    v12 = [(ASDAudioDevice *)self timestampPeriod];
+    timestampPeriod = [(ASDAudioDevice *)self timestampPeriod];
     currentSeed = self->_currentSeed;
-    v14 = v8 + (v11 * v12);
+    v14 = v8 + (v11 * timestampPeriod);
     v22.sampleTime = v7;
     v22.hostTime = v14;
     v22.seed = currentSeed;
@@ -1007,7 +1007,7 @@ void *__46__VCAudioHALPluginDevice_initialZeroTimestamp__block_invoke(uint64_t a
     block[2] = __46__VCAudioHALPluginDevice_updateZeroTimestamp___block_invoke;
     block[3] = &unk_1E85F40E0;
     block[4] = v19;
-    block[5] = a3;
+    block[5] = timestamp;
     dispatch_after(v18, timeQueue, block);
   }
 }
@@ -1025,7 +1025,7 @@ void *__46__VCAudioHALPluginDevice_updateZeroTimestamp___block_invoke(uint64_t a
   return result;
 }
 
-- (unsigned)calculateIOBufferFrameSize:(unsigned int)a3
+- (unsigned)calculateIOBufferFrameSize:(unsigned int)size
 {
   v29 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1044,7 +1044,7 @@ void *__46__VCAudioHALPluginDevice_updateZeroTimestamp___block_invoke(uint64_t a
         v20 = 1024;
         v21 = 327;
         v22 = 1024;
-        *v23 = a3;
+        *v23 = size;
         *&v23[4] = 1024;
         *&v23[6] = samplesPerFrame;
         v9 = " [%s] %s:%d requestedSize=%d configuring for samplesPerFrame=%d";
@@ -1084,9 +1084,9 @@ LABEL_11:
         v22 = 2112;
         *v23 = v5;
         *&v23[8] = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 1024;
-        v26 = a3;
+        sizeCopy = size;
         v27 = 1024;
         v28 = v14;
         v9 = " [%s] %s:%d %@(%p) requestedSize=%d configuring for samplesPerFrame=%d";
@@ -1100,16 +1100,16 @@ LABEL_11:
   return self->_samplesPerFrame;
 }
 
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = VCAudioHALPluginDevice;
-  result = [(ASDAudioDevice *)&v14 getProperty:a3 withQualifierSize:*&a4 qualifierData:a5 dataSize:a6 andData:a7 forClient:*&a8];
-  if (a3 && a6 && a7 && a3->mSelector == 1667658618)
+  result = [(ASDAudioDevice *)&v14 getProperty:property withQualifierSize:*&size qualifierData:data dataSize:dataSize andData:andData forClient:*&client];
+  if (property && dataSize && andData && property->mSelector == 1667658618)
   {
-    *a7 = [(VCAudioHALPluginDevice *)self calculateIOBufferFrameSize:*a5];
-    *a6 = 4;
+    *andData = [(VCAudioHALPluginDevice *)self calculateIOBufferFrameSize:*data];
+    *dataSize = 4;
     return 1;
   }
 
@@ -1214,7 +1214,7 @@ LABEL_11:
     block[1] = 3221225472;
     block[2] = __56__VCAudioHALPluginDevice_sharedAudioHALPluginNullDevice__block_invoke;
     block[3] = &unk_1E85F3778;
-    block[4] = a1;
+    block[4] = self;
     if (qword_1EDBDAA18 != -1)
     {
       dispatch_once(&qword_1EDBDAA18, block);
@@ -1222,7 +1222,7 @@ LABEL_11:
 
     if (!_MergedGlobals_20)
     {
-      if (objc_opt_class() == a1)
+      if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() < 3)
         {
@@ -1270,7 +1270,7 @@ LABEL_11:
         v16 = 2112;
         v17 = v4;
         v18 = 2048;
-        v19 = a1;
+        selfCopy = self;
         OUTLINED_FUNCTION_7_3();
       }
 

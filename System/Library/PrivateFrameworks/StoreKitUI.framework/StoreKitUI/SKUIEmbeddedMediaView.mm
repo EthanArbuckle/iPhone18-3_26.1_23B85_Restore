@@ -1,49 +1,49 @@
 @interface SKUIEmbeddedMediaView
 - (BOOL)showsThumbnailReflection;
-- (CGSize)_sizeToFitImageSize:(CGSize)a3 bounds:(CGRect)a4;
+- (CGSize)_sizeToFitImageSize:(CGSize)size bounds:(CGRect)bounds;
 - (SKUIEmbeddedMediaViewDelegate)delegate;
 - (UIImage)thumbnailImage;
-- (id)_newMoviePlayerControllerWithURL:(id)a3;
+- (id)_newMoviePlayerControllerWithURL:(id)l;
 - (id)_thumbnailView;
 - (int64_t)playbackState;
 - (int64_t)thumbnailContentMode;
-- (void)_didExitFullscreen:(id)a3;
-- (void)_didFinishPlayback:(id)a3;
+- (void)_didExitFullscreen:(id)fullscreen;
+- (void)_didFinishPlayback:(id)playback;
 - (void)_sendPlaybackStateChanged;
 - (void)_tearDownMoviePlayer;
-- (void)beginInlinePlaybackWithURL:(id)a3;
-- (void)beginPlaybackAnimated:(BOOL)a3;
+- (void)beginInlinePlaybackWithURL:(id)l;
+- (void)beginPlaybackAnimated:(BOOL)animated;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)endPlaybackAnimated:(BOOL)a3;
+- (void)endPlaybackAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setMediaType:(int64_t)a3;
-- (void)setShowsThumbnailReflection:(BOOL)a3;
-- (void)setThumbnailContentMode:(int64_t)a3;
-- (void)setThumbnailImage:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setMediaType:(int64_t)type;
+- (void)setShowsThumbnailReflection:(BOOL)reflection;
+- (void)setThumbnailContentMode:(int64_t)mode;
+- (void)setThumbnailImage:(id)image;
 @end
 
 @implementation SKUIEmbeddedMediaView
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = SKUIMediaPlayerFramework();
-  [v3 removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerDidExitFullscreenNotification" object:{v4), 0}];
+  [defaultCenter removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerDidExitFullscreenNotification" object:{v4), 0}];
   v5 = SKUIMediaPlayerFramework();
-  [v3 removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerPlaybackDidFinishNotification" object:{v5), 0}];
+  [defaultCenter removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerPlaybackDidFinishNotification" object:{v5), 0}];
   v6 = SKUIMediaPlayerFramework();
-  [v3 removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerPlaybackStateDidChangeNotification" object:{v6), 0}];
+  [defaultCenter removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerPlaybackStateDidChangeNotification" object:{v6), 0}];
 
   v7.receiver = self;
   v7.super_class = SKUIEmbeddedMediaView;
   [(SKUIEmbeddedMediaView *)&v7 dealloc];
 }
 
-- (void)beginInlinePlaybackWithURL:(id)a3
+- (void)beginInlinePlaybackWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -57,21 +57,21 @@
   }
 
   [(SKUIEmbeddedMediaView *)self _tearDownMoviePlayer];
-  v13 = [(SKUIEmbeddedMediaView *)self _newMoviePlayerControllerWithURL:v4];
+  v13 = [(SKUIEmbeddedMediaView *)self _newMoviePlayerControllerWithURL:lCopy];
 
   moviePlayer = self->_moviePlayer;
   self->_moviePlayer = v13;
 
   self->_usingInlinePlayback = 1;
-  v15 = [(MPMoviePlayerController *)self->_moviePlayer view];
+  view = [(MPMoviePlayerController *)self->_moviePlayer view];
   [(SKUIEmbeddedMediaView *)self bounds];
-  [v15 setFrame:?];
-  [(SKUIEmbeddedMediaView *)self addSubview:v15];
+  [view setFrame:?];
+  [(SKUIEmbeddedMediaView *)self addSubview:view];
 }
 
-- (void)beginPlaybackAnimated:(BOOL)a3
+- (void)beginPlaybackAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -100,16 +100,16 @@
       self->_moviePlayer = v15;
 
       self->_usingInlinePlayback = 0;
-      v17 = [(MPMoviePlayerController *)self->_moviePlayer view];
+      view = [(MPMoviePlayerController *)self->_moviePlayer view];
       [(SKUIEmbeddedMediaView *)self bounds];
-      [v17 setFrame:?];
-      [(SKUIEmbeddedMediaView *)self addSubview:v17];
-      [(MPMoviePlayerController *)self->_moviePlayer setFullscreen:1 animated:v3];
+      [view setFrame:?];
+      [(SKUIEmbeddedMediaView *)self addSubview:view];
+      [(MPMoviePlayerController *)self->_moviePlayer setFullscreen:1 animated:animatedCopy];
     }
   }
 }
 
-- (void)endPlaybackAnimated:(BOOL)a3
+- (void)endPlaybackAnimated:(BOOL)animated
 {
   if (os_variant_has_internal_content())
   {
@@ -127,7 +127,7 @@
   if (moviePlayer)
   {
     [(MPMoviePlayerController *)moviePlayer stop];
-    if (a3)
+    if (animated)
     {
       if ([(MPMoviePlayerController *)self->_moviePlayer isFullscreen])
       {
@@ -139,8 +139,8 @@
         [(UIImageView *)self->_playerDecorationView setAlpha:0.0];
         [(UIImageView *)self->_thumbnailReflectionView setAlpha:0.0];
         [(UIImageView *)self->_thumbnailView setAlpha:0.0];
-        v14 = [(MPMoviePlayerController *)self->_moviePlayer view];
-        [(SKUIEmbeddedMediaView *)self sendSubviewToBack:v14];
+        view = [(MPMoviePlayerController *)self->_moviePlayer view];
+        [(SKUIEmbeddedMediaView *)self sendSubviewToBack:view];
 
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
@@ -189,22 +189,22 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
   result = self->_moviePlayer;
   if (result)
   {
-    v12 = [result playbackState];
-    if ((v12 - 1) > 4)
+    playbackState = [result playbackState];
+    if ((playbackState - 1) > 4)
     {
       return 0;
     }
 
     else
     {
-      return qword_215F40458[v12 - 1];
+      return qword_215F40458[playbackState - 1];
     }
   }
 
   return result;
 }
 
-- (void)setMediaType:(int64_t)a3
+- (void)setMediaType:(int64_t)type
 {
   if (os_variant_has_internal_content())
   {
@@ -218,9 +218,9 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     }
   }
 
-  if (self->_mediaType != a3)
+  if (self->_mediaType != type)
   {
-    self->_mediaType = a3;
+    self->_mediaType = type;
     [(UIImageView *)self->_playerDecorationView removeFromSuperview];
     playerDecorationView = self->_playerDecorationView;
     self->_playerDecorationView = 0;
@@ -229,9 +229,9 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
   }
 }
 
-- (void)setShowsThumbnailReflection:(BOOL)a3
+- (void)setShowsThumbnailReflection:(BOOL)reflection
 {
-  v3 = a3;
+  reflectionCopy = reflection;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -244,20 +244,20 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     }
   }
 
-  if ([(SKUIEmbeddedMediaView *)self showsThumbnailReflection]!= v3)
+  if ([(SKUIEmbeddedMediaView *)self showsThumbnailReflection]!= reflectionCopy)
   {
-    if (v3)
+    if (reflectionCopy)
     {
       v13 = objc_alloc(MEMORY[0x277D755E8]);
-      v14 = [(UIImageView *)self->_thumbnailView image];
-      v15 = [v13 initWithImage:v14];
+      image = [(UIImageView *)self->_thumbnailView image];
+      v15 = [v13 initWithImage:image];
       thumbnailReflectionView = self->_thumbnailReflectionView;
       self->_thumbnailReflectionView = v15;
 
       [(UIImageView *)self->_thumbnailReflectionView setContentMode:[(UIImageView *)self->_thumbnailView contentMode]];
-      v17 = [(UIImageView *)self->_thumbnailReflectionView layer];
+      layer = [(UIImageView *)self->_thumbnailReflectionView layer];
       CATransform3DMakeScale(&v19, -1.0, -1.0, 1.0);
-      [v17 setTransform:&v19];
+      [layer setTransform:&v19];
 
       [(SKUIEmbeddedMediaView *)self addSubview:self->_thumbnailReflectionView];
     }
@@ -273,7 +273,7 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
   }
 }
 
-- (void)setThumbnailContentMode:(int64_t)a3
+- (void)setThumbnailContentMode:(int64_t)mode
 {
   if (os_variant_has_internal_content())
   {
@@ -287,15 +287,15 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     }
   }
 
-  v13 = [(SKUIEmbeddedMediaView *)self _thumbnailView];
-  [v13 setContentMode:a3];
+  _thumbnailView = [(SKUIEmbeddedMediaView *)self _thumbnailView];
+  [_thumbnailView setContentMode:mode];
 
-  [(UIImageView *)self->_thumbnailReflectionView setContentMode:a3];
+  [(UIImageView *)self->_thumbnailReflectionView setContentMode:mode];
 }
 
-- (void)setThumbnailImage:(id)a3
+- (void)setThumbnailImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -308,13 +308,13 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     }
   }
 
-  v13 = [(UIImageView *)self->_thumbnailView image];
+  image = [(UIImageView *)self->_thumbnailView image];
 
-  if (v13 != v4)
+  if (image != imageCopy)
   {
-    v14 = [(SKUIEmbeddedMediaView *)self _thumbnailView];
-    [v14 setImage:v4];
-    [(UIImageView *)self->_thumbnailReflectionView setImage:v4];
+    _thumbnailView = [(SKUIEmbeddedMediaView *)self _thumbnailView];
+    [_thumbnailView setImage:imageCopy];
+    [(UIImageView *)self->_thumbnailReflectionView setImage:imageCopy];
     [(SKUIEmbeddedMediaView *)self setNeedsLayout];
   }
 }
@@ -350,10 +350,10 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     }
   }
 
-  v11 = [(SKUIEmbeddedMediaView *)self _thumbnailView];
-  v12 = [v11 contentMode];
+  _thumbnailView = [(SKUIEmbeddedMediaView *)self _thumbnailView];
+  contentMode = [_thumbnailView contentMode];
 
-  return v12;
+  return contentMode;
 }
 
 - (UIImage)thumbnailImage
@@ -370,9 +370,9 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     }
   }
 
-  v11 = [(UIImageView *)self->_thumbnailView image];
+  image = [(UIImageView *)self->_thumbnailView image];
 
-  return v11;
+  return image;
 }
 
 - (void)layoutSubviews
@@ -404,12 +404,12 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     v19 = v11;
   }
 
-  v20 = [(SKUIEmbeddedMediaView *)self thumbnailContentMode];
+  thumbnailContentMode = [(SKUIEmbeddedMediaView *)self thumbnailContentMode];
   thumbnailReflectionView = self->_thumbnailReflectionView;
   if (thumbnailReflectionView)
   {
-    v22 = [(UIImageView *)thumbnailReflectionView image];
-    [v22 size];
+    image = [(UIImageView *)thumbnailReflectionView image];
+    [image size];
     v24 = v23;
     v26 = v25;
 
@@ -421,7 +421,7 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     v31 = v17;
     v32 = v19;
     v33 = floorf(*&v28);
-    if (v20 == 6)
+    if (thumbnailContentMode == 6)
     {
       v34 = v18 - v27;
     }
@@ -446,10 +446,10 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     MaxY = 0.0;
   }
 
-  v36 = [(SKUIEmbeddedMediaView *)self _thumbnailView];
-  [v36 frame];
-  v37 = [v36 image];
-  [v37 size];
+  _thumbnailView = [(SKUIEmbeddedMediaView *)self _thumbnailView];
+  [_thumbnailView frame];
+  image2 = [_thumbnailView image];
+  [image2 size];
   [SKUIEmbeddedMediaView _sizeToFitImageSize:"_sizeToFitImageSize:bounds:" bounds:?];
   v39 = v38;
   v41 = v40;
@@ -457,7 +457,7 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
   v42 = (v17 - v39) * 0.5;
   v43 = floorf(v42);
   v44 = v43;
-  if (v20 == 6)
+  if (thumbnailContentMode == 6)
   {
     v45 = v18 - v41;
   }
@@ -467,7 +467,7 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     v45 = MaxY;
   }
 
-  [v36 setFrame:{v43, v45, v39, v41}];
+  [_thumbnailView setFrame:{v43, v45, v39, v41}];
   if (self->_mediaType == 2)
   {
     playerDecorationView = self->_playerDecorationView;
@@ -488,13 +488,13 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     [(UIImageView *)playerDecorationView frame];
     v53 = v52;
     v55 = v54;
-    v56 = [v36 image];
+    image3 = [_thumbnailView image];
 
     v57 = (v17 - v53) * 0.5;
     v58 = floorf(v57);
     v59 = (v39 - v53) * 0.5;
     v60 = v44 + floorf(v59);
-    if (v56)
+    if (image3)
     {
       v61 = v41;
     }
@@ -504,7 +504,7 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
       v61 = v19;
     }
 
-    if (v56)
+    if (image3)
     {
       v58 = v60;
     }
@@ -512,14 +512,14 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     v62 = (v61 - v55) * 0.5;
     [(UIImageView *)self->_playerDecorationView setFrame:v58, v45 + floorf(v62), v53, v55];
     thumbnailView = self->_thumbnailView;
-    v64 = [MEMORY[0x277D75348] blackColor];
-    [(UIImageView *)thumbnailView setBackgroundColor:v64];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIImageView *)thumbnailView setBackgroundColor:blackColor];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -534,12 +534,12 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
 
   if (self->_mediaType != 2)
   {
-    [(UIImageView *)self->_thumbnailView setBackgroundColor:v4];
+    [(UIImageView *)self->_thumbnailView setBackgroundColor:colorCopy];
   }
 
   v13.receiver = self;
   v13.super_class = SKUIEmbeddedMediaView;
-  [(SKUIEmbeddedMediaView *)&v13 setBackgroundColor:v4];
+  [(SKUIEmbeddedMediaView *)&v13 setBackgroundColor:colorCopy];
 }
 
 - (void)didMoveToWindow
@@ -556,15 +556,15 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     }
   }
 
-  v11 = [(SKUIEmbeddedMediaView *)self window];
+  window = [(SKUIEmbeddedMediaView *)self window];
 
-  if (!v11)
+  if (!window)
   {
     [(SKUIEmbeddedMediaView *)self endPlaybackAnimated:0];
   }
 }
 
-- (void)_didExitFullscreen:(id)a3
+- (void)_didExitFullscreen:(id)fullscreen
 {
   if (!self->_usingInlinePlayback)
   {
@@ -574,7 +574,7 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
   }
 }
 
-- (void)_didFinishPlayback:(id)a3
+- (void)_didFinishPlayback:(id)playback
 {
   if ([(MPMoviePlayerController *)self->_moviePlayer isFullscreen])
   {
@@ -591,39 +591,39 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
   }
 }
 
-- (id)_newMoviePlayerControllerWithURL:(id)a3
+- (id)_newMoviePlayerControllerWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = SKUIMediaPlayerFramework();
   v6 = [objc_alloc(SKUIWeakLinkedClassForString(&cfstr_Mpmovieplayerc.isa v5))];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v8 = SKUIMediaPlayerFramework();
-  [v7 addObserver:self selector:sel__didExitFullscreen_ name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerDidExitFullscreenNotification" object:{v8), v6}];
+  [defaultCenter addObserver:self selector:sel__didExitFullscreen_ name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerDidExitFullscreenNotification" object:{v8), v6}];
   v9 = SKUIMediaPlayerFramework();
-  [v7 addObserver:self selector:sel__didFinishPlayback_ name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerPlaybackDidFinishNotification" object:{v9), v6}];
+  [defaultCenter addObserver:self selector:sel__didFinishPlayback_ name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerPlaybackDidFinishNotification" object:{v9), v6}];
   v10 = SKUIMediaPlayerFramework();
-  [v7 addObserver:self selector:sel__playbackStateChanged_ name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerPlaybackStateDidChangeNotification" object:{v10), v6}];
+  [defaultCenter addObserver:self selector:sel__playbackStateChanged_ name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerPlaybackStateDidChangeNotification" object:{v10), v6}];
 
   return v6;
 }
 
 - (void)_sendPlaybackStateChanged
 {
-  v3 = [(SKUIEmbeddedMediaView *)self delegate];
+  delegate = [(SKUIEmbeddedMediaView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 mediaView:self playbackStateDidChange:{-[SKUIEmbeddedMediaView playbackState](self, "playbackState")}];
+    [delegate mediaView:self playbackStateDidChange:{-[SKUIEmbeddedMediaView playbackState](self, "playbackState")}];
   }
 }
 
-- (CGSize)_sizeToFitImageSize:(CGSize)a3 bounds:(CGRect)a4
+- (CGSize)_sizeToFitImageSize:(CGSize)size bounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v6 = a3.height;
-  v7 = a3.width;
-  if ([(SKUIEmbeddedMediaView *)self thumbnailContentMode:a3.width]== 1 && (v7 > width || v6 > height))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v6 = size.height;
+  v7 = size.width;
+  if ([(SKUIEmbeddedMediaView *)self thumbnailContentMode:size.width]== 1 && (v7 > width || v6 > height))
   {
     v9 = v6 * (width / v7);
     v6 = ceilf(v9);
@@ -643,14 +643,14 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
   if (moviePlayer)
   {
     [(MPMoviePlayerController *)moviePlayer stop];
-    v4 = [(MPMoviePlayerController *)self->_moviePlayer view];
-    [v4 removeFromSuperview];
+    view = [(MPMoviePlayerController *)self->_moviePlayer view];
+    [view removeFromSuperview];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v5 = SKUIMediaPlayerFramework();
-    [v8 removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerDidExitFullscreenNotification" object:{v5), self->_moviePlayer}];
+    [defaultCenter removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerDidExitFullscreenNotification" object:{v5), self->_moviePlayer}];
     v6 = SKUIMediaPlayerFramework();
-    [v8 removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerPlaybackDidFinishNotification" object:{v6), self->_moviePlayer}];
+    [defaultCenter removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPMoviePlayerPlaybackDidFinishNotification" object:{v6), self->_moviePlayer}];
     v7 = self->_moviePlayer;
     self->_moviePlayer = 0;
   }
@@ -666,8 +666,8 @@ uint64_t __45__SKUIEmbeddedMediaView_endPlaybackAnimated___block_invoke(uint64_t
     self->_thumbnailView = v4;
 
     v6 = self->_thumbnailView;
-    v7 = [(SKUIEmbeddedMediaView *)self backgroundColor];
-    [(UIImageView *)v6 setBackgroundColor:v7];
+    backgroundColor = [(SKUIEmbeddedMediaView *)self backgroundColor];
+    [(UIImageView *)v6 setBackgroundColor:backgroundColor];
 
     [(UIImageView *)self->_thumbnailView setContentMode:1];
     [(SKUIEmbeddedMediaView *)self addSubview:self->_thumbnailView];

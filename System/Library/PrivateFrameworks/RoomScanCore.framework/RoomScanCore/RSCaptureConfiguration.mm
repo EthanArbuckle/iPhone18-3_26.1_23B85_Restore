@@ -1,7 +1,7 @@
 @interface RSCaptureConfiguration
 - (RSCaptureConfiguration)init;
-- (RSCaptureConfiguration)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RSCaptureConfiguration)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 @end
 
@@ -67,79 +67,79 @@
   return v4;
 }
 
-- (RSCaptureConfiguration)initWithDictionary:(id)a3
+- (RSCaptureConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v83.receiver = self;
   v83.super_class = RSCaptureConfiguration;
   v6 = [(RSCaptureConfiguration *)&v83 init];
   if (v6)
   {
-    v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"liveResultEnabled");
+    v7 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"liveResultEnabled");
     v6->_liveResultEnabled = objc_msgSend_BOOLValue(v7, v8, v9);
 
-    v11 = objc_msgSend_objectForKeyedSubscript_(v4, v10, @"textCoachingEnabled");
+    v11 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v10, @"textCoachingEnabled");
     v6->_textCoachingEnabled = objc_msgSend_BOOLValue(v11, v12, v13);
 
-    v15 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"onboardingEnabled");
+    v15 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v14, @"onboardingEnabled");
     v6->_onboardingEnabled = objc_msgSend_BOOLValue(v15, v16, v17);
 
-    v19 = objc_msgSend_objectForKeyedSubscript_(v4, v18, @"coachingMaxFrameRate");
+    v19 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v18, @"coachingMaxFrameRate");
     v6->_coachingMaxFrameRate = objc_msgSend_intValue(v19, v20, v21);
 
-    v23 = objc_msgSend_objectForKeyedSubscript_(v4, v22, @"maxFramerate");
+    v23 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v22, @"maxFramerate");
     v6->_maxFramerate = objc_msgSend_intValue(v23, v24, v25);
 
-    v27 = objc_msgSend_objectForKeyedSubscript_(v4, v26, @"mirrorDetectionEnabled");
+    v27 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v26, @"mirrorDetectionEnabled");
     v6->_mirrorDetectionEnabled = objc_msgSend_BOOLValue(v27, v28, v29);
 
-    v31 = objc_msgSend_objectForKeyedSubscript_(v4, v30, @"objectBeautificationEnabled");
+    v31 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v30, @"objectBeautificationEnabled");
     v6->_objectBeautificationEnabled = objc_msgSend_BOOLValue(v31, v32, v33);
 
-    v35 = objc_msgSend_objectForKeyedSubscript_(v4, v34, @"standardizationEnabled");
+    v35 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v34, @"standardizationEnabled");
     v6->_standardizationEnabled = objc_msgSend_BOOLValue(v35, v36, v37);
 
-    v39 = objc_msgSend_objectForKeyedSubscript_(v4, v38, @"markerCoachingEnabled");
+    v39 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v38, @"markerCoachingEnabled");
     v6->_markerCoachingEnabled = objc_msgSend_BOOLValue(v39, v40, v41);
 
-    v43 = objc_msgSend_objectForKeyedSubscript_(v4, v42, @"doorWindowBeautificationEnabled");
+    v43 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v42, @"doorWindowBeautificationEnabled");
     v6->_doorWindowBeautificationEnabled = objc_msgSend_BOOLValue(v43, v44, v45);
 
-    v47 = objc_msgSend_objectForKeyedSubscript_(v4, v46, @"curvedWallEnabled");
+    v47 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v46, @"curvedWallEnabled");
     v6->_curvedWallEnabled = objc_msgSend_BOOLValue(v47, v48, v49);
 
-    v51 = objc_msgSend_objectForKeyedSubscript_(v4, v50, @"driftDetectionEnabled");
+    v51 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v50, @"driftDetectionEnabled");
     v6->_driftDetectionEnabled = objc_msgSend_BOOLValue(v51, v52, v53);
 
-    v55 = objc_msgSend_objectForKeyedSubscript_(v4, v54, @"nonUniformHeightEnabled");
+    v55 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v54, @"nonUniformHeightEnabled");
     v6->_nonUniformHeightEnabled = objc_msgSend_BOOLValue(v55, v56, v57);
 
-    v59 = objc_msgSend_objectForKeyedSubscript_(v4, v58, @"openingReplaceOpendoorEnabled");
+    v59 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v58, @"openingReplaceOpendoorEnabled");
     v6->_openingReplaceOpendoorEnabled = objc_msgSend_BOOLValue(v59, v60, v61);
 
-    v63 = objc_msgSend_objectForKeyedSubscript_(v4, v62, @"opendoorReplaceOpeningEnabled");
+    v63 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v62, @"opendoorReplaceOpeningEnabled");
     v6->_opendoorReplaceOpeningEnabled = objc_msgSend_BOOLValue(v63, v64, v65);
 
-    v67 = objc_msgSend_objectForKeyedSubscript_(v4, v66, @"doorReplaceOpeningEnabled");
+    v67 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v66, @"doorReplaceOpeningEnabled");
     v6->_doorReplaceOpeningEnabled = objc_msgSend_BOOLValue(v67, v68, v69);
 
-    v71 = objc_msgSend_objectForKeyedSubscript_(v4, v70, @"boundaryRefinementEnabled");
+    v71 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v70, @"boundaryRefinementEnabled");
     v6->_boundaryRefinementEnabled = objc_msgSend_BOOLValue(v71, v72, v73);
 
-    v75 = objc_msgSend_objectForKeyedSubscript_(v4, v74, @"bayWindowRecessedAreaEnabled");
+    v75 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v74, @"bayWindowRecessedAreaEnabled");
     v6->_bayWindowRecessedAreaEnabled = objc_msgSend_BOOLValue(v75, v76, v77);
 
-    v79 = objc_msgSend_objectForKeyedSubscript_(v4, v78, @"uniformHeightPolygonEnabled");
+    v79 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v78, @"uniformHeightPolygonEnabled");
     v6->_uniformHeightPolygonEnabled = objc_msgSend_BOOLValue(v79, v80, v81);
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_init(v7, v8, v9);
   *(result + 9) = self->_liveResultEnabled;
   *(result + 8) = self->_windowDoorDetectionEnabled;

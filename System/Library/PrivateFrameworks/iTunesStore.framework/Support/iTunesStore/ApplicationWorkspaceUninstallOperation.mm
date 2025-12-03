@@ -1,17 +1,17 @@
 @interface ApplicationWorkspaceUninstallOperation
-- (void)runWithCompletionBlock:(id)a3;
+- (void)runWithCompletionBlock:(id)block;
 @end
 
 @implementation ApplicationWorkspaceUninstallOperation
 
-- (void)runWithCompletionBlock:(id)a3
+- (void)runWithCompletionBlock:(id)block
 {
   [ApplicationWorkspaceState completeNotificationForCanceledBundleIdentifier:[(ApplicationHandle *)[(ApplicationWorkspaceOperation *)self applicationHandle] bundleID]];
-  if (a3)
+  if (block)
   {
-    v4 = *(a3 + 2);
+    v4 = *(block + 2);
 
-    v4(a3, 1, 0, 0);
+    v4(block, 1, 0, 0);
   }
 }
 

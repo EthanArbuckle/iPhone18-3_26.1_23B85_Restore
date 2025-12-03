@@ -1,44 +1,44 @@
 @interface HUAvailableRelatedTriggerItemModuleController
 - (BOOL)triggerModuleShouldHideAddAutomationButton;
-- (Class)cellClassForItem:(id)a3;
+- (Class)cellClassForItem:(id)item;
 - (HUAccessoryButtonTableViewHeaderView)sectionEditButtonHeader;
-- (HUAvailableRelatedTriggerItemModuleController)initWithModule:(id)a3;
+- (HUAvailableRelatedTriggerItemModuleController)initWithModule:(id)module;
 - (UIActivityIndicatorView)addAutomationActivityIndicator;
 - (_TriggerEditorDelegateWrapper)presentedViewControllerDelegateWrapper;
-- (id)_activateItem:(id)a3 active:(BOOL)a4;
-- (id)_addAutomationViewControllerWithActionFactories:(id)a3;
-- (id)_addAutomationViewControllerWithSensorCharacteristics:(id)a3;
+- (id)_activateItem:(id)item active:(BOOL)active;
+- (id)_addAutomationViewControllerWithActionFactories:(id)factories;
+- (id)_addAutomationViewControllerWithSensorCharacteristics:(id)characteristics;
 - (id)_createAddAutomationViewController;
-- (id)_dismissViewController:(id)a3;
-- (id)_handleError:(id)a3 retryBlock:(id)a4;
+- (id)_dismissViewController:(id)controller;
+- (id)_handleError:(id)error retryBlock:(id)block;
 - (id)commitSelectedItems;
-- (unint64_t)didSelectItem:(id)a3;
+- (unint64_t)didSelectItem:(id)item;
 - (void)_addAutomationCancelButtonPressed;
-- (void)_enableItemPressed:(id)a3 enabled:(BOOL)a4;
+- (void)_enableItemPressed:(id)pressed enabled:(BOOL)enabled;
 - (void)_presentAddAutomationViewController;
-- (void)_presentTriggerSummaryForAvailableTriggerItem:(id)a3;
-- (void)_presentTriggerSummaryForTriggerBuilder:(id)a3 flow:(id)a4;
-- (void)_updateUIAnimated:(BOOL)a3;
-- (void)itemSection:(id)a3 accessoryButtonPressedInHeader:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)triggerEditor:(id)a3 didCommitTriggerBuilder:(id)a4 withError:(id)a5;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
-- (void)updatePresentedViewControllerForNewModuleController:(id)a3;
+- (void)_presentTriggerSummaryForAvailableTriggerItem:(id)item;
+- (void)_presentTriggerSummaryForTriggerBuilder:(id)builder flow:(id)flow;
+- (void)_updateUIAnimated:(BOOL)animated;
+- (void)itemSection:(id)section accessoryButtonPressedInHeader:(id)header;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)triggerEditor:(id)editor didCommitTriggerBuilder:(id)builder withError:(id)error;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
+- (void)updatePresentedViewControllerForNewModuleController:(id)controller;
 @end
 
 @implementation HUAvailableRelatedTriggerItemModuleController
 
-- (HUAvailableRelatedTriggerItemModuleController)initWithModule:(id)a3
+- (HUAvailableRelatedTriggerItemModuleController)initWithModule:(id)module
 {
   v7.receiver = self;
   v7.super_class = HUAvailableRelatedTriggerItemModuleController;
-  v3 = [(HUItemModuleController *)&v7 initWithModule:a3];
+  v3 = [(HUItemModuleController *)&v7 initWithModule:module];
   v4 = v3;
   if (v3)
   {
-    v5 = [(HUItemModuleController *)v3 module];
-    [v5 setEditButtonHeaderDelegate:v4];
+    module = [(HUItemModuleController *)v3 module];
+    [module setEditButtonHeaderDelegate:v4];
 
     [(HUAvailableRelatedTriggerItemModuleController *)v4 setEditing:0];
     [(HUAvailableRelatedTriggerItemModuleController *)v4 _updateUIAnimated:0];
@@ -65,15 +65,15 @@
 - (id)commitSelectedItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HUItemModuleController *)self module];
-  v4 = [v3 activateAllSelectedItems];
+  module = [(HUItemModuleController *)self module];
+  activateAllSelectedItems = [module activateAllSelectedItems];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__HUAvailableRelatedTriggerItemModuleController_commitSelectedItems__block_invoke;
   v7[3] = &unk_277DBBE38;
   objc_copyWeak(&v8, &location);
   v7[4] = self;
-  v5 = [v4 recover:v7];
+  v5 = [activateAllSelectedItems recover:v7];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(&location);
@@ -97,17 +97,17 @@ id __68__HUAvailableRelatedTriggerItemModuleController_commitSelectedItems__bloc
 
 - (BOOL)triggerModuleShouldHideAddAutomationButton
 {
-  v2 = [(HUItemModuleController *)self module];
-  v3 = [v2 addAutomationItemShouldBeHidden];
+  module = [(HUItemModuleController *)self module];
+  addAutomationItemShouldBeHidden = [module addAutomationItemShouldBeHidden];
 
-  return v3;
+  return addAutomationItemShouldBeHidden;
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = v4;
+  v5 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -129,18 +129,18 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = [(HUItemModuleController *)self module];
-  v9 = [v8 addAutomationItem];
-  v10 = [v5 isEqual:v9];
+  module = [(HUItemModuleController *)self module];
+  addAutomationItem = [module addAutomationItem];
+  v10 = [v5 isEqual:addAutomationItem];
 
   if (v10)
   {
     goto LABEL_8;
   }
 
-  v11 = [(HUItemModuleController *)self module];
-  v12 = [v11 naturalLightingItem];
-  v13 = [v5 isEqual:v12];
+  module2 = [(HUItemModuleController *)self module];
+  naturalLightingItem = [module2 naturalLightingItem];
+  v13 = [v5 isEqual:naturalLightingItem];
 
   if (v13)
   {
@@ -156,18 +156,18 @@ LABEL_9:
   return v15;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v43.receiver = self;
   v43.super_class = HUAvailableRelatedTriggerItemModuleController;
-  [(HUItemModuleController *)&v43 setupCell:v6 forItem:v7];
+  [(HUItemModuleController *)&v43 setupCell:cellCopy forItem:itemCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v8 = v6;
+    v8 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v9 = v8;
@@ -185,15 +185,15 @@ LABEL_9:
     HUDefaultSizeForIconSize();
     v12 = v11;
     v14 = v13;
-    v15 = [v10 contentMetrics];
-    [v15 setIconSize:{v12, v14}];
+    contentMetrics = [v10 contentMetrics];
+    [contentMetrics setIconSize:{v12, v14}];
 
-    v16 = [v10 contentMetrics];
-    [v16 setContentInset:{12.0, 0.0, 12.0, 0.0}];
+    contentMetrics2 = [v10 contentMetrics];
+    [contentMetrics2 setContentInset:{12.0, 0.0, 12.0, 0.0}];
   }
 
   objc_opt_class();
-  v17 = v7;
+  v17 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v18 = v17;
@@ -208,12 +208,12 @@ LABEL_9:
 
   if (v19)
   {
-    v20 = [v19 recommendationItem];
+    recommendationItem = [v19 recommendationItem];
 
-    if (v20)
+    if (recommendationItem)
     {
       objc_opt_class();
-      v21 = v6;
+      v21 = cellCopy;
       if (objc_opt_isKindOfClass())
       {
         v22 = v21;
@@ -230,20 +230,20 @@ LABEL_9:
 LABEL_20:
       [v23 setMaxNumberOfTitleLines:0];
       [v23 setMaxNumberOfDescriptionLines:0];
-      v29 = [(HUItemModuleController *)self module];
-      v30 = [v29 context];
-      [v23 setHideIcon:{objc_msgSend(v30, "showsIcons") ^ 1}];
+      module = [(HUItemModuleController *)self module];
+      context = [module context];
+      [v23 setHideIcon:{objc_msgSend(context, "showsIcons") ^ 1}];
 
 LABEL_31:
       goto LABEL_32;
     }
 
-    v24 = [v19 triggerItem];
+    triggerItem = [v19 triggerItem];
 
-    if (v24)
+    if (triggerItem)
     {
       objc_opt_class();
-      v25 = v6;
+      v25 = cellCopy;
       if (objc_opt_isKindOfClass())
       {
         v26 = v25;
@@ -257,22 +257,22 @@ LABEL_31:
       v23 = v26;
 
       [v25 setAccessoryType:1];
-      v27 = [MEMORY[0x277D75348] grayColor];
-      v28 = [v23 valueLabel];
-      [v28 setTextColor:v27];
+      grayColor = [MEMORY[0x277D75348] grayColor];
+      valueLabel = [v23 valueLabel];
+      [valueLabel setTextColor:grayColor];
 
       goto LABEL_20;
     }
   }
 
-  v31 = [(HUItemModuleController *)self module];
-  v32 = [v31 addAutomationItem];
-  v33 = [v17 isEqual:v32];
+  module2 = [(HUItemModuleController *)self module];
+  addAutomationItem = [module2 addAutomationItem];
+  v33 = [v17 isEqual:addAutomationItem];
 
   if (v33)
   {
     objc_opt_class();
-    v34 = v6;
+    v34 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v35 = v34;
@@ -293,14 +293,14 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v36 = [(HUItemModuleController *)self module];
-  v37 = [v36 naturalLightingItem];
-  v38 = [v17 isEqual:v37];
+  module3 = [(HUItemModuleController *)self module];
+  naturalLightingItem = [module3 naturalLightingItem];
+  v38 = [v17 isEqual:naturalLightingItem];
 
   if (v38)
   {
     objc_opt_class();
-    v39 = v6;
+    v39 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v40 = v39;
@@ -313,9 +313,9 @@ LABEL_31:
 
     v23 = v40;
 
-    v41 = [(HUItemModuleController *)self module];
-    v42 = [v41 context];
-    [v23 setHideIcon:{objc_msgSend(v42, "showsIcons") ^ 1}];
+    module4 = [(HUItemModuleController *)self module];
+    context2 = [module4 context];
+    [v23 setHideIcon:{objc_msgSend(context2, "showsIcons") ^ 1}];
 
     [v23 setSelectionStyle:0];
     [v23 setDelegate:self];
@@ -325,16 +325,16 @@ LABEL_31:
 LABEL_32:
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v42.receiver = self;
   v42.super_class = HUAvailableRelatedTriggerItemModuleController;
-  [(HUItemModuleController *)&v42 updateCell:v8 forItem:v9 animated:v5];
+  [(HUItemModuleController *)&v42 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
   objc_opt_class();
-  v10 = v9;
+  v10 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -349,18 +349,18 @@ LABEL_32:
 
   if (v12)
   {
-    v13 = [v12 recommendationItem];
+    recommendationItem = [v12 recommendationItem];
 
-    if (v13)
+    if (recommendationItem)
     {
       v14 = 0;
     }
 
     else
     {
-      v15 = [v12 triggerItem];
+      triggerItem = [v12 triggerItem];
 
-      if (!v15)
+      if (!triggerItem)
       {
         goto LABEL_10;
       }
@@ -368,20 +368,20 @@ LABEL_32:
       v14 = 3;
     }
 
-    [v8 setSelectionStyle:v14];
+    [cellCopy setSelectionStyle:v14];
   }
 
 LABEL_10:
-  v16 = [(HUItemModuleController *)self module];
-  v17 = [v16 addAutomationItem];
-  v18 = [v10 isEqual:v17];
+  module = [(HUItemModuleController *)self module];
+  addAutomationItem = [module addAutomationItem];
+  v18 = [v10 isEqual:addAutomationItem];
 
   if (v18)
   {
-    [v8 setAccessibilityIdentifier:@"AccessoryDetails.AddAutomationItem"];
+    [cellCopy setAccessibilityIdentifier:@"AccessoryDetails.AddAutomationItem"];
     objc_opt_class();
-    v19 = [v10 latestResults];
-    v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277D140F0]];
+    latestResults = [v10 latestResults];
+    v20 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D140F0]];
     if (objc_opt_isKindOfClass())
     {
       v21 = v20;
@@ -394,44 +394,44 @@ LABEL_10:
 
     v22 = v21;
 
-    v23 = [v22 BOOLValue];
-    v24 = [(HUAvailableRelatedTriggerItemModuleController *)self addAutomationActivityIndicator];
-    v25 = v24;
-    if (v23)
+    bOOLValue = [v22 BOOLValue];
+    addAutomationActivityIndicator = [(HUAvailableRelatedTriggerItemModuleController *)self addAutomationActivityIndicator];
+    v25 = addAutomationActivityIndicator;
+    if (bOOLValue)
     {
-      [v8 setAccessoryView:v24];
+      [cellCopy setAccessoryView:addAutomationActivityIndicator];
 
-      v26 = [(HUAvailableRelatedTriggerItemModuleController *)self addAutomationActivityIndicator];
-      [v26 startAnimating];
+      addAutomationActivityIndicator2 = [(HUAvailableRelatedTriggerItemModuleController *)self addAutomationActivityIndicator];
+      [addAutomationActivityIndicator2 startAnimating];
     }
 
     else
     {
-      [v24 stopAnimating];
+      [addAutomationActivityIndicator stopAnimating];
 
-      [v8 setAccessoryView:0];
+      [cellCopy setAccessoryView:0];
     }
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v40 = self;
+    selfCopy = self;
     v41 = v12;
     v27 = MEMORY[0x277CCACA8];
-    v39 = [v10 latestResults];
-    v28 = [v39 objectForKeyedSubscript:*MEMORY[0x277D14070]];
-    v29 = [v28 uniqueIdentifier];
-    v30 = [v27 stringWithFormat:@"AccessoryDetails.%@", v29];
+    latestResults2 = [v10 latestResults];
+    v28 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D14070]];
+    uniqueIdentifier = [v28 uniqueIdentifier];
+    v30 = [v27 stringWithFormat:@"AccessoryDetails.%@", uniqueIdentifier];
     v31 = [v30 componentsSeparatedByString:@"="];
-    v32 = [v31 firstObject];
-    v33 = objc_msgSend(v32, "stringByReplacingOccurrencesOfString:withString:", @"("), &stru_2823E0EE8;
+    firstObject = [v31 firstObject];
+    v33 = objc_msgSend(firstObject, "stringByReplacingOccurrencesOfString:withString:", @"("), &stru_2823E0EE8;
     v34 = [v33 stringByReplacingOccurrencesOfString:@"" withString:?], &stru_2823E0EE8);
     v35 = [v34 stringByReplacingOccurrencesOfString:@":" withString:@"."];
-    [v8 setAccessibilityIdentifier:v35];
+    [cellCopy setAccessibilityIdentifier:v35];
 
     objc_opt_class();
-    v36 = v8;
+    v36 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v37 = v36;
@@ -444,8 +444,8 @@ LABEL_10:
 
     v38 = v37;
 
-    [v38 setSwitchHidden:{-[HUAvailableRelatedTriggerItemModuleController editing](v40, "editing")}];
-    if ([(HUAvailableRelatedTriggerItemModuleController *)v40 editing])
+    [v38 setSwitchHidden:{-[HUAvailableRelatedTriggerItemModuleController editing](selfCopy, "editing")}];
+    if ([(HUAvailableRelatedTriggerItemModuleController *)selfCopy editing])
     {
       [v36 setSelectionStyle:3];
     }
@@ -454,11 +454,11 @@ LABEL_10:
   }
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = v4;
+  v5 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -478,9 +478,9 @@ LABEL_10:
 
   else
   {
-    v12 = [(HUItemModuleController *)self module];
-    v13 = [v12 addAutomationItem];
-    v14 = [v5 isEqual:v13];
+    module = [(HUItemModuleController *)self module];
+    addAutomationItem = [module addAutomationItem];
+    v14 = [v5 isEqual:addAutomationItem];
 
     if (v14)
     {
@@ -491,40 +491,40 @@ LABEL_10:
   return 0;
 }
 
-- (void)_presentTriggerSummaryForAvailableTriggerItem:(id)a3
+- (void)_presentTriggerSummaryForAvailableTriggerItem:(id)item
 {
-  v23 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(HUTriggerBuilderContext);
-  v5 = [v23 recommendationItem];
+  recommendationItem = [itemCopy recommendationItem];
 
-  if (!v5 || ([v23 latestResults], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKeyedSubscript:", *MEMORY[0x277D13F60]), v7 = objc_claimAutoreleasedReturnValue(), -[HUTriggerBuilderContext setTriggerContextAwareTitle:](v4, "setTriggerContextAwareTitle:", v7), v7, v6, objc_msgSend(v23, "recommendationItem"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "recommendation"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "hu_triggerBuilderIfAny"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "trigger"), v11 = objc_claimAutoreleasedReturnValue(), -[HUTriggerBuilderContext setShowTriggerDeleteButton:](v4, "setShowTriggerDeleteButton:", v11 != 0), v11, v10, v9, v8, -[HUTriggerBuilderContext setSuggestionItem:](v4, "setSuggestionItem:", v23), (objc_msgSend(v23, "isActive") & 1) != 0) || (-[HUItemModuleController module](self, "module"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "home"), v13 = objc_claimAutoreleasedReturnValue(), -[HUItemModuleController module](self, "module"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "relatedItems"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "buildersForActivating:inHome:withContext:serviceLikeItems:", 1, v13, v4, v15), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "firstObject"), v17 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v13, v12, !v17))
+  if (!recommendationItem || ([itemCopy latestResults], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKeyedSubscript:", *MEMORY[0x277D13F60]), v7 = objc_claimAutoreleasedReturnValue(), -[HUTriggerBuilderContext setTriggerContextAwareTitle:](v4, "setTriggerContextAwareTitle:", v7), v7, v6, objc_msgSend(itemCopy, "recommendationItem"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "recommendation"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "hu_triggerBuilderIfAny"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "trigger"), v11 = objc_claimAutoreleasedReturnValue(), -[HUTriggerBuilderContext setShowTriggerDeleteButton:](v4, "setShowTriggerDeleteButton:", v11 != 0), v11, v10, v9, v8, -[HUTriggerBuilderContext setSuggestionItem:](v4, "setSuggestionItem:", itemCopy), (objc_msgSend(itemCopy, "isActive") & 1) != 0) || (-[HUItemModuleController module](self, "module"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "home"), v13 = objc_claimAutoreleasedReturnValue(), -[HUItemModuleController module](self, "module"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "relatedItems"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(itemCopy, "buildersForActivating:inHome:withContext:serviceLikeItems:", 1, v13, v4, v15), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "firstObject"), v17 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v13, v12, !v17))
   {
     v18 = MEMORY[0x277D14C48];
-    v19 = [v23 trigger];
-    v20 = [(HUItemModuleController *)self module];
-    v21 = [v20 home];
-    v17 = [v18 triggerBuilderForTrigger:v19 inHome:v21 context:v4];
+    trigger = [itemCopy trigger];
+    module = [(HUItemModuleController *)self module];
+    home = [module home];
+    v17 = [v18 triggerBuilderForTrigger:trigger inHome:home context:v4];
   }
 
   v22 = [[HUTriggerActionFlow alloc] initWithFlowState:3];
   [(HUAvailableRelatedTriggerItemModuleController *)self _presentTriggerSummaryForTriggerBuilder:v17 flow:v22];
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = [a3 item];
-  [(HUAvailableRelatedTriggerItemModuleController *)self _enableItemPressed:v6 enabled:v4];
+  onCopy = on;
+  item = [cell item];
+  [(HUAvailableRelatedTriggerItemModuleController *)self _enableItemPressed:item enabled:onCopy];
 }
 
-- (void)triggerEditor:(id)a3 didCommitTriggerBuilder:(id)a4 withError:(id)a5
+- (void)triggerEditor:(id)editor didCommitTriggerBuilder:(id)builder withError:(id)error
 {
-  v15 = a5;
-  v7 = [a4 context];
-  v8 = [v7 suggestionItem];
+  errorCopy = error;
+  context = [builder context];
+  suggestionItem = [context suggestionItem];
 
   objc_opt_class();
-  v9 = v8;
+  v9 = suggestionItem;
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -539,22 +539,22 @@ LABEL_10:
 
   if (v11)
   {
-    v12 = [(HUItemModuleController *)self module];
-    v13 = [v12 containsItem:v11];
+    module = [(HUItemModuleController *)self module];
+    v13 = [module containsItem:v11];
 
     if (v13)
     {
-      v14 = [(HUItemModuleController *)self module];
-      [v14 didActivateItem:v11 active:1 error:v15];
+      module2 = [(HUItemModuleController *)self module];
+      [module2 didActivateItem:v11 active:1 error:errorCopy];
     }
   }
 }
 
-- (void)itemSection:(id)a3 accessoryButtonPressedInHeader:(id)a4
+- (void)itemSection:(id)section accessoryButtonPressedInHeader:(id)header
 {
-  v6 = a4;
+  headerCopy = header;
   objc_opt_class();
-  v16 = v6;
+  v16 = headerCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v16;
@@ -571,18 +571,18 @@ LABEL_10:
   [(HUAvailableRelatedTriggerItemModuleController *)self setEditing:[(HUAvailableRelatedTriggerItemModuleController *)self editing]^ 1];
   [(HUAvailableRelatedTriggerItemModuleController *)self _updateUIAnimated:1];
   v9 = MEMORY[0x277D14788];
-  v10 = [(HUItemModuleController *)self module];
-  v11 = [v10 itemProviders];
-  v12 = [v9 requestToReloadItemProviders:v11 senderSelector:a2];
+  module = [(HUItemModuleController *)self module];
+  itemProviders = [module itemProviders];
+  v12 = [v9 requestToReloadItemProviders:itemProviders senderSelector:a2];
 
-  v13 = [(HUItemModuleController *)self module];
-  v14 = [v13 itemUpdater];
-  v15 = [v14 performItemUpdateRequest:v12];
+  module2 = [(HUItemModuleController *)self module];
+  itemUpdater = [module2 itemUpdater];
+  v15 = [itemUpdater performItemUpdateRequest:v12];
 }
 
-- (void)_updateUIAnimated:(BOOL)a3
+- (void)_updateUIAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(HUAvailableRelatedTriggerItemModuleController *)self editing])
   {
     v5 = @"HUSmartAutomationEditButtonDoneTitle";
@@ -593,115 +593,115 @@ LABEL_10:
     v5 = @"HUSmartAutomationEditButtonTitle";
   }
 
-  v6 = [(HUItemModuleController *)self module];
-  [v6 setSectionHeaderEditButtonTitleKey:v5];
+  module = [(HUItemModuleController *)self module];
+  [module setSectionHeaderEditButtonTitleKey:v5];
 
-  v7 = [(HUAvailableRelatedTriggerItemModuleController *)self sectionEditButtonHeader];
+  sectionEditButtonHeader = [(HUAvailableRelatedTriggerItemModuleController *)self sectionEditButtonHeader];
 
-  if (v7)
+  if (sectionEditButtonHeader)
   {
-    v8 = [(HUItemModuleController *)self module];
-    v9 = [v8 sectionHeaderEditButtonTitleKey];
-    v10 = _HULocalizedStringWithDefaultValue(v9, v9, 1);
-    v11 = [(HUAvailableRelatedTriggerItemModuleController *)self sectionEditButtonHeader];
-    [v11 setOverrideAccessoryButtonTitle:v10];
+    module2 = [(HUItemModuleController *)self module];
+    sectionHeaderEditButtonTitleKey = [module2 sectionHeaderEditButtonTitleKey];
+    v10 = _HULocalizedStringWithDefaultValue(sectionHeaderEditButtonTitleKey, sectionHeaderEditButtonTitleKey, 1);
+    sectionEditButtonHeader2 = [(HUAvailableRelatedTriggerItemModuleController *)self sectionEditButtonHeader];
+    [sectionEditButtonHeader2 setOverrideAccessoryButtonTitle:v10];
 
-    v12 = [(HUAvailableRelatedTriggerItemModuleController *)self sectionEditButtonHeader];
-    v19 = [v12 defaultAccessoryButtonFont];
+    sectionEditButtonHeader3 = [(HUAvailableRelatedTriggerItemModuleController *)self sectionEditButtonHeader];
+    defaultAccessoryButtonFont = [sectionEditButtonHeader3 defaultAccessoryButtonFont];
 
     if ([(HUAvailableRelatedTriggerItemModuleController *)self editing])
     {
       v13 = MEMORY[0x277D74300];
-      v14 = [v19 fontDescriptor];
-      v15 = [v14 fontDescriptorWithSymbolicTraits:2];
-      [v19 pointSize];
+      fontDescriptor = [defaultAccessoryButtonFont fontDescriptor];
+      v15 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
+      [defaultAccessoryButtonFont pointSize];
       v16 = [v13 fontWithDescriptor:v15 size:?];
 
-      v19 = v16;
+      defaultAccessoryButtonFont = v16;
     }
 
-    v17 = [(HUAvailableRelatedTriggerItemModuleController *)self sectionEditButtonHeader];
-    [v17 setAccessoryButtonFont:v19];
+    sectionEditButtonHeader4 = [(HUAvailableRelatedTriggerItemModuleController *)self sectionEditButtonHeader];
+    [sectionEditButtonHeader4 setAccessoryButtonFont:defaultAccessoryButtonFont];
 
-    v18 = [(HUAvailableRelatedTriggerItemModuleController *)self sectionEditButtonHeader];
-    [v18 updateUIWithAnimation:v3];
+    sectionEditButtonHeader5 = [(HUAvailableRelatedTriggerItemModuleController *)self sectionEditButtonHeader];
+    [sectionEditButtonHeader5 updateUIWithAnimation:animatedCopy];
   }
 }
 
-- (void)_enableItemPressed:(id)a3 enabled:(BOOL)a4
+- (void)_enableItemPressed:(id)pressed enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v30 = a3;
+  enabledCopy = enabled;
+  pressedCopy = pressed;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v30;
-    v8 = [(HUItemModuleController *)self module];
-    v9 = [v8 context];
-    v10 = [v9 commitsAutomatically];
+    v7 = pressedCopy;
+    module = [(HUItemModuleController *)self module];
+    context = [module context];
+    commitsAutomatically = [context commitsAutomatically];
 
-    if (v10)
+    if (commitsAutomatically)
     {
-      v11 = [(HUAvailableRelatedTriggerItemModuleController *)self _activateItem:v7 active:v4];
+      v11 = [(HUAvailableRelatedTriggerItemModuleController *)self _activateItem:v7 active:enabledCopy];
     }
 
     else
     {
-      [v7 setActive:v4];
+      [v7 setActive:enabledCopy];
       v24 = MEMORY[0x277D14788];
       v25 = [MEMORY[0x277CBEB98] setWithObject:v7];
       v26 = [v24 requestToUpdateItems:v25 senderSelector:a2];
 
-      v27 = [(HUItemModuleController *)self module];
-      v28 = [v27 itemUpdater];
-      v29 = [v28 performItemUpdateRequest:v26];
+      module2 = [(HUItemModuleController *)self module];
+      itemUpdater = [module2 itemUpdater];
+      v29 = [itemUpdater performItemUpdateRequest:v26];
     }
   }
 
   else
   {
-    v12 = [(HUItemModuleController *)self module];
-    v13 = [v12 naturalLightingItem];
-    v14 = [v30 isEqual:v13];
+    module3 = [(HUItemModuleController *)self module];
+    naturalLightingItem = [module3 naturalLightingItem];
+    v14 = [pressedCopy isEqual:naturalLightingItem];
 
     if (!v14)
     {
       goto LABEL_8;
     }
 
-    v15 = [(HUItemModuleController *)self module];
-    [v15 setEnableNaturalLighting:v4];
+    module4 = [(HUItemModuleController *)self module];
+    [module4 setEnableNaturalLighting:enabledCopy];
 
     v16 = MEMORY[0x277D14788];
     v17 = MEMORY[0x277CBEB98];
-    v18 = [(HUItemModuleController *)self module];
-    v19 = [v18 naturalLightingItem];
-    v20 = [v17 setWithObject:v19];
+    module5 = [(HUItemModuleController *)self module];
+    naturalLightingItem2 = [module5 naturalLightingItem];
+    v20 = [v17 setWithObject:naturalLightingItem2];
     v7 = [v16 requestToUpdateItems:v20 senderSelector:a2];
 
-    v21 = [(HUItemModuleController *)self module];
-    v22 = [v21 itemUpdater];
-    v23 = [v22 performItemUpdateRequest:v7];
+    module6 = [(HUItemModuleController *)self module];
+    itemUpdater2 = [module6 itemUpdater];
+    v23 = [itemUpdater2 performItemUpdateRequest:v7];
   }
 
 LABEL_8:
 }
 
-- (id)_activateItem:(id)a3 active:(BOOL)a4
+- (id)_activateItem:(id)item active:(BOOL)active
 {
-  v4 = a4;
-  v6 = a3;
+  activeCopy = active;
+  itemCopy = item;
   objc_initWeak(&location, self);
-  v7 = [(HUItemModuleController *)self module];
-  v8 = [v7 activateItem:v6 active:v4];
+  module = [(HUItemModuleController *)self module];
+  v8 = [module activateItem:itemCopy active:activeCopy];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__HUAvailableRelatedTriggerItemModuleController__activateItem_active___block_invoke;
   v12[3] = &unk_277DBBE60;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = itemCopy;
   v13 = v9;
-  v15 = v4;
+  v15 = activeCopy;
   v10 = [v8 recover:v12];
 
   objc_destroyWeak(&v14);
@@ -736,23 +736,23 @@ id __70__HUAvailableRelatedTriggerItemModuleController__activateItem_active___bl
   return v3;
 }
 
-- (id)_handleError:(id)a3 retryBlock:(id)a4
+- (id)_handleError:(id)error retryBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  errorCopy = error;
+  blockCopy = block;
+  if (!errorCopy)
   {
-    v10 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     goto LABEL_5;
   }
 
-  v8 = [v6 na_isCancelledError];
+  na_isCancelledError = [errorCopy na_isCancelledError];
   v9 = MEMORY[0x277D2C900];
-  if (v8)
+  if (na_isCancelledError)
   {
-    v10 = [MEMORY[0x277D2C900] futureWithError:v6];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithError:errorCopy];
 LABEL_5:
-    v11 = v10;
+    v11 = futureWithNoResult;
     goto LABEL_7;
   }
 
@@ -761,8 +761,8 @@ LABEL_5:
   v13[2] = __73__HUAvailableRelatedTriggerItemModuleController__handleError_retryBlock___block_invoke;
   v13[3] = &unk_277DBBE88;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = errorCopy;
+  v15 = blockCopy;
   v11 = [v9 futureWithBlock:v13];
 
 LABEL_7:
@@ -842,34 +842,34 @@ void __73__HUAvailableRelatedTriggerItemModuleController__handleError_retryBlock
 
 - (void)_addAutomationCancelButtonPressed
 {
-  v3 = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewController];
+  presentedViewController = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
-    v4 = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewController];
-    v5 = [(HUAvailableRelatedTriggerItemModuleController *)self _dismissViewController:v4];
+    presentedViewController2 = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewController];
+    v5 = [(HUAvailableRelatedTriggerItemModuleController *)self _dismissViewController:presentedViewController2];
 
     [(HUAvailableRelatedTriggerItemModuleController *)self setPresentedViewController:0];
   }
 }
 
-- (id)_dismissViewController:(id)a3
+- (id)_dismissViewController:(id)controller
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  controllerCopy = controller;
   [(HUAvailableRelatedTriggerItemModuleController *)self setEditing:0];
   [(HUAvailableRelatedTriggerItemModuleController *)self _updateUIAnimated:0];
-  v6 = [HUViewControllerDismissalRequest requestWithViewController:v5];
+  v6 = [HUViewControllerDismissalRequest requestWithViewController:controllerCopy];
 
   v7 = objc_alloc(MEMORY[0x277D14788]);
-  v8 = [(HUItemModuleController *)self module];
-  v9 = [v8 itemProviders];
-  v10 = [(HUItemModuleController *)self module];
-  v11 = [v10 allItems];
-  v12 = [v7 initWithItemProviders:v9 items:v11 senderSelector:a2];
+  module = [(HUItemModuleController *)self module];
+  itemProviders = [module itemProviders];
+  module2 = [(HUItemModuleController *)self module];
+  allItems = [module2 allItems];
+  v12 = [v7 initWithItemProviders:itemProviders items:allItems senderSelector:a2];
 
-  v13 = [(HUItemModuleController *)self host];
-  v14 = [v13 moduleController:self dismissViewControllerForRequest:v6];
+  host = [(HUItemModuleController *)self host];
+  v14 = [host moduleController:self dismissViewControllerForRequest:v6];
 
   v15 = MEMORY[0x277D2C900];
   v23[0] = MEMORY[0x277D85DD0];
@@ -905,17 +905,17 @@ void __72__HUAvailableRelatedTriggerItemModuleController__dismissViewController_
   v8 = [v6 addCompletionBlock:v9];
 }
 
-- (void)updatePresentedViewControllerForNewModuleController:(id)a3
+- (void)updatePresentedViewControllerForNewModuleController:(id)controller
 {
-  v4 = a3;
-  v5 = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewController];
-  [v4 setPresentedViewController:v5];
+  controllerCopy = controller;
+  presentedViewController = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewController];
+  [controllerCopy setPresentedViewController:presentedViewController];
 
-  v6 = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewControllerDelegateWrapper];
-  [v6 setDelegate:v4];
+  presentedViewControllerDelegateWrapper = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewControllerDelegateWrapper];
+  [presentedViewControllerDelegateWrapper setDelegate:controllerCopy];
 
-  v7 = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewControllerDelegateWrapper];
-  [v4 setPresentedViewControllerDelegateWrapper:v7];
+  presentedViewControllerDelegateWrapper2 = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewControllerDelegateWrapper];
+  [controllerCopy setPresentedViewControllerDelegateWrapper:presentedViewControllerDelegateWrapper2];
 }
 
 - (_TriggerEditorDelegateWrapper)presentedViewControllerDelegateWrapper
@@ -934,17 +934,17 @@ void __72__HUAvailableRelatedTriggerItemModuleController__dismissViewController_
   return presentedViewControllerDelegateWrapper;
 }
 
-- (void)_presentTriggerSummaryForTriggerBuilder:(id)a3 flow:(id)a4
+- (void)_presentTriggerSummaryForTriggerBuilder:(id)builder flow:(id)flow
 {
-  v6 = a4;
-  v7 = a3;
-  v19 = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewControllerDelegateWrapper];
-  v8 = [[HUTriggerSummaryViewController alloc] initWithTriggerBuilder:v7 flow:v6 delegate:v19];
+  flowCopy = flow;
+  builderCopy = builder;
+  presentedViewControllerDelegateWrapper = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewControllerDelegateWrapper];
+  v8 = [[HUTriggerSummaryViewController alloc] initWithTriggerBuilder:builderCopy flow:flowCopy delegate:presentedViewControllerDelegateWrapper];
 
   v9 = MEMORY[0x277CBEB98];
-  v10 = [(HUItemModuleController *)self module];
-  v11 = [v10 relatedItems];
-  v12 = [v9 setWithArray:v11];
+  module = [(HUItemModuleController *)self module];
+  relatedItems = [module relatedItems];
+  v12 = [v9 setWithArray:relatedItems];
   v13 = [v12 na_flatMap:&__block_literal_global_154];
 
   v14 = [v13 na_flatMap:&__block_literal_global_281];
@@ -955,8 +955,8 @@ void __72__HUAvailableRelatedTriggerItemModuleController__dismissViewController_
   [v15 setModalPresentationStyle:2];
   v16 = [HUViewControllerPresentationRequest requestWithViewController:v15];
   [v16 setPreferredPresentationType:0];
-  v17 = [(HUItemModuleController *)self host];
-  v18 = [v17 moduleController:self presentViewControllerForRequest:v16];
+  host = [(HUItemModuleController *)self host];
+  v18 = [host moduleController:self presentViewControllerForRequest:v16];
 }
 
 id __94__HUAvailableRelatedTriggerItemModuleController__presentTriggerSummaryForTriggerBuilder_flow___block_invoke(uint64_t a1, void *a2)
@@ -1004,13 +1004,13 @@ id __94__HUAvailableRelatedTriggerItemModuleController__presentTriggerSummaryFor
 
 - (void)_presentAddAutomationViewController
 {
-  v3 = [(HUAvailableRelatedTriggerItemModuleController *)self addAutomationPresentingFuture];
+  addAutomationPresentingFuture = [(HUAvailableRelatedTriggerItemModuleController *)self addAutomationPresentingFuture];
 
-  if (!v3)
+  if (!addAutomationPresentingFuture)
   {
-    v4 = [(HUAvailableRelatedTriggerItemModuleController *)self _createAddAutomationViewController];
-    v5 = [MEMORY[0x277D2C938] mainThreadScheduler];
-    v6 = [v4 reschedule:v5];
+    _createAddAutomationViewController = [(HUAvailableRelatedTriggerItemModuleController *)self _createAddAutomationViewController];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+    v6 = [_createAddAutomationViewController reschedule:mainThreadScheduler];
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -1027,16 +1027,16 @@ id __94__HUAvailableRelatedTriggerItemModuleController__presentTriggerSummaryFor
     block[3] = &unk_277DB7558;
     v9 = v6;
     v16 = v9;
-    v17 = self;
+    selfCopy = self;
     dispatch_after(v8, MEMORY[0x277D85CD0], block);
     objc_initWeak(&location, self);
-    v10 = [(HUAvailableRelatedTriggerItemModuleController *)self addAutomationPresentingFuture];
+    addAutomationPresentingFuture2 = [(HUAvailableRelatedTriggerItemModuleController *)self addAutomationPresentingFuture];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __84__HUAvailableRelatedTriggerItemModuleController__presentAddAutomationViewController__block_invoke_3;
     v12[3] = &unk_277DB8CA8;
     objc_copyWeak(&v13, &location);
-    v11 = [v10 addCompletionBlock:v12];
+    v11 = [addAutomationPresentingFuture2 addCompletionBlock:v12];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -1082,48 +1082,48 @@ void __84__HUAvailableRelatedTriggerItemModuleController__presentAddAutomationVi
 
 - (id)_createAddAutomationViewController
 {
-  v3 = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewControllerDelegateWrapper];
-  v4 = [(HUItemModuleController *)self module];
-  v5 = [v4 sensorCharacteristics];
-  if (![v5 count])
+  presentedViewControllerDelegateWrapper = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewControllerDelegateWrapper];
+  module = [(HUItemModuleController *)self module];
+  sensorCharacteristics = [module sensorCharacteristics];
+  if (![sensorCharacteristics count])
   {
     goto LABEL_4;
   }
 
-  v6 = [(HUItemModuleController *)self module];
-  v7 = [v6 actionBuilderFactories];
-  if ([v7 count])
+  module2 = [(HUItemModuleController *)self module];
+  actionBuilderFactories = [module2 actionBuilderFactories];
+  if ([actionBuilderFactories count])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v19 = [(HUItemModuleController *)self module];
-  v20 = [v19 eventOptionsItems];
-  v21 = [v20 count];
+  module3 = [(HUItemModuleController *)self module];
+  eventOptionsItems = [module3 eventOptionsItems];
+  v21 = [eventOptionsItems count];
 
   if (v21)
   {
 LABEL_5:
-    v8 = [(HUItemModuleController *)self module];
-    v9 = [v8 actionBuilderFactories];
-    if ([v9 count])
+    module4 = [(HUItemModuleController *)self module];
+    actionBuilderFactories2 = [module4 actionBuilderFactories];
+    if ([actionBuilderFactories2 count])
     {
-      v10 = [(HUItemModuleController *)self module];
-      v11 = [v10 sensorCharacteristics];
-      v12 = [v11 count];
+      module5 = [(HUItemModuleController *)self module];
+      sensorCharacteristics2 = [module5 sensorCharacteristics];
+      v12 = [sensorCharacteristics2 count];
 
       if (!v12)
       {
-        v13 = [(HUItemModuleController *)self module];
-        v14 = [(HUTriggerTypePickerViewController *)v13 actionBuilderFactories];
-        v15 = [(HUAvailableRelatedTriggerItemModuleController *)self _addAutomationViewControllerWithActionFactories:v14];
+        module6 = [(HUItemModuleController *)self module];
+        actionBuilderFactories3 = [(HUTriggerTypePickerViewController *)module6 actionBuilderFactories];
+        v15 = [(HUAvailableRelatedTriggerItemModuleController *)self _addAutomationViewControllerWithActionFactories:actionBuilderFactories3];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __83__HUAvailableRelatedTriggerItemModuleController__createAddAutomationViewController__block_invoke;
         v26[3] = &unk_277DB9858;
-        v27 = v3;
+        v27 = presentedViewControllerDelegateWrapper;
         v16 = [v15 recover:v26];
 
 LABEL_10:
@@ -1136,15 +1136,15 @@ LABEL_10:
     }
 
     v17 = MEMORY[0x277D2C900];
-    v13 = [[HUTriggerTypePickerViewController alloc] initWithActionSetBuilder:0 delegate:v3];
-    v16 = [v17 futureWithResult:v13];
+    module6 = [[HUTriggerTypePickerViewController alloc] initWithActionSetBuilder:0 delegate:presentedViewControllerDelegateWrapper];
+    v16 = [v17 futureWithResult:module6];
     goto LABEL_10;
   }
 
   v22 = MEMORY[0x277CBEB98];
-  v23 = [(HUItemModuleController *)self module];
-  v24 = [v23 sensorCharacteristics];
-  v25 = [v22 setWithArray:v24];
+  module7 = [(HUItemModuleController *)self module];
+  sensorCharacteristics3 = [module7 sensorCharacteristics];
+  v25 = [v22 setWithArray:sensorCharacteristics3];
   v16 = [(HUAvailableRelatedTriggerItemModuleController *)self _addAutomationViewControllerWithSensorCharacteristics:v25];
 
 LABEL_11:
@@ -1161,38 +1161,38 @@ id __83__HUAvailableRelatedTriggerItemModuleController__createAddAutomationViewC
   return v3;
 }
 
-- (id)_addAutomationViewControllerWithSensorCharacteristics:(id)a3
+- (id)_addAutomationViewControllerWithSensorCharacteristics:(id)characteristics
 {
-  v4 = a3;
-  v5 = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewControllerDelegateWrapper];
+  characteristicsCopy = characteristics;
+  presentedViewControllerDelegateWrapper = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewControllerDelegateWrapper];
   v6 = objc_alloc_init(HUTriggerBuilderContext);
   v7 = objc_alloc(MEMORY[0x277D14668]);
-  v8 = [(HUItemModuleController *)self module];
-  v9 = [v8 home];
-  v10 = [v7 initWithHome:v9 context:v6];
+  module = [(HUItemModuleController *)self module];
+  home = [module home];
+  v10 = [v7 initWithHome:home context:v6];
 
   v11 = objc_alloc(MEMORY[0x277D14530]);
   v12 = [MEMORY[0x277CBEB98] set];
   v13 = [v11 initWithEventBuilders:v12];
 
-  if ([v4 count] == 1)
+  if ([characteristicsCopy count] == 1)
   {
-    v32 = v5;
-    v14 = [v4 anyObject];
+    v32 = presentedViewControllerDelegateWrapper;
+    anyObject = [characteristicsCopy anyObject];
     v15 = MEMORY[0x277CD1970];
-    v16 = [v14 characteristicType];
-    v17 = [v15 hf_abnormalValueForSensorCharacteristicType:v16];
+    characteristicType = [anyObject characteristicType];
+    v17 = [v15 hf_abnormalValueForSensorCharacteristicType:characteristicType];
 
-    v18 = [MEMORY[0x277CD1970] hf_continuousValueRangeCharacteristicTypes];
-    v19 = [v14 characteristicType];
-    v20 = [v18 containsObject:v19];
+    hf_continuousValueRangeCharacteristicTypes = [MEMORY[0x277CD1970] hf_continuousValueRangeCharacteristicTypes];
+    characteristicType2 = [anyObject characteristicType];
+    v20 = [hf_continuousValueRangeCharacteristicTypes containsObject:characteristicType2];
 
     if (v20)
     {
-      v21 = [(HUItemModuleController *)self module];
-      v22 = [v21 home];
-      v23 = [v22 hf_characteristicValueManager];
-      v24 = [v23 cachedValueForCharacteristic:v14];
+      module2 = [(HUItemModuleController *)self module];
+      home2 = [module2 home];
+      hf_characteristicValueManager = [home2 hf_characteristicValueManager];
+      v24 = [hf_characteristicValueManager cachedValueForCharacteristic:anyObject];
 
       if (v24)
       {
@@ -1204,19 +1204,19 @@ id __83__HUAvailableRelatedTriggerItemModuleController__createAddAutomationViewC
         v25 = 0;
       }
 
-      v5 = v32;
+      presentedViewControllerDelegateWrapper = v32;
 
       v17 = v25;
     }
 
     else
     {
-      v5 = v32;
+      presentedViewControllerDelegateWrapper = v32;
     }
 
-    v29 = [v13 setCharacteristics:v4 triggerValue:v17];
+    v29 = [v13 setCharacteristics:characteristicsCopy triggerValue:v17];
     [v10 applyEventBuilderDiff:v29];
-    v30 = [[HUCharacteristicTriggerEventViewController alloc] initWithCharacteristicEventBuilderItem:v13 triggerBuilder:v10 mode:0 delegate:v5];
+    v30 = [[HUCharacteristicTriggerEventViewController alloc] initWithCharacteristicEventBuilderItem:v13 triggerBuilder:v10 mode:0 delegate:presentedViewControllerDelegateWrapper];
     v28 = [MEMORY[0x277D2C900] futureWithResult:v30];
   }
 
@@ -1226,9 +1226,9 @@ id __83__HUAvailableRelatedTriggerItemModuleController__createAddAutomationViewC
     aBlock[1] = 3221225472;
     aBlock[2] = __103__HUAvailableRelatedTriggerItemModuleController__addAutomationViewControllerWithSensorCharacteristics___block_invoke;
     aBlock[3] = &unk_277DB85D8;
-    v34 = v4;
+    v34 = characteristicsCopy;
     v26 = _Block_copy(aBlock);
-    v27 = [[HUAccessoryEventPickerViewController alloc] initWithEventBuilderItem:v13 triggerBuilder:v10 mode:0 source:0 delegate:v5];
+    v27 = [[HUAccessoryEventPickerViewController alloc] initWithEventBuilderItem:v13 triggerBuilder:v10 mode:0 source:0 delegate:presentedViewControllerDelegateWrapper];
     [(HUAccessoryEventPickerViewController *)v27 setFilter:v26];
     v28 = [MEMORY[0x277D2C900] futureWithResult:v27];
   }
@@ -1283,16 +1283,16 @@ uint64_t __103__HUAvailableRelatedTriggerItemModuleController__addAutomationView
   return v4;
 }
 
-- (id)_addAutomationViewControllerWithActionFactories:(id)a3
+- (id)_addAutomationViewControllerWithActionFactories:(id)factories
 {
-  v4 = a3;
-  v5 = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewControllerDelegateWrapper];
+  factoriesCopy = factories;
+  presentedViewControllerDelegateWrapper = [(HUAvailableRelatedTriggerItemModuleController *)self presentedViewControllerDelegateWrapper];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __97__HUAvailableRelatedTriggerItemModuleController__addAutomationViewControllerWithActionFactories___block_invoke;
   v17[3] = &unk_277DBBF20;
   v17[4] = self;
-  v6 = [v4 na_map:v17];
+  v6 = [factoriesCopy na_map:v17];
 
   v7 = [MEMORY[0x277D2C900] combineAllFutures:v6];
   v8 = dispatch_time(0, 2000000000);
@@ -1307,8 +1307,8 @@ uint64_t __103__HUAvailableRelatedTriggerItemModuleController__addAutomationView
   v13[1] = 3221225472;
   v13[2] = __97__HUAvailableRelatedTriggerItemModuleController__addAutomationViewControllerWithActionFactories___block_invoke_3;
   v13[3] = &unk_277DB7A90;
-  v14 = v5;
-  v10 = v5;
+  v14 = presentedViewControllerDelegateWrapper;
+  v10 = presentedViewControllerDelegateWrapper;
   v11 = [v9 flatMap:v13];
 
   return v11;

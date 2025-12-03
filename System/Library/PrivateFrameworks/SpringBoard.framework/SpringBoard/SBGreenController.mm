@@ -1,9 +1,9 @@
 @interface SBGreenController
-- (BOOL)_writeGreenValuesToDisk:(id)a3 withState:(unint64_t)a4;
+- (BOOL)_writeGreenValuesToDisk:(id)disk withState:(unint64_t)state;
 - (SBGreenController)init;
-- (id)_defaultValuesDictionaryAndState:(unint64_t *)a3;
+- (id)_defaultValuesDictionaryAndState:(unint64_t *)state;
 - (id)_deviceRegionCode;
-- (unint64_t)_effectivePlaceIsAmbiguous:(BOOL *)a3;
+- (unint64_t)_effectivePlaceIsAmbiguous:(BOOL *)ambiguous;
 - (void)_readFileStateFromDisk;
 - (void)performPreBuddyWork;
 @end
@@ -40,8 +40,8 @@
 
 - (void)_readFileStateFromDisk
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:@"/var/mobile/Library/Application Support/com.apple.palette.green.plist"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:@"/var/mobile/Library/Application Support/com.apple.palette.green.plist"];
 
   v5 = 3;
   if (!v4)
@@ -96,7 +96,7 @@
   }
 }
 
-- (id)_defaultValuesDictionaryAndState:(unint64_t *)a3
+- (id)_defaultValuesDictionaryAndState:(unint64_t *)state
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSArray count](self->_relevantGreenKeys, "count")}];
@@ -135,23 +135,23 @@
     [v5 setValue:MEMORY[0x277CBEC38] forKey:@"key2"];
   }
 
-  if (a3)
+  if (state)
   {
-    *a3 = v13 ^ 1;
+    *state = v13 ^ 1;
   }
 
   return v5;
 }
 
-- (BOOL)_writeGreenValuesToDisk:(id)a3 withState:(unint64_t)a4
+- (BOOL)_writeGreenValuesToDisk:(id)disk withState:(unint64_t)state
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  diskCopy = disk;
+  v7 = diskCopy;
+  if (diskCopy)
   {
-    v8 = [v6 mutableCopy];
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v8 = [diskCopy mutableCopy];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
     [v8 setObject:v9 forKey:@"state"];
 
     v32 = 0;
@@ -168,13 +168,13 @@
       v24 = 0;
     }
 
-    v12 = a4 << 6;
-    v31 = a4 << 6;
+    v12 = state << 6;
+    v31 = state << 6;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v26 = self;
+    selfCopy = self;
     v13 = self->_relevantGreenKeys;
     v14 = [(NSArray *)v13 countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v14)
@@ -192,9 +192,9 @@
           }
 
           v19 = [v7 objectForKey:*(*(&v27 + 1) + 8 * i)];
-          v20 = [v19 BOOLValue];
+          bOOLValue = [v19 BOOLValue];
 
-          if (v20)
+          if (bOOLValue)
           {
             v12 |= 1 << v16;
             v31 = v12;
@@ -212,7 +212,7 @@
     v21 = [MEMORY[0x277CBEA90] dataWithBytes:&v31 length:1];
     [v21 writeToFile:@"/var/mobile/Library/Application Support/com.apple.palette.green.bin" options:268435457 error:0];
 
-    self = v26;
+    self = selfCopy;
     v11 = v24;
   }
 
@@ -226,48 +226,48 @@
   return v11;
 }
 
-- (unint64_t)_effectivePlaceIsAmbiguous:(BOOL *)a3
+- (unint64_t)_effectivePlaceIsAmbiguous:(BOOL *)ambiguous
 {
-  v4 = [(SBGreenController *)self _deviceRegionCode];
-  if ([v4 isEqualToString:@"CH"])
+  _deviceRegionCode = [(SBGreenController *)self _deviceRegionCode];
+  if ([_deviceRegionCode isEqualToString:@"CH"])
   {
     v5 = 0;
     v6 = 0;
   }
 
-  else if ([v4 isEqualToString:@"TA"])
+  else if ([_deviceRegionCode isEqualToString:@"TA"])
   {
     v6 = 0;
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"ZA"])
+  else if ([_deviceRegionCode isEqualToString:@"ZA"])
   {
     v6 = 0;
     v5 = 2;
   }
 
-  else if (([v4 isEqualToString:@"ZP"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", &stru_283094718))
+  else if (([_deviceRegionCode isEqualToString:@"ZP"] & 1) != 0 || objc_msgSend(_deviceRegionCode, "isEqualToString:", &stru_283094718))
   {
-    v7 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-    v8 = [v7 countryCode];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    countryCode = [autoupdatingCurrentLocale countryCode];
 
-    if ([v8 isEqualToString:@"CN"])
+    if ([countryCode isEqualToString:@"CN"])
     {
       v5 = 0;
     }
 
-    else if ([v8 isEqualToString:@"TW"])
+    else if ([countryCode isEqualToString:@"TW"])
     {
       v5 = 1;
     }
 
-    else if ([v8 isEqualToString:@"HK"])
+    else if ([countryCode isEqualToString:@"HK"])
     {
       v5 = 2;
     }
 
-    else if ([v8 isEqualToString:@"MO"])
+    else if ([countryCode isEqualToString:@"MO"])
     {
       v5 = 2;
     }
@@ -286,9 +286,9 @@
     v5 = 3;
   }
 
-  if (a3)
+  if (ambiguous)
   {
-    *a3 = v6;
+    *ambiguous = v6;
   }
 
   return v5;

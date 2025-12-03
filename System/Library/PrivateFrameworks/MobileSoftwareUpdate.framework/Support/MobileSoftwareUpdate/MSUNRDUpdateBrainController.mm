@@ -1,17 +1,17 @@
 @interface MSUNRDUpdateBrainController
 + (id)sharedInstance;
-+ (id)stateToString:(int)a3;
++ (id)stateToString:(int)string;
 - (MSUNRDUpdateBrainController)init;
 - (id)status;
 - (void)cancelAndLock;
 - (void)prepareResizeForNeRDUpdate;
-- (void)saveLastError:(id)a3;
-- (void)saveLastSuccessForTargetMainOSBuild:(id)a3 recoveryOSBuild:(id)a4;
-- (void)saveMSUUpdateAttributes:(id)a3 andState:(int)a4;
-- (void)saveRecoveryOSInfo:(id)a3;
-- (void)saveState:(int)a3;
-- (void)startForMSUUpdate:(id)a3 withMSUBrainVersion:(id)a4 withOptions:(id)a5;
-- (void)updateStatusFromCallback:(id)a3;
+- (void)saveLastError:(id)error;
+- (void)saveLastSuccessForTargetMainOSBuild:(id)build recoveryOSBuild:(id)sBuild;
+- (void)saveMSUUpdateAttributes:(id)attributes andState:(int)state;
+- (void)saveRecoveryOSInfo:(id)info;
+- (void)saveState:(int)state;
+- (void)startForMSUUpdate:(id)update withMSUBrainVersion:(id)version withOptions:(id)options;
+- (void)updateStatusFromCallback:(id)callback;
 @end
 
 @implementation MSUNRDUpdateBrainController
@@ -86,14 +86,14 @@ void __45__MSUNRDUpdateBrainController_sharedInstance__block_invoke(id a1)
   _objc_release_x1();
 }
 
-- (void)startForMSUUpdate:(id)a3 withMSUBrainVersion:(id)a4 withOptions:(id)a5
+- (void)startForMSUUpdate:(id)update withMSUBrainVersion:(id)version withOptions:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v15 = a5;
-  if (v9)
+  updateCopy = update;
+  versionCopy = version;
+  optionsCopy = options;
+  if (versionCopy)
   {
-    v16 = v9;
+    v16 = versionCopy;
   }
 
   else
@@ -101,20 +101,20 @@ void __45__MSUNRDUpdateBrainController_sharedInstance__block_invoke(id a1)
     v16 = @"(unversioned)";
   }
 
-  logfunction(", 1, @"Received request to start RecoveryOS update for MSU update:%@\n"", v10, v11, v12, v13, v14, v8);
-  v17 = [(MSUNRDUpdateBrainController *)self workQueue];
+  logfunction(", 1, @"Received request to start RecoveryOS update for MSU update:%@\n"", v10, v11, v12, v13, v14, updateCopy);
+  workQueue = [(MSUNRDUpdateBrainController *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __81__MSUNRDUpdateBrainController_startForMSUUpdate_withMSUBrainVersion_withOptions___block_invoke;
   block[3] = &unk_100048FC0;
-  v22 = v8;
-  v23 = self;
+  v22 = updateCopy;
+  selfCopy = self;
   v24 = v16;
-  v25 = v15;
-  v18 = v15;
+  v25 = optionsCopy;
+  v18 = optionsCopy;
   v19 = v16;
-  v20 = v8;
-  dispatch_async(v17, block);
+  v20 = updateCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __81__MSUNRDUpdateBrainController_startForMSUUpdate_withMSUBrainVersion_withOptions___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)
@@ -278,21 +278,21 @@ LABEL_20:
 LABEL_22:
 }
 
-- (void)updateStatusFromCallback:(id)a3
+- (void)updateStatusFromCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(MSUNRDUpdateBrainController *)self stateQueue];
-  dispatch_assert_queue_not_V2(v5);
+  callbackCopy = callback;
+  stateQueue = [(MSUNRDUpdateBrainController *)self stateQueue];
+  dispatch_assert_queue_not_V2(stateQueue);
 
-  v6 = [(MSUNRDUpdateBrainController *)self stateQueue];
+  stateQueue2 = [(MSUNRDUpdateBrainController *)self stateQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __56__MSUNRDUpdateBrainController_updateStatusFromCallback___block_invoke;
   v8[3] = &unk_100048FE8;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = callbackCopy;
+  selfCopy = self;
+  v7 = callbackCopy;
+  dispatch_async(stateQueue2, v8);
 }
 
 id __56__MSUNRDUpdateBrainController_updateStatusFromCallback___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)
@@ -314,19 +314,19 @@ id __56__MSUNRDUpdateBrainController_updateStatusFromCallback___block_invoke(uin
 
 - (id)status
 {
-  v3 = [(MSUNRDUpdateBrainController *)self stateQueue];
-  dispatch_assert_queue_not_V2(v3);
+  stateQueue = [(MSUNRDUpdateBrainController *)self stateQueue];
+  dispatch_assert_queue_not_V2(stateQueue);
 
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [(MSUNRDUpdateBrainController *)self stateQueue];
+  stateQueue2 = [(MSUNRDUpdateBrainController *)self stateQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __37__MSUNRDUpdateBrainController_status__block_invoke;
   v9[3] = &unk_100048FE8;
   v6 = v4;
   v10 = v6;
-  v11 = self;
-  dispatch_sync(v5, v9);
+  selfCopy = self;
+  dispatch_sync(stateQueue2, v9);
 
   v7 = v6;
   return v6;
@@ -389,13 +389,13 @@ void __37__MSUNRDUpdateBrainController_status__block_invoke(uint64_t a1)
 - (void)cancelAndLock
 {
   logfunction(", 1, @"Received request to cancel RecoveryOS update\n"", v2, v3, v4, v5, v6, v9);
-  v8 = [(MSUNRDUpdateBrainController *)self cancelQueue];
+  cancelQueue = [(MSUNRDUpdateBrainController *)self cancelQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __44__MSUNRDUpdateBrainController_cancelAndLock__block_invoke;
   block[3] = &unk_100049038;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(cancelQueue, block);
 }
 
 void __44__MSUNRDUpdateBrainController_cancelAndLock__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)
@@ -524,18 +524,18 @@ id __84__MSUNRDUpdateBrainController_waitWithTimeout_progressCallback_context_re
   return [v2 setProgressContext:0];
 }
 
-- (void)saveLastError:(id)a3
+- (void)saveLastError:(id)error
 {
-  v4 = a3;
-  v5 = [(MSUNRDUpdateBrainController *)self stateQueue];
+  errorCopy = error;
+  stateQueue = [(MSUNRDUpdateBrainController *)self stateQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __45__MSUNRDUpdateBrainController_saveLastError___block_invoke;
   v7[3] = &unk_100048FE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(stateQueue, v7);
 }
 
 id __45__MSUNRDUpdateBrainController_saveLastError___block_invoke(uint64_t a1)
@@ -550,18 +550,18 @@ id __45__MSUNRDUpdateBrainController_saveLastError___block_invoke(uint64_t a1)
   return [v8 setLastError:v9];
 }
 
-- (void)saveRecoveryOSInfo:(id)a3
+- (void)saveRecoveryOSInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(MSUNRDUpdateBrainController *)self stateQueue];
+  infoCopy = info;
+  stateQueue = [(MSUNRDUpdateBrainController *)self stateQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __50__MSUNRDUpdateBrainController_saveRecoveryOSInfo___block_invoke;
   v7[3] = &unk_100048FE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = infoCopy;
+  v6 = infoCopy;
+  dispatch_async(stateQueue, v7);
 }
 
 id __50__MSUNRDUpdateBrainController_saveRecoveryOSInfo___block_invoke(uint64_t a1)
@@ -576,21 +576,21 @@ id __50__MSUNRDUpdateBrainController_saveRecoveryOSInfo___block_invoke(uint64_t 
   return [v8 setCurrentRecoveryOSInfo:v9];
 }
 
-- (void)saveLastSuccessForTargetMainOSBuild:(id)a3 recoveryOSBuild:(id)a4
+- (void)saveLastSuccessForTargetMainOSBuild:(id)build recoveryOSBuild:(id)sBuild
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSUNRDUpdateBrainController *)self stateQueue];
+  buildCopy = build;
+  sBuildCopy = sBuild;
+  stateQueue = [(MSUNRDUpdateBrainController *)self stateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __83__MSUNRDUpdateBrainController_saveLastSuccessForTargetMainOSBuild_recoveryOSBuild___block_invoke;
   block[3] = &unk_100049088;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = buildCopy;
+  v13 = sBuildCopy;
+  v9 = sBuildCopy;
+  v10 = buildCopy;
+  dispatch_async(stateQueue, block);
 }
 
 id __83__MSUNRDUpdateBrainController_saveLastSuccessForTargetMainOSBuild_recoveryOSBuild___block_invoke(uint64_t a1)
@@ -610,19 +610,19 @@ id __83__MSUNRDUpdateBrainController_saveLastSuccessForTargetMainOSBuild_recover
   return [v15 setLastSuccessForTargetRecoveryOSBuild:v14];
 }
 
-- (void)saveMSUUpdateAttributes:(id)a3 andState:(int)a4
+- (void)saveMSUUpdateAttributes:(id)attributes andState:(int)state
 {
-  v6 = a3;
-  v7 = [(MSUNRDUpdateBrainController *)self stateQueue];
+  attributesCopy = attributes;
+  stateQueue = [(MSUNRDUpdateBrainController *)self stateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __64__MSUNRDUpdateBrainController_saveMSUUpdateAttributes_andState___block_invoke;
   block[3] = &unk_1000490B0;
-  v11 = a4;
+  stateCopy = state;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = attributesCopy;
+  v8 = attributesCopy;
+  dispatch_async(stateQueue, block);
 }
 
 id __64__MSUNRDUpdateBrainController_saveMSUUpdateAttributes_andState___block_invoke(uint64_t a1)
@@ -642,29 +642,29 @@ id __64__MSUNRDUpdateBrainController_saveMSUUpdateAttributes_andState___block_in
   return [v15 setCurrentMSUUpdateAttributes:v16];
 }
 
-+ (id)stateToString:(int)a3
++ (id)stateToString:(int)string
 {
-  if (a3 > 6)
+  if (string > 6)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1000490F8 + a3);
+    return *(&off_1000490F8 + string);
   }
 }
 
-- (void)saveState:(int)a3
+- (void)saveState:(int)state
 {
-  v5 = [(MSUNRDUpdateBrainController *)self stateQueue];
+  stateQueue = [(MSUNRDUpdateBrainController *)self stateQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __41__MSUNRDUpdateBrainController_saveState___block_invoke;
   v6[3] = &unk_1000490D8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  stateCopy = state;
+  dispatch_async(stateQueue, v6);
 }
 
 id __41__MSUNRDUpdateBrainController_saveState___block_invoke(uint64_t a1)

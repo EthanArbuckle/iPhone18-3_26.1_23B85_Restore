@@ -2,24 +2,24 @@
 + (void)initialize;
 - (id)description;
 - (id)newTermState;
-- (id)postingsWithOrgApacheLuceneIndexFieldInfo:(id)a3 withOrgApacheLuceneCodecsBlockTermState:(id)a4 withOrgApacheLuceneIndexPostingsEnum:(id)a5 withInt:(int)a6;
+- (id)postingsWithOrgApacheLuceneIndexFieldInfo:(id)info withOrgApacheLuceneCodecsBlockTermState:(id)state withOrgApacheLuceneIndexPostingsEnum:(id)enum withInt:(int)int;
 - (void)checkIntegrity;
 - (void)close;
 - (void)dealloc;
-- (void)decodeTermWithLongArray:(id)a3 withOrgApacheLuceneStoreDataInput:(id)a4 withOrgApacheLuceneIndexFieldInfo:(id)a5 withOrgApacheLuceneCodecsBlockTermState:(id)a6 withBoolean:(BOOL)a7;
-- (void)init__WithOrgApacheLuceneStoreIndexInput:(id)a3 withOrgApacheLuceneIndexSegmentReadState:(id)a4;
+- (void)decodeTermWithLongArray:(id)array withOrgApacheLuceneStoreDataInput:(id)input withOrgApacheLuceneIndexFieldInfo:(id)info withOrgApacheLuceneCodecsBlockTermState:(id)state withBoolean:(BOOL)boolean;
+- (void)init__WithOrgApacheLuceneStoreIndexInput:(id)input withOrgApacheLuceneIndexSegmentReadState:(id)state;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50AAPL50PostingsReader
 
-- (void)init__WithOrgApacheLuceneStoreIndexInput:(id)a3 withOrgApacheLuceneIndexSegmentReadState:(id)a4
+- (void)init__WithOrgApacheLuceneStoreIndexInput:(id)input withOrgApacheLuceneIndexSegmentReadState:(id)state
 {
-  if (!a4 || (v4 = *(a4 + 2)) == 0 || (OrgApacheLuceneCodecsCodecUtil_checkIndexHeaderWithOrgApacheLuceneStoreDataInput_withNSString_withInt_withInt_withByteArray_withNSString_(a3, OrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_TERMS_CODEC_, 0, 0, [v4 getId], *(a4 + 5)), !a3))
+  if (!state || (v4 = *(state + 2)) == 0 || (OrgApacheLuceneCodecsCodecUtil_checkIndexHeaderWithOrgApacheLuceneStoreDataInput_withNSString_withInt_withInt_withByteArray_withNSString_(input, OrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_TERMS_CODEC_, 0, 0, [v4 getId], *(state + 5)), !input))
   {
     JreThrowNullPointerException();
   }
 
-  if ([a3 readVInt] != 128)
+  if ([input readVInt] != 128)
   {
     v13 = JreStrcat("$I$IC", v6, v7, v8, v9, v10, v11, v12, @"index-time BLOCK_SIZE (");
     v14 = new_JavaLangIllegalStateException_initWithNSString_(v13);
@@ -44,130 +44,130 @@
   OrgApacheLuceneUtilIOUtils_closeWithJavaIoCloseableArray_(v3);
 }
 
-- (void)decodeTermWithLongArray:(id)a3 withOrgApacheLuceneStoreDataInput:(id)a4 withOrgApacheLuceneIndexFieldInfo:(id)a5 withOrgApacheLuceneCodecsBlockTermState:(id)a6 withBoolean:(BOOL)a7
+- (void)decodeTermWithLongArray:(id)array withOrgApacheLuceneStoreDataInput:(id)input withOrgApacheLuceneIndexFieldInfo:(id)info withOrgApacheLuceneCodecsBlockTermState:(id)state withBoolean:(BOOL)boolean
 {
-  v7 = a7;
+  booleanCopy = boolean;
   objc_opt_class();
-  if (a6 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (state && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  if (!a5)
+  if (!info)
   {
     goto LABEL_38;
   }
 
-  v12 = [a5 getIndexOptions];
-  if (!v12)
+  getIndexOptions = [info getIndexOptions];
+  if (!getIndexOptions)
   {
     goto LABEL_38;
   }
 
-  v13 = v12;
+  v13 = getIndexOptions;
   if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100015608();
   }
 
   v14 = [v13 compareToWithId:qword_100557388];
-  v15 = [a5 getIndexOptions];
-  if (!v15)
+  getIndexOptions2 = [info getIndexOptions];
+  if (!getIndexOptions2)
   {
     goto LABEL_38;
   }
 
-  v16 = v15;
+  v16 = getIndexOptions2;
   if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100015608();
   }
 
   v17 = [v16 compareToWithId:qword_100557390];
-  v18 = [a5 hasPayloads];
-  if (v7)
+  hasPayloads = [info hasPayloads];
+  if (booleanCopy)
   {
-    if (!a6)
+    if (!state)
     {
       goto LABEL_38;
     }
 
-    *(a6 + 7) = 0;
-    *(a6 + 8) = 0;
-    *(a6 + 9) = 0;
+    *(state + 7) = 0;
+    *(state + 8) = 0;
+    *(state + 9) = 0;
   }
 
-  if (!a3)
+  if (!array)
   {
     goto LABEL_38;
   }
 
-  v19 = *(a3 + 2);
+  v19 = *(array + 2);
   if (v19 <= 0)
   {
     IOSArray_throwOutOfBoundsWithMsg(v19, 0);
   }
 
-  if (!a6)
+  if (!state)
   {
     goto LABEL_38;
   }
 
-  *(a6 + 7) += *(a3 + 2);
+  *(state + 7) += *(array + 2);
   if ((v14 & 0x80000000) == 0)
   {
-    v20 = *(a3 + 2);
+    v20 = *(array + 2);
     if (v20 <= 1)
     {
       IOSArray_throwOutOfBoundsWithMsg(v20, 1);
     }
 
-    *(a6 + 8) += *(a3 + 3);
-    if ((v17 >= 0) | v18 & 1)
+    *(state + 8) += *(array + 3);
+    if ((v17 >= 0) | hasPayloads & 1)
     {
-      v21 = *(a3 + 2);
+      v21 = *(array + 2);
       if (v21 <= 2)
       {
         IOSArray_throwOutOfBoundsWithMsg(v21, 2);
       }
 
-      *(a6 + 9) += *(a3 + 4);
+      *(state + 9) += *(array + 4);
     }
   }
 
-  if (*(a6 + 4) != 1)
+  if (*(state + 4) != 1)
   {
-    *(a6 + 24) = -1;
+    *(state + 24) = -1;
 LABEL_26:
     if ((v14 & 0x80000000) == 0)
     {
-      if (*(a6 + 3) < 129)
+      if (*(state + 3) < 129)
       {
-        v23 = -1;
+        readVLong = -1;
       }
 
       else
       {
-        if (!a4)
+        if (!input)
         {
           goto LABEL_38;
         }
 
-        v23 = [a4 readVLong];
+        readVLong = [input readVLong];
       }
 
-      *(a6 + 11) = v23;
+      *(state + 11) = readVLong;
     }
 
-    if (*(a6 + 4) < 129)
+    if (*(state + 4) < 129)
     {
-      v22 = -1;
+      readVLong2 = -1;
       goto LABEL_36;
     }
 
-    if (a4)
+    if (input)
     {
-      v22 = [a4 readVLong];
+      readVLong2 = [input readVLong];
       goto LABEL_36;
     }
 
@@ -175,70 +175,70 @@ LABEL_38:
     JreThrowNullPointerException();
   }
 
-  if (!a4)
+  if (!input)
   {
     goto LABEL_38;
   }
 
-  *(a6 + 24) = [a4 readVInt];
-  if (*(a6 + 24) != 2147483646)
+  *(state + 24) = [input readVInt];
+  if (*(state + 24) != 2147483646)
   {
     goto LABEL_26;
   }
 
-  *(a6 + 4) = 0;
-  v22 = -1;
-  *(a6 + 11) = -1;
+  *(state + 4) = 0;
+  readVLong2 = -1;
+  *(state + 11) = -1;
 LABEL_36:
-  *(a6 + 10) = v22;
+  *(state + 10) = readVLong2;
 }
 
-- (id)postingsWithOrgApacheLuceneIndexFieldInfo:(id)a3 withOrgApacheLuceneCodecsBlockTermState:(id)a4 withOrgApacheLuceneIndexPostingsEnum:(id)a5 withInt:(int)a6
+- (id)postingsWithOrgApacheLuceneIndexFieldInfo:(id)info withOrgApacheLuceneCodecsBlockTermState:(id)state withOrgApacheLuceneIndexPostingsEnum:(id)enum withInt:(int)int
 {
-  if (!a3)
+  if (!info)
   {
     goto LABEL_44;
   }
 
-  v11 = [a3 getIndexOptions];
-  if (!v11)
+  getIndexOptions = [info getIndexOptions];
+  if (!getIndexOptions)
   {
     goto LABEL_44;
   }
 
-  v12 = v11;
+  v12 = getIndexOptions;
   if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100015608();
   }
 
   v13 = [v12 compareToWithId:qword_100557388];
-  v14 = [a3 getIndexOptions];
-  if (!v14)
+  getIndexOptions2 = [info getIndexOptions];
+  if (!getIndexOptions2)
   {
     goto LABEL_44;
   }
 
-  v15 = v14;
+  v15 = getIndexOptions2;
   if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100015608();
   }
 
   v16 = [v15 compareToWithId:qword_100557390];
-  v17 = [a3 hasPayloads];
-  if (OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(a6, 0x4000) && (v13 & 0x80000000) != 0)
+  hasPayloads = [info hasPayloads];
+  if (OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(int, 0x4000) && (v13 & 0x80000000) != 0)
   {
     return 0;
   }
 
-  if ((v13 & 0x80000000) != 0 || !OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(a6, 24))
+  if ((v13 & 0x80000000) != 0 || !OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(int, 24))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      if (!a5)
+      if (!enum)
       {
         goto LABEL_44;
       }
@@ -248,24 +248,24 @@ LABEL_36:
         goto LABEL_45;
       }
 
-      if ([a5 canReuseWithOrgApacheLuceneStoreIndexInput:self->docIn_ withOrgApacheLuceneIndexFieldInfo:a3])
+      if ([enum canReuseWithOrgApacheLuceneStoreIndexInput:self->docIn_ withOrgApacheLuceneIndexFieldInfo:info])
       {
         goto LABEL_28;
       }
     }
 
     v19 = [OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_BlockDocsEnum alloc];
-    OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_BlockDocsEnum_initWithOrgApacheLuceneCodecsLucene50AAPL50PostingsReader_withOrgApacheLuceneIndexFieldInfo_(v19, &self->super.super.isa, a3);
+    OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_BlockDocsEnum_initWithOrgApacheLuceneCodecsLucene50AAPL50PostingsReader_withOrgApacheLuceneIndexFieldInfo_(v19, &self->super.super.isa, info);
     goto LABEL_27;
   }
 
-  if ((v16 & 0x80000000) == 0 && OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(a6, 56) || v17 && OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(a6, 88))
+  if ((v16 & 0x80000000) == 0 && OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(int, 56) || hasPayloads && OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(int, 88))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      if (!a5)
+      if (!enum)
       {
         goto LABEL_44;
       }
@@ -275,30 +275,30 @@ LABEL_36:
         goto LABEL_45;
       }
 
-      if ([a5 canReuseWithOrgApacheLuceneStoreIndexInput:self->docIn_ withOrgApacheLuceneIndexFieldInfo:a3])
+      if ([enum canReuseWithOrgApacheLuceneStoreIndexInput:self->docIn_ withOrgApacheLuceneIndexFieldInfo:info])
       {
         goto LABEL_28;
       }
 
-      v19 = new_OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_EverythingEnum_initWithOrgApacheLuceneCodecsLucene50AAPL50PostingsReader_withOrgApacheLuceneIndexFieldInfo_(self, a3);
+      v19 = new_OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_EverythingEnum_initWithOrgApacheLuceneCodecsLucene50AAPL50PostingsReader_withOrgApacheLuceneIndexFieldInfo_(self, info);
     }
 
     else
     {
       v19 = [OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_EverythingEnum alloc];
-      OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_EverythingEnum_initWithOrgApacheLuceneCodecsLucene50AAPL50PostingsReader_withOrgApacheLuceneIndexFieldInfo_(v19, self, a3);
+      OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_EverythingEnum_initWithOrgApacheLuceneCodecsLucene50AAPL50PostingsReader_withOrgApacheLuceneIndexFieldInfo_(v19, self, info);
     }
 
 LABEL_27:
-    a5 = v19;
-    if (a5)
+    enum = v19;
+    if (enum)
     {
 LABEL_28:
       objc_opt_class();
-      if (!a4 || (objc_opt_isKindOfClass() & 1) != 0)
+      if (!state || (objc_opt_isKindOfClass() & 1) != 0)
       {
 
-        return [a5 resetWithOrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState:a4 withInt:?];
+        return [enum resetWithOrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState:state withInt:?];
       }
 
 LABEL_45:
@@ -315,7 +315,7 @@ LABEL_45:
   }
 
   objc_opt_class();
-  if (!a5)
+  if (!enum)
   {
     goto LABEL_44;
   }
@@ -325,13 +325,13 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  if (([a5 canReuseWithOrgApacheLuceneStoreIndexInput:self->docIn_ withOrgApacheLuceneIndexFieldInfo:a3] & 1) == 0)
+  if (([enum canReuseWithOrgApacheLuceneStoreIndexInput:self->docIn_ withOrgApacheLuceneIndexFieldInfo:info] & 1) == 0)
   {
 LABEL_48:
     v20 = [OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_BlockPostingsEnum alloc];
-    OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_BlockPostingsEnum_initWithOrgApacheLuceneCodecsLucene50AAPL50PostingsReader_withOrgApacheLuceneIndexFieldInfo_(v20, self, a3);
-    a5 = v20;
-    if (!a5)
+    OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_BlockPostingsEnum_initWithOrgApacheLuceneCodecsLucene50AAPL50PostingsReader_withOrgApacheLuceneIndexFieldInfo_(v20, self, info);
+    enum = v20;
+    if (!enum)
     {
 LABEL_44:
       JreThrowNullPointerException();
@@ -339,12 +339,12 @@ LABEL_44:
   }
 
   objc_opt_class();
-  if (a4 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (state && (objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_45;
   }
 
-  return [a5 resetWithOrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState:a4];
+  return [enum resetWithOrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState:state];
 }
 
 - (void)checkIntegrity
@@ -386,7 +386,7 @@ LABEL_44:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_class_();
     qword_100554120 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

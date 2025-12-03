@@ -1,44 +1,44 @@
 @interface AVTRecordingButton
-- (AVTRecordingButton)initWithCoder:(id)a3;
-- (AVTRecordingButton)initWithFrame:(CGRect)a3;
+- (AVTRecordingButton)initWithCoder:(id)coder;
+- (AVTRecordingButton)initWithFrame:(CGRect)frame;
 - (AVTRecordingButtonLongPressDelegate)longPressDelegate;
 - (void)configure;
-- (void)endLongPress:(BOOL)a3;
+- (void)endLongPress:(BOOL)press;
 - (void)layoutSubviews;
 - (void)sendHapticFeedbackIfNeeded;
-- (void)setCenterCircleColor:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setForceUsePhoneStyle:(BOOL)a3;
-- (void)setUIState:(unint64_t)a3;
+- (void)setCenterCircleColor:(id)color;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setForceUsePhoneStyle:(BOOL)style;
+- (void)setUIState:(unint64_t)state;
 - (void)startLongPress;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation AVTRecordingButton
 
-- (AVTRecordingButton)initWithFrame:(CGRect)a3
+- (AVTRecordingButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = AVTRecordingButton;
   v3 = [(AVTRecordingButton *)&v7 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] redColor];
+    redColor = [MEMORY[0x1E69DC888] redColor];
     centerCircleColor = v3->_centerCircleColor;
-    v3->_centerCircleColor = v4;
+    v3->_centerCircleColor = redColor;
   }
 
   [(AVTRecordingButton *)v3 configure];
   return v3;
 }
 
-- (AVTRecordingButton)initWithCoder:(id)a3
+- (AVTRecordingButton)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AVTRecordingButton;
-  v3 = [(AVTRecordingButton *)&v6 initWithCoder:a3];
+  v3 = [(AVTRecordingButton *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -51,22 +51,22 @@
 - (void)configure
 {
   [(AVTRecordingButton *)self setForceUsePhoneStyle:0];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [(AVTRecordingButton *)self setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(AVTRecordingButton *)self setBackgroundColor:clearColor];
 
   v5 = objc_alloc_init(CAShapeLayerAnimated);
   outerCircle = self->_outerCircle;
   self->_outerCircle = v5;
 
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  -[CAShapeLayerAnimated setFillColor:](self->_outerCircle, "setFillColor:", [v7 CGColor]);
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  -[CAShapeLayerAnimated setFillColor:](self->_outerCircle, "setFillColor:", [clearColor2 CGColor]);
 
-  v8 = [MEMORY[0x1E69DC938] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
-  if (v9 != 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+  if (userInterfaceIdiom != 1)
   {
-    v2 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v2 userInterfaceIdiom] != 5)
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] != 5)
     {
       [(CAShapeLayerAnimated *)self->_outerCircle setLineWidth:4.0];
 LABEL_8:
@@ -75,34 +75,34 @@ LABEL_8:
     }
   }
 
-  v10 = [(AVTRecordingButton *)self forceUsePhoneStyle];
+  forceUsePhoneStyle = [(AVTRecordingButton *)self forceUsePhoneStyle];
   v11 = 7.0;
-  if (v10)
+  if (forceUsePhoneStyle)
   {
     v11 = 4.0;
   }
 
   [(CAShapeLayerAnimated *)self->_outerCircle setLineWidth:v11];
-  if (v9 != 1)
+  if (userInterfaceIdiom != 1)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
 
-  v12 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
-  -[CAShapeLayerAnimated setStrokeColor:](self->_outerCircle, "setStrokeColor:", [v12 CGColor]);
+  quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+  -[CAShapeLayerAnimated setStrokeColor:](self->_outerCircle, "setStrokeColor:", [quaternaryLabelColor CGColor]);
 
-  v13 = [(AVTRecordingButton *)self layer];
-  [v13 addSublayer:self->_outerCircle];
+  layer = [(AVTRecordingButton *)self layer];
+  [layer addSublayer:self->_outerCircle];
 
   v14 = objc_alloc_init(CAShapeLayerAnimated);
   innerCircle = self->_innerCircle;
   self->_innerCircle = v14;
 
   [(CAShapeLayerAnimated *)self->_innerCircle setFillColor:[(UIColor *)self->_centerCircleColor CGColor]];
-  v16 = [(AVTRecordingButton *)self layer];
-  [v16 addSublayer:self->_innerCircle];
+  layer2 = [(AVTRecordingButton *)self layer];
+  [layer2 addSublayer:self->_innerCircle];
 
   v25 = [MEMORY[0x1E69DCAD8] configurationWithWeight:6];
   v17 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.up" withConfiguration:v25];
@@ -111,8 +111,8 @@ LABEL_9:
   self->_iconView = v18;
 
   [(UIImageView *)self->_iconView setHidden:0];
-  v20 = [MEMORY[0x1E69DC888] whiteColor];
-  [(UIImageView *)self->_iconView setTintColor:v20];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(UIImageView *)self->_iconView setTintColor:whiteColor];
 
   [(AVTRecordingButton *)self addSubview:self->_iconView];
   v21 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:101];
@@ -127,24 +127,24 @@ LABEL_9:
   self->_feedbackGenerator = v23;
 }
 
-- (void)setCenterCircleColor:(id)a3
+- (void)setCenterCircleColor:(id)color
 {
-  v5 = a3;
-  if (self->_centerCircleColor != v5)
+  colorCopy = color;
+  if (self->_centerCircleColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_centerCircleColor, a3);
+    v7 = colorCopy;
+    objc_storeStrong(&self->_centerCircleColor, color);
     v6 = v7;
     [(CAShapeLayerAnimated *)self->_innerCircle setFillColor:[(UIColor *)v7 CGColor]];
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
-- (void)setForceUsePhoneStyle:(BOOL)a3
+- (void)setForceUsePhoneStyle:(BOOL)style
 {
-  if (self->_forceUsePhoneStyle != a3)
+  if (self->_forceUsePhoneStyle != style)
   {
-    self->_forceUsePhoneStyle = a3;
+    self->_forceUsePhoneStyle = style;
     [(AVTRecordingButton *)self setNeedsLayout];
   }
 }
@@ -154,18 +154,18 @@ LABEL_9:
   v63.receiver = self;
   v63.super_class = AVTRecordingButton;
   [(AVTRecordingButton *)&v63 layoutSubviews];
-  v5 = [MEMORY[0x1E6979518] disableActions];
+  disableActions = [MEMORY[0x1E6979518] disableActions];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(AVTRecordingButton *)self setAlpha:[(AVTRecordingButton *)self isEnabled]];
-  [MEMORY[0x1E6979518] setDisableActions:v5];
+  [MEMORY[0x1E6979518] setDisableActions:disableActions];
   [(AVTRecordingButton *)self bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [MEMORY[0x1E69DC938] currentDevice];
-  v15 = [v14 userInterfaceIdiom];
-  if (v15 == 1 || ([MEMORY[0x1E69DC938] currentDevice], v2 = objc_claimAutoreleasedReturnValue(), v16 = 2.0, objc_msgSend(v2, "userInterfaceIdiom") == 5))
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+  if (userInterfaceIdiom == 1 || ([MEMORY[0x1E69DC938] currentDevice], v2 = objc_claimAutoreleasedReturnValue(), v16 = 2.0, objc_msgSend(v2, "userInterfaceIdiom") == 5))
   {
     if ([(AVTRecordingButton *)self forceUsePhoneStyle])
     {
@@ -178,9 +178,9 @@ LABEL_9:
     }
   }
 
-  v17 = [MEMORY[0x1E69DC938] currentDevice];
-  v18 = [v17 userInterfaceIdiom];
-  if (v18 == 1 || ([MEMORY[0x1E69DC938] currentDevice], v3 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v3, "userInterfaceIdiom"), v20 = 2.0, v19 == 5))
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
+  if (userInterfaceIdiom2 == 1 || ([MEMORY[0x1E69DC938] currentDevice], v3 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v3, "userInterfaceIdiom"), v20 = 2.0, v19 == 5))
   {
     if ([(AVTRecordingButton *)self forceUsePhoneStyle])
     {
@@ -199,21 +199,21 @@ LABEL_9:
   v64.size.height = v13;
   v65 = CGRectInset(v64, v16, v20);
   v21 = CGPathCreateWithEllipseInRect(v65, 0);
-  if (v18 != 1)
+  if (userInterfaceIdiom2 != 1)
   {
   }
 
-  if (v15 != 1)
+  if (userInterfaceIdiom != 1)
   {
   }
 
-  v22 = [(AVTRecordingButton *)self outerCircle];
-  [v22 setPath:v21];
+  outerCircle = [(AVTRecordingButton *)self outerCircle];
+  [outerCircle setPath:v21];
 
   CFRelease(v21);
-  v23 = [MEMORY[0x1E69DC938] currentDevice];
-  v24 = [v23 userInterfaceIdiom];
-  if (v24 == 1 || ([MEMORY[0x1E69DC938] currentDevice], v2 = objc_claimAutoreleasedReturnValue(), v25 = 4.0, objc_msgSend(v2, "userInterfaceIdiom") == 5))
+  currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
+  if (userInterfaceIdiom3 == 1 || ([MEMORY[0x1E69DC938] currentDevice], v2 = objc_claimAutoreleasedReturnValue(), v25 = 4.0, objc_msgSend(v2, "userInterfaceIdiom") == 5))
   {
     if ([(AVTRecordingButton *)self forceUsePhoneStyle])
     {
@@ -226,19 +226,19 @@ LABEL_9:
     }
   }
 
-  v26 = [(AVTRecordingButton *)self outerCircle];
-  [v26 setLineWidth:v25];
+  outerCircle2 = [(AVTRecordingButton *)self outerCircle];
+  [outerCircle2 setLineWidth:v25];
 
-  if (v24 != 1)
+  if (userInterfaceIdiom3 != 1)
   {
   }
 
-  v27 = [(AVTRecordingButton *)self uiState];
-  v28 = [MEMORY[0x1E69DC938] currentDevice];
-  v29 = [v28 userInterfaceIdiom];
-  if (v27 == 1)
+  uiState = [(AVTRecordingButton *)self uiState];
+  currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
+  if (uiState == 1)
   {
-    if (v29 == 1)
+    if (userInterfaceIdiom4 == 1)
     {
       if ([(AVTRecordingButton *)self forceUsePhoneStyle])
       {
@@ -253,9 +253,9 @@ LABEL_9:
 
     else
     {
-      v31 = [MEMORY[0x1E69DC938] currentDevice];
+      currentDevice5 = [MEMORY[0x1E69DC938] currentDevice];
       v30 = 16.0;
-      if ([v31 userInterfaceIdiom] == 5)
+      if ([currentDevice5 userInterfaceIdiom] == 5)
       {
         if ([(AVTRecordingButton *)self forceUsePhoneStyle])
         {
@@ -269,8 +269,8 @@ LABEL_9:
       }
     }
 
-    v32 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v32 userInterfaceIdiom] == 1)
+    currentDevice6 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice6 userInterfaceIdiom] == 1)
     {
       if ([(AVTRecordingButton *)self forceUsePhoneStyle])
       {
@@ -285,9 +285,9 @@ LABEL_9:
       goto LABEL_57;
     }
 
-    v27 = [MEMORY[0x1E69DC938] currentDevice];
+    uiState = [MEMORY[0x1E69DC938] currentDevice];
     v33 = 4.0;
-    if ([v27 userInterfaceIdiom] == 5)
+    if ([uiState userInterfaceIdiom] == 5)
     {
       if ([(AVTRecordingButton *)self forceUsePhoneStyle])
       {
@@ -305,7 +305,7 @@ LABEL_56:
     goto LABEL_57;
   }
 
-  if (v29 == 1)
+  if (userInterfaceIdiom4 == 1)
   {
     if ([(AVTRecordingButton *)self forceUsePhoneStyle])
     {
@@ -320,9 +320,9 @@ LABEL_56:
 
   else
   {
-    v27 = [MEMORY[0x1E69DC938] currentDevice];
+    uiState = [MEMORY[0x1E69DC938] currentDevice];
     v30 = 7.0;
-    if ([v27 userInterfaceIdiom] == 5)
+    if ([uiState userInterfaceIdiom] == 5)
     {
       if ([(AVTRecordingButton *)self forceUsePhoneStyle])
       {
@@ -338,27 +338,27 @@ LABEL_56:
 
   [(AVTRecordingButton *)self bounds];
   v35 = v34;
-  v32 = [MEMORY[0x1E69DC938] currentDevice];
-  v36 = [v32 userInterfaceIdiom];
-  if (v36 != 1)
+  currentDevice6 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom5 = [currentDevice6 userInterfaceIdiom];
+  if (userInterfaceIdiom5 != 1)
   {
-    v27 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v27 userInterfaceIdiom] != 5)
+    uiState = [MEMORY[0x1E69DC938] currentDevice];
+    if ([uiState userInterfaceIdiom] != 5)
     {
       v33 = v35 * 0.5 + -7.0;
       goto LABEL_56;
     }
   }
 
-  v37 = [(AVTRecordingButton *)self forceUsePhoneStyle];
+  forceUsePhoneStyle = [(AVTRecordingButton *)self forceUsePhoneStyle];
   v38 = -11.0;
-  if (v37)
+  if (forceUsePhoneStyle)
   {
     v38 = -7.0;
   }
 
   v33 = v38 + v35 * 0.5;
-  if (v36 != 1)
+  if (userInterfaceIdiom5 != 1)
   {
     goto LABEL_56;
   }
@@ -372,19 +372,19 @@ LABEL_57:
   width = v67.size.width;
   height = v67.size.height;
   v43 = CGPathCreateWithRoundedRect(v67, v33, v33, 0);
-  v44 = [(AVTRecordingButton *)self innerCircle];
-  [v44 setFrame:{x, y, width, height}];
+  innerCircle = [(AVTRecordingButton *)self innerCircle];
+  [innerCircle setFrame:{x, y, width, height}];
 
   BoundingBox = CGPathGetBoundingBox(v43);
   v45 = BoundingBox.origin.x;
   v46 = BoundingBox.origin.y;
   v47 = BoundingBox.size.width;
   v48 = BoundingBox.size.height;
-  v49 = [(AVTRecordingButton *)self innerCircle];
-  [v49 setBounds:{v45, v46, v47, v48}];
+  innerCircle2 = [(AVTRecordingButton *)self innerCircle];
+  [innerCircle2 setBounds:{v45, v46, v47, v48}];
 
-  v50 = [(AVTRecordingButton *)self innerCircle];
-  [v50 setPath:v43];
+  innerCircle3 = [(AVTRecordingButton *)self innerCircle];
+  [innerCircle3 setPath:v43];
 
   CFRelease(v43);
   if ([(AVTRecordingButton *)self isHighlighted]&& [(AVTRecordingButton *)self uiState]!= 1)
@@ -403,12 +403,12 @@ LABEL_57:
   }
 
   CATransform3DMakeScale(&v62, v51, v51, 1.0);
-  v52 = [(AVTRecordingButton *)self innerCircle];
+  innerCircle4 = [(AVTRecordingButton *)self innerCircle];
   v61 = v62;
-  [v52 setTransform:&v61];
+  [innerCircle4 setTransform:&v61];
 
-  v53 = [(AVTRecordingButton *)self uiState];
-  if (v53 == 2)
+  uiState2 = [(AVTRecordingButton *)self uiState];
+  if (uiState2 == 2)
   {
     [(AVTRecordingButton *)self tintColor];
   }
@@ -418,10 +418,10 @@ LABEL_57:
     [(AVTRecordingButton *)self centerCircleColor];
   }
   v54 = ;
-  v55 = v53 == 2;
-  v56 = [v54 CGColor];
-  v57 = [(AVTRecordingButton *)self innerCircle];
-  [v57 setFillColor:v56];
+  v55 = uiState2 == 2;
+  cGColor = [v54 CGColor];
+  innerCircle5 = [(AVTRecordingButton *)self innerCircle];
+  [innerCircle5 setFillColor:cGColor];
 
   v58 = MEMORY[0x1E69DD250];
   [MEMORY[0x1E6979518] animationDuration];
@@ -497,24 +497,24 @@ void __36__AVTRecordingButton_layoutSubviews__block_invoke(uint64_t a1)
   [v23 setOpacity:v22];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(AVTRecordingButton *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(AVTRecordingButton *)self isEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = AVTRecordingButton;
-    [(AVTRecordingButton *)&v5 setEnabled:v3];
+    [(AVTRecordingButton *)&v5 setEnabled:enabledCopy];
     [(AVTRecordingButton *)self setNeedsLayout];
   }
 }
 
-- (void)setUIState:(unint64_t)a3
+- (void)setUIState:(unint64_t)state
 {
-  if (self->_uiState != a3)
+  if (self->_uiState != state)
   {
-    self->_uiState = a3;
-    if (a3 - 1 <= 1)
+    self->_uiState = state;
+    if (state - 1 <= 1)
     {
       [(AVTRecordingButton *)self sendHapticFeedbackIfNeeded];
     }
@@ -525,22 +525,22 @@ void __36__AVTRecordingButton_layoutSubviews__block_invoke(uint64_t a1)
 
 - (void)sendHapticFeedbackIfNeeded
 {
-  v3 = [(AVTRecordingButton *)self lastFeedbackSent];
-  if (!v3 || (v4 = v3, -[AVTRecordingButton lastFeedbackSent](self, "lastFeedbackSent"), v5 = objc_claimAutoreleasedReturnValue(), [v5 timeIntervalSinceNow], v7 = v6, v5, v4, v7 < -0.2))
+  lastFeedbackSent = [(AVTRecordingButton *)self lastFeedbackSent];
+  if (!lastFeedbackSent || (v4 = lastFeedbackSent, -[AVTRecordingButton lastFeedbackSent](self, "lastFeedbackSent"), v5 = objc_claimAutoreleasedReturnValue(), [v5 timeIntervalSinceNow], v7 = v6, v5, v4, v7 < -0.2))
   {
     v8 = objc_opt_new();
     [(AVTRecordingButton *)self setLastFeedbackSent:v8];
 
-    v9 = [(AVTRecordingButton *)self feedbackGenerator];
-    [v9 impactOccurred];
+    feedbackGenerator = [(AVTRecordingButton *)self feedbackGenerator];
+    [feedbackGenerator impactOccurred];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = AVTRecordingButton;
-  [(AVTRecordingButton *)&v5 touchesBegan:a3 withEvent:a4];
+  [(AVTRecordingButton *)&v5 touchesBegan:began withEvent:event];
   if ([(AVTRecordingButton *)self uiState]!= 3)
   {
     [(AVTRecordingButton *)self sendHapticFeedbackIfNeeded];
@@ -550,17 +550,17 @@ void __36__AVTRecordingButton_layoutSubviews__block_invoke(uint64_t a1)
   [(AVTRecordingButton *)self performSelector:sel_startLongPress withObject:0 afterDelay:0.25];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
+  endedCopy = ended;
   v12.receiver = self;
   v12.super_class = AVTRecordingButton;
-  [(AVTRecordingButton *)&v12 touchesEnded:v6 withEvent:a4];
+  [(AVTRecordingButton *)&v12 touchesEnded:endedCopy withEvent:event];
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
   if ([(AVTRecordingButton *)self isTrackingLongPress])
   {
-    v7 = [v6 anyObject];
-    [v7 locationInView:self];
+    anyObject = [endedCopy anyObject];
+    [anyObject locationInView:self];
     v9 = v8;
     v11 = v10;
 
@@ -571,11 +571,11 @@ void __36__AVTRecordingButton_layoutSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = AVTRecordingButton;
-  [(AVTRecordingButton *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(AVTRecordingButton *)&v5 touchesCancelled:cancelled withEvent:event];
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
   if ([(AVTRecordingButton *)self isTrackingLongPress])
   {
@@ -586,25 +586,25 @@ void __36__AVTRecordingButton_layoutSubviews__block_invoke(uint64_t a1)
 - (void)startLongPress
 {
   [(AVTRecordingButton *)self setIsTrackingLongPress:1];
-  v3 = [(AVTRecordingButton *)self longPressDelegate];
+  longPressDelegate = [(AVTRecordingButton *)self longPressDelegate];
 
-  if (v3)
+  if (longPressDelegate)
   {
-    v4 = [(AVTRecordingButton *)self longPressDelegate];
-    [v4 recordingButtonDidStartLongPress:self];
+    longPressDelegate2 = [(AVTRecordingButton *)self longPressDelegate];
+    [longPressDelegate2 recordingButtonDidStartLongPress:self];
   }
 }
 
-- (void)endLongPress:(BOOL)a3
+- (void)endLongPress:(BOOL)press
 {
-  v3 = a3;
+  pressCopy = press;
   [(AVTRecordingButton *)self setIsTrackingLongPress:0];
-  v5 = [(AVTRecordingButton *)self longPressDelegate];
+  longPressDelegate = [(AVTRecordingButton *)self longPressDelegate];
 
-  if (v5)
+  if (longPressDelegate)
   {
-    v6 = [(AVTRecordingButton *)self longPressDelegate];
-    [v6 recordingButton:self didEndLongPress:v3];
+    longPressDelegate2 = [(AVTRecordingButton *)self longPressDelegate];
+    [longPressDelegate2 recordingButton:self didEndLongPress:pressCopy];
   }
 }
 

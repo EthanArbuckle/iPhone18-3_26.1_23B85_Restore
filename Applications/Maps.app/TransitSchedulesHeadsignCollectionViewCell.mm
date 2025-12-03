@@ -1,9 +1,9 @@
 @interface TransitSchedulesHeadsignCollectionViewCell
 - (TransitSchedulesHeadsignCollectionViewCell)init;
-- (TransitSchedulesHeadsignCollectionViewCell)initWithFrame:(CGRect)a3;
+- (TransitSchedulesHeadsignCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)configureViews;
-- (void)setHeadsign:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setHeadsign:(id)headsign;
+- (void)setSelected:(BOOL)selected;
 - (void)updateStyling;
 @end
 
@@ -24,20 +24,20 @@
   [(UILabel *)self->_headsignLabel setTextColor:v3];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = TransitSchedulesHeadsignCollectionViewCell;
-  [(TransitSchedulesHeadsignCollectionViewCell *)&v4 setSelected:a3];
+  [(TransitSchedulesHeadsignCollectionViewCell *)&v4 setSelected:selected];
   [(TransitSchedulesHeadsignCollectionViewCell *)self updateStyling];
 }
 
-- (void)setHeadsign:(id)a3
+- (void)setHeadsign:(id)headsign
 {
-  v6 = a3;
+  headsignCopy = headsign;
   if (![(NSString *)self->_headsign isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [headsignCopy copy];
     headsign = self->_headsign;
     self->_headsign = v4;
 
@@ -52,29 +52,29 @@
   v4 = +[UIColor clearColor];
   [v3 setBackgroundColor:v4];
 
-  v5 = [v3 layer];
-  [v5 setMasksToBounds:1];
+  layer = [v3 layer];
+  [layer setMasksToBounds:1];
 
   v6 = +[UIColor systemGray3Color];
-  v7 = [v6 CGColor];
-  v8 = [v3 layer];
-  [v8 setBorderColor:v7];
+  cGColor = [v6 CGColor];
+  layer2 = [v3 layer];
+  [layer2 setBorderColor:cGColor];
 
-  v9 = self;
-  v10 = [(TransitSchedulesHeadsignCollectionViewCell *)v9 window];
-  v11 = [v10 screen];
-  if (v11)
+  selfCopy = self;
+  window = [(TransitSchedulesHeadsignCollectionViewCell *)selfCopy window];
+  screen = [window screen];
+  if (screen)
   {
-    v12 = [(TransitSchedulesHeadsignCollectionViewCell *)v9 window];
-    v13 = [v12 screen];
-    [v13 nativeScale];
+    window2 = [(TransitSchedulesHeadsignCollectionViewCell *)selfCopy window];
+    screen2 = [window2 screen];
+    [screen2 nativeScale];
     v15 = v14;
   }
 
   else
   {
-    v12 = +[UIScreen mainScreen];
-    [v12 nativeScale];
+    window2 = +[UIScreen mainScreen];
+    [window2 nativeScale];
     v15 = v16;
   }
 
@@ -88,61 +88,61 @@
     v17 = 1.0 / v15;
   }
 
-  v18 = [v3 layer];
-  [v18 setBorderWidth:v17];
+  layer3 = [v3 layer];
+  [layer3 setBorderWidth:v17];
 
   [v3 _setContinuousCornerRadius:16.0];
   v41 = objc_alloc_init(UIView);
   v19 = +[UIColor systemBlueColor];
   [v41 setBackgroundColor:v19];
 
-  [(TransitSchedulesHeadsignCollectionViewCell *)v9 setSelectedBackgroundView:v41];
-  v20 = [v41 layer];
-  [v20 setCornerRadius:16.0];
+  [(TransitSchedulesHeadsignCollectionViewCell *)selfCopy setSelectedBackgroundView:v41];
+  layer4 = [v41 layer];
+  [layer4 setCornerRadius:16.0];
 
-  v21 = [(TransitSchedulesHeadsignCollectionViewCell *)v9 contentView];
-  [v21 setAccessibilityIdentifier:@"TransitSchedulesHeadsignCollectionViewCell"];
+  contentView = [(TransitSchedulesHeadsignCollectionViewCell *)selfCopy contentView];
+  [contentView setAccessibilityIdentifier:@"TransitSchedulesHeadsignCollectionViewCell"];
   v22 = objc_alloc_init(UILabel);
   [(UILabel *)v22 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)v22 setTextAlignment:1];
   [(UILabel *)v22 setAccessibilityIdentifier:@"TransitSchedulesHeadsignCollectionViewCellHeadsignLabel"];
   v40 = objc_retainBlock(&stru_10165D908);
   [DynamicTypeWizard autorefreshLabel:v22 withFontProvider:v40];
-  [v21 addSubview:v22];
-  headsignLabel = v9->_headsignLabel;
-  v9->_headsignLabel = v22;
+  [contentView addSubview:v22];
+  headsignLabel = selfCopy->_headsignLabel;
+  selfCopy->_headsignLabel = v22;
   v24 = v22;
 
-  v39 = [(UILabel *)v24 topAnchor];
-  v38 = [v21 topAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38 constant:6.0];
+  topAnchor = [(UILabel *)v24 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v37 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:6.0];
   v42[0] = v37;
-  v35 = [(UILabel *)v24 bottomAnchor];
-  v34 = [v21 bottomAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34 constant:-6.0];
+  bottomAnchor = [(UILabel *)v24 bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-6.0];
   v42[1] = v33;
-  v25 = [(UILabel *)v24 leadingAnchor];
-  v26 = [v21 leadingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26 constant:12.0];
+  leadingAnchor = [(UILabel *)v24 leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
   v42[2] = v27;
   [(UILabel *)v24 trailingAnchor];
   v28 = v36 = v3;
-  v29 = [v21 trailingAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29 constant:-12.0];
+  trailingAnchor = [contentView trailingAnchor];
+  v30 = [v28 constraintEqualToAnchor:trailingAnchor constant:-12.0];
   v42[3] = v30;
   v31 = [NSArray arrayWithObjects:v42 count:4];
   [NSLayoutConstraint activateConstraints:v31];
 
-  [(TransitSchedulesHeadsignCollectionViewCell *)v9 setIsAccessibilityElement:1];
-  v32 = [(TransitSchedulesHeadsignCollectionViewCell *)v9 accessibilityTraits];
-  [(TransitSchedulesHeadsignCollectionViewCell *)v9 setAccessibilityTraits:UIAccessibilityTraitButton | v32];
+  [(TransitSchedulesHeadsignCollectionViewCell *)selfCopy setIsAccessibilityElement:1];
+  accessibilityTraits = [(TransitSchedulesHeadsignCollectionViewCell *)selfCopy accessibilityTraits];
+  [(TransitSchedulesHeadsignCollectionViewCell *)selfCopy setAccessibilityTraits:UIAccessibilityTraitButton | accessibilityTraits];
 }
 
-- (TransitSchedulesHeadsignCollectionViewCell)initWithFrame:(CGRect)a3
+- (TransitSchedulesHeadsignCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TransitSchedulesHeadsignCollectionViewCell;
-  v3 = [(TransitSchedulesHeadsignCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitSchedulesHeadsignCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

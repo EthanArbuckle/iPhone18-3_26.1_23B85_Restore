@@ -1,14 +1,14 @@
 @interface AWDWiFiMetricsManagerChipCounters
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addFrameCounterPerInterface:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addFrameCounterPerInterface:(id)interface;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerChipCounters
@@ -30,7 +30,7 @@
   [(AWDWiFiMetricsManagerChipCounters *)&v3 dealloc];
 }
 
-- (void)addFrameCounterPerInterface:(id)a3
+- (void)addFrameCounterPerInterface:(id)interface
 {
   frameCounterPerInterfaces = self->_frameCounterPerInterfaces;
   if (!frameCounterPerInterfaces)
@@ -39,7 +39,7 @@
     self->_frameCounterPerInterfaces = frameCounterPerInterfaces;
   }
 
-  [(NSMutableArray *)frameCounterPerInterfaces addObject:a3];
+  [(NSMutableArray *)frameCounterPerInterfaces addObject:interface];
 }
 
 - (id)description
@@ -52,64 +52,64 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   frameCounters = self->_frameCounters;
   if (frameCounters)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerFrameCounterStats dictionaryRepresentation](frameCounters forKey:{"dictionaryRepresentation"), @"frameCounters"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerFrameCounterStats dictionaryRepresentation](frameCounters forKey:{"dictionaryRepresentation"), @"frameCounters"}];
   }
 
   txGeneralStats = self->_txGeneralStats;
   if (txGeneralStats)
   {
-    [v3 setObject:-[AWDChipCountersTx dictionaryRepresentation](txGeneralStats forKey:{"dictionaryRepresentation"), @"txGeneralStats"}];
+    [dictionary setObject:-[AWDChipCountersTx dictionaryRepresentation](txGeneralStats forKey:{"dictionaryRepresentation"), @"txGeneralStats"}];
   }
 
   txErrorStats = self->_txErrorStats;
   if (txErrorStats)
   {
-    [v3 setObject:-[AWDChipErrorCountersTx dictionaryRepresentation](txErrorStats forKey:{"dictionaryRepresentation"), @"txErrorStats"}];
+    [dictionary setObject:-[AWDChipErrorCountersTx dictionaryRepresentation](txErrorStats forKey:{"dictionaryRepresentation"), @"txErrorStats"}];
   }
 
   rxGeneralStats = self->_rxGeneralStats;
   if (rxGeneralStats)
   {
-    [v3 setObject:-[AWDChipCountersRx dictionaryRepresentation](rxGeneralStats forKey:{"dictionaryRepresentation"), @"rxGeneralStats"}];
+    [dictionary setObject:-[AWDChipCountersRx dictionaryRepresentation](rxGeneralStats forKey:{"dictionaryRepresentation"), @"rxGeneralStats"}];
   }
 
   rxMACErrorStats = self->_rxMACErrorStats;
   if (rxMACErrorStats)
   {
-    [v3 setObject:-[AWDMacCountersRxErrors dictionaryRepresentation](rxMACErrorStats forKey:{"dictionaryRepresentation"), @"rxMACErrorStats"}];
+    [dictionary setObject:-[AWDMacCountersRxErrors dictionaryRepresentation](rxMACErrorStats forKey:{"dictionaryRepresentation"), @"rxMACErrorStats"}];
   }
 
   rxMACCounterStats = self->_rxMACCounterStats;
   if (rxMACCounterStats)
   {
-    [v3 setObject:-[AWDMacCountersRx dictionaryRepresentation](rxMACCounterStats forKey:{"dictionaryRepresentation"), @"rxMACCounterStats"}];
+    [dictionary setObject:-[AWDMacCountersRx dictionaryRepresentation](rxMACCounterStats forKey:{"dictionaryRepresentation"), @"rxMACCounterStats"}];
   }
 
   rxPhyErrors = self->_rxPhyErrors;
   if (rxPhyErrors)
   {
-    [v3 setObject:-[AWDRxPhyErrors dictionaryRepresentation](rxPhyErrors forKey:{"dictionaryRepresentation"), @"rxPhyErrors"}];
+    [dictionary setObject:-[AWDRxPhyErrors dictionaryRepresentation](rxPhyErrors forKey:{"dictionaryRepresentation"), @"rxPhyErrors"}];
   }
 
   ucastWPA2Counters = self->_ucastWPA2Counters;
   if (ucastWPA2Counters)
   {
-    [v3 setObject:-[AWDWPA2Counters dictionaryRepresentation](ucastWPA2Counters forKey:{"dictionaryRepresentation"), @"ucastWPA2Counters"}];
+    [dictionary setObject:-[AWDWPA2Counters dictionaryRepresentation](ucastWPA2Counters forKey:{"dictionaryRepresentation"), @"ucastWPA2Counters"}];
   }
 
   mcastWPA2Counters = self->_mcastWPA2Counters;
   if (mcastWPA2Counters)
   {
-    [v3 setObject:-[AWDWPA2Counters dictionaryRepresentation](mcastWPA2Counters forKey:{"dictionaryRepresentation"), @"mcastWPA2Counters"}];
+    [dictionary setObject:-[AWDWPA2Counters dictionaryRepresentation](mcastWPA2Counters forKey:{"dictionaryRepresentation"), @"mcastWPA2Counters"}];
   }
 
   if ([(NSMutableArray *)self->_frameCounterPerInterfaces count])
@@ -143,14 +143,14 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"frameCounterPerInterface"];
+    [dictionary setObject:v13 forKey:@"frameCounterPerInterface"];
   }
 
   v19 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -239,78 +239,78 @@
   v11 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 96) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 96) |= 1u;
   }
 
   if (self->_frameCounters)
   {
-    [a3 setFrameCounters:?];
+    [to setFrameCounters:?];
   }
 
   if (self->_txGeneralStats)
   {
-    [a3 setTxGeneralStats:?];
+    [to setTxGeneralStats:?];
   }
 
   if (self->_txErrorStats)
   {
-    [a3 setTxErrorStats:?];
+    [to setTxErrorStats:?];
   }
 
   if (self->_rxGeneralStats)
   {
-    [a3 setRxGeneralStats:?];
+    [to setRxGeneralStats:?];
   }
 
   if (self->_rxMACErrorStats)
   {
-    [a3 setRxMACErrorStats:?];
+    [to setRxMACErrorStats:?];
   }
 
   if (self->_rxMACCounterStats)
   {
-    [a3 setRxMACCounterStats:?];
+    [to setRxMACCounterStats:?];
   }
 
   if (self->_rxPhyErrors)
   {
-    [a3 setRxPhyErrors:?];
+    [to setRxPhyErrors:?];
   }
 
   if (self->_ucastWPA2Counters)
   {
-    [a3 setUcastWPA2Counters:?];
+    [to setUcastWPA2Counters:?];
   }
 
   if (self->_mcastWPA2Counters)
   {
-    [a3 setMcastWPA2Counters:?];
+    [to setMcastWPA2Counters:?];
   }
 
   if ([(AWDWiFiMetricsManagerChipCounters *)self frameCounterPerInterfacesCount])
   {
-    [a3 clearFrameCounterPerInterfaces];
-    v5 = [(AWDWiFiMetricsManagerChipCounters *)self frameCounterPerInterfacesCount];
-    if (v5)
+    [to clearFrameCounterPerInterfaces];
+    frameCounterPerInterfacesCount = [(AWDWiFiMetricsManagerChipCounters *)self frameCounterPerInterfacesCount];
+    if (frameCounterPerInterfacesCount)
     {
-      v6 = v5;
+      v6 = frameCounterPerInterfacesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addFrameCounterPerInterface:{-[AWDWiFiMetricsManagerChipCounters frameCounterPerInterfaceAtIndex:](self, "frameCounterPerInterfaceAtIndex:", i)}];
+        [to addFrameCounterPerInterface:{-[AWDWiFiMetricsManagerChipCounters frameCounterPerInterfaceAtIndex:](self, "frameCounterPerInterfaceAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -318,19 +318,19 @@
     *(v5 + 96) |= 1u;
   }
 
-  *(v6 + 24) = [(AWDWiFiMetricsManagerFrameCounterStats *)self->_frameCounters copyWithZone:a3];
-  *(v6 + 80) = [(AWDChipCountersTx *)self->_txGeneralStats copyWithZone:a3];
+  *(v6 + 24) = [(AWDWiFiMetricsManagerFrameCounterStats *)self->_frameCounters copyWithZone:zone];
+  *(v6 + 80) = [(AWDChipCountersTx *)self->_txGeneralStats copyWithZone:zone];
 
-  *(v6 + 72) = [(AWDChipErrorCountersTx *)self->_txErrorStats copyWithZone:a3];
-  *(v6 + 40) = [(AWDChipCountersRx *)self->_rxGeneralStats copyWithZone:a3];
+  *(v6 + 72) = [(AWDChipErrorCountersTx *)self->_txErrorStats copyWithZone:zone];
+  *(v6 + 40) = [(AWDChipCountersRx *)self->_rxGeneralStats copyWithZone:zone];
 
-  *(v6 + 56) = [(AWDMacCountersRxErrors *)self->_rxMACErrorStats copyWithZone:a3];
-  *(v6 + 48) = [(AWDMacCountersRx *)self->_rxMACCounterStats copyWithZone:a3];
+  *(v6 + 56) = [(AWDMacCountersRxErrors *)self->_rxMACErrorStats copyWithZone:zone];
+  *(v6 + 48) = [(AWDMacCountersRx *)self->_rxMACCounterStats copyWithZone:zone];
 
-  *(v6 + 64) = [(AWDRxPhyErrors *)self->_rxPhyErrors copyWithZone:a3];
-  *(v6 + 88) = [(AWDWPA2Counters *)self->_ucastWPA2Counters copyWithZone:a3];
+  *(v6 + 64) = [(AWDRxPhyErrors *)self->_rxPhyErrors copyWithZone:zone];
+  *(v6 + 88) = [(AWDWPA2Counters *)self->_ucastWPA2Counters copyWithZone:zone];
 
-  *(v6 + 32) = [(AWDWPA2Counters *)self->_mcastWPA2Counters copyWithZone:a3];
+  *(v6 + 32) = [(AWDWPA2Counters *)self->_mcastWPA2Counters copyWithZone:zone];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -351,7 +351,7 @@
           objc_enumerationMutation(frameCounterPerInterfaces);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addFrameCounterPerInterface:v12];
 
         ++v11;
@@ -368,21 +368,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 96);
+    v6 = *(equal + 96);
     if (*&self->_has)
     {
-      if ((*(a3 + 96) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 96) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_27;
       }
     }
 
-    else if (*(a3 + 96))
+    else if (*(equal + 96))
     {
 LABEL_27:
       LOBYTE(v5) = 0;
@@ -390,34 +390,34 @@ LABEL_27:
     }
 
     frameCounters = self->_frameCounters;
-    if (!(frameCounters | *(a3 + 3)) || (v5 = [(AWDWiFiMetricsManagerFrameCounterStats *)frameCounters isEqual:?]) != 0)
+    if (!(frameCounters | *(equal + 3)) || (v5 = [(AWDWiFiMetricsManagerFrameCounterStats *)frameCounters isEqual:?]) != 0)
     {
       txGeneralStats = self->_txGeneralStats;
-      if (!(txGeneralStats | *(a3 + 10)) || (v5 = [(AWDChipCountersTx *)txGeneralStats isEqual:?]) != 0)
+      if (!(txGeneralStats | *(equal + 10)) || (v5 = [(AWDChipCountersTx *)txGeneralStats isEqual:?]) != 0)
       {
         txErrorStats = self->_txErrorStats;
-        if (!(txErrorStats | *(a3 + 9)) || (v5 = [(AWDChipErrorCountersTx *)txErrorStats isEqual:?]) != 0)
+        if (!(txErrorStats | *(equal + 9)) || (v5 = [(AWDChipErrorCountersTx *)txErrorStats isEqual:?]) != 0)
         {
           rxGeneralStats = self->_rxGeneralStats;
-          if (!(rxGeneralStats | *(a3 + 5)) || (v5 = [(AWDChipCountersRx *)rxGeneralStats isEqual:?]) != 0)
+          if (!(rxGeneralStats | *(equal + 5)) || (v5 = [(AWDChipCountersRx *)rxGeneralStats isEqual:?]) != 0)
           {
             rxMACErrorStats = self->_rxMACErrorStats;
-            if (!(rxMACErrorStats | *(a3 + 7)) || (v5 = [(AWDMacCountersRxErrors *)rxMACErrorStats isEqual:?]) != 0)
+            if (!(rxMACErrorStats | *(equal + 7)) || (v5 = [(AWDMacCountersRxErrors *)rxMACErrorStats isEqual:?]) != 0)
             {
               rxMACCounterStats = self->_rxMACCounterStats;
-              if (!(rxMACCounterStats | *(a3 + 6)) || (v5 = [(AWDMacCountersRx *)rxMACCounterStats isEqual:?]) != 0)
+              if (!(rxMACCounterStats | *(equal + 6)) || (v5 = [(AWDMacCountersRx *)rxMACCounterStats isEqual:?]) != 0)
               {
                 rxPhyErrors = self->_rxPhyErrors;
-                if (!(rxPhyErrors | *(a3 + 8)) || (v5 = [(AWDRxPhyErrors *)rxPhyErrors isEqual:?]) != 0)
+                if (!(rxPhyErrors | *(equal + 8)) || (v5 = [(AWDRxPhyErrors *)rxPhyErrors isEqual:?]) != 0)
                 {
                   ucastWPA2Counters = self->_ucastWPA2Counters;
-                  if (!(ucastWPA2Counters | *(a3 + 11)) || (v5 = [(AWDWPA2Counters *)ucastWPA2Counters isEqual:?]) != 0)
+                  if (!(ucastWPA2Counters | *(equal + 11)) || (v5 = [(AWDWPA2Counters *)ucastWPA2Counters isEqual:?]) != 0)
                   {
                     mcastWPA2Counters = self->_mcastWPA2Counters;
-                    if (!(mcastWPA2Counters | *(a3 + 4)) || (v5 = [(AWDWPA2Counters *)mcastWPA2Counters isEqual:?]) != 0)
+                    if (!(mcastWPA2Counters | *(equal + 4)) || (v5 = [(AWDWPA2Counters *)mcastWPA2Counters isEqual:?]) != 0)
                     {
                       frameCounterPerInterfaces = self->_frameCounterPerInterfaces;
-                      if (frameCounterPerInterfaces | *(a3 + 2))
+                      if (frameCounterPerInterfaces | *(equal + 2))
                       {
 
                         LOBYTE(v5) = [(NSMutableArray *)frameCounterPerInterfaces isEqual:?];
@@ -465,17 +465,17 @@ LABEL_27:
   return v9 ^ v12 ^ [(NSMutableArray *)self->_frameCounterPerInterfaces hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v34 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 96))
+  if (*(from + 96))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
   frameCounters = self->_frameCounters;
-  v6 = *(a3 + 3);
+  v6 = *(from + 3);
   if (frameCounters)
   {
     if (v6)
@@ -490,7 +490,7 @@ LABEL_27:
   }
 
   txGeneralStats = self->_txGeneralStats;
-  v8 = *(a3 + 10);
+  v8 = *(from + 10);
   if (txGeneralStats)
   {
     if (v8)
@@ -505,7 +505,7 @@ LABEL_27:
   }
 
   txErrorStats = self->_txErrorStats;
-  v10 = *(a3 + 9);
+  v10 = *(from + 9);
   if (txErrorStats)
   {
     if (v10)
@@ -520,7 +520,7 @@ LABEL_27:
   }
 
   rxGeneralStats = self->_rxGeneralStats;
-  v12 = *(a3 + 5);
+  v12 = *(from + 5);
   if (rxGeneralStats)
   {
     if (v12)
@@ -535,7 +535,7 @@ LABEL_27:
   }
 
   rxMACErrorStats = self->_rxMACErrorStats;
-  v14 = *(a3 + 7);
+  v14 = *(from + 7);
   if (rxMACErrorStats)
   {
     if (v14)
@@ -550,7 +550,7 @@ LABEL_27:
   }
 
   rxMACCounterStats = self->_rxMACCounterStats;
-  v16 = *(a3 + 6);
+  v16 = *(from + 6);
   if (rxMACCounterStats)
   {
     if (v16)
@@ -565,7 +565,7 @@ LABEL_27:
   }
 
   rxPhyErrors = self->_rxPhyErrors;
-  v18 = *(a3 + 8);
+  v18 = *(from + 8);
   if (rxPhyErrors)
   {
     if (v18)
@@ -580,7 +580,7 @@ LABEL_27:
   }
 
   ucastWPA2Counters = self->_ucastWPA2Counters;
-  v20 = *(a3 + 11);
+  v20 = *(from + 11);
   if (ucastWPA2Counters)
   {
     if (v20)
@@ -595,7 +595,7 @@ LABEL_27:
   }
 
   mcastWPA2Counters = self->_mcastWPA2Counters;
-  v22 = *(a3 + 4);
+  v22 = *(from + 4);
   if (mcastWPA2Counters)
   {
     if (v22)
@@ -613,7 +613,7 @@ LABEL_27:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v23 = *(a3 + 2);
+  v23 = *(from + 2);
   v24 = [v23 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v24)
   {

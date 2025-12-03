@@ -2,14 +2,14 @@
 + (id)sharedInstance;
 - (MANotificationEngine)init;
 - (id)getAllObserversPIDs;
-- (void)notifyAssetChangeWith:(unint64_t)a3 handles:(id)a4;
+- (void)notifyAssetChangeWith:(unint64_t)with handles:(id)handles;
 - (void)notifyDaemonLaunched;
-- (void)notifyFileEventWith:(unint64_t)a3 fileNames:(id)a4 profile:(id)a5 sharingGroup:(id)a6;
-- (void)notifyKVStoreEventWith:(unint64_t)a3 kvStores:(id)a4 profile:(id)a5 sharingGroup:(id)a6;
-- (void)notifyProfileChangeWith:(unint64_t)a3 profile:(id)a4 type:(unint64_t)a5;
-- (void)registerObserverEventWith:(id)a3 observerType:(unint64_t)a4 resourceNames:(id)a5 sharingGroup:(id)a6 profile:(id)a7 events:(unint64_t)a8;
-- (void)registerRemoteObserver:(id)a3;
-- (void)unregisterObserverWith:(id)a3;
+- (void)notifyFileEventWith:(unint64_t)with fileNames:(id)names profile:(id)profile sharingGroup:(id)group;
+- (void)notifyKVStoreEventWith:(unint64_t)with kvStores:(id)stores profile:(id)profile sharingGroup:(id)group;
+- (void)notifyProfileChangeWith:(unint64_t)with profile:(id)profile type:(unint64_t)type;
+- (void)registerObserverEventWith:(id)with observerType:(unint64_t)type resourceNames:(id)names sharingGroup:(id)group profile:(id)profile events:(unint64_t)events;
+- (void)registerRemoteObserver:(id)observer;
+- (void)unregisterObserverWith:(id)with;
 @end
 
 @implementation MANotificationEngine
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_100001DF8;
   block[3] = &unk_100115D08;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100129368 != -1)
   {
     dispatch_once(&qword_100129368, block);
@@ -83,92 +83,92 @@
   return v2;
 }
 
-- (void)notifyAssetChangeWith:(unint64_t)a3 handles:(id)a4
+- (void)notifyAssetChangeWith:(unint64_t)with handles:(id)handles
 {
-  v6 = a4;
+  handlesCopy = handles;
   darwinNotifyQueue = self->_darwinNotifyQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000020D0;
   block[3] = &unk_100115D30;
-  v11 = self;
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
+  selfCopy = self;
+  withCopy = with;
+  v10 = handlesCopy;
+  v8 = handlesCopy;
   dispatch_async(darwinNotifyQueue, block);
 }
 
-- (void)notifyProfileChangeWith:(unint64_t)a3 profile:(id)a4 type:(unint64_t)a5
+- (void)notifyProfileChangeWith:(unint64_t)with profile:(id)profile type:(unint64_t)type
 {
-  v8 = a4;
+  profileCopy = profile;
   darwinNotifyQueue = self->_darwinNotifyQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000022A4;
   v11[3] = &unk_100115D58;
   v11[4] = self;
-  v12 = v8;
-  v13 = a3;
-  v14 = a5;
-  v10 = v8;
+  v12 = profileCopy;
+  withCopy = with;
+  typeCopy = type;
+  v10 = profileCopy;
   dispatch_async(darwinNotifyQueue, v11);
 }
 
-- (void)notifyFileEventWith:(unint64_t)a3 fileNames:(id)a4 profile:(id)a5 sharingGroup:(id)a6
+- (void)notifyFileEventWith:(unint64_t)with fileNames:(id)names profile:(id)profile sharingGroup:(id)group
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  namesCopy = names;
+  profileCopy = profile;
+  groupCopy = group;
   fileEventNotifyQueue = self->_fileEventNotifyQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000024D8;
   block[3] = &unk_100115DA8;
-  v18 = v10;
-  v19 = v12;
-  v21 = self;
-  v22 = a3;
-  v20 = v11;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
+  v18 = namesCopy;
+  v19 = groupCopy;
+  selfCopy = self;
+  withCopy = with;
+  v20 = profileCopy;
+  v14 = profileCopy;
+  v15 = groupCopy;
+  v16 = namesCopy;
   dispatch_async(fileEventNotifyQueue, block);
 }
 
-- (void)notifyKVStoreEventWith:(unint64_t)a3 kvStores:(id)a4 profile:(id)a5 sharingGroup:(id)a6
+- (void)notifyKVStoreEventWith:(unint64_t)with kvStores:(id)stores profile:(id)profile sharingGroup:(id)group
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  storesCopy = stores;
+  profileCopy = profile;
+  groupCopy = group;
   kvStoreEventNotifyQueue = self->_kvStoreEventNotifyQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002A04;
   block[3] = &unk_100115DA8;
-  v18 = v10;
-  v19 = v12;
-  v21 = self;
-  v22 = a3;
-  v20 = v11;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
+  v18 = storesCopy;
+  v19 = groupCopy;
+  selfCopy = self;
+  withCopy = with;
+  v20 = profileCopy;
+  v14 = profileCopy;
+  v15 = groupCopy;
+  v16 = storesCopy;
   dispatch_async(kvStoreEventNotifyQueue, block);
 }
 
-- (void)registerObserverEventWith:(id)a3 observerType:(unint64_t)a4 resourceNames:(id)a5 sharingGroup:(id)a6 profile:(id)a7 events:(unint64_t)a8
+- (void)registerObserverEventWith:(id)with observerType:(unint64_t)type resourceNames:(id)names sharingGroup:(id)group profile:(id)profile events:(unint64_t)events
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!a4)
+  withCopy = with;
+  namesCopy = names;
+  groupCopy = group;
+  profileCopy = profile;
+  if (!type)
   {
     v18 = 24;
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v18 = 32;
 LABEL_5:
@@ -177,38 +177,38 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_100002F7C;
     block[3] = &unk_100115DF8;
-    v21 = v16;
-    v26 = a4;
-    v22 = v17;
-    v23 = self;
-    v24 = v14;
-    v27 = a8;
-    v25 = v15;
+    v21 = groupCopy;
+    typeCopy = type;
+    v22 = profileCopy;
+    selfCopy = self;
+    v24 = withCopy;
+    eventsCopy = events;
+    v25 = namesCopy;
     dispatch_sync(v19, block);
   }
 }
 
-- (void)registerRemoteObserver:(id)a3
+- (void)registerRemoteObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   copresenceNotifyQueue = self->_copresenceNotifyQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100003284;
   v7[3] = &unk_100115E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(copresenceNotifyQueue, v7);
 }
 
-- (void)unregisterObserverWith:(id)a3
+- (void)unregisterObserverWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MASDNotificationObserver];
-  [v4 setRemoteObjectInterface:v5];
+  [withCopy setRemoteObjectInterface:v5];
 
-  v6 = [v4 remoteObjectProxy];
+  remoteObjectProxy = [withCopy remoteObjectProxy];
   if (os_log_type_enabled(off_100127B70, OS_LOG_TYPE_DEBUG))
   {
     sub_1000042CC();
@@ -220,7 +220,7 @@ LABEL_5:
   block[2] = sub_100003570;
   block[3] = &unk_100115E20;
   block[4] = self;
-  v8 = v4;
+  v8 = withCopy;
   v18 = v8;
   dispatch_sync(fileEventNotifyQueue, block);
   kvStoreEventNotifyQueue = self->_kvStoreEventNotifyQueue;

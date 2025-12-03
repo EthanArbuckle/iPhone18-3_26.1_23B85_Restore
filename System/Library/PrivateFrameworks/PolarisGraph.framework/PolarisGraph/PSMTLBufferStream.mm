@@ -1,11 +1,11 @@
 @interface PSMTLBufferStream
-+ (id)mtlBufferStreamWithKey:(char *)a3 options:(ps_resource_options *)a4 length:(unint64_t)a5 mtlOptions:(unint64_t)a6;
-+ (id)mtlBufferStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 length:(unint64_t)a5 mtlOptions:(unint64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validate:(id *)a3;
++ (id)mtlBufferStreamWithKey:(char *)key options:(ps_resource_options *)options length:(unint64_t)length mtlOptions:(unint64_t)mtlOptions;
++ (id)mtlBufferStreamWithResourceKey:(id)key options:(ps_resource_options *)options length:(unint64_t)length mtlOptions:(unint64_t)mtlOptions;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validate:(id *)validate;
 - (PSMTLBufferStream)init;
-- (PSMTLBufferStream)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PSMTLBufferStream)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSMTLBufferStream
@@ -24,44 +24,44 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = PSMTLBufferStream;
-  [(PSResourceStream *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_length forKey:@"length"];
-  [v4 encodeInteger:self->_mtlResourceOptions forKey:@"mtlResourceOptions"];
+  [(PSResourceStream *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_length forKey:@"length"];
+  [coderCopy encodeInteger:self->_mtlResourceOptions forKey:@"mtlResourceOptions"];
 }
 
-- (PSMTLBufferStream)initWithCoder:(id)a3
+- (PSMTLBufferStream)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PSMTLBufferStream;
-  v5 = [(PSResourceStream *)&v9 initWithCoder:v4];
+  v5 = [(PSResourceStream *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(PSResourceStream *)v5 setResourceClass:5];
-    v6->_length = [v4 decodeInt64ForKey:@"length"];
-    v6->_mtlResourceOptions = [v4 decodeIntegerForKey:@"mtlResourceOptions"];
+    v6->_length = [coderCopy decodeInt64ForKey:@"length"];
+    v6->_mtlResourceOptions = [coderCopy decodeIntegerForKey:@"mtlResourceOptions"];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v11.receiver = self;
@@ -86,32 +86,32 @@
   return v9;
 }
 
-+ (id)mtlBufferStreamWithKey:(char *)a3 options:(ps_resource_options *)a4 length:(unint64_t)a5 mtlOptions:(unint64_t)a6
++ (id)mtlBufferStreamWithKey:(char *)key options:(ps_resource_options *)options length:(unint64_t)length mtlOptions:(unint64_t)mtlOptions
 {
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", a3];
-  v10 = [PSMTLBufferStream mtlBufferStreamWithResourceKey:v9 options:a4 length:a5 mtlOptions:a6];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", key];
+  v10 = [PSMTLBufferStream mtlBufferStreamWithResourceKey:v9 options:options length:length mtlOptions:mtlOptions];
 
   return v10;
 }
 
-+ (id)mtlBufferStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 length:(unint64_t)a5 mtlOptions:(unint64_t)a6
++ (id)mtlBufferStreamWithResourceKey:(id)key options:(ps_resource_options *)options length:(unint64_t)length mtlOptions:(unint64_t)mtlOptions
 {
-  v9 = a3;
+  keyCopy = key;
   v10 = objc_alloc_init(PSMTLBufferStream);
-  [(PSResourceStream *)v10 setKey:v9];
-  v10->_length = a5;
-  v10->_mtlResourceOptions = a6;
-  [(PSResourceStream *)v10 setOptions:a4->storage_mode, a4->creation_mode];
+  [(PSResourceStream *)v10 setKey:keyCopy];
+  v10->_length = length;
+  v10->_mtlResourceOptions = mtlOptions;
+  [(PSResourceStream *)v10 setOptions:options->storage_mode, options->creation_mode];
 
   return v10;
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Resource must have a valid/supported class"];
-  if (a3)
+  if (validate)
   {
-    *a3 = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v4];
+    *validate = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v4];
   }
 
   return 0;

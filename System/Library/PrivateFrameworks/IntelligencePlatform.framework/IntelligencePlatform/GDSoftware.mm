@@ -1,5 +1,5 @@
 @interface GDSoftware
-- (GDSoftware)initWithTriplesIterator:(id)a3;
+- (GDSoftware)initWithTriplesIterator:(id)iterator;
 - (id)description;
 @end
 
@@ -8,18 +8,18 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(GDSoftware *)self entityIdentifier];
-  v5 = [(GDSoftware *)self bundleIdentifiers];
-  v6 = [v5 componentsJoinedByString:@"|"];
-  v7 = [v3 stringWithFormat:@"<GDSoftware id:%@ bs:%@>", v4, v6];
+  entityIdentifier = [(GDSoftware *)self entityIdentifier];
+  bundleIdentifiers = [(GDSoftware *)self bundleIdentifiers];
+  v6 = [bundleIdentifiers componentsJoinedByString:@"|"];
+  v7 = [v3 stringWithFormat:@"<GDSoftware id:%@ bs:%@>", entityIdentifier, v6];
 
   return v7;
 }
 
-- (GDSoftware)initWithTriplesIterator:(id)a3
+- (GDSoftware)initWithTriplesIterator:(id)iterator
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  iteratorCopy = iterator;
   v29.receiver = self;
   v29.super_class = GDSoftware;
   v5 = [(GDSoftware *)&v29 init];
@@ -30,8 +30,8 @@
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v24 = v4;
-    v7 = v4;
+    v24 = iteratorCopy;
+    v7 = iteratorCopy;
     v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v8)
     {
@@ -51,17 +51,17 @@
           if (!v5->_entityIdentifier)
           {
             v13 = [GDEntityIdentifier alloc];
-            v14 = [v12 subject];
-            v15 = [(GDEntityIdentifier *)v13 initWithString:v14];
+            subject = [v12 subject];
+            v15 = [(GDEntityIdentifier *)v13 initWithString:subject];
             entityIdentifier = v5->_entityIdentifier;
             v5->_entityIdentifier = v15;
           }
 
-          v17 = [v12 predicate];
-          if ([v17 isEqual:@"nm_bundleID"])
+          predicate = [v12 predicate];
+          if ([predicate isEqual:@"nm_bundleID"])
           {
-            v18 = [v12 object];
-            [v6 addObject:v18];
+            object = [v12 object];
+            [v6 addObject:object];
           }
 
           ++v11;
@@ -78,7 +78,7 @@
     {
 
       v21 = 0;
-      v4 = v24;
+      iteratorCopy = v24;
       goto LABEL_18;
     }
 
@@ -86,7 +86,7 @@
     bundleIdentifiers = v5->_bundleIdentifiers;
     v5->_bundleIdentifiers = v19;
 
-    v4 = v24;
+    iteratorCopy = v24;
   }
 
   v21 = v5;

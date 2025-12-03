@@ -1,37 +1,37 @@
 @interface SecDbKeychainSerializedMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SecDbKeychainSerializedMetadata
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(SecDbKeychainSerializedMetadata *)self setCiphertext:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(SecDbKeychainSerializedMetadata *)self setWrappedKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(SecDbKeychainSerializedMetadata *)self setTamperCheck:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -42,13 +42,13 @@
   return v4 ^ [(NSString *)self->_tamperCheck hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((ciphertext = self->_ciphertext, !(ciphertext | v4[1])) || -[NSData isEqual:](ciphertext, "isEqual:")) && ((wrappedKey = self->_wrappedKey, !(wrappedKey | v4[3])) || -[NSData isEqual:](wrappedKey, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((ciphertext = self->_ciphertext, !(ciphertext | equalCopy[1])) || -[NSData isEqual:](ciphertext, "isEqual:")) && ((wrappedKey = self->_wrappedKey, !(wrappedKey | equalCopy[3])) || -[NSData isEqual:](wrappedKey, "isEqual:")))
   {
     tamperCheck = self->_tamperCheck;
-    if (tamperCheck | v4[2])
+    if (tamperCheck | equalCopy[2])
     {
       v8 = [(NSString *)tamperCheck isEqual:?];
     }
@@ -67,37 +67,37 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_ciphertext copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_ciphertext copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_wrappedKey copyWithZone:a3];
+  v8 = [(NSData *)self->_wrappedKey copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_tamperCheck copyWithZone:a3];
+  v10 = [(NSString *)self->_tamperCheck copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   ciphertext = self->_ciphertext;
-  v5 = a3;
-  [v5 setCiphertext:ciphertext];
-  [v5 setWrappedKey:self->_wrappedKey];
-  [v5 setTamperCheck:self->_tamperCheck];
+  toCopy = to;
+  [toCopy setCiphertext:ciphertext];
+  [toCopy setWrappedKey:self->_wrappedKey];
+  [toCopy setTamperCheck:self->_tamperCheck];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   ciphertext = self->_ciphertext;
-  v7 = a3;
+  toCopy = to;
   PBDataWriterWriteDataField();
   wrappedKey = self->_wrappedKey;
   PBDataWriterWriteDataField();
@@ -105,16 +105,16 @@
   PBDataWriterWriteStringField();
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -123,18 +123,18 @@
       while (1)
       {
         v21 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v21 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v21 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v21 & 0x7F) << v6;
@@ -151,11 +151,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -189,10 +189,10 @@ LABEL_23:
       }
 
 LABEL_25:
-      v19 = [a3 position];
-      if (v19 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -201,7 +201,7 @@ LABEL_25:
     goto LABEL_23;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -234,8 +234,8 @@ LABEL_25:
   v7.receiver = self;
   v7.super_class = SecDbKeychainSerializedMetadata;
   v3 = [(SecDbKeychainSerializedMetadata *)&v7 description];
-  v4 = [(SecDbKeychainSerializedMetadata *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SecDbKeychainSerializedMetadata *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

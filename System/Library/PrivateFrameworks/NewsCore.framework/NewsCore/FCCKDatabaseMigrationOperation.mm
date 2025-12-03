@@ -1,12 +1,12 @@
 @interface FCCKDatabaseMigrationOperation
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4;
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after;
 - (BOOL)validateOperation;
-- (void)_migrateZoneIDs:(void *)a3 completion:;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)_migrateZoneIDs:(void *)ds completion:;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
-- (void)setDatabase:(uint64_t)a1;
-- (void)setMigrator:(uint64_t)a1;
+- (void)setDatabase:(uint64_t)database;
+- (void)setMigrator:(uint64_t)migrator;
 @end
 
 @implementation FCCKDatabaseMigrationOperation
@@ -71,22 +71,22 @@ LABEL_12:
 
 - (void)prepareOperation
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self)
   {
-    objc_storeStrong(&self->_resultZoneIDsEligibleForDeletion, v3);
+    objc_storeStrong(&self->_resultZoneIDsEligibleForDeletion, array);
   }
 
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = v4;
+  array2 = [MEMORY[0x1E695DF70] array];
+  v5 = array2;
   if (self)
   {
-    v6 = v4;
-    objc_storeStrong(&self->_resultRecordIDsEligibleForDeletion, v4);
+    v6 = array2;
+    objc_storeStrong(&self->_resultRecordIDsEligibleForDeletion, array2);
     v5 = v6;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](array2, v5);
 }
 
 - (void)performOperation
@@ -125,26 +125,26 @@ LABEL_12:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_migrateZoneIDs:(void *)a3 completion:
+- (void)_migrateZoneIDs:(void *)ds completion:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dsCopy = ds;
+  if (self)
   {
     if ([v5 count])
     {
-      v7 = [v5 firstObject];
+      firstObject = [v5 firstObject];
       v8 = [v5 subarrayWithRange:{1, objc_msgSend(v5, "count") - 1}];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __61__FCCKDatabaseMigrationOperation__migrateZoneIDs_completion___block_invoke;
       v19[3] = &unk_1E7C40A48;
-      v19[4] = a1;
+      v19[4] = self;
       v20 = v8;
-      v21 = v6;
+      v21 = dsCopy;
       v9 = v8;
       v10 = v19;
-      v11 = v7;
+      v11 = firstObject;
       v12 = objc_alloc_init(FCCKDatabaseZoneMigrationOperation);
       [(FCCKDatabaseZoneMigrationOperation *)v12 setDatabase:?];
       if (v12)
@@ -153,17 +153,17 @@ LABEL_12:
       }
 
       [(FCCKDatabaseZoneMigrationOperation *)v12 setMigrator:?];
-      v14 = a1[46];
-      v15 = [v11 zoneName];
+      v14 = self[46];
+      zoneName = [v11 zoneName];
 
-      v16 = [(FCCKPrivateDatabase *)v14 pruningAssistantForZoneName:v15];
+      v16 = [(FCCKPrivateDatabase *)v14 pruningAssistantForZoneName:zoneName];
 
       [(FCCKDatabaseZoneMigrationOperation *)v12 setPruningAssistant:v16];
       newValue[0] = MEMORY[0x1E69E9820];
       newValue[1] = 3221225472;
       newValue[2] = __60__FCCKDatabaseMigrationOperation__migrateZoneID_completion___block_invoke;
       newValue[3] = &unk_1E7C3FAC0;
-      newValue[4] = a1;
+      newValue[4] = self;
       v18 = v10;
       v23 = v18;
       if (v12)
@@ -171,21 +171,21 @@ LABEL_12:
         objc_setProperty_nonatomic_copy(v12, v17, newValue, 400);
       }
 
-      [a1 associateChildOperation:v12];
+      [self associateChildOperation:v12];
       [(FCOperation *)v12 start];
     }
 
     else
     {
-      (*(v6 + 2))(v6, 0);
+      (*(dsCopy + 2))(dsCopy, 0);
     }
   }
 }
 
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after
 {
-  v6 = [a3 fc_hasCKIdentityLostError];
-  if (v6)
+  fc_hasCKIdentityLostError = [error fc_hasCKIdentityLostError];
+  if (fc_hasCKIdentityLostError)
   {
     v7 = objc_alloc_init(FCOperationExternalSignal);
     v8 = objc_alloc_init(FCCKSecureDatabaseResetOperation);
@@ -214,16 +214,16 @@ LABEL_12:
     [(FCOperation *)self associateChildOperation:v9];
     [(FCOperation *)v9 start];
     v12 = v11;
-    *a4 = v11;
+    *after = v11;
   }
 
-  return v6;
+  return fc_hasCKIdentityLostError;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v9 = a3;
-  started = FCCKDatabaseStartUpResultFromError(v9);
+  errorCopy = error;
+  started = FCCKDatabaseStartUpResultFromError(errorCopy);
   if (self)
   {
     v5 = self->_migrator;
@@ -237,7 +237,7 @@ LABEL_12:
 
     v7 = migrationCompletionHandler;
     v8 = self->_resultZoneIDsEligibleForDeletion;
-    v7[2](v7, v8, self->_resultRecordIDsEligibleForDeletion, v9);
+    v7[2](v7, v8, self->_resultRecordIDsEligibleForDeletion, errorCopy);
   }
 
   else
@@ -294,19 +294,19 @@ void __60__FCCKDatabaseMigrationOperation__migrateZoneID_completion___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setDatabase:(uint64_t)a1
+- (void)setDatabase:(uint64_t)database
 {
-  if (a1)
+  if (database)
   {
-    objc_storeStrong((a1 + 368), a2);
+    objc_storeStrong((database + 368), a2);
   }
 }
 
-- (void)setMigrator:(uint64_t)a1
+- (void)setMigrator:(uint64_t)migrator
 {
-  if (a1)
+  if (migrator)
   {
-    objc_storeStrong((a1 + 376), a2);
+    objc_storeStrong((migrator + 376), a2);
   }
 }
 

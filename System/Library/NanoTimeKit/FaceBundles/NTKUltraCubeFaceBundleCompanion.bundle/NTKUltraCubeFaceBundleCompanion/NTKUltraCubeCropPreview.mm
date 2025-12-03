@@ -1,54 +1,54 @@
 @interface NTKUltraCubeCropPreview
 - (CGRect)crop;
-- (NTKUltraCubeCropPreview)initWithPhoto:(id)a3 maskedPhoto:(id)a4 previewValidator:(id)a5 crop:(CGRect)a6 timeLabelPosition:(int64_t)a7 revertable:(BOOL)a8;
-- (id)timeLabelStyleForDevice:(id)a3 font:(id)a4;
+- (NTKUltraCubeCropPreview)initWithPhoto:(id)photo maskedPhoto:(id)maskedPhoto previewValidator:(id)validator crop:(CGRect)crop timeLabelPosition:(int64_t)position revertable:(BOOL)revertable;
+- (id)timeLabelStyleForDevice:(id)device font:(id)font;
 @end
 
 @implementation NTKUltraCubeCropPreview
 
-- (NTKUltraCubeCropPreview)initWithPhoto:(id)a3 maskedPhoto:(id)a4 previewValidator:(id)a5 crop:(CGRect)a6 timeLabelPosition:(int64_t)a7 revertable:(BOOL)a8
+- (NTKUltraCubeCropPreview)initWithPhoto:(id)photo maskedPhoto:(id)maskedPhoto previewValidator:(id)validator crop:(CGRect)crop timeLabelPosition:(int64_t)position revertable:(BOOL)revertable
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  photoCopy = photo;
+  maskedPhotoCopy = maskedPhoto;
+  validatorCopy = validator;
   v24.receiver = self;
   v24.super_class = NTKUltraCubeCropPreview;
   v21 = [(NTKUltraCubeCropPreview *)&v24 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_photo, a3);
-    objc_storeStrong(&v22->_maskedPhoto, a4);
-    objc_storeStrong(&v22->_previewValidator, a5);
+    objc_storeStrong(&v21->_photo, photo);
+    objc_storeStrong(&v22->_maskedPhoto, maskedPhoto);
+    objc_storeStrong(&v22->_previewValidator, validator);
     v22->_crop.origin.x = x;
     v22->_crop.origin.y = y;
     v22->_crop.size.width = width;
     v22->_crop.size.height = height;
-    v22->_timeLabelPosition = a7;
-    v22->_revertable = a8;
+    v22->_timeLabelPosition = position;
+    v22->_revertable = revertable;
   }
 
   return v22;
 }
 
-- (id)timeLabelStyleForDevice:(id)a3 font:(id)a4
+- (id)timeLabelStyleForDevice:(id)device font:(id)font
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKUltraCubeCropPreview *)self timeLabelPosition];
+  fontCopy = font;
+  deviceCopy = device;
+  timeLabelPosition = [(NTKUltraCubeCropPreview *)self timeLabelPosition];
   v9 = &NTKUltraCubePhotoTimeElementAboveUnitBaseY;
-  if (((v8 - 1) & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if (((timeLabelPosition - 1) & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     v9 = &NTKUltraCubePhotoTimeElementBelowUnitBaseY;
   }
 
   v10 = *v9;
-  [v7 screenBounds];
-  v15 = [NTKUltraCubeContentView timeLabelStyleForDevice:v7 font:v6 baseline:v10 faceBounds:v11, v12, v13, v14];
+  [deviceCopy screenBounds];
+  v15 = [NTKUltraCubeContentView timeLabelStyleForDevice:deviceCopy font:fontCopy baseline:v10 faceBounds:v11, v12, v13, v14];
 
   return v15;
 }

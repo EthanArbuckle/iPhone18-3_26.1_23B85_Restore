@@ -1,20 +1,20 @@
 @interface TSPSupportPackageWriteCoordinator
-- (BOOL)isComponentExternalWithIdentifier:(int64_t)a3 wasCopied:(BOOL *)a4 componentReadVersion:(unint64_t *)a5;
-- (BOOL)shouldEnqueueComponent:(id)a3;
-- (BOOL)wasComponentCopied:(int64_t)a3;
-- (TSPSupportPackageWriteCoordinator)initWithContext:(id)a3 archiverClass:(Class)a4 archiverFlags:(char)a5 documentRevision:(id)a6 saveToken:(unint64_t)a7 packageIdentifier:(unsigned __int8)a8 fileFormatVersion:(unint64_t)a9 preferredPackageType:(int64_t)a10 metadataObject:(id)a11;
-- (id)objectForIdentifier:(int64_t)a3;
-- (int64_t)componentIdentifierForObjectIdentifier:(int64_t)a3 objectOrNil:(id)a4 objectUUIDOrNil:(id)a5 outComponentIsVersioned:(BOOL *)a6;
-- (void)didReferenceData:(id)a3;
+- (BOOL)isComponentExternalWithIdentifier:(int64_t)identifier wasCopied:(BOOL *)copied componentReadVersion:(unint64_t *)version;
+- (BOOL)shouldEnqueueComponent:(id)component;
+- (BOOL)wasComponentCopied:(int64_t)copied;
+- (TSPSupportPackageWriteCoordinator)initWithContext:(id)context archiverClass:(Class)class archiverFlags:(char)flags documentRevision:(id)revision saveToken:(unint64_t)token packageIdentifier:(unsigned __int8)identifier fileFormatVersion:(unint64_t)version preferredPackageType:(int64_t)self0 metadataObject:(id)self1;
+- (id)objectForIdentifier:(int64_t)identifier;
+- (int64_t)componentIdentifierForObjectIdentifier:(int64_t)identifier objectOrNil:(id)nil objectUUIDOrNil:(id)orNil outComponentIsVersioned:(BOOL *)versioned;
+- (void)didReferenceData:(id)data;
 @end
 
 @implementation TSPSupportPackageWriteCoordinator
 
-- (TSPSupportPackageWriteCoordinator)initWithContext:(id)a3 archiverClass:(Class)a4 archiverFlags:(char)a5 documentRevision:(id)a6 saveToken:(unint64_t)a7 packageIdentifier:(unsigned __int8)a8 fileFormatVersion:(unint64_t)a9 preferredPackageType:(int64_t)a10 metadataObject:(id)a11
+- (TSPSupportPackageWriteCoordinator)initWithContext:(id)context archiverClass:(Class)class archiverFlags:(char)flags documentRevision:(id)revision saveToken:(unint64_t)token packageIdentifier:(unsigned __int8)identifier fileFormatVersion:(unint64_t)version preferredPackageType:(int64_t)self0 metadataObject:(id)self1
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a11;
+  contextCopy = context;
+  revisionCopy = revision;
+  objectCopy = object;
   v15 = MEMORY[0x277D81150];
   v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSPSupportPackageWriteCoordinator initWithContext:archiverClass:archiverFlags:documentRevision:saveToken:packageIdentifier:fileFormatVersion:preferredPackageType:metadataObject:]");
   v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPPackageWriteCoordinator.mm");
@@ -29,14 +29,14 @@
   objc_exception_throw(v27);
 }
 
-- (BOOL)shouldEnqueueComponent:(id)a3
+- (BOOL)shouldEnqueueComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v11.receiver = self;
   v11.super_class = TSPSupportPackageWriteCoordinator;
-  if ([(TSPPackageWriteCoordinator *)&v11 shouldEnqueueComponent:v4])
+  if ([(TSPPackageWriteCoordinator *)&v11 shouldEnqueueComponent:componentCopy])
   {
-    v7 = objc_msgSend_identifier(v4, v5, v6);
+    v7 = objc_msgSend_identifier(componentCopy, v5, v6);
     v9 = objc_msgSend_isComponentExternalWithIdentifier_wasCopied_componentReadVersion_(self, v8, v7, 0, 0) ^ 1;
   }
 
@@ -48,59 +48,59 @@
   return v9;
 }
 
-- (BOOL)isComponentExternalWithIdentifier:(int64_t)a3 wasCopied:(BOOL *)a4 componentReadVersion:(unint64_t *)a5
+- (BOOL)isComponentExternalWithIdentifier:(int64_t)identifier wasCopied:(BOOL *)copied componentReadVersion:(unint64_t *)version
 {
-  if (a3 == 2)
+  if (identifier == 2)
   {
     return 0;
   }
 
   else
   {
-    return MEMORY[0x2821F9670](self->_packageWriteCoordinator, sel_didWriteComponentWithIdentifier_wasCopied_componentReadVersion_, a3);
+    return MEMORY[0x2821F9670](self->_packageWriteCoordinator, sel_didWriteComponentWithIdentifier_wasCopied_componentReadVersion_, identifier);
   }
 }
 
-- (void)didReferenceData:(id)a3
+- (void)didReferenceData:(id)data
 {
-  v4 = a3;
-  if ((objc_msgSend_didWriteData_(self->_packageWriteCoordinator, v5, v4) & 1) == 0)
+  dataCopy = data;
+  if ((objc_msgSend_didWriteData_(self->_packageWriteCoordinator, v5, dataCopy) & 1) == 0)
   {
     v6.receiver = self;
     v6.super_class = TSPSupportPackageWriteCoordinator;
-    [(TSPPackageWriteCoordinator *)&v6 didReferenceData:v4];
+    [(TSPPackageWriteCoordinator *)&v6 didReferenceData:dataCopy];
   }
 }
 
-- (id)objectForIdentifier:(int64_t)a3
+- (id)objectForIdentifier:(int64_t)identifier
 {
   v8.receiver = self;
   v8.super_class = TSPSupportPackageWriteCoordinator;
   v5 = [(TSPPackageWriteCoordinator *)&v8 objectForIdentifier:?];
   if (!v5)
   {
-    v5 = objc_msgSend_objectForIdentifier_(self->_packageWriteCoordinator, v6, a3);
+    v5 = objc_msgSend_objectForIdentifier_(self->_packageWriteCoordinator, v6, identifier);
   }
 
   return v5;
 }
 
-- (int64_t)componentIdentifierForObjectIdentifier:(int64_t)a3 objectOrNil:(id)a4 objectUUIDOrNil:(id)a5 outComponentIsVersioned:(BOOL *)a6
+- (int64_t)componentIdentifierForObjectIdentifier:(int64_t)identifier objectOrNil:(id)nil objectUUIDOrNil:(id)orNil outComponentIsVersioned:(BOOL *)versioned
 {
-  v10 = a4;
-  v11 = a5;
+  nilCopy = nil;
+  orNilCopy = orNil;
   v15.receiver = self;
   v15.super_class = TSPSupportPackageWriteCoordinator;
-  IsVersioned = [(TSPPackageWriteCoordinator *)&v15 componentIdentifierForObjectIdentifier:a3 objectOrNil:v10 objectUUIDOrNil:v11 outComponentIsVersioned:a6];
+  IsVersioned = [(TSPPackageWriteCoordinator *)&v15 componentIdentifierForObjectIdentifier:identifier objectOrNil:nilCopy objectUUIDOrNil:orNilCopy outComponentIsVersioned:versioned];
   if (!IsVersioned)
   {
-    IsVersioned = objc_msgSend_componentIdentifierForObjectIdentifier_objectOrNil_objectUUIDOrNil_outComponentIsVersioned_(self->_packageWriteCoordinator, v12, a3, v10, v11, a6);
+    IsVersioned = objc_msgSend_componentIdentifierForObjectIdentifier_objectOrNil_objectUUIDOrNil_outComponentIsVersioned_(self->_packageWriteCoordinator, v12, identifier, nilCopy, orNilCopy, versioned);
   }
 
   return IsVersioned;
 }
 
-- (BOOL)wasComponentCopied:(int64_t)a3
+- (BOOL)wasComponentCopied:(int64_t)copied
 {
   v7.receiver = self;
   v7.super_class = TSPSupportPackageWriteCoordinator;
@@ -111,7 +111,7 @@
 
   else
   {
-    return objc_msgSend_wasComponentCopied_(self->_packageWriteCoordinator, v5, a3);
+    return objc_msgSend_wasComponentCopied_(self->_packageWriteCoordinator, v5, copied);
   }
 }
 

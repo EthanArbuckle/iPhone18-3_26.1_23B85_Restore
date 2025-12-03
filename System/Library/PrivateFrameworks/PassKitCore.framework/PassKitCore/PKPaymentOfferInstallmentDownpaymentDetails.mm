@@ -1,29 +1,29 @@
 @interface PKPaymentOfferInstallmentDownpaymentDetails
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferInstallmentDownpaymentDetails)initWithCoder:(id)a3;
-- (PKPaymentOfferInstallmentDownpaymentDetails)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferInstallmentDownpaymentDetails)initWithCoder:(id)coder;
+- (PKPaymentOfferInstallmentDownpaymentDetails)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferInstallmentDownpaymentDetails
 
-- (PKPaymentOfferInstallmentDownpaymentDetails)initWithDictionary:(id)a3
+- (PKPaymentOfferInstallmentDownpaymentDetails)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKPaymentOfferInstallmentDownpaymentDetails;
   v5 = [(PKPaymentOfferInstallmentDownpaymentDetails *)&v11 init];
   if (v5)
   {
-    v6 = [v4 PKCurrencyAmountForKey:@"amount"];
+    v6 = [dictionaryCopy PKCurrencyAmountForKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v6;
 
-    v8 = [v4 PKDateForKey:@"paymentDate"];
+    v8 = [dictionaryCopy PKDateForKey:@"paymentDate"];
     paymentDate = v5->_paymentDate;
     v5->_paymentDate = v8;
   }
@@ -34,8 +34,8 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PKCurrencyAmount *)self->_amount dictionaryRepresentation];
-  [v3 setObject:v4 forKeyedSubscript:@"amount"];
+  dictionaryRepresentation = [(PKCurrencyAmount *)self->_amount dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"amount"];
 
   v5 = PKISO8601DateStringFromDate(self->_paymentDate);
   [v3 setObject:v5 forKeyedSubscript:@"paymentDate"];
@@ -45,18 +45,18 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -126,19 +126,19 @@ LABEL_16:
   return v3;
 }
 
-- (PKPaymentOfferInstallmentDownpaymentDetails)initWithCoder:(id)a3
+- (PKPaymentOfferInstallmentDownpaymentDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPaymentOfferInstallmentDownpaymentDetails;
   v5 = [(PKPaymentOfferInstallmentDownpaymentDetails *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentDate"];
     paymentDate = v5->_paymentDate;
     v5->_paymentDate = v8;
   }
@@ -146,22 +146,22 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
-  v5 = a3;
-  [v5 encodeObject:amount forKey:@"amount"];
-  [v5 encodeObject:self->_paymentDate forKey:@"paymentDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_paymentDate forKey:@"paymentDate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferInstallmentDownpaymentDetails allocWithZone:](PKPaymentOfferInstallmentDownpaymentDetails init];
-  v6 = [(PKCurrencyAmount *)self->_amount copyWithZone:a3];
+  v6 = [(PKCurrencyAmount *)self->_amount copyWithZone:zone];
   amount = v5->_amount;
   v5->_amount = v6;
 
-  v8 = [(NSDate *)self->_paymentDate copyWithZone:a3];
+  v8 = [(NSDate *)self->_paymentDate copyWithZone:zone];
   paymentDate = v5->_paymentDate;
   v5->_paymentDate = v8;
 

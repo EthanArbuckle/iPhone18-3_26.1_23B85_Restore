@@ -1,15 +1,15 @@
 @interface PPExtractionSet
-- (PPExtractionSet)initWithCoder:(id)a3;
-- (PPExtractionSet)initWithNamedEntityRecords:(id)a3 topicRecords:(id)a4;
-- (id)merge:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PPExtractionSet)initWithCoder:(id)coder;
+- (PPExtractionSet)initWithNamedEntityRecords:(id)records topicRecords:(id)topicRecords;
+- (id)merge:(id)merge;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPExtractionSet
 
-- (id)merge:(id)a3
+- (id)merge:(id)merge
 {
-  v4 = a3;
+  mergeCopy = merge;
   v5 = objc_opt_new();
   v6 = v5;
   v7 = MEMORY[0x1E695E0F0];
@@ -24,11 +24,11 @@
   }
 
   [v5 addObjectsFromArray:namedEntityRecords];
-  v9 = [v4 namedEntityRecords];
-  v10 = v9;
-  if (v9)
+  namedEntityRecords = [mergeCopy namedEntityRecords];
+  v10 = namedEntityRecords;
+  if (namedEntityRecords)
   {
-    v11 = v9;
+    v11 = namedEntityRecords;
   }
 
   else
@@ -51,11 +51,11 @@
   }
 
   [v12 addObjectsFromArray:topicRecords];
-  v15 = [v4 topicRecords];
+  topicRecords = [mergeCopy topicRecords];
 
-  if (v15)
+  if (topicRecords)
   {
-    v16 = v15;
+    v16 = topicRecords;
   }
 
   else
@@ -91,44 +91,44 @@
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   namedEntityRecords = self->_namedEntityRecords;
-  v5 = a3;
-  [v5 encodeObject:namedEntityRecords forKey:@"nam"];
-  [v5 encodeObject:self->_topicRecords forKey:@"top"];
+  coderCopy = coder;
+  [coderCopy encodeObject:namedEntityRecords forKey:@"nam"];
+  [coderCopy encodeObject:self->_topicRecords forKey:@"top"];
 }
 
-- (PPExtractionSet)initWithCoder:(id)a3
+- (PPExtractionSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_autoreleasePoolPush();
   v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v5, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v6);
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"nam"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"nam"];
 
   v9 = objc_autoreleasePoolPush();
   v10 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v5, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v9);
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"top"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"top"];
 
   v12 = [(PPExtractionSet *)self initWithNamedEntityRecords:v8 topicRecords:v11];
   return v12;
 }
 
-- (PPExtractionSet)initWithNamedEntityRecords:(id)a3 topicRecords:(id)a4
+- (PPExtractionSet)initWithNamedEntityRecords:(id)records topicRecords:(id)topicRecords
 {
-  v7 = a3;
-  v8 = a4;
+  recordsCopy = records;
+  topicRecordsCopy = topicRecords;
   v12.receiver = self;
   v12.super_class = PPExtractionSet;
   v9 = [(PPExtractionSet *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_namedEntityRecords, a3);
-    objc_storeStrong(&v10->_topicRecords, a4);
+    objc_storeStrong(&v9->_namedEntityRecords, records);
+    objc_storeStrong(&v10->_topicRecords, topicRecords);
   }
 
   return v10;

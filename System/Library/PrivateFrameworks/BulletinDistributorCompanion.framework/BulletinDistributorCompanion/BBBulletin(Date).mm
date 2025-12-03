@@ -7,38 +7,38 @@
 
 - (id)dateOrRecencyDate
 {
-  v2 = [a1 date];
-  v3 = v2;
-  if (v2)
+  date = [self date];
+  v3 = date;
+  if (date)
   {
-    v4 = v2;
+    recencyDate = date;
   }
 
   else
   {
-    v4 = [a1 recencyDate];
+    recencyDate = [self recencyDate];
   }
 
-  v5 = v4;
+  v5 = recencyDate;
 
   return v5;
 }
 
 - (id)publishDate
 {
-  v2 = [a1 recencyDate];
-  v3 = v2;
-  if (v2)
+  recencyDate = [self recencyDate];
+  v3 = recencyDate;
+  if (recencyDate)
   {
-    v4 = v2;
+    date = recencyDate;
   }
 
   else
   {
-    v4 = [a1 date];
+    date = [self date];
   }
 
-  v5 = v4;
+  v5 = date;
 
   return v5;
 }

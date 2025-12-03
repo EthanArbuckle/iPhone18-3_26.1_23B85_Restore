@@ -1,34 +1,34 @@
 @interface SBPIPEnvironmentDependentOverrideAssertion
-- (SBPIPEnvironmentDependentOverrideAssertion)initWithReason:(int64_t)a3 identifier:(id)a4 windowScene:(id)a5 invalidationBlock:(id)a6;
+- (SBPIPEnvironmentDependentOverrideAssertion)initWithReason:(int64_t)reason identifier:(id)identifier windowScene:(id)scene invalidationBlock:(id)block;
 - (id)_layoutCoordinator;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (int64_t)_environmentModeForLayoutState:(id)a3;
-- (void)_updateStateForTransitionWithContext:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (int64_t)_environmentModeForLayoutState:(id)state;
+- (void)_updateStateForTransitionWithContext:(id)context;
 - (void)dealloc;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context;
 @end
 
 @implementation SBPIPEnvironmentDependentOverrideAssertion
 
-- (SBPIPEnvironmentDependentOverrideAssertion)initWithReason:(int64_t)a3 identifier:(id)a4 windowScene:(id)a5 invalidationBlock:(id)a6
+- (SBPIPEnvironmentDependentOverrideAssertion)initWithReason:(int64_t)reason identifier:(id)identifier windowScene:(id)scene invalidationBlock:(id)block
 {
-  v10 = a5;
+  sceneCopy = scene;
   v22.receiver = self;
   v22.super_class = SBPIPEnvironmentDependentOverrideAssertion;
-  v11 = [(SBPIPBehaviorOverrideAssertion *)&v22 initWithReason:a3 identifier:a4 invalidationBlock:a6];
+  v11 = [(SBPIPBehaviorOverrideAssertion *)&v22 initWithReason:reason identifier:identifier invalidationBlock:block];
   v12 = v11;
   if (v11)
   {
     v11->_invalidatesEarly = 0;
-    objc_storeWeak(&v11->_windowScene, v10);
-    v13 = [(SBPIPEnvironmentDependentOverrideAssertion *)v12 _layoutCoordinator];
-    [v13 addObserver:v12];
+    objc_storeWeak(&v11->_windowScene, sceneCopy);
+    _layoutCoordinator = [(SBPIPEnvironmentDependentOverrideAssertion *)v12 _layoutCoordinator];
+    [_layoutCoordinator addObserver:v12];
 
     v14 = MEMORY[0x277CBEB98];
     v15 = MEMORY[0x277CCABB0];
-    v16 = [v10 switcherController];
-    v17 = [v16 layoutState];
-    v18 = [v15 numberWithInteger:{-[SBPIPEnvironmentDependentOverrideAssertion _environmentModeForLayoutState:](v12, "_environmentModeForLayoutState:", v17)}];
+    switcherController = [sceneCopy switcherController];
+    layoutState = [switcherController layoutState];
+    v18 = [v15 numberWithInteger:{-[SBPIPEnvironmentDependentOverrideAssertion _environmentModeForLayoutState:](v12, "_environmentModeForLayoutState:", layoutState)}];
     v19 = [v14 setWithObject:v18];
     allowedEnvironmentModes = v12->_allowedEnvironmentModes;
     v12->_allowedEnvironmentModes = v19;
@@ -39,8 +39,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SBPIPEnvironmentDependentOverrideAssertion *)self _layoutCoordinator];
-  [v3 removeObserver:self];
+  _layoutCoordinator = [(SBPIPEnvironmentDependentOverrideAssertion *)self _layoutCoordinator];
+  [_layoutCoordinator removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBPIPEnvironmentDependentOverrideAssertion;
@@ -50,42 +50,42 @@
 - (id)_layoutCoordinator
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained layoutStateTransitionCoordinator];
+  layoutStateTransitionCoordinator = [WeakRetained layoutStateTransitionCoordinator];
 
-  return v3;
+  return layoutStateTransitionCoordinator;
 }
 
-- (int64_t)_environmentModeForLayoutState:(id)a3
+- (int64_t)_environmentModeForLayoutState:(id)state
 {
-  v3 = a3;
-  if ([v3 isFloatingSwitcherVisible])
+  stateCopy = state;
+  if ([stateCopy isFloatingSwitcherVisible])
   {
-    v4 = 2;
+    unlockedEnvironmentMode = 2;
   }
 
   else
   {
-    v4 = [v3 unlockedEnvironmentMode];
+    unlockedEnvironmentMode = [stateCopy unlockedEnvironmentMode];
   }
 
-  return v4;
+  return unlockedEnvironmentMode;
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context
 {
   if (self->_invalidatesEarly)
   {
-    [(SBPIPEnvironmentDependentOverrideAssertion *)self _updateStateForTransitionWithContext:a4];
+    [(SBPIPEnvironmentDependentOverrideAssertion *)self _updateStateForTransitionWithContext:context];
   }
 }
 
-- (void)_updateStateForTransitionWithContext:(id)a3
+- (void)_updateStateForTransitionWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_class();
-  v6 = [v4 toLayoutState];
+  toLayoutState = [contextCopy toLayoutState];
 
-  v10 = SBSafeCast(v5, v6);
+  v10 = SBSafeCast(v5, toLayoutState);
 
   allowedEnvironmentModes = self->_allowedEnvironmentModes;
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SBPIPEnvironmentDependentOverrideAssertion _environmentModeForLayoutState:](self, "_environmentModeForLayoutState:", v10)}];
@@ -94,17 +94,17 @@
   if ((allowedEnvironmentModes & 1) == 0)
   {
     [(BSSimpleAssertion *)self invalidate];
-    v9 = [(SBPIPEnvironmentDependentOverrideAssertion *)self _layoutCoordinator];
-    [v9 removeObserver:self];
+    _layoutCoordinator = [(SBPIPEnvironmentDependentOverrideAssertion *)self _layoutCoordinator];
+    [_layoutCoordinator removeObserver:self];
   }
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v22 = *MEMORY[0x277D85DE8];
   v20.receiver = self;
   v20.super_class = SBPIPEnvironmentDependentOverrideAssertion;
-  v4 = [(SBPIPBehaviorOverrideAssertion *)&v20 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBPIPBehaviorOverrideAssertion *)&v20 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSSet count](self->_allowedEnvironmentModes, "count")}];
   v16 = 0u;
   v17 = 0u;
@@ -139,8 +139,8 @@
   [v4 appendString:v12 withName:@"Allowed Environment"];
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v14 = [WeakRetained succinctDescription];
-  [v4 appendString:v14 withName:@"Window Scene"];
+  succinctDescription = [WeakRetained succinctDescription];
+  [v4 appendString:succinctDescription withName:@"Window Scene"];
 
   return v4;
 }

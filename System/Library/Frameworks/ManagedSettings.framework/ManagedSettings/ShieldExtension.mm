@@ -1,26 +1,26 @@
 @interface ShieldExtension
-- (void)appResponsibleForShieldingCategoryIdentifier:(id)a3 replyHandler:(id)a4;
-- (void)fetchConfigurationForCategoryIdentifier:(id)a3 categoryName:(id)a4 replyHandler:(id)a5;
-- (void)handleAction:(int64_t)a3 categoryIdentifier:(id)a4 replyHandler:(id)a5;
+- (void)appResponsibleForShieldingCategoryIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)fetchConfigurationForCategoryIdentifier:(id)identifier categoryName:(id)name replyHandler:(id)handler;
+- (void)handleAction:(int64_t)action categoryIdentifier:(id)identifier replyHandler:(id)handler;
 @end
 
 @implementation ShieldExtension
 
-- (void)handleAction:(int64_t)a3 categoryIdentifier:(id)a4 replyHandler:(id)a5
+- (void)handleAction:(int64_t)action categoryIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   _Block_copy(v7);
 
-  sub_100059A2C(a3, v8, v10, self, v7);
+  sub_100059A2C(action, v8, v10, self, v7);
   _Block_release(v7);
   _Block_release(v7);
 }
 
-- (void)fetchConfigurationForCategoryIdentifier:(id)a3 categoryName:(id)a4 replyHandler:(id)a5
+- (void)fetchConfigurationForCategoryIdentifier:(id)identifier categoryName:(id)name replyHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -32,9 +32,9 @@
   _Block_release(v6);
 }
 
-- (void)appResponsibleForShieldingCategoryIdentifier:(id)a3 replyHandler:(id)a4
+- (void)appResponsibleForShieldingCategoryIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(handler);
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
 
   sub_100056024(v5, &v7);

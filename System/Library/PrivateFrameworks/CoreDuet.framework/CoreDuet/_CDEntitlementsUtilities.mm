@@ -1,23 +1,23 @@
 @interface _CDEntitlementsUtilities
-+ (id)entitlementValueForKey:(id)a3;
++ (id)entitlementValueForKey:(id)key;
 @end
 
 @implementation _CDEntitlementsUtilities
 
-+ (id)entitlementValueForKey:(id)a3
++ (id)entitlementValueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = SecTaskCreateFromSelf(0);
   if (v4)
   {
     v5 = v4;
     error = 0;
-    v6 = SecTaskCopyValueForEntitlement(v4, v3, &error);
+    v6 = SecTaskCopyValueForEntitlement(v4, keyCopy, &error);
     if (error)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        [(_CDEntitlementsUtilities *)v3 entitlementValueForKey:?];
+        [(_CDEntitlementsUtilities *)keyCopy entitlementValueForKey:?];
       }
 
       CFRelease(error);

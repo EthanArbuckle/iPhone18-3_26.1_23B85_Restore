@@ -1,31 +1,31 @@
 @interface WFRemoteExecutionDialogRequest
-- (BOOL)readMessageFromData:(id)a3 error:(id *)a4;
-- (WFRemoteExecutionDialogRequest)initWithData:(id)a3 error:(id *)a4;
-- (WFRemoteExecutionDialogRequest)initWithDialogRequest:(id)a3 runRequestIdentifier:(id)a4;
-- (id)writeMessageToWriter:(id)a3 error:(id *)a4;
+- (BOOL)readMessageFromData:(id)data error:(id *)error;
+- (WFRemoteExecutionDialogRequest)initWithData:(id)data error:(id *)error;
+- (WFRemoteExecutionDialogRequest)initWithDialogRequest:(id)request runRequestIdentifier:(id)identifier;
+- (id)writeMessageToWriter:(id)writer error:(id *)error;
 @end
 
 @implementation WFRemoteExecutionDialogRequest
 
-- (id)writeMessageToWriter:(id)a3 error:(id *)a4
+- (id)writeMessageToWriter:(id)writer error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  writerCopy = writer;
   v7 = objc_alloc_init(WFREPBDialogRequest);
   v8 = MEMORY[0x1E696ACC8];
-  v9 = [(WFRemoteExecutionDialogRequest *)self dialogRequest];
+  dialogRequest = [(WFRemoteExecutionDialogRequest *)self dialogRequest];
   v18 = 0;
-  v10 = [v8 archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v18];
+  v10 = [v8 archivedDataWithRootObject:dialogRequest requiringSecureCoding:1 error:&v18];
   v11 = v18;
 
   if (v10)
   {
     [(WFREPBDialogRequest *)v7 setDialogRequestData:v10];
-    v12 = [(WFRemoteExecutionDialogRequest *)self runRequestIdentifier];
-    [(WFREPBDialogRequest *)v7 setRunRequestIdentifier:v12];
+    runRequestIdentifier = [(WFRemoteExecutionDialogRequest *)self runRequestIdentifier];
+    [(WFREPBDialogRequest *)v7 setRunRequestIdentifier:runRequestIdentifier];
 
-    [(WFREPBDialogRequest *)v7 writeTo:v6];
-    v13 = [v6 immutableData];
+    [(WFREPBDialogRequest *)v7 writeTo:writerCopy];
+    immutableData = [writerCopy immutableData];
   }
 
   else
@@ -40,30 +40,30 @@
       _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_FAULT, "%s Unable to archive dialog request: %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v11;
-      v13 = 0;
-      *a4 = v11;
+      immutableData = 0;
+      *error = v11;
     }
 
     else
     {
-      v13 = 0;
+      immutableData = 0;
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return immutableData;
 }
 
-- (BOOL)readMessageFromData:(id)a3 error:(id *)a4
+- (BOOL)readMessageFromData:(id)data error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69C65B8];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithData:v7];
+  dataCopy = data;
+  v8 = [[v6 alloc] initWithData:dataCopy];
 
   v9 = objc_alloc_init(WFREPBDialogRequest);
   v37 = 0;
@@ -71,13 +71,13 @@
   v11 = v37;
   if (v10)
   {
-    v34 = a4;
+    errorCopy = error;
     v35 = v8;
-    v12 = [(WFREPBDialogRequest *)v9 runRequestIdentifier];
+    runRequestIdentifier = [(WFREPBDialogRequest *)v9 runRequestIdentifier];
     runRequestIdentifier = self->_runRequestIdentifier;
-    self->_runRequestIdentifier = v12;
+    self->_runRequestIdentifier = runRequestIdentifier;
 
-    v14 = [(WFREPBDialogRequest *)v9 dialogRequestData];
+    dialogRequestData = [(WFREPBDialogRequest *)v9 dialogRequestData];
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = objc_opt_class();
@@ -89,7 +89,7 @@
 
     [v22 addObject:objc_opt_class()];
     v36 = 0;
-    v23 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v22 fromData:v14 error:&v36];
+    v23 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v22 fromData:dialogRequestData error:&v36];
     v24 = v36;
     dialogRequest = self->_dialogRequest;
     self->_dialogRequest = v23;
@@ -108,10 +108,10 @@
         _os_log_impl(&dword_1CA256000, v28, OS_LOG_TYPE_FAULT, "%s Unable to convert data into dialog request: %{public}@", buf, 0x16u);
       }
 
-      if (v34)
+      if (errorCopy)
       {
         v29 = v24;
-        *v34 = v24;
+        *errorCopy = v24;
       }
     }
 
@@ -130,11 +130,11 @@
       _os_log_impl(&dword_1CA256000, v30, OS_LOG_TYPE_FAULT, "%s Failed to read dialog request protobuf, %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v31 = v11;
       v27 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -147,14 +147,14 @@
   return v27;
 }
 
-- (WFRemoteExecutionDialogRequest)initWithDialogRequest:(id)a3 runRequestIdentifier:(id)a4
+- (WFRemoteExecutionDialogRequest)initWithDialogRequest:(id)request runRequestIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  requestCopy = request;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (requestCopy)
   {
-    if (v8)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -162,8 +162,8 @@
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionDialogRequest.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"dialogRequest"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionDialogRequest.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"dialogRequest"}];
 
     if (v9)
     {
@@ -171,8 +171,8 @@
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionDialogRequest.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"runRequestIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionDialogRequest.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"runRequestIdentifier"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -180,22 +180,22 @@ LABEL_3:
   v10 = [(WFRemoteExecutionRequest *)&v17 init];
   if (v10)
   {
-    v11 = [v7 requestByCompactingRequest];
+    requestByCompactingRequest = [requestCopy requestByCompactingRequest];
     dialogRequest = v10->_dialogRequest;
-    v10->_dialogRequest = v11;
+    v10->_dialogRequest = requestByCompactingRequest;
 
-    objc_storeStrong(&v10->_runRequestIdentifier, a4);
+    objc_storeStrong(&v10->_runRequestIdentifier, identifier);
     v13 = v10;
   }
 
   return v10;
 }
 
-- (WFRemoteExecutionDialogRequest)initWithData:(id)a3 error:(id *)a4
+- (WFRemoteExecutionDialogRequest)initWithData:(id)data error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = WFRemoteExecutionDialogRequest;
-  return [(WFRemoteExecutionRequest *)&v5 initWithData:a3 error:a4];
+  return [(WFRemoteExecutionRequest *)&v5 initWithData:data error:error];
 }
 
 @end

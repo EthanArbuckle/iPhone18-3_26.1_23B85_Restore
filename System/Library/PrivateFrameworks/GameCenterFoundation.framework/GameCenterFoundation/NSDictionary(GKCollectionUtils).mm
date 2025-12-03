@@ -20,7 +20,7 @@
 - (id)_gkDictionaryByRemovingObjectsForKeys:()GKCollectionUtils
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 removeObjectsForKeys:v4];
 
   return v5;
@@ -29,7 +29,7 @@
 - (id)_gkDictionaryByRemovingObjectForKey:()GKCollectionUtils
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 removeObjectForKey:v4];
 
   return v5;
@@ -60,7 +60,7 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [a1 objectForKey:{v11, v15}];
+        v12 = [self objectForKey:{v11, v15}];
         if (v12)
         {
           [v5 setObject:v12 forKey:v11];
@@ -88,8 +88,8 @@
     v9 = MEMORY[0x277CCACA8];
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/GKCollectionUtils.m"];
-    v12 = [v11 lastPathComponent];
-    v13 = [v9 stringWithFormat:@"%@ ([newKeys count] == [keys count])\n[%s (%s:%d)]", v10, "-[NSDictionary(GKCollectionUtils) _gkSubDictionaryWithKeys:mappedToNewKeys:]", objc_msgSend(v12, "UTF8String"), 346];
+    lastPathComponent = [v11 lastPathComponent];
+    v13 = [v9 stringWithFormat:@"%@ ([newKeys count] == [keys count])\n[%s (%s:%d)]", v10, "-[NSDictionary(GKCollectionUtils) _gkSubDictionaryWithKeys:mappedToNewKeys:]", objc_msgSend(lastPathComponent, "UTF8String"), 346];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v13}];
   }
@@ -99,7 +99,7 @@
   v20[1] = 3221225472;
   v20[2] = __76__NSDictionary_GKCollectionUtils___gkSubDictionaryWithKeys_mappedToNewKeys___block_invoke;
   v20[3] = &unk_2785DCA00;
-  v20[4] = a1;
+  v20[4] = self;
   v15 = v14;
   v21 = v15;
   v22 = v7;
@@ -117,10 +117,10 @@
   {
     v4 = MEMORY[0x277CBEB38];
     v5 = a3;
-    v6 = [v4 dictionary];
-    [v6 _gkAddEntriesFromFormEncodedString:v5];
+    dictionary = [v4 dictionary];
+    [dictionary _gkAddEntriesFromFormEncodedString:v5];
 
-    v7 = [a1 dictionaryWithDictionary:v6];
+    v7 = [self dictionaryWithDictionary:dictionary];
   }
 
   else
@@ -155,7 +155,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 objectForKey:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self objectForKey:{*(*(&v14 + 1) + 8 * i), v14}];
         [v5 addObject:v11];
       }
 
@@ -176,18 +176,18 @@
   {
     v6 = a4;
     v7 = a3;
-    v8 = [a1 mutableCopy];
+    v8 = [self mutableCopy];
     [v8 setObject:v7 forKey:v6];
 
-    v9 = [v8 copy];
+    selfCopy = [v8 copy];
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)_gkAddEntriesFrom:()GKCollectionUtils
@@ -196,23 +196,23 @@
   {
     v4 = MEMORY[0x277CBEB38];
     v5 = a3;
-    v6 = [v4 dictionaryWithDictionary:a1];
+    v6 = [v4 dictionaryWithDictionary:self];
     [v6 addEntriesFromDictionary:v5];
 
-    v7 = [v6 copy];
+    selfCopy = [v6 copy];
   }
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (uint64_t)BOOLValueFromKey:()GKCollectionUtils defaultValue:
 {
-  v5 = [a1 numberValueFromKey:?];
+  v5 = [self numberValueFromKey:?];
   v6 = v5;
   if (v5)
   {
@@ -224,7 +224,7 @@
 
 - (id)gkStringValueFromKey:()GKCollectionUtils
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -241,7 +241,7 @@
 
 - (uint64_t)integerValueFromKey:()GKCollectionUtils defaultValue:
 {
-  v5 = [a1 numberValueFromKey:?];
+  v5 = [self numberValueFromKey:?];
   v6 = v5;
   if (v5)
   {
@@ -253,7 +253,7 @@
 
 - (uint64_t)unsignedIntegerValueFromKey:()GKCollectionUtils defaultValue:
 {
-  v5 = [a1 numberValueFromKey:?];
+  v5 = [self numberValueFromKey:?];
   v6 = v5;
   if (v5)
   {
@@ -265,7 +265,7 @@
 
 - (double)doubleValueFromKey:()GKCollectionUtils defaultValue:
 {
-  v3 = [a1 numberValueFromKey:?];
+  v3 = [self numberValueFromKey:?];
   v4 = v3;
   if (v3)
   {
@@ -278,7 +278,7 @@
 
 - (id)numberValueFromKey:()GKCollectionUtils
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

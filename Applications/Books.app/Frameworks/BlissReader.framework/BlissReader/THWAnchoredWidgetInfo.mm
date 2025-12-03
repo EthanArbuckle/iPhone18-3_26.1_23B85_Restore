@@ -1,20 +1,20 @@
 @interface THWAnchoredWidgetInfo
-- (THWAnchoredWidgetInfo)initWithContext:(id)a3 widgetInfo:(id)a4;
+- (THWAnchoredWidgetInfo)initWithContext:(id)context widgetInfo:(id)info;
 - (void)dealloc;
 @end
 
 @implementation THWAnchoredWidgetInfo
 
-- (THWAnchoredWidgetInfo)initWithContext:(id)a3 widgetInfo:(id)a4
+- (THWAnchoredWidgetInfo)initWithContext:(id)context widgetInfo:(id)info
 {
   v8.receiver = self;
   v8.super_class = THWAnchoredWidgetInfo;
-  v5 = [(THWAnchoredWidgetInfo *)&v8 initWithContext:a3];
+  v5 = [(THWAnchoredWidgetInfo *)&v8 initWithContext:context];
   if (v5)
   {
-    v6 = a4;
-    v5->_widgetInfo = v6;
-    [(THWWidgetInfo *)v6 setParentInfo:v5];
+    infoCopy = info;
+    v5->_widgetInfo = infoCopy;
+    [(THWWidgetInfo *)infoCopy setParentInfo:v5];
   }
 
   return v5;

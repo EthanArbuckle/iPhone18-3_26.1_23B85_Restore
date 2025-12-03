@@ -7,67 +7,67 @@
 - (__CFString)singleLineAddress
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [a1 subThoroughfare];
-  if ([v3 length])
+  subThoroughfare = [self subThoroughfare];
+  if ([subThoroughfare length])
   {
-    [v2 addObject:v3];
+    [v2 addObject:subThoroughfare];
   }
 
-  v4 = [a1 thoroughfare];
+  thoroughfare = [self thoroughfare];
 
-  if ([v4 length])
+  if ([thoroughfare length])
   {
-    [v2 addObject:v4];
+    [v2 addObject:thoroughfare];
   }
 
-  v5 = [a1 subLocality];
+  subLocality = [self subLocality];
 
-  if ([v5 length])
+  if ([subLocality length])
   {
-    [v2 addObject:v5];
+    [v2 addObject:subLocality];
   }
 
-  v6 = [a1 locality];
+  locality = [self locality];
 
-  if ([v6 length])
+  if ([locality length])
   {
-    [v2 addObject:v6];
+    [v2 addObject:locality];
   }
 
-  v7 = [a1 subAdministrativeArea];
+  subAdministrativeArea = [self subAdministrativeArea];
 
-  if ([v7 length])
+  if ([subAdministrativeArea length])
   {
-    v8 = [a1 locality];
-    v9 = [v7 isEqualToString:v8];
+    locality2 = [self locality];
+    v9 = [subAdministrativeArea isEqualToString:locality2];
 
     if ((v9 & 1) == 0)
     {
-      [v2 addObject:v7];
+      [v2 addObject:subAdministrativeArea];
     }
   }
 
-  v10 = [a1 administrativeArea];
+  administrativeArea = [self administrativeArea];
 
-  if ([v10 length])
+  if ([administrativeArea length])
   {
-    [v2 addObject:v10];
+    [v2 addObject:administrativeArea];
   }
 
   if (!v2)
   {
-    v11 = [a1 administrativeAreaCode];
+    administrativeAreaCode = [self administrativeAreaCode];
 
-    if ([v11 length])
+    if ([administrativeAreaCode length])
     {
-      [0 addObject:v11];
+      [0 addObject:administrativeAreaCode];
     }
 
-    v10 = [a1 country];
+    administrativeArea = [self country];
 
-    if ([v10 length])
+    if ([administrativeArea length])
     {
-      [0 addObject:v10];
+      [0 addObject:administrativeArea];
     }
   }
 
@@ -75,20 +75,20 @@
   {
     v12 = _MNLocalizedStringFromThisBundle(@"Address Components Separator");
     v13 = [v2 objectAtIndex:0];
-    v14 = [v13 _navigation_isCJK];
+    _navigation_isCJK = [v13 _navigation_isCJK];
 
-    if (v14)
+    if (_navigation_isCJK)
     {
-      v15 = [v2 reverseObjectEnumerator];
-      v16 = [v15 allObjects];
+      reverseObjectEnumerator = [v2 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
     }
 
     else
     {
-      v16 = v2;
+      allObjects = v2;
     }
 
-    v17 = [v16 componentsJoinedByString:v12];
+    v17 = [allObjects componentsJoinedByString:v12];
   }
 
   else

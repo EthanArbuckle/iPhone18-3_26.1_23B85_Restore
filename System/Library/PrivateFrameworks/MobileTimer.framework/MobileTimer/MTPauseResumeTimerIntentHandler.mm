@@ -1,49 +1,49 @@
 @interface MTPauseResumeTimerIntentHandler
-- (id)_responseToPauseTimerIntent:(id)a3 withPausedTimers:(id)a4 error:(id)a5 dryRun:(BOOL)a6;
-- (id)_responseToResumeTimerIntent:(id)a3 withResumedTimers:(id)a4 error:(id)a5 dryRun:(BOOL)a6;
-- (void)confirmPauseTimer:(id)a3 completion:(id)a4;
-- (void)confirmResumeTimer:(id)a3 completion:(id)a4;
-- (void)handlePauseTimer:(id)a3 completion:(id)a4;
-- (void)handleResumeTimer:(id)a3 completion:(id)a4;
-- (void)resolvePauseMultipleForPauseTimer:(id)a3 withCompletion:(id)a4;
-- (void)resolveResumeMultipleForResumeTimer:(id)a3 withCompletion:(id)a4;
-- (void)resolveTargetTimerForPauseTimer:(id)a3 withCompletion:(id)a4;
-- (void)resolveTargetTimerForResumeTimer:(id)a3 withCompletion:(id)a4;
+- (id)_responseToPauseTimerIntent:(id)intent withPausedTimers:(id)timers error:(id)error dryRun:(BOOL)run;
+- (id)_responseToResumeTimerIntent:(id)intent withResumedTimers:(id)timers error:(id)error dryRun:(BOOL)run;
+- (void)confirmPauseTimer:(id)timer completion:(id)completion;
+- (void)confirmResumeTimer:(id)timer completion:(id)completion;
+- (void)handlePauseTimer:(id)timer completion:(id)completion;
+- (void)handleResumeTimer:(id)timer completion:(id)completion;
+- (void)resolvePauseMultipleForPauseTimer:(id)timer withCompletion:(id)completion;
+- (void)resolveResumeMultipleForResumeTimer:(id)timer withCompletion:(id)completion;
+- (void)resolveTargetTimerForPauseTimer:(id)timer withCompletion:(id)completion;
+- (void)resolveTargetTimerForResumeTimer:(id)timer withCompletion:(id)completion;
 @end
 
 @implementation MTPauseResumeTimerIntentHandler
 
-- (void)resolveTargetTimerForPauseTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveTargetTimerForPauseTimer:(id)timer withCompletion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v20 = "[MTPauseResumeTimerIntentHandler resolveTargetTimerForPauseTimer:withCompletion:]";
     v21 = 2112;
-    v22 = v6;
+    v22 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [v6 targetTimer];
-    v10 = [(MTUpdateTimerIntentHandler *)self _timerFromIntentTargetTimer:v9 defaultState:0];
+    targetTimer = [timerCopy targetTimer];
+    v10 = [(MTUpdateTimerIntentHandler *)self _timerFromIntentTargetTimer:targetTimer defaultState:0];
 
     v11 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F2965FF0];
-    v12 = [v6 pauseMultiple];
-    v13 = [v12 BOOLValue];
+    pauseMultiple = [timerCopy pauseMultiple];
+    bOOLValue = [pauseMultiple BOOLValue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __82__MTPauseResumeTimerIntentHandler_resolveTargetTimerForPauseTimer_withCompletion___block_invoke;
     v16[3] = &unk_1E7B0C3E8;
     v17 = v10;
-    v18 = v7;
+    v18 = completionCopy;
     v14 = v10;
-    [(MTTimerIntentHandler *)self _genericallyResolveTargetTimer:v14 multiple:v13 allowedTimerStatesForFollowup:v11 completion:v16];
+    [(MTTimerIntentHandler *)self _genericallyResolveTargetTimer:v14 multiple:bOOLValue allowedTimerStatesForFollowup:v11 completion:v16];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -67,68 +67,68 @@ void __82__MTPauseResumeTimerIntentHandler_resolveTargetTimerForPauseTimer_withC
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)resolvePauseMultipleForPauseTimer:(id)a3 withCompletion:(id)a4
+- (void)resolvePauseMultipleForPauseTimer:(id)timer withCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v7 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     v12 = 136315394;
     v13 = "[MTPauseResumeTimerIntentHandler resolvePauseMultipleForPauseTimer:withCompletion:]";
     v14 = 2112;
-    v15 = v5;
+    v15 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_INFO, "%s %@", &v12, 0x16u);
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v8 = MEMORY[0x1E696E760];
-    v9 = [v5 pauseMultiple];
-    v10 = [v8 successWithResolvedValue:{objc_msgSend(v9, "BOOLValue")}];
-    v6[2](v6, v10);
+    pauseMultiple = [timerCopy pauseMultiple];
+    v10 = [v8 successWithResolvedValue:{objc_msgSend(pauseMultiple, "BOOLValue")}];
+    completionCopy[2](completionCopy, v10);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)confirmPauseTimer:(id)a3 completion:(id)a4
+- (void)confirmPauseTimer:(id)timer completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     v10 = 136315394;
     v11 = "[MTPauseResumeTimerIntentHandler confirmPauseTimer:completion:]";
     v12 = 2112;
-    v13 = v6;
+    v13 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%s %@", &v10, 0x16u);
   }
 
-  [(MTPauseResumeTimerIntentHandler *)self _handlePauseTimer:v6 dryRun:1 completion:v7];
+  [(MTPauseResumeTimerIntentHandler *)self _handlePauseTimer:timerCopy dryRun:1 completion:completionCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handlePauseTimer:(id)a3 completion:(id)a4
+- (void)handlePauseTimer:(id)timer completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     v10 = 136315394;
     v11 = "[MTPauseResumeTimerIntentHandler handlePauseTimer:completion:]";
     v12 = 2112;
-    v13 = v6;
+    v13 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%s %@", &v10, 0x16u);
   }
 
-  [(MTPauseResumeTimerIntentHandler *)self _handlePauseTimer:v6 dryRun:0 completion:v7];
+  [(MTPauseResumeTimerIntentHandler *)self _handlePauseTimer:timerCopy dryRun:0 completion:completionCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -143,34 +143,34 @@ void __71__MTPauseResumeTimerIntentHandler__handlePauseTimer_dryRun_completion__
   }
 }
 
-- (void)resolveTargetTimerForResumeTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveTargetTimerForResumeTimer:(id)timer withCompletion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v20 = "[MTPauseResumeTimerIntentHandler resolveTargetTimerForResumeTimer:withCompletion:]";
     v21 = 2112;
-    v22 = v6;
+    v22 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
-  v9 = [v6 targetTimer];
+  targetTimer = [timerCopy targetTimer];
   v10 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F2965E28, 0}];
-  v11 = [v6 resumeMultiple];
-  v12 = [v11 BOOLValue];
+  resumeMultiple = [timerCopy resumeMultiple];
+  bOOLValue = [resumeMultiple BOOLValue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __83__MTPauseResumeTimerIntentHandler_resolveTargetTimerForResumeTimer_withCompletion___block_invoke;
   v16[3] = &unk_1E7B0C3E8;
-  v17 = v9;
-  v18 = v7;
-  v13 = v7;
-  v14 = v9;
-  [(MTTimerIntentHandler *)self _genericallyResolveTargetTimer:v14 multiple:v12 allowedTimerStatesForFollowup:v10 completion:v16];
+  v17 = targetTimer;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = targetTimer;
+  [(MTTimerIntentHandler *)self _genericallyResolveTargetTimer:v14 multiple:bOOLValue allowedTimerStatesForFollowup:v10 completion:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -193,68 +193,68 @@ void __83__MTPauseResumeTimerIntentHandler_resolveTargetTimerForResumeTimer_with
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)resolveResumeMultipleForResumeTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveResumeMultipleForResumeTimer:(id)timer withCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v7 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     v12 = 136315394;
     v13 = "[MTPauseResumeTimerIntentHandler resolveResumeMultipleForResumeTimer:withCompletion:]";
     v14 = 2112;
-    v15 = v5;
+    v15 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_INFO, "%s %@", &v12, 0x16u);
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v8 = MEMORY[0x1E696E760];
-    v9 = [v5 resumeMultiple];
-    v10 = [v8 successWithResolvedValue:{objc_msgSend(v9, "BOOLValue")}];
-    v6[2](v6, v10);
+    resumeMultiple = [timerCopy resumeMultiple];
+    v10 = [v8 successWithResolvedValue:{objc_msgSend(resumeMultiple, "BOOLValue")}];
+    completionCopy[2](completionCopy, v10);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)confirmResumeTimer:(id)a3 completion:(id)a4
+- (void)confirmResumeTimer:(id)timer completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     v10 = 136315394;
     v11 = "[MTPauseResumeTimerIntentHandler confirmResumeTimer:completion:]";
     v12 = 2112;
-    v13 = v6;
+    v13 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%s %@", &v10, 0x16u);
   }
 
-  [(MTPauseResumeTimerIntentHandler *)self _handleResumeTimer:v6 dryRun:1 completion:v7];
+  [(MTPauseResumeTimerIntentHandler *)self _handleResumeTimer:timerCopy dryRun:1 completion:completionCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleResumeTimer:(id)a3 completion:(id)a4
+- (void)handleResumeTimer:(id)timer completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     v10 = 136315394;
     v11 = "[MTPauseResumeTimerIntentHandler handleResumeTimer:completion:]";
     v12 = 2112;
-    v13 = v6;
+    v13 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%s %@", &v10, 0x16u);
   }
 
-  [(MTPauseResumeTimerIntentHandler *)self _handleResumeTimer:v6 dryRun:0 completion:v7];
+  [(MTPauseResumeTimerIntentHandler *)self _handleResumeTimer:timerCopy dryRun:0 completion:completionCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -269,18 +269,18 @@ void __72__MTPauseResumeTimerIntentHandler__handleResumeTimer_dryRun_completion_
   }
 }
 
-- (id)_responseToPauseTimerIntent:(id)a3 withPausedTimers:(id)a4 error:(id)a5 dryRun:(BOOL)a6
+- (id)_responseToPauseTimerIntent:(id)intent withPausedTimers:(id)timers error:(id)error dryRun:(BOOL)run
 {
-  v6 = a6;
+  runCopy = run;
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10 && !v11)
+  intentCopy = intent;
+  timersCopy = timers;
+  errorCopy = error;
+  v12 = errorCopy;
+  if (timersCopy && !errorCopy)
   {
     v13 = [objc_alloc(MEMORY[0x1E696E930]) initWithCode:3 userActivity:0];
-    [(__CFString *)v13 setPausedTimers:v10];
+    [(__CFString *)v13 setPausedTimers:timersCopy];
     v14 = *MEMORY[0x1E696E6D8];
     if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
     {
@@ -288,14 +288,14 @@ void __72__MTPauseResumeTimerIntentHandler__handleResumeTimer_dryRun_completion_
       *buf = 136315906;
       v30 = "[MTPauseResumeTimerIntentHandler _responseToPauseTimerIntent:withPausedTimers:error:dryRun:]";
       v31 = 2112;
-      if (v6)
+      if (runCopy)
       {
         v15 = @"confirmed";
       }
 
       v32 = v15;
       v33 = 2112;
-      v34 = v9;
+      v34 = intentCopy;
       v35 = 2112;
       v36 = v13;
       _os_log_impl(&dword_1B1F9F000, v14, OS_LOG_TYPE_INFO, "%s Successfully %@ pause timer attribute intent %@ with response %@", buf, 0x2Au);
@@ -304,13 +304,13 @@ void __72__MTPauseResumeTimerIntentHandler__handleResumeTimer_dryRun_completion_
     goto LABEL_22;
   }
 
-  v16 = [v11 domain];
-  v17 = [v16 isEqualToString:@"MTTimerIntentHandlerErrorDomain"];
+  domain = [errorCopy domain];
+  v17 = [domain isEqualToString:@"MTTimerIntentHandlerErrorDomain"];
 
   if (v17)
   {
-    v18 = [v12 code];
-    switch(v18)
+    code = [v12 code];
+    switch(code)
     {
       case 7:
         v19 = objc_alloc(MEMORY[0x1E696E930]);
@@ -325,8 +325,8 @@ LABEL_18:
         break;
       case 6:
         v21 = objc_alloc(MEMORY[0x1E696E930]);
-        v22 = [v9 pauseMultiple];
-        if ([v22 BOOLValue])
+        pauseMultiple = [intentCopy pauseMultiple];
+        if ([pauseMultiple BOOLValue])
         {
           v23 = 9;
         }
@@ -356,7 +356,7 @@ LABEL_20:
   v24 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
-    v27 = v6 ? @"confirm" : @"handle";
+    v27 = runCopy ? @"confirm" : @"handle";
     if (v12)
     {
       v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"due to error %@", v12];
@@ -372,7 +372,7 @@ LABEL_20:
     v31 = 2112;
     v32 = v27;
     v33 = 2112;
-    v34 = v9;
+    v34 = intentCopy;
     v35 = 2112;
     v36 = v28;
     _os_log_error_impl(&dword_1B1F9F000, v24, OS_LOG_TYPE_ERROR, "%s Failed to %@ pause timer intent %@%@", buf, 0x2Au);
@@ -387,30 +387,30 @@ LABEL_22:
   return v13;
 }
 
-- (id)_responseToResumeTimerIntent:(id)a3 withResumedTimers:(id)a4 error:(id)a5 dryRun:(BOOL)a6
+- (id)_responseToResumeTimerIntent:(id)intent withResumedTimers:(id)timers error:(id)error dryRun:(BOOL)run
 {
-  v6 = a6;
+  runCopy = run;
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v10 || v11)
+  intentCopy = intent;
+  timersCopy = timers;
+  errorCopy = error;
+  v12 = errorCopy;
+  if (!timersCopy || errorCopy)
   {
-    v16 = [v11 domain];
-    v17 = [v16 isEqualToString:@"MTTimerIntentHandlerErrorDomain"];
+    domain = [errorCopy domain];
+    v17 = [domain isEqualToString:@"MTTimerIntentHandlerErrorDomain"];
 
     if (v17)
     {
-      v18 = [v12 code];
-      switch(v18)
+      code = [v12 code];
+      switch(code)
       {
         case 7:
           v19 = 7;
           break;
         case 6:
-          v23 = [v9 resumeMultiple];
-          if ([v23 BOOLValue])
+          resumeMultiple = [intentCopy resumeMultiple];
+          if ([resumeMultiple BOOLValue])
           {
             v19 = 9;
           }
@@ -439,7 +439,7 @@ LABEL_22:
     v20 = *MEMORY[0x1E696E6D8];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v24 = v6 ? @"confirm" : @"handle";
+      v24 = runCopy ? @"confirm" : @"handle";
       if (v12)
       {
         v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"due to error %@", v12];
@@ -455,7 +455,7 @@ LABEL_22:
       v28 = 2112;
       v29 = v24;
       v30 = 2112;
-      v31 = v9;
+      v31 = intentCopy;
       v32 = 2112;
       v33 = v25;
       _os_log_error_impl(&dword_1B1F9F000, v20, OS_LOG_TYPE_ERROR, "%s Failed to %@ resume timer intent %@%@", buf, 0x2Au);
@@ -468,7 +468,7 @@ LABEL_22:
   else
   {
     v13 = [objc_alloc(MEMORY[0x1E696E9A0]) initWithCode:3 userActivity:0];
-    [(__CFString *)v13 setResumedTimers:v10];
+    [(__CFString *)v13 setResumedTimers:timersCopy];
     v14 = *MEMORY[0x1E696E6D8];
     if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
     {
@@ -476,14 +476,14 @@ LABEL_22:
       *buf = 136315906;
       v27 = "[MTPauseResumeTimerIntentHandler _responseToResumeTimerIntent:withResumedTimers:error:dryRun:]";
       v28 = 2112;
-      if (v6)
+      if (runCopy)
       {
         v15 = @"confirmed";
       }
 
       v29 = v15;
       v30 = 2112;
-      v31 = v9;
+      v31 = intentCopy;
       v32 = 2112;
       v33 = v13;
       _os_log_impl(&dword_1B1F9F000, v14, OS_LOG_TYPE_INFO, "%s Successfully %@ resume timer attribute intent %@ with response %@", buf, 0x2Au);

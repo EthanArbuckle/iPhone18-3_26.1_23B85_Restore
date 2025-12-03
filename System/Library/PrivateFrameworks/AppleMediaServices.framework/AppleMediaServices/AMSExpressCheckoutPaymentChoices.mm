@@ -1,7 +1,7 @@
 @interface AMSExpressCheckoutPaymentChoices
 - (NSDictionary)metrics;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMetrics:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMetrics:(id)metrics;
 @end
 
 @implementation AMSExpressCheckoutPaymentChoices
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
-  if (a3)
+  if (metrics)
   {
     v4 = sub_192F9669C();
   }
@@ -33,15 +33,15 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_192C9F520(v4);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_192C9FAF8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_192C9FAF8(coderCopy);
 }
 
 @end

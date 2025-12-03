@@ -24,13 +24,13 @@
     v3 = +[USLocationWrapper shared];
     [(UBSSettingsController *)v2 setModel:v3];
 
-    v4 = [(UBSSettingsController *)v2 model];
+    model = [(UBSSettingsController *)v2 model];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_186C;
     v6[3] = &unk_C538;
     v7 = v2;
-    [v4 loadLocationsWithCompletion:v6];
+    [model loadLocationsWithCompletion:v6];
   }
 
   return v2;

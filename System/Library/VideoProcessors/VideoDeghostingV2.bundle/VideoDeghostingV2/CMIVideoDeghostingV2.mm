@@ -1,25 +1,25 @@
 @interface CMIVideoDeghostingV2
-- (BOOL)_shouldResetRepair:(id)a3;
-- (BOOL)_shouldRunRepair:(id)a3;
-- (BOOL)_shouldRunVideoDeghosting:(id)a3;
-- (CMIVideoDeghostingV2)initWithCommandQueue:(id)a3 imageDimensions:(id)a4 tuningParameters:(id)a5;
-- (int)_extractAndCheckTuningParameters:(id)a3;
+- (BOOL)_shouldResetRepair:(id)repair;
+- (BOOL)_shouldRunRepair:(id)repair;
+- (BOOL)_shouldRunVideoDeghosting:(id)deghosting;
+- (CMIVideoDeghostingV2)initWithCommandQueue:(id)queue imageDimensions:(id)dimensions tuningParameters:(id)parameters;
+- (int)_extractAndCheckTuningParameters:(id)parameters;
 - (int)detectAndTrack;
-- (int)initGhostInformationLookAheadForSize:(int)a3;
+- (int)initGhostInformationLookAheadForSize:(int)size;
 - (int)process;
 - (int)purgeResources;
 - (int)repair;
 - (int)resetState;
 - (void)dealloc;
-- (void)setCameraInfoByPortType:(id)a3;
+- (void)setCameraInfoByPortType:(id)type;
 @end
 
 @implementation CMIVideoDeghostingV2
 
-- (CMIVideoDeghostingV2)initWithCommandQueue:(id)a3 imageDimensions:(id)a4 tuningParameters:(id)a5
+- (CMIVideoDeghostingV2)initWithCommandQueue:(id)queue imageDimensions:(id)dimensions tuningParameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a5;
+  queueCopy = queue;
+  parametersCopy = parameters;
   v25.receiver = self;
   v25.super_class = CMIVideoDeghostingV2;
   v10 = [(CMIVideoDeghostingV2 *)&v25 init];
@@ -32,33 +32,33 @@ LABEL_18:
     goto LABEL_11;
   }
 
-  if ([(CMIVideoDeghostingV2 *)v10 _extractAndCheckTuningParameters:v9])
+  if ([(CMIVideoDeghostingV2 *)v10 _extractAndCheckTuningParameters:parametersCopy])
   {
     sub_27EEC();
     goto LABEL_18;
   }
 
-  objc_storeStrong(&v11->_tuningParameters, a5);
+  objc_storeStrong(&v11->_tuningParameters, parameters);
   v12 = [NSBundle bundleForClass:objc_opt_class()];
-  v13 = [[FigMetalContext alloc] initWithbundle:v12 andOptionalCommandQueue:v8];
+  v13 = [[FigMetalContext alloc] initWithbundle:v12 andOptionalCommandQueue:queueCopy];
   metalContext = v11->_metalContext;
   v11->_metalContext = v13;
 
-  if (v8)
+  if (queueCopy)
   {
-    v15 = v8;
+    commandQueue = queueCopy;
   }
 
   else
   {
-    v15 = [(FigMetalContext *)v11->_metalContext commandQueue];
+    commandQueue = [(FigMetalContext *)v11->_metalContext commandQueue];
   }
 
   metalCommandQueue = v11->_metalCommandQueue;
-  v11->_metalCommandQueue = v15;
+  v11->_metalCommandQueue = commandQueue;
 
   *&v11->_repairEnabled = 257;
-  v17 = [[VEVideoDeghostingDetectionAndTrackingV2 alloc] initWithMetalContext:v11->_metalContext imageDimensions:a4 tuningParameters:v11->_tuningParameters];
+  v17 = [[VEVideoDeghostingDetectionAndTrackingV2 alloc] initWithMetalContext:v11->_metalContext imageDimensions:dimensions tuningParameters:v11->_tuningParameters];
   detectionAndTracking = v11->_detectionAndTracking;
   v11->_detectionAndTracking = v17;
 
@@ -69,8 +69,8 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  [(VEVideoDeghostingDetectionAndTrackingV2 *)v19 setMetalCommandQueue:v8];
-  v20 = [[VEVideoDeghostingRepairV2 alloc] initWithMetalContext:v11->_metalContext imageDimensions:a4 tuningParameters:v11->_tuningParameters];
+  [(VEVideoDeghostingDetectionAndTrackingV2 *)v19 setMetalCommandQueue:queueCopy];
+  v20 = [[VEVideoDeghostingRepairV2 alloc] initWithMetalContext:v11->_metalContext imageDimensions:dimensions tuningParameters:v11->_tuningParameters];
   repair = v11->_repair;
   v11->_repair = v20;
 
@@ -165,10 +165,10 @@ LABEL_6:
           kdebug_trace();
         }
 
-        v7 = [(VEVideoDeghostingDetectionAndTrackingV2 *)self->_detectionAndTracking process];
-        if (v7)
+        process = [(VEVideoDeghostingDetectionAndTrackingV2 *)self->_detectionAndTracking process];
+        if (process)
         {
-          v12 = v7;
+          v12 = process;
           sub_281FC();
         }
 
@@ -176,22 +176,22 @@ LABEL_6:
         {
           if (gGMFigKTraceEnabled)
           {
-            v8 = [(FigMetalContext *)self->_metalContext commandQueue];
-            v9 = [v8 commandBuffer];
+            commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+            commandBuffer = [commandQueue commandBuffer];
 
-            [v9 setLabel:@"KTRACE_END_MTL"];
+            [commandBuffer setLabel:@"KTRACE_END_MTL"];
             v17[0] = _NSConcreteStackBlock;
             v17[1] = 3221225472;
             v17[2] = sub_1EFB8;
             v17[3] = &unk_40710;
             memset(&v17[4], 0, 24);
-            [v9 addCompletedHandler:v17];
-            [v9 commit];
+            [commandBuffer addCompletedHandler:v17];
+            [commandBuffer commit];
           }
 
-          v10 = [(VEVideoDeghostingDetectionAndTrackingV2 *)self->_detectionAndTracking detectionResult];
+          detectionResult = [(VEVideoDeghostingDetectionAndTrackingV2 *)self->_detectionAndTracking detectionResult];
           v11 = self->_detectionResult;
-          self->_detectionResult = v10;
+          self->_detectionResult = detectionResult;
 
           v12 = 0;
         }
@@ -252,23 +252,23 @@ LABEL_6:
 
         [(VEVideoDeghostingRepairV2 *)self->_repair setInputSampleBuffer:self->_repairInputSampleBuffer];
         [(VEVideoDeghostingRepairV2 *)self->_repair setGhostInformationLookAheadPointer:&self->_ghostInformationLookAhead];
-        v3 = [(VEVideoDeghostingRepairV2 *)self->_repair process];
+        process = [(VEVideoDeghostingRepairV2 *)self->_repair process];
         if (gGMFigKTraceEnabled)
         {
-          v4 = [(FigMetalContext *)self->_metalContext commandQueue];
-          v5 = [v4 commandBuffer];
+          commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+          commandBuffer = [commandQueue commandBuffer];
 
-          [v5 setLabel:@"KTRACE_END_MTL"];
+          [commandBuffer setLabel:@"KTRACE_END_MTL"];
           v8[0] = _NSConcreteStackBlock;
           v8[1] = 3221225472;
           v8[2] = sub_1F214;
           v8[3] = &unk_40710;
           memset(&v8[4], 0, 24);
-          [v5 addCompletedHandler:v8];
-          [v5 commit];
+          [commandBuffer addCompletedHandler:v8];
+          [commandBuffer commit];
         }
 
-        if (v3)
+        if (process)
         {
           sub_28394();
         }
@@ -276,7 +276,7 @@ LABEL_6:
 
       else
       {
-        v3 = 0;
+        process = 0;
       }
 
       v6 = 1;
@@ -290,7 +290,7 @@ LABEL_6:
       }
 
       v6 = 0;
-      v3 = 0;
+      process = 0;
     }
   }
 
@@ -298,11 +298,11 @@ LABEL_6:
   {
     sub_28414(&self->_prevShouldRunRepair, &v9);
     v6 = v9;
-    v3 = 2;
+    process = 2;
   }
 
   self->_prevShouldRunRepair = v6;
-  return v3;
+  return process;
 }
 
 - (int)resetState
@@ -312,26 +312,26 @@ LABEL_6:
 
   *&self->_prevShouldRunVideoDeghosting = 0;
   self->_ghostInformationLookAhead.count = 0;
-  v4 = [(VEVideoDeghostingDetectionAndTrackingV2 *)self->_detectionAndTracking resetState];
-  if (v4)
+  resetState = [(VEVideoDeghostingDetectionAndTrackingV2 *)self->_detectionAndTracking resetState];
+  if (resetState)
   {
-    v5 = v4;
+    resetState2 = resetState;
     sub_284A0();
   }
 
   else
   {
-    v5 = [(VEVideoDeghostingRepairV2 *)self->_repair resetState];
-    if (v5)
+    resetState2 = [(VEVideoDeghostingRepairV2 *)self->_repair resetState];
+    if (resetState2)
     {
       sub_28520();
     }
   }
 
-  return v5;
+  return resetState2;
 }
 
-- (int)initGhostInformationLookAheadForSize:(int)a3
+- (int)initGhostInformationLookAheadForSize:(int)size
 {
   info = self->_ghostInformationLookAhead.info;
   if (info)
@@ -341,12 +341,12 @@ LABEL_6:
   }
 
   *&self->_ghostInformationLookAhead.size = 0;
-  v6 = malloc_type_calloc(a3, 0x18uLL, 0x10A00403F27F3CFuLL);
+  v6 = malloc_type_calloc(size, 0x18uLL, 0x10A00403F27F3CFuLL);
   self->_ghostInformationLookAhead.info = v6;
   if (v6)
   {
     result = 0;
-    self->_ghostInformationLookAhead.size = a3;
+    self->_ghostInformationLookAhead.size = size;
   }
 
   else
@@ -358,11 +358,11 @@ LABEL_6:
   return result;
 }
 
-- (int)_extractAndCheckTuningParameters:(id)a3
+- (int)_extractAndCheckTuningParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  parametersCopy = parameters;
+  v5 = parametersCopy;
+  if (!parametersCopy)
   {
     v13 = 740;
 LABEL_11:
@@ -372,7 +372,7 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"LuxLevelThresholdOFF"];
+  v6 = [parametersCopy objectForKeyedSubscript:@"LuxLevelThresholdOFF"];
 
   if (!v6)
   {
@@ -407,11 +407,11 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)_shouldRunVideoDeghosting:(id)a3
+- (BOOL)_shouldRunVideoDeghosting:(id)deghosting
 {
-  v4 = a3;
+  deghostingCopy = deghosting;
   prevShouldRunVideoDeghosting = self->_prevShouldRunVideoDeghosting;
-  v6 = [v4 objectForKeyedSubscript:kFigCaptureStreamMetadata_PortType];
+  v6 = [deghostingCopy objectForKeyedSubscript:kFigCaptureStreamMetadata_PortType];
   v7 = [v6 isEqual:kFigCapturePortType_BackFacingCamera];
 
   if (!v7)
@@ -424,17 +424,17 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v8 = [v4 objectForKeyedSubscript:kFigCaptureStreamMetadata_LuxLevel];
-  v9 = [v8 intValue];
+  v8 = [deghostingCopy objectForKeyedSubscript:kFigCaptureStreamMetadata_LuxLevel];
+  intValue = [v8 intValue];
 
-  if (v9 > self->_luxLevelThresholdOFF && self->_prevShouldRunVideoDeghosting)
+  if (intValue > self->_luxLevelThresholdOFF && self->_prevShouldRunVideoDeghosting)
   {
 LABEL_5:
     prevShouldRunVideoDeghosting = 0;
     goto LABEL_9;
   }
 
-  if (v9 <= self->_luxLevelThresholdON && !self->_prevShouldRunVideoDeghosting)
+  if (intValue <= self->_luxLevelThresholdON && !self->_prevShouldRunVideoDeghosting)
   {
 LABEL_8:
     prevShouldRunVideoDeghosting = 1;
@@ -445,39 +445,39 @@ LABEL_9:
   return prevShouldRunVideoDeghosting;
 }
 
-- (BOOL)_shouldRunRepair:(id)a3
+- (BOOL)_shouldRunRepair:(id)repair
 {
-  v3 = [a3 objectForKeyedSubscript:@"RepairMeta"];
+  v3 = [repair objectForKeyedSubscript:@"RepairMeta"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)_shouldResetRepair:(id)a3
+- (BOOL)_shouldResetRepair:(id)repair
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"PipeReset"];
+  repairCopy = repair;
+  v4 = [repairCopy objectForKeyedSubscript:@"PipeReset"];
 
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"PipeReset"];
-    v6 = [v5 BOOLValue];
+    v5 = [repairCopy objectForKeyedSubscript:@"PipeReset"];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setCameraInfoByPortType:(id)a3
+- (void)setCameraInfoByPortType:(id)type
 {
-  objc_storeStrong(&self->_cameraInfoByPortType, a3);
-  v5 = a3;
-  [(VEVideoDeghostingRepairV2 *)self->_repair setCameraInfoByPortType:v5];
-  [(VEVideoDeghostingDetectionAndTrackingV2 *)self->_detectionAndTracking setCameraInfoByPortType:v5];
+  objc_storeStrong(&self->_cameraInfoByPortType, type);
+  typeCopy = type;
+  [(VEVideoDeghostingRepairV2 *)self->_repair setCameraInfoByPortType:typeCopy];
+  [(VEVideoDeghostingDetectionAndTrackingV2 *)self->_detectionAndTracking setCameraInfoByPortType:typeCopy];
 }
 
 - (int)process
@@ -492,9 +492,9 @@ LABEL_9:
       v6 = v5;
       if (self->_ghostInformationLookAhead.info)
       {
-        v7 = [(CMIVideoDeghostingV2 *)self repair];
+        repair = [(CMIVideoDeghostingV2 *)self repair];
 
-        return v7;
+        return repair;
       }
 
       fig_log_get_emitter();

@@ -1,24 +1,24 @@
 @interface SBMenuBarBackgroundVariableBlurView
-- (SBMenuBarBackgroundVariableBlurView)initWithDelegate:(id)a3;
+- (SBMenuBarBackgroundVariableBlurView)initWithDelegate:(id)delegate;
 - (SBMenuBarBackgroundVariableBlurViewDelegate)delegate;
 - (void)layoutSubviews;
 @end
 
 @implementation SBMenuBarBackgroundVariableBlurView
 
-- (SBMenuBarBackgroundVariableBlurView)initWithDelegate:(id)a3
+- (SBMenuBarBackgroundVariableBlurView)initWithDelegate:(id)delegate
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = SBMenuBarBackgroundVariableBlurView;
   v5 = [(SBMenuBarBackgroundVariableBlurView *)&v14 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [(SBMenuBarBackgroundVariableBlurView *)v6 layer];
-    [v7 setAllowsHitTesting:0];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    layer = [(SBMenuBarBackgroundVariableBlurView *)v6 layer];
+    [layer setAllowsHitTesting:0];
     [(SBMenuBarBackgroundVariableBlurView *)v6 setUserInteractionEnabled:0];
     v8 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     gradientMaskLayer = v6->_gradientMaskLayer;
@@ -26,7 +26,7 @@
 
     [(CALayer *)v6->_gradientMaskLayer setAllowsHitTesting:0];
     [(CALayer *)v6->_gradientMaskLayer setName:@"gradientMask"];
-    [v7 addSublayer:v6->_gradientMaskLayer];
+    [layer addSublayer:v6->_gradientMaskLayer];
     v10 = [MEMORY[0x277D755B8] imageNamed:@"menuBarVariableBlurGradient"];
     -[CALayer setContents:](v6->_gradientMaskLayer, "setContents:", [v10 CGImage]);
     [(CALayer *)v6->_gradientMaskLayer setContentsCenter:0.25, 0.0, 0.5, 1.0];
@@ -36,7 +36,7 @@
     [v11 setValue:@"gradientMask" forKey:*MEMORY[0x277CDA530]];
     v15[0] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-    [v7 setFilters:v12];
+    [layer setFilters:v12];
   }
 
   return v6;

@@ -2,37 +2,37 @@
 - (CGPoint)endPoint;
 - (CGPoint)startPoint;
 - (NSArray)colors;
-- (PUIGradientView)initWithFrame:(CGRect)a3 usesBlur:(BOOL)a4;
+- (PUIGradientView)initWithFrame:(CGRect)frame usesBlur:(BOOL)blur;
 - (void)layoutSubviews;
-- (void)setColors:(id)a3;
-- (void)setColors:(id)a3 locations:(id)a4 type:(id)a5;
-- (void)setStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4;
-- (void)setUsesBlur:(BOOL)a3;
+- (void)setColors:(id)colors;
+- (void)setColors:(id)colors locations:(id)locations type:(id)type;
+- (void)setStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint;
+- (void)setUsesBlur:(BOOL)blur;
 @end
 
 @implementation PUIGradientView
 
-- (PUIGradientView)initWithFrame:(CGRect)a3 usesBlur:(BOOL)a4
+- (PUIGradientView)initWithFrame:(CGRect)frame usesBlur:(BOOL)blur
 {
-  v4 = a4;
+  blurCopy = blur;
   v12.receiver = self;
   v12.super_class = PUIGradientView;
-  v5 = [(PUIGradientView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PUIGradientView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     [(PUIGradientView *)v5 setClipsToBounds:1];
-    v7 = [MEMORY[0x1E6979380] layer];
+    layer = [MEMORY[0x1E6979380] layer];
     gradientLayer = v6->_gradientLayer;
-    v6->_gradientLayer = v7;
+    v6->_gradientLayer = layer;
 
     v9 = v6->_gradientLayer;
     [(PUIGradientView *)v6 bounds];
     [(CAGradientLayer *)v9 setFrame:?];
-    v10 = [(PUIGradientView *)v6 layer];
-    [v10 addSublayer:v6->_gradientLayer];
+    layer2 = [(PUIGradientView *)v6 layer];
+    [layer2 addSublayer:v6->_gradientLayer];
 
-    [(PUIGradientView *)v6 setUsesBlur:v4];
+    [(PUIGradientView *)v6 setUsesBlur:blurCopy];
   }
 
   return v6;
@@ -48,11 +48,11 @@
   [(CAGradientLayer *)gradientLayer setFrame:?];
 }
 
-- (void)setUsesBlur:(BOOL)a3
+- (void)setUsesBlur:(BOOL)blur
 {
-  if (self->_usesBlur != a3)
+  if (self->_usesBlur != blur)
   {
-    if (a3)
+    if (blur)
     {
       if (!self->_blurFilter)
       {
@@ -66,8 +66,8 @@
       }
 
       p_gradientLayer = &self->_gradientLayer;
-      v8 = [(CAGradientLayer *)self->_gradientLayer filters];
-      v9 = [v8 mutableCopy];
+      filters = [(CAGradientLayer *)self->_gradientLayer filters];
+      v9 = [filters mutableCopy];
       v10 = v9;
       if (v9)
       {
@@ -87,8 +87,8 @@
     else
     {
       p_gradientLayer = &self->_gradientLayer;
-      v12 = [(CAGradientLayer *)self->_gradientLayer filters];
-      v13 = [v12 mutableCopy];
+      filters2 = [(CAGradientLayer *)self->_gradientLayer filters];
+      v13 = [filters2 mutableCopy];
       v14 = v13;
       if (v13)
       {
@@ -109,32 +109,32 @@
   }
 }
 
-- (void)setColors:(id)a3 locations:(id)a4 type:(id)a5
+- (void)setColors:(id)colors locations:(id)locations type:(id)type
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v10)
+  colorsCopy = colors;
+  locationsCopy = locations;
+  typeCopy = type;
+  if (colorsCopy)
   {
-    [(CAGradientLayer *)self->_gradientLayer setColors:v10];
+    [(CAGradientLayer *)self->_gradientLayer setColors:colorsCopy];
   }
 
-  if (v8)
+  if (locationsCopy)
   {
-    [(CAGradientLayer *)self->_gradientLayer setLocations:v8];
+    [(CAGradientLayer *)self->_gradientLayer setLocations:locationsCopy];
   }
 
-  if (v9)
+  if (typeCopy)
   {
-    [(CAGradientLayer *)self->_gradientLayer setType:v9];
+    [(CAGradientLayer *)self->_gradientLayer setType:typeCopy];
   }
 }
 
-- (void)setStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4
+- (void)setStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint
 {
-  y = a4.y;
-  x = a4.x;
-  [(CAGradientLayer *)self->_gradientLayer setStartPoint:a3.x, a3.y];
+  y = endPoint.y;
+  x = endPoint.x;
+  [(CAGradientLayer *)self->_gradientLayer setStartPoint:point.x, point.y];
   gradientLayer = self->_gradientLayer;
 
   [(CAGradientLayer *)gradientLayer setEndPoint:x, y];
@@ -142,16 +142,16 @@
 
 - (NSArray)colors
 {
-  v2 = [(CAGradientLayer *)self->_gradientLayer colors];
-  v3 = [v2 bs_compactMap:&__block_literal_global_1];
+  colors = [(CAGradientLayer *)self->_gradientLayer colors];
+  v3 = [colors bs_compactMap:&__block_literal_global_1];
 
   return v3;
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
   gradientLayer = self->_gradientLayer;
-  v4 = [a3 bs_compactMap:&__block_literal_global_18];
+  v4 = [colors bs_compactMap:&__block_literal_global_18];
   [(CAGradientLayer *)gradientLayer setColors:v4];
 }
 

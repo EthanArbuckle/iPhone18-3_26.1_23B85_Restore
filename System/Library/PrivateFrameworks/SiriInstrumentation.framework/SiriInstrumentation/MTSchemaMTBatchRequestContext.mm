@@ -1,13 +1,13 @@
 @interface MTSchemaMTBatchRequestContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTSchemaMTBatchRequestCancelled)cancelled;
-- (MTSchemaMTBatchRequestContext)initWithDictionary:(id)a3;
-- (MTSchemaMTBatchRequestContext)initWithJSON:(id)a3;
+- (MTSchemaMTBatchRequestContext)initWithDictionary:(id)dictionary;
+- (MTSchemaMTBatchRequestContext)initWithJSON:(id)n;
 - (MTSchemaMTBatchRequestEnded)ended;
 - (MTSchemaMTBatchRequestFailed)failed;
 - (MTSchemaMTBatchRequestStarted)startedOrChanged;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -15,24 +15,24 @@
 - (void)deleteEnded;
 - (void)deleteFailed;
 - (void)deleteStartedOrChanged;
-- (void)setCancelled:(id)a3;
-- (void)setEnded:(id)a3;
-- (void)setFailed:(id)a3;
-- (void)setStartedOrChanged:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCancelled:(id)cancelled;
+- (void)setEnded:(id)ended;
+- (void)setFailed:(id)failed;
+- (void)setStartedOrChanged:(id)changed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTSchemaMTBatchRequestContext
 
-- (MTSchemaMTBatchRequestContext)initWithDictionary:(id)a3
+- (MTSchemaMTBatchRequestContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = MTSchemaMTBatchRequestContext;
   v5 = [(MTSchemaMTBatchRequestContext *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"contextId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"contextId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(MTSchemaMTBatchRequestContext *)v5 setContextId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"startedOrChanged"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"startedOrChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
       [(MTSchemaMTBatchRequestContext *)v5 setStartedOrChanged:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"ended"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(MTSchemaMTBatchRequestContext *)v5 setEnded:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"failed"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"failed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       [(MTSchemaMTBatchRequestContext *)v5 setFailed:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"cancelled"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"cancelled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,30 +78,30 @@
   return v5;
 }
 
-- (MTSchemaMTBatchRequestContext)initWithJSON:(id)a3
+- (MTSchemaMTBatchRequestContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MTSchemaMTBatchRequestContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MTSchemaMTBatchRequestContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MTSchemaMTBatchRequestContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -114,90 +114,90 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cancelled)
   {
-    v4 = [(MTSchemaMTBatchRequestContext *)self cancelled];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    cancelled = [(MTSchemaMTBatchRequestContext *)self cancelled];
+    dictionaryRepresentation = [cancelled dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"cancelled"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"cancelled"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"cancelled"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"cancelled"];
     }
   }
 
   if (self->_contextId)
   {
-    v7 = [(MTSchemaMTBatchRequestContext *)self contextId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    contextId = [(MTSchemaMTBatchRequestContext *)self contextId];
+    dictionaryRepresentation2 = [contextId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"contextId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"contextId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"contextId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"contextId"];
     }
   }
 
   if (self->_ended)
   {
-    v10 = [(MTSchemaMTBatchRequestContext *)self ended];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    ended = [(MTSchemaMTBatchRequestContext *)self ended];
+    dictionaryRepresentation3 = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"ended"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"ended"];
     }
   }
 
   if (self->_failed)
   {
-    v13 = [(MTSchemaMTBatchRequestContext *)self failed];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    failed = [(MTSchemaMTBatchRequestContext *)self failed];
+    dictionaryRepresentation4 = [failed dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"failed"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"failed"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"failed"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"failed"];
     }
   }
 
   if (self->_startedOrChanged)
   {
-    v16 = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    startedOrChanged = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
+    dictionaryRepresentation5 = [startedOrChanged dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"startedOrChanged"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"startedOrChanged"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"startedOrChanged"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"startedOrChanged"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -209,34 +209,34 @@
   return v6 ^ [(MTSchemaMTBatchRequestCancelled *)self->_cancelled hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_28;
   }
 
-  v6 = [(MTSchemaMTBatchRequestContext *)self contextId];
-  v7 = [v4 contextId];
-  if ((v6 != 0) == (v7 == 0))
+  contextId = [(MTSchemaMTBatchRequestContext *)self contextId];
+  contextId2 = [equalCopy contextId];
+  if ((contextId != 0) == (contextId2 == 0))
   {
     goto LABEL_27;
   }
 
-  v8 = [(MTSchemaMTBatchRequestContext *)self contextId];
-  if (v8)
+  contextId3 = [(MTSchemaMTBatchRequestContext *)self contextId];
+  if (contextId3)
   {
-    v9 = v8;
-    v10 = [(MTSchemaMTBatchRequestContext *)self contextId];
-    v11 = [v4 contextId];
-    v12 = [v10 isEqual:v11];
+    v9 = contextId3;
+    contextId4 = [(MTSchemaMTBatchRequestContext *)self contextId];
+    contextId5 = [equalCopy contextId];
+    v12 = [contextId4 isEqual:contextId5];
 
     if (!v12)
     {
@@ -248,20 +248,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
-  v7 = [v4 startedOrChanged];
-  if ((v6 != 0) == (v7 == 0))
+  contextId = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
+  contextId2 = [equalCopy startedOrChanged];
+  if ((contextId != 0) == (contextId2 == 0))
   {
     goto LABEL_27;
   }
 
-  v13 = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
-  if (v13)
+  startedOrChanged = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
+  if (startedOrChanged)
   {
-    v14 = v13;
-    v15 = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
-    v16 = [v4 startedOrChanged];
-    v17 = [v15 isEqual:v16];
+    v14 = startedOrChanged;
+    startedOrChanged2 = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
+    startedOrChanged3 = [equalCopy startedOrChanged];
+    v17 = [startedOrChanged2 isEqual:startedOrChanged3];
 
     if (!v17)
     {
@@ -273,20 +273,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTBatchRequestContext *)self ended];
-  v7 = [v4 ended];
-  if ((v6 != 0) == (v7 == 0))
+  contextId = [(MTSchemaMTBatchRequestContext *)self ended];
+  contextId2 = [equalCopy ended];
+  if ((contextId != 0) == (contextId2 == 0))
   {
     goto LABEL_27;
   }
 
-  v18 = [(MTSchemaMTBatchRequestContext *)self ended];
-  if (v18)
+  ended = [(MTSchemaMTBatchRequestContext *)self ended];
+  if (ended)
   {
-    v19 = v18;
-    v20 = [(MTSchemaMTBatchRequestContext *)self ended];
-    v21 = [v4 ended];
-    v22 = [v20 isEqual:v21];
+    v19 = ended;
+    ended2 = [(MTSchemaMTBatchRequestContext *)self ended];
+    ended3 = [equalCopy ended];
+    v22 = [ended2 isEqual:ended3];
 
     if (!v22)
     {
@@ -298,20 +298,20 @@
   {
   }
 
-  v6 = [(MTSchemaMTBatchRequestContext *)self failed];
-  v7 = [v4 failed];
-  if ((v6 != 0) == (v7 == 0))
+  contextId = [(MTSchemaMTBatchRequestContext *)self failed];
+  contextId2 = [equalCopy failed];
+  if ((contextId != 0) == (contextId2 == 0))
   {
     goto LABEL_27;
   }
 
-  v23 = [(MTSchemaMTBatchRequestContext *)self failed];
-  if (v23)
+  failed = [(MTSchemaMTBatchRequestContext *)self failed];
+  if (failed)
   {
-    v24 = v23;
-    v25 = [(MTSchemaMTBatchRequestContext *)self failed];
-    v26 = [v4 failed];
-    v27 = [v25 isEqual:v26];
+    v24 = failed;
+    failed2 = [(MTSchemaMTBatchRequestContext *)self failed];
+    failed3 = [equalCopy failed];
+    v27 = [failed2 isEqual:failed3];
 
     if (!v27)
     {
@@ -323,12 +323,12 @@
   {
   }
 
-  v6 = [(MTSchemaMTBatchRequestContext *)self cancelled];
-  v7 = [v4 cancelled];
-  if ((v6 != 0) != (v7 == 0))
+  contextId = [(MTSchemaMTBatchRequestContext *)self cancelled];
+  contextId2 = [equalCopy cancelled];
+  if ((contextId != 0) != (contextId2 == 0))
   {
-    v28 = [(MTSchemaMTBatchRequestContext *)self cancelled];
-    if (!v28)
+    cancelled = [(MTSchemaMTBatchRequestContext *)self cancelled];
+    if (!cancelled)
     {
 
 LABEL_31:
@@ -336,10 +336,10 @@ LABEL_31:
       goto LABEL_29;
     }
 
-    v29 = v28;
-    v30 = [(MTSchemaMTBatchRequestContext *)self cancelled];
-    v31 = [v4 cancelled];
-    v32 = [v30 isEqual:v31];
+    v29 = cancelled;
+    cancelled2 = [(MTSchemaMTBatchRequestContext *)self cancelled];
+    cancelled3 = [equalCopy cancelled];
+    v32 = [cancelled2 isEqual:cancelled3];
 
     if (v32)
     {
@@ -359,50 +359,50 @@ LABEL_29:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(MTSchemaMTBatchRequestContext *)self contextId];
+  toCopy = to;
+  contextId = [(MTSchemaMTBatchRequestContext *)self contextId];
 
-  if (v4)
+  if (contextId)
   {
-    v5 = [(MTSchemaMTBatchRequestContext *)self contextId];
+    contextId2 = [(MTSchemaMTBatchRequestContext *)self contextId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
+  startedOrChanged = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
 
-  if (v6)
+  if (startedOrChanged)
   {
-    v7 = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
+    startedOrChanged2 = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(MTSchemaMTBatchRequestContext *)self ended];
+  ended = [(MTSchemaMTBatchRequestContext *)self ended];
 
-  if (v8)
+  if (ended)
   {
-    v9 = [(MTSchemaMTBatchRequestContext *)self ended];
+    ended2 = [(MTSchemaMTBatchRequestContext *)self ended];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(MTSchemaMTBatchRequestContext *)self failed];
+  failed = [(MTSchemaMTBatchRequestContext *)self failed];
 
-  if (v10)
+  if (failed)
   {
-    v11 = [(MTSchemaMTBatchRequestContext *)self failed];
+    failed2 = [(MTSchemaMTBatchRequestContext *)self failed];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(MTSchemaMTBatchRequestContext *)self cancelled];
+  cancelled = [(MTSchemaMTBatchRequestContext *)self cancelled];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (cancelled)
   {
-    v14 = [(MTSchemaMTBatchRequestContext *)self cancelled];
+    cancelled2 = [(MTSchemaMTBatchRequestContext *)self cancelled];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
@@ -431,9 +431,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setCancelled:(id)a3
+- (void)setCancelled:(id)cancelled
 {
-  v4 = a3;
+  cancelledCopy = cancelled;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -444,14 +444,14 @@ LABEL_29:
   self->_failed = 0;
 
   v8 = 5;
-  if (!v4)
+  if (!cancelledCopy)
   {
     v8 = 0;
   }
 
   self->_whichContextevent = v8;
   cancelled = self->_cancelled;
-  self->_cancelled = v4;
+  self->_cancelled = cancelledCopy;
 }
 
 - (void)deleteFailed
@@ -479,9 +479,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setFailed:(id)a3
+- (void)setFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -491,9 +491,9 @@ LABEL_29:
   cancelled = self->_cancelled;
   self->_cancelled = 0;
 
-  self->_whichContextevent = 4 * (v4 != 0);
+  self->_whichContextevent = 4 * (failedCopy != 0);
   failed = self->_failed;
-  self->_failed = v4;
+  self->_failed = failedCopy;
 }
 
 - (void)deleteEnded
@@ -521,9 +521,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setEnded:(id)a3
+- (void)setEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -534,14 +534,14 @@ LABEL_29:
   self->_cancelled = 0;
 
   v8 = 3;
-  if (!v4)
+  if (!endedCopy)
   {
     v8 = 0;
   }
 
   self->_whichContextevent = v8;
   ended = self->_ended;
-  self->_ended = v4;
+  self->_ended = endedCopy;
 }
 
 - (void)deleteStartedOrChanged
@@ -569,9 +569,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setStartedOrChanged:(id)a3
+- (void)setStartedOrChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   ended = self->_ended;
   self->_ended = 0;
 
@@ -581,58 +581,58 @@ LABEL_29:
   cancelled = self->_cancelled;
   self->_cancelled = 0;
 
-  self->_whichContextevent = 2 * (v4 != 0);
+  self->_whichContextevent = 2 * (changedCopy != 0);
   startedOrChanged = self->_startedOrChanged;
-  self->_startedOrChanged = v4;
+  self->_startedOrChanged = changedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = MTSchemaMTBatchRequestContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(MTSchemaMTBatchRequestContext *)self contextId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  contextId = [(MTSchemaMTBatchRequestContext *)self contextId];
+  v7 = [contextId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(MTSchemaMTBatchRequestContext *)self deleteContextId];
   }
 
-  v9 = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  startedOrChanged = [(MTSchemaMTBatchRequestContext *)self startedOrChanged];
+  v10 = [startedOrChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(MTSchemaMTBatchRequestContext *)self deleteStartedOrChanged];
   }
 
-  v12 = [(MTSchemaMTBatchRequestContext *)self ended];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  ended = [(MTSchemaMTBatchRequestContext *)self ended];
+  v13 = [ended applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(MTSchemaMTBatchRequestContext *)self deleteEnded];
   }
 
-  v15 = [(MTSchemaMTBatchRequestContext *)self failed];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  failed = [(MTSchemaMTBatchRequestContext *)self failed];
+  v16 = [failed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(MTSchemaMTBatchRequestContext *)self deleteFailed];
   }
 
-  v18 = [(MTSchemaMTBatchRequestContext *)self cancelled];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  cancelled = [(MTSchemaMTBatchRequestContext *)self cancelled];
+  v19 = [cancelled applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(MTSchemaMTBatchRequestContext *)self deleteCancelled];
   }

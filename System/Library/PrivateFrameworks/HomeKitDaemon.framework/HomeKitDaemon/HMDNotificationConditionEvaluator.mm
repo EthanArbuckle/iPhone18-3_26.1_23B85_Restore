@@ -1,20 +1,20 @@
 @interface HMDNotificationConditionEvaluator
 + (id)logCategory;
-- (BOOL)conditionsPass:(id)a3 registrationUser:(id)a4;
-- (HMDNotificationConditionEvaluator)initWithConditionHandlers:(id)a3;
+- (BOOL)conditionsPass:(id)pass registrationUser:(id)user;
+- (HMDNotificationConditionEvaluator)initWithConditionHandlers:(id)handlers;
 @end
 
 @implementation HMDNotificationConditionEvaluator
 
-- (BOOL)conditionsPass:(id)a3 registrationUser:(id)a4
+- (BOOL)conditionsPass:(id)pass registrationUser:(id)user
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hmf_isEmpty])
+  passCopy = pass;
+  userCopy = user;
+  if ([passCopy hmf_isEmpty])
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -35,8 +35,8 @@
     v15[2] = __69__HMDNotificationConditionEvaluator_conditionsPass_registrationUser___block_invoke;
     v15[3] = &unk_2786750A8;
     v15[4] = self;
-    v16 = v7;
-    v12 = [v6 na_all:v15];
+    v16 = userCopy;
+    v12 = [passCopy na_all:v15];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -84,16 +84,16 @@ uint64_t __69__HMDNotificationConditionEvaluator_conditionsPass_registrationUser
   return v7;
 }
 
-- (HMDNotificationConditionEvaluator)initWithConditionHandlers:(id)a3
+- (HMDNotificationConditionEvaluator)initWithConditionHandlers:(id)handlers
 {
-  v5 = a3;
+  handlersCopy = handlers;
   v9.receiver = self;
   v9.super_class = HMDNotificationConditionEvaluator;
   v6 = [(HMDNotificationConditionEvaluator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_conditionHandlers, a3);
+    objc_storeStrong(&v6->_conditionHandlers, handlers);
   }
 
   return v7;

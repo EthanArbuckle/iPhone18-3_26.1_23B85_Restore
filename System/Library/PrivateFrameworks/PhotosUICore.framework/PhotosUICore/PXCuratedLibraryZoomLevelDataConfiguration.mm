@@ -1,8 +1,8 @@
 @interface PXCuratedLibraryZoomLevelDataConfiguration
 - (PXAssetsDataSourceManager)assetsDataSourceManager;
 - (PXCuratedLibraryZoomLevelDataConfiguration)init;
-- (PXCuratedLibraryZoomLevelDataConfiguration)initWithZoomLevel:(int64_t)a3 assetsDataSourceManager:(id)a4 enableDays:(BOOL)a5;
-- (id)createInitialPhotosDataSourceForDataSourceManager:(id)a3;
+- (PXCuratedLibraryZoomLevelDataConfiguration)initWithZoomLevel:(int64_t)level assetsDataSourceManager:(id)manager enableDays:(BOOL)days;
+- (id)createInitialPhotosDataSourceForDataSourceManager:(id)manager;
 @end
 
 @implementation PXCuratedLibraryZoomLevelDataConfiguration
@@ -18,35 +18,35 @@
   return v3;
 }
 
-- (id)createInitialPhotosDataSourceForDataSourceManager:(id)a3
+- (id)createInitialPhotosDataSourceForDataSourceManager:(id)manager
 {
   v84[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PHPhotoLibrary *)self->_photoLibrary px_standardLibrarySpecificFetchOptions];
-  [v6 setPhotoLibrary:self->_photoLibrary];
-  v71 = v6;
+  managerCopy = manager;
+  px_standardLibrarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary px_standardLibrarySpecificFetchOptions];
+  [px_standardLibrarySpecificFetchOptions setPhotoLibrary:self->_photoLibrary];
+  v71 = px_standardLibrarySpecificFetchOptions;
   if ([(PXCuratedLibraryZoomLevelDataConfiguration *)self zoomLevel]== 4)
   {
-    [v6 setIncludeAllPhotosSmartAlbum:1];
-    v7 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:1000000205 options:v6];
-    v8 = [off_1E77219A8 sharedInstance];
-    v9 = [v8 simulateMinimumPhotoCount];
+    [px_standardLibrarySpecificFetchOptions setIncludeAllPhotosSmartAlbum:1];
+    v7 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:1000000205 options:px_standardLibrarySpecificFetchOptions];
+    sharedInstance = [off_1E77219A8 sharedInstance];
+    simulateMinimumPhotoCount = [sharedInstance simulateMinimumPhotoCount];
     v10 = 0x1E695D000;
-    if (v9 > 0 || [v8 simulateEmptyLibrary])
+    if (simulateMinimumPhotoCount > 0 || [sharedInstance simulateEmptyLibrary])
     {
-      v70 = v5;
+      v70 = managerCopy;
       v11 = MEMORY[0x1E6978630];
       v72 = v7;
-      v12 = [v7 firstObject];
-      v13 = [v11 fetchAssetsInAssetCollection:v12 options:v6];
+      firstObject = [v7 firstObject];
+      v13 = [v11 fetchAssetsInAssetCollection:firstObject options:px_standardLibrarySpecificFetchOptions];
 
-      v14 = [v13 fetchedObjectIDs];
-      v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v9];
-      if (v9 >= 1)
+      fetchedObjectIDs = [v13 fetchedObjectIDs];
+      v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:simulateMinimumPhotoCount];
+      if (simulateMinimumPhotoCount >= 1)
       {
-        for (i = 0; i != v9; ++i)
+        for (i = 0; i != simulateMinimumPhotoCount; ++i)
         {
-          v17 = [v14 objectAtIndexedSubscript:{i % objc_msgSend(v14, "count")}];
+          v17 = [fetchedObjectIDs objectAtIndexedSubscript:{i % objc_msgSend(fetchedObjectIDs, "count")}];
           [v15 addObject:v17];
         }
       }
@@ -63,26 +63,26 @@
 
       v10 = 0x1E695D000uLL;
       v7 = v25;
-      v5 = v70;
+      managerCopy = v70;
     }
 
     v26 = [[PXPhotosDataSourceConfiguration alloc] initWithCollectionListFetchResult:v7 options:33921];
-    v27 = [v5 filterPredicate];
-    [(PXPhotosDataSourceConfiguration *)v26 setFilterPredicate:v27];
+    filterPredicate = [managerCopy filterPredicate];
+    [(PXPhotosDataSourceConfiguration *)v26 setFilterPredicate:filterPredicate];
 
-    -[PXPhotosDataSourceConfiguration setLibraryFilter:](v26, "setLibraryFilter:", [v5 libraryFilter]);
+    -[PXPhotosDataSourceConfiguration setLibraryFilter:](v26, "setLibraryFilter:", [managerCopy libraryFilter]);
     [(PXPhotosDataSourceConfiguration *)v26 setLibraryFilterState:0];
-    v28 = [v5 sortDescriptors];
-    [(PXPhotosDataSourceConfiguration *)v26 setSortDescriptors:v28];
+    sortDescriptors = [managerCopy sortDescriptors];
+    [(PXPhotosDataSourceConfiguration *)v26 setSortDescriptors:sortDescriptors];
 
     v83 = *MEMORY[0x1E6978D08];
     v29 = [*(v10 + 3784) arrayWithObjects:&v83 count:1];
-    v30 = [off_1E7721948 standardUserDefaults];
-    v31 = [v30 allPhotosCaptionsVisible];
-    v32 = [v31 BOOLValue];
+    standardUserDefaults = [off_1E7721948 standardUserDefaults];
+    allPhotosCaptionsVisible = [standardUserDefaults allPhotosCaptionsVisible];
+    bOOLValue = [allPhotosCaptionsVisible BOOLValue];
 
     v73 = v7;
-    if (v32)
+    if (bOOLValue)
     {
       v33 = [v29 arrayByAddingObject:*MEMORY[0x1E6978C50]];
 
@@ -90,24 +90,24 @@
     }
 
     [(PXPhotosDataSourceConfiguration *)v26 setFetchPropertySets:v29];
-    v34 = [(PXCuratedLibraryZoomLevelDataConfiguration *)self photoLibrary];
-    v35 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:v34];
+    photoLibrary = [(PXCuratedLibraryZoomLevelDataConfiguration *)self photoLibrary];
+    v35 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:photoLibrary];
 
     -[PXPhotosDataSourceConfiguration setCanIncludeUnsavedSyndicatedAssets:](v26, "setCanIncludeUnsavedSyndicatedAssets:", [v35 showUnsavedSyndicatedContentInPhotosGrids]);
     v36 = [[PXPhotosDataSource alloc] initWithPhotosDataSourceConfiguration:v26];
-    v37 = [v8 maxPhotoCount];
-    if (v37)
+    maxPhotoCount = [sharedInstance maxPhotoCount];
+    if (maxPhotoCount)
     {
-      [(PXPhotosDataSource *)v36 setFetchLimit:v37];
+      [(PXPhotosDataSource *)v36 setFetchLimit:maxPhotoCount];
     }
 
-    if ([v8 onlyPhotosFromToday])
+    if ([sharedInstance onlyPhotosFromToday])
     {
       v38 = objc_alloc_init(MEMORY[0x1E695DF10]);
       [v38 setDay:-1];
-      v39 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v40 = [MEMORY[0x1E695DF00] date];
-      v41 = [v39 dateByAddingComponents:v38 toDate:v40 options:0];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      date = [MEMORY[0x1E695DF00] date];
+      v41 = [currentCalendar dateByAddingComponents:v38 toDate:date options:0];
 
       v42 = [MEMORY[0x1E696AE18] predicateWithFormat:@"dateCreated >= %@", v41];
       [(PXPhotosDataSource *)v36 setFilterPredicate:v42];
@@ -127,34 +127,34 @@
   }
 
   enableDays = self->_enableDays;
-  v47 = [(PXCuratedLibraryZoomLevelDataConfiguration *)self zoomLevel];
+  zoomLevel = [(PXCuratedLibraryZoomLevelDataConfiguration *)self zoomLevel];
   v48 = -1;
   v49 = 6321;
-  if (v47 <= 1)
+  if (zoomLevel <= 1)
   {
-    if (v47 == 1)
+    if (zoomLevel == 1)
     {
       v49 = 6641;
       goto LABEL_28;
     }
 
-    if (v47)
+    if (zoomLevel)
     {
       goto LABEL_28;
     }
 
-    v50 = [MEMORY[0x1E696AAA8] currentHandler];
-    v51 = v50;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v51 = currentHandler;
     v52 = a2;
-    v53 = self;
+    selfCopy2 = self;
     v54 = 256;
 LABEL_38:
-    [v50 handleFailureInMethod:v52 object:v53 file:@"PXCuratedLibraryAssetsDataSourceManagerConfiguration.m" lineNumber:v54 description:@"Code which should be unreachable has been reached"];
+    [currentHandler handleFailureInMethod:v52 object:selfCopy2 file:@"PXCuratedLibraryAssetsDataSourceManagerConfiguration.m" lineNumber:v54 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  switch(v47)
+  switch(zoomLevel)
   {
     case 2:
       v49 = 7153;
@@ -173,26 +173,26 @@ LABEL_38:
       v49 = 6385;
       break;
     case 4:
-      v50 = [MEMORY[0x1E696AAA8] currentHandler];
-      v51 = v50;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v51 = currentHandler;
       v52 = a2;
-      v53 = self;
+      selfCopy2 = self;
       v54 = 274;
       goto LABEL_38;
   }
 
 LABEL_28:
-  v55 = [(PXCuratedLibraryZoomLevelDataConfiguration *)self zoomLevel];
-  v56 = [(PXCuratedLibraryZoomLevelDataConfiguration *)self photoLibrary];
-  v57 = [v5 libraryFilter];
+  zoomLevel2 = [(PXCuratedLibraryZoomLevelDataConfiguration *)self zoomLevel];
+  photoLibrary2 = [(PXCuratedLibraryZoomLevelDataConfiguration *)self photoLibrary];
+  libraryFilter = [managerCopy libraryFilter];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __96__PXCuratedLibraryZoomLevelDataConfiguration_createInitialPhotosDataSourceForDataSourceManager___block_invoke_285;
   aBlock[3] = &unk_1E7749E68;
-  v79 = v55;
-  v73 = v56;
+  v79 = zoomLevel2;
+  v73 = photoLibrary2;
   v78 = v73;
-  v80 = v57;
+  v80 = libraryFilter;
   v58 = _Block_copy(aBlock);
   v59 = v58;
   if (enableDays)
@@ -204,35 +204,35 @@ LABEL_28:
   {
     v61 = objc_alloc(MEMORY[0x1E69788E0]);
     photoLibrary = self->_photoLibrary;
-    v63 = [MEMORY[0x1E69789F0] fetchType];
-    v60 = [v61 initWithOids:MEMORY[0x1E695E0F0] photoLibrary:photoLibrary fetchType:v63 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+    fetchType = [MEMORY[0x1E69789F0] fetchType];
+    v60 = [v61 initWithOids:MEMORY[0x1E695E0F0] photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:0 identifier:0 registerIfNeeded:0];
   }
 
   v64 = [[PXPhotosDataSourceConfiguration alloc] initWithCollectionListFetchResult:v60 options:v49 & v48];
-  v65 = [v5 filterPredicate];
-  [(PXPhotosDataSourceConfiguration *)v64 setFilterPredicate:v65];
+  filterPredicate2 = [managerCopy filterPredicate];
+  [(PXPhotosDataSourceConfiguration *)v64 setFilterPredicate:filterPredicate2];
 
-  -[PXPhotosDataSourceConfiguration setLibraryFilter:](v64, "setLibraryFilter:", [v5 libraryFilter]);
+  -[PXPhotosDataSourceConfiguration setLibraryFilter:](v64, "setLibraryFilter:", [managerCopy libraryFilter]);
   [(PXPhotosDataSourceConfiguration *)v64 setLibraryFilterState:0];
   [(PXPhotosDataSourceConfiguration *)v64 setWantsCurationByDefault:1];
-  v66 = [(PXCuratedLibraryZoomLevelDataConfiguration *)self photoLibrary];
-  v67 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:v66];
+  photoLibrary3 = [(PXCuratedLibraryZoomLevelDataConfiguration *)self photoLibrary];
+  v67 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:photoLibrary3];
 
   -[PXPhotosDataSourceConfiguration setCanIncludeUnsavedSyndicatedAssets:](v64, "setCanIncludeUnsavedSyndicatedAssets:", [v67 showUnsavedSyndicatedContentInPhotosGrids]);
   v36 = [[PXPhotosDataSource alloc] initWithPhotosDataSourceConfiguration:v64];
   if (!enableDays)
   {
-    v68 = [off_1E7721858 sharedScheduler];
+    sharedScheduler = [off_1E7721858 sharedScheduler];
     v74[0] = MEMORY[0x1E69E9820];
     v74[1] = 3221225472;
     v74[2] = __96__PXCuratedLibraryZoomLevelDataConfiguration_createInitialPhotosDataSourceForDataSourceManager___block_invoke_2;
     v74[3] = &unk_1E774C2F0;
     v76 = v59;
     v75 = v36;
-    [v68 scheduleTaskWithQoS:0 block:v74];
+    [sharedScheduler scheduleTaskWithQoS:0 block:v74];
   }
 
-  v8 = v78;
+  sharedInstance = v78;
 LABEL_34:
 
   return v36;
@@ -314,18 +314,18 @@ void __96__PXCuratedLibraryZoomLevelDataConfiguration_createInitialPhotosDataSou
   }
 }
 
-- (PXCuratedLibraryZoomLevelDataConfiguration)initWithZoomLevel:(int64_t)a3 assetsDataSourceManager:(id)a4 enableDays:(BOOL)a5
+- (PXCuratedLibraryZoomLevelDataConfiguration)initWithZoomLevel:(int64_t)level assetsDataSourceManager:(id)manager enableDays:(BOOL)days
 {
-  v9 = a4;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = PXCuratedLibraryZoomLevelDataConfiguration;
   v10 = [(PXCuratedLibraryZoomLevelDataConfiguration *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_zoomLevel = a3;
-    objc_storeStrong(&v10->_assetsDataSourceManager, a4);
-    v11->_enableDays = a5;
+    v10->_zoomLevel = level;
+    objc_storeStrong(&v10->_assetsDataSourceManager, manager);
+    v11->_enableDays = days;
   }
 
   return v11;
@@ -333,8 +333,8 @@ void __96__PXCuratedLibraryZoomLevelDataConfiguration_createInitialPhotosDataSou
 
 - (PXCuratedLibraryZoomLevelDataConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManagerConfiguration.m" lineNumber:145 description:{@"%s is not available as initializer", "-[PXCuratedLibraryZoomLevelDataConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManagerConfiguration.m" lineNumber:145 description:{@"%s is not available as initializer", "-[PXCuratedLibraryZoomLevelDataConfiguration init]"}];
 
   abort();
 }

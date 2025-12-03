@@ -1,15 +1,15 @@
 @interface _UIBadgeView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIOffset)textOffset;
-- (_UIBadgeView)initWithText:(id)a3;
+- (_UIBadgeView)initWithText:(id)text;
 - (void)_applyTextToLabel;
 - (void)_setUpLabelIfNecessary;
 - (void)layoutSubviews;
-- (void)setBadgeColor:(id)a3;
-- (void)setStyle:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextAttributes:(id)a3;
-- (void)setTextOffset:(UIOffset)a3;
+- (void)setBadgeColor:(id)color;
+- (void)setStyle:(id)style;
+- (void)setText:(id)text;
+- (void)setTextAttributes:(id)attributes;
+- (void)setTextOffset:(UIOffset)offset;
 @end
 
 @implementation _UIBadgeView
@@ -59,8 +59,8 @@
       mergedTextAttributes = self->_mergedTextAttributes;
       self->_mergedTextAttributes = v3;
 
-      v5 = [(_UIBadgeVisualStyle *)self->_style font];
-      [(NSMutableDictionary *)self->_mergedTextAttributes setObject:v5 forKeyedSubscript:*off_1E70EC918];
+      font = [(_UIBadgeVisualStyle *)self->_style font];
+      [(NSMutableDictionary *)self->_mergedTextAttributes setObject:font forKeyedSubscript:*off_1E70EC918];
 
       if ([(NSDictionary *)self->_textAttributes count])
       {
@@ -107,8 +107,8 @@
 
   else
   {
-    v7 = [(_UIBadgeVisualStyle *)self->_style defaultBadgeColor];
-    [(UIView *)self setBackgroundColor:v7];
+    defaultBadgeColor = [(_UIBadgeVisualStyle *)self->_style defaultBadgeColor];
+    [(UIView *)self setBackgroundColor:defaultBadgeColor];
   }
 
   [(_UIBadgeView *)self _applyTextToLabel];
@@ -124,13 +124,13 @@
   [(UILabel *)label setFrame:v13, v16, v9, v11];
 }
 
-- (_UIBadgeView)initWithText:(id)a3
+- (_UIBadgeView)initWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [(UIView *)self initWithFrame:0.0, 0.0, 24.0, 22.0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [textCopy copy];
     text = v5->_text;
     v5->_text = v6;
 
@@ -142,9 +142,9 @@
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(_UIBadgeVisualStyle *)self->_style cornerRadius:a3.width];
+  [(_UIBadgeVisualStyle *)self->_style cornerRadius:fits.width];
   v5 = v4 + v4;
   v6 = [(NSString *)self->_text length];
   v7 = v5;
@@ -177,15 +177,15 @@
   return result;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   text = self->_text;
-  if (text != v4)
+  if (text != textCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)text isEqual:v4];
-    v4 = v9;
+    v9 = textCopy;
+    v6 = [(NSString *)text isEqual:textCopy];
+    textCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSString *)v9 copy];
@@ -196,20 +196,20 @@
       [(_UIBadgeView *)self _applyTextToLabel];
       [(UIView *)self sizeToFit];
       [(UIView *)self setNeedsLayout];
-      v4 = v9;
+      textCopy = v9;
     }
   }
 }
 
-- (void)setTextAttributes:(id)a3
+- (void)setTextAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   textAttributes = self->_textAttributes;
-  if (textAttributes != v4)
+  if (textAttributes != attributesCopy)
   {
-    v10 = v4;
-    v6 = [(NSDictionary *)textAttributes isEqual:v4];
-    v4 = v10;
+    v10 = attributesCopy;
+    v6 = [(NSDictionary *)textAttributes isEqual:attributesCopy];
+    attributesCopy = v10;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSDictionary *)v10 copy];
@@ -220,44 +220,44 @@
       self->_mergedTextAttributes = 0;
 
       [(UIView *)self setNeedsLayout];
-      v4 = v10;
+      attributesCopy = v10;
     }
   }
 }
 
-- (void)setBadgeColor:(id)a3
+- (void)setBadgeColor:(id)color
 {
-  v5 = a3;
-  if (self->_badgeColor != v5)
+  colorCopy = color;
+  if (self->_badgeColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_badgeColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_badgeColor, color);
     [(UIView *)self setNeedsLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setTextOffset:(UIOffset)a3
+- (void)setTextOffset:(UIOffset)offset
 {
-  if (self->_textOffset.horizontal != a3.horizontal || self->_textOffset.vertical != a3.vertical)
+  if (self->_textOffset.horizontal != offset.horizontal || self->_textOffset.vertical != offset.vertical)
   {
-    self->_textOffset = a3;
+    self->_textOffset = offset;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v5 = a3;
-  if (self->_style != v5)
+  styleCopy = style;
+  if (self->_style != styleCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_style, a3);
+    v7 = styleCopy;
+    objc_storeStrong(&self->_style, style);
     mergedTextAttributes = self->_mergedTextAttributes;
     self->_mergedTextAttributes = 0;
 
     [(UIView *)self setNeedsLayout];
-    v5 = v7;
+    styleCopy = v7;
   }
 }
 

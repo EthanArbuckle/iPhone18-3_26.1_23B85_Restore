@@ -1,7 +1,7 @@
 @interface ICAttachmentPreviewImageCryptoStrategyV2
-- (BOOL)serializeToEncryptedMetadata:(id)a3;
-- (BOOL)writeEncryptedImageData:(id)a3;
-- (BOOL)writeEncryptedMetadata:(id)a3;
+- (BOOL)serializeToEncryptedMetadata:(id)metadata;
+- (BOOL)writeEncryptedImageData:(id)data;
+- (BOOL)writeEncryptedMetadata:(id)metadata;
 - (id)_decryptedImageData;
 - (id)decryptedImageData;
 - (id)decryptedMetadata;
@@ -9,9 +9,9 @@
 
 @implementation ICAttachmentPreviewImageCryptoStrategyV2
 
-- (BOOL)writeEncryptedMetadata:(id)a3
+- (BOOL)writeEncryptedMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -20,9 +20,9 @@
   v7[1] = 3221225472;
   v7[2] = __67__ICAttachmentPreviewImageCryptoStrategyV2_writeEncryptedMetadata___block_invoke;
   v7[3] = &unk_278197650;
-  v5 = v4;
+  v5 = metadataCopy;
   v8 = v5;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   [(ICCryptoStrategyBase *)self performBlockIfPreviewImageExists:v7];
   LOBYTE(self) = *(v12 + 24);
@@ -85,9 +85,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (BOOL)writeEncryptedImageData:(id)a3
+- (BOOL)writeEncryptedImageData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -96,9 +96,9 @@ LABEL_12:
   v7[1] = 3221225472;
   v7[2] = __68__ICAttachmentPreviewImageCryptoStrategyV2_writeEncryptedImageData___block_invoke;
   v7[3] = &unk_278197650;
-  v5 = v4;
+  v5 = dataCopy;
   v8 = v5;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   [(ICCryptoStrategyBase *)self performBlockIfPreviewImageExists:v7];
   LOBYTE(self) = *(v12 + 24);
@@ -419,9 +419,9 @@ LABEL_13:
   }
 }
 
-- (BOOL)serializeToEncryptedMetadata:(id)a3
+- (BOOL)serializeToEncryptedMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -430,7 +430,7 @@ LABEL_13:
   v7[1] = 3221225472;
   v7[2] = __73__ICAttachmentPreviewImageCryptoStrategyV2_serializeToEncryptedMetadata___block_invoke;
   v7[3] = &unk_278198400;
-  v5 = v4;
+  v5 = metadataCopy;
   v8 = v5;
   v9 = &v10;
   [(ICCryptoStrategyBase *)self performBlockIfPreviewImageExists:v7];

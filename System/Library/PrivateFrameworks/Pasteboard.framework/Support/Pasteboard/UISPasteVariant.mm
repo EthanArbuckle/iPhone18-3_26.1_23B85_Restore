@@ -7,17 +7,17 @@
 
 - (id)_keyCommandSpecification
 {
-  v3 = [(UISPasteVariant *)self keyInput];
-  if (v3)
+  keyInput = [(UISPasteVariant *)self keyInput];
+  if (keyInput)
   {
-    v4 = [(UISPasteVariant *)self secureName];
+    secureName = [(UISPasteVariant *)self secureName];
     v5 = 0xF317E322CB2CEA02;
-    if (v4 != 65537)
+    if (secureName != 65537)
     {
       v5 = 0;
     }
 
-    if (v4 == 0x10000)
+    if (secureName == 0x10000)
     {
       v6 = 0x84E6A8CBF3F0F10CLL;
     }
@@ -27,7 +27,7 @@
       v6 = v5;
     }
 
-    v7 = [BKSHIDEventKeyCommand keyCommandWithInput:v3 modifierFlags:[(UISPasteVariant *)self keyModifierFlags]];
+    v7 = [BKSHIDEventKeyCommand keyCommandWithInput:keyInput modifierFlags:[(UISPasteVariant *)self keyModifierFlags]];
     v8 = [BKSHIDAuthenticatedKeyCommandSpecification specificationWithKeyCommand:v7 context:v6];
   }
 

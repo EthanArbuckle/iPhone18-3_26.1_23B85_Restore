@@ -10,7 +10,7 @@
 - (uint64_t)isEqualForSmartPromptPurposes:()Shortcuts
 {
   v4 = a3;
-  if (a1 == v4)
+  if (self == v4)
   {
     v8 = 1;
   }
@@ -20,7 +20,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16.receiver = a1;
+      v16.receiver = self;
       v16.super_class = &off_1F294BFC8;
       v5 = objc_msgSendSuper2(&v16, sel_isEqualForSmartPromptPurposes_, v4);
       v6 = v4;
@@ -47,10 +47,10 @@
 
       if (v5)
       {
-        v10 = [a1 userActivityType];
-        v11 = [v9 userActivityType];
-        v12 = v10;
-        v13 = v11;
+        userActivityType = [self userActivityType];
+        userActivityType2 = [v9 userActivityType];
+        v12 = userActivityType;
+        v13 = userActivityType2;
         v14 = v13;
         if (v12 == v13)
         {
@@ -84,11 +84,11 @@
 
 - (unint64_t)hashForSmartPromptPurposes
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_1F294BFC8;
   v2 = objc_msgSendSuper2(&v6, sel_hashForSmartPromptPurposes);
-  v3 = [a1 userActivityType];
-  v4 = [v3 hash];
+  userActivityType = [self userActivityType];
+  v4 = [userActivityType hash];
 
   return v4 ^ v2;
 }
@@ -206,19 +206,19 @@
 
   v19 = v18;
 
-  v20 = [a1 initWithUserActivityType:v19 localizedName:v7 bundleIdentifier:v10 extensionBundleIdentifier:v13 counterpartIdentifiers:0 teamIdentifier:v16 supportedIntents:0 bundleURL:0];
+  v20 = [self initWithUserActivityType:v19 localizedName:v7 bundleIdentifier:v10 extensionBundleIdentifier:v13 counterpartIdentifiers:0 teamIdentifier:v16 supportedIntents:0 bundleURL:0];
   return v20;
 }
 
 - (id)serializedRepresentation
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_1F294BFC8;
   v2 = objc_msgSendSuper2(&v6, sel_serializedRepresentation);
   v3 = [v2 mutableCopy];
 
-  v4 = [a1 userActivityType];
-  [v3 setValue:v4 forKey:@"UserActivityType"];
+  userActivityType = [self userActivityType];
+  [v3 setValue:userActivityType forKey:@"UserActivityType"];
 
   return v3;
 }

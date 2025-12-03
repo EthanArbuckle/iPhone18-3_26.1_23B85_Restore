@@ -1,20 +1,20 @@
 @interface CSLUIIconView
 + (double)maximumZoomDiameter;
 - ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributes;
-- (CSLUIIconView)initWithFrame:(CGRect)a3;
-- (void)beginDraggingAtPoint:(CGPoint)a3;
-- (void)endDraggingToLayoutAttributes:(id)a3;
-- (void)setJiggling:(BOOL)a3;
-- (void)setLayoutAttributes:(id)a3;
+- (CSLUIIconView)initWithFrame:(CGRect)frame;
+- (void)beginDraggingAtPoint:(CGPoint)point;
+- (void)endDraggingToLayoutAttributes:(id)attributes;
+- (void)setJiggling:(BOOL)jiggling;
+- (void)setLayoutAttributes:(id)attributes;
 @end
 
 @implementation CSLUIIconView
 
-- (CSLUIIconView)initWithFrame:(CGRect)a3
+- (CSLUIIconView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CSLUIIconView;
-  result = [(CSLUIIconView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(CSLUIIconView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_unscaledIconSize = 40.0;
@@ -33,11 +33,11 @@
   return sqrt(v6 * v6 + v4 * v4);
 }
 
-- (void)setJiggling:(BOOL)a3
+- (void)setJiggling:(BOOL)jiggling
 {
-  if (self->_jiggling != a3)
+  if (self->_jiggling != jiggling)
   {
-    if (a3)
+    if (jiggling)
     {
       [(CSLUIIconView *)self setupJiggling];
     }
@@ -47,22 +47,22 @@
       [(CSLUIIconView *)self cleanupJiggling];
     }
 
-    self->_jiggling = a3;
+    self->_jiggling = jiggling;
   }
 }
 
-- (void)beginDraggingAtPoint:(CGPoint)a3
+- (void)beginDraggingAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CSLUIIconView *)self pauseJiggling];
   self->_isDragging = 1;
   memset(&v12, 0, sizeof(v12));
-  v6 = [(CSLUIIconView *)self layer];
-  v7 = v6;
-  if (v6)
+  layer = [(CSLUIIconView *)self layer];
+  v7 = layer;
+  if (layer)
   {
-    [v6 transform];
+    [layer transform];
   }
 
   else
@@ -84,14 +84,14 @@
   [UIView _animateUsingSpringWithDuration:0 delay:v8 options:0 mass:0.63 stiffness:0.0 damping:2.0 initialVelocity:450.0 animations:45.0 completion:0.0];
 }
 
-- (void)endDraggingToLayoutAttributes:(id)a3
+- (void)endDraggingToLayoutAttributes:(id)attributes
 {
   self->_isDragging = 0;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_20AC;
   v6[3] = &unk_3C990;
-  v9 = self;
+  selfCopy = self;
   v4 = v3[1];
   v7 = *v3;
   v8 = v4;
@@ -112,7 +112,7 @@
   return v3;
 }
 
-- (void)setLayoutAttributes:(id)a3
+- (void)setLayoutAttributes:(id)attributes
 {
   v4 = v3[1];
   *&self[1].super.super.super.isa = *v3;

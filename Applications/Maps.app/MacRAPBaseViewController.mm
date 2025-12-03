@@ -2,21 +2,21 @@
 - (UISearchBar)searchBar;
 - (void)_addFooterView;
 - (void)_addHeaderView;
-- (void)macFooterViewBackButtonTapped:(id)a3;
-- (void)setHeaderTitle:(id)a3;
-- (void)setRightButtonEnabled:(BOOL)a3;
-- (void)setSearchBarPlaceholder:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)macFooterViewBackButtonTapped:(id)tapped;
+- (void)setHeaderTitle:(id)title;
+- (void)setRightButtonEnabled:(BOOL)enabled;
+- (void)setSearchBarPlaceholder:(id)placeholder;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MacRAPBaseViewController
 
-- (void)macFooterViewBackButtonTapped:(id)a3
+- (void)macFooterViewBackButtonTapped:(id)tapped
 {
-  v4 = [(MacRAPBaseViewController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(MacRAPBaseViewController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)_addFooterView
@@ -24,36 +24,36 @@
   v3 = [[MacFooterView alloc] initWithNoBlurRightSideButtonsOfType:[(MacRAPBaseViewController *)self footerRightButtonType]];
   [(MacRAPBaseViewController *)self setFooterView:v3];
 
-  v4 = [(MacRAPBaseViewController *)self footerView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  footerView = [(MacRAPBaseViewController *)self footerView];
+  [footerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(MacRAPBaseViewController *)self footerView];
-  [v5 setDelegate:self];
+  footerView2 = [(MacRAPBaseViewController *)self footerView];
+  [footerView2 setDelegate:self];
 
-  v6 = [(MacRAPBaseViewController *)self footerView];
-  [v6 setRightButtonEnabled:self->_rightButtonEnabled];
+  footerView3 = [(MacRAPBaseViewController *)self footerView];
+  [footerView3 setRightButtonEnabled:self->_rightButtonEnabled];
 
-  v7 = [(MacRAPBaseViewController *)self view];
-  v8 = [(MacRAPBaseViewController *)self footerView];
-  [v7 addSubview:v8];
+  view = [(MacRAPBaseViewController *)self view];
+  footerView4 = [(MacRAPBaseViewController *)self footerView];
+  [view addSubview:footerView4];
 
-  v24 = [(MacRAPBaseViewController *)self footerView];
-  v22 = [v24 leadingAnchor];
-  v23 = [(MacRAPBaseViewController *)self view];
-  v21 = [v23 leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  footerView5 = [(MacRAPBaseViewController *)self footerView];
+  leadingAnchor = [footerView5 leadingAnchor];
+  view2 = [(MacRAPBaseViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v25[0] = v20;
-  v19 = [(MacRAPBaseViewController *)self footerView];
-  v9 = [v19 trailingAnchor];
-  v10 = [(MacRAPBaseViewController *)self view];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  footerView6 = [(MacRAPBaseViewController *)self footerView];
+  trailingAnchor = [footerView6 trailingAnchor];
+  view3 = [(MacRAPBaseViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v25[1] = v12;
-  v13 = [(MacRAPBaseViewController *)self footerView];
-  v14 = [v13 bottomAnchor];
-  v15 = [(MacRAPBaseViewController *)self view];
-  v16 = [v15 bottomAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  footerView7 = [(MacRAPBaseViewController *)self footerView];
+  bottomAnchor = [footerView7 bottomAnchor];
+  view4 = [(MacRAPBaseViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v25[2] = v17;
   v18 = [NSArray arrayWithObjects:v25 count:3];
   [NSLayoutConstraint activateConstraints:v18];
@@ -64,55 +64,55 @@
   if ([(MacRAPBaseViewController *)self hasSearchBar])
   {
     v3 = [MacRAPHeaderView alloc];
-    v4 = [(MacRAPBaseViewController *)self searchBar];
-    v5 = [(MacRAPHeaderView *)v3 initWithSearchBar:v4];
+    searchBar = [(MacRAPBaseViewController *)self searchBar];
+    v5 = [(MacRAPHeaderView *)v3 initWithSearchBar:searchBar];
     [(MacRAPBaseViewController *)self setHeaderView:v5];
   }
 
   else
   {
-    v4 = objc_alloc_init(MacRAPHeaderView);
-    [(MacRAPBaseViewController *)self setHeaderView:v4];
+    searchBar = objc_alloc_init(MacRAPHeaderView);
+    [(MacRAPBaseViewController *)self setHeaderView:searchBar];
   }
 
-  v6 = [(MacRAPBaseViewController *)self headerView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerView = [(MacRAPBaseViewController *)self headerView];
+  [headerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(MacRAPBaseViewController *)self headerTitle];
-  v8 = [(MacRAPBaseViewController *)self headerView];
-  [v8 setTitle:v7];
+  headerTitle = [(MacRAPBaseViewController *)self headerTitle];
+  headerView2 = [(MacRAPBaseViewController *)self headerView];
+  [headerView2 setTitle:headerTitle];
 
-  v9 = [(MacRAPBaseViewController *)self view];
-  v10 = [(MacRAPBaseViewController *)self headerView];
-  [v9 addSubview:v10];
+  view = [(MacRAPBaseViewController *)self view];
+  headerView3 = [(MacRAPBaseViewController *)self headerView];
+  [view addSubview:headerView3];
 
-  v26 = [(MacRAPBaseViewController *)self headerView];
-  v24 = [v26 leadingAnchor];
-  v25 = [(MacRAPBaseViewController *)self view];
-  v23 = [v25 leadingAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  headerView4 = [(MacRAPBaseViewController *)self headerView];
+  leadingAnchor = [headerView4 leadingAnchor];
+  view2 = [(MacRAPBaseViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v27[0] = v22;
-  v21 = [(MacRAPBaseViewController *)self headerView];
-  v11 = [v21 trailingAnchor];
-  v12 = [(MacRAPBaseViewController *)self view];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  headerView5 = [(MacRAPBaseViewController *)self headerView];
+  trailingAnchor = [headerView5 trailingAnchor];
+  view3 = [(MacRAPBaseViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v27[1] = v14;
-  v15 = [(MacRAPBaseViewController *)self headerView];
-  v16 = [v15 topAnchor];
-  v17 = [(MacRAPBaseViewController *)self view];
-  v18 = [v17 topAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  headerView6 = [(MacRAPBaseViewController *)self headerView];
+  topAnchor = [headerView6 topAnchor];
+  view4 = [(MacRAPBaseViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v27[2] = v19;
   v20 = [NSArray arrayWithObjects:v27 count:3];
   [NSLayoutConstraint activateConstraints:v20];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MacRAPBaseViewController;
-  [(MacRAPBaseViewController *)&v5 viewDidAppear:a3];
+  [(MacRAPBaseViewController *)&v5 viewDidAppear:appear];
   if ([(MacRAPBaseViewController *)self hasSearchBar])
   {
     block[0] = _NSConcreteStackBlock;
@@ -124,31 +124,31 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v15.receiver = self;
   v15.super_class = MacRAPBaseViewController;
-  [(MacRAPBaseViewController *)&v15 viewWillAppear:a3];
-  v4 = [(MacRAPBaseViewController *)self headerView];
-  [v4 layoutIfNeeded];
+  [(MacRAPBaseViewController *)&v15 viewWillAppear:appear];
+  headerView = [(MacRAPBaseViewController *)self headerView];
+  [headerView layoutIfNeeded];
 
-  v5 = [(MacRAPBaseViewController *)self footerView];
-  [v5 layoutIfNeeded];
+  footerView = [(MacRAPBaseViewController *)self footerView];
+  [footerView layoutIfNeeded];
 
-  v6 = [(MacRAPBaseViewController *)self headerView];
-  [v6 frame];
+  headerView2 = [(MacRAPBaseViewController *)self headerView];
+  [headerView2 frame];
   v8 = v7;
-  v9 = [(MacRAPBaseViewController *)self footerView];
-  [v9 frame];
+  footerView2 = [(MacRAPBaseViewController *)self footerView];
+  [footerView2 frame];
   [(MacRAPBaseViewController *)self setAdditionalSafeAreaInsets:v8, 0.0, v10, 0.0];
 
-  v11 = [(MacRAPBaseViewController *)self view];
-  v12 = [(MacRAPBaseViewController *)self headerView];
-  [v11 bringSubviewToFront:v12];
+  view = [(MacRAPBaseViewController *)self view];
+  headerView3 = [(MacRAPBaseViewController *)self headerView];
+  [view bringSubviewToFront:headerView3];
 
-  v13 = [(MacRAPBaseViewController *)self view];
-  v14 = [(MacRAPBaseViewController *)self footerView];
-  [v13 bringSubviewToFront:v14];
+  view2 = [(MacRAPBaseViewController *)self view];
+  footerView3 = [(MacRAPBaseViewController *)self footerView];
+  [view2 bringSubviewToFront:footerView3];
 }
 
 - (void)viewDidLoad
@@ -158,40 +158,40 @@
   [(MacRAPBaseViewController *)&v4 viewDidLoad];
   [(MacRAPBaseViewController *)self _addHeaderView];
   [(MacRAPBaseViewController *)self _addFooterView];
-  v3 = [(MacRAPBaseViewController *)self navigationController];
-  [v3 setNavigationBarHidden:1];
+  navigationController = [(MacRAPBaseViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1];
 }
 
-- (void)setRightButtonEnabled:(BOOL)a3
+- (void)setRightButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(MacRAPBaseViewController *)self footerView];
-  [v5 setRightButtonEnabled:v3];
+  enabledCopy = enabled;
+  footerView = [(MacRAPBaseViewController *)self footerView];
+  [footerView setRightButtonEnabled:enabledCopy];
 
-  self->_rightButtonEnabled = v3;
+  self->_rightButtonEnabled = enabledCopy;
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_headerTitle] & 1) == 0)
+  titleCopy = title;
+  if (([titleCopy isEqualToString:self->_headerTitle] & 1) == 0)
   {
-    v5 = [(MacRAPBaseViewController *)self headerView];
-    [v5 setTitle:v6];
+    headerView = [(MacRAPBaseViewController *)self headerView];
+    [headerView setTitle:titleCopy];
 
-    objc_storeStrong(&self->_headerTitle, a3);
+    objc_storeStrong(&self->_headerTitle, title);
   }
 }
 
-- (void)setSearchBarPlaceholder:(id)a3
+- (void)setSearchBarPlaceholder:(id)placeholder
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_searchBarPlaceholder] & 1) == 0)
+  placeholderCopy = placeholder;
+  if (([placeholderCopy isEqualToString:self->_searchBarPlaceholder] & 1) == 0)
   {
-    v5 = [(MacRAPBaseViewController *)self searchBar];
-    [v5 setPlaceholder:v6];
+    searchBar = [(MacRAPBaseViewController *)self searchBar];
+    [searchBar setPlaceholder:placeholderCopy];
 
-    objc_storeStrong(&self->_searchBarPlaceholder, a3);
+    objc_storeStrong(&self->_searchBarPlaceholder, placeholder);
   }
 }
 
@@ -209,8 +209,8 @@
     v6 = +[UIColor systemGray5Color];
     [(UISearchBar *)v4 setBackgroundColor:v6];
 
-    v7 = [(UISearchBar *)v4 layer];
-    [v7 setCornerRadius:15.0];
+    layer = [(UISearchBar *)v4 layer];
+    [layer setCornerRadius:15.0];
 
     [(UISearchBar *)v4 setClipsToBounds:1];
     v8 = +[NSBundle mainBundle];

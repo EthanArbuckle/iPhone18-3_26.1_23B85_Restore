@@ -1,38 +1,38 @@
 @interface AXCSScrollGestureControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)accessibilitySetSystemDashBoardGesturesEnabled:(BOOL)a3;
-- (void)setScrollingStrategy:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)accessibilitySetSystemDashBoardGesturesEnabled:(BOOL)enabled;
+- (void)setScrollingStrategy:(int64_t)strategy;
 @end
 
 @implementation AXCSScrollGestureControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CSScrollGestureController" hasInstanceMethod:@"setScrollingStrategy:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"CSScrollGestureController" hasInstanceMethod:@"scrollingStrategy" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CSScrollGestureController" hasInstanceMethod:@"setScrollingStrategy:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"CSScrollGestureController" hasInstanceMethod:@"scrollingStrategy" withFullSignature:{"q", 0}];
 }
 
-- (void)setScrollingStrategy:(int64_t)a3
+- (void)setScrollingStrategy:(int64_t)strategy
 {
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:?];
   [(AXCSScrollGestureControllerAccessibility *)self _accessibilitySetSavedScrollingStrategy:v5];
 
-  v6 = [(AXCSScrollGestureControllerAccessibility *)self _accessibilityForcedScrollingStrategy];
-  if (!v6)
+  _accessibilityForcedScrollingStrategy = [(AXCSScrollGestureControllerAccessibility *)self _accessibilityForcedScrollingStrategy];
+  if (!_accessibilityForcedScrollingStrategy)
   {
     v7.receiver = self;
     v7.super_class = AXCSScrollGestureControllerAccessibility;
-    [(AXCSScrollGestureControllerAccessibility *)&v7 setScrollingStrategy:a3];
+    [(AXCSScrollGestureControllerAccessibility *)&v7 setScrollingStrategy:strategy];
   }
 }
 
-- (void)accessibilitySetSystemDashBoardGesturesEnabled:(BOOL)a3
+- (void)accessibilitySetSystemDashBoardGesturesEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(AXCSScrollGestureControllerAccessibility *)self _accessibilitySavedScrollingStrategy];
-  v6 = v5;
-  if (v3)
+  enabledCopy = enabled;
+  _accessibilitySavedScrollingStrategy = [(AXCSScrollGestureControllerAccessibility *)self _accessibilitySavedScrollingStrategy];
+  v6 = _accessibilitySavedScrollingStrategy;
+  if (enabledCopy)
   {
     [(AXCSScrollGestureControllerAccessibility *)self _accessibilitySetForcedScrollingStrategy:0];
     if (v6)
@@ -46,7 +46,7 @@
 
   else
   {
-    if (!v5)
+    if (!_accessibilitySavedScrollingStrategy)
     {
       v7 = [(AXCSScrollGestureControllerAccessibility *)self safeIntegerForKey:@"scrollingStrategy"];
       v8 = [MEMORY[0x277CCABB0] numberWithInteger:v7];

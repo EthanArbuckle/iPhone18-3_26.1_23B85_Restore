@@ -2,7 +2,7 @@
 + (id)Transcript;
 + (id)configurationForTranscript;
 + (id)storeConfigurationForTranscript;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)Transcript
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForTranscript];
+  configurationForTranscript = [self configurationForTranscript];
   v3 = +[BMSageTranscript columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Sage.Transcript" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Sage.Transcript" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Sage.Transcript" schema:v9 configuration:configurationForTranscript];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForTranscript
 {
-  v3 = [a1 storeConfigurationForTranscript];
-  v4 = [a1 syncPolicyForTranscript];
+  storeConfigurationForTranscript = [self storeConfigurationForTranscript];
+  syncPolicyForTranscript = [self syncPolicyForTranscript];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"43D0B640-3E84-4752-A4E7-04DA7F281F47"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Sage.Transcript" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Sage.Transcript" eventClass:objc_opt_class() storeConfig:storeConfigurationForTranscript syncPolicy:syncPolicyForTranscript legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Transcript"])
+  if ([name isEqualToString:@"Transcript"])
   {
-    v4 = [a1 Transcript];
+    transcript = [self Transcript];
   }
 
   else
   {
-    v4 = 0;
+    transcript = 0;
   }
 
-  return v4;
+  return transcript;
 }
 
 + (id)validKeyPaths

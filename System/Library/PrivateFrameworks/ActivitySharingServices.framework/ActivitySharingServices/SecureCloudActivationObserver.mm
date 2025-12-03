@@ -1,12 +1,12 @@
 @interface SecureCloudActivationObserver
 - (_TtC23ActivitySharingServices29SecureCloudActivationObserver)init;
-- (void)activitySharingManagerActivated:(id)a3;
-- (void)activitySharingManagerDeactivated:(id)a3;
+- (void)activitySharingManagerActivated:(id)activated;
+- (void)activitySharingManagerDeactivated:(id)deactivated;
 @end
 
 @implementation SecureCloudActivationObserver
 
-- (void)activitySharingManagerActivated:(id)a3
+- (void)activitySharingManagerActivated:(id)activated
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v6 = *(*(v5 - 8) + 64);
@@ -18,13 +18,13 @@
   v10[2] = 0;
   v10[3] = 0;
   v10[4] = self;
-  v10[5] = a3;
-  v11 = a3;
-  v12 = self;
+  v10[5] = activated;
+  activatedCopy = activated;
+  selfCopy = self;
   sub_221FA7A78(0, 0, v8, &unk_221FBCBB8, v10);
 }
 
-- (void)activitySharingManagerDeactivated:(id)a3
+- (void)activitySharingManagerDeactivated:(id)deactivated
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v5 = *(*(v4 - 8) + 64);
@@ -36,7 +36,7 @@
   v9[2] = 0;
   v9[3] = 0;
   v9[4] = self;
-  v10 = self;
+  selfCopy = self;
   sub_221FA7A78(0, 0, v7, &unk_221FBCBA0, v9);
 }
 

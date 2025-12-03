@@ -1,6 +1,6 @@
 @interface LNFetchAppShortcutParametersConnectionOperation
-- (LNFetchAppShortcutParametersConnectionOperation)initWithConnectionInterface:(id)a3 queue:(id)a4 appShortcutProviderMangledName:(id)a5 completionHandler:(id)a6;
-- (void)finishWithError:(id)a3;
+- (LNFetchAppShortcutParametersConnectionOperation)initWithConnectionInterface:(id)interface queue:(id)queue appShortcutProviderMangledName:(id)name completionHandler:(id)handler;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
@@ -18,14 +18,14 @@
     _os_log_impl(&dword_19763D000, v3, OS_LOG_TYPE_INFO, "Fetching AppShortcut parameters", buf, 2u);
   }
 
-  v4 = [(LNInterfaceConnectionOperation *)self connectionInterface];
-  v5 = [(LNFetchAppShortcutParametersConnectionOperation *)self appShortcutProviderMangledName];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  appShortcutProviderMangledName = [(LNFetchAppShortcutParametersConnectionOperation *)self appShortcutProviderMangledName];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__LNFetchAppShortcutParametersConnectionOperation_start__block_invoke;
   v6[3] = &unk_1E74B28B8;
   v6[4] = self;
-  [v4 fetchAppShortcutParametersForMangledName:v5 withCompletionHandler:v6];
+  [connectionInterface fetchAppShortcutParametersForMangledName:appShortcutProviderMangledName withCompletionHandler:v6];
 }
 
 void __56__LNFetchAppShortcutParametersConnectionOperation_start__block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -44,41 +44,41 @@ void __56__LNFetchAppShortcutParametersConnectionOperation_start__block_invoke(u
   os_activity_scope_leave(&v14);
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNFetchAppShortcutParametersConnectionOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNFetchAppShortcutParametersConnectionOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNFetchAppShortcutParametersConnectionOperation *)self appShortcutSubstitutions];
-    v7 = [(LNConnectionOperation *)self validatingResult:v6 error:v4];
+    appShortcutSubstitutions = [(LNFetchAppShortcutParametersConnectionOperation *)self appShortcutSubstitutions];
+    v7 = [(LNConnectionOperation *)self validatingResult:appShortcutSubstitutions error:errorCopy];
 
-    v8 = [(LNFetchAppShortcutParametersConnectionOperation *)self completionHandler];
-    v9 = [(LNFetchAppShortcutParametersConnectionOperation *)self appShortcutSubstitutions];
-    v10 = [(LNFetchAppShortcutParametersConnectionOperation *)self spans];
-    v11 = [(LNFetchAppShortcutParametersConnectionOperation *)self parameterPresentationSubstitutions];
-    (v8)[2](v8, v9, v10, v11, v7);
+    completionHandler2 = [(LNFetchAppShortcutParametersConnectionOperation *)self completionHandler];
+    appShortcutSubstitutions2 = [(LNFetchAppShortcutParametersConnectionOperation *)self appShortcutSubstitutions];
+    spans = [(LNFetchAppShortcutParametersConnectionOperation *)self spans];
+    parameterPresentationSubstitutions = [(LNFetchAppShortcutParametersConnectionOperation *)self parameterPresentationSubstitutions];
+    (completionHandler2)[2](completionHandler2, appShortcutSubstitutions2, spans, parameterPresentationSubstitutions, v7);
 
     [(LNFetchAppShortcutParametersConnectionOperation *)self setCompletionHandler:0];
-    v4 = v7;
+    errorCopy = v7;
   }
 
   v12.receiver = self;
   v12.super_class = LNFetchAppShortcutParametersConnectionOperation;
-  [(LNConnectionOperation *)&v12 finishWithError:v4];
+  [(LNConnectionOperation *)&v12 finishWithError:errorCopy];
 }
 
-- (LNFetchAppShortcutParametersConnectionOperation)initWithConnectionInterface:(id)a3 queue:(id)a4 appShortcutProviderMangledName:(id)a5 completionHandler:(id)a6
+- (LNFetchAppShortcutParametersConnectionOperation)initWithConnectionInterface:(id)interface queue:(id)queue appShortcutProviderMangledName:(id)name completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v11)
+  interfaceCopy = interface;
+  queueCopy = queue;
+  nameCopy = name;
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  if (interfaceCopy)
   {
-    if (v14)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -86,8 +86,8 @@ void __56__LNFetchAppShortcutParametersConnectionOperation_start__block_invoke(u
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"LNFetchAppShortcutParametersConnectionOperation.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNFetchAppShortcutParametersConnectionOperation.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
 
     if (v15)
     {
@@ -95,18 +95,18 @@ void __56__LNFetchAppShortcutParametersConnectionOperation_start__block_invoke(u
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"LNFetchAppShortcutParametersConnectionOperation.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNFetchAppShortcutParametersConnectionOperation.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v16 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v24.receiver = self;
   v24.super_class = LNFetchAppShortcutParametersConnectionOperation;
-  v17 = [(LNInterfaceConnectionOperation *)&v24 initWithIdentifier:v16 connectionInterface:v11 priority:1 queue:v12 activity:&__block_literal_global_15115];
+  v17 = [(LNInterfaceConnectionOperation *)&v24 initWithIdentifier:uUID connectionInterface:interfaceCopy priority:1 queue:queueCopy activity:&__block_literal_global_15115];
 
   if (v17)
   {
-    objc_storeStrong(&v17->_appShortcutProviderMangledName, a5);
+    objc_storeStrong(&v17->_appShortcutProviderMangledName, name);
     v18 = _Block_copy(v15);
     completionHandler = v17->_completionHandler;
     v17->_completionHandler = v18;

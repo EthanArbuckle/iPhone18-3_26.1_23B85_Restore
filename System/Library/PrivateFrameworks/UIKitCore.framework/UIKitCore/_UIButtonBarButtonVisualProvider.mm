@@ -1,25 +1,25 @@
 @interface _UIButtonBarButtonVisualProvider
-+ (id)visualProviderForIdiom:(int64_t)a3;
-+ (void)registerPlatformVisualProviderClass:(Class)a3 forIdiom:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)visualProviderForIdiom:(int64_t)idiom;
++ (void)registerPlatformVisualProviderClass:(Class)class forIdiom:(int64_t)idiom;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)menuAnchorPoint;
 - (CGPoint)pointerPreviewCenter;
 - (CGRect)accessoryViewAlignmentRect;
-- (CGSize)backButtonSystemLayoutSizeFittingSize:(CGSize)a3 horizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (CGSize)buttonBackgroundSize:(id)a3;
-- (CGSize)buttonImageViewSize:(id)a3;
-- (CGSize)buttonIntrinsicContentSize:(id)a3;
+- (CGSize)backButtonSystemLayoutSizeFittingSize:(CGSize)size horizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (CGSize)buttonBackgroundSize:(id)size;
+- (CGSize)buttonImageViewSize:(id)size;
+- (CGSize)buttonIntrinsicContentSize:(id)size;
 - (UIBarButtonItem)barButtonItem;
-- (UIEdgeInsets)buttonAlignmentRectInsets:(id)a3;
+- (UIEdgeInsets)buttonAlignmentRectInsets:(id)insets;
 - (_UIButtonBarButtonVisualProvider)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)focusEffect;
-- (id)matchingPointerShapeForView:(id)a3 rect:(CGRect)a4 inContainer:(id)a5;
+- (id)matchingPointerShapeForView:(id)view rect:(CGRect)rect inContainer:(id)container;
 - (id)pointerPreviewParameters;
-- (id)pointerShapeInContainer:(id)a3;
+- (id)pointerShapeInContainer:(id)container;
 - (uint64_t)typedStorage;
 - (unint64_t)hash;
-- (void)configureButton:(id)a3 withAppearanceDelegate:(id)a4 fromBarItem:(id)a5;
+- (void)configureButton:(id)button withAppearanceDelegate:(id)delegate fromBarItem:(id)item;
 @end
 
 @implementation _UIButtonBarButtonVisualProvider
@@ -31,10 +31,10 @@
   return WeakRetained;
 }
 
-+ (id)visualProviderForIdiom:(int64_t)a3
++ (id)visualProviderForIdiom:(int64_t)idiom
 {
   v3 = _MergedGlobals_29;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
   [v3 objectForKeyedSubscript:v4];
   v5 = objc_opt_new();
   v6 = v5;
@@ -53,7 +53,7 @@
   return v8;
 }
 
-+ (void)registerPlatformVisualProviderClass:(Class)a3 forIdiom:(int64_t)a4
++ (void)registerPlatformVisualProviderClass:(Class)class forIdiom:(int64_t)idiom
 {
   if (qword_1ED49B280 != -1)
   {
@@ -61,8 +61,8 @@
   }
 
   v6 = _MergedGlobals_29;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v6 setObject:a3 forKeyedSubscript:v7];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
+  [v6 setObject:class forKeyedSubscript:v7];
 }
 
 - (_UIButtonBarButtonVisualProvider)init
@@ -87,29 +87,29 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   v4 = objc_opt_class();
   v5 = objc_opt_class();
 
   return v4 == v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
 
   return objc_alloc_init(v3);
 }
 
-- (void)configureButton:(id)a3 withAppearanceDelegate:(id)a4 fromBarItem:(id)a5
+- (void)configureButton:(id)button withAppearanceDelegate:(id)delegate fromBarItem:(id)item
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"_UIButtonBarButton.m" lineNumber:180 description:{@"Failure attempting to configure a view for a UIBarButtonItem from visual style %@", self}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIButtonBarButton.m" lineNumber:180 description:{@"Failure attempting to configure a view for a UIBarButtonItem from visual style %@", self}];
 }
 
-- (CGSize)buttonIntrinsicContentSize:(id)a3
+- (CGSize)buttonIntrinsicContentSize:(id)size
 {
   v3 = -1.0;
   v4 = -1.0;
@@ -118,7 +118,7 @@
   return result;
 }
 
-- (UIEdgeInsets)buttonAlignmentRectInsets:(id)a3
+- (UIEdgeInsets)buttonAlignmentRectInsets:(id)insets
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -131,9 +131,9 @@
   return result;
 }
 
-- (CGSize)buttonBackgroundSize:(id)a3
+- (CGSize)buttonBackgroundSize:(id)size
 {
-  [a3 bounds];
+  [size bounds];
   v4 = v3;
   v6 = v5;
   result.height = v6;
@@ -141,7 +141,7 @@
   return result;
 }
 
-- (CGSize)buttonImageViewSize:(id)a3
+- (CGSize)buttonImageViewSize:(id)size
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);
@@ -176,12 +176,12 @@
   return result;
 }
 
-- (id)pointerShapeInContainer:(id)a3
+- (id)pointerShapeInContainer:(id)container
 {
   button = self->_button;
-  v4 = a3;
+  containerCopy = container;
   [(UIView *)button bounds];
-  [(UIView *)button convertRect:v4 toView:?];
+  [(UIView *)button convertRect:containerCopy toView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -190,9 +190,9 @@
   return [UIPointerShape shapeWithRoundedRect:v6, v8, v10, v12];
 }
 
-- (id)matchingPointerShapeForView:(id)a3 rect:(CGRect)a4 inContainer:(id)a5
+- (id)matchingPointerShapeForView:(id)view rect:(CGRect)rect inContainer:(id)container
 {
-  [a3 convertRect:a5 toView:{a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  [view convertRect:container toView:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   return [UIPointerShape shapeWithRoundedRect:?];
 }
@@ -224,8 +224,8 @@
 
 - (CGRect)accessoryViewAlignmentRect
 {
-  v2 = [(_UIButtonBarButtonVisualProvider *)self button];
-  [v2 bounds];
+  button = [(_UIButtonBarButtonVisualProvider *)self button];
+  [button bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -242,9 +242,9 @@
   return result;
 }
 
-- (CGSize)backButtonSystemLayoutSizeFittingSize:(CGSize)a3 horizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)backButtonSystemLayoutSizeFittingSize:(CGSize)size horizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  [(UIView *)self->_button systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:?];
+  [(UIView *)self->_button systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:size.height verticalFittingPriority:?];
   result.height = v6;
   result.width = v5;
   return result;

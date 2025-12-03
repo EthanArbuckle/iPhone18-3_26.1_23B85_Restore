@@ -12,19 +12,19 @@
 - (BOOL)isAccessibilityElement
 {
   v3 = objc_opt_class();
-  v4 = [(ICDocCamThumbnailContainerView *)self collectionView];
-  v5 = [v4 collectionViewLayout];
-  v6 = DCDynamicCast(v3, v5);
+  collectionView = [(ICDocCamThumbnailContainerView *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  v6 = DCDynamicCast(v3, collectionViewLayout);
 
-  v7 = [(ICDocCamThumbnailContainerView *)self collectionView];
-  v8 = [v7 dataSource];
-  v9 = [(ICDocCamThumbnailContainerView *)self collectionView];
-  v10 = [v8 collectionView:v9 numberOfItemsInSection:0];
+  collectionView2 = [(ICDocCamThumbnailContainerView *)self collectionView];
+  dataSource = [collectionView2 dataSource];
+  collectionView3 = [(ICDocCamThumbnailContainerView *)self collectionView];
+  v10 = [dataSource collectionView:collectionView3 numberOfItemsInSection:0];
 
-  v11 = [v6 compactLayout];
+  compactLayout = [v6 compactLayout];
   if (v10)
   {
-    v12 = v11;
+    v12 = compactLayout;
   }
 
   else
@@ -37,20 +37,20 @@
 
 - (BOOL)accessibilityElementsHidden
 {
-  v3 = [(ICDocCamThumbnailContainerView *)self collectionView];
-  v4 = [v3 dataSource];
-  v5 = [(ICDocCamThumbnailContainerView *)self collectionView];
-  v6 = [v4 collectionView:v5 numberOfItemsInSection:0];
+  collectionView = [(ICDocCamThumbnailContainerView *)self collectionView];
+  dataSource = [collectionView dataSource];
+  collectionView2 = [(ICDocCamThumbnailContainerView *)self collectionView];
+  v6 = [dataSource collectionView:collectionView2 numberOfItemsInSection:0];
 
   return v6 == 0;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(ICDocCamThumbnailContainerView *)self collectionView];
-  v4 = [v3 dataSource];
-  v5 = [(ICDocCamThumbnailContainerView *)self collectionView];
-  v6 = [v4 collectionView:v5 numberOfItemsInSection:0];
+  collectionView = [(ICDocCamThumbnailContainerView *)self collectionView];
+  dataSource = [collectionView dataSource];
+  collectionView2 = [(ICDocCamThumbnailContainerView *)self collectionView];
+  v6 = [dataSource collectionView:collectionView2 numberOfItemsInSection:0];
 
   v7 = [DCLocalization localizedStringForKey:@"%lu_SCANNED_IMAGE_THUMBNAILS" value:@"%lu_SCANNED_IMAGE_THUMBNAILS" table:@"Localizable"];
   v8 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v7, v6];
@@ -62,10 +62,10 @@
 {
   if ([(ICDocCamThumbnailContainerView *)self isAccessibilityElement])
   {
-    v3 = [(ICDocCamThumbnailContainerView *)self collectionView];
-    v4 = [v3 dataSource];
-    v5 = [(ICDocCamThumbnailContainerView *)self collectionView];
-    v6 = [v4 collectionView:v5 numberOfItemsInSection:0];
+    collectionView = [(ICDocCamThumbnailContainerView *)self collectionView];
+    dataSource = [collectionView dataSource];
+    collectionView2 = [(ICDocCamThumbnailContainerView *)self collectionView];
+    v6 = [dataSource collectionView:collectionView2 numberOfItemsInSection:0];
 
     v7 = [DCLocalization localizedStringForKey:@"Double-tap to preview %lu scanned images" value:@"Double-tap to preview %lu scanned images" table:@"Localizable"];
     v8 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v7, v6];
@@ -91,10 +91,10 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [(ICDocCamThumbnailContainerView *)self collectionView];
-  v8 = [v7 visibleCells];
+  collectionView = [(ICDocCamThumbnailContainerView *)self collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v9 = [visibleCells countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
     v10 = *v26;
@@ -105,7 +105,7 @@
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(visibleCells);
         }
 
         v12 = *(*(&v25 + 1) + 8 * v11);
@@ -140,7 +140,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v9 = [visibleCells countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v9);

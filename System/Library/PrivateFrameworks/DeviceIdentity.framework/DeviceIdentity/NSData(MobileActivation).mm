@@ -6,7 +6,7 @@
 
 - (id)hexString
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = malloc_type_malloc(2 * v2, 0x38B1C265uLL);
   if (v3)
   {
@@ -17,7 +17,7 @@
       v6 = v3 + 1;
       do
       {
-        v7 = *([a1 bytes] + v5);
+        v7 = *([self bytes] + v5);
         if (v7 <= 0x9F)
         {
           v8 = 48;
@@ -29,7 +29,7 @@
         }
 
         *(v6 - 1) = v8 + (v7 >> 4);
-        v9 = *([a1 bytes] + v5) & 0xF;
+        v9 = *([self bytes] + v5) & 0xF;
         if (v9 <= 9)
         {
           v10 = 48;

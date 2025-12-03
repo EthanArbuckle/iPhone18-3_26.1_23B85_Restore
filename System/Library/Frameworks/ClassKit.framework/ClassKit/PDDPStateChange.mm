@@ -1,33 +1,33 @@
 @interface PDDPStateChange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addStateChangePayloads:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addStateChangePayloads:(id)payloads;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPStateChange
 
-- (void)addStateChangePayloads:(id)a3
+- (void)addStateChangePayloads:(id)payloads
 {
-  v4 = a3;
+  payloadsCopy = payloads;
   stateChangePayloads = self->_stateChangePayloads;
-  v8 = v4;
+  v8 = payloadsCopy;
   if (!stateChangePayloads)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_stateChangePayloads;
     self->_stateChangePayloads = v6;
 
-    v4 = v8;
+    payloadsCopy = v8;
     stateChangePayloads = self->_stateChangePayloads;
   }
 
-  [(NSMutableArray *)stateChangePayloads addObject:v4];
+  [(NSMutableArray *)stateChangePayloads addObject:payloadsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = PDDPStateChange;
   v3 = [(PDDPStateChange *)&v7 description];
-  v4 = [(PDDPStateChange *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPStateChange *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -78,15 +78,15 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v11 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v13 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   if ([(NSMutableArray *)self->_stateChangePayloads count])
@@ -111,8 +111,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation3 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation3];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -127,9 +127,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_objectId)
   {
     PBDataWriterWriteStringField();
@@ -198,88 +198,88 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_objectId)
   {
-    [v8 setObjectId:?];
+    [toCopy setObjectId:?];
   }
 
   if (self->_targetObjectId)
   {
-    [v8 setTargetObjectId:?];
+    [toCopy setTargetObjectId:?];
   }
 
   if (self->_targetEntityName)
   {
-    [v8 setTargetEntityName:?];
+    [toCopy setTargetEntityName:?];
   }
 
   if (self->_targetClassId)
   {
-    [v8 setTargetClassId:?];
+    [toCopy setTargetClassId:?];
   }
 
   if (self->_targetOwnerPersonId)
   {
-    [v8 setTargetOwnerPersonId:?];
+    [toCopy setTargetOwnerPersonId:?];
   }
 
   if (self->_dateCreated)
   {
-    [v8 setDateCreated:?];
+    [toCopy setDateCreated:?];
   }
 
   if (self->_dateLastModified)
   {
-    [v8 setDateLastModified:?];
+    [toCopy setDateLastModified:?];
   }
 
   if ([(PDDPStateChange *)self stateChangePayloadsCount])
   {
-    [v8 clearStateChangePayloads];
-    v4 = [(PDDPStateChange *)self stateChangePayloadsCount];
-    if (v4)
+    [toCopy clearStateChangePayloads];
+    stateChangePayloadsCount = [(PDDPStateChange *)self stateChangePayloadsCount];
+    if (stateChangePayloadsCount)
     {
-      v5 = v4;
+      v5 = stateChangePayloadsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDDPStateChange *)self stateChangePayloadsAtIndex:i];
-        [v8 addStateChangePayloads:v7];
+        [toCopy addStateChangePayloads:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_objectId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_objectId copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_targetObjectId copyWithZone:a3];
+  v8 = [(NSString *)self->_targetObjectId copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
-  v10 = [(NSString *)self->_targetEntityName copyWithZone:a3];
+  v10 = [(NSString *)self->_targetEntityName copyWithZone:zone];
   v11 = v5[6];
   v5[6] = v10;
 
-  v12 = [(NSString *)self->_targetClassId copyWithZone:a3];
+  v12 = [(NSString *)self->_targetClassId copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
-  v14 = [(NSString *)self->_targetOwnerPersonId copyWithZone:a3];
+  v14 = [(NSString *)self->_targetOwnerPersonId copyWithZone:zone];
   v15 = v5[8];
   v5[8] = v14;
 
-  v16 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v16 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v17 = v5[1];
   v5[1] = v16;
 
-  v18 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v18 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v19 = v5[2];
   v5[2] = v18;
 
@@ -303,7 +303,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v27 + 1) + 8 * v24) copyWithZone:{a3, v27}];
+        v25 = [*(*(&v27 + 1) + 8 * v24) copyWithZone:{zone, v27}];
         [v5 addStateChangePayloads:v25];
 
         v24 = v24 + 1;
@@ -319,13 +319,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((objectId = self->_objectId, !(objectId | v4[3])) || -[NSString isEqual:](objectId, "isEqual:")) && ((targetObjectId = self->_targetObjectId, !(targetObjectId | v4[7])) || -[NSString isEqual:](targetObjectId, "isEqual:")) && ((targetEntityName = self->_targetEntityName, !(targetEntityName | v4[6])) || -[NSString isEqual:](targetEntityName, "isEqual:")) && ((targetClassId = self->_targetClassId, !(targetClassId | v4[5])) || -[NSString isEqual:](targetClassId, "isEqual:")) && ((targetOwnerPersonId = self->_targetOwnerPersonId, !(targetOwnerPersonId | v4[8])) || -[NSString isEqual:](targetOwnerPersonId, "isEqual:")) && ((dateCreated = self->_dateCreated, !(dateCreated | v4[1])) || -[PDDPDate isEqual:](dateCreated, "isEqual:")) && ((dateLastModified = self->_dateLastModified, !(dateLastModified | v4[2])) || -[PDDPDate isEqual:](dateLastModified, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((objectId = self->_objectId, !(objectId | equalCopy[3])) || -[NSString isEqual:](objectId, "isEqual:")) && ((targetObjectId = self->_targetObjectId, !(targetObjectId | equalCopy[7])) || -[NSString isEqual:](targetObjectId, "isEqual:")) && ((targetEntityName = self->_targetEntityName, !(targetEntityName | equalCopy[6])) || -[NSString isEqual:](targetEntityName, "isEqual:")) && ((targetClassId = self->_targetClassId, !(targetClassId | equalCopy[5])) || -[NSString isEqual:](targetClassId, "isEqual:")) && ((targetOwnerPersonId = self->_targetOwnerPersonId, !(targetOwnerPersonId | equalCopy[8])) || -[NSString isEqual:](targetOwnerPersonId, "isEqual:")) && ((dateCreated = self->_dateCreated, !(dateCreated | equalCopy[1])) || -[PDDPDate isEqual:](dateCreated, "isEqual:")) && ((dateLastModified = self->_dateLastModified, !(dateLastModified | equalCopy[2])) || -[PDDPDate isEqual:](dateLastModified, "isEqual:")))
   {
     stateChangePayloads = self->_stateChangePayloads;
-    if (stateChangePayloads | v4[4])
+    if (stateChangePayloads | equalCopy[4])
     {
       v13 = [(NSMutableArray *)stateChangePayloads isEqual:?];
     }
@@ -356,36 +356,36 @@
   return v9 ^ [(NSMutableArray *)self->_stateChangePayloads hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(PDDPStateChange *)self setObjectId:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(PDDPStateChange *)self setTargetObjectId:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PDDPStateChange *)self setTargetEntityName:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PDDPStateChange *)self setTargetClassId:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(PDDPStateChange *)self setTargetOwnerPersonId:?];
   }
 
   dateCreated = self->_dateCreated;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (dateCreated)
   {
     if (v6)
@@ -400,7 +400,7 @@
   }
 
   dateLastModified = self->_dateLastModified;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (dateLastModified)
   {
     if (v8)
@@ -418,7 +418,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = *(v4 + 4);
+  v9 = *(fromCopy + 4);
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {

@@ -1,54 +1,54 @@
 @interface ConversationPersonFilter
-- (BOOL)_matchesCallerFilter:(id)a3;
-- (BOOL)_matchesParticipantsFilter:(id)a3;
-- (BOOL)matches:(id)a3;
-- (ConversationPersonFilter)initWithCaller:(id)a3 participants:(id)a4 dataSource:(id)a5;
-- (id)_contactPoolForConversation:(id)a3;
-- (id)_identifiersForRecommendedPerson:(id)a3;
+- (BOOL)_matchesCallerFilter:(id)filter;
+- (BOOL)_matchesParticipantsFilter:(id)filter;
+- (BOOL)matches:(id)matches;
+- (ConversationPersonFilter)initWithCaller:(id)caller participants:(id)participants dataSource:(id)source;
+- (id)_contactPoolForConversation:(id)conversation;
+- (id)_identifiersForRecommendedPerson:(id)person;
 @end
 
 @implementation ConversationPersonFilter
 
-- (ConversationPersonFilter)initWithCaller:(id)a3 participants:(id)a4 dataSource:(id)a5
+- (ConversationPersonFilter)initWithCaller:(id)caller participants:(id)participants dataSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  callerCopy = caller;
+  participantsCopy = participants;
+  sourceCopy = source;
   v15.receiver = self;
   v15.super_class = ConversationPersonFilter;
   v12 = [(ConversationPersonFilter *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_caller, a3);
-    objc_storeStrong(&v13->_participants, a4);
-    objc_storeStrong(&v13->_contactsDataSource, a5);
+    objc_storeStrong(&v12->_caller, caller);
+    objc_storeStrong(&v13->_participants, participants);
+    objc_storeStrong(&v13->_contactsDataSource, source);
   }
 
   return v13;
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v3 = self;
-  v4 = [(ConversationPersonFilter *)self _contactPoolForConversation:a3];
-  v5 = [(ConversationPersonFilter *)v3 _matchesCallerFilter:v4];
-  LOBYTE(v3) = [(ConversationPersonFilter *)v3 _matchesParticipantsFilter:v4];
+  selfCopy = self;
+  v4 = [(ConversationPersonFilter *)self _contactPoolForConversation:matches];
+  v5 = [(ConversationPersonFilter *)selfCopy _matchesCallerFilter:v4];
+  LOBYTE(selfCopy) = [(ConversationPersonFilter *)selfCopy _matchesParticipantsFilter:v4];
 
-  return v5 & v3;
+  return v5 & selfCopy;
 }
 
-- (BOOL)_matchesCallerFilter:(id)a3
+- (BOOL)_matchesCallerFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(ConversationPersonFilter *)self caller];
+  filterCopy = filter;
+  caller = [(ConversationPersonFilter *)self caller];
 
-  if (v5)
+  if (caller)
   {
-    v6 = [(ConversationPersonFilter *)self caller];
-    v7 = [(ConversationPersonFilter *)self _identifiersForRecommendedPerson:v6];
+    caller2 = [(ConversationPersonFilter *)self caller];
+    v7 = [(ConversationPersonFilter *)self _identifiersForRecommendedPerson:caller2];
 
-    v8 = [v4 callerPoolContainsOneOf:v7];
+    v8 = [filterCopy callerPoolContainsOneOf:v7];
     v9 = IntentHandlerDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -72,11 +72,11 @@
   return v8;
 }
 
-- (BOOL)_matchesParticipantsFilter:(id)a3
+- (BOOL)_matchesParticipantsFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(ConversationPersonFilter *)self participants];
-  v6 = [v5 count];
+  filterCopy = filter;
+  participants = [(ConversationPersonFilter *)self participants];
+  v6 = [participants count];
 
   if (v6)
   {
@@ -84,8 +84,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(ConversationPersonFilter *)self participants];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v24 count:16];
+    participants2 = [(ConversationPersonFilter *)self participants];
+    v8 = [participants2 countByEnumeratingWithState:&v18 objects:v24 count:16];
     if (v8)
     {
       v9 = v8;
@@ -96,11 +96,11 @@
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(participants2);
           }
 
           v12 = [(ConversationPersonFilter *)self _identifiersForRecommendedPerson:*(*(&v18 + 1) + 8 * i)];
-          v13 = [v4 participantsPoolContainsOneOf:v12];
+          v13 = [filterCopy participantsPoolContainsOneOf:v12];
 
           if (!v13)
           {
@@ -109,7 +109,7 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v24 count:16];
+        v9 = [participants2 countByEnumeratingWithState:&v18 objects:v24 count:16];
         if (v9)
         {
           continue;
@@ -145,16 +145,16 @@ LABEL_12:
   return v14;
 }
 
-- (id)_contactPoolForConversation:(id)a3
+- (id)_contactPoolForConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   v5 = objc_alloc_init(NSMutableArray);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = [v4 remoteMembers];
-  v7 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  remoteMembers = [conversationCopy remoteMembers];
+  v7 = [remoteMembers countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v7)
   {
     v8 = v7;
@@ -165,31 +165,31 @@ LABEL_12:
       {
         if (*v36 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(remoteMembers);
         }
 
-        v11 = [*(*(&v35 + 1) + 8 * i) handle];
-        [v5 addObject:v11];
+        handle = [*(*(&v35 + 1) + 8 * i) handle];
+        [v5 addObject:handle];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v8 = [remoteMembers countByEnumeratingWithState:&v35 objects:v41 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [(ConversationPersonFilter *)self contactsDataSource];
+  contactsDataSource = [(ConversationPersonFilter *)self contactsDataSource];
   v40 = CNContactIdentifierKey;
   v13 = [NSArray arrayWithObjects:&v40 count:1];
-  v14 = [v12 tu_contactsForHandles:v5 keyDescriptors:v13 error:0];
+  v14 = [contactsDataSource tu_contactsForHandles:v5 keyDescriptors:v13 error:0];
 
   v15 = objc_alloc_init(NSMutableArray);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v16 = [v14 allValues];
-  v17 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  allValues = [v14 allValues];
+  v17 = [allValues countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v17)
   {
     v18 = v17;
@@ -200,26 +200,26 @@ LABEL_12:
       {
         if (*v32 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allValues);
         }
 
         [v15 addObjectsFromArray:*(*(&v31 + 1) + 8 * j)];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v18 = [allValues countByEnumeratingWithState:&v31 objects:v39 count:16];
     }
 
     while (v18);
   }
 
   v21 = [[ContactPool alloc] initWithContacts:v15];
-  v22 = [v4 initiator];
+  initiator = [conversationCopy initiator];
 
   v23 = &__NSArray0__struct;
-  if (v22)
+  if (initiator)
   {
-    v24 = [v4 initiator];
-    v25 = [v14 objectForKeyedSubscript:v24];
+    initiator2 = [conversationCopy initiator];
+    v25 = [v14 objectForKeyedSubscript:initiator2];
     v26 = v25;
     if (v25)
     {
@@ -242,12 +242,12 @@ LABEL_12:
   return v29;
 }
 
-- (id)_identifiersForRecommendedPerson:(id)a3
+- (id)_identifiersForRecommendedPerson:(id)person
 {
-  v3 = [a3 extractRecommendation];
-  v4 = [v3 contactIdentifiers];
+  extractRecommendation = [person extractRecommendation];
+  contactIdentifiers = [extractRecommendation contactIdentifiers];
 
-  v5 = [NSSet setWithArray:v4];
+  v5 = [NSSet setWithArray:contactIdentifiers];
 
   return v5;
 }

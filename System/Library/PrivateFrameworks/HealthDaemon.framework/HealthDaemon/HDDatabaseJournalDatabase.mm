@@ -1,23 +1,23 @@
 @interface HDDatabaseJournalDatabase
-+ (uint64_t)_getIDForString:(void *)a3 database:(uint64_t)a4 error:;
-+ (uint64_t)_openDatabase:(uint64_t)a3 error:;
-- (BOOL)appendData:(id)a3 entryClass:(Class)a4 error:(id *)a5;
-- (BOOL)createAndOpenForWritingWithError:(id *)a3;
++ (uint64_t)_getIDForString:(void *)string database:(uint64_t)database error:;
++ (uint64_t)_openDatabase:(uint64_t)database error:;
+- (BOOL)appendData:(id)data entryClass:(Class)class error:(id *)error;
+- (BOOL)createAndOpenForWritingWithError:(id *)error;
 - (BOOL)isOpen;
-- (BOOL)openForReadingWithError:(id *)a3;
-- (BOOL)removeWithError:(id *)a3;
+- (BOOL)openForReadingWithError:(id *)error;
+- (BOOL)removeWithError:(id *)error;
 - (HDDatabaseJournalDatabase)init;
-- (HDDatabaseJournalDatabase)initWithURL:(id)a3;
+- (HDDatabaseJournalDatabase)initWithURL:(id)l;
 - (NSString)description;
 - (NSString)journalPath;
 - (NSString)name;
 - (double)modificationTime;
-- (id)_getIdentifierAndCreationDate:(uint64_t)a3 error:;
-- (id)getIdentifierAndCreationDate:(id *)a3 error:(id *)a4;
+- (id)_getIdentifierAndCreationDate:(uint64_t)date error:;
+- (id)getIdentifierAndCreationDate:(id *)date error:(id *)error;
 - (int64_t)size;
-- (unsigned)enumerateEntriesWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5 handler:(id)a6;
+- (unsigned)enumerateEntriesWithProfile:(id)profile transaction:(id)transaction error:(id *)error handler:(id)handler;
 - (void)_clearCachedProperties;
-- (void)_createDatabaseConnectionWithURL:(uint64_t)a1;
+- (void)_createDatabaseConnectionWithURL:(uint64_t)l;
 - (void)_faultCachedProperties;
 - (void)close;
 - (void)dealloc;
@@ -35,15 +35,15 @@
   return 0;
 }
 
-- (HDDatabaseJournalDatabase)initWithURL:(id)a3
+- (HDDatabaseJournalDatabase)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = HDDatabaseJournalDatabase;
   v5 = [(HDDatabaseJournalDatabase *)&v11 init];
   if (v5)
   {
-    v6 = [v4 URLByAppendingPathComponent:@"journaldb.sqlite"];
+    v6 = [lCopy URLByAppendingPathComponent:@"journaldb.sqlite"];
     databaseURL = v5->_databaseURL;
     v5->_databaseURL = v6;
 
@@ -70,32 +70,32 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSURL *)self->_databaseURL path];
-  v5 = [(HDDatabaseJournalDatabase *)self isOpen];
+  path = [(NSURL *)self->_databaseURL path];
+  isOpen = [(HDDatabaseJournalDatabase *)self isOpen];
   v6 = @"closed";
-  if (v5)
+  if (isOpen)
   {
     v6 = @"open";
   }
 
-  v7 = [v3 stringWithFormat:@"%@ (%@)", v4, v6];
+  v7 = [v3 stringWithFormat:@"%@ (%@)", path, v6];
 
   return v7;
 }
 
-- (id)getIdentifierAndCreationDate:(id *)a3 error:(id *)a4
+- (id)getIdentifierAndCreationDate:(id *)date error:(id *)error
 {
   if (![(HDDatabaseJournalDatabase *)self isOpen])
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"Cannot get identifier for %@", self}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Cannot get identifier for %@", self}];
   }
 
-  return [(HDDatabaseJournalDatabase *)self _getIdentifierAndCreationDate:a3 error:a4];
+  return [(HDDatabaseJournalDatabase *)self _getIdentifierAndCreationDate:date error:error];
 }
 
-- (id)_getIdentifierAndCreationDate:(uint64_t)a3 error:
+- (id)_getIdentifierAndCreationDate:(uint64_t)date error:
 {
-  if (a1)
+  if (self)
   {
     v14 = 0;
     v15 = &v14;
@@ -107,14 +107,14 @@
     v11 = &v10;
     v12 = 0x2020000000;
     v13 = 0;
-    v5 = *(a1 + 16);
+    v5 = *(self + 16);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __65__HDDatabaseJournalDatabase__getIdentifierAndCreationDate_error___block_invoke_2;
     v9[3] = &unk_278615C30;
     v9[4] = &v14;
     v9[5] = &v10;
-    if ([v5 executeSQL:@"SELECT value error:modification_date FROM key_value_store WHERE key = ?" bindingHandler:a3 enumerationHandler:{&__block_literal_global_402, v9}])
+    if ([v5 executeSQL:@"SELECT value error:modification_date FROM key_value_store WHERE key = ?" bindingHandler:date enumerationHandler:{&__block_literal_global_402, v9}])
     {
       v6 = v15[5];
       if (v6)
@@ -129,7 +129,7 @@
         goto LABEL_9;
       }
 
-      [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 format:@"No database identifier has been set"];
+      [MEMORY[0x277CCA9B8] hk_assignError:date code:100 format:@"No database identifier has been set"];
     }
 
     v7 = 0;
@@ -148,19 +148,19 @@ LABEL_10:
 
 - (NSString)name
 {
-  v2 = [(NSURL *)self->_databaseURL URLByDeletingLastPathComponent];
-  v3 = [v2 lastPathComponent];
+  uRLByDeletingLastPathComponent = [(NSURL *)self->_databaseURL URLByDeletingLastPathComponent];
+  lastPathComponent = [uRLByDeletingLastPathComponent lastPathComponent];
 
-  return v3;
+  return lastPathComponent;
 }
 
 - (NSString)journalPath
 {
-  v2 = [(NSURL *)self->_databaseURL URLByDeletingLastPathComponent];
-  v3 = [v2 URLByDeletingLastPathComponent];
-  v4 = [v3 path];
+  uRLByDeletingLastPathComponent = [(NSURL *)self->_databaseURL URLByDeletingLastPathComponent];
+  v2URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
+  path = [v2URLByDeletingLastPathComponent path];
 
-  return v4;
+  return path;
 }
 
 - (BOOL)isOpen
@@ -189,22 +189,22 @@ LABEL_10:
 - (void)_faultCachedProperties
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = *MEMORY[0x277CBE838];
     v3 = *MEMORY[0x277CBE7B0];
     v33[0] = *MEMORY[0x277CBE838];
     v33[1] = v3;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
-    v25 = a1;
-    v32[0] = *(a1 + 8);
-    v5 = [v32[0] URLByDeletingPathExtension];
-    v6 = [v5 URLByAppendingPathExtension:@"sqlite-wal"];
+    selfCopy = self;
+    v32[0] = *(self + 8);
+    uRLByDeletingPathExtension = [v32[0] URLByDeletingPathExtension];
+    v6 = [uRLByDeletingPathExtension URLByAppendingPathExtension:@"sqlite-wal"];
     v32[1] = v6;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
 
-    v8 = [MEMORY[0x277CBEAA8] distantPast];
-    [v8 timeIntervalSinceReferenceDate];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    [distantPast timeIntervalSinceReferenceDate];
     v10 = v9;
 
     v29 = 0u;
@@ -257,12 +257,12 @@ LABEL_10:
     }
 
     v20 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
-    v21 = *(v25 + 24);
-    *(v25 + 24) = v20;
+    v21 = *(selfCopy + 24);
+    *(selfCopy + 24) = v20;
 
     v22 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v10];
-    v23 = *(v25 + 32);
-    *(v25 + 32) = v22;
+    v23 = *(selfCopy + 32);
+    *(selfCopy + 32) = v22;
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -281,14 +281,14 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)appendData:(id)a3 entryClass:(Class)a4 error:(id *)a5
+- (BOOL)appendData:(id)data entryClass:(Class)class error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   if ([(HDDatabaseJournalDatabase *)self isOpen])
   {
     [(HDDatabaseJournalDatabase *)self _clearCachedProperties];
     database = self->_database;
-    v10 = v8;
+    v10 = dataCopy;
     v11 = database;
     v12 = objc_opt_self();
     v16[0] = MEMORY[0x277D85DD0];
@@ -296,15 +296,15 @@ LABEL_10:
     v16[2] = __67__HDDatabaseJournalDatabase__appendData_entryClass_database_error___block_invoke;
     v16[3] = &unk_278622E60;
     v18 = v12;
-    v19 = a4;
+    classCopy = class;
     v17 = v10;
     v13 = v10;
-    v14 = [(HDSQLiteDatabase *)v11 performTransactionWithType:1 error:a5 usingBlock:v16];
+    v14 = [(HDSQLiteDatabase *)v11 performTransactionWithType:1 error:error usingBlock:v16];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"Cannot append data because journal database is not open"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Cannot append data because journal database is not open"];
     v14 = 0;
   }
 
@@ -313,14 +313,14 @@ LABEL_10:
 
 - (void)_clearCachedProperties
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 8) removeAllCachedResourceValues];
-    v2 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    [*(self + 8) removeAllCachedResourceValues];
+    v2 = *(self + 24);
+    *(self + 24) = 0;
 
-    v3 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    v3 = *(self + 32);
+    *(self + 32) = 0;
   }
 }
 
@@ -333,18 +333,18 @@ LABEL_10:
   [(HDSQLiteDatabase *)v3 close];
 }
 
-- (BOOL)createAndOpenForWritingWithError:(id *)a3
+- (BOOL)createAndOpenForWritingWithError:(id *)error
 {
   if ([(HDDatabaseJournalDatabase *)self isOpen])
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    v12 = [(NSURL *)self->_databaseURL path];
-    [v11 handleFailureInMethod:a2 object:self file:@"HDDatabaseJournalDatabase.m" lineNumber:141 description:{@"Cannot create and open %@ because it is already open", v12}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    path = [(NSURL *)self->_databaseURL path];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseJournalDatabase.m" lineNumber:141 description:{@"Cannot create and open %@ because it is already open", path}];
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v7 = [(NSURL *)self->_databaseURL URLByDeletingLastPathComponent];
-  v8 = [v6 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:a3];
+  uRLByDeletingLastPathComponent = [(NSURL *)self->_databaseURL URLByDeletingLastPathComponent];
+  v8 = [v6 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error];
 
   if (!v8)
   {
@@ -352,7 +352,7 @@ LABEL_10:
   }
 
   [(HDDatabaseJournalDatabase *)self _createDatabaseConnectionWithURL:?];
-  if (([HDDatabaseJournalDatabase _openDatabase:a3 error:?]& 1) == 0)
+  if (([HDDatabaseJournalDatabase _openDatabase:error error:?]& 1) == 0)
   {
     [(HDDatabaseJournalDatabase *)self close];
 LABEL_7:
@@ -367,33 +367,33 @@ LABEL_8:
   return v9;
 }
 
-- (void)_createDatabaseConnectionWithURL:(uint64_t)a1
+- (void)_createDatabaseConnectionWithURL:(uint64_t)l
 {
-  if (a1)
+  if (l)
   {
     v3 = MEMORY[0x277D10B30];
     v4 = a2;
     v5 = [[v3 alloc] initWithDatabaseURL:v4];
 
-    v6 = *(a1 + 16);
-    *(a1 + 16) = v5;
+    v6 = *(l + 16);
+    *(l + 16) = v5;
 
-    [*(a1 + 16) setFileProtectionType:*MEMORY[0x277CCA198]];
-    v7 = _Block_copy(*(a1 + 64));
+    [*(l + 16) setFileProtectionType:*MEMORY[0x277CCA198]];
+    v7 = _Block_copy(*(l + 64));
     if (v7)
     {
       v8 = v7;
-      (*(v7 + 2))(v7, a1);
+      (*(v7 + 2))(v7, l);
       v7 = v8;
     }
   }
 }
 
-+ (uint64_t)_openDatabase:(uint64_t)a3 error:
++ (uint64_t)_openDatabase:(uint64_t)database error:
 {
   v4 = a2;
   objc_opt_self();
-  if (![v4 openWithError:a3])
+  if (![v4 openWithError:database])
   {
     v6 = v4;
     objc_opt_self();
@@ -414,7 +414,7 @@ LABEL_10:
 
     if (v8 < 0)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 description:@"Unable to read schema version" underlyingError:v9];
+      [MEMORY[0x277CCA9B8] hk_assignError:database code:100 description:@"Unable to read schema version" underlyingError:v9];
     }
 
     else
@@ -428,7 +428,7 @@ LABEL_10:
         v13[2] = __60__HDDatabaseJournalDatabase__createSchemaForDatabase_error___block_invoke;
         v13[3] = &unk_278622E38;
         v14 = &unk_283CAF730;
-        v5 = [v11 performTransactionWithType:1 error:a3 usingBlock:v13];
+        v5 = [v11 performTransactionWithType:1 error:database usingBlock:v13];
 
         if (!v5)
         {
@@ -438,7 +438,7 @@ LABEL_10:
         goto LABEL_4;
       }
 
-      [MEMORY[0x277CCA9B8] hk_assignError:a3 code:116 format:{@"Journal database schema version '%ld' greater than current '%ld'", v8, 1}];
+      [MEMORY[0x277CCA9B8] hk_assignError:database code:116 format:{@"Journal database schema version '%ld' greater than current '%ld'", v8, 1}];
     }
 
     v5 = 0;
@@ -451,20 +451,20 @@ LABEL_11:
   return v5;
 }
 
-- (unsigned)enumerateEntriesWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5 handler:(id)a6
+- (unsigned)enumerateEntriesWithProfile:(id)profile transaction:(id)transaction error:(id *)error handler:(id)handler
 {
   v83 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
+  profileCopy = profile;
+  handlerCopy = handler;
   if ([(HDDatabaseJournalDatabase *)self isOpen])
   {
-    v54 = v10;
+    v54 = handlerCopy;
     v57 = 0;
     v55 = [(HDDatabaseJournalDatabase *)self _getIdentifierAndCreationDate:&v57 error:?];
     v53 = v57;
     if (v55)
     {
-      v11 = v9;
+      v11 = profileCopy;
       if (self)
       {
         unitTesting_keyValueDomainOverride = self->_unitTesting_keyValueDomainOverride;
@@ -474,9 +474,9 @@ LABEL_11:
           if (!unitTesting_keyValueDomainOverride)
           {
             v13 = MEMORY[0x277CCACA8];
-            v14 = [(HDDatabaseJournalDatabase *)self journalPath];
-            v15 = [v14 lastPathComponent];
-            v16 = [v13 stringWithFormat:@"JournalDatabase-%@", v15];
+            journalPath = [(HDDatabaseJournalDatabase *)self journalPath];
+            lastPathComponent = [journalPath lastPathComponent];
+            v16 = [v13 stringWithFormat:@"JournalDatabase-%@", lastPathComponent];
 
             v17 = [[HDKeyValueDomain alloc] initWithCategory:100 domainName:v16 profile:v11];
             keyValueDomain = self->_keyValueDomain;
@@ -497,7 +497,7 @@ LABEL_11:
       v75[0] = @"IDENTIFIER";
       v75[1] = @"anchor";
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:2];
-      v21 = [(HDKeyValueDomain *)v19 valuesForKeys:v20 error:a5];
+      v21 = [(HDKeyValueDomain *)v19 valuesForKeys:v20 error:error];
       v22 = v21;
       if (!v21)
       {
@@ -508,12 +508,12 @@ LABEL_51:
       }
 
       v23 = [v21 objectForKeyedSubscript:@"anchor"];
-      v24 = [v23 longLongValue];
+      longLongValue = [v23 longLongValue];
 
       v52 = [v22 objectForKeyedSubscript:@"IDENTIFIER"];
       if ([v55 isEqualToString:v52])
       {
-        v25 = v24;
+        v25 = longLongValue;
       }
 
       else
@@ -547,7 +547,7 @@ LABEL_51:
       v66 = __61__HDDatabaseJournalDatabase__maxEntryAnchorInDatabase_error___block_invoke;
       v67 = &unk_278614620;
       v68 = &v69;
-      if ([(HDSQLiteDatabase *)v29 executeSQL:@"SELECT MAX(ROWID) FROM entries" error:a5 bindingHandler:0 enumerationHandler:&v64])
+      if ([(HDSQLiteDatabase *)v29 executeSQL:@"SELECT MAX(ROWID) FROM entries" error:error bindingHandler:0 enumerationHandler:&v64])
       {
         v30 = v70[3];
       }
@@ -598,7 +598,7 @@ LABEL_50:
       v82 = enumeratedBytesThreshold;
       v38 = v37;
       v78 = v37;
-      if (([(HDSQLiteDatabase *)v29 executeSQL:@"SELECT entries.ROWID AS anchor error:string bindingHandler:size enumerationHandler:data FROM entries INNER JOIN unique_strings ON unique_strings.ROWID = entries.class_name WHERE anchor > ? ORDER BY anchor ASC", a5, v59, buf]& 1) != 0)
+      if (([(HDSQLiteDatabase *)v29 executeSQL:@"SELECT entries.ROWID AS anchor error:string bindingHandler:size enumerationHandler:data FROM entries INNER JOIN unique_strings ON unique_strings.ROWID = entries.class_name WHERE anchor > ? ORDER BY anchor ASC", error, v59, buf]& 1) != 0)
       {
         v39 = [v38 count];
         v25 = v70[3];
@@ -614,10 +614,10 @@ LABEL_50:
             v45 = v44;
             if (v44)
             {
-              if (a5)
+              if (error)
               {
                 v46 = v44;
-                *a5 = v45;
+                *error = v45;
               }
 
               else
@@ -645,7 +645,7 @@ LABEL_47:
             v74[1] = v47;
             v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v74 forKeys:v73 count:2];
 
-            LODWORD(v47) = [(HDKeyValueDomain *)v19 setValuesWithDictionary:v48 error:a5];
+            LODWORD(v47) = [(HDKeyValueDomain *)v19 setValuesWithDictionary:v48 error:error];
             if (v47)
             {
               goto LABEL_50;
@@ -696,7 +696,7 @@ LABEL_47:
           v31 = 3;
 LABEL_53:
 
-          v10 = v54;
+          handlerCopy = v54;
           goto LABEL_54;
         }
 
@@ -704,11 +704,11 @@ LABEL_53:
         v20 = v34;
         if (v34)
         {
-          if (a5)
+          if (error)
           {
             v35 = v34;
             v31 = 0;
-            *a5 = v20;
+            *error = v20;
 LABEL_52:
 
             goto LABEL_53;
@@ -727,11 +727,11 @@ LABEL_58:
       v20 = v42;
       if (v42)
       {
-        if (a5)
+        if (error)
         {
           v43 = v42;
           v31 = 0;
-          *a5 = v20;
+          *error = v20;
         }
 
         else
@@ -754,7 +754,7 @@ LABEL_58:
     goto LABEL_58;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"Cannot enumerate data because journal database is not open"];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Cannot enumerate data because journal database is not open"];
   v31 = 0;
 LABEL_54:
 
@@ -762,17 +762,17 @@ LABEL_54:
   return v31;
 }
 
-- (BOOL)openForReadingWithError:(id *)a3
+- (BOOL)openForReadingWithError:(id *)error
 {
   if ([(HDDatabaseJournalDatabase *)self isOpen])
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    v9 = [(NSURL *)self->_databaseURL path];
-    [v8 handleFailureInMethod:a2 object:self file:@"HDDatabaseJournalDatabase.m" lineNumber:245 description:{@"Cannot open %@ because it is already open", v9}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    path = [(NSURL *)self->_databaseURL path];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseJournalDatabase.m" lineNumber:245 description:{@"Cannot open %@ because it is already open", path}];
   }
 
   [(HDDatabaseJournalDatabase *)self _createDatabaseConnectionWithURL:?];
-  v6 = [HDDatabaseJournalDatabase _openDatabase:a3 error:?];
+  v6 = [HDDatabaseJournalDatabase _openDatabase:error error:?];
   if ((v6 & 1) == 0)
   {
     [(HDDatabaseJournalDatabase *)self close];
@@ -781,19 +781,19 @@ LABEL_54:
   return v6;
 }
 
-- (BOOL)removeWithError:(id *)a3
+- (BOOL)removeWithError:(id *)error
 {
   if ([(HDDatabaseJournalDatabase *)self isOpen])
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    v11 = [(NSURL *)self->_databaseURL path];
-    [v10 handleFailureInMethod:a2 object:self file:@"HDDatabaseJournalDatabase.m" lineNumber:265 description:{@"Cannot remove %@ because it is still open", v11}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    path = [(NSURL *)self->_databaseURL path];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseJournalDatabase.m" lineNumber:265 description:{@"Cannot remove %@ because it is still open", path}];
   }
 
   [(HDDatabaseJournalDatabase *)self _clearCachedProperties];
   v6 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v7 = [(NSURL *)self->_databaseURL URLByDeletingLastPathComponent];
-  v8 = [v6 removeItemAtURL:v7 error:a3];
+  uRLByDeletingLastPathComponent = [(NSURL *)self->_databaseURL URLByDeletingLastPathComponent];
+  v8 = [v6 removeItemAtURL:uRLByDeletingLastPathComponent error:error];
 
   return v8;
 }
@@ -859,10 +859,10 @@ uint64_t __67__HDDatabaseJournalDatabase__appendData_entryClass_database_error__
   return v17;
 }
 
-+ (uint64_t)_getIDForString:(void *)a3 database:(uint64_t)a4 error:
++ (uint64_t)_getIDForString:(void *)string database:(uint64_t)database error:
 {
   v6 = a2;
-  v7 = a3;
+  stringCopy = string;
   objc_opt_self();
   v17 = 0;
   v18 = &v17;
@@ -879,36 +879,36 @@ uint64_t __67__HDDatabaseJournalDatabase__appendData_entryClass_database_error__
   v14[2] = __60__HDDatabaseJournalDatabase__getIDForString_database_error___block_invoke_2;
   v14[3] = &unk_278614620;
   v14[4] = &v17;
-  if ([v7 executeSQL:@"SELECT ROWID FROM unique_strings WHERE string = ?" error:a4 bindingHandler:v15 enumerationHandler:v14])
+  if ([stringCopy executeSQL:@"SELECT ROWID FROM unique_strings WHERE string = ?" error:database bindingHandler:v15 enumerationHandler:v14])
   {
-    v9 = v18[3];
-    if (v9 <= 0)
+    longLongValue = v18[3];
+    if (longLongValue <= 0)
     {
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __60__HDDatabaseJournalDatabase__getIDForString_database_error___block_invoke_3;
       v12[3] = &unk_278614860;
       v13 = v8;
-      if ([v7 executeSQL:@"INSERT INTO unique_strings (string) VALUES (?)" error:a4 bindingHandler:v12 enumerationHandler:0])
+      if ([stringCopy executeSQL:@"INSERT INTO unique_strings (string) VALUES (?)" error:database bindingHandler:v12 enumerationHandler:0])
       {
-        v10 = [v7 lastInsertRowID];
-        v9 = [v10 longLongValue];
+        lastInsertRowID = [stringCopy lastInsertRowID];
+        longLongValue = [lastInsertRowID longLongValue];
       }
 
       else
       {
-        v9 = -1;
+        longLongValue = -1;
       }
     }
   }
 
   else
   {
-    v9 = -1;
+    longLongValue = -1;
   }
 
   _Block_object_dispose(&v17, 8);
-  return v9;
+  return longLongValue;
 }
 
 uint64_t __90__HDDatabaseJournalDatabase__insertData_osBuildStringID_classNameStringID_database_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)

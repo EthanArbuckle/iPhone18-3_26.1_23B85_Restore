@@ -1,27 +1,27 @@
 @interface MFMessageSigner
 - (BOOL)hasSeparateSigningAndEncryptionCertificates;
 - (MFError)error;
-- (MFMessageSigner)initWithSender:(id)a3 signingTrust:(__SecTrust *)a4 encryptionTrust:(__SecTrust *)a5 verification:(int)a6;
+- (MFMessageSigner)initWithSender:(id)sender signingTrust:(__SecTrust *)trust encryptionTrust:(__SecTrust *)encryptionTrust verification:(int)verification;
 - (void)dealloc;
 @end
 
 @implementation MFMessageSigner
 
-- (MFMessageSigner)initWithSender:(id)a3 signingTrust:(__SecTrust *)a4 encryptionTrust:(__SecTrust *)a5 verification:(int)a6
+- (MFMessageSigner)initWithSender:(id)sender signingTrust:(__SecTrust *)trust encryptionTrust:(__SecTrust *)encryptionTrust verification:(int)verification
 {
   v10 = [(MFMessageSigner *)self init];
   v11 = v10;
   if (v10)
   {
-    v10->_status = a6;
-    if (a4)
+    v10->_status = verification;
+    if (trust)
     {
-      v10->_signingCertificateTrustInfo = [[MFCertificateTrustInfo alloc] initWithCertificateType:0 trust:a4 sender:a3];
+      v10->_signingCertificateTrustInfo = [[MFCertificateTrustInfo alloc] initWithCertificateType:0 trust:trust sender:sender];
     }
 
-    if (a5)
+    if (encryptionTrust)
     {
-      v11->_encryptionCertificateTrustInfo = [[MFCertificateTrustInfo alloc] initWithCertificateType:1 trust:a5 sender:a3];
+      v11->_encryptionCertificateTrustInfo = [[MFCertificateTrustInfo alloc] initWithCertificateType:1 trust:encryptionTrust sender:sender];
     }
   }
 

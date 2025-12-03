@@ -1,6 +1,6 @@
 @interface SUScriptDocumentInteractionController
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)UTI;
 - (WebScriptObject)cancelFunction;
@@ -11,12 +11,12 @@
 - (id)_openWithFunction;
 - (id)scriptAttributeKeys;
 - (void)dealloc;
-- (void)dismissMenuAnimated:(id)a3;
-- (void)setCancelFunction:(id)a3;
-- (void)setOpenWithFunction:(id)a3;
-- (void)setUTI:(id)a3;
-- (void)showOpenWithMenuFromDOMElement:(id)a3;
-- (void)showOpenWithMenuFromNavigationItem:(id)a3;
+- (void)dismissMenuAnimated:(id)animated;
+- (void)setCancelFunction:(id)function;
+- (void)setOpenWithFunction:(id)function;
+- (void)setUTI:(id)i;
+- (void)showOpenWithMenuFromDOMElement:(id)element;
+- (void)showOpenWithMenuFromNavigationItem:(id)item;
 @end
 
 @implementation SUScriptDocumentInteractionController
@@ -31,11 +31,11 @@
   [(SUScriptObject *)&v3 dealloc];
 }
 
-- (void)dismissMenuAnimated:(id)a3
+- (void)dismissMenuAnimated:(id)animated
 {
   if (objc_opt_respondsToSelector())
   {
-    [a3 BOOLValue];
+    [animated BOOLValue];
   }
 
   WebThreadRunOnMainThread();
@@ -49,12 +49,12 @@ uint64_t __61__SUScriptDocumentInteractionController_dismissMenuAnimated___block
   return [v2 dismissMenuAnimated:v3];
 }
 
-- (void)showOpenWithMenuFromDOMElement:(id)a3
+- (void)showOpenWithMenuFromDOMElement:(id)element
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    element = 0;
   }
 
   [MEMORY[0x1E69DC938] currentDevice];
@@ -71,7 +71,7 @@ LABEL_10:
 
   else
   {
-    if (!a3)
+    if (!element)
     {
       goto LABEL_10;
     }
@@ -157,16 +157,16 @@ uint64_t __72__SUScriptDocumentInteractionController_showOpenWithMenuFromDOMElem
   return [v3 detachFromScrollView];
 }
 
-- (void)showOpenWithMenuFromNavigationItem:(id)a3
+- (void)showOpenWithMenuFromNavigationItem:(id)item
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    item = 0;
   }
 
   [MEMORY[0x1E69DC938] currentDevice];
-  if (((objc_opt_respondsToSelector() & 1) != 0 && [objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] == 1 || a3) && (objc_msgSend(a3, "conformsToProtocol:", &unk_1F422F898) & 1) == 0)
+  if (((objc_opt_respondsToSelector() & 1) != 0 && [objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] == 1 || item) && (objc_msgSend(item, "conformsToProtocol:", &unk_1F422F898) & 1) == 0)
   {
     v4 = MEMORY[0x1E69E2F88];
 
@@ -204,25 +204,25 @@ uint64_t __76__SUScriptDocumentInteractionController_showOpenWithMenuFromNavigat
 - (WebScriptObject)cancelFunction
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SUScriptFunction *)self->_cancelFunction scriptObject];
+  scriptObject = [(SUScriptFunction *)self->_cancelFunction scriptObject];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return scriptObject;
 }
 
 - (WebScriptObject)openWithFunction
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SUScriptFunction *)self->_openWithFunction scriptObject];
+  scriptObject = [(SUScriptFunction *)self->_openWithFunction scriptObject];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return scriptObject;
 }
 
-- (void)setCancelFunction:(id)a3
+- (void)setCancelFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    functionCopy = 0;
 LABEL_3:
     [(SUScriptObject *)self lock];
     cancelFunction = self->_cancelFunction;
@@ -234,7 +234,7 @@ LABEL_3:
       cancelFunction = self->_cancelFunction;
     }
 
-    [(SUScriptFunction *)cancelFunction setScriptObject:v5];
+    [(SUScriptFunction *)cancelFunction setScriptObject:functionCopy];
 
     [(SUScriptObject *)self unlock];
     return;
@@ -242,8 +242,8 @@ LABEL_3:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3)
+  functionCopy = 0;
+  if (!function)
   {
     goto LABEL_3;
   }
@@ -254,7 +254,7 @@ LABEL_3:
   }
 
   objc_opt_class();
-  v5 = a3;
+  functionCopy = function;
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_3;
@@ -265,12 +265,12 @@ LABEL_3:
   [v9 throwException:@"Invalid argument"];
 }
 
-- (void)setOpenWithFunction:(id)a3
+- (void)setOpenWithFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    functionCopy = 0;
 LABEL_3:
     [(SUScriptObject *)self lock];
     openWithFunction = self->_openWithFunction;
@@ -282,7 +282,7 @@ LABEL_3:
       openWithFunction = self->_openWithFunction;
     }
 
-    [(SUScriptFunction *)openWithFunction setScriptObject:v5];
+    [(SUScriptFunction *)openWithFunction setScriptObject:functionCopy];
 
     [(SUScriptObject *)self unlock];
     return;
@@ -290,8 +290,8 @@ LABEL_3:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3)
+  functionCopy = 0;
+  if (!function)
   {
     goto LABEL_3;
   }
@@ -302,7 +302,7 @@ LABEL_3:
   }
 
   objc_opt_class();
-  v5 = a3;
+  functionCopy = function;
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_3;
@@ -313,9 +313,9 @@ LABEL_3:
   [v9 throwException:@"Invalid argument"];
 }
 
-- (void)setUTI:(id)a3
+- (void)setUTI:(id)i
 {
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (i && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v3 = MEMORY[0x1E69E2F88];
 
@@ -367,24 +367,24 @@ id __44__SUScriptDocumentInteractionController_UTI__block_invoke(uint64_t a1)
 
 - (id)_nativeDocumentInteractionController
 {
-  v2 = [(SUScriptDocumentInteractionController *)self _nativeObject];
+  _nativeObject = [(SUScriptDocumentInteractionController *)self _nativeObject];
 
-  return [v2 object];
+  return [_nativeObject object];
 }
 
 - (id)_nativeObject
 {
-  v3 = [(SUScriptObject *)self nativeObject];
-  if (![(SUScriptNativeObject *)v3 object])
+  nativeObject = [(SUScriptObject *)self nativeObject];
+  if (![(SUScriptNativeObject *)nativeObject object])
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CDA18]);
     [v4 setName:&stru_1F41B3660];
-    v3 = [(SUScriptNativeObject *)SUScriptDocumentInteractionControllerNativeObject objectWithNativeObject:v4];
-    [(SUScriptObject *)self setNativeObject:v3];
+    nativeObject = [(SUScriptNativeObject *)SUScriptDocumentInteractionControllerNativeObject objectWithNativeObject:v4];
+    [(SUScriptObject *)self setNativeObject:nativeObject];
     v5 = v4;
   }
 
-  return v3;
+  return nativeObject;
 }
 
 - (id)_openWithFunction
@@ -395,27 +395,27 @@ id __44__SUScriptDocumentInteractionController_UTI__block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_56 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptDocumentInteractionController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_41, 3);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_41, 3);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptDocumentInteractionController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -425,14 +425,14 @@ id __44__SUScriptDocumentInteractionController_UTI__block_invoke(uint64_t a1)
 {
   v4.receiver = self;
   v4.super_class = SUScriptDocumentInteractionController;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_56 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_56 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_41 = sel_dismissMenuAnimated_;
     unk_1EBF3B4F0 = @"dismissMenu";

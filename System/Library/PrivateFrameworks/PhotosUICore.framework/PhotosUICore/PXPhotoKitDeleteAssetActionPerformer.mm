@@ -1,19 +1,19 @@
 @interface PXPhotoKitDeleteAssetActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (BOOL)canPerformOnImplicitSelectionInContainerCollection:(id)a3;
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (BOOL)canPerformOnImplicitSelectionInContainerCollection:(id)collection;
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
 - (int64_t)destructivePhotosAction;
 @end
 
 @implementation PXPhotoKitDeleteAssetActionPerformer
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
-  v4 = [a4 effectiveSelectionSnapshot];
-  v5 = [v4 isAnyItemSelected];
+  effectiveSelectionSnapshot = [manager effectiveSelectionSnapshot];
+  isAnyItemSelected = [effectiveSelectionSnapshot isAnyItemSelected];
 
-  if (v5)
+  if (isAnyItemSelected)
   {
     v6 = @"PXPhotoKitDeleteAssetActionPerformer_TitleDefault";
   }
@@ -26,14 +26,14 @@
   return PXLocalizedStringFromTable(v6, @"PhotosUICore");
 }
 
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager
 {
-  v7 = a3;
-  v8 = [a5 selectionManager];
-  v9 = [v8 selectionSnapshot];
-  v10 = [v9 isAnyItemSelected];
+  targetCopy = target;
+  selectionManager = [manager selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  isAnyItemSelected = [selectionSnapshot isAnyItemSelected];
 
-  if (v10)
+  if (isAnyItemSelected)
   {
     v11 = @"PXPhotoKitDeleteAssetActionPerformer_TitleDefault";
   }
@@ -44,34 +44,34 @@
   }
 
   v12 = PXLocalizedStringFromTable(v11, @"PhotosUICore");
-  v13 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v12 style:0 target:v7 action:a4];
+  v13 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v12 style:0 target:targetCopy action:action];
 
   return v13;
 }
 
-+ (BOOL)canPerformOnImplicitSelectionInContainerCollection:(id)a3
++ (BOOL)canPerformOnImplicitSelectionInContainerCollection:(id)collection
 {
-  v3 = a3;
-  if ([v3 px_isRecentlyDeletedSmartAlbum])
+  collectionCopy = collection;
+  if ([collectionCopy px_isRecentlyDeletedSmartAlbum])
   {
-    v4 = 1;
+    px_isRecoveredSmartAlbum = 1;
   }
 
   else
   {
-    v4 = [v3 px_isRecoveredSmartAlbum];
+    px_isRecoveredSmartAlbum = [collectionCopy px_isRecoveredSmartAlbum];
   }
 
-  return v4;
+  return px_isRecoveredSmartAlbum;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  if (([v9 isTrashBin] & 1) != 0 || objc_msgSend(v9, "px_isRecoveredSmartAlbum"))
+  assetCopy = asset;
+  collectionCopy = collection;
+  if (([collectionCopy isTrashBin] & 1) != 0 || objc_msgSend(collectionCopy, "px_isRecoveredSmartAlbum"))
   {
-    v10 = [a1 canExpungeAsset:v8 inAssetCollection:v9];
+    v10 = [self canExpungeAsset:assetCopy inAssetCollection:collectionCopy];
   }
 
   else
@@ -84,11 +84,11 @@
 
 - (int64_t)destructivePhotosAction
 {
-  v4 = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
-  v5 = [v4 allKeys];
-  v6 = [v5 firstObject];
+  assetsByAssetCollection = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
+  allKeys = [assetsByAssetCollection allKeys];
+  firstObject = [allKeys firstObject];
 
-  if (v6)
+  if (firstObject)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -96,23 +96,23 @@
       goto LABEL_3;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v6 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXPhotoKitDeleteAssetActionPerformer.m" lineNumber:50 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetsByAssetCollection.allKeys.firstObject", v11, v13}];
+    px_descriptionForAssertionMessage = [firstObject px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitDeleteAssetActionPerformer.m" lineNumber:50 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetsByAssetCollection.allKeys.firstObject", v11, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXPhotoKitDeleteAssetActionPerformer.m" lineNumber:50 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetsByAssetCollection.allKeys.firstObject", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitDeleteAssetActionPerformer.m" lineNumber:50 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetsByAssetCollection.allKeys.firstObject", v11}];
   }
 
 LABEL_3:
-  if ([v6 isTrashBin])
+  if ([firstObject isTrashBin])
   {
     v7 = 6;
   }

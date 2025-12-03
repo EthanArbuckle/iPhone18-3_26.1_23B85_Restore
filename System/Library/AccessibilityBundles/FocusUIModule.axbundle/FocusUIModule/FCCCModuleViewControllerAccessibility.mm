@@ -1,19 +1,19 @@
 @interface FCCCModuleViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation FCCCModuleViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FCCCModuleViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"FCUIActivityPickerViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"FCCCModuleViewController" hasInstanceVariable:@"_templateView" withType:"CCUIControlTemplateView"];
-  [v3 validateClass:@"FCCCModuleViewController" hasInstanceMethod:@"_roundButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FCCCModuleViewController" hasInstanceVariable:@"_activeActivity" withType:"<FCActivityDescribing>"];
-  [v3 validateProtocol:@"FCActivityDescribing" hasRequiredInstanceMethod:@"activityDisplayName"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FCCCModuleViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"FCUIActivityPickerViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"FCCCModuleViewController" hasInstanceVariable:@"_templateView" withType:"CCUIControlTemplateView"];
+  [validationsCopy validateClass:@"FCCCModuleViewController" hasInstanceMethod:@"_roundButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FCCCModuleViewController" hasInstanceVariable:@"_activeActivity" withType:"<FCActivityDescribing>"];
+  [validationsCopy validateProtocol:@"FCActivityDescribing" hasRequiredInstanceMethod:@"activityDisplayName"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,8 +22,8 @@
   v15.super_class = FCCCModuleViewControllerAccessibility;
   [(FCCCModuleViewControllerAccessibility *)&v15 _accessibilityLoadAccessibilityInformation];
   objc_initWeak(&location, self);
-  v3 = [(FCCCModuleViewControllerAccessibility *)self _accessibilityButtonView];
-  [v3 setIsAccessibilityElement:0];
+  _accessibilityButtonView = [(FCCCModuleViewControllerAccessibility *)self _accessibilityButtonView];
+  [_accessibilityButtonView setIsAccessibilityElement:0];
 
   v4 = [(FCCCModuleViewControllerAccessibility *)self safeUIViewForKey:@"view"];
   [v4 setIsAccessibilityElement:1];

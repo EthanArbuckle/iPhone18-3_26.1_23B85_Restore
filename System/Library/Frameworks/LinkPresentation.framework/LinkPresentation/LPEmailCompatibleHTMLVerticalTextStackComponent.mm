@@ -1,34 +1,34 @@
 @interface LPEmailCompatibleHTMLVerticalTextStackComponent
 + (id)baseRules;
-+ (id)ruleDictionaryForStyle:(id)a3;
-- (LPEmailCompatibleHTMLVerticalTextStackComponent)initWithStyle:(id)a3 presentationProperties:(id)a4 themePath:(id)a5 generator:(id)a6;
-- (id)componentForRow:(id)a3 style:(id)a4 name:(id)a5;
++ (id)ruleDictionaryForStyle:(id)style;
+- (LPEmailCompatibleHTMLVerticalTextStackComponent)initWithStyle:(id)style presentationProperties:(id)properties themePath:(id)path generator:(id)generator;
+- (id)componentForRow:(id)row style:(id)style name:(id)name;
 - (void)buildComponents;
 @end
 
 @implementation LPEmailCompatibleHTMLVerticalTextStackComponent
 
-- (LPEmailCompatibleHTMLVerticalTextStackComponent)initWithStyle:(id)a3 presentationProperties:(id)a4 themePath:(id)a5 generator:(id)a6
+- (LPEmailCompatibleHTMLVerticalTextStackComponent)initWithStyle:(id)style presentationProperties:(id)properties themePath:(id)path generator:(id)generator
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  styleCopy = style;
+  propertiesCopy = properties;
+  pathCopy = path;
+  generatorCopy = generator;
   v24.receiver = self;
   v24.super_class = LPEmailCompatibleHTMLVerticalTextStackComponent;
-  v15 = [(LPHTMLComponent *)&v24 initWithTagName:@"div" themePath:v13 generator:v14];
+  v15 = [(LPHTMLComponent *)&v24 initWithTagName:@"div" themePath:pathCopy generator:generatorCopy];
   v17 = v15;
   if (v15)
   {
     LPWebLock(v15, v16);
-    objc_storeStrong(&v17->_style, a3);
-    objc_storeStrong(&v17->_presentationProperties, a4);
+    objc_storeStrong(&v17->_style, style);
+    objc_storeStrong(&v17->_presentationProperties, properties);
     [(LPEmailCompatibleHTMLVerticalTextStackComponent *)v17 buildComponents];
-    v18 = [v14 cssResolver];
-    v19 = [(LPHTMLComponent *)v17 themePath];
-    v20 = [@"lp-rich-link-" stringByAppendingString:v19];
-    v21 = [(LPHTMLComponent *)v17 element];
-    [v18 addStyle:v20 toElement:v21 inComponent:v17];
+    cssResolver = [generatorCopy cssResolver];
+    themePath = [(LPHTMLComponent *)v17 themePath];
+    v20 = [@"lp-rich-link-" stringByAppendingString:themePath];
+    element = [(LPHTMLComponent *)v17 element];
+    [cssResolver addStyle:v20 toElement:element inComponent:v17];
 
     v22 = v17;
   }
@@ -36,18 +36,18 @@
   return v17;
 }
 
-- (id)componentForRow:(id)a3 style:(id)a4 name:(id)a5
+- (id)componentForRow:(id)row style:(id)style name:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  rowCopy = row;
+  styleCopy = style;
+  nameCopy = name;
   v11 = [LPEmailCompatibleHTMLTextComponent alloc];
-  v12 = [v8 leading];
-  v13 = [v9 leading];
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-leading", v10];
-  v15 = [(LPHTMLComponent *)self childThemePathWithName:v14];
-  v16 = [(LPHTMLComponent *)self generator];
-  v17 = [(LPEmailCompatibleHTMLTextComponent *)v11 initWithCaption:v12 style:v13 themePath:v15 generator:v16];
+  leading = [rowCopy leading];
+  leading2 = [styleCopy leading];
+  nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-leading", nameCopy];
+  v15 = [(LPHTMLComponent *)self childThemePathWithName:nameCopy];
+  generator = [(LPHTMLComponent *)self generator];
+  v17 = [(LPEmailCompatibleHTMLTextComponent *)v11 initWithCaption:leading style:leading2 themePath:v15 generator:generator];
 
   [(LPHTMLComponent *)self addChild:v17];
 
@@ -60,14 +60,14 @@
   LPWebLock(self, a2);
   v3 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties top];
   v15[0] = v3;
-  v4 = [(LPCaptionBarPresentationProperties *)self->_presentationProperties bottom];
-  v15[1] = v4;
+  bottom = [(LPCaptionBarPresentationProperties *)self->_presentationProperties bottom];
+  v15[1] = bottom;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
 
-  v6 = [(LPVerticalTextStackViewStyle *)self->_style topCaption];
-  v14[0] = v6;
-  v7 = [(LPVerticalTextStackViewStyle *)self->_style bottomCaption];
-  v14[1] = v7;
+  topCaption = [(LPVerticalTextStackViewStyle *)self->_style topCaption];
+  v14[0] = topCaption;
+  bottomCaption = [(LPVerticalTextStackViewStyle *)self->_style bottomCaption];
+  v14[1] = bottomCaption;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -76,7 +76,7 @@
   v10[3] = &unk_1E7A37718;
   v11 = v8;
   v12 = &unk_1F2483C98;
-  v13 = self;
+  selfCopy = self;
   v9 = v8;
   [v5 enumerateObjectsUsingBlock:v10];
 }
@@ -111,11 +111,11 @@ void __66__LPEmailCompatibleHTMLVerticalTextStackComponent_buildComponents__bloc
   return v3;
 }
 
-+ (id)ruleDictionaryForStyle:(id)a3
++ (id)ruleDictionaryForStyle:(id)style
 {
-  v3 = [a1 baseRules];
+  baseRules = [self baseRules];
 
-  return v3;
+  return baseRules;
 }
 
 @end

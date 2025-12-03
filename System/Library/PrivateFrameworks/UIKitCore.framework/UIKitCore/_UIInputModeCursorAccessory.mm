@@ -1,23 +1,23 @@
 @interface _UIInputModeCursorAccessory
-- (_UIInputModeCursorAccessory)initWithCoder:(id)a3;
+- (_UIInputModeCursorAccessory)initWithCoder:(id)coder;
 - (id)descriptionBuilder;
 - (id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIInputModeCursorAccessory
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = _UIInputModeCursorAccessory;
-  [(_UICursorAccessory *)&v6 encodeWithCoder:v4];
+  [(_UICursorAccessory *)&v6 encodeWithCoder:coderCopy];
   inputModeIdentifier = self->_inputModeIdentifier;
   if (inputModeIdentifier)
   {
-    [v4 encodeObject:inputModeIdentifier forKey:@"inputModeIdentifier"];
+    [coderCopy encodeObject:inputModeIdentifier forKey:@"inputModeIdentifier"];
   }
 }
 
@@ -30,15 +30,15 @@
   return v4 ^ [(NSString *)self->_dictationLanguage hash];
 }
 
-- (_UIInputModeCursorAccessory)initWithCoder:(id)a3
+- (_UIInputModeCursorAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _UIInputModeCursorAccessory;
-  v5 = [(_UICursorAccessory *)&v9 initWithCoder:v4];
+  v5 = [(_UICursorAccessory *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputModeIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputModeIdentifier"];
     inputModeIdentifier = v5->_inputModeIdentifier;
     v5->_inputModeIdentifier = v6;
   }
@@ -50,39 +50,39 @@
 {
   v5.receiver = self;
   v5.super_class = _UIInputModeCursorAccessory;
-  v3 = [(_UICursorAccessory *)&v5 descriptionBuilder];
-  [v3 appendString:self->_inputModeIdentifier withName:@"inputModeIdentifier"];
-  [v3 appendString:self->_dictationLanguage withName:@"dictationLanguage"];
+  descriptionBuilder = [(_UICursorAccessory *)&v5 descriptionBuilder];
+  [descriptionBuilder appendString:self->_inputModeIdentifier withName:@"inputModeIdentifier"];
+  [descriptionBuilder appendString:self->_dictationLanguage withName:@"dictationLanguage"];
 
-  return v3;
+  return descriptionBuilder;
 }
 
 - (id)identifier
 {
   v10.receiver = self;
   v10.super_class = _UIInputModeCursorAccessory;
-  v3 = [(_UICursorAccessory *)&v10 identifier];
-  v4 = v3;
-  if (v3)
+  identifier = [(_UICursorAccessory *)&v10 identifier];
+  v4 = identifier;
+  if (identifier)
   {
-    v5 = v3;
+    v5 = identifier;
   }
 
   else
   {
-    v6 = [(_UIInputModeCursorAccessory *)self dictationLanguage];
-    v7 = v6;
-    if (v6)
+    dictationLanguage = [(_UIInputModeCursorAccessory *)self dictationLanguage];
+    v7 = dictationLanguage;
+    if (dictationLanguage)
     {
-      v8 = v6;
+      inputModeIdentifier = dictationLanguage;
     }
 
     else
     {
-      v8 = [(_UIInputModeCursorAccessory *)self inputModeIdentifier];
+      inputModeIdentifier = [(_UIInputModeCursorAccessory *)self inputModeIdentifier];
     }
 
-    v5 = v8;
+    v5 = inputModeIdentifier;
   }
 
   return v5;

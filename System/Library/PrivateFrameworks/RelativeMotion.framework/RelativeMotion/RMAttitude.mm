@@ -1,23 +1,23 @@
 @interface RMAttitude
 - ($01BB1521EC52D44A8E7628F5261DCEC8)quaternion;
-- (RMAttitude)initWithCoder:(id)a3;
-- (id)_initWithQuaternion:(id)a3 timestamp:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RMAttitude)initWithCoder:(id)coder;
+- (id)_initWithQuaternion:(id)quaternion timestamp:(double)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RMAttitude
 
-- (id)_initWithQuaternion:(id)a3 timestamp:(double)a4
+- (id)_initWithQuaternion:(id)quaternion timestamp:(double)timestamp
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var3 = quaternion.var3;
+  var2 = quaternion.var2;
+  var1 = quaternion.var1;
+  var0 = quaternion.var0;
   v9.receiver = self;
   v9.super_class = RMAttitude;
-  result = [(RMLogItem *)&v9 _initWithTimestamp:a4];
+  result = [(RMLogItem *)&v9 _initWithTimestamp:timestamp];
   if (result)
   {
     *(result + 2) = var0;
@@ -29,44 +29,44 @@
   return result;
 }
 
-- (RMAttitude)initWithCoder:(id)a3
+- (RMAttitude)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RMAttitude;
-  v5 = [(RMLogItem *)&v11 initWithCoder:v4];
+  v5 = [(RMLogItem *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"kRMAttitudeCodingKeyQuaternionX"];
+    [coderCopy decodeDoubleForKey:@"kRMAttitudeCodingKeyQuaternionX"];
     v5->_quaternion.x = v6;
-    [v4 decodeDoubleForKey:@"kRMAttitudeCodingKeyQuaternionY"];
+    [coderCopy decodeDoubleForKey:@"kRMAttitudeCodingKeyQuaternionY"];
     v5->_quaternion.y = v7;
-    [v4 decodeDoubleForKey:@"kRMAttitudeCodingKeyQuaternionZ"];
+    [coderCopy decodeDoubleForKey:@"kRMAttitudeCodingKeyQuaternionZ"];
     v5->_quaternion.z = v8;
-    [v4 decodeDoubleForKey:@"kRMAttitudeCodingKeyQuaternionW"];
+    [coderCopy decodeDoubleForKey:@"kRMAttitudeCodingKeyQuaternionW"];
     v5->_quaternion.w = v9;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v3 = self;
+  selfCopy = self;
   v5.receiver = self;
   v5.super_class = RMAttitude;
-  v4 = a3;
-  [(RMLogItem *)&v5 encodeWithCoder:v4];
-  v3 += 2;
-  [v4 encodeDouble:@"kRMAttitudeCodingKeyQuaternionX" forKey:{*v3, v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"kRMAttitudeCodingKeyQuaternionY" forKey:v3[1]];
-  [v4 encodeDouble:@"kRMAttitudeCodingKeyQuaternionZ" forKey:v3[2]];
-  [v4 encodeDouble:@"kRMAttitudeCodingKeyQuaternionW" forKey:v3[3]];
+  coderCopy = coder;
+  [(RMLogItem *)&v5 encodeWithCoder:coderCopy];
+  selfCopy += 2;
+  [coderCopy encodeDouble:@"kRMAttitudeCodingKeyQuaternionX" forKey:{*selfCopy, v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"kRMAttitudeCodingKeyQuaternionY" forKey:selfCopy[1]];
+  [coderCopy encodeDouble:@"kRMAttitudeCodingKeyQuaternionZ" forKey:selfCopy[2]];
+  [coderCopy encodeDouble:@"kRMAttitudeCodingKeyQuaternionW" forKey:selfCopy[3]];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(RMLogItem *)self timestamp];
   v5 = [v4 _initWithTimestamp:?];
   v6 = v5;

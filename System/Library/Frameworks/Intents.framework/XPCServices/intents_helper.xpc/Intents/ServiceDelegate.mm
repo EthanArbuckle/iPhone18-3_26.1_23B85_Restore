@@ -1,12 +1,12 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___INHServing];
   [v5 setClass:objc_opt_class() forSelector:"loadDataImageForImage:scaledWidth:scaledHeight:usingPortableImageLoader:completion:" argumentIndex:0 ofReply:0];
   [v5 setClass:objc_opt_class() forSelector:"loadDataImageForImage:scaledWidth:scaledHeight:usingPortableImageLoader:completion:" argumentIndex:0 ofReply:1];
@@ -22,10 +22,10 @@
   v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
   [v5 setClasses:v9 forSelector:"filePathForImage:usingPortableImageLoader:completion:" argumentIndex:1 ofReply:0];
 
-  [v4 setExportedInterface:v5];
-  v10 = [[INHService alloc] initWithServingConnection:v4];
-  [v4 setExportedObject:v10];
-  [v4 resume];
+  [connectionCopy setExportedInterface:v5];
+  v10 = [[INHService alloc] initWithServingConnection:connectionCopy];
+  [connectionCopy setExportedObject:v10];
+  [connectionCopy resume];
 
   return 1;
 }

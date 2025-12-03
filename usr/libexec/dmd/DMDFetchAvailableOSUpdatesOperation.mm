@@ -1,6 +1,6 @@
 @interface DMDFetchAvailableOSUpdatesOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,9 +20,9 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = DMFOSUpdateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -31,20 +31,20 @@
   }
 
   v7 = +[DMDSUManagerInstallTask sharedInstallTask];
-  v8 = [v5 productVersion];
-  v9 = [v5 useDelay];
+  productVersion = [requestCopy productVersion];
+  useDelay = [requestCopy useDelay];
 
   v10 = DMFOSUpdateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = @"default";
     v12 = @"NO";
-    if (v8)
+    if (productVersion)
     {
-      v11 = v8;
+      v11 = productVersion;
     }
 
-    if (v9)
+    if (useDelay)
     {
       v12 = @"YES";
     }
@@ -57,7 +57,7 @@
   }
 
   v18 = 0;
-  v13 = [v7 availableUpdateWithVersion:v8 useDelay:v9 error:&v18];
+  v13 = [v7 availableUpdateWithVersion:productVersion useDelay:useDelay error:&v18];
   v14 = v18;
   v15 = v14;
   if (v13)

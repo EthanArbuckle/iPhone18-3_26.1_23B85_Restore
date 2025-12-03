@@ -1,22 +1,22 @@
 @interface RPBroadcastActivityExtensionHostContext
 - (RPBroadcastActivityHostViewController)hostViewController;
 - (id)extensionObjectProxy;
-- (void)presentationInfoWithCompletion:(id)a3;
+- (void)presentationInfoWithCompletion:(id)completion;
 @end
 
 @implementation RPBroadcastActivityExtensionHostContext
 
-- (void)presentationInfoWithCompletion:(id)a3
+- (void)presentationInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
-  [WeakRetained presentationInfoWithCompletion:v4];
+  [WeakRetained presentationInfoWithCompletion:completionCopy];
 }
 
 - (id)extensionObjectProxy
 {
-  v2 = [(RPBroadcastActivityExtensionHostContext *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
+  _auxiliaryConnection = [(RPBroadcastActivityExtensionHostContext *)self _auxiliaryConnection];
+  v3 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
 
   return v3;
 }

@@ -1,11 +1,11 @@
 @interface HDListUserDomainConceptEntity
-+ (BOOL)insertConcreteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)updateConcreteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)willDeleteConcreteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 syncProvenance:(int64_t)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (BOOL)insertConcreteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)updateConcreteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)willDeleteConcreteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d syncProvenance:(int64_t)provenance profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)foreignKeys;
-+ (id)predicateMatchingSemanticDuplicatesOf:(id)a3;
-+ (id)predicateMatchingSemanticIdentifier:(id)a3;
++ (id)predicateMatchingSemanticDuplicatesOf:(id)of;
++ (id)predicateMatchingSemanticIdentifier:(id)identifier;
 @end
 
 @implementation HDListUserDomainConceptEntity
@@ -23,31 +23,31 @@
   return v3;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDListUserDomainConceptEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDListUserDomainConceptEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (BOOL)insertConcreteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)insertConcreteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v9 = a3;
-  v10 = [a5 protectedDatabase];
+  conceptCopy = concept;
+  protectedDatabase = [transaction protectedDatabase];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __103__HDListUserDomainConceptEntity_insertConcreteUserDomainConcept_userDomainConceptID_transaction_error___block_invoke_2;
   v13[3] = &unk_278613B58;
-  v14 = v9;
-  v15 = a4;
-  v11 = v9;
-  LOBYTE(a6) = [v10 executeCachedStatementForKey:&insertConcreteUserDomainConcept_userDomainConceptID_transaction_error__statementKey error:a6 SQLGenerator:&__block_literal_global_152 bindingHandler:v13 enumerationHandler:0];
+  v14 = conceptCopy;
+  dCopy = d;
+  v11 = conceptCopy;
+  LOBYTE(error) = [protectedDatabase executeCachedStatementForKey:&insertConcreteUserDomainConcept_userDomainConceptID_transaction_error__statementKey error:error SQLGenerator:&__block_literal_global_152 bindingHandler:v13 enumerationHandler:0];
 
-  return a6;
+  return error;
 }
 
 void __103__HDListUserDomainConceptEntity_insertConcreteUserDomainConcept_userDomainConceptID_transaction_error___block_invoke_2(uint64_t a1, sqlite3_stmt *a2)
@@ -58,20 +58,20 @@ void __103__HDListUserDomainConceptEntity_insertConcreteUserDomainConcept_userDo
   HDSQLiteBindFoundationValueToStatement();
 }
 
-+ (BOOL)updateConcreteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)updateConcreteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v9 = a3;
-  v10 = [a5 protectedDatabase];
+  conceptCopy = concept;
+  protectedDatabase = [transaction protectedDatabase];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __103__HDListUserDomainConceptEntity_updateConcreteUserDomainConcept_userDomainConceptID_transaction_error___block_invoke_2;
   v13[3] = &unk_278613B58;
-  v14 = v9;
-  v15 = a4;
-  v11 = v9;
-  LOBYTE(a6) = [v10 executeCachedStatementForKey:&updateConcreteUserDomainConcept_userDomainConceptID_transaction_error__statementKey error:a6 SQLGenerator:&__block_literal_global_325 bindingHandler:v13 enumerationHandler:0];
+  v14 = conceptCopy;
+  dCopy = d;
+  v11 = conceptCopy;
+  LOBYTE(error) = [protectedDatabase executeCachedStatementForKey:&updateConcreteUserDomainConcept_userDomainConceptID_transaction_error__statementKey error:error SQLGenerator:&__block_literal_global_325 bindingHandler:v13 enumerationHandler:0];
 
-  return a6;
+  return error;
 }
 
 uint64_t __103__HDListUserDomainConceptEntity_updateConcreteUserDomainConcept_userDomainConceptID_transaction_error___block_invoke_2(uint64_t a1, sqlite3_stmt *a2)
@@ -85,22 +85,22 @@ uint64_t __103__HDListUserDomainConceptEntity_updateConcreteUserDomainConcept_us
   return sqlite3_bind_int64(a2, 3, v5);
 }
 
-+ (BOOL)willDeleteConcreteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 syncProvenance:(int64_t)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8
++ (BOOL)willDeleteConcreteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d syncProvenance:(int64_t)provenance profile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  conceptCopy = concept;
   _HKInitializeLogging();
   v12 = HKLogHealthOntology();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138413058;
-    v16 = a1;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v11;
+    v18 = conceptCopy;
     v19 = 2048;
-    v20 = a4;
+    dCopy = d;
     v21 = 2048;
-    v22 = a5;
+    provenanceCopy = provenance;
     _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "%@ will delete list UDC %@, udc_id=%ld, sync_provenance=%ld", &v15, 0x2Au);
   }
 
@@ -108,32 +108,32 @@ uint64_t __103__HDListUserDomainConceptEntity_updateConcreteUserDomainConcept_us
   return 1;
 }
 
-+ (id)predicateMatchingSemanticIdentifier:(id)a3
++ (id)predicateMatchingSemanticIdentifier:(id)identifier
 {
-  v3 = [a3 listType];
+  listType = [identifier listType];
 
-  return HDListUserDomainConceptEntityPredicateForListType(v3, 1);
+  return HDListUserDomainConceptEntityPredicateForListType(listType, 1);
 }
 
-+ (id)predicateMatchingSemanticDuplicatesOf:(id)a3
++ (id)predicateMatchingSemanticDuplicatesOf:(id)of
 {
   v22[3] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D10B20];
   v4 = MEMORY[0x277D10B18];
-  v5 = a3;
-  v6 = [v5 UUID];
-  v7 = [v4 predicateWithProperty:@"uuid" notEqualToValue:v6];
+  ofCopy = of;
+  uUID = [ofCopy UUID];
+  v7 = [v4 predicateWithProperty:@"uuid" notEqualToValue:uUID];
   v8 = MEMORY[0x277D10B18];
   v9 = MEMORY[0x277CCABB0];
-  v10 = [v5 identifier];
-  v11 = [v9 numberWithInteger:{objc_msgSend(v10, "code")}];
+  identifier = [ofCopy identifier];
+  v11 = [v9 numberWithInteger:{objc_msgSend(identifier, "code")}];
   v12 = [v8 predicateWithProperty:@"type" equalToValue:v11];
   v22[1] = v12;
   v13 = MEMORY[0x277D10B18];
   v14 = MEMORY[0x277CCABB0];
-  v15 = [v5 listType];
+  listType = [ofCopy listType];
 
-  v16 = [v14 numberWithUnsignedInteger:v15];
+  v16 = [v14 numberWithUnsignedInteger:listType];
   v17 = [v13 predicateWithProperty:@"list_type" equalToValue:v16];
   v22[2] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];

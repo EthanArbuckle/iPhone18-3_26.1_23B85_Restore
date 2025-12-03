@@ -1,33 +1,33 @@
 @interface HUCameraRecordingOnboardingFlow
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4;
-- (HUCameraRecordingOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4;
++ (id)needsOnboardingForHome:(id)home options:(id)options;
+- (HUCameraRecordingOnboardingFlow)initWithUsageOptions:(id)options home:(id)home;
 - (id)_determineInitialViewController;
-- (id)processUserInput:(id)a3;
+- (id)processUserInput:(id)input;
 - (void)_setThisUserDismissedCameraOnboardingAndReminder;
 @end
 
 @implementation HUCameraRecordingOnboardingFlow
 
-- (HUCameraRecordingOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4
+- (HUCameraRecordingOnboardingFlow)initWithUsageOptions:(id)options home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  homeCopy = home;
   v22.receiver = self;
   v22.super_class = HUCameraRecordingOnboardingFlow;
   v8 = [(HUCameraRecordingOnboardingFlow *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
     v10 = objc_alloc(MEMORY[0x277D14C98]);
     home = v9->_home;
-    v12 = [(HMHome *)home currentUser];
-    v13 = [v10 initWithHome:home user:v12 nameStyle:0];
+    currentUser = [(HMHome *)home currentUser];
+    v13 = [v10 initWithHome:home user:currentUser nameStyle:0];
     userItem = v9->_userItem;
     v9->_userItem = v13;
 
     objc_initWeak(&location, v9);
-    v15 = [objc_opt_class() needsOnboardingForHome:v7 options:v6];
+    v15 = [objc_opt_class() needsOnboardingForHome:homeCopy options:optionsCopy];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __61__HUCameraRecordingOnboardingFlow_initWithUsageOptions_home___block_invoke;
@@ -88,44 +88,44 @@ void __61__HUCameraRecordingOnboardingFlow_initWithUsageOptions_home___block_inv
   v7[0] = MEMORY[0x277CBEC38];
   v7[1] = MEMORY[0x277CBEC38];
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
-  v4 = [(HUCameraRecordingOnboardingFlow *)self home];
-  v5 = [HUHomeFeatureOnboardingUtilities home:v4 processHomeFeatureOnboarderResults:v3];
+  home = [(HUCameraRecordingOnboardingFlow *)self home];
+  v5 = [HUHomeFeatureOnboardingUtilities home:home processHomeFeatureOnboarderResults:v3];
 }
 
 - (id)_determineInitialViewController
 {
-  v3 = [(HUCameraRecordingOnboardingFlow *)self home];
-  v4 = [v3 hf_cameraRecordingHasBeenOnboarded];
+  home = [(HUCameraRecordingOnboardingFlow *)self home];
+  hf_cameraRecordingHasBeenOnboarded = [home hf_cameraRecordingHasBeenOnboarded];
 
-  v5 = [(HUCameraRecordingOnboardingFlow *)self userItem];
-  v6 = [v5 hasDismissedCameraRecordingOnboarding];
+  userItem = [(HUCameraRecordingOnboardingFlow *)self userItem];
+  hasDismissedCameraRecordingOnboarding = [userItem hasDismissedCameraRecordingOnboarding];
 
-  v7 = [(HUCameraRecordingOnboardingFlow *)self home];
-  v8 = [v7 hf_currentUserIsOwner];
+  home2 = [(HUCameraRecordingOnboardingFlow *)self home];
+  hf_currentUserIsOwner = [home2 hf_currentUserIsOwner];
 
-  v9 = [(HUCameraRecordingOnboardingFlow *)self home];
-  v10 = [v9 residentDevices];
-  v11 = [v10 count];
+  home3 = [(HUCameraRecordingOnboardingFlow *)self home];
+  residentDevices = [home3 residentDevices];
+  v11 = [residentDevices count];
 
-  v12 = [(HUCameraRecordingOnboardingFlow *)self home];
-  v13 = [v12 hf_hasCameraRecordingResident];
+  home4 = [(HUCameraRecordingOnboardingFlow *)self home];
+  hf_hasCameraRecordingResident = [home4 hf_hasCameraRecordingResident];
 
-  v14 = [(HUCameraRecordingOnboardingFlow *)self home];
-  v15 = [v14 hf_hasSecureRecordingCameras];
+  home5 = [(HUCameraRecordingOnboardingFlow *)self home];
+  hf_hasSecureRecordingCameras = [home5 hf_hasSecureRecordingCameras];
 
-  v16 = [(HUCameraRecordingOnboardingFlow *)self home];
-  v17 = [v16 hf_allCameraProfiles];
-  v18 = [v17 count];
+  home6 = [(HUCameraRecordingOnboardingFlow *)self home];
+  hf_allCameraProfiles = [home6 hf_allCameraProfiles];
+  v18 = [hf_allCameraProfiles count];
 
   v19 = 0;
-  if (v18 && (v6 & 1) == 0)
+  if (v18 && (hasDismissedCameraRecordingOnboarding & 1) == 0)
   {
     [(HUCameraRecordingOnboardingFlow *)self _setThisUserDismissedCameraOnboardingAndReminder];
     v20 = [HUCameraRecordingIntroViewController alloc];
-    v21 = [(HUCameraRecordingOnboardingFlow *)self home];
+    home7 = [(HUCameraRecordingOnboardingFlow *)self home];
     if (v11)
     {
-      v22 = v15;
+      v22 = hf_hasSecureRecordingCameras;
     }
 
     else
@@ -133,14 +133,14 @@ void __61__HUCameraRecordingOnboardingFlow_initWithUsageOptions_home___block_inv
       v22 = 0;
     }
 
-    v23 = v22 & v13;
+    v23 = v22 & hf_hasCameraRecordingResident;
     v24 = 3;
     if (v11)
     {
       v24 = 4;
     }
 
-    if (v15)
+    if (hf_hasSecureRecordingCameras)
     {
       v25 = v24;
     }
@@ -152,9 +152,9 @@ void __61__HUCameraRecordingOnboardingFlow_initWithUsageOptions_home___block_inv
 
     if (v23 == 1)
     {
-      if (v4)
+      if (hf_cameraRecordingHasBeenOnboarded)
       {
-        if (v8)
+        if (hf_currentUserIsOwner)
         {
           v25 = 5;
         }
@@ -165,7 +165,7 @@ void __61__HUCameraRecordingOnboardingFlow_initWithUsageOptions_home___block_inv
         }
       }
 
-      else if (v8)
+      else if (hf_currentUserIsOwner)
       {
         v25 = 2;
       }
@@ -176,92 +176,92 @@ void __61__HUCameraRecordingOnboardingFlow_initWithUsageOptions_home___block_inv
       }
     }
 
-    v19 = [(HUCameraRecordingIntroViewController *)v20 initWithIntroVariant:v25 home:v21];
+    v19 = [(HUCameraRecordingIntroViewController *)v20 initWithIntroVariant:v25 home:home7];
   }
 
   return v19;
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"HUCameraRecordingOnboardingKey_UserInput"];
+  inputCopy = input;
+  v6 = [inputCopy objectForKeyedSubscript:@"HUCameraRecordingOnboardingKey_UserInput"];
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v34 = self;
+    selfCopy = self;
     v35 = 2112;
     v36 = v8;
     v37 = 2112;
-    v38 = v5;
+    v38 = inputCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ with input results: %@", buf, 0x20u);
   }
 
   if ([v6 integerValue] == 1)
   {
-    v9 = [(HUCameraRecordingOnboardingFlow *)self onboardingFuture];
-    [(HUSimpleItemModuleTableViewController *)v9 finishWithNoResult];
+    onboardingFuture = [(HUCameraRecordingOnboardingFlow *)self onboardingFuture];
+    [(HUSimpleItemModuleTableViewController *)onboardingFuture finishWithNoResult];
   }
 
   else
   {
     if (![v6 integerValue])
     {
-      v15 = [(HUCameraRecordingOnboardingFlow *)self home];
-      v16 = [v15 hf_allCameraProfilesSupportingRecording];
+      home = [(HUCameraRecordingOnboardingFlow *)self home];
+      hf_allCameraProfilesSupportingRecording = [home hf_allCameraProfilesSupportingRecording];
 
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __52__HUCameraRecordingOnboardingFlow_processUserInput___block_invoke;
       aBlock[3] = &unk_277DB9F78;
-      v32 = v16;
-      v9 = v16;
+      v32 = hf_allCameraProfilesSupportingRecording;
+      onboardingFuture = hf_allCameraProfilesSupportingRecording;
       v17 = _Block_copy(aBlock);
       v18 = [[HUSimpleItemModuleTableViewController alloc] initWithTableViewStyle:2 moduleCreator:v17 moduleControllerBuilder:&__block_literal_global_48];
       v19 = [HUCameraRecordingSetupViewController alloc];
       v20 = _HULocalizedStringWithDefaultValue(@"HUCameraRecordingSetup_Title", @"HUCameraRecordingSetup_Title", 1);
       v21 = _HULocalizedStringWithDefaultValue(@"HUCameraRecordingSetup_Detail", @"HUCameraRecordingSetup_Detail", 1);
-      v22 = [(HUCameraRecordingOnboardingFlow *)self home];
-      v14 = [(HUCameraRecordingSetupViewController *)v19 initWithTitle:v20 detailText:v21 icon:0 itemTableViewController:v18 home:v22];
+      home2 = [(HUCameraRecordingOnboardingFlow *)self home];
+      v14 = [(HUCameraRecordingSetupViewController *)v19 initWithTitle:v20 detailText:v21 icon:0 itemTableViewController:v18 home:home2];
 
       goto LABEL_14;
     }
 
     if ([v6 integerValue] == 2)
     {
-      v9 = [[HUSimpleItemModuleTableViewController alloc] initWithTableViewStyle:2 moduleCreator:&__block_literal_global_25_0 moduleControllerBuilder:&__block_literal_global_28_0];
+      onboardingFuture = [[HUSimpleItemModuleTableViewController alloc] initWithTableViewStyle:2 moduleCreator:&__block_literal_global_25_0 moduleControllerBuilder:&__block_literal_global_28_0];
       v10 = [HUCameraRecordingPermissionsViewController alloc];
       v11 = _HULocalizedStringWithDefaultValue(@"HUCameraPermissionsSettingsHeader_Title", @"HUCameraPermissionsSettingsHeader_Title", 1);
       v12 = _HULocalizedStringWithDefaultValue(@"HUCameraPermissionsSettingsHeader_Body", @"HUCameraPermissionsSettingsHeader_Body", 1);
-      v13 = [(HUCameraRecordingOnboardingFlow *)self home];
-      v14 = [(HUCameraRecordingPermissionsViewController *)v10 initWithTitle:v11 detailText:v12 icon:0 itemTableViewController:v9 home:v13];
+      home3 = [(HUCameraRecordingOnboardingFlow *)self home];
+      v14 = [(HUCameraRecordingPermissionsViewController *)v10 initWithTitle:v11 detailText:v12 icon:0 itemTableViewController:onboardingFuture home:home3];
 
       goto LABEL_14;
     }
 
     v23 = objc_alloc(MEMORY[0x277D14C98]);
-    v24 = [(HUCameraRecordingOnboardingFlow *)self home];
-    v25 = [(HUCameraRecordingOnboardingFlow *)self home];
-    v26 = [v25 currentUser];
-    v9 = [v23 initWithHome:v24 user:v26 nameStyle:0];
+    home4 = [(HUCameraRecordingOnboardingFlow *)self home];
+    home5 = [(HUCameraRecordingOnboardingFlow *)self home];
+    currentUser = [home5 currentUser];
+    onboardingFuture = [v23 initWithHome:home4 user:currentUser nameStyle:0];
 
-    if (([(HUSimpleItemModuleTableViewController *)v9 hasDismissedCameraRecordingOnboarding]& 1) != 0)
+    if (([(HUSimpleItemModuleTableViewController *)onboardingFuture hasDismissedCameraRecordingOnboarding]& 1) != 0)
     {
       v27 = [MEMORY[0x277CCABB0] numberWithBool:1];
-      [v5 setObject:v27 forKeyedSubscript:@"HUHomeFeatureOnboardingKey_CameraRecording_DismissReminderBanner"];
+      [inputCopy setObject:v27 forKeyedSubscript:@"HUHomeFeatureOnboardingKey_CameraRecording_DismissReminderBanner"];
     }
 
     else
     {
-      [v5 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_CameraRecording_DismissReminderBanner"];
+      [inputCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_CameraRecording_DismissReminderBanner"];
     }
 
-    v28 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[HUCameraRecordingOnboardingFlow processUserInput:]"];
-    [v28 handleFailureInFunction:v29 file:@"HUCameraRecordingOnboardingFlow.m" lineNumber:190 description:{@"We should have handled all cases! results: %@", v5}];
+    [currentHandler handleFailureInFunction:v29 file:@"HUCameraRecordingOnboardingFlow.m" lineNumber:190 description:{@"We should have handled all cases! results: %@", inputCopy}];
   }
 
   v14 = 0;
@@ -313,19 +313,19 @@ HUCameraSettingsModuleController *__52__HUCameraRecordingOnboardingFlow_processU
   return v3;
 }
 
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4
++ (id)needsOnboardingForHome:(id)home options:(id)options
 {
-  v6 = a3;
-  v7 = [v6 hf_hasSecureRecordingCameras];
+  homeCopy = home;
+  hf_hasSecureRecordingCameras = [homeCopy hf_hasSecureRecordingCameras];
   v8 = MEMORY[0x277D2C900];
-  if (v7)
+  if (hf_hasSecureRecordingCameras)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __66__HUCameraRecordingOnboardingFlow_needsOnboardingForHome_options___block_invoke;
     v11[3] = &unk_277DB9FE0;
-    v12 = v6;
-    v13 = a1;
+    v12 = homeCopy;
+    selfCopy = self;
     v14 = a2;
     v15 = 1;
     v9 = [v8 futureWithBlock:v11];

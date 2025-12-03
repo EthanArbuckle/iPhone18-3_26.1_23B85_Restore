@@ -1,6 +1,6 @@
 @interface ExecuteSuggestionIntent
 - (ExecuteSuggestionIntent)init;
-- (ExecuteSuggestionIntent)initWithCoder:(id)a3;
+- (ExecuteSuggestionIntent)initWithCoder:(id)coder;
 @end
 
 @implementation ExecuteSuggestionIntent
@@ -12,12 +12,12 @@
   return [(ExecuteSuggestionIntent *)&v3 init];
 }
 
-- (ExecuteSuggestionIntent)initWithCoder:(id)a3
+- (ExecuteSuggestionIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ExecuteSuggestionIntent();
-  v4 = a3;
-  v5 = [(ExecuteSuggestionIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ExecuteSuggestionIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

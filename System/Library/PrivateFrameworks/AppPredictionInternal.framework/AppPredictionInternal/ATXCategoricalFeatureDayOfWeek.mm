@@ -1,15 +1,15 @@
 @interface ATXCategoricalFeatureDayOfWeek
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
-- (id)featureNameForDayOfWeek:(int)a3;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
+- (id)featureNameForDayOfWeek:(int)week;
 @end
 
 @implementation ATXCategoricalFeatureDayOfWeek
 
-- (id)featureNameForDayOfWeek:(int)a3
+- (id)featureNameForDayOfWeek:(int)week
 {
-  if (a3 < 7)
+  if (week < 7)
   {
-    return off_2785A2038[a3];
+    return off_2785A2038[week];
   }
 
   v4 = __atxlog_handle_relevance_model();
@@ -21,15 +21,15 @@
   return @"<Unexpected Category Value>";
 }
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v5 = a3;
-  v6 = [v5 timeContext];
+  contextCopy = context;
+  timeContext = [contextCopy timeContext];
 
-  if (v6)
+  if (timeContext)
   {
-    v7 = [v5 timeContext];
-    v8 = -[ATXCategoricalFeatureDayOfWeek featureNameForDayOfWeek:](self, "featureNameForDayOfWeek:", [v7 dayOfWeek]);
+    timeContext2 = [contextCopy timeContext];
+    v8 = -[ATXCategoricalFeatureDayOfWeek featureNameForDayOfWeek:](self, "featureNameForDayOfWeek:", [timeContext2 dayOfWeek]);
   }
 
   else

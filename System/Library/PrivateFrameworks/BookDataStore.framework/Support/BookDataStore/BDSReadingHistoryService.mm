@@ -1,107 +1,107 @@
 @interface BDSReadingHistoryService
 - (BDSReadingHistoryService)init;
-- (BDSReadingHistoryService)initWithReadingGoalsService:(id)a3 transactionProvider:(id)a4 viewStateChangeHandler:(id)a5;
+- (BDSReadingHistoryService)initWithReadingGoalsService:(id)service transactionProvider:(id)provider viewStateChangeHandler:(id)handler;
 - (id)serviceStatusInfo;
-- (void)backupWithName:(NSString *)a3 completionHandler:(id)a4;
-- (void)bookWidgetReadingHistoryStateInfoWithCompletionHandler:(id)a3;
-- (void)clearDate:(id)a3 completionHandler:(id)a4;
-- (void)handlePlaceholderStreakDayGoalNeedsUpdate:(id)a3;
-- (void)handleSignificantDateChange:(id)a3;
-- (void)handleSyncFileChangeWithSyncVersionInfo:(id)a3 updateInfo:(id)a4 completionHandler:(id)a5;
-- (void)incrementWithDate:(id)a3 by:(int64_t)a4 completionHandler:(id)a5;
-- (void)listBackupWithCompletionHandler:(id)a3;
-- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)a3;
-- (void)readingHistoryStateInfoWithRangeStart:(id)a3 rangeEnd:(id)a4 currentTime:(id)a5 completionHandler:(id)a6;
-- (void)restoreWithName:(NSString *)a3 completionHandler:(id)a4;
-- (void)setEnableCloudSync:(BOOL)a3;
+- (void)backupWithName:(NSString *)name completionHandler:(id)handler;
+- (void)bookWidgetReadingHistoryStateInfoWithCompletionHandler:(id)handler;
+- (void)clearDate:(id)date completionHandler:(id)handler;
+- (void)handlePlaceholderStreakDayGoalNeedsUpdate:(id)update;
+- (void)handleSignificantDateChange:(id)change;
+- (void)handleSyncFileChangeWithSyncVersionInfo:(id)info updateInfo:(id)updateInfo completionHandler:(id)handler;
+- (void)incrementWithDate:(id)date by:(int64_t)by completionHandler:(id)handler;
+- (void)listBackupWithCompletionHandler:(id)handler;
+- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)handler;
+- (void)readingHistoryStateInfoWithRangeStart:(id)start rangeEnd:(id)end currentTime:(id)time completionHandler:(id)handler;
+- (void)restoreWithName:(NSString *)name completionHandler:(id)handler;
+- (void)setEnableCloudSync:(BOOL)sync;
 @end
 
 @implementation BDSReadingHistoryService
 
-- (BDSReadingHistoryService)initWithReadingGoalsService:(id)a3 transactionProvider:(id)a4 viewStateChangeHandler:(id)a5
+- (BDSReadingHistoryService)initWithReadingGoalsService:(id)service transactionProvider:(id)provider viewStateChangeHandler:(id)handler
 {
-  v7 = a3;
+  serviceCopy = service;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return ReadingHistoryService.init(readingGoalsService:transactionProvider:viewStateChangeHandler:)(v7, a4, a5);
+  return ReadingHistoryService.init(readingGoalsService:transactionProvider:viewStateChangeHandler:)(serviceCopy, provider, handler);
 }
 
-- (void)clearDate:(id)a3 completionHandler:(id)a4
+- (void)clearDate:(id)date completionHandler:(id)handler
 {
   v6 = sub_1001C4CA8();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   __chkstk_darwin(v6);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   sub_1001C4C78();
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
-  v13 = self;
+  selfCopy = self;
   ReadingHistoryService.clearDate(_:completionHandler:)(v10, sub_1000F51A4, v12);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)handleSyncFileChangeWithSyncVersionInfo:(id)a3 updateInfo:(id)a4 completionHandler:(id)a5
+- (void)handleSyncFileChangeWithSyncVersionInfo:(id)info updateInfo:(id)updateInfo completionHandler:(id)handler
 {
   v9 = sub_100084528(&unk_10026F350, &qword_1001F31E0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = (&v21 - v11);
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
-  if (!a3)
+  if (!info)
   {
     v18 = type metadata accessor for CRDTModelSyncVersion();
     (*(*(v18 - 8) + 56))(v12, 1, 1, v18);
-    v19 = a4;
-    v20 = self;
-    if (a4)
+    updateInfoCopy = updateInfo;
+    selfCopy = self;
+    if (updateInfo)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v17 = 0;
+    update = 0;
     goto LABEL_6;
   }
 
-  v15 = a4;
-  v16 = self;
-  static CRDTModelSyncVersion.fromInfo(_:)(a3, v12);
-  if (!a4)
+  updateInfoCopy2 = updateInfo;
+  selfCopy2 = self;
+  static CRDTModelSyncVersion.fromInfo(_:)(info, v12);
+  if (!updateInfo)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v17 = [a4 update];
+  update = [updateInfo update];
 LABEL_6:
-  ReadingHistoryService.handleSyncFileChange(syncVersion:update:completionHandler:)(v12, v17, sub_1000F51A4, v14);
+  ReadingHistoryService.handleSyncFileChange(syncVersion:update:completionHandler:)(v12, update, sub_1000F51A4, v14);
 
   sub_10008875C(v12, &unk_10026F350, &qword_1001F31E0);
 }
 
-- (void)incrementWithDate:(id)a3 by:(int64_t)a4 completionHandler:(id)a5
+- (void)incrementWithDate:(id)date by:(int64_t)by completionHandler:(id)handler
 {
   v8 = sub_1001C4CA8();
   v9 = *(v8 - 8);
   v10 = *(v9 + 64);
   __chkstk_darwin(v8);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   sub_1001C4C78();
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
-  v15 = self;
-  ReadingHistoryService.increment(date:by:completionHandler:)(v12, a4, sub_1000F324C, v14);
+  selfCopy = self;
+  ReadingHistoryService.increment(date:by:completionHandler:)(v12, by, sub_1000F324C, v14);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)readingHistoryStateInfoWithRangeStart:(id)a3 rangeEnd:(id)a4 currentTime:(id)a5 completionHandler:(id)a6
+- (void)readingHistoryStateInfoWithRangeStart:(id)start rangeEnd:(id)end currentTime:(id)time completionHandler:(id)handler
 {
   v8 = sub_1001C4CA8();
   v9 = *(v8 - 8);
@@ -112,13 +112,13 @@ LABEL_6:
   v16 = &v23 - v15;
   __chkstk_darwin(v14);
   v18 = &v23 - v17;
-  v19 = _Block_copy(a6);
+  v19 = _Block_copy(handler);
   sub_1001C4C78();
   sub_1001C4C78();
   sub_1001C4C78();
   v20 = swift_allocObject();
   *(v20 + 16) = v19;
-  v21 = self;
+  selfCopy = self;
   ReadingHistoryService.readingHistoryStateInfo(rangeStart:rangeEnd:currentTime:completionHandler:)(v18, v16, v13, sub_1000F3230, v20);
 
   v22 = *(v9 + 8);
@@ -127,10 +127,10 @@ LABEL_6:
   v22(v18, v8);
 }
 
-- (void)setEnableCloudSync:(BOOL)a3
+- (void)setEnableCloudSync:(BOOL)sync
 {
-  v4 = self;
-  ReadingHistoryService.setEnableCloudSync(_:)(a3);
+  selfCopy = self;
+  ReadingHistoryService.setEnableCloudSync(_:)(sync);
 }
 
 - (id)serviceStatusInfo
@@ -154,7 +154,7 @@ LABEL_6:
   return v4;
 }
 
-- (void)handlePlaceholderStreakDayGoalNeedsUpdate:(id)a3
+- (void)handlePlaceholderStreakDayGoalNeedsUpdate:(id)update
 {
   v4 = sub_1001C4868();
   v5 = *(v4 - 8);
@@ -162,13 +162,13 @@ LABEL_6:
   __chkstk_darwin(v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1001C4848();
-  v9 = self;
+  selfCopy = self;
   sub_1000E5244();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)handleSignificantDateChange:(id)a3
+- (void)handleSignificantDateChange:(id)change
 {
   v4 = sub_1001C4868();
   v5 = *(v4 - 8);
@@ -176,19 +176,19 @@ LABEL_6:
   __chkstk_darwin(v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1001C4848();
-  v9 = self;
+  selfCopy = self;
   sub_1000E56A4();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)bookWidgetReadingHistoryStateInfoWithCompletionHandler:(id)a3
+- (void)bookWidgetReadingHistoryStateInfoWithCompletionHandler:(id)handler
 {
   v5 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -204,7 +204,7 @@ LABEL_6:
   v13[3] = 0;
   v13[4] = &unk_1001F0E30;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100118770(0, 0, v8, &unk_1001F3460, v13);
 }
 
@@ -215,13 +215,13 @@ LABEL_6:
   return result;
 }
 
-- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)a3
+- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)handler
 {
   v5 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -237,19 +237,19 @@ LABEL_6:
   v13[3] = 0;
   v13[4] = &unk_1001F0E10;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100118770(0, 0, v8, &unk_1001F3440, v13);
 }
 
-- (void)backupWithName:(NSString *)a3 completionHandler:(id)a4
+- (void)backupWithName:(NSString *)name completionHandler:(id)handler
 {
   v7 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = name;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1001C6348();
@@ -264,18 +264,18 @@ LABEL_6:
   v15[3] = 0;
   v15[4] = &unk_1001F0DF0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  nameCopy = name;
+  selfCopy = self;
   sub_100118770(0, 0, v10, &unk_1001F3420, v15);
 }
 
-- (void)listBackupWithCompletionHandler:(id)a3
+- (void)listBackupWithCompletionHandler:(id)handler
 {
   v5 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -291,19 +291,19 @@ LABEL_6:
   v13[3] = 0;
   v13[4] = &unk_1001F0DD0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100118770(0, 0, v8, &unk_1001F3400, v13);
 }
 
-- (void)restoreWithName:(NSString *)a3 completionHandler:(id)a4
+- (void)restoreWithName:(NSString *)name completionHandler:(id)handler
 {
   v7 = sub_100084528(&unk_100270A00, &qword_1001F3120);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = name;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1001C6348();
@@ -318,8 +318,8 @@ LABEL_6:
   v15[3] = 0;
   v15[4] = &unk_1001F0DB0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  nameCopy = name;
+  selfCopy = self;
   sub_100118770(0, 0, v10, &unk_1001F33E0, v15);
 }
 

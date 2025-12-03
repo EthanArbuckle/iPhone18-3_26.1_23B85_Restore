@@ -1,49 +1,49 @@
 @interface LNISIconImage
-- (LNISIconImage)initWithCoder:(id)a3;
-- (LNISIconImage)initWithIconType:(int64_t)a3 identifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (LNISIconImage)initWithCoder:(id)coder;
+- (LNISIconImage)initWithIconType:(int64_t)type identifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNISIconImage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = LNISIconImage;
-  v4 = a3;
-  [(LNImage *)&v6 encodeWithCoder:v4];
-  [v4 encodeInteger:-[LNISIconImage iconType](self forKey:{"iconType", v6.receiver, v6.super_class), @"iconType"}];
-  v5 = [(LNISIconImage *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  [(LNImage *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[LNISIconImage iconType](self forKey:{"iconType", v6.receiver, v6.super_class), @"iconType"}];
+  identifier = [(LNISIconImage *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
-- (LNISIconImage)initWithCoder:(id)a3
+- (LNISIconImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"iconType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"iconType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   if (v6)
   {
     self = [(LNISIconImage *)self initWithIconType:v5 identifier:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (LNISIconImage)initWithIconType:(int64_t)a3 identifier:(id)a4
+- (LNISIconImage)initWithIconType:(int64_t)type identifier:(id)identifier
 {
-  v8 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"LNISIconImage.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNISIconImage.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v13.receiver = self;
@@ -52,8 +52,8 @@
   v10 = v9;
   if (v9)
   {
-    v9->_iconType = a3;
-    objc_storeStrong(&v9->_identifier, a4);
+    v9->_iconType = type;
+    objc_storeStrong(&v9->_identifier, identifier);
   }
 
   return v10;

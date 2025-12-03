@@ -1,16 +1,16 @@
 @interface WDList
 - (BOOL)isAnyListLevelOverridden;
-- (WDList)initWithDocument:(id)a3 listId:(int)a4 listDefinitionId:(int)a5;
-- (id)addLevelOverrideWithLevel:(unsigned __int8)a3;
+- (WDList)initWithDocument:(id)document listId:(int)id listDefinitionId:(int)definitionId;
+- (id)addLevelOverrideWithLevel:(unsigned __int8)level;
 - (id)description;
-- (id)levelOverrideForLevel:(unsigned __int8)a3;
+- (id)levelOverrideForLevel:(unsigned __int8)level;
 @end
 
 @implementation WDList
 
-- (id)levelOverrideForLevel:(unsigned __int8)a3
+- (id)levelOverrideForLevel:(unsigned __int8)level
 {
-  v3 = a3;
+  levelCopy = level;
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
@@ -31,7 +31,7 @@
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        if ([v8 level] == v3)
+        if ([v8 level] == levelCopy)
         {
           v9 = v8;
           goto LABEL_11;
@@ -54,12 +54,12 @@ LABEL_11:
   return v9;
 }
 
-- (id)addLevelOverrideWithLevel:(unsigned __int8)a3
+- (id)addLevelOverrideWithLevel:(unsigned __int8)level
 {
-  v3 = a3;
+  levelCopy = level;
   v5 = [WDListLevelOverride alloc];
   WeakRetained = objc_loadWeakRetained(&self->mDocument);
-  v7 = [(WDListLevelOverride *)v5 initWithDocument:WeakRetained level:v3];
+  v7 = [(WDListLevelOverride *)v5 initWithDocument:WeakRetained level:levelCopy];
 
   [(NSMutableArray *)self->mLevelOverrides addObject:v7];
 
@@ -109,18 +109,18 @@ LABEL_11:
   return v3;
 }
 
-- (WDList)initWithDocument:(id)a3 listId:(int)a4 listDefinitionId:(int)a5
+- (WDList)initWithDocument:(id)document listId:(int)id listDefinitionId:(int)definitionId
 {
-  v8 = a3;
+  documentCopy = document;
   v14.receiver = self;
   v14.super_class = WDList;
   v9 = [(WDList *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->mDocument, v8);
-    v10->mListId = a4;
-    v10->mListDefinitionId = a5;
+    objc_storeWeak(&v9->mDocument, documentCopy);
+    v10->mListId = id;
+    v10->mListDefinitionId = definitionId;
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mLevelOverrides = v10->mLevelOverrides;
     v10->mLevelOverrides = v11;

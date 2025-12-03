@@ -1,22 +1,22 @@
 @interface TabDocumentActivityItemProvider
-- (TabDocumentActivityItemProvider)initWithTabDocument:(id)a3;
+- (TabDocumentActivityItemProvider)initWithTabDocument:(id)document;
 @end
 
 @implementation TabDocumentActivityItemProvider
 
-- (TabDocumentActivityItemProvider)initWithTabDocument:(id)a3
+- (TabDocumentActivityItemProvider)initWithTabDocument:(id)document
 {
-  v5 = a3;
-  v6 = [v5 URL];
-  v7 = [v5 title];
-  v8 = [v5 webView];
+  documentCopy = document;
+  v6 = [documentCopy URL];
+  title = [documentCopy title];
+  webView = [documentCopy webView];
   v12.receiver = self;
   v12.super_class = TabDocumentActivityItemProvider;
-  v9 = [(_SFActivityItemProvider *)&v12 initWithPlaceholderItem:v5 URL:v6 pageTitle:v7 webView:v8];
+  v9 = [(_SFActivityItemProvider *)&v12 initWithPlaceholderItem:documentCopy URL:v6 pageTitle:title webView:webView];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_tabDocument, a3);
+    objc_storeStrong(&v9->_tabDocument, document);
     v10 = v9;
   }
 

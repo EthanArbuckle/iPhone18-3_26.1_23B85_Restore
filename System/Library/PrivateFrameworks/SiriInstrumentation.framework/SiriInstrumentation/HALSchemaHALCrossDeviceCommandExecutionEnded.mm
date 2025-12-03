@@ -1,30 +1,30 @@
 @interface HALSchemaHALCrossDeviceCommandExecutionEnded
-- (BOOL)isEqual:(id)a3;
-- (HALSchemaHALCrossDeviceCommandExecutionEnded)initWithDictionary:(id)a3;
-- (HALSchemaHALCrossDeviceCommandExecutionEnded)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HALSchemaHALCrossDeviceCommandExecutionEnded)initWithDictionary:(id)dictionary;
+- (HALSchemaHALCrossDeviceCommandExecutionEnded)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addSelected:(id)a3;
-- (void)setHasActionResult:(BOOL)a3;
-- (void)setHasHomeKitTarget:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSelected:(id)selected;
+- (void)setHasActionResult:(BOOL)result;
+- (void)setHasHomeKitTarget:(BOOL)target;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HALSchemaHALCrossDeviceCommandExecutionEnded
 
-- (HALSchemaHALCrossDeviceCommandExecutionEnded)initWithDictionary:(id)a3
+- (HALSchemaHALCrossDeviceCommandExecutionEnded)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = HALSchemaHALCrossDeviceCommandExecutionEnded;
   v5 = [(HALSchemaHALCrossDeviceCommandExecutionEnded *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"selected"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"selected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,21 +68,21 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"action", v20}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"action", v20}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HALSchemaHALCrossDeviceCommandExecutionEnded setAction:](v5, "setAction:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"actionResult"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"actionResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HALSchemaHALCrossDeviceCommandExecutionEnded setActionResult:](v5, "setActionResult:", [v16 intValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"homeKitTarget"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"homeKitTarget"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,30 +95,30 @@
   return v5;
 }
 
-- (HALSchemaHALCrossDeviceCommandExecutionEnded)initWithJSON:(id)a3
+- (HALSchemaHALCrossDeviceCommandExecutionEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HALSchemaHALCrossDeviceCommandExecutionEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(HALSchemaHALCrossDeviceCommandExecutionEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(HALSchemaHALCrossDeviceCommandExecutionEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -132,7 +132,7 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -147,7 +147,7 @@
       v6 = off_1E78D7AB0[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"action"];
+    [dictionary setObject:v6 forKeyedSubscript:@"action"];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -177,7 +177,7 @@ LABEL_3:
     v8 = off_1E78D7B58[v7];
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"actionResult"];
+  [dictionary setObject:v8 forKeyedSubscript:@"actionResult"];
   if ((*&self->_has & 4) != 0)
   {
 LABEL_13:
@@ -192,13 +192,13 @@ LABEL_13:
       v10 = off_1E78D7B70[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"homeKitTarget"];
+    [dictionary setObject:v10 forKeyedSubscript:@"homeKitTarget"];
   }
 
 LABEL_17:
   if ([(NSArray *)self->_selecteds count])
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -218,16 +218,16 @@ LABEL_17:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          if (v17)
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v11 addObject:v17];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v18 = [MEMORY[0x1E695DFB0] null];
-            [v11 addObject:v18];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -237,12 +237,12 @@ LABEL_17:
       while (v14);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"selected"];
+    [dictionary setObject:array forKeyedSubscript:@"selected"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v20];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v20];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -286,30 +286,30 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(HALSchemaHALCrossDeviceCommandExecutionEnded *)self selecteds];
-  v6 = [v4 selecteds];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  selecteds = [(HALSchemaHALCrossDeviceCommandExecutionEnded *)self selecteds];
+  selecteds2 = [equalCopy selecteds];
+  v7 = selecteds2;
+  if ((selecteds != 0) == (selecteds2 == 0))
   {
 
     goto LABEL_20;
   }
 
-  v8 = [(HALSchemaHALCrossDeviceCommandExecutionEnded *)self selecteds];
-  if (v8)
+  selecteds3 = [(HALSchemaHALCrossDeviceCommandExecutionEnded *)self selecteds];
+  if (selecteds3)
   {
-    v9 = v8;
-    v10 = [(HALSchemaHALCrossDeviceCommandExecutionEnded *)self selecteds];
-    v11 = [v4 selecteds];
-    v12 = [v10 isEqual:v11];
+    v9 = selecteds3;
+    selecteds4 = [(HALSchemaHALCrossDeviceCommandExecutionEnded *)self selecteds];
+    selecteds5 = [equalCopy selecteds];
+    v12 = [selecteds4 isEqual:selecteds5];
 
     if (!v12)
     {
@@ -322,7 +322,7 @@ LABEL_4:
   }
 
   has = self->_has;
-  v14 = v4[28];
+  v14 = equalCopy[28];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_20:
@@ -333,13 +333,13 @@ LABEL_20:
   if (*&has)
   {
     action = self->_action;
-    if (action != [v4 action])
+    if (action != [equalCopy action])
     {
       goto LABEL_20;
     }
 
     has = self->_has;
-    v14 = v4[28];
+    v14 = equalCopy[28];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -351,10 +351,10 @@ LABEL_20:
   if (v16)
   {
     actionResult = self->_actionResult;
-    if (actionResult == [v4 actionResult])
+    if (actionResult == [equalCopy actionResult])
     {
       has = self->_has;
-      v14 = v4[28];
+      v14 = equalCopy[28];
       goto LABEL_16;
     }
 
@@ -371,7 +371,7 @@ LABEL_16:
   if (v18)
   {
     homeKitTarget = self->_homeKitTarget;
-    if (homeKitTarget != [v4 homeKitTarget])
+    if (homeKitTarget != [equalCopy homeKitTarget])
     {
       goto LABEL_20;
     }
@@ -383,10 +383,10 @@ LABEL_21:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -450,9 +450,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)setHasHomeKitTarget:(BOOL)a3
+- (void)setHasHomeKitTarget:(BOOL)target
 {
-  if (a3)
+  if (target)
   {
     v3 = 4;
   }
@@ -465,9 +465,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasActionResult:(BOOL)a3
+- (void)setHasActionResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 2;
   }
@@ -480,32 +480,32 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSelected:(id)a3
+- (void)addSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   selecteds = self->_selecteds;
-  v8 = v4;
+  v8 = selectedCopy;
   if (!selecteds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_selecteds;
-    self->_selecteds = v6;
+    self->_selecteds = array;
 
-    v4 = v8;
+    selectedCopy = v8;
     selecteds = self->_selecteds;
   }
 
-  [(NSArray *)selecteds addObject:v4];
+  [(NSArray *)selecteds addObject:selectedCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = HALSchemaHALCrossDeviceCommandExecutionEnded;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(HALSchemaHALCrossDeviceCommandExecutionEnded *)self selecteds:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(HALSchemaHALCrossDeviceCommandExecutionEnded *)self setSelecteds:v7];
 

@@ -1,35 +1,35 @@
 @interface PDARRISO18013SignatureProvider
-- (PDARRISO18013SignatureProvider)initWithISO18013Manager:(id)a3;
-- (id)associatedRequirementsForRequirement:(id)a3 context:(id)a4;
-- (void)existingKeyMaterialForRequirement:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)generateKeyMaterialForRequirement:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)isRegisteredForRequirement:(id)a3 context:(id)a4 completion:(id)a5;
+- (PDARRISO18013SignatureProvider)initWithISO18013Manager:(id)manager;
+- (id)associatedRequirementsForRequirement:(id)requirement context:(id)context;
+- (void)existingKeyMaterialForRequirement:(id)requirement context:(id)context completion:(id)completion;
+- (void)generateKeyMaterialForRequirement:(id)requirement context:(id)context completion:(id)completion;
+- (void)isRegisteredForRequirement:(id)requirement context:(id)context completion:(id)completion;
 @end
 
 @implementation PDARRISO18013SignatureProvider
 
-- (PDARRISO18013SignatureProvider)initWithISO18013Manager:(id)a3
+- (PDARRISO18013SignatureProvider)initWithISO18013Manager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = PDARRISO18013SignatureProvider;
   v6 = [(PDARRISO18013SignatureProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_isoManager, a3);
+    objc_storeStrong(&v6->_isoManager, manager);
   }
 
   return v7;
 }
 
-- (void)generateKeyMaterialForRequirement:(id)a3 context:(id)a4 completion:(id)a5
+- (void)generateKeyMaterialForRequirement:(id)requirement context:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 pass];
-  [v11 devicePaymentApplications];
+  requirementCopy = requirement;
+  contextCopy = context;
+  completionCopy = completion;
+  pass = [contextCopy pass];
+  [pass devicePaymentApplications];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -66,11 +66,11 @@ LABEL_3:
       }
     }
 
-    v18 = [v17 subcredentials];
-    v19 = [v18 anyObject];
-    v20 = [v19 identifier];
+    subcredentials = [v17 subcredentials];
+    anyObject = [subcredentials anyObject];
+    identifier = [anyObject identifier];
 
-    if (v20)
+    if (identifier)
     {
       goto LABEL_13;
     }
@@ -81,54 +81,54 @@ LABEL_3:
 LABEL_9:
   }
 
-  v20 = [v9 previouslyGeneratedSignatureKeyOfType:12];
-  v21 = [v20 contents];
-  v22 = [v21 firstObject];
-  v23 = [v22 keyReferenceIdentifier];
+  identifier = [contextCopy previouslyGeneratedSignatureKeyOfType:12];
+  contents = [identifier contents];
+  firstObject = [contents firstObject];
+  keyReferenceIdentifier = [firstObject keyReferenceIdentifier];
 
-  if (v23)
+  if (keyReferenceIdentifier)
   {
 
-    v20 = v23;
+    identifier = keyReferenceIdentifier;
 LABEL_13:
-    v24 = [v11 cardType];
-    if (!v24)
+    cardType = [pass cardType];
+    if (!cardType)
     {
-      if ([v9 isPerformingInitialRegistration])
+      if ([contextCopy isPerformingInitialRegistration])
       {
-        v24 = 4;
+        cardType = 4;
       }
 
       else
       {
-        v24 = 0;
+        cardType = 0;
       }
     }
 
     isoManager = self->_isoManager;
-    v26 = [v8 numberOfKeys];
+    numberOfKeys = [requirementCopy numberOfKeys];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_1001383AC;
     v28[3] = &unk_100848270;
-    v29 = v10;
-    [(PDISO18013Manager *)isoManager generatePresentmentKeyForCardType:v24 numberOfKeys:v26 subCredentialId:v20 completion:v28];
+    v29 = completionCopy;
+    [(PDISO18013Manager *)isoManager generatePresentmentKeyForCardType:cardType numberOfKeys:numberOfKeys subCredentialId:identifier completion:v28];
     v27 = v29;
   }
 
   else
   {
     v27 = PDBasicError();
-    (*(v10 + 2))(v10, 0, 0, v27);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v27);
   }
 }
 
-- (void)isRegisteredForRequirement:(id)a3 context:(id)a4 completion:(id)a5
+- (void)isRegisteredForRequirement:(id)requirement context:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 pass];
-  [v10 devicePaymentApplications];
+  requirementCopy = requirement;
+  completionCopy = completion;
+  pass = [context pass];
+  [pass devicePaymentApplications];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -165,16 +165,16 @@ LABEL_3:
       }
     }
 
-    v17 = [v16 subcredentials];
-    v18 = [v17 anyObject];
-    v19 = [v18 identifier];
+    subcredentials = [v16 subcredentials];
+    anyObject = [subcredentials anyObject];
+    identifier = [anyObject identifier];
 
-    if (!v19)
+    if (!identifier)
     {
       goto LABEL_15;
     }
 
-    if ([v10 passActivationState])
+    if ([pass passActivationState])
     {
       v20 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -183,19 +183,19 @@ LABEL_3:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Pass is not in active state, skipping key refresh", buf, 2u);
       }
 
-      v9[2](v9, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     else
     {
       isoManager = self->_isoManager;
-      v23 = [v8 numberOfKeys];
+      numberOfKeys = [requirementCopy numberOfKeys];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_100138920;
       v24[3] = &unk_10083C7F8;
-      v25 = v9;
-      [(PDISO18013Manager *)isoManager needsPresentmentKeyRefreshForPass:v10 numberOfKeys:v23 subCredentialId:v19 completion:v24];
+      v25 = completionCopy;
+      [(PDISO18013Manager *)isoManager needsPresentmentKeyRefreshForPass:pass numberOfKeys:numberOfKeys subCredentialId:identifier completion:v24];
     }
   }
 
@@ -211,18 +211,18 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Pass does not have subcredential", buf, 2u);
     }
 
-    v9[2](v9, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (void)existingKeyMaterialForRequirement:(id)a3 context:(id)a4 completion:(id)a5
+- (void)existingKeyMaterialForRequirement:(id)requirement context:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isPerformingInitialRegistration])
+  requirementCopy = requirement;
+  contextCopy = context;
+  completionCopy = completion;
+  if ([contextCopy isPerformingInitialRegistration])
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
@@ -231,16 +231,16 @@ LABEL_15:
     v11[1] = 3221225472;
     v11[2] = sub_100138B00;
     v11[3] = &unk_100848298;
-    v12 = v10;
-    [(PDARRISO18013SignatureProvider *)self isRegisteredForRequirement:v8 context:v9 completion:v11];
+    v12 = completionCopy;
+    [(PDARRISO18013SignatureProvider *)self isRegisteredForRequirement:requirementCopy context:contextCopy completion:v11];
   }
 }
 
-- (id)associatedRequirementsForRequirement:(id)a3 context:(id)a4
+- (id)associatedRequirementsForRequirement:(id)requirement context:(id)context
 {
-  v4 = [a4 isPerformingInitialRegistration];
+  isPerformingInitialRegistration = [context isPerformingInitialRegistration];
   v5 = [PDAuxiliaryRegistrationRequirementReference alloc];
-  if (v4)
+  if (isPerformingInitialRegistration)
   {
     v6 = [(PDAuxiliaryRegistrationRequirementReference *)v5 initWithSignatureType:12];
     v11[0] = v6;

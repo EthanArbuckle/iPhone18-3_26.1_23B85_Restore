@@ -1,24 +1,24 @@
 @interface CWFNetworkDenyListItem
-- (BOOL)containsNetwork:(id)a3;
-- (BOOL)hasDenyListState:(unint64_t)a3;
-- (BOOL)isEqualToDenyListScanResult:(id)a3;
-- (BOOL)updateNetwork:(id)a3;
-- (CWFNetworkDenyListItem)initWithDenyListNetwork:(id)a3;
-- (id)_copyCreateDenyListState:(unint64_t)a3 reason:(unint64_t)a4 reasonData:(int64_t)a5;
-- (void)addDenyListState:(unint64_t)a3 reason:(unint64_t)a4 reasonData:(int64_t)a5;
-- (void)addDenyListStateHistory:(id)a3 state:(unint64_t)a4 reason:(unint64_t)a5 reasonData:(int64_t)a6;
-- (void)addDenyListTrigger:(unint64_t)a3 reasonData:(int64_t)a4 BSSID:(id)a5;
+- (BOOL)containsNetwork:(id)network;
+- (BOOL)hasDenyListState:(unint64_t)state;
+- (BOOL)isEqualToDenyListScanResult:(id)result;
+- (BOOL)updateNetwork:(id)network;
+- (CWFNetworkDenyListItem)initWithDenyListNetwork:(id)network;
+- (id)_copyCreateDenyListState:(unint64_t)state reason:(unint64_t)reason reasonData:(int64_t)data;
+- (void)addDenyListState:(unint64_t)state reason:(unint64_t)reason reasonData:(int64_t)data;
+- (void)addDenyListStateHistory:(id)history state:(unint64_t)state reason:(unint64_t)reason reasonData:(int64_t)data;
+- (void)addDenyListTrigger:(unint64_t)trigger reasonData:(int64_t)data BSSID:(id)d;
 - (void)dealloc;
-- (void)processDenyListStateMetric:(id)a3 denyListRemove:(BOOL)a4 denyListRemoveReason:(unint64_t)a5;
+- (void)processDenyListStateMetric:(id)metric denyListRemove:(BOOL)remove denyListRemoveReason:(unint64_t)reason;
 - (void)processDenyListedBSSForMetrics;
 @end
 
 @implementation CWFNetworkDenyListItem
 
-- (CWFNetworkDenyListItem)initWithDenyListNetwork:(id)a3
+- (CWFNetworkDenyListItem)initWithDenyListNetwork:(id)network
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  networkCopy = network;
   v30.receiver = self;
   v30.super_class = CWFNetworkDenyListItem;
   v5 = [(CWFNetworkDenyListItem *)&v30 init];
@@ -46,7 +46,7 @@
     goto LABEL_33;
   }
 
-  if (!v4)
+  if (!networkCopy)
   {
     v21 = CWFGetOSLog();
     if (v21)
@@ -159,12 +159,12 @@ LABEL_34:
     goto LABEL_7;
   }
 
-  v12 = [v4 isEAP];
-  v13 = [v4 matchingKnownNetworkProfile];
-  v14 = [v13 isProfileBased];
+  isEAP = [networkCopy isEAP];
+  matchingKnownNetworkProfile = [networkCopy matchingKnownNetworkProfile];
+  isProfileBased = [matchingKnownNetworkProfile isProfileBased];
 
-  v5->_enterprisePolicy = v12 & v14;
-  v15 = [v4 copyWithZone:0];
+  v5->_enterprisePolicy = isEAP & isProfileBased;
+  v15 = [networkCopy copyWithZone:0];
   [(CWFNetworkDenyListItem *)v5 setScanResultForNetworkDenyListItem:v15];
 
   v16 = v5;
@@ -184,41 +184,41 @@ LABEL_7:
   [(CWFNetworkDenyListItem *)&v3 dealloc];
 }
 
-- (void)addDenyListTrigger:(unint64_t)a3 reasonData:(int64_t)a4 BSSID:(id)a5
+- (void)addDenyListTrigger:(unint64_t)trigger reasonData:(int64_t)data BSSID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(CWFNetworkDenyListItem *)self denyListTriggers];
-  v10 = [v9 count];
+  dCopy = d;
+  denyListTriggers = [(CWFNetworkDenyListItem *)self denyListTriggers];
+  v10 = [denyListTriggers count];
 
   if (v10 >= 0x10)
   {
-    v11 = [(CWFNetworkDenyListItem *)self denyListTriggers];
-    [v11 removeObjectAtIndex:0];
+    denyListTriggers2 = [(CWFNetworkDenyListItem *)self denyListTriggers];
+    [denyListTriggers2 removeObjectAtIndex:0];
   }
 
   v12 = objc_alloc_init(CWFNetworkDenyListInfo);
   if (v12)
   {
-    v13 = CWFStringFromDenyListAddReason(a3);
-    [(CWFNetworkDenyListInfo *)v12 setReason:a3];
-    [(CWFNetworkDenyListInfo *)v12 setReasonData:a4];
+    v13 = CWFStringFromDenyListAddReason(trigger);
+    [(CWFNetworkDenyListInfo *)v12 setReason:trigger];
+    [(CWFNetworkDenyListInfo *)v12 setReasonData:data];
     if (v13)
     {
       [(CWFNetworkDenyListInfo *)v12 setReasonString:v13];
     }
 
-    v14 = [MEMORY[0x1E695DF00] date];
-    [v14 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     [(CWFNetworkDenyListInfo *)v12 setReasonTimestamp:?];
 
-    if (v8)
+    if (dCopy)
     {
-      [(CWFNetworkDenyListInfo *)v12 setBSSID:v8];
+      [(CWFNetworkDenyListInfo *)v12 setBSSID:dCopy];
     }
 
-    v15 = [(CWFNetworkDenyListItem *)self denyListTriggers];
-    [v15 addObject:v12];
+    denyListTriggers3 = [(CWFNetworkDenyListItem *)self denyListTriggers];
+    [denyListTriggers3 addObject:v12];
   }
 
   else
@@ -244,9 +244,9 @@ LABEL_7:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)containsNetwork:(id)a3
+- (BOOL)containsNetwork:(id)network
 {
-  if (a3)
+  if (network)
   {
     return MEMORY[0x1EEE66B58](self, sel_isEqualToDenyListScanResult_);
   }
@@ -257,15 +257,15 @@ LABEL_7:
   }
 }
 
-- (BOOL)hasDenyListState:(unint64_t)a3
+- (BOOL)hasDenyListState:(unint64_t)state
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CWFNetworkDenyListItem *)self statesCurrent];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  statesCurrent = [(CWFNetworkDenyListItem *)self statesCurrent];
+  v5 = [statesCurrent countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -276,17 +276,17 @@ LABEL_7:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(statesCurrent);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) state] == a3)
+        if ([*(*(&v12 + 1) + 8 * i) state] == state)
         {
           v9 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [statesCurrent countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -303,31 +303,31 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)updateNetwork:(id)a3
+- (BOOL)updateNetwork:(id)network
 {
-  v4 = [a3 copyWithZone:0];
+  v4 = [network copyWithZone:0];
   scanResultForNetworkDenyListItem = self->_scanResultForNetworkDenyListItem;
   self->_scanResultForNetworkDenyListItem = v4;
 
   return 1;
 }
 
-- (id)_copyCreateDenyListState:(unint64_t)a3 reason:(unint64_t)a4 reasonData:(int64_t)a5
+- (id)_copyCreateDenyListState:(unint64_t)state reason:(unint64_t)reason reasonData:(int64_t)data
 {
   v16 = *MEMORY[0x1E69E9840];
   v8 = objc_alloc_init(CWFNetworkDenyListInfo);
   if (v8)
   {
-    v9 = CWFStringFromDenyListState(a3);
-    v10 = CWFStringFromDenyListAddReason(a4);
-    [(CWFNetworkDenyListInfo *)v8 setState:a3];
+    v9 = CWFStringFromDenyListState(state);
+    v10 = CWFStringFromDenyListAddReason(reason);
+    [(CWFNetworkDenyListInfo *)v8 setState:state];
     [(CWFNetworkDenyListInfo *)v8 setStateString:v9];
-    v11 = [MEMORY[0x1E695DF00] date];
-    [v11 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     [(CWFNetworkDenyListInfo *)v8 setStateTimestamp:?];
 
-    [(CWFNetworkDenyListInfo *)v8 setReason:a4];
-    [(CWFNetworkDenyListInfo *)v8 setReasonData:a5];
+    [(CWFNetworkDenyListInfo *)v8 setReason:reason];
+    [(CWFNetworkDenyListInfo *)v8 setReasonData:data];
     [(CWFNetworkDenyListInfo *)v8 setReasonString:v10];
   }
 
@@ -355,10 +355,10 @@ LABEL_11:
   return v8;
 }
 
-- (void)addDenyListState:(unint64_t)a3 reason:(unint64_t)a4 reasonData:(int64_t)a5
+- (void)addDenyListState:(unint64_t)state reason:(unint64_t)reason reasonData:(int64_t)data
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = [(CWFNetworkDenyListItem *)self _copyCreateDenyListState:a3 reason:a4 reasonData:a5];
+  v8 = [(CWFNetworkDenyListItem *)self _copyCreateDenyListState:state reason:reason reasonData:data];
   if (!v8)
   {
     v39 = CWFGetOSLog();
@@ -384,15 +384,15 @@ LABEL_11:
   }
 
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v10 = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
-  v11 = [v10 SSID];
-  v12 = [v9 initWithData:v11 encoding:4];
+  scanResultForNetworkDenyListItem = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
+  sSID = [scanResultForNetworkDenyListItem SSID];
+  v12 = [v9 initWithData:sSID encoding:4];
 
-  v13 = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
-  v14 = [v13 BSSID];
+  scanResultForNetworkDenyListItem2 = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
+  bSSID = [scanResultForNetworkDenyListItem2 BSSID];
 
-  v15 = [(CWFNetworkDenyListItem *)self statesCurrent];
-  v16 = [v15 count];
+  statesCurrent = [(CWFNetworkDenyListItem *)self statesCurrent];
+  v16 = [statesCurrent count];
 
   if (v16)
   {
@@ -400,12 +400,12 @@ LABEL_11:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v17 = [(CWFNetworkDenyListItem *)self statesCurrent];
-    v18 = [v17 countByEnumeratingWithState:&v43 objects:v47 count:16];
+    statesCurrent2 = [(CWFNetworkDenyListItem *)self statesCurrent];
+    v18 = [statesCurrent2 countByEnumeratingWithState:&v43 objects:v47 count:16];
     if (v18)
     {
       v19 = v18;
-      v41 = v14;
+      v41 = bSSID;
       v42 = v12;
       v20 = 0;
       v21 = *v44;
@@ -417,13 +417,13 @@ LABEL_11:
         {
           if (*v44 != v21)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(statesCurrent2);
           }
 
           v20 = *(*(&v43 + 1) + 8 * v22);
 
-          v24 = [v20 state];
-          if (v24 == [v8 state])
+          state = [v20 state];
+          if (state == [v8 state])
           {
 
             v27 = CWFGetOSLog();
@@ -438,13 +438,13 @@ LABEL_11:
               v30 = MEMORY[0x1E69E9C10];
             }
 
-            v14 = v41;
+            bSSID = v41;
             v12 = v42;
 
             if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
             {
-              v31 = CWFStringFromDenyListState(a3);
-              v32 = CWFStringFromDenyListAddReason(a4);
+              v31 = CWFStringFromDenyListState(state);
+              v32 = CWFStringFromDenyListAddReason(reason);
               v48 = 136316418;
               v49 = "[CWFNetworkDenyListItem addDenyListState:reason:reasonData:]";
               v50 = 2114;
@@ -456,7 +456,7 @@ LABEL_11:
               v56 = 2114;
               v57 = v32;
               v58 = 2048;
-              v59 = a4;
+              reasonCopy3 = reason;
               _os_log_send_and_compose_impl();
             }
 
@@ -468,7 +468,7 @@ LABEL_11:
         }
 
         while (v19 != v22);
-        v19 = [v17 countByEnumeratingWithState:&v43 objects:v47 count:16];
+        v19 = [statesCurrent2 countByEnumeratingWithState:&v43 objects:v47 count:16];
         if (v19)
         {
           continue;
@@ -477,7 +477,7 @@ LABEL_11:
         break;
       }
 
-      v14 = v41;
+      bSSID = v41;
       v12 = v42;
     }
 
@@ -498,20 +498,20 @@ LABEL_11:
       goto LABEL_29;
     }
 
-    v34 = CWFStringFromDenyListState(a3);
-    v35 = CWFStringFromDenyListAddReason(a4);
+    v34 = CWFStringFromDenyListState(state);
+    v35 = CWFStringFromDenyListAddReason(reason);
     v48 = 136316418;
     v49 = "[CWFNetworkDenyListItem addDenyListState:reason:reasonData:]";
     v50 = 2114;
     v51 = v12;
     v52 = 2114;
-    v53 = v14;
+    v53 = bSSID;
     v54 = 2114;
     v55 = v34;
     v56 = 2114;
     v57 = v35;
     v58 = 2048;
-    v59 = a4;
+    reasonCopy3 = reason;
     goto LABEL_28;
   }
 
@@ -529,28 +529,28 @@ LABEL_11:
 
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
-    v34 = CWFStringFromDenyListState(a3);
-    v35 = CWFStringFromDenyListAddReason(a4);
+    v34 = CWFStringFromDenyListState(state);
+    v35 = CWFStringFromDenyListAddReason(reason);
     v48 = 136316418;
     v49 = "[CWFNetworkDenyListItem addDenyListState:reason:reasonData:]";
     v50 = 2114;
     v51 = v12;
     v52 = 2114;
-    v53 = v14;
+    v53 = bSSID;
     v54 = 2114;
     v55 = v34;
     v56 = 2114;
     v57 = v35;
     v58 = 2048;
-    v59 = a4;
+    reasonCopy3 = reason;
 LABEL_28:
     _os_log_send_and_compose_impl();
   }
 
 LABEL_29:
 
-  v37 = [(CWFNetworkDenyListItem *)self statesCurrent];
-  [v37 addObject:v8];
+  statesCurrent3 = [(CWFNetworkDenyListItem *)self statesCurrent];
+  [statesCurrent3 addObject:v8];
 
   [(CWFNetworkDenyListItem *)self processDenyListStateMetric:v8 denyListRemove:0 denyListRemoveReason:0];
 LABEL_30:
@@ -559,27 +559,27 @@ LABEL_31:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addDenyListStateHistory:(id)a3 state:(unint64_t)a4 reason:(unint64_t)a5 reasonData:(int64_t)a6
+- (void)addDenyListStateHistory:(id)history state:(unint64_t)state reason:(unint64_t)reason reasonData:(int64_t)data
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = v10;
-  if (v10)
+  historyCopy = history;
+  v11 = historyCopy;
+  if (historyCopy)
   {
-    v12 = v10;
+    v12 = historyCopy;
 LABEL_4:
     v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v14 = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
-    v15 = [v14 SSID];
-    v16 = [v13 initWithData:v15 encoding:4];
+    scanResultForNetworkDenyListItem = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
+    sSID = [scanResultForNetworkDenyListItem SSID];
+    v16 = [v13 initWithData:sSID encoding:4];
 
-    v17 = [(CWFNetworkDenyListItem *)self statesHistory];
-    v18 = [v17 count];
+    statesHistory = [(CWFNetworkDenyListItem *)self statesHistory];
+    v18 = [statesHistory count];
 
     if (v18 >= 5)
     {
-      v19 = [(CWFNetworkDenyListItem *)self statesHistory];
-      [v19 removeObjectAtIndex:0];
+      statesHistory2 = [(CWFNetworkDenyListItem *)self statesHistory];
+      [statesHistory2 removeObjectAtIndex:0];
     }
 
     v20 = CWFGetOSLog();
@@ -596,18 +596,18 @@ LABEL_4:
 
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v23 = CWFStringFromDenyListState(a4);
-      v28 = CWFStringFromDenyListAddReason(a5);
+      v23 = CWFStringFromDenyListState(state);
+      v28 = CWFStringFromDenyListAddReason(reason);
       _os_log_send_and_compose_impl();
     }
 
-    v24 = [(CWFNetworkDenyListItem *)self statesHistory];
-    [v24 addObject:v12];
+    statesHistory3 = [(CWFNetworkDenyListItem *)self statesHistory];
+    [statesHistory3 addObject:v12];
 
     goto LABEL_12;
   }
 
-  v12 = [(CWFNetworkDenyListItem *)self _copyCreateDenyListState:a4 reason:a5 reasonData:a6];
+  v12 = [(CWFNetworkDenyListItem *)self _copyCreateDenyListState:state reason:reason reasonData:data];
   if (v12)
   {
     goto LABEL_4;
@@ -640,13 +640,13 @@ LABEL_12:
   v45 = *MEMORY[0x1E69E9840];
   if (self->_denyListMetrics)
   {
-    v3 = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
-    v32 = [v3 BSSID];
+    scanResultForNetworkDenyListItem = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
+    bSSID = [scanResultForNetworkDenyListItem BSSID];
 
     v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v5 = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
-    v6 = [v5 SSID];
-    v7 = [v4 initWithData:v6 encoding:4];
+    scanResultForNetworkDenyListItem2 = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
+    sSID = [scanResultForNetworkDenyListItem2 SSID];
+    v7 = [v4 initWithData:sSID encoding:4];
 
     v36 = 0u;
     v37 = 0u;
@@ -682,7 +682,7 @@ LABEL_12:
           v16 = v9;
           v17 = v8;
           v19 = v18 = v11;
-          v20 = [v19 isEqualToString:v32];
+          v20 = [v19 isEqualToString:bSSID];
 
           v11 = v18;
           v8 = v17;
@@ -699,9 +699,9 @@ LABEL_12:
           if (v21)
           {
             v22 = [v13 objectForKeyedSubscript:v11];
-            v23 = [v22 unsignedIntegerValue];
+            unsignedIntegerValue = [v22 unsignedIntegerValue];
 
-            v24 = v23 + 1;
+            v24 = unsignedIntegerValue + 1;
           }
 
           else
@@ -743,7 +743,7 @@ LABEL_19:
             v40 = 2114;
             v41 = v7;
             v42 = 2114;
-            v43 = v32;
+            v43 = bSSID;
             _os_log_send_and_compose_impl();
           }
 
@@ -775,20 +775,20 @@ LABEL_19:
   }
 
   v7 = 0;
-  v32 = 0;
+  bSSID = 0;
 LABEL_24:
 
 LABEL_25:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processDenyListStateMetric:(id)a3 denyListRemove:(BOOL)a4 denyListRemoveReason:(unint64_t)a5
+- (void)processDenyListStateMetric:(id)metric denyListRemove:(BOOL)remove denyListRemoveReason:(unint64_t)reason
 {
-  v5 = a4;
+  removeCopy = remove;
   v99 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v84 = v7;
-  if (!v7)
+  metricCopy = metric;
+  v84 = metricCopy;
+  if (!metricCopy)
   {
     v68 = CWFGetOSLog();
     if (v68)
@@ -812,7 +812,7 @@ LABEL_25:
     goto LABEL_55;
   }
 
-  v8 = v7;
+  v8 = metricCopy;
   if (!self->_denyListMetrics)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -848,15 +848,15 @@ LABEL_60:
     }
   }
 
-  v11 = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
-  v12 = [v11 BSSID];
+  scanResultForNetworkDenyListItem = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
+  bSSID = [scanResultForNetworkDenyListItem BSSID];
 
   v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v14 = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
-  v15 = [v14 SSID];
-  v16 = [v13 initWithData:v15 encoding:4];
+  scanResultForNetworkDenyListItem2 = [(CWFNetworkDenyListItem *)self scanResultForNetworkDenyListItem];
+  sSID = [scanResultForNetworkDenyListItem2 SSID];
+  v16 = [v13 initWithData:sSID encoding:4];
 
-  if (!v12)
+  if (!bSSID)
   {
     v70 = CWFGetOSLog();
     if (v70)
@@ -904,43 +904,43 @@ LABEL_60:
     goto LABEL_37;
   }
 
-  v85 = v12;
+  v85 = bSSID;
   v86 = v16;
-  if (!v5)
+  if (!removeCopy)
   {
-    v45 = [MEMORY[0x1E695DF90] dictionary];
-    if (ether_aton([v12 UTF8String]))
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if (ether_aton([bSSID UTF8String]))
     {
-      v46 = ether_aton([v12 UTF8String]);
+      v46 = ether_aton([bSSID UTF8String]);
       v47 = v46->octet[0];
       v48 = v46->octet[1];
       v49 = v46->octet[2];
       [MEMORY[0x1E696AEC0] stringWithString:v16];
-      v50 = v12;
+      v50 = bSSID;
       v52 = v51 = v8;
-      [v45 setObject:v52 forKeyedSubscript:@"ssid"];
+      [dictionary setObject:v52 forKeyedSubscript:@"ssid"];
 
       v53 = [MEMORY[0x1E696AEC0] stringWithString:v50];
-      [v45 setObject:v53 forKeyedSubscript:@"bssid"];
+      [dictionary setObject:v53 forKeyedSubscript:@"bssid"];
 
       v54 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v51, "state")}];
-      [v45 setObject:v54 forKeyedSubscript:@"state"];
+      [dictionary setObject:v54 forKeyedSubscript:@"state"];
 
       v55 = MEMORY[0x1E696AD98];
       [v51 stateTimestamp];
       v56 = [v55 numberWithDouble:?];
-      [v45 setObject:v56 forKeyedSubscript:@"denyListTimestamp"];
+      [dictionary setObject:v56 forKeyedSubscript:@"denyListTimestamp"];
 
       v57 = MEMORY[0x1E696AEC0];
       v58 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02x:%02x:%02x", v47, v48, v49];
       v59 = [v57 stringWithString:v58];
-      [v45 setObject:v59 forKeyedSubscript:@"oui"];
+      [dictionary setObject:v59 forKeyedSubscript:@"oui"];
 
       v60 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v51, "reason")}];
-      [v45 setObject:v60 forKeyedSubscript:@"reason"];
+      [dictionary setObject:v60 forKeyedSubscript:@"reason"];
 
       v61 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v51, "reasonData")}];
-      [v45 setObject:v61 forKeyedSubscript:@"denyListedSubreason"];
+      [dictionary setObject:v61 forKeyedSubscript:@"denyListedSubreason"];
 
       v62 = CWFGetOSLog();
       if (v62)
@@ -954,13 +954,13 @@ LABEL_60:
         v64 = MEMORY[0x1E69E9C10];
       }
 
-      v12 = v85;
+      bSSID = v85;
       v16 = v86;
       if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
       {
-        v65 = [v45 objectForKeyedSubscript:@"oui"];
-        v66 = [v45 objectForKeyedSubscript:@"reason"];
-        [v45 objectForKeyedSubscript:@"denyListedSubreason"];
+        v65 = [dictionary objectForKeyedSubscript:@"oui"];
+        v66 = [dictionary objectForKeyedSubscript:@"reason"];
+        [dictionary objectForKeyedSubscript:@"denyListedSubreason"];
         v87 = 136447490;
         v88 = "[CWFNetworkDenyListItem processDenyListStateMetric:denyListRemove:denyListRemoveReason:]";
         v89 = 2114;
@@ -975,7 +975,7 @@ LABEL_60:
         _os_log_send_and_compose_impl();
       }
 
-      [(NSMutableArray *)self->_denyListMetrics addObject:v45];
+      [(NSMutableArray *)self->_denyListMetrics addObject:dictionary];
       v8 = v84;
     }
 
@@ -1002,21 +1002,21 @@ LABEL_60:
     }
 
 LABEL_37:
-    v16 = v12;
+    v16 = bSSID;
     goto LABEL_38;
   }
 
-  v82 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   if ([(NSMutableArray *)self->_denyListMetrics count])
   {
     for (i = 0; i < [(NSMutableArray *)self->_denyListMetrics count]; ++i)
     {
       v18 = [(NSMutableArray *)self->_denyListMetrics objectAtIndex:i, v80, v81];
       v19 = [v18 objectForKeyedSubscript:@"state"];
-      v20 = [v19 unsignedIntegerValue];
-      v21 = [v8 state];
+      unsignedIntegerValue = [v19 unsignedIntegerValue];
+      state = [v8 state];
 
-      if (v20 == v21)
+      if (unsignedIntegerValue == state)
       {
         v22 = [v18 objectForKeyedSubscript:@"ssid"];
         if (([v22 isEqualToString:v16] & 1) == 0)
@@ -1067,8 +1067,8 @@ LABEL_15:
           goto LABEL_15;
         }
 
-        v25 = [MEMORY[0x1E695DF00] date];
-        [v25 timeIntervalSince1970];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSince1970];
         v27 = v26;
 
         v28 = MEMORY[0x1E696AD98];
@@ -1077,7 +1077,7 @@ LABEL_15:
         v31 = [v28 numberWithDouble:v27 - v30];
         [v18 setObject:v31 forKeyedSubscript:@"denyListedDuration"];
 
-        v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+        v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:reason];
         [v18 setObject:v32 forKeyedSubscript:@"denyListRemoveReason"];
 
         [v18 removeObjectForKey:@"ssid"];
@@ -1120,18 +1120,18 @@ LABEL_15:
           v8 = v84;
         }
 
-        [v82 addIndex:i];
+        [indexSet addIndex:i];
       }
 
 LABEL_25:
     }
   }
 
-  if ([v82 count])
+  if ([indexSet count])
   {
-    v44 = [(NSMutableArray *)self->_denyListMetrics objectsAtIndexes:v82];
+    v44 = [(NSMutableArray *)self->_denyListMetrics objectsAtIndexes:indexSet];
     [v44 enumerateObjectsUsingBlock:&unk_1F5B89DD0];
-    [(NSMutableArray *)self->_denyListMetrics removeObjectsAtIndexes:v82];
+    [(NSMutableArray *)self->_denyListMetrics removeObjectsAtIndexes:indexSet];
 
     v8 = v84;
   }
@@ -1142,14 +1142,14 @@ LABEL_38:
   v67 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqualToDenyListScanResult:(id)a3
+- (BOOL)isEqualToDenyListScanResult:(id)result
 {
-  v4 = a3;
-  v5 = [(CWFScanResult *)self->_scanResultForNetworkDenyListItem BSSID];
-  if (v5)
+  resultCopy = result;
+  bSSID = [(CWFScanResult *)self->_scanResultForNetworkDenyListItem BSSID];
+  if (bSSID)
   {
-    v6 = [v4 BSSID];
-    v7 = v6 == 0;
+    bSSID2 = [resultCopy BSSID];
+    v7 = bSSID2 == 0;
   }
 
   else
@@ -1157,19 +1157,19 @@ LABEL_38:
     v7 = 1;
   }
 
-  v8 = [v4 BSSID];
-  v9 = [(CWFScanResult *)self->_scanResultForNetworkDenyListItem BSSID];
-  v10 = [v8 isEqual:v9];
+  bSSID3 = [resultCopy BSSID];
+  bSSID4 = [(CWFScanResult *)self->_scanResultForNetworkDenyListItem BSSID];
+  v10 = [bSSID3 isEqual:bSSID4];
 
-  v11 = [(CWFScanResult *)self->_scanResultForNetworkDenyListItem SSID];
-  if (v11)
+  sSID = [(CWFScanResult *)self->_scanResultForNetworkDenyListItem SSID];
+  if (sSID)
   {
-    v12 = [v4 SSID];
-    if (v12)
+    sSID2 = [resultCopy SSID];
+    if (sSID2)
     {
-      v13 = [(CWFScanResult *)self->_scanResultForNetworkDenyListItem SSID];
-      v14 = [v4 SSID];
-      v15 = [v13 isEqual:v14];
+      sSID3 = [(CWFScanResult *)self->_scanResultForNetworkDenyListItem SSID];
+      sSID4 = [resultCopy SSID];
+      v15 = [sSID3 isEqual:sSID4];
 
       v16 = v15 ^ 1;
     }
@@ -1185,11 +1185,11 @@ LABEL_38:
     v16 = 1;
   }
 
-  v17 = [(CWFScanResult *)self->_scanResultForNetworkDenyListItem supportedSecurityTypes];
-  v18 = [v4 supportedSecurityTypes] & v17;
+  supportedSecurityTypes = [(CWFScanResult *)self->_scanResultForNetworkDenyListItem supportedSecurityTypes];
+  v18 = [resultCopy supportedSecurityTypes] & supportedSecurityTypes;
   if ([(CWFScanResult *)self->_scanResultForNetworkDenyListItem isPasspoint])
   {
-    v19 = [v4 isPasspoint] ^ 1;
+    v19 = [resultCopy isPasspoint] ^ 1;
   }
 
   else

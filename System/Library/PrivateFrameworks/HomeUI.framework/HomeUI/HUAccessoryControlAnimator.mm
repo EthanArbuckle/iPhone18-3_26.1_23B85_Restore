@@ -1,6 +1,6 @@
 @interface HUAccessoryControlAnimator
 - (HUAccessoryControlAnimator)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation HUAccessoryControlAnimator
@@ -14,19 +14,19 @@
   return [(HUAccessoryControlAnimator *)&v4 init];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v5 = *(&self->super.isa + OBJC_IVAR___HUAccessoryControlAnimator_currentTransitionType);
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   if (v5)
   {
-    sub_20D09A58C(a3);
+    sub_20D09A58C(transition);
   }
 
   else
   {
-    sub_20D099D30(a3);
+    sub_20D099D30(transition);
   }
 
   swift_unknownObjectRelease();

@@ -11,16 +11,16 @@
 
 - (void)dumpStatistics
 {
-  v3 = [(VideoConversionTask *)self conversionEndTime];
-  v4 = [(VideoConversionTask *)self conversionStartTime];
-  [v3 timeIntervalSinceDate:v4];
+  conversionEndTime = [(VideoConversionTask *)self conversionEndTime];
+  conversionStartTime = [(VideoConversionTask *)self conversionStartTime];
+  [conversionEndTime timeIntervalSinceDate:conversionStartTime];
   v6 = v5;
 
-  v7 = [(VideoConversionTask *)self asset];
-  v8 = v7;
-  if (v7)
+  asset = [(VideoConversionTask *)self asset];
+  v8 = asset;
+  if (asset)
   {
-    [v7 duration];
+    [asset duration];
   }
 
   else
@@ -30,8 +30,8 @@
 
   Seconds = CMTimeGetSeconds(&v18);
   v10 = [PFMediaUtilities tracksWithMediaType:AVMediaTypeVideo forAsset:v8];
-  v11 = [v10 firstObject];
-  [v11 nominalFrameRate];
+  firstObject = [v10 firstObject];
+  [firstObject nominalFrameRate];
   v13 = v12;
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -39,9 +39,9 @@
     v14 = v13;
     v15 = Seconds * v14 / v6;
     v16 = v6 / Seconds;
-    v17 = [(VideoConversionTask *)self identifier];
+    identifier = [(VideoConversionTask *)self identifier];
     LODWORD(v18.value) = 138544642;
-    *(&v18.value + 4) = v17;
+    *(&v18.value + 4) = identifier;
     LOWORD(v18.flags) = 2048;
     *(&v18.flags + 2) = v6;
     HIWORD(v18.epoch) = 2048;
@@ -58,21 +58,21 @@
 
 - (void)cancelTranscode
 {
-  v5 = [(PhotosAdjustmentsVideoTranscodingTask *)self progress];
-  if (!v5)
+  progress = [(PhotosAdjustmentsVideoTranscodingTask *)self progress];
+  if (!progress)
   {
     v4 = +[NSAssertionHandler currentHandler];
     [v4 handleFailureInMethod:a2 object:self file:@"VideoConversionService.m" lineNumber:690 description:@"Unexpected missing photos adjustments video transcode export progress with job in running state"];
   }
 
   [(VideoTranscodingTask *)self logCancellation];
-  [v5 cancel];
+  [progress cancel];
 }
 
 - (double)currentFractionCompleted
 {
-  v2 = [(PhotosAdjustmentsVideoTranscodingTask *)self progress];
-  [v2 fractionCompleted];
+  progress = [(PhotosAdjustmentsVideoTranscodingTask *)self progress];
+  [progress fractionCompleted];
   v4 = v3;
 
   return v4;
@@ -80,8 +80,8 @@
 
 - (BOOL)hasProgress
 {
-  v2 = [(PhotosAdjustmentsVideoTranscodingTask *)self progress];
-  v3 = v2 != 0;
+  progress = [(PhotosAdjustmentsVideoTranscodingTask *)self progress];
+  v3 = progress != 0;
 
   return v3;
 }
@@ -100,8 +100,8 @@
 
 - (void)performExport
 {
-  v3 = [(VideoConversionTask *)self asset];
-  if (!v3)
+  asset = [(VideoConversionTask *)self asset];
+  if (!asset)
   {
     [(VideoConversionTask *)self setStatus:2];
     [(VideoTranscodingTask *)self callCompletionHandler];
@@ -110,10 +110,10 @@
 
   if (![(VideoTranscodingTask *)self hasSlowMotionAdjustments])
   {
-    v7 = [(VideoConversionTask *)self sourceMainResourceURL];
+    sourceMainResourceURL = [(VideoConversionTask *)self sourceMainResourceURL];
     v63 = 0;
     v62 = 0;
-    v8 = [v7 getResourceValue:&v63 forKey:NSURLTypeIdentifierKey error:&v62];
+    v8 = [sourceMainResourceURL getResourceValue:&v63 forKey:NSURLTypeIdentifierKey error:&v62];
     v9 = v63;
     v10 = v62;
 
@@ -121,13 +121,13 @@
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v47 = [(VideoConversionTask *)self identifier];
-        v48 = [(VideoConversionTask *)self sourceMainResourceURL];
-        v49 = [v48 path];
+        identifier = [(VideoConversionTask *)self identifier];
+        sourceMainResourceURL2 = [(VideoConversionTask *)self sourceMainResourceURL];
+        path = [sourceMainResourceURL2 path];
         *buf = 138543618;
-        v67 = v47;
+        v67 = identifier;
         v68 = 2112;
-        v69 = v49;
+        v69 = path;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Task %{public}@: Unable to determine type identifier for input file %@", buf, 0x16u);
       }
 
@@ -142,11 +142,11 @@
       goto LABEL_31;
     }
 
-    v11 = [(VideoConversionTask *)self options];
-    v12 = [v11 objectForKeyedSubscript:@"PAMediaConversionServiceOptionScaleFactorKey"];
+    options = [(VideoConversionTask *)self options];
+    v12 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionScaleFactorKey"];
 
-    v13 = [(VideoConversionTask *)self options];
-    v14 = [v13 objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumPixelCountKey"];
+    options2 = [(VideoConversionTask *)self options];
+    v14 = [options2 objectForKeyedSubscript:@"PAMediaConversionServiceOptionMaximumPixelCountKey"];
 
     if (v12 && v14)
     {
@@ -165,9 +165,9 @@ LABEL_31:
     }
 
     +[PAMediaConversionServiceSharedUtilitiesServiceSide registerPhotosAdjustmentsSubsystems];
-    v19 = [NUVideoUtilities videoOrientationForAsset:v3 videoComposition:0];
-    v20 = [(VideoConversionTask *)self options];
-    v21 = [v20 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAdjustmentInformationKey"];
+    v19 = [NUVideoUtilities videoOrientationForAsset:asset videoComposition:0];
+    options3 = [(VideoConversionTask *)self options];
+    v21 = [options3 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAdjustmentInformationKey"];
 
     v55 = v21;
     if (v21)
@@ -181,13 +181,13 @@ LABEL_31:
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
-          v51 = [(VideoConversionTask *)self identifier];
-          v52 = [(VideoConversionTask *)self sourceMainResourceURL];
-          v53 = [v52 path];
+          identifier2 = [(VideoConversionTask *)self identifier];
+          sourceMainResourceURL3 = [(VideoConversionTask *)self sourceMainResourceURL];
+          path2 = [sourceMainResourceURL3 path];
           *buf = 138543874;
-          v67 = v51;
+          v67 = identifier2;
           v68 = 2112;
-          v69 = v53;
+          v69 = path2;
           v70 = 2114;
           v71 = v23;
           _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Task %{public}@: Unable to deserialize adjustment data for input file %@: %{public}@", buf, 0x20u);
@@ -236,8 +236,8 @@ LABEL_31:
       v54 = v10;
     }
 
-    v29 = [(VideoConversionTask *)self sourceMainResourceURL];
-    v30 = [PIPhotoEditHelper videoSourceWithURL:v29];
+    sourceMainResourceURL4 = [(VideoConversionTask *)self sourceMainResourceURL];
+    v30 = [PIPhotoEditHelper videoSourceWithURL:sourceMainResourceURL4];
     [v22 setObject:v30 forKeyedSubscript:@"source"];
 
     [v22 setMediaType:2];
@@ -262,8 +262,8 @@ LABEL_31:
       {
 LABEL_22:
         [v33 setBypassOutputSettingsIfNoComposition:1];
-        v40 = [(VideoConversionTask *)self options];
-        v41 = [v40 objectForKeyedSubscript:@"PAMediaConversionServiceOptionApplyOrientationTransformKey"];
+        options4 = [(VideoConversionTask *)self options];
+        v41 = [options4 objectForKeyedSubscript:@"PAMediaConversionServiceOptionApplyOrientationTransformKey"];
         [v33 setApplyVideoOrientationAsMetadata:{objc_msgSend(v41, "BOOLValue") ^ 1}];
 
         v60[0] = _NSConcreteStackBlock;

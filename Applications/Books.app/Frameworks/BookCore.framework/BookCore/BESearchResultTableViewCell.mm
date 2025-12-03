@@ -1,5 +1,5 @@
 @interface BESearchResultTableViewCell
-- (BESearchResultTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BESearchResultTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (CGSize)intrinsicContentSize;
 - (id)accessibilityLabel;
 - (id)largerTextConstraints;
@@ -9,52 +9,52 @@
 - (void)applyLabelFonts;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 - (void)updateConstraints;
 @end
 
 @implementation BESearchResultTableViewCell
 
-- (BESearchResultTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BESearchResultTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v36.receiver = self;
   v36.super_class = BESearchResultTableViewCell;
-  v4 = [(BESearchResultTableViewCell *)&v36 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(BESearchResultTableViewCell *)&v36 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [UIView alloc];
-    v6 = [(BESearchResultTableViewCell *)v4 contentView];
-    [v6 bounds];
+    contentView = [(BESearchResultTableViewCell *)v4 contentView];
+    [contentView bounds];
     v7 = [v5 initWithFrame:?];
     [(BESearchResultTableViewCell *)v4 setSelectedBackgroundView:v7];
 
     [(BESearchResultTableViewCell *)v4 setFocusEffect:0];
-    v8 = [(BESearchResultTableViewCell *)v4 contentView];
-    [v8 setAutoresizingMask:18];
+    contentView2 = [(BESearchResultTableViewCell *)v4 contentView];
+    [contentView2 setAutoresizingMask:18];
     v9 = objc_opt_new();
     [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
     v10 = +[UIColor grayColor];
     [v9 setFillColor:v10];
 
-    [v8 addSubview:v9];
-    v35 = [v9 leftAnchor];
-    v34 = [v8 leftAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34 constant:5.0];
+    [contentView2 addSubview:v9];
+    leftAnchor = [v9 leftAnchor];
+    leftAnchor2 = [contentView2 leftAnchor];
+    v33 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:5.0];
     v37[0] = v33;
-    v32 = [v9 rightAnchor];
-    v31 = [v8 rightAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31 constant:-5.0];
+    rightAnchor = [v9 rightAnchor];
+    rightAnchor2 = [contentView2 rightAnchor];
+    v30 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-5.0];
     v37[1] = v30;
-    v11 = [v9 topAnchor];
-    v12 = [v8 topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:5.0];
+    topAnchor = [v9 topAnchor];
+    topAnchor2 = [contentView2 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
     v37[2] = v13;
-    v14 = [v9 bottomAnchor];
-    v15 = [v8 bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:-5.0];
+    bottomAnchor = [v9 bottomAnchor];
+    bottomAnchor2 = [contentView2 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
     v37[3] = v16;
     v17 = [NSArray arrayWithObjects:v37 count:4];
     [NSLayoutConstraint activateConstraints:v17];
@@ -69,7 +69,7 @@
     [(UILabel *)v18 setLineBreakMode:5];
     [(UILabel *)v18 setHighlightedTextColor:0];
     [(UILabel *)v18 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v8 addSubview:v18];
+    [contentView2 addSubview:v18];
     titleLabel = v4->_titleLabel;
     v4->_titleLabel = v18;
     v21 = v18;
@@ -92,14 +92,14 @@
     [(BESearchResultLabel *)v22 setNumberOfLines:v24];
     [(BESearchResultLabel *)v22 setHighlightedTextColor:0];
     [(BESearchResultLabel *)v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v8 addSubview:v22];
+    [contentView2 addSubview:v22];
     resultLabel = v4->_resultLabel;
     v4->_resultLabel = v22;
     v26 = v22;
 
     v27 = objc_alloc_init(BETableViewCellPageNumberLabel);
     [(BETableViewCellPageNumberLabel *)v27 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v8 addSubview:v27];
+    [contentView2 addSubview:v27];
     pageNumberLabel = v4->_pageNumberLabel;
     v4->_pageNumberLabel = v27;
 
@@ -135,60 +135,60 @@
 
 - (id)regularTextConstraints
 {
-  v49 = [(BESearchResultTableViewCell *)self contentView];
+  contentView = [(BESearchResultTableViewCell *)self contentView];
   titleLabel = self->_titleLabel;
   resultLabel = self->_resultLabel;
   v5 = self->_pageNumberLabel;
   v52 = resultLabel;
   v6 = titleLabel;
-  v7 = [v49 layoutMarginsGuide];
-  v8 = [(UILabel *)v6 topAnchor];
-  v51 = v7;
-  v9 = [v7 topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  topAnchor = [(UILabel *)v6 topAnchor];
+  v51 = layoutMarginsGuide;
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v55[0] = v10;
   v11 = v6;
   v50 = v6;
-  v12 = [(UILabel *)v6 leadingAnchor];
-  v13 = [v7 leadingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  leadingAnchor = [(UILabel *)v6 leadingAnchor];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v55[1] = v14;
-  v15 = [(UILabel *)v11 trailingAnchor];
+  trailingAnchor = [(UILabel *)v11 trailingAnchor];
   v45 = v5;
-  v16 = [(BETableViewCellPageNumberLabel *)v5 leadingAnchor];
-  v17 = [v15 constraintLessThanOrEqualToAnchor:v16 constant:-15.0];
+  leadingAnchor3 = [(BETableViewCellPageNumberLabel *)v5 leadingAnchor];
+  v17 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor3 constant:-15.0];
   v55[2] = v17;
   v48 = [NSArray arrayWithObjects:v55 count:3];
 
-  v47 = [(BETableViewCellPageNumberLabel *)v5 leadingAnchor];
-  v43 = [(BESearchResultLabel *)v52 leadingAnchor];
-  v41 = [(UILabel *)v50 leadingAnchor];
-  v18 = [v43 constraintEqualToAnchor:v41];
+  leadingAnchor4 = [(BETableViewCellPageNumberLabel *)v5 leadingAnchor];
+  leadingAnchor5 = [(BESearchResultLabel *)v52 leadingAnchor];
+  leadingAnchor6 = [(UILabel *)v50 leadingAnchor];
+  v18 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v54[0] = v18;
-  v19 = [(BESearchResultLabel *)v52 trailingAnchor];
-  v20 = [v19 constraintEqualToAnchor:v47 constant:-4.0];
+  trailingAnchor2 = [(BESearchResultLabel *)v52 trailingAnchor];
+  v20 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor4 constant:-4.0];
   v54[1] = v20;
-  v21 = [(BESearchResultLabel *)v52 topAnchor];
-  v22 = [(UILabel *)v50 bottomAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  topAnchor3 = [(BESearchResultLabel *)v52 topAnchor];
+  bottomAnchor = [(UILabel *)v50 bottomAnchor];
+  v23 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v54[2] = v23;
-  v24 = [(BESearchResultLabel *)v52 bottomAnchor];
-  v25 = [v51 bottomAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  bottomAnchor2 = [(BESearchResultLabel *)v52 bottomAnchor];
+  bottomAnchor3 = [v51 bottomAnchor];
+  v26 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v54[3] = v26;
   v46 = [NSArray arrayWithObjects:v54 count:4];
 
-  v44 = [(BETableViewCellPageNumberLabel *)v45 trailingAnchor];
-  v42 = [v51 trailingAnchor];
-  v27 = [v44 constraintEqualToAnchor:v42];
+  trailingAnchor3 = [(BETableViewCellPageNumberLabel *)v45 trailingAnchor];
+  trailingAnchor4 = [v51 trailingAnchor];
+  v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v53[0] = v27;
-  v28 = [(BETableViewCellPageNumberLabel *)v45 centerYAnchor];
-  v29 = [(UILabel *)v50 centerYAnchor];
-  v30 = [v28 constraintGreaterThanOrEqualToAnchor:v29];
+  centerYAnchor = [(BETableViewCellPageNumberLabel *)v45 centerYAnchor];
+  centerYAnchor2 = [(UILabel *)v50 centerYAnchor];
+  v30 = [centerYAnchor constraintGreaterThanOrEqualToAnchor:centerYAnchor2];
   v53[1] = v30;
-  v31 = [(BETableViewCellPageNumberLabel *)v45 topAnchor];
-  v32 = [v51 topAnchor];
-  v33 = [v31 constraintGreaterThanOrEqualToAnchor:v32 constant:4.0];
+  topAnchor4 = [(BETableViewCellPageNumberLabel *)v45 topAnchor];
+  topAnchor5 = [v51 topAnchor];
+  v33 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5 constant:4.0];
   v53[2] = v33;
   v34 = [NSArray arrayWithObjects:v53 count:3];
 
@@ -210,58 +210,58 @@
 
 - (id)largerTextConstraints
 {
-  v45 = [(BESearchResultTableViewCell *)self contentView];
+  contentView = [(BESearchResultTableViewCell *)self contentView];
   titleLabel = self->_titleLabel;
   resultLabel = self->_resultLabel;
   v43 = self->_pageNumberLabel;
   v47 = resultLabel;
   v5 = titleLabel;
-  v6 = [v45 layoutMarginsGuide];
-  v7 = [(UILabel *)v5 topAnchor];
-  v8 = [v6 topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  topAnchor = [(UILabel *)v5 topAnchor];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v50[0] = v9;
   v46 = v5;
-  v10 = [(UILabel *)v5 leadingAnchor];
-  v11 = [v6 leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  leadingAnchor = [(UILabel *)v5 leadingAnchor];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v50[1] = v12;
-  v13 = [(UILabel *)v5 trailingAnchor];
-  v14 = [v6 trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  trailingAnchor = [(UILabel *)v5 trailingAnchor];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v50[2] = v15;
   v44 = [NSArray arrayWithObjects:v50 count:3];
 
-  v16 = [(BESearchResultLabel *)v47 leadingAnchor];
-  v17 = [(UILabel *)v46 leadingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  leadingAnchor3 = [(BESearchResultLabel *)v47 leadingAnchor];
+  leadingAnchor4 = [(UILabel *)v46 leadingAnchor];
+  v18 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v49[0] = v18;
-  v19 = [(BESearchResultLabel *)v47 trailingAnchor];
-  v20 = [v6 trailingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  trailingAnchor3 = [(BESearchResultLabel *)v47 trailingAnchor];
+  trailingAnchor4 = [layoutMarginsGuide trailingAnchor];
+  v21 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v49[1] = v21;
-  v22 = [(BESearchResultLabel *)v47 topAnchor];
-  v23 = [(UILabel *)v46 bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  topAnchor3 = [(BESearchResultLabel *)v47 topAnchor];
+  bottomAnchor = [(UILabel *)v46 bottomAnchor];
+  v24 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v49[2] = v24;
   v42 = [NSArray arrayWithObjects:v49 count:3];
 
-  v40 = [(BETableViewCellPageNumberLabel *)v43 leadingAnchor];
-  v39 = [v6 leadingAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  leadingAnchor5 = [(BETableViewCellPageNumberLabel *)v43 leadingAnchor];
+  leadingAnchor6 = [layoutMarginsGuide leadingAnchor];
+  v38 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v48[0] = v38;
-  v37 = [(BETableViewCellPageNumberLabel *)v43 trailingAnchor];
-  v41 = v6;
-  v25 = [v6 trailingAnchor];
-  v26 = [v37 constraintEqualToAnchor:v25];
+  trailingAnchor5 = [(BETableViewCellPageNumberLabel *)v43 trailingAnchor];
+  v41 = layoutMarginsGuide;
+  trailingAnchor6 = [layoutMarginsGuide trailingAnchor];
+  v26 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v48[1] = v26;
-  v27 = [(BETableViewCellPageNumberLabel *)v43 topAnchor];
-  v28 = [(BESearchResultLabel *)v47 bottomAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  topAnchor4 = [(BETableViewCellPageNumberLabel *)v43 topAnchor];
+  bottomAnchor2 = [(BESearchResultLabel *)v47 bottomAnchor];
+  v29 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2];
   v48[2] = v29;
-  v30 = [(BETableViewCellPageNumberLabel *)v43 bottomAnchor];
-  v31 = [v6 bottomAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  bottomAnchor3 = [(BETableViewCellPageNumberLabel *)v43 bottomAnchor];
+  bottomAnchor4 = [layoutMarginsGuide bottomAnchor];
+  v32 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v48[3] = v32;
   v33 = [NSArray arrayWithObjects:v48 count:4];
 
@@ -287,16 +287,16 @@
 {
   if ([(BESearchResultTableViewCell *)self _pageNumberLabelOnOwnLine])
   {
-    v3 = [(BESearchResultTableViewCell *)self regularTextConstraints];
-    [NSLayoutConstraint deactivateConstraints:v3];
+    regularTextConstraints = [(BESearchResultTableViewCell *)self regularTextConstraints];
+    [NSLayoutConstraint deactivateConstraints:regularTextConstraints];
 
     [(BESearchResultTableViewCell *)self largerTextConstraints];
   }
 
   else
   {
-    v4 = [(BESearchResultTableViewCell *)self largerTextConstraints];
-    [NSLayoutConstraint deactivateConstraints:v4];
+    largerTextConstraints = [(BESearchResultTableViewCell *)self largerTextConstraints];
+    [NSLayoutConstraint deactivateConstraints:largerTextConstraints];
 
     [(BESearchResultTableViewCell *)self regularTextConstraints];
   }
@@ -311,8 +311,8 @@
 
 - (void)_updateResultLabelMaxWidth
 {
-  v3 = [(BESearchResultTableViewCell *)self readableContentGuide];
-  [v3 layoutFrame];
+  readableContentGuide = [(BESearchResultTableViewCell *)self readableContentGuide];
+  [readableContentGuide layoutFrame];
   v4 = CGRectGetWidth(v15) + -30.0;
 
   [(BESearchResultTableViewCell *)self maxWidth];
@@ -325,8 +325,8 @@
     v4 = v6 - (v8 + v9);
   }
 
-  v10 = [(BESearchResultTableViewCell *)self pageNumberLabel];
-  [v10 intrinsicContentSize];
+  pageNumberLabel = [(BESearchResultTableViewCell *)self pageNumberLabel];
+  [pageNumberLabel intrinsicContentSize];
   v12 = v11;
 
   resultLabel = self->_resultLabel;
@@ -336,17 +336,17 @@
 
 - (void)_updateFocusShapePath
 {
-  v5 = [(BESearchResultTableViewCell *)self focusShapeView];
-  [v5 bounds];
+  focusShapeView = [(BESearchResultTableViewCell *)self focusShapeView];
+  [focusShapeView bounds];
   v3 = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:cornerRadius:" cornerRadius:?];
-  v4 = [(BESearchResultTableViewCell *)self focusShapeView];
-  [v4 setPath:v3];
+  focusShapeView2 = [(BESearchResultTableViewCell *)self focusShapeView];
+  [focusShapeView2 setPath:v3];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(BESearchResultTableViewCell *)self contentView];
-  [v2 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+  contentView = [(BESearchResultTableViewCell *)self contentView];
+  [contentView systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   v4 = v3;
   v6 = v5;
 
@@ -357,11 +357,11 @@
   return result;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 type] != &dword_4)
+  beganCopy = began;
+  eventCopy = event;
+  if ([eventCopy type] != &dword_4)
   {
     goto LABEL_12;
   }
@@ -370,7 +370,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v6;
+  v8 = beganCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v9)
   {
@@ -378,13 +378,13 @@
 LABEL_12:
     v19.receiver = self;
     v19.super_class = BESearchResultTableViewCell;
-    [(BESearchResultTableViewCell *)&v19 pressesBegan:v6 withEvent:v7];
+    [(BESearchResultTableViewCell *)&v19 pressesBegan:beganCopy withEvent:eventCopy];
     goto LABEL_13;
   }
 
   v10 = v9;
-  v17 = self;
-  v18 = v6;
+  selfCopy = self;
+  v18 = beganCopy;
   v11 = 0;
   v12 = *v21;
   do
@@ -397,8 +397,8 @@ LABEL_12:
       }
 
       v14 = [*(*(&v20 + 1) + 8 * i) key];
-      v15 = [v14 characters];
-      v16 = [v15 isEqual:@"\r"];
+      characters = [v14 characters];
+      v16 = [characters isEqual:@"\r"];
 
       v11 |= v16;
     }
@@ -408,8 +408,8 @@ LABEL_12:
 
   while (v10);
 
-  self = v17;
-  v6 = v18;
+  self = selfCopy;
+  beganCopy = v18;
   if ((v11 & 1) == 0)
   {
     goto LABEL_12;
@@ -418,25 +418,25 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = BESearchResultTableViewCell;
-  [(BESearchResultTableViewCell *)&v4 pressesChanged:a3 withEvent:a4];
+  [(BESearchResultTableViewCell *)&v4 pressesChanged:changed withEvent:event];
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = BESearchResultTableViewCell;
-  [(BESearchResultTableViewCell *)&v4 pressesCancelled:a3 withEvent:a4];
+  [(BESearchResultTableViewCell *)&v4 pressesCancelled:cancelled withEvent:event];
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 type] != &dword_4)
+  endedCopy = ended;
+  eventCopy = event;
+  if ([eventCopy type] != &dword_4)
   {
     goto LABEL_16;
   }
@@ -445,7 +445,7 @@ LABEL_13:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = v6;
+  v8 = endedCopy;
   v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (!v9)
   {
@@ -453,13 +453,13 @@ LABEL_13:
 LABEL_16:
     v25.receiver = self;
     v25.super_class = BESearchResultTableViewCell;
-    [(BESearchResultTableViewCell *)&v25 pressesEnded:v6 withEvent:v7];
+    [(BESearchResultTableViewCell *)&v25 pressesEnded:endedCopy withEvent:eventCopy];
     goto LABEL_17;
   }
 
   v10 = v9;
-  v23 = self;
-  v24 = v6;
+  selfCopy = self;
+  v24 = endedCopy;
   v11 = 0;
   v12 = *v27;
   do
@@ -472,8 +472,8 @@ LABEL_16:
       }
 
       v14 = [*(*(&v26 + 1) + 8 * i) key];
-      v15 = [v14 characters];
-      v16 = [v15 isEqual:@"\r"];
+      characters = [v14 characters];
+      v16 = [characters isEqual:@"\r"];
 
       v11 |= v16;
     }
@@ -483,26 +483,26 @@ LABEL_16:
 
   while (v10);
 
-  self = v23;
-  v6 = v24;
+  self = selfCopy;
+  endedCopy = v24;
   if ((v11 & 1) == 0)
   {
     goto LABEL_16;
   }
 
-  v17 = [(BESearchResultTableViewCell *)v23 _tableView];
-  v18 = v17;
-  if (v17)
+  _tableView = [(BESearchResultTableViewCell *)selfCopy _tableView];
+  v18 = _tableView;
+  if (_tableView)
   {
-    v19 = [v17 indexPathForCell:v23];
+    v19 = [_tableView indexPathForCell:selfCopy];
     if (v19)
     {
-      v20 = [v18 delegate];
-      v21 = [v20 tableView:v18 willSelectRowAtIndexPath:v19];
+      delegate = [v18 delegate];
+      v21 = [delegate tableView:v18 willSelectRowAtIndexPath:v19];
 
       [v18 selectRowAtIndexPath:v19 animated:1 scrollPosition:0];
-      v22 = [v18 delegate];
-      [v22 tableView:v18 didSelectRowAtIndexPath:v19];
+      delegate2 = [v18 delegate];
+      [delegate2 tableView:v18 didSelectRowAtIndexPath:v19];
     }
   }
 
@@ -512,34 +512,34 @@ LABEL_17:
 - (id)accessibilityLabel
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(UILabel *)self->_titleLabel text];
-  v5 = [v4 length];
+  text = [(UILabel *)self->_titleLabel text];
+  v5 = [text length];
 
   if (v5)
   {
-    v6 = [(UILabel *)self->_titleLabel text];
-    [v3 addObject:v6];
+    text2 = [(UILabel *)self->_titleLabel text];
+    [v3 addObject:text2];
   }
 
-  v7 = [(BESearchResultLabel *)self->_resultLabel text];
-  v8 = [v7 length];
+  text3 = [(BESearchResultLabel *)self->_resultLabel text];
+  v8 = [text3 length];
 
   if (v8)
   {
-    v9 = [(BESearchResultLabel *)self->_resultLabel text];
-    [v3 addObject:v9];
+    text4 = [(BESearchResultLabel *)self->_resultLabel text];
+    [v3 addObject:text4];
   }
 
-  v10 = [(BETableViewCellPageNumberLabel *)self->_pageNumberLabel text];
-  v11 = [v10 length];
+  text5 = [(BETableViewCellPageNumberLabel *)self->_pageNumberLabel text];
+  v11 = [text5 length];
 
   if (v11)
   {
     v12 = IMCommonCoreBundle();
     v13 = [v12 localizedStringForKey:@"Page %@" value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
 
-    v14 = [(BETableViewCellPageNumberLabel *)self->_pageNumberLabel text];
-    v15 = [NSString stringWithFormat:v13, v14];
+    text6 = [(BETableViewCellPageNumberLabel *)self->_pageNumberLabel text];
+    v15 = [NSString stringWithFormat:v13, text6];
     [v3 addObject:v15];
   }
 

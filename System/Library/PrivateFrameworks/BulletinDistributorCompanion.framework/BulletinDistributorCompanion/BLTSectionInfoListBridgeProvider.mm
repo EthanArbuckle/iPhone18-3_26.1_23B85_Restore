@@ -1,31 +1,31 @@
 @interface BLTSectionInfoListBridgeProvider
-- (BLTSectionInfoListBridgeProvider)initWithSectionConfiguration:(id)a3;
+- (BLTSectionInfoListBridgeProvider)initWithSectionConfiguration:(id)configuration;
 - (BLTSectionInfoListProviderDelegate)delegate;
-- (id)_companionSetupNotificationSettingsDictionaryForSectionInfo:(id)a3 sectionID:(id)a4;
-- (id)_loadOverridesChangedSince:(id)a3;
+- (id)_companionSetupNotificationSettingsDictionaryForSectionInfo:(id)info sectionID:(id)d;
+- (id)_loadOverridesChangedSince:(id)since;
 - (void)_reloadUpdatedOverrides;
-- (void)_reloadUpdatedOverridesWithCompletion:(id)a3;
+- (void)_reloadUpdatedOverridesWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)enableCustomSettingsForWatchSectionID:(id)a3;
-- (void)reloadWithCompletion:(id)a3;
-- (void)removeSectionWithSectionID:(id)a3;
-- (void)setCustomSettingsWithSectionInfo:(id)a3;
-- (void)setCustomSettingsWithSectionInfo:(id)a3 watchSectionID:(id)a4;
-- (void)setNotificationsLevel:(int)a3 sectionID:(id)a4 forceCustom:(BOOL)a5;
+- (void)enableCustomSettingsForWatchSectionID:(id)d;
+- (void)reloadWithCompletion:(id)completion;
+- (void)removeSectionWithSectionID:(id)d;
+- (void)setCustomSettingsWithSectionInfo:(id)info;
+- (void)setCustomSettingsWithSectionInfo:(id)info watchSectionID:(id)d;
+- (void)setNotificationsLevel:(int)level sectionID:(id)d forceCustom:(BOOL)custom;
 @end
 
 @implementation BLTSectionInfoListBridgeProvider
 
-- (BLTSectionInfoListBridgeProvider)initWithSectionConfiguration:(id)a3
+- (BLTSectionInfoListBridgeProvider)initWithSectionConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = BLTSectionInfoListBridgeProvider;
   v6 = [(BLTSectionInfoListBridgeProvider *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sectionConfiguration, a3);
+    objc_storeStrong(&v6->_sectionConfiguration, configuration);
     v8 = objc_alloc(MEMORY[0x277D2BA58]);
     v9 = [v8 initWithDomain:*MEMORY[0x277CF33B8]];
     npsDomainAccessor = v7->_npsDomainAccessor;
@@ -38,16 +38,16 @@
   return v7;
 }
 
-- (void)reloadWithCompletion:(id)a3
+- (void)reloadWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   pthread_mutex_lock(&self->_lock);
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   lastKnownBridgeSettingsChangeDate = self->_lastKnownBridgeSettingsChangeDate;
-  self->_lastKnownBridgeSettingsChangeDate = v4;
+  self->_lastKnownBridgeSettingsChangeDate = distantPast;
 
   pthread_mutex_unlock(&self->_lock);
-  [(BLTSectionInfoListBridgeProvider *)self _reloadUpdatedOverridesWithCompletion:v6];
+  [(BLTSectionInfoListBridgeProvider *)self _reloadUpdatedOverridesWithCompletion:completionCopy];
 }
 
 - (void)dealloc
@@ -93,47 +93,47 @@ void __59__BLTSectionInfoListBridgeProvider__reloadUpdatedOverrides__block_invok
   [WeakRetained updateOverrides:v5 forSectionID:v6 transaction:*(a1 + 40)];
 }
 
-- (void)_reloadUpdatedOverridesWithCompletion:(id)a3
+- (void)_reloadUpdatedOverridesWithCompletion:(id)completion
 {
-  v9 = a3;
+  completionCopy = completion;
   pthread_mutex_lock(&self->_lock);
   v4 = MEMORY[0x277CBEAA8];
   v5 = self->_lastKnownBridgeSettingsChangeDate;
-  v6 = [v4 date];
+  date = [v4 date];
   lastKnownBridgeSettingsChangeDate = self->_lastKnownBridgeSettingsChangeDate;
-  self->_lastKnownBridgeSettingsChangeDate = v6;
+  self->_lastKnownBridgeSettingsChangeDate = date;
 
   pthread_mutex_unlock(&self->_lock);
   v8 = [(BLTSectionInfoListBridgeProvider *)self _loadOverridesChangedSince:v5];
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 
-- (id)_loadOverridesChangedSince:(id)a3
+- (id)_loadOverridesChangedSince:(id)since
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sinceCopy = since;
   v5 = blt_settings_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v50 = v4;
+    v50 = sinceCopy;
     _os_log_impl(&dword_241FB3000, v5, OS_LOG_TYPE_DEFAULT, "Reloading Bridge settings changed after date: %@", buf, 0xCu);
   }
 
-  v6 = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
-  v7 = [(NPSDomainAccessor *)self->_npsDomainAccessor copyKeyList];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  synchronize = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
+  copyKeyList = [(NPSDomainAccessor *)self->_npsDomainAccessor copyKeyList];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9 = blt_settings_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (copyKeyList)
   {
     if (v10)
     {
-      v11 = [v7 count];
+      v11 = [copyKeyList count];
       *buf = 134217984;
       v50 = v11;
       _os_log_impl(&dword_241FB3000, v9, OS_LOG_TYPE_DEFAULT, "Bridge settings found with count: %lu", buf, 0xCu);
@@ -143,15 +143,15 @@ void __59__BLTSectionInfoListBridgeProvider__reloadUpdatedOverrides__block_invok
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v31 = v7;
-    obj = v7;
+    v31 = copyKeyList;
+    obj = copyKeyList;
     v36 = [obj countByEnumeratingWithState:&v41 objects:v48 count:16];
     if (v36)
     {
       v12 = *v42;
       v13 = *MEMORY[0x277CF3428];
-      v33 = self;
-      v34 = v4;
+      selfCopy = self;
+      v34 = sinceCopy;
       v32 = *MEMORY[0x277CF3428];
       do
       {
@@ -165,12 +165,12 @@ void __59__BLTSectionInfoListBridgeProvider__reloadUpdatedOverrides__block_invok
           v15 = *(*(&v41 + 1) + 8 * i);
           v16 = [(NPSDomainAccessor *)self->_npsDomainAccessor dictionaryForKey:v15, v31];
           v17 = [v16 objectForKeyedSubscript:v13];
-          v18 = [v17 earlierDate:v4];
+          v18 = [v17 earlierDate:sinceCopy];
 
-          if (v18 == v4)
+          if (v18 == sinceCopy)
           {
-            v19 = [(BLTSectionInfoListBridgeProvider *)self sectionConfiguration];
-            v20 = [v19 additionalBridgeSectionIDsForSectionID:v15];
+            sectionConfiguration = [(BLTSectionInfoListBridgeProvider *)self sectionConfiguration];
+            v20 = [sectionConfiguration additionalBridgeSectionIDsForSectionID:v15];
 
             if (v20)
             {
@@ -204,7 +204,7 @@ void __59__BLTSectionInfoListBridgeProvider__reloadUpdatedOverrides__block_invok
                     objc_enumerationMutation(v23);
                   }
 
-                  [v8 setObject:v16 forKeyedSubscript:*(*(&v37 + 1) + 8 * j)];
+                  [dictionary setObject:v16 forKeyedSubscript:*(*(&v37 + 1) + 8 * j)];
                 }
 
                 v25 = [v23 countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -213,8 +213,8 @@ void __59__BLTSectionInfoListBridgeProvider__reloadUpdatedOverrides__block_invok
               while (v25);
             }
 
-            self = v33;
-            v4 = v34;
+            self = selfCopy;
+            sinceCopy = v34;
             v13 = v32;
           }
         }
@@ -228,13 +228,13 @@ void __59__BLTSectionInfoListBridgeProvider__reloadUpdatedOverrides__block_invok
     v9 = blt_settings_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v8 count];
+      v28 = [dictionary count];
       *buf = 134217984;
       v50 = v28;
       _os_log_impl(&dword_241FB3000, v9, OS_LOG_TYPE_DEFAULT, "Relevant Bridge setting count: %lu", buf, 0xCu);
     }
 
-    v7 = v31;
+    copyKeyList = v31;
   }
 
   else if (v10)
@@ -245,93 +245,93 @@ void __59__BLTSectionInfoListBridgeProvider__reloadUpdatedOverrides__block_invok
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return dictionary;
 }
 
-- (void)setNotificationsLevel:(int)a3 sectionID:(id)a4 forceCustom:(BOOL)a5
+- (void)setNotificationsLevel:(int)level sectionID:(id)d forceCustom:(BOOL)custom
 {
-  v5 = a5;
+  customCopy = custom;
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  dCopy = d;
   v9 = [BLTTransaction transactionWithDescription:@"BLTSectionInfoListBridgeProvider setNotificationsLevel:sectionID:forceCustom:"];
   v10 = objc_alloc(MEMORY[0x277D2BA58]);
   v11 = [v10 initWithDomain:*MEMORY[0x277CF33B8]];
-  v12 = [v11 synchronize];
-  v13 = [v11 dictionaryForKey:v8];
-  v14 = [v13 mutableCopy];
+  synchronize = [v11 synchronize];
+  v13 = [v11 dictionaryForKey:dCopy];
+  dictionary = [v13 mutableCopy];
 
   v15 = *MEMORY[0x277CF3400];
-  v16 = [v14 objectForKeyedSubscript:*MEMORY[0x277CF3400]];
-  v17 = [v16 BOOLValue];
+  v16 = [dictionary objectForKeyedSubscript:*MEMORY[0x277CF3400]];
+  bOOLValue = [v16 BOOLValue];
 
-  if ((v17 & 1) != 0 || v5)
+  if ((bOOLValue & 1) != 0 || customCopy)
   {
     v18 = blt_settings_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v27 = 138412290;
-      v28 = v8;
+      v28 = dCopy;
       _os_log_impl(&dword_241FB3000, v18, OS_LOG_TYPE_INFO, "Disabling notification in bridge for %@", &v27, 0xCu);
     }
 
-    if (!v14)
+    if (!dictionary)
     {
-      v14 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v15];
-    v19 = [MEMORY[0x277CCABB0] numberWithInt:a3 == 2];
-    [v14 setObject:v19 forKeyedSubscript:*MEMORY[0x277CF33F8]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v15];
+    v19 = [MEMORY[0x277CCABB0] numberWithInt:level == 2];
+    [dictionary setObject:v19 forKeyedSubscript:*MEMORY[0x277CF33F8]];
 
-    v20 = [MEMORY[0x277CCABB0] numberWithInt:a3 == 1];
-    [v14 setObject:v20 forKeyedSubscript:*MEMORY[0x277CF33F0]];
+    v20 = [MEMORY[0x277CCABB0] numberWithInt:level == 1];
+    [dictionary setObject:v20 forKeyedSubscript:*MEMORY[0x277CF33F0]];
 
     v21 = *MEMORY[0x277CF33E8];
-    v22 = [v14 objectForKeyedSubscript:*MEMORY[0x277CF33E8]];
+    v22 = [dictionary objectForKeyedSubscript:*MEMORY[0x277CF33E8]];
 
     if (!v22)
     {
-      [v14 setObject:v8 forKeyedSubscript:v21];
+      [dictionary setObject:dCopy forKeyedSubscript:v21];
     }
 
-    v23 = [MEMORY[0x277CBEAA8] date];
-    [v14 setObject:v23 forKeyedSubscript:*MEMORY[0x277CF3428]];
+    date = [MEMORY[0x277CBEAA8] date];
+    [dictionary setObject:date forKeyedSubscript:*MEMORY[0x277CF3428]];
 
-    [v11 setObject:v14 forKey:v8];
-    v24 = [v11 synchronize];
+    [v11 setObject:dictionary forKey:dCopy];
+    synchronize2 = [v11 synchronize];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained updateOverrides:v14 forSectionID:v8 transaction:v9];
+    [WeakRetained updateOverrides:dictionary forSectionID:dCopy transaction:v9];
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCustomSettingsWithSectionInfo:(id)a3
+- (void)setCustomSettingsWithSectionInfo:(id)info
 {
-  v12 = a3;
+  infoCopy = info;
   v4 = [BLTTransaction transactionWithDescription:@"BLTSectionInfoListBridgeProvider setCustomSettingsWithSectionInfo:"];
-  v5 = [v12 sectionID];
-  v6 = [(BLTSectionInfoListBridgeProvider *)self _companionSetupNotificationSettingsDictionaryForSectionInfo:v12 sectionID:v5];
+  sectionID = [infoCopy sectionID];
+  v6 = [(BLTSectionInfoListBridgeProvider *)self _companionSetupNotificationSettingsDictionaryForSectionInfo:infoCopy sectionID:sectionID];
 
   if (v6)
   {
     npsDomainAccessor = self->_npsDomainAccessor;
-    v8 = [v12 sectionID];
-    [(NPSDomainAccessor *)npsDomainAccessor setObject:v6 forKey:v8];
+    sectionID2 = [infoCopy sectionID];
+    [(NPSDomainAccessor *)npsDomainAccessor setObject:v6 forKey:sectionID2];
 
-    v9 = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
+    synchronize = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v11 = [v12 sectionID];
-    [WeakRetained updateOverrides:v6 forSectionID:v11 transaction:v4];
+    sectionID3 = [infoCopy sectionID];
+    [WeakRetained updateOverrides:v6 forSectionID:sectionID3 transaction:v4];
   }
 }
 
-- (void)setCustomSettingsWithSectionInfo:(id)a3 watchSectionID:(id)a4
+- (void)setCustomSettingsWithSectionInfo:(id)info watchSectionID:(id)d
 {
-  v6 = a4;
-  v7 = [(BLTSectionInfoListBridgeProvider *)self _companionSetupNotificationSettingsDictionaryForSectionInfo:a3 sectionID:v6];
+  dCopy = d;
+  v7 = [(BLTSectionInfoListBridgeProvider *)self _companionSetupNotificationSettingsDictionaryForSectionInfo:info sectionID:dCopy];
   v8 = v7;
-  if (a3 && v7)
+  if (info && v7)
   {
     [v7 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277CF3400]];
     v9 = BLTWorkQueue();
@@ -341,64 +341,64 @@ void __59__BLTSectionInfoListBridgeProvider__reloadUpdatedOverrides__block_invok
     block[3] = &unk_278D316C8;
     block[4] = self;
     v11 = v8;
-    v12 = v6;
+    v12 = dCopy;
     dispatch_async(v9, block);
   }
 }
 
-- (id)_companionSetupNotificationSettingsDictionaryForSectionInfo:(id)a3 sectionID:(id)a4
+- (id)_companionSetupNotificationSettingsDictionaryForSectionInfo:(id)info sectionID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  infoCopy = info;
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
-    v9 = [(NPSDomainAccessor *)self->_npsDomainAccessor dictionaryForKey:v7];
-    v10 = [v9 mutableCopy];
+    synchronize = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
+    v9 = [(NPSDomainAccessor *)self->_npsDomainAccessor dictionaryForKey:dCopy];
+    dictionary = [v9 mutableCopy];
 
-    if (!v10)
+    if (!dictionary)
     {
       v11 = blt_settings_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v24 = 138412290;
-        v25 = v7;
+        v25 = dCopy;
         _os_log_impl(&dword_241FB3000, v11, OS_LOG_TYPE_INFO, "Creating new settings for app %@", &v24, 0xCu);
       }
 
-      v10 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    [v10 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CF3400]];
-    v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "blt_overrideShowsAlerts")}];
-    [v10 setObject:v12 forKeyedSubscript:*MEMORY[0x277CF33F8]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CF3400]];
+    v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(infoCopy, "blt_overrideShowsAlerts")}];
+    [dictionary setObject:v12 forKeyedSubscript:*MEMORY[0x277CF33F8]];
 
-    v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "blt_overrideSendToNotificationCenter")}];
-    [v10 setObject:v13 forKeyedSubscript:*MEMORY[0x277CF33F0]];
+    v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(infoCopy, "blt_overrideSendToNotificationCenter")}];
+    [dictionary setObject:v13 forKeyedSubscript:*MEMORY[0x277CF33F0]];
 
-    v14 = [MEMORY[0x277CCABB0] numberWithInt:{(objc_msgSend(v6, "pushSettings") >> 4) & 1}];
-    [v10 setObject:v14 forKeyedSubscript:*MEMORY[0x277CF3410]];
+    v14 = [MEMORY[0x277CCABB0] numberWithInt:{(objc_msgSend(infoCopy, "pushSettings") >> 4) & 1}];
+    [dictionary setObject:v14 forKeyedSubscript:*MEMORY[0x277CF3410]];
 
-    if ([v6 criticalAlertSetting])
+    if ([infoCopy criticalAlertSetting])
     {
-      v15 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v6, "criticalAlertSetting") == 2}];
-      [v10 setObject:v15 forKeyedSubscript:*MEMORY[0x277CF33E0]];
+      v15 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(infoCopy, "criticalAlertSetting") == 2}];
+      [dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x277CF33E0]];
     }
 
     else
     {
-      [v10 removeObjectForKey:*MEMORY[0x277CF33E0]];
+      [dictionary removeObjectForKey:*MEMORY[0x277CF33E0]];
     }
 
-    v17 = [v6 bulletinGroupingSetting];
+    bulletinGroupingSetting = [infoCopy bulletinGroupingSetting];
     v18 = &unk_28544B550;
-    if (v17 == 1)
+    if (bulletinGroupingSetting == 1)
     {
       v18 = &unk_28544B538;
     }
 
-    if (v17 == 2)
+    if (bulletinGroupingSetting == 2)
     {
       v19 = &unk_28544B520;
     }
@@ -408,49 +408,49 @@ void __59__BLTSectionInfoListBridgeProvider__reloadUpdatedOverrides__block_invok
       v19 = v18;
     }
 
-    [v10 setObject:v19 forKeyedSubscript:*MEMORY[0x277CF33D8]];
+    [dictionary setObject:v19 forKeyedSubscript:*MEMORY[0x277CF33D8]];
     v20 = *MEMORY[0x277CF33E8];
-    v21 = [v10 objectForKeyedSubscript:*MEMORY[0x277CF33E8]];
+    v21 = [dictionary objectForKeyedSubscript:*MEMORY[0x277CF33E8]];
 
     if (!v21)
     {
-      [v10 setObject:v7 forKeyedSubscript:v20];
+      [dictionary setObject:dCopy forKeyedSubscript:v20];
     }
 
-    v16 = [MEMORY[0x277CBEAA8] date];
-    [v10 setObject:v16 forKeyedSubscript:*MEMORY[0x277CF3428]];
+    date = [MEMORY[0x277CBEAA8] date];
+    [dictionary setObject:date forKeyedSubscript:*MEMORY[0x277CF3428]];
   }
 
   else
   {
-    v16 = blt_settings_log();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    date = blt_settings_log();
+    if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
-      [BLTSectionInfoListBridgeProvider _companionSetupNotificationSettingsDictionaryForSectionInfo:v16 sectionID:?];
+      [BLTSectionInfoListBridgeProvider _companionSetupNotificationSettingsDictionaryForSectionInfo:date sectionID:?];
     }
 
-    v10 = 0;
+    dictionary = 0;
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return dictionary;
 }
 
-- (void)enableCustomSettingsForWatchSectionID:(id)a3
+- (void)enableCustomSettingsForWatchSectionID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
-    v6 = [(NPSDomainAccessor *)self->_npsDomainAccessor dictionaryForKey:v4];
+    synchronize = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
+    v6 = [(NPSDomainAccessor *)self->_npsDomainAccessor dictionaryForKey:dCopy];
     v7 = [v6 mutableCopy];
 
     if (v7)
     {
       [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CF3400]];
-      [(NPSDomainAccessor *)self->_npsDomainAccessor setObject:v7 forKey:v4];
-      v8 = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
+      [(NPSDomainAccessor *)self->_npsDomainAccessor setObject:v7 forKey:dCopy];
+      synchronize2 = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
     }
 
     else
@@ -458,7 +458,7 @@ void __59__BLTSectionInfoListBridgeProvider__reloadUpdatedOverrides__block_invok
       v9 = blt_settings_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(BLTSectionInfoListBridgeProvider *)v4 enableCustomSettingsForWatchSectionID:v9];
+        [(BLTSectionInfoListBridgeProvider *)dCopy enableCustomSettingsForWatchSectionID:v9];
       }
     }
   }
@@ -473,14 +473,14 @@ void __59__BLTSectionInfoListBridgeProvider__reloadUpdatedOverrides__block_invok
   }
 }
 
-- (void)removeSectionWithSectionID:(id)a3
+- (void)removeSectionWithSectionID:(id)d
 {
   npsDomainAccessor = self->_npsDomainAccessor;
-  v5 = a3;
-  v6 = [(NPSDomainAccessor *)npsDomainAccessor synchronize];
-  [(NPSDomainAccessor *)self->_npsDomainAccessor removeObjectForKey:v5];
+  dCopy = d;
+  synchronize = [(NPSDomainAccessor *)npsDomainAccessor synchronize];
+  [(NPSDomainAccessor *)self->_npsDomainAccessor removeObjectForKey:dCopy];
 
-  v7 = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
+  synchronize2 = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
 }
 
 - (BLTSectionInfoListProviderDelegate)delegate

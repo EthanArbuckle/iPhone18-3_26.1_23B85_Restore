@@ -1,18 +1,18 @@
 @interface BECFIUtilitiesJSOptions
-+ (id)cfiUtilitiesJSOptionsForBookInfoSnapshot:(id)a3 ordinal:(unint64_t)a4;
++ (id)cfiUtilitiesJSOptionsForBookInfoSnapshot:(id)snapshot ordinal:(unint64_t)ordinal;
 @end
 
 @implementation BECFIUtilitiesJSOptions
 
-+ (id)cfiUtilitiesJSOptionsForBookInfoSnapshot:(id)a3 ordinal:(unint64_t)a4
++ (id)cfiUtilitiesJSOptionsForBookInfoSnapshot:(id)snapshot ordinal:(unint64_t)ordinal
 {
-  v5 = a3;
+  snapshotCopy = snapshot;
   v6 = [BECFIUtilitiesJSOptions alloc];
-  v7 = [v5 manifestId];
-  v8 = [v5 assetID];
-  v9 = [v5 spineIndexInPackage];
+  manifestId = [snapshotCopy manifestId];
+  assetID = [snapshotCopy assetID];
+  spineIndexInPackage = [snapshotCopy spineIndexInPackage];
 
-  v10 = [v6 initWithManifestId:v7 assetId:v8 chapterIndex:a4 spineIndex:{objc_msgSend(v9, "unsignedIntegerValue")}];
+  v10 = [v6 initWithManifestId:manifestId assetId:assetID chapterIndex:ordinal spineIndex:{objc_msgSend(spineIndexInPackage, "unsignedIntegerValue")}];
 
   return v10;
 }

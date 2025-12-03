@@ -1,6 +1,6 @@
 @interface ACCExternalAccessorySession
 - (ACCExternalAccessorySession)init;
-- (ACCExternalAccessorySession)initWithEASessionUUID:(id)a3 protocolID:(unsigned __int8)a4 legacyConnectionID:(unint64_t)a5 sessionID:(unsigned __int16)a6;
+- (ACCExternalAccessorySession)initWithEASessionUUID:(id)d protocolID:(unsigned __int8)iD legacyConnectionID:(unint64_t)connectionID sessionID:(unsigned __int16)sessionID;
 - (BOOL)closeDataPipes;
 - (BOOL)openPipeFromApp;
 - (BOOL)openPipeToApp;
@@ -20,22 +20,22 @@
   return 0;
 }
 
-- (ACCExternalAccessorySession)initWithEASessionUUID:(id)a3 protocolID:(unsigned __int8)a4 legacyConnectionID:(unint64_t)a5 sessionID:(unsigned __int16)a6
+- (ACCExternalAccessorySession)initWithEASessionUUID:(id)d protocolID:(unsigned __int8)iD legacyConnectionID:(unint64_t)connectionID sessionID:(unsigned __int16)sessionID
 {
-  v10 = a3;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = ACCExternalAccessorySession;
   v11 = [(ACCExternalAccessorySession *)&v25 init];
   v12 = v11;
   if (v11)
   {
-    v11->_protocolID = a4;
-    v13 = [v10 copy];
+    v11->_protocolID = iD;
+    v13 = [dCopy copy];
     eaSessionUUID = v12->_eaSessionUUID;
     v12->_eaSessionUUID = v13;
 
-    v12->_legacyConnectionID = a5;
-    v12->_sessionID = a6;
+    v12->_legacyConnectionID = connectionID;
+    v12->_sessionID = sessionID;
     v15 = objc_alloc_init(NSLock);
     sessionNotificationLock = v12->_sessionNotificationLock;
     v12->_sessionNotificationLock = v15;
@@ -70,7 +70,7 @@
       *buf = 67109634;
       v27 = protocolID;
       v28 = 1024;
-      v29 = sessionID;
+      sessionIDCopy = sessionID;
       v30 = 2112;
       v31 = v23;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "new EA Session Basic protocolID=%d sessionID=%d eaSessionUUID=%@", buf, 0x18u);

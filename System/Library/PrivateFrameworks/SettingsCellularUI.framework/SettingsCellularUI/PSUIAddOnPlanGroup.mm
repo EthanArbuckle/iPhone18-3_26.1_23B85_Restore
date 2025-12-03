@@ -1,56 +1,56 @@
 @interface PSUIAddOnPlanGroup
 - (BOOL)_shouldShowWiFiOffFooter;
 - (PSListController)listController;
-- (PSUIAddOnPlanGroup)initWithListController:(id)a3 groupSpecifier:(id)a4;
-- (PSUIAddOnPlanGroup)initWithListController:(id)a3 groupSpecifier:(id)a4 planManager:(id)a5 ctPlanManager:(id)a6 showAddOnPlans:(BOOL)a7;
+- (PSUIAddOnPlanGroup)initWithListController:(id)controller groupSpecifier:(id)specifier;
+- (PSUIAddOnPlanGroup)initWithListController:(id)controller groupSpecifier:(id)specifier planManager:(id)manager ctPlanManager:(id)planManager showAddOnPlans:(BOOL)plans;
 - (id)specifiers;
-- (id)specifiersForRemotePlans:(BOOL)a3;
-- (void)_addOnPlanOptionPressed:(id)a3;
+- (id)specifiersForRemotePlans:(BOOL)plans;
+- (void)_addOnPlanOptionPressed:(id)pressed;
 - (void)_addWiFiOffFooter;
-- (void)_handleAddButtonTapped:(id)a3;
-- (void)_handleAddRemotePlan:(id)a3;
-- (void)_turnOnWifiPressed:(id)a3;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
+- (void)_handleAddButtonTapped:(id)tapped;
+- (void)_handleAddRemotePlan:(id)plan;
+- (void)_turnOnWifiPressed:(id)pressed;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
 @end
 
 @implementation PSUIAddOnPlanGroup
 
-- (PSUIAddOnPlanGroup)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (PSUIAddOnPlanGroup)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  controllerCopy = controller;
   v8 = +[PSUICellularPlanManagerCache sharedInstance];
-  v9 = [MEMORY[0x277CF96D8] sharedManager];
-  v10 = [(PSUIAddOnPlanGroup *)self initWithListController:v7 groupSpecifier:v6 planManager:v8 ctPlanManager:v9 showAddOnPlans:1];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  v10 = [(PSUIAddOnPlanGroup *)self initWithListController:controllerCopy groupSpecifier:specifierCopy planManager:v8 ctPlanManager:mEMORY[0x277CF96D8] showAddOnPlans:1];
 
   return v10;
 }
 
-- (PSUIAddOnPlanGroup)initWithListController:(id)a3 groupSpecifier:(id)a4 planManager:(id)a5 ctPlanManager:(id)a6 showAddOnPlans:(BOOL)a7
+- (PSUIAddOnPlanGroup)initWithListController:(id)controller groupSpecifier:(id)specifier planManager:(id)manager ctPlanManager:(id)planManager showAddOnPlans:(BOOL)plans
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  controllerCopy = controller;
+  specifierCopy = specifier;
+  managerCopy = manager;
+  planManagerCopy = planManager;
   v22.receiver = self;
   v22.super_class = PSUIAddOnPlanGroup;
   v16 = [(PSUIAddOnPlanGroup *)&v22 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_listController, v12);
-    objc_storeStrong(&v17->_groupSpecifier, a4);
-    objc_storeStrong(&v17->_cellularPlanManager, a5);
-    objc_storeStrong(&v17->_ctCellularPlanManager, a6);
+    objc_storeWeak(&v16->_listController, controllerCopy);
+    objc_storeStrong(&v17->_groupSpecifier, specifier);
+    objc_storeStrong(&v17->_cellularPlanManager, manager);
+    objc_storeStrong(&v17->_ctCellularPlanManager, planManager);
     v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
     remotePlansSpecifiers = v17->_remotePlansSpecifiers;
     v17->_remotePlansSpecifiers = v18;
 
-    v17->_showAddOnPlans = a7;
+    v17->_showAddOnPlans = plans;
   }
 
-  v20 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v20 addObserver:v17 selector:sel__handleAddButtonTapped_ name:0x287739578 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v17 selector:sel__handleAddButtonTapped_ name:0x287739578 object:0];
 
   return v17;
 }
@@ -107,11 +107,11 @@
 
     if ([(PSUIAddOnPlanGroup *)self _shouldShowWiFiOffFooter])
     {
-      v19 = [(PSUIAddOnPlanGroup *)self getLogger];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      getLogger = [(PSUIAddOnPlanGroup *)self getLogger];
+      if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_2658DE000, v19, OS_LOG_TYPE_DEFAULT, "WiFi/Cellular is off while iCloud signed in", buf, 2u);
+        _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "WiFi/Cellular is off while iCloud signed in", buf, 2u);
       }
 
       [v16 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
@@ -128,11 +128,11 @@
 
     else
     {
-      v23 = [(PSUIAddOnPlanGroup *)self getLogger];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      getLogger2 = [(PSUIAddOnPlanGroup *)self getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         *v26 = 0;
-        _os_log_impl(&dword_2658DE000, v23, OS_LOG_TYPE_DEFAULT, "No add-on plan(s) is available", v26, 2u);
+        _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "No add-on plan(s) is available", v26, 2u);
       }
 
       [v3 removeAllObjects];
@@ -142,14 +142,14 @@
   return v3;
 }
 
-- (id)specifiersForRemotePlans:(BOOL)a3
+- (id)specifiersForRemotePlans:(BOOL)plans
 {
-  v3 = a3;
+  plansCopy = plans;
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 sf_isiPad];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
-  if ((v6 & 1) == 0)
+  if ((sf_isiPad & 1) == 0)
   {
     v22 = self->_remotePlansSpecifiers;
 LABEL_21:
@@ -157,74 +157,74 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v7 = [(PSUICellularPlanManagerCache *)self->_cellularPlanManager isCarrierItemFlowSupported];
+  isCarrierItemFlowSupported = [(PSUICellularPlanManagerCache *)self->_cellularPlanManager isCarrierItemFlowSupported];
   remotePlansSpecifiers = self->_remotePlansSpecifiers;
-  if (!v7)
+  if (!isCarrierItemFlowSupported)
   {
     v22 = remotePlansSpecifiers;
     goto LABEL_21;
   }
 
   [(NSMutableArray *)remotePlansSpecifiers removeAllObjects];
-  if (v3 && !self->_showAddOnPlans && ![(PSUICellularPlanManagerCache *)self->_cellularPlanManager remoteListFetchCompleted])
+  if (plansCopy && !self->_showAddOnPlans && ![(PSUICellularPlanManagerCache *)self->_cellularPlanManager remoteListFetchCompleted])
   {
     v9 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:15 edit:0];
     [(NSMutableArray *)self->_remotePlansSpecifiers addObject:v9];
   }
 
-  v10 = [(PSUICellularPlanManagerCache *)self->_cellularPlanManager remotePlans];
-  v11 = [v10 plans];
+  remotePlans = [(PSUICellularPlanManagerCache *)self->_cellularPlanManager remotePlans];
+  plans = [remotePlans plans];
 
-  if ([v11 count])
+  if ([plans count])
   {
     v12 = 0;
     v13 = *MEMORY[0x277D3FE58];
     do
     {
-      v14 = [v11 objectAtIndex:v12];
-      v15 = [(PSUIAddOnPlanGroup *)self getLogger];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      v14 = [plans objectAtIndex:v12];
+      getLogger = [(PSUIAddOnPlanGroup *)self getLogger];
+      if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v26 = v14;
-        _os_log_impl(&dword_2658DE000, v15, OS_LOG_TYPE_DEFAULT, "remote plan: %@", buf, 0xCu);
+        _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "remote plan: %@", buf, 0xCu);
       }
 
       if ([(NSMutableArray *)v14 attributes]== 8)
       {
-        v16 = [(NSMutableArray *)v14 carrierName];
+        carrierName = [(NSMutableArray *)v14 carrierName];
         carrierName = self->_carrierName;
-        self->_carrierName = v16;
+        self->_carrierName = carrierName;
 
-        v18 = [objc_alloc(MEMORY[0x277D3FAD8]) initWithName:0 target:0 set:0 get:0 detail:0 cell:4 edit:0];
-        [v18 setProperty:objc_opt_class() forKey:v13];
-        [v18 setUserInfo:v14];
-        [(NSMutableArray *)self->_remotePlansSpecifiers addObject:v18];
+        getLogger2 = [objc_alloc(MEMORY[0x277D3FAD8]) initWithName:0 target:0 set:0 get:0 detail:0 cell:4 edit:0];
+        [getLogger2 setProperty:objc_opt_class() forKey:v13];
+        [getLogger2 setUserInfo:v14];
+        [(NSMutableArray *)self->_remotePlansSpecifiers addObject:getLogger2];
       }
 
       else
       {
-        v18 = [(PSUIAddOnPlanGroup *)self getLogger];
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+        getLogger2 = [(PSUIAddOnPlanGroup *)self getLogger];
+        if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_2658DE000, v18, OS_LOG_TYPE_DEFAULT, "plan not addon type, skipping...", buf, 2u);
+          _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "plan not addon type, skipping...", buf, 2u);
         }
       }
 
       ++v12;
     }
 
-    while ([v11 count] > v12);
+    while ([plans count] > v12);
   }
 
-  v19 = [(PSUIAddOnPlanGroup *)self getLogger];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  getLogger3 = [(PSUIAddOnPlanGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
   {
     v20 = self->_remotePlansSpecifiers;
     *buf = 138412290;
     v26 = v20;
-    _os_log_impl(&dword_2658DE000, v19, OS_LOG_TYPE_DEFAULT, "specifiers:  %@", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "specifiers:  %@", buf, 0xCu);
   }
 
   v21 = self->_remotePlansSpecifiers;
@@ -234,21 +234,21 @@ LABEL_22:
   return v21;
 }
 
-- (void)_handleAddButtonTapped:(id)a3
+- (void)_handleAddButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 sf_isiPad];
+  tappedCopy = tapped;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
-  if (v6)
+  if (sf_isiPad)
   {
-    v27 = [v4 object];
-    v26 = [v27 userInfo];
+    object = [tappedCopy object];
+    userInfo = [object userInfo];
     v7 = MEMORY[0x277CCACA8];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"ADD_ON_PLAN_ALERT_BODY_%@" value:? table:?];
-    v10 = [v26 carrierName];
-    v28 = [v7 stringWithFormat:v9, v10];
+    carrierName = [userInfo carrierName];
+    v28 = [v7 stringWithFormat:v9, carrierName];
 
     v11 = MEMORY[0x277D75110];
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -262,7 +262,7 @@ LABEL_22:
 
     [v14 addAction:v18];
     v19 = MEMORY[0x277D750F8];
-    v20 = v26;
+    getLogger = userInfo;
     v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v22 = [v21 localizedStringForKey:@"OK_BUTTON" value:&stru_287733598 table:@"Cellular"];
     v29[0] = MEMORY[0x277D85DD0];
@@ -270,8 +270,8 @@ LABEL_22:
     v29[2] = __45__PSUIAddOnPlanGroup__handleAddButtonTapped___block_invoke_2;
     v29[3] = &unk_279BAA160;
     v29[4] = self;
-    v30 = v27;
-    v23 = v27;
+    v30 = object;
+    v23 = object;
     v24 = [v19 actionWithTitle:v22 style:0 handler:v29];
 
     [v14 addAction:v24];
@@ -281,33 +281,33 @@ LABEL_22:
 
   else
   {
-    v20 = [(PSUIAddOnPlanGroup *)self getLogger];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
+    getLogger = [(PSUIAddOnPlanGroup *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_FAULT))
     {
       *buf = 0;
-      _os_log_fault_impl(&dword_2658DE000, v20, OS_LOG_TYPE_FAULT, "Invalid action", buf, 2u);
+      _os_log_fault_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_FAULT, "Invalid action", buf, 2u);
     }
   }
 }
 
-- (void)_handleAddRemotePlan:(id)a3
+- (void)_handleAddRemotePlan:(id)plan
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  planCopy = plan;
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v6 = [WeakRetained view];
-  [v6 setUserInteractionEnabled:0];
+  view = [WeakRetained view];
+  [view setUserInteractionEnabled:0];
 
   v7 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
-  v8 = [v4 propertyForKey:*MEMORY[0x277D40148]];
+  v8 = [planCopy propertyForKey:*MEMORY[0x277D40148]];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v9 = [v8 contentView];
-  v10 = [v9 subviews];
+  contentView = [v8 contentView];
+  subviews = [contentView subviews];
 
-  v11 = [v10 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  v11 = [subviews countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v11)
   {
     v12 = v11;
@@ -319,7 +319,7 @@ LABEL_22:
       {
         if (*v34 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(subviews);
         }
 
         v15 = *(*(&v33 + 1) + 8 * v14);
@@ -333,22 +333,22 @@ LABEL_22:
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v12 = [subviews countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v12);
   }
 
-  v16 = [v8 accessoryView];
+  accessoryView = [v8 accessoryView];
   [v8 setAccessoryView:v7];
   [v7 startAnimating];
   v37[0] = *MEMORY[0x277D49548];
   v17 = [MEMORY[0x277CCABB0] numberWithInteger:17];
   v38[0] = v17;
   v37[1] = *MEMORY[0x277D49580];
-  v18 = [v4 userInfo];
-  v19 = [v18 plan];
-  v38[1] = v19;
+  userInfo = [planCopy userInfo];
+  plan = [userInfo plan];
+  v38[1] = plan;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:2];
 
   v21 = [MEMORY[0x277D49530] flowWithOptions:v20];
@@ -365,8 +365,8 @@ LABEL_22:
   v29[4] = self;
   v30 = v7;
   v31 = v8;
-  v32 = v16;
-  v25 = v16;
+  v32 = accessoryView;
+  v25 = accessoryView;
   v26 = v8;
   v27 = v7;
   [(TSSIMSetupFlow *)v23 showFirstViewControllerWithHostController:v24 completion:v29];
@@ -407,7 +407,7 @@ void __43__PSUIAddOnPlanGroup__handleAddRemotePlan___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
@@ -415,7 +415,7 @@ void __43__PSUIAddOnPlanGroup__handleAddRemotePlan___block_invoke_2(uint64_t a1)
   block[2] = __44__PSUIAddOnPlanGroup_simSetupFlowCompleted___block_invoke;
   block[3] = &unk_279BAAA18;
   objc_copyWeak(v5, &location);
-  v5[1] = a3;
+  v5[1] = completed;
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_destroyWeak(v5);
   objc_destroyWeak(&location);
@@ -441,12 +441,12 @@ void __44__PSUIAddOnPlanGroup_simSetupFlowCompleted___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_addOnPlanOptionPressed:(id)a3
+- (void)_addOnPlanOptionPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v5 = [WeakRetained isInModalPresentation];
+  isInModalPresentation = [WeakRetained isInModalPresentation];
 
-  if (v5)
+  if (isInModalPresentation)
   {
     v9 = [[PSUICarrierListController alloc] initWithOptions:1 showCarrierItemGroup:0];
     v6 = objc_loadWeakRetained(&self->_listController);
@@ -475,12 +475,12 @@ void __44__PSUIAddOnPlanGroup_simSetupFlowCompleted___block_invoke(uint64_t a1)
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    if ([v4 sf_isiPad])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice sf_isiPad])
     {
-      v5 = [MEMORY[0x277CB8F48] defaultStore];
-      v6 = [v5 aa_primaryAppleAccount];
-      if (v6)
+      defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+      aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+      if (aa_primaryAppleAccount)
       {
         v7 = +[PSUIDeviceWiFiState sharedInstance];
         if ([v7 isConnectedOverWiFi])
@@ -520,10 +520,10 @@ void __44__PSUIAddOnPlanGroup_simSetupFlowCompleted___block_invoke(uint64_t a1)
   v6 = [v5 localizedStringForKey:@"TURN_ON_WIFI_FAUX_CARD_SCANNER_FOOTER_%@" value:&stru_287733598 table:@"Cellular"];
   v7 = [v4 stringWithFormat:v6, v25];
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 sf_isChinaRegionCellularDevice];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isChinaRegionCellularDevice = [currentDevice sf_isChinaRegionCellularDevice];
 
-  if (v9)
+  if (sf_isChinaRegionCellularDevice)
   {
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"TURN_ON_WLAN_FAUX_CARD_SCANNER_FOOTER_HYPERLINK_SUBSTRING" value:&stru_287733598 table:@"Cellular"];
@@ -559,14 +559,14 @@ void __44__PSUIAddOnPlanGroup_simSetupFlowCompleted___block_invoke(uint64_t a1)
   [(PSSpecifier *)self->_groupSpecifier setProperty:@"_turnOnWifiPressed:" forKey:*MEMORY[0x277D3FF50]];
 }
 
-- (void)_turnOnWifiPressed:(id)a3
+- (void)_turnOnWifiPressed:(id)pressed
 {
   v3 = MEMORY[0x277CC1E80];
-  v4 = a3;
-  v6 = [v3 defaultWorkspace];
-  v5 = [v4 URL];
+  pressedCopy = pressed;
+  defaultWorkspace = [v3 defaultWorkspace];
+  v5 = [pressedCopy URL];
 
-  [v6 openSensitiveURL:v5 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v5 withOptions:0];
 }
 
 - (PSListController)listController

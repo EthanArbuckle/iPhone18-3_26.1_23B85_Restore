@@ -1,27 +1,27 @@
 @interface TIWordSearch3x3Kana
-- (id)uncachedCandidatesForOperation:(id)a3;
+- (id)uncachedCandidatesForOperation:(id)operation;
 @end
 
 @implementation TIWordSearch3x3Kana
 
-- (id)uncachedCandidatesForOperation:(id)a3
+- (id)uncachedCandidatesForOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [v4 inputString];
-  v6 = [v4 keyboardInput];
-  v7 = v4;
+  operationCopy = operation;
+  inputString = [operationCopy inputString];
+  keyboardInput = [operationCopy keyboardInput];
+  v7 = operationCopy;
   v8 = objc_alloc_init(MEMORY[0x29EDC7278]);
-  if ([(TIWordSearch *)self addFacemarkCandidatesToResultSet:v8 forInput:v5])
+  if ([(TIWordSearch *)self addFacemarkCandidatesToResultSet:v8 forInput:inputString])
   {
     [(TIWordSearchKana *)self setCandidateResultSet:v8];
     goto LABEL_23;
   }
 
   v32 = v8;
-  v31 = [v7 contextString];
-  v30 = [v7 flickUsed];
-  v33 = v5;
-  v9 = v5;
+  contextString = [v7 contextString];
+  flickUsed = [v7 flickUsed];
+  v33 = inputString;
+  v9 = inputString;
   if (!getNumericStringForTapsOnNumberPlane(NSString *)::symbolToNumberDictionary)
   {
     keyCallBacks = *byte_2A2525930;
@@ -61,27 +61,27 @@
     v29 = v10;
   }
 
-  v17 = [v7 predictionEnabled];
-  v18 = [v7 reanalysisMode];
-  v19 = [v7 geometryModelData];
-  v20 = [v7 hardwareKeyboardMode];
-  v21 = [v7 referenceMode];
+  predictionEnabled = [v7 predictionEnabled];
+  reanalysisMode = [v7 reanalysisMode];
+  geometryModelData = [v7 geometryModelData];
+  hardwareKeyboardMode = [v7 hardwareKeyboardMode];
+  referenceMode = [v7 referenceMode];
   BYTE3(v28) = [v7 singlePhrase];
-  BYTE2(v28) = v21;
-  BYTE1(v28) = v20;
-  LOBYTE(v28) = v30;
-  v22 = [TIWordSearchKana makeCandidates:"makeCandidates:input:contextString:predictionEnabled:reanalysisMode:withInputManager:geometryModelData:flickUsed:hardwareKeyboardMode:referenceMode:singlePhrase:" input:v9 contextString:v6 predictionEnabled:v31 reanalysisMode:v17 withInputManager:v18 geometryModelData:0 flickUsed:v19 hardwareKeyboardMode:v28 referenceMode:? singlePhrase:?];
+  BYTE2(v28) = referenceMode;
+  BYTE1(v28) = hardwareKeyboardMode;
+  LOBYTE(v28) = flickUsed;
+  v22 = [TIWordSearchKana makeCandidates:"makeCandidates:input:contextString:predictionEnabled:reanalysisMode:withInputManager:geometryModelData:flickUsed:hardwareKeyboardMode:referenceMode:singlePhrase:" input:v9 contextString:keyboardInput predictionEnabled:contextString reanalysisMode:predictionEnabled withInputManager:reanalysisMode geometryModelData:0 flickUsed:geometryModelData hardwareKeyboardMode:v28 referenceMode:? singlePhrase:?];
   [(TIWordSearchKana *)self setCandidateResultSet:v22];
 
-  if (v29 && !(([v9 length] != 1) | v30 & 1))
+  if (v29 && !(([v9 length] != 1) | flickUsed & 1))
   {
     [(TIWordSearchKana *)self _insertString:v29 input:v9 at:2 force:1];
   }
 
-  v23 = [(TIWordSearchKana *)self candidateResultSet];
-  v24 = [v23 candidates];
-  v5 = v33;
-  if ([v24 count])
+  candidateResultSet = [(TIWordSearchKana *)self candidateResultSet];
+  candidates = [candidateResultSet candidates];
+  inputString = v33;
+  if ([candidates count])
   {
 
 LABEL_21:
@@ -92,8 +92,8 @@ LABEL_21:
 
   if (v25)
   {
-    v23 = [(TIWordSearchKana *)self candidateResultSet];
-    [v23 addSyntheticMecabraCandidateWithSurface:v9 input:v9];
+    candidateResultSet = [(TIWordSearchKana *)self candidateResultSet];
+    [candidateResultSet addSyntheticMecabraCandidateWithSurface:v9 input:v9];
     goto LABEL_21;
   }
 
@@ -101,9 +101,9 @@ LABEL_22:
 
   v8 = v32;
 LABEL_23:
-  v26 = [(TIWordSearchKana *)self candidateResultSet];
+  candidateResultSet2 = [(TIWordSearchKana *)self candidateResultSet];
 
-  return v26;
+  return candidateResultSet2;
 }
 
 @end

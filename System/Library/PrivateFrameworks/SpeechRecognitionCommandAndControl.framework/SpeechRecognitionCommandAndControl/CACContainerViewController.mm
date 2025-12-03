@@ -1,8 +1,8 @@
 @interface CACContainerViewController
 - (UIView)viewAboveContainedViews;
-- (void)installViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)installViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)loadView;
-- (void)uninstallViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)uninstallViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation CACContainerViewController
@@ -19,15 +19,15 @@
   if (!viewAboveContainedViews)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
-    v5 = [(CACContainerViewController *)self view];
-    [v5 bounds];
+    view = [(CACContainerViewController *)self view];
+    [view bounds];
     v6 = [v4 initWithFrame:?];
     v7 = self->_viewAboveContainedViews;
     self->_viewAboveContainedViews = v6;
 
     [(UIView *)self->_viewAboveContainedViews setAutoresizingMask:18];
-    v8 = [(CACContainerViewController *)self view];
-    [v8 addSubview:self->_viewAboveContainedViews];
+    view2 = [(CACContainerViewController *)self view];
+    [view2 addSubview:self->_viewAboveContainedViews];
 
     viewAboveContainedViews = self->_viewAboveContainedViews;
   }
@@ -35,14 +35,14 @@
   return viewAboveContainedViews;
 }
 
-- (void)installViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)installViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CACContainerViewController *)self viewControllers];
-  v11 = [v10 containsObject:v8];
+  controllerCopy = controller;
+  completionCopy = completion;
+  viewControllers = [(CACContainerViewController *)self viewControllers];
+  v11 = [viewControllers containsObject:controllerCopy];
 
   if (v11)
   {
@@ -50,71 +50,71 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = controllerCopy;
       _os_log_impl(&dword_26B354000, v12, OS_LOG_TYPE_DEFAULT, "Attempted to reinstall view controller that was already installed: %@", &buf, 0xCu);
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    v13 = [(CACContainerViewController *)self viewControllers];
+    viewControllers2 = [(CACContainerViewController *)self viewControllers];
 
-    if (!v13)
+    if (!viewControllers2)
     {
-      v14 = [MEMORY[0x277CBEB18] array];
-      [(CACContainerViewController *)self setViewControllers:v14];
+      array = [MEMORY[0x277CBEB18] array];
+      [(CACContainerViewController *)self setViewControllers:array];
     }
 
-    v15 = [(CACContainerViewController *)self view];
-    [v15 bounds];
+    view = [(CACContainerViewController *)self view];
+    [view bounds];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [v8 view];
-    [v24 setFrame:{v17, v19, v21, v23}];
+    view2 = [controllerCopy view];
+    [view2 setFrame:{v17, v19, v21, v23}];
 
-    v25 = [v8 view];
-    [v25 setAutoresizingMask:18];
+    view3 = [controllerCopy view];
+    [view3 setAutoresizingMask:18];
 
-    [(CACContainerViewController *)self addChildViewController:v8];
+    [(CACContainerViewController *)self addChildViewController:controllerCopy];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v49 = 0x2020000000;
     v50 = 0;
-    v26 = [(CACContainerViewController *)self viewControllers];
+    viewControllers3 = [(CACContainerViewController *)self viewControllers];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __72__CACContainerViewController_installViewController_animated_completion___block_invoke;
     v44[3] = &unk_279CEC750;
-    v27 = v8;
+    v27 = controllerCopy;
     v45 = v27;
-    v46 = self;
+    selfCopy = self;
     p_buf = &buf;
-    [v26 enumerateObjectsUsingBlock:v44];
+    [viewControllers3 enumerateObjectsUsingBlock:v44];
 
     if ((*(*(&buf + 1) + 24) & 1) == 0)
     {
-      v28 = [(CACContainerViewController *)self viewControllers];
-      [v28 addObject:v27];
+      viewControllers4 = [(CACContainerViewController *)self viewControllers];
+      [viewControllers4 addObject:v27];
 
       if (self->_viewAboveContainedViews)
       {
-        v29 = [(CACContainerViewController *)self view];
-        v30 = [v27 view];
-        [v29 insertSubview:v30 belowSubview:self->_viewAboveContainedViews];
+        view4 = [(CACContainerViewController *)self view];
+        view5 = [v27 view];
+        [view4 insertSubview:view5 belowSubview:self->_viewAboveContainedViews];
       }
 
       else
       {
-        v29 = [(CACContainerViewController *)self view];
-        v30 = [v27 view];
-        [v29 addSubview:v30];
+        view4 = [(CACContainerViewController *)self view];
+        view5 = [v27 view];
+        [view4 addSubview:view5];
       }
     }
 
@@ -124,14 +124,14 @@
     aBlock[3] = &unk_279CEB430;
     v31 = v27;
     v41 = v31;
-    v42 = self;
-    v43 = v9;
+    selfCopy2 = self;
+    v43 = completionCopy;
     v32 = _Block_copy(aBlock);
     v33 = v32;
-    if (v6)
+    if (animatedCopy)
     {
-      v34 = [v31 view];
-      [v34 setAlpha:0.0];
+      view6 = [v31 view];
+      [view6 setAlpha:0.0];
 
       v35 = MEMORY[0x277D75D18];
       v38[0] = MEMORY[0x277D85DD0];
@@ -195,40 +195,40 @@ void __72__CACContainerViewController_installViewController_animated_completion_
   [v1 setAlpha:1.0];
 }
 
-- (void)uninstallViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)uninstallViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   v10 = CACLogGeneral();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v28 = v8;
+    v28 = controllerCopy;
     _os_log_impl(&dword_26B354000, v10, OS_LOG_TYPE_INFO, "Uninstalling view controller... %@", buf, 0xCu);
   }
 
-  v11 = [(CACContainerViewController *)self viewControllers];
-  v12 = [v11 containsObject:v8];
+  viewControllers = [(CACContainerViewController *)self viewControllers];
+  v12 = [viewControllers containsObject:controllerCopy];
 
   if (v12)
   {
-    [v8 willMoveToParentViewController:0];
-    v13 = [(CACContainerViewController *)self viewControllers];
-    [v13 removeObject:v8];
+    [controllerCopy willMoveToParentViewController:0];
+    viewControllers2 = [(CACContainerViewController *)self viewControllers];
+    [viewControllers2 removeObject:controllerCopy];
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __74__CACContainerViewController_uninstallViewController_animated_completion___block_invoke;
     aBlock[3] = &unk_279CEC778;
-    v14 = v8;
+    v14 = controllerCopy;
     v24 = v14;
-    v25 = v9;
-    v26 = v6;
+    v25 = completionCopy;
+    v26 = animatedCopy;
     v15 = _Block_copy(aBlock);
     v16 = v15;
-    if (v6)
+    if (animatedCopy)
     {
       v17 = MEMORY[0x277D75D18];
       v21[0] = MEMORY[0x277D85DD0];
@@ -256,13 +256,13 @@ void __72__CACContainerViewController_installViewController_animated_completion_
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v28 = v8;
+      v28 = controllerCopy;
       _os_log_impl(&dword_26B354000, v18, OS_LOG_TYPE_DEFAULT, "Attempted to uninstall overlay view controller that was not installed: %@", buf, 0xCu);
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 }

@@ -1,50 +1,50 @@
 @interface TTSPhonemeSupport
-+ (id)_getPhonemeMapForSynth:(id)a3 language:(id)a4;
-+ (id)_ipaVectorFromString:(id)a3;
-+ (id)_phonemesFromIPA:(id)a3 language:(id)a4 synth:(id)a5;
-+ (id)applebetPhonemesFromIPA:(id)a3;
-+ (id)eloquencePhonemesFromIPA:(id)a3 language:(id)a4;
++ (id)_getPhonemeMapForSynth:(id)synth language:(id)language;
++ (id)_ipaVectorFromString:(id)string;
++ (id)_phonemesFromIPA:(id)a language:(id)language synth:(id)synth;
++ (id)applebetPhonemesFromIPA:(id)a;
++ (id)eloquencePhonemesFromIPA:(id)a language:(id)language;
 + (id)supportedIPAPhonemeLanguages;
 @end
 
 @implementation TTSPhonemeSupport
 
-+ (id)applebetPhonemesFromIPA:(id)a3
++ (id)applebetPhonemesFromIPA:(id)a
 {
-  v4 = objc_msgSend_lhPhonemesFromIPA_language_(a1, a2, a3, @"en-US", v3);
+  v4 = objc_msgSend_lhPhonemesFromIPA_language_(self, a2, a, @"en-US", v3);
   v8 = objc_msgSend_convertLHToApplebet_(TTSLHPhonemeToApplebetPhonemeMapper, v5, v4, v6, v7);
 
   return v8;
 }
 
-+ (id)_getPhonemeMapForSynth:(id)a3 language:(id)a4
++ (id)_getPhonemeMapForSynth:(id)synth language:(id)language
 {
-  v5 = a3;
-  v10 = a4;
+  synthCopy = synth;
+  languageCopy = language;
   if (qword_1EB390FF0 != -1)
   {
     sub_1A95788B8();
   }
 
   objc_msgSend_lock(qword_1EB390FE8, v6, v7, v8, v9);
-  v14 = objc_msgSend_objectForKeyedSubscript_(qword_1EB390FE0, v11, v5, v12, v13);
-  v18 = objc_msgSend_objectForKeyedSubscript_(v14, v15, v10, v16, v17);
+  v14 = objc_msgSend_objectForKeyedSubscript_(qword_1EB390FE0, v11, synthCopy, v12, v13);
+  v18 = objc_msgSend_objectForKeyedSubscript_(v14, v15, languageCopy, v16, v17);
 
   if (!v18)
   {
-    v18 = _TTSLoadIPAToNativePhonemeMapForLanguage(v10, v5, v20, v21, v22);
+    v18 = _TTSLoadIPAToNativePhonemeMapForLanguage(languageCopy, synthCopy, v20, v21, v22);
     if (v18)
     {
-      v23 = objc_msgSend_objectForKeyedSubscript_(qword_1EB390FE0, v19, v5, v21, v22);
+      v23 = objc_msgSend_objectForKeyedSubscript_(qword_1EB390FE0, v19, synthCopy, v21, v22);
 
       if (!v23)
       {
         v28 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v24, v25, v26, v27);
-        objc_msgSend_setObject_forKeyedSubscript_(qword_1EB390FE0, v29, v28, v5, v30);
+        objc_msgSend_setObject_forKeyedSubscript_(qword_1EB390FE0, v29, v28, synthCopy, v30);
       }
 
-      v31 = objc_msgSend_objectForKeyedSubscript_(qword_1EB390FE0, v24, v5, v26, v27);
-      objc_msgSend_setObject_forKeyedSubscript_(v31, v32, v18, v10, v33);
+      v31 = objc_msgSend_objectForKeyedSubscript_(qword_1EB390FE0, v24, synthCopy, v26, v27);
+      objc_msgSend_setObject_forKeyedSubscript_(v31, v32, v18, languageCopy, v33);
     }
   }
 
@@ -53,9 +53,9 @@
   return v18;
 }
 
-+ (id)_ipaVectorFromString:(id)a3
++ (id)_ipaVectorFromString:(id)string
 {
-  v4 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(a3, a2, @"ˌ", &stru_1F1CFF8D8, v3);
+  v4 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(string, a2, @"ˌ", &stru_1F1CFF8D8, v3);
   v9 = objc_msgSend_length(v4, v5, v6, v7, v8);
   v17 = objc_msgSend_array(MEMORY[0x1E695DF70], v10, v11, v12, v13);
   if (v9 >= 1)
@@ -85,22 +85,22 @@
   return v17;
 }
 
-+ (id)_phonemesFromIPA:(id)a3 language:(id)a4 synth:(id)a5
++ (id)_phonemesFromIPA:(id)a language:(id)language synth:(id)synth
 {
-  v7 = a3;
-  v8 = a4;
-  v11 = a5;
-  if (!v8)
+  aCopy = a;
+  languageCopy = language;
+  synthCopy = synth;
+  if (!languageCopy)
   {
-    v8 = TTSPreferencesCopyDefaultOutputLanguageIdentifierForUserPreferences();
+    languageCopy = TTSPreferencesCopyDefaultOutputLanguageIdentifierForUserPreferences();
   }
 
-  v15 = objc_msgSend__getPhonemeMapForSynth_language_(TTSPhonemeSupport, v9, v11, v8, v10);
+  v15 = objc_msgSend__getPhonemeMapForSynth_language_(TTSPhonemeSupport, v9, synthCopy, languageCopy, v10);
   if (v15)
   {
-    v55 = v11;
-    v56 = v7;
-    v16 = objc_msgSend__ipaVectorFromString_(TTSPhonemeSupport, v12, v7, v13, v14);
+    v55 = synthCopy;
+    v56 = aCopy;
+    v16 = objc_msgSend__ipaVectorFromString_(TTSPhonemeSupport, v12, aCopy, v13, v14);
     v17 = objc_alloc_init(MEMORY[0x1E696AD60]);
     if (objc_msgSend_count(v16, v18, v19, v20, v21))
     {
@@ -142,8 +142,8 @@
       while (v25 < objc_msgSend_count(v16, v50, v51, v52, v53));
     }
 
-    v11 = v55;
-    v7 = v56;
+    synthCopy = v55;
+    aCopy = v56;
   }
 
   else
@@ -154,13 +154,13 @@
   return v17;
 }
 
-+ (id)eloquencePhonemesFromIPA:(id)a3 language:(id)a4
++ (id)eloquencePhonemesFromIPA:(id)a language:(id)language
 {
-  v6 = a3;
-  v7 = a4;
-  if ((objc_msgSend_containsString_(v6, v8, @"ˈ", v9, v10) & 1) != 0 || objc_msgSend_containsString_(v6, v11, @"'", v12, v13))
+  aCopy = a;
+  languageCopy = language;
+  if ((objc_msgSend_containsString_(aCopy, v8, @"ˈ", v9, v10) & 1) != 0 || objc_msgSend_containsString_(aCopy, v11, @"'", v12, v13))
   {
-    v14 = objc_msgSend__phonemesFromIPA_language_synth_(a1, v11, v6, v7, @"Kona");
+    v14 = objc_msgSend__phonemesFromIPA_language_synth_(self, v11, aCopy, languageCopy, @"Kona");
   }
 
   else

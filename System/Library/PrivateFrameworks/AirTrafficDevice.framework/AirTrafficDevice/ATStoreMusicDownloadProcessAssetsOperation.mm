@@ -1,31 +1,31 @@
 @interface ATStoreMusicDownloadProcessAssetsOperation
-- (void)_removeDRMFromDownloadedAssetWithCompletion:(id)a3;
+- (void)_removeDRMFromDownloadedAssetWithCompletion:(id)completion;
 - (void)cancel;
 - (void)execute;
-- (void)finishWithError:(id)a3 operationResult:(id)a4;
+- (void)finishWithError:(id)error operationResult:(id)result;
 @end
 
 @implementation ATStoreMusicDownloadProcessAssetsOperation
 
-- (void)_removeDRMFromDownloadedAssetWithCompletion:(id)a3
+- (void)_removeDRMFromDownloadedAssetWithCompletion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
-  v6 = [v5 storeMediaResponseItem];
+  completionCopy = completion;
+  assetsOperationResult = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
+  storeMediaResponseItem = [assetsOperationResult storeMediaResponseItem];
 
-  v24 = v6;
-  v7 = [v6 downloadableAsset];
-  v8 = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
-  v9 = [v8 downloadFilePath];
+  v24 = storeMediaResponseItem;
+  downloadableAsset = [storeMediaResponseItem downloadableAsset];
+  assetsOperationResult2 = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
+  downloadFilePath = [assetsOperationResult2 downloadFilePath];
 
-  v10 = [v7 fairPlayInfoList];
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  fairPlayInfoList = [downloadableAsset fairPlayInfoList];
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(fairPlayInfoList, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v12 = v10;
+  v12 = fairPlayInfoList;
   v13 = [v12 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v13)
   {
@@ -41,8 +41,8 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v29 + 1) + 8 * v16) responseSinfDictionary];
-        [v11 addObject:v17];
+        responseSinfDictionary = [*(*(&v29 + 1) + 8 * v16) responseSinfDictionary];
+        [v11 addObject:responseSinfDictionary];
 
         ++v16;
       }
@@ -54,8 +54,8 @@
     while (v14);
   }
 
-  v18 = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
-  if ([v18 isHLSDownload])
+  assetsOperationResult3 = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
+  if ([assetsOperationResult3 isHLSDownload])
   {
   }
 
@@ -65,19 +65,19 @@
 
     if (v19)
     {
-      v20 = [objc_alloc(MEMORY[0x277D7FBD0]) initWithFilePath:v9 sinfs:v11];
-      v21 = [(ICRequestOperation *)self progress];
-      v22 = [v20 progress];
-      [v21 addChild:v22 withPendingUnitCount:50];
+      v20 = [objc_alloc(MEMORY[0x277D7FBD0]) initWithFilePath:downloadFilePath sinfs:v11];
+      progress = [(ICRequestOperation *)self progress];
+      progress2 = [v20 progress];
+      [progress addChild:progress2 withPendingUnitCount:50];
 
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __90__ATStoreMusicDownloadProcessAssetsOperation__removeDRMFromDownloadedAssetWithCompletion___block_invoke;
       v25[3] = &unk_2784E5750;
       v25[4] = self;
-      v26 = v7;
-      v27 = v9;
-      v28 = v4;
+      v26 = downloadableAsset;
+      v27 = downloadFilePath;
+      v28 = completionCopy;
       [v20 removeDRMWithCompletionHandler:v25];
 
       goto LABEL_15;
@@ -88,11 +88,11 @@
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v34 = self;
+    selfCopy = self;
     _os_log_impl(&dword_223819000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ skipping removing DRM from downloaded file", buf, 0xCu);
   }
 
-  (*(v4 + 2))(v4, v9, 0);
+  (*(completionCopy + 2))(completionCopy, downloadFilePath, 0);
 LABEL_15:
 }
 
@@ -186,11 +186,11 @@ void __90__ATStoreMusicDownloadProcessAssetsOperation__removeDRMFromDownloadedAs
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)finishWithError:(id)a3 operationResult:(id)a4
+- (void)finishWithError:(id)error operationResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  errorCopy = error;
+  resultCopy = result;
+  v8 = errorCopy;
   v9 = v8;
   if (!v8)
   {
@@ -207,7 +207,7 @@ void __90__ATStoreMusicDownloadProcessAssetsOperation__removeDRMFromDownloadedAs
 
   v11.receiver = self;
   v11.super_class = ATStoreMusicDownloadProcessAssetsOperation;
-  [(ATStoreDownloadOperation *)&v11 finishWithError:v9 operationResult:v7];
+  [(ATStoreDownloadOperation *)&v11 finishWithError:v9 operationResult:resultCopy];
   downloadDoneRequest = self->_downloadDoneRequest;
   self->_downloadDoneRequest = 0;
 }
@@ -231,41 +231,41 @@ void __90__ATStoreMusicDownloadProcessAssetsOperation__removeDRMFromDownloadedAs
 
   else
   {
-    v3 = [(ATStoreDownloadOperation *)self asset];
-    v4 = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
-    v5 = [v4 requestContext];
+    asset = [(ATStoreDownloadOperation *)self asset];
+    assetsOperationResult = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
+    requestContext = [assetsOperationResult requestContext];
 
-    v6 = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
-    v7 = [v6 storeMediaResponseItem];
+    assetsOperationResult2 = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
+    storeMediaResponseItem = [assetsOperationResult2 storeMediaResponseItem];
 
-    v8 = [v7 downloadableAsset];
+    downloadableAsset = [storeMediaResponseItem downloadableAsset];
     v9 = _ATLogCategoryStoreDownloads();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v24 = self;
+      selfCopy = self;
       v25 = 2114;
-      v26 = v3;
+      v26 = asset;
       _os_log_impl(&dword_223819000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ starting process assets phase for asset %{public}@", buf, 0x16u);
     }
 
-    v10 = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
-    v11 = [v10 isHLSDownload];
+    assetsOperationResult3 = [(ATStoreDownloadProcessAssetsOperation *)self assetsOperationResult];
+    isHLSDownload = [assetsOperationResult3 isHLSDownload];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __53__ATStoreMusicDownloadProcessAssetsOperation_execute__block_invoke;
     v17[3] = &unk_2784E5728;
     v17[4] = self;
-    v18 = v3;
-    v22 = v11;
-    v19 = v8;
-    v20 = v7;
-    v21 = v5;
-    v12 = v5;
-    v13 = v7;
-    v14 = v8;
-    v15 = v3;
+    v18 = asset;
+    v22 = isHLSDownload;
+    v19 = downloadableAsset;
+    v20 = storeMediaResponseItem;
+    v21 = requestContext;
+    v12 = requestContext;
+    v13 = storeMediaResponseItem;
+    v14 = downloadableAsset;
+    v15 = asset;
     [(ATStoreMusicDownloadProcessAssetsOperation *)self _removeDRMFromDownloadedAssetWithCompletion:v17];
   }
 }

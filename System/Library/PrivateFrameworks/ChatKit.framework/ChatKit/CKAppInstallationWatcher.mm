@@ -2,24 +2,24 @@
 + (id)sharedInstance;
 - (CKAppInstallationWatcher)init;
 - (NSArray)inProgressInstallations;
-- (void)_callDelegateAsynchronouslyWithProgressForAppInstallation:(id)a3 added:(BOOL)a4 updated:(BOOL)a5;
+- (void)_callDelegateAsynchronouslyWithProgressForAppInstallation:(id)installation added:(BOOL)added updated:(BOOL)updated;
 - (void)_loadBundleIdentifiersFromDiskLocked;
 - (void)_saveBundleIdentifiersToDiskLocked;
-- (void)_updateAppProgressWithKnownChangedProxies:(id)a3;
-- (void)_updateAppProgressWithKnownChangedProxiesLocked:(id)a3;
+- (void)_updateAppProgressWithKnownChangedProxies:(id)proxies;
+- (void)_updateAppProgressWithKnownChangedProxiesLocked:(id)locked;
 - (void)_updateObservingApplicationWorkspaceLocked;
-- (void)addObserver:(id)a3;
-- (void)applicationInstallsDidChange:(id)a3;
-- (void)applicationInstallsDidStart:(id)a3;
-- (void)applicationInstallsDidUpdateIcon:(id)a3;
-- (void)applicationStateDidChange:(id)a3;
-- (void)applicationsDidFailToInstall:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsWillInstall:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)applicationInstallsDidChange:(id)change;
+- (void)applicationInstallsDidStart:(id)start;
+- (void)applicationInstallsDidUpdateIcon:(id)icon;
+- (void)applicationStateDidChange:(id)change;
+- (void)applicationsDidFailToInstall:(id)install;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsWillInstall:(id)install;
 - (void)dealloc;
-- (void)fetchAllAppInstallations:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)startListeningForAppBundleIdentifier:(id)a3;
+- (void)fetchAllAppInstallations:(id)installations;
+- (void)removeObserver:(id)observer;
+- (void)startListeningForAppBundleIdentifier:(id)identifier;
 @end
 
 @implementation CKAppInstallationWatcher
@@ -55,9 +55,9 @@ void __42__CKAppInstallationWatcher_sharedInstance__block_invoke()
     queue = v2->_queue;
     v2->_queue = v4;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     observers = v2->_observers;
-    v2->_observers = v6;
+    v2->_observers = array;
 
     v8 = v2->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -75,8 +75,8 @@ void __42__CKAppInstallationWatcher_sharedInstance__block_invoke()
 {
   if (self->_observingApplicationWorkspace)
   {
-    v3 = [(CKAppInstallationWatcher *)self _applicationWorkspace];
-    [v3 removeObserver:self];
+    _applicationWorkspace = [(CKAppInstallationWatcher *)self _applicationWorkspace];
+    [_applicationWorkspace removeObserver:self];
   }
 
   v4.receiver = self;
@@ -84,40 +84,40 @@ void __42__CKAppInstallationWatcher_sharedInstance__block_invoke()
   [(CKAppInstallationWatcher *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v6 = [(CKAppInstallationWatcher *)self observers];
-  v5 = [MEMORY[0x1E69A61A0] weakRefWithObject:v4];
+  observers = [(CKAppInstallationWatcher *)self observers];
+  v5 = [MEMORY[0x1E69A61A0] weakRefWithObject:observerCopy];
 
-  [v6 addObject:v5];
+  [observers addObject:v5];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__63;
   v18 = __Block_byref_object_dispose__63;
-  v19 = [MEMORY[0x1E695DF70] array];
-  v5 = [(CKAppInstallationWatcher *)self observers];
+  array = [MEMORY[0x1E695DF70] array];
+  observers = [(CKAppInstallationWatcher *)self observers];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __43__CKAppInstallationWatcher_removeObserver___block_invoke;
   v11 = &unk_1E72F6AC8;
-  v6 = v4;
+  v6 = observerCopy;
   v12 = v6;
   v13 = &v14;
-  [v5 enumerateObjectsUsingBlock:&v8];
+  [observers enumerateObjectsUsingBlock:&v8];
 
   if ([v15[5] count])
   {
-    v7 = [(CKAppInstallationWatcher *)self observers];
-    [v7 removeObjectsInArray:v15[5]];
+    observers2 = [(CKAppInstallationWatcher *)self observers];
+    [observers2 removeObjectsInArray:v15[5]];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -133,19 +133,19 @@ void __43__CKAppInstallationWatcher_removeObserver___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)startListeningForAppBundleIdentifier:(id)a3
+- (void)startListeningForAppBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(CKAppInstallationWatcher *)self queue];
+    queue = [(CKAppInstallationWatcher *)self queue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __65__CKAppInstallationWatcher_startListeningForAppBundleIdentifier___block_invoke;
     v6[3] = &unk_1E72EB8D0;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = identifierCopy;
+    dispatch_async(queue, v6);
   }
 }
 
@@ -207,18 +207,18 @@ void __65__CKAppInstallationWatcher_startListeningForAppBundleIdentifier___block
   }
 }
 
-- (void)fetchAllAppInstallations:(id)a3
+- (void)fetchAllAppInstallations:(id)installations
 {
-  v4 = a3;
-  v5 = [(CKAppInstallationWatcher *)self queue];
+  installationsCopy = installations;
+  queue = [(CKAppInstallationWatcher *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__CKAppInstallationWatcher_fetchAllAppInstallations___block_invoke;
   v7[3] = &unk_1E72ED1C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = installationsCopy;
+  v6 = installationsCopy;
+  dispatch_async(queue, v7);
 }
 
 void __53__CKAppInstallationWatcher_fetchAllAppInstallations___block_invoke(uint64_t a1)
@@ -241,19 +241,19 @@ void __53__CKAppInstallationWatcher_fetchAllAppInstallations___block_invoke(uint
 - (void)_loadBundleIdentifiersFromDiskLocked
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(CKAppInstallationWatcher *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CKAppInstallationWatcher *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [MEMORY[0x1E695DEC8] arrayWithContentsOfFile:@"/var/mobile/Library/SMS/CKAppInstallationWatcher.plist"];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = v5;
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = array;
   if (v4)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __64__CKAppInstallationWatcher__loadBundleIdentifiersFromDiskLocked__block_invoke;
     v9[3] = &unk_1E72EBB28;
-    v10 = v5;
+    v10 = array;
     [v4 enumerateObjectsUsingBlock:v9];
   }
 
@@ -263,9 +263,9 @@ void __53__CKAppInstallationWatcher_fetchAllAppInstallations___block_invoke(uint
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(CKAppInstallationWatcher *)self installations];
+      installations = [(CKAppInstallationWatcher *)self installations];
       *buf = 138412290;
-      v12 = v8;
+      v12 = installations;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Loaded initial watched bundle installations from disk: %@", buf, 0xCu);
     }
   }
@@ -327,24 +327,24 @@ LABEL_13:
 
 - (void)_saveBundleIdentifiersToDiskLocked
 {
-  v3 = [(CKAppInstallationWatcher *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CKAppInstallationWatcher *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
-  v4 = [MEMORY[0x1E695DF00] date];
-  [v4 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceReferenceDate];
   v6 = v5;
 
   v14[3] = v6;
-  v7 = [(CKAppInstallationWatcher *)self inProgressInstallations];
+  inProgressInstallations = [(CKAppInstallationWatcher *)self inProgressInstallations];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__CKAppInstallationWatcher__saveBundleIdentifiersToDiskLocked__block_invoke;
   v13[3] = &unk_1E72F6AF0;
   v13[4] = v14;
-  v8 = [v7 __imArrayByApplyingBlock:v13];
+  v8 = [inProgressInstallations __imArrayByApplyingBlock:v13];
 
   if ([v8 count])
   {
@@ -373,8 +373,8 @@ LABEL_13:
       }
     }
 
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
-    [v11 removeItemAtPath:@"/var/mobile/Library/SMS/CKAppInstallationWatcher.plist" error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtPath:@"/var/mobile/Library/SMS/CKAppInstallationWatcher.plist" error:0];
   }
 
   _Block_object_dispose(v14, 8);
@@ -414,13 +414,13 @@ id __62__CKAppInstallationWatcher__saveBundleIdentifiersToDiskLocked__block_invo
 
 - (void)_updateObservingApplicationWorkspaceLocked
 {
-  v3 = [(CKAppInstallationWatcher *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CKAppInstallationWatcher *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(CKAppInstallationWatcher *)self observingApplicationWorkspace])
   {
-    v4 = [(CKAppInstallationWatcher *)self installations];
-    v5 = [v4 count];
+    installations = [(CKAppInstallationWatcher *)self installations];
+    v5 = [installations count];
 
     if (v5)
     {
@@ -434,8 +434,8 @@ id __62__CKAppInstallationWatcher__saveBundleIdentifiersToDiskLocked__block_invo
         }
       }
 
-      v7 = [(CKAppInstallationWatcher *)self _applicationWorkspace];
-      [v7 addObserver:self];
+      _applicationWorkspace = [(CKAppInstallationWatcher *)self _applicationWorkspace];
+      [_applicationWorkspace addObserver:self];
       v8 = 1;
 LABEL_15:
 
@@ -446,8 +446,8 @@ LABEL_15:
 
   if ([(CKAppInstallationWatcher *)self observingApplicationWorkspace])
   {
-    v9 = [(CKAppInstallationWatcher *)self installations];
-    v10 = [v9 count];
+    installations2 = [(CKAppInstallationWatcher *)self installations];
+    v10 = [installations2 count];
 
     if (!v10)
     {
@@ -461,43 +461,43 @@ LABEL_15:
         }
       }
 
-      v7 = [(CKAppInstallationWatcher *)self _applicationWorkspace];
-      [v7 removeObserver:self];
+      _applicationWorkspace = [(CKAppInstallationWatcher *)self _applicationWorkspace];
+      [_applicationWorkspace removeObserver:self];
       v8 = 0;
       goto LABEL_15;
     }
   }
 }
 
-- (void)_updateAppProgressWithKnownChangedProxies:(id)a3
+- (void)_updateAppProgressWithKnownChangedProxies:(id)proxies
 {
-  v4 = a3;
-  v5 = [(CKAppInstallationWatcher *)self queue];
+  proxiesCopy = proxies;
+  queue = [(CKAppInstallationWatcher *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__CKAppInstallationWatcher__updateAppProgressWithKnownChangedProxies___block_invoke;
   v7[3] = &unk_1E72EB8D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = proxiesCopy;
+  v6 = proxiesCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)_updateAppProgressWithKnownChangedProxiesLocked:(id)a3
+- (void)_updateAppProgressWithKnownChangedProxiesLocked:(id)locked
 {
-  v4 = a3;
+  lockedCopy = locked;
   v5 = [MEMORY[0x1E695DFA8] set];
-  v6 = [(CKAppInstallationWatcher *)self installations];
+  installations = [(CKAppInstallationWatcher *)self installations];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__CKAppInstallationWatcher__updateAppProgressWithKnownChangedProxiesLocked___block_invoke;
   v10[3] = &unk_1E72F6B18;
-  v7 = v4;
+  v7 = lockedCopy;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v8 = v5;
   v13 = v8;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [installations enumerateObjectsUsingBlock:v10];
 
   if ([v8 count])
   {
@@ -635,22 +635,22 @@ void __76__CKAppInstallationWatcher__updateAppProgressWithKnownChangedProxiesLoc
   [v4 removeObject:v3];
 }
 
-- (void)_callDelegateAsynchronouslyWithProgressForAppInstallation:(id)a3 added:(BOOL)a4 updated:(BOOL)a5
+- (void)_callDelegateAsynchronouslyWithProgressForAppInstallation:(id)installation added:(BOOL)added updated:(BOOL)updated
 {
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__63;
   v11[4] = __Block_byref_object_dispose__63;
-  v12 = [a3 copy];
+  v12 = [installation copy];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __100__CKAppInstallationWatcher__callDelegateAsynchronouslyWithProgressForAppInstallation_added_updated___block_invoke;
   block[3] = &unk_1E72F6B90;
-  v9 = a4;
+  addedCopy = added;
   block[4] = self;
   block[5] = v11;
-  v10 = a5;
+  updatedCopy = updated;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   _Block_object_dispose(v11, 8);
 }
@@ -690,8 +690,8 @@ void __100__CKAppInstallationWatcher__callDelegateAsynchronouslyWithProgressForA
 
 - (NSArray)inProgressInstallations
 {
-  v2 = [(CKAppInstallationWatcher *)self installations];
-  v3 = [v2 __imArrayByFilteringWithBlock:&__block_literal_global_64_0];
+  installations = [(CKAppInstallationWatcher *)self installations];
+  v3 = [installations __imArrayByFilteringWithBlock:&__block_literal_global_64_0];
 
   return v3;
 }
@@ -704,130 +704,130 @@ BOOL __51__CKAppInstallationWatcher_inProgressInstallations__block_invoke(uint64
   return v3;
 }
 
-- (void)applicationInstallsDidStart:(id)a3
+- (void)applicationInstallsDidStart:(id)start
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  startCopy = start;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = startCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "[CKAppInstallationWatcher applicationInstallsDidStart:%@]", &v6, 0xCu);
     }
   }
 
-  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:v4];
+  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:startCopy];
 }
 
-- (void)applicationInstallsDidChange:(id)a3
+- (void)applicationInstallsDidChange:(id)change
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = changeCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "[CKAppInstallationWatcher applicationInstallsDidChange:%@]", &v6, 0xCu);
     }
   }
 
-  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:v4];
+  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:changeCopy];
 }
 
-- (void)applicationInstallsDidUpdateIcon:(id)a3
+- (void)applicationInstallsDidUpdateIcon:(id)icon
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  iconCopy = icon;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = iconCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "[CKAppInstallationWatcher applicationInstallsDidUpdateIcon:%@]", &v6, 0xCu);
     }
   }
 
-  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:v4];
+  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:iconCopy];
 }
 
-- (void)applicationsWillInstall:(id)a3
+- (void)applicationsWillInstall:(id)install
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  installCopy = install;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = installCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "[CKAppInstallationWatcher applicationInstallsWillInstall:%@]", &v6, 0xCu);
     }
   }
 
-  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:v4];
+  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:installCopy];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  installCopy = install;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = installCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "[CKAppInstallationWatcher applicationInstallsDidInstall:%@]", &v6, 0xCu);
     }
   }
 
-  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:v4];
+  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:installCopy];
 }
 
-- (void)applicationsDidFailToInstall:(id)a3
+- (void)applicationsDidFailToInstall:(id)install
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  installCopy = install;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = installCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "[CKAppInstallationWatcher applicationInstallsDidFailToInstall:%@]", &v6, 0xCu);
     }
   }
 
-  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:v4];
+  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:installCopy];
 }
 
-- (void)applicationStateDidChange:(id)a3
+- (void)applicationStateDidChange:(id)change
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = changeCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "[CKAppInstallationWatcher applicationStateDidChange:%@]", &v6, 0xCu);
     }
   }
 
-  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:v4];
+  [(CKAppInstallationWatcher *)self _updateAppProgressWithKnownChangedProxies:changeCopy];
 }
 
 @end

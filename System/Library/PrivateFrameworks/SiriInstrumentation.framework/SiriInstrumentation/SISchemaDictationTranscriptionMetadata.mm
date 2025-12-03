@@ -1,33 +1,33 @@
 @interface SISchemaDictationTranscriptionMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaDictationTranscriptionMetadata)initWithDictionary:(id)a3;
-- (SISchemaDictationTranscriptionMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaDictationTranscriptionMetadata)initWithDictionary:(id)dictionary;
+- (SISchemaDictationTranscriptionMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaDictationTranscriptionMetadata
 
-- (SISchemaDictationTranscriptionMetadata)initWithDictionary:(id)a3
+- (SISchemaDictationTranscriptionMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SISchemaDictationTranscriptionMetadata;
   v5 = [(SISchemaDictationTranscriptionMetadata *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dictationModel"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dictationModel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaDictationTranscriptionMetadata setDictationModel:](v5, "setDictationModel:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"dictationModelVersion"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"dictationModelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(SISchemaDictationTranscriptionMetadata *)v5 setDictationModelVersion:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"dictationAlternativesPresent"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"dictationAlternativesPresent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (SISchemaDictationTranscriptionMetadata)initWithJSON:(id)a3
+- (SISchemaDictationTranscriptionMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaDictationTranscriptionMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaDictationTranscriptionMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaDictationTranscriptionMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,33 +85,33 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_dictationAlternativesPresent)
   {
-    v4 = [(SISchemaDictationTranscriptionMetadata *)self dictationAlternativesPresent];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    dictationAlternativesPresent = [(SISchemaDictationTranscriptionMetadata *)self dictationAlternativesPresent];
+    dictionaryRepresentation = [dictationAlternativesPresent dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"dictationAlternativesPresent"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dictationAlternativesPresent"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"dictationAlternativesPresent"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dictationAlternativesPresent"];
     }
   }
 
   if (*&self->_has)
   {
-    v7 = [(SISchemaDictationTranscriptionMetadata *)self dictationModel];
+    dictationModel = [(SISchemaDictationTranscriptionMetadata *)self dictationModel];
     v8 = @"DICTATIONMODEL_UNKNOWN_DICTATION_MODEL_SOURCE";
-    if (v7 == 1)
+    if (dictationModel == 1)
     {
       v8 = @"DICTATIONMODEL_CLIENT";
     }
 
-    if (v7 == 2)
+    if (dictationModel == 2)
     {
       v9 = @"DICTATIONMODEL_SERVER";
     }
@@ -121,19 +121,19 @@
       v9 = v8;
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"dictationModel"];
+    [dictionary setObject:v9 forKeyedSubscript:@"dictationModel"];
   }
 
   if (self->_dictationModelVersion)
   {
-    v10 = [(SISchemaDictationTranscriptionMetadata *)self dictationModelVersion];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"dictationModelVersion"];
+    dictationModelVersion = [(SISchemaDictationTranscriptionMetadata *)self dictationModelVersion];
+    v11 = [dictationModelVersion copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"dictationModelVersion"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -152,15 +152,15 @@
   return v4 ^ [(SISchemaDictationAlternativesPresent *)self->_dictationAlternativesPresent hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -168,26 +168,26 @@
   if (*&self->_has)
   {
     dictationModel = self->_dictationModel;
-    if (dictationModel != [v4 dictationModel])
+    if (dictationModel != [equalCopy dictationModel])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(SISchemaDictationTranscriptionMetadata *)self dictationModelVersion];
-  v7 = [v4 dictationModelVersion];
-  if ((v6 != 0) == (v7 == 0))
+  dictationModelVersion = [(SISchemaDictationTranscriptionMetadata *)self dictationModelVersion];
+  dictationModelVersion2 = [equalCopy dictationModelVersion];
+  if ((dictationModelVersion != 0) == (dictationModelVersion2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(SISchemaDictationTranscriptionMetadata *)self dictationModelVersion];
-  if (v8)
+  dictationModelVersion3 = [(SISchemaDictationTranscriptionMetadata *)self dictationModelVersion];
+  if (dictationModelVersion3)
   {
-    v9 = v8;
-    v10 = [(SISchemaDictationTranscriptionMetadata *)self dictationModelVersion];
-    v11 = [v4 dictationModelVersion];
-    v12 = [v10 isEqual:v11];
+    v9 = dictationModelVersion3;
+    dictationModelVersion4 = [(SISchemaDictationTranscriptionMetadata *)self dictationModelVersion];
+    dictationModelVersion5 = [equalCopy dictationModelVersion];
+    v12 = [dictationModelVersion4 isEqual:dictationModelVersion5];
 
     if (!v12)
     {
@@ -199,12 +199,12 @@
   {
   }
 
-  v6 = [(SISchemaDictationTranscriptionMetadata *)self dictationAlternativesPresent];
-  v7 = [v4 dictationAlternativesPresent];
-  if ((v6 != 0) != (v7 == 0))
+  dictationModelVersion = [(SISchemaDictationTranscriptionMetadata *)self dictationAlternativesPresent];
+  dictationModelVersion2 = [equalCopy dictationAlternativesPresent];
+  if ((dictationModelVersion != 0) != (dictationModelVersion2 == 0))
   {
-    v13 = [(SISchemaDictationTranscriptionMetadata *)self dictationAlternativesPresent];
-    if (!v13)
+    dictationAlternativesPresent = [(SISchemaDictationTranscriptionMetadata *)self dictationAlternativesPresent];
+    if (!dictationAlternativesPresent)
     {
 
 LABEL_18:
@@ -212,10 +212,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(SISchemaDictationTranscriptionMetadata *)self dictationAlternativesPresent];
-    v16 = [v4 dictationAlternativesPresent];
-    v17 = [v15 isEqual:v16];
+    v14 = dictationAlternativesPresent;
+    dictationAlternativesPresent2 = [(SISchemaDictationTranscriptionMetadata *)self dictationAlternativesPresent];
+    dictationAlternativesPresent3 = [equalCopy dictationAlternativesPresent];
+    v17 = [dictationAlternativesPresent2 isEqual:dictationAlternativesPresent3];
 
     if (v17)
     {
@@ -235,44 +235,44 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(SISchemaDictationTranscriptionMetadata *)self dictationModelVersion];
+  dictationModelVersion = [(SISchemaDictationTranscriptionMetadata *)self dictationModelVersion];
 
-  if (v4)
+  if (dictationModelVersion)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaDictationTranscriptionMetadata *)self dictationAlternativesPresent];
+  dictationAlternativesPresent = [(SISchemaDictationTranscriptionMetadata *)self dictationAlternativesPresent];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (dictationAlternativesPresent)
   {
-    v7 = [(SISchemaDictationTranscriptionMetadata *)self dictationAlternativesPresent];
+    dictationAlternativesPresent2 = [(SISchemaDictationTranscriptionMetadata *)self dictationAlternativesPresent];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaDictationTranscriptionMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaDictationTranscriptionMetadata *)self dictationAlternativesPresent:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaDictationTranscriptionMetadata *)self deleteDictationAlternativesPresent];
   }

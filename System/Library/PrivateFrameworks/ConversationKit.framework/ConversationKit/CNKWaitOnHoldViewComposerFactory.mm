@@ -6,7 +6,7 @@
 
 - (id)makeViewComposer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNKWaitOnHoldViewComposerFactory.makeViewComposer()();
 
   return v3;

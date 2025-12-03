@@ -1,33 +1,33 @@
 @interface BSUIScreenshot
-- (BSUIScreenshot)initWithDictionary:(id)a3;
+- (BSUIScreenshot)initWithDictionary:(id)dictionary;
 - (CGSize)size;
 @end
 
 @implementation BSUIScreenshot
 
-- (BSUIScreenshot)initWithDictionary:(id)a3
+- (BSUIScreenshot)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(BSUIScreenshot *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"height"];
-    v7 = [v4 objectForKeyedSubscript:@"width"];
-    v8 = 0.0;
-    v9 = 0.0;
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"height"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"width"];
+    integerValue2 = 0.0;
+    integerValue = 0.0;
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 integerValue];
+      integerValue = [v6 integerValue];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 integerValue];
+      integerValue2 = [v7 integerValue];
     }
 
-    v5->_size.width = v8;
-    v5->_size.height = v9;
-    v10 = [v4 objectForKeyedSubscript:@"artworkUrl"];
+    v5->_size.width = integerValue2;
+    v5->_size.height = integerValue;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"artworkUrl"];
     v11 = [v10 jsa_normalizedArtworkURLOfSize:@"jpg" withFormat:v5->_size.width, v5->_size.height];
     v12 = [NSURL URLWithString:v11];
     url = v5->_url;

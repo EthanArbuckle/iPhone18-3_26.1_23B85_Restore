@@ -1,51 +1,51 @@
 @interface FBSqliteApplicationDataStoreRepository
-+ (BOOL)_objectRequiresSerialization:(id)a3;
-+ (id)_generateParameterizedQuery:(id)a3 forKeyList:(id)a4 outBindings:(id *)a5;
-+ (id)_objectForResultRow:(id)a3 index:(unint64_t)a4;
-- (BOOL)_dbQueue_containsKey:(id)a3 forApplication:(id)a4;
++ (BOOL)_objectRequiresSerialization:(id)serialization;
++ (id)_generateParameterizedQuery:(id)query forKeyList:(id)list outBindings:(id *)bindings;
++ (id)_objectForResultRow:(id)row index:(unint64_t)index;
+- (BOOL)_dbQueue_containsKey:(id)key forApplication:(id)application;
 - (BOOL)_dbQueue_databaseIntegrityCheck;
-- (BOOL)_dbQueue_executeStatement:(id)a3 bindings:(id)a4 resultRowHandler:(id)a5;
-- (BOOL)_dbQueue_executeStatement:(id)a3 bindings:(id)a4 resultRowHandler:(id)a5 error:(id *)a6;
+- (BOOL)_dbQueue_executeStatement:(id)statement bindings:(id)bindings resultRowHandler:(id)handler;
+- (BOOL)_dbQueue_executeStatement:(id)statement bindings:(id)bindings resultRowHandler:(id)handler error:(id *)error;
 - (BOOL)_dbQueue_loadDatabase;
 - (BOOL)_dbQueue_truncateDamagedDatabase;
 - (BOOL)_dbQueue_tryPreserveDamagedDatabase;
 - (BOOL)_inAlternateSystemApp;
-- (BOOL)_isEligibleForSaving:(id)a3;
-- (BOOL)_preserveFileAtURL:(id)a3;
-- (BOOL)containsKey:(id)a3 forApplication:(id)a4;
+- (BOOL)_isEligibleForSaving:(id)saving;
+- (BOOL)_preserveFileAtURL:(id)l;
+- (BOOL)containsKey:(id)key forApplication:(id)application;
 - (FBApplicationDataStoreRepositoryDelegate)delegate;
-- (FBSqliteApplicationDataStoreRepository)initWithStorePath:(id)a3;
+- (FBSqliteApplicationDataStoreRepository)initWithStorePath:(id)path;
 - (id)_dbQueue_applicationIdentifiersWithState;
-- (id)_dbQueue_keysForApplication:(id)a3;
-- (id)_dbQueue_objectForKey:(id)a3 forApplication:(id)a4;
-- (id)_dbQueue_objectsForKeys:(id)a3;
+- (id)_dbQueue_keysForApplication:(id)application;
+- (id)_dbQueue_objectForKey:(id)key forApplication:(id)application;
+- (id)_dbQueue_objectsForKeys:(id)keys;
 - (id)_dbQueue_openDatabase;
-- (id)allObjectsForKeys:(id)a3;
+- (id)allObjectsForKeys:(id)keys;
 - (id)applicationIdentifiersWithState;
-- (id)keysForApplication:(id)a3;
-- (id)migrateIdentifier:(id)a3 toIdentifier:(id)a4;
-- (id)objectForKey:(id)a3 forApplication:(id)a4;
-- (id)urlByAppendingString:(id)a3 toURL:(id)a4;
+- (id)keysForApplication:(id)application;
+- (id)migrateIdentifier:(id)identifier toIdentifier:(id)toIdentifier;
+- (id)objectForKey:(id)key forApplication:(id)application;
+- (id)urlByAppendingString:(id)string toURL:(id)l;
 - (int64_t)_dbQueue_databaseVersion;
 - (void)_dbQueue_createTables;
 - (void)_dbQueue_databaseIntegrityCheck;
 - (void)_dbQueue_load;
-- (void)_dbQueue_notifyDelegateOfChangeForKeys:(id)a3 application:(id)a4;
+- (void)_dbQueue_notifyDelegateOfChangeForKeys:(id)keys application:(id)application;
 - (void)_dbQueue_notifyDelegateOfLateLoad;
-- (void)_dbQueue_notifyDelegateOfStoreInvalidationForIdentifier:(id)a3;
+- (void)_dbQueue_notifyDelegateOfStoreInvalidationForIdentifier:(id)identifier;
 - (void)_dbQueue_openDatabase;
-- (void)_dbQueue_performWithSavepoint:(id)a3 handler:(id)a4;
+- (void)_dbQueue_performWithSavepoint:(id)savepoint handler:(id)handler;
 - (void)_dbQueue_truncateDamagedDatabase;
 - (void)beginBatchedUpdate;
 - (void)close;
 - (void)dealloc;
 - (void)endBatchedUpdate;
 - (void)flushSynchronously;
-- (void)removeAllObjectsForApplication:(id)a3;
-- (void)removeObjectForKey:(id)a3 forApplication:(id)a4;
-- (void)removeObjectsForKeys:(id)a3 forApplication:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4 forApplication:(id)a5;
+- (void)removeAllObjectsForApplication:(id)application;
+- (void)removeObjectForKey:(id)key forApplication:(id)application;
+- (void)removeObjectsForKeys:(id)keys forApplication:(id)application;
+- (void)setDelegate:(id)delegate;
+- (void)setObject:(id)object forKey:(id)key forApplication:(id)application;
 @end
 
 @implementation FBSqliteApplicationDataStoreRepository
@@ -61,16 +61,16 @@
   dispatch_sync(dbQueue, block);
 }
 
-- (FBSqliteApplicationDataStoreRepository)initWithStorePath:(id)a3
+- (FBSqliteApplicationDataStoreRepository)initWithStorePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = FBSqliteApplicationDataStoreRepository;
   v6 = [(FBSqliteApplicationDataStoreRepository *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storeURL, a3);
+    objc_storeStrong(&v6->_storeURL, path);
     Serial = BSDispatchQueueCreateSerial();
     dbQueue = v7->_dbQueue;
     v7->_dbQueue = Serial;
@@ -140,17 +140,17 @@ void __50__FBSqliteApplicationDataStoreRepository_delegate__block_invoke(uint64_
   *(v3 + 40) = WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   dbQueue = self->_dbQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__FBSqliteApplicationDataStoreRepository_setDelegate___block_invoke;
   v7[3] = &unk_1E783B240;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(dbQueue, v7);
 }
 
@@ -184,11 +184,11 @@ void __73__FBSqliteApplicationDataStoreRepository_applicationIdentifiersWithStat
   *(v3 + 40) = v2;
 }
 
-- (id)keysForApplication:(id)a3
+- (id)keysForApplication:(id)application
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  applicationCopy = application;
+  v5 = applicationCopy;
+  if (applicationCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -203,7 +203,7 @@ void __73__FBSqliteApplicationDataStoreRepository_applicationIdentifiersWithStat
     block[3] = &unk_1E783BFC0;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = applicationCopy;
     dispatch_sync(dbQueue, block);
     v7 = v13[5];
 
@@ -226,13 +226,13 @@ void __61__FBSqliteApplicationDataStoreRepository_keysForApplication___block_inv
   *(v3 + 40) = v2;
 }
 
-- (BOOL)containsKey:(id)a3 forApplication:(id)a4
+- (BOOL)containsKey:(id)key forApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  keyCopy = key;
+  applicationCopy = application;
+  v8 = applicationCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (keyCopy && applicationCopy)
   {
     v16 = 0;
     v17 = &v16;
@@ -245,7 +245,7 @@ void __61__FBSqliteApplicationDataStoreRepository_keysForApplication___block_inv
     v12[3] = &unk_1E783BF98;
     v15 = &v16;
     v12[4] = self;
-    v13 = v6;
+    v13 = keyCopy;
     v14 = v8;
     dispatch_sync(dbQueue, v12);
     v9 = *(v17 + 24);
@@ -263,13 +263,13 @@ uint64_t __69__FBSqliteApplicationDataStoreRepository_containsKey_forApplication
   return result;
 }
 
-- (id)objectForKey:(id)a3 forApplication:(id)a4
+- (id)objectForKey:(id)key forApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  keyCopy = key;
+  applicationCopy = application;
+  v8 = applicationCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (keyCopy && applicationCopy)
   {
     v16 = 0;
     v17 = &v16;
@@ -284,7 +284,7 @@ uint64_t __69__FBSqliteApplicationDataStoreRepository_containsKey_forApplication
     v12[3] = &unk_1E783BF98;
     v15 = &v16;
     v12[4] = self;
-    v13 = v6;
+    v13 = keyCopy;
     v14 = v8;
     dispatch_sync(dbQueue, v12);
     v9 = v17[5];
@@ -303,10 +303,10 @@ void __70__FBSqliteApplicationDataStoreRepository_objectForKey_forApplication___
   *(v3 + 40) = v2;
 }
 
-- (id)allObjectsForKeys:(id)a3
+- (id)allObjectsForKeys:(id)keys
 {
-  v4 = a3;
-  if ([v4 count])
+  keysCopy = keys;
+  if ([keysCopy count])
   {
     v11 = 0;
     v12 = &v11;
@@ -321,7 +321,7 @@ void __70__FBSqliteApplicationDataStoreRepository_objectForKey_forApplication___
     block[3] = &unk_1E783BFC0;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
+    v9 = keysCopy;
     dispatch_sync(dbQueue, block);
     v6 = v12[5];
 
@@ -363,17 +363,17 @@ void __47__FBSqliteApplicationDataStoreRepository_close__block_invoke(uint64_t a
   *(v2 + 32) = 0;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 forApplication:(id)a5
+- (void)setObject:(id)object forKey:(id)key forApplication:(id)application
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  objectCopy = object;
+  keyCopy = key;
+  applicationCopy = application;
+  v12 = applicationCopy;
+  if (objectCopy)
   {
-    if (v10 && v11 && [(FBSqliteApplicationDataStoreRepository *)self _isEligibleForSaving:v9])
+    if (keyCopy && applicationCopy && [(FBSqliteApplicationDataStoreRepository *)self _isEligibleForSaving:objectCopy])
     {
-      v13 = v9;
+      v13 = objectCopy;
       if ([objc_opt_class() _objectRequiresSerialization:v13])
       {
         v14 = [MEMORY[0x1E696AE40] dataWithPropertyList:v13 format:200 options:0 error:0];
@@ -391,7 +391,7 @@ void __47__FBSqliteApplicationDataStoreRepository_close__block_invoke(uint64_t a
       v17[2] = __74__FBSqliteApplicationDataStoreRepository_setObject_forKey_forApplication___block_invoke;
       v17[3] = &unk_1E783B2D8;
       v17[4] = self;
-      v18 = v10;
+      v18 = keyCopy;
       v19 = v12;
       v20 = v13;
       v16 = v13;
@@ -401,7 +401,7 @@ void __47__FBSqliteApplicationDataStoreRepository_close__block_invoke(uint64_t a
 
   else
   {
-    [(FBSqliteApplicationDataStoreRepository *)self removeObjectForKey:v10 forApplication:v11];
+    [(FBSqliteApplicationDataStoreRepository *)self removeObjectForKey:keyCopy forApplication:applicationCopy];
   }
 }
 
@@ -456,12 +456,12 @@ uint64_t __74__FBSqliteApplicationDataStoreRepository_setObject_forKey_forApplic
   return 1;
 }
 
-- (void)removeObjectForKey:(id)a3 forApplication:(id)a4
+- (void)removeObjectForKey:(id)key forApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  keyCopy = key;
+  applicationCopy = application;
+  v8 = applicationCopy;
+  if (keyCopy && applicationCopy)
   {
     dbQueue = self->_dbQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -469,8 +469,8 @@ uint64_t __74__FBSqliteApplicationDataStoreRepository_setObject_forKey_forApplic
     block[2] = __76__FBSqliteApplicationDataStoreRepository_removeObjectForKey_forApplication___block_invoke;
     block[3] = &unk_1E783B300;
     block[4] = self;
-    v11 = v7;
-    v12 = v6;
+    v11 = applicationCopy;
+    v12 = keyCopy;
     dispatch_async(dbQueue, block);
   }
 }
@@ -496,12 +496,12 @@ void __76__FBSqliteApplicationDataStoreRepository_removeObjectForKey_forApplicat
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObjectsForKeys:(id)a3 forApplication:(id)a4
+- (void)removeObjectsForKeys:(id)keys forApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  if (v7 && v8)
+  keysCopy = keys;
+  applicationCopy = application;
+  v8 = [keysCopy count];
+  if (applicationCopy && v8)
   {
     dbQueue = self->_dbQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -509,8 +509,8 @@ void __76__FBSqliteApplicationDataStoreRepository_removeObjectForKey_forApplicat
     block[2] = __78__FBSqliteApplicationDataStoreRepository_removeObjectsForKeys_forApplication___block_invoke;
     block[3] = &unk_1E783B300;
     block[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = keysCopy;
+    v12 = applicationCopy;
     dispatch_async(dbQueue, block);
   }
 }
@@ -528,11 +528,11 @@ void __78__FBSqliteApplicationDataStoreRepository_removeObjectsForKeys_forApplic
   [*(a1 + 32) _dbQueue_notifyDelegateOfChangeForKeys:*(a1 + 40) application:*(a1 + 48)];
 }
 
-- (void)removeAllObjectsForApplication:(id)a3
+- (void)removeAllObjectsForApplication:(id)application
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  applicationCopy = application;
+  v5 = applicationCopy;
+  if (applicationCopy)
   {
     dbQueue = self->_dbQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -540,7 +540,7 @@ void __78__FBSqliteApplicationDataStoreRepository_removeObjectsForKeys_forApplic
     v7[2] = __73__FBSqliteApplicationDataStoreRepository_removeAllObjectsForApplication___block_invoke;
     v7[3] = &unk_1E783B240;
     v7[4] = self;
-    v8 = v4;
+    v8 = applicationCopy;
     dispatch_async(dbQueue, v7);
   }
 }
@@ -614,10 +614,10 @@ void *__58__FBSqliteApplicationDataStoreRepository_endBatchedUpdate__block_invok
   return result;
 }
 
-- (id)migrateIdentifier:(id)a3 toIdentifier:(id)a4
+- (id)migrateIdentifier:(id)identifier toIdentifier:(id)toIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  toIdentifierCopy = toIdentifier;
   [(FBSqliteApplicationDataStoreRepository *)self beginBatchedUpdate];
   v21 = 0;
   v22 = &v21;
@@ -630,11 +630,11 @@ void *__58__FBSqliteApplicationDataStoreRepository_endBatchedUpdate__block_invok
   v14 = 3221225472;
   v15 = __73__FBSqliteApplicationDataStoreRepository_migrateIdentifier_toIdentifier___block_invoke;
   v16 = &unk_1E783C038;
-  v17 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = identifierCopy;
   v18 = v9;
   v20 = &v21;
-  v10 = v7;
+  v10 = toIdentifierCopy;
   v19 = v10;
   dispatch_sync(dbQueue, &v13);
   [(FBSqliteApplicationDataStoreRepository *)self endBatchedUpdate:v13];
@@ -775,10 +775,10 @@ void __73__FBSqliteApplicationDataStoreRepository_migrateIdentifier_toIdentifier
   *(v4 + 40) = v3;
 }
 
-- (BOOL)_isEligibleForSaving:(id)a3
+- (BOOL)_isEligibleForSaving:(id)saving
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  savingCopy = saving;
   if (_isEligibleForSaving__onceToken_0 != -1)
   {
     [FBSqliteApplicationDataStoreRepository _isEligibleForSaving:];
@@ -839,9 +839,9 @@ void __63__FBSqliteApplicationDataStoreRepository__isEligibleForSaving___block_i
   _isEligibleForSaving____eligibleClassTypes_0 = v6;
 }
 
-+ (BOOL)_objectRequiresSerialization:(id)a3
++ (BOOL)_objectRequiresSerialization:(id)serialization
 {
-  v3 = a3;
+  serializationCopy = serialization;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -857,9 +857,9 @@ void __63__FBSqliteApplicationDataStoreRepository__isEligibleForSaving___block_i
   return v4 & 1;
 }
 
-+ (id)_objectForResultRow:(id)a3 index:(unint64_t)a4
++ (id)_objectForResultRow:(id)row index:(unint64_t)index
 {
-  v4 = [a3 objectAtIndex:a4];
+  v4 = [row objectAtIndex:index];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -878,10 +878,10 @@ void __63__FBSqliteApplicationDataStoreRepository__isEligibleForSaving___block_i
 
 - (void)_dbQueue_load
 {
-  v3 = [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_loadDatabase];
+  _dbQueue_loadDatabase = [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_loadDatabase];
   v4 = FBLogAppDataStore();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (_dbQueue_loadDatabase)
   {
     if (v5)
     {
@@ -1000,16 +1000,16 @@ void __73__FBSqliteApplicationDataStoreRepository__dbQueue_databaseIntegrityChec
   v5 = objc_alloc(MEMORY[0x1E698E788]);
   if (storeURL)
   {
-    v6 = [v5 initWithFileURL:*p_storeURL dataProtectionClass:1];
+    initWithInMemoryDatabase = [v5 initWithFileURL:*p_storeURL dataProtectionClass:1];
   }
 
   else
   {
-    v6 = [v5 initWithInMemoryDatabase];
+    initWithInMemoryDatabase = [v5 initWithInMemoryDatabase];
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = initWithInMemoryDatabase;
+  if (!initWithInMemoryDatabase)
   {
     v8 = FBLogAppDataStore();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1021,31 +1021,31 @@ void __73__FBSqliteApplicationDataStoreRepository__dbQueue_databaseIntegrityChec
   return v7;
 }
 
-- (id)urlByAppendingString:(id)a3 toURL:(id)a4
+- (id)urlByAppendingString:(id)string toURL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 lastPathComponent];
-  v8 = [v5 URLByDeletingLastPathComponent];
+  lCopy = l;
+  stringCopy = string;
+  lastPathComponent = [lCopy lastPathComponent];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
 
-  v9 = [v7 stringByAppendingString:v6];
+  v9 = [lastPathComponent stringByAppendingString:stringCopy];
 
-  v10 = [v8 URLByAppendingPathComponent:v9];
+  v10 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v9];
 
   return v10;
 }
 
-- (BOOL)_preserveFileAtURL:(id)a3
+- (BOOL)_preserveFileAtURL:(id)l
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   if (MEMORY[0x1AC572820]("[FBSqliteApplicationDataStoreRepository _preserveFileAtURL:]"))
   {
-    v4 = [v3 URLByAppendingPathExtension:@"damaged"];
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    [v5 removeItemAtURL:v4 error:0];
+    v4 = [lCopy URLByAppendingPathExtension:@"damaged"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:v4 error:0];
     v16 = 0;
-    v6 = [v5 copyItemAtURL:v3 toURL:v4 error:&v16];
+    v6 = [defaultManager copyItemAtURL:lCopy toURL:v4 error:&v16];
     v7 = v16;
     v8 = v7;
     if (v6)
@@ -1075,7 +1075,7 @@ LABEL_11:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v18 = v3;
+        v18 = lCopy;
         v19 = 2114;
         v20 = v4;
         v21 = 2114;
@@ -1136,9 +1136,9 @@ LABEL_12:
 - (BOOL)_dbQueue_loadDatabase
 {
   dispatch_assert_queue_V2(self->_dbQueue);
-  v3 = [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_openDatabase];
+  _dbQueue_openDatabase = [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_openDatabase];
   dbQueue_dbConnection = self->_dbQueue_dbConnection;
-  self->_dbQueue_dbConnection = v3;
+  self->_dbQueue_dbConnection = _dbQueue_openDatabase;
 
   if (!self->_dbQueue_dbConnection)
   {
@@ -1153,22 +1153,22 @@ LABEL_12:
     self->_dbQueue_dbConnection = 0;
 
     [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_tryPreserveDamagedDatabase];
-    v7 = [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_openDatabase];
+    _dbQueue_openDatabase2 = [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_openDatabase];
     v8 = self->_dbQueue_dbConnection;
-    self->_dbQueue_dbConnection = v7;
+    self->_dbQueue_dbConnection = _dbQueue_openDatabase2;
 
     if (self->_dbQueue_dbConnection)
     {
-      v5 = [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_truncateDamagedDatabase];
-      if (!v5)
+      _dbQueue_truncateDamagedDatabase = [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_truncateDamagedDatabase];
+      if (!_dbQueue_truncateDamagedDatabase)
       {
-        return v5;
+        return _dbQueue_truncateDamagedDatabase;
       }
 
-      v9 = [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_databaseIntegrityCheck];
+      _dbQueue_databaseIntegrityCheck = [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_databaseIntegrityCheck];
       v10 = FBLogAppDataStore();
       v11 = v10;
-      if (v9)
+      if (_dbQueue_databaseIntegrityCheck)
       {
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
@@ -1187,8 +1187,8 @@ LABEL_12:
     }
 
 LABEL_14:
-    LOBYTE(v5) = 0;
-    return v5;
+    LOBYTE(_dbQueue_truncateDamagedDatabase) = 0;
+    return _dbQueue_truncateDamagedDatabase;
   }
 
 LABEL_4:
@@ -1204,8 +1204,8 @@ LABEL_4:
   [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_performWithSavepoint:@"schema" handler:v13];
   [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_executeStatement:@"PRAGMA foreign_keys=ON;" bindings:0 resultRowHandler:0];
   [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_executeStatement:@"DELETE FROM application_identifier_tab WHERE application_identifier_tab.id NOT IN (SELECT DISTINCT application_identifier FROM kvs);DELETE FROM key_tab WHERE key_tab.id NOT IN (SELECT DISTINCT key FROM kvs);" bindings:0 resultRowHandler:0];
-  LOBYTE(v5) = 1;
-  return v5;
+  LOBYTE(_dbQueue_truncateDamagedDatabase) = 1;
+  return _dbQueue_truncateDamagedDatabase;
 }
 
 uint64_t __63__FBSqliteApplicationDataStoreRepository__dbQueue_loadDatabase__block_invoke(uint64_t a1)
@@ -1218,18 +1218,18 @@ uint64_t __63__FBSqliteApplicationDataStoreRepository__dbQueue_loadDatabase__blo
   return 1;
 }
 
-- (id)_dbQueue_objectForKey:(id)a3 forApplication:(id)a4
+- (id)_dbQueue_objectForKey:(id)key forApplication:(id)application
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  applicationCopy = application;
   dispatch_assert_queue_V2(self->_dbQueue);
-  if (!v7)
+  if (!keyCopy)
   {
     [FBSqliteApplicationDataStoreRepository _dbQueue_objectForKey:a2 forApplication:?];
   }
 
-  if (!v8)
+  if (!applicationCopy)
   {
     [FBSqliteApplicationDataStoreRepository _dbQueue_objectForKey:a2 forApplication:?];
   }
@@ -1242,8 +1242,8 @@ uint64_t __63__FBSqliteApplicationDataStoreRepository__dbQueue_loadDatabase__blo
   v19 = 0;
   v20[0] = @":application_identifier";
   v20[1] = @":key";
-  v21[0] = v8;
-  v21[1] = v7;
+  v21[0] = applicationCopy;
+  v21[1] = keyCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -1272,18 +1272,18 @@ void __79__FBSqliteApplicationDataStoreRepository__dbQueue_objectForKey_forAppli
   *(v6 + 40) = v5;
 }
 
-- (BOOL)_dbQueue_containsKey:(id)a3 forApplication:(id)a4
+- (BOOL)_dbQueue_containsKey:(id)key forApplication:(id)application
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  applicationCopy = application;
   dispatch_assert_queue_V2(self->_dbQueue);
-  if (!v7)
+  if (!keyCopy)
   {
     [FBSqliteApplicationDataStoreRepository _dbQueue_containsKey:a2 forApplication:?];
   }
 
-  if (!v8)
+  if (!applicationCopy)
   {
     [FBSqliteApplicationDataStoreRepository _dbQueue_containsKey:a2 forApplication:?];
   }
@@ -1294,8 +1294,8 @@ void __79__FBSqliteApplicationDataStoreRepository__dbQueue_objectForKey_forAppli
   v17 = 0;
   v18[0] = @":application_identifier";
   v18[1] = @":key";
-  v19[0] = v8;
-  v19[1] = v7;
+  v19[0] = applicationCopy;
+  v19[1] = keyCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -1334,19 +1334,19 @@ void __82__FBSqliteApplicationDataStoreRepository__dbQueue_applicationIdentifier
   [v2 addObject:v3];
 }
 
-- (id)_dbQueue_keysForApplication:(id)a3
+- (id)_dbQueue_keysForApplication:(id)application
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  applicationCopy = application;
   dispatch_assert_queue_V2(self->_dbQueue);
-  if (!v5)
+  if (!applicationCopy)
   {
     [FBSqliteApplicationDataStoreRepository _dbQueue_keysForApplication:a2];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = @":application_identifier";
-  v18[0] = v5;
+  v18[0] = applicationCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
@@ -1369,23 +1369,23 @@ void __70__FBSqliteApplicationDataStoreRepository__dbQueue_keysForApplication___
   [v2 addObject:v3];
 }
 
-+ (id)_generateParameterizedQuery:(id)a3 forKeyList:(id)a4 outBindings:(id *)a5
++ (id)_generateParameterizedQuery:(id)query forKeyList:(id)list outBindings:(id *)bindings
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!a5)
+  queryCopy = query;
+  listCopy = list;
+  if (!bindings)
   {
     [FBSqliteApplicationDataStoreRepository _generateParameterizedQuery:a2 forKeyList:? outBindings:?];
   }
 
-  v11 = v10;
-  if (![v10 count])
+  v11 = listCopy;
+  if (![listCopy count])
   {
-    [FBSqliteApplicationDataStoreRepository _generateParameterizedQuery:a2 forKeyList:a1 outBindings:?];
+    [FBSqliteApplicationDataStoreRepository _generateParameterizedQuery:a2 forKeyList:self outBindings:?];
   }
 
-  v28 = v9;
+  v28 = queryCopy;
   v12 = [v11 count];
   v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v12];
   v29 = 0u;
@@ -1420,37 +1420,37 @@ void __70__FBSqliteApplicationDataStoreRepository__dbQueue_keysForApplication___
     while (v16);
   }
 
-  v22 = [v13 allKeys];
-  v23 = [v22 componentsJoinedByString:{@", "}];
+  allKeys = [v13 allKeys];
+  v23 = [allKeys componentsJoinedByString:{@", "}];
   v24 = [v28 stringByReplacingOccurrencesOfString:@"%@" withString:v23];
 
   v25 = v13;
-  *a5 = v13;
+  *bindings = v13;
 
   v26 = *MEMORY[0x1E69E9840];
 
   return v24;
 }
 
-- (id)_dbQueue_objectsForKeys:(id)a3
+- (id)_dbQueue_objectsForKeys:(id)keys
 {
-  v5 = a3;
+  keysCopy = keys;
   dispatch_assert_queue_V2(self->_dbQueue);
-  if (!v5)
+  if (!keysCopy)
   {
     [FBSqliteApplicationDataStoreRepository _dbQueue_objectsForKeys:a2];
   }
 
-  v6 = [MEMORY[0x1E695DF90] sharedKeySetForKeys:v5];
+  v6 = [MEMORY[0x1E695DF90] sharedKeySetForKeys:keysCopy];
   v21 = 0;
-  v7 = [objc_opt_class() _generateParameterizedQuery:@"SELECT application_identifier_tab.application_identifier forKeyList:key_tab.key outBindings:{kvs.value FROM kvs, application_identifier_tab, key_tab WHERE    key_tab.key IN (%@)    AND kvs.application_identifier = application_identifier_tab.id    AND kvs.key = key_tab.id", v5, &v21}];;
+  v7 = [objc_opt_class() _generateParameterizedQuery:@"SELECT application_identifier_tab.application_identifier forKeyList:key_tab.key outBindings:{kvs.value FROM kvs, application_identifier_tab, key_tab WHERE    key_tab.key IN (%@)    AND kvs.application_identifier = application_identifier_tab.id    AND kvs.key = key_tab.id", keysCopy, &v21}];;
   v8 = v21;
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __66__FBSqliteApplicationDataStoreRepository__dbQueue_objectsForKeys___block_invoke;
   v17 = &unk_1E783C7F8;
-  v18 = self;
+  selfCopy = self;
   v19 = v9;
   v20 = v6;
   v10 = v6;
@@ -1492,10 +1492,10 @@ void __66__FBSqliteApplicationDataStoreRepository__dbQueue_objectsForKeys___bloc
   }
 }
 
-- (void)_dbQueue_notifyDelegateOfChangeForKeys:(id)a3 application:(id)a4
+- (void)_dbQueue_notifyDelegateOfChangeForKeys:(id)keys application:(id)application
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  applicationCopy = application;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = WeakRetained;
   if (WeakRetained)
@@ -1506,15 +1506,15 @@ void __66__FBSqliteApplicationDataStoreRepository__dbQueue_objectsForKeys___bloc
     block[2] = __93__FBSqliteApplicationDataStoreRepository__dbQueue_notifyDelegateOfChangeForKeys_application___block_invoke;
     block[3] = &unk_1E783B300;
     v12 = WeakRetained;
-    v13 = v6;
-    v14 = v7;
+    v13 = keysCopy;
+    v14 = applicationCopy;
     dispatch_async(calloutQueue, block);
   }
 }
 
-- (void)_dbQueue_notifyDelegateOfStoreInvalidationForIdentifier:(id)a3
+- (void)_dbQueue_notifyDelegateOfStoreInvalidationForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -1525,7 +1525,7 @@ void __66__FBSqliteApplicationDataStoreRepository__dbQueue_objectsForKeys___bloc
     v8[2] = __98__FBSqliteApplicationDataStoreRepository__dbQueue_notifyDelegateOfStoreInvalidationForIdentifier___block_invoke;
     v8[3] = &unk_1E783B240;
     v9 = WeakRetained;
-    v10 = v4;
+    v10 = identifierCopy;
     dispatch_async(calloutQueue, v8);
   }
 }
@@ -1579,15 +1579,15 @@ void __66__FBSqliteApplicationDataStoreRepository__dbQueue_objectsForKeys___bloc
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_dbQueue_executeStatement:(id)a3 bindings:(id)a4 resultRowHandler:(id)a5 error:(id *)a6
+- (BOOL)_dbQueue_executeStatement:(id)statement bindings:(id)bindings resultRowHandler:(id)handler error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [(BSSqliteDatabaseConnection *)self->_dbQueue_dbConnection prepareStatement:a3];
+  bindingsCopy = bindings;
+  handlerCopy = handler;
+  v12 = [(BSSqliteDatabaseConnection *)self->_dbQueue_dbConnection prepareStatement:statement];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 executeWithBindings:v10 resultRowHandler:v11 error:a6];
+    v14 = [v12 executeWithBindings:bindingsCopy resultRowHandler:handlerCopy error:error];
   }
 
   else
@@ -1598,13 +1598,13 @@ void __66__FBSqliteApplicationDataStoreRepository__dbQueue_objectsForKeys___bloc
   return v14;
 }
 
-- (BOOL)_dbQueue_executeStatement:(id)a3 bindings:(id)a4 resultRowHandler:(id)a5
+- (BOOL)_dbQueue_executeStatement:(id)statement bindings:(id)bindings resultRowHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  statementCopy = statement;
+  bindingsCopy = bindings;
   v15 = 0;
-  v10 = [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_executeStatement:v8 bindings:v9 resultRowHandler:a5 error:&v15];
+  v10 = [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_executeStatement:statementCopy bindings:bindingsCopy resultRowHandler:handler error:&v15];
   v11 = v15;
   if (!v10)
   {
@@ -1614,9 +1614,9 @@ void __66__FBSqliteApplicationDataStoreRepository__dbQueue_objectsForKeys___bloc
       *buf = 138543874;
       v17 = v11;
       v18 = 2114;
-      v19 = v8;
+      v19 = statementCopy;
       v20 = 2112;
-      v21 = v9;
+      v21 = bindingsCopy;
       _os_log_error_impl(&dword_1A89DD000, v12, OS_LOG_TYPE_ERROR, "Received unexpected query error %{public}@ for query %{public}@ bindings %@", buf, 0x20u);
     }
   }
@@ -1625,16 +1625,16 @@ void __66__FBSqliteApplicationDataStoreRepository__dbQueue_objectsForKeys___bloc
   return v10;
 }
 
-- (void)_dbQueue_performWithSavepoint:(id)a3 handler:(id)a4
+- (void)_dbQueue_performWithSavepoint:(id)savepoint handler:(id)handler
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 stringWithFormat:@"SAVEPOINT %@", v8];
-  [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_executeStatement:v9 bindings:0 resultRowHandler:0];
+  handlerCopy = handler;
+  savepointCopy = savepoint;
+  savepointCopy = [v6 stringWithFormat:@"SAVEPOINT %@", savepointCopy];
+  [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_executeStatement:savepointCopy bindings:0 resultRowHandler:0];
 
-  LODWORD(v9) = v7[2](v7);
-  if (v9)
+  LODWORD(savepointCopy) = handlerCopy[2](handlerCopy);
+  if (savepointCopy)
   {
     v10 = @"RELEASE SAVEPOINT %@";
   }
@@ -1644,9 +1644,9 @@ void __66__FBSqliteApplicationDataStoreRepository__dbQueue_objectsForKeys___bloc
     v10 = @"ROLLBACK TO SAVEPOINT %@";
   }
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:v10, v8];
+  savepointCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:v10, savepointCopy];
 
-  [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_executeStatement:v11 bindings:0 resultRowHandler:0];
+  [(FBSqliteApplicationDataStoreRepository *)self _dbQueue_executeStatement:savepointCopy2 bindings:0 resultRowHandler:0];
 }
 
 - (int64_t)_dbQueue_databaseVersion
@@ -1756,7 +1756,7 @@ void __63__FBSqliteApplicationDataStoreRepository__inAlternateSystemApp__block_i
 - (void)_dbQueue_openDatabase
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = HIDWORD(*a1);
+  v9 = HIDWORD(*self);
   OUTLINED_FUNCTION_2_1(&dword_1A89DD000, a2, a3, "Failed to open application data store %{public}@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }

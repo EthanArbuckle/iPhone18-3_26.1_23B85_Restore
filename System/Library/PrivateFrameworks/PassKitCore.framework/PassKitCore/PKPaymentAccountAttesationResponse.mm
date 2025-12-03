@@ -1,26 +1,26 @@
 @interface PKPaymentAccountAttesationResponse
-- (PKPaymentAccountAttesationResponse)initWithData:(id)a3;
+- (PKPaymentAccountAttesationResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentAccountAttesationResponse
 
-- (PKPaymentAccountAttesationResponse)initWithData:(id)a3
+- (PKPaymentAccountAttesationResponse)initWithData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = PKPaymentAccountAttesationResponse;
-  v3 = [(PKWebServiceResponse *)&v14 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v14 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKStringForKey:@"attestation"];
-      v7 = [v6 pk_decodeHexadecimal];
+      v6 = [jSONObject PKStringForKey:@"attestation"];
+      pk_decodeHexadecimal = [v6 pk_decodeHexadecimal];
       p_super = &v4->_attestation->super;
-      v4->_attestation = v7;
+      v4->_attestation = pk_decodeHexadecimal;
     }
 
     else

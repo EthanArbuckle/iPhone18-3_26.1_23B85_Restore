@@ -1,7 +1,7 @@
 @interface UICollectionView
 - (BOOL)_maps_shouldShowTopHairline;
-- (CGRect)_maps_rectForHeaderInSection:(int64_t)a3;
-- (CGRect)_maps_rectForRowAtIndexPath:(id)a3;
+- (CGRect)_maps_rectForHeaderInSection:(int64_t)section;
+- (CGRect)_maps_rectForRowAtIndexPath:(id)path;
 - (CGSize)_maps_contentSize;
 - (int64_t)_maps_indexOfFirstNonEmptySection;
 - (void)_maps_reloadDataWithoutFocus;
@@ -11,7 +11,7 @@
 
 - (void)_maps_reloadDataWithoutFocus
 {
-  v3 = [(UICollectionView *)self remembersLastFocusedIndexPath];
+  remembersLastFocusedIndexPath = [(UICollectionView *)self remembersLastFocusedIndexPath];
   [(UICollectionView *)self setRemembersLastFocusedIndexPath:0];
   [(UICollectionView *)self reloadData];
   v4[0] = _NSConcreteStackBlock;
@@ -19,15 +19,15 @@
   v4[2] = sub_1005FE210;
   v4[3] = &unk_101661AE0;
   v4[4] = self;
-  v5 = v3;
+  v5 = remembersLastFocusedIndexPath;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (CGRect)_maps_rectForRowAtIndexPath:(id)a3
+- (CGRect)_maps_rectForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UICollectionView *)self collectionViewLayout];
-  v6 = [v5 layoutAttributesForItemAtIndexPath:v4];
+  pathCopy = path;
+  collectionViewLayout = [(UICollectionView *)self collectionViewLayout];
+  v6 = [collectionViewLayout layoutAttributesForItemAtIndexPath:pathCopy];
 
   [v6 frame];
   v8 = v7;
@@ -46,11 +46,11 @@
   return result;
 }
 
-- (CGRect)_maps_rectForHeaderInSection:(int64_t)a3
+- (CGRect)_maps_rectForHeaderInSection:(int64_t)section
 {
-  v4 = [(UICollectionView *)self collectionViewLayout];
-  v5 = [NSIndexPath indexPathForItem:0 inSection:a3];
-  v6 = [v4 layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:v5];
+  collectionViewLayout = [(UICollectionView *)self collectionViewLayout];
+  v5 = [NSIndexPath indexPathForItem:0 inSection:section];
+  v6 = [collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:v5];
 
   [v6 frame];
   v8 = v7;
@@ -71,8 +71,8 @@
 
 - (CGSize)_maps_contentSize
 {
-  v2 = [(UICollectionView *)self collectionViewLayout];
-  [v2 collectionViewContentSize];
+  collectionViewLayout = [(UICollectionView *)self collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -85,13 +85,13 @@
 
 - (BOOL)_maps_shouldShowTopHairline
 {
-  v3 = [(UICollectionView *)self dataSource];
-  if (!v3)
+  dataSource = [(UICollectionView *)self dataSource];
+  if (!dataSource)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = dataSource;
   [(UICollectionView *)self contentOffset];
   v6 = v5;
   v8 = v7;
@@ -102,14 +102,14 @@
     return 0;
   }
 
-  v11 = [(UICollectionView *)self _maps_indexOfFirstNonEmptySection];
-  v12 = [(UICollectionView *)self dataSource];
-  v13 = [v12 snapshot];
-  v14 = [v13 numberOfSections];
+  _maps_indexOfFirstNonEmptySection = [(UICollectionView *)self _maps_indexOfFirstNonEmptySection];
+  dataSource2 = [(UICollectionView *)self dataSource];
+  snapshot = [dataSource2 snapshot];
+  numberOfSections = [snapshot numberOfSections];
   v15 = 0;
-  if (v11 != 0x7FFFFFFFFFFFFFFFLL && v11 < v14)
+  if (_maps_indexOfFirstNonEmptySection != 0x7FFFFFFFFFFFFFFFLL && _maps_indexOfFirstNonEmptySection < numberOfSections)
   {
-    v16 = [NSIndexPath indexPathForRow:0 inSection:v11];
+    v16 = [NSIndexPath indexPathForRow:0 inSection:_maps_indexOfFirstNonEmptySection];
     v17 = [(UICollectionView *)self supplementaryViewForElementKind:UICollectionElementKindSectionHeader atIndexPath:v16];
 
     [v17 frame];
@@ -142,25 +142,25 @@
 
 - (int64_t)_maps_indexOfFirstNonEmptySection
 {
-  v3 = [(UICollectionView *)self dataSource];
+  dataSource = [(UICollectionView *)self dataSource];
 
-  if (!v3)
+  if (!dataSource)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = [(UICollectionView *)self dataSource];
+  dataSource2 = [(UICollectionView *)self dataSource];
   objc_opt_class();
   objc_opt_isKindOfClass();
 
-  v5 = [(UICollectionView *)self dataSource];
-  v6 = [v5 snapshot];
+  dataSource3 = [(UICollectionView *)self dataSource];
+  snapshot = [dataSource3 snapshot];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 sectionIdentifiers];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v8 = [sectionIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -171,18 +171,18 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(sectionIdentifiers);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([v6 numberOfItemsInSection:v12] > 0)
+        if ([snapshot numberOfItemsInSection:v12] > 0)
         {
-          v13 = [v6 indexOfSectionIdentifier:v12];
+          v13 = [snapshot indexOfSectionIdentifier:v12];
           goto LABEL_12;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [sectionIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         continue;

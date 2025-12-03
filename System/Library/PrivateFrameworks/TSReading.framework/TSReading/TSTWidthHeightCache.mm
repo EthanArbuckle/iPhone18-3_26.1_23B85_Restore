@@ -1,42 +1,42 @@
 @interface TSTWidthHeightCache
-- (BOOL)deleteColsStartingWith:(unsigned __int8)a3 andEndingWith:(unsigned __int8)a4;
-- (BOOL)deleteRowsStartingWith:(unsigned __int16)a3 andEndingWith:(unsigned __int16)a4;
-- (BOOL)insertCols:(unsigned __int16)a3 atColumn:(unsigned __int8)a4;
-- (BOOL)insertRows:(unsigned __int16)a3 atRow:(unsigned __int16)a4;
-- (BOOL)moveColsFrom:(id)a3 toCol:(unsigned __int8)a4;
-- (BOOL)moveRowsFrom:(id)a3 toRow:(unsigned __int16)a4;
+- (BOOL)deleteColsStartingWith:(unsigned __int8)with andEndingWith:(unsigned __int8)endingWith;
+- (BOOL)deleteRowsStartingWith:(unsigned __int16)with andEndingWith:(unsigned __int16)endingWith;
+- (BOOL)insertCols:(unsigned __int16)cols atColumn:(unsigned __int8)column;
+- (BOOL)insertRows:(unsigned __int16)rows atRow:(unsigned __int16)row;
+- (BOOL)moveColsFrom:(id)from toCol:(unsigned __int8)col;
+- (BOOL)moveRowsFrom:(id)from toRow:(unsigned __int16)row;
 - (BOOL)resetModelCache;
-- (BOOL)resetModelCacheRange:(id)a3;
-- (BOOL)setFitDims:(CGSize)a3 forCellID:(id)a4;
-- (BOOL)setFitHeight:(double)a3 forCellID:(id)a4;
-- (BOOL)setFitWidth:(double)a3 forCellID:(id)a4;
-- (BOOL)setModelHeight:(double)a3 forRow:(unsigned __int16)a4;
-- (BOOL)setModelWidth:(double)a3 forColumn:(unsigned __int8)a4;
+- (BOOL)resetModelCacheRange:(id)range;
+- (BOOL)setFitDims:(CGSize)dims forCellID:(id)d;
+- (BOOL)setFitHeight:(double)height forCellID:(id)d;
+- (BOOL)setFitWidth:(double)width forCellID:(id)d;
+- (BOOL)setModelHeight:(double)height forRow:(unsigned __int16)row;
+- (BOOL)setModelWidth:(double)width forColumn:(unsigned __int8)column;
 - (TSTWidthHeightCache)init;
-- (TSTWidthHeightCache)initWithNumRows:(unsigned __int16)a3 andNumCols:(unsigned __int16)a4;
-- (double)getFitHeightForRow:(unsigned __int16)a3;
-- (double)getFitWidthForCol:(unsigned __int8)a3;
-- (double)getModelHeightForRow:(unsigned __int16)a3;
-- (double)getModelWidthForColumn:(unsigned __int8)a3;
+- (TSTWidthHeightCache)initWithNumRows:(unsigned __int16)rows andNumCols:(unsigned __int16)cols;
+- (double)getFitHeightForRow:(unsigned __int16)row;
+- (double)getFitWidthForCol:(unsigned __int8)col;
+- (double)getModelHeightForRow:(unsigned __int16)row;
+- (double)getModelWidthForColumn:(unsigned __int8)column;
 - (id).cxx_construct;
 - (id)description;
-- (id)getListOfInvalidColsInRow:(unsigned __int16)a3;
-- (id)validateChangeDescriptors:(id)a3 tableModel:(id)a4;
+- (id)getListOfInvalidColsInRow:(unsigned __int16)row;
+- (id)validateChangeDescriptors:(id)descriptors tableModel:(id)model;
 - (unint64_t)numModelColumnWidths;
 - (unint64_t)numModelRowHeights;
-- (unint64_t)resetAllInvalidColsInRow:(unsigned __int16)a3;
-- (void)_increaseColCapacity:(unsigned int)a3;
-- (void)_increaseRowCapacity:(unsigned int)a3;
+- (unint64_t)resetAllInvalidColsInRow:(unsigned __int16)row;
+- (void)_increaseColCapacity:(unsigned int)capacity;
+- (void)_increaseRowCapacity:(unsigned int)capacity;
 - (void)dealloc;
 - (void)logInternalState;
 - (void)resetAllCol;
 - (void)resetAllRow;
-- (void)resetColWidthsStartingWith:(unsigned __int8)a3 andEndingWith:(unsigned __int8)a4;
-- (void)resetFitHeightForCellID:(id)a3;
-- (void)resetRowHeightForCell:(id)a3;
-- (void)resetRowHeightsStartingWith:(unsigned __int16)a3 andEndingWith:(unsigned __int16)a4;
-- (void)resetWidthsHeightsForRange:(id)a3;
-- (void)setNumsRows:(unsigned __int16)a3 andNumCols:(unsigned __int8)a4;
+- (void)resetColWidthsStartingWith:(unsigned __int8)with andEndingWith:(unsigned __int8)endingWith;
+- (void)resetFitHeightForCellID:(id)d;
+- (void)resetRowHeightForCell:(id)cell;
+- (void)resetRowHeightsStartingWith:(unsigned __int16)with andEndingWith:(unsigned __int16)endingWith;
+- (void)resetWidthsHeightsForRange:(id)range;
+- (void)setNumsRows:(unsigned __int16)rows andNumCols:(unsigned __int8)cols;
 @end
 
 @implementation TSTWidthHeightCache
@@ -58,24 +58,24 @@
   return v3;
 }
 
-- (TSTWidthHeightCache)initWithNumRows:(unsigned __int16)a3 andNumCols:(unsigned __int16)a4
+- (TSTWidthHeightCache)initWithNumRows:(unsigned __int16)rows andNumCols:(unsigned __int16)cols
 {
-  v4 = a4;
-  v5 = a3;
+  colsCopy = cols;
+  rowsCopy = rows;
   v10.receiver = self;
   v10.super_class = TSTWidthHeightCache;
   v6 = [(TSTWidthHeightCache *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    v6->mMaxRow = v5 - 1;
-    v6->mMaxCol = v4 - 1;
+    v6->mMaxRow = rowsCopy - 1;
+    v6->mMaxCol = colsCopy - 1;
     v9 = 0;
-    std::vector<double>::resize(&v6->mModelRowHeight.__begin_, v5, &v9);
+    std::vector<double>::resize(&v6->mModelRowHeight.__begin_, rowsCopy, &v9);
     v9 = 0;
-    std::vector<double>::resize(&v7->mModelColumnWidth.__begin_, v4, &v9);
-    [(TSTWidthHeightCache *)v7 _increaseRowCapacity:v5];
-    [(TSTWidthHeightCache *)v7 _increaseColCapacity:v4];
+    std::vector<double>::resize(&v7->mModelColumnWidth.__begin_, colsCopy, &v9);
+    [(TSTWidthHeightCache *)v7 _increaseRowCapacity:rowsCopy];
+    [(TSTWidthHeightCache *)v7 _increaseColCapacity:colsCopy];
     pthread_rwlock_init(&v7->mLock, 0);
   }
 
@@ -90,34 +90,34 @@
   [(TSTWidthHeightCache *)&v3 dealloc];
 }
 
-- (BOOL)setFitDims:(CGSize)a3 forCellID:(id)a4
+- (BOOL)setFitDims:(CGSize)dims forCellID:(id)d
 {
   LOBYTE(v5) = 0;
-  if (a4.var0 != 0xFFFF)
+  if (d.var0 != 0xFFFF)
   {
-    v6 = *&a4.var0 >> 16;
-    if (a4.var1 << 16 != 16711680)
+    v6 = *&d.var0 >> 16;
+    if (d.var1 << 16 != 16711680)
     {
-      height = a3.height;
-      width = a3.width;
-      var1 = a4.var1;
+      height = dims.height;
+      width = dims.width;
+      var1 = d.var1;
       pthread_rwlock_wrlock(&self->mLock);
       begin = self->mFittingColumnWidth.__begin_;
-      if (a4.var1 >= ((self->mFittingColumnWidth.__end_ - begin) >> 5))
+      if (d.var1 >= ((self->mFittingColumnWidth.__end_ - begin) >> 5))
       {
         std::vector<TSTWidthHeightCache_Private::WHCCol>::resize(&self->mFittingColumnWidth, (var1 + 1));
         begin = self->mFittingColumnWidth.__begin_;
       }
 
-      v12 = TSTWidthHeightCache_Private::WHCCol::setWidth((begin + 32 * a4.var1), a4.var0, width);
+      v12 = TSTWidthHeightCache_Private::WHCCol::setWidth((begin + 32 * d.var1), d.var0, width);
       v13 = self->mFittingRowHeight.__begin_;
-      if (a4.var0 >= 0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - v13) >> 3))
+      if (d.var0 >= 0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - v13) >> 3))
       {
-        std::vector<TSTWidthHeightCache_Private::WHCRow>::resize(&self->mFittingRowHeight.__begin_, a4.var0 + 1);
+        std::vector<TSTWidthHeightCache_Private::WHCRow>::resize(&self->mFittingRowHeight.__begin_, d.var0 + 1);
         v13 = self->mFittingRowHeight.__begin_;
       }
 
-      v5 = v12 | TSTWidthHeightCache_Private::WHCRow::setHeight((v13 + 168 * a4.var0), v6, height);
+      v5 = v12 | TSTWidthHeightCache_Private::WHCRow::setHeight((v13 + 168 * d.var0), v6, height);
       pthread_rwlock_unlock(&self->mLock);
     }
   }
@@ -125,41 +125,41 @@
   return v5;
 }
 
-- (BOOL)setFitWidth:(double)a3 forCellID:(id)a4
+- (BOOL)setFitWidth:(double)width forCellID:(id)d
 {
-  if (a4.var0 == 0xFFFF)
+  if (d.var0 == 0xFFFF)
   {
     return 0;
   }
 
-  var1 = a4.var1;
-  if (a4.var1 << 16 == 16711680)
+  var1 = d.var1;
+  if (d.var1 << 16 == 16711680)
   {
     return 0;
   }
 
   pthread_rwlock_wrlock(&self->mLock);
   begin = self->mFittingColumnWidth.__begin_;
-  if (a4.var1 >= ((self->mFittingColumnWidth.__end_ - begin) >> 5))
+  if (d.var1 >= ((self->mFittingColumnWidth.__end_ - begin) >> 5))
   {
     std::vector<TSTWidthHeightCache_Private::WHCCol>::resize(&self->mFittingColumnWidth, (var1 + 1));
     begin = self->mFittingColumnWidth.__begin_;
   }
 
-  v9 = TSTWidthHeightCache_Private::WHCCol::setWidth((begin + 32 * a4.var1), a4.var0, a3);
+  v9 = TSTWidthHeightCache_Private::WHCCol::setWidth((begin + 32 * d.var1), d.var0, width);
   pthread_rwlock_unlock(&self->mLock);
   return v9;
 }
 
-- (BOOL)setFitHeight:(double)a3 forCellID:(id)a4
+- (BOOL)setFitHeight:(double)height forCellID:(id)d
 {
-  var0 = a4.var0;
-  if (a4.var0 == 0xFFFFLL || (*&a4.var0 & 0xFF0000) == 0xFF0000)
+  var0 = d.var0;
+  if (d.var0 == 0xFFFFLL || (*&d.var0 & 0xFF0000) == 0xFF0000)
   {
     return 0;
   }
 
-  v7 = *&a4.var0 >> 16;
+  v7 = *&d.var0 >> 16;
   pthread_rwlock_wrlock(&self->mLock);
   begin = self->mFittingRowHeight.__begin_;
   if (var0 >= 0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - begin) >> 3))
@@ -168,39 +168,39 @@
     begin = self->mFittingRowHeight.__begin_;
   }
 
-  v9 = TSTWidthHeightCache_Private::WHCRow::setHeight((begin + 168 * var0), v7, a3);
+  v9 = TSTWidthHeightCache_Private::WHCRow::setHeight((begin + 168 * var0), v7, height);
   pthread_rwlock_unlock(&self->mLock);
   return v9;
 }
 
-- (BOOL)setModelWidth:(double)a3 forColumn:(unsigned __int8)a4
+- (BOOL)setModelWidth:(double)width forColumn:(unsigned __int8)column
 {
-  v4 = a4;
+  columnCopy = column;
   pthread_rwlock_wrlock(&self->mLock);
   begin = self->mModelColumnWidth.__begin_;
   v8 = self->mModelColumnWidth.__end_ - begin;
-  if (v8 > v4)
+  if (v8 > columnCopy)
   {
-    begin[v4] = a3;
+    begin[columnCopy] = width;
   }
 
-  v9 = v8 > v4;
+  v9 = v8 > columnCopy;
   pthread_rwlock_unlock(&self->mLock);
   return v9;
 }
 
-- (BOOL)setModelHeight:(double)a3 forRow:(unsigned __int16)a4
+- (BOOL)setModelHeight:(double)height forRow:(unsigned __int16)row
 {
-  v4 = a4;
+  rowCopy = row;
   pthread_rwlock_wrlock(&self->mLock);
   begin = self->mModelRowHeight.__begin_;
   v8 = self->mModelRowHeight.__end_ - begin;
-  if (v8 > v4)
+  if (v8 > rowCopy)
   {
-    begin[v4] = a3;
+    begin[rowCopy] = height;
   }
 
-  v9 = v8 > v4;
+  v9 = v8 > rowCopy;
   pthread_rwlock_unlock(&self->mLock);
   return v9;
 }
@@ -242,11 +242,11 @@
   return v3;
 }
 
-- (BOOL)resetModelCacheRange:(id)a3
+- (BOOL)resetModelCacheRange:(id)range
 {
   pthread_rwlock_wrlock(&self->mLock);
   begin = self->mModelRowHeight.__begin_;
-  v6 = (a3.var0.var0 + a3.var1.var1 - 1);
+  v6 = (range.var0.var0 + range.var1.var1 - 1);
   if (v6 >= (self->mModelRowHeight.__end_ - begin))
   {
     v7 = self->mModelRowHeight.__end_ - begin;
@@ -257,7 +257,7 @@
     LODWORD(v7) = v6 + 1;
   }
 
-  var0 = a3.var0.var0;
+  var0 = range.var0.var0;
   v9 = 8 * v7 - var0 * 8;
   if (v9 >= 1)
   {
@@ -265,7 +265,7 @@
   }
 
   v10 = self->mModelColumnWidth.__begin_;
-  v11 = (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1);
+  v11 = (LOBYTE(range.var1.var0) + range.var0.var1 - 1);
   if (v11 >= (self->mModelColumnWidth.__end_ - v10))
   {
     v12 = self->mModelColumnWidth.__end_ - v10;
@@ -276,7 +276,7 @@
     LODWORD(v12) = v11 + 1;
   }
 
-  v13 = (*&a3 >> 13) & 0x7F8;
+  v13 = (*&range >> 13) & 0x7F8;
   v14 = 8 * v12 - v13;
   if (v14 >= 1)
   {
@@ -287,15 +287,15 @@
   return 1;
 }
 
-- (BOOL)deleteColsStartingWith:(unsigned __int8)a3 andEndingWith:(unsigned __int8)a4
+- (BOOL)deleteColsStartingWith:(unsigned __int8)with andEndingWith:(unsigned __int8)endingWith
 {
-  v4 = a4;
-  v5 = a3;
+  endingWithCopy = endingWith;
+  withCopy = with;
   pthread_rwlock_wrlock(&self->mLock);
   begin = self->mFittingColumnWidth.__begin_;
-  if (v4 <= ((self->mFittingColumnWidth.__end_ - begin) >> 5))
+  if (endingWithCopy <= ((self->mFittingColumnWidth.__end_ - begin) >> 5))
   {
-    v8 = v4;
+    v8 = endingWithCopy;
   }
 
   else
@@ -303,24 +303,24 @@
     v8 = (self->mFittingColumnWidth.__end_ - begin) >> 5;
   }
 
-  if (v5 >= v8)
+  if (withCopy >= v8)
   {
-    v9 = v5;
+    v9 = withCopy;
   }
 
   else
   {
-    v9 = v5;
-    std::vector<TSTWidthHeightCache_Private::WHCCol>::erase(&self->mFittingColumnWidth, begin + 32 * v5, begin + 32 * v8);
+    v9 = withCopy;
+    std::vector<TSTWidthHeightCache_Private::WHCCol>::erase(&self->mFittingColumnWidth, begin + 32 * withCopy, begin + 32 * v8);
     for (i = self->mFittingRowHeight.__begin_; i < self->mFittingRowHeight.__end_; i = (i + 168))
     {
-      TSTWidthHeightCache_Private::WHCRow::resetColDataInRange(i, v5, v8);
+      TSTWidthHeightCache_Private::WHCRow::resetColDataInRange(i, withCopy, v8);
     }
   }
 
-  if (8 * v9 != 8 * v4)
+  if (8 * v9 != 8 * endingWithCopy)
   {
-    v11 = v4;
+    v11 = endingWithCopy;
     v12 = self->mModelColumnWidth.__begin_;
     end = self->mModelColumnWidth.__end_;
     v14 = &v12[v9];
@@ -337,37 +337,37 @@
   return 1;
 }
 
-- (BOOL)deleteRowsStartingWith:(unsigned __int16)a3 andEndingWith:(unsigned __int16)a4
+- (BOOL)deleteRowsStartingWith:(unsigned __int16)with andEndingWith:(unsigned __int16)endingWith
 {
-  v4 = a4;
-  v5 = a3;
+  endingWithCopy = endingWith;
+  withCopy = with;
   pthread_rwlock_wrlock(&self->mLock);
   begin = self->mFittingRowHeight.__begin_;
   v8 = -12483 * ((self->mFittingRowHeight.__end_ - begin) >> 3);
-  if (v4 <= v8)
+  if (endingWithCopy <= v8)
   {
-    v8 = v4;
+    v8 = endingWithCopy;
   }
 
   v9 = v8;
-  if (v8 <= v5)
+  if (v8 <= withCopy)
   {
-    v10 = v5;
+    v10 = withCopy;
   }
 
   else
   {
-    v10 = v5;
-    std::vector<TSTWidthHeightCache_Private::WHCRow>::erase(&self->mFittingRowHeight, begin + 168 * v5, begin + 168 * v8);
+    v10 = withCopy;
+    std::vector<TSTWidthHeightCache_Private::WHCRow>::erase(&self->mFittingRowHeight, begin + 168 * withCopy, begin + 168 * v8);
     for (i = self->mFittingColumnWidth.__begin_; i < self->mFittingColumnWidth.__end_; i += 4)
     {
-      TSTWidthHeightCache_Private::WHCCol::removeRowDataInRange(i, v5, v9);
+      TSTWidthHeightCache_Private::WHCCol::removeRowDataInRange(i, withCopy, v9);
     }
   }
 
-  if (8 * v10 != 8 * v4)
+  if (8 * v10 != 8 * endingWithCopy)
   {
-    v12 = v4;
+    v12 = endingWithCopy;
     v13 = self->mModelRowHeight.__begin_;
     end = self->mModelRowHeight.__end_;
     v15 = &v13[v10];
@@ -384,15 +384,15 @@
   return 1;
 }
 
-- (BOOL)insertCols:(unsigned __int16)a3 atColumn:(unsigned __int8)a4
+- (BOOL)insertCols:(unsigned __int16)cols atColumn:(unsigned __int8)column
 {
-  v4 = a4;
-  v5 = a3;
+  columnCopy = column;
+  colsCopy = cols;
   pthread_rwlock_wrlock(&self->mLock);
   begin = self->mFittingColumnWidth.__begin_;
-  if (v4 > ((self->mFittingColumnWidth.__end_ - begin) >> 5))
+  if (columnCopy > ((self->mFittingColumnWidth.__end_ - begin) >> 5))
   {
-    std::vector<TSTWidthHeightCache_Private::WHCCol>::resize(&self->mFittingColumnWidth, v4);
+    std::vector<TSTWidthHeightCache_Private::WHCCol>::resize(&self->mFittingColumnWidth, columnCopy);
     begin = self->mFittingColumnWidth.__begin_;
   }
 
@@ -400,7 +400,7 @@
   v12 = 0;
   v14 = 0;
   v13 = 0;
-  std::vector<TSTWidthHeightCache_Private::WHCCol>::insert(&self->mFittingColumnWidth, begin + 32 * v4, v5, &__p);
+  std::vector<TSTWidthHeightCache_Private::WHCCol>::insert(&self->mFittingColumnWidth, begin + 32 * columnCopy, colsCopy, &__p);
   if (__p)
   {
     v12 = __p;
@@ -409,31 +409,31 @@
 
   for (i = self->mFittingRowHeight.__begin_; i < self->mFittingRowHeight.__end_; i = (i + 168))
   {
-    TSTWidthHeightCache_NibArray::NibArray<8u>::insert(i, v5, v4, 15);
+    TSTWidthHeightCache_NibArray::NibArray<8u>::insert(i, colsCopy, columnCopy, 15);
   }
 
-  v9 = &self->mModelColumnWidth.__begin_[v4];
+  v9 = &self->mModelColumnWidth.__begin_[columnCopy];
   __p = 0;
-  std::vector<double>::insert(&self->mModelColumnWidth.__begin_, v9, v5, &__p);
+  std::vector<double>::insert(&self->mModelColumnWidth.__begin_, v9, colsCopy, &__p);
   pthread_rwlock_unlock(&self->mLock);
   return 1;
 }
 
-- (BOOL)insertRows:(unsigned __int16)a3 atRow:(unsigned __int16)a4
+- (BOOL)insertRows:(unsigned __int16)rows atRow:(unsigned __int16)row
 {
-  v4 = a4;
-  v5 = a3;
+  rowCopy = row;
+  rowsCopy = rows;
   v19 = *MEMORY[0x277D85DE8];
   pthread_rwlock_wrlock(&self->mLock);
   begin = self->mFittingRowHeight.__begin_;
-  if (0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - begin) >> 3) < v4)
+  if (0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - begin) >> 3) < rowCopy)
   {
-    std::vector<TSTWidthHeightCache_Private::WHCRow>::resize(&self->mFittingRowHeight.__begin_, v4);
+    std::vector<TSTWidthHeightCache_Private::WHCRow>::resize(&self->mFittingRowHeight.__begin_, rowCopy);
     begin = self->mFittingRowHeight.__begin_;
   }
 
   v18 = 0;
-  v8 = (begin + 168 * v4);
+  v8 = (begin + 168 * rowCopy);
   *__p = 0u;
   v17 = 0u;
   *&v9 = -1;
@@ -449,7 +449,7 @@
   v13 = &v17 + 8;
   v14 = 0;
   std::__fill_n_BOOL[abi:nn200100]<false,std::__bitset<1ul,14ul>>(&v13, 0xEuLL);
-  std::vector<TSTWidthHeightCache_Private::WHCRow>::insert(&self->mFittingRowHeight.__begin_, v8, v5, v15);
+  std::vector<TSTWidthHeightCache_Private::WHCRow>::insert(&self->mFittingRowHeight.__begin_, v8, rowsCopy, v15);
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -458,26 +458,26 @@
 
   for (i = self->mFittingColumnWidth.__begin_; i < self->mFittingColumnWidth.__end_; i += 4)
   {
-    TSTWidthHeightCache_Private::WHCCol::insertRows(i, v5, v4);
+    TSTWidthHeightCache_Private::WHCCol::insertRows(i, rowsCopy, rowCopy);
   }
 
-  v11 = &self->mModelRowHeight.__begin_[v4];
+  v11 = &self->mModelRowHeight.__begin_[rowCopy];
   *&v15[0] = 0;
-  std::vector<double>::insert(&self->mModelRowHeight.__begin_, v11, v5, v15);
+  std::vector<double>::insert(&self->mModelRowHeight.__begin_, v11, rowsCopy, v15);
   pthread_rwlock_unlock(&self->mLock);
   return 1;
 }
 
-- (BOOL)moveRowsFrom:(id)a3 toRow:(unsigned __int16)a4
+- (BOOL)moveRowsFrom:(id)from toRow:(unsigned __int16)row
 {
-  v4 = a4;
-  var0 = a3.var0;
-  var1 = a3.var1.var1;
+  rowCopy = row;
+  var0 = from.var0;
+  var1 = from.var1.var1;
   pthread_rwlock_wrlock(&self->mLock);
   v8 = var1 + var0.var0;
-  if (v8 <= v4)
+  if (v8 <= rowCopy)
   {
-    v9 = v4;
+    v9 = rowCopy;
   }
 
   else
@@ -498,7 +498,7 @@
   v20 = 0;
   v21 = 0;
   std::vector<TSTWidthHeightCache_Private::WHCRow>::__assign_with_size[abi:nn200100]<std::__wrap_iter<TSTWidthHeightCache_Private::WHCRow*>,std::__wrap_iter<TSTWidthHeightCache_Private::WHCRow*>>(&v19, v12, v12 + 168 * var1, var1);
-  v13 = begin + 168 * v4;
+  v13 = begin + 168 * rowCopy;
   if (v12 + 168 * var1 >= v13)
   {
     std::__copy_backward_impl<std::_ClassicAlgPolicy>::operator()[abi:nn200100]<TSTWidthHeightCache_Private::WHCRow *,TSTWidthHeightCache_Private::WHCRow *,TSTWidthHeightCache_Private::WHCRow *>(&v22, v13, v12, v12 + 168 * var1);
@@ -507,13 +507,13 @@
   else
   {
     std::__copy_impl::operator()[abi:nn200100]<TSTWidthHeightCache_Private::WHCRow *,TSTWidthHeightCache_Private::WHCRow *,TSTWidthHeightCache_Private::WHCRow *>(&v22, v12 + 168 * var1, v13, v12);
-    v13 = p_mFittingRowHeight->__begin_ + (168 * (v4 - var1));
+    v13 = p_mFittingRowHeight->__begin_ + (168 * (rowCopy - var1));
   }
 
   std::__copy_impl::operator()[abi:nn200100]<TSTWidthHeightCache_Private::WHCRow *,TSTWidthHeightCache_Private::WHCRow *,TSTWidthHeightCache_Private::WHCRow *>(&v22, v19, v20, v13);
   for (i = self->mFittingColumnWidth.__begin_; i < self->mFittingColumnWidth.__end_; i += 4)
   {
-    TSTWidthHeightCache_Private::WHCCol::moveRowIds(i, var0.var0, var1, v4);
+    TSTWidthHeightCache_Private::WHCCol::moveRowIds(i, var0.var0, var1, rowCopy);
   }
 
   if (v9 > self->mModelRowHeight.__end_ - self->mModelRowHeight.__begin_)
@@ -522,10 +522,10 @@
     std::vector<double>::resize(&self->mModelRowHeight.__begin_, v9, &v23);
   }
 
-  if (var0.var0 < v4)
+  if (var0.var0 < rowCopy)
   {
     v15 = 8 * var0.var0;
-    v16 = 8 * v4;
+    v16 = 8 * rowCopy;
     v17 = v16 - v15;
     if (v16 <= v15)
     {
@@ -535,10 +535,10 @@
     goto LABEL_19;
   }
 
-  v17 = ((8 * (*&var0 + var1) + 524280) & 0x7FFF8) - 8 * v4 + 8;
+  v17 = ((8 * (*&var0 + var1) + 524280) & 0x7FFF8) - 8 * rowCopy + 8;
   if (v17 >= 1)
   {
-    v15 = 8 * v4;
+    v15 = 8 * rowCopy;
 LABEL_19:
     bzero(&self->mModelRowHeight.__begin_[v15 / 8], v17);
   }
@@ -550,15 +550,15 @@ LABEL_20:
   return 1;
 }
 
-- (BOOL)moveColsFrom:(id)a3 toCol:(unsigned __int8)a4
+- (BOOL)moveColsFrom:(id)from toCol:(unsigned __int8)col
 {
-  v4 = a4;
-  var0 = a3.var1.var0;
+  colCopy = col;
+  var0 = from.var1.var0;
   pthread_rwlock_wrlock(&self->mLock);
-  v8 = a3.var0.var1 + var0;
-  if (v8 <= v4)
+  v8 = from.var0.var1 + var0;
+  if (v8 <= colCopy)
   {
-    v9 = v4;
+    v9 = colCopy;
   }
 
   else
@@ -574,14 +574,14 @@ LABEL_20:
     begin = p_mFittingColumnWidth->__begin_;
   }
 
-  v12 = begin + 32 * a3.var0.var1;
+  v12 = begin + 32 * from.var0.var1;
   v19 = var0;
   v20 = 0;
-  v13 = begin + 32 * a3.var0.var1 + 32 * var0;
+  v13 = begin + 32 * from.var0.var1 + 32 * var0;
   v21 = 0;
   v22 = 0;
-  std::vector<TSTWidthHeightCache_Private::WHCCol>::__assign_with_size[abi:nn200100]<std::__wrap_iter<TSTWidthHeightCache_Private::WHCCol*>,std::__wrap_iter<TSTWidthHeightCache_Private::WHCCol*>>(&v20, v12, v13, a3.var1.var0);
-  v14 = begin + 32 * v4;
+  std::vector<TSTWidthHeightCache_Private::WHCCol>::__assign_with_size[abi:nn200100]<std::__wrap_iter<TSTWidthHeightCache_Private::WHCCol*>,std::__wrap_iter<TSTWidthHeightCache_Private::WHCCol*>>(&v20, v12, v13, from.var1.var0);
+  v14 = begin + 32 * colCopy;
   if (v12 >= v14)
   {
     std::__copy_backward_impl<std::_ClassicAlgPolicy>::operator()[abi:nn200100]<TSTWidthHeightCache_Private::WHCCol *,TSTWidthHeightCache_Private::WHCCol *,TSTWidthHeightCache_Private::WHCCol *>(&v23, v14, v12, v13);
@@ -590,13 +590,13 @@ LABEL_20:
   else
   {
     std::__move_impl<std::_ClassicAlgPolicy>::operator()[abi:nn200100]<TSTWidthHeightCache_Private::WHCCol *,TSTWidthHeightCache_Private::WHCCol *,TSTWidthHeightCache_Private::WHCCol *>(&v23, v13, v14, v12);
-    v14 = p_mFittingColumnWidth->__begin_ + 32 * (v4 - a3.var1.var0);
+    v14 = p_mFittingColumnWidth->__begin_ + 32 * (colCopy - from.var1.var0);
   }
 
   std::__move_impl<std::_ClassicAlgPolicy>::operator()[abi:nn200100]<TSTWidthHeightCache_Private::WHCCol *,TSTWidthHeightCache_Private::WHCCol *,TSTWidthHeightCache_Private::WHCCol *>(&v23, v20, v21, v14);
   for (i = self->mFittingRowHeight.__begin_; i < self->mFittingRowHeight.__end_; i = (i + 168))
   {
-    TSTWidthHeightCache_NibArray::NibArray<8u>::move(i, a3.var0.var1, a3.var0.var1 + v19, v4, 0x100u);
+    TSTWidthHeightCache_NibArray::NibArray<8u>::move(i, from.var0.var1, from.var0.var1 + v19, colCopy, 0x100u);
   }
 
   if (v9 > self->mModelColumnWidth.__end_ - self->mModelColumnWidth.__begin_)
@@ -605,11 +605,11 @@ LABEL_20:
     std::vector<double>::resize(&self->mModelColumnWidth.__begin_, v9, &v24);
   }
 
-  if (a3.var0.var1 < v4)
+  if (from.var0.var1 < colCopy)
   {
-    v16 = (*&a3 >> 13) & 0x7F8;
-    v17 = 8 * v4 - v16;
-    if (8 * v4 <= v16)
+    v16 = (*&from >> 13) & 0x7F8;
+    v17 = 8 * colCopy - v16;
+    if (8 * colCopy <= v16)
     {
       goto LABEL_19;
     }
@@ -617,10 +617,10 @@ LABEL_20:
     goto LABEL_18;
   }
 
-  v17 = ((8 * (v19 + *&a3.var0.var1) + 2040) & 0x7F8) - 8 * v4 + 8;
+  v17 = ((8 * (v19 + *&from.var0.var1) + 2040) & 0x7F8) - 8 * colCopy + 8;
   if (v17 >= 1)
   {
-    v16 = 8 * v4;
+    v16 = 8 * colCopy;
 LABEL_18:
     bzero(self->mModelColumnWidth.__begin_ + v16, v17);
   }
@@ -632,15 +632,15 @@ LABEL_19:
   return 1;
 }
 
-- (double)getFitHeightForRow:(unsigned __int16)a3
+- (double)getFitHeightForRow:(unsigned __int16)row
 {
-  v3 = a3;
+  rowCopy = row;
   pthread_rwlock_rdlock(&self->mLock);
   begin = self->mFittingRowHeight.__begin_;
   v6 = 0.0;
-  if (0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - begin) >> 3) > v3)
+  if (0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - begin) >> 3) > rowCopy)
   {
-    v7 = begin + 168 * v3;
+    v7 = begin + 168 * rowCopy;
     v8 = *(v7 + 16);
     if (v8 == *(v7 + 17))
     {
@@ -665,15 +665,15 @@ LABEL_19:
   return v6;
 }
 
-- (double)getFitWidthForCol:(unsigned __int8)a3
+- (double)getFitWidthForCol:(unsigned __int8)col
 {
-  v3 = a3;
+  colCopy = col;
   pthread_rwlock_rdlock(&self->mLock);
   begin = self->mFittingColumnWidth.__begin_;
   v6 = -1.0;
-  if (v3 < ((self->mFittingColumnWidth.__end_ - begin) >> 5))
+  if (colCopy < ((self->mFittingColumnWidth.__end_ - begin) >> 5))
   {
-    v7 = begin + 32 * v3;
+    v7 = begin + 32 * colCopy;
     if (*v7 == *(v7 + 1))
     {
       if (v7[24])
@@ -697,48 +697,48 @@ LABEL_19:
   return v6;
 }
 
-- (double)getModelHeightForRow:(unsigned __int16)a3
+- (double)getModelHeightForRow:(unsigned __int16)row
 {
-  v3 = a3;
+  rowCopy = row;
   pthread_rwlock_rdlock(&self->mLock);
   begin = self->mModelRowHeight.__begin_;
   v6 = 0.0;
-  if (v3 < (self->mModelRowHeight.__end_ - begin))
+  if (rowCopy < (self->mModelRowHeight.__end_ - begin))
   {
-    v6 = begin[v3];
+    v6 = begin[rowCopy];
   }
 
   pthread_rwlock_unlock(&self->mLock);
   return v6;
 }
 
-- (double)getModelWidthForColumn:(unsigned __int8)a3
+- (double)getModelWidthForColumn:(unsigned __int8)column
 {
-  v3 = a3;
+  columnCopy = column;
   pthread_rwlock_rdlock(&self->mLock);
   begin = self->mModelColumnWidth.__begin_;
   v6 = 0.0;
-  if (v3 < (self->mModelColumnWidth.__end_ - begin))
+  if (columnCopy < (self->mModelColumnWidth.__end_ - begin))
   {
-    v6 = begin[v3];
+    v6 = begin[columnCopy];
   }
 
   pthread_rwlock_unlock(&self->mLock);
   return v6;
 }
 
-- (id)getListOfInvalidColsInRow:(unsigned __int16)a3
+- (id)getListOfInvalidColsInRow:(unsigned __int16)row
 {
-  v3 = a3;
+  rowCopy = row;
   pthread_rwlock_rdlock(&self->mLock);
   begin = self->mFittingRowHeight.__begin_;
-  if (0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - begin) >> 3) <= v3)
+  if (0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - begin) >> 3) <= rowCopy)
   {
     goto LABEL_11;
   }
 
-  v6 = v3;
-  v7 = *(begin + 168 * v3 + 160);
+  v6 = rowCopy;
+  v7 = *(begin + 168 * rowCopy + 160);
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:v7];
   if (!v7)
   {
@@ -786,47 +786,47 @@ LABEL_12:
   return v8;
 }
 
-- (unint64_t)resetAllInvalidColsInRow:(unsigned __int16)a3
+- (unint64_t)resetAllInvalidColsInRow:(unsigned __int16)row
 {
-  v3 = a3;
+  rowCopy = row;
   pthread_rwlock_wrlock(&self->mLock);
   begin = self->mFittingRowHeight.__begin_;
-  if (0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - begin) >> 3) <= v3)
+  if (0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - begin) >> 3) <= rowCopy)
   {
     return 0;
   }
 
   else
   {
-    return TSTWidthHeightCache_NibArray::NibArray<8u>::setValueToValue(begin + 168 * v3, 14, 15, *(begin + 168 * v3 + 160), 0x100u);
+    return TSTWidthHeightCache_NibArray::NibArray<8u>::setValueToValue(begin + 168 * rowCopy, 14, 15, *(begin + 168 * rowCopy + 160), 0x100u);
   }
 }
 
-- (void)resetRowHeightsStartingWith:(unsigned __int16)a3 andEndingWith:(unsigned __int16)a4
+- (void)resetRowHeightsStartingWith:(unsigned __int16)with andEndingWith:(unsigned __int16)endingWith
 {
-  v4 = a4;
-  v5 = a3;
+  endingWithCopy = endingWith;
+  withCopy = with;
   pthread_rwlock_wrlock(&self->mLock);
   begin = self->mFittingRowHeight.__begin_;
   v8 = 0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - begin) >> 3);
-  if (v8 <= v4)
+  if (v8 <= endingWithCopy)
   {
-    std::vector<TSTWidthHeightCache_Private::WHCRow>::resize(&self->mFittingRowHeight.__begin_, v4 + 1);
+    std::vector<TSTWidthHeightCache_Private::WHCRow>::resize(&self->mFittingRowHeight.__begin_, endingWithCopy + 1);
     begin = self->mFittingRowHeight.__begin_;
   }
 
-  if (v4 + 1 >= v8)
+  if (endingWithCopy + 1 >= v8)
   {
     v9 = v8;
   }
 
   else
   {
-    v9 = v4 + 1;
+    v9 = endingWithCopy + 1;
   }
 
   v10 = begin + 168 * v9;
-  for (i = begin + 168 * v5; i < v10; i += 168)
+  for (i = begin + 168 * withCopy; i < v10; i += 168)
   {
     *&v12 = -1;
     *(&v12 + 1) = -1;
@@ -848,31 +848,31 @@ LABEL_12:
   pthread_rwlock_unlock(&self->mLock);
 }
 
-- (void)resetColWidthsStartingWith:(unsigned __int8)a3 andEndingWith:(unsigned __int8)a4
+- (void)resetColWidthsStartingWith:(unsigned __int8)with andEndingWith:(unsigned __int8)endingWith
 {
-  v4 = a4;
-  v5 = a3;
+  endingWithCopy = endingWith;
+  withCopy = with;
   pthread_rwlock_wrlock(&self->mLock);
   begin = self->mFittingColumnWidth.__begin_;
   v8 = (self->mFittingColumnWidth.__end_ - begin) >> 5;
-  if (v8 < v4)
+  if (v8 < endingWithCopy)
   {
-    std::vector<TSTWidthHeightCache_Private::WHCCol>::resize(&self->mFittingColumnWidth, v4 + 1);
+    std::vector<TSTWidthHeightCache_Private::WHCCol>::resize(&self->mFittingColumnWidth, endingWithCopy + 1);
     begin = self->mFittingColumnWidth.__begin_;
   }
 
-  if (v4 + 1 >= v8)
+  if (endingWithCopy + 1 >= v8)
   {
     v9 = v8;
   }
 
   else
   {
-    v9 = v4 + 1;
+    v9 = endingWithCopy + 1;
   }
 
   v10 = begin + 32 * v9;
-  for (i = begin + 32 * v5; i < v10; i += 32)
+  for (i = begin + 32 * withCopy; i < v10; i += 32)
   {
     *(i + 1) = *i;
     i[24] = 0;
@@ -925,11 +925,11 @@ LABEL_12:
   pthread_rwlock_unlock(&self->mLock);
 }
 
-- (void)resetWidthsHeightsForRange:(id)a3
+- (void)resetWidthsHeightsForRange:(id)range
 {
-  var0 = a3.var0;
-  v5 = a3.var1.var0;
-  var1 = a3.var1.var1;
+  var0 = range.var0;
+  v5 = range.var1.var0;
+  var1 = range.var1.var1;
   pthread_rwlock_wrlock(&self->mLock);
   v7 = var1 + var0.var0;
   if (0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - self->mFittingRowHeight.__begin_) >> 3) < v7)
@@ -961,48 +961,48 @@ LABEL_12:
   pthread_rwlock_unlock(&self->mLock);
 }
 
-- (void)resetRowHeightForCell:(id)a3
+- (void)resetRowHeightForCell:(id)cell
 {
-  v5 = *&a3.var0 >> 16;
+  v5 = *&cell.var0 >> 16;
   pthread_rwlock_wrlock(&self->mLock);
-  TSTWidthHeightCache_Private::WHCRow::resetColDataInRange(self->mFittingRowHeight.__begin_ + 168 * a3.var0, a3.var1, (v5 + 1));
+  TSTWidthHeightCache_Private::WHCRow::resetColDataInRange(self->mFittingRowHeight.__begin_ + 168 * cell.var0, cell.var1, (v5 + 1));
 
   pthread_rwlock_unlock(&self->mLock);
 }
 
-- (void)resetFitHeightForCellID:(id)a3
+- (void)resetFitHeightForCellID:(id)d
 {
   pthread_rwlock_wrlock(&self->mLock);
   begin = self->mFittingRowHeight.__begin_;
-  if (a3.var0 < 0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - begin) >> 3))
+  if (d.var0 < 0xCF3CF3CF3CF3CF3DLL * ((self->mFittingRowHeight.__end_ - begin) >> 3))
   {
-    TSTWidthHeightCache_Private::WHCRow::resetColDataInRange(begin + 168 * a3.var0, a3.var1, (a3.var1 + 1));
+    TSTWidthHeightCache_Private::WHCRow::resetColDataInRange(begin + 168 * d.var0, d.var1, (d.var1 + 1));
   }
 
   pthread_rwlock_unlock(&self->mLock);
 }
 
-- (void)setNumsRows:(unsigned __int16)a3 andNumCols:(unsigned __int8)a4
+- (void)setNumsRows:(unsigned __int16)rows andNumCols:(unsigned __int8)cols
 {
-  v4 = a4;
-  v5 = a3;
+  colsCopy = cols;
+  rowsCopy = rows;
   pthread_rwlock_wrlock(&self->mLock);
-  v7 = v4 - 1;
-  if (self->mMaxRow > (v5 - 1))
+  v7 = colsCopy - 1;
+  if (self->mMaxRow > (rowsCopy - 1))
   {
-    std::vector<TSTWidthHeightCache_Private::WHCRow>::resize(&self->mFittingRowHeight.__begin_, v5);
+    std::vector<TSTWidthHeightCache_Private::WHCRow>::resize(&self->mFittingRowHeight.__begin_, rowsCopy);
   }
 
   if (self->mMaxCol > v7)
   {
-    std::vector<TSTWidthHeightCache_Private::WHCCol>::resize(&self->mFittingColumnWidth, v4);
+    std::vector<TSTWidthHeightCache_Private::WHCCol>::resize(&self->mFittingColumnWidth, colsCopy);
   }
 
-  if (self->mMaxRow > (v5 - 1))
+  if (self->mMaxRow > (rowsCopy - 1))
   {
     for (i = self->mFittingColumnWidth.__begin_; i < self->mFittingColumnWidth.__end_; i += 4)
     {
-      TSTWidthHeightCache_Private::WHCCol::resetAfter(i, v5);
+      TSTWidthHeightCache_Private::WHCCol::resetAfter(i, rowsCopy);
     }
   }
 
@@ -1114,7 +1114,7 @@ LABEL_24:
   }
 }
 
-- (id)validateChangeDescriptors:(id)a3 tableModel:(id)a4
+- (id)validateChangeDescriptors:(id)descriptors tableModel:(id)model
 {
   v30 = *MEMORY[0x277D85DE8];
   v23 = 0;
@@ -1127,7 +1127,7 @@ LABEL_24:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v19 objects:v29 count:16];
+  v6 = [descriptors countByEnumeratingWithState:&v19 objects:v29 count:16];
   if (v6)
   {
     v7 = *v20;
@@ -1137,26 +1137,26 @@ LABEL_24:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(descriptors);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v9 changeDescriptor];
-        v11 = [v9 cellID];
-        v12 = [v9 cellRegion];
+        changeDescriptor = [v9 changeDescriptor];
+        cellID = [v9 cellID];
+        cellRegion = [v9 cellRegion];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __60__TSTWidthHeightCache_validateChangeDescriptors_tableModel___block_invoke;
         v16[3] = &unk_279D4A788;
-        v17 = v10;
-        v18 = v11;
-        v16[5] = a4;
+        v17 = changeDescriptor;
+        v18 = cellID;
+        v16[5] = model;
         v16[6] = &v23;
         v16[4] = self;
-        [v12 enumerateCellRangesUsingBlock:v16];
+        [cellRegion enumerateCellRangesUsingBlock:v16];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v19 objects:v29 count:16];
+      v6 = [descriptors countByEnumeratingWithState:&v19 objects:v29 count:16];
     }
 
     while (v6);
@@ -1273,31 +1273,31 @@ LABEL_9:
   return result;
 }
 
-- (void)_increaseColCapacity:(unsigned int)a3
+- (void)_increaseColCapacity:(unsigned int)capacity
 {
   begin = self->mFittingColumnWidth.__begin_;
   p_mFittingColumnWidth = &self->mFittingColumnWidth;
-  if (a3 >= ((p_mFittingColumnWidth->__cap_ - begin) >> 5))
+  if (capacity >= ((p_mFittingColumnWidth->__cap_ - begin) >> 5))
   {
-    if ((a3 & 0xFFFFFF1F) != 0)
+    if ((capacity & 0xFFFFFF1F) != 0)
     {
-      v5 = (a3 + 32) & 0xE0;
+      capacityCopy = (capacity + 32) & 0xE0;
     }
 
     else
     {
-      v5 = a3;
+      capacityCopy = capacity;
     }
 
-    std::vector<TSTWidthHeightCache_Private::WHCCol>::reserve(p_mFittingColumnWidth, v5);
+    std::vector<TSTWidthHeightCache_Private::WHCCol>::reserve(p_mFittingColumnWidth, capacityCopy);
   }
 }
 
-- (void)_increaseRowCapacity:(unsigned int)a3
+- (void)_increaseRowCapacity:(unsigned int)capacity
 {
   begin = self->mFittingRowHeight.__begin_;
   p_mFittingRowHeight = &self->mFittingRowHeight;
-  if (0xCF3CF3CF3CF3CF3DLL * ((p_mFittingRowHeight->__cap_ - begin) >> 3) <= a3)
+  if (0xCF3CF3CF3CF3CF3DLL * ((p_mFittingRowHeight->__cap_ - begin) >> 3) <= capacity)
   {
     std::vector<TSTWidthHeightCache_Private::WHCRow>::reserve(p_mFittingRowHeight, 0);
   }

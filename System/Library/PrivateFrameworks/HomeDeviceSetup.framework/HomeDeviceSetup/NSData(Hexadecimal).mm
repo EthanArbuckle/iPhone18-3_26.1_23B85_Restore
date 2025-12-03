@@ -11,11 +11,11 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 lowercaseString];
+    lowercaseString = [v3 lowercaseString];
 
     v4 = objc_opt_new();
     v16 = 0;
-    v6 = [v5 length];
+    v6 = [lowercaseString length];
     v7 = v6 - 1;
     if (v6 != 1)
     {
@@ -23,7 +23,7 @@
       do
       {
         v9 = v8 + 1;
-        v10 = [v5 characterAtIndex:v8];
+        v10 = [lowercaseString characterAtIndex:v8];
         if (v10 >= 48)
         {
           v11 = v10 & 0x7F;
@@ -32,7 +32,7 @@
           if (v11 <= 0x66 && !v13)
           {
             __str[0] = v10;
-            __str[1] = [v5 characterAtIndex:v8 + 1];
+            __str[1] = [lowercaseString characterAtIndex:v8 + 1];
             HIBYTE(v16) = strtol(__str, 0, 16);
             [v4 appendBytes:&v16 + 1 length:1];
             v9 = v8 + 2;
@@ -51,11 +51,11 @@
 
 - (id)mb_hexadecimalString
 {
-  v2 = [a1 bytes];
-  if (v2)
+  bytes = [self bytes];
+  if (bytes)
   {
-    v3 = v2;
-    v4 = [a1 length];
+    v3 = bytes;
+    v4 = [self length];
     for (i = [MEMORY[0x277CCAB68] stringWithCapacity:2 * v4];
     {
       v6 = *v3++;
@@ -63,15 +63,15 @@
       [i appendString:v7];
     }
 
-    v8 = [MEMORY[0x277CCACA8] stringWithString:i];
+    string = [MEMORY[0x277CCACA8] stringWithString:i];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
-  return v8;
+  return string;
 }
 
 @end

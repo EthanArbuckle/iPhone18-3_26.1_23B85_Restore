@@ -1,37 +1,37 @@
 @interface SBUIBackgroundView
-- (SBUIBackgroundView)initWithFrame:(CGRect)a3;
-- (double)_darkenValueForBackgroundStyle:(int64_t)a3;
-- (double)_lightenSourceOverValueForBackgroundStyle:(int64_t)a3;
-- (double)_luminanceValueForBackgroundStyle:(int64_t)a3;
-- (double)_reducedTransparencyValueForBackgroundStyle:(int64_t)a3;
-- (double)_tintColorAlphaForBackgroundStyle:(int64_t)a3;
-- (double)_tintValueForBackgroundStyle:(int64_t)a3;
-- (id)_backgroundColorForDarkenAlpha:(double)a3 andProgress:(double)a4;
-- (void)_darkenWithProgress:(double)a3;
-- (void)_reduceTransparencyEnabledStateDidChange:(id)a3;
-- (void)_reduceTransparencyWithProgress:(double)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_tintWithProgress:(double)a3 backgroundColorAlpha:(double)a4;
-- (void)_updateAppearanceForBackgroundStyle:(int64_t)a3 transitionToSettings:(BOOL)a4;
-- (void)_updateAppearanceForTransitionFromStyle:(int64_t)a3 toStyle:(int64_t)a4 withProgress:(double)a5;
+- (SBUIBackgroundView)initWithFrame:(CGRect)frame;
+- (double)_darkenValueForBackgroundStyle:(int64_t)style;
+- (double)_lightenSourceOverValueForBackgroundStyle:(int64_t)style;
+- (double)_luminanceValueForBackgroundStyle:(int64_t)style;
+- (double)_reducedTransparencyValueForBackgroundStyle:(int64_t)style;
+- (double)_tintColorAlphaForBackgroundStyle:(int64_t)style;
+- (double)_tintValueForBackgroundStyle:(int64_t)style;
+- (id)_backgroundColorForDarkenAlpha:(double)alpha andProgress:(double)progress;
+- (void)_darkenWithProgress:(double)progress;
+- (void)_reduceTransparencyEnabledStateDidChange:(id)change;
+- (void)_reduceTransparencyWithProgress:(double)progress;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_tintWithProgress:(double)progress backgroundColorAlpha:(double)alpha;
+- (void)_updateAppearanceForBackgroundStyle:(int64_t)style transitionToSettings:(BOOL)settings;
+- (void)_updateAppearanceForTransitionFromStyle:(int64_t)style toStyle:(int64_t)toStyle withProgress:(double)progress;
 - (void)_updateReduceTransparencyTinting;
-- (void)_updateReduceTransparencyTintingWithProgressWeighting:(double)a3;
-- (void)beginTransitionToBackgroundStyle:(int64_t)a3;
-- (void)completeTransitionToBackgroundStyle:(int64_t)a3;
+- (void)_updateReduceTransparencyTintingWithProgressWeighting:(double)weighting;
+- (void)beginTransitionToBackgroundStyle:(int64_t)style;
+- (void)completeTransitionToBackgroundStyle:(int64_t)style;
 - (void)layoutSubviews;
-- (void)modifyAllViewsWithChanges:(id)a3;
-- (void)setBackgroundStyle:(int64_t)a3;
-- (void)setReduceTransparencyBackingColor:(id)a3;
-- (void)updateBackgroundStyleTransitionProgress:(double)a3;
+- (void)modifyAllViewsWithChanges:(id)changes;
+- (void)setBackgroundStyle:(int64_t)style;
+- (void)setReduceTransparencyBackingColor:(id)color;
+- (void)updateBackgroundStyleTransitionProgress:(double)progress;
 @end
 
 @implementation SBUIBackgroundView
 
-- (SBUIBackgroundView)initWithFrame:(CGRect)a3
+- (SBUIBackgroundView)initWithFrame:(CGRect)frame
 {
   v41.receiver = self;
   v41.super_class = SBUIBackgroundView;
-  v3 = [(SBUIBackgroundView *)&v41 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBUIBackgroundView *)&v41 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -48,8 +48,8 @@
 
     else
     {
-      v7 = [MEMORY[0x277D75348] whiteColor];
-      [(SBUIBackgroundView *)v4 setReduceTransparencyBackingColor:v7];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(SBUIBackgroundView *)v4 setReduceTransparencyBackingColor:whiteColor];
     }
 
     [(UIView *)v4->_reduceTransparencyView setHidden:!v4->_isReducedTransparencyEnabled];
@@ -66,8 +66,8 @@
     sourceOverView = v4->_sourceOverView;
     v4->_sourceOverView = v11;
 
-    v13 = [(UIView *)v4->_sourceOverView layer];
-    [v13 setCompositingFilter:*MEMORY[0x277CDA620]];
+    layer = [(UIView *)v4->_sourceOverView layer];
+    [layer setCompositingFilter:*MEMORY[0x277CDA620]];
 
     [(SBUIBackgroundView *)v4 addSubview:v4->_sourceOverView];
     v14 = objc_alloc(MEMORY[0x277D75D18]);
@@ -76,8 +76,8 @@
     darkenSourceOverView = v4->_darkenSourceOverView;
     v4->_darkenSourceOverView = v15;
 
-    v17 = [(UIView *)v4->_darkenSourceOverView layer];
-    [v17 setCompositingFilter:*MEMORY[0x277CDA2F8]];
+    layer2 = [(UIView *)v4->_darkenSourceOverView layer];
+    [layer2 setCompositingFilter:*MEMORY[0x277CDA2F8]];
 
     [(SBUIBackgroundView *)v4 addSubview:v4->_darkenSourceOverView];
     v18 = objc_alloc(MEMORY[0x277CF0D40]);
@@ -94,8 +94,8 @@
     v4->_luminanceView = v23;
 
     [(SBUIBackgroundView *)v4 addSubview:v4->_luminanceView];
-    v25 = [(SBUIBackgroundView *)v4 layer];
-    [v25 setAllowsGroupBlending:0];
+    layer3 = [(SBUIBackgroundView *)v4 layer];
+    [layer3 setAllowsGroupBlending:0];
 
     [(SBUIBackgroundView *)v4 bounds];
     v30 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v26, v27, v28, v29}];
@@ -107,9 +107,9 @@
     v33 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.25];
     [(UIView *)v32 setBackgroundColor:v33];
 
-    v34 = [(UIView *)v4->_lightenSourceOverView layer];
+    layer4 = [(UIView *)v4->_lightenSourceOverView layer];
     v35 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA550]];
-    [v34 setCompositingFilter:v35];
+    [layer4 setCompositingFilter:v35];
 
     [(SBUIBackgroundView *)v4 addSubview:v4->_lightenSourceOverView];
     v36 = objc_alloc(MEMORY[0x277D75D18]);
@@ -120,8 +120,8 @@
 
     [(SBUIBackgroundView *)v4 addSubview:v4->_tintView];
     [(SBUIBackgroundView *)v4 setBackgroundStyle:1];
-    v39 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v39 addObserver:v4 selector:sel__reduceTransparencyEnabledStateDidChange_ name:*MEMORY[0x277D764C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__reduceTransparencyEnabledStateDidChange_ name:*MEMORY[0x277D764C8] object:0];
   }
 
   return v4;
@@ -144,13 +144,13 @@
   [(SBUIBackgroundView *)self modifyAllViewsWithChanges:v7];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __49__SBUIBackgroundView__setContinuousCornerRadius___block_invoke;
   v3[3] = &__block_descriptor_40_e16_v16__0__UIView_8l;
-  *&v3[4] = a3;
+  *&v3[4] = radius;
   [(SBUIBackgroundView *)self modifyAllViewsWithChanges:v3];
 }
 
@@ -162,10 +162,10 @@ void __49__SBUIBackgroundView__setContinuousCornerRadius___block_invoke(uint64_t
   [v3 setClipsToBounds:1];
 }
 
-- (void)modifyAllViewsWithChanges:(id)a3
+- (void)modifyAllViewsWithChanges:(id)changes
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changesCopy = changes;
   reduceTransparencyTintingView = self->_reduceTransparencyTintingView;
   luminanceView = self->_luminanceView;
   backdropView = self->_backdropView;
@@ -201,9 +201,9 @@ void __49__SBUIBackgroundView__setContinuousCornerRadius___block_invoke(uint64_t
           objc_enumerationMutation(v12);
         }
 
-        if (v4)
+        if (changesCopy)
         {
-          v4[2](v4, *(*(&v18 + 1) + 8 * v16));
+          changesCopy[2](changesCopy, *(*(&v18 + 1) + 8 * v16));
         }
 
         ++v16;
@@ -219,27 +219,27 @@ void __49__SBUIBackgroundView__setContinuousCornerRadius___block_invoke(uint64_t
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setBackgroundStyle:(int64_t)a3
+- (void)setBackgroundStyle:(int64_t)style
 {
   [(SBUIBackgroundView *)self beginTransitionToBackgroundStyle:?];
 
-  [(SBUIBackgroundView *)self completeTransitionToBackgroundStyle:a3];
+  [(SBUIBackgroundView *)self completeTransitionToBackgroundStyle:style];
 }
 
-- (void)beginTransitionToBackgroundStyle:(int64_t)a3
+- (void)beginTransitionToBackgroundStyle:(int64_t)style
 {
   if (self->_transitioning)
   {
-    if (self->_transitionStyle == a3)
+    if (self->_transitionStyle == style)
     {
       return;
     }
 
     p_style = &self->_style;
-    if (self->_style == a3)
+    if (self->_style == style)
     {
 
-      [(SBUIBackgroundView *)self completeTransitionToBackgroundStyle:a3];
+      [(SBUIBackgroundView *)self completeTransitionToBackgroundStyle:style];
       return;
     }
   }
@@ -247,14 +247,14 @@ void __49__SBUIBackgroundView__setContinuousCornerRadius___block_invoke(uint64_t
   else
   {
     p_style = &self->_style;
-    if (self->_style == a3)
+    if (self->_style == style)
     {
       return;
     }
   }
 
   [SBUIBackgroundView _updateAppearanceForBackgroundStyle:"_updateAppearanceForBackgroundStyle:transitionToSettings:" transitionToSettings:?];
-  self->_transitionStyle = a3;
+  self->_transitionStyle = style;
   self->_transitioning = 1;
   v6 = !SBUIHasBlurForBackgroundStyle(*p_style) && !SBUIHasBlurForBackgroundStyle(self->_transitionStyle);
   backdropView = self->_backdropView;
@@ -263,11 +263,11 @@ void __49__SBUIBackgroundView__setContinuousCornerRadius___block_invoke(uint64_t
   [(BSUIBackdropView *)backdropView setHidden:v8];
 }
 
-- (void)updateBackgroundStyleTransitionProgress:(double)a3
+- (void)updateBackgroundStyleTransitionProgress:(double)progress
 {
   if (self->_transitioning)
   {
-    self->_progress = a3;
+    self->_progress = progress;
     if (([(BSUIBackdropView *)self->_backdropView isHidden]& 1) == 0)
     {
       backdropView = self->_backdropView;
@@ -279,29 +279,29 @@ void __49__SBUIBackgroundView__setContinuousCornerRadius___block_invoke(uint64_t
     style = self->_style;
     transitionStyle = self->_transitionStyle;
 
-    [(SBUIBackgroundView *)self _updateAppearanceForTransitionFromStyle:style toStyle:transitionStyle withProgress:a3];
+    [(SBUIBackgroundView *)self _updateAppearanceForTransitionFromStyle:style toStyle:transitionStyle withProgress:progress];
   }
 }
 
-- (void)completeTransitionToBackgroundStyle:(int64_t)a3
+- (void)completeTransitionToBackgroundStyle:(int64_t)style
 {
   if (self->_transitioning)
   {
     self->_progress = 0.0;
     self->_transitioning = 0;
-    self->_style = a3;
+    self->_style = style;
     self->_transitionStyle = -1;
     [SBUIBackgroundView _updateAppearanceForBackgroundStyle:"_updateAppearanceForBackgroundStyle:transitionToSettings:" transitionToSettings:?];
   }
 }
 
-- (void)setReduceTransparencyBackingColor:(id)a3
+- (void)setReduceTransparencyBackingColor:(id)color
 {
-  v5 = a3;
-  if (self->_reduceTransparencyBackingColor != v5)
+  colorCopy = color;
+  if (self->_reduceTransparencyBackingColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_reduceTransparencyBackingColor, a3);
+    v8 = colorCopy;
+    objc_storeStrong(&self->_reduceTransparencyBackingColor, color);
     reduceTransparencyView = self->_reduceTransparencyView;
     if (self->_reduceTransparencyBackingColor)
     {
@@ -310,15 +310,15 @@ void __49__SBUIBackgroundView__setContinuousCornerRadius___block_invoke(uint64_t
 
     else
     {
-      v7 = [MEMORY[0x277D75348] whiteColor];
-      [(UIView *)reduceTransparencyView setBackgroundColor:v7];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(UIView *)reduceTransparencyView setBackgroundColor:whiteColor];
     }
 
-    v5 = v8;
+    colorCopy = v8;
   }
 }
 
-- (void)_updateReduceTransparencyTintingWithProgressWeighting:(double)a3
+- (void)_updateReduceTransparencyTintingWithProgressWeighting:(double)weighting
 {
   v4 = SBUIGetBackdropSettingsForBackgroundStyle(self->_transitionStyle);
   v5 = SBUIGetBackdropSettingsForBackgroundStyle(self->_style);
@@ -401,7 +401,7 @@ LABEL_10:
   }
 }
 
-- (void)_reduceTransparencyEnabledStateDidChange:(id)a3
+- (void)_reduceTransparencyEnabledStateDidChange:(id)change
 {
   IsReduceTransparencyEnabled = UIAccessibilityIsReduceTransparencyEnabled();
   self->_isReducedTransparencyEnabled = IsReduceTransparencyEnabled;
@@ -421,41 +421,41 @@ LABEL_10:
   [(BSUIBackdropView *)backdropView setAlpha:v8];
 }
 
-- (void)_updateAppearanceForBackgroundStyle:(int64_t)a3 transitionToSettings:(BOOL)a4
+- (void)_updateAppearanceForBackgroundStyle:(int64_t)style transitionToSettings:(BOOL)settings
 {
-  if (a4)
+  if (settings)
   {
     backdropView = self->_backdropView;
-    v7 = SBUIGetBackdropSettingsForBackgroundStyle(a3);
+    v7 = SBUIGetBackdropSettingsForBackgroundStyle(style);
     [(BSUIBackdropView *)backdropView transitionToSettings:v7];
   }
 
-  [(SBUIBackgroundView *)self _darkenValueForBackgroundStyle:a3];
+  [(SBUIBackgroundView *)self _darkenValueForBackgroundStyle:style];
   [(SBUIBackgroundView *)self _darkenWithProgress:?];
-  [(SBUIBackgroundView *)self _tintValueForBackgroundStyle:a3];
+  [(SBUIBackgroundView *)self _tintValueForBackgroundStyle:style];
   v9 = v8;
-  [(SBUIBackgroundView *)self _tintColorAlphaForBackgroundStyle:a3];
+  [(SBUIBackgroundView *)self _tintColorAlphaForBackgroundStyle:style];
   [(SBUIBackgroundView *)self _tintWithProgress:v9 backgroundColorAlpha:v10];
-  [(SBUIBackgroundView *)self _reducedTransparencyValueForBackgroundStyle:a3];
+  [(SBUIBackgroundView *)self _reducedTransparencyValueForBackgroundStyle:style];
   [(SBUIBackgroundView *)self _reduceTransparencyWithProgress:?];
   [(SBUIBackgroundView *)self _updateReduceTransparencyTinting];
-  [(SBUIBackgroundView *)self _luminanceValueForBackgroundStyle:a3];
+  [(SBUIBackgroundView *)self _luminanceValueForBackgroundStyle:style];
   [(SBUIBackgroundView *)self _luminanceWithProgress:?];
-  [(SBUIBackgroundView *)self _lightenSourceOverValueForBackgroundStyle:a3];
+  [(SBUIBackgroundView *)self _lightenSourceOverValueForBackgroundStyle:style];
 
   [(SBUIBackgroundView *)self _lightenSourceOverWithProgress:?];
 }
 
-- (void)_updateAppearanceForTransitionFromStyle:(int64_t)a3 toStyle:(int64_t)a4 withProgress:(double)a5
+- (void)_updateAppearanceForTransitionFromStyle:(int64_t)style toStyle:(int64_t)toStyle withProgress:(double)progress
 {
   [(SBUIBackgroundView *)self _tintValueForBackgroundStyle:?];
   v10 = v9;
-  [(SBUIBackgroundView *)self _tintValueForBackgroundStyle:a4];
-  [(SBUIBackgroundView *)self _valueFromStart:v10 toEnd:v11 withFraction:a5];
+  [(SBUIBackgroundView *)self _tintValueForBackgroundStyle:toStyle];
+  [(SBUIBackgroundView *)self _valueFromStart:v10 toEnd:v11 withFraction:progress];
   v13 = v12;
-  [(SBUIBackgroundView *)self _tintColorAlphaForBackgroundStyle:a3];
+  [(SBUIBackgroundView *)self _tintColorAlphaForBackgroundStyle:style];
   v15 = v14;
-  [(SBUIBackgroundView *)self _tintColorAlphaForBackgroundStyle:a4];
+  [(SBUIBackgroundView *)self _tintColorAlphaForBackgroundStyle:toStyle];
   if (v15 >= v16)
   {
     v17 = v15;
@@ -467,32 +467,32 @@ LABEL_10:
   }
 
   [(SBUIBackgroundView *)self _tintWithProgress:v13 backgroundColorAlpha:v17];
-  [(SBUIBackgroundView *)self _darkenValueForBackgroundStyle:a3];
+  [(SBUIBackgroundView *)self _darkenValueForBackgroundStyle:style];
   v19 = v18;
-  [(SBUIBackgroundView *)self _darkenValueForBackgroundStyle:a4];
-  [(SBUIBackgroundView *)self _valueFromStart:v19 toEnd:v20 withFraction:a5];
+  [(SBUIBackgroundView *)self _darkenValueForBackgroundStyle:toStyle];
+  [(SBUIBackgroundView *)self _valueFromStart:v19 toEnd:v20 withFraction:progress];
   [(SBUIBackgroundView *)self _darkenWithProgress:?];
-  [(SBUIBackgroundView *)self _reducedTransparencyValueForBackgroundStyle:a3];
+  [(SBUIBackgroundView *)self _reducedTransparencyValueForBackgroundStyle:style];
   v22 = v21;
-  [(SBUIBackgroundView *)self _reducedTransparencyValueForBackgroundStyle:a4];
-  [(SBUIBackgroundView *)self _valueFromStart:v22 toEnd:v23 withFraction:a5];
+  [(SBUIBackgroundView *)self _reducedTransparencyValueForBackgroundStyle:toStyle];
+  [(SBUIBackgroundView *)self _valueFromStart:v22 toEnd:v23 withFraction:progress];
   [(SBUIBackgroundView *)self _reduceTransparencyWithProgress:?];
-  [(SBUIBackgroundView *)self _luminanceValueForBackgroundStyle:a3];
+  [(SBUIBackgroundView *)self _luminanceValueForBackgroundStyle:style];
   v25 = v24;
-  [(SBUIBackgroundView *)self _luminanceValueForBackgroundStyle:a4];
-  [(SBUIBackgroundView *)self _valueFromStart:v25 toEnd:v26 withFraction:a5];
+  [(SBUIBackgroundView *)self _luminanceValueForBackgroundStyle:toStyle];
+  [(SBUIBackgroundView *)self _valueFromStart:v25 toEnd:v26 withFraction:progress];
   [(SBUIBackgroundView *)self _luminanceWithProgress:?];
-  [(SBUIBackgroundView *)self _lightenSourceOverValueForBackgroundStyle:a3];
+  [(SBUIBackgroundView *)self _lightenSourceOverValueForBackgroundStyle:style];
   v28 = v27;
-  [(SBUIBackgroundView *)self _lightenSourceOverValueForBackgroundStyle:a4];
-  [(SBUIBackgroundView *)self _valueFromStart:v28 toEnd:v29 withFraction:a5];
+  [(SBUIBackgroundView *)self _lightenSourceOverValueForBackgroundStyle:toStyle];
+  [(SBUIBackgroundView *)self _valueFromStart:v28 toEnd:v29 withFraction:progress];
 
   [(SBUIBackgroundView *)self _lightenSourceOverWithProgress:?];
 }
 
-- (double)_darkenValueForBackgroundStyle:(int64_t)a3
+- (double)_darkenValueForBackgroundStyle:(int64_t)style
 {
-  v3 = a3 == 5 || a3 == 2;
+  v3 = style == 5 || style == 2;
   result = 0.0;
   if (v3)
   {
@@ -502,15 +502,15 @@ LABEL_10:
   return result;
 }
 
-- (double)_tintColorAlphaForBackgroundStyle:(int64_t)a3
+- (double)_tintColorAlphaForBackgroundStyle:(int64_t)style
 {
   result = 0.2;
-  if (a3 != 8)
+  if (style != 8)
   {
     result = 0.0;
   }
 
-  if (a3 == 5)
+  if (style == 5)
   {
     return 0.35;
   }
@@ -518,9 +518,9 @@ LABEL_10:
   return result;
 }
 
-- (double)_tintValueForBackgroundStyle:(int64_t)a3
+- (double)_tintValueForBackgroundStyle:(int64_t)style
 {
-  v3 = a3 == 8 || a3 == 5;
+  v3 = style == 8 || style == 5;
   result = 0.0;
   if (v3)
   {
@@ -530,10 +530,10 @@ LABEL_10:
   return result;
 }
 
-- (double)_luminanceValueForBackgroundStyle:(int64_t)a3
+- (double)_luminanceValueForBackgroundStyle:(int64_t)style
 {
   result = 0.0;
-  if (a3 == 9)
+  if (style == 9)
   {
     return 1.0;
   }
@@ -541,10 +541,10 @@ LABEL_10:
   return result;
 }
 
-- (double)_lightenSourceOverValueForBackgroundStyle:(int64_t)a3
+- (double)_lightenSourceOverValueForBackgroundStyle:(int64_t)style
 {
   result = 0.0;
-  if (a3 == 8)
+  if (style == 8)
   {
     return 1.0;
   }
@@ -552,10 +552,10 @@ LABEL_10:
   return result;
 }
 
-- (double)_reducedTransparencyValueForBackgroundStyle:(int64_t)a3
+- (double)_reducedTransparencyValueForBackgroundStyle:(int64_t)style
 {
   result = 0.0;
-  if ((a3 - 2) < 7 && self->_isReducedTransparencyEnabled)
+  if ((style - 2) < 7 && self->_isReducedTransparencyEnabled)
   {
     return 1.0;
   }
@@ -563,33 +563,33 @@ LABEL_10:
   return result;
 }
 
-- (void)_darkenWithProgress:(double)a3
+- (void)_darkenWithProgress:(double)progress
 {
-  v4 = [(SBUIBackgroundView *)self _backgroundColorForDarkenAlpha:0.07 andProgress:a3];
+  v4 = [(SBUIBackgroundView *)self _backgroundColorForDarkenAlpha:0.07 andProgress:progress];
   [(UIView *)self->_sourceOverView setBackgroundColor:v4];
   [(UIView *)self->_darkenSourceOverView setBackgroundColor:v4];
 }
 
-- (void)_tintWithProgress:(double)a3 backgroundColorAlpha:(double)a4
+- (void)_tintWithProgress:(double)progress backgroundColorAlpha:(double)alpha
 {
-  v5 = [(SBUIBackgroundView *)self _backgroundColorForDarkenAlpha:a4 andProgress:a3];
+  v5 = [(SBUIBackgroundView *)self _backgroundColorForDarkenAlpha:alpha andProgress:progress];
   [(UIView *)self->_tintView setBackgroundColor:v5];
 }
 
-- (void)_reduceTransparencyWithProgress:(double)a3
+- (void)_reduceTransparencyWithProgress:(double)progress
 {
   [(UIView *)self->_reduceTransparencyView setAlpha:?];
   reduceTransparencyTintingView = self->_reduceTransparencyTintingView;
 
-  [(UIView *)reduceTransparencyTintingView setAlpha:a3];
+  [(UIView *)reduceTransparencyTintingView setAlpha:progress];
 }
 
-- (id)_backgroundColorForDarkenAlpha:(double)a3 andProgress:(double)a4
+- (id)_backgroundColorForDarkenAlpha:(double)alpha andProgress:(double)progress
 {
-  [(SBUIBackgroundView *)self _valueFromStart:0.0 toEnd:a3 withFraction:a4];
+  [(SBUIBackgroundView *)self _valueFromStart:0.0 toEnd:alpha withFraction:progress];
   v5 = v4;
-  v6 = [MEMORY[0x277D75348] blackColor];
-  v7 = [v6 colorWithAlphaComponent:v5];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v7 = [blackColor colorWithAlphaComponent:v5];
 
   return v7;
 }

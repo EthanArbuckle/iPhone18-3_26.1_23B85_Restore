@@ -1,6 +1,6 @@
 @interface CCSQLCommandClause
 - (CCSQLCommandClause)init;
-- (CCSQLCommandClause)initWithClause:(id)a3 parameters:(id)a4;
+- (CCSQLCommandClause)initWithClause:(id)clause parameters:(id)parameters;
 - (id)description;
 @end
 
@@ -12,20 +12,20 @@
   objc_exception_throw(v2);
 }
 
-- (CCSQLCommandClause)initWithClause:(id)a3 parameters:(id)a4
+- (CCSQLCommandClause)initWithClause:(id)clause parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  clauseCopy = clause;
+  parametersCopy = parameters;
   v14.receiver = self;
   v14.super_class = CCSQLCommandClause;
   v8 = [(CCSQLCommandClause *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [clauseCopy copy];
     clause = v8->_clause;
     v8->_clause = v9;
 
-    v11 = [v7 copy];
+    v11 = [parametersCopy copy];
     parameters = v8->_parameters;
     v8->_parameters = v11;
   }

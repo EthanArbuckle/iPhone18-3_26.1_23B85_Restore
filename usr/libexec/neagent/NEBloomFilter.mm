@@ -1,12 +1,12 @@
 @interface NEBloomFilter
-+ (BOOL)mmapFromFile:(const char *)a3 bloomFilter:(ne_bloom_filter *)a4;
-+ (char)mmapToFile:(const char *)a3 data:(char *)a4 dataLength:(unsigned int)a5 numberOfBits:(unsigned int)a6 numberOfHashes:(unsigned int)a7 murmurSeed:(unsigned int)a8 tag:(id)a9;
-+ (double)getFalsePositiveProbability:(unsigned int)a3 numberOfBits:(unsigned int)a4 numberOfHashes:(unsigned int)a5;
-- (BOOL)contains:(id)a3;
-- (NEBloomFilter)initWithData:(id)a3 numberOfBits:(unsigned int)a4 numberOfHashes:(unsigned int)a5 murmurSeed:(unsigned int)a6 mmapFilename:(id)a7 tag:(id)a8;
++ (BOOL)mmapFromFile:(const char *)file bloomFilter:(ne_bloom_filter *)filter;
++ (char)mmapToFile:(const char *)file data:(char *)data dataLength:(unsigned int)length numberOfBits:(unsigned int)bits numberOfHashes:(unsigned int)hashes murmurSeed:(unsigned int)seed tag:(id)tag;
++ (double)getFalsePositiveProbability:(unsigned int)probability numberOfBits:(unsigned int)bits numberOfHashes:(unsigned int)hashes;
+- (BOOL)contains:(id)contains;
+- (NEBloomFilter)initWithData:(id)data numberOfBits:(unsigned int)bits numberOfHashes:(unsigned int)hashes murmurSeed:(unsigned int)seed mmapFilename:(id)filename tag:(id)tag;
 - (id)getFilterTag;
-- (id)initFromFile:(id)a3;
-- (void)insert:(id)a3;
+- (id)initFromFile:(id)file;
+- (void)insert:(id)insert;
 @end
 
 @implementation NEBloomFilter
@@ -18,35 +18,35 @@
   return v2;
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
   bitVectorBuffer = self->_bitVectorBuffer;
-  v5 = a3;
-  v6 = [(NSData *)bitVectorBuffer bytes];
+  containsCopy = contains;
+  bytes = [(NSData *)bitVectorBuffer bytes];
   numberOfBits = self->_numberOfBits;
   numberOfHashes = self->_numberOfHashes;
   murmurSeed = self->_murmurSeed;
-  v10 = [v5 UTF8String];
+  uTF8String = [containsCopy UTF8String];
 
-  return [NEBloomFilter containsWithBitmap:v6 numberOfBits:numberOfBits numberOfHashes:numberOfHashes murmurSeed:murmurSeed value:v10];
+  return [NEBloomFilter containsWithBitmap:bytes numberOfBits:numberOfBits numberOfHashes:numberOfHashes murmurSeed:murmurSeed value:uTF8String];
 }
 
-- (void)insert:(id)a3
+- (void)insert:(id)insert
 {
   bitVectorBuffer = self->_bitVectorBuffer;
-  v5 = a3;
-  v6 = [(NSData *)bitVectorBuffer bytes];
+  insertCopy = insert;
+  bytes = [(NSData *)bitVectorBuffer bytes];
   numberOfBits = self->_numberOfBits;
   numberOfHashes = self->_numberOfHashes;
   murmurSeed = self->_murmurSeed;
-  v10 = [v5 UTF8String];
+  uTF8String = [insertCopy UTF8String];
 
-  [NEBloomFilter insertWithBitmap:v6 numberOfBits:numberOfBits numberOfHashes:numberOfHashes murmurSeed:murmurSeed value:v10];
+  [NEBloomFilter insertWithBitmap:bytes numberOfBits:numberOfBits numberOfHashes:numberOfHashes murmurSeed:murmurSeed value:uTF8String];
 }
 
-- (id)initFromFile:(id)a3
+- (id)initFromFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v20.receiver = self;
   v20.super_class = NEBloomFilter;
   v5 = [(NEBloomFilter *)&v20 init];
@@ -56,7 +56,7 @@
     goto LABEL_22;
   }
 
-  if (!v4)
+  if (!fileCopy)
   {
     v14 = ne_log_obj();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -75,7 +75,7 @@
   v28 = 0u;
   v29 = 0u;
   *v27 = 0u;
-  if (+[NEBloomFilter mmapFromFile:bloomFilter:](NEBloomFilter, "mmapFromFile:bloomFilter:", [v4 UTF8String], v27))
+  if (+[NEBloomFilter mmapFromFile:bloomFilter:](NEBloomFilter, "mmapFromFile:bloomFilter:", [fileCopy UTF8String], v27))
   {
     if (v30 && HIDWORD(v28))
     {
@@ -105,7 +105,7 @@
         *buf = 138412802;
         v22 = v5;
         v23 = 2112;
-        v24 = v4;
+        v24 = fileCopy;
         v25 = 2112;
         v26 = v15;
         _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%@ - initFromFile: retrieved bloom filter data from mmap file %@ tag <%@>", buf, 0x20u);
@@ -120,7 +120,7 @@
         *buf = 138412546;
         v22 = v5;
         v23 = 2112;
-        v24 = v4;
+        v24 = fileCopy;
         _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%@ - initFromFile: failed to get bloom filter data from mmap file %@", buf, 0x16u);
       }
 
@@ -147,11 +147,11 @@ LABEL_22:
   return v16;
 }
 
-- (NEBloomFilter)initWithData:(id)a3 numberOfBits:(unsigned int)a4 numberOfHashes:(unsigned int)a5 murmurSeed:(unsigned int)a6 mmapFilename:(id)a7 tag:(id)a8
+- (NEBloomFilter)initWithData:(id)data numberOfBits:(unsigned int)bits numberOfHashes:(unsigned int)hashes murmurSeed:(unsigned int)seed mmapFilename:(id)filename tag:(id)tag
 {
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
+  dataCopy = data;
+  filenameCopy = filename;
+  tagCopy = tag;
   v29.receiver = self;
   v29.super_class = NEBloomFilter;
   v17 = [(NEBloomFilter *)&v29 init];
@@ -161,8 +161,8 @@ LABEL_22:
     goto LABEL_26;
   }
 
-  v18 = [v14 length];
-  if (!a6 || !a5 || !a4 || !v18)
+  v18 = [dataCopy length];
+  if (!seed || !hashes || !bits || !v18)
   {
     p_super = ne_log_obj();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
@@ -175,19 +175,19 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  v17->_numberOfBits = a4;
-  v17->_numberOfHashes = a5;
-  v17->_murmurSeed = a6;
-  if (!v15)
+  v17->_numberOfBits = bits;
+  v17->_numberOfHashes = hashes;
+  v17->_murmurSeed = seed;
+  if (!filenameCopy)
   {
-    v22 = v14;
+    v22 = dataCopy;
 LABEL_15:
     bitVectorBuffer = v17->_bitVectorBuffer;
     v17->_bitVectorBuffer = v22;
     goto LABEL_19;
   }
 
-  v19 = +[NEBloomFilter mmapToFile:data:dataLength:numberOfBits:numberOfHashes:murmurSeed:tag:](NEBloomFilter, "mmapToFile:data:dataLength:numberOfBits:numberOfHashes:murmurSeed:tag:", [v15 UTF8String], objc_msgSend(v14, "bytes"), objc_msgSend(v14, "length"), v17->_numberOfBits, v17->_numberOfHashes, v17->_murmurSeed, v16);
+  v19 = +[NEBloomFilter mmapToFile:data:dataLength:numberOfBits:numberOfHashes:murmurSeed:tag:](NEBloomFilter, "mmapToFile:data:dataLength:numberOfBits:numberOfHashes:murmurSeed:tag:", [filenameCopy UTF8String], objc_msgSend(dataCopy, "bytes"), objc_msgSend(dataCopy, "length"), v17->_numberOfBits, v17->_numberOfHashes, v17->_murmurSeed, tagCopy);
   v20 = ne_log_obj();
   v21 = v20;
   if (v19)
@@ -199,7 +199,7 @@ LABEL_15:
       _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%@ - initWithData: saved bloom filter data to mmap file", buf, 0xCu);
     }
 
-    v22 = [[NSData alloc] initWithBytes:v19 length:{objc_msgSend(v14, "length")}];
+    v22 = [[NSData alloc] initWithBytes:v19 length:{objc_msgSend(dataCopy, "length")}];
     goto LABEL_15;
   }
 
@@ -238,7 +238,7 @@ LABEL_26:
   return v23;
 }
 
-+ (BOOL)mmapFromFile:(const char *)a3 bloomFilter:(ne_bloom_filter *)a4
++ (BOOL)mmapFromFile:(const char *)file bloomFilter:(ne_bloom_filter *)filter
 {
   memset(&v62, 0, sizeof(v62));
   getpid();
@@ -252,7 +252,7 @@ LABEL_26:
       v75 = 1024;
       v76 = getpid();
       v77 = 2080;
-      *v78 = a3;
+      *v78 = file;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: NEBloomFilter - <pid %d> No read permission to file %s", buf, 0x1Cu);
     }
 
@@ -261,7 +261,7 @@ LABEL_5:
     return 0;
   }
 
-  v8 = open(a3, 0, a3);
+  v8 = open(file, 0, file);
   if (v8 < 0)
   {
     v12 = *__error();
@@ -278,7 +278,7 @@ LABEL_5:
       v65 = 1024;
       v66 = getpid();
       v67 = 2080;
-      v68 = a3;
+      fileCopy4 = file;
       v69 = 1024;
       v70 = v12;
       v71 = 2080;
@@ -310,7 +310,7 @@ LABEL_5:
     v65 = 1024;
     v66 = v15;
     v67 = 2080;
-    v68 = a3;
+    fileCopy4 = file;
     v69 = 1024;
     v70 = v13;
     v71 = 2080;
@@ -320,7 +320,7 @@ LABEL_5:
   }
 
   v10 = v62.st_atimespec.tv_nsec / 1000000000.0 + v62.st_atimespec.tv_sec;
-  if (!a4->var3 || !a4->var0.var5 || a4->var7 != v10)
+  if (!filter->var3 || !filter->var0.var5 || filter->var7 != v10)
   {
     if ((v62.st_size - 0x100000000) <= 0xFFFFFFFF0000001FLL)
     {
@@ -335,7 +335,7 @@ LABEL_5:
         v77 = 2048;
         *v78 = v62.st_size;
         *&v78[8] = 2080;
-        *&v78[10] = a3;
+        *&v78[10] = file;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s: NEBloomFilter - <pid %d> invalid file size %lld for file %s", buf, 0x26u);
       }
 
@@ -359,17 +359,17 @@ LABEL_5:
         *&v78[4] = 2048;
         *&v78[6] = v62.st_size;
         *&v78[14] = 2080;
-        *&v78[16] = a3;
+        *&v78[16] = file;
         _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%s: NEBloomFilter - <pid %d> read mmap <fd %d, size %lld> for file %s", buf, 0x2Cu);
       }
 
-      var4 = a4->var4;
+      var4 = filter->var4;
       v22 = v19[1];
-      *&a4->var0.var0 = *v19;
-      *&a4->var0.var2 = v22;
-      if (a4->var0.var0 == 0x5061747269636961)
+      *&filter->var0.var0 = *v19;
+      *&filter->var0.var2 = v22;
+      if (filter->var0.var0 == 0x5061747269636961)
       {
-        var1 = a4->var0.var1;
+        var1 = filter->var0.var1;
         if (var1 - 1 < 2)
         {
           if (var1 == 1)
@@ -378,10 +378,10 @@ LABEL_5:
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
             {
               v51 = getpid();
-              var2 = a4->var0.var2;
-              var3 = a4->var0.var3;
-              v54 = a4->var0.var4;
-              var5 = a4->var0.var5;
+              var2 = filter->var0.var2;
+              var3 = filter->var0.var3;
+              v54 = filter->var0.var4;
+              var5 = filter->var0.var5;
               *buf = 136316418;
               v74 = "+[NEBloomFilter mmapFromFile:bloomFilter:]";
               v75 = 1024;
@@ -429,10 +429,10 @@ LABEL_5:
             if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
             {
               v56 = getpid();
-              v57 = a4->var0.var2;
-              v58 = a4->var0.var3;
-              v59 = a4->var0.var4;
-              v60 = a4->var0.var5;
+              v57 = filter->var0.var2;
+              v58 = filter->var0.var3;
+              v59 = filter->var0.var4;
+              v60 = filter->var0.var5;
               *buf = 136316930;
               v74 = "+[NEBloomFilter mmapFromFile:bloomFilter:]";
               v75 = 1024;
@@ -455,19 +455,19 @@ LABEL_5:
             v27 = v26 + 36;
           }
 
-          v41 = a4->var0.var5 + v27;
+          v41 = filter->var0.var5 + v27;
           if (v62.st_size == v41)
           {
-            a4->var1 = v26;
-            a4->var2 = v25;
-            a4->var3 = v19 + v27;
+            filter->var1 = v26;
+            filter->var2 = v25;
+            filter->var3 = v19 + v27;
             if (var4)
             {
 LABEL_60:
-              a4->var7 = v10;
-              a4->var4 = var4;
-              a4->var5 = v19;
-              a4->var6 = v41;
+              filter->var7 = v10;
+              filter->var4 = var4;
+              filter->var5 = v19;
+              filter->var6 = v41;
               close(v9);
               v11 = ne_log_obj();
               if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -481,18 +481,18 @@ LABEL_60:
               v75 = 1024;
               v76 = v45;
               v77 = 2080;
-              *v78 = a3;
+              *v78 = file;
               v38 = "%s: NEBloomFilter - <pid %d> update done for %s";
               goto LABEL_51;
             }
 
-            v42 = strlen(a3);
+            v42 = strlen(file);
             v43 = v42;
             v44 = malloc_type_malloc((&_mh_execute_header + (v42 << 32)) >> 32, 0x100004077774924uLL);
             if (v44)
             {
               var4 = v44;
-              strncpy(v44, a3, v43)[v43] = 0;
+              strncpy(v44, file, v43)[v43] = 0;
               LODWORD(v41) = v62.st_size;
               goto LABEL_60;
             }
@@ -512,7 +512,7 @@ LABEL_60:
               v65 = 1024;
               v66 = v61;
               v67 = 2080;
-              v68 = a3;
+              fileCopy4 = file;
               v69 = 1024;
               v70 = v49;
               v71 = 2080;
@@ -522,12 +522,12 @@ LABEL_60:
 
 LABEL_66:
             munmap(v19, v62.st_size);
-            *&a4->var0.var0 = 0u;
-            *&a4->var0.var2 = 0u;
-            *&a4->var1 = 0u;
-            *&a4->var3 = 0u;
-            *&a4->var5 = 0u;
-            a4->var7 = 0.0;
+            *&filter->var0.var0 = 0u;
+            *&filter->var0.var2 = 0u;
+            *&filter->var1 = 0u;
+            *&filter->var3 = 0u;
+            *&filter->var5 = 0u;
+            filter->var7 = 0.0;
             goto LABEL_40;
           }
 
@@ -535,7 +535,7 @@ LABEL_66:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             v46 = getpid();
-            v47 = a4->var0.var5;
+            v47 = filter->var0.var5;
             *buf = 136316162;
             v74 = "+[NEBloomFilter mmapFromFile:bloomFilter:]";
             v75 = 1024;
@@ -564,7 +564,7 @@ LABEL_65:
         }
 
         v35 = getpid();
-        v36 = a4->var0.var1;
+        v36 = filter->var0.var1;
         *buf = 136316162;
         v74 = "+[NEBloomFilter mmapFromFile:bloomFilter:]";
         v75 = 1024;
@@ -589,7 +589,7 @@ LABEL_65:
         }
 
         v30 = getpid();
-        var0 = a4->var0.var0;
+        var0 = filter->var0.var0;
         *buf = 136315906;
         v74 = "+[NEBloomFilter mmapFromFile:bloomFilter:]";
         v75 = 1024;
@@ -626,7 +626,7 @@ LABEL_64:
     v65 = 1024;
     v66 = v48;
     v67 = 2080;
-    v68 = a3;
+    fileCopy4 = file;
     v69 = 1024;
     v70 = v28;
     v71 = 2080;
@@ -651,7 +651,7 @@ LABEL_40:
     v75 = 1024;
     v76 = v37;
     v77 = 2080;
-    *v78 = a3;
+    *v78 = file;
     v38 = "%s: NEBloomFilter - <pid %d> no update needed for %s";
 LABEL_51:
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, v38, buf, 0x1Cu);
@@ -662,10 +662,10 @@ LABEL_14:
   return 1;
 }
 
-+ (char)mmapToFile:(const char *)a3 data:(char *)a4 dataLength:(unsigned int)a5 numberOfBits:(unsigned int)a6 numberOfHashes:(unsigned int)a7 murmurSeed:(unsigned int)a8 tag:(id)a9
++ (char)mmapToFile:(const char *)file data:(char *)data dataLength:(unsigned int)length numberOfBits:(unsigned int)bits numberOfHashes:(unsigned int)hashes murmurSeed:(unsigned int)seed tag:(id)tag
 {
-  v15 = a9;
-  v16 = open(a3, 518, 420);
+  tagCopy = tag;
+  v16 = open(file, 518, 420);
   if (v16 < 0)
   {
     v19 = ne_log_obj();
@@ -677,7 +677,7 @@ LABEL_14:
       *buf = 136315906;
       v47 = "+[NEBloomFilter mmapToFile:data:dataLength:numberOfBits:numberOfHashes:murmurSeed:tag:]";
       v48 = 2080;
-      v49 = a3;
+      fileCopy3 = file;
       v50 = 1024;
       v51 = v37;
       v52 = 2080;
@@ -689,9 +689,9 @@ LABEL_14:
   }
 
   v17 = v16;
-  if (v15)
+  if (tagCopy)
   {
-    v18 = [v15 length] + 36;
+    v18 = [tagCopy length] + 36;
   }
 
   else
@@ -699,7 +699,7 @@ LABEL_14:
     v18 = 36;
   }
 
-  v20 = v18 + a5;
+  v20 = v18 + length;
   if (ftruncate(v17, v20))
   {
     v21 = ne_log_obj();
@@ -719,7 +719,7 @@ LABEL_11:
     *buf = 136316162;
     v47 = "+[NEBloomFilter mmapToFile:data:dataLength:numberOfBits:numberOfHashes:murmurSeed:tag:]";
     v48 = 2080;
-    v49 = a3;
+    fileCopy3 = file;
     v50 = 1024;
     v51 = v20;
     v52 = 1024;
@@ -746,7 +746,7 @@ LABEL_31:
     *buf = 136315906;
     v47 = "+[NEBloomFilter mmapToFile:data:dataLength:numberOfBits:numberOfHashes:murmurSeed:tag:]";
     v48 = 2080;
-    v49 = a3;
+    fileCopy3 = file;
     v50 = 1024;
     v51 = v17;
     v52 = 1024;
@@ -759,11 +759,11 @@ LABEL_31:
 
   v25 = v24;
   *v24 = xmmword_100019FA0;
-  *(v24 + 4) = a6;
-  *(v24 + 5) = a7;
-  *(v24 + 6) = a8;
-  *(v24 + 7) = a5;
-  if (v15 && [v15 length] && (objc_msgSend(v15, "dataUsingEncoding:", 4), (v26 = objc_claimAutoreleasedReturnValue()) != 0))
+  *(v24 + 4) = bits;
+  *(v24 + 5) = hashes;
+  *(v24 + 6) = seed;
+  *(v24 + 7) = length;
+  if (tagCopy && [tagCopy length] && (objc_msgSend(tagCopy, "dataUsingEncoding:", 4), (v26 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v27 = v26;
     v28 = [v26 length];
@@ -783,7 +783,7 @@ LABEL_31:
     v22 = v25 + 36;
   }
 
-  memcpy(v22, a4, a5);
+  memcpy(v22, data, length);
   if (msync(v25, v20, 16) == -1)
   {
     v33 = *__error();
@@ -823,12 +823,12 @@ LABEL_12:
   return v22;
 }
 
-+ (double)getFalsePositiveProbability:(unsigned int)a3 numberOfBits:(unsigned int)a4 numberOfHashes:(unsigned int)a5
++ (double)getFalsePositiveProbability:(unsigned int)probability numberOfBits:(unsigned int)bits numberOfHashes:(unsigned int)hashes
 {
-  v5 = a5;
-  v6 = 1.0 - pow(2.71828183, -(a5 * a3) / a4);
+  hashesCopy = hashes;
+  v6 = 1.0 - pow(2.71828183, -(hashes * probability) / bits);
 
-  return pow(v6, v5);
+  return pow(v6, hashesCopy);
 }
 
 @end

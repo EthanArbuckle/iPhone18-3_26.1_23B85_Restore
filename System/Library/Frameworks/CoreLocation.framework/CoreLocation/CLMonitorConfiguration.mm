@@ -1,17 +1,17 @@
 @interface CLMonitorConfiguration
 + (CLMonitorConfiguration)configWithMonitorName:(NSString *)name queue:(dispatch_queue_t)queue eventHandler:(void *)eventHandler;
-+ (id)_configWithMonitorName:(id)a3;
-+ (id)configWithMonitorName:(id)a3 onBehalfOfBundleIdentifier:(id)a4 queue:(id)a5 eventHandler:(id)a6;
-- (CLMonitorConfiguration)initWithName:(id)a3 path:(id)a4 onQueue:(id)a5 eventHandler:(id)a6 useMonitorQueueForVendingMonitor:(BOOL)a7 vendingHandler:(id)a8;
-- (CLMonitorConfiguration)initWithName:(id)a3 path:(id)a4 onSilo:(id)a5 eventHandler:(id)a6 useMonitorQueueForVendingMonitor:(BOOL)a7 vendingHandler:(id)a8;
++ (id)_configWithMonitorName:(id)name;
++ (id)configWithMonitorName:(id)name onBehalfOfBundleIdentifier:(id)identifier queue:(id)queue eventHandler:(id)handler;
+- (CLMonitorConfiguration)initWithName:(id)name path:(id)path onQueue:(id)queue eventHandler:(id)handler useMonitorQueueForVendingMonitor:(BOOL)monitor vendingHandler:(id)vendingHandler;
+- (CLMonitorConfiguration)initWithName:(id)name path:(id)path onSilo:(id)silo eventHandler:(id)handler useMonitorQueueForVendingMonitor:(BOOL)monitor vendingHandler:(id)vendingHandler;
 - (id)vendingHandler;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)eventHandler;
-- (void)setEventHandler:(id)a3;
-- (void)setVendingHandler:(id)a3;
-- (void)updateIdentityToken:(id)a3 withStorageToken:(id)a4;
-- (void)vendMonitorWithIdentityAndAuthorizationAttributes:(id)a3;
+- (void)setEventHandler:(id)handler;
+- (void)setVendingHandler:(id)handler;
+- (void)updateIdentityToken:(id)token withStorageToken:(id)storageToken;
+- (void)vendMonitorWithIdentityAndAuthorizationAttributes:(id)attributes;
 @end
 
 @implementation CLMonitorConfiguration
@@ -55,20 +55,20 @@ LABEL_4:
   return v10;
 }
 
-+ (id)_configWithMonitorName:(id)a3
++ (id)_configWithMonitorName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = +[CLLocationManager sharedQueue];
-  v5 = -[CLMonitorConfiguration initWithName:path:onSilo:eventHandler:useMonitorQueueForVendingMonitor:vendingHandler:]([CLMonitorConfiguration alloc], "initWithName:path:onSilo:eventHandler:useMonitorQueueForVendingMonitor:vendingHandler:", a3, 0, [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:v4], 0, 1, 0);
+  v5 = -[CLMonitorConfiguration initWithName:path:onSilo:eventHandler:useMonitorQueueForVendingMonitor:vendingHandler:]([CLMonitorConfiguration alloc], "initWithName:path:onSilo:eventHandler:useMonitorQueueForVendingMonitor:vendingHandler:", name, 0, [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:v4], 0, 1, 0);
 
   return v5;
 }
 
-+ (id)configWithMonitorName:(id)a3 onBehalfOfBundleIdentifier:(id)a4 queue:(id)a5 eventHandler:(id)a6
++ (id)configWithMonitorName:(id)name onBehalfOfBundleIdentifier:(id)identifier queue:(id)queue eventHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
   if (qword_1ED519088 != -1)
@@ -84,18 +84,18 @@ LABEL_4:
     v14 = 2082;
     v15 = "";
     v16 = 2114;
-    v17 = a1;
+    selfCopy = self;
     v18 = 2082;
-    v19 = [a4 UTF8String];
+    uTF8String = [identifier UTF8String];
     _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#monitor monitor-config with onBehalfOfBundleId, self:%{public, location:escape_only}@, OnBehalfBundleId:%{public, location:escape_only}s}", v13, 0x26u);
   }
 
-  result = -[CLMonitorConfiguration initWithName:path:onSilo:eventHandler:useMonitorQueueForVendingMonitor:vendingHandler:]([CLMonitorConfiguration alloc], "initWithName:path:onSilo:eventHandler:useMonitorQueueForVendingMonitor:vendingHandler:", a3, 0, [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:a5], 0, 1, 0);
+  result = -[CLMonitorConfiguration initWithName:path:onSilo:eventHandler:useMonitorQueueForVendingMonitor:vendingHandler:]([CLMonitorConfiguration alloc], "initWithName:path:onSilo:eventHandler:useMonitorQueueForVendingMonitor:vendingHandler:", name, 0, [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:queue], 0, 1, 0);
   v12 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (CLMonitorConfiguration)initWithName:(id)a3 path:(id)a4 onSilo:(id)a5 eventHandler:(id)a6 useMonitorQueueForVendingMonitor:(BOOL)a7 vendingHandler:(id)a8
+- (CLMonitorConfiguration)initWithName:(id)name path:(id)path onSilo:(id)silo eventHandler:(id)handler useMonitorQueueForVendingMonitor:(BOOL)monitor vendingHandler:(id)vendingHandler
 {
   v35 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
@@ -128,22 +128,22 @@ LABEL_4:
       v31 = 2050;
       v32 = v15;
       v33 = 2114;
-      v34 = a3;
+      nameCopy = name;
       _os_log_impl(&dword_19B873000, v17, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLMonitorConfiguration #monitor, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, name:%{public, location:escape_only}@}", buf, 0x3Au);
     }
 
-    v15->_name = [a3 copy];
-    v15->_path = [a4 copy];
-    v15->_silo = a5;
-    v15->_useMonitorQueue = a7;
-    if (a6)
+    v15->_name = [name copy];
+    v15->_path = [path copy];
+    v15->_silo = silo;
+    v15->_useMonitorQueue = monitor;
+    if (handler)
     {
-      v15->_eventHandler = _Block_copy(a6);
+      v15->_eventHandler = _Block_copy(handler);
     }
 
-    if (a8)
+    if (vendingHandler)
     {
-      v15->_vendingHandler = _Block_copy(a8);
+      v15->_vendingHandler = _Block_copy(vendingHandler);
     }
 
     os_activity_scope_leave(&v21);
@@ -153,11 +153,11 @@ LABEL_4:
   return v15;
 }
 
-- (CLMonitorConfiguration)initWithName:(id)a3 path:(id)a4 onQueue:(id)a5 eventHandler:(id)a6 useMonitorQueueForVendingMonitor:(BOOL)a7 vendingHandler:(id)a8
+- (CLMonitorConfiguration)initWithName:(id)name path:(id)path onQueue:(id)queue eventHandler:(id)handler useMonitorQueueForVendingMonitor:(BOOL)monitor vendingHandler:(id)vendingHandler
 {
-  v12 = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:a5];
+  v12 = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:queue];
 
-  return [(CLMonitorConfiguration *)self initWithName:a3 path:a4 onSilo:v12 eventHandler:a6 useMonitorQueueForVendingMonitor:1 vendingHandler:0];
+  return [(CLMonitorConfiguration *)self initWithName:name path:path onSilo:v12 eventHandler:handler useMonitorQueueForVendingMonitor:1 vendingHandler:0];
 }
 
 - (void)dealloc
@@ -186,7 +186,7 @@ LABEL_4:
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLMonitorConfiguration #monitor, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -210,12 +210,12 @@ LABEL_4:
 
 - (unint64_t)hash
 {
-  v2 = [(CLMonitorConfiguration *)self name];
+  name = [(CLMonitorConfiguration *)self name];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)name hash];
 }
 
-- (void)vendMonitorWithIdentityAndAuthorizationAttributes:(id)a3
+- (void)vendMonitorWithIdentityAndAuthorizationAttributes:(id)attributes
 {
   v25 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_19B873000, "CL: CLMonitorConfiguration #monitor", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -241,9 +241,9 @@ LABEL_4:
     v19 = 2114;
     v20 = v8;
     v21 = 2050;
-    v22 = self;
+    selfCopy = self;
     v23 = 2113;
-    v24 = a3;
+    attributesCopy = attributes;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLMonitorConfiguration #monitor, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, vendingAttributes:%{private, location:escape_only}@}", buf, 0x3Au);
   }
 
@@ -259,15 +259,15 @@ LABEL_4:
   v11[2] = sub_19B891A08;
   v11[3] = &unk_1E753CF38;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = attributes;
   dispatch_async(global_queue, v11);
   os_activity_scope_leave(&state);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setVendingHandler:(id)a3
+- (void)setVendingHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   objc_sync_enter(self);
   vendingHandler = self->_vendingHandler;
   if (vendingHandler)
@@ -288,9 +288,9 @@ LABEL_4:
   return vendingHandler;
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   objc_sync_enter(self);
   eventHandler = self->_eventHandler;
   if (eventHandler)
@@ -311,12 +311,12 @@ LABEL_4:
   return eventHandler;
 }
 
-- (void)updateIdentityToken:(id)a3 withStorageToken:(id)a4
+- (void)updateIdentityToken:(id)token withStorageToken:(id)storageToken
 {
   v17[2] = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  [(CLMonitorConfiguration *)self setIdentityToken:a3];
-  [(CLMonitorConfiguration *)self setStorageToken:a4];
+  [(CLMonitorConfiguration *)self setIdentityToken:token];
+  [(CLMonitorConfiguration *)self setStorageToken:storageToken];
   if ([(CLMonitorConfiguration *)self identityToken]&& [(CLMonitorConfiguration *)self storageToken])
   {
     v16[0] = @"kCLMonitorIdentityTokenKey";
@@ -337,9 +337,9 @@ LABEL_4:
       v10 = 2082;
       v11 = "";
       v12 = 2114;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
-      v15 = [(CLMonitorConfiguration *)self name];
+      name = [(CLMonitorConfiguration *)self name];
       _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#monitor completion handler called, self:%{public, location:escape_only}@, monitor:%{public, location:escape_only}@}", v9, 0x26u);
     }
   }

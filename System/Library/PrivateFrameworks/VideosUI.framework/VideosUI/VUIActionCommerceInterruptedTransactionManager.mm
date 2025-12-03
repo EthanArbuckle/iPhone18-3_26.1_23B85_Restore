@@ -1,7 +1,7 @@
 @interface VUIActionCommerceInterruptedTransactionManager
 + (id)sharedInstance;
 - (id)getLastInterruptedOfferDetails;
-- (void)setLastInterruptedOfferDetails:(id)a3;
+- (void)setLastInterruptedOfferDetails:(id)details;
 @end
 
 @implementation VUIActionCommerceInterruptedTransactionManager
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __64__VUIActionCommerceInterruptedTransactionManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_36 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_36, block);
@@ -32,21 +32,21 @@ void __64__VUIActionCommerceInterruptedTransactionManager_sharedInstance__block_
 
 - (id)getLastInterruptedOfferDetails
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->interruptedOfferDetails;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->interruptedOfferDetails;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setLastInterruptedOfferDetails:(id)a3
+- (void)setLastInterruptedOfferDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   obj = self;
   objc_sync_enter(obj);
   interruptedOfferDetails = obj->interruptedOfferDetails;
-  obj->interruptedOfferDetails = v4;
+  obj->interruptedOfferDetails = detailsCopy;
 
   objc_sync_exit(obj);
 }

@@ -1,47 +1,47 @@
 @interface PUParallaxLayerStackDebugStyleTableViewController
 - (id)availableStyles;
-- (id)indexPathForStyle:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)cellValueUpdated:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)indexPathForStyle:(id)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)cellValueUpdated:(id)updated;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation PUParallaxLayerStackDebugStyleTableViewController
 
-- (void)cellValueUpdated:(id)a3
+- (void)cellValueUpdated:(id)updated
 {
-  v4 = a3;
-  if ([v4 accessoryType] == 3)
+  updatedCopy = updated;
+  if ([updatedCopy accessoryType] == 3)
   {
-    v5 = [v4 styleKind];
-    v6 = [(PUParallaxLayerStackDebugStyleTableViewController *)self availableStyles];
+    styleKind = [updatedCopy styleKind];
+    availableStyles = [(PUParallaxLayerStackDebugStyleTableViewController *)self availableStyles];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __70__PUParallaxLayerStackDebugStyleTableViewController_cellValueUpdated___block_invoke;
     v21[3] = &unk_1E7B79D50;
-    v22 = v5;
-    v7 = v5;
-    v8 = [v6 indexOfObjectPassingTest:v21];
+    v22 = styleKind;
+    v7 = styleKind;
+    v8 = [availableStyles indexOfObjectPassingTest:v21];
 
-    v9 = [(PUParallaxLayerStackDebugStyleTableViewController *)self availableStyles];
-    v10 = [v9 objectAtIndexedSubscript:v8];
+    availableStyles2 = [(PUParallaxLayerStackDebugStyleTableViewController *)self availableStyles];
+    v10 = [availableStyles2 objectAtIndexedSubscript:v8];
 
     v11 = [MEMORY[0x1E69BDEE0] styleWithBakedStyle:v10];
-    [v4 applyToStyle:v11];
-    v12 = [(PUParallaxLayerStackDebugStyleTableViewController *)self viewModel];
+    [updatedCopy applyToStyle:v11];
+    viewModel = [(PUParallaxLayerStackDebugStyleTableViewController *)self viewModel];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __70__PUParallaxLayerStackDebugStyleTableViewController_cellValueUpdated___block_invoke_2;
     v19 = &unk_1E7B80328;
     v20 = v11;
     v13 = v11;
-    [v12 performChanges:&v16];
+    [viewModel performChanges:&v16];
 
     v14 = [(PUParallaxLayerStackDebugStyleTableViewController *)self viewModelUpdater:v16];
-    v15 = [(PUParallaxLayerStackDebugStyleTableViewController *)self viewModel];
-    [v14 renderOnscreenModelAfterStyleChange:v15];
+    viewModel2 = [(PUParallaxLayerStackDebugStyleTableViewController *)self viewModel];
+    [v14 renderOnscreenModelAfterStyleChange:viewModel2];
   }
 }
 
@@ -53,63 +53,63 @@ uint64_t __70__PUParallaxLayerStackDebugStyleTableViewController_cellValueUpdate
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(PUParallaxLayerStackViewModel *)self->_viewModel style];
-  v8 = [(PUParallaxLayerStackDebugStyleTableViewController *)self indexPathForStyle:v7];
-  if ([v6 isEqual:v8])
+  viewCopy = view;
+  pathCopy = path;
+  style = [(PUParallaxLayerStackViewModel *)self->_viewModel style];
+  v8 = [(PUParallaxLayerStackDebugStyleTableViewController *)self indexPathForStyle:style];
+  if ([pathCopy isEqual:v8])
   {
-    [v13 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 
   else
   {
-    v9 = [v13 cellForRowAtIndexPath:v8];
+    v9 = [viewCopy cellForRowAtIndexPath:v8];
     [v9 setAccessoryType:0];
 
-    v10 = [v13 cellForRowAtIndexPath:v6];
+    v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
     [v10 setAccessoryType:3];
 
-    [v13 deselectRowAtIndexPath:v6 animated:1];
-    v11 = [(PUParallaxLayerStackDebugStyleTableViewController *)self tableView];
-    v12 = [v11 cellForRowAtIndexPath:v6];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    tableView = [(PUParallaxLayerStackDebugStyleTableViewController *)self tableView];
+    v12 = [tableView cellForRowAtIndexPath:pathCopy];
 
     [(PUParallaxLayerStackDebugStyleTableViewController *)self cellValueUpdated:v12];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"styleCell" forIndexPath:v6];
-  v8 = [MEMORY[0x1E69DCC28] cellConfiguration];
-  v9 = [(PUParallaxLayerStackDebugStyleTableViewController *)self availableStyles];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"styleCell" forIndexPath:pathCopy];
+  cellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
+  availableStyles = [(PUParallaxLayerStackDebugStyleTableViewController *)self availableStyles];
+  v10 = [availableStyles objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v11 = [(PUParallaxLayerStackViewModel *)self->_viewModel style];
-  v12 = [(PUParallaxLayerStackDebugStyleTableViewController *)self indexPathForStyle:v11];
-  v13 = [v10 kind];
-  [v8 setText:v13];
+  style = [(PUParallaxLayerStackViewModel *)self->_viewModel style];
+  v12 = [(PUParallaxLayerStackDebugStyleTableViewController *)self indexPathForStyle:style];
+  kind = [v10 kind];
+  [cellConfiguration setText:kind];
 
-  v14 = [(PUParallaxLayerStackViewModel *)self->_viewModel segmentationItem];
-  v15 = [v14 availableStyles];
+  segmentationItem = [(PUParallaxLayerStackViewModel *)self->_viewModel segmentationItem];
+  availableStyles2 = [segmentationItem availableStyles];
   v16 = v10;
   v17 = PFFind();
 
   if (!v17)
   {
-    v18 = [v8 text];
-    v19 = [v18 stringByAppendingString:@" (not suggested)"];
-    [v8 setText:v19];
+    text = [cellConfiguration text];
+    v19 = [text stringByAppendingString:@" (not suggested)"];
+    [cellConfiguration setText:v19];
   }
 
-  [v7 setContentConfiguration:v8];
+  [v7 setContentConfiguration:cellConfiguration];
   [v7 setStyleCellDelegate:self];
-  if ([v12 isEqual:v6])
+  if ([v12 isEqual:pathCopy])
   {
-    [v7 rebuildControlsViewForStyle:v11];
+    [v7 rebuildControlsViewForStyle:style];
     [v7 setAccessoryType:3];
   }
 
@@ -132,31 +132,31 @@ uint64_t __85__PUParallaxLayerStackDebugStyleTableViewController_tableView_cellF
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(PUParallaxLayerStackDebugStyleTableViewController *)self availableStyles:a3];
+  v4 = [(PUParallaxLayerStackDebugStyleTableViewController *)self availableStyles:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)indexPathForStyle:(id)a3
+- (id)indexPathForStyle:(id)style
 {
-  v5 = a3;
-  if (!v5)
+  styleCopy = style;
+  if (!styleCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackDebugStyleTableViewController.m" lineNumber:246 description:{@"Invalid parameter not satisfying: %@", @"style"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackDebugStyleTableViewController.m" lineNumber:246 description:{@"Invalid parameter not satisfying: %@", @"style"}];
   }
 
-  v6 = [(PUParallaxLayerStackDebugStyleTableViewController *)self availableStyles];
+  availableStyles = [(PUParallaxLayerStackDebugStyleTableViewController *)self availableStyles];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__PUParallaxLayerStackDebugStyleTableViewController_indexPathForStyle___block_invoke;
   v12[3] = &unk_1E7B79D50;
-  v13 = v5;
-  v7 = v5;
-  v8 = [v6 indexOfObjectPassingTest:v12];
+  v13 = styleCopy;
+  v7 = styleCopy;
+  v8 = [availableStyles indexOfObjectPassingTest:v12];
 
   v9 = [MEMORY[0x1E696AC88] indexPathForRow:v8 inSection:0];
 
@@ -178,30 +178,30 @@ uint64_t __71__PUParallaxLayerStackDebugStyleTableViewController_indexPathForSty
   cachedAvailableStyles = self->_cachedAvailableStyles;
   if (!cachedAvailableStyles)
   {
-    v5 = [(PUParallaxLayerStackViewModel *)self->_viewModel segmentationItem];
+    segmentationItem = [(PUParallaxLayerStackViewModel *)self->_viewModel segmentationItem];
 
-    if (!v5)
+    if (!segmentationItem)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackDebugStyleTableViewController.m" lineNumber:229 description:@"editing requires a segmentation item"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackDebugStyleTableViewController.m" lineNumber:229 description:@"editing requires a segmentation item"];
     }
 
-    v6 = [(PUParallaxLayerStackViewModel *)self->_viewModel segmentationItem];
-    v7 = [v6 colorAnalysis];
+    segmentationItem2 = [(PUParallaxLayerStackViewModel *)self->_viewModel segmentationItem];
+    colorAnalysis = [segmentationItem2 colorAnalysis];
 
-    if (!v7)
+    if (!colorAnalysis)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackDebugStyleTableViewController.m" lineNumber:230 description:@"editing requires color analysis"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackDebugStyleTableViewController.m" lineNumber:230 description:@"editing requires color analysis"];
     }
 
-    v8 = [(PUParallaxLayerStackViewModel *)self->_viewModel segmentationItem];
-    v9 = [v8 availableStyles];
+    segmentationItem3 = [(PUParallaxLayerStackViewModel *)self->_viewModel segmentationItem];
+    availableStyles = [segmentationItem3 availableStyles];
 
-    if (!v9)
+    if (!availableStyles)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackDebugStyleTableViewController.m" lineNumber:231 description:@"expected available styles"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUParallaxLayerStackDebugStyleTableViewController.m" lineNumber:231 description:@"expected available styles"];
     }
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -226,8 +226,8 @@ uint64_t __71__PUParallaxLayerStackDebugStyleTableViewController_indexPathForSty
           }
 
           v16 = *(*(&v25 + 1) + 8 * v15);
-          v17 = [(PUParallaxLayerStackViewModel *)self->_viewModel segmentationItem];
-          v18 = [v17 defaultStyleOfKind:v16];
+          segmentationItem4 = [(PUParallaxLayerStackViewModel *)self->_viewModel segmentationItem];
+          v18 = [segmentationItem4 defaultStyleOfKind:v16];
 
           [v10 addObject:v18];
           ++v15;
@@ -255,8 +255,8 @@ uint64_t __71__PUParallaxLayerStackDebugStyleTableViewController_indexPathForSty
   v4.receiver = self;
   v4.super_class = PUParallaxLayerStackDebugStyleTableViewController;
   [(PUParallaxLayerStackDebugStyleTableViewController *)&v4 viewDidLoad];
-  v3 = [(PUParallaxLayerStackDebugStyleTableViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"styleCell"];
+  tableView = [(PUParallaxLayerStackDebugStyleTableViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"styleCell"];
 }
 
 @end

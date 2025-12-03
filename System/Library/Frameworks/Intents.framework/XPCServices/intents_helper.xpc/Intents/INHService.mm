@@ -1,17 +1,17 @@
 @interface INHService
-- (BOOL)_checkServiceAccessWithError:(id *)a3;
-- (INHService)initWithServingConnection:(id)a3;
+- (BOOL)_checkServiceAccessWithError:(id *)error;
+- (INHService)initWithServingConnection:(id)connection;
 - (NSXPCConnection)servingConnection;
-- (void)fetchShareExtensionIntentForExtensionContextUUID:(id)a3 completion:(id)a4;
-- (void)filePathForImage:(id)a3 usingPortableImageLoader:(id)a4 completion:(id)a5;
-- (void)loadBundleURLsForBundleIdentifiers:(id)a3 completion:(id)a4;
-- (void)loadDataImageForImage:(id)a3 scaledWidth:(double)a4 scaledHeight:(double)a5 usingPortableImageLoader:(id)a6 completion:(id)a7;
-- (void)loadSchemaURLsForBundleIdentifiers:(id)a3 completion:(id)a4;
-- (void)loadSchemaURLsWithCompletion:(id)a3;
+- (void)fetchShareExtensionIntentForExtensionContextUUID:(id)d completion:(id)completion;
+- (void)filePathForImage:(id)image usingPortableImageLoader:(id)loader completion:(id)completion;
+- (void)loadBundleURLsForBundleIdentifiers:(id)identifiers completion:(id)completion;
+- (void)loadDataImageForImage:(id)image scaledWidth:(double)width scaledHeight:(double)height usingPortableImageLoader:(id)loader completion:(id)completion;
+- (void)loadSchemaURLsForBundleIdentifiers:(id)identifiers completion:(id)completion;
+- (void)loadSchemaURLsWithCompletion:(id)completion;
 - (void)purgeExpiredImagesInEphemeralStore;
-- (void)purgeImageWithIdentifier:(id)a3 completion:(id)a4;
-- (void)retrieveImageWithIdentifier:(id)a3 completion:(id)a4;
-- (void)storeUserContext:(id)a3 forBundleIdentifier:(id)a4;
+- (void)purgeImageWithIdentifier:(id)identifier completion:(id)completion;
+- (void)retrieveImageWithIdentifier:(id)identifier completion:(id)completion;
+- (void)storeUserContext:(id)context forBundleIdentifier:(id)identifier;
 @end
 
 @implementation INHService
@@ -23,54 +23,54 @@
   return WeakRetained;
 }
 
-- (void)storeUserContext:(id)a3 forBundleIdentifier:(id)a4
+- (void)storeUserContext:(id)context forBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  identifierCopy = identifier;
   v7 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     v9 = 136315650;
     v10 = "[INHService storeUserContext:forBundleIdentifier:]";
     v11 = 2112;
-    v12 = v5;
+    v12 = contextCopy;
     v13 = 2112;
-    v14 = v6;
+    v14 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s Within intents_helper, entitled-saving UserContext:%@ for bundle: %@", &v9, 0x20u);
   }
 
   v8 = +[INUserContextStore sharedStore];
-  [v8 storeUserContext:v5 forBundleIdentifier:v6];
+  [v8 storeUserContext:contextCopy forBundleIdentifier:identifierCopy];
 }
 
-- (BOOL)_checkServiceAccessWithError:(id *)a3
+- (BOOL)_checkServiceAccessWithError:(id *)error
 {
-  v4 = [(INHService *)self servingConnection];
-  v5 = [INHelperServiceAccessSpecifier accessSpecifierAppropriateForXPCConnection:v4];
+  servingConnection = [(INHService *)self servingConnection];
+  v5 = [INHelperServiceAccessSpecifier accessSpecifierAppropriateForXPCConnection:servingConnection];
 
-  v6 = [v5 accessLevel];
-  v7 = v6;
-  if (a3 && v6 != 2)
+  accessLevel = [v5 accessLevel];
+  v7 = accessLevel;
+  if (error && accessLevel != 2)
   {
     v8 = [NSError alloc];
     v11 = NSDebugDescriptionErrorKey;
     v12 = @"Client does not have sufficient permissions to access bundle";
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a3 = [v8 initWithDomain:INIntentErrorDomain code:6010 userInfo:v9];
+    *error = [v8 initWithDomain:INIntentErrorDomain code:6010 userInfo:v9];
   }
 
   return v7 == 2;
 }
 
-- (void)fetchShareExtensionIntentForExtensionContextUUID:(id)a3 completion:(id)a4
+- (void)fetchShareExtensionIntentForExtensionContextUUID:(id)d completion:(id)completion
 {
-  v30 = a3;
-  v6 = a4;
-  v7 = [(INHService *)self servingConnection];
-  v8 = v7;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  servingConnection = [(INHService *)self servingConnection];
+  v8 = servingConnection;
+  if (servingConnection)
   {
-    [v7 auditToken];
+    [servingConnection auditToken];
   }
 
   else
@@ -100,7 +100,7 @@
 
   v11 = v10;
 
-  v12 = [v11 bundleIdentifier];
+  bundleIdentifier = [v11 bundleIdentifier];
   if (v11 && ([v11 protocol], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"com.apple.share-services"), v13, v14))
   {
     v35 = v11;
@@ -120,14 +120,14 @@
       }
     }
 
-    v21 = [v11 containingBundle];
-    v22 = [v21 bundleIdentifier];
+    containingBundle = [v11 containingBundle];
+    bundleIdentifier2 = [containingBundle bundleIdentifier];
     v23 = 0;
-    if ([v16 count] && v22)
+    if ([v16 count] && bundleIdentifier2)
     {
-      v28 = v22;
-      v29 = v12;
-      v24 = v30;
+      v28 = bundleIdentifier2;
+      v29 = bundleIdentifier;
+      v24 = dCopy;
       v25 = v16;
       v31 = 0;
       v32 = &v31;
@@ -170,21 +170,21 @@
     *&buf[12] = 2112;
     *&buf[14] = v23;
     *&buf[22] = 2112;
-    *&buf[24] = v12;
+    *&buf[24] = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "%s Fetched share extension intent %@ from people suggester for bundleID %@", buf, 0x20u);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, v23);
+    completionCopy[2](completionCopy, v23);
   }
 }
 
-- (void)loadBundleURLsForBundleIdentifiers:(id)a3 completion:(id)a4
+- (void)loadBundleURLsForBundleIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  if ([identifiersCopy count])
   {
     v30 = 0;
     v8 = [(INHService *)self _checkServiceAccessWithError:&v30];
@@ -198,7 +198,7 @@
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v11 = v6;
+      v11 = identifiersCopy;
       v12 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v12)
       {
@@ -215,18 +215,18 @@
 
             v16 = *(*(&v26 + 1) + 8 * i);
             v17 = [APApplication applicationWithBundleIdentifier:v16, v24];
-            v18 = [v17 isHidden];
+            isHidden = [v17 isHidden];
 
-            if ((v18 & 1) == 0)
+            if ((isHidden & 1) == 0)
             {
               v19 = [LSBundleProxy bundleProxyForIdentifier:v16];
-              v20 = [v19 bundleURL];
+              bundleURL = [v19 bundleURL];
 
-              if (v20)
+              if (bundleURL)
               {
                 v21 = [NSSecurityScopedURLWrapper alloc];
-                v22 = [v19 bundleURL];
-                v23 = [v21 initWithURL:v22 readonly:1];
+                bundleURL2 = [v19 bundleURL];
+                v23 = [v21 initWithURL:bundleURL2 readonly:1];
                 [v25 setObject:v23 forKey:v16];
               }
             }
@@ -238,25 +238,25 @@
         while (v13);
       }
 
-      v7[2](v7, v25, 0);
+      completionCopy[2](completionCopy, v25, 0);
       v10 = v24;
     }
 
     else
     {
-      (v7)[2](v7, 0, v9);
+      (completionCopy)[2](completionCopy, 0, v9);
     }
   }
 
   else
   {
-    v7[2](v7, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
-- (void)loadSchemaURLsWithCompletion:(id)a3
+- (void)loadSchemaURLsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(NSMutableArray);
   v6 = +[LSApplicationWorkspace defaultWorkspace];
   v19[0] = _NSConcreteStackBlock;
@@ -280,22 +280,22 @@
   v11 = [NSSet setWithArray:v10];
   v12 = [v11 mutableCopy];
 
-  v13 = [_INVCIntentDefinitionManagerClass() allBundleIdentifiers];
-  if (v13)
+  allBundleIdentifiers = [_INVCIntentDefinitionManagerClass() allBundleIdentifiers];
+  if (allBundleIdentifiers)
   {
-    [v12 addObjectsFromArray:v13];
+    [v12 addObjectsFromArray:allBundleIdentifiers];
   }
 
-  [(INHService *)self loadSchemaURLsForBundleIdentifiers:v12 completion:v4];
+  [(INHService *)self loadSchemaURLsForBundleIdentifiers:v12 completion:completionCopy];
 }
 
-- (void)loadSchemaURLsForBundleIdentifiers:(id)a3 completion:(id)a4
+- (void)loadSchemaURLsForBundleIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count])
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  if (![identifiersCopy count])
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
     goto LABEL_32;
   }
 
@@ -305,19 +305,19 @@
   v10 = v9;
   if ((v8 & 1) == 0)
   {
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
     goto LABEL_31;
   }
 
   v27 = v9;
-  v28 = v7;
+  v28 = completionCopy;
   v31 = objc_opt_new();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v29 = v6;
-  obj = v6;
+  v29 = identifiersCopy;
+  obj = identifiersCopy;
   v33 = [obj countByEnumeratingWithState:&v40 objects:v52 count:16];
   if (!v33)
   {
@@ -356,9 +356,9 @@
 
       if (v13)
       {
-        v16 = [v13 intentDefinitionURLs];
-        v17 = [v16 allValues];
-        v18 = [NSSet setWithArray:v17];
+        intentDefinitionURLs = [v13 intentDefinitionURLs];
+        allValues = [intentDefinitionURLs allValues];
+        v18 = [NSSet setWithArray:allValues];
 
         if (![v18 count])
         {
@@ -427,10 +427,10 @@ LABEL_25:
     v26 = 0;
   }
 
-  v7 = v28;
+  completionCopy = v28;
   (*(v28 + 2))(v28, v26, 0);
 
-  v6 = v29;
+  identifiersCopy = v29;
   v10 = v27;
 LABEL_31:
 
@@ -450,29 +450,29 @@ LABEL_32:
   [(INImageFilePersistence *)self->_filePersistence purgeExpiredImagesInEphemeralStore];
 }
 
-- (void)purgeImageWithIdentifier:(id)a3 completion:(id)a4
+- (void)purgeImageWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     v9 = 136315394;
     v10 = "[INHService purgeImageWithIdentifier:completion:]";
     v11 = 2112;
-    v12 = v6;
+    v12 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Purging image %@ from INImageFilePersistence", &v9, 0x16u);
   }
 
-  [(INImageFilePersistence *)self->_filePersistence purgeImageWithIdentifier:v6 completion:v7];
+  [(INImageFilePersistence *)self->_filePersistence purgeImageWithIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)filePathForImage:(id)a3 usingPortableImageLoader:(id)a4 completion:(id)a5
+- (void)filePathForImage:(id)image usingPortableImageLoader:(id)loader completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  imageCopy = image;
+  loaderCopy = loader;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v10 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
@@ -480,25 +480,25 @@ LABEL_32:
       v11 = 136315650;
       v12 = "[INHService filePathForImage:usingPortableImageLoader:completion:]";
       v13 = 2112;
-      v14 = v7;
+      v14 = imageCopy;
       v15 = 2112;
-      v16 = v8;
+      v16 = loaderCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Loading image file path for %@ with portable image loader %@", &v11, 0x20u);
     }
 
-    [v8 filePathForImage:v7 completion:v9];
+    [loaderCopy filePathForImage:imageCopy completion:completionCopy];
   }
 }
 
-- (void)loadDataImageForImage:(id)a3 scaledWidth:(double)a4 scaledHeight:(double)a5 usingPortableImageLoader:(id)a6 completion:(id)a7
+- (void)loadDataImageForImage:(id)image scaledWidth:(double)width scaledHeight:(double)height usingPortableImageLoader:(id)loader completion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if (v14)
+  imageCopy = image;
+  loaderCopy = loader;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v15 = [(INHService *)self servingConnection];
-    v16 = [INHelperServiceAccessSpecifier accessSpecifierAppropriateForXPCConnection:v15];
+    servingConnection = [(INHService *)self servingConnection];
+    v16 = [INHelperServiceAccessSpecifier accessSpecifierAppropriateForXPCConnection:servingConnection];
 
     v17 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
@@ -506,9 +506,9 @@ LABEL_32:
       *buf = 136315650;
       v23 = "[INHService loadDataImageForImage:scaledWidth:scaledHeight:usingPortableImageLoader:completion:]";
       v24 = 2112;
-      v25 = v12;
+      v25 = imageCopy;
       v26 = 2112;
-      v27 = v13;
+      v27 = loaderCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%s Loading image %@ with portable image loader %@", buf, 0x20u);
     }
 
@@ -516,40 +516,40 @@ LABEL_32:
     v18[1] = 3221225472;
     v18[2] = sub_1000028FC;
     v18[3] = &unk_1000082F8;
-    v19 = v14;
-    v20 = a4;
-    v21 = a5;
-    [v13 loadImageDataFromImage:v12 accessSpecifier:v16 completion:v18];
+    v19 = completionCopy;
+    widthCopy = width;
+    heightCopy = height;
+    [loaderCopy loadImageDataFromImage:imageCopy accessSpecifier:v16 completion:v18];
   }
 }
 
-- (void)retrieveImageWithIdentifier:(id)a3 completion:(id)a4
+- (void)retrieveImageWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     v9 = 136315394;
     v10 = "[INHService retrieveImageWithIdentifier:completion:]";
     v11 = 2112;
-    v12 = v6;
+    v12 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Retrieving image with identifier %@ with INImageFilePersistence", &v9, 0x16u);
   }
 
-  [(INImageFilePersistence *)self->_filePersistence retrieveImageWithIdentifier:v6 completion:v7];
+  [(INImageFilePersistence *)self->_filePersistence retrieveImageWithIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (INHService)initWithServingConnection:(id)a3
+- (INHService)initWithServingConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = INHService;
   v5 = [(INHService *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_servingConnection, v4);
+    objc_storeWeak(&v5->_servingConnection, connectionCopy);
     v7 = objc_alloc_init(INImageFilePersistence);
     filePersistence = v6->_filePersistence;
     v6->_filePersistence = v7;

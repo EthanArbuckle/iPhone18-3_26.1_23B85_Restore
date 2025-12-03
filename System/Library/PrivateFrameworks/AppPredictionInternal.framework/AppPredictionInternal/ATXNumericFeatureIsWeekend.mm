@@ -1,14 +1,14 @@
 @interface ATXNumericFeatureIsWeekend
-- (id)numericFeatureValueForContext:(id)a3 candidate:(id)a4;
+- (id)numericFeatureValueForContext:(id)context candidate:(id)candidate;
 @end
 
 @implementation ATXNumericFeatureIsWeekend
 
-- (id)numericFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)numericFeatureValueForContext:(id)context candidate:(id)candidate
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = [a3 timeContext];
-  v6 = [v4 numberWithBool:{objc_msgSend(v5, "dateInWeekend")}];
+  timeContext = [context timeContext];
+  v6 = [v4 numberWithBool:{objc_msgSend(timeContext, "dateInWeekend")}];
 
   return v6;
 }

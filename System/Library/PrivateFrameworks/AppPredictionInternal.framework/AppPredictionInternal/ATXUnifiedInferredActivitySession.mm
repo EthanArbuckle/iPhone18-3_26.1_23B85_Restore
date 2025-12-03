@@ -1,36 +1,36 @@
 @interface ATXUnifiedInferredActivitySession
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXUnifiedInferredActivitySession)initWithCoder:(id)a3;
-- (ATXUnifiedInferredActivitySession)initWithProto:(id)a3;
-- (ATXUnifiedInferredActivitySession)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXUnifiedInferredActivitySession:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXUnifiedInferredActivitySession)initWithCoder:(id)coder;
+- (ATXUnifiedInferredActivitySession)initWithProto:(id)proto;
+- (ATXUnifiedInferredActivitySession)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXUnifiedInferredActivitySession:(id)session;
 - (id)encodeAsProto;
-- (id)initFromJSON:(id)a3;
-- (id)initFromStartTime:(double)a3 endTime:(double)a4 source:(id)a5 activityType:(unint64_t)a6 confidence:(double)a7;
+- (id)initFromJSON:(id)n;
+- (id)initFromStartTime:(double)time endTime:(double)endTime source:(id)source activityType:(unint64_t)type confidence:(double)confidence;
 - (id)json;
 - (id)jsonRepresentation;
 - (id)prettyRepresentation;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXUnifiedInferredActivitySession
 
-- (id)initFromStartTime:(double)a3 endTime:(double)a4 source:(id)a5 activityType:(unint64_t)a6 confidence:(double)a7
+- (id)initFromStartTime:(double)time endTime:(double)endTime source:(id)source activityType:(unint64_t)type confidence:(double)confidence
 {
-  v13 = a5;
+  sourceCopy = source;
   v17.receiver = self;
   v17.super_class = ATXUnifiedInferredActivitySession;
   v14 = [(ATXUnifiedInferredActivitySession *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_source, a5);
-    v15->_startTime = a3;
-    v15->_endTime = a4;
-    v15->_inferredActivityType = a6;
-    v15->_confidence = a7;
+    objc_storeStrong(&v14->_source, source);
+    v15->_startTime = time;
+    v15->_endTime = endTime;
+    v15->_inferredActivityType = type;
+    v15->_confidence = confidence;
   }
 
   return v15;
@@ -40,8 +40,8 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CCA968]);
   v4 = MEMORY[0x277CCA968];
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [v4 dateFormatFromTemplate:@"EMMMd HH:mm ss ZZZZ" options:0 locale:v5];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v6 = [v4 dateFormatFromTemplate:@"EMMMd HH:mm ss ZZZZ" options:0 locale:currentLocale];
 
   [v3 setDateFormat:v6];
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_startTime];
@@ -63,25 +63,25 @@
 - (id)json
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(ATXUnifiedInferredActivitySession *)self jsonRepresentation];
-  v4 = [v2 dataWithJSONObject:v3 options:2 error:0];
+  jsonRepresentation = [(ATXUnifiedInferredActivitySession *)self jsonRepresentation];
+  v4 = [v2 dataWithJSONObject:jsonRepresentation options:2 error:0];
 
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 3)
+  dataCopy = data;
+  if (version == 3)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
     v12 = 0;
-    v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:a1 fromData:v6 error:&v12];
+    v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:self fromData:dataCopy error:&v12];
     v10 = v12;
     objc_autoreleasePoolPop(v8);
     v7 = 0;
@@ -94,22 +94,22 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXUnifiedInferredActivitySession *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXUnifiedInferredActivitySession *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXUnifiedInferredActivitySession)initWithCoder:(id)a3
+- (ATXUnifiedInferredActivitySession)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   if (v5)
   {
     self = [(ATXUnifiedInferredActivitySession *)self initWithProtoData:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -120,35 +120,35 @@
       [ATXUnifiedInferredActivitySession initWithCoder:];
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUnifiedInferredActivitySession *)self isEqualToATXUnifiedInferredActivitySession:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUnifiedInferredActivitySession *)self isEqualToATXUnifiedInferredActivitySession:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXUnifiedInferredActivitySession:(id)a3
+- (BOOL)isEqualToATXUnifiedInferredActivitySession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   [(ATXUnifiedInferredActivitySession *)self startTime];
   v6 = v5;
-  [v4 startTime];
+  [sessionCopy startTime];
   v8 = v6 - v7;
   if (v8 >= 0.0)
   {
@@ -162,19 +162,19 @@
 
   [(ATXUnifiedInferredActivitySession *)self endTime];
   v11 = v10;
-  [v4 endTime];
+  [sessionCopy endTime];
   v13 = v12;
-  v14 = [(ATXUnifiedInferredActivitySession *)self inferredActivityType];
-  v15 = [v4 inferredActivityType];
-  v16 = [(ATXUnifiedInferredActivitySession *)self source];
-  v17 = [v4 source];
-  v18 = [v16 isEqualToString:v17];
+  inferredActivityType = [(ATXUnifiedInferredActivitySession *)self inferredActivityType];
+  inferredActivityType2 = [sessionCopy inferredActivityType];
+  source = [(ATXUnifiedInferredActivitySession *)self source];
+  source2 = [sessionCopy source];
+  v18 = [source isEqualToString:source2];
 
-  v19 = [(ATXUnifiedInferredActivitySession *)self inferredActivityType];
-  v20 = [v4 inferredActivityType];
+  inferredActivityType3 = [(ATXUnifiedInferredActivitySession *)self inferredActivityType];
+  inferredActivityType4 = [sessionCopy inferredActivityType];
   [(ATXUnifiedInferredActivitySession *)self confidence];
   v22 = v21;
-  [v4 confidence];
+  [sessionCopy confidence];
   v24 = v23;
 
   if (v9 >= 0.1)
@@ -194,9 +194,9 @@
     v26 = -(v11 - v13);
   }
 
-  v28 = v26 < 0.1 && v14 == v15;
+  v28 = v26 < 0.1 && inferredActivityType == inferredActivityType2;
   v29 = v28 & v18;
-  if (v19 != v20)
+  if (inferredActivityType3 != inferredActivityType4)
   {
     v29 = 0;
   }
@@ -206,19 +206,19 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXUnifiedInferredActivitySession *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXUnifiedInferredActivitySession *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXUnifiedInferredActivitySession)initWithProto:(id)a3
+- (ATXUnifiedInferredActivitySession)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -234,40 +234,40 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   [v5 startTime];
   v7 = v6;
   [v5 endTime];
   v9 = v8;
-  v10 = [v5 source];
-  v11 = [v5 inferredActivity];
+  source = [v5 source];
+  inferredActivity = [v5 inferredActivity];
   [v5 confidence];
   v13 = v12;
 
-  self = [(ATXUnifiedInferredActivitySession *)self initFromStartTime:v10 endTime:v11 source:v7 activityType:v9 confidence:v13];
-  v14 = self;
+  self = [(ATXUnifiedInferredActivitySession *)self initFromStartTime:source endTime:inferredActivity source:v7 activityType:v9 confidence:v13];
+  selfCopy = self;
 LABEL_8:
 
-  return v14;
+  return selfCopy;
 }
 
-- (ATXUnifiedInferredActivitySession)initWithProtoData:(id)a3
+- (ATXUnifiedInferredActivitySession)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBUnifiedInferredActivitySession alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBUnifiedInferredActivitySession alloc] initWithData:dataCopy];
 
     self = [(ATXUnifiedInferredActivitySession *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -280,16 +280,16 @@ LABEL_8:
   [v3 setStartTime:?];
   [(ATXUnifiedInferredActivitySession *)self endTime];
   [v3 setEndTime:?];
-  v4 = [(ATXUnifiedInferredActivitySession *)self source];
-  [v3 setSource:v4];
+  source = [(ATXUnifiedInferredActivitySession *)self source];
+  [v3 setSource:source];
 
   return v3;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
-  v5 = [[ATXPBUnifiedInferredActivitySession alloc] initFromJSON:v4];
+  nCopy = n;
+  v5 = [[ATXPBUnifiedInferredActivitySession alloc] initFromJSON:nCopy];
 
   v6 = [(ATXUnifiedInferredActivitySession *)self initWithProto:v5];
   return v6;
@@ -297,10 +297,10 @@ LABEL_8:
 
 - (id)jsonRepresentation
 {
-  v2 = [(ATXUnifiedInferredActivitySession *)self proto];
-  v3 = [v2 jsonRepresentation];
+  proto = [(ATXUnifiedInferredActivitySession *)self proto];
+  jsonRepresentation = [proto jsonRepresentation];
 
-  return v3;
+  return jsonRepresentation;
 }
 
 - (void)initWithCoder:.cold.1()

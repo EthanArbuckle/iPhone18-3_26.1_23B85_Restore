@@ -6,14 +6,14 @@
 
 - (id)locationEvents
 {
-  v2 = [MEMORY[0x277D01280] defaultManager];
+  defaultManager = [MEMORY[0x277D01280] defaultManager];
   v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__0;
   v15 = __Block_byref_object_dispose__0;
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = dispatch_semaphore_create(0);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -22,7 +22,7 @@
   v10 = &v11;
   v5 = v4;
   v9 = v5;
-  [v2 fetchLocationsOfInterestVisitedSinceDate:v3 withHandler:v8];
+  [defaultManager fetchLocationsOfInterestVisitedSinceDate:v3 withHandler:v8];
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v6 = v12[5];
 

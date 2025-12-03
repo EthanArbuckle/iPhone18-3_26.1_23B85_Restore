@@ -6,17 +6,17 @@
 - (id)_predicateForMinimumQuantity;
 - (id)_predicateForSumQuantity;
 - (id)_predicateForWorkoutActivityType;
-- (id)_predicateForWorkoutActivityWithProfile:(id)a1;
+- (id)_predicateForWorkoutActivityWithProfile:(id)profile;
 @end
 
 @implementation _HKWorkoutComparisonFilter
 
 - (id)_predicateForWorkoutActivityType
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 value];
-    v2 = HDWorkoutEntityPredicateForWorkoutActivityType([v1 integerValue]);
+    value = [self value];
+    v2 = HDWorkoutEntityPredicateForWorkoutActivityType([value integerValue]);
   }
 
   else
@@ -29,11 +29,11 @@
 
 - (id)_predicateForGoal
 {
-  if (a1)
+  if (self)
   {
-    [a1 operatorType];
+    [self operatorType];
     v2 = HDSQLiteComparisonTypeForPredicateOperator();
-    v3 = [a1 value];
+    value = [self value];
     v4 = 0;
     while (1)
     {
@@ -45,16 +45,16 @@
 
       if (++v4 == 4)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"_HKWorkoutGoalType _HKGoalTypeForQuantity(HKQuantity * _Nullable __strong)"];
-        [v6 handleFailureInFunction:v7 file:@"_HKWorkoutComparisonFilter+HealthDaemon.m" lineNumber:40 description:@"Unreachable code has been executed"];
+        [currentHandler handleFailureInFunction:v7 file:@"_HKWorkoutComparisonFilter+HealthDaemon.m" lineNumber:40 description:@"Unreachable code has been executed"];
 
         v5 = 0;
         break;
       }
     }
 
-    v8 = HDWorkoutEntityPredicateForWorkoutGoal(v2, v5, v3);
+    v8 = HDWorkoutEntityPredicateForWorkoutGoal(v2, v5, value);
   }
 
   else
@@ -67,83 +67,83 @@
 
 - (id)_predicateForGoalType
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    [a1 operatorType];
+    [self operatorType];
     v2 = HDSQLiteComparisonTypeForPredicateOperator();
-    v3 = [v1 value];
-    v1 = HDWorkoutEntityPredicateForWorkoutGoalType(v2, [v3 integerValue]);
+    value = [selfCopy value];
+    selfCopy = HDWorkoutEntityPredicateForWorkoutGoalType(v2, [value integerValue]);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_predicateForSumQuantity
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 value];
-    v3 = [v1 quantityType];
-    v1 = +[HDWorkoutStatisticsPredicate predicateForSumQuantity:quantityType:operatorType:](HDWorkoutStatisticsPredicate, "predicateForSumQuantity:quantityType:operatorType:", v2, v3, [v1 operatorType]);
+    value = [self value];
+    quantityType = [selfCopy quantityType];
+    selfCopy = +[HDWorkoutStatisticsPredicate predicateForSumQuantity:quantityType:operatorType:](HDWorkoutStatisticsPredicate, "predicateForSumQuantity:quantityType:operatorType:", value, quantityType, [selfCopy operatorType]);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_predicateForMinimumQuantity
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 value];
-    v3 = [v1 quantityType];
-    v1 = +[HDWorkoutStatisticsPredicate predicateForMinimumQuantity:quantityType:operatorType:](HDWorkoutStatisticsPredicate, "predicateForMinimumQuantity:quantityType:operatorType:", v2, v3, [v1 operatorType]);
+    value = [self value];
+    quantityType = [selfCopy quantityType];
+    selfCopy = +[HDWorkoutStatisticsPredicate predicateForMinimumQuantity:quantityType:operatorType:](HDWorkoutStatisticsPredicate, "predicateForMinimumQuantity:quantityType:operatorType:", value, quantityType, [selfCopy operatorType]);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_predicateForMaximumQuantity
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 value];
-    v3 = [v1 quantityType];
-    v1 = +[HDWorkoutStatisticsPredicate predicateForMaximumQuantity:quantityType:operatorType:](HDWorkoutStatisticsPredicate, "predicateForMaximumQuantity:quantityType:operatorType:", v2, v3, [v1 operatorType]);
+    value = [self value];
+    quantityType = [selfCopy quantityType];
+    selfCopy = +[HDWorkoutStatisticsPredicate predicateForMaximumQuantity:quantityType:operatorType:](HDWorkoutStatisticsPredicate, "predicateForMaximumQuantity:quantityType:operatorType:", value, quantityType, [selfCopy operatorType]);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_predicateForAverageQuantity
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 value];
-    v3 = [v1 quantityType];
-    v1 = +[HDWorkoutStatisticsPredicate predicateForAverageQuantity:quantityType:operatorType:](HDWorkoutStatisticsPredicate, "predicateForAverageQuantity:quantityType:operatorType:", v2, v3, [v1 operatorType]);
+    value = [self value];
+    quantityType = [selfCopy quantityType];
+    selfCopy = +[HDWorkoutStatisticsPredicate predicateForAverageQuantity:quantityType:operatorType:](HDWorkoutStatisticsPredicate, "predicateForAverageQuantity:quantityType:operatorType:", value, quantityType, [selfCopy operatorType]);
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)_predicateForWorkoutActivityWithProfile:(id)a1
+- (id)_predicateForWorkoutActivityWithProfile:(id)profile
 {
-  v2 = a1;
-  if (a1)
+  profileCopy = profile;
+  if (profile)
   {
     v3 = a2;
-    v4 = [v2 subFilter];
-    v5 = [v4 predicateWithProfile:v3];
+    subFilter = [profileCopy subFilter];
+    v5 = [subFilter predicateWithProfile:v3];
 
-    v2 = [HDWorkoutActivityPredicate predicateForSubPredicate:v5];
+    profileCopy = [HDWorkoutActivityPredicate predicateForSubPredicate:v5];
   }
 
-  return v2;
+  return profileCopy;
 }
 
 @end

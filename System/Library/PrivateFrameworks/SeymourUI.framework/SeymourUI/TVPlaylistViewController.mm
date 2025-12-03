@@ -1,6 +1,6 @@
 @interface TVPlaylistViewController
-- (_TtC9SeymourUI24TVPlaylistViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI24TVPlaylistViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI24TVPlaylistViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI24TVPlaylistViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -8,11 +8,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   TVPlaylistViewController.viewDidLoad()();
 }
 
-- (_TtC9SeymourUI24TVPlaylistViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI24TVPlaylistViewController)initWithCoder:(id)coder
 {
   *(&self->super.super + OBJC_IVAR____TtC9SeymourUI24TVPlaylistViewController_layout) = xmmword_20C16A0B0;
   result = sub_20C13DE24();
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI24TVPlaylistViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI24TVPlaylistViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

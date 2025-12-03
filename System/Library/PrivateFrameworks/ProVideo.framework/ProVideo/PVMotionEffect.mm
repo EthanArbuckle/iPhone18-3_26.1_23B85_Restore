@@ -1,190 +1,190 @@
 @interface PVMotionEffect
-+ (BOOL)replacedMappedEffectWithNewPath:(id)a3;
++ (BOOL)replacedMappedEffectWithNewPath:(id)path;
 + (id)_bundleLibPaths;
-+ (id)_effectPathFromID:(id)a3;
++ (id)_effectPathFromID:(id)d;
 + (id)_userLibPaths;
 + (id)effectMap;
 + (id)motionComponentClasses;
 + (id)motionEffectPropertyKeyToPublishedParameterNameMap;
-+ (id)newEffectWithData:(id)a3;
-+ (id)newEffectWithURL:(id)a3;
++ (id)newEffectWithData:(id)data;
++ (id)newEffectWithURL:(id)l;
 + (id)publishedParameterNameToMotionEffectPropertyKeyMap;
-+ (void)extractMetadataFromContentsOfFile:(id)a3 toCacheEntry:(id)a4;
++ (void)extractMetadataFromContentsOfFile:(id)file toCacheEntry:(id)entry;
 + (void)handleApplicationDidReceiveMemoryWarning;
 + (void)initializeMotion;
 + (void)initializeMotionInternal;
-+ (void)mapTemplatesInDirectory:(id)a3 doingRescan:(BOOL)a4 origCache:(id)a5 newCache:(id)a6;
++ (void)mapTemplatesInDirectory:(id)directory doingRescan:(BOOL)rescan origCache:(id)cache newCache:(id)newCache;
 + (void)registerEffects;
-+ (void)registerNoneEffectForType:(id)a3 effectID:(id)a4 origCache:(id)a5 newCache:(id)a6;
-+ (void)registerTemplateInDirectory:(id)a3 relPath:(id)a4 effectID:(id)a5 doingRescan:(BOOL)a6 origCache:(id)a7 newCache:(id)a8;
-+ (void)scanTemplatesInDirectory:(id)a3 doingRescan:(BOOL)a4 replaceMappedEffectPath:(BOOL)a5 origCache:(id)a6 newCache:(id)a7;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime:(SEL)a3;
++ (void)registerNoneEffectForType:(id)type effectID:(id)d origCache:(id)cache newCache:(id)newCache;
++ (void)registerTemplateInDirectory:(id)directory relPath:(id)path effectID:(id)d doingRescan:(BOOL)rescan origCache:(id)cache newCache:(id)newCache;
++ (void)scanTemplatesInDirectory:(id)directory doingRescan:(BOOL)rescan replaceMappedEffectPath:(BOOL)path origCache:(id)cache newCache:(id)newCache;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime:(SEL)time;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)loopTimeOverride;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineDuration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineFrameDuration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineLastFrame;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime:(SEL)time;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)transcriptionDuration;
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange:(SEL)a3;
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange:(SEL)a3;
-- (BOOL)bounds:(CGRect *)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 includeDropShadow:(BOOL)a6 includeMasks:(BOOL)a7;
-- (BOOL)didCacheInvalidatingParameterChange_NoLock:(id)a3 key:(id)a4;
-- (BOOL)didSetCacheInvalidatingParameter_NoLock:(id)a3 forKey:(id)a4;
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange:(SEL)range;
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange:(SEL)range;
+- (BOOL)bounds:(CGRect *)bounds atTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeMasks:(BOOL)masks;
+- (BOOL)didCacheInvalidatingParameterChange_NoLock:(id)lock key:(id)key;
+- (BOOL)didSetCacheInvalidatingParameter_NoLock:(id)lock forKey:(id)key;
 - (BOOL)hasAllNecessaryResources;
 - (BOOL)hasBuiltInEnvironment;
 - (BOOL)hasPlayableAspectOverride_NoLock;
-- (BOOL)hitTest:(CGPoint)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 scale:(CGPoint)a6 adjustForMinimumSize:(BOOL)a7 minimumSize:(double)a8 sizeThreshold:(double)a9 viewSize:(CGSize)a10 viewOrigin:(int)a11;
-- (BOOL)isEphemeralProperty:(id)a3;
-- (BOOL)isLandscape:(id)a3;
-- (BOOL)isRenderCachingDisabled_NoLock:(id *)a3;
+- (BOOL)hitTest:(CGPoint)test atTime:(id *)time forcePosterFrame:(BOOL)frame scale:(CGPoint)scale adjustForMinimumSize:(BOOL)size minimumSize:(double)minimumSize sizeThreshold:(double)threshold viewSize:(CGSize)self0 viewOrigin:(int)self1;
+- (BOOL)isEphemeralProperty:(id)property;
+- (BOOL)isLandscape:(id)landscape;
+- (BOOL)isRenderCachingDisabled_NoLock:(id *)lock;
 - (BOOL)isSketch;
-- (BOOL)isTemporalProperty:(id)a3;
-- (BOOL)isVisibleAtTime_NoLock:(id *)a3 timedProperties:(id)a4 defaultProperties:(id)a5;
+- (BOOL)isTemporalProperty:(id)property;
+- (BOOL)isVisibleAtTime_NoLock:(id *)lock timedProperties:(id)properties defaultProperties:(id)defaultProperties;
 - (BOOL)loadResources;
 - (BOOL)loadResources_NoLock;
-- (BOOL)parameterInvalidatesCache_NoLock:(id)a3;
+- (BOOL)parameterInvalidatesCache_NoLock:(id)lock;
 - (BOOL)resourcesAreReady;
 - (BOOL)supportsExtendedRangeInputs;
-- (BOOL)supportsParam:(id)a3;
-- (BOOL)transcriptionHitTest:(CGPoint)a3 time:(id *)a4;
-- (CGPath)createPathsForHitTestingAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 scale:(CGPoint)a5 adjustForMinimumSize:(BOOL)a6 minimumSize:(double)a7 sizeThreshold:(double)a8 viewSize:(CGSize)a9 viewOrigin:(int)a10 outExpandedPath:(const CGPath *)a11;
-- (CGPoint)convertPointToView:(id *)a3 atTime:(BOOL)a4 forcePosterFrame:(BOOL)a5 includeTransformAnimation:(BOOL)a6 includePlayableAspectScale:(CGSize)a7 viewSize:(int)a8 viewOrigin:;
+- (BOOL)supportsParam:(id)param;
+- (BOOL)transcriptionHitTest:(CGPoint)test time:(id *)time;
+- (CGPath)createPathsForHitTestingAtTime:(id *)time forcePosterFrame:(BOOL)frame scale:(CGPoint)scale adjustForMinimumSize:(BOOL)size minimumSize:(double)minimumSize sizeThreshold:(double)threshold viewSize:(CGSize)viewSize viewOrigin:(int)self0 outExpandedPath:(const CGPath *)self1;
+- (CGPoint)convertPointToView:(id *)view atTime:(BOOL)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation includePlayableAspectScale:(CGSize)scale viewSize:(int)size viewOrigin:;
 - (CGRect)outputROI;
-- (CGRect)outputROI_NoLock:(const void *)a3 scale:(double)a4;
+- (CGRect)outputROI_NoLock:(const void *)lock scale:(double)scale;
 - (CGSize)documentSize;
 - (CGSize)outputSize;
-- (HGRect)makeCropRectForDOD:(HGRect)a3 renderRect:(CGRect)a4 renderScale:(float)a5;
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
-- (PVCGPointQuad)cornersAtTime:(SEL)a3 forcePosterFrame:(id *)a4 includeDropShadow:(BOOL)a5 scale:(BOOL)a6 viewSize:(CGPoint)a7 viewOrigin:(CGSize)a8;
-- (PVCGPointQuad)textCornersAtTime:(SEL)a3 index:(id *)a4 forcePosterFrame:(unint64_t)a5 includeDropShadow:(BOOL)a6 scale:(BOOL)a7 viewSize:(CGPoint)a8 viewOrigin:(CGSize)a9;
-- (PVMotionEffect)initWithContentID:(id)a3 andDictionary:(id)a4;
-- (PVMotionEffect)initWithEffectID:(id)a3;
+- (HGRect)makeCropRectForDOD:(HGRect)d renderRect:(CGRect)rect renderScale:(float)scale;
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PVCGPointQuad)cornersAtTime:(SEL)time forcePosterFrame:(id *)frame includeDropShadow:(BOOL)shadow scale:(BOOL)scale viewSize:(CGPoint)size viewOrigin:(CGSize)origin;
+- (PVCGPointQuad)textCornersAtTime:(SEL)time index:(id *)index forcePosterFrame:(unint64_t)frame includeDropShadow:(BOOL)shadow scale:(BOOL)scale viewSize:(CGPoint)size viewOrigin:(CGSize)origin;
+- (PVMotionEffect)initWithContentID:(id)d andDictionary:(id)dictionary;
+- (PVMotionEffect)initWithEffectID:(id)d;
 - (double)playableAspectRatio_NoLock;
 - (double)topLevelOpacity;
-- (id)addToTopLevelTransform:(_OWORD *)a3 atTime:(__int128 *)a4 forcePosterFrame:restrictToBounds:viewSize:viewOrigin:;
+- (id)addToTopLevelTransform:(_OWORD *)transform atTime:(__int128 *)time forcePosterFrame:restrictToBounds:viewSize:viewOrigin:;
 - (id)debugDisplayName;
 - (id)effectParameters;
 - (id)ephemeralProperties;
-- (id)hitAreaPointsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeDropShadow:(BOOL)a5 scale:(CGPoint)a6 viewSize:(CGSize)a7 viewOrigin:(int)a8;
-- (id)objectHitTest:(CGPoint)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 scale:(CGPoint)a6 adjustForMinimumSize:(BOOL)a7 minimumSize:(double)a8 sizeThreshold:(double)a9 viewSize:(CGSize)a10 viewOrigin:(int)a11;
+- (id)hitAreaPointsAtTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow scale:(CGPoint)scale viewSize:(CGSize)size viewOrigin:(int)origin;
+- (id)objectHitTest:(CGPoint)test atTime:(id *)time forcePosterFrame:(BOOL)frame scale:(CGPoint)scale adjustForMinimumSize:(BOOL)size minimumSize:(double)minimumSize sizeThreshold:(double)threshold viewSize:(CGSize)self0 viewOrigin:(int)self1;
 - (id)projectPath;
 - (id)projectURL;
-- (id)publishedParam_NoLock:(const void *)a3 forKey:(id)a4 atTime:(id *)a5 includeHidden:(BOOL)a6;
-- (id)publishedParams_NoLock:(const void *)a3;
-- (id)scaleToFit:(CGRect)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 viewSize:(CGSize)a6 viewOrigin:(int)a7 restrictToBounds:(BOOL)a8;
-- (id)setPositionInView:(CGPoint)a3 atTime:(id *)a4 viewSize:(CGSize)a5 viewOrigin:(int)a6 restrictToBounds:(BOOL)a7;
+- (id)publishedParam_NoLock:(const void *)lock forKey:(id)key atTime:(id *)time includeHidden:(BOOL)hidden;
+- (id)publishedParams_NoLock:(const void *)lock;
+- (id)scaleToFit:(CGRect)fit atTime:(id *)time forcePosterFrame:(BOOL)frame viewSize:(CGSize)size viewOrigin:(int)origin restrictToBounds:(BOOL)bounds;
+- (id)setPositionInView:(CGPoint)view atTime:(id *)time viewSize:(CGSize)size viewOrigin:(int)origin restrictToBounds:(BOOL)bounds;
 - (id)temporalProperties;
-- (id)textEditingBounds:(id *)a3;
-- (id)textEditingBoundsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 useParagraphBounds:(BOOL)a5 includeDropShadow:(BOOL)a6 includeMasks:(BOOL)a7;
-- (id)textTransformsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeTransformAnimation:(BOOL)a5 includePlayableAspectScale:(BOOL)a6 viewSize:(CGSize)a7 viewOrigin:(int)a8;
-- (id)textTransformsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeTransformAnimation:(BOOL)a5 viewSize:(CGSize)a6 viewOrigin:(int)a7;
-- (id)textTransformsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 viewSize:(CGSize)a5 viewOrigin:(int)a6;
-- (id)transformAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeTransformAnimation:(BOOL)a5 includePlayableAspectScale:(BOOL)a6 viewSize:(CGSize)a7 viewOrigin:(int)a8;
-- (id)transformAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeTransformAnimation:(BOOL)a5 viewSize:(CGSize)a6 viewOrigin:(int)a7;
-- (id)transformAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 viewSize:(CGSize)a5 viewOrigin:(int)a6;
-- (int)getOSFAOption:(id)a3;
+- (id)textEditingBounds:(id *)bounds;
+- (id)textEditingBoundsAtTime:(id *)time forcePosterFrame:(BOOL)frame useParagraphBounds:(BOOL)bounds includeDropShadow:(BOOL)shadow includeMasks:(BOOL)masks;
+- (id)textTransformsAtTime:(id *)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation includePlayableAspectScale:(BOOL)scale viewSize:(CGSize)size viewOrigin:(int)origin;
+- (id)textTransformsAtTime:(id *)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation viewSize:(CGSize)size viewOrigin:(int)origin;
+- (id)textTransformsAtTime:(id *)time forcePosterFrame:(BOOL)frame viewSize:(CGSize)size viewOrigin:(int)origin;
+- (id)transformAtTime:(id *)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation includePlayableAspectScale:(BOOL)scale viewSize:(CGSize)size viewOrigin:(int)origin;
+- (id)transformAtTime:(id *)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation viewSize:(CGSize)size viewOrigin:(int)origin;
+- (id)transformAtTime:(id *)time forcePosterFrame:(BOOL)frame viewSize:(CGSize)size viewOrigin:(int)origin;
+- (int)getOSFAOption:(id)option;
 - (int)playableContentMode_NoLock;
-- (int)stillImageInverseToneMapOperator:(id)a3;
-- (int8x16_t)convertPointFromView:(uint64_t)a1@<X0> atTime:(__int128 *)a2@<X2> viewSize:(__n128 *)a3@<X8> viewOrigin:(__n128)a4@<Q1>;
+- (int)stillImageInverseToneMapOperator:(id)operator;
+- (int8x16_t)convertPointFromView:(uint64_t)view@<X0> atTime:(__int128 *)time@<X2> viewSize:(__n128 *)size@<X8> viewOrigin:(__n128)origin@<Q1>;
 - (int8x16_t)getScale;
-- (uint64_t)convertPointToView:(__int128 *)a3 withEffectToViewTransform:(_OWORD *)a4 viewSize:;
-- (void)_commonInitWithProjectPathOverride:(id)a3;
+- (uint64_t)convertPointToView:(__int128 *)view withEffectToViewTransform:(_OWORD *)transform viewSize:;
+- (void)_commonInitWithProjectPathOverride:(id)override;
 - (void)_configureComponents;
 - (void)_documentDidUnload_NoLock;
-- (void)adjustCamera:(id)a3;
-- (void)adjustCutawayBorder:(id)a3;
-- (void)adjustCutawayFadeAnimation:(id)a3;
-- (void)adjustCutawayInputs:(void *)a3 splitCropRectA:(id)a4 splitCropRectB:(id)a5 pipRect:(id)a6 pipScaleFactor:(id)a7 renderScale:(float)a8 pipNeedsCrop:(BOOL)a9 isHDRRender:(BOOL)a10 workingColorSpace:(CGColorSpace *)a11;
-- (void)adjustKenBurnsAnimation:(id)a3;
-- (void)adjustPosition:(id)a3;
-- (void)adjustTransitionInputs:(void *)a3 renderScale:(float)a4 renderer:(const void *)a5 inputANeedsBackground:(BOOL)a6 inputBNeedsBackground:(BOOL)a7 slideCropRectA:(id)a8 slideCropRectB:(id)a9;
-- (void)applyARData:(id)a3 time:(id *)a4 renderParams:(_OZXRenderParams *)a5;
+- (void)adjustCamera:(id)camera;
+- (void)adjustCutawayBorder:(id)border;
+- (void)adjustCutawayFadeAnimation:(id)animation;
+- (void)adjustCutawayInputs:(void *)inputs splitCropRectA:(id)a splitCropRectB:(id)b pipRect:(id)rect pipScaleFactor:(id)factor renderScale:(float)scale pipNeedsCrop:(BOOL)crop isHDRRender:(BOOL)self0 workingColorSpace:(CGColorSpace *)self1;
+- (void)adjustKenBurnsAnimation:(id)animation;
+- (void)adjustPosition:(id)position;
+- (void)adjustTransitionInputs:(void *)inputs renderScale:(float)scale renderer:(const void *)renderer inputANeedsBackground:(BOOL)background inputBNeedsBackground:(BOOL)needsBackground slideCropRectA:(id)a slideCropRectB:(id)b;
+- (void)applyARData:(id)data time:(id *)time renderParams:(_OZXRenderParams *)params;
 - (void)applyInspectableProperties;
 - (void)applyInspectableProperties_NoLock;
 - (void)buildDropZoneIdMap_NoLock;
 - (void)dealloc;
 - (void)deleteTemporalInspectableProperties;
-- (void)disableBackgroundMovie:(BOOL)a3;
+- (void)disableBackgroundMovie:(BOOL)movie;
 - (void)loadDocument_NoLock;
 - (void)loadEffectInternal_NoLock;
 - (void)releaseResources;
-- (void)runEnsuringDocumentReadyAndLockingDocument:(id)a3;
-- (void)runEnsuringDocumentReady_NoLock:(id)a3;
-- (void)runWithDocument_NoLock:(id)a3;
-- (void)setEffectOutputAspectWithProperties_NoLock:(id)a3 allProperties:(id)a4;
-- (void)setEffectOutputAspect_NoLock:(double)a3 playableAspect:(double)a4 playableContentMode:(int)a5;
-- (void)setEffectParameters:(id)a3;
-- (void)setIsFrontFacingCamera:(BOOL)a3;
-- (void)setLoopTimeOverride:(id *)a3;
-- (void)setMaskPoints:(id)a3;
-- (void)setNodeIDToCache:(unsigned int)a3;
-- (void)setQuaternion:(double)a3 :(double)a4 :(double)a5 :(double)a6;
-- (void)setRollRadians:(double)a3;
+- (void)runEnsuringDocumentReadyAndLockingDocument:(id)document;
+- (void)runEnsuringDocumentReady_NoLock:(id)lock;
+- (void)runWithDocument_NoLock:(id)lock;
+- (void)setEffectOutputAspectWithProperties_NoLock:(id)lock allProperties:(id)properties;
+- (void)setEffectOutputAspect_NoLock:(double)lock playableAspect:(double)aspect playableContentMode:(int)mode;
+- (void)setEffectParameters:(id)parameters;
+- (void)setIsFrontFacingCamera:(BOOL)camera;
+- (void)setLoopTimeOverride:(id *)override;
+- (void)setMaskPoints:(id)points;
+- (void)setNodeIDToCache:(unsigned int)cache;
+- (void)setQuaternion:(double)quaternion :(double)a4 :(double)a5 :(double)a6;
+- (void)setRollRadians:(double)radians;
 - (void)setScale:(PVMotionEffect *)self;
-- (void)setSketchStrokes:(id)a3;
-- (void)setTopLevelOpacity:(double)a3;
-- (void)setupPublishedParameters:(id)a3;
-- (void)setupTransitionParameters:(id)a3;
+- (void)setSketchStrokes:(id)strokes;
+- (void)setTopLevelOpacity:(double)opacity;
+- (void)setupPublishedParameters:(id)parameters;
+- (void)setupTransitionParameters:(id)parameters;
 - (void)updateInspectableProperties;
-- (void)updateInspectableProperties:(id)a3;
-- (void)updateInspectableProperties_NoLock:(id)a3 componentTime:(id *)a4;
-- (void)updateSketchAnimation:(id)a3 defaultProperties:(id)a4 time:(id *)a5;
+- (void)updateInspectableProperties:(id)properties;
+- (void)updateInspectableProperties_NoLock:(id)lock componentTime:(id *)time;
+- (void)updateSketchAnimation:(id)animation defaultProperties:(id)properties time:(id *)time;
 @end
 
 @implementation PVMotionEffect
 
-- (id)textEditingBoundsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 useParagraphBounds:(BOOL)a5 includeDropShadow:(BOOL)a6 includeMasks:(BOOL)a7
+- (id)textEditingBoundsAtTime:(id *)time forcePosterFrame:(BOOL)frame useParagraphBounds:(BOOL)bounds includeDropShadow:(BOOL)shadow includeMasks:(BOOL)masks
 {
   textComponent = self->_textComponent;
-  v10 = *a3;
-  v8 = [(PVMotionEffectTextComponent *)textComponent textEditingBoundsAtTime:&v10 forcePosterFrame:a4 useParagraphBounds:a5 includeDropShadow:a6 includeMasks:a7];
+  v10 = *time;
+  v8 = [(PVMotionEffectTextComponent *)textComponent textEditingBoundsAtTime:&v10 forcePosterFrame:frame useParagraphBounds:bounds includeDropShadow:shadow includeMasks:masks];
 
   return v8;
 }
 
-- (id)textEditingBounds:(id *)a3
+- (id)textEditingBounds:(id *)bounds
 {
   textComponent = self->_textComponent;
-  v6 = *a3;
+  v6 = *bounds;
   v4 = [(PVMotionEffectTextComponent *)textComponent textEditingBounds:&v6];
 
   return v4;
 }
 
-- (id)textTransformsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 viewSize:(CGSize)a5 viewOrigin:(int)a6
+- (id)textTransformsAtTime:(id *)time forcePosterFrame:(BOOL)frame viewSize:(CGSize)size viewOrigin:(int)origin
 {
   textComponent = self->_textComponent;
-  v9 = *a3;
-  v7 = [(PVMotionEffectTextComponent *)textComponent textTransformsAtTime:&v9 forcePosterFrame:a4 viewSize:*&a6 viewOrigin:a5.width, a5.height];
+  v9 = *time;
+  v7 = [(PVMotionEffectTextComponent *)textComponent textTransformsAtTime:&v9 forcePosterFrame:frame viewSize:*&origin viewOrigin:size.width, size.height];
 
   return v7;
 }
 
-- (id)textTransformsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeTransformAnimation:(BOOL)a5 viewSize:(CGSize)a6 viewOrigin:(int)a7
+- (id)textTransformsAtTime:(id *)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation viewSize:(CGSize)size viewOrigin:(int)origin
 {
   textComponent = self->_textComponent;
-  v10 = *a3;
-  v8 = [(PVMotionEffectTextComponent *)textComponent textTransformsAtTime:&v10 forcePosterFrame:a4 includeTransformAnimation:a5 viewSize:*&a7 viewOrigin:a6.width, a6.height];
+  v10 = *time;
+  v8 = [(PVMotionEffectTextComponent *)textComponent textTransformsAtTime:&v10 forcePosterFrame:frame includeTransformAnimation:animation viewSize:*&origin viewOrigin:size.width, size.height];
 
   return v8;
 }
 
-- (id)textTransformsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeTransformAnimation:(BOOL)a5 includePlayableAspectScale:(BOOL)a6 viewSize:(CGSize)a7 viewOrigin:(int)a8
+- (id)textTransformsAtTime:(id *)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation includePlayableAspectScale:(BOOL)scale viewSize:(CGSize)size viewOrigin:(int)origin
 {
   textComponent = self->_textComponent;
-  v11 = *a3;
-  v9 = [(PVMotionEffectTextComponent *)textComponent textTransformsAtTime:&v11 forcePosterFrame:a4 includeTransformAnimation:a5 includePlayableAspectScale:a6 viewSize:*&a8 viewOrigin:a7.width, a7.height];
+  v11 = *time;
+  v9 = [(PVMotionEffectTextComponent *)textComponent textTransformsAtTime:&v11 forcePosterFrame:frame includeTransformAnimation:animation includePlayableAspectScale:scale viewSize:*&origin viewOrigin:size.width, size.height];
 
   return v9;
 }
 
-- (PVCGPointQuad)textCornersAtTime:(SEL)a3 index:(id *)a4 forcePosterFrame:(unint64_t)a5 includeDropShadow:(BOOL)a6 scale:(BOOL)a7 viewSize:(CGPoint)a8 viewOrigin:(CGSize)a9
+- (PVCGPointQuad)textCornersAtTime:(SEL)time index:(id *)index forcePosterFrame:(unint64_t)frame includeDropShadow:(BOOL)shadow scale:(BOOL)scale viewSize:(CGPoint)size viewOrigin:(CGSize)origin
 {
   result = self->_textComponent;
-  v11 = *a4;
+  v11 = *index;
   if (result)
   {
-    return [(PVCGPointQuad *)result textCornersAtTime:&v11 index:a5 forcePosterFrame:a6 includeDropShadow:a7 scale:*&a10 viewSize:a8.x viewOrigin:a8.y, a9.width, a9.height];
+    return [(PVCGPointQuad *)result textCornersAtTime:&v11 index:frame forcePosterFrame:shadow includeDropShadow:scale scale:*&a10 viewSize:size.x viewOrigin:size.y, origin.width, origin.height];
   }
 
   retstr->c = 0u;
@@ -194,11 +194,11 @@
   return result;
 }
 
-- (BOOL)transcriptionHitTest:(CGPoint)a3 time:(id *)a4
+- (BOOL)transcriptionHitTest:(CGPoint)test time:(id *)time
 {
   transcriptionComponent = self->_transcriptionComponent;
-  v6 = *a4;
-  return [(PVMotionEffectTranscriptionComponent *)transcriptionComponent transcriptionHitTest:&v6 time:a3.x, a3.y];
+  v6 = *time;
+  return [(PVMotionEffectTranscriptionComponent *)transcriptionComponent transcriptionHitTest:&v6 time:test.x, test.y];
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)transcriptionDuration
@@ -215,13 +215,13 @@
   return result;
 }
 
-- (PVCGPointQuad)cornersAtTime:(SEL)a3 forcePosterFrame:(id *)a4 includeDropShadow:(BOOL)a5 scale:(BOOL)a6 viewSize:(CGPoint)a7 viewOrigin:(CGSize)a8
+- (PVCGPointQuad)cornersAtTime:(SEL)time forcePosterFrame:(id *)frame includeDropShadow:(BOOL)shadow scale:(BOOL)scale viewSize:(CGPoint)size viewOrigin:(CGSize)origin
 {
   result = self->_transformComponent;
-  v10 = *a4;
+  v10 = *frame;
   if (result)
   {
-    return [(PVCGPointQuad *)result cornersAtTime:&v10 forcePosterFrame:a5 includeDropShadow:a6 scale:*&a9 viewSize:a7.x viewOrigin:a7.y, a8.width, a8.height];
+    return [(PVCGPointQuad *)result cornersAtTime:&v10 forcePosterFrame:shadow includeDropShadow:scale scale:*&a9 viewSize:size.x viewOrigin:size.y, origin.width, origin.height];
   }
 
   retstr->c = 0u;
@@ -231,102 +231,102 @@
   return result;
 }
 
-- (id)transformAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 viewSize:(CGSize)a5 viewOrigin:(int)a6
+- (id)transformAtTime:(id *)time forcePosterFrame:(BOOL)frame viewSize:(CGSize)size viewOrigin:(int)origin
 {
   transformComponent = self->_transformComponent;
-  v9 = *a3;
-  v7 = [(PVMotionEffectTransformComponent *)transformComponent transformAtTime:&v9 forcePosterFrame:a4 viewSize:*&a6 viewOrigin:a5.width, a5.height];
+  v9 = *time;
+  v7 = [(PVMotionEffectTransformComponent *)transformComponent transformAtTime:&v9 forcePosterFrame:frame viewSize:*&origin viewOrigin:size.width, size.height];
 
   return v7;
 }
 
-- (id)transformAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeTransformAnimation:(BOOL)a5 viewSize:(CGSize)a6 viewOrigin:(int)a7
+- (id)transformAtTime:(id *)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation viewSize:(CGSize)size viewOrigin:(int)origin
 {
   transformComponent = self->_transformComponent;
-  v10 = *a3;
-  v8 = [(PVMotionEffectTransformComponent *)transformComponent transformAtTime:&v10 forcePosterFrame:a4 includeTransformAnimation:a5 viewSize:*&a7 viewOrigin:a6.width, a6.height];
+  v10 = *time;
+  v8 = [(PVMotionEffectTransformComponent *)transformComponent transformAtTime:&v10 forcePosterFrame:frame includeTransformAnimation:animation viewSize:*&origin viewOrigin:size.width, size.height];
 
   return v8;
 }
 
-- (id)transformAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeTransformAnimation:(BOOL)a5 includePlayableAspectScale:(BOOL)a6 viewSize:(CGSize)a7 viewOrigin:(int)a8
+- (id)transformAtTime:(id *)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation includePlayableAspectScale:(BOOL)scale viewSize:(CGSize)size viewOrigin:(int)origin
 {
   transformComponent = self->_transformComponent;
-  v11 = *a3;
-  v9 = [(PVMotionEffectTransformComponent *)transformComponent transformAtTime:&v11 forcePosterFrame:a4 includeTransformAnimation:a5 includePlayableAspectScale:a6 viewSize:*&a8 viewOrigin:a7.width, a7.height];
+  v11 = *time;
+  v9 = [(PVMotionEffectTransformComponent *)transformComponent transformAtTime:&v11 forcePosterFrame:frame includeTransformAnimation:animation includePlayableAspectScale:scale viewSize:*&origin viewOrigin:size.width, size.height];
 
   return v9;
 }
 
-- (id)addToTopLevelTransform:(_OWORD *)a3 atTime:(__int128 *)a4 forcePosterFrame:restrictToBounds:viewSize:viewOrigin:
+- (id)addToTopLevelTransform:(_OWORD *)transform atTime:(__int128 *)time forcePosterFrame:restrictToBounds:viewSize:viewOrigin:
 {
-  v4 = *(a1 + 280);
-  v5 = a3[5];
-  v13[4] = a3[4];
+  v4 = *(self + 280);
+  v5 = transform[5];
+  v13[4] = transform[4];
   v13[5] = v5;
-  v6 = a3[7];
-  v13[6] = a3[6];
+  v6 = transform[7];
+  v13[6] = transform[6];
   v13[7] = v6;
-  v7 = a3[1];
-  v13[0] = *a3;
+  v7 = transform[1];
+  v13[0] = *transform;
   v13[1] = v7;
-  v8 = a3[3];
-  v13[2] = a3[2];
+  v8 = transform[3];
+  v13[2] = transform[2];
   v13[3] = v8;
-  v11 = *a4;
-  v12 = *(a4 + 2);
+  v11 = *time;
+  v12 = *(time + 2);
   v9 = [v4 addToTopLevelTransform:v13 atTime:&v11 forcePosterFrame:? restrictToBounds:? viewSize:? viewOrigin:?];
 
   return v9;
 }
 
-- (CGPoint)convertPointToView:(id *)a3 atTime:(BOOL)a4 forcePosterFrame:(BOOL)a5 includeTransformAnimation:(BOOL)a6 includePlayableAspectScale:(CGSize)a7 viewSize:(int)a8 viewOrigin:
+- (CGPoint)convertPointToView:(id *)view atTime:(BOOL)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation includePlayableAspectScale:(CGSize)scale viewSize:(int)size viewOrigin:
 {
-  v8 = *&a3->var0;
+  v8 = *&view->var0;
   transformComponent = self->_transformComponent;
-  v10 = *a4;
-  v13[1] = *&a3->var3;
+  v10 = *time;
+  v13[1] = *&view->var3;
   v14 = v10;
-  v15 = *(a4 + 16);
+  v15 = *(time + 16);
   v13[0] = v8;
-  [(PVMotionEffectTransformComponent *)transformComponent convertPointToView:v13 atTime:&v14 forcePosterFrame:a5 includeTransformAnimation:a6 includePlayableAspectScale:*&a8 viewSize:a7.width viewOrigin:a7.height];
+  [(PVMotionEffectTransformComponent *)transformComponent convertPointToView:v13 atTime:&v14 forcePosterFrame:frame includeTransformAnimation:animation includePlayableAspectScale:*&size viewSize:scale.width viewOrigin:scale.height];
   result.y = v12;
   result.x = v11;
   return result;
 }
 
-- (uint64_t)convertPointToView:(__int128 *)a3 withEffectToViewTransform:(_OWORD *)a4 viewSize:
+- (uint64_t)convertPointToView:(__int128 *)view withEffectToViewTransform:(_OWORD *)transform viewSize:
 {
-  v4 = *a3;
-  v5 = a3[1];
-  v6 = *(a1 + 280);
-  v7 = a4[5];
-  v13[4] = a4[4];
+  v4 = *view;
+  v5 = view[1];
+  v6 = *(self + 280);
+  v7 = transform[5];
+  v13[4] = transform[4];
   v13[5] = v7;
-  v8 = a4[7];
-  v13[6] = a4[6];
+  v8 = transform[7];
+  v13[6] = transform[6];
   v13[7] = v8;
-  v9 = a4[1];
-  v13[0] = *a4;
+  v9 = transform[1];
+  v13[0] = *transform;
   v13[1] = v9;
-  v10 = a4[3];
-  v13[2] = a4[2];
+  v10 = transform[3];
+  v13[2] = transform[2];
   v13[3] = v10;
   v12[0] = v4;
   v12[1] = v5;
   return [v6 convertPointToView:v12 withEffectToViewTransform:v13 viewSize:?];
 }
 
-- (int8x16_t)convertPointFromView:(uint64_t)a1@<X0> atTime:(__int128 *)a2@<X2> viewSize:(__n128 *)a3@<X8> viewOrigin:(__n128)a4@<Q1>
+- (int8x16_t)convertPointFromView:(uint64_t)view@<X0> atTime:(__int128 *)time@<X2> viewSize:(__n128 *)size@<X8> viewOrigin:(__n128)origin@<Q1>
 {
-  v5 = *(a1 + 280);
-  v10 = *a2;
-  v11 = *(a2 + 2);
+  v5 = *(view + 280);
+  v10 = *time;
+  v11 = *(time + 2);
   if (v5)
   {
     [v5 convertPointFromView:&v10 atTime:? viewSize:? viewOrigin:?];
     result = v8;
-    a4 = v9;
+    origin = v9;
     v7 = vextq_s8(result, result, 8uLL).u64[0];
   }
 
@@ -334,29 +334,29 @@
   {
     result.i64[0] = 0;
     v7 = 0;
-    a4.n128_u64[0] = 0;
+    origin.n128_u64[0] = 0;
   }
 
   result.i64[1] = v7;
-  *a3 = result;
-  a3[1] = a4;
+  *size = result;
+  size[1] = origin;
   return result;
 }
 
-- (id)setPositionInView:(CGPoint)a3 atTime:(id *)a4 viewSize:(CGSize)a5 viewOrigin:(int)a6 restrictToBounds:(BOOL)a7
+- (id)setPositionInView:(CGPoint)view atTime:(id *)time viewSize:(CGSize)size viewOrigin:(int)origin restrictToBounds:(BOOL)bounds
 {
   transformComponent = self->_transformComponent;
-  v10 = *a4;
-  v8 = [(PVMotionEffectTransformComponent *)transformComponent setPositionInView:&v10 atTime:*&a6 viewSize:a7 viewOrigin:a3.x restrictToBounds:a3.y, a5.width, a5.height];
+  v10 = *time;
+  v8 = [(PVMotionEffectTransformComponent *)transformComponent setPositionInView:&v10 atTime:*&origin viewSize:bounds viewOrigin:view.x restrictToBounds:view.y, size.width, size.height];
 
   return v8;
 }
 
-- (id)scaleToFit:(CGRect)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 viewSize:(CGSize)a6 viewOrigin:(int)a7 restrictToBounds:(BOOL)a8
+- (id)scaleToFit:(CGRect)fit atTime:(id *)time forcePosterFrame:(BOOL)frame viewSize:(CGSize)size viewOrigin:(int)origin restrictToBounds:(BOOL)bounds
 {
   transformComponent = self->_transformComponent;
-  v11 = *a4;
-  v9 = [(PVMotionEffectTransformComponent *)transformComponent scaleToFit:&v11 atTime:a5 forcePosterFrame:*&a7 viewSize:a8 viewOrigin:a3.origin.x restrictToBounds:a3.origin.y, a3.size.width, a3.size.height, a6.width, a6.height];
+  v11 = *time;
+  v9 = [(PVMotionEffectTransformComponent *)transformComponent scaleToFit:&v11 atTime:frame forcePosterFrame:*&origin viewSize:bounds viewOrigin:fit.origin.x restrictToBounds:fit.origin.y, fit.size.width, fit.size.height, size.width, size.height];
 
   return v9;
 }
@@ -372,7 +372,7 @@
 
 - (int8x16_t)getScale
 {
-  v4 = *(a1 + 280);
+  v4 = *(self + 280);
   if (v4)
   {
     [v4 getScale];
@@ -394,41 +394,41 @@
   return result;
 }
 
-- (BOOL)bounds:(CGRect *)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 includeDropShadow:(BOOL)a6 includeMasks:(BOOL)a7
+- (BOOL)bounds:(CGRect *)bounds atTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeMasks:(BOOL)masks
 {
   transformComponent = self->_transformComponent;
-  v9 = *a4;
-  return [(PVMotionEffectTransformComponent *)transformComponent bounds:a3 atTime:&v9 forcePosterFrame:a5 includeDropShadow:a6 includeMasks:a7];
+  v9 = *time;
+  return [(PVMotionEffectTransformComponent *)transformComponent bounds:bounds atTime:&v9 forcePosterFrame:frame includeDropShadow:shadow includeMasks:masks];
 }
 
-- (id)hitAreaPointsAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeDropShadow:(BOOL)a5 scale:(CGPoint)a6 viewSize:(CGSize)a7 viewOrigin:(int)a8
+- (id)hitAreaPointsAtTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow scale:(CGPoint)scale viewSize:(CGSize)size viewOrigin:(int)origin
 {
   hitAreaComponent = self->_hitAreaComponent;
-  v11 = *a3;
-  v9 = [(PVMotionEffectHitAreaComponent *)hitAreaComponent hitAreaPointsAtTime:&v11 forcePosterFrame:a4 includeDropShadow:a5 scale:*&a8 viewSize:a6.x viewOrigin:a6.y, a7.width, a7.height];
+  v11 = *time;
+  v9 = [(PVMotionEffectHitAreaComponent *)hitAreaComponent hitAreaPointsAtTime:&v11 forcePosterFrame:frame includeDropShadow:shadow scale:*&origin viewSize:scale.x viewOrigin:scale.y, size.width, size.height];
 
   return v9;
 }
 
-- (BOOL)hitTest:(CGPoint)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 scale:(CGPoint)a6 adjustForMinimumSize:(BOOL)a7 minimumSize:(double)a8 sizeThreshold:(double)a9 viewSize:(CGSize)a10 viewOrigin:(int)a11
+- (BOOL)hitTest:(CGPoint)test atTime:(id *)time forcePosterFrame:(BOOL)frame scale:(CGPoint)scale adjustForMinimumSize:(BOOL)size minimumSize:(double)minimumSize sizeThreshold:(double)threshold viewSize:(CGSize)self0 viewOrigin:(int)self1
 {
   hitAreaComponent = self->_hitAreaComponent;
-  v13 = *a4;
-  return [(PVMotionEffectHitAreaComponent *)hitAreaComponent hitTest:&v13 atTime:a5 forcePosterFrame:a7 scale:*&a11 adjustForMinimumSize:a3.x minimumSize:a3.y sizeThreshold:a6.x viewSize:a6.y viewOrigin:a8, a9, a10.width, a10.height];
+  v13 = *time;
+  return [(PVMotionEffectHitAreaComponent *)hitAreaComponent hitTest:&v13 atTime:frame forcePosterFrame:size scale:*&origin adjustForMinimumSize:test.x minimumSize:test.y sizeThreshold:scale.x viewSize:scale.y viewOrigin:minimumSize, threshold, viewSize.width, viewSize.height];
 }
 
-- (CGPath)createPathsForHitTestingAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 scale:(CGPoint)a5 adjustForMinimumSize:(BOOL)a6 minimumSize:(double)a7 sizeThreshold:(double)a8 viewSize:(CGSize)a9 viewOrigin:(int)a10 outExpandedPath:(const CGPath *)a11
+- (CGPath)createPathsForHitTestingAtTime:(id *)time forcePosterFrame:(BOOL)frame scale:(CGPoint)scale adjustForMinimumSize:(BOOL)size minimumSize:(double)minimumSize sizeThreshold:(double)threshold viewSize:(CGSize)viewSize viewOrigin:(int)self0 outExpandedPath:(const CGPath *)self1
 {
   hitAreaComponent = self->_hitAreaComponent;
-  v13 = *a3;
-  return [(PVMotionEffectHitAreaComponent *)hitAreaComponent createPathsForHitTestingAtTime:&v13 forcePosterFrame:a4 scale:a6 adjustForMinimumSize:*&a10 minimumSize:a11 sizeThreshold:a5.x viewSize:a5.y viewOrigin:a7 outExpandedPath:a8, a9.width, a9.height];
+  v13 = *time;
+  return [(PVMotionEffectHitAreaComponent *)hitAreaComponent createPathsForHitTestingAtTime:&v13 forcePosterFrame:frame scale:size adjustForMinimumSize:*&origin minimumSize:path sizeThreshold:scale.x viewSize:scale.y viewOrigin:minimumSize outExpandedPath:threshold, viewSize.width, viewSize.height];
 }
 
-- (id)objectHitTest:(CGPoint)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 scale:(CGPoint)a6 adjustForMinimumSize:(BOOL)a7 minimumSize:(double)a8 sizeThreshold:(double)a9 viewSize:(CGSize)a10 viewOrigin:(int)a11
+- (id)objectHitTest:(CGPoint)test atTime:(id *)time forcePosterFrame:(BOOL)frame scale:(CGPoint)scale adjustForMinimumSize:(BOOL)size minimumSize:(double)minimumSize sizeThreshold:(double)threshold viewSize:(CGSize)self0 viewOrigin:(int)self1
 {
   hitAreaComponent = self->_hitAreaComponent;
-  v14 = *a4;
-  v12 = [(PVMotionEffectHitAreaComponent *)hitAreaComponent objectHitTest:&v14 atTime:a5 forcePosterFrame:a7 scale:*&a11 adjustForMinimumSize:a3.x minimumSize:a3.y sizeThreshold:a6.x viewSize:a6.y viewOrigin:a8, a9, a10.width, a10.height];
+  v14 = *time;
+  v12 = [(PVMotionEffectHitAreaComponent *)hitAreaComponent objectHitTest:&v14 atTime:frame forcePosterFrame:size scale:*&origin adjustForMinimumSize:test.x minimumSize:test.y sizeThreshold:scale.x viewSize:scale.y viewOrigin:minimumSize, threshold, viewSize.width, viewSize.height];
 
   return v12;
 }
@@ -475,7 +475,7 @@
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime:(SEL)time
 {
   result = self->_timelineComponent;
   v5 = *a4;
@@ -490,7 +490,7 @@
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime:(SEL)time
 {
   result = self->_timelineComponent;
   v5 = *a4;
@@ -505,7 +505,7 @@
   return result;
 }
 
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange:(SEL)a3
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange:(SEL)range
 {
   result = self->_timelineComponent;
   v5 = *&a4->var0.var3;
@@ -523,7 +523,7 @@
   return result;
 }
 
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange:(SEL)a3
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange:(SEL)range
 {
   result = self->_timelineComponent;
   v5 = *&a4->var0.var3;
@@ -541,10 +541,10 @@
   return result;
 }
 
-- (void)setLoopTimeOverride:(id *)a3
+- (void)setLoopTimeOverride:(id *)override
 {
   timelineComponent = self->_timelineComponent;
-  v4 = *a3;
+  v4 = *override;
   [(PVMotionEffectTimelineComponent *)timelineComponent setLoopTimeOverride:&v4];
 }
 
@@ -562,27 +562,27 @@
   return result;
 }
 
-+ (id)newEffectWithURL:(id)a3
++ (id)newEffectWithURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = [PVMotionEffect alloc];
-  v5 = [v3 path];
-  v6 = [(PVMotionEffect *)v4 initWithEffectID:v5];
+  path = [lCopy path];
+  v6 = [(PVMotionEffect *)v4 initWithEffectID:path];
 
   return v6;
 }
 
-+ (id)newEffectWithData:(id)a3
++ (id)newEffectWithData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = NSTemporaryDirectory();
     v5 = [v4 stringByAppendingPathComponent:@"/EffectWithData.moef"];
 
     v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
     v10 = 0;
-    [v3 writeToURL:v6 options:1073741825 error:&v10];
+    [dataCopy writeToURL:v6 options:1073741825 error:&v10];
     v7 = v10;
     v8 = [[PVMotionEffect alloc] initWithEffectID:v5];
   }
@@ -599,7 +599,7 @@
 {
   if (s_isMotionInitialized == 1)
   {
-    v3 = OZCacheManager::Instance(a1);
+    v3 = OZCacheManager::Instance(self);
     OZCacheManager::clearTextureCache(v3);
     Instance = TXFontManager::getInstance(v4);
     v6 = OZFontManagerBase::purgeCachedFonts(Instance);
@@ -608,81 +608,81 @@
   }
 }
 
-+ (void)extractMetadataFromContentsOfFile:(id)a3 toCacheEntry:(id)a4
++ (void)extractMetadataFromContentsOfFile:(id)file toCacheEntry:(id)entry
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
+  fileCopy = file;
+  entryCopy = entry;
+  v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:fileCopy];
   v8 = [[TBXMLHelper alloc] initWithContentsOfURL:v7];
   if ([(TBXMLHelper *)v8 parse])
   {
-    v9 = [(TBXMLHelper *)v8 sceneSettings];
-    v10 = [v9 objectForKey:@"theme"];
+    sceneSettings = [(TBXMLHelper *)v8 sceneSettings];
+    v10 = [sceneSettings objectForKey:@"theme"];
     if ([v10 length])
     {
       v11 = [@"Themes" stringByAppendingPathComponent:v10];
       v12 = +[PVHostApplicationDelegateHandler sharedInstance];
-      v13 = [v12 effectTemplatesBundle];
-      v14 = [v13 localizedStringForKey:v11 value:@"***MISSING STRING***" table:0];
+      effectTemplatesBundle = [v12 effectTemplatesBundle];
+      v14 = [effectTemplatesBundle localizedStringForKey:v11 value:@"***MISSING STRING***" table:0];
       if (([v14 isEqualToString:@"***MISSING STRING***"] & 1) == 0)
       {
         v15 = v14;
         v16 = v10;
-        v17 = v9;
-        v18 = v6;
+        v17 = sceneSettings;
+        v18 = entryCopy;
         v19 = v15;
 
         v20 = v19;
-        v6 = v18;
-        v9 = v17;
+        entryCopy = v18;
+        sceneSettings = v17;
         v10 = v20;
       }
 
-      [v6 setObject:v10 forKey:@"theme"];
+      [entryCopy setObject:v10 forKey:@"theme"];
     }
 
-    v21 = [v5 pathExtension];
-    if ([v21 isEqualToString:@"motn"])
+    pathExtension = [fileCopy pathExtension];
+    if ([pathExtension isEqualToString:@"motn"])
     {
     }
 
     else
     {
-      v22 = [v5 pathExtension];
-      v23 = [v22 isEqualToString:@"moti"];
+      pathExtension2 = [fileCopy pathExtension];
+      v23 = [pathExtension2 isEqualToString:@"moti"];
 
       if ((v23 & 1) == 0)
       {
-        v36 = [v5 pathExtension];
-        v37 = [v36 isEqualToString:@"motr"];
+        pathExtension3 = [fileCopy pathExtension];
+        v37 = [pathExtension3 isEqualToString:@"motr"];
 
         if (!v37)
         {
           goto LABEL_34;
         }
 
-        v38 = [v9 objectForKey:@"shouldOverrideFCDuration"];
+        v38 = [sceneSettings objectForKey:@"shouldOverrideFCDuration"];
         v39 = v38;
         if (!v38)
         {
           goto LABEL_34;
         }
 
-        v40 = [v38 BOOLValue];
+        bOOLValue = [v38 BOOLValue];
 
-        if ((v40 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           goto LABEL_34;
         }
       }
     }
 
-    v24 = [v9 objectForKey:@"duration"];
-    v25 = [v24 integerValue];
+    v24 = [sceneSettings objectForKey:@"duration"];
+    integerValue = [v24 integerValue];
 
-    v26 = [v9 objectForKey:@"frameRate"];
+    v26 = [sceneSettings objectForKey:@"frameRate"];
     v27 = v26;
-    if (v25 < 1 || !v26 || ([v26 doubleValue], v28 <= 0.0))
+    if (integerValue < 1 || !v26 || ([v26 doubleValue], v28 <= 0.0))
     {
 LABEL_33:
 
@@ -692,14 +692,14 @@ LABEL_34:
 
     [v27 doubleValue];
     v30 = v29;
-    v31 = [v9 objectForKey:@"NTSC"];
-    v32 = [v31 BOOLValue];
+    v31 = [sceneSettings objectForKey:@"NTSC"];
+    bOOLValue2 = [v31 BOOLValue];
 
     memset(&v46, 0, sizeof(v46));
     v33 = vcvtmd_s64_f64(v30 + 0.5 + 0.0000001);
     if (v33 == 30)
     {
-      v34 = v32;
+      v34 = bOOLValue2;
     }
 
     else
@@ -716,7 +716,7 @@ LABEL_34:
     {
       if (v33 == 24)
       {
-        v41 = v32;
+        v41 = bOOLValue2;
       }
 
       else
@@ -733,7 +733,7 @@ LABEL_34:
       {
         if (v33 == 60)
         {
-          v42 = v32;
+          v42 = bOOLValue2;
         }
 
         else
@@ -763,10 +763,10 @@ LABEL_34:
           v35 = 256;
 LABEL_32:
           CMTimeMake(&v45, v35, v43);
-          operator*(&v45, v25, &v46);
+          operator*(&v45, integerValue, &v46);
           v45 = v46;
           v44 = [FigTimeObj timeWithTime:&v45];
-          [v6 setObject:v44 forKey:@"suggestedDuration"];
+          [entryCopy setObject:v44 forKey:@"suggestedDuration"];
 
           goto LABEL_33;
         }
@@ -815,22 +815,22 @@ void __27__PVMotionEffect_effectMap__block_invoke()
   +[PVMotionEffect effectMap]::sEffectMap = v0;
 }
 
-+ (id)_effectPathFromID:(id)a3
++ (id)_effectPathFromID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 effectMap];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  effectMap = [self effectMap];
+  v6 = [effectMap objectForKey:dCopy];
 
   return v6;
 }
 
-+ (void)registerTemplateInDirectory:(id)a3 relPath:(id)a4 effectID:(id)a5 doingRescan:(BOOL)a6 origCache:(id)a7 newCache:(id)a8
++ (void)registerTemplateInDirectory:(id)directory relPath:(id)path effectID:(id)d doingRescan:(BOOL)rescan origCache:(id)cache newCache:(id)newCache
 {
-  v54 = a3;
-  v10 = a4;
-  v53 = a5;
-  v11 = [v10 pathExtension];
-  v12 = [v11 isEqualToString:@"moef"];
+  directoryCopy = directory;
+  pathCopy = path;
+  dCopy = d;
+  pathExtension = [pathCopy pathExtension];
+  v12 = [pathExtension isEqualToString:@"moef"];
 
   if (v12)
   {
@@ -840,8 +840,8 @@ void __27__PVMotionEffect_effectMap__block_invoke()
 
   else
   {
-    v15 = [v10 pathExtension];
-    v16 = [v15 isEqualToString:@"motn"];
+    pathExtension2 = [pathCopy pathExtension];
+    v16 = [pathExtension2 isEqualToString:@"motn"];
 
     if (v16)
     {
@@ -851,8 +851,8 @@ void __27__PVMotionEffect_effectMap__block_invoke()
 
     else
     {
-      v17 = [v10 pathExtension];
-      v18 = [v17 isEqualToString:@"motr"];
+      pathExtension3 = [pathCopy pathExtension];
+      v18 = [pathExtension3 isEqualToString:@"motr"];
 
       if (v18)
       {
@@ -862,8 +862,8 @@ void __27__PVMotionEffect_effectMap__block_invoke()
 
       else
       {
-        v19 = [v10 pathExtension];
-        v20 = [v19 isEqualToString:@"moti"];
+        pathExtension4 = [pathCopy pathExtension];
+        v20 = [pathExtension4 isEqualToString:@"moti"];
 
         if ((v20 & 1) == 0)
         {
@@ -877,56 +877,56 @@ void __27__PVMotionEffect_effectMap__block_invoke()
   }
 
   v52 = *v14;
-  if ([v10 hasPrefix:@"..."])
+  if ([pathCopy hasPrefix:@"..."])
   {
-    v21 = [v10 substringFromIndex:4];
+    v21 = [pathCopy substringFromIndex:4];
 
-    v10 = v21;
+    pathCopy = v21;
   }
 
-  v22 = [v54 stringByAppendingPathComponent:v10];
-  v23 = [v22 lastPathComponent];
-  v24 = [v23 stringByDeletingPathExtension];
+  v22 = [directoryCopy stringByAppendingPathComponent:pathCopy];
+  lastPathComponent = [v22 lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v50 = v24;
-  v25 = [v22 stringByDeletingLastPathComponent];
-  v26 = [v25 lastPathComponent];
-  v27 = [v26 stringByDeletingPathExtension];
+  v50 = stringByDeletingPathExtension;
+  stringByDeletingLastPathComponent = [v22 stringByDeletingLastPathComponent];
+  lastPathComponent2 = [stringByDeletingLastPathComponent lastPathComponent];
+  stringByDeletingPathExtension2 = [lastPathComponent2 stringByDeletingPathExtension];
 
-  v49 = v27;
-  if ([v24 isEqualToString:v27])
+  v49 = stringByDeletingPathExtension2;
+  if ([stringByDeletingPathExtension isEqualToString:stringByDeletingPathExtension2])
   {
-    [v25 lastPathComponent];
+    [stringByDeletingLastPathComponent lastPathComponent];
   }
 
   else
   {
-    [v10 lastPathComponent];
+    [pathCopy lastPathComponent];
   }
   v28 = ;
-  v51 = [v28 stringByDeletingPathExtension];
+  stringByDeletingPathExtension3 = [v28 stringByDeletingPathExtension];
 
-  v29 = [v10 pathComponents];
-  if ([v29 count] >= 3)
+  pathComponents = [pathCopy pathComponents];
+  if ([pathComponents count] >= 3)
   {
-    v31 = [v54 stringByAppendingPathComponent:v13];
-    v32 = [v29 objectAtIndex:1];
+    v31 = [directoryCopy stringByAppendingPathComponent:v13];
+    v32 = [pathComponents objectAtIndex:1];
     v33 = [v31 stringByAppendingPathComponent:v32];
 
-    v34 = [v33 lastPathComponent];
-    v30 = [v34 stringByDeletingPathExtension];
+    lastPathComponent3 = [v33 lastPathComponent];
+    stringByDeletingPathExtension4 = [lastPathComponent3 stringByDeletingPathExtension];
   }
 
   else
   {
-    v30 = @"Motion";
+    stringByDeletingPathExtension4 = @"Motion";
   }
 
-  v35 = [v22 stringByDeletingLastPathComponent];
-  v36 = [v35 stringByAppendingPathComponent:@"large.png"];
+  stringByDeletingLastPathComponent2 = [v22 stringByDeletingLastPathComponent];
+  v36 = [stringByDeletingLastPathComponent2 stringByAppendingPathComponent:@"large.png"];
 
-  v37 = [MEMORY[0x277CCAA00] defaultManager];
-  v38 = [v37 fileExistsAtPath:v36];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v38 = [defaultManager fileExistsAtPath:v36];
 
   if ((v38 & 1) == 0)
   {
@@ -934,11 +934,11 @@ void __27__PVMotionEffect_effectMap__block_invoke()
     v36 = 0;
   }
 
-  v39 = [v22 stringByDeletingLastPathComponent];
-  v40 = [v39 stringByAppendingPathComponent:@"small.png"];
+  stringByDeletingLastPathComponent3 = [v22 stringByDeletingLastPathComponent];
+  v40 = [stringByDeletingLastPathComponent3 stringByAppendingPathComponent:@"small.png"];
 
-  v41 = [MEMORY[0x277CCAA00] defaultManager];
-  v42 = [v41 fileExistsAtPath:v40];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  v42 = [defaultManager2 fileExistsAtPath:v40];
 
   if ((v42 & 1) == 0)
   {
@@ -949,11 +949,11 @@ void __27__PVMotionEffect_effectMap__block_invoke()
   if (!v40)
   {
 LABEL_23:
-    v43 = [v22 stringByDeletingPathExtension];
-    v40 = [v43 stringByAppendingPathExtension:@"png"];
+    stringByDeletingPathExtension5 = [v22 stringByDeletingPathExtension];
+    v40 = [stringByDeletingPathExtension5 stringByAppendingPathExtension:@"png"];
 
-    v44 = [MEMORY[0x277CCAA00] defaultManager];
-    v45 = [v44 fileExistsAtPath:v40];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+    v45 = [defaultManager3 fileExistsAtPath:v40];
 
     if ((v45 & 1) == 0)
     {
@@ -964,31 +964,31 @@ LABEL_23:
 
   v46 = MEMORY[0x277CBEB38];
   v47 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  v48 = [v46 dictionaryWithObjectsAndKeys:{v51, @"FFEffectProperty_DisplayName", v30, @"FFEffectProperty_Category", v52, @"FFEffectProperty_EffectType", v47, @"FFEffectProperty_AvailableInSimpleMode", v40, @"kFFEffectProperty_ThumbnailImagePath", v36, @"kFFEffectProperty_PreviewImagePath", 0}];
+  v48 = [v46 dictionaryWithObjectsAndKeys:{stringByDeletingPathExtension3, @"FFEffectProperty_DisplayName", stringByDeletingPathExtension4, @"FFEffectProperty_Category", v52, @"FFEffectProperty_EffectType", v47, @"FFEffectProperty_AvailableInSimpleMode", v40, @"kFFEffectProperty_ThumbnailImagePath", v36, @"kFFEffectProperty_PreviewImagePath", 0}];
 
   if ([0 length])
   {
     [v48 setObject:0 forKey:@"kFFEffectProperty_Theme"];
   }
 
-  [PVEffect registerEffectClass:objc_opt_class() forEffectID:v53 withProperties:v48];
+  [PVEffect registerEffectClass:objc_opt_class() forEffectID:dCopy withProperties:v48];
 
 LABEL_28:
 }
 
-+ (void)mapTemplatesInDirectory:(id)a3 doingRescan:(BOOL)a4 origCache:(id)a5 newCache:(id)a6
++ (void)mapTemplatesInDirectory:(id)directory doingRescan:(BOOL)rescan origCache:(id)cache newCache:(id)newCache
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v19 = [a1 effectMap];
+  directoryCopy = directory;
+  cacheCopy = cache;
+  newCacheCopy = newCache;
+  effectMap = [self effectMap];
   v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = [v19 allKeys];
+  obj = [effectMap allKeys];
   v12 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
@@ -1008,8 +1008,8 @@ LABEL_28:
         v13 = *(*(&v22 + 1) + 8 * v15);
 
         v17 = objc_autoreleasePoolPush();
-        v18 = [a1 _effectPathFromID:v13];
-        [a1 registerTemplateInDirectory:v9 relPath:v18 effectID:v13 doingRescan:0 origCache:v10 newCache:v11];
+        v18 = [self _effectPathFromID:v13];
+        [self registerTemplateInDirectory:directoryCopy relPath:v18 effectID:v13 doingRescan:0 origCache:cacheCopy newCache:newCacheCopy];
 
         objc_autoreleasePoolPop(v17);
         ++v15;
@@ -1030,43 +1030,43 @@ LABEL_28:
   }
 }
 
-+ (void)scanTemplatesInDirectory:(id)a3 doingRescan:(BOOL)a4 replaceMappedEffectPath:(BOOL)a5 origCache:(id)a6 newCache:(id)a7
++ (void)scanTemplatesInDirectory:(id)directory doingRescan:(BOOL)rescan replaceMappedEffectPath:(BOOL)path origCache:(id)cache newCache:(id)newCache
 {
-  v9 = a5;
-  v19 = a3;
-  v11 = a6;
-  v12 = a7;
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
-  v13 = [v18 enumeratorAtPath:v19];
-  for (i = 0; ; i = v15)
+  pathCopy = path;
+  directoryCopy = directory;
+  cacheCopy = cache;
+  newCacheCopy = newCache;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v13 = [defaultManager enumeratorAtPath:directoryCopy];
+  for (i = 0; ; i = nextObject)
   {
-    v15 = [v13 nextObject];
+    nextObject = [v13 nextObject];
 
-    if (!v15)
+    if (!nextObject)
     {
       break;
     }
 
-    v16 = [v19 stringByAppendingPathComponent:v15];
-    if (!v9 || ([a1 replacedMappedEffectWithNewPath:v16] & 1) == 0)
+    v16 = [directoryCopy stringByAppendingPathComponent:nextObject];
+    if (!pathCopy || ([self replacedMappedEffectWithNewPath:v16] & 1) == 0)
     {
-      v17 = [@"..." stringByAppendingFormat:@"/%@", v15];
-      [a1 registerTemplateInDirectory:v19 relPath:v15 effectID:v17 doingRescan:0 origCache:v11 newCache:v12];
+      v17 = [@"..." stringByAppendingFormat:@"/%@", nextObject];
+      [self registerTemplateInDirectory:directoryCopy relPath:nextObject effectID:v17 doingRescan:0 origCache:cacheCopy newCache:newCacheCopy];
     }
   }
 }
 
-+ (BOOL)replacedMappedEffectWithNewPath:(id)a3
++ (BOOL)replacedMappedEffectWithNewPath:(id)path
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 effectMap];
+  pathCopy = path;
+  effectMap = [self effectMap];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [effectMap allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -1076,23 +1076,23 @@ LABEL_28:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v5 objectForKeyedSubscript:v10];
-        v12 = [v11 lastPathComponent];
-        v13 = [v4 lastPathComponent];
-        if ([v13 isEqualToString:v12])
+        v11 = [effectMap objectForKeyedSubscript:v10];
+        lastPathComponent = [v11 lastPathComponent];
+        lastPathComponent2 = [pathCopy lastPathComponent];
+        if ([lastPathComponent2 isEqualToString:lastPathComponent])
         {
-          [v5 setObject:v4 forKeyedSubscript:v10];
+          [effectMap setObject:pathCopy forKeyedSubscript:v10];
 
           v14 = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -1108,34 +1108,34 @@ LABEL_11:
   return v14;
 }
 
-+ (void)registerNoneEffectForType:(id)a3 effectID:(id)a4 origCache:(id)a5 newCache:(id)a6
++ (void)registerNoneEffectForType:(id)type effectID:(id)d origCache:(id)cache newCache:(id)newCache
 {
-  v17 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [MEMORY[0x277CBEAA8] date];
-  v13 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v12, @"modDate", 0}];
-  [v10 setObject:v13 forKey:v9];
+  typeCopy = type;
+  dCopy = d;
+  cacheCopy = cache;
+  newCacheCopy = newCache;
+  date = [MEMORY[0x277CBEAA8] date];
+  v13 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{date, @"modDate", 0}];
+  [cacheCopy setObject:v13 forKey:dCopy];
 
-  [v11 setObject:v13 forKey:v9];
+  [newCacheCopy setObject:v13 forKey:dCopy];
   v14 = MEMORY[0x277CBEB38];
   v15 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  v16 = [v14 dictionaryWithObjectsAndKeys:{@"None", @"FFEffectProperty_DisplayName", @"Motion", @"FFEffectProperty_Category", v17, @"FFEffectProperty_EffectType", v15, @"FFEffectProperty_AvailableInSimpleMode", 0, @"kFFEffectProperty_ThumbnailImagePath", 0, @"kFFEffectProperty_PreviewImagePath", 0}];
+  v16 = [v14 dictionaryWithObjectsAndKeys:{@"None", @"FFEffectProperty_DisplayName", @"Motion", @"FFEffectProperty_Category", typeCopy, @"FFEffectProperty_EffectType", v15, @"FFEffectProperty_AvailableInSimpleMode", 0, @"kFFEffectProperty_ThumbnailImagePath", 0, @"kFFEffectProperty_PreviewImagePath", 0}];
 
-  [PVEffect registerEffectClass:objc_opt_class() forEffectID:v9 withProperties:v16];
+  [PVEffect registerEffectClass:objc_opt_class() forEffectID:dCopy withProperties:v16];
 }
 
 + (id)_bundleLibPaths
 {
   v22[1] = *MEMORY[0x277D85DE8];
   v2 = +[PVHostApplicationDelegateHandler sharedInstance];
-  v3 = [v2 effectTemplatesBundle];
-  if (v3)
+  effectTemplatesBundle = [v2 effectTemplatesBundle];
+  if (effectTemplatesBundle)
   {
-    v4 = [v2 effectTemplatesDirectoryName];
+    effectTemplatesDirectoryName = [v2 effectTemplatesDirectoryName];
     v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
-    v6 = v4;
+    v6 = effectTemplatesDirectoryName;
     v7 = v6;
     v21 = v6;
     v22[0] = 0;
@@ -1145,7 +1145,7 @@ LABEL_11:
       v9 = v6;
       do
       {
-        v10 = [v3 pathForResource:v9 ofType:0];
+        v10 = [effectTemplatesBundle pathForResource:v9 ofType:0];
         if (v10)
         {
           [v5 addObject:v10];
@@ -1158,20 +1158,20 @@ LABEL_11:
       while (v11);
     }
 
-    v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v13 = [v12 integerForKey:@"PVVideoCompositingContextUserMotionEffectsKey"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v13 = [standardUserDefaults integerForKey:@"PVVideoCompositingContextUserMotionEffectsKey"];
 
     if (v13)
     {
       v14 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
-      v15 = [v14 firstObject];
+      firstObject = [v14 firstObject];
 
-      v16 = [v15 stringByAppendingPathComponent:v7];
+      v16 = [firstObject stringByAppendingPathComponent:v7];
 
-      v17 = [MEMORY[0x277CCAA00] defaultManager];
-      LODWORD(v15) = [v17 fileExistsAtPath:v16];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      LODWORD(firstObject) = [defaultManager fileExistsAtPath:v16];
 
-      if (v15)
+      if (firstObject)
       {
         [v5 addObject:v16];
       }
@@ -1229,14 +1229,14 @@ LABEL_11:
   if ((+[PVMotionEffect registerEffects]::sRegistered & 1) == 0)
   {
     +[PVMotionEffect registerEffects]::sRegistered = 1;
-    v3 = [a1 _bundleLibPaths];
+    _bundleLibPaths = [self _bundleLibPaths];
     v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(0, "count")}];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = [v3 reverseObjectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    reverseObjectEnumerator = [_bundleLibPaths reverseObjectEnumerator];
+    v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v6)
     {
       v7 = *v23;
@@ -1247,34 +1247,34 @@ LABEL_11:
         {
           if (*v23 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
-          [a1 mapTemplatesInDirectory:*(*(&v22 + 1) + 8 * v8++) doingRescan:0 origCache:0 newCache:v4];
+          [self mapTemplatesInDirectory:*(*(&v22 + 1) + 8 * v8++) doingRescan:0 origCache:0 newCache:v4];
         }
 
         while (v6 != v8);
-        v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v6);
     }
 
-    v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v10 = [v9 integerForKey:@"PVVideoCompositingContextUserMotionEffectsKey"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v10 = [standardUserDefaults integerForKey:@"PVVideoCompositingContextUserMotionEffectsKey"];
 
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v12 = [v11 integerForKey:@"PVReplaceShippingEffectsWithDocumentsEffects"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v12 = [standardUserDefaults2 integerForKey:@"PVReplaceShippingEffectsWithDocumentsEffects"];
 
     if (v10)
     {
-      v13 = [a1 _userLibPaths];
+      _userLibPaths = [self _userLibPaths];
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v14 = [v13 reverseObjectEnumerator];
-      v15 = [v14 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      reverseObjectEnumerator2 = [_userLibPaths reverseObjectEnumerator];
+      v15 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v18 objects:v26 count:16];
       if (v15)
       {
         v16 = *v19;
@@ -1285,30 +1285,30 @@ LABEL_11:
           {
             if (*v19 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(reverseObjectEnumerator2);
             }
 
-            [a1 scanTemplatesInDirectory:*(*(&v18 + 1) + 8 * v17++) doingRescan:0 replaceMappedEffectPath:v12 != 0 origCache:0 newCache:v4];
+            [self scanTemplatesInDirectory:*(*(&v18 + 1) + 8 * v17++) doingRescan:0 replaceMappedEffectPath:v12 != 0 origCache:0 newCache:v4];
           }
 
           while (v15 != v17);
-          v15 = [v14 countByEnumeratingWithState:&v18 objects:v26 count:16];
+          v15 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v18 objects:v26 count:16];
         }
 
         while (v15);
       }
     }
 
-    [a1 registerNoneEffectForType:@"effect.video.filter" effectID:@"737C8717-70E0-4CCE-8F19-17A0532E836F" origCache:0 newCache:v4];
-    [a1 registerNoneEffectForType:@"effect.video.title" effectID:@"4390FE7A-3408-4EB5-A049-AA394C03A911" origCache:0 newCache:v4];
-    [a1 registerNoneEffectForType:@"effect.video.transition" effectID:@"67EB7544-E4A1-4508-9733-E201AADFBC15" origCache:0 newCache:v4];
-    [a1 initializeMotion];
+    [self registerNoneEffectForType:@"effect.video.filter" effectID:@"737C8717-70E0-4CCE-8F19-17A0532E836F" origCache:0 newCache:v4];
+    [self registerNoneEffectForType:@"effect.video.title" effectID:@"4390FE7A-3408-4EB5-A049-AA394C03A911" origCache:0 newCache:v4];
+    [self registerNoneEffectForType:@"effect.video.transition" effectID:@"67EB7544-E4A1-4508-9733-E201AADFBC15" origCache:0 newCache:v4];
+    [self initializeMotion];
   }
 }
 
 + (void)initializeMotion
 {
-  v2 = PVDocumentAccessController::INSTANCE(a1);
+  v2 = PVDocumentAccessController::INSTANCE(self);
 
   PVDocumentAccessController::InitializeMotion(v2);
 }
@@ -1341,8 +1341,8 @@ LABEL_11:
     +[PAEDummyiOS setup];
     if (kNoPanZoomEnabled == -1)
     {
-      v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      kNoPanZoomEnabled = [v8 BOOLForKey:@"noPanZoomAnchoring"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      kNoPanZoomEnabled = [standardUserDefaults BOOLForKey:@"noPanZoomAnchoring"];
     }
 
     s_isMotionInitialized = 1;
@@ -1358,12 +1358,12 @@ LABEL_11:
   [v11 unlock];
 }
 
-- (PVMotionEffect)initWithEffectID:(id)a3
+- (PVMotionEffect)initWithEffectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = PVMotionEffect;
-  v5 = [(PVEffect *)&v8 initWithEffectID:v4];
+  v5 = [(PVEffect *)&v8 initWithEffectID:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -1373,26 +1373,26 @@ LABEL_11:
   return v6;
 }
 
-- (PVMotionEffect)initWithContentID:(id)a3 andDictionary:(id)a4
+- (PVMotionEffect)initWithContentID:(id)d andDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PVMotionEffect;
-  v8 = [(PVEffect *)&v11 initWithContentID:v6 andDictionary:v7];
+  v8 = [(PVEffect *)&v11 initWithContentID:dCopy andDictionary:dictionaryCopy];
   if (v8)
   {
-    v9 = [v7 objectForKeyedSubscript:@"contentPath"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"contentPath"];
     [(PVMotionEffect *)v8 _commonInitWithProjectPathOverride:v9];
   }
 
   return v8;
 }
 
-- (void)_commonInitWithProjectPathOverride:(id)a3
+- (void)_commonInitWithProjectPathOverride:(id)override
 {
-  v5 = a3;
-  objc_storeStrong(&self->_projectPathOverride, a3);
+  overrideCopy = override;
+  objc_storeStrong(&self->_projectPathOverride, override);
   atomic_store(0, &self->_docLoadStatus);
   v6 = objc_alloc_init(MEMORY[0x277CCAAF8]);
   documentLock = self->_documentLock;
@@ -1429,8 +1429,8 @@ LABEL_11:
   v20[3] = &unk_279AA61D0;
   v20[4] = self;
   [(NSMutableArray *)v17 enumerateObjectsUsingBlock:v20];
-  v18 = [(PVMotionEffect *)self projectURL];
-  v19 = [(PVMotionEffect *)self projectPath];
+  projectURL = [(PVMotionEffect *)self projectURL];
+  projectPath = [(PVMotionEffect *)self projectPath];
   [(PVMotionEffect *)self supportsExtendedRangeInputs];
   [(NSLock *)self->_documentLock lock];
   [(PVMotionEffect *)self _documentDidUnload_NoLock];
@@ -1521,11 +1521,11 @@ void __53__PVMotionEffect__commonInitWithProjectPathOverride___block_invoke_2(ui
   documentLock = self->_documentLock;
   if (documentLock)
   {
-    v4 = [(NSLock *)documentLock lock];
+    lock = [(NSLock *)documentLock lock];
     v5 = atomic_load(&self->_docLoadStatus);
     if ((v5 & 0xFFFFFFFE) == 2)
     {
-      v6 = PVDocumentAccessController::INSTANCE(v4);
+      v6 = PVDocumentAccessController::INSTANCE(lock);
       PVDocumentAccessController::ReleaseOZXDocument(v6, *self->_documentInfo);
     }
 
@@ -1557,10 +1557,10 @@ void __53__PVMotionEffect__commonInitWithProjectPathOverride___block_invoke_2(ui
   projectPath = self->_projectPath;
   if (!projectPath)
   {
-    v4 = [(PVMotionEffect *)self projectURL];
-    v5 = [v4 path];
+    projectURL = [(PVMotionEffect *)self projectURL];
+    path = [projectURL path];
     v6 = self->_projectPath;
-    self->_projectPath = v5;
+    self->_projectPath = path;
 
     projectPath = self->_projectPath;
   }
@@ -1572,10 +1572,10 @@ void __53__PVMotionEffect__commonInitWithProjectPathOverride___block_invoke_2(ui
 
 - (BOOL)hasAllNecessaryResources
 {
-  v2 = [(PVMotionEffect *)self projectURL];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v2 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  projectURL = [(PVMotionEffect *)self projectURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [projectURL path];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   return v5;
 }
@@ -1590,29 +1590,29 @@ void __53__PVMotionEffect__commonInitWithProjectPathOverride___block_invoke_2(ui
     goto LABEL_31;
   }
 
-  v26 = [(PVEffect *)self effectID];
-  v5 = self->_projectPathOverride;
-  if (v5)
+  effectID = [(PVEffect *)self effectID];
+  obja = self->_projectPathOverride;
+  if (obja)
   {
     goto LABEL_29;
   }
 
-  if ([v26 hasPrefix:@"..."])
+  if ([effectID hasPrefix:@"..."])
   {
-    v27 = [v26 substringFromIndex:4];
+    v27 = [effectID substringFromIndex:4];
     +[PVMotionEffect _userLibPaths];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     obj = v33 = 0u;
-    v5 = 0;
+    obja = 0;
     v6 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v6)
     {
       v7 = *v33;
 LABEL_7:
       v8 = 0;
-      v9 = v5;
+      v9 = obja;
       while (1)
       {
         if (*v33 != v7)
@@ -1620,10 +1620,10 @@ LABEL_7:
           objc_enumerationMutation(obj);
         }
 
-        v5 = [*(*(&v32 + 1) + 8 * v8) stringByAppendingFormat:@"/%@", v27];
+        obja = [*(*(&v32 + 1) + 8 * v8) stringByAppendingFormat:@"/%@", v27];
 
-        v10 = [MEMORY[0x277CCAA00] defaultManager];
-        v11 = [v10 fileExistsAtPath:v5];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v11 = [defaultManager fileExistsAtPath:obja];
 
         if (v11)
         {
@@ -1631,7 +1631,7 @@ LABEL_7:
         }
 
         ++v8;
-        v9 = v5;
+        v9 = obja;
         if (v6 == v8)
         {
           v6 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -1648,7 +1648,7 @@ LABEL_7:
 
   else
   {
-    v12 = [PVMotionEffect _effectPathFromID:v26];
+    v12 = [PVMotionEffect _effectPathFromID:effectID];
     if ([v12 hasPrefix:@"..."])
     {
       v27 = v12;
@@ -1658,14 +1658,14 @@ LABEL_7:
       v31 = 0u;
       v28 = 0u;
       v23 = v29 = 0u;
-      v5 = 0;
+      obja = 0;
       v13 = [v23 countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (v13)
       {
         v14 = *v29;
 LABEL_17:
         v15 = 0;
-        v16 = v5;
+        v16 = obja;
         while (1)
         {
           if (*v29 != v14)
@@ -1673,10 +1673,10 @@ LABEL_17:
             objc_enumerationMutation(v23);
           }
 
-          v5 = [*(*(&v28 + 1) + 8 * v15) stringByAppendingFormat:@"/%@", obja];
+          obja = [*(*(&v28 + 1) + 8 * v15) stringByAppendingFormat:@"/%@", obja];
 
-          v17 = [MEMORY[0x277CCAA00] defaultManager];
-          v18 = [v17 fileExistsAtPath:v5];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          v18 = [defaultManager2 fileExistsAtPath:obja];
 
           if (v18)
           {
@@ -1684,7 +1684,7 @@ LABEL_17:
           }
 
           ++v15;
-          v16 = v5;
+          v16 = obja;
           if (v13 == v15)
           {
             v13 = [v23 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -1703,25 +1703,25 @@ LABEL_17:
     {
       if (v12)
       {
-        v5 = v12;
+        obja = v12;
 
         goto LABEL_28;
       }
 
       v27 = 0;
-      v5 = v26;
+      obja = effectID;
     }
   }
 
 LABEL_28:
-  if (!v5)
+  if (!obja)
   {
     v19 = 0;
     goto LABEL_30;
   }
 
 LABEL_29:
-  v19 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5 isDirectory:0];
+  v19 = [MEMORY[0x277CBEBC0] fileURLWithPath:obja isDirectory:0];
 LABEL_30:
   v20 = self->_projectURL;
   self->_projectURL = v19;
@@ -1739,16 +1739,16 @@ LABEL_31:
 {
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsNotStarted];
-  v3 = [(PVEffect *)self effectID];
-  if (v3)
+  effectID = [(PVEffect *)self effectID];
+  if (effectID)
   {
-    v4 = [(PVMotionEffect *)self projectURL];
-    v5 = [(PVMotionEffect *)self projectPath];
+    projectURL = [(PVMotionEffect *)self projectURL];
+    projectPath = [(PVMotionEffect *)self projectPath];
     if (+[PVEnvironment PV_ENABLE_ENV_LOGS])
     {
-      NSLog(&cfstr_Pvmotioneffect_0.isa, v4);
-      v6 = [(PVEffect *)self descriptionOfInspectableProperties];
-      NSLog(&cfstr_Pvmotioneffect_1.isa, v6);
+      NSLog(&cfstr_Pvmotioneffect_0.isa, projectURL);
+      descriptionOfInspectableProperties = [(PVEffect *)self descriptionOfInspectableProperties];
+      NSLog(&cfstr_Pvmotioneffect_1.isa, descriptionOfInspectableProperties);
     }
 
     atomic_store(1u, &self->_docLoadStatus);
@@ -1761,7 +1761,7 @@ LABEL_31:
     [(NSMutableArray *)motionComponents enumerateObjectsUsingBlock:v26];
     v25 = 0;
     v8 = +[PVDocumentCacheManager sharedInstance];
-    v9 = [v8 newOZXDocumentForKey:v5];
+    v9 = [v8 newOZXDocumentForKey:projectPath];
 
     if (!v9)
     {
@@ -1837,7 +1837,7 @@ LABEL_31:
 
     else
     {
-      v8 = [(PVEffect *)self effectID];
+      effectID = [(PVEffect *)self effectID];
       v13[0] = @"E50C1035-19C5-4EFF-AAB4-B3008BC14D04";
       v13[1] = @"CAA078D7-0ACA-432E-85B1-FB975BE96A80";
       v13[2] = @"7F57747E-6F2A-4D31-806C-67B4F09A93CA";
@@ -1856,7 +1856,7 @@ LABEL_31:
       v13[15] = @"20E1551C-1F0E-4C87-9C56-750D6D2FAB5E";
       v13[16] = @"CED1BDCE-1C6F-4ABF-85EB-E10DD5F04841";
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:17];
-      if ([v9 containsObject:v8])
+      if ([v9 containsObject:effectID])
       {
         v10 = self->_supportsExtendedRangeInputs;
         self->_supportsExtendedRangeInputs = MEMORY[0x277CBEC28];
@@ -1879,9 +1879,9 @@ LABEL_31:
     return 1;
   }
 
-  v4 = [(PVMotionEffect *)self projectPath];
+  projectPath = [(PVMotionEffect *)self projectPath];
   v5 = +[PVDocumentCacheManager sharedInstance];
-  v6 = [v5 getOZXDocumentForKey:v4];
+  v6 = [v5 getOZXDocumentForKey:projectPath];
 
   v3 = v6 != 0;
   return v3;
@@ -1890,9 +1890,9 @@ LABEL_31:
 - (BOOL)loadResources
 {
   [(NSLock *)self->_documentLock lock];
-  v3 = [(PVMotionEffect *)self loadResources_NoLock];
+  loadResources_NoLock = [(PVMotionEffect *)self loadResources_NoLock];
   [(NSLock *)self->_documentLock unlock];
-  return v3;
+  return loadResources_NoLock;
 }
 
 - (BOOL)loadResources_NoLock
@@ -1988,49 +1988,49 @@ LABEL_31:
 
 - (BOOL)isSketch
 {
-  v2 = [(PVEffect *)self effectID];
-  if ([v2 isEqualToString:@"5FCD0612-3FD5-4079-BC2A-20E987BC5B59"])
+  effectID = [(PVEffect *)self effectID];
+  if ([effectID isEqualToString:@"5FCD0612-3FD5-4079-BC2A-20E987BC5B59"])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:@"494B7BCF-0476-4EF7-ACFC-36480997C2A9"];
+    v3 = [effectID isEqualToString:@"494B7BCF-0476-4EF7-ACFC-36480997C2A9"];
   }
 
   return v3;
 }
 
-- (void)runEnsuringDocumentReady_NoLock:(id)a3
+- (void)runEnsuringDocumentReady_NoLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsReadyAfterLoad:[(PVMotionEffect *)self loadResources_NoLock]];
-  v4[2]();
+  lockCopy[2]();
 }
 
-- (void)runEnsuringDocumentReadyAndLockingDocument:(id)a3
+- (void)runEnsuringDocumentReadyAndLockingDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   [(NSLock *)self->_documentLock lock];
   v6 = MEMORY[0x277D85DD0];
   v7 = *"";
   v8 = __61__PVMotionEffect_runEnsuringDocumentReadyAndLockingDocument___block_invoke;
   v9 = &unk_279AA61F8;
-  v5 = v4;
-  v10 = self;
+  v5 = documentCopy;
+  selfCopy = self;
   v11 = v5;
   [(PVMotionEffect *)self runEnsuringDocumentReady_NoLock:&v6];
   [(NSLock *)self->_documentLock unlock:v6];
 }
 
-- (void)runWithDocument_NoLock:(id)a3
+- (void)runWithDocument_NoLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  v4[2](v4, self->_documentInfo);
+  lockCopy[2](lockCopy, self->_documentInfo);
 }
 
 - (void)deleteTemporalInspectableProperties
@@ -2042,7 +2042,7 @@ LABEL_31:
   v7 = *"";
   v8 = __53__PVMotionEffect_deleteTemporalInspectableProperties__block_invoke;
   v9 = &unk_279AA6220;
-  v10 = self;
+  selfCopy = self;
   v5 = v3;
   v11 = v5;
   [(NSMutableDictionary *)inspectableProperties enumerateKeysAndObjectsUsingBlock:&v6];
@@ -2061,11 +2061,11 @@ void __53__PVMotionEffect_deleteTemporalInspectableProperties__block_invoke(uint
   }
 }
 
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
-  v7 = a4;
+  inputsCopy2 = inputs;
   v310 = *MEMORY[0x277D85DE8];
-  v9 = *(a4 + 4);
+  v9 = *(inputs + 4);
   v241 = v6;
   *v6 = 0;
   if (![(PVMotionEffect *)self hasBuiltInEnvironment])
@@ -2073,14 +2073,14 @@ void __53__PVMotionEffect_deleteTemporalInspectableProperties__block_invoke(uint
     goto LABEL_11;
   }
 
-  v10 = (v7 + 1);
-  v11 = v7[1];
+  v10 = (inputsCopy2 + 1);
+  v11 = inputsCopy2[1];
   if (!v11)
   {
     goto LABEL_11;
   }
 
-  v12 = (v7 + 1);
+  v12 = (inputsCopy2 + 1);
   do
   {
     v13 = *(v11 + 8);
@@ -2095,16 +2095,16 @@ void __53__PVMotionEffect_deleteTemporalInspectableProperties__block_invoke(uint
   }
 
   while (v11);
-  v7 = a4;
+  inputsCopy2 = inputs;
   if (v12 != v10 && *(v12 + 8) <= 2u)
   {
-    PVInputHGNodeMap<unsigned int>::GetNode(a4, 2u, &v283);
+    PVInputHGNodeMap<unsigned int>::GetNode(inputs, 2u, &v283);
   }
 
   else
   {
 LABEL_11:
-    PVInputHGNodeMap<unsigned int>::GetNode(v7, 0, &v283);
+    PVInputHGNodeMap<unsigned int>::GetNode(inputsCopy2, 0, &v283);
   }
 
   if (v283.start.value)
@@ -2114,16 +2114,16 @@ LABEL_11:
 
   [(PVEffect *)self proxyRenderScale];
   v17 = v16;
-  v18 = PVInstructionGraphContext::WorkingColorSpace(*a6.m_Obj);
-  v239 = [v18 isRec2020LinearColorSpace];
+  v18 = PVInstructionGraphContext::WorkingColorSpace(*context.m_Obj);
+  isRec2020LinearColorSpace = [v18 isRec2020LinearColorSpace];
 
   v19 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:11];
   timedPropertiesComponent = self->super._timedPropertiesComponent;
-  *&v283.start.value = *&a3->var0;
-  v283.start.epoch = a3->var3;
+  *&v283.start.value = *&time->var0;
+  v283.start.epoch = time->var3;
   v240 = v19;
   v237 = [(PVEffectTimedPropertiesComponent *)timedPropertiesComponent addTimedPropertiesToDict:v19 time:&v283];
-  m_Obj = a6.m_Obj;
+  m_Obj = context.m_Obj;
   [(NSLock *)self->_documentLock lock];
   v22 = atomic_load(&self->_docLoadStatus);
   if (v22 != 3)
@@ -2135,8 +2135,8 @@ LABEL_11:
   v23 = atomic_load(&self->_docLoadStatus);
   if (v23 != 3)
   {
-    v29 = (*(**a6.m_Obj + 40))();
-    (*(**a6.m_Obj + 40))();
+    v29 = (*(**context.m_Obj + 40))();
+    (*(**context.m_Obj + 40))();
     v31 = HGRectMake4i(0, 0, v29, v30);
     v33 = v32;
     v34 = HGObject::operator new(0x1A0uLL);
@@ -2179,7 +2179,7 @@ LABEL_21:
       }
 
       range = v283;
-      time = *a3;
+      time = *time;
       if (CMTimeRangeContainsTime(&range, &time))
       {
         break;
@@ -2192,7 +2192,7 @@ LABEL_21:
         {
 LABEL_29:
 
-          m_Obj = a6.m_Obj;
+          m_Obj = context.m_Obj;
           goto LABEL_30;
         }
 
@@ -2207,8 +2207,8 @@ LABEL_29:
   }
 
 LABEL_30:
-  *&v283.start.value = *&a3->var0;
-  v283.start.epoch = a3->var3;
+  *&v283.start.value = *&time->var0;
+  v283.start.epoch = time->var3;
   if (![(PVMotionEffect *)self isVisibleAtTime_NoLock:&v283 timedProperties:v240 defaultProperties:self->super._inspectableProperties])
   {
     [(NSLock *)self->super._inspectablePropertiesLock unlock];
@@ -2242,7 +2242,7 @@ LABEL_36:
   v37 = (*(**m_Obj + 48))();
   v38 = (*(**m_Obj + 48))();
   v39 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"swapOutputAspect"];
-  v40 = [v39 BOOLValue];
+  bOOLValue = [v39 BOOLValue];
   v220 = v35;
   v41 = v35 * v37;
   v42 = v229 * v38;
@@ -2253,7 +2253,7 @@ LABEL_36:
 
   else
   {
-    v43 = v40;
+    v43 = bOOLValue;
   }
 
   if (v41 == 0.0)
@@ -2331,8 +2331,8 @@ LABEL_36:
   v57 = [(PVMotionEffectTimelineComponent *)self->_timelineComponent isForceRenderAtPosterFrameEnabled:self->super._inspectableProperties];
   memset(&start, 0, sizeof(start));
   timelineComponent = self->_timelineComponent;
-  v299 = *&a3->var0;
-  var3 = a3->var3;
+  v299 = *&time->var0;
+  var3 = time->var3;
   if (timelineComponent)
   {
     [(PVMotionEffectTimelineComponent *)timelineComponent timelineTimeFromComponentTime_NoLock:&v299 forcePosterFrame:v57 documentInfo:self->_documentInfo];
@@ -2348,8 +2348,8 @@ LABEL_36:
 
   if (!v60)
   {
-    *&range.start.value = *&a3->var0;
-    range.start.epoch = a3->var3;
+    *&range.start.value = *&time->var0;
+    range.start.epoch = time->var3;
     [(PVEffect *)self effectRange];
     time = v283.duration;
     CMTimeRangeMake(&v298, &range.start, &time);
@@ -2415,8 +2415,8 @@ LABEL_36:
   v292 = 0u;
   v291 = 0u;
   v290 = 0u;
-  v74 = [(NSMutableDictionary *)self->super._inspectableProperties allKeys];
-  v75 = [v74 countByEnumeratingWithState:&v290 objects:v307 count:16];
+  allKeys = [(NSMutableDictionary *)self->super._inspectableProperties allKeys];
+  v75 = [allKeys countByEnumeratingWithState:&v290 objects:v307 count:16];
   if (v75)
   {
     v76 = *v291;
@@ -2426,7 +2426,7 @@ LABEL_36:
       {
         if (*v291 != v76)
         {
-          objc_enumerationMutation(v74);
+          objc_enumerationMutation(allKeys);
         }
 
         v78 = *(*(&v290 + 1) + 8 * j);
@@ -2438,15 +2438,15 @@ LABEL_36:
         }
       }
 
-      v75 = [v74 countByEnumeratingWithState:&v290 objects:v307 count:16];
+      v75 = [allKeys countByEnumeratingWithState:&v290 objects:v307 count:16];
     }
 
     while (v75);
   }
 
   groupIDToCache = self->_groupIDToCache;
-  *&v283.start.value = *&a3->var0;
-  v283.start.epoch = a3->var3;
+  *&v283.start.value = *&time->var0;
+  v283.start.epoch = time->var3;
   v82 = [(PVMotionEffect *)self isRenderCachingDisabled_NoLock:&v283];
   if (groupIDToCache)
   {
@@ -2458,7 +2458,7 @@ LABEL_36:
     v83 = 1;
   }
 
-  if (self->_lastRenderWasHDR != v239)
+  if (self->_lastRenderWasHDR != isRec2020LinearColorSpace)
   {
     self->_cachedRenderDirty = 1;
   }
@@ -2470,7 +2470,7 @@ LABEL_36:
       goto LABEL_110;
     }
 
-    v84 = 0;
+    bOOLValue2 = 0;
   }
 
   else
@@ -2480,13 +2480,13 @@ LABEL_36:
     if (v85)
     {
       v87 = [(NSMutableDictionary *)inspectableProperties objectForKeyedSubscript:@"kPVEnablePosterFrameCaching"];
-      v84 = [v87 BOOLValue];
+      bOOLValue2 = [v87 BOOLValue];
     }
 
     else
     {
       v88 = [(NSMutableDictionary *)inspectableProperties objectForKeyedSubscript:@"kPVEnableLoopedRangeRenderCaching"];
-      v84 = [v88 BOOLValue];
+      bOOLValue2 = [v88 BOOLValue];
 
       memset(&v283, 0, 24);
       v89 = self->_timelineComponent;
@@ -2499,15 +2499,15 @@ LABEL_36:
       time = v283.start;
       if (CMTimeCompare(&range.start, &time) < 0)
       {
-        v84 = 0;
+        bOOLValue2 = 0;
       }
     }
   }
 
   v90 = [MEMORY[0x277CCAE60] valueWithCGSize:{v48, v50}];
   [(PVMotionEffect *)self didSetCacheInvalidatingParameter_NoLock:v90 forKey:@"kPVCachedTextureOutputSize"];
-  OZXSetUseRenderCache(*self->_documentInfo, groupIDToCache, v84);
-  if (!v84 || self->_cachedRenderDirty)
+  OZXSetUseRenderCache(*self->_documentInfo, groupIDToCache, bOOLValue2);
+  if (!bOOLValue2 || self->_cachedRenderDirty)
   {
     OZXClearCachedRender(*self->_documentInfo, groupIDToCache);
   }
@@ -2577,8 +2577,8 @@ LABEL_110:
 
   *&v96 = *&PCMatrix44Tmpl<double>::leftTranslate(&v283, v91, v42 * 0.5, 0.0);
   v282 = 0uLL;
-  v97 = [(PVEffect *)self effectType];
-  v225 = [v97 isEqualToString:@"effect.video.transition"];
+  effectType = [(PVEffect *)self effectType];
+  v225 = [effectType isEqualToString:@"effect.video.transition"];
 
   v98 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKey:@"SelfieEffectUsesCameraFacing"];
 
@@ -2586,11 +2586,11 @@ LABEL_110:
 
   v232 = v98;
   v99 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"kPVTransformAnimationKey"];
-  *&range.start.value = *&a3->var0;
-  range.start.epoch = a3->var3;
+  *&range.start.value = *&time->var0;
+  range.start.epoch = time->var3;
   v221 = v99;
   v222 = [PVTransformAnimation getTransformInfoFromAnimation:v99 atTime:&range renderSize:14 contentMode:0 invertY:&time outInfo:v41, v42];
-  v100 = a4;
+  inputsCopy7 = inputs;
   v278[1] = 0;
   v278[0] = 0;
   v277 = v278;
@@ -2603,12 +2603,12 @@ LABEL_110:
   v272[1] = 0;
   v272[0] = 0;
   v271 = v272;
-  PVInputHGNodeMap<unsigned int>::MapKeys(a4, &__p);
+  PVInputHGNodeMap<unsigned int>::MapKeys(inputs, &__p);
   v101 = __p;
   if (__p != v270)
   {
     v102 = v45 * v52;
-    v103 = a4 + 32;
+    v103 = inputs + 32;
     v104 = -v234;
     v218 = vnegq_f64(0);
     while (1)
@@ -2616,8 +2616,8 @@ LABEL_110:
       v268 = *v101;
       *&v257.var2 = 0;
       *&v257.var0 = 0;
-      v105 = *a5;
-      PVInputHGNodeMap<unsigned int>::GetNode(v100, v268, &range);
+      v105 = *renderer;
+      PVInputHGNodeMap<unsigned int>::GetNode(inputsCopy7, v268, &range);
       *&v257.var0 = HGRenderer::GetDOD(v105, range.start.value);
       *&v257.var2 = v106;
       if (range.start.value)
@@ -2631,7 +2631,7 @@ LABEL_110:
         goto LABEL_135;
       }
 
-      v108 = a4 + 32;
+      v108 = inputs + 32;
       do
       {
         v109 = *(v107 + 8);
@@ -2667,13 +2667,13 @@ LABEL_135:
         goto LABEL_204;
       }
 
-      v100 = a4;
+      inputsCopy7 = inputs;
       if (HGRect::IsNull(&v257))
       {
         goto LABEL_204;
       }
 
-      v100 = a4;
+      inputsCopy7 = inputs;
       if (HGRect::IsZero(&v257))
       {
         goto LABEL_204;
@@ -2681,11 +2681,11 @@ LABEL_135:
 
       var2 = v257.var2;
       var0 = v257.var0;
-      v112 = (*(**a6.m_Obj + 48))();
+      v112 = (*(**context.m_Obj + 48))();
       v113 = v257.var3;
       var1 = v257.var1;
-      v115 = (*(**a6.m_Obj + 48))();
-      PVInputHGNodeMap<unsigned int>::GetNode(a4, v268, &v259);
+      v115 = (*(**context.m_Obj + 48))();
+      PVInputHGNodeMap<unsigned int>::GetNode(inputs, v268, &v259);
       range.start.value = &v268;
       v116 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(&v277, &v268);
       v117 = v116[5];
@@ -2709,7 +2709,7 @@ LABEL_135:
         v116[5] = v118;
       }
 
-      PVInputHGNodeMap<unsigned int>::GetPixelTransform(a4, v268, &range);
+      PVInputHGNodeMap<unsigned int>::GetPixelTransform(inputs, v268, &range);
       *&v259 = &v268;
       v119 = (std::__tree<std::__value_type<unsigned int,PCMatrix44Tmpl<double>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,PCMatrix44Tmpl<double>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,PCMatrix44Tmpl<double>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(&v273, &v268) + 5);
       if (&range != v119)
@@ -2745,8 +2745,8 @@ LABEL_135:
         break;
       }
 
-      v132 = [(PVEffect *)self conformToInputAspect];
-      if ((v132 | v225 & (v268 > 1)) == 1)
+      conformToInputAspect = [(PVEffect *)self conformToInputAspect];
+      if ((conformToInputAspect | v225 & (v268 > 1)) == 1)
       {
         v133 = *v103;
         if (!*v103)
@@ -2754,7 +2754,7 @@ LABEL_135:
           goto LABEL_174;
         }
 
-        v134 = a4 + 32;
+        v134 = inputs + 32;
         do
         {
           v135 = *(v133 + 8);
@@ -2812,7 +2812,7 @@ LABEL_200:
         PCMatrix44Tmpl<double>::leftTranslate((v159 + 5), v235, v234, 0.0);
       }
 
-      v100 = a4;
+      inputsCopy7 = inputs;
       if (v222)
       {
         range.start.value = &v268;
@@ -2826,7 +2826,7 @@ LABEL_200:
         v163 = std::__tree<std::__value_type<unsigned int,PCMatrix44Tmpl<double>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,PCMatrix44Tmpl<double>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,PCMatrix44Tmpl<double>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(&v273, &v268);
         v164.f64[0] = v235.f64[0] + v280.f64[0];
         PCMatrix44Tmpl<double>::leftTranslate((v163 + 5), v164, v234 + v280.f64[1], 0.0);
-        v100 = a4;
+        inputsCopy7 = inputs;
       }
 
 LABEL_204:
@@ -2844,7 +2844,7 @@ LABEL_204:
         goto LABEL_164;
       }
 
-      v127 = a4 + 32;
+      v127 = inputs + 32;
       do
       {
         v128 = *(v126 + 8);
@@ -2962,7 +2962,7 @@ LABEL_164:
       goto LABEL_197;
     }
 
-    v153 = a4 + 32;
+    v153 = inputs + 32;
     do
     {
       v154 = *(v152 + 8);
@@ -3003,7 +3003,7 @@ LABEL_199:
   }
 
 LABEL_209:
-  if ((*(**a6.m_Obj + 64))())
+  if ((*(**context.m_Obj + 64))())
   {
     v165 = 2;
   }
@@ -3013,7 +3013,7 @@ LABEL_209:
     v165 = 0;
   }
 
-  if ((*(**a6.m_Obj + 64))())
+  if ((*(**context.m_Obj + 64))())
   {
     +[PVEnvironment PVExportPrefilterValue];
     if (v166 == 0.0)
@@ -3022,7 +3022,7 @@ LABEL_209:
     }
   }
 
-  if (((*(**a6.m_Obj + 64))() & 1) == 0 && [(PVMotionEffect *)self isSketch])
+  if (((*(**context.m_Obj + 64))() & 1) == 0 && [(PVMotionEffect *)self isSketch])
   {
     v165 = 1;
   }
@@ -3031,12 +3031,12 @@ LABEL_209:
   *&v257.var2 = 0;
   *&v257.var0 = 0;
   v258 = 0;
-  v167 = PVInstructionGraphContext::WorkingColorSpace(*a6.m_Obj);
+  v167 = PVInstructionGraphContext::WorkingColorSpace(*context.m_Obj);
   PVImagePropertiesForColorSpace(v167, 0, &v257);
 
   v168 = v258;
   v169 = v257.var1;
-  (*(**a6.m_Obj + 48))();
+  (*(**context.m_Obj + 48))();
   if (v233 >= 0.00001)
   {
     v170 = v17 * v170;
@@ -3050,7 +3050,7 @@ LABEL_209:
   *(v261.f64 + 4) = v169 == 16;
   v262 = v168;
   v263 = v168;
-  LOBYTE(v264) = v239;
+  LOBYTE(v264) = isRec2020LinearColorSpace;
   HIDWORD(v264) = [(PVMotionEffect *)self stillImageInverseToneMapOperator:self->super._inspectableProperties];
   LOBYTE(v265) = 0;
   [(PVMotionEffect *)self outputROI_NoLock:self->_documentInfo scale:fabsf(*&range.start.timescale)];
@@ -3063,14 +3063,14 @@ LABEL_209:
   v226 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"splitBCropRect"];
   v228 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"pipCropRect"];
   v230 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"pipScaleFactor"];
-  (*(**a6.m_Obj + 48))();
-  v178 = *(a4 + 13);
+  (*(**context.m_Obj + 48))();
+  v178 = *(inputs + 13);
   if (!v178)
   {
     goto LABEL_227;
   }
 
-  v179 = a4 + 104;
+  v179 = inputs + 104;
   do
   {
     if (v178[7])
@@ -3082,7 +3082,7 @@ LABEL_209:
   }
 
   while (v178);
-  if (v179 != (a4 + 104) && v179[7] <= 1u)
+  if (v179 != (inputs + 104) && v179[7] <= 1u)
   {
     v180 = v179[8] == 0;
   }
@@ -3093,22 +3093,22 @@ LABEL_227:
     v180 = 1;
   }
 
-  LOBYTE(v217) = v239;
+  LOBYTE(v217) = isRec2020LinearColorSpace;
   [(PVMotionEffect *)self adjustCutawayInputs:&v277 splitCropRectA:v176 splitCropRectB:v226 pipRect:v228 pipScaleFactor:v230 renderScale:v180 pipNeedsCrop:v217 isHDRRender:v168 workingColorSpace:?];
   v181 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"inputANeedsBackground"];
   v182 = v232;
-  v183 = [v181 BOOLValue];
+  bOOLValue3 = [v181 BOOLValue];
 
   v184 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"inputBNeedsBackground"];
-  v185 = [v184 BOOLValue];
+  bOOLValue4 = [v184 BOOLValue];
 
   v186 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"slideACropRect"];
   v243 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"slideBCropRect"];
-  (*(**a6.m_Obj + 48))();
-  [(PVMotionEffect *)self adjustTransitionInputs:&v277 renderScale:a5 renderer:v183 inputANeedsBackground:v185 inputBNeedsBackground:v186 slideCropRectA:v243 slideCropRectB:?];
+  (*(**context.m_Obj + 48))();
+  [(PVMotionEffect *)self adjustTransitionInputs:&v277 renderScale:renderer renderer:bOOLValue3 inputANeedsBackground:bOOLValue4 inputBNeedsBackground:v186 slideCropRectA:v243 slideCropRectB:?];
   [(PVMotionEffect *)self adjustPosition:self->super._inspectableProperties];
   v187 = self->super._inspectableProperties;
-  v256 = *a3;
+  v256 = *time;
   [(PVMotionEffect *)self updateSketchAnimation:v187 defaultProperties:0 time:&v256];
   [(PVMotionEffect *)self adjustCamera:self->super._inspectableProperties];
   v188 = self->super._inspectableProperties;
@@ -3121,8 +3121,8 @@ LABEL_227:
   v253[2] = __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_invoke;
   v253[3] = &unk_279AA6248;
   v253[4] = self;
-  v254 = *&a3->var0;
-  v255 = a3->var3;
+  v254 = *&time->var0;
+  v255 = time->var3;
   [(NSMutableArray *)motionComponents enumerateObjectsUsingBlock:v253];
   if (v237)
   {
@@ -3138,15 +3138,15 @@ LABEL_227:
   }
 
   v191 = 0.0;
-  if (v239)
+  if (isRec2020LinearColorSpace)
   {
     v191 = 1.0;
   }
 
   OZXSetRigValueWithName(*self->_documentInfo, &[PVMotionEffect hgNodeForTime:inputs:renderer:igContext:]::rigCheckboxName, v191);
-  v192 = [(NSLock *)self->super._inspectablePropertiesLock unlock];
+  unlock = [(NSLock *)self->super._inspectablePropertiesLock unlock];
   v193 = v236;
-  if (v239)
+  if (isRec2020LinearColorSpace)
   {
     v194 = v277;
     if (v277 != v278)
@@ -3158,13 +3158,13 @@ LABEL_227:
           goto LABEL_263;
         }
 
-        v192 = v194[5];
+        unlock = v194[5];
         if (v190)
         {
-          if (v192)
+          if (unlock)
           {
             *&v259 = v194[5];
-            (*(*v192 + 16))(v192);
+            (*(*unlock + 16))(unlock);
             FxApplySimpleToneCurve(&v259, &v256, 0.7, 12.0);
             v195 = v256.var0;
             if (v259 == v256.var0)
@@ -3217,25 +3217,25 @@ LABEL_227:
         else
         {
           *&v259 = v194[5];
-          if (v192)
+          if (unlock)
           {
-            (*(*v192 + 16))(v192);
+            (*(*unlock + 16))(unlock);
 LABEL_256:
-            v192 = v194[5];
+            unlock = v194[5];
             v197 = v259;
-            if (v192 == v259)
+            if (unlock == v259)
             {
-              if (v192)
+              if (unlock)
               {
-                v192 = (*(*v259 + 24))(v259);
+                unlock = (*(*v259 + 24))(v259);
               }
             }
 
             else
             {
-              if (v192)
+              if (unlock)
               {
-                v192 = (*(*v192 + 24))(v192);
+                unlock = (*(*unlock + 24))(unlock);
                 v197 = v259;
               }
 
@@ -3278,7 +3278,7 @@ LABEL_263:
 
     if (v190 == 2)
     {
-      v262 = PCColorSpaceCache::cgRec709(v192);
+      v262 = PCColorSpaceCache::cgRec709(unlock);
       v263 = v262;
       LOBYTE(v264) = 0;
       HIDWORD(v264) = 0;
@@ -3293,7 +3293,7 @@ LABEL_263:
   std::map<unsigned int,unsigned int>::map[abi:ne200100](v251, &v271);
   std::map<unsigned int,PCRect<double>>::map[abi:ne200100](v250, &v275);
   std::map<unsigned int,PCMatrix44Tmpl<double>>::map[abi:ne200100](v249, &v273);
-  v203 = OZXGetFrameAsRenderGraph(v202, &v256, v252, v251, v250, v249, &range, &v283, 0, *a5, &v259);
+  v203 = OZXGetFrameAsRenderGraph(v202, &v256, v252, v251, v250, v249, &range, &v283, 0, *renderer, &v259);
   std::__tree<std::__value_type<int,__CVBuffer *>,std::__map_value_compare<int,std::__value_type<int,__CVBuffer *>,std::less<int>,true>,std::allocator<std::__value_type<int,__CVBuffer *>>>::destroy(v249, v249[1]);
   std::__tree<std::__value_type<int,__CVBuffer *>,std::__map_value_compare<int,std::__value_type<int,__CVBuffer *>,std::less<int>,true>,std::allocator<std::__value_type<int,__CVBuffer *>>>::destroy(v250, v250[1]);
   std::__tree<std::__value_type<int,__CVBuffer *>,std::__map_value_compare<int,std::__value_type<int,__CVBuffer *>,std::less<int>,true>,std::allocator<std::__value_type<int,__CVBuffer *>>>::destroy(v251, v251[1]);
@@ -3322,7 +3322,7 @@ LABEL_263:
       }
     }
 
-    if (v239)
+    if (isRec2020LinearColorSpace)
     {
       if (v190)
       {
@@ -3491,7 +3491,7 @@ LABEL_263:
       }
     }
 
-    self->_lastRenderWasHDR = v239;
+    self->_lastRenderWasHDR = isRec2020LinearColorSpace;
     v205 = v259;
   }
 
@@ -3527,12 +3527,12 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   return [a2 motionEffect:v2 willRender:v3 properties:v4 time:&v6];
 }
 
-- (void)adjustCutawayBorder:(id)a3
+- (void)adjustCutawayBorder:(id)border
 {
-  v4 = a3;
+  borderCopy = border;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  v5 = [v4 objectForKeyedSubscript:@"splitACropRect"];
+  v5 = [borderCopy objectForKeyedSubscript:@"splitACropRect"];
   v6 = v5;
   if (v5)
   {
@@ -3554,7 +3554,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
 
   else
   {
-    v13 = [v4 objectForKeyedSubscript:@"pipRect"];
+    v13 = [borderCopy objectForKeyedSubscript:@"pipRect"];
     v12 = v13;
     if (v13)
     {
@@ -3567,15 +3567,15 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   }
 }
 
-- (void)adjustCutawayFadeAnimation:(id)a3
+- (void)adjustCutawayFadeAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  v5 = [v4 objectForKeyedSubscript:@"pipFadeIn"];
+  v5 = [animationCopy objectForKeyedSubscript:@"pipFadeIn"];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"pipFadeOut"];
+    v6 = [animationCopy objectForKeyedSubscript:@"pipFadeOut"];
     if (v6)
     {
       memset(&v20, 0, sizeof(v20));
@@ -3626,16 +3626,16 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   }
 }
 
-- (void)adjustCutawayInputs:(void *)a3 splitCropRectA:(id)a4 splitCropRectB:(id)a5 pipRect:(id)a6 pipScaleFactor:(id)a7 renderScale:(float)a8 pipNeedsCrop:(BOOL)a9 isHDRRender:(BOOL)a10 workingColorSpace:(CGColorSpace *)a11
+- (void)adjustCutawayInputs:(void *)inputs splitCropRectA:(id)a splitCropRectB:(id)b pipRect:(id)rect pipScaleFactor:(id)factor renderScale:(float)scale pipNeedsCrop:(BOOL)crop isHDRRender:(BOOL)self0 workingColorSpace:(CGColorSpace *)self1
 {
-  v11 = a9;
-  v18 = a4;
-  v19 = a5;
-  v98 = a6;
-  v97 = a7;
+  cropCopy = crop;
+  aCopy = a;
+  bCopy = b;
+  rectCopy = rect;
+  factorCopy = factor;
   LODWORD(v99) = 0;
   v100 = &v99;
-  v20 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a3, &v99);
+  v20 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(inputs, &v99);
   v21 = v20[5];
   if (v21)
   {
@@ -3644,7 +3644,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
 
   LODWORD(v99) = 1;
   v100 = &v99;
-  v22 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a3, &v99);
+  v22 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(inputs, &v99);
   v23 = v22[5];
   if (v23)
   {
@@ -3652,9 +3652,9 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   }
 
   v24 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"pipNeedsBackground"];
-  v25 = [v24 BOOLValue];
+  bOOLValue = [v24 BOOLValue];
 
-  v26 = v18;
+  v26 = aCopy;
   v27 = v26;
   if (v26)
   {
@@ -3684,15 +3684,15 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
     v37 = MinX;
     v38 = MaxX;
     v39 = MaxY;
-    v40 = v39 * a8;
-    v41 = v38 * a8;
+    v40 = v39 * scale;
+    v41 = v38 * scale;
     v42 = MinY;
-    v44 = HGRectMake4f(v43, v37 * a8, v42 * a8, v41, v40);
+    v44 = HGRectMake4f(v43, v37 * scale, v42 * scale, v41, v40);
     (*(*v36 + 96))(v36, 0, v44, SHIDWORD(v44), v45, v46);
     (*(*v36 + 120))(v36, 0, v21);
     LODWORD(v99) = 0;
     v100 = &v99;
-    v47 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a3, &v99);
+    v47 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(inputs, &v99);
     v48 = v47[5];
     if (v48 != v36)
     {
@@ -3705,7 +3705,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
       (*(*v36 + 16))(v36);
     }
 
-    v49 = v19;
+    v49 = bCopy;
 
     if (v49)
     {
@@ -3735,15 +3735,15 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
       v59 = v54;
       v60 = v55;
       v61 = v57;
-      v62 = v61 * a8;
-      v63 = v60 * a8;
+      v62 = v61 * scale;
+      v63 = v60 * scale;
       v64 = v56;
-      v66 = HGRectMake4f(v65, v59 * a8, v64 * a8, v63, v62);
+      v66 = HGRectMake4f(v65, v59 * scale, v64 * scale, v63, v62);
       (*(*v58 + 96))(v58, 0, v66, SHIDWORD(v66), v67, v68);
       (*(*v58 + 120))(v58, 0, v23);
       LODWORD(v99) = 1;
       v100 = &v99;
-      v69 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a3, &v99);
+      v69 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(inputs, &v99);
       v70 = v69[5];
       if (v70 != v58)
       {
@@ -3764,22 +3764,22 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
 
   else
   {
-    if (v98)
+    if (rectCopy)
     {
-      if ((v25 & 1) != 0 || ([v97 doubleValue], v88 > 1.0) || v11)
+      if ((bOOLValue & 1) != 0 || ([factorCopy doubleValue], v88 > 1.0) || cropCopy)
       {
-        [v98 CGRectValue];
-        v72 = v71 * a8;
-        v74 = v73 * a8;
+        [rectCopy CGRectValue];
+        v72 = v71 * scale;
+        v74 = v73 * scale;
         v76 = v75 * v72 / v71;
         v78 = v77 * v74 / v73;
         v79 = v72 + v76;
         v80 = v74 + v78;
-        if (v25)
+        if (bOOLValue)
         {
           LODWORD(v99) = 0;
           v100 = &v99;
-          v81 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a3, &v99);
+          v81 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(inputs, &v99);
           v83 = v81[5];
           if (v83)
           {
@@ -3794,8 +3794,8 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
           HGSolidColor::HGSolidColor(v87, v101);
         }
 
-        [v97 doubleValue];
-        if (v89 > 1.0 || v11)
+        [factorCopy doubleValue];
+        if (v89 > 1.0 || cropCopy)
         {
           v90 = HGObject::operator new(0x1A0uLL);
           HGCrop::HGCrop(v90);
@@ -3804,7 +3804,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
           (*(*v90 + 120))(v90, 0, v23);
           LODWORD(v99) = 1;
           v100 = &v99;
-          v95 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a3, &v99);
+          v95 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(inputs, &v99);
           v96 = v95[5];
           if (v96 != v90)
           {
@@ -3836,19 +3836,19 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   }
 }
 
-- (HGRect)makeCropRectForDOD:(HGRect)a3 renderRect:(CGRect)a4 renderScale:(float)a5
+- (HGRect)makeCropRectForDOD:(HGRect)d renderRect:(CGRect)rect renderScale:(float)scale
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  var2 = a3.var2;
-  var0 = a3.var0;
-  var1 = a3.var1;
-  var3 = a3.var3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  var2 = d.var2;
+  var0 = d.var0;
+  var1 = d.var1;
+  var3 = d.var3;
   v14 = 0;
   v15 = 0;
-  MinX = CGRectGetMinX(a4);
+  MinX = CGRectGetMinX(rect);
   v30.origin.x = x;
   v30.origin.y = y;
   v30.size.width = width;
@@ -3864,11 +3864,11 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   v32.size.width = width;
   v32.size.height = height;
   MaxY = CGRectGetMaxY(v32);
-  v21 = MinY * a5;
-  v22 = MaxY * a5;
-  if ((var0 - (MinX * a5)) > 2.0 || (var2 - (MaxX * a5)) > 2.0 || (var1 - v21) > 2.0 || (var3 - v22) > 2.0)
+  v21 = MinY * scale;
+  v22 = MaxY * scale;
+  if ((var0 - (MinX * scale)) > 2.0 || (var2 - (MaxX * scale)) > 2.0 || (var1 - v21) > 2.0 || (var3 - v22) > 2.0)
   {
-    v14 = HGRectMake4f(v19, MinX * a5, v21, MaxX * a5, v22);
+    v14 = HGRectMake4f(v19, MinX * scale, v21, MaxX * scale, v22);
     v15 = v26;
   }
 
@@ -3881,19 +3881,19 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   return result;
 }
 
-- (void)adjustTransitionInputs:(void *)a3 renderScale:(float)a4 renderer:(const void *)a5 inputANeedsBackground:(BOOL)a6 inputBNeedsBackground:(BOOL)a7 slideCropRectA:(id)a8 slideCropRectB:(id)a9
+- (void)adjustTransitionInputs:(void *)inputs renderScale:(float)scale renderer:(const void *)renderer inputANeedsBackground:(BOOL)background inputBNeedsBackground:(BOOL)needsBackground slideCropRectA:(id)a slideCropRectB:(id)b
 {
-  v10 = a7;
-  v11 = a6;
-  v16 = a8;
-  v17 = a9;
+  needsBackgroundCopy = needsBackground;
+  backgroundCopy = background;
+  aCopy = a;
+  bCopy = b;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  if (v11)
+  if (backgroundCopy)
   {
     LODWORD(v75) = 0;
     *&v74.var0 = &v75;
-    v18 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a3, &v75);
+    v18 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(inputs, &v75);
     v21 = v18[5];
     if (v21)
     {
@@ -3903,7 +3903,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
     documentInfo = self->_documentInfo;
     v19.n128_u32[0] = documentInfo[3];
     LODWORD(v20) = documentInfo[4];
-    v23 = HGRectMake4i(0, 0, (a4 * v19.n128_u64[0]), (a4 * v20));
+    v23 = HGRectMake4i(0, 0, (scale * v19.n128_u64[0]), (scale * v20));
     v25 = v24;
     v26 = HGObject::operator new(0x1A0uLL);
     *&v76.var0 = v23;
@@ -3911,11 +3911,11 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
     HGSolidColor::HGSolidColor(v26, v76);
   }
 
-  if (v10)
+  if (needsBackgroundCopy)
   {
     LODWORD(v75) = 1;
     *&v74.var0 = &v75;
-    v27 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a3, &v75);
+    v27 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(inputs, &v75);
     v30 = v27[5];
     if (v30)
     {
@@ -3925,7 +3925,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
     v31 = self->_documentInfo;
     v28.n128_u32[0] = v31[3];
     LODWORD(v29) = v31[4];
-    v32 = HGRectMake4i(0, 0, (a4 * v28.n128_u64[0]), (a4 * v29));
+    v32 = HGRectMake4i(0, 0, (scale * v28.n128_u64[0]), (scale * v29));
     v34 = v33;
     v35 = HGObject::operator new(0x1A0uLL);
     *&v77.var0 = v32;
@@ -3933,7 +3933,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
     HGSolidColor::HGSolidColor(v35, v77);
   }
 
-  v36 = v16;
+  v36 = aCopy;
   v37 = v36;
   if (v36)
   {
@@ -3944,15 +3944,15 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
     v45 = v44;
     LODWORD(v75) = 0;
     *&v74.var0 = &v75;
-    v46 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a3, &v75);
+    v46 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(inputs, &v75);
     v47 = v46[5];
     if (v47)
     {
       (*(*v47 + 16))(v46[5]);
     }
 
-    DOD = HGRenderer::GetDOD(*a5, v47);
-    *&v49 = a4;
+    DOD = HGRenderer::GetDOD(*renderer, v47);
+    *&v49 = scale;
     *&v74.var0 = [(PVMotionEffect *)self makeCropRectForDOD:DOD renderRect:v50 renderScale:v39, v41, v43, v45, v49];
     *&v74.var2 = v51;
     if (!HGRect::IsZero(&v74))
@@ -3963,7 +3963,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
       (*(*v52 + 120))(v52, 0, v47);
       v73 = 0;
       v75 = &v73;
-      v53 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a3, &v73);
+      v53 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(inputs, &v73);
       v54 = v53[5];
       if (v54 != v52)
       {
@@ -3985,7 +3985,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
     }
   }
 
-  v55 = v17;
+  v55 = bCopy;
 
   if (v55)
   {
@@ -3996,15 +3996,15 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
     v63 = v62;
     LODWORD(v75) = 1;
     *&v74.var0 = &v75;
-    v64 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a3, &v75);
+    v64 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(inputs, &v75);
     v65 = v64[5];
     if (v65)
     {
       (*(*v65 + 16))(v64[5]);
     }
 
-    v66 = HGRenderer::GetDOD(*a5, v65);
-    *&v67 = a4;
+    v66 = HGRenderer::GetDOD(*renderer, v65);
+    *&v67 = scale;
     *&v74.var0 = [(PVMotionEffect *)self makeCropRectForDOD:v66 renderRect:v68 renderScale:v57, v59, v61, v63, v67];
     *&v74.var2 = v69;
     if (!HGRect::IsZero(&v74))
@@ -4015,7 +4015,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
       (*(*v70 + 120))(v70, 0, v65);
       v73 = 1;
       v75 = &v73;
-      v71 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a3, &v73);
+      v71 = std::__tree<std::__value_type<unsigned int,HGRef<HGNode>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,HGRef<HGNode>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,HGRef<HGNode>>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(inputs, &v73);
       v72 = v71[5];
       if (v72 != v70)
       {
@@ -4038,13 +4038,13 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   }
 }
 
-- (void)adjustKenBurnsAnimation:(id)a3
+- (void)adjustKenBurnsAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  v5 = [v4 objectForKeyedSubscript:@"kenBurnsStartXForm"];
-  v6 = [v4 objectForKeyedSubscript:@"kenBurnsEndXForm"];
+  v5 = [animationCopy objectForKeyedSubscript:@"kenBurnsStartXForm"];
+  v6 = [animationCopy objectForKeyedSubscript:@"kenBurnsEndXForm"];
   if (v5 | v6)
   {
     v22 = 0;
@@ -4093,17 +4093,17 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   }
 }
 
-- (void)setMaskPoints:(id)a3
+- (void)setMaskPoints:(id)points
 {
   v33 = *MEMORY[0x277D85DE8];
-  v18 = a3;
+  pointsCopy = points;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  v4 = [v18 objectForKeyedSubscript:@"Mask Data"];
+  v4 = [pointsCopy objectForKeyedSubscript:@"Mask Data"];
   v5 = v4;
   if (v4 && [v4 count] >= 3)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -4127,7 +4127,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
           LODWORD(v12) = documentInfo[3];
           LODWORD(v13) = documentInfo[4];
           v16 = [MEMORY[0x277CCAE60] valueWithCGPoint:{(v15 + -0.5) * v12, (0.5 - v14) * v13}];
-          [v6 addObject:v16];
+          [array addObject:v16];
         }
 
         v8 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -4150,19 +4150,19 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
       PCCFRefTraits<CGColorSpace *>::retain(v27.var1._obj);
     }
 
-    OZXSetShapePoints(v17, v6, 1, &v19);
+    OZXSetShapePoints(v17, array, 1, &v19);
     PCCFRef<CGColorSpace *>::~PCCFRef(&v22.var1._obj);
     PCCFRef<CGColorSpace *>::~PCCFRef(&v27.var1._obj);
   }
 }
 
-- (void)setSketchStrokes:(id)a3
+- (void)setSketchStrokes:(id)strokes
 {
   v48 = *MEMORY[0x277D85DE8];
-  v29 = a3;
+  strokesCopy = strokes;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  v4 = [v29 objectForKeyedSubscript:@"SketchColor"];
+  v4 = [strokesCopy objectForKeyedSubscript:@"SketchColor"];
   v5 = v4;
   v45 = 0.0;
   v46 = 0.0;
@@ -4172,10 +4172,10 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
     [v4 getRed:&v46 green:&v45 blue:&v44 alpha:0];
   }
 
-  v28 = [v29 objectForKeyedSubscript:@"SketchData"];
+  v28 = [strokesCopy objectForKeyedSubscript:@"SketchData"];
   if (v28 && [v28 count])
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
@@ -4199,7 +4199,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
           LODWORD(v12) = documentInfo[3];
           LODWORD(v13) = documentInfo[4];
           v16 = [MEMORY[0x277CCAE60] valueWithCGPoint:{(v15 + -0.5) * v12, (0.5 - v14) * v13}];
-          [v6 addObject:v16];
+          [array addObject:v16];
         }
 
         v8 = [v7 countByEnumeratingWithState:&v40 objects:v47 count:16];
@@ -4212,10 +4212,10 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
     LOWORD(v36) = 0;
     BYTE2(v36) = 1;
     HIDWORD(v36) = 1;
-    v17 = [v29 objectForKeyedSubscript:@"Sketch Write On"];
-    v18 = [v17 BOOLValue];
+    v17 = [strokesCopy objectForKeyedSubscript:@"Sketch Write On"];
+    bOOLValue = [v17 BOOLValue];
 
-    if (v18)
+    if (bOOLValue)
     {
       v37 = 1;
     }
@@ -4257,7 +4257,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
       PCCFRefTraits<CGColorSpace *>::retain(v39.var1._obj);
     }
 
-    OZXSetShapePoints(v27, v6, 0, &v31);
+    OZXSetShapePoints(v27, array, 0, &v31);
     PCCFRef<CGColorSpace *>::~PCCFRef(&v34.var1._obj);
     PCCFRef<CGColorSpace *>::~PCCFRef(&v39.var1._obj);
   }
@@ -4272,19 +4272,19 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   }
 }
 
-- (void)updateSketchAnimation:(id)a3 defaultProperties:(id)a4 time:(id *)a5
+- (void)updateSketchAnimation:(id)animation defaultProperties:(id)properties time:(id *)time
 {
   v48 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v30 = a4;
+  animationCopy = animation;
+  propertiesCopy = properties;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  v8 = [MEMORY[0x277CBEAC0] objectForKey:@"SketchData" inDictionary:v29 orInDefaultDictionary:v30];
+  v8 = [MEMORY[0x277CBEAC0] objectForKey:@"SketchData" inDictionary:animationCopy orInDefaultDictionary:propertiesCopy];
   v9 = v8;
   if (v8 && [v8 count])
   {
-    v28 = [MEMORY[0x277CBEAC0] objectForKey:@"SketchTransformAnimation" inDictionary:v29 orInDefaultDictionary:v30];
-    v10 = [MEMORY[0x277CBEAC0] objectForKey:@"ParentTransformAnimation" inDictionary:v29 orInDefaultDictionary:v30];
+    v28 = [MEMORY[0x277CBEAC0] objectForKey:@"SketchTransformAnimation" inDictionary:animationCopy orInDefaultDictionary:propertiesCopy];
+    v10 = [MEMORY[0x277CBEAC0] objectForKey:@"ParentTransformAnimation" inDictionary:animationCopy orInDefaultDictionary:propertiesCopy];
     if (v28 | v10)
     {
       v26 = v10;
@@ -4292,8 +4292,8 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
       {
         memset(v39, 0, 40);
         v38 = 0u;
-        v45 = *&a5->var0;
-        var3 = a5->var3;
+        v45 = *&time->var0;
+        var3 = time->var3;
         [v28 transformInfoAtTime:&v45];
         v11 = 0.0;
         v13 = 0.0;
@@ -4311,14 +4311,14 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
       {
         memset(v39, 0, 40);
         v38 = 0u;
-        v45 = *&a5->var0;
-        var3 = a5->var3;
+        v45 = *&time->var0;
+        var3 = time->var3;
         [v26 transformInfoAtTime:&v45];
         v11 = 0.0 + 0.0;
         v12 = 0.0 + 0.0;
       }
 
-      v14 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
@@ -4342,7 +4342,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
             LODWORD(v20) = documentInfo[3];
             LODWORD(v21) = documentInfo[4];
             v24 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v13 * ((v11 + v23 + -0.5) * v20), v13 * ((0.5 - (v12 + v22)) * v21)}];
-            [v14 addObject:v24];
+            [array addObject:v24];
           }
 
           v16 = [v15 countByEnumeratingWithState:&v41 objects:v47 count:16];
@@ -4368,7 +4368,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
         PCCFRefTraits<CGColorSpace *>::retain(space);
       }
 
-      OZXSetShapePoints(v25, v14, 0, &v31);
+      OZXSetShapePoints(v25, array, 0, &v31);
       PCCFRef<CGColorSpace *>::~PCCFRef(&v37);
       PCCFRef<CGColorSpace *>::~PCCFRef(&space);
 
@@ -4377,12 +4377,12 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   }
 }
 
-- (void)adjustPosition:(id)a3
+- (void)adjustPosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  v5 = [v4 objectForKeyedSubscript:@"Position"];
+  v5 = [positionCopy objectForKeyedSubscript:@"Position"];
   v6 = v5;
   if (v5)
   {
@@ -4398,25 +4398,25 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   }
 }
 
-- (void)adjustCamera:(id)a3
+- (void)adjustCamera:(id)camera
 {
-  v4 = a3;
+  cameraCopy = camera;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  v5 = [v4 objectForKeyedSubscript:@"SelfieEffectUsesCameraFacing"];
+  v5 = [cameraCopy objectForKeyedSubscript:@"SelfieEffectUsesCameraFacing"];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"SelfieEffectUsesCameraFacing"];
-    v7 = [v6 BOOLValue];
+    v6 = [cameraCopy objectForKeyedSubscript:@"SelfieEffectUsesCameraFacing"];
+    bOOLValue = [v6 BOOLValue];
 
-    [(PVMotionEffect *)self setIsFrontFacingCamera:v7];
+    [(PVMotionEffect *)self setIsFrontFacingCamera:bOOLValue];
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"SelfieRollRadians"];
+  v8 = [cameraCopy objectForKeyedSubscript:@"SelfieRollRadians"];
   [v8 doubleValue];
   [(PVMotionEffect *)self setRollRadians:?];
-  v9 = [v4 objectForKeyedSubscript:@"kPVARSelfieEffectCameraOrientation"];
+  v9 = [cameraCopy objectForKeyedSubscript:@"kPVARSelfieEffectCameraOrientation"];
   v10 = v9;
   if (v9)
   {
@@ -4476,20 +4476,20 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   std::__tree<std::__value_type<int,__CVBuffer *>,std::__map_value_compare<int,std::__value_type<int,__CVBuffer *>,std::less<int>,true>,std::allocator<std::__value_type<int,__CVBuffer *>>>::destroy(&v4, v5[0]);
 }
 
-- (void)setupPublishedParameters:(id)a3
+- (void)setupPublishedParameters:(id)parameters
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parametersCopy = parameters;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
   v5 = +[PVMotionEffect motionEffectPropertyKeyToPublishedParameterNameMap];
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(parametersCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v4 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [parametersCopy allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = *v17;
@@ -4499,14 +4499,14 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [v5 objectForKeyedSubscript:v11];
         v13 = v12 == 0;
 
-        [v4 objectForKeyedSubscript:v11];
+        [parametersCopy objectForKeyedSubscript:v11];
         if (v13)
           v14 = {;
           [v6 setObject:v14 forKeyedSubscript:v11];
@@ -4519,7 +4519,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -4528,14 +4528,14 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   OZXSetPublishedSettings(*self->_documentInfo, v6);
 }
 
-- (void)setupTransitionParameters:(id)a3
+- (void)setupTransitionParameters:(id)parameters
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parametersCopy = parameters;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
   v5 = +[PVMotionEffect motionEffectPropertyKeyToPublishedParameterNameMap];
-  v6 = [v4 objectForKeyedSubscript:@"Direction"];
+  v6 = [parametersCopy objectForKeyedSubscript:@"Direction"];
 
   if (v6)
   {
@@ -4543,7 +4543,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
     v21.var0 = 0;
     PCString::set(&v21, v7);
 
-    v8 = [v4 objectForKeyedSubscript:@"Direction"];
+    v8 = [parametersCopy objectForKeyedSubscript:@"Direction"];
     v9 = v8;
     if (v8)
     {
@@ -4576,7 +4576,7 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        v15 = [v4 objectForKeyedSubscript:v14];
+        v15 = [parametersCopy objectForKeyedSubscript:v14];
         if (v15)
         {
           v16 = [v5 objectForKeyedSubscript:v14];
@@ -4660,11 +4660,11 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   if (v14)
   {
     v15 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"DropShadow"];
-    v16 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
 
     *&v36 = 0;
     PCString::set(&v36, @"DropShadow");
-    OZXSetPublishedCheckBox(*self->_documentInfo, &v36, v16);
+    OZXSetPublishedCheckBox(*self->_documentInfo, &v36, bOOLValue);
     PCString::~PCString(&v36);
   }
 
@@ -4673,11 +4673,11 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   if (v17)
   {
     v18 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"AllCaps"];
-    v19 = [v18 BOOLValue];
+    bOOLValue2 = [v18 BOOLValue];
 
     *&v36 = 0;
     PCString::set(&v36, @"AllCaps");
-    OZXSetPublishedCheckBox(*self->_documentInfo, &v36, v19);
+    OZXSetPublishedCheckBox(*self->_documentInfo, &v36, bOOLValue2);
     PCString::~PCString(&v36);
   }
 
@@ -4698,13 +4698,13 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   if (v24)
   {
     v25 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"ForceDisableBackgroundShape"];
-    v26 = [v25 BOOLValue];
+    bOOLValue3 = [v25 BOOLValue];
 
     v27 = [v3 objectForKeyedSubscript:@"ForceDisableBackgroundShape"];
     *&v36 = 0;
     PCString::set(&v36, v27);
 
-    OZXSetPublishedCheckBox(*self->_documentInfo, &v36, v26);
+    OZXSetPublishedCheckBox(*self->_documentInfo, &v36, bOOLValue3);
     PCString::~PCString(&v36);
   }
 
@@ -4713,9 +4713,9 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   if (v28)
   {
     v29 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"DisableBackgroundMovieKey"];
-    v30 = [v29 BOOLValue];
+    bOOLValue4 = [v29 BOOLValue];
 
-    [(PVMotionEffect *)self disableBackgroundMovie:v30];
+    [(PVMotionEffect *)self disableBackgroundMovie:bOOLValue4];
   }
 
   v31 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"Disable Chroma Key"];
@@ -4725,9 +4725,9 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
     *&v36 = 0;
     PCString::set(&v36, @"Chroma Key SDR Color");
     v32 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"Disable Chroma Key"];
-    v33 = [v32 BOOLValue];
+    bOOLValue5 = [v32 BOOLValue];
 
-    [(PVMotionEffect *)self disableElementWithPublishedParam:&v36 disable:v33];
+    [(PVMotionEffect *)self disableElementWithPublishedParam:&v36 disable:bOOLValue5];
     PCString::~PCString(&v36);
   }
 
@@ -4762,12 +4762,12 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
   [(NSLock *)self->_documentLock unlock];
 }
 
-- (void)updateInspectableProperties:(id)a3
+- (void)updateInspectableProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v8.receiver = self;
   v8.super_class = PVMotionEffect;
-  [(PVEffect *)&v8 updateInspectableProperties:v4];
+  [(PVEffect *)&v8 updateInspectableProperties:propertiesCopy];
   [(NSLock *)self->_documentLock lock];
   v5 = atomic_load(&self->_docLoadStatus);
   if (v5 == 3)
@@ -4775,30 +4775,30 @@ uint64_t __58__PVMotionEffect_hgNodeForTime_inputs_renderer_igContext___block_in
     [(NSLock *)self->super._inspectablePropertiesLock lock];
     v6 = *MEMORY[0x277CC0898];
     v7 = *(MEMORY[0x277CC0898] + 16);
-    [(PVMotionEffect *)self updateInspectableProperties_NoLock:v4 componentTime:&v6];
+    [(PVMotionEffect *)self updateInspectableProperties_NoLock:propertiesCopy componentTime:&v6];
     [(NSLock *)self->super._inspectablePropertiesLock unlock];
   }
 
   [(NSLock *)self->_documentLock unlock];
 }
 
-- (void)updateInspectableProperties_NoLock:(id)a3 componentTime:(id *)a4
+- (void)updateInspectableProperties_NoLock:(id)lock componentTime:(id *)time
 {
-  v6 = a3;
+  lockCopy = lock;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsReady];
   [(PVEffect *)self assertInspectablePropertiesAreLocked];
   v7 = +[PVMotionEffect motionEffectPropertyKeyToPublishedParameterNameMap];
-  v8 = [v6 objectForKeyedSubscript:@"kPVOutputAspectKey"];
-  if (v8 || ([v6 objectForKeyedSubscript:@"kPVPlayableAspectRatioKey"], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  v8 = [lockCopy objectForKeyedSubscript:@"kPVOutputAspectKey"];
+  if (v8 || ([lockCopy objectForKeyedSubscript:@"kPVPlayableAspectRatioKey"], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_4:
-    [(PVMotionEffect *)self setEffectOutputAspectWithProperties_NoLock:v6 allProperties:self->super._inspectableProperties];
+    [(PVMotionEffect *)self setEffectOutputAspectWithProperties_NoLock:lockCopy allProperties:self->super._inspectableProperties];
     goto LABEL_5;
   }
 
-  v33 = [v6 objectForKeyedSubscript:@"kPVPlayableAspectRatioPreservationModeKey"];
+  v33 = [lockCopy objectForKeyedSubscript:@"kPVPlayableAspectRatioPreservationModeKey"];
 
   if (v33)
   {
@@ -4806,105 +4806,105 @@ LABEL_4:
   }
 
 LABEL_5:
-  [(PVMotionEffect *)self adjustKenBurnsAnimation:v6];
-  [(PVMotionEffect *)self adjustCutawayBorder:v6];
-  [(PVMotionEffect *)self adjustCutawayFadeAnimation:v6];
-  [(PVMotionEffect *)self setMaskPoints:v6];
-  [(PVMotionEffect *)self setSketchStrokes:v6];
-  [(PVMotionEffect *)self adjustPosition:v6];
-  v9 = [v6 objectForKeyedSubscript:@"DropShadow"];
+  [(PVMotionEffect *)self adjustKenBurnsAnimation:lockCopy];
+  [(PVMotionEffect *)self adjustCutawayBorder:lockCopy];
+  [(PVMotionEffect *)self adjustCutawayFadeAnimation:lockCopy];
+  [(PVMotionEffect *)self setMaskPoints:lockCopy];
+  [(PVMotionEffect *)self setSketchStrokes:lockCopy];
+  [(PVMotionEffect *)self adjustPosition:lockCopy];
+  v9 = [lockCopy objectForKeyedSubscript:@"DropShadow"];
 
   if (v9)
   {
-    v10 = [v6 objectForKeyedSubscript:@"DropShadow"];
-    v11 = [v10 BOOLValue];
+    v10 = [lockCopy objectForKeyedSubscript:@"DropShadow"];
+    bOOLValue = [v10 BOOLValue];
 
     v36[0].var0 = 0;
     PCString::set(v36, @"DropShadow");
-    OZXSetPublishedCheckBox(*self->_documentInfo, v36, v11);
+    OZXSetPublishedCheckBox(*self->_documentInfo, v36, bOOLValue);
     PCString::~PCString(v36);
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"AllCaps"];
+  v12 = [lockCopy objectForKeyedSubscript:@"AllCaps"];
 
   if (v12)
   {
-    v13 = [v6 objectForKeyedSubscript:@"AllCaps"];
-    v14 = [v13 BOOLValue];
+    v13 = [lockCopy objectForKeyedSubscript:@"AllCaps"];
+    bOOLValue2 = [v13 BOOLValue];
 
     v36[0].var0 = 0;
     PCString::set(v36, @"AllCaps");
-    OZXSetPublishedCheckBox(*self->_documentInfo, v36, v14);
+    OZXSetPublishedCheckBox(*self->_documentInfo, v36, bOOLValue2);
     PCString::~PCString(v36);
   }
 
-  [(PVMotionEffect *)self setupPublishedParameters:v6];
-  v15 = [v6 objectForKeyedSubscript:@"kPVTopLevelOpacityKey"];
+  [(PVMotionEffect *)self setupPublishedParameters:lockCopy];
+  v15 = [lockCopy objectForKeyedSubscript:@"kPVTopLevelOpacityKey"];
 
   if (v15)
   {
-    v16 = [v6 objectForKeyedSubscript:@"kPVTopLevelOpacityKey"];
+    v16 = [lockCopy objectForKeyedSubscript:@"kPVTopLevelOpacityKey"];
     [v16 doubleValue];
     v18 = v17;
 
     [(PVMotionEffect *)self setTopLevelOpacity:v18];
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"ForceDisableBackgroundShape"];
+  v19 = [lockCopy objectForKeyedSubscript:@"ForceDisableBackgroundShape"];
 
   if (v19)
   {
-    v20 = [v6 objectForKeyedSubscript:@"ForceDisableBackgroundShape"];
-    v21 = [v20 BOOLValue];
+    v20 = [lockCopy objectForKeyedSubscript:@"ForceDisableBackgroundShape"];
+    bOOLValue3 = [v20 BOOLValue];
 
     v22 = [v7 objectForKeyedSubscript:@"ForceDisableBackgroundShape"];
     v36[0].var0 = 0;
     PCString::set(v36, v22);
 
-    OZXSetPublishedCheckBox(*self->_documentInfo, v36, v21);
+    OZXSetPublishedCheckBox(*self->_documentInfo, v36, bOOLValue3);
     PCString::~PCString(v36);
   }
 
-  v23 = [v6 objectForKeyedSubscript:@"DisableBackgroundMovieKey"];
+  v23 = [lockCopy objectForKeyedSubscript:@"DisableBackgroundMovieKey"];
 
   if (v23)
   {
-    v24 = [v6 objectForKeyedSubscript:@"DisableBackgroundMovieKey"];
-    v25 = [v24 BOOLValue];
+    v24 = [lockCopy objectForKeyedSubscript:@"DisableBackgroundMovieKey"];
+    bOOLValue4 = [v24 BOOLValue];
 
-    [(PVMotionEffect *)self disableBackgroundMovie:v25];
+    [(PVMotionEffect *)self disableBackgroundMovie:bOOLValue4];
   }
 
-  v26 = [v6 objectForKeyedSubscript:@"Disable Chroma Key"];
+  v26 = [lockCopy objectForKeyedSubscript:@"Disable Chroma Key"];
 
   if (v26)
   {
     v36[0].var0 = 0;
     PCString::set(v36, @"Chroma Key SDR Color");
     v27 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKeyedSubscript:@"Disable Chroma Key"];
-    v28 = [v27 BOOLValue];
+    bOOLValue5 = [v27 BOOLValue];
 
-    [(PVMotionEffect *)self disableElementWithPublishedParam:v36 disable:v28];
+    [(PVMotionEffect *)self disableElementWithPublishedParam:v36 disable:bOOLValue5];
     PCString::~PCString(v36);
   }
 
-  v29 = [v6 objectForKeyedSubscript:@"SketchData"];
+  v29 = [lockCopy objectForKeyedSubscript:@"SketchData"];
 
   if (v29)
   {
-    if (a4->var2)
+    if (time->var2)
     {
-      v30 = a4;
+      timeCopy = time;
     }
 
     else
     {
-      v30 = MEMORY[0x277CC08F0];
+      timeCopy = MEMORY[0x277CC08F0];
     }
 
-    *&v36[0].var0 = *&v30->var0;
-    var3 = v30->var3;
-    [(PVMotionEffect *)self updateSketchAnimation:v6 defaultProperties:self->super._inspectableProperties time:v36];
+    *&v36[0].var0 = *&timeCopy->var0;
+    var3 = timeCopy->var3;
+    [(PVMotionEffect *)self updateSketchAnimation:lockCopy defaultProperties:self->super._inspectableProperties time:v36];
   }
 
   components = self->super._components;
@@ -4913,14 +4913,14 @@ LABEL_5:
   v34[2] = __67__PVMotionEffect_updateInspectableProperties_NoLock_componentTime___block_invoke;
   v34[3] = &unk_279AA6270;
   v34[4] = self;
-  v32 = v6;
+  v32 = lockCopy;
   v35 = v32;
   [(NSMutableArray *)components enumerateObjectsUsingBlock:v34];
 }
 
-- (void)setIsFrontFacingCamera:(BOOL)a3
+- (void)setIsFrontFacingCamera:(BOOL)camera
 {
-  v3 = a3;
+  cameraCopy = camera;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
   v7 = 0;
@@ -4937,13 +4937,13 @@ LABEL_5:
 
   if (!v5)
   {
-    OZXEquirectProjectFilterSetFrontFacing(*self->_documentInfo, &v7, v3);
+    OZXEquirectProjectFilterSetFrontFacing(*self->_documentInfo, &v7, cameraCopy);
   }
 
   PCString::~PCString(&v6);
 }
 
-- (void)setQuaternion:(double)a3 :(double)a4 :(double)a5 :(double)a6
+- (void)setQuaternion:(double)quaternion :(double)a4 :(double)a5 :(double)a6
 {
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
@@ -4961,19 +4961,19 @@ LABEL_5:
 
   if (!v11)
   {
-    OZXEquirectProjectFilterSetQuaternion(*self->_documentInfo, a3, a4, a5, a6);
+    OZXEquirectProjectFilterSetQuaternion(*self->_documentInfo, quaternion, a4, a5, a6);
   }
 
   PCString::~PCString(&v12);
 }
 
-- (void)setRollRadians:(double)a3
+- (void)setRollRadians:(double)radians
 {
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
   v5 = *self->_documentInfo;
 
-  OZXSetSelfieRollRadians(v5, a3);
+  OZXSetSelfieRollRadians(v5, radians);
 }
 
 - (CGSize)documentSize
@@ -5083,11 +5083,11 @@ uint64_t __27__PVMotionEffect_outputROI__block_invoke(uint64_t a1, uint64_t a2)
   return result;
 }
 
-- (CGRect)outputROI_NoLock:(const void *)a3 scale:(double)a4
+- (CGRect)outputROI_NoLock:(const void *)lock scale:(double)scale
 {
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  v6 = *(a3 + 12);
+  v6 = *(lock + 12);
   v7.i64[0] = v6;
   v7.i64[1] = HIDWORD(v6);
   v8 = vcvtq_f64_u64(v7);
@@ -5098,8 +5098,8 @@ uint64_t __27__PVMotionEffect_outputROI__block_invoke(uint64_t a1, uint64_t a2)
     v10.f64[0] = v9;
     __asm { FMOV            V1.2D, #0.5 }
 
-    v16 = a4;
-    v17 = vmulq_n_f64(vmulq_f64(vsubq_f64(v8, v10), _Q1), a4);
+    scaleCopy2 = scale;
+    v17 = vmulq_n_f64(vmulq_f64(vsubq_f64(v8, v10), _Q1), scale);
     v18 = v17.f64[1];
   }
 
@@ -5108,11 +5108,11 @@ uint64_t __27__PVMotionEffect_outputROI__block_invoke(uint64_t a1, uint64_t a2)
     v17.f64[0] = 0.0;
     v18 = 0.0;
     v9 = v8.f64[0];
-    v16 = a4;
+    scaleCopy2 = scale;
   }
 
-  v19 = vmuld_lane_f64(v16, v8, 1);
-  v20 = v9 * v16;
+  v19 = vmuld_lane_f64(scaleCopy2, v8, 1);
+  v20 = v9 * scaleCopy2;
   result.origin.x = v17.f64[0];
   result.size.height = v19;
   result.size.width = v20;
@@ -5120,17 +5120,17 @@ uint64_t __27__PVMotionEffect_outputROI__block_invoke(uint64_t a1, uint64_t a2)
   return result;
 }
 
-- (void)setEffectOutputAspectWithProperties_NoLock:(id)a3 allProperties:(id)a4
+- (void)setEffectOutputAspectWithProperties_NoLock:(id)lock allProperties:(id)properties
 {
-  v13 = a3;
-  v6 = a4;
+  lockCopy = lock;
+  propertiesCopy = properties;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  v7 = [MEMORY[0x277CBEAC0] objectForKey:@"kPVOutputAspectKey" inDictionary:v13 orInDefaultDictionary:v6];
+  v7 = [MEMORY[0x277CBEAC0] objectForKey:@"kPVOutputAspectKey" inDictionary:lockCopy orInDefaultDictionary:propertiesCopy];
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEAC0] objectForKey:@"kPVPlayableAspectRatioKey" inDictionary:v13 orInDefaultDictionary:v6];
-    v9 = [MEMORY[0x277CBEAC0] objectForKey:@"kPVPlayableAspectRatioPreservationModeKey" inDictionary:v13 orInDefaultDictionary:v6];
+    v8 = [MEMORY[0x277CBEAC0] objectForKey:@"kPVPlayableAspectRatioKey" inDictionary:lockCopy orInDefaultDictionary:propertiesCopy];
+    v9 = [MEMORY[0x277CBEAC0] objectForKey:@"kPVPlayableAspectRatioPreservationModeKey" inDictionary:lockCopy orInDefaultDictionary:propertiesCopy];
     [v7 doubleValue];
     v11 = v10;
     [v8 doubleValue];
@@ -5138,18 +5138,18 @@ uint64_t __27__PVMotionEffect_outputROI__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)setEffectOutputAspect_NoLock:(double)a3 playableAspect:(double)a4 playableContentMode:(int)a5
+- (void)setEffectOutputAspect_NoLock:(double)lock playableAspect:(double)aspect playableContentMode:(int)mode
 {
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
   [(PVEffect *)self assertInspectablePropertiesAreLocked];
   p_effectOutputAspect = &self->_effectOutputAspect;
-  self->_effectOutputAspect = a3;
-  if (fabs(a3) >= 0.0000001)
+  self->_effectOutputAspect = lock;
+  if (fabs(lock) >= 0.0000001)
   {
-    self->_playableAspectRatio = a4;
-    self->_playableContentMode = a5;
-    v11 = fabs(a4) >= 0.0000001 && a5 != 0 && vabdd_f64(a4, *p_effectOutputAspect) >= 0.0001;
+    self->_playableAspectRatio = aspect;
+    self->_playableContentMode = mode;
+    v11 = fabs(aspect) >= 0.0000001 && mode != 0 && vabdd_f64(aspect, *p_effectOutputAspect) >= 0.0001;
     self->_hasPlayableAspectOverride = v11;
     v12 = [(NSMutableDictionary *)self->super._inspectableProperties objectForKey:@"kPVEffectPVARMetadata"];
 
@@ -5227,17 +5227,17 @@ uint64_t __27__PVMotionEffect_outputROI__block_invoke(uint64_t a1, uint64_t a2)
   return self->_playableContentMode;
 }
 
-- (void)setNodeIDToCache:(unsigned int)a3
+- (void)setNodeIDToCache:(unsigned int)cache
 {
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  if (a3)
+  if (cache)
   {
     groupIDToCache = self->_groupIDToCache;
-    if (groupIDToCache != a3)
+    if (groupIDToCache != cache)
     {
       self->_previousGroupIDToCache = groupIDToCache;
-      self->_groupIDToCache = a3;
+      self->_groupIDToCache = cache;
       self->_cachedRenderDirty = 1;
       previousGroupIDToCache = self->_previousGroupIDToCache;
       if (previousGroupIDToCache)
@@ -5252,22 +5252,22 @@ uint64_t __27__PVMotionEffect_outputROI__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (int)stillImageInverseToneMapOperator:(id)a3
+- (int)stillImageInverseToneMapOperator:(id)operator
 {
-  v4 = a3;
+  operatorCopy = operator;
   stillImageInverseToneMapOperator = self->_stillImageInverseToneMapOperator;
   if (!stillImageInverseToneMapOperator)
   {
     v6 = MEMORY[0x277CBEAC0];
-    v7 = [(PVEffect *)self contentRegistryProperties];
-    v8 = [v6 objectForKey:@"stillImageInverseToneMapOperator" inDictionary:v4 orInDefaultDictionary:v7];
+    contentRegistryProperties = [(PVEffect *)self contentRegistryProperties];
+    v8 = [v6 objectForKey:@"stillImageInverseToneMapOperator" inDictionary:operatorCopy orInDefaultDictionary:contentRegistryProperties];
 
     if (v8)
     {
-      v9 = [v8 intValue];
-      if (v9 < 3)
+      intValue = [v8 intValue];
+      if (intValue < 3)
       {
-        v10 = qword_279AA6370[v9];
+        v10 = qword_279AA6370[intValue];
 LABEL_7:
         v11 = self->_stillImageInverseToneMapOperator;
         self->_stillImageInverseToneMapOperator = v10;
@@ -5276,7 +5276,7 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      NSLog(&cfstr_UnsupportedSti.isa, v9);
+      NSLog(&cfstr_UnsupportedSti.isa, intValue);
     }
 
     v10 = &unk_28732D3A0;
@@ -5284,26 +5284,26 @@ LABEL_7:
   }
 
 LABEL_8:
-  v12 = [(NSNumber *)stillImageInverseToneMapOperator intValue];
+  intValue2 = [(NSNumber *)stillImageInverseToneMapOperator intValue];
 
-  return v12;
+  return intValue2;
 }
 
-- (int)getOSFAOption:(id)a3
+- (int)getOSFAOption:(id)option
 {
   v4 = MEMORY[0x277CBEAC0];
   inspectableProperties = self->super._inspectableProperties;
-  v6 = [(PVEffect *)self contentRegistryProperties];
-  v7 = [v4 objectForKey:@"OSFAToneMappingOption" inDictionary:inspectableProperties orInDefaultDictionary:v6];
+  contentRegistryProperties = [(PVEffect *)self contentRegistryProperties];
+  v7 = [v4 objectForKey:@"OSFAToneMappingOption" inDictionary:inspectableProperties orInDefaultDictionary:contentRegistryProperties];
 
   if (v7)
   {
-    v8 = [v7 intValue];
-    v9 = v8;
-    if (v8 >= 3)
+    intValue = [v7 intValue];
+    bOOLValue = intValue;
+    if (intValue >= 3)
     {
-      NSLog(&cfstr_UnexpectedValu.isa, @"OSFAToneMappingOption", v8);
-      v9 = 1;
+      NSLog(&cfstr_UnexpectedValu.isa, @"OSFAToneMappingOption", intValue);
+      bOOLValue = 1;
     }
   }
 
@@ -5311,21 +5311,21 @@ LABEL_8:
   {
     v10 = MEMORY[0x277CBEAC0];
     v11 = self->super._inspectableProperties;
-    v12 = [(PVEffect *)self contentRegistryProperties];
-    v7 = [v10 objectForKey:@"wantsOSFAToneMapping" inDictionary:v11 orInDefaultDictionary:v12];
+    contentRegistryProperties2 = [(PVEffect *)self contentRegistryProperties];
+    v7 = [v10 objectForKey:@"wantsOSFAToneMapping" inDictionary:v11 orInDefaultDictionary:contentRegistryProperties2];
 
     if (v7)
     {
-      v9 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
     }
 
     else
     {
-      v9 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v9;
+  return bOOLValue;
 }
 
 - (id)debugDisplayName
@@ -5333,11 +5333,11 @@ LABEL_8:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PVEffect *)self displayName];
-  v7 = [(PVEffect *)self effectID];
-  v8 = [(PVMotionEffect *)self projectPath];
-  v9 = [v8 lastPathComponent];
-  v10 = [v3 stringWithFormat:@"%@ %@ %@ %@", v5, v6, v7, v9];
+  displayName = [(PVEffect *)self displayName];
+  effectID = [(PVEffect *)self effectID];
+  projectPath = [(PVMotionEffect *)self projectPath];
+  lastPathComponent = [projectPath lastPathComponent];
+  v10 = [v3 stringWithFormat:@"%@ %@ %@ %@", v5, displayName, effectID, lastPathComponent];
 
   return v10;
 }
@@ -5379,11 +5379,11 @@ void __37__PVMotionEffect_ephemeralProperties__block_invoke()
   [PVMotionEffect ephemeralProperties]::s_ephemeralProperties = v0;
 }
 
-- (BOOL)isEphemeralProperty:(id)a3
+- (BOOL)isEphemeralProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(PVMotionEffect *)self ephemeralProperties];
-  v6 = ([v5 containsObject:v4] & 1) != 0 || -[PVMotionEffect isTemporalProperty:](self, "isTemporalProperty:", v4);
+  propertyCopy = property;
+  ephemeralProperties = [(PVMotionEffect *)self ephemeralProperties];
+  v6 = ([ephemeralProperties containsObject:propertyCopy] & 1) != 0 || -[PVMotionEffect isTemporalProperty:](self, "isTemporalProperty:", propertyCopy);
 
   return v6;
 }
@@ -5419,34 +5419,34 @@ void __36__PVMotionEffect_temporalProperties__block_invoke()
   [PVMotionEffect temporalProperties]::s_temporalProperties = v0;
 }
 
-- (BOOL)isTemporalProperty:(id)a3
+- (BOOL)isTemporalProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"PVSetEffectAnchor"])
+  propertyCopy = property;
+  if ([propertyCopy hasPrefix:@"PVSetEffectAnchor"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(PVMotionEffect *)self temporalProperties];
-    v5 = [v6 containsObject:v4];
+    temporalProperties = [(PVMotionEffect *)self temporalProperties];
+    v5 = [temporalProperties containsObject:propertyCopy];
   }
 
   return v5;
 }
 
-- (BOOL)didSetCacheInvalidatingParameter_NoLock:(id)a3 forKey:(id)a4
+- (BOOL)didSetCacheInvalidatingParameter_NoLock:(id)lock forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  lockCopy = lock;
+  keyCopy = key;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  if ([(PVMotionEffect *)self parameterInvalidatesCache_NoLock:v7]&& !*(self->_documentInfo + 41) && [(PVMotionEffect *)self didCacheInvalidatingParameterChange_NoLock:v6 key:v7])
+  if ([(PVMotionEffect *)self parameterInvalidatesCache_NoLock:keyCopy]&& !*(self->_documentInfo + 41) && [(PVMotionEffect *)self didCacheInvalidatingParameterChange_NoLock:lockCopy key:keyCopy])
   {
     v8 = 1;
     self->_cachedRenderDirty = 1;
-    [(NSMutableDictionary *)self->_parametersThatInvalidateCache setObject:v6 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_parametersThatInvalidateCache setObject:lockCopy forKeyedSubscript:keyCopy];
   }
 
   else
@@ -5457,32 +5457,32 @@ void __36__PVMotionEffect_temporalProperties__block_invoke()
   return v8;
 }
 
-- (BOOL)didCacheInvalidatingParameterChange_NoLock:(id)a3 key:(id)a4
+- (BOOL)didCacheInvalidatingParameterChange_NoLock:(id)lock key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  lockCopy = lock;
+  keyCopy = key;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  v8 = [(NSMutableDictionary *)self->_parametersThatInvalidateCache objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_parametersThatInvalidateCache objectForKeyedSubscript:keyCopy];
   v9 = v8;
-  if (v6 | v8)
+  if (lockCopy | v8)
   {
     v10 = 1;
-    if (v6 && v8)
+    if (lockCopy && v8)
     {
-      if ([@"kPVOutputAspectKey" isEqualToString:v7] || objc_msgSend(@"kPVPlayableAspectRatioKey", "isEqualToString:", v7))
+      if ([@"kPVOutputAspectKey" isEqualToString:keyCopy] || objc_msgSend(@"kPVPlayableAspectRatioKey", "isEqualToString:", keyCopy))
       {
-        v11 = PVNumbersAreEqualAsDoubles(v9, v6);
+        v11 = PVNumbersAreEqualAsDoubles(v9, lockCopy);
       }
 
-      else if ([@"kPVPlayableAspectRatioPreservationModeKey" isEqualToString:v7])
+      else if ([@"kPVPlayableAspectRatioPreservationModeKey" isEqualToString:keyCopy])
       {
-        v11 = PVNumbersAreEqualAsIntegers(v9, v6);
+        v11 = PVNumbersAreEqualAsIntegers(v9, lockCopy);
       }
 
       else
       {
-        if (![@"kPVCachedTextureOutputSize" isEqualToString:v7])
+        if (![@"kPVCachedTextureOutputSize" isEqualToString:keyCopy])
         {
           v19 = 0;
           v20 = &v19;
@@ -5494,9 +5494,9 @@ void __36__PVMotionEffect_temporalProperties__block_invoke()
           v14[2] = __65__PVMotionEffect_didCacheInvalidatingParameterChange_NoLock_key___block_invoke;
           v14[3] = &unk_279AA62C0;
           v14[4] = self;
-          v15 = v7;
+          v15 = keyCopy;
           v16 = v9;
-          v17 = v6;
+          v17 = lockCopy;
           v18 = &v19;
           [(NSMutableArray *)motionComponents enumerateObjectsUsingBlock:v14];
           v10 = *(v20 + 24);
@@ -5505,7 +5505,7 @@ void __36__PVMotionEffect_temporalProperties__block_invoke()
           goto LABEL_13;
         }
 
-        v11 = PVValuesAreEqualAsCGSizes(v9, v6);
+        v11 = PVValuesAreEqualAsCGSizes(v9, lockCopy);
       }
 
       v10 = !v11;
@@ -5534,17 +5534,17 @@ uint64_t __65__PVMotionEffect_didCacheInvalidatingParameterChange_NoLock_key___b
   return result;
 }
 
-- (BOOL)parameterInvalidatesCache_NoLock:(id)a3
+- (BOOL)parameterInvalidatesCache_NoLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  LOBYTE(self) = [(NSMutableSet *)self->_parameterKeysThatInvalidateCache containsObject:v4];
+  LOBYTE(self) = [(NSMutableSet *)self->_parameterKeysThatInvalidateCache containsObject:lockCopy];
 
   return self;
 }
 
-- (BOOL)isRenderCachingDisabled_NoLock:(id *)a3
+- (BOOL)isRenderCachingDisabled_NoLock:(id *)lock
 {
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsReady];
@@ -5567,8 +5567,8 @@ uint64_t __65__PVMotionEffect_didCacheInvalidatingParameterChange_NoLock_key___b
     v12[1] = *"";
     v12[2] = __49__PVMotionEffect_isRenderCachingDisabled_NoLock___block_invoke;
     v12[3] = &unk_279AA62E8;
-    v13 = *&a3->var0;
-    var3 = a3->var3;
+    v13 = *&lock->var0;
+    var3 = lock->var3;
     v15 = v8;
     v12[4] = self;
     v12[5] = &v16;
@@ -5635,7 +5635,7 @@ uint64_t __33__PVMotionEffect_topLevelOpacity__block_invoke(uint64_t result, uin
   return result;
 }
 
-- (void)setTopLevelOpacity:(double)a3
+- (void)setTopLevelOpacity:(double)opacity
 {
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
@@ -5643,15 +5643,15 @@ uint64_t __33__PVMotionEffect_topLevelOpacity__block_invoke(uint64_t result, uin
   if (!*(documentInfo + 41))
   {
     v6 = **&MEMORY[0x277CC08F0];
-    OZXSetObjectOpacity(*documentInfo, &v6, *(documentInfo + 40), a3);
+    OZXSetObjectOpacity(*documentInfo, &v6, *(documentInfo + 40), opacity);
   }
 }
 
-- (BOOL)isVisibleAtTime_NoLock:(id *)a3 timedProperties:(id)a4 defaultProperties:(id)a5
+- (BOOL)isVisibleAtTime_NoLock:(id *)lock timedProperties:(id)properties defaultProperties:(id)defaultProperties
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = [MEMORY[0x277CBEAC0] objectForKey:@"kPVHiddenKey" inDictionary:v6 orInDefaultDictionary:v7];
+  propertiesCopy = properties;
+  defaultPropertiesCopy = defaultProperties;
+  v8 = [MEMORY[0x277CBEAC0] objectForKey:@"kPVHiddenKey" inDictionary:propertiesCopy orInDefaultDictionary:defaultPropertiesCopy];
   if ([v8 BOOLValue])
   {
     v9 = 0;
@@ -5659,7 +5659,7 @@ uint64_t __33__PVMotionEffect_topLevelOpacity__block_invoke(uint64_t result, uin
 
   else
   {
-    v10 = [MEMORY[0x277CBEAC0] objectForKey:@"kPVTopLevelOpacityKey" inDictionary:v6 orInDefaultDictionary:v7];
+    v10 = [MEMORY[0x277CBEAC0] objectForKey:@"kPVTopLevelOpacityKey" inDictionary:propertiesCopy orInDefaultDictionary:defaultPropertiesCopy];
     v11 = v10;
     v9 = 1;
     if (v10)
@@ -5675,28 +5675,28 @@ uint64_t __33__PVMotionEffect_topLevelOpacity__block_invoke(uint64_t result, uin
   return v9;
 }
 
-- (id)publishedParams_NoLock:(const void *)a3
+- (id)publishedParams_NoLock:(const void *)lock
 {
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
-  v5 = *a3;
+  v5 = *lock;
 
   return OZXGetPublishedSettings(v5);
 }
 
-- (id)publishedParam_NoLock:(const void *)a3 forKey:(id)a4 atTime:(id *)a5 includeHidden:(BOOL)a6
+- (id)publishedParam_NoLock:(const void *)lock forKey:(id)key atTime:(id *)time includeHidden:(BOOL)hidden
 {
-  v10 = a4;
+  keyCopy = key;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
   v11 = +[PVMotionEffect motionEffectPropertyKeyToPublishedParameterNameMap];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  v12 = [v11 objectForKeyedSubscript:keyCopy];
   v17.var0 = 0;
   PCString::set(&v17, v12);
 
-  v13 = *a3;
-  v16 = *a5;
-  v14 = OZXGetPublishedSetting(v13, &v17, &v16, a6);
+  v13 = *lock;
+  v16 = *time;
+  v14 = OZXGetPublishedSetting(v13, &v17, &v16, hidden);
   PCString::~PCString(&v17);
 
   return v14;
@@ -5706,13 +5706,13 @@ uint64_t __33__PVMotionEffect_topLevelOpacity__block_invoke(uint64_t result, uin
 {
   v10.receiver = self;
   v10.super_class = PVMotionEffect;
-  v3 = [(PVEffect *)&v10 effectParameters];
+  effectParameters = [(PVEffect *)&v10 effectParameters];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = *"";
   v8[2] = __34__PVMotionEffect_effectParameters__block_invoke;
   v8[3] = &unk_279AA58C0;
   v8[4] = self;
-  v4 = v3;
+  v4 = effectParameters;
   v9 = v4;
   [(PVMotionEffect *)self runEnsuringDocumentReadyAndLockingDocument:v8];
   v5 = v9;
@@ -5765,30 +5765,30 @@ void __34__PVMotionEffect_effectParameters__block_invoke(uint64_t a1, uint64_t a
   }
 }
 
-- (void)setEffectParameters:(id)a3
+- (void)setEffectParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5.receiver = self;
   v5.super_class = PVMotionEffect;
-  [(PVEffect *)&v5 setEffectParameters:v4];
-  [(PVEffect *)self addEntriesToInspectableProperties:v4];
+  [(PVEffect *)&v5 setEffectParameters:parametersCopy];
+  [(PVEffect *)self addEntriesToInspectableProperties:parametersCopy];
 }
 
-- (void)disableBackgroundMovie:(BOOL)a3
+- (void)disableBackgroundMovie:(BOOL)movie
 {
-  v3 = a3;
+  movieCopy = movie;
   [(PVMotionEffect *)self assertDocumentIsLocked];
   [(PVMotionEffect *)self assertDocumentStatusIsLoadedOrReady];
   v5 = 0;
   if (!OZXGetDropZone(*self->_documentInfo, 0, &v5))
   {
-    OZXDisableRenderingObject(*self->_documentInfo, v5, v3);
+    OZXDisableRenderingObject(*self->_documentInfo, v5, movieCopy);
   }
 }
 
-- (BOOL)supportsParam:(id)a3
+- (BOOL)supportsParam:(id)param
 {
-  v4 = a3;
+  paramCopy = param;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -5798,9 +5798,9 @@ void __34__PVMotionEffect_effectParameters__block_invoke(uint64_t a1, uint64_t a
   v7[2] = __32__PVMotionEffect_supportsParam___block_invoke;
   v7[3] = &unk_279AA5120;
   v7[4] = self;
-  v8 = v4;
+  v8 = paramCopy;
   v9 = &v10;
-  v5 = v4;
+  v5 = paramCopy;
   [(PVMotionEffect *)self runEnsuringDocumentReadyAndLockingDocument:v7];
   LOBYTE(self) = *(v11 + 24);
 
@@ -5880,7 +5880,7 @@ void __40__PVMotionEffect_motionComponentClasses__block_invoke()
   block[1] = *"";
   block[2] = __68__PVMotionEffect_motionEffectPropertyKeyToPublishedParameterNameMap__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[PVMotionEffect motionEffectPropertyKeyToPublishedParameterNameMap]::onceToken != -1)
   {
     dispatch_once(&+[PVMotionEffect motionEffectPropertyKeyToPublishedParameterNameMap]::onceToken, block);
@@ -5943,22 +5943,22 @@ void __68__PVMotionEffect_publishedParameterNameToMotionEffectPropertyKeyMap__bl
 
 - (BOOL)hasBuiltInEnvironment
 {
-  v3 = [(PVEffect *)self effectType];
-  v4 = [(PVEffect *)self contentProperties];
-  v5 = [v4 objectForKey:@"FFEffectProperty_Category"];
+  effectType = [(PVEffect *)self effectType];
+  contentProperties = [(PVEffect *)self contentProperties];
+  v5 = [contentProperties objectForKey:@"FFEffectProperty_Category"];
 
-  if ([v3 isEqualToString:@"effect.video.filter"] && objc_msgSend(v5, "isEqualToString:", @"Selfie"))
+  if ([effectType isEqualToString:@"effect.video.filter"] && objc_msgSend(v5, "isEqualToString:", @"Selfie"))
   {
-    v6 = [(PVEffect *)self effectID];
-    if ([v6 isEqualToString:@"7FFE36D8-396F-4011-90D9-99B6414D4DB1"])
+    effectID = [(PVEffect *)self effectID];
+    if ([effectID isEqualToString:@"7FFE36D8-396F-4011-90D9-99B6414D4DB1"])
     {
       LOBYTE(v7) = 0;
     }
 
     else
     {
-      v8 = [(PVEffect *)self effectID];
-      v7 = [v8 isEqualToString:@"87530270-50A4-4483-82B5-D520897FF2CE"] ^ 1;
+      effectID2 = [(PVEffect *)self effectID];
+      v7 = [effectID2 isEqualToString:@"87530270-50A4-4483-82B5-D520897FF2CE"] ^ 1;
     }
   }
 
@@ -5970,13 +5970,13 @@ void __68__PVMotionEffect_publishedParameterNameToMotionEffectPropertyKeyMap__bl
   return v7;
 }
 
-- (BOOL)isLandscape:(id)a3
+- (BOOL)isLandscape:(id)landscape
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"PVVideoOrientation"];
+  landscapeCopy = landscape;
+  v4 = [landscapeCopy objectForKeyedSubscript:@"PVVideoOrientation"];
   if (!v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"PVARApplyVerticalRotation"];
+    v5 = [landscapeCopy objectForKeyedSubscript:@"PVARApplyVerticalRotation"];
     v6 = v5;
     v4 = &unk_28732D3D0;
     if (v5 && ![v5 BOOLValue])
@@ -5990,25 +5990,25 @@ void __68__PVMotionEffect_publishedParameterNameToMotionEffectPropertyKeyMap__bl
   return v7;
 }
 
-- (void)applyARData:(id)a3 time:(id *)a4 renderParams:(_OZXRenderParams *)a5
+- (void)applyARData:(id)data time:(id *)time renderParams:(_OZXRenderParams *)params
 {
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"PVMatteInputMode"];
+  dataCopy = data;
+  v8 = [dataCopy objectForKeyedSubscript:@"PVMatteInputMode"];
   OZXSetMatteInputMode(*self->_documentInfo, v8);
-  v9 = [v7 objectForKeyedSubscript:@"kPVEffectPVARMetadata"];
+  v9 = [dataCopy objectForKeyedSubscript:@"kPVEffectPVARMetadata"];
   v10 = v9;
   if (v9)
   {
     v72 = v8;
-    v11 = [v9 depthData];
-    v12 = [v7 objectForKeyedSubscript:@"PVVideoOrientation"];
+    depthData = [v9 depthData];
+    v12 = [dataCopy objectForKeyedSubscript:@"PVVideoOrientation"];
     if (!v12)
     {
-      v13 = [v7 objectForKeyedSubscript:@"PVARApplyVerticalRotation"];
-      v14 = [v13 BOOLValue];
+      v13 = [dataCopy objectForKeyedSubscript:@"PVARApplyVerticalRotation"];
+      bOOLValue = [v13 BOOLValue];
       if (v13)
       {
-        v15 = v14;
+        v15 = bOOLValue;
       }
 
       else
@@ -6027,28 +6027,28 @@ void __68__PVMotionEffect_publishedParameterNameToMotionEffectPropertyKeyMap__bl
       }
     }
 
-    v16 = [v12 unsignedIntValue];
-    if (v16 - 2 >= 3)
+    unsignedIntValue = [v12 unsignedIntValue];
+    if (unsignedIntValue - 2 >= 3)
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = v16 - 1;
+      v17 = unsignedIntValue - 1;
     }
 
-    v73 = [v7 objectForKeyedSubscript:@"PVARFaceGestures"];
+    v73 = [dataCopy objectForKeyedSubscript:@"PVARFaceGestures"];
     v69 = v12;
-    v71 = [v7 objectForKeyedSubscript:@"PVARBodyGestures"];
-    v70 = [v7 objectForKeyedSubscript:@"PVAR3DSkeleton"];
-    v68 = [v7 objectForKeyedSubscript:@"kPVARFrameSetMetadataPlaneAnchorsKey"];
-    v67 = [v7 objectForKeyedSubscript:@"PVEffectSceneNode"];
+    v71 = [dataCopy objectForKeyedSubscript:@"PVARBodyGestures"];
+    v70 = [dataCopy objectForKeyedSubscript:@"PVAR3DSkeleton"];
+    v68 = [dataCopy objectForKeyedSubscript:@"kPVARFrameSetMetadataPlaneAnchorsKey"];
+    v67 = [dataCopy objectForKeyedSubscript:@"PVEffectSceneNode"];
     v91 = 0u;
     v92 = 0u;
     v89 = 0u;
     v90 = 0u;
-    v18 = [v7 objectForKeyedSubscript:@"WorldOrigin"];
+    v18 = [dataCopy objectForKeyedSubscript:@"WorldOrigin"];
     v19 = v18;
     if (v18)
     {
@@ -6063,9 +6063,9 @@ void __68__PVMotionEffect_publishedParameterNameToMotionEffectPropertyKeyMap__bl
       v90 = 0u;
     }
 
-    v76 = *&a4->var0;
-    var3 = a4->var3;
-    v62 = v11;
+    v76 = *&time->var0;
+    var3 = time->var3;
+    v62 = depthData;
     v78 = v62;
     v79 = v89;
     v80 = v90;
@@ -6078,14 +6078,14 @@ void __68__PVMotionEffect_publishedParameterNameToMotionEffectPropertyKeyMap__bl
     v20 = v68;
     v85 = v20;
     v86 = v17;
-    v87 = [v73 unsignedLongValue];
+    unsignedLongValue = [v73 unsignedLongValue];
     v21 = v67;
     v88 = v21;
-    v22 = [v10 arFrame];
+    arFrame = [v10 arFrame];
     documentInfo = self->_documentInfo;
-    if (v22)
+    if (arFrame)
     {
-      OZXApplyARFrame(*documentInfo, v22, 10.0, 45000.0, &v76);
+      OZXApplyARFrame(*documentInfo, arFrame, 10.0, 45000.0, &v76);
     }
 
     else
@@ -6101,19 +6101,19 @@ void __68__PVMotionEffect_publishedParameterNameToMotionEffectPropertyKeyMap__bl
       v30.f32[1] = v31;
       *&v32 = v24;
       *(&v32 + 1) = v25;
-      pv_simd_matrix_make_perspective(3, v16, 1, 1, v33, v34, v35, v30, v32);
+      pv_simd_matrix_make_perspective(3, unsignedIntValue, 1, 1, v33, v34, v35, v30, v32);
       v75.columns[0] = v36;
       v75.columns[1] = v37;
       v75.columns[2] = v38;
       v75.columns[3] = v39;
-      if (v16 > 4)
+      if (unsignedIntValue > 4)
       {
         v40 = 0;
       }
 
       else
       {
-        v40 = qword_260342DE0[v16];
+        v40 = qword_260342DE0[unsignedIntValue];
       }
 
       v41 = PVCardinalAnglesDouble[v40];
@@ -6162,7 +6162,7 @@ void __68__PVMotionEffect_publishedParameterNameToMotionEffectPropertyKeyMap__bl
     v8 = v72;
   }
 
-  v59 = [v7 objectForKeyedSubscript:@"PVARClearARAnchors"];
+  v59 = [dataCopy objectForKeyedSubscript:@"PVARClearARAnchors"];
   if (v59)
   {
     OZXClearARAnchors(*self->_documentInfo, v59);

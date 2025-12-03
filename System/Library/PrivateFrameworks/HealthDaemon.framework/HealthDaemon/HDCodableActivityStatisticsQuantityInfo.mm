@@ -1,21 +1,21 @@
 @interface HDCodableActivityStatisticsQuantityInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)setHasValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStartDate:(BOOL)date;
+- (void)setHasValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableActivityStatisticsQuantityInfo
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasValue:(BOOL)a3
+- (void)setHasValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableActivityStatisticsQuantityInfo;
   v4 = [(HDCodableActivityStatisticsQuantityInfo *)&v8 description];
-  v5 = [(HDCodableActivityStatisticsQuantityInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableActivityStatisticsQuantityInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_startDate];
-    [v3 setObject:v5 forKey:@"startDate"];
+    [dictionary setObject:v5 forKey:@"startDate"];
 
     has = self->_has;
   }
@@ -70,27 +70,27 @@
   if (has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_endDate];
-    [v3 setObject:v6 forKey:@"endDate"];
+    [dictionary setObject:v6 forKey:@"endDate"];
   }
 
   unit = self->_unit;
   if (unit)
   {
-    [v3 setObject:unit forKey:@"unit"];
+    [dictionary setObject:unit forKey:@"unit"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_value];
-    [v3 setObject:v8 forKey:@"value"];
+    [dictionary setObject:v8 forKey:@"value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -117,40 +117,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_startDate;
-    *(v4 + 40) |= 2u;
+    toCopy[2] = *&self->_startDate;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[1] = *&self->_endDate;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = *&self->_endDate;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_unit)
   {
-    v6 = v4;
-    [v4 setUnit:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setUnit:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    v4[3] = *&self->_value;
-    *(v4 + 40) |= 4u;
+    toCopy[3] = *&self->_value;
+    *(toCopy + 40) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -166,7 +166,7 @@
     *(v5 + 40) |= 1u;
   }
 
-  v8 = [(NSString *)self->_unit copyWithZone:a3];
+  v8 = [(NSString *)self->_unit copyWithZone:zone];
   v9 = *(v6 + 32);
   *(v6 + 32) = v8;
 
@@ -179,44 +179,44 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_startDate != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_startDate != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_endDate != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_endDate != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_19;
   }
 
   unit = self->_unit;
-  if (unit | *(v4 + 4))
+  if (unit | *(equalCopy + 4))
   {
     if (![(NSString *)unit isEqual:?])
     {
@@ -226,13 +226,13 @@ LABEL_19:
     }
 
     has = self->_has;
-    v6 = *(v4 + 40);
+    v6 = *(equalCopy + 40);
   }
 
   v8 = (v6 & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_value != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_value != *(equalCopy + 3))
     {
       goto LABEL_19;
     }
@@ -351,33 +351,33 @@ LABEL_20:
   return v9 ^ v5 ^ v16 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) != 0)
   {
-    self->_startDate = *(v4 + 2);
+    self->_startDate = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
   }
 
   if (v5)
   {
-    self->_endDate = *(v4 + 1);
+    self->_endDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(HDCodableActivityStatisticsQuantityInfo *)self setUnit:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 40) & 4) != 0)
+  if ((*(fromCopy + 40) & 4) != 0)
   {
-    self->_value = *(v4 + 3);
+    self->_value = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 }

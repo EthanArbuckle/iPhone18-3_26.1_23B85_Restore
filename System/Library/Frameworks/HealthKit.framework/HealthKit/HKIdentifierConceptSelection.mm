@@ -1,8 +1,8 @@
 @interface HKIdentifierConceptSelection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKIdentifierConceptSelection)init;
-- (HKIdentifierConceptSelection)initWithCoder:(id)a3;
-- (HKIdentifierConceptSelection)initWithIdentifier:(id)a3;
+- (HKIdentifierConceptSelection)initWithCoder:(id)coder;
+- (HKIdentifierConceptSelection)initWithIdentifier:(id)identifier;
 @end
 
 @implementation HKIdentifierConceptSelection
@@ -17,15 +17,15 @@
   return 0;
 }
 
-- (HKIdentifierConceptSelection)initWithIdentifier:(id)a3
+- (HKIdentifierConceptSelection)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HKIdentifierConceptSelection;
   v5 = [(HKConceptSelection *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -33,48 +33,48 @@
   return v5;
 }
 
-- (HKIdentifierConceptSelection)initWithCoder:(id)a3
+- (HKIdentifierConceptSelection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
 
   if (v5)
   {
     self = [(HKIdentifierConceptSelection *)self initWithIdentifier:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = HKIdentifierConceptSelection;
-  if ([(HKConceptSelection *)&v13 isEqual:v4])
+  if ([(HKConceptSelection *)&v13 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(HKIdentifierConceptSelection *)self identifier];
-    v7 = [v5 identifier];
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(HKIdentifierConceptSelection *)self identifier];
+    identifier2 = [v5 identifier];
+    if (identifier == identifier2)
     {
       v11 = 1;
     }
 
     else
     {
-      v8 = [v5 identifier];
-      if (v8)
+      identifier3 = [v5 identifier];
+      if (identifier3)
       {
-        v9 = [(HKIdentifierConceptSelection *)self identifier];
-        v10 = [v5 identifier];
-        v11 = [v9 isEqual:v10];
+        identifier4 = [(HKIdentifierConceptSelection *)self identifier];
+        identifier5 = [v5 identifier];
+        v11 = [identifier4 isEqual:identifier5];
       }
 
       else

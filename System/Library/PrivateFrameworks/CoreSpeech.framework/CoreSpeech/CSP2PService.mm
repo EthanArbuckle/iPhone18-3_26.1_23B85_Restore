@@ -1,49 +1,49 @@
 @interface CSP2PService
 + (id)sharedInstance;
-- (BOOL)fileURL:(id)a3 matchesFileNamePattern:(id)a4;
+- (BOOL)fileURL:(id)l matchesFileNamePattern:(id)pattern;
 - (BOOL)isHeadlessDeviceDataCollectionModeEnabled;
 - (BOOL)isInternalWithoutProfile;
-- (BOOL)shouldTransferVoiceTriggerLogFileWithURL:(id)a3;
+- (BOOL)shouldTransferVoiceTriggerLogFileWithURL:(id)l;
 - (CSADCompanionServiceProvider)adCompanionServiceProvider;
 - (CSP2PService)init;
-- (id)_getContentsOfDirectory:(id)a3;
-- (id)_sendGradingData:(id)a3 withFileName:(id)a4 toPeerId:(id)a5 withCompressedFlag:(BOOL)a6 withUncompressedDataSize:(unint64_t)a7 withBatchId:(id)a8 withRetainFileFlag:(BOOL)a9 withFilePrefix:(id)a10 withCompletion:(id)a11;
-- (id)_sha1:(id)a3;
+- (id)_getContentsOfDirectory:(id)directory;
+- (id)_sendGradingData:(id)data withFileName:(id)name toPeerId:(id)id withCompressedFlag:(BOOL)flag withUncompressedDataSize:(unint64_t)size withBatchId:(id)batchId withRetainFileFlag:(BOOL)fileFlag withFilePrefix:(id)self0 withCompletion:(id)self1;
+- (id)_sha1:(id)_sha1;
 - (id)_spIdSiriDebugGradingDataRootDirectory;
-- (id)_spIdSiriDebugTrainedUsersFilePathForLocale:(id)a3;
+- (id)_spIdSiriDebugTrainedUsersFilePathForLocale:(id)locale;
 - (id)_spIdSiriDebugVTDataDirectory;
-- (id)_spIdSiriDebugVoiceProfileCacheDirectoryForProfile:(id)a3 locale:(id)a4;
-- (id)_spIdSiriDebugVoiceProfileRootDirectoryForProfile:(id)a3 locale:(id)a4;
+- (id)_spIdSiriDebugVoiceProfileCacheDirectoryForProfile:(id)profile locale:(id)locale;
+- (id)_spIdSiriDebugVoiceProfileRootDirectoryForProfile:(id)profile locale:(id)locale;
 - (id)_spIdSiriDebugVoiceProfileStoreRootDirectory;
-- (id)_spIdSiriDebugVoiceProfileStoreRootDirectoryForLocale:(id)a3;
+- (id)_spIdSiriDebugVoiceProfileStoreRootDirectoryForLocale:(id)locale;
 - (id)_speakerRecognitionAudioLogsGradingDir;
-- (void)_compressFilesInDirectory:(id)a3 matchingPredicate:(id)a4 sortedByCreationDate:(BOOL)a5 compressedFileAvailable:(id)a6;
-- (void)_createDirectoryIfDoesNotExist:(id)a3;
-- (void)_getHomeUserIdForSharedSiriId:(id)a3 withCompletion:(id)a4;
-- (void)_processFetchVoiceProfileCommandFromPeerId:(id)a3 requestInfo:(id)a4 withReply:(id)a5;
-- (void)_processGradingDataFetchCommandWithRequest:(id)a3 ofLogType:(unint64_t)a4 fromSenderID:(id)a5 withReply:(id)a6;
-- (void)_processParallelRecordingCommandWithRequest:(id)a3 fromSenderID:(id)a4 withReply:(id)a5;
-- (void)_processRemoteHeySiriCommandWithRequest:(id)a3 fromSenderID:(id)a4 withReply:(id)a5;
-- (void)_processReverseTransferVoiceProfileCommandFromPeerId:(id)a3 requestInfo:(id)a4 withReply:(id)a5;
-- (void)_processVoiceProfileDeleteCommandWithRequest:(id)a3 fromSenderID:(id)a4 withReply:(id)a5;
-- (void)_processVoiceProfileListQueryCommandFromPeerId:(id)a3 requestInfo:(id)a4 withReply:(id)a5;
-- (void)_processVoiceProfileUpdateTriggerFromPeerId:(id)a3 requestInfo:(id)a4 withReply:(id)a5;
-- (void)_receiveParallelRecordingFromPeerId:(id)a3 recordingInfo:(id)a4 withReply:(id)a5;
-- (void)_receiveVoiceGradingDataFromPeerId:(id)a3 requestInfo:(id)a4 withReply:(id)a5;
-- (void)_receiveVoiceProfileFromPeerId:(id)a3 voiceProfileInfo:(id)a4 withReply:(id)a5;
-- (void)_sendAcousticGradingDataToPeerId:(id)a3;
-- (void)_sendCoreSpeechGradingDataToPeerId:(id)a3 forLogType:(unint64_t)a4;
-- (void)_sendCoreSpeechMagusGradingDataToPeerId:(id)a3;
-- (void)_sendGeckoSpeechLogsToPeerId:(id)a3;
-- (void)_sendVoiceProfile:(id)a3 toPeerId:(id)a4;
-- (void)_sendVoiceProfileUpdateTriggerToPeerId:(id)a3 forLocale:(id)a4;
-- (void)_sendVoiceTriggerGradingDataToPeerId:(id)a3;
-- (void)processRemoteCommandWithPayload:(id)a3 fromPeer:(id)a4 withReply:(id)a5;
+- (void)_compressFilesInDirectory:(id)directory matchingPredicate:(id)predicate sortedByCreationDate:(BOOL)date compressedFileAvailable:(id)available;
+- (void)_createDirectoryIfDoesNotExist:(id)exist;
+- (void)_getHomeUserIdForSharedSiriId:(id)id withCompletion:(id)completion;
+- (void)_processFetchVoiceProfileCommandFromPeerId:(id)id requestInfo:(id)info withReply:(id)reply;
+- (void)_processGradingDataFetchCommandWithRequest:(id)request ofLogType:(unint64_t)type fromSenderID:(id)d withReply:(id)reply;
+- (void)_processParallelRecordingCommandWithRequest:(id)request fromSenderID:(id)d withReply:(id)reply;
+- (void)_processRemoteHeySiriCommandWithRequest:(id)request fromSenderID:(id)d withReply:(id)reply;
+- (void)_processReverseTransferVoiceProfileCommandFromPeerId:(id)id requestInfo:(id)info withReply:(id)reply;
+- (void)_processVoiceProfileDeleteCommandWithRequest:(id)request fromSenderID:(id)d withReply:(id)reply;
+- (void)_processVoiceProfileListQueryCommandFromPeerId:(id)id requestInfo:(id)info withReply:(id)reply;
+- (void)_processVoiceProfileUpdateTriggerFromPeerId:(id)id requestInfo:(id)info withReply:(id)reply;
+- (void)_receiveParallelRecordingFromPeerId:(id)id recordingInfo:(id)info withReply:(id)reply;
+- (void)_receiveVoiceGradingDataFromPeerId:(id)id requestInfo:(id)info withReply:(id)reply;
+- (void)_receiveVoiceProfileFromPeerId:(id)id voiceProfileInfo:(id)info withReply:(id)reply;
+- (void)_sendAcousticGradingDataToPeerId:(id)id;
+- (void)_sendCoreSpeechGradingDataToPeerId:(id)id forLogType:(unint64_t)type;
+- (void)_sendCoreSpeechMagusGradingDataToPeerId:(id)id;
+- (void)_sendGeckoSpeechLogsToPeerId:(id)id;
+- (void)_sendVoiceProfile:(id)profile toPeerId:(id)id;
+- (void)_sendVoiceProfileUpdateTriggerToPeerId:(id)id forLocale:(id)locale;
+- (void)_sendVoiceTriggerGradingDataToPeerId:(id)id;
+- (void)processRemoteCommandWithPayload:(id)payload fromPeer:(id)peer withReply:(id)reply;
 - (void)sendAcousticGradingDataToNearbyPeer;
 - (void)sendCoreSpeechGradingDataToNearbyPeer;
 - (void)sendGeckoSpeechLogsToCompanion;
 - (void)sendVTNearMissGradingDataToCompanion;
-- (void)sendVoiceProfileUpdatedMessageToNearbyPeerForLocale:(id)a3;
+- (void)sendVoiceProfileUpdatedMessageToNearbyPeerForLocale:(id)locale;
 @end
 
 @implementation CSP2PService
@@ -55,44 +55,44 @@
   return WeakRetained;
 }
 
-- (BOOL)fileURL:(id)a3 matchesFileNamePattern:(id)a4
+- (BOOL)fileURL:(id)l matchesFileNamePattern:(id)pattern
 {
-  v5 = a4;
-  v6 = a3;
+  patternCopy = pattern;
+  lCopy = l;
   v16 = 0;
-  v7 = [[NSRegularExpression alloc] initWithPattern:v5 options:1 error:&v16];
+  v7 = [[NSRegularExpression alloc] initWithPattern:patternCopy options:1 error:&v16];
 
-  v8 = [v6 lastPathComponent];
-  v9 = [v6 lastPathComponent];
+  lastPathComponent = [lCopy lastPathComponent];
+  lastPathComponent2 = [lCopy lastPathComponent];
 
-  v10 = [v7 rangeOfFirstMatchInString:v8 options:16 range:{0, objc_msgSend(v9, "length")}];
+  v10 = [v7 rangeOfFirstMatchInString:lastPathComponent options:16 range:{0, objc_msgSend(lastPathComponent2, "length")}];
   v12 = v11;
 
   v14 = v10 != 0x7FFFFFFFFFFFFFFFLL || v12 != 0;
   return v14;
 }
 
-- (BOOL)shouldTransferVoiceTriggerLogFileWithURL:(id)a3
+- (BOOL)shouldTransferVoiceTriggerLogFileWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  v5 = [v4 isEqualToString:@"wav"];
+  lCopy = l;
+  pathExtension = [lCopy pathExtension];
+  v5 = [pathExtension isEqualToString:@"wav"];
 
   if (v5)
   {
-    v6 = [v3 path];
-    v7 = [v6 stringByReplacingOccurrencesOfString:@"wav" withString:@"json"];
+    path = [lCopy path];
+    v7 = [path stringByReplacingOccurrencesOfString:@"wav" withString:@"json"];
 
-    v8 = [v3 path];
-    v9 = v8;
+    path2 = [lCopy path];
+    v9 = path2;
     v10 = @".wav";
     v11 = @"-synced.json";
   }
 
   else
   {
-    v12 = [v3 pathExtension];
-    v13 = [v12 isEqualToString:@"json"];
+    pathExtension2 = [lCopy pathExtension];
+    v13 = [pathExtension2 isEqualToString:@"json"];
 
     if (!v13)
     {
@@ -106,16 +106,16 @@
       goto LABEL_13;
     }
 
-    v15 = [v3 path];
-    v7 = [v15 stringByReplacingOccurrencesOfString:@"json" withString:@"wav"];
+    path3 = [lCopy path];
+    v7 = [path3 stringByReplacingOccurrencesOfString:@"json" withString:@"wav"];
 
-    v8 = [v3 path];
-    v9 = v8;
+    path2 = [lCopy path];
+    v9 = path2;
     v10 = @".json";
     v11 = @"-synced.wav";
   }
 
-  v16 = [v8 stringByReplacingOccurrencesOfString:v10 withString:v11];
+  v16 = [path2 stringByReplacingOccurrencesOfString:v10 withString:v11];
 
   v17 = +[NSFileManager defaultManager];
   if ([v17 fileExistsAtPath:v7])
@@ -133,10 +133,10 @@ LABEL_13:
   return v14;
 }
 
-- (id)_sha1:(id)a3
+- (id)_sha1:(id)_sha1
 {
-  v3 = a3;
-  CC_SHA1([v3 bytes], objc_msgSend(v3, "length"), md);
+  _sha1Copy = _sha1;
+  CC_SHA1([_sha1Copy bytes], objc_msgSend(_sha1Copy, "length"), md);
   v4 = [NSMutableString stringWithCapacity:40];
   for (i = 0; i != 20; ++i)
   {
@@ -170,19 +170,19 @@ LABEL_13:
   }
 
   v3 = +[CSFPreferences sharedPreferences];
-  v4 = [v3 isP2PTransferEnabled];
+  isP2PTransferEnabled = [v3 isP2PTransferEnabled];
 
-  return v4;
+  return isP2PTransferEnabled;
 }
 
-- (id)_getContentsOfDirectory:(id)a3
+- (id)_getContentsOfDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = +[NSFileManager defaultManager];
   v22 = NSURLNameKey;
   v5 = [NSArray arrayWithObjects:&v22 count:1];
   v15 = 0;
-  v6 = [v4 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:v5 options:0 error:&v15];
+  v6 = [v4 contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:v5 options:0 error:&v15];
   v7 = v15;
 
   if (v7)
@@ -198,7 +198,7 @@ LABEL_3:
     *buf = 136315650;
     v17 = "[CSP2PService _getContentsOfDirectory:]";
     v18 = 2112;
-    v19 = v3;
+    v19 = directoryCopy;
     v20 = 2112;
     v21 = v7;
     v12 = "%s Error reading directory at %@: err: %@";
@@ -220,7 +220,7 @@ LABEL_12:
     *buf = 136315394;
     v17 = "[CSP2PService _getContentsOfDirectory:]";
     v18 = 2112;
-    v19 = v3;
+    v19 = directoryCopy;
     v12 = "%s %@ is empty";
     v13 = v11;
     v14 = 22;
@@ -233,46 +233,46 @@ LABEL_6:
   return v9;
 }
 
-- (id)_spIdSiriDebugVoiceProfileCacheDirectoryForProfile:(id)a3 locale:(id)a4
+- (id)_spIdSiriDebugVoiceProfileCacheDirectoryForProfile:(id)profile locale:(id)locale
 {
-  v6 = a3;
-  v7 = [(CSP2PService *)self _spIdSiriDebugVoiceProfileStoreRootDirectoryForLocale:a4];
+  profileCopy = profile;
+  v7 = [(CSP2PService *)self _spIdSiriDebugVoiceProfileStoreRootDirectoryForLocale:locale];
   v8 = [v7 stringByAppendingPathComponent:@"Caches"];
-  v9 = [v8 stringByAppendingPathComponent:v6];
+  v9 = [v8 stringByAppendingPathComponent:profileCopy];
 
   return v9;
 }
 
-- (id)_spIdSiriDebugVoiceProfileRootDirectoryForProfile:(id)a3 locale:(id)a4
+- (id)_spIdSiriDebugVoiceProfileRootDirectoryForProfile:(id)profile locale:(id)locale
 {
-  v6 = a3;
-  v7 = [(CSP2PService *)self _spIdSiriDebugVoiceProfileStoreRootDirectoryForLocale:a4];
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  profileCopy = profile;
+  v7 = [(CSP2PService *)self _spIdSiriDebugVoiceProfileStoreRootDirectoryForLocale:locale];
+  v8 = [v7 stringByAppendingPathComponent:profileCopy];
 
   return v8;
 }
 
-- (id)_spIdSiriDebugTrainedUsersFilePathForLocale:(id)a3
+- (id)_spIdSiriDebugTrainedUsersFilePathForLocale:(id)locale
 {
-  v3 = [(CSP2PService *)self _spIdSiriDebugVoiceProfileStoreRootDirectoryForLocale:a3];
+  v3 = [(CSP2PService *)self _spIdSiriDebugVoiceProfileStoreRootDirectoryForLocale:locale];
   v4 = [v3 stringByAppendingPathComponent:@"trained_users.json"];
 
   return v4;
 }
 
-- (id)_spIdSiriDebugVoiceProfileStoreRootDirectoryForLocale:(id)a3
+- (id)_spIdSiriDebugVoiceProfileStoreRootDirectoryForLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [(CSP2PService *)self _spIdSiriDebugVoiceProfileStoreRootDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  localeCopy = locale;
+  _spIdSiriDebugVoiceProfileStoreRootDirectory = [(CSP2PService *)self _spIdSiriDebugVoiceProfileStoreRootDirectory];
+  v6 = [_spIdSiriDebugVoiceProfileStoreRootDirectory stringByAppendingPathComponent:localeCopy];
 
   return v6;
 }
 
 - (id)_spIdSiriDebugVoiceProfileStoreRootDirectory
 {
-  v2 = [(CSP2PService *)self _spIdSiriDebugVTDataDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"VoiceProfileStore"];
+  _spIdSiriDebugVTDataDirectory = [(CSP2PService *)self _spIdSiriDebugVTDataDirectory];
+  v3 = [_spIdSiriDebugVTDataDirectory stringByAppendingPathComponent:@"VoiceProfileStore"];
 
   return v3;
 }
@@ -280,32 +280,32 @@ LABEL_6:
 - (id)_spIdSiriDebugGradingDataRootDirectory
 {
   v3 = +[CSFPreferences sharedPreferences];
-  v4 = [v3 remoteGradingDataDirectory];
+  remoteGradingDataDirectory = [v3 remoteGradingDataDirectory];
 
-  [(CSP2PService *)self _createDirectoryIfDoesNotExist:v4];
+  [(CSP2PService *)self _createDirectoryIfDoesNotExist:remoteGradingDataDirectory];
 
-  return v4;
+  return remoteGradingDataDirectory;
 }
 
 - (id)_spIdSiriDebugVTDataDirectory
 {
   v3 = +[CSFPreferences sharedPreferences];
-  v4 = [v3 remoteP2pLogDirectory];
+  remoteP2pLogDirectory = [v3 remoteP2pLogDirectory];
 
-  [(CSP2PService *)self _createDirectoryIfDoesNotExist:v4];
+  [(CSP2PService *)self _createDirectoryIfDoesNotExist:remoteP2pLogDirectory];
 
-  return v4;
+  return remoteP2pLogDirectory;
 }
 
-- (void)_createDirectoryIfDoesNotExist:(id)a3
+- (void)_createDirectoryIfDoesNotExist:(id)exist
 {
-  v3 = a3;
+  existCopy = exist;
   v4 = +[NSFileManager defaultManager];
   v5 = v4;
   v14 = 0;
-  if (v3)
+  if (existCopy)
   {
-    if ([v4 fileExistsAtPath:v3 isDirectory:&v14])
+    if ([v4 fileExistsAtPath:existCopy isDirectory:&v14])
     {
       if (v14)
       {
@@ -318,11 +318,11 @@ LABEL_6:
         *buf = 136315394;
         v16 = "[CSP2PService _createDirectoryIfDoesNotExist:]";
         v17 = 2112;
-        v18 = v3;
+        v18 = existCopy;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Direntry with same name exists, this will be removed: %@", buf, 0x16u);
       }
 
-      [v5 removeItemAtPath:v3 error:0];
+      [v5 removeItemAtPath:existCopy error:0];
     }
 
     v7 = CSLogCategorySpkrId;
@@ -331,12 +331,12 @@ LABEL_6:
       *buf = 136315394;
       v16 = "[CSP2PService _createDirectoryIfDoesNotExist:]";
       v17 = 2112;
-      v18 = v3;
+      v18 = existCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s Creating Directory : %@", buf, 0x16u);
     }
 
     v13 = 0;
-    [v5 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v13];
+    [v5 createDirectoryAtPath:existCopy withIntermediateDirectories:1 attributes:0 error:&v13];
     v8 = v13;
     if (v8)
     {
@@ -344,11 +344,11 @@ LABEL_6:
       if (os_log_type_enabled(CSLogCategorySpkrId, OS_LOG_TYPE_DEFAULT))
       {
         v10 = v9;
-        v11 = [v8 localizedDescription];
+        localizedDescription = [v8 localizedDescription];
         *buf = 136315394;
         v16 = "[CSP2PService _createDirectoryIfDoesNotExist:]";
         v17 = 2112;
-        v18 = v11;
+        v18 = localizedDescription;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s Creating Directory failed : %@", buf, 0x16u);
       }
     }
@@ -383,9 +383,9 @@ LABEL_15:
   return qword_10029E370;
 }
 
-- (void)_sendAcousticGradingDataToPeerId:(id)a3
+- (void)_sendAcousticGradingDataToPeerId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000F0914;
@@ -393,32 +393,32 @@ LABEL_15:
   v16[4] = self;
   v5 = [NSPredicate predicateWithBlock:v16];
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
 
   v8 = +[CSFPreferences sharedPreferences];
-  v9 = [v8 assistantAudioFileLogDirectory];
-  v10 = [NSURL URLWithString:v9];
+  assistantAudioFileLogDirectory = [v8 assistantAudioFileLogDirectory];
+  v10 = [NSURL URLWithString:assistantAudioFileLogDirectory];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000F0A8C;
   v13[3] = &unk_100251698;
   v13[4] = self;
-  v14 = v7;
-  v15 = v4;
-  v11 = v4;
-  v12 = v7;
+  v14 = uUIDString;
+  v15 = idCopy;
+  v11 = idCopy;
+  v12 = uUIDString;
   [(CSP2PService *)self _compressFilesInDirectory:v10 matchingPredicate:v5 compressedFileAvailable:v13];
 }
 
-- (void)_sendVoiceProfileUpdateTriggerToPeerId:(id)a3 forLocale:(id)a4
+- (void)_sendVoiceProfileUpdateTriggerToPeerId:(id)id forLocale:(id)locale
 {
-  v6 = a3;
+  idCopy = id;
   v16[0] = @"CSP2P_PeerIdentifier_Key";
   v16[1] = @"CSP2P_VoiceProfileLocale_Key";
-  v17[0] = v6;
-  v17[1] = a4;
-  v7 = a4;
+  v17[0] = idCopy;
+  v17[1] = locale;
+  localeCopy = locale;
   v8 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
   v14[0] = @"CSP2P_CommandType_Key";
   v14[1] = @"CSP2P_CommandDict_Key";
@@ -432,19 +432,19 @@ LABEL_15:
   v12[1] = 3221225472;
   v12[2] = sub_1000F1064;
   v12[3] = &unk_1002517C8;
-  v13 = v6;
-  v11 = v6;
+  v13 = idCopy;
+  v11 = idCopy;
   [WeakRetained sendMessageWithPayload:v9 toPeer:v11 withReply:v12];
 }
 
-- (void)_processVoiceProfileUpdateTriggerFromPeerId:(id)a3 requestInfo:(id)a4 withReply:(id)a5
+- (void)_processVoiceProfileUpdateTriggerFromPeerId:(id)id requestInfo:(id)info withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  infoCopy = info;
+  replyCopy = reply;
   if (!CSIsCommunalDevice())
   {
-    if (!v7 || !v8)
+    if (!idCopy || !infoCopy)
     {
       v19 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -452,17 +452,17 @@ LABEL_15:
         *buf = 136315650;
         v26 = "[CSP2PService _processVoiceProfileUpdateTriggerFromPeerId:requestInfo:withReply:]";
         v27 = 2112;
-        v28 = v7;
+        v28 = idCopy;
         v29 = 2112;
-        v30 = v8;
+        v30 = infoCopy;
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%s ERR: received malformed command - %@ %@", buf, 0x20u);
-        if (!v9)
+        if (!replyCopy)
         {
           goto LABEL_26;
         }
       }
 
-      else if (!v9)
+      else if (!replyCopy)
       {
         goto LABEL_26;
       }
@@ -475,23 +475,23 @@ LABEL_15:
     if (v12)
     {
       v13 = v12;
-      v14 = [v8 objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+      v14 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
 
       if (v14)
       {
-        v15 = [v8 objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
-        v16 = [v8 objectForKeyedSubscript:@"CSP2P_VoiceProfileTransferCompleted_Key"];
-        v17 = [v16 BOOLValue];
+        v15 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+        v16 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileTransferCompleted_Key"];
+        bOOLValue = [v16 BOOLValue];
 
-        if (v17)
+        if (bOOLValue)
         {
           v18 = [NSString stringWithFormat:@"%@.%@.%@", @"com.apple.siri.SiriDebug.VoiceProfileSyncTrigger", v13, v15];
           [CSSiriDebugConnection launchSiriDebugAppWithMessage:v18];
         }
 
-        if (v9)
+        if (replyCopy)
         {
-          (*(v9 + 2))(v9, 0, 0);
+          (*(replyCopy + 2))(replyCopy, 0, 0);
         }
       }
 
@@ -503,21 +503,21 @@ LABEL_15:
           *buf = 136315394;
           v26 = "[CSP2PService _processVoiceProfileUpdateTriggerFromPeerId:requestInfo:withReply:]";
           v27 = 2112;
-          v28 = v8;
+          v28 = infoCopy;
           _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%s ERR: received malformed command with locale nil - %@", buf, 0x16u);
-          if (!v9)
+          if (!replyCopy)
           {
             goto LABEL_25;
           }
         }
 
-        else if (!v9)
+        else if (!replyCopy)
         {
           goto LABEL_25;
         }
 
         v15 = [NSError errorWithDomain:@"CoreSpeech" code:3 userInfo:0];
-        (*(v9 + 2))(v9, 0, v15);
+        (*(replyCopy + 2))(replyCopy, 0, v15);
       }
 
       goto LABEL_25;
@@ -527,24 +527,24 @@ LABEL_15:
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
       v23 = v20;
-      v24 = objc_retainBlock(v9);
+      v24 = objc_retainBlock(replyCopy);
       *buf = 136315906;
       v26 = "[CSP2PService _processVoiceProfileUpdateTriggerFromPeerId:requestInfo:withReply:]";
       v27 = 2112;
-      v28 = v7;
+      v28 = idCopy;
       v29 = 2112;
       v30 = v24;
       v31 = 2112;
-      v32 = v8;
+      v32 = infoCopy;
       _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%s ERR: unknown IDS peer with passed Identifier %@, %@ %@", buf, 0x2Au);
 
-      if (!v9)
+      if (!replyCopy)
       {
         goto LABEL_20;
       }
     }
 
-    else if (!v9)
+    else if (!replyCopy)
     {
 LABEL_20:
       v13 = 0;
@@ -552,7 +552,7 @@ LABEL_20:
     }
 
     v21 = [NSError errorWithDomain:@"CoreSpeech" code:2 userInfo:0];
-    (*(v9 + 2))(v9, 0, v21);
+    (*(replyCopy + 2))(replyCopy, 0, v21);
 
     goto LABEL_20;
   }
@@ -563,9 +563,9 @@ LABEL_20:
     *buf = 136315394;
     v26 = "[CSP2PService _processVoiceProfileUpdateTriggerFromPeerId:requestInfo:withReply:]";
     v27 = 2112;
-    v28 = v7;
+    v28 = idCopy;
     _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s ERR: Rejecting command %@ sent to Horseman device", buf, 0x16u);
-    if (!v9)
+    if (!replyCopy)
     {
       goto LABEL_26;
     }
@@ -573,27 +573,27 @@ LABEL_20:
     goto LABEL_4;
   }
 
-  if (v9)
+  if (replyCopy)
   {
 LABEL_4:
     v11 = 2;
 LABEL_16:
     v13 = [NSError errorWithDomain:@"CoreSpeech" code:v11 userInfo:0];
-    (*(v9 + 2))(v9, 0, v13);
+    (*(replyCopy + 2))(replyCopy, 0, v13);
 LABEL_25:
   }
 
 LABEL_26:
 }
 
-- (void)_processReverseTransferVoiceProfileCommandFromPeerId:(id)a3 requestInfo:(id)a4 withReply:(id)a5
+- (void)_processReverseTransferVoiceProfileCommandFromPeerId:(id)id requestInfo:(id)info withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  infoCopy = info;
+  replyCopy = reply;
   if (!CSIsCommunalDevice())
   {
-    if (!v8 || !v9)
+    if (!idCopy || !infoCopy)
     {
       v16 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -601,17 +601,17 @@ LABEL_26:
         *buf = 136315650;
         v83 = "[CSP2PService _processReverseTransferVoiceProfileCommandFromPeerId:requestInfo:withReply:]";
         v84 = 2112;
-        v85 = v8;
+        v85 = idCopy;
         v86 = 2112;
-        v87 = v9;
+        v87 = infoCopy;
         _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s ERR: received malformed command - %@ %@", buf, 0x20u);
-        if (!v10)
+        if (!replyCopy)
         {
           goto LABEL_77;
         }
       }
 
-      else if (!v10)
+      else if (!replyCopy)
       {
         goto LABEL_77;
       }
@@ -623,45 +623,45 @@ LABEL_26:
     v13 = _IDSCopyIDForDeviceUniqueID();
     if (v13)
     {
-      v14 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+      v14 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
 
       if (v14)
       {
-        v15 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
+        v15 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
         if (v15)
         {
 
           goto LABEL_23;
         }
 
-        v21 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileSiriProfileId_Key"];
+        v21 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileSiriProfileId_Key"];
 
         if (v21)
         {
 LABEL_23:
-          v20 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
-          v22 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
+          v20 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+          v22 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
           if (!v22)
           {
-            v22 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileSiriProfileId_Key"];
+            v22 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileSiriProfileId_Key"];
           }
 
-          v23 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileTransferCompleted_Key"];
-          v24 = [v23 BOOLValue];
+          v23 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileTransferCompleted_Key"];
+          bOOLValue = [v23 BOOLValue];
 
-          if (v24)
+          if (bOOLValue)
           {
             v25 = [NSString stringWithFormat:@"%@.%@.%@", @"com.apple.siri.SiriDebug.VoiceProfileAddedTrigger", v22, v20];
             [CSSiriDebugConnection launchSiriDebugAppWithMessage:v25];
-            if (v10)
+            if (replyCopy)
             {
-              (*(v10 + 2))(v10, 0, 0);
+              (*(replyCopy + 2))(replyCopy, 0, 0);
             }
 
             goto LABEL_38;
           }
 
-          v26 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileRelativeFilePath_Key"];
+          v26 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileRelativeFilePath_Key"];
 
           if (!v26)
           {
@@ -671,15 +671,15 @@ LABEL_23:
               *buf = 136315394;
               v83 = "[CSP2PService _processReverseTransferVoiceProfileCommandFromPeerId:requestInfo:withReply:]";
               v84 = 2112;
-              v85 = v9;
+              v85 = infoCopy;
               _os_log_error_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "%s ERR: received malformed command with relative path nil - %@", buf, 0x16u);
-              if (!v10)
+              if (!replyCopy)
               {
                 goto LABEL_74;
               }
             }
 
-            else if (!v10)
+            else if (!replyCopy)
             {
 LABEL_74:
 
@@ -687,22 +687,22 @@ LABEL_74:
             }
 
             v25 = [NSError errorWithDomain:@"CoreSpeech" code:3 userInfo:0];
-            (*(v10 + 2))(v10, 0, v25);
+            (*(replyCopy + 2))(replyCopy, 0, v25);
 LABEL_38:
 
             goto LABEL_74;
           }
 
-          v27 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileRelativeFilePath_Key"];
-          v71 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileData_Key"];
+          v27 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileRelativeFilePath_Key"];
+          v71 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileData_Key"];
           v69 = v22;
           v70 = [(CSP2PService *)self _spIdSiriDebugVoiceProfileCacheDirectoryForProfile:v22 locale:v20];
           v72 = v27;
           v28 = [v70 stringByAppendingPathComponent:v27];
           v29 = +[NSFileManager defaultManager];
-          v30 = [v28 stringByDeletingLastPathComponent];
+          stringByDeletingLastPathComponent = [v28 stringByDeletingLastPathComponent];
           v75 = 0;
-          LOBYTE(v27) = [v29 createDirectoryAtPath:v30 withIntermediateDirectories:1 attributes:0 error:&v75];
+          LOBYTE(v27) = [v29 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v75];
           v73 = v75;
 
           if ((v27 & 1) == 0)
@@ -725,7 +725,7 @@ LABEL_38:
 LABEL_46:
             v43 = v71;
             v42 = v72;
-            if (!v10)
+            if (!replyCopy)
             {
 LABEL_73:
 
@@ -734,7 +734,7 @@ LABEL_73:
             }
 
             v44 = [NSError errorWithDomain:@"CoreSpeech" code:4 userInfo:0];
-            (*(v10 + 2))(v10, 0, v44);
+            (*(replyCopy + 2))(replyCopy, 0, v44);
 LABEL_72:
 
             goto LABEL_73;
@@ -767,33 +767,33 @@ LABEL_45:
             goto LABEL_46;
           }
 
-          v45 = [v9 objectForKeyedSubscript:@"CSP2P_IsDataCompressed_Key"];
-          v46 = [v45 BOOLValue];
+          v45 = [infoCopy objectForKeyedSubscript:@"CSP2P_IsDataCompressed_Key"];
+          bOOLValue2 = [v45 BOOLValue];
 
           v47 = v73;
-          if (v46)
+          if (bOOLValue2)
           {
             v43 = v71;
             v48 = [v71 length];
             src_buffer = [v71 bytes];
-            v49 = [v9 objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
+            v49 = [infoCopy objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
 
             v50 = v33;
             if (v49)
             {
-              [v9 objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
+              [infoCopy objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
               v52 = v51 = v48;
-              v53 = [v52 integerValue];
+              integerValue = [v52 integerValue];
 
               v48 = v51;
             }
 
             else
             {
-              v53 = 3 * v48;
+              integerValue = 3 * v48;
             }
 
-            v59 = malloc_type_malloc(v53, 0x100004077774924uLL);
+            v59 = malloc_type_malloc(integerValue, 0x100004077774924uLL);
             if (!v59)
             {
               v66 = CSLogContextFacilityCoreSpeech;
@@ -802,12 +802,12 @@ LABEL_45:
                 *buf = 136315394;
                 v83 = "[CSP2PService _processReverseTransferVoiceProfileCommandFromPeerId:requestInfo:withReply:]";
                 v84 = 2048;
-                v85 = v53;
+                v85 = integerValue;
                 _os_log_error_impl(&_mh_execute_header, v66, OS_LOG_TYPE_ERROR, "%s ERR: Failed to allocate buffer of size %zu, bailing out", buf, 0x16u);
               }
 
               v42 = v72;
-              if (!v10)
+              if (!replyCopy)
               {
                 v44 = 0;
                 goto LABEL_70;
@@ -817,7 +817,7 @@ LABEL_45:
               v81 = &off_10025E540;
               v65 = [NSDictionary dictionaryWithObjects:&v81 forKeys:&v80 count:1];
               v67 = [NSError errorWithDomain:@"CoreSpeech" code:10 userInfo:0];
-              (*(v10 + 2))(v10, v65, v67);
+              (*(replyCopy + 2))(replyCopy, v65, v67);
 
               v44 = 0;
 LABEL_69:
@@ -829,7 +829,7 @@ LABEL_70:
             }
 
             v60 = v59;
-            v44 = [NSData dataWithBytes:v59 length:compression_decode_buffer(v59, v53, src_buffer, v48, 0, COMPRESSION_LZFSE)];
+            v44 = [NSData dataWithBytes:v59 length:compression_decode_buffer(v59, integerValue, src_buffer, v48, 0, COMPRESSION_LZFSE)];
             free(v60);
             v33 = v50;
             v47 = v73;
@@ -842,7 +842,7 @@ LABEL_70:
             if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
             {
               v57 = v56;
-              v58 = [v9 objectForKeyedSubscript:@"CSP2P_PeerIdentifier_Key"];
+              v58 = [infoCopy objectForKeyedSubscript:@"CSP2P_PeerIdentifier_Key"];
               *buf = 136315650;
               v83 = "[CSP2PService _processReverseTransferVoiceProfileCommandFromPeerId:requestInfo:withReply:]";
               v84 = 2112;
@@ -861,7 +861,7 @@ LABEL_70:
 
           if (v61)
           {
-            if (v10)
+            if (replyCopy)
             {
               v50 = v33;
               v76 = @"CSP2P_VoiceProfileStatus_Key";
@@ -870,7 +870,7 @@ LABEL_70:
               v63 = &v76;
 LABEL_68:
               v65 = [NSDictionary dictionaryWithObjects:v62 forKeys:v63 count:1];
-              (*(v10 + 2))(v10, v65, v73);
+              (*(replyCopy + 2))(replyCopy, v65, v73);
               v42 = v72;
               goto LABEL_69;
             }
@@ -890,7 +890,7 @@ LABEL_68:
               _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "%s Writing to file(%@) failed!. Err=%@", buf, 0x20u);
             }
 
-            if (v10)
+            if (replyCopy)
             {
               v50 = v33;
               v78 = @"CSP2P_VoiceProfileStatus_Key";
@@ -915,7 +915,7 @@ LABEL_68:
         *buf = 136315394;
         v83 = "[CSP2PService _processReverseTransferVoiceProfileCommandFromPeerId:requestInfo:withReply:]";
         v84 = 2112;
-        v85 = v9;
+        v85 = infoCopy;
         v40 = "%s ERR: received malformed command with profileId nil - %@";
       }
 
@@ -925,7 +925,7 @@ LABEL_68:
         if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
         {
 LABEL_19:
-          if (!v10)
+          if (!replyCopy)
           {
             goto LABEL_76;
           }
@@ -937,7 +937,7 @@ LABEL_19:
         *buf = 136315394;
         v83 = "[CSP2PService _processReverseTransferVoiceProfileCommandFromPeerId:requestInfo:withReply:]";
         v84 = 2112;
-        v85 = v9;
+        v85 = infoCopy;
         v40 = "%s ERR: received malformed command with locale nil - %@";
       }
 
@@ -949,30 +949,30 @@ LABEL_19:
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
       v54 = v17;
-      v55 = objc_retainBlock(v10);
+      v55 = objc_retainBlock(replyCopy);
       *buf = 136315906;
       v83 = "[CSP2PService _processReverseTransferVoiceProfileCommandFromPeerId:requestInfo:withReply:]";
       v84 = 2112;
-      v85 = v8;
+      v85 = idCopy;
       v86 = 2112;
       v87 = v55;
       v88 = 2112;
-      v89 = v9;
+      v89 = infoCopy;
       _os_log_error_impl(&_mh_execute_header, v54, OS_LOG_TYPE_ERROR, "%s ERR: unknown IDS peer with passed Identifier %@, %@ %@", buf, 0x2Au);
 
-      if (v10)
+      if (replyCopy)
       {
         goto LABEL_17;
       }
     }
 
-    else if (v10)
+    else if (replyCopy)
     {
 LABEL_17:
       v18 = 2;
 LABEL_21:
       v20 = [NSError errorWithDomain:@"CoreSpeech" code:v18 userInfo:0];
-      (*(v10 + 2))(v10, 0, v20);
+      (*(replyCopy + 2))(replyCopy, 0, v20);
 LABEL_75:
 
       goto LABEL_76;
@@ -988,9 +988,9 @@ LABEL_75:
     *buf = 136315394;
     v83 = "[CSP2PService _processReverseTransferVoiceProfileCommandFromPeerId:requestInfo:withReply:]";
     v84 = 2112;
-    v85 = v8;
+    v85 = idCopy;
     _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s ERR: Rejecting command %@ sent to Horseman device", buf, 0x16u);
-    if (!v10)
+    if (!replyCopy)
     {
       goto LABEL_77;
     }
@@ -998,33 +998,33 @@ LABEL_75:
     goto LABEL_4;
   }
 
-  if (v10)
+  if (replyCopy)
   {
 LABEL_4:
     v12 = 2;
 LABEL_14:
     v13 = [NSError errorWithDomain:@"CoreSpeech" code:v12 userInfo:0];
-    (*(v10 + 2))(v10, 0, v13);
+    (*(replyCopy + 2))(replyCopy, 0, v13);
 LABEL_76:
   }
 
 LABEL_77:
 }
 
-- (void)_sendVoiceProfile:(id)a3 toPeerId:(id)a4
+- (void)_sendVoiceProfile:(id)profile toPeerId:(id)id
 {
-  v5 = a3;
-  v46 = a4;
+  profileCopy = profile;
+  idCopy = id;
   v6 = +[SSRVoiceProfileManager sharedInstance];
-  v7 = [v6 SSRSpeakerProfilesBasePath];
-  v8 = [v5 appDomain];
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  sSRSpeakerProfilesBasePath = [v6 SSRSpeakerProfilesBasePath];
+  appDomain = [profileCopy appDomain];
+  v9 = [sSRSpeakerProfilesBasePath stringByAppendingPathComponent:appDomain];
 
-  v10 = [v5 locale];
-  v11 = [v9 stringByAppendingPathComponent:v10];
+  locale = [profileCopy locale];
+  v11 = [v9 stringByAppendingPathComponent:locale];
 
-  v12 = [v5 profileID];
-  v13 = [v11 stringByAppendingPathComponent:v12];
+  profileID = [profileCopy profileID];
+  v13 = [v11 stringByAppendingPathComponent:profileID];
 
   v14 = +[NSFileManager defaultManager];
   v58 = 0;
@@ -1070,11 +1070,11 @@ LABEL_77:
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v23 = v22;
-      v24 = [v5 profileID];
+      profileID2 = [profileCopy profileID];
       *buf = 136315394;
       v64 = "[CSP2PService _sendVoiceProfile:toPeerId:]";
       v65 = 2114;
-      v66 = v24;
+      v66 = profileID2;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%s CSP2P_VoiceProfileFetchCmd: Transferring voice profile %{public}@", buf, 0x16u);
     }
 
@@ -1104,9 +1104,9 @@ LABEL_77:
           v49[2] = sub_1000F2874;
           v49[3] = &unk_1002517F0;
           v49[4] = v29;
-          v50 = v5;
-          v51 = v46;
-          v52 = self;
+          v50 = profileCopy;
+          v51 = idCopy;
+          selfCopy = self;
           [(CSP2PService *)self _compressFilesInDirectory:v30 matchingPredicate:v44 compressedFileAvailable:v49];
         }
 
@@ -1117,9 +1117,9 @@ LABEL_77:
     }
 
     v31 = [NSMutableDictionary alloc];
-    v32 = [v5 profileID];
-    v33 = [v5 locale];
-    v34 = [v31 initWithObjectsAndKeys:{v46, @"CSP2P_PeerIdentifier_Key", v32, @"CSP2P_VoiceProfileProfileId_Key", v33, @"CSP2P_VoiceProfileLocale_Key", &__kCFBooleanTrue, @"CSP2P_VoiceProfileTransferCompleted_Key", 0}];
+    profileID3 = [profileCopy profileID];
+    locale2 = [profileCopy locale];
+    v34 = [v31 initWithObjectsAndKeys:{idCopy, @"CSP2P_PeerIdentifier_Key", profileID3, @"CSP2P_VoiceProfileProfileId_Key", locale2, @"CSP2P_VoiceProfileLocale_Key", &__kCFBooleanTrue, @"CSP2P_VoiceProfileTransferCompleted_Key", 0}];
 
     v59[0] = @"CSP2P_CommandType_Key";
     v59[1] = @"CSP2P_CommandDict_Key";
@@ -1128,12 +1128,12 @@ LABEL_77:
     v59[2] = @"type";
     v60[2] = @"corespeech";
     v35 = [NSDictionary dictionaryWithObjects:v60 forKeys:v59 count:3];
-    v36 = [v5 siriProfileId];
+    siriProfileId = [profileCopy siriProfileId];
 
-    if (v36)
+    if (siriProfileId)
     {
-      v37 = [v5 siriProfileId];
-      [v34 setObject:v37 forKey:@"CSP2P_VoiceProfileSiriProfileId_Key"];
+      siriProfileId2 = [profileCopy siriProfileId];
+      [v34 setObject:siriProfileId2 forKey:@"CSP2P_VoiceProfileSiriProfileId_Key"];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_adCompanionServiceProvider);
@@ -1141,8 +1141,8 @@ LABEL_77:
     v47[1] = 3221225472;
     v47[2] = sub_1000F2D5C;
     v47[3] = &unk_1002517C8;
-    v48 = v5;
-    [WeakRetained sendMessageWithPayload:v35 toPeer:v46 withReply:v47];
+    v48 = profileCopy;
+    [WeakRetained sendMessageWithPayload:v35 toPeer:idCopy withReply:v47];
 
     v6 = v42;
     v16 = 0;
@@ -1150,11 +1150,11 @@ LABEL_77:
   }
 }
 
-- (void)_processFetchVoiceProfileCommandFromPeerId:(id)a3 requestInfo:(id)a4 withReply:(id)a5
+- (void)_processFetchVoiceProfileCommandFromPeerId:(id)id requestInfo:(id)info withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  infoCopy = info;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_adCompanionServiceProvider);
 
   if (!WeakRetained)
@@ -1167,7 +1167,7 @@ LABEL_77:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s Cannot send data across when _adCompanionServiceProvider is nil - returning", v30, 0xCu);
     }
 
-    if (!v10)
+    if (!replyCopy)
     {
       goto LABEL_24;
     }
@@ -1175,7 +1175,7 @@ LABEL_77:
     v19 = 9;
 LABEL_22:
     v12 = [NSError errorWithDomain:@"CoreSpeech" code:v19 userInfo:0];
-    v10[2](v10, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
     goto LABEL_23;
   }
 
@@ -1187,15 +1187,15 @@ LABEL_22:
       *v30 = 136315394;
       *&v30[4] = "[CSP2PService _processFetchVoiceProfileCommandFromPeerId:requestInfo:withReply:]";
       *&v30[12] = 2112;
-      *&v30[14] = v8;
+      *&v30[14] = idCopy;
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%s ERR: Rejecting command %@ sent to non Horseman device", v30, 0x16u);
-      if (!v10)
+      if (!replyCopy)
       {
         goto LABEL_24;
       }
     }
 
-    else if (!v10)
+    else if (!replyCopy)
     {
       goto LABEL_24;
     }
@@ -1204,30 +1204,30 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (v8 && v9)
+  if (idCopy && infoCopy)
   {
     v12 = _IDSCopyIDForDeviceUniqueID();
     if (v12)
     {
-      v13 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+      v13 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
 
       if (v13)
       {
-        v14 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
+        v14 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
 
         if (v14)
         {
-          v15 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
+          v15 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
           v16 = +[SSRVoiceProfileManager sharedInstance];
           v17 = [v16 voiceProfileForId:v15];
           if (v17)
           {
-            if (v10)
+            if (replyCopy)
             {
-              v10[2](v10, 0, 0);
+              replyCopy[2](replyCopy, 0, 0);
             }
 
-            [(CSP2PService *)self _sendVoiceProfile:v17 toPeerId:v8];
+            [(CSP2PService *)self _sendVoiceProfile:v17 toPeerId:idCopy];
             goto LABEL_39;
           }
 
@@ -1239,13 +1239,13 @@ LABEL_22:
             *&v30[12] = 2112;
             *&v30[14] = v15;
             _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%s ERR: Failed to find voice profile with identifier - %@", v30, 0x16u);
-            if (!v10)
+            if (!replyCopy)
             {
               goto LABEL_39;
             }
           }
 
-          else if (!v10)
+          else if (!replyCopy)
           {
 LABEL_39:
 
@@ -1253,7 +1253,7 @@ LABEL_39:
           }
 
           v27 = [NSError errorWithDomain:@"CoreSpeech" code:11 userInfo:0];
-          v10[2](v10, 0, v27);
+          replyCopy[2](replyCopy, 0, v27);
 
           goto LABEL_39;
         }
@@ -1262,7 +1262,7 @@ LABEL_39:
         if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
         {
 LABEL_31:
-          if (v10)
+          if (replyCopy)
           {
 LABEL_32:
             v23 = 3;
@@ -1277,7 +1277,7 @@ LABEL_23:
         *v30 = 136315394;
         *&v30[4] = "[CSP2PService _processFetchVoiceProfileCommandFromPeerId:requestInfo:withReply:]";
         *&v30[12] = 2112;
-        *&v30[14] = v9;
+        *&v30[14] = infoCopy;
         v25 = "%s ERR: received malformed command with profileId nil - %@";
       }
 
@@ -1292,12 +1292,12 @@ LABEL_23:
         *v30 = 136315394;
         *&v30[4] = "[CSP2PService _processFetchVoiceProfileCommandFromPeerId:requestInfo:withReply:]";
         *&v30[12] = 2112;
-        *&v30[14] = v9;
+        *&v30[14] = infoCopy;
         v25 = "%s ERR: received malformed command with locale nil - %@";
       }
 
       _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, v25, v30, 0x16u);
-      if (!v10)
+      if (!replyCopy)
       {
         goto LABEL_23;
       }
@@ -1309,30 +1309,30 @@ LABEL_23:
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
       v28 = v22;
-      v29 = objc_retainBlock(v10);
+      v29 = objc_retainBlock(replyCopy);
       *v30 = 136315906;
       *&v30[4] = "[CSP2PService _processFetchVoiceProfileCommandFromPeerId:requestInfo:withReply:]";
       *&v30[12] = 2112;
-      *&v30[14] = v8;
+      *&v30[14] = idCopy;
       *&v30[22] = 2112;
       v31 = v29;
       v32 = 2112;
-      v33 = v9;
+      v33 = infoCopy;
       _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%s ERR: unknown IDS peer with passed Identifier %@, %@ %@", v30, 0x2Au);
 
-      if (v10)
+      if (replyCopy)
       {
         goto LABEL_27;
       }
     }
 
-    else if (v10)
+    else if (replyCopy)
     {
 LABEL_27:
       v23 = 2;
 LABEL_33:
       v15 = [NSError errorWithDomain:@"CoreSpeech" code:v23 userInfo:0, *v30, *&v30[16]];
-      v10[2](v10, 0, v15);
+      replyCopy[2](replyCopy, 0, v15);
 LABEL_40:
 
       goto LABEL_23;
@@ -1348,11 +1348,11 @@ LABEL_40:
     *v30 = 136315650;
     *&v30[4] = "[CSP2PService _processFetchVoiceProfileCommandFromPeerId:requestInfo:withReply:]";
     *&v30[12] = 2112;
-    *&v30[14] = v8;
+    *&v30[14] = idCopy;
     *&v30[22] = 2112;
-    v31 = v9;
+    v31 = infoCopy;
     _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%s ERR: received malformed command - %@ %@", v30, 0x20u);
-    if (!v10)
+    if (!replyCopy)
     {
       goto LABEL_24;
     }
@@ -1360,7 +1360,7 @@ LABEL_40:
     goto LABEL_21;
   }
 
-  if (v10)
+  if (replyCopy)
   {
 LABEL_21:
     v19 = 3;
@@ -1370,10 +1370,10 @@ LABEL_21:
 LABEL_24:
 }
 
-- (void)_getHomeUserIdForSharedSiriId:(id)a3 withCompletion:(id)a4
+- (void)_getHomeUserIdForSharedSiriId:(id)id withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -1388,7 +1388,7 @@ LABEL_24:
     *buf = 136315394;
     v36 = "[CSP2PService _getHomeUserIdForSharedSiriId:withCompletion:]";
     v37 = 2114;
-    v38 = v5;
+    v38 = idCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s Fetching homeUserId for siriProfileId %{public}@", buf, 0x16u);
   }
 
@@ -1400,11 +1400,11 @@ LABEL_24:
   v10 = v8;
   v22 = v10;
   v26 = &v27;
-  v11 = v5;
+  v11 = idCopy;
   v23 = v11;
   v12 = v7;
   v24 = v12;
-  v13 = v6;
+  v13 = completionCopy;
   v25 = v13;
   [v10 getHomeUserIdForSharedUserId:v11 completion:&v18];
   if ([v12 waitWithTimeout:{dispatch_time(0, 100000000)}])
@@ -1445,11 +1445,11 @@ LABEL_8:
   _Block_object_dispose(&v27, 8);
 }
 
-- (void)_processVoiceProfileListQueryCommandFromPeerId:(id)a3 requestInfo:(id)a4 withReply:(id)a5
+- (void)_processVoiceProfileListQueryCommandFromPeerId:(id)id requestInfo:(id)info withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  infoCopy = info;
+  replyCopy = reply;
   if ((CSIsCommunalDevice() & 1) == 0)
   {
     v43 = CSLogContextFacilityCoreSpeech;
@@ -1458,15 +1458,15 @@ LABEL_8:
       *buf = 136315394;
       v67 = "[CSP2PService _processVoiceProfileListQueryCommandFromPeerId:requestInfo:withReply:]";
       v68 = 2112;
-      v69 = v7;
+      v69 = idCopy;
       _os_log_error_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "%s ERR: Rejecting command %@ sent to non Horseman device", buf, 0x16u);
-      if (!v9)
+      if (!replyCopy)
       {
         goto LABEL_49;
       }
     }
 
-    else if (!v9)
+    else if (!replyCopy)
     {
       goto LABEL_49;
     }
@@ -1474,11 +1474,11 @@ LABEL_8:
     v44 = 2;
 LABEL_39:
     v10 = [NSError errorWithDomain:@"CoreSpeech" code:v44 userInfo:0];
-    v9[2](v9, 0, v10);
+    replyCopy[2](replyCopy, 0, v10);
     goto LABEL_48;
   }
 
-  if (!v7 || !v8)
+  if (!idCopy || !infoCopy)
   {
     v45 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -1486,17 +1486,17 @@ LABEL_39:
       *buf = 136315650;
       v67 = "[CSP2PService _processVoiceProfileListQueryCommandFromPeerId:requestInfo:withReply:]";
       v68 = 2112;
-      v69 = v7;
+      v69 = idCopy;
       v70 = 2112;
-      v71 = v8;
+      v71 = infoCopy;
       _os_log_error_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "%s ERR: received malformed command - %@ %@", buf, 0x20u);
-      if (!v9)
+      if (!replyCopy)
       {
         goto LABEL_49;
       }
     }
 
-    else if (!v9)
+    else if (!replyCopy)
     {
       goto LABEL_49;
     }
@@ -1512,24 +1512,24 @@ LABEL_39:
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
       v49 = v46;
-      v50 = objc_retainBlock(v9);
+      v50 = objc_retainBlock(replyCopy);
       *buf = 136315906;
       v67 = "[CSP2PService _processVoiceProfileListQueryCommandFromPeerId:requestInfo:withReply:]";
       v68 = 2112;
-      v69 = v7;
+      v69 = idCopy;
       v70 = 2112;
       v71 = v50;
       v72 = 2112;
-      v73 = v8;
+      v73 = infoCopy;
       _os_log_error_impl(&_mh_execute_header, v49, OS_LOG_TYPE_ERROR, "%s ERR: unknown IDS peer with passed Identifier %@, %@ %@", buf, 0x2Au);
 
-      if (v9)
+      if (replyCopy)
       {
         goto LABEL_42;
       }
     }
 
-    else if (v9)
+    else if (replyCopy)
     {
 LABEL_42:
       v47 = 2;
@@ -1540,7 +1540,7 @@ LABEL_42:
     goto LABEL_48;
   }
 
-  v11 = [v8 objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+  v11 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
 
   if (!v11)
   {
@@ -1550,15 +1550,15 @@ LABEL_42:
       *buf = 136315394;
       v67 = "[CSP2PService _processVoiceProfileListQueryCommandFromPeerId:requestInfo:withReply:]";
       v68 = 2112;
-      v69 = v8;
+      v69 = infoCopy;
       _os_log_error_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "%s ERR: received malformed command with locale nil - %@", buf, 0x16u);
-      if (!v9)
+      if (!replyCopy)
       {
         goto LABEL_48;
       }
     }
 
-    else if (!v9)
+    else if (!replyCopy)
     {
       goto LABEL_48;
     }
@@ -1566,24 +1566,24 @@ LABEL_42:
     v47 = 3;
 LABEL_46:
     v12 = [NSError errorWithDomain:@"CoreSpeech" code:v47 userInfo:0];
-    v9[2](v9, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
     goto LABEL_47;
   }
 
-  v12 = [v8 objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+  v12 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
   v13 = +[SSRVoiceProfileManager sharedInstance];
   v14 = [v13 provisionedVoiceProfilesForLocale:v12];
 
-  if (!v9)
+  if (!replyCopy)
   {
     goto LABEL_32;
   }
 
   v52 = v12;
   v53 = v10;
-  v54 = v9;
-  v55 = v8;
-  v56 = v7;
+  v54 = replyCopy;
+  v55 = infoCopy;
+  v56 = idCopy;
   v15 = objc_alloc_init(NSMutableArray);
   v61 = 0u;
   v62 = 0u;
@@ -1611,85 +1611,85 @@ LABEL_46:
 
       v21 = *(*(&v61 + 1) + 8 * i);
       v22 = objc_alloc_init(NSMutableDictionary);
-      v23 = [v21 sharedSiriId];
+      sharedSiriId = [v21 sharedSiriId];
 
-      if (v23)
+      if (sharedSiriId)
       {
-        v24 = [v21 sharedSiriId];
-        [v22 setObject:v24 forKeyedSubscript:@"CSP2P_VoiceProfileSiriProfileId_Key"];
+        sharedSiriId2 = [v21 sharedSiriId];
+        [v22 setObject:sharedSiriId2 forKeyedSubscript:@"CSP2P_VoiceProfileSiriProfileId_Key"];
       }
 
-      v25 = [v21 profileId];
+      profileId = [v21 profileId];
 
-      if (v25)
+      if (profileId)
       {
-        v26 = [v21 profileId];
-        [v22 setObject:v26 forKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
+        profileId2 = [v21 profileId];
+        [v22 setObject:profileId2 forKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
       }
 
-      v27 = [v21 appDomain];
+      appDomain = [v21 appDomain];
 
-      if (v27)
+      if (appDomain)
       {
-        v28 = [v21 appDomain];
-        [v22 setObject:v28 forKeyedSubscript:@"CSP2P_VoiceProfileAppDomain_Key"];
+        appDomain2 = [v21 appDomain];
+        [v22 setObject:appDomain2 forKeyedSubscript:@"CSP2P_VoiceProfileAppDomain_Key"];
       }
 
-      v29 = [v21 dateAdded];
+      dateAdded = [v21 dateAdded];
 
-      if (v29)
+      if (dateAdded)
       {
         v30 = objc_alloc_init(NSDateFormatter);
         [v30 setDateFormat:@"yyyyMMddHHmmss"];
-        v31 = [v21 dateAdded];
-        v32 = [v30 stringFromDate:v31];
+        dateAdded2 = [v21 dateAdded];
+        v32 = [v30 stringFromDate:dateAdded2];
         [v22 setObject:v32 forKeyedSubscript:@"CSP2P_VoiceProfileOnboardTimeStamp_Key"];
       }
 
-      v33 = [v21 homeId];
+      homeId = [v21 homeId];
 
-      if (v33)
+      if (homeId)
       {
-        v34 = [v21 homeId];
-        [v22 setObject:v34 forKeyedSubscript:@"CSP2P_VoiceProfileHomeUserId_Key"];
+        homeId2 = [v21 homeId];
+        [v22 setObject:homeId2 forKeyedSubscript:@"CSP2P_VoiceProfileHomeUserId_Key"];
       }
 
       else
       {
-        v35 = [v21 appDomain];
-        v36 = [v35 isEqualToString:v58];
+        appDomain3 = [v21 appDomain];
+        v36 = [appDomain3 isEqualToString:v58];
 
         if (!v36)
         {
           goto LABEL_25;
         }
 
-        v37 = [v21 sharedSiriId];
+        sharedSiriId3 = [v21 sharedSiriId];
         v59[0] = _NSConcreteStackBlock;
         v59[1] = 3221225472;
         v59[2] = sub_1000F42C0;
         v59[3] = &unk_100251778;
         v60 = v22;
-        [(CSP2PService *)self _getHomeUserIdForSharedSiriId:v37 withCompletion:v59];
+        [(CSP2PService *)self _getHomeUserIdForSharedSiriId:sharedSiriId3 withCompletion:v59];
 
-        v34 = v60;
+        homeId2 = v60;
       }
 
 LABEL_25:
-      v38 = [v21 userName];
+      userName = [v21 userName];
 
-      if (v38)
+      if (userName)
       {
-        v39 = [v21 userName];
-        [v22 setObject:v39 forKeyedSubscript:@"CSP2P_VoiceProfileSpeakerName_Key"];
+        userName2 = [v21 userName];
+        [v22 setObject:userName2 forKeyedSubscript:@"CSP2P_VoiceProfileSpeakerName_Key"];
       }
 
-      v40 = [v21 languageCode];
+      languageCode = [v21 languageCode];
 
-      if (v40)
+      if (languageCode)
       {
-        v41 = [v21 languageCode];
-        [v22 setObject:v41 forKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+        languageCode2 = [v21 languageCode];
+        [v22 setObject:languageCode2 forKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
       }
 
       [v15 addObject:v22];
@@ -1702,11 +1702,11 @@ LABEL_25:
 LABEL_31:
 
   v42 = [[NSDictionary alloc] initWithObjectsAndKeys:{v15, @"voiceprofiles", 0}];
-  v9 = v54;
+  replyCopy = v54;
   (v54)[2](v54, v42, 0);
 
-  v8 = v55;
-  v7 = v56;
+  infoCopy = v55;
+  idCopy = v56;
   v12 = v52;
   v10 = v53;
   v14 = v51;
@@ -1718,97 +1718,97 @@ LABEL_48:
 LABEL_49:
 }
 
-- (void)_processGradingDataFetchCommandWithRequest:(id)a3 ofLogType:(unint64_t)a4 fromSenderID:(id)a5 withReply:(id)a6
+- (void)_processGradingDataFetchCommandWithRequest:(id)request ofLogType:(unint64_t)type fromSenderID:(id)d withReply:(id)reply
 {
-  v9 = a5;
-  v10 = a6;
+  dCopy = d;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_adCompanionServiceProvider);
 
   if (WeakRetained)
   {
-    if (v10)
+    if (replyCopy)
     {
-      (*(v10 + 2))(v10, 0, 0);
+      (*(replyCopy + 2))(replyCopy, 0, 0);
     }
 
-    if (a4 <= 4)
+    if (type <= 4)
     {
-      if (a4 > 1)
+      if (type > 1)
       {
-        if (a4 == 2)
+        if (type == 2)
         {
-          [(CSP2PService *)self _sendCoreSpeechGradingDataToPeerId:v9];
+          [(CSP2PService *)self _sendCoreSpeechGradingDataToPeerId:dCopy];
         }
 
-        else if (a4 == 3)
+        else if (type == 3)
         {
-          [(CSP2PService *)self _sendCoreSpeechMagusGradingDataToPeerId:v9];
+          [(CSP2PService *)self _sendCoreSpeechMagusGradingDataToPeerId:dCopy];
         }
 
         else
         {
-          [(CSP2PService *)self _sendAcousticGradingDataToPeerId:v9];
+          [(CSP2PService *)self _sendAcousticGradingDataToPeerId:dCopy];
         }
 
         goto LABEL_29;
       }
 
-      if (a4)
+      if (type)
       {
-        if (a4 == 1)
+        if (type == 1)
         {
-          [(CSP2PService *)self _sendVoiceTriggerGradingDataToPeerId:v9];
+          [(CSP2PService *)self _sendVoiceTriggerGradingDataToPeerId:dCopy];
         }
 
         goto LABEL_29;
       }
 
-      [(CSP2PService *)self _sendVoiceTriggerGradingDataToPeerId:v9];
-      [(CSP2PService *)self _sendCoreSpeechGradingDataToPeerId:v9];
-      [(CSP2PService *)self _sendCoreSpeechMagusGradingDataToPeerId:v9];
-      [(CSP2PService *)self _sendAcousticGradingDataToPeerId:v9];
+      [(CSP2PService *)self _sendVoiceTriggerGradingDataToPeerId:dCopy];
+      [(CSP2PService *)self _sendCoreSpeechGradingDataToPeerId:dCopy];
+      [(CSP2PService *)self _sendCoreSpeechMagusGradingDataToPeerId:dCopy];
+      [(CSP2PService *)self _sendAcousticGradingDataToPeerId:dCopy];
 LABEL_25:
-      [(CSP2PService *)self _sendGeckoSpeechLogsToPeerId:v9];
+      [(CSP2PService *)self _sendGeckoSpeechLogsToPeerId:dCopy];
       goto LABEL_29;
     }
 
-    if (a4 <= 6)
+    if (type <= 6)
     {
-      if (a4 == 5)
+      if (type == 5)
       {
         goto LABEL_25;
       }
 
-      v14 = self;
-      v15 = v9;
+      selfCopy3 = self;
+      v15 = dCopy;
       v16 = 1;
     }
 
-    else if (a4 == 7)
+    else if (type == 7)
     {
-      v14 = self;
-      v15 = v9;
+      selfCopy3 = self;
+      v15 = dCopy;
       v16 = 2;
     }
 
     else
     {
-      if (a4 != 8)
+      if (type != 8)
       {
-        if (a4 != 9)
+        if (type != 9)
         {
           goto LABEL_29;
         }
 
-        [(CSP2PService *)self _sendVoiceTriggerGradingDataToPeerId:v9];
+        [(CSP2PService *)self _sendVoiceTriggerGradingDataToPeerId:dCopy];
       }
 
-      v14 = self;
-      v15 = v9;
+      selfCopy3 = self;
+      v15 = dCopy;
       v16 = 3;
     }
 
-    [(CSP2PService *)v14 _sendCoreSpeechGradingDataToPeerId:v15 forLogType:v16];
+    [(CSP2PService *)selfCopy3 _sendCoreSpeechGradingDataToPeerId:v15 forLogType:v16];
     goto LABEL_29;
   }
 
@@ -1820,51 +1820,51 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s Cannot send data across when _adCompanionServiceProvider is nil - returning", &v17, 0xCu);
   }
 
-  if (v10)
+  if (replyCopy)
   {
     v13 = [NSError errorWithDomain:@"CoreSpeech" code:3 userInfo:0];
-    (*(v10 + 2))(v10, 0, v13);
+    (*(replyCopy + 2))(replyCopy, 0, v13);
   }
 
 LABEL_29:
 }
 
-- (void)_processVoiceProfileDeleteCommandWithRequest:(id)a3 fromSenderID:(id)a4 withReply:(id)a5
+- (void)_processVoiceProfileDeleteCommandWithRequest:(id)request fromSenderID:(id)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  dCopy = d;
+  replyCopy = reply;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F4644;
   block[3] = &unk_1002533A0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = requestCopy;
+  v17 = dCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = dCopy;
+  v14 = requestCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_receiveVoiceProfileFromPeerId:(id)a3 voiceProfileInfo:(id)a4 withReply:(id)a5
+- (void)_receiveVoiceProfileFromPeerId:(id)id voiceProfileInfo:(id)info withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v101 = v8;
-  if (!v8 || !v9)
+  idCopy = id;
+  infoCopy = info;
+  replyCopy = reply;
+  v101 = idCopy;
+  if (!idCopy || !infoCopy)
   {
     v30 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v31 = v30;
-      v32 = objc_retainBlock(v10);
+      v32 = objc_retainBlock(replyCopy);
       *buf = 136315906;
       *&buf[4] = "[CSP2PService _receiveVoiceProfileFromPeerId:voiceProfileInfo:withReply:]";
       *&buf[12] = 2112;
-      *&buf[14] = v9;
+      *&buf[14] = infoCopy;
       *&buf[22] = 2112;
       v131 = v101;
       *v132 = 2112;
@@ -1872,7 +1872,7 @@ LABEL_29:
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%s CSP2P_VoiceProfileTransferCmd: received malformed command - %@ %@ %@", buf, 0x2Au);
     }
 
-    if (v10)
+    if (replyCopy)
     {
       goto LABEL_26;
     }
@@ -1880,25 +1880,25 @@ LABEL_29:
     goto LABEL_28;
   }
 
-  v11 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileData_Key"];
+  v11 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileData_Key"];
   if (v11)
   {
-    v12 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileFileName_Key"];
+    v12 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileFileName_Key"];
     if (v12)
     {
-      v13 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileSpeakerName_Key"];
+      v13 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileSpeakerName_Key"];
       if (v13)
       {
-        v14 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+        v14 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
         if (v14)
         {
-          v15 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileDataType_Key"];
+          v15 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileDataType_Key"];
           if (v15)
           {
-            v16 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileTotalSegments_Key"];
+            v16 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileTotalSegments_Key"];
             if (v16)
             {
-              v17 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileSegment_Key"];
+              v17 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileSegment_Key"];
 
               if (v17)
               {
@@ -1906,8 +1906,8 @@ LABEL_29:
                 if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
                 {
                   v19 = v18;
-                  v20 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileSegment_Key"];
-                  v21 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileTotalSegments_Key"];
+                  v20 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileSegment_Key"];
+                  v21 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileTotalSegments_Key"];
                   *buf = 136315906;
                   *&buf[4] = "[CSP2PService _receiveVoiceProfileFromPeerId:voiceProfileInfo:withReply:]";
                   *&buf[12] = 2112;
@@ -1919,27 +1919,27 @@ LABEL_29:
                   _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%s CSP2P_VoiceProfileTransferCmd: Received VoiceProfile Segment (%@/%@) from peerId %@", buf, 0x2Au);
                 }
 
-                v22 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileData_Key"];
+                v22 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileData_Key"];
                 v23 = [v22 length];
 
-                v24 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileData_Key"];
+                v24 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileData_Key"];
                 v25 = v24;
-                v26 = [v24 bytes];
+                bytes = [v24 bytes];
 
-                v27 = [v9 objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
+                v27 = [infoCopy objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
 
                 if (v27)
                 {
-                  v28 = [v9 objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
-                  v29 = [v28 integerValue];
+                  v28 = [infoCopy objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
+                  integerValue = [v28 integerValue];
                 }
 
                 else
                 {
-                  v29 = 3 * v23;
+                  integerValue = 3 * v23;
                 }
 
-                v43 = malloc_type_malloc(v29, 0x100004077774924uLL);
+                v43 = malloc_type_malloc(integerValue, 0x100004077774924uLL);
                 v44 = v43;
                 if (!v43)
                 {
@@ -1949,15 +1949,15 @@ LABEL_29:
                     *buf = 136315394;
                     *&buf[4] = "[CSP2PService _receiveVoiceProfileFromPeerId:voiceProfileInfo:withReply:]";
                     *&buf[12] = 2048;
-                    *&buf[14] = v29;
+                    *&buf[14] = integerValue;
                     _os_log_error_impl(&_mh_execute_header, v89, OS_LOG_TYPE_ERROR, "%s ERR: Failed to allocate buffer of size %zu, bailing out", buf, 0x16u);
-                    if (!v10)
+                    if (!replyCopy)
                     {
                       goto LABEL_28;
                     }
                   }
 
-                  else if (!v10)
+                  else if (!replyCopy)
                   {
                     goto LABEL_28;
                   }
@@ -1966,12 +1966,12 @@ LABEL_29:
                   v129 = &off_10025E540;
                   v42 = [NSDictionary dictionaryWithObjects:&v129 forKeys:&v128 count:1];
                   v90 = [NSError errorWithDomain:@"CoreSpeech" code:10 userInfo:0];
-                  (*(v10 + 2))(v10, v42, v90);
+                  (*(replyCopy + 2))(replyCopy, v42, v90);
 
                   goto LABEL_27;
                 }
 
-                v42 = [NSData dataWithBytes:v43 length:compression_decode_buffer(v43, v29, v26, v23, 0, COMPRESSION_LZFSE)];
+                v42 = [NSData dataWithBytes:v43 length:compression_decode_buffer(v43, integerValue, bytes, v23, 0, COMPRESSION_LZFSE)];
                 free(v44);
                 *buf = 0;
                 *&buf[8] = buf;
@@ -1980,30 +1980,30 @@ LABEL_29:
                 *v132 = sub_1000F3944;
                 *&v132[8] = 0;
                 v45 = +[NSFileManager defaultManager];
-                v46 = [v45 temporaryDirectory];
-                v98 = [v46 URLByAppendingPathComponent:@"CoreSpeechCache"];
+                temporaryDirectory = [v45 temporaryDirectory];
+                v98 = [temporaryDirectory URLByAppendingPathComponent:@"CoreSpeechCache"];
 
-                v47 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+                v47 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
                 v48 = [v98 URLByAppendingPathComponent:v47];
 
-                v49 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
+                v49 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
                 v50 = [v48 URLByAppendingPathComponent:v49];
 
                 v99 = v50;
-                v51 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileDataType_Key"];
+                v51 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileDataType_Key"];
                 v100 = [v99 URLByAppendingPathComponent:v51];
 
-                v52 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileSegment_Key"];
+                v52 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileSegment_Key"];
                 LODWORD(v50) = [v52 integerValue] == 1;
 
                 if (v50)
                 {
                   dword_10029E368 = 0;
                   v53 = +[NSFileManager defaultManager];
-                  v54 = [v100 path];
+                  path = [v100 path];
                   v55 = *&buf[8];
                   obj = *(*&buf[8] + 40);
-                  v56 = [v53 removeItemAtPath:v54 error:&obj];
+                  v56 = [v53 removeItemAtPath:path error:&obj];
                   objc_storeStrong((v55 + 40), obj);
 
                   if ((v56 & 1) == 0)
@@ -2011,12 +2011,12 @@ LABEL_29:
                     v57 = CSLogContextFacilityCoreSpeech;
                     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
                     {
-                      v58 = [v100 path];
+                      path2 = [v100 path];
                       v59 = *(*&buf[8] + 40);
                       *v122 = 136315650;
                       v123 = "[CSP2PService _receiveVoiceProfileFromPeerId:voiceProfileInfo:withReply:]";
                       v124 = 2112;
-                      v125 = v58;
+                      v125 = path2;
                       v126 = 2112;
                       v127 = v59;
                       _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "%s CSP2P_VoiceProfileTransferCmd: Failed to delete the directory %@ with error %@", v122, 0x20u);
@@ -2024,16 +2024,16 @@ LABEL_29:
                   }
                 }
 
-                v60 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileSegment_Key"];
-                v61 = [v60 integerValue];
-                v62 = v61 == (dword_10029E368 + 1);
+                v60 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileSegment_Key"];
+                integerValue2 = [v60 integerValue];
+                v62 = integerValue2 == (dword_10029E368 + 1);
 
                 if (!v62)
                 {
                   v91 = CSLogContextFacilityCoreSpeech;
                   if (os_log_type_enabled(v91, OS_LOG_TYPE_DEFAULT))
                   {
-                    v92 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileSegment_Key"];
+                    v92 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileSegment_Key"];
                     *v122 = 136315650;
                     v123 = "[CSP2PService _receiveVoiceProfileFromPeerId:voiceProfileInfo:withReply:]";
                     v124 = 2112;
@@ -2043,7 +2043,7 @@ LABEL_29:
                     _os_log_impl(&_mh_execute_header, v91, OS_LOG_TYPE_DEFAULT, "%s CSP2P_VoiceProfileTransferCmd: received VoiceProfileSegment %@, expected %d", v122, 0x1Cu);
                   }
 
-                  if (!v10)
+                  if (!replyCopy)
                   {
                     goto LABEL_65;
                   }
@@ -2052,15 +2052,15 @@ LABEL_29:
                   v121 = &off_10025E540;
                   v73 = [NSDictionary dictionaryWithObjects:&v121 forKeys:&v120 count:1];
                   v76 = [NSError errorWithDomain:@"CoreSpeech" code:4 userInfo:0];
-                  (*(v10 + 2))(v10, v73, v76);
+                  (*(replyCopy + 2))(replyCopy, v73, v76);
                   goto LABEL_63;
                 }
 
                 v63 = +[NSFileManager defaultManager];
-                v64 = [v100 path];
+                path3 = [v100 path];
                 v65 = *&buf[8];
                 v106 = *(*&buf[8] + 40);
-                v66 = [v63 createDirectoryAtPath:v64 withIntermediateDirectories:1 attributes:0 error:&v106];
+                v66 = [v63 createDirectoryAtPath:path3 withIntermediateDirectories:1 attributes:0 error:&v106];
                 objc_storeStrong((v65 + 40), v106);
 
                 if ((v66 & 1) == 0)
@@ -2076,7 +2076,7 @@ LABEL_29:
                     _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "%s CSP2P_VoiceProfileTransferCmd: Creating directory failed with error %@", v122, 0x16u);
                   }
 
-                  if (!v10)
+                  if (!replyCopy)
                   {
                     goto LABEL_65;
                   }
@@ -2085,16 +2085,16 @@ LABEL_29:
                   v119 = &off_10025E540;
                   v73 = [NSDictionary dictionaryWithObjects:&v119 forKeys:&v118 count:1];
                   v76 = [NSError errorWithDomain:@"CoreSpeech" code:4 userInfo:0];
-                  (*(v10 + 2))(v10, v73, v76);
+                  (*(replyCopy + 2))(replyCopy, v73, v76);
                   goto LABEL_63;
                 }
 
                 v67 = [v100 URLByAppendingPathComponent:@"audio"];
 
-                v68 = [v67 path];
-                [(CSP2PService *)self _createDirectoryIfDoesNotExist:v68];
+                path4 = [v67 path];
+                [(CSP2PService *)self _createDirectoryIfDoesNotExist:path4];
 
-                v69 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileFileName_Key"];
+                v69 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileFileName_Key"];
                 v100 = [v67 URLByAppendingPathComponent:v69];
 
                 if (([v42 writeToURL:v100 atomically:0] & 1) == 0)
@@ -2107,7 +2107,7 @@ LABEL_29:
                     _os_log_impl(&_mh_execute_header, v95, OS_LOG_TYPE_DEFAULT, "%s CSP2P_VoiceProfileTransferCmd: Writing to file failed!!!", v122, 0xCu);
                   }
 
-                  if (!v10)
+                  if (!replyCopy)
                   {
                     goto LABEL_65;
                   }
@@ -2116,18 +2116,18 @@ LABEL_29:
                   v117 = &off_10025E540;
                   v73 = [NSDictionary dictionaryWithObjects:&v117 forKeys:&v116 count:1];
                   v76 = [NSError errorWithDomain:@"CoreSpeech" code:4 userInfo:0];
-                  (*(v10 + 2))(v10, v73, v76);
+                  (*(replyCopy + 2))(replyCopy, v73, v76);
                   goto LABEL_63;
                 }
 
                 ++dword_10029E368;
-                v70 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileTotalSegments_Key"];
-                v71 = [v70 integerValue];
-                v72 = v71 == dword_10029E368;
+                v70 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileTotalSegments_Key"];
+                integerValue3 = [v70 integerValue];
+                v72 = integerValue3 == dword_10029E368;
 
                 if (!v72)
                 {
-                  if (!v10)
+                  if (!replyCopy)
                   {
                     goto LABEL_65;
                   }
@@ -2135,7 +2135,7 @@ LABEL_29:
                   v108 = @"CSP2P_VoiceProfileStatus_Key";
                   v109 = &off_10025E558;
                   v73 = [NSDictionary dictionaryWithObjects:&v109 forKeys:&v108 count:1];
-                  (*(v10 + 2))(v10, v73, 0);
+                  (*(replyCopy + 2))(replyCopy, v73, 0);
 LABEL_64:
 
 LABEL_65:
@@ -2147,7 +2147,7 @@ LABEL_65:
                 dword_10029E368 = 0;
                 v73 = +[SSRVoiceProfileManager sharedInstance];
                 v74 = +[SSRVoiceProfileManager sharedInstance];
-                v75 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+                v75 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
                 v76 = [v74 newVoiceProfileWithLocale:v75 withAppDomain:SSRSpeakerRecognitionSiriDebugAppDomain];
 
                 v77 = [SSRVoiceProfileRetrainingContext alloc];
@@ -2182,14 +2182,14 @@ LABEL_65:
                 dispatch_group_wait(v84, v85);
                 if (!*(*&buf[8] + 40))
                 {
-                  v86 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileSpeakerName_Key"];
+                  v86 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileSpeakerName_Key"];
                   v87 = [v73 updateVoiceProfile:v76 withUserName:v86];
                 }
 
                 if (*(*&buf[8] + 40))
                 {
 LABEL_44:
-                  if (!v10)
+                  if (!replyCopy)
                   {
 LABEL_47:
 
@@ -2199,14 +2199,14 @@ LABEL_63:
 
                   v110 = @"CSP2P_VoiceProfileStatus_Key";
                   v111 = &off_10025E540;
-                  v88 = [NSDictionary dictionaryWithObjects:&v111 forKeys:&v110 count:1];
-                  (*(v10 + 2))(v10, v88, *(*&buf[8] + 40));
+                  profileID = [NSDictionary dictionaryWithObjects:&v111 forKeys:&v110 count:1];
+                  (*(replyCopy + 2))(replyCopy, profileID, *(*&buf[8] + 40));
                 }
 
                 else
                 {
                   notify_post("com.apple.siri.corespeech.voiceprofilelist.change");
-                  if (!v10)
+                  if (!replyCopy)
                   {
                     goto LABEL_47;
                   }
@@ -2214,10 +2214,10 @@ LABEL_63:
                   v112[0] = @"CSP2P_VoiceProfileStatus_Key";
                   v112[1] = @"CSP2P_VoiceProfileProfileId_Key";
                   v113[0] = &off_10025E528;
-                  v88 = [v76 profileID];
-                  v113[1] = v88;
+                  profileID = [v76 profileID];
+                  v113[1] = profileID;
                   v96 = [NSDictionary dictionaryWithObjects:v113 forKeys:v112 count:2];
-                  (*(v10 + 2))(v10, v96, 0);
+                  (*(replyCopy + 2))(replyCopy, v96, 0);
                 }
 
                 goto LABEL_47;
@@ -2236,13 +2236,13 @@ LABEL_23:
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v34 = v33;
-    v35 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileData_Key"];
-    v36 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileFileName_Key"];
-    v37 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileSpeakerName_Key"];
-    v38 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
-    v39 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileDataType_Key"];
-    v40 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileTotalSegments_Key"];
-    v41 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileSegment_Key"];
+    v35 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileData_Key"];
+    v36 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileFileName_Key"];
+    v37 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileSpeakerName_Key"];
+    v38 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+    v39 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileDataType_Key"];
+    v40 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileTotalSegments_Key"];
+    v41 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileSegment_Key"];
     *buf = 136316930;
     *&buf[4] = "[CSP2PService _receiveVoiceProfileFromPeerId:voiceProfileInfo:withReply:]";
     *&buf[12] = 2112;
@@ -2262,41 +2262,41 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%s CSP2P_VoiceProfileTransferCmd: received malformed command: CSP2P_VoiceProfileData_Key: %@CSP2P_VoiceProfileFileName_Key: %@CSP2P_VoiceProfileSpeakerName_Key: %@CSP2P_VoiceProfileLocale_Key: %@CSP2P_VoiceProfileDataType_Key: %@CSP2P_VoiceProfileTotalSegments_Key: %@CSP2P_VoiceProfileSegment_Key: %@", buf, 0x52u);
   }
 
-  if (v10)
+  if (replyCopy)
   {
 LABEL_26:
     v42 = [NSError errorWithDomain:@"CoreSpeech" code:3 userInfo:0];
-    (*(v10 + 2))(v10, 0, v42);
+    (*(replyCopy + 2))(replyCopy, 0, v42);
 LABEL_27:
   }
 
 LABEL_28:
 }
 
-- (void)_receiveVoiceGradingDataFromPeerId:(id)a3 requestInfo:(id)a4 withReply:(id)a5
+- (void)_receiveVoiceGradingDataFromPeerId:(id)id requestInfo:(id)info withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && v9)
+  idCopy = id;
+  infoCopy = info;
+  replyCopy = reply;
+  if (idCopy && infoCopy)
   {
     v11 = _IDSCopyIDForDeviceUniqueID();
     if (v11)
     {
-      v12 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceDataToBeGraded_Key"];
+      v12 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceDataToBeGraded_Key"];
       if (v12)
       {
         v13 = v12;
-        v14 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceFileNameToBeGraded_Key"];
+        v14 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceFileNameToBeGraded_Key"];
 
         if (v14)
         {
-          v15 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceDataToBeGraded_Key"];
-          v16 = [(CSP2PService *)self _spIdSiriDebugGradingDataRootDirectory];
-          v17 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceFileNameToBeGraded_Key"];
+          v15 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceDataToBeGraded_Key"];
+          _spIdSiriDebugGradingDataRootDirectory = [(CSP2PService *)self _spIdSiriDebugGradingDataRootDirectory];
+          v17 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceFileNameToBeGraded_Key"];
           v18 = [NSString stringWithFormat:@"%@_%@", v11, v17];
 
-          v19 = [v16 stringByAppendingPathComponent:v18];
+          v19 = [_spIdSiriDebugGradingDataRootDirectory stringByAppendingPathComponent:v18];
           v20 = +[NSFileManager defaultManager];
           v80 = v19;
           LODWORD(v19) = [v20 fileExistsAtPath:v19];
@@ -2308,7 +2308,7 @@ LABEL_28:
             if (v22)
             {
               v23 = v21;
-              v24 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceFileNameToBeGraded_Key"];
+              v24 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceFileNameToBeGraded_Key"];
               *buf = 136315650;
               v92 = "[CSP2PService _receiveVoiceGradingDataFromPeerId:requestInfo:withReply:]";
               v93 = 2112;
@@ -2319,7 +2319,7 @@ LABEL_28:
             }
 
             v25 = v80;
-            if (!v10)
+            if (!replyCopy)
             {
               goto LABEL_67;
             }
@@ -2328,7 +2328,7 @@ LABEL_28:
             v89 = @"CSP2P_GradingDataTransferStatus_Key";
             v90 = &off_10025E528;
             v26 = [NSDictionary dictionaryWithObjects:&v90 forKeys:&v89 count:1];
-            v10[2](v10, v26, 0);
+            replyCopy[2](replyCopy, v26, 0);
 LABEL_66:
 
             v18 = v79;
@@ -2348,17 +2348,17 @@ LABEL_67:
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%s Syncing audio file - %@ from %@", buf, 0x20u);
           }
 
-          v35 = [v9 objectForKeyedSubscript:@"CSP2P_IsDataCompressed_Key"];
-          v36 = [v35 BOOLValue];
+          v35 = [infoCopy objectForKeyedSubscript:@"CSP2P_IsDataCompressed_Key"];
+          bOOLValue = [v35 BOOLValue];
 
           v79 = v18;
-          if ((v36 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
             v42 = CSLogContextFacilityCoreSpeech;
             if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
             {
               v43 = v42;
-              v44 = [v9 objectForKeyedSubscript:@"CSP2P_PeerIdentifier_Key"];
+              v44 = [infoCopy objectForKeyedSubscript:@"CSP2P_PeerIdentifier_Key"];
               *buf = 136315650;
               v92 = "[CSP2PService _receiveVoiceGradingDataFromPeerId:requestInfo:withReply:]";
               v93 = 2112;
@@ -2372,29 +2372,29 @@ LABEL_67:
             goto LABEL_36;
           }
 
-          v76 = v16;
+          v76 = _spIdSiriDebugGradingDataRootDirectory;
           v37 = [v15 length];
-          v38 = [v15 bytes];
-          v39 = [v9 objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
+          bytes = [v15 bytes];
+          v39 = [infoCopy objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
 
           if (v39)
           {
-            v40 = [v9 objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
-            v41 = [v40 integerValue];
+            v40 = [infoCopy objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
+            integerValue = [v40 integerValue];
           }
 
           else
           {
-            v41 = 3 * v37;
+            integerValue = 3 * v37;
           }
 
-          v46 = malloc_type_malloc(v41, 0x100004077774924uLL);
+          v46 = malloc_type_malloc(integerValue, 0x100004077774924uLL);
           if (v46)
           {
             v47 = v46;
-            v45 = [NSData dataWithBytes:v46 length:compression_decode_buffer(v46, v41, v38, v37, 0, COMPRESSION_LZFSE)];
+            v45 = [NSData dataWithBytes:v46 length:compression_decode_buffer(v46, integerValue, bytes, v37, 0, COMPRESSION_LZFSE)];
             free(v47);
-            v16 = v76;
+            _spIdSiriDebugGradingDataRootDirectory = v76;
 LABEL_36:
             v82 = 0;
             v25 = v80;
@@ -2403,20 +2403,20 @@ LABEL_36:
             if (v48)
             {
               v75 = v45;
-              v49 = [v80 pathExtension];
+              pathExtension = [v80 pathExtension];
               v50 = v80;
-              v51 = [v49 isEqualToString:@"wav"];
+              v51 = [pathExtension isEqualToString:@"wav"];
 
               if (v51)
               {
-                v52 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceFileNameToBeGraded_Key"];
+                v52 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceFileNameToBeGraded_Key"];
                 v74 = [v52 stringByReplacingOccurrencesOfString:@".wav" withString:&stru_1002546C0];
 
-                v73 = [v9 objectForKeyedSubscript:@"CSP2P_GradingBatchTransferID_Key"];
-                v53 = [v80 lastPathComponent];
-                v54 = [v53 containsString:@"-almost"];
+                v73 = [infoCopy objectForKeyedSubscript:@"CSP2P_GradingBatchTransferID_Key"];
+                lastPathComponent = [v80 lastPathComponent];
+                v54 = [lastPathComponent containsString:@"-almost"];
 
-                v77 = v16;
+                v77 = _spIdSiriDebugGradingDataRootDirectory;
                 if (v54)
                 {
                   v55 = v73;
@@ -2458,7 +2458,7 @@ LABEL_36:
                 v67 = v55;
 
                 [CSSiriDebugConnection launchSiriDebugAppWithMessage:v64];
-                v16 = v77;
+                _spIdSiriDebugGradingDataRootDirectory = v77;
                 v50 = v80;
               }
 
@@ -2486,7 +2486,7 @@ LABEL_36:
 
               v45 = v75;
               v26 = v78;
-              if (!v10)
+              if (!replyCopy)
               {
                 goto LABEL_65;
               }
@@ -2507,7 +2507,7 @@ LABEL_36:
                 _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "%s Writing to file(%@) failed!. Err=%@", buf, 0x20u);
               }
 
-              if (!v10)
+              if (!replyCopy)
               {
                 goto LABEL_65;
               }
@@ -2515,39 +2515,39 @@ LABEL_36:
               v85 = @"CSP2P_GradingDataTransferStatus_Key";
               v86 = &off_10025E558;
               v59 = [NSDictionary dictionaryWithObjects:&v86 forKeys:&v85 count:1];
-              (v10)[2](v10, v59, v78);
+              (replyCopy)[2](replyCopy, v59, v78);
             }
 
             v83 = @"CSP2P_GradingDataTransferStatus_Key";
             v84 = &off_10025E528;
             v61 = [NSDictionary dictionaryWithObjects:&v84 forKeys:&v83 count:1];
-            (v10)[2](v10, v61, v26);
+            (replyCopy)[2](replyCopy, v61, v26);
             goto LABEL_64;
           }
 
           v60 = CSLogContextFacilityCoreSpeech;
-          v16 = v76;
+          _spIdSiriDebugGradingDataRootDirectory = v76;
           if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
           {
             *buf = 136315394;
             v92 = "[CSP2PService _receiveVoiceGradingDataFromPeerId:requestInfo:withReply:]";
             v93 = 2048;
-            v94 = v41;
+            v94 = integerValue;
             _os_log_error_impl(&_mh_execute_header, v60, OS_LOG_TYPE_ERROR, "%s ERR: Failed to allocate buffer of size %zu, bailing out", buf, 0x16u);
-            if (v10)
+            if (replyCopy)
             {
               goto LABEL_49;
             }
           }
 
-          else if (v10)
+          else if (replyCopy)
           {
 LABEL_49:
             v87 = @"CSP2P_VoiceProfileStatus_Key";
             v88 = &off_10025E540;
             v61 = [NSDictionary dictionaryWithObjects:&v88 forKeys:&v87 count:1];
             v62 = [NSError errorWithDomain:@"CoreSpeech" code:10 userInfo:0];
-            (v10)[2](v10, v61, v62);
+            (replyCopy)[2](replyCopy, v61, v62);
 
             v45 = 0;
             v26 = 0;
@@ -2571,11 +2571,11 @@ LABEL_65:
         *buf = 136315394;
         v92 = "[CSP2PService _receiveVoiceGradingDataFromPeerId:requestInfo:withReply:]";
         v93 = 2112;
-        v94 = v9;
+        v94 = infoCopy;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%s received malformed command - %@", buf, 0x16u);
       }
 
-      if (!v10)
+      if (!replyCopy)
       {
         goto LABEL_69;
       }
@@ -2583,7 +2583,7 @@ LABEL_65:
       v31 = 3;
 LABEL_23:
       v15 = [NSError errorWithDomain:@"CoreSpeech" code:v31 userInfo:0];
-      (v10)[2](v10, 0, v15);
+      (replyCopy)[2](replyCopy, 0, v15);
 LABEL_68:
 
       goto LABEL_69;
@@ -2593,19 +2593,19 @@ LABEL_68:
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v33 = v32;
-      v34 = objc_retainBlock(v10);
+      v34 = objc_retainBlock(replyCopy);
       *buf = 136315906;
       v92 = "[CSP2PService _receiveVoiceGradingDataFromPeerId:requestInfo:withReply:]";
       v93 = 2112;
-      v94 = v8;
+      v94 = idCopy;
       v95 = 2112;
-      v96 = v9;
+      v96 = infoCopy;
       v97 = 2112;
       v98 = v34;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "%s unknown IDS peer with passed Identifier %@, %@ %@", buf, 0x2Au);
     }
 
-    if (v10)
+    if (replyCopy)
     {
       v31 = 2;
       goto LABEL_23;
@@ -2621,61 +2621,61 @@ LABEL_69:
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v28 = v27;
-    v29 = objc_retainBlock(v10);
+    v29 = objc_retainBlock(replyCopy);
     *buf = 136315906;
     v92 = "[CSP2PService _receiveVoiceGradingDataFromPeerId:requestInfo:withReply:]";
     v93 = 2112;
-    v94 = v9;
+    v94 = infoCopy;
     v95 = 2112;
-    v96 = v8;
+    v96 = idCopy;
     v97 = 2112;
     v98 = v29;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%s received malformed command - %@ %@ %@", buf, 0x2Au);
   }
 
-  if (v10)
+  if (replyCopy)
   {
     v11 = [NSError errorWithDomain:@"CoreSpeech" code:3 userInfo:0];
-    (v10)[2](v10, 0, v11);
+    (replyCopy)[2](replyCopy, 0, v11);
     goto LABEL_69;
   }
 
 LABEL_70:
 }
 
-- (void)_receiveParallelRecordingFromPeerId:(id)a3 recordingInfo:(id)a4 withReply:(id)a5
+- (void)_receiveParallelRecordingFromPeerId:(id)id recordingInfo:(id)info withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && v9)
+  idCopy = id;
+  infoCopy = info;
+  replyCopy = reply;
+  if (idCopy && infoCopy)
   {
     v11 = _IDSCopyIDForDeviceUniqueID();
     if (v11)
     {
-      v12 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileRecordedData_Key"];
+      v12 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileRecordedData_Key"];
       if (v12)
       {
         v13 = v12;
-        v14 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileRemoteFileName_Key"];
+        v14 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileRemoteFileName_Key"];
         if (v14)
         {
           v15 = v14;
-          v16 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+          v16 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
           if (v16)
           {
             v17 = v16;
-            v18 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
+            v18 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
             if (v18)
             {
               v19 = v18;
-              v20 = [v9 objectForKeyedSubscript:@"CSP2P_IsDataCompressed_Key"];
+              v20 = [infoCopy objectForKeyedSubscript:@"CSP2P_IsDataCompressed_Key"];
 
               if (v20)
               {
-                v21 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileRecordedData_Key"];
-                v22 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
-                v23 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
+                v21 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileRecordedData_Key"];
+                v22 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileProfileId_Key"];
+                v23 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileLocale_Key"];
                 v24 = [(CSP2PService *)self _spIdSiriDebugVoiceProfileRootDirectoryForProfile:v22 locale:v23];
 
                 v70 = v24;
@@ -2697,7 +2697,7 @@ LABEL_70:
                     _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "%s CSP2P_VoiceProfileParallelRecordingTransferCmd: Creating directory failed with error %@", buf, 0x16u);
                   }
 
-                  if (!v10)
+                  if (!replyCopy)
                   {
                     v47 = v70;
 LABEL_65:
@@ -2706,14 +2706,14 @@ LABEL_65:
                   }
 
                   v46 = [NSError errorWithDomain:@"CoreSpeech" code:4 userInfo:0];
-                  v10[2](v10, 0, v46);
+                  replyCopy[2](replyCopy, 0, v46);
                   v47 = v70;
 LABEL_64:
 
                   goto LABEL_65;
                 }
 
-                v28 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceProfileRemoteFileName_Key"];
+                v28 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceProfileRemoteFileName_Key"];
                 v29 = [NSString stringWithFormat:@"%@_%@", v11, v28];
 
                 v68 = v29;
@@ -2729,7 +2729,7 @@ LABEL_64:
                   if (v33)
                   {
                     v34 = v32;
-                    v35 = [v9 objectForKeyedSubscript:@"CSP2P_VoiceFileNameToBeGraded_Key"];
+                    v35 = [infoCopy objectForKeyedSubscript:@"CSP2P_VoiceFileNameToBeGraded_Key"];
                     *buf = 136315650;
                     v82 = "[CSP2PService _receiveParallelRecordingFromPeerId:recordingInfo:withReply:]";
                     v83 = 2112;
@@ -2739,7 +2739,7 @@ LABEL_64:
                     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%s Ignoring sync of existing file %@ from %@", buf, 0x20u);
                   }
 
-                  if (!v10)
+                  if (!replyCopy)
                   {
                     v47 = v70;
                     v46 = v68;
@@ -2751,7 +2751,7 @@ LABEL_63:
                   v79 = @"CSP2P_GradingDataTransferStatus_Key";
                   v80 = &off_10025E528;
                   v36 = [NSDictionary dictionaryWithObjects:&v80 forKeys:&v79 count:1];
-                  (v10)[2](v10, v36, 0);
+                  (replyCopy)[2](replyCopy, v36, 0);
 LABEL_62:
                   v47 = v70;
                   v46 = v68;
@@ -2770,16 +2770,16 @@ LABEL_62:
                   _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%s Syncing parallel recorded audio file - %@ from %@", buf, 0x20u);
                 }
 
-                v48 = [v9 objectForKeyedSubscript:@"CSP2P_IsDataCompressed_Key"];
-                v49 = [v48 BOOLValue];
+                v48 = [infoCopy objectForKeyedSubscript:@"CSP2P_IsDataCompressed_Key"];
+                bOOLValue = [v48 BOOLValue];
 
-                if ((v49 & 1) == 0)
+                if ((bOOLValue & 1) == 0)
                 {
                   v54 = CSLogContextFacilityCoreSpeech;
                   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
                   {
                     v55 = v54;
-                    v56 = [v9 objectForKeyedSubscript:@"CSP2P_PeerIdentifier_Key"];
+                    v56 = [infoCopy objectForKeyedSubscript:@"CSP2P_PeerIdentifier_Key"];
                     *buf = 136315650;
                     v82 = "[CSP2PService _receiveParallelRecordingFromPeerId:recordingInfo:withReply:]";
                     v83 = 2112;
@@ -2797,7 +2797,7 @@ LABEL_52:
 
                   if (v59)
                   {
-                    if (v10)
+                    if (replyCopy)
                     {
                       v73 = @"CSP2P_VoiceProfileStatus_Key";
                       v74 = &off_10025E528;
@@ -2805,7 +2805,7 @@ LABEL_52:
                       v62 = &v73;
 LABEL_59:
                       v64 = [NSDictionary dictionaryWithObjects:v61 forKeys:v62 count:1];
-                      (v10)[2](v10, v64, v60);
+                      (replyCopy)[2](replyCopy, v64, v60);
                       v27 = v60;
 LABEL_60:
 
@@ -2827,7 +2827,7 @@ LABEL_60:
                       _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "%s Writing to file(%@) failed!. Err=%@", buf, 0x20u);
                     }
 
-                    if (v10)
+                    if (replyCopy)
                     {
                       v75 = @"CSP2P_VoiceProfileStatus_Key";
                       v76 = &off_10025E540;
@@ -2843,24 +2843,24 @@ LABEL_60:
 
                 v50 = [v21 length];
                 src_buffer = [v21 bytes];
-                v51 = [v9 objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
+                v51 = [infoCopy objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
 
                 if (v51)
                 {
-                  v52 = [v9 objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
-                  v53 = [v52 integerValue];
+                  v52 = [infoCopy objectForKeyedSubscript:@"CSP2P_UncompressedDataSize_Key"];
+                  integerValue = [v52 integerValue];
                 }
 
                 else
                 {
-                  v53 = 3 * v50;
+                  integerValue = 3 * v50;
                 }
 
-                v57 = malloc_type_malloc(v53, 0x100004077774924uLL);
+                v57 = malloc_type_malloc(integerValue, 0x100004077774924uLL);
                 if (v57)
                 {
                   v58 = v57;
-                  v36 = [NSData dataWithBytes:v57 length:compression_decode_buffer(v57, v53, src_buffer, v50, 0, COMPRESSION_LZFSE)];
+                  v36 = [NSData dataWithBytes:v57 length:compression_decode_buffer(v57, integerValue, src_buffer, v50, 0, COMPRESSION_LZFSE)];
                   free(v58);
                   goto LABEL_52;
                 }
@@ -2871,22 +2871,22 @@ LABEL_60:
                   *buf = 136315394;
                   v82 = "[CSP2PService _receiveParallelRecordingFromPeerId:recordingInfo:withReply:]";
                   v83 = 2048;
-                  v84 = v53;
+                  v84 = integerValue;
                   _os_log_error_impl(&_mh_execute_header, v65, OS_LOG_TYPE_ERROR, "%s ERR: Failed to allocate buffer of size %zu, bailing out", buf, 0x16u);
-                  if (v10)
+                  if (replyCopy)
                   {
                     goto LABEL_68;
                   }
                 }
 
-                else if (v10)
+                else if (replyCopy)
                 {
 LABEL_68:
                   v77 = @"CSP2P_VoiceProfileStatus_Key";
                   v78 = &off_10025E540;
                   v64 = [NSDictionary dictionaryWithObjects:&v78 forKeys:&v77 count:1];
                   v66 = [NSError errorWithDomain:@"CoreSpeech" code:10 userInfo:0];
-                  (v10)[2](v10, v64, v66);
+                  (replyCopy)[2](replyCopy, v64, v66);
 
                   v36 = 0;
                   goto LABEL_60;
@@ -2909,11 +2909,11 @@ LABEL_27:
         *buf = 136315394;
         v82 = "[CSP2PService _receiveParallelRecordingFromPeerId:recordingInfo:withReply:]";
         v83 = 2112;
-        v84 = v9;
+        v84 = infoCopy;
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "%s CSP2P_VoiceProfileParallelRecordingTransferCmd: received malformed command - %@", buf, 0x16u);
       }
 
-      if (!v10)
+      if (!replyCopy)
       {
         goto LABEL_33;
       }
@@ -2926,24 +2926,24 @@ LABEL_27:
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v41 = v40;
-      v42 = objc_retainBlock(v10);
+      v42 = objc_retainBlock(replyCopy);
       *buf = 136315906;
       v82 = "[CSP2PService _receiveParallelRecordingFromPeerId:recordingInfo:withReply:]";
       v83 = 2112;
-      v84 = v8;
+      v84 = idCopy;
       v85 = 2112;
-      v86 = v9;
+      v86 = infoCopy;
       v87 = 2112;
       v88 = v42;
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "%s CSP2P_VoiceProfileParallelRecordingTransferCmd: unknown IDS peer with passed Identifier %@, %@ %@", buf, 0x2Au);
     }
 
-    if (v10)
+    if (replyCopy)
     {
       v43 = 2;
 LABEL_31:
       v21 = [NSError errorWithDomain:@"CoreSpeech" code:v43 userInfo:0];
-      v10[2](v10, 0, v21);
+      replyCopy[2](replyCopy, 0, v21);
 LABEL_32:
 
       goto LABEL_33;
@@ -2959,88 +2959,88 @@ LABEL_33:
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v38 = v37;
-    v39 = objc_retainBlock(v10);
+    v39 = objc_retainBlock(replyCopy);
     *buf = 136315906;
     v82 = "[CSP2PService _receiveParallelRecordingFromPeerId:recordingInfo:withReply:]";
     v83 = 2112;
-    v84 = v9;
+    v84 = infoCopy;
     v85 = 2112;
-    v86 = v8;
+    v86 = idCopy;
     v87 = 2112;
     v88 = v39;
     _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%s CSP2P_VoiceProfileParallelRecordingTransferCmd: received malformed command - %@ %@ %@", buf, 0x2Au);
   }
 
-  if (v10)
+  if (replyCopy)
   {
     v11 = [NSError errorWithDomain:@"CoreSpeech" code:3 userInfo:0];
-    v10[2](v10, 0, v11);
+    replyCopy[2](replyCopy, 0, v11);
     goto LABEL_33;
   }
 
 LABEL_34:
 }
 
-- (id)_sendGradingData:(id)a3 withFileName:(id)a4 toPeerId:(id)a5 withCompressedFlag:(BOOL)a6 withUncompressedDataSize:(unint64_t)a7 withBatchId:(id)a8 withRetainFileFlag:(BOOL)a9 withFilePrefix:(id)a10 withCompletion:(id)a11
+- (id)_sendGradingData:(id)data withFileName:(id)name toPeerId:(id)id withCompressedFlag:(BOOL)flag withUncompressedDataSize:(unint64_t)size withBatchId:(id)batchId withRetainFileFlag:(BOOL)fileFlag withFilePrefix:(id)self0 withCompletion:(id)self1
 {
-  v52 = a6;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a10;
-  v20 = a11;
-  if (v15 && v16 && v17)
+  flagCopy = flag;
+  dataCopy = data;
+  nameCopy = name;
+  idCopy = id;
+  batchIdCopy = batchId;
+  prefixCopy = prefix;
+  completionCopy = completion;
+  if (dataCopy && nameCopy && idCopy)
   {
-    v51 = a7;
+    sizeCopy = size;
     v49 = +[NSUUID UUID];
-    v21 = [v16 stringByDeletingLastPathComponent];
-    v54 = v18;
-    v50 = v20;
+    stringByDeletingLastPathComponent = [nameCopy stringByDeletingLastPathComponent];
+    v54 = batchIdCopy;
+    v50 = completionCopy;
     if ([(CSP2PService *)self isInternalWithoutProfile])
     {
-      v22 = [v16 lastPathComponent];
+      lastPathComponent = [nameCopy lastPathComponent];
     }
 
     else
     {
       v26 = [NSMutableString alloc];
-      v27 = [v16 lastPathComponent];
-      v22 = [v26 initWithString:v27];
+      lastPathComponent2 = [nameCopy lastPathComponent];
+      lastPathComponent = [v26 initWithString:lastPathComponent2];
 
       v62 = 0;
       v28 = [[NSRegularExpression alloc] initWithPattern:@"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}" options:1 error:&v62];
-      v30 = [v28 rangeOfFirstMatchInString:v22 options:16 range:{0, objc_msgSend(v22, "length")}];
+      v30 = [v28 rangeOfFirstMatchInString:lastPathComponent options:16 range:{0, objc_msgSend(lastPathComponent, "length")}];
       if (v30 != 0x7FFFFFFFFFFFFFFFLL || v29)
       {
-        v47 = [v22 substringWithRange:{v30, v29}];
+        v47 = [lastPathComponent substringWithRange:{v30, v29}];
         [v47 dataUsingEncoding:4];
-        v32 = v31 = v21;
+        v32 = v31 = stringByDeletingLastPathComponent;
         v33 = [(CSP2PService *)self _sha1:v32];
 
-        v21 = v31;
-        [v28 replaceMatchesInString:v22 options:16 range:0 withTemplate:{objc_msgSend(v22, "length"), v33}];
+        stringByDeletingLastPathComponent = v31;
+        [v28 replaceMatchesInString:lastPathComponent options:16 range:0 withTemplate:{objc_msgSend(lastPathComponent, "length"), v33}];
       }
     }
 
-    v48 = v21;
-    v34 = [NSString stringWithFormat:@"%@%@", v19, v22];
-    v35 = [v21 stringByAppendingPathComponent:v34];
+    v48 = stringByDeletingLastPathComponent;
+    v34 = [NSString stringWithFormat:@"%@%@", prefixCopy, lastPathComponent];
+    v35 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v34];
 
     v65[0] = @"CSP2P_VoiceFileNameToBeGraded_Key";
-    v36 = [v35 lastPathComponent];
-    v66[0] = v36;
+    lastPathComponent3 = [v35 lastPathComponent];
+    v66[0] = lastPathComponent3;
     v65[1] = @"CSP2P_IsDataCompressed_Key";
-    v37 = [NSNumber numberWithBool:v52];
+    v37 = [NSNumber numberWithBool:flagCopy];
     v66[1] = v37;
-    v66[2] = v15;
+    v66[2] = dataCopy;
     v65[2] = @"CSP2P_VoiceDataToBeGraded_Key";
     v65[3] = @"CSP2P_PeerIdentifier_Key";
-    v66[3] = v17;
+    v66[3] = idCopy;
     v65[4] = @"CSP2P_UncompressedDataSize_Key";
-    v38 = [NSNumber numberWithUnsignedLong:v51];
+    v38 = [NSNumber numberWithUnsignedLong:sizeCopy];
     v65[5] = @"CSP2P_GradingBatchTransferID_Key";
-    v53 = v15;
+    v53 = dataCopy;
     v66[4] = v38;
     v66[5] = v54;
     v39 = [NSDictionary dictionaryWithObjects:v66 forKeys:v65 count:6];
@@ -3058,21 +3058,21 @@ LABEL_34:
     v56[2] = sub_1000F78B8;
     v56[3] = &unk_100251728;
     v57 = v35;
-    v61 = a9;
-    v58 = v16;
+    fileFlagCopy = fileFlag;
+    v58 = nameCopy;
     v60 = v50;
     v42 = v49;
     v59 = v42;
     v43 = v35;
-    [WeakRetained sendMessageWithPayload:v40 toPeer:v17 withReply:v56];
+    [WeakRetained sendMessageWithPayload:v40 toPeer:idCopy withReply:v56];
 
     v44 = v59;
     v45 = v42;
-    v20 = v50;
+    completionCopy = v50;
     v25 = v45;
 
-    v15 = v53;
-    v18 = v54;
+    dataCopy = v53;
+    batchIdCopy = v54;
 
     goto LABEL_21;
   }
@@ -3081,17 +3081,17 @@ LABEL_34:
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v24 = @"peerId";
-    if (v17)
+    if (idCopy)
     {
       v24 = @"unknown";
     }
 
-    if (!v16)
+    if (!nameCopy)
     {
       v24 = @"fileName";
     }
 
-    if (!v15)
+    if (!dataCopy)
     {
       v24 = @"fileData";
     }
@@ -3103,10 +3103,10 @@ LABEL_34:
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%s %@ is nil - Bailing out", buf, 0x16u);
   }
 
-  if (v20)
+  if (completionCopy)
   {
-    v22 = [NSError errorWithDomain:@"CoreSpeech" code:3 userInfo:0];
-    (*(v20 + 2))(v20, 0, v22);
+    lastPathComponent = [NSError errorWithDomain:@"CoreSpeech" code:3 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, lastPathComponent);
     v25 = 0;
 LABEL_21:
 
@@ -3119,34 +3119,34 @@ LABEL_22:
   return v25;
 }
 
-- (void)_sendCoreSpeechMagusGradingDataToPeerId:(id)a3
+- (void)_sendCoreSpeechMagusGradingDataToPeerId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   if (CSIsInternalBuild())
   {
     v5 = [NSPredicate predicateWithBlock:&stru_100251700];
     v6 = +[NSUUID UUID];
-    v7 = [v6 UUIDString];
+    uUIDString = [v6 UUIDString];
 
     v8 = +[CSFPreferences sharedPreferences];
-    v9 = [v8 mhLogDirectory];
-    v10 = [NSURL URLWithString:v9];
+    mhLogDirectory = [v8 mhLogDirectory];
+    v10 = [NSURL URLWithString:mhLogDirectory];
 
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000F7D74;
     v12[3] = &unk_100251698;
     v12[4] = self;
-    v13 = v7;
-    v14 = v4;
-    v11 = v7;
+    v13 = uUIDString;
+    v14 = idCopy;
+    v11 = uUIDString;
     [(CSP2PService *)self _compressFilesInDirectory:v10 matchingPredicate:v5 compressedFileAvailable:v12];
   }
 }
 
-- (void)_sendGeckoSpeechLogsToPeerId:(id)a3
+- (void)_sendGeckoSpeechLogsToPeerId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000F85EC;
@@ -3154,56 +3154,56 @@ LABEL_22:
   v16[4] = self;
   v5 = [NSPredicate predicateWithBlock:v16];
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
 
   v8 = +[CSFPreferences sharedPreferences];
-  v9 = [v8 geckoAudioLogDirectory];
-  v10 = [NSURL URLWithString:v9];
+  geckoAudioLogDirectory = [v8 geckoAudioLogDirectory];
+  v10 = [NSURL URLWithString:geckoAudioLogDirectory];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000F8660;
   v13[3] = &unk_100251698;
   v13[4] = self;
-  v14 = v7;
-  v15 = v4;
-  v11 = v4;
-  v12 = v7;
+  v14 = uUIDString;
+  v15 = idCopy;
+  v11 = idCopy;
+  v12 = uUIDString;
   [(CSP2PService *)self _compressFilesInDirectory:v10 matchingPredicate:v5 sortedByCreationDate:1 compressedFileAvailable:v13];
 }
 
-- (void)_sendCoreSpeechGradingDataToPeerId:(id)a3 forLogType:(unint64_t)a4
+- (void)_sendCoreSpeechGradingDataToPeerId:(id)id forLogType:(unint64_t)type
 {
-  v6 = a3;
+  idCopy = id;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000F8C44;
   v18[3] = &unk_1002516C0;
   v18[4] = self;
-  v18[5] = a4;
+  v18[5] = type;
   v7 = [NSPredicate predicateWithBlock:v18];
   v8 = +[NSUUID UUID];
-  v9 = [v8 UUIDString];
+  uUIDString = [v8 UUIDString];
 
   v10 = +[CSFPreferences sharedPreferences];
-  v11 = [v10 assistantAudioFileLogDirectory];
-  v12 = [NSURL URLWithString:v11];
+  assistantAudioFileLogDirectory = [v10 assistantAudioFileLogDirectory];
+  v12 = [NSURL URLWithString:assistantAudioFileLogDirectory];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000F8E24;
   v15[3] = &unk_100251698;
   v15[4] = self;
-  v16 = v9;
-  v17 = v6;
-  v13 = v6;
-  v14 = v9;
+  v16 = uUIDString;
+  v17 = idCopy;
+  v13 = idCopy;
+  v14 = uUIDString;
   [(CSP2PService *)self _compressFilesInDirectory:v12 matchingPredicate:v7 compressedFileAvailable:v15];
 }
 
-- (void)_sendVoiceTriggerGradingDataToPeerId:(id)a3
+- (void)_sendVoiceTriggerGradingDataToPeerId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000F9410;
@@ -3211,41 +3211,41 @@ LABEL_22:
   v16[4] = self;
   v5 = [NSPredicate predicateWithBlock:v16];
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
 
   v8 = +[CSFPreferences sharedPreferences];
-  v9 = [v8 voiceTriggerAudioLogDirectory];
-  v10 = [NSURL URLWithString:v9];
+  voiceTriggerAudioLogDirectory = [v8 voiceTriggerAudioLogDirectory];
+  v10 = [NSURL URLWithString:voiceTriggerAudioLogDirectory];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000F94E4;
   v13[3] = &unk_100251698;
   v13[4] = self;
-  v14 = v7;
-  v15 = v4;
-  v11 = v4;
-  v12 = v7;
+  v14 = uUIDString;
+  v15 = idCopy;
+  v11 = idCopy;
+  v12 = uUIDString;
   [(CSP2PService *)self _compressFilesInDirectory:v10 matchingPredicate:v5 compressedFileAvailable:v13];
 }
 
-- (void)_compressFilesInDirectory:(id)a3 matchingPredicate:(id)a4 sortedByCreationDate:(BOOL)a5 compressedFileAvailable:(id)a6
+- (void)_compressFilesInDirectory:(id)directory matchingPredicate:(id)predicate sortedByCreationDate:(BOOL)date compressedFileAvailable:(id)available
 {
-  v7 = a5;
-  v41 = a3;
-  v39 = a4;
-  v42 = a6;
+  dateCopy = date;
+  directoryCopy = directory;
+  predicateCopy = predicate;
+  availableCopy = available;
   v9 = +[NSFileManager defaultManager];
   v67[0] = NSURLNameKey;
   v67[1] = NSURLIsDirectoryKey;
   v10 = [NSArray arrayWithObjects:v67 count:2];
   v53 = 0;
-  v40 = [v9 contentsOfDirectoryAtURL:v41 includingPropertiesForKeys:v10 options:0 error:&v53];
+  v40 = [v9 contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:v10 options:0 error:&v53];
   v11 = v53;
 
   if (!v11)
   {
-    if (v39)
+    if (predicateCopy)
     {
       v38 = [v40 filteredArrayUsingPredicate:?];
     }
@@ -3261,7 +3261,7 @@ LABEL_22:
     v64 = sub_1000F3934;
     v65 = sub_1000F3944;
     v66 = 0;
-    if (v7)
+    if (dateCopy)
     {
       v52[0] = _NSConcreteStackBlock;
       v52[1] = 3221225472;
@@ -3333,17 +3333,17 @@ LABEL_21:
       {
         if (![v18 BOOLValue])
         {
-          v24 = [v17 path];
-          v25 = [NSData dataWithContentsOfFile:v24];
+          path = [v17 path];
+          v25 = [NSData dataWithContentsOfFile:path];
 
           v26 = [v25 length];
           v27 = v25;
-          v28 = [v25 bytes];
+          bytes = [v25 bytes];
           v29 = malloc_type_malloc(v26, 0x100004077774924uLL);
           v30 = v29;
           if (v29)
           {
-            v31 = compression_encode_buffer(v29, v26, v28, v26, 0, COMPRESSION_LZFSE);
+            v31 = compression_encode_buffer(v29, v26, bytes, v26, 0, COMPRESSION_LZFSE);
             if (v31)
             {
               v32 = [NSData dataWithBytes:v30 length:v31];
@@ -3384,8 +3384,8 @@ LABEL_21:
               _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%s _compressFilesInDirectory: File %@ compressed from %ld to %ld ", v54, 0x2Au);
             }
 
-            v37 = [v17 path];
-            v42[2](v42, v37, v32, v26, v33, v31 != 0, 0);
+            path2 = [v17 path];
+            availableCopy[2](availableCopy, path2, v32, v26, v33, v31 != 0, 0);
           }
 
           else
@@ -3443,7 +3443,7 @@ LABEL_34:
     *buf = 136315650;
     *&buf[4] = "[CSP2PService _compressFilesInDirectory:matchingPredicate:sortedByCreationDate:compressedFileAvailable:]";
     *&buf[12] = 2112;
-    *&buf[14] = v41;
+    *&buf[14] = directoryCopy;
     *&buf[22] = 2112;
     v64 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s Cannot read contents of directory: %@, err: %@", buf, 0x20u);
@@ -3452,13 +3452,13 @@ LABEL_34:
 LABEL_37:
 }
 
-- (void)_processParallelRecordingCommandWithRequest:(id)a3 fromSenderID:(id)a4 withReply:(id)a5
+- (void)_processParallelRecordingCommandWithRequest:(id)request fromSenderID:(id)d withReply:(id)reply
 {
-  v6 = a5;
-  v7 = [a3 objectForKeyedSubscript:@"CSP2P_RemoteRecordingStart_Key"];
-  v8 = [v7 unsignedIntegerValue];
+  replyCopy = reply;
+  v7 = [request objectForKeyedSubscript:@"CSP2P_RemoteRecordingStart_Key"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  if (v8 == 1)
+  if (unsignedIntegerValue == 1)
   {
     v14 = @"CSP2P_RemoteRecordingStatus_Key";
     v15 = &off_10025E4F8;
@@ -3475,18 +3475,18 @@ LABEL_37:
   }
 
   v11 = [NSDictionary dictionaryWithObjects:v9 forKeys:v10 count:1];
-  v6[2](v6, v11, 0);
+  replyCopy[2](replyCopy, v11, 0);
 }
 
-- (void)_processRemoteHeySiriCommandWithRequest:(id)a3 fromSenderID:(id)a4 withReply:(id)a5
+- (void)_processRemoteHeySiriCommandWithRequest:(id)request fromSenderID:(id)d withReply:(id)reply
 {
-  v6 = a5;
-  v7 = [a3 objectForKeyedSubscript:@"CSP2P_RemoteHeySiriEnable_Key"];
-  v8 = [v7 BOOLValue];
+  replyCopy = reply;
+  v7 = [request objectForKeyedSubscript:@"CSP2P_RemoteHeySiriEnable_Key"];
+  bOOLValue = [v7 BOOLValue];
 
   v9 = CSLogContextFacilityCoreSpeech;
   v10 = os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (bOOLValue)
   {
     if (v10)
     {
@@ -3517,7 +3517,7 @@ LABEL_37:
   }
 
   v13 = [NSDictionary dictionaryWithObjects:v11 forKeys:v12 count:1, v14, v15, v16, v17];
-  v6[2](v6, v13, 0);
+  replyCopy[2](replyCopy, v13, 0);
 }
 
 - (void)sendGeckoSpeechLogsToCompanion
@@ -3555,17 +3555,17 @@ LABEL_37:
   }
 }
 
-- (void)sendVoiceProfileUpdatedMessageToNearbyPeerForLocale:(id)a3
+- (void)sendVoiceProfileUpdatedMessageToNearbyPeerForLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000FA8F0;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = localeCopy;
+  v6 = localeCopy;
   dispatch_async(queue, v7);
 }
 
@@ -3604,23 +3604,23 @@ LABEL_37:
   }
 }
 
-- (void)processRemoteCommandWithPayload:(id)a3 fromPeer:(id)a4 withReply:(id)a5
+- (void)processRemoteCommandWithPayload:(id)payload fromPeer:(id)peer withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  payloadCopy = payload;
+  peerCopy = peer;
+  replyCopy = reply;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000FADA0;
   v15[3] = &unk_100252E58;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = payloadCopy;
+  v17 = peerCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = peerCopy;
+  v14 = payloadCopy;
   dispatch_async(queue, v15);
 }
 

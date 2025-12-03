@@ -1,26 +1,26 @@
 @interface NotesSiriSingleNoteHelper
 - (_TtC11NotesSiriUIP33_3E7C7BF264EBD40B6730A9F9F307847625NotesSiriSingleNoteHelper)init;
-- (id)noteHTMLEditorView:(id)a3 attachmentPresentationForContentID:(id)a4;
-- (id)noteHTMLEditorView:(id)a3 fileURLForAttachmentWithContentID:(id)a4;
+- (id)noteHTMLEditorView:(id)view attachmentPresentationForContentID:(id)d;
+- (id)noteHTMLEditorView:(id)view fileURLForAttachmentWithContentID:(id)d;
 @end
 
 @implementation NotesSiriSingleNoteHelper
 
-- (id)noteHTMLEditorView:(id)a3 fileURLForAttachmentWithContentID:(id)a4
+- (id)noteHTMLEditorView:(id)view fileURLForAttachmentWithContentID:(id)d
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FC14000, " \r");
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v20 - v9;
-  if (a4)
+  if (d)
   {
     sub_25C78F034();
-    a4 = v11;
+    d = v11;
   }
 
-  v12 = a3;
-  v13 = self;
-  sub_25C779F70(a4, v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_25C779F70(d, v10);
 
   v14 = sub_25C78E744();
   v15 = *(v14 - 8);
@@ -36,12 +36,12 @@
   return v17;
 }
 
-- (id)noteHTMLEditorView:(id)a3 attachmentPresentationForContentID:(id)a4
+- (id)noteHTMLEditorView:(id)view attachmentPresentationForContentID:(id)d
 {
-  if (a4)
+  if (d)
   {
     sub_25C78F034();
-    v5 = self;
+    selfCopy = self;
     v6 = sub_25C78F024();
     v7 = sub_25C77A524(v6);
   }

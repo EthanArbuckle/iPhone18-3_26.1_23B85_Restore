@@ -1,20 +1,20 @@
 @interface MapsThermalPressureController
 + (MapsThermalPressureController)sharedController;
 + (NSDictionary)mitigations;
-- (BOOL)shouldActivateMitigationNamed:(id)a3;
+- (BOOL)shouldActivateMitigationNamed:(id)named;
 - (MapsThermalPressureController)init;
-- (id)_observersOfMitigationNamed:(id)a3;
+- (id)_observersOfMitigationNamed:(id)named;
 - (int)currentThermalPressureLevel;
 - (void)_handleNotifyCallback;
 - (void)_updateAllObservers;
-- (void)_updateObserversOfMitigationNamed:(id)a3;
-- (void)addObserver:(id)a3 forMitigationNamed:(id)a4;
-- (void)addThermalPressureObserver:(id)a3;
+- (void)_updateObserversOfMitigationNamed:(id)named;
+- (void)addObserver:(id)observer forMitigationNamed:(id)named;
+- (void)addThermalPressureObserver:(id)observer;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeObserver:(id)a3 forMitigationNamed:(id)a4;
-- (void)removeThermalPressureObserver:(id)a3;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeObserver:(id)observer forMitigationNamed:(id)named;
+- (void)removeThermalPressureObserver:(id)observer;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation MapsThermalPressureController
@@ -92,8 +92,8 @@ LABEL_11:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [objc_opt_class() mitigations];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v28 count:16];
+  mitigations = [objc_opt_class() mitigations];
+  v12 = [mitigations countByEnumeratingWithState:&v19 objects:v28 count:16];
   if (v12)
   {
     v13 = *v20;
@@ -103,7 +103,7 @@ LABEL_11:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(mitigations);
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
@@ -119,7 +119,7 @@ LABEL_11:
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v19 objects:v28 count:16];
+      v12 = [mitigations countByEnumeratingWithState:&v19 objects:v28 count:16];
     }
 
     while (v12);
@@ -142,9 +142,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == 666 && a3.var1 == &unk_101643E58)
+  if (key.var0 == 666 && key.var1 == &unk_101643E58)
   {
     v8 = v3;
     v9 = v4;
@@ -194,11 +194,11 @@ LABEL_11:
   [(GEOObserverHashTable *)self->_thermalPressureObservers didUpdateThermalPressureLevel:LODWORD(self->_currentThermalPressureLevel)];
 }
 
-- (void)_updateObserversOfMitigationNamed:(id)a3
+- (void)_updateObserversOfMitigationNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(MapsThermalPressureController *)self _observersOfMitigationNamed:v4];
-  [v5 didUpdateMitigationNamed:v4];
+  namedCopy = named;
+  v5 = [(MapsThermalPressureController *)self _observersOfMitigationNamed:namedCopy];
+  [v5 didUpdateMitigationNamed:namedCopy];
 }
 
 - (void)_handleNotifyCallback
@@ -229,23 +229,23 @@ LABEL_11:
   }
 }
 
-- (id)_observersOfMitigationNamed:(id)a3
+- (id)_observersOfMitigationNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_mitigationObservers objectForKeyedSubscript:v4];
+  namedCopy = named;
+  v5 = [(NSMutableDictionary *)self->_mitigationObservers objectForKeyedSubscript:namedCopy];
   if (!v5)
   {
     v5 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___ThermalPressureObserver queue:self->_isolationQueue];
-    [(NSMutableDictionary *)self->_mitigationObservers setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_mitigationObservers setObject:v5 forKeyedSubscript:namedCopy];
   }
 
   return v5;
 }
 
-- (BOOL)shouldActivateMitigationNamed:(id)a3
+- (BOOL)shouldActivateMitigationNamed:(id)named
 {
-  v4 = a3;
-  v5 = v4;
+  namedCopy = named;
+  v5 = namedCopy;
   if (self->_notifyInitialized)
   {
     v20 = 0;
@@ -257,9 +257,9 @@ LABEL_11:
     v14[1] = 3221225472;
     v15 = sub_100CFA24C;
     v16 = &unk_101660778;
-    v18 = self;
+    selfCopy = self;
     v19 = &v20;
-    v17 = v4;
+    v17 = namedCopy;
     v7 = isolationQueue;
     v8 = v14;
     label = dispatch_queue_get_label(v7);
@@ -288,12 +288,12 @@ LABEL_11:
   return v11 & 1;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == &off_101650F50 && ([objc_opt_class() mitigations], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "allKeys"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "containsObject:", v10), v14, v13, v15))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == &off_101650F50 && ([objc_opt_class() mitigations], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "allKeys"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "containsObject:", pathCopy), v14, v13, v15))
   {
     objc_initWeak(&location, self);
     isolationQueue = self->_isolationQueue;
@@ -301,7 +301,7 @@ LABEL_11:
     block[1] = 3221225472;
     block[2] = sub_100CFA514;
     block[3] = &unk_101661340;
-    v19 = v10;
+    v19 = pathCopy;
     objc_copyWeak(&v20, &location);
     dispatch_async(isolationQueue, block);
     objc_destroyWeak(&v20);
@@ -313,21 +313,21 @@ LABEL_11:
   {
     v17.receiver = self;
     v17.super_class = MapsThermalPressureController;
-    [(MapsThermalPressureController *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(MapsThermalPressureController *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)removeThermalPressureObserver:(id)a3
+- (void)removeThermalPressureObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   isolationQueue = self->_isolationQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v14 = sub_100CFA6EC;
   v15 = &unk_101661A90;
-  v6 = v4;
+  v6 = observerCopy;
   v16 = v6;
-  v17 = self;
+  selfCopy = self;
   v7 = isolationQueue;
   v8 = v13;
   label = dispatch_queue_get_label(v7);
@@ -345,17 +345,17 @@ LABEL_11:
   }
 }
 
-- (void)addThermalPressureObserver:(id)a3
+- (void)addThermalPressureObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   isolationQueue = self->_isolationQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v14 = sub_100CFA8B8;
   v15 = &unk_101661A90;
-  v6 = v4;
+  v6 = observerCopy;
   v16 = v6;
-  v17 = self;
+  selfCopy = self;
   v7 = isolationQueue;
   v8 = v13;
   label = dispatch_queue_get_label(v7);
@@ -373,20 +373,20 @@ LABEL_11:
   }
 }
 
-- (void)removeObserver:(id)a3 forMitigationNamed:(id)a4
+- (void)removeObserver:(id)observer forMitigationNamed:(id)named
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  namedCopy = named;
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100CFAA58;
   v11[3] = &unk_101661480;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = namedCopy;
+  v9 = namedCopy;
+  v10 = observerCopy;
   objc_copyWeak(&v14, &location);
   dispatch_async(isolationQueue, v11);
   objc_destroyWeak(&v14);
@@ -394,20 +394,20 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)addObserver:(id)a3 forMitigationNamed:(id)a4
+- (void)addObserver:(id)observer forMitigationNamed:(id)named
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  namedCopy = named;
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100CFAC2C;
   v11[3] = &unk_101661480;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = namedCopy;
+  v9 = namedCopy;
+  v10 = observerCopy;
   objc_copyWeak(&v14, &location);
   dispatch_async(isolationQueue, v11);
   objc_destroyWeak(&v14);
@@ -426,7 +426,7 @@ LABEL_11:
   v10[1] = 3221225472;
   v11 = sub_100CFAE4C;
   v12 = &unk_101661600;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   v3 = isolationQueue;
   v4 = v10;
@@ -455,8 +455,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [objc_opt_class() mitigations];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  mitigations = [objc_opt_class() mitigations];
+  v4 = [mitigations countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -467,7 +467,7 @@ LABEL_11:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(mitigations);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -478,7 +478,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [mitigations countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

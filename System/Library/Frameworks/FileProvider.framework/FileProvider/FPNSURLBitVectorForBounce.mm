@@ -1,8 +1,8 @@
 @interface FPNSURLBitVectorForBounce
 - (BOOL)foundAllAvailableBounceNumbers;
 - (FPNSURLBitVectorForBounce)init;
-- (id)findNextAvailableBounceNumberFromIndex:(int)a3;
-- (void)markBounceNumberAsFound:(id)a3;
+- (id)findNextAvailableBounceNumberFromIndex:(int)index;
+- (void)markBounceNumberAsFound:(id)found;
 @end
 
 @implementation FPNSURLBitVectorForBounce
@@ -14,9 +14,9 @@
   v2 = [(FPNSURLBitVectorForBounce *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AEC0] fp_maximumBounceLevel];
-    v2->_bitCount = v3;
-    Mutable = CFBitVectorCreateMutable(0, v3);
+    fp_maximumBounceLevel = [MEMORY[0x1E696AEC0] fp_maximumBounceLevel];
+    v2->_bitCount = fp_maximumBounceLevel;
+    Mutable = CFBitVectorCreateMutable(0, fp_maximumBounceLevel);
     v2->_vector = Mutable;
     CFBitVectorSetCount(Mutable, v2->_bitCount);
   }
@@ -24,20 +24,20 @@
   return v2;
 }
 
-- (void)markBounceNumberAsFound:(id)a3
+- (void)markBounceNumberAsFound:(id)found
 {
-  v5 = a3;
-  v4 = [v5 unsignedIntValue];
-  if ([MEMORY[0x1E696AEC0] fp_maximumBounceLevel] >= v4)
+  foundCopy = found;
+  unsignedIntValue = [foundCopy unsignedIntValue];
+  if ([MEMORY[0x1E696AEC0] fp_maximumBounceLevel] >= unsignedIntValue)
   {
-    CFBitVectorSetBitAtIndex(self->_vector, ([v5 intValue] - 1), 1u);
+    CFBitVectorSetBitAtIndex(self->_vector, ([foundCopy intValue] - 1), 1u);
   }
 }
 
-- (id)findNextAvailableBounceNumberFromIndex:(int)a3
+- (id)findNextAvailableBounceNumberFromIndex:(int)index
 {
   v3 = MEMORY[0x1E696AD98];
-  v7.location = a3;
+  v7.location = index;
   v7.length = self->_bitCount - 1;
   FirstIndexOfBit = CFBitVectorGetFirstIndexOfBit(self->_vector, v7, 0);
 

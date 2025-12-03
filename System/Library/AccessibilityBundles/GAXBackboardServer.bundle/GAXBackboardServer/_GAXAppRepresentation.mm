@@ -5,16 +5,16 @@
 - (BOOL)isPreferences;
 - (BOOL)isPurpleBuddy;
 - (BOOL)isWebApp;
-- (BOOL)prepareForTransitionToWorkspaceAndRetrieveRestrictionsInformation:(id *)a3;
-- (_GAXAppRepresentation)initWithDelegate:(id)a3;
+- (BOOL)prepareForTransitionToWorkspaceAndRetrieveRestrictionsInformation:(id *)information;
+- (_GAXAppRepresentation)initWithDelegate:(id)delegate;
 - (_GAXAppRepresentationDelegate)delegate;
-- (id)containedViewsForArchivedFingerPath:(id)a3;
+- (id)containedViewsForArchivedFingerPath:(id)path;
 - (id)description;
 - (id)restrictionIdentifiers;
-- (void)_sendMessageToClient:(id)a3 replyMessage:(id *)a4 timeout:(double)a5 description:(id)a6;
+- (void)_sendMessageToClient:(id)client replyMessage:(id *)message timeout:(double)timeout description:(id)description;
 - (void)dealloc;
 - (void)handleDeath;
-- (void)restrictionWithIdentifier:(id)a3 didChangeState:(int64_t)a4;
+- (void)restrictionWithIdentifier:(id)identifier didChangeState:(int64_t)state;
 - (void)resume;
 - (void)suspend;
 - (void)terminate;
@@ -22,16 +22,16 @@
 
 @implementation _GAXAppRepresentation
 
-- (_GAXAppRepresentation)initWithDelegate:(id)a3
+- (_GAXAppRepresentation)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = _GAXAppRepresentation;
   v5 = [(_GAXAppRepresentation *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -39,12 +39,12 @@
 
 - (void)dealloc
 {
-  v3 = [(_GAXAppRepresentation *)self appClient];
-  v4 = v3;
-  if (v3)
+  appClient = [(_GAXAppRepresentation *)self appClient];
+  v4 = appClient;
+  if (appClient)
   {
     v9 = 0;
-    v5 = [v3 disconnectWithError:&v9];
+    v5 = [appClient disconnectWithError:&v9];
     v6 = v9;
     if ((v5 & 1) == 0)
     {
@@ -86,8 +86,8 @@
 
 - (BOOL)isHostedByTheSystemApp
 {
-  v2 = [(_GAXAppRepresentation *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.InCallService"];
+  bundleIdentifier = [(_GAXAppRepresentation *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.InCallService"];
 
   return v3;
 }
@@ -95,32 +95,32 @@
 - (BOOL)isWebApp
 {
   v3 = +[AXSpringBoardServer server];
-  v4 = [(_GAXAppRepresentation *)self bundleIdentifier];
-  v5 = [v3 gaxIsWebAppAndForegroundRunning:v4];
+  bundleIdentifier = [(_GAXAppRepresentation *)self bundleIdentifier];
+  v5 = [v3 gaxIsWebAppAndForegroundRunning:bundleIdentifier];
 
   return v5;
 }
 
 - (BOOL)isPurpleBuddy
 {
-  v2 = [(_GAXAppRepresentation *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.purplebuddy"];
+  bundleIdentifier = [(_GAXAppRepresentation *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.purplebuddy"];
 
   return v3;
 }
 
 - (BOOL)isPreferences
 {
-  v2 = [(_GAXAppRepresentation *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.Preferences"];
+  bundleIdentifier = [(_GAXAppRepresentation *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.Preferences"];
 
   return v3;
 }
 
 - (BOOL)isCoreAuthUI
 {
-  v2 = [(_GAXAppRepresentation *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.CoreAuthUI"];
+  bundleIdentifier = [(_GAXAppRepresentation *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.CoreAuthUI"];
 
   return v3;
 }
@@ -145,9 +145,9 @@
     v3 = GAXLogAppLaunching();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(_GAXAppRepresentation *)self bundleIdentifier];
+      bundleIdentifier = [(_GAXAppRepresentation *)self bundleIdentifier];
       v5 = 138543362;
-      v6 = v4;
+      v6 = bundleIdentifier;
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "GAX: Suspending process: %{public}@", &v5, 0xCu);
     }
 
@@ -166,9 +166,9 @@
     v3 = GAXLogAppLaunching();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(_GAXAppRepresentation *)self bundleIdentifier];
+      bundleIdentifier = [(_GAXAppRepresentation *)self bundleIdentifier];
       v5 = 138543362;
-      v6 = v4;
+      v6 = bundleIdentifier;
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "GAX: Resuming process: %{public}@", &v5, 0xCu);
     }
 
@@ -178,20 +178,20 @@
   }
 }
 
-- (id)containedViewsForArchivedFingerPath:(id)a3
+- (id)containedViewsForArchivedFingerPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v5 = [[NSDictionary alloc] initWithObjectsAndKeys:{v4, @"GAXIPCPayloadKeyPath", 0}];
+    v5 = [[NSDictionary alloc] initWithObjectsAndKeys:{pathCopy, @"GAXIPCPayloadKeyPath", 0}];
     v6 = [[AXIPCMessage alloc] initWithKey:11000 payload:v5];
     v11 = 0;
     [(_GAXAppRepresentation *)self _sendMessageToClient:v6 replyMessage:&v11 timeout:@"get contained views for finger path" description:0.0];
     v7 = v11;
 
-    v8 = [v7 payload];
+    payload = [v7 payload];
 
-    v9 = [v8 objectForKey:@"GAXIPCPayloadKeyViewsForPath"];
+    v9 = [payload objectForKey:@"GAXIPCPayloadKeyViewsForPath"];
 
     if (!v9)
     {
@@ -210,8 +210,8 @@
 
 - (void)handleDeath
 {
-  v3 = [(_GAXAppRepresentation *)self delegate];
-  if (!v3)
+  delegate = [(_GAXAppRepresentation *)self delegate];
+  if (!delegate)
   {
     v4 = GAXLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -220,37 +220,37 @@
     }
   }
 
-  [v3 gaxAppDidGoInvalid:self];
+  [delegate gaxAppDidGoInvalid:self];
   [(_GAXAppRepresentation *)self setAppClient:0];
 }
 
-- (BOOL)prepareForTransitionToWorkspaceAndRetrieveRestrictionsInformation:(id *)a3
+- (BOOL)prepareForTransitionToWorkspaceAndRetrieveRestrictionsInformation:(id *)information
 {
   v5 = [[AXIPCMessage alloc] initWithKey:11006 payload:0];
   v12 = 0;
   [(_GAXAppRepresentation *)self _sendMessageToClient:v5 replyMessage:&v12 timeout:@"prepare client app for transition to workspace" description:0.0];
   v6 = v12;
 
-  v7 = [v6 payload];
-  v8 = [v7 objectForKey:@"GAXIPCPayloadKeyShouldAbortServerModeTransition"];
-  v9 = [v8 BOOLValue];
+  payload = [v6 payload];
+  v8 = [payload objectForKey:@"GAXIPCPayloadKeyShouldAbortServerModeTransition"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (a3)
+  if (information)
   {
-    if (v9)
+    if (bOOLValue)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = v7;
+      v10 = payload;
     }
 
-    *a3 = v10;
+    *information = v10;
   }
 
-  return v9;
+  return bOOLValue;
 }
 
 - (id)restrictionIdentifiers
@@ -260,23 +260,23 @@
   [(_GAXAppRepresentation *)self _sendMessageToClient:v3 replyMessage:&v8 timeout:@"get restriction identifiers" description:0.0];
   v4 = v8;
 
-  v5 = [v4 payload];
+  payload = [v4 payload];
 
-  v6 = [v5 objectForKey:@"GAXIPCPayloadKeyRestrictionIdentifiers"];
+  v6 = [payload objectForKey:@"GAXIPCPayloadKeyRestrictionIdentifiers"];
 
   return v6;
 }
 
-- (void)restrictionWithIdentifier:(id)a3 didChangeState:(int64_t)a4
+- (void)restrictionWithIdentifier:(id)identifier didChangeState:(int64_t)state
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (identifierCopy)
   {
     v11[0] = @"GAXIPCPayloadKeyRestrictionIdentifier";
     v11[1] = @"GAXIPCPayloadKeyRestrictionState";
-    v12[0] = v6;
-    v8 = [NSNumber numberWithInteger:a4];
+    v12[0] = identifierCopy;
+    v8 = [NSNumber numberWithInteger:state];
     v12[1] = v8;
     v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
 
@@ -335,17 +335,17 @@ LABEL_14:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = [(_GAXAppRepresentation *)self pid];
-    v6 = [(_GAXAppRepresentation *)self bundleIdentifier];
+    bundleIdentifier = [(_GAXAppRepresentation *)self bundleIdentifier];
     LODWORD(buf) = 67109378;
     HIDWORD(buf) = v5;
     v16 = 2112;
-    v17 = v6;
+    v17 = bundleIdentifier;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Created app client for pid %i, identifier %@", &buf, 0x12u);
   }
 
   [v3 setShouldRegisterCallbackSourceOnMainRunloop:1];
-  v7 = [(_GAXAppRepresentation *)self bundleIdentifier];
-  v8 = [NSString stringWithFormat:@"GAXApp-%@", v7];
+  bundleIdentifier2 = [(_GAXAppRepresentation *)self bundleIdentifier];
+  v8 = [NSString stringWithFormat:@"GAXApp-%@", bundleIdentifier2];
   [v3 setClientIdentifier:v8];
 
   objc_initWeak(&buf, self);
@@ -364,57 +364,57 @@ LABEL_15:
   return v9;
 }
 
-- (void)_sendMessageToClient:(id)a3 replyMessage:(id *)a4 timeout:(double)a5 description:(id)a6
+- (void)_sendMessageToClient:(id)client replyMessage:(id *)message timeout:(double)timeout description:(id)description
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(_GAXAppRepresentation *)self appClient];
-  if (!v12)
+  clientCopy = client;
+  descriptionCopy = description;
+  appClient = [(_GAXAppRepresentation *)self appClient];
+  if (!appClient)
   {
     if (![(_GAXAppRepresentation *)self _setupGAXClientConnection])
     {
       v20 = GAXLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(_GAXAppRepresentation *)self bundleIdentifier];
+        bundleIdentifier = [(_GAXAppRepresentation *)self bundleIdentifier];
         v22 = [NSNumber numberWithInt:[(_GAXAppRepresentation *)self pid]];
         *buf = 138543618;
-        *v30 = v21;
+        *v30 = bundleIdentifier;
         *&v30[8] = 2114;
         *&v30[10] = v22;
         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Could not set up client GAX connection. bundle:%{public}@ pid:%{public}@", buf, 0x16u);
       }
 
-      v12 = 0;
+      appClient = 0;
       goto LABEL_22;
     }
 
-    v12 = [(_GAXAppRepresentation *)self appClient];
+    appClient = [(_GAXAppRepresentation *)self appClient];
   }
 
-  if ([v12 verifyConnectionExists])
+  if ([appClient verifyConnectionExists])
   {
-    if (a4)
+    if (message)
     {
       v13 = 0;
-      if (a5 > 2.22044605e-16)
+      if (timeout > 2.22044605e-16)
       {
-        [v12 timeout];
+        [appClient timeout];
         v13 = v14;
-        *&v15 = a5;
-        [v12 setTimeout:v15];
+        *&v15 = timeout;
+        [appClient setTimeout:v15];
       }
 
       v27 = 0;
-      v16 = [v12 sendMessage:v10 withError:&v27];
+      v16 = [appClient sendMessage:clientCopy withError:&v27];
       v17 = v27;
       v18 = v16;
-      *a4 = v16;
+      *message = v16;
       HIDWORD(v19) = 1018167296;
-      if (a5 > 2.22044605e-16)
+      if (timeout > 2.22044605e-16)
       {
         LODWORD(v19) = v13;
-        [v12 setTimeout:v19];
+        [appClient setTimeout:v19];
       }
 
       if (!v17)
@@ -426,7 +426,7 @@ LABEL_15:
     else
     {
       v28 = 0;
-      v23 = [v12 sendSimpleMessage:v10 withError:&v28];
+      v23 = [appClient sendSimpleMessage:clientCopy withError:&v28];
       v17 = v28;
       if (v23)
       {
@@ -440,13 +440,13 @@ LABEL_21:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = [(_GAXAppRepresentation *)self pid];
-      v26 = [(_GAXAppRepresentation *)self bundleIdentifier];
+      bundleIdentifier2 = [(_GAXAppRepresentation *)self bundleIdentifier];
       *buf = 67109890;
       *v30 = v25;
       *&v30[4] = 2112;
-      *&v30[6] = v26;
+      *&v30[6] = bundleIdentifier2;
       *&v30[14] = 2114;
-      *&v30[16] = v11;
+      *&v30[16] = descriptionCopy;
       v31 = 2114;
       v32 = v17;
       _os_log_error_impl(&dword_0, v24, OS_LOG_TYPE_ERROR, "Could not send message to client with pid %i identifier %@: %{public}@ (%{public}@)", buf, 0x26u);
@@ -455,9 +455,9 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (a4)
+  if (message)
   {
-    *a4 = 0;
+    *message = 0;
   }
 
 LABEL_22:

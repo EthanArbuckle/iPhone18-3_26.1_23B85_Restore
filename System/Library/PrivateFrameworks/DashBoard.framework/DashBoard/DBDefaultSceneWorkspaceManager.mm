@@ -1,25 +1,25 @@
 @interface DBDefaultSceneWorkspaceManager
-- (id)defaultWorkspaceIdentifierForDisplayIdentity:(id)a3;
-- (void)relinquishWorkspaceIdentifierForDisplayIdentity:(id)a3;
+- (id)defaultWorkspaceIdentifierForDisplayIdentity:(id)identity;
+- (void)relinquishWorkspaceIdentifierForDisplayIdentity:(id)identity;
 @end
 
 @implementation DBDefaultSceneWorkspaceManager
 
-- (id)defaultWorkspaceIdentifierForDisplayIdentity:(id)a3
+- (id)defaultWorkspaceIdentifierForDisplayIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = self;
-  DBDefaultSceneWorkspaceManager.defaultWorkspaceIdentifier(for:)(v4);
+  identityCopy = identity;
+  selfCopy = self;
+  DBDefaultSceneWorkspaceManager.defaultWorkspaceIdentifier(for:)(identityCopy);
   v7 = v6;
 
   return v7;
 }
 
-- (void)relinquishWorkspaceIdentifierForDisplayIdentity:(id)a3
+- (void)relinquishWorkspaceIdentifierForDisplayIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = self;
-  DBDefaultSceneWorkspaceManager.relinquishWorkspaceIdentifier(for:)(v4);
+  identityCopy = identity;
+  selfCopy = self;
+  DBDefaultSceneWorkspaceManager.relinquishWorkspaceIdentifier(for:)(identityCopy);
 }
 
 @end

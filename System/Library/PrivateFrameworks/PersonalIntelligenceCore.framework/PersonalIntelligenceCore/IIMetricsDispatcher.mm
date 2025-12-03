@@ -35,7 +35,7 @@
   handler[2] = __42__IIMetricsDispatcher_registerXPCActivity__block_invoke;
   handler[3] = &__block_descriptor_48_e33_v16__0__NSObject_OS_xpc_object__8l;
   handler[4] = a2;
-  handler[5] = a1;
+  handler[5] = self;
   xpc_activity_register("com.apple.proactive.PersonalIntelligence.PersonalIntelligenceMetrics", v4, handler);
   v5 = ii_default_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))

@@ -1,9 +1,9 @@
 @interface NCSupplementaryViewPrototypeRecipeMenuViewController
 - (NCSupplementaryViewPrototypeRecipeMenuViewController)init;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -62,61 +62,61 @@ void __60__NCSupplementaryViewPrototypeRecipeMenuViewController_init__block_invo
   self->_viewControllers = v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"cell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"cell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"cell"];
     [v7 setSelectionStyle:0];
   }
 
-  v8 = [-[NSArray objectAtIndex:](self->_viewControllers objectAtIndex:{objc_msgSend(v6, "row")), "title"}];
-  v9 = [MEMORY[0x277D75348] clearColor];
-  [v7 setBackgroundColor:v9];
+  v8 = [-[NSArray objectAtIndex:](self->_viewControllers objectAtIndex:{objc_msgSend(pathCopy, "row")), "title"}];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
-  v10 = [v7 textLabel];
-  [v10 setText:v8];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v8];
 
-  v11 = [v7 textLabel];
-  v12 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
-  v13 = [v12 textColor];
-  [v11 setTextColor:v13];
+  textLabel2 = [v7 textLabel];
+  configuration = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
+  textColor = [configuration textColor];
+  [textLabel2 setTextColor:textColor];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = [(UITableView *)self->_tableView dequeueReusableHeaderFooterViewWithIdentifier:@"header", a4];
-  if (!v5)
+  section = [(UITableView *)self->_tableView dequeueReusableHeaderFooterViewWithIdentifier:@"header", section];
+  if (!section)
   {
-    v5 = [objc_alloc(MEMORY[0x277D75B70]) initWithReuseIdentifier:@"header"];
+    section = [objc_alloc(MEMORY[0x277D75B70]) initWithReuseIdentifier:@"header"];
   }
 
-  v6 = [v5 textLabel];
-  [v6 setText:@"Supplementary Prototype Options"];
+  textLabel = [section textLabel];
+  [textLabel setText:@"Supplementary Prototype Options"];
 
-  v7 = [v5 textLabel];
-  v8 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
-  v9 = [v8 textColor];
-  [v7 setTextColor:v9];
+  textLabel2 = [section textLabel];
+  configuration = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
+  textColor = [configuration textColor];
+  [textLabel2 setTextColor:textColor];
 
-  return v5;
+  return section;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v9 = [(NCSupplementaryViewPrototypeRecipeViewController *)self delegate];
+  pathCopy = path;
+  delegate = [(NCSupplementaryViewPrototypeRecipeViewController *)self delegate];
   viewControllers = self->_viewControllers;
-  v7 = [v5 row];
+  v7 = [pathCopy row];
 
   v8 = objc_alloc_init([(NSArray *)viewControllers objectAtIndex:v7]);
-  [v8 setDelegate:v9];
-  [v9 requestsInsertForPrototypeRecipeViewController:v8];
-  [v9 notificationListBaseComponentDidSignificantUserInteraction:self];
+  [v8 setDelegate:delegate];
+  [delegate requestsInsertForPrototypeRecipeViewController:v8];
+  [delegate notificationListBaseComponentDidSignificantUserInteraction:self];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface UARPMetaDataTLVBackDeploy
 + (id)metaDataTable;
-+ (id)tlvFromKey:(id)a3 value:(id)a4;
++ (id)tlvFromKey:(id)key value:(id)value;
 - (UARPMetaDataTLVBackDeploy)init;
-- (UARPMetaDataTLVBackDeploy)initWithType:(unsigned int)a3 length:(unsigned int)a4 value:(void *)a5;
+- (UARPMetaDataTLVBackDeploy)initWithType:(unsigned int)type length:(unsigned int)length value:(void *)value;
 - (id)generateTLV;
 @end
 
@@ -15,7 +15,7 @@
   return [(UARPMetaDataTLVBackDeploy *)&v3 init];
 }
 
-- (UARPMetaDataTLVBackDeploy)initWithType:(unsigned int)a3 length:(unsigned int)a4 value:(void *)a5
+- (UARPMetaDataTLVBackDeploy)initWithType:(unsigned int)type length:(unsigned int)length value:(void *)value
 {
   v13.receiver = self;
   v13.super_class = UARPMetaDataTLVBackDeploy;
@@ -23,9 +23,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_tlvType = a3;
-    v8->_tlvLength = a4;
-    v10 = [NSData dataWithBytes:a5 length:a4];
+    v8->_tlvType = type;
+    v8->_tlvLength = length;
+    v10 = [NSData dataWithBytes:value length:length];
     tlvValue = v9->_tlvValue;
     v9->_tlvValue = v10;
   }
@@ -33,10 +33,10 @@
   return v9;
 }
 
-+ (id)tlvFromKey:(id)a3 value:(id)a4
++ (id)tlvFromKey:(id)key value:(id)value
 {
-  v5 = a3;
-  v19 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v6 = +[UARPMetaDataTLVBackDeploy metaDataTable];
   v20 = 0u;
   v21 = 0u;
@@ -59,13 +59,13 @@
 
         v12 = *(*(&v20 + 1) + 8 * i);
         v13 = [v12 objectForKeyedSubscript:@"Name"];
-        if (![v5 caseInsensitiveCompare:v13])
+        if (![keyCopy caseInsensitiveCompare:v13])
         {
           v14 = [v12 objectForKeyedSubscript:@"Value"];
           v15 = [v14 unsignedLongValue] + 2001563392;
           if (v15 <= 0x35 && ((0x3F036601FFFFFFuLL >> v15) & 1) != 0)
           {
-            v16 = [(__objc2_class *)*off_10009BAE8[v15] tlvFromPropertyListValue:v19];
+            v16 = [(__objc2_class *)*off_10009BAE8[v15] tlvFromPropertyListValue:valueCopy];
             v17 = v9;
             v9 = v16;
           }

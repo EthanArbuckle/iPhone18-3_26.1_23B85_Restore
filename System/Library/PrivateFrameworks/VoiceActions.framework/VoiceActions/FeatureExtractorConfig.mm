@@ -8,13 +8,13 @@
 - (int64_t)nnetVectorSize;
 - (int64_t)spliceLeftContext;
 - (int64_t)spliceRightContext;
-- (void)setCmvnMinWindowLength:(int64_t)a3;
-- (void)setCmvnSlidingWindowLength:(int64_t)a3;
-- (void)setDownSampleStride:(int64_t)a3;
-- (void)setNnetIntakeFeatureLength:(int64_t)a3;
-- (void)setNnetVectorSize:(int64_t)a3;
-- (void)setSpliceLeftContext:(int64_t)a3;
-- (void)setSpliceRightContext:(int64_t)a3;
+- (void)setCmvnMinWindowLength:(int64_t)length;
+- (void)setCmvnSlidingWindowLength:(int64_t)length;
+- (void)setDownSampleStride:(int64_t)stride;
+- (void)setNnetIntakeFeatureLength:(int64_t)length;
+- (void)setNnetVectorSize:(int64_t)size;
+- (void)setSpliceLeftContext:(int64_t)context;
+- (void)setSpliceRightContext:(int64_t)context;
 @end
 
 @implementation FeatureExtractorConfig
@@ -26,11 +26,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCmvnSlidingWindowLength:(int64_t)a3
+- (void)setCmvnSlidingWindowLength:(int64_t)length
 {
   v5 = OBJC_IVAR___FeatureExtractorConfig_cmvnSlidingWindowLength;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = length;
 }
 
 - (int64_t)cmvnMinWindowLength
@@ -40,11 +40,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCmvnMinWindowLength:(int64_t)a3
+- (void)setCmvnMinWindowLength:(int64_t)length
 {
   v5 = OBJC_IVAR___FeatureExtractorConfig_cmvnMinWindowLength;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = length;
 }
 
 - (int64_t)spliceLeftContext
@@ -54,11 +54,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSpliceLeftContext:(int64_t)a3
+- (void)setSpliceLeftContext:(int64_t)context
 {
   v5 = OBJC_IVAR___FeatureExtractorConfig_spliceLeftContext;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = context;
 }
 
 - (int64_t)spliceRightContext
@@ -68,11 +68,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSpliceRightContext:(int64_t)a3
+- (void)setSpliceRightContext:(int64_t)context
 {
   v5 = OBJC_IVAR___FeatureExtractorConfig_spliceRightContext;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = context;
 }
 
 - (int64_t)downSampleStride
@@ -82,11 +82,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDownSampleStride:(int64_t)a3
+- (void)setDownSampleStride:(int64_t)stride
 {
   v5 = OBJC_IVAR___FeatureExtractorConfig_downSampleStride;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = stride;
 }
 
 - (int64_t)nnetIntakeFeatureLength
@@ -96,11 +96,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setNnetIntakeFeatureLength:(int64_t)a3
+- (void)setNnetIntakeFeatureLength:(int64_t)length
 {
   v5 = OBJC_IVAR___FeatureExtractorConfig_nnetIntakeFeatureLength;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = length;
 }
 
 - (int64_t)nnetVectorSize
@@ -110,11 +110,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setNnetVectorSize:(int64_t)a3
+- (void)setNnetVectorSize:(int64_t)size
 {
   v5 = OBJC_IVAR___FeatureExtractorConfig_nnetVectorSize;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = size;
 }
 
 - (FeatureExtractorConfig)init
@@ -140,7 +140,7 @@
   v6 = *(v5 + 48);
   v7 = *(v5 + 52);
   swift_allocObject();
-  v8 = self;
+  selfCopy = self;
   sub_272376B2C();
   type metadata accessor for FeatureExtractorConfig();
   sub_27227DA80(&qword_2808823F8, v9, type metadata accessor for FeatureExtractorConfig);

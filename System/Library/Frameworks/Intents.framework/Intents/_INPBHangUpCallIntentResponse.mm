@@ -1,38 +1,38 @@
 @interface _INPBHangUpCallIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBHangUpCallIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBHangUpCallIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsHungUpCallType:(id)a3;
+- (int)StringAsHungUpCallType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHungUpCallType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHungUpCallType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBHangUpCallIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBHangUpCallIntentResponse *)self hasHungUpCallType])
   {
-    v4 = [(_INPBHangUpCallIntentResponse *)self hungUpCallType];
-    v5 = v4 - 2;
-    if (v4 - 2) < 9 && ((0x1EFu >> v5))
+    hungUpCallType = [(_INPBHangUpCallIntentResponse *)self hungUpCallType];
+    v5 = hungUpCallType - 2;
+    if (hungUpCallType - 2) < 9 && ((0x1EFu >> v5))
     {
       v6 = off_1E7286FB8[v5];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", hungUpCallType];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"hungUpCallType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"hungUpCallType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -48,16 +48,16 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBHangUpCallIntentResponse *)self hasHungUpCallType];
-    if (v5 == [v4 hasHungUpCallType])
+    hasHungUpCallType = [(_INPBHangUpCallIntentResponse *)self hasHungUpCallType];
+    if (hasHungUpCallType == [equalCopy hasHungUpCallType])
     {
-      if (!-[_INPBHangUpCallIntentResponse hasHungUpCallType](self, "hasHungUpCallType") || ![v4 hasHungUpCallType] || (hungUpCallType = self->_hungUpCallType, hungUpCallType == objc_msgSend(v4, "hungUpCallType")))
+      if (!-[_INPBHangUpCallIntentResponse hasHungUpCallType](self, "hasHungUpCallType") || ![equalCopy hasHungUpCallType] || (hungUpCallType = self->_hungUpCallType, hungUpCallType == objc_msgSend(equalCopy, "hungUpCallType")))
       {
         v6 = 1;
       }
@@ -67,7 +67,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBHangUpCallIntentResponse allocWithZone:?]];
   if ([(_INPBHangUpCallIntentResponse *)self hasHungUpCallType])
@@ -78,33 +78,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBHangUpCallIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBHangUpCallIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBHangUpCallIntentResponse)initWithCoder:(id)a3
+- (_INPBHangUpCallIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBHangUpCallIntentResponse *)self initWithData:v6];
+    self = [(_INPBHangUpCallIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(_INPBHangUpCallIntentResponse *)self hasHungUpCallType])
   {
     hungUpCallType = self->_hungUpCallType;
@@ -112,45 +112,45 @@
   }
 }
 
-- (int)StringAsHungUpCallType:(id)a3
+- (int)StringAsHungUpCallType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OUTGOING"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"OUTGOING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MISSED"])
+  else if ([typeCopy isEqualToString:@"MISSED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RECEIVED"])
+  else if ([typeCopy isEqualToString:@"RECEIVED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LATEST"])
+  else if ([typeCopy isEqualToString:@"LATEST"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"VOICEMAIL"])
+  else if ([typeCopy isEqualToString:@"VOICEMAIL"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RINGING"])
+  else if ([typeCopy isEqualToString:@"RINGING"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"IN_PROGRESS"])
+  else if ([typeCopy isEqualToString:@"IN_PROGRESS"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ON_HOLD"])
+  else if ([typeCopy isEqualToString:@"ON_HOLD"])
   {
     v4 = 10;
   }
@@ -163,10 +163,10 @@
   return v4;
 }
 
-- (void)setHungUpCallType:(int)a3
+- (void)setHungUpCallType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -174,7 +174,7 @@
   else
   {
     *&self->_has = has | 1;
-    self->_hungUpCallType = a3;
+    self->_hungUpCallType = type;
   }
 }
 

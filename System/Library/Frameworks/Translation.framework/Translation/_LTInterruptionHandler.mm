@@ -1,9 +1,9 @@
 @interface _LTInterruptionHandler
 - (_LTInterruptionHandler)init;
-- (id)addObservationBlock:(id)a3;
+- (id)addObservationBlock:(id)block;
 - (void)_didReceiveInterruption;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation _LTInterruptionHandler
@@ -17,9 +17,9 @@
   if (v2)
   {
     objc_storeStrong(&v2->_queue, MEMORY[0x277D85CD0]);
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v3->_observers;
-    v3->_observers = v4;
+    v3->_observers = weakObjectsHashTable;
 
     v6 = v3;
   }
@@ -27,26 +27,26 @@
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38___LTInterruptionHandler_addObserver___block_invoke;
   block[3] = &unk_278B6CD08;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -54,19 +54,19 @@
   block[2] = __41___LTInterruptionHandler_removeObserver___block_invoke;
   block[3] = &unk_278B6CD08;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (id)addObservationBlock:(id)a3
+- (id)addObservationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(_LTBlockBasedInterruptionHandler);
-  [(_LTBlockBasedInterruptionHandler *)v5 setHandler:v4];
+  [(_LTBlockBasedInterruptionHandler *)v5 setHandler:blockCopy];
 
   [(_LTInterruptionHandler *)self addObserver:v5];
 

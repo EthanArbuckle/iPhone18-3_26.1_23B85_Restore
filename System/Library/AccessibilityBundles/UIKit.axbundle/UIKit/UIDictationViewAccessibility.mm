@@ -1,20 +1,20 @@
 @interface UIDictationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)endpointButtonPressed;
 - (void)finishReturnToKeyboard;
-- (void)setState:(int)a3;
+- (void)setState:(int)state;
 @end
 
 @implementation UIDictationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v6 = @"UIDictationView";
   v7 = "v";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -30,22 +30,22 @@
   objc_storeStrong(v9, v8);
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  stateCopy = state;
   v12.receiver = self;
   v12.super_class = UIDictationViewAccessibility;
-  [(UIDictationViewAccessibility *)&v12 setState:a3];
+  [(UIDictationViewAccessibility *)&v12 setState:state];
   v9 = 1;
-  if (v13 != 3)
+  if (stateCopy != 3)
   {
-    v9 = v13 == 4;
+    v9 = stateCopy == 4;
   }
 
   v11 = v9;
-  location = [(UIDictationViewAccessibility *)v15 _accessibilityValueForKey:@"kAXDictationThinkingTimer"];
+  location = [(UIDictationViewAccessibility *)selfCopy _accessibilityValueForKey:@"kAXDictationThinkingTimer"];
   if (v9)
   {
     if (!location || ![location isActive] && !objc_msgSend(location, "isPending"))
@@ -60,14 +60,14 @@
       MEMORY[0x29EDC9740](v5);
       MEMORY[0x29EDC9740](v8);
       [location afterDelay:&__block_literal_global_19 processBlock:1.0];
-      [(UIDictationViewAccessibility *)v15 _accessibilitySetRetainedValue:location forKey:@"kAXDictationThinkingTimer"];
+      [(UIDictationViewAccessibility *)selfCopy _accessibilitySetRetainedValue:location forKey:@"kAXDictationThinkingTimer"];
     }
   }
 
   else
   {
     [location cancel];
-    [(UIDictationViewAccessibility *)v15 _accessibilityRemoveValueForKey:@"kAXDictationThinkingTimer"];
+    [(UIDictationViewAccessibility *)selfCopy _accessibilityRemoveValueForKey:@"kAXDictationThinkingTimer"];
   }
 
   objc_storeStrong(&location, 0);
@@ -84,7 +84,7 @@ double __41__UIDictationViewAccessibility_setState___block_invoke()
 
 - (void)endpointButtonPressed
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIDictationViewAccessibility;
@@ -94,14 +94,14 @@ double __41__UIDictationViewAccessibility_setState___block_invoke()
 
 - (void)finishReturnToKeyboard
 {
-  v31 = self;
+  selfCopy = self;
   v30 = a2;
   v29.receiver = self;
   v29.super_class = UIDictationViewAccessibility;
   [(UIDictationViewAccessibility *)&v29 finishReturnToKeyboard];
-  v6 = [MEMORY[0x29EDC7B08] activeInstance];
-  v28 = [v6 safeValueForKey:@"m_layout"];
-  *&v2 = MEMORY[0x29EDC9740](v6).n128_u64[0];
+  activeInstance = [MEMORY[0x29EDC7B08] activeInstance];
+  v28 = [activeInstance safeValueForKey:@"m_layout"];
+  *&v2 = MEMORY[0x29EDC9740](activeInstance).n128_u64[0];
   v21 = 0;
   v22 = &v21;
   v23 = 838860800;

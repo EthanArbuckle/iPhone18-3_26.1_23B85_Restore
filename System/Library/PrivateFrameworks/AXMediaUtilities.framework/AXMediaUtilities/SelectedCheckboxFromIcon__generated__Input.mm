@@ -1,23 +1,23 @@
 @interface SelectedCheckboxFromIcon__generated__Input
-- (SelectedCheckboxFromIcon__generated__Input)initWithImage:(__CVBuffer *)a3;
-- (id)featureValueForName:(id)a3;
+- (SelectedCheckboxFromIcon__generated__Input)initWithImage:(__CVBuffer *)image;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation SelectedCheckboxFromIcon__generated__Input
 
-- (SelectedCheckboxFromIcon__generated__Input)initWithImage:(__CVBuffer *)a3
+- (SelectedCheckboxFromIcon__generated__Input)initWithImage:(__CVBuffer *)image
 {
   if (self)
   {
-    self->_image = a3;
+    self->_image = image;
   }
 
   return self;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"image"])
+  if ([name isEqualToString:@"image"])
   {
     v4 = [MEMORY[0x1E695FE60] featureValueWithPixelBuffer:self->_image];
   }

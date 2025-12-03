@@ -1,73 +1,73 @@
 @interface PRXScrollableContentView
 - (CGSize)intrinsicContentSize;
-- (PRXScrollableContentView)initWithCardStyle:(int64_t)a3;
-- (PRXScrollableContentView)initWithCardStyle:(int64_t)a3 scrollView:(id)a4;
+- (PRXScrollableContentView)initWithCardStyle:(int64_t)style;
+- (PRXScrollableContentView)initWithCardStyle:(int64_t)style scrollView:(id)view;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation PRXScrollableContentView
 
-- (PRXScrollableContentView)initWithCardStyle:(int64_t)a3
+- (PRXScrollableContentView)initWithCardStyle:(int64_t)style
 {
   v5 = objc_alloc_init(MEMORY[0x277D759D8]);
-  v6 = [(PRXScrollableContentView *)self initWithCardStyle:a3 scrollView:v5];
+  v6 = [(PRXScrollableContentView *)self initWithCardStyle:style scrollView:v5];
 
   return v6;
 }
 
-- (PRXScrollableContentView)initWithCardStyle:(int64_t)a3 scrollView:(id)a4
+- (PRXScrollableContentView)initWithCardStyle:(int64_t)style scrollView:(id)view
 {
   v39[6] = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  viewCopy = view;
   v38.receiver = self;
   v38.super_class = PRXScrollableContentView;
-  v8 = [(PRXCardContentView *)&v38 initWithCardStyle:a3];
+  v8 = [(PRXCardContentView *)&v38 initWithCardStyle:style];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_scrollView, a4);
+    objc_storeStrong(&v8->_scrollView, view);
     [(UIScrollView *)v9->_scrollView setScrollEnabled:0];
     [(UIScrollView *)v9->_scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIScrollView *)v9->_scrollView setPreservesSuperviewLayoutMargins:1];
     [(PRXScrollableContentView *)v9 addSubview:v9->_scrollView];
-    v10 = [(UIScrollView *)v9->_scrollView heightAnchor];
+    heightAnchor = [(UIScrollView *)v9->_scrollView heightAnchor];
     [(UIScrollView *)v9->_scrollView contentSize];
-    v12 = [v10 constraintEqualToConstant:v11];
-    v37 = v7;
+    v12 = [heightAnchor constraintEqualToConstant:v11];
+    v37 = viewCopy;
     scrollViewHeightConstraint = v9->_scrollViewHeightConstraint;
     v9->_scrollViewHeightConstraint = v12;
 
     v28 = MEMORY[0x277CCAAD0];
-    v36 = [(UIScrollView *)v9->_scrollView leadingAnchor];
-    v35 = [(PRXScrollableContentView *)v9 leadingAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    leadingAnchor = [(UIScrollView *)v9->_scrollView leadingAnchor];
+    leadingAnchor2 = [(PRXScrollableContentView *)v9 leadingAnchor];
+    v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v39[0] = v34;
-    v33 = [(UIScrollView *)v9->_scrollView trailingAnchor];
-    v32 = [(PRXScrollableContentView *)v9 trailingAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    trailingAnchor = [(UIScrollView *)v9->_scrollView trailingAnchor];
+    trailingAnchor2 = [(PRXScrollableContentView *)v9 trailingAnchor];
+    v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v39[1] = v31;
-    v29 = [(UIScrollView *)v9->_scrollView topAnchor];
-    v30 = [(PRXCardContentView *)v9 mainContentGuide];
-    v27 = [v30 topAnchor];
-    v26 = [v29 constraintEqualToAnchor:v27];
+    topAnchor = [(UIScrollView *)v9->_scrollView topAnchor];
+    mainContentGuide = [(PRXCardContentView *)v9 mainContentGuide];
+    topAnchor2 = [mainContentGuide topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v39[2] = v26;
-    v24 = [(UIScrollView *)v9->_scrollView bottomAnchor];
-    v25 = [(PRXCardContentView *)v9 mainContentGuide];
-    v14 = [v25 bottomAnchor];
-    v15 = [v24 constraintEqualToAnchor:v14];
+    bottomAnchor = [(UIScrollView *)v9->_scrollView bottomAnchor];
+    mainContentGuide2 = [(PRXCardContentView *)v9 mainContentGuide];
+    bottomAnchor2 = [mainContentGuide2 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v39[3] = v15;
-    v16 = [(UIScrollView *)v9->_scrollView contentLayoutGuide];
-    v17 = [v16 widthAnchor];
-    v18 = [(PRXCardContentView *)v9 mainContentGuide];
-    v19 = [v18 widthAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    contentLayoutGuide = [(UIScrollView *)v9->_scrollView contentLayoutGuide];
+    widthAnchor = [contentLayoutGuide widthAnchor];
+    mainContentGuide3 = [(PRXCardContentView *)v9 mainContentGuide];
+    widthAnchor2 = [mainContentGuide3 widthAnchor];
+    v20 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v39[4] = v20;
     v39[5] = v9->_scrollViewHeightConstraint;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:6];
     [v28 activateConstraints:v21];
 
-    v7 = v37;
+    viewCopy = v37;
     [(UIScrollView *)v9->_scrollView addObserver:v9 forKeyPath:@"contentSize" options:0 context:PRXScrollableContentViewObserverContentSizeContext];
     v22 = v9;
   }
@@ -94,9 +94,9 @@
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (PRXScrollableContentViewObserverContentSizeContext == a6)
+  if (PRXScrollableContentViewObserverContentSizeContext == context)
   {
     v7 = PRXDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -118,7 +118,7 @@
   {
     v11.receiver = self;
     v11.super_class = PRXScrollableContentView;
-    [(PRXScrollableContentView *)&v11 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PRXScrollableContentView *)&v11 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

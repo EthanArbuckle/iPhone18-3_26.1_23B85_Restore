@@ -2,10 +2,10 @@
 + (id)currentAnimationState;
 + (void)currentAnimationState;
 + (void)popAnimationState;
-+ (void)pushAnimationState:(id)a3;
++ (void)pushAnimationState:(id)state;
 - (ARUIRingGroupAnimationState)init;
-- (void)addAnimation:(id)a3;
-- (void)animationDidComplete:(id)a3;
+- (void)addAnimation:(id)animation;
+- (void)animationDidComplete:(id)complete;
 @end
 
 @implementation ARUIRingGroupAnimationState
@@ -38,16 +38,16 @@
   return v2;
 }
 
-- (void)addAnimation:(id)a3
+- (void)addAnimation:(id)animation
 {
-  v4 = a3;
-  [v4 setDelegate:self];
-  [(NSMutableSet *)self->_trackedAnimations addObject:v4];
+  animationCopy = animation;
+  [animationCopy setDelegate:self];
+  [(NSMutableSet *)self->_trackedAnimations addObject:animationCopy];
 }
 
-- (void)animationDidComplete:(id)a3
+- (void)animationDidComplete:(id)complete
 {
-  [(NSMutableSet *)self->_trackedAnimations removeObject:a3];
+  [(NSMutableSet *)self->_trackedAnimations removeObject:complete];
   if (![(NSMutableSet *)self->_trackedAnimations count])
   {
     [__trackedAnimationStates removeObject:self];
@@ -67,9 +67,9 @@
   }
 }
 
-+ (void)pushAnimationState:(id)a3
++ (void)pushAnimationState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = arui_rings_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -84,7 +84,7 @@
       +[ARUIRingGroupAnimationState pushAnimationState:];
     }
 
-    [v3 setNextAnimationState:__currentRingGroupAnimationState];
+    [stateCopy setNextAnimationState:__currentRingGroupAnimationState];
   }
 
   v6 = arui_rings_log();
@@ -94,15 +94,15 @@
   }
 
   v7 = __currentRingGroupAnimationState;
-  __currentRingGroupAnimationState = v3;
+  __currentRingGroupAnimationState = stateCopy;
 }
 
 + (void)popAnimationState
 {
   v4 = *MEMORY[0x1E69E9840];
-  v2 = [__currentRingGroupAnimationState nextAnimationState];
+  nextAnimationState = [__currentRingGroupAnimationState nextAnimationState];
   OUTLINED_FUNCTION_2();
-  _os_log_debug_impl(&dword_1CFD67000, a1, OS_LOG_TYPE_DEBUG, "ARUIRingGroupAnimationState popping animationState. Setting __currentRingGroupAnimationState to nextAnimationState: %@", v3, 0xCu);
+  _os_log_debug_impl(&dword_1CFD67000, self, OS_LOG_TYPE_DEBUG, "ARUIRingGroupAnimationState popping animationState. Setting __currentRingGroupAnimationState to nextAnimationState: %@", v3, 0xCu);
 }
 
 + (void)pushAnimationState:.cold.1()

@@ -3,8 +3,8 @@
 + (id)queue;
 + (id)userNotificationCenter;
 + (void)requestAuthorizationIfNecessary;
-+ (void)showNotificationWithTitle:(id)a3 body:(id)a4 threadIdentifier:(id)a5;
-+ (void)showUserNotificationIfEnabledForStoreIdentifier:(id)a3 format:(id)a4;
++ (void)showNotificationWithTitle:(id)title body:(id)body threadIdentifier:(id)identifier;
++ (void)showUserNotificationIfEnabledForStoreIdentifier:(id)identifier format:(id)format;
 @end
 
 @implementation SYDUserNotifications
@@ -21,24 +21,24 @@
   return v2;
 }
 
-+ (void)showUserNotificationIfEnabledForStoreIdentifier:(id)a3 format:(id)a4
++ (void)showUserNotificationIfEnabledForStoreIdentifier:(id)identifier format:(id)format
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 shouldShowNotifications])
+  identifierCopy = identifier;
+  formatCopy = format;
+  if ([self shouldShowNotifications])
   {
     v15 = &v16;
-    v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v7 arguments:&v16];
-    v9 = [a1 queue];
+    v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:formatCopy arguments:&v16];
+    queue = [self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __79__SYDUserNotifications_showUserNotificationIfEnabledForStoreIdentifier_format___block_invoke;
     v11[3] = &unk_279D300B8;
     v13 = v8;
-    v14 = a1;
-    v12 = v6;
+    selfCopy = self;
+    v12 = identifierCopy;
     v10 = v8;
-    dispatch_async(v9, v11);
+    dispatch_async(queue, v11);
   }
 }
 
@@ -50,12 +50,12 @@ void __79__SYDUserNotifications_showUserNotificationIfEnabledForStoreIdentifier_
   [*(a1 + 48) showNotificationWithTitle:v4 body:*(a1 + 40) threadIdentifier:v3];
 }
 
-+ (void)showNotificationWithTitle:(id)a3 body:(id)a4 threadIdentifier:(id)a5
++ (void)showNotificationWithTitle:(id)title body:(id)body threadIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [a1 requestAuthorizationIfNecessary];
+  titleCopy = title;
+  bodyCopy = body;
+  identifierCopy = identifier;
+  [self requestAuthorizationIfNecessary];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2050000000;
@@ -75,9 +75,9 @@ void __79__SYDUserNotifications_showUserNotificationIfEnabledForStoreIdentifier_
   v12 = v11;
   _Block_object_dispose(&v25, 8);
   v13 = objc_alloc_init(v11);
-  [v13 setTitle:v8];
-  [v13 setBody:v9];
-  [v13 setThreadIdentifier:v10];
+  [v13 setTitle:titleCopy];
+  [v13 setBody:bodyCopy];
+  [v13 setThreadIdentifier:identifierCopy];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2050000000;
@@ -96,12 +96,12 @@ void __79__SYDUserNotifications_showUserNotificationIfEnabledForStoreIdentifier_
 
   v15 = v14;
   _Block_object_dispose(&v25, 8);
-  v16 = [MEMORY[0x277CCAD78] UUID];
-  v17 = [v16 UUIDString];
-  v18 = [v14 requestWithIdentifier:v17 content:v13 trigger:0];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v18 = [v14 requestWithIdentifier:uUIDString content:v13 trigger:0];
 
-  v19 = [a1 userNotificationCenter];
-  [v19 addNotificationRequest:v18 withCompletionHandler:&__block_literal_global_5];
+  userNotificationCenter = [self userNotificationCenter];
+  [userNotificationCenter addNotificationRequest:v18 withCompletionHandler:&__block_literal_global_5];
 }
 
 void __72__SYDUserNotifications_showNotificationWithTitle_body_threadIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -119,13 +119,13 @@ void __72__SYDUserNotifications_showNotificationWithTitle_body_threadIdentifier_
 
 + (void)requestAuthorizationIfNecessary
 {
-  if ([a1 shouldShowNotifications])
+  if ([self shouldShowNotifications])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55__SYDUserNotifications_requestAuthorizationIfNecessary__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (requestAuthorizationIfNecessary_onceToken != -1)
     {
       dispatch_once(&requestAuthorizationIfNecessary_onceToken, block);

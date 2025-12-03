@@ -1,39 +1,39 @@
 @interface PGSemanticalDeduper_PHAsset
-- (id)sceneprintByItemIdentifierWithItems:(id)a3;
+- (id)sceneprintByItemIdentifierWithItems:(id)items;
 @end
 
 @implementation PGSemanticalDeduper_PHAsset
 
-- (id)sceneprintByItemIdentifierWithItems:(id)a3
+- (id)sceneprintByItemIdentifierWithItems:(id)items
 {
   v54[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v38 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
-    v4 = [v3 firstObject];
-    v5 = [v4 photoLibrary];
+    v38 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(itemsCopy, "count")}];
+    firstObject = [itemsCopy firstObject];
+    photoLibrary = [firstObject photoLibrary];
 
-    v36 = v5;
-    v6 = [v5 librarySpecificFetchOptions];
+    v36 = photoLibrary;
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
     v7 = *MEMORY[0x277CD9B18];
     v54[0] = *MEMORY[0x277CD9AA8];
     v54[1] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:2];
-    [v6 setFetchPropertySets:v8];
+    [librarySpecificFetchOptions setFetchPropertySets:v8];
 
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v37 = v3;
-    v10 = v3;
+    v37 = itemsCopy;
+    v10 = itemsCopy;
     v11 = [v10 countByEnumeratingWithState:&v44 objects:v53 count:16];
     if (v11)
     {
       v12 = v11;
-      LOBYTE(v13) = 0;
+      LOBYTE(isGuestAsset) = 0;
       v14 = *v45;
       do
       {
@@ -45,17 +45,17 @@
           }
 
           v16 = *(*(&v44 + 1) + 8 * i);
-          v17 = [v16 localIdentifier];
-          [v9 addObject:v17];
+          localIdentifier = [v16 localIdentifier];
+          [v9 addObject:localIdentifier];
 
-          if (v13)
+          if (isGuestAsset)
           {
-            v13 = 1;
+            isGuestAsset = 1;
           }
 
           else
           {
-            v13 = [v16 isGuestAsset];
+            isGuestAsset = [v16 isGuestAsset];
           }
         }
 
@@ -67,12 +67,12 @@
 
     else
     {
-      v13 = 0;
+      isGuestAsset = 0;
     }
 
-    [v6 setIncludeGuestAssets:v13];
-    v35 = v6;
-    v18 = [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:v9 options:v6];
+    [librarySpecificFetchOptions setIncludeGuestAssets:isGuestAsset];
+    v35 = librarySpecificFetchOptions;
+    v18 = [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:v9 options:librarySpecificFetchOptions];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -93,28 +93,28 @@
           }
 
           v23 = *(*(&v40 + 1) + 8 * v22);
-          v24 = [v23 sceneprintProperties];
-          v25 = [v24 sceneprint];
+          sceneprintProperties = [v23 sceneprintProperties];
+          sceneprint = [sceneprintProperties sceneprint];
 
-          if (v25)
+          if (sceneprint)
           {
             v26 = MEMORY[0x277CCAAC8];
             v27 = objc_opt_class();
             v39 = 0;
-            v28 = [v26 unarchivedObjectOfClass:v27 fromData:v25 error:&v39];
+            v28 = [v26 unarchivedObjectOfClass:v27 fromData:sceneprint error:&v39];
             v29 = v39;
             if (v28)
             {
-              v30 = [v23 clsIdentifier];
-              [v38 setObject:v28 forKeyedSubscript:v30];
+              clsIdentifier = [v23 clsIdentifier];
+              [v38 setObject:v28 forKeyedSubscript:clsIdentifier];
               goto LABEL_23;
             }
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
-              v30 = [v23 uuid];
+              clsIdentifier = [v23 uuid];
               *buf = 138412546;
-              v49 = v30;
+              v49 = clsIdentifier;
               v50 = 2112;
               v51 = v29;
               _os_log_error_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Error unarchiving sceneprint for asset %@: %@", buf, 0x16u);
@@ -126,9 +126,9 @@ LABEL_23:
 
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
           {
-            v31 = [v23 uuid];
+            uuid = [v23 uuid];
             *buf = 138412290;
-            v49 = v31;
+            v49 = uuid;
             _os_log_debug_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Sceneprint unavailable for asset %@", buf, 0xCu);
           }
 
@@ -145,7 +145,7 @@ LABEL_28:
       while (v32);
     }
 
-    v3 = v37;
+    itemsCopy = v37;
   }
 
   else

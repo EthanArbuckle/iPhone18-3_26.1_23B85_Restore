@@ -10,11 +10,11 @@
   v18.receiver = self;
   v18.super_class = PXPhotosResultRecord;
   v15 = [(PXPhotosResultRecord *)&v18 description];
-  v3 = [(PXPhotosResultRecord *)self fetchResult];
-  v4 = [(PXPhotosResultRecord *)self curatedFetchResult];
-  v5 = [(PXPhotosResultRecord *)self keyAssetsFetchResult];
-  v6 = [(PXPhotosResultRecord *)self includedOids];
-  v7 = [(PXPhotosResultRecord *)self excludedOids];
+  fetchResult = [(PXPhotosResultRecord *)self fetchResult];
+  curatedFetchResult = [(PXPhotosResultRecord *)self curatedFetchResult];
+  keyAssetsFetchResult = [(PXPhotosResultRecord *)self keyAssetsFetchResult];
+  includedOids = [(PXPhotosResultRecord *)self includedOids];
+  excludedOids = [(PXPhotosResultRecord *)self excludedOids];
   if ([(PXPhotosResultRecord *)self wantsCuration])
   {
     v8 = @"YES";
@@ -37,9 +37,9 @@
   }
 
   v11 = v10;
-  v12 = [(PXPhotosResultRecord *)self filteredFetchResult];
-  v13 = [(PXPhotosResultRecord *)self exposedFetchResult];
-  v17 = [v16 stringWithFormat:@"<%@ fetchResult:%@ curatedFetchResult:%@ keyAssetsFetchResult:%@ includedOids:%@ excludedOids:%@ wantsCuration:%@ reverseSortOrder:%@ filteredFetchResult:%@ exposedFetchResult:%@>", v15, v3, v4, v5, v6, v7, v9, v11, v12, v13];
+  filteredFetchResult = [(PXPhotosResultRecord *)self filteredFetchResult];
+  exposedFetchResult = [(PXPhotosResultRecord *)self exposedFetchResult];
+  v17 = [v16 stringWithFormat:@"<%@ fetchResult:%@ curatedFetchResult:%@ keyAssetsFetchResult:%@ includedOids:%@ excludedOids:%@ wantsCuration:%@ reverseSortOrder:%@ filteredFetchResult:%@ exposedFetchResult:%@>", v15, fetchResult, curatedFetchResult, keyAssetsFetchResult, includedOids, excludedOids, v9, v11, filteredFetchResult, exposedFetchResult];
 
   return v17;
 }

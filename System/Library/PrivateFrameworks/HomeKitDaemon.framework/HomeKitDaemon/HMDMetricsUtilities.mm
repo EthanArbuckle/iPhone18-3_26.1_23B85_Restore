@@ -1,71 +1,71 @@
 @interface HMDMetricsUtilities
-+ (BOOL)shouldRedactBundleID:(id)a3;
-+ (BOOL)shouldRedactBundleID:(id)a3 isInternalBuild:(BOOL)a4;
-+ (id)primaryServiceTypeForHAPAccessory:(id)a3;
-+ (id)redactedThirdPartyBundleID:(id)a3;
++ (BOOL)shouldRedactBundleID:(id)d;
++ (BOOL)shouldRedactBundleID:(id)d isInternalBuild:(BOOL)build;
++ (id)primaryServiceTypeForHAPAccessory:(id)accessory;
++ (id)redactedThirdPartyBundleID:(id)d;
 @end
 
 @implementation HMDMetricsUtilities
 
-+ (BOOL)shouldRedactBundleID:(id)a3 isInternalBuild:(BOOL)a4
++ (BOOL)shouldRedactBundleID:(id)d isInternalBuild:(BOOL)build
 {
   result = 0;
-  if (a3)
+  if (d)
   {
-    if (!a4)
+    if (!build)
     {
-      return HMDIsFirstPartyClientIdentifier(a3) ^ 1;
+      return HMDIsFirstPartyClientIdentifier(d) ^ 1;
     }
   }
 
   return result;
 }
 
-+ (BOOL)shouldRedactBundleID:(id)a3
++ (BOOL)shouldRedactBundleID:(id)d
 {
-  v4 = a3;
-  LOBYTE(a1) = [a1 shouldRedactBundleID:v4 isInternalBuild:isInternalBuild()];
+  dCopy = d;
+  LOBYTE(self) = [self shouldRedactBundleID:dCopy isInternalBuild:isInternalBuild()];
 
-  return a1;
+  return self;
 }
 
-+ (id)redactedThirdPartyBundleID:(id)a3
++ (id)redactedThirdPartyBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 redactedThirdPartyBundleID:v4 isInternalBuild:isInternalBuild()];
+  dCopy = d;
+  v5 = [self redactedThirdPartyBundleID:dCopy isInternalBuild:isInternalBuild()];
 
   return v5;
 }
 
-+ (id)primaryServiceTypeForHAPAccessory:(id)a3
++ (id)primaryServiceTypeForHAPAccessory:(id)accessory
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 primaryService];
+  accessoryCopy = accessory;
+  primaryService = [accessoryCopy primaryService];
 
-  if (v4)
+  if (primaryService)
   {
-    v5 = [v3 primaryService];
-    v6 = v5;
+    primaryService2 = [accessoryCopy primaryService];
+    services = primaryService2;
 LABEL_15:
-    v13 = [v5 type];
+    type = [primaryService2 type];
   }
 
   else
   {
-    v7 = [v3 bridge];
-    if (v7)
+    bridge = [accessoryCopy bridge];
+    if (bridge)
     {
     }
 
     else
     {
-      v16 = [v3 identifiersForBridgedAccessories];
-      v17 = [v16 count];
+      identifiersForBridgedAccessories = [accessoryCopy identifiersForBridgedAccessories];
+      v17 = [identifiersForBridgedAccessories count];
 
       if (v17)
       {
-        v13 = @"Bridge";
+        type = @"Bridge";
         goto LABEL_16;
       }
     }
@@ -74,8 +74,8 @@ LABEL_15:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [v3 services];
-    v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    services = [accessoryCopy services];
+    v8 = [services countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -86,18 +86,18 @@ LABEL_15:
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(services);
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
           if ([v12 isPrimary])
           {
-            v5 = v12;
+            primaryService2 = v12;
             goto LABEL_15;
           }
         }
 
-        v9 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v9 = [services countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v9)
         {
           continue;
@@ -107,14 +107,14 @@ LABEL_15:
       }
     }
 
-    v13 = 0;
+    type = 0;
   }
 
 LABEL_16:
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return type;
 }
 
 @end

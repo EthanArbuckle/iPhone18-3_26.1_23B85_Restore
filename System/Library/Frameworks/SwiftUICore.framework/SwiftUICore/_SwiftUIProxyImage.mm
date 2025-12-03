@@ -1,9 +1,9 @@
 @interface _SwiftUIProxyImage
-- (_SwiftUIProxyImage)initWithCoder:(id)a3;
-- (id)initWithCGImage:(CGColorSpace *)a3 colorSpace:;
-- (id)replacementObjectForCoder:(id)a3;
+- (_SwiftUIProxyImage)initWithCoder:(id)coder;
+- (id)initWithCGImage:(CGColorSpace *)image colorSpace:;
+- (id)replacementObjectForCoder:(id)coder;
 - (void)CA_copyRenderValue;
-- (void)CA_copyRenderValueWithColorspace:(CGColorSpace *)a3;
+- (void)CA_copyRenderValueWithColorspace:(CGColorSpace *)colorspace;
 - (void)CA_prepareRenderValue;
 - (void)dealloc;
 - (void)finish;
@@ -15,16 +15,16 @@
 
 - (void)schedule
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = *(a1 + 24);
+    selfCopy = self;
+    v2 = *(self + 24);
     if ((atomic_load_explicit(&qword_1ED5515D8, memory_order_acquire) & 1) == 0)
     {
-      v5 = v1;
+      v5 = selfCopy;
       v6 = v2;
       v3 = __cxa_guard_acquire(&qword_1ED5515D8);
-      v1 = v5;
+      selfCopy = v5;
       v2 = v6;
       if (v3)
       {
@@ -32,7 +32,7 @@
         _MergedGlobals = dispatch_queue_create("com.apple.SwiftUI.prepare-image", v4);
 
         __cxa_guard_release(&qword_1ED5515D8);
-        v1 = v5;
+        selfCopy = v5;
         v2 = v6;
       }
     }
@@ -41,19 +41,19 @@
     block[1] = 3221225472;
     block[2] = __30___SwiftUIProxyImage_schedule__block_invoke;
     block[3] = &unk_1E72422E0;
-    block[4] = v1;
+    block[4] = selfCopy;
     dispatch_group_async(v2, _MergedGlobals, block);
   }
 }
 
 - (void)prepare
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((self + 8));
     if (WeakRetained)
     {
-      [WeakRetained CA_copyRenderValueWithColorspace:*(a1 + 16)];
+      [WeakRetained CA_copyRenderValueWithColorspace:*(self + 16)];
       CARenderRelease();
     }
   }
@@ -61,19 +61,19 @@
 
 - (void)finish
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v2 = *(a1 + 24);
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_lock((self + 32));
+    v2 = *(self + 24);
+    os_unfair_lock_unlock((self + 32));
     if (v2)
     {
-      dispatch_group_wait(*(a1 + 24), 0xFFFFFFFFFFFFFFFFLL);
-      os_unfair_lock_lock((a1 + 32));
-      v3 = *(a1 + 24);
-      *(a1 + 24) = 0;
+      dispatch_group_wait(*(self + 24), 0xFFFFFFFFFFFFFFFFLL);
+      os_unfair_lock_lock((self + 32));
+      v3 = *(self + 24);
+      *(self + 24) = 0;
 
-      os_unfair_lock_unlock((a1 + 32));
+      os_unfair_lock_unlock((self + 32));
     }
   }
 }
@@ -82,9 +82,9 @@
 {
   [(_SwiftUIProxyImage *)self finish];
   WeakRetained = objc_loadWeakRetained(&self->_image);
-  v4 = [WeakRetained CA_copyRenderValue];
+  cA_copyRenderValue = [WeakRetained CA_copyRenderValue];
 
-  return v4;
+  return cA_copyRenderValue;
 }
 
 - (void)CA_prepareRenderValue
@@ -102,21 +102,21 @@
   [(_SwiftUIProxyImage *)&v3 dealloc];
 }
 
-- (id)initWithCGImage:(CGColorSpace *)a3 colorSpace:
+- (id)initWithCGImage:(CGColorSpace *)image colorSpace:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = _SwiftUIProxyImage;
   v5 = objc_msgSendSuper2(&v10, sel_init);
   v6 = v5;
   if (v5)
   {
     objc_storeWeak(v5 + 1, a2);
-    v6[2] = CGColorSpaceRetain(a3);
+    v6[2] = CGColorSpaceRetain(image);
     v7 = dispatch_group_create();
     v8 = v6[3];
     v6[3] = v7;
@@ -125,23 +125,23 @@
   return v6;
 }
 
-- (void)CA_copyRenderValueWithColorspace:(CGColorSpace *)a3
+- (void)CA_copyRenderValueWithColorspace:(CGColorSpace *)colorspace
 {
   [(_SwiftUIProxyImage *)self finish];
   WeakRetained = objc_loadWeakRetained(&self->_image);
-  v6 = [WeakRetained CA_copyRenderValueWithColorspace:a3];
+  v6 = [WeakRetained CA_copyRenderValueWithColorspace:colorspace];
 
   return v6;
 }
 
-- (id)replacementObjectForCoder:(id)a3
+- (id)replacementObjectForCoder:(id)coder
 {
   WeakRetained = objc_loadWeakRetained(&self->_image);
 
   return WeakRetained;
 }
 
-- (_SwiftUIProxyImage)initWithCoder:(id)a3
+- (_SwiftUIProxyImage)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _SwiftUIProxyImage;

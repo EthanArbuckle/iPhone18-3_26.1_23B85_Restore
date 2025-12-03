@@ -1,10 +1,10 @@
 @interface CSDProximitySensorObserver
 - (BOOL)isCovered;
-- (CSDProximitySensorObserver)initWithQueue:(id)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
+- (CSDProximitySensorObserver)initWithQueue:(id)queue;
+- (void)addDelegate:(id)delegate queue:(id)queue;
 - (void)dealloc;
-- (void)removeDelegate:(id)a3;
-- (void)setCovered:(BOOL)a3;
+- (void)removeDelegate:(id)delegate;
+- (void)setCovered:(BOOL)covered;
 - (void)updateCovered;
 @end
 
@@ -17,9 +17,9 @@
   [(CSDProximitySensorObserver *)self setCovered:v3];
 }
 
-- (CSDProximitySensorObserver)initWithQueue:(id)a3
+- (CSDProximitySensorObserver)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = CSDProximitySensorObserver;
   v5 = [(CSDProximitySensorObserver *)&v20 init];
@@ -39,7 +39,7 @@
     objc_copyWeak(&v18, &location);
     v9 = objc_retainBlock(&v14);
     v10 = [TUNotifyObserver alloc];
-    v11 = [v10 initWithNotificationName:@"com.apple.backboard.proximity.changed" queue:v4 callback:{v9, v14, v15, v16, v17}];
+    v11 = [v10 initWithNotificationName:@"com.apple.backboard.proximity.changed" queue:queueCopy callback:{v9, v14, v15, v16, v17}];
     coveredNotifyObserver = v6->_coveredNotifyObserver;
     v6->_coveredNotifyObserver = v11;
 
@@ -69,39 +69,39 @@
   return covered;
 }
 
-- (void)setCovered:(BOOL)a3
+- (void)setCovered:(BOOL)covered
 {
-  v3 = a3;
+  coveredCopy = covered;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_covered != v3)
+  if (self->_covered != coveredCopy)
   {
-    self->_covered = v3;
-    v5 = [(CSDProximitySensorObserver *)self delegateController];
+    self->_covered = coveredCopy;
+    delegateController = [(CSDProximitySensorObserver *)self delegateController];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100264854;
     v6[3] = &unk_10061FE30;
     v6[4] = self;
-    v7 = v3;
-    [v5 enumerateDelegatesUsingBlock:v6];
+    v7 = coveredCopy;
+    [delegateController enumerateDelegatesUsingBlock:v6];
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDProximitySensorObserver *)self delegateController];
-  [v8 addDelegate:v7 queue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  delegateController = [(CSDProximitySensorObserver *)self delegateController];
+  [delegateController addDelegate:delegateCopy queue:queueCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CSDProximitySensorObserver *)self delegateController];
-  [v5 removeDelegate:v4];
+  delegateCopy = delegate;
+  delegateController = [(CSDProximitySensorObserver *)self delegateController];
+  [delegateController removeDelegate:delegateCopy];
 }
 
 @end

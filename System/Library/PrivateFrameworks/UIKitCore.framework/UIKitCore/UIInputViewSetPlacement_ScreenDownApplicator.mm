@@ -7,9 +7,9 @@
 - (UIEdgeInsets)inputAccessoryPadding
 {
   WeakRetained = objc_loadWeakRetained(&self->super._owner);
-  v3 = [WeakRetained hostView];
-  v4 = [v3 traitCollection];
-  [UIInputViewSetPlacement_FloatingAssistantApplicator inputAccessoryPaddingForTraitCollection:v4];
+  hostView = [WeakRetained hostView];
+  traitCollection = [hostView traitCollection];
+  [UIInputViewSetPlacement_FloatingAssistantApplicator inputAccessoryPaddingForTraitCollection:traitCollection];
   v6 = v5;
   v8 = v7;
   v10 = v9;

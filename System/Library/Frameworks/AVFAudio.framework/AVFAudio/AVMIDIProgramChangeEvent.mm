@@ -1,15 +1,15 @@
 @interface AVMIDIProgramChangeEvent
 - (AVMIDIProgramChangeEvent)initWithChannel:(UInt32)channel programNumber:(UInt32)programNumber;
-- (AVMIDIProgramChangeEvent)initWithMessage:(MIDIChannelMessage *)a3;
+- (AVMIDIProgramChangeEvent)initWithMessage:(MIDIChannelMessage *)message;
 @end
 
 @implementation AVMIDIProgramChangeEvent
 
-- (AVMIDIProgramChangeEvent)initWithMessage:(MIDIChannelMessage *)a3
+- (AVMIDIProgramChangeEvent)initWithMessage:(MIDIChannelMessage *)message
 {
   v4.receiver = self;
   v4.super_class = AVMIDIProgramChangeEvent;
-  return [(AVMIDIChannelEvent *)&v4 initWithMessage:a3];
+  return [(AVMIDIChannelEvent *)&v4 initWithMessage:message];
 }
 
 - (AVMIDIProgramChangeEvent)initWithChannel:(UInt32)channel programNumber:(UInt32)programNumber

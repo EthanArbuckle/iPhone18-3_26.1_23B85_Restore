@@ -1,32 +1,32 @@
 @interface CNAClassKitResultTransformVisitor
-+ (id)addressForPerson:(id)a3 searchType:(unint64_t)a4;
-- (CNAClassKitResultTransformVisitor)initWithFactory:(id)a3 dataStore:(id)a4 searchType:(unint64_t)a5 addressableGroupResultStyle:(int64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)addressForPerson:(id)person searchType:(unint64_t)type;
+- (CNAClassKitResultTransformVisitor)initWithFactory:(id)factory dataStore:(id)store searchType:(unint64_t)type addressableGroupResultStyle:(int64_t)style;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)reduceCollection:(id)a3;
-- (void)visitAddressableGroup:(id)a3;
-- (void)visitClass:(id)a3;
-- (void)visitExpandableGroup:(id)a3;
-- (void)visitGroup:(id)a3;
-- (void)visitPerson:(id)a3;
+- (id)reduceCollection:(id)collection;
+- (void)visitAddressableGroup:(id)group;
+- (void)visitClass:(id)class;
+- (void)visitExpandableGroup:(id)group;
+- (void)visitGroup:(id)group;
+- (void)visitPerson:(id)person;
 @end
 
 @implementation CNAClassKitResultTransformVisitor
 
-- (CNAClassKitResultTransformVisitor)initWithFactory:(id)a3 dataStore:(id)a4 searchType:(unint64_t)a5 addressableGroupResultStyle:(int64_t)a6
+- (CNAClassKitResultTransformVisitor)initWithFactory:(id)factory dataStore:(id)store searchType:(unint64_t)type addressableGroupResultStyle:(int64_t)style
 {
-  v11 = a3;
-  v12 = a4;
+  factoryCopy = factory;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = CNAClassKitResultTransformVisitor;
   v13 = [(CNAClassKitResultTransformVisitor *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_factory, a3);
-    objc_storeStrong(&v14->_dataStore, a4);
-    v14->_searchType = a5;
-    v14->_groupResultStyle = a6;
+    objc_storeStrong(&v13->_factory, factory);
+    objc_storeStrong(&v14->_dataStore, store);
+    v14->_searchType = type;
+    v14->_groupResultStyle = style;
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
     results = v14->_results;
     v14->_results = v15;
@@ -42,20 +42,20 @@
   v3 = [objc_alloc(MEMORY[0x277CFBDF0]) initWithObject:self];
   v4 = [v3 appendName:@"factory" object:self->_factory];
   v5 = [v3 appendName:@"dataStore" object:self->_dataStore];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (id)reduceCollection:(id)a3
+- (id)reduceCollection:(id)collection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectionCopy = collection;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [collectionCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -66,13 +66,13 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(collectionCopy);
         }
 
         [*(*(&v12 + 1) + 8 * i) acceptVisitor:self];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [collectionCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -85,7 +85,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   factory = self->_factory;
@@ -96,32 +96,32 @@
   return [v4 initWithFactory:factory dataStore:dataStore searchType:searchType addressableGroupResultStyle:groupResultStyle];
 }
 
-- (void)visitPerson:(id)a3
+- (void)visitPerson:(id)person
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 nameComponents];
-  v6 = [v5 givenName];
-  v7 = [v5 familyName];
-  v8 = [CNAutocompleteNameComponents nameComponentsWithFirstName:v6 lastName:v7 nickname:&stru_282787720 nameSuffix:&stru_282787720];
+  personCopy = person;
+  nameComponents = [personCopy nameComponents];
+  givenName = [nameComponents givenName];
+  familyName = [nameComponents familyName];
+  v8 = [CNAutocompleteNameComponents nameComponentsWithFirstName:givenName lastName:familyName nickname:&stru_282787720 nameSuffix:&stru_282787720];
 
-  v9 = [objc_opt_class() addressForPerson:v4 searchType:self->_searchType];
+  v9 = [objc_opt_class() addressForPerson:personCopy searchType:self->_searchType];
   if ((*(*MEMORY[0x277CFBD38] + 16))())
   {
     v10 = [CNAutocompleteResultValue resultValueWithAddress:v9 addressType:1];
-    v11 = [v4 appleID];
+    appleID = [personCopy appleID];
 
-    if (v11)
+    if (appleID)
     {
       v17 = @"ckShareIdentifier";
-      v12 = [v4 appleID];
-      v18[0] = v12;
-      v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
+      appleID2 = [personCopy appleID];
+      v18[0] = appleID2;
+      appleID = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     }
 
     factory = self->_factory;
-    v14 = [v4 displayName];
-    v15 = [(CNAutocompleteResultFactory *)factory MAIDResultWithDisplayName:v14 value:v10 nameComponents:v8 userInfo:v11];
+    displayName = [personCopy displayName];
+    v15 = [(CNAutocompleteResultFactory *)factory MAIDResultWithDisplayName:displayName value:v10 nameComponents:v8 userInfo:appleID];
 
     [(NSMutableArray *)self->_results _cn_addNonNilObject:v15];
   }
@@ -129,41 +129,41 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)addressForPerson:(id)a3 searchType:(unint64_t)a4
++ (id)addressForPerson:(id)person searchType:(unint64_t)type
 {
-  if (a4)
+  if (type)
   {
-    [a3 appleID];
+    [person appleID];
   }
 
   else
   {
-    [a3 emailAddress];
+    [person emailAddress];
   }
   v4 = ;
 
   return v4;
 }
 
-- (void)visitClass:(id)a3
+- (void)visitClass:(id)class
 {
-  v4 = a3;
-  v5 = [v4 groupIdentifier];
+  classCopy = class;
+  groupIdentifier = [classCopy groupIdentifier];
   v6 = [(CNAClassKitResultTransformVisitor *)self copy];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__CNAClassKitResultTransformVisitor_visitClass___block_invoke;
   aBlock[3] = &unk_2781C46C8;
   aBlock[4] = self;
-  v14 = v5;
+  v14 = groupIdentifier;
   v15 = v6;
   v7 = v6;
-  v8 = v5;
+  v8 = groupIdentifier;
   v9 = _Block_copy(aBlock);
   factory = self->_factory;
-  v11 = [v4 displayName];
+  displayName = [classCopy displayName];
 
-  v12 = [(CNAutocompleteResultFactory *)factory MAIDGroupResultWithDisplayName:v11 groupIdentifier:v8 membersProvider:v9];
+  v12 = [(CNAutocompleteResultFactory *)factory MAIDGroupResultWithDisplayName:displayName groupIdentifier:v8 membersProvider:v9];
 
   [(NSMutableArray *)self->_results _cn_addNonNilObject:v12];
 }
@@ -199,38 +199,38 @@ id __48__CNAClassKitResultTransformVisitor_visitClass___block_invoke(uint64_t a1
   return v8;
 }
 
-- (void)visitGroup:(id)a3
+- (void)visitGroup:(id)group
 {
   if (self->_groupResultStyle)
   {
-    [(CNAClassKitResultTransformVisitor *)self visitAddressableGroup:a3];
+    [(CNAClassKitResultTransformVisitor *)self visitAddressableGroup:group];
   }
 
   else
   {
-    [(CNAClassKitResultTransformVisitor *)self visitExpandableGroup:a3];
+    [(CNAClassKitResultTransformVisitor *)self visitExpandableGroup:group];
   }
 }
 
-- (void)visitExpandableGroup:(id)a3
+- (void)visitExpandableGroup:(id)group
 {
-  v4 = a3;
-  v5 = [v4 groupIdentifier];
+  groupCopy = group;
+  groupIdentifier = [groupCopy groupIdentifier];
   v6 = [(CNAClassKitResultTransformVisitor *)self copy];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__CNAClassKitResultTransformVisitor_visitExpandableGroup___block_invoke;
   aBlock[3] = &unk_2781C46C8;
   aBlock[4] = self;
-  v14 = v5;
+  v14 = groupIdentifier;
   v15 = v6;
   v7 = v6;
-  v8 = v5;
+  v8 = groupIdentifier;
   v9 = _Block_copy(aBlock);
   factory = self->_factory;
-  v11 = [v4 groupName];
+  groupName = [groupCopy groupName];
 
-  v12 = [(CNAutocompleteResultFactory *)factory MAIDGroupResultWithDisplayName:v11 groupIdentifier:v8 membersProvider:v9];
+  v12 = [(CNAutocompleteResultFactory *)factory MAIDGroupResultWithDisplayName:groupName groupIdentifier:v8 membersProvider:v9];
 
   [(NSMutableArray *)self->_results _cn_addNonNilObject:v12];
 }
@@ -266,16 +266,16 @@ id __58__CNAClassKitResultTransformVisitor_visitExpandableGroup___block_invoke(u
   return v8;
 }
 
-- (void)visitAddressableGroup:(id)a3
+- (void)visitAddressableGroup:(id)group
 {
-  v9 = a3;
-  v4 = [v9 emailAddress];
+  groupCopy = group;
+  emailAddress = [groupCopy emailAddress];
   if ((*(*MEMORY[0x277CFBD38] + 16))())
   {
-    v5 = [CNAutocompleteResultValue resultValueWithAddress:v4 addressType:1];
+    v5 = [CNAutocompleteResultValue resultValueWithAddress:emailAddress addressType:1];
     factory = self->_factory;
-    v7 = [v9 groupName];
-    v8 = [(CNAutocompleteResultFactory *)factory MAIDResultWithDisplayName:v7 value:v5 nameComponents:0 userInfo:0];
+    groupName = [groupCopy groupName];
+    v8 = [(CNAutocompleteResultFactory *)factory MAIDResultWithDisplayName:groupName value:v5 nameComponents:0 userInfo:0];
 
     [(NSMutableArray *)self->_results _cn_addNonNilObject:v8];
   }

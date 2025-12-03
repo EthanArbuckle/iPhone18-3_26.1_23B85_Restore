@@ -10,10 +10,10 @@
   v15 = a3;
   v9 = a5;
   v10 = a6;
-  v11 = [v15 behaviorType];
-  if ((v11 - 1) >= 2)
+  behaviorType = [v15 behaviorType];
+  if ((behaviorType - 1) >= 2)
   {
-    if (v11)
+    if (behaviorType)
     {
       goto LABEL_6;
     }
@@ -43,17 +43,17 @@ LABEL_6:
     switch(a4)
     {
       case 3:
-        v13 = a1;
+        selfCopy2 = self;
         v14 = v18;
         v15 = 0;
         break;
       case 4:
         v17 = MEMORY[0x1E69DD250];
-        v16 = _SBModifyFrameRateForAnimationBlockFromSettings(v11, v18);
-        [v17 _animateByRetargetingAnimations:v16 completion:v12];
+        currentHandler = _SBModifyFrameRateForAnimationBlockFromSettings(v11, v18);
+        [v17 _animateByRetargetingAnimations:currentHandler completion:v12];
         goto LABEL_17;
       case 5:
-        v13 = a1;
+        selfCopy2 = self;
         v14 = v18;
         v15 = 1;
         break;
@@ -61,15 +61,15 @@ LABEL_6:
         goto LABEL_18;
     }
 
-    [v13 sb_animateWithSettings:v14 interactive:v15 animations:v11 completion:v12];
+    [selfCopy2 sb_animateWithSettings:v14 interactive:v15 animations:v11 completion:v12];
     goto LABEL_18;
   }
 
   switch(a4)
   {
     case 0:
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:a1 file:@"UIView+SBFFluidBehaviorSettings.m" lineNumber:43 description:{@"sb_animateWithSettings needs a explicit update mode, not SBAnimationUpdateModeUnspecified"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIView+SBFFluidBehaviorSettings.m" lineNumber:43 description:{@"sb_animateWithSettings needs a explicit update mode, not SBAnimationUpdateModeUnspecified"}];
 LABEL_17:
 
       break;

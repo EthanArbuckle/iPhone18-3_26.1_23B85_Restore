@@ -1,14 +1,14 @@
 @interface CDMAsrUtils
-+ (id)createAsrUuidCharIndexTimingMaps:(id)a3;
-+ (id)createCharIndexTimingMap:(id)a3;
++ (id)createAsrUuidCharIndexTimingMaps:(id)maps;
++ (id)createCharIndexTimingMap:(id)map;
 @end
 
 @implementation CDMAsrUtils
 
-+ (id)createAsrUuidCharIndexTimingMaps:(id)a3
++ (id)createAsrUuidCharIndexTimingMaps:(id)maps
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  mapsCopy = maps;
   v4 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -17,12 +17,12 @@
     _os_log_debug_impl(&dword_1DC287000, v4, OS_LOG_TYPE_DEBUG, "%s Building maps of {char_index: asr_timing} for each ASR alternative", buf, 0xCu);
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(mapsCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v3;
+  v6 = mapsCopy;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v7)
   {
@@ -81,17 +81,17 @@
   return v5;
 }
 
-+ (id)createCharIndexTimingMap:(id)a3
++ (id)createCharIndexTimingMap:(id)map
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  mapCopy = map;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v3 asrTokens];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  asrTokens = [mapCopy asrTokens];
+  v6 = [asrTokens countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -102,7 +102,7 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(asrTokens);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
@@ -115,7 +115,7 @@
         [v4 setObject:v13 forKey:v14];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v7 = [asrTokens countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v7);

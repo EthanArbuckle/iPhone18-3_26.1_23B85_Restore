@@ -1,15 +1,15 @@
 @interface NSUnitConverterReciprocal
-- (BOOL)isEqual:(id)a3;
-- (NSUnitConverterReciprocal)initWithCoder:(id)a3;
-- (NSUnitConverterReciprocal)initWithReciprocalValue:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSUnitConverterReciprocal)initWithCoder:(id)coder;
+- (NSUnitConverterReciprocal)initWithReciprocalValue:(double)value;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSUnitConverterReciprocal
 
-- (NSUnitConverterReciprocal)initWithReciprocalValue:(double)a3
+- (NSUnitConverterReciprocal)initWithReciprocalValue:(double)value
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
@@ -17,21 +17,21 @@
   result = [(NSUnitConverterReciprocal *)&v5 init];
   if (result)
   {
-    result->_reciprocalValue = a3;
+    result->_reciprocalValue = value;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   reciprocalValue = self->_reciprocalValue;
-  [a3 reciprocalValue];
+  [equal reciprocalValue];
   return reciprocalValue == v4;
 }
 
@@ -76,29 +76,29 @@
   return [-[NSUnitConverterReciprocal description](&v3 description)];
 }
 
-- (NSUnitConverterReciprocal)initWithCoder:(id)a3
+- (NSUnitConverterReciprocal)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSUnitConverterReciprocal cannot be decoded by non-keyed archivers" userInfo:0]);
   }
 
-  [a3 decodeDoubleForKey:@"NS.reciprocalValue"];
+  [coder decodeDoubleForKey:@"NS.reciprocalValue"];
 
   return [(NSUnitConverterReciprocal *)self initWithReciprocalValue:?];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (![a3 allowsKeyedCoding])
+  if (![coder allowsKeyedCoding])
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSUnitConverterReciprocal encoder does not allow non-keyed coding!" userInfo:0]);
   }
 
   reciprocalValue = self->_reciprocalValue;
 
-  [a3 encodeDouble:@"NS.reciprocalValue" forKey:reciprocalValue];
+  [coder encodeDouble:@"NS.reciprocalValue" forKey:reciprocalValue];
 }
 
 @end

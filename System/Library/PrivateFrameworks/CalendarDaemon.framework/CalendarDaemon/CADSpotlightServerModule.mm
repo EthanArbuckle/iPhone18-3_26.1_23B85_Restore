@@ -1,23 +1,23 @@
 @interface CADSpotlightServerModule
-- (CADSpotlightServerModule)initWithSpotlightEntityAnnotator:(id)a3;
+- (CADSpotlightServerModule)initWithSpotlightEntityAnnotator:(id)annotator;
 - (void)activate;
 - (void)deactivate;
 - (void)protectedDataDidBecomeAvailable;
-- (void)receivedNotificationNamed:(id)a3;
+- (void)receivedNotificationNamed:(id)named;
 @end
 
 @implementation CADSpotlightServerModule
 
-- (CADSpotlightServerModule)initWithSpotlightEntityAnnotator:(id)a3
+- (CADSpotlightServerModule)initWithSpotlightEntityAnnotator:(id)annotator
 {
-  v5 = a3;
+  annotatorCopy = annotator;
   v9.receiver = self;
   v9.super_class = CADSpotlightServerModule;
   v6 = [(CADSpotlightServerModule *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_spotlightEntityAnnotator, a3);
+    objc_storeStrong(&v6->_spotlightEntityAnnotator, annotator);
   }
 
   return v7;
@@ -56,10 +56,10 @@
   [(CADSpotlightIndexer *)self->_indexer cancelOngoingWorkAndShutdown];
 }
 
-- (void)receivedNotificationNamed:(id)a3
+- (void)receivedNotificationNamed:(id)named
 {
-  v4 = a3;
-  if (([v4 isEqualToString:*MEMORY[0x277CF7560]] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277CF7568]))
+  namedCopy = named;
+  if (([namedCopy isEqualToString:*MEMORY[0x277CF7560]] & 1) != 0 || objc_msgSend(namedCopy, "isEqualToString:", *MEMORY[0x277CF7568]))
   {
     v5 = CADSpotlightHandle;
     if (os_log_type_enabled(CADSpotlightHandle, OS_LOG_TYPE_DEFAULT))

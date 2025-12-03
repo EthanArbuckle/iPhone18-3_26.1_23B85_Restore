@@ -3,30 +3,30 @@
 - (BOOL)hasAttachmentFilter;
 - (BOOL)hasTaskFilter;
 - (BOOL)isManagedByServer;
-- (MobileCalDAVSubscribedCalendar)initWithCalendarURL:(id)a3 calendar:(void *)a4 properties:(id)a5 principal:(id)a6;
+- (MobileCalDAVSubscribedCalendar)initWithCalendarURL:(id)l calendar:(void *)calendar properties:(id)properties principal:(id)principal;
 - (NSURL)subscriptionURL;
 - (double)refreshInterval;
 - (id)properties;
-- (void)setRefreshInterval:(double)a3;
-- (void)setSubscriptionURL:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setRefreshInterval:(double)interval;
+- (void)setSubscriptionURL:(id)l;
+- (void)setTitle:(id)title;
 - (void)updatePropertiesFromCalCalendar;
 @end
 
 @implementation MobileCalDAVSubscribedCalendar
 
-- (MobileCalDAVSubscribedCalendar)initWithCalendarURL:(id)a3 calendar:(void *)a4 properties:(id)a5 principal:(id)a6
+- (MobileCalDAVSubscribedCalendar)initWithCalendarURL:(id)l calendar:(void *)calendar properties:(id)properties principal:(id)principal
 {
-  v10 = a5;
+  propertiesCopy = properties;
   v11 = MEMORY[0x277D03970];
-  v12 = a6;
-  v13 = a3;
-  v14 = [v11 SubCalTitleKey];
-  v15 = [v10 objectForKeyedSubscript:v14];
+  principalCopy = principal;
+  lCopy = l;
+  subCalTitleKey = [v11 SubCalTitleKey];
+  v15 = [propertiesCopy objectForKeyedSubscript:subCalTitleKey];
 
   v20.receiver = self;
   v20.super_class = MobileCalDAVSubscribedCalendar;
-  v16 = [(MobileCalDAVCalendar *)&v20 initWithCalendarURL:v13 calendar:a4 principal:v12 title:v15];
+  v16 = [(MobileCalDAVCalendar *)&v20 initWithCalendarURL:lCopy calendar:calendar principal:principalCopy title:v15];
 
   if (v16)
   {
@@ -41,9 +41,9 @@
       }
     }
 
-    if (v10)
+    if (propertiesCopy)
     {
-      v17 = [v10 mutableCopy];
+      v17 = [propertiesCopy mutableCopy];
     }
 
     else
@@ -60,14 +60,14 @@
 
 - (id)properties
 {
-  v3 = [(MobileCalDAVCalendar *)self title];
+  title = [(MobileCalDAVCalendar *)self title];
 
-  if (v3)
+  if (title)
   {
     properties = self->_properties;
-    v5 = [(MobileCalDAVCalendar *)self title];
-    v6 = [MEMORY[0x277D03970] SubCalTitleKey];
-    [(NSMutableDictionary *)properties setValue:v5 forKey:v6];
+    title2 = [(MobileCalDAVCalendar *)self title];
+    subCalTitleKey = [MEMORY[0x277D03970] SubCalTitleKey];
+    [(NSMutableDictionary *)properties setValue:title2 forKey:subCalTitleKey];
   }
 
   v7 = self->_properties;
@@ -75,26 +75,26 @@
   return v7;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = MobileCalDAVSubscribedCalendar;
-  [(MobileCalDAVCalendar *)&v9 setTitle:v4];
-  v5 = [(MobileCalDAVCalendar *)self title];
-  if (v5 == v4)
+  [(MobileCalDAVCalendar *)&v9 setTitle:titleCopy];
+  title = [(MobileCalDAVCalendar *)self title];
+  if (title == titleCopy)
   {
     goto LABEL_4;
   }
 
-  v6 = [(MobileCalDAVCalendar *)self title];
-  v7 = [v4 isEqualToString:v6];
+  title2 = [(MobileCalDAVCalendar *)self title];
+  v7 = [titleCopy isEqualToString:title2];
 
   if ((v7 & 1) == 0)
   {
     properties = self->_properties;
-    v5 = [MEMORY[0x277D03970] SubCalTitleKey];
-    [(NSMutableDictionary *)properties setValue:v4 forKey:v5];
+    title = [MEMORY[0x277D03970] SubCalTitleKey];
+    [(NSMutableDictionary *)properties setValue:titleCopy forKey:title];
 LABEL_4:
   }
 }
@@ -102,8 +102,8 @@ LABEL_4:
 - (NSURL)subscriptionURL
 {
   properties = self->_properties;
-  v3 = [MEMORY[0x277D03970] SubCalSubscriptionURLKey];
-  v4 = [(NSMutableDictionary *)properties objectForKeyedSubscript:v3];
+  subCalSubscriptionURLKey = [MEMORY[0x277D03970] SubCalSubscriptionURLKey];
+  v4 = [(NSMutableDictionary *)properties objectForKeyedSubscript:subCalSubscriptionURLKey];
 
   if (v4)
   {
@@ -118,17 +118,17 @@ LABEL_4:
   return v5;
 }
 
-- (void)setSubscriptionURL:(id)a3
+- (void)setSubscriptionURL:(id)l
 {
-  v8 = [a3 absoluteString];
-  v4 = [(MobileCalDAVSubscribedCalendar *)self subscriptionURL];
-  v5 = [v4 absoluteString];
+  absoluteString = [l absoluteString];
+  subscriptionURL = [(MobileCalDAVSubscribedCalendar *)self subscriptionURL];
+  absoluteString2 = [subscriptionURL absoluteString];
 
-  if (v8 != v5 && ([v8 isEqualToString:v5] & 1) == 0)
+  if (absoluteString != absoluteString2 && ([absoluteString isEqualToString:absoluteString2] & 1) == 0)
   {
     properties = self->_properties;
-    v7 = [MEMORY[0x277D03970] SubCalSubscriptionURLKey];
-    [(NSMutableDictionary *)properties setValue:v8 forKey:v7];
+    subCalSubscriptionURLKey = [MEMORY[0x277D03970] SubCalSubscriptionURLKey];
+    [(NSMutableDictionary *)properties setValue:absoluteString forKey:subCalSubscriptionURLKey];
 
     if ([(MobileCalDAVCalendar *)self getCalCalendar])
     {
@@ -142,27 +142,27 @@ LABEL_4:
 - (BOOL)hasAlarmFilter
 {
   properties = self->_properties;
-  v3 = [MEMORY[0x277D03970] SubCalFilterAlarmsKey];
-  v4 = [(NSMutableDictionary *)properties objectForKeyedSubscript:v3];
-  v5 = [v4 BOOLValue];
+  subCalFilterAlarmsKey = [MEMORY[0x277D03970] SubCalFilterAlarmsKey];
+  v4 = [(NSMutableDictionary *)properties objectForKeyedSubscript:subCalFilterAlarmsKey];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)hasAttachmentFilter
 {
   v2 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:*MEMORY[0x277CF7AC8]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasTaskFilter
 {
   v2 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:*MEMORY[0x277CF7AD0]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)refreshInterval
@@ -174,13 +174,13 @@ LABEL_4:
   return v4;
 }
 
-- (void)setRefreshInterval:(double)a3
+- (void)setRefreshInterval:(double)interval
 {
   [(MobileCalDAVSubscribedCalendar *)self refreshInterval];
-  if (v5 != a3)
+  if (v5 != interval)
   {
     properties = self->_properties;
-    v7 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v7 = [MEMORY[0x277CCABB0] numberWithDouble:interval];
     [(NSMutableDictionary *)properties setValue:v7 forKey:*MEMORY[0x277CF7AE8]];
 
     if ([(MobileCalDAVCalendar *)self getCalCalendar])
@@ -195,9 +195,9 @@ LABEL_4:
 - (BOOL)isManagedByServer
 {
   v2 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:*MEMORY[0x277CF7AE0]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)updatePropertiesFromCalCalendar

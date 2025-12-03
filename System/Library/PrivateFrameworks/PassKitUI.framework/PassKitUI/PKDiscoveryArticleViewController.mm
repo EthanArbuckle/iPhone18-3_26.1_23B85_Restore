@@ -1,48 +1,48 @@
 @interface PKDiscoveryArticleViewController
 - (BOOL)_hasCardInGalleryView;
 - (BOOL)isScrollable;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (PKDiscoveryArticleViewController)initWithArticleLayout:(id)a3 referrerIdentifier:(id)a4 cardSize:(int64_t)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (PKDiscoveryArticleViewController)initWithArticleLayout:(id)layout referrerIdentifier:(id)identifier cardSize:(int64_t)size;
 - (PKDiscoveryArticleViewControllerDelegate)delegate;
 - (PKProximityReaderDiscoveryDelegate)proximityReaderDelegate;
 - (UIEdgeInsets)safeAreaOverrideInsets;
-- (id)_paymentSetupNavigationControllerForProvisioningController:(id)a3;
-- (id)_shelfForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)defaultZoomTransitionForDiscoveryCardView:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_configureCallToActionShelfView:(id)a3 forCallToActionShelf:(id)a4 atIndexPath:(id)a5;
-- (void)_configureInlineMediaShelfView:(id)a3 forInlineMediaShelf:(id)a4 atIndexPath:(id)a5;
+- (id)_paymentSetupNavigationControllerForProvisioningController:(id)controller;
+- (id)_shelfForIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)defaultZoomTransitionForDiscoveryCardView:(id)view;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_configureCallToActionShelfView:(id)view forCallToActionShelf:(id)shelf atIndexPath:(id)path;
+- (void)_configureInlineMediaShelfView:(id)view forInlineMediaShelf:(id)shelf atIndexPath:(id)path;
 - (void)_dismissButtonPressed;
-- (void)_dismissForActionCompleted:(BOOL)a3 withRelevantPassUniqueIdentifier:(id)a4;
-- (void)_loadMedia:(id)a3 forShelfViewAtIndexPath:(id)a4 withCellImageCacheKey:(id)a5 completion:(id)a6;
-- (void)_performAccountUserInvitationFlowWithCTATapped:(id)a3 callToAction:(id)a4;
-- (void)_performProvisioningCTATapped:(id)a3 callToAction:(id)a4;
+- (void)_dismissForActionCompleted:(BOOL)completed withRelevantPassUniqueIdentifier:(id)identifier;
+- (void)_loadMedia:(id)media forShelfViewAtIndexPath:(id)path withCellImageCacheKey:(id)key completion:(id)completion;
+- (void)_performAccountUserInvitationFlowWithCTATapped:(id)tapped callToAction:(id)action;
+- (void)_performProvisioningCTATapped:(id)tapped callToAction:(id)action;
 - (void)_reportScolledToBottomIfNecessary;
-- (void)_setCardSize:(int64_t)a3;
-- (void)_showActivityIndicator:(BOOL)a3 view:(id)a4;
+- (void)_setCardSize:(int64_t)size;
+- (void)_showActivityIndicator:(BOOL)indicator view:(id)view;
 - (void)dealloc;
-- (void)discoveryCardViewCTATapped:(id)a3 callToAction:(id)a4 itemIdentifier:(id)a5;
+- (void)discoveryCardViewCTATapped:(id)tapped callToAction:(id)action itemIdentifier:(id)identifier;
 - (void)loadView;
-- (void)paymentSetupDidFinish:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setArticleLayout:(id)a3 cardSize:(int64_t)a4 animated:(BOOL)a5;
-- (void)setCallToActionTappedOverride:(id)a3;
-- (void)setIsDownloading:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)paymentSetupDidFinish:(id)finish;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setArticleLayout:(id)layout cardSize:(int64_t)size animated:(BOOL)animated;
+- (void)setCallToActionTappedOverride:(id)override;
+- (void)setIsDownloading:(BOOL)downloading;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKDiscoveryArticleViewController
 
-- (PKDiscoveryArticleViewController)initWithArticleLayout:(id)a3 referrerIdentifier:(id)a4 cardSize:(int64_t)a5
+- (PKDiscoveryArticleViewController)initWithArticleLayout:(id)layout referrerIdentifier:(id)identifier cardSize:(int64_t)size
 {
-  v9 = a3;
-  v10 = a4;
+  layoutCopy = layout;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = PKDiscoveryArticleViewController;
   v11 = [(PKDiscoveryArticleViewController *)&v20 initWithNibName:0 bundle:0];
@@ -55,19 +55,19 @@
     *(v11 + 274) = 0;
     *(v11 + 1000) = xmmword_1BE115EF0;
     *(v11 + 1016) = xmmword_1BE115EF0;
-    objc_storeStrong(v11 + 132, a4);
-    v14 = [v9 card];
-    v15 = [v14 callToAction];
-    *(v11 + 133) = [v15 action];
+    objc_storeStrong(v11 + 132, identifier);
+    card = [layoutCopy card];
+    callToAction = [card callToAction];
+    *(v11 + 133) = [callToAction action];
 
-    objc_storeStrong(v11 + 124, a3);
-    v11[1032] = v9 == 0;
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v11 selector:sel__systemTextSizeChanged name:*MEMORY[0x1E69DDC48] object:0];
-    [v16 addObserver:v11 selector:sel__applicationWillTerminate name:*MEMORY[0x1E69DDBD0] object:0];
-    [v16 addObserver:v11 selector:sel__applicationWillResignActive name:*MEMORY[0x1E69DDBC8] object:0];
+    objc_storeStrong(v11 + 124, layout);
+    v11[1032] = layoutCopy == 0;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__systemTextSizeChanged name:*MEMORY[0x1E69DDC48] object:0];
+    [defaultCenter addObserver:v11 selector:sel__applicationWillTerminate name:*MEMORY[0x1E69DDBD0] object:0];
+    [defaultCenter addObserver:v11 selector:sel__applicationWillResignActive name:*MEMORY[0x1E69DDBC8] object:0];
     v11[1114] = 1;
-    [v11 _setCardSize:a5];
+    [v11 _setCardSize:size];
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v18 = *(v11 + 135);
     *(v11 + 135) = v17;
@@ -85,13 +85,13 @@
     if (!self->_reportedScrolledToBottom)
     {
       self->_reportedScrolledToBottom = 1;
-      v3 = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
+      proximityReaderDelegate = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
 
-      if (!v3)
+      if (!proximityReaderDelegate)
       {
-        v5 = [MEMORY[0x1E69B87F0] sharedInstance];
-        v4 = [(PKDiscoveryArticleLayout *)self->_articleLayout itemIdentifier];
-        [v5 discoveryItemWithIdentifier:v4 callToAction:self->_callToAction wasScrolledToTheBottom:self->_scrolledToBottom];
+        mEMORY[0x1E69B87F0] = [MEMORY[0x1E69B87F0] sharedInstance];
+        itemIdentifier = [(PKDiscoveryArticleLayout *)self->_articleLayout itemIdentifier];
+        [mEMORY[0x1E69B87F0] discoveryItemWithIdentifier:itemIdentifier callToAction:self->_callToAction wasScrolledToTheBottom:self->_scrolledToBottom];
       }
     }
   }
@@ -99,8 +99,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(PKDiscoveryCardView *)self->_cardView setDelegate:0];
   v4.receiver = self;
@@ -113,11 +113,11 @@
   v34.receiver = self;
   v34.super_class = PKDiscoveryArticleViewController;
   [(PKDiscoveryArticleViewController *)&v34 loadView];
-  v3 = [(PKDiscoveryArticleViewController *)self view];
+  view = [(PKDiscoveryArticleViewController *)self view];
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:self action:sel__dismissButtonPressed];
-  v5 = [(PKDiscoveryArticleViewController *)self navigationItem];
+  navigationItem = [(PKDiscoveryArticleViewController *)self navigationItem];
   v33 = v4;
-  [v5 setLeftBarButtonItem:v4];
+  [navigationItem setLeftBarButtonItem:v4];
 
   v6 = objc_alloc_init(PKDiscoveryLayout);
   v7 = objc_alloc(MEMORY[0x1E69DC7F0]);
@@ -131,8 +131,8 @@
 
   [(UICollectionView *)self->_collectionView setContentInsetAdjustmentBehavior:2];
   v14 = self->_collectionView;
-  v15 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(UICollectionView *)v14 setBackgroundColor:v15];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(UICollectionView *)v14 setBackgroundColor:systemBackgroundColor];
 
   [(UICollectionView *)self->_collectionView setDelegate:self];
   [(UICollectionView *)self->_collectionView setDataSource:self];
@@ -149,8 +149,8 @@
   self->_activityIndicator = v18;
 
   v20 = self->_activityIndicator;
-  v21 = [MEMORY[0x1E69DC888] grayColor];
-  [(UIActivityIndicatorView *)v20 setColor:v21];
+  grayColor = [MEMORY[0x1E69DC888] grayColor];
+  [(UIActivityIndicatorView *)v20 setColor:grayColor];
 
   v22 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v8, v9, v10, v11}];
   downloadingLabel = self->_downloadingLabel;
@@ -161,8 +161,8 @@
   [(UILabel *)v24 setFont:v25];
 
   v26 = self->_downloadingLabel;
-  v27 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
-  [(UILabel *)v26 setTextColor:v27];
+  systemDarkGrayColor = [MEMORY[0x1E69DC888] systemDarkGrayColor];
+  [(UILabel *)v26 setTextColor:systemDarkGrayColor];
 
   v28 = self->_downloadingLabel;
   v29 = PKLocalizedDiscoveryString(&cfstr_DiscoveryArtic.isa);
@@ -175,14 +175,14 @@
   }
 
   [(UILabel *)self->_downloadingLabel setAlpha:v30];
-  v31 = [MEMORY[0x1E69DC888] whiteColor];
-  [v3 setBackgroundColor:v31];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [view setBackgroundColor:whiteColor];
 
-  [v3 addSubview:self->_collectionView];
+  [view addSubview:self->_collectionView];
   [(UICollectionView *)self->_collectionView addSubview:self->_cardView];
-  [v3 addSubview:self->_activityIndicator];
-  [v3 addSubview:self->_downloadingLabel];
-  [v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9490]];
+  [view addSubview:self->_activityIndicator];
+  [view addSubview:self->_downloadingLabel];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9490]];
   if (self->_isDownloading)
   {
     [(UIActivityIndicatorView *)self->_activityIndicator startAnimating];
@@ -194,21 +194,21 @@
   v49.receiver = self;
   v49.super_class = PKDiscoveryArticleViewController;
   [(PKDiscoveryArticleViewController *)&v49 viewWillLayoutSubviews];
-  v3 = [(PKDiscoveryArticleLayout *)self->_articleLayout isWritingDirectionRTL];
-  if (v3)
+  isWritingDirectionRTL = [(PKDiscoveryArticleLayout *)self->_articleLayout isWritingDirectionRTL];
+  if (isWritingDirectionRTL)
   {
-    v4 = v3;
-    v5 = [(PKDiscoveryArticleViewController *)self traitOverrides];
-    [v5 setLayoutDirection:v4 == 1];
+    v4 = isWritingDirectionRTL;
+    traitOverrides = [(PKDiscoveryArticleViewController *)self traitOverrides];
+    [traitOverrides setLayoutDirection:v4 == 1];
   }
 
-  v6 = [(PKDiscoveryArticleViewController *)self view];
-  [v6 bounds];
+  view = [(PKDiscoveryArticleViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v6 safeAreaInsets];
+  [view safeAreaInsets];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -258,43 +258,43 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PKDiscoveryArticleViewController;
-  [(PKDiscoveryArticleViewController *)&v7 viewDidAppear:a3];
+  [(PKDiscoveryArticleViewController *)&v7 viewDidAppear:appear];
   if (self->_articleLayout && !self->_isDownloading)
   {
-    v4 = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
+    proximityReaderDelegate = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
 
-    if (!v4)
+    if (!proximityReaderDelegate)
     {
-      v5 = [MEMORY[0x1E69B87F0] sharedInstance];
-      v6 = [(PKDiscoveryArticleLayout *)self->_articleLayout itemIdentifier];
-      [v5 discoveryItemWithIdentifier:v6 callToAction:self->_callToAction isScrollable:{-[PKDiscoveryArticleViewController isScrollable](self, "isScrollable")}];
+      mEMORY[0x1E69B87F0] = [MEMORY[0x1E69B87F0] sharedInstance];
+      itemIdentifier = [(PKDiscoveryArticleLayout *)self->_articleLayout itemIdentifier];
+      [mEMORY[0x1E69B87F0] discoveryItemWithIdentifier:itemIdentifier callToAction:self->_callToAction isScrollable:{-[PKDiscoveryArticleViewController isScrollable](self, "isScrollable")}];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKDiscoveryArticleViewController;
-  [(PKDiscoveryArticleViewController *)&v4 viewDidDisappear:a3];
+  [(PKDiscoveryArticleViewController *)&v4 viewDidDisappear:disappear];
   [(PKDiscoveryArticleViewController *)self _reportScolledToBottomIfNecessary];
 }
 
 - (BOOL)isScrollable
 {
-  v2 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  v3 = [v2 isScrollable];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  isScrollable = [collectionViewLayout isScrollable];
 
-  return v3;
+  return isScrollable;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  [a3 bounds];
+  [view bounds];
   v6 = v5;
   +[PKDiscoveryCardView expandedHeight];
   v8 = v7 + 8.0;
@@ -304,9 +304,9 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  v6 = [(PKDiscoveryArticleViewController *)self view:a3];
+  v6 = [(PKDiscoveryArticleViewController *)self view:view];
   v7 = v6;
   if (self->_hasSafeAreaInsetOverride)
   {
@@ -329,11 +329,11 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = [(PKDiscoveryArticleViewController *)self _shelfForIndexPath:a5, a4];
-  v7 = [(PKDiscoveryArticleLayout *)self->_articleLayout itemIdentifier];
-  v8 = [PKDiscoveryShelfView viewForShelf:v6 discoveryCardViewDelegate:self itemIdentifier:v7];
+  layout = [(PKDiscoveryArticleViewController *)self _shelfForIndexPath:path, layout];
+  itemIdentifier = [(PKDiscoveryArticleLayout *)self->_articleLayout itemIdentifier];
+  v8 = [PKDiscoveryShelfView viewForShelf:layout discoveryCardViewDelegate:self itemIdentifier:itemIdentifier];
 
   [v8 setContentInsets:{self->_contentInsets.top, self->_contentInsets.left, self->_contentInsets.bottom, self->_contentInsets.right}];
   [(UICollectionView *)self->_collectionView bounds];
@@ -348,25 +348,25 @@
   return result;
 }
 
-- (void)setCallToActionTappedOverride:(id)a3
+- (void)setCallToActionTappedOverride:(id)override
 {
-  v6 = a3;
-  v4 = _Block_copy(v6);
+  overrideCopy = override;
+  v4 = _Block_copy(overrideCopy);
   callToActionTappedOverride = self->_callToActionTappedOverride;
   self->_callToActionTappedOverride = v4;
 
-  [(PKDiscoveryCardView *)self->_cardView setCallToActionTappedOverride:v6];
+  [(PKDiscoveryCardView *)self->_cardView setCallToActionTappedOverride:overrideCopy];
 }
 
-- (void)setArticleLayout:(id)a3 cardSize:(int64_t)a4 animated:(BOOL)a5
+- (void)setArticleLayout:(id)layout cardSize:(int64_t)size animated:(BOOL)animated
 {
-  v5 = a5;
-  v9 = a3;
-  objc_storeStrong(&self->_articleLayout, a3);
-  self->_isDownloading = v9 == 0;
+  animatedCopy = animated;
+  layoutCopy = layout;
+  objc_storeStrong(&self->_articleLayout, layout);
+  self->_isDownloading = layoutCopy == 0;
   [(PKDiscoveryCardView *)self->_cardView removeFromSuperview];
   [(PKDiscoveryCardView *)self->_cardView setDelegate:0];
-  [(PKDiscoveryArticleViewController *)self _setCardSize:a4];
+  [(PKDiscoveryArticleViewController *)self _setCardSize:size];
   v10 = [[PKDiscoveryCardViewTemplateInformation alloc] initWithCardSize:self->_cardSize displayType:1];
   v11 = [[PKDiscoveryCardView alloc] initWithArticleLayout:self->_articleLayout cardTemplateInformation:v10];
   cardView = self->_cardView;
@@ -374,11 +374,11 @@
 
   [(PKDiscoveryCardView *)self->_cardView setDelegate:self];
   [(UICollectionView *)self->_collectionView addSubview:self->_cardView];
-  v13 = [(PKDiscoveryArticleViewController *)self view];
-  [v13 setNeedsLayout];
+  view = [(PKDiscoveryArticleViewController *)self view];
+  [view setNeedsLayout];
 
   [(UICollectionView *)self->_collectionView reloadData];
-  if (v5)
+  if (animatedCopy)
   {
     [(UICollectionView *)self->_collectionView setAlpha:0.0];
     v14[4] = self;
@@ -411,18 +411,18 @@ uint64_t __71__PKDiscoveryArticleViewController_setArticleLayout_cardSize_animat
   return [v2 setAlpha:0.0];
 }
 
-- (void)setIsDownloading:(BOOL)a3
+- (void)setIsDownloading:(BOOL)downloading
 {
-  if (self->_isDownloading == !a3)
+  if (self->_isDownloading == !downloading)
   {
     v18 = v6;
     v19 = v5;
     v20 = v3;
     v21 = v4;
-    v7 = a3;
-    self->_isDownloading = a3;
+    downloadingCopy = downloading;
+    self->_isDownloading = downloading;
     v9 = self->_activityIndicator;
-    if (v7)
+    if (downloadingCopy)
     {
       [(UIActivityIndicatorView *)self->_activityIndicator startAnimating];
     }
@@ -432,14 +432,14 @@ uint64_t __71__PKDiscoveryArticleViewController_setArticleLayout_cardSize_animat
     v15[1] = 3221225472;
     v15[2] = __53__PKDiscoveryArticleViewController_setIsDownloading___block_invoke;
     v15[3] = &unk_1E8013D60;
-    v17 = v7;
+    v17 = downloadingCopy;
     v15[4] = self;
     v16 = v9;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __53__PKDiscoveryArticleViewController_setIsDownloading___block_invoke_2;
     v12[3] = &unk_1E8013E98;
-    v14 = v7;
+    v14 = downloadingCopy;
     v13 = v16;
     v11 = v16;
     [v10 pkui_animateUsingOptions:6 animations:v15 completion:v12];
@@ -474,116 +474,116 @@ uint64_t __53__PKDiscoveryArticleViewController_setIsDownloading___block_invoke_
   return result;
 }
 
-- (void)_setCardSize:(int64_t)a3
+- (void)_setCardSize:(int64_t)size
 {
-  if (a3 == 2)
+  if (size == 2)
   {
-    v3 = 0;
+    sizeCopy = 0;
   }
 
   else
   {
-    v3 = a3;
+    sizeCopy = size;
   }
 
-  self->_cardSize = v3;
+  self->_cardSize = sizeCopy;
 }
 
-- (void)discoveryCardViewCTATapped:(id)a3 callToAction:(id)a4 itemIdentifier:(id)a5
+- (void)discoveryCardViewCTATapped:(id)tapped callToAction:(id)action itemIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 action];
+  tappedCopy = tapped;
+  actionCopy = action;
+  identifierCopy = identifier;
+  action = [actionCopy action];
   v12 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 134217984;
-    v26 = v11;
+    v26 = action;
     _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "Article view CTA (action=%ld) tapped", &v25, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v14 = [(PKDiscoveryArticleLayout *)self->_articleLayout item];
-  [WeakRetained discoveryArticleViewController:self tappedCallToAction:v9 item:v14];
+  item = [(PKDiscoveryArticleLayout *)self->_articleLayout item];
+  [WeakRetained discoveryArticleViewController:self tappedCallToAction:actionCopy item:item];
 
-  v15 = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
+  proximityReaderDelegate = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
 
-  if (!v15)
+  if (!proximityReaderDelegate)
   {
-    v16 = [MEMORY[0x1E69B87F0] sharedInstance];
-    [v16 tappedDiscoveryItemWithIdentifier:v10 callToAction:objc_msgSend(v9 cardSize:{"action"), self->_cardSize}];
+    mEMORY[0x1E69B87F0] = [MEMORY[0x1E69B87F0] sharedInstance];
+    [mEMORY[0x1E69B87F0] tappedDiscoveryItemWithIdentifier:identifierCopy callToAction:objc_msgSend(actionCopy cardSize:{"action"), self->_cardSize}];
   }
 
-  [v9 setReferrerIdentifier:self->_referrerIdentifierOverride];
-  v17 = [(PKDiscoveryArticleViewController *)self presentingViewController];
+  [actionCopy setReferrerIdentifier:self->_referrerIdentifierOverride];
+  presentingViewController = [(PKDiscoveryArticleViewController *)self presentingViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v17 passGroupsViewController];
+    passGroupsViewController = [presentingViewController passGroupsViewController];
 LABEL_9:
-    v19 = v18;
+    v19 = passGroupsViewController;
     goto LABEL_11;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = v17;
+    passGroupsViewController = presentingViewController;
     goto LABEL_9;
   }
 
   v19 = 0;
 LABEL_11:
-  if (v11 <= 5)
+  if (action <= 5)
   {
-    if (v11 < 4)
+    if (action < 4)
     {
 LABEL_18:
-      [(PKDiscoveryArticleViewController *)self _performProvisioningCTATapped:v8 callToAction:v9];
+      [(PKDiscoveryArticleViewController *)self _performProvisioningCTATapped:tappedCopy callToAction:actionCopy];
       goto LABEL_31;
     }
 
-    if (v11 != 4)
+    if (action != 4)
     {
-      if (v11 != 5)
+      if (action != 5)
       {
         goto LABEL_31;
       }
 
-      v21 = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
+      proximityReaderDelegate2 = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
 
-      if (!v21)
+      if (!proximityReaderDelegate2)
       {
-        v22 = [MEMORY[0x1E69B87F0] sharedInstance];
-        [v22 completedDiscoveryItemCTAWithCompletion:0];
+        mEMORY[0x1E69B87F0]2 = [MEMORY[0x1E69B87F0] sharedInstance];
+        [mEMORY[0x1E69B87F0]2 completedDiscoveryItemCTAWithCompletion:0];
       }
     }
   }
 
-  else if (v11 <= 8)
+  else if (action <= 8)
   {
-    if (v11 != 6)
+    if (action != 6)
     {
-      if (v11 == 7)
+      if (action == 7)
       {
-        [(PKDiscoveryArticleViewController *)self _performAccountUserInvitationFlowWithCTATapped:v8 callToAction:v9];
+        [(PKDiscoveryArticleViewController *)self _performAccountUserInvitationFlowWithCTATapped:tappedCopy callToAction:actionCopy];
       }
 
       else
       {
-        v20 = [v9 appStoreAppIdentifier];
-        [v19 presentAppStorePageForItemWithIdentifier:v20];
+        appStoreAppIdentifier = [actionCopy appStoreAppIdentifier];
+        [v19 presentAppStorePageForItemWithIdentifier:appStoreAppIdentifier];
       }
 
       goto LABEL_31;
     }
   }
 
-  else if ((v11 - 9) >= 2 && v11 != 12)
+  else if ((action - 9) >= 2 && action != 12)
   {
-    if (v11 != 11)
+    if (action != 11)
     {
       goto LABEL_31;
     }
@@ -591,11 +591,11 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v23 = [v9 actionURL];
-  v24 = v23;
-  if (v23)
+  actionURL = [actionCopy actionURL];
+  v24 = actionURL;
+  if (actionURL)
   {
-    v12 = [v23 url];
+    v12 = [actionURL url];
     [v24 isSensitive];
     PKOpenURL();
   }
@@ -603,25 +603,25 @@ LABEL_18:
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 134217984;
-    v26 = v11;
+    v26 = action;
     _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "Failed to perform actionType %ld as no URL exists", &v25, 0xCu);
   }
 
 LABEL_31:
 }
 
-- (void)_performAccountUserInvitationFlowWithCTATapped:(id)a3 callToAction:(id)a4
+- (void)_performAccountUserInvitationFlowWithCTATapped:(id)tapped callToAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  [(PKDiscoveryArticleViewController *)self _showActivityIndicator:1 view:v6];
+  tappedCopy = tapped;
+  actionCopy = action;
+  [(PKDiscoveryArticleViewController *)self _showActivityIndicator:1 view:tappedCopy];
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __96__PKDiscoveryArticleViewController__performAccountUserInvitationFlowWithCTATapped_callToAction___block_invoke;
   v9[3] = &unk_1E80110E0;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = tappedCopy;
   v10 = v8;
   [PKAccountInvitationController presentCreateAccountUserInvitationWithViewController:self account:0 accountUserCollection:0 familyMemberCollection:0 context:0 completion:v9];
 
@@ -648,31 +648,31 @@ void __96__PKDiscoveryArticleViewController__performAccountUserInvitationFlowWit
   [WeakRetained _showActivityIndicator:0 view:*(a1 + 32)];
 }
 
-- (void)_performProvisioningCTATapped:(id)a3 callToAction:(id)a4
+- (void)_performProvisioningCTATapped:(id)tapped callToAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  tappedCopy = tapped;
+  actionCopy = action;
   objc_initWeak(&location, self);
   v8 = objc_alloc(MEMORY[0x1E69B8D48]);
-  v9 = [MEMORY[0x1E69B8EF8] sharedService];
-  v10 = [v8 initWithWebService:v9];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v10 = [v8 initWithWebService:mEMORY[0x1E69B8EF8]];
 
-  v11 = [v7 referrerIdentifier];
-  [v10 setReferrerIdentifier:v11];
+  referrerIdentifier = [actionCopy referrerIdentifier];
+  [v10 setReferrerIdentifier:referrerIdentifier];
 
-  v12 = [v7 paymentNetworks];
-  [v10 setAllowedPaymentNetworks:v12];
+  paymentNetworks = [actionCopy paymentNetworks];
+  [v10 setAllowedPaymentNetworks:paymentNetworks];
 
-  v13 = [v7 transitNetworkIdentifiers];
-  [v10 setRequiredTransitNetworkIdentifiers:v13];
+  transitNetworkIdentifiers = [actionCopy transitNetworkIdentifiers];
+  [v10 setRequiredTransitNetworkIdentifiers:transitNetworkIdentifiers];
 
-  v14 = [v7 allowedFeatureIdentifiers];
-  [v10 setAllowedFeatureIdentifiers:v14];
+  allowedFeatureIdentifiers = [actionCopy allowedFeatureIdentifiers];
+  [v10 setAllowedFeatureIdentifiers:allowedFeatureIdentifiers];
 
-  v15 = [v7 productIdentifiers];
-  [v10 setAllowedProductIdentifiers:v15];
+  productIdentifiers = [actionCopy productIdentifiers];
+  [v10 setAllowedProductIdentifiers:productIdentifiers];
 
-  [(PKDiscoveryArticleViewController *)self _showActivityIndicator:1 view:v6];
+  [(PKDiscoveryArticleViewController *)self _showActivityIndicator:1 view:tappedCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__PKDiscoveryArticleViewController__performProvisioningCTATapped_callToAction___block_invoke;
@@ -680,9 +680,9 @@ void __96__PKDiscoveryArticleViewController__performAccountUserInvitationFlowWit
   objc_copyWeak(&v29, &location);
   v16 = v10;
   v26 = v16;
-  v17 = v7;
+  v17 = actionCopy;
   v27 = v17;
-  v18 = v6;
+  v18 = tappedCopy;
   v28 = v18;
   v19 = _Block_copy(aBlock);
   v22[0] = MEMORY[0x1E69E9820];
@@ -797,10 +797,10 @@ void __79__PKDiscoveryArticleViewController__performProvisioningCTATapped_callTo
   }
 }
 
-- (id)_paymentSetupNavigationControllerForProvisioningController:(id)a3
+- (id)_paymentSetupNavigationControllerForProvisioningController:(id)controller
 {
-  v4 = a3;
-  v5 = [[PKPaymentSetupNavigationController alloc] initWithProvisioningController:v4 context:0];
+  controllerCopy = controller;
+  v5 = [[PKPaymentSetupNavigationController alloc] initWithProvisioningController:controllerCopy context:0];
 
   [(PKNavigationController *)v5 setCustomFormSheetPresentationStyleForiPad];
   [(PKPaymentSetupNavigationController *)v5 setSetupDelegate:self];
@@ -808,29 +808,29 @@ void __79__PKDiscoveryArticleViewController__performProvisioningCTATapped_callTo
   return v5;
 }
 
-- (void)_showActivityIndicator:(BOOL)a3 view:(id)a4
+- (void)_showActivityIndicator:(BOOL)indicator view:(id)view
 {
-  v4 = a3;
-  v5 = a4;
+  indicatorCopy = indicator;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [v5 setShowActivityIndicator:v4];
+    [viewCopy setShowActivityIndicator:indicatorCopy];
   }
 }
 
-- (void)paymentSetupDidFinish:(id)a3
+- (void)paymentSetupDidFinish:(id)finish
 {
-  v4 = [a3 provisioningController];
-  v5 = [v4 provisionedPasses];
-  v6 = [v5 lastObject];
-  v7 = [v6 secureElementPass];
-  v9 = [v7 paymentPass];
+  provisioningController = [finish provisioningController];
+  provisionedPasses = [provisioningController provisionedPasses];
+  lastObject = [provisionedPasses lastObject];
+  secureElementPass = [lastObject secureElementPass];
+  paymentPass = [secureElementPass paymentPass];
 
-  if (v9)
+  if (paymentPass)
   {
-    v8 = [v9 uniqueID];
-    [(PKDiscoveryArticleViewController *)self _dismissForActionCompleted:1 withRelevantPassUniqueIdentifier:v8];
+    uniqueID = [paymentPass uniqueID];
+    [(PKDiscoveryArticleViewController *)self _dismissForActionCompleted:1 withRelevantPassUniqueIdentifier:uniqueID];
   }
 
   else
@@ -839,13 +839,13 @@ void __79__PKDiscoveryArticleViewController__performProvisioningCTATapped_callTo
   }
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 == self && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  if (controllerCopy == self && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [[PKPresentationControllerForOverCurrentContextDestination alloc] initWithPresentedViewController:v7 presentingViewController:v8];
+    v9 = [[PKPresentationControllerForOverCurrentContextDestination alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
   }
 
   else
@@ -856,12 +856,12 @@ void __79__PKDiscoveryArticleViewController__performProvisioningCTATapped_callTo
   return v9;
 }
 
-- (id)defaultZoomTransitionForDiscoveryCardView:(id)a3
+- (id)defaultZoomTransitionForDiscoveryCardView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_alloc_init(MEMORY[0x1E69DD320]);
   [v4 setAlignmentRectProvider:&__block_literal_global_161];
-  objc_initWeak(&location, v3);
+  objc_initWeak(&location, viewCopy);
   v5 = MEMORY[0x1E69DD260];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -929,52 +929,52 @@ id __78__PKDiscoveryArticleViewController_defaultZoomTransitionForDiscoveryCardV
   return WeakRetained;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(PKDiscoveryArticleLayout *)self->_articleLayout shelves:a3];
+  v4 = [(PKDiscoveryArticleLayout *)self->_articleLayout shelves:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:v6];
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  [v7 setBackgroundColor:v8];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:pathCopy];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v7 setBackgroundColor:whiteColor];
 
-  v9 = [(PKDiscoveryArticleViewController *)self _shelfForIndexPath:v6];
+  v9 = [(PKDiscoveryArticleViewController *)self _shelfForIndexPath:pathCopy];
   if (v9)
   {
-    v10 = [(PKDiscoveryArticleLayout *)self->_articleLayout itemIdentifier];
-    v11 = [PKDiscoveryShelfView viewForShelf:v9 discoveryCardViewDelegate:self itemIdentifier:v10];
+    itemIdentifier = [(PKDiscoveryArticleLayout *)self->_articleLayout itemIdentifier];
+    v11 = [PKDiscoveryShelfView viewForShelf:v9 discoveryCardViewDelegate:self itemIdentifier:itemIdentifier];
 
     [v11 setContentInsets:{self->_contentInsets.top, self->_contentInsets.left, self->_contentInsets.bottom, self->_contentInsets.right}];
-    v12 = [v7 shelfView];
-    v13 = v12;
-    if (v12)
+    shelfView = [v7 shelfView];
+    v13 = shelfView;
+    if (shelfView)
     {
-      if (v12 == v11)
+      if (shelfView == v11)
       {
 LABEL_6:
-        v15 = [v9 type];
-        if (v15 == 4)
+        type = [v9 type];
+        if (type == 4)
         {
-          [(PKDiscoveryArticleViewController *)self _configureCallToActionShelfView:v11 forCallToActionShelf:v9 atIndexPath:v6];
+          [(PKDiscoveryArticleViewController *)self _configureCallToActionShelfView:v11 forCallToActionShelf:v9 atIndexPath:pathCopy];
         }
 
-        else if (v15 == 2)
+        else if (type == 2)
         {
-          [(PKDiscoveryArticleViewController *)self _configureInlineMediaShelfView:v11 forInlineMediaShelf:v9 atIndexPath:v6];
+          [(PKDiscoveryArticleViewController *)self _configureInlineMediaShelfView:v11 forInlineMediaShelf:v9 atIndexPath:pathCopy];
         }
 
         goto LABEL_14;
       }
 
-      v14 = [v7 shelfView];
-      [v14 removeFromSuperview];
+      shelfView2 = [v7 shelfView];
+      [shelfView2 removeFromSuperview];
 
       [v7 setShelfView:0];
     }
@@ -996,51 +996,51 @@ LABEL_14:
   return v7;
 }
 
-- (id)_shelfForIndexPath:(id)a3
+- (id)_shelfForIndexPath:(id)path
 {
-  v4 = [a3 row];
-  v5 = [(PKDiscoveryArticleLayout *)self->_articleLayout shelves];
-  if (v4 >= [v5 count])
+  v4 = [path row];
+  shelves = [(PKDiscoveryArticleLayout *)self->_articleLayout shelves];
+  if (v4 >= [shelves count])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndex:v4];
+    v6 = [shelves objectAtIndex:v4];
   }
 
   return v6;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v17 = a3;
-  v4 = [(PKDiscoveryArticleViewController *)self view];
-  [v4 setNeedsLayout];
+  scrollCopy = scroll;
+  view = [(PKDiscoveryArticleViewController *)self view];
+  [view setNeedsLayout];
 
-  v5 = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
+  proximityReaderDelegate = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
 
-  if (v5)
+  if (proximityReaderDelegate)
   {
-    [v17 contentOffset];
+    [scrollCopy contentOffset];
     v7 = v6;
-    [v17 frame];
+    [scrollCopy frame];
     v9 = v7 + v8;
-    v10 = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
-    v11 = [(PKDiscoveryArticleLayout *)self->_articleLayout itemIdentifier];
-    [v10 discoveryItemWithIdentifier:v11 position:v9];
+    proximityReaderDelegate2 = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
+    itemIdentifier = [(PKDiscoveryArticleLayout *)self->_articleLayout itemIdentifier];
+    [proximityReaderDelegate2 discoveryItemWithIdentifier:itemIdentifier position:v9];
   }
 
   else if ([(PKDiscoveryArticleViewController *)self isScrollable])
   {
     if (!self->_scrolledToBottom)
     {
-      [v17 contentOffset];
+      [scrollCopy contentOffset];
       v13 = v12;
-      [v17 contentSize];
+      [scrollCopy contentSize];
       v15 = v14;
-      [v17 frame];
+      [scrollCopy frame];
       self->_scrolledToBottom = v13 >= v15 - v16;
       if (v13 >= v15 - v16)
       {
@@ -1050,18 +1050,18 @@ LABEL_14:
   }
 }
 
-- (void)_configureInlineMediaShelfView:(id)a3 forInlineMediaShelf:(id)a4 atIndexPath:(id)a5
+- (void)_configureInlineMediaShelfView:(id)view forInlineMediaShelf:(id)shelf atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 media];
-  v12 = [v11 type];
+  viewCopy = view;
+  shelfCopy = shelf;
+  pathCopy = path;
+  media = [shelfCopy media];
+  type = [media type];
 
-  if (v12 == 1)
+  if (type == 1)
   {
-    v13 = v8;
-    v14 = [(NSMutableDictionary *)self->_cellImageCache objectForKey:v10];
+    v13 = viewCopy;
+    v14 = [(NSMutableDictionary *)self->_cellImageCache objectForKey:pathCopy];
     v15 = [v14 objectForKey:@"mediaAsset"];
     if (v15)
     {
@@ -1070,29 +1070,29 @@ LABEL_14:
 
     else
     {
-      v16 = [v9 media];
+      media2 = [shelfCopy media];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __99__PKDiscoveryArticleViewController__configureInlineMediaShelfView_forInlineMediaShelf_atIndexPath___block_invoke;
       v17[3] = &unk_1E8010A38;
       v18 = v13;
-      [(PKDiscoveryArticleViewController *)self _loadMedia:v16 forShelfViewAtIndexPath:v10 withCellImageCacheKey:@"mediaAsset" completion:v17];
+      [(PKDiscoveryArticleViewController *)self _loadMedia:media2 forShelfViewAtIndexPath:pathCopy withCellImageCacheKey:@"mediaAsset" completion:v17];
     }
   }
 }
 
-- (void)_configureCallToActionShelfView:(id)a3 forCallToActionShelf:(id)a4 atIndexPath:(id)a5
+- (void)_configureCallToActionShelfView:(id)view forCallToActionShelf:(id)shelf atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
+  viewCopy = view;
+  pathCopy = path;
   cellImageCache = self->_cellImageCache;
-  v11 = a4;
-  v12 = [(NSMutableDictionary *)cellImageCache objectForKey:v9];
-  v13 = [v11 callToAction];
+  shelfCopy = shelf;
+  v12 = [(NSMutableDictionary *)cellImageCache objectForKey:pathCopy];
+  callToAction = [shelfCopy callToAction];
 
-  v14 = [v13 icon];
+  icon = [callToAction icon];
 
-  if (!v14)
+  if (!icon)
   {
     v16 = [v12 objectForKey:@"wordmarkAsset"];
     if (v16)
@@ -1101,13 +1101,13 @@ LABEL_14:
     }
 
 LABEL_8:
-    v18 = [v13 wordmarkAsset];
+    wordmarkAsset = [callToAction wordmarkAsset];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __101__PKDiscoveryArticleViewController__configureCallToActionShelfView_forCallToActionShelf_atIndexPath___block_invoke_2;
     v19[3] = &unk_1E8010A38;
-    v20 = v8;
-    [(PKDiscoveryArticleViewController *)self _loadMedia:v18 forShelfViewAtIndexPath:v9 withCellImageCacheKey:@"wordmarkAsset" completion:v19];
+    v20 = viewCopy;
+    [(PKDiscoveryArticleViewController *)self _loadMedia:wordmarkAsset forShelfViewAtIndexPath:pathCopy withCellImageCacheKey:@"wordmarkAsset" completion:v19];
 
     goto LABEL_9;
   }
@@ -1116,13 +1116,13 @@ LABEL_8:
   v16 = [v12 objectForKey:@"wordmarkAsset"];
   if (!v15)
   {
-    v17 = [v13 icon];
+    icon2 = [callToAction icon];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __101__PKDiscoveryArticleViewController__configureCallToActionShelfView_forCallToActionShelf_atIndexPath___block_invoke;
     v21[3] = &unk_1E8010A38;
-    v22 = v8;
-    [(PKDiscoveryArticleViewController *)self _loadMedia:v17 forShelfViewAtIndexPath:v9 withCellImageCacheKey:@"mediaAsset" completion:v21];
+    v22 = viewCopy;
+    [(PKDiscoveryArticleViewController *)self _loadMedia:icon2 forShelfViewAtIndexPath:pathCopy withCellImageCacheKey:@"mediaAsset" completion:v21];
 
     if (v16)
     {
@@ -1132,7 +1132,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  [v8 setImage:v15 animated:0];
+  [viewCopy setImage:v15 animated:0];
 
   if (!v16)
   {
@@ -1140,57 +1140,57 @@ LABEL_8:
   }
 
 LABEL_6:
-  [v8 setWordmarkAsset:v16 animated:0];
+  [viewCopy setWordmarkAsset:v16 animated:0];
 LABEL_9:
 }
 
-- (void)_loadMedia:(id)a3 forShelfViewAtIndexPath:(id)a4 withCellImageCacheKey:(id)a5 completion:(id)a6
+- (void)_loadMedia:(id)media forShelfViewAtIndexPath:(id)path withCellImageCacheKey:(id)key completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  mediaCopy = media;
+  pathCopy = path;
+  keyCopy = key;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lockDownloads);
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = __Block_byref_object_copy__38;
   v35 = __Block_byref_object_dispose__38;
-  v36 = [(NSMutableDictionary *)self->_imageDownloads objectForKey:v11];
+  v36 = [(NSMutableDictionary *)self->_imageDownloads objectForKey:pathCopy];
   v14 = v32[5];
   if (v14)
   {
-    v15 = [v32[5] objectForKey:v12];
+    v15 = [v32[5] objectForKey:keyCopy];
     if (v15)
     {
-      v16 = _Block_copy(v13);
+      v16 = _Block_copy(completionCopy);
       [v15 addObject:v16];
     }
 
     else
     {
       v21 = objc_alloc(MEMORY[0x1E695DF70]);
-      v22 = _Block_copy(v13);
+      v22 = _Block_copy(completionCopy);
       v15 = [v21 initWithObjects:{v22, 0}];
 
-      [v32[5] setObject:v15 forKey:v12];
+      [v32[5] setObject:v15 forKey:keyCopy];
     }
   }
 
   else
   {
     v17 = objc_alloc(MEMORY[0x1E695DF70]);
-    v18 = _Block_copy(v13);
+    v18 = _Block_copy(completionCopy);
     v15 = [v17 initWithObjects:{v18, 0}];
 
     v19 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:1];
     v20 = v32[5];
     v32[5] = v19;
 
-    [v32[5] setObject:v15 forKey:v12];
+    [v32[5] setObject:v15 forKey:keyCopy];
   }
 
-  [(NSMutableDictionary *)self->_imageDownloads setObject:v32[5] forKey:v11];
+  [(NSMutableDictionary *)self->_imageDownloads setObject:v32[5] forKey:pathCopy];
   os_unfair_lock_unlock(&self->_lockDownloads);
   if (!v14)
   {
@@ -1202,10 +1202,10 @@ LABEL_9:
     v25[2] = __104__PKDiscoveryArticleViewController__loadMedia_forShelfViewAtIndexPath_withCellImageCacheKey_completion___block_invoke;
     v25[3] = &unk_1E801CDB8;
     objc_copyWeak(&v29, &location);
-    v26 = v11;
-    v27 = v12;
+    v26 = pathCopy;
+    v27 = keyCopy;
     v28 = &v31;
-    PKFetchImageForDiscoveryMedia(v10, v23, v24, 0, v25);
+    PKFetchImageForDiscoveryMedia(mediaCopy, v23, v24, 0, v25);
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&location);
@@ -1295,14 +1295,14 @@ void __104__PKDiscoveryArticleViewController__loadMedia_forShelfViewAtIndexPath_
 
 - (BOOL)_hasCardInGalleryView
 {
-  v3 = [(PKDiscoveryArticleViewController *)self presentingViewController];
+  presentingViewController = [(PKDiscoveryArticleViewController *)self presentingViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     articleLayout = self->_articleLayout;
-    v5 = v3;
-    v6 = [(PKDiscoveryArticleLayout *)articleLayout itemIdentifier];
-    v7 = [v5 hasDiscoveryCardWithItemIdentifier:v6];
+    v5 = presentingViewController;
+    itemIdentifier = [(PKDiscoveryArticleLayout *)articleLayout itemIdentifier];
+    v7 = [v5 hasDiscoveryCardWithItemIdentifier:itemIdentifier];
   }
 
   else
@@ -1313,36 +1313,36 @@ void __104__PKDiscoveryArticleViewController__loadMedia_forShelfViewAtIndexPath_
   return v7;
 }
 
-- (void)_dismissForActionCompleted:(BOOL)a3 withRelevantPassUniqueIdentifier:(id)a4
+- (void)_dismissForActionCompleted:(BOOL)completed withRelevantPassUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  v12 = a4;
-  v6 = [(PKDiscoveryArticleViewController *)self presentingViewController];
-  if ([v6 conformsToProtocol:&unk_1F3DC57F0])
+  completedCopy = completed;
+  identifierCopy = identifier;
+  presentingViewController = [(PKDiscoveryArticleViewController *)self presentingViewController];
+  if ([presentingViewController conformsToProtocol:&unk_1F3DC57F0])
   {
-    [v6 dismissDiscoveryArticleViewController:self afterActionCompleted:v4 withRelevantPassUniqueIdenitifer:v12];
-    v7 = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
+    [presentingViewController dismissDiscoveryArticleViewController:self afterActionCompleted:completedCopy withRelevantPassUniqueIdenitifer:identifierCopy];
+    proximityReaderDelegate = [(PKDiscoveryArticleViewController *)self proximityReaderDelegate];
 
-    if (!v7)
+    if (!proximityReaderDelegate)
     {
-      v8 = [MEMORY[0x1E69B87F0] sharedInstance];
-      v9 = [(PKDiscoveryArticleLayout *)self->_articleLayout itemIdentifier];
-      v10 = [(PKDiscoveryArticleLayout *)self->_articleLayout card];
-      v11 = [v10 callToAction];
-      [v8 dismissedDiscoveryItemWithIdentifier:v9 callToAction:objc_msgSend(v11 cardSize:{"action"), self->_cardSize}];
+      mEMORY[0x1E69B87F0] = [MEMORY[0x1E69B87F0] sharedInstance];
+      itemIdentifier = [(PKDiscoveryArticleLayout *)self->_articleLayout itemIdentifier];
+      card = [(PKDiscoveryArticleLayout *)self->_articleLayout card];
+      callToAction = [card callToAction];
+      [mEMORY[0x1E69B87F0] dismissedDiscoveryItemWithIdentifier:itemIdentifier callToAction:objc_msgSend(callToAction cardSize:{"action"), self->_cardSize}];
     }
   }
 
   else
   {
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (void)_dismissButtonPressed
 {
-  v3 = [(PKDiscoveryArticleViewController *)self cardView];
-  [v3 loadAndUploadImageData];
+  cardView = [(PKDiscoveryArticleViewController *)self cardView];
+  [cardView loadAndUploadImageData];
 
   [(PKDiscoveryArticleViewController *)self _dismissForActionCompleted:0 withRelevantPassUniqueIdentifier:0];
 }

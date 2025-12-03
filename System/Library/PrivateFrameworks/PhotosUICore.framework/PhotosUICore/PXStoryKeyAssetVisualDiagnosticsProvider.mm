@@ -1,31 +1,31 @@
 @interface PXStoryKeyAssetVisualDiagnosticsProvider
 - (PXStoryKeyAssetVisualDiagnosticsProvider)init;
-- (PXStoryKeyAssetVisualDiagnosticsProvider)initWithModel:(id)a3;
-- (void)_requestPotentialKeyAssetsWithResultHandler:(id)a3;
-- (void)_requestThumbnailTimelineWithKeyAsset:(id)a3 resultHandler:(id)a4;
-- (void)addVisualDiagnosticsToContext:(id)a3 completionHandler:(id)a4;
+- (PXStoryKeyAssetVisualDiagnosticsProvider)initWithModel:(id)model;
+- (void)_requestPotentialKeyAssetsWithResultHandler:(id)handler;
+- (void)_requestThumbnailTimelineWithKeyAsset:(id)asset resultHandler:(id)handler;
+- (void)addVisualDiagnosticsToContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation PXStoryKeyAssetVisualDiagnosticsProvider
 
-- (void)addVisualDiagnosticsToContext:(id)a3 completionHandler:(id)a4
+- (void)addVisualDiagnosticsToContext:(id)context completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  [v7 addTitlePageWithTitle:@"Visual Diagnostics" subtitle:@"Key Asset"];
-  v9 = [(PXStoryKeyAssetVisualDiagnosticsProvider *)self helper];
+  contextCopy = context;
+  handlerCopy = handler;
+  [contextCopy addTitlePageWithTitle:@"Visual Diagnostics" subtitle:@"Key Asset"];
+  helper = [(PXStoryKeyAssetVisualDiagnosticsProvider *)self helper];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __92__PXStoryKeyAssetVisualDiagnosticsProvider_addVisualDiagnosticsToContext_completionHandler___block_invoke;
   v13[3] = &unk_1E773A108;
   v13[4] = self;
-  v14 = v7;
-  v15 = v9;
-  v16 = v8;
+  v14 = contextCopy;
+  v15 = helper;
+  v16 = handlerCopy;
   v17 = a2;
-  v10 = v9;
-  v11 = v7;
-  v12 = v8;
+  v10 = helper;
+  v11 = contextCopy;
+  v12 = handlerCopy;
   [(PXStoryKeyAssetVisualDiagnosticsProvider *)self _requestPotentialKeyAssetsWithResultHandler:v13];
 }
 
@@ -202,10 +202,10 @@ void __92__PXStoryKeyAssetVisualDiagnosticsProvider_addVisualDiagnosticsToContex
   }
 }
 
-- (void)_requestThumbnailTimelineWithKeyAsset:(id)a3 resultHandler:(id)a4
+- (void)_requestThumbnailTimelineWithKeyAsset:(id)asset resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  handlerCopy = handler;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -215,7 +215,7 @@ void __92__PXStoryKeyAssetVisualDiagnosticsProvider_addVisualDiagnosticsToContex
   aBlock[2] = __96__PXStoryKeyAssetVisualDiagnosticsProvider__requestThumbnailTimelineWithKeyAsset_resultHandler___block_invoke;
   aBlock[3] = &unk_1E7739FF0;
   aBlock[5] = v9;
-  aBlock[4] = v7;
+  aBlock[4] = handlerCopy;
   _Block_copy(aBlock);
   [(PXStoryKeyAssetVisualDiagnosticsProvider *)self model];
   [objc_claimAutoreleasedReturnValue() configuration];
@@ -254,9 +254,9 @@ void __96__PXStoryKeyAssetVisualDiagnosticsProvider__requestThumbnailTimelineWit
   (*(v8 + 16))(v8, 0, v10);
 }
 
-- (void)_requestPotentialKeyAssetsWithResultHandler:(id)a3
+- (void)_requestPotentialKeyAssetsWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
@@ -266,12 +266,12 @@ void __96__PXStoryKeyAssetVisualDiagnosticsProvider__requestThumbnailTimelineWit
   aBlock[2] = __88__PXStoryKeyAssetVisualDiagnosticsProvider__requestPotentialKeyAssetsWithResultHandler___block_invoke;
   aBlock[3] = &unk_1E7739FA0;
   v22 = v23;
-  v5 = v4;
+  v5 = handlerCopy;
   v21 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(PXStoryKeyAssetVisualDiagnosticsProvider *)self model];
-  v8 = [v7 configuration];
-  v9 = [v8 copy];
+  model = [(PXStoryKeyAssetVisualDiagnosticsProvider *)self model];
+  configuration = [model configuration];
+  v9 = [configuration copy];
 
   [v9 setOptions:{objc_msgSend(v9, "options") & 0xFFFFFFFFFFFFFFFDLL}];
   v10 = objc_alloc_init(PXStoryDefaultAssetsProducerFactory);
@@ -350,19 +350,19 @@ void __88__PXStoryKeyAssetVisualDiagnosticsProvider__requestPotentialKeyAssetsWi
   (*(v8 + 16))(v8, 0, v10);
 }
 
-- (PXStoryKeyAssetVisualDiagnosticsProvider)initWithModel:(id)a3
+- (PXStoryKeyAssetVisualDiagnosticsProvider)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v13.receiver = self;
   v13.super_class = PXStoryKeyAssetVisualDiagnosticsProvider;
   v6 = [(PXStoryKeyAssetVisualDiagnosticsProvider *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
     v8 = [PXStoryVisualDiagnosticsProviderHelper alloc];
-    v9 = [(PXStoryModel *)v7->_model configuration];
-    v10 = [(PXStoryVisualDiagnosticsProviderHelper *)v8 initWithConfiguration:v9];
+    configuration = [(PXStoryModel *)v7->_model configuration];
+    v10 = [(PXStoryVisualDiagnosticsProviderHelper *)v8 initWithConfiguration:configuration];
     helper = v7->_helper;
     v7->_helper = v10;
   }
@@ -372,8 +372,8 @@ void __88__PXStoryKeyAssetVisualDiagnosticsProvider__requestPotentialKeyAssetsWi
 
 - (PXStoryKeyAssetVisualDiagnosticsProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryKeyAssetVisualDiagnosticsProvider.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXStoryKeyAssetVisualDiagnosticsProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryKeyAssetVisualDiagnosticsProvider.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXStoryKeyAssetVisualDiagnosticsProvider init]"}];
 
   abort();
 }

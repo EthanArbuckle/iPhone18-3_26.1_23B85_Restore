@@ -1,42 +1,42 @@
 @interface DSEADevice
-+ (id)deviceWithModelNumber:(id)a3;
-+ (id)deviceWithSerialNumber:(id)a3;
-+ (id)devicesWithModelNumbers:(id)a3;
-- (DSEADevice)initWithAccessory:(id)a3;
-- (DSEADevice)initWithModelNumber:(id)a3;
-- (DSEADevice)initWithSerialNumber:(id)a3;
++ (id)deviceWithModelNumber:(id)number;
++ (id)deviceWithSerialNumber:(id)number;
++ (id)devicesWithModelNumbers:(id)numbers;
+- (DSEADevice)initWithAccessory:(id)accessory;
+- (DSEADevice)initWithModelNumber:(id)number;
+- (DSEADevice)initWithSerialNumber:(id)number;
 - (id)information;
 @end
 
 @implementation DSEADevice
 
-+ (id)deviceWithSerialNumber:(id)a3
++ (id)deviceWithSerialNumber:(id)number
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSerialNumber:v4];
+  numberCopy = number;
+  v5 = [[self alloc] initWithSerialNumber:numberCopy];
 
   return v5;
 }
 
-- (DSEADevice)initWithSerialNumber:(id)a3
+- (DSEADevice)initWithSerialNumber:(id)number
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numberCopy = number;
   v22.receiver = self;
   v22.super_class = DSEADevice;
   v5 = [(DSEADevice *)&v22 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
-    v7 = [v6 connectedAccessories];
+    mEMORY[0x277CC5FB0] = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
+    connectedAccessories = [mEMORY[0x277CC5FB0] connectedAccessories];
 
-    if (v7)
+    if (connectedAccessories)
     {
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v8 = v7;
+      v8 = connectedAccessories;
       v9 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
       if (v9)
       {
@@ -52,8 +52,8 @@
             }
 
             v13 = *(*(&v18 + 1) + 8 * i);
-            v14 = [v13 serialNumber];
-            v15 = [v14 isEqualToString:v4];
+            serialNumber = [v13 serialNumber];
+            v15 = [serialNumber isEqualToString:numberCopy];
 
             if (v15)
             {
@@ -86,33 +86,33 @@ LABEL_13:
   return v5;
 }
 
-+ (id)deviceWithModelNumber:(id)a3
++ (id)deviceWithModelNumber:(id)number
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithModelNumber:v4];
+  numberCopy = number;
+  v5 = [[self alloc] initWithModelNumber:numberCopy];
 
   return v5;
 }
 
-- (DSEADevice)initWithModelNumber:(id)a3
+- (DSEADevice)initWithModelNumber:(id)number
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numberCopy = number;
   v22.receiver = self;
   v22.super_class = DSEADevice;
   v5 = [(DSEADevice *)&v22 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
-    v7 = [v6 connectedAccessories];
+    mEMORY[0x277CC5FB0] = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
+    connectedAccessories = [mEMORY[0x277CC5FB0] connectedAccessories];
 
-    if (v7)
+    if (connectedAccessories)
     {
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v8 = v7;
+      v8 = connectedAccessories;
       v9 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
       if (v9)
       {
@@ -128,8 +128,8 @@ LABEL_13:
             }
 
             v13 = *(*(&v18 + 1) + 8 * i);
-            v14 = [v13 modelNumber];
-            v15 = [v14 isEqualToString:v4];
+            modelNumber = [v13 modelNumber];
+            v15 = [modelNumber isEqualToString:numberCopy];
 
             if (v15)
             {
@@ -162,22 +162,22 @@ LABEL_13:
   return v5;
 }
 
-+ (id)devicesWithModelNumbers:(id)a3
++ (id)devicesWithModelNumbers:(id)numbers
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  numbersCopy = numbers;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
-  v6 = [v5 connectedAccessories];
+  mEMORY[0x277CC5FB0] = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
+  connectedAccessories = [mEMORY[0x277CC5FB0] connectedAccessories];
 
-  if (v6)
+  if (connectedAccessories)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v19 = v6;
-    v7 = v6;
+    v19 = connectedAccessories;
+    v7 = connectedAccessories;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
@@ -193,8 +193,8 @@ LABEL_13:
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [v12 modelNumber];
-          v14 = [v3 containsObject:v13];
+          modelNumber = [v12 modelNumber];
+          v14 = [numbersCopy containsObject:modelNumber];
 
           if (v14)
           {
@@ -212,7 +212,7 @@ LABEL_13:
       while (v9);
     }
 
-    v6 = v19;
+    connectedAccessories = v19;
   }
 
   v16 = [v4 copy];
@@ -222,18 +222,18 @@ LABEL_13:
   return v16;
 }
 
-- (DSEADevice)initWithAccessory:(id)a3
+- (DSEADevice)initWithAccessory:(id)accessory
 {
-  v5 = a3;
+  accessoryCopy = accessory;
   v9.receiver = self;
   v9.super_class = DSEADevice;
   v6 = [(DSEADevice *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (accessoryCopy)
     {
-      objc_storeStrong(&v6->_device, a3);
+      objc_storeStrong(&v6->_device, accessory);
     }
 
     else
@@ -251,86 +251,86 @@ LABEL_13:
   v36[8] = *MEMORY[0x277D85DE8];
   v35[0] = @"capabilities";
   v3 = MEMORY[0x277CCABB0];
-  v34 = [(DSEADevice *)self device];
-  v33 = [v3 numberWithUnsignedInt:{objc_msgSend(v34, "accessoryCapabilities")}];
+  device = [(DSEADevice *)self device];
+  v33 = [v3 numberWithUnsignedInt:{objc_msgSend(device, "accessoryCapabilities")}];
   v36[0] = v33;
   v35[1] = @"firmwareRevision";
-  v32 = [(DSEADevice *)self device];
-  v4 = [v32 firmwareRevision];
-  v31 = v4;
-  if (!v4)
+  device2 = [(DSEADevice *)self device];
+  firmwareRevision = [device2 firmwareRevision];
+  v31 = firmwareRevision;
+  if (!firmwareRevision)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    firmwareRevision = [MEMORY[0x277CBEB68] null];
   }
 
-  v25 = v4;
-  v36[1] = v4;
+  v25 = firmwareRevision;
+  v36[1] = firmwareRevision;
   v35[2] = @"hardwareRevision";
-  v30 = [(DSEADevice *)self device];
-  v5 = [v30 hardwareRevision];
-  v6 = v5;
-  if (!v5)
+  device3 = [(DSEADevice *)self device];
+  hardwareRevision = [device3 hardwareRevision];
+  v6 = hardwareRevision;
+  if (!hardwareRevision)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    hardwareRevision = [MEMORY[0x277CBEB68] null];
   }
 
-  v24 = v5;
-  v36[2] = v5;
+  v24 = hardwareRevision;
+  v36[2] = hardwareRevision;
   v35[3] = @"MACAddress";
-  v28 = [(DSEADevice *)self device];
-  v7 = [v28 macAddress];
-  v8 = v7;
-  if (!v7)
+  device4 = [(DSEADevice *)self device];
+  macAddress = [device4 macAddress];
+  v8 = macAddress;
+  if (!macAddress)
   {
-    v7 = [MEMORY[0x277CBEB68] null];
+    macAddress = [MEMORY[0x277CBEB68] null];
   }
 
   v29 = v6;
-  v23 = v7;
-  v36[3] = v7;
+  v23 = macAddress;
+  v36[3] = macAddress;
   v35[4] = @"modelNumber";
-  v27 = [(DSEADevice *)self device];
-  v9 = [v27 modelNumber];
-  v10 = v9;
-  if (!v9)
+  device5 = [(DSEADevice *)self device];
+  modelNumber = [device5 modelNumber];
+  v10 = modelNumber;
+  if (!modelNumber)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    modelNumber = [MEMORY[0x277CBEB68] null];
   }
 
-  v22 = v9;
-  v36[4] = v9;
+  v22 = modelNumber;
+  v36[4] = modelNumber;
   v35[5] = @"name";
-  v11 = [(DSEADevice *)self device];
-  v12 = [v11 name];
-  v13 = v12;
-  if (!v12)
+  device6 = [(DSEADevice *)self device];
+  name = [device6 name];
+  null = name;
+  if (!name)
   {
-    v13 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v36[5] = v13;
+  v36[5] = null;
   v35[6] = @"serialNumber";
-  v14 = [(DSEADevice *)self device];
-  v15 = [v14 serialNumber];
-  v16 = v15;
-  if (!v15)
+  device7 = [(DSEADevice *)self device];
+  serialNumber = [device7 serialNumber];
+  null2 = serialNumber;
+  if (!serialNumber)
   {
-    v16 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v36[6] = v16;
+  v36[6] = null2;
   v35[7] = @"connectionID";
   v17 = MEMORY[0x277CCABB0];
-  v18 = [(DSEADevice *)self device];
-  v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(v18, "connectionID")}];
+  device8 = [(DSEADevice *)self device];
+  v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(device8, "connectionID")}];
   v36[7] = v19;
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:8];
 
-  if (!v15)
+  if (!serialNumber)
   {
   }
 
-  if (!v12)
+  if (!name)
   {
   }
 

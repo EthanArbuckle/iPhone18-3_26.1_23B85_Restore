@@ -1,14 +1,14 @@
 @interface CAMVideoPreviewView
 - (BOOL)previewViewWindowIsFullScreen;
-- (CAMVideoPreviewView)initWithFrame:(CGRect)a3;
+- (CAMVideoPreviewView)initWithFrame:(CGRect)frame;
 - (int64_t)_modeForCurrentWindowSize;
 - (void)_updateAspectModeForSublayers;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setPreviewViewAspectMode:(int64_t)a3;
-- (void)setPreviewViewAspectModeWindowed:(int64_t)a3;
-- (void)setSquare:(BOOL)a3 animated:(BOOL)a4;
-- (void)setVideoPreviewLayer:(id)a3;
+- (void)setPreviewViewAspectMode:(int64_t)mode;
+- (void)setPreviewViewAspectModeWindowed:(int64_t)windowed;
+- (void)setSquare:(BOOL)square animated:(BOOL)animated;
+- (void)setVideoPreviewLayer:(id)layer;
 @end
 
 @implementation CAMVideoPreviewView
@@ -18,8 +18,8 @@
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   v4 = [CAMCaptureConversions previewLayerVideoGravityForPreviewViewAspectMode:[(CAMVideoPreviewView *)self _modeForCurrentWindowSize]];
-  v3 = [(CAMVideoPreviewView *)self videoPreviewLayer];
-  [v3 setVideoGravity:v4];
+  videoPreviewLayer = [(CAMVideoPreviewView *)self videoPreviewLayer];
+  [videoPreviewLayer setVideoGravity:v4];
   [MEMORY[0x1E6979518] commit];
 }
 
@@ -38,11 +38,11 @@
   [v4 commit];
 }
 
-- (CAMVideoPreviewView)initWithFrame:(CGRect)a3
+- (CAMVideoPreviewView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CAMVideoPreviewView;
-  v3 = [(CAMVideoPreviewView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMVideoPreviewView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -61,10 +61,10 @@
 
 - (void)dealloc
 {
-  v3 = [(UIView *)self->_previewLayerView layer];
-  v4 = [(AVCaptureVideoPreviewLayer *)self->_videoPreviewLayer superlayer];
+  layer = [(UIView *)self->_previewLayerView layer];
+  superlayer = [(AVCaptureVideoPreviewLayer *)self->_videoPreviewLayer superlayer];
 
-  if (v3 == v4)
+  if (layer == superlayer)
   {
     [(AVCaptureVideoPreviewLayer *)self->_videoPreviewLayer removeFromSuperlayer];
   }
@@ -74,12 +74,12 @@
   [(CAMVideoPreviewView *)&v5 dealloc];
 }
 
-- (void)setSquare:(BOOL)a3 animated:(BOOL)a4
+- (void)setSquare:(BOOL)square animated:(BOOL)animated
 {
-  if (self->_square != a3)
+  if (self->_square != square)
   {
-    self->_square = a3;
-    if (a4)
+    self->_square = square;
+    if (animated)
     {
       [(CAMVideoPreviewView *)self _frameForSubviewsAccountForSquare:1];
       v6 = v5;
@@ -88,8 +88,8 @@
       v12 = v11;
       v13 = *MEMORY[0x1E695EFF8];
       v14 = *(MEMORY[0x1E695EFF8] + 8);
-      v15 = [(UIView *)self->_previewLayerView layer];
-      [CAMAnimationHelper animateLayer:v15 toFrame:1 fromCurrentState:v6, v8, v10, v12];
+      layer = [(UIView *)self->_previewLayerView layer];
+      [CAMAnimationHelper animateLayer:layer toFrame:1 fromCurrentState:v6, v8, v10, v12];
 
       videoPreviewLayer = self->_videoPreviewLayer;
 
@@ -104,57 +104,57 @@
   }
 }
 
-- (void)setVideoPreviewLayer:(id)a3
+- (void)setVideoPreviewLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   videoPreviewLayer = self->_videoPreviewLayer;
-  if (videoPreviewLayer != v5)
+  if (videoPreviewLayer != layerCopy)
   {
-    v9 = v5;
+    v9 = layerCopy;
     [(AVCaptureVideoPreviewLayer *)videoPreviewLayer removeFromSuperlayer];
-    objc_storeStrong(&self->_videoPreviewLayer, a3);
+    objc_storeStrong(&self->_videoPreviewLayer, layer);
     v7 = self->_videoPreviewLayer;
     [(UIView *)self->_previewLayerView bounds];
     [(AVCaptureVideoPreviewLayer *)v7 setFrame:?];
-    v8 = [(UIView *)self->_previewLayerView layer];
-    [v8 addSublayer:self->_videoPreviewLayer];
+    layer = [(UIView *)self->_previewLayerView layer];
+    [layer addSublayer:self->_videoPreviewLayer];
 
     [(CAMVideoPreviewView *)self _updateAspectModeForSublayers];
     videoPreviewLayer = [(CAMVideoPreviewView *)self setNeedsLayout];
-    v5 = v9;
+    layerCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](videoPreviewLayer, v5);
+  MEMORY[0x1EEE66BB8](videoPreviewLayer, layerCopy);
 }
 
-- (void)setPreviewViewAspectMode:(int64_t)a3
+- (void)setPreviewViewAspectMode:(int64_t)mode
 {
-  if (self->_previewViewAspectMode != a3)
+  if (self->_previewViewAspectMode != mode)
   {
-    self->_previewViewAspectMode = a3;
+    self->_previewViewAspectMode = mode;
     [(CAMVideoPreviewView *)self _updateAspectModeForSublayers];
   }
 }
 
-- (void)setPreviewViewAspectModeWindowed:(int64_t)a3
+- (void)setPreviewViewAspectModeWindowed:(int64_t)windowed
 {
-  if (self->_previewViewAspectModeWindowed != a3)
+  if (self->_previewViewAspectModeWindowed != windowed)
   {
-    self->_previewViewAspectModeWindowed = a3;
+    self->_previewViewAspectModeWindowed = windowed;
     [(CAMVideoPreviewView *)self _updateAspectModeForSublayers];
   }
 }
 
 - (BOOL)previewViewWindowIsFullScreen
 {
-  v3 = [(CAMVideoPreviewView *)self window];
-  v4 = [v3 screen];
-  [v4 bounds];
+  window = [(CAMVideoPreviewView *)self window];
+  screen = [window screen];
+  [screen bounds];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(CAMVideoPreviewView *)self window];
-  [v9 bounds];
+  window2 = [(CAMVideoPreviewView *)self window];
+  [window2 bounds];
   v11 = v10;
   v13 = v12;
 

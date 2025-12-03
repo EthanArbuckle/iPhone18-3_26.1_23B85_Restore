@@ -1,28 +1,28 @@
 @interface GRPSchemaGroupedMessagesServerEvent
-- (BOOL)isEqual:(id)a3;
-- (GRPSchemaGroupedMessagesServerEvent)initWithDictionary:(id)a3;
-- (GRPSchemaGroupedMessagesServerEvent)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GRPSchemaGroupedMessagesServerEvent)initWithDictionary:(id)dictionary;
+- (GRPSchemaGroupedMessagesServerEvent)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addAnyEvents:(id)a3;
-- (void)addOrderedAnyEvents:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAnyEvents:(id)events;
+- (void)addOrderedAnyEvents:(id)events;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GRPSchemaGroupedMessagesServerEvent
 
-- (GRPSchemaGroupedMessagesServerEvent)initWithDictionary:(id)a3
+- (GRPSchemaGroupedMessagesServerEvent)initWithDictionary:(id)dictionary
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = GRPSchemaGroupedMessagesServerEvent;
   v5 = [(GRPSchemaGroupedMessagesServerEvent *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"anyEvents"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"anyEvents"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"orderedAnyEvents"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"orderedAnyEvents"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,30 +117,30 @@
   return v5;
 }
 
-- (GRPSchemaGroupedMessagesServerEvent)initWithJSON:(id)a3
+- (GRPSchemaGroupedMessagesServerEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GRPSchemaGroupedMessagesServerEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GRPSchemaGroupedMessagesServerEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GRPSchemaGroupedMessagesServerEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -154,10 +154,10 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_anyEvents count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -177,16 +177,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -196,12 +196,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"anyEvents"];
+    [dictionary setObject:array forKeyedSubscript:@"anyEvents"];
   }
 
   if ([(NSArray *)self->_orderedAnyEvents count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -221,16 +221,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -240,36 +240,36 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"orderedAnyEvents"];
+    [dictionary setObject:array2 forKeyedSubscript:@"orderedAnyEvents"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v21];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v21];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(GRPSchemaGroupedMessagesServerEvent *)self anyEvents];
-  v6 = [v4 anyEvents];
-  if ((v5 != 0) == (v6 == 0))
+  anyEvents = [(GRPSchemaGroupedMessagesServerEvent *)self anyEvents];
+  anyEvents2 = [equalCopy anyEvents];
+  if ((anyEvents != 0) == (anyEvents2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(GRPSchemaGroupedMessagesServerEvent *)self anyEvents];
-  if (v7)
+  anyEvents3 = [(GRPSchemaGroupedMessagesServerEvent *)self anyEvents];
+  if (anyEvents3)
   {
-    v8 = v7;
-    v9 = [(GRPSchemaGroupedMessagesServerEvent *)self anyEvents];
-    v10 = [v4 anyEvents];
-    v11 = [v9 isEqual:v10];
+    v8 = anyEvents3;
+    anyEvents4 = [(GRPSchemaGroupedMessagesServerEvent *)self anyEvents];
+    anyEvents5 = [equalCopy anyEvents];
+    v11 = [anyEvents4 isEqual:anyEvents5];
 
     if (!v11)
     {
@@ -281,12 +281,12 @@
   {
   }
 
-  v5 = [(GRPSchemaGroupedMessagesServerEvent *)self orderedAnyEvents];
-  v6 = [v4 orderedAnyEvents];
-  if ((v5 != 0) != (v6 == 0))
+  anyEvents = [(GRPSchemaGroupedMessagesServerEvent *)self orderedAnyEvents];
+  anyEvents2 = [equalCopy orderedAnyEvents];
+  if ((anyEvents != 0) != (anyEvents2 == 0))
   {
-    v12 = [(GRPSchemaGroupedMessagesServerEvent *)self orderedAnyEvents];
-    if (!v12)
+    orderedAnyEvents = [(GRPSchemaGroupedMessagesServerEvent *)self orderedAnyEvents];
+    if (!orderedAnyEvents)
     {
 
 LABEL_15:
@@ -294,10 +294,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(GRPSchemaGroupedMessagesServerEvent *)self orderedAnyEvents];
-    v15 = [v4 orderedAnyEvents];
-    v16 = [v14 isEqual:v15];
+    v13 = orderedAnyEvents;
+    orderedAnyEvents2 = [(GRPSchemaGroupedMessagesServerEvent *)self orderedAnyEvents];
+    orderedAnyEvents3 = [equalCopy orderedAnyEvents];
+    v16 = [orderedAnyEvents2 isEqual:orderedAnyEvents3];
 
     if (v16)
     {
@@ -317,10 +317,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -384,54 +384,54 @@ LABEL_13:
   }
 }
 
-- (void)addOrderedAnyEvents:(id)a3
+- (void)addOrderedAnyEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   orderedAnyEvents = self->_orderedAnyEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!orderedAnyEvents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_orderedAnyEvents;
-    self->_orderedAnyEvents = v6;
+    self->_orderedAnyEvents = array;
 
-    v4 = v8;
+    eventsCopy = v8;
     orderedAnyEvents = self->_orderedAnyEvents;
   }
 
-  [(NSArray *)orderedAnyEvents addObject:v4];
+  [(NSArray *)orderedAnyEvents addObject:eventsCopy];
 }
 
-- (void)addAnyEvents:(id)a3
+- (void)addAnyEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   anyEvents = self->_anyEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!anyEvents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_anyEvents;
-    self->_anyEvents = v6;
+    self->_anyEvents = array;
 
-    v4 = v8;
+    eventsCopy = v8;
     anyEvents = self->_anyEvents;
   }
 
-  [(NSArray *)anyEvents addObject:v4];
+  [(NSArray *)anyEvents addObject:eventsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = GRPSchemaGroupedMessagesServerEvent;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(GRPSchemaGroupedMessagesServerEvent *)self anyEvents:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(GRPSchemaGroupedMessagesServerEvent *)self setAnyEvents:v7];
 
-  v8 = [(GRPSchemaGroupedMessagesServerEvent *)self orderedAnyEvents];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  orderedAnyEvents = [(GRPSchemaGroupedMessagesServerEvent *)self orderedAnyEvents];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:orderedAnyEvents underConditions:policyCopy];
 
   [(GRPSchemaGroupedMessagesServerEvent *)self setOrderedAnyEvents:v9];
 

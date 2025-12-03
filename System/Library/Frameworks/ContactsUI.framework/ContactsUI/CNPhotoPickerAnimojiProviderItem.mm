@@ -1,31 +1,31 @@
 @interface CNPhotoPickerAnimojiProviderItem
 + (id)log;
 - (BOOL)allowsVariants;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)transformForMemojiMetadata;
 - (CGSize)originalImageSize;
-- (CNPhotoPickerAnimojiProviderItem)initWithAvatarRecord:(id)a3 imageProvider:(id)a4 renderingScope:(id)a5 renderingQueue:(id)a6 callbackQueue:(id)a7;
-- (CNPhotoPickerAnimojiProviderItem)initWithOriginalImageData:(id)a3 cropRect:(CGRect)a4;
-- (CNPhotoPickerAnimojiProviderItem)initWithOriginalImageData:(id)a3 cropRect:(CGRect)a4 backgroundColorVariant:(id)a5;
+- (CNPhotoPickerAnimojiProviderItem)initWithAvatarRecord:(id)record imageProvider:(id)provider renderingScope:(id)scope renderingQueue:(id)queue callbackQueue:(id)callbackQueue;
+- (CNPhotoPickerAnimojiProviderItem)initWithOriginalImageData:(id)data cropRect:(CGRect)rect;
+- (CNPhotoPickerAnimojiProviderItem)initWithOriginalImageData:(id)data cropRect:(CGRect)rect backgroundColorVariant:(id)variant;
 - (UIEdgeInsets)edgeInsets;
 - (id)contactImageForMetadataStore;
-- (id)copyWithColor:(id)a3;
-- (id)copyWithPoseConfiguration:(id)a3 generatorProvider:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createVariantsItemsWithVariantsManager:(id)a3;
+- (id)copyWithColor:(id)color;
+- (id)copyWithPoseConfiguration:(id)configuration generatorProvider:(id)provider;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createVariantsItemsWithVariantsManager:(id)manager;
 - (id)generateImageDataIfNeeded;
 - (id)generateThumbnailImageDataIfNeeded;
 - (id)imageData;
 - (id)localizedVariantsTitle;
-- (id)renderAvatarWithBackgroundWithImage:(id)a3;
-- (id)renderAvatarWithBackgroundWithImageData:(id)a3;
-- (id)renderAvatarWithPoseWithSize:(double)a3;
+- (id)renderAvatarWithBackgroundWithImage:(id)image;
+- (id)renderAvatarWithBackgroundWithImageData:(id)data;
+- (id)renderAvatarWithPoseWithSize:(double)size;
 - (id)renderDefaultAvatarImage;
 - (id)variantIdentifier;
 - (unint64_t)hash;
-- (void)applyVariantEffectToFullsizeImageWithCompletion:(id)a3;
+- (void)applyVariantEffectToFullsizeImageWithCompletion:(id)completion;
 - (void)generateAllImageDatasIfNeeded;
-- (void)updateVisualIdentity:(id)a3;
+- (void)updateVisualIdentity:(id)identity;
 @end
 
 @implementation CNPhotoPickerAnimojiProviderItem
@@ -102,23 +102,23 @@ uint64_t __40__CNPhotoPickerAnimojiProviderItem_hash__block_invoke_3(uint64_t a1
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __44__CNPhotoPickerAnimojiProviderItem_isEqual___block_invoke;
   v16[3] = &unk_1E74E7460;
   v16[4] = self;
-  v17 = v4;
+  v17 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __44__CNPhotoPickerAnimojiProviderItem_isEqual___block_invoke_2;
   aBlock[3] = &unk_1E74E7460;
   v6 = v17;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v7 = _Block_copy(aBlock);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -241,56 +241,56 @@ LABEL_7:
 - (id)contactImageForMetadataStore
 {
   v3 = objc_alloc(MEMORY[0x1E695CD88]);
-  v4 = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
+  _originalImageData = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
   [(CNPhotoPickerProviderItem *)self cropRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [MEMORY[0x1E695DF00] date];
-  v14 = [v3 initWithImageData:v4 cropRect:v13 lastUsedDate:{v6, v8, v10, v12}];
+  date = [MEMORY[0x1E695DF00] date];
+  v14 = [v3 initWithImageData:_originalImageData cropRect:date lastUsedDate:{v6, v8, v10, v12}];
 
   [v14 setSource:3];
-  v15 = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
-  v16 = [v15 colorName];
-  [v14 setVariant:v16];
+  backgroundColorVariant = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
+  colorName = [backgroundColorVariant colorName];
+  [v14 setVariant:colorName];
 
-  v17 = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
-  v18 = [v17 identifier];
-  [v14 setSourceIdentifier:v18];
+  avatarRecord = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
+  identifier = [avatarRecord identifier];
+  [v14 setSourceIdentifier:identifier];
 
   v19 = MEMORY[0x1E695CF08];
-  v20 = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
-  v21 = [v19 dataForPoseConfiguration:v20];
+  poseConfiguration = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
+  v21 = [v19 dataForPoseConfiguration:poseConfiguration];
   [v14 setPoseConfigurationData:v21];
 
   return v14;
 }
 
-- (id)createVariantsItemsWithVariantsManager:(id)a3
+- (id)createVariantsItemsWithVariantsManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
+  managerCopy = manager;
+  _originalImageData = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
 
-  if (v5)
+  if (_originalImageData)
   {
-    v6 = [v4 avatarBackgrounds];
+    avatarBackgrounds = [managerCopy avatarBackgrounds];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __75__CNPhotoPickerAnimojiProviderItem_createVariantsItemsWithVariantsManager___block_invoke_2;
     v14[3] = &unk_1E74E57A8;
     v14[4] = self;
-    v7 = [v6 _cn_map:v14];
+    v7 = [avatarBackgrounds _cn_map:v14];
   }
 
   else
   {
     v8 = [CNAvatarStickerGeneratorProvider alloc];
-    v9 = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
-    v10 = [(CNAvatarStickerGeneratorProvider *)v8 initWithAvatarRecord:v9];
+    avatarRecord = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
+    v10 = [(CNAvatarStickerGeneratorProvider *)v8 initWithAvatarRecord:avatarRecord];
 
-    v11 = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
-    v6 = [CNPhotoPickerVariantsManager avatarPoseConfigurationsForAvatarRecord:v11];
+    avatarRecord2 = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
+    avatarBackgrounds = [CNPhotoPickerVariantsManager avatarPoseConfigurationsForAvatarRecord:avatarRecord2];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -299,7 +299,7 @@ LABEL_7:
     v15[4] = self;
     v16 = v10;
     v12 = v10;
-    v7 = [v6 _cn_map:v15];
+    v7 = [avatarBackgrounds _cn_map:v15];
   }
 
   return v7;
@@ -319,19 +319,19 @@ id __75__CNPhotoPickerAnimojiProviderItem_createVariantsItemsWithVariantsManager
   return v2;
 }
 
-- (void)applyVariantEffectToFullsizeImageWithCompletion:(id)a3
+- (void)applyVariantEffectToFullsizeImageWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(CNPhotoPickerProviderItem *)self setThumbnailImageData:0];
-  v5 = [(CNPhotoPickerProviderItem *)self renderingQueue];
+  renderingQueue = [(CNPhotoPickerProviderItem *)self renderingQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __84__CNPhotoPickerAnimojiProviderItem_applyVariantEffectToFullsizeImageWithCompletion___block_invoke;
   v7[3] = &unk_1E74E6DD0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [renderingQueue performBlock:v7];
 }
 
 void __84__CNPhotoPickerAnimojiProviderItem_applyVariantEffectToFullsizeImageWithCompletion___block_invoke(uint64_t a1)
@@ -348,45 +348,45 @@ void __84__CNPhotoPickerAnimojiProviderItem_applyVariantEffectToFullsizeImageWit
 
 - (id)generateThumbnailImageDataIfNeeded
 {
-  v3 = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
-  if (v3)
+  _originalImageData = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
+  if (_originalImageData)
   {
   }
 
   else
   {
-    v6 = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
+    poseConfiguration = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
 
-    if (v6)
+    if (poseConfiguration)
     {
-      v5 = [(CNPhotoPickerAnimojiProviderItem *)self renderAvatarWithPoseWithSize:120.0];
+      thumbnailImageData2 = [(CNPhotoPickerAnimojiProviderItem *)self renderAvatarWithPoseWithSize:120.0];
       goto LABEL_8;
     }
   }
 
-  v4 = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
+  thumbnailImageData = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
 
-  if (v4)
+  if (thumbnailImageData)
   {
-    v5 = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
+    thumbnailImageData2 = [(CNPhotoPickerProviderItem *)self thumbnailImageData];
   }
 
   else
   {
-    v7 = [(CNPhotoPickerAnimojiProviderItem *)self generateImageDataIfNeeded];
+    generateImageDataIfNeeded = [(CNPhotoPickerAnimojiProviderItem *)self generateImageDataIfNeeded];
     v9.receiver = self;
     v9.super_class = CNPhotoPickerAnimojiProviderItem;
-    v5 = [(CNPhotoPickerProviderItem *)&v9 generateThumbnailImageDataIfNeeded];
+    thumbnailImageData2 = [(CNPhotoPickerProviderItem *)&v9 generateThumbnailImageDataIfNeeded];
   }
 
 LABEL_8:
 
-  return v5;
+  return thumbnailImageData2;
 }
 
 - (void)generateAllImageDatasIfNeeded
 {
-  v3 = [(CNPhotoPickerAnimojiProviderItem *)self generateImageDataIfNeeded];
+  generateImageDataIfNeeded = [(CNPhotoPickerAnimojiProviderItem *)self generateImageDataIfNeeded];
   v4.receiver = self;
   v4.super_class = CNPhotoPickerAnimojiProviderItem;
   [(CNPhotoPickerProviderItem *)&v4 generateAllImageDatasIfNeeded];
@@ -394,77 +394,77 @@ LABEL_8:
 
 - (id)generateImageDataIfNeeded
 {
-  v3 = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
+  imageData = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
 
-  if (v3)
+  if (imageData)
   {
-    v4 = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
+    imageData2 = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
     goto LABEL_12;
   }
 
-  v5 = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
+  _originalImageData = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
 
-  if (v5)
+  if (_originalImageData)
   {
-    v6 = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
+    backgroundColorVariant = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
 
-    v4 = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
-    if (v6)
+    imageData2 = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
+    if (backgroundColorVariant)
     {
-      v7 = [(CNPhotoPickerAnimojiProviderItem *)self renderAvatarWithBackgroundWithImageData:v4];
+      v7 = [(CNPhotoPickerAnimojiProviderItem *)self renderAvatarWithBackgroundWithImageData:imageData2];
 
-      v4 = v7;
+      imageData2 = v7;
     }
 
     goto LABEL_11;
   }
 
-  v8 = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
+  poseConfiguration = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
 
-  if (v8)
+  if (poseConfiguration)
   {
-    v9 = [(CNPhotoPickerAnimojiProviderItem *)self renderAvatarWithPoseWithSize:420.0];
+    renderDefaultAvatarImage = [(CNPhotoPickerAnimojiProviderItem *)self renderAvatarWithPoseWithSize:420.0];
 LABEL_10:
-    v4 = v9;
+    imageData2 = renderDefaultAvatarImage;
     goto LABEL_11;
   }
 
-  v4 = [(CNPhotoPickerAnimojiProviderItem *)self imageProvider];
+  imageData2 = [(CNPhotoPickerAnimojiProviderItem *)self imageProvider];
 
-  if (v4)
+  if (imageData2)
   {
-    v9 = [(CNPhotoPickerAnimojiProviderItem *)self renderDefaultAvatarImage];
+    renderDefaultAvatarImage = [(CNPhotoPickerAnimojiProviderItem *)self renderDefaultAvatarImage];
     goto LABEL_10;
   }
 
 LABEL_11:
-  [(CNPhotoPickerAnimojiProviderItem *)self set_generatedImageData:v4];
+  [(CNPhotoPickerAnimojiProviderItem *)self set_generatedImageData:imageData2];
 LABEL_12:
 
-  return v4;
+  return imageData2;
 }
 
-- (id)renderAvatarWithBackgroundWithImage:(id)a3
+- (id)renderAvatarWithBackgroundWithImage:(id)image
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
-  v6 = [v5 color];
-  v7 = [CNPhotoPickerVariantsManager colorGradientBackground:v6];
+  imageCopy = image;
+  backgroundColorVariant = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
+  color = [backgroundColorVariant color];
+  v7 = [CNPhotoPickerVariantsManager colorGradientBackground:color];
 
   v8 = objc_opt_new();
-  [v4 scale];
+  [imageCopy scale];
   [v8 setScale:?];
   [v8 setOpaque:0];
   v9 = objc_alloc(MEMORY[0x1E69DCA78]);
-  [v4 size];
+  [imageCopy size];
   v10 = [v9 initWithSize:v8 format:?];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __72__CNPhotoPickerAnimojiProviderItem_renderAvatarWithBackgroundWithImage___block_invoke;
   v16[3] = &unk_1E74E5758;
   v17 = v7;
-  v18 = v4;
-  v11 = v4;
+  v18 = imageCopy;
+  v11 = imageCopy;
   v12 = v7;
   v13 = [v10 imageWithActions:v16];
   v14 = UIImagePNGRepresentation(v13);
@@ -487,9 +487,9 @@ void __72__CNPhotoPickerAnimojiProviderItem_renderAvatarWithBackgroundWithImage_
   [v6 drawInRect:?];
 }
 
-- (id)renderAvatarWithBackgroundWithImageData:(id)a3
+- (id)renderAvatarWithBackgroundWithImageData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = [MEMORY[0x1E69DCAB8] cnui_imageWithDataPreservingScale:?];
     v5 = [(CNPhotoPickerAnimojiProviderItem *)self renderAvatarWithBackgroundWithImage:v4];
@@ -503,7 +503,7 @@ void __72__CNPhotoPickerAnimojiProviderItem_renderAvatarWithBackgroundWithImage_
   return v5;
 }
 
-- (id)renderAvatarWithPoseWithSize:(double)a3
+- (id)renderAvatarWithPoseWithSize:(double)size
 {
   v22 = 0;
   v23 = &v22;
@@ -511,27 +511,27 @@ void __72__CNPhotoPickerAnimojiProviderItem_renderAvatarWithBackgroundWithImage_
   v25 = __Block_byref_object_copy__51025;
   v26 = __Block_byref_object_dispose__51026;
   v27 = 0;
-  v5 = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
+  poseConfiguration = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
 
-  if (v5)
+  if (poseConfiguration)
   {
-    v6 = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
-    [v6 loadIfNeeded];
+    poseConfiguration2 = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
+    [poseConfiguration2 loadIfNeeded];
 
-    v7 = [(CNPhotoPickerAnimojiProviderItem *)self stickerGeneratorProvider];
+    stickerGeneratorProvider = [(CNPhotoPickerAnimojiProviderItem *)self stickerGeneratorProvider];
 
-    if (!v7)
+    if (!stickerGeneratorProvider)
     {
       v8 = [CNAvatarStickerGeneratorProvider alloc];
-      v9 = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
-      v10 = [(CNAvatarStickerGeneratorProvider *)v8 initWithAvatarRecord:v9];
+      avatarRecord = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
+      v10 = [(CNAvatarStickerGeneratorProvider *)v8 initWithAvatarRecord:avatarRecord];
       [(CNPhotoPickerAnimojiProviderItem *)self setStickerGeneratorProvider:v10];
     }
 
-    v11 = [(CNPhotoPickerAnimojiProviderItem *)self stickerGeneratorProvider];
-    v12 = [v11 generator];
+    stickerGeneratorProvider2 = [(CNPhotoPickerAnimojiProviderItem *)self stickerGeneratorProvider];
+    generator = [stickerGeneratorProvider2 generator];
 
-    [v12 setAsync:0];
+    [generator setAsync:0];
     v29 = 0;
     v30 = &v29;
     v31 = 0x2050000000;
@@ -552,18 +552,18 @@ void __72__CNPhotoPickerAnimojiProviderItem_renderAvatarWithBackgroundWithImage_
     _Block_object_dispose(&v29, 8);
     v15 = objc_alloc_init(v13);
     [v15 setCorrectClipping:1];
-    v16 = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
-    [v16 size];
-    [v15 setSizeMultiplier:a3 / v17];
+    poseConfiguration3 = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
+    [poseConfiguration3 size];
+    [v15 setSizeMultiplier:size / v17];
 
-    v18 = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
+    poseConfiguration4 = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __65__CNPhotoPickerAnimojiProviderItem_renderAvatarWithPoseWithSize___block_invoke;
     v21[3] = &unk_1E74E5730;
     v21[4] = self;
     v21[5] = &v22;
-    [v12 stickerImageWithConfiguration:v18 options:v15 completionHandler:v21];
+    [generator stickerImageWithConfiguration:poseConfiguration4 options:v15 completionHandler:v21];
 
     [(CNPhotoPickerAnimojiProviderItem *)self setStickerGeneratorProvider:0];
     v19 = v23[5];
@@ -600,14 +600,14 @@ void __65__CNPhotoPickerAnimojiProviderItem_renderAvatarWithPoseWithSize___block
 
 - (id)renderDefaultAvatarImage
 {
-  v3 = [(CNPhotoPickerAnimojiProviderItem *)self imageProvider];
+  imageProvider = [(CNPhotoPickerAnimojiProviderItem *)self imageProvider];
 
-  if (v3)
+  if (imageProvider)
   {
-    v4 = [(CNPhotoPickerAnimojiProviderItem *)self imageProvider];
-    v5 = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
-    v6 = [(CNPhotoPickerAnimojiProviderItem *)self renderingScope];
-    v7 = [v4 imageForRecord:v5 scope:v6];
+    imageProvider2 = [(CNPhotoPickerAnimojiProviderItem *)self imageProvider];
+    avatarRecord = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
+    renderingScope = [(CNPhotoPickerAnimojiProviderItem *)self renderingScope];
+    v7 = [imageProvider2 imageForRecord:avatarRecord scope:renderingScope];
 
     v8 = UIImagePNGRepresentation(v7);
   }
@@ -622,38 +622,38 @@ void __65__CNPhotoPickerAnimojiProviderItem_renderAvatarWithPoseWithSize___block
 
 - (id)variantIdentifier
 {
-  v2 = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
-  v3 = [v2 colorName];
+  backgroundColorVariant = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
+  colorName = [backgroundColorVariant colorName];
 
-  return v3;
+  return colorName;
 }
 
-- (id)copyWithPoseConfiguration:(id)a3 generatorProvider:(id)a4
+- (id)copyWithPoseConfiguration:(id)configuration generatorProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  configurationCopy = configuration;
   v8 = [CNPhotoPickerAnimojiProviderItem alloc];
-  v9 = [(CNPhotoPickerProviderItem *)self renderingQueue];
-  v10 = [(CNPhotoPickerProviderItem *)self callbackQueue];
-  v11 = [(CNPhotoPickerProviderItem *)v8 initWithImageData:0 thumbnailImageData:0 fullscreenImageData:0 imageFilterName:0 cropRect:v9 renderingQueue:v10 callbackQueue:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  renderingQueue = [(CNPhotoPickerProviderItem *)self renderingQueue];
+  callbackQueue = [(CNPhotoPickerProviderItem *)self callbackQueue];
+  v11 = [(CNPhotoPickerProviderItem *)v8 initWithImageData:0 thumbnailImageData:0 fullscreenImageData:0 imageFilterName:0 cropRect:renderingQueue renderingQueue:callbackQueue callbackQueue:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   [(CNPhotoPickerAnimojiProviderItem *)self originalImageSize];
   [(CNPhotoPickerAnimojiProviderItem *)v11 setOriginalImageSize:?];
   [(CNPhotoPickerAnimojiProviderItem *)self edgeInsets];
   [(CNPhotoPickerAnimojiProviderItem *)v11 setEdgeInsets:?];
-  v12 = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
-  [(CNPhotoPickerAnimojiProviderItem *)v11 setAvatarRecord:v12];
+  avatarRecord = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
+  [(CNPhotoPickerAnimojiProviderItem *)v11 setAvatarRecord:avatarRecord];
 
-  [(CNPhotoPickerAnimojiProviderItem *)v11 setPoseConfiguration:v7];
-  [(CNPhotoPickerAnimojiProviderItem *)v11 setStickerGeneratorProvider:v6];
+  [(CNPhotoPickerAnimojiProviderItem *)v11 setPoseConfiguration:configurationCopy];
+  [(CNPhotoPickerAnimojiProviderItem *)v11 setStickerGeneratorProvider:providerCopy];
 
-  v13 = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
+  imageData = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
 
-  if (v13)
+  if (imageData)
   {
     v14 = MEMORY[0x1E69DCAB8];
-    v15 = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
-    v16 = [v14 imageWithData:v15];
+    imageData2 = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
+    v16 = [v14 imageWithData:imageData2];
     v17 = [v16 imageWithRenderingMode:2];
     [(CNPhotoPickerAnimojiProviderItem *)v11 setLoadingPlaceholderImage:v17];
   }
@@ -661,19 +661,19 @@ void __65__CNPhotoPickerAnimojiProviderItem_renderAvatarWithPoseWithSize___block
   return v11;
 }
 
-- (id)copyWithColor:(id)a3
+- (id)copyWithColor:(id)color
 {
   v4 = MEMORY[0x1E69DCAB8];
-  v5 = a3;
-  v6 = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
-  v7 = [v4 cnui_imageWithDataPreservingScale:v6];
+  colorCopy = color;
+  _originalImageData = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
+  v7 = [v4 cnui_imageWithDataPreservingScale:_originalImageData];
 
   [(CNPhotoPickerProviderItem *)self cropRect];
   if (!CGRectEqualToRect(v30, *MEMORY[0x1E695F058]))
   {
-    v8 = [v7 CGImage];
+    cGImage = [v7 CGImage];
     [(CNPhotoPickerProviderItem *)self cropRect];
-    v9 = CGImageCreateWithImageInRect(v8, v31);
+    v9 = CGImageCreateWithImageInRect(cGImage, v31);
     v10 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v9];
 
     CGImageRelease(v9);
@@ -703,18 +703,18 @@ void __65__CNPhotoPickerAnimojiProviderItem_renderAvatarWithPoseWithSize___block
   }
 
   v22 = [CNPhotoPickerAnimojiProviderItem alloc];
-  v23 = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
+  _originalImageData2 = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
   [(CNPhotoPickerProviderItem *)self cropRect];
-  v24 = [(CNPhotoPickerAnimojiProviderItem *)v22 initWithOriginalImageData:v23 cropRect:?];
+  v24 = [(CNPhotoPickerAnimojiProviderItem *)v22 initWithOriginalImageData:_originalImageData2 cropRect:?];
 
-  [(CNPhotoPickerAnimojiProviderItem *)v24 setBackgroundColorVariant:v5];
+  [(CNPhotoPickerAnimojiProviderItem *)v24 setBackgroundColorVariant:colorCopy];
   v25 = [(CNPhotoPickerAnimojiProviderItem *)v24 renderAvatarWithBackgroundWithImage:v7];
   [(CNPhotoPickerProviderItem *)v24 setThumbnailImageData:v25];
-  v26 = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
-  [(CNPhotoPickerAnimojiProviderItem *)v24 setAvatarRecord:v26];
+  avatarRecord = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
+  [(CNPhotoPickerAnimojiProviderItem *)v24 setAvatarRecord:avatarRecord];
 
-  v27 = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
-  [(CNPhotoPickerAnimojiProviderItem *)v24 setPoseConfiguration:v27];
+  poseConfiguration = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
+  [(CNPhotoPickerAnimojiProviderItem *)v24 setPoseConfiguration:poseConfiguration];
 
   [(CNPhotoPickerAnimojiProviderItem *)self originalImageSize];
   [(CNPhotoPickerAnimojiProviderItem *)v24 setOriginalImageSize:?];
@@ -724,67 +724,67 @@ void __65__CNPhotoPickerAnimojiProviderItem_renderAvatarWithPoseWithSize___block
   return v24;
 }
 
-- (CNPhotoPickerAnimojiProviderItem)initWithAvatarRecord:(id)a3 imageProvider:(id)a4 renderingScope:(id)a5 renderingQueue:(id)a6 callbackQueue:(id)a7
+- (CNPhotoPickerAnimojiProviderItem)initWithAvatarRecord:(id)record imageProvider:(id)provider renderingScope:(id)scope renderingQueue:(id)queue callbackQueue:(id)callbackQueue
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  recordCopy = record;
+  providerCopy = provider;
+  scopeCopy = scope;
   v19.receiver = self;
   v19.super_class = CNPhotoPickerAnimojiProviderItem;
-  v16 = [(CNPhotoPickerProviderItem *)&v19 initWithImageData:0 thumbnailImageData:0 fullscreenImageData:0 imageFilterName:0 cropRect:a6 renderingQueue:a7 callbackQueue:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  v16 = [(CNPhotoPickerProviderItem *)&v19 initWithImageData:0 thumbnailImageData:0 fullscreenImageData:0 imageFilterName:0 cropRect:queue renderingQueue:callbackQueue callbackQueue:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_avatarRecord, a3);
-    objc_storeStrong(&v17->_imageProvider, a4);
-    objc_storeStrong(&v17->_renderingScope, a5);
+    objc_storeStrong(&v16->_avatarRecord, record);
+    objc_storeStrong(&v17->_imageProvider, provider);
+    objc_storeStrong(&v17->_renderingScope, scope);
   }
 
   return v17;
 }
 
-- (CNPhotoPickerAnimojiProviderItem)initWithOriginalImageData:(id)a3 cropRect:(CGRect)a4
+- (CNPhotoPickerAnimojiProviderItem)initWithOriginalImageData:(id)data cropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
-  v11 = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dataCopy = data;
+  imageData = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
   v14.receiver = self;
   v14.super_class = CNPhotoPickerAnimojiProviderItem;
-  v12 = [(CNPhotoPickerProviderItem *)&v14 initWithImageData:v11 thumbnailImageData:0 fullscreenImageData:0 cropRect:x, y, width, height];
+  height = [(CNPhotoPickerProviderItem *)&v14 initWithImageData:imageData thumbnailImageData:0 fullscreenImageData:0 cropRect:x, y, width, height];
 
-  if (v12)
+  if (height)
   {
-    objc_storeStrong(&v12->__originalImageData, a3);
+    objc_storeStrong(&height->__originalImageData, data);
   }
 
-  return v12;
+  return height;
 }
 
-- (CNPhotoPickerAnimojiProviderItem)initWithOriginalImageData:(id)a3 cropRect:(CGRect)a4 backgroundColorVariant:(id)a5
+- (CNPhotoPickerAnimojiProviderItem)initWithOriginalImageData:(id)data cropRect:(CGRect)rect backgroundColorVariant:(id)variant
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v13 = a5;
-  v14 = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dataCopy = data;
+  variantCopy = variant;
+  imageData = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
   v19.receiver = self;
   v19.super_class = CNPhotoPickerAnimojiProviderItem;
-  v15 = [(CNPhotoPickerProviderItem *)&v19 initWithImageData:v14 thumbnailImageData:0 fullscreenImageData:0 cropRect:x, y, width, height];
+  height = [(CNPhotoPickerProviderItem *)&v19 initWithImageData:imageData thumbnailImageData:0 fullscreenImageData:0 cropRect:x, y, width, height];
 
-  if (v15)
+  if (height)
   {
-    objc_storeStrong(&v15->__originalImageData, a3);
-    objc_storeStrong(&v15->_backgroundColorVariant, a5);
-    v16 = [(CNPhotoPickerAnimojiProviderItem *)v15 generateImageDataIfNeeded];
-    v17 = v15;
+    objc_storeStrong(&height->__originalImageData, data);
+    objc_storeStrong(&height->_backgroundColorVariant, variant);
+    generateImageDataIfNeeded = [(CNPhotoPickerAnimojiProviderItem *)height generateImageDataIfNeeded];
+    v17 = height;
   }
 
-  return v15;
+  return height;
 }
 
 - (CGAffineTransform)transformForMemojiMetadata
@@ -798,8 +798,8 @@ void __65__CNPhotoPickerAnimojiProviderItem_renderAvatarWithPoseWithSize___block
   [(CNPhotoPickerProviderItem *)self cropRect];
   v12 = v11 / 3.0;
   v13 = objc_alloc(MEMORY[0x1E69DCAB8]);
-  v14 = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
-  v15 = [v13 initWithData:v14];
+  imageData = [(CNPhotoPickerAnimojiProviderItem *)self imageData];
+  v15 = [v13 initWithData:imageData];
 
   [v15 size];
   v17 = v16 / 3.0;
@@ -914,66 +914,66 @@ void __65__CNPhotoPickerAnimojiProviderItem_renderAvatarWithPoseWithSize___block
   return result;
 }
 
-- (void)updateVisualIdentity:(id)a3
+- (void)updateVisualIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v16.receiver = self;
   v16.super_class = CNPhotoPickerAnimojiProviderItem;
-  [(CNPhotoPickerProviderItem *)&v16 updateVisualIdentity:v4];
-  [v4 updateImageType:3];
-  v5 = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
+  [(CNPhotoPickerProviderItem *)&v16 updateVisualIdentity:identityCopy];
+  [identityCopy updateImageType:3];
+  backgroundColorVariant = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
 
-  if (v5)
+  if (backgroundColorVariant)
   {
     v14 = 0u;
     v15 = 0u;
     v13 = 0u;
     [(CNPhotoPickerAnimojiProviderItem *)self transformForMemojiMetadata];
     v6 = MEMORY[0x1E695CF08];
-    v7 = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
-    v8 = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
-    v9 = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
-    v10 = [v9 colorName];
+    avatarRecord = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
+    poseConfiguration = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
+    backgroundColorVariant2 = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
+    colorName = [backgroundColorVariant2 colorName];
     v12[0] = v13;
     v12[1] = v14;
     v12[2] = v15;
-    v11 = [v6 memojiMetadataDataForAvatarRecord:v7 poseConfiguration:v8 backgroundColorDescription:v10 cropTransform:v12];
-    [v4 setMemojiMetadata:v11];
+    v11 = [v6 memojiMetadataDataForAvatarRecord:avatarRecord poseConfiguration:poseConfiguration backgroundColorDescription:colorName cropTransform:v12];
+    [identityCopy setMemojiMetadata:v11];
   }
 
   else
   {
-    [v4 setMemojiMetadata:0];
+    [identityCopy setMemojiMetadata:0];
   }
 }
 
 - (id)imageData
 {
-  v3 = [(CNPhotoPickerAnimojiProviderItem *)self _generatedImageData];
-  v4 = v3;
-  if (v3)
+  _generatedImageData = [(CNPhotoPickerAnimojiProviderItem *)self _generatedImageData];
+  v4 = _generatedImageData;
+  if (_generatedImageData)
   {
-    v5 = v3;
+    imageData = _generatedImageData;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CNPhotoPickerAnimojiProviderItem;
-    v5 = [(CNPhotoPickerProviderItem *)&v8 imageData];
+    imageData = [(CNPhotoPickerProviderItem *)&v8 imageData];
   }
 
-  v6 = v5;
+  v6 = imageData;
 
   return v6;
 }
 
 - (id)localizedVariantsTitle
 {
-  v2 = [(CNPhotoPickerAnimojiProviderItem *)self originalImageData];
+  originalImageData = [(CNPhotoPickerAnimojiProviderItem *)self originalImageData];
   v3 = CNContactsUIBundle();
   v4 = v3;
-  if (v2)
+  if (originalImageData)
   {
     v5 = @"PHOTO_SELECT_COLOR";
   }
@@ -990,31 +990,31 @@ void __65__CNPhotoPickerAnimojiProviderItem_renderAvatarWithPoseWithSize___block
 
 - (BOOL)allowsVariants
 {
-  v2 = [(CNPhotoPickerAnimojiProviderItem *)self originalImageData];
-  v3 = v2 != 0;
+  originalImageData = [(CNPhotoPickerAnimojiProviderItem *)self originalImageData];
+  v3 = originalImageData != 0;
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = CNPhotoPickerAnimojiProviderItem;
-  v4 = [(CNPhotoPickerProviderItem *)&v11 copyWithZone:a3];
-  v5 = [(CNPhotoPickerAnimojiProviderItem *)self _generatedImageData];
-  [v4 set_generatedImageData:v5];
+  v4 = [(CNPhotoPickerProviderItem *)&v11 copyWithZone:zone];
+  _generatedImageData = [(CNPhotoPickerAnimojiProviderItem *)self _generatedImageData];
+  [v4 set_generatedImageData:_generatedImageData];
 
-  v6 = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
-  [v4 set_originalImageData:v6];
+  _originalImageData = [(CNPhotoPickerAnimojiProviderItem *)self _originalImageData];
+  [v4 set_originalImageData:_originalImageData];
 
-  v7 = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
-  [v4 setBackgroundColorVariant:v7];
+  backgroundColorVariant = [(CNPhotoPickerAnimojiProviderItem *)self backgroundColorVariant];
+  [v4 setBackgroundColorVariant:backgroundColorVariant];
 
-  v8 = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
-  [v4 setAvatarRecord:v8];
+  avatarRecord = [(CNPhotoPickerAnimojiProviderItem *)self avatarRecord];
+  [v4 setAvatarRecord:avatarRecord];
 
-  v9 = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
-  [v4 setPoseConfiguration:v9];
+  poseConfiguration = [(CNPhotoPickerAnimojiProviderItem *)self poseConfiguration];
+  [v4 setPoseConfiguration:poseConfiguration];
 
   [(CNPhotoPickerAnimojiProviderItem *)self originalImageSize];
   [v4 setOriginalImageSize:?];

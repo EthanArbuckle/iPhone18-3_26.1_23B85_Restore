@@ -10,16 +10,16 @@
 
 - (uint64_t)copyABVCardDataRepresentation
 {
-  if (![a1 canBeConvertedToEncoding:4])
+  if (![self canBeConvertedToEncoding:4])
   {
     return 0;
   }
 
   v2 = objc_alloc(MEMORY[0x1E695DEF0]);
-  v3 = [a1 UTF8String];
-  v4 = [a1 lengthOfBytesUsingEncoding:4];
+  uTF8String = [self UTF8String];
+  v4 = [self lengthOfBytesUsingEncoding:4];
 
-  return [v2 initWithBytes:v3 length:v4];
+  return [v2 initWithBytes:uTF8String length:v4];
 }
 
 - (__CFString)abEscapeStringForUnichar:()ABVCardAdditions and:advance:
@@ -80,35 +80,35 @@ LABEL_11:
 
 - (__CFString)abStringByRemovingCharactersFromSet:()ABVCardAdditions
 {
-  v4 = a1;
-  v5 = [(__CFString *)a1 length];
+  selfCopy = self;
+  v5 = [(__CFString *)self length];
   if (v5)
   {
     v10.length = v5;
     v10.location = 0;
-    if (CFStringFindCharacterFromSet(v4, a3, v10, 0, 0))
+    if (CFStringFindCharacterFromSet(selfCopy, a3, v10, 0, 0))
     {
-      v4 = [(__CFString *)v4 mutableCopy];
-      v6 = [(__CFString *)v4 length];
+      selfCopy = [(__CFString *)selfCopy mutableCopy];
+      v6 = [(__CFString *)selfCopy length];
       if (v6 - 1 >= 0)
       {
         v7 = v6;
         do
         {
-          if ([a3 characterIsMember:{-[__CFString characterAtIndex:](v4, "characterAtIndex:", --v7)}])
+          if ([a3 characterIsMember:{-[__CFString characterAtIndex:](selfCopy, "characterAtIndex:", --v7)}])
           {
-            [(__CFString *)v4 deleteCharactersInRange:v7, 1];
+            [(__CFString *)selfCopy deleteCharactersInRange:v7, 1];
           }
         }
 
         while (v7 > 0);
       }
 
-      v8 = v4;
+      v8 = selfCopy;
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (__CFString)abStringByStrippingControlCharacters
@@ -118,7 +118,7 @@ LABEL_11:
     [NSString(ABVCardAdditions) abStringByStrippingControlCharacters];
   }
 
-  v2 = [a1 abStringByRemovingCharactersFromSet:abStringByStrippingControlCharacters___invalidChars];
+  v2 = [self abStringByRemovingCharactersFromSet:abStringByStrippingControlCharacters___invalidChars];
   if ([v2 length])
   {
     return v2;
@@ -135,44 +135,44 @@ LABEL_11:
   v13 = 0;
   v14 = 0;
   strcpy(v12, "\r\n;,\\"");
-  v2 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:a1];
+  v2 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:self];
   [v2 setCharactersToBeSkipped:0];
   v3 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", v12)}];
-  v4 = [MEMORY[0x1E696AD60] string];
-  v5 = [a1 length];
+  string = [MEMORY[0x1E696AD60] string];
+  v5 = [self length];
   if (([v2 isAtEnd] & 1) == 0)
   {
     do
     {
       v14 = 1;
       v6 = [v2 scanUpToCharactersFromSet:v3 intoString:&v13];
-      v7 = [v2 scanLocation];
+      scanLocation = [v2 scanLocation];
       if (v6)
       {
-        [v4 appendString:v13];
+        [string appendString:v13];
       }
 
-      while (v7 < v5)
+      while (scanLocation < v5)
       {
-        v8 = [a1 characterAtIndex:v7];
-        v9 = v7 + 1 >= v5 ? 0 : [a1 characterAtIndex:?];
-        v10 = [a1 abEscapeStringForUnichar:v8 and:v9 advance:&v14];
+        v8 = [self characterAtIndex:scanLocation];
+        v9 = scanLocation + 1 >= v5 ? 0 : [self characterAtIndex:?];
+        v10 = [self abEscapeStringForUnichar:v8 and:v9 advance:&v14];
         if (!v10)
         {
           break;
         }
 
-        [v4 appendString:v10];
-        v7 += v14;
+        [string appendString:v10];
+        scanLocation += v14;
       }
 
-      [v2 setScanLocation:v7];
+      [v2 setScanLocation:scanLocation];
     }
 
     while (![v2 isAtEnd]);
   }
 
-  return v4;
+  return string;
 }
 
 @end

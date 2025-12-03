@@ -1,45 +1,45 @@
 @interface CAAnimation
-+ (id)mf_animationWithKeyPath:(id)a3 type:(unint64_t)a4;
-+ (id)shortDescriptionWithAnimationType:(unint64_t)a3;
-- (void)mf_executeAnimationCompletionFinished:(BOOL)a3;
-- (void)mf_setAnimationCompletion:(id)a3;
++ (id)mf_animationWithKeyPath:(id)path type:(unint64_t)type;
++ (id)shortDescriptionWithAnimationType:(unint64_t)type;
+- (void)mf_executeAnimationCompletionFinished:(BOOL)finished;
+- (void)mf_setAnimationCompletion:(id)completion;
 @end
 
 @implementation CAAnimation
 
-+ (id)mf_animationWithKeyPath:(id)a3 type:(unint64_t)a4
++ (id)mf_animationWithKeyPath:(id)path type:(unint64_t)type
 {
-  v5 = a3;
-  if (a4 == 1)
+  pathCopy = path;
+  if (type == 1)
   {
-    v6 = [CASpringAnimation animationWithKeyPath:v5];
+    v6 = [CASpringAnimation animationWithKeyPath:pathCopy];
     [v6 setMass:2.0];
     [v6 setStiffness:300.0];
     [v6 setDamping:400.0];
   }
 
-  else if (a4)
+  else if (type)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [CABasicAnimation animationWithKeyPath:v5];
+    v6 = [CABasicAnimation animationWithKeyPath:pathCopy];
   }
 
   return v6;
 }
 
-+ (id)shortDescriptionWithAnimationType:(unint64_t)a3
++ (id)shortDescriptionWithAnimationType:(unint64_t)type
 {
   v3 = @"Magic Spring";
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }
@@ -50,22 +50,22 @@
   }
 }
 
-- (void)mf_setAnimationCompletion:(id)a3
+- (void)mf_setAnimationCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v4 = objc_retainBlock(a3);
+    v4 = objc_retainBlock(completion);
     [CAAnimation setValue:"setValue:forKey:" forKey:?];
   }
 }
 
-- (void)mf_executeAnimationCompletionFinished:(BOOL)a3
+- (void)mf_executeAnimationCompletionFinished:(BOOL)finished
 {
-  v3 = a3;
+  finishedCopy = finished;
   v4 = [(CAAnimation *)self valueForKey:@"MFAnimationCompletionKey"];
   if (v4)
   {
-    v4[2](v4, v3);
+    v4[2](v4, finishedCopy);
   }
 }
 

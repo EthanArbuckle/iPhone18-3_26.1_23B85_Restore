@@ -1,19 +1,19 @@
 @interface IdentityProvisioningSessionProxy
-- (void)generateIdentityProvisioningAttestationsWithCredentialIdentifier:(NSString *)a3 pairingID:(NSString *)a4 completionHandler:(id)a5;
+- (void)generateIdentityProvisioningAttestationsWithCredentialIdentifier:(NSString *)identifier pairingID:(NSString *)d completionHandler:(id)handler;
 @end
 
 @implementation IdentityProvisioningSessionProxy
 
-- (void)generateIdentityProvisioningAttestationsWithCredentialIdentifier:(NSString *)a3 pairingID:(NSString *)a4 completionHandler:(id)a5
+- (void)generateIdentityProvisioningAttestationsWithCredentialIdentifier:(NSString *)identifier pairingID:(NSString *)d completionHandler:(id)handler
 {
   v9 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = identifier;
+  v14[3] = d;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -28,8 +28,8 @@
   v17[3] = 0;
   v17[4] = &unk_1006D9180;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
 
   sub_100500D54(0, 0, v12, &unk_1006E13D0, v17);
 }

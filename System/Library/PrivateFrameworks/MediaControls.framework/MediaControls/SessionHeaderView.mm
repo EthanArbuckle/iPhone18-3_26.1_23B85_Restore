@@ -1,10 +1,10 @@
 @interface SessionHeaderView
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)isHighlighted;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)updateContentSizeCategory;
 - (void)updateVisualStyling;
 @end
@@ -18,41 +18,41 @@
   return [(SessionHeaderView *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5 = type metadata accessor for SessionHeaderView(0);
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(SessionHeaderView *)&v9 isHighlighted];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHighlighted = [(SessionHeaderView *)&v9 isHighlighted];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(SessionHeaderView *)&v8 setHighlighted:v3];
-  sub_1A22C9A9C(v7);
+  [(SessionHeaderView *)&v8 setHighlighted:highlightedCopy];
+  sub_1A22C9A9C(isHighlighted);
 }
 
 - (void)dealloc
 {
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC13MediaControls17SessionHeaderView_titleLabel);
-  v3 = self;
+  selfCopy = self;
   [v2 setMarqueeRunning_];
-  [*(&v3->super.super.super.super.isa + OBJC_IVAR____TtC13MediaControls17SessionHeaderView_subtitleLabel) setMarqueeRunning_];
-  v4.receiver = v3;
+  [*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC13MediaControls17SessionHeaderView_subtitleLabel) setMarqueeRunning_];
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for SessionHeaderView(0);
   [(SessionHeaderView *)&v4 dealloc];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A22CA18C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   sub_1A22CA69C();
   v6 = v5;
   sub_1A22CA69C();
@@ -65,12 +65,12 @@
   return result;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v6 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.isa) + 0xC8);
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
+  touchCopy = touch;
+  selfCopy = self;
+  eventCopy = event;
   v6(v13);
   sub_1A22CC9A0(v13);
   if (v13[0])
@@ -80,9 +80,9 @@
 
   else
   {
-    v12.receiver = v8;
+    v12.receiver = selfCopy;
     v12.super_class = type metadata accessor for SessionHeaderView(0);
-    v10 = [(SessionHeaderView *)&v12 beginTrackingWithTouch:v7 withEvent:v9];
+    v10 = [(SessionHeaderView *)&v12 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
   }
 
   return v10;
@@ -90,13 +90,13 @@
 
 - (void)updateContentSizeCategory
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A22CB5E0();
 }
 
 - (void)updateVisualStyling
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A22CB86C();
 }
 

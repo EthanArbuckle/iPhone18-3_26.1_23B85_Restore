@@ -1,15 +1,15 @@
 @interface ENMIMEUtils
-+ (id)determineMIMETypeForFile:(id)a3;
-+ (id)fileExtensionForMIMEType:(id)a3;
-+ (id)mimeTypeForUTI:(id)a3;
++ (id)determineMIMETypeForFile:(id)file;
++ (id)fileExtensionForMIMEType:(id)type;
++ (id)mimeTypeForUTI:(id)i;
 @end
 
 @implementation ENMIMEUtils
 
-+ (id)mimeTypeForUTI:(id)a3
++ (id)mimeTypeForUTI:(id)i
 {
-  v3 = a3;
-  v4 = UTTypeCopyPreferredTagWithClass(v3, *MEMORY[0x277CC1F60]);
+  iCopy = i;
+  v4 = UTTypeCopyPreferredTagWithClass(iCopy, *MEMORY[0x277CC1F60]);
   if (v4)
   {
     v5 = v4;
@@ -21,12 +21,12 @@
     CFRelease(v5);
   }
 
-  if (([(__CFString *)v3 isEqualToString:@"public.jpeg"]& 1) != 0)
+  if (([(__CFString *)iCopy isEqualToString:@"public.jpeg"]& 1) != 0)
   {
     v5 = @"image/jpeg";
   }
 
-  else if ([(__CFString *)v3 isEqualToString:@"public.png"])
+  else if ([(__CFString *)iCopy isEqualToString:@"public.png"])
   {
     v5 = @"image/png";
   }
@@ -41,10 +41,10 @@ LABEL_9:
   return v5;
 }
 
-+ (id)determineMIMETypeForFile:(id)a3
++ (id)determineMIMETypeForFile:(id)file
 {
-  v3 = [a3 pathExtension];
-  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], v3, 0);
+  pathExtension = [file pathExtension];
+  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], pathExtension, 0);
   if (PreferredIdentifierForTag)
   {
     v5 = PreferredIdentifierForTag;
@@ -71,7 +71,7 @@ LABEL_9:
 
   else
   {
-    v9 = [(__CFString *)v3 isEqualToString:@"gif"];
+    v9 = [(__CFString *)pathExtension isEqualToString:@"gif"];
 
     if (v9)
     {
@@ -90,7 +90,7 @@ LABEL_38:
     goto LABEL_15;
   }
 
-  v12 = [(__CFString *)v3 isEqualToString:@"jpg"];
+  v12 = [(__CFString *)pathExtension isEqualToString:@"jpg"];
 
   if (v12)
   {
@@ -106,7 +106,7 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  v14 = [(__CFString *)v3 isEqualToString:@"png"];
+  v14 = [(__CFString *)pathExtension isEqualToString:@"png"];
 
   if (v14)
   {
@@ -122,7 +122,7 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  v16 = [(__CFString *)v3 isEqualToString:@"wav"];
+  v16 = [(__CFString *)pathExtension isEqualToString:@"wav"];
 
   if (v16)
   {
@@ -138,7 +138,7 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  v18 = [(__CFString *)v3 isEqualToString:@"mp3"];
+  v18 = [(__CFString *)pathExtension isEqualToString:@"mp3"];
 
   if (v18)
   {
@@ -154,7 +154,7 @@ LABEL_27:
     goto LABEL_31;
   }
 
-  v20 = [(__CFString *)v3 isEqualToString:@"amr"];
+  v20 = [(__CFString *)pathExtension isEqualToString:@"amr"];
 
   if (v20)
   {
@@ -170,7 +170,7 @@ LABEL_31:
     goto LABEL_35;
   }
 
-  v22 = [(__CFString *)v3 isEqualToString:@"mp4"];
+  v22 = [(__CFString *)pathExtension isEqualToString:@"mp4"];
 
   if (v22)
   {
@@ -182,7 +182,7 @@ LABEL_35:
   v23 = +[EDAMLimitsConstants EDAM_MIME_TYPE_PDF];
   if (([v7 isEqualToString:v23] & 1) == 0)
   {
-    v24 = [(__CFString *)v3 isEqualToString:@"pdf"];
+    v24 = [(__CFString *)pathExtension isEqualToString:@"pdf"];
 
     if (!v24)
     {
@@ -200,11 +200,11 @@ LABEL_40:
   return v7;
 }
 
-+ (id)fileExtensionForMIMEType:(id)a3
++ (id)fileExtensionForMIMEType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[EDAMLimitsConstants EDAM_MIME_TYPE_INK];
-  v5 = [(__CFString *)v3 isEqualToString:v4];
+  v5 = [(__CFString *)typeCopy isEqualToString:v4];
 
   if (v5)
   {
@@ -212,7 +212,7 @@ LABEL_40:
     goto LABEL_42;
   }
 
-  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F60], v3, 0);
+  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F60], typeCopy, 0);
   if (PreferredIdentifierForTag)
   {
     v8 = PreferredIdentifierForTag;
@@ -233,7 +233,7 @@ LABEL_40:
   }
 
   v10 = +[EDAMLimitsConstants EDAM_MIME_TYPE_GIF];
-  if ([(__CFString *)v3 isEqualToString:v10])
+  if ([(__CFString *)typeCopy isEqualToString:v10])
   {
     v11 = @"gif";
     v12 = [(__CFString *)v6 isEqualToString:@"gif"];
@@ -249,7 +249,7 @@ LABEL_40:
   }
 
   v13 = +[EDAMLimitsConstants EDAM_MIME_TYPE_JPEG];
-  if ([(__CFString *)v3 isEqualToString:v13])
+  if ([(__CFString *)typeCopy isEqualToString:v13])
   {
     v11 = @"jpg";
     v14 = [(__CFString *)v6 isEqualToString:@"jpg"];
@@ -265,7 +265,7 @@ LABEL_40:
   }
 
   v15 = +[EDAMLimitsConstants EDAM_MIME_TYPE_PNG];
-  if (([(__CFString *)v3 isEqualToString:v15]& 1) != 0 || [(__CFString *)v3 isEqualToString:@"image/x-png"])
+  if (([(__CFString *)typeCopy isEqualToString:v15]& 1) != 0 || [(__CFString *)typeCopy isEqualToString:@"image/x-png"])
   {
     v11 = @"png";
     v16 = [(__CFString *)v6 isEqualToString:@"png"];
@@ -281,7 +281,7 @@ LABEL_40:
   }
 
   v17 = +[EDAMLimitsConstants EDAM_MIME_TYPE_WAV];
-  if ([(__CFString *)v3 isEqualToString:v17])
+  if ([(__CFString *)typeCopy isEqualToString:v17])
   {
     v11 = @"wav";
     v18 = [(__CFString *)v6 isEqualToString:@"wav"];
@@ -297,7 +297,7 @@ LABEL_40:
   }
 
   v19 = +[EDAMLimitsConstants EDAM_MIME_TYPE_MP3];
-  if ([(__CFString *)v3 isEqualToString:v19])
+  if ([(__CFString *)typeCopy isEqualToString:v19])
   {
     v11 = @"mp3";
     v20 = [(__CFString *)v6 isEqualToString:@"mp3"];
@@ -313,7 +313,7 @@ LABEL_40:
   }
 
   v21 = +[EDAMLimitsConstants EDAM_MIME_TYPE_AMR];
-  if ([(__CFString *)v3 isEqualToString:v21])
+  if ([(__CFString *)typeCopy isEqualToString:v21])
   {
     v11 = @"amr";
     v22 = [(__CFString *)v6 isEqualToString:@"amr"];
@@ -329,7 +329,7 @@ LABEL_40:
   }
 
   v23 = +[EDAMLimitsConstants EDAM_MIME_TYPE_MP4_VIDEO];
-  if ([(__CFString *)v3 isEqualToString:v23])
+  if ([(__CFString *)typeCopy isEqualToString:v23])
   {
     v11 = @"mp4";
     v24 = [(__CFString *)v6 isEqualToString:@"mp4"];
@@ -345,7 +345,7 @@ LABEL_40:
   }
 
   v25 = +[EDAMLimitsConstants EDAM_MIME_TYPE_INK];
-  if ([(__CFString *)v3 isEqualToString:v25])
+  if ([(__CFString *)typeCopy isEqualToString:v25])
   {
     v11 = @"png";
     v26 = [(__CFString *)v6 isEqualToString:@"png"];
@@ -363,7 +363,7 @@ LABEL_40:
   }
 
   v27 = +[EDAMLimitsConstants EDAM_MIME_TYPE_PDF];
-  if (![(__CFString *)v3 isEqualToString:v27])
+  if (![(__CFString *)typeCopy isEqualToString:v27])
   {
     v11 = v6;
     goto LABEL_41;

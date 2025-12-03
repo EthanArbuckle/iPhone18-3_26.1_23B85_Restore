@@ -1,32 +1,32 @@
 @interface AXMObjectDetectorNode
 + (BOOL)isSupported;
 + (id)possibleObjectClassifications;
-- (AXMObjectDetectorNode)initWithCoder:(id)a3;
+- (AXMObjectDetectorNode)initWithCoder:(id)coder;
 - (BOOL)validateVisionKitSoftLinkSymbols;
-- (void)encodeWithCoder:(id)a3;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 @end
 
 @implementation AXMObjectDetectorNode
 
-- (AXMObjectDetectorNode)initWithCoder:(id)a3
+- (AXMObjectDetectorNode)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = AXMObjectDetectorNode;
-  return [(AXMEvaluationNode *)&v4 initWithCoder:a3];
+  return [(AXMEvaluationNode *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = AXMObjectDetectorNode;
-  [(AXMEvaluationNode *)&v3 encodeWithCoder:a3];
+  [(AXMEvaluationNode *)&v3 encodeWithCoder:coder];
 }
 
 + (BOOL)isSupported
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 physicalMemory] > 0x773593FF;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v3 = [processInfo physicalMemory] > 0x773593FF;
 
   return v3;
 }
@@ -74,14 +74,14 @@
   }
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v61[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  evaluateCopy = evaluate;
+  metricsCopy = metrics;
   v57.receiver = self;
   v57.super_class = AXMObjectDetectorNode;
-  [(AXMEvaluationNode *)&v57 evaluate:v6 metrics:v7];
+  [(AXMEvaluationNode *)&v57 evaluate:evaluateCopy metrics:metricsCopy];
   context = objc_autoreleasePoolPush();
   recognizeObjectsRequest = self->_recognizeObjectsRequest;
   if (!recognizeObjectsRequest)
@@ -96,16 +96,16 @@
 
   v61[0] = recognizeObjectsRequest;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:{1, context}];
-  v51 = v6;
-  v50 = v7;
-  [(AXMEvaluationNode *)self evaluateRequests:v11 withContext:v6 requestHandlerOptions:0 metrics:v7 error:0];
+  v51 = evaluateCopy;
+  v50 = metricsCopy;
+  [(AXMEvaluationNode *)self evaluateRequests:v11 withContext:evaluateCopy requestHandlerOptions:0 metrics:metricsCopy error:0];
 
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v12 = [(VNRecognizeObjectsRequest *)self->_recognizeObjectsRequest results];
-  v52 = [v12 countByEnumeratingWithState:&v53 objects:v60 count:16];
+  results = [(VNRecognizeObjectsRequest *)self->_recognizeObjectsRequest results];
+  v52 = [results countByEnumeratingWithState:&v53 objects:v60 count:16];
   if (v52)
   {
     v13 = *v54;
@@ -116,7 +116,7 @@
       {
         if (*v54 != v13)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(results);
         }
 
         v16 = *(*(&v53 + 1) + 8 * i);
@@ -124,41 +124,41 @@
         v18 = v17;
         if (v17)
         {
-          v19 = [v17 label];
-          if (v19 && (v20 = v19, [*(v14 + 2656) _deniedVoiceOverObjectClassificationLabels], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "label"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "containsObject:", v22), v22, v21, v20, v23))
+          label = [v17 label];
+          if (label && (v20 = label, [*(v14 + 2656) _deniedVoiceOverObjectClassificationLabels], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "label"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "containsObject:", v22), v22, v21, v20, v23))
           {
-            v24 = AXMediaLogCommon();
-            if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+            localizedName = AXMediaLogCommon();
+            if (os_log_type_enabled(localizedName, OS_LOG_TYPE_INFO))
             {
-              v25 = [v18 label];
+              label2 = [v18 label];
               *buf = 138412290;
-              v59 = v25;
-              _os_log_impl(&dword_1AE37B000, v24, OS_LOG_TYPE_INFO, "Object classifier detected but denied for VoiceOver: %@", buf, 0xCu);
+              v59 = label2;
+              _os_log_impl(&dword_1AE37B000, localizedName, OS_LOG_TYPE_INFO, "Object classifier detected but denied for VoiceOver: %@", buf, 0xCu);
             }
           }
 
           else
           {
-            v24 = [v18 localizedName];
-            if (![v24 length])
+            localizedName = [v18 localizedName];
+            if (![localizedName length])
             {
               v26 = AXMediaLogCommon();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v59 = v24;
+                v59 = localizedName;
                 _os_log_impl(&dword_1AE37B000, v26, OS_LOG_TYPE_DEFAULT, "Could not get localized value for label: %@. Falling back to raw value", buf, 0xCu);
               }
 
-              v27 = [v18 label];
+              label3 = [v18 label];
 
-              v24 = v27;
+              localizedName = label3;
             }
 
             [v16 confidence];
             if (v28 > 0.4)
             {
-              v29 = [v18 label];
+              label4 = [v18 label];
               [v16 boundingBox];
               v31 = v30;
               v33 = v32;
@@ -170,9 +170,9 @@
               v41 = v40;
               v43 = v42;
               v44 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v18, "sceneClassId")}];
-              v45 = [v44 stringValue];
+              stringValue = [v44 stringValue];
               LODWORD(v46) = v39;
-              v47 = [AXMVisionFeature objectClassificationWithLabel:v29 localizedValue:v24 boundingBox:v45 confidence:v31 canvasSize:v33 sceneClassId:v35, v37, v46, v41, v43];
+              v47 = [AXMVisionFeature objectClassificationWithLabel:label4 localizedValue:localizedName boundingBox:stringValue confidence:v31 canvasSize:v33 sceneClassId:v35, v37, v46, v41, v43];
 
               v14 = 0x1E7A1B000;
               [v51 appendFeature:v47];
@@ -182,16 +182,16 @@
 
         else
         {
-          v24 = AXMediaLogCommon();
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+          localizedName = AXMediaLogCommon();
+          if (os_log_type_enabled(localizedName, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            _os_log_impl(&dword_1AE37B000, v24, OS_LOG_TYPE_DEFAULT, "Recognized object result produced no labels", buf, 2u);
+            _os_log_impl(&dword_1AE37B000, localizedName, OS_LOG_TYPE_DEFAULT, "Recognized object result produced no labels", buf, 2u);
           }
         }
       }
 
-      v52 = [v12 countByEnumeratingWithState:&v53 objects:v60 count:16];
+      v52 = [results countByEnumeratingWithState:&v53 objects:v60 count:16];
     }
 
     while (v52);

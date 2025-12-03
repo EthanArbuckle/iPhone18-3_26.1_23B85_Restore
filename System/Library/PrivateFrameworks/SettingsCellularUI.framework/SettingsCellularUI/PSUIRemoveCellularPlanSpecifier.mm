@@ -1,21 +1,21 @@
 @interface PSUIRemoveCellularPlanSpecifier
-+ (void)remap:(id)a3 to:(id)a4;
-+ (void)showRemapFor:(id)a3 withList:(id)a4 navigationController:(id)a5;
++ (void)remap:(id)remap to:(id)to;
++ (void)showRemapFor:(id)for withList:(id)list navigationController:(id)controller;
 - (PSListController)hostController;
-- (PSUIRemoveCellularPlanSpecifier)initWithPlanUniversalReference:(id)a3 cellularPlanManager:(id)a4 planManagerCache:(id)a5 hostController:(id)a6 popViewControllerOnPlanDeletion:(BOOL)a7;
+- (PSUIRemoveCellularPlanSpecifier)initWithPlanUniversalReference:(id)reference cellularPlanManager:(id)manager planManagerCache:(id)cache hostController:(id)controller popViewControllerOnPlanDeletion:(BOOL)deletion;
 - (id)_remainingActivePlans;
-- (void)removeCellularPlan:(id)a3;
-- (void)removeCellularPlanConfirmed:(id)a3;
+- (void)removeCellularPlan:(id)plan;
+- (void)removeCellularPlanConfirmed:(id)confirmed;
 @end
 
 @implementation PSUIRemoveCellularPlanSpecifier
 
-- (PSUIRemoveCellularPlanSpecifier)initWithPlanUniversalReference:(id)a3 cellularPlanManager:(id)a4 planManagerCache:(id)a5 hostController:(id)a6 popViewControllerOnPlanDeletion:(BOOL)a7
+- (PSUIRemoveCellularPlanSpecifier)initWithPlanUniversalReference:(id)reference cellularPlanManager:(id)manager planManagerCache:(id)cache hostController:(id)controller popViewControllerOnPlanDeletion:(BOOL)deletion
 {
-  v13 = a3;
-  v38 = a4;
-  v37 = a5;
-  v14 = a6;
+  referenceCopy = reference;
+  managerCopy = manager;
+  cacheCopy = cache;
+  controllerCopy = controller;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -40,30 +40,30 @@
   v22 = v21;
   if (v21)
   {
-    v36 = v13;
-    objc_storeStrong(&v21->_planReference, a3);
-    objc_storeStrong(&v22->_cellularPlanManager, a4);
-    objc_storeStrong(&v22->_planManagerCache, a5);
-    objc_storeWeak(&v22->_hostController, v14);
-    v22->_popViewControllerOnPlanDeletion = a7;
+    v36 = referenceCopy;
+    objc_storeStrong(&v21->_planReference, reference);
+    objc_storeStrong(&v22->_cellularPlanManager, manager);
+    objc_storeStrong(&v22->_planManagerCache, cache);
+    objc_storeWeak(&v22->_hostController, controllerCopy);
+    v22->_popViewControllerOnPlanDeletion = deletion;
     [(PSUIRemoveCellularPlanSpecifier *)v22 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
     [(PSUIRemoveCellularPlanSpecifier *)v22 setIdentifier:@"REMOVE_PLAN_BUTTON_ID"];
     v23 = [(PSUICellularPlanManagerCache *)v22->_planManagerCache planFromReference:v22->_planReference];
-    v24 = [v23 plan];
-    v25 = [v24 carrierName];
+    plan = [v23 plan];
+    carrierName = [plan carrierName];
 
-    v26 = [v23 phoneNumber];
+    phoneNumber = [v23 phoneNumber];
     v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v28 = [v27 localizedStringForKey:@"DELETE_ESIM" value:&stru_287733598 table:@"Gemini-Gemini"];
     [(PSConfirmationSpecifier *)v22 setTitle:v28];
 
     [(PSUIRemoveCellularPlanSpecifier *)v22 setIdentifier:@"CELLULAR_SETTINGS_DELETE_ESIM"];
-    if ([v25 length] && objc_msgSend(v26, "length"))
+    if ([carrierName length] && objc_msgSend(phoneNumber, "length"))
     {
       v29 = MEMORY[0x277CCACA8];
       v30 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v31 = [v30 localizedStringForKey:@"DELETE_ESIM_MESSAGE_CARRIER_%@_%@" value:&stru_287733598 table:@"Gemini-Gemini"];
-      v32 = [v29 stringWithFormat:v31, v26, v25];
+      v32 = [v29 stringWithFormat:v31, phoneNumber, carrierName];
       [(PSConfirmationSpecifier *)v22 setPrompt:v32];
     }
 
@@ -81,21 +81,21 @@
     [(PSUIRemoveCellularPlanSpecifier *)v22 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FE80]];
     [(PSUIRemoveCellularPlanSpecifier *)v22 setConfirmationAction:sel_removeCellularPlan_];
 
-    v13 = v36;
+    referenceCopy = v36;
   }
 
   return v22;
 }
 
-- (void)removeCellularPlan:(id)a3
+- (void)removeCellularPlan:(id)plan
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [(PSUIRemoveCellularPlanSpecifier *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIRemoveCellularPlanSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v15 = "[PSUIRemoveCellularPlanSpecifier removeCellularPlan:]";
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
   v5 = [MEMORY[0x277D3F9C8] preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -119,16 +119,16 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeCellularPlanConfirmed:(id)a3
+- (void)removeCellularPlanConfirmed:(id)confirmed
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUIRemoveCellularPlanSpecifier *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  confirmedCopy = confirmed;
+  getLogger = [(PSUIRemoveCellularPlanSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 136315138;
     *(&buf + 4) = "[PSUIRemoveCellularPlanSpecifier removeCellularPlanConfirmed:]";
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "%s", &buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s", &buf, 0xCu);
   }
 
   *&buf = 0;
@@ -138,10 +138,10 @@
   v25 = __Block_byref_object_dispose__2;
   v26 = [(PSUICellularPlanManagerCache *)self->_planManagerCache planFromReference:self->_planReference];
   objc_initWeak(&location, self);
-  v6 = [(PSUIRemoveCellularPlanSpecifier *)self hostController];
-  v7 = [v6 navigationController];
+  hostController = [(PSUIRemoveCellularPlanSpecifier *)self hostController];
+  navigationController = [hostController navigationController];
 
-  v8 = [(PSUIRemoveCellularPlanSpecifier *)self _remainingActivePlans];
+  _remainingActivePlans = [(PSUIRemoveCellularPlanSpecifier *)self _remainingActivePlans];
   cellularPlanManager = self->_cellularPlanManager;
   v10 = *(*(&buf + 1) + 40);
   v16[0] = MEMORY[0x277D85DD0];
@@ -151,9 +151,9 @@
   v16[4] = self;
   p_buf = &buf;
   objc_copyWeak(&v20, &location);
-  v11 = v8;
+  v11 = _remainingActivePlans;
   v17 = v11;
-  v12 = v7;
+  v12 = navigationController;
   v18 = v12;
   [(CTCellularPlanManager *)cellularPlanManager didDeletePlanItem:v10 completion:v16];
   if ([(PSUIRemoveCellularPlanSpecifier *)self popViewControllerOnPlanDeletion])
@@ -232,8 +232,8 @@ void __63__PSUIRemoveCellularPlanSpecifier_removeCellularPlanConfirmed___block_i
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(PSUICellularPlanManagerCache *)self->_planManagerCache planItems];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  planItems = [(PSUICellularPlanManagerCache *)self->_planManagerCache planItems];
+  v6 = [planItems countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -244,15 +244,15 @@ void __63__PSUIRemoveCellularPlanSpecifier_removeCellularPlanConfirmed___block_i
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(planItems);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
         if ([v10 isSelected])
         {
-          v11 = [v3 iccid];
-          v12 = [v10 iccid];
-          v13 = [v11 isEqualToString:v12];
+          iccid = [v3 iccid];
+          iccid2 = [v10 iccid];
+          v13 = [iccid isEqualToString:iccid2];
 
           if ((v13 & 1) == 0)
           {
@@ -261,7 +261,7 @@ void __63__PSUIRemoveCellularPlanSpecifier_removeCellularPlanConfirmed___block_i
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [planItems countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -273,19 +273,19 @@ void __63__PSUIRemoveCellularPlanSpecifier_removeCellularPlanConfirmed___block_i
   return v14;
 }
 
-+ (void)showRemapFor:(id)a3 withList:(id)a4 navigationController:(id)a5
++ (void)showRemapFor:(id)for withList:(id)list navigationController:(id)controller
 {
   v71 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v50 = a5;
+  forCopy = for;
+  listCopy = list;
+  controllerCopy = controller;
   v9 = [MEMORY[0x277D4D830] loggerWithCategory:@"RemoveCellularPlanSpecifier"];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v68 = "+[PSUIRemoveCellularPlanSpecifier showRemapFor:withList:navigationController:]";
     v69 = 2048;
-    v70 = [v8 count];
+    v70 = [listCopy count];
     _os_log_impl(&dword_2658DE000, v9, OS_LOG_TYPE_DEFAULT, "%s active plans is  %lu", buf, 0x16u);
   }
 
@@ -302,7 +302,7 @@ void __63__PSUIRemoveCellularPlanSpecifier_removeCellularPlanConfirmed___block_i
 
   v19 = 0x277D75000uLL;
   v49 = v14;
-  if ([v8 count] == 1)
+  if ([listCopy count] == 1)
   {
     v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v21 = [v20 localizedStringForKey:@"REMAP_TO_SINGLE_SIM" value:&stru_287733598 table:@"Cellular"];
@@ -312,13 +312,13 @@ void __63__PSUIRemoveCellularPlanSpecifier_removeCellularPlanConfirmed___block_i
     v63[1] = 3221225472;
     v63[2] = __78__PSUIRemoveCellularPlanSpecifier_showRemapFor_withList_navigationController___block_invoke;
     v63[3] = &unk_279BAA160;
-    v64 = v7;
-    v65 = v8;
+    v64 = forCopy;
+    v65 = listCopy;
     v23 = [v22 actionWithTitle:v21 style:0 handler:v63];
     [v18 addAction:v23];
 
-    v24 = v50;
-    v25 = v8;
+    v24 = controllerCopy;
+    v25 = listCopy;
     v26 = &unk_265974000;
   }
 
@@ -328,13 +328,13 @@ void __63__PSUIRemoveCellularPlanSpecifier_removeCellularPlanConfirmed___block_i
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v21 = v8;
+    v21 = listCopy;
     v27 = [v21 countByEnumeratingWithState:&v59 objects:v66 count:16];
-    v24 = v50;
+    v24 = controllerCopy;
     if (v27)
     {
       v28 = v27;
-      v48 = v8;
+      v48 = listCopy;
       v52 = *v60;
       obj = v21;
       do
@@ -342,7 +342,7 @@ void __63__PSUIRemoveCellularPlanSpecifier_removeCellularPlanConfirmed___block_i
         for (i = 0; i != v28; ++i)
         {
           v30 = v18;
-          v31 = v7;
+          v31 = forCopy;
           if (*v60 != v52)
           {
             objc_enumerationMutation(obj);
@@ -352,16 +352,16 @@ void __63__PSUIRemoveCellularPlanSpecifier_removeCellularPlanConfirmed___block_i
           v33 = MEMORY[0x277CCACA8];
           v34 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v35 = [v34 localizedStringForKey:@"REMAP_TO_SIM_%@" value:&stru_287733598 table:@"Cellular"];
-          v36 = [v32 userLabel];
-          v37 = [v36 label];
-          v38 = [v33 stringWithFormat:v35, v37];
+          userLabel = [v32 userLabel];
+          label = [userLabel label];
+          v38 = [v33 stringWithFormat:v35, label];
 
           v39 = MEMORY[0x277D750F8];
           v56[0] = MEMORY[0x277D85DD0];
           v56[1] = 3221225472;
           v56[2] = __78__PSUIRemoveCellularPlanSpecifier_showRemapFor_withList_navigationController___block_invoke_2;
           v56[3] = &unk_279BAA160;
-          v7 = v31;
+          forCopy = v31;
           v57 = v31;
           v58 = v32;
           v40 = [v39 actionWithTitle:v38 style:0 handler:v56];
@@ -374,7 +374,7 @@ void __63__PSUIRemoveCellularPlanSpecifier_removeCellularPlanConfirmed___block_i
 
       while (v28);
       v25 = v48;
-      v24 = v50;
+      v24 = controllerCopy;
       v21 = obj;
       v11 = 0x277CCA000;
       v26 = &unk_265974000;
@@ -383,7 +383,7 @@ void __63__PSUIRemoveCellularPlanSpecifier_removeCellularPlanConfirmed___block_i
 
     else
     {
-      v25 = v8;
+      v25 = listCopy;
       v26 = &unk_265974000;
     }
   }
@@ -414,11 +414,11 @@ void __78__PSUIRemoveCellularPlanSpecifier_showRemapFor_withList_navigationContr
   [PSUIRemoveCellularPlanSpecifier remap:v1 to:v2];
 }
 
-+ (void)remap:(id)a3 to:(id)a4
++ (void)remap:(id)remap to:(id)to
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  remapCopy = remap;
+  toCopy = to;
   v7 = [MEMORY[0x277D4D830] loggerWithCategory:@"RemoveCellularPlanSpecifier"];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -427,8 +427,8 @@ void __78__PSUIRemoveCellularPlanSpecifier_showRemapFor_withList_navigationContr
     _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x277CF96D8] sharedManager];
-  [v8 danglingPlanItemsShouldUpdate:0];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  [mEMORY[0x277CF96D8] danglingPlanItemsShouldUpdate:0];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -438,7 +438,7 @@ void __78__PSUIRemoveCellularPlanSpecifier_showRemapFor_withList_navigationContr
   {
     v11 = v10;
     v12 = *v21;
-    v19 = v6;
+    v19 = toCopy;
     while (2)
     {
       for (i = 0; i != v11; ++i)
@@ -449,20 +449,20 @@ void __78__PSUIRemoveCellularPlanSpecifier_showRemapFor_withList_navigationContr
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 iccid];
-        v16 = [v5 iccid];
-        v17 = [v15 isEqualToString:v16];
+        iccid = [v14 iccid];
+        iccid2 = [remapCopy iccid];
+        v17 = [iccid isEqualToString:iccid2];
 
         if (v17)
         {
-          v6 = v19;
-          [v8 remapSimLabel:v14 to:v19 completion:&__block_literal_global_67];
+          toCopy = v19;
+          [mEMORY[0x277CF96D8] remapSimLabel:v14 to:v19 completion:&__block_literal_global_67];
           goto LABEL_13;
         }
       }
 
       v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
-      v6 = v19;
+      toCopy = v19;
       if (v11)
       {
         continue;

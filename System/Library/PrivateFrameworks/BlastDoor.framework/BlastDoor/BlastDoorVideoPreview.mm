@@ -19,7 +19,7 @@
 
 - (BlastDoorImage)image
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2145834C0();
 
   return v3;

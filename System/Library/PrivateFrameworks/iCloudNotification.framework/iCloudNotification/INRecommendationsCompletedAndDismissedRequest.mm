@@ -1,23 +1,23 @@
 @interface INRecommendationsCompletedAndDismissedRequest
-- (INRecommendationsCompletedAndDismissedRequest)initWithAccount:(id)a3 configuration:(id)a4;
+- (INRecommendationsCompletedAndDismissedRequest)initWithAccount:(id)account configuration:(id)configuration;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation INRecommendationsCompletedAndDismissedRequest
 
-- (INRecommendationsCompletedAndDismissedRequest)initWithAccount:(id)a3 configuration:(id)a4
+- (INRecommendationsCompletedAndDismissedRequest)initWithAccount:(id)account configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = INRecommendationsCompletedAndDismissedRequest;
   v9 = [(INRecommendationsCompletedAndDismissedRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_configuration, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_configuration, configuration);
   }
 
   return v10;
@@ -25,16 +25,16 @@
 
 - (id)urlString
 {
-  v3 = [(ACAccount *)self->_account aa_personID];
+  aa_personID = [(ACAccount *)self->_account aa_personID];
 
-  if (v3)
+  if (aa_personID)
   {
-    v4 = [(CERuleConfiguration *)self->_configuration completedURL];
+    completedURL = [(CERuleConfiguration *)self->_configuration completedURL];
 
-    if (v4)
+    if (completedURL)
     {
-      v5 = [(CERuleConfiguration *)self->_configuration completedURL];
-      v6 = [v5 absoluteString];
+      completedURL2 = [(CERuleConfiguration *)self->_configuration completedURL];
+      absoluteString = [completedURL2 absoluteString];
 
       goto LABEL_11;
     }
@@ -55,18 +55,18 @@
     }
   }
 
-  v6 = 0;
+  absoluteString = 0;
 LABEL_11:
 
-  return v6;
+  return absoluteString;
 }
 
 - (id)urlRequest
 {
   v6.receiver = self;
   v6.super_class = INRecommendationsCompletedAndDismissedRequest;
-  v3 = [(INRecommendationsCompletedAndDismissedRequest *)&v6 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(INRecommendationsCompletedAndDismissedRequest *)&v6 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 ind_addQuotaHeadersForAccount:self->_account];
 

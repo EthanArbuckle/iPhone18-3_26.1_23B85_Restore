@@ -1,18 +1,18 @@
 @interface WFRemoteExecutionIncomingStopSession
-- (void)handleIncomingProtobuf:(id)a3 currentlyActiveSessions:(id)a4;
+- (void)handleIncomingProtobuf:(id)protobuf currentlyActiveSessions:(id)sessions;
 @end
 
 @implementation WFRemoteExecutionIncomingStopSession
 
-- (void)handleIncomingProtobuf:(id)a3 currentlyActiveSessions:(id)a4
+- (void)handleIncomingProtobuf:(id)protobuf currentlyActiveSessions:(id)sessions
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  protobufCopy = protobuf;
+  sessionsCopy = sessions;
   [(WFRemoteExecutionSession *)self setState:200];
   v8 = objc_alloc(MEMORY[0x1E69C65B8]);
-  v9 = [v6 data];
-  v10 = [v8 initWithData:v9];
+  data = [protobufCopy data];
+  v10 = [v8 initWithData:data];
 
   v11 = objc_alloc_init(WFRemoteExecutionStopRequest);
   v37 = 0;
@@ -24,16 +24,16 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v13 = v7;
+    v13 = sessionsCopy;
     v14 = [v13 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v14)
     {
       v15 = v14;
       v28 = v12;
       v29 = v10;
-      v30 = self;
-      v31 = v7;
-      v32 = v6;
+      selfCopy = self;
+      v31 = sessionsCopy;
+      v32 = protobufCopy;
       v16 = *v34;
       do
       {
@@ -45,10 +45,10 @@
           }
 
           v18 = *(*(&v33 + 1) + 8 * i);
-          v19 = [v18 request];
-          v20 = [v19 identifier];
-          v21 = [(WFRemoteExecutionStopRequest *)v11 requestIdentifier];
-          v22 = [v20 isEqualToString:v21];
+          request = [v18 request];
+          identifier = [request identifier];
+          requestIdentifier = [(WFRemoteExecutionStopRequest *)v11 requestIdentifier];
+          v22 = [identifier isEqualToString:requestIdentifier];
 
           if (v22)
           {
@@ -70,10 +70,10 @@
       }
 
       while (v15);
-      v7 = v31;
-      v6 = v32;
+      sessionsCopy = v31;
+      protobufCopy = v32;
       v10 = v29;
-      self = v30;
+      self = selfCopy;
       v12 = v28;
     }
 

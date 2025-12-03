@@ -1,17 +1,17 @@
 @interface TSDMagicMoveMatch
-+ (id)matchWithOutgoingObject:(id)a3 incomingObject:(id)a4 matchType:(int64_t)a5 attributeMatchPercent:(double)a6 textureDescription:(id)a7;
-- (BOOL)conflictsWithMatch:(id)a3;
++ (id)matchWithOutgoingObject:(id)object incomingObject:(id)incomingObject matchType:(int64_t)type attributeMatchPercent:(double)percent textureDescription:(id)description;
+- (BOOL)conflictsWithMatch:(id)match;
 - (BOOL)isTextMatch;
 - (id)description;
 - (void)p_updateMagicMoveCost;
-- (void)setAttributeMatchPercent:(double)a3;
+- (void)setAttributeMatchPercent:(double)percent;
 @end
 
 @implementation TSDMagicMoveMatch
 
-- (void)setAttributeMatchPercent:(double)a3
+- (void)setAttributeMatchPercent:(double)percent
 {
-  if (a3 < 0.0 || a3 > 1.0)
+  if (percent < 0.0 || percent > 1.0)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDMagicMoveMatch setAttributeMatchPercent:]");
@@ -72,24 +72,24 @@
   return v33;
 }
 
-+ (id)matchWithOutgoingObject:(id)a3 incomingObject:(id)a4 matchType:(int64_t)a5 attributeMatchPercent:(double)a6 textureDescription:(id)a7
++ (id)matchWithOutgoingObject:(id)object incomingObject:(id)incomingObject matchType:(int64_t)type attributeMatchPercent:(double)percent textureDescription:(id)description
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  objectCopy = object;
+  incomingObjectCopy = incomingObject;
+  descriptionCopy = description;
   v15 = objc_alloc_init(TSDMagicMoveMatch);
-  objc_storeStrong(&v15->_outgoingObject, a3);
-  objc_storeStrong(&v15->_incomingObject, a4);
-  objc_msgSend_setMatchType_(v15, v16, a5);
-  objc_msgSend_setAttributeMatchPercent_(v15, v17, v18, a6);
-  objc_msgSend_setTextureDescription_(v15, v19, v14);
+  objc_storeStrong(&v15->_outgoingObject, object);
+  objc_storeStrong(&v15->_incomingObject, incomingObject);
+  objc_msgSend_setMatchType_(v15, v16, type);
+  objc_msgSend_setAttributeMatchPercent_(v15, v17, v18, percent);
+  objc_msgSend_setTextureDescription_(v15, v19, descriptionCopy);
 
-  objc_msgSend_position(v12, v20, v21);
-  objc_msgSend_position(v13, v22, v23);
+  objc_msgSend_position(objectCopy, v20, v21);
+  objc_msgSend_position(incomingObjectCopy, v22, v23);
   TSUDistance();
   objc_msgSend_setDistance_(v15, v24, v25);
-  v28 = objc_msgSend_zOrder(v12, v26, v27);
-  v31 = objc_msgSend_zOrder(v13, v29, v30);
+  v28 = objc_msgSend_zOrder(objectCopy, v26, v27);
+  v31 = objc_msgSend_zOrder(incomingObjectCopy, v29, v30);
   objc_msgSend_setZOrderDistance_(v15, v32, v33, vabdd_f64(v28, v31));
   if (objc_msgSend_matchType(v15, v34, v35) == 1)
   {
@@ -265,11 +265,11 @@ LABEL_21:
   return v31;
 }
 
-- (BOOL)conflictsWithMatch:(id)a3
+- (BOOL)conflictsWithMatch:(id)match
 {
-  v4 = a3;
+  matchCopy = match;
   v7 = objc_msgSend_outgoingObject(self, v5, v6);
-  v10 = objc_msgSend_outgoingObject(v4, v8, v9);
+  v10 = objc_msgSend_outgoingObject(matchCopy, v8, v9);
   if (objc_msgSend_conflictsWithMatchObject_(v7, v11, v10))
   {
     matched = 1;
@@ -278,7 +278,7 @@ LABEL_21:
   else
   {
     v15 = objc_msgSend_incomingObject(self, v12, v13);
-    v18 = objc_msgSend_incomingObject(v4, v16, v17);
+    v18 = objc_msgSend_incomingObject(matchCopy, v16, v17);
     matched = objc_msgSend_conflictsWithMatchObject_(v15, v19, v18);
   }
 

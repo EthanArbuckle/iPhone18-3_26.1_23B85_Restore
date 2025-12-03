@@ -1,19 +1,19 @@
 @interface NavSignShieldInfo
-- (BOOL)isEqual:(id)a3;
-- (NavSignShieldInfo)initWithShieldID:(int)a3 shieldStringID:(id)a4 shieldText:(id)a5;
-- (id)_car_shieldImageWithSize:(int64_t)a3 scale:(double)a4 useAdaptiveStyling:(BOOL)a5 nightMode:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (NavSignShieldInfo)initWithShieldID:(int)d shieldStringID:(id)iD shieldText:(id)text;
+- (id)_car_shieldImageWithSize:(int64_t)size scale:(double)scale useAdaptiveStyling:(BOOL)styling nightMode:(BOOL)mode;
 - (id)description;
-- (id)shieldImageWithSize:(int64_t)a3 scale:(double)a4 idiom:(int64_t)a5;
+- (id)shieldImageWithSize:(int64_t)size scale:(double)scale idiom:(int64_t)idiom;
 - (unint64_t)hash;
 @end
 
 @implementation NavSignShieldInfo
 
-- (NavSignShieldInfo)initWithShieldID:(int)a3 shieldStringID:(id)a4 shieldText:(id)a5
+- (NavSignShieldInfo)initWithShieldID:(int)d shieldStringID:(id)iD shieldText:(id)text
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 || v8)
+  iDCopy = iD;
+  textCopy = text;
+  if (d || iDCopy)
   {
     v18.receiver = self;
     v18.super_class = NavSignShieldInfo;
@@ -21,65 +21,65 @@
     v12 = v11;
     if (v11)
     {
-      v11->_shieldID = a3;
-      v13 = [v8 copy];
+      v11->_shieldID = d;
+      v13 = [iDCopy copy];
       shieldStringID = v12->_shieldStringID;
       v12->_shieldStringID = v13;
 
-      v15 = [v9 copy];
+      v15 = [textCopy copy];
       shieldText = v12->_shieldText;
       v12->_shieldText = v15;
     }
 
     self = v12;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 shieldID];
-      if (v6 == [(NavSignShieldInfo *)self shieldID])
+      v5 = equalCopy;
+      shieldID = [v5 shieldID];
+      if (shieldID == [(NavSignShieldInfo *)self shieldID])
       {
-        v7 = [(NavSignShieldInfo *)self shieldStringID];
-        v8 = [v7 length];
-        v9 = [v5 shieldStringID];
-        v10 = v9;
+        shieldStringID = [(NavSignShieldInfo *)self shieldStringID];
+        v8 = [shieldStringID length];
+        shieldStringID2 = [v5 shieldStringID];
+        v10 = shieldStringID2;
         if (v8)
         {
-          v11 = [(NavSignShieldInfo *)self shieldStringID];
-          v12 = [v10 isEqualToString:v11];
+          shieldStringID3 = [(NavSignShieldInfo *)self shieldStringID];
+          v12 = [v10 isEqualToString:shieldStringID3];
 
           if (v12)
           {
 LABEL_6:
-            v13 = [(NavSignShieldInfo *)self shieldText];
-            v14 = [v13 length];
-            v15 = [v5 shieldText];
-            v16 = v15;
+            shieldText = [(NavSignShieldInfo *)self shieldText];
+            v14 = [shieldText length];
+            shieldText2 = [v5 shieldText];
+            v16 = shieldText2;
             if (v14)
             {
-              v17 = [(NavSignShieldInfo *)self shieldText];
-              v18 = [v16 isEqualToString:v17];
+              shieldText3 = [(NavSignShieldInfo *)self shieldText];
+              v18 = [v16 isEqualToString:shieldText3];
             }
 
             else
             {
-              v18 = [v15 length] == 0;
+              v18 = [shieldText2 length] == 0;
             }
 
             goto LABEL_13;
@@ -88,7 +88,7 @@ LABEL_6:
 
         else
         {
-          v19 = [v9 length];
+          v19 = [shieldStringID2 length];
 
           if (!v19)
           {
@@ -112,56 +112,56 @@ LABEL_14:
 
 - (id)description
 {
-  v3 = [(NavSignShieldInfo *)self shieldID];
-  v4 = [(NavSignShieldInfo *)self shieldStringID];
-  v5 = [(NavSignShieldInfo *)self shieldText];
-  v6 = [NSString stringWithFormat:@"shieldID: [%d] strID: [%@] text: [%@]", v3, v4, v5];
+  shieldID = [(NavSignShieldInfo *)self shieldID];
+  shieldStringID = [(NavSignShieldInfo *)self shieldStringID];
+  shieldText = [(NavSignShieldInfo *)self shieldText];
+  v6 = [NSString stringWithFormat:@"shieldID: [%d] strID: [%@] text: [%@]", shieldID, shieldStringID, shieldText];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(NavSignShieldInfo *)self shieldID];
-  v4 = [(NavSignShieldInfo *)self shieldID];
-  if (v3 >= 0)
+  shieldID = [(NavSignShieldInfo *)self shieldID];
+  shieldID2 = [(NavSignShieldInfo *)self shieldID];
+  if (shieldID >= 0)
   {
-    v5 = v4;
+    v5 = shieldID2;
   }
 
   else
   {
-    v5 = -v4;
+    v5 = -shieldID2;
   }
 
   v6 = v5;
-  v7 = [(NavSignShieldInfo *)self shieldStringID];
-  v8 = [v7 hash];
-  v9 = [(NavSignShieldInfo *)self shieldText];
-  v10 = v8 ^ [v9 hash];
+  shieldStringID = [(NavSignShieldInfo *)self shieldStringID];
+  v8 = [shieldStringID hash];
+  shieldText = [(NavSignShieldInfo *)self shieldText];
+  v10 = v8 ^ [shieldText hash];
 
   return v10 ^ v6;
 }
 
-- (id)_car_shieldImageWithSize:(int64_t)a3 scale:(double)a4 useAdaptiveStyling:(BOOL)a5 nightMode:(BOOL)a6
+- (id)_car_shieldImageWithSize:(int64_t)size scale:(double)scale useAdaptiveStyling:(BOOL)styling nightMode:(BOOL)mode
 {
-  v6 = a6;
-  v7 = a5;
+  modeCopy = mode;
+  stylingCopy = styling;
   if ([(NavSignShieldInfo *)self shieldID])
   {
-    v11 = [[VKIconModifiers alloc] initNavigationModifiers];
-    [v11 setNewInterfaceEnabled:1];
-    v12 = [(NavSignShieldInfo *)self shieldText];
-    [v11 setText:v12];
+    initNavigationModifiers = [[VKIconModifiers alloc] initNavigationModifiers];
+    [initNavigationModifiers setNewInterfaceEnabled:1];
+    shieldText = [(NavSignShieldInfo *)self shieldText];
+    [initNavigationModifiers setText:shieldText];
 
-    if (v6)
+    if (modeCopy)
     {
       v13 = +[VKIconManager sharedManager];
-      [v11 setVariant:{objc_msgSend(v13, "darkVariant")}];
+      [initNavigationModifiers setVariant:{objc_msgSend(v13, "darkVariant")}];
     }
 
-    v14 = [(NavSignShieldInfo *)self shieldID];
-    if (v7)
+    shieldID = [(NavSignShieldInfo *)self shieldID];
+    if (stylingCopy)
     {
       v15 = 6;
     }
@@ -172,53 +172,53 @@ LABEL_14:
     }
 
     v16 = v15 | 0x4BAF0;
-    if (v14 == 310000)
+    if (shieldID == 310000)
     {
       v17 = v16;
     }
 
     else
     {
-      v17 = v14;
+      v17 = shieldID;
     }
 
     v18 = +[VKIconManager sharedManager];
-    v19 = [(NavSignShieldInfo *)self shieldText];
-    *&v20 = a4;
-    v21 = [v18 imageForDataID:v17 text:v19 contentScale:a3 sizeGroup:v11 modifiers:v20];
+    shieldText2 = [(NavSignShieldInfo *)self shieldText];
+    *&v20 = scale;
+    v21 = [v18 imageForDataID:v17 text:shieldText2 contentScale:size sizeGroup:initNavigationModifiers modifiers:v20];
   }
 
   else
   {
-    v21 = [(NavSignShieldInfo *)self shieldImageWithSize:a3 scale:1 idiom:a4];
+    v21 = [(NavSignShieldInfo *)self shieldImageWithSize:size scale:1 idiom:scale];
   }
 
   return v21;
 }
 
-- (id)shieldImageWithSize:(int64_t)a3 scale:(double)a4 idiom:(int64_t)a5
+- (id)shieldImageWithSize:(int64_t)size scale:(double)scale idiom:(int64_t)idiom
 {
-  if ([(NavSignShieldInfo *)self shieldID:a3]|| ([(NavSignShieldInfo *)self shieldStringID], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  if ([(NavSignShieldInfo *)self shieldID:size]|| ([(NavSignShieldInfo *)self shieldStringID], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
     v9 = objc_alloc_init(VKIconModifiers);
-    v10 = [(NavSignShieldInfo *)self shieldText];
-    [v9 setText:v10];
+    shieldText = [(NavSignShieldInfo *)self shieldText];
+    [v9 setText:shieldText];
 
-    v11 = [(NavSignShieldInfo *)self shieldID];
+    shieldID = [(NavSignShieldInfo *)self shieldID];
     v12 = +[VKIconManager sharedManager];
-    if (v11)
+    if (shieldID)
     {
-      v13 = [(NavSignShieldInfo *)self shieldID];
-      v14 = [(NavSignShieldInfo *)self shieldText];
-      *&v15 = a4;
-      [v12 imageForDataID:v13 text:v14 contentScale:a3 sizeGroup:v9 modifiers:v15];
+      shieldID2 = [(NavSignShieldInfo *)self shieldID];
+      shieldText2 = [(NavSignShieldInfo *)self shieldText];
+      *&v15 = scale;
+      [v12 imageForDataID:shieldID2 text:shieldText2 contentScale:size sizeGroup:v9 modifiers:v15];
     }
 
     else
     {
-      v14 = [(NavSignShieldInfo *)self shieldStringID];
-      *&v16 = a4;
-      [v12 imageForName:v14 contentScale:a3 sizeGroup:v9 modifiers:v16];
+      shieldText2 = [(NavSignShieldInfo *)self shieldStringID];
+      *&v16 = scale;
+      [v12 imageForName:shieldText2 contentScale:size sizeGroup:v9 modifiers:v16];
     }
     v17 = ;
   }

@@ -16,7 +16,7 @@
 
   *a3 = 4277001901;
   v8 = a3 + 2;
-  v9 = [a1 dataUsingEncoding:4 allowLossyConversion:1];
+  v9 = [self dataUsingEncoding:4 allowLossyConversion:1];
   v10 = v9;
   if (!v9)
   {
@@ -33,7 +33,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
-      v25 = [a1 UTF8String];
+      uTF8String = [self UTF8String];
       v26 = 2048;
       v27 = v15;
       v28 = 2048;
@@ -42,9 +42,9 @@
     }
 
     *__error() = v13;
-    v16 = [a1 UTF8String];
+    uTF8String2 = [self UTF8String];
     [v10 length];
-    _SASetCrashLogMessage(771, "%s claimed it was %lu UTF8 characters, but ended up being %lu", v17, v18, v19, v20, v21, v22, v16);
+    _SASetCrashLogMessage(771, "%s claimed it was %lu UTF8 characters, but ended up being %lu", v17, v18, v19, v20, v21, v22, uTF8String2);
     _os_crash();
     __break(1u);
 LABEL_11:
@@ -63,8 +63,8 @@ LABEL_7:
 
 - (void)addSelfToSerializationDictionary:()NSStringSASerializable
 {
-  v5 = [MEMORY[0x1E696AEC0] classDictionaryKey];
-  SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, a1, v5);
+  classDictionaryKey = [MEMORY[0x1E696AEC0] classDictionaryKey];
+  SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, self, classDictionaryKey);
 }
 
 + (uint64_t)newInstanceWithoutReferencesFromSerializedBuffer:()NSStringSASerializable bufferLength:

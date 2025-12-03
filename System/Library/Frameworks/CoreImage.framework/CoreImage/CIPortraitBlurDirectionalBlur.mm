@@ -30,21 +30,21 @@ id __45__CIPortraitBlurDirectionalBlur__kernelMetal__block_invoke()
     v21 = 0;
     v22 = &v21;
     v23 = 0x2020000000;
-    v24 = [(NSNumber *)self->inputHorizontalBlur BOOLValue];
+    bOOLValue = [(NSNumber *)self->inputHorizontalBlur BOOLValue];
     if ([(NSNumber *)self->inputUseMetal BOOLValue])
     {
-      v3 = [(CIPortraitBlurDirectionalBlur *)self _kernelMetal];
+      _kernelMetal = [(CIPortraitBlurDirectionalBlur *)self _kernelMetal];
     }
 
     else
     {
-      v3 = [(CIPortraitBlurDirectionalBlur *)self _kernel];
+      _kernelMetal = [(CIPortraitBlurDirectionalBlur *)self _kernel];
     }
 
-    v5 = v3;
-    if (!v3)
+    _kernel = _kernelMetal;
+    if (!_kernelMetal)
     {
-      v5 = [(CIPortraitBlurDirectionalBlur *)self _kernel];
+      _kernel = [(CIPortraitBlurDirectionalBlur *)self _kernel];
     }
 
     inputImage = self->inputImage;
@@ -75,7 +75,7 @@ id __45__CIPortraitBlurDirectionalBlur__kernelMetal__block_invoke()
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:{2, MEMORY[0x1E69E9820], 3221225472, __44__CIPortraitBlurDirectionalBlur_outputImage__block_invoke, &unk_1E75C2528, &v21}];
     v25 = @"kCIKernelOutputFormat";
     v26 = [MEMORY[0x1E696AD98] numberWithInt:264];
-    v19 = [v5 applyWithExtent:&v20 roiCallback:v18 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v26, &v25, 1), v14, v15, v17, v16}];
+    v19 = [_kernel applyWithExtent:&v20 roiCallback:v18 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v26, &v25, 1), v14, v15, v17, v16}];
     _Block_object_dispose(&v21, 8);
     return v19;
   }

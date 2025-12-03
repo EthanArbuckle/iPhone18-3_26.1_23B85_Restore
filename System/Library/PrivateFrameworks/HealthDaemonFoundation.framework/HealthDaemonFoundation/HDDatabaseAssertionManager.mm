@@ -1,12 +1,12 @@
 @interface HDDatabaseAssertionManager
-- (BOOL)takeAssertion:(id)a3;
-- (HDDatabaseAssertionManager)initWithDirectoryPath:(id)a3 prefix:(id)a4;
-- (id)_dbFilesFromDirectoryPath:(void *)a1;
-- (id)_dbFilesInDirectory:(void *)a3 errorOut:;
-- (uint64_t)_lock_takeCoreOSAssertionWithError:(uint64_t)a1;
+- (BOOL)takeAssertion:(id)assertion;
+- (HDDatabaseAssertionManager)initWithDirectoryPath:(id)path prefix:(id)prefix;
+- (id)_dbFilesFromDirectoryPath:(void *)path;
+- (id)_dbFilesInDirectory:(void *)directory errorOut:;
+- (uint64_t)_lock_takeCoreOSAssertionWithError:(uint64_t)error;
 - (void)_cancelTimerIfNeeded;
-- (void)_handleAssertionReleased:(BOOL)a3;
-- (void)_lock_releaseCoreOSAssertionIfNeeded:(uint64_t)a1;
+- (void)_handleAssertionReleased:(BOOL)released;
+- (void)_lock_releaseCoreOSAssertionIfNeeded:(uint64_t)needed;
 - (void)_startTimer;
 - (void)_timerFired;
 - (void)invalidate;
@@ -14,10 +14,10 @@
 
 @implementation HDDatabaseAssertionManager
 
-- (HDDatabaseAssertionManager)initWithDirectoryPath:(id)a3 prefix:(id)a4
+- (HDDatabaseAssertionManager)initWithDirectoryPath:(id)path prefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  prefixCopy = prefix;
   v18.receiver = self;
   v18.super_class = HDDatabaseAssertionManager;
   v8 = [(HDAssertionManager *)&v18 init];
@@ -27,11 +27,11 @@
     contentProtectionManager = v8->_contentProtectionManager;
     v8->_contentProtectionManager = v10;
 
-    v12 = [v6 copy];
+    v12 = [pathCopy copy];
     directoryPath = v8->_directoryPath;
     v8->_directoryPath = v12;
 
-    v14 = [v7 copy];
+    v14 = [prefixCopy copy];
     prefix = v8->_prefix;
     v8->_prefix = v14;
 
@@ -56,22 +56,22 @@
   [(HDDatabaseAssertionManager *)self _cancelTimerIfNeeded];
 }
 
-- (BOOL)takeAssertion:(id)a3
+- (BOOL)takeAssertion:(id)assertion
 {
-  v4 = a3;
-  if ([v4 contextType] == 3 || objc_msgSend(v4, "contextType") == 2)
+  assertionCopy = assertion;
+  if ([assertionCopy contextType] == 3 || objc_msgSend(assertionCopy, "contextType") == 2)
   {
     [(HDDatabaseAssertionManager *)self _cancelTimerIfNeeded];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 contextType] != 3 && objc_msgSend(v4, "contextType") != 2;
+  v5 = [assertionCopy contextType] != 3 && objc_msgSend(assertionCopy, "contextType") != 2;
   if (!self->_coreOSAssertionTaken && !(v5 | ![(HDContentProtectionManager *)self->_contentProtectionManager isProtectedDataAvailable]))
   {
-    v6 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v7 = [v6 supportsCoreOSDatabaseAssertion];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    supportsCoreOSDatabaseAssertion = [mEMORY[0x277CCDD30] supportsCoreOSDatabaseAssertion];
 
-    if (v7)
+    if (supportsCoreOSDatabaseAssertion)
     {
       v14 = 0;
       v10 = [(HDDatabaseAssertionManager *)self _lock_takeCoreOSAssertionWithError:?];
@@ -96,18 +96,18 @@
   os_unfair_lock_unlock(&self->_lock);
   v13.receiver = self;
   v13.super_class = HDDatabaseAssertionManager;
-  v8 = [(HDAssertionManager *)&v13 takeAssertion:v4];
+  v8 = [(HDAssertionManager *)&v13 takeAssertion:assertionCopy];
 
   return v8;
 }
 
-- (void)_handleAssertionReleased:(BOOL)a3
+- (void)_handleAssertionReleased:(BOOL)released
 {
   v5.receiver = self;
   v5.super_class = HDDatabaseAssertionManager;
   [(HDAssertionManager *)&v5 _handleAssertionReleased:?];
   os_unfair_lock_lock(&self->_lock);
-  [(HDDatabaseAssertionManager *)self _lock_releaseCoreOSAssertionIfNeeded:a3];
+  [(HDDatabaseAssertionManager *)self _lock_releaseCoreOSAssertionIfNeeded:released];
   os_unfair_lock_unlock(&self->_lock);
 }
 
@@ -136,9 +136,9 @@ id __59__HDDatabaseAssertionManager__dbFilesInDirectory_errorOut___block_invoke(
 
 - (void)_startTimer
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_5(a1);
+    OUTLINED_FUNCTION_1_5(self);
     v3 = dispatch_get_global_queue(21, 0);
     v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v3);
     v5 = *(v1 + 104);
@@ -165,9 +165,9 @@ id __59__HDDatabaseAssertionManager__dbFilesInDirectory_errorOut___block_invoke(
 - (void)_cancelTimerIfNeeded
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_5(a1);
+    OUTLINED_FUNCTION_1_5(self);
     if (*(v1 + 104))
     {
       _HKInitializeLogging();
@@ -190,23 +190,23 @@ id __59__HDDatabaseAssertionManager__dbFilesInDirectory_errorOut___block_invoke(
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_lock_takeCoreOSAssertionWithError:(uint64_t)a1
+- (uint64_t)_lock_takeCoreOSAssertionWithError:(uint64_t)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (error)
   {
-    os_unfair_lock_assert_owner((a1 + 120));
+    os_unfair_lock_assert_owner((error + 120));
     _HKInitializeLogging();
     v4 = HKLogAssertions();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = a1;
+      *&buf[4] = error;
       _os_log_impl(&dword_25156C000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Taking CoreOS assertion", buf, 0xCu);
     }
 
-    v5 = *(a1 + 88);
-    v6 = [(HDDatabaseAssertionManager *)a1 _dbFilesFromDirectoryPath:?];
+    v5 = *(error + 88);
+    v6 = [(HDDatabaseAssertionManager *)error _dbFilesFromDirectoryPath:?];
     [v5 addObjectsFromArray:v6];
 
     *buf = xmmword_2515C04A0;
@@ -214,7 +214,7 @@ id __59__HDDatabaseAssertionManager__dbFilesInDirectory_errorOut___block_invoke(
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = *(a1 + 88);
+    v7 = *(error + 88);
     v8 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
     if (v8)
     {
@@ -236,8 +236,8 @@ id __59__HDDatabaseAssertionManager__dbFilesInDirectory_errorOut___block_invoke(
           v14 = *(*(&v22 + 1) + 8 * v13);
           if ((HKIsUnitTesting() & 1) == 0)
           {
-            v15 = [v14 path];
-            v16 = open([v15 fileSystemRepresentation], 2);
+            path = [v14 path];
+            v16 = open([path fileSystemRepresentation], 2);
 
             if (fcntl(v16, 108, buf) < 0)
             {
@@ -275,7 +275,7 @@ LABEL_24:
               if (os_log_type_enabled(*v12, OS_LOG_TYPE_ERROR))
               {
                 *v26 = 138543362;
-                v27 = a1;
+                errorCopy = error;
                 _os_log_error_impl(&dword_25156C000, v17, OS_LOG_TYPE_ERROR, "%{public}@: Failed to close file descriptor", v26, 0xCu);
               }
             }
@@ -308,15 +308,15 @@ LABEL_25:
   return v18;
 }
 
-- (id)_dbFilesFromDirectoryPath:(void *)a1
+- (id)_dbFilesFromDirectoryPath:(void *)path
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (path)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v10 = 0;
-    v5 = [(HDDatabaseAssertionManager *)a1 _dbFilesInDirectory:v3 errorOut:&v10];
+    v5 = [(HDDatabaseAssertionManager *)path _dbFilesInDirectory:v3 errorOut:&v10];
     v6 = v10;
     if (v5)
     {
@@ -330,7 +330,7 @@ LABEL_25:
       if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v12 = a1;
+        pathCopy = path;
         v13 = 2114;
         v14 = v3;
         v15 = 2114;
@@ -350,20 +350,20 @@ LABEL_25:
   return v4;
 }
 
-- (void)_lock_releaseCoreOSAssertionIfNeeded:(uint64_t)a1
+- (void)_lock_releaseCoreOSAssertionIfNeeded:(uint64_t)needed
 {
   v57 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (needed)
   {
-    os_unfair_lock_assert_owner((a1 + 120));
-    if (*(a1 + 96) == 1 && (a2 & 1) == 0)
+    os_unfair_lock_assert_owner((needed + 120));
+    if (*(needed + 96) == 1 && (a2 & 1) == 0)
     {
       _HKInitializeLogging();
       v4 = HKLogAssertions();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v56 = a1;
+        neededCopy = needed;
         _os_log_impl(&dword_25156C000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Releasing CoreOS assertion", buf, 0xCu);
       }
 
@@ -371,7 +371,7 @@ LABEL_25:
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v5 = *(a1 + 88);
+      v5 = *(needed + 88);
       v6 = [v5 countByEnumeratingWithState:&v50 objects:v54 count:16];
       if (v6)
       {
@@ -391,8 +391,8 @@ LABEL_25:
             v10 = *(*(&v50 + 1) + 8 * v9);
             if ((HKIsUnitTesting() & 1) == 0)
             {
-              v11 = [v10 path];
-              v12 = open([v11 fileSystemRepresentation], 2);
+              path = [v10 path];
+              v12 = open([path fileSystemRepresentation], 2);
 
               v47 = 0;
               if (fcntl(v12, 109) < 0)
@@ -455,8 +455,8 @@ LABEL_18:
         while (v45);
       }
 
-      [*(a1 + 88) removeAllObjects];
-      *(a1 + 96) = 0;
+      [*(needed + 88) removeAllObjects];
+      *(needed + 96) = 0;
     }
   }
 
@@ -466,42 +466,42 @@ LABEL_18:
 - (void)_timerFired
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 hasActiveOrPendingAssertions];
-    os_unfair_lock_lock((a1 + 120));
+    hasActiveOrPendingAssertions = [self hasActiveOrPendingAssertions];
+    os_unfair_lock_lock((self + 120));
     _HKInitializeLogging();
     v3 = HKLogAssertions();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = *(a1 + 96);
+      v4 = *(self + 96);
       v8 = 138543618;
-      v9 = a1;
+      selfCopy = self;
       v10 = 1026;
       v11 = v4;
       _os_log_impl(&dword_25156C000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Attempting to release assertion with assertion taken value %{public}d", &v8, 0x12u);
     }
 
-    if (*(a1 + 96) == 1)
+    if (*(self + 96) == 1)
     {
-      v5 = *(a1 + 88);
-      v6 = [(HDDatabaseAssertionManager *)a1 _dbFilesFromDirectoryPath:?];
+      v5 = *(self + 88);
+      v6 = [(HDDatabaseAssertionManager *)self _dbFilesFromDirectoryPath:?];
       [v5 addObjectsFromArray:v6];
 
-      [(HDDatabaseAssertionManager *)a1 _lock_releaseCoreOSAssertionIfNeeded:v2];
+      [(HDDatabaseAssertionManager *)self _lock_releaseCoreOSAssertionIfNeeded:hasActiveOrPendingAssertions];
     }
 
-    os_unfair_lock_unlock((a1 + 120));
-    [(HDDatabaseAssertionManager *)a1 _cancelTimerIfNeeded];
+    os_unfair_lock_unlock((self + 120));
+    [(HDDatabaseAssertionManager *)self _cancelTimerIfNeeded];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_dbFilesInDirectory:(void *)a3 errorOut:
+- (id)_dbFilesInDirectory:(void *)directory errorOut:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = objc_alloc_init(MEMORY[0x277CCAA00]);
     v15 = 0;
@@ -518,10 +518,10 @@ LABEL_18:
       v10 = v9;
       if (v10)
       {
-        if (a3)
+        if (directory)
         {
           v11 = v10;
-          *a3 = v10;
+          *directory = v10;
         }
 
         else
@@ -530,7 +530,7 @@ LABEL_18:
         }
       }
 
-      a1 = 0;
+      self = 0;
       goto LABEL_12;
     }
 
@@ -541,20 +541,20 @@ LABEL_3:
       v13[1] = 3221225472;
       v13[2] = __59__HDDatabaseAssertionManager__dbFilesInDirectory_errorOut___block_invoke;
       v13[3] = &unk_2796BE0C0;
-      v13[4] = a1;
+      v13[4] = self;
       v14 = v5;
-      a1 = [v7 hk_map:v13];
+      self = [v7 hk_map:v13];
     }
 
     else
     {
-      a1 = MEMORY[0x277CBEBF8];
+      self = MEMORY[0x277CBEBF8];
     }
 
 LABEL_12:
   }
 
-  return a1;
+  return self;
 }
 
 - (void)takeAssertion:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

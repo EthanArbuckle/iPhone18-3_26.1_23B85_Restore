@@ -11,13 +11,13 @@
   v6 = v4;
   if (v4)
   {
-    [a1 setObject:MEMORY[0x1E695E110] forKeyedSubscript:v5];
-    [a1 populateUnderlyingErrorsStartingWithRootError:v6];
+    [self setObject:MEMORY[0x1E695E110] forKeyedSubscript:v5];
+    [self populateUnderlyingErrorsStartingWithRootError:v6];
   }
 
   else
   {
-    [a1 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v5];
+    [self setObject:MEMORY[0x1E695E118] forKeyedSubscript:v5];
   }
 }
 

@@ -1,33 +1,33 @@
 @interface IFTSchemaIFTActionCancellation
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTActionCancellation)initWithDictionary:(id)a3;
-- (IFTSchemaIFTActionCancellation)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTActionCancellation)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTActionCancellation)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTActionCancellation
 
-- (IFTSchemaIFTActionCancellation)initWithDictionary:(id)a3
+- (IFTSchemaIFTActionCancellation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTActionCancellation;
   v5 = [(IFTSchemaIFTActionCancellation *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionCancellation setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"cancelledActionStatementId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"cancelledActionStatementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(IFTSchemaIFTActionCancellation *)v5 setCancelledActionStatementId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"statementId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"statementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTActionCancellation)initWithJSON:(id)a3
+- (IFTSchemaIFTActionCancellation)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTActionCancellation *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTActionCancellation *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTActionCancellation *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,48 +85,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cancelledActionStatementId)
   {
-    v4 = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    cancelledActionStatementId = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
+    dictionaryRepresentation = [cancelledActionStatementId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"cancelledActionStatementId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"cancelledActionStatementId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"cancelledActionStatementId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"cancelledActionStatementId"];
     }
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionCancellation exists](self, "exists")}];
-    [v3 setObject:v7 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v7 forKeyedSubscript:@"exists"];
   }
 
   if (self->_statementId)
   {
-    v8 = [(IFTSchemaIFTActionCancellation *)self statementId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    statementId = [(IFTSchemaIFTActionCancellation *)self statementId];
+    dictionaryRepresentation2 = [statementId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"statementId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"statementId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"statementId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"statementId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -145,15 +145,15 @@
   return v4 ^ [(IFTSchemaIFTStatementId *)self->_statementId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -161,26 +161,26 @@
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
-  v7 = [v4 cancelledActionStatementId];
-  if ((v6 != 0) == (v7 == 0))
+  cancelledActionStatementId = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
+  cancelledActionStatementId2 = [equalCopy cancelledActionStatementId];
+  if ((cancelledActionStatementId != 0) == (cancelledActionStatementId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
-  if (v8)
+  cancelledActionStatementId3 = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
+  if (cancelledActionStatementId3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
-    v11 = [v4 cancelledActionStatementId];
-    v12 = [v10 isEqual:v11];
+    v9 = cancelledActionStatementId3;
+    cancelledActionStatementId4 = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
+    cancelledActionStatementId5 = [equalCopy cancelledActionStatementId];
+    v12 = [cancelledActionStatementId4 isEqual:cancelledActionStatementId5];
 
     if (!v12)
     {
@@ -192,12 +192,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTActionCancellation *)self statementId];
-  v7 = [v4 statementId];
-  if ((v6 != 0) != (v7 == 0))
+  cancelledActionStatementId = [(IFTSchemaIFTActionCancellation *)self statementId];
+  cancelledActionStatementId2 = [equalCopy statementId];
+  if ((cancelledActionStatementId != 0) != (cancelledActionStatementId2 == 0))
   {
-    v13 = [(IFTSchemaIFTActionCancellation *)self statementId];
-    if (!v13)
+    statementId = [(IFTSchemaIFTActionCancellation *)self statementId];
+    if (!statementId)
     {
 
 LABEL_18:
@@ -205,10 +205,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(IFTSchemaIFTActionCancellation *)self statementId];
-    v16 = [v4 statementId];
-    v17 = [v15 isEqual:v16];
+    v14 = statementId;
+    statementId2 = [(IFTSchemaIFTActionCancellation *)self statementId];
+    statementId3 = [equalCopy statementId];
+    v17 = [statementId2 isEqual:statementId3];
 
     if (v17)
     {
@@ -228,54 +228,54 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
+  cancelledActionStatementId = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
 
-  if (v4)
+  if (cancelledActionStatementId)
   {
-    v5 = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
+    cancelledActionStatementId2 = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTActionCancellation *)self statementId];
+  statementId = [(IFTSchemaIFTActionCancellation *)self statementId];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (statementId)
   {
-    v8 = [(IFTSchemaIFTActionCancellation *)self statementId];
+    statementId2 = [(IFTSchemaIFTActionCancellation *)self statementId];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTActionCancellation;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  cancelledActionStatementId = [(IFTSchemaIFTActionCancellation *)self cancelledActionStatementId];
+  v7 = [cancelledActionStatementId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTActionCancellation *)self deleteCancelledActionStatementId];
   }
 
-  v9 = [(IFTSchemaIFTActionCancellation *)self statementId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  statementId = [(IFTSchemaIFTActionCancellation *)self statementId];
+  v10 = [statementId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTActionCancellation *)self deleteStatementId];
   }

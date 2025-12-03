@@ -1,35 +1,35 @@
 @interface SUUIBadgeViewElement
 - (CGSize)size;
 - (NSAttributedString)attributedString;
-- (SUUIBadgeViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIBadgeViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (UIImage)fallbackImage;
 - (id)accessibilityText;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 - (int64_t)badgeType;
 @end
 
 @implementation SUUIBadgeViewElement
 
-- (SUUIBadgeViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIBadgeViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v25.receiver = self;
   v25.super_class = SUUIBadgeViewElement;
-  v9 = [(SUUIViewElement *)&v25 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v25 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"src"];
+    v10 = [elementCopy getAttribute:@"src"];
     if ([v10 length])
     {
       v11 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v10];
-      v12 = [v11 scheme];
-      v13 = [v12 isEqualToString:@"resource"];
+      scheme = [v11 scheme];
+      v13 = [scheme isEqualToString:@"resource"];
 
       if (v13)
       {
-        v14 = [v11 host];
+        host = [v11 host];
         resourceName = v9->_resourceName;
-        v9->_resourceName = v14;
+        v9->_resourceName = host;
       }
 
       else
@@ -42,10 +42,10 @@
 
     if (!v9->_resourceName && !v9->_url)
     {
-      v17 = [v8 getAttribute:@"content"];
+      v17 = [elementCopy getAttribute:@"content"];
       if (![v17 length])
       {
-        v18 = [v8 getAttribute:@"text"];
+        v18 = [elementCopy getAttribute:@"text"];
 
         v17 = v18;
       }
@@ -56,8 +56,8 @@
       }
     }
 
-    v19 = [v8 getAttribute:@"height"];
-    v20 = [v8 getAttribute:@"width"];
+    v19 = [elementCopy getAttribute:@"height"];
+    v20 = [elementCopy getAttribute:@"width"];
     if ([v19 length] && objc_msgSend(v20, "length"))
     {
       [v20 floatValue];
@@ -75,27 +75,27 @@
 {
   if (self->_text)
   {
-    v3 = [(SUUIBadgeViewElement *)self style];
-    v4 = SUUIViewElementFontWithStyle(v3);
+    style = [(SUUIBadgeViewElement *)self style];
+    v4 = SUUIViewElementFontWithStyle(style);
     if (!v4)
     {
       v4 = [MEMORY[0x277D74300] systemFontOfSize:10.0];
     }
 
-    v5 = [v3 ikColor];
-    v6 = [v5 color];
+    ikColor = [style ikColor];
+    color = [ikColor color];
 
-    if (!v6)
+    if (!color)
     {
-      v6 = [MEMORY[0x277D75348] whiteColor];
+      color = [MEMORY[0x277D75348] whiteColor];
     }
 
-    v7 = [MEMORY[0x277D74248] defaultParagraphStyle];
-    v8 = [v7 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+    v8 = [defaultParagraphStyle mutableCopy];
 
     [v8 setLineBreakMode:4];
     v9 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v10 = [v9 initWithObjectsAndKeys:{v4, *MEMORY[0x277D740A8], v8, *MEMORY[0x277D74118], v6, *MEMORY[0x277D740C0], 0}];
+    v10 = [v9 initWithObjectsAndKeys:{v4, *MEMORY[0x277D740A8], v8, *MEMORY[0x277D74118], color, *MEMORY[0x277D740C0], 0}];
     v11 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:self->_text attributes:v10];
   }
 
@@ -109,8 +109,8 @@
 
 - (int64_t)badgeType
 {
-  v3 = [(SUUIBadgeViewElement *)self fallbackImage];
-  if (!v3 && !self->_resourceName)
+  fallbackImage = [(SUUIBadgeViewElement *)self fallbackImage];
+  if (!fallbackImage && !self->_resourceName)
   {
     return self->_url == 0;
   }
@@ -122,37 +122,37 @@
 {
   v6.receiver = self;
   v6.super_class = SUUIBadgeViewElement;
-  v3 = [(SUUIBadgeViewElement *)&v6 accessibilityText];
-  if (![v3 length])
+  accessibilityText = [(SUUIBadgeViewElement *)&v6 accessibilityText];
+  if (![accessibilityText length])
   {
     v4 = self->_text;
 
-    v3 = v4;
+    accessibilityText = v4;
   }
 
-  return v3;
+  return accessibilityText;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v18.receiver = self;
   v18.super_class = SUUIBadgeViewElement;
-  v5 = [(SUUIViewElement *)&v18 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v18 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self)
+  if (elementCopy != self)
   {
-    if (!v4)
+    if (!elementCopy)
     {
       goto LABEL_10;
     }
 
 LABEL_6:
-    if (v4->_hasValidFallbackImage)
+    if (elementCopy->_hasValidFallbackImage)
     {
-      v8 = [(SUUIBadgeViewElement *)v4 fallbackImage];
+      fallbackImage = [(SUUIBadgeViewElement *)elementCopy fallbackImage];
       fallbackImage = self->_fallbackImage;
-      self->_fallbackImage = v8;
+      self->_fallbackImage = fallbackImage;
 
       self->_hasValidFallbackImage = 1;
     }
@@ -164,23 +164,23 @@ LABEL_6:
       self->_fallbackImage = 0;
     }
 
-    v11 = [(SUUIBadgeViewElement *)v4 resourceName];
+    resourceName = [(SUUIBadgeViewElement *)elementCopy resourceName];
     resourceName = self->_resourceName;
-    self->_resourceName = v11;
+    self->_resourceName = resourceName;
 
-    [(SUUIBadgeViewElement *)v4 size];
+    [(SUUIBadgeViewElement *)elementCopy size];
     self->_size.width = v13;
     self->_size.height = v14;
-    objc_storeStrong(&self->_text, v4->_text);
-    v15 = [(SUUIBadgeViewElement *)v4 URL];
+    objc_storeStrong(&self->_text, elementCopy->_text);
+    v15 = [(SUUIBadgeViewElement *)elementCopy URL];
     url = self->_url;
     self->_url = v15;
 
     goto LABEL_10;
   }
 
-  v7 = [v5 updateType];
-  if (v4 && v7)
+  updateType = [v5 updateType];
+  if (elementCopy && updateType)
   {
     goto LABEL_6;
   }
@@ -195,19 +195,19 @@ LABEL_10:
   if (!self->_hasValidFallbackImage)
   {
     self->_hasValidFallbackImage = 1;
-    v3 = [(SUUIBadgeViewElement *)self style];
-    v4 = [v3 badgeTreatment];
-    v5 = [v4 isEqualToString:@"rect"];
+    style = [(SUUIBadgeViewElement *)self style];
+    badgeTreatment = [style badgeTreatment];
+    v5 = [badgeTreatment isEqualToString:@"rect"];
 
     if (v5)
     {
       v6 = self->_text;
-      v7 = [v3 ikColor];
-      v8 = [v7 color];
+      ikColor = [style ikColor];
+      color = [ikColor color];
 
-      if (v8)
+      if (color)
       {
-        v9 = SUUIBadgeImageFromText(v6, v8, 1);
+        v9 = SUUIBadgeImageFromText(v6, color, 1);
         fallbackImage = self->_fallbackImage;
         self->_fallbackImage = v9;
       }

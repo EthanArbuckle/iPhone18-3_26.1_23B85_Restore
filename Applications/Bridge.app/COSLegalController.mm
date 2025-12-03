@@ -2,12 +2,12 @@
 - (BOOL)shouldShowBuiltinAppsPane;
 - (COSLegalController)init;
 - (id)specifiers;
-- (void)handleLegalDocuments:(id)a3 error:(id)a4;
+- (void)handleLegalDocuments:(id)documents error:(id)error;
 - (void)queryGizmoForLegalDocuments;
-- (void)startSpinnerInCellForSpecifier:(id)a3;
+- (void)startSpinnerInCellForSpecifier:(id)specifier;
 - (void)stopSpinner;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSLegalController
@@ -30,25 +30,25 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = COSLegalController;
-  [(COSLegalController *)&v16 viewWillAppear:a3];
+  [(COSLegalController *)&v16 viewWillAppear:appear];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = [_NSLocalizedStringResource alloc];
   v6 = +[NSLocale currentLocale];
-  v7 = [v5 initWithKey:@"LEGAL" table:@"About" locale:v6 bundleURL:v4];
+  v7 = [v5 initWithKey:@"LEGAL" table:@"About" locale:v6 bundleURL:bundleURL];
 
   v8 = [_NSLocalizedStringResource alloc];
   v9 = +[NSLocale currentLocale];
-  v10 = [v8 initWithKey:@"GENERAL" table:@"Settings" locale:v9 bundleURL:v4];
+  v10 = [v8 initWithKey:@"GENERAL" table:@"Settings" locale:v9 bundleURL:bundleURL];
 
   v11 = [_NSLocalizedStringResource alloc];
   v12 = +[NSLocale currentLocale];
-  v13 = [v11 initWithKey:@"About" table:@"General" locale:v12 bundleURL:v4];
+  v13 = [v11 initWithKey:@"About" table:@"General" locale:v12 bundleURL:bundleURL];
 
   v17[0] = v10;
   v17[1] = v13;
@@ -71,13 +71,13 @@
   objc_destroyWeak(&location);
 }
 
-- (void)handleLegalDocuments:(id)a3 error:(id)a4
+- (void)handleLegalDocuments:(id)documents error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  documentsCopy = documents;
+  errorCopy = error;
+  v8 = errorCopy;
   self->_hasFetchedDocuments = 1;
-  if (!v6 || v7)
+  if (!documentsCopy || errorCopy)
   {
     self->_errorHasOccurred = 1;
     v20 = pbb_bridge_log();
@@ -101,10 +101,10 @@
     if (self->_remoteLoadingSpecifier == self->_licenseSpecifier)
     {
       v24 = [(COSLegalController *)self indexPathForSpecifier:?];
-      v25 = [(COSLegalController *)self table];
+      table = [(COSLegalController *)self table];
       v26.receiver = self;
       v26.super_class = COSLegalController;
-      [(COSLegalController *)&v26 tableView:v25 didSelectRowAtIndexPath:v24];
+      [(COSLegalController *)&v26 tableView:table didSelectRowAtIndexPath:v24];
     }
 
     BPSPresentGizmoUnreachableServiceAlertWithDismissalHandler();
@@ -113,30 +113,30 @@
   else
   {
     self->_errorHasOccurred = 0;
-    v9 = [v6 objectForKeyedSubscript:kNSSLegalDocumentsLegalNoticesKey];
+    v9 = [documentsCopy objectForKeyedSubscript:kNSSLegalDocumentsLegalNoticesKey];
     v10 = self->_legalNoticesMarkup;
     self->_legalNoticesMarkup = v9;
 
-    v11 = [v6 objectForKeyedSubscript:kNSSLegalDocumentsLicenseKey];
+    v11 = [documentsCopy objectForKeyedSubscript:kNSSLegalDocumentsLicenseKey];
     v12 = self->_licenseMarkup;
     self->_licenseMarkup = v11;
 
-    v13 = [v6 objectForKeyedSubscript:kNSSLegalDocumentsSarStatementKey];
+    v13 = [documentsCopy objectForKeyedSubscript:kNSSLegalDocumentsSarStatementKey];
     v14 = self->_rfExposureMarkup;
     self->_rfExposureMarkup = v13;
 
-    v15 = [v6 objectForKeyedSubscript:kNSSLegalDocumentsSarUrlAddedKey];
+    v15 = [documentsCopy objectForKeyedSubscript:kNSSLegalDocumentsSarUrlAddedKey];
     self->_sarURLAdded = [v15 BOOLValue];
 
-    v16 = [v6 objectForKeyedSubscript:kNSSLegalDocumentsBuiltinAppsKey];
+    v16 = [documentsCopy objectForKeyedSubscript:kNSSLegalDocumentsBuiltinAppsKey];
     builtinAppsMarkup = self->_builtinAppsMarkup;
     self->_builtinAppsMarkup = v16;
 
     if (self->_remoteLoadingSpecifier)
     {
       v18 = [(COSLegalController *)self indexPathForSpecifier:?];
-      v19 = [(COSLegalController *)self table];
-      [(COSLegalController *)self tableView:v19 didSelectRowAtIndexPath:v18];
+      table2 = [(COSLegalController *)self table];
+      [(COSLegalController *)self tableView:table2 didSelectRowAtIndexPath:v18];
     }
   }
 
@@ -199,11 +199,11 @@
   return v4;
 }
 
-- (void)startSpinnerInCellForSpecifier:(id)a3
+- (void)startSpinnerInCellForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   [(COSLegalController *)self stopSpinner];
-  v7 = [v4 propertyForKey:PSTableCellKey];
+  v7 = [specifierCopy propertyForKey:PSTableCellKey];
   if (v7)
   {
     v5 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
@@ -213,7 +213,7 @@
   }
 
   remoteLoadingSpecifier = self->_remoteLoadingSpecifier;
-  self->_remoteLoadingSpecifier = v4;
+  self->_remoteLoadingSpecifier = specifierCopy;
 }
 
 - (void)stopSpinner
@@ -231,9 +231,9 @@
 
 - (BOOL)shouldShowBuiltinAppsPane
 {
-  v2 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   NRWatchOSVersionForRemoteDevice();
-  v3 = [v2 valueForProperty:NRDevicePropertyGreenTeaDevice];
+  v3 = [activeWatch valueForProperty:NRDevicePropertyGreenTeaDevice];
   if ([v3 BOOLValue])
   {
     IsGreaterThanOrEqual = NRVersionIsGreaterThanOrEqual();
@@ -247,11 +247,11 @@
   return IsGreaterThanOrEqual;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COSLegalController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(COSLegalController *)self indexForIndexPath:pathCopy];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
@@ -260,12 +260,12 @@
       [(COSLegalController *)self stopSpinner];
       v10.receiver = self;
       v10.super_class = COSLegalController;
-      [(COSLegalController *)&v10 tableView:v6 didSelectRowAtIndexPath:v7];
+      [(COSLegalController *)&v10 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     }
 
     else
     {
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       [(COSLegalController *)self startSpinnerInCellForSpecifier:v9];
       if (self->_errorHasOccurred)
       {

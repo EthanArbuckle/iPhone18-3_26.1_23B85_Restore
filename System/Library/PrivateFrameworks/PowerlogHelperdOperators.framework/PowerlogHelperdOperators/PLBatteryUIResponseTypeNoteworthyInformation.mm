@@ -3,12 +3,12 @@
 - (BOOL)hasNoterworthyInformationThroughOverrides;
 - (BOOL)hasRelevantSuggestion;
 - (double)getDailyPercentDrainThresholdValue;
-- (id)getResultFromCacheForSuggestionResponseType:(int64_t)a3;
+- (id)getResultFromCacheForSuggestionResponseType:(int64_t)type;
 - (id)getResultFromCacheForUISOCDrainResponseType;
 - (id)result;
-- (unint64_t)getNumDaysAboveDrainThreshold:(double)a3;
+- (unint64_t)getNumDaysAboveDrainThreshold:(double)threshold;
 - (unint64_t)getNumDaysAboveDrainThresholdValue;
-- (unint64_t)getNumDaysBelowUISOCLevel:(double)a3 forLastNDays:(unint64_t)a4;
+- (unint64_t)getNumDaysBelowUISOCLevel:(double)level forLastNDays:(unint64_t)days;
 - (unint64_t)getNumDaysBelowUISOCLevelThresholdValue;
 - (unint64_t)getUISOCLevelPercentThresholdValue;
 - (void)getBUIVisitDefaultValue;
@@ -29,28 +29,28 @@
 
   else
   {
-    v4 = [(PLBatteryUIResponseTypeNoteworthyInformation *)self getUISOCLevelPercentThresholdValue];
-    v5 = [(PLBatteryUIResponseTypeNoteworthyInformation *)self getNumDaysBelowUISOCLevelThresholdValue];
-    v6 = [(PLBatteryUIResponseTypeNoteworthyInformation *)self getNumDaysBelowUISOCLevel:7 forLastNDays:v4];
-    v7 = [(PLBatteryUIResponseTypeNoteworthyInformation *)self hasRelevantSuggestion];
-    v8 = [(PLBatteryUIResponseTypeNoteworthyInformation *)self getBUIVisitDefaultValue];
+    getUISOCLevelPercentThresholdValue = [(PLBatteryUIResponseTypeNoteworthyInformation *)self getUISOCLevelPercentThresholdValue];
+    getNumDaysBelowUISOCLevelThresholdValue = [(PLBatteryUIResponseTypeNoteworthyInformation *)self getNumDaysBelowUISOCLevelThresholdValue];
+    v6 = [(PLBatteryUIResponseTypeNoteworthyInformation *)self getNumDaysBelowUISOCLevel:7 forLastNDays:getUISOCLevelPercentThresholdValue];
+    hasRelevantSuggestion = [(PLBatteryUIResponseTypeNoteworthyInformation *)self hasRelevantSuggestion];
+    getBUIVisitDefaultValue = [(PLBatteryUIResponseTypeNoteworthyInformation *)self getBUIVisitDefaultValue];
     v9 = PLLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v12 = 134219008;
-      v13 = v4;
+      v13 = getUISOCLevelPercentThresholdValue;
       v14 = 2048;
-      v15 = v5;
+      v15 = getNumDaysBelowUISOCLevelThresholdValue;
       v16 = 2048;
       v17 = v6;
       v18 = 1024;
-      v19 = v7;
+      v19 = hasRelevantSuggestion;
       v20 = 1024;
-      v21 = v8;
+      v21 = getBUIVisitDefaultValue;
       _os_log_debug_impl(&dword_25EE51000, v9, OS_LOG_TYPE_DEBUG, "UISOCLevelPercentThresholdValue=%f, numDaysBelowUISOCLevelThresholdValue=%zu, numDaysBelowUISOCLevel=%zu, doesHaveRelevantSuggestion=%d, userHasVisitedBUI=%d", &v12, 0x2Cu);
     }
 
-    v10 = v6 >= v5 && v7 && !v8;
+    v10 = v6 >= getNumDaysBelowUISOCLevelThresholdValue && hasRelevantSuggestion && !getBUIVisitDefaultValue;
     [(PLBatteryUIResponseTypeNoteworthyInformation *)self setHasNoteworthyInformation:v10];
     v11 = *MEMORY[0x277D85DE8];
   }
@@ -83,21 +83,21 @@ id __54__PLBatteryUIResponseTypeNoteworthyInformation_result__block_invoke(uint6
   return v2;
 }
 
-- (unint64_t)getNumDaysAboveDrainThreshold:(double)a3
+- (unint64_t)getNumDaysAboveDrainThreshold:(double)threshold
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [(PLBatteryUIResponseTypeNoteworthyInformation *)self getResultFromCacheForUISOCDrainResponseType];
+  getResultFromCacheForUISOCDrainResponseType = [(PLBatteryUIResponseTypeNoteworthyInformation *)self getResultFromCacheForUISOCDrainResponseType];
   v5 = PLLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(PLBatteryUIResponseTypeNoteworthyInformation *)v4 getNumDaysAboveDrainThreshold:v5];
+    [(PLBatteryUIResponseTypeNoteworthyInformation *)getResultFromCacheForUISOCDrainResponseType getNumDaysAboveDrainThreshold:v5];
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = getResultFromCacheForUISOCDrainResponseType;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -117,7 +117,7 @@ id __54__PLBatteryUIResponseTypeNoteworthyInformation_result__block_invoke(uint6
         [v12 doubleValue];
         v14 = v13;
 
-        if (v14 > a3)
+        if (v14 > threshold)
         {
           ++v9;
         }
@@ -139,12 +139,12 @@ id __54__PLBatteryUIResponseTypeNoteworthyInformation_result__block_invoke(uint6
   return v15;
 }
 
-- (unint64_t)getNumDaysBelowUISOCLevel:(double)a3 forLastNDays:(unint64_t)a4
+- (unint64_t)getNumDaysBelowUISOCLevel:(double)level forLastNDays:(unint64_t)days
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT datetime(timestamp, 'unixepoch', 'localtime', 'start of day'), COUNT(*) FROM PLBatteryAgent_EventBackward_BatteryUI WHERE level <= %f AND timestamp >((SELECT MAX(timestamp) FROM PLBatteryAgent_EventBackward_Battery)-%zu*86400) GROUP BY datetime(timestamp, 'unixepoch', 'localtime', 'start of day')", *&a3, a4];;
-  v5 = [MEMORY[0x277D3F210] sharedSQLiteConnection];
-  v6 = [v5 performQuery:v4];
+  days = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT datetime(timestamp, 'unixepoch', 'localtime', 'start of day'), COUNT(*) FROM PLBatteryAgent_EventBackward_BatteryUI WHERE level <= %f AND timestamp >((SELECT MAX(timestamp) FROM PLBatteryAgent_EventBackward_Battery)-%zu*86400) GROUP BY datetime(timestamp, 'unixepoch', 'localtime', 'start of day')", *&level, days];;
+  mEMORY[0x277D3F210] = [MEMORY[0x277D3F210] sharedSQLiteConnection];
+  v6 = [mEMORY[0x277D3F210] performQuery:days];
 
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -188,22 +188,22 @@ id __54__PLBatteryUIResponseTypeNoteworthyInformation_result__block_invoke(uint6
 - (id)getResultFromCacheForUISOCDrainResponseType
 {
   v3 = PLBatteryUsageUIKeyFromConfiguration();
-  v4 = [(PLBatteryUIResponseTypeNoteworthyInformation *)self responderService];
-  v5 = [v4 responseCache];
-  v6 = [v5 objectForKeyedSubscript:&unk_287145E08];
+  responderService = [(PLBatteryUIResponseTypeNoteworthyInformation *)self responderService];
+  responseCache = [responderService responseCache];
+  v6 = [responseCache objectForKeyedSubscript:&unk_287145E08];
   v7 = [v6 objectForKeyedSubscript:v3];
   v8 = [v7 objectForKeyedSubscript:@"result"];
 
   return v8;
 }
 
-- (id)getResultFromCacheForSuggestionResponseType:(int64_t)a3
+- (id)getResultFromCacheForSuggestionResponseType:(int64_t)type
 {
   v5 = PLBatteryUsageUIKeyFromConfiguration();
-  v6 = [(PLBatteryUIResponseTypeNoteworthyInformation *)self responderService];
-  v7 = [v6 responseCache];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  responderService = [(PLBatteryUIResponseTypeNoteworthyInformation *)self responderService];
+  responseCache = [responderService responseCache];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  v9 = [responseCache objectForKeyedSubscript:v8];
   v10 = [v9 objectForKeyedSubscript:v5];
   v11 = [v10 objectForKeyedSubscript:@"result"];
 
@@ -244,15 +244,15 @@ id __54__PLBatteryUIResponseTypeNoteworthyInformation_result__block_invoke(uint6
   v3 = v2;
   if (v2 && [v2 unsignedIntValue])
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v4 = 7;
+    unsignedIntValue = 7;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unint64_t)getUISOCLevelPercentThresholdValue
@@ -289,29 +289,29 @@ id __54__PLBatteryUIResponseTypeNoteworthyInformation_result__block_invoke(uint6
   v3 = v2;
   if (v2 && [v2 unsignedIntValue])
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v4 = 5;
+    unsignedIntValue = 5;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (BOOL)getBUIVisitDefaultValue
 {
   v2 = [MEMORY[0x277D3F180] objectForKey:@"BUIVisitDefaultKey" forApplicationID:@"com.apple.powerlogd" synchronize:1];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
   v4 = PLLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(PLBatteryUIResponseTypeNoteworthyInformation *)v3 getBUIVisitDefaultValue];
+    [(PLBatteryUIResponseTypeNoteworthyInformation *)bOOLValue getBUIVisitDefaultValue];
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasNoterworthyInformationThroughOverrides
@@ -320,9 +320,9 @@ id __54__PLBatteryUIResponseTypeNoteworthyInformation_result__block_invoke(uint6
   if (v2)
   {
     v3 = [PLUtilities powerlogDefaultForKey:@"BUI_HAS_NOTEWORTHY_INFORMATION"];
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = bOOLValue;
   }
 
   return v2;
@@ -341,7 +341,7 @@ id __54__PLBatteryUIResponseTypeNoteworthyInformation_result__block_invoke(uint6
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1 & 1;
+  v3[1] = self & 1;
   _os_log_debug_impl(&dword_25EE51000, a2, OS_LOG_TYPE_DEBUG, "BUIVisitDefaultValue=%d", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }

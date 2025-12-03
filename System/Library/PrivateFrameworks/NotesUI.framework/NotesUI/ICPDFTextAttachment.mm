@@ -1,7 +1,7 @@
 @interface ICPDFTextAttachment
 - (ICPDFEncryptionStateChecker)encryptionStateChecker;
 - (id)supportedPresentationSizes;
-- (signed)effectiveAttachmentViewSizeForTextContainer:(id)a3;
+- (signed)effectiveAttachmentViewSizeForTextContainer:(id)container;
 @end
 
 @implementation ICPDFTextAttachment
@@ -28,18 +28,18 @@ void __49__ICPDFTextAttachment_supportedPresentationSizes__block_invoke()
 {
   if (!self->_encryptionStateChecker)
   {
-    v3 = [(ICAbstractTextAttachment *)self attachment];
-    v4 = [v3 attachmentType];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
+    attachmentType = [attachment attachmentType];
 
-    if (v4 == 6)
+    if (attachmentType == 6)
     {
-      v5 = [(ICAbstractTextAttachment *)self attachment];
-      v6 = [v5 media];
-      v7 = [v6 mediaURL];
+      attachment2 = [(ICAbstractTextAttachment *)self attachment];
+      media = [attachment2 media];
+      mediaURL = [media mediaURL];
 
-      if (v7)
+      if (mediaURL)
       {
-        v8 = [[ICPDFEncryptionStateChecker alloc] initWithPDFURL:v7];
+        v8 = [[ICPDFEncryptionStateChecker alloc] initWithPDFURL:mediaURL];
         encryptionStateChecker = self->_encryptionStateChecker;
         self->_encryptionStateChecker = v8;
       }
@@ -51,23 +51,23 @@ void __49__ICPDFTextAttachment_supportedPresentationSizes__block_invoke()
   return v10;
 }
 
-- (signed)effectiveAttachmentViewSizeForTextContainer:(id)a3
+- (signed)effectiveAttachmentViewSizeForTextContainer:(id)container
 {
   v11.receiver = self;
   v11.super_class = ICPDFTextAttachment;
-  v4 = [(ICBaseTextAttachment *)&v11 effectiveAttachmentViewSizeForTextContainer:a3];
+  v4 = [(ICBaseTextAttachment *)&v11 effectiveAttachmentViewSizeForTextContainer:container];
   if (v4 != 1)
   {
-    v5 = [(ICAbstractTextAttachment *)self attachment];
-    v6 = [v5 attachmentModel];
-    v7 = [v6 hasPreviews];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
+    attachmentModel = [attachment attachmentModel];
+    hasPreviews = [attachmentModel hasPreviews];
 
-    if ((v7 & 1) == 0)
+    if ((hasPreviews & 1) == 0)
     {
-      v8 = [(ICPDFTextAttachment *)self encryptionStateChecker];
-      v9 = [v8 encryptionState];
+      encryptionStateChecker = [(ICPDFTextAttachment *)self encryptionStateChecker];
+      encryptionState = [encryptionStateChecker encryptionState];
 
-      if (v9 != 2)
+      if (encryptionState != 2)
       {
         LOWORD(v4) = 1;
       }

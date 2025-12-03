@@ -1,52 +1,52 @@
 @interface MTAAlarmTableViewController
-- (BOOL)_isAlarmsSection:(int64_t)a3;
-- (BOOL)_isWakeAlarmSection:(int64_t)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (MTAAlarmTableViewController)initWithAlarmManager:(id)a3 dataSource:(id)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (BOOL)_isAlarmsSection:(int64_t)section;
+- (BOOL)_isWakeAlarmSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (MTAAlarmTableViewController)initWithAlarmManager:(id)manager dataSource:(id)source;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)addViewController;
-- (id)bypassReloadAlarm:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)bypassReloadAlarm:(id)alarm;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (int64_t)numberOfItems;
 - (int64_t)numberOfItemsIncludingSleep;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_addAlarm:(id)a3 withCompletionBlock:(id)a4;
-- (void)_reloadData:(id)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_addAlarm:(id)alarm withCompletionBlock:(id)block;
+- (void)_reloadData:(id)data;
 - (void)_reloadDataIfNecessary;
-- (void)_removeAlarm:(id)a3 withCompletionBlock:(id)a4;
-- (void)_scrollToAlarm:(id)a3;
-- (void)_updateAlarm:(id)a3 withCompletionBlock:(id)a4;
-- (void)alarmEditController:(id)a3 didAddAlarm:(id)a4;
-- (void)alarmEditController:(id)a3 didDeleteAlarm:(id)a4;
-- (void)alarmEditController:(id)a3 didEditAlarm:(id)a4;
-- (void)dataSource:(id)a3 didUpdateAlarms:(id)a4;
-- (void)dataSourceDidReload:(id)a3;
-- (void)deleteRowAtIndexPath:(id)a3;
+- (void)_removeAlarm:(id)alarm withCompletionBlock:(id)block;
+- (void)_scrollToAlarm:(id)alarm;
+- (void)_updateAlarm:(id)alarm withCompletionBlock:(id)block;
+- (void)alarmEditController:(id)controller didAddAlarm:(id)alarm;
+- (void)alarmEditController:(id)controller didDeleteAlarm:(id)alarm;
+- (void)alarmEditController:(id)controller didEditAlarm:(id)alarm;
+- (void)dataSource:(id)source didUpdateAlarms:(id)alarms;
+- (void)dataSourceDidReload:(id)reload;
+- (void)deleteRowAtIndexPath:(id)path;
 - (void)didDismissViewController;
-- (void)dismissAddViewController:(id)a3;
-- (void)finishAddViewControllerDismissal:(BOOL)a3;
-- (void)handleContentSizeTransitionFrom:(id)a3;
+- (void)dismissAddViewController:(id)controller;
+- (void)finishAddViewControllerDismissal:(BOOL)dismissal;
+- (void)handleContentSizeTransitionFrom:(id)from;
 - (void)healthAppInstallationDidChange;
 - (void)reloadSections;
 - (void)reloadSleepSection;
 - (void)reloadWidgetTimeline;
 - (void)saveScrollPoint;
 - (void)scrollToSavedPoint;
-- (void)setAlarmEnabled:(BOOL)a3 forCell:(id)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setupForTest:(id)a3 options:(id)a4;
-- (void)showAddViewForAlarm:(id)a3;
-- (void)showAddViewForAlarmWithID:(id)a3;
-- (void)showEditViewForRow:(int64_t)a3;
-- (void)showSleepView:(BOOL)a3;
+- (void)setAlarmEnabled:(BOOL)enabled forCell:(id)cell;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setupForTest:(id)test options:(id)options;
+- (void)showAddViewForAlarm:(id)alarm;
+- (void)showAddViewForAlarmWithID:(id)d;
+- (void)showEditViewForRow:(int64_t)row;
+- (void)showSleepView:(BOOL)view;
 - (void)sleepScheduleModelDidChange;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MTAAlarmTableViewController
@@ -57,32 +57,32 @@
   v12.super_class = MTAAlarmTableViewController;
   [(MTATableViewController *)&v12 viewDidLoad];
   [(MTATableViewController *)self reloadState];
-  v3 = [(MTAAlarmTableViewController *)self tableView];
-  [v3 setAllowsSelectionDuringEditing:1];
+  tableView = [(MTAAlarmTableViewController *)self tableView];
+  [tableView setAllowsSelectionDuringEditing:1];
 
-  v4 = [(MTAAlarmTableViewController *)self tableView];
-  [v4 setAllowsSelection:1];
+  tableView2 = [(MTAAlarmTableViewController *)self tableView];
+  [tableView2 setAllowsSelection:1];
 
-  v5 = [(MTAAlarmTableViewController *)self tableView];
-  [v5 setLayoutMarginsFollowReadableWidth:1];
+  tableView3 = [(MTAAlarmTableViewController *)self tableView];
+  [tableView3 setLayoutMarginsFollowReadableWidth:1];
 
-  v6 = [(MTAAlarmTableViewController *)self tableView];
-  [v6 setEstimatedRowHeight:96.0];
+  tableView4 = [(MTAAlarmTableViewController *)self tableView];
+  [tableView4 setEstimatedRowHeight:96.0];
 
-  v7 = [(MTAAlarmTableViewController *)self tableView];
-  [v7 setRowHeight:UITableViewAutomaticDimension];
+  tableView5 = [(MTAAlarmTableViewController *)self tableView];
+  [tableView5 setRowHeight:UITableViewAutomaticDimension];
 
-  v8 = [(MTAAlarmTableViewController *)self tableView];
-  [v8 registerClass:objc_opt_class() forCellReuseIdentifier:off_1000D1AA0];
+  tableView6 = [(MTAAlarmTableViewController *)self tableView];
+  [tableView6 registerClass:objc_opt_class() forCellReuseIdentifier:off_1000D1AA0];
 
-  v9 = [(MTAAlarmTableViewController *)self tableView];
-  [v9 registerClass:objc_opt_class() forCellReuseIdentifier:off_1000D1B08];
+  tableView7 = [(MTAAlarmTableViewController *)self tableView];
+  [tableView7 registerClass:objc_opt_class() forCellReuseIdentifier:off_1000D1B08];
 
-  v10 = [(MTAAlarmTableViewController *)self tableView];
-  [v10 registerClass:objc_opt_class() forCellReuseIdentifier:off_1000D1B10];
+  tableView8 = [(MTAAlarmTableViewController *)self tableView];
+  [tableView8 registerClass:objc_opt_class() forCellReuseIdentifier:off_1000D1B10];
 
-  v11 = [(MTAAlarmTableViewController *)self tableView];
-  [v11 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kMTAAlarmTableViewHeaderReuseIdentifier"];
+  tableView9 = [(MTAAlarmTableViewController *)self tableView];
+  [tableView9 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kMTAAlarmTableViewHeaderReuseIdentifier"];
 }
 
 - (int64_t)numberOfItemsIncludingSleep
@@ -97,30 +97,30 @@
     return 0;
   }
 
-  v4 = [(MTAAlarmTableViewController *)self dataSource];
-  v5 = [v4 numberOfAlarms];
+  dataSource = [(MTAAlarmTableViewController *)self dataSource];
+  numberOfAlarms = [dataSource numberOfAlarms];
 
-  v6 = [(MTAAlarmTableViewController *)self dataSource];
-  v7 = [v6 sleepAlarm];
+  dataSource2 = [(MTAAlarmTableViewController *)self dataSource];
+  sleepAlarm = [dataSource2 sleepAlarm];
 
-  if (v7)
+  if (sleepAlarm)
   {
-    return v5 + 1;
+    return numberOfAlarms + 1;
   }
 
   else
   {
-    return v5;
+    return numberOfAlarms;
   }
 }
 
 - (void)reloadSections
 {
   [(NSMutableArray *)self->_sections removeAllObjects];
-  v3 = [(MTAAlarmTableViewController *)self dataSource];
-  v4 = [v3 sleepAlarm];
+  dataSource = [(MTAAlarmTableViewController *)self dataSource];
+  sleepAlarm = [dataSource sleepAlarm];
 
-  if (v4 || MTShouldHandleForEucalyptus() && (MTIdiomIpad() & 1) == 0)
+  if (sleepAlarm || MTShouldHandleForEucalyptus() && (MTIdiomIpad() & 1) == 0)
   {
     [(NSMutableArray *)self->_sections addObject:&off_1000B1890];
   }
@@ -142,10 +142,10 @@
     return 0;
   }
 
-  v4 = [(MTAAlarmTableViewController *)self dataSource];
-  v5 = [v4 numberOfAlarms];
+  dataSource = [(MTAAlarmTableViewController *)self dataSource];
+  numberOfAlarms = [dataSource numberOfAlarms];
 
-  return v5;
+  return numberOfAlarms;
 }
 
 - (void)scrollToSavedPoint
@@ -159,14 +159,14 @@
     if (v5 >= 0.0)
     {
       v6 = v5;
-      v7 = [(MTAAlarmTableViewController *)self tableView];
-      [v7 contentSize];
+      tableView = [(MTAAlarmTableViewController *)self tableView];
+      [tableView contentSize];
       v9 = v8;
 
       if (v9 > v6)
       {
-        v10 = [(MTAAlarmTableViewController *)self tableView];
-        [v10 setContentOffset:{0.0, v6}];
+        tableView2 = [(MTAAlarmTableViewController *)self tableView];
+        [tableView2 setContentOffset:{0.0, v6}];
       }
     }
 
@@ -176,30 +176,30 @@
   }
 }
 
-- (MTAAlarmTableViewController)initWithAlarmManager:(id)a3 dataSource:(id)a4
+- (MTAAlarmTableViewController)initWithAlarmManager:(id)manager dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  sourceCopy = source;
   v23.receiver = self;
   v23.super_class = MTAAlarmTableViewController;
   v8 = [(MTATableViewController *)&v23 initWithTableViewStyle:0];
   if (v8)
   {
     v9 = [UIImage systemImageNamed:@"alarm.fill"];
-    v10 = [(MTAAlarmTableViewController *)v8 tabBarItem];
-    [v10 setImage:v9];
+    tabBarItem = [(MTAAlarmTableViewController *)v8 tabBarItem];
+    [tabBarItem setImage:v9];
 
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@"ALARMS_LIST" value:&stru_1000AEF10 table:0];
     [(MTAAlarmTableViewController *)v8 setTitle:v12];
 
-    [(MTAAlarmTableViewController *)v8 setAlarmManager:v6];
-    [(MTAAlarmTableViewController *)v8 setDataSource:v7];
-    v13 = [(MTAAlarmTableViewController *)v8 dataSource];
-    [v13 registerObserver:v8];
+    [(MTAAlarmTableViewController *)v8 setAlarmManager:managerCopy];
+    [(MTAAlarmTableViewController *)v8 setDataSource:sourceCopy];
+    dataSource = [(MTAAlarmTableViewController *)v8 dataSource];
+    [dataSource registerObserver:v8];
 
-    v14 = [(MTAAlarmTableViewController *)v8 title];
-    v15 = [NSUserActivity mtUserActivityWithActivityType:@"com.apple.clock.alarm" title:v14];
+    title = [(MTAAlarmTableViewController *)v8 title];
+    v15 = [NSUserActivity mtUserActivityWithActivityType:@"com.apple.clock.alarm" title:title];
     userActivity = v8->_userActivity;
     v8->_userActivity = v15;
 
@@ -210,8 +210,8 @@
     v19 = objc_opt_new();
     [(MTAAlarmTableViewController *)v8 setSleepCoordinator:v19];
 
-    v20 = [(MTAAlarmTableViewController *)v8 sleepCoordinator];
-    [v20 setDelegate:v8];
+    sleepCoordinator = [(MTAAlarmTableViewController *)v8 sleepCoordinator];
+    [sleepCoordinator setDelegate:v8];
 
     v21 = v8;
   }
@@ -219,37 +219,37 @@
   return v8;
 }
 
-- (void)_reloadData:(id)a3
+- (void)_reloadData:(id)data
 {
-  v4 = a3;
-  v5 = [(MTAlarmDataSource *)self->_dataSource reloadAlarms];
+  dataCopy = data;
+  reloadAlarms = [(MTAlarmDataSource *)self->_dataSource reloadAlarms];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000232B8;
   v8[3] = &unk_1000AE0A0;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
-  [(MTAAlarmTableViewController *)self setReloadDataFuture:v5];
+  v9 = dataCopy;
+  v6 = dataCopy;
+  v7 = [reloadAlarms addCompletionBlock:v8];
+  [(MTAAlarmTableViewController *)self setReloadDataFuture:reloadAlarms];
 }
 
 - (void)_reloadDataIfNecessary
 {
-  v3 = [(MTAAlarmTableViewController *)self reloadDataFuture];
+  reloadDataFuture = [(MTAAlarmTableViewController *)self reloadDataFuture];
 
-  if (!v3)
+  if (!reloadDataFuture)
   {
 
     [(MTAAlarmTableViewController *)self _reloadData:0];
   }
 }
 
-- (void)dataSourceDidReload:(id)a3
+- (void)dataSourceDidReload:(id)reload
 {
   [(MTAAlarmTableViewController *)self reloadSections];
   [(MTATableViewController *)self _reloadUI:0];
-  v4 = [(MTAAlarmTableViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(MTAAlarmTableViewController *)self tableView];
+  [tableView reloadData];
 
   [(MTAAlarmTableViewController *)self scrollToSavedPoint];
   alarmsLoadedAction = self->_alarmsLoadedAction;
@@ -261,17 +261,17 @@
   }
 }
 
-- (void)dataSource:(id)a3 didUpdateAlarms:(id)a4
+- (void)dataSource:(id)source didUpdateAlarms:(id)alarms
 {
-  v5 = a4;
+  alarmsCopy = alarms;
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MTAlarm *)self->_alarmToEdit alarmID];
+    alarmID = [(MTAlarm *)self->_alarmToEdit alarmID];
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v7;
+    v12 = alarmID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ reloading UI for alarm: %{public}@", buf, 0x16u);
   }
 
@@ -282,39 +282,39 @@
     v8[2] = sub_100023508;
     v8[3] = &unk_1000AE0C8;
     v8[4] = self;
-    [v5 enumerateObjectsUsingBlock:v8];
+    [alarmsCopy enumerateObjectsUsingBlock:v8];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MTAAlarmTableViewController;
-  [(MTATableViewController *)&v4 viewWillAppear:a3];
+  [(MTATableViewController *)&v4 viewWillAppear:appear];
   self->_viewVisible = 1;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MTAAlarmTableViewController;
-  [(MTATableViewController *)&v4 viewDidAppear:a3];
+  [(MTATableViewController *)&v4 viewDidAppear:appear];
   [(NSUserActivity *)self->_userActivity becomeCurrent];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   self->_viewVisible = 0;
   [(NSUserActivity *)self->_userActivity resignCurrent];
   v5.receiver = self;
   v5.super_class = MTAAlarmTableViewController;
-  [(MTATableViewController *)&v5 viewDidDisappear:v3];
+  [(MTATableViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)setupForTest:(id)a3 options:(id)a4
+- (void)setupForTest:(id)test options:(id)options
 {
-  [(MTAAlarmTableViewController *)self setIsRunningPPTTest:1, a4];
+  [(MTAAlarmTableViewController *)self setIsRunningPPTTest:1, options];
 
   [(MTATableViewController *)self reloadState];
 }
@@ -323,8 +323,8 @@
 {
   if ([(MTAAlarmTableViewController *)self isViewLoaded])
   {
-    v3 = [(MTAAlarmTableViewController *)self tableView];
-    [v3 contentOffset];
+    tableView = [(MTAAlarmTableViewController *)self tableView];
+    [tableView contentOffset];
     *&v5 = v4;
     v7 = [NSNumber numberWithFloat:v5];
 
@@ -337,8 +337,8 @@
 {
   if (self->_alarmToEdit)
   {
-    v3 = [(MTAAlarmTableViewController *)self dataSource];
-    v4 = [v3 rowForAlarm:self->_alarmToEdit] == 0x7FFFFFFFFFFFFFFFLL;
+    dataSource = [(MTAAlarmTableViewController *)self dataSource];
+    v4 = [dataSource rowForAlarm:self->_alarmToEdit] == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -349,72 +349,72 @@
   v5 = [[MTAAlarmEditViewController alloc] initWithAlarm:self->_alarmToEdit isNewAlarm:v4];
   [(MTAAlarmTableViewController *)self setAlarmEditViewController:v5];
 
-  v6 = [(MTAAlarmTableViewController *)self alarmEditViewController];
-  [v6 setDelegate:self];
+  alarmEditViewController = [(MTAAlarmTableViewController *)self alarmEditViewController];
+  [alarmEditViewController setDelegate:self];
 
   v7 = [MTAAddSheetNavigationController alloc];
-  v8 = [(MTAAlarmTableViewController *)self alarmEditViewController];
-  v9 = [(MTAAddSheetNavigationController *)v7 initWithRootViewController:v8];
+  alarmEditViewController2 = [(MTAAlarmTableViewController *)self alarmEditViewController];
+  v9 = [(MTAAddSheetNavigationController *)v7 initWithRootViewController:alarmEditViewController2];
 
   return v9;
 }
 
-- (void)showAddViewForAlarm:(id)a3
+- (void)showAddViewForAlarm:(id)alarm
 {
-  v5 = a3;
-  objc_storeStrong(&self->_alarmToEdit, a3);
-  v6 = [(MTAAlarmTableViewController *)self tableView];
-  [v6 setUserInteractionEnabled:0];
+  alarmCopy = alarm;
+  objc_storeStrong(&self->_alarmToEdit, alarm);
+  tableView = [(MTAAlarmTableViewController *)self tableView];
+  [tableView setUserInteractionEnabled:0];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10002399C;
   v9[3] = &unk_1000AD9F0;
-  v10 = v5;
+  v10 = alarmCopy;
   v8.receiver = self;
   v8.super_class = MTAAlarmTableViewController;
-  v7 = v5;
+  v7 = alarmCopy;
   [(MTATableViewController *)&v8 showAddViewWithCompletion:v9];
 }
 
-- (void)showAddViewForAlarmWithID:(id)a3
+- (void)showAddViewForAlarmWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_initWeak(&location, self);
   [(MTAAlarmTableViewController *)self _reloadDataIfNecessary];
-  v5 = [(MTAAlarmTableViewController *)self reloadDataFuture];
+  reloadDataFuture = [(MTAAlarmTableViewController *)self reloadDataFuture];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100023B74;
   v8[3] = &unk_1000AE0F0;
   objc_copyWeak(&v10, &location);
-  v6 = v4;
+  v6 = dCopy;
   v9 = v6;
-  v7 = [v5 addCompletionBlock:v8];
+  v7 = [reloadDataFuture addCompletionBlock:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)dismissAddViewController:(id)a3
+- (void)dismissAddViewController:(id)controller
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100023D08;
   v6[3] = &unk_1000AD9F0;
   v6[4] = self;
-  v4 = a3;
+  controllerCopy = controller;
   [(MTATableViewController *)self reloadState:v6];
   v5.receiver = self;
   v5.super_class = MTAAlarmTableViewController;
-  [(MTATableViewController *)&v5 dismissAddViewController:v4];
+  [(MTATableViewController *)&v5 dismissAddViewController:controllerCopy];
 
   [(MTAAlarmTableViewController *)self setAlarmEditViewController:0];
 }
 
-- (void)finishAddViewControllerDismissal:(BOOL)a3
+- (void)finishAddViewControllerDismissal:(BOOL)dismissal
 {
-  v3 = a3;
+  dismissalCopy = dismissal;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100023E38;
@@ -423,94 +423,94 @@
   [(MTATableViewController *)self reloadState:v8];
   v7.receiver = self;
   v7.super_class = MTAAlarmTableViewController;
-  [(MTATableViewController *)&v7 finishAddViewControllerDismissal:v3];
+  [(MTATableViewController *)&v7 finishAddViewControllerDismissal:dismissalCopy];
   [(MTAAlarmTableViewController *)self setAlarmEditViewController:0];
   v5 = +[MTAStateStore shared];
   v6 = [MTAStateStoreEvent eventWithType:6];
   [v5 pushEvent:v6];
 }
 
-- (void)_addAlarm:(id)a3 withCompletionBlock:(id)a4
+- (void)_addAlarm:(id)alarm withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  alarmCopy = alarm;
+  blockCopy = block;
   v8 = MTLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 alarmID];
+    alarmID = [alarmCopy alarmID];
     *buf = 138543362;
-    v18 = v9;
+    v18 = alarmID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Adding alarm %{public}@", buf, 0xCu);
   }
 
-  v10 = [(MTAAlarmTableViewController *)self dataSource];
-  v11 = [(MTAAlarmTableViewController *)self bypassReloadAlarm:v6];
-  v12 = [v10 addAlarm:v11];
+  dataSource = [(MTAAlarmTableViewController *)self dataSource];
+  v11 = [(MTAAlarmTableViewController *)self bypassReloadAlarm:alarmCopy];
+  v12 = [dataSource addAlarm:v11];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100024018;
   v15[3] = &unk_1000AE118;
   v15[4] = self;
-  v16 = v7;
-  v13 = v7;
+  v16 = blockCopy;
+  v13 = blockCopy;
   v14 = [v12 addSuccessBlock:v15];
 }
 
-- (void)_updateAlarm:(id)a3 withCompletionBlock:(id)a4
+- (void)_updateAlarm:(id)alarm withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  alarmCopy = alarm;
+  blockCopy = block;
   v8 = MTLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 alarmID];
+    alarmID = [alarmCopy alarmID];
     *buf = 138543362;
-    v18 = v9;
+    v18 = alarmID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Updating alarm %{public}@", buf, 0xCu);
   }
 
-  v10 = [(MTAAlarmTableViewController *)self dataSource];
-  v11 = [(MTAAlarmTableViewController *)self bypassReloadAlarm:v6];
-  v12 = [v10 updateAlarm:v11];
+  dataSource = [(MTAAlarmTableViewController *)self dataSource];
+  v11 = [(MTAAlarmTableViewController *)self bypassReloadAlarm:alarmCopy];
+  v12 = [dataSource updateAlarm:v11];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000241F0;
   v15[3] = &unk_1000AE118;
   v15[4] = self;
-  v16 = v7;
-  v13 = v7;
+  v16 = blockCopy;
+  v13 = blockCopy;
   v14 = [v12 addSuccessBlock:v15];
 }
 
-- (void)_removeAlarm:(id)a3 withCompletionBlock:(id)a4
+- (void)_removeAlarm:(id)alarm withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  alarmCopy = alarm;
+  blockCopy = block;
   v8 = MTLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 alarmID];
+    alarmID = [alarmCopy alarmID];
     *buf = 138543362;
-    v18 = v9;
+    v18 = alarmID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Removing alarm %{public}@", buf, 0xCu);
   }
 
-  v10 = [(MTAAlarmTableViewController *)self dataSource];
-  v11 = [(MTAAlarmTableViewController *)self bypassReloadAlarm:v6];
-  v12 = [v10 removeAlarm:v11];
+  dataSource = [(MTAAlarmTableViewController *)self dataSource];
+  v11 = [(MTAAlarmTableViewController *)self bypassReloadAlarm:alarmCopy];
+  v12 = [dataSource removeAlarm:v11];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000243C8;
   v15[3] = &unk_1000AE118;
   v15[4] = self;
-  v16 = v7;
-  v13 = v7;
+  v16 = blockCopy;
+  v13 = blockCopy;
   v14 = [v12 addSuccessBlock:v15];
 }
 
-- (id)bypassReloadAlarm:(id)a3
+- (id)bypassReloadAlarm:(id)alarm
 {
-  v3 = [a3 mutableCopy];
+  v3 = [alarm mutableCopy];
   v4 = +[NSDate date];
   [v3 setBypassReloadDate:v4];
 
@@ -530,69 +530,69 @@
   dispatch_async(v3, block);
 }
 
-- (void)showEditViewForRow:(int64_t)a3
+- (void)showEditViewForRow:(int64_t)row
 {
-  v6 = [(MTAAlarmTableViewController *)self dataSource];
-  v5 = [v6 alarmAtRow:a3];
+  dataSource = [(MTAAlarmTableViewController *)self dataSource];
+  v5 = [dataSource alarmAtRow:row];
   [(MTAAlarmTableViewController *)self showAddViewForAlarm:v5];
 }
 
-- (BOOL)_isWakeAlarmSection:(int64_t)a3
+- (BOOL)_isWakeAlarmSection:(int64_t)section
 {
-  if ([(NSMutableArray *)self->_sections count]<= a3)
+  if ([(NSMutableArray *)self->_sections count]<= section)
   {
     sub_1000737D8(a2, self);
   }
 
-  v6 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:a3];
+  v6 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:section];
   v7 = [v6 integerValue] == 1;
 
   return v7;
 }
 
-- (BOOL)_isAlarmsSection:(int64_t)a3
+- (BOOL)_isAlarmsSection:(int64_t)section
 {
-  if ([(NSMutableArray *)self->_sections count]<= a3)
+  if ([(NSMutableArray *)self->_sections count]<= section)
   {
     sub_10007384C(a2, self);
   }
 
-  v6 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:a3];
+  v6 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:section];
   v7 = [v6 integerValue] == 3;
 
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([(MTAAlarmTableViewController *)self numberOfItems]<= 0 && [(MTAAlarmTableViewController *)self _isAlarmsSection:a4])
+  viewCopy = view;
+  if ([(MTAAlarmTableViewController *)self numberOfItems]<= 0 && [(MTAAlarmTableViewController *)self _isAlarmsSection:section])
   {
     v7 = 2.22507386e-308;
   }
 
   else
   {
-    [v6 sectionHeaderHeight];
+    [viewCopy sectionHeaderHeight];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:@"kMTAAlarmTableViewHeaderReuseIdentifier"];
+  v6 = [view dequeueReusableHeaderFooterViewWithIdentifier:@"kMTAAlarmTableViewHeaderReuseIdentifier"];
   v7 = +[UIListContentConfiguration _interactiveInsetGroupedHeaderConfiguration];
-  v8 = [v7 textProperties];
-  v9 = [v8 font];
+  textProperties = [v7 textProperties];
+  font = [textProperties font];
 
-  v10 = [v7 textProperties];
-  v11 = [v10 color];
+  textProperties2 = [v7 textProperties];
+  color = [textProperties2 color];
 
   v12 = objc_alloc_init(NSMutableParagraphStyle);
-  v13 = [(MTAAlarmTableViewController *)self view];
-  if ([v13 mtui_isRTL])
+  view = [(MTAAlarmTableViewController *)self view];
+  if ([view mtui_isRTL])
   {
     v14 = 2;
   }
@@ -606,7 +606,7 @@
 
   [v12 setLineBreakMode:0];
   v15 = +[UIListContentConfiguration groupedHeaderConfiguration];
-  if ([(MTAAlarmTableViewController *)self _isWakeAlarmSection:a4])
+  if ([(MTAAlarmTableViewController *)self _isWakeAlarmSection:section])
   {
     v16 = +[UIColor mtui_primaryColor];
     v17 = [UIImage mtui_imageWithSymbolName:@"bed.double.fill" scale:1 textStyle:UIFontTextStyleTitle3 andTintColor:v16];
@@ -615,7 +615,7 @@
     [v18 setImage:v17];
     [NSBundle bundleWithIdentifier:@"com.apple.MobileTimerUI"];
     v36 = v7;
-    v19 = v11;
+    v19 = color;
     v21 = v20 = v6;
     v22 = [v21 localizedStringForKey:@"SLEEP_HEADER_TITLE" value:&stru_1000AEF10 table:@"MobileTimerUI_Burrito"];
     v23 = [NSString stringWithFormat:@" %@", v22];
@@ -623,8 +623,8 @@
     v24 = [NSMutableAttributedString alloc];
     v40[0] = NSFontAttributeName;
     v40[1] = NSForegroundColorAttributeName;
-    v37 = v9;
-    v41[0] = v9;
+    v37 = font;
+    v41[0] = font;
     v41[1] = v19;
     v25 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:2];
     v26 = [v24 initWithString:v23 attributes:v25];
@@ -638,7 +638,7 @@
     [v20 setContentConfiguration:v15];
 
     v6 = v20;
-    v11 = v19;
+    color = v19;
     v7 = v36;
   }
 
@@ -652,13 +652,13 @@
     v29 = [NSAttributedString alloc];
     v30 = +[NSBundle mainBundle];
     v31 = [v30 localizedStringForKey:@"REGULAR_ALARMS_SECTION_HEADER_TITLE" value:&stru_1000AEF10 table:0];
-    v32 = v9;
+    v32 = font;
     v33 = v31;
     v38[0] = NSFontAttributeName;
     v38[1] = NSForegroundColorAttributeName;
     v37 = v32;
     v39[0] = v32;
-    v39[1] = v11;
+    v39[1] = color;
     v38[2] = NSParagraphStyleAttributeName;
     v39[2] = v12;
     v34 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:3];
@@ -668,15 +668,15 @@
     [v6 setContentConfiguration:v15];
   }
 
-  v9 = v37;
+  font = v37;
 LABEL_9:
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(MTAAlarmTableViewController *)self _isWakeAlarmSection:a4])
+  if ([(MTAAlarmTableViewController *)self _isWakeAlarmSection:section])
   {
     return 1;
   }
@@ -684,17 +684,17 @@ LABEL_9:
   return [(MTAAlarmTableViewController *)self numberOfItems];
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100024E9C;
   v14[3] = &unk_1000ADA20;
   objc_copyWeak(&v16, &location);
-  v8 = v7;
+  v8 = pathCopy;
   v15 = v8;
   v9 = [UIContextualAction contextualActionWithStyle:1 title:0 handler:v14];
   v10 = [UIImage systemImageNamed:@"trash"];
@@ -710,22 +710,22 @@ LABEL_9:
   return v12;
 }
 
-- (void)deleteRowAtIndexPath:(id)a3
+- (void)deleteRowAtIndexPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v4 = [a3 row];
-    v5 = [(MTAAlarmTableViewController *)self dataSource];
-    v6 = [v5 alarmAtRow:v4];
+    v4 = [path row];
+    dataSource = [(MTAAlarmTableViewController *)self dataSource];
+    v6 = [dataSource alarmAtRow:v4];
 
     [(MTAAlarmTableViewController *)self _removeAlarm:v6 withCompletionBlock:0];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(MTAAlarmTableViewController *)self isRunningPPTTest])
   {
     if (qword_1000D2A68 != -1)
@@ -733,54 +733,54 @@ LABEL_9:
       sub_1000738C0();
     }
 
-    v8 = qword_1000D2A70;
+    sleepAlarm = qword_1000D2A70;
     goto LABEL_10;
   }
 
-  v9 = -[MTAAlarmTableViewController _isWakeAlarmSection:](self, "_isWakeAlarmSection:", [v7 section]);
-  v10 = [(MTAAlarmTableViewController *)self dataSource];
-  v11 = v10;
+  v9 = -[MTAAlarmTableViewController _isWakeAlarmSection:](self, "_isWakeAlarmSection:", [pathCopy section]);
+  dataSource = [(MTAAlarmTableViewController *)self dataSource];
+  v11 = dataSource;
   if (!v9)
   {
-    v8 = [v10 alarmAtRow:{objc_msgSend(v7, "row")}];
+    sleepAlarm = [dataSource alarmAtRow:{objc_msgSend(pathCopy, "row")}];
 
     goto LABEL_10;
   }
 
-  v8 = [v10 sleepAlarm];
+  sleepAlarm = [dataSource sleepAlarm];
 
   if (!MTShouldHandleForEucalyptus())
   {
 LABEL_10:
-    v13 = [v6 dequeueReusableCellWithIdentifier:off_1000D1AA0 forIndexPath:v7];
-    [v13 refreshUI:v8 animated:0];
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:off_1000D1AA0 forIndexPath:pathCopy];
+    [v13 refreshUI:sleepAlarm animated:0];
     goto LABEL_11;
   }
 
-  v12 = [(MTAAlarmTableViewController *)self sleepCoordinator];
-  if ([v12 didCompleteSleepOnboarding])
+  sleepCoordinator = [(MTAAlarmTableViewController *)self sleepCoordinator];
+  if ([sleepCoordinator didCompleteSleepOnboarding])
   {
   }
 
   else
   {
-    v15 = [(MTAAlarmTableViewController *)self dataSource];
-    v16 = [v15 sleepAlarm];
+    dataSource2 = [(MTAAlarmTableViewController *)self dataSource];
+    sleepAlarm2 = [dataSource2 sleepAlarm];
 
-    if (!v16)
+    if (!sleepAlarm2)
     {
-      v13 = [v6 dequeueReusableCellWithIdentifier:off_1000D1B10 forIndexPath:v7];
-      v17 = [NSBundle bundleWithIdentifier:@"com.apple.MobileTimerUI"];
-      v18 = [v17 localizedStringForKey:@"SLEEP_ALARM_SETUP" value:&stru_1000AEF10 table:@"MobileTimerUI_Burrito"];
-      [v13 configureSetupButtonWithTitle:v18 action:"setupButtonPressed"];
+      v13 = [viewCopy dequeueReusableCellWithIdentifier:off_1000D1B10 forIndexPath:pathCopy];
+      sleepCoordinator2 = [NSBundle bundleWithIdentifier:@"com.apple.MobileTimerUI"];
+      sleepMetadata = [sleepCoordinator2 localizedStringForKey:@"SLEEP_ALARM_SETUP" value:&stru_1000AEF10 table:@"MobileTimerUI_Burrito"];
+      [v13 configureSetupButtonWithTitle:sleepMetadata action:"setupButtonPressed"];
       goto LABEL_16;
     }
   }
 
-  v13 = [v6 dequeueReusableCellWithIdentifier:off_1000D1B08 forIndexPath:v7];
-  v17 = [(MTAAlarmTableViewController *)self sleepCoordinator];
-  v18 = [v17 sleepMetadata];
-  [v13 refreshWithSleepMetadata:v18];
+  v13 = [viewCopy dequeueReusableCellWithIdentifier:off_1000D1B08 forIndexPath:pathCopy];
+  sleepCoordinator2 = [(MTAAlarmTableViewController *)self sleepCoordinator];
+  sleepMetadata = [sleepCoordinator2 sleepMetadata];
+  [v13 refreshWithSleepMetadata:sleepMetadata];
 LABEL_16:
 
 LABEL_11:
@@ -789,9 +789,9 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  if (!-[MTAAlarmTableViewController _isWakeAlarmSection:](self, "_isWakeAlarmSection:", [a4 section]))
+  if (!-[MTAAlarmTableViewController _isWakeAlarmSection:](self, "_isWakeAlarmSection:", [path section]))
   {
     return 1;
   }
@@ -799,37 +799,37 @@ LABEL_11:
   return MTShouldHandleForBedtime();
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  if (-[MTAAlarmTableViewController _isWakeAlarmSection:](self, "_isWakeAlarmSection:", [v6 section]))
+  pathCopy = path;
+  if (-[MTAAlarmTableViewController _isWakeAlarmSection:](self, "_isWakeAlarmSection:", [pathCopy section]))
   {
     MTShouldHandleForBedtime();
   }
 
   else
   {
-    v5 = v6;
-    if (!v6)
+    v5 = pathCopy;
+    if (!pathCopy)
     {
       goto LABEL_6;
     }
 
-    -[MTAAlarmTableViewController showEditViewForRow:](self, "showEditViewForRow:", [v6 row]);
+    -[MTAAlarmTableViewController showEditViewForRow:](self, "showEditViewForRow:", [pathCopy row]);
   }
 
-  v5 = v6;
+  v5 = pathCopy;
 LABEL_6:
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v8.receiver = self;
   v8.super_class = MTAAlarmTableViewController;
-  [(MTAAlarmTableViewController *)&v8 setEditing:a3 animated:a4];
+  [(MTAAlarmTableViewController *)&v8 setEditing:editing animated:animated];
   v5 = +[MTAStateStore shared];
-  if (v4)
+  if (editingCopy)
   {
     v6 = 7;
   }
@@ -843,15 +843,15 @@ LABEL_6:
   [v5 pushEvent:v7];
 }
 
-- (void)showSleepView:(BOOL)a3
+- (void)showSleepView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(MTAAlarmTableViewController *)self sleepCoordinator];
-  v6 = [v5 isHealthAppNotInstalled];
+  viewCopy = view;
+  sleepCoordinator = [(MTAAlarmTableViewController *)self sleepCoordinator];
+  isHealthAppNotInstalled = [sleepCoordinator isHealthAppNotInstalled];
 
-  if (v6)
+  if (isHealthAppNotInstalled)
   {
-    if (v3)
+    if (viewCopy)
     {
 
       +[MTUIUtility openSleepInHealthApp];
@@ -860,14 +860,14 @@ LABEL_6:
 
   else
   {
-    v7 = [(MTAAlarmTableViewController *)self sleepCoordinator];
-    v9 = [v7 sleepEditController];
+    sleepCoordinator2 = [(MTAAlarmTableViewController *)self sleepCoordinator];
+    sleepEditController = [sleepCoordinator2 sleepEditController];
 
-    v8 = v9;
-    if (v9)
+    v8 = sleepEditController;
+    if (sleepEditController)
     {
-      [(MTAAlarmTableViewController *)self presentViewController:v9 animated:1 completion:&stru_1000AE158];
-      v8 = v9;
+      [(MTAAlarmTableViewController *)self presentViewController:sleepEditController animated:1 completion:&stru_1000AE158];
+      v8 = sleepEditController;
     }
   }
 }
@@ -878,7 +878,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ reloading sleep section", buf, 0xCu);
   }
 
@@ -896,9 +896,9 @@ LABEL_6:
   if (v3 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = v3;
-    v6 = [(MTAAlarmTableViewController *)self tableView];
+    tableView = [(MTAAlarmTableViewController *)self tableView];
     v5 = [NSIndexSet indexSetWithIndex:v4];
-    [v6 reloadSections:v5 withRowAnimation:100];
+    [tableView reloadSections:v5 withRowAnimation:100];
   }
 }
 
@@ -908,7 +908,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Health app installation changed", buf, 0xCu);
   }
 
@@ -927,49 +927,49 @@ LABEL_6:
   [v3 pushEvent:v2];
 }
 
-- (void)alarmEditController:(id)a3 didAddAlarm:(id)a4
+- (void)alarmEditController:(id)controller didAddAlarm:(id)alarm
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  alarmCopy = alarm;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000259DC;
   v9[3] = &unk_1000AE1A0;
   objc_copyWeak(&v11, &location);
-  v8 = v7;
+  v8 = alarmCopy;
   v10 = v8;
   [(MTAAlarmTableViewController *)self _addAlarm:v8 withCompletionBlock:v9];
-  [(MTAAlarmTableViewController *)self dismissAddViewController:v6];
+  [(MTAAlarmTableViewController *)self dismissAddViewController:controllerCopy];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)alarmEditController:(id)a3 didEditAlarm:(id)a4
+- (void)alarmEditController:(id)controller didEditAlarm:(id)alarm
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  alarmCopy = alarm;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100025B4C;
   v9[3] = &unk_1000AE1A0;
   objc_copyWeak(&v11, &location);
-  v8 = v7;
+  v8 = alarmCopy;
   v10 = v8;
   [(MTAAlarmTableViewController *)self _updateAlarm:v8 withCompletionBlock:v9];
-  [(MTAAlarmTableViewController *)self dismissAddViewController:v6];
+  [(MTAAlarmTableViewController *)self dismissAddViewController:controllerCopy];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)_scrollToAlarm:(id)a3
+- (void)_scrollToAlarm:(id)alarm
 {
-  v4 = a3;
-  v5 = [(MTAAlarmTableViewController *)self dataSource];
-  v6 = [v5 rowForAlarm:v4];
+  alarmCopy = alarm;
+  dataSource = [(MTAAlarmTableViewController *)self dataSource];
+  v6 = [dataSource rowForAlarm:alarmCopy];
 
   v7 = [(NSMutableArray *)self->_sections indexOfObject:&off_1000B18A8];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
@@ -977,62 +977,62 @@ LABEL_6:
     v8 = v7;
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [(MTAAlarmTableViewController *)self tableView];
+      tableView = [(MTAAlarmTableViewController *)self tableView];
       v9 = [NSIndexPath indexPathForRow:v6 inSection:v8];
-      [v10 scrollToRowAtIndexPath:v9 atScrollPosition:0 animated:0];
+      [tableView scrollToRowAtIndexPath:v9 atScrollPosition:0 animated:0];
     }
   }
 }
 
-- (void)alarmEditController:(id)a3 didDeleteAlarm:(id)a4
+- (void)alarmEditController:(id)controller didDeleteAlarm:(id)alarm
 {
-  v6 = a3;
-  [(MTAAlarmTableViewController *)self _removeAlarm:a4 withCompletionBlock:0];
-  [(MTAAlarmTableViewController *)self dismissAddViewController:v6];
+  controllerCopy = controller;
+  [(MTAAlarmTableViewController *)self _removeAlarm:alarm withCompletionBlock:0];
+  [(MTAAlarmTableViewController *)self dismissAddViewController:controllerCopy];
 }
 
-- (void)handleContentSizeTransitionFrom:(id)a3
+- (void)handleContentSizeTransitionFrom:(id)from
 {
-  v4 = [a3 currentAlarmEditController];
-  [(MTAAlarmTableViewController *)self setAlarmEditViewController:v4];
+  currentAlarmEditController = [from currentAlarmEditController];
+  [(MTAAlarmTableViewController *)self setAlarmEditViewController:currentAlarmEditController];
 
-  v5 = [(MTAAlarmTableViewController *)self alarmEditViewController];
-  [v5 setDelegate:self];
+  alarmEditViewController = [(MTAAlarmTableViewController *)self alarmEditViewController];
+  [alarmEditViewController setDelegate:self];
 }
 
-- (void)setAlarmEnabled:(BOOL)a3 forCell:(id)a4
+- (void)setAlarmEnabled:(BOOL)enabled forCell:(id)cell
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(MTAAlarmTableViewController *)self tableView];
-  v8 = [v7 indexPathForCell:v6];
+  enabledCopy = enabled;
+  cellCopy = cell;
+  tableView = [(MTAAlarmTableViewController *)self tableView];
+  v8 = [tableView indexPathForCell:cellCopy];
 
-  LODWORD(v6) = -[MTAAlarmTableViewController _isWakeAlarmSection:](self, "_isWakeAlarmSection:", [v8 section]);
-  v9 = [(MTAAlarmTableViewController *)self dataSource];
-  v10 = v9;
-  if (v6)
+  LODWORD(cellCopy) = -[MTAAlarmTableViewController _isWakeAlarmSection:](self, "_isWakeAlarmSection:", [v8 section]);
+  dataSource = [(MTAAlarmTableViewController *)self dataSource];
+  v10 = dataSource;
+  if (cellCopy)
   {
-    v11 = [v9 sleepAlarm];
-    v12 = [v11 mutableCopy];
+    sleepAlarm = [dataSource sleepAlarm];
+    v12 = [sleepAlarm mutableCopy];
 
-    [v12 setSleepSchedule:v4];
+    [v12 setSleepSchedule:enabledCopy];
   }
 
   else
   {
-    v13 = [v9 alarmAtRow:{objc_msgSend(v8, "row")}];
+    v13 = [dataSource alarmAtRow:{objc_msgSend(v8, "row")}];
     v12 = [v13 mutableCopy];
   }
 
-  [v12 setEnabled:v4];
+  [v12 setEnabled:enabledCopy];
   v14 = MTLogForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v12 alarmID];
+    alarmID = [v12 alarmID];
     *buf = 138543618;
-    v22 = v15;
+    v22 = alarmID;
     v23 = 1024;
-    v24 = v4;
+    v24 = enabledCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Setting alarm %{public}@ to enabled: %d", buf, 0x12u);
   }
 
@@ -1041,8 +1041,8 @@ LABEL_6:
   v17[2] = sub_100025F84;
   v17[3] = &unk_1000AE1C8;
   v18 = v12;
-  v19 = self;
-  v20 = v4;
+  selfCopy = self;
+  v20 = enabledCopy;
   v16 = v12;
   [(MTAAlarmTableViewController *)self _updateAlarm:v16 withCompletionBlock:v17];
 }

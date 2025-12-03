@@ -11,42 +11,42 @@
   v2 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v2 setUsesSignificantDigits:1];
   [v2 setMaximumSignificantDigits:2];
-  if ([a1 compare:&unk_1F23E68E0] == -1)
+  if ([self compare:&unk_1F23E68E0] == -1)
   {
     [v2 setMaximumSignificantDigits:1];
   }
 
-  v3 = [v2 stringFromNumber:a1];
+  v3 = [v2 stringFromNumber:self];
   v4 = [v2 numberFromString:v3];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 longLongValue];
+    longLongValue = [v4 longLongValue];
   }
 
   else
   {
-    v6 = 0;
+    longLongValue = 0;
   }
 
-  return v6;
+  return longLongValue;
 }
 
 - (id)br_round:()BRAdditions
 {
   if (a3)
   {
-    [a1 doubleValue];
+    [self doubleValue];
     if (((v5 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF)
     {
-      [a1 doubleValue];
+      [self doubleValue];
       v12 = v11;
-      v13 = *[a1 objCType];
-      v14 = (v13 & 0xFFFFFFFD) == 0x64 && *([a1 objCType] + 1) == 0;
+      v13 = *[self objCType];
+      v14 = (v13 & 0xFFFFFFFD) == 0x64 && *([self objCType] + 1) == 0;
       v15 = (((v13 - 99) >> 1) | ((v13 - 99) << 7));
       v16 = v15 > 8;
       v17 = (1 << v15) & 0x189;
-      v19 = !v16 && v17 != 0 && *([a1 objCType] + 1) == 0;
+      v19 = !v16 && v17 != 0 && *([self objCType] + 1) == 0;
       v20 = log10(fabs(v12));
       v21 = __exp10(a3 - floor(v20) + -1.0);
       v22 = floor(v12 * v21) / v21;
@@ -76,7 +76,7 @@
       v7 = brc_default_log(0, 0);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
       {
-        [(NSNumber(BRAdditions) *)a1 br_round:v6, v7];
+        [(NSNumber(BRAdditions) *)self br_round:v6, v7];
       }
 
       v8 = &unk_1F23E68F8;
@@ -102,7 +102,7 @@
 {
   if (a3)
   {
-    return [a1 isEqualToNumber:?];
+    return [self isEqualToNumber:?];
   }
 
   else

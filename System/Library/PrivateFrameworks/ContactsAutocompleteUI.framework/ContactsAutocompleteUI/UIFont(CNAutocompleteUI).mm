@@ -8,22 +8,22 @@
 
 - (double)cn_originPointFromCaplinePoint:()CNAutocompleteUI
 {
-  [a1 pointSize];
-  [a1 capHeight];
+  [self pointSize];
+  [self capHeight];
   return a2;
 }
 
 - (double)cn_caplinePointFromOriginPoint:()CNAutocompleteUI
 {
-  [a1 pointSize];
-  [a1 capHeight];
+  [self pointSize];
+  [self capHeight];
   return a2;
 }
 
 - (double)cn_originPointFromMidlinePoint:()CNAutocompleteUI
 {
-  [a1 capHeight];
-  [a1 pointSize];
+  [self capHeight];
+  [self pointSize];
   return a2;
 }
 

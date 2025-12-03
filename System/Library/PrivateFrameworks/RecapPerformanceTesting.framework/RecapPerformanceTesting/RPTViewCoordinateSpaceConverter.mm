@@ -1,34 +1,34 @@
 @interface RPTViewCoordinateSpaceConverter
-- (CGPoint)convertPoint:(CGPoint)a3;
-- (CGRect)convertRect:(CGRect)a3;
-- (CGSize)convertSize:(CGSize)a3;
-- (CGVector)convertVector:(CGVector)a3;
-- (id)initFromView:(id)a3;
+- (CGPoint)convertPoint:(CGPoint)point;
+- (CGRect)convertRect:(CGRect)rect;
+- (CGSize)convertSize:(CGSize)size;
+- (CGVector)convertVector:(CGVector)vector;
+- (id)initFromView:(id)view;
 @end
 
 @implementation RPTViewCoordinateSpaceConverter
 
-- (id)initFromView:(id)a3
+- (id)initFromView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = RPTViewCoordinateSpaceConverter;
   v6 = [(RPTViewCoordinateSpaceConverter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_view, a3);
+    objc_storeStrong(&v6->_view, view);
   }
 
   return v7;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3
+- (CGPoint)convertPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(RPTViewCoordinateSpaceConverter *)self view];
-  [v5 convertPoint:0 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  view = [(RPTViewCoordinateSpaceConverter *)self view];
+  [view convertPoint:0 toView:{x, y}];
   v7 = v6;
   v9 = v8;
 
@@ -39,12 +39,12 @@
   return result;
 }
 
-- (CGSize)convertSize:(CGSize)a3
+- (CGSize)convertSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(RPTViewCoordinateSpaceConverter *)self view];
-  [v5 convertRect:0 toView:{0.0, 0.0, width, height}];
+  height = size.height;
+  width = size.width;
+  view = [(RPTViewCoordinateSpaceConverter *)self view];
+  [view convertRect:0 toView:{0.0, 0.0, width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -55,14 +55,14 @@
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3
+- (CGRect)convertRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(RPTViewCoordinateSpaceConverter *)self view];
-  [v7 convertRect:0 toView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  view = [(RPTViewCoordinateSpaceConverter *)self view];
+  [view convertRect:0 toView:{x, y, width, height}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -79,10 +79,10 @@
   return result;
 }
 
-- (CGVector)convertVector:(CGVector)a3
+- (CGVector)convertVector:(CGVector)vector
 {
-  dy = a3.dy;
-  dx = a3.dx;
+  dy = vector.dy;
+  dx = vector.dx;
   [(RPTViewCoordinateSpaceConverter *)self convertPoint:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
   v7 = v6;
   v9 = v8;

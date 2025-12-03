@@ -1,43 +1,43 @@
 @interface BMDistributedContextEventTranslation
-- (BMDistributedContextEventTranslation)initWithLocalDeviceIdentifier:(id)a3;
-- (id)contextSyncActivityLevelEventFromEvent:(id)a3;
-- (id)contextSyncAppInFocusFromEvent:(id)a3;
-- (id)contextSyncCellularStatusFromEvent:(id)a3;
-- (id)contextSyncLOIFromSemanticLocationEvent:(id)a3;
-- (id)contextSyncWalletTransactionFromEvent:(id)a3;
-- (id)translateEvent:(id)a3;
+- (BMDistributedContextEventTranslation)initWithLocalDeviceIdentifier:(id)identifier;
+- (id)contextSyncActivityLevelEventFromEvent:(id)event;
+- (id)contextSyncAppInFocusFromEvent:(id)event;
+- (id)contextSyncCellularStatusFromEvent:(id)event;
+- (id)contextSyncLOIFromSemanticLocationEvent:(id)event;
+- (id)contextSyncWalletTransactionFromEvent:(id)event;
+- (id)translateEvent:(id)event;
 @end
 
 @implementation BMDistributedContextEventTranslation
 
-- (BMDistributedContextEventTranslation)initWithLocalDeviceIdentifier:(id)a3
+- (BMDistributedContextEventTranslation)initWithLocalDeviceIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = BMDistributedContextEventTranslation;
   v6 = [(BMDistributedContextEventTranslation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_localDeviceIdentifier, a3);
+    objc_storeStrong(&v6->_localDeviceIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (id)translateEvent:(id)a3
+- (id)translateEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 eventBody];
+  eventCopy = event;
+  eventBody = [eventCopy eventBody];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = [v4 eventBody];
+  eventBody2 = [eventCopy eventBody];
   if (isKindOfClass)
   {
-    v8 = [(BMDistributedContextEventTranslation *)self contextSyncLOIFromSemanticLocationEvent:v7];
+    v8 = [(BMDistributedContextEventTranslation *)self contextSyncLOIFromSemanticLocationEvent:eventBody2];
 
-    v9 = [v8 serialize];
+    serialize = [v8 serialize];
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v8, "dataVersion")}];
     v11 = getBMContextSyncLOIIdentifier();
 LABEL_17:
@@ -66,12 +66,12 @@ LABEL_17:
   _Block_object_dispose(&v34, 8);
   v14 = objc_opt_isKindOfClass();
 
-  v15 = [v4 eventBody];
+  eventBody3 = [eventCopy eventBody];
   if (v14)
   {
-    v8 = [(BMDistributedContextEventTranslation *)self contextSyncActivityLevelEventFromEvent:v15];
+    v8 = [(BMDistributedContextEventTranslation *)self contextSyncActivityLevelEventFromEvent:eventBody3];
 
-    v9 = [v8 serialize];
+    serialize = [v8 serialize];
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v8, "dataVersion")}];
     v11 = getBMContextSyncDeviceActivityLevelIdentifier();
     goto LABEL_17;
@@ -97,12 +97,12 @@ LABEL_17:
   _Block_object_dispose(&v34, 8);
   v18 = objc_opt_isKindOfClass();
 
-  v19 = [v4 eventBody];
+  eventBody4 = [eventCopy eventBody];
   if (v18)
   {
-    v8 = [(BMDistributedContextEventTranslation *)self contextSyncCellularStatusFromEvent:v19];
+    v8 = [(BMDistributedContextEventTranslation *)self contextSyncCellularStatusFromEvent:eventBody4];
 
-    v9 = [v8 serialize];
+    serialize = [v8 serialize];
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v8, "dataVersion")}];
     v11 = getBMContextSyncCellularAvailabilityStatusIdentifier();
     goto LABEL_17;
@@ -128,12 +128,12 @@ LABEL_17:
   _Block_object_dispose(&v34, 8);
   v22 = objc_opt_isKindOfClass();
 
-  v23 = [v4 eventBody];
+  eventBody5 = [eventCopy eventBody];
   if (v22)
   {
-    v8 = [(BMDistributedContextEventTranslation *)self contextSyncWalletTransactionFromEvent:v23];
+    v8 = [(BMDistributedContextEventTranslation *)self contextSyncWalletTransactionFromEvent:eventBody5];
 
-    v9 = [v8 serialize];
+    serialize = [v8 serialize];
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v8, "dataVersion")}];
     v11 = getBMContextSyncWalletTransactionIdentifier();
     goto LABEL_17;
@@ -144,74 +144,74 @@ LABEL_17:
 
   if (v24)
   {
-    v25 = [v4 eventBody];
-    v8 = [(BMDistributedContextEventTranslation *)self contextSyncAppInFocusFromEvent:v25];
+    eventBody6 = [eventCopy eventBody];
+    v8 = [(BMDistributedContextEventTranslation *)self contextSyncAppInFocusFromEvent:eventBody6];
 
-    v9 = [v8 serialize];
+    serialize = [v8 serialize];
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v8, "dataVersion")}];
     v11 = getBMContextSyncAppInFocusIdentifier();
     goto LABEL_17;
   }
 
   v10 = 0;
-  v9 = 0;
+  serialize = 0;
   v26 = 0;
 LABEL_18:
-  v27 = [[BMDistributedContextTranslatedEventMessage alloc] initWithStreamIdentifier:v26 eventData:v9 eventDataVersion:v10];
+  v27 = [[BMDistributedContextTranslatedEventMessage alloc] initWithStreamIdentifier:v26 eventData:serialize eventDataVersion:v10];
 
   return v27;
 }
 
-- (id)contextSyncLOIFromSemanticLocationEvent:(id)a3
+- (id)contextSyncLOIFromSemanticLocationEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 isStarting];
-  v6 = [v4 userSpecificPlaceType];
-  v7 = [v4 placeType];
+  eventCopy = event;
+  isStarting = [eventCopy isStarting];
+  userSpecificPlaceType = [eventCopy userSpecificPlaceType];
+  placeType = [eventCopy placeType];
 
   v8 = objc_alloc(getBMContextSyncLOIClass());
   localDeviceIdentifier = self->_localDeviceIdentifier;
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:v5];
-  v11 = [v8 initWithID:@"com.apple.biome.ContextSync" deviceUUID:localDeviceIdentifier starting:v10 userSpecificPlaceType:v6 placeType:v7];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:isStarting];
+  v11 = [v8 initWithID:@"com.apple.biome.ContextSync" deviceUUID:localDeviceIdentifier starting:v10 userSpecificPlaceType:userSpecificPlaceType placeType:placeType];
 
   return v11;
 }
 
-- (id)contextSyncActivityLevelEventFromEvent:(id)a3
+- (id)contextSyncActivityLevelEventFromEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_opt_new();
-  if ([v4 inUseStatus])
+  if ([eventCopy inUseStatus])
   {
     v6 = [objc_alloc(getBMContextSyncDeviceActivityLevelDeviceActivityStateClass()) initWithState:1];
     [v5 addObject:v6];
   }
 
-  if (([v4 inUseStatus] & 2) != 0)
+  if (([eventCopy inUseStatus] & 2) != 0)
   {
     v7 = [objc_alloc(getBMContextSyncDeviceActivityLevelDeviceActivityStateClass()) initWithState:2];
     [v5 addObject:v7];
   }
 
-  if (([v4 inUseStatus] & 4) != 0)
+  if (([eventCopy inUseStatus] & 4) != 0)
   {
     v8 = [objc_alloc(getBMContextSyncDeviceActivityLevelDeviceActivityStateClass()) initWithState:3];
     [v5 addObject:v8];
   }
 
-  if (([v4 inUseStatus] & 8) != 0)
+  if (([eventCopy inUseStatus] & 8) != 0)
   {
     v9 = [objc_alloc(getBMContextSyncDeviceActivityLevelDeviceActivityStateClass()) initWithState:4];
     [v5 addObject:v9];
   }
 
-  if (([v4 inUseStatus] & 0x10) != 0)
+  if (([eventCopy inUseStatus] & 0x10) != 0)
   {
     v10 = [objc_alloc(getBMContextSyncDeviceActivityLevelDeviceActivityStateClass()) initWithState:5];
     [v5 addObject:v10];
   }
 
-  if (([v4 inUseStatus] & 0x20) != 0)
+  if (([eventCopy inUseStatus] & 0x20) != 0)
   {
     v11 = [objc_alloc(getBMContextSyncDeviceActivityLevelDeviceActivityStateClass()) initWithState:6];
     [v5 addObject:v11];
@@ -222,15 +222,15 @@ LABEL_18:
   return v12;
 }
 
-- (id)contextSyncCellularStatusFromEvent:(id)a3
+- (id)contextSyncCellularStatusFromEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 deviceType];
-  LODWORD(v6) = [v4 deviceRegistrationStatus];
-  LODWORD(v7) = [v4 previousDeviceRegistrationStatus];
-  if ([v4 hasAboveThreshold])
+  eventCopy = event;
+  deviceType = [eventCopy deviceType];
+  LODWORD(v6) = [eventCopy deviceRegistrationStatus];
+  LODWORD(v7) = [eventCopy previousDeviceRegistrationStatus];
+  if ([eventCopy hasAboveThreshold])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "aboveThreshold")}];
+    v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(eventCopy, "aboveThreshold")}];
   }
 
   else
@@ -258,81 +258,81 @@ LABEL_18:
     v6 = v6;
   }
 
-  if (v5 == 2)
+  if (deviceType == 2)
   {
     v9 = 2;
   }
 
   else
   {
-    v9 = v5 == 1;
+    v9 = deviceType == 1;
   }
 
   v10 = objc_alloc(getBMContextSyncCellularAvailabilityStatusClass());
   localDeviceIdentifier = self->_localDeviceIdentifier;
-  v12 = [v4 timeStamp];
-  v13 = [v4 latestStrongTimeStamp];
-  v14 = [v10 initWithID:@"com.apple.biome.ContextSync" deviceUUID:localDeviceIdentifier timeStamp:v12 deviceType:v9 deviceRegistrationStatus:v6 previousDeviceRegistrationStatus:v7 aboveThreshold:v8 latestStrongTimeStamp:v13];
+  timeStamp = [eventCopy timeStamp];
+  latestStrongTimeStamp = [eventCopy latestStrongTimeStamp];
+  v14 = [v10 initWithID:@"com.apple.biome.ContextSync" deviceUUID:localDeviceIdentifier timeStamp:timeStamp deviceType:v9 deviceRegistrationStatus:v6 previousDeviceRegistrationStatus:v7 aboveThreshold:v8 latestStrongTimeStamp:latestStrongTimeStamp];
 
   return v14;
 }
 
-- (id)contextSyncWalletTransactionFromEvent:(id)a3
+- (id)contextSyncWalletTransactionFromEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 transactionType];
-  if (v5 - 1 >= 6)
+  eventCopy = event;
+  transactionType = [eventCopy transactionType];
+  if (transactionType - 1 >= 6)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = v5;
+    v6 = transactionType;
   }
 
-  v7 = [v4 merchantType];
-  if ((v7 - 1) >= 7)
+  merchantType = [eventCopy merchantType];
+  if ((merchantType - 1) >= 7)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = v7;
+    v8 = merchantType;
   }
 
   v9 = objc_alloc(getBMContextSyncWalletTransactionClass());
   localDeviceIdentifier = self->_localDeviceIdentifier;
-  v11 = [v4 passUniqueID];
-  v12 = [v4 passLocalizedDescription];
-  v13 = [v4 transactionID];
-  v14 = [v4 poiCategory];
+  passUniqueID = [eventCopy passUniqueID];
+  passLocalizedDescription = [eventCopy passLocalizedDescription];
+  transactionID = [eventCopy transactionID];
+  poiCategory = [eventCopy poiCategory];
   LODWORD(v17) = v8;
-  v15 = [v9 initWithID:@"com.apple.biome.ContextSync" deviceUUID:localDeviceIdentifier passUniqueID:v11 passLocalizedDescription:v12 transactionType:v6 transactionID:v13 merchantType:v17 poiCategory:v14];
+  v15 = [v9 initWithID:@"com.apple.biome.ContextSync" deviceUUID:localDeviceIdentifier passUniqueID:passUniqueID passLocalizedDescription:passLocalizedDescription transactionType:v6 transactionID:transactionID merchantType:v17 poiCategory:poiCategory];
 
   return v15;
 }
 
-- (id)contextSyncAppInFocusFromEvent:(id)a3
+- (id)contextSyncAppInFocusFromEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_alloc(getBMAppInFocusClass());
-  v5 = [v3 launchReason];
-  v6 = [v3 type];
-  v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "starting")}];
-  v19 = [v3 absoluteTimestamp];
-  v18 = [v3 bundleID];
-  v17 = [v3 parentBundleID];
-  v7 = [v3 extensionHostID];
-  v8 = [v3 shortVersionString];
-  v9 = [v3 exactVersionString];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v3, "dyldPlatform")}];
+  launchReason = [eventCopy launchReason];
+  type = [eventCopy type];
+  v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(eventCopy, "starting")}];
+  absoluteTimestamp = [eventCopy absoluteTimestamp];
+  bundleID = [eventCopy bundleID];
+  parentBundleID = [eventCopy parentBundleID];
+  extensionHostID = [eventCopy extensionHostID];
+  shortVersionString = [eventCopy shortVersionString];
+  exactVersionString = [eventCopy exactVersionString];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(eventCopy, "dyldPlatform")}];
   v11 = MEMORY[0x277CCABB0];
-  v12 = [v3 isNativeArchitecture];
+  isNativeArchitecture = [eventCopy isNativeArchitecture];
 
-  v13 = [v11 numberWithBool:v12];
-  v16 = [v4 initWithLaunchReason:v5 type:v6 starting:v20 absoluteTimestamp:v19 bundleID:v18 parentBundleID:v17 extensionHostID:v7 shortVersionString:v8 exactVersionString:v9 dyldPlatform:v10 isNativeArchitecture:v13];
+  v13 = [v11 numberWithBool:isNativeArchitecture];
+  v16 = [v4 initWithLaunchReason:launchReason type:type starting:v20 absoluteTimestamp:absoluteTimestamp bundleID:bundleID parentBundleID:parentBundleID extensionHostID:extensionHostID shortVersionString:shortVersionString exactVersionString:exactVersionString dyldPlatform:v10 isNativeArchitecture:v13];
 
   v14 = [objc_alloc(getBMContextSyncAppInFocusClass()) initWithID:@"com.apple.biome.ContextSync" deviceUUID:self->_localDeviceIdentifier AppInFocus:v16];
 

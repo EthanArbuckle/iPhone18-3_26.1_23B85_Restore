@@ -1,19 +1,19 @@
 @interface HKConcept
-+ (HKConcept)conceptWithIdentifier:(id)a3 attributes:(id)a4 relationships:(id)a5;
-+ (id)fallbackLanguagesForLocale:(id)a3;
++ (HKConcept)conceptWithIdentifier:(id)identifier attributes:(id)attributes relationships:(id)relationships;
++ (id)fallbackLanguagesForLocale:(id)locale;
 + (id)preferredLanguages;
 - (BOOL)chartsBloodPressure;
 - (BOOL)hidesOutOfRangeFilter;
 - (BOOL)isAdHoc;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExcludedFromSearch;
 - (BOOL)isGeneric;
 - (BOOL)isLowUtility;
 - (BOOL)isNebulous;
 - (HKConcept)groupByConcept;
 - (HKConcept)init;
-- (HKConcept)initWithCoder:(id)a3;
-- (HKConcept)initWithIdentifier:(id)a3 attributes:(id)a4 relationships:(id)a5 version:(int64_t)a6 deleted:(BOOL)a7 options:(unint64_t)a8;
+- (HKConcept)initWithCoder:(id)coder;
+- (HKConcept)initWithIdentifier:(id)identifier attributes:(id)attributes relationships:(id)relationships version:(int64_t)version deleted:(BOOL)deleted options:(unint64_t)options;
 - (HKMedicalCoding)LOINCCoding;
 - (HKMedicalCoding)RxNormCoding;
 - (HKMedicalCoding)coding;
@@ -21,38 +21,38 @@
 - (NSString)adHocCode;
 - (NSString)localizedPreferredName;
 - (NSString)preferredName;
-- (id)allConceptsOfRelationshipType:(int64_t)a3;
-- (id)attributesForType:(int64_t)a3;
-- (id)copyWithRelationships:(id)a3;
+- (id)allConceptsOfRelationshipType:(int64_t)type;
+- (id)attributesForType:(int64_t)type;
+- (id)copyWithRelationships:(id)relationships;
 - (id)description;
-- (id)firstAttributeForType:(int64_t)a3;
-- (id)firstConceptOfRelationshipType:(int64_t)a3;
-- (id)stringsForAttributeType:(int64_t)a3;
+- (id)firstAttributeForType:(int64_t)type;
+- (id)firstConceptOfRelationshipType:(int64_t)type;
+- (id)stringsForAttributeType:(int64_t)type;
 - (id)treeDescription;
 - (unint64_t)hash;
-- (void)_appendSortedAttributeTypeCountDescriptionToString:(id)a3;
-- (void)_appendTreeDescriptionToString:(id)a3 visitedStack:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAttributesWithType:(int64_t)a3 block:(id)a4;
-- (void)mutateBySettingRelationships:(id)a3;
+- (void)_appendSortedAttributeTypeCountDescriptionToString:(id)string;
+- (void)_appendTreeDescriptionToString:(id)string visitedStack:(id)stack;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAttributesWithType:(int64_t)type block:(id)block;
+- (void)mutateBySettingRelationships:(id)relationships;
 @end
 
 @implementation HKConcept
 
-+ (id)fallbackLanguagesForLocale:(id)a3
++ (id)fallbackLanguagesForLocale:(id)locale
 {
-  v3 = [a3 countryCode];
-  if ([v3 isEqualToString:@"CA"])
+  countryCode = [locale countryCode];
+  if ([countryCode isEqualToString:@"CA"])
   {
     v4 = &unk_1F06864C0;
   }
 
-  else if ([v3 isEqualToString:@"GB"])
+  else if ([countryCode isEqualToString:@"GB"])
   {
     v4 = &unk_1F06864D8;
   }
 
-  else if ([v3 isEqualToString:@"US"])
+  else if ([countryCode isEqualToString:@"US"])
   {
     v4 = &unk_1F06864F0;
   }
@@ -67,33 +67,33 @@
 
 + (id)preferredLanguages
 {
-  v3 = [MEMORY[0x1E695DF58] hk_testableCurrentLocale];
-  v4 = [MEMORY[0x1E695DF58] hk_testablePreferredLanguages];
-  v5 = [a1 fallbackLanguagesForLocale:v3];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  hk_testableCurrentLocale = [MEMORY[0x1E695DF58] hk_testableCurrentLocale];
+  hk_testablePreferredLanguages = [MEMORY[0x1E695DF58] hk_testablePreferredLanguages];
+  v5 = [self fallbackLanguagesForLocale:hk_testableCurrentLocale];
+  v6 = [hk_testablePreferredLanguages arrayByAddingObjectsFromArray:v5];
 
   return v6;
 }
 
-+ (HKConcept)conceptWithIdentifier:(id)a3 attributes:(id)a4 relationships:(id)a5
++ (HKConcept)conceptWithIdentifier:(id)identifier attributes:(id)attributes relationships:(id)relationships
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HKConcept alloc] initWithIdentifier:v9 attributes:v8 relationships:v7 version:0 deleted:0 options:0];
+  relationshipsCopy = relationships;
+  attributesCopy = attributes;
+  identifierCopy = identifier;
+  v10 = [[HKConcept alloc] initWithIdentifier:identifierCopy attributes:attributesCopy relationships:relationshipsCopy version:0 deleted:0 options:0];
 
   return v10;
 }
 
-- (id)copyWithRelationships:(id)a3
+- (id)copyWithRelationships:(id)relationships
 {
-  v4 = a3;
-  v5 = [[HKConcept alloc] initWithIdentifier:self->_identifier attributes:self->_attributes relationships:v4 version:self->_version deleted:self->_deleted options:self->_options];
+  relationshipsCopy = relationships;
+  v5 = [[HKConcept alloc] initWithIdentifier:self->_identifier attributes:self->_attributes relationships:relationshipsCopy version:self->_version deleted:self->_deleted options:self->_options];
 
   return v5;
 }
 
-- (id)firstConceptOfRelationshipType:(int64_t)a3
+- (id)firstConceptOfRelationshipType:(int64_t)type
 {
   if (![(HKConcept *)self relationshipsAreLoaded])
   {
@@ -105,14 +105,14 @@
   v9[1] = 3221225472;
   v9[2] = __44__HKConcept_firstConceptOfRelationshipType___block_invoke;
   v9[3] = &__block_descriptor_40_e31_B16__0__HKConceptRelationship_8l;
-  v9[4] = a3;
+  v9[4] = type;
   v6 = [(NSArray *)relationships hk_firstObjectPassingTest:v9];
-  v7 = [v6 destination];
+  destination = [v6 destination];
 
-  return v7;
+  return destination;
 }
 
-- (id)allConceptsOfRelationshipType:(int64_t)a3
+- (id)allConceptsOfRelationshipType:(int64_t)type
 {
   if (![(HKConcept *)self relationshipsAreLoaded])
   {
@@ -124,7 +124,7 @@
   v8[1] = 3221225472;
   v8[2] = __43__HKConcept_allConceptsOfRelationshipType___block_invoke;
   v8[3] = &__block_descriptor_40_e42___HKConcept_16__0__HKConceptRelationship_8l;
-  v8[4] = a3;
+  v8[4] = type;
   v6 = [(NSArray *)relationships hk_map:v8];
 
   return v6;
@@ -146,14 +146,14 @@ id __43__HKConcept_allConceptsOfRelationshipType___block_invoke(uint64_t a1, voi
   return v4;
 }
 
-- (HKConcept)initWithIdentifier:(id)a3 attributes:(id)a4 relationships:(id)a5 version:(int64_t)a6 deleted:(BOOL)a7 options:(unint64_t)a8
+- (HKConcept)initWithIdentifier:(id)identifier attributes:(id)attributes relationships:(id)relationships version:(int64_t)version deleted:(BOOL)deleted options:(unint64_t)options
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if (v14)
+  identifierCopy = identifier;
+  attributesCopy = attributes;
+  relationshipsCopy = relationships;
+  if (identifierCopy)
   {
-    if (v15)
+    if (attributesCopy)
     {
       goto LABEL_3;
     }
@@ -162,7 +162,7 @@ id __43__HKConcept_allConceptsOfRelationshipType___block_invoke(uint64_t a1, voi
   else
   {
     [HKConcept initWithIdentifier:attributes:relationships:version:deleted:options:];
-    if (v15)
+    if (attributesCopy)
     {
       goto LABEL_3;
     }
@@ -175,19 +175,19 @@ LABEL_3:
   v17 = [(HKConcept *)&v24 init];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v18;
 
-    v20 = [v15 copy];
+    v20 = [attributesCopy copy];
     attributes = v17->_attributes;
     v17->_attributes = v20;
 
-    objc_storeStrong(&v17->_relationships, a5);
-    v17->_deleted = a7;
+    objc_storeStrong(&v17->_relationships, relationships);
+    v17->_deleted = deleted;
     v22 = v17->_relationships != 0;
-    v17->_version = a6;
-    v17->_options = v22 | a8;
+    v17->_version = version;
+    v17->_options = v22 | options;
   }
 
   return v17;
@@ -205,12 +205,12 @@ LABEL_3:
 
 - (unint64_t)hash
 {
-  v3 = [(HKConcept *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(HKConcept *)self identifier];
+  v4 = [identifier hash];
   if ([(HKConceptIdentifier *)self->_identifier isInMemory])
   {
-    v5 = [(HKConcept *)self adHocCode];
-    v6 = [v5 hash];
+    adHocCode = [(HKConcept *)self adHocCode];
+    v6 = [adHocCode hash];
   }
 
   else
@@ -221,10 +221,10 @@ LABEL_3:
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -234,14 +234,14 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(HKConceptIdentifier *)self->_identifier isEqual:v5->_identifier])
       {
         if ([(HKConceptIdentifier *)self->_identifier isInMemory])
         {
-          v6 = [(HKConcept *)self adHocCode];
-          v7 = [(HKConcept *)v5 adHocCode];
-          v8 = [v6 isEqual:v7];
+          adHocCode = [(HKConcept *)self adHocCode];
+          adHocCode2 = [(HKConcept *)v5 adHocCode];
+          v8 = [adHocCode isEqual:adHocCode2];
         }
 
         else
@@ -265,10 +265,10 @@ LABEL_3:
   return v8;
 }
 
-- (void)mutateBySettingRelationships:(id)a3
+- (void)mutateBySettingRelationships:(id)relationships
 {
   self->_options |= 1uLL;
-  v4 = [a3 copy];
+  v4 = [relationships copy];
   relationships = self->_relationships;
   self->_relationships = v4;
 
@@ -277,13 +277,13 @@ LABEL_3:
 
 - (HKConcept)groupByConcept
 {
-  v3 = [(HKConcept *)self firstConceptOfRelationshipType:1013];
-  if (!v3)
+  selfCopy = [(HKConcept *)self firstConceptOfRelationshipType:1013];
+  if (!selfCopy)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (NSSet)validInRegions
@@ -293,8 +293,8 @@ LABEL_3:
   v4 = MEMORY[0x1E695DFD8];
   if (v2)
   {
-    v5 = [v2 stringValue];
-    v6 = [v5 componentsSeparatedByString:{@", "}];
+    stringValue = [v2 stringValue];
+    v6 = [stringValue componentsSeparatedByString:{@", "}];
     v7 = [v4 setWithArray:v6];
   }
 
@@ -309,9 +309,9 @@ LABEL_3:
 - (NSString)preferredName
 {
   v2 = [(HKConcept *)self firstAttributeForType:1012];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (NSString)localizedPreferredName
@@ -342,23 +342,23 @@ LABEL_3:
         {
           v10 = v9;
           v11 = -[HKConcept firstAttributeForType:](self, "firstAttributeForType:", [v9 integerValue]);
-          v12 = [v11 stringValue];
+          stringValue = [v11 stringValue];
 
-          if (v12)
+          if (stringValue)
           {
             if (_os_feature_enabled_impl())
             {
-              v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ [%@]", v12, v8, v18];
+              v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ [%@]", stringValue, v8, v18];
             }
 
             else
             {
-              v15 = v12;
+              v15 = stringValue;
             }
 
             v14 = v15;
 
-            v13 = v3;
+            preferredName = v3;
             goto LABEL_18;
           }
         }
@@ -374,13 +374,13 @@ LABEL_3:
     }
   }
 
-  v13 = [(HKConcept *)self preferredName];
-  if (v13)
+  preferredName = [(HKConcept *)self preferredName];
+  if (preferredName)
   {
-    v13 = v13;
+    preferredName = preferredName;
   }
 
-  v14 = v13;
+  v14 = preferredName;
 LABEL_18:
 
   v16 = *MEMORY[0x1E69E9840];
@@ -388,42 +388,42 @@ LABEL_18:
   return v14;
 }
 
-- (id)firstAttributeForType:(int64_t)a3
+- (id)firstAttributeForType:(int64_t)type
 {
   attributes = self->_attributes;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__HKConcept_firstAttributeForType___block_invoke;
   v6[3] = &__block_descriptor_40_e28_B16__0__HKConceptAttribute_8l;
-  v6[4] = a3;
+  v6[4] = type;
   v4 = [(NSArray *)attributes hk_firstObjectPassingTest:v6];
 
   return v4;
 }
 
-- (id)attributesForType:(int64_t)a3
+- (id)attributesForType:(int64_t)type
 {
   attributes = self->_attributes;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __31__HKConcept_attributesForType___block_invoke;
   v6[3] = &__block_descriptor_40_e28_B16__0__HKConceptAttribute_8l;
-  v6[4] = a3;
+  v6[4] = type;
   v4 = [(NSArray *)attributes hk_filter:v6];
 
   return v4;
 }
 
-- (void)enumerateAttributesWithType:(int64_t)a3 block:(id)a4
+- (void)enumerateAttributesWithType:(int64_t)type block:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(HKConcept *)self attributes];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  attributes = [(HKConcept *)self attributes];
+  v8 = [attributes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -434,17 +434,17 @@ LABEL_18:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(attributes);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if ([v12 type] == a3)
+        if ([v12 type] == type)
         {
-          v6[2](v6, v12);
+          blockCopy[2](blockCopy, v12);
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [attributes countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -453,7 +453,7 @@ LABEL_18:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)stringsForAttributeType:(int64_t)a3
+- (id)stringsForAttributeType:(int64_t)type
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9[0] = MEMORY[0x1E69E9820];
@@ -462,7 +462,7 @@ LABEL_18:
   v9[3] = &unk_1E73798F8;
   v10 = v5;
   v6 = v5;
-  [(HKConcept *)self enumerateAttributesWithType:a3 block:v9];
+  [(HKConcept *)self enumerateAttributesWithType:type block:v9];
   v7 = [v6 copy];
 
   return v7;
@@ -494,49 +494,49 @@ void __37__HKConcept_stringsForAttributeType___block_invoke(uint64_t a1, void *a
 - (BOOL)isGeneric
 {
   v2 = [(HKConcept *)self firstAttributeForType:846];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isLowUtility
 {
   v2 = [(HKConcept *)self firstAttributeForType:989];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isExcludedFromSearch
 {
   v2 = [(HKConcept *)self firstAttributeForType:620];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)chartsBloodPressure
 {
   v2 = [(HKConcept *)self firstAttributeForType:61813];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hidesOutOfRangeFilter
 {
   v2 = [(HKConcept *)self firstAttributeForType:61839];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)adHocCode
 {
   v2 = [(HKConcept *)self firstAttributeForType:2];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (HKMedicalCoding)LOINCCoding
@@ -545,11 +545,11 @@ void __37__HKConcept_stringsForAttributeType___block_invoke(uint64_t a1, void *a
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 stringValue];
-    if (v4)
+    stringValue = [v2 stringValue];
+    if (stringValue)
     {
       v5 = +[HKMedicalCodingSystem LOINCCodeSystem];
-      v6 = [HKMedicalCoding medicalCodingWithSystem:v5 codingVersion:0 code:v4 displayString:0];
+      v6 = [HKMedicalCoding medicalCodingWithSystem:v5 codingVersion:0 code:stringValue displayString:0];
     }
 
     else
@@ -572,11 +572,11 @@ void __37__HKConcept_stringsForAttributeType___block_invoke(uint64_t a1, void *a
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 stringValue];
-    if (v4)
+    stringValue = [v2 stringValue];
+    if (stringValue)
     {
       v5 = +[HKMedicalCodingSystem RxNormCodeSystem];
-      v6 = [HKMedicalCoding medicalCodingWithSystem:v5 codingVersion:0 code:v4 displayString:0];
+      v6 = [HKMedicalCoding medicalCodingWithSystem:v5 codingVersion:0 code:stringValue displayString:0];
     }
 
     else
@@ -599,30 +599,30 @@ void __37__HKConcept_stringsForAttributeType___block_invoke(uint64_t a1, void *a
   if (v3)
   {
     v4 = +[HKMedicalCodingSystem adHocConceptSystem];
-    v5 = [v3 stringValue];
+    stringValue = [v3 stringValue];
   }
 
   else
   {
     v4 = +[HKMedicalCodingSystem appleOntologySystem];
-    v6 = [(HKConcept *)self identifier];
-    v7 = [v6 numberRepresentation];
-    v5 = [v7 stringValue];
+    identifier = [(HKConcept *)self identifier];
+    numberRepresentation = [identifier numberRepresentation];
+    stringValue = [numberRepresentation stringValue];
   }
 
-  v8 = [[HKMedicalCoding alloc] initWithCodingSystem:v4 codingVersion:0 code:v5 displayString:0];
+  v8 = [[HKMedicalCoding alloc] initWithCodingSystem:v4 codingVersion:0 code:stringValue displayString:0];
 
   return v8;
 }
 
-- (HKConcept)initWithCoder:(id)a3
+- (HKConcept)initWithCoder:(id)coder
 {
   v20[6] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = coderCopy;
     if (([v5 _decodingCyclesIsAllowed] & 1) == 0)
     {
       [v5 _allowDecodingCyclesInSecureMode];
@@ -634,7 +634,7 @@ void __37__HKConcept_stringsForAttributeType___block_invoke(uint64_t a1, void *a
   v6 = [(HKConcept *)&v19 init];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
     v8 = objc_alloc(MEMORY[0x1E695DFD8]);
     v20[0] = objc_opt_class();
     v20[1] = objc_opt_class();
@@ -645,7 +645,7 @@ void __37__HKConcept_stringsForAttributeType___block_invoke(uint64_t a1, void *a
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:6];
     v10 = [v8 initWithArray:v9];
 
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"Attributes"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"Attributes"];
     attributes = v6->_attributes;
     v6->_attributes = v11;
 
@@ -653,37 +653,37 @@ void __37__HKConcept_stringsForAttributeType___block_invoke(uint64_t a1, void *a
     v6->_identifier = v7;
     v14 = v7;
 
-    v15 = [v4 decodeObjectOfClasses:v10 forKey:@"Relationships"];
+    v15 = [coderCopy decodeObjectOfClasses:v10 forKey:@"Relationships"];
     relationships = v6->_relationships;
     v6->_relationships = v15;
 
-    v6->_version = [v4 decodeInt64ForKey:@"Version"];
-    v6->_deleted = [v4 decodeBoolForKey:@"Deleted"];
-    v6->_options = [v4 decodeIntegerForKey:@"Options"];
+    v6->_version = [coderCopy decodeInt64ForKey:@"Version"];
+    v6->_deleted = [coderCopy decodeBoolForKey:@"Deleted"];
+    v6->_options = [coderCopy decodeIntegerForKey:@"Options"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   attributes = self->_attributes;
-  v5 = a3;
-  [v5 encodeObject:attributes forKey:@"Attributes"];
-  [v5 encodeObject:self->_identifier forKey:@"Identifier"];
-  [v5 encodeObject:self->_relationships forKey:@"Relationships"];
-  [v5 encodeInt64:self->_version forKey:@"Version"];
-  [v5 encodeBool:self->_deleted forKey:@"Deleted"];
-  [v5 encodeInteger:self->_options forKey:@"Options"];
+  coderCopy = coder;
+  [coderCopy encodeObject:attributes forKey:@"Attributes"];
+  [coderCopy encodeObject:self->_identifier forKey:@"Identifier"];
+  [coderCopy encodeObject:self->_relationships forKey:@"Relationships"];
+  [coderCopy encodeInt64:self->_version forKey:@"Version"];
+  [coderCopy encodeBool:self->_deleted forKey:@"Deleted"];
+  [coderCopy encodeInteger:self->_options forKey:@"Options"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HKConceptIdentifier *)self->_identifier rawIdentifier];
-  v5 = [(HKConcept *)self preferredName];
-  v6 = [v3 stringWithFormat:@"HKConcept: Identifier: %lld, Preferred Name: %@", v4, v5];
+  rawIdentifier = [(HKConceptIdentifier *)self->_identifier rawIdentifier];
+  preferredName = [(HKConcept *)self preferredName];
+  v6 = [v3 stringWithFormat:@"HKConcept: Identifier: %lld, Preferred Name: %@", rawIdentifier, preferredName];
 
   return v6;
 }
@@ -692,29 +692,29 @@ void __37__HKConcept_stringsForAttributeType___block_invoke(uint64_t a1, void *a
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@, Tree:\n", self];
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
-  v5 = [(HKConcept *)self identifier];
-  v6 = [v4 initWithObjects:{v5, 0}];
+  identifier = [(HKConcept *)self identifier];
+  v6 = [v4 initWithObjects:{identifier, 0}];
 
   [(HKConcept *)self _appendTreeDescriptionToString:v3 visitedStack:v6];
 
   return v3;
 }
 
-- (void)_appendTreeDescriptionToString:(id)a3 visitedStack:(id)a4
+- (void)_appendTreeDescriptionToString:(id)string visitedStack:(id)stack
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 appendFormat:@"%012lld", -[HKConceptIdentifier rawIdentifier](self->_identifier, "rawIdentifier")];
+  stringCopy = string;
+  stackCopy = stack;
+  [stringCopy appendFormat:@"%012lld", -[HKConceptIdentifier rawIdentifier](self->_identifier, "rawIdentifier")];
   if ([(NSArray *)self->_attributes count])
   {
-    [v6 appendFormat:@" ["];
-    [(HKConcept *)self _appendSortedAttributeTypeCountDescriptionToString:v6];
-    [v6 appendFormat:@"]"];
+    [stringCopy appendFormat:@" ["];
+    [(HKConcept *)self _appendSortedAttributeTypeCountDescriptionToString:stringCopy];
+    [stringCopy appendFormat:@"]"];
   }
 
-  [v6 appendFormat:@"\n"];
-  v8 = [v7 count];
+  [stringCopy appendFormat:@"\n"];
+  v8 = [stackCopy count];
   v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%*s", (10 * v8 - 8), ""];
   v26 = 0u;
   v27 = 0u;
@@ -736,30 +736,30 @@ void __37__HKConcept_stringsForAttributeType___block_invoke(uint64_t a1, void *a
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        [v6 appendString:v9];
-        v15 = [v14 destination];
-        v16 = [v15 identifier];
-        v17 = [v7 containsObject:v16];
+        [stringCopy appendString:v9];
+        destination = [v14 destination];
+        identifier = [destination identifier];
+        v17 = [stackCopy containsObject:identifier];
 
         if (v17)
         {
-          v18 = [v14 type];
-          v19 = [v14 destination];
-          v20 = [v19 identifier];
-          [v6 appendFormat:@"%04lld -> %012lld [CYCLE DETECTED]\n", v18, objc_msgSend(v20, "rawIdentifier")];
+          type = [v14 type];
+          destination2 = [v14 destination];
+          identifier2 = [destination2 identifier];
+          [stringCopy appendFormat:@"%04lld -> %012lld [CYCLE DETECTED]\n", type, objc_msgSend(identifier2, "rawIdentifier")];
         }
 
         else
         {
-          v21 = [v14 destination];
-          v22 = [v21 identifier];
-          [v7 addObject:v22];
+          destination3 = [v14 destination];
+          identifier3 = [destination3 identifier];
+          [stackCopy addObject:identifier3];
 
-          [v6 appendFormat:@"%04lld -> ", objc_msgSend(v14, "type")];
-          v23 = [v14 destination];
-          [v23 _appendTreeDescriptionToString:v6 visitedStack:v7];
+          [stringCopy appendFormat:@"%04lld -> ", objc_msgSend(v14, "type")];
+          destination4 = [v14 destination];
+          [destination4 _appendTreeDescriptionToString:stringCopy visitedStack:stackCopy];
 
-          [v7 removeLastObject];
+          [stackCopy removeLastObject];
         }
       }
 
@@ -790,10 +790,10 @@ uint64_t __33__HKConcept__sortedRelationships__block_invoke(uint64_t a1, void *a
   return v6;
 }
 
-- (void)_appendSortedAttributeTypeCountDescriptionToString:(id)a3
+- (void)_appendSortedAttributeTypeCountDescriptionToString:(id)string
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v19 = 0u;
   v20 = 0u;
@@ -830,14 +830,14 @@ uint64_t __33__HKConcept__sortedRelationships__block_invoke(uint64_t a1, void *a
     while (v8);
   }
 
-  v14 = [v5 hk_sortedKeys];
+  hk_sortedKeys = [v5 hk_sortedKeys];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __64__HKConcept__appendSortedAttributeTypeCountDescriptionToString___block_invoke;
   v17[3] = &unk_1E7379940;
   v18 = v5;
   v15 = v5;
-  [v4 hk_appendComponentsJoinedByString:@" container:" componentGenerator:{v14, v17}];
+  [stringCopy hk_appendComponentsJoinedByString:@" container:" componentGenerator:{hk_sortedKeys, v17}];
 
   v16 = *MEMORY[0x1E69E9840];
 }

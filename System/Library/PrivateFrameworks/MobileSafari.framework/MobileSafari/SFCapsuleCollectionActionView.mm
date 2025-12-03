@@ -1,16 +1,16 @@
 @interface SFCapsuleCollectionActionView
-- (SFCapsuleCollectionActionView)initWithFrame:(CGRect)a3;
-- (void)setAction:(id)a3;
+- (SFCapsuleCollectionActionView)initWithFrame:(CGRect)frame;
+- (void)setAction:(id)action;
 @end
 
 @implementation SFCapsuleCollectionActionView
 
-- (SFCapsuleCollectionActionView)initWithFrame:(CGRect)a3
+- (SFCapsuleCollectionActionView)initWithFrame:(CGRect)frame
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = SFCapsuleCollectionActionView;
-  v3 = [(SFCapsuleCollectionActionView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFCapsuleCollectionActionView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -20,13 +20,13 @@
     [(UIImageView *)v3->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SFCapsuleCollectionActionView *)v3 addSubview:v3->_imageView];
     v6 = MEMORY[0x1E696ACD8];
-    v7 = [(UIImageView *)v3->_imageView centerYAnchor];
-    v8 = [(SFCapsuleCollectionActionView *)v3 centerYAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    centerYAnchor = [(UIImageView *)v3->_imageView centerYAnchor];
+    centerYAnchor2 = [(SFCapsuleCollectionActionView *)v3 centerYAnchor];
+    v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v17[0] = v9;
-    v10 = [(UIImageView *)v3->_imageView centerXAnchor];
-    v11 = [(SFCapsuleCollectionActionView *)v3 centerXAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    centerXAnchor = [(UIImageView *)v3->_imageView centerXAnchor];
+    centerXAnchor2 = [(SFCapsuleCollectionActionView *)v3 centerXAnchor];
+    v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v17[1] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
     [v6 activateConstraints:v13];
@@ -38,17 +38,17 @@
   return v3;
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v5 = a3;
-  if (self->_action != v5)
+  actionCopy = action;
+  if (self->_action != actionCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_action, a3);
-    v6 = [(UIAction *)v7 image];
-    [(UIImageView *)self->_imageView setImage:v6];
+    v7 = actionCopy;
+    objc_storeStrong(&self->_action, action);
+    image = [(UIAction *)v7 image];
+    [(UIImageView *)self->_imageView setImage:image];
 
-    v5 = v7;
+    actionCopy = v7;
   }
 }
 

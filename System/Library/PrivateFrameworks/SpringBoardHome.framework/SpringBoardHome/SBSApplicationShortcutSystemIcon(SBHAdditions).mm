@@ -20,23 +20,23 @@
 
 - (id)sbh_systemImage
 {
-  v1 = [a1 type];
-  if (v1 > 0x1C)
+  type = [self type];
+  if (type > 0x1C)
   {
     v4 = 0;
   }
 
   else
   {
-    v2 = [off_1E8089098[v1] unsignedIntegerValue];
-    if (v2 > 0x1C)
+    unsignedIntegerValue = [off_1E8089098[type] unsignedIntegerValue];
+    if (unsignedIntegerValue > 0x1C)
     {
       v3 = 0;
     }
 
     else
     {
-      v3 = off_1E8089180[v2];
+      v3 = off_1E8089180[unsignedIntegerValue];
     }
 
     v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:v3];
@@ -48,7 +48,7 @@
 - (id)sbh_image
 {
   v1 = @"ComposeNew";
-  switch([a1 type])
+  switch([self type])
   {
     case 0:
       break;
@@ -140,10 +140,10 @@
       v1 = @"rectangle.grid.2x2";
       break;
     case 30:
-      v2 = [MEMORY[0x1E69DC938] currentDevice];
-      v3 = [v2 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v1 = @"apps.ipad.landscape";
       }

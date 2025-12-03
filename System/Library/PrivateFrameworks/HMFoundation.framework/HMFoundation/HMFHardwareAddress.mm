@@ -1,24 +1,24 @@
 @interface HMFHardwareAddress
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAddress:(id)a3;
-- (HMFHardwareAddress)initWithAddressData:(id)a3;
-- (HMFHardwareAddress)initWithAddressString:(id)a3 length:(unint64_t)a4;
-- (HMFHardwareAddress)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAddress:(id)address;
+- (HMFHardwareAddress)initWithAddressData:(id)data;
+- (HMFHardwareAddress)initWithAddressString:(id)string length:(unint64_t)length;
+- (HMFHardwareAddress)initWithCoder:(id)coder;
 - (NSString)formattedString;
 - (NSString)propertyDescription;
 - (unint64_t)hash;
 - (unint64_t)length;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFHardwareAddress
 
-- (HMFHardwareAddress)initWithAddressString:(id)a3 length:(unint64_t)a4
+- (HMFHardwareAddress)initWithAddressString:(id)string length:(unint64_t)length
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4 - 1 > 7)
+  stringCopy = string;
+  v7 = stringCopy;
+  if (length - 1 > 7)
   {
     v14 = objc_autoreleasePoolPush();
     v15 = HMFGetOSLogHandle();
@@ -28,7 +28,7 @@
       *buf = 138543618;
       v21 = v16;
       v22 = 2048;
-      v23 = a4;
+      lengthCopy = length;
       _os_log_impl(&dword_22ADEC000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to create hardware address with invalid length: %lu", buf, 0x16u);
     }
 
@@ -38,7 +38,7 @@
 
   else
   {
-    [v6 UTF8String];
+    [stringCopy UTF8String];
     [v7 length];
     v8 = TextToHardwareAddress();
     if (v8)
@@ -52,7 +52,7 @@
         *buf = 138543874;
         v21 = v12;
         v22 = 2112;
-        v23 = v7;
+        lengthCopy = v7;
         v24 = 1024;
         v25 = v9;
         _os_log_impl(&dword_22ADEC000, v11, OS_LOG_TYPE_ERROR, "%{public}@Failed to convert string to hardware address %@: %d", buf, 0x1Cu);
@@ -64,7 +64,7 @@
 
     else
     {
-      v17 = [MEMORY[0x277CBEA90] dataWithBytes:&buf[-((a4 + 15) & 0xFFFFFFFFFFFFFFF0)] length:a4];
+      v17 = [MEMORY[0x277CBEA90] dataWithBytes:&buf[-((length + 15) & 0xFFFFFFFFFFFFFFF0)] length:length];
       v13 = [(HMFHardwareAddress *)self initWithAddressData:v17];
       self = v17;
     }
@@ -74,11 +74,11 @@
   return v13;
 }
 
-- (HMFHardwareAddress)initWithAddressData:(id)a3
+- (HMFHardwareAddress)initWithAddressData:(id)data
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 length] || objc_msgSend(v4, "length") >= 9)
+  dataCopy = data;
+  if (![dataCopy length] || objc_msgSend(dataCopy, "length") >= 9)
   {
     v5 = objc_autoreleasePoolPush();
     v6 = HMFGetOSLogHandle();
@@ -88,7 +88,7 @@
       *buf = 138543618;
       v14 = v7;
       v15 = 2112;
-      v16 = v4;
+      v16 = dataCopy;
       _os_log_impl(&dword_22ADEC000, v6, OS_LOG_TYPE_ERROR, "%{public}@Failed to create hardware address with data of invalid length: %@", buf, 0x16u);
     }
 
@@ -102,7 +102,7 @@
   v8 = [(HMFHardwareAddress *)&v12 init];
   if (v8)
   {
-    v9 = [v4 copy];
+    v9 = [dataCopy copy];
     self = *(v8 + 2);
     *(v8 + 2) = v9;
 LABEL_8:
@@ -115,16 +115,16 @@ LABEL_8:
 - (NSString)propertyDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMFHardwareAddress *)self formattedString];
-  v4 = [v2 stringWithFormat:@" formattedString=%@", v3];
+  formattedString = [(HMFHardwareAddress *)self formattedString];
+  v4 = [v2 stringWithFormat:@" formattedString=%@", formattedString];
 
   return v4;
 }
 
 - (unint64_t)length
 {
-  v2 = [(HMFHardwareAddress *)self data];
-  v3 = [v2 length];
+  data = [(HMFHardwareAddress *)self data];
+  v3 = [data length];
 
   return v3;
 }
@@ -136,8 +136,8 @@ LABEL_8:
   if (!formattedString)
   {
     v4 = v10 - ((3 * [(HMFHardwareAddress *)self length]+ 15) & 0xFFFFFFFFFFFFFFF0);
-    v5 = [(HMFHardwareAddress *)self data];
-    [v5 bytes];
+    data = [(HMFHardwareAddress *)self data];
+    [data bytes];
     [(HMFHardwareAddress *)self length];
     HardwareAddressToCString();
 
@@ -155,50 +155,50 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v2 = [(HMFHardwareAddress *)self data];
-  v3 = [v2 hash];
+  data = [(HMFHardwareAddress *)self data];
+  v3 = [data hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HMFHardwareAddress *)self isEqualToAddress:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HMFHardwareAddress *)self isEqualToAddress:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToAddress:(id)a3
+- (BOOL)isEqualToAddress:(id)address
 {
-  if (self == a3)
+  if (self == address)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(HMFHardwareAddress *)self data];
-  v6 = [v4 data];
+  addressCopy = address;
+  data = [(HMFHardwareAddress *)self data];
+  data2 = [addressCopy data];
 
-  LOBYTE(v4) = [v5 isEqualToData:v6];
-  return v4;
+  LOBYTE(addressCopy) = [data isEqualToData:data2];
+  return addressCopy;
 }
 
-- (HMFHardwareAddress)initWithCoder:(id)a3
+- (HMFHardwareAddress)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMF.data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMF.data"];
 
   v6 = [(HMFHardwareAddress *)self initWithAddressData:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMFHardwareAddress *)self data];
-  [v4 encodeObject:v5 forKey:@"HMF.data"];
+  coderCopy = coder;
+  data = [(HMFHardwareAddress *)self data];
+  [coderCopy encodeObject:data forKey:@"HMF.data"];
 }
 
 @end

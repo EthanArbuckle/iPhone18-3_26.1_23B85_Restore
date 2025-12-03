@@ -8,15 +8,15 @@
 - (unint64_t)lockScreenMode;
 - (void)cancelDataMigratorDeferredExit;
 - (void)deferDataMigratorExit;
-- (void)enrollInSeedProgramNamed:(id)a3 withAssetAudience:(id)a4 programID:(id)a5;
+- (void)enrollInSeedProgramNamed:(id)named withAssetAudience:(id)audience programID:(id)d;
 - (void)ensureShortLivedTokenUpgrade;
 - (void)ensureSilentLoginUpgrade;
 - (void)observeFinishSetupTriggers;
 - (void)performSilentICDPUpgrade;
-- (void)setLockScreenMode:(unint64_t)a3;
+- (void)setLockScreenMode:(unint64_t)mode;
 - (void)startExpressSettingsUpload;
-- (void)storeAuthenticationContextforApplyPay:(id)a3;
-- (void)storeAuthenticationContextforBiometric:(id)a3;
+- (void)storeAuthenticationContextforApplyPay:(id)pay;
+- (void)storeAuthenticationContextforBiometric:(id)biometric;
 @end
 
 @implementation BYBuddyDaemonGeneralClient
@@ -47,8 +47,8 @@ BYBuddyDaemonGeneralClient *__37__BYBuddyDaemonGeneralClient_factory__block_invo
 
 - (BOOL)setupAssistantNeedsToRun
 {
-  v2 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_17];
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v3 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_17];
 
   v6 = 0;
   v7 = &v6;
@@ -60,10 +60,10 @@ BYBuddyDaemonGeneralClient *__37__BYBuddyDaemonGeneralClient_factory__block_invo
   v5[3] = &unk_1E7D03218;
   v5[4] = &v6;
   [v3 setupAssistantNeedsToRun:v5];
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(_daemonConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
 
-  return v2;
+  return _daemonConnection;
 }
 
 void __54__BYBuddyDaemonGeneralClient_setupAssistantNeedsToRun__block_invoke(uint64_t a1, void *a2)
@@ -106,8 +106,8 @@ void __54__BYBuddyDaemonGeneralClient_setupAssistantNeedsToRun__block_invoke(uin
 
 - (unint64_t)lockScreenMode
 {
-  v2 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_25];
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v3 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_25];
 
   v7 = 0;
   v8 = &v7;
@@ -163,12 +163,12 @@ void __44__BYBuddyDaemonGeneralClient_lockScreenMode__block_invoke(uint64_t a1, 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setLockScreenMode:(unint64_t)a3
+- (void)setLockScreenMode:(unint64_t)mode
 {
-  v4 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_29];
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v5 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_29];
 
-  [v5 setLockScreenMode:a3];
+  [v5 setLockScreenMode:mode];
 }
 
 void __48__BYBuddyDaemonGeneralClient_setLockScreenMode___block_invoke(uint64_t a1, void *a2)
@@ -211,8 +211,8 @@ void __48__BYBuddyDaemonGeneralClient_setLockScreenMode___block_invoke(uint64_t 
 
 - (void)ensureSilentLoginUpgrade
 {
-  v2 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_31];
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v3 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_31];
 
   [v3 ensureSilentLoginUpgrade:&__block_literal_global_35];
 }
@@ -267,8 +267,8 @@ void __54__BYBuddyDaemonGeneralClient_ensureSilentLoginUpgrade__block_invoke_32(
 
 - (void)ensureShortLivedTokenUpgrade
 {
-  v2 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_37];
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v3 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_37];
 
   [v3 ensureShortLivedTokenUpgrade:&__block_literal_global_40];
 }
@@ -323,8 +323,8 @@ void __58__BYBuddyDaemonGeneralClient_ensureShortLivedTokenUpgrade__block_invoke
 
 - (id)backupMetadata
 {
-  v2 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_42];
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v3 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_42];
 
   v7 = 0;
   v8 = &v7;
@@ -384,8 +384,8 @@ void __44__BYBuddyDaemonGeneralClient_backupMetadata__block_invoke(uint64_t a1, 
 
 - (void)observeFinishSetupTriggers
 {
-  v2 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_46];
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v3 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_46];
 
   [v3 observeFinishSetupTriggers:&__block_literal_global_49];
 }
@@ -440,8 +440,8 @@ void __56__BYBuddyDaemonGeneralClient_observeFinishSetupTriggers__block_invoke_4
 
 - (void)performSilentICDPUpgrade
 {
-  v2 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_51];
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v3 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_51];
 
   [v3 performSilentICDPUpgrade:&__block_literal_global_54];
 }
@@ -496,8 +496,8 @@ void __54__BYBuddyDaemonGeneralClient_performSilentICDPUpgrade__block_invoke_52(
 
 - (void)deferDataMigratorExit
 {
-  v2 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_56];
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v3 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_56];
 
   [v3 deferDataMigratorExit:&__block_literal_global_59];
 }
@@ -552,8 +552,8 @@ void __51__BYBuddyDaemonGeneralClient_deferDataMigratorExit__block_invoke_57()
 
 - (void)cancelDataMigratorDeferredExit
 {
-  v2 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_61];
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v3 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_61];
 
   [v3 cancelDataMigratorDeferredExit:&__block_literal_global_64_0];
 }
@@ -606,15 +606,15 @@ void __60__BYBuddyDaemonGeneralClient_cancelDataMigratorDeferredExit__block_invo
   }
 }
 
-- (void)enrollInSeedProgramNamed:(id)a3 withAssetAudience:(id)a4 programID:(id)a5
+- (void)enrollInSeedProgramNamed:(id)named withAssetAudience:(id)audience programID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v12 = [v11 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_66_0];
+  dCopy = d;
+  audienceCopy = audience;
+  namedCopy = named;
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v12 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_66_0];
 
-  [v12 enrollInSeedProgramNamed:v10 withAssetAudience:v9 programID:v8 completion:&__block_literal_global_69];
+  [v12 enrollInSeedProgramNamed:namedCopy withAssetAudience:audienceCopy programID:dCopy completion:&__block_literal_global_69];
 }
 
 void __83__BYBuddyDaemonGeneralClient_enrollInSeedProgramNamed_withAssetAudience_programID___block_invoke(uint64_t a1, void *a2)
@@ -665,15 +665,15 @@ void __83__BYBuddyDaemonGeneralClient_enrollInSeedProgramNamed_withAssetAudience
   }
 }
 
-- (void)storeAuthenticationContextforApplyPay:(id)a3
+- (void)storeAuthenticationContextforApplyPay:(id)pay
 {
-  if (a3)
+  if (pay)
   {
-    v4 = a3;
-    v5 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_71];
+    payCopy = pay;
+    _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+    v6 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_71];
 
-    [v6 storeAuthenticationContextforApplyPay:v4 completion:&__block_literal_global_74];
+    [v6 storeAuthenticationContextforApplyPay:payCopy completion:&__block_literal_global_74];
   }
 }
 
@@ -727,8 +727,8 @@ void __68__BYBuddyDaemonGeneralClient_storeAuthenticationContextforApplyPay___bl
 
 - (id)fetchAuthenticationContextForApplePay
 {
-  v2 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_76];
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v3 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_76];
 
   v7 = 0;
   v8 = &v7;
@@ -786,15 +786,15 @@ void __67__BYBuddyDaemonGeneralClient_fetchAuthenticationContextForApplePay__blo
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storeAuthenticationContextforBiometric:(id)a3
+- (void)storeAuthenticationContextforBiometric:(id)biometric
 {
-  if (a3)
+  if (biometric)
   {
-    v4 = a3;
-    v5 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_80];
+    biometricCopy = biometric;
+    _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+    v6 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_80];
 
-    [v6 storeAuthenticationContextforBiometric:v4 completion:&__block_literal_global_83];
+    [v6 storeAuthenticationContextforBiometric:biometricCopy completion:&__block_literal_global_83];
   }
 }
 
@@ -848,8 +848,8 @@ void __69__BYBuddyDaemonGeneralClient_storeAuthenticationContextforBiometric___b
 
 - (id)fetchAuthenticationContextForBiometric
 {
-  v2 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_85];
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v3 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_85];
 
   v7 = 0;
   v8 = &v7;
@@ -909,8 +909,8 @@ void __68__BYBuddyDaemonGeneralClient_fetchAuthenticationContextForBiometric__bl
 
 - (void)startExpressSettingsUpload
 {
-  v2 = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_88];
+  _daemonConnection = [(BYBuddyDaemonGeneralClient *)self _daemonConnection];
+  v3 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_88];
 
   [v3 startExpressSettingsUpload];
 }

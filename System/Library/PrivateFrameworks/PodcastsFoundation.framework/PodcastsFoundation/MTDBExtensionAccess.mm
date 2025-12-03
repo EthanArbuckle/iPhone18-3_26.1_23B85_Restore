@@ -5,11 +5,11 @@
 - (void)_handleChange;
 - (void)_startObserving;
 - (void)_stopObserving;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)attemptToFix;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeObserver:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation MTDBExtensionAccess
@@ -47,9 +47,9 @@ uint64_t __37__MTDBExtensionAccess_sharedInstance__block_invoke()
   v2 = [(MTDBExtensionAccess *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     [(MTDBExtensionAccess *)v2 _startObserving];
   }
@@ -77,35 +77,35 @@ uint64_t __37__MTDBExtensionAccess_sharedInstance__block_invoke()
   objc_sync_exit(obj);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v16 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (MTDBExtensionAccessContext == a6)
+  pathCopy = path;
+  if (MTDBExtensionAccessContext == context)
   {
     v11 = _MTLogCategoryDatabase();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v10;
+      v15 = pathCopy;
       _os_log_impl(&dword_1D8CEC000, v11, OS_LOG_TYPE_DEFAULT, "MTDBExtensionAccess did get update for keyPath - %@", buf, 0xCu);
     }
 
@@ -116,7 +116,7 @@ uint64_t __37__MTDBExtensionAccess_sharedInstance__block_invoke()
   {
     v13.receiver = self;
     v13.super_class = MTDBExtensionAccess;
-    [(MTDBExtensionAccess *)&v13 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(MTDBExtensionAccess *)&v13 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -131,14 +131,14 @@ uint64_t __37__MTDBExtensionAccess_sharedInstance__block_invoke()
     _os_log_impl(&dword_1D8CEC000, v3, OS_LOG_TYPE_DEFAULT, "MTDBExtensionAccess will start observing", v8, 2u);
   }
 
-  v4 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  [v4 addObserver:self forKeyPath:@"MTDetectedCorruptDB" options:0 context:MTDBExtensionAccessContext];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults addObserver:self forKeyPath:@"MTDetectedCorruptDB" options:0 context:MTDBExtensionAccessContext];
 
-  v5 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  [v5 addObserver:self forKeyPath:@"MTCoreDataMigrationVersion" options:0 context:MTDBExtensionAccessContext];
+  _applePodcastsFoundationSharedUserDefaults2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults2 addObserver:self forKeyPath:@"MTCoreDataMigrationVersion" options:0 context:MTDBExtensionAccessContext];
 
-  v6 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  [v6 addObserver:self forKeyPath:@"MTLibraryMigrationVersion" options:0 context:MTDBExtensionAccessContext];
+  _applePodcastsFoundationSharedUserDefaults3 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults3 addObserver:self forKeyPath:@"MTLibraryMigrationVersion" options:0 context:MTDBExtensionAccessContext];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _MTDatabaseCreatedNotification, @"com.apple.podcasts.DatabaseCreatedNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -146,14 +146,14 @@ uint64_t __37__MTDBExtensionAccess_sharedInstance__block_invoke()
 
 - (void)_stopObserving
 {
-  v3 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  [v3 removeObserver:self forKeyPath:@"MTDetectedCorruptDB" context:MTDBExtensionAccessContext];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults removeObserver:self forKeyPath:@"MTDetectedCorruptDB" context:MTDBExtensionAccessContext];
 
-  v4 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  [v4 removeObserver:self forKeyPath:@"MTCoreDataMigrationVersion" context:MTDBExtensionAccessContext];
+  _applePodcastsFoundationSharedUserDefaults2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults2 removeObserver:self forKeyPath:@"MTCoreDataMigrationVersion" context:MTDBExtensionAccessContext];
 
-  v5 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  [v5 removeObserver:self forKeyPath:@"MTLibraryMigrationVersion" context:MTDBExtensionAccessContext];
+  _applePodcastsFoundationSharedUserDefaults3 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults3 removeObserver:self forKeyPath:@"MTLibraryMigrationVersion" context:MTDBExtensionAccessContext];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.podcasts.DatabaseCreatedNotification", 0);

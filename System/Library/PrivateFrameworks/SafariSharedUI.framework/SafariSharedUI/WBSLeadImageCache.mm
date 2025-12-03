@@ -1,20 +1,20 @@
 @interface WBSLeadImageCache
-- (BOOL)canHandleRequest:(id)a3;
-- (WBSLeadImageCache)initWithImageDirectoryURL:(id)a3;
+- (BOOL)canHandleRequest:(id)request;
+- (WBSLeadImageCache)initWithImageDirectoryURL:(id)l;
 - (WBSSiteMetadataProviderDelegate)providerDelegate;
-- (id)responseForRequest:(id)a3 willProvideUpdates:(BOOL *)a4;
-- (void)_addRequest:(id)a3;
-- (void)prepareResponseForRequest:(id)a3 allowDelayedResponse:(BOOL)a4;
-- (void)saveImage:(id)a3 forURL:(id)a4 completionHandler:(id)a5;
-- (void)siteMetadataImageCacheDidEmptyCache:(id)a3;
-- (void)stopWatchingUpdatesForRequest:(id)a3;
+- (id)responseForRequest:(id)request willProvideUpdates:(BOOL *)updates;
+- (void)_addRequest:(id)request;
+- (void)prepareResponseForRequest:(id)request allowDelayedResponse:(BOOL)response;
+- (void)saveImage:(id)image forURL:(id)l completionHandler:(id)handler;
+- (void)siteMetadataImageCacheDidEmptyCache:(id)cache;
+- (void)stopWatchingUpdatesForRequest:(id)request;
 @end
 
 @implementation WBSLeadImageCache
 
-- (WBSLeadImageCache)initWithImageDirectoryURL:(id)a3
+- (WBSLeadImageCache)initWithImageDirectoryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = WBSLeadImageCache;
   v5 = [(WBSLeadImageCache *)&v19 init];
@@ -24,20 +24,20 @@
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = [v6 stringWithFormat:@"com.apple.Safari.%@.%p.internalQueue", v8, v5];
-    v10 = [v9 UTF8String];
-    v11 = dispatch_queue_create(v10, MEMORY[0x1E69E96A8]);
+    uTF8String = [v9 UTF8String];
+    v11 = dispatch_queue_create(uTF8String, MEMORY[0x1E69E96A8]);
     internalQueue = v5->_internalQueue;
     v5->_internalQueue = v11;
 
-    v13 = [[WBSSiteMetadataImageCache alloc] initWithImageDirectoryURL:v4 imageType:1];
+    v13 = [[WBSSiteMetadataImageCache alloc] initWithImageDirectoryURL:lCopy imageType:1];
     imageCache = v5->_imageCache;
     v5->_imageCache = v13;
 
     [(WBSSiteMetadataImageCache *)v5->_imageCache setDelegate:v5];
     [(WBSSiteMetadataImageCache *)v5->_imageCache setUpImageCache];
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     urlStringToRequestSets = v5->_urlStringToRequestSets;
-    v5->_urlStringToRequestSets = v15;
+    v5->_urlStringToRequestSets = dictionary;
 
     v17 = v5;
   }
@@ -45,18 +45,18 @@
   return v5;
 }
 
-- (void)saveImage:(id)a3 forURL:(id)a4 completionHandler:(id)a5
+- (void)saveImage:(id)image forURL:(id)l completionHandler:(id)handler
 {
   imageCache = self->_imageCache;
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 absoluteString];
-  [(WBSSiteMetadataImageCache *)imageCache saveImageToDisk:v9 forKeyString:v10 completionHandler:v8];
+  handlerCopy = handler;
+  imageCopy = image;
+  absoluteString = [l absoluteString];
+  [(WBSSiteMetadataImageCache *)imageCache saveImageToDisk:imageCopy forKeyString:absoluteString completionHandler:handlerCopy];
 }
 
-- (void)prepareResponseForRequest:(id)a3 allowDelayedResponse:(BOOL)a4
+- (void)prepareResponseForRequest:(id)request allowDelayedResponse:(BOOL)response
 {
-  v5 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
   internalQueue = self->_internalQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -64,8 +64,8 @@
   v8[2] = __68__WBSLeadImageCache_prepareResponseForRequest_allowDelayedResponse___block_invoke;
   v8[3] = &unk_1E8285DC0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = requestCopy;
+  v7 = requestCopy;
   objc_copyWeak(&v10, &location);
   dispatch_barrier_async(internalQueue, v8);
   objc_destroyWeak(&v10);
@@ -160,44 +160,44 @@ void __68__WBSLeadImageCache_prepareResponseForRequest_allowDelayedResponse___bl
   }
 }
 
-- (id)responseForRequest:(id)a3 willProvideUpdates:(BOOL *)a4
+- (id)responseForRequest:(id)request willProvideUpdates:(BOOL *)updates
 {
-  v5 = [a3 url];
+  v5 = [request url];
   if (v5)
   {
     v6 = 0;
-    *a4 = 1;
+    *updates = 1;
   }
 
   else
   {
-    *a4 = 0;
+    *updates = 0;
     v6 = [WBSLeadImageCacheResponse responseWithURL:0 thumbnail:0];
   }
 
   return v6;
 }
 
-- (BOOL)canHandleRequest:(id)a3
+- (BOOL)canHandleRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)stopWatchingUpdatesForRequest:(id)a3
+- (void)stopWatchingUpdatesForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__WBSLeadImageCache_stopWatchingUpdatesForRequest___block_invoke;
   v7[3] = &unk_1E82834A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   dispatch_barrier_async(internalQueue, v7);
 }
 
@@ -214,23 +214,23 @@ void __51__WBSLeadImageCache_stopWatchingUpdatesForRequest___block_invoke(uint64
   }
 }
 
-- (void)_addRequest:(id)a3
+- (void)_addRequest:(id)request
 {
-  v7 = a3;
-  v4 = [v7 url];
-  v5 = [v4 absoluteString];
+  requestCopy = request;
+  v4 = [requestCopy url];
+  absoluteString = [v4 absoluteString];
 
-  v6 = [(NSMutableDictionary *)self->_urlStringToRequestSets objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_urlStringToRequestSets objectForKeyedSubscript:absoluteString];
   if (!v6)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
-    [(NSMutableDictionary *)self->_urlStringToRequestSets setObject:v6 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)self->_urlStringToRequestSets setObject:v6 forKeyedSubscript:absoluteString];
   }
 
-  [v6 addObject:v7];
+  [v6 addObject:requestCopy];
 }
 
-- (void)siteMetadataImageCacheDidEmptyCache:(id)a3
+- (void)siteMetadataImageCacheDidEmptyCache:(id)cache
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];

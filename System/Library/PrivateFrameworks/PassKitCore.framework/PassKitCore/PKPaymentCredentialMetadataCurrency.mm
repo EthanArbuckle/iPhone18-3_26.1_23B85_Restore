@@ -1,22 +1,22 @@
 @interface PKPaymentCredentialMetadataCurrency
-- (BOOL)_isEqualToMetadata:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentCredentialMetadataCurrency)initWithConfiguration:(id)a3;
+- (BOOL)_isEqualToMetadata:(id)metadata;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentCredentialMetadataCurrency)initWithConfiguration:(id)configuration;
 - (id)displayString;
 - (unint64_t)hash;
 @end
 
 @implementation PKPaymentCredentialMetadataCurrency
 
-- (PKPaymentCredentialMetadataCurrency)initWithConfiguration:(id)a3
+- (PKPaymentCredentialMetadataCurrency)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = PKPaymentCredentialMetadataCurrency;
-  v5 = [(PKPaymentCredentialMetadata *)&v11 initWithConfiguration:v4];
+  v5 = [(PKPaymentCredentialMetadata *)&v11 initWithConfiguration:configurationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"currencyCode"];
+    v6 = [configurationCopy objectForKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v6;
 
@@ -40,19 +40,19 @@
 - (id)displayString
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [(PKPaymentCredentialMetadata *)self value];
-  [v4 doubleValue];
+  value = [(PKPaymentCredentialMetadata *)self value];
+  [value doubleValue];
   v5 = [v3 numberWithDouble:?];
-  v6 = [(PKPaymentCredentialMetadataCurrency *)self currencyCode];
-  v7 = PKFormattedCurrencyStringFromNumber(v5, v6);
+  currencyCode = [(PKPaymentCredentialMetadataCurrency *)self currencyCode];
+  v7 = PKFormattedCurrencyStringFromNumber(v5, currencyCode);
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -60,20 +60,20 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPaymentCredentialMetadataCurrency *)self _isEqualToMetadata:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPaymentCredentialMetadataCurrency *)self _isEqualToMetadata:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isEqualToMetadata:(id)a3
+- (BOOL)_isEqualToMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = PKPaymentCredentialMetadataCurrency;
-  if ([(PKPaymentCredentialMetadata *)&v12 _isEqualToMetadata:v4])
+  if ([(PKPaymentCredentialMetadata *)&v12 _isEqualToMetadata:metadataCopy])
   {
-    v5 = v4[3];
+    v5 = metadataCopy[3];
     v6 = self->_currencyCode;
     v7 = v5;
     v8 = v7;

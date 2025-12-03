@@ -1,8 +1,8 @@
 @interface UITraitCollection
 + (id)crl_baseTraitCollection;
 + (id)crl_elevatedTraitCollection;
-+ (void)crl_withTraitCollectionAsCurrent:(id)a3 performBlock:(id)a4;
-- (BOOL)crl_hasSameUserInterfaceStyleWith:(id)a3;
++ (void)crl_withTraitCollectionAsCurrent:(id)current performBlock:(id)block;
+- (BOOL)crl_hasSameUserInterfaceStyleWith:(id)with;
 - (BOOL)crl_isCompactHeight;
 - (BOOL)crl_isCompactWidth;
 @end
@@ -11,8 +11,8 @@
 
 - (BOOL)crl_isCompactWidth
 {
-  v3 = [(UITraitCollection *)self horizontalSizeClass];
-  if (v3 == UIUserInterfaceSizeClassUnspecified)
+  horizontalSizeClass = [(UITraitCollection *)self horizontalSizeClass];
+  if (horizontalSizeClass == UIUserInterfaceSizeClassUnspecified)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (CRLAssertCat_init_token != -1)
@@ -41,8 +41,8 @@
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:22 isFatal:0 description:"expected inequality between %{public}s and %{public}s", "horizontalSizeClass", "UIUserInterfaceSizeClassUnspecified"];
   }
 
-  v7 = [(UITraitCollection *)self verticalSizeClass];
-  if (v7 == UIUserInterfaceSizeClassUnspecified)
+  verticalSizeClass = [(UITraitCollection *)self verticalSizeClass];
+  if (verticalSizeClass == UIUserInterfaceSizeClassUnspecified)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (CRLAssertCat_init_token != -1)
@@ -71,16 +71,16 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:27 isFatal:0 description:"expected inequality between %{public}s and %{public}s", "verticalSizeClass", "UIUserInterfaceSizeClassUnspecified"];
   }
 
-  v12 = v3 == UIUserInterfaceSizeClassRegular && v7 == UIUserInterfaceSizeClassCompact;
-  return v3 == UIUserInterfaceSizeClassCompact || v12;
+  v12 = horizontalSizeClass == UIUserInterfaceSizeClassRegular && verticalSizeClass == UIUserInterfaceSizeClassCompact;
+  return horizontalSizeClass == UIUserInterfaceSizeClassCompact || v12;
 }
 
 - (BOOL)crl_isCompactHeight
 {
-  v2 = [(UITraitCollection *)self verticalSizeClass];
-  if (v2 != UIUserInterfaceSizeClassCompact)
+  verticalSizeClass = [(UITraitCollection *)self verticalSizeClass];
+  if (verticalSizeClass != UIUserInterfaceSizeClassCompact)
   {
-    if (v2 == UIUserInterfaceSizeClassUnspecified)
+    if (verticalSizeClass == UIUserInterfaceSizeClassUnspecified)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (CRLAssertCat_init_token != -1)
@@ -109,29 +109,29 @@
       [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:48 isFatal:0 description:"expected inequality between %{public}s and %{public}s", "verticalSizeClass", "UIUserInterfaceSizeClassUnspecified"];
     }
 
-    LOBYTE(v2) = 0;
+    LOBYTE(verticalSizeClass) = 0;
   }
 
-  return v2;
+  return verticalSizeClass;
 }
 
-- (BOOL)crl_hasSameUserInterfaceStyleWith:(id)a3
+- (BOOL)crl_hasSameUserInterfaceStyleWith:(id)with
 {
-  v4 = a3;
-  v5 = [(UITraitCollection *)self userInterfaceStyle];
-  v6 = [v4 userInterfaceStyle];
+  withCopy = with;
+  userInterfaceStyle = [(UITraitCollection *)self userInterfaceStyle];
+  userInterfaceStyle2 = [withCopy userInterfaceStyle];
 
-  return v5 == v6;
+  return userInterfaceStyle == userInterfaceStyle2;
 }
 
-+ (void)crl_withTraitCollectionAsCurrent:(id)a3 performBlock:(id)a4
++ (void)crl_withTraitCollectionAsCurrent:(id)current performBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  currentCopy = current;
   v7 = +[UITraitCollection currentTraitCollection];
-  [UITraitCollection setCurrentTraitCollection:v6];
+  [UITraitCollection setCurrentTraitCollection:currentCopy];
 
-  v5[2](v5);
+  blockCopy[2](blockCopy);
   [UITraitCollection setCurrentTraitCollection:v7];
 }
 

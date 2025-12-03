@@ -29,8 +29,8 @@
   v7 = [v5 sectionWithRows:v6 title:@"AOD Reduced Backlight"];
 
   v8 = MEMORY[0x277D431A8];
-  v9 = [MEMORY[0x277D43238] action];
-  v10 = [v8 rowWithTitle:@"Restore Defaults" action:v9];
+  action = [MEMORY[0x277D43238] action];
+  v10 = [v8 rowWithTitle:@"Restore Defaults" action:action];
 
   v11 = MEMORY[0x277D43218];
   v19 = v10;

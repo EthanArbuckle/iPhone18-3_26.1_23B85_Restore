@@ -1,6 +1,6 @@
 @interface IMDStickerRegistry
 + (id)sharedInstance;
-- (BOOL)_isRecipeBasedSticker:(id)a3;
+- (BOOL)_isRecipeBasedSticker:(id)sticker;
 - (IMDStickerRegistry)init;
 - (void)dealloc;
 @end
@@ -27,7 +27,7 @@
   {
     if ([objc_msgSend(MEMORY[0x277D19268] "sharedInstance")])
     {
-      v3 = [@"/var/mobile/Library/SMS/Stickers" stringByExpandingTildeInPath];
+      stringByExpandingTildeInPath = [@"/var/mobile/Library/SMS/Stickers" stringByExpandingTildeInPath];
       if ([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")])
       {
         v8 = 0;
@@ -38,7 +38,7 @@
           if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v11 = v3;
+            v11 = stringByExpandingTildeInPath;
             v12 = 2112;
             v13 = v8;
             _os_log_impl(&dword_22B4CC000, v4, OS_LOG_TYPE_INFO, "Deleting legacy Sticker folder at path %@, error %@", buf, 0x16u);
@@ -74,14 +74,14 @@
   [(IMDStickerRegistry *)&v3 dealloc];
 }
 
-- (BOOL)_isRecipeBasedSticker:(id)a3
+- (BOOL)_isRecipeBasedSticker:(id)sticker
 {
-  if ([a3 count])
+  if ([sticker count])
   {
-    v4 = [objc_msgSend(a3 objectForKey:{*MEMORY[0x277D1A738]), "length"}];
+    v4 = [objc_msgSend(sticker objectForKey:{*MEMORY[0x277D1A738]), "length"}];
     if (v4)
     {
-      LOBYTE(v4) = [objc_msgSend(a3 objectForKey:{*MEMORY[0x277D1A770]), "length"}] != 0;
+      LOBYTE(v4) = [objc_msgSend(sticker objectForKey:{*MEMORY[0x277D1A770]), "length"}] != 0;
     }
   }
 

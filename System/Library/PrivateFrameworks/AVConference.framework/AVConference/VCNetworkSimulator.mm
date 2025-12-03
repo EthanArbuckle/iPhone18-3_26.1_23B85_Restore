@@ -4,7 +4,7 @@
 - (id)createDefaultPolicies;
 - (id)loadPoliciesFromJson;
 - (int)processNetwork;
-- (int)waitForCondition:(_opaque_pthread_cond_t *)a3 withTimeout:(double)a4 conditionPredicate:(BOOL *)a5;
+- (int)waitForCondition:(_opaque_pthread_cond_t *)condition withTimeout:(double)timeout conditionPredicate:(BOOL *)predicate;
 - (void)dealloc;
 - (void)loadPoliciesFromJson;
 - (void)setupNetwork;
@@ -124,7 +124,7 @@ VCNetworkSimulator *__36__VCNetworkSimulator_sharedInstance__block_invoke()
             v23 = 2112;
             v24 = v3;
             v25 = 2112;
-            v26 = v16;
+            selfCopy = v16;
             v11 = " [%s] %s:%d Error loading json policies from path=%@ error=%@";
             v12 = v10;
             v13 = 48;
@@ -161,7 +161,7 @@ LABEL_24:
             v23 = 2112;
             v24 = v6;
             v25 = 2048;
-            v26 = self;
+            selfCopy = self;
             v27 = 2112;
             v28 = v3;
             v29 = 2112;
@@ -175,10 +175,10 @@ LABEL_24:
       }
 
 LABEL_15:
-      v7 = [(VCNetworkSimulator *)self createDefaultPolicies];
+      createDefaultPolicies = [(VCNetworkSimulator *)self createDefaultPolicies];
       if (!v4)
       {
-        return v7;
+        return createDefaultPolicies;
       }
 
       goto LABEL_11;
@@ -190,8 +190,8 @@ LABEL_15:
     v5 = [v4 dataUsingEncoding:4];
   }
 
-  v7 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v5 options:0 error:0];
-  if (!v7)
+  createDefaultPolicies = [MEMORY[0x1E696ACB0] JSONObjectWithData:v5 options:0 error:0];
+  if (!createDefaultPolicies)
   {
     [(VCNetworkSimulator *)self loadPoliciesFromJson];
     goto LABEL_15;
@@ -203,7 +203,7 @@ LABEL_11:
     CFRelease(v4);
   }
 
-  return v7;
+  return createDefaultPolicies;
 }
 
 - (void)setupNetwork
@@ -297,28 +297,28 @@ uint64_t __34__VCNetworkSimulator_setupNetwork__block_invoke(uint64_t a1)
   return [(VCNetworkSimulator *)self waitForCondition:&self->_packetPushedCondition withTimeout:0 conditionPredicate:0.005];
 }
 
-- (int)waitForCondition:(_opaque_pthread_cond_t *)a3 withTimeout:(double)a4 conditionPredicate:(BOOL *)a5
+- (int)waitForCondition:(_opaque_pthread_cond_t *)condition withTimeout:(double)timeout conditionPredicate:(BOOL *)predicate
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.tv_sec = 0xAAAAAAAAAAAAAAAALL;
   v12.tv_nsec = 0xAAAAAAAAAAAAAAAALL;
   pthread_mutex_lock(&self->_mutex);
-  if (a4 <= 0.0)
+  if (timeout <= 0.0)
   {
     v10 = 60;
   }
 
   else
   {
-    v12.tv_sec = a4;
-    v12.tv_nsec = ((a4 - a4) * 1000000000.0);
+    v12.tv_sec = timeout;
+    v12.tv_nsec = ((timeout - timeout) * 1000000000.0);
     do
     {
-      v9 = pthread_cond_timedwait_relative_np(a3, &self->_mutex, &v12);
+      v9 = pthread_cond_timedwait_relative_np(condition, &self->_mutex, &v12);
       v10 = v9;
     }
 
-    while (a5 && !*a5 && !v9);
+    while (predicate && !*predicate && !v9);
   }
 
   pthread_mutex_unlock(&self->_mutex);
@@ -327,7 +327,7 @@ uint64_t __34__VCNetworkSimulator_setupNetwork__block_invoke(uint64_t a1)
 
 - (void)loadPoliciesFromJson
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -349,7 +349,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [a1 performSelector:sel_logPrefix];
+    [self performSelector:sel_logPrefix];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)

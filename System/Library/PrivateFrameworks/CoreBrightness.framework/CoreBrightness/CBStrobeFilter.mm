@@ -1,10 +1,10 @@
 @interface CBStrobeFilter
 - (BOOL)isPolluted;
-- (BOOL)wasFlashlightOnAt:(float)a3;
-- (CBStrobeFilter)initWithFlashlightManager:(id)a3;
-- (CBStrobeFilter)initWithQueue:(id)a3;
-- (id)filterEvent:(id)a3;
-- (id)handleALSEvent:(id)a3;
+- (BOOL)wasFlashlightOnAt:(float)at;
+- (CBStrobeFilter)initWithFlashlightManager:(id)manager;
+- (CBStrobeFilter)initWithQueue:(id)queue;
+- (id)filterEvent:(id)event;
+- (id)handleALSEvent:(id)event;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
@@ -12,45 +12,45 @@
 
 @implementation CBStrobeFilter
 
-- (CBStrobeFilter)initWithFlashlightManager:(id)a3
+- (CBStrobeFilter)initWithFlashlightManager:(id)manager
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  managerCopy = manager;
   v6.receiver = self;
   v6.super_class = CBStrobeFilter;
-  v9 = [(CBStrobeFilter *)&v6 init];
-  if (v9)
+  selfCopy = [(CBStrobeFilter *)&v6 init];
+  if (selfCopy)
   {
     v3 = os_log_create("com.apple.CoreBrightness.CBStrobeFilter", "default");
-    v9->super._logHandle = v3;
-    v4 = MEMORY[0x1E69E5928](v7);
-    v9->_flashlightManager = v4;
+    selfCopy->super._logHandle = v3;
+    v4 = MEMORY[0x1E69E5928](managerCopy);
+    selfCopy->_flashlightManager = v4;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (CBStrobeFilter)initWithQueue:(id)a3
+- (CBStrobeFilter)initWithQueue:(id)queue
 {
   context = objc_autoreleasePoolPush();
-  v5 = [(CBStrobeFilter *)self initWithFlashlightManager:[[CBFlashlightManager alloc] initWithQueue:a3 andSamplingTime:1000000000]];
+  v5 = [(CBStrobeFilter *)self initWithFlashlightManager:[[CBFlashlightManager alloc] initWithQueue:queue andSamplingTime:1000000000]];
   objc_autoreleasePoolPop(context);
   return v5;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->super._logHandle)
   {
-    MEMORY[0x1E69E5920](v5->super._logHandle);
-    v5->super._logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->super._logHandle);
+    selfCopy->super._logHandle = 0;
   }
 
-  *&v2 = MEMORY[0x1E69E5920](v5->_flashlightManager).n128_u64[0];
-  v3.receiver = v5;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_flashlightManager).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBStrobeFilter;
   [(CBStrobeFilter *)&v3 dealloc];
 }
@@ -73,31 +73,31 @@
   }
 }
 
-- (id)filterEvent:(id)a3
+- (id)filterEvent:(id)event
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return [(CBStrobeFilter *)self handleALSEvent:a3];
+    return [(CBStrobeFilter *)self handleALSEvent:event];
   }
 
   else
   {
-    return a3;
+    return event;
   }
 }
 
-- (id)handleALSEvent:(id)a3
+- (id)handleALSEvent:(id)event
 {
-  [a3 timestamp];
+  [event timestamp];
   v7 = v3;
-  [a3 integrationTime];
+  [event integrationTime];
   *&v5 = v7 - v4;
   self->_pollutedWithEvent = [(CBStrobeFilter *)self wasFlashlightOnAt:v5];
-  return a3;
+  return event;
 }
 
-- (BOOL)wasFlashlightOnAt:(float)a3
+- (BOOL)wasFlashlightOnAt:(float)at
 {
   if (!self->_isActive || !self->_flashlightManager)
   {
@@ -109,13 +109,13 @@
   {
     if (!float_equal(v4, 0.0))
     {
-      return a3 <= (v4 + 0.25);
+      return at <= (v4 + 0.25);
     }
 
     return 0;
   }
 
-  return a3 >= (v4 - 0.25);
+  return at >= (v4 - 0.25);
 }
 
 - (BOOL)isPolluted

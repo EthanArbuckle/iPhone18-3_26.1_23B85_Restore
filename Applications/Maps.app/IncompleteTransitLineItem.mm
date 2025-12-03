@@ -5,9 +5,9 @@
 - (GEOMapItemIdentifier)identifier;
 - (GEOTransitArtworkDataSource)artwork;
 - (GEOTransitSystem)system;
-- (IncompleteTransitLineItem)initWithIdentifier:(id)a3 name:(id)a4;
-- (IncompleteTransitLineItem)initWithLabelMarker:(id)a3 system:(id)a4;
-- (IncompleteTransitLineItem)initWithTransitLine:(id)a3;
+- (IncompleteTransitLineItem)initWithIdentifier:(id)identifier name:(id)name;
+- (IncompleteTransitLineItem)initWithLabelMarker:(id)marker system:(id)system;
+- (IncompleteTransitLineItem)initWithTransitLine:(id)line;
 - (NSString)name;
 - (unint64_t)departureTimeDisplayStyle;
 - (unint64_t)muid;
@@ -42,15 +42,15 @@
   line = self->_line;
   if (line)
   {
-    v4 = [(GEOTransitLine *)line artwork];
+    artwork = [(GEOTransitLine *)line artwork];
   }
 
   else
   {
-    v4 = self->_labelMarker;
+    artwork = self->_labelMarker;
   }
 
-  return v4;
+  return artwork;
 }
 
 - (BOOL)departuresAreVehicleSpecific
@@ -80,35 +80,35 @@
   system = self->_system;
   if (system)
   {
-    v3 = system;
+    system = system;
   }
 
   else
   {
-    v3 = [(GEOTransitLine *)self->_line system];
+    system = [(GEOTransitLine *)self->_line system];
   }
 
-  return v3;
+  return system;
 }
 
 - (NSString)name
 {
   if (self->_line)
   {
-    v2 = [(GEOTransitLine *)self->_line name];
+    name = [(GEOTransitLine *)self->_line name];
   }
 
   else if (self->_labelMarker)
   {
-    v2 = [(VKLabelMarker *)self->_labelMarker _annotationTitle];
+    name = [(VKLabelMarker *)self->_labelMarker _annotationTitle];
   }
 
   else
   {
-    v2 = self->_name;
+    name = self->_name;
   }
 
-  return v2;
+  return name;
 }
 
 - (GEOMapItemIdentifier)identifier
@@ -116,7 +116,7 @@
   line = self->_line;
   if (line)
   {
-    v4 = [(GEOTransitLine *)line identifier];
+    identifier = [(GEOTransitLine *)line identifier];
   }
 
   else
@@ -124,24 +124,24 @@
     labelMarker = self->_labelMarker;
     if (labelMarker)
     {
-      v6 = [(VKLabelMarker *)labelMarker _maps_lineIdentifiers];
-      v7 = [v6 firstObject];
+      _maps_lineIdentifiers = [(VKLabelMarker *)labelMarker _maps_lineIdentifiers];
+      firstObject = [_maps_lineIdentifiers firstObject];
 
-      if (v7)
+      if (firstObject)
       {
-        v8 = [v7 geoMapItemIdentifier];
+        geoMapItemIdentifier = [firstObject geoMapItemIdentifier];
 
         goto LABEL_8;
       }
     }
 
-    v4 = [(MKMapItemIdentifier *)self->_identifier geoMapItemIdentifier];
+    identifier = [(MKMapItemIdentifier *)self->_identifier geoMapItemIdentifier];
   }
 
-  v8 = v4;
+  geoMapItemIdentifier = identifier;
 LABEL_8:
 
-  return v8;
+  return geoMapItemIdentifier;
 }
 
 - (unint64_t)muid
@@ -161,40 +161,40 @@ LABEL_8:
     return [(GEOTransitLine *)line muid];
   }
 
-  v6 = [(VKLabelMarker *)labelMarker _maps_lineIdentifiers];
-  v7 = [v6 firstObject];
-  v8 = [v7 muid];
+  _maps_lineIdentifiers = [(VKLabelMarker *)labelMarker _maps_lineIdentifiers];
+  firstObject = [_maps_lineIdentifiers firstObject];
+  muid = [firstObject muid];
 
-  return v8;
+  return muid;
 }
 
-- (IncompleteTransitLineItem)initWithTransitLine:(id)a3
+- (IncompleteTransitLineItem)initWithTransitLine:(id)line
 {
-  v5 = a3;
+  lineCopy = line;
   v9.receiver = self;
   v9.super_class = IncompleteTransitLineItem;
   v6 = [(IncompleteTransitLineItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_line, a3);
+    objc_storeStrong(&v6->_line, line);
   }
 
   return v7;
 }
 
-- (IncompleteTransitLineItem)initWithIdentifier:(id)a3 name:(id)a4
+- (IncompleteTransitLineItem)initWithIdentifier:(id)identifier name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = IncompleteTransitLineItem;
   v9 = [(IncompleteTransitLineItem *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_identifier, identifier);
+    v11 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v11;
   }
@@ -202,18 +202,18 @@ LABEL_8:
   return v10;
 }
 
-- (IncompleteTransitLineItem)initWithLabelMarker:(id)a3 system:(id)a4
+- (IncompleteTransitLineItem)initWithLabelMarker:(id)marker system:(id)system
 {
-  v7 = a3;
-  v8 = a4;
+  markerCopy = marker;
+  systemCopy = system;
   v12.receiver = self;
   v12.super_class = IncompleteTransitLineItem;
   v9 = [(IncompleteTransitLineItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_labelMarker, a3);
-    objc_storeStrong(&v10->_system, a4);
+    objc_storeStrong(&v9->_labelMarker, marker);
+    objc_storeStrong(&v10->_system, system);
   }
 
   return v10;

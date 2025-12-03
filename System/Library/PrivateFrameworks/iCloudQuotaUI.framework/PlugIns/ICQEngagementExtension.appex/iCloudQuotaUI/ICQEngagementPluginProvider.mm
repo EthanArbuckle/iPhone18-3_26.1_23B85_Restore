@@ -1,18 +1,18 @@
 @interface ICQEngagementPluginProvider
-+ (void)performRequestWithObject:(id)a3 completion:(id)a4;
++ (void)performRequestWithObject:(id)object completion:(id)completion;
 @end
 
 @implementation ICQEngagementPluginProvider
 
-+ (void)performRequestWithObject:(id)a3 completion:(id)a4
++ (void)performRequestWithObject:(id)object completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  completionCopy = completion;
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = objectCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Recieved JS object: %@", &buf, 0xCu);
   }
 
@@ -29,7 +29,7 @@
     sub_100001A60();
   }
 
-  v9 = v5;
+  v9 = objectCopy;
   v10 = [v9 objectForKeyedSubscript:@"json-payload"];
   v11 = [v10 objectForKeyedSubscript:@"request"];
   v12 = [v11 objectForKeyedSubscript:@"command"];
@@ -83,7 +83,7 @@
     block[3] = &unk_100004190;
     v32 = v39;
     v33 = &buf;
-    v31 = v6;
+    v31 = completionCopy;
     dispatch_group_notify(v17, v18, block);
 
     _Block_object_dispose(v39, 8);
@@ -121,7 +121,7 @@
     v24[2] = sub_1000018A8;
     v24[3] = &unk_1000041E0;
     v26 = &buf;
-    v25 = v6;
+    v25 = completionCopy;
     dispatch_group_notify(v21, v22, v24);
 
     _Block_object_dispose(&buf, 8);
@@ -136,7 +136,7 @@
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Invalid JS command.", &buf, 2u);
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 

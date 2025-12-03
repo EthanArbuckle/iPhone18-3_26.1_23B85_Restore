@@ -1,20 +1,20 @@
 @interface DNDMutableAppAction
-- (void)setAction:(id)a3;
+- (void)setAction:(id)action;
 @end
 
 @implementation DNDMutableAppAction
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v10 = a3;
+  actionCopy = action;
   if (([(LNAction *)self->super._rawAction isEqual:?]& 1) == 0)
   {
-    v4 = [v10 copy];
+    v4 = [actionCopy copy];
     rawAction = self->super._rawAction;
     self->super._rawAction = v4;
 
-    v6 = [v10 identifier];
-    v7 = [v6 copy];
+    identifier = [actionCopy identifier];
+    v7 = [identifier copy];
     identifier = self->super._identifier;
     self->super._identifier = v7;
 

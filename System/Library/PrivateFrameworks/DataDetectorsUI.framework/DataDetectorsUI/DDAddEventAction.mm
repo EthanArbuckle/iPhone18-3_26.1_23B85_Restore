@@ -1,7 +1,7 @@
 @interface DDAddEventAction
-+ (BOOL)actionAvailableForEvent:(id)a3;
-+ (id)cachedEventForICSString:(id)a3;
-+ (id)icsEventForICSString:(id)a3;
++ (BOOL)actionAvailableForEvent:(id)event;
++ (id)cachedEventForICSString:(id)string;
++ (id)icsEventForICSString:(id)string;
 - (id)compactTitle;
 - (id)eventStartDateFromCache;
 - (id)eventTitleFromCache;
@@ -14,54 +14,54 @@
 
 - (void)invalidate
 {
-  v3 = [(DDAction *)self viewController];
-  [v3 setAction:0];
+  viewController = [(DDAction *)self viewController];
+  [viewController setAction:0];
 
   v4.receiver = self;
   v4.super_class = DDAddEventAction;
   [(DDAction *)&v4 invalidate];
 }
 
-+ (id)icsEventForICSString:(id)a3
++ (id)icsEventForICSString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_autoreleasePoolPush();
   gotLoadHelper_x8__OBJC_CLASS___ICSDocument(v5);
   v7 = objc_alloc(*(v6 + 264));
   v16 = 0;
-  v8 = [v7 initWithICSString:v3 options:0 error:&v16];
+  v8 = [v7 initWithICSString:stringCopy options:0 error:&v16];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 calendar];
-    v11 = [v10 method];
-    if (v11 > 5 || ((1 << v11) & 0x27) == 0)
+    calendar = [v8 calendar];
+    method = [calendar method];
+    if (method > 5 || ((1 << method) & 0x27) == 0)
     {
-      v14 = 0;
+      firstObject = 0;
     }
 
     else
     {
-      v13 = [v10 components];
-      v14 = [v13 firstObject];
+      components = [calendar components];
+      firstObject = [components firstObject];
     }
   }
 
   else
   {
-    v14 = 0;
+    firstObject = 0;
   }
 
   objc_autoreleasePoolPop(v4);
 
-  return v14;
+  return firstObject;
 }
 
-+ (id)cachedEventForICSString:(id)a3
++ (id)cachedEventForICSString:(id)string
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     gotLoadHelper_x21__OBJC_CLASS___EKEventStore(v6);
     if ([*(v3 + 2624) authorizationStatusForEntityType:0] == 3)
@@ -69,15 +69,15 @@
       v7 = [objc_alloc(*(v3 + 2624)) initWithOptions:48 path:0];
       if (v7)
       {
-        v8 = [v5 dataUsingEncoding:4];
+        v8 = [stringCopy dataUsingEncoding:4];
         v9 = [v7 importICSData:v8 intoCalendar:0 options:0];
-        v10 = [v9 firstObject];
+        firstObject = [v9 firstObject];
 
-        if (v10)
+        if (firstObject)
         {
           v17[0] = @"event";
           v17[1] = @"store";
-          v18[0] = v10;
+          v18[0] = firstObject;
           v18[1] = v7;
           v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
@@ -89,7 +89,7 @@ LABEL_8:
 
     else
     {
-      v12 = [a1 icsEventForICSString:v5];
+      v12 = [self icsEventForICSString:stringCopy];
       if (v12)
       {
         v15 = @"icsEvent";
@@ -127,20 +127,20 @@ LABEL_11:
 
 - (id)compactTitle
 {
-  v3 = [(DDAddEventAction *)self eventTitleFromCache];
-  if (v3)
+  eventTitleFromCache = [(DDAddEventAction *)self eventTitleFromCache];
+  if (eventTitleFromCache)
   {
-    v4 = v3;
-    v5 = [MEMORY[0x277CCA900] newlineCharacterSet];
-    v6 = [v4 componentsSeparatedByCharactersInSet:v5];
-    v7 = [v6 firstObject];
-    v8 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v9 = [v7 stringByTrimmingCharactersInSet:v8];
+    v4 = eventTitleFromCache;
+    newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+    v6 = [v4 componentsSeparatedByCharactersInSet:newlineCharacterSet];
+    firstObject = [v6 firstObject];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v9 = [firstObject stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     if ([v9 length])
     {
       v9 = v9;
-      v10 = v9;
+      compactTitle = v9;
       goto LABEL_10;
     }
   }
@@ -150,41 +150,41 @@ LABEL_11:
     v9 = 0;
   }
 
-  v11 = [(DDAddEventAction *)self eventStartDateFromCache];
-  if (!v11)
+  eventStartDateFromCache = [(DDAddEventAction *)self eventStartDateFromCache];
+  if (!eventStartDateFromCache)
   {
     goto LABEL_8;
   }
 
-  v10 = [MEMORY[0x277CCA968] localizedStringFromDate:v11 dateStyle:1 timeStyle:1];
-  if (![v10 length])
+  compactTitle = [MEMORY[0x277CCA968] localizedStringFromDate:eventStartDateFromCache dateStyle:1 timeStyle:1];
+  if (![compactTitle length])
   {
 
 LABEL_8:
     v13.receiver = self;
     v13.super_class = DDAddEventAction;
-    v10 = [(DDAction *)&v13 compactTitle];
+    compactTitle = [(DDAction *)&v13 compactTitle];
   }
 
 LABEL_10:
 
-  return v10;
+  return compactTitle;
 }
 
 - (id)quickActionTitle
 {
   v9 = 0;
-  v3 = [(DDAddEventAction *)self eventStartDateFromCache];
-  if (v3)
+  eventStartDateFromCache = [(DDAddEventAction *)self eventStartDateFromCache];
+  if (eventStartDateFromCache)
   {
     goto LABEL_2;
   }
 
-  v5 = [(DDAction *)self associatedResults];
-  v6 = [(DDAction *)self context];
-  v3 = beginDateOfEventResults(v5, v6, &v9 + 1, &v9, 0);
+  associatedResults = [(DDAction *)self associatedResults];
+  context = [(DDAction *)self context];
+  eventStartDateFromCache = beginDateOfEventResults(associatedResults, context, &v9 + 1, &v9, 0);
 
-  if (!v3)
+  if (!eventStartDateFromCache)
   {
     goto LABEL_8;
   }
@@ -192,8 +192,8 @@ LABEL_10:
   if (!v9)
   {
 LABEL_2:
-    v4 = [MEMORY[0x277CCA968] localizedStringFromDate:v3 dateStyle:3 timeStyle:HIBYTE(v9) != 1];
-    if ([v4 length])
+    quickActionTitle = [MEMORY[0x277CCA968] localizedStringFromDate:eventStartDateFromCache dateStyle:3 timeStyle:HIBYTE(v9) != 1];
+    if ([quickActionTitle length])
     {
       goto LABEL_9;
     }
@@ -201,8 +201,8 @@ LABEL_2:
 
   else
   {
-    v4 = [MEMORY[0x277CCA968] localizedStringFromDate:v3 dateStyle:0 timeStyle:1];
-    if ([v4 length])
+    quickActionTitle = [MEMORY[0x277CCA968] localizedStringFromDate:eventStartDateFromCache dateStyle:0 timeStyle:1];
+    if ([quickActionTitle length])
     {
       goto LABEL_9;
     }
@@ -211,19 +211,19 @@ LABEL_2:
 LABEL_8:
   v8.receiver = self;
   v8.super_class = DDAddEventAction;
-  v4 = [(DDAction *)&v8 quickActionTitle];
+  quickActionTitle = [(DDAction *)&v8 quickActionTitle];
 LABEL_9:
 
-  return v4;
+  return quickActionTitle;
 }
 
 - (id)notificationTitle
 {
-  v3 = [(DDAddEventAction *)self eventTitleFromCache];
-  v4 = [(DDAddEventAction *)self eventStartDateFromCache];
-  if (v4)
+  eventTitleFromCache = [(DDAddEventAction *)self eventTitleFromCache];
+  eventStartDateFromCache = [(DDAddEventAction *)self eventStartDateFromCache];
+  if (eventStartDateFromCache)
   {
-    v5 = [MEMORY[0x277CCA968] localizedStringFromDate:v4 dateStyle:1 timeStyle:1];
+    v5 = [MEMORY[0x277CCA968] localizedStringFromDate:eventStartDateFromCache dateStyle:1 timeStyle:1];
   }
 
   else
@@ -231,13 +231,13 @@ LABEL_9:
     v5 = 0;
   }
 
-  v6 = [v3 length];
+  v6 = [eventTitleFromCache length];
   v7 = [v5 length];
   v8 = MEMORY[0x277CCACA8];
   if (v6 && v7)
   {
     v9 = DDLocalizedString(@"Add “%@” on %@ to Calendar");
-    [v8 stringWithFormat:v9, v3, v5];
+    [v8 stringWithFormat:v9, eventTitleFromCache, v5];
   }
 
   else if (v7)
@@ -249,7 +249,7 @@ LABEL_9:
   else if (v6)
   {
     v9 = DDLocalizedString(@"Add “%@” to Calendar");
-    [v8 stringWithFormat:v9, v3, v13];
+    [v8 stringWithFormat:v9, eventTitleFromCache, v13];
   }
 
   else
@@ -262,11 +262,11 @@ LABEL_9:
   return v10;
 }
 
-+ (BOOL)actionAvailableForEvent:(id)a3
++ (BOOL)actionAvailableForEvent:(id)event
 {
-  if (a3)
+  if (event)
   {
-    return [a1 isAvailable];
+    return [self isAvailable];
   }
 
   else

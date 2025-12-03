@@ -1,72 +1,72 @@
 @interface CARDNDDiagnosticsService
-+ (id)TTRURLforEvent:(unint64_t)a3;
-+ (id)_radarURLForDiagnosticsAndDescriptionText:(id)a3;
-+ (id)_radarURLForDiagnosticsAtTime:(id)a3 didEnterRhodesGeofence:(BOOL)a4;
-+ (id)_radarURLForDiagnosticsAtTime:(id)a3 didStartRhodes:(BOOL)a4;
-+ (id)_radarURLForDiagnosticsAtTime:(id)a3 withEvent:(unint64_t)a4;
++ (id)TTRURLforEvent:(unint64_t)event;
++ (id)_radarURLForDiagnosticsAndDescriptionText:(id)text;
++ (id)_radarURLForDiagnosticsAtTime:(id)time didEnterRhodesGeofence:(BOOL)geofence;
++ (id)_radarURLForDiagnosticsAtTime:(id)time didStartRhodes:(BOOL)rhodes;
++ (id)_radarURLForDiagnosticsAtTime:(id)time withEvent:(unint64_t)event;
 @end
 
 @implementation CARDNDDiagnosticsService
 
-+ (id)TTRURLforEvent:(unint64_t)a3
++ (id)TTRURLforEvent:(unint64_t)event
 {
   v5 = +[NSDate date];
   v6 = CRStringForDate();
 
-  v7 = [a1 _radarURLForDiagnosticsAtTime:v6 withEvent:a3];
+  v7 = [self _radarURLForDiagnosticsAtTime:v6 withEvent:event];
 
   return v7;
 }
 
-+ (id)_radarURLForDiagnosticsAtTime:(id)a3 withEvent:(unint64_t)a4
++ (id)_radarURLForDiagnosticsAtTime:(id)time withEvent:(unint64_t)event
 {
-  v7 = a3;
-  if (a4 > 1)
+  timeCopy = time;
+  if (event > 1)
   {
-    if (a4 == 2)
+    if (event == 2)
     {
-      v11 = a1;
-      v12 = v7;
+      selfCopy2 = self;
+      v12 = timeCopy;
       v13 = 1;
     }
 
     else
     {
-      if (a4 != 3)
+      if (event != 3)
       {
         goto LABEL_13;
       }
 
-      v11 = a1;
-      v12 = v7;
+      selfCopy2 = self;
+      v12 = timeCopy;
       v13 = 0;
     }
 
-    v14 = [v11 _radarURLForDiagnosticsAtTime:v12 didEnterRhodesGeofence:v13];
+    v14 = [selfCopy2 _radarURLForDiagnosticsAtTime:v12 didEnterRhodesGeofence:v13];
   }
 
   else
   {
-    if (a4)
+    if (event)
     {
-      if (a4 != 1)
+      if (event != 1)
       {
         goto LABEL_13;
       }
 
-      v8 = a1;
-      v9 = v7;
+      selfCopy4 = self;
+      v9 = timeCopy;
       v10 = 0;
     }
 
     else
     {
-      v8 = a1;
-      v9 = v7;
+      selfCopy4 = self;
+      v9 = timeCopy;
       v10 = 1;
     }
 
-    v14 = [v8 _radarURLForDiagnosticsAtTime:v9 didStartRhodes:v10];
+    v14 = [selfCopy4 _radarURLForDiagnosticsAtTime:v9 didStartRhodes:v10];
   }
 
   v4 = v14;
@@ -75,39 +75,39 @@ LABEL_13:
   return v4;
 }
 
-+ (id)_radarURLForDiagnosticsAtTime:(id)a3 didStartRhodes:(BOOL)a4
++ (id)_radarURLForDiagnosticsAtTime:(id)time didStartRhodes:(BOOL)rhodes
 {
   v4 = @"Exited DNDWD at %@";
-  if (a4)
+  if (rhodes)
   {
     v4 = @"Entered DNDWD at %@";
   }
 
-  v5 = [NSString stringWithFormat:v4, a3];
-  v6 = [@"Please describe what you were doing to trigger Do Not Disturb While Driving. \n\n\n" stringByAppendingString:v5];
+  time = [NSString stringWithFormat:v4, time];
+  v6 = [@"Please describe what you were doing to trigger Do Not Disturb While Driving. \n\n\n" stringByAppendingString:time];
 
   v7 = [objc_opt_class() _radarURLForDiagnosticsAndDescriptionText:v6];
 
   return v7;
 }
 
-+ (id)_radarURLForDiagnosticsAtTime:(id)a3 didEnterRhodesGeofence:(BOOL)a4
++ (id)_radarURLForDiagnosticsAtTime:(id)time didEnterRhodesGeofence:(BOOL)geofence
 {
   v4 = @"Exited geofence at %@";
-  if (a4)
+  if (geofence)
   {
     v4 = @"Entered geofence at %@";
   }
 
-  v5 = [NSString stringWithFormat:v4, a3];
-  v6 = [objc_opt_class() _radarURLForDiagnosticsAndDescriptionText:v5];
+  time = [NSString stringWithFormat:v4, time];
+  v6 = [objc_opt_class() _radarURLForDiagnosticsAndDescriptionText:time];
 
   return v6;
 }
 
-+ (id)_radarURLForDiagnosticsAndDescriptionText:(id)a3
++ (id)_radarURLForDiagnosticsAndDescriptionText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = CRFormattedBuildAndDeviceIdentifier();
   if (v4)
   {
@@ -138,7 +138,7 @@ LABEL_13:
   v8 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:7];
   v9 = [v8 mutableCopy];
 
-  [v9 setObject:v3 forKeyedSubscript:@"Description"];
+  [v9 setObject:textCopy forKeyedSubscript:@"Description"];
   v10 = CRURLEncodedString();
   v11 = [@"tap-to-radar://new?" stringByAppendingString:v10];
   v12 = [NSURL URLWithString:v11];

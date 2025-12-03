@@ -104,10 +104,10 @@
   v1 = [(NSArray *)v0 count];
   v2 = [NSMutableData dataWithLength:8 * v1];
   [(NSArray *)v0 getObjects:[(NSMutableData *)v2 mutableBytes] range:0, v1];
-  v3 = [(NSMutableData *)v2 mutableBytes];
+  mutableBytes = [(NSMutableData *)v2 mutableBytes];
   v4 = NSString_class_();
 
-  return [IOSObjectArray arrayWithObjects:v3 count:v1 type:v4];
+  return [IOSObjectArray arrayWithObjects:mutableBytes count:v1 type:v4];
 }
 
 + (IOSObjectArray)getISOCountriesNative
@@ -116,10 +116,10 @@
   v1 = [(NSArray *)v0 count];
   v2 = [NSMutableData dataWithLength:8 * v1];
   [(NSArray *)v0 getObjects:[(NSMutableData *)v2 mutableBytes] range:0, v1];
-  v3 = [(NSMutableData *)v2 mutableBytes];
+  mutableBytes = [(NSMutableData *)v2 mutableBytes];
   v4 = NSString_class_();
 
-  return [IOSObjectArray arrayWithObjects:v3 count:v1 type:v4];
+  return [IOSObjectArray arrayWithObjects:mutableBytes count:v1 type:v4];
 }
 
 + (IOSObjectArray)getAvailableDateFormatLocalesNative

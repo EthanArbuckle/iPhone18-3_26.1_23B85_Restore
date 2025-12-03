@@ -1,41 +1,41 @@
 @interface OBNavigationBarDisplayState
-+ (id)displayStateForNavigationBar:(id)a3;
-- (OBNavigationBarDisplayState)initWithNavigationBar:(id)a3;
-- (void)applyState:(id)a3;
++ (id)displayStateForNavigationBar:(id)bar;
+- (OBNavigationBarDisplayState)initWithNavigationBar:(id)bar;
+- (void)applyState:(id)state;
 @end
 
 @implementation OBNavigationBarDisplayState
 
-- (OBNavigationBarDisplayState)initWithNavigationBar:(id)a3
+- (OBNavigationBarDisplayState)initWithNavigationBar:(id)bar
 {
-  v4 = a3;
+  barCopy = bar;
   v9.receiver = self;
   v9.super_class = OBNavigationBarDisplayState;
   v5 = [(OBNavigationBarDisplayState *)&v9 init];
   if (v5)
   {
-    [v4 _titleOpacity];
+    [barCopy _titleOpacity];
     v5->_titleOpacity = v6;
-    [v4 _backgroundOpacity];
+    [barCopy _backgroundOpacity];
     v5->_backgroundOpacity = v7;
   }
 
   return v5;
 }
 
-- (void)applyState:(id)a3
+- (void)applyState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(OBNavigationBarDisplayState *)self titleOpacity];
-  [v4 _setTitleOpacity:?];
+  [stateCopy _setTitleOpacity:?];
   [(OBNavigationBarDisplayState *)self backgroundOpacity];
-  [v4 _setBackgroundOpacity:?];
+  [stateCopy _setBackgroundOpacity:?];
 }
 
-+ (id)displayStateForNavigationBar:(id)a3
++ (id)displayStateForNavigationBar:(id)bar
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithNavigationBar:v4];
+  barCopy = bar;
+  v5 = [[self alloc] initWithNavigationBar:barCopy];
 
   return v5;
 }

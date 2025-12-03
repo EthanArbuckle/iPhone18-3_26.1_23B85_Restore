@@ -1,72 +1,72 @@
 @interface PTImageblockConfig
-+ ($3CC19D079FD0B010EE84973AA846B91B)adjustScissorRectToImageBlocks:(SEL)a3 imageBlockSize:(id *)a4;
-- (PTImageblockConfig)initWithPTTexture:(id)a3;
-- (PTImageblockConfig)initWithPTTexture:(id)a3 outRect:;
-- (PTImageblockConfig)initWithPTTexture:(id)a3 scissorRect:(id *)a4;
-- (PTImageblockConfig)initWithTexture:(id)a3;
-- (PTImageblockConfig)initWithTextureSize:(PTImageblockConfig *)self scissorRect:(SEL)a2 outRect:(id *)a3 imageblockSize:(unint64_t)a4;
++ ($3CC19D079FD0B010EE84973AA846B91B)adjustScissorRectToImageBlocks:(SEL)blocks imageBlockSize:(id *)size;
+- (PTImageblockConfig)initWithPTTexture:(id)texture;
+- (PTImageblockConfig)initWithPTTexture:(id)texture outRect:;
+- (PTImageblockConfig)initWithPTTexture:(id)texture scissorRect:(id *)rect;
+- (PTImageblockConfig)initWithTexture:(id)texture;
+- (PTImageblockConfig)initWithTextureSize:(PTImageblockConfig *)self scissorRect:(SEL)rect outRect:(id *)outRect imageblockSize:(unint64_t)size;
 - (__n128)scissorRectOffset;
 @end
 
 @implementation PTImageblockConfig
 
-- (PTImageblockConfig)initWithTexture:(id)a3
+- (PTImageblockConfig)initWithTexture:(id)texture
 {
   memset(v10, 0, sizeof(v10));
-  v4 = a3;
-  v5 = [v4 pixelFormat];
-  v6 = [v4 device];
-  v7 = [PTMetalTextureUtil macroBlockSizeForPixelFormat:v5 device:v6];
+  textureCopy = texture;
+  pixelFormat = [textureCopy pixelFormat];
+  device = [textureCopy device];
+  v7 = [PTMetalTextureUtil macroBlockSizeForPixelFormat:pixelFormat device:device];
 
-  LOWORD(v5) = [v4 width];
-  LOWORD(v6) = [v4 height];
+  LOWORD(pixelFormat) = [textureCopy width];
+  LOWORD(device) = [textureCopy height];
 
-  LOWORD(v9) = v5;
-  HIWORD(v9) = v6;
+  LOWORD(v9) = pixelFormat;
+  HIWORD(v9) = device;
   return [(PTImageblockConfig *)self initWithTextureSize:v9 scissorRect:v10 outRect:v7 imageblockSize:0.0];
 }
 
-- (PTImageblockConfig)initWithPTTexture:(id)a3
+- (PTImageblockConfig)initWithPTTexture:(id)texture
 {
   memset(v8, 0, sizeof(v8));
-  v4 = a3;
-  LOWORD(v7) = [v4 width];
-  HIWORD(v7) = [v4 height];
-  v5 = [v4 imageBlockSize];
+  textureCopy = texture;
+  LOWORD(v7) = [textureCopy width];
+  HIWORD(v7) = [textureCopy height];
+  imageBlockSize = [textureCopy imageBlockSize];
 
-  return [(PTImageblockConfig *)self initWithTextureSize:v7 scissorRect:v8 outRect:v5 imageblockSize:0.0];
+  return [(PTImageblockConfig *)self initWithTextureSize:v7 scissorRect:v8 outRect:imageBlockSize imageblockSize:0.0];
 }
 
-- (PTImageblockConfig)initWithPTTexture:(id)a3 scissorRect:(id *)a4
+- (PTImageblockConfig)initWithPTTexture:(id)texture scissorRect:(id *)rect
 {
-  v6 = a3;
-  LOWORD(v10) = [v6 width];
-  HIWORD(v10) = [v6 height];
-  v7 = [v6 imageBlockSize];
+  textureCopy = texture;
+  LOWORD(v10) = [textureCopy width];
+  HIWORD(v10) = [textureCopy height];
+  imageBlockSize = [textureCopy imageBlockSize];
 
-  v8 = *&a4->var2;
-  v11[0] = *&a4->var0;
+  v8 = *&rect->var2;
+  v11[0] = *&rect->var0;
   v11[1] = v8;
-  return [(PTImageblockConfig *)self initWithTextureSize:v10 scissorRect:v11 outRect:v7 imageblockSize:0.0];
+  return [(PTImageblockConfig *)self initWithTextureSize:v10 scissorRect:v11 outRect:imageBlockSize imageblockSize:0.0];
 }
 
-- (PTImageblockConfig)initWithPTTexture:(id)a3 outRect:
+- (PTImageblockConfig)initWithPTTexture:(id)texture outRect:
 {
   v4 = v3;
   memset(v10, 0, sizeof(v10));
-  v6 = a3;
-  LOWORD(v9) = [v6 width];
-  HIWORD(v9) = [v6 height];
-  v7 = [v6 imageBlockSize];
+  textureCopy = texture;
+  LOWORD(v9) = [textureCopy width];
+  HIWORD(v9) = [textureCopy height];
+  imageBlockSize = [textureCopy imageBlockSize];
 
-  return [(PTImageblockConfig *)self initWithTextureSize:v9 scissorRect:v10 outRect:v7 imageblockSize:v4];
+  return [(PTImageblockConfig *)self initWithTextureSize:v9 scissorRect:v10 outRect:imageBlockSize imageblockSize:v4];
 }
 
-- (PTImageblockConfig)initWithTextureSize:(PTImageblockConfig *)self scissorRect:(SEL)a2 outRect:(id *)a3 imageblockSize:(unint64_t)a4
+- (PTImageblockConfig)initWithTextureSize:(PTImageblockConfig *)self scissorRect:(SEL)rect outRect:(id *)outRect imageblockSize:(unint64_t)size
 {
   v6 = v4;
   v7 = v5;
-  v9 = a3;
+  outRectCopy = outRect;
   v34.receiver = self;
   v34.super_class = PTImageblockConfig;
   v10 = [(PTImageblockConfig *)&v34 init];
@@ -77,12 +77,12 @@
     v10->_threadsPerGroup.width = v6;
     v10->_threadsPerGroup.height = v6;
     v10->_threadsPerGroup.depth = 1;
-    if (*(a4 + 16) && *(a4 + 24))
+    if (*(size + 16) && *(size + 24))
     {
       v32 = 0u;
       v33 = 0u;
-      v12 = *(a4 + 16);
-      v31[0] = *a4;
+      v12 = *(size + 16);
+      v31[0] = *size;
       v31[1] = v12;
       [PTImageblockConfig adjustScissorRectToImageBlocks:v31 imageBlockSize:v6];
       v13 = vmovn_s64(v32);
@@ -98,8 +98,8 @@
       v17 = vceqz_s32(v16);
       if (vorr_s8(v17, vdup_lane_s32(v17, 1)).u8[0])
       {
-        v10->_threads.width = v9;
-        v10->_threads.height = HIWORD(v9);
+        v10->_threads.width = outRectCopy;
+        v10->_threads.height = HIWORD(outRectCopy);
 LABEL_9:
         v11->_threads.depth = 1;
         v29 = v11;
@@ -139,25 +139,25 @@ LABEL_10:
   return v11;
 }
 
-+ ($3CC19D079FD0B010EE84973AA846B91B)adjustScissorRectToImageBlocks:(SEL)a3 imageBlockSize:(id *)a4
++ ($3CC19D079FD0B010EE84973AA846B91B)adjustScissorRectToImageBlocks:(SEL)blocks imageBlockSize:(id *)size
 {
   v5 = vand_s8(vdup_n_s32(a5), 0xFFFF0000FFFFLL);
-  v6 = vand_s8(vmovn_s64(*&a4->var0), 0xFFFF0000FFFFLL);
+  v6 = vand_s8(vmovn_s64(*&size->var0), 0xFFFF0000FFFFLL);
   v6.i32[0] %= v5.i32[0];
   v7 = v6.i32[1] % v5.i32[1];
-  v8 = a4->var1 - v7;
-  retstr->var0 = a4->var0 - v6.u32[0];
+  v8 = size->var1 - v7;
+  retstr->var0 = size->var0 - v6.u32[0];
   retstr->var1 = v8;
-  v9 = (a4->var3 + a5 - 1 + v7) / a5 * a5;
-  retstr->var2 = (a4->var2 + a5 - 1 + v6.u32[0]) / a5 * a5;
+  v9 = (size->var3 + a5 - 1 + v7) / a5 * a5;
+  retstr->var2 = (size->var2 + a5 - 1 + v6.u32[0]) / a5 * a5;
   retstr->var3 = v9;
   return result;
 }
 
 - (__n128)scissorRectOffset
 {
-  LOWORD(v1) = *(a1 + 8);
-  WORD2(v1) = *(a1 + 10);
+  LOWORD(v1) = *(self + 8);
+  WORD2(v1) = *(self + 10);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;

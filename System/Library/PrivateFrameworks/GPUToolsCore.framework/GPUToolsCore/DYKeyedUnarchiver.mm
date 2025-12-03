@@ -2,9 +2,9 @@
 + (NSSet)allClassSet;
 + (NSSet)captureArchiveClassSet;
 + (NSSet)graphicsAPIInfosClassSet;
-+ (id)unarchivedObjectOfClass:(Class)a3 fromData:(id)a4 error:(id *)a5;
-+ (void)registerClass:(id)a3 withSet:(id)a4;
-+ (void)registerRuntimeClass:(id)a3 withSet:(id)a4;
++ (id)unarchivedObjectOfClass:(Class)class fromData:(id)data error:(id *)error;
++ (void)registerClass:(id)class withSet:(id)set;
++ (void)registerRuntimeClass:(id)class withSet:(id)set;
 @end
 
 @implementation DYKeyedUnarchiver
@@ -186,39 +186,39 @@ uint64_t __45__DYKeyedUnarchiver_graphicsAPIInfosClassSet__block_invoke()
   return result;
 }
 
-+ (void)registerClass:(id)a3 withSet:(id)a4
++ (void)registerClass:(id)class withSet:(id)set
 {
-  v5 = NSClassFromString(a3);
+  v5 = NSClassFromString(class);
   if (v5)
   {
 
-    [a4 addObject:v5];
+    [set addObject:v5];
   }
 }
 
-+ (void)registerRuntimeClass:(id)a3 withSet:(id)a4
++ (void)registerRuntimeClass:(id)class withSet:(id)set
 {
-  v6 = [a3 rangeOfString:@"DY"];
+  v6 = [class rangeOfString:@"DY"];
   v8 = v7;
-  v9 = NSClassFromString(a3);
+  v9 = NSClassFromString(class);
   if (v9)
   {
     v10 = v9;
     if (!v6)
     {
-      v11 = [@"DYGT" stringByAppendingString:{objc_msgSend(a3, "substringFromIndex:", v8)}];
+      v11 = [@"DYGT" stringByAppendingString:{objc_msgSend(class, "substringFromIndex:", v8)}];
       [MEMORY[0x277CCAAC8] setClass:v10 forClassName:v11];
     }
 
-    [a4 addObject:v10];
+    [set addObject:v10];
   }
 }
 
-+ (id)unarchivedObjectOfClass:(Class)a3 fromData:(id)a4 error:(id *)a5
++ (id)unarchivedObjectOfClass:(Class)class fromData:(id)data error:(id *)error
 {
-  v7 = [MEMORY[0x277CBEB98] setWithObjects:{a3, 0}];
+  v7 = [MEMORY[0x277CBEB98] setWithObjects:{class, 0}];
 
-  return [DYKeyedUnarchiver unarchivedObjectOfClasses:v7 fromData:a4 error:a5];
+  return [DYKeyedUnarchiver unarchivedObjectOfClasses:v7 fromData:data error:error];
 }
 
 @end

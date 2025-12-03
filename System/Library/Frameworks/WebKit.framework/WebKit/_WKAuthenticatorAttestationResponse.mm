@@ -1,34 +1,34 @@
 @interface _WKAuthenticatorAttestationResponse
-- (_WKAuthenticatorAttestationResponse)initWithClientDataJSON:(id)a3 rawId:(id)a4 extensionOutputsCBOR:(id)a5 attestationObject:(id)a6 attachment:(int64_t)a7 transports:(id)a8;
-- (_WKAuthenticatorAttestationResponse)initWithClientDataJSON:(id)a3 rawId:(id)a4 extensions:(void *)a5 attestationObject:(id)a6 attachment:(int64_t)a7 transports:(id)a8;
+- (_WKAuthenticatorAttestationResponse)initWithClientDataJSON:(id)n rawId:(id)id extensionOutputsCBOR:(id)r attestationObject:(id)object attachment:(int64_t)attachment transports:(id)transports;
+- (_WKAuthenticatorAttestationResponse)initWithClientDataJSON:(id)n rawId:(id)id extensions:(void *)extensions attestationObject:(id)object attachment:(int64_t)attachment transports:(id)transports;
 - (void)dealloc;
 @end
 
 @implementation _WKAuthenticatorAttestationResponse
 
-- (_WKAuthenticatorAttestationResponse)initWithClientDataJSON:(id)a3 rawId:(id)a4 extensions:(void *)a5 attestationObject:(id)a6 attachment:(int64_t)a7 transports:(id)a8
+- (_WKAuthenticatorAttestationResponse)initWithClientDataJSON:(id)n rawId:(id)id extensions:(void *)extensions attestationObject:(id)object attachment:(int64_t)attachment transports:(id)transports
 {
   v12.receiver = self;
   v12.super_class = _WKAuthenticatorAttestationResponse;
-  v10 = [(_WKAuthenticatorResponse *)&v12 initWithClientDataJSON:a3 rawId:a4 extensions:a5 attachment:a7];
+  v10 = [(_WKAuthenticatorResponse *)&v12 initWithClientDataJSON:n rawId:id extensions:extensions attachment:attachment];
   if (v10)
   {
-    v10->_attestationObject = a6;
-    v10->_transports = [a8 copy];
+    v10->_attestationObject = object;
+    v10->_transports = [transports copy];
   }
 
   return v10;
 }
 
-- (_WKAuthenticatorAttestationResponse)initWithClientDataJSON:(id)a3 rawId:(id)a4 extensionOutputsCBOR:(id)a5 attestationObject:(id)a6 attachment:(int64_t)a7 transports:(id)a8
+- (_WKAuthenticatorAttestationResponse)initWithClientDataJSON:(id)n rawId:(id)id extensionOutputsCBOR:(id)r attestationObject:(id)object attachment:(int64_t)attachment transports:(id)transports
 {
   v12.receiver = self;
   v12.super_class = _WKAuthenticatorAttestationResponse;
-  v10 = [(_WKAuthenticatorResponse *)&v12 initWithClientDataJSON:a3 rawId:a4 extensionOutputsCBOR:a5 attachment:a7];
+  v10 = [(_WKAuthenticatorResponse *)&v12 initWithClientDataJSON:n rawId:id extensionOutputsCBOR:r attachment:attachment];
   if (v10)
   {
-    v10->_attestationObject = a6;
-    v10->_transports = [a8 copy];
+    v10->_attestationObject = object;
+    v10->_transports = [transports copy];
   }
 
   return v10;

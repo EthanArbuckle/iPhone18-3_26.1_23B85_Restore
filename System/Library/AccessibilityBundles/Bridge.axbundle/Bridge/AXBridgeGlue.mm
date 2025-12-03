@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __45__AXBridgeGlue_accessibilityInitializeBundle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accessibilityInitializeBundle_onceToken != -1)
   {
     dispatch_once(&accessibilityInitializeBundle_onceToken, block);
@@ -68,8 +68,8 @@ void __45__AXBridgeGlue_accessibilityInitializeBundle__block_invoke_4(uint64_t a
 
 + (void)_handleNanoETSettings
 {
-  v2 = [MEMORY[0x29EDBD690] sharedInstance];
-  [v2 addHandler:&__block_literal_global_361 forBundleName:@"ETSettings"];
+  mEMORY[0x29EDBD690] = [MEMORY[0x29EDBD690] sharedInstance];
+  [mEMORY[0x29EDBD690] addHandler:&__block_literal_global_361 forBundleName:@"ETSettings"];
 }
 
 void __37__AXBridgeGlue__handleNanoETSettings__block_invoke_2()

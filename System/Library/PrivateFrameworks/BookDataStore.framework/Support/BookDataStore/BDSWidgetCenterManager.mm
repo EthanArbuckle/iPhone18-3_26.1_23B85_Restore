@@ -1,7 +1,7 @@
 @interface BDSWidgetCenterManager
 + (BDSWidgetCenterManager)sharedInstance;
 - (BDSWidgetCenterManager)init;
-- (void)reloadWidgetTimelinesWithShouldDonateRelevance:(BOOL)a3;
+- (void)reloadWidgetTimelinesWithShouldDonateRelevance:(BOOL)relevance;
 @end
 
 @implementation BDSWidgetCenterManager
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000463BC;
   block[3] = &unk_10023F980;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100274A78 != -1)
   {
     dispatch_once(&qword_100274A78, block);
@@ -55,14 +55,14 @@
   return v2;
 }
 
-- (void)reloadWidgetTimelinesWithShouldDonateRelevance:(BOOL)a3
+- (void)reloadWidgetTimelinesWithShouldDonateRelevance:(BOOL)relevance
 {
-  v3 = a3;
+  relevanceCopy = relevance;
   v5 = +[BUBag defaultBag];
-  v6 = [v5 booksReadingNowWidgetRolloutRate];
-  v7 = [v6 valuePromise];
+  booksReadingNowWidgetRolloutRate = [v5 booksReadingNowWidgetRolloutRate];
+  valuePromise = [booksReadingNowWidgetRolloutRate valuePromise];
   v21 = 0;
-  v8 = [v7 resultWithTimeout:&v21 error:2.0];
+  v8 = [valuePromise resultWithTimeout:&v21 error:2.0];
   v9 = v21;
   [v8 doubleValue];
   v11 = v10;
@@ -85,17 +85,17 @@
     }
   }
 
-  v15 = v12 <= v11 && v9 == 0 && v3;
+  v15 = v12 <= v11 && v9 == 0 && relevanceCopy;
   [(BDSWidgetCenterManager *)self setShouldDonateRelevance:v15];
   v16 = [[BDSOSTransaction alloc] initWithTransactionName:"com.apple.bookdatastored.BDSWidgetCenterManager.reloadWidgetTimelinesWithShouldDonateRelevance"];
-  v17 = [(BDSWidgetCenterManager *)self coalescingBlock];
+  coalescingBlock = [(BDSWidgetCenterManager *)self coalescingBlock];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100046A50;
   v19[3] = &unk_10023F6B0;
   v20 = v16;
   v18 = v16;
-  [v17 signalWithCompletion:v19];
+  [coalescingBlock signalWithCompletion:v19];
 }
 
 @end

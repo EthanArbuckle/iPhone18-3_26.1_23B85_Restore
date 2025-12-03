@@ -1,51 +1,51 @@
 @interface ASCredentialRequestPaneContext
-- (ASCredentialRequestPaneContext)initWithPaneViewController:(id)a3 stackView:(id)a4;
+- (ASCredentialRequestPaneContext)initWithPaneViewController:(id)controller stackView:(id)view;
 - (ASCredentialRequestPaneViewController)paneViewController;
-- (void)addEmptyViewWithSpacing:(double)a3;
-- (void)addHeaderWithConfiguration:(id)a3;
-- (void)addSubPane:(id)a3 withCustomSpacingAfter:(double)a4;
+- (void)addEmptyViewWithSpacing:(double)spacing;
+- (void)addHeaderWithConfiguration:(id)configuration;
+- (void)addSubPane:(id)pane withCustomSpacingAfter:(double)after;
 @end
 
 @implementation ASCredentialRequestPaneContext
 
-- (ASCredentialRequestPaneContext)initWithPaneViewController:(id)a3 stackView:(id)a4
+- (ASCredentialRequestPaneContext)initWithPaneViewController:(id)controller stackView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = ASCredentialRequestPaneContext;
   v8 = [(ASCredentialRequestPaneContext *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_paneViewController, v6);
-    objc_storeStrong(&v9->_stackView, a4);
+    objc_storeWeak(&v8->_paneViewController, controllerCopy);
+    objc_storeStrong(&v9->_stackView, view);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (void)addSubPane:(id)a3 withCustomSpacingAfter:(double)a4
+- (void)addSubPane:(id)pane withCustomSpacingAfter:(double)after
 {
-  v6 = a3;
-  v7 = [(ASCredentialRequestPaneContext *)self stackView];
-  [v6 addToStackView:v7 withCustomSpacingAfter:self context:a4];
+  paneCopy = pane;
+  stackView = [(ASCredentialRequestPaneContext *)self stackView];
+  [paneCopy addToStackView:stackView withCustomSpacingAfter:self context:after];
 }
 
-- (void)addEmptyViewWithSpacing:(double)a3
+- (void)addEmptyViewWithSpacing:(double)spacing
 {
   v7 = objc_alloc_init(_ASStackSpacerView);
-  v5 = [(ASCredentialRequestPaneContext *)self stackView];
-  [v5 addArrangedSubview:v7];
+  stackView = [(ASCredentialRequestPaneContext *)self stackView];
+  [stackView addArrangedSubview:v7];
 
-  v6 = [(ASCredentialRequestPaneContext *)self stackView];
-  [v6 setCustomSpacing:v7 afterView:a3];
+  stackView2 = [(ASCredentialRequestPaneContext *)self stackView];
+  [stackView2 setCustomSpacing:v7 afterView:spacing];
 }
 
-- (void)addHeaderWithConfiguration:(id)a3
+- (void)addHeaderWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;
@@ -64,7 +64,7 @@
 
   v6 = v5;
   _Block_object_dispose(&v10, 8);
-  v7 = [[v5 alloc] initWithHeaderConfiguration:v4];
+  v7 = [[v5 alloc] initWithHeaderConfiguration:configurationCopy];
   header = self->_header;
   self->_header = v7;
 

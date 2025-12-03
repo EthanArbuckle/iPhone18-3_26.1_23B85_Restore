@@ -1,7 +1,7 @@
 @interface _EARLmEvaluator
 + (void)initialize;
-- (BOOL)runEvaluationWithData:(id)a3 handle:(id)a4 result:(id *)a5 bestWeight:(float *)a6;
-- (_EARLmEvaluator)initWithConfiguration:(id)a3 root:(id)a4 recognizerConfiguration:(id)a5;
+- (BOOL)runEvaluationWithData:(id)data handle:(id)handle result:(id *)result bestWeight:(float *)weight;
+- (_EARLmEvaluator)initWithConfiguration:(id)configuration root:(id)root recognizerConfiguration:(id)recognizerConfiguration;
 - (id).cxx_construct;
 @end
 
@@ -10,33 +10,33 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (_EARLmEvaluator)initWithConfiguration:(id)a3 root:(id)a4 recognizerConfiguration:(id)a5
+- (_EARLmEvaluator)initWithConfiguration:(id)configuration root:(id)root recognizerConfiguration:(id)recognizerConfiguration
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  rootCopy = root;
+  recognizerConfigurationCopy = recognizerConfiguration;
   v17.receiver = self;
   v17.super_class = _EARLmEvaluator;
   v11 = [(_EARLmEvaluator *)&v17 init];
   if (v11)
   {
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [v12 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v13 = [defaultManager fileExistsAtPath:configurationCopy];
 
     if (v13)
     {
-      if (v8)
+      if (configurationCopy)
       {
-        [v8 ear_toString];
-        if (v9)
+        [configurationCopy ear_toString];
+        if (rootCopy)
         {
           goto LABEL_5;
         }
@@ -46,11 +46,11 @@
       {
         buf = 0uLL;
         v19 = 0;
-        if (v9)
+        if (rootCopy)
         {
 LABEL_5:
-          [v9 ear_toString];
-          if (!v10)
+          [rootCopy ear_toString];
+          if (!recognizerConfigurationCopy)
           {
             goto LABEL_12;
           }
@@ -59,14 +59,14 @@ LABEL_5:
         }
       }
 
-      if (!v10)
+      if (!recognizerConfigurationCopy)
       {
 LABEL_12:
         std::allocate_shared[abi:ne200100]<quasar::LmEvaluator,std::allocator<quasar::LmEvaluator>,std::string,std::string,std::string,0>();
       }
 
 LABEL_6:
-      [v10 ear_toString];
+      [recognizerConfigurationCopy ear_toString];
       goto LABEL_12;
     }
 
@@ -74,7 +74,7 @@ LABEL_6:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = configurationCopy;
       _os_log_impl(&dword_1B501D000, v14, OS_LOG_TYPE_DEFAULT, "File does not exist %@", &buf, 0xCu);
     }
 
@@ -89,20 +89,20 @@ LABEL_6:
   return v15;
 }
 
-- (BOOL)runEvaluationWithData:(id)a3 handle:(id)a4 result:(id *)a5 bestWeight:(float *)a6
+- (BOOL)runEvaluationWithData:(id)data handle:(id)handle result:(id *)result bestWeight:(float *)weight
 {
   v21 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  if (a5)
+  dataCopy = data;
+  handleCopy = handle;
+  if (result)
   {
-    *a5 = 0;
+    *result = 0;
   }
 
   v12 = quasar::PTree::PTree(v20);
-  if (v11)
+  if (handleCopy)
   {
-    [v11 handle];
+    [handleCopy handle];
   }
 
   else
@@ -112,16 +112,16 @@ LABEL_6:
   }
 
   ptr = self->_evaluator.__ptr_;
-  [v10 data];
-  v14 = quasar::LmEvaluator::runEvaluation(ptr, v16, &v18, v20, a6, self->_roundingEnabled, 0);
+  [dataCopy data];
+  v14 = quasar::LmEvaluator::runEvaluation(ptr, v16, &v18, v20, weight, self->_roundingEnabled, 0);
   if (v17)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v17);
   }
 
-  if (a5)
+  if (result)
   {
-    *a5 = EARHelpers::dictFromPTree(v20, 1);
+    *result = EARHelpers::dictFromPTree(v20, 1);
   }
 
   if (v19)

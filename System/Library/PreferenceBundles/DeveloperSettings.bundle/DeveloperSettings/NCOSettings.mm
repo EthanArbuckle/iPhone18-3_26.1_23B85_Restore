@@ -1,14 +1,14 @@
 @interface NCOSettings
-+ (id)ncoAlertWithText:(id)a3 cancelHandler:(id)a4 defaultHandler:(id)a5;
++ (id)ncoAlertWithText:(id)text cancelHandler:(id)handler defaultHandler:(id)defaultHandler;
 - (BOOL)shouldShowExpirationFooter;
 - (NCOSettings)init;
-- (id)getNCOCellularValue:(id)a3;
-- (id)getNCOPrefer5GValue:(id)a3;
-- (id)getNCOWiFiValue:(id)a3;
+- (id)getNCOCellularValue:(id)value;
+- (id)getNCOPrefer5GValue:(id)value;
+- (id)getNCOWiFiValue:(id)value;
 - (id)specifiers;
 - (void)reloadNCOGroup;
-- (void)reloadPrefer5GSpecifier:(id)a3;
-- (void)setNCOPrefer5GValue:(id)a3 specifier:(id)a4;
+- (void)reloadPrefer5GSpecifier:(id)specifier;
+- (void)setNCOPrefer5GValue:(id)value specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -59,10 +59,10 @@
   if (!v4)
   {
     v5 = objc_opt_new();
-    v6 = [(NCOSettings *)self ncoData];
-    v7 = [v6 isHighDataModeSupported];
+    ncoData = [(NCOSettings *)self ncoData];
+    isHighDataModeSupported = [ncoData isHighDataModeSupported];
 
-    if (v7)
+    if (isHighDataModeSupported)
     {
       v8 = [PSSpecifier preferenceSpecifierNamed:&stru_3E0D8 target:self set:0 get:0 detail:0 cell:0 edit:0];
       [v8 setIdentifier:@"NCO_Group_Id"];
@@ -122,27 +122,27 @@
 
 - (void)reloadNCOGroup
 {
-  v3 = [(NCOSettings *)self ncoData];
-  -[NCOSettings setCachedCellularOverrideValue:](self, "setCachedCellularOverrideValue:", [v3 isCellularInexpensive]);
+  ncoData = [(NCOSettings *)self ncoData];
+  -[NCOSettings setCachedCellularOverrideValue:](self, "setCachedCellularOverrideValue:", [ncoData isCellularInexpensive]);
 
-  v4 = [(NCOSettings *)self ncoData];
-  -[NCOSettings setCachedWifiOverrideValue:](self, "setCachedWifiOverrideValue:", [v4 wifiOverride]);
+  ncoData2 = [(NCOSettings *)self ncoData];
+  -[NCOSettings setCachedWifiOverrideValue:](self, "setCachedWifiOverrideValue:", [ncoData2 wifiOverride]);
 
-  v5 = [(NCOSettings *)self ncoData];
+  ncoData3 = [(NCOSettings *)self ncoData];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10530;
   v6[3] = &unk_3D5D8;
   v6[4] = self;
-  [v5 fetchPrefer5GEnabledWithCompletion:v6];
+  [ncoData3 fetchPrefer5GEnabledWithCompletion:v6];
 }
 
-- (id)getNCOCellularValue:(id)a3
+- (id)getNCOCellularValue:(id)value
 {
-  v3 = [(NCOSettings *)self cachedCellularOverrideValue];
+  cachedCellularOverrideValue = [(NCOSettings *)self cachedCellularOverrideValue];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3)
+  if (cachedCellularOverrideValue)
   {
     v6 = @"NCO_INEXPENSIVE";
   }
@@ -157,44 +157,44 @@
   return v7;
 }
 
-- (id)getNCOWiFiValue:(id)a3
+- (id)getNCOWiFiValue:(id)value
 {
-  v4 = [(NCOSettings *)self cachedWifiOverrideValue];
-  v5 = [(NCOSettings *)self wifiShortTitles];
-  v6 = [v5 count];
+  cachedWifiOverrideValue = [(NCOSettings *)self cachedWifiOverrideValue];
+  wifiShortTitles = [(NCOSettings *)self wifiShortTitles];
+  v6 = [wifiShortTitles count];
 
-  if (v4 > v6)
+  if (cachedWifiOverrideValue > v6)
   {
     [(NCOSettings *)self setCachedWifiOverrideValue:0];
   }
 
-  v7 = [(NCOSettings *)self wifiShortTitles];
-  v8 = [v7 objectAtIndexedSubscript:{-[NCOSettings cachedWifiOverrideValue](self, "cachedWifiOverrideValue")}];
+  wifiShortTitles2 = [(NCOSettings *)self wifiShortTitles];
+  v8 = [wifiShortTitles2 objectAtIndexedSubscript:{-[NCOSettings cachedWifiOverrideValue](self, "cachedWifiOverrideValue")}];
 
   return v8;
 }
 
-- (id)getNCOPrefer5GValue:(id)a3
+- (id)getNCOPrefer5GValue:(id)value
 {
-  v3 = [(NCOSettings *)self cachedPrefer5GValue];
+  cachedPrefer5GValue = [(NCOSettings *)self cachedPrefer5GValue];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:cachedPrefer5GValue];
 }
 
-- (void)setNCOPrefer5GValue:(id)a3 specifier:(id)a4
+- (void)setNCOPrefer5GValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 setObject:&__kCFBooleanTrue forKeyedSubscript:PSControlIsLoadingKey];
-  [(NCOSettings *)self reloadSpecifier:v7 animated:1];
-  if ([v6 isEqualToNumber:&__kCFBooleanTrue])
+  valueCopy = value;
+  specifierCopy = specifier;
+  [specifierCopy setObject:&__kCFBooleanTrue forKeyedSubscript:PSControlIsLoadingKey];
+  [(NCOSettings *)self reloadSpecifier:specifierCopy animated:1];
+  if ([valueCopy isEqualToNumber:&__kCFBooleanTrue])
   {
-    v8 = [(NCOSettings *)self ncoData];
-    v9 = [v8 isCellularInexpensive];
+    ncoData = [(NCOSettings *)self ncoData];
+    isCellularInexpensive = [ncoData isCellularInexpensive];
 
     v10 = [NSBundle bundleForClass:objc_opt_class()];
     v11 = v10;
-    if (v9)
+    if (isCellularInexpensive)
     {
       v12 = [v10 localizedStringForKey:@"NCO_PREFER5G_INEXPENSIVE_ALERT_TEXT" value:&stru_3E0D8 table:@"NCOSettings"];
       v29[0] = _NSConcreteStackBlock;
@@ -202,13 +202,13 @@
       v29[2] = sub_10C88;
       v29[3] = &unk_3D600;
       v29[4] = self;
-      v30 = v7;
+      v30 = specifierCopy;
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_10C94;
       v26[3] = &unk_3D628;
       v26[4] = self;
-      v27 = v6;
+      v27 = valueCopy;
       v28 = v30;
       v13 = [NCOSettings ncoAlertWithText:v12 cancelHandler:v29 defaultHandler:v26];
 
@@ -224,42 +224,42 @@
       v24[2] = sub_10D10;
       v24[3] = &unk_3D600;
       v24[4] = self;
-      v25 = v7;
+      v25 = specifierCopy;
       v17 = _NSConcreteStackBlock;
       v18 = 3221225472;
       v19 = sub_10D1C;
       v20 = &unk_3D628;
-      v21 = self;
-      v22 = v6;
+      selfCopy = self;
+      v22 = valueCopy;
       v23 = v25;
       v16 = [NCOSettings ncoAlertWithText:v15 cancelHandler:v24 defaultHandler:&v17];
 
-      [(NCOSettings *)self presentViewController:v16 animated:1 completion:0, v17, v18, v19, v20, v21];
+      [(NCOSettings *)self presentViewController:v16 animated:1 completion:0, v17, v18, v19, v20, selfCopy];
       v14 = v25;
     }
   }
 
   else
   {
-    -[NCOSettings enablePrefer5G:specifier:](self, "enablePrefer5G:specifier:", [v6 BOOLValue], v7);
+    -[NCOSettings enablePrefer5G:specifier:](self, "enablePrefer5G:specifier:", [valueCopy BOOLValue], specifierCopy);
   }
 }
 
-- (void)reloadPrefer5GSpecifier:(id)a3
+- (void)reloadPrefer5GSpecifier:(id)specifier
 {
-  [a3 setObject:&__kCFBooleanFalse forKeyedSubscript:PSControlIsLoadingKey];
+  [specifier setObject:&__kCFBooleanFalse forKeyedSubscript:PSControlIsLoadingKey];
 
   [(NCOSettings *)self reloadNCOGroup];
 }
 
-+ (id)ncoAlertWithText:(id)a3 cancelHandler:(id)a4 defaultHandler:(id)a5
++ (id)ncoAlertWithText:(id)text cancelHandler:(id)handler defaultHandler:(id)defaultHandler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  defaultHandlerCopy = defaultHandler;
+  textCopy = text;
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"NCO_ALERT_TITLE" value:&stru_3E0D8 table:@"NCOSettings"];
-  v12 = [UIAlertController alertControllerWithTitle:v11 message:v9 preferredStyle:1];
+  v12 = [UIAlertController alertControllerWithTitle:v11 message:textCopy preferredStyle:1];
 
   v13 = [NSBundle bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"NCO_CANCEL" value:&stru_3E0D8 table:@"NCOSettings"];
@@ -267,8 +267,8 @@
   v27[1] = 3221225472;
   v27[2] = sub_112C0;
   v27[3] = &unk_3D650;
-  v28 = v7;
-  v15 = v7;
+  v28 = handlerCopy;
+  v15 = handlerCopy;
   v16 = [UIAlertAction actionWithTitle:v14 style:1 handler:v27];
 
   [v12 addAction:v16];
@@ -278,8 +278,8 @@
   v23 = 3221225472;
   v24 = sub_112D8;
   v25 = &unk_3D650;
-  v26 = v8;
-  v19 = v8;
+  v26 = defaultHandlerCopy;
+  v19 = defaultHandlerCopy;
   v20 = [UIAlertAction actionWithTitle:v18 style:0 handler:&v22];
 
   [v12 addAction:{v20, v22, v23, v24, v25}];

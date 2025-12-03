@@ -1,18 +1,18 @@
 @interface BRShareParticipantCell
-- (void)_setupWithAvatar:(BOOL)a3 subtitle:(BOOL)a4 participantColor:(BOOL)a5;
+- (void)_setupWithAvatar:(BOOL)avatar subtitle:(BOOL)subtitle participantColor:(BOOL)color;
 - (void)prepareForReuse;
-- (void)setRepresentedValue:(id)a3;
+- (void)setRepresentedValue:(id)value;
 @end
 
 @implementation BRShareParticipantCell
 
-- (void)_setupWithAvatar:(BOOL)a3 subtitle:(BOOL)a4 participantColor:(BOOL)a5
+- (void)_setupWithAvatar:(BOOL)avatar subtitle:(BOOL)subtitle participantColor:(BOOL)color
 {
-  v5 = a5;
-  v6 = a4;
-  if (a3)
+  colorCopy = color;
+  subtitleCopy = subtitle;
+  if (avatar)
   {
-    v8 = a4;
+    subtitleCopy2 = subtitle;
     avatarViewController = self->_avatarViewController;
     if (!avatarViewController)
     {
@@ -20,37 +20,37 @@
       v11 = self->_avatarViewController;
       self->_avatarViewController = v10;
 
-      v12 = [(CNAvatarViewController *)self->_avatarViewController view];
-      [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view = [(CNAvatarViewController *)self->_avatarViewController view];
+      [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
       avatarViewController = self->_avatarViewController;
     }
 
-    v13 = [(CNAvatarViewController *)avatarViewController view];
-    [(BRShareParticipantCell *)self addSubview:v13];
+    view2 = [(CNAvatarViewController *)avatarViewController view];
+    [(BRShareParticipantCell *)self addSubview:view2];
     v14 = objc_opt_new();
-    v15 = [v13 heightAnchor];
-    v16 = [v15 constraintEqualToConstant:32.0];
+    heightAnchor = [view2 heightAnchor];
+    v16 = [heightAnchor constraintEqualToConstant:32.0];
     [v14 addObject:v16];
 
-    v17 = [v13 widthAnchor];
-    v18 = [v17 constraintEqualToConstant:32.0];
+    widthAnchor = [view2 widthAnchor];
+    v18 = [widthAnchor constraintEqualToConstant:32.0];
     [v14 addObject:v18];
 
-    v19 = [v13 leadingAnchor];
-    v20 = [(BRShareParticipantCell *)self layoutMarginsGuide];
-    v21 = [v20 leadingAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21];
+    leadingAnchor = [view2 leadingAnchor];
+    layoutMarginsGuide = [(BRShareParticipantCell *)self layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v14 addObject:v22];
 
-    v23 = [v13 topAnchor];
-    v24 = [(BRShareParticipantCell *)self topAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24 constant:6.0];
+    topAnchor = [view2 topAnchor];
+    topAnchor2 = [(BRShareParticipantCell *)self topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:6.0];
     [v14 addObject:v25];
 
-    v26 = [(BRShareParticipantCell *)self bottomAnchor];
-    v27 = [v13 bottomAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:6.0];
+    bottomAnchor = [(BRShareParticipantCell *)self bottomAnchor];
+    bottomAnchor2 = [view2 bottomAnchor];
+    v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:6.0];
     [v14 addObject:v28];
 
     v29 = [v14 copy];
@@ -58,7 +58,7 @@
     self->_avatarConstraints = v29;
 
     [NSLayoutConstraint activateConstraints:self->_avatarConstraints];
-    v6 = v8;
+    subtitleCopy = subtitleCopy2;
   }
 
   else
@@ -69,8 +69,8 @@
     }
 
     [NSLayoutConstraint deactivateConstraints:?];
-    v13 = [(CNAvatarViewController *)self->_avatarViewController view];
-    [v13 removeFromSuperview];
+    view2 = [(CNAvatarViewController *)self->_avatarViewController view];
+    [view2 removeFromSuperview];
   }
 
 LABEL_8:
@@ -94,7 +94,7 @@ LABEL_8:
   }
 
   subtitleLabel = self->_subtitleLabel;
-  if (v6)
+  if (subtitleCopy)
   {
     if (!subtitleLabel)
     {
@@ -118,7 +118,7 @@ LABEL_8:
   }
 
   v98 = 64;
-  if (v5)
+  if (colorCopy)
   {
     if (!self->_participantColorView)
     {
@@ -129,38 +129,38 @@ LABEL_8:
       [(UIView *)self->_participantColorView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIView *)self->_participantColorView frame];
       v41 = v40 * 0.5;
-      v42 = [(UIView *)self->_participantColorView layer];
-      [v42 setCornerRadius:v41];
+      layer = [(UIView *)self->_participantColorView layer];
+      [layer setCornerRadius:v41];
     }
 
-    v43 = [(BRShareParticipantCell *)self contentView];
-    [v43 addSubview:self->_participantColorView];
+    contentView = [(BRShareParticipantCell *)self contentView];
+    [contentView addSubview:self->_participantColorView];
 
     v44 = objc_opt_new();
-    v45 = [(UIView *)self->_participantColorView heightAnchor];
-    v46 = [v45 constraintEqualToConstant:16.0];
+    heightAnchor2 = [(UIView *)self->_participantColorView heightAnchor];
+    v46 = [heightAnchor2 constraintEqualToConstant:16.0];
     [v44 addObject:v46];
 
-    v47 = [(UIView *)self->_participantColorView widthAnchor];
-    v48 = [v47 constraintEqualToConstant:16.0];
+    widthAnchor2 = [(UIView *)self->_participantColorView widthAnchor];
+    v48 = [widthAnchor2 constraintEqualToConstant:16.0];
     [v44 addObject:v48];
 
-    v49 = [(UIView *)self->_participantColorView leadingAnchor];
-    v50 = [(BRShareParticipantCell *)self titleLabel];
-    v51 = [v50 trailingAnchor];
-    v52 = [v49 constraintEqualToAnchor:v51 constant:8.0];
+    leadingAnchor3 = [(UIView *)self->_participantColorView leadingAnchor];
+    titleLabel = [(BRShareParticipantCell *)self titleLabel];
+    trailingAnchor = [titleLabel trailingAnchor];
+    v52 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:8.0];
     [v44 addObject:v52];
 
-    v53 = [(UIView *)self->_participantColorView trailingAnchor];
-    v54 = [(BRShareParticipantCell *)self contentView];
-    v55 = [v54 trailingAnchor];
-    v56 = [v53 constraintEqualToAnchor:v55 constant:-8.0];
+    trailingAnchor2 = [(UIView *)self->_participantColorView trailingAnchor];
+    contentView2 = [(BRShareParticipantCell *)self contentView];
+    trailingAnchor3 = [contentView2 trailingAnchor];
+    v56 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-8.0];
     [v44 addObject:v56];
 
-    v57 = [(UIView *)self->_participantColorView centerYAnchor];
-    v58 = [(BRShareParticipantCell *)self contentView];
-    v59 = [v58 centerYAnchor];
-    v60 = [v57 constraintEqualToAnchor:v59 constant:0.0];
+    centerYAnchor = [(UIView *)self->_participantColorView centerYAnchor];
+    contentView3 = [(BRShareParticipantCell *)self contentView];
+    centerYAnchor2 = [contentView3 centerYAnchor];
+    v60 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
     [v44 addObject:v60];
 
     v61 = [v44 copy];
@@ -183,60 +183,60 @@ LABEL_8:
     self->_textCenterLayoutGuide = v63;
 
     [(BRShareParticipantCell *)self addLayoutGuide:self->_textCenterLayoutGuide];
-    v65 = [(UILayoutGuide *)self->_textCenterLayoutGuide leadingAnchor];
-    v66 = [(BRShareParticipantCell *)self layoutMarginsGuide];
-    v67 = [v66 leadingAnchor];
-    v68 = [v65 constraintEqualToAnchor:v67 constant:48.0];
+    leadingAnchor4 = [(UILayoutGuide *)self->_textCenterLayoutGuide leadingAnchor];
+    layoutMarginsGuide2 = [(BRShareParticipantCell *)self layoutMarginsGuide];
+    leadingAnchor5 = [layoutMarginsGuide2 leadingAnchor];
+    v68 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:48.0];
     [v68 setActive:1];
 
-    v69 = [(BRShareParticipantCell *)self trailingAnchor];
-    v70 = [(UILayoutGuide *)self->_textCenterLayoutGuide trailingAnchor];
-    v71 = [v69 constraintEqualToAnchor:v70 constant:32.0];
+    trailingAnchor4 = [(BRShareParticipantCell *)self trailingAnchor];
+    trailingAnchor5 = [(UILayoutGuide *)self->_textCenterLayoutGuide trailingAnchor];
+    v71 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:32.0];
 
     LODWORD(v72) = 1147207680;
     [v71 setPriority:v72];
     [v71 setActive:1];
-    v73 = [(BRShareParticipantCell *)self centerYAnchor];
-    v74 = [(UILayoutGuide *)self->_textCenterLayoutGuide centerYAnchor];
-    v75 = [v73 constraintEqualToAnchor:v74];
+    centerYAnchor3 = [(BRShareParticipantCell *)self centerYAnchor];
+    centerYAnchor4 = [(UILayoutGuide *)self->_textCenterLayoutGuide centerYAnchor];
+    v75 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v75 setActive:1];
   }
 
   [NSLayoutConstraint deactivateConstraints:self->_textConstraints, v98];
   v100 = objc_opt_new();
-  v76 = [(UILayoutGuide *)self->_textCenterLayoutGuide topAnchor];
-  v77 = [(UILabel *)self->_titleLabel topAnchor];
-  v78 = [v76 constraintEqualToAnchor:v77];
+  topAnchor3 = [(UILayoutGuide *)self->_textCenterLayoutGuide topAnchor];
+  topAnchor4 = [(UILabel *)self->_titleLabel topAnchor];
+  v78 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v100 addObject:v78];
 
-  v79 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v80 = [(UILayoutGuide *)self->_textCenterLayoutGuide leadingAnchor];
-  v81 = [v79 constraintEqualToAnchor:v80];
+  leadingAnchor6 = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor7 = [(UILayoutGuide *)self->_textCenterLayoutGuide leadingAnchor];
+  v81 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   [v100 addObject:v81];
 
-  v82 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v83 = [(UILayoutGuide *)self->_textCenterLayoutGuide trailingAnchor];
-  v84 = [v82 constraintEqualToAnchor:v83];
+  trailingAnchor6 = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor7 = [(UILayoutGuide *)self->_textCenterLayoutGuide trailingAnchor];
+  v84 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   [v100 addObject:v84];
 
-  v85 = [(UILayoutGuide *)self->_textCenterLayoutGuide bottomAnchor];
-  if (v6)
+  bottomAnchor3 = [(UILayoutGuide *)self->_textCenterLayoutGuide bottomAnchor];
+  if (subtitleCopy)
   {
-    v86 = [*(&self->super.super.super.super.isa + v99) bottomAnchor];
-    v87 = [v85 constraintEqualToAnchor:v86];
+    bottomAnchor4 = [*(&self->super.super.super.super.isa + v99) bottomAnchor];
+    v87 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [v100 addObject:v87];
 
-    v88 = [*(&self->super.super.super.super.isa + v99) firstBaselineAnchor];
-    v89 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-    v90 = [v88 constraintEqualToAnchor:v89 constant:16.0];
+    firstBaselineAnchor = [*(&self->super.super.super.super.isa + v99) firstBaselineAnchor];
+    firstBaselineAnchor2 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+    v90 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2 constant:16.0];
     [v100 addObject:v90];
 
-    v91 = [*(&self->super.super.super.super.isa + v99) leadingAnchor];
-    v92 = [(UILayoutGuide *)self->_textCenterLayoutGuide leadingAnchor];
-    v93 = [v91 constraintEqualToAnchor:v92];
+    leadingAnchor8 = [*(&self->super.super.super.super.isa + v99) leadingAnchor];
+    leadingAnchor9 = [(UILayoutGuide *)self->_textCenterLayoutGuide leadingAnchor];
+    v93 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
     [v100 addObject:v93];
 
-    v85 = [*(&self->super.super.super.super.isa + v99) trailingAnchor];
+    bottomAnchor3 = [*(&self->super.super.super.super.isa + v99) trailingAnchor];
     [(UILayoutGuide *)self->_textCenterLayoutGuide trailingAnchor];
   }
 
@@ -245,7 +245,7 @@ LABEL_8:
     [(UILabel *)self->_titleLabel bottomAnchor];
   }
   v94 = ;
-  v95 = [v85 constraintEqualToAnchor:v94];
+  v95 = [bottomAnchor3 constraintEqualToAnchor:v94];
   [v100 addObject:v95];
 
   v96 = [v100 copy];
@@ -255,27 +255,27 @@ LABEL_8:
   [NSLayoutConstraint activateConstraints:self->_textConstraints];
 }
 
-- (void)setRepresentedValue:(id)a3
+- (void)setRepresentedValue:(id)value
 {
-  v6 = a3;
-  if (self->_representedValue != v6)
+  valueCopy = value;
+  if (self->_representedValue != valueCopy)
   {
-    objc_storeStrong(&self->_representedValue, a3);
+    objc_storeStrong(&self->_representedValue, value);
     if (self->_representedValue)
     {
-      v7 = [(BRShareParticipantCellValue *)v6 contact];
-      v3 = v7 != 0;
-      v8 = [(BRShareParticipantCellValue *)v6 subtitle];
-      v9 = [v8 length] != 0;
-      v10 = [(BRShareParticipantCellValue *)v6 participantColor];
-      [(BRShareParticipantCell *)self _setupWithAvatar:v3 subtitle:v9 participantColor:v10 != 0];
+      contact = [(BRShareParticipantCellValue *)valueCopy contact];
+      contact3 = contact != 0;
+      subtitle = [(BRShareParticipantCellValue *)valueCopy subtitle];
+      v9 = [subtitle length] != 0;
+      participantColor = [(BRShareParticipantCellValue *)valueCopy participantColor];
+      [(BRShareParticipantCell *)self _setupWithAvatar:contact3 subtitle:v9 participantColor:participantColor != 0];
     }
 
-    v11 = [(BRShareParticipantCellValue *)v6 contact];
-    if (v11)
+    contact2 = [(BRShareParticipantCellValue *)valueCopy contact];
+    if (contact2)
     {
-      v3 = [(BRShareParticipantCellValue *)v6 contact];
-      v20 = v3;
+      contact3 = [(BRShareParticipantCellValue *)valueCopy contact];
+      v20 = contact3;
       v12 = [NSArray arrayWithObjects:&v20 count:1];
     }
 
@@ -284,20 +284,20 @@ LABEL_8:
       v12 = &__NSArray0__struct;
     }
 
-    v13 = [(BRShareParticipantCell *)self avatarViewController];
-    [v13 setContacts:v12];
+    avatarViewController = [(BRShareParticipantCell *)self avatarViewController];
+    [avatarViewController setContacts:v12];
 
-    if (v11)
+    if (contact2)
     {
     }
 
-    v14 = [(BRShareParticipantCellValue *)v6 title];
-    [(UILabel *)self->_titleLabel setText:v14];
+    title = [(BRShareParticipantCellValue *)valueCopy title];
+    [(UILabel *)self->_titleLabel setText:title];
 
-    v15 = [(BRShareParticipantCellValue *)v6 subtitle];
-    [(UILabel *)self->_subtitleLabel setText:v15];
+    subtitle2 = [(BRShareParticipantCellValue *)valueCopy subtitle];
+    [(UILabel *)self->_subtitleLabel setText:subtitle2];
 
-    if ([(BRShareParticipantCellValue *)v6 grayedOut])
+    if ([(BRShareParticipantCellValue *)valueCopy grayedOut])
     {
       +[UIColor secondaryLabelColor];
     }
@@ -311,8 +311,8 @@ LABEL_8:
     v17 = +[UIColor secondaryLabelColor];
     [(UILabel *)self->_subtitleLabel setTextColor:v17];
 
-    v18 = [(BRShareParticipantCellValue *)self->_representedValue participantColor];
-    if (v18)
+    participantColor2 = [(BRShareParticipantCellValue *)self->_representedValue participantColor];
+    if (participantColor2)
     {
       [(BRShareParticipantCellValue *)self->_representedValue participantColor];
     }

@@ -1,11 +1,11 @@
 @interface BuddyPhoneNumberPermissionController
-+ (void)_registerPhoneNumberPermissionEnabled:(BOOL)a3 buddyPreferences:(id)a4;
-+ (void)skippedByCloudConfigWithEnvironment:(id)a3;
++ (void)_registerPhoneNumberPermissionEnabled:(BOOL)enabled buddyPreferences:(id)preferences;
++ (void)skippedByCloudConfigWithEnvironment:(id)environment;
 - (BOOL)controllerNeedsToRun;
 - (BuddyPhoneNumberPermissionController)init;
 - (void)_continueTapped;
 - (void)_notNowTapped;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -42,31 +42,31 @@
 
 - (void)viewDidLoad
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   v13.receiver = self;
   v13.super_class = BuddyPhoneNumberPermissionController;
   [(BuddyPhoneNumberPermissionController *)&v13 viewDidLoad];
-  v2 = [(BuddyPhoneNumberPermissionController *)v15 headerView];
-  [v2 setIconInheritsTint:0];
+  headerView = [(BuddyPhoneNumberPermissionController *)selfCopy headerView];
+  [headerView setIconInheritsTint:0];
 
-  v3 = [(BuddyPhoneNumberPermissionController *)v15 headerView];
+  headerView2 = [(BuddyPhoneNumberPermissionController *)selfCopy headerView];
   LODWORD(v4) = 0;
-  [v3 setTitleHyphenationFactor:v4];
+  [headerView2 setTitleHyphenationFactor:v4];
 
-  v5 = [(BuddyPhoneNumberPermissionController *)v15 buttonTray];
+  buttonTray = [(BuddyPhoneNumberPermissionController *)selfCopy buttonTray];
   v16[0] = BYPrivacyiMessageFaceTimeIdentifier;
   v16[1] = BYPrivacyFaceTimeIdentifier;
   v16[2] = BYPrivacyMessagesIdentifier;
   v6 = [NSArray arrayWithObjects:v16 count:3];
-  [v5 setPrivacyLinkForBundles:v6];
+  [buttonTray setPrivacyLinkForBundles:v6];
 
-  v7 = v15;
+  v7 = selfCopy;
   v8 = +[NSBundle mainBundle];
   v9 = [(NSBundle *)v8 localizedStringForKey:@"PHONE_NUMBER_PERMISSION_ALLOW" value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v7 addBoldButton:v9 action:"_continueTapped"];
 
-  v10 = v15;
+  v10 = selfCopy;
   v11 = +[NSBundle mainBundle];
   v12 = [(NSBundle *)v11 localizedStringForKey:@"PHONE_NUMBER_PERMISSION_NOTNOW" value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v10 addLinkButton:v12 action:"_notNowTapped"];
@@ -74,35 +74,35 @@
 
 - (BOOL)controllerNeedsToRun
 {
-  v43 = self;
+  selfCopy = self;
   v42 = a2;
   v41 = 1;
-  v2 = [(BuddyPhoneNumberPermissionController *)self buddyPreferences];
-  v3 = [(BYPreferencesController *)v2 BOOLForKey:@"PhoneNumberPermissionPresentedKey"];
+  buddyPreferences = [(BuddyPhoneNumberPermissionController *)self buddyPreferences];
+  v3 = [(BYPreferencesController *)buddyPreferences BOOLForKey:@"PhoneNumberPermissionPresentedKey"];
 
   v40 = v3 & 1;
-  v4 = [(BuddyPhoneNumberPermissionController *)v43 runState];
-  v5 = [(BYRunState *)v4 hasCompletedInitialRun]^ 1;
+  runState = [(BuddyPhoneNumberPermissionController *)selfCopy runState];
+  v5 = [(BYRunState *)runState hasCompletedInitialRun]^ 1;
 
   v39 = v5 & 1;
-  v6 = [(BuddyPhoneNumberPermissionController *)v43 capabilities];
-  v7 = [(BYCapabilities *)v6 mgHasCellularTelephony];
+  capabilities = [(BuddyPhoneNumberPermissionController *)selfCopy capabilities];
+  mgHasCellularTelephony = [(BYCapabilities *)capabilities mgHasCellularTelephony];
 
-  v38 = v7 & 1;
+  v38 = mgHasCellularTelephony & 1;
   v35 = 0;
-  v8 = 0;
-  if ([(BuddyPhoneNumberPermissionController *)v43 includeCellularDataCheck])
+  mgHasCellularData = 0;
+  if ([(BuddyPhoneNumberPermissionController *)selfCopy includeCellularDataCheck])
   {
-    v36 = [(BuddyPhoneNumberPermissionController *)v43 capabilities];
+    capabilities2 = [(BuddyPhoneNumberPermissionController *)selfCopy capabilities];
     v35 = 1;
-    v8 = [(BYCapabilities *)v36 mgHasCellularData];
+    mgHasCellularData = [(BYCapabilities *)capabilities2 mgHasCellularData];
   }
 
   if (v35)
   {
   }
 
-  v37 = v8 & 1;
+  v37 = mgHasCellularData & 1;
   if ((v39 & 1) == 0)
   {
     location = _BYLoggingFacility();
@@ -154,13 +154,13 @@
   v24 = 0;
   v22 = 0;
   v15 = 0;
-  if ([(BuddyPhoneNumberPermissionController *)v43 includeAppleAccountCheck])
+  if ([(BuddyPhoneNumberPermissionController *)selfCopy includeAppleAccountCheck])
   {
     v25 = +[ACAccountStore defaultStore];
     v24 = 1;
-    v23 = [v25 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [v25 aa_primaryAppleAccount];
     v22 = 1;
-    v15 = v23 != 0;
+    v15 = aa_primaryAppleAccount != 0;
   }
 
   if (v22)
@@ -190,12 +190,12 @@
   return 0;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = dispatch_get_global_queue(0, 0);
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
@@ -209,13 +209,13 @@
   objc_storeStrong(location, 0);
 }
 
-+ (void)skippedByCloudConfigWithEnvironment:(id)a3
++ (void)skippedByCloudConfigWithEnvironment:(id)environment
 {
-  v6 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4[1] = v6;
+  objc_storeStrong(location, environment);
+  v4[1] = selfCopy;
   v4[0] = location[0];
   v3 = dispatch_get_global_queue(2, 0);
   IDSRegistrationControlGetStateForRegistrationType();
@@ -224,15 +224,15 @@
   objc_storeStrong(location, 0);
 }
 
-+ (void)_registerPhoneNumberPermissionEnabled:(BOOL)a3 buddyPreferences:(id)a4
++ (void)_registerPhoneNumberPermissionEnabled:(BOOL)enabled buddyPreferences:(id)preferences
 {
-  v25 = a1;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
+  enabledCopy = enabled;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, preferences);
   [location setObject:&__kCFBooleanTrue forKey:@"PhoneNumberPermissionPresentedKey"];
-  if (v23)
+  if (enabledCopy)
   {
     oslog = _BYLoggingFacility();
     v20 = OS_LOG_TYPE_DEFAULT;
@@ -302,21 +302,21 @@
 - (void)_continueTapped
 {
   v2 = objc_opt_class();
-  v3 = [(BuddyPhoneNumberPermissionController *)self buddyPreferences];
-  [v2 _registerPhoneNumberPermissionEnabled:1 buddyPreferences:v3];
+  buddyPreferences = [(BuddyPhoneNumberPermissionController *)self buddyPreferences];
+  [v2 _registerPhoneNumberPermissionEnabled:1 buddyPreferences:buddyPreferences];
 
-  v4 = [(BuddyWelcomeController *)self delegate];
-  [(BFFFlowItemDelegate *)v4 flowItemDone:self];
+  delegate = [(BuddyWelcomeController *)self delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:self];
 }
 
 - (void)_notNowTapped
 {
   v2 = objc_opt_class();
-  v3 = [(BuddyPhoneNumberPermissionController *)self buddyPreferences];
-  [v2 _registerPhoneNumberPermissionEnabled:0 buddyPreferences:v3];
+  buddyPreferences = [(BuddyPhoneNumberPermissionController *)self buddyPreferences];
+  [v2 _registerPhoneNumberPermissionEnabled:0 buddyPreferences:buddyPreferences];
 
-  v4 = [(BuddyWelcomeController *)self delegate];
-  [(BFFFlowItemDelegate *)v4 flowItemDone:self];
+  delegate = [(BuddyWelcomeController *)self delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:self];
 }
 
 @end

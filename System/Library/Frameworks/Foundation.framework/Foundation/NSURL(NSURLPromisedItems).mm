@@ -43,37 +43,37 @@
   if (v5)
   {
     v6 = v5;
-    if (([v5 isEqual:a1] & 1) != 0 || !_CFURLIsItemPromiseAtURL())
+    if (([v5 isEqual:self] & 1) != 0 || !_CFURLIsItemPromiseAtURL())
     {
-      v7 = -1;
-      v8 = a1;
+      _promiseExtensionConsume = -1;
+      selfCopy2 = self;
     }
 
     else
     {
-      v7 = [v6 _promiseExtensionConsume];
+      _promiseExtensionConsume = [v6 _promiseExtensionConsume];
       v9[0] = 0;
       if ([v6 checkResourceIsReachableAndReturnError:v9])
       {
-        v8 = v6;
+        selfCopy2 = v6;
       }
 
       else
       {
-        v8 = a1;
+        selfCopy2 = self;
       }
     }
 
-    (*(a3 + 16))(a3, v8);
-    [a1 _promiseExtensionRelease:v7];
+    (*(a3 + 16))(a3, selfCopy2);
+    [self _promiseExtensionRelease:_promiseExtensionConsume];
     CFRelease(v6);
   }
 
   else
   {
-    (*(a3 + 16))(a3, a1);
+    (*(a3 + 16))(a3, self);
 
-    [a1 _promiseExtensionRelease:-1];
+    [self _promiseExtensionRelease:-1];
   }
 }
 
@@ -82,24 +82,24 @@
   v5 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(a3, "userInfo")}];
   if ([v5 objectForKey:@"NSURL"])
   {
-    [v5 setObject:a1 forKey:@"NSURL"];
+    [v5 setObject:self forKey:@"NSURL"];
   }
 
   if ([v5 objectForKey:@"NSFilePath"])
   {
-    [v5 setObject:objc_msgSend(a1 forKey:{"path"), @"NSFilePath"}];
+    [v5 setObject:objc_msgSend(self forKey:{"path"), @"NSFilePath"}];
   }
 
   v6 = [v5 objectForKey:@"NSUnderlyingError"];
   if (v6)
   {
-    [v5 setObject:objc_msgSend(a1 forKey:{"_fixedUpSideFaultError:", v6), @"NSUnderlyingError"}];
+    [v5 setObject:objc_msgSend(self forKey:{"_fixedUpSideFaultError:", v6), @"NSUnderlyingError"}];
   }
 
-  v7 = [a3 domain];
-  v8 = [a3 code];
+  domain = [a3 domain];
+  code = [a3 code];
 
-  return [NSError errorWithDomain:v7 code:v8 userInfo:v5];
+  return [NSError errorWithDomain:domain code:code userInfo:v5];
 }
 
 - (uint64_t)checkPromisedItemIsReachableAndReturnError:()NSURLPromisedItems
@@ -119,11 +119,11 @@
   v7[1] = 3221225472;
   v7[2] = __72__NSURL_NSURLPromisedItems__checkPromisedItemIsReachableAndReturnError___block_invoke;
   v7[3] = &unk_1E69F4480;
-  v7[4] = a1;
+  v7[4] = self;
   v7[5] = &v8;
   v7[6] = &v12;
   v7[7] = a3;
-  [a1 _performWithPhysicalURL:v7];
+  [self _performWithPhysicalURL:v7];
   v4 = v9;
   v5 = *(v9 + 24);
   if (a3 && (v9[3] & 1) == 0)
@@ -194,10 +194,10 @@
   v10[3] = &unk_1E69F44A8;
   v10[6] = &v11;
   v10[7] = &v21;
-  v10[4] = a1;
+  v10[4] = self;
   v10[5] = a4;
   v10[8] = &v15;
-  [a1 _performWithPhysicalURL:v10];
+  [self _performWithPhysicalURL:v10];
   v7 = v12;
   v8 = *(v12 + 24);
   if (a5 && (v12[3] & 1) == 0)
@@ -237,11 +237,11 @@
   v8[1] = 3221225472;
   v8[2] = __69__NSURL_NSURLPromisedItems__promisedItemResourceValuesForKeys_error___block_invoke;
   v8[3] = &unk_1E69F44D0;
-  v8[4] = a1;
+  v8[4] = self;
   v8[5] = a3;
   v8[6] = &v9;
   v8[7] = &v15;
-  [a1 _performWithPhysicalURL:v8];
+  [self _performWithPhysicalURL:v8];
   v5 = v10;
   v6 = v10[5];
   if (a4 && !v6)

@@ -1,43 +1,43 @@
 @interface AFASRSharedUserInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFASRSharedUserInfo)initWithBuilder:(id)a3;
-- (AFASRSharedUserInfo)initWithCoder:(id)a3;
-- (AFASRSharedUserInfo)initWithSharedUserId:(id)a3 loggableSharedUserId:(id)a4 loggableUserIdHash:(id)a5 personaId:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFASRSharedUserInfo)initWithBuilder:(id)builder;
+- (AFASRSharedUserInfo)initWithCoder:(id)coder;
+- (AFASRSharedUserInfo)initWithSharedUserId:(id)id loggableSharedUserId:(id)userId loggableUserIdHash:(id)hash personaId:(id)personaId;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFASRSharedUserInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sharedUserId = self->_sharedUserId;
-  v5 = a3;
-  [v5 encodeObject:sharedUserId forKey:@"AFASRSharedUserInfo::sharedUserId"];
-  [v5 encodeObject:self->_loggableSharedUserId forKey:@"AFASRSharedUserInfo::loggableSharedUserId"];
-  [v5 encodeObject:self->_loggableUserIdHash forKey:@"AFASRSharedUserInfo::loggableUserIdHash"];
-  [v5 encodeObject:self->_personaId forKey:@"AFASRSharedUserInfo::personaId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sharedUserId forKey:@"AFASRSharedUserInfo::sharedUserId"];
+  [coderCopy encodeObject:self->_loggableSharedUserId forKey:@"AFASRSharedUserInfo::loggableSharedUserId"];
+  [coderCopy encodeObject:self->_loggableUserIdHash forKey:@"AFASRSharedUserInfo::loggableUserIdHash"];
+  [coderCopy encodeObject:self->_personaId forKey:@"AFASRSharedUserInfo::personaId"];
 }
 
-- (AFASRSharedUserInfo)initWithCoder:(id)a3
+- (AFASRSharedUserInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFASRSharedUserInfo::sharedUserId"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFASRSharedUserInfo::loggableSharedUserId"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFASRSharedUserInfo::loggableUserIdHash"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFASRSharedUserInfo::personaId"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFASRSharedUserInfo::sharedUserId"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFASRSharedUserInfo::loggableSharedUserId"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFASRSharedUserInfo::loggableUserIdHash"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFASRSharedUserInfo::personaId"];
 
   v9 = [(AFASRSharedUserInfo *)self initWithSharedUserId:v5 loggableSharedUserId:v6 loggableUserIdHash:v7 personaId:v8];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -47,22 +47,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AFASRSharedUserInfo *)v5 sharedUserId];
+      v5 = equalCopy;
+      sharedUserId = [(AFASRSharedUserInfo *)v5 sharedUserId];
       sharedUserId = self->_sharedUserId;
-      if (sharedUserId == v6 || [(NSString *)sharedUserId isEqual:v6])
+      if (sharedUserId == sharedUserId || [(NSString *)sharedUserId isEqual:sharedUserId])
       {
-        v8 = [(AFASRSharedUserInfo *)v5 loggableSharedUserId];
+        loggableSharedUserId = [(AFASRSharedUserInfo *)v5 loggableSharedUserId];
         loggableSharedUserId = self->_loggableSharedUserId;
-        if (loggableSharedUserId == v8 || [(NSString *)loggableSharedUserId isEqual:v8])
+        if (loggableSharedUserId == loggableSharedUserId || [(NSString *)loggableSharedUserId isEqual:loggableSharedUserId])
         {
-          v10 = [(AFASRSharedUserInfo *)v5 loggableUserIdHash];
+          loggableUserIdHash = [(AFASRSharedUserInfo *)v5 loggableUserIdHash];
           loggableUserIdHash = self->_loggableUserIdHash;
-          if (loggableUserIdHash == v10 || [(NSString *)loggableUserIdHash isEqual:v10])
+          if (loggableUserIdHash == loggableUserIdHash || [(NSString *)loggableUserIdHash isEqual:loggableUserIdHash])
           {
-            v12 = [(AFASRSharedUserInfo *)v5 personaId];
+            personaId = [(AFASRSharedUserInfo *)v5 personaId];
             personaId = self->_personaId;
-            v14 = personaId == v12 || [(NSString *)personaId isEqual:v12];
+            v14 = personaId == personaId || [(NSString *)personaId isEqual:personaId];
           }
 
           else
@@ -100,7 +100,7 @@
   return v4 ^ v5 ^ [(NSString *)self->_personaId hash];
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -111,24 +111,24 @@
   return v6;
 }
 
-- (AFASRSharedUserInfo)initWithSharedUserId:(id)a3 loggableSharedUserId:(id)a4 loggableUserIdHash:(id)a5 personaId:(id)a6
+- (AFASRSharedUserInfo)initWithSharedUserId:(id)id loggableSharedUserId:(id)userId loggableUserIdHash:(id)hash personaId:(id)personaId
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  userIdCopy = userId;
+  hashCopy = hash;
+  personaIdCopy = personaId;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __94__AFASRSharedUserInfo_initWithSharedUserId_loggableSharedUserId_loggableUserIdHash_personaId___block_invoke;
   v20[3] = &unk_1E7345A18;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v21 = idCopy;
+  v22 = userIdCopy;
+  v23 = hashCopy;
+  v24 = personaIdCopy;
+  v14 = personaIdCopy;
+  v15 = hashCopy;
+  v16 = userIdCopy;
+  v17 = idCopy;
   v18 = [(AFASRSharedUserInfo *)self initWithBuilder:v20];
 
   return v18;
@@ -144,36 +144,36 @@ void __94__AFASRSharedUserInfo_initWithSharedUserId_loggableSharedUserId_loggabl
   [v4 setPersonaId:a1[7]];
 }
 
-- (AFASRSharedUserInfo)initWithBuilder:(id)a3
+- (AFASRSharedUserInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v21.receiver = self;
   v21.super_class = AFASRSharedUserInfo;
   v5 = [(AFASRSharedUserInfo *)&v21 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFASRSharedUserInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFASRSharedUserInfoMutation *)v7 isDirty])
     {
-      v8 = [(_AFASRSharedUserInfoMutation *)v7 getSharedUserId];
-      v9 = [v8 copy];
+      getSharedUserId = [(_AFASRSharedUserInfoMutation *)v7 getSharedUserId];
+      v9 = [getSharedUserId copy];
       sharedUserId = v6->_sharedUserId;
       v6->_sharedUserId = v9;
 
-      v11 = [(_AFASRSharedUserInfoMutation *)v7 getLoggableSharedUserId];
-      v12 = [v11 copy];
+      getLoggableSharedUserId = [(_AFASRSharedUserInfoMutation *)v7 getLoggableSharedUserId];
+      v12 = [getLoggableSharedUserId copy];
       loggableSharedUserId = v6->_loggableSharedUserId;
       v6->_loggableSharedUserId = v12;
 
-      v14 = [(_AFASRSharedUserInfoMutation *)v7 getLoggableUserIdHash];
-      v15 = [v14 copy];
+      getLoggableUserIdHash = [(_AFASRSharedUserInfoMutation *)v7 getLoggableUserIdHash];
+      v15 = [getLoggableUserIdHash copy];
       loggableUserIdHash = v6->_loggableUserIdHash;
       v6->_loggableUserIdHash = v15;
 
-      v17 = [(_AFASRSharedUserInfoMutation *)v7 getPersonaId];
-      v18 = [v17 copy];
+      getPersonaId = [(_AFASRSharedUserInfoMutation *)v7 getPersonaId];
+      v18 = [getPersonaId copy];
       personaId = v6->_personaId;
       v6->_personaId = v18;
     }
@@ -182,41 +182,41 @@ void __94__AFASRSharedUserInfo_initWithSharedUserId_loggableSharedUserId_loggabl
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFASRSharedUserInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFASRSharedUserInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFASRSharedUserInfo);
-      v7 = [(_AFASRSharedUserInfoMutation *)v5 getSharedUserId];
-      v8 = [v7 copy];
+      getSharedUserId = [(_AFASRSharedUserInfoMutation *)v5 getSharedUserId];
+      v8 = [getSharedUserId copy];
       sharedUserId = v6->_sharedUserId;
       v6->_sharedUserId = v8;
 
-      v10 = [(_AFASRSharedUserInfoMutation *)v5 getLoggableSharedUserId];
-      v11 = [v10 copy];
+      getLoggableSharedUserId = [(_AFASRSharedUserInfoMutation *)v5 getLoggableSharedUserId];
+      v11 = [getLoggableSharedUserId copy];
       loggableSharedUserId = v6->_loggableSharedUserId;
       v6->_loggableSharedUserId = v11;
 
-      v13 = [(_AFASRSharedUserInfoMutation *)v5 getLoggableUserIdHash];
-      v14 = [v13 copy];
+      getLoggableUserIdHash = [(_AFASRSharedUserInfoMutation *)v5 getLoggableUserIdHash];
+      v14 = [getLoggableUserIdHash copy];
       loggableUserIdHash = v6->_loggableUserIdHash;
       v6->_loggableUserIdHash = v14;
 
-      v16 = [(_AFASRSharedUserInfoMutation *)v5 getPersonaId];
-      v17 = [v16 copy];
+      getPersonaId = [(_AFASRSharedUserInfoMutation *)v5 getPersonaId];
+      v17 = [getPersonaId copy];
       personaId = v6->_personaId;
       v6->_personaId = v17;
     }

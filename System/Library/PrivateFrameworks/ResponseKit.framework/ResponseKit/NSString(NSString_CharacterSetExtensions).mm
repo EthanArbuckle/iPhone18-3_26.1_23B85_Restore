@@ -6,8 +6,8 @@
 
 - (BOOL)consistsOfCharactersFromSet:()NSString_CharacterSetExtensions options:
 {
-  v6 = [a3 invertedSet];
-  v7 = [a1 rangeOfCharacterFromSet:v6 options:a4] == 0x7FFFFFFFFFFFFFFFLL;
+  invertedSet = [a3 invertedSet];
+  v7 = [self rangeOfCharacterFromSet:invertedSet options:a4] == 0x7FFFFFFFFFFFFFFFLL;
 
   return v7;
 }

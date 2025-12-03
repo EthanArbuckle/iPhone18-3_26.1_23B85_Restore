@@ -12,7 +12,7 @@
   v2 = MEMORY[0x277CCACA8];
   v3 = v12;
   v4 = __p[0];
-  v5 = [MEMORY[0x277CCACA8] defaultCStringEncoding];
+  defaultCStringEncoding = [MEMORY[0x277CCACA8] defaultCStringEncoding];
   if (v3 >= 0)
   {
     v6 = __p;
@@ -23,7 +23,7 @@
     v6 = v4;
   }
 
-  v7 = [v2 stringWithCString:v6 encoding:v5];
+  v7 = [v2 stringWithCString:v6 encoding:defaultCStringEncoding];
   if (v12 < 0)
   {
     v9 = v7;

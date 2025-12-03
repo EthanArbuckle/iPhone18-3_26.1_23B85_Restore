@@ -1,28 +1,28 @@
 @interface TISmartSelector
-- (TISmartSelector)initWithOptions:(unint64_t)a3 language:(id)a4 dataChangedHandler:(id)a5;
-- (_NSRange)longestRangeEncapsulatingSubstringInDocument:(id)a3 containingRange:(_NSRange)a4 tokenizedRanges:(id)a5 meetingCondition:(id)a6;
-- (_NSRange)selectionRangeForTextInDocument:(id)a3 inRange:(_NSRange)a4 language:(id)a5 options:(unint64_t)a6;
-- (_NSRange)selectionRangeForTextInDocument:(id)a3 inRange:(_NSRange)a4 language:(id)a5 tokenizedRanges:(id)a6 options:(unint64_t)a7;
+- (TISmartSelector)initWithOptions:(unint64_t)options language:(id)language dataChangedHandler:(id)handler;
+- (_NSRange)longestRangeEncapsulatingSubstringInDocument:(id)document containingRange:(_NSRange)range tokenizedRanges:(id)ranges meetingCondition:(id)condition;
+- (_NSRange)selectionRangeForTextInDocument:(id)document inRange:(_NSRange)range language:(id)language options:(unint64_t)options;
+- (_NSRange)selectionRangeForTextInDocument:(id)document inRange:(_NSRange)range language:(id)language tokenizedRanges:(id)ranges options:(unint64_t)options;
 - (void)dealloc;
 - (void)loadStaticPhraseDictionary;
-- (void)setLanguage:(id)a3;
+- (void)setLanguage:(id)language;
 @end
 
 @implementation TISmartSelector
 
-- (_NSRange)selectionRangeForTextInDocument:(id)a3 inRange:(_NSRange)a4 language:(id)a5 options:(unint64_t)a6
+- (_NSRange)selectionRangeForTextInDocument:(id)document inRange:(_NSRange)range language:(id)language options:(unint64_t)options
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a5;
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = [(__CFString *)v11 length];
+  length = range.length;
+  location = range.location;
+  documentCopy = document;
+  languageCopy = language;
+  array = [MEMORY[0x277CBEB18] array];
+  v14 = [(__CFString *)documentCopy length];
   v15 = *MEMORY[0x277CBECE8];
-  v16 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v12];
+  v16 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:languageCopy];
   v27.location = 0;
   v27.length = v14;
-  v17 = CFStringTokenizerCreate(v15, v11, v27, 0, v16);
+  v17 = CFStringTokenizerCreate(v15, documentCopy, v27, 0, v16);
   if (v17)
   {
     v18 = v17;
@@ -30,21 +30,21 @@
     {
       CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v18);
       v20 = [MEMORY[0x277CCAE60] valueWithRange:{CurrentTokenRange.location, CurrentTokenRange.length}];
-      [v13 addObject:v20];
+      [array addObject:v20];
     }
 
     CFRelease(v18);
-    v21 = [(TISmartSelector *)self selectionRangeForTextInDocument:v11 inRange:location language:length tokenizedRanges:v12 options:v13, a6];
+    options = [(TISmartSelector *)self selectionRangeForTextInDocument:documentCopy inRange:location language:length tokenizedRanges:languageCopy options:array, options];
     v23 = v22;
   }
 
   else
   {
     v23 = 0;
-    v21 = 0x7FFFFFFFFFFFFFFFLL;
+    options = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v24 = v21;
+  v24 = options;
   v25 = v23;
   result.length = v25;
   result.location = v24;
@@ -54,10 +54,10 @@
 - (void)loadStaticPhraseDictionary
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(NSLocale *)self->_locale localeIdentifier];
-  KB::utf8_string(v3, v8);
-  v4 = [(NSLocale *)self->_locale localeIdentifier];
-  v5 = [TIInputMode inputModeWithIdentifier:v4];
+  localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
+  KB::utf8_string(localeIdentifier, v8);
+  localeIdentifier2 = [(NSLocale *)self->_locale localeIdentifier];
+  v5 = [TIInputMode inputModeWithIdentifier:localeIdentifier2];
   v6 = UIKeyboardPhraseLexiconPathForInputMode(v5);
   KB::utf8_string(v6, &v9);
   v10 = 0x100000;
@@ -82,42 +82,42 @@
   KB::StaticDictionary::create(v7);
 }
 
-- (_NSRange)longestRangeEncapsulatingSubstringInDocument:(id)a3 containingRange:(_NSRange)a4 tokenizedRanges:(id)a5 meetingCondition:(id)a6
+- (_NSRange)longestRangeEncapsulatingSubstringInDocument:(id)document containingRange:(_NSRange)range tokenizedRanges:(id)ranges meetingCondition:(id)condition
 {
-  length = a4.length;
-  location = a4.location;
-  v30 = a3;
-  v10 = a5;
-  v11 = a6;
-  v28 = v11;
+  length = range.length;
+  location = range.location;
+  documentCopy = document;
+  rangesCopy = ranges;
+  conditionCopy = condition;
+  v28 = conditionCopy;
   v12 = 0;
-  if ([v10 count])
+  if ([rangesCopy count])
   {
     v13 = 0;
-    v27 = v11 + 16;
+    v27 = conditionCopy + 16;
     v29 = 0x7FFFFFFFFFFFFFFFLL;
     do
     {
-      v14 = [v10 objectAtIndexedSubscript:{v13, v27}];
-      v15 = [v14 rangeValue];
+      v14 = [rangesCopy objectAtIndexedSubscript:{v13, v27}];
+      rangeValue = [v14 rangeValue];
 
-      if (v13 < [v10 count])
+      if (v13 < [rangesCopy count])
       {
         v16 = v13;
         do
         {
-          v17 = [v10 objectAtIndexedSubscript:v16];
-          v18 = [v17 rangeValue];
+          v17 = [rangesCopy objectAtIndexedSubscript:v16];
+          rangeValue2 = [v17 rangeValue];
           v20 = v19;
 
-          v21 = v20 - v15 + v18;
-          v31.location = v15;
+          v21 = v20 - rangeValue + rangeValue2;
+          v31.location = rangeValue;
           v31.length = v21;
           v33.location = location;
           v33.length = length;
           if (v21 >= NSUnionRange(v31, v33).length)
           {
-            v22 = [v30 substringWithRange:{v15, v20 - v15 + v18}];
+            v22 = [documentCopy substringWithRange:{rangeValue, v20 - rangeValue + rangeValue2}];
             if (v12 < v21)
             {
               v23 = (v28)[2](v28, v22);
@@ -129,7 +129,7 @@
               v24 = v29;
               if (v23)
               {
-                v24 = v15;
+                v24 = rangeValue;
               }
 
               v29 = v24;
@@ -139,13 +139,13 @@
           ++v16;
         }
 
-        while (v16 < [v10 count]);
+        while (v16 < [rangesCopy count]);
       }
 
       ++v13;
     }
 
-    while (v13 < [v10 count]);
+    while (v13 < [rangesCopy count]);
   }
 
   else
@@ -160,22 +160,22 @@
   return result;
 }
 
-- (_NSRange)selectionRangeForTextInDocument:(id)a3 inRange:(_NSRange)a4 language:(id)a5 tokenizedRanges:(id)a6 options:(unint64_t)a7
+- (_NSRange)selectionRangeForTextInDocument:(id)document inRange:(_NSRange)range language:(id)language tokenizedRanges:(id)ranges options:(unint64_t)options
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v106[5] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v13 length];
+  documentCopy = document;
+  languageCopy = language;
+  rangesCopy = ranges;
+  v16 = [documentCopy length];
   v107.location = 0;
   v107.length = v16;
   v109.location = location;
   v109.length = length;
   if (v16 >= NSUnionRange(v107, v109).length)
   {
-    v62 = v14;
+    v62 = languageCopy;
     v97 = 0;
     v98 = &v97;
     v99 = 0x4012000000;
@@ -184,9 +184,9 @@
     v102 = "";
     v103 = xmmword_22CC889D0;
     v17 = dispatch_semaphore_create(0);
-    v61 = v15;
+    v61 = rangesCopy;
     dsema = v17;
-    if ((a7 & self->_options & 0x1FLL) != 0)
+    if ((options & self->_options & 0x1FLL) != 0)
     {
       v18 = v17;
       v19 = [objc_alloc(MEMORY[0x277D04228]) initWithScannerType:0 passiveIntent:1];
@@ -198,13 +198,13 @@
       v91[3] = &unk_27872FB50;
       v94 = location;
       v95 = length;
-      v96 = a7;
+      optionsCopy = options;
       v91[4] = self;
       v93 = &v97;
       v92 = v18;
-      [v20 scanString:v13 range:0 configuration:v16 completionBlock:{v19, v91}];
+      [v20 scanString:documentCopy range:0 configuration:v16 completionBlock:{v19, v91}];
 
-      v15 = v61;
+      rangesCopy = v61;
     }
 
     else
@@ -213,14 +213,14 @@
     }
 
     options = self->_options;
-    if ((a7 & options & 0x20) != 0)
+    if ((options & options & 0x20) != 0)
     {
       v90[0] = MEMORY[0x277D85DD0];
       v90[1] = 3221225472;
       v90[2] = __92__TISmartSelector_selectionRangeForTextInDocument_inRange_language_tokenizedRanges_options___block_invoke_2;
       v90[3] = &unk_278731200;
       v90[4] = self;
-      v56 = [(TISmartSelector *)self longestRangeEncapsulatingSubstringInDocument:v13 containingRange:location tokenizedRanges:length meetingCondition:v15, v90];
+      v56 = [(TISmartSelector *)self longestRangeEncapsulatingSubstringInDocument:documentCopy containingRange:location tokenizedRanges:length meetingCondition:rangesCopy, v90];
       v57 = v22;
       options = self->_options;
     }
@@ -231,14 +231,14 @@
       v57 = 0;
     }
 
-    if ((a7 & options & 0x40) != 0)
+    if ((options & options & 0x40) != 0)
     {
-      v23 = [(NSLocale *)self->_locale localeIdentifier];
-      v24 = [v14 isEqualToString:v23];
+      localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
+      v24 = [languageCopy isEqualToString:localeIdentifier];
 
       if ((v24 & 1) == 0)
       {
-        [(TISmartSelector *)self setLanguage:v14];
+        [(TISmartSelector *)self setLanguage:languageCopy];
       }
 
       v89[0] = MEMORY[0x277D85DD0];
@@ -246,8 +246,8 @@
       v89[2] = __92__TISmartSelector_selectionRangeForTextInDocument_inRange_language_tokenizedRanges_options___block_invoke_3;
       v89[3] = &unk_278731200;
       v89[4] = self;
-      v15 = v61;
-      v58 = [(TISmartSelector *)self longestRangeEncapsulatingSubstringInDocument:v13 containingRange:location tokenizedRanges:length meetingCondition:v61, v89];
+      rangesCopy = v61;
+      v58 = [(TISmartSelector *)self longestRangeEncapsulatingSubstringInDocument:documentCopy containingRange:location tokenizedRanges:length meetingCondition:v61, v89];
       v59 = v25;
       options = self->_options;
     }
@@ -258,14 +258,14 @@
       v59 = 0;
     }
 
-    if ((a7 & options & 0x80) != 0)
+    if ((options & options & 0x80) != 0)
     {
       v88[0] = MEMORY[0x277D85DD0];
       v88[1] = 3221225472;
       v88[2] = __92__TISmartSelector_selectionRangeForTextInDocument_inRange_language_tokenizedRanges_options___block_invoke_4;
       v88[3] = &unk_278731200;
       v88[4] = self;
-      v26 = [(TISmartSelector *)self longestRangeEncapsulatingSubstringInDocument:v13 containingRange:location tokenizedRanges:length meetingCondition:v15, v88];
+      v26 = [(TISmartSelector *)self longestRangeEncapsulatingSubstringInDocument:documentCopy containingRange:location tokenizedRanges:length meetingCondition:rangesCopy, v88];
       v55 = v27;
     }
 
@@ -284,10 +284,10 @@
     v87 = xmmword_22CC889D0;
     v28 = dispatch_semaphore_create(0);
     v29 = v28;
-    if ((a7 & self->_options & 0x100) != 0)
+    if ((options & self->_options & 0x100) != 0)
     {
-      v30 = [(NSLocale *)self->_locale localeIdentifier];
-      v31 = [v14 isEqualToString:v30];
+      localeIdentifier2 = [(NSLocale *)self->_locale localeIdentifier];
+      v31 = [languageCopy isEqualToString:localeIdentifier2];
 
       if ((v31 & 1) == 0)
       {
@@ -301,11 +301,11 @@
       v69 = 3221225472;
       v70 = __92__TISmartSelector_selectionRangeForTextInDocument_inRange_language_tokenizedRanges_options___block_invoke_5;
       v71 = &unk_27872FBA0;
-      v72 = self;
+      selfCopy = self;
       v78 = v16;
       v79 = location;
       v80 = length;
-      v73 = v13;
+      v73 = documentCopy;
       v74 = v33;
       v76 = &v81;
       v77 = 0;
@@ -390,8 +390,8 @@
 
     _Block_object_dispose(&v81, 8);
     _Block_object_dispose(&v97, 8);
-    v15 = v61;
-    v14 = v62;
+    rangesCopy = v61;
+    languageCopy = v62;
   }
 
   v52 = *MEMORY[0x277D85DE8];
@@ -530,9 +530,9 @@ void __92__TISmartSelector_selectionRangeForTextInDocument_inRange_language_toke
   }
 }
 
-- (void)setLanguage:(id)a3
+- (void)setLanguage:(id)language
 {
-  v4 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:a3];
+  v4 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:language];
   locale = self->_locale;
   self->_locale = v4;
 
@@ -564,23 +564,23 @@ void __92__TISmartSelector_selectionRangeForTextInDocument_inRange_language_toke
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (TISmartSelector)initWithOptions:(unint64_t)a3 language:(id)a4 dataChangedHandler:(id)a5
+- (TISmartSelector)initWithOptions:(unint64_t)options language:(id)language dataChangedHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  languageCopy = language;
+  handlerCopy = handler;
   v36.receiver = self;
   v36.super_class = TISmartSelector;
   v10 = [(TISmartSelector *)&v36 init];
   v11 = v10;
   if (v10)
   {
-    v10->_options = a3;
-    v12 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v8];
+    v10->_options = options;
+    v12 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:languageCopy];
     locale = v11->_locale;
     v11->_locale = v12;
 
-    v14 = _Block_copy(v9);
+    v14 = _Block_copy(handlerCopy);
     dataChangedHandler = v11->_dataChangedHandler;
     v11->_dataChangedHandler = v14;
 

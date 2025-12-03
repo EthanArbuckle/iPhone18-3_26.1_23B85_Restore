@@ -1,10 +1,10 @@
 @interface TSCHPresetImagerPie
-- (CGPath)newMutablePathWithRadius:(double)a3 center:(CGPoint)a4 startAngle:(double)a5 endAngle:(double)a6;
+- (CGPath)newMutablePathWithRadius:(double)radius center:(CGPoint)center startAngle:(double)angle endAngle:(double)endAngle;
 @end
 
 @implementation TSCHPresetImagerPie
 
-- (CGPath)newMutablePathWithRadius:(double)a3 center:(CGPoint)a4 startAngle:(double)a5 endAngle:(double)a6
+- (CGPath)newMutablePathWithRadius:(double)radius center:(CGPoint)center startAngle:(double)angle endAngle:(double)endAngle
 {
   Mutable = CGPathCreateMutable();
   CGPathMoveToPointSafe();

@@ -1,27 +1,27 @@
 @interface _ICQMegaBackupUpdateStatusRequest
-+ (id)updateStatusRequestWithAccount:(id)a3 deviceBackupUUID:(id)a4 status:(int64_t)a5 requestURL:(id)a6 URLSession:(id)a7 queue:(id)a8 error:(id *)a9;
++ (id)updateStatusRequestWithAccount:(id)account deviceBackupUUID:(id)d status:(int64_t)status requestURL:(id)l URLSession:(id)session queue:(id)queue error:(id *)error;
 - (id)additionalRequestHeaders;
 - (id)bodyJSON;
-- (id)handleResponse:(id)a3 body:(id)a4;
-- (void)addAdditionalRequestHeaders:(id)a3;
+- (id)handleResponse:(id)response body:(id)body;
+- (void)addAdditionalRequestHeaders:(id)headers;
 @end
 
 @implementation _ICQMegaBackupUpdateStatusRequest
 
-+ (id)updateStatusRequestWithAccount:(id)a3 deviceBackupUUID:(id)a4 status:(int64_t)a5 requestURL:(id)a6 URLSession:(id)a7 queue:(id)a8 error:(id *)a9
++ (id)updateStatusRequestWithAccount:(id)account deviceBackupUUID:(id)d status:(int64_t)status requestURL:(id)l URLSession:(id)session queue:(id)queue error:(id *)error
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = [[a1 alloc] initWithRequestURL:v20 URLSession:v19 queue:v18];
+  accountCopy = account;
+  dCopy = d;
+  queueCopy = queue;
+  sessionCopy = session;
+  lCopy = l;
+  v21 = [[self alloc] initWithRequestURL:lCopy URLSession:sessionCopy queue:queueCopy];
 
   if (v21)
   {
-    objc_storeStrong((v21 + 56), a3);
-    objc_storeStrong((v21 + 64), a4);
-    *(v21 + 72) = a5;
+    objc_storeStrong((v21 + 56), account);
+    objc_storeStrong((v21 + 64), d);
+    *(v21 + 72) = status;
   }
 
   return v21;
@@ -60,14 +60,14 @@
 - (id)bodyJSON
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v3 = [(_ICQMegaBackupUpdateStatusRequest *)self status];
+  status = [(_ICQMegaBackupUpdateStatusRequest *)self status];
   v4 = @"end";
-  if (v3 != 1)
+  if (status != 1)
   {
     v4 = 0;
   }
 
-  if (!v3)
+  if (!status)
   {
     v4 = @"start";
   }
@@ -83,20 +83,20 @@
   return v6;
 }
 
-- (void)addAdditionalRequestHeaders:(id)a3
+- (void)addAdditionalRequestHeaders:(id)headers
 {
   v7.receiver = self;
   v7.super_class = _ICQMegaBackupUpdateStatusRequest;
-  v4 = a3;
-  [(_ICQMegaBackupNetworkRequest *)&v7 addAdditionalRequestHeaders:v4];
+  headersCopy = headers;
+  [(_ICQMegaBackupNetworkRequest *)&v7 addAdditionalRequestHeaders:headersCopy];
   v5 = [ICQRequestProvider alloc];
   v6 = [(ICQRequestProvider *)v5 initWithAccount:self->_account, v7.receiver, v7.super_class];
-  [(ICQRequestProvider *)v6 addBasicAndCloudBackupHeadersToRequest:v4];
+  [(ICQRequestProvider *)v6 addBasicAndCloudBackupHeadersToRequest:headersCopy];
 }
 
-- (id)handleResponse:(id)a3 body:(id)a4
+- (id)handleResponse:(id)response body:(id)body
 {
-  v5 = [a4 objectForKeyedSubscript:@"expirationDate"];
+  v5 = [body objectForKeyedSubscript:@"expirationDate"];
   v6 = v5;
   if (v5)
   {

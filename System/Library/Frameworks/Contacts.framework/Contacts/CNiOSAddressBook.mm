@@ -1,25 +1,25 @@
 @interface CNiOSAddressBook
 + (void)initialize;
-+ (void)newAddressBookWithDelegateInfo:(id)a3;
-+ (void)newAddressBookWithURL:(id)a3;
++ (void)newAddressBookWithDelegateInfo:(id)info;
++ (void)newAddressBookWithURL:(id)l;
 + (void)newInMemoryAddressBook;
 - (CNiOSAddressBook)init;
-- (CNiOSAddressBook)initWithAddressBookProvider:(id)a3;
-- (CNiOSAddressBook)initWithContactsEnvironment:(id)a3;
-- (id)performAsynchronousWorkWithInvalidatedAddressBook:(id)a3;
-- (id)performSynchronousWorkWithInvalidatedAddressBook:(id)a3;
-- (id)resultWithInvalidatedAddressBook:(id)a3;
+- (CNiOSAddressBook)initWithAddressBookProvider:(id)provider;
+- (CNiOSAddressBook)initWithContactsEnvironment:(id)environment;
+- (id)performAsynchronousWorkWithInvalidatedAddressBook:(id)book;
+- (id)performSynchronousWorkWithInvalidatedAddressBook:(id)book;
+- (id)resultWithInvalidatedAddressBook:(id)book;
 - (void)flushPool;
 - (void)popAddressBook;
-- (void)preparedAddressBook:(void *)a3;
-- (void)pushAddressBook:(void *)a3;
+- (void)preparedAddressBook:(void *)book;
+- (void)pushAddressBook:(void *)book;
 @end
 
 @implementation CNiOSAddressBook
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CNiOSAddressBook;
   objc_msgSendSuper2(&v2, sel_initialize);
   ABInitialize();
@@ -27,9 +27,9 @@
 
 - (void)popAddressBook
 {
-  v3 = [(CNiOSAddressBook *)self addressBookPool];
-  v4 = [v3 anyObject];
-  if (!v4 || (v5 = CFRetain(v4)) == 0)
+  addressBookPool = [(CNiOSAddressBook *)self addressBookPool];
+  anyObject = [addressBookPool anyObject];
+  if (!anyObject || (v5 = CFRetain(anyObject)) == 0)
   {
     v6 = 0;
     goto LABEL_6;
@@ -39,8 +39,8 @@
 
   if (v6)
   {
-    v3 = [(CNiOSAddressBook *)self addressBookPool];
-    [v3 removeObject:v6];
+    addressBookPool = [(CNiOSAddressBook *)self addressBookPool];
+    [addressBookPool removeObject:v6];
 LABEL_6:
   }
 
@@ -55,14 +55,14 @@ LABEL_6:
   v12[3] = __Block_byref_object_copy__29;
   v12[4] = __Block_byref_object_dispose__29;
   v13 = 0;
-  v3 = [(CNiOSAddressBook *)self accessQueue];
+  accessQueue = [(CNiOSAddressBook *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__CNiOSAddressBook_flushPool__block_invoke;
   block[3] = &unk_1E7412358;
   block[4] = self;
   block[5] = v12;
-  dispatch_sync(v3, block);
+  dispatch_sync(accessQueue, block);
 
   v7 = 0;
   v8 = &v7;
@@ -76,14 +76,14 @@ LABEL_6:
       break;
     }
 
-    v5 = [(CNiOSAddressBook *)self accessQueue];
+    accessQueue2 = [(CNiOSAddressBook *)self accessQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __29__CNiOSAddressBook_flushPool__block_invoke_2;
     v6[3] = &unk_1E7412358;
     v6[4] = self;
     v6[5] = &v7;
-    dispatch_sync(v5, v6);
+    dispatch_sync(accessQueue2, v6);
 
     if (*(v8 + 24) == 1)
     {
@@ -120,11 +120,11 @@ void __29__CNiOSAddressBook_flushPool__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (void)newAddressBookWithURL:(id)a3
++ (void)newAddressBookWithURL:(id)l
 {
   error = 0;
-  v3 = [a3 path];
-  v4 = [v3 stringByAppendingString:@"/"];
+  path = [l path];
+  v4 = [path stringByAppendingString:@"/"];
 
   if ([v4 length])
   {
@@ -147,15 +147,15 @@ void __29__CNiOSAddressBook_flushPool__block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (void)newAddressBookWithDelegateInfo:(id)a3
++ (void)newAddressBookWithDelegateInfo:(id)info
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 altDSID];
-  v4 = v3;
-  if (v3)
+  altDSID = [info altDSID];
+  v4 = altDSID;
+  if (altDSID)
   {
     v9 = *MEMORY[0x1E698A140];
-    v10[0] = v3;
+    v10[0] = altDSID;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
@@ -184,11 +184,11 @@ void __29__CNiOSAddressBook_flushPool__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (CNiOSAddressBook)initWithContactsEnvironment:(id)a3
+- (CNiOSAddressBook)initWithContactsEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v5 = objc_opt_class();
-  if ([v4 useInMemoryStores])
+  if ([environmentCopy useInMemoryStores])
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -200,34 +200,34 @@ void __29__CNiOSAddressBook_flushPool__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [v4 delegateInfos];
+    delegateInfos = [environmentCopy delegateInfos];
 
-    if (v7)
+    if (delegateInfos)
     {
-      v8 = [v4 delegateInfos];
-      v9 = [v8 firstObject];
+      delegateInfos2 = [environmentCopy delegateInfos];
+      firstObject = [delegateInfos2 firstObject];
 
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __48__CNiOSAddressBook_initWithContactsEnvironment___block_invoke_2;
       v18[3] = &unk_1E7416E10;
-      v19 = v9;
+      v19 = firstObject;
       v20 = v5;
-      v10 = v9;
+      v10 = firstObject;
       v6 = _Block_copy(v18);
       v11 = v19;
     }
 
     else
     {
-      v12 = [v4 baseURL];
+      baseURL = [environmentCopy baseURL];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __48__CNiOSAddressBook_initWithContactsEnvironment___block_invoke_3;
       v15[3] = &unk_1E7416E10;
-      v16 = v12;
+      v16 = baseURL;
       v17 = v5;
-      v10 = v12;
+      v10 = baseURL;
       v6 = _Block_copy(v15);
       v11 = v16;
     }
@@ -274,9 +274,9 @@ CFTypeRef __48__CNiOSAddressBook_initWithContactsEnvironment___block_invoke_3(ui
   return result;
 }
 
-- (CNiOSAddressBook)initWithAddressBookProvider:(id)a3
+- (CNiOSAddressBook)initWithAddressBookProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v22.receiver = self;
   v22.super_class = CNiOSAddressBook;
   v5 = [(CNiOSAddressBook *)&v22 init];
@@ -291,7 +291,7 @@ CFTypeRef __48__CNiOSAddressBook_initWithContactsEnvironment___block_invoke_3(ui
     v10 = *(v5 + 2);
     *(v5 + 2) = v9;
 
-    v11 = [v4 copy];
+    v11 = [providerCopy copy];
     v12 = *(v5 + 4);
     *(v5 + 4) = v11;
 
@@ -323,53 +323,53 @@ void __48__CNiOSAddressBook_initWithAddressBookProvider___block_invoke(uint64_t 
   [WeakRetained flushPool];
 }
 
-- (void)pushAddressBook:(void *)a3
+- (void)pushAddressBook:(void *)book
 {
-  if (a3)
+  if (book)
   {
-    v5 = [(CNiOSAddressBook *)self addressBookPool];
-    v6 = [v5 count];
+    addressBookPool = [(CNiOSAddressBook *)self addressBookPool];
+    v6 = [addressBookPool count];
 
     if (v6 <= 1)
     {
-      MEMORY[0x19A8B3F90](a3);
-      v7 = [(CNiOSAddressBook *)self addressBookPool];
-      [v7 addObject:a3];
+      MEMORY[0x19A8B3F90](book);
+      addressBookPool2 = [(CNiOSAddressBook *)self addressBookPool];
+      [addressBookPool2 addObject:book];
     }
   }
 }
 
-- (void)preparedAddressBook:(void *)a3
+- (void)preparedAddressBook:(void *)book
 {
-  v3 = a3;
-  if (!a3)
+  bookCopy = book;
+  if (!book)
   {
-    v5 = [(CNiOSAddressBook *)self accessQueue];
+    accessQueue = [(CNiOSAddressBook *)self accessQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __40__CNiOSAddressBook_preparedAddressBook___block_invoke;
     block[3] = &unk_1E7412A88;
     block[4] = self;
-    dispatch_sync(v5, block);
+    dispatch_sync(accessQueue, block);
 
-    v6 = [(CNiOSAddressBook *)self addressBookProvider];
-    v3 = v6[2]();
+    addressBookProvider = [(CNiOSAddressBook *)self addressBookProvider];
+    bookCopy = addressBookProvider[2]();
 
-    v7 = [(CNiOSAddressBook *)self accessQueue];
+    accessQueue2 = [(CNiOSAddressBook *)self accessQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __40__CNiOSAddressBook_preparedAddressBook___block_invoke_2;
     v9[3] = &unk_1E7412A88;
     v9[4] = self;
-    dispatch_sync(v7, v9);
+    dispatch_sync(accessQueue2, v9);
   }
 
-  return v3;
+  return bookCopy;
 }
 
-- (id)resultWithInvalidatedAddressBook:(id)a3
+- (id)resultWithInvalidatedAddressBook:(id)book
 {
-  v4 = a3;
+  bookCopy = book;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -381,13 +381,13 @@ void __48__CNiOSAddressBook_initWithAddressBookProvider___block_invoke(uint64_t 
   v14 = __53__CNiOSAddressBook_resultWithInvalidatedAddressBook___block_invoke;
   v15 = &unk_1E7416E60;
   v17 = &v18;
-  v5 = v4;
+  v5 = bookCopy;
   v16 = v5;
   v6 = [(CNiOSAddressBook *)self performSynchronousWorkWithInvalidatedAddressBook:&v12];
   v7 = MEMORY[0x1E6996810];
   v8 = v19[5];
-  v9 = [v6 error];
-  v10 = [v7 resultWithValue:v8 orError:v9];
+  error = [v6 error];
+  v10 = [v7 resultWithValue:v8 orError:error];
 
   _Block_object_dispose(&v18, 8);
 
@@ -404,15 +404,15 @@ uint64_t __53__CNiOSAddressBook_resultWithInvalidatedAddressBook___block_invoke(
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)performSynchronousWorkWithInvalidatedAddressBook:(id)a3
+- (id)performSynchronousWorkWithInvalidatedAddressBook:(id)book
 {
-  v4 = a3;
+  bookCopy = book;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__CNiOSAddressBook_performSynchronousWorkWithInvalidatedAddressBook___block_invoke;
   v8[3] = &unk_1E7416E88;
-  v9 = v4;
-  v5 = v4;
+  v9 = bookCopy;
+  v5 = bookCopy;
   v6 = [(CNiOSAddressBook *)self performAsynchronousWorkWithInvalidatedAddressBook:v8];
 
   return v6;
@@ -427,21 +427,21 @@ void __69__CNiOSAddressBook_performSynchronousWorkWithInvalidatedAddressBook___b
   v6[2]();
 }
 
-- (id)performAsynchronousWorkWithInvalidatedAddressBook:(id)a3
+- (id)performAsynchronousWorkWithInvalidatedAddressBook:(id)book
 {
-  v4 = a3;
+  bookCopy = book;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v5 = [(CNiOSAddressBook *)self accessQueue];
+  accessQueue = [(CNiOSAddressBook *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__CNiOSAddressBook_performAsynchronousWorkWithInvalidatedAddressBook___block_invoke;
   block[3] = &unk_1E7412358;
   block[4] = self;
   block[5] = &v13;
-  dispatch_sync(v5, block);
+  dispatch_sync(accessQueue, block);
 
   v6 = [(CNiOSAddressBook *)self preparedAddressBook:v14[3]];
   v14[3] = v6;
@@ -453,7 +453,7 @@ void __69__CNiOSAddressBook_performSynchronousWorkWithInvalidatedAddressBook___b
     v11[3] = &unk_1E7416EB0;
     v11[4] = self;
     v11[5] = &v13;
-    v4[2](v4, v6, v11);
+    bookCopy[2](bookCopy, v6, v11);
     v7 = [MEMORY[0x1E6996810] successWithValue:MEMORY[0x1E695E118]];
   }
 

@@ -2,41 +2,41 @@
 - (NSArray)scopeChain;
 - (NSString)displayName;
 - (NSString)name;
-- (RWIProtocolDebuggerFunctionDetails)initWithLocation:(id)a3;
+- (RWIProtocolDebuggerFunctionDetails)initWithLocation:(id)location;
 - (RWIProtocolDebuggerLocation)location;
-- (void)setDisplayName:(id)a3;
-- (void)setLocation:(id)a3;
-- (void)setName:(id)a3;
-- (void)setScopeChain:(id)a3;
+- (void)setDisplayName:(id)name;
+- (void)setLocation:(id)location;
+- (void)setName:(id)name;
+- (void)setScopeChain:(id)chain;
 @end
 
 @implementation RWIProtocolDebuggerFunctionDetails
 
-- (RWIProtocolDebuggerFunctionDetails)initWithLocation:(id)a3
+- (RWIProtocolDebuggerFunctionDetails)initWithLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v8.receiver = self;
   v8.super_class = RWIProtocolDebuggerFunctionDetails;
   v5 = [(RWIProtocolJSONObject *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!locationCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"location"}];
     }
 
-    [(RWIProtocolDebuggerFunctionDetails *)v5 setLocation:v4];
+    [(RWIProtocolDebuggerFunctionDetails *)v5 setLocation:locationCopy];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerFunctionDetails;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"location"];
+  [(RWIProtocolJSONObject *)&v3 setObject:location forKey:@"location"];
 }
 
 - (RWIProtocolDebuggerLocation)location
@@ -94,11 +94,11 @@
   return v7;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerFunctionDetails;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"name"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"name"];
 }
 
 - (NSString)name
@@ -110,11 +110,11 @@
   return v2;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerFunctionDetails;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"displayName"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"displayName"];
 }
 
 - (NSString)displayName
@@ -126,14 +126,14 @@
   return v2;
 }
 
-- (void)setScopeChain:(id)a3
+- (void)setScopeChain:(id)chain
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = chain;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {

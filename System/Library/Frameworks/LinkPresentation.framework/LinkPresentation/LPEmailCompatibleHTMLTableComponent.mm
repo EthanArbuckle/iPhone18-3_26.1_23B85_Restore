@@ -1,52 +1,52 @@
 @interface LPEmailCompatibleHTMLTableComponent
-+ (id)ruleDictionaryForStyle:(id)a3;
-- (LPEmailCompatibleHTMLTableComponent)initWithThemePath:(id)a3 generator:(id)a4;
-- (void)addChildAsRow:(id)a3;
++ (id)ruleDictionaryForStyle:(id)style;
+- (LPEmailCompatibleHTMLTableComponent)initWithThemePath:(id)path generator:(id)generator;
+- (void)addChildAsRow:(id)row;
 @end
 
 @implementation LPEmailCompatibleHTMLTableComponent
 
-- (LPEmailCompatibleHTMLTableComponent)initWithThemePath:(id)a3 generator:(id)a4
+- (LPEmailCompatibleHTMLTableComponent)initWithThemePath:(id)path generator:(id)generator
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  generatorCopy = generator;
   v30.receiver = self;
   v30.super_class = LPEmailCompatibleHTMLTableComponent;
-  v8 = [(LPHTMLComponent *)&v30 initWithTagName:@"table" themePath:v6 generator:v7];
+  v8 = [(LPHTMLComponent *)&v30 initWithTagName:@"table" themePath:pathCopy generator:generatorCopy];
   v10 = v8;
   if (v8)
   {
     LPWebLock(v8, v9);
-    v11 = [v7 rootWidth];
-    v12 = [v11 _lp_CSSText];
-    v13 = [v7 cssResolver];
-    v14 = [v13 localVariables];
-    [v14 setObject:v12 forKeyedSubscript:@"local-table-width"];
+    rootWidth = [generatorCopy rootWidth];
+    _lp_CSSText = [rootWidth _lp_CSSText];
+    cssResolver = [generatorCopy cssResolver];
+    localVariables = [cssResolver localVariables];
+    [localVariables setObject:_lp_CSSText forKeyedSubscript:@"local-table-width"];
 
-    v15 = [v7 backgroundColor];
-    v16 = [v15 _lp_CSSText];
-    v17 = [v7 cssResolver];
-    v18 = [v17 localVariables];
-    [v18 setObject:v16 forKeyedSubscript:@"local-table-backgroundColor"];
+    backgroundColor = [generatorCopy backgroundColor];
+    _lp_CSSText2 = [backgroundColor _lp_CSSText];
+    cssResolver2 = [generatorCopy cssResolver];
+    localVariables2 = [cssResolver2 localVariables];
+    [localVariables2 setObject:_lp_CSSText2 forKeyedSubscript:@"local-table-backgroundColor"];
 
-    v19 = [v7 cssResolver];
-    v20 = [@"lp-rich-link-" stringByAppendingString:v6];
-    v21 = [(LPHTMLComponent *)v10 element];
-    [v19 addStyle:v20 toElement:v21 inComponent:v10];
+    cssResolver3 = [generatorCopy cssResolver];
+    v20 = [@"lp-rich-link-" stringByAppendingString:pathCopy];
+    element = [(LPHTMLComponent *)v10 element];
+    [cssResolver3 addStyle:v20 toElement:element inComponent:v10];
 
-    v22 = [(LPHTMLComponent *)v10 element];
-    [v22 setAttribute:@"cellpadding" value:@"0"];
+    element2 = [(LPHTMLComponent *)v10 element];
+    [element2 setAttribute:@"cellpadding" value:@"0"];
 
-    v23 = [(LPHTMLComponent *)v10 element];
-    [v23 setAttribute:@"cellspacing" value:@"0"];
+    element3 = [(LPHTMLComponent *)v10 element];
+    [element3 setAttribute:@"cellspacing" value:@"0"];
 
-    v24 = [(LPHTMLComponent *)v10 element];
-    [v24 setAttribute:@"border" value:@"0"];
+    element4 = [(LPHTMLComponent *)v10 element];
+    [element4 setAttribute:@"border" value:@"0"];
 
-    v25 = [(LPHTMLComponent *)v10 element];
-    v26 = [v7 rootWidth];
-    v27 = [v26 _lp_HTMLAttributeText];
-    [v25 setAttribute:@"width" value:v27];
+    element5 = [(LPHTMLComponent *)v10 element];
+    rootWidth2 = [generatorCopy rootWidth];
+    _lp_HTMLAttributeText = [rootWidth2 _lp_HTMLAttributeText];
+    [element5 setAttribute:@"width" value:_lp_HTMLAttributeText];
 
     v28 = v10;
   }
@@ -54,33 +54,33 @@
   return v10;
 }
 
-- (void)addChildAsRow:(id)a3
+- (void)addChildAsRow:(id)row
 {
-  v12 = a3;
+  rowCopy = row;
   v4 = [LPHTMLComponent alloc];
-  v5 = [(LPHTMLComponent *)self generator];
-  v6 = [(LPHTMLComponent *)v4 initWithTagName:@"tr" themePath:&stru_1F2447CF0 generator:v5];
+  generator = [(LPHTMLComponent *)self generator];
+  v6 = [(LPHTMLComponent *)v4 initWithTagName:@"tr" themePath:&stru_1F2447CF0 generator:generator];
 
   v7 = [LPHTMLComponent alloc];
-  v8 = [(LPHTMLComponent *)self generator];
-  v9 = [(LPHTMLComponent *)v7 initWithTagName:@"td" themePath:&stru_1F2447CF0 generator:v8];
+  generator2 = [(LPHTMLComponent *)self generator];
+  v9 = [(LPHTMLComponent *)v7 initWithTagName:@"td" themePath:&stru_1F2447CF0 generator:generator2];
 
-  v10 = [(LPHTMLComponent *)v9 element];
-  [v10 setAttribute:@"vertical-align" value:@"center"];
+  element = [(LPHTMLComponent *)v9 element];
+  [element setAttribute:@"vertical-align" value:@"center"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(LPHTMLComponent *)v9 element];
-    [v11 setAttribute:@"align" value:@"center"];
+    element2 = [(LPHTMLComponent *)v9 element];
+    [element2 setAttribute:@"align" value:@"center"];
   }
 
-  [(LPHTMLComponent *)v9 addChild:v12];
+  [(LPHTMLComponent *)v9 addChild:rowCopy];
   [(LPHTMLComponent *)v6 addChild:v9];
   [(LPHTMLComponent *)self addChild:v6];
 }
 
-+ (id)ruleDictionaryForStyle:(id)a3
++ (id)ruleDictionaryForStyle:(id)style
 {
   v8[5] = *MEMORY[0x1E69E9840];
   v7[0] = @"width";

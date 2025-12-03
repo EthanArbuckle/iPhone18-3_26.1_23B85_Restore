@@ -2,17 +2,17 @@
 + (VSUserAccountManager)sharedUserAccountManager;
 - (VSUserAccountManager)init;
 - (VSUserAccountServiceConnection)connection;
-- (void)_runAutoSignInServiceCallWithSuccessHandler:(id)a3 failureHandler:(id)a4;
-- (void)deleteAutoSignInTokenWithCompletionHandler:(id)a3;
-- (void)deleteUserAccount:(id)a3 completion:(id)a4;
-- (void)fetchUserAccountWithSourceIdentifier:(id)a3 sourceType:(int64_t)a4 deviceIdentifier:(id)a5 withCompletion:(id)a6;
-- (void)forceRefreshUserAccount:(id)a3 withCompletion:(id)a4;
-- (void)queryAutoSignInTokenWithCompletionHandler:(id)a3;
+- (void)_runAutoSignInServiceCallWithSuccessHandler:(id)handler failureHandler:(id)failureHandler;
+- (void)deleteAutoSignInTokenWithCompletionHandler:(id)handler;
+- (void)deleteUserAccount:(id)account completion:(id)completion;
+- (void)fetchUserAccountWithSourceIdentifier:(id)identifier sourceType:(int64_t)type deviceIdentifier:(id)deviceIdentifier withCompletion:(id)completion;
+- (void)forceRefreshUserAccount:(id)account withCompletion:(id)completion;
+- (void)queryAutoSignInTokenWithCompletionHandler:(id)handler;
 - (void)queryUserAccountsWithOptions:(VSUserAccountQueryOptions)options completion:(void *)completion;
-- (void)queryUserAccountsWithOptions:(int64_t)a3 sourceIdentifier:(id)a4 sourceType:(id)a5 deviceIdentifier:(id)a6 completion:(id)a7;
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4;
-- (void)requestAutoSignInAuthorizationWithCompletionHandler:(id)a3;
-- (void)updateAutoSignInToken:(id)a3 updateContext:(id)a4 completionHandler:(id)a5;
+- (void)queryUserAccountsWithOptions:(int64_t)options sourceIdentifier:(id)identifier sourceType:(id)type deviceIdentifier:(id)deviceIdentifier completion:(id)completion;
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info;
+- (void)requestAutoSignInAuthorizationWithCompletionHandler:(id)handler;
+- (void)updateAutoSignInToken:(id)token updateContext:(id)context completionHandler:(id)handler;
 - (void)updateUserAccount:(VSUserAccount *)account completion:(void *)completion;
 @end
 
@@ -68,14 +68,14 @@ uint64_t __48__VSUserAccountManager_sharedUserAccountManager__block_invoke()
     [v8 raise:v9 format:{@"Object passed to %s was not of type %@.", "-[VSUserAccountManager updateUserAccount:completion:]", v11}];
   }
 
-  v12 = [(VSUserAccountManager *)self connection];
+  connection = [(VSUserAccountManager *)self connection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __53__VSUserAccountManager_updateUserAccount_completion___block_invoke;
   v15[3] = &unk_278B73910;
   v16 = v7;
   v13 = v7;
-  v14 = [v12 serviceWithErrorHandler:v15];
+  v14 = [connection serviceWithErrorHandler:v15];
   [v14 updateUserAccount:v6 completion:v13];
 }
 
@@ -95,19 +95,19 @@ void __53__VSUserAccountManager_updateUserAccount_completion___block_invoke(uint
   }
 }
 
-- (void)deleteUserAccount:(id)a3 completion:(id)a4
+- (void)deleteUserAccount:(id)account completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VSUserAccountManager *)self connection];
+  completionCopy = completion;
+  accountCopy = account;
+  connection = [(VSUserAccountManager *)self connection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__VSUserAccountManager_deleteUserAccount_completion___block_invoke;
   v11[3] = &unk_278B73910;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 serviceWithErrorHandler:v11];
-  [v10 deleteUserAccount:v7 completion:v9];
+  v12 = completionCopy;
+  v9 = completionCopy;
+  v10 = [connection serviceWithErrorHandler:v11];
+  [v10 deleteUserAccount:accountCopy completion:v9];
 }
 
 void __53__VSUserAccountManager_deleteUserAccount_completion___block_invoke(uint64_t a1, void *a2)
@@ -126,22 +126,22 @@ void __53__VSUserAccountManager_deleteUserAccount_completion___block_invoke(uint
   }
 }
 
-- (void)fetchUserAccountWithSourceIdentifier:(id)a3 sourceType:(int64_t)a4 deviceIdentifier:(id)a5 withCompletion:(id)a6
+- (void)fetchUserAccountWithSourceIdentifier:(id)identifier sourceType:(int64_t)type deviceIdentifier:(id)deviceIdentifier withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  deviceIdentifierCopy = deviceIdentifier;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __104__VSUserAccountManager_fetchUserAccountWithSourceIdentifier_sourceType_deviceIdentifier_withCompletion___block_invoke;
   v16[3] = &unk_278B74A90;
-  v17 = v10;
-  v18 = v11;
-  v19 = v12;
-  v20 = a4;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = identifierCopy;
+  v18 = deviceIdentifierCopy;
+  v19 = completionCopy;
+  typeCopy = type;
+  v13 = completionCopy;
+  v14 = deviceIdentifierCopy;
+  v15 = identifierCopy;
   [(VSUserAccountManager *)self queryUserAccountsWithOptions:1 completion:v16];
 }
 
@@ -204,25 +204,25 @@ LABEL_13:
   (*(a1[6] + 16))();
 }
 
-- (void)forceRefreshUserAccount:(id)a3 withCompletion:(id)a4
+- (void)forceRefreshUserAccount:(id)account withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VSUserAccountManager *)self connection];
+  completionCopy = completion;
+  accountCopy = account;
+  connection = [(VSUserAccountManager *)self connection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __63__VSUserAccountManager_forceRefreshUserAccount_withCompletion___block_invoke;
   v14[3] = &unk_278B73910;
-  v9 = v6;
+  v9 = completionCopy;
   v15 = v9;
-  v10 = [v8 serviceWithErrorHandler:v14];
+  v10 = [connection serviceWithErrorHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__VSUserAccountManager_forceRefreshUserAccount_withCompletion___block_invoke_10;
   v12[3] = &unk_278B73910;
   v13 = v9;
   v11 = v9;
-  [v10 forceRefreshUserAccount:v7 withCompletion:v12];
+  [v10 forceRefreshUserAccount:accountCopy withCompletion:v12];
 }
 
 void __63__VSUserAccountManager_forceRefreshUserAccount_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -244,14 +244,14 @@ void __63__VSUserAccountManager_forceRefreshUserAccount_withCompletion___block_i
 - (void)queryUserAccountsWithOptions:(VSUserAccountQueryOptions)options completion:(void *)completion
 {
   v6 = completion;
-  v7 = [(VSUserAccountManager *)self connection];
+  connection = [(VSUserAccountManager *)self connection];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__VSUserAccountManager_queryUserAccountsWithOptions_completion___block_invoke;
   v10[3] = &unk_278B73910;
   v11 = v6;
   v8 = v6;
-  v9 = [v7 serviceWithErrorHandler:v10];
+  v9 = [connection serviceWithErrorHandler:v10];
   [v9 queryUserAccountsWithOptions:options completion:v8];
 }
 
@@ -271,21 +271,21 @@ void __64__VSUserAccountManager_queryUserAccountsWithOptions_completion___block_
   }
 }
 
-- (void)queryUserAccountsWithOptions:(int64_t)a3 sourceIdentifier:(id)a4 sourceType:(id)a5 deviceIdentifier:(id)a6 completion:(id)a7
+- (void)queryUserAccountsWithOptions:(int64_t)options sourceIdentifier:(id)identifier sourceType:(id)type deviceIdentifier:(id)deviceIdentifier completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [(VSUserAccountManager *)self connection];
+  completionCopy = completion;
+  deviceIdentifierCopy = deviceIdentifier;
+  typeCopy = type;
+  identifierCopy = identifier;
+  connection = [(VSUserAccountManager *)self connection];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __109__VSUserAccountManager_queryUserAccountsWithOptions_sourceIdentifier_sourceType_deviceIdentifier_completion___block_invoke;
   v19[3] = &unk_278B73910;
-  v20 = v12;
-  v17 = v12;
-  v18 = [v16 serviceWithErrorHandler:v19];
-  [v18 queryUserAccountsWithOptions:a3 sourceIdentifier:v15 sourceType:v14 deviceIdentifier:v13 completion:v17];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  v18 = [connection serviceWithErrorHandler:v19];
+  [v18 queryUserAccountsWithOptions:options sourceIdentifier:identifierCopy sourceType:typeCopy deviceIdentifier:deviceIdentifierCopy completion:v17];
 }
 
 void __109__VSUserAccountManager_queryUserAccountsWithOptions_sourceIdentifier_sourceType_deviceIdentifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -304,14 +304,14 @@ void __109__VSUserAccountManager_queryUserAccountsWithOptions_sourceIdentifier_s
   }
 }
 
-- (void)queryAutoSignInTokenWithCompletionHandler:(id)a3
+- (void)queryAutoSignInTokenWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__VSUserAccountManager_queryAutoSignInTokenWithCompletionHandler___block_invoke;
   v8[3] = &unk_278B74AB8;
-  v9 = v4;
+  v9 = handlerCopy;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__VSUserAccountManager_queryAutoSignInTokenWithCompletionHandler___block_invoke_2;
@@ -332,14 +332,14 @@ uint64_t __66__VSUserAccountManager_queryAutoSignInTokenWithCompletionHandler___
   return result;
 }
 
-- (void)requestAutoSignInAuthorizationWithCompletionHandler:(id)a3
+- (void)requestAutoSignInAuthorizationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__VSUserAccountManager_requestAutoSignInAuthorizationWithCompletionHandler___block_invoke;
   v8[3] = &unk_278B74AB8;
-  v9 = v4;
+  v9 = handlerCopy;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __76__VSUserAccountManager_requestAutoSignInAuthorizationWithCompletionHandler___block_invoke_3;
@@ -395,23 +395,23 @@ uint64_t __76__VSUserAccountManager_requestAutoSignInAuthorizationWithCompletion
   return result;
 }
 
-- (void)updateAutoSignInToken:(id)a3 updateContext:(id)a4 completionHandler:(id)a5
+- (void)updateAutoSignInToken:(id)token updateContext:(id)context completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  tokenCopy = token;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__VSUserAccountManager_updateAutoSignInToken_updateContext_completionHandler___block_invoke;
   v13[3] = &unk_278B74B08;
-  v14 = v7;
-  v15 = v8;
+  v14 = tokenCopy;
+  v15 = handlerCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__VSUserAccountManager_updateAutoSignInToken_updateContext_completionHandler___block_invoke_2;
   v11[3] = &unk_278B73910;
   v12 = v15;
   v9 = v15;
-  v10 = v7;
+  v10 = tokenCopy;
   [(VSUserAccountManager *)self _runAutoSignInServiceCallWithSuccessHandler:v13 failureHandler:v11];
 }
 
@@ -426,14 +426,14 @@ uint64_t __78__VSUserAccountManager_updateAutoSignInToken_updateContext_completi
   return result;
 }
 
-- (void)deleteAutoSignInTokenWithCompletionHandler:(id)a3
+- (void)deleteAutoSignInTokenWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__VSUserAccountManager_deleteAutoSignInTokenWithCompletionHandler___block_invoke;
   v8[3] = &unk_278B74AB8;
-  v9 = v4;
+  v9 = handlerCopy;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__VSUserAccountManager_deleteAutoSignInTokenWithCompletionHandler___block_invoke_2;
@@ -454,18 +454,18 @@ uint64_t __67__VSUserAccountManager_deleteAutoSignInTokenWithCompletionHandler__
   return result;
 }
 
-- (void)_runAutoSignInServiceCallWithSuccessHandler:(id)a3 failureHandler:(id)a4
+- (void)_runAutoSignInServiceCallWithSuccessHandler:(id)handler failureHandler:(id)failureHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VSUserAccountManager *)self connection];
+  handlerCopy = handler;
+  failureHandlerCopy = failureHandler;
+  connection = [(VSUserAccountManager *)self connection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __83__VSUserAccountManager__runAutoSignInServiceCallWithSuccessHandler_failureHandler___block_invoke;
   v16[3] = &unk_278B73910;
-  v9 = v7;
+  v9 = failureHandlerCopy;
   v17 = v9;
-  v10 = [v8 serviceWithErrorHandler:v16];
+  v10 = [connection serviceWithErrorHandler:v16];
 
   if (v10)
   {
@@ -491,7 +491,7 @@ uint64_t __67__VSUserAccountManager_deleteAutoSignInTokenWithCompletionHandler__
     v13[1] = 3221225472;
     v13[2] = __83__VSUserAccountManager__runAutoSignInServiceCallWithSuccessHandler_failureHandler___block_invoke_14;
     v13[3] = &unk_278B74B30;
-    v15 = v6;
+    v15 = handlerCopy;
     v14 = v10;
     [v11 currentAccountTypeWithCompletionHandler:v13];
   }
@@ -535,16 +535,16 @@ uint64_t __83__VSUserAccountManager__runAutoSignInServiceCallWithSuccessHandler_
 
 - (VSUserAccountServiceConnection)connection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_connection;
   if (!v3)
   {
     v3 = objc_alloc_init(VSUserAccountServiceConnection);
-    objc_storeStrong(&v2->_connection, v3);
+    objc_storeStrong(&selfCopy->_connection, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -554,10 +554,10 @@ uint64_t __83__VSUserAccountManager__runAutoSignInServiceCallWithSuccessHandler_
   return v3;
 }
 
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info
 {
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"VSActiveSubscriptionsDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"VSActiveSubscriptionsDidChangeNotification" object:self];
 }
 
 @end

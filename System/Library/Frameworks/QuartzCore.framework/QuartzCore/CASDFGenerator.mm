@@ -1,12 +1,12 @@
 @interface CASDFGenerator
 - (CASDFGenerator)init;
-- (CGImage)generateSDFWithRequest:(id)a3 forImage:(CGImage *)a4;
+- (CGImage)generateSDFWithRequest:(id)request forImage:(CGImage *)image;
 - (void)dealloc;
 @end
 
 @implementation CASDFGenerator
 
-- (CGImage)generateSDFWithRequest:(id)a3 forImage:(CGImage *)a4
+- (CGImage)generateSDFWithRequest:(id)request forImage:(CGImage *)image
 {
   MEMORY[0x1EEE9AC00](self);
   v5 = v4;
@@ -23,7 +23,7 @@
   }
 
   v13 = v12;
-  v14 = [v7 includeGradient];
+  includeGradient = [v7 includeGradient];
   [v7 padding];
   v15 = 0.0;
   if (v16 >= 0.0)
@@ -32,16 +32,16 @@
     v15 = v17;
   }
 
-  v18 = [v7 outputBitDepth];
+  outputBitDepth = [v7 outputBitDepth];
   v19 = 2;
   v20 = 1111970369;
-  if (v18)
+  if (outputBitDepth)
   {
-    if (v18 == 1)
+    if (outputBitDepth == 1)
     {
       v21 = 0;
-      v19 = v14 != 0;
-      if (v14)
+      v19 = includeGradient != 0;
+      if (includeGradient)
       {
         v20 = 1815491698;
       }
@@ -52,10 +52,10 @@
       }
     }
 
-    else if (v18 == 2)
+    else if (outputBitDepth == 2)
     {
-      v19 = v14 != 0;
-      if (v14)
+      v19 = includeGradient != 0;
+      if (includeGradient)
       {
         v20 = 1380411457;
       }
@@ -77,7 +77,7 @@
   else
   {
     v21 = 0;
-    if (v14)
+    if (includeGradient)
     {
       v19 = 2;
     }
@@ -87,7 +87,7 @@
       v19 = 0;
     }
 
-    if (v14)
+    if (includeGradient)
     {
       v20 = 1111970369;
     }
@@ -322,7 +322,7 @@
     {
       (*(*v38 + 760))(v38, v70, *(v70 + 40), *(v70 + 44));
       (*(*v38 + 760))(v38, v72, *(v72 + 40), *(v72 + 44));
-      if (!v14)
+      if (!includeGradient)
       {
         v100 = 0;
         v95 = 0;
@@ -382,7 +382,7 @@ LABEL_74:
 
         while (v84 > 1.0);
         CA::OGL::Context::unbind_surface(v38, v50, 1);
-        if (v14)
+        if (includeGradient)
         {
           CA::OGL::Context::push_surface(v38, v100, 1u, 0, 0);
           *(*(v38 + 16) + 16) = 81;
@@ -518,7 +518,7 @@ LABEL_92:
 
     if (v72)
     {
-      if (v14)
+      if (includeGradient)
       {
         v91 = 36;
       }

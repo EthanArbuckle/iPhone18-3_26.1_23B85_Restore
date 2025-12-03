@@ -1,14 +1,14 @@
 @interface GESSAlgTopologyQuality
 - (id).cxx_construct;
-- (void)setQualityImpl:(const TopologyQuality *)a3;
+- (void)setQualityImpl:(const TopologyQuality *)impl;
 @end
 
 @implementation GESSAlgTopologyQuality
 
-- (void)setQualityImpl:(const TopologyQuality *)a3
+- (void)setQualityImpl:(const TopologyQuality *)impl
 {
-  v3 = *&a3->nVertices;
-  *&self->_qualityImpl.nFaces = *&a3->nFaces;
+  v3 = *&impl->nVertices;
+  *&self->_qualityImpl.nFaces = *&impl->nFaces;
   *&self->_qualityImpl.nVertices = v3;
 }
 

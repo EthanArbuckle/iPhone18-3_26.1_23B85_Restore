@@ -4,8 +4,8 @@
 - (BOOL)includedPath;
 - (BOOL)includedUserManagedAssetsPath;
 - (MCMConcreteContainerIdentity)concreteContainerIdentity;
-- (MCMXPCMessageWithConcreteContainerBase)initWithConcreteContainer:(id)a3 context:(id)a4;
-- (MCMXPCMessageWithConcreteContainerBase)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5;
+- (MCMXPCMessageWithConcreteContainerBase)initWithConcreteContainer:(id)container context:(id)context;
+- (MCMXPCMessageWithConcreteContainerBase)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error;
 - (unsigned)disposition;
 @end
 
@@ -56,37 +56,37 @@
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = MCMXPCMessageWithConcreteContainerBase;
-  v3 = [(MCMXPCMessageBase *)&v7 disposition];
-  if (v3 == 1)
+  disposition = [(MCMXPCMessageBase *)&v7 disposition];
+  if (disposition == 1)
   {
-    v4 = [(MCMXPCMessageWithConcreteContainerBase *)self concreteContainerIdentity];
-    v3 = [v4 disposition];
+    concreteContainerIdentity = [(MCMXPCMessageWithConcreteContainerBase *)self concreteContainerIdentity];
+    disposition = [concreteContainerIdentity disposition];
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return disposition;
 }
 
-- (MCMXPCMessageWithConcreteContainerBase)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5
+- (MCMXPCMessageWithConcreteContainerBase)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v23[0] = 1;
   v22.receiver = self;
   v22.super_class = MCMXPCMessageWithConcreteContainerBase;
-  v10 = [(MCMXPCMessageBase *)&v22 initWithXPCObject:v8 context:v9 error:v23];
+  v10 = [(MCMXPCMessageBase *)&v22 initWithXPCObject:objectCopy context:contextCopy error:v23];
   if (v10)
   {
-    v11 = xpc_dictionary_get_dictionary(v8, "Container");
+    v11 = xpc_dictionary_get_dictionary(objectCopy, "Container");
     v12 = container_xpc_decode_container_object();
     if (v12)
     {
       v13 = [MCMConcreteContainerIdentityForLibsystem alloc];
-      v14 = [v9 clientIdentity];
-      v15 = [v14 userIdentity];
-      v16 = [v9 userIdentityCache];
-      v17 = [(MCMConcreteContainerIdentityForLibsystem *)v13 initWithLibsystemContainer:v12 defaultUserIdentity:v15 userIdentityCache:v16 error:v23];
+      clientIdentity = [contextCopy clientIdentity];
+      userIdentity = [clientIdentity userIdentity];
+      userIdentityCache = [contextCopy userIdentityCache];
+      v17 = [(MCMConcreteContainerIdentityForLibsystem *)v13 initWithLibsystemContainer:v12 defaultUserIdentity:userIdentity userIdentityCache:userIdentityCache error:v23];
       concreteContainerIdentity = v10->_concreteContainerIdentity;
       v10->_concreteContainerIdentity = v17;
 
@@ -111,9 +111,9 @@
   {
 
     v10 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v23[0];
+      *error = v23[0];
     }
   }
 
@@ -123,17 +123,17 @@
   return v10;
 }
 
-- (MCMXPCMessageWithConcreteContainerBase)initWithConcreteContainer:(id)a3 context:(id)a4
+- (MCMXPCMessageWithConcreteContainerBase)initWithConcreteContainer:(id)container context:(id)context
 {
   v13 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  containerCopy = container;
   v12.receiver = self;
   v12.super_class = MCMXPCMessageWithConcreteContainerBase;
-  v8 = [(MCMXPCMessageBase *)&v12 initWithContext:a4];
+  v8 = [(MCMXPCMessageBase *)&v12 initWithContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_concreteContainerIdentity, a3);
+    objc_storeStrong(&v8->_concreteContainerIdentity, container);
   }
 
   v10 = *MEMORY[0x1E69E9840];

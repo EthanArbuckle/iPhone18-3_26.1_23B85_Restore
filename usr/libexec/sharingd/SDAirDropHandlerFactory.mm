@@ -1,12 +1,12 @@
 @interface SDAirDropHandlerFactory
-+ (id)handlerForTransfer:(id)a3;
++ (id)handlerForTransfer:(id)transfer;
 @end
 
 @implementation SDAirDropHandlerFactory
 
-+ (id)handlerForTransfer:(id)a3
++ (id)handlerForTransfer:(id)transfer
 {
-  v3 = a3;
+  transferCopy = transfer;
   v24[0] = objc_opt_class();
   v24[1] = objc_opt_class();
   v24[2] = objc_opt_class();
@@ -66,7 +66,7 @@ LABEL_3:
       }
 
       v14 = objc_alloc(*(*(&v17 + 1) + 8 * v13));
-      v15 = [v14 initWithTransfer:{v3, v17}];
+      v15 = [v14 initWithTransfer:{transferCopy, v17}];
       if ([v15 canHandleTransfer])
       {
         break;

@@ -1,47 +1,47 @@
 @interface _BlastDoorLPiCloudSharingMetadata
-- (BOOL)isEqual:(id)a3;
-- (_BlastDoorLPiCloudSharingMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)shareURLForHandle:(id)a3;
-- (id)tokenDataForHandle:(id)a3;
-- (void)_enumerateAsynchronousFields:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTokenData:(id)a3 handle:(id)a4 url:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (_BlastDoorLPiCloudSharingMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)shareURLForHandle:(id)handle;
+- (id)tokenDataForHandle:(id)handle;
+- (void)_enumerateAsynchronousFields:(id)fields;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTokenData:(id)data handle:(id)handle url:(id)url;
 @end
 
 @implementation _BlastDoorLPiCloudSharingMetadata
 
-- (_BlastDoorLPiCloudSharingMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPiCloudSharingMetadata)initWithCoder:(id)coder
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = _BlastDoorLPiCloudSharingMetadata;
   v5 = [(_BlastDoorLPiCloudSharingMetadata *)&v22 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"application");
+    v6 = decodeStringForKey(coderCopy, @"application");
     application = v5->_application;
     v5->_application = v6;
 
-    v8 = decodeStringForKey(v4, @"kind");
+    v8 = decodeStringForKey(coderCopy, @"kind");
     kind = v5->_kind;
     v5->_kind = v8;
 
-    v10 = decodeStringForKey(v4, @"title");
+    v10 = decodeStringForKey(coderCopy, @"title");
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 _bd_lp_strictlyDecodeLPImageForKey:@"icon"];
+    v12 = [coderCopy _bd_lp_strictlyDecodeLPImageForKey:@"icon"];
     icon = v5->_icon;
     v5->_icon = v12;
 
-    v14 = [v4 _bd_lp_strictlyDecodeLPImageForKey:@"thumbnail"];
+    v14 = [coderCopy _bd_lp_strictlyDecodeLPImageForKey:@"thumbnail"];
     thumbnail = v5->_thumbnail;
     v5->_thumbnail = v14;
 
     v16 = objc_opt_class();
-    v17 = [v4 _bd_lp_strictlyDecodeDictionaryOfObjectsWithKeysOfClass:v16 andObjectsOfClass:objc_opt_class() forKey:@"encodedTokens"];
+    v17 = [coderCopy _bd_lp_strictlyDecodeDictionaryOfObjectsWithKeysOfClass:v16 andObjectsOfClass:objc_opt_class() forKey:@"encodedTokens"];
     encodedTokens = v5->_encodedTokens;
     v5->_encodedTokens = v17;
 
@@ -52,40 +52,40 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   application = self->_application;
-  v5 = a3;
-  [v5 _bd_lp_encodeObjectIfNotNil:application forKey:@"application"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_kind forKey:@"kind"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_title forKey:@"title"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_icon forKey:@"icon"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_thumbnail forKey:@"thumbnail"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_encodedTokens forKey:@"encodedTokens"];
+  coderCopy = coder;
+  [coderCopy _bd_lp_encodeObjectIfNotNil:application forKey:@"application"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_kind forKey:@"kind"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_title forKey:@"title"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_icon forKey:@"icon"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_thumbnail forKey:@"thumbnail"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_encodedTokens forKey:@"encodedTokens"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPiCloudSharingMetadata allocWithZone:a3];
+  v4 = [_BlastDoorLPiCloudSharingMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(_BlastDoorLPiCloudSharingMetadata *)self application];
-    [(_BlastDoorLPiCloudSharingMetadata *)v4 setApplication:v5];
+    application = [(_BlastDoorLPiCloudSharingMetadata *)self application];
+    [(_BlastDoorLPiCloudSharingMetadata *)v4 setApplication:application];
 
-    v6 = [(_BlastDoorLPiCloudSharingMetadata *)self kind];
-    [(_BlastDoorLPiCloudSharingMetadata *)v4 setKind:v6];
+    kind = [(_BlastDoorLPiCloudSharingMetadata *)self kind];
+    [(_BlastDoorLPiCloudSharingMetadata *)v4 setKind:kind];
 
-    v7 = [(_BlastDoorLPiCloudSharingMetadata *)self title];
-    [(_BlastDoorLPiCloudSharingMetadata *)v4 setTitle:v7];
+    title = [(_BlastDoorLPiCloudSharingMetadata *)self title];
+    [(_BlastDoorLPiCloudSharingMetadata *)v4 setTitle:title];
 
-    v8 = [(_BlastDoorLPiCloudSharingMetadata *)self icon];
-    [(_BlastDoorLPiCloudSharingMetadata *)v4 setIcon:v8];
+    icon = [(_BlastDoorLPiCloudSharingMetadata *)self icon];
+    [(_BlastDoorLPiCloudSharingMetadata *)v4 setIcon:icon];
 
-    v9 = [(_BlastDoorLPiCloudSharingMetadata *)self thumbnail];
-    [(_BlastDoorLPiCloudSharingMetadata *)v4 setThumbnail:v9];
+    thumbnail = [(_BlastDoorLPiCloudSharingMetadata *)self thumbnail];
+    [(_BlastDoorLPiCloudSharingMetadata *)v4 setThumbnail:thumbnail];
 
-    v10 = [(_BlastDoorLPiCloudSharingMetadata *)self encodedTokens];
-    [(_BlastDoorLPiCloudSharingMetadata *)v4 setEncodedTokens:v10];
+    encodedTokens = [(_BlastDoorLPiCloudSharingMetadata *)self encodedTokens];
+    [(_BlastDoorLPiCloudSharingMetadata *)v4 setEncodedTokens:encodedTokens];
 
     v11 = v4;
   }
@@ -93,13 +93,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v15.receiver = self;
   v15.super_class = _BlastDoorLPiCloudSharingMetadata;
-  if ([(_BlastDoorLPiCloudSharingMetadata *)&v15 isEqual:v4])
+  if ([(_BlastDoorLPiCloudSharingMetadata *)&v15 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -109,7 +109,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6[3];
       if (v7 | self->_application && ![v7 isEqual:?] || (v8 = v6[4], v8 | self->_kind) && !objc_msgSend(v8, "isEqual:") || (v9 = v6[5], v9 | self->_title) && !objc_msgSend(v9, "isEqual:") || (v10 = v6[6], v10 | self->_icon) && !objc_msgSend(v10, "isEqual:") || (v11 = v6[7], v11 | self->_thumbnail) && !objc_msgSend(v11, "isEqual:"))
       {
@@ -141,45 +141,45 @@
   return v5;
 }
 
-- (void)_enumerateAsynchronousFields:(id)a3
+- (void)_enumerateAsynchronousFields:(id)fields
 {
-  v3 = (a3 + 16);
-  v4 = *(a3 + 2);
-  v5 = a3;
+  v3 = (fields + 16);
+  v4 = *(fields + 2);
+  fieldsCopy = fields;
   v4();
-  (*v3)(v5, @"thumbnail");
+  (*v3)(fieldsCopy, @"thumbnail");
 }
 
-- (void)setTokenData:(id)a3 handle:(id)a4 url:(id)a5
+- (void)setTokenData:(id)data handle:(id)handle url:(id)url
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  handleCopy = handle;
+  urlCopy = url;
   if (!self->_encodedTokens)
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     encodedTokens = self->_encodedTokens;
-    self->_encodedTokens = v10;
+    self->_encodedTokens = dictionary;
   }
 
-  v12 = [[_BlastDoorCKDeviceToDeviceShareInvitationToken alloc] initWithSharingInvitationData:v13 shareURL:v9];
-  [(NSDictionary *)self->_encodedTokens setObject:v12 forKeyedSubscript:v8];
+  v12 = [[_BlastDoorCKDeviceToDeviceShareInvitationToken alloc] initWithSharingInvitationData:dataCopy shareURL:urlCopy];
+  [(NSDictionary *)self->_encodedTokens setObject:v12 forKeyedSubscript:handleCopy];
 }
 
-- (id)tokenDataForHandle:(id)a3
+- (id)tokenDataForHandle:(id)handle
 {
-  v3 = [(NSDictionary *)self->_encodedTokens objectForKeyedSubscript:a3];
-  v4 = [v3 sharingInvitationData];
+  v3 = [(NSDictionary *)self->_encodedTokens objectForKeyedSubscript:handle];
+  sharingInvitationData = [v3 sharingInvitationData];
 
-  return v4;
+  return sharingInvitationData;
 }
 
-- (id)shareURLForHandle:(id)a3
+- (id)shareURLForHandle:(id)handle
 {
-  v3 = [(NSDictionary *)self->_encodedTokens objectForKeyedSubscript:a3];
-  v4 = [v3 shareURL];
+  v3 = [(NSDictionary *)self->_encodedTokens objectForKeyedSubscript:handle];
+  shareURL = [v3 shareURL];
 
-  return v4;
+  return shareURL;
 }
 
 @end

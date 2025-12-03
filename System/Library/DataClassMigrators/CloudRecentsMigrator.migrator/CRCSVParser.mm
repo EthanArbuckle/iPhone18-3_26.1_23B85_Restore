@@ -1,8 +1,8 @@
 @interface CRCSVParser
-- (BOOL)_ensureBufferSize:(unint64_t)a3;
+- (BOOL)_ensureBufferSize:(unint64_t)size;
 - (BOOL)parse;
-- (CRCSVParser)initWithPath:(id)a3;
-- (id)_consumeSingleCharacter:(char)a3;
+- (CRCSVParser)initWithPath:(id)path;
+- (id)_consumeSingleCharacter:(char)character;
 - (id)_parseEscapedText;
 - (id)_parseField;
 - (id)_parseLineSeparator;
@@ -10,19 +10,19 @@
 - (id)_parseSeparator;
 - (id)_parseText;
 - (id)_parseTwoDoubleQuotes;
-- (void)_fillBuffer:(unint64_t)a3;
+- (void)_fillBuffer:(unint64_t)buffer;
 - (void)dealloc;
-- (void)didFindError:(id)a3;
+- (void)didFindError:(id)error;
 - (void)didFinishParsing;
-- (void)setParsedLineBlock:(id)a3;
-- (void)setSeparator:(id)a3;
+- (void)setParsedLineBlock:(id)block;
+- (void)setSeparator:(id)separator;
 @end
 
 @implementation CRCSVParser
 
-- (CRCSVParser)initWithPath:(id)a3
+- (CRCSVParser)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = CRCSVParser;
   v5 = [(CRCSVParser *)&v13 init];
@@ -34,7 +34,7 @@
     data = v6->_data;
     v6->_data = v7;
 
-    v9 = [[NSInputStream alloc] initWithFileAtPath:v4];
+    v9 = [[NSInputStream alloc] initWithFileAtPath:pathCopy];
     stream = v6->_stream;
     v6->_stream = v9;
 
@@ -53,13 +53,13 @@
   [(CRCSVParser *)&v3 dealloc];
 }
 
-- (void)setSeparator:(id)a3
+- (void)setSeparator:(id)separator
 {
-  v4 = a3;
-  if (self->_separator != v4)
+  separatorCopy = separator;
+  if (self->_separator != separatorCopy)
   {
-    v9 = v4;
-    v5 = [(NSString *)v4 copy];
+    v9 = separatorCopy;
+    v5 = [(NSString *)separatorCopy copy];
     separator = self->_separator;
     self->_separator = v5;
 
@@ -67,33 +67,33 @@
     separatorData = self->_separatorData;
     self->_separatorData = v7;
 
-    v4 = v9;
+    separatorCopy = v9;
   }
 }
 
-- (void)setParsedLineBlock:(id)a3
+- (void)setParsedLineBlock:(id)block
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(block);
   parsedLineBlock = self->_parsedLineBlock;
   self->_parsedLineBlock = v4;
 
   _objc_release_x1();
 }
 
-- (void)didFindError:(id)a3
+- (void)didFindError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = MFLogGeneral();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_22B4(v5, v6);
+    sub_22B4(errorCopy, v6);
   }
 
   parserError = self->_parserError;
   p_parserError = &self->_parserError;
   if (!parserError)
   {
-    objc_storeStrong(p_parserError, a3);
+    objc_storeStrong(p_parserError, error);
   }
 }
 
@@ -104,9 +104,9 @@
   self->_stream = 0;
 }
 
-- (void)_fillBuffer:(unint64_t)a3
+- (void)_fillBuffer:(unint64_t)buffer
 {
-  v3 = __chkstk_darwin(self, a2, a3);
+  v3 = __chkstk_darwin(self, a2, buffer);
   v5 = v4;
   v6 = v3;
   if ([v3 shouldProceedParsing] && objc_msgSend(v6, "_availableBytes") < v5)
@@ -149,28 +149,28 @@
   }
 }
 
-- (BOOL)_ensureBufferSize:(unint64_t)a3
+- (BOOL)_ensureBufferSize:(unint64_t)size
 {
   [(CRCSVParser *)self _fillBuffer:?];
-  if ([(CRCSVParser *)self _availableBytes]< a3)
+  if ([(CRCSVParser *)self _availableBytes]< size)
   {
     v5 = [NSError errorWithDomain:@"CRCSVParserErrorDomain" code:1 userInfo:0];
     [(CRCSVParser *)self didFindError:v5];
   }
 
-  v6 = [(CRCSVParser *)self shouldProceedParsing];
-  if (v6)
+  shouldProceedParsing = [(CRCSVParser *)self shouldProceedParsing];
+  if (shouldProceedParsing)
   {
-    LOBYTE(v6) = [(CRCSVParser *)self _availableBytes]>= a3;
+    LOBYTE(shouldProceedParsing) = [(CRCSVParser *)self _availableBytes]>= size;
   }
 
-  return v6;
+  return shouldProceedParsing;
 }
 
-- (id)_consumeSingleCharacter:(char)a3
+- (id)_consumeSingleCharacter:(char)character
 {
-  v3 = a3;
-  if ([(CRCSVParser *)self _ensureBufferSize:1]&& (v5 = [(NSMutableData *)self->_data bytes], v3 == v5[self->_head]))
+  characterCopy = character;
+  if ([(CRCSVParser *)self _ensureBufferSize:1]&& (v5 = [(NSMutableData *)self->_data bytes], characterCopy == v5[self->_head]))
   {
     v6 = [[NSString alloc] initWithBytes:&v5[self->_head++] length:1 encoding:4];
     self->_consumedNullText = 0;
@@ -211,9 +211,9 @@
     return 0;
   }
 
-  v3 = [(NSMutableData *)self->_data bytes];
+  bytes = [(NSMutableData *)self->_data bytes];
   head = self->_head;
-  if (v3[head] != 34 || v3[head + 1] != 34)
+  if (bytes[head] != 34 || bytes[head + 1] != 34)
   {
     return 0;
   }
@@ -268,10 +268,10 @@ LABEL_27:
 LABEL_18:
       v9 *= 2;
       [(CRCSVParser *)self _fillBuffer:v9];
-      v15 = [(CRCSVParser *)self _availableBytes];
-      if (v9 >= v15)
+      _availableBytes = [(CRCSVParser *)self _availableBytes];
+      if (v9 >= _availableBytes)
       {
-        v16 = v15;
+        v16 = _availableBytes;
       }
 
       else
@@ -287,10 +287,10 @@ LABEL_18:
       }
 
       v11 = [(NSMutableData *)self->_data bytes]+ self->_head;
-      v17 = [(CRCSVParser *)self shouldProceedParsing];
+      shouldProceedParsing = [(CRCSVParser *)self shouldProceedParsing];
       v18 = 0;
       v10 = v16;
-      if ((v17 & 1) == 0)
+      if ((shouldProceedParsing & 1) == 0)
       {
         goto LABEL_28;
       }
@@ -345,26 +345,26 @@ LABEL_28:
 
 - (id)_parseEscapedText
 {
-  v3 = [(CRCSVParser *)self _parseDoubleQuote];
+  _parseDoubleQuote = [(CRCSVParser *)self _parseDoubleQuote];
 
-  if (v3)
+  if (_parseDoubleQuote)
   {
-    v3 = +[NSMutableString string];
+    _parseDoubleQuote = +[NSMutableString string];
     while (1)
     {
-      v4 = [(CRCSVParser *)self _parseText];
-      if (!v4)
+      _parseText = [(CRCSVParser *)self _parseText];
+      if (!_parseText)
       {
-        v4 = [(CRCSVParser *)self _parseSeparator];
-        if (!v4)
+        _parseText = [(CRCSVParser *)self _parseSeparator];
+        if (!_parseText)
         {
-          v4 = [(CRCSVParser *)self _parseLineSeparator];
-          if (!v4)
+          _parseText = [(CRCSVParser *)self _parseLineSeparator];
+          if (!_parseText)
           {
-            v5 = [(CRCSVParser *)self _parseTwoDoubleQuotes];
+            _parseTwoDoubleQuotes = [(CRCSVParser *)self _parseTwoDoubleQuotes];
 
-            v4 = @"";
-            if (!v5)
+            _parseText = @"";
+            if (!_parseTwoDoubleQuotes)
             {
               break;
             }
@@ -372,32 +372,32 @@ LABEL_28:
         }
       }
 
-      [v3 appendString:v4];
+      [_parseDoubleQuote appendString:_parseText];
     }
 
-    v6 = [(CRCSVParser *)self _parseDoubleQuote];
+    _parseDoubleQuote2 = [(CRCSVParser *)self _parseDoubleQuote];
 
-    if (!v6)
+    if (!_parseDoubleQuote2)
     {
       v7 = [NSError errorWithDomain:@"CRCSVParserErrorDomain" code:4 userInfo:0];
       [(CRCSVParser *)self didFindError:v7];
 
-      v3 = 0;
+      _parseDoubleQuote = 0;
     }
   }
 
-  return v3;
+  return _parseDoubleQuote;
 }
 
 - (id)_parseField
 {
-  v3 = [(CRCSVParser *)self _parseEscapedText];
-  if (!v3)
+  _parseEscapedText = [(CRCSVParser *)self _parseEscapedText];
+  if (!_parseEscapedText)
   {
-    v3 = [(CRCSVParser *)self _parseText];
+    _parseEscapedText = [(CRCSVParser *)self _parseText];
   }
 
-  return v3;
+  return _parseEscapedText;
 }
 
 - (id)_parseRecord
@@ -407,16 +407,16 @@ LABEL_28:
     v4 = v3;
     for (i = [NSMutableArray arrayWithObject:v3];
     {
-      v6 = [(CRCSVParser *)self _parseSeparator];
+      _parseSeparator = [(CRCSVParser *)self _parseSeparator];
 
-      if (!v6)
+      if (!_parseSeparator)
       {
         break;
       }
 
-      v7 = [(CRCSVParser *)self _parseField];
+      _parseField = [(CRCSVParser *)self _parseField];
 
-      if (!v7)
+      if (!_parseField)
       {
         v8 = [NSError errorWithDomain:@"CRCSVParserErrorDomain" code:2 userInfo:0];
         [(CRCSVParser *)self didFindError:v8];
@@ -426,7 +426,7 @@ LABEL_28:
         break;
       }
 
-      v4 = v7;
+      v4 = _parseField;
     }
   }
 
@@ -446,8 +446,8 @@ LABEL_28:
   }
 
   v3 = objc_autoreleasePoolPush();
-  v4 = [(CRCSVParser *)self _parseRecord];
-  if ([v4 count])
+  _parseRecord = [(CRCSVParser *)self _parseRecord];
+  if ([_parseRecord count])
   {
     (*(self->_parsedLineBlock + 2))();
   }
@@ -463,9 +463,9 @@ LABEL_28:
       }
 
       v5 = objc_autoreleasePoolPush();
-      v6 = [(CRCSVParser *)self _parseLineSeparator];
-      v7 = [(CRCSVParser *)self _parseRecord];
-      if ([v7 count])
+      _parseLineSeparator = [(CRCSVParser *)self _parseLineSeparator];
+      _parseRecord2 = [(CRCSVParser *)self _parseRecord];
+      if ([_parseRecord2 count])
       {
         (*(self->_parsedLineBlock + 2))();
       }

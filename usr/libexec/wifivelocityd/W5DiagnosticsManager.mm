@@ -1,55 +1,55 @@
 @interface W5DiagnosticsManager
-+ (BOOL)__isDoubleNATWithTracerouteOutput:(id)a3;
-+ (BOOL)__setNetworkServiceOrder:(id)a3;
++ (BOOL)__isDoubleNATWithTracerouteOutput:(id)output;
++ (BOOL)__setNetworkServiceOrder:(id)order;
 + (id)__ambiguousSSIDs;
-+ (id)__channelNumbersForWiFiChannels:(id)a3;
++ (id)__channelNumbersForWiFiChannels:(id)channels;
 + (id)__networkServiceOrder;
-+ (id)__performDNSResolution:(id)a3;
-+ (void)__parsePingOutput:(id)a3 result:(id)a4;
-- (BOOL)__isDefaultCountryCode:(id)a3;
-- (BOOL)__isUsingCustomProxySettings:(id)a3;
-- (BOOL)__performCurlWithAddress:(id)a3;
-- (BOOL)__performLoadViaNSURLSessionWithAddress:(id)a3 usingTimeout:(id)a4 andForceWiFiInterface:(BOOL)a5;
-- (W5DiagnosticsManager)initWithStatusManager:(id)a3 peerDiagnosticsManager:(id)a4;
-- (id)__adjust5GHzWeights:(id)a3;
-- (id)__applyChannelWeights:(id)a3 supportedChannels:(id)a4;
-- (id)__channelWeightsForChannel:(id)a3;
-- (id)__channelWeightsForScanResults:(id)a3 supportedChannels:(id)a4 rssiThreshold:(int64_t)a5;
++ (id)__performDNSResolution:(id)resolution;
++ (void)__parsePingOutput:(id)output result:(id)result;
+- (BOOL)__isDefaultCountryCode:(id)code;
+- (BOOL)__isUsingCustomProxySettings:(id)settings;
+- (BOOL)__performCurlWithAddress:(id)address;
+- (BOOL)__performLoadViaNSURLSessionWithAddress:(id)address usingTimeout:(id)timeout andForceWiFiInterface:(BOOL)interface;
+- (W5DiagnosticsManager)initWithStatusManager:(id)manager peerDiagnosticsManager:(id)diagnosticsManager;
+- (id)__adjust5GHzWeights:(id)weights;
+- (id)__applyChannelWeights:(id)weights supportedChannels:(id)channels;
+- (id)__channelWeightsForChannel:(id)channel;
+- (id)__channelWeightsForScanResults:(id)results supportedChannels:(id)channels rssiThreshold:(int64_t)threshold;
 - (id)__defaultDiagnosticsTests;
-- (id)__filteredChannelWeights:(id)a3 channels:(id)a4;
-- (id)__occupiedChannelsForScanResults:(id)a3 supportedChannels:(id)a4 rssiThreshold:(int64_t)a5 ignoreChannel:(id)a6;
-- (id)__only2GHzChannels:(id)a3;
-- (id)__only2GHz_1_6_11_14_Channels:(id)a3;
-- (id)__only5GHz20MHz40MHzChannels:(id)a3;
-- (id)__only5GHz40MHzChannels:(id)a3;
-- (id)__only5GHzChannels:(id)a3;
-- (id)__only5GHzNonDFSChannels:(id)a3;
-- (id)__orderedChannelWeights:(id)a3;
-- (id)__overlappingChannelsForChannel:(id)a3 supportedChannels:(id)a4;
-- (id)__pendingRequestWithUUID:(id)a3;
-- (id)__performCFPingWithAddress:(id)a3 count:(int64_t)a4 timeout:(double)a5 trafficClass:(id)a6 networkServiceType:(id)a7 dataLength:(unint64_t)a8;
-- (id)__performPing6WithAddress:(id)a3 count:(int64_t)a4 wait:(double)a5 trafficClass:(id)a6 interfaceName:(id)a7 dataLength:(unint64_t)a8;
-- (id)__performPingUsingIMFoundationWithAddress:(id)a3 timeout:(int64_t)a4;
-- (id)__performPingWithAddress:(id)a3 count:(int64_t)a4 timeout:(double)a5 wait:(double)a6 interval:(double)a7 trafficClass:(id)a8 interfaceName:(id)a9 dataLength:(unint64_t)a10;
-- (id)__performTracerouteWithAddress:(id)a3 maxTTL:(int64_t)a4 waittime:(int64_t)a5 queries:(int64_t)a6;
-- (id)__preferredNetworkWithNetworkName:(id)a3 configuration:(id)a4;
-- (id)__runDiagnosticsTest:(id)a3;
-- (id)__scanResultWithNetworkName:(id)a3;
-- (id)__testAWDLEnabledWithConfiguration:(id)a3;
-- (id)__testAWDLRealtimeWithConfiguration:(id)a3;
-- (id)__testAirPortBaseStationWithConfiguration:(id)a3;
-- (id)__testAmbiguousNetworkNameWithConfiguration:(id)a3;
-- (id)__testBTCoexWithConfiguration:(id)a3;
-- (id)__testCaptivePortalWithConfiguration:(id)a3;
-- (id)__testConcurrentWithConfiguration:(id)a3;
-- (id)__testConflictingCountryCodeWithConfiguration:(id)a3;
-- (id)__testConflictingPHYMode11acWithConfiguration:(id)a3;
-- (id)__testConflictingPHYMode11nWithConfiguration:(id)a3;
-- (id)__testConflictingSecurityTypePNLWithConfiguration:(id)a3;
-- (id)__testCongested2GHzWithConfiguration:(id)a3;
-- (id)__testCongested5GHzWithConfiguration:(id)a3;
-- (id)__testCongestedChannelUsingCCAWithConfiguration:(id)a3;
-- (id)__testCongestedChannelWithConfiguration:(id)a3;
+- (id)__filteredChannelWeights:(id)weights channels:(id)channels;
+- (id)__occupiedChannelsForScanResults:(id)results supportedChannels:(id)channels rssiThreshold:(int64_t)threshold ignoreChannel:(id)channel;
+- (id)__only2GHzChannels:(id)channels;
+- (id)__only2GHz_1_6_11_14_Channels:(id)channels;
+- (id)__only5GHz20MHz40MHzChannels:(id)channels;
+- (id)__only5GHz40MHzChannels:(id)channels;
+- (id)__only5GHzChannels:(id)channels;
+- (id)__only5GHzNonDFSChannels:(id)channels;
+- (id)__orderedChannelWeights:(id)weights;
+- (id)__overlappingChannelsForChannel:(id)channel supportedChannels:(id)channels;
+- (id)__pendingRequestWithUUID:(id)d;
+- (id)__performCFPingWithAddress:(id)address count:(int64_t)count timeout:(double)timeout trafficClass:(id)class networkServiceType:(id)type dataLength:(unint64_t)length;
+- (id)__performPing6WithAddress:(id)address count:(int64_t)count wait:(double)wait trafficClass:(id)class interfaceName:(id)name dataLength:(unint64_t)length;
+- (id)__performPingUsingIMFoundationWithAddress:(id)address timeout:(int64_t)timeout;
+- (id)__performPingWithAddress:(id)address count:(int64_t)count timeout:(double)timeout wait:(double)wait interval:(double)interval trafficClass:(id)class interfaceName:(id)name dataLength:(unint64_t)self0;
+- (id)__performTracerouteWithAddress:(id)address maxTTL:(int64_t)l waittime:(int64_t)waittime queries:(int64_t)queries;
+- (id)__preferredNetworkWithNetworkName:(id)name configuration:(id)configuration;
+- (id)__runDiagnosticsTest:(id)test;
+- (id)__scanResultWithNetworkName:(id)name;
+- (id)__testAWDLEnabledWithConfiguration:(id)configuration;
+- (id)__testAWDLRealtimeWithConfiguration:(id)configuration;
+- (id)__testAirPortBaseStationWithConfiguration:(id)configuration;
+- (id)__testAmbiguousNetworkNameWithConfiguration:(id)configuration;
+- (id)__testBTCoexWithConfiguration:(id)configuration;
+- (id)__testCaptivePortalWithConfiguration:(id)configuration;
+- (id)__testConcurrentWithConfiguration:(id)configuration;
+- (id)__testConflictingCountryCodeWithConfiguration:(id)configuration;
+- (id)__testConflictingPHYMode11acWithConfiguration:(id)configuration;
+- (id)__testConflictingPHYMode11nWithConfiguration:(id)configuration;
+- (id)__testConflictingSecurityTypePNLWithConfiguration:(id)configuration;
+- (id)__testCongested2GHzWithConfiguration:(id)configuration;
+- (id)__testCongested5GHzWithConfiguration:(id)configuration;
+- (id)__testCongestedChannelUsingCCAWithConfiguration:(id)configuration;
+- (id)__testCongestedChannelWithConfiguration:(id)configuration;
 - (id)__testCurlApple;
 - (id)__testCustomDNS;
 - (id)__testCustomIPv4;
@@ -57,65 +57,65 @@
 - (id)__testCustomWebProxy;
 - (id)__testDetectDoubleNAT;
 - (id)__testDiscoverPeerTypes;
-- (id)__testDownloadSpeedWithConfiguration:(id)a3;
-- (id)__testHT402GHzWithConfiguration:(id)a3;
-- (id)__testHiddenNetworkWithConfiguration:(id)a3;
-- (id)__testHighBTConnectedWithConfiguration:(id)a3;
-- (id)__testHighBTPairedWithConfiguration:(id)a3;
+- (id)__testDownloadSpeedWithConfiguration:(id)configuration;
+- (id)__testHT402GHzWithConfiguration:(id)configuration;
+- (id)__testHiddenNetworkWithConfiguration:(id)configuration;
+- (id)__testHighBTConnectedWithConfiguration:(id)configuration;
+- (id)__testHighBTPairedWithConfiguration:(id)configuration;
 - (id)__testIPv4Assigned;
 - (id)__testIPv6Assigned;
-- (id)__testLargePNLWithConfiguration:(id)a3;
+- (id)__testLargePNLWithConfiguration:(id)configuration;
 - (id)__testLeakyAP;
-- (id)__testLegacyRates11bWithConfiguration:(id)a3;
-- (id)__testLegacySecurityWEPWithConfiguration:(id)a3;
-- (id)__testLegacySecurityWPAWithConfiguration:(id)a3;
-- (id)__testLongBeaconIntervalWithConfiguration:(id)a3;
+- (id)__testLegacyRates11bWithConfiguration:(id)configuration;
+- (id)__testLegacySecurityWEPWithConfiguration:(id)configuration;
+- (id)__testLegacySecurityWPAWithConfiguration:(id)configuration;
+- (id)__testLongBeaconIntervalWithConfiguration:(id)configuration;
 - (id)__testLongDTIMInterval;
-- (id)__testNoSecurityWithConfiguration:(id)a3;
-- (id)__testPNLContainsHiddenWithConfiguration:(id)a3;
-- (id)__testPasspointWithConfiguration:(id)a3;
+- (id)__testNoSecurityWithConfiguration:(id)configuration;
+- (id)__testPNLContainsHiddenWithConfiguration:(id)configuration;
+- (id)__testPasspointWithConfiguration:(id)configuration;
 - (id)__testPeerDiagnostics;
 - (id)__testPeerTypes;
-- (id)__testPing6AWDLWithConfiguration:(id)a3;
-- (id)__testPingLANUsingCFNetworkWithConfiguration:(id)a3;
+- (id)__testPing6AWDLWithConfiguration:(id)configuration;
+- (id)__testPingLANUsingCFNetworkWithConfiguration:(id)configuration;
 - (id)__testPingLANUsingIMFoundation;
-- (id)__testPingLANWithConfiguration:(id)a3;
-- (id)__testPingWANUsingCFNetworkWithConfiguration:(id)a3;
+- (id)__testPingLANWithConfiguration:(id)configuration;
+- (id)__testPingWANUsingCFNetworkWithConfiguration:(id)configuration;
 - (id)__testPingWANUsingIMFoundation;
-- (id)__testPingWANWithConfiguration:(id)a3;
-- (id)__testPoorSignalWithConfiguration:(id)a3;
+- (id)__testPingWANWithConfiguration:(id)configuration;
+- (id)__testPoorSignalWithConfiguration:(id)configuration;
 - (id)__testReachApple;
-- (id)__testReachabilityToPeersWithConfiguration:(id)a3;
+- (id)__testReachabilityToPeersWithConfiguration:(id)configuration;
 - (id)__testResolveDNS;
 - (id)__testRetrieveApple;
-- (id)__testRetrieveAppleForceWiFiWithConfiguration:(id)a3;
-- (id)__testUploadSpeedWithConfiguration:(id)a3;
-- (id)__testWiFiHiddenScanResultsWithConfiguration:(id)a3;
+- (id)__testRetrieveAppleForceWiFiWithConfiguration:(id)configuration;
+- (id)__testUploadSpeedWithConfiguration:(id)configuration;
+- (id)__testWiFiHiddenScanResultsWithConfiguration:(id)configuration;
 - (id)__testWiFiIsPrimaryIPv4;
 - (id)__testWiFiIsPrimaryIPv6;
 - (id)__testWiFiLink;
-- (id)__testWiFiNoScanResultsWithConfiguration:(id)a3;
-- (id)__testiOSPersonalHotspotWithConfiguration:(id)a3;
+- (id)__testWiFiNoScanResultsWithConfiguration:(id)configuration;
+- (id)__testiOSPersonalHotspotWithConfiguration:(id)configuration;
 - (id)diagnosticsHistory;
-- (int64_t)__ipv4ConfigMethodForDescription:(id)a3;
-- (int64_t)__ipv6ConfigMethodForDescription:(id)a3;
+- (int64_t)__ipv4ConfigMethodForDescription:(id)description;
+- (int64_t)__ipv6ConfigMethodForDescription:(id)description;
 - (void)__nextRequest;
 - (void)__purgeDiagnosticsHistory;
 - (void)__resetNetworkServiceOrderFromFile;
-- (void)__runRequest:(id)a3 reply:(id)a4;
-- (void)__updateDiagnosticsHistoryWithResult:(id)a3;
-- (void)addRequest:(id)a3;
-- (void)cancelRequestWithUUID:(id)a3 reply:(id)a4;
+- (void)__runRequest:(id)request reply:(id)reply;
+- (void)__updateDiagnosticsHistoryWithResult:(id)result;
+- (void)addRequest:(id)request;
+- (void)cancelRequestWithUUID:(id)d reply:(id)reply;
 - (void)dealloc;
 - (void)resetNetworkServiceOrderForTeardown;
-- (void)setCompletedTestCallback:(id)a3;
-- (void)setPingCallback:(id)a3;
-- (void)teardownAndNotify:(id)a3;
+- (void)setCompletedTestCallback:(id)callback;
+- (void)setPingCallback:(id)callback;
+- (void)teardownAndNotify:(id)notify;
 @end
 
 @implementation W5DiagnosticsManager
 
-- (W5DiagnosticsManager)initWithStatusManager:(id)a3 peerDiagnosticsManager:(id)a4
+- (W5DiagnosticsManager)initWithStatusManager:(id)manager peerDiagnosticsManager:(id)diagnosticsManager
 {
   v14.receiver = self;
   v14.super_class = W5DiagnosticsManager;
@@ -141,13 +141,13 @@
   }
 
   dispatch_queue_set_specific(*(v6 + 5), v6 + 40, 1, 0);
-  if (!a3)
+  if (!manager)
   {
     goto LABEL_10;
   }
 
-  *(v6 + 1) = a3;
-  *(v6 + 2) = a4;
+  *(v6 + 1) = manager;
+  *(v6 + 2) = diagnosticsManager;
   v10 = objc_alloc_init(NSMutableArray);
   *(v6 + 6) = v10;
   if (!v10)
@@ -194,12 +194,12 @@ LABEL_10:
   [(W5DiagnosticsManager *)&v5 dealloc];
 }
 
-- (void)setCompletedTestCallback:(id)a3
+- (void)setCompletedTestCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_completedTestCallback = [a3 copy];
+    self->_completedTestCallback = [callback copy];
   }
 
   else
@@ -210,17 +210,17 @@ LABEL_10:
     v6[2] = sub_10003CD60;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setPingCallback:(id)a3
+- (void)setPingCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_pingCallback = [a3 copy];
+    self->_pingCallback = [callback copy];
   }
 
   else
@@ -231,12 +231,12 @@ LABEL_10:
     v6[2] = sub_10003CE5C;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)addRequest:(id)a3
+- (void)addRequest:(id)request
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -244,11 +244,11 @@ LABEL_10:
   v4[2] = sub_10003CF28;
   v4[3] = &unk_1000E1C98;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = request;
   dispatch_async(queue, v4);
 }
 
-- (id)__pendingRequestWithUUID:(id)a3
+- (id)__pendingRequestWithUUID:(id)d
 {
   v11 = 0u;
   v12 = 0u;
@@ -291,7 +291,7 @@ LABEL_3:
   }
 }
 
-- (void)cancelRequestWithUUID:(id)a3 reply:(id)a4
+- (void)cancelRequestWithUUID:(id)d reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -299,12 +299,12 @@ LABEL_3:
   block[2] = sub_10003D0F8;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = d;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)teardownAndNotify:(id)a3
+- (void)teardownAndNotify:(id)notify
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -312,7 +312,7 @@ LABEL_3:
   v4[2] = sub_10003D3D4;
   v4[3] = &unk_1000E1C70;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = notify;
   dispatch_async(queue, v4);
 }
 
@@ -506,8 +506,8 @@ LABEL_3:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v10 = [v9 allKeys];
-        v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        allKeys = [v9 allKeys];
+        v11 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v11)
         {
           v12 = v11;
@@ -518,7 +518,7 @@ LABEL_3:
             {
               if (*v20 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(allKeys);
               }
 
               v15 = *(*(&v19 + 1) + 8 * j);
@@ -529,7 +529,7 @@ LABEL_3:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v12 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v12);
@@ -548,38 +548,38 @@ LABEL_3:
   }
 }
 
-- (void)__updateDiagnosticsHistoryWithResult:(id)a3
+- (void)__updateDiagnosticsHistoryWithResult:(id)result
 {
-  if (a3 && ([a3 didPass] & 1) == 0)
+  if (result && ([result didPass] & 1) == 0)
   {
-    v5 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] networkName];
-    if ([a3 testID] == 52)
+    networkName = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] networkName];
+    if ([result testID] == 52)
     {
-      v5 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] lastAssociatedSSIDString];
+      networkName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] lastAssociatedSSIDString];
     }
 
-    if (v5)
+    if (networkName)
     {
-      v6 = [(NSMutableDictionary *)self->_diagnosticsHistory objectForKeyedSubscript:v5];
+      v6 = [(NSMutableDictionary *)self->_diagnosticsHistory objectForKeyedSubscript:networkName];
       if (!v6)
       {
         v6 = +[NSMutableDictionary dictionary];
-        [(NSMutableDictionary *)self->_diagnosticsHistory setObject:v6 forKeyedSubscript:v5];
+        [(NSMutableDictionary *)self->_diagnosticsHistory setObject:v6 forKeyedSubscript:networkName];
       }
 
-      [v6 setObject:a3 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", objc_msgSend(a3, "testID"))}];
+      [v6 setObject:result forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", objc_msgSend(result, "testID"))}];
     }
   }
 
   [(W5DiagnosticsManager *)self __purgeDiagnosticsHistory];
 }
 
-- (void)__runRequest:(id)a3 reply:(id)a4
+- (void)__runRequest:(id)request reply:(id)reply
 {
-  v7 = [a3 testRequests];
-  if (!v7)
+  testRequests = [request testRequests];
+  if (!testRequests)
   {
-    v7 = [(W5DiagnosticsManager *)self __defaultDiagnosticsTests];
+    testRequests = [(W5DiagnosticsManager *)self __defaultDiagnosticsTests];
   }
 
   if (![(NSArray *)self->_wifiScanResults count])
@@ -588,16 +588,16 @@ LABEL_3:
     self->_wifiScanResults = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] scanCache:1];
   }
 
-  v8 = [(W5StatusManager *)self->_status concurrentQueue];
+  concurrentQueue = [(W5StatusManager *)self->_status concurrentQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10003E478;
   v9[3] = &unk_1000E20B8;
-  v9[4] = a3;
-  v9[5] = v7;
+  v9[4] = request;
+  v9[5] = testRequests;
   v9[6] = self;
-  v9[7] = a4;
-  [(NSOperationQueue *)v8 addOperationWithBlock:v9];
+  v9[7] = reply;
+  [(NSOperationQueue *)concurrentQueue addOperationWithBlock:v9];
 }
 
 - (id)__testDetectDoubleNAT
@@ -624,21 +624,21 @@ LABEL_3:
   return v3;
 }
 
-- (id)__testPingLANWithConfiguration:(id)a3
+- (id)__testPingLANWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
-  v6 = 1;
+  integerValue = 1;
   [v5 setTestID:1];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v7 = [a3 objectForKeyedSubscript:@"PingCount"];
-  v8 = [a3 objectForKeyedSubscript:@"PingTimeout"];
-  v9 = [a3 objectForKeyedSubscript:@"PingInterval"];
-  v10 = [a3 objectForKeyedSubscript:@"PingWait"];
-  v11 = [a3 objectForKeyedSubscript:@"PingDataLength"];
+  v7 = [configuration objectForKeyedSubscript:@"PingCount"];
+  v8 = [configuration objectForKeyedSubscript:@"PingTimeout"];
+  v9 = [configuration objectForKeyedSubscript:@"PingInterval"];
+  v10 = [configuration objectForKeyedSubscript:@"PingWait"];
+  unsignedIntegerValue = [configuration objectForKeyedSubscript:@"PingDataLength"];
   if (v7)
   {
-    v6 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   if (v8)
@@ -674,7 +674,7 @@ LABEL_5:
 LABEL_6:
     [v10 doubleValue];
     v17 = v16;
-    if (!v11)
+    if (!unsignedIntegerValue)
     {
       goto LABEL_8;
     }
@@ -684,21 +684,21 @@ LABEL_6:
 
 LABEL_19:
   v17 = 2.0;
-  if (v11)
+  if (unsignedIntegerValue)
   {
 LABEL_7:
-    v11 = [v11 unsignedIntegerValue];
+    unsignedIntegerValue = [unsignedIntegerValue unsignedIntegerValue];
   }
 
 LABEL_8:
-  v18 = [a3 objectForKeyedSubscript:@"PingTrafficClass"];
+  v18 = [configuration objectForKeyedSubscript:@"PingTrafficClass"];
   if ([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] SSID])
   {
-    v19 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
-    v20 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
-    if (v19 || (v19 = v20) != 0)
+    iPv4RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
+    iPv6RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
+    if (iPv4RouterAddress || (iPv4RouterAddress = iPv6RouterAddress) != 0)
     {
-      v21 = [(W5DiagnosticsManager *)self __performPingWithAddress:v19 count:v6 timeout:v18 wait:[(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName] interval:v11 trafficClass:v13 interfaceName:v17 dataLength:v15];
+      v21 = [(W5DiagnosticsManager *)self __performPingWithAddress:iPv4RouterAddress count:integerValue timeout:v18 wait:[(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName] interval:unsignedIntegerValue trafficClass:v13 interfaceName:v17 dataLength:v15];
       if (v21)
       {
         v22 = v21;
@@ -724,18 +724,18 @@ LABEL_8:
   return v5;
 }
 
-- (id)__testPing6AWDLWithConfiguration:(id)a3
+- (id)__testPing6AWDLWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:59];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"PingCount"];
-  v7 = [a3 objectForKeyedSubscript:@"PingWait"];
-  v8 = [a3 objectForKeyedSubscript:@"PingDataLength"];
+  v6 = [configuration objectForKeyedSubscript:@"PingCount"];
+  v7 = [configuration objectForKeyedSubscript:@"PingWait"];
+  unsignedIntegerValue = [configuration objectForKeyedSubscript:@"PingDataLength"];
   if (v6)
   {
-    v9 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     if (v7)
     {
       goto LABEL_3;
@@ -743,7 +743,7 @@ LABEL_8:
 
 LABEL_13:
     v11 = 2.0;
-    if (!v8)
+    if (!unsignedIntegerValue)
     {
       goto LABEL_5;
     }
@@ -751,7 +751,7 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  v9 = 1;
+  integerValue = 1;
   if (!v7)
   {
     goto LABEL_13;
@@ -760,17 +760,17 @@ LABEL_13:
 LABEL_3:
   [v7 doubleValue];
   v11 = v10;
-  if (v8)
+  if (unsignedIntegerValue)
   {
 LABEL_4:
-    v8 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [unsignedIntegerValue unsignedIntegerValue];
   }
 
 LABEL_5:
-  v12 = [a3 objectForKeyedSubscript:@"PingTrafficClass"];
+  v12 = [configuration objectForKeyedSubscript:@"PingTrafficClass"];
   if ([objc_msgSend(-[CWFInterface AWDL](-[W5StatusManager corewifi](self->_status "corewifi")])
   {
-    v13 = [(W5DiagnosticsManager *)self __performPing6WithAddress:@"ff02::fb" count:v9 wait:v12 trafficClass:[(W5WiFiInterface *)[(W5StatusManager *)self->_status awdl] interfaceName] interfaceName:v8 dataLength:v11];
+    v13 = [(W5DiagnosticsManager *)self __performPing6WithAddress:@"ff02::fb" count:integerValue wait:v12 trafficClass:[(W5WiFiInterface *)[(W5StatusManager *)self->_status awdl] interfaceName] interfaceName:unsignedIntegerValue dataLength:v11];
     if (v13)
     {
       v14 = v13;
@@ -795,24 +795,24 @@ LABEL_5:
   return v5;
 }
 
-- (id)__testPingWANWithConfiguration:(id)a3
+- (id)__testPingWANWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:4];
   +[NSDate timeIntervalSinceReferenceDate];
   v51 = v5;
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"PingCount"];
-  v7 = [a3 objectForKeyedSubscript:@"PingTimeout"];
-  v8 = [a3 objectForKeyedSubscript:@"PingInterval"];
-  v9 = [a3 objectForKeyedSubscript:@"PingWait"];
-  v10 = [a3 objectForKeyedSubscript:@"PingDataLength"];
-  v11 = [a3 objectForKeyedSubscript:@"PingWANUseAppleDNS"];
-  v12 = [a3 objectForKeyedSubscript:@"PingDataLength"];
-  v13 = [a3 objectForKeyedSubscript:@"IPAddress"];
+  v6 = [configuration objectForKeyedSubscript:@"PingCount"];
+  v7 = [configuration objectForKeyedSubscript:@"PingTimeout"];
+  v8 = [configuration objectForKeyedSubscript:@"PingInterval"];
+  v9 = [configuration objectForKeyedSubscript:@"PingWait"];
+  unsignedIntegerValue = [configuration objectForKeyedSubscript:@"PingDataLength"];
+  v11 = [configuration objectForKeyedSubscript:@"PingWANUseAppleDNS"];
+  v12 = [configuration objectForKeyedSubscript:@"PingDataLength"];
+  v13 = [configuration objectForKeyedSubscript:@"IPAddress"];
   if (v6)
   {
-    v52 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     if (v7)
     {
 LABEL_3:
@@ -824,7 +824,7 @@ LABEL_3:
 
   else
   {
-    v52 = 1;
+    integerValue = 1;
     if (v7)
     {
       goto LABEL_3;
@@ -852,7 +852,7 @@ LABEL_6:
 LABEL_8:
       [v9 doubleValue];
       v20 = v19;
-      if (!v10)
+      if (!unsignedIntegerValue)
       {
         goto LABEL_10;
       }
@@ -862,10 +862,10 @@ LABEL_8:
   }
 
   v20 = 2.0;
-  if (v10)
+  if (unsignedIntegerValue)
   {
 LABEL_9:
-    v10 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [unsignedIntegerValue unsignedIntegerValue];
   }
 
 LABEL_10:
@@ -892,7 +892,7 @@ LABEL_12:
 
   v23 = 0;
 LABEL_18:
-  v24 = [a3 objectForKeyedSubscript:@"PingTrafficClass"];
+  v24 = [configuration objectForKeyedSubscript:@"PingTrafficClass"];
   if ([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] SSID])
   {
     v25 = +[NSMutableArray array];
@@ -901,7 +901,7 @@ LABEL_18:
       status = self->_status;
       if (v21)
       {
-        v27 = [(W5DiagnosticsManager *)self __performPingWithAddress:v21 count:v52 timeout:v24 wait:[(W5WiFiInterface *)[(W5StatusManager *)status wifi] interfaceName] interval:v10 trafficClass:v15 interfaceName:v20 dataLength:v18];
+        v27 = [(W5DiagnosticsManager *)self __performPingWithAddress:v21 count:integerValue timeout:v24 wait:[(W5WiFiInterface *)[(W5StatusManager *)status wifi] interfaceName] interval:unsignedIntegerValue trafficClass:v15 interfaceName:v20 dataLength:v18];
         if (v27)
         {
           [v25 addObject:v27];
@@ -910,12 +910,12 @@ LABEL_18:
 
       else
       {
-        v36 = [(CWFInterface *)[(W5StatusManager *)status corewifi] DNSServerAddresses];
+        dNSServerAddresses = [(CWFInterface *)[(W5StatusManager *)status corewifi] DNSServerAddresses];
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
         v60 = 0u;
-        v37 = [v36 countByEnumeratingWithState:&v57 objects:v68 count:16];
+        v37 = [dNSServerAddresses countByEnumeratingWithState:&v57 objects:v68 count:16];
         if (v37)
         {
           v38 = v37;
@@ -926,10 +926,10 @@ LABEL_18:
             {
               if (*v58 != v39)
               {
-                objc_enumerationMutation(v36);
+                objc_enumerationMutation(dNSServerAddresses);
               }
 
-              v41 = [(W5DiagnosticsManager *)self __performPingWithAddress:*(*(&v57 + 1) + 8 * i) count:v52 timeout:v24 wait:[(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName] interval:v10 trafficClass:v15 interfaceName:v20 dataLength:v18];
+              v41 = [(W5DiagnosticsManager *)self __performPingWithAddress:*(*(&v57 + 1) + 8 * i) count:integerValue timeout:v24 wait:[(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName] interval:unsignedIntegerValue trafficClass:v15 interfaceName:v20 dataLength:v18];
               if (v41)
               {
                 v42 = v41;
@@ -947,7 +947,7 @@ LABEL_18:
               }
             }
 
-            v38 = [v36 countByEnumeratingWithState:&v57 objects:v68 count:16];
+            v38 = [dNSServerAddresses countByEnumeratingWithState:&v57 objects:v68 count:16];
           }
 
           while (v38);
@@ -976,7 +976,7 @@ LABEL_18:
               objc_enumerationMutation(v28);
             }
 
-            v33 = [(W5DiagnosticsManager *)self __performPingWithAddress:*(*(&v61 + 1) + 8 * j) count:v52 timeout:v24 wait:[(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName] interval:v10 trafficClass:v15 interfaceName:v20 dataLength:v18];
+            v33 = [(W5DiagnosticsManager *)self __performPingWithAddress:*(*(&v61 + 1) + 8 * j) count:integerValue timeout:v24 wait:[(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName] interval:unsignedIntegerValue trafficClass:v15 interfaceName:v20 dataLength:v18];
             if (v33)
             {
               v34 = v33;
@@ -1063,11 +1063,11 @@ LABEL_57:
   [v3 setTestStarted:?];
   if ([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] SSID])
   {
-    v4 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
-    v5 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
-    if (v4 || (v4 = v5) != 0)
+    iPv4RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
+    iPv6RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
+    if (iPv4RouterAddress || (iPv4RouterAddress = iPv6RouterAddress) != 0)
     {
-      v6 = [(W5DiagnosticsManager *)self __performPingUsingIMFoundationWithAddress:v4 timeout:1];
+      v6 = [(W5DiagnosticsManager *)self __performPingUsingIMFoundationWithAddress:iPv4RouterAddress timeout:1];
       if (v6)
       {
         v7 = v6;
@@ -1146,12 +1146,12 @@ LABEL_4:
       }
     }
 
-    v13 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] DNSServerAddresses];
+    dNSServerAddresses = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] DNSServerAddresses];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v14 = [v13 countByEnumeratingWithState:&v32 objects:v43 count:16];
+    v14 = [dNSServerAddresses countByEnumeratingWithState:&v32 objects:v43 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1162,7 +1162,7 @@ LABEL_13:
       {
         if (*v33 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(dNSServerAddresses);
         }
 
         v18 = [(W5DiagnosticsManager *)self __performPingUsingIMFoundationWithAddress:*(*(&v32 + 1) + 8 * v17) timeout:1];
@@ -1179,7 +1179,7 @@ LABEL_13:
 
         if (v15 == ++v17)
         {
-          v15 = [v13 countByEnumeratingWithState:&v32 objects:v43 count:16];
+          v15 = [dNSServerAddresses countByEnumeratingWithState:&v32 objects:v43 count:16];
           if (v15)
           {
             goto LABEL_13;
@@ -1242,18 +1242,18 @@ LABEL_31:
   return v3;
 }
 
-- (id)__testPingLANUsingCFNetworkWithConfiguration:(id)a3
+- (id)__testPingLANUsingCFNetworkWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:3];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"PingCount"];
-  v7 = [a3 objectForKeyedSubscript:@"PingTimeout"];
-  v8 = [a3 objectForKeyedSubscript:@"PingDataLength"];
+  v6 = [configuration objectForKeyedSubscript:@"PingCount"];
+  v7 = [configuration objectForKeyedSubscript:@"PingTimeout"];
+  unsignedIntegerValue = [configuration objectForKeyedSubscript:@"PingDataLength"];
   if (v6)
   {
-    v9 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     if (v7)
     {
       goto LABEL_3;
@@ -1262,13 +1262,13 @@ LABEL_31:
 
   else
   {
-    v9 = 1;
+    integerValue = 1;
     if (v7)
     {
 LABEL_3:
       [v7 doubleValue];
       v11 = v10;
-      if (!v8)
+      if (!unsignedIntegerValue)
       {
         goto LABEL_5;
       }
@@ -1278,21 +1278,21 @@ LABEL_3:
   }
 
   v11 = 2.0;
-  if (v8)
+  if (unsignedIntegerValue)
   {
 LABEL_4:
-    v8 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [unsignedIntegerValue unsignedIntegerValue];
   }
 
 LABEL_5:
-  v12 = [a3 objectForKeyedSubscript:@"PingTrafficClass"];
+  v12 = [configuration objectForKeyedSubscript:@"PingTrafficClass"];
   if ([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] SSID])
   {
-    v13 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
-    v14 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
-    if (v13 || (v13 = v14) != 0)
+    iPv4RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
+    iPv6RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
+    if (iPv4RouterAddress || (iPv4RouterAddress = iPv6RouterAddress) != 0)
     {
-      v15 = [(W5DiagnosticsManager *)self __performCFPingWithAddress:v13 count:v9 timeout:v12 trafficClass:0 networkServiceType:v8 dataLength:v11];
+      v15 = [(W5DiagnosticsManager *)self __performCFPingWithAddress:iPv4RouterAddress count:integerValue timeout:v12 trafficClass:0 networkServiceType:unsignedIntegerValue dataLength:v11];
       if (v15)
       {
         v16 = v15;
@@ -1318,21 +1318,21 @@ LABEL_5:
   return v5;
 }
 
-- (id)__testPingWANUsingCFNetworkWithConfiguration:(id)a3
+- (id)__testPingWANUsingCFNetworkWithConfiguration:(id)configuration
 {
   v4 = objc_alloc_init(W5DiagnosticsTestResult);
   [v4 setTestID:6];
   +[NSDate timeIntervalSinceReferenceDate];
   [v4 setTestStarted:?];
-  v5 = [a3 objectForKeyedSubscript:@"PingCount"];
-  v6 = [a3 objectForKeyedSubscript:@"PingTimeout"];
-  v7 = [a3 objectForKeyedSubscript:@"PingDataLength"];
-  v8 = [a3 objectForKeyedSubscript:@"PingWANUseAppleDNS"];
-  v9 = [a3 objectForKeyedSubscript:@"PingDataLength"];
-  v10 = [a3 objectForKeyedSubscript:@"IPAddress"];
+  v5 = [configuration objectForKeyedSubscript:@"PingCount"];
+  v6 = [configuration objectForKeyedSubscript:@"PingTimeout"];
+  unsignedIntegerValue = [configuration objectForKeyedSubscript:@"PingDataLength"];
+  v8 = [configuration objectForKeyedSubscript:@"PingWANUseAppleDNS"];
+  v9 = [configuration objectForKeyedSubscript:@"PingDataLength"];
+  v10 = [configuration objectForKeyedSubscript:@"IPAddress"];
   if (v5)
   {
-    v11 = [v5 integerValue];
+    integerValue = [v5 integerValue];
     if (v6)
     {
       goto LABEL_3;
@@ -1341,13 +1341,13 @@ LABEL_5:
 
   else
   {
-    v11 = 1;
+    integerValue = 1;
     if (v6)
     {
 LABEL_3:
       [v6 doubleValue];
       v13 = v12;
-      if (!v7)
+      if (!unsignedIntegerValue)
       {
         goto LABEL_5;
       }
@@ -1357,10 +1357,10 @@ LABEL_3:
   }
 
   v13 = 2.0;
-  if (v7)
+  if (unsignedIntegerValue)
   {
 LABEL_4:
-    v7 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [unsignedIntegerValue unsignedIntegerValue];
   }
 
 LABEL_5:
@@ -1386,7 +1386,7 @@ LABEL_7:
 
   v15 = 0;
 LABEL_13:
-  v16 = [a3 objectForKeyedSubscript:@"PingTrafficClass"];
+  v16 = [configuration objectForKeyedSubscript:@"PingTrafficClass"];
   if ([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] SSID])
   {
     v17 = +[NSMutableArray array];
@@ -1395,7 +1395,7 @@ LABEL_13:
     {
       if (v10)
       {
-        v18 = [(W5DiagnosticsManager *)self __performCFPingWithAddress:v10 count:v11 timeout:v16 trafficClass:0 networkServiceType:v7 dataLength:v13];
+        v18 = [(W5DiagnosticsManager *)self __performCFPingWithAddress:v10 count:integerValue timeout:v16 trafficClass:0 networkServiceType:unsignedIntegerValue dataLength:v13];
         if (v18)
         {
           [v17 addObject:v18];
@@ -1404,12 +1404,12 @@ LABEL_13:
 
       else
       {
-        v27 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] DNSServerAddresses];
+        dNSServerAddresses = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] DNSServerAddresses];
         v49 = 0u;
         v50 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v28 = [v27 countByEnumeratingWithState:&v49 objects:v60 count:16];
+        v28 = [dNSServerAddresses countByEnumeratingWithState:&v49 objects:v60 count:16];
         if (v28)
         {
           v29 = v28;
@@ -1420,10 +1420,10 @@ LABEL_13:
             {
               if (*v50 != v30)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(dNSServerAddresses);
               }
 
-              v32 = [(W5DiagnosticsManager *)self __performCFPingWithAddress:*(*(&v49 + 1) + 8 * i) count:v11 timeout:v16 trafficClass:0 networkServiceType:v7 dataLength:v13, v42];
+              v32 = [(W5DiagnosticsManager *)self __performCFPingWithAddress:*(*(&v49 + 1) + 8 * i) count:integerValue timeout:v16 trafficClass:0 networkServiceType:unsignedIntegerValue dataLength:v13, v42];
               if (v32)
               {
                 v33 = v32;
@@ -1441,7 +1441,7 @@ LABEL_13:
               }
             }
 
-            v29 = [v27 countByEnumeratingWithState:&v49 objects:v60 count:16];
+            v29 = [dNSServerAddresses countByEnumeratingWithState:&v49 objects:v60 count:16];
           }
 
           while (v29);
@@ -1470,7 +1470,7 @@ LABEL_13:
               objc_enumerationMutation(v19);
             }
 
-            v24 = [(W5DiagnosticsManager *)self __performCFPingWithAddress:*(*(&v53 + 1) + 8 * j) count:v11 timeout:v16 trafficClass:0 networkServiceType:v7 dataLength:v13, v42];
+            v24 = [(W5DiagnosticsManager *)self __performCFPingWithAddress:*(*(&v53 + 1) + 8 * j) count:integerValue timeout:v16 trafficClass:0 networkServiceType:unsignedIntegerValue dataLength:v13, v42];
             if (v24)
             {
               v25 = v24;
@@ -1549,7 +1549,7 @@ LABEL_52:
   return v4;
 }
 
-- (id)__testConcurrentWithConfiguration:(id)a3
+- (id)__testConcurrentWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:53];
@@ -1557,8 +1557,8 @@ LABEL_52:
   [v5 setTestStarted:?];
   v20 = v5;
   [v5 setDidPass:1];
-  v6 = [a3 objectForKeyedSubscript:@"InternalUUID"];
-  v7 = [a3 objectForKeyedSubscript:@"ConcurrentRequests"];
+  v6 = [configuration objectForKeyedSubscript:@"InternalUUID"];
+  v7 = [configuration objectForKeyedSubscript:@"ConcurrentRequests"];
   v22 = +[NSMutableArray array];
   v21 = dispatch_queue_create(0, 0);
   v8 = dispatch_group_create();
@@ -1582,7 +1582,7 @@ LABEL_52:
 
         v13 = *(*(&v29 + 1) + 8 * i);
         dispatch_group_enter(v8);
-        v14 = [(W5StatusManager *)self->_status concurrentQueue];
+        concurrentQueue = [(W5StatusManager *)self->_status concurrentQueue];
         v28[0] = _NSConcreteStackBlock;
         v28[1] = 3221225472;
         v28[2] = sub_100040894;
@@ -1593,7 +1593,7 @@ LABEL_52:
         v28[7] = v21;
         v28[8] = v22;
         v28[9] = v8;
-        [(NSOperationQueue *)v14 addOperationWithBlock:v28];
+        [(NSOperationQueue *)concurrentQueue addOperationWithBlock:v28];
       }
 
       v10 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -1693,8 +1693,8 @@ LABEL_18:
             }
 
             v9 = *(*(&v13 + 1) + 8 * i);
-            v10 = [v9 bytes];
-            if ([v9 length] >= 0x10 && v10->sa_family == 2 && !getnameinfo(v10, v10->sa_len, v19, 0x10u, 0, 0, 2))
+            bytes = [v9 bytes];
+            if ([v9 length] >= 0x10 && bytes->sa_family == 2 && !getnameinfo(bytes, bytes->sa_len, v19, 0x10u, 0, 0, 2))
             {
               v11 = [NSString stringWithCString:v19 encoding:1];
               if (v11)
@@ -1761,10 +1761,10 @@ LABEL_16:
   return v4;
 }
 
-- (id)__testRetrieveAppleForceWiFiWithConfiguration:(id)a3
+- (id)__testRetrieveAppleForceWiFiWithConfiguration:(id)configuration
 {
   v5 = [NSString stringWithFormat:@"https://%@", @"captive.apple.com"];
-  v6 = [a3 objectForKeyedSubscript:@"Timeout"];
+  v6 = [configuration objectForKeyedSubscript:@"Timeout"];
   v7 = objc_alloc_init(W5DiagnosticsTestResult);
   [v7 setTestID:11];
   +[NSDate timeIntervalSinceReferenceDate];
@@ -1804,11 +1804,11 @@ LABEL_16:
   [v3 setTestID:12];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestStarted:?];
-  v4 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4Addresses];
-  v5 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
-  if ([v4 count])
+  iPv4Addresses = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4Addresses];
+  iPv4RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv4RouterAddress];
+  if ([iPv4Addresses count])
   {
-    v6 = v5 == 0;
+    v6 = iPv4RouterAddress == 0;
   }
 
   else
@@ -1822,8 +1822,8 @@ LABEL_16:
     [v3 setResult:1];
     v8[0] = @"IPv4Addresses";
     v8[1] = @"IPv4Router";
-    v9[0] = v4;
-    v9[1] = v5;
+    v9[0] = iPv4Addresses;
+    v9[1] = iPv4RouterAddress;
     [v3 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v9, v8, 2)}];
   }
 
@@ -1838,13 +1838,13 @@ LABEL_16:
   [v3 setTestID:60];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestStarted:?];
-  v4 = [(W5PeerDiagnosticsManager *)self->_peerDiagnostics gatherPeerDiagnostics];
-  if ([v4 count])
+  gatherPeerDiagnostics = [(W5PeerDiagnosticsManager *)self->_peerDiagnostics gatherPeerDiagnostics];
+  if ([gatherPeerDiagnostics count])
   {
     [v3 setResult:1];
     [v3 setDidPass:1];
     v6 = @"PeerDiagnosticsResults";
-    v7 = v4;
+    v7 = gatherPeerDiagnostics;
     [v3 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v7, &v6, 1)}];
   }
 
@@ -1864,10 +1864,10 @@ LABEL_16:
   [v3 setTestID:61];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestStarted:?];
-  v4 = [(W5PeerDiagnosticsManager *)self->_peerDiagnostics gatherPeerTypes];
-  if (v4)
+  gatherPeerTypes = [(W5PeerDiagnosticsManager *)self->_peerDiagnostics gatherPeerTypes];
+  if (gatherPeerTypes)
   {
-    v5 = v4;
+    v5 = gatherPeerTypes;
     [v3 setResult:1];
     [v3 setDidPass:1];
     v7 = @"PeerDevicesInfo";
@@ -1905,11 +1905,11 @@ LABEL_16:
   [v3 setTestID:13];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestStarted:?];
-  v4 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6Addresses];
-  v5 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
-  if ([v4 count])
+  iPv6Addresses = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6Addresses];
+  iPv6RouterAddress = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] IPv6RouterAddress];
+  if ([iPv6Addresses count])
   {
-    v6 = v5 == 0;
+    v6 = iPv6RouterAddress == 0;
   }
 
   else
@@ -1923,8 +1923,8 @@ LABEL_16:
     [v3 setResult:1];
     v8[0] = @"IPv6Addresses";
     v8[1] = @"IPv6Router";
-    v9[0] = v4;
-    v9[1] = v5;
+    v9[0] = iPv6Addresses;
+    v9[1] = iPv6RouterAddress;
     [v3 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v9, v8, 2)}];
   }
 
@@ -1939,8 +1939,8 @@ LABEL_16:
   [v3 setTestID:14];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestStarted:?];
-  v4 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] ipv4ConfigMethod];
-  if (v4 == 3)
+  ipv4ConfigMethod = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] ipv4ConfigMethod];
+  if (ipv4ConfigMethod == 3)
   {
     [v3 setDidPass:1];
   }
@@ -1951,7 +1951,7 @@ LABEL_16:
   }
 
   v6 = @"IPv4ConfigMethod";
-  v7 = [NSNumber numberWithInteger:v4];
+  v7 = [NSNumber numberWithInteger:ipv4ConfigMethod];
   [v3 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v7, &v6, 1)}];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestCompleted:?];
@@ -1964,8 +1964,8 @@ LABEL_16:
   [v3 setTestID:15];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestStarted:?];
-  v4 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] ipv6ConfigMethod];
-  if (v4 == 1)
+  ipv6ConfigMethod = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] ipv6ConfigMethod];
+  if (ipv6ConfigMethod == 1)
   {
     [v3 setDidPass:1];
   }
@@ -1976,7 +1976,7 @@ LABEL_16:
   }
 
   v6 = @"IPv6ConfigMethod";
-  v7 = [NSNumber numberWithInteger:v4];
+  v7 = [NSNumber numberWithInteger:ipv6ConfigMethod];
   [v3 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v7, &v6, 1)}];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestCompleted:?];
@@ -2025,21 +2025,21 @@ LABEL_16:
   return v3;
 }
 
-- (id)__testCongestedChannelUsingCCAWithConfiguration:(id)a3
+- (id)__testCongestedChannelUsingCCAWithConfiguration:(id)configuration
 {
-  v3 = [(W5DiagnosticsManager *)self __testCongestedChannelWithConfiguration:a3];
+  v3 = [(W5DiagnosticsManager *)self __testCongestedChannelWithConfiguration:configuration];
   [v3 setTestID:23];
   return v3;
 }
 
-- (id)__testCongestedChannelWithConfiguration:(id)a3
+- (id)__testCongestedChannelWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:24];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+  v6 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
   +[NSDate timeIntervalSinceReferenceDate];
   if ((v6 & 0x8000000000000000) == 0)
   {
@@ -2052,22 +2052,22 @@ LABEL_16:
     }
   }
 
-  v9 = [a3 objectForKeyedSubscript:@"NetworkName"];
+  v9 = [configuration objectForKeyedSubscript:@"NetworkName"];
   if (v9)
   {
-    v10 = [(W5DiagnosticsManager *)self __scanResultWithNetworkName:v9];
+    wifi = [(W5DiagnosticsManager *)self __scanResultWithNetworkName:v9];
   }
 
   else
   {
-    v10 = [(W5StatusManager *)self->_status wifi];
+    wifi = [(W5StatusManager *)self->_status wifi];
   }
 
-  v11 = [(W5WiFiInterface *)v10 channel];
-  v12 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] supportedChannels];
-  v13 = [(W5DiagnosticsManager *)self __overlappingChannelsForChannel:v11 supportedChannels:v12];
-  v14 = [(W5DiagnosticsManager *)self __occupiedChannelsForScanResults:self->_wifiScanResults supportedChannels:v12 rssiThreshold:-80 ignoreChannel:v11];
-  v15 = [(W5DiagnosticsManager *)self __orderedChannelWeights:[(W5DiagnosticsManager *)self __adjust5GHzWeights:[(W5DiagnosticsManager *)self __applyChannelWeights:[(W5DiagnosticsManager *)self __channelWeightsForScanResults:self->_wifiScanResults supportedChannels:v12 rssiThreshold:-80] supportedChannels:v12]]];
+  channel = [(W5WiFiInterface *)wifi channel];
+  supportedChannels = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] supportedChannels];
+  v13 = [(W5DiagnosticsManager *)self __overlappingChannelsForChannel:channel supportedChannels:supportedChannels];
+  v14 = [(W5DiagnosticsManager *)self __occupiedChannelsForScanResults:self->_wifiScanResults supportedChannels:supportedChannels rssiThreshold:-80 ignoreChannel:channel];
+  v15 = [(W5DiagnosticsManager *)self __orderedChannelWeights:[(W5DiagnosticsManager *)self __adjust5GHzWeights:[(W5DiagnosticsManager *)self __applyChannelWeights:[(W5DiagnosticsManager *)self __channelWeightsForScanResults:self->_wifiScanResults supportedChannels:supportedChannels rssiThreshold:-80] supportedChannels:supportedChannels]]];
   v39 = [(W5DiagnosticsManager *)self __only2GHz_1_6_11_14_Channels:v15];
   v40 = [(W5DiagnosticsManager *)self __only5GHz20MHz40MHzChannels:v15];
   v41 = [(W5DiagnosticsManager *)self __only5GHz40MHzChannels:v40];
@@ -2132,7 +2132,7 @@ LABEL_16:
 
         v30 = *(*(&v43 + 1) + 8 * j);
         v31 = [objc_msgSend(v30 "channel")];
-        if (v31 == [v11 channel])
+        if (v31 == [channel channel])
         {
           [v24 addObject:v30];
         }
@@ -2144,11 +2144,11 @@ LABEL_16:
     while (v27);
   }
 
-  v32 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] cachedLinkQualityMetric];
-  v33 = [objc_msgSend(v32 "linkQualityMetricData")];
+  cachedLinkQualityMetric = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] cachedLinkQualityMetric];
+  v33 = [objc_msgSend(cachedLinkQualityMetric "linkQualityMetricData")];
   if (v33 && v33[18])
   {
-    if ([v32 CCA] < 0x47)
+    if ([cachedLinkQualityMetric CCA] < 0x47)
     {
       [v5 setDidPass:1];
     }
@@ -2160,15 +2160,15 @@ LABEL_16:
 
     v36 = v40;
     v37 = +[NSMutableDictionary dictionary];
-    [v37 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKeyedSubscript:{"numberWithUnsignedInteger:", objc_msgSend(v32, "CCA")), @"CCA"}];
+    [v37 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKeyedSubscript:{"numberWithUnsignedInteger:", objc_msgSend(cachedLinkQualityMetric, "CCA")), @"CCA"}];
     v35 = v41;
-    if (!v11)
+    if (!channel)
     {
       goto LABEL_35;
     }
 
 LABEL_34:
-    [v37 setObject:v11 forKeyedSubscript:@"CurrentChannel"];
+    [v37 setObject:channel forKeyedSubscript:@"CurrentChannel"];
     goto LABEL_35;
   }
 
@@ -2185,7 +2185,7 @@ LABEL_34:
 
   v36 = v40;
   v37 = +[NSMutableDictionary dictionary];
-  if (v11)
+  if (channel)
   {
     goto LABEL_34;
   }
@@ -2217,15 +2217,15 @@ LABEL_35:
   return v5;
 }
 
-- (id)__testCongested2GHzWithConfiguration:(id)a3
+- (id)__testCongested2GHzWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:25];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   v6 = &WiFiManagerClientCopyProperty_ptr;
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+  v7 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
   +[NSDate timeIntervalSinceReferenceDate];
   if ((v7 & 0x8000000000000000) == 0)
   {
@@ -2238,10 +2238,10 @@ LABEL_35:
     }
   }
 
-  v10 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] supportedChannels];
-  v11 = [(W5DiagnosticsManager *)self __only2GHzChannels:v10];
+  supportedChannels = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] supportedChannels];
+  v11 = [(W5DiagnosticsManager *)self __only2GHzChannels:supportedChannels];
   v12 = [(W5DiagnosticsManager *)self __occupiedChannelsForScanResults:self->_wifiScanResults supportedChannels:v11 rssiThreshold:-80 ignoreChannel:0];
-  v13 = [(W5DiagnosticsManager *)self __orderedChannelWeights:[(W5DiagnosticsManager *)self __adjust5GHzWeights:[(W5DiagnosticsManager *)self __applyChannelWeights:[(W5DiagnosticsManager *)self __channelWeightsForScanResults:self->_wifiScanResults supportedChannels:v10 rssiThreshold:-80] supportedChannels:v10]]];
+  v13 = [(W5DiagnosticsManager *)self __orderedChannelWeights:[(W5DiagnosticsManager *)self __adjust5GHzWeights:[(W5DiagnosticsManager *)self __applyChannelWeights:[(W5DiagnosticsManager *)self __channelWeightsForScanResults:self->_wifiScanResults supportedChannels:supportedChannels rssiThreshold:-80] supportedChannels:supportedChannels]]];
   v14 = [(W5DiagnosticsManager *)self __only2GHz_1_6_11_14_Channels:v13];
   v15 = [(W5DiagnosticsManager *)self __only5GHz20MHz40MHzChannels:v13];
   v16 = [(W5DiagnosticsManager *)self __only5GHz40MHzChannels:v15];
@@ -2325,15 +2325,15 @@ LABEL_13:
   return v5;
 }
 
-- (id)__testCongested5GHzWithConfiguration:(id)a3
+- (id)__testCongested5GHzWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:26];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   v6 = &WiFiManagerClientCopyProperty_ptr;
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+  v7 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
   +[NSDate timeIntervalSinceReferenceDate];
   if ((v7 & 0x8000000000000000) == 0)
   {
@@ -2346,10 +2346,10 @@ LABEL_13:
     }
   }
 
-  v10 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] supportedChannels];
-  v11 = [(W5DiagnosticsManager *)self __only5GHzChannels:v10];
+  supportedChannels = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] supportedChannels];
+  v11 = [(W5DiagnosticsManager *)self __only5GHzChannels:supportedChannels];
   v12 = [(W5DiagnosticsManager *)self __occupiedChannelsForScanResults:self->_wifiScanResults supportedChannels:v11 rssiThreshold:-80 ignoreChannel:0];
-  v13 = [(W5DiagnosticsManager *)self __orderedChannelWeights:[(W5DiagnosticsManager *)self __adjust5GHzWeights:[(W5DiagnosticsManager *)self __applyChannelWeights:[(W5DiagnosticsManager *)self __channelWeightsForScanResults:self->_wifiScanResults supportedChannels:v10 rssiThreshold:-80] supportedChannels:v10]]];
+  v13 = [(W5DiagnosticsManager *)self __orderedChannelWeights:[(W5DiagnosticsManager *)self __adjust5GHzWeights:[(W5DiagnosticsManager *)self __applyChannelWeights:[(W5DiagnosticsManager *)self __channelWeightsForScanResults:self->_wifiScanResults supportedChannels:supportedChannels rssiThreshold:-80] supportedChannels:supportedChannels]]];
   v14 = [(W5DiagnosticsManager *)self __only2GHz_1_6_11_14_Channels:v13];
   v15 = [(W5DiagnosticsManager *)self __only5GHz20MHz40MHzChannels:v13];
   v16 = [(W5DiagnosticsManager *)self __only5GHz40MHzChannels:v15];
@@ -2433,14 +2433,14 @@ LABEL_13:
   return v5;
 }
 
-- (id)__testHT402GHzWithConfiguration:(id)a3
+- (id)__testHT402GHzWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:27];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+  v6 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
   +[NSDate timeIntervalSinceReferenceDate];
   if ((v6 & 0x8000000000000000) == 0)
   {
@@ -2498,8 +2498,8 @@ LABEL_13:
     [v5 setDidPass:1];
   }
 
-  v17 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] supportedChannels];
-  v18 = [(W5DiagnosticsManager *)self __orderedChannelWeights:[(W5DiagnosticsManager *)self __adjust5GHzWeights:[(W5DiagnosticsManager *)self __applyChannelWeights:[(W5DiagnosticsManager *)self __channelWeightsForScanResults:self->_wifiScanResults supportedChannels:v17 rssiThreshold:-80] supportedChannels:v17]]];
+  supportedChannels = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] supportedChannels];
+  v18 = [(W5DiagnosticsManager *)self __orderedChannelWeights:[(W5DiagnosticsManager *)self __adjust5GHzWeights:[(W5DiagnosticsManager *)self __applyChannelWeights:[(W5DiagnosticsManager *)self __channelWeightsForScanResults:self->_wifiScanResults supportedChannels:supportedChannels rssiThreshold:-80] supportedChannels:supportedChannels]]];
   v19 = [(W5DiagnosticsManager *)self __only2GHz_1_6_11_14_Channels:v18];
   v20 = [(W5DiagnosticsManager *)self __only5GHz20MHz40MHzChannels:v18];
   v21 = [(W5DiagnosticsManager *)self __only5GHz40MHzChannels:v20];
@@ -2530,18 +2530,18 @@ LABEL_13:
   return v5;
 }
 
-- (id)__testNoSecurityWithConfiguration:(id)a3
+- (id)__testNoSecurityWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:38];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
   if (v6)
   {
     v7 = v6;
-    v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+    v8 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
     +[NSDate timeIntervalSinceReferenceDate];
     if ((v8 & 0x8000000000000000) == 0)
     {
@@ -2558,8 +2558,8 @@ LABEL_13:
     if (v11)
     {
       v12 = v11;
-      v13 = [v11 strongestSupportedSecurity];
-      if (v13)
+      strongestSupportedSecurity = [v11 strongestSupportedSecurity];
+      if (strongestSupportedSecurity)
       {
         [v5 setDidPass:1];
       }
@@ -2572,7 +2572,7 @@ LABEL_13:
       v21[0] = @"ScanResult";
       v21[1] = @"Security";
       v22[0] = v12;
-      v22[1] = [NSNumber numberWithInteger:v13];
+      v22[1] = [NSNumber numberWithInteger:strongestSupportedSecurity];
       v15 = v22;
       v16 = v21;
       v17 = 2;
@@ -2583,8 +2583,8 @@ LABEL_15:
 
   else if ([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] SSID])
   {
-    v14 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] security];
-    if (v14)
+    security = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] security];
+    if (security)
     {
       [v5 setDidPass:1];
     }
@@ -2595,7 +2595,7 @@ LABEL_15:
     }
 
     v19 = @"Security";
-    v20 = [NSNumber numberWithInteger:v14];
+    v20 = [NSNumber numberWithInteger:security];
     v15 = &v20;
     v16 = &v19;
     v17 = 1;
@@ -2607,18 +2607,18 @@ LABEL_15:
   return v5;
 }
 
-- (id)__testLegacySecurityWEPWithConfiguration:(id)a3
+- (id)__testLegacySecurityWEPWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:39];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
   if (v6)
   {
     v7 = v6;
-    v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+    v8 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
     +[NSDate timeIntervalSinceReferenceDate];
     if ((v8 & 0x8000000000000000) == 0)
     {
@@ -2635,8 +2635,8 @@ LABEL_15:
     if (v11)
     {
       v12 = v11;
-      v13 = [v11 supportedSecurityTypes];
-      if (([v13 containsObject:&off_1000EEF90] & 1) != 0 || (objc_msgSend(v13, "containsObject:", &off_1000EEFA8) & 1) != 0 || objc_msgSend(v12, "supportsWEPCipher"))
+      supportedSecurityTypes = [v11 supportedSecurityTypes];
+      if (([supportedSecurityTypes containsObject:&off_1000EEF90] & 1) != 0 || (objc_msgSend(supportedSecurityTypes, "containsObject:", &off_1000EEFA8) & 1) != 0 || objc_msgSend(v12, "supportsWEPCipher"))
       {
         [v5 setResult:1];
       }
@@ -2660,9 +2660,9 @@ LABEL_17:
 
   else if ([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] SSID])
   {
-    v17 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] security];
-    v18 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentNetwork];
-    if (v17 == 1 || v17 == 8 || [v18 supportsWEPCipher])
+    security = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] security];
+    currentNetwork = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentNetwork];
+    if (security == 1 || security == 8 || [currentNetwork supportsWEPCipher])
     {
       [v5 setResult:1];
     }
@@ -2673,7 +2673,7 @@ LABEL_17:
     }
 
     v20 = @"Security";
-    v21 = [NSNumber numberWithInteger:v17];
+    v21 = [NSNumber numberWithInteger:security];
     v14 = &v21;
     v15 = &v20;
     v16 = 1;
@@ -2685,18 +2685,18 @@ LABEL_17:
   return v5;
 }
 
-- (id)__testLegacySecurityWPAWithConfiguration:(id)a3
+- (id)__testLegacySecurityWPAWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:40];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
   if (v6)
   {
     v7 = v6;
-    v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+    v8 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
     +[NSDate timeIntervalSinceReferenceDate];
     if ((v8 & 0x8000000000000000) == 0)
     {
@@ -2713,8 +2713,8 @@ LABEL_17:
     if (v11)
     {
       v12 = v11;
-      v13 = [v11 supportedSecurityTypes];
-      if (([v13 containsObject:&off_1000EEFC0] & 1) != 0 || (objc_msgSend(v13, "containsObject:", &off_1000EEFD8) & 1) != 0 || objc_msgSend(v12, "supportsTKIPCipher"))
+      supportedSecurityTypes = [v11 supportedSecurityTypes];
+      if (([supportedSecurityTypes containsObject:&off_1000EEFC0] & 1) != 0 || (objc_msgSend(supportedSecurityTypes, "containsObject:", &off_1000EEFD8) & 1) != 0 || objc_msgSend(v12, "supportsTKIPCipher"))
       {
         [v5 setResult:1];
       }
@@ -2738,9 +2738,9 @@ LABEL_16:
 
   else if ([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] SSID])
   {
-    v17 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] security];
-    v18 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentNetwork];
-    if (v17 <= 0xA && ((1 << v17) & 0x60C) != 0 || [v18 supportsTKIPCipher])
+    security = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] security];
+    currentNetwork = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentNetwork];
+    if (security <= 0xA && ((1 << security) & 0x60C) != 0 || [currentNetwork supportsTKIPCipher])
     {
       [v5 setResult:1];
     }
@@ -2751,7 +2751,7 @@ LABEL_16:
     }
 
     v20 = @"Security";
-    v21 = [NSNumber numberWithInteger:v17];
+    v21 = [NSNumber numberWithInteger:security];
     v14 = &v21;
     v15 = &v20;
     v16 = 1;
@@ -2763,18 +2763,18 @@ LABEL_16:
   return v5;
 }
 
-- (id)__testLegacyRates11bWithConfiguration:(id)a3
+- (id)__testLegacyRates11bWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:41];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
   if (v6)
   {
     v7 = v6;
-    v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+    v8 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
     +[NSDate timeIntervalSinceReferenceDate];
     if ((v8 & 0x8000000000000000) == 0)
     {
@@ -2825,18 +2825,18 @@ LABEL_16:
   return v5;
 }
 
-- (id)__testAirPortBaseStationWithConfiguration:(id)a3
+- (id)__testAirPortBaseStationWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:33];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
   if (v6)
   {
     v7 = v6;
-    v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+    v8 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
     +[NSDate timeIntervalSinceReferenceDate];
     if ((v8 & 0x8000000000000000) == 0)
     {
@@ -2849,21 +2849,21 @@ LABEL_16:
       }
     }
 
-    v11 = [(W5DiagnosticsManager *)self __scanResultWithNetworkName:v7];
+    currentNetwork = [(W5DiagnosticsManager *)self __scanResultWithNetworkName:v7];
   }
 
   else
   {
-    v11 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentNetwork];
+    currentNetwork = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentNetwork];
   }
 
-  v12 = v11;
-  if (v11)
+  v12 = currentNetwork;
+  if (currentNetwork)
   {
-    v13 = [v11 airPortBaseStationModelName];
-    if (v13)
+    airPortBaseStationModelName = [currentNetwork airPortBaseStationModelName];
+    if (airPortBaseStationModelName)
     {
-      v14 = v13;
+      v14 = airPortBaseStationModelName;
       [v5 setDidPass:1];
       [v5 setResult:1];
       v16[0] = @"ScanResult";
@@ -2879,18 +2879,18 @@ LABEL_16:
   return v5;
 }
 
-- (id)__testiOSPersonalHotspotWithConfiguration:(id)a3
+- (id)__testiOSPersonalHotspotWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:44];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
   if (!v6)
   {
-    v11 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentNetwork];
-    if (!v11)
+    currentNetwork = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentNetwork];
+    if (!currentNetwork)
     {
       goto LABEL_11;
     }
@@ -2899,7 +2899,7 @@ LABEL_16:
   }
 
   v7 = v6;
-  v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+  v8 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
   +[NSDate timeIntervalSinceReferenceDate];
   if ((v8 & 0x8000000000000000) == 0)
   {
@@ -2912,11 +2912,11 @@ LABEL_16:
     }
   }
 
-  v11 = [(W5DiagnosticsManager *)self __scanResultWithNetworkName:v7];
-  if (v11)
+  currentNetwork = [(W5DiagnosticsManager *)self __scanResultWithNetworkName:v7];
+  if (currentNetwork)
   {
 LABEL_8:
-    if ([v11 isPersonalHotspot])
+    if ([currentNetwork isPersonalHotspot])
     {
       [v5 setResult:1];
     }
@@ -2933,14 +2933,14 @@ LABEL_11:
   return v5;
 }
 
-- (id)__testPasspointWithConfiguration:(id)a3
+- (id)__testPasspointWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:45];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
   if (!v6)
   {
     if (![(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentNetwork])
@@ -2952,7 +2952,7 @@ LABEL_11:
   }
 
   v7 = v6;
-  v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+  v8 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
   +[NSDate timeIntervalSinceReferenceDate];
   if ((v8 & 0x8000000000000000) == 0)
   {
@@ -2985,28 +2985,28 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)__isDefaultCountryCode:(id)a3
+- (BOOL)__isDefaultCountryCode:(id)code
 {
-  if (!a3)
+  if (!code)
   {
     return 0;
   }
 
-  v3 = [a3 lowercaseString];
+  lowercaseString = [code lowercaseString];
 
-  return [&off_1000F4098 containsObject:v3];
+  return [&off_1000F4098 containsObject:lowercaseString];
 }
 
-- (id)__testConflictingCountryCodeWithConfiguration:(id)a3
+- (id)__testConflictingCountryCodeWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:28];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   v21 = v5;
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
+  v7 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
   +[NSDate timeIntervalSinceReferenceDate];
   if ((v7 & 0x8000000000000000) == 0)
   {
@@ -3084,16 +3084,16 @@ LABEL_11:
   return v21;
 }
 
-- (id)__testConflictingSecurityTypePNLWithConfiguration:(id)a3
+- (id)__testConflictingSecurityTypePNLWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:29];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   v33 = v5;
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
+  v7 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
   +[NSDate timeIntervalSinceReferenceDate];
   if ((v7 & 0x8000000000000000) == 0)
   {
@@ -3109,9 +3109,9 @@ LABEL_11:
   v10 = +[NSMutableArray array];
   v11 = +[NSMutableArray array];
   v12 = +[NSMutableDictionary dictionary];
-  v13 = [a3 objectForKeyedSubscript:@"InternalUUID"];
-  v14 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UseCachedPNL", "BOOLValue"}];
-  v15 = [(W5StatusManager *)self->_status wifi];
+  v13 = [configuration objectForKeyedSubscript:@"InternalUUID"];
+  v14 = [objc_msgSend(configuration objectForKeyedSubscript:{@"UseCachedPNL", "BOOLValue"}];
+  wifi = [(W5StatusManager *)self->_status wifi];
   if (v14)
   {
     v16 = v13;
@@ -3122,7 +3122,7 @@ LABEL_11:
     v16 = 0;
   }
 
-  v17 = [(W5WiFiInterface *)v15 cachedPreferredNetworksListWithUUID:v16];
+  v17 = [(W5WiFiInterface *)wifi cachedPreferredNetworksListWithUUID:v16];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -3220,28 +3220,28 @@ LABEL_11:
   return v33;
 }
 
-- (id)__testCaptivePortalWithConfiguration:(id)a3
+- (id)__testCaptivePortalWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:46];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
   if (v6)
   {
-    v7 = [(W5DiagnosticsManager *)self __preferredNetworkWithNetworkName:v6 configuration:a3];
+    currentPreferredNetwork = [(W5DiagnosticsManager *)self __preferredNetworkWithNetworkName:v6 configuration:configuration];
   }
 
   else
   {
-    v7 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentPreferredNetwork];
+    currentPreferredNetwork = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentPreferredNetwork];
   }
 
-  v8 = v7;
-  if (v7)
+  v8 = currentPreferredNetwork;
+  if (currentPreferredNetwork)
   {
-    if ([v7 isCaptive])
+    if ([currentPreferredNetwork isCaptive])
     {
       [v5 setResult:1];
     }
@@ -3261,27 +3261,27 @@ LABEL_11:
   return v5;
 }
 
-- (id)__testAWDLRealtimeWithConfiguration:(id)a3
+- (id)__testAWDLRealtimeWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:22];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"InternalUUID"];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UseCachedStatus", "BOOLValue"}];
+  v6 = [configuration objectForKeyedSubscript:@"InternalUUID"];
+  v7 = [objc_msgSend(configuration objectForKeyedSubscript:{@"UseCachedStatus", "BOOLValue"}];
   status = self->_status;
   if (v7)
   {
-    v9 = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v6), "awdl"}];
+    awdlStatus = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v6), "awdl"}];
   }
 
   else
   {
-    v9 = [(W5StatusManager *)status awdlStatus];
+    awdlStatus = [(W5StatusManager *)status awdlStatus];
   }
 
-  v10 = v9;
-  if ([v9 awdlStrategy] && *(objc_msgSend(objc_msgSend(v10, "awdlStrategy"), "bytes") + 2) == 9)
+  v10 = awdlStatus;
+  if ([awdlStatus awdlStrategy] && *(objc_msgSend(objc_msgSend(v10, "awdlStrategy"), "bytes") + 2) == 9)
   {
     [v5 setResult:1];
   }
@@ -3296,27 +3296,27 @@ LABEL_11:
   return v5;
 }
 
-- (id)__testAWDLEnabledWithConfiguration:(id)a3
+- (id)__testAWDLEnabledWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:21];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"InternalUUID"];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UseCachedStatus", "BOOLValue"}];
+  v6 = [configuration objectForKeyedSubscript:@"InternalUUID"];
+  v7 = [objc_msgSend(configuration objectForKeyedSubscript:{@"UseCachedStatus", "BOOLValue"}];
   status = self->_status;
   if (v7)
   {
-    v9 = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v6), "awdl"}];
+    awdlStatus = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v6), "awdl"}];
   }
 
   else
   {
-    v9 = [(W5StatusManager *)status awdlStatus];
+    awdlStatus = [(W5StatusManager *)status awdlStatus];
   }
 
-  v10 = v9;
-  if ([v9 awdlSyncEnabled] && *(objc_msgSend(objc_msgSend(v10, "awdlSyncEnabled"), "bytes") + 2))
+  v10 = awdlStatus;
+  if ([awdlStatus awdlSyncEnabled] && *(objc_msgSend(objc_msgSend(v10, "awdlSyncEnabled"), "bytes") + 2))
   {
     [v5 setResult:1];
   }
@@ -3331,26 +3331,26 @@ LABEL_11:
   return v5;
 }
 
-- (id)__testBTCoexWithConfiguration:(id)a3
+- (id)__testBTCoexWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:20];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"InternalUUID"];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UseCachedStatus", "BOOLValue"}];
+  v6 = [configuration objectForKeyedSubscript:@"InternalUUID"];
+  v7 = [objc_msgSend(configuration objectForKeyedSubscript:{@"UseCachedStatus", "BOOLValue"}];
   status = self->_status;
   if (v7)
   {
-    v9 = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v6), "wifi"}];
+    wifiStatus = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v6), "wifi"}];
   }
 
   else
   {
-    v9 = [(W5StatusManager *)status wifiStatus];
+    wifiStatus = [(W5StatusManager *)status wifiStatus];
   }
 
-  if ([v9 btcMode] == 7)
+  if ([wifiStatus btcMode] == 7)
   {
     [v5 setResult:1];
   }
@@ -3365,31 +3365,31 @@ LABEL_11:
   return v5;
 }
 
-- (id)__testHighBTConnectedWithConfiguration:(id)a3
+- (id)__testHighBTConnectedWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:19];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"InternalUUID"];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UseCachedStatus", "BOOLValue"}];
+  v6 = [configuration objectForKeyedSubscript:@"InternalUUID"];
+  v7 = [objc_msgSend(configuration objectForKeyedSubscript:{@"UseCachedStatus", "BOOLValue"}];
   status = self->_status;
   if (v7)
   {
-    v9 = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v6), "bluetooth"}];
+    bluetoothStatus = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v6), "bluetooth"}];
   }
 
   else
   {
-    v9 = [(W5StatusManager *)status bluetoothStatus];
+    bluetoothStatus = [(W5StatusManager *)status bluetoothStatus];
   }
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v9 devices];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  devices = [bluetoothStatus devices];
+  v11 = [devices countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (!v11)
   {
     v14 = 0;
@@ -3409,7 +3409,7 @@ LABEL_14:
     {
       if (*v21 != v15)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(devices);
       }
 
       v17 = *(*(&v20 + 1) + 8 * i);
@@ -3417,7 +3417,7 @@ LABEL_14:
       v14 += [v17 isAppleDevice];
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    v12 = [devices countByEnumeratingWithState:&v20 objects:v26 count:16];
   }
 
   while (v12);
@@ -3439,31 +3439,31 @@ LABEL_15:
   return v5;
 }
 
-- (id)__testHighBTPairedWithConfiguration:(id)a3
+- (id)__testHighBTPairedWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:18];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"InternalUUID"];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UseCachedStatus", "BOOLValue"}];
+  v6 = [configuration objectForKeyedSubscript:@"InternalUUID"];
+  v7 = [objc_msgSend(configuration objectForKeyedSubscript:{@"UseCachedStatus", "BOOLValue"}];
   status = self->_status;
   if (v7)
   {
-    v9 = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v6), "bluetooth"}];
+    bluetoothStatus = [-[W5StatusManager cachedStatusWithUUID:](status cachedStatusWithUUID:{v6), "bluetooth"}];
   }
 
   else
   {
-    v9 = [(W5StatusManager *)status bluetoothStatus];
+    bluetoothStatus = [(W5StatusManager *)status bluetoothStatus];
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [v9 devices];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  devices = [bluetoothStatus devices];
+  v11 = [devices countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (!v11)
   {
     v13 = 0;
@@ -3481,7 +3481,7 @@ LABEL_17:
     {
       if (*v19 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(devices);
       }
 
       v16 = *(*(&v18 + 1) + 8 * i);
@@ -3491,7 +3491,7 @@ LABEL_17:
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v18 objects:v24 count:16];
+    v12 = [devices countByEnumeratingWithState:&v18 objects:v24 count:16];
   }
 
   while (v12);
@@ -3510,16 +3510,16 @@ LABEL_18:
   return v5;
 }
 
-- (id)__testLargePNLWithConfiguration:(id)a3
+- (id)__testLargePNLWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:47];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"InternalUUID"];
-  LODWORD(a3) = [objc_msgSend(a3 objectForKeyedSubscript:{@"UseCachedPNL", "BOOLValue"}];
-  v7 = [(W5StatusManager *)self->_status wifi];
-  if (a3)
+  v6 = [configuration objectForKeyedSubscript:@"InternalUUID"];
+  LODWORD(configuration) = [objc_msgSend(configuration objectForKeyedSubscript:{@"UseCachedPNL", "BOOLValue"}];
+  wifi = [(W5StatusManager *)self->_status wifi];
+  if (configuration)
   {
     v8 = v6;
   }
@@ -3529,7 +3529,7 @@ LABEL_18:
     v8 = 0;
   }
 
-  v9 = [-[W5WiFiInterface cachedPreferredNetworksListWithUUID:](v7 cachedPreferredNetworksListWithUUID:{v8), "count"}];
+  v9 = [-[W5WiFiInterface cachedPreferredNetworksListWithUUID:](wifi cachedPreferredNetworksListWithUUID:{v8), "count"}];
   if (v9 < 0xA)
   {
     [v5 setDidPass:1];
@@ -3548,18 +3548,18 @@ LABEL_18:
   return v5;
 }
 
-- (id)__testLongBeaconIntervalWithConfiguration:(id)a3
+- (id)__testLongBeaconIntervalWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:34];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
   if (v6)
   {
     v7 = v6;
-    v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+    v8 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
     +[NSDate timeIntervalSinceReferenceDate];
     if ((v8 & 0x8000000000000000) == 0)
     {
@@ -3572,19 +3572,19 @@ LABEL_18:
       }
     }
 
-    v11 = [(W5DiagnosticsManager *)self __scanResultWithNetworkName:v7];
+    currentNetwork = [(W5DiagnosticsManager *)self __scanResultWithNetworkName:v7];
   }
 
   else
   {
-    v11 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentNetwork];
+    currentNetwork = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentNetwork];
   }
 
-  v12 = v11;
-  if (v11)
+  v12 = currentNetwork;
+  if (currentNetwork)
   {
-    v13 = [v11 beaconInterval];
-    if (v13 == 100)
+    beaconInterval = [currentNetwork beaconInterval];
+    if (beaconInterval == 100)
     {
       [v5 setDidPass:1];
     }
@@ -3597,7 +3597,7 @@ LABEL_18:
     v15[0] = @"ScanResult";
     v15[1] = @"BeaconInterval";
     v16[0] = v12;
-    v16[1] = [NSNumber numberWithInteger:v13];
+    v16[1] = [NSNumber numberWithInteger:beaconInterval];
     [v5 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v16, v15, 2)}];
   }
 
@@ -3614,8 +3614,8 @@ LABEL_18:
   [v3 setTestStarted:?];
   if ([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] SSID])
   {
-    v4 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] DTIMInterval];
-    if (v4 == 3)
+    dTIMInterval = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] DTIMInterval];
+    if (dTIMInterval == 3)
     {
       [v3 setDidPass:1];
     }
@@ -3626,7 +3626,7 @@ LABEL_18:
     }
 
     v6 = @"DTIMInterval";
-    v7 = [NSNumber numberWithUnsignedInteger:v4];
+    v7 = [NSNumber numberWithUnsignedInteger:dTIMInterval];
     [v3 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v7, &v6, 1)}];
   }
 
@@ -3635,15 +3635,15 @@ LABEL_18:
   return v3;
 }
 
-- (id)__testConflictingPHYMode11acWithConfiguration:(id)a3
+- (id)__testConflictingPHYMode11acWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:36];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
+  v7 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
   +[NSDate timeIntervalSinceReferenceDate];
   if ((v7 & 0x8000000000000000) == 0)
   {
@@ -3656,12 +3656,12 @@ LABEL_18:
     }
   }
 
-  v10 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] supportedPHYModes];
-  if ((v10 & 0x80) != 0)
+  supportedPHYModes = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] supportedPHYModes];
+  if ((supportedPHYModes & 0x80) != 0)
   {
     [v5 setDidPass:1];
     v27 = @"SupportedPHYModes";
-    v28 = [NSNumber numberWithUnsignedInt:v10];
+    v28 = [NSNumber numberWithUnsignedInt:supportedPHYModes];
     v19 = &v28;
     v20 = &v27;
 LABEL_22:
@@ -3706,7 +3706,7 @@ LABEL_22:
   {
     [v5 setDidPass:1];
     v29 = @"SupportedPHYModes";
-    v30 = [NSNumber numberWithUnsignedInt:v10];
+    v30 = [NSNumber numberWithUnsignedInt:supportedPHYModes];
     v19 = &v30;
     v20 = &v29;
     goto LABEL_22;
@@ -3714,7 +3714,7 @@ LABEL_22:
 
   [v5 setResult:1];
   v31[0] = @"SupportedPHYModes";
-  v18 = [NSNumber numberWithUnsignedInt:v10];
+  v18 = [NSNumber numberWithUnsignedInt:supportedPHYModes];
   v31[1] = @"ScanResults";
   v32[0] = v18;
   v32[1] = [v11 copy];
@@ -3728,15 +3728,15 @@ LABEL_23:
   return v5;
 }
 
-- (id)__testConflictingPHYMode11nWithConfiguration:(id)a3
+- (id)__testConflictingPHYMode11nWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:37];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
+  v7 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
   +[NSDate timeIntervalSinceReferenceDate];
   if ((v7 & 0x8000000000000000) == 0)
   {
@@ -3749,12 +3749,12 @@ LABEL_23:
     }
   }
 
-  v10 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] supportedPHYModes];
-  if ((v10 & 0x10) != 0)
+  supportedPHYModes = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] supportedPHYModes];
+  if ((supportedPHYModes & 0x10) != 0)
   {
     [v5 setDidPass:1];
     v27 = @"SupportedPHYModes";
-    v28 = [NSNumber numberWithUnsignedInt:v10];
+    v28 = [NSNumber numberWithUnsignedInt:supportedPHYModes];
     v19 = &v28;
     v20 = &v27;
 LABEL_23:
@@ -3799,7 +3799,7 @@ LABEL_23:
   {
     [v5 setDidPass:1];
     v29 = @"SupportedPHYModes";
-    v30 = [NSNumber numberWithUnsignedInt:v10];
+    v30 = [NSNumber numberWithUnsignedInt:supportedPHYModes];
     v19 = &v30;
     v20 = &v29;
     goto LABEL_23;
@@ -3807,7 +3807,7 @@ LABEL_23:
 
   [v5 setResult:1];
   v31[0] = @"SupportedPHYModes";
-  v18 = [NSNumber numberWithUnsignedInt:v10];
+  v18 = [NSNumber numberWithUnsignedInt:supportedPHYModes];
   v31[1] = @"ScanResults";
   v32[0] = v18;
   v32[1] = [v11 copy];
@@ -3821,18 +3821,18 @@ LABEL_24:
   return v5;
 }
 
-- (id)__testPoorSignalWithConfiguration:(id)a3
+- (id)__testPoorSignalWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:32];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
   if (v6)
   {
     v7 = v6;
-    v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+    v8 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
     +[NSDate timeIntervalSinceReferenceDate];
     if ((v8 & 0x8000000000000000) == 0)
     {
@@ -3846,10 +3846,10 @@ LABEL_24:
     }
 
     v11 = [(W5DiagnosticsManager *)self __scanResultWithNetworkName:v7];
-    v12 = [v11 rssi];
-    v13 = [v11 noise];
-    v14 = v13;
-    if (v12 < -70 || v12 - v13 <= 9)
+    rssi = [v11 rssi];
+    noise = [v11 noise];
+    v14 = noise;
+    if (rssi < -70 || rssi - noise <= 9)
     {
       [v5 setResult:1];
     }
@@ -3861,7 +3861,7 @@ LABEL_24:
 
     v23[0] = @"RSSI";
     v23[1] = @"Noise";
-    v24[0] = [NSNumber numberWithInteger:v12];
+    v24[0] = [NSNumber numberWithInteger:rssi];
     v24[1] = [NSNumber numberWithInteger:v14];
     v18 = [+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary mutableCopy:v24];
     v19 = v18;
@@ -3875,10 +3875,10 @@ LABEL_24:
 
   if ([(CWFInterface *)[(W5StatusManager *)self->_status corewifi] SSID])
   {
-    v15 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] RSSI];
-    v16 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] noise];
-    v17 = v16;
-    if (v15 < -70 || v15 - v16 <= 9)
+    rSSI = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] RSSI];
+    noise2 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] noise];
+    v17 = noise2;
+    if (rSSI < -70 || rSSI - noise2 <= 9)
     {
       [v5 setResult:1];
     }
@@ -3890,7 +3890,7 @@ LABEL_24:
 
     v21[0] = @"RSSI";
     v21[1] = @"Noise";
-    v22[0] = [NSNumber numberWithInteger:v15];
+    v22[0] = [NSNumber numberWithInteger:rSSI];
     v22[1] = [NSNumber numberWithInteger:v17];
     v19 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
 LABEL_17:
@@ -3902,17 +3902,17 @@ LABEL_17:
   return v5;
 }
 
-- (id)__testPNLContainsHiddenWithConfiguration:(id)a3
+- (id)__testPNLContainsHiddenWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:48];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
   v6 = +[NSMutableArray array];
-  v7 = [a3 objectForKeyedSubscript:@"InternalUUID"];
-  LODWORD(a3) = [objc_msgSend(a3 objectForKeyedSubscript:{@"UseCachedPNL", "BOOLValue"}];
-  v8 = [(W5StatusManager *)self->_status wifi];
-  if (a3)
+  v7 = [configuration objectForKeyedSubscript:@"InternalUUID"];
+  LODWORD(configuration) = [objc_msgSend(configuration objectForKeyedSubscript:{@"UseCachedPNL", "BOOLValue"}];
+  wifi = [(W5StatusManager *)self->_status wifi];
+  if (configuration)
   {
     v9 = v7;
   }
@@ -3922,7 +3922,7 @@ LABEL_17:
     v9 = 0;
   }
 
-  v10 = [(W5WiFiInterface *)v8 cachedPreferredNetworksListWithUUID:v9];
+  v10 = [(W5WiFiInterface *)wifi cachedPreferredNetworksListWithUUID:v9];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -3972,13 +3972,13 @@ LABEL_17:
   return v5;
 }
 
-- (id)__preferredNetworkWithNetworkName:(id)a3 configuration:(id)a4
+- (id)__preferredNetworkWithNetworkName:(id)name configuration:(id)configuration
 {
-  v4 = a4;
-  v7 = [a4 objectForKeyedSubscript:@"InternalUUID"];
-  LODWORD(v4) = [objc_msgSend(v4 objectForKeyedSubscript:{@"UseCachedPNL", "BOOLValue"}];
-  v8 = [(W5StatusManager *)self->_status wifi];
-  if (v4)
+  configurationCopy = configuration;
+  v7 = [configuration objectForKeyedSubscript:@"InternalUUID"];
+  LODWORD(configurationCopy) = [objc_msgSend(configurationCopy objectForKeyedSubscript:{@"UseCachedPNL", "BOOLValue"}];
+  wifi = [(W5StatusManager *)self->_status wifi];
+  if (configurationCopy)
   {
     v9 = v7;
   }
@@ -3988,7 +3988,7 @@ LABEL_17:
     v9 = 0;
   }
 
-  v10 = [(W5WiFiInterface *)v8 cachedPreferredNetworksListWithUUID:v9];
+  v10 = [(W5WiFiInterface *)wifi cachedPreferredNetworksListWithUUID:v9];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -4029,7 +4029,7 @@ LABEL_6:
   }
 }
 
-- (id)__scanResultWithNetworkName:(id)a3
+- (id)__scanResultWithNetworkName:(id)name
 {
   v13 = 0u;
   v14 = 0u;
@@ -4071,25 +4071,25 @@ LABEL_6:
   return v7;
 }
 
-- (id)__testHiddenNetworkWithConfiguration:(id)a3
+- (id)__testHiddenNetworkWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:43];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
   if (v6)
   {
-    v7 = [(W5DiagnosticsManager *)self __preferredNetworkWithNetworkName:v6 configuration:a3];
+    currentPreferredNetwork = [(W5DiagnosticsManager *)self __preferredNetworkWithNetworkName:v6 configuration:configuration];
   }
 
   else
   {
-    v7 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentPreferredNetwork];
+    currentPreferredNetwork = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentPreferredNetwork];
   }
 
-  if ([v7 isHidden])
+  if ([currentPreferredNetwork isHidden])
   {
     [v5 setResult:1];
   }
@@ -4104,14 +4104,14 @@ LABEL_6:
   return v5;
 }
 
-- (id)__testAmbiguousNetworkNameWithConfiguration:(id)a3
+- (id)__testAmbiguousNetworkNameWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:42];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"NetworkName"];
+  v6 = [configuration objectForKeyedSubscript:@"NetworkName"];
   if (v6 || (v6 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] networkName]) != 0)
   {
     v7 = v6;
@@ -4135,14 +4135,14 @@ LABEL_6:
   return v5;
 }
 
-- (id)__testWiFiHiddenScanResultsWithConfiguration:(id)a3
+- (id)__testWiFiHiddenScanResultsWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:30];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+  v6 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
   +[NSDate timeIntervalSinceReferenceDate];
   if ((v6 & 0x8000000000000000) == 0)
   {
@@ -4206,14 +4206,14 @@ LABEL_6:
   return v5;
 }
 
-- (id)__testWiFiNoScanResultsWithConfiguration:(id)a3
+- (id)__testWiFiNoScanResultsWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:31];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
+  v6 = [objc_msgSend(configuration objectForKeyedSubscript:{@"MaxScanCacheAge", "integerValue"}];
   +[NSDate timeIntervalSinceReferenceDate];
   if ((v6 & 0x8000000000000000) == 0)
   {
@@ -4241,23 +4241,23 @@ LABEL_6:
   return v5;
 }
 
-- (id)__testDownloadSpeedWithConfiguration:(id)a3
+- (id)__testDownloadSpeedWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:49];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"SpeedTestFileSizes"];
-  v7 = [a3 objectForKeyedSubscript:@"SpeedTestTimeout"];
+  v6 = [configuration objectForKeyedSubscript:@"SpeedTestFileSizes"];
+  v7 = [configuration objectForKeyedSubscript:@"SpeedTestTimeout"];
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 5;
+    unsignedIntegerValue = 5;
   }
 
   v16 = 0;
@@ -4271,20 +4271,20 @@ LABEL_6:
     v9 = 1;
     while (1)
     {
-      v10 = -[W5DiagnosticsManager __downloadSpeedtestWithFileSize:timeout:error:](self, "__downloadSpeedtestWithFileSize:timeout:error:", [objc_msgSend(v6 objectAtIndexedSubscript:{v9 - 1), "unsignedIntValue"}], v8, &v16);
+      v10 = -[W5DiagnosticsManager __downloadSpeedtestWithFileSize:timeout:error:](self, "__downloadSpeedtestWithFileSize:timeout:error:", [objc_msgSend(v6 objectAtIndexedSubscript:{v9 - 1), "unsignedIntValue"}], unsignedIntegerValue, &v16);
       if (!v10)
       {
         break;
       }
 
       v11 = v10;
-      v12 = [v10 fileSize];
+      fileSize = [v10 fileSize];
       [v11 speed];
       v14 = v13;
       if (v9 < [v6 count])
       {
         ++v9;
-        if ((8 * v12) / (v14 * 1000000.0) <= 1.0)
+        if ((8 * fileSize) / (v14 * 1000000.0) <= 1.0)
         {
           continue;
         }
@@ -4305,23 +4305,23 @@ LABEL_6:
   return v5;
 }
 
-- (id)__testUploadSpeedWithConfiguration:(id)a3
+- (id)__testUploadSpeedWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:50];
-  [v5 setConfiguration:a3];
+  [v5 setConfiguration:configuration];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"SpeedTestFileSizes"];
-  v7 = [a3 objectForKeyedSubscript:@"SpeedTestTimeout"];
+  v6 = [configuration objectForKeyedSubscript:@"SpeedTestFileSizes"];
+  v7 = [configuration objectForKeyedSubscript:@"SpeedTestTimeout"];
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 5;
+    unsignedIntegerValue = 5;
   }
 
   v16 = 0;
@@ -4335,20 +4335,20 @@ LABEL_6:
     v9 = 1;
     while (1)
     {
-      v10 = -[W5DiagnosticsManager __uploadSpeedtestWithFileSize:timeout:error:](self, "__uploadSpeedtestWithFileSize:timeout:error:", [objc_msgSend(v6 objectAtIndexedSubscript:{v9 - 1), "unsignedIntValue"}], v8, &v16);
+      v10 = -[W5DiagnosticsManager __uploadSpeedtestWithFileSize:timeout:error:](self, "__uploadSpeedtestWithFileSize:timeout:error:", [objc_msgSend(v6 objectAtIndexedSubscript:{v9 - 1), "unsignedIntValue"}], unsignedIntegerValue, &v16);
       if (!v10)
       {
         break;
       }
 
       v11 = v10;
-      v12 = [v10 fileSize];
+      fileSize = [v10 fileSize];
       [v11 speed];
       v14 = v13;
       if (v9 < [v6 count])
       {
         ++v9;
-        if ((8 * v12) / (v14 * 1000000.0) <= 1.0)
+        if ((8 * fileSize) / (v14 * 1000000.0) <= 1.0)
         {
           continue;
         }
@@ -4375,10 +4375,10 @@ LABEL_6:
   [v3 setTestID:51];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestStarted:?];
-  v4 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentNetwork];
-  [v4 scanRecord];
+  currentNetwork = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] currentNetwork];
+  [currentNetwork scanRecord];
   v5 = WiFiNetworkCreate();
-  if (v5 && (v6 = v5, [v4 bssid], IsAPLeaky = WiFiNetworkIsAPLeaky(), CFRelease(v6), IsAPLeaky))
+  if (v5 && (v6 = v5, [currentNetwork bssid], IsAPLeaky = WiFiNetworkIsAPLeaky(), CFRelease(v6), IsAPLeaky))
   {
     [v3 setResult:1];
   }
@@ -4399,11 +4399,11 @@ LABEL_6:
   [v3 setTestID:52];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestStarted:?];
-  v4 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] networkName];
-  if (v4)
+  networkName = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] networkName];
+  if (networkName)
   {
     v6 = @"NetworkName";
-    v7 = v4;
+    v7 = networkName;
     [v3 setInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v7, &v6, 1)}];
     [v3 setResult:1];
     [v3 setDidPass:1];
@@ -4420,9 +4420,9 @@ LABEL_6:
   [v3 setTestID:57];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestStarted:?];
-  v4 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] globalIPv4InterfaceName];
-  v5 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] globalIPv4NetworkServiceName];
-  v6 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] globalIPv4NetworkServiceID];
+  globalIPv4InterfaceName = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] globalIPv4InterfaceName];
+  globalIPv4NetworkServiceName = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] globalIPv4NetworkServiceName];
+  globalIPv4NetworkServiceID = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] globalIPv4NetworkServiceID];
   if ([-[CWFInterface networkServiceID](-[W5StatusManager corewifi](self->_status "corewifi")])
   {
     [v3 setResult:1];
@@ -4430,9 +4430,9 @@ LABEL_6:
   }
 
   v7 = +[NSMutableDictionary dictionary];
-  [v7 setObject:v4 forKeyedSubscript:@"IPv4InterfaceName"];
-  [v7 setObject:v5 forKeyedSubscript:@"IPv4ServiceName"];
-  [v7 setObject:v6 forKeyedSubscript:@"IPv4ServiceID"];
+  [v7 setObject:globalIPv4InterfaceName forKeyedSubscript:@"IPv4InterfaceName"];
+  [v7 setObject:globalIPv4NetworkServiceName forKeyedSubscript:@"IPv4ServiceName"];
+  [v7 setObject:globalIPv4NetworkServiceID forKeyedSubscript:@"IPv4ServiceID"];
   [v3 setInfo:v7];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestCompleted:?];
@@ -4445,9 +4445,9 @@ LABEL_6:
   [v3 setTestID:58];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestStarted:?];
-  v4 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] globalIPv6InterfaceName];
-  v5 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] globalIPv6NetworkServiceName];
-  v6 = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] globalIPv6NetworkServiceID];
+  globalIPv6InterfaceName = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] globalIPv6InterfaceName];
+  globalIPv6NetworkServiceName = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] globalIPv6NetworkServiceName];
+  globalIPv6NetworkServiceID = [(CWFInterface *)[(W5StatusManager *)self->_status corewifi] globalIPv6NetworkServiceID];
   if ([-[CWFInterface networkServiceID](-[W5StatusManager corewifi](self->_status "corewifi")])
   {
     [v3 setResult:1];
@@ -4455,29 +4455,29 @@ LABEL_6:
   }
 
   v7 = +[NSMutableDictionary dictionary];
-  [v7 setObject:v4 forKeyedSubscript:@"IPv6InterfaceName"];
-  [v7 setObject:v5 forKeyedSubscript:@"IPv6ServiceName"];
-  [v7 setObject:v6 forKeyedSubscript:@"IPv6ServiceID"];
+  [v7 setObject:globalIPv6InterfaceName forKeyedSubscript:@"IPv6InterfaceName"];
+  [v7 setObject:globalIPv6NetworkServiceName forKeyedSubscript:@"IPv6ServiceName"];
+  [v7 setObject:globalIPv6NetworkServiceID forKeyedSubscript:@"IPv6ServiceID"];
   [v3 setInfo:v7];
   +[NSDate timeIntervalSinceReferenceDate];
   [v3 setTestCompleted:?];
   return v3;
 }
 
-- (id)__testReachabilityToPeersWithConfiguration:(id)a3
+- (id)__testReachabilityToPeersWithConfiguration:(id)configuration
 {
   v5 = objc_alloc_init(W5DiagnosticsTestResult);
   [v5 setTestID:63];
   +[NSDate timeIntervalSinceReferenceDate];
   [v5 setTestStarted:?];
-  v6 = [a3 objectForKeyedSubscript:@"PingCount"];
-  v7 = [a3 objectForKeyedSubscript:@"PingTimeout"];
-  v8 = [a3 objectForKeyedSubscript:@"PingInterval"];
-  v9 = [a3 objectForKeyedSubscript:@"PingWait"];
-  v10 = [a3 objectForKeyedSubscript:@"PingDataLength"];
+  v6 = [configuration objectForKeyedSubscript:@"PingCount"];
+  v7 = [configuration objectForKeyedSubscript:@"PingTimeout"];
+  v8 = [configuration objectForKeyedSubscript:@"PingInterval"];
+  v9 = [configuration objectForKeyedSubscript:@"PingWait"];
+  v10 = [configuration objectForKeyedSubscript:@"PingDataLength"];
   if (v6)
   {
-    v32 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     if (v7)
     {
       goto LABEL_3;
@@ -4486,7 +4486,7 @@ LABEL_6:
 
   else
   {
-    v32 = 1;
+    integerValue = 1;
     if (v7)
     {
 LABEL_3:
@@ -4520,7 +4520,7 @@ LABEL_10:
     }
 
 LABEL_11:
-    v31 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_12;
   }
 
@@ -4540,10 +4540,10 @@ LABEL_5:
   }
 
 LABEL_6:
-  v31 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 LABEL_12:
-  v17 = [a3 objectForKeyedSubscript:@"PingTrafficClass"];
-  v18 = [a3 objectForKeyedSubscript:@"AddressesToPing"];
+  v17 = [configuration objectForKeyedSubscript:@"PingTrafficClass"];
+  v18 = [configuration objectForKeyedSubscript:@"AddressesToPing"];
   v19 = objc_opt_new();
   v30 = v5;
   if (-[CWFInterface SSID](-[W5StatusManager corewifi](self->_status, "corewifi"), "SSID") && (v35 = 0u, v36 = 0u, v33 = 0u, v34 = 0u, (v20 = [v18 countByEnumeratingWithState:&v33 objects:v39 count:16]) != 0))
@@ -4561,7 +4561,7 @@ LABEL_12:
           objc_enumerationMutation(v18);
         }
 
-        v26 = [(W5DiagnosticsManager *)self __performPingWithAddress:*(*(&v33 + 1) + 8 * i) count:v32 timeout:v17 wait:[(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName] interval:v31 trafficClass:v12 interfaceName:v16 dataLength:v14];
+        v26 = [(W5DiagnosticsManager *)self __performPingWithAddress:*(*(&v33 + 1) + 8 * i) count:integerValue timeout:v17 wait:[(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName] interval:unsignedIntegerValue trafficClass:v12 interfaceName:v16 dataLength:v14];
         [v26 packetLoss];
         v28 = v27 < 100.0;
         v23 = v28 & v23;
@@ -4591,92 +4591,92 @@ LABEL_12:
   return v30;
 }
 
-- (id)__orderedChannelWeights:(id)a3
+- (id)__orderedChannelWeights:(id)weights
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000474C8;
   v4[3] = &unk_1000E2868;
-  v4[4] = a3;
-  return [objc_msgSend(a3 "allKeys")];
+  v4[4] = weights;
+  return [objc_msgSend(weights "allKeys")];
 }
 
-- (id)__overlappingChannelsForChannel:(id)a3 supportedChannels:(id)a4
+- (id)__overlappingChannelsForChannel:(id)channel supportedChannels:(id)channels
 {
   v6 = +[NSMutableArray array];
   v7 = +[NSMutableArray array];
-  v8 = [a3 channel];
-  if (([a3 flags] & 0x800) != 0)
+  channel = [channel channel];
+  if (([channel flags] & 0x800) != 0)
   {
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 16)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 15)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 14)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 13)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 12)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 11)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 10)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 9)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 8)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 7)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 6)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 5)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 4)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 3)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 2)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 1)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 1)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 2)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 3)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 4)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 5)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 6)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 7)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 8)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 9)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 10)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 11)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 12)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 13)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 14)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 15)}];
-    v11 = v8 + 16;
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 16)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 15)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 14)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 13)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 12)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 11)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 10)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 9)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 8)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 7)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 6)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 5)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 4)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 3)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 2)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 1)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 1)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 2)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 3)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 4)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 5)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 6)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 7)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 8)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 9)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 10)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 11)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 12)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 13)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 14)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 15)}];
+    v11 = channel + 16;
   }
 
-  else if (([a3 flags] & 0x400) != 0)
+  else if (([channel flags] & 0x400) != 0)
   {
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 8)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 7)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 6)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 5)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 4)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 3)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 2)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 1)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 1)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 2)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 3)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 4)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 5)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 6)}];
-    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 7)}];
-    v11 = v8 + 8;
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 8)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 7)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 6)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 5)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 4)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 3)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 2)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 1)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 1)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 2)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 3)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 4)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 5)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 6)}];
+    [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 7)}];
+    v11 = channel + 8;
   }
 
   else
   {
-    v9 = [a3 flags];
-    v10 = [a3 flags];
-    if ((v9 & 4) != 0)
+    flags = [channel flags];
+    flags2 = [channel flags];
+    if ((flags & 4) != 0)
     {
       v12 = -2;
-      if ((v10 & 0x200) != 0)
+      if ((flags2 & 0x200) != 0)
       {
         v12 = 2;
       }
 
-      v13 = (v12 + 2 * v8) >> 1;
+      v13 = (v12 + 2 * channel) >> 1;
       [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v13 - 4)}];
       [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v13 - 3)}];
       [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v13 - 2)}];
@@ -4690,22 +4690,22 @@ LABEL_12:
 
     else
     {
-      if ((v10 & 2) == 0)
+      if ((flags2 & 2) == 0)
       {
         goto LABEL_12;
       }
 
-      [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 2)}];
-      [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 - 1)}];
-      [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8)}];
-      [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v8 + 1)}];
-      v11 = v8 + 2;
+      [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 2)}];
+      [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 1)}];
+      [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel)}];
+      [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 1)}];
+      v11 = channel + 2;
     }
   }
 
   [v7 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v11)}];
 LABEL_12:
-  v14 = [W5DiagnosticsManager __channelNumbersForWiFiChannels:a4];
+  v14 = [W5DiagnosticsManager __channelNumbersForWiFiChannels:channels];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -4740,14 +4740,14 @@ LABEL_12:
   return [v6 copy];
 }
 
-+ (id)__channelNumbersForWiFiChannels:(id)a3
++ (id)__channelNumbersForWiFiChannels:(id)channels
 {
   v4 = +[NSMutableArray array];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [channels countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4759,7 +4759,7 @@ LABEL_12:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(channels);
         }
 
         [v4 addObject:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", objc_msgSend(*(*(&v10 + 1) + 8 * v8), "channel"))}];
@@ -4767,7 +4767,7 @@ LABEL_12:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [channels countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -4776,14 +4776,14 @@ LABEL_12:
   return [v4 copy];
 }
 
-- (id)__only5GHzNonDFSChannels:(id)a3
+- (id)__only5GHzNonDFSChannels:(id)channels
 {
   v4 = +[NSMutableArray array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [channels countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4794,7 +4794,7 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(channels);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -4804,7 +4804,7 @@ LABEL_12:
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [channels countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -4813,14 +4813,14 @@ LABEL_12:
   return [v4 copy];
 }
 
-- (id)__only2GHzChannels:(id)a3
+- (id)__only2GHzChannels:(id)channels
 {
   v4 = +[NSMutableArray array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [channels countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4831,7 +4831,7 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(channels);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -4841,7 +4841,7 @@ LABEL_12:
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [channels countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -4850,14 +4850,14 @@ LABEL_12:
   return [v4 copy];
 }
 
-- (id)__only5GHzChannels:(id)a3
+- (id)__only5GHzChannels:(id)channels
 {
   v4 = +[NSMutableArray array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [channels countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4868,7 +4868,7 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(channels);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -4878,7 +4878,7 @@ LABEL_12:
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [channels countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -4887,14 +4887,14 @@ LABEL_12:
   return [v4 copy];
 }
 
-- (id)__only2GHz_1_6_11_14_Channels:(id)a3
+- (id)__only2GHz_1_6_11_14_Channels:(id)channels
 {
   v4 = +[NSMutableArray array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [channels countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4905,7 +4905,7 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(channels);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -4915,7 +4915,7 @@ LABEL_12:
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [channels countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -4924,14 +4924,14 @@ LABEL_12:
   return [v4 copy];
 }
 
-- (id)__only5GHz20MHz40MHzChannels:(id)a3
+- (id)__only5GHz20MHz40MHzChannels:(id)channels
 {
   v4 = +[NSMutableArray array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [channels countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4942,7 +4942,7 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(channels);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -4952,7 +4952,7 @@ LABEL_12:
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [channels countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -4961,14 +4961,14 @@ LABEL_12:
   return [v4 copy];
 }
 
-- (id)__only5GHz40MHzChannels:(id)a3
+- (id)__only5GHz40MHzChannels:(id)channels
 {
   v4 = +[NSMutableArray array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [channels countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4979,7 +4979,7 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(channels);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -4989,7 +4989,7 @@ LABEL_12:
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [channels countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -4998,15 +4998,15 @@ LABEL_12:
   return [v4 copy];
 }
 
-- (id)__filteredChannelWeights:(id)a3 channels:(id)a4
+- (id)__filteredChannelWeights:(id)weights channels:(id)channels
 {
   v6 = +[NSMutableDictionary dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [a3 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [weights allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -5017,17 +5017,17 @@ LABEL_12:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if ([a4 containsObject:v12])
+        if ([channels containsObject:v12])
         {
-          [v6 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", v12), v12}];
+          [v6 setObject:objc_msgSend(weights forKeyedSubscript:{"objectForKeyedSubscript:", v12), v12}];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -5036,15 +5036,15 @@ LABEL_12:
   return [v6 copy];
 }
 
-- (id)__adjust5GHzWeights:(id)a3
+- (id)__adjust5GHzWeights:(id)weights
 {
   v4 = +[NSMutableDictionary dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [weights allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -5055,7 +5055,7 @@ LABEL_12:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -5084,11 +5084,11 @@ LABEL_12:
           v11 = v11 + -0.1;
         }
 
-        [objc_msgSend(a3 objectForKeyedSubscript:{v10), "floatValue"}];
+        [objc_msgSend(weights objectForKeyedSubscript:{v10), "floatValue"}];
         [v4 setObject:+[NSNumber numberWithDouble:](NSNumber forKeyedSubscript:{"numberWithDouble:", v11 + v12), v10}];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -5097,14 +5097,14 @@ LABEL_12:
   return [v4 copy];
 }
 
-- (id)__applyChannelWeights:(id)a3 supportedChannels:(id)a4
+- (id)__applyChannelWeights:(id)weights supportedChannels:(id)channels
 {
   v23 = +[NSMutableDictionary dictionary];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v6 = [channels countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -5115,11 +5115,11 @@ LABEL_12:
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(channels);
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
-        v11 = [(W5DiagnosticsManager *)self __overlappingChannelsForChannel:v10 supportedChannels:a4];
+        v11 = [(W5DiagnosticsManager *)self __overlappingChannelsForChannel:v10 supportedChannels:channels];
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
@@ -5144,7 +5144,7 @@ LABEL_12:
             }
 
             v15 = v15 + 1.0;
-            [objc_msgSend(a3 objectForKeyedSubscript:{*(*(&v24 + 1) + 8 * j)), "floatValue"}];
+            [objc_msgSend(weights objectForKeyedSubscript:{*(*(&v24 + 1) + 8 * j)), "floatValue"}];
             v16 = v16 + v18;
           }
 
@@ -5167,7 +5167,7 @@ LABEL_15:
         [v23 setObject:v20 forKeyedSubscript:v10];
       }
 
-      v7 = [a4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v7 = [channels countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v7);
@@ -5176,10 +5176,10 @@ LABEL_15:
   return [v23 copy];
 }
 
-- (id)__channelWeightsForScanResults:(id)a3 supportedChannels:(id)a4 rssiThreshold:(int64_t)a5
+- (id)__channelWeightsForScanResults:(id)results supportedChannels:(id)channels rssiThreshold:(int64_t)threshold
 {
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [W5DiagnosticsManager __channelNumbersForWiFiChannels:a4];
+  v7 = [W5DiagnosticsManager __channelNumbersForWiFiChannels:channels];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -5211,7 +5211,7 @@ LABEL_15:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v31 = [a3 countByEnumeratingWithState:&v37 objects:v46 count:16];
+  v31 = [results countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v31)
   {
     v29 = *v38;
@@ -5222,20 +5222,20 @@ LABEL_15:
       {
         if (*v38 != v29)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(results);
         }
 
         v32 = v12;
         v13 = *(*(&v37 + 1) + 8 * v12);
-        if ([v13 rssi] >= a5)
+        if ([v13 rssi] >= threshold)
         {
           v14 = -[W5DiagnosticsManager __channelWeightsForChannel:](self, "__channelWeightsForChannel:", [v13 channel]);
           v33 = 0u;
           v34 = 0u;
           v35 = 0u;
           v36 = 0u;
-          v15 = [v14 allKeys];
-          v16 = [v15 countByEnumeratingWithState:&v33 objects:v45 count:16];
+          allKeys = [v14 allKeys];
+          v16 = [allKeys countByEnumeratingWithState:&v33 objects:v45 count:16];
           if (v16)
           {
             v17 = v16;
@@ -5246,7 +5246,7 @@ LABEL_15:
               {
                 if (*v34 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v20 = *(*(&v33 + 1) + 8 * j);
@@ -5258,7 +5258,7 @@ LABEL_15:
                 [v6 setObject:+[NSNumber numberWithFloat:](NSNumber forKeyedSubscript:{"numberWithFloat:", v25), v20}];
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v33 objects:v45 count:16];
+              v17 = [allKeys countByEnumeratingWithState:&v33 objects:v45 count:16];
             }
 
             while (v17);
@@ -5269,7 +5269,7 @@ LABEL_15:
       }
 
       while ((v32 + 1) != v31);
-      v31 = [a3 countByEnumeratingWithState:&v37 objects:v46 count:16];
+      v31 = [results countByEnumeratingWithState:&v37 objects:v46 count:16];
     }
 
     while (v31);
@@ -5278,14 +5278,14 @@ LABEL_15:
   return [(W5DiagnosticsManager *)self __filteredChannelWeights:v6 channels:v7];
 }
 
-- (id)__occupiedChannelsForScanResults:(id)a3 supportedChannels:(id)a4 rssiThreshold:(int64_t)a5 ignoreChannel:(id)a6
+- (id)__occupiedChannelsForScanResults:(id)results supportedChannels:(id)channels rssiThreshold:(int64_t)threshold ignoreChannel:(id)channel
 {
   v10 = +[NSMutableOrderedSet orderedSet];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v11 = [results countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -5296,21 +5296,21 @@ LABEL_15:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(results);
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        if ([v15 rssi] >= a5)
+        if ([v15 rssi] >= threshold)
         {
-          v16 = [a6 channel];
-          if (v16 != [objc_msgSend(v15 "channel")])
+          channel = [channel channel];
+          if (channel != [objc_msgSend(v15 "channel")])
           {
-            [v10 addObjectsFromArray:{-[W5DiagnosticsManager __overlappingChannelsForChannel:supportedChannels:](self, "__overlappingChannelsForChannel:supportedChannels:", objc_msgSend(v15, "channel"), a4)}];
+            [v10 addObjectsFromArray:{-[W5DiagnosticsManager __overlappingChannelsForChannel:supportedChannels:](self, "__overlappingChannelsForChannel:supportedChannels:", objc_msgSend(v15, "channel"), channels)}];
           }
         }
       }
 
-      v12 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [results countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);
@@ -5319,81 +5319,81 @@ LABEL_15:
   return [objc_msgSend(v10 "array")];
 }
 
-- (id)__channelWeightsForChannel:(id)a3
+- (id)__channelWeightsForChannel:(id)channel
 {
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [a3 channel];
-  if (([a3 flags] & 0x800) != 0)
+  channel = [channel channel];
+  if (([channel flags] & 0x800) != 0)
   {
-    [v4 setObject:&off_1000EEF78 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 16)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 15)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 14)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 13)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 12)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 11)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 10)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 9)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 8)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 7)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 6)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 5)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 4)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 3)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 2)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 1)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 1)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 2)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 3)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 4)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 5)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 6)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 7)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 8)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 9)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 10)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 11)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 12)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 13)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 14)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 15)}];
-    v8 = v5 - 16;
+    [v4 setObject:&off_1000EEF78 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 16)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 15)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 14)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 13)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 12)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 11)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 10)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 9)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 8)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 7)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 6)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 5)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 4)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 3)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 2)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 1)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 1)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 2)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 3)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 4)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 5)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 6)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 7)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 8)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 9)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 10)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 11)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 12)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 13)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 14)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 15)}];
+    v8 = channel - 16;
   }
 
-  else if (([a3 flags] & 0x400) != 0)
+  else if (([channel flags] & 0x400) != 0)
   {
-    [v4 setObject:&off_1000EEF78 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 8)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 7)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 6)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 5)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 4)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 3)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 2)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 1)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 1)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 2)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 3)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 4)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 5)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 6)}];
-    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 7)}];
-    v8 = v5 - 8;
+    [v4 setObject:&off_1000EEF78 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 8)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 7)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 6)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 5)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 4)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 3)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 2)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 1)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 1)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 2)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 3)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 4)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 5)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 6)}];
+    [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 7)}];
+    v8 = channel - 8;
   }
 
   else
   {
-    v6 = [a3 flags];
-    v7 = [a3 flags];
-    if ((v6 & 4) != 0)
+    flags = [channel flags];
+    flags2 = [channel flags];
+    if ((flags & 4) != 0)
     {
       v9 = -2;
-      if ((v7 & 0x200) != 0)
+      if ((flags2 & 0x200) != 0)
       {
         v9 = 2;
       }
 
-      v10 = (v9 + 2 * v5) >> 1;
+      v10 = (v9 + 2 * channel) >> 1;
       [v4 setObject:&off_1000EEF78 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v10 + 4)}];
       [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v10 + 3)}];
       [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v10 + 2)}];
@@ -5407,16 +5407,16 @@ LABEL_15:
 
     else
     {
-      if ((v7 & 2) == 0)
+      if ((flags2 & 2) == 0)
       {
         goto LABEL_12;
       }
 
-      [v4 setObject:&off_1000EEF78 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 2)}];
-      [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 + 1)}];
-      [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5)}];
-      [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v5 - 1)}];
-      v8 = v5 - 2;
+      [v4 setObject:&off_1000EEF78 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 2)}];
+      [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel + 1)}];
+      [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel)}];
+      [v4 setObject:&off_1000EEFF0 forKeyedSubscript:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", channel - 1)}];
+      v8 = channel - 2;
     }
   }
 
@@ -5437,17 +5437,17 @@ LABEL_12:
   return qword_100106BF8;
 }
 
-- (BOOL)__isUsingCustomProxySettings:(id)a3
+- (BOOL)__isUsingCustomProxySettings:(id)settings
 {
-  if ([a3 count] != 2)
+  if ([settings count] != 2)
   {
-    return [a3 count] != 0;
+    return [settings count] != 0;
   }
 
-  v4 = [a3 objectForKeyedSubscript:kSCPropNetProxiesExceptionsList];
+  v4 = [settings objectForKeyedSubscript:kSCPropNetProxiesExceptionsList];
   if ([v4 count] == 2 && objc_msgSend(v4, "containsObject:", @"*.local") && objc_msgSend(v4, "containsObject:", @"169.254/16"))
   {
-    return [objc_msgSend(a3 objectForKeyedSubscript:{kSCPropNetProxiesFTPPassive), "BOOLValue"}] ^ 1;
+    return [objc_msgSend(settings objectForKeyedSubscript:{kSCPropNetProxiesFTPPassive), "BOOLValue"}] ^ 1;
   }
 
   else
@@ -5456,29 +5456,29 @@ LABEL_12:
   }
 }
 
-- (int64_t)__ipv6ConfigMethodForDescription:(id)a3
+- (int64_t)__ipv6ConfigMethodForDescription:(id)description
 {
-  if ([a3 isEqualToString:kSCValNetIPv6ConfigMethodAutomatic])
+  if ([description isEqualToString:kSCValNetIPv6ConfigMethodAutomatic])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:kSCValNetIPv6ConfigMethodLinkLocal])
+  if ([description isEqualToString:kSCValNetIPv6ConfigMethodLinkLocal])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:kSCValNetIPv6ConfigMethodManual])
+  if ([description isEqualToString:kSCValNetIPv6ConfigMethodManual])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:kSCValNetIPv6ConfigMethodRouterAdvertisement])
+  if ([description isEqualToString:kSCValNetIPv6ConfigMethodRouterAdvertisement])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:kSCValNetIPv6ConfigMethod6to4])
+  if ([description isEqualToString:kSCValNetIPv6ConfigMethod6to4])
   {
     return 5;
   }
@@ -5486,39 +5486,39 @@ LABEL_12:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (int64_t)__ipv4ConfigMethodForDescription:(id)a3
+- (int64_t)__ipv4ConfigMethodForDescription:(id)description
 {
-  if ([a3 isEqualToString:kSCValNetIPv4ConfigMethodAutomatic])
+  if ([description isEqualToString:kSCValNetIPv4ConfigMethodAutomatic])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:kSCValNetIPv4ConfigMethodLinkLocal])
+  if ([description isEqualToString:kSCValNetIPv4ConfigMethodLinkLocal])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:kSCValNetIPv4ConfigMethodDHCP])
+  if ([description isEqualToString:kSCValNetIPv4ConfigMethodDHCP])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:kSCValNetIPv4ConfigMethodManual])
+  if ([description isEqualToString:kSCValNetIPv4ConfigMethodManual])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:kSCValNetIPv4ConfigMethodBOOTP])
+  if ([description isEqualToString:kSCValNetIPv4ConfigMethodBOOTP])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:kSCValNetIPv4ConfigMethodINFORM])
+  if ([description isEqualToString:kSCValNetIPv4ConfigMethodINFORM])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:kSCValNetIPv4ConfigMethodPPP])
+  if ([description isEqualToString:kSCValNetIPv4ConfigMethodPPP])
   {
     return 7;
   }
@@ -5526,11 +5526,11 @@ LABEL_12:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)__runDiagnosticsTest:(id)a3
+- (id)__runDiagnosticsTest:(id)test
 {
-  [a3 testID];
+  [test testID];
   v5 = W5DescriptionForDiagnosticsTestID();
-  if (-[NSArray containsObject:](-[W5StatusManager bootArgs](self->_status, "bootArgs"), "containsObject:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@=%ld", @"wifivelocity-exclude-test", [a3 testID])) || -[NSArray containsObject:](-[W5StatusManager bootArgs](self->_status, "bootArgs"), "containsObject:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@='%@'", @"wifivelocity-exclude-test", v5)))
+  if (-[NSArray containsObject:](-[W5StatusManager bootArgs](self->_status, "bootArgs"), "containsObject:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@=%ld", @"wifivelocity-exclude-test", [test testID])) || -[NSArray containsObject:](-[W5StatusManager bootArgs](self->_status, "bootArgs"), "containsObject:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@='%@'", @"wifivelocity-exclude-test", v5)))
   {
     v6 = sub_100098A04();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -5538,7 +5538,7 @@ LABEL_12:
       v23 = 138543618;
       v24 = v5;
       v25 = 2048;
-      v26 = [a3 testID];
+      testID = [test testID];
       _os_log_send_and_compose_impl();
     }
 
@@ -5554,7 +5554,7 @@ LABEL_12:
       v23 = 138543874;
       v24 = v10;
       v25 = 2114;
-      v26 = [objc_msgSend(objc_msgSend(a3 "uuid")];
+      testID = [objc_msgSend(objc_msgSend(test "uuid")];
       v27 = 2114;
       v28 = v5;
       LODWORD(v22) = 32;
@@ -5562,173 +5562,173 @@ LABEL_12:
       _os_log_send_and_compose_impl();
     }
 
-    switch([a3 testID])
+    switch([test testID])
     {
       case 1uLL:
-        v11 = -[W5DiagnosticsManager __testPingLANWithConfiguration:](self, "__testPingLANWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testPingLANWithConfiguration:](self, "__testPingLANWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 2uLL:
-        v11 = [(W5DiagnosticsManager *)self __testPingLANUsingIMFoundation];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testPingLANUsingIMFoundation];
         goto LABEL_75;
       case 3uLL:
-        v11 = -[W5DiagnosticsManager __testPingLANUsingCFNetworkWithConfiguration:](self, "__testPingLANUsingCFNetworkWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testPingLANUsingCFNetworkWithConfiguration:](self, "__testPingLANUsingCFNetworkWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 4uLL:
-        v11 = -[W5DiagnosticsManager __testPingWANWithConfiguration:](self, "__testPingWANWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testPingWANWithConfiguration:](self, "__testPingWANWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 5uLL:
-        v11 = [(W5DiagnosticsManager *)self __testPingWANUsingIMFoundation];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testPingWANUsingIMFoundation];
         goto LABEL_75;
       case 6uLL:
-        v11 = -[W5DiagnosticsManager __testPingWANUsingCFNetworkWithConfiguration:](self, "__testPingWANUsingCFNetworkWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testPingWANUsingCFNetworkWithConfiguration:](self, "__testPingWANUsingCFNetworkWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 7uLL:
-        v11 = [(W5DiagnosticsManager *)self __testResolveDNS];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testResolveDNS];
         goto LABEL_75;
       case 8uLL:
-        v11 = [(W5DiagnosticsManager *)self __testDetectDoubleNAT];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testDetectDoubleNAT];
         goto LABEL_75;
       case 9uLL:
-        v11 = [(W5DiagnosticsManager *)self __testReachApple];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testReachApple];
         goto LABEL_75;
       case 0xAuLL:
-        v11 = [(W5DiagnosticsManager *)self __testRetrieveApple];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testRetrieveApple];
         goto LABEL_75;
       case 0xBuLL:
-        v11 = -[W5DiagnosticsManager __testRetrieveAppleForceWiFiWithConfiguration:](self, "__testRetrieveAppleForceWiFiWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testRetrieveAppleForceWiFiWithConfiguration:](self, "__testRetrieveAppleForceWiFiWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0xCuLL:
-        v11 = [(W5DiagnosticsManager *)self __testIPv4Assigned];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testIPv4Assigned];
         goto LABEL_75;
       case 0xDuLL:
-        v11 = [(W5DiagnosticsManager *)self __testIPv6Assigned];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testIPv6Assigned];
         goto LABEL_75;
       case 0xEuLL:
-        v11 = [(W5DiagnosticsManager *)self __testCustomIPv4];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testCustomIPv4];
         goto LABEL_75;
       case 0xFuLL:
-        v11 = [(W5DiagnosticsManager *)self __testCustomIPv6];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testCustomIPv6];
         goto LABEL_75;
       case 0x10uLL:
-        v11 = [(W5DiagnosticsManager *)self __testCustomDNS];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testCustomDNS];
         goto LABEL_75;
       case 0x11uLL:
-        v11 = [(W5DiagnosticsManager *)self __testCustomWebProxy];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testCustomWebProxy];
         goto LABEL_75;
       case 0x12uLL:
-        v11 = -[W5DiagnosticsManager __testHighBTPairedWithConfiguration:](self, "__testHighBTPairedWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testHighBTPairedWithConfiguration:](self, "__testHighBTPairedWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x13uLL:
-        v11 = -[W5DiagnosticsManager __testHighBTConnectedWithConfiguration:](self, "__testHighBTConnectedWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testHighBTConnectedWithConfiguration:](self, "__testHighBTConnectedWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x14uLL:
-        v11 = -[W5DiagnosticsManager __testBTCoexWithConfiguration:](self, "__testBTCoexWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testBTCoexWithConfiguration:](self, "__testBTCoexWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x15uLL:
-        v11 = -[W5DiagnosticsManager __testAWDLEnabledWithConfiguration:](self, "__testAWDLEnabledWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testAWDLEnabledWithConfiguration:](self, "__testAWDLEnabledWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x16uLL:
-        v11 = -[W5DiagnosticsManager __testAWDLRealtimeWithConfiguration:](self, "__testAWDLRealtimeWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testAWDLRealtimeWithConfiguration:](self, "__testAWDLRealtimeWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x17uLL:
-        v11 = -[W5DiagnosticsManager __testCongestedChannelUsingCCAWithConfiguration:](self, "__testCongestedChannelUsingCCAWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testCongestedChannelUsingCCAWithConfiguration:](self, "__testCongestedChannelUsingCCAWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x18uLL:
-        v11 = -[W5DiagnosticsManager __testCongestedChannelWithConfiguration:](self, "__testCongestedChannelWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testCongestedChannelWithConfiguration:](self, "__testCongestedChannelWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x19uLL:
-        v11 = -[W5DiagnosticsManager __testCongested2GHzWithConfiguration:](self, "__testCongested2GHzWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testCongested2GHzWithConfiguration:](self, "__testCongested2GHzWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x1AuLL:
-        v11 = -[W5DiagnosticsManager __testCongested5GHzWithConfiguration:](self, "__testCongested5GHzWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testCongested5GHzWithConfiguration:](self, "__testCongested5GHzWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x1BuLL:
-        v11 = -[W5DiagnosticsManager __testHT402GHzWithConfiguration:](self, "__testHT402GHzWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testHT402GHzWithConfiguration:](self, "__testHT402GHzWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x1CuLL:
-        v11 = -[W5DiagnosticsManager __testConflictingCountryCodeWithConfiguration:](self, "__testConflictingCountryCodeWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testConflictingCountryCodeWithConfiguration:](self, "__testConflictingCountryCodeWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x1DuLL:
-        v11 = -[W5DiagnosticsManager __testConflictingSecurityTypePNLWithConfiguration:](self, "__testConflictingSecurityTypePNLWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testConflictingSecurityTypePNLWithConfiguration:](self, "__testConflictingSecurityTypePNLWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x1EuLL:
-        v11 = -[W5DiagnosticsManager __testWiFiHiddenScanResultsWithConfiguration:](self, "__testWiFiHiddenScanResultsWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testWiFiHiddenScanResultsWithConfiguration:](self, "__testWiFiHiddenScanResultsWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x1FuLL:
-        v11 = -[W5DiagnosticsManager __testWiFiNoScanResultsWithConfiguration:](self, "__testWiFiNoScanResultsWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testWiFiNoScanResultsWithConfiguration:](self, "__testWiFiNoScanResultsWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x20uLL:
-        v11 = -[W5DiagnosticsManager __testPoorSignalWithConfiguration:](self, "__testPoorSignalWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testPoorSignalWithConfiguration:](self, "__testPoorSignalWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x21uLL:
-        v11 = -[W5DiagnosticsManager __testAirPortBaseStationWithConfiguration:](self, "__testAirPortBaseStationWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testAirPortBaseStationWithConfiguration:](self, "__testAirPortBaseStationWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x22uLL:
-        v11 = -[W5DiagnosticsManager __testLongBeaconIntervalWithConfiguration:](self, "__testLongBeaconIntervalWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testLongBeaconIntervalWithConfiguration:](self, "__testLongBeaconIntervalWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x23uLL:
-        v11 = [(W5DiagnosticsManager *)self __testLongDTIMInterval];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testLongDTIMInterval];
         goto LABEL_75;
       case 0x24uLL:
-        v11 = -[W5DiagnosticsManager __testConflictingPHYMode11acWithConfiguration:](self, "__testConflictingPHYMode11acWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testConflictingPHYMode11acWithConfiguration:](self, "__testConflictingPHYMode11acWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x25uLL:
-        v11 = -[W5DiagnosticsManager __testConflictingPHYMode11nWithConfiguration:](self, "__testConflictingPHYMode11nWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testConflictingPHYMode11nWithConfiguration:](self, "__testConflictingPHYMode11nWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x26uLL:
-        v11 = -[W5DiagnosticsManager __testNoSecurityWithConfiguration:](self, "__testNoSecurityWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testNoSecurityWithConfiguration:](self, "__testNoSecurityWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x27uLL:
-        v11 = -[W5DiagnosticsManager __testLegacySecurityWEPWithConfiguration:](self, "__testLegacySecurityWEPWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testLegacySecurityWEPWithConfiguration:](self, "__testLegacySecurityWEPWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x28uLL:
-        v11 = -[W5DiagnosticsManager __testLegacySecurityWPAWithConfiguration:](self, "__testLegacySecurityWPAWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testLegacySecurityWPAWithConfiguration:](self, "__testLegacySecurityWPAWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x29uLL:
-        v11 = -[W5DiagnosticsManager __testLegacyRates11bWithConfiguration:](self, "__testLegacyRates11bWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testLegacyRates11bWithConfiguration:](self, "__testLegacyRates11bWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x2AuLL:
-        v11 = -[W5DiagnosticsManager __testAmbiguousNetworkNameWithConfiguration:](self, "__testAmbiguousNetworkNameWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testAmbiguousNetworkNameWithConfiguration:](self, "__testAmbiguousNetworkNameWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x2BuLL:
-        v11 = -[W5DiagnosticsManager __testHiddenNetworkWithConfiguration:](self, "__testHiddenNetworkWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testHiddenNetworkWithConfiguration:](self, "__testHiddenNetworkWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x2CuLL:
-        v11 = -[W5DiagnosticsManager __testiOSPersonalHotspotWithConfiguration:](self, "__testiOSPersonalHotspotWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testiOSPersonalHotspotWithConfiguration:](self, "__testiOSPersonalHotspotWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x2DuLL:
-        v11 = -[W5DiagnosticsManager __testPasspointWithConfiguration:](self, "__testPasspointWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testPasspointWithConfiguration:](self, "__testPasspointWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x2EuLL:
-        v11 = -[W5DiagnosticsManager __testCaptivePortalWithConfiguration:](self, "__testCaptivePortalWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testCaptivePortalWithConfiguration:](self, "__testCaptivePortalWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x2FuLL:
-        v11 = -[W5DiagnosticsManager __testLargePNLWithConfiguration:](self, "__testLargePNLWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testLargePNLWithConfiguration:](self, "__testLargePNLWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x30uLL:
-        v11 = -[W5DiagnosticsManager __testPNLContainsHiddenWithConfiguration:](self, "__testPNLContainsHiddenWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testPNLContainsHiddenWithConfiguration:](self, "__testPNLContainsHiddenWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x31uLL:
-        v11 = -[W5DiagnosticsManager __testDownloadSpeedWithConfiguration:](self, "__testDownloadSpeedWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testDownloadSpeedWithConfiguration:](self, "__testDownloadSpeedWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x32uLL:
-        v11 = -[W5DiagnosticsManager __testUploadSpeedWithConfiguration:](self, "__testUploadSpeedWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testUploadSpeedWithConfiguration:](self, "__testUploadSpeedWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x33uLL:
-        v11 = [(W5DiagnosticsManager *)self __testLeakyAP];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testLeakyAP];
         goto LABEL_75;
       case 0x34uLL:
-        v11 = [(W5DiagnosticsManager *)self __testWiFiLink];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testWiFiLink];
         goto LABEL_75;
       case 0x35uLL:
-        v11 = -[W5DiagnosticsManager __testConcurrentWithConfiguration:](self, "__testConcurrentWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testConcurrentWithConfiguration:](self, "__testConcurrentWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x36uLL:
-        v11 = [(W5DiagnosticsManager *)self __testCurlApple];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testCurlApple];
         goto LABEL_75;
       case 0x37uLL:
         v7 = objc_alloc_init(W5DiagnosticsTestResult);
-        [v7 setTestID:{objc_msgSend(a3, "testID")}];
+        [v7 setTestID:{objc_msgSend(test, "testID")}];
         [v7 setDidPass:1];
         [v7 setResult:1];
         +[NSDate timeIntervalSinceReferenceDate];
@@ -5737,7 +5737,7 @@ LABEL_12:
         goto LABEL_71;
       case 0x38uLL:
         v7 = objc_alloc_init(W5DiagnosticsTestResult);
-        [v7 setTestID:{objc_msgSend(a3, "testID")}];
+        [v7 setTestID:{objc_msgSend(test, "testID")}];
         [v7 setDidPass:1];
         [v7 setResult:1];
         +[NSDate timeIntervalSinceReferenceDate];
@@ -5748,27 +5748,27 @@ LABEL_71:
         [v7 setTestCompleted:?];
         break;
       case 0x39uLL:
-        v11 = [(W5DiagnosticsManager *)self __testWiFiIsPrimaryIPv4];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testWiFiIsPrimaryIPv4];
         goto LABEL_75;
       case 0x3AuLL:
-        v11 = [(W5DiagnosticsManager *)self __testWiFiIsPrimaryIPv6];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testWiFiIsPrimaryIPv6];
         goto LABEL_75;
       case 0x3BuLL:
-        v11 = -[W5DiagnosticsManager __testPing6AWDLWithConfiguration:](self, "__testPing6AWDLWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testPing6AWDLWithConfiguration:](self, "__testPing6AWDLWithConfiguration:", [test configuration]);
         goto LABEL_75;
       case 0x3CuLL:
-        v11 = [(W5DiagnosticsManager *)self __testPeerDiagnostics];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testPeerDiagnostics];
         goto LABEL_75;
       case 0x3DuLL:
-        v11 = [(W5DiagnosticsManager *)self __testPeerTypes];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testPeerTypes];
         goto LABEL_75;
       case 0x3EuLL:
-        v11 = [(W5DiagnosticsManager *)self __testDiscoverPeerTypes];
+        __testPingLANUsingIMFoundation = [(W5DiagnosticsManager *)self __testDiscoverPeerTypes];
         goto LABEL_75;
       case 0x3FuLL:
-        v11 = -[W5DiagnosticsManager __testReachabilityToPeersWithConfiguration:](self, "__testReachabilityToPeersWithConfiguration:", [a3 configuration]);
+        __testPingLANUsingIMFoundation = -[W5DiagnosticsManager __testReachabilityToPeersWithConfiguration:](self, "__testReachabilityToPeersWithConfiguration:", [test configuration]);
 LABEL_75:
-        v7 = v11;
+        v7 = __testPingLANUsingIMFoundation;
         break;
       default:
         v7 = 0;
@@ -5779,25 +5779,25 @@ LABEL_75:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:+[NSDate date]];
-      v14 = [objc_msgSend(objc_msgSend(a3 "uuid")];
+      v14 = [objc_msgSend(objc_msgSend(test "uuid")];
       [v7 testCompleted];
       v16 = v15;
       [v7 testStarted];
       v18 = v16 - v17;
-      v19 = [v7 result];
-      v20 = [v7 didPass];
+      result = [v7 result];
+      didPass = [v7 didPass];
       v23 = 138544642;
       v24 = v13;
       v25 = 2114;
-      v26 = v14;
+      testID = v14;
       v27 = 2114;
       v28 = v5;
       v29 = 2048;
       v30 = v18;
       v31 = 1024;
-      v32 = v19;
+      v32 = result;
       v33 = 1024;
-      v34 = v20;
+      v34 = didPass;
       _os_log_send_and_compose_impl();
     }
   }
@@ -5805,13 +5805,13 @@ LABEL_75:
   return v7;
 }
 
-+ (void)__parsePingOutput:(id)a3 result:(id)a4
++ (void)__parsePingOutput:(id)output result:(id)result
 {
-  if (a3)
+  if (output)
   {
-    if (a4)
+    if (result)
     {
-      v5 = [[NSString alloc] initWithData:a3 encoding:4];
+      v5 = [[NSString alloc] initWithData:output encoding:4];
       if (v5)
       {
         v6 = [v5 componentsSeparatedByString:@"\n"];
@@ -5839,7 +5839,7 @@ LABEL_75:
               {
                 v12 = [v11 objectAtIndexedSubscript:6];
                 [objc_msgSend(v12 substringToIndex:{objc_msgSend(v12, "length") - 1), "doubleValue"}];
-                [a4 setPacketLoss:?];
+                [result setPacketLoss:?];
               }
 
               else if ([v11 containsObject:@"round-trip"] && objc_msgSend(v11, "count") >= 4)
@@ -5848,13 +5848,13 @@ LABEL_75:
                 if ([v13 count] >= 4)
                 {
                   [objc_msgSend(v13 objectAtIndexedSubscript:{0), "doubleValue"}];
-                  [a4 setMin:?];
+                  [result setMin:?];
                   [objc_msgSend(v13 objectAtIndexedSubscript:{1), "doubleValue"}];
-                  [a4 setAvg:?];
+                  [result setAvg:?];
                   [objc_msgSend(v13 objectAtIndexedSubscript:{2), "doubleValue"}];
-                  [a4 setMax:?];
+                  [result setMax:?];
                   [objc_msgSend(v13 objectAtIndexedSubscript:{3), "doubleValue"}];
-                  [a4 setStddev:?];
+                  [result setStddev:?];
                 }
               }
 
@@ -5872,13 +5872,13 @@ LABEL_75:
   }
 }
 
-+ (BOOL)__isDoubleNATWithTracerouteOutput:(id)a3
++ (BOOL)__isDoubleNATWithTracerouteOutput:(id)output
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = [a3 componentsSeparatedByString:@"\n"];
+  obj = [output componentsSeparatedByString:@"\n"];
   v4 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
@@ -5899,7 +5899,7 @@ LABEL_75:
         v11 = [v9 rangeOfString:@""]);
         if (v10 != 0x7FFFFFFFFFFFFFFFLL && v11 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v6 += [a1 __detectLocalIPv4Address:{objc_msgSend(v9, "substringWithRange:", v10 + 1, &v11[~v10])}];
+          v6 += [self __detectLocalIPv4Address:{objc_msgSend(v9, "substringWithRange:", v10 + 1, &v11[~v10])}];
         }
       }
 
@@ -5913,9 +5913,9 @@ LABEL_75:
   return v4;
 }
 
-- (id)__performTracerouteWithAddress:(id)a3 maxTTL:(int64_t)a4 waittime:(int64_t)a5 queries:(int64_t)a6
+- (id)__performTracerouteWithAddress:(id)address maxTTL:(int64_t)l waittime:(int64_t)waittime queries:(int64_t)queries
 {
-  result = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi:a3] interfaceName];
+  result = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi:address] interfaceName];
   if (result)
   {
     v9[0] = @"-n";
@@ -5944,7 +5944,7 @@ LABEL_75:
   return result;
 }
 
-- (id)__performPingUsingIMFoundationWithAddress:(id)a3 timeout:(int64_t)a4
+- (id)__performPingUsingIMFoundationWithAddress:(id)address timeout:(int64_t)timeout
 {
   v19 = 0;
   v20 = &v19;
@@ -5953,7 +5953,7 @@ LABEL_75:
   v23 = sub_10003D548;
   v24 = 0;
   v7 = sub_10004C3EC();
-  if (a4 <= 2147483646 && a3 && v7)
+  if (timeout <= 2147483646 && address && v7)
   {
     v8 = dispatch_semaphore_create(0);
     +[NSDate timeIntervalSinceReferenceDate];
@@ -5981,12 +5981,12 @@ LABEL_75:
     v18[1] = 3221225472;
     v18[2] = sub_10004AB70;
     v18[3] = &unk_1000E28B0;
-    v18[4] = a3;
+    v18[4] = address;
     v18[5] = self;
     v18[8] = v10;
     v18[6] = v8;
     v18[7] = &v19;
-    [objc_msgSend([v11 alloc] initWithAddress:a3 wifi:{1), "startWithTimeout:queue:completionHandler:", dispatch_get_global_queue(0, 0), v18, a4}];
+    [objc_msgSend([v11 alloc] initWithAddress:address wifi:{1), "startWithTimeout:queue:completionHandler:", dispatch_get_global_queue(0, 0), v18, timeout}];
     v12 = dispatch_time(0, 80000000000);
     if (dispatch_semaphore_wait(v8, v12) >= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -6019,31 +6019,31 @@ LABEL_75:
   return v16;
 }
 
-- (id)__performPingWithAddress:(id)a3 count:(int64_t)a4 timeout:(double)a5 wait:(double)a6 interval:(double)a7 trafficClass:(id)a8 interfaceName:(id)a9 dataLength:(unint64_t)a10
+- (id)__performPingWithAddress:(id)address count:(int64_t)count timeout:(double)timeout wait:(double)wait interval:(double)interval trafficClass:(id)class interfaceName:(id)name dataLength:(unint64_t)self0
 {
-  if (a5 >= 2147483650.0 || a4 > 2147483646 || a3 == 0 || a9 == 0)
+  if (timeout >= 2147483650.0 || count > 2147483646 || address == 0 || name == 0)
   {
     return 0;
   }
 
-  if (a8 && ([a8 integerValue], (v21 = W5DescriptionForPingTrafficClass()) != 0))
+  if (class && ([class integerValue], (v21 = W5DescriptionForPingTrafficClass()) != 0))
   {
     v22 = v21;
     v37[0] = @"-c";
-    v37[1] = [NSString stringWithFormat:@"%ld", a4];
+    v37[1] = [NSString stringWithFormat:@"%ld", count];
     v37[2] = @"-b";
-    v37[3] = a9;
+    v37[3] = name;
     v37[4] = @"-k";
     v37[5] = v22;
     v37[6] = @"-i";
-    v37[7] = [NSString stringWithFormat:@"%.1f", *&a7];
+    v37[7] = [NSString stringWithFormat:@"%.1f", *&interval];
     v37[8] = @"-t";
-    v37[9] = [NSString stringWithFormat:@"%.2f", *&a5];
+    v37[9] = [NSString stringWithFormat:@"%.2f", *&timeout];
     v37[10] = @"-W";
-    v37[11] = [NSString stringWithFormat:@"%ld", (a6 * 1000.0)];
+    v37[11] = [NSString stringWithFormat:@"%ld", (wait * 1000.0)];
     v37[12] = @"-s";
-    v37[13] = [NSString stringWithFormat:@"%ld", a10 + 56];
-    v37[14] = a3;
+    v37[13] = [NSString stringWithFormat:@"%ld", length + 56];
+    v37[14] = address;
     v23 = v37;
     v24 = 15;
   }
@@ -6051,18 +6051,18 @@ LABEL_75:
   else
   {
     v36[0] = @"-c";
-    v36[1] = [NSString stringWithFormat:@"%ld", a4];
+    v36[1] = [NSString stringWithFormat:@"%ld", count];
     v36[2] = @"-b";
-    v36[3] = a9;
+    v36[3] = name;
     v36[4] = @"-i";
-    v36[5] = [NSString stringWithFormat:@"%.1f", *&a7];
+    v36[5] = [NSString stringWithFormat:@"%.1f", *&interval];
     v36[6] = @"-t";
-    v36[7] = [NSString stringWithFormat:@"%.2f", *&a5];
+    v36[7] = [NSString stringWithFormat:@"%.2f", *&timeout];
     v36[8] = @"-W";
-    v36[9] = [NSString stringWithFormat:@"%ld", (a6 * 1000.0)];
+    v36[9] = [NSString stringWithFormat:@"%ld", (wait * 1000.0)];
     v36[10] = @"-s";
-    v36[11] = [NSString stringWithFormat:@"%ld", a10 + 56];
-    v36[12] = a3;
+    v36[11] = [NSString stringWithFormat:@"%ld", length + 56];
+    v36[12] = address;
     v23 = v36;
     v24 = 13;
   }
@@ -6073,14 +6073,14 @@ LABEL_75:
   v28 = [NSMutableData dataWithCapacity:0];
   [NSTask runTaskWithLaunchPath:@"/sbin/ping" arguments:v25 outputData:v28 error:0];
   v29 = objc_alloc_init(W5PingResult);
-  [v29 setInterfaceName:a9];
-  [v29 setAddress:a3];
-  [v29 setCount:a4];
-  [v29 setTimeout:a5];
-  [v29 setWait:a6];
-  [v29 setInterval:a7];
-  [v29 setTrafficClass:{objc_msgSend(a8, "integerValue")}];
-  [v29 setDataLength:a10];
+  [v29 setInterfaceName:name];
+  [v29 setAddress:address];
+  [v29 setCount:count];
+  [v29 setTimeout:timeout];
+  [v29 setWait:wait];
+  [v29 setInterval:interval];
+  [v29 setTrafficClass:{objc_msgSend(class, "integerValue")}];
+  [v29 setDataLength:length];
   [v29 setStartedAt:v27];
   +[NSDate timeIntervalSinceReferenceDate];
   [v29 setEndedAt:?];
@@ -6106,27 +6106,27 @@ LABEL_75:
   return v29;
 }
 
-- (id)__performPing6WithAddress:(id)a3 count:(int64_t)a4 wait:(double)a5 trafficClass:(id)a6 interfaceName:(id)a7 dataLength:(unint64_t)a8
+- (id)__performPing6WithAddress:(id)address count:(int64_t)count wait:(double)wait trafficClass:(id)class interfaceName:(id)name dataLength:(unint64_t)length
 {
   v8 = 0;
-  if (a3 && a4 <= 2147483646 && a7)
+  if (address && count <= 2147483646 && name)
   {
-    if (a6 && ([a6 integerValue], (v15 = W5DescriptionForPingTrafficClass()) != 0))
+    if (class && ([class integerValue], (v15 = W5DescriptionForPingTrafficClass()) != 0))
     {
       v16 = v15;
       v30[0] = @"-c";
-      v30[1] = [NSString stringWithFormat:@"%ld", a4];
+      v30[1] = [NSString stringWithFormat:@"%ld", count];
       v30[2] = @"-B";
-      v30[3] = a7;
+      v30[3] = name;
       v30[4] = @"-I";
-      v30[5] = a7;
+      v30[5] = name;
       v30[6] = @"-k";
       v30[7] = v16;
       v30[8] = @"-i";
-      v30[9] = [NSString stringWithFormat:@"%f", *&a5];
+      v30[9] = [NSString stringWithFormat:@"%f", *&wait];
       v30[10] = @"-s";
-      v30[11] = [NSString stringWithFormat:@"%ld", a8 + 56];
-      v30[12] = a3;
+      v30[11] = [NSString stringWithFormat:@"%ld", length + 56];
+      v30[12] = address;
       v17 = v30;
       v18 = 13;
     }
@@ -6134,16 +6134,16 @@ LABEL_75:
     else
     {
       v29[0] = @"-c";
-      v29[1] = [NSString stringWithFormat:@"%ld", a4];
+      v29[1] = [NSString stringWithFormat:@"%ld", count];
       v29[2] = @"-B";
-      v29[3] = a7;
+      v29[3] = name;
       v29[4] = @"-I";
-      v29[5] = a7;
+      v29[5] = name;
       v29[6] = @"-i";
-      v29[7] = [NSString stringWithFormat:@"%f", *&a5];
+      v29[7] = [NSString stringWithFormat:@"%f", *&wait];
       v29[8] = @"-s";
-      v29[9] = [NSString stringWithFormat:@"%ld", a8 + 56];
-      v29[10] = a3;
+      v29[9] = [NSString stringWithFormat:@"%ld", length + 56];
+      v29[10] = address;
       v17 = v29;
       v18 = 11;
     }
@@ -6154,12 +6154,12 @@ LABEL_75:
     v22 = [NSMutableData dataWithCapacity:0];
     [NSTask runTaskWithLaunchPath:@"/sbin/ping6" arguments:v19 outputData:v22 error:0];
     v8 = objc_alloc_init(W5PingResult);
-    [v8 setInterfaceName:a7];
-    [v8 setAddress:a3];
-    [v8 setCount:a4];
-    [v8 setWait:a5];
-    [v8 setTrafficClass:{objc_msgSend(a6, "integerValue")}];
-    [v8 setDataLength:a8];
+    [v8 setInterfaceName:name];
+    [v8 setAddress:address];
+    [v8 setCount:count];
+    [v8 setWait:wait];
+    [v8 setTrafficClass:{objc_msgSend(class, "integerValue")}];
+    [v8 setDataLength:length];
     [v8 setStartedAt:v21];
     +[NSDate timeIntervalSinceReferenceDate];
     [v8 setEndedAt:?];
@@ -6186,43 +6186,43 @@ LABEL_75:
   return v8;
 }
 
-- (id)__performCFPingWithAddress:(id)a3 count:(int64_t)a4 timeout:(double)a5 trafficClass:(id)a6 networkServiceType:(id)a7 dataLength:(unint64_t)a8
+- (id)__performCFPingWithAddress:(id)address count:(int64_t)count timeout:(double)timeout trafficClass:(id)class networkServiceType:(id)type dataLength:(unint64_t)length
 {
   v8 = 0;
-  if (a3 && a4 <= 2147483646 && a5 < 2147483650.0)
+  if (address && count <= 2147483646 && timeout < 2147483650.0)
   {
     +[NSDate timeIntervalSinceReferenceDate];
     v14 = v13;
     v15 = +[NSMutableArray array];
     v16 = 0.0;
     v17 = 0.0;
-    v47 = a4;
-    if (a4 >= 1)
+    countCopy = count;
+    if (count >= 1)
     {
       v18 = kCFNetDiagnosticPingOptionTimeout;
       v19 = kCFNetDiagnosticPingOptionPacketCount;
       v20 = kCFNetDiagnosticPingOptionDataLength;
       v49 = kCFNetDiagnosticPingOptionTrafficClass;
       v48 = kCFNetDiagnosticPingOptionTypeOfService;
-      v21 = v47;
+      v21 = countCopy;
       do
       {
         v60[0] = v18;
-        v61[0] = [NSNumber numberWithDouble:a5];
+        v61[0] = [NSNumber numberWithDouble:timeout];
         v61[1] = &off_1000EEF78;
         v60[1] = v19;
         v60[2] = v20;
-        v61[2] = [NSNumber numberWithUnsignedInteger:a8];
+        v61[2] = [NSNumber numberWithUnsignedInteger:length];
         v22 = [+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary mutableCopy:v61];
         v23 = v22;
-        if (a6)
+        if (class)
         {
-          [v22 setObject:a6 forKeyedSubscript:v49];
+          [v22 setObject:class forKeyedSubscript:v49];
         }
 
-        if (a7)
+        if (type)
         {
-          [v23 setObject:a7 forKeyedSubscript:v48];
+          [v23 setObject:type forKeyedSubscript:v48];
         }
 
         +[NSDate timeIntervalSinceReferenceDate];
@@ -6336,18 +6336,18 @@ LABEL_75:
     v41 = sqrt(v38 / [v15 count]);
     v8 = objc_alloc_init(W5PingResult);
     [v8 setInterfaceName:{-[W5WiFiInterface interfaceName](-[W5StatusManager wifi](self->_status, "wifi"), "interfaceName")}];
-    [v8 setAddress:a3];
-    [v8 setCount:v47];
-    [v8 setTimeout:a5];
+    [v8 setAddress:address];
+    [v8 setCount:countCopy];
+    [v8 setTimeout:timeout];
     [v8 setWait:1.0];
     [v8 setInterval:1.0];
-    [v8 setTrafficClass:{objc_msgSend(a6, "integerValue")}];
-    [v8 setDataLength:a8];
+    [v8 setTrafficClass:{objc_msgSend(class, "integerValue")}];
+    [v8 setDataLength:length];
     [v8 setMin:v28];
     [v8 setMax:v16];
     [v8 setAvg:v34];
     [v8 setStddev:v41];
-    [v8 setPacketLoss:(v47 - v17) / v47];
+    [v8 setPacketLoss:(countCopy - v17) / countCopy];
     [v8 setStartedAt:v14];
     +[NSDate timeIntervalSinceReferenceDate];
     [v8 setEndedAt:?];
@@ -6372,16 +6372,16 @@ LABEL_75:
   return v8;
 }
 
-- (BOOL)__performCurlWithAddress:(id)a3
+- (BOOL)__performCurlWithAddress:(id)address
 {
-  v4 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
+  interfaceName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
   LOBYTE(v5) = 0;
-  if (a3)
+  if (address)
   {
-    if (v4)
+    if (interfaceName)
     {
-      v9 = a3;
-      v6 = [NSArray arrayWithObjects:&v9 count:1];
+      addressCopy = address;
+      v6 = [NSArray arrayWithObjects:&addressCopy count:1];
       v7 = [NSMutableData dataWithCapacity:0];
       v5 = [NSTask runTaskWithLaunchPath:@"/usr/local/bin/curl" arguments:v6 timeout:v7 outputData:0 errorData:0 launchHandler:0 didLaunch:1.6 error:0];
       if (v5)
@@ -6394,9 +6394,9 @@ LABEL_75:
   return v5;
 }
 
-+ (id)__performDNSResolution:(id)a3
++ (id)__performDNSResolution:(id)resolution
 {
-  v3 = CFHostCreateWithName(kCFAllocatorDefault, a3);
+  v3 = CFHostCreateWithName(kCFAllocatorDefault, resolution);
   if (!v3)
   {
     return 0;
@@ -6477,7 +6477,7 @@ LABEL_6:
   return v7;
 }
 
-+ (BOOL)__setNetworkServiceOrder:(id)a3
++ (BOOL)__setNetworkServiceOrder:(id)order
 {
   v4 = SCPreferencesCreate(kCFAllocatorDefault, @"wifivelocityd", 0);
   if (!v4)
@@ -6492,7 +6492,7 @@ LABEL_6:
     if (v6)
     {
       v7 = v6;
-      if (SCNetworkSetSetServiceOrder(v6, a3) && SCPreferencesCommitChanges(v5) && SCPreferencesApplyChanges(v5))
+      if (SCNetworkSetSetServiceOrder(v6, order) && SCPreferencesCommitChanges(v5) && SCPreferencesApplyChanges(v5))
       {
         usleep(0x186A0u);
         v8 = 1;
@@ -6517,20 +6517,20 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)__performLoadViaNSURLSessionWithAddress:(id)a3 usingTimeout:(id)a4 andForceWiFiInterface:(BOOL)a5
+- (BOOL)__performLoadViaNSURLSessionWithAddress:(id)address usingTimeout:(id)timeout andForceWiFiInterface:(BOOL)interface
 {
-  v5 = a5;
+  interfaceCopy = interface;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
   v9 = dispatch_semaphore_create(0);
-  v10 = [NSURL URLWithString:a3];
+  v10 = [NSURL URLWithString:address];
   if (v10)
   {
-    if (a4)
+    if (timeout)
     {
-      [a4 doubleValue];
+      [timeout doubleValue];
     }
 
     else
@@ -6542,7 +6542,7 @@ LABEL_9:
     if (v12)
     {
       urlSession = self->_urlSession;
-      if (urlSession || (v14 = +[NSURLSessionConfiguration ephemeralSessionConfiguration], (v15 = v14) != 0) && ([(NSURLSessionConfiguration *)v14 setRequestCachePolicy:1], [(NSURLSessionConfiguration *)v15 setHTTPMaximumConnectionsPerHost:1], [(NSURLSessionConfiguration *)v15 setAllowsCellularAccess:!v5], urlSession = [NSURLSession sessionWithConfiguration:v15], (self->_urlSession = urlSession) != 0))
+      if (urlSession || (v14 = +[NSURLSessionConfiguration ephemeralSessionConfiguration], (v15 = v14) != 0) && ([(NSURLSessionConfiguration *)v14 setRequestCachePolicy:1], [(NSURLSessionConfiguration *)v15 setHTTPMaximumConnectionsPerHost:1], [(NSURLSessionConfiguration *)v15 setAllowsCellularAccess:!interfaceCopy], urlSession = [NSURLSession sessionWithConfiguration:v15], (self->_urlSession = urlSession) != 0))
       {
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;

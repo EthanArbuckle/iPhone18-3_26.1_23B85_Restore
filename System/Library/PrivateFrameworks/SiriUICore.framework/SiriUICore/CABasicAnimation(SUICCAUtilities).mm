@@ -11,10 +11,10 @@
 - (void)_suic_updateForAdditiveAnimationFromScalar:()SUICCAUtilities toScalar:withLayerScalar:
 {
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:a2 - a4];
-  [a1 setFromValue:v7];
+  [self setFromValue:v7];
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3 - a4];
-  [a1 setToValue:v8];
+  [self setToValue:v8];
 }
 
 - (void)_suic_updateForAdditiveAnimationFromPoint:()SUICCAUtilities toPoint:withLayerPoint:
@@ -22,10 +22,10 @@
   v8 = a4 - a6;
   v9 = a5 - a7;
   v10 = [MEMORY[0x1E696B098] valueWithPoint:{a2 - a6, a3 - a7}];
-  [a1 setFromValue:v10];
+  [self setFromValue:v10];
 
   v11 = [MEMORY[0x1E696B098] valueWithPoint:{v8, v9}];
-  [a1 setToValue:v11];
+  [self setToValue:v11];
 }
 
 - (void)_suic_updateForAdditiveAnimationFromSize:()SUICCAUtilities toSize:withLayerSize:
@@ -33,10 +33,10 @@
   v8 = a4 - a6;
   v9 = a5 - a7;
   v10 = [MEMORY[0x1E696B098] valueWithSize:{a2 - a6, a3 - a7}];
-  [a1 setFromValue:v10];
+  [self setFromValue:v10];
 
   v11 = [MEMORY[0x1E696B098] valueWithSize:{v8, v9}];
-  [a1 setToValue:v11];
+  [self setToValue:v11];
 }
 
 - (uint64_t)_suic_updateForAdditiveAnimationFromTransform:()SUICCAUtilities toTransform:
@@ -78,7 +78,7 @@
   v18[1] = v14;
   v18[2] = v20;
   v18[3] = v9;
-  return [a1 _suic_updateForAdditiveAnimationFromTransform:v26 toTransform:v19 withLayerTransform:v18];
+  return [self _suic_updateForAdditiveAnimationFromTransform:v26 toTransform:v19 withLayerTransform:v18];
 }
 
 - (void)_suic_updateForAdditiveAnimationFromTransform:()SUICCAUtilities toTransform:withLayerTransform:
@@ -219,11 +219,11 @@
 
   b = v52;
   v47 = [MEMORY[0x1E696B098] valueWithCATransform3D:&b];
-  [a1 setFromValue:v47];
+  [self setFromValue:v47];
 
   b = a;
   v48 = [MEMORY[0x1E696B098] valueWithCATransform3D:&b];
-  [a1 setToValue:v48];
+  [self setToValue:v48];
 }
 
 @end

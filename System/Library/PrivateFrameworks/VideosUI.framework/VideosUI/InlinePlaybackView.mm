@@ -1,15 +1,15 @@
 @interface InlinePlaybackView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (UIView)accessibilityImageView;
 - (UIView)accessibilityPlaybackView;
 @end
 
 @implementation InlinePlaybackView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v5 = self;
-  v6 = sub_1E3B78BF4(a4);
+  selfCopy = self;
+  v6 = sub_1E3B78BF4(only);
   v8 = v7;
 
   v9 = v6;
@@ -21,7 +21,7 @@
 
 - (UIView)accessibilityImageView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3B790C0();
 
   return v3;
@@ -29,7 +29,7 @@
 
 - (UIView)accessibilityPlaybackView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3B79138();
 
   return v3;

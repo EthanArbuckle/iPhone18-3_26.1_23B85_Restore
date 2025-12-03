@@ -4,21 +4,21 @@
 + (id)_internalParameters;
 + (id)_seedParameters;
 + (id)defaultDeviceParameters;
-- (BOOL)isEqual:(id)a3;
-- (DRSTaskingLimitingParameters)initWithAcceptConfigCountCap:(unint64_t)a3 taskingHysteresisInterval:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (DRSTaskingLimitingParameters)initWithAcceptConfigCountCap:(unint64_t)cap taskingHysteresisInterval:(double)interval;
 @end
 
 @implementation DRSTaskingLimitingParameters
 
-- (DRSTaskingLimitingParameters)initWithAcceptConfigCountCap:(unint64_t)a3 taskingHysteresisInterval:(double)a4
+- (DRSTaskingLimitingParameters)initWithAcceptConfigCountCap:(unint64_t)cap taskingHysteresisInterval:(double)interval
 {
   v7.receiver = self;
   v7.super_class = DRSTaskingLimitingParameters;
   result = [(DRSTaskingLimitingParameters *)&v7 init];
   if (result)
   {
-    result->_acceptedConfigCountCap = a3;
-    result->_taskingHysteresisInterval = a4;
+    result->_acceptedConfigCountCap = cap;
+    result->_taskingHysteresisInterval = interval;
   }
 
   return result;
@@ -27,7 +27,7 @@
 + (id)defaultDeviceParameters
 {
   v3 = +[DRSSystemProfile sharedInstance];
-  v4 = [a1 parametersForPlatform:objc_msgSend(v3 isInternal:"platform") isSeed:objc_msgSend(v3 isCarrier:"isInternal") taskingIsEnabled:{objc_msgSend(v3, "isSeed"), objc_msgSend(v3, "isCarrier"), objc_msgSend(v3, "isTaskingEnabled")}];
+  v4 = [self parametersForPlatform:objc_msgSend(v3 isInternal:"platform") isSeed:objc_msgSend(v3 isCarrier:"isInternal") taskingIsEnabled:{objc_msgSend(v3, "isSeed"), objc_msgSend(v3, "isCarrier"), objc_msgSend(v3, "isTaskingEnabled")}];
 
   return v4;
 }
@@ -108,16 +108,16 @@ void __51__DRSTaskingLimitingParameters__customerParameters__block_invoke()
   _customerParameters_parameters = v0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     [(DRSTaskingLimitingParameters *)v6 taskingHysteresisInterval];
@@ -125,8 +125,8 @@ void __51__DRSTaskingLimitingParameters__customerParameters__block_invoke()
     [(DRSTaskingLimitingParameters *)self taskingHysteresisInterval];
     if (v8 == v9)
     {
-      v10 = [(DRSTaskingLimitingParameters *)v6 acceptedConfigCountCap];
-      v11 = v10 == [(DRSTaskingLimitingParameters *)self acceptedConfigCountCap];
+      acceptedConfigCountCap = [(DRSTaskingLimitingParameters *)v6 acceptedConfigCountCap];
+      v11 = acceptedConfigCountCap == [(DRSTaskingLimitingParameters *)self acceptedConfigCountCap];
     }
 
     else

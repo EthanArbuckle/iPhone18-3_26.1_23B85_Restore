@@ -1,49 +1,49 @@
 @interface MADComputeServiceProxy
-- (MADComputeServiceProxy)initWithCoordinator:(id)a3;
-- (void)handleResults:(id)a3 assetRepresentation:(id)a4 requestID:(id)a5 error:(id)a6 acknowledgement:(id)a7;
-- (void)reportProgress:(double)a3 requestID:(id)a4;
+- (MADComputeServiceProxy)initWithCoordinator:(id)coordinator;
+- (void)handleResults:(id)results assetRepresentation:(id)representation requestID:(id)d error:(id)error acknowledgement:(id)acknowledgement;
+- (void)reportProgress:(double)progress requestID:(id)d;
 @end
 
 @implementation MADComputeServiceProxy
 
-- (MADComputeServiceProxy)initWithCoordinator:(id)a3
+- (MADComputeServiceProxy)initWithCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v8.receiver = self;
   v8.super_class = MADComputeServiceProxy;
   v5 = [(MADComputeServiceProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_coordinator, v4);
+    objc_storeWeak(&v5->_coordinator, coordinatorCopy);
   }
 
   return v6;
 }
 
-- (void)reportProgress:(double)a3 requestID:(id)a4
+- (void)reportProgress:(double)progress requestID:(id)d
 {
-  v8 = a4;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained reportProgress:v8 requestID:a3];
+    [WeakRetained reportProgress:dCopy requestID:progress];
   }
 }
 
-- (void)handleResults:(id)a3 assetRepresentation:(id)a4 requestID:(id)a5 error:(id)a6 acknowledgement:(id)a7
+- (void)handleResults:(id)results assetRepresentation:(id)representation requestID:(id)d error:(id)error acknowledgement:(id)acknowledgement
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  resultsCopy = results;
+  representationCopy = representation;
+  dCopy = d;
+  errorCopy = error;
+  acknowledgementCopy = acknowledgement;
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
   v18 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained handleResults:v12 assetRepresentation:v13 requestID:v14 error:v15 acknowledgement:v16];
+    [WeakRetained handleResults:resultsCopy assetRepresentation:representationCopy requestID:dCopy error:errorCopy acknowledgement:acknowledgementCopy];
   }
 
   else
@@ -53,7 +53,7 @@
       [MADComputeServiceProxy handleResults:assetRepresentation:requestID:error:acknowledgement:];
     }
 
-    v16[2](v16, 0);
+    acknowledgementCopy[2](acknowledgementCopy, 0);
   }
 }
 

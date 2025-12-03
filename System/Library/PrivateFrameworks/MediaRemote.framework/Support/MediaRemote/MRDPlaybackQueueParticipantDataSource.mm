@@ -1,27 +1,27 @@
 @interface MRDPlaybackQueueParticipantDataSource
-- (MRDPlaybackQueueParticipantDataSource)initWithDelegate:(id)a3;
+- (MRDPlaybackQueueParticipantDataSource)initWithDelegate:(id)delegate;
 - (MRDPlaybackQueueParticipantDataSourceDelegate)delegate;
 - (NSArray)participants;
-- (id)donateAttribution:(id)a3;
+- (id)donateAttribution:(id)attribution;
 - (void)dealloc;
-- (void)handleGroupSessionServerDidStartNotification:(id)a3;
-- (void)handleMusicStateUpdateNotification:(id)a3;
+- (void)handleGroupSessionServerDidStartNotification:(id)notification;
+- (void)handleMusicStateUpdateNotification:(id)notification;
 - (void)loadFromStorage;
 - (void)loadLocalIdentities;
-- (void)manager:(id)a3 didEndHostedGroupSession:(id)a4;
-- (void)manager:(id)a3 didStartHostedGroupSession:(id)a4;
+- (void)manager:(id)manager didEndHostedGroupSession:(id)session;
+- (void)manager:(id)manager didStartHostedGroupSession:(id)session;
 - (void)rebuildParticipants;
 - (void)rotatePepper;
 - (void)saveToStorage;
-- (void)updatePepperIfNeededWithSession:(id)a3;
+- (void)updatePepperIfNeededWithSession:(id)session;
 @end
 
 @implementation MRDPlaybackQueueParticipantDataSource
 
 - (void)loadFromStorage
 {
-  v3 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MRDPlaybackQueueParticipantDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = _MRLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -30,16 +30,16 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[MRDPlaybackQueueParticipantDataSource] loadFromStorage.", buf, 2u);
   }
 
-  v5 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
-  v6 = [v5 objectForKey:@"MRDPQPDS.PPR"];
+  storage = [(MRDPlaybackQueueParticipantDataSource *)self storage];
+  v6 = [storage objectForKey:@"MRDPQPDS.PPR"];
 
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
-      v8 = [v7 objectForKey:@"MRDPQPDS.PED"];
+      storage2 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
+      v8 = [storage2 objectForKey:@"MRDPQPDS.PED"];
 
       if (v8)
       {
@@ -49,8 +49,8 @@
           [v8 timeIntervalSinceNow];
           if (v9 > 60.0)
           {
-            v10 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
-            v39 = [v10 objectForKey:@"MRDPQPDS.RPS"];
+            storage3 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
+            v39 = [storage3 objectForKey:@"MRDPQPDS.RPS"];
 
             if (v39)
             {
@@ -79,9 +79,9 @@
                       }
 
                       v16 = *(*(&v42 + 1) + 8 * i);
-                      v17 = [(MRDPlaybackQueueParticipantDataSource *)self remoteIdentityMap];
+                      remoteIdentityMap = [(MRDPlaybackQueueParticipantDataSource *)self remoteIdentityMap];
                       v18 = [v12 objectForKeyedSubscript:v16];
-                      [v17 setObject:v18 forKey:v16];
+                      [remoteIdentityMap setObject:v18 forKey:v16];
                     }
 
                     v13 = [v12 countByEnumeratingWithState:&v42 objects:v51 count:16];
@@ -105,16 +105,16 @@
                 [(MRDPlaybackQueueParticipantDataSource *)self setPepper:v6];
                 [(MRDPlaybackQueueParticipantDataSource *)self setPepperExpirationDate:v8];
                 objc_initWeak(buf, self);
-                v22 = [(MRDPlaybackQueueParticipantDataSource *)self pepperExpirationDate];
-                [v22 timeIntervalSinceNow];
+                pepperExpirationDate = [(MRDPlaybackQueueParticipantDataSource *)self pepperExpirationDate];
+                [pepperExpirationDate timeIntervalSinceNow];
                 v24 = v23;
-                v25 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
+                queue2 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
                 v40[0] = _NSConcreteStackBlock;
                 v40[1] = 3221225472;
                 v40[2] = sub_100145990;
                 v40[3] = &unk_1004B8280;
                 objc_copyWeak(&v41, buf);
-                v26 = [MSVTimer timerWithInterval:0 repeats:v25 queue:v40 block:v24 + 1.0];
+                v26 = [MSVTimer timerWithInterval:0 repeats:queue2 queue:v40 block:v24 + 1.0];
                 [(MRDPlaybackQueueParticipantDataSource *)self setPepperExpirationTimer:v26];
 
                 objc_destroyWeak(&v41);
@@ -127,8 +127,8 @@
     }
   }
 
-  v27 = [(MRDPlaybackQueueParticipantDataSource *)self pepper];
-  v28 = v27 == 0;
+  pepper = [(MRDPlaybackQueueParticipantDataSource *)self pepper];
+  v28 = pepper == 0;
 
   if (v28)
   {
@@ -139,28 +139,28 @@
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "[MRDPlaybackQueueParticipantDataSource] Did not rehydrate.", buf, 2u);
     }
 
-    v30 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
-    [v30 setObject:0 forKey:@"MRDPQPDS.RPS"];
+    storage4 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
+    [storage4 setObject:0 forKey:@"MRDPQPDS.RPS"];
 
-    v31 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
-    [v31 setObject:0 forKey:@"MRDPQPDS.PED"];
+    storage5 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
+    [storage5 setObject:0 forKey:@"MRDPQPDS.PED"];
 
-    v32 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
-    [v32 setObject:0 forKey:@"MRDPQPDS.PPR"];
+    storage6 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
+    [storage6 setObject:0 forKey:@"MRDPQPDS.PPR"];
   }
 
   v33 = +[MRDMediaRemoteServer server];
-  v34 = [v33 groupSessionServer];
-  v35 = [v34 sessionManager];
+  groupSessionServer = [v33 groupSessionServer];
+  sessionManager = [groupSessionServer sessionManager];
 
-  v36 = [v35 session];
-  [(MRDPlaybackQueueParticipantDataSource *)self updatePepperIfNeededWithSession:v36];
+  session = [sessionManager session];
+  [(MRDPlaybackQueueParticipantDataSource *)self updatePepperIfNeededWithSession:session];
 }
 
 - (void)rotatePepper
 {
-  v3 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MRDPlaybackQueueParticipantDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = MSVNanoIDCreateTaggedPointer();
   [(MRDPlaybackQueueParticipantDataSource *)self setPepper:v4];
@@ -172,20 +172,20 @@
   [(MRDPlaybackQueueParticipantDataSource *)self setPepperExpirationDate:v7];
 
   objc_initWeak(&location, self);
-  v8 = [(MRDPlaybackQueueParticipantDataSource *)self pepperExpirationDate];
-  [v8 timeIntervalSinceNow];
+  pepperExpirationDate = [(MRDPlaybackQueueParticipantDataSource *)self pepperExpirationDate];
+  [pepperExpirationDate timeIntervalSinceNow];
   v10 = v9;
-  v11 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
+  queue2 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100145B08;
   v17 = &unk_1004B8280;
   objc_copyWeak(&v18, &location);
-  v12 = [MSVTimer timerWithInterval:0 repeats:v11 queue:&v14 block:v10 + 1.0];
+  v12 = [MSVTimer timerWithInterval:0 repeats:queue2 queue:&v14 block:v10 + 1.0];
   [(MRDPlaybackQueueParticipantDataSource *)self setPepperExpirationTimer:v12, v14, v15, v16, v17];
 
-  v13 = [(MRDPlaybackQueueParticipantDataSource *)self remoteIdentityMap];
-  [v13 removeAllObjects];
+  remoteIdentityMap = [(MRDPlaybackQueueParticipantDataSource *)self remoteIdentityMap];
+  [remoteIdentityMap removeAllObjects];
 
   [(MRDPlaybackQueueParticipantDataSource *)self saveToStorage];
   [(MRDPlaybackQueueParticipantDataSource *)self rebuildParticipants];
@@ -195,41 +195,41 @@
 
 - (void)saveToStorage
 {
-  v3 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MRDPlaybackQueueParticipantDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(MRDPlaybackQueueParticipantDataSource *)self remoteIdentityMap];
-  v11 = [v4 dictionaryRepresentation];
+  remoteIdentityMap = [(MRDPlaybackQueueParticipantDataSource *)self remoteIdentityMap];
+  dictionaryRepresentation = [remoteIdentityMap dictionaryRepresentation];
 
-  v5 = [NSKeyedArchiver archivedDataWithRootObject:v11 requiringSecureCoding:1 error:0];
-  v6 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
-  [v6 setObject:v5 forKey:@"MRDPQPDS.RPS"];
+  v5 = [NSKeyedArchiver archivedDataWithRootObject:dictionaryRepresentation requiringSecureCoding:1 error:0];
+  storage = [(MRDPlaybackQueueParticipantDataSource *)self storage];
+  [storage setObject:v5 forKey:@"MRDPQPDS.RPS"];
 
-  v7 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
-  v8 = [(MRDPlaybackQueueParticipantDataSource *)self pepperExpirationDate];
-  [v7 setObject:v8 forKey:@"MRDPQPDS.PED"];
+  storage2 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
+  pepperExpirationDate = [(MRDPlaybackQueueParticipantDataSource *)self pepperExpirationDate];
+  [storage2 setObject:pepperExpirationDate forKey:@"MRDPQPDS.PED"];
 
-  v9 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
-  v10 = [(MRDPlaybackQueueParticipantDataSource *)self pepper];
-  [v9 setObject:v10 forKey:@"MRDPQPDS.PPR"];
+  storage3 = [(MRDPlaybackQueueParticipantDataSource *)self storage];
+  pepper = [(MRDPlaybackQueueParticipantDataSource *)self pepper];
+  [storage3 setObject:pepper forKey:@"MRDPQPDS.PPR"];
 }
 
 - (void)rebuildParticipants
 {
-  v3 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MRDPlaybackQueueParticipantDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[NSMutableArray array];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v5 = [(MRDPlaybackQueueParticipantDataSource *)self localIdentityMap];
-  v6 = [v5 keyEnumerator];
-  v7 = [v6 allObjects];
+  localIdentityMap = [(MRDPlaybackQueueParticipantDataSource *)self localIdentityMap];
+  keyEnumerator = [localIdentityMap keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  v8 = v7;
-  v9 = [v7 countByEnumeratingWithState:&v43 objects:v51 count:16];
+  v8 = allObjects;
+  v9 = [allObjects countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v9)
   {
     v10 = v9;
@@ -246,8 +246,8 @@
 
         v13 = *(*(&v43 + 1) + 8 * v12);
         v14 = [MRPlaybackQueueParticipant alloc];
-        v15 = [(MRDPlaybackQueueParticipantDataSource *)self localIdentityMap];
-        v16 = [v15 objectForKey:v13];
+        localIdentityMap2 = [(MRDPlaybackQueueParticipantDataSource *)self localIdentityMap];
+        v16 = [localIdentityMap2 objectForKey:v13];
         v17 = [v14 initWithIdentifier:v16 identity:v13];
 
         [v4 addObject:v17];
@@ -265,11 +265,11 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v18 = [(MRDPlaybackQueueParticipantDataSource *)self remoteIdentityMap];
-  v19 = [v18 keyEnumerator];
-  v20 = [v19 allObjects];
+  remoteIdentityMap = [(MRDPlaybackQueueParticipantDataSource *)self remoteIdentityMap];
+  keyEnumerator2 = [remoteIdentityMap keyEnumerator];
+  allObjects2 = [keyEnumerator2 allObjects];
 
-  v21 = [v20 countByEnumeratingWithState:&v39 objects:v50 count:16];
+  v21 = [allObjects2 countByEnumeratingWithState:&v39 objects:v50 count:16];
   if (v21)
   {
     v22 = v21;
@@ -281,13 +281,13 @@
       {
         if (*v40 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(allObjects2);
         }
 
         v25 = *(*(&v39 + 1) + 8 * v24);
         v26 = [MRPlaybackQueueParticipant alloc];
-        v27 = [(MRDPlaybackQueueParticipantDataSource *)self remoteIdentityMap];
-        v28 = [v27 objectForKey:v25];
+        remoteIdentityMap2 = [(MRDPlaybackQueueParticipantDataSource *)self remoteIdentityMap];
+        v28 = [remoteIdentityMap2 objectForKey:v25];
         v29 = [v26 initWithIdentifier:v28 identity:v25];
 
         [v4 addObject:v29];
@@ -295,7 +295,7 @@
       }
 
       while (v22 != v24);
-      v22 = [v20 countByEnumeratingWithState:&v39 objects:v50 count:16];
+      v22 = [allObjects2 countByEnumeratingWithState:&v39 objects:v50 count:16];
     }
 
     while (v22);
@@ -321,7 +321,7 @@
     self->_participants = v33;
 
     [(MRDPlaybackQueueParticipantDataSource *)self saveToStorage];
-    v35 = [(MRDPlaybackQueueParticipantDataSource *)self delegateQueue];
+    delegateQueue = [(MRDPlaybackQueueParticipantDataSource *)self delegateQueue];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_10014593C;
@@ -329,26 +329,26 @@
     v37[4] = self;
     v38 = v33;
     v36 = v33;
-    dispatch_async(v35, v37);
+    dispatch_async(delegateQueue, v37);
   }
 }
 
 - (void)loadLocalIdentities
 {
-  v3 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MRDPlaybackQueueParticipantDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[MRDMusicUserStateCenter sharedCenter];
-  v5 = [v4 localUserIdentities];
+  localUserIdentities = [v4 localUserIdentities];
 
-  v6 = [(MRDPlaybackQueueParticipantDataSource *)self localIdentityMap];
-  [v6 removeAllObjects];
+  localIdentityMap = [(MRDPlaybackQueueParticipantDataSource *)self localIdentityMap];
+  [localIdentityMap removeAllObjects];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = localUserIdentities;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -365,8 +365,8 @@
 
         v12 = *(*(&v15 + 1) + 8 * i);
         v13 = [MRPlaybackQueueParticipant expectedIdentifierForUserIdentity:v12 withRandomData:0, v15];
-        v14 = [(MRDPlaybackQueueParticipantDataSource *)self localIdentityMap];
-        [v14 setObject:v13 forKey:v12];
+        localIdentityMap2 = [(MRDPlaybackQueueParticipantDataSource *)self localIdentityMap];
+        [localIdentityMap2 setObject:v13 forKey:v12];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -386,14 +386,14 @@
   v10 = sub_10003519C;
   v11 = sub_100035A84;
   v12 = 0;
-  v3 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
+  queue = [(MRDPlaybackQueueParticipantDataSource *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100016070;
   v6[3] = &unk_1004B6D30;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -401,13 +401,13 @@
   return v4;
 }
 
-- (MRDPlaybackQueueParticipantDataSource)initWithDelegate:(id)a3
+- (MRDPlaybackQueueParticipantDataSource)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[MRUserSettings currentSettings];
-  v6 = [v5 supportGroupSessionAttribution];
+  supportGroupSessionAttribution = [v5 supportGroupSessionAttribution];
 
-  if (v6)
+  if (supportGroupSessionAttribution)
   {
     v33.receiver = self;
     v33.super_class = MRDPlaybackQueueParticipantDataSource;
@@ -415,7 +415,7 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeWeak(&v7->_delegate, v4);
+      objc_storeWeak(&v7->_delegate, delegateCopy);
       v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v10 = dispatch_queue_create("com.apple.amp.MediaRemote.MRDPlaybackQueueParticipantDataSource.queue", v9);
       queue = v8->_queue;
@@ -428,9 +428,9 @@
       v8->_delegateQueue = v14;
 
       v16 = +[MRDSettings currentSettings];
-      v17 = [v16 userDefaults];
+      userDefaults = [v16 userDefaults];
       storage = v8->_storage;
-      v8->_storage = v17;
+      v8->_storage = userDefaults;
 
       v19 = +[NSMapTable strongToStrongObjectsMapTable];
       localIdentityMap = v8->_localIdentityMap;
@@ -447,13 +447,13 @@
       pepperExpirationDate = v8->_pepperExpirationDate;
       v8->_pepperExpirationDate = v24;
 
-      v26 = [(MRDPlaybackQueueParticipantDataSource *)v8 queue];
+      queue = [(MRDPlaybackQueueParticipantDataSource *)v8 queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100145530;
       block[3] = &unk_1004B6D08;
       v32 = v8;
-      dispatch_async(v26, block);
+      dispatch_async(queue, block);
     }
 
     v27 = _MRLogForCategory();
@@ -464,15 +464,15 @@
     }
 
     self = v8;
-    v28 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v28 = 0;
+    selfCopy = 0;
   }
 
-  return v28;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -489,25 +489,25 @@
   [(MRDPlaybackQueueParticipantDataSource *)&v4 dealloc];
 }
 
-- (id)donateAttribution:(id)a3
+- (id)donateAttribution:(id)attribution
 {
-  v4 = a3;
+  attributionCopy = attribution;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_10003519C;
   v16 = sub_100035A84;
   v17 = 0;
-  v5 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
+  queue = [(MRDPlaybackQueueParticipantDataSource *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100145800;
   block[3] = &unk_1004B7798;
-  v10 = v4;
+  v10 = attributionCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_async_and_wait(v5, block);
+  v6 = attributionCopy;
+  dispatch_async_and_wait(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -515,22 +515,22 @@
   return v7;
 }
 
-- (void)updatePepperIfNeededWithSession:(id)a3
+- (void)updatePepperIfNeededWithSession:(id)session
 {
-  v4 = a3;
-  v5 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  sessionCopy = session;
+  queue = [(MRDPlaybackQueueParticipantDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(MRDPlaybackQueueParticipantDataSource *)self pepperExpirationDate];
-  [v6 timeIntervalSinceNow];
+  pepperExpirationDate = [(MRDPlaybackQueueParticipantDataSource *)self pepperExpirationDate];
+  [pepperExpirationDate timeIntervalSinceNow];
   v8 = v7;
 
-  v9 = [v4 isHosted];
-  if (v8 < 0.0 && v9)
+  isHosted = [sessionCopy isHosted];
+  if (v8 < 0.0 && isHosted)
   {
-    v10 = [(MRDPlaybackQueueParticipantDataSource *)self pepper];
+    pepper = [(MRDPlaybackQueueParticipantDataSource *)self pepper];
 
-    if (v10)
+    if (pepper)
     {
       return;
     }
@@ -544,52 +544,52 @@
   [(MRDPlaybackQueueParticipantDataSource *)self rotatePepper];
 }
 
-- (void)handleMusicStateUpdateNotification:(id)a3
+- (void)handleMusicStateUpdateNotification:(id)notification
 {
-  v4 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
+  queue = [(MRDPlaybackQueueParticipantDataSource *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100145C38;
   block[3] = &unk_1004B6D08;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
-- (void)handleGroupSessionServerDidStartNotification:(id)a3
+- (void)handleGroupSessionServerDidStartNotification:(id)notification
 {
   v4 = +[MRDMediaRemoteServer server];
-  v5 = [v4 groupSessionServer];
-  v6 = [v5 sessionManager];
+  groupSessionServer = [v4 groupSessionServer];
+  sessionManager = [groupSessionServer sessionManager];
 
-  [v6 addObserver:self];
+  [sessionManager addObserver:self];
 }
 
-- (void)manager:(id)a3 didStartHostedGroupSession:(id)a4
+- (void)manager:(id)manager didStartHostedGroupSession:(id)session
 {
-  v5 = a4;
-  v6 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
+  sessionCopy = session;
+  queue = [(MRDPlaybackQueueParticipantDataSource *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100145D78;
   v8[3] = &unk_1004B68F0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = sessionCopy;
+  v7 = sessionCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)manager:(id)a3 didEndHostedGroupSession:(id)a4
+- (void)manager:(id)manager didEndHostedGroupSession:(id)session
 {
-  v5 = a4;
-  v6 = [(MRDPlaybackQueueParticipantDataSource *)self queue];
+  sessionCopy = session;
+  queue = [(MRDPlaybackQueueParticipantDataSource *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100145E38;
   v8[3] = &unk_1004B68F0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = sessionCopy;
+  v7 = sessionCopy;
+  dispatch_async(queue, v8);
 }
 
 - (MRDPlaybackQueueParticipantDataSourceDelegate)delegate

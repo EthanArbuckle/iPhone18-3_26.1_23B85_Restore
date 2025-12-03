@@ -1,28 +1,28 @@
 @interface OnboardingWelcomeViewController
-- (_TtC28HealthExposureNotificationUI31OnboardingWelcomeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC28HealthExposureNotificationUI31OnboardingWelcomeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didTapFooterLabel;
 - (void)didTapHowExposureNotificationsWork;
 - (void)didTapPrimaryButton;
 - (void)didTapSecondaryButton;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation OnboardingWelcomeViewController
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   OnboardingWelcomeViewController.traitCollectionDidChange(_:)(v9);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = self;
+  selfCopy = self;
   OnboardingWelcomeViewController.updateForScrollOffsetChange()();
 }
 
@@ -30,34 +30,34 @@
 {
   type metadata accessor for OnboardingInfoViewController();
   v3 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v6 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  v5 = [objc_allocWithZone(MEMORY[0x277D757A0]) initWithRootViewController_];
+  initWithRootViewController_ = [objc_allocWithZone(MEMORY[0x277D757A0]) initWithRootViewController_];
 
-  [(OnboardingWelcomeViewController *)v6 presentViewController:v5 animated:1 completion:0];
+  [(OnboardingWelcomeViewController *)selfCopy presentViewController:initWithRootViewController_ animated:1 completion:0];
 }
 
 - (void)didTapFooterLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_2516B0724();
 }
 
 - (void)didTapPrimaryButton
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC28HealthExposureNotificationUI31OnboardingWelcomeViewController_flow);
-  v3 = self;
-  sub_2516B3EF4(v3, v2);
+  selfCopy = self;
+  sub_2516B3EF4(selfCopy, v2);
 }
 
 - (void)didTapSecondaryButton
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC28HealthExposureNotificationUI31OnboardingWelcomeViewController_flow);
-  v3 = self;
-  sub_2516B4250(v3, v2);
+  selfCopy = self;
+  sub_2516B4250(selfCopy, v2);
 }
 
-- (_TtC28HealthExposureNotificationUI31OnboardingWelcomeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC28HealthExposureNotificationUI31OnboardingWelcomeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

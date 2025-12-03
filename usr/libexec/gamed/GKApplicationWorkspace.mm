@@ -1,19 +1,19 @@
 @interface GKApplicationWorkspace
-- (BOOL)applicationIsInstalled:(id)a3;
+- (BOOL)applicationIsInstalled:(id)installed;
 - (BOOL)openMoltresAppIfInstalled;
 - (id)availableGameIdentifiers;
 - (id)availableGamesAndIdentifiers;
 - (void)openSettings;
-- (void)openURL:(id)a3;
+- (void)openURL:(id)l;
 @end
 
 @implementation GKApplicationWorkspace
 
-- (BOOL)applicationIsInstalled:(id)a3
+- (BOOL)applicationIsInstalled:(id)installed
 {
-  v3 = a3;
+  installedCopy = installed;
   v4 = +[LSApplicationWorkspace defaultWorkspace];
-  v5 = [v4 applicationIsInstalled:v3];
+  v5 = [v4 applicationIsInstalled:installedCopy];
 
   return v5;
 }
@@ -80,15 +80,15 @@ LABEL_4:
   [v2 openSensitiveURL:v3 withOptions:0];
 }
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v10 = FBSOpenApplicationOptionKeyPromptUnlockDevice;
   v11 = &__kCFBooleanTrue;
   v4 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v5 = +[LSApplicationWorkspace defaultWorkspace];
   v9 = 0;
-  [v5 openSensitiveURL:v3 withOptions:v4 error:&v9];
+  [v5 openSensitiveURL:lCopy withOptions:v4 error:&v9];
   v6 = v9;
 
   if (v6)
@@ -101,7 +101,7 @@ LABEL_4:
     v8 = os_log_GKError;
     if (os_log_type_enabled(os_log_GKError, OS_LOG_TYPE_ERROR))
     {
-      sub_10028B970(v3, v6, v8);
+      sub_10028B970(lCopy, v6, v8);
     }
   }
 }

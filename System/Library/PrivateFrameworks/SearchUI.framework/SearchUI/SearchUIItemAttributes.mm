@@ -1,28 +1,28 @@
 @interface SearchUIItemAttributes
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SearchUIItemAttributes
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SearchUIItemAttributes;
-  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:a3];
+  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:zone];
   [v4 setIsForcingHeight:{-[SearchUIItemAttributes isForcingHeight](self, "isForcingHeight")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = SearchUIItemAttributes;
-  if ([(UICollectionViewLayoutAttributes *)&v8 isEqual:v4])
+  if ([(UICollectionViewLayoutAttributes *)&v8 isEqual:equalCopy])
   {
-    v5 = [(SearchUIItemAttributes *)self isForcingHeight];
-    v6 = v5 ^ [v4 isForcingHeight] ^ 1;
+    isForcingHeight = [(SearchUIItemAttributes *)self isForcingHeight];
+    v6 = isForcingHeight ^ [equalCopy isForcingHeight] ^ 1;
   }
 
   else

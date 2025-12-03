@@ -1,18 +1,18 @@
 @interface RequestThrottleRecord
-- (BOOL)isEqual:(id)a3;
-- (RequestThrottleRecord)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RequestThrottleRecord)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RequestThrottleRecord
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v9 = 1;
       goto LABEL_17;
@@ -69,27 +69,27 @@ LABEL_17:
   return v9;
 }
 
-- (RequestThrottleRecord)initWithCoder:(id)a3
+- (RequestThrottleRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = RequestThrottleRecord;
   v5 = [(RequestThrottleRecord *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_error"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_error"];
     error = v5->_error;
     v5->_error = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_itemID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_itemID"];
     itemID = v5->_itemID;
     v5->_itemID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_externalVersionID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_externalVersionID"];
     externalVersionID = v5->_externalVersionID;
     v5->_externalVersionID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_requestDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_requestDate"];
     requestDate = v5->_requestDate;
     v5->_requestDate = v12;
   }
@@ -97,18 +97,18 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (self->_error)
   {
     v4 = ASDErrorWithSafeUserInfo();
-    [v5 encodeObject:v4 forKey:@"_error"];
+    [coderCopy encodeObject:v4 forKey:@"_error"];
   }
 
-  [v5 encodeObject:self->_itemID forKey:@"_itemID"];
-  [v5 encodeObject:self->_externalVersionID forKey:@"_externalVersionID"];
-  [v5 encodeObject:self->_requestDate forKey:@"_requestDate"];
+  [coderCopy encodeObject:self->_itemID forKey:@"_itemID"];
+  [coderCopy encodeObject:self->_externalVersionID forKey:@"_externalVersionID"];
+  [coderCopy encodeObject:self->_requestDate forKey:@"_requestDate"];
 }
 
 @end

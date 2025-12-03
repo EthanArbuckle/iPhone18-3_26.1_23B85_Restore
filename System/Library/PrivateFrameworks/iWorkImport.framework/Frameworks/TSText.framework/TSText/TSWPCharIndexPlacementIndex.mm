@@ -1,31 +1,31 @@
 @interface TSWPCharIndexPlacementIndex
-- (TSWPCharIndexPlacementIndex)initWithCharIndex:(unint64_t)a3 placmentIndex:(int)a4 drawableAttachment:(id)a5;
-- (int64_t)compare:(id)a3;
+- (TSWPCharIndexPlacementIndex)initWithCharIndex:(unint64_t)index placmentIndex:(int)placmentIndex drawableAttachment:(id)attachment;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation TSWPCharIndexPlacementIndex
 
-- (TSWPCharIndexPlacementIndex)initWithCharIndex:(unint64_t)a3 placmentIndex:(int)a4 drawableAttachment:(id)a5
+- (TSWPCharIndexPlacementIndex)initWithCharIndex:(unint64_t)index placmentIndex:(int)placmentIndex drawableAttachment:(id)attachment
 {
-  v9 = a5;
+  attachmentCopy = attachment;
   v13.receiver = self;
   v13.super_class = TSWPCharIndexPlacementIndex;
   v10 = [(TSWPCharIndexPlacementIndex *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_charIndex = a3;
-    v10->_placementIndex = a4;
-    objc_storeStrong(&v10->_drawableAttachment, a5);
+    v10->_charIndex = index;
+    v10->_placementIndex = placmentIndex;
+    objc_storeStrong(&v10->_drawableAttachment, attachment);
   }
 
   return v11;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v7 = objc_msgSend_placementIndex(v4, v5, v6);
+  compareCopy = compare;
+  v7 = objc_msgSend_placementIndex(compareCopy, v5, v6);
   if (v7 == objc_msgSend_placementIndex(self, v8, v9))
   {
     v12 = 0;
@@ -33,7 +33,7 @@
 
   else
   {
-    v13 = objc_msgSend_placementIndex(v4, v10, v11);
+    v13 = objc_msgSend_placementIndex(compareCopy, v10, v11);
     if (v13 < objc_msgSend_placementIndex(self, v14, v15))
     {
       v12 = 1;

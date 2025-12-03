@@ -2,7 +2,7 @@
 + (INVoiceShortcutCenter)sharedCenter;
 + (void)initialize;
 - (INVoiceShortcutCenter)init;
-- (id)_initWithVoiceShortcutClient:(id)a3;
+- (id)_initWithVoiceShortcutClient:(id)client;
 - (void)getAllVoiceShortcutsWithCompletion:(void *)completionHandler;
 - (void)getVoiceShortcutWithIdentifier:(NSUUID *)identifier completion:(void *)completionHandler;
 - (void)setShortcutSuggestions:(NSArray *)suggestions;
@@ -41,8 +41,8 @@ uint64_t __48__INVoiceShortcutCenter_setShortcutSuggestions___block_invoke(uint6
   v20 = *MEMORY[0x1E69E9840];
   v6 = identifier;
   v7 = completionHandler;
-  v8 = [(INVoiceShortcutCenter *)self voiceShortcutClient];
-  if (!v8)
+  voiceShortcutClient = [(INVoiceShortcutCenter *)self voiceShortcutClient];
+  if (!voiceShortcutClient)
   {
     v11 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
@@ -73,14 +73,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v9 = [(NSUUID *)v6 UUIDString];
+  uUIDString = [(NSUUID *)v6 UUIDString];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __67__INVoiceShortcutCenter_getVoiceShortcutWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E7280618;
   v16 = v6;
   v17 = v7;
-  [v8 getVoiceShortcutWithIdentifier:v9 completion:v15];
+  [voiceShortcutClient getVoiceShortcutWithIdentifier:uUIDString completion:v15];
 
   v10 = v16;
 LABEL_11:
@@ -155,15 +155,15 @@ LABEL_13:
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = completionHandler;
-  v5 = [(INVoiceShortcutCenter *)self voiceShortcutClient];
-  if (v5)
+  voiceShortcutClient = [(INVoiceShortcutCenter *)self voiceShortcutClient];
+  if (voiceShortcutClient)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __60__INVoiceShortcutCenter_getAllVoiceShortcutsWithCompletion___block_invoke;
     v8[3] = &unk_1E7285360;
     v9 = v4;
-    [v5 getVoiceShortcutsWithCompletion:v8];
+    [voiceShortcutClient getVoiceShortcutsWithCompletion:v8];
   }
 
   else
@@ -277,16 +277,16 @@ void __60__INVoiceShortcutCenter_getAllVoiceShortcutsWithCompletion___block_invo
   return v4;
 }
 
-- (id)_initWithVoiceShortcutClient:(id)a3
+- (id)_initWithVoiceShortcutClient:(id)client
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  clientCopy = client;
   v10.receiver = self;
   v10.super_class = INVoiceShortcutCenter;
   v6 = [(INVoiceShortcutCenter *)&v10 init];
   if (v6)
   {
-    if (!v5)
+    if (!clientCopy)
     {
       v7 = INSiriLogContextIntents;
       if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
@@ -297,7 +297,7 @@ void __60__INVoiceShortcutCenter_getAllVoiceShortcutsWithCompletion___block_invo
       }
     }
 
-    objc_storeStrong(&v6->_voiceShortcutClient, a3);
+    objc_storeStrong(&v6->_voiceShortcutClient, client);
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -310,7 +310,7 @@ void __60__INVoiceShortcutCenter_getAllVoiceShortcutsWithCompletion___block_invo
   block[1] = 3221225472;
   block[2] = __37__INVoiceShortcutCenter_sharedCenter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCenter_onceToken != -1)
   {
     dispatch_once(&sharedCenter_onceToken, block);
@@ -333,7 +333,7 @@ uint64_t __37__INVoiceShortcutCenter_sharedCenter__block_invoke(uint64_t a1)
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);

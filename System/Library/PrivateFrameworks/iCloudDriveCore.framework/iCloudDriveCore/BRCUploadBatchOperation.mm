@@ -1,38 +1,38 @@
 @interface BRCUploadBatchOperation
-- (BRCUploadBatchOperation)initWithSyncContext:(id)a3 sessionContext:(id)a4 clientZone:(id)a5 group:(id)a6 callBackQueueTarget:(id)a7;
+- (BRCUploadBatchOperation)initWithSyncContext:(id)context sessionContext:(id)sessionContext clientZone:(id)zone group:(id)group callBackQueueTarget:(id)target;
 - (id)createActivity;
-- (void)_publishProgressIfNecessaryForTransfer:(id)a3;
-- (void)_publishUploadProgress:(id)a3;
+- (void)_publishProgressIfNecessaryForTransfer:(id)transfer;
+- (void)_publishUploadProgress:(id)progress;
 - (void)_registerForDocumentReparentNotifications;
 - (void)_unregisterForDocumentReparentNotifications;
-- (void)_uploadRecordsByID:(id)a3;
-- (void)addItem:(id)a3 stageID:(id)a4 record:(id)a5 transferSize:(unint64_t)a6;
-- (void)finishWithResult:(id)a3 error:(id)a4;
-- (void)mainWithTransfers:(id)a3;
-- (void)sendTransferCompletionCallBack:(id)a3 error:(id)a4;
+- (void)_uploadRecordsByID:(id)d;
+- (void)addItem:(id)item stageID:(id)d record:(id)record transferSize:(unint64_t)size;
+- (void)finishWithResult:(id)result error:(id)error;
+- (void)mainWithTransfers:(id)transfers;
+- (void)sendTransferCompletionCallBack:(id)back error:(id)error;
 @end
 
 @implementation BRCUploadBatchOperation
 
-- (BRCUploadBatchOperation)initWithSyncContext:(id)a3 sessionContext:(id)a4 clientZone:(id)a5 group:(id)a6 callBackQueueTarget:(id)a7
+- (BRCUploadBatchOperation)initWithSyncContext:(id)context sessionContext:(id)sessionContext clientZone:(id)zone group:(id)group callBackQueueTarget:(id)target
 {
-  v13 = a5;
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
-  v17 = a3;
-  v18 = [v17 contextIdentifier];
-  v19 = [@"upload" stringByAppendingPathComponent:v18];
+  zoneCopy = zone;
+  targetCopy = target;
+  groupCopy = group;
+  sessionContextCopy = sessionContext;
+  contextCopy = context;
+  contextIdentifier = [contextCopy contextIdentifier];
+  v19 = [@"upload" stringByAppendingPathComponent:contextIdentifier];
 
   v23.receiver = self;
   v23.super_class = BRCUploadBatchOperation;
-  v20 = [(BRCTransferBatchOperation *)&v23 initWithName:v19 syncContext:v17 sessionContext:v16 group:v15];
+  v20 = [(BRCTransferBatchOperation *)&v23 initWithName:v19 syncContext:contextCopy sessionContext:sessionContextCopy group:groupCopy];
 
   if (v20)
   {
-    objc_storeStrong(&v20->_clientZone, a5);
-    v21 = [(_BRCOperation *)v20 callbackQueue];
-    dispatch_set_target_queue(v21, v14);
+    objc_storeStrong(&v20->_clientZone, zone);
+    callbackQueue = [(_BRCOperation *)v20 callbackQueue];
+    dispatch_set_target_queue(callbackQueue, targetCopy);
   }
 
   return v20;
@@ -45,35 +45,35 @@
   return v2;
 }
 
-- (void)addItem:(id)a3 stageID:(id)a4 record:(id)a5 transferSize:(unint64_t)a6
+- (void)addItem:(id)item stageID:(id)d record:(id)record transferSize:(unint64_t)size
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[BRCUpload alloc] initWithDocument:v12 stageID:v11 transferSize:a6];
+  recordCopy = record;
+  dCopy = d;
+  itemCopy = item;
+  v13 = [[BRCUpload alloc] initWithDocument:itemCopy stageID:dCopy transferSize:size];
 
-  [(BRCUpload *)v13 setRecord:v10];
+  [(BRCUpload *)v13 setRecord:recordCopy];
   [(BRCTransferBatchOperation *)self addTransfer:v13];
 }
 
-- (void)sendTransferCompletionCallBack:(id)a3 error:(id)a4
+- (void)sendTransferCompletionCallBack:(id)back error:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCUploadBatchOperation *)self perUploadCompletionBlock];
-  if (v8)
+  backCopy = back;
+  errorCopy = error;
+  perUploadCompletionBlock = [(BRCUploadBatchOperation *)self perUploadCompletionBlock];
+  if (perUploadCompletionBlock)
   {
-    v9 = [(BRCSessionContext *)self->super.super._sessionContext clientReadWriteDatabaseFacade];
-    v10 = [v9 serialQueue];
+    clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super.super._sessionContext clientReadWriteDatabaseFacade];
+    serialQueue = [clientReadWriteDatabaseFacade serialQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__BRCUploadBatchOperation_sendTransferCompletionCallBack_error___block_invoke;
     block[3] = &unk_2784FFBF0;
-    v17 = v8;
-    v15 = v6;
-    v16 = v7;
-    dispatch_sync(v10, block);
+    v17 = perUploadCompletionBlock;
+    v15 = backCopy;
+    v16 = errorCopy;
+    dispatch_sync(serialQueue, block);
 
     v11 = v17;
   }
@@ -85,9 +85,9 @@
     if (os_log_type_enabled(v12, 0x90u))
     {
       *buf = 138412802;
-      v19 = v6;
+      v19 = backCopy;
       v20 = 2112;
-      v21 = v7;
+      v21 = errorCopy;
       v22 = 2112;
       v23 = v11;
       _os_log_error_impl(&dword_223E7A000, v12, 0x90u, "[ERROR] No per upload completion block for %@, error %@%@", buf, 0x20u);
@@ -97,40 +97,40 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_publishUploadProgress:(id)a3
+- (void)_publishUploadProgress:(id)progress
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 progress];
-  v6 = v5;
-  if (v5)
+  progressCopy = progress;
+  progress = [progressCopy progress];
+  v6 = progress;
+  if (progress)
   {
-    if (([v5 isFinished] & 1) == 0 && (objc_msgSend(v6, "isPublished") & 1) == 0)
+    if (([progress isFinished] & 1) == 0 && (objc_msgSend(v6, "isPublished") & 1) == 0)
     {
-      v7 = [v6 userInfo];
-      v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCA640]];
+      userInfo = [v6 userInfo];
+      v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA640]];
 
       if (!v8)
       {
-        v9 = [v6 userInfo];
-        v10 = [v9 valueForKey:@"ICDProgressObjectID"];
+        userInfo2 = [v6 userInfo];
+        v10 = [userInfo2 valueForKey:@"ICDProgressObjectID"];
 
         v11 = [MEMORY[0x277CC6400] br_fpItemIDFromItemIdentifier:v10];
         if (v11)
         {
           objc_initWeak(location, v6);
-          objc_initWeak(&from, v4);
-          v12 = [MEMORY[0x277CC6408] defaultManager];
+          objc_initWeak(&from, progressCopy);
+          defaultManager = [MEMORY[0x277CC6408] defaultManager];
           v16[0] = MEMORY[0x277D85DD0];
           v16[1] = 3221225472;
           v16[2] = __50__BRCUploadBatchOperation__publishUploadProgress___block_invoke;
           v16[3] = &unk_278502840;
           v17 = v10;
-          v18 = self;
+          selfCopy = self;
           objc_copyWeak(&v20, location);
-          v19 = v4;
+          v19 = progressCopy;
           objc_copyWeak(&v21, &from);
-          [v12 fetchURLForItemID:v11 completionHandler:v16];
+          [defaultManager fetchURLForItemID:v11 completionHandler:v16];
 
           objc_destroyWeak(&v21);
           objc_destroyWeak(&v20);
@@ -246,8 +246,8 @@ void __50__BRCUploadBatchOperation__publishUploadProgress___block_invoke_103(uin
 {
   if (self->_documentReparentNotificationToken)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_documentReparentNotificationToken];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_documentReparentNotificationToken];
 
     documentReparentNotificationToken = self->_documentReparentNotificationToken;
     self->_documentReparentNotificationToken = 0;
@@ -301,10 +301,10 @@ void __68__BRCUploadBatchOperation__registerForDocumentReparentNotifications__bl
   [v6 recreateProgress];
 }
 
-- (void)mainWithTransfers:(id)a3
+- (void)mainWithTransfers:(id)transfers
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transfersCopy = transfers;
   v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[BRCTransferBatchOperation itemsCount](self, "itemsCount")}];
   [(BRCUploadBatchOperation *)self _registerForDocumentReparentNotifications];
   v6 = brc_bread_crumbs();
@@ -318,7 +318,7 @@ void __68__BRCUploadBatchOperation__registerForDocumentReparentNotifications__bl
   v32 = 0u;
   v33 = 0u;
   v31 = 0u;
-  obj = v4;
+  obj = transfersCopy;
   v8 = [obj countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v8)
   {
@@ -348,20 +348,20 @@ void __68__BRCUploadBatchOperation__registerForDocumentReparentNotifications__bl
           _os_log_debug_impl(&dword_223E7A000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] %@%@", buf, 0x16u);
         }
 
-        v16 = [v13 record];
-        v17 = [v13 record];
-        v18 = [v17 recordID];
-        [v5 setObject:v16 forKeyedSubscript:v18];
+        record = [v13 record];
+        record2 = [v13 record];
+        recordID = [record2 recordID];
+        [v5 setObject:record forKeyedSubscript:recordID];
 
         [(BRCUploadBatchOperation *)self _publishUploadProgress:v13];
-        v19 = [(BRCSessionContext *)self->super.super._sessionContext analyticsReporter];
-        v20 = [v13 itemID];
+        analyticsReporter = [(BRCSessionContext *)self->super.super._sessionContext analyticsReporter];
+        itemID = [v13 itemID];
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __45__BRCUploadBatchOperation_mainWithTransfers___block_invoke;
         v30[3] = &unk_278502890;
         v30[4] = self;
-        [v19 lookupFSEventToSyncUpEventByItemID:v20 accessor:v30];
+        [analyticsReporter lookupFSEventToSyncUpEventByItemID:itemID accessor:v30];
 
         ++v12;
       }
@@ -375,8 +375,8 @@ void __68__BRCUploadBatchOperation__registerForDocumentReparentNotifications__bl
 
   [(BRCUploadBatchOperation *)self hash];
   kdebug_trace();
-  v21 = [(BRCClientZone *)self->_clientZone serverZone];
-  if ([v21 hasFetchedServerZoneState])
+  serverZone = [(BRCClientZone *)self->_clientZone serverZone];
+  if ([serverZone hasFetchedServerZoneState])
   {
 
 LABEL_16:
@@ -384,22 +384,22 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v22 = [(BRCClientZone *)self->_clientZone isPrivateZone];
+  isPrivateZone = [(BRCClientZone *)self->_clientZone isPrivateZone];
 
-  if (!v22)
+  if (!isPrivateZone)
   {
     goto LABEL_16;
   }
 
-  v23 = [(BRCClientZone *)self->_clientZone asPrivateClientZone];
-  v24 = [(_BRCOperation *)self group];
+  asPrivateClientZone = [(BRCClientZone *)self->_clientZone asPrivateClientZone];
+  group = [(_BRCOperation *)self group];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __45__BRCUploadBatchOperation_mainWithTransfers___block_invoke_2;
   v28[3] = &unk_2784FFFA8;
   v28[4] = self;
   v29 = v5;
-  [v23 createCloudKitZoneWithGroup:v24 completion:v28];
+  [asPrivateClientZone createCloudKitZoneWithGroup:group completion:v28];
 
 LABEL_17:
   v25 = *MEMORY[0x277D85DE8];
@@ -419,28 +419,28 @@ uint64_t __45__BRCUploadBatchOperation_mainWithTransfers___block_invoke_2(uint64
   }
 }
 
-- (void)_publishProgressIfNecessaryForTransfer:(id)a3
+- (void)_publishProgressIfNecessaryForTransfer:(id)transfer
 {
-  v4 = a3;
+  transferCopy = transfer;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [BRCUploadBatchOperation _publishProgressIfNecessaryForTransfer:];
   }
 
-  v5 = [(BRCTransferBatchOperation *)self queue];
+  queue = [(BRCTransferBatchOperation *)self queue];
 
-  if (!v5)
+  if (!queue)
   {
     [BRCUploadBatchOperation _publishProgressIfNecessaryForTransfer:];
   }
 
-  [(BRCUploadBatchOperation *)self _publishUploadProgress:v4];
+  [(BRCUploadBatchOperation *)self _publishUploadProgress:transferCopy];
 }
 
-- (void)_uploadRecordsByID:(id)a3
+- (void)_uploadRecordsByID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
@@ -454,12 +454,12 @@ uint64_t __45__BRCUploadBatchOperation_mainWithTransfers___block_invoke_2(uint64
   v26[4] = __Block_byref_object_dispose__19;
   v27 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v5 = objc_alloc(MEMORY[0x277CBC4A0]);
-  v6 = [v4 allValues];
-  v7 = [v5 initWithRecordsToSave:v6 recordIDsToDelete:0];
+  allValues = [dCopy allValues];
+  v7 = [v5 initWithRecordsToSave:allValues recordIDsToDelete:0];
 
   [v7 setShouldOnlySaveAssetContent:1];
-  v8 = [(_BRCOperation *)self callbackQueue];
-  [v7 setCallbackQueue:v8];
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  [v7 setCallbackQueue:callbackQueue];
 
   [v7 setSavePolicy:0];
   [v7 setAtomic:0];
@@ -470,9 +470,9 @@ uint64_t __45__BRCUploadBatchOperation_mainWithTransfers___block_invoke_2(uint64
   v25[4] = self;
   [v7 setPerRecordProgressBlock:v25];
   v9 = [BRCUserDefaults defaultsForMangledID:0];
-  v10 = [v9 requestCKCacheAssetClone];
+  requestCKCacheAssetClone = [v9 requestCKCacheAssetClone];
 
-  if (v10)
+  if (requestCKCacheAssetClone)
   {
     [v7 setShouldCloneFileInAssetCache:1];
   }
@@ -484,7 +484,7 @@ uint64_t __45__BRCUploadBatchOperation_mainWithTransfers___block_invoke_2(uint64
   v21[4] = self;
   v23 = v28;
   v24 = v26;
-  v11 = v4;
+  v11 = dCopy;
   v22 = v11;
   [v7 setPerRecordCompletionBlock:v21];
   objc_initWeak(&location, v7);
@@ -493,7 +493,7 @@ uint64_t __45__BRCUploadBatchOperation_mainWithTransfers___block_invoke_2(uint64
   v14 = __46__BRCUploadBatchOperation__uploadRecordsByID___block_invoke_118;
   v15 = &unk_278502930;
   objc_copyWeak(&v19, &location);
-  v16 = self;
+  selfCopy = self;
   v17 = v28;
   v18 = v26;
   [v7 setModifyRecordsCompletionBlock:&v12];
@@ -648,18 +648,18 @@ void __46__BRCUploadBatchOperation__uploadRecordsByID___block_invoke_119(uint64_
   }
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   [(BRCUploadBatchOperation *)self _unregisterForDocumentReparentNotifications];
   v9.receiver = self;
   v9.super_class = BRCUploadBatchOperation;
-  [(BRCTransferBatchOperation *)&v9 finishWithResult:v6 error:v7];
+  [(BRCTransferBatchOperation *)&v9 finishWithResult:resultCopy error:errorCopy];
   uploadBatchCompletionBlock = self->_uploadBatchCompletionBlock;
   if (uploadBatchCompletionBlock)
   {
-    uploadBatchCompletionBlock[2](uploadBatchCompletionBlock, v6, v7);
+    uploadBatchCompletionBlock[2](uploadBatchCompletionBlock, resultCopy, errorCopy);
   }
 
   [(BRCUploadBatchOperation *)self setPerUploadCompletionBlock:0];

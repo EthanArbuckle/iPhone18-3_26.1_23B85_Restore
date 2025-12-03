@@ -1,17 +1,17 @@
 @interface LabelDetailsPlatterWrapper
 - (void)remakePlatters;
-- (void)touchBackgroundFrom:(id)a3;
+- (void)touchBackgroundFrom:(id)from;
 @end
 
 @implementation LabelDetailsPlatterWrapper
 
 - (void)remakePlatters
 {
-  v2 = self;
+  selfCopy = self;
   sub_10009E49C();
 }
 
-- (void)touchBackgroundFrom:(id)a3
+- (void)touchBackgroundFrom:(id)from
 {
   v3 = *(self + qword_1004A65D0);
   if (v3)
@@ -22,8 +22,8 @@
       v7 = *(v6 + 1);
       ObjectType = swift_getObjectType();
       v9 = *(v7 + 24);
-      v10 = a3;
-      v11 = self;
+      fromCopy = from;
+      selfCopy = self;
       v12 = v3;
       v9(ObjectType, v7);
 

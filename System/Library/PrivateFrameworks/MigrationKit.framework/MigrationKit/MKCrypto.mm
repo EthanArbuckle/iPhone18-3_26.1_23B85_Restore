@@ -1,17 +1,17 @@
 @interface MKCrypto
-- (MKCrypto)initWithKey:(id)a3;
-- (id)bytes:(unint64_t)a3;
-- (id)decryptData:(id)a3;
-- (id)encrypt:(BOOL)a3 data:(id)a4 withKey:(id)a5 iv:(id)a6;
-- (id)encryptData:(id)a3;
+- (MKCrypto)initWithKey:(id)key;
+- (id)bytes:(unint64_t)bytes;
+- (id)decryptData:(id)data;
+- (id)encrypt:(BOOL)encrypt data:(id)data withKey:(id)key iv:(id)iv;
+- (id)encryptData:(id)data;
 @end
 
 @implementation MKCrypto
 
-- (MKCrypto)initWithKey:(id)a3
+- (MKCrypto)initWithKey:(id)key
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v26.receiver = self;
   v26.super_class = MKCrypto;
   v5 = [(MKCrypto *)&v26 init];
@@ -22,7 +22,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ([v4 length] > 0xF)
+  if ([keyCopy length] > 0xF)
   {
     v24 = 0u;
     v25 = 0u;
@@ -42,16 +42,16 @@ LABEL_18:
             objc_enumerationMutation(&unk_286AAD338);
           }
 
-          v18 = [*(*(&v22 + 1) + 8 * i) unsignedIntegerValue];
-          if ([v4 length] > v18)
+          unsignedIntegerValue = [*(*(&v22 + 1) + 8 * i) unsignedIntegerValue];
+          if ([keyCopy length] > unsignedIntegerValue)
           {
-            v19 = [v4 subdataWithRange:{0, v18}];
+            v19 = [keyCopy subdataWithRange:{0, unsignedIntegerValue}];
 
-            v4 = v19;
+            keyCopy = v19;
             goto LABEL_17;
           }
 
-          if ([v4 length] == v18)
+          if ([keyCopy length] == unsignedIntegerValue)
           {
             goto LABEL_17;
           }
@@ -68,7 +68,7 @@ LABEL_18:
     }
 
 LABEL_17:
-    [(MKCrypto *)v5 setKey:v4];
+    [(MKCrypto *)v5 setKey:keyCopy];
     goto LABEL_18;
   }
 
@@ -85,13 +85,13 @@ LABEL_19:
   return v13;
 }
 
-- (id)encryptData:(id)a3
+- (id)encryptData:(id)data
 {
-  v4 = a3;
-  if ([v4 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
     v5 = [(MKCrypto *)self bytes:16];
-    v6 = [(MKCrypto *)self encrypt:1 data:v4 withKey:self->_key iv:v5];
+    v6 = [(MKCrypto *)self encrypt:1 data:dataCopy withKey:self->_key iv:v5];
     if (v6)
     {
       v7 = [MEMORY[0x277CBEB28] dataWithCapacity:{objc_msgSend(v6, "length") + objc_msgSend(v5, "length")}];
@@ -119,13 +119,13 @@ LABEL_19:
   return v7;
 }
 
-- (id)decryptData:(id)a3
+- (id)decryptData:(id)data
 {
-  v4 = a3;
-  if ([v4 length] > 0x10)
+  dataCopy = data;
+  if ([dataCopy length] > 0x10)
   {
-    v13 = [v4 subdataWithRange:{0, 16}];
-    v14 = [v4 subdataWithRange:{objc_msgSend(v13, "length"), objc_msgSend(v4, "length") - objc_msgSend(v13, "length")}];
+    v13 = [dataCopy subdataWithRange:{0, 16}];
+    v14 = [dataCopy subdataWithRange:{objc_msgSend(v13, "length"), objc_msgSend(dataCopy, "length") - objc_msgSend(v13, "length")}];
     v12 = [(MKCrypto *)self encrypt:0 data:v14 withKey:self->_key iv:v13];
   }
 
@@ -143,14 +143,14 @@ LABEL_19:
   return v12;
 }
 
-- (id)encrypt:(BOOL)a3 data:(id)a4 withKey:(id)a5 iv:(id)a6
+- (id)encrypt:(BOOL)encrypt data:(id)data withKey:(id)key iv:(id)iv
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  encryptCopy = encrypt;
+  dataCopy = data;
+  keyCopy = key;
+  ivCopy = iv;
   cryptorRef = 0;
-  v13 = [v11 length];
+  v13 = [keyCopy length];
   if (v13 > 0x20 || ((1 << v13) & 0x101010000) == 0)
   {
     v16 = [MKError alloc];
@@ -159,7 +159,7 @@ LABEL_19:
     goto LABEL_13;
   }
 
-  if ([v12 length] != 16)
+  if ([ivCopy length] != 16)
   {
     v16 = [MKError alloc];
     v17 = @"did receive an invalid iv.";
@@ -177,7 +177,7 @@ LABEL_19:
     v15 = 3;
   }
 
-  if (CCCryptorCreateWithMode(!v8, v15, 0, 0, [v12 bytes], objc_msgSend(v11, "bytes"), objc_msgSend(v11, "length"), 0, 0, 0, 0, &cryptorRef))
+  if (CCCryptorCreateWithMode(!encryptCopy, v15, 0, 0, [ivCopy bytes], objc_msgSend(keyCopy, "bytes"), objc_msgSend(keyCopy, "length"), 0, 0, 0, 0, &cryptorRef))
   {
     v16 = [MKError alloc];
     v17 = @"could not create a cryptor.";
@@ -189,8 +189,8 @@ LABEL_13:
   }
 
   dataOutMoved = 0;
-  v23 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(v10, "length") + 16}];
-  if (CCCryptorUpdate(cryptorRef, [v10 bytes], objc_msgSend(v10, "length"), objc_msgSend(v23, "mutableBytes"), objc_msgSend(v23, "length"), &dataOutMoved))
+  v23 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(dataCopy, "length") + 16}];
+  if (CCCryptorUpdate(cryptorRef, [dataCopy bytes], objc_msgSend(dataCopy, "length"), objc_msgSend(v23, "mutableBytes"), objc_msgSend(v23, "length"), &dataOutMoved))
   {
     v24 = [MKError alloc];
     v25 = @"could not update the cryptor.";
@@ -232,12 +232,12 @@ LABEL_14:
   return v20;
 }
 
-- (id)bytes:(unint64_t)a3
+- (id)bytes:(unint64_t)bytes
 {
-  v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:a3];
-  if (a3 >= 4)
+  v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:bytes];
+  if (bytes >= 4)
   {
-    v5 = a3 >> 2;
+    v5 = bytes >> 2;
     do
     {
       v7 = arc4random();

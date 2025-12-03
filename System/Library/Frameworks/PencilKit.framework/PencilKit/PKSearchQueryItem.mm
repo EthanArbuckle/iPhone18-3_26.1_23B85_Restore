@@ -1,17 +1,17 @@
 @interface PKSearchQueryItem
 - (CGRect)bounds;
-- (PKSearchQueryItem)initWithBounds:(CGRect)a3;
-- (PKSearchQueryItem)initWithBounds:(CGRect)a3 strokes:(id)a4;
+- (PKSearchQueryItem)initWithBounds:(CGRect)bounds;
+- (PKSearchQueryItem)initWithBounds:(CGRect)bounds strokes:(id)strokes;
 @end
 
 @implementation PKSearchQueryItem
 
-- (PKSearchQueryItem)initWithBounds:(CGRect)a3
+- (PKSearchQueryItem)initWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8.receiver = self;
   v8.super_class = PKSearchQueryItem;
   result = [(PKSearchQueryItem *)&v8 init];
@@ -22,18 +22,18 @@
   return result;
 }
 
-- (PKSearchQueryItem)initWithBounds:(CGRect)a3 strokes:(id)a4
+- (PKSearchQueryItem)initWithBounds:(CGRect)bounds strokes:(id)strokes
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(PKSearchQueryItem *)self initWithBounds:x, y, width, height];
-  strokes = v10->_strokes;
-  v10->_strokes = v9;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  strokesCopy = strokes;
+  height = [(PKSearchQueryItem *)self initWithBounds:x, y, width, height];
+  strokes = height->_strokes;
+  height->_strokes = strokesCopy;
 
-  return v10;
+  return height;
 }
 
 - (CGRect)bounds

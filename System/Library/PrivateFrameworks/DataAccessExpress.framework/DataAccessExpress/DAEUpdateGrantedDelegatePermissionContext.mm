@@ -1,19 +1,19 @@
 @interface DAEUpdateGrantedDelegatePermissionContext
-- (DAEUpdateGrantedDelegatePermissionContext)initWithResultsBlock:(id)a3;
-- (void)finishedWithError:(id)a3;
+- (DAEUpdateGrantedDelegatePermissionContext)initWithResultsBlock:(id)block;
+- (void)finishedWithError:(id)error;
 @end
 
 @implementation DAEUpdateGrantedDelegatePermissionContext
 
-- (DAEUpdateGrantedDelegatePermissionContext)initWithResultsBlock:(id)a3
+- (DAEUpdateGrantedDelegatePermissionContext)initWithResultsBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = DAEUpdateGrantedDelegatePermissionContext;
   v5 = [(DAEUpdateGrantedDelegatePermissionContext *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     resultsBlock = v5->_resultsBlock;
     v5->_resultsBlock = v6;
   }
@@ -21,20 +21,20 @@
   return v5;
 }
 
-- (void)finishedWithError:(id)a3
+- (void)finishedWithError:(id)error
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  resultsBlock = v4->_resultsBlock;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  resultsBlock = selfCopy->_resultsBlock;
   if (resultsBlock)
   {
-    resultsBlock[2](resultsBlock, v7);
-    v6 = v4->_resultsBlock;
-    v4->_resultsBlock = 0;
+    resultsBlock[2](resultsBlock, errorCopy);
+    v6 = selfCopy->_resultsBlock;
+    selfCopy->_resultsBlock = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 @end

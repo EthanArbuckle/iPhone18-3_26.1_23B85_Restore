@@ -1,22 +1,22 @@
 @interface WKColorExtensionView
-- (WKColorExtensionView)initWithFrame:(CGRect)a3 delegate:(id)a4;
-- (void)_updateColor:(id)a3 visible:(BOOL)a4;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (WKColorExtensionView)initWithFrame:(CGRect)frame delegate:(id)delegate;
+- (void)_updateColor:(id)color visible:(BOOL)visible;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)cancelFadeAnimation;
 - (void)fadeOut;
 @end
 
 @implementation WKColorExtensionView
 
-- (WKColorExtensionView)initWithFrame:(CGRect)a3 delegate:(id)a4
+- (WKColorExtensionView)initWithFrame:(CGRect)frame delegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = WKColorExtensionView;
-  v5 = [(WKColorExtensionView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(WKColorExtensionView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, a4);
+    objc_storeWeak(&v5->_delegate, delegate);
     [(WKColorExtensionView *)v6 setHidden:1];
   }
 
@@ -25,22 +25,22 @@
 
 - (void)fadeOut
 {
-  v3 = [MEMORY[0x1E69DC888] clearColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
 
-  [(WKColorExtensionView *)self _updateColor:v3 visible:0];
+  [(WKColorExtensionView *)self _updateColor:clearColor visible:0];
 }
 
-- (void)_updateColor:(id)a3 visible:(BOOL)a4
+- (void)_updateColor:(id)color visible:(BOOL)visible
 {
-  if (a4)
+  if (visible)
   {
-    v7 = [(WKColorExtensionView *)self isHidden];
-    if (v7)
+    isHidden = [(WKColorExtensionView *)self isHidden];
+    if (isHidden)
     {
       [(WKColorExtensionView *)self cancelFadeAnimation];
     }
 
-    self->_isVisible = a4;
+    self->_isVisible = visible;
     [(WKColorExtensionView *)self setHidden:0];
   }
 
@@ -53,7 +53,7 @@
 
     [(WKColorExtensionView *)self isHidden];
     isVisible = self->_isVisible;
-    self->_isVisible = a4;
+    self->_isVisible = visible;
     if (isVisible)
     {
       Weak = objc_loadWeak(&self->_delegate);
@@ -69,7 +69,7 @@
       }
     }
 
-    v7 = 0;
+    isHidden = 0;
   }
 
   v12 = [-[WKColorExtensionView layer](self "layer")];
@@ -79,26 +79,26 @@
     CFRetain(v12);
   }
 
-  v14 = [a3 CGColor];
-  v15 = v14;
-  if (v14)
+  cGColor = [color CGColor];
+  v15 = cGColor;
+  if (cGColor)
   {
-    CFRetain(v14);
+    CFRetain(cGColor);
   }
 
-  if (a3)
+  if (color)
   {
-    v16 = a3;
+    colorCopy = color;
   }
 
   m_ptr = self->_targetColor.m_ptr;
-  self->_targetColor.m_ptr = a3;
+  self->_targetColor.m_ptr = color;
   if (m_ptr)
   {
   }
 
   [-[WKColorExtensionView layer](self "layer")];
-  if (v7)
+  if (isHidden)
   {
     v18 = objc_loadWeak(&self->_delegate);
     v19 = v18;
@@ -144,9 +144,9 @@
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (a4 && !self->_isVisible)
+  if (finished && !self->_isVisible)
   {
     [(WKColorExtensionView *)self setHidden:1];
   }
@@ -156,20 +156,20 @@
 {
   if (self->_targetColor.m_ptr)
   {
-    v3 = [(WKColorExtensionView *)self layer];
-    v7 = v3;
-    if (v3)
+    layer = [(WKColorExtensionView *)self layer];
+    v7 = layer;
+    if (layer)
     {
-      v4 = v3;
-      v3 = v7;
+      v4 = layer;
+      layer = v7;
     }
 
-    [v3 removeAnimationForKey:@"WKColorExtensionViewFade"];
-    v5 = [(UIColor *)self->_targetColor.m_ptr CGColor];
-    v6 = v5;
-    if (v5)
+    [layer removeAnimationForKey:@"WKColorExtensionViewFade"];
+    cGColor = [(UIColor *)self->_targetColor.m_ptr CGColor];
+    v6 = cGColor;
+    if (cGColor)
     {
-      CFRetain(v5);
+      CFRetain(cGColor);
     }
 
     [v7 setBackgroundColor:v6];

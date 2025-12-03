@@ -1,17 +1,17 @@
 @interface DESFederatedBuffer
-+ (id)computeApproximateStaleness:(double)a3 stalenessScale:(id)a4 stalenessBias:(id)a5;
-+ (id)computeDownScalingFactor:(id)a3 approximateStaleness:(id)a4;
++ (id)computeApproximateStaleness:(double)staleness stalenessScale:(id)scale stalenessBias:(id)bias;
++ (id)computeDownScalingFactor:(id)factor approximateStaleness:(id)staleness;
 @end
 
 @implementation DESFederatedBuffer
 
-+ (id)computeApproximateStaleness:(double)a3 stalenessScale:(id)a4 stalenessBias:(id)a5
++ (id)computeApproximateStaleness:(double)staleness stalenessScale:(id)scale stalenessBias:(id)bias
 {
-  v7 = a4;
-  v8 = a5;
+  scaleCopy = scale;
+  biasCopy = bias;
   v9 = [MEMORY[0x277CBEAA8] now];
   [v9 timeIntervalSince1970];
-  v11 = v10 - a3;
+  v11 = v10 - staleness;
 
   if (v11 < 0.0)
   {
@@ -27,7 +27,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  [v7 doubleValue];
+  [scaleCopy doubleValue];
   if (v13 <= 0.0)
   {
     v12 = +[DESLogging coreChannel];
@@ -40,7 +40,7 @@ LABEL_23:
   }
 
   v14 = v13;
-  [v8 doubleValue];
+  [biasCopy doubleValue];
   v16 = v11 / v14 + v15;
   v17 = +[DESLogging coreChannel];
   v12 = v17;
@@ -65,12 +65,12 @@ LABEL_24:
   return v21;
 }
 
-+ (id)computeDownScalingFactor:(id)a3 approximateStaleness:(id)a4
++ (id)computeDownScalingFactor:(id)factor approximateStaleness:(id)staleness
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  factorCopy = factor;
+  stalenessCopy = staleness;
+  v7 = stalenessCopy;
+  if (!factorCopy)
   {
     v11 = 1.0;
 LABEL_14:
@@ -84,9 +84,9 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  [v6 doubleValue];
+  [stalenessCopy doubleValue];
   v9 = v8 + 1.0;
-  [v5 doubleValue];
+  [factorCopy doubleValue];
   v11 = pow(v9, v10);
   if (v11 != INFINITY && v11 >= 1.0)
   {

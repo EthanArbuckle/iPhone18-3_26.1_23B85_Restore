@@ -1,17 +1,17 @@
 @interface GAXSBSyncControllerOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)beginRestoring;
-- (void)resetService:(id)a3 willBeginDataResetWithMode:(int64_t)a4;
+- (void)resetService:(id)service willBeginDataResetWithMode:(int64_t)mode;
 @end
 
 @implementation GAXSBSyncControllerOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBSyncController" hasInstanceMethod:@"resetService:willBeginDataResetWithMode:" withFullSignature:{"v", "@", "q", 0}];
-  [v3 validateClass:@"SBSyncController" hasInstanceMethod:@"beginRestoring" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBSyncController" hasInstanceMethod:@"isInUse" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBSyncController" hasInstanceMethod:@"resetService:willBeginDataResetWithMode:" withFullSignature:{"v", "@", "q", 0}];
+  [validationsCopy validateClass:@"SBSyncController" hasInstanceMethod:@"beginRestoring" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBSyncController" hasInstanceMethod:@"isInUse" withFullSignature:{"B", 0}];
 }
 
 - (void)beginRestoring
@@ -35,15 +35,15 @@
   }
 }
 
-- (void)resetService:(id)a3 willBeginDataResetWithMode:(int64_t)a4
+- (void)resetService:(id)service willBeginDataResetWithMode:(int64_t)mode
 {
-  v6 = a3;
+  serviceCopy = service;
   v7 = +[GAXSpringboard sharedInstance];
   if (([v7 isInactive] & 1) != 0 || objc_msgSend(v7, "profileConfiguration") != 1)
   {
     v10.receiver = self;
     v10.super_class = GAXSBSyncControllerOverride;
-    [(GAXSBSyncControllerOverride *)&v10 resetService:v6 willBeginDataResetWithMode:a4];
+    [(GAXSBSyncControllerOverride *)&v10 resetService:serviceCopy willBeginDataResetWithMode:mode];
   }
 
   else

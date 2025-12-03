@@ -1,13 +1,13 @@
 @interface SBSwitcherModifierEventResponseSnapshot
-- (SBSwitcherModifierEventResponseSnapshot)initWithEventResponse:(id)a3;
+- (SBSwitcherModifierEventResponseSnapshot)initWithEventResponse:(id)response;
 @end
 
 @implementation SBSwitcherModifierEventResponseSnapshot
 
-- (SBSwitcherModifierEventResponseSnapshot)initWithEventResponse:(id)a3
+- (SBSwitcherModifierEventResponseSnapshot)initWithEventResponse:(id)response
 {
-  v4 = a3;
-  if (v4)
+  responseCopy = response;
+  if (responseCopy)
   {
     v19.receiver = self;
     v19.super_class = SBSwitcherModifierEventResponseSnapshot;
@@ -24,7 +24,7 @@
       v17 = v8;
       v9 = v7;
       v18 = v9;
-      [v4 enumerateResponseTreeUsingBlock:v16];
+      [responseCopy enumerateResponseTreeUsingBlock:v16];
       responseNames = v5->_responseNames;
       v5->_responseNames = v8;
       v11 = v8;
@@ -35,15 +35,15 @@
     }
 
     self = v5;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 void __65__SBSwitcherModifierEventResponseSnapshot_initWithEventResponse___block_invoke(uint64_t a1, void *a2)

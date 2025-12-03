@@ -1,23 +1,23 @@
 @interface CRLImageProviderPool
 + (CRLImageProviderPool)sharedPool;
-+ (Class)p_providerClassForData:(id)a3;
-- (BOOL)isBitmapAsset:(id)a3;
++ (Class)p_providerClassForData:(id)data;
+- (BOOL)isBitmapAsset:(id)asset;
 - (CRLImageProviderPool)init;
-- (id)p_providerForData:(id)a3 temporary:(BOOL)a4 shouldValidate:(BOOL)a5;
+- (id)p_providerForData:(id)data temporary:(BOOL)temporary shouldValidate:(BOOL)validate;
 - (unint64_t)p_estimatedSizeOfAllProviders;
 - (unint64_t)p_imageProviderMemoryThreshold;
 - (unint64_t)p_removeProvidersWithZeroInterest;
-- (void)addInterestInProviderForAsset:(id)a3;
+- (void)addInterestInProviderForAsset:(id)asset;
 - (void)flushImageProviders;
-- (void)flushProvidersToFreeMemoryIfNecessaryExcludingProvider:(id)a3;
-- (void)p_applicationDidEnterBackground:(id)a3;
-- (void)p_didReceiveMemoryWarning:(id)a3;
+- (void)flushProvidersToFreeMemoryIfNecessaryExcludingProvider:(id)provider;
+- (void)p_applicationDidEnterBackground:(id)background;
+- (void)p_didReceiveMemoryWarning:(id)warning;
 - (void)p_flushProvidersWithNoOneActivelyHoldingAReference;
-- (void)p_flushRandomImageProvidersExcludingProvider:(id)a3;
-- (void)p_freeFileDescriptorsWithProviderCount:(unint64_t)a3;
+- (void)p_flushRandomImageProvidersExcludingProvider:(id)provider;
+- (void)p_freeFileDescriptorsWithProviderCount:(unint64_t)count;
 - (void)p_updateFileDescriptorLimit;
-- (void)removeInterestInProviderForAsset:(id)a3;
-- (void)willCullAssets:(id)a3;
+- (void)removeInterestInProviderForAsset:(id)asset;
+- (void)willCullAssets:(id)assets;
 @end
 
 @implementation CRLImageProviderPool
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = sub_100241360;
   block[3] = &unk_10183B690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_101A348C0 != -1)
   {
     dispatch_once(&qword_101A348C0, block);
@@ -64,12 +64,12 @@
   return v2;
 }
 
-- (BOOL)isBitmapAsset:(id)a3
+- (BOOL)isBitmapAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 type];
+  assetCopy = asset;
+  type = [assetCopy type];
   v5 = sub_1000ECC48();
-  v6 = [v4 conformsToType:v5];
+  v6 = [type conformsToType:v5];
 
   if (v6)
   {
@@ -78,20 +78,20 @@
 
   else
   {
-    v8 = [objc_opt_class() p_providerClassForData:v3];
+    v8 = [objc_opt_class() p_providerClassForData:assetCopy];
     v7 = [v8 isSubclassOfClass:objc_opt_class()];
   }
 
   return v7;
 }
 
-+ (Class)p_providerClassForData:(id)a3
++ (Class)p_providerClassForData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 type];
-  v5 = [v4 identifier];
+  dataCopy = data;
+  type = [dataCopy type];
+  identifier = [type identifier];
   v6 = sub_1000ECC48();
-  v7 = [v4 conformsToType:v6];
+  v7 = [type conformsToType:v6];
 
   if (v7)
   {
@@ -110,7 +110,7 @@
     goto LABEL_30;
   }
 
-  if ([v5 crl_conformsToUTI:@"com.adobe.illustrator.ai-image"] || objc_msgSend(v4, "conformsToType:", UTTypeImage) || objc_msgSend(v4, "conformsToType:", UTTypePDF))
+  if ([identifier crl_conformsToUTI:@"com.adobe.illustrator.ai-image"] || objc_msgSend(type, "conformsToType:", UTTypeImage) || objc_msgSend(type, "conformsToType:", UTTypePDF))
   {
     v9 = objc_opt_class();
     if (!v9)
@@ -133,7 +133,7 @@
     v21[3] = &unk_10184B8E0;
     v21[4] = buf;
     v21[5] = &v22;
-    [v3 performInputStreamReadWithAccessor:v21];
+    [dataCopy performInputStreamReadWithAccessor:v21];
     if (*(*&buf[8] + 24) == 1 && (v22 == 1178882085 ? (v14 = v23 == 45) : (v14 = 0), v14))
     {
       v9 = objc_opt_class();
@@ -141,11 +141,11 @@
 
     else
     {
-      v15 = [v3 newCGImage];
-      if (v15)
+      newCGImage = [dataCopy newCGImage];
+      if (newCGImage)
       {
         v9 = objc_opt_class();
-        CGImageRelease(v15);
+        CGImageRelease(newCGImage);
       }
 
       else
@@ -166,7 +166,7 @@ LABEL_30:
       v10 = off_1019EEA08;
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        sub_101338C40(v3, v10);
+        sub_101338C40(dataCopy, v10);
       }
 
       v9 = 0;
@@ -183,7 +183,7 @@ LABEL_30:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = NSStringFromClass(v9);
-    if (v3)
+    if (dataCopy)
     {
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
@@ -194,20 +194,20 @@ LABEL_30:
       v13 = @"Nil";
     }
 
-    v16 = [v3 filename];
-    v17 = [v3 assetUUID];
-    v18 = [v17 UUIDString];
+    filename = [dataCopy filename];
+    assetUUID = [dataCopy assetUUID];
+    uUIDString = [assetUUID UUIDString];
     *buf = 138544130;
     *&buf[4] = v11;
     *&buf[12] = 2114;
     *&buf[14] = v13;
     *&buf[22] = 2112;
-    v25 = v16;
+    v25 = filename;
     v26 = 2114;
-    v27 = v18;
+    v27 = uUIDString;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Returning provider of class %{public}@ for <%{public}@: filename=%@, assetUUID=%{public}@> ", buf, 0x2Au);
 
-    if (v3)
+    if (dataCopy)
     {
     }
   }
@@ -218,12 +218,12 @@ LABEL_35:
   return v9;
 }
 
-- (id)p_providerForData:(id)a3 temporary:(BOOL)a4 shouldValidate:(BOOL)a5
+- (id)p_providerForData:(id)data temporary:(BOOL)temporary shouldValidate:(BOOL)validate
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = v7;
-  if (!v7 || ([(__CFString *)v7 needsDownload]& 1) != 0)
+  validateCopy = validate;
+  dataCopy = data;
+  v8 = dataCopy;
+  if (!dataCopy || ([(__CFString *)dataCopy needsDownload]& 1) != 0)
   {
     if ([(__CFString *)v8 needsDownload])
     {
@@ -246,15 +246,15 @@ LABEL_35:
           v11 = @"Nil";
         }
 
-        v15 = [(__CFString *)v8 filename];
-        v16 = [(__CFString *)v8 assetUUID];
-        v17 = [v16 UUIDString];
+        filename = [(__CFString *)v8 filename];
+        assetUUID = [(__CFString *)v8 assetUUID];
+        uUIDString = [assetUUID UUIDString];
         *buf = 138543874;
         v49 = v11;
         v50 = 2112;
-        v51 = v15;
+        v51 = filename;
         v52 = 2114;
-        v53 = v17;
+        v53 = uUIDString;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Skipping provider for image data needing download <%{public}@: filename=%@, assetUUID=%{public}@> ", buf, 0x20u);
 
         if (v8)
@@ -268,16 +268,16 @@ LABEL_35:
     goto LABEL_22;
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  mOpenFileDescriptorLimit = v12->mOpenFileDescriptorLimit;
-  v13 = [(NSMapTable *)v12->mImageDataToImageProviderMap objectForKeyedSubscript:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mOpenFileDescriptorLimit = selfCopy->mOpenFileDescriptorLimit;
+  v13 = [(NSMapTable *)selfCopy->mImageDataToImageProviderMap objectForKeyedSubscript:v8];
   if (v13)
   {
-    v45 = [(NSMapTable *)v12->mImageDataToImageProviderMap count];
-    objc_sync_exit(v12);
+    v45 = [(NSMapTable *)selfCopy->mImageDataToImageProviderMap count];
+    objc_sync_exit(selfCopy);
 
-    if (!v5)
+    if (!validateCopy)
     {
       goto LABEL_37;
     }
@@ -285,11 +285,11 @@ LABEL_35:
     goto LABEL_31;
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
-  v14 = v12;
+  v14 = selfCopy;
   objc_sync_enter(v14);
-  v13 = [(NSMapTable *)v12->mImageDataToImageProviderMap objectForKeyedSubscript:v8];
+  v13 = [(NSMapTable *)selfCopy->mImageDataToImageProviderMap objectForKeyedSubscript:v8];
   if (v13)
   {
     goto LABEL_13;
@@ -301,13 +301,13 @@ LABEL_35:
     v13 = [[v36 alloc] initWithImageData:v8];
     if (v13)
     {
-      if (!a4)
+      if (!temporary)
       {
-        [(NSMapTable *)v12->mImageDataToImageProviderMap setObject:v13 forKeyedSubscript:v8];
+        [(NSMapTable *)selfCopy->mImageDataToImageProviderMap setObject:v13 forKeyedSubscript:v8];
       }
 
 LABEL_13:
-      v45 = [(NSMapTable *)v12->mImageDataToImageProviderMap count];
+      v45 = [(NSMapTable *)selfCopy->mImageDataToImageProviderMap count];
       goto LABEL_14;
     }
 
@@ -325,7 +325,7 @@ LABEL_14:
 
   if (v13)
   {
-    if (!v5)
+    if (!validateCopy)
     {
       goto LABEL_37;
     }
@@ -353,15 +353,15 @@ LABEL_22:
       v20 = @"Nil";
     }
 
-    v21 = [(__CFString *)v8 filename];
-    v22 = [(__CFString *)v8 assetUUID];
-    v23 = [v22 UUIDString];
+    filename2 = [(__CFString *)v8 filename];
+    assetUUID2 = [(__CFString *)v8 assetUUID];
+    uUIDString2 = [assetUUID2 UUIDString];
     *buf = 138543874;
     v49 = v20;
     v50 = 2112;
-    v51 = v21;
+    v51 = filename2;
     v52 = 2114;
-    v53 = v23;
+    v53 = uUIDString2;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "No provider found or determinable for data. Falling back to error. <%{public}@: filename=%@, assetUUID=%{public}@> ", buf, 0x20u);
 
     if (v8)
@@ -370,7 +370,7 @@ LABEL_22:
   }
 
   v13 = +[CRLErrorImageProvider sharedInstance];
-  if (v5)
+  if (validateCopy)
   {
 LABEL_31:
     if (([v13 isError] & 1) == 0 && (objc_msgSend(v13, "isValid") & 1) == 0)
@@ -396,17 +396,17 @@ LABEL_31:
           v39 = @"Nil";
         }
 
-        v41 = [(__CFString *)v8 filename];
-        v42 = [(__CFString *)v8 assetUUID];
-        v43 = [v42 UUIDString];
+        filename3 = [(__CFString *)v8 filename];
+        assetUUID3 = [(__CFString *)v8 assetUUID];
+        uUIDString3 = [assetUUID3 UUIDString];
         *buf = 138544130;
         v49 = v38;
         v50 = 2114;
         v51 = v39;
         v52 = 2112;
-        v53 = v41;
+        v53 = filename3;
         v54 = 2114;
-        *v55 = v43;
+        *v55 = uUIDString3;
         _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Provider of type %{public}@ says data is not valid <%{public}@: filename=%@, assetUUID=%{public}@> ", buf, 0x2Au);
 
         if (v8)
@@ -442,27 +442,27 @@ LABEL_37:
         v44 = @"Nil";
       }
 
-      v28 = [(__CFString *)v8 filename];
-      v29 = [(__CFString *)v8 needsDownload];
-      v30 = [(__CFString *)v8 type];
-      v31 = [(__CFString *)v8 assetUUID];
-      v32 = [v31 UUIDString];
+      filename4 = [(__CFString *)v8 filename];
+      needsDownload = [(__CFString *)v8 needsDownload];
+      type = [(__CFString *)v8 type];
+      assetUUID4 = [(__CFString *)v8 assetUUID];
+      uUIDString4 = [assetUUID4 UUIDString];
       v33 = [NSNumber numberWithUnsignedLongLong:[(__CFString *)v8 length]];
-      v34 = [v33 stringValue];
+      stringValue = [v33 stringValue];
       *buf = 138544898;
       v49 = v44;
       v50 = 2050;
       v51 = v8;
       v52 = 2112;
-      v53 = v28;
+      v53 = filename4;
       v54 = 1024;
-      *v55 = v29;
+      *v55 = needsDownload;
       *&v55[4] = 2114;
-      *&v55[6] = v30;
+      *&v55[6] = type;
       v56 = 2114;
-      v57 = v32;
+      v57 = uUIDString4;
       v58 = 2112;
-      v59 = v34;
+      v59 = stringValue;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Returning error provider. <%{public}@: %{public}p filename=%@, needsDownload=%i, type=%{public}@, assetUUID=%{public}@, length=%@> ", buf, 0x44u);
 
       if (v8)
@@ -479,11 +479,11 @@ LABEL_37:
   return v13;
 }
 
-- (void)addInterestInProviderForAsset:(id)a3
+- (void)addInterestInProviderForAsset:(id)asset
 {
-  if (a3)
+  if (asset)
   {
-    v6 = [(CRLImageProviderPool *)self providerForAsset:a3 shouldValidate:0];
+    v6 = [(CRLImageProviderPool *)self providerForAsset:asset shouldValidate:0];
     [v6 addInterest];
   }
 
@@ -517,17 +517,17 @@ LABEL_37:
   }
 }
 
-- (void)removeInterestInProviderForAsset:(id)a3
+- (void)removeInterestInProviderForAsset:(id)asset
 {
-  v4 = a3;
-  if (v4)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMapTable *)v5->mImageDataToImageProviderMap objectForKeyedSubscript:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMapTable *)selfCopy->mImageDataToImageProviderMap objectForKeyedSubscript:assetCopy];
     [v6 removeInterest];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -560,17 +560,17 @@ LABEL_37:
   }
 }
 
-- (void)p_flushRandomImageProvidersExcludingProvider:(id)a3
+- (void)p_flushRandomImageProvidersExcludingProvider:(id)provider
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  providerCopy = provider;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(NSMapTable *)v5->mImageDataToImageProviderMap objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  objectEnumerator = [(NSMapTable *)selfCopy->mImageDataToImageProviderMap objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v7)
   {
     v9 = *v15;
@@ -583,11 +583,11 @@ LABEL_37:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        if (v11 != v4 && [(CRLImageProviderPool *)v5 p_rngSaysToFlush])
+        if (v11 != providerCopy && [(CRLImageProviderPool *)selfCopy p_rngSaysToFlush])
         {
           if (qword_101AD5C60 != -1)
           {
@@ -609,13 +609,13 @@ LABEL_37:
       }
 
       while (v7 != v10);
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)flushImageProviders
@@ -632,14 +632,14 @@ LABEL_37:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Flushing all image providers.", buf, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(NSMapTable *)v4->mImageDataToImageProviderMap objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)selfCopy->mImageDataToImageProviderMap objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -649,32 +649,32 @@ LABEL_37:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v9 + 1) + 8 * i) flush];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  [(NSMapTable *)v4->mImageDataToImageProviderMap removeAllObjects];
-  objc_sync_exit(v4);
+  [(NSMapTable *)selfCopy->mImageDataToImageProviderMap removeAllObjects];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)willCullAssets:(id)a3
+- (void)willCullAssets:(id)assets
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  assetsCopy = assets;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v4;
+  v6 = assetsCopy;
   v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v7)
   {
@@ -689,7 +689,7 @@ LABEL_37:
           objc_enumerationMutation(v6);
         }
 
-        [(NSMapTable *)v5->mImageDataToImageProviderMap removeObjectForKey:*(*(&v10 + 1) + 8 * v9), v10];
+        [(NSMapTable *)selfCopy->mImageDataToImageProviderMap removeObjectForKey:*(*(&v10 + 1) + 8 * v9), v10];
         v9 = v9 + 1;
       }
 
@@ -700,17 +700,17 @@ LABEL_37:
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)p_freeFileDescriptorsWithProviderCount:(unint64_t)a3
+- (void)p_freeFileDescriptorsWithProviderCount:(unint64_t)count
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  obj = v3;
-  [(CRLImageProviderPool *)v3 p_updateFileDescriptorLimit];
-  v4 = [(CRLImageProviderPool *)v3 p_providerLimitForFileDescriptorLimit:v3->mOpenFileDescriptorLimit];
-  if (v4 < a3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = selfCopy;
+  [(CRLImageProviderPool *)selfCopy p_updateFileDescriptorLimit];
+  v4 = [(CRLImageProviderPool *)selfCopy p_providerLimitForFileDescriptorLimit:selfCopy->mOpenFileDescriptorLimit];
+  if (v4 < count)
   {
     if (qword_101AD5C58 != -1)
     {
@@ -720,35 +720,35 @@ LABEL_37:
     v5 = off_1019EEA00;
     if (os_log_type_enabled(off_1019EEA00, OS_LOG_TYPE_DEFAULT))
     {
-      mOpenFileDescriptorLimit = v3->mOpenFileDescriptorLimit;
+      mOpenFileDescriptorLimit = selfCopy->mOpenFileDescriptorLimit;
       *buf = 134218240;
-      *&buf[4] = a3;
+      *&buf[4] = count;
       *&buf[12] = 2048;
       *&buf[14] = mOpenFileDescriptorLimit;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "1st stage of fd grief. %tu providers and %tu fds allowed. Freeing 0-interest providers.", buf, 0x16u);
     }
 
-    v7 = [(CRLImageProviderPool *)v3 p_removeProvidersWithZeroInterest];
+    p_removeProvidersWithZeroInterest = [(CRLImageProviderPool *)selfCopy p_removeProvidersWithZeroInterest];
     if (qword_101AD5C58 != -1)
     {
       sub_1013390B8();
     }
 
-    a3 -= v7;
+    count -= p_removeProvidersWithZeroInterest;
     v8 = off_1019EEA00;
     if (os_log_type_enabled(off_1019EEA00, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      *&buf[4] = v7;
+      *&buf[4] = p_removeProvidersWithZeroInterest;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "1st stage of fd grief. Freed %tu providers.", buf, 0xCu);
     }
   }
 
-  if (a3 > v4)
+  if (count > v4)
   {
-    if (!v3->mHaveRaisedFileDescriptorLimit)
+    if (!selfCopy->mHaveRaisedFileDescriptorLimit)
     {
-      if (v3->mOpenFileDescriptorLimit > 0x7FF)
+      if (selfCopy->mOpenFileDescriptorLimit > 0x7FF)
       {
         if (qword_101AD5C58 != -1)
         {
@@ -761,9 +761,9 @@ LABEL_37:
           goto LABEL_39;
         }
 
-        v19 = v3->mOpenFileDescriptorLimit;
+        v19 = selfCopy->mOpenFileDescriptorLimit;
         *buf = 134218496;
-        *&buf[4] = a3;
+        *&buf[4] = count;
         *&buf[12] = 2048;
         *&buf[14] = v19;
         *&buf[22] = 2048;
@@ -781,9 +781,9 @@ LABEL_37:
         v14 = off_1019EEA00;
         if (os_log_type_enabled(off_1019EEA00, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = v3->mOpenFileDescriptorLimit;
+          v15 = selfCopy->mOpenFileDescriptorLimit;
           *buf = 134218496;
-          *&buf[4] = a3;
+          *&buf[4] = count;
           *&buf[12] = 2048;
           *&buf[14] = v15;
           *&buf[22] = 2048;
@@ -791,7 +791,7 @@ LABEL_37:
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "2nd stage of fd grief. %tu providers and %tu fds allowed. Will raise limit to %tu.", buf, 0x20u);
         }
 
-        if (v3->mOpenFileDescriptorLimit <= 0x7FF)
+        if (selfCopy->mOpenFileDescriptorLimit <= 0x7FF)
         {
           v16 = 2048;
           do
@@ -811,15 +811,15 @@ LABEL_37:
 
             else
             {
-              v3->mOpenFileDescriptorLimit = *buf;
-              v4 = [(CRLImageProviderPool *)v3 p_providerLimitForFileDescriptorLimit:?];
+              selfCopy->mOpenFileDescriptorLimit = *buf;
+              v4 = [(CRLImageProviderPool *)selfCopy p_providerLimitForFileDescriptorLimit:?];
             }
           }
 
-          while (v3->mOpenFileDescriptorLimit < v16);
+          while (selfCopy->mOpenFileDescriptorLimit < v16);
         }
 
-        v3->mHaveRaisedFileDescriptorLimit = 1;
+        selfCopy->mHaveRaisedFileDescriptorLimit = 1;
         if (qword_101AD5C58 != -1)
         {
           sub_101339130();
@@ -831,9 +831,9 @@ LABEL_37:
           goto LABEL_39;
         }
 
-        v18 = v3->mOpenFileDescriptorLimit;
+        v18 = selfCopy->mOpenFileDescriptorLimit;
         *buf = 134218496;
-        *&buf[4] = a3;
+        *&buf[4] = count;
         *&buf[12] = 2048;
         *&buf[14] = v18;
         *&buf[22] = 2048;
@@ -854,9 +854,9 @@ LABEL_37:
     v9 = off_1019EEA00;
     if (os_log_type_enabled(off_1019EEA00, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = v3->mOpenFileDescriptorLimit;
+      v10 = selfCopy->mOpenFileDescriptorLimit;
       *buf = 134218240;
-      *&buf[4] = a3;
+      *&buf[4] = count;
       *&buf[12] = 2048;
       *&buf[14] = v10;
       v11 = "2nd stage of fd grief. %tu providers and %tu fds allowed. Already raised the limit, skipping.";
@@ -868,24 +868,24 @@ LABEL_38:
   }
 
 LABEL_39:
-  if (a3 > v4)
+  if (count > v4)
   {
     if (qword_101AD5C58 != -1)
     {
       sub_101339180();
     }
 
-    v20 = a3 - ((3 * v4) >> 2);
+    v20 = count - ((3 * v4) >> 2);
     v21 = off_1019EEA00;
     if (os_log_type_enabled(off_1019EEA00, OS_LOG_TYPE_DEFAULT))
     {
       v22 = obj->mOpenFileDescriptorLimit;
       *buf = 134218496;
-      *&buf[4] = a3;
+      *&buf[4] = count;
       *&buf[12] = 2048;
       *&buf[14] = v22;
       *&buf[22] = 2048;
-      *&buf[24] = a3 - ((3 * v4) >> 2);
+      *&buf[24] = count - ((3 * v4) >> 2);
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "3rd stage of fd grief. %tu providers and %tu fds allowed. Freeing the least interesting %tu providers.", buf, 0x20u);
     }
 
@@ -894,12 +894,12 @@ LABEL_39:
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v24 = [(NSMapTable *)obj->mImageDataToImageProviderMap objectEnumerator];
-    v25 = [v24 countByEnumeratingWithState:&v61 objects:v69 count:16];
+    objectEnumerator = [(NSMapTable *)obj->mImageDataToImageProviderMap objectEnumerator];
+    v25 = [objectEnumerator countByEnumeratingWithState:&v61 objects:v69 count:16];
     if (v25)
     {
       v55 = *v62;
-      v52 = v24;
+      v52 = objectEnumerator;
       v53 = v20;
       do
       {
@@ -908,17 +908,17 @@ LABEL_39:
         {
           if (*v62 != v55)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v27 = *(*(&v61 + 1) + 8 * i);
           v28 = [v23 count];
           if (v28 >= v20)
           {
-            v29 = [v27 interest];
+            interest = [v27 interest];
             if (v28)
             {
-              v30 = v29;
+              interest2 = interest;
               v31 = 0;
               v32 = 0x7FFFFFFFFFFFFFFFLL;
               do
@@ -927,9 +927,9 @@ LABEL_39:
                 v34 = [v23 objectAtIndexedSubscript:v31];
                 v35 = sub_100014370(v33, v34);
 
-                if ([v35 interest] > v30)
+                if ([v35 interest] > interest2)
                 {
-                  v30 = [v35 interest];
+                  interest2 = [v35 interest];
                   v32 = v31;
                 }
 
@@ -937,7 +937,7 @@ LABEL_39:
               }
 
               while (v28 != v31);
-              v24 = v52;
+              objectEnumerator = v52;
               v20 = v53;
               if (v32 != 0x7FFFFFFFFFFFFFFFLL)
               {
@@ -952,7 +952,7 @@ LABEL_39:
           }
         }
 
-        v25 = [v24 countByEnumeratingWithState:&v61 objects:v69 count:16];
+        v25 = [objectEnumerator countByEnumeratingWithState:&v61 objects:v69 count:16];
       }
 
       while (v25);
@@ -977,10 +977,10 @@ LABEL_39:
             objc_enumerationMutation(v36);
           }
 
-          v40 = [*(*(&v57 + 1) + 8 * v39) imageData];
-          if (v40)
+          imageData = [*(*(&v57 + 1) + 8 * v39) imageData];
+          if (imageData)
           {
-            [(NSMapTable *)obj->mImageDataToImageProviderMap removeObjectForKey:v40];
+            [(NSMapTable *)obj->mImageDataToImageProviderMap removeObjectForKey:imageData];
           }
 
           else
@@ -1050,7 +1050,7 @@ LABEL_39:
       v49 = obj->mOpenFileDescriptorLimit;
       v50 = [v36 count];
       *buf = 134218496;
-      *&buf[4] = a3 - v47;
+      *&buf[4] = count - v47;
       *&buf[12] = 2048;
       *&buf[14] = v49;
       *&buf[22] = 2048;
@@ -1065,9 +1065,9 @@ LABEL_39:
 - (unint64_t)p_imageProviderMemoryThreshold
 {
   v2 = +[CRLCapabilities currentCapabilities];
-  v3 = [v2 isRendererH5OrBelow];
+  isRendererH5OrBelow = [v2 isRendererH5OrBelow];
 
-  if (v3)
+  if (isRendererH5OrBelow)
   {
     return 0x4000000;
   }
@@ -1080,15 +1080,15 @@ LABEL_39:
 
 - (unint64_t)p_estimatedSizeOfAllProviders
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMapTable *)v2->mImageDataToImageProviderMap objectEnumerator];
+  objectEnumerator = [(NSMapTable *)selfCopy->mImageDataToImageProviderMap objectEnumerator];
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -1099,7 +1099,7 @@ LABEL_39:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v4 += [*(*(&v9 + 1) + 8 * v7) i_flushableMemoryEstimate];
@@ -1107,34 +1107,34 @@ LABEL_39:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
-- (void)flushProvidersToFreeMemoryIfNecessaryExcludingProvider:(id)a3
+- (void)flushProvidersToFreeMemoryIfNecessaryExcludingProvider:(id)provider
 {
-  v5 = a3;
-  v4 = [(CRLImageProviderPool *)self p_estimatedSizeOfAllProviders];
-  if (v4 > [(CRLImageProviderPool *)self p_imageProviderMemoryThreshold])
+  providerCopy = provider;
+  p_estimatedSizeOfAllProviders = [(CRLImageProviderPool *)self p_estimatedSizeOfAllProviders];
+  if (p_estimatedSizeOfAllProviders > [(CRLImageProviderPool *)self p_imageProviderMemoryThreshold])
   {
-    [(CRLImageProviderPool *)self p_flushRandomImageProvidersExcludingProvider:v5];
+    [(CRLImageProviderPool *)self p_flushRandomImageProvidersExcludingProvider:providerCopy];
   }
 }
 
-- (void)p_didReceiveMemoryWarning:(id)a3
+- (void)p_didReceiveMemoryWarning:(id)warning
 {
   [(CRLImageProviderPool *)self p_removeProvidersWithZeroInterest];
 
   [(CRLImageProviderPool *)self p_flushProvidersWithNoOneActivelyHoldingAReference];
 }
 
-- (void)p_applicationDidEnterBackground:(id)a3
+- (void)p_applicationDidEnterBackground:(id)background
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
@@ -1147,15 +1147,15 @@ LABEL_39:
 
 - (unint64_t)p_removeProvidersWithZeroInterest
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [(NSMapTable *)v2->mImageDataToImageProviderMap objectEnumerator];
+  objectEnumerator = [(NSMapTable *)selfCopy->mImageDataToImageProviderMap objectEnumerator];
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = *v23;
@@ -1165,16 +1165,16 @@ LABEL_39:
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
         if ([v8 interest] >= 1)
         {
-          v9 = [v8 imageData];
-          v10 = [v9 hasOwners];
+          imageData = [v8 imageData];
+          hasOwners = [imageData hasOwners];
 
-          if (v10)
+          if (hasOwners)
           {
             continue;
           }
@@ -1188,7 +1188,7 @@ LABEL_39:
         [v4 addObject:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v5);
@@ -1212,10 +1212,10 @@ LABEL_39:
           objc_enumerationMutation(v11);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * j) imageData];
-        if (v15)
+        imageData2 = [*(*(&v18 + 1) + 8 * j) imageData];
+        if (imageData2)
         {
-          [(NSMapTable *)v2->mImageDataToImageProviderMap removeObjectForKey:v15];
+          [(NSMapTable *)selfCopy->mImageDataToImageProviderMap removeObjectForKey:imageData2];
         }
       }
 
@@ -1226,21 +1226,21 @@ LABEL_39:
   }
 
   v16 = [v11 count];
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v16;
 }
 
 - (void)p_flushProvidersWithNoOneActivelyHoldingAReference
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(NSMapTable *)v2->mImageDataToImageProviderMap objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)selfCopy->mImageDataToImageProviderMap objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v4)
   {
     v5 = *v8;
@@ -1251,7 +1251,7 @@ LABEL_39:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v7 + 1) + 8 * v6) i_flushIfNoOneUsing];
@@ -1259,13 +1259,13 @@ LABEL_39:
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)p_updateFileDescriptorLimit

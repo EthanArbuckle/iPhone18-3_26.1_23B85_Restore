@@ -1,40 +1,40 @@
 @interface IMTranscriptBackgroundCommandPipelineParameter
-- (IMTranscriptBackgroundCommandPipelineParameter)initWithDefusedMessage:(id)a3 idsTrustedData:(id)a4;
+- (IMTranscriptBackgroundCommandPipelineParameter)initWithDefusedMessage:(id)message idsTrustedData:(id)data;
 - (id)description;
 @end
 
 @implementation IMTranscriptBackgroundCommandPipelineParameter
 
-- (IMTranscriptBackgroundCommandPipelineParameter)initWithDefusedMessage:(id)a3 idsTrustedData:(id)a4
+- (IMTranscriptBackgroundCommandPipelineParameter)initWithDefusedMessage:(id)message idsTrustedData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  dataCopy = data;
   v20.receiver = self;
   v20.super_class = IMTranscriptBackgroundCommandPipelineParameter;
   v9 = [(IMTranscriptBackgroundCommandPipelineParameter *)&v20 init];
   if (v9)
   {
-    v9->_isFromMe = [v8 isFromMe];
-    v10 = [v8 fromIdentifier];
+    v9->_isFromMe = [dataCopy isFromMe];
+    fromIdentifier = [dataCopy fromIdentifier];
     fromIdentifier = v9->_fromIdentifier;
-    v9->_fromIdentifier = v10;
+    v9->_fromIdentifier = fromIdentifier;
 
-    v12 = [v8 toIdentifier];
+    toIdentifier = [dataCopy toIdentifier];
     toIdentifier = v9->_toIdentifier;
-    v9->_toIdentifier = v12;
+    v9->_toIdentifier = toIdentifier;
 
-    objc_storeStrong(&v9->_transcriptBackgroundCommand, a3);
+    objc_storeStrong(&v9->_transcriptBackgroundCommand, message);
     if (objc_opt_respondsToSelector())
     {
-      if ([v7 has_replicationSourceID])
+      if ([messageCopy has_replicationSourceID])
       {
-        v14 = [v7 replicationSourceID];
+        replicationSourceID = [messageCopy replicationSourceID];
         v15 = +[IMDServiceController sharedController];
-        v16 = [v15 serviceWithReplicationSourceID:v14];
+        v16 = [v15 serviceWithReplicationSourceID:replicationSourceID];
 
-        v17 = [v16 internalName];
+        internalName = [v16 internalName];
         replicationSourceServiceName = v9->_replicationSourceServiceName;
-        v9->_replicationSourceServiceName = v17;
+        v9->_replicationSourceServiceName = internalName;
       }
     }
   }
@@ -55,8 +55,8 @@
     v4 = @"NO";
   }
 
-  v5 = [(IMTranscriptBackgroundCommandPipelineParameter *)self transcriptBackgroundCommand];
-  v6 = [v3 stringWithFormat:@"<IMTranscriptBackgroundCommandPipelineParameter %p isFromMe = %@; OUTPUT transcriptBackgroundCommand = %@;", self, v4, v5];;
+  transcriptBackgroundCommand = [(IMTranscriptBackgroundCommandPipelineParameter *)self transcriptBackgroundCommand];
+  v6 = [v3 stringWithFormat:@"<IMTranscriptBackgroundCommandPipelineParameter %p isFromMe = %@; OUTPUT transcriptBackgroundCommand = %@;", self, v4, transcriptBackgroundCommand];;
 
   return v6;
 }

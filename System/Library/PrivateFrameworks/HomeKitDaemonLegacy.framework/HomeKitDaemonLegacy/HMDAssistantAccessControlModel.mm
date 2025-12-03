@@ -10,15 +10,15 @@
   v31 = *MEMORY[0x277D85DE8];
   v28.receiver = self;
   v28.super_class = HMDAssistantAccessControlModel;
-  v3 = [(HMDBackingStoreModelObject *)&v28 dependentUUIDs];
-  v4 = [v3 mutableCopy];
+  dependentUUIDs = [(HMDBackingStoreModelObject *)&v28 dependentUUIDs];
+  v4 = [dependentUUIDs mutableCopy];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(HMDAssistantAccessControlModel *)self accessoryModelIDs];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  accessoryModelIDs = [(HMDAssistantAccessControlModel *)self accessoryModelIDs];
+  v6 = [accessoryModelIDs countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
@@ -29,7 +29,7 @@
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accessoryModelIDs);
         }
 
         v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:*(*(&v24 + 1) + 8 * i)];
@@ -39,7 +39,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      v7 = [accessoryModelIDs countByEnumeratingWithState:&v24 objects:v30 count:16];
     }
 
     while (v7);
@@ -49,8 +49,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = [(HMDAssistantAccessControlModel *)self siriEndpointAccessoryModelUUIDs];
-  v12 = [v11 countByEnumeratingWithState:&v20 objects:v29 count:16];
+  siriEndpointAccessoryModelUUIDs = [(HMDAssistantAccessControlModel *)self siriEndpointAccessoryModelUUIDs];
+  v12 = [siriEndpointAccessoryModelUUIDs countByEnumeratingWithState:&v20 objects:v29 count:16];
   if (v12)
   {
     v13 = v12;
@@ -61,7 +61,7 @@
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(siriEndpointAccessoryModelUUIDs);
         }
 
         v16 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:*(*(&v20 + 1) + 8 * j)];
@@ -71,7 +71,7 @@
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v20 objects:v29 count:16];
+      v13 = [siriEndpointAccessoryModelUUIDs countByEnumeratingWithState:&v20 objects:v29 count:16];
     }
 
     while (v13);

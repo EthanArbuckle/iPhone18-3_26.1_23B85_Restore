@@ -1,23 +1,23 @@
 @interface GKGameCenterFriendPlayerView
-+ (id)newWithHandle:(id)a3 player:(id)a4;
-+ (id)newWithRelationshipResult:(id)a3;
++ (id)newWithHandle:(id)handle player:(id)player;
++ (id)newWithRelationshipResult:(id)result;
 @end
 
 @implementation GKGameCenterFriendPlayerView
 
-+ (id)newWithHandle:(id)a3 player:(id)a4
++ (id)newWithHandle:(id)handle player:(id)player
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_TtC12GameCenterUI26GameCenterFriendPlayerView alloc] initWithHandle:v6 player:v5];
+  playerCopy = player;
+  handleCopy = handle;
+  v7 = [[_TtC12GameCenterUI26GameCenterFriendPlayerView alloc] initWithHandle:handleCopy player:playerCopy];
 
   return v7;
 }
 
-+ (id)newWithRelationshipResult:(id)a3
++ (id)newWithRelationshipResult:(id)result
 {
-  v3 = a3;
-  v4 = [[_TtC12GameCenterUI26GameCenterFriendPlayerView alloc] initWithRelationshipResult:v3];
+  resultCopy = result;
+  v4 = [[_TtC12GameCenterUI26GameCenterFriendPlayerView alloc] initWithRelationshipResult:resultCopy];
 
   return v4;
 }

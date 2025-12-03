@@ -1,18 +1,18 @@
 @interface PCSMetrics
 + (id)metrics;
-- (BOOL)addKeyWithDSID:(id)a3 service:(unsigned int)a4 publicKey:(id)a5;
-- (BOOL)markKeyNegativeWithDSID:(id)a3 service:(unsigned int)a4;
+- (BOOL)addKeyWithDSID:(id)d service:(unsigned int)service publicKey:(id)key;
+- (BOOL)markKeyNegativeWithDSID:(id)d service:(unsigned int)service;
 - (BOOL)setupDatabase;
 - (PCSMetrics)init;
 - (id)databaseURL;
 - (id)keyRegistryCallback;
 - (id)markNegativeCallback;
-- (int)updateCurrentWState:(_PCSIdentitySetData *)a3 forceFetchFromServer:(BOOL)a4;
-- (unsigned)getKeyInfoWithDSID:(id)a3 service:(unsigned int)a4 publicKey:(id)a5;
-- (void)addIdentityInfoToHealthSummary:(id)a3 dsid:(id)a4 wState:(int)a5;
-- (void)addMetricsToHealthSummary:(id)a3 withIdentitySet:(_PCSIdentitySetData *)a4;
+- (int)updateCurrentWState:(_PCSIdentitySetData *)state forceFetchFromServer:(BOOL)server;
+- (unsigned)getKeyInfoWithDSID:(id)d service:(unsigned int)service publicKey:(id)key;
+- (void)addIdentityInfoToHealthSummary:(id)summary dsid:(id)dsid wState:(int)state;
+- (void)addMetricsToHealthSummary:(id)summary withIdentitySet:(_PCSIdentitySetData *)set;
 - (void)dealloc;
-- (void)storeEventTimestamp:(unint64_t)a3;
+- (void)storeEventTimestamp:(unint64_t)timestamp;
 @end
 
 @implementation PCSMetrics
@@ -67,52 +67,52 @@
   return v3;
 }
 
-- (void)addMetricsToHealthSummary:(id)a3 withIdentitySet:(_PCSIdentitySetData *)a4
+- (void)addMetricsToHealthSummary:(id)summary withIdentitySet:(_PCSIdentitySetData *)set
 {
-  v24 = a3;
-  v6 = [(PCSMetrics *)self settings];
-  v7 = [v6 fuzzyDaysSinceKey:kPCSSettingStingrayRoll];
-  [v24 setObject:v7 forKeyedSubscript:@"rollSettingDays"];
+  summaryCopy = summary;
+  settings = [(PCSMetrics *)self settings];
+  v7 = [settings fuzzyDaysSinceKey:kPCSSettingStingrayRoll];
+  [summaryCopy setObject:v7 forKeyedSubscript:@"rollSettingDays"];
 
-  v8 = [(PCSMetrics *)self settings];
-  v9 = [v8 fuzzyDaysSinceKey:@"timestampWEnable"];
-  [v24 setObject:v9 forKeyedSubscript:@"wEnableThisDeviceDays"];
+  settings2 = [(PCSMetrics *)self settings];
+  v9 = [settings2 fuzzyDaysSinceKey:@"timestampWEnable"];
+  [summaryCopy setObject:v9 forKeyedSubscript:@"wEnableThisDeviceDays"];
 
-  v10 = [(PCSMetrics *)self settings];
-  v11 = [v10 fuzzyDaysSinceKey:@"timestampWDisable"];
-  [v24 setObject:v11 forKeyedSubscript:@"wDisableThisDeviceDays"];
+  settings3 = [(PCSMetrics *)self settings];
+  v11 = [settings3 fuzzyDaysSinceKey:@"timestampWDisable"];
+  [summaryCopy setObject:v11 forKeyedSubscript:@"wDisableThisDeviceDays"];
 
-  v12 = [(PCSMetrics *)self settings];
-  v13 = [v12 fuzzyDaysSinceKey:@"timestampKeyrollSuccess"];
-  [v24 setObject:v13 forKeyedSubscript:@"keyrollSucceededDays"];
+  settings4 = [(PCSMetrics *)self settings];
+  v13 = [settings4 fuzzyDaysSinceKey:@"timestampKeyrollSuccess"];
+  [summaryCopy setObject:v13 forKeyedSubscript:@"keyrollSucceededDays"];
 
-  v14 = [(PCSMetrics *)self settings];
-  v15 = [v14 fuzzyDaysSinceKey:@"timestampKeyrollAttempted"];
-  [v24 setObject:v15 forKeyedSubscript:@"keyrollAttemptedDays"];
+  settings5 = [(PCSMetrics *)self settings];
+  v15 = [settings5 fuzzyDaysSinceKey:@"timestampKeyrollAttempted"];
+  [summaryCopy setObject:v15 forKeyedSubscript:@"keyrollAttemptedDays"];
 
-  v16 = [(PCSMetrics *)self settings];
-  v17 = [v16 fuzzyDaysSinceKey:@"timestampObserveWEnable"];
-  [v24 setObject:v17 forKeyedSubscript:@"wEnableObservedDays"];
+  settings6 = [(PCSMetrics *)self settings];
+  v17 = [settings6 fuzzyDaysSinceKey:@"timestampObserveWEnable"];
+  [summaryCopy setObject:v17 forKeyedSubscript:@"wEnableObservedDays"];
 
-  v18 = [(PCSMetrics *)self settings];
-  v19 = [v18 fuzzyDaysSinceKey:@"timestampObserveWDisable"];
-  [v24 setObject:v19 forKeyedSubscript:@"wDisableObservedDays"];
+  settings7 = [(PCSMetrics *)self settings];
+  v19 = [settings7 fuzzyDaysSinceKey:@"timestampObserveWDisable"];
+  [summaryCopy setObject:v19 forKeyedSubscript:@"wDisableObservedDays"];
 
-  v20 = [(PCSMetrics *)self updateCurrentWState:a4 forceFetchFromServer:1];
+  v20 = [(PCSMetrics *)self updateCurrentWState:set forceFetchFromServer:1];
   v21 = [NSNumber numberWithInt:v20];
-  [v24 setObject:v21 forKeyedSubscript:@"wState"];
+  [summaryCopy setObject:v21 forKeyedSubscript:@"wState"];
 
-  v22 = [(PCSMetrics *)self settings];
-  v23 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v22 tristateForBoolKey:@"initialWState"]);
-  [v24 setObject:v23 forKeyedSubscript:@"initialWState"];
+  settings8 = [(PCSMetrics *)self settings];
+  v23 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [settings8 tristateForBoolKey:@"initialWState"]);
+  [summaryCopy setObject:v23 forKeyedSubscript:@"initialWState"];
 
-  [(PCSMetrics *)self addIdentityInfoToHealthSummary:v24 dsid:_PCSIdentitySetGetDSID() wState:v20];
+  [(PCSMetrics *)self addIdentityInfoToHealthSummary:summaryCopy dsid:_PCSIdentitySetGetDSID() wState:v20];
 }
 
-- (void)addIdentityInfoToHealthSummary:(id)a3 dsid:(id)a4 wState:(int)a5
+- (void)addIdentityInfoToHealthSummary:(id)summary dsid:(id)dsid wState:(int)state
 {
-  v6 = a3;
-  v7 = a4;
+  summaryCopy = summary;
+  dsidCopy = dsid;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -126,8 +126,8 @@
   v16 = 0x2020000000;
   v17 = 0;
   v11 = _PCSServiceItemsGetNoRollStingrayServiceTypes();
-  v12 = v7;
-  v13 = v6;
+  v12 = dsidCopy;
+  v13 = summaryCopy;
   PCSServiceItemsGetEachName();
   v8 = [NSNumber numberWithUnsignedLong:v23[3], _NSConcreteStackBlock, 3221225472, sub_100015D70, &unk_100039498];
   [v13 setObject:v8 forKeyedSubscript:@"currentInStingray"];
@@ -143,27 +143,27 @@
   _Block_object_dispose(&v22, 8);
 }
 
-- (int)updateCurrentWState:(_PCSIdentitySetData *)a3 forceFetchFromServer:(BOOL)a4
+- (int)updateCurrentWState:(_PCSIdentitySetData *)state forceFetchFromServer:(BOOL)server
 {
-  if (a3)
+  if (state)
   {
     v5 = PCSIdentitySetIsWalrusWithForceFetch();
-    v6 = [(PCSMetrics *)self settings];
-    v7 = [v6 objectForKey:@"initialWState"];
+    settings = [(PCSMetrics *)self settings];
+    v7 = [settings objectForKey:@"initialWState"];
 
     if (!v7)
     {
-      v8 = [(PCSMetrics *)self settings];
-      [v8 setBool:v5 forKey:@"initialWState"];
+      settings2 = [(PCSMetrics *)self settings];
+      [settings2 setBool:v5 forKey:@"initialWState"];
     }
 
-    v9 = [(PCSMetrics *)self settings];
-    v10 = [v9 tristateForBoolKey:@"knownWState"];
+    settings3 = [(PCSMetrics *)self settings];
+    v10 = [settings3 tristateForBoolKey:@"knownWState"];
 
     if (v10 == -1 || ((v5 ^ (v10 == 0)) & 1) == 0)
     {
-      v11 = [(PCSMetrics *)self settings];
-      [v11 setBool:v5 forKey:@"knownWState"];
+      settings4 = [(PCSMetrics *)self settings];
+      [settings4 setBool:v5 forKey:@"knownWState"];
 
       if (v5)
       {
@@ -187,17 +187,17 @@
   return v5;
 }
 
-- (void)storeEventTimestamp:(unint64_t)a3
+- (void)storeEventTimestamp:(unint64_t)timestamp
 {
   v6 = objc_alloc_init(NSUserDefaults);
-  if (a3 - 1 > 5)
+  if (timestamp - 1 > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&off_100039558 + a3 - 1);
+    v4 = *(&off_100039558 + timestamp - 1);
   }
 
   v5 = +[NSDate now];
@@ -260,14 +260,14 @@
 
 - (BOOL)setupDatabase
 {
-  v3 = [(PCSMetrics *)self databaseURL];
-  v4 = v3;
-  if (v3)
+  databaseURL = [(PCSMetrics *)self databaseURL];
+  v4 = databaseURL;
+  if (databaseURL)
   {
-    v5 = [v3 fileSystemRepresentation];
-    if (v5)
+    fileSystemRepresentation = [databaseURL fileSystemRepresentation];
+    if (fileSystemRepresentation)
     {
-      if (sqlite3_open_v2(v5, &self->_db, 6, 0))
+      if (sqlite3_open_v2(fileSystemRepresentation, &self->_db, 6, 0))
       {
         v6 = [(PCSMetrics *)self log];
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -329,36 +329,36 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)addKeyWithDSID:(id)a3 service:(unsigned int)a4 publicKey:(id)a5
+- (BOOL)addKeyWithDSID:(id)d service:(unsigned int)service publicKey:(id)key
 {
-  v8 = a5;
-  v9 = a3;
+  keyCopy = key;
+  dCopy = d;
   [(PCSMetrics *)self addKeyStmt];
-  [v9 UTF8String];
+  [dCopy UTF8String];
 
-  v10 = !sub_100016B98() && !sqlite3_bind_int64(-[PCSMetrics addKeyStmt](self, "addKeyStmt"), 2, a4) && (-[PCSMetrics addKeyStmt](self, "addKeyStmt"), !sub_100016B74([v8 UTF8String])) && sqlite3_step(-[PCSMetrics addKeyStmt](self, "addKeyStmt")) == 101;
+  v10 = !sub_100016B98() && !sqlite3_bind_int64(-[PCSMetrics addKeyStmt](self, "addKeyStmt"), 2, service) && (-[PCSMetrics addKeyStmt](self, "addKeyStmt"), !sub_100016B74([keyCopy UTF8String])) && sqlite3_step(-[PCSMetrics addKeyStmt](self, "addKeyStmt")) == 101;
   sqlite3_reset([(PCSMetrics *)self addKeyStmt]);
 
   return v10;
 }
 
-- (BOOL)markKeyNegativeWithDSID:(id)a3 service:(unsigned int)a4
+- (BOOL)markKeyNegativeWithDSID:(id)d service:(unsigned int)service
 {
-  v6 = a3;
-  v7 = !sqlite3_bind_int(-[PCSMetrics markKeyStmt](self, "markKeyStmt"), 1, 1) && !sqlite3_bind_text(-[PCSMetrics markKeyStmt](self, "markKeyStmt"), 2, [v6 UTF8String], -1, 0) && !sqlite3_bind_int64(-[PCSMetrics markKeyStmt](self, "markKeyStmt"), 3, a4) && sqlite3_step(-[PCSMetrics markKeyStmt](self, "markKeyStmt")) == 101;
+  dCopy = d;
+  v7 = !sqlite3_bind_int(-[PCSMetrics markKeyStmt](self, "markKeyStmt"), 1, 1) && !sqlite3_bind_text(-[PCSMetrics markKeyStmt](self, "markKeyStmt"), 2, [dCopy UTF8String], -1, 0) && !sqlite3_bind_int64(-[PCSMetrics markKeyStmt](self, "markKeyStmt"), 3, service) && sqlite3_step(-[PCSMetrics markKeyStmt](self, "markKeyStmt")) == 101;
   sqlite3_reset([(PCSMetrics *)self markKeyStmt]);
 
   return v7;
 }
 
-- (unsigned)getKeyInfoWithDSID:(id)a3 service:(unsigned int)a4 publicKey:(id)a5
+- (unsigned)getKeyInfoWithDSID:(id)d service:(unsigned int)service publicKey:(id)key
 {
-  v8 = a5;
-  v9 = a3;
+  keyCopy = key;
+  dCopy = d;
   [(PCSMetrics *)self getKeyStmt];
-  [v9 UTF8String];
+  [dCopy UTF8String];
 
-  if (sub_100016B98() || sqlite3_bind_int64(-[PCSMetrics getKeyStmt](self, "getKeyStmt"), 2, a4) || (-[PCSMetrics getKeyStmt](self, "getKeyStmt"), sub_100016B74([v8 UTF8String])) || sqlite3_step(-[PCSMetrics getKeyStmt](self, "getKeyStmt")) != 100)
+  if (sub_100016B98() || sqlite3_bind_int64(-[PCSMetrics getKeyStmt](self, "getKeyStmt"), 2, service) || (-[PCSMetrics getKeyStmt](self, "getKeyStmt"), sub_100016B74([keyCopy UTF8String])) || sqlite3_step(-[PCSMetrics getKeyStmt](self, "getKeyStmt")) != 100)
   {
     v10 = 0;
   }

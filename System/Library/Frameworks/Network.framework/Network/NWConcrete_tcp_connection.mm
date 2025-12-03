@@ -1,5 +1,5 @@
 @interface NWConcrete_tcp_connection
-- (char)initWithParameters:(char *)a1;
+- (char)initWithParameters:(char *)parameters;
 - (void)dealloc;
 @end
 
@@ -128,16 +128,16 @@ LABEL_15:
   [(NWConcrete_tcp_connection *)&v17 dealloc:v15];
 }
 
-- (char)initWithParameters:(char *)a1
+- (char)initWithParameters:(char *)parameters
 {
   v38 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (!a1)
+  if (!parameters)
   {
     goto LABEL_39;
   }
 
-  v33.receiver = a1;
+  v33.receiver = parameters;
   v33.super_class = NWConcrete_tcp_connection;
   v4 = objc_msgSendSuper2(&v33, sel_init);
   if (!v4)
@@ -224,15 +224,15 @@ LABEL_60:
     goto LABEL_38;
   }
 
-  a1 = v4;
+  parameters = v4;
   *(v4 + 28) = 16;
   if (v3)
   {
     v5 = _nw_parameters_copy(v3);
-    v6 = *(a1 + 6);
-    *(a1 + 6) = v5;
+    v6 = *(parameters + 6);
+    *(parameters + 6) = v5;
 
-    v7 = *(a1 + 6);
+    v7 = *(parameters + 6);
     if (!v7)
     {
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -312,7 +312,7 @@ LABEL_35:
 LABEL_37:
 
 LABEL_38:
-          a1 = 0;
+          parameters = 0;
           goto LABEL_39;
         }
 
@@ -336,10 +336,10 @@ LABEL_36:
   else
   {
     secure_tcp = nw_parameters_create_secure_tcp(&__block_literal_global_19409, &__block_literal_global_2);
-    v14 = *(a1 + 6);
-    *(a1 + 6) = secure_tcp;
+    v14 = *(parameters + 6);
+    *(parameters + 6) = secure_tcp;
 
-    v7 = *(a1 + 6);
+    v7 = *(parameters + 6);
     if (!v7)
     {
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -434,18 +434,18 @@ LABEL_44:
   }
 
   _nw_parameters_set_data_mode(v7, 2);
-  nw_parameters_set_https_proxy_is_opaque(*(a1 + 6), 1);
-  nw_parameters_set_no_fullstack_fallback(*(a1 + 6), 1);
-  if ((nw_parameters_get_indefinite_set(*(a1 + 6)) & 1) == 0)
+  nw_parameters_set_https_proxy_is_opaque(*(parameters + 6), 1);
+  nw_parameters_set_no_fullstack_fallback(*(parameters + 6), 1);
+  if ((nw_parameters_get_indefinite_set(*(parameters + 6)) & 1) == 0)
   {
-    nw_parameters_set_indefinite(*(a1 + 6));
+    nw_parameters_set_indefinite(*(parameters + 6));
   }
 
-  a1[156] = 0;
-  *(a1 + 116) = 0xFFFFFFFFLL;
+  parameters[156] = 0;
+  *(parameters + 116) = 0xFFFFFFFFLL;
 LABEL_39:
 
-  return a1;
+  return parameters;
 }
 
 @end

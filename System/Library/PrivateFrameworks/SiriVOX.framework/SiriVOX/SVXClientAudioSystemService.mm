@@ -1,9 +1,9 @@
 @interface SVXClientAudioSystemService
-- (SVXClientAudioSystemService)initWithClientServiceProvider:(id)a3 analytics:(id)a4 performer:(id)a5;
+- (SVXClientAudioSystemService)initWithClientServiceProvider:(id)provider analytics:(id)analytics performer:(id)performer;
 - (SVXClientAudioSystemServiceDelegate)delegate;
-- (void)handleAudioSessionDidBecomeActive:(BOOL)a3 activationContext:(id)a4 deactivationContext:(id)a5;
-- (void)handleAudioSessionIDDidChange:(unsigned int)a3;
-- (void)handleAudioSessionWillBecomeActive:(BOOL)a3 activationContext:(id)a4 deactivationContext:(id)a5;
+- (void)handleAudioSessionDidBecomeActive:(BOOL)active activationContext:(id)context deactivationContext:(id)deactivationContext;
+- (void)handleAudioSessionIDDidChange:(unsigned int)change;
+- (void)handleAudioSessionWillBecomeActive:(BOOL)active activationContext:(id)context deactivationContext:(id)deactivationContext;
 @end
 
 @implementation SVXClientAudioSystemService
@@ -15,24 +15,24 @@
   return WeakRetained;
 }
 
-- (SVXClientAudioSystemService)initWithClientServiceProvider:(id)a3 analytics:(id)a4 performer:(id)a5
+- (SVXClientAudioSystemService)initWithClientServiceProvider:(id)provider analytics:(id)analytics performer:(id)performer
 {
-  v8 = a3;
-  v9 = a5;
+  providerCopy = provider;
+  performerCopy = performer;
   v13.receiver = self;
   v13.super_class = SVXClientAudioSystemService;
   v10 = [(SVXClientAudioSystemService *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_performer, a5);
-    objc_storeStrong(&v11->_clientServiceProvider, a3);
+    objc_storeStrong(&v10->_performer, performer);
+    objc_storeStrong(&v11->_clientServiceProvider, provider);
   }
 
   return v11;
 }
 
-- (void)handleAudioSessionIDDidChange:(unsigned int)a3
+- (void)handleAudioSessionIDDidChange:(unsigned int)change
 {
   performer = self->_performer;
   v4[0] = MEMORY[0x277D85DD0];
@@ -40,7 +40,7 @@
   v4[2] = __61__SVXClientAudioSystemService_handleAudioSessionIDDidChange___block_invoke;
   v4[3] = &unk_279C69128;
   v4[4] = self;
-  v5 = a3;
+  changeCopy = change;
   [(SVXPerforming *)performer performBlock:v4];
 }
 
@@ -56,21 +56,21 @@ void __61__SVXClientAudioSystemService_handleAudioSessionIDDidChange___block_inv
   }
 }
 
-- (void)handleAudioSessionDidBecomeActive:(BOOL)a3 activationContext:(id)a4 deactivationContext:(id)a5
+- (void)handleAudioSessionDidBecomeActive:(BOOL)active activationContext:(id)context deactivationContext:(id)deactivationContext
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  deactivationContextCopy = deactivationContext;
   performer = self->_performer;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __103__SVXClientAudioSystemService_handleAudioSessionDidBecomeActive_activationContext_deactivationContext___block_invoke;
   v13[3] = &unk_279C69100;
-  v17 = a3;
-  v14 = v8;
-  v15 = v9;
-  v16 = self;
-  v11 = v9;
-  v12 = v8;
+  activeCopy = active;
+  v14 = contextCopy;
+  v15 = deactivationContextCopy;
+  selfCopy = self;
+  v11 = deactivationContextCopy;
+  v12 = contextCopy;
   [(SVXPerforming *)performer performBlock:v13];
 }
 
@@ -155,21 +155,21 @@ LABEL_14:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAudioSessionWillBecomeActive:(BOOL)a3 activationContext:(id)a4 deactivationContext:(id)a5
+- (void)handleAudioSessionWillBecomeActive:(BOOL)active activationContext:(id)context deactivationContext:(id)deactivationContext
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  deactivationContextCopy = deactivationContext;
   performer = self->_performer;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __104__SVXClientAudioSystemService_handleAudioSessionWillBecomeActive_activationContext_deactivationContext___block_invoke;
   v13[3] = &unk_279C69100;
-  v17 = a3;
-  v14 = v8;
-  v15 = v9;
-  v16 = self;
-  v11 = v9;
-  v12 = v8;
+  activeCopy = active;
+  v14 = contextCopy;
+  v15 = deactivationContextCopy;
+  selfCopy = self;
+  v11 = deactivationContextCopy;
+  v12 = contextCopy;
   [(SVXPerforming *)performer performBlock:v13];
 }
 

@@ -1,15 +1,15 @@
 @interface SBUIRemoteAlertServiceViewController
 + (id)_exportedInterface;
-- (SBUIRemoteAlertServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (SBUIRemoteAlertServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dealloc;
-- (void)handleButtonActions:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
-- (void)sb_dismissForAlertAnimated:(BOOL)a3 completion:(id)a4;
-- (void)sb_presentForAlertAnimated:(BOOL)a3 completion:(id)a4;
-- (void)sb_preserveInputViewsAnimated:(BOOL)a3;
-- (void)sb_restoreInputViewsAnimated:(BOOL)a3;
-- (void)synchronizeAnimationsInActions:(id)a3;
+- (void)handleButtonActions:(id)actions;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
+- (void)sb_dismissForAlertAnimated:(BOOL)animated completion:(id)completion;
+- (void)sb_presentForAlertAnimated:(BOOL)animated completion:(id)completion;
+- (void)sb_preserveInputViewsAnimated:(BOOL)animated;
+- (void)sb_restoreInputViewsAnimated:(BOOL)animated;
+- (void)synchronizeAnimationsInActions:(id)actions;
 @end
 
 @implementation SBUIRemoteAlertServiceViewController
@@ -26,38 +26,38 @@
   [(SBUIRemoteAlertServiceViewController *)&v3 dealloc];
 }
 
-- (SBUIRemoteAlertServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBUIRemoteAlertServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = SBUIRemoteAlertServiceViewController;
-  return [(SBUIRemoteAlertServiceViewController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(SBUIRemoteAlertServiceViewController *)&v5 initWithNibName:name bundle:bundle];
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v5 = [(SBUIRemoteAlertServiceViewController *)self _selectorIsOverriden:sel_prepareForActivationWithContext_completion_];
-  v6 = v7;
-  if (v7 && (v5 & 1) == 0)
+  v6 = completionCopy;
+  if (completionCopy && (v5 & 1) == 0)
   {
-    v5 = v7[2](v7);
-    v6 = v7;
+    v5 = completionCopy[2](completionCopy);
+    v6 = completionCopy;
   }
 
   MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionsCopy = actions;
   if (![(SBUIRemoteAlertServiceViewController *)self _selectorIsOverriden:sel_handleButtonActions_])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v4;
+    v5 = actionsCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (!v6)
     {
@@ -76,9 +76,9 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * v9) events];
-        v11 = v10;
-        if (v10)
+        events = [*(*(&v13 + 1) + 8 * v9) events];
+        v11 = events;
+        if (events)
         {
           [(SBUIRemoteAlertServiceViewController *)self handleLockButtonPressed];
           if ((v11 & 2) == 0)
@@ -93,7 +93,7 @@ LABEL_9:
           }
         }
 
-        else if ((v10 & 2) == 0)
+        else if ((events & 2) == 0)
         {
           goto LABEL_9;
         }
@@ -162,29 +162,29 @@ LABEL_23:
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)synchronizeAnimationsInActions:(id)a3
+- (void)synchronizeAnimationsInActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v5 = objc_autoreleasePoolPush();
   if ([(SBUIRemoteAlertServiceViewController *)self _appearState])
   {
     if (self->_hasSentAnimationFence)
     {
       [MEMORY[0x1E69DCE70] _synchronizeDrawing];
-      v6 = 0;
+      _synchronizedDrawingFence = 0;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DCE70] _synchronizedDrawingFence];
+      _synchronizedDrawingFence = [MEMORY[0x1E69DCE70] _synchronizedDrawingFence];
     }
 
     self->_hasSentAnimationFence = 1;
@@ -195,51 +195,51 @@ LABEL_23:
     v9[3] = &unk_1E789DA38;
     v9[4] = self;
     [v7 _performBlockAfterCATransactionCommits:v9];
-    v8 = [(SBUIRemoteAlertServiceViewController *)self _remoteViewControllerProxy];
-    [v8 _participateInSystemAnimationFence:v6];
+    _remoteViewControllerProxy = [(SBUIRemoteAlertServiceViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy _participateInSystemAnimationFence:_synchronizedDrawingFence];
   }
 
-  v4[2](v4);
+  actionsCopy[2](actionsCopy);
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)sb_preserveInputViewsAnimated:(BOOL)a3
+- (void)sb_preserveInputViewsAnimated:(BOOL)animated
 {
   if (!self->_hasPreservedInputViews)
   {
-    v4 = a3;
+    animatedCopy = animated;
     self->_hasPreservedInputViews = 1;
-    v7 = [MEMORY[0x1E69DCD68] sharedInstance];
+    mEMORY[0x1E69DCD68] = [MEMORY[0x1E69DCD68] sharedInstance];
     v6 = [MEMORY[0x1E696B098] valueWithPointer:self];
-    [v7 _preserveInputViewsWithId:v6 animated:v4];
+    [mEMORY[0x1E69DCD68] _preserveInputViewsWithId:v6 animated:animatedCopy];
   }
 }
 
-- (void)sb_restoreInputViewsAnimated:(BOOL)a3
+- (void)sb_restoreInputViewsAnimated:(BOOL)animated
 {
   if (self->_hasPreservedInputViews)
   {
-    v4 = a3;
+    animatedCopy = animated;
     self->_hasPreservedInputViews = 0;
-    v7 = [MEMORY[0x1E69DCD68] sharedInstance];
+    mEMORY[0x1E69DCD68] = [MEMORY[0x1E69DCD68] sharedInstance];
     v6 = [MEMORY[0x1E696B098] valueWithPointer:self];
-    [v7 _restoreInputViewsWithId:v6 animated:v4];
+    [mEMORY[0x1E69DCD68] _restoreInputViewsWithId:v6 animated:animatedCopy];
   }
 }
 
-- (void)sb_presentForAlertAnimated:(BOOL)a3 completion:(id)a4
+- (void)sb_presentForAlertAnimated:(BOOL)animated completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)sb_dismissForAlertAnimated:(BOOL)a3 completion:(id)a4
+- (void)sb_dismissForAlertAnimated:(BOOL)animated completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 

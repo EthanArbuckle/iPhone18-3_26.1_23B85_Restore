@@ -1,16 +1,16 @@
 @interface _UIDatePickerMode
-+ (id)_datePickerModeWithFormatString:(id)a3 datePickerView:(id)a4;
-+ (id)_datePickerModeWithMode:(int64_t)a3 datePickerView:(id)a4;
-+ (id)newDateFromGregorianYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5 timeZone:(id)a6;
++ (id)_datePickerModeWithFormatString:(id)string datePickerView:(id)view;
++ (id)_datePickerModeWithMode:(int64_t)mode datePickerView:(id)view;
++ (id)newDateFromGregorianYear:(int64_t)year month:(int64_t)month day:(int64_t)day timeZone:(id)zone;
 + (int64_t)datePickerMode;
 + (unint64_t)extractableCalendarUnits;
 + (void)initialize;
-- (BOOL)_isComponentScrolling:(int64_t)a3;
-- (BOOL)_monthExists:(int64_t)a3 inYear:(int64_t)a4;
-- (BOOL)_scrollingAnyColumnExcept:(int)a3;
-- (BOOL)_shouldEnableValueForRow:(int64_t)a3 column:(int64_t)a4;
-- (BOOL)_shouldEnableValueForRow:(int64_t)a3 inComponent:(int64_t)a4 calendarUnit:(unint64_t)a5;
-- (BOOL)areValidDateComponents:(id)a3 comparingUnits:(int64_t)a4;
+- (BOOL)_isComponentScrolling:(int64_t)scrolling;
+- (BOOL)_monthExists:(int64_t)exists inYear:(int64_t)year;
+- (BOOL)_scrollingAnyColumnExcept:(int)except;
+- (BOOL)_shouldEnableValueForRow:(int64_t)row column:(int64_t)column;
+- (BOOL)_shouldEnableValueForRow:(int64_t)row inComponent:(int64_t)component calendarUnit:(unint64_t)unit;
+- (BOOL)areValidDateComponents:(id)components comparingUnits:(int64_t)units;
 - (BOOL)followsSystemHourCycle;
 - (NSDate)baseDate;
 - (NSDate)originatingDate;
@@ -25,65 +25,65 @@
 - (UIFont)defaultTimeFont;
 - (UIFont)font;
 - (UIFont)sizedFont;
-- (_NSRange)rangeForCalendarUnit:(unint64_t)a3;
+- (_NSRange)rangeForCalendarUnit:(unint64_t)unit;
 - (_UIDatePickerMode)init;
 - (_UIDatePickerView)datePickerView;
-- (double)componentWidthForTwoDigitCalendarUnit:(unint64_t)a3 font:(id)a4 maxWidth:(double)a5;
+- (double)componentWidthForTwoDigitCalendarUnit:(unint64_t)unit font:(id)font maxWidth:(double)width;
 - (double)todaySinceReferenceDate;
 - (double)totalComponentWidth;
-- (double)totalComponentWidthWithFont:(id)a3;
-- (double)widthForCalendarUnit:(unint64_t)a3 font:(id)a4 maxWidth:(double)a5;
-- (double)widthForComponent:(int64_t)a3 maxWidth:(double)a4;
-- (id)_dateByEnsuringValue:(int64_t)a3 forCalendarUnit:(unint64_t)a4;
-- (id)_dateForYearRow:(int64_t)a3;
+- (double)totalComponentWidthWithFont:(id)font;
+- (double)widthForCalendarUnit:(unint64_t)unit font:(id)font maxWidth:(double)width;
+- (double)widthForComponent:(int64_t)component maxWidth:(double)width;
+- (id)_dateByEnsuringValue:(int64_t)value forCalendarUnit:(unint64_t)unit;
+- (id)_dateForYearRow:(int64_t)row;
 - (id)_style;
 - (id)calendar;
 - (id)calendarForFormatters;
-- (id)dateComponentsByRestrictingSelectedComponents:(id)a3 withLastManipulatedColumn:(int64_t)a4;
-- (id)dateForRow:(int64_t)a3 inCalendarUnit:(unint64_t)a4;
-- (id)dateFormatForCalendarUnit:(unint64_t)a3;
-- (id)dateFormatterForCalendarUnit:(unint64_t)a3;
-- (id)fontForCalendarUnit:(unint64_t)a3;
+- (id)dateComponentsByRestrictingSelectedComponents:(id)components withLastManipulatedColumn:(int64_t)column;
+- (id)dateForRow:(int64_t)row inCalendarUnit:(unint64_t)unit;
+- (id)dateFormatForCalendarUnit:(unint64_t)unit;
+- (id)dateFormatterForCalendarUnit:(unint64_t)unit;
+- (id)fontForCalendarUnit:(unint64_t)unit;
 - (id)locale;
 - (id)timeZone;
-- (id)titleForRow:(int64_t)a3 inComponent:(int64_t)a4;
-- (id)viewForRow:(int64_t)a3 inComponent:(int64_t)a4 reusingView:(id)a5;
+- (id)titleForRow:(int64_t)row inComponent:(int64_t)component;
+- (id)viewForRow:(int64_t)row inComponent:(int64_t)component reusingView:(id)view;
 - (int64_t)_incrementForStaggeredTimeIntervals;
-- (int64_t)_numberOfDaysInDateComponents:(id)a3;
-- (int64_t)_yearlessYearForMonth:(int64_t)a3;
-- (int64_t)componentForCalendarUnit:(unint64_t)a3;
+- (int64_t)_numberOfDaysInDateComponents:(id)components;
+- (int64_t)_yearlessYearForMonth:(int64_t)month;
+- (int64_t)componentForCalendarUnit:(unint64_t)unit;
 - (int64_t)datePickerMode;
 - (int64_t)displayedCalendarUnits;
-- (int64_t)eraForYearRow:(int64_t)a3;
-- (int64_t)hourForRow:(int64_t)a3;
-- (int64_t)numberOfRowsForCalendarUnit:(unint64_t)a3;
-- (int64_t)numberOfRowsInComponent:(int64_t)a3;
-- (int64_t)rowForDate:(id)a3 dateComponents:(id)a4 component:(int64_t)a5 currentRow:(int64_t)a6;
-- (int64_t)rowForValue:(int64_t)a3 forCalendarUnit:(unint64_t)a4 currentRow:(int64_t)a5;
-- (int64_t)titleAlignmentForCalendarUnit:(unint64_t)a3;
-- (int64_t)valueForDate:(id)a3 dateComponents:(id)a4 calendarUnit:(unint64_t)a5;
-- (int64_t)valueForRow:(int64_t)a3 inCalendarUnit:(unint64_t)a4;
-- (int64_t)yearForRow:(int64_t)a3;
+- (int64_t)eraForYearRow:(int64_t)row;
+- (int64_t)hourForRow:(int64_t)row;
+- (int64_t)numberOfRowsForCalendarUnit:(unint64_t)unit;
+- (int64_t)numberOfRowsInComponent:(int64_t)component;
+- (int64_t)rowForDate:(id)date dateComponents:(id)components component:(int64_t)component currentRow:(int64_t)row;
+- (int64_t)rowForValue:(int64_t)value forCalendarUnit:(unint64_t)unit currentRow:(int64_t)row;
+- (int64_t)titleAlignmentForCalendarUnit:(unint64_t)unit;
+- (int64_t)valueForDate:(id)date dateComponents:(id)components calendarUnit:(unint64_t)unit;
+- (int64_t)valueForRow:(int64_t)row inCalendarUnit:(unint64_t)unit;
+- (int64_t)yearForRow:(int64_t)row;
 - (int64_t)yearsSinceBaseDate;
-- (unint64_t)calendarUnitForComponent:(int64_t)a3;
+- (unint64_t)calendarUnitForComponent:(int64_t)component;
 - (unint64_t)elements;
-- (unint64_t)nextUnitLargerThanUnit:(unint64_t)a3;
-- (unint64_t)nextUnitSmallerThanUnit:(unint64_t)a3;
+- (unint64_t)nextUnitLargerThanUnit:(unint64_t)unit;
+- (unint64_t)nextUnitSmallerThanUnit:(unint64_t)unit;
 - (unint64_t)numberOfComponents;
-- (void)_shouldReset:(id)a3;
-- (void)_updateSelectedDateComponentsWithNewValueInComponent:(int64_t)a3 usingSelectionBarValue:(BOOL)a4;
+- (void)_shouldReset:(id)reset;
+- (void)_updateSelectedDateComponentsWithNewValueInComponent:(int64_t)component usingSelectionBarValue:(BOOL)value;
 - (void)clearBaseDate;
 - (void)dealloc;
 - (void)fixUpElementsForRTL;
 - (void)invalidateTodayTextColor;
-- (void)loadDate:(id)a3 animated:(BOOL)a4;
+- (void)loadDate:(id)date animated:(BOOL)animated;
 - (void)noteCalendarChanged;
 - (void)resetComponentWidths;
-- (void)setBaseDateComponents:(id)a3;
-- (void)setElements:(unint64_t *)a3;
-- (void)setTodayDateComponents:(id)a3;
+- (void)setBaseDateComponents:(id)components;
+- (void)setElements:(unint64_t *)elements;
+- (void)setTodayDateComponents:(id)components;
 - (void)updateDateForNewDateRange;
-- (void)updateEnabledStateOfViewForRow:(int64_t)a3 inComponent:(int64_t)a4;
+- (void)updateEnabledStateOfViewForRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation _UIDatePickerMode
@@ -96,15 +96,15 @@
   }
 }
 
-+ (id)newDateFromGregorianYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5 timeZone:(id)a6
++ (id)newDateFromGregorianYear:(int64_t)year month:(int64_t)month day:(int64_t)day timeZone:(id)zone
 {
   v9 = MEMORY[0x1E695DF10];
-  v10 = a6;
+  zoneCopy = zone;
   v11 = objc_alloc_init(v9);
-  [v11 setYear:a3];
-  [v11 setMonth:a4];
-  [v11 setDay:a5];
-  [v11 setTimeZone:v10];
+  [v11 setYear:year];
+  [v11 setMonth:month];
+  [v11 setDay:day];
+  [v11 setTimeZone:zoneCopy];
 
   v12 = objc_alloc(MEMORY[0x1E695DEE8]);
   v13 = [v12 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
@@ -117,19 +117,19 @@
 
 + (int64_t)datePickerMode
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"_UIDatePickerMode.m" lineNumber:161 description:{@"%s must be overridden by subclasses", "+[_UIDatePickerMode datePickerMode]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:161 description:{@"%s must be overridden by subclasses", "+[_UIDatePickerMode datePickerMode]"}];
 
   return 0;
 }
 
-+ (id)_datePickerModeWithMode:(int64_t)a3 datePickerView:(id)a4
++ (id)_datePickerModeWithMode:(int64_t)mode datePickerView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = 0;
-  if (a3 <= 3)
+  if (mode <= 3)
   {
-    if (a3 < 0)
+    if (mode < 0)
     {
       goto LABEL_11;
     }
@@ -137,15 +137,15 @@
     goto LABEL_10;
   }
 
-  if (a3 > 4269)
+  if (mode > 4269)
   {
-    if (a3 == 4270 || a3 == 4271)
+    if (mode == 4270 || mode == 4271)
     {
       goto LABEL_10;
     }
   }
 
-  else if (a3 == 4 || a3 == 4269)
+  else if (mode == 4 || mode == 4269)
   {
 LABEL_10:
     v6 = objc_opt_class();
@@ -153,17 +153,17 @@ LABEL_10:
 
 LABEL_11:
   v7 = objc_alloc_init(v6);
-  [v7 setDatePickerView:v5];
+  [v7 setDatePickerView:viewCopy];
   [v7 noteCalendarChanged];
 
   return v7;
 }
 
-+ (id)_datePickerModeWithFormatString:(id)a3 datePickerView:(id)a4
++ (id)_datePickerModeWithFormatString:(id)string datePickerView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_UIDatePickerMode_Custom alloc] initWithFormatString:v6 datePickerView:v5];
+  viewCopy = view;
+  stringCopy = string;
+  v7 = [[_UIDatePickerMode_Custom alloc] initWithFormatString:stringCopy datePickerView:viewCopy];
 
   [(_UIDatePickerMode_Custom *)v7 noteCalendarChanged];
 
@@ -180,18 +180,18 @@ LABEL_11:
     v4 = objc_opt_class();
     if (v4 == objc_opt_class())
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      [v6 handleFailureInMethod:a2 object:v3 file:@"_UIDatePickerMode.m" lineNumber:202 description:{@"%@ is an abstract class. You must instantiate on of its subclasses instead.", v8}];
+      [currentHandler handleFailureInMethod:a2 object:v3 file:@"_UIDatePickerMode.m" lineNumber:202 description:{@"%@ is an abstract class. You must instantiate on of its subclasses instead.", v8}];
 
       return 0;
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 addObserver:v3 selector:sel__shouldReset_ name:@"_UIDatePickerModeShouldResetNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v3 selector:sel__shouldReset_ name:@"_UIDatePickerModeShouldResetNotification" object:0];
 
       [(_UIDatePickerMode *)v3 setMinuteInterval:1];
     }
@@ -202,8 +202,8 @@ LABEL_11:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_UIDatePickerModeShouldResetNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_UIDatePickerModeShouldResetNotification" object:0];
 
   elements = self->_elements;
   if (elements)
@@ -217,17 +217,17 @@ LABEL_11:
   [(_UIDatePickerMode *)&v5 dealloc];
 }
 
-- (int64_t)_yearlessYearForMonth:(int64_t)a3
+- (int64_t)_yearlessYearForMonth:(int64_t)month
 {
-  v3 = [(_UIDatePickerMode *)self calendar];
-  v4 = [v3 calendarIdentifier];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  calendarIdentifier = [calendar calendarIdentifier];
 
-  if ([v4 isEqualToString:*MEMORY[0x1E695D860]])
+  if ([calendarIdentifier isEqualToString:*MEMORY[0x1E695D860]])
   {
     v5 = 6;
   }
 
-  else if ([v4 hasPrefix:@"islamic"])
+  else if ([calendarIdentifier hasPrefix:@"islamic"])
   {
     v5 = 7;
   }
@@ -242,59 +242,59 @@ LABEL_11:
 
 - (BOOL)followsSystemHourCycle
 {
-  v2 = [(_UIDatePickerMode *)self datePickerView];
-  v3 = [v2 data];
-  v4 = [v3 followsSystemHourCycle];
+  datePickerView = [(_UIDatePickerMode *)self datePickerView];
+  data = [datePickerView data];
+  followsSystemHourCycle = [data followsSystemHourCycle];
 
-  return v4;
+  return followsSystemHourCycle;
 }
 
 - (id)calendar
 {
-  v2 = [(_UIDatePickerMode *)self datePickerView];
-  v3 = [v2 data];
-  v4 = [v3 effectiveCalendar];
+  datePickerView = [(_UIDatePickerMode *)self datePickerView];
+  data = [datePickerView data];
+  effectiveCalendar = [data effectiveCalendar];
 
-  return v4;
+  return effectiveCalendar;
 }
 
 - (id)calendarForFormatters
 {
-  v2 = [(_UIDatePickerMode *)self datePickerView];
-  v3 = [v2 data];
-  v4 = [v3 formattingCalendar];
+  datePickerView = [(_UIDatePickerMode *)self datePickerView];
+  data = [datePickerView data];
+  formattingCalendar = [data formattingCalendar];
 
-  return v4;
+  return formattingCalendar;
 }
 
 - (id)locale
 {
-  v2 = [(_UIDatePickerMode *)self datePickerView];
-  v3 = [v2 data];
-  v4 = [v3 effectiveLocale];
+  datePickerView = [(_UIDatePickerMode *)self datePickerView];
+  data = [datePickerView data];
+  effectiveLocale = [data effectiveLocale];
 
-  return v4;
+  return effectiveLocale;
 }
 
 - (id)timeZone
 {
-  v2 = [(_UIDatePickerMode *)self datePickerView];
-  v3 = [v2 data];
-  v4 = [v3 timeZone];
+  datePickerView = [(_UIDatePickerMode *)self datePickerView];
+  data = [datePickerView data];
+  timeZone = [data timeZone];
 
-  return v4;
+  return timeZone;
 }
 
 - (id)_style
 {
-  v2 = [(_UIDatePickerMode *)self datePickerView];
-  v3 = [v2 datePicker];
-  v4 = [v3 _style];
+  datePickerView = [(_UIDatePickerMode *)self datePickerView];
+  datePicker = [datePickerView datePicker];
+  _style = [datePicker _style];
 
-  return v4;
+  return _style;
 }
 
-- (void)_shouldReset:(id)a3
+- (void)_shouldReset:(id)reset
 {
   dateFormatters = self->_dateFormatters;
   self->_dateFormatters = 0;
@@ -322,16 +322,16 @@ LABEL_11:
   [(_UIDatePickerMode *)self resetComponentWidths];
 }
 
-- (double)componentWidthForTwoDigitCalendarUnit:(unint64_t)a3 font:(id)a4 maxWidth:(double)a5
+- (double)componentWidthForTwoDigitCalendarUnit:(unint64_t)unit font:(id)font maxWidth:(double)width
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v10 = [MEMORY[0x1E695DF00] date];
-  LODWORD(v11) = [v9 rangeOfUnit:a3 inUnit:a3 >> 1 forDate:v10];
+  fontCopy = font;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  LODWORD(v11) = [currentCalendar rangeOfUnit:unit inUnit:unit >> 1 forDate:date];
   v13 = v12;
-  v14 = [v9 components:766 fromDate:v10];
-  v15 = [(_UIDatePickerMode *)self dateFormatterForCalendarUnit:a3];
+  v14 = [currentCalendar components:766 fromDate:date];
+  v15 = [(_UIDatePickerMode *)self dateFormatterForCalendarUnit:unit];
   v16 = 0.0;
   if (v13 >= v11)
   {
@@ -339,23 +339,23 @@ LABEL_11:
     v27 = *off_1E70EC918;
     do
     {
-      _UIDateComponentsSetValue(v14, a3, v11);
-      v17 = [v9 dateFromComponents:v14];
+      _UIDateComponentsSetValue(v14, unit, v11);
+      v17 = [currentCalendar dateFromComponents:v14];
 
       v18 = [v15 stringFromDate:v17];
       v28 = v27;
-      v29[0] = v8;
+      v29[0] = fontCopy;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
       v19 = v13;
-      v20 = a3;
-      v21 = v9;
-      v23 = v22 = v8;
+      unitCopy = unit;
+      v21 = currentCalendar;
+      v23 = v22 = fontCopy;
       [v18 sizeWithAttributes:v23];
       v25 = v24;
 
-      v8 = v22;
-      v9 = v21;
-      a3 = v20;
+      fontCopy = v22;
+      currentCalendar = v21;
+      unit = unitCopy;
       v13 = v19;
       if (v25 >= v16)
       {
@@ -363,7 +363,7 @@ LABEL_11:
       }
 
       ++v11;
-      v10 = v17;
+      date = v17;
     }
 
     while (v19 >= v11);
@@ -371,15 +371,15 @@ LABEL_11:
 
   else
   {
-    v17 = v10;
+    v17 = date;
   }
 
-  if (v16 < a5)
+  if (v16 < width)
   {
-    a5 = v16;
+    width = v16;
   }
 
-  return a5;
+  return width;
 }
 
 - (int64_t)datePickerMode
@@ -389,12 +389,12 @@ LABEL_11:
   return [v2 datePickerMode];
 }
 
-- (id)dateFormatterForCalendarUnit:(unint64_t)a3
+- (id)dateFormatterForCalendarUnit:(unint64_t)unit
 {
-  v4 = [(_UIDatePickerMode *)self componentForCalendarUnit:a3];
+  v4 = [(_UIDatePickerMode *)self componentForCalendarUnit:unit];
   if (!self->_dateFormatters)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if ([(_UIDatePickerMode *)self numberOfComponents])
     {
       v6 = 0;
@@ -403,19 +403,19 @@ LABEL_11:
         v7 = objc_alloc_init(MEMORY[0x1E696AB78]);
         [v7 setDateStyle:2];
         [v7 setTimeStyle:0];
-        v8 = [(_UIDatePickerMode *)self locale];
-        [v7 setLocale:v8];
+        locale = [(_UIDatePickerMode *)self locale];
+        [v7 setLocale:locale];
 
-        v9 = [(_UIDatePickerMode *)self calendarForFormatters];
-        [v7 setCalendar:v9];
+        calendarForFormatters = [(_UIDatePickerMode *)self calendarForFormatters];
+        [v7 setCalendar:calendarForFormatters];
 
-        v10 = [(_UIDatePickerMode *)self timeZone];
-        [v7 setTimeZone:v10];
+        timeZone = [(_UIDatePickerMode *)self timeZone];
+        [v7 setTimeZone:timeZone];
 
         [v7 setFormattingContext:2];
         v11 = [(_UIDatePickerMode *)self dateFormatForCalendarUnit:[(_UIDatePickerMode *)self calendarUnitForComponent:v6]];
         [v7 setDateFormat:v11];
-        [v5 addObject:v7];
+        [array addObject:v7];
 
         ++v6;
       }
@@ -423,7 +423,7 @@ LABEL_11:
       while (v6 < [(_UIDatePickerMode *)self numberOfComponents]);
     }
 
-    v12 = [v5 copy];
+    v12 = [array copy];
     dateFormatters = self->_dateFormatters;
     self->_dateFormatters = v12;
   }
@@ -441,14 +441,14 @@ LABEL_11:
   return v14;
 }
 
-- (void)setTodayDateComponents:(id)a3
+- (void)setTodayDateComponents:(id)components
 {
-  v5 = a3;
-  if (self->_todayDateComponents != v5)
+  componentsCopy = components;
+  if (self->_todayDateComponents != componentsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_todayDateComponents, a3);
-    v5 = v6;
+    v6 = componentsCopy;
+    objc_storeStrong(&self->_todayDateComponents, components);
+    componentsCopy = v6;
     self->_yearsSinceBaseDate = 0;
   }
 }
@@ -458,9 +458,9 @@ LABEL_11:
   todayDateComponents = self->_todayDateComponents;
   if (!todayDateComponents)
   {
-    v4 = [(_UIDatePickerMode *)self calendar];
-    v5 = [MEMORY[0x1E695DF00] date];
-    v6 = [v4 components:766 fromDate:v5];
+    calendar = [(_UIDatePickerMode *)self calendar];
+    date = [MEMORY[0x1E695DF00] date];
+    v6 = [calendar components:766 fromDate:date];
     v7 = self->_todayDateComponents;
     self->_todayDateComponents = v6;
 
@@ -481,9 +481,9 @@ LABEL_11:
   result = self->_todaySinceReferenceDate;
   if (result == 0.0)
   {
-    v4 = [(_UIDatePickerMode *)self calendar];
-    v5 = [(_UIDatePickerMode *)self todayDateComponents];
-    v6 = [v4 dateFromComponents:v5];
+    calendar = [(_UIDatePickerMode *)self calendar];
+    todayDateComponents = [(_UIDatePickerMode *)self todayDateComponents];
+    v6 = [calendar dateFromComponents:todayDateComponents];
 
     [v6 timeIntervalSinceReferenceDate];
     self->_todaySinceReferenceDate = v7;
@@ -499,8 +499,8 @@ LABEL_11:
   originatingDate = self->_originatingDate;
   if (!originatingDate)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    [(_UIDatePickerMode *)self setOriginatingDate:v4];
+    date = [MEMORY[0x1E695DF00] date];
+    [(_UIDatePickerMode *)self setOriginatingDate:date];
 
     originatingDate = self->_originatingDate;
   }
@@ -516,9 +516,9 @@ LABEL_11:
   [(_UIDatePickerMode *)self setYearsSinceBaseDate:0];
 }
 
-- (void)setBaseDateComponents:(id)a3
+- (void)setBaseDateComponents:(id)components
 {
-  objc_storeStrong(&self->_baseDateComponents, a3);
+  objc_storeStrong(&self->_baseDateComponents, components);
 
   [(_UIDatePickerMode *)self setBaseDate:0];
 }
@@ -550,9 +550,9 @@ LABEL_11:
   baseDate = self->_baseDate;
   if (!baseDate)
   {
-    v4 = [(_UIDatePickerMode *)self baseDateComponents];
-    v5 = [(_UIDatePickerMode *)self calendar];
-    v6 = [v5 dateFromComponents:v4];
+    baseDateComponents = [(_UIDatePickerMode *)self baseDateComponents];
+    calendar = [(_UIDatePickerMode *)self calendar];
+    v6 = [calendar dateFromComponents:baseDateComponents];
     [(_UIDatePickerMode *)self setBaseDate:v6];
 
     baseDate = self->_baseDate;
@@ -566,10 +566,10 @@ LABEL_11:
   result = self->_yearsSinceBaseDate;
   if (!result)
   {
-    v4 = [(_UIDatePickerMode *)self calendar];
-    v5 = [(_UIDatePickerMode *)self baseDate];
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [v4 components:4 fromDate:v5 toDate:v6 options:0];
+    calendar = [(_UIDatePickerMode *)self calendar];
+    baseDate = [(_UIDatePickerMode *)self baseDate];
+    date = [MEMORY[0x1E695DF00] date];
+    v7 = [calendar components:4 fromDate:baseDate toDate:date options:0];
 
     self->_yearsSinceBaseDate = [v7 year];
     return self->_yearsSinceBaseDate;
@@ -584,8 +584,8 @@ LABEL_11:
   if (!amString)
   {
     v4 = [(_UIDatePickerMode *)self dateFormatterForCalendarUnit:0x10000];
-    v5 = [v4 AMSymbol];
-    v6 = [v5 copy];
+    aMSymbol = [v4 AMSymbol];
+    v6 = [aMSymbol copy];
     v7 = self->_amString;
     self->_amString = v6;
 
@@ -601,8 +601,8 @@ LABEL_11:
   if (!pmString)
   {
     v4 = [(_UIDatePickerMode *)self dateFormatterForCalendarUnit:0x10000];
-    v5 = [v4 PMSymbol];
-    v6 = [v5 copy];
+    pMSymbol = [v4 PMSymbol];
+    v6 = [pMSymbol copy];
     v7 = self->_pmString;
     self->_pmString = v6;
 
@@ -612,9 +612,9 @@ LABEL_11:
   return pmString;
 }
 
-- (id)fontForCalendarUnit:(unint64_t)a3
+- (id)fontForCalendarUnit:(unint64_t)unit
 {
-  if (a3 == 0x10000)
+  if (unit == 0x10000)
   {
     [(_UIDatePickerMode *)self amPmFont];
   }
@@ -633,9 +633,9 @@ LABEL_11:
   font = self->_font;
   if (!font)
   {
-    v4 = [(_UIDatePickerMode *)self sizedFont];
+    sizedFont = [(_UIDatePickerMode *)self sizedFont];
     v5 = self->_font;
-    self->_font = v4;
+    self->_font = sizedFont;
 
     font = self->_font;
   }
@@ -646,20 +646,20 @@ LABEL_11:
 - (UIFont)sizedFont
 {
   WeakRetained = objc_loadWeakRetained(&self->_datePickerView);
-  v4 = [WeakRetained traitCollection];
-  v5 = +[UIDatePicker _styleForIdiom:](UIDatePicker, "_styleForIdiom:", [v4 userInterfaceIdiom]);
+  traitCollection = [WeakRetained traitCollection];
+  v5 = +[UIDatePicker _styleForIdiom:](UIDatePicker, "_styleForIdiom:", [traitCollection userInterfaceIdiom]);
 
-  v6 = [(_UIDatePickerMode *)self datePickerView];
-  [v6 bounds];
+  datePickerView = [(_UIDatePickerMode *)self datePickerView];
+  [datePickerView bounds];
   v8 = v7;
   [v5 pickerHorizontalEdgeInset];
   v10 = v8 - (v9 + v9);
 
   v11 = objc_loadWeakRetained(&self->_datePickerView);
-  v12 = [v11 _style];
+  _style = [v11 _style];
   v13 = objc_loadWeakRetained(&self->_datePickerView);
-  v14 = [v13 traitCollection];
-  v15 = [v12 centerCellFontWithTraitCollection:v14];
+  traitCollection2 = [v13 traitCollection];
+  v15 = [_style centerCellFontWithTraitCollection:traitCollection2];
   [v15 pointSize];
   v17 = v16;
 
@@ -668,10 +668,10 @@ LABEL_11:
   do
   {
     v20 = objc_loadWeakRetained(&self->_datePickerView);
-    v21 = [v20 _style];
+    _style2 = [v20 _style];
     v22 = objc_loadWeakRetained(&self->_datePickerView);
-    v23 = [v22 traitCollection];
-    v24 = [v21 centerCellFontWithTraitCollection:v23];
+    traitCollection3 = [v22 traitCollection];
+    v24 = [_style2 centerCellFontWithTraitCollection:traitCollection3];
     v25 = v18;
 
     v18 = v24;
@@ -705,10 +705,10 @@ LABEL_11:
   if (!defaultTimeFont)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datePickerView);
-    v5 = [WeakRetained _style];
+    _style = [WeakRetained _style];
     v6 = objc_loadWeakRetained(&self->_datePickerView);
-    v7 = [v6 traitCollection];
-    v8 = [v5 centerCellFontWithTraitCollection:v7];
+    traitCollection = [v6 traitCollection];
+    v8 = [_style centerCellFontWithTraitCollection:traitCollection];
     v9 = self->_defaultTimeFont;
     self->_defaultTimeFont = v8;
 
@@ -724,10 +724,10 @@ LABEL_11:
   if (!amPmFont)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datePickerView);
-    v5 = [WeakRetained _style];
+    _style = [WeakRetained _style];
     v6 = objc_loadWeakRetained(&self->_datePickerView);
-    v7 = [v6 traitCollection];
-    v8 = [v5 centerCellFontWithTraitCollection:v7];
+    traitCollection = [v6 traitCollection];
+    v8 = [_style centerCellFontWithTraitCollection:traitCollection];
     v9 = self->_amPmFont;
     self->_amPmFont = v8;
 
@@ -743,9 +743,9 @@ LABEL_11:
   if (!todayTextColor)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datePickerView);
-    v5 = [WeakRetained _textColor];
+    _textColor = [WeakRetained _textColor];
     v6 = self->_todayTextColor;
-    self->_todayTextColor = v5;
+    self->_todayTextColor = _textColor;
 
     todayTextColor = self->_todayTextColor;
   }
@@ -771,42 +771,42 @@ LABEL_11:
   return result;
 }
 
-- (double)widthForComponent:(int64_t)a3 maxWidth:(double)a4
+- (double)widthForComponent:(int64_t)component maxWidth:(double)width
 {
-  if (a3 < 0 || [(_UIDatePickerMode *)self numberOfComponents]<= a3)
+  if (component < 0 || [(_UIDatePickerMode *)self numberOfComponents]<= component)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:517 description:{@"Invalid parameter not satisfying: %@", @"component >= 0 && component < [self numberOfComponents]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:517 description:{@"Invalid parameter not satisfying: %@", @"component >= 0 && component < [self numberOfComponents]"}];
   }
 
-  v8 = [(_UIDatePickerMode *)self calendarUnitForComponent:a3];
-  v9 = [(_UIDatePickerMode *)self font];
-  [(_UIDatePickerMode *)self widthForCalendarUnit:v8 font:v9 maxWidth:a4];
+  v8 = [(_UIDatePickerMode *)self calendarUnitForComponent:component];
+  font = [(_UIDatePickerMode *)self font];
+  [(_UIDatePickerMode *)self widthForCalendarUnit:v8 font:font maxWidth:width];
   v11 = v10;
 
   return v11;
 }
 
-- (double)widthForCalendarUnit:(unint64_t)a3 font:(id)a4 maxWidth:(double)a5
+- (double)widthForCalendarUnit:(unint64_t)unit font:(id)font maxWidth:(double)width
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:523 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode widthForCalendarUnit:font:maxWidth:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:523 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode widthForCalendarUnit:font:maxWidth:]"}];
 
   return 0.0;
 }
 
 + (unint64_t)extractableCalendarUnits
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"_UIDatePickerMode.m" lineNumber:530 description:{@"%s must be overridden by subclasses", "+[_UIDatePickerMode extractableCalendarUnits]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:530 description:{@"%s must be overridden by subclasses", "+[_UIDatePickerMode extractableCalendarUnits]"}];
 
   return 0;
 }
 
-- (void)setElements:(unint64_t *)a3
+- (void)setElements:(unint64_t *)elements
 {
   elements = self->_elements;
-  if (elements != a3)
+  if (elements != elements)
   {
     if (elements)
     {
@@ -815,7 +815,7 @@ LABEL_11:
       [(_UIDatePickerMode *)self setNumberOfComponents:0];
     }
 
-    self->_elements = a3;
+    self->_elements = elements;
   }
 }
 
@@ -825,9 +825,9 @@ LABEL_11:
   if (!result)
   {
     v6 = 0;
-    v4 = [(_UIDatePickerMode *)self localizedFormatString];
-    v5 = [objc_opt_class() extractableCalendarUnits];
-    [(_UIDatePickerMode *)self setElements:_UICopyCalendarUnitsFromFormatString(v4, v5, &v6)];
+    localizedFormatString = [(_UIDatePickerMode *)self localizedFormatString];
+    extractableCalendarUnits = [objc_opt_class() extractableCalendarUnits];
+    [(_UIDatePickerMode *)self setElements:_UICopyCalendarUnitsFromFormatString(localizedFormatString, extractableCalendarUnits, &v6)];
 
     [(_UIDatePickerMode *)self setNumberOfComponents:v6];
     [(_UIDatePickerMode *)self fixUpElementsForRTL];
@@ -844,9 +844,9 @@ LABEL_11:
     if (![(_UIDatePickerMode *)self isTimeIntervalMode])
     {
       WeakRetained = objc_loadWeakRetained(&self->_datePickerView);
-      v4 = [WeakRetained _shouldReverseLayoutDirection];
+      _shouldReverseLayoutDirection = [WeakRetained _shouldReverseLayoutDirection];
 
-      if (v4)
+      if (_shouldReverseLayoutDirection)
       {
         if ([(_UIDatePickerMode *)self numberOfComponents])
         {
@@ -884,7 +884,7 @@ LABEL_11:
 
 - (int64_t)displayedCalendarUnits
 {
-  v3 = [(_UIDatePickerMode *)self elements];
+  elements = [(_UIDatePickerMode *)self elements];
   if (![(_UIDatePickerMode *)self numberOfComponents])
   {
     return 0;
@@ -894,7 +894,7 @@ LABEL_11:
   v5 = 0;
   do
   {
-    v5 |= v3[v4++];
+    v5 |= elements[v4++];
   }
 
   while (v4 < [(_UIDatePickerMode *)self numberOfComponents]);
@@ -903,39 +903,39 @@ LABEL_11:
 
 - (NSString)localizedFormatString
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:589 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode localizedFormatString]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:589 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode localizedFormatString]"}];
 
   return 0;
 }
 
-- (unint64_t)calendarUnitForComponent:(int64_t)a3
+- (unint64_t)calendarUnitForComponent:(int64_t)component
 {
-  if ([(_UIDatePickerMode *)self numberOfComponents]<= a3)
+  if ([(_UIDatePickerMode *)self numberOfComponents]<= component)
   {
     return 0;
   }
 
   else
   {
-    return [(_UIDatePickerMode *)self elements][8 * a3];
+    return [(_UIDatePickerMode *)self elements][8 * component];
   }
 }
 
-- (int64_t)componentForCalendarUnit:(unint64_t)a3
+- (int64_t)componentForCalendarUnit:(unint64_t)unit
 {
-  v5 = [(_UIDatePickerMode *)self numberOfComponents];
-  v6 = [(_UIDatePickerMode *)self elements];
-  if (v5 < 1)
+  numberOfComponents = [(_UIDatePickerMode *)self numberOfComponents];
+  elements = [(_UIDatePickerMode *)self elements];
+  if (numberOfComponents < 1)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v7 = v6;
+  v7 = elements;
   result = 0;
-  while (v7[result] != a3)
+  while (v7[result] != unit)
   {
-    if (v5 == ++result)
+    if (numberOfComponents == ++result)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -944,17 +944,17 @@ LABEL_11:
   return result;
 }
 
-- (int64_t)numberOfRowsInComponent:(int64_t)a3
+- (int64_t)numberOfRowsInComponent:(int64_t)component
 {
-  v4 = [(_UIDatePickerMode *)self calendarUnitForComponent:a3];
+  v4 = [(_UIDatePickerMode *)self calendarUnitForComponent:component];
 
   return [(_UIDatePickerMode *)self numberOfRowsForCalendarUnit:v4];
 }
 
-- (int64_t)numberOfRowsForCalendarUnit:(unint64_t)a3
+- (int64_t)numberOfRowsForCalendarUnit:(unint64_t)unit
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:613 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode numberOfRowsForCalendarUnit:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:613 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode numberOfRowsForCalendarUnit:]"}];
 
   return 0;
 }
@@ -975,51 +975,51 @@ LABEL_11:
   [(_UIDatePickerMode *)self setElements:0];
   [(_UIDatePickerMode *)self setLocalizedFormatString:0];
   [(_UIDatePickerMode *)self setTodayDateComponents:0];
-  v6 = [(_UIDatePickerMode *)self calendar];
-  v7 = [(_UIDatePickerMode *)self timeZone];
-  [v6 setTimeZone:v7];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  timeZone = [(_UIDatePickerMode *)self timeZone];
+  [calendar setTimeZone:timeZone];
 
-  v8 = [(_UIDatePickerMode *)self calendar];
-  self->_maxDayRange.location = [v8 maximumRangeOfUnit:16];
+  calendar2 = [(_UIDatePickerMode *)self calendar];
+  self->_maxDayRange.location = [calendar2 maximumRangeOfUnit:16];
   self->_maxDayRange.length = v9;
 
-  v10 = [(_UIDatePickerMode *)self calendar];
-  self->_maxMonthRange.location = [v10 maximumRangeOfUnit:8];
+  calendar3 = [(_UIDatePickerMode *)self calendar];
+  self->_maxMonthRange.location = [calendar3 maximumRangeOfUnit:8];
   self->_maxMonthRange.length = v11;
 
-  v13 = [(_UIDatePickerMode *)self calendar];
-  v12 = [v13 calendarIdentifier];
-  self->_isUsingJapaneseCalendar = [v12 isEqualToString:*MEMORY[0x1E695D898]];
+  calendar4 = [(_UIDatePickerMode *)self calendar];
+  calendarIdentifier = [calendar4 calendarIdentifier];
+  self->_isUsingJapaneseCalendar = [calendarIdentifier isEqualToString:*MEMORY[0x1E695D898]];
 }
 
 - (void)resetComponentWidths
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:643 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode resetComponentWidths]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:643 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode resetComponentWidths]"}];
 }
 
 - (double)totalComponentWidth
 {
-  v3 = [(_UIDatePickerMode *)self font];
-  [(_UIDatePickerMode *)self totalComponentWidthWithFont:v3];
+  font = [(_UIDatePickerMode *)self font];
+  [(_UIDatePickerMode *)self totalComponentWidthWithFont:font];
   v5 = v4;
 
   return v5;
 }
 
-- (double)totalComponentWidthWithFont:(id)a3
+- (double)totalComponentWidthWithFont:(id)font
 {
-  v4 = a3;
-  v5 = [(_UIDatePickerMode *)self elements];
-  v6 = [(_UIDatePickerMode *)self numberOfComponents];
-  if (v6)
+  fontCopy = font;
+  elements = [(_UIDatePickerMode *)self elements];
+  numberOfComponents = [(_UIDatePickerMode *)self numberOfComponents];
+  if (numberOfComponents)
   {
-    v7 = v6;
+    v7 = numberOfComponents;
     v8 = 0.0;
     do
     {
-      v9 = *v5++;
-      [(_UIDatePickerMode *)self widthForCalendarUnit:v9 font:v4 maxWidth:1.79769313e308];
+      v9 = *elements++;
+      [(_UIDatePickerMode *)self widthForCalendarUnit:v9 font:fontCopy maxWidth:1.79769313e308];
       v8 = v8 + v10;
       --v7;
     }
@@ -1037,10 +1037,10 @@ LABEL_11:
 
 - (int64_t)_incrementForStaggeredTimeIntervals
 {
-  v3 = [(_UIDatePickerMode *)self datePickerView];
-  v4 = [v3 staggerTimeIntervals];
+  datePickerView = [(_UIDatePickerMode *)self datePickerView];
+  staggerTimeIntervals = [datePickerView staggerTimeIntervals];
 
-  if (!v4)
+  if (!staggerTimeIntervals)
   {
     return 1;
   }
@@ -1048,62 +1048,62 @@ LABEL_11:
   return [(_UIDatePickerMode *)self minuteInterval];
 }
 
-- (unint64_t)nextUnitLargerThanUnit:(unint64_t)a3
+- (unint64_t)nextUnitLargerThanUnit:(unint64_t)unit
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:668 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode nextUnitLargerThanUnit:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:668 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode nextUnitLargerThanUnit:]"}];
 
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (unint64_t)nextUnitSmallerThanUnit:(unint64_t)a3
+- (unint64_t)nextUnitSmallerThanUnit:(unint64_t)unit
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:673 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode nextUnitSmallerThanUnit:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:673 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode nextUnitSmallerThanUnit:]"}];
 
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)_dateByEnsuringValue:(int64_t)a3 forCalendarUnit:(unint64_t)a4
+- (id)_dateByEnsuringValue:(int64_t)value forCalendarUnit:(unint64_t)unit
 {
-  if (a4 != 8 || (v7 = objc_alloc_init(MEMORY[0x1E695DF10]), [v7 setDay:1], objc_msgSend(v7, "setMonth:", a3), objc_msgSend(v7, "setYear:", -[_UIDatePickerMode _yearlessYearForMonth:](self, "_yearlessYearForMonth:", a3)), -[_UIDatePickerMode calendar](self, "calendar"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "dateFromComponents:", v7), v9 = objc_claimAutoreleasedReturnValue(), v8, v7, !v9))
+  if (unit != 8 || (v7 = objc_alloc_init(MEMORY[0x1E695DF10]), [v7 setDay:1], objc_msgSend(v7, "setMonth:", value), objc_msgSend(v7, "setYear:", -[_UIDatePickerMode _yearlessYearForMonth:](self, "_yearlessYearForMonth:", value)), -[_UIDatePickerMode calendar](self, "calendar"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "dateFromComponents:", v7), v9 = objc_claimAutoreleasedReturnValue(), v8, v7, !v9))
   {
-    v10 = [(_UIDatePickerMode *)self todayDateComponents];
-    v11 = [v10 copy];
+    todayDateComponents = [(_UIDatePickerMode *)self todayDateComponents];
+    v11 = [todayDateComponents copy];
 
-    v12 = [(_UIDatePickerMode *)self nextUnitSmallerThanUnit:a4];
+    v12 = [(_UIDatePickerMode *)self nextUnitSmallerThanUnit:unit];
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
       for (i = v12; i != 0x7FFFFFFFFFFFFFFFLL; i = [(_UIDatePickerMode *)self nextUnitSmallerThanUnit:i])
       {
-        v14 = [(_UIDatePickerMode *)self calendar];
-        v15 = [v14 maximumRangeOfUnit:i];
+        calendar = [(_UIDatePickerMode *)self calendar];
+        v15 = [calendar maximumRangeOfUnit:i];
 
         _UIDateComponentsSetValue(v11, i, v15);
       }
     }
 
-    v16 = [(_UIDatePickerMode *)self nextUnitLargerThanUnit:a4];
-    v17 = [(_UIDatePickerMode *)self calendar];
-    v18 = [v17 maximumRangeOfUnit:v16];
+    v16 = [(_UIDatePickerMode *)self nextUnitLargerThanUnit:unit];
+    calendar2 = [(_UIDatePickerMode *)self calendar];
+    year = [calendar2 maximumRangeOfUnit:v16];
     v20 = v19;
 
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      _UIDateComponentsSetValue(v11, a4, a3);
-      v27 = [(_UIDatePickerMode *)self calendar];
-      v9 = [v27 dateFromComponents:v11];
+      _UIDateComponentsSetValue(v11, unit, value);
+      calendar3 = [(_UIDatePickerMode *)self calendar];
+      v9 = [calendar3 dateFromComponents:v11];
     }
 
     else
     {
       if (v16 == 4)
       {
-        v18 = [v11 year];
+        year = [v11 year];
         v20 = 30;
       }
 
-      if (v18 >= v18 + v20)
+      if (year >= year + v20)
       {
         v9 = 0;
       }
@@ -1117,20 +1117,20 @@ LABEL_11:
           v22 = v11;
           v23 = v9;
           v24 = v21;
-          _UIDateComponentsSetValue(v11, a4, a3);
-          _UIDateComponentsSetValue(v11, v16, v18);
-          v25 = [(_UIDatePickerMode *)self calendar];
-          v9 = [v25 dateFromComponents:v22];
+          _UIDateComponentsSetValue(v11, unit, value);
+          _UIDateComponentsSetValue(v11, v16, year);
+          calendar4 = [(_UIDatePickerMode *)self calendar];
+          v9 = [calendar4 dateFromComponents:v22];
 
-          v26 = [(_UIDatePickerMode *)self calendar];
-          v11 = [v26 components:a4 fromDate:v9];
+          calendar5 = [(_UIDatePickerMode *)self calendar];
+          v11 = [calendar5 components:unit fromDate:v9];
 
-          if (_UIDateComponentsGetValue(v11, a4) == a3)
+          if (_UIDateComponentsGetValue(v11, unit) == value)
           {
             break;
           }
 
-          ++v18;
+          ++year;
           v21 = v24 - 1;
         }
 
@@ -1142,63 +1142,63 @@ LABEL_11:
   return v9;
 }
 
-- (id)_dateForYearRow:(int64_t)a3
+- (id)_dateForYearRow:(int64_t)row
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  [v5 setYear:a3];
-  v6 = [(_UIDatePickerMode *)self calendar];
-  v7 = [(_UIDatePickerMode *)self baseDate];
-  v8 = [v6 dateByAddingComponents:v5 toDate:v7 options:0];
+  [v5 setYear:row];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  baseDate = [(_UIDatePickerMode *)self baseDate];
+  v8 = [calendar dateByAddingComponents:v5 toDate:baseDate options:0];
 
   return v8;
 }
 
-- (int64_t)hourForRow:(int64_t)a3
+- (int64_t)hourForRow:(int64_t)row
 {
   v4 = [(_UIDatePickerMode *)self rangeForCalendarUnit:32];
-  if (a3 % v5 + v4 == 24)
+  if (row % v5 + v4 == 24)
   {
     return 0;
   }
 
   else
   {
-    return a3 % v5 + v4;
+    return row % v5 + v4;
   }
 }
 
-- (int64_t)yearForRow:(int64_t)a3
+- (int64_t)yearForRow:(int64_t)row
 {
-  v4 = [(_UIDatePickerMode *)self _dateForYearRow:a3];
-  v5 = [(_UIDatePickerMode *)self calendar];
-  v6 = [v5 components:4 fromDate:v4];
+  v4 = [(_UIDatePickerMode *)self _dateForYearRow:row];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  v6 = [calendar components:4 fromDate:v4];
 
-  v7 = [v6 year];
-  return v7;
+  year = [v6 year];
+  return year;
 }
 
-- (int64_t)eraForYearRow:(int64_t)a3
+- (int64_t)eraForYearRow:(int64_t)row
 {
-  v4 = [(_UIDatePickerMode *)self _dateForYearRow:a3];
-  v5 = [(_UIDatePickerMode *)self calendar];
-  v6 = [v5 components:2 fromDate:v4];
+  v4 = [(_UIDatePickerMode *)self _dateForYearRow:row];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  v6 = [calendar components:2 fromDate:v4];
 
   v7 = [v6 era];
   return v7;
 }
 
-- (int64_t)valueForRow:(int64_t)a3 inCalendarUnit:(unint64_t)a4
+- (int64_t)valueForRow:(int64_t)row inCalendarUnit:(unint64_t)unit
 {
-  if (a4 > 31)
+  if (unit > 31)
   {
-    if (a4 > 127)
+    if (unit > 127)
     {
-      if (a4 == 0x10000)
+      if (unit == 0x10000)
       {
-        return a3;
+        return row;
       }
 
-      if (a4 == 128)
+      if (unit == 128)
       {
 
         return [(_UIDatePickerMode *)self secondForRow:?];
@@ -1207,13 +1207,13 @@ LABEL_11:
 
     else
     {
-      if (a4 == 32)
+      if (unit == 32)
       {
 
         return [(_UIDatePickerMode *)self hourForRow:?];
       }
 
-      if (a4 == 64)
+      if (unit == 64)
       {
 
         return [(_UIDatePickerMode *)self minuteForRow:?];
@@ -1221,21 +1221,21 @@ LABEL_11:
     }
 
 LABEL_33:
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:813 description:{@"attempt to get value for row (%ld) of invalid calendar unit (%lu)", a3, a4}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:813 description:{@"attempt to get value for row (%ld) of invalid calendar unit (%lu)", row, unit}];
 
-    return a3;
+    return row;
   }
 
-  if (a4 > 7)
+  if (unit > 7)
   {
-    if (a4 == 8)
+    if (unit == 8)
     {
 
       return [(_UIDatePickerMode *)self monthForRow:?];
     }
 
-    if (a4 == 16)
+    if (unit == 16)
     {
 
       return [(_UIDatePickerMode *)self dayForRow:?];
@@ -1244,9 +1244,9 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  if (a4 != 2)
+  if (unit != 2)
   {
-    if (a4 == 4)
+    if (unit == 4)
     {
 
       return [(_UIDatePickerMode *)self yearForRow:?];
@@ -1258,41 +1258,41 @@ LABEL_33:
   return [(_UIDatePickerMode *)self eraForYearRow:?];
 }
 
-- (id)dateForRow:(int64_t)a3 inCalendarUnit:(unint64_t)a4
+- (id)dateForRow:(int64_t)row inCalendarUnit:(unint64_t)unit
 {
-  if (a4 == 4 || a4 == 2)
+  if (unit == 4 || unit == 2)
   {
-    v4 = [(_UIDatePickerMode *)self _dateForYearRow:a3];
+    v4 = [(_UIDatePickerMode *)self _dateForYearRow:row];
   }
 
   else
   {
-    v4 = [(_UIDatePickerMode *)self _dateByEnsuringValue:[(_UIDatePickerMode *)self valueForRow:a3 inCalendarUnit:a4] forCalendarUnit:a4];
+    v4 = [(_UIDatePickerMode *)self _dateByEnsuringValue:[(_UIDatePickerMode *)self valueForRow:row inCalendarUnit:unit] forCalendarUnit:unit];
   }
 
   return v4;
 }
 
-- (id)dateFormatForCalendarUnit:(unint64_t)a3
+- (id)dateFormatForCalendarUnit:(unint64_t)unit
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:831 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode dateFormatForCalendarUnit:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:831 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode dateFormatForCalendarUnit:]"}];
 
   return 0;
 }
 
-- (id)titleForRow:(int64_t)a3 inComponent:(int64_t)a4
+- (id)titleForRow:(int64_t)row inComponent:(int64_t)component
 {
-  if (a3 < 0 || [(_UIDatePickerMode *)self numberOfRowsInComponent:a4]< a3)
+  if (row < 0 || [(_UIDatePickerMode *)self numberOfRowsInComponent:component]< row)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:836 description:{@"Invalid parameter not satisfying: %@", @"row >= 0 && row <= [self numberOfRowsInComponent:component]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:836 description:{@"Invalid parameter not satisfying: %@", @"row >= 0 && row <= [self numberOfRowsInComponent:component]"}];
   }
 
-  v8 = [(_UIDatePickerMode *)self calendarUnitForComponent:a4];
+  v8 = [(_UIDatePickerMode *)self calendarUnitForComponent:component];
   if (v8 == 0x10000)
   {
-    if (a3)
+    if (row)
     {
       [(_UIDatePickerMode *)self pmString];
     }
@@ -1307,7 +1307,7 @@ LABEL_33:
   else
   {
     v9 = v8;
-    v10 = [(_UIDatePickerMode *)self dateForRow:a3 inCalendarUnit:v8];
+    v10 = [(_UIDatePickerMode *)self dateForRow:row inCalendarUnit:v8];
     v11 = [(_UIDatePickerMode *)self dateFormatterForCalendarUnit:v9];
     v12 = [v11 stringFromDate:v10];
   }
@@ -1315,28 +1315,28 @@ LABEL_33:
   return v12;
 }
 
-- (int64_t)titleAlignmentForCalendarUnit:(unint64_t)a3
+- (int64_t)titleAlignmentForCalendarUnit:(unint64_t)unit
 {
   v5 = [(_UIDatePickerMode *)self componentForCalendarUnit:16];
   v6 = v5 < [(_UIDatePickerMode *)self componentForCalendarUnit:8];
-  v7 = [(_UIDatePickerMode *)self _style];
-  v8 = [v7 titleAlignmentForCalendarUnit:a3 datePickerMode:-[_UIDatePickerMode datePickerMode](self dayIsBeforeMonth:{"datePickerMode"), v6}];
+  _style = [(_UIDatePickerMode *)self _style];
+  v8 = [_style titleAlignmentForCalendarUnit:unit datePickerMode:-[_UIDatePickerMode datePickerMode](self dayIsBeforeMonth:{"datePickerMode"), v6}];
 
   return v8;
 }
 
-- (_NSRange)rangeForCalendarUnit:(unint64_t)a3
+- (_NSRange)rangeForCalendarUnit:(unint64_t)unit
 {
-  if (a3 > 63)
+  if (unit > 63)
   {
-    if (a3 == 64 || a3 == 128)
+    if (unit == 64 || unit == 128)
     {
       location = 0;
       length = 60;
       goto LABEL_17;
     }
 
-    if (a3 == 0x10000)
+    if (unit == 0x10000)
     {
       location = 0;
       length = 2;
@@ -1349,21 +1349,21 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  if (a3 == 8)
+  if (unit == 8)
   {
     location = self->_maxMonthRange.location;
     length = self->_maxMonthRange.length;
     goto LABEL_17;
   }
 
-  if (a3 == 16)
+  if (unit == 16)
   {
     location = self->_maxDayRange.location;
     length = self->_maxDayRange.length;
     goto LABEL_17;
   }
 
-  if (a3 != 32)
+  if (unit != 32)
   {
     goto LABEL_15;
   }
@@ -1385,38 +1385,38 @@ LABEL_17:
   return result;
 }
 
-- (int64_t)rowForDate:(id)a3 dateComponents:(id)a4 component:(int64_t)a5 currentRow:(int64_t)a6
+- (int64_t)rowForDate:(id)date dateComponents:(id)components component:(int64_t)component currentRow:(int64_t)row
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [(_UIDatePickerMode *)self calendarUnitForComponent:a5];
-  v13 = [(_UIDatePickerMode *)self valueForDate:v11 dateComponents:v10 calendarUnit:v12];
+  componentsCopy = components;
+  dateCopy = date;
+  v12 = [(_UIDatePickerMode *)self calendarUnitForComponent:component];
+  v13 = [(_UIDatePickerMode *)self valueForDate:dateCopy dateComponents:componentsCopy calendarUnit:v12];
 
-  return [(_UIDatePickerMode *)self rowForValue:v13 forCalendarUnit:v12 currentRow:a6];
+  return [(_UIDatePickerMode *)self rowForValue:v13 forCalendarUnit:v12 currentRow:row];
 }
 
-- (int64_t)valueForDate:(id)a3 dateComponents:(id)a4 calendarUnit:(unint64_t)a5
+- (int64_t)valueForDate:(id)date dateComponents:(id)components calendarUnit:(unint64_t)unit
 {
-  Value = _UIDateComponentsGetValue(a4, a5);
-  if (a5 == 128 || a5 == 64)
+  Value = _UIDateComponentsGetValue(components, unit);
+  if (unit == 128 || unit == 64)
   {
-    v8 = [(_UIDatePickerMode *)self _incrementForStaggeredTimeIntervals];
-    if (v8 >= 2)
+    _incrementForStaggeredTimeIntervals = [(_UIDatePickerMode *)self _incrementForStaggeredTimeIntervals];
+    if (_incrementForStaggeredTimeIntervals >= 2)
     {
-      return Value / v8 * v8;
+      return Value / _incrementForStaggeredTimeIntervals * _incrementForStaggeredTimeIntervals;
     }
   }
 
   return Value;
 }
 
-- (int64_t)rowForValue:(int64_t)a3 forCalendarUnit:(unint64_t)a4 currentRow:(int64_t)a5
+- (int64_t)rowForValue:(int64_t)value forCalendarUnit:(unint64_t)unit currentRow:(int64_t)row
 {
-  v9 = [(_UIDatePickerMode *)self numberOfRowsForCalendarUnit:a4];
-  v10 = [(_UIDatePickerMode *)self rangeForCalendarUnit:a4];
+  v9 = [(_UIDatePickerMode *)self numberOfRowsForCalendarUnit:unit];
+  v10 = [(_UIDatePickerMode *)self rangeForCalendarUnit:unit];
   v12 = v11;
-  v13 = a3 - v10;
-  if (a4 == 128 || a4 == 64)
+  v13 = value - v10;
+  if (unit == 128 || unit == 64)
   {
     v12 = v11 / [(_UIDatePickerMode *)self _incrementForStaggeredTimeIntervals];
     v13 /= [(_UIDatePickerMode *)self _incrementForStaggeredTimeIntervals];
@@ -1437,26 +1437,26 @@ LABEL_17:
     v14 = v12;
   }
 
-  v15 = a5 / v14 * v14;
+  v15 = row / v14 * v14;
   v16 = v15 + v13;
   v17 = v15 - v14 + v13;
   v18 = v13 + v14 + v15;
-  v19 = a5 - v16;
-  if (a5 - v16 < 0)
+  v19 = row - v16;
+  if (row - v16 < 0)
   {
-    v19 = v16 - a5;
+    v19 = v16 - row;
   }
 
-  v20 = a5 - v17;
-  if (a5 - v17 < 0)
+  v20 = row - v17;
+  if (row - v17 < 0)
   {
-    v20 = v17 - a5;
+    v20 = v17 - row;
   }
 
-  v21 = a5 - v18;
-  if (a5 - v18 < 0)
+  v21 = row - v18;
+  if (row - v18 < 0)
   {
-    v21 = v18 - a5;
+    v21 = v18 - row;
   }
 
   if (v20 <= v21 && v20 <= v19)
@@ -1482,30 +1482,30 @@ LABEL_17:
   return result;
 }
 
-- (void)loadDate:(id)a3 animated:(BOOL)a4
+- (void)loadDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  dateCopy = date;
   minimumDate = self->_minimumDate;
   if (minimumDate)
   {
-    v28 = v6;
-    v8 = [(NSDate *)minimumDate earlierDate:v6];
+    v28 = dateCopy;
+    v8 = [(NSDate *)minimumDate earlierDate:dateCopy];
 
-    v6 = v28;
+    dateCopy = v28;
     if (v8 == v28)
     {
       v9 = self->_minimumDate;
 
-      v6 = v9;
+      dateCopy = v9;
     }
   }
 
   maximumDate = self->_maximumDate;
-  v29 = v6;
+  v29 = dateCopy;
   if (maximumDate)
   {
-    v11 = [(NSDate *)maximumDate laterDate:v6];
+    v11 = [(NSDate *)maximumDate laterDate:dateCopy];
 
     if (v11 == v29)
     {
@@ -1515,65 +1515,65 @@ LABEL_17:
     }
   }
 
-  v13 = [(_UIDatePickerMode *)self calendar];
-  v14 = [v13 components:-[_UIDatePickerMode displayedCalendarUnits](self fromDate:{"displayedCalendarUnits"), v29}];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  v14 = [calendar components:-[_UIDatePickerMode displayedCalendarUnits](self fromDate:{"displayedCalendarUnits"), v29}];
 
   [(_UIDatePickerMode *)self setOriginatingDate:v29];
-  v15 = [(_UIDatePickerMode *)self datePickerView];
-  v16 = [v15 _soundsEnabled];
+  datePickerView = [(_UIDatePickerMode *)self datePickerView];
+  _soundsEnabled = [datePickerView _soundsEnabled];
 
-  if (!v4)
+  if (!animatedCopy)
   {
-    v17 = [(_UIDatePickerMode *)self datePickerView];
-    [v17 setSoundsEnabled:0];
+    datePickerView2 = [(_UIDatePickerMode *)self datePickerView];
+    [datePickerView2 setSoundsEnabled:0];
   }
 
-  v18 = [(_UIDatePickerMode *)self numberOfComponents];
-  if (v18 >= 1)
+  numberOfComponents = [(_UIDatePickerMode *)self numberOfComponents];
+  if (numberOfComponents >= 1)
   {
-    v19 = v18;
+    v19 = numberOfComponents;
     for (i = 0; i != v19; ++i)
     {
-      v21 = [(_UIDatePickerMode *)self datePickerView];
-      v22 = [v21 selectedRowInComponent:i];
+      datePickerView3 = [(_UIDatePickerMode *)self datePickerView];
+      v22 = [datePickerView3 selectedRowInComponent:i];
 
       v23 = [(_UIDatePickerMode *)self rowForDate:v29 dateComponents:v14 component:i currentRow:v22];
       v24 = v23 & ~(v23 >> 63);
-      v25 = [(_UIDatePickerMode *)self datePickerView];
-      [v25 selectRow:v24 inComponent:i animated:v4];
+      datePickerView4 = [(_UIDatePickerMode *)self datePickerView];
+      [datePickerView4 selectRow:v24 inComponent:i animated:animatedCopy];
     }
   }
 
   [(_UIDatePickerMode *)self setSelectedDateComponents:0];
-  v26 = [(_UIDatePickerMode *)self datePickerView];
-  [v26 setSoundsEnabled:v16];
+  datePickerView5 = [(_UIDatePickerMode *)self datePickerView];
+  [datePickerView5 setSoundsEnabled:_soundsEnabled];
 
-  v27 = [(_UIDatePickerMode *)self datePickerView];
-  [v27 _updateLabels:v4];
+  datePickerView6 = [(_UIDatePickerMode *)self datePickerView];
+  [datePickerView6 _updateLabels:animatedCopy];
 }
 
-- (void)_updateSelectedDateComponentsWithNewValueInComponent:(int64_t)a3 usingSelectionBarValue:(BOOL)a4
+- (void)_updateSelectedDateComponentsWithNewValueInComponent:(int64_t)component usingSelectionBarValue:(BOOL)value
 {
-  v34 = a4;
+  valueCopy = value;
   p_selectedDateComponents = &self->_selectedDateComponents;
   obj = self->_selectedDateComponents;
   if (!obj)
   {
-    v7 = [(_UIDatePickerMode *)self calendar];
-    v8 = [(_UIDatePickerMode *)self originatingDate];
-    obj = [v7 components:254 fromDate:v8];
+    calendar = [(_UIDatePickerMode *)self calendar];
+    originatingDate = [(_UIDatePickerMode *)self originatingDate];
+    obj = [calendar components:254 fromDate:originatingDate];
   }
 
-  v9 = [(_UIDatePickerMode *)self numberOfComponents];
-  if (v9)
+  numberOfComponents = [(_UIDatePickerMode *)self numberOfComponents];
+  if (numberOfComponents)
   {
-    v10 = v9;
+    v10 = numberOfComponents;
     v11 = 0;
     v12 = 0x7FFFFFFFFFFFFFFFLL;
     while (1)
     {
       v13 = v12;
-      if (a3 != 0x7FFFFFFFFFFFFFFFLL && a3 != v11)
+      if (component != 0x7FFFFFFFFFFFFFFFLL && component != v11)
       {
         goto LABEL_24;
       }
@@ -1590,8 +1590,8 @@ LABEL_25:
       {
         if (v12 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v31 = [(_UIDatePickerMode *)self datePickerView];
-          v32 = [v31 selectedRowInComponent:v12];
+          datePickerView = [(_UIDatePickerMode *)self datePickerView];
+          v32 = [datePickerView selectedRowInComponent:v12];
 
           _UIDateComponentsSetValue(obj, 0x10000, v32);
         }
@@ -1601,16 +1601,16 @@ LABEL_25:
     }
 
     v16 = v15;
-    v17 = [(_UIDatePickerMode *)self datePickerView];
-    v18 = v17;
-    if (v34)
+    datePickerView2 = [(_UIDatePickerMode *)self datePickerView];
+    v18 = datePickerView2;
+    if (valueCopy)
     {
-      v19 = [v17 _selectionBarRowInComponent:v11];
+      v19 = [datePickerView2 _selectionBarRowInComponent:v11];
     }
 
     else
     {
-      v19 = [v17 selectedRowInComponent:v11];
+      v19 = [datePickerView2 selectedRowInComponent:v11];
     }
 
     v20 = v19;
@@ -1618,8 +1618,8 @@ LABEL_25:
     v21 = [(_UIDatePickerMode *)self dateForRow:v20 inCalendarUnit:v16];
     if (v16 == 536)
     {
-      v24 = [(_UIDatePickerMode *)self calendar];
-      v23 = [v24 components:30 fromDate:v21];
+      calendar2 = [(_UIDatePickerMode *)self calendar];
+      v23 = [calendar2 components:30 fromDate:v21];
 
       -[NSDateComponents setEra:](obj, "setEra:", [v23 era]);
       -[NSDateComponents setYear:](obj, "setYear:", [v23 year]);
@@ -1663,8 +1663,8 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v22 = [(_UIDatePickerMode *)self calendar];
-      v23 = [v22 components:6 fromDate:v21];
+      calendar3 = [(_UIDatePickerMode *)self calendar];
+      v23 = [calendar3 components:6 fromDate:v21];
 
       -[NSDateComponents setYear:](obj, "setYear:", [v23 year]);
       -[NSDateComponents setEra:](obj, "setEra:", [v23 era]);
@@ -1674,8 +1674,8 @@ LABEL_24:
   }
 
 LABEL_31:
-  v33 = [(_UIDatePickerMode *)self timeZone];
-  [(NSDateComponents *)obj setTimeZone:v33];
+  timeZone = [(_UIDatePickerMode *)self timeZone];
+  [(NSDateComponents *)obj setTimeZone:timeZone];
 
   if (!self->_selectedDateComponents)
   {
@@ -1697,55 +1697,55 @@ LABEL_31:
   return v4;
 }
 
-- (int64_t)_numberOfDaysInDateComponents:(id)a3
+- (int64_t)_numberOfDaysInDateComponents:(id)components
 {
-  v4 = a3;
-  [v4 setDay:1];
-  v5 = [(_UIDatePickerMode *)self calendar];
-  v6 = [v5 dateFromComponents:v4];
+  componentsCopy = components;
+  [componentsCopy setDay:1];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  v6 = [calendar dateFromComponents:componentsCopy];
 
-  [v5 rangeOfUnit:16 inUnit:8 forDate:v6];
+  [calendar rangeOfUnit:16 inUnit:8 forDate:v6];
   v8 = v7;
   if (v7 == 1)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v9 setMonth:1];
     [v9 setDay:-1];
-    v10 = [v5 dateByAddingComponents:v9 toDate:v6 options:0];
-    v11 = [v5 components:16 fromDate:v10];
+    v10 = [calendar dateByAddingComponents:v9 toDate:v6 options:0];
+    v11 = [calendar components:16 fromDate:v10];
     v8 = [v11 day];
   }
 
   return v8;
 }
 
-- (BOOL)_monthExists:(int64_t)a3 inYear:(int64_t)a4
+- (BOOL)_monthExists:(int64_t)exists inYear:(int64_t)year
 {
   v7 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  [v7 setMonth:a3];
-  [v7 setYear:a4];
+  [v7 setMonth:exists];
+  [v7 setYear:year];
   [v7 setDay:1];
-  v8 = [(_UIDatePickerMode *)self calendar];
-  v9 = [v8 dateFromComponents:v7];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  v9 = [calendar dateFromComponents:v7];
 
-  v10 = [(_UIDatePickerMode *)self calendar];
-  v11 = [v10 components:8 fromDate:v9];
+  calendar2 = [(_UIDatePickerMode *)self calendar];
+  v11 = [calendar2 components:8 fromDate:v9];
 
-  LOBYTE(a3) = [v11 month] == a3;
-  return a3;
+  LOBYTE(exists) = [v11 month] == exists;
+  return exists;
 }
 
-- (id)dateComponentsByRestrictingSelectedComponents:(id)a3 withLastManipulatedColumn:(int64_t)a4
+- (id)dateComponentsByRestrictingSelectedComponents:(id)components withLastManipulatedColumn:(int64_t)column
 {
-  v7 = a3;
+  componentsCopy = components;
   v8 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (column != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(_UIDatePickerMode *)self calendarUnitForComponent:a4];
+    v8 = [(_UIDatePickerMode *)self calendarUnitForComponent:column];
   }
 
-  v9 = [(_UIDatePickerMode *)self calendar];
-  v10 = [v9 dateFromComponents:v7];
+  calendar = [(_UIDatePickerMode *)self calendar];
+  v10 = [calendar dateFromComponents:componentsCopy];
 
   if (self->_minimumDate)
   {
@@ -1755,7 +1755,7 @@ LABEL_31:
     {
       minimumDateComponents = self->_minimumDateComponents;
 LABEL_13:
-      v14 = minimumDateComponents;
+      lastSelectedDateComponents = minimumDateComponents;
 
       goto LABEL_14;
     }
@@ -1774,8 +1774,8 @@ LABEL_13:
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL || self->_isUsingJapaneseCalendar)
   {
-    v13 = [(_UIDatePickerMode *)self calendar];
-    v14 = [v13 components:-[_UIDatePickerMode displayedCalendarUnits](self fromDate:{"displayedCalendarUnits"), v10}];
+    calendar2 = [(_UIDatePickerMode *)self calendar];
+    lastSelectedDateComponents = [calendar2 components:-[_UIDatePickerMode displayedCalendarUnits](self fromDate:{"displayedCalendarUnits"), v10}];
 
 LABEL_10:
     goto LABEL_14;
@@ -1783,7 +1783,7 @@ LABEL_10:
 
   if (v8 == 8 || v8 == 4)
   {
-    if (-[_UIDatePickerMode _monthExists:inYear:](self, "_monthExists:inYear:", [v7 month], objc_msgSend(v7, "year")))
+    if (-[_UIDatePickerMode _monthExists:inYear:](self, "_monthExists:inYear:", [componentsCopy month], objc_msgSend(componentsCopy, "year")))
     {
       v8 = 16;
     }
@@ -1796,32 +1796,32 @@ LABEL_10:
 
   if (([(_UIDatePickerMode *)self displayedCalendarUnits]& v8) == 0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:1160 description:{@"attempting to manipulate unknown unit: %lu in mode: %@", v8, self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:1160 description:{@"attempting to manipulate unknown unit: %lu in mode: %@", v8, self}];
   }
 
   if (v8 == 8)
   {
-    v20 = [v7 month];
-    v14 = [v7 copy];
+    month = [componentsCopy month];
+    lastSelectedDateComponents = [componentsCopy copy];
 
-    [(NSDateComponents *)v14 setMonth:v20 - 1];
+    [(NSDateComponents *)lastSelectedDateComponents setMonth:month - 1];
   }
 
   else
   {
     if (v8 != 16)
     {
-      v13 = [(_UIDatePickerMode *)self datePickerView];
-      v21 = [v13 data];
-      v14 = [v21 lastSelectedDateComponents];
+      calendar2 = [(_UIDatePickerMode *)self datePickerView];
+      data = [calendar2 data];
+      lastSelectedDateComponents = [data lastSelectedDateComponents];
 
       goto LABEL_10;
     }
 
-    v17 = [v7 day];
-    v18 = [(_UIDatePickerMode *)self _numberOfDaysInDateComponents:v7];
-    v14 = [v7 copy];
+    v17 = [componentsCopy day];
+    v18 = [(_UIDatePickerMode *)self _numberOfDaysInDateComponents:componentsCopy];
+    lastSelectedDateComponents = [componentsCopy copy];
 
     if (v17 <= v18)
     {
@@ -1837,23 +1837,23 @@ LABEL_10:
       v19 = v18;
     }
 
-    [(NSDateComponents *)v14 setDay:v19];
+    [(NSDateComponents *)lastSelectedDateComponents setDay:v19];
   }
 
 LABEL_14:
 
-  return v14;
+  return lastSelectedDateComponents;
 }
 
 - (void)updateDateForNewDateRange
 {
   WeakRetained = objc_loadWeakRetained(&self->_datePickerView);
-  v4 = [WeakRetained data];
-  v23 = [v4 minimumDate];
+  data = [WeakRetained data];
+  minimumDate = [data minimumDate];
 
   v5 = objc_loadWeakRetained(&self->_datePickerView);
-  v6 = [v5 data];
-  v7 = [v6 maximumDate];
+  data2 = [v5 data];
+  maximumDate = [data2 maximumDate];
 
   minimumDateComponents = self->_minimumDateComponents;
   self->_minimumDateComponents = 0;
@@ -1867,19 +1867,19 @@ LABEL_14:
   maximumDate = self->_maximumDate;
   self->_maximumDate = 0;
 
-  v12 = [(_UIDatePickerMode *)self displayedCalendarUnits];
-  if (v23)
+  displayedCalendarUnits = [(_UIDatePickerMode *)self displayedCalendarUnits];
+  if (minimumDate)
   {
-    v13 = [(_UIDatePickerMode *)self calendar];
-    v14 = [v13 components:v12 fromDate:v23];
+    calendar = [(_UIDatePickerMode *)self calendar];
+    v14 = [calendar components:displayedCalendarUnits fromDate:minimumDate];
 
-    if (v7)
+    if (maximumDate)
     {
 LABEL_3:
-      v15 = [(_UIDatePickerMode *)self calendar];
-      v16 = [v15 components:v12 fromDate:v7];
+      calendar2 = [(_UIDatePickerMode *)self calendar];
+      v16 = [calendar2 components:displayedCalendarUnits fromDate:maximumDate];
 
-      if (v14 && v16 && (_UIDatePickerCompareDateComponents(v14, v16, v12) + 1) > 1)
+      if (v14 && v16 && (_UIDatePickerCompareDateComponents(v14, v16, displayedCalendarUnits) + 1) > 1)
       {
         goto LABEL_13;
       }
@@ -1891,7 +1891,7 @@ LABEL_3:
   else
   {
     v14 = 0;
-    if (v7)
+    if (maximumDate)
     {
       goto LABEL_3;
     }
@@ -1903,16 +1903,16 @@ LABEL_9:
   objc_storeStrong(&self->_maximumDateComponents, v16);
   if (self->_minimumDateComponents)
   {
-    v17 = [(_UIDatePickerMode *)self calendar];
-    v18 = [v17 dateFromComponents:self->_minimumDateComponents];
+    calendar3 = [(_UIDatePickerMode *)self calendar];
+    v18 = [calendar3 dateFromComponents:self->_minimumDateComponents];
     v19 = self->_minimumDate;
     self->_minimumDate = v18;
   }
 
   if (self->_maximumDateComponents)
   {
-    v20 = [(_UIDatePickerMode *)self calendar];
-    v21 = [v20 dateFromComponents:self->_maximumDateComponents];
+    calendar4 = [(_UIDatePickerMode *)self calendar];
+    v21 = [calendar4 dateFromComponents:self->_maximumDateComponents];
     v22 = self->_maximumDate;
     self->_maximumDate = v21;
   }
@@ -1920,13 +1920,13 @@ LABEL_9:
 LABEL_13:
 }
 
-- (id)viewForRow:(int64_t)a3 inComponent:(int64_t)a4 reusingView:(id)a5
+- (id)viewForRow:(int64_t)row inComponent:(int64_t)component reusingView:(id)view
 {
-  v8 = a5;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = viewCopy;
   }
 
   else
@@ -1935,26 +1935,26 @@ LABEL_13:
   }
 
   v10 = v9;
-  v11 = [(_UIDatePickerMode *)self calendarUnitForComponent:a4];
+  v11 = [(_UIDatePickerMode *)self calendarUnitForComponent:component];
   [(UIDatePickerContentView *)v10 setUseDigitFont:(v11 & 0xE0) != 0];
-  v12 = [(UIDatePickerContentView *)v10 titleLabel];
+  titleLabel = [(UIDatePickerContentView *)v10 titleLabel];
   v13 = [(_UIDatePickerMode *)self fontForCalendarUnit:v11];
-  [v12 setFont:v13];
+  [titleLabel setFont:v13];
 
   [(UIDatePickerContentView *)v10 setTitleAlignment:[(_UIDatePickerMode *)self titleAlignmentForCalendarUnit:v11]];
-  v14 = [(UIDatePickerContentView *)v10 titleLabel];
-  v15 = [(_UIDatePickerMode *)self titleForRow:a3 inComponent:a4];
-  [v14 setText:v15];
+  titleLabel2 = [(UIDatePickerContentView *)v10 titleLabel];
+  v15 = [(_UIDatePickerMode *)self titleForRow:row inComponent:component];
+  [titleLabel2 setText:v15];
 
-  v16 = [(UIDatePickerContentView *)v10 titleLabel];
+  titleLabel3 = [(UIDatePickerContentView *)v10 titleLabel];
   WeakRetained = objc_loadWeakRetained(&self->_datePickerView);
-  v18 = [WeakRetained _textColor];
-  [v16 setTextColor:v18];
+  _textColor = [WeakRetained _textColor];
+  [titleLabel3 setTextColor:_textColor];
 
-  v19 = [(UIDatePickerContentView *)v10 titleLabel];
+  titleLabel4 = [(UIDatePickerContentView *)v10 titleLabel];
   v20 = objc_loadWeakRetained(&self->_datePickerView);
-  v21 = [v20 _textShadowColor];
-  [v19 setShadowColor:v21];
+  _textShadowColor = [v20 _textShadowColor];
+  [titleLabel4 setShadowColor:_textShadowColor];
 
   if (v11 != 32)
   {
@@ -1969,24 +1969,24 @@ LABEL_13:
   if (![(_UIDatePickerMode *)self isTimeIntervalMode])
   {
 LABEL_8:
-    v22 = [(UIDatePickerContentView *)v10 titleLabel];
-    [v22 setEnabled:{-[_UIDatePickerMode _shouldEnableValueForRow:column:](self, "_shouldEnableValueForRow:column:", a3, a4)}];
+    titleLabel5 = [(UIDatePickerContentView *)v10 titleLabel];
+    [titleLabel5 setEnabled:{-[_UIDatePickerMode _shouldEnableValueForRow:column:](self, "_shouldEnableValueForRow:column:", row, component)}];
   }
 
-  v23 = [(_UIDatePickerMode *)self datePickerView];
-  v24 = [v23 highlightsToday];
+  datePickerView = [(_UIDatePickerMode *)self datePickerView];
+  highlightsToday = [datePickerView highlightsToday];
 
-  if (v24 && v11 <= 0x10 && ((1 << v11) & 0x10110) != 0)
+  if (highlightsToday && v11 <= 0x10 && ((1 << v11) & 0x10110) != 0)
   {
-    v25 = [(_UIDatePickerMode *)self valueForRow:a3 inCalendarUnit:v11];
-    v26 = [(_UIDatePickerMode *)self todayDateComponents];
-    Value = _UIDateComponentsGetValue(v26, v11);
+    v25 = [(_UIDatePickerMode *)self valueForRow:row inCalendarUnit:v11];
+    todayDateComponents = [(_UIDatePickerMode *)self todayDateComponents];
+    Value = _UIDateComponentsGetValue(todayDateComponents, v11);
 
     if (v11 == 4)
     {
-      v28 = [(_UIDatePickerMode *)self eraForYearRow:a3];
-      v29 = [(_UIDatePickerMode *)self todayDateComponents];
-      v30 = [v29 era];
+      v28 = [(_UIDatePickerMode *)self eraForYearRow:row];
+      todayDateComponents2 = [(_UIDatePickerMode *)self todayDateComponents];
+      v30 = [todayDateComponents2 era];
 
       if (v25 != Value || v28 != v30)
       {
@@ -1999,9 +1999,9 @@ LABEL_8:
       goto LABEL_18;
     }
 
-    v31 = [(UIDatePickerContentView *)v10 titleLabel];
-    v32 = [(_UIDatePickerMode *)self todayTextColor];
-    [v31 setTextColor:v32];
+    titleLabel6 = [(UIDatePickerContentView *)v10 titleLabel];
+    todayTextColor = [(_UIDatePickerMode *)self todayTextColor];
+    [titleLabel6 setTextColor:todayTextColor];
   }
 
 LABEL_18:
@@ -2009,85 +2009,85 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)areValidDateComponents:(id)a3 comparingUnits:(int64_t)a4
+- (BOOL)areValidDateComponents:(id)components comparingUnits:(int64_t)units
 {
-  v6 = a3;
-  v7 = [(_UIDatePickerMode *)self calendar];
-  v8 = [v7 dateFromComponents:v6];
+  componentsCopy = components;
+  calendar = [(_UIDatePickerMode *)self calendar];
+  v8 = [calendar dateFromComponents:componentsCopy];
 
-  if ((a4 & 0x10000) != 0)
+  if ((units & 0x10000) != 0)
   {
-    v9 = a4 & 0xFFFFFFFFFFFEFFDFLL | 0x20;
+    unitsCopy = units & 0xFFFFFFFFFFFEFFDFLL | 0x20;
   }
 
   else
   {
-    v9 = a4;
+    unitsCopy = units;
   }
 
-  v10 = [(_UIDatePickerMode *)self calendar];
-  v11 = [v10 components:v9 fromDate:v8];
+  calendar2 = [(_UIDatePickerMode *)self calendar];
+  v11 = [calendar2 components:unitsCopy fromDate:v8];
 
-  v12 = _UIDatePickerCompareDateComponents(v6, v11, a4);
+  v12 = _UIDatePickerCompareDateComponents(componentsCopy, v11, units);
   v13 = v12 == 0;
   minimumDateComponents = self->_minimumDateComponents;
   if (minimumDateComponents && !v12)
   {
-    v13 = (_UIDatePickerCompareDateComponents(minimumDateComponents, v6, a4) + 1) < 2;
+    v13 = (_UIDatePickerCompareDateComponents(minimumDateComponents, componentsCopy, units) + 1) < 2;
   }
 
   maximumDateComponents = self->_maximumDateComponents;
   if (maximumDateComponents && v13)
   {
-    LOBYTE(v13) = _UIDatePickerCompareDateComponents(maximumDateComponents, v6, a4) < 2;
+    LOBYTE(v13) = _UIDatePickerCompareDateComponents(maximumDateComponents, componentsCopy, units) < 2;
   }
 
   return v13;
 }
 
-- (BOOL)_isComponentScrolling:(int64_t)a3
+- (BOOL)_isComponentScrolling:(int64_t)scrolling
 {
-  v4 = [(_UIDatePickerMode *)self datePickerView];
-  v5 = [v4 tableViewForColumn:a3];
+  datePickerView = [(_UIDatePickerMode *)self datePickerView];
+  v5 = [datePickerView tableViewForColumn:scrolling];
 
   if ([v5 isDragging])
   {
-    v6 = 1;
+    isDecelerating = 1;
   }
 
   else
   {
-    v6 = [v5 isDecelerating];
+    isDecelerating = [v5 isDecelerating];
   }
 
-  return v6;
+  return isDecelerating;
 }
 
-- (BOOL)_scrollingAnyColumnExcept:(int)a3
+- (BOOL)_scrollingAnyColumnExcept:(int)except
 {
-  v5 = [(_UIDatePickerMode *)self numberOfComponents];
-  if (v5)
+  numberOfComponents = [(_UIDatePickerMode *)self numberOfComponents];
+  if (numberOfComponents)
   {
     v6 = 0;
-    while (a3 == v6 || ![(_UIDatePickerMode *)self _isComponentScrolling:v6])
+    while (except == v6 || ![(_UIDatePickerMode *)self _isComponentScrolling:v6])
     {
       if ([(_UIDatePickerMode *)self numberOfComponents]<= ++v6)
       {
-        LOBYTE(v5) = 0;
-        return v5;
+        LOBYTE(numberOfComponents) = 0;
+        return numberOfComponents;
       }
     }
 
-    LOBYTE(v5) = 1;
+    LOBYTE(numberOfComponents) = 1;
   }
 
-  return v5;
+  return numberOfComponents;
 }
 
-- (BOOL)_shouldEnableValueForRow:(int64_t)a3 column:(int64_t)a4
+- (BOOL)_shouldEnableValueForRow:(int64_t)row column:(int64_t)column
 {
-  v7 = [(_UIDatePickerMode *)self calendarUnitForComponent:a4];
-  v8 = [(_UIDatePickerMode *)self _shouldEnableValueForRow:a3 inComponent:a4 calendarUnit:v7];
+  v7 = [(_UIDatePickerMode *)self calendarUnitForComponent:column];
+  v8 = [(_UIDatePickerMode *)self _shouldEnableValueForRow:row inComponent:column calendarUnit:v7];
   v9 = __ROR8__(v7 - 8, 3);
   if (v9 > 2)
   {
@@ -2101,7 +2101,7 @@ LABEL_13:
     }
 
 LABEL_10:
-    v11 = [(_UIDatePickerMode *)self _scrollingAnyColumnExcept:a4];
+    v11 = [(_UIDatePickerMode *)self _scrollingAnyColumnExcept:column];
     goto LABEL_11;
   }
 
@@ -2127,26 +2127,26 @@ LABEL_11:
   return v8 & 1;
 }
 
-- (BOOL)_shouldEnableValueForRow:(int64_t)a3 inComponent:(int64_t)a4 calendarUnit:(unint64_t)a5
+- (BOOL)_shouldEnableValueForRow:(int64_t)row inComponent:(int64_t)component calendarUnit:(unint64_t)unit
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:1347 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode _shouldEnableValueForRow:inComponent:calendarUnit:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerMode.m" lineNumber:1347 description:{@"%s must be overridden by subclasses", "-[_UIDatePickerMode _shouldEnableValueForRow:inComponent:calendarUnit:]"}];
 
   return 0;
 }
 
-- (void)updateEnabledStateOfViewForRow:(int64_t)a3 inComponent:(int64_t)a4
+- (void)updateEnabledStateOfViewForRow:(int64_t)row inComponent:(int64_t)component
 {
-  v7 = [(_UIDatePickerMode *)self datePickerView];
-  v9 = [v7 viewForRow:a3 forComponent:a4];
+  datePickerView = [(_UIDatePickerMode *)self datePickerView];
+  v9 = [datePickerView viewForRow:row forComponent:component];
 
   if (v9)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v9 titleLabel];
-      [v8 setEnabled:{-[_UIDatePickerMode _shouldEnableValueForRow:column:](self, "_shouldEnableValueForRow:column:", a3, a4)}];
+      titleLabel = [v9 titleLabel];
+      [titleLabel setEnabled:{-[_UIDatePickerMode _shouldEnableValueForRow:column:](self, "_shouldEnableValueForRow:column:", row, component)}];
     }
   }
 }

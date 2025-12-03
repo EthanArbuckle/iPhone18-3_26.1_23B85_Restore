@@ -1,19 +1,19 @@
 @interface HMDDurationEventModel
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 message:(id)a6;
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d message:(id)message;
 + (id)properties;
 @end
 
 @implementation HMDDurationEventModel
 
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 message:(id)a6
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d message:(id)message
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [HMDEventModel eventModelWithDictionary:v12 home:v11 eventTriggerUUID:v10 className:objc_opt_class() message:v9];
+  messageCopy = message;
+  dCopy = d;
+  homeCopy = home;
+  dictionaryCopy = dictionary;
+  v13 = [HMDEventModel eventModelWithDictionary:dictionaryCopy home:homeCopy eventTriggerUUID:dCopy className:objc_opt_class() message:messageCopy];
 
-  v14 = [v12 hmf_numberForKey:*MEMORY[0x277CD2280]];
+  v14 = [dictionaryCopy hmf_numberForKey:*MEMORY[0x277CD2280]];
 
   [v13 setDuration:v14];
 
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __35__HMDDurationEventModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_263743 != -1)
   {
     dispatch_once(&properties_onceToken_263743, block);

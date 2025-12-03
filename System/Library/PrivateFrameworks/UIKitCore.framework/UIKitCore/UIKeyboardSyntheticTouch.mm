@@ -1,37 +1,37 @@
 @interface UIKeyboardSyntheticTouch
-+ (id)syntheticTouchWithPoint:(CGPoint)a3 timestamp:(double)a4 window:(id)a5;
++ (id)syntheticTouchWithPoint:(CGPoint)point timestamp:(double)timestamp window:(id)window;
 - (CGPoint)getLocationInWindow;
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
 - (CGPoint)locationInWindow;
-- (CGPoint)previousLocationInView:(id)a3;
-- (UIKeyboardSyntheticTouch)initWithPoint:(CGPoint)a3 timestamp:(double)a4 window:(id)a5;
+- (CGPoint)previousLocationInView:(id)view;
+- (UIKeyboardSyntheticTouch)initWithPoint:(CGPoint)point timestamp:(double)timestamp window:(id)window;
 @end
 
 @implementation UIKeyboardSyntheticTouch
 
-+ (id)syntheticTouchWithPoint:(CGPoint)a3 timestamp:(double)a4 window:(id)a5
++ (id)syntheticTouchWithPoint:(CGPoint)point timestamp:(double)timestamp window:(id)window
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a5;
-  v9 = [[UIKeyboardSyntheticTouch alloc] initWithPoint:v8 timestamp:x window:y, a4];
+  y = point.y;
+  x = point.x;
+  windowCopy = window;
+  timestamp = [[UIKeyboardSyntheticTouch alloc] initWithPoint:windowCopy timestamp:x window:y, timestamp];
 
-  return v9;
+  return timestamp;
 }
 
-- (UIKeyboardSyntheticTouch)initWithPoint:(CGPoint)a3 timestamp:(double)a4 window:(id)a5
+- (UIKeyboardSyntheticTouch)initWithPoint:(CGPoint)point timestamp:(double)timestamp window:(id)window
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = a5;
+  y = point.y;
+  x = point.x;
+  windowCopy = window;
   v14.receiver = self;
   v14.super_class = UIKeyboardSyntheticTouch;
   v11 = [(UIKeyboardSyntheticTouch *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->timestamp = a4;
-    objc_storeStrong(&v11->window, a5);
+    v11->timestamp = timestamp;
+    objc_storeStrong(&v11->window, window);
     v12->locationInWindow.x = x;
     v12->locationInWindow.y = y;
     *&v12->phase = xmmword_18A64C520;
@@ -40,11 +40,11 @@
   return v12;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIKeyboardSyntheticTouch *)self window];
-  [v4 convertPoint:v5 fromView:{self->locationInWindow.x, self->locationInWindow.y}];
+  viewCopy = view;
+  window = [(UIKeyboardSyntheticTouch *)self window];
+  [viewCopy convertPoint:window fromView:{self->locationInWindow.x, self->locationInWindow.y}];
   v7 = v6;
   v9 = v8;
 
@@ -55,11 +55,11 @@
   return result;
 }
 
-- (CGPoint)previousLocationInView:(id)a3
+- (CGPoint)previousLocationInView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIKeyboardSyntheticTouch *)self window];
-  [v4 convertPoint:v5 fromView:{self->locationInWindow.x, self->locationInWindow.y}];
+  viewCopy = view;
+  window = [(UIKeyboardSyntheticTouch *)self window];
+  [viewCopy convertPoint:window fromView:{self->locationInWindow.x, self->locationInWindow.y}];
   v7 = v6;
   v9 = v8;
 

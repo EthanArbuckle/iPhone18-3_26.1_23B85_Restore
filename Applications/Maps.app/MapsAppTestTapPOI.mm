@@ -1,7 +1,7 @@
 @interface MapsAppTestTapPOI
 - ($1AB5FA073B851C12C2339EC22442E995)vkJumpPointCoordinate;
 - (BOOL)runTest;
-- (MapsAppTestTapPOI)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5;
+- (MapsAppTestTapPOI)initWithApplication:(id)application testName:(id)name options:(id)options;
 - (void)didFinishJumping;
 - (void)didShowPlaceCard;
 - (void)didShowWebModule;
@@ -27,10 +27,10 @@
   [(MapsAppTest *)self startedSubTest:@"scrollingPlacecard"];
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_placeViewController);
-  v4 = [WeakRetained view];
+  view = [WeakRetained view];
   objc_opt_class();
-  v5 = [v4 subviews];
-  v6 = [v5 mutableCopy];
+  subviews = [view subviews];
+  v6 = [subviews mutableCopy];
 
   if ([v6 count])
   {
@@ -43,13 +43,13 @@
         break;
       }
 
-      v9 = [v8 subviews];
-      v10 = [v9 count] == 0;
+      subviews2 = [v8 subviews];
+      v10 = [subviews2 count] == 0;
 
       if (!v10)
       {
-        v11 = [v8 subviews];
-        [v6 addObjectsFromArray:v11];
+        subviews3 = [v8 subviews];
+        [v6 addObjectsFromArray:subviews3];
       }
 
       if (++v7 >= [v6 count])
@@ -152,11 +152,11 @@ LABEL_7:
 
 - (void)tapPOI
 {
-  v3 = [(MapsAppTest *)self mainMKMapView];
-  [v3 _setLabelsDidLayoutCallback:0];
+  mainMKMapView = [(MapsAppTest *)self mainMKMapView];
+  [mainMKMapView _setLabelsDidLayoutCallback:0];
 
-  v16 = [(MapsAppTest *)self mainVKMapView];
-  [v16 labelMarkers];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+  [mainVKMapView labelMarkers];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -175,8 +175,8 @@ LABEL_3:
       }
 
       v8 = *(*(&v27 + 1) + 8 * v7);
-      v9 = [v8 text];
-      v10 = [v9 isEqual:self->_poiLabel];
+      text = [v8 text];
+      v10 = [text isEqual:self->_poiLabel];
 
       if (v10)
       {
@@ -195,9 +195,9 @@ LABEL_3:
       }
     }
 
-    v11 = v8;
+    mapRegion = v8;
 
-    if (!v11)
+    if (!mapRegion)
     {
       goto LABEL_13;
     }
@@ -250,8 +250,8 @@ LABEL_3:
     }
 
     objc_destroyWeak(v12);
-    v15 = [(MapsAppTest *)self mainMKMapView];
-    [v15 _selectLabelMarker:v11 animated:1];
+    mainMKMapView2 = [(MapsAppTest *)self mainMKMapView];
+    [mainMKMapView2 _selectLabelMarker:mapRegion animated:1];
 
     objc_destroyWeak(&location);
   }
@@ -262,8 +262,8 @@ LABEL_9:
 
 LABEL_13:
     poiLabel = self->_poiLabel;
-    v11 = [v16 mapRegion];
-    v14 = [NSString stringWithFormat:@"Could not find POI named %@ in map region: %@", poiLabel, v11];
+    mapRegion = [mainVKMapView mapRegion];
+    v14 = [NSString stringWithFormat:@"Could not find POI named %@ in map region: %@", poiLabel, mapRegion];
     [(MapsAppTest *)self failedTestWithReason:v14];
   }
 }
@@ -271,14 +271,14 @@ LABEL_13:
 - (void)didFinishJumping
 {
   [(MapsAppTest *)self finishedSubTest:@"loadingScene"];
-  v3 = [(MapsAppTest *)self mainMKMapView];
+  mainMKMapView = [(MapsAppTest *)self mainMKMapView];
   objc_initWeak(&location, self);
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100C5E744;
   v4[3] = &unk_101661B98;
   objc_copyWeak(&v5, &location);
-  [v3 _setLabelsDidLayoutCallback:v4];
+  [mainMKMapView _setLabelsDidLayoutCallback:v4];
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
@@ -287,21 +287,21 @@ LABEL_13:
 {
   [(MapsAppTest *)self startedTest];
   [(MapsAppTest *)self startedSubTest:@"loadingScene"];
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 _mapstest_mapType];
+  options = [(MapsAppTest *)self options];
+  _mapstest_mapType = [options _mapstest_mapType];
 
-  [(MapsAppTest *)self switchToMapType:v4];
+  [(MapsAppTest *)self switchToMapType:_mapstest_mapType];
   region = self->_region;
-  v6 = [(MapsAppTest *)self mainVKMapView];
-  v7 = v6;
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+  v7 = mainVKMapView;
   if (region)
   {
-    [v6 setMapRegion:self->_region pitch:0.0 yaw:0.0];
+    [mainVKMapView setMapRegion:self->_region pitch:0.0 yaw:0.0];
   }
 
   else
   {
-    [v6 _mapstest_jumpToCoords:1 pitch:self->_vkJumpPointCoordinate.latitude yaw:self->_vkJumpPointCoordinate.longitude altitudeIsRegionSize:{self->_vkJumpPointCoordinate.altitude, self->_pitch, self->_yaw}];
+    [mainVKMapView _mapstest_jumpToCoords:1 pitch:self->_vkJumpPointCoordinate.latitude yaw:self->_vkJumpPointCoordinate.longitude altitudeIsRegionSize:{self->_vkJumpPointCoordinate.altitude, self->_pitch, self->_yaw}];
   }
 
   objc_initWeak(&location, self);
@@ -316,47 +316,47 @@ LABEL_13:
   return 1;
 }
 
-- (MapsAppTestTapPOI)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5
+- (MapsAppTestTapPOI)initWithApplication:(id)application testName:(id)name options:(id)options
 {
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  optionsCopy = options;
   v27.receiver = self;
   v27.super_class = MapsAppTestTapPOI;
-  v11 = [(MapsAppTest *)&v27 initWithApplication:a3 testName:v9 options:v10];
+  v11 = [(MapsAppTest *)&v27 initWithApplication:application testName:nameCopy options:optionsCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_testName, a4);
-    v13 = [v10 objectForKeyedSubscript:@"poi_label"];
+    objc_storeStrong(&v11->_testName, name);
+    v13 = [optionsCopy objectForKeyedSubscript:@"poi_label"];
     poiLabel = v12->_poiLabel;
     v12->_poiLabel = v13;
 
-    v15 = [v10 objectForKeyedSubscript:@"waitForWebModule"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"waitForWebModule"];
     v12->_waitForWebModule = [v15 BOOLValue];
 
-    v16 = [v10 objectForKeyedSubscript:@"shouldTestPlaceEnrichment"];
+    v16 = [optionsCopy objectForKeyedSubscript:@"shouldTestPlaceEnrichment"];
     v12->_shouldTestPlaceEnrichment = [v16 BOOLValue];
 
-    v17 = [v10 objectForKeyedSubscript:@"shouldScrollPlacecard"];
+    v17 = [optionsCopy objectForKeyedSubscript:@"shouldScrollPlacecard"];
     v12->_shouldScrollPlacecard = [v17 BOOLValue];
 
-    v18 = [v10 objectForKeyedSubscript:@"shouldSkipPanningMap"];
+    v18 = [optionsCopy objectForKeyedSubscript:@"shouldSkipPanningMap"];
     v12->_shouldSkipPanningMap = [v18 BOOLValue];
 
-    [v10 _mapstest_pitch];
+    [optionsCopy _mapstest_pitch];
     v12->_pitch = v19;
-    [v10 _mapstest_yaw];
+    [optionsCopy _mapstest_yaw];
     v12->_yaw = v20;
-    if ([v10 _mapstest_hasMapRegion])
+    if ([optionsCopy _mapstest_hasMapRegion])
     {
-      v21 = [v10 _mapstest_mapRegion];
+      _mapstest_mapRegion = [optionsCopy _mapstest_mapRegion];
       region = v12->_region;
-      v12->_region = v21;
+      v12->_region = _mapstest_mapRegion;
     }
 
     else
     {
-      [v10 _mapstest_jumpPoint];
+      [optionsCopy _mapstest_jumpPoint];
       v12->_vkJumpPointCoordinate.latitude = v23;
       v12->_vkJumpPointCoordinate.longitude = v24;
       v12->_vkJumpPointCoordinate.altitude = v25;

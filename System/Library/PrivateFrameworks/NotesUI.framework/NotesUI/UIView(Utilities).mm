@@ -8,20 +8,20 @@
 
 - (double)ic_backingScaleFactor
 {
-  v1 = [a1 window];
-  v2 = [v1 screen];
-  v3 = v2;
-  if (v2)
+  window = [self window];
+  screen = [window screen];
+  v3 = screen;
+  if (screen)
   {
-    v4 = v2;
+    mainScreen = screen;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DCEB0] mainScreen];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
   }
 
-  v5 = v4;
+  v5 = mainScreen;
 
   [v5 scale];
   if (v6 >= 1.0)
@@ -54,7 +54,7 @@
   v10[3] = &unk_1E8469BB0;
   v11 = v7;
   v9 = v7;
-  [v8 animateWithDuration:a4 animations:v10 completion:a1];
+  [v8 animateWithDuration:a4 animations:v10 completion:self];
 }
 
 @end

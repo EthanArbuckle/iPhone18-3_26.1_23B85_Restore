@@ -1,48 +1,48 @@
 @interface SearchUITLKImage
 - (BOOL)hasMultipleRepresentations;
-- (SearchUITLKImage)initWithSearchUIImage:(id)a3;
+- (SearchUITLKImage)initWithSearchUIImage:(id)image;
 - (double)aspectRatio;
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5;
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler;
 @end
 
 @implementation SearchUITLKImage
 
 - (BOOL)hasMultipleRepresentations
 {
-  v2 = [(SearchUITLKImage *)self searchUIImage];
-  v3 = [v2 hasMultipleRepresentations];
+  searchUIImage = [(SearchUITLKImage *)self searchUIImage];
+  hasMultipleRepresentations = [searchUIImage hasMultipleRepresentations];
 
-  return v3;
+  return hasMultipleRepresentations;
 }
 
-- (SearchUITLKImage)initWithSearchUIImage:(id)a3
+- (SearchUITLKImage)initWithSearchUIImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v8.receiver = self;
   v8.super_class = SearchUITLKImage;
   v5 = [(TLKImage *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SearchUITLKImage *)v5 setSearchUIImage:v4];
+    [(SearchUITLKImage *)v5 setSearchUIImage:imageCopy];
   }
 
   return v6;
 }
 
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(SearchUITLKImage *)self searchUIImage];
+  styleCopy = style;
+  handlerCopy = handler;
+  searchUIImage = [(SearchUITLKImage *)self searchUIImage];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__SearchUITLKImage_loadImageWithScale_isDarkStyle_completionHandler___block_invoke;
   v11[3] = &unk_1E85B4478;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  [v9 loadImageWithScale:v5 isDarkStyle:v11 completionHandler:a3];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [searchUIImage loadImageWithScale:styleCopy isDarkStyle:v11 completionHandler:scale];
 }
 
 void __69__SearchUITLKImage_loadImageWithScale_isDarkStyle_completionHandler___block_invoke(uint64_t a1, void *a2, char a3)
@@ -80,8 +80,8 @@ uint64_t __69__SearchUITLKImage_loadImageWithScale_isDarkStyle_completionHandler
 
 - (double)aspectRatio
 {
-  v2 = [(SearchUITLKImage *)self searchUIImage];
-  [v2 aspectRatio];
+  searchUIImage = [(SearchUITLKImage *)self searchUIImage];
+  [searchUIImage aspectRatio];
   v4 = v3;
 
   return v4;

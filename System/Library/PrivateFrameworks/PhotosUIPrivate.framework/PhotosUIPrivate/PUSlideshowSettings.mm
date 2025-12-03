@@ -3,14 +3,14 @@
 + (id)settingsControllerModule;
 - (BOOL)transitionSettingsAreDefaults;
 - (OKProducerPreset)currentPreset;
-- (id)archiveValueForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)applyArchiveValue:(id)a3 forKey:(id)a4;
+- (id)archiveValueForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)applyArchiveValue:(id)value forKey:(id)key;
 - (void)performPostSaveActions;
 - (void)removeTransitionTimingCustomizationsFromUserDefaults;
 - (void)restoreCurrentInteractiveTransitionValuesFromUserDefaults;
 - (void)saveInteractiveSlideshowSettingsInUserDefaults;
-- (void)setCurrentPreset:(id)a3;
+- (void)setCurrentPreset:(id)preset;
 - (void)setDefaultPresetTransitionValues;
 - (void)setDefaultValues;
 @end
@@ -196,27 +196,27 @@
 - (void)saveInteractiveSlideshowSettingsInUserDefaults
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 valueForKey:@"InteractiveSlideshowTransitionSettings"];
-  v5 = [v4 mutableCopy];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults valueForKey:@"InteractiveSlideshowTransitionSettings"];
+  dictionary = [v4 mutableCopy];
 
-  if (!v5)
+  if (!dictionary)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v6 = [v5 valueForKey:@"interactiveTransitionFineTuneSettings"];
-  v7 = [v6 mutableCopy];
+  v6 = [dictionary valueForKey:@"interactiveTransitionFineTuneSettings"];
+  dictionary2 = [v6 mutableCopy];
 
-  if (!v7)
+  if (!dictionary2)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [v5 setValue:v7 forKey:@"interactiveTransitionFineTuneSettings"];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setValue:dictionary2 forKey:@"interactiveTransitionFineTuneSettings"];
   }
 
   if (self->_currentPreset && ![(PUSlideshowSettings *)self transitionSettingsAreDefaults])
   {
-    v8 = [(OKProducerPreset *)self->_currentPreset uniqueIdentifier];
+    uniqueIdentifier = [(OKProducerPreset *)self->_currentPreset uniqueIdentifier];
     v13[0] = @"interactiveTransitionFingerTrackingBoxRadiusCurrentValueAsNumber";
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_interactiveTransitionFingerTrackingBoxRadiusDefaultValue];
     v14[0] = v9;
@@ -228,11 +228,11 @@
     v14[2] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
 
-    [v7 setValue:v12 forKey:v8];
-    [v5 setValue:v7 forKey:@"interactiveTransitionFineTuneSettings"];
-    [v3 setObject:v5 forKey:@"InteractiveSlideshowTransitionSettings"];
+    [dictionary2 setValue:v12 forKey:uniqueIdentifier];
+    [dictionary setValue:dictionary2 forKey:@"interactiveTransitionFineTuneSettings"];
+    [standardUserDefaults setObject:dictionary forKey:@"InteractiveSlideshowTransitionSettings"];
 
-    [v3 synchronize];
+    [standardUserDefaults synchronize];
   }
 }
 
@@ -346,14 +346,14 @@ LABEL_24:
 {
   if (self->_currentPreset)
   {
-    v17 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v3 = [v17 valueForKey:@"InteractiveSlideshowTransitionSettings"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v3 = [standardUserDefaults valueForKey:@"InteractiveSlideshowTransitionSettings"];
     v4 = v3;
     if (v3)
     {
       v5 = [v3 valueForKey:@"interactiveTransitionFineTuneSettings"];
-      v6 = [(OKProducerPreset *)self->_currentPreset uniqueIdentifier];
-      v7 = [v5 objectForKey:v6];
+      uniqueIdentifier = [(OKProducerPreset *)self->_currentPreset uniqueIdentifier];
+      v7 = [v5 objectForKey:uniqueIdentifier];
 
       if (v7)
       {
@@ -387,15 +387,15 @@ LABEL_24:
 
 - (void)removeTransitionTimingCustomizationsFromUserDefaults
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2 = [v4 valueForKey:@"InteractiveSlideshowTransitionSettings"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2 = [standardUserDefaults valueForKey:@"InteractiveSlideshowTransitionSettings"];
   v3 = [v2 mutableCopy];
 
   if (v3)
   {
     [v3 removeObjectForKey:@"interactiveTransitionFineTuneSettings"];
-    [v4 setValue:v3 forKey:@"InteractiveSlideshowTransitionSettings"];
-    [v4 synchronize];
+    [standardUserDefaults setValue:v3 forKey:@"InteractiveSlideshowTransitionSettings"];
+    [standardUserDefaults synchronize];
   }
 }
 
@@ -408,8 +408,8 @@ LABEL_24:
       goto LABEL_6;
     }
 
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v3 valueForKey:@"InteractiveSlideshowTransitionSettings"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults valueForKey:@"InteractiveSlideshowTransitionSettings"];
     v5 = v4;
     if (v4)
     {
@@ -439,8 +439,8 @@ LABEL_6:
 
       v9 = v8;
       _Block_object_dispose(&v16, 8);
-      v10 = [v8 defaultManager];
-      v11 = [v10 presetForUniqueIdentifier:self->_currentPresetUniqueIdentifier];
+      defaultManager = [v8 defaultManager];
+      v11 = [defaultManager presetForUniqueIdentifier:self->_currentPresetUniqueIdentifier];
       currentPreset = self->_currentPreset;
       self->_currentPreset = v11;
 
@@ -453,39 +453,39 @@ LABEL_6:
   return v13;
 }
 
-- (void)setCurrentPreset:(id)a3
+- (void)setCurrentPreset:(id)preset
 {
-  v10 = a3;
-  if (self->_currentPreset != v10)
+  presetCopy = preset;
+  if (self->_currentPreset != presetCopy)
   {
-    objc_storeStrong(&self->_currentPreset, a3);
-    v5 = [(OKProducerPreset *)self->_currentPreset uniqueIdentifier];
+    objc_storeStrong(&self->_currentPreset, preset);
+    uniqueIdentifier = [(OKProducerPreset *)self->_currentPreset uniqueIdentifier];
     currentPresetUniqueIdentifier = self->_currentPresetUniqueIdentifier;
-    self->_currentPresetUniqueIdentifier = v5;
+    self->_currentPresetUniqueIdentifier = uniqueIdentifier;
 
     if (self->_currentPresetUniqueIdentifier)
     {
-      v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v8 = [v7 valueForKey:@"InteractiveSlideshowTransitionSettings"];
-      v9 = [v8 mutableCopy];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v8 = [standardUserDefaults valueForKey:@"InteractiveSlideshowTransitionSettings"];
+      dictionary = [v8 mutableCopy];
 
-      if (!v9)
+      if (!dictionary)
       {
-        v9 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
       }
 
       [(PUSlideshowSettings *)self setDefaultPresetTransitionValues];
-      [v9 setObject:self->_currentPresetUniqueIdentifier forKey:@"LastUsedPresetIdentifier"];
-      [v7 setObject:v9 forKey:@"InteractiveSlideshowTransitionSettings"];
-      [v7 synchronize];
+      [dictionary setObject:self->_currentPresetUniqueIdentifier forKey:@"LastUsedPresetIdentifier"];
+      [standardUserDefaults setObject:dictionary forKey:@"InteractiveSlideshowTransitionSettings"];
+      [standardUserDefaults synchronize];
     }
   }
 }
 
-- (id)archiveValueForKey:(id)a3
+- (id)archiveValueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"currentPreset"])
+  keyCopy = key;
+  if ([keyCopy hasPrefix:@"currentPreset"])
   {
     v5 = 0;
   }
@@ -494,21 +494,21 @@ LABEL_6:
   {
     v7.receiver = self;
     v7.super_class = PUSlideshowSettings;
-    v5 = [(PXSettings *)&v7 archiveValueForKey:v4];
+    v5 = [(PXSettings *)&v7 archiveValueForKey:keyCopy];
   }
 
   return v5;
 }
 
-- (void)applyArchiveValue:(id)a3 forKey:(id)a4
+- (void)applyArchiveValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 hasPrefix:@"currentPreset"] & 1) == 0)
+  valueCopy = value;
+  keyCopy = key;
+  if (([keyCopy hasPrefix:@"currentPreset"] & 1) == 0)
   {
     v8.receiver = self;
     v8.super_class = PUSlideshowSettings;
-    [(PXSettings *)&v8 applyArchiveValue:v6 forKey:v7];
+    [(PXSettings *)&v8 applyArchiveValue:valueCopy forKey:keyCopy];
   }
 }
 
@@ -520,11 +520,11 @@ LABEL_6:
   [(PUSlideshowSettings *)self saveInteractiveSlideshowSettingsInUserDefaults];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PUSlideshowSettings;
-  v4 = [(PTSettings *)&v6 copyWithZone:a3];
+  v4 = [(PTSettings *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 12, self->_currentPreset);
   objc_storeStrong(v4 + 25, self->_currentPresetUniqueIdentifier);
   return v4;
@@ -537,17 +537,17 @@ LABEL_6:
   [v2 restoreCurrentInteractiveTransitionValuesFromUserDefaults];
 
   v3 = +[PUSlideshowSettings sharedInstance];
-  v4 = [v3 currentPreset];
+  currentPreset = [v3 currentPreset];
 
   v5 = 0x1E69C6000uLL;
   v6 = 0x1E69C6000uLL;
-  if (v4)
+  if (currentPreset)
   {
     v7 = MEMORY[0x1E696AEC0];
     v8 = +[PUSlideshowSettings sharedInstance];
-    v9 = [v8 currentPreset];
-    v10 = [v9 localizedName];
-    v67 = [v7 stringWithFormat:@"Features (%@)", v10];
+    currentPreset2 = [v8 currentPreset];
+    localizedName = [currentPreset2 localizedName];
+    v67 = [v7 stringWithFormat:@"Features (%@)", localizedName];
 
     v65 = MEMORY[0x1E69C6638];
     v62 = [MEMORY[0x1E69C66A8] rowWithTitle:@"User Interactivity" valueKeyPath:@"allowUserInteractivity"];

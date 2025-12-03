@@ -1,41 +1,41 @@
 @interface ASCloudDevice
-+ (id)cloudDeviceWithRecord:(id)a3;
-- (ASCloudDevice)initWithBuildNumber:(id)a3 deviceType:(id)a4 identifier:(id)a5 modificationDate:(id)a6 osVersion:(id)a7;
-- (ASCloudDevice)initWithCoder:(id)a3;
-- (ASCloudDevice)initWithDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)cloudDeviceWithRecord:(id)record;
+- (ASCloudDevice)initWithBuildNumber:(id)number deviceType:(id)type identifier:(id)identifier modificationDate:(id)date osVersion:(id)version;
+- (ASCloudDevice)initWithCoder:(id)coder;
+- (ASCloudDevice)initWithDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCloudDevice
 
-+ (id)cloudDeviceWithRecord:(id)a3
++ (id)cloudDeviceWithRecord:(id)record
 {
-  v3 = a3;
-  v4 = [v3 valuesByKey];
-  v5 = [v4 objectForKeyedSubscript:@"DeviceOSBuild"];
+  recordCopy = record;
+  valuesByKey = [recordCopy valuesByKey];
+  v5 = [valuesByKey objectForKeyedSubscript:@"DeviceOSBuild"];
 
   if (v5)
   {
-    v6 = [v3 valuesByKey];
-    v7 = [v6 objectForKeyedSubscript:@"DeviceOSVersionNumber"];
+    valuesByKey2 = [recordCopy valuesByKey];
+    v7 = [valuesByKey2 objectForKeyedSubscript:@"DeviceOSVersionNumber"];
 
     if (v7)
     {
-      v8 = [v3 valuesByKey];
-      v9 = [v8 objectForKeyedSubscript:@"DeviceOSType"];
+      valuesByKey3 = [recordCopy valuesByKey];
+      v9 = [valuesByKey3 objectForKeyedSubscript:@"DeviceOSType"];
 
       if (v9)
       {
-        v10 = [v3 modificationDate];
-        if (v10)
+        modificationDate = [recordCopy modificationDate];
+        if (modificationDate)
         {
           v11 = [ASCloudDevice alloc];
-          v12 = [v3 recordID];
-          v13 = [v12 recordName];
-          v14 = [(ASCloudDevice *)v11 initWithBuildNumber:v5 deviceType:v9 identifier:v13 modificationDate:v10 osVersion:v7];
+          recordID = [recordCopy recordID];
+          recordName = [recordID recordName];
+          v14 = [(ASCloudDevice *)v11 initWithBuildNumber:v5 deviceType:v9 identifier:recordName modificationDate:modificationDate osVersion:v7];
         }
 
         else
@@ -91,81 +91,81 @@
   return v14;
 }
 
-- (ASCloudDevice)initWithBuildNumber:(id)a3 deviceType:(id)a4 identifier:(id)a5 modificationDate:(id)a6 osVersion:(id)a7
+- (ASCloudDevice)initWithBuildNumber:(id)number deviceType:(id)type identifier:(id)identifier modificationDate:(id)date osVersion:(id)version
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  numberCopy = number;
+  typeCopy = type;
+  identifierCopy = identifier;
+  dateCopy = date;
+  versionCopy = version;
   v21.receiver = self;
   v21.super_class = ASCloudDevice;
   v17 = [(ASCloudDevice *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_buildNumber, a3);
-    objc_storeStrong(&v18->_deviceType, a4);
-    objc_storeStrong(&v18->_identifier, a5);
-    objc_storeStrong(&v18->_modificationDate, a6);
-    objc_storeStrong(&v18->_osVersion, a7);
+    objc_storeStrong(&v17->_buildNumber, number);
+    objc_storeStrong(&v18->_deviceType, type);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v18->_modificationDate, date);
+    objc_storeStrong(&v18->_osVersion, version);
   }
 
   return v18;
 }
 
-- (ASCloudDevice)initWithDictionaryRepresentation:(id)a3
+- (ASCloudDevice)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"buildNumber"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"buildNumber"];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"deviceType"];
+    v6 = [representationCopy objectForKeyedSubscript:@"deviceType"];
     if (v6)
     {
-      v7 = [v4 objectForKeyedSubscript:@"identifier"];
+      v7 = [representationCopy objectForKeyedSubscript:@"identifier"];
       if (v7)
       {
-        v8 = [v4 objectForKeyedSubscript:@"modificationDate"];
+        v8 = [representationCopy objectForKeyedSubscript:@"modificationDate"];
         if (v8)
         {
-          v9 = [v4 objectForKeyedSubscript:@"osVersion"];
+          v9 = [representationCopy objectForKeyedSubscript:@"osVersion"];
           if (v9)
           {
             self = [(ASCloudDevice *)self initWithBuildNumber:v5 deviceType:v6 identifier:v7 modificationDate:v8 osVersion:v9];
-            v10 = self;
+            selfCopy = self;
           }
 
           else
           {
-            v10 = 0;
+            selfCopy = 0;
           }
         }
 
         else
         {
-          v10 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v10 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
@@ -188,65 +188,65 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(ASCloudDevice *)self identifier];
-  v6 = [v4 identifier];
+  equalCopy = equal;
+  identifier = [(ASCloudDevice *)self identifier];
+  identifier2 = [equalCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(equalCopy) = [identifier isEqualToString:identifier2];
+  return equalCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(ASCloudDevice *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(ASCloudDevice *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   buildNumber = self->_buildNumber;
-  v5 = a3;
-  [v5 encodeObject:buildNumber forKey:@"buildNumber"];
-  [v5 encodeObject:self->_deviceType forKey:@"deviceType"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_modificationDate forKey:@"modificationDate"];
-  [v5 encodeObject:self->_osVersion forKey:@"osVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:buildNumber forKey:@"buildNumber"];
+  [coderCopy encodeObject:self->_deviceType forKey:@"deviceType"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_modificationDate forKey:@"modificationDate"];
+  [coderCopy encodeObject:self->_osVersion forKey:@"osVersion"];
 }
 
-- (ASCloudDevice)initWithCoder:(id)a3
+- (ASCloudDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = ASCloudDevice;
   v5 = [(ASCloudDevice *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"buildNumber"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"buildNumber"];
     buildNumber = v5->_buildNumber;
     v5->_buildNumber = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceType"];
     deviceType = v5->_deviceType;
     v5->_deviceType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modificationDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modificationDate"];
     modificationDate = v5->_modificationDate;
     v5->_modificationDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"osVersion"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"osVersion"];
     osVersion = v5->_osVersion;
     v5->_osVersion = v14;
   }

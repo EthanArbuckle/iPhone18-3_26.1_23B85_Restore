@@ -1,20 +1,20 @@
 @interface VCSystemAudioCapture
-+ (BOOL)isValidConfiguration:(id *)a3;
-+ (id)newAudioTapWithCaptureContext:(__CFString *)a3 audioFormat:(id)a4;
-+ (id)newAudioTapWithProcessID:(int)a3 audioFormat:(id)a4 excludedPids:(id)a5;
-+ (id)newAudioTapWithSessionType:(unsigned int)a3 audioFormat:(id)a4;
++ (BOOL)isValidConfiguration:(id *)configuration;
++ (id)newAudioTapWithCaptureContext:(__CFString *)context audioFormat:(id)format;
++ (id)newAudioTapWithProcessID:(int)d audioFormat:(id)format excludedPids:(id)pids;
++ (id)newAudioTapWithSessionType:(unsigned int)type audioFormat:(id)format;
 - (BOOL)start;
-- (BOOL)startAudioHALPlugInSource:(unsigned int)a3;
+- (BOOL)startAudioHALPlugInSource:(unsigned int)source;
 - (BOOL)startAudioQueue;
 - (BOOL)stop;
-- (BOOL)stopAudioHALPlugInSource:(unsigned int)a3;
+- (BOOL)stopAudioHALPlugInSource:(unsigned int)source;
 - (BOOL)stopAudioQueue;
-- (VCSystemAudioCapture)initWithConfiguration:(id *)a3;
-- (id)newAudioTapWithAudioStreamBasicDescription:(AudioStreamBasicDescription *)a3;
+- (VCSystemAudioCapture)initWithConfiguration:(id *)configuration;
+- (id)newAudioTapWithAudioStreamBasicDescription:(AudioStreamBasicDescription *)description;
 - (int)getQueueState;
 - (uint64_t)startAudioQueue;
 - (void)dealloc;
-- (void)setQueueState:(int)a3;
+- (void)setQueueState:(int)state;
 - (void)setupAudioInjection;
 - (void)start;
 - (void)startAudioQueue;
@@ -24,7 +24,7 @@
 
 @implementation VCSystemAudioCapture
 
-- (VCSystemAudioCapture)initWithConfiguration:(id *)a3
+- (VCSystemAudioCapture)initWithConfiguration:(id *)configuration
 {
   v46 = *MEMORY[0x1E69E9840];
   if (![VCSystemAudioCapture isValidConfiguration:?])
@@ -105,8 +105,8 @@ LABEL_15:
     v6->_audioRecorderQueue = v16;
     if (v16)
     {
-      v17 = *&a3->var3.source;
-      *&v6->_tapSettings.tapType = *&a3->var3.tapType;
+      v17 = *&configuration->var3.source;
+      *&v6->_tapSettings.tapType = *&configuration->var3.tapType;
       *&v6->_tapSettings.source = v17;
       captureContext = v6->_tapSettings.captureContext;
       if (captureContext)
@@ -121,19 +121,19 @@ LABEL_15:
       }
 
       p_audioBasicDescriptionAudioQueue = &v6->_audioBasicDescriptionAudioQueue;
-      v21 = *&a3->var0.format.mBitsPerChannel;
-      v22 = *&a3->var0.format.mBytesPerPacket;
-      *&v6->_audioBasicDescriptionAudioQueue.mSampleRate = *&a3->var0.format.mSampleRate;
+      v21 = *&configuration->var0.format.mBitsPerChannel;
+      v22 = *&configuration->var0.format.mBytesPerPacket;
+      *&v6->_audioBasicDescriptionAudioQueue.mSampleRate = *&configuration->var0.format.mSampleRate;
       *&v6->_audioBasicDescriptionAudioQueue.mBytesPerPacket = v22;
       *&v6->_audioBasicDescriptionAudioQueue.mBitsPerChannel = v21;
-      v23 = *&a3->var0.format.mSampleRate;
-      v24 = *&a3->var0.format.mBytesPerPacket;
-      *&v6->_audioBasicDescriptionAudioCapture.mBitsPerChannel = *&a3->var0.format.mBitsPerChannel;
+      v23 = *&configuration->var0.format.mSampleRate;
+      v24 = *&configuration->var0.format.mBytesPerPacket;
+      *&v6->_audioBasicDescriptionAudioCapture.mBitsPerChannel = *&configuration->var0.format.mBitsPerChannel;
       *&v6->_audioBasicDescriptionAudioCapture.mSampleRate = v23;
       *&v6->_audioBasicDescriptionAudioCapture.mBytesPerPacket = v24;
-      v6->_samplesPerFrame = a3->var0.samplesPerFrame;
-      v6->_sinkContext = a3->var1;
-      v6->_sinkProc = a3->var2;
+      v6->_samplesPerFrame = configuration->var0.samplesPerFrame;
+      v6->_sinkContext = configuration->var1;
+      v6->_sinkProc = configuration->var2;
       v6->_firstAudioBufferReceived = 0;
       CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
       v26 = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCSystemAudioCapture.systemAudioQueue", 0, CustomRootQueue);
@@ -206,7 +206,7 @@ LABEL_15:
               v6->_timestamp = 0;
               v6->_hostTime = 0.0;
               v6->_startHostTime = 0.0;
-              v6->_remoteDeviceInfo = a3->var4;
+              v6->_remoteDeviceInfo = configuration->var4;
               return v6;
             }
 
@@ -298,7 +298,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v3;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -341,21 +341,21 @@ LABEL_11:
   [(VCObject *)&v14 dealloc];
 }
 
-+ (BOOL)isValidConfiguration:(id *)a3
++ (BOOL)isValidConfiguration:(id *)configuration
 {
-  if (!a3)
+  if (!configuration)
   {
     +[VCSystemAudioCapture isValidConfiguration:];
     return v9;
   }
 
-  if (!a3->var2)
+  if (!configuration->var2)
   {
     +[VCSystemAudioCapture isValidConfiguration:];
     return v8;
   }
 
-  tapType = a3->var3.tapType;
+  tapType = configuration->var3.tapType;
   if (tapType >= 3)
   {
     +[VCSystemAudioCapture isValidConfiguration:];
@@ -364,14 +364,14 @@ LABEL_11:
 
   if (tapType == 2)
   {
-    if (!a3->var3.captureContext)
+    if (!configuration->var3.captureContext)
     {
       +[VCSystemAudioCapture isValidConfiguration:];
       return v5;
     }
   }
 
-  else if (tapType == 1 && a3->var3.var0.audioProcessIdToTap)
+  else if (tapType == 1 && configuration->var3.var0.audioProcessIdToTap)
   {
     +[VCSystemAudioCapture isValidConfiguration:];
     return v6;
@@ -433,7 +433,7 @@ LABEL_11:
         WORD2(v15) = 2112;
         *(&v15 + 6) = v3;
         HIWORD(v15) = 2048;
-        v16 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -467,7 +467,7 @@ LABEL_11:
     }
 
 LABEL_21:
-    [(VCSystemAudioCapture *)self setQueueState:0, *v14, *&v14[16], v15, v16];
+    [(VCSystemAudioCapture *)self setQueueState:0, *v14, *&v14[16], v15, selfCopy];
 LABEL_22:
     v12 = 0;
     goto LABEL_23;
@@ -538,7 +538,7 @@ LABEL_11:
         v42 = 2112;
         v43 = v3;
         v44 = 2048;
-        v45 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -616,13 +616,13 @@ LABEL_50:
     Buffer = AudioQueueAllocateBuffer(v21->var0, v21->var3, var2);
     if (Buffer)
     {
-      v33 = [(VCSystemAudioCapture *)Buffer startAudioQueue];
-      if (!v33)
+      startAudioQueue = [(VCSystemAudioCapture *)Buffer startAudioQueue];
+      if (!startAudioQueue)
       {
         goto LABEL_41;
       }
 
-      if (v33 != 1)
+      if (startAudioQueue != 1)
       {
         goto LABEL_42;
       }
@@ -689,13 +689,13 @@ LABEL_22:
     }
   }
 
-  v34 = [(VCSystemAudioCapture *)v26 startAudioQueue];
-  if (v34 == 1)
+  startAudioQueue2 = [(VCSystemAudioCapture *)v26 startAudioQueue];
+  if (startAudioQueue2 == 1)
   {
     goto LABEL_22;
   }
 
-  if (v34)
+  if (startAudioQueue2)
   {
     goto LABEL_42;
   }
@@ -788,7 +788,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v3;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -804,15 +804,15 @@ LABEL_11:
     source = self->_tapSettings.source;
     if (source - 2 < 2)
     {
-      v12 = [(VCSystemAudioCapture *)self stopAudioHALPlugInSource:?];
+      stopAudioQueue = [(VCSystemAudioCapture *)self stopAudioHALPlugInSource:?];
       goto LABEL_21;
     }
 
     if (source <= 1)
     {
-      v12 = [(VCSystemAudioCapture *)self stopAudioQueue];
+      stopAudioQueue = [(VCSystemAudioCapture *)self stopAudioQueue];
 LABEL_21:
-      v13 = v12;
+      v13 = stopAudioQueue;
       goto LABEL_22;
     }
   }
@@ -885,7 +885,7 @@ LABEL_11:
         v20 = 2112;
         v21 = v3;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -939,7 +939,7 @@ LABEL_11:
   return 1;
 }
 
-- (void)setQueueState:(int)a3
+- (void)setQueueState:(int)state
 {
   v6 = *MEMORY[0x1E69E9840];
   callbackQueue = self->_callbackQueue;
@@ -948,7 +948,7 @@ LABEL_11:
   block[2] = __38__VCSystemAudioCapture_setQueueState___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_sync(callbackQueue, block);
 }
 
@@ -972,30 +972,30 @@ LABEL_11:
   return v3;
 }
 
-+ (id)newAudioTapWithProcessID:(int)a3 audioFormat:(id)a4 excludedPids:(id)a5
++ (id)newAudioTapWithProcessID:(int)d audioFormat:(id)format excludedPids:(id)pids
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a3 != -1)
+  if (d != -1)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695A888]) initProcessTapWithFormat:a4 PID:*&a3];
+    v6 = [objc_alloc(MEMORY[0x1E695A888]) initProcessTapWithFormat:format PID:*&d];
     goto LABEL_9;
   }
 
   if (VCFeatureFlagManager_UseAvconferenced())
   {
     v10[0] = [MEMORY[0x1E696AD98] numberWithInt:getpid()];
-    a5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
+    pids = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 LABEL_7:
-    v6 = [objc_alloc(MEMORY[0x1E695A888]) initSystemTapWithFormat:a4 excludePIDs:a5];
+    v6 = [objc_alloc(MEMORY[0x1E695A888]) initSystemTapWithFormat:format excludePIDs:pids];
     goto LABEL_9;
   }
 
-  if (a5 && [a5 count])
+  if (pids && [pids count])
   {
     goto LABEL_7;
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E695A888]) initSystemTapWithFormat:a4];
+  v6 = [objc_alloc(MEMORY[0x1E695A888]) initSystemTapWithFormat:format];
 LABEL_9:
   v8 = v6;
   if (!v6)
@@ -1006,15 +1006,15 @@ LABEL_9:
   return v8;
 }
 
-+ (id)newAudioTapWithSessionType:(unsigned int)a3 audioFormat:(id)a4
++ (id)newAudioTapWithSessionType:(unsigned int)type audioFormat:(id)format
 {
-  if (a3)
+  if (type)
   {
     +[VCSystemAudioCapture newAudioTapWithSessionType:audioFormat:];
     return v5;
   }
 
-  result = [objc_alloc(MEMORY[0x1E695A888]) initPreSpatialSessionTypeTapWithFormat:a4 sessionType:+[VCSystemAudioCapture audioTapSessionTypeForInternalSessionType:](VCSystemAudioCapture, "audioTapSessionTypeForInternalSessionType:", 0)];
+  result = [objc_alloc(MEMORY[0x1E695A888]) initPreSpatialSessionTypeTapWithFormat:format sessionType:+[VCSystemAudioCapture audioTapSessionTypeForInternalSessionType:](VCSystemAudioCapture, "audioTapSessionTypeForInternalSessionType:", 0)];
   if (!result)
   {
     +[VCSystemAudioCapture newAudioTapWithSessionType:audioFormat:];
@@ -1024,9 +1024,9 @@ LABEL_9:
   return result;
 }
 
-+ (id)newAudioTapWithCaptureContext:(__CFString *)a3 audioFormat:(id)a4
++ (id)newAudioTapWithCaptureContext:(__CFString *)context audioFormat:(id)format
 {
-  v4 = [objc_alloc(MEMORY[0x1E695A888]) initPreSpatialSceneIdentifierTapWithFormat:a4 sceneIdentifier:a3];
+  v4 = [objc_alloc(MEMORY[0x1E695A888]) initPreSpatialSceneIdentifierTapWithFormat:format sceneIdentifier:context];
   if (!v4)
   {
     +[VCSystemAudioCapture newAudioTapWithCaptureContext:audioFormat:];
@@ -1035,7 +1035,7 @@ LABEL_9:
   return v4;
 }
 
-- (id)newAudioTapWithAudioStreamBasicDescription:(AudioStreamBasicDescription *)a3
+- (id)newAudioTapWithAudioStreamBasicDescription:(AudioStreamBasicDescription *)description
 {
   v11[1] = *MEMORY[0x1E69E9840];
   p_tapSettings = &self->_tapSettings;
@@ -1045,7 +1045,7 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v4 = [objc_alloc(MEMORY[0x1E6958418]) initWithStreamDescription:a3];
+  v4 = [objc_alloc(MEMORY[0x1E6958418]) initWithStreamDescription:description];
   if (!v4)
   {
     [(VCSystemAudioCapture *)&v10 newAudioTapWithAudioStreamBasicDescription:v11];
@@ -1090,7 +1090,7 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)startAudioHALPlugInSource:(unsigned int)a3
+- (BOOL)startAudioHALPlugInSource:(unsigned int)source
 {
   v24 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1144,7 +1144,7 @@ LABEL_10:
       WORD2(v19) = 2112;
       *(&v19 + 6) = v5;
       HIWORD(v19) = 2048;
-      v20 = self;
+      selfCopy = self;
       v8 = " [%s] %s:%d %@(%p) ";
       v9 = v12;
       v10 = 48;
@@ -1159,13 +1159,13 @@ LABEL_12:
   *v18 = self->_audioBasicDescriptionAudioCapture.mSampleRate;
   *&v18[8] = *&self->_audioBasicDescriptionAudioCapture.mFormatID;
   v19 = *&self->_audioBasicDescriptionAudioCapture.mBytesPerFrame;
-  v20 = samplesPerFrame | 0xAAAAAAAA00000000;
+  selfCopy = samplesPerFrame | 0xAAAAAAAA00000000;
   remoteDeviceInfo = self->_remoteDeviceInfo;
-  v21 = self;
+  selfCopy2 = self;
   v22 = _VCSystemAudioCapture_handleInputBufferFromAudioHALPlugin;
   v23 = remoteDeviceInfo;
   v15 = off_1E85F1EE8;
-  if (a3 == 2)
+  if (source == 2)
   {
     v15 = off_1E85F1F10;
   }
@@ -1191,7 +1191,7 @@ LABEL_20:
   return 1;
 }
 
-- (BOOL)stopAudioHALPlugInSource:(unsigned int)a3
+- (BOOL)stopAudioHALPlugInSource:(unsigned int)source
 {
   v17 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1244,7 +1244,7 @@ LABEL_11:
         WORD2(v15) = 2112;
         *(&v15 + 6) = v4;
         HIWORD(v15) = 2048;
-        v16 = self;
+        selfCopy = self;
         v7 = " [%s] %s:%d %@(%p) ";
         v8 = v11;
         v9 = 48;

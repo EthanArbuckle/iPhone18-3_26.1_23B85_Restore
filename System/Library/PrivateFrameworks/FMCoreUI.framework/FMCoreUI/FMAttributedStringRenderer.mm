@@ -1,11 +1,11 @@
 @interface FMAttributedStringRenderer
-- (CGSize)_sizeFromTextStorage:(id)a3;
+- (CGSize)_sizeFromTextStorage:(id)storage;
 - (FMAttributedStringRenderer)init;
-- (FMAttributedStringRenderer)initWithOptions:(id)a3;
-- (id)_imageFromTextStorage:(id)a3 width:(double)a4 showExclusionPaths:(BOOL)a5;
-- (id)_textStorageForAttributedString:(id)a3 width:(double)a4 options:(id)a5;
-- (id)imageForAttributedString:(id)a3 width:(double)a4;
-- (id)imageForAttributedString:(id)a3 width:(double)a4 showExclusionPaths:(BOOL)a5 options:(id)a6;
+- (FMAttributedStringRenderer)initWithOptions:(id)options;
+- (id)_imageFromTextStorage:(id)storage width:(double)width showExclusionPaths:(BOOL)paths;
+- (id)_textStorageForAttributedString:(id)string width:(double)width options:(id)options;
+- (id)imageForAttributedString:(id)string width:(double)width;
+- (id)imageForAttributedString:(id)string width:(double)width showExclusionPaths:(BOOL)paths options:(id)options;
 @end
 
 @implementation FMAttributedStringRenderer
@@ -18,43 +18,43 @@
   return v4;
 }
 
-- (FMAttributedStringRenderer)initWithOptions:(id)a3
+- (FMAttributedStringRenderer)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = FMAttributedStringRenderer;
   v6 = [(FMAttributedStringRenderer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
   }
 
   return v7;
 }
 
-- (id)imageForAttributedString:(id)a3 width:(double)a4
+- (id)imageForAttributedString:(id)string width:(double)width
 {
-  v6 = a3;
-  v7 = [(FMAttributedStringRenderer *)self options];
-  v8 = [(FMAttributedStringRenderer *)self imageForAttributedString:v6 width:v7 options:a4];
+  stringCopy = string;
+  options = [(FMAttributedStringRenderer *)self options];
+  v8 = [(FMAttributedStringRenderer *)self imageForAttributedString:stringCopy width:options options:width];
 
   return v8;
 }
 
-- (id)imageForAttributedString:(id)a3 width:(double)a4 showExclusionPaths:(BOOL)a5 options:(id)a6
+- (id)imageForAttributedString:(id)string width:(double)width showExclusionPaths:(BOOL)paths options:(id)options
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
+  pathsCopy = paths;
+  stringCopy = string;
+  optionsCopy = options;
   dispatch_assert_queue_not_V2(MEMORY[0x277D85CD0]);
-  if (a4 <= 0.0)
+  if (width <= 0.0)
   {
     [FMAttributedStringRenderer imageForAttributedString:width:showExclusionPaths:options:];
   }
 
-  v12 = [(FMAttributedStringRenderer *)self _textStorageForAttributedString:v10 width:v11 options:a4];
-  v13 = [(FMAttributedStringRenderer *)self _imageFromTextStorage:v12 width:v7 showExclusionPaths:a4];
+  v12 = [(FMAttributedStringRenderer *)self _textStorageForAttributedString:stringCopy width:optionsCopy options:width];
+  v13 = [(FMAttributedStringRenderer *)self _imageFromTextStorage:v12 width:pathsCopy showExclusionPaths:width];
   if (!v13)
   {
     [FMAttributedStringRenderer imageForAttributedString:width:showExclusionPaths:options:];
@@ -63,44 +63,44 @@
   return v13;
 }
 
-- (id)_textStorageForAttributedString:(id)a3 width:(double)a4 options:(id)a5
+- (id)_textStorageForAttributedString:(id)string width:(double)width options:(id)options
 {
   v7 = MEMORY[0x277D74238];
-  v8 = a5;
-  v9 = a3;
+  optionsCopy = options;
+  stringCopy = string;
   v10 = objc_alloc_init(v7);
-  v11 = [objc_alloc(MEMORY[0x277D74278]) initWithSize:{a4, INFINITY}];
-  v12 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:v9];
+  v11 = [objc_alloc(MEMORY[0x277D74278]) initWithSize:{width, INFINITY}];
+  v12 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:stringCopy];
   v13 = objc_alloc_init(MEMORY[0x277D74240]);
-  [v8 hyphenationFactor];
+  [optionsCopy hyphenationFactor];
   *&v14 = v14;
   [v13 setHyphenationFactor:v14];
   v15 = *MEMORY[0x277D74118];
-  v16 = [v9 string];
+  string = [stringCopy string];
 
-  [v12 addAttribute:v15 value:v13 range:{0, objc_msgSend(v16, "length")}];
+  [v12 addAttribute:v15 value:v13 range:{0, objc_msgSend(string, "length")}];
   [v10 setUsesDefaultHyphenation:0];
-  v17 = [v8 exclusionPaths];
-  [v11 setExclusionPaths:v17];
+  exclusionPaths = [optionsCopy exclusionPaths];
+  [v11 setExclusionPaths:exclusionPaths];
 
-  [v11 setLineBreakMode:{objc_msgSend(v8, "lineBreakMode")}];
-  [v8 lineFragmentPadding];
+  [v11 setLineBreakMode:{objc_msgSend(optionsCopy, "lineBreakMode")}];
+  [optionsCopy lineFragmentPadding];
   [v11 setLineFragmentPadding:?];
-  v18 = [v8 maximumNumberOfLines];
+  maximumNumberOfLines = [optionsCopy maximumNumberOfLines];
 
-  [v11 setMaximumNumberOfLines:v18];
+  [v11 setMaximumNumberOfLines:maximumNumberOfLines];
   [v10 addTextContainer:v11];
   v19 = [objc_alloc(MEMORY[0x277D742D8]) initWithAttributedString:v12];
   [v19 addLayoutManager:v10];
-  v20 = [v10 textStorage];
+  textStorage = [v10 textStorage];
 
-  if (!v20)
+  if (!textStorage)
   {
     [FMAttributedStringRenderer _textStorageForAttributedString:width:options:];
   }
 
-  v21 = [v10 textContainers];
-  v22 = [v21 count];
+  textContainers = [v10 textContainers];
+  v22 = [textContainers count];
 
   if (v22 != 1)
   {
@@ -110,17 +110,17 @@
   return v19;
 }
 
-- (CGSize)_sizeFromTextStorage:(id)a3
+- (CGSize)_sizeFromTextStorage:(id)storage
 {
-  v3 = a3;
+  storageCopy = storage;
   dispatch_assert_queue_not_V2(MEMORY[0x277D85CD0]);
-  v4 = [v3 layoutManagers];
+  layoutManagers = [storageCopy layoutManagers];
 
-  v5 = [v4 firstObject];
+  firstObject = [layoutManagers firstObject];
 
-  v6 = [v5 textContainers];
-  v7 = [v6 firstObject];
-  [v5 usedRectForTextContainer:v7];
+  textContainers = [firstObject textContainers];
+  firstObject2 = [textContainers firstObject];
+  [firstObject usedRectForTextContainer:firstObject2];
   v9 = v8;
   v11 = v10;
 
@@ -131,30 +131,30 @@
   return result;
 }
 
-- (id)_imageFromTextStorage:(id)a3 width:(double)a4 showExclusionPaths:(BOOL)a5
+- (id)_imageFromTextStorage:(id)storage width:(double)width showExclusionPaths:(BOOL)paths
 {
-  v8 = a3;
-  v9 = [v8 layoutManagers];
-  v10 = [v9 firstObject];
+  storageCopy = storage;
+  layoutManagers = [storageCopy layoutManagers];
+  firstObject = [layoutManagers firstObject];
 
-  [(FMAttributedStringRenderer *)self _sizeFromTextStorage:v8];
+  [(FMAttributedStringRenderer *)self _sizeFromTextStorage:storageCopy];
   v12 = v11;
 
-  v13 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:{a4, v12}];
-  v14 = [v10 textContainers];
-  v15 = [v14 firstObject];
-  v16 = [v10 glyphRangeForTextContainer:v15];
+  v13 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:{width, v12}];
+  textContainers = [firstObject textContainers];
+  firstObject2 = [textContainers firstObject];
+  v16 = [firstObject glyphRangeForTextContainer:firstObject2];
   v18 = v17;
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __77__FMAttributedStringRenderer__imageFromTextStorage_width_showExclusionPaths___block_invoke;
   v22[3] = &unk_278FDBB40;
-  v23 = v10;
+  v23 = firstObject;
   v24 = v16;
   v25 = v18;
-  v26 = a5;
-  v19 = v10;
+  pathsCopy = paths;
+  v19 = firstObject;
   v20 = [v13 imageWithActions:v22];
 
   return v20;

@@ -6,8 +6,8 @@
 - (BOOL)isAvailable;
 - (BOOL)isConstrained;
 - (BOOL)isExpensive;
-- (EFNetworkStatus)initWithInterfaceType:(int)a3;
-- (EFNetworkStatus)initWithPathMonitor:(id)a3;
+- (EFNetworkStatus)initWithInterfaceType:(int)type;
+- (EFNetworkStatus)initWithPathMonitor:(id)monitor;
 @end
 
 @implementation EFNetworkStatus
@@ -96,17 +96,17 @@ void __24__EFNetworkStatus_wired__block_invoke()
   wired_sNetworkStatus = v0;
 }
 
-- (EFNetworkStatus)initWithInterfaceType:(int)a3
+- (EFNetworkStatus)initWithInterfaceType:(int)type
 {
-  v4 = nw_path_monitor_create_with_type(a3);
+  v4 = nw_path_monitor_create_with_type(type);
   v5 = [(EFNetworkStatus *)self initWithPathMonitor:v4];
 
   return v5;
 }
 
-- (EFNetworkStatus)initWithPathMonitor:(id)a3
+- (EFNetworkStatus)initWithPathMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v25.receiver = self;
   v25.super_class = EFNetworkStatus;
   v6 = [(EFNetworkStatus *)&v25 init];
@@ -114,7 +114,7 @@ void __24__EFNetworkStatus_wired__block_invoke()
   if (v6)
   {
     v6->_currentPathLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_pathMonitor, a3);
+    objc_storeStrong(&v6->_pathMonitor, monitor);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_BACKGROUND, 0);
     v10 = dispatch_queue_create("com.apple.mail.EFNetworkStatus.monitorQueue", v9);
@@ -131,8 +131,8 @@ void __24__EFNetworkStatus_wired__block_invoke()
     v20 = &unk_1E8248E00;
     objc_copyWeak(&v21, &location);
     objc_copyWeak(&v22, &from);
-    nw_path_monitor_set_update_handler(v5, &v17);
-    nw_path_monitor_start(v5);
+    nw_path_monitor_set_update_handler(monitorCopy, &v17);
+    nw_path_monitor_start(monitorCopy);
     v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:{1.0, v17, v18, v19, v20}];
     v14 = [v12 lockWhenCondition:1 beforeDate:v13];
 

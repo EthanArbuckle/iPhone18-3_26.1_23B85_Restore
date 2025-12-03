@@ -1,7 +1,7 @@
 @interface NTKPhotosContentEditOption
-+ (id)_localizedNameForActionForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameForActionForValue:(unint64_t)value forDevice:(id)device;
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 @end
 
@@ -52,43 +52,43 @@ void *__54__NTKPhotosContentEditOption__orderedValuesForDevice___block_invoke_2(
   }
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_278785E48[a3];
+    return off_278785E48[value];
   }
 }
 
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_278785E60[a3];
+    return off_278785E60[value];
   }
 }
 
-+ (id)_localizedNameForActionForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_localizedNameForActionForValue:(unint64_t)value forDevice:(id)device
 {
-  v5 = a4;
-  if (a3 == 1)
+  deviceCopy = device;
+  if (value == 1)
   {
     v6 = @"EDIT_OPTION_LABEL_PHOTOS_CUSTOM_ACTION_COMPANION";
     v7 = @"Choose Photos…";
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!value)
   {
     v6 = @"EDIT_OPTION_LABEL_PHOTOS_SYNCED_ALBUM_ACTION_COMPANION";
     v7 = @"Choose Album…";

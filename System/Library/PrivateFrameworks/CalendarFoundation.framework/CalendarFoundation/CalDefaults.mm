@@ -7,7 +7,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = MEMORY[0x1E695DF20];
     v3 = [MEMORY[0x1E696AD98] numberWithBool:1];
@@ -18,8 +18,8 @@
     v8 = [MEMORY[0x1E696AD98] numberWithBool:0];
     v10 = [v2 dictionaryWithObjectsAndKeys:{v3, @"display birthdays calendar", v4, @"add holiday calendar", v5, @"Add default alarms", v6, @"Disable invitation alerts", v7, @"Disable shared calendar alerts", v8, @"CALPrefCrashImmediatelyUponException", 0}];
 
-    v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v9 registerDefaults:v10];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults registerDefaults:v10];
   }
 }
 

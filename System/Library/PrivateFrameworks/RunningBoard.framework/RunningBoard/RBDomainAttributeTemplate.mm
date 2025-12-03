@@ -4,9 +4,9 @@
 - (uint64_t)domain;
 - (uint64_t)endowmentNamespace;
 - (uint64_t)name;
-- (void)setDomain:(void *)a1;
-- (void)setEndowmentNamespace:(void *)a1;
-- (void)setName:(void *)a1;
+- (void)setDomain:(void *)domain;
+- (void)setEndowmentNamespace:(void *)namespace;
+- (void)setName:(void *)name;
 @end
 
 @implementation RBDomainAttributeTemplate
@@ -16,15 +16,15 @@
   attributeGroups = self->_attributeGroups;
   if (attributeGroups)
   {
-    v3 = attributeGroups;
+    array = attributeGroups;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return v3;
+  return array;
 }
 
 - (uint64_t)endowmentNamespace
@@ -207,11 +207,11 @@
   return result;
 }
 
-- (void)setDomain:(void *)a1
+- (void)setDomain:(void *)domain
 {
-  if (a1)
+  if (domain)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 16);
+    objc_setProperty_nonatomic_copy(domain, newValue, newValue, 16);
   }
 }
 
@@ -225,19 +225,19 @@
   return result;
 }
 
-- (void)setName:(void *)a1
+- (void)setName:(void *)name
 {
-  if (a1)
+  if (name)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 24);
+    objc_setProperty_nonatomic_copy(name, newValue, newValue, 24);
   }
 }
 
-- (void)setEndowmentNamespace:(void *)a1
+- (void)setEndowmentNamespace:(void *)namespace
 {
-  if (a1)
+  if (namespace)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 72);
+    objc_setProperty_nonatomic_copy(namespace, newValue, newValue, 72);
   }
 }
 

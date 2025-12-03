@@ -1,19 +1,19 @@
 @interface GDXPCSysdiagnoseService
 - (GDXPCSysdiagnoseService)init;
-- (id)diagnosticsWithError:(id *)a3;
-- (id)entityRelevanceRankingSupplementalDiagnosticsWithError:(id *)a3;
-- (id)entityResolutionSupplementalDiagnosticsWithError:(id *)a3;
-- (id)entityTaggingSupplementalDiagnosticsWithError:(id *)a3;
-- (id)eventViewDiagnosticsWithError:(id *)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)viewsSupplementalDiagnosticsWithError:(id *)a3;
+- (id)diagnosticsWithError:(id *)error;
+- (id)entityRelevanceRankingSupplementalDiagnosticsWithError:(id *)error;
+- (id)entityResolutionSupplementalDiagnosticsWithError:(id *)error;
+- (id)entityTaggingSupplementalDiagnosticsWithError:(id *)error;
+- (id)eventViewDiagnosticsWithError:(id *)error;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)viewsSupplementalDiagnosticsWithError:(id *)error;
 - (void)dealloc;
 - (void)locked_establishConnection;
 @end
 
 @implementation GDXPCSysdiagnoseService
 
-- (id)eventViewDiagnosticsWithError:(id *)a3
+- (id)eventViewDiagnosticsWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -50,9 +50,9 @@
   [v6 eventViewDiagnosticsWithCompletion:v10];
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v7 = v20[5];
   }
 
@@ -64,7 +64,7 @@
   return v8;
 }
 
-- (id)viewsSupplementalDiagnosticsWithError:(id *)a3
+- (id)viewsSupplementalDiagnosticsWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -101,9 +101,9 @@
   [v6 viewsSupplementalDiagnosticsWithCompletion:v10];
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v7 = v20[5];
   }
 
@@ -115,7 +115,7 @@
   return v8;
 }
 
-- (id)entityResolutionSupplementalDiagnosticsWithError:(id *)a3
+- (id)entityResolutionSupplementalDiagnosticsWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -152,9 +152,9 @@
   [v6 entityResolutionSupplementalDiagnosticsWithCompletion:v10];
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v7 = v20[5];
   }
 
@@ -166,7 +166,7 @@
   return v8;
 }
 
-- (id)entityRelevanceRankingSupplementalDiagnosticsWithError:(id *)a3
+- (id)entityRelevanceRankingSupplementalDiagnosticsWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -203,9 +203,9 @@
   [v6 entityRelevanceRankingSupplementalDiagnosticsWithCompletion:v10];
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v7 = v20[5];
   }
 
@@ -217,7 +217,7 @@
   return v8;
 }
 
-- (id)entityTaggingSupplementalDiagnosticsWithError:(id *)a3
+- (id)entityTaggingSupplementalDiagnosticsWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -254,9 +254,9 @@
   [v6 entityTaggingSupplementalDiagnosticsWithCompletion:v10];
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v7 = v20[5];
   }
 
@@ -268,7 +268,7 @@
   return v8;
 }
 
-- (id)diagnosticsWithError:(id *)a3
+- (id)diagnosticsWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -305,9 +305,9 @@
   [v6 diagnosticsWithCompletion:v10];
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v7 = v20[5];
   }
 
@@ -319,14 +319,14 @@
   return v8;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GDXPCSysdiagnoseService *)v5 locked_establishConnection];
-  v6 = [(NSXPCConnection *)v5->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
-  objc_sync_exit(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GDXPCSysdiagnoseService *)selfCopy locked_establishConnection];
+  v6 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

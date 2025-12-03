@@ -1,18 +1,18 @@
 @interface SSDialogButton
-+ (SSDialogButton)buttonWithTitle:(id)a3;
++ (SSDialogButton)buttonWithTitle:(id)title;
 - (NSString)buttonAction;
 - (NSString)buttonTitle;
-- (SSDialogButton)initWithTitle:(id)a3 actionDictionary:(id)a4;
+- (SSDialogButton)initWithTitle:(id)title actionDictionary:(id)dictionary;
 - (id)actionParameter;
-- (id)valueForActionProperty:(id)a3;
+- (id)valueForActionProperty:(id)property;
 - (void)dealloc;
 @end
 
 @implementation SSDialogButton
 
-- (SSDialogButton)initWithTitle:(id)a3 actionDictionary:(id)a4
+- (SSDialogButton)initWithTitle:(id)title actionDictionary:(id)dictionary
 {
-  if (![a3 length])
+  if (![title length])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Button must have a title"];
   }
@@ -22,8 +22,8 @@
   v7 = [(SSDialogButton *)&v9 init];
   if (v7)
   {
-    v7->_actionDictionary = [a4 copy];
-    v7->_title = [a3 copy];
+    v7->_actionDictionary = [dictionary copy];
+    v7->_title = [title copy];
   }
 
   return v7;
@@ -43,9 +43,9 @@
   return v2;
 }
 
-+ (SSDialogButton)buttonWithTitle:(id)a3
++ (SSDialogButton)buttonWithTitle:(id)title
 {
-  v3 = [[a1 alloc] initWithTitle:a3 actionDictionary:0];
+  v3 = [[self alloc] initWithTitle:title actionDictionary:0];
 
   return v3;
 }
@@ -71,9 +71,9 @@
   }
 }
 
-- (id)valueForActionProperty:(id)a3
+- (id)valueForActionProperty:(id)property
 {
-  v3 = [(NSDictionary *)self->_actionDictionary objectForKey:a3];
+  v3 = [(NSDictionary *)self->_actionDictionary objectForKey:property];
 
   return v3;
 }

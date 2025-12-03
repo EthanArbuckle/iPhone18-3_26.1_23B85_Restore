@@ -2,47 +2,47 @@
 - (NSArray)supplementaryIdentifiers;
 - (SFCapsulePageContainer)container;
 - (SFCapsulePageLayout)baseLayout;
-- (SFCapsulePageLayoutBottomToolbarFocused)initWithContainer:(id)a3;
-- (SFCapsulePageLayoutBottomToolbarFocused)initWithContainer:(id)a3 baseLayout:(id)a4;
-- (double)_horizontalPositionForSupplementaryViewWithFrame:(CGRect)a3 isLeadingEdge:(BOOL)a4;
-- (double)keyboardHeightBelowCapsuleForPage:(id)a3;
+- (SFCapsulePageLayoutBottomToolbarFocused)initWithContainer:(id)container;
+- (SFCapsulePageLayoutBottomToolbarFocused)initWithContainer:(id)container baseLayout:(id)layout;
+- (double)_horizontalPositionForSupplementaryViewWithFrame:(CGRect)frame isLeadingEdge:(BOOL)edge;
+- (double)keyboardHeightBelowCapsuleForPage:(id)page;
 - (double)pageWidth;
-- (id)bottomBackdropInfoForPage:(id)a3;
-- (id)capsuleInfoForPage:(id)a3;
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4;
-- (id)topBackdropInfoForPage:(id)a3;
+- (id)bottomBackdropInfoForPage:(id)page;
+- (id)capsuleInfoForPage:(id)page;
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page;
+- (id)topBackdropInfoForPage:(id)page;
 @end
 
 @implementation SFCapsulePageLayoutBottomToolbarFocused
 
-- (SFCapsulePageLayoutBottomToolbarFocused)initWithContainer:(id)a3
+- (SFCapsulePageLayoutBottomToolbarFocused)initWithContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = SFCapsulePageLayoutBottomToolbarFocused;
   v5 = [(SFCapsulePageLayoutBottomToolbarFocused *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_container, v4);
+    objc_storeWeak(&v5->_container, containerCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (SFCapsulePageLayoutBottomToolbarFocused)initWithContainer:(id)a3 baseLayout:(id)a4
+- (SFCapsulePageLayoutBottomToolbarFocused)initWithContainer:(id)container baseLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  layoutCopy = layout;
   v12.receiver = self;
   v12.super_class = SFCapsulePageLayoutBottomToolbarFocused;
   v8 = [(SFCapsulePageLayoutBottomToolbarFocused *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_baseLayout, v7);
-    objc_storeWeak(&v9->_container, v6);
+    objc_storeWeak(&v8->_baseLayout, layoutCopy);
+    objc_storeWeak(&v9->_container, containerCopy);
     v10 = v9;
   }
 
@@ -58,12 +58,12 @@
   return Width;
 }
 
-- (id)capsuleInfoForPage:(id)a3
+- (id)capsuleInfoForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_baseLayout);
   v6 = objc_loadWeakRetained(&self->_container);
-  if ([v4 isSelected])
+  if ([pageCopy isSelected])
   {
     [v6 bounds];
     v8 = v7;
@@ -72,7 +72,7 @@
     v14 = v13;
     v15 = 8.0;
     v16 = 8.0;
-    v17 = [WeakRetained capsuleInfoForPage:v4];
+    v17 = [WeakRetained capsuleInfoForPage:pageCopy];
     [v17 frame];
     Height = CGRectGetHeight(v60);
     v61.origin.x = v8;
@@ -121,7 +121,7 @@
     v31 = v30;
     v33 = v32;
     v35 = v34;
-    [(SFCapsulePageLayoutBottomToolbarFocused *)self keyboardHeightBelowCapsuleForPage:v4];
+    [(SFCapsulePageLayoutBottomToolbarFocused *)self keyboardHeightBelowCapsuleForPage:pageCopy];
     v42 = v36;
     v64.origin.x = v28;
     v64.origin.y = v31;
@@ -184,7 +184,7 @@
     v49[3] = &unk_1E721E8F0;
     v52 = &v53;
     v50 = WeakRetained;
-    v51 = v4;
+    v51 = pageCopy;
     [v6 performIgnoringKeyboard:v49];
     v26 = v54[5];
 
@@ -202,14 +202,14 @@ void __62__SFCapsulePageLayoutBottomToolbarFocused_capsuleInfoForPage___block_in
   *(v3 + 40) = v2;
 }
 
-- (double)keyboardHeightBelowCapsuleForPage:(id)a3
+- (double)keyboardHeightBelowCapsuleForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   [WeakRetained keyboardHeight];
   v7 = v6;
   v8 = objc_loadWeakRetained(&self->_baseLayout);
-  v9 = [v8 capsuleInfoForPage:v4];
+  v9 = [v8 capsuleInfoForPage:pageCopy];
 
   [v9 frame];
   v10 = fmax(v7 - CGRectGetHeight(v12), 0.0);
@@ -220,21 +220,21 @@ void __62__SFCapsulePageLayoutBottomToolbarFocused_capsuleInfoForPage___block_in
 - (NSArray)supplementaryIdentifiers
 {
   WeakRetained = objc_loadWeakRetained(&self->_baseLayout);
-  v3 = [WeakRetained supplementaryIdentifiers];
+  supplementaryIdentifiers = [WeakRetained supplementaryIdentifiers];
 
-  return v3;
+  return supplementaryIdentifiers;
 }
 
-- (id)bottomBackdropInfoForPage:(id)a3
+- (id)bottomBackdropInfoForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   [WeakRetained bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(SFCapsulePageLayoutBottomToolbarFocused *)self capsuleInfoForPage:v4];
+  v14 = [(SFCapsulePageLayoutBottomToolbarFocused *)self capsuleInfoForPage:pageCopy];
 
   [v14 frame];
   v16 = v15;
@@ -262,12 +262,12 @@ void __62__SFCapsulePageLayoutBottomToolbarFocused_capsuleInfoForPage___block_in
   return v24;
 }
 
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_baseLayout);
-  v9 = [WeakRetained infoForSupplementaryIdentifier:v6 page:v7];
+  v9 = [WeakRetained infoForSupplementaryIdentifier:identifierCopy page:pageCopy];
 
   [v9 frame];
   v11 = v10;
@@ -278,13 +278,13 @@ void __62__SFCapsulePageLayoutBottomToolbarFocused_capsuleInfoForPage___block_in
   {
     [v9 setAlpha:0.0];
     v18 = v11;
-    if ([v6 isEqualToString:@"SFCapsuleSupplementaryViewLeadingButton"])
+    if ([identifierCopy isEqualToString:@"SFCapsuleSupplementaryViewLeadingButton"])
     {
       [(SFCapsulePageLayoutBottomToolbarFocused *)self _horizontalPositionForSupplementaryViewWithFrame:1 isLeadingEdge:v11, MaxY, v15, v17];
       v18 = v19;
     }
 
-    if ([v6 isEqualToString:@"SFCapsuleSupplementaryViewTrailingButton"])
+    if ([identifierCopy isEqualToString:@"SFCapsuleSupplementaryViewTrailingButton"])
     {
       [(SFCapsulePageLayoutBottomToolbarFocused *)self _horizontalPositionForSupplementaryViewWithFrame:0 isLeadingEdge:v11, MaxY, v15, v17];
       v11 = v20;
@@ -308,24 +308,24 @@ void __62__SFCapsulePageLayoutBottomToolbarFocused_capsuleInfoForPage___block_in
   return v9;
 }
 
-- (id)topBackdropInfoForPage:(id)a3
+- (id)topBackdropInfoForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_baseLayout);
-  v6 = [WeakRetained topBackdropInfoForPage:v4];
+  v6 = [WeakRetained topBackdropInfoForPage:pageCopy];
 
   return v6;
 }
 
-- (double)_horizontalPositionForSupplementaryViewWithFrame:(CGRect)a3 isLeadingEdge:(BOOL)a4
+- (double)_horizontalPositionForSupplementaryViewWithFrame:(CGRect)frame isLeadingEdge:(BOOL)edge
 {
-  v4 = a4;
-  width = a3.size.width;
+  edgeCopy = edge;
+  width = frame.size.width;
   WeakRetained = objc_loadWeakRetained(&self->_container);
-  v7 = [WeakRetained traitCollection];
-  v8 = [v7 layoutDirection];
+  traitCollection = [WeakRetained traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if ((v8 != 0) == v4)
+  if ((layoutDirection != 0) == edgeCopy)
   {
     [WeakRetained bounds];
     v9 = CGRectGetWidth(v11) - 8.0 - width;

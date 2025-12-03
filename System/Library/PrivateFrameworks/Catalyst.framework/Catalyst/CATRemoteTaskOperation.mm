@@ -1,50 +1,50 @@
 @interface CATRemoteTaskOperation
-+ (id)invalidRemoteTaskWithRequest:(id)a3 error:(id)a4;
-- (CATRemoteTaskOperation)initWithRequest:(id)a3 client:(id)a4;
-- (CATRemoteTaskOperation)initWithRequest:(id)a3 clientError:(id)a4;
++ (id)invalidRemoteTaskWithRequest:(id)request error:(id)error;
+- (CATRemoteTaskOperation)initWithRequest:(id)request client:(id)client;
+- (CATRemoteTaskOperation)initWithRequest:(id)request clientError:(id)error;
 - (void)cancel;
 - (void)cancelOperationIfNeeded;
-- (void)clientFailedWithError:(id)a3;
+- (void)clientFailedWithError:(id)error;
 - (void)fetchProgress;
 - (void)main;
 - (void)operationWillFinish;
-- (void)postNotificationWithName:(id)a3 userInfo:(id)a4;
-- (void)processMessage:(id)a3;
-- (void)processNotificationWithName:(id)a3 userInfo:(id)a4;
-- (void)updateCompletedUnitCount:(int64_t)a3 andTotalUnitCount:(int64_t)a4;
-- (void)updateProgressWithRemoteProgress:(id)a3;
+- (void)postNotificationWithName:(id)name userInfo:(id)info;
+- (void)processMessage:(id)message;
+- (void)processNotificationWithName:(id)name userInfo:(id)info;
+- (void)updateCompletedUnitCount:(int64_t)count andTotalUnitCount:(int64_t)unitCount;
+- (void)updateProgressWithRemoteProgress:(id)progress;
 @end
 
 @implementation CATRemoteTaskOperation
 
-+ (id)invalidRemoteTaskWithRequest:(id)a3 error:(id)a4
++ (id)invalidRemoteTaskWithRequest:(id)request error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   v7 = [CATRemoteTaskOperation alloc];
   v8 = v7;
-  if (v6)
+  if (errorCopy)
   {
-    v9 = [(CATRemoteTaskOperation *)v7 initWithRequest:v5 clientError:v6];
+    v9 = [(CATRemoteTaskOperation *)v7 initWithRequest:requestCopy clientError:errorCopy];
   }
 
   else
   {
     v10 = CATErrorWithCodeAndUserInfo(501, 0);
-    v9 = [(CATRemoteTaskOperation *)v8 initWithRequest:v5 clientError:v10];
+    v9 = [(CATRemoteTaskOperation *)v8 initWithRequest:requestCopy clientError:v10];
   }
 
   return v9;
 }
 
-- (CATRemoteTaskOperation)initWithRequest:(id)a3 client:(id)a4
+- (CATRemoteTaskOperation)initWithRequest:(id)request client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  requestCopy = request;
+  clientCopy = client;
+  v8 = clientCopy;
+  if (requestCopy)
   {
-    if (v7)
+    if (clientCopy)
     {
       goto LABEL_3;
     }
@@ -63,24 +63,24 @@
 LABEL_3:
   v12.receiver = self;
   v12.super_class = CATRemoteTaskOperation;
-  v9 = [(CATTaskOperation *)&v12 initWithRequest:v6];
+  v9 = [(CATTaskOperation *)&v12 initWithRequest:requestCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_client, a4);
+    objc_storeStrong(&v9->_client, client);
   }
 
   return v10;
 }
 
-- (CATRemoteTaskOperation)initWithRequest:(id)a3 clientError:(id)a4
+- (CATRemoteTaskOperation)initWithRequest:(id)request clientError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  requestCopy = request;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (requestCopy)
   {
-    if (v7)
+    if (errorCopy)
     {
       goto LABEL_3;
     }
@@ -99,11 +99,11 @@ LABEL_3:
 LABEL_3:
   v12.receiver = self;
   v12.super_class = CATRemoteTaskOperation;
-  v9 = [(CATTaskOperation *)&v12 initWithRequest:v6];
+  v9 = [(CATTaskOperation *)&v12 initWithRequest:requestCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mClientError, a4);
+    objc_storeStrong(&v9->mClientError, error);
   }
 
   return v10;
@@ -137,11 +137,11 @@ LABEL_3:
   if ([(CATOperation *)self isExecuting])
   {
     v4 = [CATTaskMessageCancel alloc];
-    v5 = [(CATOperation *)self UUID];
-    v7 = [(CATTaskMessage *)v4 initWithTaskUUID:v5];
+    uUID = [(CATOperation *)self UUID];
+    v7 = [(CATTaskMessage *)v4 initWithTaskUUID:uUID];
 
-    v6 = [(CATRemoteTaskOperation *)self client];
-    [v6 remoteTaskOperation:self preparedMessage:v7];
+    client = [(CATRemoteTaskOperation *)self client];
+    [client remoteTaskOperation:self preparedMessage:v7];
   }
 }
 
@@ -157,7 +157,7 @@ LABEL_3:
 - (void)main
 {
   OUTLINED_FUNCTION_1();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -195,13 +195,13 @@ void __30__CATRemoteTaskOperation_main__block_invoke(uint64_t a1)
   }
 }
 
-- (void)processNotificationWithName:(id)a3 userInfo:(id)a4
+- (void)processNotificationWithName:(id)name userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(CATTaskOperation *)self canSendNotificationWithName:v6 userInfo:v7])
+  nameCopy = name;
+  infoCopy = info;
+  if ([(CATTaskOperation *)self canSendNotificationWithName:nameCopy userInfo:infoCopy])
   {
-    v8 = [(CATTaskOperation *)self notificationDelegate];
+    notificationDelegate = [(CATTaskOperation *)self notificationDelegate];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
 LABEL_5:
@@ -209,12 +209,12 @@ LABEL_5:
       goto LABEL_10;
     }
 
-    v9 = [(CATTaskOperation *)self canSendNotificationWithName:v6 userInfo:v7];
+    v9 = [(CATTaskOperation *)self canSendNotificationWithName:nameCopy userInfo:infoCopy];
 
     if (v9)
     {
-      v8 = [(CATTaskOperation *)self notificationDelegate];
-      [v8 taskOperation:self didPostNotificationWithName:v6 userInfo:v7];
+      notificationDelegate = [(CATTaskOperation *)self notificationDelegate];
+      [notificationDelegate taskOperation:self didPostNotificationWithName:nameCopy userInfo:infoCopy];
       goto LABEL_5;
     }
   }
@@ -229,7 +229,7 @@ LABEL_5:
     v10 = _CATLogGeneral_logObj_6;
     if (os_log_type_enabled(_CATLogGeneral_logObj_6, OS_LOG_TYPE_ERROR))
     {
-      [(CATRemoteTaskOperation *)self processNotificationWithName:v6 userInfo:v10];
+      [(CATRemoteTaskOperation *)self processNotificationWithName:nameCopy userInfo:v10];
     }
   }
 
@@ -266,20 +266,20 @@ void __39__CATRemoteTaskOperation_fetchProgress__block_invoke(uint64_t a1)
   }
 }
 
-- (void)postNotificationWithName:(id)a3 userInfo:(id)a4
+- (void)postNotificationWithName:(id)name userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  infoCopy = info;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__CATRemoteTaskOperation_postNotificationWithName_userInfo___block_invoke;
   v13[3] = &unk_278DA7280;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = nameCopy;
+  v15 = infoCopy;
   v8 = v13;
-  v9 = v7;
-  v10 = v6;
+  v9 = infoCopy;
+  v10 = nameCopy;
   v11 = CATGetCatalystQueue();
   v12 = v8;
   block[0] = MEMORY[0x277D85DD0];
@@ -303,17 +303,17 @@ void __60__CATRemoteTaskOperation_postNotificationWithName_userInfo___block_invo
   }
 }
 
-- (void)processMessage:(id)a3
+- (void)processMessage:(id)message
 {
-  v12 = a3;
+  messageCopy = message;
   v4 = CATGetCatalystQueue();
   CATAssertIsQueue(v4);
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v12 progress];
-    [(CATRemoteTaskOperation *)self updateProgressWithRemoteProgress:v5];
+    progress = [messageCopy progress];
+    [(CATRemoteTaskOperation *)self updateProgressWithRemoteProgress:progress];
   }
 
   else
@@ -321,11 +321,11 @@ void __60__CATRemoteTaskOperation_postNotificationWithName_userInfo___block_invo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v12;
-      v7 = [v6 completedUnitCount];
-      v8 = [v6 totalUnitCount];
+      v6 = messageCopy;
+      completedUnitCount = [v6 completedUnitCount];
+      totalUnitCount = [v6 totalUnitCount];
 
-      [(CATRemoteTaskOperation *)self updateCompletedUnitCount:v7 andTotalUnitCount:v8];
+      [(CATRemoteTaskOperation *)self updateCompletedUnitCount:completedUnitCount andTotalUnitCount:totalUnitCount];
     }
 
     else
@@ -333,20 +333,20 @@ void __60__CATRemoteTaskOperation_postNotificationWithName_userInfo___block_invo
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v12;
-        v10 = [v9 name];
-        v11 = [v9 userInfo];
+        v9 = messageCopy;
+        name = [v9 name];
+        userInfo = [v9 userInfo];
 
-        [(CATRemoteTaskOperation *)self processNotificationWithName:v10 userInfo:v11];
+        [(CATRemoteTaskOperation *)self processNotificationWithName:name userInfo:userInfo];
       }
     }
   }
 }
 
-- (void)clientFailedWithError:(id)a3
+- (void)clientFailedWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     [CATRemoteTaskOperation clientFailedWithError:];
   }
@@ -356,9 +356,9 @@ void __60__CATRemoteTaskOperation_postNotificationWithName_userInfo___block_invo
   v9[2] = __48__CATRemoteTaskOperation_clientFailedWithError___block_invoke;
   v9[3] = &unk_278DA7470;
   v9[4] = self;
-  v10 = v4;
+  v10 = errorCopy;
   v5 = v9;
-  v6 = v4;
+  v6 = errorCopy;
   v7 = CATGetCatalystQueue();
   v8 = v5;
   block[0] = MEMORY[0x277D85DD0];
@@ -388,65 +388,65 @@ void __48__CATRemoteTaskOperation_clientFailedWithError___block_invoke(uint64_t 
   }
 }
 
-- (void)updateCompletedUnitCount:(int64_t)a3 andTotalUnitCount:(int64_t)a4
+- (void)updateCompletedUnitCount:(int64_t)count andTotalUnitCount:(int64_t)unitCount
 {
   v7 = CATGetCatalystQueue();
   CATAssertIsQueue(v7);
 
-  if ([(CATOperation *)self totalUnitCount]!= a4)
+  if ([(CATOperation *)self totalUnitCount]!= unitCount)
   {
-    [(CATOperation *)self setTotalUnitCount:a4];
+    [(CATOperation *)self setTotalUnitCount:unitCount];
   }
 
-  if ([(CATOperation *)self completedUnitCount]!= a3)
+  if ([(CATOperation *)self completedUnitCount]!= count)
   {
 
-    [(CATOperation *)self setCompletedUnitCount:a3];
+    [(CATOperation *)self setCompletedUnitCount:count];
   }
 }
 
-- (void)updateProgressWithRemoteProgress:(id)a3
+- (void)updateProgressWithRemoteProgress:(id)progress
 {
-  v14 = a3;
+  progressCopy = progress;
   v4 = CATGetCatalystQueue();
   CATAssertIsQueue(v4);
 
   if ([(CATOperation *)self isExecuting])
   {
-    v5 = [(CATRemoteTaskOperation *)self remotePhase];
-    if (!v5 || (v6 = v5, v7 = [v14 phase], -[CATRemoteTaskOperation remotePhase](self, "remotePhase"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "unsignedIntegerValue"), v8, v6, v7 != v9))
+    remotePhase = [(CATRemoteTaskOperation *)self remotePhase];
+    if (!remotePhase || (v6 = remotePhase, v7 = [progressCopy phase], -[CATRemoteTaskOperation remotePhase](self, "remotePhase"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "unsignedIntegerValue"), v8, v6, v7 != v9))
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v14, "phase")}];
+      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(progressCopy, "phase")}];
       [(CATRemoteTaskOperation *)self setRemotePhase:v10];
     }
 
-    v11 = [v14 completedUnitCount];
-    if (v11 != [(CATOperation *)self completedUnitCount])
+    completedUnitCount = [progressCopy completedUnitCount];
+    if (completedUnitCount != [(CATOperation *)self completedUnitCount])
     {
-      -[CATOperation setCompletedUnitCount:](self, "setCompletedUnitCount:", [v14 completedUnitCount]);
+      -[CATOperation setCompletedUnitCount:](self, "setCompletedUnitCount:", [progressCopy completedUnitCount]);
     }
 
-    v12 = [v14 totalUnitCount];
-    if (v12 != [(CATOperation *)self totalUnitCount])
+    totalUnitCount = [progressCopy totalUnitCount];
+    if (totalUnitCount != [(CATOperation *)self totalUnitCount])
     {
-      -[CATOperation setTotalUnitCount:](self, "setTotalUnitCount:", [v14 totalUnitCount]);
+      -[CATOperation setTotalUnitCount:](self, "setTotalUnitCount:", [progressCopy totalUnitCount]);
     }
 
-    if ([v14 state] == 1)
+    if ([progressCopy state] == 1)
     {
-      v13 = [v14 resultObject];
-      [(CATOperation *)self endOperationWithResultObject:v13];
+      resultObject = [progressCopy resultObject];
+      [(CATOperation *)self endOperationWithResultObject:resultObject];
     }
 
     else
     {
-      if ([v14 state] != 2)
+      if ([progressCopy state] != 2)
       {
         goto LABEL_14;
       }
 
-      v13 = [v14 error];
-      [(CATOperation *)self endOperationWithError:v13];
+      resultObject = [progressCopy error];
+      [(CATOperation *)self endOperationWithError:resultObject];
     }
   }
 

@@ -1,21 +1,21 @@
 @interface iCloudMailUnifiedSettingsProvider
 - (iCloudMailUnifiedSettingsProvider)init;
-- (id)accountsForAccountManager:(id)a3;
+- (id)accountsForAccountManager:(id)manager;
 - (void)navigateToiCloudMailSettings;
-- (void)navigateToiCloudMailSettingsWith:(id)a3;
+- (void)navigateToiCloudMailSettingsWith:(id)with;
 @end
 
 @implementation iCloudMailUnifiedSettingsProvider
 
 - (void)navigateToiCloudMailSettings
 {
-  v2 = self;
+  selfCopy = self;
   sub_2755632AC(0, 0);
 }
 
-- (void)navigateToiCloudMailSettingsWith:(id)a3
+- (void)navigateToiCloudMailSettingsWith:(id)with
 {
-  if (a3)
+  if (with)
   {
     v4 = sub_275565B9C();
     v6 = v5;
@@ -27,7 +27,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_2755632AC(v4, v6);
 }
 
@@ -38,11 +38,11 @@
   return result;
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  iCloudMailUnifiedSettingsProvider.accounts(for:)(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  iCloudMailUnifiedSettingsProvider.accounts(for:)(managerCopy);
 
   type metadata accessor for AIDAServiceType();
   sub_2755658BC();

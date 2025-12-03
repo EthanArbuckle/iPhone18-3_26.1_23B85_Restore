@@ -1,6 +1,6 @@
 @interface RootHostingViewController
 - (UIViewController)childViewControllerForStatusBarStyle;
-- (_TtC8VideosUI25RootHostingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8VideosUI25RootHostingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -8,7 +8,7 @@
 
 - (UIViewController)childViewControllerForStatusBarStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E4119188();
 
   return v3;
@@ -16,18 +16,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E411940C();
 }
 
-- (_TtC8VideosUI25RootHostingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI25RootHostingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E4119914();
 }
 

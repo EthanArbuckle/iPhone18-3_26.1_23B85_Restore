@@ -1,101 +1,101 @@
 @interface WFFloatingView
 - (BOOL)isPressed;
-- (WFFloatingView)initWithConfiguration:(id)a3 frame:(CGRect)a4;
-- (WFFloatingView)initWithFrame:(CGRect)a3;
+- (WFFloatingView)initWithConfiguration:(id)configuration frame:(CGRect)frame;
+- (WFFloatingView)initWithFrame:(CGRect)frame;
 - (WFGradient)gradient;
-- (void)applyConfiguration:(id)a3;
-- (void)setGradient:(id)a3;
-- (void)setPressed:(BOOL)a3;
-- (void)setPressed:(BOOL)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)applyConfiguration:(id)configuration;
+- (void)setGradient:(id)gradient;
+- (void)setPressed:(BOOL)pressed;
+- (void)setPressed:(BOOL)pressed animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WFFloatingView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = WFFloatingView;
-  [(WFFloatingView *)&v6 traitCollectionDidChange:a3];
-  v4 = [(WFFloatingView *)self layer];
-  v5 = [(WFFloatingView *)self traitCollection];
-  [v4 setTraitCollection:v5];
+  [(WFFloatingView *)&v6 traitCollectionDidChange:change];
+  layer = [(WFFloatingView *)self layer];
+  traitCollection = [(WFFloatingView *)self traitCollection];
+  [layer setTraitCollection:traitCollection];
 }
 
-- (void)applyConfiguration:(id)a3
+- (void)applyConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(WFFloatingView *)self layer];
-  [v5 applyConfiguration:v4];
+  configurationCopy = configuration;
+  layer = [(WFFloatingView *)self layer];
+  [layer applyConfiguration:configurationCopy];
 }
 
-- (void)setPressed:(BOOL)a3 animated:(BOOL)a4
+- (void)setPressed:(BOOL)pressed animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(WFFloatingView *)self layer];
-  [v6 setPressed:v5 animated:v4];
+  animatedCopy = animated;
+  pressedCopy = pressed;
+  layer = [(WFFloatingView *)self layer];
+  [layer setPressed:pressedCopy animated:animatedCopy];
 }
 
-- (void)setPressed:(BOOL)a3
+- (void)setPressed:(BOOL)pressed
 {
-  v3 = a3;
-  v4 = [(WFFloatingView *)self layer];
-  [v4 setPressed:v3];
+  pressedCopy = pressed;
+  layer = [(WFFloatingView *)self layer];
+  [layer setPressed:pressedCopy];
 }
 
 - (BOOL)isPressed
 {
-  v2 = [(WFFloatingView *)self layer];
-  v3 = [v2 isPressed];
+  layer = [(WFFloatingView *)self layer];
+  isPressed = [layer isPressed];
 
-  return v3;
+  return isPressed;
 }
 
-- (void)setGradient:(id)a3
+- (void)setGradient:(id)gradient
 {
-  v4 = a3;
-  v5 = [(WFFloatingView *)self layer];
-  [v5 setGradient:v4];
+  gradientCopy = gradient;
+  layer = [(WFFloatingView *)self layer];
+  [layer setGradient:gradientCopy];
 }
 
 - (WFGradient)gradient
 {
-  v2 = [(WFFloatingView *)self layer];
-  v3 = [v2 gradient];
+  layer = [(WFFloatingView *)self layer];
+  gradient = [layer gradient];
 
-  return v3;
+  return gradient;
 }
 
-- (WFFloatingView)initWithFrame:(CGRect)a3
+- (WFFloatingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = objc_opt_new();
-  v9 = [(WFFloatingView *)self initWithConfiguration:v8 frame:x, y, width, height];
+  height = [(WFFloatingView *)self initWithConfiguration:v8 frame:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (WFFloatingView)initWithConfiguration:(id)a3 frame:(CGRect)a4
+- (WFFloatingView)initWithConfiguration:(id)configuration frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = WFFloatingView;
-  v10 = [(WFFloatingView *)&v16 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(WFFloatingView *)&v16 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(WFFloatingView *)v10 applyConfiguration:v9];
-    v12 = [(WFFloatingView *)v11 layer];
-    v13 = [(WFFloatingView *)v11 traitCollection];
-    [v12 setTraitCollection:v13];
+    [(WFFloatingView *)height applyConfiguration:configurationCopy];
+    layer = [(WFFloatingView *)v11 layer];
+    traitCollection = [(WFFloatingView *)v11 traitCollection];
+    [layer setTraitCollection:traitCollection];
 
     v14 = v11;
   }

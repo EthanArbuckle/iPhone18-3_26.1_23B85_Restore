@@ -1,21 +1,21 @@
 @interface MRGameControllerMessage
 - (BOOL)shouldLog;
-- (MRGameControllerMessage)initWithGameControllerEvent:(id)a3 controllerID:(unint64_t)a4;
+- (MRGameControllerMessage)initWithGameControllerEvent:(id)event controllerID:(unint64_t)d;
 - (unint64_t)controllerID;
 @end
 
 @implementation MRGameControllerMessage
 
-- (MRGameControllerMessage)initWithGameControllerEvent:(id)a3 controllerID:(unint64_t)a4
+- (MRGameControllerMessage)initWithGameControllerEvent:(id)event controllerID:(unint64_t)d
 {
-  v6 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = MRGameControllerMessage;
   v7 = [(MRProtocolMessage *)&v9 init];
   if (v7)
   {
-    [v6 setControllerID:a4];
-    [(MRProtocolMessage *)v7 setUnderlyingCodableMessage:v6];
+    [eventCopy setControllerID:d];
+    [(MRProtocolMessage *)v7 setUnderlyingCodableMessage:eventCopy];
   }
 
   return v7;
@@ -23,18 +23,18 @@
 
 - (unint64_t)controllerID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 controllerID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  controllerID = [underlyingCodableMessage controllerID];
 
-  return v3;
+  return controllerID;
 }
 
 - (BOOL)shouldLog
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 hasMotion];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  hasMotion = [underlyingCodableMessage hasMotion];
 
-  return v3 ^ 1;
+  return hasMotion ^ 1;
 }
 
 @end

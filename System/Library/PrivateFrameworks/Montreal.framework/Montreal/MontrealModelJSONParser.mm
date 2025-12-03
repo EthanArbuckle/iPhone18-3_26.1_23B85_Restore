@@ -1,19 +1,19 @@
 @interface MontrealModelJSONParser
-- (MontrealModelJSONParser)initWithURL:(id)a3;
-- (id)createJSONFromFile:(id)a3;
+- (MontrealModelJSONParser)initWithURL:(id)l;
+- (id)createJSONFromFile:(id)file;
 @end
 
 @implementation MontrealModelJSONParser
 
-- (MontrealModelJSONParser)initWithURL:(id)a3
+- (MontrealModelJSONParser)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = MontrealModelJSONParser;
   v8 = [(MontrealModelJSONParser *)&v17 init];
   if (v8)
   {
-    v9 = objc_msgSend_path(v4, v5, v6, v7);
+    v9 = objc_msgSend_path(lCopy, v5, v6, v7);
     v10 = *(v8 + 1);
     *(v8 + 1) = v9;
 
@@ -26,9 +26,9 @@
   return v8;
 }
 
-- (id)createJSONFromFile:(id)a3
+- (id)createJSONFromFile:(id)file
 {
-  v4 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], a2, a3, v3);
+  v4 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], a2, file, v3);
   v6 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x1E696ACB0], v5, v4, 0, 0);
 
   return v6;

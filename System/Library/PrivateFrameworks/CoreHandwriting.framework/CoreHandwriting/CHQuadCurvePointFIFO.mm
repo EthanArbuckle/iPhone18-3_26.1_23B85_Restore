@@ -1,6 +1,6 @@
 @interface CHQuadCurvePointFIFO
-- (CHQuadCurvePointFIFO)initWithFIFO:(id)a3;
-- (CHQuadCurvePointFIFO)initWithFIFO:(id)a3 drawingTarget:(id)a4;
+- (CHQuadCurvePointFIFO)initWithFIFO:(id)o;
+- (CHQuadCurvePointFIFO)initWithFIFO:(id)o drawingTarget:(id)target;
 - (id).cxx_construct;
 - (void)addPoint:(CHQuadCurvePointFIFO *)self;
 - (void)clear;
@@ -10,11 +10,11 @@
 
 @implementation CHQuadCurvePointFIFO
 
-- (CHQuadCurvePointFIFO)initWithFIFO:(id)a3
+- (CHQuadCurvePointFIFO)initWithFIFO:(id)o
 {
   v6.receiver = self;
   v6.super_class = CHQuadCurvePointFIFO;
-  result = [(CHPointFIFO *)&v6 initWithFIFO:a3];
+  result = [(CHPointFIFO *)&v6 initWithFIFO:o];
   if (result)
   {
     result->_unitScale = 1.0;
@@ -29,14 +29,14 @@
   return result;
 }
 
-- (CHQuadCurvePointFIFO)initWithFIFO:(id)a3 drawingTarget:(id)a4
+- (CHQuadCurvePointFIFO)initWithFIFO:(id)o drawingTarget:(id)target
 {
-  v7 = a4;
-  v12 = objc_msgSend_initWithFIFO_(self, v8, a3, v9, v10, v11);
+  targetCopy = target;
+  v12 = objc_msgSend_initWithFIFO_(self, v8, o, v9, v10, v11);
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong((v12 + 48), a4);
+    objc_storeStrong((v12 + 48), target);
   }
 
   return v13;

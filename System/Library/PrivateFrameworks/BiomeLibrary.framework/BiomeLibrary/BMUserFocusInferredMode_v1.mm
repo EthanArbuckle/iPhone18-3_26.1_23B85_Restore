@@ -9,10 +9,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMUserFocusInferredMode_v1;
-  v2 = [(BMUserFocusInferredMode *)&v4 origin];
-  if (v2 < 0x11)
+  origin = [(BMUserFocusInferredMode *)&v4 origin];
+  if (origin < 0x11)
   {
-    return v2 + 1;
+    return origin + 1;
   }
 
   else
@@ -25,10 +25,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMUserFocusInferredMode_v1;
-  v2 = [(BMUserFocusInferredMode *)&v4 modeType];
-  if (v2 < 0x11)
+  modeType = [(BMUserFocusInferredMode *)&v4 modeType];
+  if (modeType < 0x11)
   {
-    return v2 + 1;
+    return modeType + 1;
   }
 
   else

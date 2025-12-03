@@ -7,18 +7,18 @@
 
 - (uint64_t)adjustsImageSizeForAccessibilityContentSizeCategory
 {
-  v1 = objc_getAssociatedObject(a1, &adjustsImageSizeForAccessibilityContentSizeCategoryKey);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, &adjustsImageSizeForAccessibilityContentSizeCategoryKey);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setAdjustsImageSizeForAccessibilityContentSizeCategory:()UIAccessibilityContentSizeCategoryImageAdjusting
 {
-  if ([a1 adjustsImageSizeForAccessibilityContentSizeCategory] != a3)
+  if ([self adjustsImageSizeForAccessibilityContentSizeCategory] != a3)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    objc_setAssociatedObject(a1, &adjustsImageSizeForAccessibilityContentSizeCategoryKey, v5, 1);
+    objc_setAssociatedObject(self, &adjustsImageSizeForAccessibilityContentSizeCategoryKey, v5, 1);
   }
 }
 

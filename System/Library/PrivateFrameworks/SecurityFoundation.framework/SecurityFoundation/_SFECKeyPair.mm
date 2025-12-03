@@ -1,34 +1,34 @@
 @interface _SFECKeyPair
-+ (id)_secKeyCreationAttributesForSpecifier:(id)a3;
-- (id)initRandomKeyPairWithSpecifier:(id)a3 privateKeyDomain:(id)a4;
-- (id)performWithCCKey:(id)a3;
++ (id)_secKeyCreationAttributesForSpecifier:(id)specifier;
+- (id)initRandomKeyPairWithSpecifier:(id)specifier privateKeyDomain:(id)domain;
+- (id)performWithCCKey:(id)key;
 - (id)publicKey;
 @end
 
 @implementation _SFECKeyPair
 
-+ (id)_secKeyCreationAttributesForSpecifier:(id)a3
++ (id)_secKeyCreationAttributesForSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBFE0], *MEMORY[0x277CDBFF0]);
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC028], *MEMORY[0x277CDC040]);
   CFDictionarySetValue(Mutable, *MEMORY[0x277CDC090], *MEMORY[0x277CBED28]);
   v5 = *MEMORY[0x277CDC018];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v3 curve];
+  curve = [specifierCopy curve];
 
-  v8 = [v6 numberWithInteger:ECKeyBitSize(v7)];
+  v8 = [v6 numberWithInteger:ECKeyBitSize(curve)];
   CFDictionaryAddValue(Mutable, v5, v8);
 
   return Mutable;
 }
 
-- (id)initRandomKeyPairWithSpecifier:(id)a3 privateKeyDomain:(id)a4
+- (id)initRandomKeyPairWithSpecifier:(id)specifier privateKeyDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  specifierCopy = specifier;
+  domainCopy = domain;
+  if (!specifierCopy)
   {
     [_SFECKeyPair initRandomKeyPairWithSpecifier:privateKeyDomain:];
   }
@@ -36,7 +36,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = specifierCopy;
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
     CFDictionarySetValue(Mutable, *MEMORY[0x277CDC028], *MEMORY[0x277CDC040]);
     v10 = *MEMORY[0x277CDC018];
@@ -60,15 +60,15 @@
     CFRelease(v12);
     self = v14;
 
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)publicKey
@@ -83,12 +83,12 @@
   return v3;
 }
 
-- (id)performWithCCKey:(id)a3
+- (id)performWithCCKey:(id)key
 {
   error[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_SFKey *)self keySpecifier];
-  v6 = (32 * *CCCurveParameters([v5 curve])) | 0x10;
+  keyCopy = key;
+  keySpecifier = [(_SFKey *)self keySpecifier];
+  v6 = (32 * *CCCurveParameters([keySpecifier curve])) | 0x10;
   MEMORY[0x28223BE20]();
   v8 = error - v7;
   error[0] = 0;
@@ -109,7 +109,7 @@
     }
   }
 
-  v14 = v4[2](v4, v8, v13);
+  v14 = keyCopy[2](keyCopy, v8, v13);
 
   v15 = *MEMORY[0x277D85DE8];
 

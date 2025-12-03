@@ -1,10 +1,10 @@
 @interface MotionManager
-- (void)bagChangeNotification:(id)a3;
+- (void)bagChangeNotification:(id)notification;
 @end
 
 @implementation MotionManager
 
-- (void)bagChangeNotification:(id)a3
+- (void)bagChangeNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

@@ -1,26 +1,26 @@
 @interface SFAirDropNode
-+ (id)nodeWithSFNode:(__SFNode *)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)nodeWithSFNode:(__SFNode *)node;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (SFAirDropNode)init;
-- (id)displayNameForLocale:(id)a3;
+- (id)displayNameForLocale:(id)locale;
 - (unint64_t)hash;
-- (void)_updateDisplayIconWithSFNode:(__SFNode *)a3;
-- (void)appendDiscoveryInfoToDisplayName:(id)a3;
+- (void)_updateDisplayIconWithSFNode:(__SFNode *)node;
+- (void)appendDiscoveryInfoToDisplayName:(id)name;
 - (void)cancelSend;
 - (void)dealloc;
-- (void)handleOperationCallback:(__SFOperation *)a3 event:(int64_t)a4 withResults:(id)a5;
-- (void)setRangingMeasurement:(id)a3;
+- (void)handleOperationCallback:(__SFOperation *)callback event:(int64_t)event withResults:(id)results;
+- (void)setRangingMeasurement:(id)measurement;
 - (void)updateDisplayName;
-- (void)updateWithSFNode:(__SFNode *)a3;
+- (void)updateWithSFNode:(__SFNode *)node;
 @end
 
 @implementation SFAirDropNode
 
-+ (id)nodeWithSFNode:(__SFNode *)a3
++ (id)nodeWithSFNode:(__SFNode *)node
 {
   v4 = objc_alloc_init(SFAirDropNode);
-  [(SFAirDropNode *)v4 updateWithSFNode:a3];
+  [(SFAirDropNode *)v4 updateWithSFNode:node];
 
   return v4;
 }
@@ -50,24 +50,24 @@
   [(SFAirDropNode *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[SFAirDropNode isSuggestion](self, "isSuggestion") && [v5 isSuggestion])
     {
       realName = self->_realName;
-      v7 = [v5 realName];
-      v8 = [(NSString *)realName isEqualToString:v7];
+      realName = [v5 realName];
+      v8 = [(NSString *)realName isEqualToString:realName];
     }
 
     else
     {
-      v7 = [(SFAirDropNode *)self node];
-      v8 = !valuesChanged(v7, [v5 node]);
+      realName = [(SFAirDropNode *)self node];
+      v8 = !valuesChanged(realName, [v5 node]);
     }
   }
 
@@ -81,8 +81,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SFAirDropNode *)self node];
-  v3 = CFHash(v2);
+  node = [(SFAirDropNode *)self node];
+  v3 = CFHash(node);
 
   return v3;
 }
@@ -143,16 +143,16 @@
   return v10;
 }
 
-- (void)updateWithSFNode:(__SFNode *)a3
+- (void)updateWithSFNode:(__SFNode *)node
 {
   [(SFAirDropNode *)self _updateDisplayIconWithSFNode:?];
-  self->_selectionReason = SFNodeGetSelectionReason(a3);
-  self->_supportsCredentials = SFNodeSupportsCredentials(a3) != 0;
-  self->_supportsFMF = SFNodeSupportsFMF(a3);
-  self->_supportsPasses = SFNodeSupportsPasses(a3) != 0;
-  self->_supportsMixedTypes = SFNodeSupportsMixedTypes(a3) != 0;
-  self->_ultraWideBindCapable = SFNodeSupportsUWB(a3) != 0;
-  v14 = SFNodeCopyKinds(a3);
+  self->_selectionReason = SFNodeGetSelectionReason(node);
+  self->_supportsCredentials = SFNodeSupportsCredentials(node) != 0;
+  self->_supportsFMF = SFNodeSupportsFMF(node);
+  self->_supportsPasses = SFNodeSupportsPasses(node) != 0;
+  self->_supportsMixedTypes = SFNodeSupportsMixedTypes(node) != 0;
+  self->_ultraWideBindCapable = SFNodeSupportsUWB(node) != 0;
+  v14 = SFNodeCopyKinds(node);
   self->_disabled = [(__CFSet *)v14 containsObject:@"Disabled"];
   self->_me = [(__CFSet *)v14 containsObject:@"Me"];
   self->_unknown = [(__CFSet *)v14 containsObject:@"Unknown"];
@@ -162,57 +162,57 @@
   self->_classroomGroup = [(__CFSet *)v14 containsObject:@"ClassroomGroup"];
   self->_suggestion = [(__CFSet *)v14 containsObject:@"Suggestion"];
   self->_rapport = [(__CFSet *)v14 containsObject:@"Rapport"];
-  [(SFAirDropNode *)self setNode:a3];
-  v5 = SFNodeCopyRealName(a3);
+  [(SFAirDropNode *)self setNode:node];
+  v5 = SFNodeCopyRealName(node);
   [(SFAirDropNode *)self setRealName:v5];
 
-  v6 = SFNodeCopySecondaryName(a3);
+  v6 = SFNodeCopySecondaryName(node);
   [(SFAirDropNode *)self setSecondaryName:v6];
 
-  v7 = SFNodeCopyContactIdentifier(a3);
+  v7 = SFNodeCopyContactIdentifier(node);
   [(SFAirDropNode *)self setContactIdentifier:v7];
 
-  v8 = SFNodeCopyModel(a3);
+  v8 = SFNodeCopyModel(node);
   [(SFAirDropNode *)self setModel:v8];
 
-  v9 = SFNodeCopyTransportBundleID(a3);
+  v9 = SFNodeCopyTransportBundleID(node);
   if (v9)
   {
     [(SFAirDropNode *)self setTransportBundleID:v9];
   }
 
-  v10 = SFNodeCopyHandles(a3);
+  v10 = SFNodeCopyHandles(node);
   [(SFAirDropNode *)self setActualHandles:v10];
 
-  v11 = SFNodeCopyRangingData(a3);
-  v12 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v11 error:0];
+  v11 = SFNodeCopyRangingData(node);
+  rangingMeasurement2 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v11 error:0];
   if (IsAppleInternalBuild())
   {
     if (CFPreferencesGetAppBooleanValue(@"ShowKnownInMagicHead", @"com.apple.Sharing", 0))
     {
-      v13 = [(SFAirDropNode *)self rangingMeasurement];
+      rangingMeasurement = [(SFAirDropNode *)self rangingMeasurement];
 
-      if (v13)
+      if (rangingMeasurement)
       {
-        if (!v12)
+        if (!rangingMeasurement2)
         {
-          v12 = [(SFAirDropNode *)self rangingMeasurement];
+          rangingMeasurement2 = [(SFAirDropNode *)self rangingMeasurement];
         }
       }
     }
   }
 
   [(SFAirDropNode *)self updateDisplayName];
-  [(SFAirDropNode *)self setRangingMeasurement:v12];
+  [(SFAirDropNode *)self setRangingMeasurement:rangingMeasurement2];
 }
 
-- (void)_updateDisplayIconWithSFNode:(__SFNode *)a3
+- (void)_updateDisplayIconWithSFNode:(__SFNode *)node
 {
-  v5 = [(SFAirDropNode *)self node];
-  if (v5)
+  node = [(SFAirDropNode *)self node];
+  if (node)
   {
-    v6 = [(SFAirDropNode *)self node];
-    IconData = SFNodeGetIconData(v6);
+    node2 = [(SFAirDropNode *)self node];
+    IconData = SFNodeGetIconData(node2);
   }
 
   else
@@ -220,9 +220,9 @@
     IconData = 0;
   }
 
-  if (a3)
+  if (node)
   {
-    v8 = SFNodeGetIconData(a3);
+    v8 = SFNodeGetIconData(node);
     if (v8)
     {
       v9 = v8;
@@ -237,12 +237,12 @@
   }
 }
 
-- (void)setRangingMeasurement:(id)a3
+- (void)setRangingMeasurement:(id)measurement
 {
-  v5 = a3;
+  measurementCopy = measurement;
   p_rangingMeasurement = &self->_rangingMeasurement;
   v7 = self->_rangingMeasurement;
-  v8 = v5;
+  v8 = measurementCopy;
   v18 = v8;
   if (v7 == v8)
   {
@@ -262,20 +262,20 @@ LABEL_18:
   if ((v9 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_rangingMeasurement, a3);
+    objc_storeStrong(&self->_rangingMeasurement, measurement);
     v10 = +[SFSettingsDomain rootSettings];
-    v11 = [v10 magicHeadSettings];
-    v12 = [v11 showRangingValues];
+    magicHeadSettings = [v10 magicHeadSettings];
+    showRangingValues = [magicHeadSettings showRangingValues];
 
-    if (!v12)
+    if (!showRangingValues)
     {
       goto LABEL_19;
     }
 
-    v13 = [(CURangingMeasurement *)*p_rangingMeasurement flags];
+    flags = [(CURangingMeasurement *)*p_rangingMeasurement flags];
     v14 = objc_opt_new();
     v7 = v14;
-    if ((v13 & 8) != 0)
+    if ((flags & 8) != 0)
     {
       [(CURangingMeasurement *)*p_rangingMeasurement ptsScore];
       [(CURangingMeasurement *)v7 appendFormat:@"%.2f", v15];
@@ -287,7 +287,7 @@ LABEL_7:
     }
 
     [(CURangingMeasurement *)v7 appendString:@", "];
-    if ((v13 & 2) != 0)
+    if ((flags & 2) != 0)
     {
       [(CURangingMeasurement *)*p_rangingMeasurement horizontalAngle];
       [(CURangingMeasurement *)v7 appendFormat:@"%.2f", v16];
@@ -300,7 +300,7 @@ LABEL_7:
 
     [(CURangingMeasurement *)v7 appendString:@"°"];
     [(CURangingMeasurement *)v7 appendString:@", "];
-    if (v13)
+    if (flags)
     {
       [(CURangingMeasurement *)*p_rangingMeasurement distanceMeters];
       [(CURangingMeasurement *)v7 appendFormat:@"%.2f", v17];
@@ -322,12 +322,12 @@ LABEL_19:
 
 - (void)updateDisplayName
 {
-  v3 = [(SFAirDropNode *)self node];
+  node = [(SFAirDropNode *)self node];
 
   if (self->_me && enableDeviceImages())
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = SFNodeCopyModel(v3);
+    v5 = SFNodeCopyModel(node);
     v27 = [v4 stringWithFormat:@"My %@", v5];
 
     [(SFAirDropNode *)self setSecondaryName:&stru_1F1D30528];
@@ -342,7 +342,7 @@ LABEL_19:
   v28 = v6;
   if (![(__CFString *)v6 length]&& (self->_unknown || self->_classroom))
   {
-    v8 = SFNodeCopyDisplayName(v3);
+    v8 = SFNodeCopyDisplayName(node);
 
     v7 = v8;
   }
@@ -360,7 +360,7 @@ LABEL_19:
 
   else
   {
-    v26 = SFNodeCopyNickName(v3);
+    v26 = SFNodeCopyNickName(node);
 
     v9 = v26;
   }
@@ -373,7 +373,7 @@ LABEL_19:
 
   else
   {
-    v10 = SFNodeCopyComputerName(v3);
+    v10 = SFNodeCopyComputerName(node);
 
     v11 = v10;
   }
@@ -386,7 +386,7 @@ LABEL_19:
 
   else
   {
-    v12 = SFNodeCopyDisplayName(v3);
+    v12 = SFNodeCopyDisplayName(node);
 
     v13 = v12;
   }
@@ -399,8 +399,8 @@ LABEL_19:
 
   else
   {
-    Name = SFNodeCopyFirstName(v3);
-    v16 = SFNodeCopyLastName(v3);
+    Name = SFNodeCopyFirstName(node);
+    v16 = SFNodeCopyLastName(node);
     v17 = objc_opt_new();
     nameComponents = self->_nameComponents;
     self->_nameComponents = v17;
@@ -409,8 +409,8 @@ LABEL_19:
     [(NSPersonNameComponents *)self->_nameComponents setFamilyName:v16];
     v19 = objc_opt_new();
     [v19 setStyle:0];
-    v20 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [v19 set_locale:v20];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [v19 set_locale:autoupdatingCurrentLocale];
 
     v21 = [v19 stringFromPersonNameComponents:self->_nameComponents];
 
@@ -420,10 +420,10 @@ LABEL_19:
   v33 = v14;
   [(SFAirDropNode *)self setDisplayName:v14];
   v22 = +[SFSettingsDomain rootSettings];
-  v23 = [v22 magicHeadSettings];
-  v24 = [v23 showRangingValues];
+  magicHeadSettings = [v22 magicHeadSettings];
+  showRangingValues = [magicHeadSettings showRangingValues];
 
-  if (v24)
+  if (showRangingValues)
   {
     v25 = [v33 mutableCopy];
     [(SFAirDropNode *)self appendDiscoveryInfoToDisplayName:v25];
@@ -431,12 +431,12 @@ LABEL_19:
   }
 }
 
-- (void)appendDiscoveryInfoToDisplayName:(id)a3
+- (void)appendDiscoveryInfoToDisplayName:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SFAirDropNode *)self node];
-  v6 = SFNodeCopySiblingNodes(v5);
+  nameCopy = name;
+  node = [(SFAirDropNode *)self node];
+  v6 = SFNodeCopySiblingNodes(node);
 
   v19 = 0u;
   v20 = 0u;
@@ -489,12 +489,12 @@ LABEL_11:
 
   if (v11)
   {
-    [v4 appendString:{@", B"}];
+    [nameCopy appendString:{@", B"}];
   }
 
   if (v10)
   {
-    [v4 appendString:{@", A"}];
+    [nameCopy appendString:{@", A"}];
   }
 
 LABEL_18:
@@ -502,28 +502,28 @@ LABEL_18:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)displayNameForLocale:(id)a3
+- (id)displayNameForLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v5 = +[SFSettingsDomain rootSettings];
-  v6 = [v5 magicHeadSettings];
-  v7 = [v6 showRangingValues];
+  magicHeadSettings = [v5 magicHeadSettings];
+  showRangingValues = [magicHeadSettings showRangingValues];
 
-  if (v7)
+  if (showRangingValues)
   {
-    v8 = [(SFAirDropNode *)self displayName];
+    displayName = [(SFAirDropNode *)self displayName];
   }
 
   else
   {
-    v9 = v4;
-    if (!v9)
+    currentLocale = localeCopy;
+    if (!currentLocale)
     {
-      v9 = [MEMORY[0x1E695DF58] currentLocale];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
       v10 = airdrop_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [(SFAirDropNode *)v9 displayNameForLocale:v10];
+        [(SFAirDropNode *)currentLocale displayNameForLocale:v10];
       }
     }
 
@@ -532,17 +532,17 @@ LABEL_18:
     {
       v12 = objc_opt_new();
       [v12 setStyle:0];
-      [v12 set_locale:v9];
-      v8 = [v12 stringFromPersonNameComponents:v11];
+      [v12 set_locale:currentLocale];
+      displayName = [v12 stringFromPersonNameComponents:v11];
     }
 
     else
     {
-      v8 = [(SFAirDropNode *)self displayName];
+      displayName = [(SFAirDropNode *)self displayName];
     }
   }
 
-  return v8;
+  return displayName;
 }
 
 - (void)cancelSend
@@ -556,26 +556,26 @@ LABEL_18:
   }
 }
 
-- (void)handleOperationCallback:(__SFOperation *)a3 event:(int64_t)a4 withResults:(id)a5
+- (void)handleOperationCallback:(__SFOperation *)callback event:(int64_t)event withResults:(id)results
 {
-  v8 = a5;
-  if (a4 > 4)
+  resultsCopy = results;
+  if (event > 4)
   {
-    if (a4 <= 0xF)
+    if (event <= 0xF)
     {
-      if (((1 << a4) & 0xC9E0) != 0)
+      if (((1 << event) & 0xC9E0) != 0)
       {
         goto LABEL_17;
       }
 
-      if (a4 != 9)
+      if (event != 9)
       {
-        if (a4 == 10)
+        if (event == 10)
         {
           v9 = airdrop_log();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
           {
-            [SFAirDropNode handleOperationCallback:v8 event:v9 withResults:?];
+            [SFAirDropNode handleOperationCallback:resultsCopy event:v9 withResults:?];
           }
 
           goto LABEL_12;
@@ -593,21 +593,21 @@ LABEL_14:
     v10 = airdrop_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [SFAirDropNode handleOperationCallback:a4 event:v8 withResults:v10];
+      [SFAirDropNode handleOperationCallback:event event:resultsCopy withResults:v10];
     }
 
     goto LABEL_17;
   }
 
-  if (a4 == 2)
+  if (event == 2)
   {
-    SFOperationResume(a3);
+    SFOperationResume(callback);
     goto LABEL_17;
   }
 
-  if (a4 != 3)
+  if (event != 3)
   {
-    if (a4 == 4)
+    if (event == 4)
     {
       goto LABEL_12;
     }

@@ -1,26 +1,26 @@
 @interface PHSmartAlbumChangeRequest
-+ (id)_changeRequestForSmartAlbum:(id)a3 userQuery:(id)a4;
-+ (id)changeRequestForSmartAlbum:(id)a3;
-+ (id)creationRequestForSmartAlbumCopyFromSmartAlbum:(id)a3;
-+ (id)creationRequestForSmartAlbumWithTitle:(id)a3 userQuery:(id)a4;
-+ (id)validateSmartAlbumTitle:(id)a3 error:(id *)a4;
-+ (void)_deleteSmartAlbums:(id)a3 withOperation:(int64_t)a4 topLevelSelector:(SEL)a5;
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
++ (id)_changeRequestForSmartAlbum:(id)album userQuery:(id)query;
++ (id)changeRequestForSmartAlbum:(id)album;
++ (id)creationRequestForSmartAlbumCopyFromSmartAlbum:(id)album;
++ (id)creationRequestForSmartAlbumWithTitle:(id)title userQuery:(id)query;
++ (id)validateSmartAlbumTitle:(id)title error:(id *)error;
++ (void)_deleteSmartAlbums:(id)albums withOperation:(int64_t)operation topLevelSelector:(SEL)selector;
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
 - (BOOL)customSortAscending;
-- (BOOL)validateInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (BOOL)validateInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (NSString)title;
 - (PHObjectPlaceholder)placeholderForCreatedSmartAlbum;
-- (PHSmartAlbumChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHSmartAlbumChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (PHSmartAlbumChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHSmartAlbumChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)description;
 - (id)initForNewObject;
 - (unsigned)customSortKey;
-- (void)encodeToXPCDict:(id)a3;
-- (void)setCustomSortAscending:(BOOL)a3;
-- (void)setCustomSortKey:(unsigned int)a3;
-- (void)setTitle:(id)a3;
+- (void)encodeToXPCDict:(id)dict;
+- (void)setCustomSortAscending:(BOOL)ascending;
+- (void)setCustomSortKey:(unsigned int)key;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PHSmartAlbumChangeRequest
@@ -30,18 +30,18 @@
   v8.receiver = self;
   v8.super_class = PHSmartAlbumChangeRequest;
   v3 = [(PHSmartAlbumChangeRequest *)&v8 description];
-  v4 = [(PHSmartAlbumChangeRequest *)self title];
-  v5 = [(PHSmartAlbumChangeRequest *)self userQuery];
-  v6 = [v3 stringByAppendingFormat:@" title=%@ userQuery=%@", v4, v5];
+  title = [(PHSmartAlbumChangeRequest *)self title];
+  userQuery = [(PHSmartAlbumChangeRequest *)self userQuery];
+  v6 = [v3 stringByAppendingFormat:@" title=%@ userQuery=%@", title, userQuery];
 
   return v6;
 }
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 managedObjectContext];
+  objectCopy = object;
+  managedObjectContext = [objectCopy managedObjectContext];
   v9 = PLSafeEntityForNameInManagedObjectContext();
 
   if (!v9)
@@ -50,10 +50,10 @@
     goto LABEL_12;
   }
 
-  v10 = [v7 entity];
-  v11 = [v10 isKindOfEntity:v9];
+  entity = [objectCopy entity];
+  v11 = [entity isKindOfEntity:v9];
 
-  if (!v11 || [v7 kindValue] != 1507)
+  if (!v11 || [objectCopy kindValue] != 1507)
   {
     v20 = MEMORY[0x1E696ABC0];
     v26 = *MEMORY[0x1E696A578];
@@ -63,11 +63,11 @@
     v14 = [v20 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3300 userInfo:v22];
 
 LABEL_9:
-    if (a5)
+    if (error)
     {
       v23 = v14;
       v19 = 0;
-      *a5 = v14;
+      *error = v14;
       goto LABEL_13;
     }
 
@@ -76,9 +76,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v12 = [(PHChangeRequest *)self helper];
+  helper = [(PHChangeRequest *)self helper];
   v25 = 0;
-  v13 = [v12 applyMutationsToManagedObject:v7 error:&v25];
+  v13 = [helper applyMutationsToManagedObject:objectCopy error:&v25];
   v14 = v25;
 
   if (!v13)
@@ -90,7 +90,7 @@ LABEL_12:
   if (userQuery)
   {
     v16 = MEMORY[0x1E69BE708];
-    v17 = v7;
+    v17 = objectCopy;
     v18 = [v16 dataFromQuery:userQuery];
     [v17 setUserQueryData:v18];
   }
@@ -101,21 +101,21 @@ LABEL_13:
   return v19;
 }
 
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PHChangeRequest *)self helper];
+  objectCopy = object;
+  keyCopy = key;
+  helper = [(PHChangeRequest *)self helper];
   v23 = 0;
-  v11 = [v10 allowMutationToManagedObject:v8 propertyKey:v9 error:&v23];
+  v11 = [helper allowMutationToManagedObject:objectCopy propertyKey:keyCopy error:&v23];
   v12 = v23;
 
   if (v11)
   {
-    if (([v9 isEqualToString:@"title"] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"customSortKey") & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"customSortAscending"))
+    if (([keyCopy isEqualToString:@"title"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"customSortKey") & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"customSortAscending"))
     {
-      if ([v8 canPerformEditOperation:64])
+      if ([objectCopy canPerformEditOperation:64])
       {
         v13 = 1;
         goto LABEL_13;
@@ -123,8 +123,8 @@ LABEL_13:
 
       v14 = MEMORY[0x1E696ABC0];
       v26 = *MEMORY[0x1E696A578];
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid operation on property %@", v9];
-      v27[0] = v15;
+      keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid operation on property %@", keyCopy];
+      v27[0] = keyCopy;
       v16 = MEMORY[0x1E695DF20];
       v17 = v27;
       v18 = &v26;
@@ -134,8 +134,8 @@ LABEL_13:
     {
       v14 = MEMORY[0x1E696ABC0];
       v24 = *MEMORY[0x1E696A578];
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid property %@", v9];
-      v25 = v15;
+      keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid property %@", keyCopy];
+      v25 = keyCopy;
       v16 = MEMORY[0x1E695DF20];
       v17 = &v25;
       v18 = &v24;
@@ -147,11 +147,11 @@ LABEL_13:
     v12 = v20;
   }
 
-  if (a5)
+  if (error)
   {
     v21 = v12;
     v13 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
@@ -164,38 +164,38 @@ LABEL_13:
   return v13;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E69BE458] insertNewSmartAlbumIntoLibrary:a3];
-  v7 = [(PHChangeRequest *)self uuid];
-  [v6 setUuid:v7];
+  v6 = [MEMORY[0x1E69BE458] insertNewSmartAlbumIntoLibrary:library];
+  uuid = [(PHChangeRequest *)self uuid];
+  [v6 setUuid:uuid];
 
-  if (a4 && !v6)
+  if (error && !v6)
   {
     v8 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E696A578];
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create asset collection"];
     v13[0] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-    *a4 = [v8 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v10];
+    *error = [v8 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v10];
   }
 
   return v6;
 }
 
-- (BOOL)validateInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)validateInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
+  libraryCopy = library;
   if (self->_userQuery)
   {
-    v7 = [(PHSmartAlbumChangeRequest *)self title];
+    title = [(PHSmartAlbumChangeRequest *)self title];
     v13 = 0;
-    v8 = [objc_opt_class() validateSmartAlbumTitle:v7 error:&v13];
+    v8 = [objc_opt_class() validateSmartAlbumTitle:title error:&v13];
     v9 = v13;
 
     v10 = v8 != 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -205,7 +205,7 @@ LABEL_13:
   {
     v9 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3300 localizedDescription:@"Smart Album doesn't allow nil query"];
     v10 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -214,7 +214,7 @@ LABEL_13:
   if (!v10)
   {
     v11 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_7:
@@ -222,57 +222,57 @@ LABEL_7:
   return v10;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  titleCopy = title;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (titleCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"title"];
+    [mutations setObject:titleCopy forKeyedSubscript:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"title"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"title"];
+    [mutations removeObjectForKey:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"title"];
   }
 }
 
 - (NSString)title
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"title"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"title"];
 
   return v5;
 }
 
 - (PHObjectPlaceholder)placeholderForCreatedSmartAlbum
 {
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
+  helper = [(PHChangeRequest *)self helper];
+  v4 = [helper placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
 
   return v4;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  xdict = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 encodeToXPCDict:xdict];
+  xdict = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:xdict];
 
   if (self->_userQuery)
   {
@@ -281,24 +281,24 @@ LABEL_7:
   }
 }
 
-- (PHSmartAlbumChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHSmartAlbumChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v20.receiver = self;
   v20.super_class = PHSmartAlbumChangeRequest;
   v11 = [(PHChangeRequest *)&v20 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
 
     if (v12)
     {
       length = 0;
-      data = xpc_dictionary_get_data(v8, "userQuery", &length);
+      data = xpc_dictionary_get_data(dictCopy, "userQuery", &length);
       if (length)
       {
         v15 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:data length:length freeWhenDone:0];
@@ -312,16 +312,16 @@ LABEL_7:
   return v11;
 }
 
-- (PHSmartAlbumChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHSmartAlbumChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = PHSmartAlbumChangeRequest;
   v8 = [(PHChangeRequest *)&v12 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
   }
@@ -344,63 +344,63 @@ LABEL_7:
   return v2;
 }
 
-- (void)setCustomSortAscending:(BOOL)a3
+- (void)setCustomSortAscending:(BOOL)ascending
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  ascendingCopy = ascending;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"customSortAscending"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:ascendingCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"customSortAscending"];
 }
 
 - (BOOL)customSortAscending
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"customSortAscending"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"customSortAscending"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setCustomSortKey:(unsigned int)a3
+- (void)setCustomSortKey:(unsigned int)key
 {
-  v3 = *&a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  v3 = *&key;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"customSortKey"];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"customSortKey"];
 }
 
 - (unsigned)customSortKey
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"customSortKey"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"customSortKey"];
 
-  LODWORD(v3) = [v5 intValue];
-  return v3;
+  LODWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-+ (void)_deleteSmartAlbums:(id)a3 withOperation:(int64_t)a4 topLevelSelector:(SEL)a5
++ (void)_deleteSmartAlbums:(id)albums withOperation:(int64_t)operation topLevelSelector:(SEL)selector
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  [PHObject assertAllObjects:v7 forSelector:a5 areOfType:objc_opt_class()];
+  albumsCopy = albums;
+  [PHObject assertAllObjects:albumsCopy forSelector:selector areOfType:objc_opt_class()];
   +[PHPhotoLibrary assertTransaction];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v7;
+  v8 = albumsCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -416,7 +416,7 @@ LABEL_7:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [(PHTrashableObjectDeleteRequest *)PHCollectionDeleteRequest deleteRequestForObject:*(*(&v14 + 1) + 8 * v12++) operation:a4, v14];
+        v13 = [(PHTrashableObjectDeleteRequest *)PHCollectionDeleteRequest deleteRequestForObject:*(*(&v14 + 1) + 8 * v12++) operation:operation, v14];
       }
 
       while (v10 != v12);
@@ -427,17 +427,17 @@ LABEL_7:
   }
 }
 
-+ (id)validateSmartAlbumTitle:(id)a3 error:(id *)a4
++ (id)validateSmartAlbumTitle:(id)title error:(id *)error
 {
   v5 = MEMORY[0x1E696AB08];
-  v6 = a3;
-  v7 = [v5 whitespaceAndNewlineCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  titleCopy = title;
+  whitespaceAndNewlineCharacterSet = [v5 whitespaceAndNewlineCharacterSet];
+  v8 = [titleCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if ([v8 length])
   {
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -448,7 +448,7 @@ LABEL_7:
 
     v9 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3300 localizedDescription:@"Empty title unsupported"];
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -457,7 +457,7 @@ LABEL_7:
   if (!v8)
   {
     v9 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_7:
@@ -465,15 +465,15 @@ LABEL_7:
   return v8;
 }
 
-+ (id)creationRequestForSmartAlbumCopyFromSmartAlbum:(id)a3
++ (id)creationRequestForSmartAlbumCopyFromSmartAlbum:(id)album
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 assetCollectionType] == 2)
+  albumCopy = album;
+  if ([albumCopy assetCollectionType] == 2)
   {
-    v4 = [v3 title];
-    v5 = [v3 userQuery];
-    v6 = [PHSmartAlbumChangeRequest creationRequestForSmartAlbumWithTitle:v4 userQuery:v5];
+    title = [albumCopy title];
+    userQuery = [albumCopy userQuery];
+    v6 = [PHSmartAlbumChangeRequest creationRequestForSmartAlbumWithTitle:title userQuery:userQuery];
   }
 
   else
@@ -482,7 +482,7 @@ LABEL_7:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v3;
+      v10 = albumCopy;
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_ERROR, "Asset collection type is not a smart album: %@", &v9, 0xCu);
     }
 
@@ -492,32 +492,32 @@ LABEL_7:
   return v6;
 }
 
-+ (id)creationRequestForSmartAlbumWithTitle:(id)a3 userQuery:(id)a4
++ (id)creationRequestForSmartAlbumWithTitle:(id)title userQuery:(id)query
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PHSmartAlbumChangeRequest alloc] initForNewObject];
-  [v7 setTitle:v6];
+  queryCopy = query;
+  titleCopy = title;
+  initForNewObject = [[PHSmartAlbumChangeRequest alloc] initForNewObject];
+  [initForNewObject setTitle:titleCopy];
 
-  [v7 setUserQuery:v5];
+  [initForNewObject setUserQuery:queryCopy];
 
-  return v7;
+  return initForNewObject;
 }
 
-+ (id)changeRequestForSmartAlbum:(id)a3
++ (id)changeRequestForSmartAlbum:(id)album
 {
-  v4 = a3;
-  v5 = [v4 userQuery];
-  v6 = [a1 _changeRequestForSmartAlbum:v4 userQuery:v5];
+  albumCopy = album;
+  userQuery = [albumCopy userQuery];
+  v6 = [self _changeRequestForSmartAlbum:albumCopy userQuery:userQuery];
 
   return v6;
 }
 
-+ (id)_changeRequestForSmartAlbum:(id)a3 userQuery:(id)a4
++ (id)_changeRequestForSmartAlbum:(id)album userQuery:(id)query
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isTransient])
+  albumCopy = album;
+  queryCopy = query;
+  if ([albumCopy isTransient])
   {
     v7 = 0;
   }
@@ -525,13 +525,13 @@ LABEL_7:
   else
   {
     v8 = [PHSmartAlbumChangeRequest alloc];
-    v9 = [v5 uuid];
-    v10 = [v5 objectID];
-    v7 = [(PHSmartAlbumChangeRequest *)v8 initWithUUID:v9 objectID:v10];
+    uuid = [albumCopy uuid];
+    objectID = [albumCopy objectID];
+    v7 = [(PHSmartAlbumChangeRequest *)v8 initWithUUID:uuid objectID:objectID];
 
-    if (v6)
+    if (queryCopy)
     {
-      [(PHSmartAlbumChangeRequest *)v7 setUserQuery:v6];
+      [(PHSmartAlbumChangeRequest *)v7 setUserQuery:queryCopy];
     }
   }
 

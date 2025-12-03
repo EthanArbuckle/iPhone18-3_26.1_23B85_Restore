@@ -1,5 +1,5 @@
 @interface UnityPoster
-- (BOOL)wantsLowBrightness:(id)a3;
+- (BOOL)wantsLowBrightness:(id)brightness;
 - (CGRect)_timeLayoutRect;
 - (id)_alternateGreenColor;
 - (id)_alternateRedColor;
@@ -7,63 +7,63 @@
 - (id)_greenColor;
 - (id)_redColor;
 - (id)_yellowColor;
-- (id)currentLowerQuiltViewForLookIdentifier:(id)a3;
-- (id)currentUpperQuiltViewForLookIdentifier:(id)a3;
-- (id)initialLookIdentifierForEditor:(id)a3;
-- (id)interpolatedColorForIdentifier:(id)a3 progress:(double)a4;
-- (id)looksForEditor:(id)a3;
-- (int64_t)deviceOrientationFromEnvironment:(id)a3;
-- (void)_setupConfigurationWithBounds:(CGRect)a3 upperQuiltView:(id)a4 lowerQuiltView:(id)a5;
-- (void)_setupLowerQuiltViewsIfNecessaryInParentView:(id)a3 lookIdentifier:(id)a4;
-- (void)_setupQuiltViewIfNecessaryInParentView:(id)a3 lookIdentifier:(id)a4;
-- (void)_setupUpperQuiltViewsIfNecessaryInParentView:(id)a3 lookIdentifier:(id)a4;
-- (void)_setupViewsInBackgroundView:(id)a3 foregroundView:(id)a4 lookIdentifier:(id)a5;
-- (void)_updateColorsForIdentifier:(id)a3 upperQuiltView:(id)a4 lowerQuiltView:(id)a5 progress:(double)a6;
+- (id)currentLowerQuiltViewForLookIdentifier:(id)identifier;
+- (id)currentUpperQuiltViewForLookIdentifier:(id)identifier;
+- (id)initialLookIdentifierForEditor:(id)editor;
+- (id)interpolatedColorForIdentifier:(id)identifier progress:(double)progress;
+- (id)looksForEditor:(id)editor;
+- (int64_t)deviceOrientationFromEnvironment:(id)environment;
+- (void)_setupConfigurationWithBounds:(CGRect)bounds upperQuiltView:(id)view lowerQuiltView:(id)quiltView;
+- (void)_setupLowerQuiltViewsIfNecessaryInParentView:(id)view lookIdentifier:(id)identifier;
+- (void)_setupQuiltViewIfNecessaryInParentView:(id)view lookIdentifier:(id)identifier;
+- (void)_setupUpperQuiltViewsIfNecessaryInParentView:(id)view lookIdentifier:(id)identifier;
+- (void)_setupViewsInBackgroundView:(id)view foregroundView:(id)foregroundView lookIdentifier:(id)identifier;
+- (void)_updateColorsForIdentifier:(id)identifier upperQuiltView:(id)view lowerQuiltView:(id)quiltView progress:(double)progress;
 - (void)cleanupQuiltViews;
-- (void)editor:(id)a3 didFinishTransitionToLook:(id)a4;
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)editor:(id)a3 didTransitionToLook:(id)a4 progress:(double)a5;
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4;
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5;
-- (void)editorDidInvalidate:(id)a3;
+- (void)editor:(id)editor didFinishTransitionToLook:(id)look;
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment;
+- (void)editor:(id)editor didTransitionToLook:(id)look progress:(double)progress;
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion;
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look;
+- (void)editorDidInvalidate:(id)invalidate;
 - (void)regenerateConfiguration;
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)renderer:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)rendererDidInvalidate:(id)a3;
-- (void)setupFullscreenConstraintsForView:(id)a3 container:(id)a4;
-- (void)updateConfiguration:(id)a3 completion:(id)a4;
-- (void)updateCurrentLowerQuiltView:(id)a3 lookIdentifier:(id)a4;
-- (void)updateCurrentQuiltView:(id)a3 forLookIdentifier:(id)a4;
-- (void)updateCurrentQuiltViewsForLookIdentifier:(id)a3 interfaceOrientation:(int64_t)a4 unlockProgress:(double)a5;
-- (void)updateCurrentUpperQuiltView:(id)a3 lookIdentifier:(id)a4;
-- (void)updateDescriptors:(id)a3 completion:(id)a4;
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment;
+- (void)renderer:(id)renderer didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)rendererDidInvalidate:(id)invalidate;
+- (void)setupFullscreenConstraintsForView:(id)view container:(id)container;
+- (void)updateConfiguration:(id)configuration completion:(id)completion;
+- (void)updateCurrentLowerQuiltView:(id)view lookIdentifier:(id)identifier;
+- (void)updateCurrentQuiltView:(id)view forLookIdentifier:(id)identifier;
+- (void)updateCurrentQuiltViewsForLookIdentifier:(id)identifier interfaceOrientation:(int64_t)orientation unlockProgress:(double)progress;
+- (void)updateCurrentUpperQuiltView:(id)view lookIdentifier:(id)identifier;
+- (void)updateDescriptors:(id)descriptors completion:(id)completion;
 @end
 
 @implementation UnityPoster
 
-- (void)setupFullscreenConstraintsForView:(id)a3 container:(id)a4
+- (void)setupFullscreenConstraintsForView:(id)view container:(id)container
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v19 = [v5 leadingAnchor];
-  v18 = [v6 leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  containerCopy = container;
+  viewCopy = view;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  leadingAnchor = [containerCopy leadingAnchor];
+  leadingAnchor2 = [viewCopy leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v20[0] = v17;
-  v7 = [v5 trailingAnchor];
-  v8 = [v6 trailingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  trailingAnchor = [containerCopy trailingAnchor];
+  trailingAnchor2 = [viewCopy trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v20[1] = v9;
-  v10 = [v5 topAnchor];
-  v11 = [v6 topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  topAnchor = [containerCopy topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[2] = v12;
-  v13 = [v5 bottomAnchor];
+  bottomAnchor = [containerCopy bottomAnchor];
 
-  v14 = [v6 bottomAnchor];
+  bottomAnchor2 = [viewCopy bottomAnchor];
 
-  v15 = [v13 constraintEqualToAnchor:v14];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v20[3] = v15;
   v16 = [NSArray arrayWithObjects:v20 count:4];
   [NSLayoutConstraint activateConstraints:v16];
@@ -141,37 +141,37 @@
   return v3;
 }
 
-- (id)interpolatedColorForIdentifier:(id)a3 progress:(double)a4
+- (id)interpolatedColorForIdentifier:(id)identifier progress:(double)progress
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-  *&v8 = a4;
+  *&v8 = progress;
   [v7 _solveForInput:v8];
   v10 = v9;
-  if ([v6 isEqualToString:@"4color"])
+  if ([identifierCopy isEqualToString:@"4color"])
   {
-    v11 = +[UIColor blackColor];
-    v12 = [(UnityPoster *)self _yellowColor];
+    _yellowColor2 = +[UIColor blackColor];
+    _yellowColor = [(UnityPoster *)self _yellowColor];
 LABEL_5:
-    v13 = v12;
+    v13 = _yellowColor;
     goto LABEL_7;
   }
 
-  if ([v6 isEqualToString:@"3color"])
+  if ([identifierCopy isEqualToString:@"3color"])
   {
-    v11 = [(UnityPoster *)self _yellowColor];
-    v12 = +[UIColor blackColor];
+    _yellowColor2 = [(UnityPoster *)self _yellowColor];
+    _yellowColor = +[UIColor blackColor];
     goto LABEL_5;
   }
 
   v13 = 0;
-  v11 = 0;
+  _yellowColor2 = 0;
 LABEL_7:
   v22 = 0.0;
   v23 = 0.0;
   v20 = 0;
   v21 = 0.0;
-  [v11 getRed:&v23 green:&v22 blue:&v21 alpha:&v20];
+  [_yellowColor2 getRed:&v23 green:&v22 blue:&v21 alpha:&v20];
   v18 = 0.0;
   v19 = 0.0;
   v16 = 0;
@@ -182,12 +182,12 @@ LABEL_7:
   return v14;
 }
 
-- (void)_updateColorsForIdentifier:(id)a3 upperQuiltView:(id)a4 lowerQuiltView:(id)a5 progress:(double)a6
+- (void)_updateColorsForIdentifier:(id)identifier upperQuiltView:(id)view lowerQuiltView:(id)quiltView progress:(double)progress
 {
-  v18 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  viewCopy = view;
   unityOptions = self->_unityOptions;
-  v12 = a5;
+  quiltViewCopy = quiltView;
   if (([(UnityOptions *)unityOptions lowBrightness]& 1) != 0)
   {
     [(UnityPoster *)self _alternateRedColor];
@@ -218,14 +218,14 @@ LABEL_7:
     [(UnityPoster *)self _yellowColor];
   }
   v15 = ;
-  [v10 setTopQuiltColor:v14];
-  [v10 setBottomLeftQuiltColor:0];
-  [v10 setBottomRightQuiltColor:v14];
-  if (fabs(a6) <= 0.000001)
+  [viewCopy setTopQuiltColor:v14];
+  [viewCopy setBottomLeftQuiltColor:0];
+  [viewCopy setBottomRightQuiltColor:v14];
+  if (fabs(progress) <= 0.000001)
   {
-    if ([v18 isEqualToString:@"4color"])
+    if ([identifierCopy isEqualToString:@"4color"])
     {
-      [v10 setIntersectionPieceColor:v15];
+      [viewCopy setIntersectionPieceColor:v15];
       goto LABEL_16;
     }
 
@@ -234,23 +234,23 @@ LABEL_7:
 
   else
   {
-    v16 = [(UnityPoster *)self interpolatedColorForIdentifier:v18 progress:a6];
+    v16 = [(UnityPoster *)self interpolatedColorForIdentifier:identifierCopy progress:progress];
   }
 
   v17 = v16;
-  [v10 setIntersectionPieceColor:v16];
+  [viewCopy setIntersectionPieceColor:v16];
 
 LABEL_16:
-  [v12 setTopQuiltColor:0];
-  [v12 setBottomLeftQuiltColor:v13];
-  [v12 setIntersectionPieceColor:0];
-  [v12 setBottomRightQuiltColor:0];
+  [quiltViewCopy setTopQuiltColor:0];
+  [quiltViewCopy setBottomLeftQuiltColor:v13];
+  [quiltViewCopy setIntersectionPieceColor:0];
+  [quiltViewCopy setBottomRightQuiltColor:0];
 }
 
-- (void)_setupQuiltViewIfNecessaryInParentView:(id)a3 lookIdentifier:(id)a4
+- (void)_setupQuiltViewIfNecessaryInParentView:(id)view lookIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
+  viewCopy = view;
+  identifierCopy = identifier;
   if (!self->_quiltViews)
   {
     v7 = +[NSMutableDictionary dictionary];
@@ -258,9 +258,9 @@ LABEL_16:
     self->_quiltViews = v7;
   }
 
-  if (v6)
+  if (identifierCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_quiltViews objectForKey:v6];
+    v9 = [(NSMutableDictionary *)self->_quiltViews objectForKey:identifierCopy];
     if (v9)
     {
 LABEL_5:
@@ -271,16 +271,16 @@ LABEL_5:
     if (!self->_sharedQuiltView)
     {
       v10 = [UPQuiltViewPad alloc];
-      [v11 bounds];
-      v9 = [v10 initWithFrame:v6 identifier:?];
+      [viewCopy bounds];
+      v9 = [v10 initWithFrame:identifierCopy identifier:?];
       [(UnityPoster *)self _timeLayoutRect];
       [v9 setTimeRect:?];
       [CSProminentLayoutController frameForElements:16 variant:1];
       [v9 setLandscapeWidgetRect:?];
-      [v9 updateQuiltsWithIdentifier:v6 deviceInterfaceOrientation:self->_currentDeviceInterfaceOrientation unlockProgress:0.0];
-      [v11 addSubview:v9];
-      [(UnityPoster *)self setupFullscreenConstraintsForView:v9 container:v11];
-      [(UnityPoster *)self updateCurrentQuiltView:v9 forLookIdentifier:v6];
+      [v9 updateQuiltsWithIdentifier:identifierCopy deviceInterfaceOrientation:self->_currentDeviceInterfaceOrientation unlockProgress:0.0];
+      [viewCopy addSubview:v9];
+      [(UnityPoster *)self setupFullscreenConstraintsForView:v9 container:viewCopy];
+      [(UnityPoster *)self updateCurrentQuiltView:v9 forLookIdentifier:identifierCopy];
       goto LABEL_5;
     }
   }
@@ -288,10 +288,10 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)_setupUpperQuiltViewsIfNecessaryInParentView:(id)a3 lookIdentifier:(id)a4
+- (void)_setupUpperQuiltViewsIfNecessaryInParentView:(id)view lookIdentifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
+  viewCopy = view;
+  identifierCopy = identifier;
   if (!self->_upperQuiltViews)
   {
     v7 = +[NSMutableDictionary dictionary];
@@ -299,9 +299,9 @@ LABEL_7:
     self->_upperQuiltViews = v7;
   }
 
-  if (v6)
+  if (identifierCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_upperQuiltViews objectForKey:v6];
+    v9 = [(NSMutableDictionary *)self->_upperQuiltViews objectForKey:identifierCopy];
     if (v9)
     {
       goto LABEL_5;
@@ -309,19 +309,19 @@ LABEL_7:
 
     if (!self->_sharedUpperQuiltView)
     {
-      v9 = [(UnityPoster *)self currentUpperQuiltViewForLookIdentifier:v6];
+      v9 = [(UnityPoster *)self currentUpperQuiltViewForLookIdentifier:identifierCopy];
       if (!v9)
       {
         v11 = [UPQuiltViewPhone alloc];
-        [v12 bounds];
+        [viewCopy bounds];
         v10 = [v11 initWithFrame:?];
         [(UnityPoster *)self _timeLayoutRect];
         [v10 setTimeRect:?];
         [CSProminentLayoutController frameForElements:16 variant:1];
         [v10 setLandscapeWidgetRect:?];
-        [v12 addSubview:v10];
-        [(UnityPoster *)self updateCurrentUpperQuiltView:v10 lookIdentifier:v6];
-        [(UnityPoster *)self setupFullscreenConstraintsForView:v10 container:v12];
+        [viewCopy addSubview:v10];
+        [(UnityPoster *)self updateCurrentUpperQuiltView:v10 lookIdentifier:identifierCopy];
+        [(UnityPoster *)self setupFullscreenConstraintsForView:v10 container:viewCopy];
         goto LABEL_6;
       }
 
@@ -332,10 +332,10 @@ LABEL_6:
   }
 }
 
-- (void)_setupLowerQuiltViewsIfNecessaryInParentView:(id)a3 lookIdentifier:(id)a4
+- (void)_setupLowerQuiltViewsIfNecessaryInParentView:(id)view lookIdentifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
+  viewCopy = view;
+  identifierCopy = identifier;
   if (!self->_lowerQuiltViews)
   {
     v7 = +[NSMutableDictionary dictionary];
@@ -343,9 +343,9 @@ LABEL_6:
     self->_lowerQuiltViews = v7;
   }
 
-  if (v6)
+  if (identifierCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_lowerQuiltViews objectForKey:v6];
+    v9 = [(NSMutableDictionary *)self->_lowerQuiltViews objectForKey:identifierCopy];
     if (v9)
     {
       goto LABEL_5;
@@ -353,18 +353,18 @@ LABEL_6:
 
     if (!self->_sharedLowerQuiltView)
     {
-      v9 = [(UnityPoster *)self currentLowerQuiltViewForLookIdentifier:v6];
+      v9 = [(UnityPoster *)self currentLowerQuiltViewForLookIdentifier:identifierCopy];
       if (!v9)
       {
         v11 = [UPQuiltViewPhone alloc];
-        [v12 bounds];
+        [viewCopy bounds];
         v10 = [v11 initWithFrame:?];
         [(UnityPoster *)self _timeLayoutRect];
         [v10 setTimeRect:?];
         [v10 setQuiltViewDelegate:self];
-        [v12 addSubview:v10];
-        [(UnityPoster *)self updateCurrentLowerQuiltView:v10 lookIdentifier:v6];
-        [(UnityPoster *)self setupFullscreenConstraintsForView:v10 container:v12];
+        [viewCopy addSubview:v10];
+        [(UnityPoster *)self updateCurrentLowerQuiltView:v10 lookIdentifier:identifierCopy];
+        [(UnityPoster *)self setupFullscreenConstraintsForView:v10 container:viewCopy];
         goto LABEL_6;
       }
 
@@ -375,61 +375,61 @@ LABEL_6:
   }
 }
 
-- (void)_setupViewsInBackgroundView:(id)a3 foregroundView:(id)a4 lookIdentifier:(id)a5
+- (void)_setupViewsInBackgroundView:(id)view foregroundView:(id)foregroundView lookIdentifier:(id)identifier
 {
-  v25 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v25 bounds];
+  viewCopy = view;
+  foregroundViewCopy = foregroundView;
+  identifierCopy = identifier;
+  [viewCopy bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v18 = +[UIDevice currentDevice];
-  v19 = [v18 userInterfaceIdiom];
+  userInterfaceIdiom = [v18 userInterfaceIdiom];
 
-  if (v19 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    [(UnityPoster *)self _setupQuiltViewIfNecessaryInParentView:v8 lookIdentifier:self->_currentLookIdentifier];
+    [(UnityPoster *)self _setupQuiltViewIfNecessaryInParentView:foregroundViewCopy lookIdentifier:self->_currentLookIdentifier];
   }
 
   else
   {
     v20 = +[UIDevice currentDevice];
-    v21 = [v20 userInterfaceIdiom];
+    userInterfaceIdiom2 = [v20 userInterfaceIdiom];
 
-    if (!v21)
+    if (!userInterfaceIdiom2)
     {
-      [(UnityPoster *)self _setupUpperQuiltViewsIfNecessaryInParentView:v8 lookIdentifier:v9];
-      [(UnityPoster *)self _setupLowerQuiltViewsIfNecessaryInParentView:v25 lookIdentifier:v9];
+      [(UnityPoster *)self _setupUpperQuiltViewsIfNecessaryInParentView:foregroundViewCopy lookIdentifier:identifierCopy];
+      [(UnityPoster *)self _setupLowerQuiltViewsIfNecessaryInParentView:viewCopy lookIdentifier:identifierCopy];
       v22 = +[UIColor blackColor];
-      [v25 setBackgroundColor:v22];
+      [viewCopy setBackgroundColor:v22];
 
-      v23 = [(UnityPoster *)self currentUpperQuiltViewForLookIdentifier:v9];
-      v24 = [(UnityPoster *)self currentLowerQuiltViewForLookIdentifier:v9];
+      v23 = [(UnityPoster *)self currentUpperQuiltViewForLookIdentifier:identifierCopy];
+      v24 = [(UnityPoster *)self currentLowerQuiltViewForLookIdentifier:identifierCopy];
       [(UnityPoster *)self _setupConfigurationWithBounds:v23 upperQuiltView:v24 lowerQuiltView:v11, v13, v15, v17];
-      [(UnityPoster *)self _updateColorsForIdentifier:v9 upperQuiltView:v23 lowerQuiltView:v24 progress:0.0];
-      [(UnityPoster *)self updateCurrentUpperQuiltView:v23 lookIdentifier:v9];
-      [(UnityPoster *)self updateCurrentLowerQuiltView:v24 lookIdentifier:v9];
+      [(UnityPoster *)self _updateColorsForIdentifier:identifierCopy upperQuiltView:v23 lowerQuiltView:v24 progress:0.0];
+      [(UnityPoster *)self updateCurrentUpperQuiltView:v23 lookIdentifier:identifierCopy];
+      [(UnityPoster *)self updateCurrentLowerQuiltView:v24 lookIdentifier:identifierCopy];
     }
   }
 }
 
-- (void)_setupConfigurationWithBounds:(CGRect)a3 upperQuiltView:(id)a4 lowerQuiltView:(id)a5
+- (void)_setupConfigurationWithBounds:(CGRect)bounds upperQuiltView:(id)view lowerQuiltView:(id)quiltView
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
-  v12 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  quiltViewCopy = quiltView;
+  viewCopy = view;
   [CSProminentLayoutController frameForElements:1 variant:1];
   v13 = [UPQuiltConfigurationPhone alloc];
   [(UnityPoster *)self _timeLayoutRect];
   v18 = [v13 initWithRandomizationSeedValue:0 viewport:x timeBounds:y lineVariance:{width, height, v14, v15, v16, v17, 0x3FC999999999999ALL}];
-  [v12 setConfiguration:v18];
+  [viewCopy setConfiguration:v18];
 
-  [v11 setConfiguration:v18];
+  [quiltViewCopy setConfiguration:v18];
 }
 
 - (CGRect)_timeLayoutRect
@@ -445,17 +445,17 @@ LABEL_6:
 - (void)cleanupQuiltViews
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
     p_quiltViews = &self->_quiltViews;
-    v6 = [(NSMutableDictionary *)self->_quiltViews allValues];
-    v7 = [v6 countByEnumeratingWithState:&v33 objects:v39 count:16];
+    allValues = [(NSMutableDictionary *)self->_quiltViews allValues];
+    v7 = [allValues countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v7)
     {
       v8 = v7;
@@ -467,13 +467,13 @@ LABEL_6:
         {
           if (*v34 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v33 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v33 objects:v39 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v33 objects:v39 count:16];
       }
 
       while (v8);
@@ -488,9 +488,9 @@ LABEL_6:
   else
   {
     v12 = +[UIDevice currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    userInterfaceIdiom2 = [v12 userInterfaceIdiom];
 
-    if (v13)
+    if (userInterfaceIdiom2)
     {
       return;
     }
@@ -499,8 +499,8 @@ LABEL_6:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = [(NSMutableDictionary *)self->_lowerQuiltViews allValues];
-    v15 = [v14 countByEnumeratingWithState:&v29 objects:v38 count:16];
+    allValues2 = [(NSMutableDictionary *)self->_lowerQuiltViews allValues];
+    v15 = [allValues2 countByEnumeratingWithState:&v29 objects:v38 count:16];
     if (v15)
     {
       v16 = v15;
@@ -511,13 +511,13 @@ LABEL_6:
         {
           if (*v30 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allValues2);
           }
 
           [*(*(&v29 + 1) + 8 * j) removeFromSuperview];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        v16 = [allValues2 countByEnumeratingWithState:&v29 objects:v38 count:16];
       }
 
       while (v16);
@@ -533,8 +533,8 @@ LABEL_6:
     v25 = 0u;
     v26 = 0u;
     p_quiltViews = &self->_upperQuiltViews;
-    v6 = [(NSMutableDictionary *)self->_upperQuiltViews allValues];
-    v20 = [v6 countByEnumeratingWithState:&v25 objects:v37 count:16];
+    allValues = [(NSMutableDictionary *)self->_upperQuiltViews allValues];
+    v20 = [allValues countByEnumeratingWithState:&v25 objects:v37 count:16];
     if (v20)
     {
       v21 = v20;
@@ -546,13 +546,13 @@ LABEL_6:
         {
           if (*v26 != v22)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v25 + 1) + 8 * k) removeFromSuperview];
         }
 
-        v21 = [v6 countByEnumeratingWithState:&v25 objects:v37 count:16];
+        v21 = [allValues countByEnumeratingWithState:&v25 objects:v37 count:16];
       }
 
       while (v21);
@@ -570,35 +570,35 @@ LABEL_6:
   *(&self->super.isa + v10) = 0;
 }
 
-- (BOOL)wantsLowBrightness:(id)a3
+- (BOOL)wantsLowBrightness:(id)brightness
 {
-  v3 = a3;
-  if ([v3 isLowLuminance])
+  brightnessCopy = brightness;
+  if ([brightnessCopy isLowLuminance])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v3 traitCollection];
-    if ([v5 _backlightLuminance] == 1)
+    traitCollection = [brightnessCopy traitCollection];
+    if ([traitCollection _backlightLuminance] == 1)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [v3 traitCollection];
-      v4 = [v6 _backlightLuminance] == 0;
+      traitCollection2 = [brightnessCopy traitCollection];
+      v4 = [traitCollection2 _backlightLuminance] == 0;
     }
   }
 
   return v4;
 }
 
-- (int64_t)deviceOrientationFromEnvironment:(id)a3
+- (int64_t)deviceOrientationFromEnvironment:(id)environment
 {
-  result = [a3 deviceOrientation];
+  result = [environment deviceOrientation];
   if (result <= 1)
   {
     return 1;
@@ -607,13 +607,13 @@ LABEL_6:
   return result;
 }
 
-- (void)updateCurrentQuiltViewsForLookIdentifier:(id)a3 interfaceOrientation:(int64_t)a4 unlockProgress:(double)a5
+- (void)updateCurrentQuiltViewsForLookIdentifier:(id)identifier interfaceOrientation:(int64_t)orientation unlockProgress:(double)progress
 {
   sharedQuiltView = self->_sharedQuiltView;
   if (sharedQuiltView)
   {
 
-    [(UPQuiltViewPad *)sharedQuiltView updateQuiltsWithIdentifier:a3 deviceInterfaceOrientation:a4 unlockProgress:a5];
+    [(UPQuiltViewPad *)sharedQuiltView updateQuiltsWithIdentifier:identifier deviceInterfaceOrientation:orientation unlockProgress:progress];
   }
 
   else
@@ -625,58 +625,58 @@ LABEL_6:
     v10[1] = 3221225472;
     v10[2] = sub_100002A84;
     v10[3] = &unk_10000C408;
-    v10[4] = a4;
-    *&v10[5] = a5;
+    v10[4] = orientation;
+    *&v10[5] = progress;
     [(NSMutableDictionary *)quiltViews enumerateKeysAndObjectsUsingBlock:v10];
   }
 }
 
-- (void)updateCurrentQuiltView:(id)a3 forLookIdentifier:(id)a4
+- (void)updateCurrentQuiltView:(id)view forLookIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = v7;
+  viewCopy = view;
+  v8 = viewCopy;
   if (self->_renderer)
   {
-    objc_storeStrong(&self->_sharedQuiltView, a3);
+    objc_storeStrong(&self->_sharedQuiltView, view);
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_quiltViews setObject:v7 forKey:a4];
+    [(NSMutableDictionary *)self->_quiltViews setObject:viewCopy forKey:identifier];
   }
 }
 
-- (void)updateCurrentUpperQuiltView:(id)a3 lookIdentifier:(id)a4
+- (void)updateCurrentUpperQuiltView:(id)view lookIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = v7;
+  viewCopy = view;
+  v8 = viewCopy;
   if (self->_renderer)
   {
-    objc_storeStrong(&self->_sharedUpperQuiltView, a3);
+    objc_storeStrong(&self->_sharedUpperQuiltView, view);
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_upperQuiltViews setObject:v7 forKey:a4];
+    [(NSMutableDictionary *)self->_upperQuiltViews setObject:viewCopy forKey:identifier];
   }
 }
 
-- (void)updateCurrentLowerQuiltView:(id)a3 lookIdentifier:(id)a4
+- (void)updateCurrentLowerQuiltView:(id)view lookIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = v7;
+  viewCopy = view;
+  v8 = viewCopy;
   if (self->_renderer)
   {
-    objc_storeStrong(&self->_sharedLowerQuiltView, a3);
+    objc_storeStrong(&self->_sharedLowerQuiltView, view);
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_lowerQuiltViews setObject:v7 forKey:a4];
+    [(NSMutableDictionary *)self->_lowerQuiltViews setObject:viewCopy forKey:identifier];
   }
 }
 
-- (id)currentUpperQuiltViewForLookIdentifier:(id)a3
+- (id)currentUpperQuiltViewForLookIdentifier:(id)identifier
 {
   if (self->_renderer)
   {
@@ -685,13 +685,13 @@ LABEL_6:
 
   else
   {
-    v3 = [(NSMutableDictionary *)self->_upperQuiltViews objectForKey:a3];
+    v3 = [(NSMutableDictionary *)self->_upperQuiltViews objectForKey:identifier];
   }
 
   return v3;
 }
 
-- (id)currentLowerQuiltViewForLookIdentifier:(id)a3
+- (id)currentLowerQuiltViewForLookIdentifier:(id)identifier
 {
   if (self->_renderer)
   {
@@ -700,7 +700,7 @@ LABEL_6:
 
   else
   {
-    v3 = [(NSMutableDictionary *)self->_lowerQuiltViews objectForKey:a3];
+    v3 = [(NSMutableDictionary *)self->_lowerQuiltViews objectForKey:identifier];
   }
 
   return v3;
@@ -714,11 +714,11 @@ LABEL_6:
   [(UnityPoster *)self _setupConfigurationWithBounds:v4 upperQuiltView:v3 lowerQuiltView:?];
 }
 
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_renderer, a3);
+  rendererCopy = renderer;
+  environmentCopy = environment;
+  objc_storeStrong(&self->_renderer, renderer);
   if (!self->_unityOptions)
   {
     v9 = objc_alloc_init(UnityOptions);
@@ -726,11 +726,11 @@ LABEL_6:
     self->_unityOptions = v9;
   }
 
-  [(UnityOptions *)self->_unityOptions setLowBrightness:[(UnityPoster *)self wantsLowBrightness:v8]];
-  self->_isPreview = [v8 isPreview];
+  [(UnityOptions *)self->_unityOptions setLowBrightness:[(UnityPoster *)self wantsLowBrightness:environmentCopy]];
+  self->_isPreview = [environmentCopy isPreview];
   *&self->_unlockProgress = xmmword_100005E10;
-  v11 = [v8 contents];
-  v12 = [v11 loadUserInfoWithError:0];
+  contents = [environmentCopy contents];
+  v12 = [contents loadUserInfoWithError:0];
 
   currentLookIdentifier = [v12 objectForKey:@"lookIdentifier"];
   if (currentLookIdentifier && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -752,9 +752,9 @@ LABEL_6:
 
   currentLookIdentifier = &v14->isa;
 LABEL_9:
-  v15 = [v7 backgroundView];
-  v16 = [v7 foregroundView];
-  [(UnityPoster *)self _setupViewsInBackgroundView:v15 foregroundView:v16 lookIdentifier:self->_currentLookIdentifier];
+  backgroundView = [rendererCopy backgroundView];
+  foregroundView = [rendererCopy foregroundView];
+  [(UnityPoster *)self _setupViewsInBackgroundView:backgroundView foregroundView:foregroundView lookIdentifier:self->_currentLookIdentifier];
 
   [(UnityPoster *)self _greenColor];
   v29[0] = _NSConcreteStackBlock;
@@ -762,12 +762,12 @@ LABEL_9:
   v29[2] = sub_100002FE0;
   v17 = v29[3] = &unk_10000C430;
   v30 = v17;
-  [v7 updatePreferences:v29];
+  [rendererCopy updatePreferences:v29];
   wakeProgress = self->_wakeProgress;
-  [v8 backlightProgress];
+  [environmentCopy backlightProgress];
   if (wakeProgress != v19)
   {
-    [v8 backlightProgress];
+    [environmentCopy backlightProgress];
     self->_wakeProgress = v20;
   }
 
@@ -775,23 +775,23 @@ LABEL_9:
   if (!UIAccessibilityIsReduceMotionEnabled())
   {
     unlockProgress = self->_unlockProgress;
-    [v8 unlockProgress];
+    [environmentCopy unlockProgress];
     if (unlockProgress == v23)
     {
       goto LABEL_15;
     }
 
-    [v8 unlockProgress];
+    [environmentCopy unlockProgress];
     v21 = v24;
   }
 
   self->_unlockProgress = v21;
 LABEL_15:
-  self->_currentDeviceInterfaceOrientation = [(UnityPoster *)self deviceOrientationFromEnvironment:v8];
+  self->_currentDeviceInterfaceOrientation = [(UnityPoster *)self deviceOrientationFromEnvironment:environmentCopy];
   v25 = +[UIDevice currentDevice];
-  v26 = [v25 userInterfaceIdiom];
+  userInterfaceIdiom = [v25 userInterfaceIdiom];
 
-  if (!v26)
+  if (!userInterfaceIdiom)
   {
     v27 = [(UnityPoster *)self currentUpperQuiltViewForLookIdentifier:self->_currentLookIdentifier];
     v28 = [(UnityPoster *)self currentLowerQuiltViewForLookIdentifier:self->_currentLookIdentifier];
@@ -800,35 +800,35 @@ LABEL_15:
   }
 }
 
-- (void)renderer:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)renderer:(id)renderer didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
-  v29 = a4;
-  self->_isPreview = [v29 isPreview];
+  environmentCopy = environment;
+  self->_isPreview = [environmentCopy isPreview];
   wakeProgress = self->_wakeProgress;
-  [v29 backlightProgress];
+  [environmentCopy backlightProgress];
   if (wakeProgress != v7)
   {
-    [v29 backlightProgress];
+    [environmentCopy backlightProgress];
     self->_wakeProgress = v8;
   }
 
-  v9 = [(UnityPoster *)self wantsLowBrightness:v29];
+  v9 = [(UnityPoster *)self wantsLowBrightness:environmentCopy];
   if (v9 != [(UnityOptions *)self->_unityOptions lowBrightness])
   {
     [(UnityOptions *)self->_unityOptions setLowBrightness:v9];
   }
 
-  v10 = [v29 contents];
-  v11 = [v10 loadUserInfoWithError:0];
+  contents = [environmentCopy contents];
+  v11 = [contents loadUserInfoWithError:0];
 
   v12 = [v11 objectForKey:@"lookIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = +[UIDevice currentDevice];
-    v14 = [v13 userInterfaceIdiom];
+    userInterfaceIdiom = [v13 userInterfaceIdiom];
 
-    if (!v14)
+    if (!userInterfaceIdiom)
     {
       v15 = [(UnityPoster *)self currentUpperQuiltViewForLookIdentifier:self->_currentLookIdentifier];
       v16 = [(UnityPoster *)self currentLowerQuiltViewForLookIdentifier:self->_currentLookIdentifier];
@@ -840,24 +840,24 @@ LABEL_15:
   if (!UIAccessibilityIsReduceMotionEnabled())
   {
     unlockProgress = self->_unlockProgress;
-    [v29 unlockProgress];
+    [environmentCopy unlockProgress];
     if (unlockProgress == v19)
     {
       goto LABEL_12;
     }
 
-    [v29 unlockProgress];
+    [environmentCopy unlockProgress];
     v17 = v20;
   }
 
   self->_unlockProgress = v17;
 LABEL_12:
   v21 = +[UIDevice currentDevice];
-  v22 = [v21 userInterfaceIdiom];
+  userInterfaceIdiom2 = [v21 userInterfaceIdiom];
 
-  if (v22 == 1)
+  if (userInterfaceIdiom2 == 1)
   {
-    v23 = [(UnityPoster *)self deviceOrientationFromEnvironment:v29];
+    v23 = [(UnityPoster *)self deviceOrientationFromEnvironment:environmentCopy];
     currentDeviceInterfaceOrientation = v23;
     if (v23 != self->_currentDeviceInterfaceOrientation)
     {
@@ -870,9 +870,9 @@ LABEL_12:
   }
 
   v25 = +[UIDevice currentDevice];
-  v26 = [v25 userInterfaceIdiom];
+  userInterfaceIdiom3 = [v25 userInterfaceIdiom];
 
-  if (!v26)
+  if (!userInterfaceIdiom3)
   {
     v27 = [(UnityPoster *)self currentUpperQuiltViewForLookIdentifier:self->_currentLookIdentifier];
     v28 = [(UnityPoster *)self currentLowerQuiltViewForLookIdentifier:self->_currentLookIdentifier];
@@ -881,19 +881,19 @@ LABEL_12:
   }
 }
 
-- (void)rendererDidInvalidate:(id)a3
+- (void)rendererDidInvalidate:(id)invalidate
 {
   [(UnityPoster *)self cleanupQuiltViews];
   renderer = self->_renderer;
   self->_renderer = 0;
 }
 
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment
 {
-  v10 = a3;
-  objc_storeStrong(&self->_editor, a3);
-  v7 = a4;
-  v8 = [(UnityPoster *)self deviceOrientationFromEnvironment:v7];
+  editorCopy = editor;
+  objc_storeStrong(&self->_editor, editor);
+  environmentCopy = environment;
+  v8 = [(UnityPoster *)self deviceOrientationFromEnvironment:environmentCopy];
 
   currentDeviceInterfaceOrientation = self->_currentDeviceInterfaceOrientation;
   if (!currentDeviceInterfaceOrientation || v8 != currentDeviceInterfaceOrientation)
@@ -903,9 +903,9 @@ LABEL_12:
   }
 }
 
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
-  v6 = [(UnityPoster *)self deviceOrientationFromEnvironment:a4];
+  v6 = [(UnityPoster *)self deviceOrientationFromEnvironment:environment];
   if (v6 != self->_currentDeviceInterfaceOrientation)
   {
     self->_currentDeviceInterfaceOrientation = v6;
@@ -915,7 +915,7 @@ LABEL_12:
   }
 }
 
-- (id)looksForEditor:(id)a3
+- (id)looksForEditor:(id)editor
 {
   v3 = [PRTimeFontConfiguration alloc];
   v4 = [v3 initWithTimeFontIdentifier:PRTimeFontIdentifierPrivateSystemSoftHeavy];
@@ -938,11 +938,11 @@ LABEL_12:
   return v15;
 }
 
-- (id)initialLookIdentifierForEditor:(id)a3
+- (id)initialLookIdentifierForEditor:(id)editor
 {
-  v3 = [a3 environment];
-  v4 = [v3 sourceContents];
-  v5 = [v4 loadUserInfoWithError:0];
+  environment = [editor environment];
+  sourceContents = [environment sourceContents];
+  v5 = [sourceContents loadUserInfoWithError:0];
 
   v6 = [v5 objectForKey:@"lookIdentifier"];
   v7 = v6;
@@ -961,63 +961,63 @@ LABEL_12:
   return v8;
 }
 
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look
 {
-  v22 = a4;
-  v7 = a5;
+  viewsCopy = views;
+  lookCopy = look;
   v8 = +[UIDevice currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  userInterfaceIdiom = [v8 userInterfaceIdiom];
 
-  if (v9 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v10 = [v7 identifier];
+    identifier = [lookCopy identifier];
 
-    if (v10)
+    if (identifier)
     {
-      v11 = [v7 identifier];
+      identifier2 = [lookCopy identifier];
       currentLookIdentifier = self->_currentLookIdentifier;
-      self->_currentLookIdentifier = v11;
+      self->_currentLookIdentifier = identifier2;
     }
 
-    v13 = [v22 foregroundView];
-    [(UnityPoster *)self _setupQuiltViewIfNecessaryInParentView:v13 lookIdentifier:self->_currentLookIdentifier];
+    foregroundView = [viewsCopy foregroundView];
+    [(UnityPoster *)self _setupQuiltViewIfNecessaryInParentView:foregroundView lookIdentifier:self->_currentLookIdentifier];
 
-    v14 = [(NSMutableDictionary *)self->_quiltViews objectForKey:self->_currentLookIdentifier];
-    [v14 updateQuiltsWithIdentifier:self->_currentLookIdentifier deviceInterfaceOrientation:self->_currentDeviceInterfaceOrientation unlockProgress:0.0];
+    backgroundView = [(NSMutableDictionary *)self->_quiltViews objectForKey:self->_currentLookIdentifier];
+    [backgroundView updateQuiltsWithIdentifier:self->_currentLookIdentifier deviceInterfaceOrientation:self->_currentDeviceInterfaceOrientation unlockProgress:0.0];
   }
 
   else
   {
     v15 = +[UIDevice currentDevice];
-    v16 = [v15 userInterfaceIdiom];
+    userInterfaceIdiom2 = [v15 userInterfaceIdiom];
 
-    if (v16)
+    if (userInterfaceIdiom2)
     {
       goto LABEL_10;
     }
 
-    v17 = [v7 identifier];
+    identifier3 = [lookCopy identifier];
 
-    if (v17)
+    if (identifier3)
     {
-      v18 = [v7 identifier];
+      identifier4 = [lookCopy identifier];
       v19 = self->_currentLookIdentifier;
-      self->_currentLookIdentifier = v18;
+      self->_currentLookIdentifier = identifier4;
     }
 
-    v14 = [v22 backgroundView];
-    v20 = [v22 foregroundView];
-    v21 = [v7 identifier];
-    [(UnityPoster *)self _setupViewsInBackgroundView:v14 foregroundView:v20 lookIdentifier:v21];
+    backgroundView = [viewsCopy backgroundView];
+    foregroundView2 = [viewsCopy foregroundView];
+    identifier5 = [lookCopy identifier];
+    [(UnityPoster *)self _setupViewsInBackgroundView:backgroundView foregroundView:foregroundView2 lookIdentifier:identifier5];
   }
 
 LABEL_10:
 }
 
-- (void)editor:(id)a3 didTransitionToLook:(id)a4 progress:(double)a5
+- (void)editor:(id)editor didTransitionToLook:(id)look progress:(double)progress
 {
-  v17 = a4;
-  v8 = [a3 currentLook];
+  lookCopy = look;
+  currentLook = [editor currentLook];
   unityOptions = self->_unityOptions;
   if (!unityOptions)
   {
@@ -1030,49 +1030,49 @@ LABEL_10:
 
   [(UnityOptions *)unityOptions setLowBrightness:0];
   v12 = +[UIDevice currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  userInterfaceIdiom = [v12 userInterfaceIdiom];
 
-  if (!v13)
+  if (!userInterfaceIdiom)
   {
     v14 = [(UnityPoster *)self currentUpperQuiltViewForLookIdentifier:self->_currentLookIdentifier];
     v15 = [(UnityPoster *)self currentLowerQuiltViewForLookIdentifier:self->_currentLookIdentifier];
-    v16 = [v17 identifier];
-    [(UnityPoster *)self _updateColorsForIdentifier:v16 upperQuiltView:v14 lowerQuiltView:v15 progress:a5];
+    identifier = [lookCopy identifier];
+    [(UnityPoster *)self _updateColorsForIdentifier:identifier upperQuiltView:v14 lowerQuiltView:v15 progress:progress];
   }
 }
 
-- (void)editor:(id)a3 didFinishTransitionToLook:(id)a4
+- (void)editor:(id)editor didFinishTransitionToLook:(id)look
 {
-  v10 = a4;
+  lookCopy = look;
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v7 = [v10 identifier];
+    identifier = [lookCopy identifier];
 
-    if (v7)
+    if (identifier)
     {
-      v8 = [v10 identifier];
+      identifier2 = [lookCopy identifier];
       currentLookIdentifier = self->_currentLookIdentifier;
-      self->_currentLookIdentifier = v8;
+      self->_currentLookIdentifier = identifier2;
     }
 
     [(UnityPoster *)self updateCurrentQuiltViewsForLookIdentifier:self->_currentLookIdentifier interfaceOrientation:self->_currentDeviceInterfaceOrientation unlockProgress:self->_unlockProgress];
   }
 }
 
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion
 {
-  v21 = a3;
-  v5 = a4;
-  v6 = [v21 environment];
-  v7 = [v6 sourceContents];
-  v8 = [v7 descriptorIdentifier];
+  editorCopy = editor;
+  completionCopy = completion;
+  environment = [editorCopy environment];
+  sourceContents = [environment sourceContents];
+  descriptorIdentifier = [sourceContents descriptorIdentifier];
 
-  v9 = [v21 environment];
-  v10 = [v9 sourceContents];
-  v11 = [v10 loadUserInfoWithError:0];
+  environment2 = [editorCopy environment];
+  sourceContents2 = [environment2 sourceContents];
+  v11 = [sourceContents2 loadUserInfoWithError:0];
 
   v12 = [v11 mutableCopy];
   v13 = v12;
@@ -1088,9 +1088,9 @@ LABEL_10:
 
   v15 = v14;
 
-  if (v8)
+  if (descriptorIdentifier)
   {
-    v16 = v8;
+    v16 = descriptorIdentifier;
   }
 
   else
@@ -1099,18 +1099,18 @@ LABEL_10:
   }
 
   [v15 setObject:v16 forKey:@"descriptor"];
-  v17 = [v21 currentLook];
-  v18 = [v17 identifier];
-  [v15 setObject:v18 forKey:@"lookIdentifier"];
+  currentLook = [editorCopy currentLook];
+  identifier = [currentLook identifier];
+  [v15 setObject:identifier forKey:@"lookIdentifier"];
 
-  v19 = [v21 environment];
-  v20 = [v19 targetConfiguration];
-  [v20 storeUserInfo:v15 error:0];
+  environment3 = [editorCopy environment];
+  targetConfiguration = [environment3 targetConfiguration];
+  [targetConfiguration storeUserInfo:v15 error:0];
 
-  v5[2](v5);
+  completionCopy[2](completionCopy);
 }
 
-- (void)editorDidInvalidate:(id)a3
+- (void)editorDidInvalidate:(id)invalidate
 {
   editor = self->_editor;
   self->_editor = 0;
@@ -1118,14 +1118,14 @@ LABEL_10:
   [(UnityPoster *)self cleanupQuiltViews];
 }
 
-- (void)updateDescriptors:(id)a3 completion:(id)a4
+- (void)updateDescriptors:(id)descriptors completion:(id)completion
 {
-  v30 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  descriptorsCopy = descriptors;
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    v26 = v5;
+    v26 = completionCopy;
     v29 = [NSMutableArray arrayWithCapacity:3];
     v38[0] = @"3color";
     v38[1] = @"4color";
@@ -1152,7 +1152,7 @@ LABEL_10:
           }
 
           v11 = *(*(&v31 + 1) + 8 * i);
-          v12 = [v30 objectForKeyedSubscript:v11];
+          v12 = [descriptorsCopy objectForKeyedSubscript:v11];
           v13 = v12;
           if (!v12 || ([v12 preferredTitleColors], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "firstObject"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isLUTBackedColor"), v15, v14, (v16 & 1) == 0))
           {
@@ -1193,11 +1193,11 @@ LABEL_10:
   }
 }
 
-- (void)updateConfiguration:(id)a3 completion:(id)a4
+- (void)updateConfiguration:(id)configuration completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, a3, 0);
+    (*(completion + 2))(completion, configuration, 0);
   }
 }
 

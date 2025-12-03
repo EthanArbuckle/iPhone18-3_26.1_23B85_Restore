@@ -1,5 +1,5 @@
 @interface _PUIStylePickerHomeScreenVariationSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsGradientSlider;
 - (BOOL)_axIsLumaSlider;
 - (id)accessibilityLabel;
@@ -9,16 +9,16 @@
 
 @implementation _PUIStylePickerHomeScreenVariationSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_PUIStylePickerHomeScreenVariationSlider" isKindOfClass:@"PUIStyleVariationSlider"];
-  [v3 validateClass:@"PUIStyleVariationSlider" hasInstanceMethod:@"styleCoordinator" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUIStyleVariationSlider" hasInstanceMethod:@"contextIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUIStyleVariationSlider" hasInstanceMethod:@"value" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PUIStyleUICoordinator" hasInstanceVariable:@"_coordinatorImpl" withType:"<PUIStyleUICoordinatorImpl>"];
-  [v3 validateClass:@"_PUIStylePickerHomeScreenGradientSliderUICoordinatorImpl" hasInstanceMethod:@"effectiveColor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUIStyleVariationSlider" hasInstanceMethod:@"_setSliderValue:layout:fireActions:" withFullSignature:{"v", "d", "B", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_PUIStylePickerHomeScreenVariationSlider" isKindOfClass:@"PUIStyleVariationSlider"];
+  [validationsCopy validateClass:@"PUIStyleVariationSlider" hasInstanceMethod:@"styleCoordinator" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUIStyleVariationSlider" hasInstanceMethod:@"contextIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUIStyleVariationSlider" hasInstanceMethod:@"value" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PUIStyleUICoordinator" hasInstanceVariable:@"_coordinatorImpl" withType:"<PUIStyleUICoordinatorImpl>"];
+  [validationsCopy validateClass:@"_PUIStylePickerHomeScreenGradientSliderUICoordinatorImpl" hasInstanceMethod:@"effectiveColor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUIStyleVariationSlider" hasInstanceMethod:@"_setSliderValue:layout:fireActions:" withFullSignature:{"v", "d", "B", "B", 0}];
 }
 
 - (id)accessibilityLabel
@@ -27,7 +27,7 @@
   {
     v3 = @"home.screen.gradient.slider";
 LABEL_5:
-    v4 = accessibilityLocalizedString(v3);
+    accessibilityLabel = accessibilityLocalizedString(v3);
     goto LABEL_7;
   }
 
@@ -39,10 +39,10 @@ LABEL_5:
 
   v6.receiver = self;
   v6.super_class = _PUIStylePickerHomeScreenVariationSliderAccessibility;
-  v4 = [(_PUIStylePickerHomeScreenVariationSliderAccessibility *)&v6 accessibilityLabel];
+  accessibilityLabel = [(_PUIStylePickerHomeScreenVariationSliderAccessibility *)&v6 accessibilityLabel];
 LABEL_7:
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
@@ -57,7 +57,7 @@ LABEL_7:
   if ([(_PUIStylePickerHomeScreenVariationSliderAccessibility *)self _axIsLumaSlider])
   {
     [(_PUIStylePickerHomeScreenVariationSliderAccessibility *)self _axSliderValue];
-    v3 = AXFormatFloatWithPercentage();
+    accessibilityValue = AXFormatFloatWithPercentage();
   }
 
   else
@@ -72,10 +72,10 @@ LABEL_7:
 
     v7.receiver = self;
     v7.super_class = _PUIStylePickerHomeScreenVariationSliderAccessibility;
-    v3 = [(_PUIStylePickerHomeScreenVariationSliderAccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(_PUIStylePickerHomeScreenVariationSliderAccessibility *)&v7 accessibilityValue];
   }
 
-  v5 = v3;
+  v5 = accessibilityValue;
 LABEL_7:
 
   return v5;

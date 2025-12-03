@@ -1,15 +1,15 @@
 @interface VUILibraryMenuDataSourceFactory
 + (id)_validCategoriesForPlatform;
-+ (id)libraryMenuDataSourceForFamilyMember:(id)a3;
-+ (id)libraryMenuDataSourceForMediaLibrary:(id)a3;
++ (id)libraryMenuDataSourceForFamilyMember:(id)member;
++ (id)libraryMenuDataSourceForMediaLibrary:(id)library;
 @end
 
 @implementation VUILibraryMenuDataSourceFactory
 
-+ (id)libraryMenuDataSourceForMediaLibrary:(id)a3
++ (id)libraryMenuDataSourceForMediaLibrary:(id)library
 {
-  v3 = a3;
-  if ([v3 type])
+  libraryCopy = library;
+  if ([libraryCopy type])
   {
     +[VUILibraryMenuDataSourceFactory _validCategoriesForHomeSharing];
   }
@@ -20,17 +20,17 @@
   }
   v4 = ;
   v5 = [[VUIMPMenuDataSource alloc] initWithValidCategories:v4];
-  [(VUIMPMenuDataSource *)v5 setMediaLibrary:v3];
+  [(VUIMPMenuDataSource *)v5 setMediaLibrary:libraryCopy];
 
   return v5;
 }
 
-+ (id)libraryMenuDataSourceForFamilyMember:(id)a3
++ (id)libraryMenuDataSourceForFamilyMember:(id)member
 {
-  v3 = [a3 memberIdentifier];
-  v4 = [v3 stringValue];
+  memberIdentifier = [member memberIdentifier];
+  stringValue = [memberIdentifier stringValue];
 
-  if (v4)
+  if (stringValue)
   {
     v5 = +[VUILibraryMenuDataSourceFactory _validCategoriesForPlatform];
     v6 = [v5 mutableCopy];
@@ -40,7 +40,7 @@
     v8 = [v6 copy];
     v9 = [(VUIFamilySharingMenuDataSource *)v7 initWithValidCategories:v8];
 
-    [(VUIFamilySharingMenuDataSource *)v9 setOwnerIdentifier:v4];
+    [(VUIFamilySharingMenuDataSource *)v9 setOwnerIdentifier:stringValue];
   }
 
   else
@@ -54,20 +54,20 @@
 + (id)_validCategoriesForPlatform
 {
   v2 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{&unk_1F5E5D620, &unk_1F5E5D638, &unk_1F5E5D650, &unk_1F5E5D668, &unk_1F5E5D680, &unk_1F5E5D698, 0}];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{&unk_1F5E5D620, &unk_1F5E5D638, &unk_1F5E5D650, &unk_1F5E5D668, &unk_1F5E5D680, &unk_1F5E5D6B0, &unk_1F5E5D6C8, &unk_1F5E5D608, &unk_1F5E5D698, 0}];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DC938] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if (v7)
+    if (userInterfaceIdiom2)
     {
       goto LABEL_6;
     }

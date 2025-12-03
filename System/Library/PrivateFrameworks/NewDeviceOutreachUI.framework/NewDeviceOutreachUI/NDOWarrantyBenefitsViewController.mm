@@ -1,23 +1,23 @@
 @interface NDOWarrantyBenefitsViewController
 - (NDOWarranty)warranty;
-- (NDOWarrantyBenefitsViewController)initWithWarranty:(id)a3;
-- (void)donePressed:(id)a3;
+- (NDOWarrantyBenefitsViewController)initWithWarranty:(id)warranty;
+- (void)donePressed:(id)pressed;
 - (void)loadView;
 @end
 
 @implementation NDOWarrantyBenefitsViewController
 
-- (NDOWarrantyBenefitsViewController)initWithWarranty:(id)a3
+- (NDOWarrantyBenefitsViewController)initWithWarranty:(id)warranty
 {
-  v4 = a3;
-  v5 = [v4 localizedBenefitsCardTitle];
+  warrantyCopy = warranty;
+  localizedBenefitsCardTitle = [warrantyCopy localizedBenefitsCardTitle];
   v8.receiver = self;
   v8.super_class = NDOWarrantyBenefitsViewController;
-  v6 = [(OBTextWelcomeController *)&v8 initWithTitle:v5];
+  v6 = [(OBTextWelcomeController *)&v8 initWithTitle:localizedBenefitsCardTitle];
 
   if (v6)
   {
-    objc_storeWeak(&v6->_warranty, v4);
+    objc_storeWeak(&v6->_warranty, warrantyCopy);
   }
 
   return v6;
@@ -29,36 +29,36 @@
   v16.super_class = NDOWarrantyBenefitsViewController;
   [(OBTextWelcomeController *)&v16 loadView];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_donePressed_];
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
-  v5 = [(NDOWarrantyBenefitsViewController *)self warranty];
-  v6 = [v5 localizedBenefitsCardSubTitle];
+  warranty = [(NDOWarrantyBenefitsViewController *)self warranty];
+  localizedBenefitsCardSubTitle = [warranty localizedBenefitsCardSubTitle];
 
-  if (v6)
+  if (localizedBenefitsCardSubTitle)
   {
-    v7 = [(NDOWarrantyBenefitsViewController *)self warranty];
-    v8 = [v7 localizedBenefitsCardSubTitle];
-    [(OBTextWelcomeController *)self addSectionWithHeader:0 content:v8];
+    warranty2 = [(NDOWarrantyBenefitsViewController *)self warranty];
+    localizedBenefitsCardSubTitle2 = [warranty2 localizedBenefitsCardSubTitle];
+    [(OBTextWelcomeController *)self addSectionWithHeader:0 content:localizedBenefitsCardSubTitle2];
   }
 
-  v9 = [(NDOWarrantyBenefitsViewController *)self warranty];
-  v10 = [v9 benefitDetailsArray];
+  warranty3 = [(NDOWarrantyBenefitsViewController *)self warranty];
+  benefitDetailsArray = [warranty3 benefitDetailsArray];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __45__NDOWarrantyBenefitsViewController_loadView__block_invoke;
   v15[3] = &unk_2799788E0;
   v15[4] = self;
-  [v10 enumerateObjectsUsingBlock:v15];
+  [benefitDetailsArray enumerateObjectsUsingBlock:v15];
 
-  v11 = [(NDOWarrantyBenefitsViewController *)self warranty];
-  v12 = [v11 localizedBenefitsCardFooter];
+  warranty4 = [(NDOWarrantyBenefitsViewController *)self warranty];
+  localizedBenefitsCardFooter = [warranty4 localizedBenefitsCardFooter];
 
-  if (v12)
+  if (localizedBenefitsCardFooter)
   {
-    v13 = [(NDOWarrantyBenefitsViewController *)self warranty];
-    v14 = [v13 localizedBenefitsCardFooter];
-    [(OBTextWelcomeController *)self addSectionWithHeader:0 content:v14];
+    warranty5 = [(NDOWarrantyBenefitsViewController *)self warranty];
+    localizedBenefitsCardFooter2 = [warranty5 localizedBenefitsCardFooter];
+    [(OBTextWelcomeController *)self addSectionWithHeader:0 content:localizedBenefitsCardFooter2];
   }
 }
 
@@ -72,10 +72,10 @@ void __45__NDOWarrantyBenefitsViewController_loadView__block_invoke(uint64_t a1,
   [v2 addSectionWithHeader:v5 content:v4];
 }
 
-- (void)donePressed:(id)a3
+- (void)donePressed:(id)pressed
 {
-  v3 = [(NDOWarrantyBenefitsViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(NDOWarrantyBenefitsViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (NDOWarranty)warranty

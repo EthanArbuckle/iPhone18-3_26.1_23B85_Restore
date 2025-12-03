@@ -1,32 +1,32 @@
 @interface PIPerspectiveAutoCalculator
-+ (void)undoOrientation:(int64_t)a3 forPitch:(double *)a4 yaw:(double *)a5 angle:(double *)a6;
-- (BOOL)canGenerateNewCropRect:(id *)a3;
-- (BOOL)hasFrontFacingCameraDimentions:(id)a3;
-- (BOOL)isFrontFacingCameraImage:(id)a3 pixelSize:(id)a4;
-- (BOOL)passesBuildingCheck:(id *)a3;
-- (BOOL)passesConfidenceCheck:(id)a3 error:(id *)a4;
-- (BOOL)passesFaceCheck:(id *)a3;
-- (BOOL)passesImagePropertiesCheck:(id *)a3;
-- (BOOL)passesMinimumCorrectionCheck:(id)a3 error:(id *)a4;
-- (PIPerspectiveAutoCalculator)initWithComposition:(id)a3;
-- (PIPerspectiveAutoCalculator)initWithMedia:(id)a3;
-- (PIPerspectiveAutoCalculator)initWithRequest:(id)a3;
-- (float)getSizeOfAllFaces:(id)a3;
-- (id)primaryImageProperties:(id *)a3;
-- (void)addMethodDiagnostics:(id)a3 details:(id)a4;
-- (void)addMethodResultToDiagnostics:(id)a3 error:(id)a4 setYawPitchError:(BOOL)a5;
-- (void)submit:(id)a3;
-- (void)submitVerified:(id)a3;
++ (void)undoOrientation:(int64_t)orientation forPitch:(double *)pitch yaw:(double *)yaw angle:(double *)angle;
+- (BOOL)canGenerateNewCropRect:(id *)rect;
+- (BOOL)hasFrontFacingCameraDimentions:(id)dimentions;
+- (BOOL)isFrontFacingCameraImage:(id)image pixelSize:(id)size;
+- (BOOL)passesBuildingCheck:(id *)check;
+- (BOOL)passesConfidenceCheck:(id)check error:(id *)error;
+- (BOOL)passesFaceCheck:(id *)check;
+- (BOOL)passesImagePropertiesCheck:(id *)check;
+- (BOOL)passesMinimumCorrectionCheck:(id)check error:(id *)error;
+- (PIPerspectiveAutoCalculator)initWithComposition:(id)composition;
+- (PIPerspectiveAutoCalculator)initWithMedia:(id)media;
+- (PIPerspectiveAutoCalculator)initWithRequest:(id)request;
+- (float)getSizeOfAllFaces:(id)faces;
+- (id)primaryImageProperties:(id *)properties;
+- (void)addMethodDiagnostics:(id)diagnostics details:(id)details;
+- (void)addMethodResultToDiagnostics:(id)diagnostics error:(id)error setYawPitchError:(BOOL)pitchError;
+- (void)submit:(id)submit;
+- (void)submitVerified:(id)verified;
 - (void)writeDebugDiagnosticsToDisk;
 @end
 
 @implementation PIPerspectiveAutoCalculator
 
-- (void)submitVerified:(id)a3
+- (void)submitVerified:(id)verified
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  verifiedCopy = verified;
+  if (!verifiedCopy)
   {
     v48 = NUAssertLogger_12170();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -48,8 +48,8 @@
         v56 = dispatch_get_specific(*v50);
         v57 = MEMORY[0x1E696AF00];
         v58 = v56;
-        v59 = [v57 callStackSymbols];
-        v60 = [v59 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v57 callStackSymbols];
+        v60 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v67 = v56;
         v68 = 2114;
@@ -60,8 +60,8 @@
 
     else if (v53)
     {
-      v54 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v55 = [v54 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v55 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v67 = v55;
       _os_log_error_impl(&dword_1C7694000, v52, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -70,7 +70,7 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = verifiedCopy;
   v64 = 0;
   v6 = [(PIPerspectiveAutoCalculator *)self canGenerateNewCropRect:&v64];
   v7 = v64;
@@ -94,35 +94,35 @@
     v11 = [MEMORY[0x1E696AD98] numberWithBool:NUIsAppleInternal()];
     [v8 setObject:v11 forKeyedSubscript:*MEMORY[0x1E695F770]];
 
-    v12 = [(PIPerspectiveAutoCalculator *)self maxAutoPitch];
+    maxAutoPitch = [(PIPerspectiveAutoCalculator *)self maxAutoPitch];
 
-    if (v12)
+    if (maxAutoPitch)
     {
       v13 = MEMORY[0x1E696AD98];
-      v14 = [(PIPerspectiveAutoCalculator *)self maxAutoPitch];
-      [v14 floatValue];
+      maxAutoPitch2 = [(PIPerspectiveAutoCalculator *)self maxAutoPitch];
+      [maxAutoPitch2 floatValue];
       v16 = [v13 numberWithDouble:v15 * 3.14159265 / 180.0];
       [v8 setObject:v16 forKeyedSubscript:@"pitchLimit"];
     }
 
-    v17 = [(PIPerspectiveAutoCalculator *)self maxAutoYaw];
+    maxAutoYaw = [(PIPerspectiveAutoCalculator *)self maxAutoYaw];
 
-    if (v17)
+    if (maxAutoYaw)
     {
       v18 = MEMORY[0x1E696AD98];
-      v19 = [(PIPerspectiveAutoCalculator *)self maxAutoYaw];
-      [v19 floatValue];
+      maxAutoYaw2 = [(PIPerspectiveAutoCalculator *)self maxAutoYaw];
+      [maxAutoYaw2 floatValue];
       v21 = [v18 numberWithDouble:v20 * 3.14159265 / 180.0];
       [v8 setObject:v21 forKeyedSubscript:@"yawLimit"];
     }
 
-    v22 = [(PIPerspectiveAutoCalculator *)self maxAutoAngle];
+    maxAutoAngle = [(PIPerspectiveAutoCalculator *)self maxAutoAngle];
 
-    if (v22)
+    if (maxAutoAngle)
     {
       v23 = MEMORY[0x1E696AD98];
-      v24 = [(PIPerspectiveAutoCalculator *)self maxAutoAngle];
-      [v24 floatValue];
+      maxAutoAngle2 = [(PIPerspectiveAutoCalculator *)self maxAutoAngle];
+      [maxAutoAngle2 floatValue];
       v26 = [v23 numberWithDouble:v25 * 3.14159265 / 180.0];
       [v8 setObject:v26 forKeyedSubscript:@"rollLimit"];
     }
@@ -138,22 +138,22 @@
     [v8 setObject:v30 forKeyedSubscript:@"minimumYawCorrectionArea"];
 
     v31 = MEMORY[0x1E696AEC0];
-    v32 = [(PIPerspectiveAutoCalculator *)self maxAutoPitch];
-    v33 = [v31 stringWithFormat:@"%@", v32];
-    v34 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-    [v34 setObject:v33 forKeyedSubscript:@"pitchLimit"];
+    maxAutoPitch3 = [(PIPerspectiveAutoCalculator *)self maxAutoPitch];
+    v33 = [v31 stringWithFormat:@"%@", maxAutoPitch3];
+    debugDiagnostics = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+    [debugDiagnostics setObject:v33 forKeyedSubscript:@"pitchLimit"];
 
     v35 = MEMORY[0x1E696AEC0];
-    v36 = [(PIPerspectiveAutoCalculator *)self maxAutoYaw];
-    v37 = [v35 stringWithFormat:@"%@", v36];
-    v38 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-    [v38 setObject:v37 forKeyedSubscript:@"yawLimit"];
+    maxAutoYaw3 = [(PIPerspectiveAutoCalculator *)self maxAutoYaw];
+    v37 = [v35 stringWithFormat:@"%@", maxAutoYaw3];
+    debugDiagnostics2 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+    [debugDiagnostics2 setObject:v37 forKeyedSubscript:@"yawLimit"];
 
     v39 = MEMORY[0x1E696AEC0];
-    v40 = [(PIPerspectiveAutoCalculator *)self maxAutoAngle];
-    v41 = [v39 stringWithFormat:@"%@", v40];
-    v42 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-    [v42 setObject:v41 forKeyedSubscript:@"rollLimit"];
+    maxAutoAngle3 = [(PIPerspectiveAutoCalculator *)self maxAutoAngle];
+    v41 = [v39 stringWithFormat:@"%@", maxAutoAngle3];
+    debugDiagnostics3 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+    [debugDiagnostics3 setObject:v41 forKeyedSubscript:@"rollLimit"];
 
     v43 = [objc_alloc(MEMORY[0x1E69B3AE8]) initWithRequest:self dataExtractor:@"CIAutoPerspective" options:v8];
     v44 = +[PIPipelineFilters exifOrientationAndCropStraightenOnly];
@@ -161,12 +161,12 @@
     v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v65 count:1];
     [v43 setPipelineFilters:v45];
 
-    v46 = [MEMORY[0x1E69B3A88] oneToOneScalePolicy];
-    [v43 setScalePolicy:v46];
+    oneToOneScalePolicy = [MEMORY[0x1E69B3A88] oneToOneScalePolicy];
+    [v43 setScalePolicy:oneToOneScalePolicy];
 
     [v43 setSampleMode:3];
-    v47 = [(NURenderRequest *)self responseQueue];
-    [v43 setResponseQueue:v47];
+    responseQueue = [(NURenderRequest *)self responseQueue];
+    [v43 setResponseQueue:responseQueue];
 
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
@@ -302,11 +302,11 @@ void __46__PIPerspectiveAutoCalculator_submitVerified___block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)passesMinimumCorrectionCheck:(id)a3 error:(id *)a4
+- (BOOL)passesMinimumCorrectionCheck:(id)check error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  checkCopy = check;
+  if (!error)
   {
     v26 = NUAssertLogger_12170();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -328,8 +328,8 @@ void __46__PIPerspectiveAutoCalculator_submitVerified___block_invoke(uint64_t a1
         v34 = dispatch_get_specific(*v28);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v38 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v34;
         v43 = 2114;
@@ -340,8 +340,8 @@ void __46__PIPerspectiveAutoCalculator_submitVerified___block_invoke(uint64_t a1
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v33 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v33;
       _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -350,8 +350,8 @@ void __46__PIPerspectiveAutoCalculator_submitVerified___block_invoke(uint64_t a1
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v8 = [v6 objectForKeyedSubscript:@"pitchExpandTopDegrees"];
+  v7 = checkCopy;
+  v8 = [checkCopy objectForKeyedSubscript:@"pitchExpandTopDegrees"];
   [v8 doubleValue];
   v10 = v9;
 
@@ -384,17 +384,17 @@ void __46__PIPerspectiveAutoCalculator_submitVerified___block_invoke(uint64_t a1
 
   if (!v17)
   {
-    *a4 = [MEMORY[0x1E69B3A48] extraError:@"Less than minimum correction" object:0];
+    *error = [MEMORY[0x1E69B3A48] extraError:@"Less than minimum correction" object:0];
   }
 
   return v17;
 }
 
-- (BOOL)passesConfidenceCheck:(id)a3 error:(id *)a4
+- (BOOL)passesConfidenceCheck:(id)check error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  checkCopy = check;
+  if (!checkCopy)
   {
     v17 = NUAssertLogger_12170();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -405,7 +405,7 @@ void __46__PIPerspectiveAutoCalculator_submitVerified___block_invoke(uint64_t a1
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v19 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v21 = NUAssertLogger_12170();
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_ERROR);
@@ -413,11 +413,11 @@ void __46__PIPerspectiveAutoCalculator_submitVerified___block_invoke(uint64_t a1
     {
       if (v22)
       {
-        v30 = dispatch_get_specific(*v19);
+        v30 = dispatch_get_specific(*callStackSymbols);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v19 = [v31 callStackSymbols];
-        v33 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v30;
         v43 = 2114;
@@ -428,10 +428,10 @@ void __46__PIPerspectiveAutoCalculator_submitVerified___block_invoke(uint64_t a1
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v42 = v19;
+      v42 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -439,7 +439,7 @@ void __46__PIPerspectiveAutoCalculator_submitVerified___block_invoke(uint64_t a1
     goto LABEL_19;
   }
 
-  if (!a4)
+  if (!error)
   {
     v24 = NUAssertLogger_12170();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -450,7 +450,7 @@ void __46__PIPerspectiveAutoCalculator_submitVerified___block_invoke(uint64_t a1
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v19 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v26 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v21 = NUAssertLogger_12170();
     v27 = os_log_type_enabled(v21, OS_LOG_TYPE_ERROR);
@@ -458,8 +458,8 @@ void __46__PIPerspectiveAutoCalculator_submitVerified___block_invoke(uint64_t a1
     {
       if (v27)
       {
-        v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v29 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v42 = v29;
         _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -471,11 +471,11 @@ void __46__PIPerspectiveAutoCalculator_submitVerified___block_invoke(uint64_t a1
 LABEL_19:
     if (v27)
     {
-      v34 = dispatch_get_specific(*v19);
+      v34 = dispatch_get_specific(*callStackSymbols);
       v35 = MEMORY[0x1E696AF00];
       v36 = v34;
-      v37 = [v35 callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v35 callStackSymbols];
+      v38 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v42 = v34;
       v43 = 2114;
@@ -488,8 +488,8 @@ LABEL_21:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v8 = [v6 objectForKeyedSubscript:@"confidence"];
+  v7 = checkCopy;
+  v8 = [checkCopy objectForKeyedSubscript:@"confidence"];
   [v8 doubleValue];
   v10 = v9;
   [(PIPerspectiveAutoCalculator *)self minimumConfidence];
@@ -506,16 +506,16 @@ LABEL_21:
 
   if (v10 < v12)
   {
-    *a4 = [MEMORY[0x1E69B3A48] extraError:@"Confidence value too low" object:v8];
+    *error = [MEMORY[0x1E69B3A48] extraError:@"Confidence value too low" object:v8];
   }
 
   return v10 >= v12;
 }
 
-- (BOOL)canGenerateNewCropRect:(id *)a3
+- (BOOL)canGenerateNewCropRect:(id *)rect
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!rect)
   {
     v26 = NUAssertLogger_12170();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -537,8 +537,8 @@ LABEL_21:
         v34 = dispatch_get_specific(*v28);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v38 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v41 = v34;
         v42 = 2114;
@@ -549,8 +549,8 @@ LABEL_21:
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v33 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v41 = v33;
       _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -560,18 +560,18 @@ LABEL_21:
   }
 
   v5 = [PICompositionController alloc];
-  v6 = [(NURenderRequest *)self composition];
-  v7 = [(PICompositionController *)v5 initWithComposition:v6];
+  composition = [(NURenderRequest *)self composition];
+  v7 = [(PICompositionController *)v5 initWithComposition:composition];
 
   [(PICompositionController *)v7 removeAdjustmentWithKey:@"cropStraighten"];
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_angleSeedDegreesCCW];
-  v9 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-  [v9 setObject:v8 forKeyedSubscript:@"preseedRoll"];
+  debugDiagnostics = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+  [debugDiagnostics setObject:v8 forKeyedSubscript:@"preseedRoll"];
 
   if (self->_angleSeedDegreesCCW == 0.0)
   {
-    v10 = [(PICompositionController *)v7 composition];
-    [(NURenderRequest *)self setComposition:v10];
+    composition2 = [(PICompositionController *)v7 composition];
+    [(NURenderRequest *)self setComposition:composition2];
 
     [(PIPerspectiveAutoCalculator *)self addMethodDiagnostics:@"canGenerateNewCropRect" details:&unk_1F471FFA0];
     v11 = 1;
@@ -579,7 +579,7 @@ LABEL_21:
 
   else
   {
-    v12 = [(PIPerspectiveAutoCalculator *)self primaryImageProperties:a3];
+    v12 = [(PIPerspectiveAutoCalculator *)self primaryImageProperties:rect];
     v13 = v12;
     v11 = v12 != 0;
     if (v12)
@@ -603,8 +603,8 @@ LABEL_21:
       v39[8] = v23;
       v39[4] = self;
       [(PICompositionController *)v7 modifyAdjustmentWithKey:@"cropStraighten" modificationBlock:v39];
-      v24 = [(PICompositionController *)v7 composition];
-      [(NURenderRequest *)self setComposition:v24];
+      composition3 = [(PICompositionController *)v7 composition];
+      [(NURenderRequest *)self setComposition:composition3];
     }
   }
 
@@ -662,10 +662,10 @@ void __54__PIPerspectiveAutoCalculator_canGenerateNewCropRect___block_invoke(uin
   [v21 addMethodDiagnostics:@"canGenerateNewCropRect" details:v23];
 }
 
-- (id)primaryImageProperties:(id *)a3
+- (id)primaryImageProperties:(id *)properties
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!properties)
   {
     v13 = NUAssertLogger_12170();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -687,8 +687,8 @@ void __54__PIPerspectiveAutoCalculator_canGenerateNewCropRect___block_invoke(uin
         v21 = dispatch_get_specific(*v15);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v21;
         v29 = 2114;
@@ -699,8 +699,8 @@ void __54__PIPerspectiveAutoCalculator_canGenerateNewCropRect___block_invoke(uin
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v20;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -710,8 +710,8 @@ void __54__PIPerspectiveAutoCalculator_canGenerateNewCropRect___block_invoke(uin
   }
 
   v5 = objc_alloc(MEMORY[0x1E69B3B30]);
-  v6 = [(NURenderRequest *)self composition];
-  v7 = [v5 initWithComposition:v6];
+  composition = [(NURenderRequest *)self composition];
+  v7 = [v5 initWithComposition:composition];
 
   [v7 setName:@"PIPerspectiveAutoCalculator-primaryImageProperties"];
   v8 = +[PIPipelineFilters sourceFilter];
@@ -719,17 +719,17 @@ void __54__PIPerspectiveAutoCalculator_canGenerateNewCropRect___block_invoke(uin
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
   [v7 setPipelineFilters:v9];
 
-  v10 = [v7 submitSynchronous:a3];
-  v11 = [v10 properties];
+  v10 = [v7 submitSynchronous:properties];
+  properties = [v10 properties];
 
-  return v11;
+  return properties;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v21 = NUAssertLogger_12170();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -751,8 +751,8 @@ void __54__PIPerspectiveAutoCalculator_canGenerateNewCropRect___block_invoke(uin
         v29 = dispatch_get_specific(*v23);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v29;
         v39 = 2114;
@@ -763,8 +763,8 @@ void __54__PIPerspectiveAutoCalculator_canGenerateNewCropRect___block_invoke(uin
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v38 = v28;
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -773,7 +773,7 @@ void __54__PIPerspectiveAutoCalculator_canGenerateNewCropRect___block_invoke(uin
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = submitCopy;
   v36 = 0;
   v6 = [(PIPerspectiveAutoCalculator *)self passesImagePropertiesCheck:&v36];
   v7 = v36;
@@ -812,10 +812,10 @@ LABEL_14:
     }
   }
 
-  v11 = [v7 nonLocalizedFailureReason];
+  nonLocalizedFailureReason = [v7 nonLocalizedFailureReason];
   v12 = PIPerspectiveErrorUnexpectedRuntimeError;
 
-  if (v11 == v12)
+  if (nonLocalizedFailureReason == v12)
   {
     v20 = [objc_alloc(MEMORY[0x1E69B3C78]) initWithError:v7];
   }
@@ -827,16 +827,16 @@ LABEL_14:
     [v13 setObject:&unk_1F471F700 forKeyedSubscript:@"yaw"];
     [v13 setObject:&unk_1F471F700 forKeyedSubscript:@"angle"];
     v14 = [v13 objectForKeyedSubscript:@"pitch"];
-    v15 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-    [v15 setObject:v14 forKeyedSubscript:@"pitch"];
+    debugDiagnostics = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+    [debugDiagnostics setObject:v14 forKeyedSubscript:@"pitch"];
 
     v16 = [v13 objectForKeyedSubscript:@"yaw"];
-    v17 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-    [v17 setObject:v16 forKeyedSubscript:@"yaw"];
+    debugDiagnostics2 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+    [debugDiagnostics2 setObject:v16 forKeyedSubscript:@"yaw"];
 
     v18 = [v13 objectForKeyedSubscript:@"angle"];
-    v19 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-    [v19 setObject:v18 forKeyedSubscript:@"angle"];
+    debugDiagnostics3 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+    [debugDiagnostics3 setObject:v18 forKeyedSubscript:@"angle"];
 
     v20 = [objc_alloc(MEMORY[0x1E69B3C78]) initWithResult:v13];
   }
@@ -847,10 +847,10 @@ LABEL_14:
 LABEL_12:
 }
 
-- (BOOL)passesBuildingCheck:(id *)a3
+- (BOOL)passesBuildingCheck:(id *)check
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!check)
   {
     v20 = NUAssertLogger_12170();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -872,8 +872,8 @@ LABEL_12:
         v28 = dispatch_get_specific(*v22);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v28;
         v38 = 2114;
@@ -884,8 +884,8 @@ LABEL_12:
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v27;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -906,11 +906,11 @@ LABEL_12:
   [v5 setScalePolicy:v9];
 
   [v5 setSampleMode:3];
-  v10 = [(NURenderRequest *)self responseQueue];
-  [v5 setResponseQueue:v10];
+  responseQueue = [(NURenderRequest *)self responseQueue];
+  [v5 setResponseQueue:responseQueue];
 
   [v5 setName:@"PIPerspectiveAutoCalculator-classify"];
-  v11 = [v5 submitGenericSynchronous:a3];
+  v11 = [v5 submitGenericSynchronous:check];
   v12 = v11;
   if (v11)
   {
@@ -929,23 +929,23 @@ LABEL_12:
     v18 = v14 > 0.4;
     if (v14 <= 0.4)
     {
-      *a3 = [MEMORY[0x1E69B3A48] notFoundError:@"No building detected" object:v17];
+      *check = [MEMORY[0x1E69B3A48] notFoundError:@"No building detected" object:v17];
     }
   }
 
   else
   {
-    [(PIPerspectiveAutoCalculator *)self wrapAsUnexpectedError:*a3];
-    *a3 = v18 = 0;
+    [(PIPerspectiveAutoCalculator *)self wrapAsUnexpectedError:*check];
+    *check = v18 = 0;
   }
 
   return v18;
 }
 
-- (BOOL)passesImagePropertiesCheck:(id *)a3
+- (BOOL)passesImagePropertiesCheck:(id *)check
 {
   v48 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!check)
   {
     v29 = NUAssertLogger_12170();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -967,8 +967,8 @@ LABEL_12:
         v37 = dispatch_get_specific(*v31);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v37;
         v46 = 2114;
@@ -979,8 +979,8 @@ LABEL_12:
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v36;
       _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -992,29 +992,29 @@ LABEL_12:
   if (self->_disableOnPanos || self->_disableOnFrontFacingCameraImages)
   {
     v5 = objc_alloc(MEMORY[0x1E69B3B30]);
-    v6 = [(NURenderRequest *)self composition];
-    v7 = [v5 initWithComposition:v6];
+    composition = [(NURenderRequest *)self composition];
+    v7 = [v5 initWithComposition:composition];
 
-    v8 = [(NURenderRequest *)self responseQueue];
-    [v7 setResponseQueue:v8];
+    responseQueue = [(NURenderRequest *)self responseQueue];
+    [v7 setResponseQueue:responseQueue];
 
     [v7 setName:@"PIPerspectiveAutoCalculator-selfieAndAspectRatioCheck"];
-    v9 = [v7 submitSynchronous:a3];
+    v9 = [v7 submitSynchronous:check];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 properties];
-      v12 = [v11 size];
-      [v11 size];
+      properties = [v9 properties];
+      v12 = [properties size];
+      [properties size];
       v14 = v12 / v13;
-      v15 = [(PIPerspectiveAutoCalculator *)self disableOnPanos];
+      disableOnPanos = [(PIPerspectiveAutoCalculator *)self disableOnPanos];
       v17 = v14 >= 0.5 && v14 <= 2.0;
-      v18 = !v15 || v17;
+      v18 = !disableOnPanos || v17;
       if ([(PIPerspectiveAutoCalculator *)self disableOnFrontFacingCameraImages])
       {
-        v20 = [v11 metadata];
-        v21 = [v11 size];
-        v23 = ![(PIPerspectiveAutoCalculator *)self isFrontFacingCameraImage:v20 pixelSize:v21, v22];
+        metadata = [properties metadata];
+        v21 = [properties size];
+        v23 = ![(PIPerspectiveAutoCalculator *)self isFrontFacingCameraImage:metadata pixelSize:v21, v22];
       }
 
       else
@@ -1035,14 +1035,14 @@ LABEL_12:
       [(PIPerspectiveAutoCalculator *)self addMethodDiagnostics:@"passesImagePropertiesCheck" details:v27];
       if ((v24 & 1) == 0)
       {
-        *a3 = [MEMORY[0x1E69B3A48] extraError:@"Panos and FFC not supported" object:v27];
+        *check = [MEMORY[0x1E69B3A48] extraError:@"Panos and FFC not supported" object:v27];
       }
     }
 
     else
     {
-      [(PIPerspectiveAutoCalculator *)self wrapAsUnexpectedError:*a3];
-      *a3 = v24 = 0;
+      [(PIPerspectiveAutoCalculator *)self wrapAsUnexpectedError:*check];
+      *check = v24 = 0;
     }
   }
 
@@ -1054,19 +1054,19 @@ LABEL_12:
   return v24 & 1;
 }
 
-- (BOOL)isFrontFacingCameraImage:(id)a3 pixelSize:(id)a4
+- (BOOL)isFrontFacingCameraImage:(id)image pixelSize:(id)size
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v7 = a3;
-  v8 = [v7 objectForKey:*MEMORY[0x1E696D9B0]];
+  var1 = size.var1;
+  var0 = size.var0;
+  imageCopy = image;
+  v8 = [imageCopy objectForKey:*MEMORY[0x1E696D9B0]];
   v9 = [v8 objectForKey:*MEMORY[0x1E696DA50]];
   v10 = [v8 objectForKey:*MEMORY[0x1E696DA58]];
-  v11 = [v10 lowercaseString];
+  lowercaseString = [v10 lowercaseString];
 
   if (v9)
   {
-    v12 = v11 == 0;
+    v12 = lowercaseString == 0;
   }
 
   else
@@ -1076,7 +1076,7 @@ LABEL_12:
 
   if (!v12)
   {
-    if ([v9 isEqualToString:@"Apple"] && objc_msgSend(v11, "containsString:", @"front") && (objc_msgSend(v11, "containsString:", @"camera") & 1) != 0)
+    if ([v9 isEqualToString:@"Apple"] && objc_msgSend(lowercaseString, "containsString:", @"front") && (objc_msgSend(lowercaseString, "containsString:", @"camera") & 1) != 0)
     {
       goto LABEL_13;
     }
@@ -1086,7 +1086,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = [v7 objectForKey:*MEMORY[0x1E696DF28]];
+  v13 = [imageCopy objectForKey:*MEMORY[0x1E696DF28]];
   v14 = v13;
   if (!v13)
   {
@@ -1109,20 +1109,20 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)hasFrontFacingCameraDimentions:(id)a3
+- (BOOL)hasFrontFacingCameraDimentions:(id)dimentions
 {
-  if (a3.var0 == 640 && a3.var1 == 480 || a3.var0 == 480 && a3.var1 == 640 || a3.var0 == 1280 && a3.var1 == 960)
+  if (dimentions.var0 == 640 && dimentions.var1 == 480 || dimentions.var0 == 480 && dimentions.var1 == 640 || dimentions.var0 == 1280 && dimentions.var1 == 960)
   {
     return 1;
   }
 
-  return a3.var0 == 960 && a3.var1 == 1280;
+  return dimentions.var0 == 960 && dimentions.var1 == 1280;
 }
 
-- (BOOL)passesFaceCheck:(id *)a3
+- (BOOL)passesFaceCheck:(id *)check
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!check)
   {
     v21 = NUAssertLogger_12170();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1144,8 +1144,8 @@ LABEL_17:
         v29 = dispatch_get_specific(*v23);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v29;
         v38 = 2114;
@@ -1156,8 +1156,8 @@ LABEL_17:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v28;
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1169,22 +1169,22 @@ LABEL_17:
   if (self->_maxFaceSize < 100.0)
   {
     v5 = [PIFaceObservationCache faceRequestWithRequest:self];
-    v6 = [(NURenderRequest *)self responseQueue];
-    [v5 setResponseQueue:v6];
+    responseQueue = [(NURenderRequest *)self responseQueue];
+    [v5 setResponseQueue:responseQueue];
 
     [v5 setName:@"PIPerspectiveAutoCalculator-faceCheck"];
-    v7 = [(PIPerspectiveAutoCalculator *)self faceObservationCache];
+    faceObservationCache = [(PIPerspectiveAutoCalculator *)self faceObservationCache];
 
-    if (v7)
+    if (faceObservationCache)
     {
-      v8 = [(PIPerspectiveAutoCalculator *)self faceObservationCache];
-      v9 = [v8 submitSynchronous:v5 error:a3];
+      faceObservationCache2 = [(PIPerspectiveAutoCalculator *)self faceObservationCache];
+      v9 = [faceObservationCache2 submitSynchronous:v5 error:check];
 
       if (v9)
       {
 LABEL_5:
-        v10 = [v9 faces];
-        [(PIPerspectiveAutoCalculator *)self getSizeOfAllFaces:v10];
+        faces = [v9 faces];
+        [(PIPerspectiveAutoCalculator *)self getSizeOfAllFaces:faces];
         v12 = v11;
 
         [(PIPerspectiveAutoCalculator *)self maxFaceSize];
@@ -1204,7 +1204,7 @@ LABEL_5:
         v19 = v14 >= v12;
         if (v14 < v12)
         {
-          *a3 = [MEMORY[0x1E69B3A48] extraError:@"Faces too large" object:v18];
+          *check = [MEMORY[0x1E69B3A48] extraError:@"Faces too large" object:v18];
         }
 
         goto LABEL_11;
@@ -1213,15 +1213,15 @@ LABEL_5:
 
     else
     {
-      v9 = [v5 submitGenericSynchronous:a3];
+      v9 = [v5 submitGenericSynchronous:check];
       if (v9)
       {
         goto LABEL_5;
       }
     }
 
-    [(PIPerspectiveAutoCalculator *)self wrapAsUnexpectedError:*a3];
-    *a3 = v19 = 0;
+    [(PIPerspectiveAutoCalculator *)self wrapAsUnexpectedError:*check];
+    *check = v19 = 0;
 LABEL_11:
 
     return v19;
@@ -1230,11 +1230,11 @@ LABEL_11:
   return 1;
 }
 
-- (float)getSizeOfAllFaces:(id)a3
+- (float)getSizeOfAllFaces:(id)faces
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  facesCopy = faces;
+  if (!facesCopy)
   {
     v14 = NUAssertLogger_12170();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1256,8 +1256,8 @@ LABEL_11:
         v22 = dispatch_get_specific(*v16);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v22;
         v34 = 2114;
@@ -1268,8 +1268,8 @@ LABEL_11:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v21;
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1278,12 +1278,12 @@ LABEL_11:
     _NUAssertFailHandler();
   }
 
-  v4 = v3;
+  v4 = facesCopy;
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v5 = [facesCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1322,25 +1322,25 @@ LABEL_11:
   v27 = *MEMORY[0x1E69E9840];
   if ([(PIPerspectiveAutoCalculator *)self debugFilesEnabled])
   {
-    v3 = [(NURenderRequest *)self composition];
+    composition = [(NURenderRequest *)self composition];
     v24 = 0;
-    v4 = [PICaptureDebugUtilities createCaptureDebugDirectoryForComposition:v3 error:&v24];
+    v4 = [PICaptureDebugUtilities createCaptureDebugDirectoryForComposition:composition error:&v24];
     v5 = v24;
 
     if (v4)
     {
       v6 = MEMORY[0x1E696AEC0];
-      v7 = [(PIPerspectiveAutoCalculator *)self debugFilesPrefix];
-      v8 = [v6 stringWithFormat:@"%@PerspectiveEvaluation-txt.DBG", v7];
+      debugFilesPrefix = [(PIPerspectiveAutoCalculator *)self debugFilesPrefix];
+      v8 = [v6 stringWithFormat:@"%@PerspectiveEvaluation-txt.DBG", debugFilesPrefix];
       v9 = [v4 URLByAppendingPathComponent:v8];
 
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [(PIPerspectiveAutoCalculator *)self debugFilesPrefix];
-      v12 = [v10 stringWithFormat:@"%@PerspectiveLineDetection-png.DBG", v11];
+      debugFilesPrefix2 = [(PIPerspectiveAutoCalculator *)self debugFilesPrefix];
+      v12 = [v10 stringWithFormat:@"%@PerspectiveLineDetection-png.DBG", debugFilesPrefix2];
       v13 = [v4 URLByAppendingPathComponent:v12];
 
-      v14 = [(PIPerspectiveAutoCalculator *)self debugFilesPrefix];
-      LODWORD(v12) = [v14 isEqualToString:@"Edit"];
+      debugFilesPrefix3 = [(PIPerspectiveAutoCalculator *)self debugFilesPrefix];
+      LODWORD(v12) = [debugFilesPrefix3 isEqualToString:@"Edit"];
 
       if (v12)
       {
@@ -1418,74 +1418,74 @@ void __58__PIPerspectiveAutoCalculator_writeDebugDiagnosticsToDisk__block_invoke
   [v14 writeToURL:*(a1 + 48) atomically:1];
 }
 
-- (void)addMethodResultToDiagnostics:(id)a3 error:(id)a4 setYawPitchError:(BOOL)a5
+- (void)addMethodResultToDiagnostics:(id)diagnostics error:(id)error setYawPitchError:(BOOL)pitchError
 {
-  v5 = a5;
-  v34 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AD98] numberWithInt:v8 == 0];
-  v10 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-  [v10 setObject:v9 forKeyedSubscript:v34];
+  pitchErrorCopy = pitchError;
+  diagnosticsCopy = diagnostics;
+  errorCopy = error;
+  v9 = [MEMORY[0x1E696AD98] numberWithInt:errorCopy == 0];
+  debugDiagnostics = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+  [debugDiagnostics setObject:v9 forKeyedSubscript:diagnosticsCopy];
 
-  if (v8)
+  if (errorCopy)
   {
-    v11 = [v8 nonLocalizedFailureReason];
+    nonLocalizedFailureReason = [errorCopy nonLocalizedFailureReason];
 
-    if (!v11)
+    if (!nonLocalizedFailureReason)
     {
-      v12 = [MEMORY[0x1E69B3A48] errorWithCode:7 reason:PIPerspectiveErrorUnexpectedRuntimeError object:0 underlyingError:v8];
+      v12 = [MEMORY[0x1E69B3A48] errorWithCode:7 reason:PIPerspectiveErrorUnexpectedRuntimeError object:0 underlyingError:errorCopy];
 
-      v8 = v12;
+      errorCopy = v12;
     }
 
-    v13 = [v8 nonLocalizedFailureReason];
-    v14 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.error", v34];
-    [v14 setObject:v13 forKeyedSubscript:v15];
+    nonLocalizedFailureReason2 = [errorCopy nonLocalizedFailureReason];
+    debugDiagnostics2 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+    diagnosticsCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.error", diagnosticsCopy];
+    [debugDiagnostics2 setObject:nonLocalizedFailureReason2 forKeyedSubscript:diagnosticsCopy];
 
-    v16 = [v8 userInfo];
+    userInfo = [errorCopy userInfo];
     v17 = *MEMORY[0x1E696AA08];
-    v18 = [v16 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    v18 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
     v19 = [v18 description];
-    v20 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.underlyingError", v34];
-    [v20 setObject:v19 forKeyedSubscript:v21];
+    debugDiagnostics3 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+    diagnosticsCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.underlyingError", diagnosticsCopy];
+    [debugDiagnostics3 setObject:v19 forKeyedSubscript:diagnosticsCopy2];
 
-    if (v5)
+    if (pitchErrorCopy)
     {
-      v22 = [v8 nonLocalizedFailureReason];
-      v23 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-      [v23 setObject:v22 forKeyedSubscript:@"pitchError"];
+      nonLocalizedFailureReason3 = [errorCopy nonLocalizedFailureReason];
+      debugDiagnostics4 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+      [debugDiagnostics4 setObject:nonLocalizedFailureReason3 forKeyedSubscript:@"pitchError"];
 
-      v24 = [v8 nonLocalizedFailureReason];
-      v25 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-      [v25 setObject:v24 forKeyedSubscript:@"yawError"];
+      nonLocalizedFailureReason4 = [errorCopy nonLocalizedFailureReason];
+      debugDiagnostics5 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+      [debugDiagnostics5 setObject:nonLocalizedFailureReason4 forKeyedSubscript:@"yawError"];
 
-      v26 = [v8 userInfo];
-      v27 = [v26 objectForKeyedSubscript:v17];
+      userInfo2 = [errorCopy userInfo];
+      v27 = [userInfo2 objectForKeyedSubscript:v17];
       v28 = [v27 description];
-      v29 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-      [v29 setObject:v28 forKeyedSubscript:@"pitchError.underlyingError"];
+      debugDiagnostics6 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+      [debugDiagnostics6 setObject:v28 forKeyedSubscript:@"pitchError.underlyingError"];
 
-      v30 = [v8 userInfo];
-      v31 = [v30 objectForKeyedSubscript:v17];
+      userInfo3 = [errorCopy userInfo];
+      v31 = [userInfo3 objectForKeyedSubscript:v17];
       v32 = [v31 description];
-      v33 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-      [v33 setObject:v32 forKeyedSubscript:@"yawError.underlyingError"];
+      debugDiagnostics7 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+      [debugDiagnostics7 setObject:v32 forKeyedSubscript:@"yawError.underlyingError"];
     }
   }
 }
 
-- (void)addMethodDiagnostics:(id)a3 details:(id)a4
+- (void)addMethodDiagnostics:(id)diagnostics details:(id)details
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  diagnosticsCopy = diagnostics;
+  detailsCopy = details;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [detailsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1496,27 +1496,27 @@ void __58__PIPerspectiveAutoCalculator_writeDebugDiagnosticsToDisk__block_invoke
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(detailsCopy);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v7 objectForKeyedSubscript:v12];
-        v14 = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
-        v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, v12];
-        [v14 setObject:v13 forKeyedSubscript:v15];
+        v13 = [detailsCopy objectForKeyedSubscript:v12];
+        debugDiagnostics = [(PIPerspectiveAutoCalculator *)self debugDiagnostics];
+        v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", diagnosticsCopy, v12];
+        [debugDiagnostics setObject:v13 forKeyedSubscript:v15];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [detailsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
   }
 }
 
-- (PIPerspectiveAutoCalculator)initWithMedia:(id)a3
+- (PIPerspectiveAutoCalculator)initWithMedia:(id)media
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mediaCopy = media;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -1555,8 +1555,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -1583,8 +1583,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1602,10 +1602,10 @@ LABEL_14:
   }
 }
 
-- (PIPerspectiveAutoCalculator)initWithRequest:(id)a3
+- (PIPerspectiveAutoCalculator)initWithRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -1644,8 +1644,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -1672,8 +1672,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1691,11 +1691,11 @@ LABEL_14:
   }
 }
 
-- (PIPerspectiveAutoCalculator)initWithComposition:(id)a3
+- (PIPerspectiveAutoCalculator)initWithComposition:(id)composition
 {
   v9.receiver = self;
   v9.super_class = PIPerspectiveAutoCalculator;
-  v3 = [(NURenderRequest *)&v9 initWithComposition:a3];
+  v3 = [(NURenderRequest *)&v9 initWithComposition:composition];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   debugDiagnostics = v3->_debugDiagnostics;
   v3->_debugDiagnostics = v4;
@@ -1721,10 +1721,10 @@ LABEL_14:
   return v3;
 }
 
-+ (void)undoOrientation:(int64_t)a3 forPitch:(double *)a4 yaw:(double *)a5 angle:(double *)a6
++ (void)undoOrientation:(int64_t)orientation forPitch:(double *)pitch yaw:(double *)yaw angle:(double *)angle
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!pitch)
   {
     v8 = NUAssertLogger_12170();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1735,7 +1735,7 @@ LABEL_14:
       _os_log_error_impl(&dword_1C7694000, v8, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v10 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v12 = NUAssertLogger_12170();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
@@ -1743,11 +1743,11 @@ LABEL_14:
     {
       if (v13)
       {
-        v26 = dispatch_get_specific(*v10);
+        v26 = dispatch_get_specific(*callStackSymbols);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v10 = [v27 callStackSymbols];
-        v29 = [v10 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = v26;
         v41 = 2114;
@@ -1758,10 +1758,10 @@ LABEL_14:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v10 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v40 = v10;
+      v40 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -1769,7 +1769,7 @@ LABEL_14:
     goto LABEL_41;
   }
 
-  if (!a5)
+  if (!yaw)
   {
     v15 = NUAssertLogger_12170();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1780,7 +1780,7 @@ LABEL_14:
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v10 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v17 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v12 = NUAssertLogger_12170();
     v18 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
@@ -1788,10 +1788,10 @@ LABEL_14:
     {
       if (v18)
       {
-        v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v10 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v40 = v10;
+        v40 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -1804,11 +1804,11 @@ LABEL_43:
 LABEL_41:
     if (v18)
     {
-      v30 = dispatch_get_specific(*v10);
+      v30 = dispatch_get_specific(*callStackSymbols);
       v31 = MEMORY[0x1E696AF00];
       v32 = v30;
-      v10 = [v31 callStackSymbols];
-      v33 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v31 callStackSymbols];
+      v33 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v40 = v30;
       v41 = 2114;
@@ -1819,7 +1819,7 @@ LABEL_41:
     goto LABEL_43;
   }
 
-  if (!a6)
+  if (!angle)
   {
     v20 = NUAssertLogger_12170();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1830,7 +1830,7 @@ LABEL_41:
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v10 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v22 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v12 = NUAssertLogger_12170();
     v23 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
@@ -1838,8 +1838,8 @@ LABEL_41:
     {
       if (v23)
       {
-        v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v40 = v25;
         _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1851,11 +1851,11 @@ LABEL_41:
 LABEL_44:
     if (v23)
     {
-      v34 = dispatch_get_specific(*v10);
+      v34 = dispatch_get_specific(*callStackSymbols);
       v35 = MEMORY[0x1E696AF00];
       v36 = v34;
-      v37 = [v35 callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v35 callStackSymbols];
+      v38 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v40 = v34;
       v41 = 2114;
@@ -1868,64 +1868,64 @@ LABEL_46:
     _NUAssertFailHandler();
   }
 
-  v6 = *a4;
-  v7 = *a5;
-  if (a3 <= 4)
+  v6 = *pitch;
+  v7 = *yaw;
+  if (orientation <= 4)
   {
-    if (a3 != 2)
+    if (orientation != 2)
     {
-      if (a3 == 3)
+      if (orientation == 3)
       {
-        *a4 = -v6;
+        *pitch = -v6;
         v6 = -v7;
         goto LABEL_21;
       }
 
-      if (a3 != 4)
+      if (orientation != 4)
       {
         return;
       }
 
-      *a4 = -v6;
+      *pitch = -v6;
 LABEL_19:
-      *a6 = -*a6;
+      *angle = -*angle;
       return;
     }
 
     v6 = -v7;
 LABEL_18:
-    *a5 = v6;
+    *yaw = v6;
     goto LABEL_19;
   }
 
-  if (a3 <= 6)
+  if (orientation <= 6)
   {
-    if (a3 != 5)
+    if (orientation != 5)
     {
-      *a4 = -v7;
+      *pitch = -v7;
       goto LABEL_21;
     }
 
-    *a4 = -v7;
+    *pitch = -v7;
     v6 = -v6;
     goto LABEL_18;
   }
 
-  if (a3 == 7)
+  if (orientation == 7)
   {
-    *a4 = v7;
+    *pitch = v7;
     goto LABEL_18;
   }
 
-  if (a3 != 8)
+  if (orientation != 8)
   {
     return;
   }
 
-  *a4 = v7;
+  *pitch = v7;
   v6 = -v6;
 LABEL_21:
-  *a5 = v6;
+  *yaw = v6;
 }
 
 @end

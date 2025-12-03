@@ -11,50 +11,50 @@
 
 - (double)ekui_width
 {
-  [a1 bounds];
+  [self bounds];
 
   return CGRectGetWidth(*&v1);
 }
 
 - (double)ekui_height
 {
-  [a1 bounds];
+  [self bounds];
 
   return CGRectGetHeight(*&v1);
 }
 
 - (uint64_t)ekui_horizontalSizeClass
 {
-  v2 = [a1 traitCollection];
+  traitCollection = [self traitCollection];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [a1 rootViewController];
-    v4 = [v3 ekui_futureTraitCollection];
+    rootViewController = [self rootViewController];
+    ekui_futureTraitCollection = [rootViewController ekui_futureTraitCollection];
 
-    v2 = v4;
+    traitCollection = ekui_futureTraitCollection;
   }
 
-  v5 = [v2 horizontalSizeClass];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  return v5;
+  return horizontalSizeClass;
 }
 
 - (uint64_t)ekui_verticalSizeClass
 {
-  v2 = [a1 traitCollection];
+  traitCollection = [self traitCollection];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [a1 rootViewController];
-    v4 = [v3 ekui_futureTraitCollection];
+    rootViewController = [self rootViewController];
+    ekui_futureTraitCollection = [rootViewController ekui_futureTraitCollection];
 
-    v2 = v4;
+    traitCollection = ekui_futureTraitCollection;
   }
 
-  v5 = [v2 verticalSizeClass];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  return v5;
+  return verticalSizeClass;
 }
 
 - (uint64_t)ekui_interfaceOrientation
@@ -65,20 +65,20 @@
     return 0;
   }
 
-  v2 = [a1 windowScene];
-  v3 = [v2 interfaceOrientation];
+  windowScene = [self windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return v3;
+  return interfaceOrientation;
 }
 
 - (void)ekui_affineTransform
 {
-  v3 = [a1 layer];
-  if (v3)
+  layer = [self layer];
+  if (layer)
   {
-    v4 = v3;
-    [v3 affineTransform];
-    v3 = v4;
+    v4 = layer;
+    [layer affineTransform];
+    layer = v4;
   }
 
   else

@@ -1,30 +1,30 @@
 @interface SBUIFaceIDCameraGlyphView
 - (CGAffineTransform)localTransform;
-- (SBUIFaceIDCameraGlyphView)initWithFrame:(CGRect)a3;
-- (void)_flyInWithText:(BOOL)a3 delay:(double)a4;
+- (SBUIFaceIDCameraGlyphView)initWithFrame:(CGRect)frame;
+- (void)_flyInWithText:(BOOL)text delay:(double)delay;
 - (void)_installMask;
 - (void)_removeAnimations;
-- (void)_setAlpha:(double)a3 onComponents:(id)a4 completion:(id)a5;
+- (void)_setAlpha:(double)alpha onComponents:(id)components completion:(id)completion;
 - (void)_updateCallToActionLabelFont;
 - (void)layoutSubviews;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setLocalTransform:(CGAffineTransform *)a3;
-- (void)setState:(unint64_t)a3 delay:(double)a4;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setLocalTransform:(CGAffineTransform *)transform;
+- (void)setState:(unint64_t)state delay:(double)delay;
 @end
 
 @implementation SBUIFaceIDCameraGlyphView
 
-- (SBUIFaceIDCameraGlyphView)initWithFrame:(CGRect)a3
+- (SBUIFaceIDCameraGlyphView)initWithFrame:(CGRect)frame
 {
   v57.receiver = self;
   v57.super_class = SBUIFaceIDCameraGlyphView;
-  v3 = [(SBUIFaceIDCameraGlyphView *)&v57 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBUIFaceIDCameraGlyphView *)&v57 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SBUIFaceIDCameraGlyphView *)v3 bs_setHitTestingDisabled:1];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel__updateCallToActionLabelFont name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__updateCallToActionLabelFont name:*MEMORY[0x1E69DDC48] object:0];
 
     v6 = objc_alloc(MEMORY[0x1E69DD250]);
     v7 = [v6 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -43,22 +43,22 @@
     maskTopLayer = v4->_maskTopLayer;
     v4->_maskTopLayer = v11;
 
-    v13 = [MEMORY[0x1E69DC888] redColor];
-    -[CALayer setBackgroundColor:](v4->_maskTopLayer, "setBackgroundColor:", [v13 CGColor]);
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    -[CALayer setBackgroundColor:](v4->_maskTopLayer, "setBackgroundColor:", [redColor CGColor]);
 
     v14 = objc_alloc_init(MEMORY[0x1E6979398]);
     maskLeftLayer = v4->_maskLeftLayer;
     v4->_maskLeftLayer = v14;
 
-    v16 = [MEMORY[0x1E69DC888] redColor];
-    -[CALayer setBackgroundColor:](v4->_maskLeftLayer, "setBackgroundColor:", [v16 CGColor]);
+    redColor2 = [MEMORY[0x1E69DC888] redColor];
+    -[CALayer setBackgroundColor:](v4->_maskLeftLayer, "setBackgroundColor:", [redColor2 CGColor]);
 
     v17 = objc_alloc_init(MEMORY[0x1E6979398]);
     maskRightLayer = v4->_maskRightLayer;
     v4->_maskRightLayer = v17;
 
-    v19 = [MEMORY[0x1E69DC888] redColor];
-    -[CALayer setBackgroundColor:](v4->_maskRightLayer, "setBackgroundColor:", [v19 CGColor]);
+    redColor3 = [MEMORY[0x1E69DC888] redColor];
+    -[CALayer setBackgroundColor:](v4->_maskRightLayer, "setBackgroundColor:", [redColor3 CGColor]);
 
     v20 = objc_alloc_init(MEMORY[0x1E6979398]);
     maskContainerLayer = v4->_maskContainerLayer;
@@ -69,14 +69,14 @@
     [(CALayer *)v4->_maskContainerLayer addSublayer:v4->_maskRightLayer];
     v22 = MEMORY[0x1E69DCAB8];
     v23 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v24 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v25 = [v24 traitCollection];
-    v26 = [v22 imageNamed:@"CameraCoveredTail" inBundle:v23 compatibleWithTraitCollection:v25];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    v26 = [v22 imageNamed:@"CameraCoveredTail" inBundle:v23 compatibleWithTraitCollection:traitCollection];
     v27 = [v26 sbf_imageUsingContextType:4];
 
     v28 = objc_alloc(MEMORY[0x1E69DD5C8]);
-    v29 = [(SBUIFaceIDCameraGlyphView *)v4 legibilitySettings];
-    v30 = [v28 initWithSettings:v29 strength:v27 image:0.25];
+    legibilitySettings = [(SBUIFaceIDCameraGlyphView *)v4 legibilitySettings];
+    v30 = [v28 initWithSettings:legibilitySettings strength:v27 image:0.25];
     arrowTail = v4->_arrowTail;
     v4->_arrowTail = v30;
 
@@ -84,14 +84,14 @@
     [(MTMaterialView *)v4->_arrowBackgroundView addSubview:v4->_arrowTail];
     v32 = MEMORY[0x1E69DCAB8];
     v33 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v34 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v35 = [v34 traitCollection];
-    v36 = [v32 imageNamed:@"CameraCovered" inBundle:v33 compatibleWithTraitCollection:v35];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    traitCollection2 = [mainScreen2 traitCollection];
+    v36 = [v32 imageNamed:@"CameraCovered" inBundle:v33 compatibleWithTraitCollection:traitCollection2];
     v37 = [v36 sbf_imageUsingContextType:4];
 
     v38 = objc_alloc(MEMORY[0x1E69DD5C8]);
-    v39 = [(SBUIFaceIDCameraGlyphView *)v4 legibilitySettings];
-    v40 = [v38 initWithSettings:v39 strength:v37 image:0.25];
+    legibilitySettings2 = [(SBUIFaceIDCameraGlyphView *)v4 legibilitySettings];
+    v40 = [v38 initWithSettings:legibilitySettings2 strength:v37 image:0.25];
     arrowHead = v4->_arrowHead;
     v4->_arrowHead = v40;
 
@@ -110,18 +110,18 @@
     v56[0] = v45;
     [(UIView *)v44 setTransform:v56];
     v47 = [SBUILegibilityLabel alloc];
-    v48 = [(SBUIFaceIDCameraGlyphView *)v4 legibilitySettings];
+    legibilitySettings3 = [(SBUIFaceIDCameraGlyphView *)v4 legibilitySettings];
     v49 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v50 = [v49 localizedStringForKey:@"CAMERA_COVERED_CALL_TO_ACTION" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices_Late_Fall_2018_iOS"];
     v51 = SBUICurrentPreferredFontForCoachingText();
-    v52 = [(SBUILegibilityLabel *)v47 initWithSettings:v48 strength:v50 string:v51 font:0.25];
+    v52 = [(SBUILegibilityLabel *)v47 initWithSettings:legibilitySettings3 strength:v50 string:v51 font:0.25];
     callToActionLabel = v4->_callToActionLabel;
     v4->_callToActionLabel = v52;
 
     [(SBUILegibilityLabel *)v4->_callToActionLabel setNumberOfLines:3];
     [(UIView *)v4->_localRotationView addSubview:v4->_callToActionLabel];
-    v54 = [(MTMaterialView *)v4->_arrowBackgroundView layer];
-    [v54 setAllowsGroupOpacity:1];
+    layer = [(MTMaterialView *)v4->_arrowBackgroundView layer];
+    [layer setAllowsGroupOpacity:1];
 
     [(UIView *)v4->_arrowContainer setAlpha:0.0];
     [(SBUILegibilityLabel *)v4->_callToActionLabel setAlpha:0.0];
@@ -134,47 +134,47 @@
 - (void)_installMask
 {
   maskContainerLayer = self->_maskContainerLayer;
-  v4 = [(_UILegibilityView *)self->_arrowHead shadowImageView];
-  v5 = [v4 layer];
-  v6 = [v5 mask];
+  shadowImageView = [(_UILegibilityView *)self->_arrowHead shadowImageView];
+  layer = [shadowImageView layer];
+  mask = [layer mask];
 
-  if (maskContainerLayer != v6)
+  if (maskContainerLayer != mask)
   {
-    v7 = [(_UILegibilityView *)self->_arrowHead shadowImageView];
-    v8 = [v7 layer];
-    [v8 setMask:self->_maskContainerLayer];
+    shadowImageView2 = [(_UILegibilityView *)self->_arrowHead shadowImageView];
+    layer2 = [shadowImageView2 layer];
+    [layer2 setMask:self->_maskContainerLayer];
 
     [(SBUIFaceIDCameraGlyphView *)self setNeedsLayout];
   }
 }
 
-- (void)setState:(unint64_t)a3 delay:(double)a4
+- (void)setState:(unint64_t)state delay:(double)delay
 {
   v19[1] = *MEMORY[0x1E69E9840];
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     if (state)
     {
-      if (a3)
+      if (state)
       {
-        if (a3 != 1)
+        if (state != 1)
         {
-          if (a3 != 2)
+          if (state != 2)
           {
             return;
           }
 
           v19[0] = self->_callToActionLabel;
-          v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:{1, a4}];
+          v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:{1, delay}];
           [(SBUIFaceIDCameraGlyphView *)self _fadeComponentsIn:v6 completion:0];
           goto LABEL_13;
         }
 
         callToActionLabel = self->_callToActionLabel;
-        v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&callToActionLabel count:{1, a4}];
-        v8 = self;
+        v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&callToActionLabel count:{1, delay}];
+        selfCopy3 = self;
         v9 = v6;
         v10 = 0;
       }
@@ -184,47 +184,47 @@
         arrowContainer = self->_arrowContainer;
         v17[0] = self->_callToActionLabel;
         v17[1] = arrowContainer;
-        v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:{2, a4}];
+        v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:{2, delay}];
         v12 = MEMORY[0x1E69E9820];
         v13 = 3221225472;
         v14 = __44__SBUIFaceIDCameraGlyphView_setState_delay___block_invoke;
         v15 = &unk_1E789DC08;
-        v16 = self;
+        selfCopy2 = self;
         v10 = &v12;
-        v8 = self;
+        selfCopy3 = self;
         v9 = v6;
       }
 
-      [(SBUIFaceIDCameraGlyphView *)v8 _fadeComponentsOut:v9 completion:v10, v12, v13, v14, v15, v16];
+      [(SBUIFaceIDCameraGlyphView *)selfCopy3 _fadeComponentsOut:v9 completion:v10, v12, v13, v14, v15, selfCopy2];
 LABEL_13:
 
       return;
     }
 
-    v7 = a3 == 2;
+    v7 = state == 2;
 
-    [(SBUIFaceIDCameraGlyphView *)self _flyInWithText:v7 delay:a4];
+    [(SBUIFaceIDCameraGlyphView *)self _flyInWithText:v7 delay:delay];
   }
 }
 
-- (void)_flyInWithText:(BOOL)a3 delay:(double)a4
+- (void)_flyInWithText:(BOOL)text delay:(double)delay
 {
   v6 = 0x1E698E000uLL;
   v7 = 0x1E698E000uLL;
-  if (a3)
+  if (text)
   {
     v8 = [MEMORY[0x1E698E708] settingsWithMass:3.0 stiffness:200.0 damping:38.0];
-    [v8 setDelay:a4 + 0.045];
-    v9 = [(SBUIFaceIDCameraGlyphView *)self window];
-    v10 = [v9 interfaceOrientation];
+    [v8 setDelay:delay + 0.045];
+    window = [(SBUIFaceIDCameraGlyphView *)self window];
+    interfaceOrientation = [window interfaceOrientation];
 
     v11 = 300.0;
-    if (v10 != 3)
+    if (interfaceOrientation != 3)
     {
       v11 = 0.0;
     }
 
-    if (v10 == 4)
+    if (interfaceOrientation == 4)
     {
       v11 = -300.0;
     }
@@ -241,7 +241,7 @@ LABEL_13:
     v13 = MEMORY[0x1E698E608];
     v14 = *MEMORY[0x1E6979EB8];
     v15 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-    v16 = [v13 settingsWithDuration:v15 delay:0.5 timingFunction:a4 + 0.265];
+    v16 = [v13 settingsWithDuration:v15 delay:0.5 timingFunction:delay + 0.265];
 
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
@@ -249,14 +249,14 @@ LABEL_13:
     v35[3] = &unk_1E789DA38;
     v35[4] = self;
     [MEMORY[0x1E698E7D0] animateWithSettings:v16 actions:v35];
-    v17 = [MEMORY[0x1E6979390] animation];
-    [v17 setDuration:0.7];
-    [v17 setRemovedOnCompletion:1];
-    [v17 setBeginTime:CACurrentMediaTime() + 0.335 + a4];
-    [v17 setValues:&unk_1F1DB5CF8];
-    [v17 setKeyTimes:&unk_1F1DB5D10];
-    v18 = [(_UILegibilityView *)self->_arrowTail layer];
-    [v18 addAnimation:v17 forKey:@"transform.translation.y"];
+    animation = [MEMORY[0x1E6979390] animation];
+    [animation setDuration:0.7];
+    [animation setRemovedOnCompletion:1];
+    [animation setBeginTime:CACurrentMediaTime() + 0.335 + delay];
+    [animation setValues:&unk_1F1DB5CF8];
+    [animation setKeyTimes:&unk_1F1DB5D10];
+    layer = [(_UILegibilityView *)self->_arrowTail layer];
+    [layer addAnimation:animation forKey:@"transform.translation.y"];
 
     v7 = 0x1E698E000;
     v6 = 0x1E698E000;
@@ -269,8 +269,8 @@ LABEL_13:
 
   v19 = [*(v6 + 1800) settingsWithMass:3.0 stiffness:250.0 damping:50.0];
   v20 = v19;
-  v21 = a4 + -0.005;
-  if (a4 + -0.005 < 0.0)
+  v21 = delay + -0.005;
+  if (delay + -0.005 < 0.0)
   {
     v21 = 0.0;
   }
@@ -287,7 +287,7 @@ LABEL_13:
   [MEMORY[0x1E698E7D0] animateWithSettings:v20 actions:v34];
   v23 = *(v7 + 1544);
   v24 = [MEMORY[0x1E69793D0] functionWithName:v14];
-  v25 = [v23 settingsWithDuration:v24 delay:0.5 timingFunction:a4 + 0.04];
+  v25 = [v23 settingsWithDuration:v24 delay:0.5 timingFunction:delay + 0.04];
 
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
@@ -295,24 +295,24 @@ LABEL_13:
   v33[3] = &unk_1E789DA38;
   v33[4] = self;
   [MEMORY[0x1E698E7D0] animateWithSettings:v25 actions:v33];
-  v26 = [MEMORY[0x1E6979318] animation];
-  [v26 setDuration:0.75];
-  [v26 setBeginTime:CACurrentMediaTime() + 0.7464 + a4];
-  [v26 setRemovedOnCompletion:0];
-  [v26 setAutoreverses:1];
+  animation2 = [MEMORY[0x1E6979318] animation];
+  [animation2 setDuration:0.75];
+  [animation2 setBeginTime:CACurrentMediaTime() + 0.7464 + delay];
+  [animation2 setRemovedOnCompletion:0];
+  [animation2 setAutoreverses:1];
   LODWORD(v27) = 2139095040;
-  [v26 setRepeatCount:v27];
-  [v26 setKeyPath:@"transform.translation.y"];
-  [v26 setFromValue:&unk_1F1DB5AB8];
-  [v26 setToValue:&unk_1F1DB5C10];
+  [animation2 setRepeatCount:v27];
+  [animation2 setKeyPath:@"transform.translation.y"];
+  [animation2 setFromValue:&unk_1F1DB5AB8];
+  [animation2 setToValue:&unk_1F1DB5C10];
   LODWORD(v28) = 0.5;
   LODWORD(v29) = 0.5;
   LODWORD(v30) = 1.0;
   v31 = [MEMORY[0x1E69793D0] functionWithControlPoints:v28 :0.0 :v29 :v30];
-  [v26 setTimingFunction:v31];
+  [animation2 setTimingFunction:v31];
 
-  v32 = [(_UILegibilityView *)self->_arrowHead layer];
-  [v32 addAnimation:v26 forKey:@"transform.translation.y"];
+  layer2 = [(_UILegibilityView *)self->_arrowHead layer];
+  [layer2 addAnimation:animation2 forKey:@"transform.translation.y"];
 }
 
 uint64_t __50__SBUIFaceIDCameraGlyphView__flyInWithText_delay___block_invoke(uint64_t a1)
@@ -335,25 +335,25 @@ uint64_t __50__SBUIFaceIDCameraGlyphView__flyInWithText_delay___block_invoke_48(
   return [v1 setTransform:v4];
 }
 
-- (void)_setAlpha:(double)a3 onComponents:(id)a4 completion:(id)a5
+- (void)_setAlpha:(double)alpha onComponents:(id)components completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  componentsCopy = components;
+  completionCopy = completion;
   v9 = [MEMORY[0x1E698E608] settingsWithDuration:0.2];
   v10 = MEMORY[0x1E698E7D0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __63__SBUIFaceIDCameraGlyphView__setAlpha_onComponents_completion___block_invoke;
   v15[3] = &unk_1E789DD70;
-  v16 = v7;
-  v17 = a3;
+  v16 = componentsCopy;
+  alphaCopy = alpha;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __63__SBUIFaceIDCameraGlyphView__setAlpha_onComponents_completion___block_invoke_2;
   v13[3] = &unk_1E789DBE0;
-  v14 = v8;
-  v11 = v8;
-  v12 = v7;
+  v14 = completionCopy;
+  v11 = completionCopy;
+  v12 = componentsCopy;
   [v10 animateWithSettings:v9 actions:v15 completion:v13];
 }
 
@@ -432,8 +432,8 @@ uint64_t __63__SBUIFaceIDCameraGlyphView__setAlpha_onComponents_completion___blo
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) layer];
-        [v10 removeAllAnimations];
+        layer = [*(*(&v11 + 1) + 8 * v9) layer];
+        [layer removeAllAnimations];
 
         ++v9;
       }
@@ -454,8 +454,8 @@ uint64_t __63__SBUIFaceIDCameraGlyphView__setAlpha_onComponents_completion___blo
   [(SBUIFaceIDCameraGlyphView *)self bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [(_UILegibilityView *)self->_arrowHead image];
-  [v9 size];
+  image = [(_UILegibilityView *)self->_arrowHead image];
+  [image size];
 
   [(UIView *)self->_arrowContainer setFrame:0.0, 0.0, 80.0, 80.0];
   [(MTMaterialView *)self->_arrowBackgroundView setFrame:0.0, 0.0, 80.0, 80.0];
@@ -472,8 +472,8 @@ uint64_t __63__SBUIFaceIDCameraGlyphView__setAlpha_onComponents_completion___blo
 
   else
   {
-    v2 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v2 userInterfaceIdiom] != 1 || SBFEffectiveHomeButtonType() != 2)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1 || SBFEffectiveHomeButtonType() != 2)
     {
 LABEL_14:
 
@@ -490,8 +490,8 @@ LABEL_14:
 
   else
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -517,8 +517,8 @@ LABEL_15:
 
   v61 = v15 * 0.5;
   [(UIView *)self->_arrowContainer setCenter:?];
-  v16 = [(_UILegibilityView *)self->_arrowHead image];
-  [v16 size];
+  image2 = [(_UILegibilityView *)self->_arrowHead image];
+  [image2 size];
   v18 = (80.0 - v17) * 0.5;
 
   [(UIView *)self->_arrowContainer bounds];
@@ -533,8 +533,8 @@ LABEL_15:
   slice.size = v56;
   remainder.origin = slice.origin;
   remainder.size = v56;
-  v23 = [(_UILegibilityView *)self->_arrowHead image];
-  [v23 size];
+  image3 = [(_UILegibilityView *)self->_arrowHead image];
+  [image3 size];
   v25 = v24;
   v68.origin.x = x;
   v59 = x;
@@ -548,8 +548,8 @@ LABEL_15:
   [(_UILegibilityView *)self->_arrowHead setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
   v62.origin = origin;
   v62.size = v56;
-  v26 = [(_UILegibilityView *)self->_arrowTail image];
-  [v26 size];
+  image4 = [(_UILegibilityView *)self->_arrowTail image];
+  [image4 size];
   v28 = v27;
   v69.origin.x = x;
   v69.origin.y = y;
@@ -558,8 +558,8 @@ LABEL_15:
   CGRectDivide(v69, &v62, &remainder, v28, CGRectMaxYEdge);
 
   [(_UILegibilityView *)self->_arrowTail setFrame:v62.origin.x, v62.origin.y, v62.size.width, v62.size.height];
-  v29 = [(_UILegibilityView *)self->_arrowHead shadowImageView];
-  [v29 bounds];
+  shadowImageView = [(_UILegibilityView *)self->_arrowHead shadowImageView];
+  [shadowImageView bounds];
   v31 = v30;
   v33 = v32;
   v35 = v34;
@@ -567,16 +567,16 @@ LABEL_15:
 
   [(CALayer *)self->_maskContainerLayer setFrame:v31, v33, v35, v37];
   v38 = v37 * 0.5 + slice.size.height * 0.5;
-  v39 = [(_UILegibilityView *)self->_arrowTail image];
-  [v39 size];
+  image5 = [(_UILegibilityView *)self->_arrowTail image];
+  [image5 size];
   v41 = (v35 - v40) * 0.5;
   v42 = v37 - v38;
 
-  v43 = [(_UILegibilityView *)self->_arrowTail image];
-  [v43 size];
+  image6 = [(_UILegibilityView *)self->_arrowTail image];
+  [image6 size];
   v45 = (v35 + v44) * 0.5;
-  v46 = [(_UILegibilityView *)self->_arrowTail image];
-  [v46 size];
+  image7 = [(_UILegibilityView *)self->_arrowTail image];
+  [image7 size];
   v48 = (v35 - v47) * 0.5;
 
   [(CALayer *)self->_maskTopLayer setFrame:0.0, 0.0, v35, v38];
@@ -603,12 +603,12 @@ LABEL_15:
   [(MTMaterialView *)self->_arrowBackgroundView setWeighting:1.0];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(_UILegibilityView *)self->_arrowHead updateForChangedSettings:self->_legibilitySettings];
     [(_UILegibilityView *)self->_arrowTail updateForChangedSettings:self->_legibilitySettings];
     [(SBUILegibilityLabel *)self->_callToActionLabel setLegibilitySettings:self->_legibilitySettings];
@@ -616,29 +616,29 @@ LABEL_15:
   }
 }
 
-- (void)setLocalTransform:(CGAffineTransform *)a3
+- (void)setLocalTransform:(CGAffineTransform *)transform
 {
   p_localTransform = &self->_localTransform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_localTransform.c;
   *&v12.a = *&self->_localTransform.a;
   *&v12.c = v7;
   *&v12.tx = *&self->_localTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v12))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_localTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_localTransform->c = *&transform->c;
     *&p_localTransform->tx = v9;
     *&p_localTransform->a = v8;
     localRotationView = self->_localRotationView;
-    v11 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v11 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v11;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     [(UIView *)localRotationView setTransform:&t1];
   }
 }

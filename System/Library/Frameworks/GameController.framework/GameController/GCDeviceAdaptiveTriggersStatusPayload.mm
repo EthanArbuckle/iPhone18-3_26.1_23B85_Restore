@@ -1,16 +1,16 @@
 @interface GCDeviceAdaptiveTriggersStatusPayload
-- (BOOL)isEqual:(id)a3;
-- (GCDeviceAdaptiveTriggersStatusPayload)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GCDeviceAdaptiveTriggersStatusPayload)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCDeviceAdaptiveTriggersStatusPayload
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -20,18 +20,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       status = self->_status;
-      v7 = [(GCDeviceAdaptiveTriggersStatusPayload *)v5 status];
-      if ([(NSNumber *)status isEqualToNumber:v7])
+      status = [(GCDeviceAdaptiveTriggersStatusPayload *)v5 status];
+      if ([(NSNumber *)status isEqualToNumber:status])
       {
         armPosition = self->_armPosition;
-        v9 = [(GCDeviceAdaptiveTriggersStatusPayload *)v5 armPosition];
-        if ([(NSNumber *)armPosition isEqualToNumber:v9])
+        armPosition = [(GCDeviceAdaptiveTriggersStatusPayload *)v5 armPosition];
+        if ([(NSNumber *)armPosition isEqualToNumber:armPosition])
         {
           mode = self->_mode;
-          v11 = [(GCDeviceAdaptiveTriggersStatusPayload *)v5 mode];
-          v12 = [(NSNumber *)mode isEqualToNumber:v11];
+          mode = [(GCDeviceAdaptiveTriggersStatusPayload *)v5 mode];
+          v12 = [(NSNumber *)mode isEqualToNumber:mode];
         }
 
         else
@@ -62,23 +62,23 @@
   return v4 ^ [(NSNumber *)self->_mode hash];
 }
 
-- (GCDeviceAdaptiveTriggersStatusPayload)initWithCoder:(id)a3
+- (GCDeviceAdaptiveTriggersStatusPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = GCDeviceAdaptiveTriggersStatusPayload;
   v5 = [(GCDeviceAdaptiveTriggersStatusPayload *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_status"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_status"];
     status = v5->_status;
     v5->_status = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_armPosition"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_armPosition"];
     armPosition = v5->_armPosition;
     v5->_armPosition = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_mode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_mode"];
     mode = v5->_mode;
     v5->_mode = v10;
   }
@@ -86,13 +86,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   status = self->_status;
-  v5 = a3;
-  [v5 encodeObject:status forKey:@"_status"];
-  [v5 encodeObject:self->_armPosition forKey:@"_armPosition"];
-  [v5 encodeObject:self->_mode forKey:@"_mode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:status forKey:@"_status"];
+  [coderCopy encodeObject:self->_armPosition forKey:@"_armPosition"];
+  [coderCopy encodeObject:self->_mode forKey:@"_mode"];
 }
 
 @end

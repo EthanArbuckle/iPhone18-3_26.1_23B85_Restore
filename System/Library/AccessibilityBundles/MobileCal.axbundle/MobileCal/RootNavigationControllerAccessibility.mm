@@ -1,5 +1,5 @@
 @interface RootNavigationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axCurrentDayViewMode;
 - (id)_axCurrentMonthViewMode;
 - (id)_compactMonthDividedListSwitchBarButtonItem;
@@ -11,18 +11,18 @@
 
 @implementation RootNavigationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"RootNavigationController" isKindOfClass:@"UINavigationController"];
-  [v3 validateClass:@"RootNavigationController" hasInstanceMethod:@"todayPressed" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"RootNavigationController" hasInstanceMethod:@"_compactMonthDividedListSwitchBarButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RootNavigationController" hasInstanceMethod:@"_listViewSwitchBarButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RootNavigationController" hasInstanceMethod:@"_initializeCalendarsButton" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"RootNavigationController" hasInstanceMethod:@"calendarsBarButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RootNavigationController" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RootNavigationController" hasInstanceVariable:@"_listToggleBarButtonItem" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"RootNavigationController" hasInstanceVariable:@"_dividedMonthToggleBarButtonItem" withType:"UIBarButtonItem"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"RootNavigationController" isKindOfClass:@"UINavigationController"];
+  [validationsCopy validateClass:@"RootNavigationController" hasInstanceMethod:@"todayPressed" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"RootNavigationController" hasInstanceMethod:@"_compactMonthDividedListSwitchBarButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RootNavigationController" hasInstanceMethod:@"_listViewSwitchBarButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RootNavigationController" hasInstanceMethod:@"_initializeCalendarsButton" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"RootNavigationController" hasInstanceMethod:@"calendarsBarButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RootNavigationController" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RootNavigationController" hasInstanceVariable:@"_listToggleBarButtonItem" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"RootNavigationController" hasInstanceVariable:@"_dividedMonthToggleBarButtonItem" withType:"UIBarButtonItem"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -75,14 +75,14 @@ id __83__RootNavigationControllerAccessibility__accessibilityLoadAccessibilityIn
 - (void)todayPressed
 {
   v17 = *MEMORY[0x29EDCA608];
-  v3 = [(RootNavigationControllerAccessibility *)self topViewController];
-  [v3 _accessibilitySetBoolValue:1 forKey:@"_AXShouldFocusOnTodayStorageKey"];
+  topViewController = [(RootNavigationControllerAccessibility *)self topViewController];
+  [topViewController _accessibilitySetBoolValue:1 forKey:@"_AXShouldFocusOnTodayStorageKey"];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 childViewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  childViewControllers = [topViewController childViewControllers];
+  v5 = [childViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -93,13 +93,13 @@ id __83__RootNavigationControllerAccessibility__accessibilityLoadAccessibilityIn
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childViewControllers);
         }
 
         [*(*(&v12 + 1) + 8 * i) _accessibilitySetBoolValue:1 forKey:@"_AXShouldFocusOnTodayStorageKey"];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [childViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -108,8 +108,8 @@ id __83__RootNavigationControllerAccessibility__accessibilityLoadAccessibilityIn
   v11.receiver = self;
   v11.super_class = RootNavigationControllerAccessibility;
   [(RootNavigationControllerAccessibility *)&v11 todayPressed];
-  v10 = v3;
-  v9 = v3;
+  v10 = topViewController;
+  v9 = topViewController;
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
@@ -152,11 +152,11 @@ void __53__RootNavigationControllerAccessibility_todayPressed__block_invoke(uint
 {
   v5.receiver = self;
   v5.super_class = RootNavigationControllerAccessibility;
-  v2 = [(RootNavigationControllerAccessibility *)&v5 _compactMonthDividedListSwitchBarButtonItem];
+  _compactMonthDividedListSwitchBarButtonItem = [(RootNavigationControllerAccessibility *)&v5 _compactMonthDividedListSwitchBarButtonItem];
   v3 = accessibilityLocalizedString(@"list.button");
-  [v2 setAccessibilityLabel:v3];
+  [_compactMonthDividedListSwitchBarButtonItem setAccessibilityLabel:v3];
 
-  return v2;
+  return _compactMonthDividedListSwitchBarButtonItem;
 }
 
 - (id)_axCurrentDayViewMode
@@ -180,16 +180,16 @@ void __53__RootNavigationControllerAccessibility_todayPressed__block_invoke(uint
 
   else
   {
-    v4 = [MEMORY[0x29EDC0AD8] sharedPreferences];
-    v5 = [v4 monthViewScaleSize];
+    mEMORY[0x29EDC0AD8] = [MEMORY[0x29EDC0AD8] sharedPreferences];
+    monthViewScaleSize = [mEMORY[0x29EDC0AD8] monthViewScaleSize];
 
     v6 = @"monthviewmode.details";
-    if (v5 == 2)
+    if (monthViewScaleSize == 2)
     {
       v6 = @"monthviewmode.stacked";
     }
 
-    if (v5 == 1)
+    if (monthViewScaleSize == 1)
     {
       v3 = @"monthviewmode.compact";
     }
@@ -209,18 +209,18 @@ void __53__RootNavigationControllerAccessibility_todayPressed__block_invoke(uint
 {
   v8.receiver = self;
   v8.super_class = RootNavigationControllerAccessibility;
-  v3 = [(RootNavigationControllerAccessibility *)&v8 _listViewSwitchBarButtonItem];
+  _listViewSwitchBarButtonItem = [(RootNavigationControllerAccessibility *)&v8 _listViewSwitchBarButtonItem];
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __69__RootNavigationControllerAccessibility__listViewSwitchBarButtonItem__block_invoke;
   v5[3] = &unk_29F2D2B30;
   objc_copyWeak(&v6, &location);
-  [v3 _setAccessibilityLabelBlock:v5];
+  [_listViewSwitchBarButtonItem _setAccessibilityLabelBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 
-  return v3;
+  return _listViewSwitchBarButtonItem;
 }
 
 id __69__RootNavigationControllerAccessibility__listViewSwitchBarButtonItem__block_invoke(uint64_t a1)

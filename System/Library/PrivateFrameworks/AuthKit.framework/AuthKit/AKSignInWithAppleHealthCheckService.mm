@@ -19,7 +19,7 @@
 
 - (void)registerService
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001E6408();
 }
 

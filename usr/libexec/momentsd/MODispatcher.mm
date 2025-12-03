@@ -1,22 +1,22 @@
 @interface MODispatcher
-- (MODispatcher)initWithNotifier:(id)a3;
-- (void)onNotification:(int)a3 withPayload:(id)a4;
-- (void)registerForNotification:(int)a3 withHandler:(id)a4;
-- (void)unregisterForNotification:(int)a3;
+- (MODispatcher)initWithNotifier:(id)notifier;
+- (void)onNotification:(int)notification withPayload:(id)payload;
+- (void)registerForNotification:(int)notification withHandler:(id)handler;
+- (void)unregisterForNotification:(int)notification;
 @end
 
 @implementation MODispatcher
 
-- (MODispatcher)initWithNotifier:(id)a3
+- (MODispatcher)initWithNotifier:(id)notifier
 {
-  v5 = a3;
+  notifierCopy = notifier;
   v15.receiver = self;
   v15.super_class = MODispatcher;
   v6 = [(MODispatcher *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notifier, a3);
+    objc_storeStrong(&v6->_notifier, notifier);
     v8 = objc_opt_new();
     handlerMap = v7->_handlerMap;
     v7->_handlerMap = v8;
@@ -32,9 +32,9 @@
   return v7;
 }
 
-- (void)registerForNotification:(int)a3 withHandler:(id)a4
+- (void)registerForNotification:(int)notification withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
@@ -42,9 +42,9 @@
   v9[2] = __52__MODispatcher_registerForNotification_withHandler___block_invoke;
   v9[3] = &unk_10033ECE8;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
+  notificationCopy = notification;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(queue, v9);
 
   objc_destroyWeak(&v11);
@@ -88,7 +88,7 @@ void __52__MODispatcher_registerForNotification_withHandler___block_invoke(uint6
 LABEL_7:
 }
 
-- (void)unregisterForNotification:(int)a3
+- (void)unregisterForNotification:(int)notification
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -97,7 +97,7 @@ LABEL_7:
   block[2] = __42__MODispatcher_unregisterForNotification___block_invoke;
   block[3] = &unk_10033ED10;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  notificationCopy = notification;
   dispatch_async(queue, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -118,9 +118,9 @@ void __42__MODispatcher_unregisterForNotification___block_invoke(uint64_t a1)
   }
 }
 
-- (void)onNotification:(int)a3 withPayload:(id)a4
+- (void)onNotification:(int)notification withPayload:(id)payload
 {
-  v6 = a4;
+  payloadCopy = payload;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
@@ -128,9 +128,9 @@ void __42__MODispatcher_unregisterForNotification___block_invoke(uint64_t a1)
   v9[2] = __62__MODispatcher_MONotifierUtility__onNotification_withPayload___block_invoke;
   v9[3] = &unk_10033ED38;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
+  notificationCopy = notification;
+  v10 = payloadCopy;
+  v8 = payloadCopy;
   dispatch_async(queue, v9);
 
   objc_destroyWeak(&v11);

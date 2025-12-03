@@ -1,11 +1,11 @@
 @interface FooterButtonReusableView
-- (_TtC16MusicApplication24FooterButtonReusableView)initWithCoder:(id)a3;
+- (_TtC16MusicApplication24FooterButtonReusableView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation FooterButtonReusableView
 
-- (_TtC16MusicApplication24FooterButtonReusableView)initWithCoder:(id)a3
+- (_TtC16MusicApplication24FooterButtonReusableView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplication24FooterButtonReusableView_title);
   *v3 = 0;
@@ -22,7 +22,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2FFC8();
 }
 

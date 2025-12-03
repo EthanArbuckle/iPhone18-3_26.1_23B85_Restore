@@ -1,18 +1,18 @@
 @interface CECIOCECInterfaceListener
-- (CECIOCECInterfaceListener)initWithInterfaceController:(id)a3;
-- (void)addIOCECInterface:(__IOCECInterface *)a3;
+- (CECIOCECInterfaceListener)initWithInterfaceController:(id)controller;
+- (void)addIOCECInterface:(__IOCECInterface *)interface;
 - (void)dealloc;
-- (void)scheduleWithDispatchQueue:(id)a3;
-- (void)unscheduleFromDispatchQueue:(id)a3;
+- (void)scheduleWithDispatchQueue:(id)queue;
+- (void)unscheduleFromDispatchQueue:(id)queue;
 @end
 
 @implementation CECIOCECInterfaceListener
 
-- (CECIOCECInterfaceListener)initWithInterfaceController:(id)a3
+- (CECIOCECInterfaceListener)initWithInterfaceController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = CECIOCECInterfaceListener;
-  v3 = [(CECIOCECInterfaceListener *)&v6 initWithInterfaceController:a3];
+  v3 = [(CECIOCECInterfaceListener *)&v6 initWithInterfaceController:controller];
   if (v3)
   {
     v4 = IOCECInterfaceListenerCreate();
@@ -48,18 +48,18 @@
   [(CECIOCECInterfaceListener *)&v4 dealloc];
 }
 
-- (void)scheduleWithDispatchQueue:(id)a3
+- (void)scheduleWithDispatchQueue:(id)queue
 {
   if (self->_listener)
   {
     IOCECInterfaceListenerRegisterAddInterfaceCallback();
     listener = self->_listener;
 
-    _IOCECInterfaceListenerScheduleWithDispatchQueue(listener, a3);
+    _IOCECInterfaceListenerScheduleWithDispatchQueue(listener, queue);
   }
 }
 
-- (void)unscheduleFromDispatchQueue:(id)a3
+- (void)unscheduleFromDispatchQueue:(id)queue
 {
   if (self->_listener)
   {
@@ -67,9 +67,9 @@
   }
 }
 
-- (void)addIOCECInterface:(__IOCECInterface *)a3
+- (void)addIOCECInterface:(__IOCECInterface *)interface
 {
-  v4 = [CECIOCECInterface interfaceWithIOCECInterface:a3 listener:self];
+  v4 = [CECIOCECInterface interfaceWithIOCECInterface:interface listener:self];
 
   [(CECIOCECInterfaceListener *)self addInterface:v4];
 }

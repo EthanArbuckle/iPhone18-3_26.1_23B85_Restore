@@ -1,68 +1,68 @@
 @interface CSDRelayConversation
-- (CSDRelayConversation)initWithRelayMessage:(id)a3 queue:(id)a4;
+- (CSDRelayConversation)initWithRelayMessage:(id)message queue:(id)queue;
 - (CSDRelayConversationDelegate)delegate;
 - (TUConversation)tuConversation;
 - (id)description;
-- (void)setEndpointOnCurrentDevice:(BOOL)a3;
-- (void)updateWithProminenceRelayMessage:(id)a3;
-- (void)updateWithRelayMessage:(id)a3;
+- (void)setEndpointOnCurrentDevice:(BOOL)device;
+- (void)updateWithProminenceRelayMessage:(id)message;
+- (void)updateWithRelayMessage:(id)message;
 @end
 
 @implementation CSDRelayConversation
 
-- (CSDRelayConversation)initWithRelayMessage:(id)a3 queue:(id)a4
+- (CSDRelayConversation)initWithRelayMessage:(id)message queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  queueCopy = queue;
   v36.receiver = self;
   v36.super_class = CSDRelayConversation;
   v8 = [(CSDRelayConversation *)&v36 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a4);
-    v9->_state = [v6 tuState];
+    objc_storeStrong(&v8->_queue, queue);
+    v9->_state = [messageCopy tuState];
     v10 = [NSUUID alloc];
-    v11 = [v6 uUIDString];
-    v12 = [v10 initWithUUIDString:v11];
+    uUIDString = [messageCopy uUIDString];
+    v12 = [v10 initWithUUIDString:uUIDString];
     UUID = v9->_UUID;
     v9->_UUID = v12;
 
     v14 = [NSUUID alloc];
-    v15 = [v6 groupUUIDString];
-    v16 = [v14 initWithUUIDString:v15];
+    groupUUIDString = [messageCopy groupUUIDString];
+    v16 = [v14 initWithUUIDString:groupUUIDString];
     groupUUID = v9->_groupUUID;
     v9->_groupUUID = v16;
 
     v18 = [NSUUID alloc];
-    v19 = [v6 messagesGroupUUIDString];
-    v20 = [v18 initWithUUIDString:v19];
+    messagesGroupUUIDString = [messageCopy messagesGroupUUIDString];
+    v20 = [v18 initWithUUIDString:messagesGroupUUIDString];
     messagesGroupUUID = v9->_messagesGroupUUID;
     v9->_messagesGroupUUID = v20;
 
-    v22 = [v6 localMember];
-    v23 = [v22 tuConversationMember];
+    localMember = [messageCopy localMember];
+    tuConversationMember = [localMember tuConversationMember];
     localMember = v9->_localMember;
-    v9->_localMember = v23;
+    v9->_localMember = tuConversationMember;
 
-    v9->_avMode = [v6 tuAVMode];
-    v25 = [v6 initiator];
-    v26 = [v25 tuHandle];
+    v9->_avMode = [messageCopy tuAVMode];
+    initiator = [messageCopy initiator];
+    tuHandle = [initiator tuHandle];
     initiator = v9->_initiator;
-    v9->_initiator = v26;
+    v9->_initiator = tuHandle;
 
-    v28 = [v6 reportData];
-    v29 = [v28 tuConversationReport];
+    reportData = [messageCopy reportData];
+    tuConversationReport = [reportData tuConversationReport];
     report = v9->_report;
-    v9->_report = v29;
+    v9->_report = tuConversationReport;
 
-    v31 = [v6 tuConversationMembers];
+    tuConversationMembers = [messageCopy tuConversationMembers];
     remoteMembers = v9->_remoteMembers;
-    v9->_remoteMembers = v31;
+    v9->_remoteMembers = tuConversationMembers;
 
-    v33 = [v6 tuConversationParticipants];
+    tuConversationParticipants = [messageCopy tuConversationParticipants];
     activeRemoteParticipants = v9->_activeRemoteParticipants;
-    v9->_activeRemoteParticipants = v33;
+    v9->_activeRemoteParticipants = tuConversationParticipants;
 
     v9->_endpointOnCurrentDevice = 1;
   }
@@ -70,52 +70,52 @@
   return v9;
 }
 
-- (void)updateWithRelayMessage:(id)a3
+- (void)updateWithRelayMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CSDRelayConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  queue = [(CSDRelayConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = [NSUUID alloc];
-  v7 = [v4 messagesGroupUUIDString];
-  v8 = [v6 initWithUUIDString:v7];
+  messagesGroupUUIDString = [messageCopy messagesGroupUUIDString];
+  v8 = [v6 initWithUUIDString:messagesGroupUUIDString];
   [(CSDRelayConversation *)self setMessagesGroupUUID:v8];
 
-  v9 = [v4 tuConversationParticipants];
-  [(CSDRelayConversation *)self setActiveRemoteParticipants:v9];
+  tuConversationParticipants = [messageCopy tuConversationParticipants];
+  [(CSDRelayConversation *)self setActiveRemoteParticipants:tuConversationParticipants];
 
-  v10 = [v4 tuConversationMembers];
-  [(CSDRelayConversation *)self setRemoteMembers:v10];
+  tuConversationMembers = [messageCopy tuConversationMembers];
+  [(CSDRelayConversation *)self setRemoteMembers:tuConversationMembers];
 
-  -[CSDRelayConversation setState:](self, "setState:", [v4 tuState]);
-  -[CSDRelayConversation setAvMode:](self, "setAvMode:", [v4 tuAVMode]);
-  v11 = [v4 localMember];
+  -[CSDRelayConversation setState:](self, "setState:", [messageCopy tuState]);
+  -[CSDRelayConversation setAvMode:](self, "setAvMode:", [messageCopy tuAVMode]);
+  localMember = [messageCopy localMember];
 
-  v12 = [v11 tuConversationMember];
-  [(CSDRelayConversation *)self setLocalMember:v12];
+  tuConversationMember = [localMember tuConversationMember];
+  [(CSDRelayConversation *)self setLocalMember:tuConversationMember];
 
-  v13 = [(CSDRelayConversation *)self delegate];
-  [v13 conversationChanged:self];
+  delegate = [(CSDRelayConversation *)self delegate];
+  [delegate conversationChanged:self];
 }
 
-- (void)updateWithProminenceRelayMessage:(id)a3
+- (void)updateWithProminenceRelayMessage:(id)message
 {
-  v4 = a3;
-  v23 = self;
-  v5 = [(CSDRelayConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  selfCopy = self;
+  queue = [(CSDRelayConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 prominenceEntrys];
-  v7 = v6;
-  if (v6)
+  prominenceEntrys = [messageCopy prominenceEntrys];
+  v7 = prominenceEntrys;
+  if (prominenceEntrys)
   {
-    v21 = v4;
-    obj = v6;
+    v21 = messageCopy;
+    obj = prominenceEntrys;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    v8 = [prominenceEntrys countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v8)
     {
       v9 = v8;
@@ -134,8 +134,8 @@
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v13 = [(CSDRelayConversation *)v23 activeRemoteParticipants];
-          v14 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          activeRemoteParticipants = [(CSDRelayConversation *)selfCopy activeRemoteParticipants];
+          v14 = [activeRemoteParticipants countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v14)
           {
             v15 = v14;
@@ -146,18 +146,18 @@
               {
                 if (*v25 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(activeRemoteParticipants);
                 }
 
                 v18 = *(*(&v24 + 1) + 8 * j);
-                v19 = [v18 identifier];
-                if (v19 == [v12 participantIdentifier])
+                identifier = [v18 identifier];
+                if (identifier == [v12 participantIdentifier])
                 {
                   [v18 setAudioPriority:{objc_msgSend(v12, "audioPriority")}];
                 }
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
+              v15 = [activeRemoteParticipants countByEnumeratingWithState:&v24 objects:v32 count:16];
             }
 
             while (v15);
@@ -170,18 +170,18 @@
       while (v9);
     }
 
-    v20 = [(CSDRelayConversation *)v23 delegate];
-    [v20 conversationChanged:v23];
-    v4 = v21;
+    delegate = [(CSDRelayConversation *)selfCopy delegate];
+    [delegate conversationChanged:selfCopy];
+    messageCopy = v21;
     v7 = obj;
   }
 
   else
   {
-    v20 = sub_100004778();
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    delegate = sub_100004778();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
-      sub_100479148(v20);
+      sub_100479148(delegate);
     }
   }
 }
@@ -189,29 +189,29 @@
 - (id)description
 {
   v3 = [NSMutableString stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CSDRelayConversation *)self UUID];
-  [v3 appendFormat:@" UUID=%@", v4];
+  uUID = [(CSDRelayConversation *)self UUID];
+  [v3 appendFormat:@" UUID=%@", uUID];
 
-  v5 = [(CSDRelayConversation *)self groupUUID];
-  [v3 appendFormat:@" groupUUID=%@", v5];
+  groupUUID = [(CSDRelayConversation *)self groupUUID];
+  [v3 appendFormat:@" groupUUID=%@", groupUUID];
 
-  v6 = [(CSDRelayConversation *)self messagesGroupUUID];
+  messagesGroupUUID = [(CSDRelayConversation *)self messagesGroupUUID];
 
-  if (v6)
+  if (messagesGroupUUID)
   {
-    v7 = [(CSDRelayConversation *)self messagesGroupUUID];
-    [v3 appendFormat:@" messagesGroupUUID=%@", v7];
+    messagesGroupUUID2 = [(CSDRelayConversation *)self messagesGroupUUID];
+    [v3 appendFormat:@" messagesGroupUUID=%@", messagesGroupUUID2];
   }
 
   [v3 appendFormat:@" state=%ld", -[CSDRelayConversation state](self, "state")];
-  v8 = [(CSDRelayConversation *)self localMember];
-  [v3 appendFormat:@" localMember=%@", v8];
+  localMember = [(CSDRelayConversation *)self localMember];
+  [v3 appendFormat:@" localMember=%@", localMember];
 
-  v9 = [(CSDRelayConversation *)self remoteMembers];
-  [v3 appendFormat:@" remoteMembers=%@", v9];
+  remoteMembers = [(CSDRelayConversation *)self remoteMembers];
+  [v3 appendFormat:@" remoteMembers=%@", remoteMembers];
 
-  v10 = [(CSDRelayConversation *)self activeRemoteParticipants];
-  [v3 appendFormat:@" activeRemoteParticipants=%@", v10];
+  activeRemoteParticipants = [(CSDRelayConversation *)self activeRemoteParticipants];
+  [v3 appendFormat:@" activeRemoteParticipants=%@", activeRemoteParticipants];
 
   [v3 appendString:@">"];
   v11 = [v3 copy];
@@ -221,16 +221,16 @@
 
 - (TUConversation)tuConversation
 {
-  v3 = [(CSDRelayConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDRelayConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDRelayConversation *)self groupUUID];
-  v5 = [TUMutableConversation emptyConversationWithGroupUUID:v4];
+  groupUUID = [(CSDRelayConversation *)self groupUUID];
+  v5 = [TUMutableConversation emptyConversationWithGroupUUID:groupUUID];
 
   [v5 setHostedOnCurrentDevice:0];
   [v5 setEndpointOnCurrentDevice:{-[CSDRelayConversation endpointOnCurrentDevice](self, "endpointOnCurrentDevice")}];
-  v6 = [(CSDRelayConversation *)self UUID];
-  [v5 setUUID:v6];
+  uUID = [(CSDRelayConversation *)self UUID];
+  [v5 setUUID:uUID];
 
   v7 = +[TUConversationProvider faceTimeProvider];
   [v5 setProvider:v7];
@@ -252,34 +252,34 @@
 
   if ([(CSDRelayConversation *)self endpointOnCurrentDevice])
   {
-    v13 = [(CSDRelayConversation *)self state];
+    state = [(CSDRelayConversation *)self state];
   }
 
   else
   {
-    v13 = 0;
+    state = 0;
   }
 
-  [v5 setState:v13];
+  [v5 setState:state];
   [v5 setState:{-[CSDRelayConversation state](self, "state")}];
-  v14 = [(CSDRelayConversation *)self messagesGroupUUID];
-  [v5 setMessagesGroupUUID:v14];
+  messagesGroupUUID = [(CSDRelayConversation *)self messagesGroupUUID];
+  [v5 setMessagesGroupUUID:messagesGroupUUID];
 
-  v15 = [(CSDRelayConversation *)self remoteMembers];
-  [v5 setRemoteMembers:v15];
+  remoteMembers = [(CSDRelayConversation *)self remoteMembers];
+  [v5 setRemoteMembers:remoteMembers];
 
-  v16 = [(CSDRelayConversation *)self localMember];
-  [v5 setLocalMember:v16];
+  localMember = [(CSDRelayConversation *)self localMember];
+  [v5 setLocalMember:localMember];
 
   [v5 setAvMode:{-[CSDRelayConversation avMode](self, "avMode")}];
-  v17 = [(CSDRelayConversation *)self initiator];
-  [v5 setInitiator:v17];
+  initiator = [(CSDRelayConversation *)self initiator];
+  [v5 setInitiator:initiator];
 
-  v18 = [(CSDRelayConversation *)self report];
-  [v5 setReport:v18];
+  report = [(CSDRelayConversation *)self report];
+  [v5 setReport:report];
 
-  v19 = [(CSDRelayConversation *)self activeRemoteParticipants];
-  v20 = [v19 copy];
+  activeRemoteParticipants = [(CSDRelayConversation *)self activeRemoteParticipants];
+  v20 = [activeRemoteParticipants copy];
   [v5 setActiveRemoteParticipants:v20];
 
   v21 = [v5 copy];
@@ -287,11 +287,11 @@
   return v21;
 }
 
-- (void)setEndpointOnCurrentDevice:(BOOL)a3
+- (void)setEndpointOnCurrentDevice:(BOOL)device
 {
-  self->_endpointOnCurrentDevice = a3;
-  v4 = [(CSDRelayConversation *)self delegate];
-  [v4 conversationChanged:self];
+  self->_endpointOnCurrentDevice = device;
+  delegate = [(CSDRelayConversation *)self delegate];
+  [delegate conversationChanged:self];
 }
 
 - (CSDRelayConversationDelegate)delegate

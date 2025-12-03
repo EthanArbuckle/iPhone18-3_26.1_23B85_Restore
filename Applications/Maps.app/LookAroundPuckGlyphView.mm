@@ -1,22 +1,22 @@
 @interface LookAroundPuckGlyphView
 - (CGSize)intrinsicContentSize;
-- (LookAroundPuckGlyphView)initWithFrame:(CGRect)a3;
-- (void)setTilted:(BOOL)a3;
-- (void)setTilted:(BOOL)a3 animated:(BOOL)a4;
+- (LookAroundPuckGlyphView)initWithFrame:(CGRect)frame;
+- (void)setTilted:(BOOL)tilted;
+- (void)setTilted:(BOOL)tilted animated:(BOOL)animated;
 - (void)tintColorDidChange;
 @end
 
 @implementation LookAroundPuckGlyphView
 
-- (void)setTilted:(BOOL)a3 animated:(BOOL)a4
+- (void)setTilted:(BOOL)tilted animated:(BOOL)animated
 {
-  if (self->_tilted != a3)
+  if (self->_tilted != tilted)
   {
-    v4 = a4;
-    v5 = a3;
-    v7 = [(LookAroundPuckGlyphView *)self layer];
-    v8 = [v7 presentationLayer];
-    [v8 contentsRect];
+    animatedCopy = animated;
+    tiltedCopy = tilted;
+    layer = [(LookAroundPuckGlyphView *)self layer];
+    presentationLayer = [layer presentationLayer];
+    [presentationLayer contentsRect];
     x = v26.origin.x;
     y = v26.origin.y;
     width = v26.size.width;
@@ -28,11 +28,11 @@
     v27.size.height = height;
     MinY = CGRectGetMinY(v27);
 
-    [(LookAroundPuckGlyphView *)self setTilted:v5];
-    if (v4)
+    [(LookAroundPuckGlyphView *)self setTilted:tiltedCopy];
+    if (animatedCopy)
     {
       v15 = 5 * MinX + 25 * MinY;
-      if (v5)
+      if (tiltedCopy)
       {
         v16 = 24;
       }
@@ -74,22 +74,22 @@
       [v22 setDuration:v17 * 0.0166666667];
       [v22 setValues:v24];
       [v22 setCalculationMode:kCAAnimationDiscrete];
-      v23 = [(LookAroundPuckGlyphView *)self layer];
-      [v23 addAnimation:v22 forKey:@"tilt"];
+      layer2 = [(LookAroundPuckGlyphView *)self layer];
+      [layer2 addAnimation:v22 forKey:@"tilt"];
     }
   }
 }
 
-- (void)setTilted:(BOOL)a3
+- (void)setTilted:(BOOL)tilted
 {
-  if (self->_tilted != a3)
+  if (self->_tilted != tilted)
   {
-    v4 = a3;
-    self->_tilted = a3;
-    v6 = [(LookAroundPuckGlyphView *)self layer];
-    [v6 removeAnimationForKey:@"tilt"];
+    tiltedCopy = tilted;
+    self->_tilted = tilted;
+    layer = [(LookAroundPuckGlyphView *)self layer];
+    [layer removeAnimationForKey:@"tilt"];
 
-    if (v4)
+    if (tiltedCopy)
     {
       v7 = 24;
     }
@@ -99,7 +99,7 @@
       v7 = 0;
     }
 
-    if (v4)
+    if (tiltedCopy)
     {
       v8 = 4;
     }
@@ -111,8 +111,8 @@
 
     v9 = ((v7 - (v8 & 0xEF | (16 * ((v8 & 4) != 0)))) & 0xFC) * 0.2;
     v10 = v8 * 0.2;
-    v11 = [(LookAroundPuckGlyphView *)self layer];
-    [v11 setContentsRect:{v9, v10, 0.2, 0.2}];
+    layer2 = [(LookAroundPuckGlyphView *)self layer];
+    [layer2 setContentsRect:{v9, v10, 0.2, 0.2}];
   }
 }
 
@@ -121,10 +121,10 @@
   v6.receiver = self;
   v6.super_class = LookAroundPuckGlyphView;
   [(LookAroundPuckGlyphView *)&v6 tintColorDidChange];
-  v3 = [(LookAroundPuckGlyphView *)self tintColor];
-  v4 = [v3 CGColor];
-  v5 = [(LookAroundPuckGlyphView *)self layer];
-  [v5 setContentsMultiplyColor:v4];
+  tintColor = [(LookAroundPuckGlyphView *)self tintColor];
+  cGColor = [tintColor CGColor];
+  layer = [(LookAroundPuckGlyphView *)self layer];
+  [layer setContentsMultiplyColor:cGColor];
 }
 
 - (CGSize)intrinsicContentSize
@@ -137,11 +137,11 @@
   return result;
 }
 
-- (LookAroundPuckGlyphView)initWithFrame:(CGRect)a3
+- (LookAroundPuckGlyphView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = LookAroundPuckGlyphView;
-  v3 = [(LookAroundPuckGlyphView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LookAroundPuckGlyphView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIImage imageNamed:@"LookAroundPuckAnimation"];
@@ -150,10 +150,10 @@
     image = v3->_image;
     v3->_image = v6;
 
-    v8 = [(LookAroundPuckGlyphView *)v3 layer];
-    [v8 setContents:{-[UIImage CGImage](v3->_image, "CGImage")}];
+    layer = [(LookAroundPuckGlyphView *)v3 layer];
+    [layer setContents:{-[UIImage CGImage](v3->_image, "CGImage")}];
     [(LookAroundPuckGlyphView *)v3 tintColorDidChange];
-    [v8 setContentsRect:{0.0, 0.0, 0.2, 0.2}];
+    [layer setContentsRect:{0.0, 0.0, 0.2, 0.2}];
     v9 = v3;
   }
 

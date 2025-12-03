@@ -1,5 +1,5 @@
 @interface DCCityMapperURLGenerator
-+ (void)generateURLWithMapsLink:(id)a3 completionHandler:(id)a4;
++ (void)generateURLWithMapsLink:(id)link completionHandler:(id)handler;
 - (void)populateQueryDictionary;
 @end
 
@@ -7,77 +7,77 @@
 
 - (void)populateQueryDictionary
 {
-  v19 = [(DCMapsURLGenerator *)self queryDictionary];
-  v3 = [(DCMapsURLGenerator *)self mapsLink];
-  v4 = [(DCCityMapperURLGenerator *)self startCoordinate];
-  v5 = v4;
-  if (v4)
+  queryDictionary = [(DCMapsURLGenerator *)self queryDictionary];
+  mapsLink = [(DCMapsURLGenerator *)self mapsLink];
+  startCoordinate = [(DCCityMapperURLGenerator *)self startCoordinate];
+  v5 = startCoordinate;
+  if (startCoordinate)
   {
-    v6 = v4;
+    v6 = startCoordinate;
   }
 
   else
   {
-    v7 = [v3 centerLocation];
-    v8 = v7;
-    if (v7)
+    centerLocation = [mapsLink centerLocation];
+    v8 = centerLocation;
+    if (centerLocation)
     {
-      v9 = v7;
+      searchLocation = centerLocation;
     }
 
     else
     {
-      v9 = [v3 searchLocation];
+      searchLocation = [mapsLink searchLocation];
     }
 
-    v6 = v9;
+    v6 = searchLocation;
   }
 
   if ([v6 length])
   {
-    [v19 setObject:v6 forKey:@"startcoord"];
+    [queryDictionary setObject:v6 forKey:@"startcoord"];
   }
 
-  v10 = [(DCCityMapperURLGenerator *)self endCoordinate];
-  v11 = [v10 length];
+  endCoordinate = [(DCCityMapperURLGenerator *)self endCoordinate];
+  v11 = [endCoordinate length];
 
   if (v11)
   {
-    v12 = [(DCCityMapperURLGenerator *)self endCoordinate];
-    [v19 setObject:v12 forKey:@"endcoord"];
+    endCoordinate2 = [(DCCityMapperURLGenerator *)self endCoordinate];
+    [queryDictionary setObject:endCoordinate2 forKey:@"endcoord"];
   }
 
-  v13 = [v3 startAddress];
-  v14 = [v13 length];
+  startAddress = [mapsLink startAddress];
+  v14 = [startAddress length];
 
   if (v14)
   {
-    v15 = [v3 startAddress];
-    [v19 setObject:v15 forKey:@"startaddress"];
+    startAddress2 = [mapsLink startAddress];
+    [queryDictionary setObject:startAddress2 forKey:@"startaddress"];
   }
 
-  v16 = [v3 destinationAddress];
-  v17 = [v16 length];
+  destinationAddress = [mapsLink destinationAddress];
+  v17 = [destinationAddress length];
 
   if (v17)
   {
-    v18 = [v3 destinationAddress];
-    [v19 setObject:v18 forKey:@"endaddress"];
+    destinationAddress2 = [mapsLink destinationAddress];
+    [queryDictionary setObject:destinationAddress2 forKey:@"endaddress"];
   }
 }
 
-+ (void)generateURLWithMapsLink:(id)a3 completionHandler:(id)a4
++ (void)generateURLWithMapsLink:(id)link completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  linkCopy = link;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __70__DCCityMapperURLGenerator_generateURLWithMapsLink_completionHandler___block_invoke;
     v7[3] = &unk_278346928;
-    v8 = v5;
-    v9 = v6;
+    v8 = linkCopy;
+    v9 = handlerCopy;
     [v8 geocodeDirectionsEndpointsWithCompletionHandler:v7];
   }
 }

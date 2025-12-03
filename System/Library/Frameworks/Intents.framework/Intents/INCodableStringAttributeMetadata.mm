@@ -1,6 +1,6 @@
 @interface INCodableStringAttributeMetadata
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (INCodableStringAttributeMetadata)initWithCoder:(id)a3;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (INCodableStringAttributeMetadata)initWithCoder:(id)coder;
 - (NSString)localizedDefaultValue;
 - (id)__INCodableDescriptionCapitalizationKey;
 - (id)__INCodableDescriptionDefaultValueIDKey;
@@ -23,128 +23,128 @@
 - (id)__INTypeCodableDescriptionDisableSmartDashesKey;
 - (id)__INTypeCodableDescriptionDisableSmartQuotesKey;
 - (id)__INTypeCodableDescriptionMultilineKey;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)localizedDefaultValueWithLocalizer:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)localizedDefaultValueWithLocalizer:(id)localizer;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INCodableStringAttributeMetadata
 
 - (id)__INCodableDescriptionMultilineKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataMultilineKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataMultilineKey = [objc_opt_class() __INCodableStringAttributeMetadataMultilineKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataMultilineKey;
 }
 
 - (id)__INCodableDescriptionDisableAutocorrectKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDisableAutocorrectKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDisableAutocorrectKey = [objc_opt_class() __INCodableStringAttributeMetadataDisableAutocorrectKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDisableAutocorrectKey;
 }
 
 - (id)__INCodableDescriptionDisableSmartDashesKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDisableSmartDashesKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDisableSmartDashesKey = [objc_opt_class() __INCodableStringAttributeMetadataDisableSmartDashesKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDisableSmartDashesKey;
 }
 
 - (id)__INCodableDescriptionDisableSmartQuotesKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDisableSmartQuotesKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDisableSmartQuotesKey = [objc_opt_class() __INCodableStringAttributeMetadataDisableSmartQuotesKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDisableSmartQuotesKey;
 }
 
 - (id)__INCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableStringAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDefaultValueKey;
 }
 
 - (id)__INCodableDescriptionDefaultValueIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDefaultValueIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDefaultValueIDKey = [objc_opt_class() __INCodableStringAttributeMetadataDefaultValueIDKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDefaultValueIDKey;
 }
 
 - (id)__INCodableDescriptionCapitalizationKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataCapitalizationKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataCapitalizationKey = [objc_opt_class() __INCodableStringAttributeMetadataCapitalizationKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataCapitalizationKey;
 }
 
-- (INCodableStringAttributeMetadata)initWithCoder:(id)a3
+- (INCodableStringAttributeMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = INCodableStringAttributeMetadata;
-  v5 = [(INCodableAttributeMetadata *)&v12 initWithCoder:v4];
+  v5 = [(INCodableAttributeMetadata *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    -[INCodableStringAttributeMetadata setMultiline:](v5, "setMultiline:", [v4 decodeBoolForKey:@"multiline"]);
-    -[INCodableStringAttributeMetadata setDisableAutocorrect:](v5, "setDisableAutocorrect:", [v4 decodeBoolForKey:@"disableAutocorrect"]);
-    -[INCodableStringAttributeMetadata setDisableSmartDashes:](v5, "setDisableSmartDashes:", [v4 decodeBoolForKey:@"disableSmartDashes"]);
-    -[INCodableStringAttributeMetadata setDisableSmartQuotes:](v5, "setDisableSmartQuotes:", [v4 decodeBoolForKey:@"disableSmartQuotes"]);
+    -[INCodableStringAttributeMetadata setMultiline:](v5, "setMultiline:", [coderCopy decodeBoolForKey:@"multiline"]);
+    -[INCodableStringAttributeMetadata setDisableAutocorrect:](v5, "setDisableAutocorrect:", [coderCopy decodeBoolForKey:@"disableAutocorrect"]);
+    -[INCodableStringAttributeMetadata setDisableSmartDashes:](v5, "setDisableSmartDashes:", [coderCopy decodeBoolForKey:@"disableSmartDashes"]);
+    -[INCodableStringAttributeMetadata setDisableSmartQuotes:](v5, "setDisableSmartQuotes:", [coderCopy decodeBoolForKey:@"disableSmartQuotes"]);
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"defaultValue"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"defaultValue"];
     [(INCodableStringAttributeMetadata *)v5 setDefaultValue:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultValueID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultValueID"];
     [(INCodableStringAttributeMetadata *)v5 setDefaultValueID:v10];
 
-    -[INCodableStringAttributeMetadata setCapitalization:](v5, "setCapitalization:", [v4 decodeIntegerForKey:@"capitalization"]);
+    -[INCodableStringAttributeMetadata setCapitalization:](v5, "setCapitalization:", [coderCopy decodeIntegerForKey:@"capitalization"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INCodableStringAttributeMetadata;
-  v4 = a3;
-  [(INCodableAttributeMetadata *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_multiline forKey:{@"multiline", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_disableAutocorrect forKey:@"disableAutocorrect"];
-  [v4 encodeBool:self->_disableSmartDashes forKey:@"disableSmartDashes"];
-  [v4 encodeBool:self->_disableSmartQuotes forKey:@"disableSmartQuotes"];
-  [v4 encodeObject:self->_defaultValue forKey:@"defaultValue"];
-  [v4 encodeObject:self->_defaultValueID forKey:@"defaultValueID"];
-  [v4 encodeInteger:self->_capitalization forKey:@"capitalization"];
+  coderCopy = coder;
+  [(INCodableAttributeMetadata *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_multiline forKey:{@"multiline", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_disableAutocorrect forKey:@"disableAutocorrect"];
+  [coderCopy encodeBool:self->_disableSmartDashes forKey:@"disableSmartDashes"];
+  [coderCopy encodeBool:self->_disableSmartQuotes forKey:@"disableSmartQuotes"];
+  [coderCopy encodeObject:self->_defaultValue forKey:@"defaultValue"];
+  [coderCopy encodeObject:self->_defaultValueID forKey:@"defaultValueID"];
+  [coderCopy encodeInteger:self->_capitalization forKey:@"capitalization"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = INCodableStringAttributeMetadata;
   v13 = 0;
-  v6 = [(INCodableAttributeMetadata *)&v12 widgetPlistableRepresentationWithParameters:a3 error:&v13];
+  v6 = [(INCodableAttributeMetadata *)&v12 widgetPlistableRepresentationWithParameters:parameters error:&v13];
   v7 = v13;
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -168,13 +168,13 @@
   return v10;
 }
 
-- (id)localizedDefaultValueWithLocalizer:(id)a3
+- (id)localizedDefaultValueWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INCodableStringAttributeMetadata *)self defaultValueID];
-  v6 = [(INCodableStringAttributeMetadata *)self defaultValue];
-  v7 = [(INCodableAttributeMetadata *)self _localizationTable];
-  v8 = INLocalizedStringFromCodable(v5, v6, v7, v4, 0);
+  localizerCopy = localizer;
+  defaultValueID = [(INCodableStringAttributeMetadata *)self defaultValueID];
+  defaultValue = [(INCodableStringAttributeMetadata *)self defaultValue];
+  _localizationTable = [(INCodableAttributeMetadata *)self _localizationTable];
+  v8 = INLocalizedStringFromCodable(defaultValueID, defaultValue, _localizationTable, localizerCopy, 0);
 
   return v8;
 }
@@ -187,97 +187,97 @@
   return v4;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v39[7] = *MEMORY[0x1E69E9840];
   v37.receiver = self;
   v37.super_class = INCodableStringAttributeMetadata;
-  v4 = a3;
-  v32 = [(INCodableAttributeMetadata *)&v37 dictionaryRepresentationWithLocalizer:v4];
-  v36 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionMultilineKey];
-  v38[0] = v36;
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[INCodableStringAttributeMetadata isMultiline](self, "isMultiline")}];
-  v35 = v5;
-  if (!v5)
+  localizerCopy = localizer;
+  v32 = [(INCodableAttributeMetadata *)&v37 dictionaryRepresentationWithLocalizer:localizerCopy];
+  __INCodableDescriptionMultilineKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionMultilineKey];
+  v38[0] = __INCodableDescriptionMultilineKey;
+  null = [MEMORY[0x1E696AD98] numberWithBool:{-[INCodableStringAttributeMetadata isMultiline](self, "isMultiline")}];
+  v35 = null;
+  if (!null)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v5;
-  v39[0] = v5;
-  v34 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDisableAutocorrectKey];
-  v38[1] = v34;
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[INCodableStringAttributeMetadata disableAutocorrect](self, "disableAutocorrect")}];
-  v33 = v6;
-  if (!v6)
+  v27 = null;
+  v39[0] = null;
+  __INCodableDescriptionDisableAutocorrectKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDisableAutocorrectKey];
+  v38[1] = __INCodableDescriptionDisableAutocorrectKey;
+  null2 = [MEMORY[0x1E696AD98] numberWithBool:{-[INCodableStringAttributeMetadata disableAutocorrect](self, "disableAutocorrect")}];
+  v33 = null2;
+  if (!null2)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v6;
-  v39[1] = v6;
-  v31 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDisableSmartDashesKey];
-  v38[2] = v31;
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[INCodableStringAttributeMetadata disableSmartDashes](self, "disableSmartDashes")}];
-  v8 = v7;
-  if (!v7)
+  v26 = null2;
+  v39[1] = null2;
+  __INCodableDescriptionDisableSmartDashesKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDisableSmartDashesKey];
+  v38[2] = __INCodableDescriptionDisableSmartDashesKey;
+  null3 = [MEMORY[0x1E696AD98] numberWithBool:{-[INCodableStringAttributeMetadata disableSmartDashes](self, "disableSmartDashes")}];
+  v8 = null3;
+  if (!null3)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v30 = v8;
-  v25 = v7;
-  v39[2] = v7;
-  v29 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDisableSmartQuotesKey];
-  v38[3] = v29;
-  v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[INCodableStringAttributeMetadata disableSmartQuotes](self, "disableSmartQuotes")}];
-  v10 = v9;
-  if (!v9)
+  v25 = null3;
+  v39[2] = null3;
+  __INCodableDescriptionDisableSmartQuotesKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDisableSmartQuotesKey];
+  v38[3] = __INCodableDescriptionDisableSmartQuotesKey;
+  null4 = [MEMORY[0x1E696AD98] numberWithBool:{-[INCodableStringAttributeMetadata disableSmartQuotes](self, "disableSmartQuotes")}];
+  v10 = null4;
+  if (!null4)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v9;
-  v39[3] = v9;
-  v28 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
-  v38[4] = v28;
-  v11 = [(INCodableStringAttributeMetadata *)self localizedDefaultValueWithLocalizer:v4];
+  v24 = null4;
+  v39[3] = null4;
+  __INCodableDescriptionDefaultValueKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
+  v38[4] = __INCodableDescriptionDefaultValueKey;
+  v11 = [(INCodableStringAttributeMetadata *)self localizedDefaultValueWithLocalizer:localizerCopy];
 
-  v12 = v11;
+  null5 = v11;
   if (!v11)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39[4] = v12;
-  v13 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDefaultValueIDKey];
-  v38[5] = v13;
-  v14 = [(INCodableStringAttributeMetadata *)self defaultValueID];
-  v15 = v14;
-  if (!v14)
+  v39[4] = null5;
+  __INCodableDescriptionDefaultValueIDKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDefaultValueIDKey];
+  v38[5] = __INCodableDescriptionDefaultValueIDKey;
+  defaultValueID = [(INCodableStringAttributeMetadata *)self defaultValueID];
+  null6 = defaultValueID;
+  if (!defaultValueID)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39[5] = v15;
-  v16 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionCapitalizationKey];
-  v38[6] = v16;
-  v17 = [(INCodableStringAttributeMetadata *)self capitalization];
-  if ((v17 - 1) > 2)
+  v39[5] = null6;
+  __INCodableDescriptionCapitalizationKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionCapitalizationKey];
+  v38[6] = __INCodableDescriptionCapitalizationKey;
+  capitalization = [(INCodableStringAttributeMetadata *)self capitalization];
+  if ((capitalization - 1) > 2)
   {
     v18 = @"None";
   }
 
   else
   {
-    v18 = off_1E72811E8[v17 - 1];
+    v18 = off_1E72811E8[capitalization - 1];
   }
 
   v39[6] = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:7];
   v20 = [v32 if_dictionaryByAddingEntriesFromDictionary:v19];
 
-  if (!v14)
+  if (!defaultValueID)
   {
   }
 
@@ -301,21 +301,21 @@
   {
   }
 
-  v21 = [v20 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v20 if_dictionaryWithNonEmptyValues];
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v21;
+  return if_dictionaryWithNonEmptyValues;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v40.receiver = self;
   v40.super_class = INCodableStringAttributeMetadata;
-  [(INCodableAttributeMetadata *)&v40 updateWithDictionary:v4];
-  v5 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionMultilineKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  [(INCodableAttributeMetadata *)&v40 updateWithDictionary:dictionaryCopy];
+  __INCodableDescriptionMultilineKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionMultilineKey];
+  v6 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionMultilineKey];
 
   if (v6)
   {
@@ -338,10 +338,10 @@
 
   v8 = v7;
 
-  v9 = [v8 BOOLValue];
-  self->_multiline = v9;
-  v10 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDisableAutocorrectKey];
-  v11 = [v4 objectForKeyedSubscript:v10];
+  bOOLValue = [v8 BOOLValue];
+  self->_multiline = bOOLValue;
+  __INCodableDescriptionDisableAutocorrectKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDisableAutocorrectKey];
+  v11 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDisableAutocorrectKey];
 
   if (v11)
   {
@@ -364,10 +364,10 @@
 
   v13 = v12;
 
-  v14 = [v13 BOOLValue];
-  self->_disableAutocorrect = v14;
-  v15 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDisableSmartDashesKey];
-  v16 = [v4 objectForKeyedSubscript:v15];
+  bOOLValue2 = [v13 BOOLValue];
+  self->_disableAutocorrect = bOOLValue2;
+  __INCodableDescriptionDisableSmartDashesKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDisableSmartDashesKey];
+  v16 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDisableSmartDashesKey];
 
   if (v16)
   {
@@ -390,10 +390,10 @@
 
   v18 = v17;
 
-  v19 = [v18 BOOLValue];
-  self->_disableSmartDashes = v19;
-  v20 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDisableSmartQuotesKey];
-  v21 = [v4 objectForKeyedSubscript:v20];
+  bOOLValue3 = [v18 BOOLValue];
+  self->_disableSmartDashes = bOOLValue3;
+  __INCodableDescriptionDisableSmartQuotesKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDisableSmartQuotesKey];
+  v21 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDisableSmartQuotesKey];
 
   if (v21)
   {
@@ -416,10 +416,10 @@
 
   v23 = v22;
 
-  v24 = [v23 BOOLValue];
-  self->_disableSmartQuotes = v24;
-  v25 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
-  v26 = [v4 objectForKeyedSubscript:v25];
+  bOOLValue4 = [v23 BOOLValue];
+  self->_disableSmartQuotes = bOOLValue4;
+  __INCodableDescriptionDefaultValueKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
+  v26 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDefaultValueKey];
 
   if (v26)
   {
@@ -445,8 +445,8 @@
   defaultValue = self->_defaultValue;
   self->_defaultValue = v28;
 
-  v30 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDefaultValueIDKey];
-  v31 = [v4 objectForKeyedSubscript:v30];
+  __INCodableDescriptionDefaultValueIDKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionDefaultValueIDKey];
+  v31 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDefaultValueIDKey];
 
   if (v31)
   {
@@ -472,8 +472,8 @@
   defaultValueID = self->_defaultValueID;
   self->_defaultValueID = v33;
 
-  v35 = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionCapitalizationKey];
-  v36 = [v4 objectForKeyedSubscript:v35];
+  __INCodableDescriptionCapitalizationKey = [(INCodableStringAttributeMetadata *)self __INCodableDescriptionCapitalizationKey];
+  v36 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionCapitalizationKey];
 
   if (v36)
   {
@@ -500,22 +500,22 @@
   self->_capitalization = v39;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v15.receiver = a1;
+  representationCopy = representation;
+  v15.receiver = self;
   v15.super_class = &OBJC_METACLASS___INCodableStringAttributeMetadata;
   v16 = 0;
-  v7 = objc_msgSendSuper2(&v15, sel_makeFromWidgetPlistableRepresentation_error_, v6, &v16);
+  v7 = objc_msgSendSuper2(&v15, sel_makeFromWidgetPlistableRepresentation_error_, representationCopy, &v16);
   v8 = v16;
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -526,17 +526,17 @@
 
   else
   {
-    [v7 setMultiline:{objc_msgSend(v6, "intents_BOOLForKey:", @"multiline"}];
-    [v7 setDisableAutocorrect:{objc_msgSend(v6, "intents_BOOLForKey:", @"disableAutocorrect"}];
-    [v7 setDisableSmartDashes:{objc_msgSend(v6, "intents_BOOLForKey:", @"disableSmartDashes"}];
-    [v7 setDisableSmartQuotes:{objc_msgSend(v6, "intents_BOOLForKey:", @"disableSmartQuotes"}];
-    v12 = [v6 intents_stringForKey:@"defaultValue"];
+    [v7 setMultiline:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"multiline"}];
+    [v7 setDisableAutocorrect:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"disableAutocorrect"}];
+    [v7 setDisableSmartDashes:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"disableSmartDashes"}];
+    [v7 setDisableSmartQuotes:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"disableSmartQuotes"}];
+    v12 = [representationCopy intents_stringForKey:@"defaultValue"];
     [v7 setDefaultValue:v12];
 
-    v13 = [v6 intents_stringForKey:@"defaultValueID"];
+    v13 = [representationCopy intents_stringForKey:@"defaultValueID"];
     [v7 setDefaultValueID:v13];
 
-    [v7 setCapitalization:{objc_msgSend(v6, "intents_intForKey:", @"capitalization"}];
+    [v7 setCapitalization:{objc_msgSend(representationCopy, "intents_intForKey:", @"capitalization"}];
     v11 = v7;
   }
 
@@ -545,114 +545,114 @@
 
 - (id)__INTypeCodableDescriptionMultilineKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataMultilineKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataMultilineKey = [objc_opt_class() __INCodableStringAttributeMetadataMultilineKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataMultilineKey;
 }
 
 - (id)__INTypeCodableDescriptionDisableSmartQuotesKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDisableSmartQuotesKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDisableSmartQuotesKey = [objc_opt_class() __INCodableStringAttributeMetadataDisableSmartQuotesKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDisableSmartQuotesKey;
 }
 
 - (id)__INTypeCodableDescriptionDisableSmartDashesKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDisableSmartDashesKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDisableSmartDashesKey = [objc_opt_class() __INCodableStringAttributeMetadataDisableSmartDashesKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDisableSmartDashesKey;
 }
 
 - (id)__INTypeCodableDescriptionDisableAutocorrectKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDisableAutocorrectKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDisableAutocorrectKey = [objc_opt_class() __INCodableStringAttributeMetadataDisableAutocorrectKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDisableAutocorrectKey;
 }
 
 - (id)__INTypeCodableDescriptionDefaultValueIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDefaultValueIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDefaultValueIDKey = [objc_opt_class() __INCodableStringAttributeMetadataDefaultValueIDKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDefaultValueIDKey;
 }
 
 - (id)__INTypeCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableStringAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDefaultValueKey;
 }
 
 - (id)__INTypeCodableDescriptionCapitalizationKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataCapitalizationKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataCapitalizationKey = [objc_opt_class() __INCodableStringAttributeMetadataCapitalizationKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataCapitalizationKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionMultilineKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataMultilineKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataMultilineKey = [objc_opt_class() __INCodableStringAttributeMetadataMultilineKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataMultilineKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDisableSmartQuotesKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDisableSmartQuotesKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDisableSmartQuotesKey = [objc_opt_class() __INCodableStringAttributeMetadataDisableSmartQuotesKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDisableSmartQuotesKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDisableSmartDashesKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDisableSmartDashesKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDisableSmartDashesKey = [objc_opt_class() __INCodableStringAttributeMetadataDisableSmartDashesKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDisableSmartDashesKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDisableAutocorrectKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDisableAutocorrectKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDisableAutocorrectKey = [objc_opt_class() __INCodableStringAttributeMetadataDisableAutocorrectKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDisableAutocorrectKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDefaultValueIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDefaultValueIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDefaultValueIDKey = [objc_opt_class() __INCodableStringAttributeMetadataDefaultValueIDKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDefaultValueIDKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableStringAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataDefaultValueKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionCapitalizationKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableStringAttributeMetadataCapitalizationKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableStringAttributeMetadataCapitalizationKey = [objc_opt_class() __INCodableStringAttributeMetadataCapitalizationKey];
 
-  return v3;
+  return __INCodableStringAttributeMetadataCapitalizationKey;
 }
 
 @end

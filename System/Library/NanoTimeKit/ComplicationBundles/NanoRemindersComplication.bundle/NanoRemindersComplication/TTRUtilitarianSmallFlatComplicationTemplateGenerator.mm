@@ -1,10 +1,10 @@
 @interface TTRUtilitarianSmallFlatComplicationTemplateGenerator
-- (id)templateForTimelineModelEntry:(id)a3;
+- (id)templateForTimelineModelEntry:(id)entry;
 @end
 
 @implementation TTRUtilitarianSmallFlatComplicationTemplateGenerator
 
-- (id)templateForTimelineModelEntry:(id)a3
+- (id)templateForTimelineModelEntry:(id)entry
 {
   v3 = [CLKSimpleTextProvider textProviderWithText:&stru_10758];
   v4 = [TTRComplicationAsset imageForFamily:7];

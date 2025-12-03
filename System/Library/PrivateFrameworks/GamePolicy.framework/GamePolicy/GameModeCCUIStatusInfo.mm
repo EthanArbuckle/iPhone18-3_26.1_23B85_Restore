@@ -1,15 +1,15 @@
 @interface GameModeCCUIStatusInfo
 - (_TtC10GamePolicy22GameModeCCUIStatusInfo)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GameModeCCUIStatusInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E5C1A4C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_24E5C1A4C(coderCopy);
 }
 
 - (_TtC10GamePolicy22GameModeCCUIStatusInfo)init

@@ -55,15 +55,15 @@ void __41__PUTabbedLibrarySettings_sharedInstance__block_invoke()
     return 0;
   }
 
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v2 = [v3 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v2 = [currentDevice userInterfaceIdiom] == 1;
 
   return v2;
 }
 
 + (id)transientProperties
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___PUTabbedLibrarySettings;
   v2 = objc_msgSendSuper2(&v5, sel_transientProperties);
   v3 = [v2 setByAddingObjectsFromArray:&unk_1F2B7D7A8];
@@ -150,10 +150,10 @@ void __41__PUTabbedLibrarySettings_sharedInstance__block_invoke()
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v69 count:13];
   v52 = [v51 sectionWithRows:v24 title:@"Sidebar"];
 
-  v25 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v26 = MEMORY[0x1E69C6638];
   v67[0] = v52;
-  v67[1] = v25;
+  v67[1] = px_restoreDefaultsSection;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:2];
   v28 = [v26 moduleWithTitle:@"Tab Settings" contents:v27];
 

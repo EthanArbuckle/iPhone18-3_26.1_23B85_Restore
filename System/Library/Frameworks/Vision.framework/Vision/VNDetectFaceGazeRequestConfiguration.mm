@@ -1,15 +1,15 @@
 @interface VNDetectFaceGazeRequestConfiguration
-- (VNDetectFaceGazeRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNDetectFaceGazeRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNDetectFaceGazeRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = VNDetectFaceGazeRequestConfiguration;
-  v4 = [(VNImageBasedRequestConfiguration *)&v10 copyWithZone:a3];
+  v4 = [(VNImageBasedRequestConfiguration *)&v10 copyWithZone:zone];
   v6 = v4;
   if (v4)
   {
@@ -25,11 +25,11 @@
   return v6;
 }
 
-- (VNDetectFaceGazeRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNDetectFaceGazeRequestConfiguration)initWithRequestClass:(Class)class
 {
   v4.receiver = self;
   v4.super_class = VNDetectFaceGazeRequestConfiguration;
-  result = [(VNImageBasedRequestConfiguration *)&v4 initWithRequestClass:a3];
+  result = [(VNImageBasedRequestConfiguration *)&v4 initWithRequestClass:class];
   if (result)
   {
     result->_gazeHeatMapThreshold = 0.2;

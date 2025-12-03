@@ -1,12 +1,12 @@
 @interface _ANEIOSurfaceObject
-+ (_ANEIOSurfaceObject)objectWithIOSurface:(__IOSurface *)a3;
-+ (_ANEIOSurfaceObject)objectWithIOSurface:(__IOSurface *)a3 startOffset:(id)a4;
-+ (_ANEIOSurfaceObject)objectWithIOSurfaceNoRetain:(__IOSurface *)a3 startOffset:(id)a4;
-- (_ANEIOSurfaceObject)initWithCoder:(id)a3;
-- (_ANEIOSurfaceObject)initWithIOSurface:(__IOSurface *)a3 startOffset:(id)a4 shouldRetain:(BOOL)a5;
++ (_ANEIOSurfaceObject)objectWithIOSurface:(__IOSurface *)surface;
++ (_ANEIOSurfaceObject)objectWithIOSurface:(__IOSurface *)surface startOffset:(id)offset;
++ (_ANEIOSurfaceObject)objectWithIOSurfaceNoRetain:(__IOSurface *)retain startOffset:(id)offset;
+- (_ANEIOSurfaceObject)initWithCoder:(id)coder;
+- (_ANEIOSurfaceObject)initWithIOSurface:(__IOSurface *)surface startOffset:(id)offset shouldRetain:(BOOL)retain;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ANEIOSurfaceObject
@@ -24,59 +24,59 @@
   [(_ANEIOSurfaceObject *)&v4 dealloc];
 }
 
-+ (_ANEIOSurfaceObject)objectWithIOSurface:(__IOSurface *)a3
++ (_ANEIOSurfaceObject)objectWithIOSurface:(__IOSurface *)surface
 {
-  v3 = [[a1 alloc] initWithIOSurface:a3 startOffset:&unk_1F22544A0 shouldRetain:1];
+  v3 = [[self alloc] initWithIOSurface:surface startOffset:&unk_1F22544A0 shouldRetain:1];
 
   return v3;
 }
 
-+ (_ANEIOSurfaceObject)objectWithIOSurface:(__IOSurface *)a3 startOffset:(id)a4
++ (_ANEIOSurfaceObject)objectWithIOSurface:(__IOSurface *)surface startOffset:(id)offset
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithIOSurface:a3 startOffset:v6 shouldRetain:1];
+  offsetCopy = offset;
+  v7 = [[self alloc] initWithIOSurface:surface startOffset:offsetCopy shouldRetain:1];
 
   return v7;
 }
 
-+ (_ANEIOSurfaceObject)objectWithIOSurfaceNoRetain:(__IOSurface *)a3 startOffset:(id)a4
++ (_ANEIOSurfaceObject)objectWithIOSurfaceNoRetain:(__IOSurface *)retain startOffset:(id)offset
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithIOSurface:a3 startOffset:v6 shouldRetain:0];
+  offsetCopy = offset;
+  v7 = [[self alloc] initWithIOSurface:retain startOffset:offsetCopy shouldRetain:0];
 
   return v7;
 }
 
-- (_ANEIOSurfaceObject)initWithIOSurface:(__IOSurface *)a3 startOffset:(id)a4 shouldRetain:(BOOL)a5
+- (_ANEIOSurfaceObject)initWithIOSurface:(__IOSurface *)surface startOffset:(id)offset shouldRetain:(BOOL)retain
 {
-  v5 = a5;
-  v9 = a4;
-  if (a3)
+  retainCopy = retain;
+  offsetCopy = offset;
+  if (surface)
   {
     v13.receiver = self;
     v13.super_class = _ANEIOSurfaceObject;
     v10 = [(_ANEIOSurfaceObject *)&v13 init];
     if (v10)
     {
-      if (v5)
+      if (retainCopy)
       {
-        CFRetain(a3);
+        CFRetain(surface);
       }
 
-      v10->_ioSurface = a3;
-      objc_storeStrong(&v10->_startOffset, a4);
+      v10->_ioSurface = surface;
+      objc_storeStrong(&v10->_startOffset, offset);
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)description
@@ -84,48 +84,48 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_ANEIOSurfaceObject *)self ioSurface];
-  v7 = [(_ANEIOSurfaceObject *)self startOffset];
-  v8 = [v3 stringWithFormat:@"%@: { ioSurface=%p  startOffset=%lu }", v5, v6, objc_msgSend(v7, "unsignedIntegerValue")];;
+  ioSurface = [(_ANEIOSurfaceObject *)self ioSurface];
+  startOffset = [(_ANEIOSurfaceObject *)self startOffset];
+  v8 = [v3 stringWithFormat:@"%@: { ioSurface=%p  startOffset=%lu }", v5, ioSurface, objc_msgSend(startOffset, "unsignedIntegerValue")];;
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(_ANEIOSurfaceObject *)self ioSurface])
   {
     XPCObject = IOSurfaceCreateXPCObject([(_ANEIOSurfaceObject *)self ioSurface]);
-    [v5 encodeXPCObject:XPCObject forKey:@"_ANEIOSurface"];
+    [coderCopy encodeXPCObject:XPCObject forKey:@"_ANEIOSurface"];
   }
 }
 
-- (_ANEIOSurfaceObject)initWithCoder:(id)a3
+- (_ANEIOSurfaceObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 decodeXPCObjectForKey:@"_ANEIOSurface"];
-    v6 = v5;
+    v5 = [coderCopy decodeXPCObjectForKey:@"_ANEIOSurface"];
+    selfCopy = v5;
     if (v5)
     {
       v7 = IOSurfaceLookupFromXPCObject(v5);
       self = [(_ANEIOSurfaceObject *)self initWithIOSurface:v7 startOffset:&unk_1F22544A0 shouldRetain:1];
       CFRelease(v7);
 
-      v6 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

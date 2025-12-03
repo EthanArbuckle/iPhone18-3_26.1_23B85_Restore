@@ -83,7 +83,7 @@ void __19__PIHighKey_kernel__block_invoke()
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v18 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v20 = NUAssertLogger_1303();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_ERROR);
@@ -91,11 +91,11 @@ void __19__PIHighKey_kernel__block_invoke()
     {
       if (v21)
       {
-        v29 = dispatch_get_specific(*v18);
+        v29 = dispatch_get_specific(*callStackSymbols);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v18 = [v30 callStackSymbols];
-        v32 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = v29;
         v41 = 2114;
@@ -106,10 +106,10 @@ void __19__PIHighKey_kernel__block_invoke()
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v40 = v18;
+      v40 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -128,7 +128,7 @@ void __19__PIHighKey_kernel__block_invoke()
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v18 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v25 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v20 = NUAssertLogger_1303();
     v26 = os_log_type_enabled(v20, OS_LOG_TYPE_ERROR);
@@ -136,8 +136,8 @@ void __19__PIHighKey_kernel__block_invoke()
     {
       if (v26)
       {
-        v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v28 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v40 = v28;
         _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -149,11 +149,11 @@ void __19__PIHighKey_kernel__block_invoke()
 LABEL_19:
     if (v26)
     {
-      v33 = dispatch_get_specific(*v18);
+      v33 = dispatch_get_specific(*callStackSymbols);
       v34 = MEMORY[0x1E696AF00];
       v35 = v33;
-      v36 = [v34 callStackSymbols];
-      v37 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v34 callStackSymbols];
+      v37 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v40 = v33;
       v41 = 2114;
@@ -166,7 +166,7 @@ LABEL_21:
     _NUAssertFailHandler();
   }
 
-  v3 = [objc_opt_class() kernel];
+  kernel = [objc_opt_class() kernel];
   [(CIImage *)self->inputImage extent];
   v5 = v4;
   v7 = v6;
@@ -176,7 +176,7 @@ LABEL_21:
   v38[0] = self->inputImage;
   v38[1] = inputStrength;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
-  v14 = [v3 applyWithExtent:v13 arguments:{v5, v7, v9, v11}];
+  v14 = [kernel applyWithExtent:v13 arguments:{v5, v7, v9, v11}];
 
   return v14;
 }

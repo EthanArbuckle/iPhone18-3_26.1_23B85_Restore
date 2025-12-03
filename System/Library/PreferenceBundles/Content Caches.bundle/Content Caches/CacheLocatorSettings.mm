@@ -1,19 +1,19 @@
 @interface CacheLocatorSettings
-- (CacheLocatorSettings)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)scanForCachesOn:(id)a3 withHandler:(id)a4;
+- (CacheLocatorSettings)initWithNibName:(id)name bundle:(id)bundle;
+- (void)scanForCachesOn:(id)on withHandler:(id)handler;
 - (void)stopScanning;
 - (void)viewDidLoad;
 @end
 
 @implementation CacheLocatorSettings
 
-- (void)scanForCachesOn:(id)a3 withHandler:(id)a4
+- (void)scanForCachesOn:(id)on withHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
+  onCopy = on;
+  selfCopy = self;
   sub_181A0(sub_18620, v7);
 }
 
@@ -21,7 +21,7 @@
 {
   if (*&self->PSViewController_opaque[OBJC_IVAR___CacheLocatorSettings_isResultAvailableSubscription])
   {
-    v2 = self;
+    selfCopy = self;
 
     sub_32BF4();
   }
@@ -29,13 +29,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CacheLocatorSettings.viewDidLoad()();
 }
 
-- (CacheLocatorSettings)initWithNibName:(id)a3 bundle:(id)a4
+- (CacheLocatorSettings)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_33244();
     v7 = v6;
@@ -47,8 +47,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return CacheLocatorSettings.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return CacheLocatorSettings.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface GmoEngine
-- (BOOL)homogClassifier:(const void *)a3 camCalib:(id)a4 smoothedSpotsLocAtRefDist:(id *)a5 currentSpotsLocAtRefDist:(id *)a6 factorySpotsLocAtRefDist:(id *)a7 validSpotsIndexes:(const void *)a8 smoothedSNR:(const void *)a9 smoothedSNa:(const void *)a10 gmoMetrics:(GmoMetrics *)a11 estTols:(EstTols *)a12;
-- (GmoEngine)initWithPulseShape:(const float *)a3 pulseShapeSize:(unint64_t)a4 spotSizeSigma:(float)a5 unitInfo:(const PeridotUnitInfo *)a6;
-- (float)calcHomogModelErrorR:(void *)a3 estSpotLocAtRefDistValid:(void *)a4 globalEstimationResult:(void *)a5;
+- (BOOL)homogClassifier:(const void *)classifier camCalib:(id)calib smoothedSpotsLocAtRefDist:(id *)dist currentSpotsLocAtRefDist:(id *)refDist factorySpotsLocAtRefDist:(id *)atRefDist validSpotsIndexes:(const void *)indexes smoothedSNR:(const void *)r smoothedSNa:(const void *)self0 gmoMetrics:(GmoMetrics *)self1 estTols:(EstTols *)self2;
+- (GmoEngine)initWithPulseShape:(const float *)shape pulseShapeSize:(unint64_t)size spotSizeSigma:(float)sigma unitInfo:(const PeridotUnitInfo *)info;
+- (float)calcHomogModelErrorR:(void *)r estSpotLocAtRefDistValid:(void *)valid globalEstimationResult:(void *)result;
 - (id).cxx_construct;
-- (int)blockSmoothing:(void *)a3 localNa:(const void *)a4 specsOut:(void *)a5 numOfFrames:(unint64_t)a6 smoothedSpotsLoc:(id *)a7 validSpotsIndexes:(void *)a8 numOfValidSpots:(unsigned int *)a9 smoothedSNR:(void *)a10 smoothedSNa:(void *)a11;
-- (int)calculateGtErrP95:(id *)a3 spotLocations:(id *)a4 result:(float *)a5;
-- (int)calculateItpQual:(const PDAnchors *)a3 spotLocations:(id *)a4 result:(float *)a5;
-- (int)calculateSpecQs:(const GmoProcessBankInputs *)a3 pulsesPerphase:(unint64_t)a4 specsOut:(SpecsResults *)a5;
-- (int)configureEngineWithSpecConfig:(const PRIConfigSpec *)a3;
-- (int)findSpotLocation1D:(float)a3 spotLocation:(float *)a4 outBound:(BOOL *)a5;
-- (int)findSpotLocation:(const SpecsResults *)a3 withAnchors:(const SpConfig *)a4 spotLocationEstimation:(void *)a5 outBound:(void *)a6;
-- (int)getAnchorsWithHysteresis:(id *)a3 anchorsWithHist:(PDAnchors *)a4;
-- (int)globalEstimation:(id *)a3 estSpotLocAtRefDist:(id *)a4 validSpotsIndexes:(const void *)a5 result:(void *)a6;
+- (int)blockSmoothing:(void *)smoothing localNa:(const void *)na specsOut:(void *)out numOfFrames:(unint64_t)frames smoothedSpotsLoc:(id *)loc validSpotsIndexes:(void *)indexes numOfValidSpots:(unsigned int *)spots smoothedSNR:(void *)self0 smoothedSNa:(void *)self1;
+- (int)calculateGtErrP95:(id *)p95 spotLocations:(id *)locations result:(float *)result;
+- (int)calculateItpQual:(const PDAnchors *)qual spotLocations:(id *)locations result:(float *)result;
+- (int)calculateSpecQs:(const GmoProcessBankInputs *)qs pulsesPerphase:(unint64_t)perphase specsOut:(SpecsResults *)out;
+- (int)configureEngineWithSpecConfig:(const PRIConfigSpec *)config;
+- (int)findSpotLocation1D:(float)d spotLocation:(float *)location outBound:(BOOL *)bound;
+- (int)findSpotLocation:(const SpecsResults *)location withAnchors:(const SpConfig *)anchors spotLocationEstimation:(void *)estimation outBound:(void *)bound;
+- (int)getAnchorsWithHysteresis:(id *)hysteresis anchorsWithHist:(PDAnchors *)hist;
+- (int)globalEstimation:(id *)estimation estSpotLocAtRefDist:(id *)dist validSpotsIndexes:(const void *)indexes result:(void *)result;
 - (vector<std::vector<unsigned)specPhasePriOrder;
-- (void)calculateGaussianIntegralForFrame:(id *)a3 anchors:(const PDAnchors *)a4 spotSize:(float)a5 integral:(void *)a6;
-- (void)clipSpotsLocation:(id *)a3 refSpotsLoc:(id *)a4 clippedSpotLocations:(id *)a5 numOfClippedSpots:(unint64_t *)a6;
-- (void)specSwitch:(unint64_t)a3 from:(const PRIConfigSpec *)a4 toBuffer:(unsigned __int8)a5[16];
+- (void)calculateGaussianIntegralForFrame:(id *)frame anchors:(const PDAnchors *)anchors spotSize:(float)size integral:(void *)integral;
+- (void)clipSpotsLocation:(id *)location refSpotsLoc:(id *)loc clippedSpotLocations:(id *)locations numOfClippedSpots:(unint64_t *)spots;
+- (void)specSwitch:(unint64_t)switch from:(const PRIConfigSpec *)from toBuffer:(unsigned __int8)buffer[16];
 @end
 
 @implementation GmoEngine
@@ -54,9 +54,9 @@
   return self;
 }
 
-- (int)globalEstimation:(id *)a3 estSpotLocAtRefDist:(id *)a4 validSpotsIndexes:(const void *)a5 result:(void *)a6
+- (int)globalEstimation:(id *)estimation estSpotLocAtRefDist:(id *)dist validSpotsIndexes:(const void *)indexes result:(void *)result
 {
-  if (*(a5 + 8) - *a5 + *(a5 + 32) - *(a5 + 24) + *(a5 + 56) - *(a5 + 48) + *(a5 + 80) - *(a5 + 72) + *(a5 + 104) - *(a5 + 96) + *(a5 + 128) - *(a5 + 120) + *(a5 + 152) - *(a5 + 144) + *(a5 + 176) - *(a5 + 168))
+  if (*(indexes + 8) - *indexes + *(indexes + 32) - *(indexes + 24) + *(indexes + 56) - *(indexes + 48) + *(indexes + 80) - *(indexes + 72) + *(indexes + 104) - *(indexes + 96) + *(indexes + 128) - *(indexes + 120) + *(indexes + 152) - *(indexes + 144) + *(indexes + 176) - *(indexes + 168))
   {
     operator new[]();
   }
@@ -64,26 +64,26 @@
   operator new[]();
 }
 
-- (float)calcHomogModelErrorR:(void *)a3 estSpotLocAtRefDistValid:(void *)a4 globalEstimationResult:(void *)a5
+- (float)calcHomogModelErrorR:(void *)r estSpotLocAtRefDistValid:(void *)valid globalEstimationResult:(void *)result
 {
-  v5 = *(a5 + 1);
+  v5 = *(result + 1);
   if (!v5)
   {
     return INFINITY;
   }
 
-  v6 = *(a5 + 2);
+  v6 = *(result + 2);
   v7 = 0.0;
-  v8 = *(a5 + 1);
+  v8 = *(result + 1);
   do
   {
     v9 = *v6++;
-    v10 = (*(a3 + 1) + 8 * *(*(a5 + 125) + v9));
+    v10 = (*(r + 1) + 8 * *(*(result + 125) + v9));
     v11 = *v10;
-    v12 = (*(a4 + 1) + 8 * v9);
+    v12 = (*(valid + 1) + 8 * v9);
     v13 = *v12;
-    v14 = v10[*(a3 + 5)];
-    v15 = v12[*(a4 + 5)];
+    v14 = v10[*(r + 5)];
+    v15 = v12[*(valid + 5)];
     v7 = (v7 + ((v11 - v13) * (v11 - v13))) + ((v14 - v15) * (v14 - v15));
     --v8;
   }
@@ -92,311 +92,311 @@
   return sqrtf(v7 / v5);
 }
 
-- (BOOL)homogClassifier:(const void *)a3 camCalib:(id)a4 smoothedSpotsLocAtRefDist:(id *)a5 currentSpotsLocAtRefDist:(id *)a6 factorySpotsLocAtRefDist:(id *)a7 validSpotsIndexes:(const void *)a8 smoothedSNR:(const void *)a9 smoothedSNa:(const void *)a10 gmoMetrics:(GmoMetrics *)a11 estTols:(EstTols *)a12
+- (BOOL)homogClassifier:(const void *)classifier camCalib:(id)calib smoothedSpotsLocAtRefDist:(id *)dist currentSpotsLocAtRefDist:(id *)refDist factorySpotsLocAtRefDist:(id *)atRefDist validSpotsIndexes:(const void *)indexes smoothedSNR:(const void *)r smoothedSNa:(const void *)self0 gmoMetrics:(GmoMetrics *)self1 estTols:(EstTols *)self2
 {
   v241 = *MEMORY[0x277D85DE8];
-  v15 = (a3 + 260);
-  a4;
-  v16 = *(a3 + 126) - *(a3 + 125);
-  a11->var2 = v16 * 0.0089286;
-  v17 = *(a3 + 92);
-  v18 = *(a3 + 6);
-  v17.i32[1] = HIDWORD(*(a3 + 12));
+  v15 = (classifier + 260);
+  calib;
+  v16 = *(classifier + 126) - *(classifier + 125);
+  metrics->var2 = v16 * 0.0089286;
+  v17 = *(classifier + 92);
+  v18 = *(classifier + 6);
+  v17.i32[1] = HIDWORD(*(classifier + 12));
   v17.i32[2] = v18.i32[3];
-  v17.i32[3] = *(a3 + 29);
-  v19 = *&a7->var0[0].var0[0].var0;
-  v20 = *&a7->var0[0].var0[0].var1;
-  v19.i32[1] = HIDWORD(*&a7->var0[0].var0[0].var1);
+  v17.i32[3] = *(classifier + 29);
+  v19 = *&atRefDist->var0[0].var0[0].var0;
+  v20 = *&atRefDist->var0[0].var0[0].var1;
+  v19.i32[1] = HIDWORD(*&atRefDist->var0[0].var0[0].var1);
   v19.i32[2] = v20.i32[3];
-  v19.i32[3] = LODWORD(a7->var0[0].var0[3].var0);
-  v18.i32[1] = *(a3 + 13);
-  v18.i32[2] = *(a3 + 28);
-  v18.i32[3] = *(a3 + 30);
-  v20.i32[1] = *&a7->var0[0].var0[1].var1;
-  v20.i32[2] = LODWORD(a7->var0[0].var0[2].var1);
+  v19.i32[3] = LODWORD(atRefDist->var0[0].var0[3].var0);
+  v18.i32[1] = *(classifier + 13);
+  v18.i32[2] = *(classifier + 28);
+  v18.i32[3] = *(classifier + 30);
+  v20.i32[1] = *&atRefDist->var0[0].var0[1].var1;
+  v20.i32[2] = LODWORD(atRefDist->var0[0].var0[2].var1);
   v21 = vsubq_f32(v17, v19);
-  v20.i32[3] = LODWORD(a7->var0[0].var0[3].var1);
+  v20.i32[3] = LODWORD(atRefDist->var0[0].var0[3].var1);
   v22 = vsubq_f32(v18, v20);
   v23 = vmulq_f32(v21, v21);
-  v24 = *&a5->var0[0].var0[0].var0;
-  v25 = *&a5->var0[0].var0[0].var1;
-  v24.i32[1] = HIDWORD(*&a5->var0[0].var0[0].var1);
+  v24 = *&dist->var0[0].var0[0].var0;
+  v25 = *&dist->var0[0].var0[0].var1;
+  v24.i32[1] = HIDWORD(*&dist->var0[0].var0[0].var1);
   v24.i32[2] = v25.i32[3];
   v134 = vmlaq_f32(v23, v22, v22);
-  v24.i32[3] = LODWORD(a5->var0[0].var0[3].var0);
-  v25.i32[1] = *&a5->var0[0].var0[1].var1;
-  v25.i32[2] = LODWORD(a5->var0[0].var0[2].var1);
-  v25.i32[3] = LODWORD(a5->var0[0].var0[3].var1);
+  v24.i32[3] = LODWORD(dist->var0[0].var0[3].var0);
+  v25.i32[1] = *&dist->var0[0].var0[1].var1;
+  v25.i32[2] = LODWORD(dist->var0[0].var0[2].var1);
+  v25.i32[3] = LODWORD(dist->var0[0].var0[3].var1);
   v26 = vsubq_f32(v17, v24);
   v27 = vsubq_f32(v18, v25);
-  v28 = *(a3 + 124);
-  v29 = *(a3 + 8);
-  v28.i32[1] = HIDWORD(*(a3 + 16));
+  v28 = *(classifier + 124);
+  v29 = *(classifier + 8);
+  v28.i32[1] = HIDWORD(*(classifier + 16));
   v30 = vmulq_f32(v26, v26);
   v28.i32[2] = v29.i32[3];
-  v28.i32[3] = *(a3 + 37);
-  v31 = *&a7->var0[0].var0[4].var0;
-  v32 = *&a7->var0[0].var0[4].var1;
-  v31.i32[1] = HIDWORD(*&a7->var0[0].var0[4].var1);
+  v28.i32[3] = *(classifier + 37);
+  v31 = *&atRefDist->var0[0].var0[4].var0;
+  v32 = *&atRefDist->var0[0].var0[4].var1;
+  v31.i32[1] = HIDWORD(*&atRefDist->var0[0].var0[4].var1);
   v31.i32[2] = v32.i32[3];
   v33 = vmlaq_f32(v30, v27, v27);
-  v31.i32[3] = LODWORD(a7->var0[0].var0[7].var0);
-  v29.i32[1] = *(a3 + 17);
-  v29.i32[2] = *(a3 + 36);
-  v29.i32[3] = *(a3 + 38);
+  v31.i32[3] = LODWORD(atRefDist->var0[0].var0[7].var0);
+  v29.i32[1] = *(classifier + 17);
+  v29.i32[2] = *(classifier + 36);
+  v29.i32[3] = *(classifier + 38);
   v34 = vsubq_f32(v28, v31);
-  v32.i32[1] = *&a7->var0[0].var0[5].var1;
-  v32.i32[2] = LODWORD(a7->var0[0].var0[6].var1);
-  v32.i32[3] = LODWORD(a7->var0[0].var0[7].var1);
+  v32.i32[1] = *&atRefDist->var0[0].var0[5].var1;
+  v32.i32[2] = LODWORD(atRefDist->var0[0].var0[6].var1);
+  v32.i32[3] = LODWORD(atRefDist->var0[0].var0[7].var1);
   v35 = vsubq_f32(v29, v32);
   v36 = vmlaq_f32(vmulq_f32(v34, v34), v35, v35);
-  v37 = *&a5->var0[0].var0[4].var0;
-  v38 = *&a5->var0[0].var0[4].var1;
-  v37.i32[1] = HIDWORD(*&a5->var0[0].var0[4].var1);
+  v37 = *&dist->var0[0].var0[4].var0;
+  v38 = *&dist->var0[0].var0[4].var1;
+  v37.i32[1] = HIDWORD(*&dist->var0[0].var0[4].var1);
   v37.i32[2] = v38.i32[3];
-  v38.i32[1] = *&a5->var0[0].var0[5].var1;
-  v38.i32[2] = LODWORD(a5->var0[0].var0[6].var1);
-  v37.i32[3] = LODWORD(a5->var0[0].var0[7].var0);
-  v38.i32[3] = LODWORD(a5->var0[0].var0[7].var1);
+  v38.i32[1] = *&dist->var0[0].var0[5].var1;
+  v38.i32[2] = LODWORD(dist->var0[0].var0[6].var1);
+  v37.i32[3] = LODWORD(dist->var0[0].var0[7].var0);
+  v38.i32[3] = LODWORD(dist->var0[0].var0[7].var1);
   v39 = vsubq_f32(v28, v37);
   v40 = vsubq_f32(v29, v38);
-  v41 = *(a3 + 156);
-  v42 = *(a3 + 10);
-  v41.i32[1] = HIDWORD(*(a3 + 20));
+  v41 = *(classifier + 156);
+  v42 = *(classifier + 10);
+  v41.i32[1] = HIDWORD(*(classifier + 20));
   v43 = vmulq_f32(v39, v39);
   v41.i32[2] = v42.i32[3];
-  v41.i32[3] = *(a3 + 45);
-  v44 = *&a7->var0[0].var0[8].var0;
-  v45 = *&a7->var0[0].var0[8].var1;
-  v44.i32[1] = HIDWORD(*&a7->var0[0].var0[8].var1);
+  v41.i32[3] = *(classifier + 45);
+  v44 = *&atRefDist->var0[0].var0[8].var0;
+  v45 = *&atRefDist->var0[0].var0[8].var1;
+  v44.i32[1] = HIDWORD(*&atRefDist->var0[0].var0[8].var1);
   v44.i32[2] = v45.i32[3];
   v46 = vmlaq_f32(v43, v40, v40);
-  v44.i32[3] = LODWORD(a7->var0[0].var0[11].var0);
-  v42.i32[1] = *(a3 + 21);
-  v42.i32[2] = *(a3 + 44);
-  v42.i32[3] = *(a3 + 46);
+  v44.i32[3] = LODWORD(atRefDist->var0[0].var0[11].var0);
+  v42.i32[1] = *(classifier + 21);
+  v42.i32[2] = *(classifier + 44);
+  v42.i32[3] = *(classifier + 46);
   v47 = vsubq_f32(v41, v44);
-  v45.i32[1] = *&a7->var0[0].var0[9].var1;
-  v45.i32[2] = LODWORD(a7->var0[0].var0[10].var1);
-  v45.i32[3] = LODWORD(a7->var0[0].var0[11].var1);
+  v45.i32[1] = *&atRefDist->var0[0].var0[9].var1;
+  v45.i32[2] = LODWORD(atRefDist->var0[0].var0[10].var1);
+  v45.i32[3] = LODWORD(atRefDist->var0[0].var0[11].var1);
   v48 = vsubq_f32(v42, v45);
   v49 = vmlaq_f32(vmulq_f32(v47, v47), v48, v48);
-  v50 = *&a5->var0[0].var0[8].var0;
-  v51 = *&a5->var0[0].var0[8].var1;
-  v50.i32[1] = HIDWORD(*&a5->var0[0].var0[8].var1);
+  v50 = *&dist->var0[0].var0[8].var0;
+  v51 = *&dist->var0[0].var0[8].var1;
+  v50.i32[1] = HIDWORD(*&dist->var0[0].var0[8].var1);
   v50.i32[2] = v51.i32[3];
-  v51.i32[1] = *&a5->var0[0].var0[9].var1;
-  v51.i32[2] = LODWORD(a5->var0[0].var0[10].var1);
-  v50.i32[3] = LODWORD(a5->var0[0].var0[11].var0);
+  v51.i32[1] = *&dist->var0[0].var0[9].var1;
+  v51.i32[2] = LODWORD(dist->var0[0].var0[10].var1);
+  v50.i32[3] = LODWORD(dist->var0[0].var0[11].var0);
   v52 = vsubq_f32(v41, v50);
-  v51.i32[3] = LODWORD(a5->var0[0].var0[11].var1);
+  v51.i32[3] = LODWORD(dist->var0[0].var0[11].var1);
   v53 = vsubq_f32(v42, v51);
   v54 = vmulq_f32(v52, v52);
-  v52.i64[0] = *(a3 + 188);
-  v50.i64[0] = *(a3 + 24);
+  v52.i64[0] = *(classifier + 188);
+  v50.i64[0] = *(classifier + 24);
   v52.i32[1] = v50.i32[1];
   v55 = vmlaq_f32(v54, v53, v53);
-  v53.i64[0] = a7->var0[0].var0[12];
-  v51.i64[0] = *&a7->var0[0].var0[12].var1;
+  v53.i64[0] = atRefDist->var0[0].var0[12];
+  v51.i64[0] = *&atRefDist->var0[0].var0[12].var1;
   v53.i32[1] = v51.i32[1];
   *v53.f32 = vsub_f32(*v52.f32, *v53.f32);
-  v50.i32[1] = *(a3 + 50);
-  v51.i32[1] = LODWORD(a7->var0[0].var0[13].var1);
+  v50.i32[1] = *(classifier + 50);
+  v51.i32[1] = LODWORD(atRefDist->var0[0].var0[13].var1);
   *v51.f32 = vsub_f32(*v50.f32, *v51.f32);
   v56 = vmul_f32(*v53.f32, *v53.f32);
-  v53.i64[0] = a5->var0[0].var0[12];
-  v45.i64[0] = *&a5->var0[0].var0[12].var1;
+  v53.i64[0] = dist->var0[0].var0[12];
+  v45.i64[0] = *&dist->var0[0].var0[12].var1;
   v53.i32[1] = v45.i32[1];
   v57 = vmla_f32(v56, *v51.f32, *v51.f32);
   *v53.f32 = vsub_f32(*v52.f32, *v53.f32);
-  v45.i32[1] = LODWORD(a5->var0[0].var0[13].var1);
+  v45.i32[1] = LODWORD(dist->var0[0].var0[13].var1);
   *v52.f32 = vsub_f32(*v50.f32, *v45.f32);
   v58 = vmla_f32(vmul_f32(*v53.f32, *v53.f32), *v52.f32, *v52.f32);
-  v53.i64[0] = *(a3 + 204);
-  *v52.f32 = vsub_f32(*v53.f32, a7->var0[1].var0[0]);
+  v53.i64[0] = *(classifier + 204);
+  *v52.f32 = vsub_f32(*v53.f32, atRefDist->var0[1].var0[0]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v53.f32 = vsub_f32(*v53.f32, a5->var0[1].var0[0]);
+  *v53.f32 = vsub_f32(*v53.f32, dist->var0[1].var0[0]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  v51.i64[0] = *(a3 + 212);
-  *v50.f32 = vsub_f32(*v51.f32, a7->var0[1].var0[1]);
+  v51.i64[0] = *(classifier + 212);
+  *v50.f32 = vsub_f32(*v51.f32, atRefDist->var0[1].var0[1]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v23.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32));
-  *v52.f32 = vsub_f32(*v51.f32, a5->var0[1].var0[1]);
+  *v52.f32 = vsub_f32(*v51.f32, dist->var0[1].var0[1]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  v50.i64[0] = *(a3 + 220);
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[1].var0[2]);
+  v50.i64[0] = *(classifier + 220);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[1].var0[2]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   v132 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32));
   v133 = *v23.f32;
-  *v52.f32 = vsub_f32(*v50.f32, a5->var0[1].var0[2]);
+  *v52.f32 = vsub_f32(*v50.f32, dist->var0[1].var0[2]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  v50.i64[0] = *(a3 + 228);
-  *v45.f32 = vsub_f32(*v50.f32, a7->var0[1].var0[3]);
+  v50.i64[0] = *(classifier + 228);
+  *v45.f32 = vsub_f32(*v50.f32, atRefDist->var0[1].var0[3]);
   *v45.f32 = vmul_f32(*v45.f32, *v45.f32);
-  *v53.f32 = vsub_f32(*v50.f32, a5->var0[1].var0[3]);
+  *v53.f32 = vsub_f32(*v50.f32, dist->var0[1].var0[3]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v130 = vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32));
   v131 = vzip1_s32(vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32), vadd_f32(vdup_lane_s32(*v45.f32, 1), *v45.f32));
-  v53.i64[0] = *(a3 + 236);
-  *v52.f32 = vsub_f32(*v53.f32, a7->var0[1].var0[4]);
+  v53.i64[0] = *(classifier + 236);
+  *v52.f32 = vsub_f32(*v53.f32, atRefDist->var0[1].var0[4]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v53.f32 = vsub_f32(*v53.f32, a5->var0[1].var0[4]);
+  *v53.f32 = vsub_f32(*v53.f32, dist->var0[1].var0[4]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  v51.i64[0] = *(a3 + 244);
-  *v50.f32 = vsub_f32(*v51.f32, a7->var0[1].var0[5]);
+  v51.i64[0] = *(classifier + 244);
+  *v50.f32 = vsub_f32(*v51.f32, atRefDist->var0[1].var0[5]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v23.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32));
-  *v52.f32 = vsub_f32(*v51.f32, a5->var0[1].var0[5]);
+  *v52.f32 = vsub_f32(*v51.f32, dist->var0[1].var0[5]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   v128 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32));
   v129 = *v23.f32;
-  v53.i64[0] = *(a3 + 252);
-  *v52.f32 = vsub_f32(*v53.f32, a7->var0[1].var0[6]);
+  v53.i64[0] = *(classifier + 252);
+  *v52.f32 = vsub_f32(*v53.f32, atRefDist->var0[1].var0[6]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v53.f32 = vsub_f32(*v53.f32, a5->var0[1].var0[6]);
+  *v53.f32 = vsub_f32(*v53.f32, dist->var0[1].var0[6]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v59 = v15[1];
-  *v50.f32 = vsub_f32(*v15, a7->var0[1].var0[7]);
+  *v50.f32 = vsub_f32(*v15, atRefDist->var0[1].var0[7]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v23.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32));
-  *v52.f32 = vsub_f32(*v15, a5->var0[1].var0[7]);
+  *v52.f32 = vsub_f32(*v15, dist->var0[1].var0[7]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v50.f32 = vsub_f32(v59, a7->var0[1].var0[8]);
+  *v50.f32 = vsub_f32(v59, atRefDist->var0[1].var0[8]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   v126 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32));
   v127 = *v23.f32;
-  *v52.f32 = vsub_f32(v59, a5->var0[1].var0[8]);
+  *v52.f32 = vsub_f32(v59, dist->var0[1].var0[8]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v45.f32 = v15[2];
   v60 = v15[3];
-  *v51.f32 = vsub_f32(*v45.f32, a7->var0[1].var0[9]);
+  *v51.f32 = vsub_f32(*v45.f32, atRefDist->var0[1].var0[9]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
-  *v53.f32 = vsub_f32(*v45.f32, a5->var0[1].var0[9]);
+  *v53.f32 = vsub_f32(*v45.f32, dist->var0[1].var0[9]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v124 = vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32));
   v125 = vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32));
-  *v53.f32 = vsub_f32(v60, a7->var0[1].var0[10]);
+  *v53.f32 = vsub_f32(v60, atRefDist->var0[1].var0[10]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v50.f32 = vsub_f32(v60, a5->var0[1].var0[10]);
+  *v50.f32 = vsub_f32(v60, dist->var0[1].var0[10]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v45.f32 = v15[4];
   v61 = v15[5];
-  *v52.f32 = vsub_f32(*v45.f32, a7->var0[1].var0[11]);
+  *v52.f32 = vsub_f32(*v45.f32, atRefDist->var0[1].var0[11]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v51.f32 = vsub_f32(*v45.f32, a5->var0[1].var0[11]);
+  *v51.f32 = vsub_f32(*v45.f32, dist->var0[1].var0[11]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   v62 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32));
   v123 = vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32));
-  *v53.f32 = vsub_f32(v61, a7->var0[1].var0[12]);
+  *v53.f32 = vsub_f32(v61, atRefDist->var0[1].var0[12]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v50.f32 = vsub_f32(v61, a5->var0[1].var0[12]);
+  *v50.f32 = vsub_f32(v61, dist->var0[1].var0[12]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v45.f32 = v15[6];
   v63 = v15[7];
-  *v52.f32 = vsub_f32(*v45.f32, a7->var0[1].var0[13]);
+  *v52.f32 = vsub_f32(*v45.f32, atRefDist->var0[1].var0[13]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   v64 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32));
-  *v53.f32 = vsub_f32(*v45.f32, a5->var0[1].var0[13]);
+  *v53.f32 = vsub_f32(*v45.f32, dist->var0[1].var0[13]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v52.f32 = vsub_f32(v63, a7->var0[2].var0[0]);
+  *v52.f32 = vsub_f32(v63, atRefDist->var0[2].var0[0]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   v65 = vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32));
   *v53.f32 = vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32);
-  *v52.f32 = vsub_f32(v63, a5->var0[2].var0[0]);
+  *v52.f32 = vsub_f32(v63, dist->var0[2].var0[0]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v45.f32 = v15[8];
   v66 = v15[9];
-  *v51.f32 = vsub_f32(*v45.f32, a7->var0[2].var0[1]);
+  *v51.f32 = vsub_f32(*v45.f32, atRefDist->var0[2].var0[1]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   v67 = vzip1_s32(*v53.f32, vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32));
-  *v53.f32 = vsub_f32(*v45.f32, a5->var0[2].var0[1]);
+  *v53.f32 = vsub_f32(*v45.f32, dist->var0[2].var0[1]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v68 = vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32));
-  *v53.f32 = vsub_f32(v66, a7->var0[2].var0[2]);
+  *v53.f32 = vsub_f32(v66, atRefDist->var0[2].var0[2]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v50.f32 = vsub_f32(v66, a5->var0[2].var0[2]);
+  *v50.f32 = vsub_f32(v66, dist->var0[2].var0[2]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v45.f32 = v15[10];
   v69 = v15[11];
-  *v52.f32 = vsub_f32(*v45.f32, a7->var0[2].var0[3]);
+  *v52.f32 = vsub_f32(*v45.f32, atRefDist->var0[2].var0[3]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v51.f32 = vsub_f32(*v45.f32, a5->var0[2].var0[3]);
+  *v51.f32 = vsub_f32(*v45.f32, dist->var0[2].var0[3]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   v70 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32));
   v71 = vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32));
-  *v53.f32 = vsub_f32(v69, a7->var0[2].var0[4]);
+  *v53.f32 = vsub_f32(v69, atRefDist->var0[2].var0[4]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v50.f32 = vsub_f32(v69, a5->var0[2].var0[4]);
+  *v50.f32 = vsub_f32(v69, dist->var0[2].var0[4]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v45.f32 = v15[12];
   v72 = v15[13];
-  *v52.f32 = vsub_f32(*v45.f32, a7->var0[2].var0[5]);
+  *v52.f32 = vsub_f32(*v45.f32, atRefDist->var0[2].var0[5]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   v73 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32));
-  *v53.f32 = vsub_f32(*v45.f32, a5->var0[2].var0[5]);
+  *v53.f32 = vsub_f32(*v45.f32, dist->var0[2].var0[5]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v52.f32 = vsub_f32(v72, a7->var0[2].var0[6]);
+  *v52.f32 = vsub_f32(v72, atRefDist->var0[2].var0[6]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   v74 = vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32));
   *v53.f32 = vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32);
-  *v52.f32 = vsub_f32(v72, a5->var0[2].var0[6]);
+  *v52.f32 = vsub_f32(v72, dist->var0[2].var0[6]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v45.f32 = v15[14];
   v75 = v15[15];
-  *v51.f32 = vsub_f32(*v45.f32, a7->var0[2].var0[7]);
+  *v51.f32 = vsub_f32(*v45.f32, atRefDist->var0[2].var0[7]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   v76 = vzip1_s32(*v53.f32, vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32));
-  *v53.f32 = vsub_f32(*v45.f32, a5->var0[2].var0[7]);
+  *v53.f32 = vsub_f32(*v45.f32, dist->var0[2].var0[7]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v77 = vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32));
-  *v53.f32 = vsub_f32(v75, a7->var0[2].var0[8]);
+  *v53.f32 = vsub_f32(v75, atRefDist->var0[2].var0[8]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v78 = vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32);
-  *v50.f32 = vsub_f32(v75, a5->var0[2].var0[8]);
+  *v50.f32 = vsub_f32(v75, dist->var0[2].var0[8]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v45.f32 = v15[16];
   *v23.f32 = v15[17];
-  *v52.f32 = vsub_f32(*v45.f32, a7->var0[2].var0[9]);
+  *v52.f32 = vsub_f32(*v45.f32, atRefDist->var0[2].var0[9]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v53.f32 = vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32);
-  *v52.f32 = vsub_f32(*v45.f32, a5->var0[2].var0[9]);
+  *v52.f32 = vsub_f32(*v45.f32, dist->var0[2].var0[9]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   v79 = vzip1_s32(v78, *v53.f32);
   v80 = vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32));
-  *v53.f32 = vsub_f32(*v23.f32, a7->var0[2].var0[10]);
+  *v53.f32 = vsub_f32(*v23.f32, atRefDist->var0[2].var0[10]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v50.f32 = vsub_f32(*v23.f32, a5->var0[2].var0[10]);
+  *v50.f32 = vsub_f32(*v23.f32, dist->var0[2].var0[10]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   v81 = vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32);
   *v23.f32 = v15[18];
   *v50.f32 = v15[19];
-  *v52.f32 = vsub_f32(*v23.f32, a7->var0[2].var0[11]);
+  *v52.f32 = vsub_f32(*v23.f32, atRefDist->var0[2].var0[11]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   v82 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32));
-  *v52.f32 = vsub_f32(*v23.f32, a5->var0[2].var0[11]);
+  *v52.f32 = vsub_f32(*v23.f32, dist->var0[2].var0[11]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[2].var0[12]);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[2].var0[12]);
   v83 = vmul_f32(*v51.f32, *v51.f32);
   v84 = vzip1_s32(v81, vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32));
-  *v52.f32 = vsub_f32(*v50.f32, a5->var0[2].var0[12]);
+  *v52.f32 = vsub_f32(*v50.f32, dist->var0[2].var0[12]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   v85 = v15[20];
   *v53.f32 = v15[21];
-  *v50.f32 = vsub_f32(v85, a7->var0[2].var0[13]);
+  *v50.f32 = vsub_f32(v85, atRefDist->var0[2].var0[13]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   v86 = vzip1_s32(vadd_f32(vdup_lane_s32(v83, 1), v83), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32));
-  *v51.f32 = vsub_f32(v85, a5->var0[2].var0[13]);
+  *v51.f32 = vsub_f32(v85, dist->var0[2].var0[13]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   v87 = vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32));
-  *v51.f32 = vsub_f32(*v53.f32, a7->var0[3].var0[0]);
+  *v51.f32 = vsub_f32(*v53.f32, atRefDist->var0[3].var0[0]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   *v45.f32 = vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32);
-  v88 = a5->var0[3].var0[1];
-  *v53.f32 = vsub_f32(*v53.f32, a5->var0[3].var0[0]);
+  v88 = dist->var0[3].var0[1];
+  *v53.f32 = vsub_f32(*v53.f32, dist->var0[3].var0[0]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v89 = v15[22];
   *v51.f32 = v15[23];
-  *v23.f32 = vsub_f32(v89, a7->var0[3].var0[1]);
+  *v23.f32 = vsub_f32(v89, atRefDist->var0[3].var0[1]);
   *v23.f32 = vmul_f32(*v23.f32, *v23.f32);
   v135 = vsqrtq_f32(v134);
   v136 = vsqrtq_f32(v36);
@@ -406,12 +406,12 @@
   v137 = vsqrtq_f32(v49);
   *v52.f32 = vsub_f32(v89, v88);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  v45.i64[0] = a7->var0[3].var0[3];
-  *v50.f32 = vsub_f32(*v51.f32, a7->var0[3].var0[2]);
+  v45.i64[0] = atRefDist->var0[3].var0[3];
+  *v50.f32 = vsub_f32(*v51.f32, atRefDist->var0[3].var0[2]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v49.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32));
-  v53.i64[0] = a5->var0[3].var0[3];
-  *v52.f32 = vsub_f32(*v51.f32, a5->var0[3].var0[2]);
+  v53.i64[0] = dist->var0[3].var0[3];
+  *v52.f32 = vsub_f32(*v51.f32, dist->var0[3].var0[2]);
   v190 = vsqrtq_f32(v55);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v33.f32 = vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32);
@@ -447,16 +447,16 @@
   *v53.f32 = vsub_f32(*v23.f32, *v53.f32);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   *v53.f32 = vzip1_s32(*v33.f32, vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32));
-  *v52.f32 = vsub_f32(*v55.f32, a7->var0[3].var0[4]);
+  *v52.f32 = vsub_f32(*v55.f32, atRefDist->var0[3].var0[4]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v23.f32 = vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32);
-  v49.i64[0] = a5->var0[3].var0[5];
-  *v52.f32 = vsub_f32(*v55.f32, a5->var0[3].var0[4]);
+  v49.i64[0] = dist->var0[3].var0[5];
+  *v52.f32 = vsub_f32(*v55.f32, dist->var0[3].var0[4]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v55.f32 = vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32);
   *v33.f32 = v15[26];
   v90 = v15[27];
-  *v52.f32 = vsub_f32(*v33.f32, a7->var0[3].var0[5]);
+  *v52.f32 = vsub_f32(*v33.f32, atRefDist->var0[3].var0[5]);
   v201 = vsqrt_f32(v74);
   v202 = vsqrt_f32(v77);
   *v50.f32 = vmul_f32(*v52.f32, *v52.f32);
@@ -466,80 +466,80 @@
   v91 = vsqrt_f32(vzip1_s32(*v23.f32, vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
   *v53.f32 = vsub_f32(*v33.f32, *v49.f32);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v50.f32 = vsub_f32(v90, a7->var0[3].var0[6]);
+  *v50.f32 = vsub_f32(v90, atRefDist->var0[3].var0[6]);
   *v49.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v50.f32 = vsqrt_f32(vzip1_s32(*v55.f32, vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32)));
   *v53.f32 = vadd_f32(vdup_lane_s32(*v49.f32, 1), *v49.f32);
-  v55.i64[0] = a5->var0[3].var0[7];
-  *v49.f32 = vsub_f32(v90, a5->var0[3].var0[6]);
+  v55.i64[0] = dist->var0[3].var0[7];
+  *v49.f32 = vsub_f32(v90, dist->var0[3].var0[6]);
   *v49.f32 = vmul_f32(*v49.f32, *v49.f32);
   *v33.f32 = v15[28];
   v92 = v15[29];
-  *v23.f32 = vsub_f32(*v33.f32, a7->var0[3].var0[7]);
+  *v23.f32 = vsub_f32(*v33.f32, atRefDist->var0[3].var0[7]);
   *v23.f32 = vmul_f32(*v23.f32, *v23.f32);
   v203 = vsqrt_f32(v80);
   v204 = vsqrt_f32(v84);
   *v23.f32 = vzip1_s32(*v53.f32, vadd_f32(vdup_lane_s32(*v23.f32, 1), *v23.f32));
   *v53.f32 = vsub_f32(*v33.f32, *v55.f32);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  v93 = vsub_f32(v92, a7->var0[3].var0[8]);
+  v93 = vsub_f32(v92, atRefDist->var0[3].var0[8]);
   *v33.f32 = vmul_f32(v93, v93);
   v94 = vzip1_s32(vadd_f32(vdup_lane_s32(*v49.f32, 1), *v49.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32));
   *v53.f32 = vadd_f32(vdup_lane_s32(*v33.f32, 1), *v33.f32);
-  v33.i64[0] = a5->var0[3].var0[9];
-  *v49.f32 = vsub_f32(v92, a5->var0[3].var0[8]);
+  v33.i64[0] = dist->var0[3].var0[9];
+  *v49.f32 = vsub_f32(v92, dist->var0[3].var0[8]);
   *v49.f32 = vmul_f32(*v49.f32, *v49.f32);
   v95 = vadd_f32(vdup_lane_s32(*v49.f32, 1), *v49.f32);
   v96 = v15[30];
   v97 = v15[31];
-  *v49.f32 = vsub_f32(v96, a7->var0[3].var0[9]);
+  *v49.f32 = vsub_f32(v96, atRefDist->var0[3].var0[9]);
   *v49.f32 = vmul_f32(*v49.f32, *v49.f32);
   v152 = vsqrt_f32(v86);
   v153 = vsqrt_f32(*v36.f32);
   *v49.f32 = vzip1_s32(*v53.f32, vadd_f32(vdup_lane_s32(*v49.f32, 1), *v49.f32));
   *v53.f32 = vsub_f32(v96, *v33.f32);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v36.f32 = vsub_f32(v97, a7->var0[3].var0[10]);
+  *v36.f32 = vsub_f32(v97, atRefDist->var0[3].var0[10]);
   *v33.f32 = vmul_f32(*v36.f32, *v36.f32);
   *v36.f32 = vzip1_s32(v95, vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32));
   *v53.f32 = vadd_f32(vdup_lane_s32(*v33.f32, 1), *v33.f32);
-  v98 = a5->var0[3].var0[11];
-  *v33.f32 = vsub_f32(v97, a5->var0[3].var0[10]);
+  v98 = dist->var0[3].var0[11];
+  *v33.f32 = vsub_f32(v97, dist->var0[3].var0[10]);
   *v33.f32 = vmul_f32(*v33.f32, *v33.f32);
   v99 = v15[32];
   v100 = v15[33];
-  *v55.f32 = vsub_f32(v99, a7->var0[3].var0[11]);
+  *v55.f32 = vsub_f32(v99, atRefDist->var0[3].var0[11]);
   *v55.f32 = vmul_f32(*v55.f32, *v55.f32);
   v205 = v51.i64[0];
   v206 = v45.i64[0];
   *v51.f32 = vzip1_s32(*v53.f32, vadd_f32(vdup_lane_s32(*v55.f32, 1), *v55.f32));
   *v53.f32 = vsub_f32(v99, v98);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v45.f32 = vsub_f32(v100, a7->var0[3].var0[12]);
+  *v45.f32 = vsub_f32(v100, atRefDist->var0[3].var0[12]);
   v101 = vmul_f32(*v45.f32, *v45.f32);
   *v45.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v33.f32, 1), *v33.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32));
   *v53.f32 = vadd_f32(vdup_lane_s32(v101, 1), v101);
-  v102 = a5->var0[3].var0[13];
-  *v33.f32 = vsub_f32(v100, a5->var0[3].var0[12]);
+  v102 = dist->var0[3].var0[13];
+  *v33.f32 = vsub_f32(v100, dist->var0[3].var0[12]);
   *v33.f32 = vmul_f32(*v33.f32, *v33.f32);
   v103 = v15[34];
   v104 = v15[35];
-  *v55.f32 = vsub_f32(v103, a7->var0[3].var0[13]);
+  *v55.f32 = vsub_f32(v103, atRefDist->var0[3].var0[13]);
   *v55.f32 = vmul_f32(*v55.f32, *v55.f32);
   v154 = v46.i64[0];
   v155 = v91;
   *v53.f32 = vzip1_s32(*v53.f32, vadd_f32(vdup_lane_s32(*v55.f32, 1), *v55.f32));
   v105 = vsub_f32(v103, v102);
   v106 = vmul_f32(v105, v105);
-  *v55.f32 = vsub_f32(v104, a7->var0[4].var0[0]);
+  *v55.f32 = vsub_f32(v104, atRefDist->var0[4].var0[0]);
   *v55.f32 = vmul_f32(*v55.f32, *v55.f32);
   v107 = vzip1_s32(vadd_f32(vdup_lane_s32(*v33.f32, 1), *v33.f32), vadd_f32(vdup_lane_s32(v106, 1), v106));
-  v108 = a5->var0[4].var0[1];
-  *v33.f32 = vsub_f32(v104, a5->var0[4].var0[0]);
+  v108 = dist->var0[4].var0[1];
+  *v33.f32 = vsub_f32(v104, dist->var0[4].var0[0]);
   *v33.f32 = vmul_f32(*v33.f32, *v33.f32);
   v109 = v15[36];
   v110 = v15[37];
-  *v46.f32 = vsub_f32(v109, a7->var0[4].var0[1]);
+  *v46.f32 = vsub_f32(v109, atRefDist->var0[4].var0[1]);
   v207 = v52.i64[0];
   v208 = v50.i64[0];
   *v52.f32 = vmul_f32(*v46.f32, *v46.f32);
@@ -553,28 +553,28 @@
   v211 = vsqrt_f32(*v45.f32);
   v212 = vsqrt_f32(v107);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v50.f32 = vsub_f32(v110, a7->var0[4].var0[2]);
+  *v50.f32 = vsub_f32(v110, atRefDist->var0[4].var0[2]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
-  v23.i64[0] = a5->var0[4].var0[3];
-  *v45.f32 = vsub_f32(v110, a5->var0[4].var0[2]);
+  v23.i64[0] = dist->var0[4].var0[3];
+  *v45.f32 = vsub_f32(v110, dist->var0[4].var0[2]);
   *v45.f32 = vmul_f32(*v45.f32, *v45.f32);
   v111 = v15[38];
   v112 = v15[39];
-  *v51.f32 = vsub_f32(v111, a7->var0[4].var0[3]);
+  *v51.f32 = vsub_f32(v111, atRefDist->var0[4].var0[3]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   v160 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v55.f32, 1), *v55.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32)));
   v161 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32)));
   *v52.f32 = vsub_f32(v111, *v23.f32);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v52.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v45.f32, 1), *v45.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32)));
-  *v50.f32 = vsub_f32(v112, a7->var0[4].var0[4]);
+  *v50.f32 = vsub_f32(v112, atRefDist->var0[4].var0[4]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
-  v23.i64[0] = a5->var0[4].var0[5];
-  *v45.f32 = vsub_f32(v112, a5->var0[4].var0[4]);
+  v23.i64[0] = dist->var0[4].var0[5];
+  *v45.f32 = vsub_f32(v112, dist->var0[4].var0[4]);
   *v45.f32 = vmul_f32(*v45.f32, *v45.f32);
   v113 = v15[40];
   v114 = v15[41];
-  *v51.f32 = vsub_f32(v113, a7->var0[4].var0[5]);
+  *v51.f32 = vsub_f32(v113, atRefDist->var0[4].var0[5]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   v213 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v33.f32, 1), *v33.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32)));
   v214 = v52.i64[0];
@@ -582,14 +582,14 @@
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v53.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32));
   *v52.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v45.f32, 1), *v45.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32));
-  *v50.f32 = vsub_f32(v114, a7->var0[4].var0[6]);
+  *v50.f32 = vsub_f32(v114, atRefDist->var0[4].var0[6]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
-  v23.i64[0] = a5->var0[4].var0[7];
-  *v45.f32 = vsub_f32(v114, a5->var0[4].var0[6]);
+  v23.i64[0] = dist->var0[4].var0[7];
+  *v45.f32 = vsub_f32(v114, dist->var0[4].var0[6]);
   *v45.f32 = vmul_f32(*v45.f32, *v45.f32);
   v115 = v15[42];
   v116 = v15[43];
-  *v51.f32 = vsub_f32(v115, a7->var0[4].var0[7]);
+  *v51.f32 = vsub_f32(v115, atRefDist->var0[4].var0[7]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   v162 = vsqrt_f32(*v53.f32);
   v163 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32)));
@@ -597,316 +597,316 @@
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v215 = vsqrt_f32(*v52.f32);
   v216 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v45.f32, 1), *v45.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32)));
-  *v53.f32 = vsub_f32(v116, a7->var0[4].var0[8]);
+  *v53.f32 = vsub_f32(v116, atRefDist->var0[4].var0[8]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v52.f32 = vsub_f32(v116, a5->var0[4].var0[8]);
+  *v52.f32 = vsub_f32(v116, dist->var0[4].var0[8]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v51.f32 = v15[44];
   *v45.f32 = v15[45];
-  *v50.f32 = vsub_f32(*v51.f32, a7->var0[4].var0[9]);
+  *v50.f32 = vsub_f32(*v51.f32, atRefDist->var0[4].var0[9]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v53.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
-  *v50.f32 = vsub_f32(*v51.f32, a5->var0[4].var0[9]);
+  *v50.f32 = vsub_f32(*v51.f32, dist->var0[4].var0[9]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v52.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
-  *v50.f32 = vsub_f32(*v45.f32, a7->var0[4].var0[10]);
+  *v50.f32 = vsub_f32(*v45.f32, atRefDist->var0[4].var0[10]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
-  *v51.f32 = vsub_f32(*v45.f32, a5->var0[4].var0[10]);
+  *v51.f32 = vsub_f32(*v45.f32, dist->var0[4].var0[10]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   *v23.f32 = v15[46];
   v117 = v15[47];
-  *v45.f32 = vsub_f32(*v23.f32, a7->var0[4].var0[11]);
+  *v45.f32 = vsub_f32(*v23.f32, atRefDist->var0[4].var0[11]);
   *v45.f32 = vmul_f32(*v45.f32, *v45.f32);
   v164 = v53.i64[0];
   v165 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v45.f32, 1), *v45.f32)));
-  *v53.f32 = vsub_f32(*v23.f32, a5->var0[4].var0[11]);
+  *v53.f32 = vsub_f32(*v23.f32, dist->var0[4].var0[11]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v217 = v52.i64[0];
   v218 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32)));
-  *v53.f32 = vsub_f32(v117, a7->var0[4].var0[12]);
+  *v53.f32 = vsub_f32(v117, atRefDist->var0[4].var0[12]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v52.f32 = vsub_f32(v117, a5->var0[4].var0[12]);
+  *v52.f32 = vsub_f32(v117, dist->var0[4].var0[12]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v51.f32 = v15[48];
   *v45.f32 = v15[49];
-  *v50.f32 = vsub_f32(*v51.f32, a7->var0[4].var0[13]);
+  *v50.f32 = vsub_f32(*v51.f32, atRefDist->var0[4].var0[13]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v53.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
-  *v50.f32 = vsub_f32(*v51.f32, a5->var0[4].var0[13]);
+  *v50.f32 = vsub_f32(*v51.f32, dist->var0[4].var0[13]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v52.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
-  *v50.f32 = vsub_f32(*v45.f32, a7->var0[5].var0[0]);
+  *v50.f32 = vsub_f32(*v45.f32, atRefDist->var0[5].var0[0]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
-  *v51.f32 = vsub_f32(*v45.f32, a5->var0[5].var0[0]);
+  *v51.f32 = vsub_f32(*v45.f32, dist->var0[5].var0[0]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   *v23.f32 = v15[50];
   v118 = v15[51];
-  *v45.f32 = vsub_f32(*v23.f32, a7->var0[5].var0[1]);
+  *v45.f32 = vsub_f32(*v23.f32, atRefDist->var0[5].var0[1]);
   *v45.f32 = vmul_f32(*v45.f32, *v45.f32);
   v166 = v53.i64[0];
   v167 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v45.f32, 1), *v45.f32)));
-  *v53.f32 = vsub_f32(*v23.f32, a5->var0[5].var0[1]);
+  *v53.f32 = vsub_f32(*v23.f32, dist->var0[5].var0[1]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v219 = v52.i64[0];
   v220 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32)));
-  *v53.f32 = vsub_f32(v118, a7->var0[5].var0[2]);
+  *v53.f32 = vsub_f32(v118, atRefDist->var0[5].var0[2]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v52.f32 = vsub_f32(v118, a5->var0[5].var0[2]);
+  *v52.f32 = vsub_f32(v118, dist->var0[5].var0[2]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v51.f32 = v15[52];
   *v45.f32 = v15[53];
-  *v50.f32 = vsub_f32(*v51.f32, a7->var0[5].var0[3]);
+  *v50.f32 = vsub_f32(*v51.f32, atRefDist->var0[5].var0[3]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v53.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
-  *v50.f32 = vsub_f32(*v51.f32, a5->var0[5].var0[3]);
+  *v50.f32 = vsub_f32(*v51.f32, dist->var0[5].var0[3]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v52.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
-  *v50.f32 = vsub_f32(*v45.f32, a7->var0[5].var0[4]);
+  *v50.f32 = vsub_f32(*v45.f32, atRefDist->var0[5].var0[4]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
-  *v51.f32 = vsub_f32(*v45.f32, a5->var0[5].var0[4]);
+  *v51.f32 = vsub_f32(*v45.f32, dist->var0[5].var0[4]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   *v23.f32 = v15[54];
   v119 = v15[55];
-  *v45.f32 = vsub_f32(*v23.f32, a7->var0[5].var0[5]);
+  *v45.f32 = vsub_f32(*v23.f32, atRefDist->var0[5].var0[5]);
   *v45.f32 = vmul_f32(*v45.f32, *v45.f32);
   v168 = v53.i64[0];
   v169 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v45.f32, 1), *v45.f32)));
-  *v53.f32 = vsub_f32(*v23.f32, a5->var0[5].var0[5]);
+  *v53.f32 = vsub_f32(*v23.f32, dist->var0[5].var0[5]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v221 = v52.i64[0];
   v222 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32)));
-  *v53.f32 = vsub_f32(v119, a7->var0[5].var0[6]);
+  *v53.f32 = vsub_f32(v119, atRefDist->var0[5].var0[6]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v52.f32 = vsub_f32(v119, a5->var0[5].var0[6]);
+  *v52.f32 = vsub_f32(v119, dist->var0[5].var0[6]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v51.f32 = v15[56];
   *v45.f32 = v15[57];
-  *v50.f32 = vsub_f32(*v51.f32, a7->var0[5].var0[7]);
+  *v50.f32 = vsub_f32(*v51.f32, atRefDist->var0[5].var0[7]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v53.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
-  *v50.f32 = vsub_f32(*v51.f32, a5->var0[5].var0[7]);
+  *v50.f32 = vsub_f32(*v51.f32, dist->var0[5].var0[7]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v52.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
-  *v50.f32 = vsub_f32(*v45.f32, a7->var0[5].var0[8]);
+  *v50.f32 = vsub_f32(*v45.f32, atRefDist->var0[5].var0[8]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
-  *v51.f32 = vsub_f32(*v45.f32, a5->var0[5].var0[8]);
+  *v51.f32 = vsub_f32(*v45.f32, dist->var0[5].var0[8]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   *v23.f32 = v15[58];
   v120 = v15[59];
-  *v45.f32 = vsub_f32(*v23.f32, a7->var0[5].var0[9]);
+  *v45.f32 = vsub_f32(*v23.f32, atRefDist->var0[5].var0[9]);
   *v45.f32 = vmul_f32(*v45.f32, *v45.f32);
   v170 = v53.i64[0];
   v171 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v45.f32, 1), *v45.f32)));
-  *v53.f32 = vsub_f32(*v23.f32, a5->var0[5].var0[9]);
+  *v53.f32 = vsub_f32(*v23.f32, dist->var0[5].var0[9]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v223 = v52.i64[0];
   v224 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32)));
-  *v53.f32 = vsub_f32(v120, a7->var0[5].var0[10]);
+  *v53.f32 = vsub_f32(v120, atRefDist->var0[5].var0[10]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v52.f32 = vsub_f32(v120, a5->var0[5].var0[10]);
+  *v52.f32 = vsub_f32(v120, dist->var0[5].var0[10]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v51.f32 = v15[60];
   *v45.f32 = v15[61];
-  *v50.f32 = vsub_f32(*v51.f32, a7->var0[5].var0[11]);
+  *v50.f32 = vsub_f32(*v51.f32, atRefDist->var0[5].var0[11]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v53.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32));
-  *v50.f32 = vsub_f32(*v51.f32, a5->var0[5].var0[11]);
+  *v50.f32 = vsub_f32(*v51.f32, dist->var0[5].var0[11]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v52.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32));
-  *v50.f32 = vsub_f32(*v45.f32, a7->var0[5].var0[12]);
+  *v50.f32 = vsub_f32(*v45.f32, atRefDist->var0[5].var0[12]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
-  *v51.f32 = vsub_f32(*v45.f32, a5->var0[5].var0[12]);
+  *v51.f32 = vsub_f32(*v45.f32, dist->var0[5].var0[12]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   *v23.f32 = v15[62];
   v121 = v15[63];
-  *v45.f32 = vsub_f32(*v23.f32, a7->var0[5].var0[13]);
+  *v45.f32 = vsub_f32(*v23.f32, atRefDist->var0[5].var0[13]);
   *v45.f32 = vmul_f32(*v45.f32, *v45.f32);
   v172 = vsqrt_f32(*v53.f32);
   v173 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v45.f32, 1), *v45.f32)));
-  *v53.f32 = vsub_f32(*v23.f32, a5->var0[5].var0[13]);
+  *v53.f32 = vsub_f32(*v23.f32, dist->var0[5].var0[13]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v225 = vsqrt_f32(*v52.f32);
   v226 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32)));
-  *v53.f32 = vsub_f32(v121, a7->var0[6].var0[0]);
+  *v53.f32 = vsub_f32(v121, atRefDist->var0[6].var0[0]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
-  *v52.f32 = vsub_f32(v121, a5->var0[6].var0[0]);
+  *v52.f32 = vsub_f32(v121, dist->var0[6].var0[0]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   *v50.f32 = v15[64];
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[6].var0[1]);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[6].var0[1]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   *v53.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32));
-  *v50.f32 = vsub_f32(*v50.f32, a5->var0[6].var0[1]);
+  *v50.f32 = vsub_f32(*v50.f32, dist->var0[6].var0[1]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v52.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
   *v50.f32 = v15[65];
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[6].var0[2]);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[6].var0[2]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
-  *v50.f32 = vsub_f32(*v50.f32, a5->var0[6].var0[2]);
+  *v50.f32 = vsub_f32(*v50.f32, dist->var0[6].var0[2]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v45.f32 = v15[66];
-  *v23.f32 = vsub_f32(*v45.f32, a7->var0[6].var0[3]);
+  *v23.f32 = vsub_f32(*v45.f32, atRefDist->var0[6].var0[3]);
   *v23.f32 = vmul_f32(*v23.f32, *v23.f32);
   v174 = vsqrt_f32(*v53.f32);
   v175 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32), vadd_f32(vdup_lane_s32(*v23.f32, 1), *v23.f32)));
-  *v53.f32 = vsub_f32(*v45.f32, a5->var0[6].var0[3]);
+  *v53.f32 = vsub_f32(*v45.f32, dist->var0[6].var0[3]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   v227 = v52.i64[0];
   v228 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32)));
   *v53.f32 = v15[67];
-  *v52.f32 = vsub_f32(*v53.f32, a7->var0[6].var0[4]);
+  *v52.f32 = vsub_f32(*v53.f32, atRefDist->var0[6].var0[4]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v53.f32 = vsub_f32(*v53.f32, a5->var0[6].var0[4]);
+  *v53.f32 = vsub_f32(*v53.f32, dist->var0[6].var0[4]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   *v50.f32 = v15[68];
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[6].var0[5]);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[6].var0[5]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   *v52.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32)));
-  *v50.f32 = vsub_f32(*v50.f32, a5->var0[6].var0[5]);
+  *v50.f32 = vsub_f32(*v50.f32, dist->var0[6].var0[5]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v53.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
   *v50.f32 = v15[69];
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[6].var0[6]);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[6].var0[6]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
-  *v50.f32 = vsub_f32(*v50.f32, a5->var0[6].var0[6]);
+  *v50.f32 = vsub_f32(*v50.f32, dist->var0[6].var0[6]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v45.f32 = v15[70];
-  *v23.f32 = vsub_f32(*v45.f32, a7->var0[6].var0[7]);
+  *v23.f32 = vsub_f32(*v45.f32, atRefDist->var0[6].var0[7]);
   *v23.f32 = vmul_f32(*v23.f32, *v23.f32);
-  *v45.f32 = vsub_f32(*v45.f32, a5->var0[6].var0[7]);
+  *v45.f32 = vsub_f32(*v45.f32, dist->var0[6].var0[7]);
   *v45.f32 = vmul_f32(*v45.f32, *v45.f32);
   v176 = v52.i64[0];
   v177 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32), vadd_f32(vdup_lane_s32(*v23.f32, 1), *v23.f32)));
   v229 = v53.i64[0];
   v230 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v45.f32, 1), *v45.f32)));
   *v53.f32 = v15[71];
-  *v52.f32 = vsub_f32(*v53.f32, a7->var0[6].var0[8]);
+  *v52.f32 = vsub_f32(*v53.f32, atRefDist->var0[6].var0[8]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v53.f32 = vsub_f32(*v53.f32, a5->var0[6].var0[8]);
+  *v53.f32 = vsub_f32(*v53.f32, dist->var0[6].var0[8]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   *v51.f32 = v15[72];
-  *v45.f32 = vsub_f32(*v51.f32, a7->var0[6].var0[9]);
+  *v45.f32 = vsub_f32(*v51.f32, atRefDist->var0[6].var0[9]);
   *v45.f32 = vmul_f32(*v45.f32, *v45.f32);
   *v52.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v45.f32, 1), *v45.f32)));
-  *v50.f32 = vsub_f32(*v51.f32, a5->var0[6].var0[9]);
+  *v50.f32 = vsub_f32(*v51.f32, dist->var0[6].var0[9]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v53.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32));
   *v50.f32 = v15[73];
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[6].var0[10]);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[6].var0[10]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
-  *v50.f32 = vsub_f32(*v50.f32, a5->var0[6].var0[10]);
+  *v50.f32 = vsub_f32(*v50.f32, dist->var0[6].var0[10]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v45.f32 = v15[74];
-  *v23.f32 = vsub_f32(*v45.f32, a7->var0[6].var0[11]);
+  *v23.f32 = vsub_f32(*v45.f32, atRefDist->var0[6].var0[11]);
   *v23.f32 = vmul_f32(*v23.f32, *v23.f32);
   v178 = v52.i64[0];
   v179 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32), vadd_f32(vdup_lane_s32(*v23.f32, 1), *v23.f32)));
-  *v52.f32 = vsub_f32(*v45.f32, a5->var0[6].var0[11]);
+  *v52.f32 = vsub_f32(*v45.f32, dist->var0[6].var0[11]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   v231 = vsqrt_f32(*v53.f32);
   v232 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32)));
   *v53.f32 = v15[75];
-  *v52.f32 = vsub_f32(*v53.f32, a7->var0[6].var0[12]);
+  *v52.f32 = vsub_f32(*v53.f32, atRefDist->var0[6].var0[12]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v53.f32 = vsub_f32(*v53.f32, a5->var0[6].var0[12]);
+  *v53.f32 = vsub_f32(*v53.f32, dist->var0[6].var0[12]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   *v50.f32 = v15[76];
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[6].var0[13]);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[6].var0[13]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   *v52.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32));
-  *v50.f32 = vsub_f32(*v50.f32, a5->var0[6].var0[13]);
+  *v50.f32 = vsub_f32(*v50.f32, dist->var0[6].var0[13]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v53.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
   *v50.f32 = v15[77];
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[7].var0[0]);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[7].var0[0]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
-  *v50.f32 = vsub_f32(*v50.f32, a5->var0[7].var0[0]);
+  *v50.f32 = vsub_f32(*v50.f32, dist->var0[7].var0[0]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v45.f32 = v15[78];
-  *v23.f32 = vsub_f32(*v45.f32, a7->var0[7].var0[1]);
+  *v23.f32 = vsub_f32(*v45.f32, atRefDist->var0[7].var0[1]);
   *v23.f32 = vmul_f32(*v23.f32, *v23.f32);
   v180 = vsqrt_f32(*v52.f32);
   v181 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32), vadd_f32(vdup_lane_s32(*v23.f32, 1), *v23.f32)));
-  *v52.f32 = vsub_f32(*v45.f32, a5->var0[7].var0[1]);
+  *v52.f32 = vsub_f32(*v45.f32, dist->var0[7].var0[1]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   v233 = v53.i64[0];
   v234 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32)));
   *v53.f32 = v15[79];
-  *v52.f32 = vsub_f32(*v53.f32, a7->var0[7].var0[2]);
+  *v52.f32 = vsub_f32(*v53.f32, atRefDist->var0[7].var0[2]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v53.f32 = vsub_f32(*v53.f32, a5->var0[7].var0[2]);
+  *v53.f32 = vsub_f32(*v53.f32, dist->var0[7].var0[2]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   *v50.f32 = v15[80];
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[7].var0[3]);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[7].var0[3]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   *v52.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32)));
-  *v50.f32 = vsub_f32(*v50.f32, a5->var0[7].var0[3]);
+  *v50.f32 = vsub_f32(*v50.f32, dist->var0[7].var0[3]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v53.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
   *v50.f32 = v15[81];
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[7].var0[4]);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[7].var0[4]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
-  *v50.f32 = vsub_f32(*v50.f32, a5->var0[7].var0[4]);
+  *v50.f32 = vsub_f32(*v50.f32, dist->var0[7].var0[4]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v45.f32 = v15[82];
-  *v23.f32 = vsub_f32(*v45.f32, a7->var0[7].var0[5]);
+  *v23.f32 = vsub_f32(*v45.f32, atRefDist->var0[7].var0[5]);
   *v23.f32 = vmul_f32(*v23.f32, *v23.f32);
-  *v45.f32 = vsub_f32(*v45.f32, a5->var0[7].var0[5]);
+  *v45.f32 = vsub_f32(*v45.f32, dist->var0[7].var0[5]);
   *v45.f32 = vmul_f32(*v45.f32, *v45.f32);
   v182 = v52.i64[0];
   v183 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32), vadd_f32(vdup_lane_s32(*v23.f32, 1), *v23.f32)));
   v235 = v53.i64[0];
   v236 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v45.f32, 1), *v45.f32)));
   *v53.f32 = v15[83];
-  *v52.f32 = vsub_f32(*v53.f32, a7->var0[7].var0[6]);
+  *v52.f32 = vsub_f32(*v53.f32, atRefDist->var0[7].var0[6]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v53.f32 = vsub_f32(*v53.f32, a5->var0[7].var0[6]);
+  *v53.f32 = vsub_f32(*v53.f32, dist->var0[7].var0[6]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   *v51.f32 = v15[84];
-  *v45.f32 = vsub_f32(*v51.f32, a7->var0[7].var0[7]);
+  *v45.f32 = vsub_f32(*v51.f32, atRefDist->var0[7].var0[7]);
   *v45.f32 = vmul_f32(*v45.f32, *v45.f32);
   *v52.f32 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v45.f32, 1), *v45.f32)));
-  *v50.f32 = vsub_f32(*v51.f32, a5->var0[7].var0[7]);
+  *v50.f32 = vsub_f32(*v51.f32, dist->var0[7].var0[7]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v53.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32));
   *v50.f32 = v15[85];
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[7].var0[8]);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[7].var0[8]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
-  *v50.f32 = vsub_f32(*v50.f32, a5->var0[7].var0[8]);
+  *v50.f32 = vsub_f32(*v50.f32, dist->var0[7].var0[8]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v45.f32 = v15[86];
-  *v23.f32 = vsub_f32(*v45.f32, a7->var0[7].var0[9]);
+  *v23.f32 = vsub_f32(*v45.f32, atRefDist->var0[7].var0[9]);
   *v23.f32 = vmul_f32(*v23.f32, *v23.f32);
   v184 = v52.i64[0];
   v185 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32), vadd_f32(vdup_lane_s32(*v23.f32, 1), *v23.f32)));
-  *v52.f32 = vsub_f32(*v45.f32, a5->var0[7].var0[9]);
+  *v52.f32 = vsub_f32(*v45.f32, dist->var0[7].var0[9]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
   v237 = vsqrt_f32(*v53.f32);
   v238 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32), vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32)));
   *v53.f32 = v15[87];
-  *v52.f32 = vsub_f32(*v53.f32, a7->var0[7].var0[10]);
+  *v52.f32 = vsub_f32(*v53.f32, atRefDist->var0[7].var0[10]);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v53.f32 = vsub_f32(*v53.f32, a5->var0[7].var0[10]);
+  *v53.f32 = vsub_f32(*v53.f32, dist->var0[7].var0[10]);
   *v53.f32 = vmul_f32(*v53.f32, *v53.f32);
   *v50.f32 = v15[88];
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[7].var0[11]);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[7].var0[11]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   *v52.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32));
-  *v50.f32 = vsub_f32(*v50.f32, a5->var0[7].var0[11]);
+  *v50.f32 = vsub_f32(*v50.f32, dist->var0[7].var0[11]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   *v53.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v53.f32, 1), *v53.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32));
   *v50.f32 = v15[89];
-  *v51.f32 = vsub_f32(*v50.f32, a7->var0[7].var0[12]);
+  *v51.f32 = vsub_f32(*v50.f32, atRefDist->var0[7].var0[12]);
   *v51.f32 = vmul_f32(*v51.f32, *v51.f32);
   *v45.f32 = v15[90];
-  *v23.f32 = vsub_f32(*v45.f32, a7->var0[7].var0[13]);
+  *v23.f32 = vsub_f32(*v45.f32, atRefDist->var0[7].var0[13]);
   *v23.f32 = vmul_f32(*v23.f32, *v23.f32);
   *v51.f32 = vzip1_s32(vadd_f32(vdup_lane_s32(*v51.f32, 1), *v51.f32), vadd_f32(vdup_lane_s32(*v23.f32, 1), *v23.f32));
-  v23.i64[0] = a5->var0[7].var0[12];
+  v23.i64[0] = dist->var0[7].var0[12];
   v186 = vsqrt_f32(*v52.f32);
   v187 = vsqrt_f32(*v51.f32);
   *v52.f32 = vsub_f32(*v50.f32, *v23.f32);
   *v52.f32 = vmul_f32(*v52.f32, *v52.f32);
-  *v50.f32 = vsub_f32(*v45.f32, a5->var0[7].var0[13]);
+  *v50.f32 = vsub_f32(*v45.f32, dist->var0[7].var0[13]);
   *v50.f32 = vmul_f32(*v50.f32, *v50.f32);
   v239 = vsqrt_f32(*v53.f32);
   v240 = vsqrt_f32(vzip1_s32(vadd_f32(vdup_lane_s32(*v52.f32, 1), *v52.f32), vadd_f32(vdup_lane_s32(*v50.f32, 1), *v50.f32)));
@@ -918,12 +918,12 @@
   operator new[]();
 }
 
-- (int)blockSmoothing:(void *)a3 localNa:(const void *)a4 specsOut:(void *)a5 numOfFrames:(unint64_t)a6 smoothedSpotsLoc:(id *)a7 validSpotsIndexes:(void *)a8 numOfValidSpots:(unsigned int *)a9 smoothedSNR:(void *)a10 smoothedSNa:(void *)a11
+- (int)blockSmoothing:(void *)smoothing localNa:(const void *)na specsOut:(void *)out numOfFrames:(unint64_t)frames smoothedSpotsLoc:(id *)loc validSpotsIndexes:(void *)indexes numOfValidSpots:(unsigned int *)spots smoothedSNR:(void *)self0 smoothedSNa:(void *)self1
 {
-  (MEMORY[0x28223BE20])(self, a2, a3);
+  (MEMORY[0x28223BE20])(self, a2, smoothing);
   v43 = v13;
   v65 = *MEMORY[0x277D85DE8];
-  *a9 = 0;
+  *spots = 0;
   v44 = v12;
   if (v12[2] - *v12 < 0xEuLL)
   {
@@ -1004,65 +1004,65 @@
   v50 = 0;
   v47 = &unk_28380A0A8;
   v48 = v61;
-  *(a10 + 26) = 0u;
-  *(a10 + 27) = 0u;
-  *(a10 + 24) = 0u;
-  *(a10 + 25) = 0u;
-  *(a10 + 22) = 0u;
-  *(a10 + 23) = 0u;
-  *(a10 + 20) = 0u;
-  *(a10 + 21) = 0u;
-  *(a10 + 18) = 0u;
-  *(a10 + 19) = 0u;
-  *(a10 + 16) = 0u;
-  *(a10 + 17) = 0u;
-  *(a10 + 14) = 0u;
-  *(a10 + 15) = 0u;
-  *(a10 + 12) = 0u;
-  *(a10 + 13) = 0u;
-  *(a10 + 10) = 0u;
-  *(a10 + 11) = 0u;
-  *(a10 + 8) = 0u;
-  *(a10 + 9) = 0u;
-  *(a10 + 6) = 0u;
-  *(a10 + 7) = 0u;
-  *(a10 + 4) = 0u;
-  *(a10 + 5) = 0u;
-  *(a10 + 2) = 0u;
-  *(a10 + 3) = 0u;
-  *a10 = 0u;
-  *(a10 + 1) = 0u;
+  *(r + 26) = 0u;
+  *(r + 27) = 0u;
+  *(r + 24) = 0u;
+  *(r + 25) = 0u;
+  *(r + 22) = 0u;
+  *(r + 23) = 0u;
+  *(r + 20) = 0u;
+  *(r + 21) = 0u;
+  *(r + 18) = 0u;
+  *(r + 19) = 0u;
+  *(r + 16) = 0u;
+  *(r + 17) = 0u;
+  *(r + 14) = 0u;
+  *(r + 15) = 0u;
+  *(r + 12) = 0u;
+  *(r + 13) = 0u;
+  *(r + 10) = 0u;
+  *(r + 11) = 0u;
+  *(r + 8) = 0u;
+  *(r + 9) = 0u;
+  *(r + 6) = 0u;
+  *(r + 7) = 0u;
+  *(r + 4) = 0u;
+  *(r + 5) = 0u;
+  *(r + 2) = 0u;
+  *(r + 3) = 0u;
+  *r = 0u;
+  *(r + 1) = 0u;
   v14.i64[0] = 0x3F0000003FLL;
   v14.i64[1] = 0x3F0000003FLL;
   v15 = vnegq_f32(v14);
-  *a11 = v15;
-  *(a11 + 1) = v15;
-  *(a11 + 2) = v15;
-  *(a11 + 3) = v15;
-  *(a11 + 4) = v15;
-  *(a11 + 5) = v15;
-  *(a11 + 6) = v15;
-  *(a11 + 7) = v15;
-  *(a11 + 8) = v15;
-  *(a11 + 9) = v15;
-  *(a11 + 10) = v15;
-  *(a11 + 11) = v15;
-  *(a11 + 12) = v15;
-  *(a11 + 13) = v15;
-  *(a11 + 14) = v15;
-  *(a11 + 15) = v15;
-  *(a11 + 16) = v15;
-  *(a11 + 17) = v15;
-  *(a11 + 18) = v15;
-  *(a11 + 19) = v15;
-  *(a11 + 20) = v15;
-  *(a11 + 21) = v15;
-  *(a11 + 22) = v15;
-  *(a11 + 23) = v15;
-  *(a11 + 24) = v15;
-  *(a11 + 25) = v15;
-  *(a11 + 26) = v15;
-  *(a11 + 27) = v15;
+  *sNa = v15;
+  *(sNa + 1) = v15;
+  *(sNa + 2) = v15;
+  *(sNa + 3) = v15;
+  *(sNa + 4) = v15;
+  *(sNa + 5) = v15;
+  *(sNa + 6) = v15;
+  *(sNa + 7) = v15;
+  *(sNa + 8) = v15;
+  *(sNa + 9) = v15;
+  *(sNa + 10) = v15;
+  *(sNa + 11) = v15;
+  *(sNa + 12) = v15;
+  *(sNa + 13) = v15;
+  *(sNa + 14) = v15;
+  *(sNa + 15) = v15;
+  *(sNa + 16) = v15;
+  *(sNa + 17) = v15;
+  *(sNa + 18) = v15;
+  *(sNa + 19) = v15;
+  *(sNa + 20) = v15;
+  *(sNa + 21) = v15;
+  *(sNa + 22) = v15;
+  *(sNa + 23) = v15;
+  *(sNa + 24) = v15;
+  *(sNa + 25) = v15;
+  *(sNa + 26) = v15;
+  *(sNa + 27) = v15;
   v16 = 0;
   v17 = 0;
   v18 = &v60;
@@ -1132,7 +1132,7 @@
         }
 
         v21[1] = v22;
-        ++*a9;
+        ++*spots;
       }
 
       ++v20;
@@ -1212,29 +1212,29 @@
   return 0;
 }
 
-- (int)getAnchorsWithHysteresis:(id *)a3 anchorsWithHist:(PDAnchors *)a4
+- (int)getAnchorsWithHysteresis:(id *)hysteresis anchorsWithHist:(PDAnchors *)hist
 {
   v6 = 0;
   LODWORD(v4) = -1.0;
-  return [(GmoEngine *)self getAnchorsWithHysteresis:a3 currAnchors:v10 snrHysteresisPct:a4 anchorsWithHist:v9 violations:v8 anchorMoveIdx:v7 spotLocationsAtRefDist:v4 anchorsMoved:&v6];
+  return [(GmoEngine *)self getAnchorsWithHysteresis:hysteresis currAnchors:v10 snrHysteresisPct:hist anchorsWithHist:v9 violations:v8 anchorMoveIdx:v7 spotLocationsAtRefDist:v4 anchorsMoved:&v6];
 }
 
-- (void)clipSpotsLocation:(id *)a3 refSpotsLoc:(id *)a4 clippedSpotLocations:(id *)a5 numOfClippedSpots:(unint64_t *)a6
+- (void)clipSpotsLocation:(id *)location refSpotsLoc:(id *)loc clippedSpotLocations:(id *)locations numOfClippedSpots:(unint64_t *)spots
 {
   v6 = 0;
   v61 = *MEMORY[0x277D85DE8];
   allowedDistFromCalib = self->_allowedDistFromCalib;
-  *a6 = 0;
-  a5->var1 = a3->var1;
-  a5->var2 = a3->var2;
-  v8 = *a3->var3;
-  a5->var3[2] = a3->var3[2];
-  *a5->var3 = v8;
-  v9 = *a6;
+  *spots = 0;
+  locations->var1 = location->var1;
+  locations->var2 = location->var2;
+  v8 = *location->var3;
+  locations->var3[2] = location->var3[2];
+  *locations->var3 = v8;
+  v9 = *spots;
   do
   {
-    v10 = a4->var0[0].var0[v6];
-    v11 = vsub_f32(a3->var0[0].var0[v6], v10);
+    v10 = loc->var0[0].var0[v6];
+    v11 = vsub_f32(location->var0[0].var0[v6], v10);
     v12 = sqrtf(vaddv_f32(vmul_f32(v11, v11)));
     v13 = 1.0;
     if (v12 == 0.0)
@@ -1245,7 +1245,7 @@
       }
 
 LABEL_10:
-      *a6 = ++v9;
+      *spots = ++v9;
       goto LABEL_2;
     }
 
@@ -1266,14 +1266,14 @@ LABEL_10:
     }
 
 LABEL_2:
-    a5->var0[0].var0[v6++] = vmla_n_f32(v10, v11, v13);
+    locations->var0[0].var0[v6++] = vmla_n_f32(v10, v11, v13);
   }
 
   while (v6 != 14);
   for (i = 0; i != 14; ++i)
   {
-    v16 = a4->var0[1].var0[i];
-    v17 = vsub_f32(a3->var0[1].var0[i], v16);
+    v16 = loc->var0[1].var0[i];
+    v17 = vsub_f32(location->var0[1].var0[i], v16);
     v18 = sqrtf(vaddv_f32(vmul_f32(v17, v17)));
     v19 = 1.0;
     if (v18 == 0.0)
@@ -1284,7 +1284,7 @@ LABEL_2:
       }
 
 LABEL_20:
-      *a6 = ++v9;
+      *spots = ++v9;
       goto LABEL_12;
     }
 
@@ -1305,13 +1305,13 @@ LABEL_20:
     }
 
 LABEL_12:
-    a5->var0[1].var0[i] = vmla_n_f32(v16, v17, v19);
+    locations->var0[1].var0[i] = vmla_n_f32(v16, v17, v19);
   }
 
   for (j = 0; j != 14; ++j)
   {
-    v22 = a4->var0[2].var0[j];
-    v23 = vsub_f32(a3->var0[2].var0[j], v22);
+    v22 = loc->var0[2].var0[j];
+    v23 = vsub_f32(location->var0[2].var0[j], v22);
     v24 = sqrtf(vaddv_f32(vmul_f32(v23, v23)));
     v25 = 1.0;
     if (v24 == 0.0)
@@ -1322,7 +1322,7 @@ LABEL_12:
       }
 
 LABEL_30:
-      *a6 = ++v9;
+      *spots = ++v9;
       goto LABEL_22;
     }
 
@@ -1343,13 +1343,13 @@ LABEL_30:
     }
 
 LABEL_22:
-    a5->var0[2].var0[j] = vmla_n_f32(v22, v23, v25);
+    locations->var0[2].var0[j] = vmla_n_f32(v22, v23, v25);
   }
 
   for (k = 0; k != 14; ++k)
   {
-    v28 = a4->var0[3].var0[k];
-    v29 = vsub_f32(a3->var0[3].var0[k], v28);
+    v28 = loc->var0[3].var0[k];
+    v29 = vsub_f32(location->var0[3].var0[k], v28);
     v30 = sqrtf(vaddv_f32(vmul_f32(v29, v29)));
     v31 = 1.0;
     if (v30 == 0.0)
@@ -1360,7 +1360,7 @@ LABEL_22:
       }
 
 LABEL_40:
-      *a6 = ++v9;
+      *spots = ++v9;
       goto LABEL_32;
     }
 
@@ -1381,13 +1381,13 @@ LABEL_40:
     }
 
 LABEL_32:
-    a5->var0[3].var0[k] = vmla_n_f32(v28, v29, v31);
+    locations->var0[3].var0[k] = vmla_n_f32(v28, v29, v31);
   }
 
   for (m = 0; m != 14; ++m)
   {
-    v34 = a4->var0[4].var0[m];
-    v35 = vsub_f32(a3->var0[4].var0[m], v34);
+    v34 = loc->var0[4].var0[m];
+    v35 = vsub_f32(location->var0[4].var0[m], v34);
     v36 = sqrtf(vaddv_f32(vmul_f32(v35, v35)));
     v37 = 1.0;
     if (v36 == 0.0)
@@ -1398,7 +1398,7 @@ LABEL_32:
       }
 
 LABEL_50:
-      *a6 = ++v9;
+      *spots = ++v9;
       goto LABEL_42;
     }
 
@@ -1419,13 +1419,13 @@ LABEL_50:
     }
 
 LABEL_42:
-    a5->var0[4].var0[m] = vmla_n_f32(v34, v35, v37);
+    locations->var0[4].var0[m] = vmla_n_f32(v34, v35, v37);
   }
 
   for (n = 0; n != 14; ++n)
   {
-    v40 = a4->var0[5].var0[n];
-    v41 = vsub_f32(a3->var0[5].var0[n], v40);
+    v40 = loc->var0[5].var0[n];
+    v41 = vsub_f32(location->var0[5].var0[n], v40);
     v42 = sqrtf(vaddv_f32(vmul_f32(v41, v41)));
     v43 = 1.0;
     if (v42 == 0.0)
@@ -1436,7 +1436,7 @@ LABEL_42:
       }
 
 LABEL_60:
-      *a6 = ++v9;
+      *spots = ++v9;
       goto LABEL_52;
     }
 
@@ -1457,13 +1457,13 @@ LABEL_60:
     }
 
 LABEL_52:
-    a5->var0[5].var0[n] = vmla_n_f32(v40, v41, v43);
+    locations->var0[5].var0[n] = vmla_n_f32(v40, v41, v43);
   }
 
   for (ii = 0; ii != 14; ++ii)
   {
-    v46 = a4->var0[6].var0[ii];
-    v47 = vsub_f32(a3->var0[6].var0[ii], v46);
+    v46 = loc->var0[6].var0[ii];
+    v47 = vsub_f32(location->var0[6].var0[ii], v46);
     v48 = sqrtf(vaddv_f32(vmul_f32(v47, v47)));
     v49 = 1.0;
     if (v48 == 0.0)
@@ -1474,7 +1474,7 @@ LABEL_52:
       }
 
 LABEL_70:
-      *a6 = ++v9;
+      *spots = ++v9;
       goto LABEL_62;
     }
 
@@ -1495,13 +1495,13 @@ LABEL_70:
     }
 
 LABEL_62:
-    a5->var0[6].var0[ii] = vmla_n_f32(v46, v47, v49);
+    locations->var0[6].var0[ii] = vmla_n_f32(v46, v47, v49);
   }
 
   for (jj = 0; jj != 14; ++jj)
   {
-    v52 = a4->var0[7].var0[jj];
-    v53 = vsub_f32(a3->var0[7].var0[jj], v52);
+    v52 = loc->var0[7].var0[jj];
+    v53 = vsub_f32(location->var0[7].var0[jj], v52);
     v54 = sqrtf(vaddv_f32(vmul_f32(v53, v53)));
     v55 = 1.0;
     if (v54 == 0.0)
@@ -1512,7 +1512,7 @@ LABEL_62:
       }
 
 LABEL_80:
-      *a6 = ++v9;
+      *spots = ++v9;
       goto LABEL_72;
     }
 
@@ -1533,7 +1533,7 @@ LABEL_80:
     }
 
 LABEL_72:
-    a5->var0[7].var0[jj] = vmla_n_f32(v52, v53, v55);
+    locations->var0[7].var0[jj] = vmla_n_f32(v52, v53, v55);
   }
 
   if (v9)
@@ -1549,12 +1549,12 @@ LABEL_72:
   }
 }
 
-- (int)calculateGtErrP95:(id *)a3 spotLocations:(id *)a4 result:(float *)a5
+- (int)calculateGtErrP95:(id *)p95 spotLocations:(id *)locations result:(float *)result
 {
   v5 = 0;
   v30 = *MEMORY[0x277D85DE8];
-  v6 = &a4->var0[0].var0[7];
-  v7 = &a3->var0[0].var0[7];
+  v6 = &locations->var0[0].var0[7];
+  v7 = &p95->var0[0].var0[7];
   do
   {
     v8.i32[0] = *(v6 - 14);
@@ -1638,10 +1638,10 @@ LABEL_72:
   common::utils::prctile<float>();
 }
 
-- (int)calculateItpQual:(const PDAnchors *)a3 spotLocations:(id *)a4 result:(float *)a5
+- (int)calculateItpQual:(const PDAnchors *)qual spotLocations:(id *)locations result:(float *)result
 {
   v41 = *MEMORY[0x277D85DE8];
-  [(GmoEngine *)self calculateSnrLoss:a3 gtSpotLocations:a4 radialTargetFlag:1 gtSnr:v12 snrLoss:v11];
+  [(GmoEngine *)self calculateSnrLoss:qual gtSpotLocations:locations radialTargetFlag:1 gtSnr:v12 snrLoss:v11];
   __asm { FMOV            V0.4S, #1.0 }
 
   v13 = vsubq_f32(_Q0, v11[0]);
@@ -1675,19 +1675,19 @@ LABEL_72:
   common::utils::prctile<float>();
 }
 
-- (void)calculateGaussianIntegralForFrame:(id *)a3 anchors:(const PDAnchors *)a4 spotSize:(float)a5 integral:(void *)a6
+- (void)calculateGaussianIntegralForFrame:(id *)frame anchors:(const PDAnchors *)anchors spotSize:(float)size integral:(void *)integral
 {
   v8 = 0;
-  p_y = &a4->banks[0].anchors[0].y;
-  p_var1 = &a3->var0[0].var0[0].var1;
-  v10 = 0.70711 / a5;
+  p_y = &anchors->banks[0].anchors[0].y;
+  p_var1 = &frame->var0[0].var0[0].var1;
+  v10 = 0.70711 / size;
   do
   {
     v11 = 0;
     v12 = v8;
     v13 = p_var1;
     v14 = p_y;
-    v15 = a6;
+    integralCopy = integral;
     do
     {
       v16 = 0;
@@ -1695,9 +1695,9 @@ LABEL_72:
       v18 = v14;
       do
       {
-        LOBYTE(a5) = *(v18 - 1);
+        LOBYTE(size) = *(v18 - 1);
         v6.i32[0] = *(v17 - 1);
-        v19 = (vmovl_s16(*&vmovl_s8(*&a5)).i32[0] - *v6.i32) + v12;
+        v19 = (vmovl_s16(*&vmovl_s8(*&size)).i32[0] - *v6.i32) + v12;
         v20 = v19 + -1.0;
         v6.i8[0] = *v18;
         v21 = vmovl_s16(*&vmovl_s8(v6)).i32[0] - *v17;
@@ -1707,8 +1707,8 @@ LABEL_72:
         v25 = erff(v10 * v21);
         v26 = (v25 - erff(v10 * v22)) * 0.5;
         *&v26 = v26;
-        a5 = *&v26 * v24;
-        *&v15[v16] = a5;
+        size = *&v26 * v24;
+        *&integralCopy[v16] = size;
         v16 += 48;
         v18 += 3;
         v17 += 2;
@@ -1716,7 +1716,7 @@ LABEL_72:
 
       while (v16 != 672);
       ++v11;
-      v15 += 672;
+      integralCopy += 672;
       v14 += 42;
       v13 += 28;
     }
@@ -1725,7 +1725,7 @@ LABEL_72:
     v27 = 0;
     v28 = p_var1;
     v29 = p_y;
-    v30 = a6;
+    integralCopy2 = integral;
     v31 = 1.0;
     do
     {
@@ -1733,9 +1733,9 @@ LABEL_72:
       v33 = v29;
       for (i = 12; i != 684; i += 48)
       {
-        LOBYTE(a5) = *(v33 - 1);
+        LOBYTE(size) = *(v33 - 1);
         v6.i32[0] = *(v32 - 1);
-        v35 = (vmovl_s16(*&vmovl_s8(*&a5)).i32[0] - *v6.i32) + v12;
+        v35 = (vmovl_s16(*&vmovl_s8(*&size)).i32[0] - *v6.i32) + v12;
         v36 = v35 + -1.0;
         v6.i8[0] = *v33;
         v37 = vmovl_s16(*&vmovl_s8(v6)).i32[0] - *v32;
@@ -1747,14 +1747,14 @@ LABEL_72:
         v31 = 1.0;
         v42 = (v40 - v41) * 0.5;
         *&v42 = v42;
-        a5 = *&v42 * *&v39;
-        *&v30[i] = a5;
+        size = *&v42 * *&v39;
+        *&integralCopy2[i] = size;
         v33 += 3;
         v32 += 2;
       }
 
       ++v27;
-      v30 += 672;
+      integralCopy2 += 672;
       v29 += 42;
       v28 += 28;
     }
@@ -1763,16 +1763,16 @@ LABEL_72:
     v43 = 0;
     v44 = p_var1;
     v45 = p_y;
-    v46 = a6;
+    integralCopy3 = integral;
     do
     {
       v47 = v44;
       v48 = v45;
       for (j = 24; j != 696; j += 48)
       {
-        LOBYTE(a5) = *(v48 - 1);
+        LOBYTE(size) = *(v48 - 1);
         v6.i32[0] = *(v47 - 1);
-        v50 = (vmovl_s16(*&vmovl_s8(*&a5)).i32[0] - *v6.i32) + v12;
+        v50 = (vmovl_s16(*&vmovl_s8(*&size)).i32[0] - *v6.i32) + v12;
         v51 = v50 + -1.0;
         v6.i8[0] = *v48;
         v52 = vmovl_s16(*&vmovl_s8(v6)).i32[0] - *v47;
@@ -1785,14 +1785,14 @@ LABEL_72:
         v31 = 1.0;
         v59 = (v57 - v58) * 0.5;
         *&v59 = v59;
-        a5 = *&v59 * v56;
-        *&v46[j] = a5;
+        size = *&v59 * v56;
+        *&integralCopy3[j] = size;
         v48 += 3;
         v47 += 2;
       }
 
       ++v43;
-      v46 += 672;
+      integralCopy3 += 672;
       v45 += 42;
       v44 += 28;
     }
@@ -1801,7 +1801,7 @@ LABEL_72:
     v60 = 0;
     v61 = p_var1;
     v62 = p_y;
-    v63 = a6;
+    integralCopy4 = integral;
     v64 = 2.0;
     v65 = 3.0;
     do
@@ -1810,9 +1810,9 @@ LABEL_72:
       v67 = v62;
       for (k = 36; k != 708; k += 48)
       {
-        LOBYTE(a5) = *(v67 - 1);
+        LOBYTE(size) = *(v67 - 1);
         v6.i32[0] = *(v66 - 1);
-        v69 = (vmovl_s16(*&vmovl_s8(*&a5)).i32[0] - *v6.i32) + v12;
+        v69 = (vmovl_s16(*&vmovl_s8(*&size)).i32[0] - *v6.i32) + v12;
         v70 = v69 + -1.0;
         v6.i8[0] = *v67;
         v71 = vmovl_s16(*&vmovl_s8(v6)).i32[0] - *v66;
@@ -1826,41 +1826,41 @@ LABEL_72:
         v64 = 2.0;
         v78 = (v76 - v77) * 0.5;
         *&v78 = v78;
-        a5 = *&v78 * v75;
-        *&v63[k] = a5;
+        size = *&v78 * v75;
+        *&integralCopy4[k] = size;
         v67 += 3;
         v66 += 2;
       }
 
       ++v60;
-      v63 += 672;
+      integralCopy4 += 672;
       v62 += 42;
       v61 += 28;
     }
 
     while (v60 != 8);
     ++v8;
-    a6 = a6 + 4;
+    integral = integral + 4;
   }
 
   while (v8 != 3);
 }
 
-- (int)findSpotLocation:(const SpecsResults *)a3 withAnchors:(const SpConfig *)a4 spotLocationEstimation:(void *)a5 outBound:(void *)a6
+- (int)findSpotLocation:(const SpecsResults *)location withAnchors:(const SpConfig *)anchors spotLocationEstimation:(void *)estimation outBound:(void *)bound
 {
   v11 = 0;
   v12 = 1;
   v13 = vdupq_n_s64(0x7FF8000000000000uLL);
   v50 = v13;
-  v14 = a3;
+  locationCopy = location;
   do
   {
-    v15 = v14[56];
-    v16 = v15 + v14[14];
-    v17 = v14[42];
-    v18 = fmaxf((v16 + (v17 + *v14)) + 0.000005, 0.0);
-    v19 = v14[70];
-    v20 = ((v19 + v14[28]) + v16) + 0.000004;
+    v15 = locationCopy[56];
+    v16 = v15 + locationCopy[14];
+    v17 = locationCopy[42];
+    v18 = fmaxf((v16 + (v17 + *locationCopy)) + 0.000005, 0.0);
+    v19 = locationCopy[70];
+    v20 = ((v19 + locationCopy[28]) + v16) + 0.000004;
     if (v20 <= v18)
     {
       v21 = v18;
@@ -1871,9 +1871,9 @@ LABEL_72:
       v21 = v20;
     }
 
-    v22 = v14[98];
+    v22 = locationCopy[98];
     v23 = v22 + v15;
-    v24 = v14[84];
+    v24 = locationCopy[84];
     v25 = (v23 + (v24 + v17)) + 0.000003;
     if (v25 <= v21)
     {
@@ -1885,7 +1885,7 @@ LABEL_72:
       v26 = v25;
     }
 
-    v27 = v14[112];
+    v27 = locationCopy[112];
     v28 = ((v27 + v19) + v23) + 0.000002;
     v29 = v28 > v26;
     if (v28 <= v26)
@@ -1896,17 +1896,17 @@ LABEL_72:
     v30 = v25 > v21 || v29;
     v32 = v20 > v18 && v25 <= v21;
     v33 = v29 || v32;
-    v34 = v14[140] + v22;
-    v35 = (v34 + (v14[126] + v24)) + 0.000001;
+    v34 = locationCopy[140] + v22;
+    v35 = (v34 + (locationCopy[126] + v24)) + 0.000001;
     v36 = v35 <= v28;
     if (v35 > v28)
     {
-      v28 = (v34 + (v14[126] + v24)) + 0.000001;
+      v28 = (v34 + (locationCopy[126] + v24)) + 0.000001;
       v30 = 2;
     }
 
     v37 = v36 & v33;
-    v38 = (v14[154] + v27) + v34;
+    v38 = (locationCopy[154] + v27) + v34;
     if (v38 <= v28)
     {
       v39 = v28;
@@ -1937,7 +1937,7 @@ LABEL_72:
       v41 = v37;
     }
 
-    v42 = &a3->var0[v40][v41][v11];
+    v42 = &location->var0[v40][v41][v11];
     v43 = *v42;
     *v13.i32 = v42[42] + *v42;
     v44 = 2;
@@ -1946,35 +1946,35 @@ LABEL_72:
       v44 = 1;
     }
 
-    v45 = a3->var0[v40][v44][v11];
+    v45 = location->var0[v40][v44][v11];
     *v13.i32 = *v13.i32 / v39;
     v51 = 0;
-    if ([(GmoEngine *)self findSpotLocation1D:&v51 + 4 spotLocation:a6 outBound:*v13.i64, *&v50])
+    if ([(GmoEngine *)self findSpotLocation1D:&v51 + 4 spotLocation:bound outBound:*v13.i64, *&v50])
     {
       return v12;
     }
 
     *&v46 = (v45 + v43) / v39;
-    v47.i8[0] = a4->var0[v11];
-    *a5 = (v41 + ((*(&v51 + 1) + -1.0) + vmovl_s16(*&vmovl_s8(v47)).i32[0]));
-    if ([(GmoEngine *)self findSpotLocation1D:&v51 spotLocation:a6 + 1 outBound:v46])
+    v47.i8[0] = anchors->var0[v11];
+    *estimation = (v41 + ((*(&v51 + 1) + -1.0) + vmovl_s16(*&vmovl_s8(v47)).i32[0]));
+    if ([(GmoEngine *)self findSpotLocation1D:&v51 spotLocation:bound + 1 outBound:v46])
     {
       return v12;
     }
 
-    v48.i8[0] = a4->var1[v11];
+    v48.i8[0] = anchors->var1[v11];
     *v13.i64 = ((*&v51 + vmovl_s16(*&vmovl_s8(v48)).i32[0]) + (v40 - 1));
-    *(a5 + 1) = v13.i64[0];
-    if (v14[168] < self->_minSpecQsSnr)
+    *(estimation + 1) = v13.i64[0];
+    if (locationCopy[168] < self->_minSpecQsSnr)
     {
       v13.i32[1] = v50.i32[1];
-      *a5 = v50;
+      *estimation = v50;
     }
 
     v12 = v11 < 0xD;
-    ++v14;
-    a5 = a5 + 16;
-    a6 = a6 + 2;
+    ++locationCopy;
+    estimation = estimation + 16;
+    bound = bound + 2;
     ++v11;
   }
 
@@ -1982,21 +1982,21 @@ LABEL_72:
   return 0;
 }
 
-- (int)findSpotLocation1D:(float)a3 spotLocation:(float *)a4 outBound:(BOOL *)a5
+- (int)findSpotLocation1D:(float)d spotLocation:(float *)location outBound:(BOOL *)bound
 {
-  *a5 = 0;
+  *bound = 0;
   ptr = self->_refRelQs.__ptr_;
-  if (*ptr < a3)
+  if (*ptr < d)
   {
     v6 = *self->_refX.__ptr_;
 LABEL_5:
-    *a4 = v6;
-    *a5 = 1;
+    *location = v6;
+    *bound = 1;
     return 0;
   }
 
   v7 = self->_refXSize - 1;
-  if (ptr[v7] > a3)
+  if (ptr[v7] > d)
   {
     v6 = self->_refX.__ptr_[v7];
     goto LABEL_5;
@@ -2015,14 +2015,14 @@ LABEL_5:
     ++v9;
   }
 
-  while (v11 >= a3);
-  *a4 = (((self->_refX.__ptr_[v10] - self->_refX.__ptr_[v10 - 1]) * (a3 - ptr[v10 - 1])) / (v11 - ptr[v10 - 1])) + self->_refX.__ptr_[v10 - 1];
+  while (v11 >= d);
+  *location = (((self->_refX.__ptr_[v10] - self->_refX.__ptr_[v10 - 1]) * (d - ptr[v10 - 1])) / (v11 - ptr[v10 - 1])) + self->_refX.__ptr_[v10 - 1];
   return 0;
 }
 
-- (int)calculateSpecQs:(const GmoProcessBankInputs *)a3 pulsesPerphase:(unint64_t)a4 specsOut:(SpecsResults *)a5
+- (int)calculateSpecQs:(const GmoProcessBankInputs *)qs pulsesPerphase:(unint64_t)perphase specsOut:(SpecsResults *)out
 {
-  v5 = (MEMORY[0x28223BE20])(self, a2, a3);
+  v5 = (MEMORY[0x28223BE20])(self, a2, qs);
   __b = v8;
   v98 = v5;
   v116[1018] = *MEMORY[0x277D85DE8];
@@ -2450,9 +2450,9 @@ LABEL_14:
   return v112;
 }
 
-- (int)configureEngineWithSpecConfig:(const PRIConfigSpec *)a3
+- (int)configureEngineWithSpecConfig:(const PRIConfigSpec *)config
 {
-  v3 = (MEMORY[0x28223BE20])(self, a2, a3);
+  v3 = (MEMORY[0x28223BE20])(self, a2, config);
   v5 = v4;
   v6 = v3;
   v16 = *MEMORY[0x277D85DE8];
@@ -2479,7 +2479,7 @@ LABEL_14:
   operator new();
 }
 
-- (GmoEngine)initWithPulseShape:(const float *)a3 pulseShapeSize:(unint64_t)a4 spotSizeSigma:(float)a5 unitInfo:(const PeridotUnitInfo *)a6
+- (GmoEngine)initWithPulseShape:(const float *)shape pulseShapeSize:(unint64_t)size spotSizeSigma:(float)sigma unitInfo:(const PeridotUnitInfo *)info
 {
   v17 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
@@ -2515,13 +2515,13 @@ LABEL_14:
   return 0;
 }
 
-- (void)specSwitch:(unint64_t)a3 from:(const PRIConfigSpec *)a4 toBuffer:(unsigned __int8)a5[16]
+- (void)specSwitch:(unint64_t)switch from:(const PRIConfigSpec *)from toBuffer:(unsigned __int8)buffer[16]
 {
-  if (a3 > 1)
+  if (switch > 1)
   {
-    if (a3 == 2)
+    if (switch == 2)
     {
-      p_spect1hp = &a4->data[0].spect1hp;
+      p_spect1hp = &from->data[0].spect1hp;
       v6 = 124;
       v7 = 116;
       v8 = 108;
@@ -2540,9 +2540,9 @@ LABEL_14:
       goto LABEL_11;
     }
 
-    if (a3 == 3)
+    if (switch == 3)
     {
-      p_spect1hp = &a4->data[0].spect1pepx;
+      p_spect1hp = &from->data[0].spect1pepx;
       v6 = 126;
       v7 = 118;
       v8 = 110;
@@ -2564,7 +2564,7 @@ LABEL_14:
 
   else
   {
-    if (!a3)
+    if (!switch)
     {
       v6 = 120;
       v7 = 112;
@@ -2581,13 +2581,13 @@ LABEL_14:
       v18 = 24;
       v19 = 16;
       v20 = 8;
-      p_spect1hp = a4;
+      p_spect1hp = from;
       goto LABEL_11;
     }
 
-    if (a3 == 1)
+    if (switch == 1)
     {
-      p_spect1hp = &a4->data[0].spect1hs2;
+      p_spect1hp = &from->data[0].spect1hs2;
       v6 = 122;
       v7 = 114;
       v8 = 106;
@@ -2604,22 +2604,22 @@ LABEL_14:
       v19 = 18;
       v20 = 10;
 LABEL_11:
-      *a5 = p_spect1hp->data[0].spect1hs1;
-      a5[1] = *(&a4->data[0].spect1hs1 + v20);
-      a5[2] = *(&a4->data[0].spect1hs1 + v19);
-      a5[3] = *(&a4->data[0].spect1hs1 + v18);
-      a5[4] = *(&a4->data[0].spect1hs1 + v17);
-      a5[5] = *(&a4->data[0].spect1hs1 + v16);
-      a5[6] = *(&a4->data[0].spect1hs1 + v15);
-      a5[7] = *(&a4->data[0].spect1hs1 + v14);
-      a5[8] = *(&a4->data[0].spect1hs1 + v13);
-      a5[9] = *(&a4->data[0].spect1hs1 + v12);
-      a5[10] = *(&a4->data[0].spect1hs1 + v11);
-      a5[11] = *(&a4->data[0].spect1hs1 + v10);
-      a5[12] = *(&a4->data[0].spect1hs1 + v9);
-      a5[13] = *(&a4->data[0].spect1hs1 + v8);
-      a5[14] = *(&a4->data[0].spect1hs1 + v7);
-      a5[15] = *(&a4->data[0].spect1hs1 + v6);
+      *buffer = p_spect1hp->data[0].spect1hs1;
+      buffer[1] = *(&from->data[0].spect1hs1 + v20);
+      buffer[2] = *(&from->data[0].spect1hs1 + v19);
+      buffer[3] = *(&from->data[0].spect1hs1 + v18);
+      buffer[4] = *(&from->data[0].spect1hs1 + v17);
+      buffer[5] = *(&from->data[0].spect1hs1 + v16);
+      buffer[6] = *(&from->data[0].spect1hs1 + v15);
+      buffer[7] = *(&from->data[0].spect1hs1 + v14);
+      buffer[8] = *(&from->data[0].spect1hs1 + v13);
+      buffer[9] = *(&from->data[0].spect1hs1 + v12);
+      buffer[10] = *(&from->data[0].spect1hs1 + v11);
+      buffer[11] = *(&from->data[0].spect1hs1 + v10);
+      buffer[12] = *(&from->data[0].spect1hs1 + v9);
+      buffer[13] = *(&from->data[0].spect1hs1 + v8);
+      buffer[14] = *(&from->data[0].spect1hs1 + v7);
+      buffer[15] = *(&from->data[0].spect1hs1 + v6);
     }
   }
 }

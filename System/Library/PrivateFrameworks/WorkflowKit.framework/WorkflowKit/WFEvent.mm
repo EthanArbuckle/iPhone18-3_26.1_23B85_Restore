@@ -48,8 +48,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(WFEvent *)self propertyNames];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  propertyNames = [(WFEvent *)self propertyNames];
+  v5 = [propertyNames countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -60,13 +60,13 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(propertyNames);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = [(WFEvent *)self valueForKey:v9];
-        v11 = [objc_opt_class() serializablePropertyTransformers];
-        v12 = [v11 objectForKey:v9];
+        serializablePropertyTransformers = [objc_opt_class() serializablePropertyTransformers];
+        v12 = [serializablePropertyTransformers objectForKey:v9];
 
         if (v12)
         {
@@ -83,7 +83,7 @@
         [v3 setValue:v10 forKey:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [propertyNames countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -96,16 +96,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = [(WFEvent *)self serializableEvent];
-  v3 = [v2 dictionaryRepresentation];
+  serializableEvent = [(WFEvent *)self serializableEvent];
+  dictionaryRepresentation = [serializableEvent dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (id)coreAnalyticsKey
 {
-  v2 = [(WFEvent *)self dictionaryRepresentation];
-  v3 = [v2 objectForKey:@"key"];
+  dictionaryRepresentation = [(WFEvent *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation objectForKey:@"key"];
 
   if (v3)
   {
@@ -129,16 +129,16 @@
 
 - (id)debugDescription
 {
-  v2 = [(WFEvent *)self serializableEvent];
-  v3 = [v2 debugDescription];
+  serializableEvent = [(WFEvent *)self serializableEvent];
+  v3 = [serializableEvent debugDescription];
 
   return v3;
 }
 
 - (id)description
 {
-  v2 = [(WFEvent *)self serializableEvent];
-  v3 = [v2 description];
+  serializableEvent = [(WFEvent *)self serializableEvent];
+  v3 = [serializableEvent description];
 
   return v3;
 }

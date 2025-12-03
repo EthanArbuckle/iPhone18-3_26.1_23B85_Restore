@@ -2,7 +2,7 @@
 + (id)sharedManager;
 - (VCPMADProcessingJobManager)init;
 - (id)getJobScheduler;
-- (void)registerQueueGroupWithName:(id)a3 andNumberOfQueues:(unint64_t)a4;
+- (void)registerQueueGroupWithName:(id)name andNumberOfQueues:(unint64_t)queues;
 @end
 
 @implementation VCPMADProcessingJobManager
@@ -38,34 +38,34 @@
   return v3;
 }
 
-- (void)registerQueueGroupWithName:(id)a3 andNumberOfQueues:(unint64_t)a4
+- (void)registerQueueGroupWithName:(id)name andNumberOfQueues:(unint64_t)queues
 {
-  v6 = a3;
-  if (a4 - 5 > 0xFFFFFFFFFFFFFFFBLL)
+  nameCopy = name;
+  if (queues - 5 > 0xFFFFFFFFFFFFFFFBLL)
   {
-    v8 = a4;
+    queuesCopy = queues;
   }
 
   else
   {
-    if (a4 <= 1)
+    if (queues <= 1)
     {
-      v7 = 1;
+      queuesCopy2 = 1;
     }
 
     else
     {
-      v7 = a4;
+      queuesCopy2 = queues;
     }
 
-    if (v7 >= 4)
+    if (queuesCopy2 >= 4)
     {
-      v8 = 4;
+      queuesCopy = 4;
     }
 
     else
     {
-      v8 = v7;
+      queuesCopy = queuesCopy2;
     }
 
     if (MediaAnalysisLogLevel() >= 4)
@@ -74,35 +74,35 @@
       if (os_log_type_enabled(&_os_log_default, v9))
       {
         *buf = 134218498;
-        v25 = a4;
+        queuesCopy3 = queues;
         v26 = 2112;
-        v27 = v6;
+        v27 = nameCopy;
         v28 = 2048;
-        v29 = v8;
+        v29 = queuesCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "Invalid number of queues %lu for QueueGroup %@, clipping to %lu", buf, 0x20u);
       }
     }
   }
 
-  v10 = [(NSMutableDictionary *)self->_queueNameToQueueGroup objectForKeyedSubscript:v6];
+  v10 = [(NSMutableDictionary *)self->_queueNameToQueueGroup objectForKeyedSubscript:nameCopy];
 
   if (v10)
   {
-    v11 = [(NSMutableDictionary *)self->_queueNameToQueueGroup objectForKeyedSubscript:v6];
-    v12 = [v11 queues];
-    v13 = [v12 count];
+    v11 = [(NSMutableDictionary *)self->_queueNameToQueueGroup objectForKeyedSubscript:nameCopy];
+    queues = [v11 queues];
+    v13 = [queues count];
 
-    if (v8 != v13 && MediaAnalysisLogLevel() >= 4)
+    if (queuesCopy != v13 && MediaAnalysisLogLevel() >= 4)
     {
       v14 = VCPLogToOSLogType[4];
       if (os_log_type_enabled(&_os_log_default, v14))
       {
         *buf = 138412802;
-        v25 = v6;
+        queuesCopy3 = nameCopy;
         v26 = 2048;
         v27 = v13;
         v28 = 2048;
-        v29 = v8;
+        v29 = queuesCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "QueueGroup %@ has been registered with %lu queues, not allowed to change to %lu queues as requested", buf, 0x20u);
       }
     }
@@ -116,9 +116,9 @@
       if (os_log_type_enabled(&_os_log_default, v15))
       {
         *buf = 138412546;
-        v25 = v6;
+        queuesCopy3 = nameCopy;
         v26 = 2048;
-        v27 = v8;
+        v27 = queuesCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v15, "Registering QueueGroup %@ with %lu queues", buf, 0x16u);
       }
     }
@@ -129,7 +129,7 @@
     do
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = [NSString stringWithFormat:@"com.apple.mediaanalysis.%@_%lu", v6, v17];
+      v19 = [NSString stringWithFormat:@"com.apple.mediaanalysis.%@_%lu", nameCopy, v17];
       v20 = dispatch_queue_create([v19 UTF8String], 0);
       v21 = qos_class_self();
       v22 = dispatch_get_global_queue(v21, 0);
@@ -140,9 +140,9 @@
       ++v17;
     }
 
-    while (v8 != v17);
+    while (queuesCopy != v17);
     [(QueueGroup *)v23 setQueues:v16];
-    [(NSMutableDictionary *)self->_queueNameToQueueGroup setObject:v23 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_queueNameToQueueGroup setObject:v23 forKeyedSubscript:nameCopy];
   }
 }
 

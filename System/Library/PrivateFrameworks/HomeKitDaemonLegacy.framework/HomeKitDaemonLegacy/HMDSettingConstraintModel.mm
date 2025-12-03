@@ -1,72 +1,72 @@
 @interface HMDSettingConstraintModel
 + (id)hmbProperties;
 - (NSString)nameForKeyPath;
-- (id)copyWithNewParentModelID:(id)a3;
+- (id)copyWithNewParentModelID:(id)d;
 @end
 
 @implementation HMDSettingConstraintModel
 
-- (id)copyWithNewParentModelID:(id)a3
+- (id)copyWithNewParentModelID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [HMDSettingConstraintModel alloc];
-  v6 = [(HMBModel *)self hmbModelID];
-  v7 = [(HMBModel *)v5 initWithModelID:v6 parentModelID:v4];
+  hmbModelID = [(HMBModel *)self hmbModelID];
+  v7 = [(HMBModel *)v5 initWithModelID:hmbModelID parentModelID:dCopy];
 
-  v8 = [(HMDSettingConstraintModel *)self type];
-  [(HMDSettingConstraintModel *)v7 setType:v8];
+  type = [(HMDSettingConstraintModel *)self type];
+  [(HMDSettingConstraintModel *)v7 setType:type];
 
-  v9 = [(HMDSettingConstraintModel *)self numberValue];
-  [(HMDSettingConstraintModel *)v7 setNumberValue:v9];
+  numberValue = [(HMDSettingConstraintModel *)self numberValue];
+  [(HMDSettingConstraintModel *)v7 setNumberValue:numberValue];
 
-  v10 = [(HMDSettingConstraintModel *)self stringValue];
-  [(HMDSettingConstraintModel *)v7 setStringValue:v10];
+  stringValue = [(HMDSettingConstraintModel *)self stringValue];
+  [(HMDSettingConstraintModel *)v7 setStringValue:stringValue];
 
-  v11 = [(HMDSettingConstraintModel *)self dataValue];
-  [(HMDSettingConstraintModel *)v7 setDataValue:v11];
+  dataValue = [(HMDSettingConstraintModel *)self dataValue];
+  [(HMDSettingConstraintModel *)v7 setDataValue:dataValue];
 
   return v7;
 }
 
 - (NSString)nameForKeyPath
 {
-  v3 = self;
-  v4 = [(HMDSettingConstraintModel *)self type];
-  [v4 integerValue];
+  selfCopy = self;
+  type = [(HMDSettingConstraintModel *)self type];
+  [type integerValue];
   v5 = HMSettingConstraintTypeToString();
 
-  v6 = [(HMDSettingConstraintModel *)v3 type];
-  v7 = [v6 integerValue];
+  type2 = [(HMDSettingConstraintModel *)selfCopy type];
+  integerValue = [type2 integerValue];
 
-  if (v7 == 4)
+  if (integerValue == 4)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(HMDSettingConstraintModel *)v3 numberValue];
-    v10 = v9;
-    if (v9)
+    numberValue = [(HMDSettingConstraintModel *)selfCopy numberValue];
+    v10 = numberValue;
+    if (numberValue)
     {
       v11 = 0;
-      v12 = v9;
+      v12 = numberValue;
     }
 
     else
     {
-      v13 = [(HMDSettingConstraintModel *)v3 stringValue];
-      v2 = v13;
-      if (v13)
+      stringValue = [(HMDSettingConstraintModel *)selfCopy stringValue];
+      v2 = stringValue;
+      if (stringValue)
       {
         v11 = 0;
-        v12 = v13;
+        v12 = stringValue;
       }
 
       else
       {
-        v14 = [(HMDSettingConstraintModel *)v3 dataValue];
-        v3 = v14;
+        dataValue = [(HMDSettingConstraintModel *)selfCopy dataValue];
+        selfCopy = dataValue;
         v12 = @"unknown";
-        if (v14)
+        if (dataValue)
         {
-          v12 = v14;
+          v12 = dataValue;
         }
 
         v11 = 1;

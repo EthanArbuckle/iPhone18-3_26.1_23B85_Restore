@@ -1,27 +1,27 @@
 @interface ASCompetitionParticipantScoreView
-- (ASCompetitionParticipantScoreView)initWithConfiguration:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (double)_computeFontSizeReductionForLabel:(id)a3 width:(double)a4 maxReduction:(double)a5 updateBlock:(id)a6;
-- (double)computeNameFontSizeReductionForWidth:(double)a3;
-- (double)computePrimaryScoreFontSizeReductionForWidth:(double)a3;
-- (void)_updateNameLabelWithFontSizeReduction:(double)a3;
-- (void)_updatePrimaryScoreLabelWithFontSizeReduction:(double)a3;
+- (ASCompetitionParticipantScoreView)initWithConfiguration:(id)configuration;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (double)_computeFontSizeReductionForLabel:(id)label width:(double)width maxReduction:(double)reduction updateBlock:(id)block;
+- (double)computeNameFontSizeReductionForWidth:(double)width;
+- (double)computePrimaryScoreFontSizeReductionForWidth:(double)width;
+- (void)_updateNameLabelWithFontSizeReduction:(double)reduction;
+- (void)_updatePrimaryScoreLabelWithFontSizeReduction:(double)reduction;
 - (void)_updateSecondaryScoreLabel;
-- (void)layoutForWidth:(double)a3;
+- (void)layoutForWidth:(double)width;
 - (void)layoutSubviews;
-- (void)setName:(id)a3;
-- (void)setNameFontSizeReduction:(double)a3;
-- (void)setPrimaryScore:(unint64_t)a3;
-- (void)setPrimaryScoreFontSizeReduction:(double)a3;
-- (void)setScoreColor:(id)a3;
-- (void)setSecondaryScoreEnabled:(BOOL)a3;
+- (void)setName:(id)name;
+- (void)setNameFontSizeReduction:(double)reduction;
+- (void)setPrimaryScore:(unint64_t)score;
+- (void)setPrimaryScoreFontSizeReduction:(double)reduction;
+- (void)setScoreColor:(id)color;
+- (void)setSecondaryScoreEnabled:(BOOL)enabled;
 @end
 
 @implementation ASCompetitionParticipantScoreView
 
-- (ASCompetitionParticipantScoreView)initWithConfiguration:(id)a3
+- (ASCompetitionParticipantScoreView)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = ASCompetitionParticipantScoreView;
   v6 = *MEMORY[0x277CBF3A0];
@@ -32,22 +32,22 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_configuration, a3);
-    if ([v5 showsNames])
+    objc_storeStrong(&v10->_configuration, configuration);
+    if ([configurationCopy showsNames])
     {
       v12 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v6, v7, v8, v9}];
       nameLabel = v11->_nameLabel;
       v11->_nameLabel = v12;
 
-      v14 = [v5 nameFont];
-      [(UILabel *)v11->_nameLabel setFont:v14];
+      nameFont = [configurationCopy nameFont];
+      [(UILabel *)v11->_nameLabel setFont:nameFont];
 
-      v15 = [MEMORY[0x277D75348] whiteColor];
-      [(UILabel *)v11->_nameLabel setTextColor:v15];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(UILabel *)v11->_nameLabel setTextColor:whiteColor];
 
       [(UILabel *)v11->_nameLabel setLineBreakMode:4];
       [(UILabel *)v11->_nameLabel setAllowsDefaultTighteningForTruncation:1];
-      if ([v5 alignment] == 1)
+      if ([configurationCopy alignment] == 1)
       {
         v16 = 1;
       }
@@ -66,7 +66,7 @@
     v11->_primaryScoreLabel = v17;
 
     [(UILabel *)v11->_primaryScoreLabel setLineBreakMode:4];
-    if ([v5 alignment] == 1)
+    if ([configurationCopy alignment] == 1)
     {
       v19 = 1;
     }
@@ -83,10 +83,10 @@
   return v11;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(ASCompetitionParticipantScoreView *)self layoutForWidth:a3.width, a3.height];
+  width = fits.width;
+  [(ASCompetitionParticipantScoreView *)self layoutForWidth:fits.width, fits.height];
   secondaryScoreLabel = self->_secondaryScoreLabel;
   if (!secondaryScoreLabel)
   {
@@ -110,10 +110,10 @@
   [(ASCompetitionParticipantScoreView *)self layoutForWidth:v3];
 }
 
-- (void)layoutForWidth:(double)a3
+- (void)layoutForWidth:(double)width
 {
   previousLayoutWidth = self->_previousLayoutWidth;
-  if (!previousLayoutWidth || ([(NSNumber *)previousLayoutWidth floatValue], vabdd_f64(v6, a3) >= 0.00000011920929))
+  if (!previousLayoutWidth || ([(NSNumber *)previousLayoutWidth floatValue], vabdd_f64(v6, width) >= 0.00000011920929))
   {
     [(UILabel *)self->_nameLabel sizeToFit];
     [(UILabel *)self->_primaryScoreLabel sizeToFit];
@@ -124,14 +124,14 @@
       v8 = v7;
       if ([(ASCompetitionScoreViewConfiguration *)self->_configuration wantsScaledBaselineAlignment])
       {
-        v9 = [(UILabel *)self->_nameLabel font];
+        font = [(UILabel *)self->_nameLabel font];
         [(ASCompetitionScoreViewConfiguration *)self->_configuration nameBaselineOffset];
-        [v9 _scaledValueForValue:?];
+        [font _scaledValueForValue:?];
         v8 = v10;
       }
 
       [(UILabel *)self->_nameLabel bounds];
-      [(UILabel *)self->_nameLabel setFrame:0.0, 0.0, a3, CGRectGetHeight(v29)];
+      [(UILabel *)self->_nameLabel setFrame:0.0, 0.0, width, CGRectGetHeight(v29)];
       [(UILabel *)self->_nameLabel _setFirstLineBaselineFrameOriginY:v8];
     }
 
@@ -144,9 +144,9 @@
     v12 = v11;
     if ([(ASCompetitionScoreViewConfiguration *)self->_configuration wantsScaledBaselineAlignment])
     {
-      v13 = [(UILabel *)self->_primaryScoreLabel font];
+      font2 = [(UILabel *)self->_primaryScoreLabel font];
       [(ASCompetitionScoreViewConfiguration *)self->_configuration primaryScoreBaselineOffset];
-      [v13 _scaledValueForValue:?];
+      [font2 _scaledValueForValue:?];
       v12 = v14;
     }
 
@@ -156,15 +156,15 @@
     v17 = scoreLeftMargin;
     scoreRightMargin = self->_scoreRightMargin;
     v19 = fmaxf(v17, scoreRightMargin);
-    v20 = v19 + (a3 - Width) * -0.5 + v19 + (a3 - Width) * -0.5;
+    v20 = v19 + (width - Width) * -0.5 + v19 + (width - Width) * -0.5;
     if (v20 <= 0.0)
     {
-      v21 = a3;
+      widthCopy = width;
     }
 
     else
     {
-      v21 = a3 - v20;
+      widthCopy = width - v20;
     }
 
     if (scoreLeftMargin <= 0.0 || v20 <= 0.0)
@@ -179,7 +179,7 @@
 
     v24 = v8 + v12;
     [(UILabel *)self->_primaryScoreLabel bounds];
-    [(UILabel *)self->_primaryScoreLabel setFrame:v23, 0.0, v21, CGRectGetHeight(v31)];
+    [(UILabel *)self->_primaryScoreLabel setFrame:v23, 0.0, widthCopy, CGRectGetHeight(v31)];
     [(UILabel *)self->_primaryScoreLabel _setFirstLineBaselineFrameOriginY:v24];
     if (self->_secondaryScoreLabel)
     {
@@ -187,28 +187,28 @@
       v26 = v24 + v25;
       v27 = self->_scoreLeftMargin;
       [(UILabel *)self->_secondaryScoreLabel bounds];
-      [(UILabel *)self->_secondaryScoreLabel setFrame:v27, 0.0, v21, CGRectGetHeight(v32)];
+      [(UILabel *)self->_secondaryScoreLabel setFrame:v27, 0.0, widthCopy, CGRectGetHeight(v32)];
       [(UILabel *)self->_secondaryScoreLabel _setFirstLineBaselineFrameOriginY:v26];
     }
 
-    self->_previousLayoutWidth = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    self->_previousLayoutWidth = [MEMORY[0x277CCABB0] numberWithDouble:width];
 
     MEMORY[0x2821F96F8]();
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  [(UILabel *)self->_nameLabel setText:a3];
+  [(UILabel *)self->_nameLabel setText:name];
   previousLayoutWidth = self->_previousLayoutWidth;
   self->_previousLayoutWidth = 0;
 
   [(ASCompetitionParticipantScoreView *)self setNeedsLayout];
 }
 
-- (void)setNameFontSizeReduction:(double)a3
+- (void)setNameFontSizeReduction:(double)reduction
 {
-  if (vabdd_f64(self->_nameFontSizeReduction, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_nameFontSizeReduction, reduction) > 0.00000011920929)
   {
     [(ASCompetitionParticipantScoreView *)self _updateNameLabelWithFontSizeReduction:?];
     previousLayoutWidth = self->_previousLayoutWidth;
@@ -218,9 +218,9 @@
   }
 }
 
-- (void)setPrimaryScore:(unint64_t)a3
+- (void)setPrimaryScore:(unint64_t)score
 {
-  self->_primaryScore = a3;
+  self->_primaryScore = score;
   [(ASCompetitionParticipantScoreView *)self _updatePrimaryScoreLabelWithFontSizeReduction:self->_primaryScoreFontSizeReduction];
   previousLayoutWidth = self->_previousLayoutWidth;
   self->_previousLayoutWidth = 0;
@@ -228,9 +228,9 @@
   [(ASCompetitionParticipantScoreView *)self setNeedsLayout];
 }
 
-- (void)setPrimaryScoreFontSizeReduction:(double)a3
+- (void)setPrimaryScoreFontSizeReduction:(double)reduction
 {
-  if (vabdd_f64(self->_primaryScoreFontSizeReduction, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_primaryScoreFontSizeReduction, reduction) > 0.00000011920929)
   {
     [(ASCompetitionParticipantScoreView *)self _updatePrimaryScoreLabelWithFontSizeReduction:?];
     previousLayoutWidth = self->_previousLayoutWidth;
@@ -240,21 +240,21 @@
   }
 }
 
-- (void)setScoreColor:(id)a3
+- (void)setScoreColor:(id)color
 {
-  objc_storeStrong(&self->_scoreColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_scoreColor, color);
+  colorCopy = color;
   [(UILabel *)self->_secondaryScoreLabel setTextColor:self->_scoreColor];
 }
 
-- (void)setSecondaryScoreEnabled:(BOOL)a3
+- (void)setSecondaryScoreEnabled:(BOOL)enabled
 {
-  if (self->_secondaryScoreEnabled != a3)
+  if (self->_secondaryScoreEnabled != enabled)
   {
     v18 = v3;
-    self->_secondaryScoreEnabled = a3;
+    self->_secondaryScoreEnabled = enabled;
     secondaryScoreLabel = self->_secondaryScoreLabel;
-    if (a3)
+    if (enabled)
     {
       if (!secondaryScoreLabel)
       {
@@ -275,8 +275,8 @@
         }
 
         [(UILabel *)self->_secondaryScoreLabel setTextAlignment:v14, v6, v5, v4, v18, v7];
-        v15 = [(ASCompetitionScoreViewConfiguration *)self->_configuration secondaryScoreFont];
-        [(UILabel *)self->_secondaryScoreLabel setFont:v15];
+        secondaryScoreFont = [(ASCompetitionScoreViewConfiguration *)self->_configuration secondaryScoreFont];
+        [(UILabel *)self->_secondaryScoreLabel setFont:secondaryScoreFont];
 
         [(UILabel *)self->_secondaryScoreLabel setTextColor:self->_scoreColor];
         [(ASCompetitionParticipantScoreView *)self addSubview:self->_secondaryScoreLabel];
@@ -298,12 +298,12 @@
   }
 }
 
-- (double)computePrimaryScoreFontSizeReductionForWidth:(double)a3
+- (double)computePrimaryScoreFontSizeReductionForWidth:(double)width
 {
-  [(ASCompetitionParticipantScoreView *)self _availableScoreWidthForWidth:a3];
+  [(ASCompetitionParticipantScoreView *)self _availableScoreWidthForWidth:width];
   v5 = v4;
-  v6 = [(ASCompetitionScoreViewConfiguration *)self->_configuration primaryScoreFont];
-  [v6 pointSize];
+  primaryScoreFont = [(ASCompetitionScoreViewConfiguration *)self->_configuration primaryScoreFont];
+  [primaryScoreFont pointSize];
   v8 = v7 * 0.3;
 
   primaryScoreLabel = self->_primaryScoreLabel;
@@ -316,14 +316,14 @@
   return result;
 }
 
-- (double)computeNameFontSizeReductionForWidth:(double)a3
+- (double)computeNameFontSizeReductionForWidth:(double)width
 {
-  v5 = [(ASCompetitionScoreViewConfiguration *)self->_configuration showsNames];
+  showsNames = [(ASCompetitionScoreViewConfiguration *)self->_configuration showsNames];
   result = 0.0;
-  if (v5)
+  if (showsNames)
   {
-    v7 = [(ASCompetitionScoreViewConfiguration *)self->_configuration nameFont];
-    [v7 pointSize];
+    nameFont = [(ASCompetitionScoreViewConfiguration *)self->_configuration nameFont];
+    [nameFont pointSize];
     v9 = v8 * 0.3;
 
     nameLabel = self->_nameLabel;
@@ -332,76 +332,76 @@
     v11[2] = __74__ASCompetitionParticipantScoreView_computeNameFontSizeReductionForWidth___block_invoke;
     v11[3] = &unk_278C52ED0;
     v11[4] = self;
-    [(ASCompetitionParticipantScoreView *)self _computeFontSizeReductionForLabel:nameLabel width:v11 maxReduction:a3 updateBlock:v9];
+    [(ASCompetitionParticipantScoreView *)self _computeFontSizeReductionForLabel:nameLabel width:v11 maxReduction:width updateBlock:v9];
   }
 
   return result;
 }
 
-- (double)_computeFontSizeReductionForLabel:(id)a3 width:(double)a4 maxReduction:(double)a5 updateBlock:(id)a6
+- (double)_computeFontSizeReductionForLabel:(id)label width:(double)width maxReduction:(double)reduction updateBlock:(id)block
 {
-  v9 = a3;
-  v10 = a6;
+  labelCopy = label;
+  blockCopy = block;
   v11 = 0.0;
-  if (a4 > 1.0)
+  if (width > 1.0)
   {
     v11 = -1.0;
-    if (a5 >= -1.0)
+    if (reduction >= -1.0)
     {
       do
       {
         v11 = v11 + 1.0;
-        v10[2](v10, v11);
-        [v9 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+        blockCopy[2](blockCopy, v11);
+        [labelCopy sizeThatFits:{1.79769313e308, 1.79769313e308}];
       }
 
-      while (v11 <= a5 && v12 > a4);
+      while (v11 <= reduction && v12 > width);
     }
   }
 
   return v11;
 }
 
-- (void)_updateNameLabelWithFontSizeReduction:(double)a3
+- (void)_updateNameLabelWithFontSizeReduction:(double)reduction
 {
-  v5 = [(ASCompetitionScoreViewConfiguration *)self->_configuration nameFont];
-  v6 = v5;
-  if (fabs(a3) > 0.00000011920929)
+  nameFont = [(ASCompetitionScoreViewConfiguration *)self->_configuration nameFont];
+  v6 = nameFont;
+  if (fabs(reduction) > 0.00000011920929)
   {
-    v9 = v5;
-    [v5 pointSize];
-    v8 = [v9 fontWithSize:v7 - a3];
+    v9 = nameFont;
+    [nameFont pointSize];
+    reduction = [v9 fontWithSize:v7 - reduction];
 
-    v6 = v8;
+    v6 = reduction;
   }
 
   v10 = v6;
   [(UILabel *)self->_nameLabel setFont:v6];
-  self->_nameFontSizeReduction = a3;
+  self->_nameFontSizeReduction = reduction;
 }
 
-- (void)_updatePrimaryScoreLabelWithFontSizeReduction:(double)a3
+- (void)_updatePrimaryScoreLabelWithFontSizeReduction:(double)reduction
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v5 = [(ASCompetitionScoreViewConfiguration *)self->_configuration primaryScoreFont];
-  v6 = [(ASCompetitionScoreViewConfiguration *)self->_configuration primaryScoreUnitFont];
-  if (fabs(a3) > 0.00000011920929)
+  primaryScoreFont = [(ASCompetitionScoreViewConfiguration *)self->_configuration primaryScoreFont];
+  primaryScoreUnitFont = [(ASCompetitionScoreViewConfiguration *)self->_configuration primaryScoreUnitFont];
+  if (fabs(reduction) > 0.00000011920929)
   {
-    [v5 pointSize];
+    [primaryScoreFont pointSize];
     v8 = v7;
-    [v6 pointSize];
+    [primaryScoreUnitFont pointSize];
     v10 = v9;
-    v11 = [v5 fontWithSize:v8 - a3];
+    reduction = [primaryScoreFont fontWithSize:v8 - reduction];
 
-    v12 = [v6 fontWithSize:v10 - a3];
+    reduction2 = [primaryScoreUnitFont fontWithSize:v10 - reduction];
 
-    v6 = v12;
-    v5 = v11;
+    primaryScoreUnitFont = reduction2;
+    primaryScoreFont = reduction;
   }
 
   if ([(ASCompetitionScoreViewConfiguration *)self->_configuration showsPrimaryScoreUnits])
   {
-    v13 = ASPointsStringWithScore(self->_primaryScore, v5, v6, self->_scoreColor);
+    v13 = ASPointsStringWithScore(self->_primaryScore, primaryScoreFont, primaryScoreUnitFont, self->_scoreColor);
     [(UILabel *)self->_primaryScoreLabel setAttributedText:v13];
   }
 
@@ -425,13 +425,13 @@
     v21[0] = *MEMORY[0x277D740C0];
     v21[1] = v18;
     v22[0] = scoreColor;
-    v22[1] = v5;
+    v22[1] = primaryScoreFont;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
     v20 = [v16 initWithString:v13 attributes:v19];
     [(UILabel *)self->_primaryScoreLabel setAttributedText:v20];
   }
 
-  self->_primaryScoreFontSizeReduction = a3;
+  self->_primaryScoreFontSizeReduction = reduction;
 }
 
 - (void)_updateSecondaryScoreLabel

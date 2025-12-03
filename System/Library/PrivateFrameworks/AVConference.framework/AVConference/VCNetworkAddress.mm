@@ -1,9 +1,9 @@
 @interface VCNetworkAddress
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int)getSockaddrStorage:(sockaddr_storage *)a3 size:(unint64_t *)a4;
+- (int)getSockaddrStorage:(sockaddr_storage *)storage size:(unint64_t *)size;
 - (void)dealloc;
 @end
 
@@ -29,18 +29,18 @@
   return ip;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = -[NSString isEqual:](self->_ip, "isEqual:", [a3 ip]);
+  v5 = -[NSString isEqual:](self->_ip, "isEqual:", [equal ip]);
   if (v5)
   {
     port = self->_port;
-    if (port == [a3 port])
+    if (port == [equal port])
     {
       ipVersion = self->_ipVersion;
-      if (ipVersion == [a3 ipVersion])
+      if (ipVersion == [equal ipVersion])
       {
-        if (-[NSString isEqual:](self->_interfaceName, "isEqual:", [a3 interfaceName]))
+        if (-[NSString isEqual:](self->_interfaceName, "isEqual:", [equal interfaceName]))
         {
           LOBYTE(v5) = 1;
           return v5;
@@ -48,7 +48,7 @@
 
         if (!self->_interfaceName)
         {
-          LOBYTE(v5) = [a3 interfaceName] == 0;
+          LOBYTE(v5) = [equal interfaceName] == 0;
           return v5;
         }
       }
@@ -68,9 +68,9 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@:%d", -[VCNetworkAddress description](&v3, sel_description), self->_ip, self->_port];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [VCNetworkAddress allocWithZone:a3];
+  v4 = [VCNetworkAddress allocWithZone:zone];
   [(VCNetworkAddress *)v4 setIp:self->_ip];
   [(VCNetworkAddress *)v4 setPort:self->_port];
   [(VCNetworkAddress *)v4 setIpVersion:self->_ipVersion];
@@ -78,7 +78,7 @@
   return v4;
 }
 
-- (int)getSockaddrStorage:(sockaddr_storage *)a3 size:(unint64_t *)a4
+- (int)getSockaddrStorage:(sockaddr_storage *)storage size:(unint64_t *)size
 {
   v16 = *MEMORY[0x1E69E9840];
   *&v4 = 0xAAAAAAAAAAAAAAAALL;
@@ -87,9 +87,9 @@
   *&v14.ai_addr = v4;
   *&v14.ai_flags = v4;
   v13 = 0;
-  if (a3)
+  if (storage)
   {
-    if (a4)
+    if (size)
     {
       memset(&v14, 0, sizeof(v14));
       if (self->_ipVersion == 6)
@@ -104,8 +104,8 @@
 
       v14.ai_family = v8;
       v14.ai_socktype = 2;
-      v9 = [(NSString *)self->_ip UTF8String];
-      if (getaddrinfo(v9, [objc_msgSend(objc_msgSend(MEMORY[0x1E696AD98] numberWithUnsignedShort:{self->_port), "stringValue"), "UTF8String"}], &v14, &v13) == -1)
+      uTF8String = [(NSString *)self->_ip UTF8String];
+      if (getaddrinfo(uTF8String, [objc_msgSend(objc_msgSend(MEMORY[0x1E696AD98] numberWithUnsignedShort:{self->_port), "stringValue"), "UTF8String"}], &v14, &v13) == -1)
       {
         [VCNetworkAddress getSockaddrStorage:? size:?];
       }
@@ -115,15 +115,15 @@
         v10 = v13;
         if (v13)
         {
-          if (*a4 >= v13->ai_addrlen)
+          if (*size >= v13->ai_addrlen)
           {
-            memcpy(a3, v13->ai_addr, v13->ai_addrlen);
+            memcpy(storage, v13->ai_addr, v13->ai_addrlen);
             v11 = 0;
-            *a4 = v10->ai_addrlen;
+            *size = v10->ai_addrlen;
             goto LABEL_10;
           }
 
-          [(VCNetworkAddress *)v13->ai_addrlen getSockaddrStorage:a4 size:&v15];
+          [(VCNetworkAddress *)v13->ai_addrlen getSockaddrStorage:size size:&v15];
         }
 
         else

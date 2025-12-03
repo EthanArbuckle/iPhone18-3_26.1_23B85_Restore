@@ -1,16 +1,16 @@
 @interface SUGradientColorStop
 - (CGColor)copyCGColor;
-- (SUGradientColorStop)initWithCoder:(id)a3;
-- (SUGradientColorStop)initWithColor:(CGColor *)a3 offset:(double)a4;
+- (SUGradientColorStop)initWithCoder:(id)coder;
+- (SUGradientColorStop)initWithColor:(CGColor *)color offset:(double)offset;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUGradientColorStop
 
-- (SUGradientColorStop)initWithColor:(CGColor *)a3 offset:(double)a4
+- (SUGradientColorStop)initWithColor:(CGColor *)color offset:(double)offset
 {
   v9.receiver = self;
   v9.super_class = SUGradientColorStop;
@@ -18,32 +18,32 @@
   v7 = v6;
   if (v6)
   {
-    v6->_offset = a4;
-    v6->_rawColor = CGColorRetain(a3);
-    SUColorGetRGBA(a3, &v7->_r, &v7->_g, &v7->_b, &v7->_a);
+    v6->_offset = offset;
+    v6->_rawColor = CGColorRetain(color);
+    SUColorGetRGBA(color, &v7->_r, &v7->_g, &v7->_b, &v7->_a);
   }
 
   return v7;
 }
 
-- (SUGradientColorStop)initWithCoder:(id)a3
+- (SUGradientColorStop)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = SUGradientColorStop;
   v4 = [(SUGradientColorStop *)&v12 init];
   if (v4)
   {
-    [a3 decodeFloatForKey:@"r"];
+    [coder decodeFloatForKey:@"r"];
     v4->_r = v5;
-    [a3 decodeFloatForKey:@"g"];
+    [coder decodeFloatForKey:@"g"];
     v4->_g = v6;
-    [a3 decodeFloatForKey:@"b"];
+    [coder decodeFloatForKey:@"b"];
     v4->_b = v7;
-    [a3 decodeFloatForKey:@"A"];
+    [coder decodeFloatForKey:@"A"];
     v4->_a = v8;
-    [a3 decodeFloatForKey:@"offset"];
+    [coder decodeFloatForKey:@"offset"];
     v4->_offset = v9;
-    v10 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"rawcolor"];
+    v10 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"rawcolor"];
     if (v10)
     {
       v4->_rawColor = CGColorRetain([v10 CGColor]);
@@ -66,35 +66,35 @@
   [(SUGradientColorStop *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   r = self->_r;
   *&r = r;
-  [a3 encodeFloat:@"r" forKey:r];
+  [coder encodeFloat:@"r" forKey:r];
   g = self->_g;
   *&g = g;
-  [a3 encodeFloat:@"g" forKey:g];
+  [coder encodeFloat:@"g" forKey:g];
   b = self->_b;
   *&b = b;
-  [a3 encodeFloat:@"b" forKey:b];
+  [coder encodeFloat:@"b" forKey:b];
   a = self->_a;
   *&a = a;
-  [a3 encodeFloat:@"A" forKey:a];
+  [coder encodeFloat:@"A" forKey:a];
   offset = self->_offset;
   *&offset = offset;
-  [a3 encodeFloat:@"offset" forKey:offset];
+  [coder encodeFloat:@"offset" forKey:offset];
   if (self->_rawColor)
   {
     v10 = [MEMORY[0x1E69DC888] colorWithCGColor:?];
 
-    [a3 safeEncodeUIColor:v10 forKey:@"rawcolor"];
+    [coder safeEncodeUIColor:v10 forKey:@"rawcolor"];
   }
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   offset = self->_offset;
-  v4 = *(a3 + 5);
+  v4 = *(compare + 5);
   if (offset < v4)
   {
     return -1;

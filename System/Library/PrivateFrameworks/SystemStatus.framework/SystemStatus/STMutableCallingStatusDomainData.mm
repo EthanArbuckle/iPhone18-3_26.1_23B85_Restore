@@ -1,23 +1,23 @@
 @interface STMutableCallingStatusDomainData
-- (BOOL)applyDiff:(id)a3;
-- (STMutableCallingStatusDomainData)initWithCallDescriptorListData:(id)a3;
+- (BOOL)applyDiff:(id)diff;
+- (STMutableCallingStatusDomainData)initWithCallDescriptorListData:(id)data;
 - (STMutableListData)callDescriptorListData;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addActiveCallAttribution:(id)a3;
-- (void)addActiveVideoConferenceAttribution:(id)a3;
-- (void)addCallDescriptor:(id)a3;
-- (void)addRingingCallAttribution:(id)a3;
-- (void)addRingingVideoConferenceAttribution:(id)a3;
-- (void)removeActiveCallAttribution:(id)a3;
-- (void)removeActiveVideoConferenceAttribution:(id)a3;
-- (void)removeCallDescriptor:(id)a3;
-- (void)removeRingingCallAttribution:(id)a3;
-- (void)removeRingingVideoConferenceAttribution:(id)a3;
-- (void)setActiveCallAttributions:(id)a3;
-- (void)setActiveVideoConferenceAttributions:(id)a3;
-- (void)setCallDescriptors:(id)a3;
-- (void)setRingingCallAttributions:(id)a3;
-- (void)setRingingVideoConferenceAttributions:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addActiveCallAttribution:(id)attribution;
+- (void)addActiveVideoConferenceAttribution:(id)attribution;
+- (void)addCallDescriptor:(id)descriptor;
+- (void)addRingingCallAttribution:(id)attribution;
+- (void)addRingingVideoConferenceAttribution:(id)attribution;
+- (void)removeActiveCallAttribution:(id)attribution;
+- (void)removeActiveVideoConferenceAttribution:(id)attribution;
+- (void)removeCallDescriptor:(id)descriptor;
+- (void)removeRingingCallAttribution:(id)attribution;
+- (void)removeRingingVideoConferenceAttribution:(id)attribution;
+- (void)setActiveCallAttributions:(id)attributions;
+- (void)setActiveVideoConferenceAttributions:(id)attributions;
+- (void)setCallDescriptors:(id)descriptors;
+- (void)setRingingCallAttributions:(id)attributions;
+- (void)setRingingVideoConferenceAttributions:(id)attributions;
 @end
 
 @implementation STMutableCallingStatusDomainData
@@ -26,14 +26,14 @@
 {
   v4.receiver = self;
   v4.super_class = STMutableCallingStatusDomainData;
-  v2 = [(STCallingStatusDomainData *)&v4 callDescriptorListData];
+  callDescriptorListData = [(STCallingStatusDomainData *)&v4 callDescriptorListData];
 
-  return v2;
+  return callDescriptorListData;
 }
 
-- (STMutableCallingStatusDomainData)initWithCallDescriptorListData:(id)a3
+- (STMutableCallingStatusDomainData)initWithCallDescriptorListData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   v7.receiver = self;
   v7.super_class = STMutableCallingStatusDomainData;
   v5 = [(STCallingStatusDomainData *)&v7 _initWithCallDescriptorListData:v4];
@@ -41,123 +41,123 @@
   return v5;
 }
 
-- (void)setCallDescriptors:(id)a3
+- (void)setCallDescriptors:(id)descriptors
 {
-  if (a3)
+  if (descriptors)
   {
-    v4 = a3;
-    v5 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
-    [v5 setObjects:v4];
+    descriptorsCopy = descriptors;
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    [callDescriptorListData setObjects:descriptorsCopy];
   }
 }
 
-- (void)addCallDescriptor:(id)a3
+- (void)addCallDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
-    v4 = a3;
-    v5 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
-    [v5 addObject:v4];
+    descriptorCopy = descriptor;
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    [callDescriptorListData addObject:descriptorCopy];
   }
 }
 
-- (void)removeCallDescriptor:(id)a3
+- (void)removeCallDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
-    v4 = a3;
-    v5 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
-    [v5 removeObject:v4];
+    descriptorCopy = descriptor;
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    [callDescriptorListData removeObject:descriptorCopy];
   }
 }
 
-- (void)setActiveCallAttributions:(id)a3
+- (void)setActiveCallAttributions:(id)attributions
 {
-  v4 = a3;
-  v10 = [(STCallingStatusDomainData *)self _activeAudioCallDescriptors];
-  v5 = [v4 allObjects];
+  attributionsCopy = attributions;
+  _activeAudioCallDescriptors = [(STCallingStatusDomainData *)self _activeAudioCallDescriptors];
+  allObjects = [attributionsCopy allObjects];
 
-  v6 = [v5 bs_map:&__block_literal_global_128];
+  v6 = [allObjects bs_map:&__block_literal_global_128];
 
-  if (([v10 isEqualToArray:v6] & 1) == 0)
+  if (([_activeAudioCallDescriptors isEqualToArray:v6] & 1) == 0)
   {
-    v7 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
-    v8 = [v7 objects];
-    v9 = [v8 mutableCopy];
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    objects = [callDescriptorListData objects];
+    v9 = [objects mutableCopy];
 
-    [v9 removeObjectsInArray:v10];
+    [v9 removeObjectsInArray:_activeAudioCallDescriptors];
     [v9 addObjectsFromArray:v6];
-    [v7 setObjects:v9];
+    [callDescriptorListData setObjects:v9];
   }
 }
 
-- (void)addActiveCallAttribution:(id)a3
+- (void)addActiveCallAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
     v3 = [STCallingStatusDomainCallDescriptor audioCallDescriptorWithState:0];
-    [v4 addObject:v3];
+    [callDescriptorListData addObject:v3];
   }
 }
 
-- (void)removeActiveCallAttribution:(id)a3
+- (void)removeActiveCallAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
     v3 = [STCallingStatusDomainCallDescriptor audioCallDescriptorWithState:0];
-    [v4 removeObject:v3];
+    [callDescriptorListData removeObject:v3];
   }
 }
 
-- (void)setRingingCallAttributions:(id)a3
+- (void)setRingingCallAttributions:(id)attributions
 {
-  v4 = a3;
-  v10 = [(STCallingStatusDomainData *)self _ringingAudioCallDescriptors];
-  v5 = [v4 allObjects];
+  attributionsCopy = attributions;
+  _ringingAudioCallDescriptors = [(STCallingStatusDomainData *)self _ringingAudioCallDescriptors];
+  allObjects = [attributionsCopy allObjects];
 
-  v6 = [v5 bs_map:&__block_literal_global_130];
+  v6 = [allObjects bs_map:&__block_literal_global_130];
 
-  if (([v10 isEqualToArray:v6] & 1) == 0)
+  if (([_ringingAudioCallDescriptors isEqualToArray:v6] & 1) == 0)
   {
-    v7 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
-    v8 = [v7 objects];
-    v9 = [v8 mutableCopy];
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    objects = [callDescriptorListData objects];
+    v9 = [objects mutableCopy];
 
-    [v9 removeObjectsInArray:v10];
+    [v9 removeObjectsInArray:_ringingAudioCallDescriptors];
     [v9 addObjectsFromArray:v6];
-    [v7 setObjects:v9];
+    [callDescriptorListData setObjects:v9];
   }
 }
 
-- (void)addRingingCallAttribution:(id)a3
+- (void)addRingingCallAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
     v3 = [STCallingStatusDomainCallDescriptor audioCallDescriptorWithState:1];
-    [v4 addObject:v3];
+    [callDescriptorListData addObject:v3];
   }
 }
 
-- (void)removeRingingCallAttribution:(id)a3
+- (void)removeRingingCallAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
     v3 = [STCallingStatusDomainCallDescriptor audioCallDescriptorWithState:1];
-    [v4 removeObject:v3];
+    [callDescriptorListData removeObject:v3];
   }
 }
 
-- (void)setActiveVideoConferenceAttributions:(id)a3
+- (void)setActiveVideoConferenceAttributions:(id)attributions
 {
-  v4 = a3;
+  attributionsCopy = attributions;
   if (self)
   {
-    v5 = [(STCallingStatusDomainData *)self callDescriptors];
-    v11 = [v5 bs_filter:&__block_literal_global_23_0];
+    callDescriptors = [(STCallingStatusDomainData *)self callDescriptors];
+    v11 = [callDescriptors bs_filter:&__block_literal_global_23_0];
   }
 
   else
@@ -165,49 +165,49 @@
     v11 = 0;
   }
 
-  v6 = [v4 allObjects];
+  allObjects = [attributionsCopy allObjects];
 
-  v7 = [v6 bs_map:&__block_literal_global_132];
+  v7 = [allObjects bs_map:&__block_literal_global_132];
 
   if (([v11 isEqualToArray:v7] & 1) == 0)
   {
-    v8 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
-    v9 = [v8 objects];
-    v10 = [v9 mutableCopy];
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    objects = [callDescriptorListData objects];
+    v10 = [objects mutableCopy];
 
     [v10 removeObjectsInArray:v11];
     [v10 addObjectsFromArray:v7];
-    [v8 setObjects:v10];
+    [callDescriptorListData setObjects:v10];
   }
 }
 
-- (void)addActiveVideoConferenceAttribution:(id)a3
+- (void)addActiveVideoConferenceAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
     v3 = [STCallingStatusDomainCallDescriptor videoCallDescriptorWithState:0];
-    [v4 addObject:v3];
+    [callDescriptorListData addObject:v3];
   }
 }
 
-- (void)removeActiveVideoConferenceAttribution:(id)a3
+- (void)removeActiveVideoConferenceAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
     v3 = [STCallingStatusDomainCallDescriptor videoCallDescriptorWithState:0];
-    [v4 removeObject:v3];
+    [callDescriptorListData removeObject:v3];
   }
 }
 
-- (void)setRingingVideoConferenceAttributions:(id)a3
+- (void)setRingingVideoConferenceAttributions:(id)attributions
 {
-  v4 = a3;
+  attributionsCopy = attributions;
   if (self)
   {
-    v5 = [(STCallingStatusDomainData *)self callDescriptors];
-    v11 = [v5 bs_filter:&__block_literal_global_25];
+    callDescriptors = [(STCallingStatusDomainData *)self callDescriptors];
+    v11 = [callDescriptors bs_filter:&__block_literal_global_25];
   }
 
   else
@@ -215,57 +215,57 @@
     v11 = 0;
   }
 
-  v6 = [v4 allObjects];
+  allObjects = [attributionsCopy allObjects];
 
-  v7 = [v6 bs_map:&__block_literal_global_134];
+  v7 = [allObjects bs_map:&__block_literal_global_134];
 
   if (([v11 isEqualToArray:v7] & 1) == 0)
   {
-    v8 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
-    v9 = [v8 objects];
-    v10 = [v9 mutableCopy];
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    objects = [callDescriptorListData objects];
+    v10 = [objects mutableCopy];
 
     [v10 removeObjectsInArray:v11];
     [v10 addObjectsFromArray:v7];
-    [v8 setObjects:v10];
+    [callDescriptorListData setObjects:v10];
   }
 }
 
-- (void)addRingingVideoConferenceAttribution:(id)a3
+- (void)addRingingVideoConferenceAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
     v3 = [STCallingStatusDomainCallDescriptor videoCallDescriptorWithState:1];
-    [v4 addObject:v3];
+    [callDescriptorListData addObject:v3];
   }
 }
 
-- (void)removeRingingVideoConferenceAttribution:(id)a3
+- (void)removeRingingVideoConferenceAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
+    callDescriptorListData = [(STMutableCallingStatusDomainData *)self callDescriptorListData];
     v3 = [STCallingStatusDomainCallDescriptor videoCallDescriptorWithState:1];
-    [v4 removeObject:v3];
+    [callDescriptorListData removeObject:v3];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STCallingStatusDomainData allocWithZone:a3];
+  v4 = [STCallingStatusDomainData allocWithZone:zone];
 
   return [(STCallingStatusDomainData *)v4 initWithData:self];
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableData:self];
+    [diffCopy applyToMutableData:self];
   }
 
   return isKindOfClass & 1;

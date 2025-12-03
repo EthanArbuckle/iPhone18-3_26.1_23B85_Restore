@@ -7,22 +7,22 @@
 + (id)wifiNetworkInfoFromProto:()WifiInfoSerialization
 {
   v3 = a3;
-  v4 = [v3 macAddress];
+  macAddress = [v3 macAddress];
 
-  if (v4)
+  if (macAddress)
   {
     v5 = objc_alloc(MEMORY[0x1E69A29F0]);
-    v6 = [v3 macAddress];
-    v7 = [v5 initWithMACAddressString:v6];
+    macAddress2 = [v3 macAddress];
+    v7 = [v5 initWithMACAddressString:macAddress2];
 
     if (v7)
     {
       v8 = objc_alloc(MEMORY[0x1E69A2A80]);
-      v9 = [v3 networkSSID];
-      v10 = [v3 networkBSSID];
-      v11 = [v3 networkGatewayIPAddress];
-      v12 = [v3 networkGatewayMacAddress];
-      v13 = [v8 initWithMACAddress:v7 SSID:v9 BSSID:v10 gatewayIPAddress:v11 gatewayMACAddress:v12];
+      networkSSID = [v3 networkSSID];
+      networkBSSID = [v3 networkBSSID];
+      networkGatewayIPAddress = [v3 networkGatewayIPAddress];
+      networkGatewayMacAddress = [v3 networkGatewayMacAddress];
+      v13 = [v8 initWithMACAddress:v7 SSID:networkSSID BSSID:networkBSSID gatewayIPAddress:networkGatewayIPAddress gatewayMACAddress:networkGatewayMacAddress];
     }
 
     else

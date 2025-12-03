@@ -1,32 +1,32 @@
 @interface SSVDirectUploadQueue
 - (NSArray)uploadKinds;
-- (SSVDirectUploadQueue)initWithUploadKinds:(id)a3;
+- (SSVDirectUploadQueue)initWithUploadKinds:(id)kinds;
 - (id)_outboundConnection;
 - (void)_establishInboundConnection;
-- (void)_handleAddUploadsMessage:(id)a3;
-- (void)_handleChangeUploadsMessage:(id)a3;
-- (void)_handleInboundMessage:(id)a3 connection:(id)a4;
-- (void)_handleRemoveUploadsMessage:(id)a3;
+- (void)_handleAddUploadsMessage:(id)message;
+- (void)_handleChangeUploadsMessage:(id)message;
+- (void)_handleInboundMessage:(id)message connection:(id)connection;
+- (void)_handleRemoveUploadsMessage:(id)message;
 - (void)_sendObserversUploadsDidChange;
-- (void)_sendSimpleMessage:(id)a3 completionBlock:(id)a4;
-- (void)addUploadObserver:(id)a3;
-- (void)cancelAllUploadsWithCompletionBlock:(id)a3;
-- (void)cancelUploads:(id)a3 completionBlock:(id)a4;
+- (void)_sendSimpleMessage:(id)message completionBlock:(id)block;
+- (void)addUploadObserver:(id)observer;
+- (void)cancelAllUploadsWithCompletionBlock:(id)block;
+- (void)cancelUploads:(id)uploads completionBlock:(id)block;
 - (void)dealloc;
-- (void)getUploadsWithCompletionBlock:(id)a3;
-- (void)pauseAllUploadsWithCompletionBlock:(id)a3;
-- (void)pauseUploads:(id)a3 completionBlock:(id)a4;
-- (void)removeUploadObserver:(id)a3;
-- (void)resumeAllUploadsWithCompletionBlock:(id)a3;
-- (void)resumeUploads:(id)a3 completionBlock:(id)a4;
+- (void)getUploadsWithCompletionBlock:(id)block;
+- (void)pauseAllUploadsWithCompletionBlock:(id)block;
+- (void)pauseUploads:(id)uploads completionBlock:(id)block;
+- (void)removeUploadObserver:(id)observer;
+- (void)resumeAllUploadsWithCompletionBlock:(id)block;
+- (void)resumeUploads:(id)uploads completionBlock:(id)block;
 @end
 
 @implementation SSVDirectUploadQueue
 
-- (SSVDirectUploadQueue)initWithUploadKinds:(id)a3
+- (SSVDirectUploadQueue)initWithUploadKinds:(id)kinds
 {
-  v4 = a3;
-  if (![v4 count])
+  kindsCopy = kinds;
+  if (![kindsCopy count])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Must have upload kinds"];
   }
@@ -48,19 +48,19 @@
     observers = v5->_observers;
     v5->_observers = v10;
 
-    v12 = [v4 copy];
+    v12 = [kindsCopy copy];
     uploadKinds = v5->_uploadKinds;
     v5->_uploadKinds = v12;
 
     objc_initWeak(&location, v5);
-    v14 = [(__CFString *)@"com.apple.iTunesStore.daemon.launched" UTF8String];
+    uTF8String = [(__CFString *)@"com.apple.iTunesStore.daemon.launched" UTF8String];
     v15 = v5->_accessQueue;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __44__SSVDirectUploadQueue_initWithUploadKinds___block_invoke;
     v17[3] = &unk_1E84ACFA8;
     objc_copyWeak(&v18, &location);
-    notify_register_dispatch(v14, &v5->_daemonLaunchToken, v15, v17);
+    notify_register_dispatch(uTF8String, &v5->_daemonLaunchToken, v15, v17);
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
   }
@@ -93,17 +93,17 @@ void __44__SSVDirectUploadQueue_initWithUploadKinds___block_invoke(uint64_t a1)
   [(SSVDirectUploadQueue *)&v3 dealloc];
 }
 
-- (void)addUploadObserver:(id)a3
+- (void)addUploadObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__SSVDirectUploadQueue_addUploadObserver___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -115,10 +115,10 @@ uint64_t __42__SSVDirectUploadQueue_addUploadObserver___block_invoke(uint64_t a1
   return [v2 _establishInboundConnection];
 }
 
-- (void)cancelAllUploadsWithCompletionBlock:(id)a3
+- (void)cancelAllUploadsWithCompletionBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -127,19 +127,19 @@ uint64_t __42__SSVDirectUploadQueue_addUploadObserver___block_invoke(uint64_t a1
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -163,9 +163,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v19}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v19}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -178,8 +178,8 @@ LABEL_16:
   block[2] = __60__SSVDirectUploadQueue_cancelAllUploadsWithCompletionBlock___block_invoke;
   block[3] = &unk_1E84AC360;
   block[4] = self;
-  v21 = v4;
-  v18 = v4;
+  v21 = blockCopy;
+  v18 = blockCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -190,11 +190,11 @@ void __60__SSVDirectUploadQueue_cancelAllUploadsWithCompletionBlock___block_invo
   [*(a1 + 32) _sendSimpleMessage:v2 completionBlock:*(a1 + 40)];
 }
 
-- (void)cancelUploads:(id)a3 completionBlock:(id)a4
+- (void)cancelUploads:(id)uploads completionBlock:(id)block
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  uploadsCopy = uploads;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -203,19 +203,19 @@ void __60__SSVDirectUploadQueue_cancelAllUploadsWithCompletionBlock___block_invo
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v12 = v10;
     }
@@ -239,9 +239,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v28, v23}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v28, v23}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
@@ -253,11 +253,11 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = __54__SSVDirectUploadQueue_cancelUploads_completionBlock___block_invoke;
   block[3] = &unk_1E84AC000;
-  v25 = v6;
-  v26 = self;
-  v27 = v7;
-  v21 = v7;
-  v22 = v6;
+  v25 = uploadsCopy;
+  selfCopy = self;
+  v27 = blockCopy;
+  v21 = blockCopy;
+  v22 = uploadsCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -300,10 +300,10 @@ void __54__SSVDirectUploadQueue_cancelUploads_completionBlock___block_invoke(uin
   [*(a1 + 40) _sendSimpleMessage:v2 completionBlock:*(a1 + 48)];
 }
 
-- (void)getUploadsWithCompletionBlock:(id)a3
+- (void)getUploadsWithCompletionBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -312,19 +312,19 @@ void __54__SSVDirectUploadQueue_cancelUploads_completionBlock___block_invoke(uin
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -348,9 +348,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v19}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v19}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -363,8 +363,8 @@ LABEL_16:
   block[2] = __54__SSVDirectUploadQueue_getUploadsWithCompletionBlock___block_invoke;
   block[3] = &unk_1E84AC360;
   block[4] = self;
-  v21 = v4;
-  v18 = v4;
+  v21 = blockCopy;
+  v18 = blockCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -498,10 +498,10 @@ void __54__SSVDirectUploadQueue_getUploadsWithCompletionBlock___block_invoke_3(u
   *(v12 + 64) = v2;
 }
 
-- (void)pauseAllUploadsWithCompletionBlock:(id)a3
+- (void)pauseAllUploadsWithCompletionBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -510,19 +510,19 @@ void __54__SSVDirectUploadQueue_getUploadsWithCompletionBlock___block_invoke_3(u
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -546,9 +546,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v19}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v19}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -561,8 +561,8 @@ LABEL_16:
   block[2] = __59__SSVDirectUploadQueue_pauseAllUploadsWithCompletionBlock___block_invoke;
   block[3] = &unk_1E84AC360;
   block[4] = self;
-  v21 = v4;
-  v18 = v4;
+  v21 = blockCopy;
+  v18 = blockCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -573,11 +573,11 @@ void __59__SSVDirectUploadQueue_pauseAllUploadsWithCompletionBlock___block_invok
   [*(a1 + 32) _sendSimpleMessage:v2 completionBlock:*(a1 + 40)];
 }
 
-- (void)pauseUploads:(id)a3 completionBlock:(id)a4
+- (void)pauseUploads:(id)uploads completionBlock:(id)block
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  uploadsCopy = uploads;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -586,19 +586,19 @@ void __59__SSVDirectUploadQueue_pauseAllUploadsWithCompletionBlock___block_invok
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v12 = v10;
     }
@@ -622,9 +622,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v28, v23}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v28, v23}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
@@ -636,11 +636,11 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = __53__SSVDirectUploadQueue_pauseUploads_completionBlock___block_invoke;
   block[3] = &unk_1E84AC000;
-  v25 = v6;
-  v26 = self;
-  v27 = v7;
-  v21 = v7;
-  v22 = v6;
+  v25 = uploadsCopy;
+  selfCopy = self;
+  v27 = blockCopy;
+  v21 = blockCopy;
+  v22 = uploadsCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -683,24 +683,24 @@ void __53__SSVDirectUploadQueue_pauseUploads_completionBlock___block_invoke(uint
   [*(a1 + 40) _sendSimpleMessage:v2 completionBlock:*(a1 + 48)];
 }
 
-- (void)removeUploadObserver:(id)a3
+- (void)removeUploadObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__SSVDirectUploadQueue_removeUploadObserver___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(accessQueue, v7);
 }
 
-- (void)resumeAllUploadsWithCompletionBlock:(id)a3
+- (void)resumeAllUploadsWithCompletionBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -709,19 +709,19 @@ void __53__SSVDirectUploadQueue_pauseUploads_completionBlock___block_invoke(uint
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -745,9 +745,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v19}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v19}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -760,8 +760,8 @@ LABEL_16:
   block[2] = __60__SSVDirectUploadQueue_resumeAllUploadsWithCompletionBlock___block_invoke;
   block[3] = &unk_1E84AC360;
   block[4] = self;
-  v21 = v4;
-  v18 = v4;
+  v21 = blockCopy;
+  v18 = blockCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -772,11 +772,11 @@ void __60__SSVDirectUploadQueue_resumeAllUploadsWithCompletionBlock___block_invo
   [*(a1 + 32) _sendSimpleMessage:v2 completionBlock:*(a1 + 40)];
 }
 
-- (void)resumeUploads:(id)a3 completionBlock:(id)a4
+- (void)resumeUploads:(id)uploads completionBlock:(id)block
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  uploadsCopy = uploads;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -785,19 +785,19 @@ void __60__SSVDirectUploadQueue_resumeAllUploadsWithCompletionBlock___block_invo
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v12 = v10;
     }
@@ -821,9 +821,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v28, v23}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v28, v23}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
@@ -835,11 +835,11 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = __54__SSVDirectUploadQueue_resumeUploads_completionBlock___block_invoke;
   block[3] = &unk_1E84AC000;
-  v25 = v6;
-  v26 = self;
-  v27 = v7;
-  v21 = v7;
-  v22 = v6;
+  v25 = uploadsCopy;
+  selfCopy = self;
+  v27 = blockCopy;
+  v21 = blockCopy;
+  v22 = uploadsCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -900,19 +900,19 @@ void __54__SSVDirectUploadQueue_resumeUploads_completionBlock___block_invoke(uin
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v7 = v5;
     }
@@ -963,10 +963,10 @@ void __54__SSVDirectUploadQueue_resumeUploads_completionBlock___block_invoke(uin
       [(SSXPCConnection *)v19 setMessageBlock:v25];
       v21 = SSXPCCreateMessageDictionary(157);
       SSXPCDictionarySetCFObject(v21, "1", self->_uploadKinds);
-      v22 = [(SSXPCConnection *)self->_inboundConnection createXPCEndpoint];
-      xpc_dictionary_set_value(v21, "2", v22);
-      v23 = [(SSVDirectUploadQueue *)self _outboundConnection];
-      [v23 sendMessage:v21];
+      createXPCEndpoint = [(SSXPCConnection *)self->_inboundConnection createXPCEndpoint];
+      xpc_dictionary_set_value(v21, "2", createXPCEndpoint);
+      _outboundConnection = [(SSVDirectUploadQueue *)self _outboundConnection];
+      [_outboundConnection sendMessage:v21];
 
       objc_destroyWeak(&v27);
       objc_destroyWeak(location);
@@ -999,10 +999,10 @@ void __51__SSVDirectUploadQueue__establishInboundConnection__block_invoke_2(uint
   [WeakRetained _handleInboundMessage:*(a1 + 32) connection:*(a1 + 40)];
 }
 
-- (void)_handleAddUploadsMessage:(id)a3
+- (void)_handleAddUploadsMessage:(id)message
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:0 valueOptions:0 capacity:0];
   v25 = 0u;
   v26 = 0u;
@@ -1038,7 +1038,7 @@ void __51__SSVDirectUploadQueue__establishInboundConnection__block_invoke_2(uint
     while (v8);
   }
 
-  v13 = xpc_dictionary_get_value(v4, "2");
+  v13 = xpc_dictionary_get_value(messageCopy, "2");
   v14 = v13;
   v15 = MEMORY[0x1E69E9E50];
   if (v13 && MEMORY[0x1DA6E0380](v13) == v15)
@@ -1055,7 +1055,7 @@ void __51__SSVDirectUploadQueue__establishInboundConnection__block_invoke_2(uint
   uploads = self->_uploads;
   self->_uploads = v16;
 
-  v18 = xpc_dictionary_get_value(v4, "1");
+  v18 = xpc_dictionary_get_value(messageCopy, "1");
   v19 = v18;
   if (v18 && MEMORY[0x1DA6E0380](v18) == v15)
   {
@@ -1064,7 +1064,7 @@ void __51__SSVDirectUploadQueue__establishInboundConnection__block_invoke_2(uint
     v20[2] = __49__SSVDirectUploadQueue__handleAddUploadsMessage___block_invoke_2;
     v20[3] = &unk_1E84B0670;
     v21 = v5;
-    v22 = self;
+    selfCopy = self;
     xpc_array_apply(v19, v20);
   }
 
@@ -1114,13 +1114,13 @@ uint64_t __49__SSVDirectUploadQueue__handleAddUploadsMessage___block_invoke_2(ui
   return 1;
 }
 
-- (void)_handleChangeUploadsMessage:(id)a3
+- (void)_handleChangeUploadsMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if ([(NSMutableArray *)self->_uploads count])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = xpc_dictionary_get_value(v4, "1");
+    v6 = xpc_dictionary_get_value(messageCopy, "1");
     v7 = v6;
     if (v6 && MEMORY[0x1DA6E0380](v6) == MEMORY[0x1E69E9E50])
     {
@@ -1142,7 +1142,7 @@ uint64_t __49__SSVDirectUploadQueue__handleAddUploadsMessage___block_invoke_2(ui
       block[2] = __52__SSVDirectUploadQueue__handleChangeUploadsMessage___block_invoke_2;
       block[3] = &unk_1E84AC078;
       v12 = v8;
-      v13 = self;
+      selfCopy = self;
       v14 = v5;
       v10 = v8;
       dispatch_async(observerQueue, block);
@@ -1206,10 +1206,10 @@ void __52__SSVDirectUploadQueue__handleChangeUploadsMessage___block_invoke_2(uin
   }
 }
 
-- (void)_handleInboundMessage:(id)a3 connection:(id)a4
+- (void)_handleInboundMessage:(id)message connection:(id)connection
 {
-  v8 = a3;
-  int64 = xpc_dictionary_get_int64(v8, "0");
+  messageCopy = message;
+  int64 = xpc_dictionary_get_int64(messageCopy, "0");
   v6 = int64;
   if (int64 <= 1013)
   {
@@ -1220,7 +1220,7 @@ void __52__SSVDirectUploadQueue__handleChangeUploadsMessage___block_invoke_2(uin
 
     if (int64 == 1013)
     {
-      [(SSVDirectUploadQueue *)self _handleAddUploadsMessage:v8];
+      [(SSVDirectUploadQueue *)self _handleAddUploadsMessage:messageCopy];
       goto LABEL_10;
     }
 
@@ -1234,25 +1234,25 @@ LABEL_8:
   {
     if (int64 == 1015)
     {
-      [(SSVDirectUploadQueue *)self _handleRemoveUploadsMessage:v8];
+      [(SSVDirectUploadQueue *)self _handleRemoveUploadsMessage:messageCopy];
       goto LABEL_10;
     }
 
     goto LABEL_8;
   }
 
-  [(SSVDirectUploadQueue *)self _handleChangeUploadsMessage:v8];
+  [(SSVDirectUploadQueue *)self _handleChangeUploadsMessage:messageCopy];
 LABEL_10:
 }
 
-- (void)_handleRemoveUploadsMessage:(id)a3
+- (void)_handleRemoveUploadsMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = xpc_dictionary_get_value(v4, "1");
+  v5 = xpc_dictionary_get_value(messageCopy, "1");
   v6 = v5;
   if (v5 && MEMORY[0x1DA6E0380](v5) == MEMORY[0x1E69E9E50])
   {
@@ -1321,7 +1321,7 @@ uint64_t __52__SSVDirectUploadQueue__handleRemoveUploadsMessage___block_invoke(u
   block[2] = __54__SSVDirectUploadQueue__sendObserversUploadsDidChange__block_invoke;
   block[3] = &unk_1E84AC078;
   v9 = v3;
-  v10 = self;
+  selfCopy = self;
   v11 = v4;
   v6 = v4;
   v7 = v3;
@@ -1368,21 +1368,21 @@ void __54__SSVDirectUploadQueue__sendObserversUploadsDidChange__block_invoke(uin
   }
 }
 
-- (void)_sendSimpleMessage:(id)a3 completionBlock:(id)a4
+- (void)_sendSimpleMessage:(id)message completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = self->_observerQueue;
-  v8 = a3;
-  v9 = [(SSVDirectUploadQueue *)self _outboundConnection];
+  messageCopy = message;
+  _outboundConnection = [(SSVDirectUploadQueue *)self _outboundConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__SSVDirectUploadQueue__sendSimpleMessage_completionBlock___block_invoke;
   v12[3] = &unk_1E84ABEF0;
   v13 = v7;
-  v14 = v6;
+  v14 = blockCopy;
   v10 = v7;
-  v11 = v6;
-  [v9 sendMessage:v8 withReply:v12];
+  v11 = blockCopy;
+  [_outboundConnection sendMessage:messageCopy withReply:v12];
 }
 
 void __59__SSVDirectUploadQueue__sendSimpleMessage_completionBlock___block_invoke(uint64_t a1, void *a2)

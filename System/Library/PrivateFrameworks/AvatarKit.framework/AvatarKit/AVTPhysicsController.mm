@@ -1,19 +1,19 @@
 @interface AVTPhysicsController
 - (AVTPhysicsController)init;
 - (AVTPhysicsControllerDelegate)delegate;
-- (__n128)offsetFromRestingPositionForNode:(void *)a3 inCoordinateSpaceOfNode:(void *)a4;
+- (__n128)offsetFromRestingPositionForNode:(void *)node inCoordinateSpaceOfNode:(void *)ofNode;
 - (id)physicsState;
-- (void)_setupPhysicsChain:(id)a3 physicsRigs:(id)a4;
-- (void)addToPhysicsWorld:(id)a3;
-- (void)applyForcesWithMultiplier:(double)a3;
+- (void)_setupPhysicsChain:(id)chain physicsRigs:(id)rigs;
+- (void)addToPhysicsWorld:(id)world;
+- (void)applyForcesWithMultiplier:(double)multiplier;
 - (void)downforcesDidChange;
 - (void)installPhysics;
 - (void)physicsState;
-- (void)removeFromPhysicsWorld:(id)a3;
-- (void)resetToPhysicsState:(id)a3 assumeRestStateIfNil:(BOOL)a4;
+- (void)removeFromPhysicsWorld:(id)world;
+- (void)resetToPhysicsState:(id)state assumeRestStateIfNil:(BOOL)nil;
 - (void)setupPhysics;
 - (void)setupPhysicsIfNeeded;
-- (void)updateAtTime:(double)a3 forceMultiplier:(double)a4;
+- (void)updateAtTime:(double)time forceMultiplier:(double)multiplier;
 @end
 
 @implementation AVTPhysicsController
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (void)applyForcesWithMultiplier:(double)a3
+- (void)applyForcesWithMultiplier:(double)multiplier
 {
   v55 = *MEMORY[0x1E69E9840];
   if (!self->_hasPhysicsStateOverride)
@@ -59,7 +59,7 @@
     {
       v17 = v16;
       v18 = *v51;
-      v19 = *v47.i32 * a3;
+      v19 = *v47.i32 * multiplier;
       v49 = v19;
       v45 = vdupq_lane_s32(v47, 0);
       __asm { FMOV            V0.4S, #5.0 }
@@ -88,7 +88,7 @@
             v27 = 0;
           }
 
-          v28 = [v27 presentationNode];
+          presentationNode = [v27 presentationNode];
           if (v26)
           {
             v29 = *(v26 + 24);
@@ -99,7 +99,7 @@
             v29 = 0;
           }
 
-          v30 = [v29 presentationNode];
+          presentationNode2 = [v29 presentationNode];
           if (v26)
           {
             v31 = *(v26 + 32);
@@ -111,7 +111,7 @@
           }
 
           v32 = v31;
-          [v28 convertPosition:v30 toNode:0.0];
+          [presentationNode convertPosition:presentationNode2 toNode:0.0];
           if (v26)
           {
             v34 = *(v26 + 64);
@@ -130,7 +130,7 @@
             v35.i64[0] = vmulq_n_f32(v35, 20.0 / v37).u64[0];
           }
 
-          [v30 convertVector:0 toNode:*v35.i64];
+          [presentationNode2 convertVector:0 toNode:*v35.i64];
           v39 = vmulq_n_f32(v38, v49);
           if (v26)
           {
@@ -149,7 +149,7 @@
             v39.i64[0] = 0;
           }
 
-          [v30 convertVector:0 toNode:*v39.i64];
+          [presentationNode2 convertVector:0 toNode:*v39.i64];
           if (v26)
           {
             v40 = *(v26 + 48);
@@ -179,34 +179,34 @@ LABEL_27:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAtTime:(double)a3 forceMultiplier:(double)a4
+- (void)updateAtTime:(double)time forceMultiplier:(double)multiplier
 {
   if (!self->_hasPhysicsStateOverride)
   {
     if (self->_physicsBehaviorsAreInstalledInPhysicsWorld)
     {
-      [(AVTPhysicsController *)self applyForcesWithMultiplier:a4];
+      [(AVTPhysicsController *)self applyForcesWithMultiplier:multiplier];
     }
 
     else
     {
       self->_physicsBehaviorsAreInstalledInPhysicsWorld = 1;
-      [(AVTPhysicsController *)self installPhysics:a3];
+      [(AVTPhysicsController *)self installPhysics:time];
     }
   }
 }
 
-- (__n128)offsetFromRestingPositionForNode:(void *)a3 inCoordinateSpaceOfNode:(void *)a4
+- (__n128)offsetFromRestingPositionForNode:(void *)node inCoordinateSpaceOfNode:(void *)ofNode
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  ofNodeCopy = ofNode;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v32 = 0u;
-  v8 = *(a1 + 16);
+  v8 = *(self + 16);
   v9 = [v8 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v9)
   {
@@ -233,9 +233,9 @@ LABEL_27:
           v14 = 0;
         }
 
-        if (v14 == v6)
+        if (v14 == nodeCopy)
         {
-          if (*(a1 + 37))
+          if (*(self + 37))
           {
             if (v13)
             {
@@ -249,16 +249,16 @@ LABEL_27:
               *&v17 = 0;
             }
 
-            [v16 convertPosition:v7 toNode:*&v17];
+            [v16 convertPosition:ofNodeCopy toNode:*&v17];
             v33 = v18;
 
-            [v6 convertPosition:v7 toNode:0.0];
+            [nodeCopy convertPosition:ofNodeCopy toNode:0.0];
             v32 = vsubq_f32(v19, v33);
           }
 
           else
           {
-            v20 = [v7 presentationNode];
+            presentationNode = [ofNodeCopy presentationNode];
             if (v13)
             {
               v21 = *(v13 + 24);
@@ -270,8 +270,8 @@ LABEL_27:
             }
 
             v22 = v21;
-            v23 = [v22 presentationNode];
-            v24 = v23;
+            presentationNode2 = [v22 presentationNode];
+            v24 = presentationNode2;
             if (v13)
             {
               v25 = *(v13 + 64);
@@ -282,11 +282,11 @@ LABEL_27:
               *&v25 = 0;
             }
 
-            [v23 convertPosition:v20 toNode:*&v25];
+            [presentationNode2 convertPosition:presentationNode toNode:*&v25];
             v34 = v26;
 
-            v27 = [v6 presentationNode];
-            [v27 convertPosition:v20 toNode:0.0];
+            presentationNode3 = [nodeCopy presentationNode];
+            [presentationNode3 convertPosition:presentationNode toNode:0.0];
             v31 = v28;
 
             v32 = vsubq_f32(v31, v34);
@@ -467,30 +467,30 @@ void __44__AVTPhysicsController__setupCollisionNode___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_setupPhysicsChain:(id)a3 physicsRigs:(id)a4
+- (void)_setupPhysicsChain:(id)chain physicsRigs:(id)rigs
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  chainCopy = chain;
+  rigsCopy = rigs;
+  if (chainCopy)
   {
     LODWORD(v8) = 1.5;
     v9 = [MEMORY[0x1E69DF338] sphereWithRadius:v8];
     [v9 setSegmentCount:12];
-    v10 = [MEMORY[0x1E69DF340] kinematicBody];
-    [v10 setAffectedByGravity:0];
+    kinematicBody = [MEMORY[0x1E69DF340] kinematicBody];
+    [kinematicBody setAffectedByGravity:0];
     LODWORD(v11) = 1061997773;
-    [v10 setDamping:v11];
+    [kinematicBody setDamping:v11];
     LODWORD(v12) = 1061997773;
-    [v10 setAngularDamping:v12];
-    [v6 setPhysicsBody:v10];
+    [kinematicBody setAngularDamping:v12];
+    [chainCopy setPhysicsBody:kinematicBody];
     v13 = [MEMORY[0x1E69DF350] shapeWithModel:v9];
-    [v10 setPhysicsShape:v13];
+    [kinematicBody setPhysicsShape:v13];
     v23[0] = 0;
     v23[1] = v23;
     v23[2] = 0x3032000000;
     v23[3] = __Block_byref_object_copy__1;
     v23[4] = __Block_byref_object_dispose__1;
-    v24 = v6;
+    v24 = chainCopy;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __55__AVTPhysicsController__setupPhysicsChain_physicsRigs___block_invoke;
@@ -499,10 +499,10 @@ void __44__AVTPhysicsController__setupCollisionNode___block_invoke(uint64_t a1, 
     v14 = v13;
     v22 = v23;
     v18 = v14;
-    v19 = self;
-    v15 = v10;
+    selfCopy = self;
+    v15 = kinematicBody;
     v20 = v15;
-    v21 = v7;
+    v21 = rigsCopy;
     [v17 enumerateChildNodesUsingBlock:v16];
 
     _Block_object_dispose(v23, 8);
@@ -565,15 +565,15 @@ void __44__AVTPhysicsController__setupCollisionNode___block_invoke(uint64_t a1, 
         v19 = v18;
         if (self->_physicsBehaviorsAreInstalledInPhysicsWorld)
         {
-          v20 = [v17 presentationNode];
+          presentationNode = [v17 presentationNode];
 
-          v21 = [v19 presentationNode];
+          presentationNode2 = [v19 presentationNode];
 
-          v19 = v21;
-          v17 = v20;
+          v19 = presentationNode2;
+          v17 = presentationNode;
         }
 
-        v22 = [v17 name];
+        name = [v17 name];
         [v19 convertPosition:v17 fromNode:0.0];
         if (v16)
         {
@@ -593,7 +593,7 @@ void __44__AVTPhysicsController__setupCollisionNode___block_invoke(uint64_t a1, 
           v27 = [MEMORY[0x1E695DEC8] avt_arrayWithFloat3:v34 roundingBehavior:?];
           v40 = v27;
           v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-          [v33 setObject:v28 forKeyedSubscript:v22];
+          [v33 setObject:v28 forKeyedSubscript:name];
         }
 
         ++v15;
@@ -613,17 +613,17 @@ void __44__AVTPhysicsController__setupCollisionNode___block_invoke(uint64_t a1, 
   return v30;
 }
 
-- (void)resetToPhysicsState:(id)a3 assumeRestStateIfNil:(BOOL)a4
+- (void)resetToPhysicsState:(id)state assumeRestStateIfNil:(BOOL)nil
 {
-  v4 = a4;
+  nilCopy = nil;
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  stateCopy = state;
   [(AVTPhysicsController *)self setupPhysicsIfNeeded];
-  if (v6 || v4)
+  if (stateCopy || nilCopy)
   {
     self->_hasPhysicsStateOverride = 1;
-    v26 = v6;
-    v28 = [v6 dictionaryRepresentation];
+    v26 = stateCopy;
+    dictionaryRepresentation = [stateCopy dictionaryRepresentation];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -658,9 +658,9 @@ void __44__AVTPhysicsController__setupCollisionNode___block_invoke(uint64_t a1, 
           }
 
           v15 = v14;
-          v16 = [v13 parentNode];
-          v17 = [v13 name];
-          v18 = [(NSArray *)v28 objectForKeyedSubscript:v17];
+          parentNode = [v13 parentNode];
+          name = [v13 name];
+          v18 = [(NSArray *)dictionaryRepresentation objectForKeyedSubscript:name];
           v19 = v18;
           if (v18)
           {
@@ -691,10 +691,10 @@ void __44__AVTPhysicsController__setupCollisionNode___block_invoke(uint64_t a1, 
             v22.i64[0] = 0;
           }
 
-          [v15 convertPosition:v16 toNode:*v22.i64];
+          [v15 convertPosition:parentNode toNode:*v22.i64];
           [v13 setPosition:?];
-          v23 = [v13 physicsBody];
-          [v23 setResting:1];
+          physicsBody = [v13 physicsBody];
+          [physicsBody setResting:1];
 
           ++v11;
         }
@@ -707,27 +707,27 @@ void __44__AVTPhysicsController__setupCollisionNode___block_invoke(uint64_t a1, 
       while (v24);
     }
 
-    v6 = v26;
+    stateCopy = v26;
   }
 
   else
   {
     self->_hasPhysicsStateOverride = 0;
     memset(v30, 0, sizeof(v30));
-    v28 = self->_physicsRigs;
-    v7 = [(NSArray *)v28 countByEnumeratingWithState:v30 objects:v35 count:16];
+    dictionaryRepresentation = self->_physicsRigs;
+    v7 = [(NSArray *)dictionaryRepresentation countByEnumeratingWithState:v30 objects:v35 count:16];
     if (v7)
     {
-      [(AVTPhysicsController *)v30 resetToPhysicsState:v28 assumeRestStateIfNil:v7, v35];
+      [(AVTPhysicsController *)v30 resetToPhysicsState:dictionaryRepresentation assumeRestStateIfNil:v7, v35];
     }
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addToPhysicsWorld:(id)a3
+- (void)addToPhysicsWorld:(id)world
 {
-  v4 = a3;
+  worldCopy = world;
   WeakRetained = objc_loadWeakRetained(&self->_physicsWorld);
 
   if (WeakRetained)
@@ -739,16 +739,16 @@ void __44__AVTPhysicsController__setupCollisionNode___block_invoke(uint64_t a1, 
     }
   }
 
-  objc_storeWeak(&self->_physicsWorld, v4);
+  objc_storeWeak(&self->_physicsWorld, worldCopy);
 }
 
-- (void)removeFromPhysicsWorld:(id)a3
+- (void)removeFromPhysicsWorld:(id)world
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  worldCopy = world;
   WeakRetained = objc_loadWeakRetained(&self->_physicsWorld);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != worldCopy)
   {
     v6 = avt_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -783,13 +783,13 @@ void __44__AVTPhysicsController__setupCollisionNode___block_invoke(uint64_t a1, 
           v19 = *(*(&v23 + 1) + 8 * v18);
           if (v19)
           {
-            [v4 removePhysicsJoint:{*(v19 + 40), v23}];
+            [worldCopy removePhysicsJoint:{*(v19 + 40), v23}];
             v20 = *(v19 + 16);
           }
 
           else
           {
-            [AVTPhysicsController removeFromPhysicsWorld:v4];
+            [AVTPhysicsController removeFromPhysicsWorld:worldCopy];
             v20 = 0;
           }
 

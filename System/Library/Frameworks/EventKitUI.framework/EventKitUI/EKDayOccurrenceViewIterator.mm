@@ -1,21 +1,21 @@
 @interface EKDayOccurrenceViewIterator
-- (EKDayOccurrenceViewIterator)initWithOccurrenceViews:(id)a3 selectedEvent:(id)a4;
-- (id)_occurrenceViewAtIndex:(int64_t)a3;
+- (EKDayOccurrenceViewIterator)initWithOccurrenceViews:(id)views selectedEvent:(id)event;
+- (id)_occurrenceViewAtIndex:(int64_t)index;
 - (id)next;
 - (id)previous;
-- (int64_t)_nextIndexFromCurrentIndex:(int64_t)a3 forward:(BOOL)a4;
-- (int64_t)_selectedCopyOccurrenceViewIndexInOccurrenceViews:(id)a3 selectedIndex:(int64_t)a4;
-- (int64_t)_selectedOccurrenceViewIndexInOccurrenceViews:(id)a3 selectedEvent:(id)a4;
-- (void)_prepareOccurrenceViewsForIteration:(id)a3 selectedEvent:(id)a4 result:(id)a5;
-- (void)_separateOccurrenceViews:(id)a3 result:(id)a4;
+- (int64_t)_nextIndexFromCurrentIndex:(int64_t)index forward:(BOOL)forward;
+- (int64_t)_selectedCopyOccurrenceViewIndexInOccurrenceViews:(id)views selectedIndex:(int64_t)index;
+- (int64_t)_selectedOccurrenceViewIndexInOccurrenceViews:(id)views selectedEvent:(id)event;
+- (void)_prepareOccurrenceViewsForIteration:(id)iteration selectedEvent:(id)event result:(id)result;
+- (void)_separateOccurrenceViews:(id)views result:(id)result;
 @end
 
 @implementation EKDayOccurrenceViewIterator
 
-- (EKDayOccurrenceViewIterator)initWithOccurrenceViews:(id)a3 selectedEvent:(id)a4
+- (EKDayOccurrenceViewIterator)initWithOccurrenceViews:(id)views selectedEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  viewsCopy = views;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = EKDayOccurrenceViewIterator;
   v8 = [(EKDayOccurrenceViewIterator *)&v13 init];
@@ -27,7 +27,7 @@
     v11[2] = __69__EKDayOccurrenceViewIterator_initWithOccurrenceViews_selectedEvent___block_invoke;
     v11[3] = &unk_1E8440820;
     v12 = v8;
-    [(EKDayOccurrenceViewIterator *)v12 _prepareOccurrenceViewsForIteration:v6 selectedEvent:v7 result:v11];
+    [(EKDayOccurrenceViewIterator *)v12 _prepareOccurrenceViewsForIteration:viewsCopy selectedEvent:eventCopy result:v11];
   }
 
   return v9;
@@ -45,52 +45,52 @@ uint64_t __69__EKDayOccurrenceViewIterator_initWithOccurrenceViews_selectedEvent
 - (id)next
 {
   [(EKDayOccurrenceViewIterator *)self setCurrentIndex:[(EKDayOccurrenceViewIterator *)self _nextIndexFromCurrentIndex:[(EKDayOccurrenceViewIterator *)self currentIndex] forward:1]];
-  v3 = [(EKDayOccurrenceViewIterator *)self currentIndex];
+  currentIndex = [(EKDayOccurrenceViewIterator *)self currentIndex];
 
-  return [(EKDayOccurrenceViewIterator *)self _occurrenceViewAtIndex:v3];
+  return [(EKDayOccurrenceViewIterator *)self _occurrenceViewAtIndex:currentIndex];
 }
 
 - (id)previous
 {
   [(EKDayOccurrenceViewIterator *)self setCurrentIndex:[(EKDayOccurrenceViewIterator *)self _nextIndexFromCurrentIndex:[(EKDayOccurrenceViewIterator *)self currentIndex] forward:0]];
-  v3 = [(EKDayOccurrenceViewIterator *)self currentIndex];
+  currentIndex = [(EKDayOccurrenceViewIterator *)self currentIndex];
 
-  return [(EKDayOccurrenceViewIterator *)self _occurrenceViewAtIndex:v3];
+  return [(EKDayOccurrenceViewIterator *)self _occurrenceViewAtIndex:currentIndex];
 }
 
-- (id)_occurrenceViewAtIndex:(int64_t)a3
+- (id)_occurrenceViewAtIndex:(int64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
   }
 
   else
   {
-    v5 = [(EKDayOccurrenceViewIterator *)self occurrenceViews];
-    v3 = [v5 objectAtIndexedSubscript:a3];
+    occurrenceViews = [(EKDayOccurrenceViewIterator *)self occurrenceViews];
+    v3 = [occurrenceViews objectAtIndexedSubscript:index];
   }
 
   return v3;
 }
 
-- (int64_t)_nextIndexFromCurrentIndex:(int64_t)a3 forward:(BOOL)a4
+- (int64_t)_nextIndexFromCurrentIndex:(int64_t)index forward:(BOOL)forward
 {
-  v4 = a4;
-  v7 = [(EKDayOccurrenceViewIterator *)self occurrenceViews];
-  v8 = [v7 count];
+  forwardCopy = forward;
+  occurrenceViews = [(EKDayOccurrenceViewIterator *)self occurrenceViews];
+  v8 = [occurrenceViews count];
 
   if (!v8)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (!v4)
+  if (!forwardCopy)
   {
-    v11 = [(EKDayOccurrenceViewIterator *)self occurrenceViews];
-    v10 = [v11 count] - 1;
+    occurrenceViews2 = [(EKDayOccurrenceViewIterator *)self occurrenceViews];
+    v10 = [occurrenceViews2 count] - 1;
 
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+    if (index != 0x7FFFFFFFFFFFFFFFLL)
     {
       v12 = -1;
       goto LABEL_11;
@@ -99,16 +99,16 @@ uint64_t __69__EKDayOccurrenceViewIterator_initWithOccurrenceViews_selectedEvent
     return v10;
   }
 
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = 0;
     v12 = 1;
 LABEL_11:
-    v13 = v12 + a3;
+    v13 = v12 + index;
     if (v13 >= 0)
     {
-      v14 = [(EKDayOccurrenceViewIterator *)self occurrenceViews];
-      if (v13 < [v14 count])
+      occurrenceViews3 = [(EKDayOccurrenceViewIterator *)self occurrenceViews];
+      if (v13 < [occurrenceViews3 count])
       {
         v10 = v13;
       }
@@ -120,20 +120,20 @@ LABEL_11:
   return [(EKDayOccurrenceViewIterator *)self firstTimedOccurrenceIndex];
 }
 
-- (void)_prepareOccurrenceViewsForIteration:(id)a3 selectedEvent:(id)a4 result:(id)a5
+- (void)_prepareOccurrenceViewsForIteration:(id)iteration selectedEvent:(id)event result:(id)result
 {
-  v8 = a4;
-  v9 = a5;
+  eventCopy = event;
+  resultCopy = result;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __88__EKDayOccurrenceViewIterator__prepareOccurrenceViewsForIteration_selectedEvent_result___block_invoke;
   v12[3] = &unk_1E8440848;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(EKDayOccurrenceViewIterator *)self _separateOccurrenceViews:a3 result:v12];
+  v13 = eventCopy;
+  v14 = resultCopy;
+  v10 = resultCopy;
+  v11 = eventCopy;
+  [(EKDayOccurrenceViewIterator *)self _separateOccurrenceViews:iteration result:v12];
 }
 
 void __88__EKDayOccurrenceViewIterator__prepareOccurrenceViewsForIteration_selectedEvent_result___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -159,18 +159,18 @@ void __88__EKDayOccurrenceViewIterator__prepareOccurrenceViewsForIteration_selec
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_separateOccurrenceViews:(id)a3 result:(id)a4
+- (void)_separateOccurrenceViews:(id)views result:(id)result
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
+  viewsCopy = views;
+  resultCopy = result;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v5;
+  v9 = viewsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -188,12 +188,12 @@ void __88__EKDayOccurrenceViewIterator__prepareOccurrenceViewsForIteration_selec
         v14 = *(*(&v18 + 1) + 8 * i);
         if ([v14 isAllDay])
         {
-          v15 = v7;
+          v15 = array;
         }
 
         else
         {
-          v15 = v8;
+          v15 = array2;
         }
 
         [v15 addObject:v14];
@@ -205,23 +205,23 @@ void __88__EKDayOccurrenceViewIterator__prepareOccurrenceViewsForIteration_selec
     while (v11);
   }
 
-  v16 = [v7 copy];
-  v17 = [v8 copy];
-  v6[2](v6, v16, v17);
+  v16 = [array copy];
+  v17 = [array2 copy];
+  resultCopy[2](resultCopy, v16, v17);
 }
 
-- (int64_t)_selectedOccurrenceViewIndexInOccurrenceViews:(id)a3 selectedEvent:(id)a4
+- (int64_t)_selectedOccurrenceViewIndexInOccurrenceViews:(id)views selectedEvent:(id)event
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  eventCopy = event;
+  v6 = eventCopy;
+  if (eventCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __91__EKDayOccurrenceViewIterator__selectedOccurrenceViewIndexInOccurrenceViews_selectedEvent___block_invoke;
     v9[3] = &unk_1E8440870;
-    v10 = v5;
-    v7 = [a3 indexOfObjectPassingTest:v9];
+    v10 = eventCopy;
+    v7 = [views indexOfObjectPassingTest:v9];
   }
 
   else
@@ -240,15 +240,15 @@ uint64_t __91__EKDayOccurrenceViewIterator__selectedOccurrenceViewIndexInOccurre
   return v4;
 }
 
-- (int64_t)_selectedCopyOccurrenceViewIndexInOccurrenceViews:(id)a3 selectedIndex:(int64_t)a4
+- (int64_t)_selectedCopyOccurrenceViewIndexInOccurrenceViews:(id)views selectedIndex:(int64_t)index
 {
-  v5 = a3;
-  v6 = v5;
+  viewsCopy = views;
+  v6 = viewsCopy;
   v7 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL && a4 >= -1)
+  if (index != 0x7FFFFFFFFFFFFFFFLL && index >= -1)
   {
-    v8 = a4 + 1;
-    if (v8 < [v5 count])
+    v8 = index + 1;
+    if (v8 < [viewsCopy count])
     {
       v9 = [v6 objectAtIndexedSubscript:v8];
       if ([v9 isSelectedCopyView])

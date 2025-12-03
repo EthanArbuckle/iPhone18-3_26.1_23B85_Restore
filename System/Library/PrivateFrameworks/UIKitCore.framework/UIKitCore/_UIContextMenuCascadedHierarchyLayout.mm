@@ -1,27 +1,27 @@
 @interface _UIContextMenuCascadedHierarchyLayout
-- (CAPoint3D)_submenuOffsetForCascadingLeft:(BOOL)a3;
+- (CAPoint3D)_submenuOffsetForCascadingLeft:(BOOL)left;
 - (CGRect)_cascadingAreaBounds;
 - (CGSize)encompassingSize;
-- (_UIContextMenuCascadedHierarchyLayout)initWithMenuView:(id)a3;
+- (_UIContextMenuCascadedHierarchyLayout)initWithMenuView:(id)view;
 - (_UIContextMenuView)menuView;
 - (id)_metrics;
-- (void)navigateDownFromNode:(id)a3 toNode:(id)a4 alongsideAnimations:(id)a5 completion:(id)a6;
-- (void)navigateUpFromNode:(id)a3 toNode:(id)a4 alongsideAnimations:(id)a5 completion:(id)a6;
-- (void)performLayoutForComputingPreferredContentSize:(BOOL)a3 withMaxContainerSize:(CGSize)a4;
+- (void)navigateDownFromNode:(id)node toNode:(id)toNode alongsideAnimations:(id)animations completion:(id)completion;
+- (void)navigateUpFromNode:(id)node toNode:(id)toNode alongsideAnimations:(id)animations completion:(id)completion;
+- (void)performLayoutForComputingPreferredContentSize:(BOOL)size withMaxContainerSize:(CGSize)containerSize;
 @end
 
 @implementation _UIContextMenuCascadedHierarchyLayout
 
-- (_UIContextMenuCascadedHierarchyLayout)initWithMenuView:(id)a3
+- (_UIContextMenuCascadedHierarchyLayout)initWithMenuView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = _UIContextMenuCascadedHierarchyLayout;
   v5 = [(_UIContextMenuCascadedHierarchyLayout *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIContextMenuCascadedHierarchyLayout *)v5 setMenuView:v4];
+    [(_UIContextMenuCascadedHierarchyLayout *)v5 setMenuView:viewCopy];
   }
 
   return v6;
@@ -29,11 +29,11 @@
 
 - (CGSize)encompassingSize
 {
-  v2 = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
-  v3 = [v2 submenus];
-  v4 = [v3 first];
-  v5 = [v4 listView];
-  [v5 bounds];
+  menuView = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
+  submenus = [menuView submenus];
+  first = [submenus first];
+  listView = [first listView];
+  [listView bounds];
   v7 = v6;
   v9 = v8;
 
@@ -44,53 +44,53 @@
   return result;
 }
 
-- (void)performLayoutForComputingPreferredContentSize:(BOOL)a3 withMaxContainerSize:(CGSize)a4
+- (void)performLayoutForComputingPreferredContentSize:(BOOL)size withMaxContainerSize:(CGSize)containerSize
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
+  height = containerSize.height;
+  width = containerSize.width;
+  menuView = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
   v18[3] = 0;
-  v9 = [v8 submenus];
+  submenus = [menuView submenus];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __108___UIContextMenuCascadedHierarchyLayout_performLayoutForComputingPreferredContentSize_withMaxContainerSize___block_invoke;
   v11[3] = &unk_1E711F790;
-  v10 = v8;
+  v10 = menuView;
   v12 = v10;
-  v13 = self;
-  v17 = a3;
+  selfCopy = self;
+  sizeCopy = size;
   v15 = width;
   v16 = height;
   v14 = v18;
-  [v9 enumerateNodes:v11];
+  [submenus enumerateNodes:v11];
 
   _Block_object_dispose(v18, 8);
 }
 
-- (void)navigateDownFromNode:(id)a3 toNode:(id)a4 alongsideAnimations:(id)a5 completion:(id)a6
+- (void)navigateDownFromNode:(id)node toNode:(id)toNode alongsideAnimations:(id)animations completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
-  v15 = [v11 listView];
+  nodeCopy = node;
+  toNodeCopy = toNode;
+  animationsCopy = animations;
+  completionCopy = completion;
+  menuView = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
+  listView = [toNodeCopy listView];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __100___UIContextMenuCascadedHierarchyLayout_navigateDownFromNode_toNode_alongsideAnimations_completion___block_invoke;
   v35[3] = &unk_1E70F8868;
-  v16 = v14;
+  v16 = menuView;
   v36 = v16;
-  v17 = v15;
+  v17 = listView;
   v37 = v17;
-  v38 = v11;
-  v39 = self;
-  v40 = v10;
-  v26 = v10;
-  v18 = v11;
+  v38 = toNodeCopy;
+  selfCopy = self;
+  v40 = nodeCopy;
+  v26 = nodeCopy;
+  v18 = toNodeCopy;
   [UIView _performWithoutRetargetingAnimations:v35];
   v19 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.25];
   v33[0] = MEMORY[0x1E69E9820];
@@ -107,72 +107,72 @@
   v30[2] = __100___UIContextMenuCascadedHierarchyLayout_navigateDownFromNode_toNode_alongsideAnimations_completion___block_invoke_5;
   v30[3] = &unk_1E70F6150;
   v31 = v16;
-  v32 = v12;
+  v32 = animationsCopy;
   v30[4] = self;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __100___UIContextMenuCascadedHierarchyLayout_navigateDownFromNode_toNode_alongsideAnimations_completion___block_invoke_7;
   v27[3] = &unk_1E711F7E0;
   v28 = v20;
-  v29 = v13;
-  v22 = v13;
+  v29 = completionCopy;
+  v22 = completionCopy;
   v23 = v20;
   v24 = v16;
-  v25 = v12;
+  v25 = animationsCopy;
   [UIView _animateUsingSpringBehavior:v21 tracking:0 animations:v30 completion:v27];
 }
 
-- (void)navigateUpFromNode:(id)a3 toNode:(id)a4 alongsideAnimations:(id)a5 completion:(id)a6
+- (void)navigateUpFromNode:(id)node toNode:(id)toNode alongsideAnimations:(id)animations completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  nodeCopy = node;
+  animationsCopy = animations;
+  completionCopy = completion;
   v11 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.25];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __98___UIContextMenuCascadedHierarchyLayout_navigateUpFromNode_toNode_alongsideAnimations_completion___block_invoke;
   v14[3] = &unk_1E70F37C0;
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  [UIView _animateUsingSpringBehavior:v11 tracking:0 animations:v14 completion:v10];
+  v15 = nodeCopy;
+  v16 = animationsCopy;
+  v12 = animationsCopy;
+  v13 = nodeCopy;
+  [UIView _animateUsingSpringBehavior:v11 tracking:0 animations:v14 completion:completionCopy];
 }
 
 - (id)_metrics
 {
-  v2 = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
-  v3 = [v2 traitCollection];
-  v4 = _UIContextMenuGetPlatformMetrics([v3 userInterfaceIdiom]);
+  menuView = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
+  traitCollection = [menuView traitCollection];
+  v4 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   return v4;
 }
 
 - (CGRect)_cascadingAreaBounds
 {
-  v3 = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
-  v4 = [v3 window];
+  menuView = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
+  window = [menuView window];
 
-  v5 = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
-  v6 = [v5 shouldAvoidInputViews];
-  v7 = v4;
+  menuView2 = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
+  shouldAvoidInputViews = [menuView2 shouldAvoidInputViews];
+  v7 = window;
   [v7 safeAreaInsets];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 traitCollection];
-  v17 = [v16 verticalSizeClass];
+  traitCollection = [v7 traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
   v18 = 0.0;
   v19 = v15 + 0.0;
-  if (v17 == 1)
+  if (verticalSizeClass == 1)
   {
     v19 = v15;
   }
 
   v67 = v19;
-  if (v17 == 1)
+  if (verticalSizeClass == 1)
   {
     v20 = v11;
   }
@@ -183,7 +183,7 @@
     v20 = v11 + 0.0;
   }
 
-  if (v17 == 1)
+  if (verticalSizeClass == 1)
   {
     v21 = v9;
   }
@@ -195,13 +195,13 @@
 
   v22 = _UIContextMenuDefaultContentSpacing(v7);
   v23 = fmax(v13, 20.0);
-  if (v6)
+  if (shouldAvoidInputViews)
   {
     v24 = v7;
-    v25 = [v24 _window];
-    v26 = [v25 _isRemoteInputHostWindow];
+    _window = [v24 _window];
+    _isRemoteInputHostWindow = [_window _isRemoteInputHostWindow];
 
-    if ((v26 & 1) == 0)
+    if ((_isRemoteInputHostWindow & 1) == 0)
     {
       v27 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
       v28 = v27;
@@ -209,8 +209,8 @@
       {
         [v27 verticalOverlapForView:v24 usingKeyboardInfo:0];
         v30 = v29;
-        v31 = [v24 traitCollection];
-        v32 = _UIContextMenuGetPlatformMetrics([v31 userInterfaceIdiom]);
+        traitCollection2 = [v24 traitCollection];
+        v32 = _UIContextMenuGetPlatformMetrics([traitCollection2 userInterfaceIdiom]);
 
         [v32 minimumContainerInsets];
         v34 = v33;
@@ -225,10 +225,10 @@
     }
   }
 
-  v35 = [v7 traitCollection];
-  v36 = [v35 userInterfaceIdiom];
+  traitCollection3 = [v7 traitCollection];
+  userInterfaceIdiom = [traitCollection3 userInterfaceIdiom];
 
-  v37 = _UIContextMenuGetPlatformMetrics(v36);
+  v37 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v37 preferredDefaultContentInsets];
   v39 = fmax(fmax(v21, 20.0), v38);
   v41 = fmax(fmax(v20, v22), v40);
@@ -240,8 +240,8 @@
   v49 = v39 + v48;
   v51 = v50 - (v41 + v45);
   v53 = v52 - (v39 + v43);
-  v54 = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
-  [v7 convertRect:v54 toView:{v47, v49, v51, v53}];
+  menuView3 = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
+  [v7 convertRect:menuView3 toView:{v47, v49, v51, v53}];
   v56 = v55;
   v58 = v57;
   v60 = v59;
@@ -258,32 +258,32 @@
   return result;
 }
 
-- (CAPoint3D)_submenuOffsetForCascadingLeft:(BOOL)a3
+- (CAPoint3D)_submenuOffsetForCascadingLeft:(BOOL)left
 {
-  v3 = a3;
-  v5 = [(_UIContextMenuCascadedHierarchyLayout *)self _metrics];
-  v6 = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
-  v7 = [v6 effectiveUserInterfaceLayoutDirection];
+  leftCopy = left;
+  _metrics = [(_UIContextMenuCascadedHierarchyLayout *)self _metrics];
+  menuView = [(_UIContextMenuCascadedHierarchyLayout *)self menuView];
+  effectiveUserInterfaceLayoutDirection = [menuView effectiveUserInterfaceLayoutDirection];
 
-  if (!v3)
+  if (!leftCopy)
   {
-    if (!v7)
+    if (!effectiveUserInterfaceLayoutDirection)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    [v5 leadingCascadedSubmenuOffset];
+    [_metrics leadingCascadedSubmenuOffset];
     goto LABEL_6;
   }
 
-  if (!v7)
+  if (!effectiveUserInterfaceLayoutDirection)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [v5 trailingCascadedSubmenuOffset];
+  [_metrics trailingCascadedSubmenuOffset];
 LABEL_6:
   v11 = v8;
   v12 = v9;

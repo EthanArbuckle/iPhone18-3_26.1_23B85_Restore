@@ -1,27 +1,27 @@
 @interface TPSCapability
-- (TPSCapability)initWithDictionary:(id)a3;
+- (TPSCapability)initWithDictionary:(id)dictionary;
 - (id)debugDescription;
 @end
 
 @implementation TPSCapability
 
-- (TPSCapability)initWithDictionary:(id)a3
+- (TPSCapability)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = TPSCapability;
   v5 = [(TPSCapability *)&v13 init];
   if (v5)
   {
-    v6 = [v4 TPSSafeStringForKey:@"key"];
+    v6 = [dictionaryCopy TPSSafeStringForKey:@"key"];
     key = v5->_key;
     v5->_key = v6;
 
-    v8 = [v4 TPSSafeObjectForKey:@"value"];
+    v8 = [dictionaryCopy TPSSafeObjectForKey:@"value"];
     value = v5->_value;
     v5->_value = v8;
 
-    v10 = [v4 TPSSafeStringForKey:@"joinType"];
+    v10 = [dictionaryCopy TPSSafeStringForKey:@"joinType"];
     if ([v10 isEqualToString:@"AND"])
     {
       v11 = 0;
@@ -59,8 +59,8 @@ LABEL_8:
   v6 = [(TPSCapability *)self key];
   [v5 appendFormat:@"; %@ = %@", @"key", v6];
 
-  v7 = [(TPSCapability *)self value];
-  [v5 appendFormat:@"; %@ = %@", @"value", v7];
+  value = [(TPSCapability *)self value];
+  [v5 appendFormat:@"; %@ = %@", @"value", value];
 
   [v5 appendFormat:@"; %@ = %ld", @"joinType", -[TPSCapability joinType](self, "joinType")];
 

@@ -1,5 +1,5 @@
 @interface PKBarcodeEventMetadataResponse
-- (PKBarcodeEventMetadataResponse)initWithCoder:(id)a3;
+- (PKBarcodeEventMetadataResponse)initWithCoder:(id)coder;
 - (PKBarcodeEventMetadataResponse)initWithPaymentInformation:(NSData *)paymentInformation;
 @end
 
@@ -20,15 +20,15 @@
   return v7;
 }
 
-- (PKBarcodeEventMetadataResponse)initWithCoder:(id)a3
+- (PKBarcodeEventMetadataResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKBarcodeEventMetadataResponse;
   v5 = [(PKBarcodeEventMetadataResponse *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentInformation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentInformation"];
     paymentInformation = v5->_paymentInformation;
     v5->_paymentInformation = v6;
 

@@ -1,5 +1,5 @@
 @interface SBHLegibilityLabelSettings
-+ (id)generatedLegibilitySettingsForSettings:(id)a3 existingSettings:(id)a4;
++ (id)generatedLegibilitySettingsForSettings:(id)settings existingSettings:(id)existingSettings;
 + (id)settingsControllerModule;
 - (void)setDefaultValues;
 @end
@@ -114,8 +114,8 @@
   }
 
   v32 = MEMORY[0x1E69C65E8];
-  v33 = [MEMORY[0x1E69C6640] action];
-  v34 = [v32 rowWithTitle:@"Restore Defaults" action:v33];
+  action = [MEMORY[0x1E69C6640] action];
+  v34 = [v32 rowWithTitle:@"Restore Defaults" action:action];
 
   v35 = MEMORY[0x1E69C6638];
   v45 = v34;
@@ -128,52 +128,52 @@
   return v38;
 }
 
-+ (id)generatedLegibilitySettingsForSettings:(id)a3 existingSettings:(id)a4
++ (id)generatedLegibilitySettingsForSettings:(id)settings existingSettings:(id)existingSettings
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 overrideLegibilitySettings])
+  settingsCopy = settings;
+  existingSettingsCopy = existingSettings;
+  if (![settingsCopy overrideLegibilitySettings])
   {
     v10 = 0;
     goto LABEL_44;
   }
 
   v7 = off_1E8087000;
-  v8 = [SBHLegibilitySettings legibilitySettingsForLegibilitySettings:v6 ignoreFeatureFlags:1];
-  if ([v5 shouldOverrideLegibilityStyle])
+  v8 = [SBHLegibilitySettings legibilitySettingsForLegibilitySettings:existingSettingsCopy ignoreFeatureFlags:1];
+  if ([settingsCopy shouldOverrideLegibilityStyle])
   {
-    v9 = [v5 overriddenLegibilityStyle];
+    overriddenLegibilityStyle = [settingsCopy overriddenLegibilityStyle];
   }
 
   else
   {
-    v9 = [v8 style];
+    overriddenLegibilityStyle = [v8 style];
   }
 
-  v11 = v9;
-  if ([v5 overrideContentColor] && (objc_msgSend(v5, "overrideContentColorRed"), v13 = v12, objc_msgSend(v5, "overrideContentColorGreen"), v15 = v14, objc_msgSend(v5, "overrideContentColorBlue"), objc_msgSend(MEMORY[0x1E69DC888], "colorWithRed:green:blue:alpha:", v13 / 255.0, v15 / 255.0, v16 / 255.0, 1.0), (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  v11 = overriddenLegibilityStyle;
+  if ([settingsCopy overrideContentColor] && (objc_msgSend(settingsCopy, "overrideContentColorRed"), v13 = v12, objc_msgSend(settingsCopy, "overrideContentColorGreen"), v15 = v14, objc_msgSend(settingsCopy, "overrideContentColorBlue"), objc_msgSend(MEMORY[0x1E69DC888], "colorWithRed:green:blue:alpha:", v13 / 255.0, v15 / 255.0, v16 / 255.0, 1.0), (v17 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v18 = v17;
     v40 = 0;
-    v19 = 0;
-    v20 = 0;
-    v21 = 0;
+    primaryColor = 0;
+    secondaryColor = 0;
+    shadowColor = 0;
   }
 
   else
   {
-    v19 = [v8 primaryColor];
-    v20 = [v8 secondaryColor];
-    v21 = [v8 shadowColor];
+    primaryColor = [v8 primaryColor];
+    secondaryColor = [v8 secondaryColor];
+    shadowColor = [v8 shadowColor];
     v18 = 0;
     v40 = 1;
   }
 
-  v22 = [v8 _UILegibilitySettings];
-  if (v22)
+  _UILegibilitySettings = [v8 _UILegibilitySettings];
+  if (_UILegibilitySettings)
   {
-    v23 = [v8 _UILegibilitySettings];
-    [v23 minFillHeight];
+    _UILegibilitySettings2 = [v8 _UILegibilitySettings];
+    [_UILegibilitySettings2 minFillHeight];
     v25 = v24;
 
     v7 = off_1E8087000;
@@ -184,17 +184,17 @@
     v25 = 0.0;
   }
 
-  if (![v5 shouldOverrideLegibilityEngine] || !SBHFeatureEnabled(0))
+  if (![settingsCopy shouldOverrideLegibilityEngine] || !SBHFeatureEnabled(0))
   {
     goto LABEL_39;
   }
 
-  v26 = [v5 overrideLegibilityEngine];
-  if (v26 > 1)
+  overrideLegibilityEngine = [settingsCopy overrideLegibilityEngine];
+  if (overrideLegibilityEngine > 1)
   {
-    if (v26 != 2)
+    if (overrideLegibilityEngine != 2)
     {
-      if (v26 == 3)
+      if (overrideLegibilityEngine == 3)
       {
         v28 = [MEMORY[0x1E69C5428] defaultLegibilityDescriptorForStyle:PLKLegibilityStyleForUILegibilityStyle()];
 LABEL_31:
@@ -206,7 +206,7 @@ LABEL_39:
       v37 = objc_alloc(MEMORY[0x1E69DD5B8]);
       if (v40)
       {
-        v38 = [v37 initWithStyle:v11 primaryColor:v19 secondaryColor:v20 shadowColor:v21];
+        v38 = [v37 initWithStyle:v11 primaryColor:primaryColor secondaryColor:secondaryColor shadowColor:shadowColor];
       }
 
       else
@@ -219,7 +219,7 @@ LABEL_39:
       goto LABEL_43;
     }
 
-    if (v19)
+    if (primaryColor)
     {
       v31 = 0;
     }
@@ -235,9 +235,9 @@ LABEL_39:
       v33 = [v32 initWithStyle:v11];
     }
 
-    else if (v19)
+    else if (primaryColor)
     {
-      v33 = [v32 initWithStyle:v11 primaryColor:v19 secondaryColor:v20 shadowColor:v21];
+      v33 = [v32 initWithStyle:v11 primaryColor:primaryColor secondaryColor:secondaryColor shadowColor:shadowColor];
     }
 
     else
@@ -256,14 +256,14 @@ LABEL_39:
 
   else
   {
-    if (v26)
+    if (overrideLegibilityEngine)
     {
-      if (v26 == 1)
+      if (overrideLegibilityEngine == 1)
       {
         v27 = objc_alloc(MEMORY[0x1E69D4588]);
         if (v40)
         {
-          v28 = [v27 initWithStyle:v11 primaryColor:v19 secondaryColor:v20 shadowColor:v21];
+          v28 = [v27 initWithStyle:v11 primaryColor:primaryColor secondaryColor:secondaryColor shadowColor:shadowColor];
         }
 
         else
@@ -280,7 +280,7 @@ LABEL_39:
     v29 = objc_alloc(MEMORY[0x1E69DD5B8]);
     if (v40)
     {
-      v30 = [v29 initWithStyle:v11 primaryColor:v19 secondaryColor:v20 shadowColor:v21];
+      v30 = [v29 initWithStyle:v11 primaryColor:primaryColor secondaryColor:secondaryColor shadowColor:shadowColor];
     }
 
     else

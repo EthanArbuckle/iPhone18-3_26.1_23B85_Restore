@@ -12,7 +12,7 @@
   v11 = 0.0;
   v12 = 0.0;
   v4 = a3;
-  [a1 getRed:&v14 green:&v13 blue:&v12 alpha:&v11];
+  [self getRed:&v14 green:&v13 blue:&v12 alpha:&v11];
   v9 = 0.0;
   v10 = 0.0;
   v7 = 0.0;
@@ -31,7 +31,7 @@
   v15 = 0.0;
   v13 = 0.0;
   v6 = a4;
-  [a1 getRed:&v16 green:&v15 blue:&v14 alpha:&v13];
+  [self getRed:&v16 green:&v15 blue:&v14 alpha:&v13];
   v11 = 0.0;
   v12 = 0.0;
   v9 = 0.0;

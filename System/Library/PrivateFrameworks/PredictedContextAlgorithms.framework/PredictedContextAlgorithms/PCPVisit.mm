@@ -1,20 +1,20 @@
 @interface PCPVisit
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasExitTimeCFAbsolute:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasExitTimeCFAbsolute:(BOOL)absolute;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPVisit
 
-- (void)setHasExitTimeCFAbsolute:(BOOL)a3
+- (void)setHasExitTimeCFAbsolute:(BOOL)absolute
 {
-  if (a3)
+  if (absolute)
   {
     v3 = 2;
   }
@@ -33,27 +33,27 @@
   v8.receiver = self;
   v8.super_class = PCPVisit;
   v4 = [(PCPVisit *)&v8 description];
-  v5 = [(PCPVisit *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPVisit *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   location = self->_location;
   if (location)
   {
-    v7 = [(PCPLocation *)location dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"location"];
+    dictionaryRepresentation = [(PCPLocation *)location dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"location"];
   }
 
   has = self->_has;
@@ -80,20 +80,20 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_location)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -101,7 +101,7 @@
   {
     entryTimeCFAbsolute = self->_entryTimeCFAbsolute;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -109,61 +109,61 @@
   {
     exitTimeCFAbsolute = self->_exitTimeCFAbsolute;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_loiIdentifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v6;
+    [toCopy setIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_location)
   {
     [v6 setLocation:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_entryTimeCFAbsolute;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 1) = *&self->_entryTimeCFAbsolute;
+    *(toCopy + 48) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_exitTimeCFAbsolute;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 2) = *&self->_exitTimeCFAbsolute;
+    *(toCopy + 48) |= 2u;
   }
 
   if (self->_loiIdentifier)
   {
     [v6 setLoiIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(PCPLocation *)self->_location copyWithZone:a3];
+  v8 = [(PCPLocation *)self->_location copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -181,23 +181,23 @@
     *(v5 + 48) |= 2u;
   }
 
-  v11 = [(NSData *)self->_loiIdentifier copyWithZone:a3];
+  v11 = [(NSData *)self->_loiIdentifier copyWithZone:zone];
   v12 = *(v5 + 40);
   *(v5 + 40) = v11;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 3))
+  if (identifier | *(equalCopy + 3))
   {
     if (![(NSData *)identifier isEqual:?])
     {
@@ -206,7 +206,7 @@
   }
 
   location = self->_location;
-  if (location | *(v4 + 4))
+  if (location | *(equalCopy + 4))
   {
     if (![(PCPLocation *)location isEqual:?])
     {
@@ -214,16 +214,16 @@
     }
   }
 
-  v7 = *(v4 + 48);
+  v7 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_entryTimeCFAbsolute != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_entryTimeCFAbsolute != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_18:
     v9 = 0;
@@ -232,19 +232,19 @@ LABEL_18:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_exitTimeCFAbsolute != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_exitTimeCFAbsolute != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_18;
   }
 
   loiIdentifier = self->_loiIdentifier;
-  if (loiIdentifier | *(v4 + 5))
+  if (loiIdentifier | *(equalCopy + 5))
   {
     v9 = [(NSData *)loiIdentifier isEqual:?];
   }
@@ -333,18 +333,18 @@ LABEL_19:
   return v4 ^ v3 ^ v7 ^ v11 ^ [(NSData *)self->_loiIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(PCPVisit *)self setIdentifier:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
   location = self->_location;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (location)
   {
     if (!v6)
@@ -365,23 +365,23 @@ LABEL_19:
     [(PCPVisit *)self setLocation:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_9:
-  v7 = *(v4 + 48);
+  v7 = *(fromCopy + 48);
   if (v7)
   {
-    self->_entryTimeCFAbsolute = v4[1];
+    self->_entryTimeCFAbsolute = fromCopy[1];
     *&self->_has |= 1u;
-    v7 = *(v4 + 48);
+    v7 = *(fromCopy + 48);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_exitTimeCFAbsolute = v4[2];
+    self->_exitTimeCFAbsolute = fromCopy[2];
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PCPVisit *)self setLoiIdentifier:?];
   }

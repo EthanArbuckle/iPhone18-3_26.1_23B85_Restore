@@ -8,8 +8,8 @@
 {
   v6.receiver = self;
   v6.super_class = _LTCombinedRouteParagraphTranslationRequest;
-  v3 = [(_LTTranslationRequest *)&v6 requestContext];
-  [v3 setRoute:0];
+  requestContext = [(_LTTranslationRequest *)&v6 requestContext];
+  [requestContext setRoute:0];
   if ([(_LTTranslationRequest *)self forcedOfflineTranslation])
   {
     v4 = 1;
@@ -25,10 +25,10 @@
     v4 = 2;
   }
 
-  [v3 setRoute:v4];
+  [requestContext setRoute:v4];
 LABEL_6:
 
-  return v3;
+  return requestContext;
 }
 
 @end

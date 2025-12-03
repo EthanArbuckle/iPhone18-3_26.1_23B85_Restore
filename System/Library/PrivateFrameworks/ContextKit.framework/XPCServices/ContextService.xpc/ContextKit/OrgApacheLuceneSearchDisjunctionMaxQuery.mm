@@ -1,29 +1,29 @@
 @interface OrgApacheLuceneSearchDisjunctionMaxQuery
-- (BOOL)isEqual:(id)a3;
-- (OrgApacheLuceneSearchDisjunctionMaxQuery)initWithFloat:(float)a3;
+- (BOOL)isEqual:(id)equal;
+- (OrgApacheLuceneSearchDisjunctionMaxQuery)initWithFloat:(float)float;
 - (id)clone;
 - (id)iterator;
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3;
-- (id)toStringWithNSString:(id)a3;
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader;
+- (id)toStringWithNSString:(id)string;
 - (unint64_t)hash;
-- (void)addWithJavaUtilCollection:(id)a3;
-- (void)addWithOrgApacheLuceneSearchQuery:(id)a3;
+- (void)addWithJavaUtilCollection:(id)collection;
+- (void)addWithOrgApacheLuceneSearchQuery:(id)query;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchDisjunctionMaxQuery
 
-- (OrgApacheLuceneSearchDisjunctionMaxQuery)initWithFloat:(float)a3
+- (OrgApacheLuceneSearchDisjunctionMaxQuery)initWithFloat:(float)float
 {
   OrgApacheLuceneSearchQuery_init(self);
   v5 = new_JavaUtilArrayList_init();
   JreStrongAssignAndConsume((&self->super.boost_ + 1), v5);
   HIDWORD(self->disjuncts_) = 0;
-  *(&self->disjuncts_ + 1) = a3;
+  *(&self->disjuncts_ + 1) = float;
   return self;
 }
 
-- (void)addWithOrgApacheLuceneSearchQuery:(id)a3
+- (void)addWithOrgApacheLuceneSearchQuery:(id)query
 {
   v3 = *(&self->super.boost_ + 1);
   if (!v3)
@@ -31,12 +31,12 @@
     JreThrowNullPointerException();
   }
 
-  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_withNSString_(a3, @"Query must not be null");
+  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_withNSString_(query, @"Query must not be null");
 
   [v3 addWithId:v4];
 }
 
-- (void)addWithJavaUtilCollection:(id)a3
+- (void)addWithJavaUtilCollection:(id)collection
 {
   v3 = *(&self->super.boost_ + 1);
   if (!v3)
@@ -44,7 +44,7 @@
     JreThrowNullPointerException();
   }
 
-  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_withNSString_(a3, @"Query connection must not be null");
+  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_withNSString_(collection, @"Query connection must not be null");
 
   [v3 addAllWithJavaUtilCollection:v4];
 }
@@ -60,7 +60,7 @@
   return [v3 iterator];
 }
 
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader
 {
   v4 = *(&self->super.boost_ + 1);
   if (!v4)
@@ -78,23 +78,23 @@
     }
 
     v8 = v7;
-    v9 = [v7 rewriteWithOrgApacheLuceneIndexIndexReader:a3];
+    clone = [v7 rewriteWithOrgApacheLuceneIndexIndexReader:reader];
     [(OrgApacheLuceneSearchQuery *)self getBoost];
     if (v10 != 1.0)
     {
-      if (v9 == v8)
+      if (clone == v8)
       {
-        v9 = [v9 clone];
+        clone = [clone clone];
       }
 
       [(OrgApacheLuceneSearchQuery *)self getBoost];
-      if (v9)
+      if (clone)
       {
         v12 = v11;
-        [v9 getBoost];
+        [clone getBoost];
         *&v14 = v12 * v13;
-        [v9 setBoostWithFloat:v14];
-        return v9;
+        [clone setBoostWithFloat:v14];
+        return clone;
       }
 
 LABEL_23:
@@ -108,7 +108,7 @@ LABEL_23:
     {
       v15 = v6;
       v16 = 0;
-      v17 = 0;
+      clone2 = 0;
       while (1)
       {
         v18 = [*(&self->super.boost_ + 1) getWithInt:v16];
@@ -118,20 +118,20 @@ LABEL_23:
         }
 
         v19 = v18;
-        v20 = [v18 rewriteWithOrgApacheLuceneIndexIndexReader:a3];
+        v20 = [v18 rewriteWithOrgApacheLuceneIndexIndexReader:reader];
         if (v20 != v19)
         {
           v21 = v20;
-          if (!v17)
+          if (!clone2)
           {
-            v17 = [(OrgApacheLuceneSearchDisjunctionMaxQuery *)self clone];
-            if (!v17)
+            clone2 = [(OrgApacheLuceneSearchDisjunctionMaxQuery *)self clone];
+            if (!clone2)
             {
               goto LABEL_23;
             }
           }
 
-          [*(v17 + 12) setWithInt:v16 withId:v21];
+          [*(clone2 + 12) setWithInt:v16 withId:v21];
         }
 
         v16 = (v16 + 1);
@@ -142,11 +142,11 @@ LABEL_23:
       }
     }
 
-    v17 = 0;
+    clone2 = 0;
 LABEL_19:
-    if (v17)
+    if (clone2)
     {
-      return v17;
+      return clone2;
     }
 
     else
@@ -155,16 +155,16 @@ LABEL_19:
     }
   }
 
-  return v9;
+  return clone;
 }
 
 - (id)clone
 {
   v7.receiver = self;
   v7.super_class = OrgApacheLuceneSearchDisjunctionMaxQuery;
-  v3 = [(OrgApacheLuceneSearchQuery *)&v7 clone];
+  clone = [(OrgApacheLuceneSearchQuery *)&v7 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     goto LABEL_8;
   }
@@ -181,19 +181,19 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  v5 = [v4 clone];
+  clone2 = [v4 clone];
   objc_opt_class();
-  if (v5 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone2 && (objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_7:
     JreThrowClassCastException();
   }
 
-  JreStrongAssign((v3 + 12), v5);
-  return v3;
+  JreStrongAssign((clone + 12), clone2);
+  return clone;
 }
 
-- (id)toStringWithNSString:(id)a3
+- (id)toStringWithNSString:(id)string
 {
   v5 = new_JavaLangStringBuilder_init();
   -[JavaLangStringBuilder appendWithNSString:](v5, "appendWithNSString:", @"(");
@@ -221,7 +221,7 @@ LABEL_19:
           goto LABEL_19;
         }
 
-        -[JavaLangStringBuilder appendWithNSString:](v5, "appendWithNSString:", [v10 toStringWithNSString:a3]);
+        -[JavaLangStringBuilder appendWithNSString:](v5, "appendWithNSString:", [v10 toStringWithNSString:string]);
         v11 = v5;
         v12 = @"");
       }
@@ -233,7 +233,7 @@ LABEL_19:
           goto LABEL_19;
         }
 
-        v12 = [v10 toStringWithNSString:a3];
+        v12 = [v10 toStringWithNSString:string];
         v11 = v5;
       }
 
@@ -269,7 +269,7 @@ LABEL_19:
   return [(JavaLangStringBuilder *)v5 description];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -278,27 +278,27 @@ LABEL_19:
   }
 
   objc_opt_class();
-  if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (equal && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
   v8.receiver = self;
   v8.super_class = OrgApacheLuceneSearchDisjunctionMaxQuery;
-  v5 = [(OrgApacheLuceneSearchQuery *)&v8 isEqual:a3];
+  v5 = [(OrgApacheLuceneSearchQuery *)&v8 isEqual:equal];
   if (v5)
   {
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_11;
     }
 
-    if (*(&self->disjuncts_ + 1) == *(a3 + 5))
+    if (*(&self->disjuncts_ + 1) == *(equal + 5))
     {
       v6 = *(&self->super.boost_ + 1);
       if (v6)
       {
-        LOBYTE(v5) = [v6 isEqual:*(a3 + 12)];
+        LOBYTE(v5) = [v6 isEqual:*(equal + 12)];
         return v5;
       }
 

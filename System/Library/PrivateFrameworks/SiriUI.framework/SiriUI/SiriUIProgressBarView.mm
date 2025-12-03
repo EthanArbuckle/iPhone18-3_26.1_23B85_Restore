@@ -1,16 +1,16 @@
 @interface SiriUIProgressBarView
-- (SiriUIProgressBarView)initWithFrame:(CGRect)a3;
-- (void)beginProgressAnimationWithDuration:(double)a3;
+- (SiriUIProgressBarView)initWithFrame:(CGRect)frame;
+- (void)beginProgressAnimationWithDuration:(double)duration;
 - (void)layoutSubviews;
 @end
 
 @implementation SiriUIProgressBarView
 
-- (SiriUIProgressBarView)initWithFrame:(CGRect)a3
+- (SiriUIProgressBarView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SiriUIProgressBarView;
-  v3 = [(SiriUIProgressBarView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUIProgressBarView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
@@ -19,8 +19,8 @@
     v3->_progressBar = v5;
 
     v7 = v3->_progressBar;
-    v8 = [MEMORY[0x277D75348] labelColor];
-    v9 = [v8 colorWithAlphaComponent:0.3];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    v9 = [labelColor colorWithAlphaComponent:0.3];
     [(UIView *)v7 setBackgroundColor:v9];
 
     [(SiriUIProgressBarView *)v3 addSubview:v3->_progressBar];
@@ -44,7 +44,7 @@
   }
 }
 
-- (void)beginProgressAnimationWithDuration:(double)a3
+- (void)beginProgressAnimationWithDuration:(double)duration
 {
   if (!self->_progressState)
   {
@@ -61,7 +61,7 @@
     v5[2] = __60__SiriUIProgressBarView_beginProgressAnimationWithDuration___block_invoke_2;
     v5[3] = &unk_279C59DF0;
     v5[4] = self;
-    [MEMORY[0x277D75D18] animateWithDuration:v6 animations:v5 completion:a3];
+    [MEMORY[0x277D75D18] animateWithDuration:v6 animations:v5 completion:duration];
   }
 }
 

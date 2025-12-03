@@ -1,20 +1,20 @@
 @interface PNPPencilView
-+ (id)_hardwareImageForVariant:(unint64_t)a3;
-- (CGAffineTransform)transformForDeviceState:(SEL)a3;
-- (CGSize)_edgeAccurateSizeForLength:(double)a3 depth:(double)a4 deviceState:(id)a5;
-- (CGSize)comfortableContainingSizeForDeviceState:(id)a3;
++ (id)_hardwareImageForVariant:(unint64_t)variant;
+- (CGAffineTransform)transformForDeviceState:(SEL)state;
+- (CGSize)_edgeAccurateSizeForLength:(double)length depth:(double)depth deviceState:(id)state;
+- (CGSize)comfortableContainingSizeForDeviceState:(id)state;
 - (CGSize)intrinsicContentSize;
-- (CGSize)intrinsicSizeForDeviceState:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PNPPencilView)initWithVariant:(unint64_t)a3;
+- (CGSize)intrinsicSizeForDeviceState:(id)state;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PNPPencilView)initWithVariant:(unint64_t)variant;
 - (PNPPencilViewDelegate)delegate;
-- (void)_animateIndicatorToShown:(BOOL)a3 withCompletionBlock:(id)a4;
+- (void)_animateIndicatorToShown:(BOOL)shown withCompletionBlock:(id)block;
 - (void)_prepareMovieView;
-- (void)eventSource:(id)a3 hadPencilDoubleTapped:(id)a4;
+- (void)eventSource:(id)source hadPencilDoubleTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)prepareMovieForSpinningPencil:(id)a3;
-- (void)setDeviceState:(id)a3;
-- (void)setSpinning:(BOOL)a3;
+- (void)prepareMovieForSpinningPencil:(id)pencil;
+- (void)setDeviceState:(id)state;
+- (void)setSpinning:(BOOL)spinning;
 @end
 
 @implementation PNPPencilView
@@ -23,15 +23,15 @@
 {
   pencilImageView = self->_pencilImageView;
   [(PNPPencilView *)self bounds];
-  v4 = [(PNPPencilView *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(PNPPencilView *)self traitCollection];
+  [traitCollection displayScale];
   UIRectIntegralWithScale();
   [(UIImageView *)pencilImageView setFrame:?];
 
   pencilMovieView = self->_pencilMovieView;
   [(PNPPencilView *)self bounds];
-  v6 = [(PNPPencilView *)self traitCollection];
-  [v6 displayScale];
+  traitCollection2 = [(PNPPencilView *)self traitCollection];
+  [traitCollection2 displayScale];
   UIRectIntegralWithScale();
   [(_PNPPencilMovieView *)pencilMovieView setFrame:?];
 
@@ -49,8 +49,8 @@
   }
 
   v11 = v10 * 0.5;
-  v12 = [(PNPPencilView *)self layer];
-  [v12 setCornerRadius:v11];
+  layer = [(PNPPencilView *)self layer];
+  [layer setCornerRadius:v11];
 
   [(UIView *)self->_touchIndicatorView _setCornerRadius:6.0];
   [(PNPPencilView *)self bounds];
@@ -60,8 +60,8 @@
   UIRectCenteredAboutPoint();
   [(UIView *)self->_touchIndicatorView setFrame:?];
   touchIndicatorView = self->_touchIndicatorView;
-  v14 = [MEMORY[0x277D75348] systemBlueColor];
-  [(UIView *)touchIndicatorView setBackgroundColor:v14];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [(UIView *)touchIndicatorView setBackgroundColor:systemBlueColor];
 
   v15 = 0.6;
   if (!self->_touchIndicatorShown)
@@ -71,9 +71,9 @@
 
   [(UIView *)self->_touchIndicatorView setAlpha:v15];
   v16 = self->_pencilMovieView;
-  v17 = [(PNPPencilView *)self spinning];
+  spinning = [(PNPPencilView *)self spinning];
   v18 = 1.0;
-  if (!v17)
+  if (!spinning)
   {
     v18 = 0.0;
   }
@@ -81,9 +81,9 @@
   [(_PNPPencilMovieView *)v16 setAlpha:v18];
 }
 
-- (void)_animateIndicatorToShown:(BOOL)a3 withCompletionBlock:(id)a4
+- (void)_animateIndicatorToShown:(BOOL)shown withCompletionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   [(PNPPencilView *)self setNeedsLayout];
   [(PNPPencilView *)self layoutIfNeeded];
   v7 = MEMORY[0x277D75D18];
@@ -92,13 +92,13 @@
   v11[2] = __62__PNPPencilView__animateIndicatorToShown_withCompletionBlock___block_invoke;
   v11[3] = &unk_279A0A100;
   v11[4] = self;
-  v12 = a3;
+  shownCopy = shown;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__PNPPencilView__animateIndicatorToShown_withCompletionBlock___block_invoke_2;
   v9[3] = &unk_279A0A1C0;
-  v10 = v6;
-  v8 = v6;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [v7 animateWithDuration:6 delay:v11 options:v9 animations:0.2 completion:0.0];
 }
 
@@ -122,17 +122,17 @@ uint64_t __62__PNPPencilView__animateIndicatorToShown_withCompletionBlock___bloc
   return result;
 }
 
-- (void)eventSource:(id)a3 hadPencilDoubleTapped:(id)a4
+- (void)eventSource:(id)source hadPencilDoubleTapped:(id)tapped
 {
-  v5 = a4;
+  tappedCopy = tapped;
   [(PNPPencilView *)self _resetTouchIndicatorPosition];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__PNPPencilView_eventSource_hadPencilDoubleTapped___block_invoke;
   v7[3] = &unk_279A0A530;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = tappedCopy;
+  v6 = tappedCopy;
   [(PNPPencilView *)self _animateIndicatorToShown:1 withCompletionBlock:v7];
 }
 
@@ -182,53 +182,53 @@ uint64_t __51__PNPPencilView_eventSource_hadPencilDoubleTapped___block_invoke_4(
   return result;
 }
 
-- (void)setDeviceState:(id)a3
+- (void)setDeviceState:(id)state
 {
-  v7 = a3;
-  v5 = [(PNPPencilView *)self deviceState];
-  v6 = [v7 isEqual:v5];
+  stateCopy = state;
+  deviceState = [(PNPPencilView *)self deviceState];
+  v6 = [stateCopy isEqual:deviceState];
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_deviceState, a3);
+    objc_storeStrong(&self->_deviceState, state);
     [(PNPPencilView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)_edgeAccurateSizeForLength:(double)a3 depth:(double)a4 deviceState:(id)a5
+- (CGSize)_edgeAccurateSizeForLength:(double)length depth:(double)depth deviceState:(id)state
 {
   v7 = MEMORY[0x277D759A0];
-  v8 = a5;
-  v9 = [v7 mainScreen];
-  [v9 scale];
+  stateCopy = state;
+  mainScreen = [v7 mainScreen];
+  [mainScreen scale];
   v11 = v10;
-  v12 = [MEMORY[0x277D759A0] mainScreen];
-  [v12 nativeScale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 nativeScale];
   v14 = v13;
 
-  v15 = [v8 isOnLeftOrRightSide];
-  if (v15)
+  isOnLeftOrRightSide = [stateCopy isOnLeftOrRightSide];
+  if (isOnLeftOrRightSide)
   {
-    v19 = a4;
+    lengthCopy = depth;
   }
 
   else
   {
-    v19 = a3;
+    lengthCopy = length;
   }
 
-  if (v15)
+  if (isOnLeftOrRightSide)
   {
-    v20 = a3;
+    depthCopy2 = length;
   }
 
   else
   {
-    v20 = a4;
+    depthCopy2 = depth;
   }
 
-  v17.n128_f64[0] = v11 / v14 * v20;
-  v16.n128_f64[0] = v11 / v14 * v19;
+  v17.n128_f64[0] = v11 / v14 * depthCopy2;
+  v16.n128_f64[0] = v11 / v14 * lengthCopy;
   v18.n128_u64[0] = 1.0;
 
   MEMORY[0x2821DE808](v16, v17, v18);
@@ -237,17 +237,17 @@ uint64_t __51__PNPPencilView_eventSource_hadPencilDoubleTapped___block_invoke_4(
   return result;
 }
 
-- (CGSize)intrinsicSizeForDeviceState:(id)a3
+- (CGSize)intrinsicSizeForDeviceState:(id)state
 {
-  [(PNPPencilView *)self _edgeAccurateSizeForLength:a3 depth:855.0 deviceState:51.2];
+  [(PNPPencilView *)self _edgeAccurateSizeForLength:state depth:855.0 deviceState:51.2];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)comfortableContainingSizeForDeviceState:(id)a3
+- (CGSize)comfortableContainingSizeForDeviceState:(id)state
 {
-  [(PNPPencilView *)self _edgeAccurateSizeForLength:a3 depth:950.0 deviceState:128.0];
+  [(PNPPencilView *)self _edgeAccurateSizeForLength:state depth:950.0 deviceState:128.0];
   result.height = v4;
   result.width = v3;
   return result;
@@ -255,8 +255,8 @@ uint64_t __51__PNPPencilView_eventSource_hadPencilDoubleTapped___block_invoke_4(
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(PNPPencilView *)self deviceState];
-  [(PNPPencilView *)self intrinsicSizeForDeviceState:v3];
+  deviceState = [(PNPPencilView *)self deviceState];
+  [(PNPPencilView *)self intrinsicSizeForDeviceState:deviceState];
   v5 = v4;
   v7 = v6;
 
@@ -267,10 +267,10 @@ uint64_t __51__PNPPencilView_eventSource_hadPencilDoubleTapped___block_invoke_4(
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = [objc_opt_class() _hardwareImageForVariant:self->_variant];
   [v5 size];
   v7 = v6;
@@ -300,7 +300,7 @@ uint64_t __51__PNPPencilView_eventSource_hadPencilDoubleTapped___block_invoke_4(
   return result;
 }
 
-- (CGAffineTransform)transformForDeviceState:(SEL)a3
+- (CGAffineTransform)transformForDeviceState:(SEL)state
 {
   v9 = a4;
   if ([v9 isOnLeftOrRightSide])
@@ -330,7 +330,7 @@ LABEL_8:
   return result;
 }
 
-+ (id)_hardwareImageForVariant:(unint64_t)a3
++ (id)_hardwareImageForVariant:(unint64_t)variant
 {
   if (_hardwareImageForVariant__onceToken != -1)
   {
@@ -338,7 +338,7 @@ LABEL_8:
   }
 
   v4 = &_hardwareImageForVariant____hardwareImageForPencilPairingUI;
-  if (a3)
+  if (variant)
   {
     v4 = &_hardwareImageForVariant____hardwareImageForSettings;
   }
@@ -363,17 +363,17 @@ void __42__PNPPencilView__hardwareImageForVariant___block_invoke()
   _hardwareImageForVariant____hardwareImageForSettings = v5;
 }
 
-- (void)setSpinning:(BOOL)a3
+- (void)setSpinning:(BOOL)spinning
 {
-  v3 = a3;
-  if ([(PNPPencilView *)self spinning]!= a3)
+  spinningCopy = spinning;
+  if ([(PNPPencilView *)self spinning]!= spinning)
   {
-    if (v3)
+    if (spinningCopy)
     {
       [(_PNPPencilMovieView *)self->_pencilMovieView prepare];
     }
 
-    self->_spinning = v3;
+    self->_spinning = spinningCopy;
 
     [(PNPPencilView *)self setNeedsLayout];
   }
@@ -402,14 +402,14 @@ void __34__PNPPencilView__prepareMovieView__block_invoke(uint64_t a1)
   }
 }
 
-- (PNPPencilView)initWithVariant:(unint64_t)a3
+- (PNPPencilView)initWithVariant:(unint64_t)variant
 {
   v12.receiver = self;
   v12.super_class = PNPPencilView;
   v4 = [(PNPPencilView *)&v12 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-  v4->_variant = a3;
+  v4->_variant = variant;
   v5 = objc_alloc(MEMORY[0x277D755E8]);
-  v6 = [objc_opt_class() _hardwareImageForVariant:a3];
+  v6 = [objc_opt_class() _hardwareImageForVariant:variant];
   v7 = [v5 initWithImage:v6];
   pencilImageView = v4->_pencilImageView;
   v4->_pencilImageView = v7;
@@ -424,13 +424,13 @@ void __34__PNPPencilView__prepareMovieView__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)prepareMovieForSpinningPencil:(id)a3
+- (void)prepareMovieForSpinningPencil:(id)pencil
 {
-  v4 = a3;
+  pencilCopy = pencil;
   v5 = [_PNPPencilMovieView alloc];
-  v6 = [v4 deviceType];
+  deviceType = [pencilCopy deviceType];
 
-  v7 = [(_PNPPencilMovieView *)v5 initWithDeviceType:v6];
+  v7 = [(_PNPPencilMovieView *)v5 initWithDeviceType:deviceType];
   pencilMovieView = self->_pencilMovieView;
   self->_pencilMovieView = v7;
 

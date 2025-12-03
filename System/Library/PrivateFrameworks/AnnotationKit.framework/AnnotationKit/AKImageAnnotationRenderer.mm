@@ -1,29 +1,29 @@
 @interface AKImageAnnotationRenderer
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4;
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
 @end
 
 @implementation AKImageAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
-  v3 = a3;
-  [v3 rectangle];
+  annotationCopy = annotation;
+  [annotationCopy rectangle];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 rotationAngle];
+  [annotationCopy rotationAngle];
   [AKGeometryHelper boundsOfRotatedRectangle:v5 angle:v7, v9, v11, v12];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  if ([v3 hasShadow])
+  if ([annotationCopy hasShadow])
   {
-    [AKAnnotationRendererUtilities outsetRectForShadow:v3 onAnnotation:v14, v16, v18, v20];
+    [AKAnnotationRendererUtilities outsetRectForShadow:annotationCopy onAnnotation:v14, v16, v18, v20];
     v14 = v21;
     v16 = v22;
     v18 = v23;
@@ -51,7 +51,7 @@
   return result;
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -60,32 +60,32 @@
   return result;
 }
 
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  CGContextSaveGState(a4);
-  v13 = [v12 forDisplay];
+  annotationCopy = annotation;
+  nilCopy = nil;
+  optionsCopy = options;
+  CGContextSaveGState(context);
+  forDisplay = [optionsCopy forDisplay];
 
-  [a1 _transformContextToModelCoordinates:a4 forAnnotation:v10 forDisplay:v13 pageControllerOrNil:v11];
-  v14 = [v10 hasShadow];
-  if (v14)
+  [self _transformContextToModelCoordinates:context forAnnotation:annotationCopy forDisplay:forDisplay pageControllerOrNil:nilCopy];
+  hasShadow = [annotationCopy hasShadow];
+  if (hasShadow)
   {
-    [AKAnnotationRendererUtilities beginShadowInContext:a4 forAnnotation:v10];
+    [AKAnnotationRendererUtilities beginShadowInContext:context forAnnotation:annotationCopy];
   }
 
-  CGContextSaveGState(a4);
+  CGContextSaveGState(context);
   memset(&v38, 0, sizeof(v38));
-  [AKGeometryHelper rotationTransformForRectangularAnnotation:v10 hasRotation:0];
+  [AKGeometryHelper rotationTransformForRectangularAnnotation:annotationCopy hasRotation:0];
   transform = v38;
-  CGContextConcatCTM(a4, &transform);
-  [v10 rectangle];
+  CGContextConcatCTM(context, &transform);
+  [annotationCopy rectangle];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  if (([v10 horizontallyFlipped] & 1) != 0 || objc_msgSend(v10, "verticallyFlipped"))
+  if (([annotationCopy horizontallyFlipped] & 1) != 0 || objc_msgSend(annotationCopy, "verticallyFlipped"))
   {
     v39.origin.x = v16;
     v39.origin.y = v18;
@@ -98,8 +98,8 @@
     v40.size.height = v22;
     MidY = CGRectGetMidY(v40);
     CGAffineTransformMakeTranslation(&transform, MidX, MidY);
-    CGContextConcatCTM(a4, &transform);
-    if ([v10 horizontallyFlipped])
+    CGContextConcatCTM(context, &transform);
+    if ([annotationCopy horizontallyFlipped])
     {
       v24 = -1.0;
     }
@@ -109,7 +109,7 @@
       v24 = 1.0;
     }
 
-    if ([v10 verticallyFlipped])
+    if ([annotationCopy verticallyFlipped])
     {
       v25 = -1.0;
     }
@@ -120,59 +120,59 @@
     }
 
     CGAffineTransformMakeScale(&transform, v24, v25);
-    CGContextConcatCTM(a4, &transform);
+    CGContextConcatCTM(context, &transform);
     CGAffineTransformMakeTranslation(&transform, -MidX, -MidY);
-    CGContextConcatCTM(a4, &transform);
+    CGContextConcatCTM(context, &transform);
   }
 
   CGAffineTransformMakeTranslation(&transform, v16, v18);
-  CGContextConcatCTM(a4, &transform);
+  CGContextConcatCTM(context, &transform);
   v26 = *MEMORY[0x277CBF348];
   v27 = *(MEMORY[0x277CBF348] + 8);
-  v28 = +[AKGeometryHelper inverseExifOrientation:](AKGeometryHelper, "inverseExifOrientation:", [v10 originalExifOrientation]);
+  v28 = +[AKGeometryHelper inverseExifOrientation:](AKGeometryHelper, "inverseExifOrientation:", [annotationCopy originalExifOrientation]);
   memset(&transform, 0, sizeof(transform));
   [AKGeometryHelper affineTransformRecenteringAboutOriginForExifOrientation:v28 withOriginalSize:v20, v22];
   v36 = transform;
-  CGContextConcatCTM(a4, &v36);
+  CGContextConcatCTM(context, &v36);
   [AKGeometryHelper adjustRect:v28 forExifOrientation:v26 aboutCenter:v27, v20, v22, v26, v27];
   v30 = v29;
   v32 = v31;
-  CGContextSetInterpolationQuality(a4, kCGInterpolationHigh);
-  v33 = [v10 image];
-  v34 = [v33 akCGImage];
+  CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+  image = [annotationCopy image];
+  akCGImage = [image akCGImage];
   v41.origin.x = v26;
   v41.origin.y = v27;
   v41.size.width = v30;
   v41.size.height = v32;
-  CGContextDrawImage(a4, v41, v34);
+  CGContextDrawImage(context, v41, akCGImage);
 
-  CGContextRestoreGState(a4);
-  if (v14)
+  CGContextRestoreGState(context);
+  if (hasShadow)
   {
-    [AKAnnotationRendererUtilities endShadowInContext:a4];
+    [AKAnnotationRendererUtilities endShadowInContext:context];
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  [v6 rectangle];
+  y = inside.y;
+  x = inside.x;
+  annotationCopy = annotation;
+  [annotationCopy rectangle];
   v7 = CGPathCreateWithRect(v13, 0);
   memset(&m, 0, sizeof(m));
-  [AKGeometryHelper rotationTransformForRectangularAnnotation:v6 hasRotation:0];
+  [AKGeometryHelper rotationTransformForRectangularAnnotation:annotationCopy hasRotation:0];
 
   v9 = m;
   CGAffineTransformInvert(&v10, &v9);
   m = v10;
   v12.x = x;
   v12.y = y;
-  LOBYTE(v6) = CGPathContainsPoint(v7, &m, v12, 0);
+  LOBYTE(annotationCopy) = CGPathContainsPoint(v7, &m, v12, 0);
   CGPathRelease(v7);
-  return v6;
+  return annotationCopy;
 }
 
 @end

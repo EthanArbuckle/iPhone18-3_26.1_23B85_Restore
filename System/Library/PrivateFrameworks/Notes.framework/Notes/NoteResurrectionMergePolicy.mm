@@ -1,9 +1,9 @@
 @interface NoteResurrectionMergePolicy
 + (id)sharedNoteResurrectionMergePolicy;
-- (BOOL)accountExists:(id)a3;
-- (BOOL)resolveConflicts:(id)a3 error:(id *)a4;
-- (id)localStoreForNote:(id)a3;
-- (id)snapshotFromRecord:(id)a3;
+- (BOOL)accountExists:(id)exists;
+- (BOOL)resolveConflicts:(id)conflicts error:(id *)error;
+- (id)localStoreForNote:(id)note;
+- (id)snapshotFromRecord:(id)record;
 @end
 
 @implementation NoteResurrectionMergePolicy
@@ -23,13 +23,13 @@
   return v2;
 }
 
-- (id)localStoreForNote:(id)a3
+- (id)localStoreForNote:(id)note
 {
-  v3 = a3;
+  noteCopy = note;
   v4 = objc_alloc_init(MEMORY[0x277CBE440]);
-  v5 = [v3 managedObjectContext];
-  v6 = [v5 persistentStoreCoordinator];
-  [v4 setPersistentStoreCoordinator:v6];
+  managedObjectContext = [noteCopy managedObjectContext];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
+  [v4 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   v7 = objc_alloc_init(MEMORY[0x277CBE428]);
   v8 = [MEMORY[0x277CBE408] entityForName:@"Account" inManagedObjectContext:v4];
@@ -42,71 +42,71 @@
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 userInfo];
-    NSLog(&cfstr_ErrorGettingDe.isa, v12, v13);
+    userInfo = [v11 userInfo];
+    NSLog(&cfstr_ErrorGettingDe.isa, v12, userInfo);
   }
 
-  v14 = [v10 lastObject];
-  v15 = [v14 defaultStore];
-  v16 = [v15 objectID];
+  lastObject = [v10 lastObject];
+  defaultStore = [lastObject defaultStore];
+  objectID = [defaultStore objectID];
 
-  v17 = [v3 managedObjectContext];
-  v18 = [v17 objectWithID:v16];
+  managedObjectContext2 = [noteCopy managedObjectContext];
+  v18 = [managedObjectContext2 objectWithID:objectID];
 
   return v18;
 }
 
-- (BOOL)accountExists:(id)a3
+- (BOOL)accountExists:(id)exists
 {
   v3 = MEMORY[0x277CBE440];
-  v4 = a3;
+  existsCopy = exists;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 managedObjectContext];
-  v7 = [v6 persistentStoreCoordinator];
-  [v5 setPersistentStoreCoordinator:v7];
+  managedObjectContext = [existsCopy managedObjectContext];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
+  [v5 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   v8 = objc_alloc_init(MEMORY[0x277CBE428]);
   v9 = [MEMORY[0x277CBE408] entityForName:@"Account" inManagedObjectContext:v5];
   [v8 setEntity:v9];
   v10 = MEMORY[0x277CCAC30];
-  v11 = [v4 accountIdentifier];
+  accountIdentifier = [existsCopy accountIdentifier];
 
-  v12 = [v10 predicateWithFormat:@"accountIdentifier == %@", v11];
+  v12 = [v10 predicateWithFormat:@"accountIdentifier == %@", accountIdentifier];
 
   [v8 setPredicate:v12];
   v15 = 0;
   v13 = [v5 executeFetchRequest:v8 error:&v15];
-  LOBYTE(v11) = [v13 count] == 1;
+  LOBYTE(accountIdentifier) = [v13 count] == 1;
 
-  return v11;
+  return accountIdentifier;
 }
 
-- (id)snapshotFromRecord:(id)a3
+- (id)snapshotFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = [v3 objectSnapshot];
-  if (v4)
+  recordCopy = record;
+  objectSnapshot = [recordCopy objectSnapshot];
+  if (objectSnapshot)
   {
-    [v3 objectSnapshot];
+    [recordCopy objectSnapshot];
   }
 
   else
   {
-    [v3 cachedSnapshot];
+    [recordCopy cachedSnapshot];
   }
   v5 = ;
 
   return v5;
 }
 
-- (BOOL)resolveConflicts:(id)a3 error:(id *)a4
+- (BOOL)resolveConflicts:(id)conflicts error:(id *)error
 {
   v138 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v92 = self;
+  conflictsCopy = conflicts;
+  selfCopy = self;
   v131.receiver = self;
   v131.super_class = NoteResurrectionMergePolicy;
-  v7 = [(NSMergePolicy *)&v131 resolveConflicts:v6 error:a4];
+  v7 = [(NSMergePolicy *)&v131 resolveConflicts:conflictsCopy error:error];
   v8 = v7;
   if (!v7)
   {
@@ -122,8 +122,8 @@
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
-  v88 = v6;
-  obj = v6;
+  v88 = conflictsCopy;
+  obj = conflictsCopy;
   v9 = [obj countByEnumeratingWithState:&v127 objects:v137 count:16];
   if (v9)
   {
@@ -148,21 +148,21 @@
         }
 
         v15 = *(*(&v127 + 1) + 8 * v14);
-        v16 = [v15 sourceObject];
-        v17 = [v16 entity];
+        sourceObject = [v15 sourceObject];
+        entity = [sourceObject entity];
         if (!v106)
         {
-          v18 = [v16 managedObjectContext];
-          v19 = [MEMORY[0x277CBE408] entityForName:@"Note" inManagedObjectContext:v18];
+          managedObjectContext = [sourceObject managedObjectContext];
+          v19 = [MEMORY[0x277CBE408] entityForName:@"Note" inManagedObjectContext:managedObjectContext];
 
-          v20 = [MEMORY[0x277CBE408] entityForName:@"NoteBody" inManagedObjectContext:v18];
+          v20 = [MEMORY[0x277CBE408] entityForName:@"NoteBody" inManagedObjectContext:managedObjectContext];
 
-          v21 = [MEMORY[0x277CBE408] entityForName:@"NoteChange" inManagedObjectContext:v18];
+          v21 = [MEMORY[0x277CBE408] entityForName:@"NoteChange" inManagedObjectContext:managedObjectContext];
 
-          v22 = [MEMORY[0x277CBE408] entityForName:@"Store" inManagedObjectContext:v18];
+          v22 = [MEMORY[0x277CBE408] entityForName:@"Store" inManagedObjectContext:managedObjectContext];
 
-          v106 = v18;
-          v23 = [MEMORY[0x277CBE408] entityForName:@"Account" inManagedObjectContext:v18];
+          v106 = managedObjectContext;
+          v23 = [MEMORY[0x277CBE408] entityForName:@"Account" inManagedObjectContext:managedObjectContext];
 
           v96 = v23;
           v13 = v93;
@@ -175,39 +175,39 @@
 
         if (![v15 newVersionNumber])
         {
-          if ([v17 isEqual:v12])
+          if ([entity isEqual:v12])
           {
-            v24 = [v16 objectID];
-            [v95 setObject:v16 forKey:v24];
+            objectID = [sourceObject objectID];
+            [v95 setObject:sourceObject forKey:objectID];
           }
 
-          else if ([v17 isEqual:v11])
+          else if ([entity isEqual:v11])
           {
-            v24 = [(NoteResurrectionMergePolicy *)v92 snapshotFromRecord:v15];
-            v25 = [v24 objectForKey:@"owner"];
-            [v97 setObject:v16 forKey:v25];
+            objectID = [(NoteResurrectionMergePolicy *)selfCopy snapshotFromRecord:v15];
+            v25 = [objectID objectForKey:@"owner"];
+            [v97 setObject:sourceObject forKey:v25];
           }
 
           else
           {
-            if ([v17 isEqual:v100])
+            if ([entity isEqual:v100])
             {
-              v24 = [v16 objectID];
+              objectID = [sourceObject objectID];
               v26 = v102;
             }
 
             else
             {
-              if (![v17 isEqual:v96])
+              if (![entity isEqual:v96])
               {
                 goto LABEL_20;
               }
 
-              v24 = [v16 objectID];
+              objectID = [sourceObject objectID];
               v26 = v101;
             }
 
-            [v26 addObject:v24];
+            [v26 addObject:objectID];
           }
         }
 
@@ -244,8 +244,8 @@ LABEL_24:
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
-  v91 = [v106 insertedObjects];
-  v29 = [v91 countByEnumeratingWithState:&v123 objects:v136 count:16];
+  insertedObjects = [v106 insertedObjects];
+  v29 = [insertedObjects countByEnumeratingWithState:&v123 objects:v136 count:16];
   v90 = v11;
   v99 = v12;
   if (!v29)
@@ -262,36 +262,36 @@ LABEL_24:
     {
       if (*v124 != v31)
       {
-        objc_enumerationMutation(v91);
+        objc_enumerationMutation(insertedObjects);
       }
 
       v33 = *(*(&v123 + 1) + 8 * i);
-      v34 = [v33 entity];
-      v35 = [v34 isEqual:v12];
+      entity2 = [v33 entity];
+      v35 = [entity2 isEqual:v12];
       if (v35)
       {
-        obja = v34;
-        v36 = v33;
+        obja = entity2;
+        owner = v33;
         goto LABEL_37;
       }
 
-      if ([v34 isEqual:v11])
+      if ([entity2 isEqual:v11])
       {
-        obja = v34;
-        v36 = [v33 owner];
+        obja = entity2;
+        owner = [v33 owner];
 LABEL_37:
-        v37 = v36;
-        v38 = [v36 store];
-        v39 = [v38 objectID];
-        if ([v102 containsObject:v39])
+        v37 = owner;
+        store = [owner store];
+        objectID2 = [store objectID];
+        if ([v102 containsObject:objectID2])
         {
 
           goto LABEL_40;
         }
 
-        v40 = [v37 store];
-        v41 = [v40 account];
-        [v41 objectID];
+        store2 = [v37 store];
+        account = [store2 account];
+        [account objectID];
         v43 = v42 = v30;
         v94 = [v101 containsObject:v43];
 
@@ -302,7 +302,7 @@ LABEL_37:
         if (v94)
         {
 LABEL_40:
-          v44 = [v37 objectID];
+          objectID3 = [v37 objectID];
           v27 = v97;
           if (v35)
           {
@@ -314,7 +314,7 @@ LABEL_40:
             v45 = v97;
           }
 
-          [v45 setObject:v33 forKey:v44];
+          [v45 setObject:v33 forKey:objectID3];
         }
 
         else
@@ -323,31 +323,31 @@ LABEL_40:
         }
 
         v12 = v99;
-        v34 = obja;
+        entity2 = obja;
         goto LABEL_50;
       }
 
-      if (![v34 isEqual:v100])
+      if (![entity2 isEqual:v100])
       {
         goto LABEL_51;
       }
 
-      v46 = v34;
+      v46 = entity2;
       v37 = v33;
-      v47 = [v37 account];
-      v48 = [v47 objectID];
-      v49 = [v101 containsObject:v48];
+      account2 = [v37 account];
+      objectID4 = [account2 objectID];
+      v49 = [v101 containsObject:objectID4];
 
       if (v49)
       {
-        v50 = [v37 objectID];
-        [v102 addObject:v50];
+        objectID5 = [v37 objectID];
+        [v102 addObject:objectID5];
 
         [v106 deleteObject:v37];
       }
 
       v12 = v99;
-      v34 = v46;
+      entity2 = v46;
       v11 = v90;
 LABEL_50:
 
@@ -355,7 +355,7 @@ LABEL_50:
 LABEL_51:
     }
 
-    v30 = [v91 countByEnumeratingWithState:&v123 objects:v136 count:16];
+    v30 = [insertedObjects countByEnumeratingWithState:&v123 objects:v136 count:16];
   }
 
   while (v30);
@@ -390,7 +390,7 @@ LABEL_53:
           [v28 _forceInsertionForObject:v59];
           if (!v54)
           {
-            v54 = [(NoteResurrectionMergePolicy *)v92 localStoreForNote:v58];
+            v54 = [(NoteResurrectionMergePolicy *)selfCopy localStoreForNote:v58];
           }
 
           [v58 setStore:v54];
@@ -448,8 +448,8 @@ LABEL_53:
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
-  v66 = [v28 insertedObjects];
-  v67 = [v66 countByEnumeratingWithState:&v111 objects:v133 count:16];
+  insertedObjects2 = [v28 insertedObjects];
+  v67 = [insertedObjects2 countByEnumeratingWithState:&v111 objects:v133 count:16];
   if (v67)
   {
     v68 = v67;
@@ -460,16 +460,16 @@ LABEL_53:
       {
         if (*v112 != v69)
         {
-          objc_enumerationMutation(v66);
+          objc_enumerationMutation(insertedObjects2);
         }
 
         v71 = *(*(&v111 + 1) + 8 * m);
-        v72 = [v71 entity];
-        if ([v72 isEqual:v105])
+        entity3 = [v71 entity];
+        if ([entity3 isEqual:v105])
         {
-          v73 = [v71 store];
-          v74 = [v73 objectID];
-          v75 = [v102 containsObject:v74];
+          store3 = [v71 store];
+          objectID6 = [store3 objectID];
+          v75 = [v102 containsObject:objectID6];
 
           if (v75)
           {
@@ -478,7 +478,7 @@ LABEL_53:
         }
       }
 
-      v68 = [v66 countByEnumeratingWithState:&v111 objects:v133 count:16];
+      v68 = [insertedObjects2 countByEnumeratingWithState:&v111 objects:v133 count:16];
     }
 
     while (v68);
@@ -506,22 +506,22 @@ LABEL_53:
         }
 
         v81 = [v106 objectWithID:*(*(&v107 + 1) + 8 * n)];
-        v82 = [v81 account];
+        account3 = [v81 account];
 
-        if (v82)
+        if (account3)
         {
-          v83 = [v82 objectID];
-          if ([v101 containsObject:v83])
+          objectID7 = [account3 objectID];
+          if ([v101 containsObject:objectID7])
           {
           }
 
           else
           {
-            v84 = [(NoteResurrectionMergePolicy *)v92 accountExists:v82];
+            v84 = [(NoteResurrectionMergePolicy *)selfCopy accountExists:account3];
 
             if (!v84)
             {
-              [v106 deleteObject:v82];
+              [v106 deleteObject:account3];
             }
           }
         }
@@ -537,7 +537,7 @@ LABEL_53:
   v12 = v99;
 LABEL_97:
 
-  v6 = v88;
+  conflictsCopy = v88;
   v8 = v87;
 LABEL_98:
 

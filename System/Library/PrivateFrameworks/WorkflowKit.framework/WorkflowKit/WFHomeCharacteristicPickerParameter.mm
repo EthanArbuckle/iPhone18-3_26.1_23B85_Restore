@@ -2,8 +2,8 @@
 - (BOOL)isHidden;
 - (NSArray)possibleStates;
 - (id)defaultSerializedRepresentation;
-- (id)localizedLabelForPossibleState:(id)a3;
-- (void)setService:(id)a3 homeIdentifier:(id)a4;
+- (id)localizedLabelForPossibleState:(id)state;
+- (void)setService:(id)service homeIdentifier:(id)identifier;
 - (void)updatePossibleStates;
 @end
 
@@ -22,44 +22,44 @@
 
 - (BOOL)isHidden
 {
-  v2 = [(WFHomeCharacteristicPickerParameter *)self service];
-  v3 = v2 == 0;
+  service = [(WFHomeCharacteristicPickerParameter *)self service];
+  v3 = service == 0;
 
   return v3;
 }
 
 - (id)defaultSerializedRepresentation
 {
-  v3 = [(WFHomeCharacteristicPickerParameter *)self service];
-  v4 = v3;
-  if (v3)
+  service = [(WFHomeCharacteristicPickerParameter *)self service];
+  v4 = service;
+  if (service)
   {
-    v5 = [v3 defaultCharacteristic];
-    v6 = v5;
-    if (v5)
+    defaultCharacteristic = [service defaultCharacteristic];
+    v6 = defaultCharacteristic;
+    if (defaultCharacteristic)
     {
-      v7 = v5;
+      firstObject = defaultCharacteristic;
     }
 
     else
     {
       v9 = WFSupportedCharacteristicsForHMService(v4);
-      v7 = [v9 firstObject];
+      firstObject = [v9 firstObject];
     }
 
     v10 = [WFHMCharacteristicSubstitutableState alloc];
-    v11 = [(WFHomeCharacteristicPickerParameter *)self homeIdentifier];
-    v12 = [(WFHMCharacteristicSubstitutableState *)v10 initWithCharacteristic:v7 homeIdentifier:v11];
+    homeIdentifier = [(WFHomeCharacteristicPickerParameter *)self homeIdentifier];
+    v12 = [(WFHMCharacteristicSubstitutableState *)v10 initWithCharacteristic:firstObject homeIdentifier:homeIdentifier];
 
-    v8 = [(WFHMCharacteristicSubstitutableState *)v12 serializedRepresentation];
+    serializedRepresentation = [(WFHMCharacteristicSubstitutableState *)v12 serializedRepresentation];
   }
 
   else
   {
-    v8 = 0;
+    serializedRepresentation = 0;
   }
 
-  return v8;
+  return serializedRepresentation;
 }
 
 - (NSArray)possibleStates
@@ -67,8 +67,8 @@
   possibleStates = self->_possibleStates;
   if (!possibleStates)
   {
-    v4 = [(WFHomeCharacteristicPickerParameter *)self service];
-    v5 = WFSupportedCharacteristicsForHMService(v4);
+    service = [(WFHomeCharacteristicPickerParameter *)self service];
+    v5 = WFSupportedCharacteristicsForHMService(service);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __53__WFHomeCharacteristicPickerParameter_possibleStates__block_invoke;
@@ -94,28 +94,28 @@ WFHMCharacteristicSubstitutableState *__53__WFHomeCharacteristicPickerParameter_
   return v6;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    v3 = [a3 characteristic];
-    v4 = [v3 localizedDescription];
+    characteristic = [state characteristic];
+    localizedDescription = [characteristic localizedDescription];
   }
 
   else
   {
-    v4 = 0;
+    localizedDescription = 0;
   }
 
-  return v4;
+  return localizedDescription;
 }
 
-- (void)setService:(id)a3 homeIdentifier:(id)a4
+- (void)setService:(id)service homeIdentifier:(id)identifier
 {
-  objc_storeStrong(&self->_service, a3);
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 copy];
+  objc_storeStrong(&self->_service, service);
+  serviceCopy = service;
+  identifierCopy = identifier;
+  v9 = [identifierCopy copy];
 
   homeIdentifier = self->_homeIdentifier;
   self->_homeIdentifier = v9;

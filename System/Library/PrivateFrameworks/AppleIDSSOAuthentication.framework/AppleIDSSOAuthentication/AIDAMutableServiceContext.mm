@@ -1,16 +1,16 @@
 @interface AIDAMutableServiceContext
-- (void)setAaSignInFlowControllerDelegate:(id)a3;
-- (void)setAaSignOutFlowControllerDelegate:(id)a3;
-- (void)setAuthenticationResults:(id)a3;
+- (void)setAaSignInFlowControllerDelegate:(id)delegate;
+- (void)setAaSignOutFlowControllerDelegate:(id)delegate;
+- (void)setAuthenticationResults:(id)results;
 @end
 
 @implementation AIDAMutableServiceContext
 
-- (void)setAuthenticationResults:(id)a3
+- (void)setAuthenticationResults:(id)results
 {
-  v5 = a3;
-  objc_storeStrong(&self->super._authenticationResults, a3);
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DBE8]];
+  resultsCopy = results;
+  objc_storeStrong(&self->super._authenticationResults, results);
+  v6 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBE8]];
   v7 = _AIDALogSystem();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
   if (v6)
@@ -42,50 +42,50 @@
   self->super.__telemetryTimeSeries = v10;
 }
 
-- (void)setAaSignInFlowControllerDelegate:(id)a3
+- (void)setAaSignInFlowControllerDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(NSDictionary *)self->super._signInContexts mutableCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    dictionary = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v9 = v7;
+  v9 = dictionary;
 
-  [v9 setObject:v4 forKeyedSubscript:@"com.apple.AppleID.Service.Cloud"];
+  [v9 setObject:delegateCopy forKeyedSubscript:@"com.apple.AppleID.Service.Cloud"];
   [(AIDAMutableServiceContext *)self setSignInContexts:v9];
   aaSignInFlowControllerDelegate = self->super._aaSignInFlowControllerDelegate;
-  self->super._aaSignInFlowControllerDelegate = v4;
+  self->super._aaSignInFlowControllerDelegate = delegateCopy;
 }
 
-- (void)setAaSignOutFlowControllerDelegate:(id)a3
+- (void)setAaSignOutFlowControllerDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(NSDictionary *)self->super._signOutContexts mutableCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    dictionary = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v9 = v7;
+  v9 = dictionary;
 
-  [v9 setObject:v4 forKeyedSubscript:@"com.apple.AppleID.Service.Cloud"];
+  [v9 setObject:delegateCopy forKeyedSubscript:@"com.apple.AppleID.Service.Cloud"];
   [(AIDAMutableServiceContext *)self setSignOutContexts:v9];
   aaSignOutFlowControllerDelegate = self->super._aaSignOutFlowControllerDelegate;
-  self->super._aaSignOutFlowControllerDelegate = v4;
+  self->super._aaSignOutFlowControllerDelegate = delegateCopy;
 }
 
 - (void)setAuthenticationResults:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

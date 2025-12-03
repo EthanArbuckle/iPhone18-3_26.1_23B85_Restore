@@ -1,24 +1,24 @@
 @interface VIObjectKnowledgeProperty
-- (BOOL)isEqual:(id)a3;
-- (VIObjectKnowledgeProperty)initWithName:(id)a3 value:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VIObjectKnowledgeProperty)initWithName:(id)name value:(id)value;
 @end
 
 @implementation VIObjectKnowledgeProperty
 
-- (VIObjectKnowledgeProperty)initWithName:(id)a3 value:(id)a4
+- (VIObjectKnowledgeProperty)initWithName:(id)name value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = VIObjectKnowledgeProperty;
   v8 = [(VIObjectKnowledgeProperty *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 copy];
+    v11 = [valueCopy copy];
     value = v8->_value;
     v8->_value = v11;
   }
@@ -26,10 +26,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     IsEqual = 1;
   }
@@ -39,7 +39,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -48,11 +48,11 @@
     }
 
     v6 = v5;
-    v7 = [(VIObjectKnowledgeProperty *)v6 name];
-    if (VIObjectIsEqual(v7, self->_name))
+    name = [(VIObjectKnowledgeProperty *)v6 name];
+    if (VIObjectIsEqual(name, self->_name))
     {
-      v8 = [(VIObjectKnowledgeProperty *)v6 value];
-      IsEqual = VIObjectIsEqual(v8, self->_value);
+      value = [(VIObjectKnowledgeProperty *)v6 value];
+      IsEqual = VIObjectIsEqual(value, self->_value);
     }
 
     else

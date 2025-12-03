@@ -1,43 +1,43 @@
 @interface MMCSController
 + (id)serialControllerQueue;
 + (void)preMMCSWarm;
-- (BOOL)_getTransfers:(id)a3 requestURL:(id)a4 requestorID:(id)a5 sourceAppID:(id)a6 token:(id)a7 error:(id *)a8;
-- (BOOL)_putTransfers:(id)a3 requestURL:(id)a4 requestorID:(id)a5 transferID:(id)a6 sourceAppID:(id)a7 token:(id)a8 error:(id *)a9;
-- (BOOL)_unregisterTransfers:(id)a3;
+- (BOOL)_getTransfers:(id)transfers requestURL:(id)l requestorID:(id)d sourceAppID:(id)iD token:(id)token error:(id *)error;
+- (BOOL)_putTransfers:(id)transfers requestURL:(id)l requestorID:(id)d transferID:(id)iD sourceAppID:(id)appID token:(id)token error:(id *)error;
+- (BOOL)_unregisterTransfers:(id)transfers;
 - (BOOL)isActive;
-- (BOOL)unregisterFiles:(id)a3;
-- (MMCSController)initWithQueue:(id)a3;
+- (BOOL)unregisterFiles:(id)files;
+- (MMCSController)initWithQueue:(id)queue;
 - (_mmcs_engine)_engine;
-- (id)_MMCSICloudRequestHeadersCopy:(__CFString *)a3;
-- (id)_optionsForFiles:(id)a3 sourceAppID:(id)a4;
-- (id)_registeredTransferForGUID:(id)a3;
-- (id)_registeredTransferForItemID:(unint64_t)a3;
+- (id)_MMCSICloudRequestHeadersCopy:(__CFString *)copy;
+- (id)_optionsForFiles:(id)files sourceAppID:(id)d;
+- (id)_registeredTransferForGUID:(id)d;
+- (id)_registeredTransferForItemID:(unint64_t)d;
 - (id)getContentHeadersAsString;
-- (void)_addPreauthorizationOptions:(id)a3 forFiles:(id)a4;
-- (void)_addRequestorContext:(id)a3 transferID:(id)a4;
-- (void)_cancelRequest:(id)a3;
-- (void)_getItemCompleted:(id)a3 path:(id)a4 error:(id)a5;
+- (void)_addPreauthorizationOptions:(id)options forFiles:(id)files;
+- (void)_addRequestorContext:(id)context transferID:(id)d;
+- (void)_cancelRequest:(id)request;
+- (void)_getItemCompleted:(id)completed path:(id)path error:(id)error;
 - (void)_invalidatePowerAssertionTimer;
-- (void)_itemCompleted:(id)a3;
-- (void)_processCompletedItem:(id)a3 error:(id)a4;
-- (void)_putItemCompleted:(id)a3 error:(id)a4;
+- (void)_itemCompleted:(id)completed;
+- (void)_processCompletedItem:(id)item error:(id)error;
+- (void)_putItemCompleted:(id)completed error:(id)error;
 - (void)_registerPowerAssertionIfNeeded;
 - (void)_releasePowerAssertion;
 - (void)_releasePowerAssertionAndSimulateCrash;
-- (void)_removeRequestorContext:(id)a3 transferID:(id)a4;
+- (void)_removeRequestorContext:(id)context transferID:(id)d;
 - (void)_schedulePowerAssertionTimer;
-- (void)_setScheduledTransfers:(id)a3 block:(id)a4;
+- (void)_setScheduledTransfers:(id)transfers block:(id)block;
 - (void)_unregisterPowerAssertion;
-- (void)cancelPutRequestID:(id)a3;
+- (void)cancelPutRequestID:(id)d;
 - (void)dealloc;
-- (void)getFiles:(id)a3 requestURL:(id)a4 requestorID:(id)a5 sourceAppID:(id)a6 authToken:(id)a7 completionBlock:(id)a8;
-- (void)putFiles:(id)a3 requestURL:(id)a4 requestorID:(id)a5 transferID:(id)a6 sourceAppID:(id)a7 authToken:(id)a8 preauthenticate:(BOOL)a9 completionBlock:(id)a10;
-- (void)registerFilesForDownload:(id)a3 completionBlock:(id)a4;
+- (void)getFiles:(id)files requestURL:(id)l requestorID:(id)d sourceAppID:(id)iD authToken:(id)token completionBlock:(id)block;
+- (void)putFiles:(id)files requestURL:(id)l requestorID:(id)d transferID:(id)iD sourceAppID:(id)appID authToken:(id)token preauthenticate:(BOOL)preauthenticate completionBlock:(id)self0;
+- (void)registerFilesForDownload:(id)download completionBlock:(id)block;
 @end
 
 @implementation MMCSController
 
-- (MMCSController)initWithQueue:(id)a3
+- (MMCSController)initWithQueue:(id)queue
 {
   v14.receiver = self;
   v14.super_class = MMCSController;
@@ -48,7 +48,7 @@
     objc_msgSend__engine(v4, v5, v6, v7, v8);
     v9->_powerAssertionTimer = 0;
     v9->_transferIDContextMapLock = objc_alloc_init(MEMORY[0x277CCAC60]);
-    objc_msgSend_setReplyQueue_(v9, v10, a3, v11, v12);
+    objc_msgSend_setReplyQueue_(v9, v10, queue, v11, v12);
   }
 
   return v9;
@@ -286,16 +286,16 @@ LABEL_8:
   [(MMCSController *)&v18 dealloc];
 }
 
-- (void)_addPreauthorizationOptions:(id)a3 forFiles:(id)a4
+- (void)_addPreauthorizationOptions:(id)options forFiles:(id)files
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, a4, v4);
+  v6 = objc_msgSend_serialControllerQueue(MMCSController, a2, options, files, v4);
   dispatch_assert_queue_V2(v6);
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(a4, v7, &v47, v59, 16);
+  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(files, v7, &v47, v59, 16);
   if (v12)
   {
     v13 = 0;
@@ -308,7 +308,7 @@ LABEL_3:
       v17 = v14;
       if (*v48 != v15)
       {
-        objc_enumerationMutation(a4);
+        objc_enumerationMutation(files);
       }
 
       v18 = *(*(&v47 + 1) + 8 * v16);
@@ -332,9 +332,9 @@ LABEL_3:
           v32 = objc_msgSend_length(v27, v28, v29, v30, v31);
           v37 = objc_msgSend_guid(v18, v33, v34, v35, v36);
           *buf = 134218242;
-          v52 = v32;
+          filesCopy = v32;
           v53 = 2112;
-          v54 = v37;
+          filesCopy2 = v37;
           _os_log_impl(&dword_20E3AF000, v22, OS_LOG_TYPE_INFO, "Preauthorizing MMCS request with auth data of length %tu (file: %@)", buf, 0x16u);
         }
       }
@@ -356,9 +356,9 @@ LABEL_3:
             if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
             {
               *buf = 138412802;
-              v52 = a4;
+              filesCopy = files;
               v53 = 2112;
-              v54 = v13;
+              filesCopy2 = v13;
               v55 = 2112;
               v56 = v38;
               v41 = "MMCSPutFiles %@ have different protocol versions: %@ vs. %@";
@@ -376,16 +376,16 @@ LABEL_3:
 
       if (v12 == ++v16)
       {
-        v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(a4, v8, &v47, v59, 16);
+        v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(files, v8, &v47, v59, 16);
         if (v12)
         {
           goto LABEL_3;
         }
 
-        CFDictionarySetValue(a3, *MEMORY[0x277D255B8], v14);
+        CFDictionarySetValue(options, *MEMORY[0x277D255B8], v14);
         if (v13)
         {
-          CFDictionarySetValue(a3, *MEMORY[0x277D255F8], v13);
+          CFDictionarySetValue(options, *MEMORY[0x277D255F8], v13);
         }
 
         goto LABEL_28;
@@ -399,9 +399,9 @@ LABEL_3:
       {
         v40 = objc_opt_class();
         *buf = 138413058;
-        v52 = v40;
+        filesCopy = v40;
         v53 = 2112;
-        v54 = a4;
+        filesCopy2 = files;
         v55 = 2112;
         v56 = v17;
         v57 = 2112;
@@ -419,9 +419,9 @@ LABEL_28:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_optionsForFiles:(id)a3 sourceAppID:(id)a4
+- (id)_optionsForFiles:(id)files sourceAppID:(id)d
 {
-  v8 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, a4, v4);
+  v8 = objc_msgSend_serialControllerQueue(MMCSController, a2, files, d, v4);
   dispatch_assert_queue_V2(v8);
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -445,12 +445,12 @@ LABEL_28:
     CFDictionarySetValue(v10, *MEMORY[0x277D25530], v28);
   }
 
-  objc_msgSend__addPreauthorizationOptions_forFiles_(self, v29, v9, a3, v30);
-  if (a4)
+  objc_msgSend__addPreauthorizationOptions_forFiles_(self, v29, v9, files, v30);
+  if (d)
   {
     v35 = *MEMORY[0x277D25600];
-    CFDictionarySetValue(v9, *MEMORY[0x277D25600], a4);
-    CFDictionarySetValue(v10, v35, a4);
+    CFDictionarySetValue(v9, *MEMORY[0x277D25600], d);
+    CFDictionarySetValue(v10, v35, d);
   }
 
   if (objc_msgSend_connectionBehavior(self, v31, v32, v33, v34) == 1)
@@ -582,19 +582,19 @@ LABEL_19:
   return result;
 }
 
-- (id)_registeredTransferForGUID:(id)a3
+- (id)_registeredTransferForGUID:(id)d
 {
-  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, v3, v4);
+  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, d, v3, v4);
   dispatch_assert_queue_V2(v7);
   transfers = self->_transfers;
 
-  return objc_msgSend_objectForKey_(transfers, v8, a3, v9, v10);
+  return objc_msgSend_objectForKey_(transfers, v8, d, v9, v10);
 }
 
-- (id)_registeredTransferForItemID:(unint64_t)a3
+- (id)_registeredTransferForItemID:(unint64_t)d
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, v3, v4);
+  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, d, v3, v4);
   dispatch_assert_queue_V2(v7);
   v27 = 0u;
   v28 = 0u;
@@ -615,7 +615,7 @@ LABEL_3:
       }
 
       v21 = *(*(&v25 + 1) + 8 * v20);
-      if (objc_msgSend_itemID(v21, v14, v15, v16, v17) == a3)
+      if (objc_msgSend_itemID(v21, v14, v15, v16, v17) == d)
       {
         break;
       }
@@ -642,7 +642,7 @@ LABEL_9:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v30 = a3;
+        dCopy = d;
         _os_log_impl(&dword_20E3AF000, v22, OS_LOG_TYPE_INFO, "Found no registered transfer for transfer id: %qx", buf, 0xCu);
       }
     }
@@ -654,16 +654,16 @@ LABEL_9:
   return v21;
 }
 
-- (BOOL)_unregisterTransfers:(id)a3
+- (BOOL)_unregisterTransfers:(id)transfers
 {
   v63 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, v3, v4);
+  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, transfers, v3, v4);
   dispatch_assert_queue_V2(v7);
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v8, &v56, v62, 16);
+  v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(transfers, v8, &v56, v62, 16);
   if (v13)
   {
     v15 = *v57;
@@ -676,7 +676,7 @@ LABEL_9:
       {
         if (*v57 != v15)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(transfers);
         }
 
         v17 = *(*(&v56 + 1) + 8 * v16);
@@ -735,7 +735,7 @@ LABEL_9:
       }
 
       while (v13 != v16);
-      v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v30, &v56, v62, 16);
+      v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(transfers, v30, &v56, v62, 16);
     }
 
     while (v13);
@@ -750,12 +750,12 @@ LABEL_9:
   return 1;
 }
 
-- (void)_setScheduledTransfers:(id)a3 block:(id)a4
+- (void)_setScheduledTransfers:(id)transfers block:(id)block
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, a4, v4);
+  v8 = objc_msgSend_serialControllerQueue(MMCSController, a2, transfers, block, v4);
   dispatch_assert_queue_V2(v8);
-  if (a4)
+  if (block)
   {
     if (!self->_requestIDToBlockMap)
     {
@@ -767,7 +767,7 @@ LABEL_9:
       self->_transferToRequestIDsMap = objc_alloc_init(MEMORY[0x277CBEB38]);
     }
 
-    v54 = a4;
+    blockCopy = block;
     if (!self->_requestIDToRemainingTransfersMap)
     {
       self->_requestIDToRemainingTransfersMap = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -783,7 +783,7 @@ LABEL_9:
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v14, &v55, v59, 16);
+    v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(transfers, v14, &v55, v59, 16);
     if (v15)
     {
       v20 = v15;
@@ -794,7 +794,7 @@ LABEL_9:
         {
           if (*v56 != v21)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(transfers);
           }
 
           v23 = *(*(&v55 + 1) + 8 * i);
@@ -812,27 +812,27 @@ LABEL_9:
           objc_msgSend_setObject_forKey_(v33, v39, v32, v38, v40);
         }
 
-        v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v16, &v55, v59, 16);
+        v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(transfers, v16, &v55, v59, 16);
       }
 
       while (v20);
     }
 
-    v41 = objc_msgSend_copy(v54, v16, v17, v18, v19);
+    v41 = objc_msgSend_copy(blockCopy, v16, v17, v18, v19);
     objc_msgSend_setObject_forKey_(self->_requestIDToBlockMap, v42, v41, v13, v43);
 
-    v48 = objc_msgSend_mutableCopy(a3, v44, v45, v46, v47);
+    v48 = objc_msgSend_mutableCopy(transfers, v44, v45, v46, v47);
     objc_msgSend_setObject_forKey_(self->_requestIDToRemainingTransfersMap, v49, v48, v13, v50);
-    objc_msgSend_setObject_forKey_(self->_requestIDToTransfersMap, v51, a3, v13, v52);
+    objc_msgSend_setObject_forKey_(self->_requestIDToTransfersMap, v51, transfers, v13, v52);
   }
 
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_putTransfers:(id)a3 requestURL:(id)a4 requestorID:(id)a5 transferID:(id)a6 sourceAppID:(id)a7 token:(id)a8 error:(id *)a9
+- (BOOL)_putTransfers:(id)transfers requestURL:(id)l requestorID:(id)d transferID:(id)iD sourceAppID:(id)appID token:(id)token error:(id *)error
 {
   *&v54[5] = *MEMORY[0x277D85DE8];
-  v16 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, a4, a5);
+  v16 = objc_msgSend_serialControllerQueue(MMCSController, a2, transfers, l, d);
   dispatch_assert_queue_V2(v16);
   if (IMOSLoggingEnabled())
   {
@@ -840,7 +840,7 @@ LABEL_9:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *v54 = a3;
+      *v54 = transfers;
       _os_log_impl(&dword_20E3AF000, v21, OS_LOG_TYPE_INFO, "Make put transfer request for transfers: %@", buf, 0xCu);
     }
   }
@@ -863,7 +863,7 @@ LABEL_9:
     goto LABEL_29;
   }
 
-  if (!a4)
+  if (!l)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -881,7 +881,7 @@ LABEL_9:
     goto LABEL_29;
   }
 
-  if (!a5)
+  if (!d)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -899,7 +899,7 @@ LABEL_9:
     goto LABEL_29;
   }
 
-  if (!a8)
+  if (!token)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -925,14 +925,14 @@ LABEL_30:
   v52 = 0;
   v49 = 0;
   v50 = 0;
-  objc_msgSend_count(a3, v22, v23, v24, v25);
-  sub_20E3B3F3C(a3, a5, a4, a8);
-  if (sub_20E3B4058(a3, &v52, &v51, &v50, &v49))
+  objc_msgSend_count(transfers, v22, v23, v24, v25);
+  sub_20E3B3F3C(transfers, d, l, token);
+  if (sub_20E3B4058(transfers, &v52, &v51, &v50, &v49))
   {
-    v28 = objc_msgSend__optionsForFiles_sourceAppID_(self, v26, a3, a7, v27);
+    v28 = objc_msgSend__optionsForFiles_sourceAppID_(self, v26, transfers, appID, v27);
     v29 = [MMCSRequestorContext alloc];
-    v32 = objc_msgSend_initWithController_transferID_(v29, v30, self, a6, v31);
-    objc_msgSend__addRequestorContext_transferID_(self, v33, v32, a6, v34);
+    v32 = objc_msgSend_initWithController_transferID_(v29, v30, self, iD, v31);
+    objc_msgSend__addRequestorContext_transferID_(self, v33, v32, iD, v34);
     if (IMOSLoggingEnabled())
     {
       v39 = OSLogHandleForIMFoundationCategory();
@@ -948,9 +948,9 @@ LABEL_30:
     objc_msgSend__engine(self, v35, v36, v37, v38);
     v41 = MMCSPutItems();
     v42 = v41 != 0;
-    if (a9)
+    if (error)
     {
-      *a9 = 0;
+      *error = 0;
     }
 
     if (IMOSLoggingEnabled())
@@ -982,16 +982,16 @@ LABEL_30:
     v42 = 0;
   }
 
-  sub_20E3B4404(a3, &v52, &v51, &v50, &v49);
+  sub_20E3B4404(transfers, &v52, &v51, &v50, &v49);
 LABEL_31:
   v46 = *MEMORY[0x277D85DE8];
   return v42;
 }
 
-- (BOOL)_getTransfers:(id)a3 requestURL:(id)a4 requestorID:(id)a5 sourceAppID:(id)a6 token:(id)a7 error:(id *)a8
+- (BOOL)_getTransfers:(id)transfers requestURL:(id)l requestorID:(id)d sourceAppID:(id)iD token:(id)token error:(id *)error
 {
   *&v54[5] = *MEMORY[0x277D85DE8];
-  v15 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, a4, a5);
+  v15 = objc_msgSend_serialControllerQueue(MMCSController, a2, transfers, l, d);
   dispatch_assert_queue_V2(v15);
   if (IMOSLoggingEnabled())
   {
@@ -999,7 +999,7 @@ LABEL_31:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *v54 = a3;
+      *v54 = transfers;
       _os_log_impl(&dword_20E3AF000, v20, OS_LOG_TYPE_INFO, "Make get transfer request for transfers: %@", buf, 0xCu);
     }
   }
@@ -1022,7 +1022,7 @@ LABEL_31:
     goto LABEL_38;
   }
 
-  if (!a4)
+  if (!l)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -1040,7 +1040,7 @@ LABEL_31:
     goto LABEL_38;
   }
 
-  if (!a5)
+  if (!d)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -1058,7 +1058,7 @@ LABEL_31:
     goto LABEL_38;
   }
 
-  if (!a7)
+  if (!token)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -1083,9 +1083,9 @@ LABEL_39:
   v51 = 0;
   v52 = 0;
   v50 = 0;
-  objc_msgSend_count(a3, v21, v22, v23, v24);
-  sub_20E3B3F3C(a3, a5, a4, a7);
-  v25 = sub_20E3B4058(a3, &v52, 0, &v51, &v50);
+  objc_msgSend_count(transfers, v21, v22, v23, v24);
+  sub_20E3B3F3C(transfers, d, l, token);
+  v25 = sub_20E3B4058(transfers, &v52, 0, &v51, &v50);
   v26 = IMOSLoggingEnabled();
   if (v25)
   {
@@ -1122,7 +1122,7 @@ LABEL_39:
       }
     }
 
-    v32 = objc_msgSend__optionsForFiles_sourceAppID_(self, v29, a3, a6, v30);
+    v32 = objc_msgSend__optionsForFiles_sourceAppID_(self, v29, transfers, iD, v30);
     v33 = [MMCSRequestorContext alloc];
     objc_msgSend_initWithController_transferID_(v33, v34, self, 0, v35);
     if (IMOSLoggingEnabled())
@@ -1140,9 +1140,9 @@ LABEL_39:
     objc_msgSend__engine(self, v36, v37, v38, v39);
     v42 = MMCSGetItems();
     v43 = v42 != 0;
-    if (a8)
+    if (error)
     {
-      *a8 = 0;
+      *error = 0;
     }
 
     if (IMOSLoggingEnabled())
@@ -1174,7 +1174,7 @@ LABEL_39:
     v43 = 0;
   }
 
-  sub_20E3B4404(a3, &v52, 0, &v51, &v50);
+  sub_20E3B4404(transfers, &v52, 0, &v51, &v50);
 LABEL_40:
   v47 = *MEMORY[0x277D85DE8];
   return v43;
@@ -1201,32 +1201,32 @@ LABEL_40:
   return self;
 }
 
-- (void)registerFilesForDownload:(id)a3 completionBlock:(id)a4
+- (void)registerFilesForDownload:(id)download completionBlock:(id)block
 {
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_20E3B4DB4;
   v9[3] = &unk_277E1CBF0;
   v9[4] = self;
-  v9[5] = a4;
-  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, a4, v4);
+  v9[5] = block;
+  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, download, block, v4);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_20E3B4E64;
   block[3] = &unk_277E1CC18;
   block[4] = self;
-  block[5] = a3;
+  block[5] = download;
   block[6] = v9;
   dispatch_async(v7, block);
 }
 
-- (BOOL)unregisterFiles:(id)a3
+- (BOOL)unregisterFiles:(id)files
 {
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, v3, v4);
+  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, files, v3, v4);
   dispatch_assert_queue_not_V2(v7);
   v12 = objc_msgSend_serialControllerQueue(MMCSController, v8, v9, v10, v11);
   block[0] = MEMORY[0x277D85DD0];
@@ -1235,7 +1235,7 @@ LABEL_40:
   block[3] = &unk_277E1CC68;
   block[5] = self;
   block[6] = &v15;
-  block[4] = a3;
+  block[4] = files;
   dispatch_sync(v12, block);
   LOBYTE(self) = *(v16 + 24) != 0;
   _Block_object_dispose(&v15, 8);
@@ -1259,59 +1259,59 @@ LABEL_40:
   dispatch_async(v5, &unk_28253E008);
 }
 
-- (void)getFiles:(id)a3 requestURL:(id)a4 requestorID:(id)a5 sourceAppID:(id)a6 authToken:(id)a7 completionBlock:(id)a8
+- (void)getFiles:(id)files requestURL:(id)l requestorID:(id)d sourceAppID:(id)iD authToken:(id)token completionBlock:(id)block
 {
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_20E3B569C;
   v16[3] = &unk_277E1CCD8;
   v16[4] = self;
-  v16[5] = a8;
-  v14 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, a4, a5);
+  v16[5] = block;
+  v14 = objc_msgSend_serialControllerQueue(MMCSController, a2, files, l, d);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_20E3B5764;
   block[3] = &unk_277E1CD28;
-  block[9] = a7;
+  block[9] = token;
   block[10] = v16;
-  block[4] = a3;
+  block[4] = files;
   block[5] = self;
-  block[6] = a4;
-  block[7] = a5;
-  block[8] = a6;
+  block[6] = l;
+  block[7] = d;
+  block[8] = iD;
   dispatch_async(v14, block);
 }
 
-- (void)putFiles:(id)a3 requestURL:(id)a4 requestorID:(id)a5 transferID:(id)a6 sourceAppID:(id)a7 authToken:(id)a8 preauthenticate:(BOOL)a9 completionBlock:(id)a10
+- (void)putFiles:(id)files requestURL:(id)l requestorID:(id)d transferID:(id)iD sourceAppID:(id)appID authToken:(id)token preauthenticate:(BOOL)preauthenticate completionBlock:(id)self0
 {
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_20E3B5BD0;
   v20[3] = &unk_277E1CCD8;
   v20[4] = self;
-  v20[5] = a10;
-  v17 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, a4, a5);
+  v20[5] = block;
+  v17 = objc_msgSend_serialControllerQueue(MMCSController, a2, files, l, d);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_20E3B5C98;
   block[3] = &unk_277E1CD78;
-  block[4] = a3;
+  block[4] = files;
   block[5] = self;
-  v19 = a9;
-  block[6] = a4;
-  block[7] = a5;
-  block[8] = a6;
-  block[9] = a7;
-  block[10] = a8;
+  preauthenticateCopy = preauthenticate;
+  block[6] = l;
+  block[7] = d;
+  block[8] = iD;
+  block[9] = appID;
+  block[10] = token;
   block[11] = v20;
   dispatch_async(v17, block);
 }
 
-- (void)_addRequestorContext:(id)a3 transferID:(id)a4
+- (void)_addRequestorContext:(id)context transferID:(id)d
 {
-  v8 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, a4, v4);
+  v8 = objc_msgSend_serialControllerQueue(MMCSController, a2, context, d, v4);
   dispatch_assert_queue_V2(v8);
-  if (a3 && a4)
+  if (context && d)
   {
     objc_msgSend_lock(self->_transferIDContextMapLock, v9, v10, v11, v12);
     transferIDToContextMap = self->_transferIDToContextMap;
@@ -1321,26 +1321,26 @@ LABEL_40:
       self->_transferIDToContextMap = transferIDToContextMap;
     }
 
-    v20 = objc_msgSend_objectForKeyedSubscript_(transferIDToContextMap, v13, a4, v14, v15);
+    v20 = objc_msgSend_objectForKeyedSubscript_(transferIDToContextMap, v13, d, v14, v15);
     if (!v20)
     {
       v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      objc_msgSend_setObject_forKeyedSubscript_(self->_transferIDToContextMap, v21, v20, a4, v22);
+      objc_msgSend_setObject_forKeyedSubscript_(self->_transferIDToContextMap, v21, v20, d, v22);
     }
 
-    objc_msgSend_addObject_(v20, v17, a3, v18, v19);
+    objc_msgSend_addObject_(v20, v17, context, v18, v19);
     transferIDContextMapLock = self->_transferIDContextMapLock;
 
     objc_msgSend_unlock(transferIDContextMapLock, v23, v24, v25, v26);
   }
 }
 
-- (void)_removeRequestorContext:(id)a3 transferID:(id)a4
+- (void)_removeRequestorContext:(id)context transferID:(id)d
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, a4, v4);
+  v8 = objc_msgSend_serialControllerQueue(MMCSController, a2, context, d, v4);
   dispatch_assert_queue_V2(v8);
-  if (a3 && a4)
+  if (context && d)
   {
     if (IMOSLoggingEnabled())
     {
@@ -1348,17 +1348,17 @@ LABEL_40:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v30 = 138412290;
-        v31 = a4;
+        dCopy = d;
         _os_log_impl(&dword_20E3AF000, v13, OS_LOG_TYPE_INFO, "Remove request context for transferID %@", &v30, 0xCu);
       }
     }
 
     objc_msgSend_lock(self->_transferIDContextMapLock, v9, v10, v11, v12);
-    v17 = objc_msgSend_objectForKeyedSubscript_(self->_transferIDToContextMap, v14, a4, v15, v16);
-    objc_msgSend_removeObject_(v17, v18, a3, v19, v20);
+    v17 = objc_msgSend_objectForKeyedSubscript_(self->_transferIDToContextMap, v14, d, v15, v16);
+    objc_msgSend_removeObject_(v17, v18, context, v19, v20);
     if (!objc_msgSend_count(v17, v21, v22, v23, v24))
     {
-      objc_msgSend_setObject_forKeyedSubscript_(self->_transferIDToContextMap, v25, 0, a4, v28);
+      objc_msgSend_setObject_forKeyedSubscript_(self->_transferIDToContextMap, v25, 0, d, v28);
     }
 
     objc_msgSend_unlock(self->_transferIDContextMapLock, v25, v26, v27, v28);
@@ -1367,10 +1367,10 @@ LABEL_40:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cancelRequest:(id)a3
+- (void)_cancelRequest:(id)request
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, v3, v4);
+  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, request, v3, v4);
   dispatch_assert_queue_V2(v7);
   if (IMOSLoggingEnabled())
   {
@@ -1378,7 +1378,7 @@ LABEL_40:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v14 = 134217984;
-      v15 = a3;
+      requestCopy = request;
       _os_log_impl(&dword_20E3AF000, v12, OS_LOG_TYPE_INFO, "Request cancel context %p", &v14, 0xCu);
     }
   }
@@ -1388,18 +1388,18 @@ LABEL_40:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelPutRequestID:(id)a3
+- (void)cancelPutRequestID:(id)d
 {
-  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, v3, v4);
+  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, d, v3, v4);
   dispatch_assert_queue_not_V2(v7);
-  if (a3)
+  if (d)
   {
     v12 = objc_msgSend_serialControllerQueue(MMCSController, v8, v9, v10, v11);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = sub_20E3B6394;
     v13[3] = &unk_277E1CDA0;
-    v13[4] = a3;
+    v13[4] = d;
     v13[5] = self;
     dispatch_sync(v12, v13);
   }
@@ -1428,15 +1428,15 @@ LABEL_40:
   return v12;
 }
 
-- (void)_processCompletedItem:(id)a3 error:(id)a4
+- (void)_processCompletedItem:(id)item error:(id)error
 {
-  v5 = a3;
+  itemCopy = item;
   v100 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, a4, v4);
+  v7 = objc_msgSend_serialControllerQueue(MMCSController, a2, item, error, v4);
   dispatch_assert_queue_V2(v7);
-  v8 = v5;
+  v8 = itemCopy;
   transferToRequestIDsMap = self->_transferToRequestIDsMap;
-  v14 = objc_msgSend_guid(v5, v10, v11, v12, v13);
+  v14 = objc_msgSend_guid(itemCopy, v10, v11, v12, v13);
   v18 = objc_msgSend_objectForKey_(transferToRequestIDsMap, v15, v14, v16, v17);
   v23 = objc_msgSend_mutableCopy(v18, v19, v20, v21, v22);
   v28 = objc_msgSend_mutableCopy(v23, v24, v25, v26, v27);
@@ -1449,7 +1449,7 @@ LABEL_40:
   {
     v35 = v30;
     v36 = *v96;
-    if (v5)
+    if (itemCopy)
     {
       v37 = v28 == 0;
     }
@@ -1461,7 +1461,7 @@ LABEL_40:
 
     v38 = !v37;
     v93 = v38;
-    v92 = v5;
+    v92 = itemCopy;
     do
     {
       v39 = 0;
@@ -1474,7 +1474,7 @@ LABEL_40:
 
         v40 = *(*(&v95 + 1) + 8 * v39);
         v41 = objc_msgSend_objectForKey_(self->_requestIDToRemainingTransfersMap, v31, v40, v33, v34);
-        objc_msgSend_removeObjectIdenticalTo_(v41, v42, v5, v43, v44);
+        objc_msgSend_removeObjectIdenticalTo_(v41, v42, itemCopy, v43, v44);
         if (!objc_msgSend_count(v41, v45, v46, v47, v48))
         {
           v49 = objc_msgSend_objectForKey_(self->_requestIDToBlockMap, v31, v40, v33, v34);
@@ -1482,8 +1482,8 @@ LABEL_40:
           {
             v53 = v49;
             v54 = objc_msgSend_objectForKey_(self->_requestIDToTransfersMap, v50, v40, v51, v52);
-            v5 = v92;
-            (*(v53 + 16))(v53, v54, a4 == 0, a4);
+            itemCopy = v92;
+            (*(v53 + 16))(v53, v54, error == 0, error);
           }
 
           objc_msgSend_removeObjectForKey_(self->_requestIDToBlockMap, v50, v40, v51, v52);
@@ -1495,15 +1495,15 @@ LABEL_40:
             if (v93)
             {
               v69 = self->_transferToRequestIDsMap;
-              v70 = objc_msgSend_guid(v5, v31, v68, v33, v34);
+              v70 = objc_msgSend_guid(itemCopy, v31, v68, v33, v34);
               objc_msgSend_setObject_forKey_(v69, v71, v28, v70, v72);
             }
           }
 
-          else if (v5)
+          else if (itemCopy)
           {
             v73 = self->_transferToRequestIDsMap;
-            v74 = objc_msgSend_guid(v5, v31, v68, v33, v34);
+            v74 = objc_msgSend_guid(itemCopy, v31, v68, v33, v34);
             objc_msgSend_removeObjectForKey_(v73, v75, v74, v76, v77);
           }
         }
@@ -1546,53 +1546,53 @@ LABEL_40:
   v91 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_putItemCompleted:(id)a3 error:(id)a4
+- (void)_putItemCompleted:(id)completed error:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, a4, v4);
+  v8 = objc_msgSend_serialControllerQueue(MMCSController, a2, completed, error, v4);
   dispatch_assert_queue_V2(v8);
-  objc_msgSend_setMMCSError_(a3, v9, a4, v10, v11);
+  objc_msgSend_setMMCSError_(completed, v9, error, v10, v11);
   if (IMOSLoggingEnabled())
   {
     v16 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v21 = a3;
+      completedCopy = completed;
       v22 = 2112;
-      v23 = a4;
+      errorCopy = error;
       _os_log_impl(&dword_20E3AF000, v16, OS_LOG_TYPE_INFO, "Put item completed: %@  error: %@", buf, 0x16u);
     }
   }
 
-  if (a3)
+  if (completed)
   {
     v17 = objc_msgSend_replyQueue(self, v12, v13, v14, v15);
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = sub_20E3B72CC;
     v19[3] = &unk_277E1CDA0;
-    v19[4] = a4;
-    v19[5] = a3;
+    v19[4] = error;
+    v19[5] = completed;
     dispatch_async(v17, v19);
   }
 
-  objc_msgSend__processCompletedItem_error_(self, v12, a3, a4, v15);
+  objc_msgSend__processCompletedItem_error_(self, v12, completed, error, v15);
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getItemCompleted:(id)a3 path:(id)a4 error:(id)a5
+- (void)_getItemCompleted:(id)completed path:(id)path error:(id)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, a4, a5);
+  v9 = objc_msgSend_serialControllerQueue(MMCSController, a2, completed, path, error);
   dispatch_assert_queue_V2(v9);
   v26 = 0;
   v27 = &v26;
   v28 = 0x3052000000;
   v29 = sub_20E3B331C;
   v30 = sub_20E3B332C;
-  v31 = a5;
-  objc_msgSend_setMMCSError_(a3, v10, a5, v11, v12);
+  errorCopy = error;
+  objc_msgSend_setMMCSError_(completed, v10, error, v11, v12);
   if (IMOSLoggingEnabled())
   {
     v13 = OSLogHandleForIMFoundationCategory();
@@ -1600,7 +1600,7 @@ LABEL_40:
     {
       v14 = v27[5];
       *buf = 138412546;
-      v33 = a3;
+      pathCopy = completed;
       v34 = 2112;
       v35 = v14;
       _os_log_impl(&dword_20E3AF000, v13, OS_LOG_TYPE_INFO, "Get item completed: %@  error: %@", buf, 0x16u);
@@ -1614,7 +1614,7 @@ LABEL_40:
     {
       v16 = v27[5];
       *buf = 138412546;
-      v33 = a4;
+      pathCopy = path;
       v34 = 2112;
       v35 = v16;
       _os_log_impl(&dword_20E3AF000, v15, OS_LOG_TYPE_INFO, "[=MMCS-Timing=]  Get Item completed for path: %@  (error: %@)", buf, 0x16u);
@@ -1628,33 +1628,33 @@ LABEL_40:
     {
       v22 = qos_class_self();
       *buf = 67109120;
-      LODWORD(v33) = v22;
+      LODWORD(pathCopy) = v22;
       _os_log_impl(&dword_20E3AF000, v21, OS_LOG_TYPE_INFO, "Get item completed running at qos (%u)", buf, 8u);
     }
   }
 
-  if (a3)
+  if (completed)
   {
     v23 = objc_msgSend_replyQueue(self, v17, v18, v19, v20);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_20E3B780C;
     block[3] = &unk_277E1CC68;
-    block[5] = a4;
+    block[5] = path;
     block[6] = &v26;
-    block[4] = a3;
+    block[4] = completed;
     dispatch_async(v23, block);
   }
 
-  objc_msgSend__processCompletedItem_error_(self, v17, a3, v27[5], v20);
+  objc_msgSend__processCompletedItem_error_(self, v17, completed, v27[5], v20);
   _Block_object_dispose(&v26, 8);
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_itemCompleted:(id)a3
+- (void)_itemCompleted:(id)completed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, v3, v4);
+  v6 = objc_msgSend_serialControllerQueue(MMCSController, a2, completed, v3, v4);
   dispatch_assert_queue_V2(v6);
   if (IMOSLoggingEnabled())
   {
@@ -1662,7 +1662,7 @@ LABEL_40:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = a3;
+      completedCopy = completed;
       _os_log_impl(&dword_20E3AF000, v7, OS_LOG_TYPE_INFO, "Item completed: %@", &v9, 0xCu);
     }
   }
@@ -1670,9 +1670,9 @@ LABEL_40:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_MMCSICloudRequestHeadersCopy:(__CFString *)a3
+- (id)_MMCSICloudRequestHeadersCopy:(__CFString *)copy
 {
-  v5 = objc_msgSend_serialControllerQueue(MMCSController, a2, a3, v3, v4);
+  v5 = objc_msgSend_serialControllerQueue(MMCSController, a2, copy, v3, v4);
   dispatch_assert_queue_V2(v5);
   v6 = MMCSICloudRequestHeadersCopy();
 

@@ -1,29 +1,29 @@
 @interface SecureIntentViewController
-+ (BOOL)isEnrolledWithRequestSource:(unint64_t)a3;
-+ (int64_t)authStorageKeyForRequestSource:(unint64_t)a3;
-- (SecureIntentViewController)initWithSource:(unint64_t)a3 context:(id)a4 delegate:(id)a5;
++ (BOOL)isEnrolledWithRequestSource:(unint64_t)source;
++ (int64_t)authStorageKeyForRequestSource:(unint64_t)source;
+- (SecureIntentViewController)initWithSource:(unint64_t)source context:(id)context delegate:(id)delegate;
 - (SecureIntentViewControllerDelegate)intentDelegate;
 - (id)_details;
 - (id)_errorMessage;
 - (id)_logger;
 - (id)_title;
-- (id)authStorageKeyDescription:(int64_t)a3;
-- (id)presentationWindowForPaymentAuthorizationController:(id)a3;
+- (id)authStorageKeyDescription:(int64_t)description;
+- (id)presentationWindowForPaymentAuthorizationController:(id)controller;
 - (id)requestSourceDescription;
 - (void)_cancelEnrollment;
 - (void)_continueEnrollment;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)paymentAuthorizationController:(id)a3 didAuthorizeContextWithHandler:(id)a4;
-- (void)paymentAuthorizationControllerDidFinish:(id)a3;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)paymentAuthorizationController:(id)controller didAuthorizeContextWithHandler:(id)handler;
+- (void)paymentAuthorizationControllerDidFinish:(id)finish;
 - (void)viewDidLoad;
 @end
 
 @implementation SecureIntentViewController
 
-- (SecureIntentViewController)initWithSource:(unint64_t)a3 context:(id)a4 delegate:(id)a5
+- (SecureIntentViewController)initWithSource:(unint64_t)source context:(id)context delegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = SecureIntentViewController;
   v11 = [(SecureIntentViewController *)&v14 init];
@@ -31,9 +31,9 @@
   if (v11)
   {
     [(SecureIntentViewController *)v11 setDelegate:v11];
-    v12->_requestSource = a3;
-    objc_storeWeak(&v12->_intentDelegate, v10);
-    objc_storeStrong(&v12->_context, a4);
+    v12->_requestSource = source;
+    objc_storeWeak(&v12->_intentDelegate, delegateCopy);
+    objc_storeStrong(&v12->_context, context);
   }
 
   return v12;
@@ -45,29 +45,29 @@
   v15.super_class = SecureIntentViewController;
   [(SecureIntentViewController *)&v15 viewDidLoad];
   v3 = [OBWelcomeController alloc];
-  v4 = [(SecureIntentViewController *)self _title];
-  v5 = [(SecureIntentViewController *)self _details];
-  v6 = [v3 initWithTitle:v4 detailText:v5 icon:0];
+  _title = [(SecureIntentViewController *)self _title];
+  _details = [(SecureIntentViewController *)self _details];
+  v6 = [v3 initWithTitle:_title detailText:_details icon:0];
 
   v7 = +[OBBoldTrayButton boldButton];
   v8 = settingsLocString(@"CONTINUE", @"Accessibility");
   [v7 setTitle:v8 forState:0];
 
   [v7 addTarget:self action:"_continueEnrollment" forControlEvents:64];
-  v9 = [v6 buttonTray];
-  [v9 addButton:v7];
+  buttonTray = [v6 buttonTray];
+  [buttonTray addButton:v7];
 
   v10 = +[OBLinkTrayButton linkButton];
   v11 = settingsLocString(@"SECURE_INTENT_NOT_NOW", @"Accessibility");
   [v10 setTitle:v11 forState:0];
 
   [v10 addTarget:self action:"_cancelEnrollment" forControlEvents:64];
-  v12 = [v6 buttonTray];
-  [v12 addButton:v10];
+  buttonTray2 = [v6 buttonTray];
+  [buttonTray2 addButton:v10];
 
   v13 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelEnrollment"];
-  v14 = [v6 navigationItem];
-  [v14 setLeftBarButtonItem:v13];
+  navigationItem = [v6 navigationItem];
+  [navigationItem setLeftBarButtonItem:v13];
 
   [(SecureIntentViewController *)self pushViewController:v6 animated:1];
 }
@@ -120,15 +120,15 @@ void __47__SecureIntentViewController__cancelEnrollment__block_invoke(uint64_t a
     v7 = objc_alloc_init(PKPaymentRequest);
     [v7 setRequestType:6];
     [v7 setConfirmationStyle:1];
-    v8 = [(LAContext *)self->_context externalizedContext];
-    [v7 setExternalizedContext:v8];
+    externalizedContext = [(LAContext *)self->_context externalizedContext];
+    [v7 setExternalizedContext:externalizedContext];
 
     v13 = v5;
     v9 = [NSArray arrayWithObjects:&v13 count:1];
     [v7 setPaymentSummaryItems:v9];
 
-    v10 = [(SecureIntentViewController *)self _errorMessage];
-    [v7 setLocalizedErrorMessage:v10];
+    _errorMessage = [(SecureIntentViewController *)self _errorMessage];
+    [v7 setLocalizedErrorMessage:_errorMessage];
 
     v11 = [[PKPaymentAuthorizationController alloc] initWithPaymentRequest:v7];
     pkController = self->_pkController;
@@ -223,23 +223,23 @@ LABEL_6:
   return v2;
 }
 
-+ (int64_t)authStorageKeyForRequestSource:(unint64_t)a3
++ (int64_t)authStorageKeyForRequestSource:(unint64_t)source
 {
-  if (a3 > 2)
+  if (source > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DA8E0[a3];
+    return qword_1DA8E0[source];
   }
 }
 
-+ (BOOL)isEnrolledWithRequestSource:(unint64_t)a3
++ (BOOL)isEnrolledWithRequestSource:(unint64_t)source
 {
   v4 = [[LAStorage alloc] initWithDomain:0 authenticationContext:0];
-  v5 = [SecureIntentViewController authStorageKeyForRequestSource:a3];
+  v5 = [SecureIntentViewController authStorageKeyForRequestSource:source];
   if (v5)
   {
     v6 = [v4 BOOLForKey:v5];
@@ -253,18 +253,18 @@ LABEL_6:
   return v6;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a4;
+  viewControllerCopy = viewController;
   v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelEnrollment"];
-  v7 = [v6 navigationItem];
+  navigationItem = [viewControllerCopy navigationItem];
 
-  [v7 setLeftBarButtonItem:v8];
+  [navigationItem setLeftBarButtonItem:v8];
 }
 
-- (void)paymentAuthorizationControllerDidFinish:(id)a3
+- (void)paymentAuthorizationControllerDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   objc_initWeak(&location, self);
   pkController = self->_pkController;
   v6[0] = _NSConcreteStackBlock;
@@ -307,23 +307,23 @@ void __70__SecureIntentViewController_paymentAuthorizationControllerDidFinish___
   [WeakRetained secureIntentViewControllerDidFinish:*(a1 + 40)];
 }
 
-- (id)presentationWindowForPaymentAuthorizationController:(id)a3
+- (id)presentationWindowForPaymentAuthorizationController:(id)controller
 {
-  v3 = [(SecureIntentViewController *)self view];
-  v4 = [v3 window];
+  view = [(SecureIntentViewController *)self view];
+  window = [view window];
 
-  return v4;
+  return window;
 }
 
-- (id)authStorageKeyDescription:(int64_t)a3
+- (id)authStorageKeyDescription:(int64_t)description
 {
   v3 = @"LAStorageKeySoundEnrollment";
-  if (a3 != 17)
+  if (description != 17)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (description == 1)
   {
     return @"LAStorageKeyDoublePressDisabled";
   }
@@ -354,13 +354,13 @@ void __70__SecureIntentViewController_paymentAuthorizationControllerDidFinish___
   }
 }
 
-- (void)paymentAuthorizationController:(id)a3 didAuthorizeContextWithHandler:(id)a4
+- (void)paymentAuthorizationController:(id)controller didAuthorizeContextWithHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [(SecureIntentViewController *)self _authStorageKey];
-  if (v6)
+  handlerCopy = handler;
+  _authStorageKey = [(SecureIntentViewController *)self _authStorageKey];
+  if (_authStorageKey)
   {
-    v7 = v6;
+    v7 = _authStorageKey;
     v8 = [[LAStorage alloc] initWithDomain:0 authenticationContext:self->_context];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -368,20 +368,20 @@ void __70__SecureIntentViewController_paymentAuthorizationControllerDidFinish___
     v10[3] = &unk_257DE0;
     v10[4] = self;
     v12 = v7;
-    v11 = v5;
+    v11 = handlerCopy;
     [v8 setBool:1 forKey:v7 completionHandler:v10];
   }
 
   else
   {
-    v9 = [(SecureIntentViewController *)self _logger];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    _logger = [(SecureIntentViewController *)self _logger];
+    if (os_log_type_enabled(_logger, OS_LOG_TYPE_ERROR))
     {
-      [SecureIntentViewController paymentAuthorizationController:v9 didAuthorizeContextWithHandler:?];
+      [SecureIntentViewController paymentAuthorizationController:_logger didAuthorizeContextWithHandler:?];
     }
 
     v8 = [[PKPaymentAuthorizationResult alloc] initWithStatus:0 errors:0];
-    (*(v5 + 2))(v5, v8);
+    (*(handlerCopy + 2))(handlerCopy, v8);
   }
 }
 

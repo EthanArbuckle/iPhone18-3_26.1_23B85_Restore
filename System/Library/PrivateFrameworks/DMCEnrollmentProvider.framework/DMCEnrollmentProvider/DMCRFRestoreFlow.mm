@@ -1,34 +1,34 @@
 @interface DMCRFRestoreFlow
-+ (id)_intersectionOfSet:(id)a3 set:(id)a4;
-+ (id)_set:(id)a3 subtracting:(id)a4;
-- (DMCRFRestoreFlow)initWithSnapshotSource:(id)a3 interactionClient:(id)a4 deviceEnvironment:(id)a5 completion:(id)a6;
-- (id)_appBundleIdentifiersSetDebugDescription:(id)a3;
-- (void)_checkSnapshotForConflictingApps:(id)a3;
-- (void)_compareAppsOnDeviceToAppBundleIdentifiers:(id)a3 fromSnapshot:(id)a4;
-- (void)_handleSnapshots:(id)a3;
-- (void)_restoreSnapshot:(id)a3 skippingApps:(id)a4;
-- (void)_startRestoreFromSnapshot:(id)a3 skippingApps:(id)a4;
++ (id)_intersectionOfSet:(id)set set:(id)a4;
++ (id)_set:(id)_set subtracting:(id)subtracting;
+- (DMCRFRestoreFlow)initWithSnapshotSource:(id)source interactionClient:(id)client deviceEnvironment:(id)environment completion:(id)completion;
+- (id)_appBundleIdentifiersSetDebugDescription:(id)description;
+- (void)_checkSnapshotForConflictingApps:(id)apps;
+- (void)_compareAppsOnDeviceToAppBundleIdentifiers:(id)identifiers fromSnapshot:(id)snapshot;
+- (void)_handleSnapshots:(id)snapshots;
+- (void)_restoreSnapshot:(id)snapshot skippingApps:(id)apps;
+- (void)_startRestoreFromSnapshot:(id)snapshot skippingApps:(id)apps;
 - (void)startManagedRestoreWorkflow;
 @end
 
 @implementation DMCRFRestoreFlow
 
-- (DMCRFRestoreFlow)initWithSnapshotSource:(id)a3 interactionClient:(id)a4 deviceEnvironment:(id)a5 completion:(id)a6
+- (DMCRFRestoreFlow)initWithSnapshotSource:(id)source interactionClient:(id)client deviceEnvironment:(id)environment completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  sourceCopy = source;
+  clientCopy = client;
+  environmentCopy = environment;
+  completionCopy = completion;
   v20.receiver = self;
   v20.super_class = DMCRFRestoreFlow;
   v15 = [(DMCRFRestoreFlow *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_snapshotSource, a3);
-    objc_storeStrong(&v16->_interactionClient, a4);
-    objc_storeStrong(&v16->_deviceEnvironment, a5);
-    v17 = [v14 copy];
+    objc_storeStrong(&v15->_snapshotSource, source);
+    objc_storeStrong(&v16->_interactionClient, client);
+    objc_storeStrong(&v16->_deviceEnvironment, environment);
+    v17 = [completionCopy copy];
     completion = v16->_completion;
     v16->_completion = v17;
   }
@@ -50,16 +50,16 @@
   block[3] = &unk_278EE7940;
   block[4] = v12;
   dispatch_after(v4, v3, block);
-  v5 = [(DMCRFRestoreFlow *)self snapshotSource];
+  snapshotSource = [(DMCRFRestoreFlow *)self snapshotSource];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__DMCRFRestoreFlow_startManagedRestoreWorkflow__block_invoke_10;
   v7[3] = &unk_278EE8160;
   v6 = v3;
-  v9 = self;
+  selfCopy = self;
   v10 = v12;
   v8 = v6;
-  [v5 fetchRestorableSnapshotsWithCompletion:v7];
+  [snapshotSource fetchRestorableSnapshotsWithCompletion:v7];
 
   _Block_object_dispose(v12, 8);
 }
@@ -114,11 +114,11 @@ void __47__DMCRFRestoreFlow_startManagedRestoreWorkflow__block_invoke_10(uint64_
   }
 }
 
-- (void)_handleSnapshots:(id)a3
+- (void)_handleSnapshots:(id)snapshots
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  snapshotsCopy = snapshots;
+  v5 = snapshotsCopy;
+  if (snapshotsCopy && [snapshotsCopy count])
   {
     v6 = [v5 objectAtIndexedSubscript:0];
     [(DMCRFRestoreFlow *)self _checkSnapshotForConflictingApps:v6];
@@ -133,15 +133,15 @@ void __47__DMCRFRestoreFlow_startManagedRestoreWorkflow__block_invoke_10(uint64_
       _os_log_impl(&dword_247E7D000, v7, OS_LOG_TYPE_DEFAULT, "managed restore skipped because no restorable snapshots are available", v9, 2u);
     }
 
-    v8 = [(DMCRFRestoreFlow *)self completion];
-    v8[2](v8, 0);
+    completion = [(DMCRFRestoreFlow *)self completion];
+    completion[2](completion, 0);
   }
 }
 
-- (void)_checkSnapshotForConflictingApps:(id)a3
+- (void)_checkSnapshotForConflictingApps:(id)apps
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  appsCopy = apps;
+  identifier = [appsCopy identifier];
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
@@ -154,7 +154,7 @@ void __47__DMCRFRestoreFlow_startManagedRestoreWorkflow__block_invoke_10(uint64_
   block[3] = &unk_278EE7940;
   block[4] = v17;
   dispatch_after(v7, v6, block);
-  v8 = [(DMCRFRestoreFlow *)self snapshotSource];
+  snapshotSource = [(DMCRFRestoreFlow *)self snapshotSource];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__DMCRFRestoreFlow__checkSnapshotForConflictingApps___block_invoke_21;
@@ -162,10 +162,10 @@ void __47__DMCRFRestoreFlow_startManagedRestoreWorkflow__block_invoke_10(uint64_
   v9 = v6;
   v15 = v17;
   v12 = v9;
-  v13 = self;
-  v10 = v4;
+  selfCopy = self;
+  v10 = appsCopy;
   v14 = v10;
-  [v8 fetchAppBundleIDsForSnapshot:v5 completion:v11];
+  [snapshotSource fetchAppBundleIDsForSnapshot:identifier completion:v11];
 
   _Block_object_dispose(v17, 8);
 }
@@ -231,24 +231,24 @@ void __53__DMCRFRestoreFlow__checkSnapshotForConflictingApps___block_invoke_21(u
   }
 }
 
-- (void)_compareAppsOnDeviceToAppBundleIdentifiers:(id)a3 fromSnapshot:(id)a4
+- (void)_compareAppsOnDeviceToAppBundleIdentifiers:(id)identifiers fromSnapshot:(id)snapshot
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  snapshotCopy = snapshot;
   v8 = objc_opt_class();
-  v9 = [(DMCRFRestoreFlow *)self deviceEnvironment];
-  v10 = [v9 installedAppBundleIdentifiers];
-  v11 = [v8 _intersectionOfSet:v6 set:v10];
+  deviceEnvironment = [(DMCRFRestoreFlow *)self deviceEnvironment];
+  installedAppBundleIdentifiers = [deviceEnvironment installedAppBundleIdentifiers];
+  v11 = [v8 _intersectionOfSet:identifiersCopy set:installedAppBundleIdentifiers];
 
-  v12 = [objc_opt_class() _set:v6 subtracting:v11];
+  v12 = [objc_opt_class() _set:identifiersCopy subtracting:v11];
   [(DMCRFRestoreFlow *)self setAppsToRestore:v12];
 
   v13 = *(DMCLogObjects() + 32);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v6 debugDescription];
+    v15 = [identifiersCopy debugDescription];
     *buf = 138543362;
     v30 = v15;
     _os_log_impl(&dword_247E7D000, v14, OS_LOG_TYPE_DEFAULT, "managed restore, snapshot app bundle IDs: [%{public}@]", buf, 0xCu);
@@ -268,24 +268,24 @@ void __53__DMCRFRestoreFlow__checkSnapshotForConflictingApps___block_invoke_21(u
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v20 = v19;
-    v21 = [(DMCRFRestoreFlow *)self appsToRestore];
-    v22 = [v21 debugDescription];
+    appsToRestore = [(DMCRFRestoreFlow *)self appsToRestore];
+    v22 = [appsToRestore debugDescription];
     *buf = 138543362;
     v30 = v22;
     _os_log_impl(&dword_247E7D000, v20, OS_LOG_TYPE_DEFAULT, "managed restore, restoring app bundle IDs: [%{public}@]", buf, 0xCu);
   }
 
-  v23 = [(DMCRFRestoreFlow *)self interactionClient];
+  interactionClient = [(DMCRFRestoreFlow *)self interactionClient];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __76__DMCRFRestoreFlow__compareAppsOnDeviceToAppBundleIdentifiers_fromSnapshot___block_invoke;
   v26[3] = &unk_278EE81B0;
   v26[4] = self;
-  v27 = v7;
+  v27 = snapshotCopy;
   v28 = v11;
   v24 = v11;
-  v25 = v7;
-  [v23 doesUserWantToRestoreSnapshot:v25 withConflictingApps:v24 completion:v26];
+  v25 = snapshotCopy;
+  [interactionClient doesUserWantToRestoreSnapshot:v25 withConflictingApps:v24 completion:v26];
 }
 
 void __76__DMCRFRestoreFlow__compareAppsOnDeviceToAppBundleIdentifiers_fromSnapshot___block_invoke(uint64_t a1, int a2, void *a3)
@@ -343,21 +343,21 @@ void __76__DMCRFRestoreFlow__compareAppsOnDeviceToAppBundleIdentifiers_fromSnaps
   }
 }
 
-+ (id)_set:(id)a3 subtracting:(id)a4
++ (id)_set:(id)_set subtracting:(id)subtracting
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
-  [v6 minusSet:v5];
+  subtractingCopy = subtracting;
+  v6 = [_set mutableCopy];
+  [v6 minusSet:subtractingCopy];
 
   v7 = [v6 copy];
 
   return v7;
 }
 
-+ (id)_intersectionOfSet:(id)a3 set:(id)a4
++ (id)_intersectionOfSet:(id)set set:(id)a4
 {
   v5 = a4;
-  v6 = [a3 mutableCopy];
+  v6 = [set mutableCopy];
   [v6 intersectSet:v5];
 
   v7 = [v6 copy];
@@ -365,40 +365,40 @@ void __76__DMCRFRestoreFlow__compareAppsOnDeviceToAppBundleIdentifiers_fromSnaps
   return v7;
 }
 
-- (void)_restoreSnapshot:(id)a3 skippingApps:(id)a4
+- (void)_restoreSnapshot:(id)snapshot skippingApps:(id)apps
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  snapshotCopy = snapshot;
+  appsCopy = apps;
   v8 = *(DMCLogObjects() + 32);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(DMCRFRestoreFlow *)self appsToRestore];
-    v11 = [(DMCRFRestoreFlow *)self _appBundleIdentifiersSetDebugDescription:v10];
+    appsToRestore = [(DMCRFRestoreFlow *)self appsToRestore];
+    v11 = [(DMCRFRestoreFlow *)self _appBundleIdentifiersSetDebugDescription:appsToRestore];
     *buf = 138543362;
     v30 = v11;
     _os_log_impl(&dword_247E7D000, v9, OS_LOG_TYPE_DEFAULT, "managed restore, marking apps as managed [%{public}@]", buf, 0xCu);
   }
 
-  v12 = [(DMCRFRestoreFlow *)self appsToRestore];
-  v13 = [v12 allObjects];
+  appsToRestore2 = [(DMCRFRestoreFlow *)self appsToRestore];
+  allObjects = [appsToRestore2 allObjects];
 
   v14 = [MDMClientCoreRestoreAppHelper alloc];
-  v15 = [(DMCRFRestoreFlow *)self snapshotSource];
-  v16 = [v15 personaIdentifier];
+  snapshotSource = [(DMCRFRestoreFlow *)self snapshotSource];
+  personaIdentifier = [snapshotSource personaIdentifier];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __50__DMCRFRestoreFlow__restoreSnapshot_skippingApps___block_invoke;
   v24 = &unk_278EE81D8;
-  v25 = self;
-  v26 = v13;
-  v27 = v6;
-  v28 = v7;
-  v17 = v7;
-  v18 = v6;
-  v19 = v13;
-  v20 = [(MDMClientCoreRestoreAppHelper *)v14 initWithApps:v19 persona:v16 operation:0 originator:@"MobileBackup" completion:&v21];
+  selfCopy = self;
+  v26 = allObjects;
+  v27 = snapshotCopy;
+  v28 = appsCopy;
+  v17 = appsCopy;
+  v18 = snapshotCopy;
+  v19 = allObjects;
+  v20 = [(MDMClientCoreRestoreAppHelper *)v14 initWithApps:v19 persona:personaIdentifier operation:0 originator:@"MobileBackup" completion:&v21];
 
   [(MDMClientCoreRestoreAppHelper *)v20 start:v21];
 }
@@ -442,28 +442,28 @@ void __50__DMCRFRestoreFlow__restoreSnapshot_skippingApps___block_invoke(uint64_
   }
 }
 
-- (void)_startRestoreFromSnapshot:(id)a3 skippingApps:(id)a4
+- (void)_startRestoreFromSnapshot:(id)snapshot skippingApps:(id)apps
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  appsCopy = apps;
+  snapshotCopy = snapshot;
   v8 = *(DMCLogObjects() + 32);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(DMCRFRestoreFlow *)self _appBundleIdentifiersSetDebugDescription:v6];
+    v10 = [(DMCRFRestoreFlow *)self _appBundleIdentifiersSetDebugDescription:appsCopy];
     *buf = 138543362;
     v14 = v10;
     _os_log_impl(&dword_247E7D000, v9, OS_LOG_TYPE_DEFAULT, "managed restore, starting restore, skipping apps [%{public}@]", buf, 0xCu);
   }
 
-  v11 = [(DMCRFRestoreFlow *)self snapshotSource];
+  snapshotSource = [(DMCRFRestoreFlow *)self snapshotSource];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__DMCRFRestoreFlow__startRestoreFromSnapshot_skippingApps___block_invoke;
   v12[3] = &unk_278EE7AF8;
   v12[4] = self;
-  [v11 startRestoreForSnapshot:v7 excludingAppBundleIdentifiers:v6 completion:v12];
+  [snapshotSource startRestoreForSnapshot:snapshotCopy excludingAppBundleIdentifiers:appsCopy completion:v12];
 }
 
 void __59__DMCRFRestoreFlow__startRestoreFromSnapshot_skippingApps___block_invoke(uint64_t a1, void *a2)
@@ -486,11 +486,11 @@ void __59__DMCRFRestoreFlow__startRestoreFromSnapshot_skippingApps___block_invok
   (v7)[2](v7, v8);
 }
 
-- (id)_appBundleIdentifiersSetDebugDescription:(id)a3
+- (id)_appBundleIdentifiersSetDebugDescription:(id)description
 {
-  if (a3)
+  if (description)
   {
-    v4 = [a3 debugDescription];
+    v4 = [description debugDescription];
   }
 
   else

@@ -1,19 +1,19 @@
 @interface TSAWebVideoRep
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4 mixingTypeContext:(id)a5;
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject mixingTypeContext:(id)context;
 - (TSAWebVideoInfo)webVideoInfo;
-- (TSAWebVideoRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSAWebVideoRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (id)hyperlinkRegions;
-- (id)textureForDescription:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (id)textureForDescription:(id)description;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation TSAWebVideoRep
 
-- (TSAWebVideoRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSAWebVideoRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v5.receiver = self;
   v5.super_class = TSAWebVideoRep;
-  return [(TSDRep *)&v5 initWithLayout:a3 canvas:a4];
+  return [(TSDRep *)&v5 initWithLayout:layout canvas:canvas];
 }
 
 - (TSAWebVideoInfo)webVideoInfo
@@ -25,9 +25,9 @@
   return v7;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v41 = objc_msgSend_sharedPool(MEMORY[0x277D802D0], v5, v6, v7);
   v11 = objc_msgSend_webVideoInfo(self, v8, v9, v10);
   v15 = objc_msgSend_posterImageData(v11, v12, v13, v14);
@@ -55,21 +55,21 @@
     }
   }
 
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   CGContextClipToRectSafe();
-  objc_msgSend_drawImageInContext_rect_(v17, v39, a3, v40, v31, v30, v28, v29);
-  CGContextRestoreGState(a3);
-  CGContextRestoreGState(a3);
+  objc_msgSend_drawImageInContext_rect_(v17, v39, context, v40, v31, v30, v28, v29);
+  CGContextRestoreGState(context);
+  CGContextRestoreGState(context);
 }
 
-- (id)textureForDescription:(id)a3
+- (id)textureForDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v18.receiver = self;
   v18.super_class = TSAWebVideoRep;
-  v5 = [(TSDRep *)&v18 textureForDescription:v4];
+  v5 = [(TSDRep *)&v18 textureForDescription:descriptionCopy];
   objc_msgSend_setObjectType_(v5, v6, 9, v7);
-  if ((objc_msgSend_shouldNotAddContainedReps(v4, v8, v9, v10) & 1) == 0)
+  if ((objc_msgSend_shouldNotAddContainedReps(descriptionCopy, v8, v9, v10) & 1) == 0)
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -77,23 +77,23 @@
     v17[3] = &unk_27A6B0148;
     v17[4] = self;
     v11 = MEMORY[0x277C95D60](v17);
-    if (objc_msgSend_isMagicMove(v4, v12, v13, v14))
+    if (objc_msgSend_isMagicMove(descriptionCopy, v12, v13, v14))
     {
-      objc_msgSend_addChildTexturesToTextureSet_forDescription_passingTest_(self, v15, v5, v4, v11);
+      objc_msgSend_addChildTexturesToTextureSet_forDescription_passingTest_(self, v15, v5, descriptionCopy, v11);
     }
 
     else
     {
-      objc_msgSend_addChildTexturesToTextureSet_forDescription_passingTest_(self, v15, v5, v4, 0);
+      objc_msgSend_addChildTexturesToTextureSet_forDescription_passingTest_(self, v15, v5, descriptionCopy, 0);
     }
   }
 
   return v5;
 }
 
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4 mixingTypeContext:(id)a5
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject mixingTypeContext:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
   v10 = objc_msgSend_webVideoInfo(v6, v7, v8, v9);

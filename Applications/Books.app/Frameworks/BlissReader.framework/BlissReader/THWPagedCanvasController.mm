@@ -1,66 +1,66 @@
 @interface THWPagedCanvasController
-- (BOOL)allowSelectionPopoverForInteractiveCanvasController:(id)a3;
-- (BOOL)createLayerHostIfNeededWithFrame:(CGRect)a3 viewScale:(double)a4;
-- (BOOL)createViewIfNeededWithFrame:(CGRect)a3 viewScale:(double)a4;
-- (BOOL)interactiveCanvasController:(id)a3 allowsEditMenuForRep:(id)a4;
-- (BOOL)interactiveCanvasController:(id)a3 allowsHyperlinkWithGesture:(id)a4 forRep:(id)a5;
-- (BOOL)interactiveCanvasController:(id)a3 canvasViewShouldBecomeFirstResponder:(id)a4;
-- (BOOL)interactiveCanvasController:(id)a3 shouldBeginEditingTHWPRep:(id)a4 withGesture:(id)a5;
-- (BOOL)interactiveCanvasControllerIsRelatedCanvasScrolling:(id)a3;
+- (BOOL)allowSelectionPopoverForInteractiveCanvasController:(id)controller;
+- (BOOL)createLayerHostIfNeededWithFrame:(CGRect)frame viewScale:(double)scale;
+- (BOOL)createViewIfNeededWithFrame:(CGRect)frame viewScale:(double)scale;
+- (BOOL)interactiveCanvasController:(id)controller allowsEditMenuForRep:(id)rep;
+- (BOOL)interactiveCanvasController:(id)controller allowsHyperlinkWithGesture:(id)gesture forRep:(id)rep;
+- (BOOL)interactiveCanvasController:(id)controller canvasViewShouldBecomeFirstResponder:(id)responder;
+- (BOOL)interactiveCanvasController:(id)controller shouldBeginEditingTHWPRep:(id)rep withGesture:(id)gesture;
+- (BOOL)interactiveCanvasControllerIsRelatedCanvasScrolling:(id)scrolling;
 - (BOOL)userInteractionEnabled;
-- (CGPoint)interactiveCanvasController:(id)a3 restrictedContentOffset:(CGPoint)a4 forViewScale:(double)a5;
-- (CGRect)interactiveCanvasController:(id)a3 expandBoundsForScrollViewHitTesting:(CGRect)a4;
-- (CGRect)interactiveCanvasController:(id)a3 expandVisibleBoundsForTiling:(CGRect)a4;
+- (CGPoint)interactiveCanvasController:(id)controller restrictedContentOffset:(CGPoint)offset forViewScale:(double)scale;
+- (CGRect)interactiveCanvasController:(id)controller expandBoundsForScrollViewHitTesting:(CGRect)testing;
+- (CGRect)interactiveCanvasController:(id)controller expandVisibleBoundsForTiling:(CGRect)tiling;
 - (CGRect)targetVisibleRect;
-- (THWPagedCanvasController)initWithDocumentRoot:(id)a3;
+- (THWPagedCanvasController)initWithDocumentRoot:(id)root;
 - (_NSRange)loadedPageRange;
-- (double)p_adjustScale:(double)a3 andFrame:(CGRect *)a4;
+- (double)p_adjustScale:(double)scale andFrame:(CGRect *)frame;
 - (double)p_verticalOverflow;
-- (id)bookNavigatorForInteractiveCanvasController:(id)a3;
-- (id)documentNavigatorForInteractiveCanvasController:(id)a3;
-- (id)interactiveCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forRep:(id)a5;
-- (id)interactiveCanvasController:(id)a3 layoutGeometryProviderForLayout:(id)a4;
-- (id)interactiveCanvasController:(id)a3 primaryTargetForGesture:(id)a4;
+- (id)bookNavigatorForInteractiveCanvasController:(id)controller;
+- (id)documentNavigatorForInteractiveCanvasController:(id)controller;
+- (id)interactiveCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forRep:(id)rep;
+- (id)interactiveCanvasController:(id)controller layoutGeometryProviderForLayout:(id)layout;
+- (id)interactiveCanvasController:(id)controller primaryTargetForGesture:(id)gesture;
 - (id)p_enclosingInteractiveCanvasController;
 - (unint64_t)pageIndex;
 - (void)dealloc;
 - (void)forceStopScrollingAtCurrentPageIndex;
-- (void)interactiveCanvasController:(id)a3 willAnimateScrollToVisibleUnscaledRect:(CGRect)a4;
-- (void)interactiveCanvasControllerDidEndScrollingAnimation:(id)a3 stillAnimating:(BOOL)a4;
-- (void)interactiveCanvasControllerDidLayout:(id)a3;
-- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)a3;
-- (void)interactiveCanvasControllerDidScroll:(id)a3;
-- (void)interactiveCanvasControllerDidStopScrolling:(id)a3;
-- (void)interactiveCanvasControllerWillScroll:(id)a3;
+- (void)interactiveCanvasController:(id)controller willAnimateScrollToVisibleUnscaledRect:(CGRect)rect;
+- (void)interactiveCanvasControllerDidEndScrollingAnimation:(id)animation stillAnimating:(BOOL)animating;
+- (void)interactiveCanvasControllerDidLayout:(id)layout;
+- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)thread;
+- (void)interactiveCanvasControllerDidScroll:(id)scroll;
+- (void)interactiveCanvasControllerDidStopScrolling:(id)scrolling;
+- (void)interactiveCanvasControllerWillScroll:(id)scroll;
 - (void)invalidateLayoutsAndFrames;
 - (void)invalidateViews;
 - (void)p_rebuildContentSize;
-- (void)p_rebuildWithPageIndex:(unint64_t)a3;
-- (void)p_setFrame:(CGRect)a3 scale:(double)a4 pageIndex:(unint64_t)a5;
+- (void)p_rebuildWithPageIndex:(unint64_t)index;
+- (void)p_setFrame:(CGRect)frame scale:(double)scale pageIndex:(unint64_t)index;
 - (void)p_updateContentsScale;
-- (void)p_updateInfosToDisplayForced:(BOOL)a3;
+- (void)p_updateInfosToDisplayForced:(BOOL)forced;
 - (void)p_updateMostVisiblePageIndex;
 - (void)p_updateRasterizeOnLayer;
 - (void)p_updateRenderedPageIndexes;
 - (void)p_updateWithDelegate;
 - (void)popDisableInfoUpdates;
-- (void)setDelegate:(id)a3;
-- (void)setFrame:(CGRect)a3 scale:(double)a4;
-- (void)setMinimizeInfoChange:(BOOL)a3;
-- (void)setPadInfos:(BOOL)a3;
-- (void)setPageIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setPageOffset:(unint64_t)a3;
-- (void)setPreloadPageIndex:(unint64_t)a3;
-- (void)setRasterize:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)setupImmediatePressGestureWithSimultaneousGestures:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setFrame:(CGRect)frame scale:(double)scale;
+- (void)setMinimizeInfoChange:(BOOL)change;
+- (void)setPadInfos:(BOOL)infos;
+- (void)setPageIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setPageOffset:(unint64_t)offset;
+- (void)setPreloadPageIndex:(unint64_t)index;
+- (void)setRasterize:(BOOL)rasterize;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)setupImmediatePressGestureWithSimultaneousGestures:(id)gestures;
 - (void)teardownController;
 - (void)teardownView;
 @end
 
 @implementation THWPagedCanvasController
 
-- (THWPagedCanvasController)initWithDocumentRoot:(id)a3
+- (THWPagedCanvasController)initWithDocumentRoot:(id)root
 {
   v9.receiver = self;
   v9.super_class = THWPagedCanvasController;
@@ -105,7 +105,7 @@
   }
 }
 
-- (id)bookNavigatorForInteractiveCanvasController:(id)a3
+- (id)bookNavigatorForInteractiveCanvasController:(id)controller
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -117,7 +117,7 @@
   return [(THWPagedCanvasControllerDelegate *)delegate bookNavigationForPagedCanvasController:self];
 }
 
-- (id)documentNavigatorForInteractiveCanvasController:(id)a3
+- (id)documentNavigatorForInteractiveCanvasController:(id)controller
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -129,7 +129,7 @@
   return [(THWPagedCanvasControllerDelegate *)delegate documentNavigatorForPagedCanvasController:self];
 }
 
-- (BOOL)createViewIfNeededWithFrame:(CGRect)a3 viewScale:(double)a4
+- (BOOL)createViewIfNeededWithFrame:(CGRect)frame viewScale:(double)scale
 {
   if (self->_wrapperView)
   {
@@ -147,10 +147,10 @@
     return 0;
   }
 
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (([(THWPagedCanvasControllerDelegate *)self->_delegate pagedCanvasControllerDeferViewCreation:self]& 1) != 0)
   {
     return 0;
@@ -162,7 +162,7 @@
   THCanvasAndScrollViewCreateWithClass(self, &self->_interactiveCanvasController, &self->_layerHost, p_scrollView, v13, 0, v14);
   if (self->_clippingLayerHost)
   {
-    v15 = [(THWPagedCanvasController *)self pageIndex];
+    pageIndex = [(THWPagedCanvasController *)self pageIndex];
     [(THWClippingLayerHost *)self->_clippingLayerHost setInteractiveCanvasController:0];
     [(THWClippingLayerHost *)self->_clippingLayerHost teardownAndTransferCanvasLayersToHost:[(THWPagedCanvasController *)self layerHost]];
 
@@ -171,7 +171,7 @@
 
   else
   {
-    v15 = 0x7FFFFFFFFFFFFFFFLL;
+    pageIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v11 = 1;
@@ -185,7 +185,7 @@
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController setNestedCanvasAllowLayoutAndRenderOnThread:0];
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController setAllowLayoutAndRenderOnThread:1];
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController setCreateRepsForOffscreenLayouts:1];
-  [(THWPagedCanvasController *)self p_setFrame:v15 scale:x pageIndex:y, width, height, a4];
+  [(THWPagedCanvasController *)self p_setFrame:pageIndex scale:x pageIndex:y, width, height, scale];
   [(THWPagedCanvasController *)self p_updateWithDelegate];
   [(THWPagedCanvasController *)self popDisableInfoUpdates];
   [(THWPagedCanvasController *)self p_updateRasterizeOnLayer];
@@ -229,29 +229,29 @@
 {
   if (self->_clippingLayerHost)
   {
-    v3 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController canvas];
+    canvas = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController canvas];
     [(THWPagedCanvasControllerDelegate *)self->_delegate pagedCanvasControllerContentsScale:self];
 
-    [v3 i_setContentsScale:?];
+    [canvas i_setContentsScale:?];
   }
 }
 
-- (BOOL)createLayerHostIfNeededWithFrame:(CGRect)a3 viewScale:(double)a4
+- (BOOL)createLayerHostIfNeededWithFrame:(CGRect)frame viewScale:(double)scale
 {
   if (self->_scrollView || self->_layerHost || self->_interactiveCanvasController || self->_clippingLayerHost)
   {
     return 0;
   }
 
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   THCanvasAndClippingLayerHostCreateWithClass(self, &self->_interactiveCanvasController, &self->_clippingLayerHost, 0);
   v5 = 1;
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController setNestedCanvasAllowLayoutAndRenderOnThread:1];
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController setCreateRepsForOffscreenLayouts:1];
-  [(THWPagedCanvasController *)self setFrame:x scale:y, width, height, a4];
+  [(THWPagedCanvasController *)self setFrame:x scale:y, width, height, scale];
   [(THWPagedCanvasController *)self p_updateWithDelegate];
   [(THWPagedCanvasController *)self p_updateRasterizeOnLayer];
   return v5;
@@ -270,56 +270,56 @@
   return result;
 }
 
-- (double)p_adjustScale:(double)a3 andFrame:(CGRect *)a4
+- (double)p_adjustScale:(double)scale andFrame:(CGRect *)frame
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return a3;
+    return scale;
   }
 
   delegate = self->_delegate;
 
-  [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasController:self adjustScale:a4 andFrame:a3];
+  [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasController:self adjustScale:frame andFrame:scale];
   return result;
 }
 
-- (void)setFrame:(CGRect)a3 scale:(double)a4
+- (void)setFrame:(CGRect)frame scale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(THWPagedCanvasController *)self pageIndex];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  pageIndex = [(THWPagedCanvasController *)self pageIndex];
 
-  [(THWPagedCanvasController *)self p_setFrame:v10 scale:x pageIndex:y, width, height, a4];
+  [(THWPagedCanvasController *)self p_setFrame:pageIndex scale:x pageIndex:y, width, height, scale];
 }
 
-- (void)p_setFrame:(CGRect)a3 scale:(double)a4 pageIndex:(unint64_t)a5
+- (void)p_setFrame:(CGRect)frame scale:(double)scale pageIndex:(unint64_t)index
 {
-  v36 = a3;
-  [(THWPagedCanvasController *)self p_adjustScale:&v36 andFrame:a4];
+  frameCopy = frame;
+  [(THWPagedCanvasController *)self p_adjustScale:&frameCopy andFrame:scale];
   v8 = v7;
   if (self->_clippingLayerHost)
   {
     [(THWPagedCanvasController *)self p_verticalOverflow];
     *&v9 = v8 * v9;
-    v36 = CGRectInset(v36, 0.0, -ceilf(*&v9));
+    frameCopy = CGRectInset(frameCopy, 0.0, -ceilf(*&v9));
     [(CALayer *)[(THWClippingLayerHost *)self->_clippingLayerHost clippingLayer] bounds];
     v11 = v10;
     v13 = v12;
-    [(THWClippingLayerHost *)self->_clippingLayerHost setFrame:v36.origin.x, v36.origin.y, v36.size.width, v36.size.height];
+    [(THWClippingLayerHost *)self->_clippingLayerHost setFrame:frameCopy.origin.x, frameCopy.origin.y, frameCopy.size.width, frameCopy.size.height];
     [(CALayer *)[(THWClippingLayerHost *)self->_clippingLayerHost clippingLayer] bounds];
     if (v11 != v15 || v13 != v14)
     {
       interactiveCanvasController = self->_interactiveCanvasController;
-      x = v36.origin.x;
-      y = v36.origin.y;
-      width = v36.size.width;
-      height = v36.size.height;
+      x = frameCopy.origin.x;
+      y = frameCopy.origin.y;
+      width = frameCopy.size.width;
+      height = frameCopy.size.height;
       v22 = v8;
 LABEL_7:
       [(TSDInteractiveCanvasController *)interactiveCanvasController setViewScale:0 andScrollViewFrame:0 maintainPosition:v22 animated:x, y, width, height];
-      [(THWPagedCanvasController *)self p_rebuildWithPageIndex:a5];
+      [(THWPagedCanvasController *)self p_rebuildWithPageIndex:index];
     }
   }
 
@@ -331,8 +331,8 @@ LABEL_7:
       {
         [(THWPagedCanvasController *)self p_verticalOverflow];
         *&v23 = v8 * v23;
-        v37 = CGRectInset(v36, 0.0, -ceilf(*&v23));
-        v36 = v37;
+        v37 = CGRectInset(frameCopy, 0.0, -ceilf(*&v23));
+        frameCopy = v37;
         [(UIView *)self->_wrapperView setFrame:*&v37.origin.x, *&v37.origin.y, *&v37.size.width, *&v37.size.height];
         TSDRectWithSize();
         v25 = v24;
@@ -363,14 +363,14 @@ LABEL_7:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  self->_delegate = a3;
+  self->_delegate = delegate;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v5 = sub_156008;
   v6 = &unk_45AE00;
-  v7 = self;
+  selfCopy = self;
   if (+[NSThread isMainThread])
   {
     v5(v4);
@@ -435,10 +435,10 @@ LABEL_7:
   }
 }
 
-- (void)setPageIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)setPageIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(THWPagedCanvasController *)self scrollView];
+  animatedCopy = animated;
+  scrollView = [(THWPagedCanvasController *)self scrollView];
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController visibleBoundsRect];
   if (self->_clippingLayerHost)
   {
@@ -469,7 +469,7 @@ LABEL_7:
     [(THWPagedCanvasController *)self p_updateInfosToDisplay];
   }
 
-  else if (v6)
+  else if (scrollView)
   {
     v20 = v7;
     v21 = v8;
@@ -477,7 +477,7 @@ LABEL_7:
     v23 = v10;
     if (!CGRectIsEmpty(*&v7))
     {
-      [(THScrollView *)v6 contentSize];
+      [(THScrollView *)scrollView contentSize];
       v32.origin.x = v20;
       v32.origin.y = v21;
       v32.size.width = v22;
@@ -495,33 +495,33 @@ LABEL_7:
       CGRectGetWidth(v34);
       TSUClamp();
       v25 = v24;
-      [(THScrollView *)v6 contentOffset];
+      [(THScrollView *)scrollView contentOffset];
       if (v25 != v27 || v26 != 0.0)
       {
 
-        [(THScrollView *)v6 setContentOffset:v4 animated:v25, 0.0];
+        [(THScrollView *)scrollView setContentOffset:animatedCopy animated:v25, 0.0];
       }
     }
   }
 }
 
-- (void)setMinimizeInfoChange:(BOOL)a3
+- (void)setMinimizeInfoChange:(BOOL)change
 {
-  if (self->_minimizeInfoChange != a3)
+  if (self->_minimizeInfoChange != change)
   {
-    self->_minimizeInfoChange = a3;
-    if (!a3)
+    self->_minimizeInfoChange = change;
+    if (!change)
     {
       [(THWPagedCanvasController *)self p_updateInfosToDisplayForced:1];
     }
   }
 }
 
-- (void)setPadInfos:(BOOL)a3
+- (void)setPadInfos:(BOOL)infos
 {
-  if (self->_padInfos != a3)
+  if (self->_padInfos != infos)
   {
-    self->_padInfos = a3;
+    self->_padInfos = infos;
     [(THWPagedCanvasController *)self p_updateInfosToDisplayForced:1];
   }
 }
@@ -586,12 +586,12 @@ LABEL_7:
   }
 }
 
-- (void)p_updateInfosToDisplayForced:(BOOL)a3
+- (void)p_updateInfosToDisplayForced:(BOOL)forced
 {
-  v5 = [(THWPagedCanvasController *)self delegate];
-  if (v5)
+  delegate = [(THWPagedCanvasController *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
+    v6 = delegate;
     [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)self interactiveCanvasController] visibleBoundsRect];
     x = v48.origin.x;
     y = v48.origin.y;
@@ -678,7 +678,7 @@ LABEL_7:
 
         if (!self->_minimizeInfoChange || ((v29 = v19 + 1, v28 == v18) ? (v30 = v27 == v29) : (v30 = 0), v30))
         {
-          v34 = v28 != 0x7FFFFFFFFFFFFFFFLL && a3;
+          v34 = v28 != 0x7FFFFFFFFFFFFFFFLL && forced;
           if (!v34 && (v28 == self->_loadedPageRange.location ? (v35 = v27 == self->_loadedPageRange.length) : (v35 = 0), v35))
           {
             v33 = 0;
@@ -793,20 +793,20 @@ LABEL_7:
 
 - (void)p_updateRenderedPageIndexes
 {
-  v3 = [(THWPagedCanvasController *)self delegate];
+  delegate = [(THWPagedCanvasController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
 
-    self->_renderedPageIndexes = -[THWPagedCanvasControllerDelegate pagedCanvasController:renderedPageIndexSetFromReps:](v3, "pagedCanvasController:renderedPageIndexSetFromReps:", self, [-[TSDInteractiveCanvasController canvas](self->_interactiveCanvasController "canvas")]);
+    self->_renderedPageIndexes = -[THWPagedCanvasControllerDelegate pagedCanvasController:renderedPageIndexSetFromReps:](delegate, "pagedCanvasController:renderedPageIndexSetFromReps:", self, [-[TSDInteractiveCanvasController canvas](self->_interactiveCanvasController "canvas")]);
   }
 }
 
 - (void)p_rebuildContentSize
 {
-  v3 = [(THWPagedCanvasController *)self delegate];
-  if (v3)
+  delegate = [(THWPagedCanvasController *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
+    v4 = delegate;
     [objc_msgSend(-[TSDInteractiveCanvasController layerHost](self->_interactiveCanvasController "layerHost")];
     [(TSDInteractiveCanvasController *)self->_interactiveCanvasController convertBoundsToUnscaledSize:v5, v6];
     height = v7;
@@ -824,7 +824,7 @@ LABEL_7:
   [v11 setUnscaledSize:{width, height}];
 }
 
-- (void)p_rebuildWithPageIndex:(unint64_t)a3
+- (void)p_rebuildWithPageIndex:(unint64_t)index
 {
   [(THWPagedCanvasController *)self p_rebuildContentSize];
   [objc_msgSend(-[TSDInteractiveCanvasController layerHost](self->_interactiveCanvasController "layerHost")];
@@ -832,9 +832,9 @@ LABEL_7:
   v6 = [-[TSDInteractiveCanvasController layerHost](-[THWPagedCanvasController interactiveCanvasController](self "interactiveCanvasController")];
   v7 = v8;
   [v6 setSublayerTransform:&v7];
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(THWPagedCanvasController *)self setPageIndex:a3 animated:0];
+    [(THWPagedCanvasController *)self setPageIndex:index animated:0];
   }
 
   [(THWPagedCanvasController *)self p_updateInfosToDisplay];
@@ -842,16 +842,16 @@ LABEL_7:
 
 - (void)p_updateMostVisiblePageIndex
 {
-  v3 = [(THWPagedCanvasController *)self pageIndex];
+  pageIndex = [(THWPagedCanvasController *)self pageIndex];
   mostVisiblePageIndex = self->_mostVisiblePageIndex;
-  if (v3 != mostVisiblePageIndex)
+  if (pageIndex != mostVisiblePageIndex)
   {
-    v5 = v3;
-    self->_mostVisiblePageIndex = v3;
-    v6 = [(THWPagedCanvasController *)self delegate];
+    v5 = pageIndex;
+    self->_mostVisiblePageIndex = pageIndex;
+    delegate = [(THWPagedCanvasController *)self delegate];
     if (v5 != 0x7FFFFFFFFFFFFFFFLL && mostVisiblePageIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = v6;
+      v7 = delegate;
       if (objc_opt_respondsToSelector())
       {
         v8 = self->_mostVisiblePageIndex;
@@ -862,20 +862,20 @@ LABEL_7:
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 willAnimateScrollToVisibleUnscaledRect:(CGRect)a4
+- (void)interactiveCanvasController:(id)controller willAnimateScrollToVisibleUnscaledRect:(CGRect)rect
 {
-  self->_targetVisibleRect = a4;
+  self->_targetVisibleRect = rect;
   if (self->_disableThreadedLayoutAndRenderDuringAnimation)
   {
-    [a3 pushThreadedLayoutAndRenderDisabled];
+    [controller pushThreadedLayoutAndRenderDisabled];
   }
 
   [(THWPagedCanvasController *)self p_updateInfosToDisplay];
 }
 
-- (void)interactiveCanvasControllerDidEndScrollingAnimation:(id)a3 stillAnimating:(BOOL)a4
+- (void)interactiveCanvasControllerDidEndScrollingAnimation:(id)animation stillAnimating:(BOOL)animating
 {
-  if (!a4)
+  if (!animating)
   {
     size = CGRectNull.size;
     self->_targetVisibleRect.origin = CGRectNull.origin;
@@ -884,13 +884,13 @@ LABEL_7:
 
   if (self->_disableThreadedLayoutAndRenderDuringAnimation)
   {
-    [a3 popThreadedLayoutAndRenderDisabled];
+    [animation popThreadedLayoutAndRenderDisabled];
   }
 }
 
-- (void)interactiveCanvasControllerDidScroll:(id)a3
+- (void)interactiveCanvasControllerDidScroll:(id)scroll
 {
-  if (([a3 currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
+  if (([scroll currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
   {
     [(THWPagedCanvasController *)self p_updateInfosToDisplay];
   }
@@ -914,11 +914,11 @@ LABEL_7:
   return TSUDynamicCast();
 }
 
-- (CGPoint)interactiveCanvasController:(id)a3 restrictedContentOffset:(CGPoint)a4 forViewScale:(double)a5
+- (CGPoint)interactiveCanvasController:(id)controller restrictedContentOffset:(CGPoint)offset forViewScale:(double)scale
 {
-  y = a4.y;
-  x = a4.x;
-  if ([(TSDInteractiveCanvasController *)self->_interactiveCanvasController currentlyScrolling:a3])
+  y = offset.y;
+  x = offset.x;
+  if ([(TSDInteractiveCanvasController *)self->_interactiveCanvasController currentlyScrolling:controller])
   {
     if (objc_opt_respondsToSelector())
     {
@@ -928,8 +928,8 @@ LABEL_7:
         {
           if ([(THWPagedCanvasController *)self pageIndex])
           {
-            v8 = [(THWPagedCanvasController *)self pageIndex];
-            if (v8 < [(THWPagedCanvasControllerDelegate *)self->_delegate pageCountForPagedCanvasController:self]- 1)
+            pageIndex = [(THWPagedCanvasController *)self pageIndex];
+            if (pageIndex < [(THWPagedCanvasControllerDelegate *)self->_delegate pageCountForPagedCanvasController:self]- 1)
             {
               [(TSDInteractiveCanvasController *)self->_interactiveCanvasController visibleUnscaledRect];
               width = v24.size.width;
@@ -994,27 +994,27 @@ LABEL_21:
   return result;
 }
 
-- (void)interactiveCanvasControllerWillScroll:(id)a3
+- (void)interactiveCanvasControllerWillScroll:(id)scroll
 {
   if (!self->_currentlyScrolling)
   {
     [-[THWPagedCanvasController p_enclosingInteractiveCanvasController](self p_enclosingInteractiveCanvasController];
     self->_currentlyScrolling = 1;
-    v4 = [(THWPagedCanvasController *)self pageIndex];
-    if (v4 != 0x7FFFFFFFFFFFFFFFLL)
+    pageIndex = [(THWPagedCanvasController *)self pageIndex];
+    if (pageIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v5 = v4;
-      v6 = [(THWPagedCanvasController *)self delegate];
+      v5 = pageIndex;
+      delegate = [(THWPagedCanvasController *)self delegate];
       if (objc_opt_respondsToSelector())
       {
 
-        [(THWPagedCanvasControllerDelegate *)v6 pagedCanvasController:self willScrollFromPageIndex:v5];
+        [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasController:self willScrollFromPageIndex:v5];
       }
     }
   }
 }
 
-- (void)interactiveCanvasControllerDidStopScrolling:(id)a3
+- (void)interactiveCanvasControllerDidStopScrolling:(id)scrolling
 {
   if (self->_currentlyScrolling)
   {
@@ -1022,43 +1022,43 @@ LABEL_21:
     [-[THWPagedCanvasController p_enclosingInteractiveCanvasController](self p_enclosingInteractiveCanvasController];
   }
 
-  v4 = [(THWPagedCanvasController *)self delegate];
+  delegate = [(THWPagedCanvasController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(THWPagedCanvasControllerDelegate *)v4 pagedCanvasControllerDidStopScrolling:self];
+    [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasControllerDidStopScrolling:self];
   }
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(THWPagedCanvasController *)self pageIndex];
-    if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+    pageIndex = [(THWPagedCanvasController *)self pageIndex];
+    if (pageIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(THWPagedCanvasControllerDelegate *)v4 pagedCanvasController:self didScrollToPageIndex:v5];
+      [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasController:self didScrollToPageIndex:pageIndex];
     }
   }
 
   [(THWPagedCanvasController *)self p_updateMostVisiblePageIndex];
 }
 
-- (id)interactiveCanvasController:(id)a3 layoutGeometryProviderForLayout:(id)a4
+- (id)interactiveCanvasController:(id)controller layoutGeometryProviderForLayout:(id)layout
 {
-  v6 = [(THWPagedCanvasController *)self delegate];
+  delegate = [(THWPagedCanvasController *)self delegate];
 
-  return [(THWPagedCanvasControllerDelegate *)v6 pagedCanvasController:self geometryProviderForLayout:a4];
+  return [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasController:self geometryProviderForLayout:layout];
 }
 
-- (id)interactiveCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forRep:(id)a5
+- (id)interactiveCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forRep:(id)rep
 {
-  v8 = [(THWPagedCanvasController *)self delegate];
+  delegate = [(THWPagedCanvasController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
 
-    return [(THWPagedCanvasControllerDelegate *)v8 pagedCanvasController:self delegateConformingToProtocol:a4 forRep:a5];
+    return [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasController:self delegateConformingToProtocol:protocol forRep:rep];
   }
 
-  else if ([(THWPagedCanvasControllerDelegate *)v8 conformsToProtocol:a4])
+  else if ([(THWPagedCanvasControllerDelegate *)delegate conformsToProtocol:protocol])
   {
-    return v8;
+    return delegate;
   }
 
   else
@@ -1067,30 +1067,30 @@ LABEL_21:
   }
 }
 
-- (void)interactiveCanvasControllerDidLayout:(id)a3
+- (void)interactiveCanvasControllerDidLayout:(id)layout
 {
-  v5 = [(THWPagedCanvasController *)self delegate];
+  delegate = [(THWPagedCanvasController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(THWPagedCanvasControllerDelegate *)v5 pagedCanvasControllerDidLayout:self];
+    [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasControllerDidLayout:self];
   }
 
-  if (([a3 currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
+  if (([layout currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
   {
 
     [(THWPagedCanvasController *)self p_updateRenderedPageIndexes];
   }
 }
 
-- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)a3
+- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)thread
 {
-  v5 = [(THWPagedCanvasController *)self delegate];
+  delegate = [(THWPagedCanvasController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(THWPagedCanvasControllerDelegate *)v5 pagedCanvasControllerDidLayoutAndRenderOnBackgroundThread:self];
+    [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasControllerDidLayoutAndRenderOnBackgroundThread:self];
   }
 
-  if (([a3 currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
+  if (([thread currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
   {
     [(THWPagedCanvasController *)self p_updateInfosToDisplay];
 
@@ -1098,15 +1098,15 @@ LABEL_21:
   }
 }
 
-- (CGRect)interactiveCanvasController:(id)a3 expandBoundsForScrollViewHitTesting:(CGRect)a4
+- (CGRect)interactiveCanvasController:(id)controller expandBoundsForScrollViewHitTesting:(CGRect)testing
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = testing.size.height;
+  width = testing.size.width;
+  y = testing.origin.y;
+  x = testing.origin.x;
   [(THWPagedCanvasController *)self p_verticalOverflow];
   v11 = v10;
-  [a3 viewScale];
+  [controller viewScale];
   *&v12 = v11 * v12;
   v13 = ceilf(*&v12);
   v26.origin.x = x;
@@ -1139,7 +1139,7 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)interactiveCanvasController:(id)a3 expandVisibleBoundsForTiling:(CGRect)a4
+- (CGRect)interactiveCanvasController:(id)controller expandVisibleBoundsForTiling:(CGRect)tiling
 {
   x = CGRectInfinite.origin.x;
   y = CGRectInfinite.origin.y;
@@ -1152,14 +1152,14 @@ LABEL_21:
   return result;
 }
 
-- (id)interactiveCanvasController:(id)a3 primaryTargetForGesture:(id)a4
+- (id)interactiveCanvasController:(id)controller primaryTargetForGesture:(id)gesture
 {
-  v6 = [(THWPagedCanvasController *)self delegate];
+  delegate = [(THWPagedCanvasController *)self delegate];
 
-  return [(THWPagedCanvasControllerDelegate *)v6 pagedCanvasController:self primaryTargetForGesture:a4];
+  return [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasController:self primaryTargetForGesture:gesture];
 }
 
-- (BOOL)interactiveCanvasController:(id)a3 canvasViewShouldBecomeFirstResponder:(id)a4
+- (BOOL)interactiveCanvasController:(id)controller canvasViewShouldBecomeFirstResponder:(id)responder
 {
   [(THWPagedCanvasController *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -1167,51 +1167,51 @@ LABEL_21:
     return 1;
   }
 
-  v6 = [(THWPagedCanvasController *)self delegate];
+  delegate = [(THWPagedCanvasController *)self delegate];
 
-  return [(THWPagedCanvasControllerDelegate *)v6 pagedCanvasController:self canvasViewShouldBecomeFirstResponder:a4];
+  return [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasController:self canvasViewShouldBecomeFirstResponder:responder];
 }
 
-- (BOOL)interactiveCanvasController:(id)a3 allowsEditMenuForRep:(id)a4
+- (BOOL)interactiveCanvasController:(id)controller allowsEditMenuForRep:(id)rep
 {
-  v6 = [(THWPagedCanvasController *)self delegate];
+  delegate = [(THWPagedCanvasController *)self delegate];
 
-  return [(THWPagedCanvasControllerDelegate *)v6 pagedCanvasController:self allowsEditMenuForRep:a4];
+  return [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasController:self allowsEditMenuForRep:rep];
 }
 
-- (BOOL)interactiveCanvasController:(id)a3 allowsHyperlinkWithGesture:(id)a4 forRep:(id)a5
+- (BOOL)interactiveCanvasController:(id)controller allowsHyperlinkWithGesture:(id)gesture forRep:(id)rep
 {
-  v8 = [(THWPagedCanvasController *)self delegate];
+  delegate = [(THWPagedCanvasController *)self delegate];
 
-  return [(THWPagedCanvasControllerDelegate *)v8 pagedCanvasController:self allowsHyperlinkWithGesture:a4 forRep:a5];
+  return [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasController:self allowsHyperlinkWithGesture:gesture forRep:rep];
 }
 
-- (BOOL)allowSelectionPopoverForInteractiveCanvasController:(id)a3
+- (BOOL)allowSelectionPopoverForInteractiveCanvasController:(id)controller
 {
-  v4 = [(THWPagedCanvasController *)self delegate];
+  delegate = [(THWPagedCanvasController *)self delegate];
 
-  return [(THWPagedCanvasControllerDelegate *)v4 allowSelectionPopoverForPagedCanvasController:self];
+  return [(THWPagedCanvasControllerDelegate *)delegate allowSelectionPopoverForPagedCanvasController:self];
 }
 
-- (BOOL)interactiveCanvasController:(id)a3 shouldBeginEditingTHWPRep:(id)a4 withGesture:(id)a5
+- (BOOL)interactiveCanvasController:(id)controller shouldBeginEditingTHWPRep:(id)rep withGesture:(id)gesture
 {
-  v8 = [(THWPagedCanvasController *)self delegate];
+  delegate = [(THWPagedCanvasController *)self delegate];
 
-  return [(THWPagedCanvasControllerDelegate *)v8 pagedCanvasController:self shouldBeginEditingTHWPRep:a4 withGesture:a5];
+  return [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasController:self shouldBeginEditingTHWPRep:rep withGesture:gesture];
 }
 
-- (BOOL)interactiveCanvasControllerIsRelatedCanvasScrolling:(id)a3
+- (BOOL)interactiveCanvasControllerIsRelatedCanvasScrolling:(id)scrolling
 {
-  v4 = [(THWPagedCanvasController *)self delegate];
+  delegate = [(THWPagedCanvasController *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [(THWPagedCanvasControllerDelegate *)v4 pagedCanvasControllerIsRelatedCanvasScrolling:self];
+  return [(THWPagedCanvasControllerDelegate *)delegate pagedCanvasControllerIsRelatedCanvasScrolling:self];
 }
 
-- (void)setupImmediatePressGestureWithSimultaneousGestures:(id)a3
+- (void)setupImmediatePressGestureWithSimultaneousGestures:(id)gestures
 {
   if ([(TSDInteractiveCanvasController *)self->_interactiveCanvasController canvasView])
   {
@@ -1223,7 +1223,7 @@ LABEL_21:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v7 = [gestures countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1235,7 +1235,7 @@ LABEL_21:
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(gestures);
           }
 
           [-[TSDInteractiveCanvasController gestureDispatcher](self->_interactiveCanvasController "gestureDispatcher")];
@@ -1243,7 +1243,7 @@ LABEL_21:
         }
 
         while (v8 != v10);
-        v8 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [gestures countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -1251,41 +1251,41 @@ LABEL_21:
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [-[TSDInteractiveCanvasController canvasView](self->_interactiveCanvasController "canvasView")];
-  [(THScrollView *)self->_scrollView setUserInteractionEnabled:v3];
-  [(THScrollView *)self->_scrollView setScrollEnabled:v3];
+  [(THScrollView *)self->_scrollView setUserInteractionEnabled:enabledCopy];
+  [(THScrollView *)self->_scrollView setScrollEnabled:enabledCopy];
   wrapperView = self->_wrapperView;
 
-  [(UIView *)wrapperView setUserInteractionEnabled:v3];
+  [(UIView *)wrapperView setUserInteractionEnabled:enabledCopy];
 }
 
 - (BOOL)userInteractionEnabled
 {
-  v2 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController canvasView];
+  canvasView = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController canvasView];
 
-  return [v2 isUserInteractionEnabled];
+  return [canvasView isUserInteractionEnabled];
 }
 
-- (void)setPreloadPageIndex:(unint64_t)a3
+- (void)setPreloadPageIndex:(unint64_t)index
 {
-  if (self->_preloadPageIndex != a3)
+  if (self->_preloadPageIndex != index)
   {
-    self->_preloadPageIndex = a3;
+    self->_preloadPageIndex = index;
     [(THWPagedCanvasController *)self p_updateInfosToDisplay];
   }
 }
 
-- (void)setPageOffset:(unint64_t)a3
+- (void)setPageOffset:(unint64_t)offset
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && self->_pageOffset != a3 && [(THWPagedCanvasControllerDelegate *)self->_delegate pageCountForPagedCanvasController:self]> a3)
+  if (offset != 0x7FFFFFFFFFFFFFFFLL && self->_pageOffset != offset && [(THWPagedCanvasControllerDelegate *)self->_delegate pageCountForPagedCanvasController:self]> offset)
   {
-    v5 = [(THWPagedCanvasController *)self pageIndex];
-    self->_pageOffset = a3;
+    pageIndex = [(THWPagedCanvasController *)self pageIndex];
+    self->_pageOffset = offset;
 
-    [(THWPagedCanvasController *)self p_rebuildWithPageIndex:v5];
+    [(THWPagedCanvasController *)self p_rebuildWithPageIndex:pageIndex];
   }
 }
 
@@ -1295,12 +1295,12 @@ LABEL_21:
   clippingLayerHost = self->_clippingLayerHost;
   if (clippingLayerHost)
   {
-    v5 = [(THWClippingLayerHost *)clippingLayerHost clippingLayer];
+    clippingLayer = [(THWClippingLayerHost *)clippingLayerHost clippingLayer];
   }
 
   else
   {
-    v5 = [(UIView *)self->_wrapperView layer];
+    clippingLayer = [(UIView *)self->_wrapperView layer];
   }
 
   rasterizeQueue = self->_rasterizeQueue;
@@ -1308,17 +1308,17 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = sub_15790C;
   block[3] = &unk_45CEE0;
-  block[4] = v5;
+  block[4] = clippingLayer;
   block[5] = self;
   v8 = rasterize;
   dispatch_async(rasterizeQueue, block);
 }
 
-- (void)setRasterize:(BOOL)a3
+- (void)setRasterize:(BOOL)rasterize
 {
-  if (self->_rasterize != a3)
+  if (self->_rasterize != rasterize)
   {
-    self->_rasterize = a3;
+    self->_rasterize = rasterize;
     [(THWPagedCanvasController *)self p_updateRasterizeOnLayer];
   }
 }
@@ -1342,9 +1342,9 @@ LABEL_21:
   if (self->_currentlyScrolling)
   {
     [(THWPagedCanvasController *)self setPageIndex:[(THWPagedCanvasController *)self pageIndex] animated:0];
-    v4 = [(THWPagedCanvasController *)self interactiveCanvasController];
+    interactiveCanvasController = [(THWPagedCanvasController *)self interactiveCanvasController];
 
-    [(TSDInteractiveCanvasController *)v4 forceStopScrolling];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController forceStopScrolling];
   }
 }
 

@@ -49,10 +49,10 @@
   }
 
   v5 = v4;
-  v6 = [a1 consolidatedSOSContactsWithSOSContactsManager:v4];
+  v6 = [self consolidatedSOSContactsWithSOSContactsManager:v4];
   v7 = [v6 mutableCopy];
 
-  [a1 setEmergencyContacts:v7];
+  [self setEmergencyContacts:v7];
   v8 = 1;
   [getSOSUtilitiesClass() setAllowedToMessageSOSContacts:1];
 

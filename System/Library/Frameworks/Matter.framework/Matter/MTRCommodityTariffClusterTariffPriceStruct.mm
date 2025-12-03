@@ -1,6 +1,6 @@
 @interface MTRCommodityTariffClusterTariffPriceStruct
 - (MTRCommodityTariffClusterTariffPriceStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityTariffClusterTariffPriceStruct);
-  v5 = [(MTRCommodityTariffClusterTariffPriceStruct *)self priceType];
-  [(MTRCommodityTariffClusterTariffPriceStruct *)v4 setPriceType:v5];
+  priceType = [(MTRCommodityTariffClusterTariffPriceStruct *)self priceType];
+  [(MTRCommodityTariffClusterTariffPriceStruct *)v4 setPriceType:priceType];
 
-  v6 = [(MTRCommodityTariffClusterTariffPriceStruct *)self price];
-  [(MTRCommodityTariffClusterTariffPriceStruct *)v4 setPrice:v6];
+  price = [(MTRCommodityTariffClusterTariffPriceStruct *)self price];
+  [(MTRCommodityTariffClusterTariffPriceStruct *)v4 setPrice:price];
 
-  v7 = [(MTRCommodityTariffClusterTariffPriceStruct *)self priceLevel];
-  [(MTRCommodityTariffClusterTariffPriceStruct *)v4 setPriceLevel:v7];
+  priceLevel = [(MTRCommodityTariffClusterTariffPriceStruct *)self priceLevel];
+  [(MTRCommodityTariffClusterTariffPriceStruct *)v4 setPriceLevel:priceLevel];
 
   return v4;
 }

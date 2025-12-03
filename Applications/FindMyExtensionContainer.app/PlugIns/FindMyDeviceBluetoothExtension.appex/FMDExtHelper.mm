@@ -1,58 +1,58 @@
 @interface FMDExtHelper
-+ (id)_computehash:(id)a3;
-+ (id)deviceIDFromAddress:(id)a3;
-+ (id)parseStyle:(unint64_t)a3 info:(id)a4;
++ (id)_computehash:(id)_computehash;
++ (id)deviceIDFromAddress:(id)address;
++ (id)parseStyle:(unint64_t)style info:(id)info;
 @end
 
 @implementation FMDExtHelper
 
-+ (id)deviceIDFromAddress:(id)a3
++ (id)deviceIDFromAddress:(id)address
 {
-  v3 = [NSString stringWithFormat:@"BT_%@", a3];
-  v4 = [FMDExtHelper _computehash:v3];
+  address = [NSString stringWithFormat:@"BT_%@", address];
+  v4 = [FMDExtHelper _computehash:address];
 
   return v4;
 }
 
-+ (id)_computehash:(id)a3
++ (id)_computehash:(id)_computehash
 {
-  v3 = [a3 dataUsingEncoding:4];
-  v4 = [v3 fm_sha256Hash];
-  v5 = [v4 fm_hexString];
-  v6 = [v5 lowercaseString];
+  v3 = [_computehash dataUsingEncoding:4];
+  fm_sha256Hash = [v3 fm_sha256Hash];
+  fm_hexString = [fm_sha256Hash fm_hexString];
+  lowercaseString = [fm_hexString lowercaseString];
 
-  return v6;
+  return lowercaseString;
 }
 
-+ (id)parseStyle:(unint64_t)a3 info:(id)a4
++ (id)parseStyle:(unint64_t)style info:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   v6 = sub_100003F1C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v32 = a3;
+    styleCopy = style;
     v33 = 2112;
-    v34 = v5;
+    v34 = infoCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#PARSING style %llu with feature %@", buf, 0x16u);
   }
 
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!infoCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v22 = 0;
     goto LABEL_34;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"pattern"];
+  v7 = [infoCopy objectForKeyedSubscript:@"pattern"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v5 objectForKeyedSubscript:@"mask"];
+    v8 = [infoCopy objectForKeyedSubscript:@"mask"];
     if (v8)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = v5;
+        v25 = infoCopy;
         v28 = 0u;
         v29 = 0u;
         v26 = 0u;
@@ -78,7 +78,7 @@
               if (v14)
               {
                 v16 = strtouq([v14 UTF8String], 0, 16);
-                v17 = a3;
+                styleCopy2 = style;
                 if (v16)
                 {
                   v18 = (v16 & 1) == 0;
@@ -95,13 +95,13 @@
                   {
                     v19 = v16;
                     v16 >>= 1;
-                    v17 >>= 1;
+                    styleCopy2 >>= 1;
                   }
 
                   while (v19 && (v19 & 2) == 0);
                 }
 
-                v20 = [NSString stringWithFormat:@"%llu", v17 & v16];
+                v20 = [NSString stringWithFormat:@"%llu", styleCopy2 & v16];
                 v21 = [v7 stringByReplacingOccurrencesOfString:v13 withString:v20];
 
                 v7 = v21;
@@ -116,7 +116,7 @@
 
         v7 = v7;
         v22 = v7;
-        v5 = v25;
+        infoCopy = v25;
         goto LABEL_33;
       }
     }
@@ -124,7 +124,7 @@
     v23 = sub_100003F1C();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      sub_10000D244(v5, v23);
+      sub_10000D244(infoCopy, v23);
     }
   }
 
@@ -133,7 +133,7 @@
     v8 = sub_100003F1C();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_10000D2BC(v5, v8);
+      sub_10000D2BC(infoCopy, v8);
     }
   }
 

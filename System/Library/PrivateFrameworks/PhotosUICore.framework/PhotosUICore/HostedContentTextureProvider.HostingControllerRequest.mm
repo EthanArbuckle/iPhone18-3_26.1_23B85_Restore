@@ -1,15 +1,15 @@
 @interface HostedContentTextureProvider.HostingControllerRequest
-- (void)hostingController:(id)a3 didRenderFrame:(id)a4;
+- (void)hostingController:(id)controller didRenderFrame:(id)frame;
 @end
 
 @implementation HostedContentTextureProvider.HostingControllerRequest
 
-- (void)hostingController:(id)a3 didRenderFrame:(id)a4
+- (void)hostingController:(id)controller didRenderFrame:(id)frame
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  frameCopy = frame;
 
-  sub_1A4038A80(v6);
+  sub_1A4038A80(frameCopy);
 }
 
 @end

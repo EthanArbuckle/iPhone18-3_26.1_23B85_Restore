@@ -7,11 +7,11 @@
 
 - (uint64_t)resignFirstResponderInScene:()KeyboardNotifications
 {
-  v4 = [a3 keyWindow];
-  if (v4)
+  keyWindow = [a3 keyWindow];
+  if (keyWindow)
   {
-    [a1 setActiveFirstResponder:v4];
-    v5 = [v4 endEditing:1];
+    [self setActiveFirstResponder:keyWindow];
+    v5 = [keyWindow endEditing:1];
   }
 
   else
@@ -24,12 +24,12 @@
 
 - (void)restoreFirstResponder
 {
-  v2 = [a1 activeFirstResponder];
+  activeFirstResponder = [self activeFirstResponder];
 
-  if (v2)
+  if (activeFirstResponder)
   {
-    v3 = [a1 activeFirstResponder];
-    [v3 becomeFirstResponder];
+    activeFirstResponder2 = [self activeFirstResponder];
+    [activeFirstResponder2 becomeFirstResponder];
   }
 }
 

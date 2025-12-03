@@ -1,24 +1,24 @@
 @interface ICLAppExtensionRecord
-- (BOOL)isEqual:(id)a3;
-- (ICLAppExtensionRecord)initWithCoder:(id)a3;
-- (ICLAppExtensionRecord)initWithLegacyRecordDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICLAppExtensionRecord)initWithCoder:(id)coder;
+- (ICLAppExtensionRecord)initWithLegacyRecordDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)legacyRecordDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICLAppExtensionRecord
 
-- (ICLAppExtensionRecord)initWithCoder:(id)a3
+- (ICLAppExtensionRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ICLAppExtensionRecord;
-  v5 = [(ICLBundleRecord *)&v9 initWithCoder:v4];
+  v5 = [(ICLBundleRecord *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionOwnerBundleID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionOwnerBundleID"];
     extensionOwnerBundleID = v5->_extensionOwnerBundleID;
     v5->_extensionOwnerBundleID = v6;
   }
@@ -26,25 +26,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICLAppExtensionRecord;
-  v4 = a3;
-  [(ICLBundleRecord *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ICLBundleRecord *)&v6 encodeWithCoder:coderCopy];
   v5 = [(ICLAppExtensionRecord *)self extensionOwnerBundleID:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"extensionOwnerBundleID"];
+  [coderCopy encodeObject:v5 forKey:@"extensionOwnerBundleID"];
 }
 
-- (ICLAppExtensionRecord)initWithLegacyRecordDictionary:(id)a3
+- (ICLAppExtensionRecord)initWithLegacyRecordDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = ICLAppExtensionRecord;
-  v5 = [(ICLBundleRecord *)&v10 initWithLegacyRecordDictionary:v4];
+  v5 = [(ICLBundleRecord *)&v10 initWithLegacyRecordDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"PluginOwnerBundleID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"PluginOwnerBundleID"];
     objc_opt_class();
     v7 = v6;
     if (objc_opt_isKindOfClass())
@@ -63,13 +63,13 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = ICLAppExtensionRecord;
   v5 = [(ICLBundleRecord *)&v9 copyWithZone:?];
-  v6 = [(ICLAppExtensionRecord *)self extensionOwnerBundleID];
-  v7 = [v6 copyWithZone:a3];
+  extensionOwnerBundleID = [(ICLAppExtensionRecord *)self extensionOwnerBundleID];
+  v7 = [extensionOwnerBundleID copyWithZone:zone];
   [v5 setExtensionOwnerBundleID:v7];
 
   return v5;
@@ -80,14 +80,14 @@
   v3 = objc_opt_new();
   v8.receiver = self;
   v8.super_class = ICLAppExtensionRecord;
-  v4 = [(ICLBundleRecord *)&v8 legacyRecordDictionary];
-  [v3 addEntriesFromDictionary:v4];
+  legacyRecordDictionary = [(ICLBundleRecord *)&v8 legacyRecordDictionary];
+  [v3 addEntriesFromDictionary:legacyRecordDictionary];
 
   [v3 setObject:@"PluginKitPlugin" forKeyedSubscript:@"ApplicationType"];
-  v5 = [(ICLAppExtensionRecord *)self extensionOwnerBundleID];
-  if (v5)
+  extensionOwnerBundleID = [(ICLAppExtensionRecord *)self extensionOwnerBundleID];
+  if (extensionOwnerBundleID)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"PluginOwnerBundleID"];
+    [v3 setObject:extensionOwnerBundleID forKeyedSubscript:@"PluginOwnerBundleID"];
   }
 
   v6 = [v3 copy];
@@ -95,10 +95,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -106,12 +106,12 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = ICLAppExtensionRecord, [(ICLBundleRecord *)&v10 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = ICLAppExtensionRecord, [(ICLBundleRecord *)&v10 isEqual:equalCopy]))
     {
-      v5 = v4;
-      v6 = [(ICLAppExtensionRecord *)self extensionOwnerBundleID];
-      v7 = [(ICLAppExtensionRecord *)v5 extensionOwnerBundleID];
-      v8 = MICompareObjects(v6, v7);
+      v5 = equalCopy;
+      extensionOwnerBundleID = [(ICLAppExtensionRecord *)self extensionOwnerBundleID];
+      extensionOwnerBundleID2 = [(ICLAppExtensionRecord *)v5 extensionOwnerBundleID];
+      v8 = MICompareObjects(extensionOwnerBundleID, extensionOwnerBundleID2);
 
       if (!v8 && (!gLogHandle || *(gLogHandle + 44) >= 3))
       {
@@ -133,8 +133,8 @@
   v7.receiver = self;
   v7.super_class = ICLAppExtensionRecord;
   v3 = [(ICLBundleRecord *)&v7 hash];
-  v4 = [(ICLAppExtensionRecord *)self extensionOwnerBundleID];
-  v5 = [v4 hash];
+  extensionOwnerBundleID = [(ICLAppExtensionRecord *)self extensionOwnerBundleID];
+  v5 = [extensionOwnerBundleID hash];
 
   return v5 ^ v3;
 }

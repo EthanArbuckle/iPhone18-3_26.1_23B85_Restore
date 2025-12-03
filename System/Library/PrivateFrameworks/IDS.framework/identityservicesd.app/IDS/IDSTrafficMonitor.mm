@@ -1,6 +1,6 @@
 @interface IDSTrafficMonitor
 + (id)sharedInstance;
-- (BOOL)_noteActionType:(id)a3 forService:(id)a4 serviceType:(unsigned int)a5 requestor:(id)a6;
+- (BOOL)_noteActionType:(id)type forService:(id)service serviceType:(unsigned int)serviceType requestor:(id)requestor;
 - (IDSTrafficMonitor)init;
 - (void)_dailyTimerHandler;
 - (void)_setDailyTimer;
@@ -119,15 +119,15 @@
   self->_hourlyTimer = v5;
 }
 
-- (BOOL)_noteActionType:(id)a3 forService:(id)a4 serviceType:(unsigned int)a5 requestor:(id)a6
+- (BOOL)_noteActionType:(id)type forService:(id)service serviceType:(unsigned int)serviceType requestor:(id)requestor
 {
-  v7 = *&a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([(__CFString *)v10 length]&& [(__CFString *)v11 length])
+  v7 = *&serviceType;
+  typeCopy = type;
+  serviceCopy = service;
+  requestorCopy = requestor;
+  if ([(__CFString *)typeCopy length]&& [(__CFString *)serviceCopy length])
   {
-    v75 = v12;
+    v75 = requestorCopy;
     [(NSRecursiveLock *)self->_lock lock];
     traffic = self->_traffic;
     if (!traffic)
@@ -139,18 +139,18 @@
       traffic = self->_traffic;
     }
 
-    v16 = [(NSMutableDictionary *)traffic objectForKey:v11];
+    v16 = [(NSMutableDictionary *)traffic objectForKey:serviceCopy];
     if (!v16)
     {
       v16 = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-      [(NSMutableDictionary *)self->_traffic setObject:v16 forKey:v11];
+      [(NSMutableDictionary *)self->_traffic setObject:v16 forKey:serviceCopy];
     }
 
     v76 = v16;
-    v17 = [v16 objectForKey:v10];
+    v17 = [v16 objectForKey:typeCopy];
     v78 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v17 longLongValue] + 1);
 
-    [v16 setObject:v78 forKey:v10];
+    [v16 setObject:v78 forKey:typeCopy];
     if (v7 == -1)
     {
       v22 = 0;
@@ -179,13 +179,13 @@
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413570;
-      v80 = v10;
+      v80 = typeCopy;
       v81 = 2112;
-      v82 = v11;
+      v82 = serviceCopy;
       v83 = 2112;
       v84 = v75;
       v85 = 1024;
-      v86 = [(__CFString *)v78 intValue];
+      intValue = [(__CFString *)v78 intValue];
       v87 = 1024;
       v88 = v7;
       v89 = 2112;
@@ -198,23 +198,23 @@
       v72 = v7;
       v73 = v22;
       v69 = v75;
-      v71 = [(__CFString *)v78 intValue];
-      v63 = v10;
-      v66 = v11;
+      intValue2 = [(__CFString *)v78 intValue];
+      v63 = typeCopy;
+      v66 = serviceCopy;
       _IDSLogV();
     }
 
-    if (([(__CFString *)v10 isEqualToIgnoringCase:@"outgoing-messages", v63, v66, v69, v71, v72, v73]& 1) == 0 && ![(__CFString *)v10 isEqualToIgnoringCase:@"outgoing-fallback-messages"])
+    if (([(__CFString *)typeCopy isEqualToIgnoringCase:@"outgoing-messages", v63, v66, v69, intValue2, v72, v73]& 1) == 0 && ![(__CFString *)typeCopy isEqualToIgnoringCase:@"outgoing-fallback-messages"])
     {
-      if ([(__CFString *)v10 isEqualToIgnoringCase:@"outgoing-server-messages"])
+      if ([(__CFString *)typeCopy isEqualToIgnoringCase:@"outgoing-server-messages"])
       {
-        v77 = [NSString stringWithFormat:@"server-message-budget-daily-%@", v11];
+        serviceCopy = [NSString stringWithFormat:@"server-message-budget-daily-%@", serviceCopy];
         v36 = [IDSServerBag sharedInstanceForBagType:1];
-        v27 = [v36 objectForKey:v77];
+        v27 = [v36 objectForKey:serviceCopy];
 
-        v37 = [(__CFString *)v27 intValue];
-        v23 = v37 < 1;
-        if (v37 < 1)
+        intValue3 = [(__CFString *)v27 intValue];
+        v23 = intValue3 < 1;
+        if (intValue3 < 1)
         {
           v59 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
@@ -268,15 +268,15 @@
         }
       }
 
-      else if ([(__CFString *)v10 isEqualToIgnoringCase:@"query-requests"])
+      else if ([(__CFString *)typeCopy isEqualToIgnoringCase:@"query-requests"])
       {
-        v77 = [NSString stringWithFormat:@"query-ui-budget-daily-%@", v11];
+        serviceCopy = [NSString stringWithFormat:@"query-ui-budget-daily-%@", serviceCopy];
         v47 = [IDSServerBag sharedInstanceForBagType:1];
-        v27 = [v47 objectForKey:v77];
+        v27 = [v47 objectForKey:serviceCopy];
 
-        v48 = [(__CFString *)v27 intValue];
-        v23 = v48 < 1;
-        if (v48 < 1)
+        intValue4 = [(__CFString *)v27 intValue];
+        v23 = intValue4 < 1;
+        if (intValue4 < 1)
         {
           v60 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
@@ -332,23 +332,23 @@
 
       else
       {
-        if (![(__CFString *)v10 isEqualToIgnoringCase:@"queries"])
+        if (![(__CFString *)typeCopy isEqualToIgnoringCase:@"queries"])
         {
           v23 = 1;
 LABEL_140:
           [(NSRecursiveLock *)self->_lock unlock:v64];
 
-          v12 = v75;
+          requestorCopy = v75;
           goto LABEL_141;
         }
 
-        v77 = [NSString stringWithFormat:@"query-budget-daily-%@", v11];
+        serviceCopy = [NSString stringWithFormat:@"query-budget-daily-%@", serviceCopy];
         v53 = [IDSServerBag sharedInstanceForBagType:1];
-        v27 = [v53 objectForKey:v77];
+        v27 = [v53 objectForKey:serviceCopy];
 
-        v54 = [(__CFString *)v27 intValue];
-        v23 = v54 < 1;
-        if (v54 < 1)
+        intValue5 = [(__CFString *)v27 intValue];
+        v23 = intValue5 < 1;
+        if (intValue5 < 1)
         {
           v61 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
@@ -406,7 +406,7 @@ LABEL_140:
       goto LABEL_139;
     }
 
-    if ([(__CFString *)v10 isEqualToIgnoringCase:@"outgoing-messages"])
+    if ([(__CFString *)typeCopy isEqualToIgnoringCase:@"outgoing-messages"])
     {
       v25 = &stru_100C06028;
     }
@@ -418,9 +418,9 @@ LABEL_140:
 
     if (v22)
     {
-      v77 = [NSString stringWithFormat:@"peer%@-message-budget-global-daily-%u", v25, v7];
+      serviceCopy = [NSString stringWithFormat:@"peer%@-message-budget-global-daily-%u", v25, v7];
       v26 = [IDSServerBag sharedInstanceForBagType:1];
-      v27 = [v26 objectForKey:v77];
+      v27 = [v26 objectForKey:serviceCopy];
 
       if ([(__CFString *)v27 intValue]>= 1)
       {
@@ -494,9 +494,9 @@ LABEL_139:
       }
     }
 
-    v77 = [NSString stringWithFormat:@"peer%@-message-budget-daily-%@", v25, v11];
+    serviceCopy = [NSString stringWithFormat:@"peer%@-message-budget-daily-%@", v25, serviceCopy];
     v32 = [IDSServerBag sharedInstanceForBagType:1];
-    v27 = [v32 objectForKey:v77];
+    v27 = [v32 objectForKey:serviceCopy];
 
     if ([(__CFString *)v27 intValue]>= 1)
     {
@@ -722,8 +722,8 @@ LABEL_141:
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v6 = [v5 allKeys];
-        v7 = [v6 countByEnumeratingWithState:&v22 objects:v34 count:16];
+        allKeys = [v5 allKeys];
+        v7 = [allKeys countByEnumeratingWithState:&v22 objects:v34 count:16];
         if (v7)
         {
           v8 = *v23;
@@ -733,7 +733,7 @@ LABEL_141:
             {
               if (*v23 != v8)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(allKeys);
               }
 
               v10 = *(*(&v22 + 1) + 8 * j);
@@ -756,7 +756,7 @@ LABEL_141:
               }
             }
 
-            v7 = [v6 countByEnumeratingWithState:&v22 objects:v34 count:16];
+            v7 = [allKeys countByEnumeratingWithState:&v22 objects:v34 count:16];
           }
 
           while (v7);

@@ -1,70 +1,70 @@
 @interface MTMaterialShadowView
-+ (id)materialShadowViewWithRecipe:(int64_t)a3 configuration:(int64_t)a4 initialWeighting:(double)a5 scaleAdjustment:(id)a6;
-+ (id)materialShadowViewWithRecipeNamed:(id)a3 inBundle:(id)a4 configuration:(int64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7;
-+ (id)materialShadowViewWithRecipeNamesByTraitCollection:(id)a3 inBundle:(id)a4 configuration:(int64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7;
++ (id)materialShadowViewWithRecipe:(int64_t)recipe configuration:(int64_t)configuration initialWeighting:(double)weighting scaleAdjustment:(id)adjustment;
++ (id)materialShadowViewWithRecipeNamed:(id)named inBundle:(id)bundle configuration:(int64_t)configuration initialWeighting:(double)weighting scaleAdjustment:(id)adjustment;
++ (id)materialShadowViewWithRecipeNamesByTraitCollection:(id)collection inBundle:(id)bundle configuration:(int64_t)configuration initialWeighting:(double)weighting scaleAdjustment:(id)adjustment;
 - (BOOL)shadowPathIsBounds;
 - (CGSize)shadowOffset;
-- (MTMaterialShadowView)initWithMaterialView:(id)a3;
+- (MTMaterialShadowView)initWithMaterialView:(id)view;
 - (UIColor)shadowColor;
 - (double)shadowOpacity;
 - (double)shadowRadius;
 - (void)_configureCaptureOnlyMaterialViewIfNecessary;
 - (void)_configureShadowViewIfNecessary;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)groupNameDidChangeForMaterialView:(id)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)groupNameDidChangeForMaterialView:(id)view;
 - (void)layoutSubviews;
-- (void)recipeNameDidChangeForMaterialView:(id)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setShadowOffset:(CGSize)a3;
-- (void)setShadowOpacity:(double)a3;
-- (void)setShadowPathIsBounds:(BOOL)a3;
-- (void)setShadowRadius:(double)a3;
-- (void)weightingDidChangeForMaterialView:(id)a3;
+- (void)recipeNameDidChangeForMaterialView:(id)view;
+- (void)setShadowColor:(id)color;
+- (void)setShadowOffset:(CGSize)offset;
+- (void)setShadowOpacity:(double)opacity;
+- (void)setShadowPathIsBounds:(BOOL)bounds;
+- (void)setShadowRadius:(double)radius;
+- (void)weightingDidChangeForMaterialView:(id)view;
 @end
 
 @implementation MTMaterialShadowView
 
-+ (id)materialShadowViewWithRecipe:(int64_t)a3 configuration:(int64_t)a4 initialWeighting:(double)a5 scaleAdjustment:(id)a6
++ (id)materialShadowViewWithRecipe:(int64_t)recipe configuration:(int64_t)configuration initialWeighting:(double)weighting scaleAdjustment:(id)adjustment
 {
-  v10 = a6;
-  v11 = [a1 alloc];
-  v12 = [MTMaterialView materialViewWithRecipe:a3 configuration:a4 initialWeighting:v10 scaleAdjustment:a5];
+  adjustmentCopy = adjustment;
+  v11 = [self alloc];
+  v12 = [MTMaterialView materialViewWithRecipe:recipe configuration:configuration initialWeighting:adjustmentCopy scaleAdjustment:weighting];
 
   v13 = [v11 initWithMaterialView:v12];
 
   return v13;
 }
 
-+ (id)materialShadowViewWithRecipeNamed:(id)a3 inBundle:(id)a4 configuration:(int64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7
++ (id)materialShadowViewWithRecipeNamed:(id)named inBundle:(id)bundle configuration:(int64_t)configuration initialWeighting:(double)weighting scaleAdjustment:(id)adjustment
 {
-  v12 = a7;
-  v13 = a4;
-  v14 = a3;
-  v15 = [a1 alloc];
-  v16 = [MTMaterialView materialViewWithRecipeNamed:v14 inBundle:v13 configuration:a5 initialWeighting:v12 scaleAdjustment:a6];
+  adjustmentCopy = adjustment;
+  bundleCopy = bundle;
+  namedCopy = named;
+  v15 = [self alloc];
+  v16 = [MTMaterialView materialViewWithRecipeNamed:namedCopy inBundle:bundleCopy configuration:configuration initialWeighting:adjustmentCopy scaleAdjustment:weighting];
 
   v17 = [v15 initWithMaterialView:v16];
 
   return v17;
 }
 
-+ (id)materialShadowViewWithRecipeNamesByTraitCollection:(id)a3 inBundle:(id)a4 configuration:(int64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7
++ (id)materialShadowViewWithRecipeNamesByTraitCollection:(id)collection inBundle:(id)bundle configuration:(int64_t)configuration initialWeighting:(double)weighting scaleAdjustment:(id)adjustment
 {
-  v12 = a7;
-  v13 = a4;
-  v14 = a3;
-  v15 = [a1 alloc];
-  v16 = [MTMaterialView materialViewWithRecipeNamesByTraitCollection:v14 compatibleWithTraitCollection:0 bundle:v13 configuration:a5 initialWeighting:v12 scaleAdjustment:a6];
+  adjustmentCopy = adjustment;
+  bundleCopy = bundle;
+  collectionCopy = collection;
+  v15 = [self alloc];
+  v16 = [MTMaterialView materialViewWithRecipeNamesByTraitCollection:collectionCopy compatibleWithTraitCollection:0 bundle:bundleCopy configuration:configuration initialWeighting:adjustmentCopy scaleAdjustment:weighting];
 
   v17 = [v15 initWithMaterialView:v16];
 
   return v17;
 }
 
-- (MTMaterialShadowView)initWithMaterialView:(id)a3
+- (MTMaterialShadowView)initWithMaterialView:(id)view
 {
-  v6 = a3;
-  if (!v6)
+  viewCopy = view;
+  if (!viewCopy)
   {
     [(MTMaterialShadowView *)a2 initWithMaterialView:?];
   }
@@ -77,10 +77,10 @@
   if (v7)
   {
     [(MTMaterialShadowView *)v7 setAutoresizesSubviews:1];
-    objc_storeStrong(&v8->_materialView, a3);
-    v9 = [(MTMaterialView *)v8->_materialView groupNameBase];
+    objc_storeStrong(&v8->_materialView, view);
+    groupNameBase = [(MTMaterialView *)v8->_materialView groupNameBase];
 
-    if (!v9)
+    if (!groupNameBase)
     {
       materialView = v8->_materialView;
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%p", objc_opt_class(), v8];
@@ -103,8 +103,8 @@
   if (shadowView)
   {
     v3 = MEMORY[0x277D75348];
-    v4 = [(UIView *)shadowView layer];
-    v5 = [v3 colorWithCGColor:{objc_msgSend(v4, "shadowColor")}];
+    layer = [(UIView *)shadowView layer];
+    v5 = [v3 colorWithCGColor:{objc_msgSend(layer, "shadowColor")}];
   }
 
   else
@@ -115,37 +115,37 @@
   return v5;
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(MTMaterialShadowView *)self _configureShadowViewIfNecessary];
-  v6 = [(UIView *)self->_shadowView layer];
-  v5 = [v4 CGColor];
+  layer = [(UIView *)self->_shadowView layer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setShadowColor:v5];
+  [layer setShadowColor:cGColor];
 }
 
 - (double)shadowOpacity
 {
-  v2 = [(UIView *)self->_shadowView layer];
-  [v2 shadowOpacity];
+  layer = [(UIView *)self->_shadowView layer];
+  [layer shadowOpacity];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setShadowOpacity:(double)a3
+- (void)setShadowOpacity:(double)opacity
 {
   [(MTMaterialShadowView *)self _configureShadowViewIfNecessary];
-  v6 = [(UIView *)self->_shadowView layer];
-  *&v5 = a3;
-  [v6 setShadowOpacity:v5];
+  layer = [(UIView *)self->_shadowView layer];
+  *&v5 = opacity;
+  [layer setShadowOpacity:v5];
 }
 
 - (CGSize)shadowOffset
 {
-  v2 = [(UIView *)self->_shadowView layer];
-  [v2 shadowOffset];
+  layer = [(UIView *)self->_shadowView layer];
+  [layer shadowOffset];
   v4 = v3;
   v6 = v5;
 
@@ -156,45 +156,45 @@
   return result;
 }
 
-- (void)setShadowOffset:(CGSize)a3
+- (void)setShadowOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
+  height = offset.height;
+  width = offset.width;
   [(MTMaterialShadowView *)self _configureShadowViewIfNecessary];
-  v6 = [(UIView *)self->_shadowView layer];
-  [v6 setShadowOffset:{width, height}];
+  layer = [(UIView *)self->_shadowView layer];
+  [layer setShadowOffset:{width, height}];
 }
 
 - (double)shadowRadius
 {
-  v2 = [(UIView *)self->_shadowView layer];
-  [v2 shadowRadius];
+  layer = [(UIView *)self->_shadowView layer];
+  [layer shadowRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setShadowRadius:(double)a3
+- (void)setShadowRadius:(double)radius
 {
   [(MTMaterialShadowView *)self _configureShadowViewIfNecessary];
-  v5 = [(UIView *)self->_shadowView layer];
-  [v5 setShadowRadius:a3];
+  layer = [(UIView *)self->_shadowView layer];
+  [layer setShadowRadius:radius];
 }
 
 - (BOOL)shadowPathIsBounds
 {
-  v2 = [(UIView *)self->_shadowView layer];
-  v3 = [v2 shadowPathIsBounds];
+  layer = [(UIView *)self->_shadowView layer];
+  shadowPathIsBounds = [layer shadowPathIsBounds];
 
-  return v3;
+  return shadowPathIsBounds;
 }
 
-- (void)setShadowPathIsBounds:(BOOL)a3
+- (void)setShadowPathIsBounds:(BOOL)bounds
 {
-  v3 = a3;
+  boundsCopy = bounds;
   [(MTMaterialShadowView *)self _configureShadowViewIfNecessary];
-  v5 = [(UIView *)self->_shadowView layer];
-  [v5 setShadowPathIsBounds:v3];
+  layer = [(UIView *)self->_shadowView layer];
+  [layer setShadowPathIsBounds:boundsCopy];
 }
 
 - (void)layoutSubviews
@@ -205,35 +205,35 @@
   [(MTMaterialShadowView *)self _configureCaptureOnlyMaterialViewIfNecessary];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   [(MTMaterialView *)self->_materialView _setContinuousCornerRadius:?];
-  [(UIView *)self->_shadowView _setContinuousCornerRadius:a3];
+  [(UIView *)self->_shadowView _setContinuousCornerRadius:radius];
   captureOnlyMaterialView = self->_captureOnlyMaterialView;
 
-  [(MTMaterialView *)captureOnlyMaterialView _setContinuousCornerRadius:a3];
+  [(MTMaterialView *)captureOnlyMaterialView _setContinuousCornerRadius:radius];
 }
 
-- (void)recipeNameDidChangeForMaterialView:(id)a3
+- (void)recipeNameDidChangeForMaterialView:(id)view
 {
   captureOnlyMaterialView = self->_captureOnlyMaterialView;
-  v4 = [a3 recipeName];
-  [(MTMaterialView *)captureOnlyMaterialView setRecipeName:v4];
+  recipeName = [view recipeName];
+  [(MTMaterialView *)captureOnlyMaterialView setRecipeName:recipeName];
 }
 
-- (void)weightingDidChangeForMaterialView:(id)a3
+- (void)weightingDidChangeForMaterialView:(id)view
 {
   captureOnlyMaterialView = self->_captureOnlyMaterialView;
-  [a3 weighting];
+  [view weighting];
 
   [(MTMaterialView *)captureOnlyMaterialView setWeighting:?];
 }
 
-- (void)groupNameDidChangeForMaterialView:(id)a3
+- (void)groupNameDidChangeForMaterialView:(id)view
 {
   captureOnlyMaterialView = self->_captureOnlyMaterialView;
-  v4 = [a3 groupNameBase];
-  [(MTMaterialView *)captureOnlyMaterialView setGroupNameBase:v4];
+  groupNameBase = [view groupNameBase];
+  [(MTMaterialView *)captureOnlyMaterialView setGroupNameBase:groupNameBase];
 }
 
 - (void)_configureShadowViewIfNecessary
@@ -246,8 +246,8 @@
     shadowView = self->_shadowView;
     self->_shadowView = v4;
 
-    v6 = [(UIView *)self->_shadowView layer];
-    [v6 setShadowPathIsBounds:1];
+    layer = [(UIView *)self->_shadowView layer];
+    [layer setShadowPathIsBounds:1];
 
     v7 = self->_shadowView;
     [(MTMaterialView *)self->_materialView _continuousCornerRadius];
@@ -269,8 +269,8 @@
 
     [(MTMaterialView *)self->_captureOnlyMaterialView setCaptureOnly:1];
     v5 = self->_captureOnlyMaterialView;
-    v6 = [(MTMaterialView *)self->_materialView groupNameBase];
-    [(MTMaterialView *)v5 setGroupNameBase:v6];
+    groupNameBase = [(MTMaterialView *)self->_materialView groupNameBase];
+    [(MTMaterialView *)v5 setGroupNameBase:groupNameBase];
 
     v7 = self->_captureOnlyMaterialView;
     [(MTMaterialShadowView *)self bounds];

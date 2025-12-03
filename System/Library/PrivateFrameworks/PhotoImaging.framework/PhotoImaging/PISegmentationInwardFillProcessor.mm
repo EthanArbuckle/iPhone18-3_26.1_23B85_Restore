@@ -1,20 +1,20 @@
 @interface PISegmentationInwardFillProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
 @end
 
 @implementation PISegmentationInwardFillProcessor
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v8 = a5;
-  v9 = [a3 objectAtIndexedSubscript:0];
-  v10 = [v8 metalCommandBuffer];
-  v11 = [v9 metalTexture];
-  v12 = [v8 metalTexture];
+  outputCopy = output;
+  v9 = [inputs objectAtIndexedSubscript:0];
+  metalCommandBuffer = [outputCopy metalCommandBuffer];
+  metalTexture = [v9 metalTexture];
+  metalTexture2 = [outputCopy metalTexture];
 
-  if (v10)
+  if (metalCommandBuffer)
   {
-    v13 = v11 == 0;
+    v13 = metalTexture == 0;
   }
 
   else
@@ -22,19 +22,19 @@
     v13 = 1;
   }
 
-  v14 = v13 || v12 == 0;
+  v14 = v13 || metalTexture2 == 0;
   v15 = !v14;
   if (v14)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x1E69B3A48] invalidError:@"Metal unavailable" object:0];
+      *error = [MEMORY[0x1E69B3A48] invalidError:@"Metal unavailable" object:0];
     }
   }
 
   else
   {
-    [PIParallaxInwardFillKernel fillSourceTexture:v11 intoDestinationTexture:v12 withCommandBuffer:v10];
+    [PIParallaxInwardFillKernel fillSourceTexture:metalTexture intoDestinationTexture:metalTexture2 withCommandBuffer:metalCommandBuffer];
   }
 
   return v15;

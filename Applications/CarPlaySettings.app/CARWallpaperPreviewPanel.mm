@@ -1,21 +1,21 @@
 @interface CARWallpaperPreviewPanel
-- (_TtC15CarPlaySettings24CARWallpaperPreviewPanel)initWithPanelController:(id)a3;
-- (_TtC15CarPlaySettings24CARWallpaperPreviewPanel)initWithWallpaper:(id)a3 wallpaperPreferences:(id)a4 panelController:(id)a5 completionHandler:(id)a6;
-- (void)backButtonPressedWithSender:(id)a3;
+- (_TtC15CarPlaySettings24CARWallpaperPreviewPanel)initWithPanelController:(id)controller;
+- (_TtC15CarPlaySettings24CARWallpaperPreviewPanel)initWithWallpaper:(id)wallpaper wallpaperPreferences:(id)preferences panelController:(id)controller completionHandler:(id)handler;
+- (void)backButtonPressedWithSender:(id)sender;
 - (void)invalidate;
 - (void)sceneDidActivate;
 - (void)sceneWillDeactivate;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CARWallpaperPreviewPanel
 
-- (_TtC15CarPlaySettings24CARWallpaperPreviewPanel)initWithWallpaper:(id)a3 wallpaperPreferences:(id)a4 panelController:(id)a5 completionHandler:(id)a6
+- (_TtC15CarPlaySettings24CARWallpaperPreviewPanel)initWithWallpaper:(id)wallpaper wallpaperPreferences:(id)preferences panelController:(id)controller completionHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   if (v9)
   {
     v10 = swift_allocObject();
@@ -29,36 +29,36 @@
   }
 
   swift_unknownObjectRetain();
-  v11 = a4;
+  preferencesCopy = preferences;
   swift_unknownObjectRetain();
-  return CARWallpaperPreviewPanel.init(wallpaper:wallpaperPreferences:panelController:completionHandler:)(a3, v11, a5, v9, v10);
+  return CARWallpaperPreviewPanel.init(wallpaper:wallpaperPreferences:panelController:completionHandler:)(wallpaper, preferencesCopy, controller, v9, v10);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CARWallpaperPreviewPanel.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  CARWallpaperPreviewPanel.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  CARWallpaperPreviewPanel.viewWillAppear(_:)(appear);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = type metadata accessor for CARWallpaperPreviewPanel();
   swift_unknownObjectRetain();
   v7 = v9.receiver;
-  [(CARWallpaperPreviewPanel *)&v9 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
-  v8 = [v7 panelController];
-  if (v8)
+  [(CARWallpaperPreviewPanel *)&v9 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
+  panelController = [v7 panelController];
+  if (panelController)
   {
-    [v8 dismissPanel:v7];
+    [panelController dismissPanel:v7];
     swift_unknownObjectRelease();
   }
 
@@ -66,12 +66,12 @@
   swift_unknownObjectRelease();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v4.receiver = self;
   v4.super_class = type metadata accessor for CARWallpaperPreviewPanel();
-  [(CARWallpaperPreviewPanel *)&v4 viewWillDisappear:v3];
+  [(CARWallpaperPreviewPanel *)&v4 viewWillDisappear:disappearCopy];
 }
 
 - (void)invalidate
@@ -93,23 +93,23 @@
 
 - (void)sceneDidActivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_10007CBA8();
 }
 
 - (void)sceneWillDeactivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_10007CCE8();
 }
 
-- (void)backButtonPressedWithSender:(id)a3
+- (void)backButtonPressedWithSender:(id)sender
 {
-  v3 = self;
+  selfCopy = self;
   sub_10007CF40();
 }
 
-- (_TtC15CarPlaySettings24CARWallpaperPreviewPanel)initWithPanelController:(id)a3
+- (_TtC15CarPlaySettings24CARWallpaperPreviewPanel)initWithPanelController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

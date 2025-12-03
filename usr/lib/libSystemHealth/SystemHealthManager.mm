@@ -1,8 +1,8 @@
 @interface SystemHealthManager
 - (BOOL)isSupportedIPad;
-- (BOOL)shouldFilterComponent:(unint64_t)a3;
+- (BOOL)shouldFilterComponent:(unint64_t)component;
 - (SystemHealthManager)init;
-- (void)postComponentStatusEventFor:(unint64_t)a3 status:(unint64_t)a4 withReply:(id)a5;
+- (void)postComponentStatusEventFor:(unint64_t)for status:(unint64_t)status withReply:(id)reply;
 @end
 
 @implementation SystemHealthManager
@@ -30,10 +30,10 @@
   return v2;
 }
 
-- (BOOL)shouldFilterComponent:(unint64_t)a3
+- (BOOL)shouldFilterComponent:(unint64_t)component
 {
   deviceClass = self->deviceClass;
-  v4 = deviceClass != 1 || a3 == 12;
+  v4 = deviceClass != 1 || component == 12;
   return deviceClass != 3 && v4;
 }
 
@@ -45,11 +45,11 @@
   return v3;
 }
 
-- (void)postComponentStatusEventFor:(unint64_t)a3 status:(unint64_t)a4 withReply:(id)a5
+- (void)postComponentStatusEventFor:(unint64_t)for status:(unint64_t)status withReply:(id)reply
 {
   v21[1] = *MEMORY[0x29EDCA608];
-  v8 = a5;
-  if ([(SystemHealthManager *)self shouldFilterComponent:a3])
+  replyCopy = reply;
+  if ([(SystemHealthManager *)self shouldFilterComponent:for])
   {
     v9 = MEMORY[0x29EDB9FA0];
     v20 = *MEMORY[0x29EDB9ED8];
@@ -85,10 +85,10 @@
     v17[2] = __68__SystemHealthManager_postComponentStatusEventFor_status_withReply___block_invoke_23;
     v17[3] = &unk_29EE8D7E8;
     v17[4] = self;
-    [v15 postComponentStatusEventFor:a3 status:a4 withReply:v17];
+    [v15 postComponentStatusEventFor:for status:status withReply:v17];
   }
 
-  v8[2](v8, v12, v11);
+  replyCopy[2](replyCopy, v12, v11);
 
   v16 = *MEMORY[0x29EDCA608];
 }

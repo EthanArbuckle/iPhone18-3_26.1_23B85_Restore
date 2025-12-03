@@ -1,6 +1,6 @@
 @interface MOMusicPlaybackCoordinator
-- (void)nowPlayingItemChangedWithNote:(id)a3;
-- (void)playbackStateDidChangeWithNote:(id)a3;
+- (void)nowPlayingItemChangedWithNote:(id)note;
+- (void)playbackStateDidChangeWithNote:(id)note;
 - (void)updateDelegateProgressIndication;
 @end
 
@@ -12,14 +12,14 @@
   MOMusicPlaybackCoordinator.updateDelegateProgressIndication()();
 }
 
-- (void)playbackStateDidChangeWithNote:(id)a3
+- (void)playbackStateDidChangeWithNote:(id)note
 {
   v3 = *(*self->_TtCs12_SwiftObject_opaque + 280);
 
   v3(v4);
 }
 
-- (void)nowPlayingItemChangedWithNote:(id)a3
+- (void)nowPlayingItemChangedWithNote:(id)note
 {
   v3 = *(*self->_TtCs12_SwiftObject_opaque + 272);
 

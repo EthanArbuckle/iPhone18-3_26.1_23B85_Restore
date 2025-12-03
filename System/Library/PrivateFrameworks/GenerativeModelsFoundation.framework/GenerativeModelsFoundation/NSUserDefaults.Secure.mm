@@ -1,19 +1,19 @@
 @interface NSUserDefaults.Secure
 - (id)dictionaryRepresentation;
-- (id)objectForKey:(id)a3;
-- (id)objectForKey:(id)a3 inDomain:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4 inDomain:(id)a5;
+- (id)objectForKey:(id)key;
+- (id)objectForKey:(id)key inDomain:(id)domain;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key inDomain:(id)domain;
 @end
 
 @implementation NSUserDefaults.Secure
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
-    v6 = a4;
-    v7 = self;
+    keyCopy = key;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18E1A77D0();
     swift_unknownObjectRelease();
@@ -22,8 +22,8 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a4;
-    v9 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
   }
 
   sub_18E1A7530();
@@ -33,17 +33,17 @@
   sub_18E178150(v10, &qword_1EABD0960, &qword_18E1AB550);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 inDomain:(id)a5
+- (void)setObject:(id)object forKey:(id)key inDomain:(id)domain
 {
-  if (a3)
+  if (object)
   {
-    v8 = a4;
-    v9 = a5;
-    v10 = self;
+    keyCopy = key;
+    domainCopy = domain;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18E1A77D0();
     swift_unknownObjectRelease();
-    if (a4)
+    if (key)
     {
       goto LABEL_3;
     }
@@ -51,7 +51,7 @@
 LABEL_6:
     v11 = 0;
     v13 = 0;
-    if (!a5)
+    if (!domain)
     {
       goto LABEL_7;
     }
@@ -60,10 +60,10 @@ LABEL_6:
   }
 
   memset(v17, 0, sizeof(v17));
-  v14 = a4;
-  v15 = a5;
-  v16 = self;
-  if (!a4)
+  keyCopy2 = key;
+  domainCopy2 = domain;
+  selfCopy2 = self;
+  if (!key)
   {
     goto LABEL_6;
   }
@@ -72,7 +72,7 @@ LABEL_3:
   v11 = sub_18E1A7530();
   v13 = v12;
 
-  if (a5)
+  if (domain)
   {
 LABEL_4:
     sub_18E1A7530();
@@ -84,10 +84,10 @@ LABEL_7:
   sub_18E178150(v17, &qword_1EABD0960, &qword_18E1AB550);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   sub_18E1A7530();
-  v4 = self;
+  selfCopy = self;
   NSUserDefaults.Secure.object(forKey:)(v13);
 
   v5 = v14;
@@ -112,16 +112,16 @@ LABEL_7:
   return v11;
 }
 
-- (id)objectForKey:(id)a3 inDomain:(id)a4
+- (id)objectForKey:(id)key inDomain:(id)domain
 {
   v6 = sub_18E1A7530();
   v8 = v7;
-  if (a4)
+  if (domain)
   {
     sub_18E1A7530();
   }
 
-  v9 = self;
+  selfCopy = self;
   NSUserDefaults.Secure.object(forKey:inDomain:)(v18, v6, v8);
 
   v10 = v19;
@@ -148,7 +148,7 @@ LABEL_7:
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   NSUserDefaults.Secure.dictionaryRepresentation()();
 
   v3 = sub_18E1A7470();

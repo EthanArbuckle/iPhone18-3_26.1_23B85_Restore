@@ -1,7 +1,7 @@
 @interface PLLoggingServiceStore
 + (PLLoggingServiceStore)sharedInstance;
 - (PLLoggingServiceStore)init;
-- (void)storeInstrumentationWithEvents:(id)a3 completion:(id)a4;
+- (void)storeInstrumentationWithEvents:(id)events completion:(id)completion;
 @end
 
 @implementation PLLoggingServiceStore
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (void)storeInstrumentationWithEvents:(id)a3 completion:(id)a4
+- (void)storeInstrumentationWithEvents:(id)events completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   sub_268C39E9C();
   v5 = sub_268C42CA8();
   if (v4)

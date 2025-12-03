@@ -1,47 +1,47 @@
 @interface HUForwardingTriggerActionBuilderDelegate
-- (HUForwardingTriggerActionBuilderDelegate)initWithTriggerActionBuilderEditorDelegate:(id)a3;
+- (HUForwardingTriggerActionBuilderDelegate)initWithTriggerActionBuilderEditorDelegate:(id)delegate;
 - (HUTriggerActionBuilderEditorDelegate)triggerActionBuilderEditorDelegate;
-- (void)triggerEditor:(id)a3 didFinishWithTriggerBuilder:(id)a4;
+- (void)triggerEditor:(id)editor didFinishWithTriggerBuilder:(id)builder;
 @end
 
 @implementation HUForwardingTriggerActionBuilderDelegate
 
-- (HUForwardingTriggerActionBuilderDelegate)initWithTriggerActionBuilderEditorDelegate:(id)a3
+- (HUForwardingTriggerActionBuilderDelegate)initWithTriggerActionBuilderEditorDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = HUForwardingTriggerActionBuilderDelegate;
   v5 = [(HUForwardingTriggerActionBuilderDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HUForwardingTriggerActionBuilderDelegate *)v5 setTriggerActionBuilderEditorDelegate:v4];
+    [(HUForwardingTriggerActionBuilderDelegate *)v5 setTriggerActionBuilderEditorDelegate:delegateCopy];
   }
 
   return v6;
 }
 
-- (void)triggerEditor:(id)a3 didFinishWithTriggerBuilder:(id)a4
+- (void)triggerEditor:(id)editor didFinishWithTriggerBuilder:(id)builder
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  editorCopy = editor;
+  builderCopy = builder;
+  v7 = builderCopy;
+  if (builderCopy)
   {
-    v8 = [v6 triggerActionSets];
+    triggerActionSets = [builderCopy triggerActionSets];
   }
 
   else
   {
-    v8 = 0;
+    triggerActionSets = 0;
   }
 
-  v9 = [(HUForwardingTriggerActionBuilderDelegate *)self triggerActionBuilderEditorDelegate];
+  triggerActionBuilderEditorDelegate = [(HUForwardingTriggerActionBuilderDelegate *)self triggerActionBuilderEditorDelegate];
 
-  if (v9)
+  if (triggerActionBuilderEditorDelegate)
   {
-    v10 = [(HUForwardingTriggerActionBuilderDelegate *)self triggerActionBuilderEditorDelegate];
-    [v10 actionBuilderEditor:v11 didFinishWithTriggerActionSetBuilder:v8];
+    triggerActionBuilderEditorDelegate2 = [(HUForwardingTriggerActionBuilderDelegate *)self triggerActionBuilderEditorDelegate];
+    [triggerActionBuilderEditorDelegate2 actionBuilderEditor:editorCopy didFinishWithTriggerActionSetBuilder:triggerActionSets];
   }
 }
 

@@ -1,10 +1,10 @@
 @interface GCGenericDeviceDriverPropertiesModelBuilder
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GCGenericDeviceDriverPropertiesModelBuilder)init;
 - (id)build;
 - (unint64_t)hash;
 - (void)build;
-- (void)initializeWithModel:(id)a3;
+- (void)initializeWithModel:(id)model;
 @end
 
 @implementation GCGenericDeviceDriverPropertiesModelBuilder
@@ -16,22 +16,22 @@
   return [(GCGenericDeviceDriverPropertiesModelBuilder *)&v3 init];
 }
 
-- (void)initializeWithModel:(id)a3
+- (void)initializeWithModel:(id)model
 {
-  v4 = [a3 properties];
-  [(GCGenericDeviceDriverPropertiesModelBuilder *)self setProperties:v4];
+  properties = [model properties];
+  [(GCGenericDeviceDriverPropertiesModelBuilder *)self setProperties:properties];
 }
 
 - (id)build
 {
   v4 = objc_alloc([objc_opt_class() modelClass]);
-  v5 = [(GCGenericDeviceDriverPropertiesModelBuilder *)self properties];
-  if (!v5)
+  properties = [(GCGenericDeviceDriverPropertiesModelBuilder *)self properties];
+  if (!properties)
   {
     [(GCGenericDeviceDriverPropertiesModelBuilder *)a2 build];
   }
 
-  v6 = [v5 copy];
+  v6 = [properties copy];
   v7 = v4[1];
   v4[1] = v6;
 
@@ -40,25 +40,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [objc_opt_class() modelClass];
+  modelClass = [objc_opt_class() modelClass];
 
-  return [v2 hash];
+  return [modelClass hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 isEqual:self];
+    v5 = [equalCopy isEqual:self];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = GCGenericDeviceDriverPropertiesModelBuilder;
-    v5 = [(GCGenericDeviceDriverPropertiesModelBuilder *)&v8 isEqual:v4];
+    v5 = [(GCGenericDeviceDriverPropertiesModelBuilder *)&v8 isEqual:equalCopy];
   }
 
   v6 = v5;
@@ -68,8 +68,8 @@
 
 - (void)build
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"GCGenericDeviceDriverPropertiesModel.m" lineNumber:110 description:@"'properties' can not be nil"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"GCGenericDeviceDriverPropertiesModel.m" lineNumber:110 description:@"'properties' can not be nil"];
 }
 
 @end

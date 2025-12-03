@@ -1,14 +1,14 @@
 @interface PGMemoryMusicEnergyQuestionFactory
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGMemoryMusicEnergyQuestionFactory
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = _Block_copy(v6);
+  blockCopy = block;
+  v7 = _Block_copy(blockCopy);
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -32,7 +32,7 @@
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
 LABEL_19:
-          v20 = MEMORY[0x277CBEBF8];
+          allObjects = MEMORY[0x277CBEBF8];
           goto LABEL_22;
         }
 
@@ -47,7 +47,7 @@ LABEL_11:
       }
     }
 
-    if (!a3)
+    if (!limit)
     {
       v11 = CFAbsoluteTimeGetCurrent();
       if (v11 - v36[3] < 0.01)
@@ -74,28 +74,28 @@ LABEL_11:
     }
   }
 
-  else if (!a3)
+  else if (!limit)
   {
     goto LABEL_19;
   }
 
   v13 = [MEMORY[0x277CBEB58] set];
-  v14 = [(PGSurveyQuestionFactory *)self workingContext];
-  v15 = [v14 photoLibrary];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  photoLibrary = [workingContext photoLibrary];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __79__PGMemoryMusicEnergyQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke;
   v26 = &unk_278880550;
-  v27 = self;
+  selfCopy = self;
   v16 = v13;
   v28 = v16;
-  v32 = a3;
+  limitCopy = limit;
   v17 = v7;
   v29 = v17;
   v30 = &v35;
   v33 = 0x3F847AE147AE147BLL;
   v31 = &v39;
-  [PGMemoryMusicQuestionUtils enumerateMemoryMusicSuggestionsInPhotoLibrary:v15 block:&v23];
+  [PGMemoryMusicQuestionUtils enumerateMemoryMusicSuggestionsInPhotoLibrary:photoLibrary block:&v23];
 
   if (v7 && (v18 = CFAbsoluteTimeGetCurrent(), v18 - v36[3] >= 0.01) && (v36[3] = v18, v34 = 0, v17[2](v17, &v34, 1.0), v19 = *(v40 + 24) | v34, *(v40 + 24) = v19, (v19 & 1) != 0))
   {
@@ -108,12 +108,12 @@ LABEL_11:
       _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
     }
 
-    v20 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v20 = [v16 allObjects];
+    allObjects = [v16 allObjects];
   }
 
 LABEL_22:
@@ -122,7 +122,7 @@ LABEL_22:
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return allObjects;
 }
 
 void __79__PGMemoryMusicEnergyQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)

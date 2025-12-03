@@ -36,8 +36,8 @@ LABEL_8:
 LABEL_9:
   if ([(MTFVoice *)self _pcmData])
   {
-    v6 = [(MTFVoice *)self _pcmData];
-    SLMMapCache::Unmap(v6, v7);
+    _pcmData = [(MTFVoice *)self _pcmData];
+    SLMMapCache::Unmap(_pcmData, v7);
   }
 
   if ([(MTFVoice *)self voiceData])

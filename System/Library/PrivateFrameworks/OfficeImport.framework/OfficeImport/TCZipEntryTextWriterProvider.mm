@@ -1,25 +1,25 @@
 @interface TCZipEntryTextWriterProvider
 - (BOOL)setUp;
-- (TCZipEntryTextWriterProvider)initWithEntryName:(id)a3 outputStream:(id)a4 isCompressed:(BOOL)a5;
+- (TCZipEntryTextWriterProvider)initWithEntryName:(id)name outputStream:(id)stream isCompressed:(BOOL)compressed;
 @end
 
 @implementation TCZipEntryTextWriterProvider
 
-- (TCZipEntryTextWriterProvider)initWithEntryName:(id)a3 outputStream:(id)a4 isCompressed:(BOOL)a5
+- (TCZipEntryTextWriterProvider)initWithEntryName:(id)name outputStream:(id)stream isCompressed:(BOOL)compressed
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  streamCopy = stream;
   v14.receiver = self;
   v14.super_class = TCZipEntryTextWriterProvider;
   v10 = [(TCZipEntryTextWriterProvider *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     entryName = v10->_entryName;
     v10->_entryName = v11;
 
-    v10->_outputStream = v9;
-    v10->_isCompressed = a5;
+    v10->_outputStream = streamCopy;
+    v10->_isCompressed = compressed;
   }
 
   return v10;

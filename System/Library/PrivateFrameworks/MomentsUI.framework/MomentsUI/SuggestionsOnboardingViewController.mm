@@ -2,15 +2,15 @@
 - (void)customizeSuggestionsButtonTapped;
 - (void)notNowButtonTapped;
 - (void)onboardButtonTapped;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation SuggestionsOnboardingViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   ObjectType = swift_getObjectType();
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
@@ -25,7 +25,7 @@
   (*(*(v14 - 8) + 56))(v12, 1, 1, v14);
   (*(v7 + 16))(v9, self + v13, v6);
   type metadata accessor for MainActor();
-  v15 = self;
+  selfCopy = self;
   v16 = static MainActor.shared.getter();
   v17 = (*(v7 + 80) + 32) & ~*(v7 + 80);
   v18 = swift_allocObject();
@@ -35,14 +35,14 @@
   (*(v7 + 32))(v18 + v17, v9, v6);
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v12, &closure #1 in SuggestionsOnboardingViewController.viewDidAppear(_:)partial apply, v18);
 
-  v20.receiver = v15;
+  v20.receiver = selfCopy;
   v20.super_class = ObjectType;
-  [(OBBaseWelcomeController *)&v20 viewDidAppear:v3];
+  [(OBBaseWelcomeController *)&v20 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   ObjectType = swift_getObjectType();
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
@@ -54,12 +54,12 @@
   v12 = &v20 - v11;
   v20.receiver = self;
   v20.super_class = ObjectType;
-  v13 = self;
-  [(OBBaseWelcomeController *)&v20 viewDidDisappear:v3];
+  selfCopy = self;
+  [(OBBaseWelcomeController *)&v20 viewDidDisappear:disappearCopy];
   v14 = OBJC_IVAR____TtC9MomentsUI35SuggestionsOnboardingViewController_sessionUUID;
   v15 = type metadata accessor for TaskPriority();
   (*(*(v15 - 8) + 56))(v12, 1, 1, v15);
-  (*(v7 + 16))(v9, v13 + v14, v6);
+  (*(v7 + 16))(v9, selfCopy + v14, v6);
   type metadata accessor for MainActor();
   v16 = static MainActor.shared.getter();
   v17 = (*(v7 + 80) + 32) & ~*(v7 + 80);
@@ -73,19 +73,19 @@
 
 - (void)customizeSuggestionsButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   SuggestionsOnboardingViewController.customizeSuggestionsButtonTapped()();
 }
 
 - (void)onboardButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   SuggestionsOnboardingViewController.onboardButtonTapped()();
 }
 
 - (void)notNowButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   SuggestionsOnboardingViewController.notNowButtonTapped()();
 }
 

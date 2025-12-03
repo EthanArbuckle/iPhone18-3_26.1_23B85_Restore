@@ -1,35 +1,35 @@
 @interface AXMBrailleCanvasDescription
-- (AXMBrailleCanvasDescription)initWithCoder:(id)a3;
-- (AXMBrailleCanvasDescription)initWithHeight:(unint64_t)a3 width:(unint64_t)a4 numberOfDiscretePinHeights:(unint64_t)a5;
+- (AXMBrailleCanvasDescription)initWithCoder:(id)coder;
+- (AXMBrailleCanvasDescription)initWithHeight:(unint64_t)height width:(unint64_t)width numberOfDiscretePinHeights:(unint64_t)heights;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMBrailleCanvasDescription
 
-- (AXMBrailleCanvasDescription)initWithHeight:(unint64_t)a3 width:(unint64_t)a4 numberOfDiscretePinHeights:(unint64_t)a5
+- (AXMBrailleCanvasDescription)initWithHeight:(unint64_t)height width:(unint64_t)width numberOfDiscretePinHeights:(unint64_t)heights
 {
   v9.receiver = self;
   v9.super_class = AXMBrailleCanvasDescription;
   result = [(AXMBrailleCanvasDescription *)&v9 init];
   if (result)
   {
-    result->_width = a4;
-    result->_height = a3;
-    result->_numberOfDiscretePinHeights = a5;
+    result->_width = width;
+    result->_height = height;
+    result->_numberOfDiscretePinHeights = heights;
     *&result->_hasConsistentHorizontalPinSpacing = 257;
   }
 
   return result;
 }
 
-- (AXMBrailleCanvasDescription)initWithCoder:(id)a3
+- (AXMBrailleCanvasDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = AXMBrailleCanvasDescription;
   v5 = [(AXMBrailleCanvasDescription *)&v12 init];
-  if (v5 && ((v5->_height = [v4 decodeIntegerForKey:@"height"], v5->_width = objc_msgSend(v4, "decodeIntegerForKey:", @"width"), v5->_numberOfDiscretePinHeights = objc_msgSend(v4, "decodeIntegerForKey:", @"numberOfDiscretePinHeights"), v5->_hasConsistentHorizontalPinSpacing = objc_msgSend(v4, "decodeBoolForKey:", @"hasConsistentHorizontalPinSpacing"), v5->_hasConsistentVerticalPinSpacing = objc_msgSend(v4, "decodeBoolForKey:", @"hasConsistentVerticalPinSpacing"), objc_msgSend(v4, "decodeDoubleForKey:", @"verticalPinSpacing"), v5->_verticalPinSpacing = v6, objc_msgSend(v4, "decodeDoubleForKey:", @"horizontalPinSpacing"), v5->_horizontalPinSpacing = v7, objc_msgSend(v4, "decodeDoubleForKey:", @"interCellHorizontalSpacing"), v5->_interCellHorizontalSpacing = v8, objc_msgSend(v4, "decodeDoubleForKey:", @"interCellVerticalSpacing"), v5->_interCellVerticalSpacing = v9, !v5->_hasConsistentHorizontalPinSpacing) || !v5->_hasConsistentVerticalPinSpacing) && (v5->_verticalPinSpacing == 0.0 || v5->_horizontalPinSpacing == 0.0))
+  if (v5 && ((v5->_height = [coderCopy decodeIntegerForKey:@"height"], v5->_width = objc_msgSend(coderCopy, "decodeIntegerForKey:", @"width"), v5->_numberOfDiscretePinHeights = objc_msgSend(coderCopy, "decodeIntegerForKey:", @"numberOfDiscretePinHeights"), v5->_hasConsistentHorizontalPinSpacing = objc_msgSend(coderCopy, "decodeBoolForKey:", @"hasConsistentHorizontalPinSpacing"), v5->_hasConsistentVerticalPinSpacing = objc_msgSend(coderCopy, "decodeBoolForKey:", @"hasConsistentVerticalPinSpacing"), objc_msgSend(coderCopy, "decodeDoubleForKey:", @"verticalPinSpacing"), v5->_verticalPinSpacing = v6, objc_msgSend(coderCopy, "decodeDoubleForKey:", @"horizontalPinSpacing"), v5->_horizontalPinSpacing = v7, objc_msgSend(coderCopy, "decodeDoubleForKey:", @"interCellHorizontalSpacing"), v5->_interCellHorizontalSpacing = v8, objc_msgSend(coderCopy, "decodeDoubleForKey:", @"interCellVerticalSpacing"), v5->_interCellVerticalSpacing = v9, !v5->_hasConsistentHorizontalPinSpacing) || !v5->_hasConsistentVerticalPinSpacing) && (v5->_verticalPinSpacing == 0.0 || v5->_horizontalPinSpacing == 0.0))
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"verticalPinSpacing and horizontalPinSpacing are required if cell spacing is not uniform."];
     v10 = 0;
@@ -43,19 +43,19 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   height = self->_height;
-  v5 = a3;
-  [v5 encodeInteger:height forKey:@"height"];
-  [v5 encodeInteger:self->_width forKey:@"width"];
-  [v5 encodeInteger:-[AXMBrailleCanvasDescription numberOfDiscretePinHeights](self forKey:{"numberOfDiscretePinHeights"), @"numberOfDiscretePinHeights"}];
-  [v5 encodeBool:self->_hasConsistentHorizontalPinSpacing forKey:@"hasConsistentHorizontalPinSpacing"];
-  [v5 encodeBool:self->_hasConsistentVerticalPinSpacing forKey:@"hasConsistentVerticalPinSpacing"];
-  [v5 encodeDouble:@"verticalPinSpacing" forKey:self->_verticalPinSpacing];
-  [v5 encodeDouble:@"horizontalPinSpacing" forKey:self->_horizontalPinSpacing];
-  [v5 encodeDouble:@"interCellHorizontalSpacing" forKey:self->_interCellHorizontalSpacing];
-  [v5 encodeDouble:@"interCellVerticalSpacing" forKey:self->_interCellVerticalSpacing];
+  coderCopy = coder;
+  [coderCopy encodeInteger:height forKey:@"height"];
+  [coderCopy encodeInteger:self->_width forKey:@"width"];
+  [coderCopy encodeInteger:-[AXMBrailleCanvasDescription numberOfDiscretePinHeights](self forKey:{"numberOfDiscretePinHeights"), @"numberOfDiscretePinHeights"}];
+  [coderCopy encodeBool:self->_hasConsistentHorizontalPinSpacing forKey:@"hasConsistentHorizontalPinSpacing"];
+  [coderCopy encodeBool:self->_hasConsistentVerticalPinSpacing forKey:@"hasConsistentVerticalPinSpacing"];
+  [coderCopy encodeDouble:@"verticalPinSpacing" forKey:self->_verticalPinSpacing];
+  [coderCopy encodeDouble:@"horizontalPinSpacing" forKey:self->_horizontalPinSpacing];
+  [coderCopy encodeDouble:@"interCellHorizontalSpacing" forKey:self->_interCellHorizontalSpacing];
+  [coderCopy encodeDouble:@"interCellVerticalSpacing" forKey:self->_interCellVerticalSpacing];
 
   if ((!self->_hasConsistentHorizontalPinSpacing || !self->_hasConsistentVerticalPinSpacing) && (self->_verticalPinSpacing == 0.0 || self->_horizontalPinSpacing == 0.0))
   {

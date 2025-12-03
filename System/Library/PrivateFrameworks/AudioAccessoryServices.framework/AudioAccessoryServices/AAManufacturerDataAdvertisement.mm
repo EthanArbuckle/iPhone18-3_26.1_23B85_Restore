@@ -1,8 +1,8 @@
 @interface AAManufacturerDataAdvertisement
-+ (id)manufacturerDataWithData:(id)a3;
-- (AAManufacturerDataAdvertisement)initWithData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAdvertisement:(id)a3;
++ (id)manufacturerDataWithData:(id)data;
+- (AAManufacturerDataAdvertisement)initWithData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAdvertisement:(id)advertisement;
 - (id)_parsePayloads;
 - (unint64_t)hash;
 @end
@@ -12,9 +12,9 @@
 - (id)_parsePayloads
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(AAManufacturerDataAdvertisement *)self manufacturerData];
-  v5 = [(AAManufacturerDataAdvertisement *)self manufacturerData];
-  v6 = [v4 subdataWithRange:{2, objc_msgSend(v5, "length") - 2}];
+  manufacturerData = [(AAManufacturerDataAdvertisement *)self manufacturerData];
+  manufacturerData2 = [(AAManufacturerDataAdvertisement *)self manufacturerData];
+  v6 = [manufacturerData subdataWithRange:{2, objc_msgSend(manufacturerData2, "length") - 2}];
 
   if ([v6 length])
   {
@@ -27,8 +27,8 @@
       }
 
       [v3 addObject:v7];
-      v8 = [v7 payloadData];
-      v9 = [v8 length];
+      payloadData = [v7 payloadData];
+      v9 = [payloadData length];
 
       v10 = [v6 length];
       v11 = v10 - v9;
@@ -37,8 +37,8 @@
         break;
       }
 
-      v12 = [v7 payloadData];
-      v13 = [v6 subdataWithRange:{objc_msgSend(v12, "length"), v11}];
+      payloadData2 = [v7 payloadData];
+      v13 = [v6 subdataWithRange:{objc_msgSend(payloadData2, "length"), v11}];
 
       v6 = v13;
       if (![v13 length])
@@ -54,24 +54,24 @@ LABEL_8:
   return v3;
 }
 
-+ (id)manufacturerDataWithData:(id)a3
++ (id)manufacturerDataWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[AAManufacturerDataAdvertisement alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[AAManufacturerDataAdvertisement alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-- (AAManufacturerDataAdvertisement)initWithData:(id)a3
+- (AAManufacturerDataAdvertisement)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = AAManufacturerDataAdvertisement;
   v6 = [(AAManufacturerDataAdvertisement *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_manufacturerData, a3);
+    objc_storeStrong(&v6->_manufacturerData, data);
     if ([(NSData *)v7->_manufacturerData length]<= 1)
     {
       [AAManufacturerDataAdvertisement initWithData:?];
@@ -84,9 +84,9 @@ LABEL_8:
       v7->_companyID = v8;
       if (v8 == 76)
       {
-        v9 = [(AAManufacturerDataAdvertisement *)v7 _parsePayloads];
+        _parsePayloads = [(AAManufacturerDataAdvertisement *)v7 _parsePayloads];
         payloads = v7->_payloads;
-        v7->_payloads = v9;
+        v7->_payloads = _parsePayloads;
       }
 
       v11 = v7;
@@ -101,26 +101,26 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)isEqualToAdvertisement:(id)a3
+- (BOOL)isEqualToAdvertisement:(id)advertisement
 {
-  v4 = a3;
-  v5 = [(AAManufacturerDataAdvertisement *)self manufacturerData];
-  v6 = [v4 manufacturerData];
+  advertisementCopy = advertisement;
+  manufacturerData = [(AAManufacturerDataAdvertisement *)self manufacturerData];
+  manufacturerData2 = [advertisementCopy manufacturerData];
 
-  LOBYTE(v4) = [v5 isEqualToData:v6];
-  return v4;
+  LOBYTE(advertisementCopy) = [manufacturerData isEqualToData:manufacturerData2];
+  return advertisementCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_7;
@@ -145,8 +145,8 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v2 = [(AAManufacturerDataAdvertisement *)self manufacturerData];
-  v3 = [v2 hash];
+  manufacturerData = [(AAManufacturerDataAdvertisement *)self manufacturerData];
+  v3 = [manufacturerData hash];
 
   return v3;
 }

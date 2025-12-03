@@ -1,23 +1,23 @@
 @interface HMDUserDefaults
 + (id)logCategory;
 + (id)protectedUserDefaults;
-- (HMDUserDefaults)initWithSuiteName:(id)a3;
+- (HMDUserDefaults)initWithSuiteName:(id)name;
 - (void)migrateProtectedKeys;
-- (void)migrateProtectedKeys:(id)a3;
+- (void)migrateProtectedKeys:(id)keys;
 @end
 
 @implementation HMDUserDefaults
 
-- (void)migrateProtectedKeys:(id)a3
+- (void)migrateProtectedKeys:(id)keys
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  keysCopy = keys;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v4;
+  obj = keysCopy;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v6)
   {
@@ -25,7 +25,7 @@
     v9 = *v25;
     *&v7 = 138543618;
     v21 = v7;
-    v22 = v5;
+    v22 = standardUserDefaults;
     do
     {
       for (i = 0; i != v8; ++i)
@@ -36,11 +36,11 @@
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v5 objectForKey:{v11, v21}];
+        v12 = [standardUserDefaults objectForKey:{v11, v21}];
         if (v12)
         {
           v13 = objc_autoreleasePoolPush();
-          v14 = self;
+          selfCopy = self;
           v15 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
@@ -57,12 +57,12 @@
             self = v18;
             v9 = v17;
             v8 = v16;
-            v5 = v22;
+            standardUserDefaults = v22;
           }
 
           objc_autoreleasePoolPop(v13);
-          [v5 removeObjectForKey:v11];
-          [(HMDUserDefaults *)v14 setObject:v12 forKey:v11];
+          [standardUserDefaults removeObjectForKey:v11];
+          [(HMDUserDefaults *)selfCopy setObject:v12 forKey:v11];
         }
       }
 
@@ -86,11 +86,11 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDUserDefaults)initWithSuiteName:(id)a3
+- (HMDUserDefaults)initWithSuiteName:(id)name
 {
   v6.receiver = self;
   v6.super_class = HMDUserDefaults;
-  v3 = [(HMDUserDefaults *)&v6 initWithSuiteName:a3];
+  v3 = [(HMDUserDefaults *)&v6 initWithSuiteName:name];
   v4 = v3;
   if (v3)
   {

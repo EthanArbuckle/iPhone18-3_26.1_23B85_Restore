@@ -1,14 +1,14 @@
 @interface ICUserVerificationOperation
-+ (id)operationWithVerificationRequest:(id)a3;
++ (id)operationWithVerificationRequest:(id)request;
 @end
 
 @implementation ICUserVerificationOperation
 
-+ (id)operationWithVerificationRequest:(id)a3
++ (id)operationWithVerificationRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 verificationContext];
-  if ([v4 verificationStyle])
+  requestCopy = request;
+  verificationContext = [requestCopy verificationContext];
+  if ([verificationContext verificationStyle])
   {
     v5 = 0;
   }
@@ -18,7 +18,7 @@
     v5 = objc_alloc_init(ICACAccountVerificationOperation);
     if (v5)
     {
-      v6 = [v3 copy];
+      v6 = [requestCopy copy];
       verificationRequest = v5->super._verificationRequest;
       v5->super._verificationRequest = v6;
     }

@@ -1,5 +1,5 @@
 @interface BatteryDataCollectionAgent
-- (BatteryDataCollectionAgent)initWithParams:(id)a3 collectionBlock:(id)a4;
+- (BatteryDataCollectionAgent)initWithParams:(id)params collectionBlock:(id)block;
 - (id)getLastDataLoggedTimestampDefaultsKey;
 - (id)getLastUsedDataFileNameDefaultsKey;
 - (unint64_t)getCollectionPeriod;
@@ -12,12 +12,12 @@
 
 - (id)getLastDataLoggedTimestampDefaultsKey
 {
-  v2 = [(BatteryDataCollectionAgent *)self dataGroupName];
+  dataGroupName = [(BatteryDataCollectionAgent *)self dataGroupName];
 
-  return [(NSString *)v2 stringByAppendingString:@"_LastLoggedTimeStamp"];
+  return [(NSString *)dataGroupName stringByAppendingString:@"_LastLoggedTimeStamp"];
 }
 
-- (BatteryDataCollectionAgent)initWithParams:(id)a3 collectionBlock:(id)a4
+- (BatteryDataCollectionAgent)initWithParams:(id)params collectionBlock:(id)block
 {
   v31.receiver = self;
   v31.super_class = BatteryDataCollectionAgent;
@@ -32,25 +32,25 @@
     return 0;
   }
 
-  -[BatteryDataCollectionAgent setDataGroupName:](v6, "setDataGroupName:", [a3 objectForKeyedSubscript:@"DataGroupName"]);
-  -[BatteryDataCollectionAgent setFormatVersion:](v6, "setFormatVersion:", [a3 objectForKeyedSubscript:@"DataFormatVersion"]);
-  -[BatteryDataCollectionAgent setDirPath:](v6, "setDirPath:", [a3 objectForKeyedSubscript:@"DataFilePath"]);
-  -[BatteryDataCollectionAgent setColumnNames:](v6, "setColumnNames:", [a3 objectForKeyedSubscript:@"DataColumnNames"]);
-  [(BatteryDataCollectionAgent *)v6 setCreateDataDictCollectionBlock:a4];
-  -[BatteryDataCollectionAgent setCollectionPeriod:](v6, "setCollectionPeriod:", [a3 objectForKeyedSubscript:@"DataCollectionPeriod"]);
-  -[BatteryDataCollectionAgent setCollectAtSBC:](v6, "setCollectAtSBC:", [objc_msgSend(a3 objectForKeyedSubscript:{@"DataCollectionAtSBC", "BOOLValue"}]);
-  -[BatteryDataCollectionAgent setCollectAtPowerSourceChange:](v6, "setCollectAtPowerSourceChange:", [objc_msgSend(a3 objectForKeyedSubscript:{@"DataCollectAtPowerSourceChange", "BOOLValue"}]);
-  -[BatteryDataCollectionAgent setCollectOnce:](v6, "setCollectOnce:", [objc_msgSend(a3 objectForKeyedSubscript:{@"DataCollectionOnce", "BOOLValue"}]);
-  -[BatteryDataCollectionAgent setCollationPeriod:](v6, "setCollationPeriod:", [a3 objectForKeyedSubscript:@"DataCollationPeriod"]);
-  -[BatteryDataCollectionAgent setRetentionPeriod:](v6, "setRetentionPeriod:", [a3 objectForKeyedSubscript:@"DataRetentionPeriod"]);
-  -[BatteryDataCollectionAgent setBatteryChanged:](v6, "setBatteryChanged:", [objc_msgSend(a3 objectForKeyedSubscript:{@"BatteryChanged", "BOOLValue"}]);
+  -[BatteryDataCollectionAgent setDataGroupName:](v6, "setDataGroupName:", [params objectForKeyedSubscript:@"DataGroupName"]);
+  -[BatteryDataCollectionAgent setFormatVersion:](v6, "setFormatVersion:", [params objectForKeyedSubscript:@"DataFormatVersion"]);
+  -[BatteryDataCollectionAgent setDirPath:](v6, "setDirPath:", [params objectForKeyedSubscript:@"DataFilePath"]);
+  -[BatteryDataCollectionAgent setColumnNames:](v6, "setColumnNames:", [params objectForKeyedSubscript:@"DataColumnNames"]);
+  [(BatteryDataCollectionAgent *)v6 setCreateDataDictCollectionBlock:block];
+  -[BatteryDataCollectionAgent setCollectionPeriod:](v6, "setCollectionPeriod:", [params objectForKeyedSubscript:@"DataCollectionPeriod"]);
+  -[BatteryDataCollectionAgent setCollectAtSBC:](v6, "setCollectAtSBC:", [objc_msgSend(params objectForKeyedSubscript:{@"DataCollectionAtSBC", "BOOLValue"}]);
+  -[BatteryDataCollectionAgent setCollectAtPowerSourceChange:](v6, "setCollectAtPowerSourceChange:", [objc_msgSend(params objectForKeyedSubscript:{@"DataCollectAtPowerSourceChange", "BOOLValue"}]);
+  -[BatteryDataCollectionAgent setCollectOnce:](v6, "setCollectOnce:", [objc_msgSend(params objectForKeyedSubscript:{@"DataCollectionOnce", "BOOLValue"}]);
+  -[BatteryDataCollectionAgent setCollationPeriod:](v6, "setCollationPeriod:", [params objectForKeyedSubscript:@"DataCollationPeriod"]);
+  -[BatteryDataCollectionAgent setRetentionPeriod:](v6, "setRetentionPeriod:", [params objectForKeyedSubscript:@"DataRetentionPeriod"]);
+  -[BatteryDataCollectionAgent setBatteryChanged:](v6, "setBatteryChanged:", [objc_msgSend(params objectForKeyedSubscript:{@"BatteryChanged", "BOOLValue"}]);
   [(BatteryDataCollectionAgent *)v6 setEventRegistrationToken:0];
-  -[BatteryDataCollectionAgent setSkipCSVAndUsePowerlog:](v6, "setSkipCSVAndUsePowerlog:", [objc_msgSend(a3 objectForKeyedSubscript:{@"SkipCSVUsePowerlog", "BOOLValue"}]);
-  -[BatteryDataCollectionAgent setUseBTMAsDataSource:](v6, "setUseBTMAsDataSource:", [objc_msgSend(a3 objectForKeyedSubscript:{@"useBTM", "BOOLValue"}]);
-  -[BatteryDataCollectionAgent setUseSmartChargingDataSource:](v6, "setUseSmartChargingDataSource:", [objc_msgSend(a3 objectForKeyedSubscript:{@"useSC", "BOOLValue"}]);
+  -[BatteryDataCollectionAgent setSkipCSVAndUsePowerlog:](v6, "setSkipCSVAndUsePowerlog:", [objc_msgSend(params objectForKeyedSubscript:{@"SkipCSVUsePowerlog", "BOOLValue"}]);
+  -[BatteryDataCollectionAgent setUseBTMAsDataSource:](v6, "setUseBTMAsDataSource:", [objc_msgSend(params objectForKeyedSubscript:{@"useBTM", "BOOLValue"}]);
+  -[BatteryDataCollectionAgent setUseSmartChargingDataSource:](v6, "setUseSmartChargingDataSource:", [objc_msgSend(params objectForKeyedSubscript:{@"useSC", "BOOLValue"}]);
   v7 = v6->_collectOnce || v6->_collectAtPowerSourceChange || v6->_useSmartChargingDataSource;
   [(BatteryDataCollectionAgent *)v6 setEventBasedCollection:v7 & 1];
-  v8 = ([objc_msgSend(a3 objectForKeyedSubscript:{@"DataNeverPrune", "BOOLValue"}] & 1) != 0 || -[BatteryDataCollectionAgent skipCSVAndUsePowerlog](v6, "skipCSVAndUsePowerlog");
+  v8 = ([objc_msgSend(params objectForKeyedSubscript:{@"DataNeverPrune", "BOOLValue"}] & 1) != 0 || -[BatteryDataCollectionAgent skipCSVAndUsePowerlog](v6, "skipCSVAndUsePowerlog");
   [(BatteryDataCollectionAgent *)v6 setNeverPrune:v8];
   v9 = [+[NSString stringWithFormat:](NSString UTF8String:@"%@.%@"];
   v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -134,9 +134,9 @@ LABEL_34:
         v23 = qword_1000AB7E8;
         if (os_log_type_enabled(qword_1000AB7E8, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(BatteryDataCollectionAgent *)v6 dataGroupName];
+          dataGroupName = [(BatteryDataCollectionAgent *)v6 dataGroupName];
           *buf = 138413314;
-          v33 = v24;
+          v33 = dataGroupName;
           v34 = 2112;
           v35 = v15;
           v36 = 2048;
@@ -152,9 +152,9 @@ LABEL_34:
   }
 
   dispatch_source_set_event_handler([(BatteryDataCollectionAgent *)v6 collectionTimer], [(BatteryDataCollectionAgent *)v6 collectionEventHandler]);
-  v25 = [(BatteryDataCollectionAgent *)v6 collectionTimer];
+  collectionTimer = [(BatteryDataCollectionAgent *)v6 collectionTimer];
   v26 = dispatch_time(0x8000000000000000, v16);
-  dispatch_source_set_timer(v25, v26, [(BatteryDataCollectionAgent *)v6 getCollectionPeriod], 0x3B9ACA00uLL);
+  dispatch_source_set_timer(collectionTimer, v26, [(BatteryDataCollectionAgent *)v6 getCollectionPeriod], 0x3B9ACA00uLL);
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);
   objc_autoreleasePoolPop(v14);
@@ -184,8 +184,8 @@ LABEL_34:
 - (void)start
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(BatteryDataCollectionAgent *)self collectAtPowerSourceChange];
-  if (v4)
+  collectAtPowerSourceChange = [(BatteryDataCollectionAgent *)self collectAtPowerSourceChange];
+  if (collectAtPowerSourceChange)
   {
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
@@ -195,7 +195,7 @@ LABEL_34:
     v26 = 0;
     v27 = &v26;
     v28 = 0x2020000000;
-    if (sub_10003C580(v4, 0x10000uLL))
+    if (sub_10003C580(collectAtPowerSourceChange, 0x10000uLL))
     {
       v5 = 2;
     }
@@ -279,9 +279,9 @@ LABEL_24:
   {
     if ([(BatteryDataCollectionAgent *)self collectOnce])
     {
-      v20 = [(BatteryDataCollectionAgent *)self collectionTimer];
+      collectionTimer = [(BatteryDataCollectionAgent *)self collectionTimer];
       v21 = dispatch_time(0x8000000000000000, 1000000000);
-      dispatch_source_set_timer(v20, v21, [(BatteryDataCollectionAgent *)self getCollectionPeriod], 0x3B9ACA00uLL);
+      dispatch_source_set_timer(collectionTimer, v21, [(BatteryDataCollectionAgent *)self getCollectionPeriod], 0x3B9ACA00uLL);
     }
 
     goto LABEL_30;
@@ -321,12 +321,12 @@ LABEL_24:
 LABEL_30:
               dispatch_resume([(BatteryDataCollectionAgent *)self collectionTimer]);
 LABEL_31:
-              v22 = [(BatteryDataCollectionAgent *)self shortDescription];
+              shortDescription = [(BatteryDataCollectionAgent *)self shortDescription];
               v23 = qword_1000AB7E8;
               if (os_log_type_enabled(qword_1000AB7E8, OS_LOG_TYPE_DEFAULT))
               {
                 LODWORD(out_token) = 138412290;
-                *(&out_token + 4) = v22;
+                *(&out_token + 4) = shortDescription;
                 _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Started bdc agent %@", &out_token, 0xCu);
               }
 
@@ -391,12 +391,12 @@ LABEL_33:
     dispatch_suspend([(BatteryDataCollectionAgent *)self collectionTimer]);
   }
 
-  v4 = [(BatteryDataCollectionAgent *)self shortDescription];
+  shortDescription = [(BatteryDataCollectionAgent *)self shortDescription];
   v5 = qword_1000AB7E8;
   if (os_log_type_enabled(qword_1000AB7E8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = shortDescription;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Stopped bdc agent %@", &v6, 0xCu);
   }
 
@@ -418,9 +418,9 @@ LABEL_33:
 
 - (id)getLastUsedDataFileNameDefaultsKey
 {
-  v2 = [(BatteryDataCollectionAgent *)self dataGroupName];
+  dataGroupName = [(BatteryDataCollectionAgent *)self dataGroupName];
 
-  return [(NSString *)v2 stringByAppendingString:@"_LastUsedFileName"];
+  return [(NSString *)dataGroupName stringByAppendingString:@"_LastUsedFileName"];
 }
 
 @end

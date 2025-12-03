@@ -1,21 +1,21 @@
 @interface _UICollectionViewOrthogonalScrollerSectionController
-- (BOOL)isIndexPathInExtantOrthogonalScroller:(_BOOL8)a1;
-- (id)autoScrollAssistantForOrthogonalScrollingSectionAtIndexPath:(id *)a1;
-- (id)existingScrollViewForSection:(id *)a1;
-- (id)promiseItemParentScrollViewForLayoutAttributes:(id *)a1;
-- (id)subviewRouterForSection:(id *)a1;
-- (uint64_t)isElementInOrthogonalScrollingSectionWithLayoutAttributes:(uint64_t)a1;
-- (uint64_t)isIndexPathInOrthogonalScrollingSection:(uint64_t)a1;
-- (uint64_t)isSectionOrthogonallyScrolling:(uint64_t)a1;
-- (void)_placeView:(uint64_t)a3 belowOrthogonalScrollViewForSection:;
-- (void)_scrollViewForSection:(int)a3 createIfNecessary:;
-- (void)adjustElementHierarchyOrderingForOrthogonalElementIfNeeded:(void *)a3 layoutAttributes:;
-- (void)initWithCollectionView:(void *)a1;
+- (BOOL)isIndexPathInExtantOrthogonalScroller:(_BOOL8)scroller;
+- (id)autoScrollAssistantForOrthogonalScrollingSectionAtIndexPath:(id *)path;
+- (id)existingScrollViewForSection:(id *)section;
+- (id)promiseItemParentScrollViewForLayoutAttributes:(id *)attributes;
+- (id)subviewRouterForSection:(id *)section;
+- (uint64_t)isElementInOrthogonalScrollingSectionWithLayoutAttributes:(uint64_t)attributes;
+- (uint64_t)isIndexPathInOrthogonalScrollingSection:(uint64_t)section;
+- (uint64_t)isSectionOrthogonallyScrolling:(uint64_t)scrolling;
+- (void)_placeView:(uint64_t)view belowOrthogonalScrollViewForSection:;
+- (void)_scrollViewForSection:(int)section createIfNecessary:;
+- (void)adjustElementHierarchyOrderingForOrthogonalElementIfNeeded:(void *)needed layoutAttributes:;
+- (void)initWithCollectionView:(void *)view;
 - (void)layoutScrollViews;
 - (void)processQueuedScrollViewRemovals;
-- (void)reconfigureScrollViewsForUpdate:(uint64_t)a1;
-- (void)scrollToItemAtIndexPath:(uint64_t)a3 atScrollPosition:(uint64_t)a4 additionalInsets:(double)a5 animated:(double)a6;
-- (void)setShouldPreventFocusScrollPastContentSize:(uint64_t)a1;
+- (void)reconfigureScrollViewsForUpdate:(uint64_t)update;
+- (void)scrollToItemAtIndexPath:(uint64_t)path atScrollPosition:(uint64_t)position additionalInsets:(double)insets animated:(double)animated;
+- (void)setShouldPreventFocusScrollPastContentSize:(uint64_t)size;
 @end
 
 @implementation _UICollectionViewOrthogonalScrollerSectionController
@@ -23,16 +23,16 @@
 - (void)processQueuedScrollViewRemovals
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
+    WeakRetained = objc_loadWeakRetained((self + 16));
     if (WeakRetained)
     {
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      obj = *(a1 + 32);
+      obj = *(self + 32);
       v3 = [obj countByEnumeratingWithState:&v20 objects:v25 count:16];
       if (v3)
       {
@@ -52,8 +52,8 @@
             v17 = 0u;
             v18 = 0u;
             v19 = 0u;
-            v7 = [v6 subviews];
-            v8 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            subviews = [v6 subviews];
+            v8 = [subviews countByEnumeratingWithState:&v16 objects:v24 count:16];
             if (v8)
             {
               v9 = v8;
@@ -64,7 +64,7 @@
                 {
                   if (*v17 != v10)
                   {
-                    objc_enumerationMutation(v7);
+                    objc_enumerationMutation(subviews);
                   }
 
                   v12 = *(*(&v16 + 1) + 8 * j);
@@ -75,7 +75,7 @@
                   }
                 }
 
-                v9 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+                v9 = [subviews countByEnumeratingWithState:&v16 objects:v24 count:16];
               }
 
               while (v9);
@@ -95,8 +95,8 @@
         while (v4);
       }
 
-      v13 = *(a1 + 32);
-      *(a1 + 32) = 0;
+      v13 = *(self + 32);
+      *(self + 32) = 0;
     }
   }
 }
@@ -104,20 +104,20 @@
 - (void)layoutScrollViews
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
+    WeakRetained = objc_loadWeakRetained((self + 16));
     v3 = WeakRetained;
     if (WeakRetained)
     {
-      v4 = [WeakRetained collectionViewLayout];
-      if ([v4 _hasOrthogonalScrollingSections])
+      collectionViewLayout = [WeakRetained collectionViewLayout];
+      if ([collectionViewLayout _hasOrthogonalScrollingSections])
       {
         v21 = 0u;
         v22 = 0u;
         v19 = 0u;
         v20 = 0u;
-        obj = [*(a1 + 24) objectEnumerator];
+        obj = [*(self + 24) objectEnumerator];
         v5 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v5)
         {
@@ -157,14 +157,14 @@
               }
 
               v14 = v13;
-              v15 = [v9 superview];
+              superview = [v9 superview];
 
-              if (v14 != v15)
+              if (v14 != superview)
               {
                 [(_UICollectionViewSubviewRouter *)v12 addContainerView:v9];
               }
 
-              v16 = [v4 _sectionDescriptorForSectionIndex:v10];
+              v16 = [collectionViewLayout _sectionDescriptorForSectionIndex:v10];
               [(_UICollectionViewOrthogonalScrollView *)v9 configureForDescriptor:v16];
 
               ++v8;
@@ -182,58 +182,58 @@
   }
 }
 
-- (void)initWithCollectionView:(void *)a1
+- (void)initWithCollectionView:(void *)view
 {
   v3 = a2;
-  if (a1)
+  if (view)
   {
-    v12.receiver = a1;
+    v12.receiver = view;
     v12.super_class = _UICollectionViewOrthogonalScrollerSectionController;
     v4 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v4;
+    view = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 2, v3);
       v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v6 = a1[3];
-      a1[3] = v5;
+      v6 = view[3];
+      view[3] = v5;
 
-      v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-      v8 = a1[5];
-      a1[5] = v7;
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      v8 = view[5];
+      view[5] = weakObjectsHashTable;
 
-      v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-      v10 = a1[6];
-      a1[6] = v9;
+      weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      v10 = view[6];
+      view[6] = weakObjectsHashTable2;
     }
   }
 
-  return a1;
+  return view;
 }
 
-- (uint64_t)isElementInOrthogonalScrollingSectionWithLayoutAttributes:(uint64_t)a1
+- (uint64_t)isElementInOrthogonalScrollingSectionWithLayoutAttributes:(uint64_t)attributes
 {
   v3 = a2;
-  if (!a1)
+  if (!attributes)
   {
     v9 = 0;
     goto LABEL_12;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
+  WeakRetained = objc_loadWeakRetained((attributes + 16));
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    v6 = [WeakRetained collectionViewLayout];
-    if (![v6 _hasOrthogonalScrollingSections])
+    collectionViewLayout = [WeakRetained collectionViewLayout];
+    if (![collectionViewLayout _hasOrthogonalScrollingSections])
     {
       v9 = 0;
       goto LABEL_10;
     }
 
-    v7 = [v3 indexPath];
-    v8 = v7;
-    if (!v7 || [v7 length] == 1)
+    indexPath = [v3 indexPath];
+    v8 = indexPath;
+    if (!indexPath || [indexPath length] == 1)
     {
       v9 = 0;
 LABEL_7:
@@ -242,9 +242,9 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v11 = [v8 section];
-    v12 = [v6 _orthogonalScrollingSections];
-    v9 = [v12 containsIndex:v11];
+    section = [v8 section];
+    _orthogonalScrollingSections = [collectionViewLayout _orthogonalScrollingSections];
+    v9 = [_orthogonalScrollingSections containsIndex:section];
 
     if (!v9)
     {
@@ -261,14 +261,14 @@ LABEL_10:
           goto LABEL_17;
         }
 
-        v14 = [(_UILabelConfiguration *)v3 _content];
-        v15 = [v6 _shouldOrthogonalScrollingSectionDecorationScrollWithContentForIndexPath:v8 elementKind:v14];
+        _content = [(_UILabelConfiguration *)v3 _content];
+        v15 = [collectionViewLayout _shouldOrthogonalScrollingSectionDecorationScrollWithContentForIndexPath:v8 elementKind:_content];
       }
 
       else
       {
-        v14 = [(_UILabelConfiguration *)v3 _content];
-        v15 = [v6 _shouldOrthogonalScrollingSectionSupplementaryScrollWithContentForIndexPath:v8 elementKind:v14];
+        _content = [(_UILabelConfiguration *)v3 _content];
+        v15 = [collectionViewLayout _shouldOrthogonalScrollingSectionSupplementaryScrollWithContentForIndexPath:v8 elementKind:_content];
       }
 
       v9 = v15;
@@ -288,12 +288,12 @@ LABEL_12:
   return v9;
 }
 
-- (uint64_t)isIndexPathInOrthogonalScrollingSection:(uint64_t)a1
+- (uint64_t)isIndexPathInOrthogonalScrollingSection:(uint64_t)section
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (section && v3)
   {
     if ([v3 item] == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -302,27 +302,27 @@ LABEL_12:
 
     else
     {
-      v5 = -[_UICollectionViewOrthogonalScrollerSectionController isSectionOrthogonallyScrolling:](a1, [v4 section]);
+      v5 = -[_UICollectionViewOrthogonalScrollerSectionController isSectionOrthogonallyScrolling:](section, [v4 section]);
     }
   }
 
   return v5;
 }
 
-- (uint64_t)isSectionOrthogonallyScrolling:(uint64_t)a1
+- (uint64_t)isSectionOrthogonallyScrolling:(uint64_t)scrolling
 {
-  if (!a1)
+  if (!scrolling)
   {
     return 0;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
-  v4 = [WeakRetained collectionViewLayout];
+  WeakRetained = objc_loadWeakRetained((scrolling + 16));
+  collectionViewLayout = [WeakRetained collectionViewLayout];
 
-  if (v4)
+  if (collectionViewLayout)
   {
-    v5 = [v4 _orthogonalScrollingSections];
-    v6 = [v5 containsIndex:a2];
+    _orthogonalScrollingSections = [collectionViewLayout _orthogonalScrollingSections];
+    v6 = [_orthogonalScrollingSections containsIndex:a2];
   }
 
   else
@@ -333,37 +333,37 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)isIndexPathInExtantOrthogonalScroller:(_BOOL8)a1
+- (BOOL)isIndexPathInExtantOrthogonalScroller:(_BOOL8)scroller
 {
   v3 = a2;
-  if (a1)
+  if (scroller)
   {
-    if ([(_UICollectionViewOrthogonalScrollerSectionController *)a1 isIndexPathInOrthogonalScrollingSection:v3])
+    if ([(_UICollectionViewOrthogonalScrollerSectionController *)scroller isIndexPathInOrthogonalScrollingSection:v3])
     {
-      v4 = -[_UICollectionViewOrthogonalScrollerSectionController _scrollViewForSection:createIfNecessary:](a1, [v3 section], 0);
-      a1 = v4 != 0;
+      v4 = -[_UICollectionViewOrthogonalScrollerSectionController _scrollViewForSection:createIfNecessary:](scroller, [v3 section], 0);
+      scroller = v4 != 0;
     }
 
     else
     {
-      a1 = 0;
+      scroller = 0;
     }
   }
 
-  return a1;
+  return scroller;
 }
 
-- (void)_scrollViewForSection:(int)a3 createIfNecessary:
+- (void)_scrollViewForSection:(int)section createIfNecessary:
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v9 = 0;
     goto LABEL_32;
   }
 
   v6 = MEMORY[0x1E696AD98];
-  v7 = a1[3];
+  v7 = self[3];
   v8 = [v6 numberWithInteger:a2];
   v9 = [v7 objectForKey:v8];
 
@@ -374,7 +374,7 @@ LABEL_12:
 
   else
   {
-    v10 = a3 == 0;
+    v10 = section == 0;
   }
 
   if (v10)
@@ -382,7 +382,7 @@ LABEL_12:
     goto LABEL_29;
   }
 
-  if (![(_UICollectionViewOrthogonalScrollerSectionController *)a1 isSectionOrthogonallyScrolling:a2])
+  if (![(_UICollectionViewOrthogonalScrollerSectionController *)self isSectionOrthogonallyScrolling:a2])
   {
     v9 = 0;
 LABEL_29:
@@ -394,22 +394,22 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  WeakRetained = objc_loadWeakRetained(a1 + 2);
+  WeakRetained = objc_loadWeakRetained(self + 2);
   if (WeakRetained)
   {
     v9 = [[_UICollectionViewOrthogonalScrollView alloc] initWithCollectionView:a2 section:?];
     v12 = MEMORY[0x1E696AD98];
-    v13 = a1[3];
+    v13 = self[3];
     v14 = [v12 numberWithInteger:a2];
     [v13 setObject:v9 forKey:v14];
 
-    v15 = [WeakRetained collectionViewLayout];
-    v16 = [v15 _sectionDescriptorForSectionIndex:a2];
+    collectionViewLayout = [WeakRetained collectionViewLayout];
+    v16 = [collectionViewLayout _sectionDescriptorForSectionIndex:a2];
 
     [(_UICollectionViewOrthogonalScrollView *)v9 configureForDescriptor:v16];
     v17 = [WeakRetained _subviewRouterForOrthogonalScrollViewAtSection:a2];
     [(_UICollectionViewSubviewRouter *)v17 addContainerView:v9];
-    v18 = objc_loadWeakRetained(a1 + 2);
+    v18 = objc_loadWeakRetained(self + 2);
     if (v18)
     {
       v38 = v16;
@@ -419,7 +419,7 @@ LABEL_29:
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v19 = a1[5];
+      v19 = self[5];
       v20 = [v19 countByEnumeratingWithState:&v45 objects:v50 count:16];
       if (v20)
       {
@@ -449,7 +449,7 @@ LABEL_29:
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v24 = a1[6];
+      v24 = self[6];
       v25 = [v24 countByEnumeratingWithState:&v41 objects:v49 count:16];
       if (v25)
       {
@@ -465,16 +465,16 @@ LABEL_29:
             }
 
             v29 = *(*(&v41 + 1) + 8 * j);
-            v30 = [v29 _layoutAttributes];
-            v31 = [v30 indexPath];
+            _layoutAttributes = [v29 _layoutAttributes];
+            indexPath = [_layoutAttributes indexPath];
 
-            if ([v31 length] == 2)
+            if ([indexPath length] == 2)
             {
-              v32 = [v29 superview];
+              superview = [v29 superview];
 
-              if (v32 == v18)
+              if (superview == v18)
               {
-                -[_UICollectionViewOrthogonalScrollerSectionController _placeView:belowOrthogonalScrollViewForSection:](a1, v29, [v31 section]);
+                -[_UICollectionViewOrthogonalScrollerSectionController _placeView:belowOrthogonalScrollViewForSection:](self, v29, [indexPath section]);
               }
             }
           }
@@ -502,10 +502,10 @@ LABEL_29:
 LABEL_30:
     if (v9[271] != a2)
     {
-      v34 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v35 = v9[271];
-      v36 = objc_loadWeakRetained(a1 + 2);
-      [v34 handleFailureInMethod:sel__scrollViewForSection_createIfNecessary_ object:a1 file:@"_UICollectionViewOrthogonalScrollerSectionController.m" lineNumber:266 description:{@"UICollectionView internal inconsistency: attempted to retrieve _UICollectionViewOrthogonalScrollView for section %ld but received section %ld. Collection View: %@", a2, v35, v36}];
+      v36 = objc_loadWeakRetained(self + 2);
+      [currentHandler handleFailureInMethod:sel__scrollViewForSection_createIfNecessary_ object:self file:@"_UICollectionViewOrthogonalScrollerSectionController.m" lineNumber:266 description:{@"UICollectionView internal inconsistency: attempted to retrieve _UICollectionViewOrthogonalScrollView for section %ld but received section %ld. Collection View: %@", a2, v35, v36}];
     }
   }
 
@@ -514,52 +514,52 @@ LABEL_32:
   return v9;
 }
 
-- (id)autoScrollAssistantForOrthogonalScrollingSectionAtIndexPath:(id *)a1
+- (id)autoScrollAssistantForOrthogonalScrollingSectionAtIndexPath:(id *)path
 {
   v3 = a2;
-  if (a1)
+  if (path)
   {
-    if ([(_UICollectionViewOrthogonalScrollerSectionController *)a1 isIndexPathInExtantOrthogonalScroller:v3])
+    if ([(_UICollectionViewOrthogonalScrollerSectionController *)path isIndexPathInExtantOrthogonalScroller:v3])
     {
-      v4 = -[_UICollectionViewOrthogonalScrollerSectionController _scrollViewForSection:createIfNecessary:](a1, [v3 section], 0);
-      a1 = [v4 _autoScrollAssistant];
+      v4 = -[_UICollectionViewOrthogonalScrollerSectionController _scrollViewForSection:createIfNecessary:](path, [v3 section], 0);
+      path = [v4 _autoScrollAssistant];
     }
 
     else
     {
-      a1 = 0;
+      path = 0;
     }
   }
 
-  return a1;
+  return path;
 }
 
-- (void)reconfigureScrollViewsForUpdate:(uint64_t)a1
+- (void)reconfigureScrollViewsForUpdate:(uint64_t)update
 {
   v3 = a2;
-  if (a1)
+  if (update)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
+    WeakRetained = objc_loadWeakRetained((update + 16));
     v5 = WeakRetained;
     if (WeakRetained)
     {
-      v6 = [WeakRetained collectionViewLayout];
-      if (v6)
+      collectionViewLayout = [WeakRetained collectionViewLayout];
+      if (collectionViewLayout)
       {
-        v7 = *(a1 + 24);
-        v8 = [v6 _orthogonalScrollingSections];
-        v9 = v8;
-        if (v8)
+        v7 = *(update + 24);
+        _orthogonalScrollingSections = [collectionViewLayout _orthogonalScrollingSections];
+        v9 = _orthogonalScrollingSections;
+        if (_orthogonalScrollingSections)
         {
-          v10 = v8;
+          indexSet = _orthogonalScrollingSections;
         }
 
         else
         {
-          v10 = [MEMORY[0x1E696AC90] indexSet];
+          indexSet = [MEMORY[0x1E696AC90] indexSet];
         }
 
-        v11 = v10;
+        v11 = indexSet;
 
         if ([v11 count] || objc_msgSend(v7, "count"))
         {
@@ -572,10 +572,10 @@ LABEL_32:
           v18 = v11;
           v13 = v12;
           v19 = v13;
-          v20 = a1;
+          updateCopy = update;
           [v7 enumerateKeysAndObjectsUsingBlock:v16];
-          v14 = *(a1 + 24);
-          *(a1 + 24) = v13;
+          v14 = *(update + 24);
+          *(update + 24) = v13;
           v15 = v13;
         }
       }
@@ -583,53 +583,53 @@ LABEL_32:
   }
 }
 
-- (void)adjustElementHierarchyOrderingForOrthogonalElementIfNeeded:(void *)a3 layoutAttributes:
+- (void)adjustElementHierarchyOrderingForOrthogonalElementIfNeeded:(void *)needed layoutAttributes:
 {
   v11 = a2;
-  v5 = a3;
-  if (v11 && a1 && v5 && (v5[288] & 1) == 0)
+  neededCopy = needed;
+  if (v11 && self && neededCopy && (neededCopy[288] & 1) == 0)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
+    WeakRetained = objc_loadWeakRetained(self + 2);
     v7 = WeakRetained;
     if (WeakRetained && ([WeakRetained __hasTransitionLayoutAttributes] & 1) == 0)
     {
-      v8 = [v7 collectionViewLayout];
-      if ([v8 _hasOrthogonalScrollingSections])
+      collectionViewLayout = [v7 collectionViewLayout];
+      if ([collectionViewLayout _hasOrthogonalScrollingSections])
       {
-        if ([v8 _orthogonalScrollingElementShouldAppearAboveForAttributes:v5])
+        if ([collectionViewLayout _orthogonalScrollingElementShouldAppearAboveForAttributes:neededCopy])
         {
           [v7 bringSubviewToFront:v11];
-          [a1[5] addObject:v11];
+          [self[5] addObject:v11];
         }
 
-        else if ([v8 _orthogonalScrollingElementShouldAppearBelowForAttributes:v5])
+        else if ([collectionViewLayout _orthogonalScrollingElementShouldAppearBelowForAttributes:neededCopy])
         {
-          [a1[6] addObject:v11];
-          v9 = [v5 indexPath];
-          v10 = [v9 section];
+          [self[6] addObject:v11];
+          indexPath = [neededCopy indexPath];
+          section = [indexPath section];
 
-          [(_UICollectionViewOrthogonalScrollerSectionController *)a1 _placeView:v11 belowOrthogonalScrollViewForSection:v10];
+          [(_UICollectionViewOrthogonalScrollerSectionController *)self _placeView:v11 belowOrthogonalScrollViewForSection:section];
         }
       }
     }
   }
 }
 
-- (void)_placeView:(uint64_t)a3 belowOrthogonalScrollViewForSection:
+- (void)_placeView:(uint64_t)view belowOrthogonalScrollViewForSection:
 {
   v9 = a2;
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
+    WeakRetained = objc_loadWeakRetained(self + 2);
     if (WeakRetained)
     {
-      v6 = [(_UICollectionViewOrthogonalScrollerSectionController *)a1 _scrollViewForSection:a3 createIfNecessary:0];
+      v6 = [(_UICollectionViewOrthogonalScrollerSectionController *)self _scrollViewForSection:view createIfNecessary:0];
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 superview];
+        superview = [v6 superview];
 
-        if (v8 == WeakRetained)
+        if (superview == WeakRetained)
         {
           [WeakRetained insertSubview:v9 belowSubview:v7];
         }
@@ -638,33 +638,33 @@ LABEL_32:
   }
 }
 
-- (id)promiseItemParentScrollViewForLayoutAttributes:(id *)a1
+- (id)promiseItemParentScrollViewForLayoutAttributes:(id *)attributes
 {
-  if (a1)
+  if (attributes)
   {
-    v3 = a1;
-    v4 = [a2 indexPath];
-    v5 = [v4 section];
+    attributesCopy = attributes;
+    indexPath = [a2 indexPath];
+    section = [indexPath section];
 
-    a1 = [(_UICollectionViewOrthogonalScrollerSectionController *)v3 _scrollViewForSection:v5 createIfNecessary:0];
+    attributes = [(_UICollectionViewOrthogonalScrollerSectionController *)attributesCopy _scrollViewForSection:section createIfNecessary:0];
     v2 = vars8;
   }
 
-  return a1;
+  return attributes;
 }
 
-- (void)setShouldPreventFocusScrollPastContentSize:(uint64_t)a1
+- (void)setShouldPreventFocusScrollPastContentSize:(uint64_t)size
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1 && *(a1 + 8) != a2)
+  if (size && *(size + 8) != a2)
   {
-    *(a1 + 8) = a2;
+    *(size + 8) = a2;
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [*(a1 + 24) objectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    objectEnumerator = [*(size + 24) objectEnumerator];
+    v4 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -676,14 +676,14 @@ LABEL_32:
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          [*(*(&v8 + 1) + 8 * v7++) _setShouldPreventFocusScrollPastContentSize:*(a1 + 8)];
+          [*(*(&v8 + 1) + 8 * v7++) _setShouldPreventFocusScrollPastContentSize:*(size + 8)];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -691,11 +691,11 @@ LABEL_32:
   }
 }
 
-- (id)subviewRouterForSection:(id *)a1
+- (id)subviewRouterForSection:(id *)section
 {
-  if (a1)
+  if (section)
   {
-    v2 = [(_UICollectionViewOrthogonalScrollerSectionController *)a1 _scrollViewForSection:a2 createIfNecessary:1];
+    v2 = [(_UICollectionViewOrthogonalScrollerSectionController *)section _scrollViewForSection:a2 createIfNecessary:1];
     v3 = v2;
     if (v2)
     {
@@ -718,10 +718,10 @@ LABEL_32:
   return v5;
 }
 
-- (void)scrollToItemAtIndexPath:(uint64_t)a3 atScrollPosition:(uint64_t)a4 additionalInsets:(double)a5 animated:(double)a6
+- (void)scrollToItemAtIndexPath:(uint64_t)path atScrollPosition:(uint64_t)position additionalInsets:(double)insets animated:(double)animated
 {
   v15 = a2;
-  if (a1)
+  if (self)
   {
     if (v15)
     {
@@ -730,11 +730,11 @@ LABEL_32:
       v15 = v19;
       if (v16)
       {
-        v17 = -[_UICollectionViewOrthogonalScrollerSectionController _scrollViewForSection:createIfNecessary:](a1, [v19 section], 1);
+        v17 = -[_UICollectionViewOrthogonalScrollerSectionController _scrollViewForSection:createIfNecessary:](self, [v19 section], 1);
         v18 = v17;
         if (v17)
         {
-          [(_UICollectionViewOrthogonalScrollView *)v17 scrollToItemAtIndexPath:v19 atScrollPosition:a3 additionalInsets:a4 animated:a5, a6, a7, a8];
+          [(_UICollectionViewOrthogonalScrollView *)v17 scrollToItemAtIndexPath:v19 atScrollPosition:path additionalInsets:position animated:insets, animated, a7, a8];
         }
 
         v15 = v19;
@@ -743,15 +743,15 @@ LABEL_32:
   }
 }
 
-- (id)existingScrollViewForSection:(id *)a1
+- (id)existingScrollViewForSection:(id *)section
 {
-  if (a1)
+  if (section)
   {
-    a1 = [(_UICollectionViewOrthogonalScrollerSectionController *)a1 _scrollViewForSection:a2 createIfNecessary:0];
+    section = [(_UICollectionViewOrthogonalScrollerSectionController *)section _scrollViewForSection:a2 createIfNecessary:0];
     v2 = vars8;
   }
 
-  return a1;
+  return section;
 }
 
 @end

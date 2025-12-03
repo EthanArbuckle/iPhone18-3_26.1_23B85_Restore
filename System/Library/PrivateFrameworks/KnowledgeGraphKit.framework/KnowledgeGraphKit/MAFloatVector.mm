@@ -1,19 +1,19 @@
 @interface MAFloatVector
-+ (id)meanVectorWithFloatVectors:(id)a3;
-+ (id)onesOfCount:(int64_t)a3;
-+ (id)vectorRepeatingFloat:(float)a3 count:(int64_t)a4;
-+ (id)zerosOfCount:(int64_t)a3;
-- (BOOL)_isArrayOfFloats:(id)a3;
-- (BOOL)isApproximatelyEqualTo:(id)a3;
-- (BOOL)isApproximatelyEqualTo:(id)a3 epsilon:(float)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)meanVectorWithFloatVectors:(id)vectors;
++ (id)onesOfCount:(int64_t)count;
++ (id)vectorRepeatingFloat:(float)float count:(int64_t)count;
++ (id)zerosOfCount:(int64_t)count;
+- (BOOL)_isArrayOfFloats:(id)floats;
+- (BOOL)isApproximatelyEqualTo:(id)to;
+- (BOOL)isApproximatelyEqualTo:(id)to epsilon:(float)epsilon;
+- (BOOL)isEqual:(id)equal;
 - (MAFloatVector)init;
-- (MAFloatVector)initWithArray:(id)a3;
-- (MAFloatVector)initWithData:(id)a3;
-- (MAFloatVector)initWithFloats:(const float *)a3 count:(int64_t)a4;
-- (MAFloatVector)initWithWrapper:(id)a3;
-- (float)dotProductWithVector:(id)a3;
-- (float)floatAtIndex:(int64_t)a3;
+- (MAFloatVector)initWithArray:(id)array;
+- (MAFloatVector)initWithData:(id)data;
+- (MAFloatVector)initWithFloats:(const float *)floats count:(int64_t)count;
+- (MAFloatVector)initWithWrapper:(id)wrapper;
+- (float)dotProductWithVector:(id)vector;
+- (float)floatAtIndex:(int64_t)index;
 - (float)mean;
 - (float)standardDeviation;
 - (float)sum;
@@ -22,40 +22,40 @@
 - (id)data;
 - (id)debugDescription;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)sliceFromStart:(int64_t)a3 toEnd:(int64_t)a4;
-- (id)vectorByAddingScalar:(float)a3;
-- (id)vectorByAddingVector:(id)a3;
-- (id)vectorByAppendingArray:(id)a3;
-- (id)vectorByAppendingDoubles:(const double *)a3 count:(int64_t)a4;
-- (id)vectorByAppendingFloat:(float)a3;
-- (id)vectorByAppendingFloats:(const float *)a3 count:(int64_t)a4;
-- (id)vectorByAppendingVector:(id)a3;
-- (id)vectorByDividingByScalar:(float)a3;
-- (id)vectorByElementwiseMultiplyingByVector:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)sliceFromStart:(int64_t)start toEnd:(int64_t)end;
+- (id)vectorByAddingScalar:(float)scalar;
+- (id)vectorByAddingVector:(id)vector;
+- (id)vectorByAppendingArray:(id)array;
+- (id)vectorByAppendingDoubles:(const double *)doubles count:(int64_t)count;
+- (id)vectorByAppendingFloat:(float)float;
+- (id)vectorByAppendingFloats:(const float *)floats count:(int64_t)count;
+- (id)vectorByAppendingVector:(id)vector;
+- (id)vectorByDividingByScalar:(float)scalar;
+- (id)vectorByElementwiseMultiplyingByVector:(id)vector;
 - (id)vectorByElementwiseNaturalLogarithm;
 - (id)vectorByElementwiseNaturalLogarithmIfPositive;
-- (id)vectorByElementwiseRaisingToExponent:(float)a3;
-- (id)vectorByMultiplyingByScalar:(float)a3;
-- (id)vectorBySubtractingScalar:(float)a3;
-- (id)vectorBySubtractingVector:(id)a3;
+- (id)vectorByElementwiseRaisingToExponent:(float)exponent;
+- (id)vectorByMultiplyingByScalar:(float)scalar;
+- (id)vectorBySubtractingScalar:(float)scalar;
+- (id)vectorBySubtractingVector:(id)vector;
 - (int64_t)count;
 - (unint64_t)hash;
 @end
 
 @implementation MAFloatVector
 
-- (BOOL)_isArrayOfFloats:(id)a3
+- (BOOL)_isArrayOfFloats:(id)floats
 {
-  v3 = a3;
-  if ([v3 count])
+  floatsCopy = floats;
+  if ([floatsCopy count])
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 objCType];
-    v6 = *v5;
+    firstObject = [floatsCopy firstObject];
+    objCType = [firstObject objCType];
+    v6 = *objCType;
     if (v6 == 102)
     {
-      v7 = -v5[1];
+      v7 = -objCType[1];
     }
 
     else
@@ -76,36 +76,36 @@
 
 - (id)debugDescription
 {
-  v2 = [(MAFloatVector *)self wrapper];
-  v3 = [v2 debugDescription];
+  wrapper = [(MAFloatVector *)self wrapper];
+  v3 = [wrapper debugDescription];
 
   return v3;
 }
 
 - (id)description
 {
-  v2 = [(MAFloatVector *)self wrapper];
-  v3 = [v2 description];
+  wrapper = [(MAFloatVector *)self wrapper];
+  v3 = [wrapper description];
 
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [MAMutableFloatVector allocWithZone:a3];
-  v5 = [(MAFloatVector *)self wrapper];
-  v6 = [v5 mutableCopy];
+  v4 = [MAMutableFloatVector allocWithZone:zone];
+  wrapper = [(MAFloatVector *)self wrapper];
+  v6 = [wrapper mutableCopy];
   v7 = [(MAFloatVector *)v4 initWithWrapper:v6];
 
   return v7;
 }
 
-+ (id)meanVectorWithFloatVectors:(id)a3
++ (id)meanVectorWithFloatVectors:(id)vectors
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
-  v5 = [v3 objectAtIndexedSubscript:0];
+  vectorsCopy = vectors;
+  v4 = [vectorsCopy count];
+  v5 = [vectorsCopy objectAtIndexedSubscript:0];
   v6 = [v5 count];
 
   v7 = [(MAFloatVector *)MAMutableFloatVector zerosOfCount:v6];
@@ -113,7 +113,7 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v3;
+  v8 = vectorsCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -145,30 +145,30 @@
   return v7;
 }
 
-+ (id)vectorRepeatingFloat:(float)a3 count:(int64_t)a4
++ (id)vectorRepeatingFloat:(float)float count:(int64_t)count
 {
-  v7 = [a1 alloc];
-  v8 = [a1 wrapperClass];
-  *&v9 = a3;
-  v10 = [v8 repeatingFloat:a4 count:v9];
+  v7 = [self alloc];
+  wrapperClass = [self wrapperClass];
+  *&v9 = float;
+  v10 = [wrapperClass repeatingFloat:count count:v9];
   v11 = [v7 initWithWrapper:v10];
 
   return v11;
 }
 
-+ (id)onesOfCount:(int64_t)a3
++ (id)onesOfCount:(int64_t)count
 {
-  v5 = [a1 alloc];
-  v6 = [objc_msgSend(a1 "wrapperClass")];
+  v5 = [self alloc];
+  v6 = [objc_msgSend(self "wrapperClass")];
   v7 = [v5 initWithWrapper:v6];
 
   return v7;
 }
 
-+ (id)zerosOfCount:(int64_t)a3
++ (id)zerosOfCount:(int64_t)count
 {
-  v5 = [a1 alloc];
-  v6 = [objc_msgSend(a1 "wrapperClass")];
+  v5 = [self alloc];
+  v6 = [objc_msgSend(self "wrapperClass")];
   v7 = [v5 initWithWrapper:v6];
 
   return v7;
@@ -176,16 +176,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MAFloatVector *)self wrapper];
-  v3 = [v2 hash];
+  wrapper = [(MAFloatVector *)self wrapper];
+  v3 = [wrapper hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -195,11 +195,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MAFloatVector *)self wrapper];
-      v7 = [(MAFloatVector *)v5 wrapper];
+      v5 = equalCopy;
+      wrapper = [(MAFloatVector *)self wrapper];
+      wrapper2 = [(MAFloatVector *)v5 wrapper];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [wrapper isEqual:wrapper2];
     }
 
     else
@@ -211,10 +211,10 @@
   return v8;
 }
 
-- (BOOL)isApproximatelyEqualTo:(id)a3 epsilon:(float)a4
+- (BOOL)isApproximatelyEqualTo:(id)to epsilon:(float)epsilon
 {
-  v6 = a3;
-  if (v6 == self)
+  toCopy = to;
+  if (toCopy == self)
   {
     v11 = 1;
   }
@@ -224,12 +224,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(MAFloatVector *)self wrapper];
-      v9 = [(MAFloatVector *)v7 wrapper];
+      v7 = toCopy;
+      wrapper = [(MAFloatVector *)self wrapper];
+      wrapper2 = [(MAFloatVector *)v7 wrapper];
 
-      *&v10 = a4;
-      v11 = [v8 isApproximatelyEqualTo:v9 epsilon:v10];
+      *&v10 = epsilon;
+      v11 = [wrapper isApproximatelyEqualTo:wrapper2 epsilon:v10];
     }
 
     else
@@ -241,10 +241,10 @@
   return v11;
 }
 
-- (BOOL)isApproximatelyEqualTo:(id)a3
+- (BOOL)isApproximatelyEqualTo:(id)to
 {
-  v4 = a3;
-  if (v4 == self)
+  toCopy = to;
+  if (toCopy == self)
   {
     v8 = 1;
   }
@@ -254,11 +254,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MAFloatVector *)self wrapper];
-      v7 = [(MAFloatVector *)v5 wrapper];
+      v5 = toCopy;
+      wrapper = [(MAFloatVector *)self wrapper];
+      wrapper2 = [(MAFloatVector *)v5 wrapper];
 
-      v8 = [v6 isApproximatelyEqualTo:v7];
+      v8 = [wrapper isApproximatelyEqualTo:wrapper2];
     }
 
     else
@@ -270,70 +270,70 @@
   return v8;
 }
 
-- (id)sliceFromStart:(int64_t)a3 toEnd:(int64_t)a4
+- (id)sliceFromStart:(int64_t)start toEnd:(int64_t)end
 {
-  v6 = [(MAFloatVector *)self wrapper];
-  v7 = [v6 sliceFromStart:a3 toEnd:a4];
+  wrapper = [(MAFloatVector *)self wrapper];
+  v7 = [wrapper sliceFromStart:start toEnd:end];
 
   v8 = [[MAFloatVector alloc] initWithWrapper:v7];
 
   return v8;
 }
 
-- (id)vectorByAppendingArray:(id)a3
+- (id)vectorByAppendingArray:(id)array
 {
-  v4 = a3;
-  v5 = [(MAFloatVector *)self wrapper];
-  v6 = [v5 mutableCopy];
+  arrayCopy = array;
+  wrapper = [(MAFloatVector *)self wrapper];
+  v6 = [wrapper mutableCopy];
 
-  [v6 appendArray:v4];
+  [v6 appendArray:arrayCopy];
   v7 = [[MAFloatVector alloc] initWithWrapper:v6];
 
   return v7;
 }
 
-- (id)vectorByAppendingVector:(id)a3
+- (id)vectorByAppendingVector:(id)vector
 {
-  v4 = a3;
-  v5 = [(MAFloatVector *)self wrapper];
-  v6 = [v5 mutableCopy];
+  vectorCopy = vector;
+  wrapper = [(MAFloatVector *)self wrapper];
+  v6 = [wrapper mutableCopy];
 
-  v7 = [v4 wrapper];
+  wrapper2 = [vectorCopy wrapper];
 
-  [v6 appendVector:v7];
+  [v6 appendVector:wrapper2];
   v8 = [[MAFloatVector alloc] initWithWrapper:v6];
 
   return v8;
 }
 
-- (id)vectorByAppendingDoubles:(const double *)a3 count:(int64_t)a4
+- (id)vectorByAppendingDoubles:(const double *)doubles count:(int64_t)count
 {
-  v6 = [(MAFloatVector *)self wrapper];
-  v7 = [v6 mutableCopy];
+  wrapper = [(MAFloatVector *)self wrapper];
+  v7 = [wrapper mutableCopy];
 
-  [v7 appendDoubles:a3 count:a4];
+  [v7 appendDoubles:doubles count:count];
   v8 = [[MAFloatVector alloc] initWithWrapper:v7];
 
   return v8;
 }
 
-- (id)vectorByAppendingFloats:(const float *)a3 count:(int64_t)a4
+- (id)vectorByAppendingFloats:(const float *)floats count:(int64_t)count
 {
-  v6 = [(MAFloatVector *)self wrapper];
-  v7 = [v6 mutableCopy];
+  wrapper = [(MAFloatVector *)self wrapper];
+  v7 = [wrapper mutableCopy];
 
-  [v7 appendFloats:a3 count:a4];
+  [v7 appendFloats:floats count:count];
   v8 = [[MAFloatVector alloc] initWithWrapper:v7];
 
   return v8;
 }
 
-- (id)vectorByAppendingFloat:(float)a3
+- (id)vectorByAppendingFloat:(float)float
 {
-  v4 = [(MAFloatVector *)self wrapper];
-  v5 = [v4 mutableCopy];
+  wrapper = [(MAFloatVector *)self wrapper];
+  v5 = [wrapper mutableCopy];
 
-  *&v6 = a3;
+  *&v6 = float;
   [v5 appendFloat:v6];
   v7 = [[MAFloatVector alloc] initWithWrapper:v5];
 
@@ -343,9 +343,9 @@
 - (id)vectorByElementwiseNaturalLogarithmIfPositive
 {
   v3 = [MAFloatVector alloc];
-  v4 = [(MAFloatVector *)self wrapper];
-  v5 = [v4 naturalLogarithmIfPositive];
-  v6 = [(MAFloatVector *)v3 initWithWrapper:v5];
+  wrapper = [(MAFloatVector *)self wrapper];
+  naturalLogarithmIfPositive = [wrapper naturalLogarithmIfPositive];
+  v6 = [(MAFloatVector *)v3 initWithWrapper:naturalLogarithmIfPositive];
 
   return v6;
 }
@@ -353,114 +353,114 @@
 - (id)vectorByElementwiseNaturalLogarithm
 {
   v3 = [MAFloatVector alloc];
-  v4 = [(MAFloatVector *)self wrapper];
-  v5 = [v4 naturalLogarithm];
-  v6 = [(MAFloatVector *)v3 initWithWrapper:v5];
+  wrapper = [(MAFloatVector *)self wrapper];
+  naturalLogarithm = [wrapper naturalLogarithm];
+  v6 = [(MAFloatVector *)v3 initWithWrapper:naturalLogarithm];
 
   return v6;
 }
 
-- (id)vectorByElementwiseRaisingToExponent:(float)a3
+- (id)vectorByElementwiseRaisingToExponent:(float)exponent
 {
   v5 = [MAFloatVector alloc];
-  v6 = [(MAFloatVector *)self wrapper];
-  *&v7 = a3;
-  v8 = [v6 vectorByElementwiseRaisingToExponent:v7];
+  wrapper = [(MAFloatVector *)self wrapper];
+  *&v7 = exponent;
+  v8 = [wrapper vectorByElementwiseRaisingToExponent:v7];
   v9 = [(MAFloatVector *)v5 initWithWrapper:v8];
 
   return v9;
 }
 
-- (float)dotProductWithVector:(id)a3
+- (float)dotProductWithVector:(id)vector
 {
-  v4 = a3;
-  v5 = [(MAFloatVector *)self wrapper];
-  v6 = [v4 wrapper];
+  vectorCopy = vector;
+  wrapper = [(MAFloatVector *)self wrapper];
+  wrapper2 = [vectorCopy wrapper];
 
-  [v5 dotProductWithWrapper:v6];
+  [wrapper dotProductWithWrapper:wrapper2];
   v8 = v7;
 
   return v8;
 }
 
-- (id)vectorByElementwiseMultiplyingByVector:(id)a3
+- (id)vectorByElementwiseMultiplyingByVector:(id)vector
 {
-  v4 = a3;
+  vectorCopy = vector;
   v5 = [MAFloatVector alloc];
-  v6 = [(MAFloatVector *)self wrapper];
-  v7 = [v4 wrapper];
+  wrapper = [(MAFloatVector *)self wrapper];
+  wrapper2 = [vectorCopy wrapper];
 
-  v8 = [v6 vectorByElementwiseMultiplyingByWrapper:v7];
+  v8 = [wrapper vectorByElementwiseMultiplyingByWrapper:wrapper2];
   v9 = [(MAFloatVector *)v5 initWithWrapper:v8];
 
   return v9;
 }
 
-- (id)vectorByDividingByScalar:(float)a3
+- (id)vectorByDividingByScalar:(float)scalar
 {
   v5 = [MAFloatVector alloc];
-  v6 = [(MAFloatVector *)self wrapper];
-  *&v7 = a3;
-  v8 = [v6 vectorByDividingByScalar:v7];
+  wrapper = [(MAFloatVector *)self wrapper];
+  *&v7 = scalar;
+  v8 = [wrapper vectorByDividingByScalar:v7];
   v9 = [(MAFloatVector *)v5 initWithWrapper:v8];
 
   return v9;
 }
 
-- (id)vectorByMultiplyingByScalar:(float)a3
+- (id)vectorByMultiplyingByScalar:(float)scalar
 {
   v5 = [MAFloatVector alloc];
-  v6 = [(MAFloatVector *)self wrapper];
-  *&v7 = a3;
-  v8 = [v6 vectorByMultiplyingByScalar:v7];
+  wrapper = [(MAFloatVector *)self wrapper];
+  *&v7 = scalar;
+  v8 = [wrapper vectorByMultiplyingByScalar:v7];
   v9 = [(MAFloatVector *)v5 initWithWrapper:v8];
 
   return v9;
 }
 
-- (id)vectorByAddingScalar:(float)a3
+- (id)vectorByAddingScalar:(float)scalar
 {
   v5 = [MAFloatVector alloc];
-  v6 = [(MAFloatVector *)self wrapper];
-  *&v7 = a3;
-  v8 = [v6 vectorByAddingScalar:v7];
+  wrapper = [(MAFloatVector *)self wrapper];
+  *&v7 = scalar;
+  v8 = [wrapper vectorByAddingScalar:v7];
   v9 = [(MAFloatVector *)v5 initWithWrapper:v8];
 
   return v9;
 }
 
-- (id)vectorBySubtractingScalar:(float)a3
+- (id)vectorBySubtractingScalar:(float)scalar
 {
   v5 = [MAFloatVector alloc];
-  v6 = [(MAFloatVector *)self wrapper];
-  *&v7 = a3;
-  v8 = [v6 vectorBySubtractingScalar:v7];
+  wrapper = [(MAFloatVector *)self wrapper];
+  *&v7 = scalar;
+  v8 = [wrapper vectorBySubtractingScalar:v7];
   v9 = [(MAFloatVector *)v5 initWithWrapper:v8];
 
   return v9;
 }
 
-- (id)vectorByAddingVector:(id)a3
+- (id)vectorByAddingVector:(id)vector
 {
-  v4 = a3;
+  vectorCopy = vector;
   v5 = [MAFloatVector alloc];
-  v6 = [(MAFloatVector *)self wrapper];
-  v7 = [v4 wrapper];
+  wrapper = [(MAFloatVector *)self wrapper];
+  wrapper2 = [vectorCopy wrapper];
 
-  v8 = [v6 vectorByAddingVector:v7];
+  v8 = [wrapper vectorByAddingVector:wrapper2];
   v9 = [(MAFloatVector *)v5 initWithWrapper:v8];
 
   return v9;
 }
 
-- (id)vectorBySubtractingVector:(id)a3
+- (id)vectorBySubtractingVector:(id)vector
 {
-  v4 = a3;
+  vectorCopy = vector;
   v5 = [MAFloatVector alloc];
-  v6 = [(MAFloatVector *)self wrapper];
-  v7 = [v4 wrapper];
+  wrapper = [(MAFloatVector *)self wrapper];
+  wrapper2 = [vectorCopy wrapper];
 
-  v8 = [v6 vectorBySubtractingVector:v7];
+  v8 = [wrapper vectorBySubtractingVector:wrapper2];
   v9 = [(MAFloatVector *)v5 initWithWrapper:v8];
 
   return v9;
@@ -468,24 +468,24 @@
 
 - (id)data
 {
-  v2 = [(MAFloatVector *)self wrapper];
-  v3 = [v2 data];
+  wrapper = [(MAFloatVector *)self wrapper];
+  data = [wrapper data];
 
-  return v3;
+  return data;
 }
 
 - (id)array
 {
-  v2 = [(MAFloatVector *)self wrapper];
-  v3 = [v2 array];
+  wrapper = [(MAFloatVector *)self wrapper];
+  array = [wrapper array];
 
-  return v3;
+  return array;
 }
 
-- (float)floatAtIndex:(int64_t)a3
+- (float)floatAtIndex:(int64_t)index
 {
-  v4 = [(MAFloatVector *)self wrapper];
-  [v4 floatAtIndex:a3];
+  wrapper = [(MAFloatVector *)self wrapper];
+  [wrapper floatAtIndex:index];
   v6 = v5;
 
   return v6;
@@ -493,8 +493,8 @@
 
 - (float)standardDeviation
 {
-  v2 = [(MAFloatVector *)self wrapper];
-  [v2 standardDeviation];
+  wrapper = [(MAFloatVector *)self wrapper];
+  [wrapper standardDeviation];
   v4 = v3;
 
   return v4;
@@ -502,8 +502,8 @@
 
 - (float)mean
 {
-  v2 = [(MAFloatVector *)self wrapper];
-  [v2 mean];
+  wrapper = [(MAFloatVector *)self wrapper];
+  [wrapper mean];
   v4 = v3;
 
   return v4;
@@ -511,8 +511,8 @@
 
 - (float)sumOfSquares
 {
-  v2 = [(MAFloatVector *)self wrapper];
-  [v2 sumOfSquares];
+  wrapper = [(MAFloatVector *)self wrapper];
+  [wrapper sumOfSquares];
   v4 = v3;
 
   return v4;
@@ -520,8 +520,8 @@
 
 - (float)sum
 {
-  v2 = [(MAFloatVector *)self wrapper];
-  [v2 sum];
+  wrapper = [(MAFloatVector *)self wrapper];
+  [wrapper sum];
   v4 = v3;
 
   return v4;
@@ -529,25 +529,25 @@
 
 - (int64_t)count
 {
-  v2 = [(MAFloatVector *)self wrapper];
-  v3 = [v2 count];
+  wrapper = [(MAFloatVector *)self wrapper];
+  v3 = [wrapper count];
 
   return v3;
 }
 
-- (MAFloatVector)initWithData:(id)a3
+- (MAFloatVector)initWithData:(id)data
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v8 = [dataCopy2 length];
 
-  return [(MAFloatVector *)self initWithFloats:v7 count:v8 >> 2];
+  return [(MAFloatVector *)self initWithFloats:bytes count:v8 >> 2];
 }
 
-- (MAFloatVector)initWithArray:(id)a3
+- (MAFloatVector)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = MAFloatVector;
   v5 = [(MAFloatVector *)&v9 init];
@@ -561,7 +561,7 @@
   return v5;
 }
 
-- (MAFloatVector)initWithFloats:(const float *)a3 count:(int64_t)a4
+- (MAFloatVector)initWithFloats:(const float *)floats count:(int64_t)count
 {
   v10.receiver = self;
   v10.super_class = MAFloatVector;
@@ -576,16 +576,16 @@
   return v6;
 }
 
-- (MAFloatVector)initWithWrapper:(id)a3
+- (MAFloatVector)initWithWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v9.receiver = self;
   v9.super_class = MAFloatVector;
   v6 = [(MAFloatVector *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrapper, a3);
+    objc_storeStrong(&v6->_wrapper, wrapper);
   }
 
   return v7;

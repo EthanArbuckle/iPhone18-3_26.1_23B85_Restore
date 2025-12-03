@@ -1,12 +1,12 @@
 @interface IMBalloonPluginAttributionController
 + (id)sharedInstance;
-- (BOOL)shouldShowAttributionForBundleID:(id)a3;
+- (BOOL)shouldShowAttributionForBundleID:(id)d;
 - (IMBalloonPluginAttributionController)init;
 - (id)_currentTimestamp;
 - (void)_handleInstalledPluginsChanged;
 - (void)_purgeLeastRecentlySeenAppBundleIDsIfNecessary;
 - (void)_saveToFile;
-- (void)didShowAttributionForBundleIDs:(id)a3;
+- (void)didShowAttributionForBundleIDs:(id)ds;
 - (void)startExpiryTimer;
 @end
 
@@ -157,15 +157,15 @@ LABEL_14:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didShowAttributionForBundleIDs:(id)a3
+- (void)didShowAttributionForBundleIDs:(id)ds
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v22, v26, 16);
+  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(dsCopy, v5, &v22, v26, 16);
   if (v6)
   {
     v8 = v6;
@@ -178,7 +178,7 @@ LABEL_14:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
@@ -195,7 +195,7 @@ LABEL_14:
         }
       }
 
-      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v7, &v22, v26, 16);
+      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(dsCopy, v7, &v22, v26, 16);
     }
 
     while (v8);
@@ -204,22 +204,22 @@ LABEL_14:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldShowAttributionForBundleID:(id)a3
+- (BOOL)shouldShowAttributionForBundleID:(id)d
 {
-  v4 = a3;
-  if (objc_msgSend_containsString_(v4, v5, *MEMORY[0x1E69A6A20]) & 1) != 0 || (objc_msgSend_containsString_(v4, v6, *MEMORY[0x1E69A6A08]))
+  dCopy = d;
+  if (objc_msgSend_containsString_(dCopy, v5, *MEMORY[0x1E69A6A20]) & 1) != 0 || (objc_msgSend_containsString_(dCopy, v6, *MEMORY[0x1E69A6A08]))
   {
     goto LABEL_3;
   }
 
-  if ((objc_msgSend_containsString_(v4, v7, *MEMORY[0x1E69A69C8]) & 1) != 0 || (objc_msgSend_containsString_(v4, v9, *MEMORY[0x1E69A68F8]) & 1) != 0 || (objc_msgSend_containsString_(v4, v10, *MEMORY[0x1E69A6980]) & 1) != 0 || (IMIsRunningInUnitTesting() & 1) == 0 && !objc_msgSend_hasPerformedFirstAppExtensionLoad(self, v12, v13))
+  if ((objc_msgSend_containsString_(dCopy, v7, *MEMORY[0x1E69A69C8]) & 1) != 0 || (objc_msgSend_containsString_(dCopy, v9, *MEMORY[0x1E69A68F8]) & 1) != 0 || (objc_msgSend_containsString_(dCopy, v10, *MEMORY[0x1E69A6980]) & 1) != 0 || (IMIsRunningInUnitTesting() & 1) == 0 && !objc_msgSend_hasPerformedFirstAppExtensionLoad(self, v12, v13))
   {
     v8 = 0;
     goto LABEL_8;
   }
 
   v14 = objc_msgSend_bundleIDsDisplayingAttribution(self, v12, v13);
-  v16 = objc_msgSend_objectForKey_(v14, v15, v4);
+  v16 = objc_msgSend_objectForKey_(v14, v15, dCopy);
 
   if (v16)
   {
@@ -230,12 +230,12 @@ LABEL_3:
   else
   {
     v19 = objc_msgSend_sharedInstance(IMBalloonPluginManager, v17, v18);
-    v21 = objc_msgSend_balloonPluginForBundleID_(v19, v20, v4);
+    v21 = objc_msgSend_balloonPluginForBundleID_(v19, v20, dCopy);
 
     v24 = objc_msgSend_identifier(v21, v22, v23);
-    isEqualToString = objc_msgSend_isEqualToString_(v24, v25, v4);
+    isEqualToString = objc_msgSend_isEqualToString_(v24, v25, dCopy);
 
-    if ((isEqualToString & 1) != 0 || !objc_msgSend_containsString_(v4, v27, *MEMORY[0x1E69A69F0]))
+    if ((isEqualToString & 1) != 0 || !objc_msgSend_containsString_(dCopy, v27, *MEMORY[0x1E69A69F0]))
     {
       v8 = 0;
     }
@@ -243,7 +243,7 @@ LABEL_3:
     else
     {
       v30 = objc_msgSend_expiredBundleIDToTimestampMap(self, v28, v29);
-      v32 = objc_msgSend_objectForKey_(v30, v31, v4);
+      v32 = objc_msgSend_objectForKey_(v30, v31, dCopy);
       v8 = v32 == 0;
     }
   }

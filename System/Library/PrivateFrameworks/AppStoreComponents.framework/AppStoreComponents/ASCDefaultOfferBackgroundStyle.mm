@@ -1,6 +1,6 @@
 @interface ASCDefaultOfferBackgroundStyle
 - (ASCDefaultOfferBackgroundStyle)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation ASCDefaultOfferBackgroundStyle
@@ -12,11 +12,11 @@
   return [(ASCOfferBackgroundStyle *)&v3 _init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }

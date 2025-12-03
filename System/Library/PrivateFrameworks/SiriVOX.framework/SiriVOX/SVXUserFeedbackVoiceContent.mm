@@ -1,41 +1,41 @@
 @interface SVXUserFeedbackVoiceContent
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXUserFeedbackVoiceContent)initWithCoder:(id)a3;
-- (SVXUserFeedbackVoiceContent)initWithText:(id)a3 isPhonetic:(BOOL)a4;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXUserFeedbackVoiceContent)initWithCoder:(id)coder;
+- (SVXUserFeedbackVoiceContent)initWithText:(id)text isPhonetic:(BOOL)phonetic;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXUserFeedbackVoiceContent
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   text = self->_text;
-  v5 = a3;
-  [v5 encodeObject:text forKey:@"SVXUserFeedbackVoiceContent::text"];
+  coderCopy = coder;
+  [coderCopy encodeObject:text forKey:@"SVXUserFeedbackVoiceContent::text"];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_isPhonetic];
-  [v5 encodeObject:v6 forKey:@"SVXUserFeedbackVoiceContent::isPhonetic"];
+  [coderCopy encodeObject:v6 forKey:@"SVXUserFeedbackVoiceContent::isPhonetic"];
 }
 
-- (SVXUserFeedbackVoiceContent)initWithCoder:(id)a3
+- (SVXUserFeedbackVoiceContent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackVoiceContent::text"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackVoiceContent::isPhonetic"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackVoiceContent::text"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackVoiceContent::isPhonetic"];
 
-  v7 = [v6 BOOLValue];
-  v8 = [(SVXUserFeedbackVoiceContent *)self initWithText:v5 isPhonetic:v7];
+  bOOLValue = [v6 BOOLValue];
+  v8 = [(SVXUserFeedbackVoiceContent *)self initWithText:v5 isPhonetic:bOOLValue];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -45,13 +45,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       isPhonetic = self->_isPhonetic;
       if (isPhonetic == [(SVXUserFeedbackVoiceContent *)v5 isPhonetic])
       {
-        v7 = [(SVXUserFeedbackVoiceContent *)v5 text];
+        text = [(SVXUserFeedbackVoiceContent *)v5 text];
         text = self->_text;
-        v9 = text == v7 || [(NSString *)text isEqual:v7];
+        v9 = text == text || [(NSString *)text isEqual:text];
       }
 
       else
@@ -78,7 +78,7 @@
   return v5 ^ v3;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v11.receiver = self;
@@ -101,54 +101,54 @@
   return v9;
 }
 
-- (SVXUserFeedbackVoiceContent)initWithText:(id)a3 isPhonetic:(BOOL)a4
+- (SVXUserFeedbackVoiceContent)initWithText:(id)text isPhonetic:(BOOL)phonetic
 {
-  v6 = a3;
+  textCopy = text;
   v11.receiver = self;
   v11.super_class = SVXUserFeedbackVoiceContent;
   v7 = [(SVXUserFeedbackVoiceContent *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [textCopy copy];
     text = v7->_text;
     v7->_text = v8;
 
-    v7->_isPhonetic = a4;
+    v7->_isPhonetic = phonetic;
   }
 
   return v7;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXUserFeedbackVoiceContentMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXUserFeedbackVoiceContentMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXUserFeedbackVoiceContentMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXUserFeedbackVoiceContent *)self copy];
+    generate = [(SVXUserFeedbackVoiceContent *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXUserFeedbackVoiceContentMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXUserFeedbackVoiceContentMutation *)v4 generate];
+  generate = [(_SVXUserFeedbackVoiceContentMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

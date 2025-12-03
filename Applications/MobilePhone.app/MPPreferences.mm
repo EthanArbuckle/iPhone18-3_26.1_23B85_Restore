@@ -2,7 +2,7 @@
 + (id)sharedPreferences;
 - (BOOL)useSwiftUIRecents;
 - (id)domain;
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4;
+- (void)setPreferencesValue:(id)value forKey:(id)key;
 @end
 
 @implementation MPPreferences
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __34__MPPreferences_sharedPreferences__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedPreferences_onceToken_0 != -1)
   {
     dispatch_once(&sharedPreferences_onceToken_0, block);
@@ -66,15 +66,15 @@ uint64_t __34__MPPreferences_useSwiftUIRecents__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4
+- (void)setPreferencesValue:(id)value forKey:(id)key
 {
   v10.receiver = self;
   v10.super_class = MPPreferences;
-  v6 = a4;
-  v7 = a3;
-  [(PHPreferences *)&v10 setPreferencesValue:v7 forKey:v6];
-  v11 = v6;
-  v12 = v7;
+  keyCopy = key;
+  valueCopy = value;
+  [(PHPreferences *)&v10 setPreferencesValue:valueCopy forKey:keyCopy];
+  v11 = keyCopy;
+  v12 = valueCopy;
   v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v9 = +[NSNotificationCenter defaultCenter];
 

@@ -1,34 +1,34 @@
 @interface CarPlayRouteRecommendationControllerImpl
-- (void)mediaApplicationsInFocus:(id)a3;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)mediaApplicationsInFocus:(id)focus;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 @end
 
 @implementation CarPlayRouteRecommendationControllerImpl
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
   swift_getObjectType();
   v5 = *(&self->super.isa + OBJC_IVAR____TtC12mediaremotedP33_2D59729E7249CB12B9FED99ADC3BB6A140CarPlayRouteRecommendationControllerImpl_lock);
-  v6 = a3;
-  v7 = self;
+  connectCopy = connect;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 4);
   sub_100006E8C();
   os_unfair_lock_unlock(v5 + 4);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
   swift_getObjectType();
   v5 = *(&self->super.isa + OBJC_IVAR____TtC12mediaremotedP33_2D59729E7249CB12B9FED99ADC3BB6A140CarPlayRouteRecommendationControllerImpl_lock);
-  v6 = a3;
-  v7 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 4);
   sub_100006EA4();
   os_unfair_lock_unlock(v5 + 4);
 }
 
-- (void)mediaApplicationsInFocus:(id)a3
+- (void)mediaApplicationsInFocus:(id)focus
 {
   v4 = sub_1001BC5A8(&qword_100521B60, &qword_10044F1A0);
   v5 = *(*(v4 - 8) + 64);
@@ -42,7 +42,7 @@
   v10[3] = 0;
   v10[4] = self;
   v10[5] = v8;
-  v11 = self;
+  selfCopy = self;
   sub_1001CB290(0, 0, v7, &unk_100450540, v10);
 }
 

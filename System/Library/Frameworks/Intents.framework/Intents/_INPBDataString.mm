@@ -1,16 +1,16 @@
 @interface _INPBDataString
-- (BOOL)isEqual:(id)a3;
-- (_INPBDataString)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDataString)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAlternatives:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAlternatives:(id)a3;
-- (void)setLocalizedValue:(id)a3;
-- (void)setPronunciationHint:(id)a3;
-- (void)setVocabularyIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAlternatives:(id)alternatives;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAlternatives:(id)alternatives;
+- (void)setLocalizedValue:(id)value;
+- (void)setPronunciationHint:(id)hint;
+- (void)setVocabularyIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDataString
@@ -18,10 +18,10 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_alternatives count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -41,8 +41,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -51,33 +51,33 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"alternatives"];
+    [dictionary setObject:array forKeyedSubscript:@"alternatives"];
   }
 
   if (self->_localizedValue)
   {
-    v11 = [(_INPBDataString *)self localizedValue];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"localizedValue"];
+    localizedValue = [(_INPBDataString *)self localizedValue];
+    v12 = [localizedValue copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"localizedValue"];
   }
 
   if (self->_pronunciationHint)
   {
-    v13 = [(_INPBDataString *)self pronunciationHint];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"pronunciationHint"];
+    pronunciationHint = [(_INPBDataString *)self pronunciationHint];
+    v14 = [pronunciationHint copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"pronunciationHint"];
   }
 
   if (self->_vocabularyIdentifier)
   {
-    v15 = [(_INPBDataString *)self vocabularyIdentifier];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"vocabularyIdentifier"];
+    vocabularyIdentifier = [(_INPBDataString *)self vocabularyIdentifier];
+    v16 = [vocabularyIdentifier copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"vocabularyIdentifier"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -88,28 +88,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_vocabularyIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBDataString *)self alternatives];
-  v6 = [v4 alternatives];
-  if ((v5 != 0) == (v6 == 0))
+  alternatives = [(_INPBDataString *)self alternatives];
+  alternatives2 = [equalCopy alternatives];
+  if ((alternatives != 0) == (alternatives2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBDataString *)self alternatives];
-  if (v7)
+  alternatives3 = [(_INPBDataString *)self alternatives];
+  if (alternatives3)
   {
-    v8 = v7;
-    v9 = [(_INPBDataString *)self alternatives];
-    v10 = [v4 alternatives];
-    v11 = [v9 isEqual:v10];
+    v8 = alternatives3;
+    alternatives4 = [(_INPBDataString *)self alternatives];
+    alternatives5 = [equalCopy alternatives];
+    v11 = [alternatives4 isEqual:alternatives5];
 
     if (!v11)
     {
@@ -121,20 +121,20 @@
   {
   }
 
-  v5 = [(_INPBDataString *)self localizedValue];
-  v6 = [v4 localizedValue];
-  if ((v5 != 0) == (v6 == 0))
+  alternatives = [(_INPBDataString *)self localizedValue];
+  alternatives2 = [equalCopy localizedValue];
+  if ((alternatives != 0) == (alternatives2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBDataString *)self localizedValue];
-  if (v12)
+  localizedValue = [(_INPBDataString *)self localizedValue];
+  if (localizedValue)
   {
-    v13 = v12;
-    v14 = [(_INPBDataString *)self localizedValue];
-    v15 = [v4 localizedValue];
-    v16 = [v14 isEqual:v15];
+    v13 = localizedValue;
+    localizedValue2 = [(_INPBDataString *)self localizedValue];
+    localizedValue3 = [equalCopy localizedValue];
+    v16 = [localizedValue2 isEqual:localizedValue3];
 
     if (!v16)
     {
@@ -146,20 +146,20 @@
   {
   }
 
-  v5 = [(_INPBDataString *)self pronunciationHint];
-  v6 = [v4 pronunciationHint];
-  if ((v5 != 0) == (v6 == 0))
+  alternatives = [(_INPBDataString *)self pronunciationHint];
+  alternatives2 = [equalCopy pronunciationHint];
+  if ((alternatives != 0) == (alternatives2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBDataString *)self pronunciationHint];
-  if (v17)
+  pronunciationHint = [(_INPBDataString *)self pronunciationHint];
+  if (pronunciationHint)
   {
-    v18 = v17;
-    v19 = [(_INPBDataString *)self pronunciationHint];
-    v20 = [v4 pronunciationHint];
-    v21 = [v19 isEqual:v20];
+    v18 = pronunciationHint;
+    pronunciationHint2 = [(_INPBDataString *)self pronunciationHint];
+    pronunciationHint3 = [equalCopy pronunciationHint];
+    v21 = [pronunciationHint2 isEqual:pronunciationHint3];
 
     if (!v21)
     {
@@ -171,12 +171,12 @@
   {
   }
 
-  v5 = [(_INPBDataString *)self vocabularyIdentifier];
-  v6 = [v4 vocabularyIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  alternatives = [(_INPBDataString *)self vocabularyIdentifier];
+  alternatives2 = [equalCopy vocabularyIdentifier];
+  if ((alternatives != 0) != (alternatives2 == 0))
   {
-    v22 = [(_INPBDataString *)self vocabularyIdentifier];
-    if (!v22)
+    vocabularyIdentifier = [(_INPBDataString *)self vocabularyIdentifier];
+    if (!vocabularyIdentifier)
     {
 
 LABEL_25:
@@ -184,10 +184,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_INPBDataString *)self vocabularyIdentifier];
-    v25 = [v4 vocabularyIdentifier];
-    v26 = [v24 isEqual:v25];
+    v23 = vocabularyIdentifier;
+    vocabularyIdentifier2 = [(_INPBDataString *)self vocabularyIdentifier];
+    vocabularyIdentifier3 = [equalCopy vocabularyIdentifier];
+    v26 = [vocabularyIdentifier2 isEqual:vocabularyIdentifier3];
 
     if (v26)
     {
@@ -207,52 +207,52 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBDataString allocWithZone:](_INPBDataString init];
-  v6 = [(NSArray *)self->_alternatives copyWithZone:a3];
+  v6 = [(NSArray *)self->_alternatives copyWithZone:zone];
   [(_INPBDataString *)v5 setAlternatives:v6];
 
-  v7 = [(NSString *)self->_localizedValue copyWithZone:a3];
+  v7 = [(NSString *)self->_localizedValue copyWithZone:zone];
   [(_INPBDataString *)v5 setLocalizedValue:v7];
 
-  v8 = [(NSString *)self->_pronunciationHint copyWithZone:a3];
+  v8 = [(NSString *)self->_pronunciationHint copyWithZone:zone];
   [(_INPBDataString *)v5 setPronunciationHint:v8];
 
-  v9 = [(NSString *)self->_vocabularyIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_vocabularyIdentifier copyWithZone:zone];
   [(_INPBDataString *)v5 setVocabularyIdentifier:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDataString *)self data];
+  coderCopy = coder;
+  data = [(_INPBDataString *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDataString)initWithCoder:(id)a3
+- (_INPBDataString)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDataString *)self initWithData:v6];
+    self = [(_INPBDataString *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -285,25 +285,25 @@ LABEL_23:
     while (v7);
   }
 
-  v11 = [(_INPBDataString *)self localizedValue];
+  localizedValue = [(_INPBDataString *)self localizedValue];
 
-  if (v11)
+  if (localizedValue)
   {
     localizedValue = self->_localizedValue;
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(_INPBDataString *)self pronunciationHint];
+  pronunciationHint = [(_INPBDataString *)self pronunciationHint];
 
-  if (v13)
+  if (pronunciationHint)
   {
     pronunciationHint = self->_pronunciationHint;
     PBDataWriterWriteStringField();
   }
 
-  v15 = [(_INPBDataString *)self vocabularyIdentifier];
+  vocabularyIdentifier = [(_INPBDataString *)self vocabularyIdentifier];
 
-  if (v15)
+  if (vocabularyIdentifier)
   {
     vocabularyIdentifier = self->_vocabularyIdentifier;
     PBDataWriterWriteStringField();
@@ -312,54 +312,54 @@ LABEL_23:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setVocabularyIdentifier:(id)a3
+- (void)setVocabularyIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   vocabularyIdentifier = self->_vocabularyIdentifier;
   self->_vocabularyIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, vocabularyIdentifier);
 }
 
-- (void)setPronunciationHint:(id)a3
+- (void)setPronunciationHint:(id)hint
 {
-  v4 = [a3 copy];
+  v4 = [hint copy];
   pronunciationHint = self->_pronunciationHint;
   self->_pronunciationHint = v4;
 
   MEMORY[0x1EEE66BB8](v4, pronunciationHint);
 }
 
-- (void)setLocalizedValue:(id)a3
+- (void)setLocalizedValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   localizedValue = self->_localizedValue;
   self->_localizedValue = v4;
 
   MEMORY[0x1EEE66BB8](v4, localizedValue);
 }
 
-- (void)addAlternatives:(id)a3
+- (void)addAlternatives:(id)alternatives
 {
-  v4 = a3;
+  alternativesCopy = alternatives;
   alternatives = self->_alternatives;
-  v8 = v4;
+  v8 = alternativesCopy;
   if (!alternatives)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_alternatives;
-    self->_alternatives = v6;
+    self->_alternatives = array;
 
-    v4 = v8;
+    alternativesCopy = v8;
     alternatives = self->_alternatives;
   }
 
-  [(NSArray *)alternatives addObject:v4];
+  [(NSArray *)alternatives addObject:alternativesCopy];
 }
 
-- (void)setAlternatives:(id)a3
+- (void)setAlternatives:(id)alternatives
 {
-  v4 = [a3 mutableCopy];
+  v4 = [alternatives mutableCopy];
   alternatives = self->_alternatives;
   self->_alternatives = v4;
 

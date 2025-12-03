@@ -1,20 +1,20 @@
 @interface FMBlurView
-- (FMBlurView)initWithFrame:(CGRect)a3 autosizesToFitSuperview:(BOOL)a4;
+- (FMBlurView)initWithFrame:(CGRect)frame autosizesToFitSuperview:(BOOL)superview;
 - (void)didMoveToSuperview;
 @end
 
 @implementation FMBlurView
 
-- (FMBlurView)initWithFrame:(CGRect)a3 autosizesToFitSuperview:(BOOL)a4
+- (FMBlurView)initWithFrame:(CGRect)frame autosizesToFitSuperview:(BOOL)superview
 {
-  v4 = a4;
+  superviewCopy = superview;
   v9.receiver = self;
   v9.super_class = FMBlurView;
-  v5 = [(FMBlurView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(FMBlurView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    [(FMBlurView *)v5 setAutosizesToFitSuperview:v4];
+    [(FMBlurView *)v5 setAutosizesToFitSuperview:superviewCopy];
     v7 = [MEMORY[0x277D75348] colorWithWhite:0.9686 alpha:0.96];
     [(FMBlurView *)v6 setBackgroundColor:v7];
 
@@ -31,8 +31,8 @@
 {
   if ([(FMBlurView *)self autosizesToFitSuperview])
   {
-    v3 = [(FMBlurView *)self superview];
-    [v3 frame];
+    superview = [(FMBlurView *)self superview];
+    [superview frame];
     v5 = v4;
     v7 = v6;
     v9 = v8;

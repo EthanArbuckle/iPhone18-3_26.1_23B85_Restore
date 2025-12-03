@@ -9,17 +9,17 @@
 {
   v43 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(HDCodableOntologyLocalizedEducationContent);
-  -[HDCodableOntologyLocalizedEducationContent setVersion:](v2, "setVersion:", [a1 version]);
-  [a1 timestamp];
+  -[HDCodableOntologyLocalizedEducationContent setVersion:](v2, "setVersion:", [self version]);
+  [self timestamp];
   [(HDCodableOntologyLocalizedEducationContent *)v2 setTimestamp:?];
   v23 = v2;
-  -[HDCodableOntologyLocalizedEducationContent setDeleted:](v2, "setDeleted:", [a1 isDeleted]);
+  -[HDCodableOntologyLocalizedEducationContent setDeleted:](v2, "setDeleted:", [self isDeleted]);
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v22 = a1;
-  obj = [a1 sections];
+  selfCopy = self;
+  obj = [self sections];
   v24 = [obj countByEnumeratingWithState:&v28 objects:v40 count:16];
   if (v24)
   {
@@ -35,7 +35,7 @@
         }
 
         v4 = *(*(&v28 + 1) + 8 * v3);
-        if (v22)
+        if (selfCopy)
         {
           v26 = v3;
           v5 = objc_alloc_init(HDCodableOntologyLocalizedEducationContentSection);
@@ -45,8 +45,8 @@
           v32 = 0u;
           v33 = 0u;
           v25 = v4;
-          v27 = [v4 sectionData];
-          v6 = [v27 countByEnumeratingWithState:&v32 objects:v41 count:16];
+          sectionData = [v4 sectionData];
+          v6 = [sectionData countByEnumeratingWithState:&v32 objects:v41 count:16];
           if (v6)
           {
             v7 = v6;
@@ -57,7 +57,7 @@
               {
                 if (*v33 != v8)
                 {
-                  objc_enumerationMutation(v27);
+                  objc_enumerationMutation(sectionData);
                 }
 
                 v10 = *(*(&v32 + 1) + 8 * i);
@@ -66,8 +66,8 @@
                 v37 = 0u;
                 v38 = 0u;
                 v39 = 0u;
-                v12 = [v10 stringValues];
-                v13 = [v12 countByEnumeratingWithState:&v36 objects:v42 count:16];
+                stringValues = [v10 stringValues];
+                v13 = [stringValues countByEnumeratingWithState:&v36 objects:v42 count:16];
                 if (v13)
                 {
                   v14 = v13;
@@ -78,13 +78,13 @@
                     {
                       if (*v37 != v15)
                       {
-                        objc_enumerationMutation(v12);
+                        objc_enumerationMutation(stringValues);
                       }
 
                       [(HDCodableSectionData *)v11 addStringValues:*(*(&v36 + 1) + 8 * j)];
                     }
 
-                    v14 = [v12 countByEnumeratingWithState:&v36 objects:v42 count:16];
+                    v14 = [stringValues countByEnumeratingWithState:&v36 objects:v42 count:16];
                   }
 
                   while (v14);
@@ -99,7 +99,7 @@
                 [(HDCodableOntologyLocalizedEducationContentSection *)v5 addSectionData:v11];
               }
 
-              v7 = [v27 countByEnumeratingWithState:&v32 objects:v41 count:16];
+              v7 = [sectionData countByEnumeratingWithState:&v32 objects:v41 count:16];
             }
 
             while (v7);
@@ -136,13 +136,13 @@
   v4 = a3;
   if ([v4 isMemberOfClass:objc_opt_class()])
   {
-    v5 = [v4 sections];
+    sections = [v4 sections];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __72__HKOntologyLocalizedEducationContent_HDSyncSupport__createWithCodable___block_invoke;
     v13[3] = &__block_descriptor_40_e59__16__0__HDCodableOntologyLocalizedEducationContentSection_8l;
-    v13[4] = a1;
-    v6 = [v5 hk_map:v13];
+    v13[4] = self;
+    v6 = [sections hk_map:v13];
 
     v7 = objc_alloc(MEMORY[0x277CCD750]);
     if (v6)
@@ -155,9 +155,9 @@
       v8 = MEMORY[0x277CBEBF8];
     }
 
-    v9 = [v4 version];
+    version = [v4 version];
     [v4 timestamp];
-    v11 = [v7 initWithSections:v8 version:v9 timestamp:objc_msgSend(v4 deleted:{"deleted"), v10}];
+    v11 = [v7 initWithSections:v8 version:version timestamp:objc_msgSend(v4 deleted:{"deleted"), v10}];
   }
 
   else

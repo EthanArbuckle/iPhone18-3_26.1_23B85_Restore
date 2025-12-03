@@ -1,21 +1,21 @@
 @interface IMNicknameEncryptionKey
-- (IMNicknameEncryptionKey)initWithData:(id)a3;
+- (IMNicknameEncryptionKey)initWithData:(id)data;
 - (const)bytes;
 - (unint64_t)length;
 @end
 
 @implementation IMNicknameEncryptionKey
 
-- (IMNicknameEncryptionKey)initWithData:(id)a3
+- (IMNicknameEncryptionKey)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = IMNicknameEncryptionKey;
   v6 = [(IMNicknameEncryptionKey *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
   }
 
   return v7;
@@ -23,16 +23,16 @@
 
 - (const)bytes
 {
-  v2 = [(IMNicknameEncryptionKey *)self data];
-  v3 = [v2 bytes];
+  data = [(IMNicknameEncryptionKey *)self data];
+  bytes = [data bytes];
 
-  return v3;
+  return bytes;
 }
 
 - (unint64_t)length
 {
-  v2 = [(IMNicknameEncryptionKey *)self data];
-  v3 = [v2 length];
+  data = [(IMNicknameEncryptionKey *)self data];
+  v3 = [data length];
 
   return v3;
 }

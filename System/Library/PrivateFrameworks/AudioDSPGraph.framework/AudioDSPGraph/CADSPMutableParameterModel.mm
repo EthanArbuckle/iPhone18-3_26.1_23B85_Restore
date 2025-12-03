@@ -1,21 +1,21 @@
 @interface CADSPMutableParameterModel
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (void)removeDefaultValue;
 @end
 
 @implementation CADSPMutableParameterModel
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CADSPMutableParameterModel;
-  return [(CADSPParameterModel *)&v4 mutableCopyWithZone:a3];
+  return [(CADSPParameterModel *)&v4 mutableCopyWithZone:zone];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [CADSPParameterModel allocWithZone:a3];
+  result = [CADSPParameterModel allocWithZone:zone];
   *(result + 8) = self->super._this;
   return result;
 }

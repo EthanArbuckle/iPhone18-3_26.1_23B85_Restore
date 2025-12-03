@@ -1,34 +1,34 @@
 @interface SBSceneViewStatusBarAssertion
 - (BOOL)isStatusBarHidden;
-- (SBSceneViewStatusBarAssertion)initWithStatusBarHidden:(BOOL)a3 nubViewHidden:(int64_t)a4 atLevel:(unint64_t)a5;
-- (SBSceneViewStatusBarAssertion)initWithStatusBarSettings:(id)a3 nubViewHidden:(int64_t)a4 atLevel:(unint64_t)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBSceneViewStatusBarAssertion)initWithStatusBarHidden:(BOOL)hidden nubViewHidden:(int64_t)viewHidden atLevel:(unint64_t)level;
+- (SBSceneViewStatusBarAssertion)initWithStatusBarSettings:(id)settings nubViewHidden:(int64_t)hidden atLevel:(unint64_t)level;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)_notifyObserversDidInvalidate;
 - (void)_notifyObserversDidUpdate;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)setNubViewHidden:(int64_t)a3;
-- (void)setSettings:(id)a3;
-- (void)setStatusBarHidden:(BOOL)a3;
+- (void)removeObserver:(id)observer;
+- (void)setNubViewHidden:(int64_t)hidden;
+- (void)setSettings:(id)settings;
+- (void)setStatusBarHidden:(BOOL)hidden;
 @end
 
 @implementation SBSceneViewStatusBarAssertion
 
 - (BOOL)isStatusBarHidden
 {
-  v3 = [(SBStatusBarSettings *)self->_settings alpha];
+  alpha = [(SBStatusBarSettings *)self->_settings alpha];
 
-  if (!v3)
+  if (!alpha)
   {
     return 0;
   }
 
-  v4 = [(SBStatusBarSettings *)self->_settings alpha];
-  [v4 floatValue];
+  alpha2 = [(SBStatusBarSettings *)self->_settings alpha];
+  [alpha2 floatValue];
   IsZero = BSFloatIsZero();
 
   return IsZero;
@@ -110,12 +110,12 @@
   [(SBSceneViewStatusBarAssertion *)&v3 dealloc];
 }
 
-- (SBSceneViewStatusBarAssertion)initWithStatusBarHidden:(BOOL)a3 nubViewHidden:(int64_t)a4 atLevel:(unint64_t)a5
+- (SBSceneViewStatusBarAssertion)initWithStatusBarHidden:(BOOL)hidden nubViewHidden:(int64_t)viewHidden atLevel:(unint64_t)level
 {
-  v7 = a3;
+  hiddenCopy = hidden;
   v9 = objc_alloc_init(SBMutableStatusBarSettings);
   v10 = 1.0;
-  if (v7)
+  if (hiddenCopy)
   {
     v10 = 0.0;
   }
@@ -123,57 +123,57 @@
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
   [(SBMutableStatusBarSettings *)v9 setAlpha:v11];
 
-  v12 = [(SBSceneViewStatusBarAssertion *)self initWithStatusBarSettings:v9 nubViewHidden:a4 atLevel:a5];
+  v12 = [(SBSceneViewStatusBarAssertion *)self initWithStatusBarSettings:v9 nubViewHidden:viewHidden atLevel:level];
   return v12;
 }
 
-- (SBSceneViewStatusBarAssertion)initWithStatusBarSettings:(id)a3 nubViewHidden:(int64_t)a4 atLevel:(unint64_t)a5
+- (SBSceneViewStatusBarAssertion)initWithStatusBarSettings:(id)settings nubViewHidden:(int64_t)hidden atLevel:(unint64_t)level
 {
-  v8 = a3;
+  settingsCopy = settings;
   v13.receiver = self;
   v13.super_class = SBSceneViewStatusBarAssertion;
   v9 = [(SBSceneViewStatusBarAssertion *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [settingsCopy copy];
     settings = v9->_settings;
     v9->_settings = v10;
 
-    v9->_nubViewHidden = a4;
-    v9->_level = a5;
+    v9->_nubViewHidden = hidden;
+    v9->_level = level;
   }
 
   return v9;
 }
 
-- (void)setStatusBarHidden:(BOOL)a3
+- (void)setStatusBarHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(SBSceneViewStatusBarAssertion *)self isStatusBarHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(SBSceneViewStatusBarAssertion *)self isStatusBarHidden]!= hidden)
   {
     v6 = [(SBStatusBarSettings *)self->_settings mutableCopy];
-    v5 = [MEMORY[0x277CCABB0] numberWithInt:!v3];
+    v5 = [MEMORY[0x277CCABB0] numberWithInt:!hiddenCopy];
     [v6 setAlpha:v5];
 
     [(SBSceneViewStatusBarAssertion *)self setSettings:v6];
   }
 }
 
-- (void)setNubViewHidden:(int64_t)a3
+- (void)setNubViewHidden:(int64_t)hidden
 {
-  if (self->_nubViewHidden != a3)
+  if (self->_nubViewHidden != hidden)
   {
-    self->_nubViewHidden = a3;
+    self->_nubViewHidden = hidden;
     [(SBSceneViewStatusBarAssertion *)self _notifyObserversDidUpdate];
   }
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
-  v6 = a3;
+  settingsCopy = settings;
   if (![(SBStatusBarSettings *)self->_settings isEqual:?])
   {
-    v4 = [v6 copy];
+    v4 = [settingsCopy copy];
     settings = self->_settings;
     self->_settings = v4;
 
@@ -181,21 +181,21 @@
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  observerCopy = observer;
+  v9 = observerCopy;
+  if (observerCopy)
   {
-    if (![(NSHashTable *)self->_observers containsObject:v4])
+    if (![(NSHashTable *)self->_observers containsObject:observerCopy])
     {
       observers = self->_observers;
       v6 = v9;
       if (!observers)
       {
-        v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         v8 = self->_observers;
-        self->_observers = v7;
+        self->_observers = weakObjectsHashTable;
 
         v6 = v9;
         observers = self->_observers;
@@ -211,9 +211,9 @@
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
@@ -221,10 +221,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBSceneViewStatusBarAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSceneViewStatusBarAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -249,26 +249,26 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSceneViewStatusBarAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSceneViewStatusBarAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBSceneViewStatusBarAssertion *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBSceneViewStatusBarAssertion *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__SBSceneViewStatusBarAssertion_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

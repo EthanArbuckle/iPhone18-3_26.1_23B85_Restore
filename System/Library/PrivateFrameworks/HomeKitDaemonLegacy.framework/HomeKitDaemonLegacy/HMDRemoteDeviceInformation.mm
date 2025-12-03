@@ -1,11 +1,11 @@
 @interface HMDRemoteDeviceInformation
 - (HMDRemoteDeviceInformation)init;
 - (id)attributeDescriptions;
-- (void)addState:(uint64_t)a1;
-- (void)clearState:(uint64_t)a1;
-- (void)completeConfirmationsWithError:(uint64_t)a1;
-- (void)queueConfirmationHandler:(double)a3 timeout:;
-- (void)setRetryTimer:(uint64_t)a1;
+- (void)addState:(uint64_t)state;
+- (void)clearState:(uint64_t)state;
+- (void)completeConfirmationsWithError:(uint64_t)error;
+- (void)queueConfirmationHandler:(double)handler timeout:;
+- (void)setRetryTimer:(uint64_t)timer;
 @end
 
 @implementation HMDRemoteDeviceInformation
@@ -85,53 +85,53 @@
   objc_exception_throw(v7);
 }
 
-- (void)addState:(uint64_t)a1
+- (void)addState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
-    *(a1 + 40) |= a2;
+    dispatch_assert_queue_V2(*(state + 24));
+    *(state + 40) |= a2;
   }
 }
 
-- (void)queueConfirmationHandler:(double)a3 timeout:
+- (void)queueConfirmationHandler:(double)handler timeout:
 {
-  if (a1)
+  if (self)
   {
-    v5 = *(a1 + 24);
+    v5 = *(self + 24);
     v6 = a2;
     dispatch_assert_queue_V2(v5);
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
-    v13 = [WeakRetained newConfirmationHandlerWithTimeout:*(a1 + 24) workQueue:v6 handler:a3];
+    WeakRetained = objc_loadWeakRetained((self + 32));
+    v13 = [WeakRetained newConfirmationHandlerWithTimeout:*(self + 24) workQueue:v6 handler:handler];
 
-    [*(a1 + 48) addObject:v13];
+    [*(self + 48) addObject:v13];
     if (v13)
     {
-      v8 = [v13 workQueue];
-      dispatch_assert_queue_V2(v8);
+      workQueue = [v13 workQueue];
+      dispatch_assert_queue_V2(workQueue);
 
-      v9 = [v13 timeoutTimer];
-      [v9 setDelegate:v13];
+      timeoutTimer = [v13 timeoutTimer];
+      [timeoutTimer setDelegate:v13];
 
-      v10 = [v13 workQueue];
-      v11 = [v13 timeoutTimer];
-      [v11 setDelegateQueue:v10];
+      workQueue2 = [v13 workQueue];
+      timeoutTimer2 = [v13 timeoutTimer];
+      [timeoutTimer2 setDelegateQueue:workQueue2];
 
-      v12 = [v13 timeoutTimer];
-      [v12 resume];
+      timeoutTimer3 = [v13 timeoutTimer];
+      [timeoutTimer3 resume];
     }
   }
 }
 
-- (void)completeConfirmationsWithError:(uint64_t)a1
+- (void)completeConfirmationsWithError:(uint64_t)error
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
-    v4 = [*(a1 + 48) copy];
-    [*(a1 + 48) removeAllObjects];
+    dispatch_assert_queue_V2(*(error + 24));
+    v4 = [*(error + 48) copy];
+    [*(error + 48) removeAllObjects];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -166,20 +166,20 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearState:(uint64_t)a1
+- (void)clearState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
-    *(a1 + 40) &= ~2uLL;
+    dispatch_assert_queue_V2(*(state + 24));
+    *(state + 40) &= ~2uLL;
   }
 }
 
-- (void)setRetryTimer:(uint64_t)a1
+- (void)setRetryTimer:(uint64_t)timer
 {
-  if (a1)
+  if (timer)
   {
-    objc_storeStrong((a1 + 64), a2);
+    objc_storeStrong((timer + 64), a2);
   }
 }
 

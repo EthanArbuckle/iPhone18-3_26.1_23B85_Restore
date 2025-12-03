@@ -24,49 +24,49 @@
     +[UIImage(SSImageSurface) ss_imageProperties];
   }
 
-  v0 = [MEMORY[0x1E695DF00] date];
-  v1 = [ss_imageProperties_exifDateTimeFormatter stringFromDate:v0];
+  date = [MEMORY[0x1E695DF00] date];
+  v1 = [ss_imageProperties_exifDateTimeFormatter stringFromDate:date];
   v2 = objc_opt_new();
   v3 = *MEMORY[0x1E696DE78];
   [v2 setObject:&unk_1F555C210 forKeyedSubscript:*MEMORY[0x1E696DE78]];
   [v2 setObject:&unk_1F555C1E0 forKeyedSubscript:*MEMORY[0x1E696D888]];
   [v2 setObject:&unk_1F555C1E0 forKeyedSubscript:*MEMORY[0x1E696D880]];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v20 = *MEMORY[0x1E696DB40];
   v21[0] = @"Screenshot";
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-  [v4 addEntriesFromDictionary:v5];
+  [dictionary addEntriesFromDictionary:v5];
 
   if (v1)
   {
     v18 = *MEMORY[0x1E696D998];
     v19 = v1;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    [v4 addEntriesFromDictionary:v6];
+    [dictionary addEntriesFromDictionary:v6];
   }
 
-  v7 = [v4 copy];
+  v7 = [dictionary copy];
   [v2 setObject:v7 forKeyedSubscript:*MEMORY[0x1E696D9B0]];
 
   if (_os_feature_enabled_impl())
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v16[0] = *MEMORY[0x1E696DF40];
     v16[1] = v3;
     v17[0] = @"Screenshot";
     v17[1] = &unk_1F555C210;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
-    [v8 addEntriesFromDictionary:v9];
+    [dictionary2 addEntriesFromDictionary:v9];
 
     if (v1)
     {
       v14 = *MEMORY[0x1E696DF20];
       v15 = v1;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-      [v8 addEntriesFromDictionary:v10];
+      [dictionary2 addEntriesFromDictionary:v10];
     }
 
-    v11 = [v8 copy];
+    v11 = [dictionary2 copy];
     [v2 setObject:v11 forKeyedSubscript:*MEMORY[0x1E696DF28]];
   }
 
@@ -84,8 +84,8 @@
 
   v3 = CGImageSourceCreateWithData(data, 0);
   v4 = CGImageSourceGetType(v3);
-  v5 = [*MEMORY[0x1E6982E00] identifier];
-  v6 = [v4 isEqual:v5];
+  identifier = [*MEMORY[0x1E6982E00] identifier];
+  v6 = [v4 isEqual:identifier];
 
   if (v3)
   {
@@ -98,11 +98,11 @@
 - (__CFData)ss_ioSurfaceImageData
 {
   v42[5] = *MEMORY[0x1E69E9840];
-  v2 = [a1 sdrSurface];
-  v3 = [a1 hdrSurface];
-  if (v2 | v3)
+  sdrSurface = [self sdrSurface];
+  hdrSurface = [self hdrSurface];
+  if (sdrSurface | hdrSurface)
   {
-    v4 = v3;
+    v4 = hdrSurface;
     v5 = _SSSignpostLog();
     if (os_signpost_enabled(v5))
     {
@@ -117,10 +117,10 @@
       _os_log_impl(&dword_1D9E04000, v6, OS_LOG_TYPE_INFO, "BEGIN EncodeScreenshotImageData", v38, 2u);
     }
 
-    v7 = [a1 isHighDynamicRange];
-    if (v2)
+    isHighDynamicRange = [self isHighDynamicRange];
+    if (sdrSurface)
     {
-      v8 = v7;
+      v8 = isHighDynamicRange;
     }
 
     else
@@ -150,8 +150,8 @@
     }
 
     v12 = CGImageDestinationCreateWithData(v10, v11, 1uLL, 0);
-    v13 = [MEMORY[0x1E69DCAB8] ss_imageProperties];
-    v14 = v13;
+    ss_imageProperties = [MEMORY[0x1E69DCAB8] ss_imageProperties];
+    v14 = ss_imageProperties;
     if (v9 == 1)
     {
       v15 = CGImageCreateFromIOSurface();
@@ -205,7 +205,7 @@
 
     else
     {
-      v16 = [v13 mutableCopy];
+      v16 = [ss_imageProperties mutableCopy];
       v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:2019963956];
       [v16 setObject:v33 forKeyedSubscript:*MEMORY[0x1E696E148]];
 
@@ -247,12 +247,12 @@
 
 - (CGImage)ss_isHDRImage
 {
-  if ([a1 isHighDynamicRange])
+  if ([self isHighDynamicRange])
   {
     return 1;
   }
 
-  result = [a1 CGImage];
+  result = [self CGImage];
   if (result)
   {
     result = CGImageGetColorSpace(result);
@@ -274,8 +274,8 @@
 {
   v4 = *MEMORY[0x1E6982E00];
   v5 = a3;
-  v6 = [v4 identifier];
-  v7 = [a1 ss_dataWithFileFormat:v6 addProperties:1 imageDescription:v5];
+  identifier = [v4 identifier];
+  v7 = [self ss_dataWithFileFormat:identifier addProperties:1 imageDescription:v5];
 
   return v7;
 }
@@ -284,34 +284,34 @@
 {
   v8 = a3;
   v9 = a5;
-  v10 = [a1 ss_sdrSurfaceCGImage];
-  if (!v10)
+  ss_sdrSurfaceCGImage = [self ss_sdrSurfaceCGImage];
+  if (!ss_sdrSurfaceCGImage)
   {
-    v11 = [a1 ss_CGImageBacked];
-    v10 = [v11 CGImage];
+    ss_CGImageBacked = [self ss_CGImageBacked];
+    ss_sdrSurfaceCGImage = [ss_CGImageBacked CGImage];
   }
 
-  if ([a1 ss_isHDRImage])
+  if ([self ss_isHDRImage])
   {
-    v12 = [a1 ss_hdrSurfaceCGImage];
+    ss_hdrSurfaceCGImage = [self ss_hdrSurfaceCGImage];
   }
 
   else
   {
-    v12 = 0;
+    ss_hdrSurfaceCGImage = 0;
   }
 
   v13 = MEMORY[0x1E69DCAB8];
   v14 = [MEMORY[0x1E6982C40] typeWithIdentifier:v8];
   if (a4)
   {
-    v15 = [MEMORY[0x1E69DCAB8] ss_imageProperties];
-    v16 = [v13 ss_imageDataWithDataType:v14 sdrImage:v10 hdrImage:v12 properties:v15 imageDescription:v9];
+    ss_imageProperties = [MEMORY[0x1E69DCAB8] ss_imageProperties];
+    v16 = [v13 ss_imageDataWithDataType:v14 sdrImage:ss_sdrSurfaceCGImage hdrImage:ss_hdrSurfaceCGImage properties:ss_imageProperties imageDescription:v9];
   }
 
   else
   {
-    v16 = [v13 ss_imageDataWithDataType:v14 sdrImage:v10 hdrImage:v12 properties:0 imageDescription:v9];
+    v16 = [v13 ss_imageDataWithDataType:v14 sdrImage:ss_sdrSurfaceCGImage hdrImage:ss_hdrSurfaceCGImage properties:0 imageDescription:v9];
   }
 
   return v16;
@@ -321,15 +321,15 @@
 {
   v4 = *MEMORY[0x1E6982F28];
   v5 = a3;
-  v6 = [v4 identifier];
-  v7 = [a1 ss_dataWithFileFormat:v6 addProperties:1 imageDescription:v5];
+  identifier = [v4 identifier];
+  v7 = [self ss_dataWithFileFormat:identifier addProperties:1 imageDescription:v5];
 
   return v7;
 }
 
 - (uint64_t)ss_hdrSurfaceCGImage
 {
-  result = [a1 hdrSurface];
+  result = [self hdrSurface];
   if (result)
   {
 
@@ -341,7 +341,7 @@
 
 - (uint64_t)ss_sdrSurfaceCGImage
 {
-  result = [a1 sdrSurface];
+  result = [self sdrSurface];
   if (result)
   {
 
@@ -356,13 +356,13 @@
   v3 = MEMORY[0x1E69DCAB8];
   v4 = a3;
   v5 = [v3 alloc];
-  v6 = [v4 backingSurface];
-  v7 = [v4 hdrBackingSurface];
+  backingSurface = [v4 backingSurface];
+  hdrBackingSurface = [v4 hdrBackingSurface];
   [v4 scale];
   v9 = v8;
-  v10 = [v4 orientation];
+  orientation = [v4 orientation];
 
-  v11 = [v5 _initWithSDRIOSurface:v6 HDRIOSurface:v7 scale:v10 orientation:v9];
+  v11 = [v5 _initWithSDRIOSurface:backingSurface HDRIOSurface:hdrBackingSurface scale:orientation orientation:v9];
 
   return v11;
 }
@@ -370,23 +370,23 @@
 - (SSImageSurface)ss_imageSurfaceFromImage
 {
   v2 = objc_alloc_init(SSImageSurface);
-  [a1 scale];
+  [self scale];
   [(SSImageSurface *)v2 setScale:?];
-  -[SSImageSurface setOrientation:](v2, "setOrientation:", [a1 imageOrientation]);
-  v3 = [a1 sdrSurface];
-  if (v3)
+  -[SSImageSurface setOrientation:](v2, "setOrientation:", [self imageOrientation]);
+  sdrSurface = [self sdrSurface];
+  if (sdrSurface)
   {
-    [(SSImageSurface *)v2 setBackingSurface:v3];
-    -[SSImageSurface setHdrBackingSurface:](v2, "setHdrBackingSurface:", [a1 hdrSurface]);
+    [(SSImageSurface *)v2 setBackingSurface:sdrSurface];
+    -[SSImageSurface setHdrBackingSurface:](v2, "setHdrBackingSurface:", [self hdrSurface]);
   }
 
   else
   {
-    v4 = [a1 _copyIOSurface];
-    if (v4)
+    _copyIOSurface = [self _copyIOSurface];
+    if (_copyIOSurface)
     {
-      v5 = v4;
-      [(SSImageSurface *)v2 setBackingSurface:v4];
+      v5 = _copyIOSurface;
+      [(SSImageSurface *)v2 setBackingSurface:_copyIOSurface];
       CFRelease(v5);
     }
 
@@ -395,7 +395,7 @@
       v6 = os_log_create("com.apple.screenshotservices", "Image");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
       {
-        [(UIImage(SSImageSurface) *)a1 ss_imageSurfaceFromImage];
+        [(UIImage(SSImageSurface) *)self ss_imageSurfaceFromImage];
       }
     }
   }
@@ -410,9 +410,9 @@
   v5 = MEMORY[0x1E69DCAB8];
   [v3 scale];
   v7 = v6;
-  v8 = [v3 orientation];
+  orientation = [v3 orientation];
 
-  v9 = [v5 imageWithCGImage:v4 scale:v8 orientation:v7];
+  v9 = [v5 imageWithCGImage:v4 scale:orientation orientation:v7];
   CGImageRelease(v4);
 
   return v9;
@@ -422,7 +422,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1D9E04000, a2, OS_LOG_TYPE_FAULT, "unexpected NULL backing surface for image %@", &v2, 0xCu);
 }
 

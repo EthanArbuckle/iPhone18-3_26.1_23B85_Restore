@@ -1,8 +1,8 @@
 @interface ACCAuthorizationManager
 + (id)sharedManager;
-+ (unint64_t)authorizationStatusForCertSerial:(id)a3;
-+ (unint64_t)promptUserForAuthorizationOfAccessoryWithName:(id)a3 providesPower:(BOOL)a4 certSerial:(id)a5;
-+ (void)requestAuthorizationForCertSerial:(id)a3 withName:(id)a4 providesPower:(BOOL)a5 completionHandler:(id)a6;
++ (unint64_t)authorizationStatusForCertSerial:(id)serial;
++ (unint64_t)promptUserForAuthorizationOfAccessoryWithName:(id)name providesPower:(BOOL)power certSerial:(id)serial;
++ (void)requestAuthorizationForCertSerial:(id)serial withName:(id)name providesPower:(BOOL)power completionHandler:(id)handler;
 - (ACCAuthorizationManager)init;
 - (BOOL)bypassAuthorization;
 @end
@@ -60,7 +60,7 @@
   block[1] = 3221225472;
   block[2] = sub_100029D28;
   block[3] = &unk_100111CF8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10012BA40 != -1)
   {
     dispatch_once(&qword_10012BA40, block);
@@ -71,13 +71,13 @@
   return v2;
 }
 
-+ (unint64_t)authorizationStatusForCertSerial:(id)a3
++ (unint64_t)authorizationStatusForCertSerial:(id)serial
 {
-  v3 = a3;
+  serialCopy = serial;
   v4 = +[ACCAuthorizationManager sharedManager];
-  v5 = [v4 bypassAuthorization];
+  bypassAuthorization = [v4 bypassAuthorization];
 
-  if (v5)
+  if (bypassAuthorization)
   {
     NSLog(@"Bypassing user authorization...");
     v6 = 2;
@@ -85,7 +85,7 @@
 
   else
   {
-    v7 = [ACCAccessoryAuthorizationStore authorizationEntryForCertSerial:v3];
+    v7 = [ACCAccessoryAuthorizationStore authorizationEntryForCertSerial:serialCopy];
     v8 = v7;
     if (v7)
     {
@@ -109,18 +109,18 @@
   return v6;
 }
 
-+ (void)requestAuthorizationForCertSerial:(id)a3 withName:(id)a4 providesPower:(BOOL)a5 completionHandler:(id)a6
++ (void)requestAuthorizationForCertSerial:(id)serial withName:(id)name providesPower:(BOOL)power completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [ACCAuthorizationManager authorizationStatusForCertSerial:v9];
+  serialCopy = serial;
+  nameCopy = name;
+  handlerCopy = handler;
+  v12 = [ACCAuthorizationManager authorizationStatusForCertSerial:serialCopy];
   NSLog(@"authorizationStatus: %lu", v12);
   if (v12)
   {
-    if (v11)
+    if (handlerCopy)
     {
-      v11[2](v11, v12 == 2);
+      handlerCopy[2](handlerCopy, v12 == 2);
     }
 
     goto LABEL_6;
@@ -134,10 +134,10 @@
     block[1] = 3221225472;
     block[2] = sub_100029F58;
     block[3] = &unk_100113910;
-    v16 = v9;
-    v17 = v10;
-    v19 = a5;
-    v18 = v11;
+    v16 = serialCopy;
+    v17 = nameCopy;
+    powerCopy = power;
+    v18 = handlerCopy;
     dispatch_async(v14, block);
 
 LABEL_6:
@@ -147,21 +147,21 @@ LABEL_6:
   __break(0x5510u);
 }
 
-+ (unint64_t)promptUserForAuthorizationOfAccessoryWithName:(id)a3 providesPower:(BOOL)a4 certSerial:(id)a5
++ (unint64_t)promptUserForAuthorizationOfAccessoryWithName:(id)name providesPower:(BOOL)power certSerial:(id)serial
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  powerCopy = power;
+  nameCopy = name;
+  serialCopy = serial;
   v9 = sub_100029AEC(@"ACC_AUTHORIZATION_NOTIFICATION_HEADER");
   v10 = MGCopyAnswer();
-  v11 = [NSString stringWithFormat:v9, v7, v10];
+  v11 = [NSString stringWithFormat:v9, nameCopy, v10];
 
   v12 = sub_100029AEC(@"ACC_AUTHORIZATION_NOTIFICATION_MESSAGE");
   v13 = MGCopyAnswer();
   v14 = [NSString stringWithFormat:v12, v13];
 
-  v43 = v7;
-  if (!v7 || ![v7 length])
+  v43 = nameCopy;
+  if (!nameCopy || ![nameCopy length])
   {
     v15 = sub_100029AEC(@"ACC_AUTHORIZATION_NOTIFICATION_HEADER_NO_NAME");
     v16 = MGCopyAnswer();
@@ -183,7 +183,7 @@ LABEL_6:
   v21 = sub_100029AEC(@"ACC_AUTHORIZATION_NOTIFICATION_ALLOW");
   v47[2] = v21;
   v46[3] = kCFUserNotificationAlternateButtonTitleKey;
-  if (v6)
+  if (powerCopy)
   {
     v22 = @"ACC_AUTHORIZATION_NOTIFICATION_CHARGE_ONLY";
   }
@@ -210,8 +210,8 @@ LABEL_6:
   v28 = [NSDictionary dictionaryWithObjects:v47 forKeys:v46 count:8];
 
   v29 = +[ACCAuthorizationManager sharedManager];
-  v30 = [v29 notificationDictMutable];
-  v31 = [v30 objectForKey:v8];
+  notificationDictMutable = [v29 notificationDictMutable];
+  v31 = [notificationDictMutable objectForKey:serialCopy];
 
   if (v31)
   {
@@ -221,20 +221,20 @@ LABEL_6:
   error = -1431655766;
   v32 = CFUserNotificationCreate(kCFAllocatorDefault, 0.0, 3uLL, &error, v28);
   v33 = +[ACCAuthorizationManager sharedManager];
-  v34 = [v33 notificationDictMutable];
-  [v34 setObject:v32 forKey:v8];
+  notificationDictMutable2 = [v33 notificationDictMutable];
+  [notificationDictMutable2 setObject:v32 forKey:serialCopy];
 
   responseFlags = 0xAAAAAAAAAAAAAAAALL;
   CFUserNotificationReceiveResponse(v32, 0.0, &responseFlags);
   v35 = +[ACCAuthorizationManager sharedManager];
-  v36 = [v35 notificationDictMutable];
-  v37 = CFEqual([v36 objectForKey:v8], v32);
+  notificationDictMutable3 = [v35 notificationDictMutable];
+  v37 = CFEqual([notificationDictMutable3 objectForKey:serialCopy], v32);
 
   if (v37)
   {
     v38 = +[ACCAuthorizationManager sharedManager];
-    v39 = [v38 notificationDictMutable];
-    [v39 removeObjectForKey:v8];
+    notificationDictMutable4 = [v38 notificationDictMutable];
+    [notificationDictMutable4 removeObjectForKey:serialCopy];
   }
 
   CFRelease(v32);

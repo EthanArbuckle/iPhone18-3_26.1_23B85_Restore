@@ -5,33 +5,33 @@
 - (NSString)simplifiedURLString;
 - (UIImage)appIcon;
 - (UIImage)sourceIcon;
-- (WBSForYouLinkRecommendation)initWithTitle:(id)a3 url:(id)a4 lastSeenDate:(id)a5 source:(unint64_t)a6 topicSource:(unint64_t)a7;
+- (WBSForYouLinkRecommendation)initWithTitle:(id)title url:(id)url lastSeenDate:(id)date source:(unint64_t)source topicSource:(unint64_t)topicSource;
 @end
 
 @implementation WBSForYouLinkRecommendation
 
-- (WBSForYouLinkRecommendation)initWithTitle:(id)a3 url:(id)a4 lastSeenDate:(id)a5 source:(unint64_t)a6 topicSource:(unint64_t)a7
+- (WBSForYouLinkRecommendation)initWithTitle:(id)title url:(id)url lastSeenDate:(id)date source:(unint64_t)source topicSource:(unint64_t)topicSource
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  titleCopy = title;
+  urlCopy = url;
+  dateCopy = date;
   v24.receiver = self;
   v24.super_class = WBSForYouLinkRecommendation;
   v15 = [(WBSForYouLinkRecommendation *)&v24 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [titleCopy copy];
     title = v15->_title;
     v15->_title = v16;
 
-    objc_storeStrong(&v15->_pageURL, a4);
-    v18 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeStrong(&v15->_pageURL, url);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uniqueIdentifier = v15->_uniqueIdentifier;
-    v15->_uniqueIdentifier = v18;
+    v15->_uniqueIdentifier = uUID;
 
-    objc_storeStrong(&v15->_lastSeenDate, a5);
-    v15->_source = a6;
-    v15->_topicSource = a7;
+    objc_storeStrong(&v15->_lastSeenDate, date);
+    v15->_source = source;
+    v15->_topicSource = topicSource;
     v20 = [MEMORY[0x1E695DFA8] set];
     originalQueries = v15->_originalQueries;
     v15->_originalQueries = v20;
@@ -47,9 +47,9 @@
   simplifiedURLString = self->_simplifiedURLString;
   if (!simplifiedURLString)
   {
-    v4 = [(NSURL *)self->_pageURL safari_simplifiedURLStringForDeduping];
+    safari_simplifiedURLStringForDeduping = [(NSURL *)self->_pageURL safari_simplifiedURLStringForDeduping];
     v5 = self->_simplifiedURLString;
-    self->_simplifiedURLString = v4;
+    self->_simplifiedURLString = safari_simplifiedURLStringForDeduping;
 
     simplifiedURLString = self->_simplifiedURLString;
   }
@@ -62,13 +62,13 @@
   appIcon = self->_appIcon;
   if (!appIcon)
   {
-    v4 = [(WBSForYouLinkRecommendation *)self badgeBundleIdentifier];
-    if ([v4 length])
+    badgeBundleIdentifier = [(WBSForYouLinkRecommendation *)self badgeBundleIdentifier];
+    if ([badgeBundleIdentifier length])
     {
       v5 = MEMORY[0x1E69DCAB8];
-      v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v6 scale];
-      v7 = [v5 _applicationIconImageForBundleIdentifier:v4 format:5 scale:?];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
+      v7 = [v5 _applicationIconImageForBundleIdentifier:badgeBundleIdentifier format:5 scale:?];
     }
 
     else
@@ -191,8 +191,8 @@ uint64_t __52__WBSForYouLinkRecommendation_badgeBundleIdentifier__block_invoke(u
 
 - (NSString)originalQueriesString
 {
-  v2 = [(NSMutableSet *)self->_originalQueries allObjects];
-  v3 = [v2 componentsJoinedByString:{@", "}];
+  allObjects = [(NSMutableSet *)self->_originalQueries allObjects];
+  v3 = [allObjects componentsJoinedByString:{@", "}];
 
   return v3;
 }

@@ -1,12 +1,12 @@
 @interface CRLIndeterminateRoundSpinnerView
-- (_TtC8Freeform32CRLIndeterminateRoundSpinnerView)initWithCoder:(id)a3;
-- (_TtC8Freeform32CRLIndeterminateRoundSpinnerView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC8Freeform32CRLIndeterminateRoundSpinnerView)initWithCoder:(id)coder;
+- (_TtC8Freeform32CRLIndeterminateRoundSpinnerView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation CRLIndeterminateRoundSpinnerView
 
-- (_TtC8Freeform32CRLIndeterminateRoundSpinnerView)initWithCoder:(id)a3
+- (_TtC8Freeform32CRLIndeterminateRoundSpinnerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform32CRLIndeterminateRoundSpinnerView_wantsLinkViewSublayerTransformAdjustedHitTestFrame) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform32CRLIndeterminateRoundSpinnerView_backgroundLayer) = 0;
@@ -17,18 +17,18 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_100AC74CC(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_100AC74CC(event, x, y);
 
   return v10;
 }
 
-- (_TtC8Freeform32CRLIndeterminateRoundSpinnerView)initWithFrame:(CGRect)a3
+- (_TtC8Freeform32CRLIndeterminateRoundSpinnerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

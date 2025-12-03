@@ -1,7 +1,7 @@
 @interface _CUIThemeNamedColorGradientRendition
 - (CGPoint)gradientEndPoint;
 - (CGPoint)gradientStartPoint;
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
 - (void)dealloc;
 @end
 
@@ -32,13 +32,13 @@
   [(CUIThemeRendition *)&v3 dealloc];
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v33.receiver = self;
   v33.super_class = _CUIThemeNamedColorGradientRendition;
-  v5 = [(CUIThemeRendition *)&v33 _initWithCSIHeader:a3 version:*&a4];
+  v5 = [(CUIThemeRendition *)&v33 _initWithCSIHeader:header version:*&version];
   f64 = v5->f64;
-  v13 = &a3->var0 + 4 * a3->var11.var0 + a3->var10;
+  v13 = &header->var0 + 4 * header->var11.var0 + header->var10;
   v16 = *(v13 + 45);
   v14 = (v13 + 180);
   v15 = v16;

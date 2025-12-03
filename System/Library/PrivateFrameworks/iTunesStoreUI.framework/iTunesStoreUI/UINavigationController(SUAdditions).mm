@@ -8,10 +8,10 @@
 
 - (id)firstViewController
 {
-  v1 = [a1 viewControllers];
-  if ([v1 count])
+  viewControllers = [self viewControllers];
+  if ([viewControllers count])
   {
-    v2 = [v1 objectAtIndex:0];
+    v2 = [viewControllers objectAtIndex:0];
   }
 
   else
@@ -24,18 +24,18 @@
 
 - (uint64_t)indexOfViewController:()SUAdditions
 {
-  v4 = a3;
-  v5 = [a1 viewControllers];
-  if (v4)
+  parentViewController = a3;
+  viewControllers = [self viewControllers];
+  if (parentViewController)
   {
     do
     {
-      v6 = v4;
-      v7 = [v5 indexOfObjectIdenticalTo:v4];
-      v4 = [v4 parentViewController];
+      v6 = parentViewController;
+      v7 = [viewControllers indexOfObjectIdenticalTo:parentViewController];
+      parentViewController = [parentViewController parentViewController];
     }
 
-    while (v7 == 0x7FFFFFFFFFFFFFFFLL && v4);
+    while (v7 == 0x7FFFFFFFFFFFFFFFLL && parentViewController);
   }
 
   else
@@ -49,12 +49,12 @@
 - (void)invalidate
 {
   v12 = *MEMORY[0x1E69E9840];
-  v1 = [a1 viewControllers];
+  viewControllers = [self viewControllers];
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  v2 = [viewControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v2)
   {
     v3 = v2;
@@ -66,7 +66,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(viewControllers);
         }
 
         v6 = *(*(&v7 + 1) + 8 * v5);
@@ -79,7 +79,7 @@
       }
 
       while (v3 != v5);
-      v3 = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [viewControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v3);

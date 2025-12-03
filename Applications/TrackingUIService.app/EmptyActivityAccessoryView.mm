@@ -1,17 +1,17 @@
 @interface EmptyActivityAccessoryView
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
-- (_TtC17TrackingUIService26EmptyActivityAccessoryView)initWithCoder:(id)a3;
-- (_TtC17TrackingUIService26EmptyActivityAccessoryView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
+- (_TtC17TrackingUIService26EmptyActivityAccessoryView)initWithCoder:(id)coder;
+- (_TtC17TrackingUIService26EmptyActivityAccessoryView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation EmptyActivityAccessoryView
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = self;
-  v7 = [(EmptyActivityAccessoryView *)v6 subviews];
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  subviews = [(EmptyActivityAccessoryView *)selfCopy subviews];
   sub_100001A84();
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -66,23 +66,23 @@ LABEL_12:
   return result;
 }
 
-- (_TtC17TrackingUIService26EmptyActivityAccessoryView)initWithFrame:(CGRect)a3
+- (_TtC17TrackingUIService26EmptyActivityAccessoryView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   return [(EmptyActivityAccessoryView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC17TrackingUIService26EmptyActivityAccessoryView)initWithCoder:(id)a3
+- (_TtC17TrackingUIService26EmptyActivityAccessoryView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(EmptyActivityAccessoryView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(EmptyActivityAccessoryView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

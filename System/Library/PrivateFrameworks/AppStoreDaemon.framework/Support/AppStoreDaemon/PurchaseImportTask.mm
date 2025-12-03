@@ -48,11 +48,11 @@
   }
 
   v9 = ASDLogHandleForCategory();
-  v10 = [(PurchaseInfo *)self->_purchaseInfo signpostID];
-  if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
+  signpostID = [(PurchaseInfo *)self->_purchaseInfo signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     *v11 = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_END, v10, "Purchase/Import", "", v11, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_END, signpostID, "Purchase/Import", "", v11, 2u);
   }
 
   [(Task *)self completeWithSuccess];

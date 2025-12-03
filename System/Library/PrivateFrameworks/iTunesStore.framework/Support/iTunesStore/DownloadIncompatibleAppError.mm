@@ -1,6 +1,6 @@
 @interface DownloadIncompatibleAppError
 - (id)copyUserNotification;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DownloadIncompatibleAppError
@@ -10,10 +10,10 @@
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   v3 = [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"OK", &stru_10033CC30, 0];
   CFDictionarySetValue(Mutable, kCFUserNotificationDefaultButtonTitleKey, v3);
-  v4 = [ISDeviceIncompatibleAppErrorWithAppTitle() localizedFailureReason];
-  if (v4)
+  localizedFailureReason = [ISDeviceIncompatibleAppErrorWithAppTitle() localizedFailureReason];
+  if (localizedFailureReason)
   {
-    CFDictionarySetValue(Mutable, kCFUserNotificationAlertHeaderKey, v4);
+    CFDictionarySetValue(Mutable, kCFUserNotificationAlertHeaderKey, localizedFailureReason);
   }
 
   v5 = [[ISUserNotification alloc] initWithDictionary:Mutable options:3];
@@ -21,11 +21,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = DownloadIncompatibleAppError;
-  return [(DownloadError *)&v4 copyWithZone:a3];
+  return [(DownloadError *)&v4 copyWithZone:zone];
 }
 
 @end

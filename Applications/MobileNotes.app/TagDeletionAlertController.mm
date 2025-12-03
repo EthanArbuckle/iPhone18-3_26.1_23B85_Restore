@@ -1,25 +1,25 @@
 @interface TagDeletionAlertController
 - (_TtC11MobileNotes26TagDeletionAlertController)init;
-- (_TtC11MobileNotes26TagDeletionAlertController)initWithViewControllerManager:(id)a3 window:(id)a4 eventReporter:(id)a5 deletionMethod:(int64_t)a6;
-- (id)makeDeleteTagAlertControllerWithTags:(id)a3 sendNotification:(BOOL)a4;
+- (_TtC11MobileNotes26TagDeletionAlertController)initWithViewControllerManager:(id)manager window:(id)window eventReporter:(id)reporter deletionMethod:(int64_t)method;
+- (id)makeDeleteTagAlertControllerWithTags:(id)tags sendNotification:(BOOL)notification;
 @end
 
 @implementation TagDeletionAlertController
 
-- (_TtC11MobileNotes26TagDeletionAlertController)initWithViewControllerManager:(id)a3 window:(id)a4 eventReporter:(id)a5 deletionMethod:(int64_t)a6
+- (_TtC11MobileNotes26TagDeletionAlertController)initWithViewControllerManager:(id)manager window:(id)window eventReporter:(id)reporter deletionMethod:(int64_t)method
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  return sub_10029A538(a3, a4, a5, a6);
+  managerCopy = manager;
+  windowCopy = window;
+  reporterCopy = reporter;
+  return sub_10029A538(manager, window, reporter, method);
 }
 
-- (id)makeDeleteTagAlertControllerWithTags:(id)a3 sendNotification:(BOOL)a4
+- (id)makeDeleteTagAlertControllerWithTags:(id)tags sendNotification:(BOOL)notification
 {
   sub_1000054A4(0, &qword_1006C63E0);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = self;
-  v8 = sub_10029A700(v6, a4);
+  selfCopy = self;
+  v8 = sub_10029A700(v6, notification);
 
   return v8;
 }

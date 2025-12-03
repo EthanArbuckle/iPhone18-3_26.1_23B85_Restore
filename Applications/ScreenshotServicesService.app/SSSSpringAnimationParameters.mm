@@ -1,32 +1,32 @@
 @interface SSSSpringAnimationParameters
-+ (id)springAnimationParametersWithDuration:(double)a3 mass:(double)a4 stiffness:(double)a5 damping:(double)a6 speed:(double)a7 controlPointOne:(CGPoint)a8 controlPointTwo:(CGPoint)a9;
-- (id)animationUsingParametersForKeyPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)springAnimationParametersWithDuration:(double)duration mass:(double)mass stiffness:(double)stiffness damping:(double)damping speed:(double)speed controlPointOne:(CGPoint)one controlPointTwo:(CGPoint)two;
+- (id)animationUsingParametersForKeyPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)timingParameters;
 @end
 
 @implementation SSSSpringAnimationParameters
 
-+ (id)springAnimationParametersWithDuration:(double)a3 mass:(double)a4 stiffness:(double)a5 damping:(double)a6 speed:(double)a7 controlPointOne:(CGPoint)a8 controlPointTwo:(CGPoint)a9
++ (id)springAnimationParametersWithDuration:(double)duration mass:(double)mass stiffness:(double)stiffness damping:(double)damping speed:(double)speed controlPointOne:(CGPoint)one controlPointTwo:(CGPoint)two
 {
-  y = a8.y;
-  x = a8.x;
+  y = one.y;
+  x = one.x;
   v15 = objc_alloc_init(objc_opt_class());
-  [v15 setDuration:a3];
-  *(v15 + 5) = a4;
-  *(v15 + 6) = a5;
-  *(v15 + 7) = a6;
-  *(v15 + 8) = a7;
+  [v15 setDuration:duration];
+  *(v15 + 5) = mass;
+  *(v15 + 6) = stiffness;
+  *(v15 + 7) = damping;
+  *(v15 + 8) = speed;
   *(v15 + 9) = x;
   *(v15 + 10) = y;
-  *(v15 + 88) = a9;
+  *(v15 + 88) = two;
 
   return v15;
 }
 
-- (id)animationUsingParametersForKeyPath:(id)a3
+- (id)animationUsingParametersForKeyPath:(id)path
 {
-  v4 = [CASpringAnimation animationWithKeyPath:a3];
+  v4 = [CASpringAnimation animationWithKeyPath:path];
   [v4 setMass:self->_mass];
   [v4 setStiffness:self->_stiffness];
   [v4 setDamping:self->_damping];
@@ -61,11 +61,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = SSSSpringAnimationParameters;
-  result = [(SSSAnimationParameters *)&v5 copyWithZone:a3];
+  result = [(SSSAnimationParameters *)&v5 copyWithZone:zone];
   *(result + 5) = *&self->_mass;
   *(result + 6) = *&self->_stiffness;
   *(result + 7) = *&self->_damping;

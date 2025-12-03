@@ -1,6 +1,6 @@
 @interface PLSearchIndexingContext
 - (BOOL)isSharedLibraryEnabled;
-- (PLSearchIndexingContext)initWithSceneTaxonomyProvider:(id)a3 csuTaxonomyObjectStore:(id)a4 locale:(id)a5 calendar:(id)a6 indexDateFormatter:(id)a7 countrySynonymProvider:(id)a8 delegate:(id)a9;
+- (PLSearchIndexingContext)initWithSceneTaxonomyProvider:(id)provider csuTaxonomyObjectStore:(id)store locale:(id)locale calendar:(id)calendar indexDateFormatter:(id)formatter countrySynonymProvider:(id)synonymProvider delegate:(id)delegate;
 - (PLSearchIndexingContextDelegate)delegate;
 - (id)description;
 @end
@@ -16,11 +16,11 @@
 
 - (BOOL)isSharedLibraryEnabled
 {
-  v2 = self;
-  v3 = [(PLSearchIndexingContext *)self delegate];
-  LOBYTE(v2) = [v3 isSharedLibraryEnabledForSearchIndexingContext:v2];
+  selfCopy = self;
+  delegate = [(PLSearchIndexingContext *)self delegate];
+  LOBYTE(selfCopy) = [delegate isSharedLibraryEnabledForSearchIndexingContext:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)description
@@ -49,19 +49,19 @@
   return v13;
 }
 
-- (PLSearchIndexingContext)initWithSceneTaxonomyProvider:(id)a3 csuTaxonomyObjectStore:(id)a4 locale:(id)a5 calendar:(id)a6 indexDateFormatter:(id)a7 countrySynonymProvider:(id)a8 delegate:(id)a9
+- (PLSearchIndexingContext)initWithSceneTaxonomyProvider:(id)provider csuTaxonomyObjectStore:(id)store locale:(id)locale calendar:(id)calendar indexDateFormatter:(id)formatter countrySynonymProvider:(id)synonymProvider delegate:(id)delegate
 {
-  v16 = a3;
-  v17 = a4;
-  obj = a5;
-  v18 = a5;
-  v56 = a6;
-  v52 = a7;
-  v55 = a7;
-  v53 = a8;
-  v54 = a8;
-  v19 = a9;
-  if (!v17)
+  providerCopy = provider;
+  storeCopy = store;
+  obj = locale;
+  localeCopy = locale;
+  calendarCopy = calendar;
+  formatterCopy = formatter;
+  formatterCopy2 = formatter;
+  synonymProviderCopy = synonymProvider;
+  synonymProviderCopy2 = synonymProvider;
+  delegateCopy = delegate;
+  if (!storeCopy)
   {
     v20 = PLSearchBackendIndexManagerGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -71,27 +71,27 @@
     }
   }
 
-  if (!v16)
+  if (!providerCopy)
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"PLSearchIndexingContext.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"sceneTaxonomyProvider"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSearchIndexingContext.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"sceneTaxonomyProvider"}];
   }
 
-  v21 = v18;
-  if (!v18)
+  v21 = localeCopy;
+  if (!localeCopy)
   {
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"PLSearchIndexingContext.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"locale"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLSearchIndexingContext.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"locale"}];
 
     v21 = 0;
   }
 
-  if (!v56)
+  if (!calendarCopy)
   {
-    v49 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v49 handleFailureInMethod:a2 object:self file:@"PLSearchIndexingContext.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"calendar"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLSearchIndexingContext.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"calendar"}];
 
-    v21 = v18;
+    v21 = localeCopy;
   }
 
   v57.receiver = self;
@@ -100,17 +100,17 @@
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_sceneTaxonomyProvider, a3);
-    objc_storeStrong(&v23->_csuTaxonomyObjectStore, a4);
+    objc_storeStrong(&v22->_sceneTaxonomyProvider, provider);
+    objc_storeStrong(&v23->_csuTaxonomyObjectStore, store);
     objc_storeStrong(&v23->_locale, obj);
-    objc_storeStrong(&v23->_calendar, a6);
-    objc_storeStrong(&v23->_searchIndexDateFormatter, v52);
-    objc_storeWeak(&v23->_delegate, v19);
+    objc_storeStrong(&v23->_calendar, calendar);
+    objc_storeStrong(&v23->_searchIndexDateFormatter, formatterCopy);
+    objc_storeWeak(&v23->_delegate, delegateCopy);
     v24 = objc_alloc_init(PLUtilityAssetPool);
     utilityAssetPool = v23->_utilityAssetPool;
     v23->_utilityAssetPool = v24;
 
-    objc_storeStrong(&v23->_countrySynonymProvider, v53);
+    objc_storeStrong(&v23->_countrySynonymProvider, synonymProviderCopy);
     v26 = [objc_alloc(MEMORY[0x1E6964E00]) initWithKeyName:@"photosAlbumUUIDs" searchable:0 searchableByDefault:0 unique:0 multiValued:1];
     photosAlbumUUIDsKey = v23->_photosAlbumUUIDsKey;
     v23->_photosAlbumUUIDsKey = v26;

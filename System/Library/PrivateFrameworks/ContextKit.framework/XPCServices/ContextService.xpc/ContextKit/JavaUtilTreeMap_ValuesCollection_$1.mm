@@ -1,5 +1,5 @@
 @interface JavaUtilTreeMap_ValuesCollection_$1
-- (JavaUtilTreeMap_ValuesCollection_$1)initWithJavaUtilTreeMap_ValuesCollection:(id)a3 withJavaUtilTreeMap_Node:(id)a4;
+- (JavaUtilTreeMap_ValuesCollection_$1)initWithJavaUtilTreeMap_ValuesCollection:(id)collection withJavaUtilTreeMap_Node:(id)node;
 - (id)next;
 @end
 
@@ -7,21 +7,21 @@
 
 - (id)next
 {
-  v2 = [(JavaUtilTreeMap_MapIterator *)self stepForward];
-  if (!v2)
+  stepForward = [(JavaUtilTreeMap_MapIterator *)self stepForward];
+  if (!stepForward)
   {
     JreThrowNullPointerException();
   }
 
-  return v2[5];
+  return stepForward[5];
 }
 
-- (JavaUtilTreeMap_ValuesCollection_$1)initWithJavaUtilTreeMap_ValuesCollection:(id)a3 withJavaUtilTreeMap_Node:(id)a4
+- (JavaUtilTreeMap_ValuesCollection_$1)initWithJavaUtilTreeMap_ValuesCollection:(id)collection withJavaUtilTreeMap_Node:(id)node
 {
-  Weak = objc_loadWeak(a3 + 1);
+  Weak = objc_loadWeak(collection + 1);
   JreStrongAssign(&self->super.this$0_, Weak);
   self->super.expectedModCount_ = Weak[11];
-  JreStrongAssign(&self->super.next_, a4);
+  JreStrongAssign(&self->super.next_, node);
   return self;
 }
 

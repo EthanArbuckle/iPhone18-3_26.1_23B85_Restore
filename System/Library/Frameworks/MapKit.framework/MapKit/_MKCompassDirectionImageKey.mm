@@ -1,8 +1,8 @@
 @interface _MKCompassDirectionImageKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (_MKCompassDirectionImageKey)initWithSize:(CGSize)a3 headingString:(id)a4 compassViewStyle:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_MKCompassDirectionImageKey)initWithSize:(CGSize)size headingString:(id)string compassViewStyle:(int64_t)style;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _MKCompassDirectionImageKey
@@ -16,9 +16,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   headingString = self->_headingString;
   compassViewStyle = self->_compassViewStyle;
   width = self->_size.width;
@@ -27,10 +27,10 @@
   return [v4 initWithSize:headingString headingString:compassViewStyle compassViewStyle:{width, height}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -40,10 +40,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       headingString = self->_headingString;
-      v7 = [(_MKCompassDirectionImageKey *)v5 headingString];
-      if ([(NSString *)headingString isEqual:v7])
+      headingString = [(_MKCompassDirectionImageKey *)v5 headingString];
+      if ([(NSString *)headingString isEqual:headingString])
       {
         [(_MKCompassDirectionImageKey *)v5 size];
         v9 = 0;
@@ -69,11 +69,11 @@
   return v9;
 }
 
-- (_MKCompassDirectionImageKey)initWithSize:(CGSize)a3 headingString:(id)a4 compassViewStyle:(int64_t)a5
+- (_MKCompassDirectionImageKey)initWithSize:(CGSize)size headingString:(id)string compassViewStyle:(int64_t)style
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a4;
+  height = size.height;
+  width = size.width;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = _MKCompassDirectionImageKey;
   v11 = [(_MKCompassDirectionImageKey *)&v15 init];
@@ -82,8 +82,8 @@
   {
     v11->_size.width = width;
     v11->_size.height = height;
-    objc_storeStrong(&v11->_headingString, a4);
-    v12->_compassViewStyle = a5;
+    objc_storeStrong(&v11->_headingString, string);
+    v12->_compassViewStyle = style;
     v13 = v12;
   }
 

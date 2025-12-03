@@ -1,29 +1,29 @@
 @interface SIRINLUEXTERNALUUID
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsNamespaceA:(id)a3;
+- (int)StringAsNamespaceA:(id)a;
 - (int)namespaceA;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLowInt:(BOOL)a3;
-- (void)setHasNamespaceA:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLowInt:(BOOL)int;
+- (void)setHasNamespaceA:(BOOL)a;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALUUID
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_highInt = *(v4 + 1);
+    self->_highInt = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -36,17 +36,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 2) == 0)
+  else if ((*(fromCopy + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_lowInt = *(v4 + 2);
+  self->_lowInt = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 28) & 4) != 0)
+  if ((*(fromCopy + 28) & 4) != 0)
   {
 LABEL_4:
-    self->_namespaceA = *(v4 + 6);
+    self->_namespaceA = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 
@@ -93,23 +93,23 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_highInt != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_highInt != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_16:
     v5 = 0;
@@ -118,21 +118,21 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_lowInt != *(v4 + 2))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_lowInt != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 28) & 4) == 0;
+  v5 = (*(equalCopy + 28) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_namespaceA != *(v4 + 6))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_namespaceA != *(equalCopy + 6))
     {
       goto LABEL_16;
     }
@@ -145,9 +145,9 @@ LABEL_17:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -184,14 +184,14 @@ LABEL_4:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_highInt;
-    *(v4 + 28) |= 1u;
+    toCopy[1] = self->_highInt;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -210,28 +210,28 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_lowInt;
-  *(v4 + 28) |= 2u;
+  toCopy[2] = self->_lowInt;
+  *(toCopy + 28) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    *(v4 + 6) = self->_namespaceA;
-    *(v4 + 28) |= 4u;
+    *(toCopy + 6) = self->_namespaceA;
+    *(toCopy + 28) |= 4u;
   }
 
 LABEL_5:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     highInt = self->_highInt;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -252,13 +252,13 @@ LABEL_3:
 
   lowInt = self->_lowInt;
   PBDataWriterWriteUint64Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     namespaceA = self->_namespaceA;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
@@ -266,7 +266,7 @@ LABEL_5:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -277,7 +277,7 @@ LABEL_5:
 
 LABEL_6:
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_lowInt];
-    [v3 setObject:v6 forKey:@"low_int"];
+    [dictionary setObject:v6 forKey:@"low_int"];
 
     if ((*&self->_has & 4) == 0)
     {
@@ -296,13 +296,13 @@ LABEL_7:
       v8 = off_1E83281D8[namespaceA];
     }
 
-    [v3 setObject:v8 forKey:@"namespace_a"];
+    [dictionary setObject:v8 forKey:@"namespace_a"];
 
     goto LABEL_11;
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_highInt];
-  [v3 setObject:v5 forKey:@"high_int"];
+  [dictionary setObject:v5 forKey:@"high_int"];
 
   has = self->_has;
   if ((has & 2) != 0)
@@ -318,7 +318,7 @@ LABEL_3:
 
 LABEL_11:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -327,41 +327,41 @@ LABEL_11:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALUUID;
   v4 = [(SIRINLUEXTERNALUUID *)&v8 description];
-  v5 = [(SIRINLUEXTERNALUUID *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALUUID *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsNamespaceA:(id)a3
+- (int)StringAsNamespaceA:(id)a
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UUID_NAMESPACE_UNSPECIFIED"])
+  aCopy = a;
+  if ([aCopy isEqualToString:@"UUID_NAMESPACE_UNSPECIFIED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ENTITY"])
+  else if ([aCopy isEqualToString:@"ENTITY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TASK"])
+  else if ([aCopy isEqualToString:@"TASK"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYSTEM_DIALOG_ACT"])
+  else if ([aCopy isEqualToString:@"SYSTEM_DIALOG_ACT"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NLU_REQUEST_ID"])
+  else if ([aCopy isEqualToString:@"NLU_REQUEST_ID"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ASR_HYPOTHESIS_ID"])
+  else if ([aCopy isEqualToString:@"ASR_HYPOTHESIS_ID"])
   {
     v4 = 5;
   }
@@ -374,9 +374,9 @@ LABEL_11:
   return v4;
 }
 
-- (void)setHasNamespaceA:(BOOL)a3
+- (void)setHasNamespaceA:(BOOL)a
 {
-  if (a3)
+  if (a)
   {
     v3 = 4;
   }
@@ -402,9 +402,9 @@ LABEL_11:
   }
 }
 
-- (void)setHasLowInt:(BOOL)a3
+- (void)setHasLowInt:(BOOL)int
 {
-  if (a3)
+  if (int)
   {
     v3 = 2;
   }

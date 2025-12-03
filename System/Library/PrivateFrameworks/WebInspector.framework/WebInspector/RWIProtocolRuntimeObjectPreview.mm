@@ -7,16 +7,16 @@
 - (int)size;
 - (int64_t)subtype;
 - (int64_t)type;
-- (void)setEntries:(id)a3;
-- (void)setProperties:(id)a3;
-- (void)setStringRepresentation:(id)a3;
-- (void)setSubtype:(int64_t)a3;
-- (void)setType:(int64_t)a3;
+- (void)setEntries:(id)entries;
+- (void)setProperties:(id)properties;
+- (void)setStringRepresentation:(id)representation;
+- (void)setSubtype:(int64_t)subtype;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation RWIProtocolRuntimeObjectPreview
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   Inspector::toProtocolString();
   if (v6)
@@ -84,7 +84,7 @@ LABEL_8:
   return v10;
 }
 
-- (void)setSubtype:(int64_t)a3
+- (void)setSubtype:(int64_t)subtype
 {
   Inspector::toProtocolString();
   if (v6)
@@ -152,11 +152,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setStringRepresentation:(id)a3
+- (void)setStringRepresentation:(id)representation
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeObjectPreview;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"description"];
+  [(RWIProtocolJSONObject *)&v3 setString:representation forKey:@"description"];
 }
 
 - (NSString)stringRepresentation
@@ -182,14 +182,14 @@ LABEL_8:
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"overflow"];
 }
 
-- (void)setProperties:(id)a3
+- (void)setProperties:(id)properties
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = properties;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -253,14 +253,14 @@ LABEL_8:
   return v2;
 }
 
-- (void)setEntries:(id)a3
+- (void)setEntries:(id)entries
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = entries;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {

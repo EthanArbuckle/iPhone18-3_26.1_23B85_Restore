@@ -1,11 +1,11 @@
 @interface TVSettingsAutoDownloadsController
-- (id)episodeCount:(id)a3;
-- (id)featureEnabled:(id)a3;
+- (id)episodeCount:(id)count;
+- (id)featureEnabled:(id)enabled;
 - (id)specifiers;
-- (id)storageLimit:(id)a3;
-- (void)setEpisodeCount:(id)a3 withSpecifier:(id)a4;
-- (void)setFeatureEnabled:(id)a3 specifier:(id)a4;
-- (void)setStorageLimit:(id)a3 withSpecifier:(id)a4;
+- (id)storageLimit:(id)limit;
+- (void)setEpisodeCount:(id)count withSpecifier:(id)specifier;
+- (void)setFeatureEnabled:(id)enabled specifier:(id)specifier;
+- (void)setStorageLimit:(id)limit withSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -115,46 +115,46 @@
   return v3;
 }
 
-- (void)setEpisodeCount:(id)a3 withSpecifier:(id)a4
+- (void)setEpisodeCount:(id)count withSpecifier:(id)specifier
 {
-  v4 = a3;
+  countCopy = count;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  [v5 setAutoDownloadsEpisodeCount:v4];
+  [v5 setAutoDownloadsEpisodeCount:countCopy];
 }
 
-- (id)episodeCount:(id)a3
+- (id)episodeCount:(id)count
 {
   v3 = +[WLKSystemPreferencesStore sharedPreferences];
-  v4 = [v3 autoDownloadsEpisodeCount];
+  autoDownloadsEpisodeCount = [v3 autoDownloadsEpisodeCount];
 
-  return v4;
+  return autoDownloadsEpisodeCount;
 }
 
-- (void)setStorageLimit:(id)a3 withSpecifier:(id)a4
+- (void)setStorageLimit:(id)limit withSpecifier:(id)specifier
 {
-  v4 = a3;
+  limitCopy = limit;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  [v5 setAutoDownloadsStorageLimit:v4];
+  [v5 setAutoDownloadsStorageLimit:limitCopy];
 }
 
-- (id)storageLimit:(id)a3
+- (id)storageLimit:(id)limit
 {
   v3 = +[WLKSystemPreferencesStore sharedPreferences];
-  v4 = [v3 autoDownloadsStorageLimit];
+  autoDownloadsStorageLimit = [v3 autoDownloadsStorageLimit];
 
-  return v4;
+  return autoDownloadsStorageLimit;
 }
 
-- (void)setFeatureEnabled:(id)a3 specifier:(id)a4
+- (void)setFeatureEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[WLKSystemPreferencesStore sharedPreferences];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setUseAutomaticDownloads:v5];
+  [v6 setUseAutomaticDownloads:bOOLValue];
 }
 
-- (id)featureEnabled:(id)a3
+- (id)featureEnabled:(id)enabled
 {
   v3 = +[WLKSystemPreferencesStore sharedPreferences];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 useAutomaticDownloads]);

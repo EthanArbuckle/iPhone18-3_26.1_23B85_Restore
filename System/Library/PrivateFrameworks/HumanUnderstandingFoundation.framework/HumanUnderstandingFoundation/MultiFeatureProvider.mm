@@ -1,6 +1,6 @@
 @interface MultiFeatureProvider
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation MultiFeatureProvider
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_2546B54C4();
   v5 = v4;

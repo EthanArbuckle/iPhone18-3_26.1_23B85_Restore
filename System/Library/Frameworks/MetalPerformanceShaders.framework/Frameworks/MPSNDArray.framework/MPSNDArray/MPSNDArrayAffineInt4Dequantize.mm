@@ -1,51 +1,51 @@
 @interface MPSNDArrayAffineInt4Dequantize
-- (MPSNDArrayAffineInt4Dequantize)initWithDevice:(id)a3 quantizationDescriptor:(id)a4;
-- (MPSNDArrayAffineInt4Dequantize)initWithDevice:(id)a3 quantizationDescriptor:(id)a4 sourceCount:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7;
+- (MPSNDArrayAffineInt4Dequantize)initWithDevice:(id)device quantizationDescriptor:(id)descriptor;
+- (MPSNDArrayAffineInt4Dequantize)initWithDevice:(id)device quantizationDescriptor:(id)descriptor sourceCount:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayAffineInt4Dequantize
 
-- (MPSNDArrayAffineInt4Dequantize)initWithDevice:(id)a3 quantizationDescriptor:(id)a4 sourceCount:(unint64_t)a5
+- (MPSNDArrayAffineInt4Dequantize)initWithDevice:(id)device quantizationDescriptor:(id)descriptor sourceCount:(unint64_t)count
 {
   v9.receiver = self;
   v9.super_class = MPSNDArrayAffineInt4Dequantize;
-  result = [(MPSNDArrayMultiaryKernel *)&v9 initWithDevice:a3 sourceCount:a5];
+  result = [(MPSNDArrayMultiaryKernel *)&v9 initWithDevice:device sourceCount:count];
   if (result)
   {
     result->super._encode = EncodeArrayAffieInt4Dequant;
     result->super.super._encodeData = result;
     v7 = result;
-    v8 = a4;
+    descriptorCopy = descriptor;
     result = v7;
-    v7->_quantizationDescriptor = v8;
+    v7->_quantizationDescriptor = descriptorCopy;
   }
 
   return result;
 }
 
-- (MPSNDArrayAffineInt4Dequantize)initWithDevice:(id)a3 quantizationDescriptor:(id)a4
+- (MPSNDArrayAffineInt4Dequantize)initWithDevice:(id)device quantizationDescriptor:(id)descriptor
 {
-  v7 = [a4 getNDArrayCount] + 1;
+  v7 = [descriptor getNDArrayCount] + 1;
 
-  return [(MPSNDArrayAffineInt4Dequantize *)self initWithDevice:a3 quantizationDescriptor:a4 sourceCount:v7];
+  return [(MPSNDArrayAffineInt4Dequantize *)self initWithDevice:device quantizationDescriptor:descriptor sourceCount:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = MPSNDArrayAffineInt4Dequantize;
-  [(MPSNDArrayMultiaryBase *)&v3 encodeWithCoder:a3];
+  [(MPSNDArrayMultiaryBase *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v9.receiver = self;
   v9.super_class = MPSNDArrayAffineInt4Dequantize;
-  result = [(MPSNDArrayMultiaryKernel *)&v9 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v9 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 17) = EncodeArrayAffieInt4Dequant;
@@ -67,11 +67,11 @@
   [(MPSNDArrayMultiaryBase *)&v3 dealloc];
 }
 
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state
 {
   v8.receiver = self;
   v8.super_class = MPSNDArrayAffineInt4Dequantize;
-  return [(MPSNDArrayMultiaryBase *)&v8 workloadStatisticsForSourceArrays:a3 destArrays:a4 sourceState:a7, a6];
+  return [(MPSNDArrayMultiaryBase *)&v8 workloadStatisticsForSourceArrays:arrays destArrays:destArrays sourceState:state, object];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface DEFaceTimeExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DEFaceTimeExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v26[0] = @"collectionFlags";
   v4 = [NSNumber numberWithInteger:223];
   v27[0] = v4;

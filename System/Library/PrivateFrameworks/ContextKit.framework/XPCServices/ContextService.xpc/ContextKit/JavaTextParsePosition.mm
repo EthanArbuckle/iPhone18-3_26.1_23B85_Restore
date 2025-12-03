@@ -1,19 +1,19 @@
 @interface JavaTextParsePosition
-- (BOOL)isEqual:(id)a3;
-- (JavaTextParsePosition)initWithInt:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (JavaTextParsePosition)initWithInt:(int)int;
 - (id)description;
 @end
 
 @implementation JavaTextParsePosition
 
-- (JavaTextParsePosition)initWithInt:(int)a3
+- (JavaTextParsePosition)initWithInt:(int)int
 {
-  self->currentPosition_ = a3;
+  self->currentPosition_ = int;
   self->errorIndex_ = -1;
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -22,7 +22,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -32,7 +32,7 @@
     JreThrowClassCastException();
   }
 
-  return self->currentPosition_ == *(a3 + 2) && self->errorIndex_ == *(a3 + 3);
+  return self->currentPosition_ == *(equal + 2) && self->errorIndex_ == *(equal + 3);
 }
 
 - (id)description

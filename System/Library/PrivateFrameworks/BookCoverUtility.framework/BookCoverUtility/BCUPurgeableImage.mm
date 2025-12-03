@@ -1,5 +1,5 @@
 @interface BCUPurgeableImage
-- (BCUPurgeableImage)initWithImage:(CGImage *)a3 surface:(__IOSurface *)a4 contentsScale:(double)a5;
+- (BCUPurgeableImage)initWithImage:(CGImage *)image surface:(__IOSurface *)surface contentsScale:(double)scale;
 - (BOOL)markAsNonVolatile;
 - (BOOL)markAsVolatile;
 - (CGImage)CGImage;
@@ -9,7 +9,7 @@
 
 @implementation BCUPurgeableImage
 
-- (BCUPurgeableImage)initWithImage:(CGImage *)a3 surface:(__IOSurface *)a4 contentsScale:(double)a5
+- (BCUPurgeableImage)initWithImage:(CGImage *)image surface:(__IOSurface *)surface contentsScale:(double)scale
 {
   v12.receiver = self;
   v12.super_class = BCUPurgeableImage;
@@ -17,18 +17,18 @@
   v9 = v8;
   if (v8)
   {
-    v10 = 1.0;
-    if (a5 != 0.0)
+    scaleCopy = 1.0;
+    if (scale != 0.0)
     {
-      v10 = a5;
+      scaleCopy = scale;
     }
 
-    v8->_contentsScale = v10;
-    v8->_image = CGImageRetain(a3);
-    v9->_surface = a4;
-    if (a4)
+    v8->_contentsScale = scaleCopy;
+    v8->_image = CGImageRetain(image);
+    v9->_surface = surface;
+    if (surface)
     {
-      CFRetain(a4);
+      CFRetain(surface);
     }
   }
 

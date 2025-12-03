@@ -1,28 +1,28 @@
 @interface _WKSystemPreviewDataTaskDelegate
-- (BOOL)isValidFileExtension:(id)a3;
-- (BOOL)isValidMIMEType:(id)a3;
-- (_WKSystemPreviewDataTaskDelegate)initWithSystemPreviewController:(void *)a3;
+- (BOOL)isValidFileExtension:(id)extension;
+- (BOOL)isValidMIMEType:(id)type;
+- (_WKSystemPreviewDataTaskDelegate)initWithSystemPreviewController:(void *)controller;
 - (id).cxx_construct;
 - (void)completeLoad;
-- (void)dataTask:(id)a3 didCompleteWithError:(id)a4;
-- (void)dataTask:(id)a3 didReceiveData:(id)a4;
-- (void)dataTask:(id)a3 didReceiveResponse:(id)a4 decisionHandler:(id)a5;
+- (void)dataTask:(id)task didCompleteWithError:(id)error;
+- (void)dataTask:(id)task didReceiveData:(id)data;
+- (void)dataTask:(id)task didReceiveResponse:(id)response decisionHandler:(id)handler;
 @end
 
 @implementation _WKSystemPreviewDataTaskDelegate
 
-- (_WKSystemPreviewDataTaskDelegate)initWithSystemPreviewController:(void *)a3
+- (_WKSystemPreviewDataTaskDelegate)initWithSystemPreviewController:(void *)controller
 {
   v9.receiver = self;
   v9.super_class = _WKSystemPreviewDataTaskDelegate;
   v5 = [(_WKSystemPreviewDataTaskDelegate *)&v9 init];
   if (v5)
   {
-    if (a3)
+    if (controller)
     {
-      WTF::WeakPtrFactory<WebPushD::PushServiceConnection,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(a3, a3);
-      v6 = *a3;
-      if (*a3)
+      WTF::WeakPtrFactory<WebPushD::PushServiceConnection,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(controller, controller);
+      v6 = *controller;
+      if (*controller)
       {
         atomic_fetch_add(v6, 1u);
       }
@@ -45,9 +45,9 @@
   return v5;
 }
 
-- (BOOL)isValidMIMEType:(id)a3
+- (BOOL)isValidMIMEType:(id)type
 {
-  MEMORY[0x19EB02040](&v9, a3);
+  MEMORY[0x19EB02040](&v9, type);
   if (WebCore::MIMETypeRegistry::isUSDMIMEType(&v9, v4))
   {
     v6 = 1;
@@ -55,7 +55,7 @@
 
   else
   {
-    v6 = [a3 isEqualToString:@"application/octet-stream"];
+    v6 = [type isEqualToString:@"application/octet-stream"];
   }
 
   v7 = v9;
@@ -68,9 +68,9 @@
   return v6;
 }
 
-- (BOOL)isValidFileExtension:(id)a3
+- (BOOL)isValidFileExtension:(id)extension
 {
-  MEMORY[0x19EB02040](&v9, a3);
+  MEMORY[0x19EB02040](&v9, extension);
   WebCore::MIMETypeRegistry::mimeTypeForExtension();
   isUSDMIMEType = WebCore::MIMETypeRegistry::isUSDMIMEType(&v10, v3);
   v6 = v10;
@@ -90,7 +90,7 @@
   return isUSDMIMEType;
 }
 
-- (void)dataTask:(id)a3 didReceiveResponse:(id)a4 decisionHandler:(id)a5
+- (void)dataTask:(id)task didReceiveResponse:(id)response decisionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
   m_ptr = self->_previewController.m_impl.m_ptr;
@@ -111,7 +111,7 @@ LABEL_5:
   v10 = 0;
   ++*(v9 + 8);
 LABEL_6:
-  v11 = WTF::dynamic_objc_cast<NSHTTPURLResponse>(a4);
+  v11 = WTF::dynamic_objc_cast<NSHTTPURLResponse>(response);
   v12 = v11;
   if (v11 && [MEMORY[0x1E695AC08] isErrorStatusCode:{objc_msgSend(v11, "statusCode")}])
   {
@@ -123,7 +123,7 @@ LABEL_6:
       _os_log_impl(&dword_19D52D000, v13, OS_LOG_TYPE_DEFAULT, "cancelling subresource load due to error status code: %ld", buf, 0xCu);
     }
 
-    (*(a5 + 2))(a5, 0);
+    (*(handler + 2))(handler, 0);
     if (v9)
     {
 LABEL_44:
@@ -131,17 +131,17 @@ LABEL_44:
     }
   }
 
-  else if (-[_WKSystemPreviewDataTaskDelegate isValidMIMEType:](self, "isValidMIMEType:", [a4 MIMEType]) || -[_WKSystemPreviewDataTaskDelegate isValidFileExtension:](self, "isValidFileExtension:", objc_msgSend(objc_msgSend(a4, "URL"), "pathExtension")))
+  else if (-[_WKSystemPreviewDataTaskDelegate isValidMIMEType:](self, "isValidMIMEType:", [response MIMEType]) || -[_WKSystemPreviewDataTaskDelegate isValidFileExtension:](self, "isValidFileExtension:", objc_msgSend(objc_msgSend(response, "URL"), "pathExtension")))
   {
-    v14 = [a4 expectedContentLength];
-    if (v14 == -1)
+    expectedContentLength = [response expectedContentLength];
+    if (expectedContentLength == -1)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = v14;
+      v15 = expectedContentLength;
     }
 
     self->_expectedContentLength = v15;
@@ -152,7 +152,7 @@ LABEL_44:
     {
     }
 
-    [objc_msgSend(a4 "MIMEType")];
+    [objc_msgSend(response "MIMEType")];
     WTF::FileSystemImpl::openTemporaryFile();
     if (v29)
     {
@@ -209,7 +209,7 @@ LABEL_44:
       }
     }
 
-    (*(a5 + 2))(a5, 1);
+    (*(handler + 2))(handler, 1);
     WTF::FileSystemImpl::FileHandle::~FileHandle(&v30);
     if (v29 && atomic_fetch_add_explicit(v29, 0xFFFFFFFE, memory_order_relaxed) == 2)
     {
@@ -223,13 +223,13 @@ LABEL_44:
     if (os_log_type_enabled(qword_1ED6413A0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = [a4 MIMEType];
+      *&buf[4] = [response MIMEType];
       *&buf[12] = 2112;
-      *&buf[14] = [objc_msgSend(a4 "URL")];
+      *&buf[14] = [objc_msgSend(response "URL")];
       _os_log_impl(&dword_19D52D000, v28, OS_LOG_TYPE_DEFAULT, "cancelling subresource load due to unhandled MIME type: %@ extension: %@", buf, 0x16u);
     }
 
-    (*(a5 + 2))(a5, 0);
+    (*(handler + 2))(handler, 0);
     if (v9)
     {
       goto LABEL_44;
@@ -242,9 +242,9 @@ LABEL_44:
   }
 }
 
-- (void)dataTask:(id)a3 didReceiveData:(id)a4
+- (void)dataTask:(id)task didReceiveData:(id)data
 {
-  [(NSMutableData *)self->_data.m_ptr appendData:a4];
+  [(NSMutableData *)self->_data.m_ptr appendData:data];
   if (self->_expectedContentLength)
   {
     m_ptr = self->_previewController.m_impl.m_ptr;
@@ -268,9 +268,9 @@ LABEL_44:
   }
 }
 
-- (void)dataTask:(id)a3 didCompleteWithError:(id)a4
+- (void)dataTask:(id)task didCompleteWithError:(id)error
 {
-  if (a4)
+  if (error)
   {
     WTF::FileSystemImpl::FileHandle::FileHandle(v8);
     WTF::FileSystemImpl::FileHandle::operator=();

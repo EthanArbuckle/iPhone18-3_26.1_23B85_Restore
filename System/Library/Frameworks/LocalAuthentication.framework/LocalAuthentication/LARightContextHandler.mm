@@ -1,9 +1,9 @@
 @interface LARightContextHandler
 - (LARightContextHandler)init;
-- (LARightContextHandler)initWithDelegate:(id)a3;
+- (LARightContextHandler)initWithDelegate:(id)delegate;
 - (LARightContextHandlerDelegate)delegate;
-- (void)contextDidBecomeInvalid:(id)a3;
-- (void)setContext:(id)a3;
+- (void)contextDidBecomeInvalid:(id)invalid;
+- (void)setContext:(id)context;
 @end
 
 @implementation LARightContextHandler
@@ -22,43 +22,43 @@
   return v2;
 }
 
-- (LARightContextHandler)initWithDelegate:(id)a3
+- (LARightContextHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(LARightContextHandler *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   context = self->_context;
-  if (context != v5)
+  if (context != contextCopy)
   {
-    v7 = v5;
+    v7 = contextCopy;
     if (context)
     {
       [(LAContext *)context removeContextObserver:self];
       [(LAContext *)self->_context invalidate];
     }
 
-    objc_storeStrong(&self->_context, a3);
+    objc_storeStrong(&self->_context, context);
     context = [(LAContext *)self->_context addContextObserver:self];
-    v5 = v7;
+    contextCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](context, v5);
+  MEMORY[0x1EEE66BB8](context, contextCopy);
 }
 
-- (void)contextDidBecomeInvalid:(id)a3
+- (void)contextDidBecomeInvalid:(id)invalid
 {
-  if (self->_context == a3)
+  if (self->_context == invalid)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained rightContextDidBecomeInvalid];

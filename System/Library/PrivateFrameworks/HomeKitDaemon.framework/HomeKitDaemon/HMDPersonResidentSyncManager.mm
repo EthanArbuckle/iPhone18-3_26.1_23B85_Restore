@@ -1,15 +1,15 @@
 @interface HMDPersonResidentSyncManager
 + (id)logCategory;
-- (HMDPersonResidentSyncManager)initWithUUID:(id)a3 messageDispatcher:(id)a4 workQueue:(id)a5 residentSyncManager:(id)a6;
+- (HMDPersonResidentSyncManager)initWithUUID:(id)d messageDispatcher:(id)dispatcher workQueue:(id)queue residentSyncManager:(id)manager;
 - (HMDPersonResidentSyncManagerDelegate)delegate;
-- (id)addOrUpdatePersons:(id)a3;
-- (id)addOrUpdatePersons:(id)a3 andRemovePersonsWithUUIDs:(id)a4;
+- (id)addOrUpdatePersons:(id)persons;
+- (id)addOrUpdatePersons:(id)persons andRemovePersonsWithUUIDs:(id)ds;
 - (id)logIdentifier;
 - (id)removeAllAssociatedSyncedData;
-- (id)removePersonsWithUUIDs:(id)a3;
-- (void)configureWithHome:(id)a3 delegate:(id)a4;
-- (void)handleModifyPersonsMessage:(id)a3;
-- (void)handleRemoveAllAssociatedDataMessage:(id)a3;
+- (id)removePersonsWithUUIDs:(id)ds;
+- (void)configureWithHome:(id)home delegate:(id)delegate;
+- (void)handleModifyPersonsMessage:(id)message;
+- (void)handleRemoveAllAssociatedDataMessage:(id)message;
 @end
 
 @implementation HMDPersonResidentSyncManager
@@ -23,41 +23,41 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDPersonResidentSyncManager *)self UUID];
-  v3 = [v2 UUIDString];
+  uUID = [(HMDPersonResidentSyncManager *)self UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)handleRemoveAllAssociatedDataMessage:(id)a3
+- (void)handleRemoveAllAssociatedDataMessage:(id)message
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonResidentSyncManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDPersonResidentSyncManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 shortDescription];
+    shortDescription = [messageCopy shortDescription];
     *buf = 138543618;
     v15 = v9;
     v16 = 2112;
-    v17 = v10;
+    v17 = shortDescription;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Handling remove all associated synced data message: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMDPersonResidentSyncManager *)v7 residentSyncManager];
+  residentSyncManager = [(HMDPersonResidentSyncManager *)selfCopy residentSyncManager];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __69__HMDPersonResidentSyncManager_handleRemoveAllAssociatedDataMessage___block_invoke;
   v13[3] = &unk_27868A398;
-  v13[4] = v7;
-  [v11 interceptRemoteResidentRequest:v4 proceed:v13];
+  v13[4] = selfCopy;
+  [residentSyncManager interceptRemoteResidentRequest:messageCopy proceed:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -76,24 +76,24 @@ void __69__HMDPersonResidentSyncManager_handleRemoveAllAssociatedDataMessage___b
   v7 = [v5 addCompletionBlock:v8];
 }
 
-- (void)handleModifyPersonsMessage:(id)a3
+- (void)handleModifyPersonsMessage:(id)message
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonResidentSyncManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDPersonResidentSyncManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 shortDescription];
+    shortDescription = [messageCopy shortDescription];
     *buf = 138543618;
     v36 = v9;
     v37 = 2112;
-    v38 = v10;
+    v38 = shortDescription;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Handling modify persons message: %@", buf, 0x16u);
   }
 
@@ -101,11 +101,11 @@ void __69__HMDPersonResidentSyncManager_handleRemoveAllAssociatedDataMessage___b
   v34[0] = objc_opt_class();
   v34[1] = objc_opt_class();
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
-  v12 = [v4 unarchivedObjectForKey:@"HMDPRSM.mk.personsToAddOrUpdate" ofClasses:v11];
+  v12 = [messageCopy unarchivedObjectForKey:@"HMDPRSM.mk.personsToAddOrUpdate" ofClasses:v11];
 
   if (v12)
   {
-    v13 = [v4 arrayForKey:@"HMDPRSM.mk.personUUIDsToRemove"];
+    v13 = [messageCopy arrayForKey:@"HMDPRSM.mk.personUUIDsToRemove"];
     v14 = v13;
     if (v13)
     {
@@ -113,59 +113,59 @@ void __69__HMDPersonResidentSyncManager_handleRemoveAllAssociatedDataMessage___b
       v16 = [v13 na_map:&__block_literal_global_56_105166];
       v17 = [v15 setWithArray:v16];
 
-      v18 = [(HMDPersonResidentSyncManager *)v7 residentSyncManager];
+      residentSyncManager = [(HMDPersonResidentSyncManager *)selfCopy residentSyncManager];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __59__HMDPersonResidentSyncManager_handleModifyPersonsMessage___block_invoke_2;
       v31[3] = &unk_278678060;
-      v31[4] = v7;
+      v31[4] = selfCopy;
       v32 = v12;
       v33 = v17;
       v19 = v17;
-      [v18 interceptRemoteResidentRequest:v4 proceed:v31];
+      [residentSyncManager interceptRemoteResidentRequest:messageCopy proceed:v31];
     }
 
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = v7;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [v4 messagePayload];
+        messagePayload = [messageCopy messagePayload];
         *buf = 138543618;
         v36 = v28;
         v37 = 2112;
-        v38 = v29;
+        v38 = messagePayload;
         _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_ERROR, "%{public}@Could not find person UUID strings in message payload: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v25);
       v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-      [v4 respondWithError:v19];
+      [messageCopy respondWithError:v19];
     }
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v7;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [v4 messagePayload];
+      messagePayload2 = [messageCopy messagePayload];
       *buf = 138543618;
       v36 = v23;
       v37 = 2112;
-      v38 = v24;
+      v38 = messagePayload2;
       _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_ERROR, "%{public}@Could not find persons in message payload: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v20);
     v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    [v4 respondWithError:v14];
+    [messageCopy respondWithError:v14];
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -199,44 +199,44 @@ id __59__HMDPersonResidentSyncManager_handleModifyPersonsMessage___block_invoke(
   v33 = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Remove all associated synced data"];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = HMFGetLogIdentifier();
-    v8 = [v3 identifier];
-    v9 = [v8 shortDescription];
+    identifier = [v3 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v30 = v7;
     v31 = 2114;
-    v32 = v9;
+    v32 = shortDescription;
     _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Removing all associated synced data", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v4);
   v10 = objc_alloc_init(MEMORY[0x277D2C900]);
   v11 = MEMORY[0x277D2C938];
-  v12 = [(HMDPersonResidentSyncManager *)v5 workQueue];
-  v13 = [v11 schedulerWithDispatchQueue:v12];
+  workQueue = [(HMDPersonResidentSyncManager *)selfCopy workQueue];
+  v13 = [v11 schedulerWithDispatchQueue:workQueue];
   v14 = [v10 reschedule:v13];
 
   v15 = objc_alloc(MEMORY[0x277D0F820]);
-  v16 = [(HMDPersonResidentSyncManager *)v5 UUID];
-  v17 = [v15 initWithTarget:v16];
+  uUID = [(HMDPersonResidentSyncManager *)selfCopy UUID];
+  v17 = [v15 initWithTarget:uUID];
 
   v18 = [MEMORY[0x277D0F848] messageWithName:@"HMDPRSM.m.removeAllAssociatedData" destination:v17 payload:0];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __61__HMDPersonResidentSyncManager_removeAllAssociatedSyncedData__block_invoke;
   v26[3] = &unk_278686658;
-  v26[4] = v5;
+  v26[4] = selfCopy;
   v27 = v3;
   v19 = v14;
   v28 = v19;
   v20 = v3;
   [v18 setResponseHandler:v26];
-  v21 = [(HMDPersonResidentSyncManager *)v5 residentSyncManager];
-  [v21 performResidentRequest:v18 options:0];
+  residentSyncManager = [(HMDPersonResidentSyncManager *)selfCopy residentSyncManager];
+  [residentSyncManager performResidentRequest:v18 options:0];
 
   v22 = v28;
   v23 = v19;
@@ -295,26 +295,26 @@ void __61__HMDPersonResidentSyncManager_removeAllAssociatedSyncedData__block_inv
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addOrUpdatePersons:(id)a3 andRemovePersonsWithUUIDs:(id)a4
+- (id)addOrUpdatePersons:(id)persons andRemovePersonsWithUUIDs:(id)ds
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
+  personsCopy = persons;
+  dsCopy = ds;
+  v8 = personsCopy;
+  v9 = dsCopy;
   v10 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Modifying persons"];
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v10 identifier];
-    v16 = [v15 shortDescription];
+    identifier = [v10 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138544130;
     v59 = v14;
     v60 = 2114;
-    v61 = v16;
+    v61 = shortDescription;
     v62 = 2112;
     v63 = v8;
     v64 = 2112;
@@ -330,12 +330,12 @@ void __61__HMDPersonResidentSyncManager_removeAllAssociatedSyncedData__block_inv
   {
     v18 = objc_alloc_init(MEMORY[0x277D2C900]);
     v19 = MEMORY[0x277D2C938];
-    v20 = [(HMDPersonResidentSyncManager *)v12 workQueue];
-    v21 = [v19 schedulerWithDispatchQueue:v20];
+    workQueue = [(HMDPersonResidentSyncManager *)selfCopy workQueue];
+    v21 = [v19 schedulerWithDispatchQueue:workQueue];
     v48 = [v18 reschedule:v21];
 
-    v22 = [v9 allObjects];
-    v23 = [v22 na_map:&__block_literal_global_48_105190];
+    allObjects = [v9 allObjects];
+    v23 = [allObjects na_map:&__block_literal_global_48_105190];
 
     v56[0] = @"HMDPRSM.mk.personsToAddOrUpdate";
     v56[1] = @"HMDPRSM.mk.personUUIDsToRemove";
@@ -344,7 +344,7 @@ void __61__HMDPersonResidentSyncManager_removeAllAssociatedSyncedData__block_inv
     v57[1] = v23;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:2];
     v25 = objc_alloc(MEMORY[0x277D0F820]);
-    [(HMDPersonResidentSyncManager *)v12 UUID];
+    [(HMDPersonResidentSyncManager *)selfCopy UUID];
     v26 = v8;
     v28 = v27 = v10;
     v29 = [v25 initWithTarget:v28];
@@ -354,7 +354,7 @@ void __61__HMDPersonResidentSyncManager_removeAllAssociatedSyncedData__block_inv
     v52[1] = 3221225472;
     v52[2] = __77__HMDPersonResidentSyncManager_addOrUpdatePersons_andRemovePersonsWithUUIDs___block_invoke_2;
     v52[3] = &unk_278686658;
-    v52[4] = v12;
+    v52[4] = selfCopy;
     v50 = v27;
     v31 = v27;
     v8 = v26;
@@ -362,13 +362,13 @@ void __61__HMDPersonResidentSyncManager_removeAllAssociatedSyncedData__block_inv
     v32 = v48;
     v54 = v32;
     [v30 setResponseHandler:v52];
-    v33 = [(HMDPersonResidentSyncManager *)v12 residentSyncManager];
-    [v33 performResidentRequest:v30 options:0];
+    residentSyncManager = [(HMDPersonResidentSyncManager *)selfCopy residentSyncManager];
+    [residentSyncManager performResidentRequest:v30 options:0];
 
     if ([v8 count])
     {
       v34 = v9;
-      v35 = [(HMDPersonResidentSyncManager *)v12 addOrUpdatePersons:v8];
+      v35 = [(HMDPersonResidentSyncManager *)selfCopy addOrUpdatePersons:v8];
     }
 
     else
@@ -376,7 +376,7 @@ void __61__HMDPersonResidentSyncManager_removeAllAssociatedSyncedData__block_inv
       v34 = v9;
       if ([v9 count])
       {
-        v44 = [(HMDPersonResidentSyncManager *)v12 removePersonsWithUUIDs:v9];
+        v44 = [(HMDPersonResidentSyncManager *)selfCopy removePersonsWithUUIDs:v9];
       }
     }
 
@@ -391,17 +391,17 @@ void __61__HMDPersonResidentSyncManager_removeAllAssociatedSyncedData__block_inv
   else
   {
     v36 = objc_autoreleasePoolPush();
-    v37 = v12;
+    v37 = selfCopy;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
       v39 = HMFGetLogIdentifier();
-      v40 = [v10 identifier];
-      v41 = [v40 shortDescription];
+      identifier2 = [v10 identifier];
+      shortDescription2 = [identifier2 shortDescription];
       *buf = 138543874;
       v59 = v39;
       v60 = 2114;
-      v61 = v41;
+      v61 = shortDescription2;
       v62 = 2112;
       v63 = v51;
       _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to serialize persons: %@", buf, 0x20u);
@@ -468,59 +468,59 @@ void __77__HMDPersonResidentSyncManager_addOrUpdatePersons_andRemovePersonsWithU
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)removePersonsWithUUIDs:(id)a3
+- (id)removePersonsWithUUIDs:(id)ds
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v5 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Remove persons"];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 identifier];
-    v11 = [v10 shortDescription];
+    identifier = [v5 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v43 = v9;
     v44 = 2114;
-    v45 = v11;
+    v45 = shortDescription;
     v46 = 2112;
-    v47 = v4;
+    v47 = dsCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Removing persons with UUIDs from persons data set: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
   v12 = objc_alloc_init(MEMORY[0x277D2C900]);
   v13 = MEMORY[0x277D2C938];
-  v14 = [(HMDPersonResidentSyncManager *)v7 workQueue];
-  v15 = [v13 schedulerWithDispatchQueue:v14];
+  workQueue = [(HMDPersonResidentSyncManager *)selfCopy workQueue];
+  v15 = [v13 schedulerWithDispatchQueue:workQueue];
   v16 = [v12 reschedule:v15];
 
-  v17 = [v4 allObjects];
-  v18 = [v17 na_map:&__block_literal_global_105203];
+  allObjects = [dsCopy allObjects];
+  v18 = [allObjects na_map:&__block_literal_global_105203];
 
   v40 = @"HMDPRSM.mk.personUUIDs";
   v41 = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
   v20 = objc_alloc(MEMORY[0x277D0F820]);
-  v21 = [(HMDPersonResidentSyncManager *)v7 UUID];
-  v22 = [v20 initWithTarget:v21];
+  uUID = [(HMDPersonResidentSyncManager *)selfCopy UUID];
+  v22 = [v20 initWithTarget:uUID];
 
   v23 = [MEMORY[0x277D0F848] messageWithName:@"HMDPRSM.m.removePersons" destination:v22 payload:v19];
   v32 = MEMORY[0x277D85DD0];
   v33 = 3221225472;
   v34 = __55__HMDPersonResidentSyncManager_removePersonsWithUUIDs___block_invoke_2;
   v35 = &unk_27867E7E8;
-  v36 = v7;
+  v36 = selfCopy;
   v37 = v5;
   v24 = v16;
   v38 = v24;
-  v39 = v4;
-  v25 = v4;
+  v39 = dsCopy;
+  v25 = dsCopy;
   v26 = v5;
   [v23 setResponseHandler:&v32];
-  v27 = [(HMDPersonResidentSyncManager *)v7 residentSyncManager:v32];
+  v27 = [(HMDPersonResidentSyncManager *)selfCopy residentSyncManager:v32];
   [v27 performResidentRequest:v23 options:0];
 
   v28 = v39;
@@ -583,60 +583,60 @@ void __55__HMDPersonResidentSyncManager_removePersonsWithUUIDs___block_invoke_2(
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addOrUpdatePersons:(id)a3
+- (id)addOrUpdatePersons:(id)persons
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  personsCopy = persons;
   v5 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Add persons"];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 identifier];
-    v11 = [v10 shortDescription];
+    identifier = [v5 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v45 = v9;
     v46 = 2114;
-    v47 = v11;
+    v47 = shortDescription;
     v48 = 2112;
-    v49 = v4;
+    v49 = personsCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Adding/updating persons: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
   v41 = 0;
-  v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v41];
+  v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:personsCopy requiringSecureCoding:1 error:&v41];
   v13 = v41;
   if (v12)
   {
     v14 = objc_alloc_init(MEMORY[0x277D2C900]);
     v15 = MEMORY[0x277D2C938];
-    v16 = [(HMDPersonResidentSyncManager *)v7 workQueue];
-    v17 = [v15 schedulerWithDispatchQueue:v16];
+    workQueue = [(HMDPersonResidentSyncManager *)selfCopy workQueue];
+    v17 = [v15 schedulerWithDispatchQueue:workQueue];
     v18 = [v14 reschedule:v17];
 
     v42 = @"HMDPRSM.mk.persons";
     v43 = v12;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
     v20 = objc_alloc(MEMORY[0x277D0F820]);
-    v21 = [(HMDPersonResidentSyncManager *)v7 UUID];
-    v22 = [v20 initWithTarget:v21];
+    uUID = [(HMDPersonResidentSyncManager *)selfCopy UUID];
+    v22 = [v20 initWithTarget:uUID];
 
     v23 = [MEMORY[0x277D0F848] messageWithName:@"HMDPRSM.m.addOrUpdatePersons" destination:v22 payload:v19];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __51__HMDPersonResidentSyncManager_addOrUpdatePersons___block_invoke;
     v37[3] = &unk_27867E7E8;
-    v37[4] = v7;
+    v37[4] = selfCopy;
     v38 = v5;
     v24 = v18;
     v39 = v24;
-    v40 = v4;
+    v40 = personsCopy;
     [v23 setResponseHandler:v37];
-    v25 = [(HMDPersonResidentSyncManager *)v7 residentSyncManager];
-    [v25 performResidentRequest:v23 options:0];
+    residentSyncManager = [(HMDPersonResidentSyncManager *)selfCopy residentSyncManager];
+    [residentSyncManager performResidentRequest:v23 options:0];
 
     v26 = v40;
     v27 = v24;
@@ -645,17 +645,17 @@ void __55__HMDPersonResidentSyncManager_removePersonsWithUUIDs___block_invoke_2(
   else
   {
     v28 = objc_autoreleasePoolPush();
-    v29 = v7;
+    v29 = selfCopy;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       v31 = HMFGetLogIdentifier();
-      v32 = [v5 identifier];
-      v33 = [v32 shortDescription];
+      identifier2 = [v5 identifier];
+      shortDescription2 = [identifier2 shortDescription];
       *buf = 138543874;
       v45 = v31;
       v46 = 2114;
-      v47 = v33;
+      v47 = shortDescription2;
       v48 = 2112;
       v49 = v13;
       _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to serialize persons: %@", buf, 0x20u);
@@ -725,49 +725,49 @@ void __51__HMDPersonResidentSyncManager_addOrUpdatePersons___block_invoke(id *a1
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithHome:(id)a3 delegate:(id)a4
+- (void)configureWithHome:(id)home delegate:(id)delegate
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [(HMDPersonResidentSyncManager *)self setDelegate:a4];
-  v7 = [HMDUserMessagePolicy userMessagePolicyWithHome:v6 userPrivilege:0 remoteAccessRequired:0];
+  homeCopy = home;
+  [(HMDPersonResidentSyncManager *)self setDelegate:delegate];
+  v7 = [HMDUserMessagePolicy userMessagePolicyWithHome:homeCopy userPrivilege:0 remoteAccessRequired:0];
 
   v8 = +[(HMDRemoteMessagePolicy *)HMDMutableRemoteMessagePolicy];
   [v8 setRoles:{objc_msgSend(v8, "roles") | 4}];
-  v9 = [(HMDPersonResidentSyncManager *)self messageDispatcher];
+  messageDispatcher = [(HMDPersonResidentSyncManager *)self messageDispatcher];
   v15[0] = v7;
   v15[1] = v8;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
-  [v9 registerForMessage:@"HMDPRSM.m.modifyPersons" receiver:self policies:v10 selector:sel_handleModifyPersonsMessage_];
+  [messageDispatcher registerForMessage:@"HMDPRSM.m.modifyPersons" receiver:self policies:v10 selector:sel_handleModifyPersonsMessage_];
 
-  v11 = [(HMDPersonResidentSyncManager *)self messageDispatcher];
+  messageDispatcher2 = [(HMDPersonResidentSyncManager *)self messageDispatcher];
   v14[0] = v7;
   v14[1] = v8;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-  [v11 registerForMessage:@"HMDPRSM.m.removeAllAssociatedData" receiver:self policies:v12 selector:sel_handleRemoveAllAssociatedDataMessage_];
+  [messageDispatcher2 registerForMessage:@"HMDPRSM.m.removeAllAssociatedData" receiver:self policies:v12 selector:sel_handleRemoveAllAssociatedDataMessage_];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDPersonResidentSyncManager)initWithUUID:(id)a3 messageDispatcher:(id)a4 workQueue:(id)a5 residentSyncManager:(id)a6
+- (HMDPersonResidentSyncManager)initWithUUID:(id)d messageDispatcher:(id)dispatcher workQueue:(id)queue residentSyncManager:(id)manager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  dispatcherCopy = dispatcher;
+  queueCopy = queue;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = HMDPersonResidentSyncManager;
   v14 = [(HMDPersonResidentSyncManager *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_workQueue, a5);
-    v16 = [v10 copy];
+    objc_storeStrong(&v14->_workQueue, queue);
+    v16 = [dCopy copy];
     UUID = v15->_UUID;
     v15->_UUID = v16;
 
-    objc_storeStrong(&v15->_messageDispatcher, a4);
-    objc_storeStrong(&v15->_residentSyncManager, a6);
+    objc_storeStrong(&v15->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v15->_residentSyncManager, manager);
   }
 
   return v15;

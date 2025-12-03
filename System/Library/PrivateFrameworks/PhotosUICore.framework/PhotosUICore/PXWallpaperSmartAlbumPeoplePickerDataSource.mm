@@ -1,21 +1,21 @@
 @interface PXWallpaperSmartAlbumPeoplePickerDataSource
-+ (void)personsForPrimarySuggestionSubtype:(unsigned __int16)a3 secondarySuggestionSubtype:(unsigned __int16)a4 excludingPersonLocalIdentifiers:(id)a5 photoLibrary:(id)a6 results:(id)a7;
-- (void)computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:(id)a3;
++ (void)personsForPrimarySuggestionSubtype:(unsigned __int16)subtype secondarySuggestionSubtype:(unsigned __int16)suggestionSubtype excludingPersonLocalIdentifiers:(id)identifiers photoLibrary:(id)library results:(id)results;
+- (void)computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:(id)feedback;
 @end
 
 @implementation PXWallpaperSmartAlbumPeoplePickerDataSource
 
-+ (void)personsForPrimarySuggestionSubtype:(unsigned __int16)a3 secondarySuggestionSubtype:(unsigned __int16)a4 excludingPersonLocalIdentifiers:(id)a5 photoLibrary:(id)a6 results:(id)a7
++ (void)personsForPrimarySuggestionSubtype:(unsigned __int16)subtype secondarySuggestionSubtype:(unsigned __int16)suggestionSubtype excludingPersonLocalIdentifiers:(id)identifiers photoLibrary:(id)library results:(id)results
 {
-  v9 = a4;
-  v10 = a3;
+  suggestionSubtypeCopy = suggestionSubtype;
+  subtypeCopy = subtype;
   v44 = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v13)
+  identifiersCopy = identifiers;
+  libraryCopy = library;
+  resultsCopy = results;
+  if (identifiersCopy)
   {
-    if (v14)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -23,29 +23,29 @@
 
   else
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:a1 file:@"PXWallpaperSmartAlbumPeoplePickerDataSource.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"excludingPersonLocalIdentifiers"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXWallpaperSmartAlbumPeoplePickerDataSource.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"excludingPersonLocalIdentifiers"}];
 
-    if (v14)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v35 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v35 handleFailureInMethod:a2 object:a1 file:@"PXWallpaperSmartAlbumPeoplePickerDataSource.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXWallpaperSmartAlbumPeoplePickerDataSource.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
 LABEL_3:
-  v39 = v15;
-  if (!v15)
+  v39 = resultsCopy;
+  if (!resultsCopy)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:a1 file:@"PXWallpaperSmartAlbumPeoplePickerDataSource.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"results"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXWallpaperSmartAlbumPeoplePickerDataSource.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"results"}];
   }
 
-  v38 = [MEMORY[0x1E69C15B0] fetchPersonLocalIdentifiersForSuggestionSubtype:v10 photoLibrary:v14];
+  v38 = [MEMORY[0x1E69C15B0] fetchPersonLocalIdentifiersForSuggestionSubtype:subtypeCopy photoLibrary:libraryCopy];
   v16 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:v38];
-  [v16 minusSet:v13];
+  [v16 minusSet:identifiersCopy];
   v17 = PLWallpaperGetLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -54,10 +54,10 @@ LABEL_3:
     _os_log_impl(&dword_1A3C1C000, v17, OS_LOG_TYPE_INFO, "[PXWallpaperSmartAlbumPeoplePickerDataSource] TopPeople local identifiers: %{public}@", buf, 0xCu);
   }
 
-  v37 = [MEMORY[0x1E69C15B0] fetchPersonLocalIdentifiersForSuggestionSubtype:v9 photoLibrary:v14];
+  v37 = [MEMORY[0x1E69C15B0] fetchPersonLocalIdentifiersForSuggestionSubtype:suggestionSubtypeCopy photoLibrary:libraryCopy];
   v18 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:v37];
-  v40 = v13;
-  [v18 minusSet:v13];
+  v40 = identifiersCopy;
+  [v18 minusSet:identifiersCopy];
   v19 = PLWallpaperGetLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
@@ -66,19 +66,19 @@ LABEL_3:
     _os_log_impl(&dword_1A3C1C000, v19, OS_LOG_TYPE_INFO, "[PXWallpaperSmartAlbumPeoplePickerDataSource] Shuffle People local identifiers: %{public}@", buf, 0xCu);
   }
 
-  v20 = [v14 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
   v21 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"manualOrder" ascending:1];
   v41[0] = v21;
   v22 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"faceCount" ascending:0];
   v41[1] = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
-  [v20 setSortDescriptors:v23];
+  [librarySpecificFetchOptions setSortDescriptors:v23];
 
   v24 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:v16];
   [v24 intersectSet:v18];
   v25 = MEMORY[0x1E6978980];
-  v26 = [v24 allObjects];
-  v27 = [v25 fetchPersonsWithLocalIdentifiers:v26 options:v20];
+  allObjects = [v24 allObjects];
+  v27 = [v25 fetchPersonsWithLocalIdentifiers:allObjects options:librarySpecificFetchOptions];
 
   v28 = PLWallpaperGetLog();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -91,8 +91,8 @@ LABEL_3:
   v29 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:v18];
   [v29 minusSet:v24];
   v30 = MEMORY[0x1E6978980];
-  v31 = [v29 allObjects];
-  v32 = [v30 fetchPersonsWithLocalIdentifiers:v31 options:v20];
+  allObjects2 = [v29 allObjects];
+  v32 = [v30 fetchPersonsWithLocalIdentifiers:allObjects2 options:librarySpecificFetchOptions];
 
   v33 = PLWallpaperGetLog();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
@@ -105,17 +105,17 @@ LABEL_3:
   (v39)[2](v39, v27, v32);
 }
 
-- (void)computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:(id)a3
+- (void)computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   v5 = objc_opt_class();
-  v6 = [(PXPassiveContentPeoplePickerDataSourceBase *)self photoLibrary];
+  photoLibrary = [(PXPassiveContentPeoplePickerDataSourceBase *)self photoLibrary];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __115__PXWallpaperSmartAlbumPeoplePickerDataSource_computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback___block_invoke;
   v7[3] = &unk_1E7737220;
   v7[4] = self;
-  [v5 personsForPrimarySuggestionSubtype:602 secondarySuggestionSubtype:652 excludingPersonLocalIdentifiers:v4 photoLibrary:v6 results:v7];
+  [v5 personsForPrimarySuggestionSubtype:602 secondarySuggestionSubtype:652 excludingPersonLocalIdentifiers:feedbackCopy photoLibrary:photoLibrary results:v7];
 }
 
 void __115__PXWallpaperSmartAlbumPeoplePickerDataSource_computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback___block_invoke(uint64_t a1, void *a2, void *a3)

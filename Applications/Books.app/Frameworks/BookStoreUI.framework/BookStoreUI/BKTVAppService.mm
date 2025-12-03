@@ -1,7 +1,7 @@
 @interface BKTVAppService
 + (BKTVAppService)shared;
 - (BKTVAppService)init;
-- (id)fetchTVApp:(id)a3;
+- (id)fetchTVApp:(id)app;
 @end
 
 @implementation BKTVAppService
@@ -18,11 +18,11 @@
   return v3;
 }
 
-- (id)fetchTVApp:(id)a3
+- (id)fetchTVApp:(id)app
 {
-  v4 = a3;
-  v5 = self;
-  sub_A1648(v4);
+  appCopy = app;
+  selfCopy = self;
+  sub_A1648(appCopy);
   v7 = v6;
 
   return v7;

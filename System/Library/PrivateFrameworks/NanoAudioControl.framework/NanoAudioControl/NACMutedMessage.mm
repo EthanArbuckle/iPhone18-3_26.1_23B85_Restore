@@ -1,20 +1,20 @@
 @interface NACMutedMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMuted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMuted:(BOOL)muted;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NACMutedMessage
 
-- (void)setHasMuted:(BOOL)a3
+- (void)setHasMuted:(BOOL)muted
 {
-  if (a3)
+  if (muted)
   {
     v3 = 2;
   }
@@ -33,87 +33,87 @@
   v8.receiver = self;
   v8.super_class = NACMutedMessage;
   v4 = [(NACMutedMessage *)&v8 description];
-  v5 = [(NACMutedMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NACMutedMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_muted];
-    [v3 setObject:v4 forKey:@"muted"];
+    [dictionary setObject:v4 forKey:@"muted"];
   }
 
   category = self->_category;
   if (category)
   {
-    [v3 setObject:category forKey:@"category"];
+    [dictionary setObject:category forKey:@"category"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInt:self->_originIdentifier];
-    [v3 setObject:v6 forKey:@"originIdentifier"];
+    [dictionary setObject:v6 forKey:@"originIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     muted = self->_muted;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_category)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     originIdentifier = self->_originIdentifier;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[20] = self->_muted;
-    v4[24] |= 2u;
+    toCopy[20] = self->_muted;
+    toCopy[24] |= 2u;
   }
 
   if (self->_category)
   {
-    v5 = v4;
-    [v4 setCategory:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setCategory:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_originIdentifier;
-    v4[24] |= 1u;
+    *(toCopy + 4) = self->_originIdentifier;
+    toCopy[24] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -121,7 +121,7 @@
     *(v5 + 24) |= 2u;
   }
 
-  v7 = [(NSString *)self->_category copyWithZone:a3];
+  v7 = [(NSString *)self->_category copyWithZone:zone];
   v8 = *(v6 + 8);
   *(v6 + 8) = v7;
 
@@ -134,45 +134,45 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   has = self->_has;
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0)
+    if ((*(equalCopy + 24) & 2) == 0)
     {
       goto LABEL_12;
     }
 
-    v10 = *(v4 + 20);
+    v10 = *(equalCopy + 20);
     if (self->_muted)
     {
-      if ((*(v4 + 20) & 1) == 0)
+      if ((*(equalCopy + 20) & 1) == 0)
       {
         goto LABEL_12;
       }
     }
 
-    else if (*(v4 + 20))
+    else if (*(equalCopy + 20))
     {
       goto LABEL_12;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_12;
   }
 
   category = self->_category;
-  if (category | *(v4 + 1))
+  if (category | *(equalCopy + 1))
   {
     if (![(NSString *)category isEqual:?])
     {
@@ -182,10 +182,10 @@
     has = self->_has;
   }
 
-  v8 = (*(v4 + 24) & 1) == 0;
+  v8 = (*(equalCopy + 24) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_originIdentifier == *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_originIdentifier == *(equalCopy + 4))
     {
       v8 = 1;
       goto LABEL_13;
@@ -226,25 +226,25 @@ LABEL_13:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 24) & 2) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 24) & 2) != 0)
   {
-    self->_muted = *(v4 + 20);
+    self->_muted = *(fromCopy + 20);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(NACMutedMessage *)self setCategory:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
-    self->_originIdentifier = *(v4 + 4);
+    self->_originIdentifier = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 }

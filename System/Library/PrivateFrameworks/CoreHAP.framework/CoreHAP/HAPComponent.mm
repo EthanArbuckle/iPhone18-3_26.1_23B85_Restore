@@ -1,6 +1,6 @@
 @interface HAPComponent
 - (HAPBTLECentralManagerDelegate)centralManagerDelegate;
-- (HAPComponent)initWithDelegate:(id)a3;
+- (HAPComponent)initWithDelegate:(id)delegate;
 @end
 
 @implementation HAPComponent
@@ -12,14 +12,14 @@
   return WeakRetained;
 }
 
-- (HAPComponent)initWithDelegate:(id)a3
+- (HAPComponent)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(HAPComponent *)self init];
   v6 = v5;
   if (v5)
   {
-    [(HAPComponent *)v5 setCentralManagerDelegate:v4];
+    [(HAPComponent *)v5 setCentralManagerDelegate:delegateCopy];
   }
 
   return v6;

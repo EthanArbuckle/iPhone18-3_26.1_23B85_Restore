@@ -1,29 +1,29 @@
 @interface CAMMotionController
 - (CAMMotionController)init;
-- (id)_debugStringForDeviceOrientation:(int64_t)a3;
-- (id)_debugStringForInterfaceOrientation:(int64_t)a3;
+- (id)_debugStringForDeviceOrientation:(int64_t)orientation;
+- (id)_debugStringForInterfaceOrientation:(int64_t)orientation;
 - (int64_t)captureOrientation;
 - (int64_t)panoramaCaptureOrientation;
-- (void)_handleApplicationDidEnterBackground:(id)a3;
-- (void)_handleApplicationWillEnterForeground:(id)a3;
-- (void)_handleLevelMotionUpdate:(id)a3 error:(id)a4;
-- (void)_setCachedCaptureOrientation:(int64_t)a3;
-- (void)_setDominantPhysicalButton:(int64_t)a3;
+- (void)_handleApplicationDidEnterBackground:(id)background;
+- (void)_handleApplicationWillEnterForeground:(id)foreground;
+- (void)_handleLevelMotionUpdate:(id)update error:(id)error;
+- (void)_setCachedCaptureOrientation:(int64_t)orientation;
+- (void)_setDominantPhysicalButton:(int64_t)button;
 - (void)_updateAttitudeAlignmentMotionManager;
 - (void)_updateInitialOrientation;
 - (void)_updatePhysicalButtonObservation;
-- (void)accelerometer:(id)a3 didChangeDeviceOrientation:(int64_t)a4;
+- (void)accelerometer:(id)accelerometer didChangeDeviceOrientation:(int64_t)orientation;
 - (void)beginGeneratingDominantPhysicalButtonNotifications;
-- (void)beginUpdatingLevelViewModel:(id)a3;
-- (void)beginUpdatingPreviewAlignmentModel:(id)a3;
+- (void)beginUpdatingLevelViewModel:(id)model;
+- (void)beginUpdatingPreviewAlignmentModel:(id)model;
 - (void)dealloc;
-- (void)debugValidateCaptureOrientationForMode:(int64_t)a3;
+- (void)debugValidateCaptureOrientationForMode:(int64_t)mode;
 - (void)endGeneratingDominantPhysicalButtonNotifications;
 - (void)endUpdatingActiveLevelViewModel;
 - (void)endUpdatingPreviewAlignmentModel;
-- (void)observable:(id)a3 didPublishChange:(unint64_t)a4 withContext:(void *)a5;
-- (void)setDeviceOrientation:(int64_t)a3;
-- (void)setForceLandscapeOrientation:(BOOL)a3;
+- (void)observable:(id)observable didPublishChange:(unint64_t)change withContext:(void *)context;
+- (void)setDeviceOrientation:(int64_t)orientation;
+- (void)setForceLandscapeOrientation:(BOOL)orientation;
 @end
 
 @implementation CAMMotionController
@@ -53,14 +53,14 @@
 
 - (int64_t)captureOrientation
 {
-  v3 = [(CAMMotionController *)self _cachedCaptureOrientation];
+  _cachedCaptureOrientation = [(CAMMotionController *)self _cachedCaptureOrientation];
   if ([(CAMMotionController *)self forceLandscapeOrientation])
   {
 
     return [(CAMMotionController *)self _orientationIfForcedToLandscape];
   }
 
-  else if ((v3 - 1) >= 4)
+  else if ((_cachedCaptureOrientation - 1) >= 4)
   {
 
     return [(CAMMotionController *)self _fallbackCaptureOrientation];
@@ -68,23 +68,23 @@
 
   else
   {
-    return v3;
+    return _cachedCaptureOrientation;
   }
 }
 
 - (void)endUpdatingActiveLevelViewModel
 {
-  v3 = [(CAMMotionController *)self activeLevelViewModel];
-  if (v3)
+  activeLevelViewModel = [(CAMMotionController *)self activeLevelViewModel];
+  if (activeLevelViewModel)
   {
-    v5 = v3;
-    [v3 unregisterChangeObserver:self context:0];
-    v4 = [(CAMMotionController *)self activeLevelViewModel];
-    [v4 reset];
+    v5 = activeLevelViewModel;
+    [activeLevelViewModel unregisterChangeObserver:self context:0];
+    activeLevelViewModel2 = [(CAMMotionController *)self activeLevelViewModel];
+    [activeLevelViewModel2 reset];
 
     [(CAMMotionController *)self _setActiveLevelViewModel:0];
     [(CAMMotionController *)self _updateAttitudeAlignmentMotionManager];
-    v3 = v5;
+    activeLevelViewModel = v5;
   }
 }
 
@@ -97,13 +97,13 @@
 
 - (void)_updatePhysicalButtonObservation
 {
-  v3 = [(CAMMotionController *)self _physicalButtonMotionManager];
+  _physicalButtonMotionManager = [(CAMMotionController *)self _physicalButtonMotionManager];
   v4 = +[CAMUserPreferences preferences];
   if ([v4 isLockAsShutterEnabled] && -[CAMMotionController _numberOfDominantPhysicalButtonObservers](self, "_numberOfDominantPhysicalButtonObservers") >= 1)
   {
-    if (![(CMMotionManager *)v3 isDeviceMotionActive])
+    if (![(CMMotionManager *)_physicalButtonMotionManager isDeviceMotionActive])
     {
-      if (!v3)
+      if (!_physicalButtonMotionManager)
       {
         v5 = objc_alloc_init(MEMORY[0x1E69634D0]);
         physicalButtonMotionManager = self->__physicalButtonMotionManager;
@@ -111,33 +111,33 @@
 
         [(CMMotionManager *)self->__physicalButtonMotionManager setDeviceMotionUpdateInterval:0.05];
         [(CMMotionManager *)self->__physicalButtonMotionManager setPowerConservationMode:2];
-        v3 = self->__physicalButtonMotionManager;
+        _physicalButtonMotionManager = self->__physicalButtonMotionManager;
       }
 
       objc_initWeak(&location, self);
-      v7 = [MEMORY[0x1E696ADC8] mainQueue];
+      mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __55__CAMMotionController__updatePhysicalButtonObservation__block_invoke;
       v8[3] = &unk_1E76F89C8;
       objc_copyWeak(&v9, &location);
-      [(CMMotionManager *)v3 startDeviceMotionUpdatesToQueue:v7 withHandler:v8];
+      [(CMMotionManager *)_physicalButtonMotionManager startDeviceMotionUpdatesToQueue:mainQueue withHandler:v8];
 
       objc_destroyWeak(&v9);
       objc_destroyWeak(&location);
     }
   }
 
-  else if ([(CMMotionManager *)v3 isDeviceMotionActive])
+  else if ([(CMMotionManager *)_physicalButtonMotionManager isDeviceMotionActive])
   {
-    [(CMMotionManager *)v3 stopDeviceMotionUpdates];
+    [(CMMotionManager *)_physicalButtonMotionManager stopDeviceMotionUpdates];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(CAMMotionController *)self _accelerometer];
-  [v3 setOrientationEventsEnabled:0];
+  _accelerometer = [(CAMMotionController *)self _accelerometer];
+  [_accelerometer setOrientationEventsEnabled:0];
 
   v4.receiver = self;
   v4.super_class = CAMMotionController;
@@ -147,42 +147,42 @@
 - (void)_updateInitialOrientation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(BKSAccelerometer *)self->__accelerometer currentDeviceOrientation];
+  currentDeviceOrientation = [(BKSAccelerometer *)self->__accelerometer currentDeviceOrientation];
   v4 = os_log_create("com.apple.camera", "Orientation");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CAMMotionController *)self _debugStringForDeviceOrientation:v3];
+    v5 = [(CAMMotionController *)self _debugStringForDeviceOrientation:currentDeviceOrientation];
     v14 = 138543362;
     v15 = v5;
     _os_log_impl(&dword_1A3640000, v4, OS_LOG_TYPE_DEFAULT, "Capture orientation %{public}@ (initial)", &v14, 0xCu);
   }
 
-  self->__cachedCaptureOrientation = v3;
-  self->_deviceOrientation = v3;
-  if ((v3 - 3) <= 1)
+  self->__cachedCaptureOrientation = currentDeviceOrientation;
+  self->_deviceOrientation = currentDeviceOrientation;
+  if ((currentDeviceOrientation - 3) <= 1)
   {
-    [(CAMMotionController *)self _setOrientationWhenForcedToLandscape:v3];
+    [(CAMMotionController *)self _setOrientationWhenForcedToLandscape:currentDeviceOrientation];
 LABEL_6:
-    v6 = 0;
+    activeInterfaceOrientation = 0;
     goto LABEL_7;
   }
 
-  if ((v3 - 1) < 4)
+  if ((currentDeviceOrientation - 1) < 4)
   {
     goto LABEL_6;
   }
 
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  v6 = [v7 activeInterfaceOrientation];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  activeInterfaceOrientation = [mEMORY[0x1E69DC668] activeInterfaceOrientation];
 
   v8 = os_log_create("com.apple.camera", "Orientation");
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (activeInterfaceOrientation)
   {
     if (v9)
     {
-      v10 = [(CAMMotionController *)self _debugStringForDeviceOrientation:v3];
-      v11 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:v6];
+      v10 = [(CAMMotionController *)self _debugStringForDeviceOrientation:currentDeviceOrientation];
+      v11 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:activeInterfaceOrientation];
       v14 = 138543618;
       v15 = v10;
       v16 = 2114;
@@ -195,7 +195,7 @@ LABEL_6:
   {
     if (v9)
     {
-      v12 = [(CAMMotionController *)self _debugStringForDeviceOrientation:v3];
+      v12 = [(CAMMotionController *)self _debugStringForDeviceOrientation:currentDeviceOrientation];
       v13 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:0];
       v14 = 138543618;
       v15 = v12;
@@ -204,90 +204,90 @@ LABEL_6:
       _os_log_impl(&dword_1A3640000, v8, OS_LOG_TYPE_DEFAULT, "Device orientation from accelerometer is not usable for capture orientation (%{public}@) and neither is [UIApplication activeInterfaceOrientation] (%{public}@). Will use Portrait as fallback.", &v14, 0x16u);
     }
 
-    v6 = 1;
+    activeInterfaceOrientation = 1;
   }
 
 LABEL_7:
-  self->__fallbackCaptureOrientation = v6;
+  self->__fallbackCaptureOrientation = activeInterfaceOrientation;
 }
 
-- (void)_handleApplicationDidEnterBackground:(id)a3
+- (void)_handleApplicationDidEnterBackground:(id)background
 {
-  v3 = [(CAMMotionController *)self _accelerometer];
-  [v3 setOrientationEventsEnabled:0];
+  _accelerometer = [(CAMMotionController *)self _accelerometer];
+  [_accelerometer setOrientationEventsEnabled:0];
 }
 
-- (void)_handleApplicationWillEnterForeground:(id)a3
+- (void)_handleApplicationWillEnterForeground:(id)foreground
 {
-  v4 = [(CAMMotionController *)self captureOrientation];
-  v5 = [(CAMMotionController *)self deviceOrientation];
+  captureOrientation = [(CAMMotionController *)self captureOrientation];
+  deviceOrientation = [(CAMMotionController *)self deviceOrientation];
   [(CAMMotionController *)self _updateInitialOrientation];
-  v6 = [(CAMMotionController *)self _accelerometer];
-  [v6 setOrientationEventsEnabled:1];
+  _accelerometer = [(CAMMotionController *)self _accelerometer];
+  [_accelerometer setOrientationEventsEnabled:1];
 
-  if ([(CAMMotionController *)self captureOrientation]!= v4)
+  if ([(CAMMotionController *)self captureOrientation]!= captureOrientation)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"CAMMotionControllerCaptureOrientationChangedNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CAMMotionControllerCaptureOrientationChangedNotification" object:self];
   }
 
-  if ([(CAMMotionController *)self deviceOrientation]!= v5)
+  if ([(CAMMotionController *)self deviceOrientation]!= deviceOrientation)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"CAMMotionControllerCaptureDeviceOrientationChangedNotification" object:self];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"CAMMotionControllerCaptureDeviceOrientationChangedNotification" object:self];
   }
 }
 
-- (void)_setCachedCaptureOrientation:(int64_t)a3
+- (void)_setCachedCaptureOrientation:(int64_t)orientation
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->__cachedCaptureOrientation != a3)
+  if (self->__cachedCaptureOrientation != orientation)
   {
-    self->__cachedCaptureOrientation = a3;
+    self->__cachedCaptureOrientation = orientation;
     v5 = os_log_create("com.apple.camera", "Orientation");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CAMMotionController *)self _debugStringForDeviceOrientation:a3];
+      v6 = [(CAMMotionController *)self _debugStringForDeviceOrientation:orientation];
       v8 = 138543362;
       v9 = v6;
       _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "Capture orientation %{public}@ (updated)", &v8, 0xCu);
     }
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"CAMMotionControllerCaptureOrientationChangedNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CAMMotionControllerCaptureOrientationChangedNotification" object:self];
   }
 }
 
-- (void)setDeviceOrientation:(int64_t)a3
+- (void)setDeviceOrientation:(int64_t)orientation
 {
-  if (self->_deviceOrientation != a3)
+  if (self->_deviceOrientation != orientation)
   {
-    self->_deviceOrientation = a3;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"CAMMotionControllerCaptureDeviceOrientationChangedNotification" object:self];
+    self->_deviceOrientation = orientation;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CAMMotionControllerCaptureDeviceOrientationChangedNotification" object:self];
   }
 }
 
 - (int64_t)panoramaCaptureOrientation
 {
-  v2 = [(CAMMotionController *)self captureOrientation];
+  captureOrientation = [(CAMMotionController *)self captureOrientation];
 
-  return [CAMOrientationUtilities panoramaCaptureOrientationFromCaptureOrientation:v2];
+  return [CAMOrientationUtilities panoramaCaptureOrientationFromCaptureOrientation:captureOrientation];
 }
 
-- (void)setForceLandscapeOrientation:(BOOL)a3
+- (void)setForceLandscapeOrientation:(BOOL)orientation
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (self->_forceLandscapeOrientation != a3)
+  if (self->_forceLandscapeOrientation != orientation)
   {
-    if (a3)
+    if (orientation)
     {
-      v5 = [(CAMMotionController *)self captureOrientation];
-      self->_forceLandscapeOrientation = a3;
+      captureOrientation = [(CAMMotionController *)self captureOrientation];
+      self->_forceLandscapeOrientation = orientation;
       v6 = os_log_create("com.apple.camera", "Orientation");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:v5];
+        v7 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:captureOrientation];
         v8 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:[(CAMMotionController *)self _orientationIfForcedToLandscape]];
         v14 = 138543618;
         v15 = v7;
@@ -296,24 +296,24 @@ LABEL_7:
         _os_log_impl(&dword_1A3640000, v6, OS_LOG_TYPE_DEFAULT, "Beginning force landscape orientation, changing orientation from %{public}@ to %{public}@", &v14, 0x16u);
       }
 
-      if (v5 <= 2)
+      if (captureOrientation <= 2)
       {
         [(CAMMotionController *)self _setOrientationWhenForcedToLandscape:3];
 LABEL_10:
-        v13 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v13 postNotificationName:@"CAMMotionControllerCaptureOrientationChangedNotification" object:self];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"CAMMotionControllerCaptureOrientationChangedNotification" object:self];
       }
     }
 
     else
     {
       self->_forceLandscapeOrientation = 0;
-      v9 = [(CAMMotionController *)self captureOrientation];
+      captureOrientation2 = [(CAMMotionController *)self captureOrientation];
       v10 = os_log_create("com.apple.camera", "Orientation");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v11 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:[(CAMMotionController *)self _orientationIfForcedToLandscape]];
-        v12 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:v9];
+        v12 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:captureOrientation2];
         v14 = 138543618;
         v15 = v11;
         v16 = 2114;
@@ -321,7 +321,7 @@ LABEL_10:
         _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "Ending force landscape orientation, changing orientation from %{public}@ to %{public}@", &v14, 0x16u);
       }
 
-      if ([(CAMMotionController *)self _orientationIfForcedToLandscape]!= v9)
+      if ([(CAMMotionController *)self _orientationIfForcedToLandscape]!= captureOrientation2)
       {
         goto LABEL_10;
       }
@@ -329,33 +329,33 @@ LABEL_10:
   }
 }
 
-- (void)accelerometer:(id)a3 didChangeDeviceOrientation:(int64_t)a4
+- (void)accelerometer:(id)accelerometer didChangeDeviceOrientation:(int64_t)orientation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = [(CAMMotionController *)self _cachedCaptureOrientation];
-  if ((a4 - 1) < 4)
+  _cachedCaptureOrientation = [(CAMMotionController *)self _cachedCaptureOrientation];
+  if ((orientation - 1) < 4)
   {
-    if ((a4 - 3) <= 1)
+    if ((orientation - 3) <= 1)
     {
-      [(CAMMotionController *)self _setOrientationWhenForcedToLandscape:a4];
+      [(CAMMotionController *)self _setOrientationWhenForcedToLandscape:orientation];
     }
 
 LABEL_12:
-    [(CAMMotionController *)self setDeviceOrientation:a4];
+    [(CAMMotionController *)self setDeviceOrientation:orientation];
 LABEL_13:
-    [(CAMMotionController *)self _setCachedCaptureOrientation:a4];
+    [(CAMMotionController *)self _setCachedCaptureOrientation:orientation];
     return;
   }
 
-  v7 = v6;
-  v8 = v6 - 1;
+  v7 = _cachedCaptureOrientation;
+  v8 = _cachedCaptureOrientation - 1;
   v9 = os_log_create("com.apple.camera", "Orientation");
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
   if (v8 >= 4)
   {
     if (v10)
     {
-      v14 = [(CAMMotionController *)self _debugStringForDeviceOrientation:a4];
+      v14 = [(CAMMotionController *)self _debugStringForDeviceOrientation:orientation];
       v15 = [(CAMMotionController *)self _debugStringForDeviceOrientation:v7];
       v16 = 138543618;
       v17 = v14;
@@ -370,7 +370,7 @@ LABEL_13:
   v11 = v7 - 5;
   if (v10)
   {
-    v12 = [(CAMMotionController *)self _debugStringForDeviceOrientation:a4];
+    v12 = [(CAMMotionController *)self _debugStringForDeviceOrientation:orientation];
     v13 = [(CAMMotionController *)self _debugStringForDeviceOrientation:v7];
     v16 = 138543618;
     v17 = v12;
@@ -379,7 +379,7 @@ LABEL_13:
     _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "Received device orientation change from accelerometer as %{public}@ (ignoring and keeping %{public}@)", &v16, 0x16u);
   }
 
-  [(CAMMotionController *)self setDeviceOrientation:a4];
+  [(CAMMotionController *)self setDeviceOrientation:orientation];
   if (v11 <= 0xFFFFFFFFFFFFFFFBLL)
   {
     goto LABEL_13;
@@ -478,68 +478,68 @@ LABEL_24:
   [(CAMMotionController *)self _updatePhysicalButtonObservation];
 }
 
-- (void)_setDominantPhysicalButton:(int64_t)a3
+- (void)_setDominantPhysicalButton:(int64_t)button
 {
-  if (self->_dominantPhysicalButton != a3)
+  if (self->_dominantPhysicalButton != button)
   {
-    self->_dominantPhysicalButton = a3;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"CAMMotionControllerDominantPhysicalCaptureButtonChangedNotification" object:self];
+    self->_dominantPhysicalButton = button;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CAMMotionControllerDominantPhysicalCaptureButtonChangedNotification" object:self];
   }
 }
 
-- (void)beginUpdatingLevelViewModel:(id)a3
+- (void)beginUpdatingLevelViewModel:(id)model
 {
-  v5 = a3;
-  v4 = [(CAMMotionController *)self activeLevelViewModel];
-  if (v4 != v5)
+  modelCopy = model;
+  activeLevelViewModel = [(CAMMotionController *)self activeLevelViewModel];
+  if (activeLevelViewModel != modelCopy)
   {
-    if (v4)
+    if (activeLevelViewModel)
     {
       [(CAMMotionController *)self endUpdatingActiveLevelViewModel];
     }
 
-    [(CAMMotionController *)self _setActiveLevelViewModel:v5];
-    [v5 registerChangeObserver:self context:0];
+    [(CAMMotionController *)self _setActiveLevelViewModel:modelCopy];
+    [modelCopy registerChangeObserver:self context:0];
     [(CAMMotionController *)self _updateAttitudeAlignmentMotionManager];
   }
 }
 
-- (void)observable:(id)a3 didPublishChange:(unint64_t)a4 withContext:(void *)a5
+- (void)observable:(id)observable didPublishChange:(unint64_t)change withContext:(void *)context
 {
-  if (!a5 && (a4 & 8) != 0)
+  if (!context && (change & 8) != 0)
   {
     [(CAMMotionController *)self _updateAttitudeAlignmentMotionManager];
   }
 }
 
-- (void)beginUpdatingPreviewAlignmentModel:(id)a3
+- (void)beginUpdatingPreviewAlignmentModel:(id)model
 {
-  v7 = a3;
-  v4 = [(CAMMotionController *)self activePreviewAlignmentModel];
+  modelCopy = model;
+  activePreviewAlignmentModel = [(CAMMotionController *)self activePreviewAlignmentModel];
 
-  v5 = v7;
-  if (v4 != v7)
+  v5 = modelCopy;
+  if (activePreviewAlignmentModel != modelCopy)
   {
-    v6 = [(CAMMotionController *)self activePreviewAlignmentModel];
+    activePreviewAlignmentModel2 = [(CAMMotionController *)self activePreviewAlignmentModel];
 
-    if (v6)
+    if (activePreviewAlignmentModel2)
     {
       [(CAMMotionController *)self endUpdatingPreviewAlignmentModel];
     }
 
-    [v7 reset];
-    [(CAMMotionController *)self _setActivePreviewAlignmentModel:v7];
+    [modelCopy reset];
+    [(CAMMotionController *)self _setActivePreviewAlignmentModel:modelCopy];
     [(CAMMotionController *)self _updateAttitudeAlignmentMotionManager];
-    v5 = v7;
+    v5 = modelCopy;
   }
 }
 
 - (void)endUpdatingPreviewAlignmentModel
 {
-  v3 = [(CAMMotionController *)self activePreviewAlignmentModel];
+  activePreviewAlignmentModel = [(CAMMotionController *)self activePreviewAlignmentModel];
 
-  if (v3)
+  if (activePreviewAlignmentModel)
   {
     [(CAMMotionController *)self _setActivePreviewAlignmentModel:0];
 
@@ -549,38 +549,38 @@ LABEL_24:
 
 - (void)_updateAttitudeAlignmentMotionManager
 {
-  v3 = [(CAMMotionController *)self _attitudeAlignmentMotionManager];
-  v4 = [(CAMMotionController *)self activeLevelViewModel];
-  v5 = [(CAMMotionController *)self activePreviewAlignmentModel];
-  if (!v3 && v4 | v5)
+  _attitudeAlignmentMotionManager = [(CAMMotionController *)self _attitudeAlignmentMotionManager];
+  activeLevelViewModel = [(CAMMotionController *)self activeLevelViewModel];
+  activePreviewAlignmentModel = [(CAMMotionController *)self activePreviewAlignmentModel];
+  if (!_attitudeAlignmentMotionManager && activeLevelViewModel | activePreviewAlignmentModel)
   {
-    v3 = objc_alloc_init(MEMORY[0x1E69634D0]);
-    objc_storeStrong(&self->__attitudeAlignmentMotionManager, v3);
+    _attitudeAlignmentMotionManager = objc_alloc_init(MEMORY[0x1E69634D0]);
+    objc_storeStrong(&self->__attitudeAlignmentMotionManager, _attitudeAlignmentMotionManager);
   }
 
-  v6 = [v3 isDeviceMotionActive];
-  if (v4 | v5)
+  isDeviceMotionActive = [_attitudeAlignmentMotionManager isDeviceMotionActive];
+  if (activeLevelViewModel | activePreviewAlignmentModel)
   {
-    if ((v6 & 1) == 0)
+    if ((isDeviceMotionActive & 1) == 0)
     {
       objc_initWeak(&location, self);
-      v7 = [MEMORY[0x1E696ADC8] mainQueue];
+      mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
       v13 = MEMORY[0x1E69E9820];
       v14 = 3221225472;
       v15 = __60__CAMMotionController__updateAttitudeAlignmentMotionManager__block_invoke;
       v16 = &unk_1E76F89C8;
       objc_copyWeak(&v17, &location);
-      [v3 startDeviceMotionUpdatesToQueue:v7 withHandler:&v13];
+      [_attitudeAlignmentMotionManager startDeviceMotionUpdatesToQueue:mainQueue withHandler:&v13];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);
     }
 
-    if (v5 && v4)
+    if (activePreviewAlignmentModel && activeLevelViewModel)
     {
       +[CAMPreviewAlignmentModel desiredUpdateInterval];
       v9 = v8;
-      [v4 desiredUpdateInterval];
+      [activeLevelViewModel desiredUpdateInterval];
       if (v9 >= v10)
       {
         v9 = v10;
@@ -589,20 +589,20 @@ LABEL_24:
 
     else
     {
-      if (v5)
+      if (activePreviewAlignmentModel)
       {
         v11 = CAMPreviewAlignmentModel;
       }
 
       else
       {
-        if (!v4)
+        if (!activeLevelViewModel)
         {
           v9 = 0.0;
           goto LABEL_19;
         }
 
-        v11 = v4;
+        v11 = activeLevelViewModel;
       }
 
       [(__objc2_class *)v11 desiredUpdateInterval:v13];
@@ -613,14 +613,14 @@ LABEL_24:
   else
   {
     v9 = 0.0;
-    if (v6)
+    if (isDeviceMotionActive)
     {
-      [v3 stopDeviceMotionUpdates];
+      [_attitudeAlignmentMotionManager stopDeviceMotionUpdates];
     }
   }
 
 LABEL_19:
-  [v3 setDeviceMotionUpdateInterval:{v9, v13, v14, v15, v16}];
+  [_attitudeAlignmentMotionManager setDeviceMotionUpdateInterval:{v9, v13, v14, v15, v16}];
 }
 
 void __60__CAMMotionController__updateAttitudeAlignmentMotionManager__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -631,81 +631,81 @@ void __60__CAMMotionController__updateAttitudeAlignmentMotionManager__block_invo
   [WeakRetained _handleLevelMotionUpdate:v6 error:v5];
 }
 
-- (void)_handleLevelMotionUpdate:(id)a3 error:(id)a4
+- (void)_handleLevelMotionUpdate:(id)update error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  updateCopy = update;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = os_log_create("com.apple.camera", "Orientation");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [CAMMotionController _handleLevelMotionUpdate:v7 error:v8];
+      [CAMMotionController _handleLevelMotionUpdate:errorCopy error:v8];
     }
 
-    v9 = [(CAMMotionController *)self _attitudeAlignmentMotionManager];
-    [v9 stopDeviceMotionUpdates];
+    _attitudeAlignmentMotionManager = [(CAMMotionController *)self _attitudeAlignmentMotionManager];
+    [_attitudeAlignmentMotionManager stopDeviceMotionUpdates];
   }
 
   else
   {
-    v10 = [(CAMMotionController *)self activeLevelViewModel];
-    [v10 applyDeviceMotion:v6 captureOrientation:{-[CAMMotionController captureOrientation](self, "captureOrientation")}];
+    activeLevelViewModel = [(CAMMotionController *)self activeLevelViewModel];
+    [activeLevelViewModel applyDeviceMotion:updateCopy captureOrientation:{-[CAMMotionController captureOrientation](self, "captureOrientation")}];
 
-    v9 = [(CAMMotionController *)self activePreviewAlignmentModel];
-    [v9 applyDeviceMotion:v6];
+    _attitudeAlignmentMotionManager = [(CAMMotionController *)self activePreviewAlignmentModel];
+    [_attitudeAlignmentMotionManager applyDeviceMotion:updateCopy];
   }
 }
 
-- (id)_debugStringForDeviceOrientation:(int64_t)a3
+- (id)_debugStringForDeviceOrientation:(int64_t)orientation
 {
-  if (a3 >= 7)
+  if (orientation >= 7)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected:%ld", a3];
+    orientation = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected:%ld", orientation];
   }
 
   else
   {
-    v4 = off_1E76F8A10[a3];
+    orientation = off_1E76F8A10[orientation];
   }
 
-  return v4;
+  return orientation;
 }
 
-- (id)_debugStringForInterfaceOrientation:(int64_t)a3
+- (id)_debugStringForInterfaceOrientation:(int64_t)orientation
 {
-  if (a3 >= 5)
+  if (orientation >= 5)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected:%ld", a3];
+    orientation = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected:%ld", orientation];
   }
 
   else
   {
-    v4 = off_1E76F8A48[a3];
+    orientation = off_1E76F8A48[orientation];
   }
 
-  return v4;
+  return orientation;
 }
 
-- (void)debugValidateCaptureOrientationForMode:(int64_t)a3
+- (void)debugValidateCaptureOrientationForMode:(int64_t)mode
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [(CAMMotionController *)self _cachedCaptureOrientation];
-  if ((v5 - 1) >= 4)
+  _cachedCaptureOrientation = [(CAMMotionController *)self _cachedCaptureOrientation];
+  if ((_cachedCaptureOrientation - 1) >= 4)
   {
-    v6 = v5;
-    v7 = [(CAMMotionController *)self _fallbackCaptureOrientation];
-    v8 = [MEMORY[0x1E69DC668] sharedApplication];
-    v9 = [v8 activeInterfaceOrientation];
+    v6 = _cachedCaptureOrientation;
+    _fallbackCaptureOrientation = [(CAMMotionController *)self _fallbackCaptureOrientation];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    activeInterfaceOrientation = [mEMORY[0x1E69DC668] activeInterfaceOrientation];
 
-    if (a3 <= 9 && ((1 << a3) & 0x251) != 0 && !v6)
+    if (mode <= 9 && ((1 << mode) & 0x251) != 0 && !v6)
     {
       v14 = os_log_create("com.apple.camera", "Orientation");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v17 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:v7];
+        v17 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:_fallbackCaptureOrientation];
         v18 = [(CAMMotionController *)self _debugStringForDeviceOrientation:0];
-        v19 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:v9];
+        v19 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:activeInterfaceOrientation];
         v20 = 138543874;
         v21 = v17;
         v22 = 2114;
@@ -716,9 +716,9 @@ void __60__CAMMotionController__updateAttitudeAlignmentMotionManager__block_invo
       }
 
       v10 = +[CAMCaptureCapabilities capabilities];
-      v15 = [v10 isInternalInstall];
-      v16 = [(CAMMotionController *)self _didNotifyCaptureOrientationWasInvalid];
-      if (v15 && !v16)
+      isInternalInstall = [v10 isInternalInstall];
+      _didNotifyCaptureOrientationWasInvalid = [(CAMMotionController *)self _didNotifyCaptureOrientationWasInvalid];
+      if (isInternalInstall && !_didNotifyCaptureOrientationWasInvalid)
       {
         CFPreferencesAppSynchronize(@"com.apple.camera");
         if (!CFPreferencesGetAppBooleanValue(@"CAMDebugSuppressOrientationAlert", @"com.apple.camera", 0))
@@ -736,9 +736,9 @@ void __60__CAMMotionController__updateAttitudeAlignmentMotionManager__block_invo
       v10 = os_log_create("com.apple.camera", "Orientation");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:v7];
+        v11 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:_fallbackCaptureOrientation];
         v12 = [(CAMMotionController *)self _debugStringForDeviceOrientation:v6];
-        v13 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:v9];
+        v13 = [(CAMMotionController *)self _debugStringForInterfaceOrientation:activeInterfaceOrientation];
         v20 = 138543874;
         v21 = v11;
         v22 = 2114;

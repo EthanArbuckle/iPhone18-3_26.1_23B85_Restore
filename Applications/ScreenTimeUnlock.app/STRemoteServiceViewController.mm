@@ -1,17 +1,17 @@
 @interface STRemoteServiceViewController
 + (void)dismissPinController;
-- (BOOL)validatePIN:(id)a3 forPINController:(id)a4;
+- (BOOL)validatePIN:(id)n forPINController:(id)controller;
 - (STRemoteServiceViewController)init;
-- (void)_dismissPINControllerWithCompletionHandler:(id)a3;
-- (void)_provideAuthenticationResultToClient:(id)a3;
-- (void)_providePINToClient:(id)a3;
+- (void)_dismissPINControllerWithCompletionHandler:(id)handler;
+- (void)_provideAuthenticationResultToClient:(id)client;
+- (void)_providePINToClient:(id)client;
 - (void)_willAppearInRemoteViewController;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)devicePINControllerDidDismissPINPane:(id)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)devicePINControllerDidDismissPINPane:(id)pane;
 - (void)didAcceptEnteredPIN;
 - (void)didCancelEnteringPIN;
-- (void)setPIN:(id)a3 forPINController:(id)a4;
-- (void)showRestrictionsPINControllerWithMode:(int64_t)a3;
+- (void)setPIN:(id)n forPINController:(id)controller;
+- (void)showRestrictionsPINControllerWithMode:(int64_t)mode;
 - (void)viewDidLoad;
 @end
 
@@ -31,8 +31,8 @@
 
 + (void)dismissPinController
 {
-  v2 = [qword_10000CEC8 _remoteViewControllerProxy];
-  [v2 dismiss];
+  _remoteViewControllerProxy = [qword_10000CEC8 _remoteViewControllerProxy];
+  [_remoteViewControllerProxy dismiss];
 
   v3 = qword_10000CEC8;
   qword_10000CEC8 = 0;
@@ -57,16 +57,16 @@
   v4.receiver = self;
   v4.super_class = STRemoteServiceViewController;
   [(STRemoteServiceViewController *)&v4 _willAppearInRemoteViewController];
-  v3 = [(STRemoteServiceViewController *)self _remoteViewControllerProxy];
-  [v3 setStyleOverridesToCancel:-1048577 animationSettings:0];
+  _remoteViewControllerProxy = [(STRemoteServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStyleOverridesToCancel:-1048577 animationSettings:0];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"STRemoteServiceUserInfoContextData"];
+  contextCopy = context;
+  completionCopy = completion;
+  userInfo = [contextCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"STRemoteServiceUserInfoContextData"];
 
   if (v9)
   {
@@ -81,13 +81,13 @@
   appContext = self->_appContext;
   self->_appContext = v10;
 
-  v12 = [v6 userInfo];
-  v13 = [v12 objectForKeyedSubscript:STRemoteAlertConfigurationContextKeyPasscodeMode];
+  userInfo2 = [contextCopy userInfo];
+  v13 = [userInfo2 objectForKeyedSubscript:STRemoteAlertConfigurationContextKeyPasscodeMode];
 
   if (v13)
   {
-    v14 = [v13 integerValue];
-    v15 = self;
+    integerValue = [v13 integerValue];
+    selfCopy2 = self;
   }
 
   else
@@ -99,24 +99,24 @@
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Defaulting remote view service to auth mode.", v25, 2u);
     }
 
-    v15 = self;
-    v14 = 0;
+    selfCopy2 = self;
+    integerValue = 0;
   }
 
-  [(STRemoteServiceViewController *)v15 setPasscodeMode:v14];
-  v17 = [v6 xpcEndpoint];
+  [(STRemoteServiceViewController *)selfCopy2 setPasscodeMode:integerValue];
+  xpcEndpoint = [contextCopy xpcEndpoint];
 
-  if (v17)
+  if (xpcEndpoint)
   {
     v18 = objc_opt_new();
-    v19 = [v6 xpcEndpoint];
-    [v18 _setEndpoint:v19];
+    xpcEndpoint2 = [contextCopy xpcEndpoint];
+    [v18 _setEndpoint:xpcEndpoint2];
 
     v20 = [[NSXPCConnection alloc] initWithListenerEndpoint:v18];
-    v21 = [(STRemoteServiceViewController *)self passcodeMode];
-    if (v21)
+    passcodeMode = [(STRemoteServiceViewController *)self passcodeMode];
+    if (passcodeMode)
     {
-      if (v21 != 1)
+      if (passcodeMode != 1)
       {
 LABEL_15:
         [v20 resume];
@@ -140,16 +140,16 @@ LABEL_15:
   }
 
 LABEL_16:
-  v24 = [(STRemoteServiceViewController *)self _remoteViewControllerProxy];
-  [v24 setDesiredHardwareButtonEvents:16];
+  _remoteViewControllerProxy = [(STRemoteServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)showRestrictionsPINControllerWithMode:(int64_t)a3
+- (void)showRestrictionsPINControllerWithMode:(int64_t)mode
 {
   if ((byte_10000CED0 & 1) == 0)
   {
@@ -162,7 +162,7 @@ LABEL_16:
 
   v7 = objc_opt_new();
   [v7 setPinDelegate:self];
-  if (a3 == 1)
+  if (mode == 1)
   {
     v8 = +[STLog remoteViewService];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -175,7 +175,7 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!mode)
   {
     v8 = +[STLog remoteViewService];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -197,13 +197,13 @@ LABEL_11:
 
 - (void)didAcceptEnteredPIN
 {
-  v3 = [(STRemoteServiceViewController *)self presentedViewController];
+  presentedViewController = [(STRemoteServiceViewController *)self presentedViewController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100002020;
   v4[3] = &unk_1000082E8;
   v4[4] = self;
-  [v3 dismissViewControllerAnimated:+[STRestrictionsPINNavigationController st_shouldAnimate](STRestrictionsPINNavigationController completion:{"st_shouldAnimate"), v4}];
+  [presentedViewController dismissViewControllerAnimated:+[STRestrictionsPINNavigationController st_shouldAnimate](STRestrictionsPINNavigationController completion:{"st_shouldAnimate"), v4}];
 }
 
 - (void)didCancelEnteringPIN
@@ -214,41 +214,41 @@ LABEL_11:
   [(STRemoteServiceViewController *)self _provideAuthenticationResultToClient:0];
 }
 
-- (void)_dismissPINControllerWithCompletionHandler:(id)a3
+- (void)_dismissPINControllerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STRemoteServiceViewController *)self presentedViewController];
+  handlerCopy = handler;
+  presentedViewController = [(STRemoteServiceViewController *)self presentedViewController];
   v6 = +[STRestrictionsPINNavigationController st_shouldAnimate];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100002180;
   v8[3] = &unk_100008310;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 dismissViewControllerAnimated:v6 completion:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [presentedViewController dismissViewControllerAnimated:v6 completion:v8];
 }
 
-- (void)devicePINControllerDidDismissPINPane:(id)a3
+- (void)devicePINControllerDidDismissPINPane:(id)pane
 {
-  -[STRemoteServiceViewController _restrictionsPINControllerDidDismiss:](self, "_restrictionsPINControllerDidDismiss:", [a3 success]);
+  -[STRemoteServiceViewController _restrictionsPINControllerDidDismiss:](self, "_restrictionsPINControllerDidDismiss:", [pane success]);
   [(STRemoteServiceViewController *)self _providePINToClient:0];
 
   [(STRemoteServiceViewController *)self _provideAuthenticationResultToClient:0];
 }
 
-- (void)_providePINToClient:(id)a3
+- (void)_providePINToClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   if ([(STRemoteServiceViewController *)self passcodeMode])
   {
-    v5 = [(STRemoteServiceViewController *)self clientConnection];
+    clientConnection = [(STRemoteServiceViewController *)self clientConnection];
 
-    if (v5)
+    if (clientConnection)
     {
-      if (v4)
+      if (clientCopy)
       {
-        v6 = [[STOpaquePasscode alloc] initWithPasscode:v4];
+        v6 = [[STOpaquePasscode alloc] initWithPasscode:clientCopy];
       }
 
       else
@@ -256,8 +256,8 @@ LABEL_11:
         v6 = 0;
       }
 
-      v7 = [(STRemoteServiceViewController *)self clientConnection];
-      v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:&stru_100008350];
+      clientConnection2 = [(STRemoteServiceViewController *)self clientConnection];
+      v8 = [clientConnection2 synchronousRemoteObjectProxyWithErrorHandler:&stru_100008350];
 
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
@@ -265,8 +265,8 @@ LABEL_11:
       v10[3] = &unk_100008378;
       v10[4] = self;
       [v8 receivePasscode:v6 completionHandler:v10];
-      v9 = [(STRemoteServiceViewController *)self clientConnection];
-      [v9 invalidate];
+      clientConnection3 = [(STRemoteServiceViewController *)self clientConnection];
+      [clientConnection3 invalidate];
 
       [(STRemoteServiceViewController *)self setClientConnection:0];
     }
@@ -282,14 +282,14 @@ LABEL_11:
   }
 }
 
-- (void)_provideAuthenticationResultToClient:(id)a3
+- (void)_provideAuthenticationResultToClient:(id)client
 {
-  v7 = a3;
+  clientCopy = client;
   if ([(STRemoteServiceViewController *)self passcodeMode]!= 1)
   {
-    if (v7)
+    if (clientCopy)
     {
-      v4 = [[STAuthenticationResult alloc] initWithResult:{objc_msgSend(v7, "BOOLValue")}];
+      v4 = [[STAuthenticationResult alloc] initWithResult:{objc_msgSend(clientCopy, "BOOLValue")}];
     }
 
     else
@@ -297,19 +297,19 @@ LABEL_11:
       v4 = 0;
     }
 
-    v5 = [(STRemoteServiceViewController *)self clientConnection];
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&stru_100008398];
+    clientConnection = [(STRemoteServiceViewController *)self clientConnection];
+    v6 = [clientConnection synchronousRemoteObjectProxyWithErrorHandler:&stru_100008398];
 
     [v6 receivePasscodeAuthenticationResult:v4 completionHandler:&stru_1000083B8];
   }
 }
 
-- (BOOL)validatePIN:(id)a3 forPINController:(id)a4
+- (BOOL)validatePIN:(id)n forPINController:(id)controller
 {
-  v5 = [SFRestrictionsPasscodeController validatePIN:a3, a4];
+  controller = [SFRestrictionsPasscodeController validatePIN:n, controller];
   v6 = +[STLog remoteViewService];
   v7 = v6;
-  if (v5)
+  if (controller)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -326,12 +326,12 @@ LABEL_11:
     sub_10000322C(v7);
   }
 
-  return v5;
+  return controller;
 }
 
-- (void)setPIN:(id)a3 forPINController:(id)a4
+- (void)setPIN:(id)n forPINController:(id)controller
 {
-  v5 = a3;
+  nCopy = n;
   v6 = +[STLog remoteViewService];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -339,7 +339,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "User did set pin - making call to client", v7, 2u);
   }
 
-  [(STRemoteServiceViewController *)self _providePINToClient:v5];
+  [(STRemoteServiceViewController *)self _providePINToClient:nCopy];
 }
 
 @end

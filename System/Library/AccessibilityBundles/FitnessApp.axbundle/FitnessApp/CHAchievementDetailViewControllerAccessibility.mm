@@ -1,5 +1,5 @@
 @interface CHAchievementDetailViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateAchievementView;
 - (void)viewDidLoad;
@@ -7,15 +7,15 @@
 
 @implementation CHAchievementDetailViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHAchievementDetailViewController" hasInstanceVariable:@"_achievement" withType:"ACHAchievement"];
-  [v3 validateClass:@"CHAchievementDetailViewController" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHAchievementDetailViewController" hasInstanceMethod:@"badgeContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHAchievementDetailViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CHAchievementDetailViewController" hasInstanceVariable:@"_locProvider" withType:"ACHAchievementLocalizationProvider"];
-  [v3 validateClass:@"ACHAchievementLocalizationProvider" hasInstanceMethod:@"titleForAchievement:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHAchievementDetailViewController" hasInstanceVariable:@"_achievement" withType:"ACHAchievement"];
+  [validationsCopy validateClass:@"CHAchievementDetailViewController" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHAchievementDetailViewController" hasInstanceMethod:@"badgeContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHAchievementDetailViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CHAchievementDetailViewController" hasInstanceVariable:@"_locProvider" withType:"ACHAchievementLocalizationProvider"];
+  [validationsCopy validateClass:@"ACHAchievementLocalizationProvider" hasInstanceMethod:@"titleForAchievement:" withFullSignature:{"@", "@", 0}];
 }
 
 - (void)_axAnnotateAchievementView
@@ -64,14 +64,14 @@ LABEL_8:
     abort();
   }
 
-  v12 = [v11 text];
-  v13 = [v12 length];
+  text = [v11 text];
+  v13 = [text length];
 
   if (v13)
   {
-    v14 = [v11 text];
+    text2 = [v11 text];
     v15 = +[NSCharacterSet newlineCharacterSet];
-    v16 = [v14 componentsSeparatedByCharactersInSet:v15];
+    v16 = [text2 componentsSeparatedByCharactersInSet:v15];
 
     v17 = AXLabelForElements();
     [v11 setAccessibilityLabel:v17];

@@ -1,14 +1,14 @@
 @interface SRPhotoplethysmogramSample
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPPGSample:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPPGSample:(id)sample;
 - (SRPhotoplethysmogramSample)init;
-- (SRPhotoplethysmogramSample)initWithCoder:(id)a3;
-- (SRPhotoplethysmogramSample)initWithHAPPGFrame:(id)a3;
-- (SRPhotoplethysmogramSample)initWithStartDate:(id)a3 nsSinceStart:(int64_t)a4 usage:(id)a5 opticalSamples:(id)a6 accelSamples:(id)a7 degrees:(id)a8;
+- (SRPhotoplethysmogramSample)initWithCoder:(id)coder;
+- (SRPhotoplethysmogramSample)initWithHAPPGFrame:(id)frame;
+- (SRPhotoplethysmogramSample)initWithStartDate:(id)date nsSinceStart:(int64_t)start usage:(id)usage opticalSamples:(id)samples accelSamples:(id)accelSamples degrees:(id)degrees;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRPhotoplethysmogramSample
@@ -20,38 +20,38 @@
   return 0;
 }
 
-- (SRPhotoplethysmogramSample)initWithStartDate:(id)a3 nsSinceStart:(int64_t)a4 usage:(id)a5 opticalSamples:(id)a6 accelSamples:(id)a7 degrees:(id)a8
+- (SRPhotoplethysmogramSample)initWithStartDate:(id)date nsSinceStart:(int64_t)start usage:(id)usage opticalSamples:(id)samples accelSamples:(id)accelSamples degrees:(id)degrees
 {
   v16.receiver = self;
   v16.super_class = SRPhotoplethysmogramSample;
   v14 = [(SRPhotoplethysmogramSample *)&v16 init];
   if (v14)
   {
-    v14->_startDate = a3;
-    v14->_nanosecondsSinceStart = a4;
-    v14->_usage = [a5 copy];
-    v14->_opticalSamples = a6;
-    v14->_accelerometerSamples = a7;
-    v14->_temperature = a8;
+    v14->_startDate = date;
+    v14->_nanosecondsSinceStart = start;
+    v14->_usage = [usage copy];
+    v14->_opticalSamples = samples;
+    v14->_accelerometerSamples = accelSamples;
+    v14->_temperature = degrees;
   }
 
   return v14;
 }
 
-- (SRPhotoplethysmogramSample)initWithHAPPGFrame:(id)a3
+- (SRPhotoplethysmogramSample)initWithHAPPGFrame:(id)frame
 {
-  v5 = [MEMORY[0x1E695DEC8] sr_arrayWithHAOpticalSamples:{objc_msgSend(a3, "opticalSamples")}];
-  v6 = [MEMORY[0x1E695DEC8] sr_arrayWithHAAccelSamples:{objc_msgSend(a3, "accelSamples")}];
-  v7 = [a3 usage];
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = v8;
-  if (v7)
+  v5 = [MEMORY[0x1E695DEC8] sr_arrayWithHAOpticalSamples:{objc_msgSend(frame, "opticalSamples")}];
+  v6 = [MEMORY[0x1E695DEC8] sr_arrayWithHAAccelSamples:{objc_msgSend(frame, "accelSamples")}];
+  usage = [frame usage];
+  array = [MEMORY[0x1E695DF70] array];
+  v9 = array;
+  if (usage)
   {
-    [v8 addObject:@"ForegroundHeartRate"];
-    if ((v7 & 2) == 0)
+    [array addObject:@"ForegroundHeartRate"];
+    if ((usage & 2) == 0)
     {
 LABEL_3:
-      if ((v7 & 4) == 0)
+      if ((usage & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -60,16 +60,16 @@ LABEL_3:
     }
   }
 
-  else if ((v7 & 2) == 0)
+  else if ((usage & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v9 addObject:@"DeepBreathing"];
-  if ((v7 & 4) == 0)
+  if ((usage & 4) == 0)
   {
 LABEL_4:
-    if ((v7 & 8) == 0)
+    if ((usage & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -79,7 +79,7 @@ LABEL_4:
 
 LABEL_10:
   [v9 addObject:@"ForegroundBloodOxygen"];
-  if ((v7 & 8) != 0)
+  if ((usage & 8) != 0)
   {
 LABEL_5:
     [v9 addObject:@"BackgroundSystem"];
@@ -87,10 +87,10 @@ LABEL_5:
 
 LABEL_6:
   v10 = [MEMORY[0x1E695DEC8] arrayWithArray:v9];
-  if ([a3 temperatureSample])
+  if ([frame temperatureSample])
   {
     v11 = objc_alloc(MEMORY[0x1E696AD28]);
-    [objc_msgSend(a3 "temperatureSample")];
+    [objc_msgSend(frame "temperatureSample")];
     v13 = [v11 initWithDoubleValue:objc_msgSend(MEMORY[0x1E696B080] unit:{"celsius"), v12}];
   }
 
@@ -99,7 +99,7 @@ LABEL_6:
     v13 = 0;
   }
 
-  v14 = -[SRPhotoplethysmogramSample initWithStartDate:nsSinceStart:usage:opticalSamples:accelSamples:degrees:]([SRPhotoplethysmogramSample alloc], "initWithStartDate:nsSinceStart:usage:opticalSamples:accelSamples:degrees:", [a3 startDate], objc_msgSend(a3, "timestamp"), v10, v5, v6, v13);
+  v14 = -[SRPhotoplethysmogramSample initWithStartDate:nsSinceStart:usage:opticalSamples:accelSamples:degrees:]([SRPhotoplethysmogramSample alloc], "initWithStartDate:nsSinceStart:usage:opticalSamples:accelSamples:degrees:", [frame startDate], objc_msgSend(frame, "timestamp"), v10, v5, v6, v13);
   return v14;
 }
 
@@ -110,9 +110,9 @@ LABEL_6:
   [(SRPhotoplethysmogramSample *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -123,31 +123,31 @@ LABEL_6:
     return 0;
   }
 
-  return [(SRPhotoplethysmogramSample *)self isEqualToPPGSample:a3];
+  return [(SRPhotoplethysmogramSample *)self isEqualToPPGSample:equal];
 }
 
-- (BOOL)isEqualToPPGSample:(id)a3
+- (BOOL)isEqualToPPGSample:(id)sample
 {
-  if ((-[SRPhotoplethysmogramSample temperature](self, "temperature") || [a3 temperature]) && !-[NSMeasurement isEqual:](-[SRPhotoplethysmogramSample temperature](self, "temperature"), "isEqual:", objc_msgSend(a3, "temperature")))
+  if ((-[SRPhotoplethysmogramSample temperature](self, "temperature") || [sample temperature]) && !-[NSMeasurement isEqual:](-[SRPhotoplethysmogramSample temperature](self, "temperature"), "isEqual:", objc_msgSend(sample, "temperature")))
   {
     return 0;
   }
 
-  if (!-[NSDate isEqualToDate:](-[SRPhotoplethysmogramSample startDate](self, "startDate"), "isEqualToDate:", [a3 startDate]))
+  if (!-[NSDate isEqualToDate:](-[SRPhotoplethysmogramSample startDate](self, "startDate"), "isEqualToDate:", [sample startDate]))
   {
     return 0;
   }
 
-  v5 = [(SRPhotoplethysmogramSample *)self nanosecondsSinceStart];
-  if (v5 != [a3 nanosecondsSinceStart] || !-[NSArray isEqual:](-[SRPhotoplethysmogramSample usage](self, "usage"), "isEqual:", objc_msgSend(a3, "usage")) || !-[NSArray isEqualToArray:](-[SRPhotoplethysmogramSample opticalSamples](self, "opticalSamples"), "isEqualToArray:", objc_msgSend(a3, "opticalSamples")))
+  nanosecondsSinceStart = [(SRPhotoplethysmogramSample *)self nanosecondsSinceStart];
+  if (nanosecondsSinceStart != [sample nanosecondsSinceStart] || !-[NSArray isEqual:](-[SRPhotoplethysmogramSample usage](self, "usage"), "isEqual:", objc_msgSend(sample, "usage")) || !-[NSArray isEqualToArray:](-[SRPhotoplethysmogramSample opticalSamples](self, "opticalSamples"), "isEqualToArray:", objc_msgSend(sample, "opticalSamples")))
   {
     return 0;
   }
 
-  v6 = [(SRPhotoplethysmogramSample *)self accelerometerSamples];
-  v7 = [a3 accelerometerSamples];
+  accelerometerSamples = [(SRPhotoplethysmogramSample *)self accelerometerSamples];
+  accelerometerSamples2 = [sample accelerometerSamples];
 
-  return [(NSArray *)v6 isEqualToArray:v7];
+  return [(NSArray *)accelerometerSamples isEqualToArray:accelerometerSamples2];
 }
 
 - (unint64_t)hash
@@ -166,42 +166,42 @@ LABEL_6:
   return [v3 stringWithFormat:@"%@ (%p): startDate: %@, nanosecondsSinceStart: %lld, usage: %@, opticalSamples: %@, accelerometerSamples: %@, temperature: %@", NSStringFromClass(v4), self, -[SRPhotoplethysmogramSample startDate](self, "startDate"), -[SRPhotoplethysmogramSample nanosecondsSinceStart](self, "nanosecondsSinceStart"), -[SRPhotoplethysmogramSample usage](self, "usage"), -[SRPhotoplethysmogramSample opticalSamples](self, "opticalSamples"), -[SRPhotoplethysmogramSample accelerometerSamples](self, "accelerometerSamples"), -[SRPhotoplethysmogramSample temperature](self, "temperature")];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:self->_startDate forKey:@"startDate"];
-  [a3 encodeInt64:self->_nanosecondsSinceStart forKey:@"nanosecondsSinceStart"];
-  [a3 encodeObject:self->_usage forKey:@"usage"];
-  [a3 encodeObject:self->_opticalSamples forKey:@"opticalSamples"];
-  [a3 encodeObject:self->_accelerometerSamples forKey:@"accelerometerSamples"];
+  [coder encodeObject:self->_startDate forKey:@"startDate"];
+  [coder encodeInt64:self->_nanosecondsSinceStart forKey:@"nanosecondsSinceStart"];
+  [coder encodeObject:self->_usage forKey:@"usage"];
+  [coder encodeObject:self->_opticalSamples forKey:@"opticalSamples"];
+  [coder encodeObject:self->_accelerometerSamples forKey:@"accelerometerSamples"];
   temperature = self->_temperature;
 
-  [a3 encodeObject:temperature forKey:@"temperature"];
+  [coder encodeObject:temperature forKey:@"temperature"];
 }
 
-- (SRPhotoplethysmogramSample)initWithCoder:(id)a3
+- (SRPhotoplethysmogramSample)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v7 = [a3 decodeInt64ForKey:@"nanosecondsSinceStart"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v7 = [coder decodeInt64ForKey:@"nanosecondsSinceStart"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
-  v10 = [a3 decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, objc_opt_class(), 0), @"usage"}];
+  v10 = [coder decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, objc_opt_class(), 0), @"usage"}];
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
-  v13 = [a3 decodeObjectOfClasses:objc_msgSend(v11 forKey:{"setWithObjects:", v12, objc_opt_class(), 0), @"opticalSamples"}];
+  v13 = [coder decodeObjectOfClasses:objc_msgSend(v11 forKey:{"setWithObjects:", v12, objc_opt_class(), 0), @"opticalSamples"}];
   v14 = MEMORY[0x1E695DFD8];
   v15 = objc_opt_class();
-  v16 = [a3 decodeObjectOfClasses:objc_msgSend(v14 forKey:{"setWithObjects:", v15, objc_opt_class(), 0), @"accelerometerSamples"}];
-  v17 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"temperature"];
+  v16 = [coder decodeObjectOfClasses:objc_msgSend(v14 forKey:{"setWithObjects:", v15, objc_opt_class(), 0), @"accelerometerSamples"}];
+  v17 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"temperature"];
 
   return [(SRPhotoplethysmogramSample *)self initWithStartDate:v6 nsSinceStart:v7 usage:v10 opticalSamples:v13 accelSamples:v16 degrees:v17];
 }

@@ -6,9 +6,9 @@
 - (BOOL)includedPath;
 - (BOOL)includedUserManagedAssetsPath;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandAcquireSandboxExtensionWithUUID)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandAcquireSandboxExtensionWithUUID)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMConcreteContainerIdentity)concreteContainerIdentity;
-- (id)_tokenForContainerPath:(id)a3 containerIdentity:(id)a4 error:(id *)a5;
+- (id)_tokenForContainerPath:(id)path containerIdentity:(id)identity error:(id *)error;
 - (void)execute;
 @end
 
@@ -54,21 +54,21 @@
   return result;
 }
 
-- (id)_tokenForContainerPath:(id)a3 containerIdentity:(id)a4 error:(id *)a5
+- (id)_tokenForContainerPath:(id)path containerIdentity:(id)identity error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
+  identityCopy = identity;
+  pathCopy = path;
   v10 = [MCMSandboxExtension alloc];
-  v11 = [(MCMCommand *)self context];
-  v12 = [v11 clientIdentity];
-  v13 = [(MCMSandboxExtension *)v10 initWithClientIdentity:v12 containerPath:v9 containerIdentity:v8];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  v13 = [(MCMSandboxExtension *)v10 initWithClientIdentity:clientIdentity containerPath:pathCopy containerIdentity:identityCopy];
 
   if (v13)
   {
     [(MCMSandboxExtension *)v13 setUseLegacyExtensionPolicy:0];
     [(MCMSandboxExtension *)v13 setUseProxiedClientForTarget:1];
-    v14 = [(MCMSandboxExtension *)v13 tokenForPart:0 partDomain:0 error:a5];
+    v14 = [(MCMSandboxExtension *)v13 tokenForPart:0 partDomain:0 error:error];
   }
 
   else
@@ -85,26 +85,26 @@
 {
   v35 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(MCMCommandAcquireSandboxExtensionWithUUID *)self concreteContainerIdentity];
-  v5 = [(MCMCommand *)self context];
-  v6 = [v5 containerCache];
+  concreteContainerIdentity = [(MCMCommandAcquireSandboxExtensionWithUUID *)self concreteContainerIdentity];
+  context = [(MCMCommand *)self context];
+  containerCache = [context containerCache];
   v30 = 0;
-  v7 = [v6 entryForContainerIdentity:v4 error:&v30];
+  v7 = [containerCache entryForContainerIdentity:concreteContainerIdentity error:&v30];
   v8 = v30;
 
   v28 = v7;
   if (!v7)
   {
     v12 = 0;
-    v9 = 0;
+    metadataMinimal = 0;
     goto LABEL_8;
   }
 
-  v9 = [v7 metadataMinimal];
-  v10 = [v9 containerPath];
-  v11 = [v9 containerIdentity];
+  metadataMinimal = [v7 metadataMinimal];
+  containerPath = [metadataMinimal containerPath];
+  containerIdentity = [metadataMinimal containerIdentity];
   v29 = v8;
-  v12 = [(MCMCommandAcquireSandboxExtensionWithUUID *)self _tokenForContainerPath:v10 containerIdentity:v11 error:&v29];
+  v12 = [(MCMCommandAcquireSandboxExtensionWithUUID *)self _tokenForContainerPath:containerPath containerIdentity:containerIdentity error:&v29];
   v13 = v29;
 
   if (v12)
@@ -140,20 +140,20 @@ LABEL_8:
   v16 = v15;
   if (v7)
   {
-    v27 = [v9 userIdentity];
-    v17 = [v27 personaUniqueString];
-    v18 = [v9 containerPath];
-    [v18 containerDataURL];
-    v19 = v9;
-    v20 = self;
-    v21 = v4;
+    userIdentity = [metadataMinimal userIdentity];
+    personaUniqueString = [userIdentity personaUniqueString];
+    containerPath2 = [metadataMinimal containerPath];
+    [containerPath2 containerDataURL];
+    v19 = metadataMinimal;
+    selfCopy = self;
+    v21 = concreteContainerIdentity;
     v23 = v22 = v3;
-    v24 = [(MCMResultAcquireSandboxExtensionWithUUID *)v16 initWithSandboxToken:v12 personaUniqueString:v17 url:v23];
+    v24 = [(MCMResultAcquireSandboxExtensionWithUUID *)v16 initWithSandboxToken:v12 personaUniqueString:personaUniqueString url:v23];
 
     v3 = v22;
-    v4 = v21;
-    self = v20;
-    v9 = v19;
+    concreteContainerIdentity = v21;
+    self = selfCopy;
+    metadataMinimal = v19;
   }
 
   else
@@ -161,8 +161,8 @@ LABEL_8:
     v24 = [(MCMResultBase *)v15 initWithError:v8];
   }
 
-  v25 = [(MCMCommand *)self resultPromise];
-  [v25 completeWithResult:v24];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v24];
 
   objc_autoreleasePoolPop(v3);
   v26 = *MEMORY[0x1E69E9840];
@@ -171,28 +171,28 @@ LABEL_8:
 - (BOOL)preflightClientAllowed
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMCommand *)self context];
-  v4 = [v3 clientIdentity];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
 
-  v5 = [(MCMCommandAcquireSandboxExtensionWithUUID *)self concreteContainerIdentity];
-  v6 = [v4 isAllowedToPerformOperationType:0 containerIdentity:v5 part:0 partDomain:0 access:2];
+  concreteContainerIdentity = [(MCMCommandAcquireSandboxExtensionWithUUID *)self concreteContainerIdentity];
+  v6 = [clientIdentity isAllowedToPerformOperationType:0 containerIdentity:concreteContainerIdentity part:0 partDomain:0 access:2];
 
   v7 = *MEMORY[0x1E69E9840];
   return v6 != 0;
 }
 
-- (MCMCommandAcquireSandboxExtensionWithUUID)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandAcquireSandboxExtensionWithUUID)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = MCMCommandAcquireSandboxExtensionWithUUID;
-  v9 = [(MCMCommand *)&v14 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v14 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v10 = [v8 concreteContainerIdentity];
+    concreteContainerIdentity = [messageCopy concreteContainerIdentity];
     concreteContainerIdentity = v9->_concreteContainerIdentity;
-    v9->_concreteContainerIdentity = v10;
+    v9->_concreteContainerIdentity = concreteContainerIdentity;
   }
 
   v12 = *MEMORY[0x1E69E9840];

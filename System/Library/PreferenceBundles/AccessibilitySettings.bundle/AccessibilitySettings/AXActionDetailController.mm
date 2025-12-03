@@ -1,19 +1,19 @@
 @interface AXActionDetailController
-- (BOOL)isActionAvailable:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)actionForSpecifier:(id)a3;
+- (BOOL)isActionAvailable:(int64_t)available;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)actionForSpecifier:(id)specifier;
 - (int64_t)currentAction;
-- (void)_updateCheckmarkForCell:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCurrentAction:(int64_t)a3;
-- (void)updateSpecifierStateAndReload:(BOOL)a3;
+- (void)_updateCheckmarkForCell:(id)cell;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCurrentAction:(int64_t)action;
+- (void)updateSpecifierStateAndReload:(BOOL)reload;
 @end
 
 @implementation AXActionDetailController
 
-- (void)updateSpecifierStateAndReload:(BOOL)a3
+- (void)updateSpecifierStateAndReload:(BOOL)reload
 {
-  v3 = a3;
+  reloadCopy = reload;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -48,50 +48,50 @@
     while (v7);
   }
 
-  if (v3)
+  if (reloadCopy)
   {
     [(AXActionDetailController *)self reloadSpecifiers];
   }
 }
 
-- (void)_updateCheckmarkForCell:(id)a3
+- (void)_updateCheckmarkForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(AXActionDetailController *)self currentAction];
-  v6 = [v4 specifier];
-  [v4 setChecked:{v5 == -[AXActionDetailController actionForSpecifier:](self, "actionForSpecifier:", v6)}];
+  cellCopy = cell;
+  currentAction = [(AXActionDetailController *)self currentAction];
+  specifier = [cellCopy specifier];
+  [cellCopy setChecked:{currentAction == -[AXActionDetailController actionForSpecifier:](self, "actionForSpecifier:", specifier)}];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = AXActionDetailController;
-  v5 = [(AXActionDetailController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(AXActionDetailController *)&v7 tableView:view cellForRowAtIndexPath:path];
   [(AXActionDetailController *)self _updateCheckmarkForCell:v5];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = AXActionDetailController;
-  v6 = a4;
-  v7 = a3;
-  [(AXActionDetailController *)&v12 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [v7 cellForRowAtIndexPath:{v6, v12.receiver, v12.super_class}];
+  pathCopy = path;
+  viewCopy = view;
+  [(AXActionDetailController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:{pathCopy, v12.receiver, v12.super_class}];
 
-  v9 = [v8 specifier];
-  v10 = [(AXActionDetailController *)self currentAction];
-  v11 = [(AXActionDetailController *)self actionForSpecifier:v9];
-  if (v10 != v11)
+  specifier = [v8 specifier];
+  currentAction = [(AXActionDetailController *)self currentAction];
+  v11 = [(AXActionDetailController *)self actionForSpecifier:specifier];
+  if (currentAction != v11)
   {
     [(AXActionDetailController *)self updateCurrentAction:v11];
     [(AXActionDetailController *)self updateSpecifierStateAndReload:1];
   }
 }
 
-- (int64_t)actionForSpecifier:(id)a3
+- (int64_t)actionForSpecifier:(id)specifier
 {
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_1();
@@ -99,7 +99,7 @@
   return -1;
 }
 
-- (BOOL)isActionAvailable:(int64_t)a3
+- (BOOL)isActionAvailable:(int64_t)available
 {
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_1();
@@ -115,7 +115,7 @@
   return -1;
 }
 
-- (void)updateCurrentAction:(int64_t)a3
+- (void)updateCurrentAction:(int64_t)action
 {
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_1();

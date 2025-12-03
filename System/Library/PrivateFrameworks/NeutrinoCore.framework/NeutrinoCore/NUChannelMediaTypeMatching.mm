@@ -1,7 +1,7 @@
 @interface NUChannelMediaTypeMatching
-- (BOOL)match:(id)a3;
+- (BOOL)match:(id)match;
 - (NUChannelMediaTypeMatching)init;
-- (NUChannelMediaTypeMatching)initWithMediaType:(int64_t)a3;
+- (NUChannelMediaTypeMatching)initWithMediaType:(int64_t)type;
 - (id)description;
 @end
 
@@ -10,15 +10,15 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(NUChannelMediaTypeMatching *)self mediaType];
-  if (v3 > 5)
+  mediaType = [(NUChannelMediaTypeMatching *)self mediaType];
+  if (mediaType > 5)
   {
     v4 = @"???";
   }
 
   else
   {
-    v4 = off_1E8109A90[v3];
+    v4 = off_1E8109A90[mediaType];
   }
 
   v5 = v4;
@@ -27,16 +27,16 @@
   return v6;
 }
 
-- (BOOL)match:(id)a3
+- (BOOL)match:(id)match
 {
-  v4 = a3;
-  if ([v4 type] == 1)
+  matchCopy = match;
+  if ([matchCopy type] == 1)
   {
     if ([(NUChannelMediaTypeMatching *)self mediaType])
     {
-      v5 = [v4 format];
-      v6 = [(NUChannelMediaTypeMatching *)self mediaType];
-      v7 = v6 == [v5 mediaType];
+      format = [matchCopy format];
+      mediaType = [(NUChannelMediaTypeMatching *)self mediaType];
+      v7 = mediaType == [format mediaType];
     }
 
     else
@@ -53,12 +53,12 @@
   return v7;
 }
 
-- (NUChannelMediaTypeMatching)initWithMediaType:(int64_t)a3
+- (NUChannelMediaTypeMatching)initWithMediaType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = NUChannelMediaTypeMatching;
   result = [(NUChannelMediaTypeMatching *)&v5 init];
-  result->_mediaType = a3;
+  result->_mediaType = type;
   return result;
 }
 
@@ -108,8 +108,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -125,8 +125,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

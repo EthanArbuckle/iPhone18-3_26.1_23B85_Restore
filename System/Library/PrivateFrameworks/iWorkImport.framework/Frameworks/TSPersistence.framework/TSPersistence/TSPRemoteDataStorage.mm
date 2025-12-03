@@ -4,21 +4,21 @@
 - (BOOL)canDownload;
 - (BOOL)isLengthPrecise;
 - (BOOL)isMaterialized;
-- (BOOL)isPartialDataInPackage:(id)a3;
+- (BOOL)isPartialDataInPackage:(id)package;
 - (BOOL)isReadable;
-- (BOOL)materializeFromPartiallyDownloadedDocumentForData:(id)a3 withContentsOfURL:(id)a4 canMove:(BOOL)a5 error:(id *)a6;
+- (BOOL)materializeFromPartiallyDownloadedDocumentForData:(id)data withContentsOfURL:(id)l canMove:(BOOL)move error:(id *)error;
 - (BOOL)migrateToTemporaryDataStorageIfNeeded;
-- (BOOL)p_copyPartiallyMaterializedDataToURL:(id)a3 encryptionInfo:(id)a4;
+- (BOOL)p_copyPartiallyMaterializedDataToURL:(id)l encryptionInfo:(id)info;
 - (NSDate)modificationDate;
 - (NSIndexSet)unmaterializedRanges;
 - (TSPDataStorage)packageDataStorage;
-- (TSPRemoteDataStorage)initWithRemoteURL:(id)a3 unmaterializedRanges:(id)a4 encryptionKey:(id)a5 canDownload:(BOOL)a6 downloadPriority:(int64_t)a7 uploadStatus:(int64_t)a8 modificationDate:(id)a9 materializedLength:(unint64_t)a10 packageDataStorage:(id)a11;
+- (TSPRemoteDataStorage)initWithRemoteURL:(id)l unmaterializedRanges:(id)ranges encryptionKey:(id)key canDownload:(BOOL)download downloadPriority:(int64_t)priority uploadStatus:(int64_t)status modificationDate:(id)date materializedLength:(unint64_t)self0 packageDataStorage:(id)self1;
 - (TSPRemoteDataStorageDelegate)delegate;
 - (id)dataStorageToUse;
 - (id)decryptionInfo;
-- (id)p_migrateToTemporaryDataStorageWithEncryptionInfo:(id)a3 updateInternalDataStorages:(BOOL)a4;
+- (id)p_migrateToTemporaryDataStorageWithEncryptionInfo:(id)info updateInternalDataStorages:(BOOL)storages;
 - (id)packageLocator;
-- (id)writeData:(id)a3 toPackageWriter:(id)a4 infoMessage:(void *)a5 preferredFilename:(id)a6 shouldRemoveData:(BOOL)a7 error:(id *)a8;
+- (id)writeData:(id)data toPackageWriter:(id)writer infoMessage:(void *)message preferredFilename:(id)filename shouldRemoveData:(BOOL)removeData error:(id *)error;
 - (int64_t)uploadStatus;
 - (unint64_t)encodedLength;
 - (unint64_t)fileFormatVersion;
@@ -28,18 +28,18 @@
 - (unint64_t)p_materializedLength;
 - (unint64_t)reservedLength;
 - (unsigned)packageIdentifier;
-- (void)didAddDownloadObserverWithData:(id)a3;
-- (void)didInitializeFromDocumentURL:(id)a3;
-- (void)didReceivePartialRemoteData:(id)a3 decryptionKey:(id)a4 range:(_NSRange)a5 completionQueue:(id)a6 completion:(id)a7;
-- (void)didReceiveRemoteData:(id)a3 decryptionInfo:(id)a4 completionQueue:(id)a5 completion:(id)a6;
-- (void)didReceiveRemoteDataAtURL:(id)a3 canMove:(BOOL)a4 decryptionInfo:(id)a5 completionQueue:(id)a6 completion:(id)a7;
-- (void)didReceiveRemoteDataWithDecryptionInfo:(id)a3 noEncryptionHandler:(id)a4 createReadChannelForCryptoTranscodeBlock:(id)a5 completionQueue:(id)a6 completion:(id)a7;
-- (void)didReceiveRemoteDataWithReadChannel:(id)a3 completionQueue:(id)a4 completion:(id)a5;
-- (void)didSaveWithChangeCount:(unint64_t)a3 packageDataStorage:(id)a4;
-- (void)p_notifyDownloadObserversWithStatus:(int64_t)a3 error:(id)a4;
-- (void)performIOChannelReadWithAccessor:(id)a3;
-- (void)performReadWithAccessor:(id)a3;
-- (void)setUploadStatus:(int64_t)a3;
+- (void)didAddDownloadObserverWithData:(id)data;
+- (void)didInitializeFromDocumentURL:(id)l;
+- (void)didReceivePartialRemoteData:(id)data decryptionKey:(id)key range:(_NSRange)range completionQueue:(id)queue completion:(id)completion;
+- (void)didReceiveRemoteData:(id)data decryptionInfo:(id)info completionQueue:(id)queue completion:(id)completion;
+- (void)didReceiveRemoteDataAtURL:(id)l canMove:(BOOL)move decryptionInfo:(id)info completionQueue:(id)queue completion:(id)completion;
+- (void)didReceiveRemoteDataWithDecryptionInfo:(id)info noEncryptionHandler:(id)handler createReadChannelForCryptoTranscodeBlock:(id)block completionQueue:(id)queue completion:(id)completion;
+- (void)didReceiveRemoteDataWithReadChannel:(id)channel completionQueue:(id)queue completion:(id)completion;
+- (void)didSaveWithChangeCount:(unint64_t)count packageDataStorage:(id)storage;
+- (void)p_notifyDownloadObserversWithStatus:(int64_t)status error:(id)error;
+- (void)performIOChannelReadWithAccessor:(id)accessor;
+- (void)performReadWithAccessor:(id)accessor;
+- (void)setUploadStatus:(int64_t)status;
 @end
 
 @implementation TSPRemoteDataStorage
@@ -68,15 +68,15 @@
   return v3;
 }
 
-- (TSPRemoteDataStorage)initWithRemoteURL:(id)a3 unmaterializedRanges:(id)a4 encryptionKey:(id)a5 canDownload:(BOOL)a6 downloadPriority:(int64_t)a7 uploadStatus:(int64_t)a8 modificationDate:(id)a9 materializedLength:(unint64_t)a10 packageDataStorage:(id)a11
+- (TSPRemoteDataStorage)initWithRemoteURL:(id)l unmaterializedRanges:(id)ranges encryptionKey:(id)key canDownload:(BOOL)download downloadPriority:(int64_t)priority uploadStatus:(int64_t)status modificationDate:(id)date materializedLength:(unint64_t)self0 packageDataStorage:(id)self1
 {
-  v17 = a3;
-  v51 = a4;
-  v49 = a5;
-  v48 = a9;
-  v47 = a11;
-  v50 = v17;
-  if (!v17)
+  lCopy = l;
+  rangesCopy = ranges;
+  keyCopy = key;
+  dateCopy = date;
+  storageCopy = storage;
+  v50 = lCopy;
+  if (!lCopy)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSPRemoteDataStorage initWithRemoteURL:unmaterializedRanges:encryptionKey:canDownload:downloadPriority:uploadStatus:modificationDate:materializedLength:packageDataStorage:]");
@@ -92,20 +92,20 @@
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_remoteURL, a3);
-    objc_storeStrong(&v27->_encryptionKey, a5);
-    v27->_canDownload = a6;
-    v27->_downloadPriority = a7;
-    v27->_uploadStatus = a8;
-    v30 = objc_msgSend_mutableCopy(v51, v28, v29);
+    objc_storeStrong(&v26->_remoteURL, l);
+    objc_storeStrong(&v27->_encryptionKey, key);
+    v27->_canDownload = download;
+    v27->_downloadPriority = priority;
+    v27->_uploadStatus = status;
+    v30 = objc_msgSend_mutableCopy(rangesCopy, v28, v29);
     unmaterializedRanges = v27->_unmaterializedRanges;
     v27->_unmaterializedRanges = v30;
 
-    objc_storeStrong(&v27->_packageDataStorage, a11);
-    objc_storeStrong(&v27->_modificationDate, a9);
-    if (a10 != -1)
+    objc_storeStrong(&v27->_packageDataStorage, storage);
+    objc_storeStrong(&v27->_modificationDate, date);
+    if (length != -1)
     {
-      atomic_store(a10, &v27->_materializedLength);
+      atomic_store(length, &v27->_materializedLength);
     }
 
     v32 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -123,9 +123,9 @@
   return v27;
 }
 
-- (void)didInitializeFromDocumentURL:(id)a3
+- (void)didInitializeFromDocumentURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if ((objc_msgSend_isUnmaterializedDueToPartiallyDownloadedDocument(self, v5, v6) & 1) == 0)
   {
     v52 = 0;
@@ -152,7 +152,7 @@
     v8 = v53[5];
     if (objc_opt_respondsToSelector())
     {
-      objc_msgSend_didInitializeFromDocumentURL_(v53[5], v9, v4);
+      objc_msgSend_didInitializeFromDocumentURL_(v53[5], v9, lCopy);
     }
 
     v11 = v53[5];
@@ -263,7 +263,7 @@
   return v3;
 }
 
-- (void)setUploadStatus:(int64_t)a3
+- (void)setUploadStatus:(int64_t)status
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -271,7 +271,7 @@
   v4[2] = sub_2769F9D0C;
   v4[3] = &unk_27A6E2CA0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = status;
   dispatch_sync(accessQueue, v4);
 }
 
@@ -411,9 +411,9 @@
   return v3;
 }
 
-- (void)p_notifyDownloadObserversWithStatus:(int64_t)a3 error:(id)a4
+- (void)p_notifyDownloadObserversWithStatus:(int64_t)status error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_accessQueue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_msgSend_dataForRemoteDataStorage_(WeakRetained, v8, self);
@@ -426,25 +426,25 @@
     block[2] = sub_2769FA514;
     block[3] = &unk_27A6E2C50;
     block[4] = v9;
-    v15 = a3;
-    v14 = v6;
+    statusCopy = status;
+    v14 = errorCopy;
     dispatch_async(v12, block);
   }
 }
 
-- (void)didReceiveRemoteDataWithDecryptionInfo:(id)a3 noEncryptionHandler:(id)a4 createReadChannelForCryptoTranscodeBlock:(id)a5 completionQueue:(id)a6 completion:(id)a7
+- (void)didReceiveRemoteDataWithDecryptionInfo:(id)info noEncryptionHandler:(id)handler createReadChannelForCryptoTranscodeBlock:(id)block completionQueue:(id)queue completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  infoCopy = info;
+  handlerCopy = handler;
+  blockCopy = block;
+  queueCopy = queue;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v34 = v14;
+  v34 = blockCopy;
   v19 = objc_msgSend_temporaryDataStorageURLForRemoteDataStorage_(WeakRetained, v18, self);
 
   v20 = sub_276AB683C(self->_encryptionKey, 0x100000);
-  v21 = v12;
+  v21 = infoCopy;
   if (UnsafePointer != -1)
   {
     sub_276BD32C4();
@@ -455,9 +455,9 @@
   aBlock[2] = sub_2769FA9E4;
   aBlock[3] = &unk_27A6E3F28;
   aBlock[4] = self;
-  v22 = v15;
+  v22 = queueCopy;
   v45 = v22;
-  v23 = v16;
+  v23 = completionCopy;
   v48 = v23;
   v24 = v19;
   v46 = v24;
@@ -473,10 +473,10 @@
     block[2] = sub_2769FAF6C;
     block[3] = &unk_27A6E3FA0;
     v36 = v31;
-    v37 = self;
+    selfCopy = self;
     v38 = v24;
     v41 = v27;
-    v42 = v13;
+    v42 = handlerCopy;
     v39 = v21;
     v40 = v25;
     v32 = v34;
@@ -498,18 +498,18 @@
   }
 }
 
-- (void)didReceiveRemoteData:(id)a3 decryptionInfo:(id)a4 completionQueue:(id)a5 completion:(id)a6
+- (void)didReceiveRemoteData:(id)data decryptionInfo:(id)info completionQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
+  dataCopy = data;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_2769FB7F4;
   aBlock[3] = &unk_27A6E3FC8;
-  v11 = v10;
+  v11 = dataCopy;
   v25 = v11;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
+  infoCopy = info;
   v15 = _Block_copy(aBlock);
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
@@ -518,23 +518,23 @@
   v23 = v11;
   v16 = v11;
   v17 = _Block_copy(&v19);
-  objc_msgSend_didReceiveRemoteDataWithDecryptionInfo_noEncryptionHandler_createReadChannelForCryptoTranscodeBlock_completionQueue_completion_(self, v18, v14, v15, v17, v13, v12, v19, v20, v21, v22);
+  objc_msgSend_didReceiveRemoteDataWithDecryptionInfo_noEncryptionHandler_createReadChannelForCryptoTranscodeBlock_completionQueue_completion_(self, v18, infoCopy, v15, v17, queueCopy, completionCopy, v19, v20, v21, v22);
 }
 
-- (void)didReceiveRemoteDataAtURL:(id)a3 canMove:(BOOL)a4 decryptionInfo:(id)a5 completionQueue:(id)a6 completion:(id)a7
+- (void)didReceiveRemoteDataAtURL:(id)l canMove:(BOOL)move decryptionInfo:(id)info completionQueue:(id)queue completion:(id)completion
 {
-  v12 = a3;
+  lCopy = l;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_2769FBA94;
   aBlock[3] = &unk_27A6E4018;
-  v29 = a4;
-  v13 = v12;
+  moveCopy = move;
+  v13 = lCopy;
   v27 = v13;
-  v28 = self;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
+  selfCopy = self;
+  completionCopy = completion;
+  queueCopy = queue;
+  infoCopy = info;
   v17 = _Block_copy(aBlock);
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
@@ -543,42 +543,42 @@
   v25 = v13;
   v18 = v13;
   v19 = _Block_copy(&v21);
-  objc_msgSend_didReceiveRemoteDataWithDecryptionInfo_noEncryptionHandler_createReadChannelForCryptoTranscodeBlock_completionQueue_completion_(self, v20, v16, v17, v19, v15, v14, v21, v22, v23, v24);
+  objc_msgSend_didReceiveRemoteDataWithDecryptionInfo_noEncryptionHandler_createReadChannelForCryptoTranscodeBlock_completionQueue_completion_(self, v20, infoCopy, v17, v19, queueCopy, completionCopy, v21, v22, v23, v24);
 }
 
-- (void)didReceiveRemoteDataWithReadChannel:(id)a3 completionQueue:(id)a4 completion:(id)a5
+- (void)didReceiveRemoteDataWithReadChannel:(id)channel completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
+  channelCopy = channel;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_2769FBD60;
   aBlock[3] = &unk_27A6E3FF0;
-  v15 = v8;
-  v9 = v8;
-  v10 = a5;
-  v11 = a4;
+  v15 = channelCopy;
+  v9 = channelCopy;
+  completionCopy = completion;
+  queueCopy = queue;
   v12 = _Block_copy(aBlock);
-  objc_msgSend_didReceiveRemoteDataWithDecryptionInfo_noEncryptionHandler_createReadChannelForCryptoTranscodeBlock_completionQueue_completion_(self, v13, 0, 0, v12, v11, v10);
+  objc_msgSend_didReceiveRemoteDataWithDecryptionInfo_noEncryptionHandler_createReadChannelForCryptoTranscodeBlock_completionQueue_completion_(self, v13, 0, 0, v12, queueCopy, completionCopy);
 }
 
-- (void)didReceivePartialRemoteData:(id)a3 decryptionKey:(id)a4 range:(_NSRange)a5 completionQueue:(id)a6 completion:(id)a7
+- (void)didReceivePartialRemoteData:(id)data decryptionKey:(id)key range:(_NSRange)range completionQueue:(id)queue completion:(id)completion
 {
-  length = a5.length;
-  location = a5.location;
-  v12 = a3;
-  v13 = a4;
-  v45 = a6;
-  v14 = a7;
+  length = range.length;
+  location = range.location;
+  dataCopy = data;
+  keyCopy = key;
+  queueCopy = queue;
+  completionCopy = completion;
   context = objc_autoreleasePoolPush();
-  v15 = v12;
+  v15 = dataCopy;
   v18 = v15;
   v19 = v15;
-  if (!v13)
+  if (!keyCopy)
   {
     goto LABEL_5;
   }
 
-  v20 = objc_msgSend_tsp_dataWithDecryptionKey_(v15, v16, v13);
+  v20 = objc_msgSend_tsp_dataWithDecryptionKey_(v15, v16, keyCopy);
 
   v19 = v20;
   if (v20)
@@ -627,38 +627,38 @@ LABEL_6:
     block[5] = self;
     v52 = v43;
     v53 = length;
-    v51 = v14;
-    v49 = v45;
+    v51 = completionCopy;
+    v49 = queueCopy;
     v50 = v34;
     dispatch_async(v38, block);
   }
 
-  else if (v14)
+  else if (completionCopy)
   {
-    if (v45)
+    if (queueCopy)
     {
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = sub_2769FCAB4;
       v46[3] = &unk_27A6E3480;
-      v47 = v14;
-      dispatch_async(v45, v46);
+      v47 = completionCopy;
+      dispatch_async(queueCopy, v46);
     }
 
     else
     {
       v39 = objc_msgSend_tsp_unknownWriteErrorWithUserInfo_(MEMORY[0x277CCA9B8], v33, 0);
-      (*(v14 + 2))(v14, v39);
+      (*(completionCopy + 2))(completionCopy, v39);
     }
   }
 
   objc_autoreleasePoolPop(context);
 }
 
-- (BOOL)materializeFromPartiallyDownloadedDocumentForData:(id)a3 withContentsOfURL:(id)a4 canMove:(BOOL)a5 error:(id *)a6
+- (BOOL)materializeFromPartiallyDownloadedDocumentForData:(id)data withContentsOfURL:(id)l canMove:(BOOL)move error:(id *)error
 {
-  v10 = a3;
-  v136 = a4;
+  dataCopy = data;
+  lCopy = l;
   if (objc_msgSend_isUnmaterializedDueToPartiallyDownloadedDocument(self, v11, v12))
   {
     v148 = 0;
@@ -685,14 +685,14 @@ LABEL_6:
       goto LABEL_17;
     }
 
-    v134 = a6;
+    errorCopy = error;
     v17 = v143[5];
     if (!v17)
     {
       v18 = MEMORY[0x277D81150];
       v130 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[TSPRemoteDataStorage materializeFromPartiallyDownloadedDocumentForData:withContentsOfURL:canMove:error:]");
       v128 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRemoteDataStorage.mm");
-      if (v10)
+      if (dataCopy)
       {
         v22 = objc_opt_class();
         v126 = NSStringFromClass(v22);
@@ -703,26 +703,26 @@ LABEL_6:
         v126 = @"Nil";
       }
 
-      v125 = objc_msgSend_filename(v10, v20, v21);
-      isApplicationData = objc_msgSend_isApplicationData(v10, v69, v70);
-      isReadable = objc_msgSend_isReadable(v10, v71, v72);
-      isExternalData = objc_msgSend_isExternalData(v10, v74, v75);
-      isEncrypted = objc_msgSend_isEncrypted(v10, v76, v77);
-      v81 = objc_msgSend_needsDownload(v10, v79, v80);
-      v84 = objc_msgSend_type(v10, v82, v83);
-      v87 = objc_msgSend_packageIdentifier(v10, v85, v86);
+      v125 = objc_msgSend_filename(dataCopy, v20, v21);
+      isApplicationData = objc_msgSend_isApplicationData(dataCopy, v69, v70);
+      isReadable = objc_msgSend_isReadable(dataCopy, v71, v72);
+      isExternalData = objc_msgSend_isExternalData(dataCopy, v74, v75);
+      isEncrypted = objc_msgSend_isEncrypted(dataCopy, v76, v77);
+      v81 = objc_msgSend_needsDownload(dataCopy, v79, v80);
+      v84 = objc_msgSend_type(dataCopy, v82, v83);
+      v87 = objc_msgSend_packageIdentifier(dataCopy, v85, v86);
       v89 = sub_276AC69B4(v87, v88);
-      v120 = objc_msgSend_anonymousUniqueIdentifier(v10, v90, v91);
+      v120 = objc_msgSend_anonymousUniqueIdentifier(dataCopy, v90, v91);
       v119 = objc_msgSend_UUIDString(v120, v92, v93);
-      v118 = objc_msgSend_digestString(v10, v94, v95);
+      v118 = objc_msgSend_digestString(dataCopy, v94, v95);
       v96 = MEMORY[0x277CCABB0];
-      v99 = objc_msgSend_length(v10, v97, v98);
+      v99 = objc_msgSend_length(dataCopy, v97, v98);
       objc_msgSend_numberWithUnsignedLongLong_(v96, v100, v99);
       v117 = v116 = v18;
       v103 = objc_msgSend_stringValue(v117, v101, v102);
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v116, v104, v130, v128, 586, 0, "It's expected that the package data storage is defined when this method is called. data=<%{public}@: %{public}p filename=%@, isApplicationData=%i, isReadable=%i, isExternalData=%i, isEncrypted=%i, needsDownload=%i, type=%{public}@, packageIdentifier=%{public}@, anonymousUniqueIdentifier=%{public}@, digestString=%@, length=%@> ", v126, v10, v125, isApplicationData, isReadable, isExternalData, isEncrypted, v81, v84, v89, v119, v118, v103);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v116, v104, v130, v128, 586, 0, "It's expected that the package data storage is defined when this method is called. data=<%{public}@: %{public}p filename=%@, isApplicationData=%i, isReadable=%i, isExternalData=%i, isEncrypted=%i, needsDownload=%i, type=%{public}@, packageIdentifier=%{public}@, anonymousUniqueIdentifier=%{public}@, digestString=%@, length=%@> ", v126, dataCopy, v125, isApplicationData, isReadable, isExternalData, isEncrypted, v81, v84, v89, v119, v118, v103);
 
-      if (v10)
+      if (dataCopy)
       {
       }
 
@@ -754,9 +754,9 @@ LABEL_17:
       v138[1] = 3221225472;
       v138[2] = sub_2769FD40C;
       v138[3] = &unk_27A6E4108;
-      v140 = a5;
-      v139 = v136;
-      v112 = objc_msgSend_temporaryDataStorageForReplacingDataContentsWithDecryptionInfo_writer_error_(v10, v111, v110, v138, v134);
+      moveCopy = move;
+      v139 = lCopy;
+      v112 = objc_msgSend_temporaryDataStorageForReplacingDataContentsWithDecryptionInfo_writer_error_(dataCopy, v111, v110, v138, errorCopy);
       v68 = v112 != 0;
       if (v112)
       {
@@ -782,7 +782,7 @@ LABEL_17:
     v23 = MEMORY[0x277D81150];
     v132 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "[TSPRemoteDataStorage materializeFromPartiallyDownloadedDocumentForData:withContentsOfURL:canMove:error:]");
     v135 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v24, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPRemoteDataStorage.mm");
-    if (v10)
+    if (dataCopy)
     {
       v27 = objc_opt_class();
       v133 = NSStringFromClass(v27);
@@ -793,25 +793,25 @@ LABEL_17:
       v133 = @"Nil";
     }
 
-    v131 = objc_msgSend_filename(v10, v25, v26);
-    v30 = objc_msgSend_isApplicationData(v10, v28, v29);
-    v127 = objc_msgSend_isReadable(v10, v31, v32);
-    v124 = objc_msgSend_isExternalData(v10, v33, v34);
-    v37 = objc_msgSend_isEncrypted(v10, v35, v36);
-    v40 = objc_msgSend_needsDownload(v10, v38, v39);
-    v129 = objc_msgSend_type(v10, v41, v42);
-    v45 = objc_msgSend_packageIdentifier(v10, v43, v44);
+    v131 = objc_msgSend_filename(dataCopy, v25, v26);
+    v30 = objc_msgSend_isApplicationData(dataCopy, v28, v29);
+    v127 = objc_msgSend_isReadable(dataCopy, v31, v32);
+    v124 = objc_msgSend_isExternalData(dataCopy, v33, v34);
+    v37 = objc_msgSend_isEncrypted(dataCopy, v35, v36);
+    v40 = objc_msgSend_needsDownload(dataCopy, v38, v39);
+    v129 = objc_msgSend_type(dataCopy, v41, v42);
+    v45 = objc_msgSend_packageIdentifier(dataCopy, v43, v44);
     v47 = sub_276AC69B4(v45, v46);
-    v122 = objc_msgSend_anonymousUniqueIdentifier(v10, v48, v49);
+    v122 = objc_msgSend_anonymousUniqueIdentifier(dataCopy, v48, v49);
     v52 = objc_msgSend_UUIDString(v122, v50, v51);
-    v55 = objc_msgSend_digestString(v10, v53, v54);
+    v55 = objc_msgSend_digestString(dataCopy, v53, v54);
     v56 = MEMORY[0x277CCABB0];
-    v59 = objc_msgSend_length(v10, v57, v58);
+    v59 = objc_msgSend_length(dataCopy, v57, v58);
     v61 = objc_msgSend_numberWithUnsignedLongLong_(v56, v60, v59);
     v64 = objc_msgSend_stringValue(v61, v62, v63);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v23, v65, v132, v135, 568, 0, "This method should only be called for data that's unmaterialized due to partially downloaded document. data=<%{public}@: %{public}p filename=%@, isApplicationData=%i, isReadable=%i, isExternalData=%i, isEncrypted=%i, needsDownload=%i, type=%{public}@, packageIdentifier=%{public}@, anonymousUniqueIdentifier=%{public}@, digestString=%@, length=%@> ", v133, v10, v131, v30, v127, v124, v37, v40, v129, v47, v52, v55, v64);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v23, v65, v132, v135, 568, 0, "This method should only be called for data that's unmaterialized due to partially downloaded document. data=<%{public}@: %{public}p filename=%@, isApplicationData=%i, isReadable=%i, isExternalData=%i, isEncrypted=%i, needsDownload=%i, type=%{public}@, packageIdentifier=%{public}@, anonymousUniqueIdentifier=%{public}@, digestString=%@, length=%@> ", v133, dataCopy, v131, v30, v127, v124, v37, v40, v129, v47, v52, v55, v64);
 
-    if (v10)
+    if (dataCopy)
     {
     }
 
@@ -822,9 +822,9 @@ LABEL_17:
   return v68;
 }
 
-- (void)performReadWithAccessor:(id)a3
+- (void)performReadWithAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -842,20 +842,20 @@ LABEL_17:
   v7 = v10[5];
   if (v7)
   {
-    objc_msgSend_performReadWithAccessor_(v7, v6, v4);
+    objc_msgSend_performReadWithAccessor_(v7, v6, accessorCopy);
   }
 
   else
   {
-    v4[2](v4, 0);
+    accessorCopy[2](accessorCopy, 0);
   }
 
   _Block_object_dispose(&v9, 8);
 }
 
-- (void)performIOChannelReadWithAccessor:(id)a3
+- (void)performIOChannelReadWithAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -890,24 +890,24 @@ LABEL_17:
       abort();
     }
 
-    objc_msgSend_performIOChannelReadWithAccessor_(v7, v6, v4);
+    objc_msgSend_performIOChannelReadWithAccessor_(v7, v6, accessorCopy);
   }
 
   else
   {
-    v4[2](v4, 0);
+    accessorCopy[2](accessorCopy, 0);
   }
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v19, 8);
 }
 
-- (id)writeData:(id)a3 toPackageWriter:(id)a4 infoMessage:(void *)a5 preferredFilename:(id)a6 shouldRemoveData:(BOOL)a7 error:(id *)a8
+- (id)writeData:(id)data toPackageWriter:(id)writer infoMessage:(void *)message preferredFilename:(id)filename shouldRemoveData:(BOOL)removeData error:(id *)error
 {
-  v93 = a7;
-  v95 = a3;
-  v96 = a4;
-  v94 = a6;
+  removeDataCopy = removeData;
+  dataCopy = data;
+  writerCopy = writer;
+  filenameCopy = filename;
   v121 = 0;
   v122 = &v121;
   v123 = 0x3032000000;
@@ -958,7 +958,7 @@ LABEL_17:
   isUnmaterializedDueToPartiallyDownloadedDocument = objc_msgSend_isUnmaterializedDueToPartiallyDownloadedDocument(self, v15, v16);
   if (v14)
   {
-    v19 = v93;
+    v19 = removeDataCopy;
   }
 
   else
@@ -970,7 +970,7 @@ LABEL_17:
   {
     if (v19)
     {
-      objc_msgSend_filenameForData_preferredFilename_(v96, v18, v95, v94);
+      objc_msgSend_filenameForData_preferredFilename_(writerCopy, v18, dataCopy, filenameCopy);
       v20 = 0;
       v21 = 0;
       v22 = 0;
@@ -990,10 +990,10 @@ LABEL_17:
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v44, v45);
       }
 
-      v27 = objc_msgSend_filenameForData_preferredFilename_(v96, v18, v95, v94);
+      v27 = objc_msgSend_filenameForData_preferredFilename_(writerCopy, v18, dataCopy, filenameCopy);
       if (v106[5])
       {
-        v46 = objc_msgSend_encryptionKey(v96, v25, v26);
+        v46 = objc_msgSend_encryptionKey(writerCopy, v25, v26);
         v47 = v106[5];
         if (objc_opt_respondsToSelector())
         {
@@ -1072,7 +1072,7 @@ LABEL_17:
   else
   {
     v97 = 0;
-    v28 = objc_msgSend_writeData_toPackageWriter_infoMessage_preferredFilename_shouldRemoveData_error_(v14, v18, v95, v96, a5, v94, 0, &v97);
+    v28 = objc_msgSend_writeData_toPackageWriter_infoMessage_preferredFilename_shouldRemoveData_error_(v14, v18, dataCopy, writerCopy, message, filenameCopy, 0, &v97);
     v20 = v97;
     v24 = v28 != 0;
     if (v28)
@@ -1121,10 +1121,10 @@ LABEL_17:
     {
 LABEL_72:
       v85 = sub_276A7BE80(self->_uploadStatus, v25);
-      *(a5 + 4) |= 0x4000u;
-      *(a5 + 31) = v85;
+      *(message + 4) |= 0x4000u;
+      *(message + 31) = v85;
       v86 = [TSPDataStorageWriteResult alloc];
-      v88 = objc_msgSend_initWithFilename_encryptionInfo_packageStorageType_encodedLength_isMissingData_changeCount_(v86, v87, v27, v22, v23, v21, v93, v112[3]);
+      v88 = objc_msgSend_initWithFilename_encryptionInfo_packageStorageType_encodedLength_isMissingData_changeCount_(v86, v87, v27, v22, v23, v21, removeDataCopy, v112[3]);
       goto LABEL_79;
     }
   }
@@ -1134,18 +1134,18 @@ LABEL_72:
     if (objc_msgSend_count(v116[5], v25, v26))
     {
       v67 = v116[5];
-      *(a5 + 4) |= 0x400u;
-      v68 = *(a5 + 13);
+      *(message + 4) |= 0x400u;
+      v68 = *(message + 13);
       if (!v68)
       {
-        v69 = *(a5 + 1);
+        v69 = *(message + 1);
         if (v69)
         {
           v69 = *(v69 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v68 = google::protobuf::Arena::CreateMaybeMessage<TSP::IndexSet>(v69);
-        *(a5 + 13) = v68;
+        *(message + 13) = v68;
       }
 
       objc_msgSend_tsp_saveToMessage_(v67, v65, v68);
@@ -1153,7 +1153,7 @@ LABEL_72:
 
     v70 = objc_msgSend_absoluteString(self->_remoteURL, v65, v66);
     v73 = v70;
-    if (a5)
+    if (message)
     {
       v74 = v70 == 0;
     }
@@ -1166,54 +1166,54 @@ LABEL_72:
     v75 = !v74;
     if (v74)
     {
-      if (!a5)
+      if (!message)
       {
 
         goto LABEL_74;
       }
 
-      v81 = *(a5 + 4);
+      v81 = *(message + 4);
     }
 
     else
     {
-      *(a5 + 4) |= 0x20u;
-      v76 = *(a5 + 1);
+      *(message + 4) |= 0x20u;
+      v76 = *(message + 1);
       if (v76)
       {
         v76 = *(v76 & 0xFFFFFFFFFFFFFFFELL);
       }
 
-      v77 = google::protobuf::internal::ArenaStringPtr::Mutable(a5 + 8, v76);
+      v77 = google::protobuf::internal::ArenaStringPtr::Mutable(message + 8, v76);
       objc_msgSend_tsp_saveToProtobufString_(v73, v78, v77);
       canDownload = self->_canDownload;
-      v80 = *(a5 + 4);
+      v80 = *(message + 4);
       v81 = v80 | 0x1000;
-      *(a5 + 4) = v80 | 0x1000;
-      *(a5 + 120) = canDownload;
+      *(message + 4) = v80 | 0x1000;
+      *(message + 120) = canDownload;
       if (!self->_downloadPriority)
       {
         v81 = v80 | 0x41000;
-        *(a5 + 4) = v80 | 0x41000;
-        *(a5 + 38) = 0;
+        *(message + 4) = v80 | 0x41000;
+        *(message + 38) = 0;
       }
     }
 
-    *(a5 + 4) = v81 | 0x2000;
-    *(a5 + 121) = v23 == 2;
+    *(message + 4) = v81 | 0x2000;
+    *(message + 121) = v23 == 2;
     v82 = v100[5];
     if (v82)
     {
       objc_msgSend_timeIntervalSince1970(v82, v71, v72);
-      *(a5 + 4) |= 0x10000u;
-      *(a5 + 17) = v83;
+      *(message + 4) |= 0x10000u;
+      *(message + 17) = v83;
     }
 
     v84 = atomic_load(&self->_materializedLength);
     if (v84 && v84 != -1)
     {
-      *(a5 + 4) |= 0x20000u;
-      *(a5 + 18) = v84;
+      *(message + 4) |= 0x20000u;
+      *(message + 18) = v84;
     }
 
     if (v75)
@@ -1223,18 +1223,18 @@ LABEL_72:
   }
 
 LABEL_74:
-  if (a8)
+  if (error)
   {
     if (v20)
     {
       v89 = v20;
       v88 = 0;
-      *a8 = v20;
+      *error = v20;
       goto LABEL_79;
     }
 
     v90 = objc_msgSend_tsp_unknownWriteErrorWithUserInfo_(MEMORY[0x277CCA9B8], v25, 0);
-    *a8 = v90;
+    *error = v90;
   }
 
   v88 = 0;
@@ -1251,18 +1251,18 @@ LABEL_79:
   return v88;
 }
 
-- (void)didSaveWithChangeCount:(unint64_t)a3 packageDataStorage:(id)a4
+- (void)didSaveWithChangeCount:(unint64_t)count packageDataStorage:(id)storage
 {
-  v6 = a4;
+  storageCopy = storage;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2769FE474;
   block[3] = &unk_27A6E2C50;
-  v10 = v6;
-  v11 = a3;
+  v10 = storageCopy;
+  countCopy = count;
   block[4] = self;
-  v8 = v6;
+  v8 = storageCopy;
   dispatch_barrier_async(accessQueue, block);
 }
 
@@ -1476,7 +1476,7 @@ LABEL_79:
   return v3;
 }
 
-- (void)didAddDownloadObserverWithData:(id)a3
+- (void)didAddDownloadObserverWithData:(id)data
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1487,9 +1487,9 @@ LABEL_79:
   dispatch_async(accessQueue, block);
 }
 
-- (BOOL)isPartialDataInPackage:(id)a3
+- (BOOL)isPartialDataInPackage:(id)package
 {
-  v4 = a3;
+  packageCopy = package;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1499,10 +1499,10 @@ LABEL_79:
   block[1] = 3221225472;
   block[2] = sub_2769FF454;
   block[3] = &unk_27A6E2C00;
-  v9 = v4;
+  v9 = packageCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = packageCopy;
   dispatch_sync(accessQueue, block);
   LOBYTE(accessQueue) = *(v12 + 24);
 
@@ -1563,9 +1563,9 @@ LABEL_79:
   return v8 & 1;
 }
 
-- (id)p_migrateToTemporaryDataStorageWithEncryptionInfo:(id)a3 updateInternalDataStorages:(BOOL)a4
+- (id)p_migrateToTemporaryDataStorageWithEncryptionInfo:(id)info updateInternalDataStorages:(BOOL)storages
 {
-  v6 = a3;
+  infoCopy = info;
   v7 = objc_opt_class();
   v10 = objc_msgSend_ioQueue(v7, v8, v9);
   dispatch_assert_queue_V2(v10);
@@ -1585,10 +1585,10 @@ LABEL_79:
     v16[1] = 3221225472;
     v16[2] = sub_2769FF9AC;
     v16[3] = &unk_27A6E4158;
-    v19 = a4;
+    storagesCopy = storages;
     v16[4] = self;
     v18 = &v20;
-    v17 = v6;
+    v17 = infoCopy;
     dispatch_barrier_sync(accessQueue, v16);
   }
 
@@ -1603,10 +1603,10 @@ LABEL_79:
   return v14;
 }
 
-- (BOOL)p_copyPartiallyMaterializedDataToURL:(id)a3 encryptionInfo:(id)a4
+- (BOOL)p_copyPartiallyMaterializedDataToURL:(id)l encryptionInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_accessQueue);
   temporaryMaterializedDataStorage = self->_temporaryMaterializedDataStorage;
   if (temporaryMaterializedDataStorage)
@@ -1635,7 +1635,7 @@ LABEL_5:
 
     if (objc_opt_respondsToSelector())
     {
-      if (objc_msgSend_linkOrCopyToURL_encryptionInfo_canLink_(v9, v25, v6, v7, 1))
+      if (objc_msgSend_linkOrCopyToURL_encryptionInfo_canLink_(v9, v25, lCopy, infoCopy, 1))
       {
         goto LABEL_9;
       }

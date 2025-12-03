@@ -2,11 +2,11 @@
 + (TPSUIAppController)shared;
 + (id)sharedInstance;
 - (BOOL)viewNavigationCollapsed;
-- (id)assetConfigurationForAssets:(id)a3 language:(id)a4 sizeClass:(int64_t)a5 style:(int64_t)a6 assetFileInfoManager:(id)a7;
+- (id)assetConfigurationForAssets:(id)assets language:(id)language sizeClass:(int64_t)class style:(int64_t)style assetFileInfoManager:(id)manager;
 - (void)contentWillUpdate;
-- (void)overrideWidgetWithTip:(id)a3;
+- (void)overrideWidgetWithTip:(id)tip;
 - (void)resetAttributedStringCache;
-- (void)setViewNavigationCollapsed:(BOOL)a3;
+- (void)setViewNavigationCollapsed:(BOOL)collapsed;
 @end
 
 @implementation TPSUIAppController
@@ -18,22 +18,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setViewNavigationCollapsed:(BOOL)a3
+- (void)setViewNavigationCollapsed:(BOOL)collapsed
 {
   v5 = OBJC_IVAR___TPSUIAppController_viewNavigationCollapsed;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = collapsed;
 }
 
 - (void)contentWillUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_220B6115C();
 }
 
-- (id)assetConfigurationForAssets:(id)a3 language:(id)a4 sizeClass:(int64_t)a5 style:(int64_t)a6 assetFileInfoManager:(id)a7
+- (id)assetConfigurationForAssets:(id)assets language:(id)language sizeClass:(int64_t)class style:(int64_t)style assetFileInfoManager:(id)manager
 {
-  if (a4)
+  if (language)
   {
     v11 = sub_220BCDBA0();
     v13 = v12;
@@ -45,17 +45,17 @@
     v13 = 0;
   }
 
-  v14 = a3;
-  v15 = a7;
-  v16 = self;
-  v17 = sub_220B62950(a3, v11, v13, a6, v15);
+  assetsCopy = assets;
+  managerCopy = manager;
+  selfCopy = self;
+  v17 = sub_220B62950(assets, v11, v13, style, managerCopy);
 
   return v17;
 }
 
 - (void)resetAttributedStringCache
 {
-  v2 = self;
+  selfCopy = self;
   sub_220B62140();
 }
 
@@ -79,10 +79,10 @@
   return v2;
 }
 
-- (void)overrideWidgetWithTip:(id)a3
+- (void)overrideWidgetWithTip:(id)tip
 {
   type metadata accessor for TipsContentModel();
-  v6 = a3;
+  tipCopy = tip;
   v4 = static TipsContentModel.shared()();
   if ([objc_opt_self() isInternalBuild])
   {

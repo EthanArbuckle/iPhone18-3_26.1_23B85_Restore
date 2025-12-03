@@ -1,22 +1,22 @@
 @interface ReloadActivity
-- (id)activityTitleWithTabDocument:(id)a3;
-- (id)systemImageNameWithTabDocument:(id)a3;
-- (void)performActivityWithTabDocument:(id)a3;
+- (id)activityTitleWithTabDocument:(id)document;
+- (id)systemImageNameWithTabDocument:(id)document;
+- (void)performActivityWithTabDocument:(id)document;
 @end
 
 @implementation ReloadActivity
 
-- (id)activityTitleWithTabDocument:(id)a3
+- (id)activityTitleWithTabDocument:(id)document
 {
-  [a3 canStopLoading];
+  [document canStopLoading];
   v3 = _WBSLocalizedString();
 
   return v3;
 }
 
-- (id)systemImageNameWithTabDocument:(id)a3
+- (id)systemImageNameWithTabDocument:(id)document
 {
-  if ([a3 canStopLoading])
+  if ([document canStopLoading])
   {
     v3 = @"xmark";
   }
@@ -29,17 +29,17 @@
   return v3;
 }
 
-- (void)performActivityWithTabDocument:(id)a3
+- (void)performActivityWithTabDocument:(id)document
 {
-  v4 = a3;
-  if ([v4 canStopLoading])
+  documentCopy = document;
+  if ([documentCopy canStopLoading])
   {
-    [v4 stopLoadingUserInitiated];
+    [documentCopy stopLoadingUserInitiated];
   }
 
   else
   {
-    [v4 reloadUserInitiated];
+    [documentCopy reloadUserInitiated];
   }
 
   [(_SFActivity *)self activityDidFinish:1];

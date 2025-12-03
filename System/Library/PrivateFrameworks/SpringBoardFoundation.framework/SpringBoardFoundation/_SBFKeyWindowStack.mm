@@ -1,19 +1,19 @@
 @interface _SBFKeyWindowStack
 + (_SBFKeyWindowStack)sharedInstance;
-- (BOOL)_isWindowEligibleForKeyness:(id)a3;
-- (BOOL)pushKeyWindow:(id)a3;
+- (BOOL)_isWindowEligibleForKeyness:(id)keyness;
+- (BOOL)pushKeyWindow:(id)window;
 - (_SBFKeyWindowStack)init;
-- (id)_evaluateForNewKeyWindowWithReason:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_evaluateForNewKeyWindowWithReason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)expectedKeyWindow;
 - (id)succinctDescription;
-- (void)_keyWindowDidChangeNotification:(id)a3;
+- (void)_keyWindowDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)noteWindowDeallocated:(id)a3;
-- (void)noteWindowHidden:(id)a3;
-- (void)noteWindowUnhidden:(id)a3;
-- (void)popKeyWindow:(id)a3 reason:(id)a4;
+- (void)noteWindowDeallocated:(id)deallocated;
+- (void)noteWindowHidden:(id)hidden;
+- (void)noteWindowUnhidden:(id)unhidden;
+- (void)popKeyWindow:(id)window reason:(id)reason;
 @end
 
 @implementation _SBFKeyWindowStack
@@ -41,8 +41,8 @@
     windowStack = v2->_windowStack;
     v2->_windowStack = v3;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__keyWindowDidChangeNotification_ name:*MEMORY[0x1E69DE7B0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__keyWindowDidChangeNotification_ name:*MEMORY[0x1E69DE7B0] object:0];
   }
 
   return v2;
@@ -50,8 +50,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _SBFKeyWindowStack;
@@ -66,21 +66,21 @@
   return expectedKeyWindow;
 }
 
-- (BOOL)pushKeyWindow:(id)a3
+- (BOOL)pushKeyWindow:(id)window
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  windowCopy = window;
+  if (!windowCopy)
   {
     [_SBFKeyWindowStack pushKeyWindow:];
   }
 
   BSDispatchQueueAssertMain();
-  v5 = [_SBWindowReference referenceForObject:v4];
+  v5 = [_SBWindowReference referenceForObject:windowCopy];
   v6 = SBLogKeyWindow();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [MEMORY[0x1E698E680] descriptionForObject:v4];
+    v7 = [MEMORY[0x1E698E680] descriptionForObject:windowCopy];
     v11 = 138543362;
     v12 = v7;
     _os_log_impl(&dword_1BEA11000, v6, OS_LOG_TYPE_DEFAULT, "Push: %{public}@", &v11, 0xCu);
@@ -89,20 +89,20 @@
   [(NSMutableOrderedSet *)self->_windowStack removeObject:v5];
   [(NSMutableOrderedSet *)self->_windowStack addObject:v5];
   v8 = [(_SBFKeyWindowStack *)self _evaluateForNewKeyWindowWithReason:@"push"];
-  v9 = self->_expectedKeyWindow == v4;
+  v9 = self->_expectedKeyWindow == windowCopy;
 
   return v9;
 }
 
-- (void)popKeyWindow:(id)a3 reason:(id)a4
+- (void)popKeyWindow:(id)window reason:(id)reason
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  windowCopy = window;
+  reasonCopy = reason;
+  v8 = reasonCopy;
+  if (windowCopy)
   {
-    if (v7)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
@@ -120,14 +120,14 @@
   [_SBFKeyWindowStack popKeyWindow:reason:];
 LABEL_3:
   BSDispatchQueueAssertMain();
-  v9 = [_SBWindowReference referenceForObject:v6];
+  v9 = [_SBWindowReference referenceForObject:windowCopy];
   if ([(NSMutableOrderedSet *)self->_windowStack containsObject:v9])
   {
     expectedKeyWindow = self->_expectedKeyWindow;
     v11 = SBLogKeyWindow();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      if (expectedKeyWindow == v6)
+      if (expectedKeyWindow == windowCopy)
       {
         v12 = @"YES";
       }
@@ -137,7 +137,7 @@ LABEL_3:
         v12 = @"NO";
       }
 
-      v13 = [MEMORY[0x1E698E680] descriptionForObject:v6];
+      v13 = [MEMORY[0x1E698E680] descriptionForObject:windowCopy];
       v15 = 138543874;
       v16 = v12;
       v17 = 2114;
@@ -148,7 +148,7 @@ LABEL_3:
     }
 
     [(NSMutableOrderedSet *)self->_windowStack removeObject:v9];
-    if (expectedKeyWindow == v6)
+    if (expectedKeyWindow == windowCopy)
     {
       [(SBFWindow *)self->_expectedKeyWindow _resignKeyFromKeyWindowStack];
       self->_expectedKeyWindow = 0;
@@ -157,68 +157,68 @@ LABEL_3:
   }
 }
 
-- (void)noteWindowDeallocated:(id)a3
+- (void)noteWindowDeallocated:(id)deallocated
 {
-  v4 = a3;
-  if (!v4)
+  deallocatedCopy = deallocated;
+  if (!deallocatedCopy)
   {
     [_SBFKeyWindowStack noteWindowDeallocated:];
   }
 
   BSDispatchQueueAssertMain();
-  [(_SBFKeyWindowStack *)self popKeyWindow:v4 reason:@"window deallocated"];
+  [(_SBFKeyWindowStack *)self popKeyWindow:deallocatedCopy reason:@"window deallocated"];
 }
 
-- (void)noteWindowHidden:(id)a3
+- (void)noteWindowHidden:(id)hidden
 {
-  v8 = a3;
-  if (!v8)
+  hiddenCopy = hidden;
+  if (!hiddenCopy)
   {
     [_SBFKeyWindowStack noteWindowHidden:];
   }
 
   BSDispatchQueueAssertMain();
-  if ([v8 isKeyWindow])
+  if ([hiddenCopy isKeyWindow])
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [MEMORY[0x1E698E680] descriptionForObject:v8];
+    v5 = [MEMORY[0x1E698E680] descriptionForObject:hiddenCopy];
     v6 = [v4 stringWithFormat:@"Window hidden: %@", v5];
     v7 = [(_SBFKeyWindowStack *)self _evaluateForNewKeyWindowWithReason:v6];
   }
 }
 
-- (void)noteWindowUnhidden:(id)a3
+- (void)noteWindowUnhidden:(id)unhidden
 {
-  v10 = a3;
-  if (!v10)
+  unhiddenCopy = unhidden;
+  if (!unhiddenCopy)
   {
     [_SBFKeyWindowStack noteWindowUnhidden:];
   }
 
   BSDispatchQueueAssertMain();
   windowStack = self->_windowStack;
-  v5 = [_SBWindowReference referenceForObject:v10];
+  v5 = [_SBWindowReference referenceForObject:unhiddenCopy];
   LODWORD(windowStack) = [(NSMutableOrderedSet *)windowStack containsObject:v5];
 
   if (windowStack)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [MEMORY[0x1E698E680] descriptionForObject:v10];
+    v7 = [MEMORY[0x1E698E680] descriptionForObject:unhiddenCopy];
     v8 = [v6 stringWithFormat:@"Window unhidden: %@", v7];
     v9 = [(_SBFKeyWindowStack *)self _evaluateForNewKeyWindowWithReason:v8];
   }
 }
 
-- (id)_evaluateForNewKeyWindowWithReason:(id)a3
+- (id)_evaluateForNewKeyWindowWithReason:(id)reason
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(NSMutableOrderedSet *)self->_windowStack reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  reverseObjectEnumerator = [(NSMutableOrderedSet *)self->_windowStack reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -229,18 +229,18 @@ LABEL_3:
     {
       if (*v20 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
-      v10 = [*(*(&v19 + 1) + 8 * v9) object];
-      if ([(_SBFKeyWindowStack *)self _isWindowEligibleForKeyness:v10])
+      object = [*(*(&v19 + 1) + 8 * v9) object];
+      if ([(_SBFKeyWindowStack *)self _isWindowEligibleForKeyness:object])
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -254,43 +254,43 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v10 = 0;
+    object = 0;
   }
 
-  if (self->_expectedKeyWindow != v10)
+  if (self->_expectedKeyWindow != object)
   {
     v11 = SBLogKeyWindow();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [MEMORY[0x1E698E680] descriptionForObject:v10];
+      v12 = [MEMORY[0x1E698E680] descriptionForObject:object];
       *buf = 138543618;
       v24 = v12;
       v25 = 2114;
-      v26 = v4;
+      v26 = reasonCopy;
       _os_log_impl(&dword_1BEA11000, v11, OS_LOG_TYPE_DEFAULT, "Evaluate: making new window key: %{public}@, for reason: %{public}@ ", buf, 0x16u);
     }
 
     [(SBFWindow *)self->_expectedKeyWindow _resignKeyFromKeyWindowStack];
-    self->_expectedKeyWindow = v10;
+    self->_expectedKeyWindow = object;
 LABEL_18:
-    [(SBFWindow *)v10 _makeKeyFromKeyWindowStack];
+    [(SBFWindow *)object _makeKeyFromKeyWindowStack];
     goto LABEL_19;
   }
 
-  v13 = [MEMORY[0x1E69DC668] sharedApplication];
-  v14 = [v13 keyWindow];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  keyWindow = [mEMORY[0x1E69DC668] keyWindow];
 
   v15 = SBLogKeyWindow();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (v14 != v10)
+  if (keyWindow != object)
   {
     if (v16)
     {
-      v17 = [MEMORY[0x1E698E680] descriptionForObject:v10];
+      v17 = [MEMORY[0x1E698E680] descriptionForObject:object];
       *buf = 138543618;
       v24 = v17;
       v25 = 2114;
-      v26 = v4;
+      v26 = reasonCopy;
       _os_log_impl(&dword_1BEA11000, v15, OS_LOG_TYPE_DEFAULT, "Evaluate: making new window key: %{public}@ from nonSBF window, for reason: %{public}@ ", buf, 0x16u);
     }
 
@@ -300,20 +300,20 @@ LABEL_18:
   if (v16)
   {
     *buf = 138543362;
-    v24 = v4;
+    v24 = reasonCopy;
     _os_log_impl(&dword_1BEA11000, v15, OS_LOG_TYPE_DEFAULT, "Evaluate: no change - reason: %{public}@ ", buf, 0xCu);
   }
 
 LABEL_19:
 
-  return v10;
+  return object;
 }
 
-- (BOOL)_isWindowEligibleForKeyness:(id)a3
+- (BOOL)_isWindowEligibleForKeyness:(id)keyness
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 canBecomeKeyWindow])
+  keynessCopy = keyness;
+  v4 = keynessCopy;
+  if (keynessCopy && [keynessCopy canBecomeKeyWindow])
   {
     v5 = [v4 _isEffectivelyHiddenForKeyWindowStack] ^ 1;
   }
@@ -326,17 +326,17 @@ LABEL_19:
   return v5;
 }
 
-- (void)_keyWindowDidChangeNotification:(id)a3
+- (void)_keyWindowDidChangeNotification:(id)notification
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [a3 object];
+  object = [notification object];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v4 = SBLogKeyWindow();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [MEMORY[0x1E698E680] descriptionForObject:v3];
+      v5 = [MEMORY[0x1E698E680] descriptionForObject:object];
       v6 = 138543362;
       v7 = v5;
       _os_log_impl(&dword_1BEA11000, v4, OS_LOG_TYPE_DEFAULT, "A window that wasn't a SB owned window became key: %{public}@", &v6, 0xCu);
@@ -346,32 +346,32 @@ LABEL_19:
 
 - (id)succinctDescription
 {
-  v2 = [(_SBFKeyWindowStack *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_SBFKeyWindowStack *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_SBFKeyWindowStack *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_SBFKeyWindowStack *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(_SBFKeyWindowStack *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(_SBFKeyWindowStack *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60___SBFKeyWindowStack_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E807F290;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

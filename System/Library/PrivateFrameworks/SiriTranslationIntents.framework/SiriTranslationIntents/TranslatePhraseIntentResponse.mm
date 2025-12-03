@@ -1,12 +1,12 @@
 @interface TranslatePhraseIntentResponse
-- (TranslatePhraseIntentResponse)initWithPropertiesByName:(id)a3;
+- (TranslatePhraseIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation TranslatePhraseIntentResponse
 
-- (TranslatePhraseIntentResponse)initWithPropertiesByName:(id)a3
+- (TranslatePhraseIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_2694240A8();
   }

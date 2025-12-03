@@ -48,13 +48,13 @@
   {
     v21.receiver = self;
     v21.super_class = TPSCellularNetworkBundleController;
-    v4 = [(TPSCellularNetworkBundleController *)&v21 subscriptions];
-    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [v4 count]);
+    subscriptions = [(TPSCellularNetworkBundleController *)&v21 subscriptions];
+    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [subscriptions count]);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v4;
+    v6 = subscriptions;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v7)
     {
@@ -72,8 +72,8 @@
           v11 = *(*(&v17 + 1) + 8 * i);
           if (([v11 isSimHidden] & 1) == 0)
           {
-            v12 = [(TPSCellularNetworkBundleController *)self telephonyController];
-            v13 = [v12 supportsCellularNetworkSelectionForSubscriptionContext:v11];
+            telephonyController = [(TPSCellularNetworkBundleController *)self telephonyController];
+            v13 = [telephonyController supportsCellularNetworkSelectionForSubscriptionContext:v11];
 
             if (v13)
             {

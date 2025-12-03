@@ -7,7 +7,7 @@
 - (uint64_t)atx_isFuzzyMatch:()FuzzyMatch
 {
   v4 = a3;
-  if ([a1 isEqual:v4])
+  if ([self isEqual:v4])
   {
     v5 = 1;
   }
@@ -18,18 +18,18 @@
     if (objc_opt_isKindOfClass())
     {
       v6 = v4;
-      v7 = [a1 location];
-      v8 = [v6 location];
-      if (v7 == v8)
+      location = [self location];
+      location2 = [v6 location];
+      if (location == location2)
       {
         v5 = 1;
       }
 
       else
       {
-        v9 = [a1 location];
-        v10 = [v6 location];
-        v5 = [v9 atx_isFuzzyMatch:v10];
+        location3 = [self location];
+        location4 = [v6 location];
+        v5 = [location3 atx_isFuzzyMatch:location4];
       }
     }
 

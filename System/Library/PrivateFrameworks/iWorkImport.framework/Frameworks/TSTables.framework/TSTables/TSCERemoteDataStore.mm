@@ -2,29 +2,29 @@
 - (BOOL)hasFullyPopulatedCache;
 - (BOOL)p_isInCollaborationMode;
 - (TSCECalculationEngine)calculationEngine;
-- (TSCERemoteDataStore)initWithContext:(id)a3 calculationEngine:(id)a4;
+- (TSCERemoteDataStore)initWithContext:(id)context calculationEngine:(id)engine;
 - (TSCERemoteDataStoreDelegate)delegate;
 - (double)remoteDataSyncKey;
 - (id)allQuotes;
 - (id)allRemoteData;
-- (id)cachedQuoteForSymbol:(id)a3;
-- (id)p_dictionaryForRemoteData:(id)a3;
-- (id)p_tsceValueFromTsceCellValue:(id)a3;
-- (id)p_updateCachesWithMap:(id)a3 quotes:(id)a4 overwriteValues:(BOOL)a5;
-- (id)valueForRemoteData:(id)a3;
-- (void)addRemoteDataInterest:(id)a3 forOwner:(const TSKUIDStruct *)a4;
+- (id)cachedQuoteForSymbol:(id)symbol;
+- (id)p_dictionaryForRemoteData:(id)data;
+- (id)p_tsceValueFromTsceCellValue:(id)value;
+- (id)p_updateCachesWithMap:(id)map quotes:(id)quotes overwriteValues:(BOOL)values;
+- (id)valueForRemoteData:(id)data;
+- (void)addRemoteDataInterest:(id)interest forOwner:(const TSKUIDStruct *)owner;
 - (void)dealloc;
-- (void)loadFromUnarchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
 - (void)p_initializeQueue;
-- (void)p_recursiveWriteWillModify:(BOOL)a3 withBlock:(id)a4;
+- (void)p_recursiveWriteWillModify:(BOOL)modify withBlock:(id)block;
 - (void)registerWithCoordinator;
-- (void)remoteDataDidUpdateValues:(id)a3 quotes:(id)a4;
-- (void)removeRemoteDataInterest:(id)a3 forOwner:(const TSKUIDStruct *)a4;
-- (void)saveToArchiver:(id)a3;
+- (void)remoteDataDidUpdateValues:(id)values quotes:(id)quotes;
+- (void)removeRemoteDataInterest:(id)interest forOwner:(const TSKUIDStruct *)owner;
+- (void)saveToArchiver:(id)archiver;
 - (void)unregisterWithCoordinator;
-- (void)updateCachedStocksFromKnownStocks:(id)a3;
-- (void)updateCachedStocksIntoStore:(id)a3;
-- (void)updateWithRemoteDataMap:(id)a3 quotes:(id)a4 syncKey:(double)a5;
+- (void)updateCachedStocksFromKnownStocks:(id)stocks;
+- (void)updateCachedStocksIntoStore:(id)store;
+- (void)updateWithRemoteDataMap:(id)map quotes:(id)quotes syncKey:(double)key;
 @end
 
 @implementation TSCERemoteDataStore
@@ -47,10 +47,10 @@
   self->_tspSemaphore = v13;
 }
 
-- (void)p_recursiveWriteWillModify:(BOOL)a3 withBlock:(id)a4
+- (void)p_recursiveWriteWillModify:(BOOL)modify withBlock:(id)block
 {
-  v4 = a3;
-  block = a4;
+  modifyCopy = modify;
+  block = block;
   specific = dispatch_get_specific(qword_27CFB4708);
   queue = self->_queue;
   if (specific == queue)
@@ -60,7 +60,7 @@
 
   else
   {
-    if (v4)
+    if (modifyCopy)
     {
       dispatch_semaphore_wait(self->_tspSemaphore, 0xFFFFFFFFFFFFFFFFLL);
       objc_msgSend_willModify(self, v8, v9, v10, v11);
@@ -72,13 +72,13 @@
   }
 }
 
-- (TSCERemoteDataStore)initWithContext:(id)a3 calculationEngine:(id)a4
+- (TSCERemoteDataStore)initWithContext:(id)context calculationEngine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  engineCopy = engine;
   v27.receiver = self;
   v27.super_class = TSCERemoteDataStore;
-  v8 = [(TSCERemoteDataStore *)&v27 initWithContext:v6];
+  v8 = [(TSCERemoteDataStore *)&v27 initWithContext:contextCopy];
   if (v8)
   {
     v9 = objc_alloc_init(TSCERemoteDataValueMap);
@@ -104,7 +104,7 @@
     v8->_unSyncedStocks = v17;
 
     objc_msgSend_p_initializeQueue(v8, v19, v20, v21, v22);
-    objc_msgSend_setCalculationEngine_(v8, v23, v7, v24, v25);
+    objc_msgSend_setCalculationEngine_(v8, v23, engineCopy, v24, v25);
   }
 
   return v8;
@@ -155,10 +155,10 @@
   objc_msgSend_p_recursiveWriteWillModify_withBlock_(self, a2, 1, v3, v2);
 }
 
-- (id)valueForRemoteData:(id)a3
+- (id)valueForRemoteData:(id)data
 {
-  v4 = a3;
-  if (objc_msgSend_isCold(v4, v5, v6, v7, v8) && objc_msgSend_year(v4, v9, v10, v11, v12) == 0x7FFFFFFFFFFFFFFFLL)
+  dataCopy = data;
+  if (objc_msgSend_isCold(dataCopy, v5, v6, v7, v8) && objc_msgSend_year(dataCopy, v9, v10, v11, v12) == 0x7FFFFFFFFFFFFFFFLL)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "[TSCERemoteDataStore valueForRemoteData:]", v14, v15);
@@ -185,7 +185,7 @@
     block[3] = &unk_278461A90;
     v48 = &v49;
     block[4] = self;
-    v47 = v4;
+    v47 = dataCopy;
     dispatch_sync(queue, block);
     v40 = v50[5];
     if (v40)
@@ -210,16 +210,16 @@
   return v35;
 }
 
-- (id)cachedQuoteForSymbol:(id)a3
+- (id)cachedQuoteForSymbol:(id)symbol
 {
-  v8 = a3;
-  if (v8)
+  symbolCopy = symbol;
+  if (symbolCopy)
   {
     v9 = objc_msgSend_calculationEngine(self, v4, v5, v6, v7);
     v14 = objc_msgSend_documentLocale(v9, v10, v11, v12, v13);
     v19 = objc_msgSend_locale(v14, v15, v16, v17, v18);
 
-    v23 = objc_msgSend_uppercaseStringWithLocale_(v8, v20, v19, v21, v22);
+    v23 = objc_msgSend_uppercaseStringWithLocale_(symbolCopy, v20, v19, v21, v22);
     v72 = 0;
     v73 = &v72;
     v74 = 0x3032000000;
@@ -282,10 +282,10 @@
   return v65;
 }
 
-- (void)addRemoteDataInterest:(id)a3 forOwner:(const TSKUIDStruct *)a4
+- (void)addRemoteDataInterest:(id)interest forOwner:(const TSKUIDStruct *)owner
 {
-  v6 = a3;
-  if (objc_msgSend_count(v6, v7, v8, v9, v10))
+  interestCopy = interest;
+  if (objc_msgSend_count(interestCopy, v7, v8, v9, v10))
   {
     v33 = 0;
     v34 = &v33;
@@ -297,13 +297,13 @@
     v26 = 3221225472;
     v27 = sub_22137D3A4;
     v28 = &unk_278463668;
-    v32 = a4;
-    v29 = self;
-    v30 = v6;
+    ownerCopy = owner;
+    selfCopy = self;
+    v30 = interestCopy;
     v31 = &v33;
     objc_msgSend_p_recursiveWriteWillModify_withBlock_(self, v11, 1, &v25, v12);
     v17 = v34[5];
-    if (v17 && objc_msgSend_count(v17, v13, v14, v15, v16, v25, v26, v27, v28, v29))
+    if (v17 && objc_msgSend_count(v17, v13, v14, v15, v16, v25, v26, v27, v28, selfCopy))
     {
       v22 = objc_msgSend_coordinator(self, v18, v19, v20, v21);
       objc_msgSend_addRemoteDataInterest_forStore_(v22, v23, v34[5], self, v24);
@@ -313,10 +313,10 @@
   }
 }
 
-- (void)removeRemoteDataInterest:(id)a3 forOwner:(const TSKUIDStruct *)a4
+- (void)removeRemoteDataInterest:(id)interest forOwner:(const TSKUIDStruct *)owner
 {
-  v6 = a3;
-  if (objc_msgSend_count(v6, v7, v8, v9, v10))
+  interestCopy = interest;
+  if (objc_msgSend_count(interestCopy, v7, v8, v9, v10))
   {
     v33 = 0;
     v34 = &v33;
@@ -329,12 +329,12 @@
     v27 = sub_22137D6BC;
     v28 = &unk_278463690;
     v31 = &v33;
-    v32 = a4;
-    v29 = self;
-    v30 = v6;
+    ownerCopy = owner;
+    selfCopy = self;
+    v30 = interestCopy;
     objc_msgSend_p_recursiveWriteWillModify_withBlock_(self, v11, 1, &v25, v12);
     v17 = v34[5];
-    if (v17 && objc_msgSend_count(v17, v13, v14, v15, v16, v25, v26, v27, v28, v29))
+    if (v17 && objc_msgSend_count(v17, v13, v14, v15, v16, v25, v26, v27, v28, selfCopy))
     {
       v22 = objc_msgSend_coordinator(self, v18, v19, v20, v21);
       objc_msgSend_removeRemoteDataInterest_forStore_(v22, v23, v34[5], self, v24);
@@ -344,10 +344,10 @@
   }
 }
 
-- (id)p_updateCachesWithMap:(id)a3 quotes:(id)a4 overwriteValues:(BOOL)a5
+- (id)p_updateCachesWithMap:(id)map quotes:(id)quotes overwriteValues:(BOOL)values
 {
-  v8 = a3;
-  v9 = a4;
+  mapCopy = map;
+  quotesCopy = quotes;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -358,13 +358,13 @@
   v16[1] = 3221225472;
   v16[2] = sub_22137DAD4;
   v16[3] = &unk_2784636E0;
-  v17 = v9;
-  v18 = self;
-  v21 = a5;
-  v19 = v8;
+  v17 = quotesCopy;
+  selfCopy = self;
+  valuesCopy = values;
+  v19 = mapCopy;
   v20 = &v22;
-  v10 = v8;
-  v11 = v9;
+  v10 = mapCopy;
+  v11 = quotesCopy;
   objc_msgSend_p_recursiveWriteWillModify_withBlock_(self, v12, 1, v16, v13);
   v14 = v23[5];
 
@@ -397,11 +397,11 @@
   return remoteDataSyncKey;
 }
 
-- (void)remoteDataDidUpdateValues:(id)a3 quotes:(id)a4
+- (void)remoteDataDidUpdateValues:(id)values quotes:(id)quotes
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_count(v6, v8, v9, v10, v11) <= 0 && !objc_msgSend_count(v7, v12, v13, v14, v15))
+  valuesCopy = values;
+  quotesCopy = quotes;
+  if (objc_msgSend_count(valuesCopy, v8, v9, v10, v11) <= 0 && !objc_msgSend_count(quotesCopy, v12, v13, v14, v15))
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSCERemoteDataStore remoteDataDidUpdateValues:quotes:]", v14, v15);
@@ -419,8 +419,8 @@
     v32[2] = sub_22137E1B0;
     v32[3] = &unk_278462620;
     v32[4] = self;
-    v33 = v6;
-    v34 = v7;
+    v33 = valuesCopy;
+    v34 = quotesCopy;
     objc_msgSend_addOperationWithBlock_(updateQueue, v29, v32, v30, v31);
   }
 
@@ -430,10 +430,10 @@
   }
 }
 
-- (id)p_tsceValueFromTsceCellValue:(id)a3
+- (id)p_tsceValueFromTsceCellValue:(id)value
 {
-  v3 = a3;
-  v12 = objc_msgSend_valueType(v3, v4, v5, v6, v7);
+  valueCopy = value;
+  v12 = objc_msgSend_valueType(valueCopy, v4, v5, v6, v7);
   if (v12 <= 4)
   {
     if (!v12)
@@ -539,9 +539,9 @@ LABEL_14:
   return v3;
 }
 
-- (id)p_dictionaryForRemoteData:(id)a3
+- (id)p_dictionaryForRemoteData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -554,10 +554,10 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = sub_22137EE40;
   block[3] = &unk_278463780;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
-  v15 = v4;
-  v11 = v4;
+  v15 = dataCopy;
+  v11 = dataCopy;
   dispatch_sync(queue, block);
   v12 = v19[5];
 
@@ -566,10 +566,10 @@ LABEL_14:
   return v12;
 }
 
-- (void)updateWithRemoteDataMap:(id)a3 quotes:(id)a4 syncKey:(double)a5
+- (void)updateWithRemoteDataMap:(id)map quotes:(id)quotes syncKey:(double)key
 {
-  v8 = a3;
-  v9 = a4;
+  mapCopy = map;
+  quotesCopy = quotes;
   if ((objc_msgSend_p_isInCollaborationMode(self, v10, v11, v12, v13) & 1) == 0)
   {
     v18 = objc_msgSend_delegate(self, v14, v15, v16, v17);
@@ -598,11 +598,11 @@ LABEL_14:
   v37[2] = sub_22137F1B4;
   v37[3] = &unk_2784637D0;
   v37[4] = self;
-  v32 = v8;
+  v32 = mapCopy;
   v38 = v32;
-  v33 = v9;
+  v33 = quotesCopy;
   v39 = v33;
-  v40 = a5;
+  keyCopy = key;
   objc_msgSend_addOperationWithBlock_(updateQueue, v34, v37, v35, v36);
 }
 
@@ -620,12 +620,12 @@ LABEL_14:
   return v19;
 }
 
-- (void)updateCachedStocksFromKnownStocks:(id)a3
+- (void)updateCachedStocksFromKnownStocks:(id)stocks
 {
-  v4 = a3;
+  stocksCopy = stocks;
   v9 = objc_msgSend_cachedStocks(self, v5, v6, v7, v8);
   v14 = objc_msgSend_tsu_allKeysAsSet(v9, v10, v11, v12, v13);
-  v19 = objc_msgSend_tsu_allKeysAsSet(v4, v15, v16, v17, v18);
+  v19 = objc_msgSend_tsu_allKeysAsSet(stocksCopy, v15, v16, v17, v18);
   v23 = objc_msgSend_tsu_setByIntersectingSet_(v14, v20, v19, v21, v22);
 
   v28[0] = MEMORY[0x277D85DD0];
@@ -633,23 +633,23 @@ LABEL_14:
   v28[2] = sub_22137F554;
   v28[3] = &unk_2784637F8;
   v28[4] = self;
-  v24 = v4;
+  v24 = stocksCopy;
   v29 = v24;
   objc_msgSend_enumerateObjectsUsingBlock_(v23, v25, v28, v26, v27);
 }
 
-- (void)updateCachedStocksIntoStore:(id)a3
+- (void)updateCachedStocksIntoStore:(id)store
 {
-  v12 = a3;
+  storeCopy = store;
   v8 = objc_msgSend_cachedStocks(self, v4, v5, v6, v7);
-  objc_msgSend_updateCachedStocksFromKnownStocks_(v12, v9, v8, v10, v11);
+  objc_msgSend_updateCachedStocksFromKnownStocks_(storeCopy, v9, v8, v10, v11);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v56 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v56, v4, off_2812E2AC8[156], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E2AC8[156], v5, v6);
 
   objc_msgSend_p_initializeQueue(self, v8, v9, v10, v11);
   v12 = [TSCERemoteDataValueMap alloc];
@@ -725,14 +725,14 @@ LABEL_14:
   objc_msgSend_updateKnownCachedStocksInStore_(v52, v53, self, v54, v55);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_221380188, off_2812E2AC8[156], v6);
+  v7 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_221380188, off_2812E2AC8[156], v6);
 
   v43 = v7;
   v34 = 0;
@@ -793,7 +793,7 @@ LABEL_14:
   v28[5] = &v40;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v21, v22, v28, v23, v24);
 
-  objc_msgSend_requiresDocumentVersion_(v4, v25, *MEMORY[0x277D80978], v26, v27);
+  objc_msgSend_requiresDocumentVersion_(archiverCopy, v25, *MEMORY[0x277D80978], v26, v27);
   _Block_object_dispose(v30, 8);
 
   _Block_object_dispose(v32, 8);

@@ -1,5 +1,5 @@
 @interface NTKExactitudesMiniClockHandView
-- (_TtC24NTKExactitudesFaceBundle31NTKExactitudesMiniClockHandView)initWithFrame:(CGRect)a3;
+- (_TtC24NTKExactitudesFaceBundle31NTKExactitudesMiniClockHandView)initWithFrame:(CGRect)frame;
 - (void)_layoutInlayLayer;
 @end
 
@@ -15,16 +15,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1F168();
 }
 
-- (_TtC24NTKExactitudesFaceBundle31NTKExactitudesMiniClockHandView)initWithFrame:(CGRect)a3
+- (_TtC24NTKExactitudesFaceBundle31NTKExactitudesMiniClockHandView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_216EC();
   sub_216DC();
   sub_216CC();
@@ -35,9 +35,9 @@
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for NTKExactitudesMiniClockHandView();
-  v8 = [(NTKExactitudesHandView *)&v10 initWithFrame:x, y, width, height];
+  height = [(NTKExactitudesHandView *)&v10 initWithFrame:x, y, width, height];
 
-  return v8;
+  return height;
 }
 
 @end

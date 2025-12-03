@@ -1,9 +1,9 @@
 @interface DisplayViewController
-- (DisplayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (DisplayViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIView)displayView;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)setDisplayView:(id)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)setDisplayView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -11,7 +11,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100023858();
 }
 
@@ -22,16 +22,16 @@
   return v2;
 }
 
-- (void)setDisplayView:(id)a3
+- (void)setDisplayView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_100023D14(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100023D14(viewCopy);
 }
 
-- (DisplayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (DisplayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100057A50();
     v7 = v6;
@@ -43,22 +43,22 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100026500(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100026500(v5, v7, bundle);
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v5 = sub_100026B58(self, a2, a5);
+  v5 = sub_100026B58(self, a2, region);
 
   return v5;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
   v9 = sub_100026BAC();
 
   return v9;

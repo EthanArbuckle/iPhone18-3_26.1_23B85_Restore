@@ -1,32 +1,32 @@
 @interface _CPLIsInIndexSetInject
 - (NSString)description;
-- (_CPLIsInIndexSetInject)initWithInjection:(id)a3 indexSet:(id)a4 exclude:(BOOL)a5;
+- (_CPLIsInIndexSetInject)initWithInjection:(id)injection indexSet:(id)set exclude:(BOOL)exclude;
 @end
 
 @implementation _CPLIsInIndexSetInject
 
-- (_CPLIsInIndexSetInject)initWithInjection:(id)a3 indexSet:(id)a4 exclude:(BOOL)a5
+- (_CPLIsInIndexSetInject)initWithInjection:(id)injection indexSet:(id)set exclude:(BOOL)exclude
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  excludeCopy = exclude;
+  injectionCopy = injection;
+  setCopy = set;
   v37.receiver = self;
   v37.super_class = _CPLIsInIndexSetInject;
   v11 = [(_CPLIsInIndexSetInject *)&v37 init];
   if (v11)
   {
-    v12 = [v10 count];
+    v12 = [setCopy count];
     if (v12)
     {
       v13 = v12;
-      objc_storeStrong(&v11->_injection, a3);
-      v14 = [v9 sql];
+      objc_storeStrong(&v11->_injection, injection);
+      v14 = [injectionCopy sql];
       v15 = [NSMutableData alloc];
       v16 = [v14 length];
       if (v13 == 1)
       {
         v17 = 4;
-        if (v5)
+        if (excludeCopy)
         {
           v17 = 5;
         }
@@ -34,7 +34,7 @@
         v18 = [v15 initWithCapacity:&v16[v17]];
         objc_msgSend(v18, "appendBytes:length:", "(", 1);
         [v18 appendData:v14];
-        if (v5)
+        if (excludeCopy)
         {
           v19 = "!=?)";
           v20 = v18;
@@ -52,25 +52,25 @@
         objc_storeStrong(&v11->_sql, v18);
         if (objc_opt_respondsToSelector())
         {
-          v30 = [v9 bindValuesToKeepAlive];
+          bindValuesToKeepAlive = [injectionCopy bindValuesToKeepAlive];
           keepAlive = v11->_keepAlive;
-          v11->_keepAlive = v30;
+          v11->_keepAlive = bindValuesToKeepAlive;
         }
 
-        v11->_onlyIndex = [v10 firstIndex];
+        v11->_onlyIndex = [setCopy firstIndex];
       }
 
       else
       {
         v26 = 20;
-        if (v5)
+        if (excludeCopy)
         {
           v26 = 21;
         }
 
         v27 = [v15 initWithCapacity:&v16[v26]];
         v18 = v27;
-        if (v5)
+        if (excludeCopy)
         {
           v28 = "(!is_in_indexset(";
           v29 = 17;
@@ -88,34 +88,34 @@
         objc_storeStrong(&v11->_sql, v18);
         if (objc_opt_respondsToSelector())
         {
-          v32 = [v9 bindValuesToKeepAlive];
+          bindValuesToKeepAlive2 = [injectionCopy bindValuesToKeepAlive];
           v33 = v11->_keepAlive;
-          v11->_keepAlive = v32;
+          v11->_keepAlive = bindValuesToKeepAlive2;
         }
 
         if (v11->_keepAlive)
         {
           v38[0] = v11->_keepAlive;
-          v38[1] = v10;
+          v38[1] = setCopy;
           v34 = [NSArray arrayWithObjects:v38 count:2];
         }
 
         else
         {
-          v34 = v10;
+          v34 = setCopy;
         }
 
         v35 = v11->_keepAlive;
         v11->_keepAlive = v34;
 
-        objc_storeStrong(&v11->_indexSet, a4);
+        objc_storeStrong(&v11->_indexSet, set);
       }
     }
 
     else
     {
       v22 = [NSData alloc];
-      if (v5)
+      if (excludeCopy)
       {
         v23 = "(1)";
       }

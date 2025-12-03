@@ -1,20 +1,20 @@
 @interface PSSpecifierToggleContentConfigurationCell
-- (_TtC11Preferences41PSSpecifierToggleContentConfigurationCell)initWithCoder:(id)a3;
-- (_TtC11Preferences41PSSpecifierToggleContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC11Preferences41PSSpecifierToggleContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (_TtC11Preferences41PSSpecifierToggleContentConfigurationCell)initWithCoder:(id)coder;
+- (_TtC11Preferences41PSSpecifierToggleContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC11Preferences41PSSpecifierToggleContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)controlValue;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setValue:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setValue:(id)value;
 @end
 
 @implementation PSSpecifierToggleContentConfigurationCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_18B0EC44C(a3);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_18B0EC44C(specifier);
 }
 
 - (void)prepareForReuse
@@ -27,11 +27,11 @@
   *&v2[OBJC_IVAR____TtC11Preferences41PSSpecifierToggleContentConfigurationCell_toggleContentViewModel] = 0;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18B0F52A0();
     swift_unknownObjectRelease();
@@ -40,7 +40,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_18B0EC9B4(v6);
@@ -50,7 +50,7 @@
 
 - (id)controlValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B0ECC1C(v10);
 
   v3 = v11;
@@ -74,9 +74,9 @@
   return v8;
 }
 
-- (_TtC11Preferences41PSSpecifierToggleContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC11Preferences41PSSpecifierToggleContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_18B0F51B0();
     v9 = v8;
@@ -88,13 +88,13 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return PSSpecifierToggleContentConfigurationCell.init(style:reuseIdentifier:specifier:)(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return PSSpecifierToggleContentConfigurationCell.init(style:reuseIdentifier:specifier:)(style, v7, v9, specifier);
 }
 
-- (_TtC11Preferences41PSSpecifierToggleContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC11Preferences41PSSpecifierToggleContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_18B0F51B0();
     *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC11Preferences41PSSpecifierToggleContentConfigurationCell_toggleContentViewModel) = 0;
@@ -109,18 +109,18 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for PSSpecifierToggleContentConfigurationCell();
-  v7 = [(PSSwitchTableCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(PSSwitchTableCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (_TtC11Preferences41PSSpecifierToggleContentConfigurationCell)initWithCoder:(id)a3
+- (_TtC11Preferences41PSSpecifierToggleContentConfigurationCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC11Preferences41PSSpecifierToggleContentConfigurationCell_toggleContentViewModel) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PSSpecifierToggleContentConfigurationCell();
-  v4 = a3;
-  v5 = [(PSSpecifierToggleContentConfigurationCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PSSpecifierToggleContentConfigurationCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

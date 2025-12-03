@@ -2,24 +2,24 @@
 + (id)_persistedInstancesStorage;
 + (id)activePersistentInstances;
 - (BOOL)shouldCollect;
-- (LAAnalyticsPasscodeFallbackPeriod)initWithPolicyGroup:(int64_t)a3;
+- (LAAnalyticsPasscodeFallbackPeriod)initWithPolicyGroup:(int64_t)group;
 - (NSArray)policies;
 - (NSString)policyGroupName;
 - (id)buildPayload;
 - (id)description;
 - (id)instanceToReplaceWithWhenRemovedFromStorage;
 - (int64_t)timeInterval;
-- (void)biometrySucceededWithEvaluationRequest:(id)a3;
-- (void)passcodePresentedWithEvaluationRequest:(id)a3 biometryAttempts:(int64_t)a4;
+- (void)biometrySucceededWithEvaluationRequest:(id)request;
+- (void)passcodePresentedWithEvaluationRequest:(id)request biometryAttempts:(int64_t)attempts;
 @end
 
 @implementation LAAnalyticsPasscodeFallbackPeriod
 
 + (id)activePersistentInstances
 {
-  v2 = [a1 _persistedInstancesStorage];
+  _persistedInstancesStorage = [self _persistedInstancesStorage];
   v3 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [_persistedInstancesStorage filteredArrayUsingPredicate:v3];
 
   return v4;
 }
@@ -41,39 +41,39 @@ uint64_t __62__LAAnalyticsPasscodeFallbackPeriod_activePersistentInstances__bloc
   return v3;
 }
 
-- (LAAnalyticsPasscodeFallbackPeriod)initWithPolicyGroup:(int64_t)a3
+- (LAAnalyticsPasscodeFallbackPeriod)initWithPolicyGroup:(int64_t)group
 {
   v5.receiver = self;
   v5.super_class = LAAnalyticsPasscodeFallbackPeriod;
   result = [(LAAnalytics *)&v5 initWithEventName:@"com.apple.LocalAuthentication.PasscodeRecoveryTime"];
   if (result)
   {
-    result->_policyGroup = a3;
+    result->_policyGroup = group;
   }
 
   return result;
 }
 
-- (void)passcodePresentedWithEvaluationRequest:(id)a3 biometryAttempts:(int64_t)a4
+- (void)passcodePresentedWithEvaluationRequest:(id)request biometryAttempts:(int64_t)attempts
 {
-  v6 = a3;
-  v7 = [(LAAnalyticsPasscodeFallbackPeriod *)self policies];
-  if (!v7)
+  requestCopy = request;
+  policies = [(LAAnalyticsPasscodeFallbackPeriod *)self policies];
+  if (!policies)
   {
     goto LABEL_12;
   }
 
-  v8 = v7;
-  v9 = [(LAAnalyticsPasscodeFallbackPeriod *)self policies];
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "policy")}];
-  v11 = [v9 containsObject:v10];
+  v8 = policies;
+  policies2 = [(LAAnalyticsPasscodeFallbackPeriod *)self policies];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(requestCopy, "policy")}];
+  v11 = [policies2 containsObject:v10];
 
   if (v11)
   {
 LABEL_12:
     if (!self->_passcodePresentedTime)
     {
-      if (a4 < 1)
+      if (attempts < 1)
       {
         goto LABEL_9;
       }
@@ -84,7 +84,7 @@ LABEL_12:
     }
 
     ++self->_passcodeCount;
-    self->_biometryAttempts += a4;
+    self->_biometryAttempts += attempts;
     v14 = LA_LOG();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -95,19 +95,19 @@ LABEL_12:
 LABEL_9:
 }
 
-- (void)biometrySucceededWithEvaluationRequest:(id)a3
+- (void)biometrySucceededWithEvaluationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(LAAnalyticsPasscodeFallbackPeriod *)self policies];
-  if (!v5)
+  requestCopy = request;
+  policies = [(LAAnalyticsPasscodeFallbackPeriod *)self policies];
+  if (!policies)
   {
     goto LABEL_10;
   }
 
-  v6 = v5;
-  v7 = [(LAAnalyticsPasscodeFallbackPeriod *)self policies];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "policy")}];
-  v9 = [v7 containsObject:v8];
+  v6 = policies;
+  policies2 = [(LAAnalyticsPasscodeFallbackPeriod *)self policies];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(requestCopy, "policy")}];
+  v9 = [policies2 containsObject:v8];
 
   if (v9)
   {
@@ -131,29 +131,29 @@ LABEL_10:
 
 - (NSArray)policies
 {
-  v2 = [(LAAnalyticsPasscodeFallbackPeriod *)self policyGroup];
-  if ((v2 - 1) > 2)
+  policyGroup = [(LAAnalyticsPasscodeFallbackPeriod *)self policyGroup];
+  if ((policyGroup - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_278A61458 + v2 - 1);
+    return *(&off_278A61458 + policyGroup - 1);
   }
 }
 
 - (NSString)policyGroupName
 {
-  v2 = [(LAAnalyticsPasscodeFallbackPeriod *)self policyGroup];
-  if (v2 > 3)
+  policyGroup = [(LAAnalyticsPasscodeFallbackPeriod *)self policyGroup];
+  if (policyGroup > 3)
   {
     return @"Stockholm";
   }
 
   else
   {
-    return &off_278A61470[v2]->isa;
+    return &off_278A61470[policyGroup]->isa;
   }
 }
 
@@ -193,8 +193,8 @@ LABEL_10:
 {
   v11[4] = *MEMORY[0x277D85DE8];
   v10[0] = @"policyGroupName";
-  v3 = [(LAAnalyticsPasscodeFallbackPeriod *)self policyGroupName];
-  v11[0] = v3;
+  policyGroupName = [(LAAnalyticsPasscodeFallbackPeriod *)self policyGroupName];
+  v11[0] = policyGroupName;
   v10[1] = @"passcodeCount";
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[LAAnalyticsPasscodeFallbackPeriod passcodeCount](self, "passcodeCount")}];
   v11[1] = v4;
@@ -214,8 +214,8 @@ LABEL_10:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(LAAnalyticsPasscodeFallbackPeriod *)self policyGroupName];
-  v5 = [v3 stringWithFormat:@"<LAAnalyticsPasscodeFallbackPeriod group:%@, passcodeCount:%d, biometryAttempts:%d timeInterval: %d>", v4, -[LAAnalyticsPasscodeFallbackPeriod passcodeCount](self, "passcodeCount"), -[LAAnalyticsPasscodeFallbackPeriod biometryAttempts](self, "biometryAttempts"), -[LAAnalyticsPasscodeFallbackPeriod timeInterval](self, "timeInterval")];
+  policyGroupName = [(LAAnalyticsPasscodeFallbackPeriod *)self policyGroupName];
+  v5 = [v3 stringWithFormat:@"<LAAnalyticsPasscodeFallbackPeriod group:%@, passcodeCount:%d, biometryAttempts:%d timeInterval: %d>", policyGroupName, -[LAAnalyticsPasscodeFallbackPeriod passcodeCount](self, "passcodeCount"), -[LAAnalyticsPasscodeFallbackPeriod biometryAttempts](self, "biometryAttempts"), -[LAAnalyticsPasscodeFallbackPeriod timeInterval](self, "timeInterval")];
 
   return v5;
 }

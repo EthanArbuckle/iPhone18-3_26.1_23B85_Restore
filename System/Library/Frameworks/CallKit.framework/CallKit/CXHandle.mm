@@ -1,15 +1,15 @@
 @interface CXHandle
-+ (id)stringForType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)stringForType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isEqualToHandle:(CXHandle *)handle;
-- (CXHandle)initWithCoder:(id)a3;
+- (CXHandle)initWithCoder:(id)coder;
 - (CXHandle)initWithType:(CXHandleType)type value:(NSString *)value;
-- (CXHandle)initWithType:(int64_t)a3;
-- (CXHandle)initWithType:(int64_t)a3 value:(id)a4 siriDisplayName:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CXHandle)initWithType:(int64_t)type;
+- (CXHandle)initWithType:(int64_t)type value:(id)value siriDisplayName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CXHandle
@@ -25,10 +25,10 @@
   v4 = objc_opt_class();
   v5 = [objc_opt_class() stringForType:{-[CXHandle type](self, "type")}];
   v6 = description__TULoggableStringForHandle;
-  v7 = [(CXHandle *)self value];
+  value = [(CXHandle *)self value];
   v8 = v6();
-  v9 = [(CXHandle *)self siriDisplayName];
-  v10 = [v3 stringWithFormat:@"<%@ %p type=%@ value=%@ siriDisplayName=%@>", v4, self, v5, v8, v9];
+  siriDisplayName = [(CXHandle *)self siriDisplayName];
+  v10 = [v3 stringWithFormat:@"<%@ %p type=%@ value=%@ siriDisplayName=%@>", v4, self, v5, v8, siriDisplayName];
 
   return v10;
 }
@@ -55,13 +55,13 @@
   return v7;
 }
 
-- (CXHandle)initWithType:(int64_t)a3 value:(id)a4 siriDisplayName:(id)a5
+- (CXHandle)initWithType:(int64_t)type value:(id)value siriDisplayName:(id)name
 {
-  v8 = a5;
-  v9 = [(CXHandle *)self initWithType:a3 value:a4];
+  nameCopy = name;
+  v9 = [(CXHandle *)self initWithType:type value:value];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [nameCopy copy];
     siriDisplayName = v9->_siriDisplayName;
     v9->_siriDisplayName = v10;
   }
@@ -69,14 +69,14 @@
   return v9;
 }
 
-- (CXHandle)initWithType:(int64_t)a3
+- (CXHandle)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = CXHandle;
   result = [(CXHandle *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -89,26 +89,26 @@ void *__23__CXHandle_description__block_invoke()
   return result;
 }
 
-+ (id)stringForType:(int64_t)a3
++ (id)stringForType:(int64_t)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown(%ld)", a3];
+    type = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown(%ld)", type];
   }
 
   else
   {
-    v4 = off_1E7C06BC0[a3 - 1];
+    type = off_1E7C06BC0[type - 1];
   }
 
-  return v4;
+  return type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXHandle *)self isEqualToHandle:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXHandle *)self isEqualToHandle:equalCopy];
 
   return v5;
 }
@@ -116,15 +116,15 @@ void *__23__CXHandle_description__block_invoke()
 - (BOOL)isEqualToHandle:(CXHandle *)handle
 {
   v4 = handle;
-  v5 = [(CXHandle *)self type];
-  if (v5 == [(CXHandle *)v4 type])
+  type = [(CXHandle *)self type];
+  if (type == [(CXHandle *)v4 type])
   {
-    v6 = [(CXHandle *)self value];
-    v7 = [(CXHandle *)v4 value];
-    v8 = (v6 | v7) == 0;
-    if (v7)
+    value = [(CXHandle *)self value];
+    value2 = [(CXHandle *)v4 value];
+    v8 = (value | value2) == 0;
+    if (value2)
     {
-      v8 = [v6 isEqualToString:v7];
+      v8 = [value isEqualToString:value2];
     }
   }
 
@@ -138,43 +138,43 @@ void *__23__CXHandle_description__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(CXHandle *)self type];
-  v4 = [(CXHandle *)self value];
-  v5 = [v4 hash];
+  type = [(CXHandle *)self type];
+  value = [(CXHandle *)self value];
+  v5 = [value hash];
 
-  return v5 ^ v3;
+  return v5 ^ type;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithType:", -[CXHandle type](self, "type")}];
-  v5 = [(CXHandle *)self value];
-  [v4 setValue:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithType:", -[CXHandle type](self, "type")}];
+  value = [(CXHandle *)self value];
+  [v4 setValue:value];
 
-  v6 = [(CXHandle *)self siriDisplayName];
-  [v4 setSiriDisplayName:v6];
+  siriDisplayName = [(CXHandle *)self siriDisplayName];
+  [v4 setSiriDisplayName:siriDisplayName];
 
   return v4;
 }
 
-- (CXHandle)initWithCoder:(id)a3
+- (CXHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_type);
-  v6 = [v4 decodeIntegerForKey:v5];
+  v6 = [coderCopy decodeIntegerForKey:v5];
 
   v7 = [(CXHandle *)self initWithType:v6];
   if (v7)
   {
     v8 = objc_opt_class();
     v9 = NSStringFromSelector(sel_value);
-    v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
     value = v7->_value;
     v7->_value = v10;
 
     v12 = objc_opt_class();
     v13 = NSStringFromSelector(sel_siriDisplayName);
-    v14 = [v4 decodeObjectOfClass:v12 forKey:v13];
+    v14 = [coderCopy decodeObjectOfClass:v12 forKey:v13];
     siriDisplayName = v7->_siriDisplayName;
     v7->_siriDisplayName = v14;
   }
@@ -182,20 +182,20 @@ void *__23__CXHandle_description__block_invoke()
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CXHandle *)self type];
+  coderCopy = coder;
+  type = [(CXHandle *)self type];
   v6 = NSStringFromSelector(sel_type);
-  [v4 encodeInteger:v5 forKey:v6];
+  [coderCopy encodeInteger:type forKey:v6];
 
-  v7 = [(CXHandle *)self value];
+  value = [(CXHandle *)self value];
   v8 = NSStringFromSelector(sel_value);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:value forKey:v8];
 
-  v10 = [(CXHandle *)self siriDisplayName];
+  siriDisplayName = [(CXHandle *)self siriDisplayName];
   v9 = NSStringFromSelector(sel_siriDisplayName);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:siriDisplayName forKey:v9];
 }
 
 @end

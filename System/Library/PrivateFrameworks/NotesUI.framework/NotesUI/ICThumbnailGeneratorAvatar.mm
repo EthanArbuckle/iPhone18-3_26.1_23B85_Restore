@@ -1,16 +1,16 @@
 @interface ICThumbnailGeneratorAvatar
-- (ICThumbnailGeneratorAvatar)initWithManagedObjectContext:(id)a3;
-- (void)drawWithBorderIntoContext:(CGContext *)a3 avatarImage:(id)a4;
-- (void)generateThumbnailWithConfiguration:(id)a3 completion:(id)a4;
+- (ICThumbnailGeneratorAvatar)initWithManagedObjectContext:(id)context;
+- (void)drawWithBorderIntoContext:(CGContext *)context avatarImage:(id)image;
+- (void)generateThumbnailWithConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation ICThumbnailGeneratorAvatar
 
-- (ICThumbnailGeneratorAvatar)initWithManagedObjectContext:(id)a3
+- (ICThumbnailGeneratorAvatar)initWithManagedObjectContext:(id)context
 {
   v8.receiver = self;
   v8.super_class = ICThumbnailGeneratorAvatar;
-  v3 = [(ICThumbnailGenerator *)&v8 initWithManagedObjectContext:a3];
+  v3 = [(ICThumbnailGenerator *)&v8 initWithManagedObjectContext:context];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695D098]);
@@ -31,13 +31,13 @@ uint64_t __59__ICThumbnailGeneratorAvatar_initWithManagedObjectContext___block_i
   return result;
 }
 
-- (void)generateThumbnailWithConfiguration:(id)a3 completion:(id)a4
+- (void)generateThumbnailWithConfiguration:(id)configuration completion:(id)completion
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   objc_opt_class();
-  v8 = [v6 associatedObject];
+  associatedObject = [configurationCopy associatedObject];
   v9 = ICCheckedDynamicCast();
 
   if (![v9 count])
@@ -50,16 +50,16 @@ uint64_t __59__ICThumbnailGeneratorAvatar_initWithManagedObjectContext___block_i
   }
 
   v12 = MEMORY[0x1E695D0B0];
-  [v6 preferredSize];
+  [configurationCopy preferredSize];
   v14 = v13;
   v16 = v15;
-  [v6 scale];
+  [configurationCopy scale];
   v18 = [v12 scopeWithPointSize:-[ICThumbnailGeneratorAvatar isRTL](self scale:"isRTL") rightToLeft:0 style:{v14, v16, v17}];
-  v19 = [[ICThumbnailDescription alloc] initWithConfiguration:v6];
-  v20 = [(ICThumbnailGeneratorAvatar *)self renderer];
-  v21 = [v20 avatarImageForContacts:v9 scope:v18];
+  v19 = [[ICThumbnailDescription alloc] initWithConfiguration:configurationCopy];
+  renderer = [(ICThumbnailGeneratorAvatar *)self renderer];
+  v21 = [renderer avatarImageForContacts:v9 scope:v18];
 
-  if ([v6 hasBorder])
+  if ([configurationCopy hasBorder])
   {
     v22 = objc_alloc(MEMORY[0x1E69DCA78]);
     [v21 size];
@@ -74,9 +74,9 @@ uint64_t __59__ICThumbnailGeneratorAvatar_initWithManagedObjectContext___block_i
   }
 
   [(ICThumbnailDescription *)v19 setImage:v21];
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v19);
+    completionCopy[2](completionCopy, v19);
   }
 }
 
@@ -89,28 +89,28 @@ uint64_t __76__ICThumbnailGeneratorAvatar_generateThumbnailWithConfiguration_com
   return [v3 drawWithBorderIntoContext:v4 avatarImage:v5];
 }
 
-- (void)drawWithBorderIntoContext:(CGContext *)a3 avatarImage:(id)a4
+- (void)drawWithBorderIntoContext:(CGContext *)context avatarImage:(id)image
 {
-  v5 = a4;
-  [v5 size];
+  imageCopy = image;
+  [imageCopy size];
   v7 = v6;
-  [v5 size];
+  [imageCopy size];
   v9 = v8;
-  [v5 drawInRect:{0.0, 0.0, v7, v8}];
+  [imageCopy drawInRect:{0.0, 0.0, v7, v8}];
 
-  CGContextSetAllowsAntialiasing(a3, 1);
-  CGContextSetShouldAntialias(a3, 1);
+  CGContextSetAllowsAntialiasing(context, 1);
+  CGContextSetShouldAntialias(context, 1);
   v10 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.1];
-  CGContextSetStrokeColorWithColor(a3, [v10 CGColor]);
+  CGContextSetStrokeColorWithColor(context, [v10 CGColor]);
 
-  CGContextSetLineWidth(a3, 1.0);
+  CGContextSetLineWidth(context, 1.0);
   v12.origin.x = 0.0;
   v12.origin.y = 0.0;
   v12.size.width = v7;
   v12.size.height = v9;
   v13 = CGRectInset(v12, 0.5, 0.5);
 
-  CGContextStrokeEllipseInRect(a3, v13);
+  CGContextStrokeEllipseInRect(context, v13);
 }
 
 @end

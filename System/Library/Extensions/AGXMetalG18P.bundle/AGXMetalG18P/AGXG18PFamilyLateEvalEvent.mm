@@ -1,15 +1,15 @@
 @interface AGXG18PFamilyLateEvalEvent
-- (unsigned)_encodeIOGPUKernelWaitEventCommandArgs:(IOGPUKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4 timeout:(unsigned int)a5;
+- (unsigned)_encodeIOGPUKernelWaitEventCommandArgs:(IOGPUKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value timeout:(unsigned int)timeout;
 @end
 
 @implementation AGXG18PFamilyLateEvalEvent
 
-- (unsigned)_encodeIOGPUKernelWaitEventCommandArgs:(IOGPUKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4 timeout:(unsigned int)a5
+- (unsigned)_encodeIOGPUKernelWaitEventCommandArgs:(IOGPUKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value timeout:(unsigned int)timeout
 {
   v5 = *(&self->super.super.super.isa + *MEMORY[0x29EDC55D0]);
-  a3->var2 = a4;
-  a3->var0 = v5;
-  a3->var1 = a5;
+  args->var2 = value;
+  args->var0 = v5;
+  args->var1 = timeout;
   return 65540;
 }
 

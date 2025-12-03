@@ -1,14 +1,14 @@
 @interface HMDNotificationRegistryCoreDataCharacteristicsRequest
-- (BOOL)isEqual:(id)a3;
-- (HMDNotificationRegistryCoreDataCharacteristicsRequest)initWithRequest:(id)a3 characteristicThresholds:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDNotificationRegistryCoreDataCharacteristicsRequest)initWithRequest:(id)request characteristicThresholds:(id)thresholds;
 @end
 
 @implementation HMDNotificationRegistryCoreDataCharacteristicsRequest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -18,7 +18,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -31,12 +31,12 @@
     if (v6)
     {
       request = self->_request;
-      v9 = [(HMDNotificationRegistryCoreDataCharacteristicsRequest *)v6 request];
-      if ([(HMDNotificationRegistryCharacteristicsRequest *)request isEqual:v9])
+      request = [(HMDNotificationRegistryCoreDataCharacteristicsRequest *)v6 request];
+      if ([(HMDNotificationRegistryCharacteristicsRequest *)request isEqual:request])
       {
         characteristicThresholds = self->_characteristicThresholds;
-        v11 = [(HMDNotificationRegistryCoreDataCharacteristicsRequest *)v7 characteristicThresholds];
-        v12 = [(NSArray *)characteristicThresholds isEqual:v11];
+        characteristicThresholds = [(HMDNotificationRegistryCoreDataCharacteristicsRequest *)v7 characteristicThresholds];
+        v12 = [(NSArray *)characteristicThresholds isEqual:characteristicThresholds];
       }
 
       else
@@ -54,18 +54,18 @@
   return v12;
 }
 
-- (HMDNotificationRegistryCoreDataCharacteristicsRequest)initWithRequest:(id)a3 characteristicThresholds:(id)a4
+- (HMDNotificationRegistryCoreDataCharacteristicsRequest)initWithRequest:(id)request characteristicThresholds:(id)thresholds
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  thresholdsCopy = thresholds;
   v12.receiver = self;
   v12.super_class = HMDNotificationRegistryCoreDataCharacteristicsRequest;
   v9 = [(HMDNotificationRegistryCoreDataCharacteristicsRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_characteristicThresholds, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_characteristicThresholds, thresholds);
   }
 
   return v10;

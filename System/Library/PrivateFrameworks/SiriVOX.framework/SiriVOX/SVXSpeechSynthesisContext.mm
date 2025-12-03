@@ -1,18 +1,18 @@
 @interface SVXSpeechSynthesisContext
-- (SVXSpeechSynthesisContext)initWithOperationType:(int64_t)a3 request:(id)a4 languageCode:(id)a5 voiceName:(id)a6 gender:(int64_t)a7 audioSessionID:(unsigned int)a8 preparation:(id)a9 audioChunkHandler:(id)a10 finalization:(id)a11 taskTracker:(id)a12 analyticsContext:(id)a13;
+- (SVXSpeechSynthesisContext)initWithOperationType:(int64_t)type request:(id)request languageCode:(id)code voiceName:(id)name gender:(int64_t)gender audioSessionID:(unsigned int)d preparation:(id)preparation audioChunkHandler:(id)self0 finalization:(id)self1 taskTracker:(id)self2 analyticsContext:(id)self3;
 - (id)description;
 - (void)dealloc;
-- (void)finalizeWithResultType:(int64_t)a3 utteranceInfo:(id)a4 error:(id)a5;
-- (void)handleAudioChunkData:(id)a3;
+- (void)finalizeWithResultType:(int64_t)type utteranceInfo:(id)info error:(id)error;
+- (void)handleAudioChunkData:(id)data;
 - (void)prepare;
 @end
 
 @implementation SVXSpeechSynthesisContext
 
-- (void)finalizeWithResultType:(int64_t)a3 utteranceInfo:(id)a4 error:(id)a5
+- (void)finalizeWithResultType:(int64_t)type utteranceInfo:(id)info error:(id)error
 {
-  v13 = a4;
-  v8 = a5;
+  infoCopy = info;
+  errorCopy = error;
   preparation = self->_preparation;
   if (preparation)
   {
@@ -23,7 +23,7 @@
   finalization = self->_finalization;
   if (finalization)
   {
-    v11 = [[SVXSpeechSynthesisResult alloc] initWithType:a3 utteranceInfo:v13 error:v8];
+    v11 = [[SVXSpeechSynthesisResult alloc] initWithType:type utteranceInfo:infoCopy error:errorCopy];
     finalization[2](finalization, v11);
 
     v12 = self->_finalization;
@@ -31,16 +31,16 @@
   }
 }
 
-- (void)handleAudioChunkData:(id)a3
+- (void)handleAudioChunkData:(id)data
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   audioChunkCount = self->_audioChunkCount;
   audioChunkHandler = self->_audioChunkHandler;
   self->_audioChunkCount = audioChunkCount + 1;
   if (audioChunkHandler)
   {
-    v7 = [[SVXSpeechSynthesizerAudioData alloc] initWithAudioChunkData:v4 audioChunkIndex:audioChunkCount];
+    v7 = [[SVXSpeechSynthesizerAudioData alloc] initWithAudioChunkData:dataCopy audioChunkIndex:audioChunkCount];
     (*(self->_audioChunkHandler + 2))();
   }
 
@@ -69,52 +69,52 @@
   }
 }
 
-- (SVXSpeechSynthesisContext)initWithOperationType:(int64_t)a3 request:(id)a4 languageCode:(id)a5 voiceName:(id)a6 gender:(int64_t)a7 audioSessionID:(unsigned int)a8 preparation:(id)a9 audioChunkHandler:(id)a10 finalization:(id)a11 taskTracker:(id)a12 analyticsContext:(id)a13
+- (SVXSpeechSynthesisContext)initWithOperationType:(int64_t)type request:(id)request languageCode:(id)code voiceName:(id)name gender:(int64_t)gender audioSessionID:(unsigned int)d preparation:(id)preparation audioChunkHandler:(id)self0 finalization:(id)self1 taskTracker:(id)self2 analyticsContext:(id)self3
 {
-  v43 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
+  requestCopy = request;
+  codeCopy = code;
+  nameCopy = name;
+  preparationCopy = preparation;
+  handlerCopy = handler;
+  finalizationCopy = finalization;
+  trackerCopy = tracker;
+  contextCopy = context;
   v44.receiver = self;
   v44.super_class = SVXSpeechSynthesisContext;
   v24 = [(SVXSpeechSynthesisContext *)&v44 init];
   v25 = v24;
   if (v24)
   {
-    v24->_operationType = a3;
-    v26 = [v43 copy];
+    v24->_operationType = type;
+    v26 = [requestCopy copy];
     request = v25->_request;
     v25->_request = v26;
 
-    v28 = [v17 copy];
+    v28 = [codeCopy copy];
     languageCode = v25->_languageCode;
     v25->_languageCode = v28;
 
-    v30 = [v18 copy];
+    v30 = [nameCopy copy];
     voiceName = v25->_voiceName;
     v25->_voiceName = v30;
 
-    v25->_gender = a7;
-    v25->_audioSessionID = a8;
-    v32 = [v19 copy];
+    v25->_gender = gender;
+    v25->_audioSessionID = d;
+    v32 = [preparationCopy copy];
     preparation = v25->_preparation;
     v25->_preparation = v32;
 
     v25->_audioChunkCount = 0;
-    v34 = MEMORY[0x26D642680](v20);
+    v34 = MEMORY[0x26D642680](handlerCopy);
     audioChunkHandler = v25->_audioChunkHandler;
     v25->_audioChunkHandler = v34;
 
-    v36 = [v21 copy];
+    v36 = [finalizationCopy copy];
     finalization = v25->_finalization;
     v25->_finalization = v36;
 
-    objc_storeStrong(&v25->_taskTracker, a12);
-    v38 = [v23 copy];
+    objc_storeStrong(&v25->_taskTracker, tracker);
+    v38 = [contextCopy copy];
     analyticsContext = v25->_analyticsContext;
     v25->_analyticsContext = v38;
   }

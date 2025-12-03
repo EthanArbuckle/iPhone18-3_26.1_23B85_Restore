@@ -21,7 +21,7 @@
     [blankImageOfSize__blankImageCache setObject:v9 forKey:v8];
     if (!v9)
     {
-      [(UIImage(Compositing) *)a2 blankImageOfSize:a1];
+      [(UIImage(Compositing) *)a2 blankImageOfSize:self];
     }
   }
 
@@ -31,11 +31,11 @@
 - (id)compositeImage:()Compositing blendMode:alpha:
 {
   v8 = a4;
-  [a1 size];
+  [self size];
   v10 = v9;
-  [a1 size];
+  [self size];
   v12 = v11;
-  [a1 scale];
+  [self scale];
   v14 = v13;
   v19.width = v10;
   v19.height = v12;
@@ -43,7 +43,7 @@
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetAllowsAntialiasing(CurrentContext, 1);
   CGContextSetShouldAntialias(CurrentContext, 1);
-  [a1 drawInRect:{0.0, 0.0, v10, v12}];
+  [self drawInRect:{0.0, 0.0, v10, v12}];
   [v8 drawInRect:a5 blendMode:0.0 alpha:{0.0, v10, v12, a2}];
 
   v16 = UIGraphicsGetImageFromCurrentImageContext();

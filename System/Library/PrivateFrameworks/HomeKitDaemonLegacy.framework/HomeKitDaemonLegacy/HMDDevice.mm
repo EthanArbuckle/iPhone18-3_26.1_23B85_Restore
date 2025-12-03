@@ -1,23 +1,23 @@
 @interface HMDDevice
-+ (HMDDevice)deviceWithDestination:(id)a3;
-+ (HMDDevice)deviceWithHandle:(id)a3;
++ (HMDDevice)deviceWithDestination:(id)destination;
++ (HMDDevice)deviceWithHandle:(id)handle;
 + (id)logCategory;
-- (BOOL)isBackingStorageEqual:(id)a3;
+- (BOOL)isBackingStorageEqual:(id)equal;
 - (BOOL)isCurrentDevice;
 - (BOOL)isDirty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPublishingOnObservedNetService;
-- (BOOL)isRelatedToDevice:(id)a3;
-- (BOOL)isSameAccountWithDevice:(id)a3;
-- (BOOL)mergeObject:(id)a3;
+- (BOOL)isRelatedToDevice:(id)device;
+- (BOOL)isSameAccountWithDevice:(id)device;
+- (BOOL)mergeObject:(id)object;
 - (BOOL)supportsHH2;
 - (HMDAccount)account;
 - (HMDDevice)init;
-- (HMDDevice)initWithCoder:(id)a3;
-- (HMDDevice)initWithDeviceAddress:(id)a3;
-- (HMDDevice)initWithIdentifier:(id)a3 handles:(id)a4 name:(id)a5 productInfo:(id)a6 version:(id)a7 capabilities:(id)a8 account:(id)a9;
-- (HMDDevice)initWithObjectModel:(id)a3;
-- (HMDDevice)initWithService:(id)a3 device:(id)a4;
+- (HMDDevice)initWithCoder:(id)coder;
+- (HMDDevice)initWithDeviceAddress:(id)address;
+- (HMDDevice)initWithIdentifier:(id)identifier handles:(id)handles name:(id)name productInfo:(id)info version:(id)version capabilities:(id)capabilities account:(id)account;
+- (HMDDevice)initWithObjectModel:(id)model;
+- (HMDDevice)initWithService:(id)service device:(id)device;
 - (HMDDeviceAddress)deviceAddress;
 - (HMDDeviceCapabilities)capabilities;
 - (HMDHomeKitVersion)derivedVersion;
@@ -34,48 +34,48 @@
 - (NSUUID)idsIdentifier;
 - (NSUUID)idsIdentifierHash;
 - (NSUUID)modelParentIdentifier;
-- (id)backingStoreObjectsWithChangeType:(unint64_t)a3 version:(int64_t)a4;
-- (id)deviceForIDSService:(id)a3;
+- (id)backingStoreObjectsWithChangeType:(unint64_t)type version:(int64_t)version;
+- (id)deviceForIDSService:(id)service;
 - (id)globalDestination;
 - (id)globalHandles;
 - (id)handles;
 - (id)localHandles;
 - (id)logIdentifier;
 - (id)modelBackedObjects;
-- (id)modelObjectWithChangeType:(unint64_t)a3 version:(int64_t)a4;
-- (uint64_t)_swapToNetServiceKVOCancellation:(void *)a3 swapToObservedNetService:;
+- (id)modelObjectWithChangeType:(unint64_t)type version:(int64_t)version;
+- (uint64_t)_swapToNetServiceKVOCancellation:(void *)cancellation swapToObservedNetService:;
 - (unint64_t)hash;
-- (void)__handleAccountHandleUpdated:(id)a3;
-- (void)__updateDeviceWithActions:(id)a3;
-- (void)_postIsPublishingChanged:(void *)a1;
+- (void)__handleAccountHandleUpdated:(id)updated;
+- (void)__updateDeviceWithActions:(id)actions;
+- (void)_postIsPublishingChanged:(void *)changed;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccount:(id)a3;
-- (void)setCapabilities:(id)a3;
-- (void)setDirty:(BOOL)a3;
-- (void)setHandles:(id)a3;
-- (void)setIDSIdentifierHash:(id)a3;
-- (void)setLocalOnlyVersionFromIDS:(id)a3;
-- (void)setName:(id)a3;
-- (void)setProductInfo:(id)a3;
-- (void)setRpIdentity:(id)a3;
-- (void)setVersion:(id)a3;
-- (void)startObservingIsPublishingForService:(id)a3;
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4;
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
-- (void)updateVersion:(id)a3;
-- (void)updateWithDevice:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccount:(id)account;
+- (void)setCapabilities:(id)capabilities;
+- (void)setDirty:(BOOL)dirty;
+- (void)setHandles:(id)handles;
+- (void)setIDSIdentifierHash:(id)hash;
+- (void)setLocalOnlyVersionFromIDS:(id)s;
+- (void)setName:(id)name;
+- (void)setProductInfo:(id)info;
+- (void)setRpIdentity:(id)identity;
+- (void)setVersion:(id)version;
+- (void)startObservingIsPublishingForService:(id)service;
+- (void)transactionObjectRemoved:(id)removed message:(id)message;
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
+- (void)updateVersion:(id)version;
+- (void)updateWithDevice:(id)device;
 @end
 
 @implementation HMDDevice
 
-- (id)deviceForIDSService:(id)a3
+- (id)deviceForIDSService:(id)service
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(HMDDevice *)self localHandles];
-  v7 = [v5 setWithArray:v6];
+  localHandles = [(HMDDevice *)self localHandles];
+  v7 = [v5 setWithArray:localHandles];
 
   if ([v7 count])
   {
@@ -84,8 +84,8 @@
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = [v4 devices];
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    devices = [serviceCopy devices];
+    v10 = [devices countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
       v20 = v8;
@@ -96,12 +96,12 @@
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(devices);
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
           v14 = MEMORY[0x277CBEB98];
-          v15 = [v13 hmd_handlesForService:v4];
+          v15 = [v13 hmd_handlesForService:serviceCopy];
           v16 = [v14 setWithArray:v15];
           v17 = [v7 intersectsSet:v16];
 
@@ -112,7 +112,7 @@
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v10 = [devices countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v10)
         {
           continue;
@@ -138,15 +138,15 @@ LABEL_12:
   return v10;
 }
 
-- (HMDDevice)initWithService:(id)a3 device:(id)a4
+- (HMDDevice)initWithService:(id)service device:(id)device
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  serviceCopy = service;
+  deviceCopy = device;
+  v8 = deviceCopy;
+  if (deviceCopy)
   {
-    [v7 hmd_handlesForService:v6];
+    [deviceCopy hmd_handlesForService:serviceCopy];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -155,7 +155,7 @@ LABEL_12:
     if (v10)
     {
       v11 = v10;
-      v12 = 0;
+      identifier2 = 0;
       v13 = *v32;
       while (2)
       {
@@ -169,22 +169,22 @@ LABEL_12:
           v15 = *(*(&v31 + 1) + 8 * i);
           if ([v15 isGlobal])
           {
-            v16 = [v15 identifier];
+            identifier = [v15 identifier];
 
-            v12 = v16;
+            identifier2 = identifier;
             goto LABEL_16;
           }
 
-          if (!v12)
+          if (!identifier2)
           {
             if ([v15 isLocal])
             {
-              v12 = [v15 identifier];
+              identifier2 = [v15 identifier];
             }
 
             else
             {
-              v12 = 0;
+              identifier2 = 0;
             }
           }
         }
@@ -200,15 +200,15 @@ LABEL_12:
 
 LABEL_16:
 
-      if (v12)
+      if (identifier2)
       {
-        v17 = [v8 name];
-        v18 = [v8 hmd_productInfo];
-        v19 = [v8 hmd_version];
-        v20 = [v8 hmd_capabilities];
-        v21 = [(HMDDevice *)self initWithIdentifier:v12 handles:v9 name:v17 productInfo:v18 version:v19 capabilities:v20];
+        name = [v8 name];
+        hmd_productInfo = [v8 hmd_productInfo];
+        hmd_version = [v8 hmd_version];
+        hmd_capabilities = [v8 hmd_capabilities];
+        selfCopy2 = [(HMDDevice *)self initWithIdentifier:identifier2 handles:v9 name:name productInfo:hmd_productInfo version:hmd_version capabilities:hmd_capabilities];
 
-        v22 = v21;
+        v22 = selfCopy2;
 LABEL_25:
 
         goto LABEL_26;
@@ -220,7 +220,7 @@ LABEL_25:
     }
 
     v26 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -236,7 +236,7 @@ LABEL_25:
   }
 
   v23 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy2 = self;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
@@ -270,25 +270,25 @@ LABEL_26:
   [(HMDDevice *)&v3 dealloc];
 }
 
-- (uint64_t)_swapToNetServiceKVOCancellation:(void *)a3 swapToObservedNetService:
+- (uint64_t)_swapToNetServiceKVOCancellation:(void *)cancellation swapToObservedNetService:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  cancellationCopy = cancellation;
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    v8 = [*(a1 + 8) isPublishing];
-    v12 = *(a1 + 16);
-    v9 = *(a1 + 8);
-    objc_storeStrong((a1 + 16), a2);
-    objc_storeStrong((a1 + 8), a3);
-    v10 = v8 ^ [*(a1 + 8) isPublishing];
+    isPublishing = [*(self + 8) isPublishing];
+    v12 = *(self + 16);
+    v9 = *(self + 8);
+    objc_storeStrong((self + 16), a2);
+    objc_storeStrong((self + 8), cancellation);
+    v10 = isPublishing ^ [*(self + 8) isPublishing];
     if (v10 == 1)
     {
-      *(a1 + 24) = [*(a1 + 8) isPublishing];
+      *(self + 24) = [*(self + 8) isPublishing];
     }
 
-    os_unfair_lock_unlock((a1 + 40));
+    os_unfair_lock_unlock((self + 40));
     if (v12)
     {
       block[0] = MEMORY[0x277D85DD0];
@@ -309,9 +309,9 @@ LABEL_26:
   return v10;
 }
 
-- (void)startObservingIsPublishingForService:(id)a3
+- (void)startObservingIsPublishingForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -323,11 +323,11 @@ LABEL_26:
   block[1] = 3221225472;
   block[2] = __50__HMDDevice_startObservingIsPublishingForService___block_invoke_2;
   block[3] = &unk_2797355D0;
-  v10 = self;
+  selfCopy = self;
   v11 = v5;
-  v9 = v4;
+  v9 = serviceCopy;
   v6 = v5;
-  v7 = v4;
+  v7 = serviceCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v13);
@@ -380,20 +380,20 @@ void __50__HMDDevice_startObservingIsPublishingForService___block_invoke_2(uint6
   }
 }
 
-- (void)_postIsPublishingChanged:(void *)a1
+- (void)_postIsPublishingChanged:(void *)changed
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBEC10];
   v3 = MEMORY[0x277CBEC10];
-  if (a1)
+  if (changed)
   {
     v18 = @"isPublishing";
-    v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isPublishingOnObservedNetService")}];
+    v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(changed, "isPublishingOnObservedNetService")}];
     v19[0] = v4;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
 
     v6 = objc_autoreleasePoolPush();
-    v7 = a1;
+    changedCopy = changed;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -408,8 +408,8 @@ void __50__HMDDevice_startObservingIsPublishingForService___block_invoke_2(uint6
     }
 
     objc_autoreleasePoolPop(v6);
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 postNotificationName:@"HMDDeviceIsPublishingChangedNotification" object:v7 userInfo:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"HMDDeviceIsPublishingChangedNotification" object:changedCopy userInfo:v5];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -423,14 +423,14 @@ void __50__HMDDevice_startObservingIsPublishingForService___block_invoke_2(uint6
   return lastKnownIsPublishingStateValue;
 }
 
-- (BOOL)isBackingStorageEqual:(id)a3
+- (BOOL)isBackingStorageEqual:(id)equal
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -445,14 +445,14 @@ void __50__HMDDevice_startObservingIsPublishingForService___block_invoke_2(uint6
     goto LABEL_27;
   }
 
-  v7 = [(HMDDevice *)self idsIdentifier];
-  v8 = [v6 idsIdentifier];
+  idsIdentifier = [(HMDDevice *)self idsIdentifier];
+  idsIdentifier2 = [v6 idsIdentifier];
   v9 = HMFEqualObjects();
 
   if ((v9 & 1) == 0)
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy = self;
     v31 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
@@ -460,14 +460,14 @@ void __50__HMDDevice_startObservingIsPublishingForService___block_invoke_2(uint6
     }
 
     v32 = HMFGetLogIdentifier();
-    v33 = [(HMDDevice *)v30 idsIdentifier];
-    v34 = [v6 idsIdentifier];
+    idsIdentifier3 = [(HMDDevice *)selfCopy idsIdentifier];
+    idsIdentifier4 = [v6 idsIdentifier];
     *buf = 138543874;
     v58 = v32;
     v59 = 2112;
-    v60 = v33;
+    v60 = idsIdentifier3;
     v61 = 2112;
-    v62 = v34;
+    v62 = idsIdentifier4;
     v35 = "%{public}@Updating Device IDS Identifier from %@ to %@";
 LABEL_25:
     _os_log_impl(&dword_2531F8000, v31, OS_LOG_TYPE_INFO, v35, buf, 0x20u);
@@ -475,14 +475,14 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v10 = [(HMDDevice *)self name];
-  v11 = [v6 name];
+  name = [(HMDDevice *)self name];
+  name2 = [v6 name];
   v12 = HMFEqualObjects();
 
   if ((v12 & 1) == 0)
   {
     v29 = objc_autoreleasePoolPush();
-    v36 = self;
+    selfCopy2 = self;
     v31 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
@@ -490,26 +490,26 @@ LABEL_25:
     }
 
     v32 = HMFGetLogIdentifier();
-    v33 = [(HMDDevice *)v36 name];
-    v34 = [v6 name];
+    idsIdentifier3 = [(HMDDevice *)selfCopy2 name];
+    idsIdentifier4 = [v6 name];
     *buf = 138543874;
     v58 = v32;
     v59 = 2112;
-    v60 = v33;
+    v60 = idsIdentifier3;
     v61 = 2112;
-    v62 = v34;
+    v62 = idsIdentifier4;
     v35 = "%{public}@Updating Device name from %@ to %@";
     goto LABEL_25;
   }
 
-  v13 = [(HMDDevice *)self productInfo];
-  v14 = [v6 productInfo];
+  productInfo = [(HMDDevice *)self productInfo];
+  productInfo2 = [v6 productInfo];
   v15 = HMFEqualObjects();
 
   if ((v15 & 1) == 0)
   {
     v29 = objc_autoreleasePoolPush();
-    v37 = self;
+    selfCopy3 = self;
     v31 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
@@ -517,26 +517,26 @@ LABEL_25:
     }
 
     v32 = HMFGetLogIdentifier();
-    v33 = [(HMDDevice *)v37 productInfo];
-    v34 = [v6 productInfo];
+    idsIdentifier3 = [(HMDDevice *)selfCopy3 productInfo];
+    idsIdentifier4 = [v6 productInfo];
     *buf = 138543874;
     v58 = v32;
     v59 = 2112;
-    v60 = v33;
+    v60 = idsIdentifier3;
     v61 = 2112;
-    v62 = v34;
+    v62 = idsIdentifier4;
     v35 = "%{public}@Updating Device Product Info from %@ to %@";
     goto LABEL_25;
   }
 
-  v16 = [(HMDDevice *)self version];
-  v17 = [v6 version];
+  version = [(HMDDevice *)self version];
+  version2 = [v6 version];
   v18 = HMFEqualObjects();
 
   if ((v18 & 1) == 0)
   {
     v29 = objc_autoreleasePoolPush();
-    v38 = self;
+    selfCopy4 = self;
     v31 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
@@ -544,26 +544,26 @@ LABEL_25:
     }
 
     v32 = HMFGetLogIdentifier();
-    v33 = [(HMDDevice *)v38 version];
-    v34 = [v6 version];
+    idsIdentifier3 = [(HMDDevice *)selfCopy4 version];
+    idsIdentifier4 = [v6 version];
     *buf = 138543874;
     v58 = v32;
     v59 = 2112;
-    v60 = v33;
+    v60 = idsIdentifier3;
     v61 = 2112;
-    v62 = v34;
+    v62 = idsIdentifier4;
     v35 = "%{public}@Updating Device version from %@ to %@";
     goto LABEL_25;
   }
 
-  v19 = [(HMDDevice *)self capabilities];
-  v20 = [v6 capabilities];
+  capabilities = [(HMDDevice *)self capabilities];
+  capabilities2 = [v6 capabilities];
   v21 = HMFEqualObjects();
 
   if ((v21 & 1) == 0)
   {
     v29 = objc_autoreleasePoolPush();
-    v39 = self;
+    selfCopy5 = self;
     v31 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
@@ -571,38 +571,38 @@ LABEL_25:
     }
 
     v32 = HMFGetLogIdentifier();
-    v33 = [(HMDDevice *)v39 capabilities];
-    v34 = [v6 capabilities];
+    idsIdentifier3 = [(HMDDevice *)selfCopy5 capabilities];
+    idsIdentifier4 = [v6 capabilities];
     *buf = 138543874;
     v58 = v32;
     v59 = 2112;
-    v60 = v33;
+    v60 = idsIdentifier3;
     v61 = 2112;
-    v62 = v34;
+    v62 = idsIdentifier4;
     v35 = "%{public}@Updating Device capabilities from %@ to %@";
     goto LABEL_25;
   }
 
-  v22 = [(HMDDevice *)self pushToken];
-  v23 = [v6 pushToken];
+  pushToken = [(HMDDevice *)self pushToken];
+  pushToken2 = [v6 pushToken];
   v24 = HMFEqualObjects();
 
   if ((v24 & 1) == 0)
   {
     v29 = objc_autoreleasePoolPush();
-    v40 = self;
+    selfCopy6 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       v32 = HMFGetLogIdentifier();
-      v33 = [(HMDDevice *)v40 pushToken];
-      v34 = [v6 pushToken];
+      idsIdentifier3 = [(HMDDevice *)selfCopy6 pushToken];
+      idsIdentifier4 = [v6 pushToken];
       *buf = 138543874;
       v58 = v32;
       v59 = 2112;
-      v60 = v33;
+      v60 = idsIdentifier3;
       v61 = 2112;
-      v62 = v34;
+      v62 = idsIdentifier4;
       v35 = "%{public}@Updating Push Token from %@ to %@";
       goto LABEL_25;
     }
@@ -615,48 +615,48 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v25 = [(HMDDevice *)self rpIdentity];
-  v26 = [v6 rpIdentity];
+  rpIdentity = [(HMDDevice *)self rpIdentity];
+  rpIdentity2 = [v6 rpIdentity];
   v27 = HMFEqualObjects();
 
   if ((v27 & 1) == 0)
   {
     v43 = objc_autoreleasePoolPush();
-    v44 = self;
+    selfCopy7 = self;
     v45 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
     {
       v46 = HMFGetLogIdentifier();
-      v47 = [(HMDDevice *)v44 rpIdentity];
-      v48 = [v6 rpIdentity];
+      rpIdentity3 = [(HMDDevice *)selfCopy7 rpIdentity];
+      rpIdentity4 = [v6 rpIdentity];
       *buf = 138543874;
       v58 = v46;
       v59 = 2112;
-      v60 = v47;
+      v60 = rpIdentity3;
       v61 = 2112;
-      v62 = v48;
+      v62 = rpIdentity4;
       _os_log_impl(&dword_2531F8000, v45, OS_LOG_TYPE_INFO, "%{public}@Updating Device Rapport identity from %@ to %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v43);
     v29 = objc_autoreleasePoolPush();
-    v49 = v44;
+    v49 = selfCopy7;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       v50 = HMFGetLogIdentifier();
-      v56 = [(HMDDevice *)v49 rpIdentity];
-      v55 = [v56 deviceIRK];
-      v51 = [v55 data];
-      v52 = [v6 rpIdentity];
-      v53 = [v52 deviceIRK];
-      v54 = [v53 data];
+      rpIdentity5 = [(HMDDevice *)v49 rpIdentity];
+      deviceIRK = [rpIdentity5 deviceIRK];
+      data = [deviceIRK data];
+      rpIdentity6 = [v6 rpIdentity];
+      deviceIRK2 = [rpIdentity6 deviceIRK];
+      data2 = [deviceIRK2 data];
       *buf = 138543874;
       v58 = v50;
       v59 = 2112;
-      v60 = v51;
+      v60 = data;
       v61 = 2112;
-      v62 = v54;
+      v62 = data2;
       _os_log_impl(&dword_2531F8000, v31, OS_LOG_TYPE_INFO, "%{public}@Rapport identity changed from %@ to %@", buf, 0x20u);
     }
 
@@ -672,35 +672,35 @@ LABEL_28:
 
 - (id)modelBackedObjects
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  [v3 addObject:self];
-  v4 = [(HMDDevice *)self capabilities];
-  if (v4)
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObject:self];
+  capabilities = [(HMDDevice *)self capabilities];
+  if (capabilities)
   {
-    [v3 addObject:v4];
+    [array addObject:capabilities];
   }
 
-  v5 = [v3 copy];
+  v5 = [array copy];
 
   return v5;
 }
 
-- (id)backingStoreObjectsWithChangeType:(unint64_t)a3 version:(int64_t)a4
+- (id)backingStoreObjectsWithChangeType:(unint64_t)type version:(int64_t)version
 {
   v7 = [HMDDevice modelObjectWithChangeType:"modelObjectWithChangeType:version:" version:?];
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
-    [v8 addObject:v7];
-    v9 = [(HMDDevice *)self capabilities];
-    v10 = v9;
-    if (v9)
+    array = [MEMORY[0x277CBEB18] array];
+    [array addObject:v7];
+    capabilities = [(HMDDevice *)self capabilities];
+    v10 = capabilities;
+    if (capabilities)
     {
-      v11 = [v9 modelObjectWithChangeType:a3 version:a4];
-      [v8 addObject:v11];
+      v11 = [capabilities modelObjectWithChangeType:type version:version];
+      [array addObject:v11];
     }
 
-    v12 = [v8 copy];
+    v12 = [array copy];
   }
 
   else
@@ -711,45 +711,45 @@ LABEL_28:
   return v12;
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3 version:(int64_t)a4
+- (id)modelObjectWithChangeType:(unint64_t)type version:(int64_t)version
 {
   v36 = *MEMORY[0x277D85DE8];
   v6 = [HMDDeviceModel alloc];
-  v7 = [(HMDDevice *)self modelIdentifier];
-  v8 = [(HMDDevice *)self modelParentIdentifier];
-  v9 = [(HMDBackingStoreModelObject *)v6 initWithObjectChangeType:a3 uuid:v7 parentUUID:v8];
+  modelIdentifier = [(HMDDevice *)self modelIdentifier];
+  modelParentIdentifier = [(HMDDevice *)self modelParentIdentifier];
+  v9 = [(HMDBackingStoreModelObject *)v6 initWithObjectChangeType:type uuid:modelIdentifier parentUUID:modelParentIdentifier];
 
-  v10 = [(HMDDevice *)self identifier];
-  [(HMDDeviceModel *)v9 setIdentifier:v10];
+  identifier = [(HMDDevice *)self identifier];
+  [(HMDDeviceModel *)v9 setIdentifier:identifier];
 
-  v11 = [(HMDDevice *)self name];
-  v12 = [v11 copy];
+  name = [(HMDDevice *)self name];
+  v12 = [name copy];
   [(HMDDeviceModel *)v9 setName:v12];
 
-  v13 = [(HMDDevice *)self version];
-  v14 = [v13 copy];
+  version = [(HMDDevice *)self version];
+  v14 = [version copy];
   [(HMDDeviceModel *)v9 setVersion:v14];
 
-  v15 = [(HMDDevice *)self productInfo];
-  v16 = [v15 copy];
+  productInfo = [(HMDDevice *)self productInfo];
+  v16 = [productInfo copy];
   [(HMDDeviceModel *)v9 setProductInfo:v16];
 
-  v17 = [(HMDDevice *)self rpIdentity];
+  rpIdentity = [(HMDDevice *)self rpIdentity];
 
-  if (v17)
+  if (rpIdentity)
   {
-    v18 = [(HMDDevice *)self rpIdentity];
-    v19 = [v18 copy];
+    rpIdentity2 = [(HMDDevice *)self rpIdentity];
+    v19 = [rpIdentity2 copy];
     [(HMDDeviceModel *)v9 setRpIdentity:v19];
   }
 
-  v20 = [(HMDDevice *)self handles];
-  v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v20, "count")}];
+  handles = [(HMDDevice *)self handles];
+  v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(handles, "count")}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v22 = v20;
+  v22 = handles;
   v23 = [v22 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v23)
   {
@@ -787,22 +787,22 @@ LABEL_28:
 
 - (NSUUID)modelParentIdentifier
 {
-  v2 = [(HMDDevice *)self account];
-  v3 = [v2 modelIdentifier];
+  account = [(HMDDevice *)self account];
+  modelIdentifier = [account modelIdentifier];
 
-  return v3;
+  return modelIdentifier;
 }
 
-- (void)__updateDeviceWithActions:(id)a3
+- (void)__updateDeviceWithActions:(id)actions
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDDevice *)self account];
-  v6 = [v5 manager];
+  actionsCopy = actions;
+  account = [(HMDDevice *)self account];
+  manager = [account manager];
 
-  if ([v4 source] == 2)
+  if ([actionsCopy source] == 2)
   {
-    if (-[HMDDevice isCurrentDevice](self, "isCurrentDevice") || [v6 isCurrentDeviceDataOwnerForDevice:self])
+    if (-[HMDDevice isCurrentDevice](self, "isCurrentDevice") || [manager isCurrentDeviceDataOwnerForDevice:self])
     {
       if (![(HMDDevice *)self isLocallyTracked])
       {
@@ -810,7 +810,7 @@ LABEL_28:
       }
 
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
@@ -830,14 +830,14 @@ LABEL_28:
     }
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy3 = self;
     v13 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
 LABEL_21:
 
       objc_autoreleasePoolPop(v11);
-      [v4 markChanged];
+      [actionsCopy markChanged];
       goto LABEL_22;
     }
 
@@ -851,12 +851,12 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ([v4 source])
+  if ([actionsCopy source])
   {
     goto LABEL_22;
   }
 
-  if (-[HMDDevice isCurrentDevice](self, "isCurrentDevice") || [v6 isCurrentDeviceDataOwnerForDevice:self])
+  if (-[HMDDevice isCurrentDevice](self, "isCurrentDevice") || [manager isCurrentDeviceDataOwnerForDevice:self])
   {
     if (![(HMDDevice *)self isLocallyTracked])
     {
@@ -864,7 +864,7 @@ LABEL_20:
     }
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy3 = self;
     v13 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -881,7 +881,7 @@ LABEL_20:
   if (!isWatch())
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy4 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -892,25 +892,25 @@ LABEL_20:
     }
 
     objc_autoreleasePoolPop(v17);
-    [(HMDDevice *)v18 setCloudTracked:1];
+    [(HMDDevice *)selfCopy4 setCloudTracked:1];
   }
 
-  [v4 markLocalChanged];
+  [actionsCopy markLocalChanged];
 LABEL_22:
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v9;
+    v11 = valuesCopy;
   }
 
   else
@@ -919,7 +919,7 @@ LABEL_22:
   }
 
   v12 = v11;
-  v13 = v9;
+  v13 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -935,60 +935,60 @@ LABEL_22:
 
   if (v12 | v15)
   {
-    v16 = [v10 transactionResult];
-    [(HMDDevice *)self __updateDeviceWithActions:v16];
-    v17 = [(HMDDevice *)self account];
-    v18 = [v17 manager];
-    v19 = [v18 shouldDevice:self processModel:v13 actions:v16];
+    transactionResult = [messageCopy transactionResult];
+    [(HMDDevice *)self __updateDeviceWithActions:transactionResult];
+    account = [(HMDDevice *)self account];
+    manager = [account manager];
+    v19 = [manager shouldDevice:self processModel:v13 actions:transactionResult];
 
     if (v19)
     {
       if (v12)
       {
-        __transactionDeviceUpdated(self, v12, v10);
+        __transactionDeviceUpdated(self, v12, messageCopy);
       }
 
       else if (v15)
       {
-        v26 = self;
+        selfCopy = self;
         v27 = v15;
-        v28 = v10;
-        v29 = [v28 transactionResult];
-        v30 = [(HMDDevice *)v26 capabilities];
+        v28 = messageCopy;
+        transactionResult2 = [v28 transactionResult];
+        capabilities = [(HMDDevice *)selfCopy capabilities];
         v39 = v28;
         v40 = v27;
-        v38 = v30;
-        if (v30)
+        v38 = capabilities;
+        if (capabilities)
         {
-          [v30 transactionObjectUpdated:0 newValues:v27 message:v28];
-          v31 = v29;
+          [capabilities transactionObjectUpdated:0 newValues:v27 message:v28];
+          v31 = transactionResult2;
         }
 
         else
         {
           v32 = [[HMDDeviceCapabilities alloc] initWithObjectModel:v27];
-          [(HMDDevice *)v26 setCapabilities:v32];
+          [(HMDDevice *)selfCopy setCapabilities:v32];
 
-          v33 = [(HMDDevice *)v26 capabilities];
+          capabilities2 = [(HMDDevice *)selfCopy capabilities];
 
-          v31 = v29;
-          if (v33)
+          v31 = transactionResult2;
+          if (capabilities2)
           {
-            [v29 markChanged];
-            v34 = [(HMDDevice *)v26 capabilities];
+            [transactionResult2 markChanged];
+            capabilities3 = [(HMDDevice *)selfCopy capabilities];
             v46[0] = @"HMDDeviceCapabilitiesUpdatedDifferingFieldsNotificationKey";
-            v37 = [v40 setProperties];
-            *buf = v37;
+            setProperties = [v40 setProperties];
+            *buf = setProperties;
             v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:buf forKeys:v46 count:1];
-            logAndPostNotification(@"HMDDeviceCapabilitiiesUpdatedNotification", v34, v35);
+            logAndPostNotification(@"HMDDeviceCapabilitiiesUpdatedNotification", capabilities3, v35);
           }
         }
 
         if ([v31 changed])
         {
-          [(HMDDevice *)v26 setDirty:1];
-          v36 = [v31 backingStore];
-          __HMDDeviceMarkDirty(v26, v36);
+          [(HMDDevice *)selfCopy setDirty:1];
+          backingStore = [v31 backingStore];
+          __HMDDeviceMarkDirty(selfCopy, backingStore);
         }
       }
     }
@@ -997,7 +997,7 @@ LABEL_22:
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -1013,22 +1013,22 @@ LABEL_22:
     }
 
     objc_autoreleasePoolPop(v20);
-    v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v10 respondWithError:v16];
+    transactionResult = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+    [messageCopy respondWithError:transactionResult];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4
+- (void)transactionObjectRemoved:(id)removed message:(id)message
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  removedCopy = removed;
+  messageCopy = message;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
   if (isKindOfClass)
@@ -1052,7 +1052,7 @@ LABEL_22:
       v18 = 138543874;
       v19 = v14;
       v20 = 2112;
-      v21 = v6;
+      v21 = removedCopy;
       v22 = 2112;
       v23 = objc_opt_class();
       v15 = v23;
@@ -1061,69 +1061,69 @@ LABEL_22:
 
     objc_autoreleasePoolPop(v9);
     v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v7 respondWithError:v16];
+    [messageCopy respondWithError:v16];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v33 = a3;
-  v4 = [v33 hmd_isForXPCTransport];
-  v5 = [(HMDDevice *)self identifier];
-  if (v4)
+  coderCopy = coder;
+  hmd_isForXPCTransport = [coderCopy hmd_isForXPCTransport];
+  identifier = [(HMDDevice *)self identifier];
+  if (hmd_isForXPCTransport)
   {
-    [v33 encodeObject:v5 forKey:@"HM.identifier"];
+    [coderCopy encodeObject:identifier forKey:@"HM.identifier"];
 
-    v6 = [(HMDDevice *)self name];
-    [v33 encodeObject:v6 forKey:@"HM.name"];
+    name = [(HMDDevice *)self name];
+    [coderCopy encodeObject:name forKey:@"HM.name"];
 
-    v7 = [(HMDDevice *)self productInfo];
-    [v33 encodeObject:v7 forKey:*MEMORY[0x277CCFC60]];
+    productInfo = [(HMDDevice *)self productInfo];
+    [coderCopy encodeObject:productInfo forKey:*MEMORY[0x277CCFC60]];
 
-    [v33 encodeBool:-[HMDDevice isCurrentDevice](self forKey:{"isCurrentDevice"), @"HM.currentDevice"}];
-    v8 = [(HMDDevice *)self idsIdentifier];
-    [v33 encodeObject:v8 forKey:*MEMORY[0x277CCFC58]];
+    [coderCopy encodeBool:-[HMDDevice isCurrentDevice](self forKey:{"isCurrentDevice"), @"HM.currentDevice"}];
+    idsIdentifier = [(HMDDevice *)self idsIdentifier];
+    [coderCopy encodeObject:idsIdentifier forKey:*MEMORY[0x277CCFC58]];
 
-    if (([v33 hmd_entitlements] & 0x1000) != 0)
+    if (([coderCopy hmd_entitlements] & 0x1000) != 0)
     {
-      v9 = [(HMDDevice *)self remoteDestinationString];
-      [v33 encodeObject:v9 forKey:*MEMORY[0x277CCFC50]];
+      remoteDestinationString = [(HMDDevice *)self remoteDestinationString];
+      [coderCopy encodeObject:remoteDestinationString forKey:*MEMORY[0x277CCFC50]];
     }
 
-    v10 = [(HMDDevice *)self rpIdentity];
-    v11 = [v10 deviceIRK];
-    [v33 encodeObject:v11 forKey:*MEMORY[0x277CCFC68]];
+    rpIdentity = [(HMDDevice *)self rpIdentity];
+    deviceIRK = [rpIdentity deviceIRK];
+    [coderCopy encodeObject:deviceIRK forKey:*MEMORY[0x277CCFC68]];
 
-    v12 = [(HMDDevice *)self supportsHH2];
-    [v33 encodeBool:v12 forKey:*MEMORY[0x277CCFCD0]];
+    supportsHH2 = [(HMDDevice *)self supportsHH2];
+    [coderCopy encodeBool:supportsHH2 forKey:*MEMORY[0x277CCFCD0]];
   }
 
   else
   {
-    [v33 encodeObject:v5 forKey:@"HM.identifier"];
+    [coderCopy encodeObject:identifier forKey:@"HM.identifier"];
 
-    v13 = [(HMDDevice *)self handles];
-    [v33 encodeObject:v13 forKey:@"HM.handles"];
+    handles = [(HMDDevice *)self handles];
+    [coderCopy encodeObject:handles forKey:@"HM.handles"];
 
-    v14 = [(HMDDevice *)self name];
-    [v33 encodeObject:v14 forKey:@"HM.name"];
+    name2 = [(HMDDevice *)self name];
+    [coderCopy encodeObject:name2 forKey:@"HM.name"];
 
-    v15 = [(HMDDevice *)self version];
-    [v33 encodeObject:v15 forKey:@"HM.version2"];
+    version = [(HMDDevice *)self version];
+    [coderCopy encodeObject:version forKey:@"HM.version2"];
 
-    if (([v33 hmd_isForLocalStore] & 1) != 0 || objc_msgSend(v33, "hmd_isForRemoteTransportOnSameAccount"))
+    if (([coderCopy hmd_isForLocalStore] & 1) != 0 || objc_msgSend(coderCopy, "hmd_isForRemoteTransportOnSameAccount"))
     {
-      v16 = [(HMDDevice *)self productInfo];
-      [v33 encodeObject:v16 forKey:@"HM.productInfo"];
+      productInfo2 = [(HMDDevice *)self productInfo];
+      [coderCopy encodeObject:productInfo2 forKey:@"HM.productInfo"];
     }
 
-    v17 = [(HMDDevice *)self version];
-    v18 = v17;
-    if (v17)
+    version2 = [(HMDDevice *)self version];
+    v18 = version2;
+    if (version2)
     {
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%tu.%tu", objc_msgSend(v17, "majorVersion"), objc_msgSend(v17, "minorVersion")];
+      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%tu.%tu", objc_msgSend(version2, "majorVersion"), objc_msgSend(version2, "minorVersion")];
       v20 = MEMORY[0x277CCABB0];
       [v19 doubleValue];
       v21 = [v20 numberWithDouble:?];
@@ -1134,72 +1134,72 @@ LABEL_22:
       v21 = 0;
     }
 
-    [v33 encodeObject:v21 forKey:@"HM.version"];
+    [coderCopy encodeObject:v21 forKey:@"HM.version"];
 
-    v22 = [(HMDDevice *)self remoteDestinationString];
-    [v33 encodeObject:v22 forKey:@"HM.destination"];
+    remoteDestinationString2 = [(HMDDevice *)self remoteDestinationString];
+    [coderCopy encodeObject:remoteDestinationString2 forKey:@"HM.destination"];
 
-    v23 = [(HMDDevice *)self idsIdentifier];
-    [v33 encodeObject:v23 forKey:@"HM.idsIdentifier"];
+    idsIdentifier2 = [(HMDDevice *)self idsIdentifier];
+    [coderCopy encodeObject:idsIdentifier2 forKey:@"HM.idsIdentifier"];
 
-    v24 = [(HMDDevice *)self idsIdentifierHash];
-    [v33 encodeObject:v24 forKey:@"HM.accountIdentifier"];
+    idsIdentifierHash = [(HMDDevice *)self idsIdentifierHash];
+    [coderCopy encodeObject:idsIdentifierHash forKey:@"HM.accountIdentifier"];
 
-    v25 = [(HMDDevice *)self rpIdentity];
-    [v33 encodeObject:v25 forKey:@"HM.rpIdentity"];
+    rpIdentity2 = [(HMDDevice *)self rpIdentity];
+    [coderCopy encodeObject:rpIdentity2 forKey:@"HM.rpIdentity"];
 
-    v26 = [(HMDDevice *)self capabilities];
-    [v33 encodeObject:v26 forKey:@"HM.capabilities"];
-    if (v26)
+    capabilities = [(HMDDevice *)self capabilities];
+    [coderCopy encodeObject:capabilities forKey:@"HM.capabilities"];
+    if (capabilities)
     {
-      v27 = [(HMDDevice *)self capabilities];
-      [v33 encodeBool:objc_msgSend(v27 forKey:{"supportsKeychainSync"), @"HM.supportsKeychainSync"}];
+      capabilities2 = [(HMDDevice *)self capabilities];
+      [coderCopy encodeBool:objc_msgSend(capabilities2 forKey:{"supportsKeychainSync"), @"HM.supportsKeychainSync"}];
 
-      v28 = [(HMDDevice *)self capabilities];
-      [v33 encodeBool:objc_msgSend(v28 forKey:{"supportsCloudDataSync"), @"HM.supportsCloudDataSync"}];
+      capabilities3 = [(HMDDevice *)self capabilities];
+      [coderCopy encodeBool:objc_msgSend(capabilities3 forKey:{"supportsCloudDataSync"), @"HM.supportsCloudDataSync"}];
 
-      v29 = [(HMDDevice *)self capabilities];
-      [v33 encodeBool:objc_msgSend(v29 forKey:{"isResidentCapable"), @"HM.residentCapable"}];
+      capabilities4 = [(HMDDevice *)self capabilities];
+      [coderCopy encodeBool:objc_msgSend(capabilities4 forKey:{"isResidentCapable"), @"HM.residentCapable"}];
 
-      v30 = [(HMDDevice *)self capabilities];
-      [v33 encodeBool:objc_msgSend(v30 forKey:{"isRemoteGatewayCapable"), @"HM.remoteGatewayCapable"}];
+      capabilities5 = [(HMDDevice *)self capabilities];
+      [coderCopy encodeBool:objc_msgSend(capabilities5 forKey:{"isRemoteGatewayCapable"), @"HM.remoteGatewayCapable"}];
     }
 
-    if ([v33 hmd_isForLocalStore])
+    if ([coderCopy hmd_isForLocalStore])
     {
-      v31 = [(HMDDevice *)self modelIdentifier];
-      [v33 encodeObject:v31 forKey:@"HM.modelIdentifier"];
+      modelIdentifier = [(HMDDevice *)self modelIdentifier];
+      [coderCopy encodeObject:modelIdentifier forKey:@"HM.modelIdentifier"];
 
-      [v33 encodeBool:-[HMDDevice isLocallyTracked](self forKey:{"isLocallyTracked"), @"HM.locallyTracked"}];
-      [v33 encodeBool:-[HMDDevice isCloudTracked](self forKey:{"isCloudTracked"), @"HM.cloudTracked"}];
-      v32 = [(HMDDevice *)self sharedUserIDSIdentifier];
-      [v33 encodeObject:v32 forKey:@"HM.sharedUserIDSIdentifier"];
+      [coderCopy encodeBool:-[HMDDevice isLocallyTracked](self forKey:{"isLocallyTracked"), @"HM.locallyTracked"}];
+      [coderCopy encodeBool:-[HMDDevice isCloudTracked](self forKey:{"isCloudTracked"), @"HM.cloudTracked"}];
+      sharedUserIDSIdentifier = [(HMDDevice *)self sharedUserIDSIdentifier];
+      [coderCopy encodeObject:sharedUserIDSIdentifier forKey:@"HM.sharedUserIDSIdentifier"];
     }
   }
 }
 
-- (HMDDevice)initWithCoder:(id)a3
+- (HMDDevice)initWithCoder:(id)coder
 {
   v56[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  coderCopy = coder;
   v4 = 0x277CCA000uLL;
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.name"];
-  v51 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.productInfo"];
-  if ([v3 containsValueForKey:@"HM.handles"])
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.name"];
+  v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.productInfo"];
+  if ([coderCopy containsValueForKey:@"HM.handles"])
   {
     v7 = MEMORY[0x277CBEB98];
     v56[0] = objc_opt_class();
     v56[1] = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:2];
     v9 = [v7 setWithArray:v8];
-    v10 = [v3 decodeObjectOfClasses:v9 forKey:@"HM.handles"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"HM.handles"];
   }
 
   else
   {
     v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-    v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.idsIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.idsIdentifier"];
     if (v9)
     {
       v11 = [[_HMDLocalDeviceHandle alloc] initWithDeviceIdentifier:v9];
@@ -1210,7 +1210,7 @@ LABEL_22:
       }
     }
 
-    v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.destination"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.destination"];
     v14 = [HMDDeviceHandle deviceHandleForDestination:v13];
 
     if (v14)
@@ -1224,39 +1224,39 @@ LABEL_22:
   v15 = v10;
 
   v49 = v15;
-  if ([v3 containsValueForKey:@"HM.version2"])
+  if ([coderCopy containsValueForKey:@"HM.version2"])
   {
-    v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.version2"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.version2"];
     v17 = fixHomeKitVersion(v16);
   }
 
   else
   {
-    v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.version"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.version"];
     if (v17)
     {
       v18 = v6;
       v19 = v5;
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         v23 = HMFGetLogIdentifier();
-        v24 = [v17 stringValue];
+        stringValue = [v17 stringValue];
         *buf = 138543618;
         v53 = v23;
         v54 = 2112;
-        v55 = v24;
+        v55 = stringValue;
         _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_INFO, "%{public}@Updating the version of device '%@'", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v20);
       v16 = v17;
       v25 = [HMDHomeKitVersion alloc];
-      v26 = [v16 stringValue];
+      stringValue2 = [v16 stringValue];
 
-      v27 = [(HMDHomeKitVersion *)v25 initWithString:v26];
+      v27 = [(HMDHomeKitVersion *)v25 initWithString:stringValue2];
       v17 = fixHomeKitVersion(v27);
 
       v5 = v19;
@@ -1271,27 +1271,27 @@ LABEL_22:
     }
   }
 
-  if ([v3 containsValueForKey:@"HM.capabilities"])
+  if ([coderCopy containsValueForKey:@"HM.capabilities"])
   {
-    v28 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.capabilities"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.capabilities"];
   }
 
   else
   {
     v29 = [HMDDeviceCapabilitiesModel alloc];
-    v30 = [*(v4 + 3448) UUID];
-    v31 = [(HMDBackingStoreModelObject *)v29 initWithUUID:v30];
+    uUID = [*(v4 + 3448) UUID];
+    v31 = [(HMDBackingStoreModelObject *)v29 initWithUUID:uUID];
 
-    v32 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "decodeBoolForKey:", @"HM.supportsKeychainSync"}];
+    v32 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(coderCopy, "decodeBoolForKey:", @"HM.supportsKeychainSync"}];
     [(HMDDeviceCapabilitiesModel *)v31 setSupportsKeychainSync:v32];
 
-    v33 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "decodeBoolForKey:", @"HM.supportsCloudDataSync"}];
+    v33 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(coderCopy, "decodeBoolForKey:", @"HM.supportsCloudDataSync"}];
     [(HMDDeviceCapabilitiesModel *)v31 setSupportsCloudDataSync:v33];
 
-    v34 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "decodeBoolForKey:", @"HM.residentCapable"}];
+    v34 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(coderCopy, "decodeBoolForKey:", @"HM.residentCapable"}];
     [(HMDDeviceCapabilitiesModel *)v31 setResidentCapable:v34];
 
-    v35 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "decodeBoolForKey:", @"HM.remoteGatewayCapable"}];
+    v35 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(coderCopy, "decodeBoolForKey:", @"HM.remoteGatewayCapable"}];
     [(HMDDeviceCapabilitiesModel *)v31 setRemoteGatewayCapable:v35];
 
     v28 = [[HMDDeviceCapabilities alloc] initWithObjectModel:v31];
@@ -1300,9 +1300,9 @@ LABEL_22:
   v36 = [(HMDDevice *)self initWithIdentifier:v5 handles:v15 name:v6 productInfo:v51 version:v17 capabilities:v28];
   if (v36)
   {
-    if ([v3 containsValueForKey:@"HM.modelIdentifier"])
+    if ([coderCopy containsValueForKey:@"HM.modelIdentifier"])
     {
-      v37 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.modelIdentifier"];
+      v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.modelIdentifier"];
     }
 
     else
@@ -1313,12 +1313,12 @@ LABEL_22:
     modelIdentifier = v36->_modelIdentifier;
     v36->_modelIdentifier = v37;
 
-    v39 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.accountIdentifier"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.accountIdentifier"];
     idsIdentifierHash = v36->_idsIdentifierHash;
     v36->_idsIdentifierHash = v39;
 
     v41 = v36->_modelIdentifier;
-    v42 = [(HMDDeviceCapabilities *)v36->_capabilities modelParentIdentifier];
+    modelParentIdentifier = [(HMDDeviceCapabilities *)v36->_capabilities modelParentIdentifier];
     LOBYTE(v41) = HMFEqualObjects();
 
     if ((v41 & 1) == 0)
@@ -1326,16 +1326,16 @@ LABEL_22:
       [(HMDDeviceCapabilities *)v36->_capabilities setModelParentIdentifier:v36->_modelIdentifier];
     }
 
-    if ([v3 containsValueForKey:@"HM.rpIdentity"])
+    if ([coderCopy containsValueForKey:@"HM.rpIdentity"])
     {
-      v43 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.rpIdentity"];
+      v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.rpIdentity"];
       rpIdentity = v36->_rpIdentity;
       v36->_rpIdentity = v43;
     }
 
-    v36->_locallyTracked = [v3 decodeBoolForKey:@"HM.locallyTracked"];
-    v36->_cloudTracked = [v3 decodeBoolForKey:@"HM.cloudTracked"];
-    v45 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.sharedUserIDSIdentifier"];
+    v36->_locallyTracked = [coderCopy decodeBoolForKey:@"HM.locallyTracked"];
+    v36->_cloudTracked = [coderCopy decodeBoolForKey:@"HM.cloudTracked"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.sharedUserIDSIdentifier"];
     sharedUserIDSIdentifier = v36->_sharedUserIDSIdentifier;
     v36->_sharedUserIDSIdentifier = v45;
 
@@ -1346,14 +1346,14 @@ LABEL_22:
   return v36;
 }
 
-- (BOOL)mergeObject:(id)a3
+- (BOOL)mergeObject:(id)object
 {
   v94 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -1368,8 +1368,8 @@ LABEL_22:
     goto LABEL_46;
   }
 
-  v7 = [(HMDDevice *)self idsIdentifier];
-  if (v7)
+  idsIdentifier = [(HMDDevice *)self idsIdentifier];
+  if (idsIdentifier)
   {
 
 LABEL_7:
@@ -1377,16 +1377,16 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v33 = [v6 idsIdentifierHash];
-  if (!v33)
+  idsIdentifierHash = [v6 idsIdentifierHash];
+  if (!idsIdentifierHash)
   {
     goto LABEL_7;
   }
 
-  v34 = v33;
-  v35 = [(HMDDevice *)self idsIdentifierHash];
-  v36 = [v6 idsIdentifierHash];
-  v37 = [v35 isEqual:v36];
+  v34 = idsIdentifierHash;
+  idsIdentifierHash2 = [(HMDDevice *)self idsIdentifierHash];
+  idsIdentifierHash3 = [v6 idsIdentifierHash];
+  v37 = [idsIdentifierHash2 isEqual:idsIdentifierHash3];
 
   if (v37)
   {
@@ -1394,93 +1394,93 @@ LABEL_7:
   }
 
   v38 = objc_autoreleasePoolPush();
-  v39 = self;
+  selfCopy = self;
   v40 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
   {
     v41 = HMFGetLogIdentifier();
-    v42 = [v6 idsIdentifierHash];
+    idsIdentifierHash4 = [v6 idsIdentifierHash];
     v90 = 138543618;
     v91 = v41;
     v92 = 2112;
-    v93 = v42;
+    v93 = idsIdentifierHash4;
     _os_log_impl(&dword_2531F8000, v40, OS_LOG_TYPE_DEBUG, "%{public}@Updating device account identifier to %@", &v90, 0x16u);
   }
 
   objc_autoreleasePoolPop(v38);
-  v43 = [v6 idsIdentifierHash];
-  [(HMDDevice *)v39 setIDSIdentifierHash:v43];
+  idsIdentifierHash5 = [v6 idsIdentifierHash];
+  [(HMDDevice *)selfCopy setIDSIdentifierHash:idsIdentifierHash5];
 
   v8 = 1;
 LABEL_8:
-  v9 = [(HMDDevice *)self name];
-  v10 = [v6 name];
-  v11 = [v9 isEqualToString:v10];
+  name = [(HMDDevice *)self name];
+  name2 = [v6 name];
+  v11 = [name isEqualToString:name2];
 
   if ((v11 & 1) == 0)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [v6 name];
+      name3 = [v6 name];
       v90 = 138543618;
       v91 = v15;
       v92 = 2112;
-      v93 = v16;
+      v93 = name3;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Updating device name to %@", &v90, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    v17 = [v6 name];
-    [(HMDDevice *)v13 setName:v17];
+    name4 = [v6 name];
+    [(HMDDevice *)selfCopy2 setName:name4];
 
     v8 = 1;
   }
 
-  v18 = [v6 productInfo];
-  if (v18)
+  productInfo = [v6 productInfo];
+  if (productInfo)
   {
-    v19 = v18;
-    v20 = [(HMDDevice *)self productInfo];
-    v21 = [v6 productInfo];
-    v22 = [v20 isEqual:v21];
+    v19 = productInfo;
+    productInfo2 = [(HMDDevice *)self productInfo];
+    productInfo3 = [v6 productInfo];
+    v22 = [productInfo2 isEqual:productInfo3];
 
     if ((v22 & 1) == 0)
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy3 = self;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
         v26 = HMFGetLogIdentifier();
-        v27 = [v6 productInfo];
+        productInfo4 = [v6 productInfo];
         v90 = 138543618;
         v91 = v26;
         v92 = 2112;
-        v93 = v27;
+        v93 = productInfo4;
         _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_DEBUG, "%{public}@Updating device product info to %@", &v90, 0x16u);
       }
 
       objc_autoreleasePoolPop(v23);
-      v28 = [v6 productInfo];
-      [(HMDDevice *)v24 setProductInfo:v28];
+      productInfo5 = [v6 productInfo];
+      [(HMDDevice *)selfCopy3 setProductInfo:productInfo5];
 
       v8 = 1;
     }
   }
 
-  v29 = [v6 version];
+  version = [v6 version];
 
-  if (v29)
+  if (version)
   {
     if ([(HMDDevice *)self isCurrentDevice])
     {
-      v30 = [(HMDDevice *)self version];
-      v31 = [v6 version];
-      v32 = [v30 isEqual:v31];
+      version2 = [(HMDDevice *)self version];
+      version3 = [v6 version];
+      v32 = [version2 isEqual:version3];
 
       if (v32)
       {
@@ -1490,9 +1490,9 @@ LABEL_8:
 
     else
     {
-      v44 = [v6 version];
-      v45 = [(HMDDevice *)self version];
-      v46 = [v44 isGreaterThanVersion:v45];
+      version4 = [v6 version];
+      version5 = [(HMDDevice *)self version];
+      v46 = [version4 isGreaterThanVersion:version5];
 
       if (!v46)
       {
@@ -1501,89 +1501,89 @@ LABEL_8:
     }
 
     v47 = objc_autoreleasePoolPush();
-    v48 = self;
+    selfCopy4 = self;
     v49 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
     {
       v50 = HMFGetLogIdentifier();
-      v51 = [v6 version];
+      version6 = [v6 version];
       v90 = 138543618;
       v91 = v50;
       v92 = 2112;
-      v93 = v51;
+      v93 = version6;
       _os_log_impl(&dword_2531F8000, v49, OS_LOG_TYPE_DEBUG, "%{public}@Updating device version to %@", &v90, 0x16u);
     }
 
     objc_autoreleasePoolPop(v47);
-    v52 = [v6 version];
-    [(HMDDevice *)v48 setVersion:v52];
+    version7 = [v6 version];
+    [(HMDDevice *)selfCopy4 setVersion:version7];
 
     v8 = 1;
   }
 
 LABEL_30:
-  v53 = [v6 capabilities];
-  if (v53)
+  capabilities = [v6 capabilities];
+  if (capabilities)
   {
-    v54 = v53;
-    v55 = [(HMDDevice *)self capabilities];
-    v56 = [v6 capabilities];
-    v57 = [v55 isEqual:v56];
+    v54 = capabilities;
+    capabilities2 = [(HMDDevice *)self capabilities];
+    capabilities3 = [v6 capabilities];
+    v57 = [capabilities2 isEqual:capabilities3];
 
     if ((v57 & 1) == 0)
     {
       v58 = objc_autoreleasePoolPush();
-      v59 = self;
+      selfCopy5 = self;
       v60 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
       {
         v61 = HMFGetLogIdentifier();
-        v62 = [v6 capabilities];
+        capabilities4 = [v6 capabilities];
         v90 = 138543618;
         v91 = v61;
         v92 = 2112;
-        v93 = v62;
+        v93 = capabilities4;
         _os_log_impl(&dword_2531F8000, v60, OS_LOG_TYPE_DEBUG, "%{public}@Updating device capabilities to: %@", &v90, 0x16u);
       }
 
       objc_autoreleasePoolPop(v58);
-      v63 = [v6 capabilities];
-      [(HMDDevice *)v59 setCapabilities:v63];
+      capabilities5 = [v6 capabilities];
+      [(HMDDevice *)selfCopy5 setCapabilities:capabilities5];
 
       v8 = 1;
     }
   }
 
-  v64 = [v6 rpIdentity];
-  if (v64)
+  rpIdentity = [v6 rpIdentity];
+  if (rpIdentity)
   {
-    v65 = v64;
-    v66 = [v6 rpIdentity];
-    v67 = [(HMDDevice *)self rpIdentity];
-    v68 = [v66 isEqual:v67];
+    v65 = rpIdentity;
+    rpIdentity2 = [v6 rpIdentity];
+    rpIdentity3 = [(HMDDevice *)self rpIdentity];
+    v68 = [rpIdentity2 isEqual:rpIdentity3];
 
     if ((v68 & 1) == 0)
     {
-      v69 = [v6 rpIdentity];
-      [(HMDDevice *)self setRpIdentity:v69];
+      rpIdentity4 = [v6 rpIdentity];
+      [(HMDDevice *)self setRpIdentity:rpIdentity4];
 
       v8 = 1;
     }
   }
 
   v70 = MEMORY[0x277CBEB58];
-  v71 = [(HMDDevice *)self handles];
-  v72 = [v70 setWithArray:v71];
+  handles = [(HMDDevice *)self handles];
+  v72 = [v70 setWithArray:handles];
 
   v73 = MEMORY[0x277CBEB98];
-  v74 = [v6 handles];
-  v75 = [v73 setWithArray:v74];
+  handles2 = [v6 handles];
+  v75 = [v73 setWithArray:handles2];
   v76 = [v72 mergeObject:v75];
 
   if (v76)
   {
     v77 = objc_autoreleasePoolPush();
-    v78 = self;
+    selfCopy6 = self;
     v79 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
     {
@@ -1596,8 +1596,8 @@ LABEL_30:
     }
 
     objc_autoreleasePoolPop(v77);
-    v81 = [v72 allObjects];
-    [(HMDDevice *)v78 setHandles:v81];
+    allObjects = [v72 allObjects];
+    [(HMDDevice *)selfCopy6 setHandles:allObjects];
 
     goto LABEL_43;
   }
@@ -1611,7 +1611,7 @@ LABEL_46:
 
 LABEL_43:
   v82 = objc_autoreleasePoolPush();
-  v83 = self;
+  selfCopy7 = self;
   v84 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v84, OS_LOG_TYPE_INFO))
   {
@@ -1622,8 +1622,8 @@ LABEL_43:
   }
 
   objc_autoreleasePoolPop(v82);
-  v86 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v86 postNotificationName:@"HMDDeviceUpdatedNotification" object:v83];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"HMDDeviceUpdatedNotification" object:selfCopy7];
 
   v87 = 1;
 LABEL_47:
@@ -1634,18 +1634,18 @@ LABEL_47:
 
 - (id)logIdentifier
 {
-  v2 = [(HMDDevice *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDDevice *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)setRpIdentity:(id)a3
+- (void)setRpIdentity:(id)identity
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identityCopy = identity;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1653,16 +1653,16 @@ LABEL_47:
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v4;
+    v14 = identityCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Setting RPIdentity %@", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  rpIdentity = v6->_rpIdentity;
-  v6->_rpIdentity = v4;
+  rpIdentity = selfCopy->_rpIdentity;
+  selfCopy->_rpIdentity = identityCopy;
 
-  os_unfair_lock_unlock(&v6->_lock.lock);
+  os_unfair_lock_unlock(&selfCopy->_lock.lock);
   v10 = *MEMORY[0x277D85DE8];
 }
 
@@ -1677,30 +1677,30 @@ LABEL_47:
 
 - (NSString)remoteDestinationString
 {
-  v3 = [(HMDDevice *)self globalHandles];
-  v4 = [v3 firstObject];
+  globalHandles = [(HMDDevice *)self globalHandles];
+  firstObject = [globalHandles firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [v4 destination];
+    destination = [firstObject destination];
   }
 
   else
   {
-    v6 = [(HMDDevice *)self localHandles];
-    v7 = [v6 firstObject];
+    localHandles = [(HMDDevice *)self localHandles];
+    firstObject2 = [localHandles firstObject];
 
-    v5 = [v7 destination];
+    destination = [firstObject2 destination];
   }
 
-  return v5;
+  return destination;
 }
 
-- (void)setIDSIdentifierHash:(id)a3
+- (void)setIDSIdentifierHash:(id)hash
 {
-  v6 = a3;
+  hashCopy = hash;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [hashCopy copy];
   idsIdentifierHash = self->_idsIdentifierHash;
   self->_idsIdentifierHash = v4;
 
@@ -1719,12 +1719,12 @@ LABEL_47:
 
   else
   {
-    v5 = [(HMDDevice *)self idsIdentifier];
-    if (v5)
+    idsIdentifier = [(HMDDevice *)self idsIdentifier];
+    if (idsIdentifier)
     {
-      v6 = [(HMDDevice *)self idsIdentifier];
-      v7 = [v6 UUIDString];
-      if ([v7 length])
+      idsIdentifier2 = [(HMDDevice *)self idsIdentifier];
+      uUIDString = [idsIdentifier2 UUIDString];
+      if ([uUIDString length])
       {
         if (__idsIdentifierHashFromIDSIdentifier_onceToken != -1)
         {
@@ -1733,7 +1733,7 @@ LABEL_47:
 
         v8 = objc_alloc(MEMORY[0x277CCAD78]);
         v9 = __idsIdentifierHashFromIDSIdentifier_namespace;
-        v10 = [v7 dataUsingEncoding:4];
+        v10 = [uUIDString dataUsingEncoding:4];
         v4 = [v8 initWithNamespace:v9 data:v10];
       }
 
@@ -1752,10 +1752,10 @@ LABEL_47:
   return v4;
 }
 
-- (void)setDirty:(BOOL)a3
+- (void)setDirty:(BOOL)dirty
 {
   os_unfair_lock_lock_with_options();
-  self->_dirty = a3;
+  self->_dirty = dirty;
 
   os_unfair_lock_unlock(&self->_lock.lock);
 }
@@ -1768,19 +1768,19 @@ LABEL_47:
   return dirty;
 }
 
-- (void)setCapabilities:(id)a3
+- (void)setCapabilities:(id)capabilities
 {
-  v7 = a3;
+  capabilitiesCopy = capabilities;
   os_unfair_lock_lock_with_options();
-  v4 = [v7 copy];
+  v4 = [capabilitiesCopy copy];
   capabilities = self->_capabilities;
   self->_capabilities = v4;
 
   if (self->_modelIdentifier)
   {
-    v6 = [(HMDDeviceCapabilities *)self->_capabilities modelParentIdentifier];
+    modelParentIdentifier = [(HMDDeviceCapabilities *)self->_capabilities modelParentIdentifier];
 
-    if (!v6)
+    if (!modelParentIdentifier)
     {
       [(HMDDeviceCapabilities *)self->_capabilities setModelParentIdentifier:self->_modelIdentifier];
     }
@@ -1800,59 +1800,59 @@ LABEL_47:
 
 - (HMDHomeKitVersion)derivedVersion
 {
-  v3 = [(HMDDevice *)self localOnlyVersionFromIDS];
-  if (!v3)
+  localOnlyVersionFromIDS = [(HMDDevice *)self localOnlyVersionFromIDS];
+  if (!localOnlyVersionFromIDS)
   {
     goto LABEL_4;
   }
 
-  v4 = v3;
-  v5 = [(HMDDevice *)self localOnlyVersionFromIDS];
-  v6 = [(HMDDevice *)self version];
-  v7 = [v5 isGreaterThanVersion:v6];
+  v4 = localOnlyVersionFromIDS;
+  localOnlyVersionFromIDS2 = [(HMDDevice *)self localOnlyVersionFromIDS];
+  version = [(HMDDevice *)self version];
+  v7 = [localOnlyVersionFromIDS2 isGreaterThanVersion:version];
 
   if (v7)
   {
-    v8 = [(HMDDevice *)self localOnlyVersionFromIDS];
+    localOnlyVersionFromIDS3 = [(HMDDevice *)self localOnlyVersionFromIDS];
   }
 
   else
   {
 LABEL_4:
-    v8 = [(HMDDevice *)self version];
+    localOnlyVersionFromIDS3 = [(HMDDevice *)self version];
   }
 
-  return v8;
+  return localOnlyVersionFromIDS3;
 }
 
 - (BOOL)supportsHH2
 {
-  v2 = [(HMDDevice *)self derivedVersion];
+  derivedVersion = [(HMDDevice *)self derivedVersion];
   v3 = HMDMinimumHomeKitVersionSupportingHH2();
-  v4 = [v2 isAtLeastVersion:v3];
+  v4 = [derivedVersion isAtLeastVersion:v3];
 
   return v4;
 }
 
-- (void)setLocalOnlyVersionFromIDS:(id)a3
+- (void)setLocalOnlyVersionFromIDS:(id)s
 {
-  v8 = a3;
+  sCopy = s;
   os_unfair_lock_lock_with_options();
-  if (self->_localOnlyVersionFromIDS && ![v8 isGreaterThanVersion:?])
+  if (self->_localOnlyVersionFromIDS && ![sCopy isGreaterThanVersion:?])
   {
     os_unfair_lock_unlock(&self->_lock.lock);
   }
 
   else
   {
-    objc_storeStrong(&self->_localOnlyVersionFromIDS, a3);
+    objc_storeStrong(&self->_localOnlyVersionFromIDS, s);
     os_unfair_lock_unlock(&self->_lock.lock);
     [(HMDDevice *)self setDirty:1];
-    v5 = [(HMDDevice *)self account];
-    v6 = [v5 manager];
+    account = [(HMDDevice *)self account];
+    manager = [account manager];
 
-    v7 = [v6 backingStore];
-    __HMDDeviceMarkDirty(self, v7);
+    backingStore = [manager backingStore];
+    __HMDDeviceMarkDirty(self, backingStore);
   }
 }
 
@@ -1865,15 +1865,15 @@ LABEL_4:
   return v3;
 }
 
-- (void)updateWithDevice:(id)a3
+- (void)updateWithDevice:(id)device
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self != v4)
+  deviceCopy = device;
+  v5 = deviceCopy;
+  if (deviceCopy && self != deviceCopy)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -1881,23 +1881,23 @@ LABEL_4:
       *buf = 138543874;
       v49 = v9;
       v50 = 2112;
-      v51 = v7;
+      v51 = selfCopy;
       v52 = 2112;
       v53 = v5;
       _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Updating with device -- local: %@, remote: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v10 = [(HMDDevice *)v7 account];
-    v11 = [v10 manager];
+    account = [(HMDDevice *)selfCopy account];
+    manager = [account manager];
 
-    v47 = v11;
-    v12 = [v11 backingStore];
+    v47 = manager;
+    backingStore = [manager backingStore];
     v13 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-    v46 = v12;
-    v14 = [v12 transaction:@"Update Device" options:v13];
+    v46 = backingStore;
+    v14 = [backingStore transaction:@"Update Device" options:v13];
 
-    v15 = [(HMDDevice *)v7 modelObjectWithChangeType:2 version:4];
+    v15 = [(HMDDevice *)selfCopy modelObjectWithChangeType:2 version:4];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1928,13 +1928,13 @@ LABEL_4:
     if ([v17 diff:v20 differingFields:0])
     {
       v21 = [v17 merge:v20];
-      v22 = [v17 uuid];
-      if (v22)
+      uuid = [v17 uuid];
+      if (uuid)
       {
-        v23 = v22;
-        v24 = [v17 parentUUID];
+        v23 = uuid;
+        parentUUID = [v17 parentUUID];
 
-        if (v24)
+        if (parentUUID)
         {
           [v14 add:v17];
         }
@@ -1942,11 +1942,11 @@ LABEL_4:
     }
 
     v45 = v14;
-    v25 = [(HMDDevice *)v7 capabilities];
-    v26 = [v25 modelObjectWithChangeType:2 version:4];
+    capabilities = [(HMDDevice *)selfCopy capabilities];
+    v26 = [capabilities modelObjectWithChangeType:2 version:4];
 
-    v27 = [(HMDDevice *)v5 capabilities];
-    v28 = [v27 modelObjectWithChangeType:2 version:4];
+    capabilities2 = [(HMDDevice *)v5 capabilities];
+    v28 = [capabilities2 modelObjectWithChangeType:2 version:4];
 
     v29 = v26;
     objc_opt_class();
@@ -1979,10 +1979,10 @@ LABEL_4:
     v35 = v29;
     if (!v31)
     {
-      v36 = [(HMDDevice *)v7 modelIdentifier];
-      if (v36)
+      modelIdentifier = [(HMDDevice *)selfCopy modelIdentifier];
+      if (modelIdentifier)
       {
-        [HMDDeviceCapabilities deviceCapabilitiesModelIdentifierWithParentIdentifier:v36];
+        [HMDDeviceCapabilities deviceCapabilitiesModelIdentifierWithParentIdentifier:modelIdentifier];
       }
 
       else
@@ -1990,68 +1990,68 @@ LABEL_4:
         [MEMORY[0x277CCAD78] UUID];
       }
       v37 = ;
-      v35 = [(HMDBackingStoreModelObject *)[HMDDeviceCapabilitiesModel alloc] initWithObjectChangeType:1 uuid:v37 parentUUID:v36];
+      v35 = [(HMDBackingStoreModelObject *)[HMDDeviceCapabilitiesModel alloc] initWithObjectChangeType:1 uuid:v37 parentUUID:modelIdentifier];
     }
 
     if ([(HMDBackingStoreModelObject *)v35 diff:v34 differingFields:0])
     {
       v38 = [(HMDBackingStoreModelObject *)v35 merge:v34];
-      v39 = [(HMDBackingStoreModelObject *)v35 uuid];
-      if (v39)
+      uuid2 = [(HMDBackingStoreModelObject *)v35 uuid];
+      if (uuid2)
       {
-        v40 = v39;
-        v41 = [(HMDBackingStoreModelObject *)v35 parentUUID];
+        v40 = uuid2;
+        parentUUID2 = [(HMDBackingStoreModelObject *)v35 parentUUID];
 
-        if (v41)
+        if (parentUUID2)
         {
           [v45 add:v35];
         }
       }
     }
 
-    if ([v47 shouldSyncDevice:v7])
+    if ([v47 shouldSyncDevice:selfCopy])
     {
       [v45 run];
     }
 
     else
     {
-      __transactionDeviceUpdated(v7, v17, 0);
+      __transactionDeviceUpdated(selfCopy, v17, 0);
       v42 = [[HMDDeviceCapabilities alloc] initWithObjectModel:v35];
-      [(HMDDevice *)v7 setCapabilities:v42];
+      [(HMDDevice *)selfCopy setCapabilities:v42];
     }
   }
 
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateVersion:(id)a3
+- (void)updateVersion:(id)version
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  [(HMDDevice *)self setVersion:a3];
+  [(HMDDevice *)self setVersion:version];
   [(HMDDevice *)self setDirty:1];
-  v4 = [(HMDDevice *)self account];
-  v5 = [v4 manager];
+  account = [(HMDDevice *)self account];
+  manager = [account manager];
 
-  v6 = [v5 backingStore];
-  __HMDDeviceMarkDirty(self, v6);
+  backingStore = [manager backingStore];
+  __HMDDeviceMarkDirty(self, backingStore);
 
-  if ([v5 shouldSyncDevice:self])
+  if ([manager shouldSyncDevice:self])
   {
-    v7 = [v5 backingStore];
+    backingStore2 = [manager backingStore];
     v10[0] = self;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-    [v7 updateModelObjects:v8 destination:2];
+    [backingStore2 updateModelObjects:v8 destination:2];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setVersion:(id)a3
+- (void)setVersion:(id)version
 {
-  v6 = a3;
+  versionCopy = version;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [versionCopy copy];
   version = self->_version;
   self->_version = v4;
 
@@ -2067,11 +2067,11 @@ LABEL_4:
   return v3;
 }
 
-- (void)setProductInfo:(id)a3
+- (void)setProductInfo:(id)info
 {
-  v6 = a3;
+  infoCopy = info;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [infoCopy copy];
   productInfo = self->_productInfo;
   self->_productInfo = v4;
 
@@ -2087,42 +2087,42 @@ LABEL_4:
   return v3;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  obj = a3;
-  v4 = [obj primaryHandle];
-  v5 = [obj handles];
+  obj = account;
+  primaryHandle = [obj primaryHandle];
+  handles = [obj handles];
   os_unfair_lock_lock_with_options();
   objc_storeWeak(&self->_account, obj);
   if (obj)
   {
     if (!self->_modelIdentifier)
     {
-      v6 = [obj modelIdentifier];
-      v7 = __modelIdentifierFromParentIdentifier(self, v6);
+      modelIdentifier = [obj modelIdentifier];
+      v7 = __modelIdentifierFromParentIdentifier(self, modelIdentifier);
       modelIdentifier = self->_modelIdentifier;
       self->_modelIdentifier = v7;
 
-      v9 = [(HMDDeviceCapabilities *)self->_capabilities modelParentIdentifier];
+      modelParentIdentifier = [(HMDDeviceCapabilities *)self->_capabilities modelParentIdentifier];
 
-      if (!v9)
+      if (!modelParentIdentifier)
       {
         [(HMDDeviceCapabilities *)self->_capabilities setModelParentIdentifier:self->_modelIdentifier];
       }
     }
 
     v10 = obj;
-    v11 = self;
-    __deregisterForAccountHandleUpdates(v11);
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v11 selector:sel___handleAccountHandleUpdated_ name:@"HMDAccountHandlesUpdatedNotification" object:v10];
+    selfCopy = self;
+    __deregisterForAccountHandleUpdates(selfCopy);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:selfCopy selector:sel___handleAccountHandleUpdated_ name:@"HMDAccountHandlesUpdatedNotification" object:v10];
 
     v13 = MEMORY[0x277CBEB98];
-    v14 = [(NSSet *)v11->_handles allObjects];
-    v15 = __deviceHandlesForAccount(v14, v5, v4);
+    allObjects = [(NSSet *)selfCopy->_handles allObjects];
+    v15 = __deviceHandlesForAccount(allObjects, handles, primaryHandle);
     v16 = [v13 setWithArray:v15];
-    handles = v11->_handles;
-    v11->_handles = v16;
+    handles = selfCopy->_handles;
+    selfCopy->_handles = v16;
   }
 
   else
@@ -2142,11 +2142,11 @@ LABEL_4:
   return WeakRetained;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [nameCopy copy];
   name = self->_name;
   self->_name = v4;
 
@@ -2164,25 +2164,25 @@ LABEL_4:
 
 - (BOOL)isCurrentDevice
 {
-  v2 = [(HMDDevice *)self idsIdentifier];
+  idsIdentifier = [(HMDDevice *)self idsIdentifier];
   v3 = +[HMDDeviceAddress localDeviceIDSIdentifier];
-  v4 = [v2 isEqual:v3];
+  v4 = [idsIdentifier isEqual:v3];
 
   return v4;
 }
 
 - (NSUUID)idsIdentifier
 {
-  v2 = [(HMDDevice *)self localHandles];
-  v3 = [v2 firstObject];
+  localHandles = [(HMDDevice *)self localHandles];
+  firstObject = [localHandles firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 internal];
+    internal = [firstObject internal];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = internal;
     }
 
     else
@@ -2192,26 +2192,26 @@ LABEL_4:
 
     v6 = v5;
 
-    v7 = [v6 deviceIdentifier];
+    deviceIdentifier = [v6 deviceIdentifier];
   }
 
   else
   {
-    v7 = 0;
+    deviceIdentifier = 0;
   }
 
-  return v7;
+  return deviceIdentifier;
 }
 
-- (void)__handleAccountHandleUpdated:(id)a3
+- (void)__handleAccountHandleUpdated:(id)updated
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  updatedCopy = updated;
+  object = [updatedCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -2223,12 +2223,12 @@ LABEL_4:
 
   if (v7)
   {
-    v8 = [(HMDDevice *)self account];
+    account = [(HMDDevice *)self account];
 
-    if (v7 == v8)
+    if (v7 == account)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -2239,21 +2239,21 @@ LABEL_4:
       }
 
       objc_autoreleasePoolPop(v9);
-      v13 = [v7 handles];
-      if (([v13 hmf_isEmpty] & 1) == 0)
+      handles = [v7 handles];
+      if (([handles hmf_isEmpty] & 1) == 0)
       {
-        v14 = [v7 primaryHandle];
-        if (v14)
+        primaryHandle = [v7 primaryHandle];
+        if (primaryHandle)
         {
           os_unfair_lock_lock_with_options();
-          v15 = [(NSSet *)v10->_handles allObjects];
-          v16 = __deviceHandlesForAccount(v15, v13, v14);
+          allObjects = [(NSSet *)selfCopy->_handles allObjects];
+          v16 = __deviceHandlesForAccount(allObjects, handles, primaryHandle);
 
           v17 = [MEMORY[0x277CBEB98] setWithArray:v16];
-          handles = v10->_handles;
-          v10->_handles = v17;
+          handles = selfCopy->_handles;
+          selfCopy->_handles = v17;
 
-          os_unfair_lock_unlock(&v10->_lock.lock);
+          os_unfair_lock_unlock(&selfCopy->_lock.lock);
         }
       }
     }
@@ -2262,19 +2262,19 @@ LABEL_4:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setHandles:(id)a3
+- (void)setHandles:(id)handles
 {
-  v4 = a3;
-  if (v4)
+  handlesCopy = handles;
+  if (handlesCopy)
   {
-    v12 = v4;
-    v5 = [(HMDDevice *)self account];
+    v12 = handlesCopy;
+    account = [(HMDDevice *)self account];
     v6 = [v12 copy];
-    if (v5)
+    if (account)
     {
-      v7 = [v5 handles];
-      v8 = [v5 primaryHandle];
-      v9 = __deviceHandlesForAccount(v6, v7, v8);
+      handles = [account handles];
+      primaryHandle = [account primaryHandle];
+      v9 = __deviceHandlesForAccount(v6, handles, primaryHandle);
 
       v6 = v9;
     }
@@ -2285,7 +2285,7 @@ LABEL_4:
     self->_handles = v10;
 
     os_unfair_lock_unlock(&self->_lock.lock);
-    v4 = v12;
+    handlesCopy = v12;
   }
 }
 
@@ -2296,8 +2296,8 @@ LABEL_4:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(HMDDevice *)self globalHandles];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  globalHandles = [(HMDDevice *)self globalHandles];
+  v3 = [globalHandles countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2308,18 +2308,18 @@ LABEL_4:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(globalHandles);
         }
 
-        v7 = [*(*(&v11 + 1) + 8 * i) pushToken];
-        if (v7)
+        pushToken = [*(*(&v11 + 1) + 8 * i) pushToken];
+        if (pushToken)
         {
-          v8 = v7;
+          v8 = pushToken;
           goto LABEL_11;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [globalHandles countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -2339,31 +2339,31 @@ LABEL_11:
 
 - (id)globalDestination
 {
-  v2 = [(HMDDevice *)self globalHandles];
-  if ([v2 count])
+  globalHandles = [(HMDDevice *)self globalHandles];
+  if ([globalHandles count])
   {
-    v3 = [v2 firstObject];
-    v4 = [v3 destination];
+    firstObject = [globalHandles firstObject];
+    destination = [firstObject destination];
   }
 
   else
   {
-    v4 = 0;
+    destination = 0;
   }
 
-  return v4;
+  return destination;
 }
 
 - (id)globalHandles
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDDevice *)self handles];
-  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  handles = [(HMDDevice *)self handles];
+  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(handles, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = handles;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -2399,13 +2399,13 @@ LABEL_11:
 - (id)localHandles
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDDevice *)self handles];
-  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  handles = [(HMDDevice *)self handles];
+  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(handles, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = handles;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -2441,50 +2441,50 @@ LABEL_11:
 - (id)handles
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSSet *)self->_handles allObjects];
+  allObjects = [(NSSet *)self->_handles allObjects];
   os_unfair_lock_unlock(&self->_lock.lock);
 
-  return v3;
+  return allObjects;
 }
 
 - (HMDDeviceAddress)deviceAddress
 {
-  v3 = [(HMDDevice *)self idsIdentifier];
-  v4 = [(HMDDevice *)self globalHandles];
-  v5 = [v4 firstObject];
-  v6 = [v5 destination];
-  v7 = [HMDDeviceAddress addressWithIDSIdentifier:v3 idsDestination:v6];
+  idsIdentifier = [(HMDDevice *)self idsIdentifier];
+  globalHandles = [(HMDDevice *)self globalHandles];
+  firstObject = [globalHandles firstObject];
+  destination = [firstObject destination];
+  v7 = [HMDDeviceAddress addressWithIDSIdentifier:idsIdentifier idsDestination:destination];
 
   return v7;
 }
 
-- (BOOL)isSameAccountWithDevice:(id)a3
+- (BOOL)isSameAccountWithDevice:(id)device
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDDevice *)self account];
-  v6 = [(HMDDevice *)v4 account];
-  v7 = v6;
-  if (v5 && v6)
+  deviceCopy = device;
+  account = [(HMDDevice *)self account];
+  account2 = [(HMDDevice *)deviceCopy account];
+  v7 = account2;
+  if (account && account2)
   {
     v8 = HMFEqualObjects();
   }
 
   else
   {
-    if (v5)
+    if (account)
     {
-      v9 = v4;
+      selfCopy = deviceCopy;
     }
 
     else
     {
-      v9 = self;
+      selfCopy = self;
     }
 
-    v10 = v9;
+    v10 = selfCopy;
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -2504,10 +2504,10 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)isRelatedToDevice:(id)a3
+- (BOOL)isRelatedToDevice:(id)device
 {
-  v4 = a3;
-  if ([(HMDDevice *)self isEqual:v4])
+  deviceCopy = device;
+  if ([(HMDDevice *)self isEqual:deviceCopy])
   {
     v5 = 1;
   }
@@ -2515,12 +2515,12 @@ LABEL_11:
   else
   {
     v6 = MEMORY[0x277CBEB58];
-    v7 = [v4 handles];
-    v8 = [v6 setWithArray:v7];
+    handles = [deviceCopy handles];
+    v8 = [v6 setWithArray:handles];
 
     v9 = MEMORY[0x277CBEB98];
-    v10 = [(HMDDevice *)self handles];
-    v11 = [v9 setWithArray:v10];
+    handles2 = [(HMDDevice *)self handles];
+    v11 = [v9 setWithArray:handles2];
     [v8 intersectSet:v11];
 
     v5 = [v8 count] != 0;
@@ -2529,10 +2529,10 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -2542,9 +2542,9 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HMDDevice *)v4 identifier];
-      v6 = [(HMDDevice *)self identifier];
-      v7 = [v5 isEqual:v6];
+      identifier = [(HMDDevice *)equalCopy identifier];
+      identifier2 = [(HMDDevice *)self identifier];
+      v7 = [identifier isEqual:identifier2];
     }
 
     else
@@ -2558,8 +2558,8 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(HMDDevice *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMDDevice *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -2568,68 +2568,68 @@ LABEL_11:
 {
   v37[8] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v36 = [(HMDDevice *)self identifier];
-  v35 = [v36 UUIDString];
+  identifier = [(HMDDevice *)self identifier];
+  uUIDString = [identifier UUIDString];
   v34 = [v3 initWithName:@"ID" value:?];
   v37[0] = v34;
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDDevice *)self name];
-  v32 = [MEMORY[0x277D0F8D8] defaultFormatter];
-  v33 = v5;
-  v31 = [v4 initWithName:@"Nm" value:v5 options:0 formatter:?];
+  name = [(HMDDevice *)self name];
+  defaultFormatter = [MEMORY[0x277D0F8D8] defaultFormatter];
+  v33 = name;
+  v31 = [v4 initWithName:@"Nm" value:name options:0 formatter:?];
   v37[1] = v31;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v30 = [(HMDDevice *)self version];
-  if (v30)
+  version = [(HMDDevice *)self version];
+  if (version)
   {
-    v7 = [(HMDDevice *)self version];
+    version2 = [(HMDDevice *)self version];
   }
 
   else
   {
-    v7 = @"Unknown";
+    version2 = @"Unknown";
   }
 
-  v29 = [v6 initWithName:@"Ver" value:{v7, v7}];
+  v29 = [v6 initWithName:@"Ver" value:{version2, version2}];
   v37[2] = v29;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v28 = [(HMDDevice *)self capabilities];
-  v27 = [v28 shortDescription];
+  capabilities = [(HMDDevice *)self capabilities];
+  shortDescription = [capabilities shortDescription];
   v9 = [v8 initWithName:@"Cap" value:?];
   v37[3] = v9;
   v10 = objc_alloc(MEMORY[0x277D0F778]);
-  v11 = [(HMDDevice *)self sharedUserIDSIdentifier];
-  v12 = [v10 initWithName:@"SHID" value:v11];
+  sharedUserIDSIdentifier = [(HMDDevice *)self sharedUserIDSIdentifier];
+  v12 = [v10 initWithName:@"SHID" value:sharedUserIDSIdentifier];
   v37[4] = v12;
   v13 = objc_alloc(MEMORY[0x277D0F778]);
-  v14 = [(HMDDevice *)self localOnlyVersionFromIDS];
-  if (v14)
+  localOnlyVersionFromIDS = [(HMDDevice *)self localOnlyVersionFromIDS];
+  if (localOnlyVersionFromIDS)
   {
-    v15 = [(HMDDevice *)self localOnlyVersionFromIDS];
+    localOnlyVersionFromIDS2 = [(HMDDevice *)self localOnlyVersionFromIDS];
   }
 
   else
   {
-    v15 = @"Unknown";
+    localOnlyVersionFromIDS2 = @"Unknown";
   }
 
-  v16 = [v13 initWithName:@"IdsVer" value:v15];
+  v16 = [v13 initWithName:@"IdsVer" value:localOnlyVersionFromIDS2];
   v37[5] = v16;
   v17 = objc_alloc(MEMORY[0x277D0F778]);
-  v18 = [(HMDDevice *)self idsIdentifier];
-  v19 = [v17 initWithName:@"IDS" value:v18];
+  idsIdentifier = [(HMDDevice *)self idsIdentifier];
+  v19 = [v17 initWithName:@"IDS" value:idsIdentifier];
   v37[6] = v19;
   v20 = objc_alloc(MEMORY[0x277D0F778]);
-  v21 = [(HMDDevice *)self handles];
-  v22 = [v20 initWithName:@"Hndl" value:v21];
+  handles = [(HMDDevice *)self handles];
+  v22 = [v20 initWithName:@"Hndl" value:handles];
   v37[7] = v22;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:8];
 
-  if (v14)
+  if (localOnlyVersionFromIDS)
   {
   }
 
-  if (v30)
+  if (version)
   {
   }
 
@@ -2642,53 +2642,53 @@ LABEL_11:
 {
   v3 = isInternalBuild();
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(HMDDevice *)self identifier];
-  v6 = v5;
+  identifier = [(HMDDevice *)self identifier];
+  v6 = identifier;
   if (v3)
   {
-    v7 = [(HMDDevice *)self name];
-    v8 = [v4 stringWithFormat:@"%@/%@", v6, v7];
+    name = [(HMDDevice *)self name];
+    v8 = [v4 stringWithFormat:@"%@/%@", v6, name];
   }
 
   else
   {
-    v8 = [v4 stringWithFormat:@"%@", v5];
+    v8 = [v4 stringWithFormat:@"%@", identifier];
   }
 
   return v8;
 }
 
-- (HMDDevice)initWithObjectModel:(id)a3
+- (HMDDevice)initWithObjectModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = v5;
-  if (v5)
+  modelCopy = model;
+  identifier = [modelCopy identifier];
+  v6 = identifier;
+  if (identifier)
   {
-    v7 = v5;
+    uuid = identifier;
   }
 
   else
   {
-    v7 = [v4 uuid];
+    uuid = [modelCopy uuid];
   }
 
-  v8 = v7;
+  v8 = uuid;
 
-  v9 = [v4 deviceHandles];
-  v10 = [v4 name];
-  v11 = [v4 productInfo];
-  v12 = [v4 version];
-  v13 = [(HMDDevice *)self initWithIdentifier:v8 handles:v9 name:v10 productInfo:v11 version:v12 capabilities:0];
+  deviceHandles = [modelCopy deviceHandles];
+  name = [modelCopy name];
+  productInfo = [modelCopy productInfo];
+  version = [modelCopy version];
+  v13 = [(HMDDevice *)self initWithIdentifier:v8 handles:deviceHandles name:name productInfo:productInfo version:version capabilities:0];
 
   if (v13)
   {
-    v14 = [v4 uuid];
+    uuid2 = [modelCopy uuid];
     modelIdentifier = v13->_modelIdentifier;
-    v13->_modelIdentifier = v14;
+    v13->_modelIdentifier = uuid2;
 
-    v16 = [v4 rpIdentity];
-    v17 = [v16 copy];
+    rpIdentity = [modelCopy rpIdentity];
+    v17 = [rpIdentity copy];
     rpIdentity = v13->_rpIdentity;
     v13->_rpIdentity = v17;
   }
@@ -2696,15 +2696,15 @@ LABEL_11:
   return v13;
 }
 
-- (HMDDevice)initWithDeviceAddress:(id)a3
+- (HMDDevice)initWithDeviceAddress:(id)address
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 idsDestination];
-  v6 = [HMDDeviceHandle deviceHandleForDestination:v5];
+  addressCopy = address;
+  idsDestination = [addressCopy idsDestination];
+  v6 = [HMDDeviceHandle deviceHandleForDestination:idsDestination];
 
-  v7 = [v4 idsIdentifier];
-  v8 = [HMDDeviceHandle deviceHandleForDeviceIdentifier:v7];
+  idsIdentifier = [addressCopy idsIdentifier];
+  v8 = [HMDDeviceHandle deviceHandleForDeviceIdentifier:idsIdentifier];
 
   if (([v6 isGlobal] & 1) == 0)
   {
@@ -2718,25 +2718,25 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v9 = [v6 identifier];
+  identifier = [v6 identifier];
   v14[0] = v6;
   v14[1] = v8;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-  v11 = [(HMDDevice *)self initWithIdentifier:v9 handles:v10 name:0 productInfo:0 version:0 capabilities:0];
+  v11 = [(HMDDevice *)self initWithIdentifier:identifier handles:v10 name:0 productInfo:0 version:0 capabilities:0];
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (HMDDevice)initWithIdentifier:(id)a3 handles:(id)a4 name:(id)a5 productInfo:(id)a6 version:(id)a7 capabilities:(id)a8 account:(id)a9
+- (HMDDevice)initWithIdentifier:(id)identifier handles:(id)handles name:(id)name productInfo:(id)info version:(id)version capabilities:(id)capabilities account:(id)account
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v38 = a7;
-  v19 = a8;
-  v20 = a9;
+  identifierCopy = identifier;
+  handlesCopy = handles;
+  nameCopy = name;
+  infoCopy = info;
+  versionCopy = version;
+  capabilitiesCopy = capabilities;
+  accountCopy = account;
   v39.receiver = self;
   v39.super_class = HMDDevice;
   v21 = [(HMDDevice *)&v39 init];
@@ -2744,32 +2744,32 @@ LABEL_5:
   if (v21)
   {
     v21->_lock.lock._os_unfair_lock_opaque = 0;
-    v23 = [v15 copy];
+    v23 = [identifierCopy copy];
     identifier = v22->_identifier;
     v22->_identifier = v23;
 
-    v25 = [MEMORY[0x277CBEB98] setWithArray:v16];
+    v25 = [MEMORY[0x277CBEB98] setWithArray:handlesCopy];
     handles = v22->_handles;
     v22->_handles = v25;
 
-    v27 = [v17 copy];
+    v27 = [nameCopy copy];
     name = v22->_name;
     v22->_name = v27;
 
-    v29 = [v18 copy];
+    v29 = [infoCopy copy];
     productInfo = v22->_productInfo;
     v22->_productInfo = v29;
 
-    objc_storeStrong(&v22->_version, a7);
-    v31 = [v19 copy];
+    objc_storeStrong(&v22->_version, version);
+    v31 = [capabilitiesCopy copy];
     capabilities = v22->_capabilities;
     v22->_capabilities = v31;
 
-    objc_storeStrong(&v22->_localOnlyVersionFromIDS, a7);
-    if (v20)
+    objc_storeStrong(&v22->_localOnlyVersionFromIDS, version);
+    if (accountCopy)
     {
-      v33 = [v20 modelIdentifier];
-      v34 = __modelIdentifierFromParentIdentifier(v22, v33);
+      modelIdentifier = [accountCopy modelIdentifier];
+      v34 = __modelIdentifierFromParentIdentifier(v22, modelIdentifier);
       modelIdentifier = v22->_modelIdentifier;
       v22->_modelIdentifier = v34;
 
@@ -2819,35 +2819,35 @@ uint64_t __24__HMDDevice_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (HMDDevice)deviceWithHandle:(id)a3
++ (HMDDevice)deviceWithHandle:(id)handle
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 identifier];
-  v11[0] = v4;
+  handleCopy = handle;
+  v5 = [self alloc];
+  identifier = [handleCopy identifier];
+  v11[0] = handleCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
 
-  v8 = [v5 initWithIdentifier:v6 handles:v7 name:0 productInfo:0 version:0 capabilities:0];
+  v8 = [v5 initWithIdentifier:identifier handles:v7 name:0 productInfo:0 version:0 capabilities:0];
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-+ (HMDDevice)deviceWithDestination:(id)a3
++ (HMDDevice)deviceWithDestination:(id)destination
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [HMDDeviceHandle deviceHandleForDestination:v4];
+  destinationCopy = destination;
+  v5 = [HMDDeviceHandle deviceHandleForDestination:destinationCopy];
   if (v5)
   {
-    v6 = [a1 deviceWithHandle:v5];
+    v6 = [self deviceWithHandle:v5];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = a1;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -2855,7 +2855,7 @@ uint64_t __24__HMDDevice_logCategory__block_invoke()
       v13 = 138543618;
       v14 = v10;
       v15 = 2112;
-      v16 = v4;
+      v16 = destinationCopy;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_ERROR, "%{public}@Invalid destination: %@", &v13, 0x16u);
     }
 

@@ -1,23 +1,23 @@
 @interface TDAsset
-+ (BOOL)isTemplateFromImageFilename:(id)a3;
++ (BOOL)isTemplateFromImageFilename:(id)filename;
 + (id)_filenameRegex;
-+ (int64_t)idiomFromImageFilename:(id)a3;
-+ (int64_t)subtypeFromImageFilename:(id)a3;
-+ (unsigned)scaleFactorFromImageFilename:(id)a3;
++ (int64_t)idiomFromImageFilename:(id)filename;
++ (int64_t)subtypeFromImageFilename:(id)filename;
++ (unsigned)scaleFactorFromImageFilename:(id)filename;
 - (NSString)baseName;
 - (id)_sourceRelativePathComponents;
-- (id)fileURLWithDocument:(id)a3;
+- (id)fileURLWithDocument:(id)document;
 - (id)sourceRelativePath;
 - (unsigned)scaleFactor;
-- (void)setScaleFactor:(unsigned int)a3;
+- (void)setScaleFactor:(unsigned int)factor;
 @end
 
 @implementation TDAsset
 
-- (void)setScaleFactor:(unsigned int)a3
+- (void)setScaleFactor:(unsigned int)factor
 {
   [(TDAsset *)self willChangeValueForKey:@"scaleFactor"];
-  self->_scaleFactor = a3;
+  self->_scaleFactor = factor;
 
   [(TDAsset *)self didChangeValueForKey:@"scaleFactor"];
 }
@@ -32,45 +32,45 @@
 
 - (id)_sourceRelativePathComponents
 {
-  v3 = [(TDAsset *)self name];
-  v4 = [(TDAsset *)self category];
-  if (![v4 length])
+  name = [(TDAsset *)self name];
+  category = [(TDAsset *)self category];
+  if (![category length])
   {
-    return v3;
+    return name;
   }
 
-  return [v4 stringByAppendingPathComponent:v3];
+  return [category stringByAppendingPathComponent:name];
 }
 
 - (id)sourceRelativePath
 {
-  v3 = [(TDAsset *)self _sourceRelativePathComponents];
+  _sourceRelativePathComponents = [(TDAsset *)self _sourceRelativePathComponents];
   v4 = [-[TDAsset source](self "source")];
   if (![v4 length])
   {
-    return v3;
+    return _sourceRelativePathComponents;
   }
 
-  return [v4 stringByAppendingPathComponent:v3];
+  return [v4 stringByAppendingPathComponent:_sourceRelativePathComponents];
 }
 
-- (id)fileURLWithDocument:(id)a3
+- (id)fileURLWithDocument:(id)document
 {
-  v5 = [(TDAsset *)self _sourceRelativePathComponents];
+  _sourceRelativePathComponents = [(TDAsset *)self _sourceRelativePathComponents];
   v6 = [objc_msgSend(-[TDAsset source](self "source")];
   if ([v6 length])
   {
-    v5 = [v6 stringByAppendingPathComponent:v5];
+    _sourceRelativePathComponents = [v6 stringByAppendingPathComponent:_sourceRelativePathComponents];
   }
 
-  if (!v5)
+  if (!_sourceRelativePathComponents)
   {
     return 0;
   }
 
   v7 = MEMORY[0x277CBEBC0];
 
-  return [v7 fileURLWithPath:v5 isDirectory:0];
+  return [v7 fileURLWithPath:_sourceRelativePathComponents isDirectory:0];
 }
 
 + (id)_filenameRegex
@@ -105,14 +105,14 @@ uint64_t __25__TDAsset__filenameRegex__block_invoke()
   }
 
   v6 = v4;
-  v7 = [(TDAsset *)self name];
+  name = [(TDAsset *)self name];
 
-  return [v7 substringToIndex:v6];
+  return [name substringToIndex:v6];
 }
 
-+ (unsigned)scaleFactorFromImageFilename:(id)a3
++ (unsigned)scaleFactorFromImageFilename:(id)filename
 {
-  if ([a3 length])
+  if ([filename length])
   {
     v4 = [+[TDAsset _filenameRegex](TDAsset "_filenameRegex")];
   }
@@ -133,12 +133,12 @@ uint64_t __25__TDAsset__filenameRegex__block_invoke()
     return 1;
   }
 
-  v8 = [a3 substringWithRange:{v5 + 1, v6 - 2}];
+  v8 = [filename substringWithRange:{v5 + 1, v6 - 2}];
 
   return [v8 intValue];
 }
 
-+ (BOOL)isTemplateFromImageFilename:(id)a3
++ (BOOL)isTemplateFromImageFilename:(id)filename
 {
   v3 = [+[TDAsset _filenameRegex](TDAsset "_filenameRegex")];
   v4 = [v3 count];
@@ -150,7 +150,7 @@ uint64_t __25__TDAsset__filenameRegex__block_invoke()
   return v4;
 }
 
-+ (int64_t)idiomFromImageFilename:(id)a3
++ (int64_t)idiomFromImageFilename:(id)filename
 {
   v4 = [+[TDAsset _filenameRegex](TDAsset "_filenameRegex")];
   result = [v4 count];
@@ -178,7 +178,7 @@ uint64_t __25__TDAsset__filenameRegex__block_invoke()
 
     else
     {
-      v9 = [a3 substringWithRange:{v7, v8}];
+      v9 = [filename substringWithRange:{v7, v8}];
       if ([v9 caseInsensitiveCompare:@"~ipad"])
       {
         if ([v9 caseInsensitiveCompare:@"~iphone"])
@@ -223,7 +223,7 @@ uint64_t __25__TDAsset__filenameRegex__block_invoke()
   return result;
 }
 
-+ (int64_t)subtypeFromImageFilename:(id)a3
++ (int64_t)subtypeFromImageFilename:(id)filename
 {
   v3 = [+[TDAsset _filenameRegex](TDAsset "_filenameRegex")];
   if (![v3 count])

@@ -1,37 +1,37 @@
 @interface HUAccessorySettingsUtilities
-+ (BOOL)_shouldCollapseModuleForGroupKeyPath:(id)a3;
-+ (BOOL)_shouldSkipModuleCreationForGroupKeyPath:(id)a3 accessory:(id)a4 home:(id)a5;
-+ (id)generateModulesFromSettingsDictionary:(id)a3 itemUpdater:(id)a4 home:(id)a5 sourceItem:(id)a6 usageOptions:(id)a7 settingsController:(id)a8;
++ (BOOL)_shouldCollapseModuleForGroupKeyPath:(id)path;
++ (BOOL)_shouldSkipModuleCreationForGroupKeyPath:(id)path accessory:(id)accessory home:(id)home;
++ (id)generateModulesFromSettingsDictionary:(id)dictionary itemUpdater:(id)updater home:(id)home sourceItem:(id)item usageOptions:(id)options settingsController:(id)controller;
 @end
 
 @implementation HUAccessorySettingsUtilities
 
-+ (id)generateModulesFromSettingsDictionary:(id)a3 itemUpdater:(id)a4 home:(id)a5 sourceItem:(id)a6 usageOptions:(id)a7 settingsController:(id)a8
++ (id)generateModulesFromSettingsDictionary:(id)dictionary itemUpdater:(id)updater home:(id)home sourceItem:(id)item usageOptions:(id)options settingsController:(id)controller
 {
   v49 = *MEMORY[0x277D85DE8];
-  v37 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a8;
+  updaterCopy = updater;
+  homeCopy = home;
+  itemCopy = item;
+  controllerCopy = controller;
   v36 = objc_opt_new();
-  v15 = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
-  v16 = [v13 accessories];
-  v39 = [v16 anyObject];
+  hf_accessorySettingsDictionary = [MEMORY[0x277D14368] hf_accessorySettingsDictionary];
+  accessories = [itemCopy accessories];
+  anyObject = [accessories anyObject];
 
-  if (v15)
+  if (hf_accessorySettingsDictionary)
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v34 = v15;
-    v17 = v15;
+    v34 = hf_accessorySettingsDictionary;
+    v17 = hf_accessorySettingsDictionary;
     v18 = [v17 countByEnumeratingWithState:&v40 objects:v48 count:16];
     if (v18)
     {
       v19 = v18;
       v20 = *v41;
-      v35 = a1;
+      selfCopy = self;
       v38 = v17;
       do
       {
@@ -43,9 +43,9 @@
           }
 
           v22 = *(*(&v40 + 1) + 8 * i);
-          if (([a1 _shouldSkipModuleCreationForGroupKeyPath:v22 accessory:v39 home:v12] & 1) == 0)
+          if (([self _shouldSkipModuleCreationForGroupKeyPath:v22 accessory:anyObject home:homeCopy] & 1) == 0)
           {
-            if ([a1 _shouldCollapseModuleForGroupKeyPath:v22])
+            if ([self _shouldCollapseModuleForGroupKeyPath:v22])
             {
               v23 = 1;
             }
@@ -59,15 +59,15 @@
               v17 = v38;
             }
 
-            v26 = [[HUHomeKitAccessorySettingsItemModule alloc] initWithSettingsController:v14 itemUpdater:v37 home:v12 sourceItem:v13 settingGroupKeyPath:v22 isCollapsed:v23];
+            v26 = [[HUHomeKitAccessorySettingsItemModule alloc] initWithSettingsController:controllerCopy itemUpdater:updaterCopy home:homeCopy sourceItem:itemCopy settingGroupKeyPath:v22 isCollapsed:v23];
             [v17 objectForKeyedSubscript:v22];
-            v27 = v14;
-            v29 = v28 = v13;
+            v27 = controllerCopy;
+            v29 = v28 = itemCopy;
             v30 = [v29 objectForKeyedSubscript:*MEMORY[0x277D13398]];
 
             if (v30)
             {
-              v31 = [objc_alloc(NSClassFromString(v30)) initWithSettingsController:v27 sourceItem:v28 home:v12];
+              v31 = [objc_alloc(NSClassFromString(v30)) initWithSettingsController:v27 sourceItem:v28 home:homeCopy];
               [(HUHomeKitAccessorySettingsItemModule *)v26 setAccessorySettingsManager:v31];
             }
 
@@ -82,9 +82,9 @@
             }
 
             [v36 na_safeAddObject:v26];
-            v13 = v28;
-            v14 = v27;
-            a1 = v35;
+            itemCopy = v28;
+            controllerCopy = v27;
+            self = selfCopy;
             v17 = v38;
           }
         }
@@ -95,21 +95,21 @@
       while (v19);
     }
 
-    v15 = v34;
+    hf_accessorySettingsDictionary = v34;
   }
 
   return v36;
 }
 
-+ (BOOL)_shouldSkipModuleCreationForGroupKeyPath:(id)a3 accessory:(id)a4 home:(id)a5
++ (BOOL)_shouldSkipModuleCreationForGroupKeyPath:(id)path accessory:(id)accessory home:(id)home
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  pathCopy = path;
+  accessoryCopy = accessory;
+  homeCopy = home;
   v10 = objc_opt_new();
-  v11 = [v8 hf_categoryOrPrimaryServiceType];
-  v12 = [v11 isEqualToString:*MEMORY[0x277CCE900]];
+  hf_categoryOrPrimaryServiceType = [accessoryCopy hf_categoryOrPrimaryServiceType];
+  v12 = [hf_categoryOrPrimaryServiceType isEqualToString:*MEMORY[0x277CCE900]];
 
   if (v12)
   {
@@ -123,16 +123,16 @@
     [v10 addObjectsFromArray:v13];
   }
 
-  if ([v8 supportsUserMediaSettings])
+  if ([accessoryCopy supportsUserMediaSettings])
   {
     [v10 addObject:*MEMORY[0x277D138A8]];
   }
 
   v14 = MEMORY[0x277D13840];
-  if ([v7 isEqualToString:*MEMORY[0x277D13840]])
+  if ([pathCopy isEqualToString:*MEMORY[0x277D13840]])
   {
-    v15 = [v9 hf_allCameraProfilesWithDoorbellService];
-    v16 = [v15 count];
+    hf_allCameraProfilesWithDoorbellService = [homeCopy hf_allCameraProfilesWithDoorbellService];
+    v16 = [hf_allCameraProfilesWithDoorbellService count];
 
     if (!v16)
     {
@@ -149,22 +149,22 @@
     [v10 addObjectsFromArray:v18];
   }
 
-  v19 = [v10 containsObject:v7];
+  v19 = [v10 containsObject:pathCopy];
 
   return v19;
 }
 
-+ (BOOL)_shouldCollapseModuleForGroupKeyPath:(id)a3
++ (BOOL)_shouldCollapseModuleForGroupKeyPath:(id)path
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D133A8]])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:*MEMORY[0x277D133A8]])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x277D14170]];
+    v4 = [pathCopy isEqualToString:*MEMORY[0x277D14170]];
   }
 
   return v4;

@@ -1,26 +1,26 @@
 @interface UIGestureKeyboardIntroduction
 - (BOOL)showGestureKeyboardIntroduction;
-- (UIGestureKeyboardIntroduction)initWithLayoutStar:(id)a3 completion:(id)a4;
-- (void)dismissGestureKeyboardIntroduction:(id)a3;
-- (void)insertText:(id)a3 forKey:(id)a4;
-- (void)playGestureKeyboardIntroduction:(id)a3;
-- (void)tryGestureKeyboardFromView:(id)a3 withEvent:(id)a4;
+- (UIGestureKeyboardIntroduction)initWithLayoutStar:(id)star completion:(id)completion;
+- (void)dismissGestureKeyboardIntroduction:(id)introduction;
+- (void)insertText:(id)text forKey:(id)key;
+- (void)playGestureKeyboardIntroduction:(id)introduction;
+- (void)tryGestureKeyboardFromView:(id)view withEvent:(id)event;
 @end
 
 @implementation UIGestureKeyboardIntroduction
 
-- (UIGestureKeyboardIntroduction)initWithLayoutStar:(id)a3 completion:(id)a4
+- (UIGestureKeyboardIntroduction)initWithLayoutStar:(id)star completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  starCopy = star;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = UIGestureKeyboardIntroduction;
   v9 = [(UIGestureKeyboardIntroduction *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->m_layout, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->m_layout, star);
+    v11 = [completionCopy copy];
     m_completionBlock = v10->m_completionBlock;
     v10->m_completionBlock = v11;
   }
@@ -30,64 +30,64 @@
 
 - (BOOL)showGestureKeyboardIntroduction
 {
-  v2 = self;
+  selfCopy = self;
   v88[2] = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyboardLayoutStar *)self->m_layout currentKeyplane];
-  v4 = [(UIKeyboardLayoutStar *)v2->m_layout currentKeyplaneView];
-  v5 = [v3 subtrees];
-  v6 = [v5 firstObject];
+  currentKeyplane = [(UIKeyboardLayoutStar *)self->m_layout currentKeyplane];
+  currentKeyplaneView = [(UIKeyboardLayoutStar *)selfCopy->m_layout currentKeyplaneView];
+  subtrees = [currentKeyplane subtrees];
+  firstObject = [subtrees firstObject];
 
-  v7 = [v6 keySet];
-  v8 = [v7 subtrees];
-  v9 = [v8 count];
+  keySet = [firstObject keySet];
+  subtrees2 = [keySet subtrees];
+  v9 = [subtrees2 count];
 
   if (v9 > 1)
   {
-    v13 = [v6 keySet];
-    v14 = [v13 subtrees];
-    if ([v14 count] < 2)
+    keySet2 = [firstObject keySet];
+    subtrees3 = [keySet2 subtrees];
+    if ([subtrees3 count] < 2)
     {
       v17 = 0;
     }
 
     else
     {
-      v15 = [v6 keySet];
-      v16 = [v15 subtrees];
-      v17 = [v16 objectAtIndexedSubscript:1];
+      keySet3 = [firstObject keySet];
+      subtrees4 = [keySet3 subtrees];
+      v17 = [subtrees4 objectAtIndexedSubscript:1];
     }
 
-    v18 = [v17 subtrees];
-    if ([v18 count] < 4)
+    subtrees5 = [v17 subtrees];
+    if ([subtrees5 count] < 4)
     {
       v20 = 0;
     }
 
     else
     {
-      v19 = [v17 subtrees];
-      v20 = [v19 objectAtIndexedSubscript:3];
+      subtrees6 = [v17 subtrees];
+      v20 = [subtrees6 objectAtIndexedSubscript:3];
     }
 
-    v21 = [v6 keySet];
-    v22 = [v21 subtrees];
-    if ([v22 count])
+    keySet4 = [firstObject keySet];
+    subtrees7 = [keySet4 subtrees];
+    if ([subtrees7 count])
     {
-      [v6 keySet];
-      v79 = v2;
-      v23 = v6;
-      v24 = v3;
-      v25 = v4;
+      [firstObject keySet];
+      v79 = selfCopy;
+      v23 = firstObject;
+      v24 = currentKeyplane;
+      v25 = currentKeyplaneView;
       v27 = v26 = v20;
-      v28 = [v27 subtrees];
-      v29 = [v28 objectAtIndexedSubscript:0];
+      subtrees8 = [v27 subtrees];
+      v29 = [subtrees8 objectAtIndexedSubscript:0];
 
       v17 = v27;
       v20 = v26;
-      v4 = v25;
-      v3 = v24;
-      v6 = v23;
-      v2 = v79;
+      currentKeyplaneView = v25;
+      currentKeyplane = v24;
+      firstObject = v23;
+      selfCopy = v79;
     }
 
     else
@@ -95,8 +95,8 @@
       v29 = 0;
     }
 
-    v30 = [v29 subtrees];
-    if ([v30 count] <= 4)
+    subtrees9 = [v29 subtrees];
+    if ([subtrees9 count] <= 4)
     {
 
       v32 = 0;
@@ -104,8 +104,8 @@
 
     else
     {
-      v31 = [v29 subtrees];
-      v32 = [v31 objectAtIndexedSubscript:4];
+      subtrees10 = [v29 subtrees];
+      v32 = [subtrees10 objectAtIndexedSubscript:4];
 
       if (v20 && v32 && [v20 displayTypeHint] == 10 && objc_msgSend(v32, "displayTypeHint") == 10)
       {
@@ -114,39 +114,39 @@
         v34 = [UIView alloc];
         [v33 frame];
         v35 = [(UIView *)v34 initWithFrame:?];
-        m_view = v2->m_view;
-        v2->m_view = v35;
+        m_view = selfCopy->m_view;
+        selfCopy->m_view = v35;
 
-        v37 = [v33 superview];
-        [v37 addSubview:v2->m_view];
+        superview = [v33 superview];
+        [superview addSubview:selfCopy->m_view];
 
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __64__UIGestureKeyboardIntroduction_showGestureKeyboardIntroduction__block_invoke;
         aBlock[3] = &unk_1E71100A8;
-        aBlock[4] = v2;
-        v82 = v4;
-        v83 = v3;
+        aBlock[4] = selfCopy;
+        v82 = currentKeyplaneView;
+        v83 = currentKeyplane;
         v76 = v33;
         v84 = v76;
         v38 = _Block_copy(aBlock);
         v77 = v20;
         v39 = v38[2](v38, v20, 1);
-        m_firstKeyView = v2->m_firstKeyView;
-        v2->m_firstKeyView = v39;
+        m_firstKeyView = selfCopy->m_firstKeyView;
+        selfCopy->m_firstKeyView = v39;
 
         v75 = v38;
         v41 = v38[2](v38, v32, 0);
-        m_secondKeyView = v2->m_secondKeyView;
-        v2->m_secondKeyView = v41;
+        m_secondKeyView = selfCopy->m_secondKeyView;
+        selfCopy->m_secondKeyView = v41;
 
-        [(UIView *)v2->m_view frame];
+        [(UIView *)selfCopy->m_view frame];
         v44 = v43;
         v45 = [UILabel alloc];
         v46 = [(UILabel *)v45 initWithFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v44, 60.0];
-        [(UIView *)v2->m_view center];
+        [(UIView *)selfCopy->m_view center];
         v48 = v47;
-        [(UIView *)v2->m_view frame];
+        [(UIView *)selfCopy->m_view frame];
         [(UIView *)v46 setCenter:v48, v49 * 0.25];
         [(UILabel *)v46 setUserInteractionEnabled:0];
         [(UILabel *)v46 setNumberOfLines:0];
@@ -155,8 +155,8 @@
         v78 = _UINSLocalizedStringWithDefaultValue(@"To access the alternate letters on the keyboard,\npull down on the key and release.", @"To access the alternate letters on the keyboard,\npull down on the key and release.");
         v72 = *off_1E70EC920;
         v87[0] = *off_1E70EC920;
-        v50 = [(UIKeyboardLayoutStar *)v2->m_layout renderConfig];
-        if ([v50 whiteText])
+        renderConfig = [(UIKeyboardLayoutStar *)selfCopy->m_layout renderConfig];
+        if ([renderConfig whiteText])
         {
           +[UIColor whiteColor];
         }
@@ -177,11 +177,11 @@
         v57 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v78 attributes:v56];
         [(UILabel *)v80 setAttributedText:v57];
 
-        [(UIView *)v2->m_view addSubview:v80];
+        [(UIView *)selfCopy->m_view addSubview:v80];
         v73 = [UIButton buttonWithType:1];
         v85[0] = v72;
-        v58 = [(UIKeyboardLayoutStar *)v2->m_layout renderConfig];
-        if ([v58 whiteText])
+        renderConfig2 = [(UIKeyboardLayoutStar *)selfCopy->m_layout renderConfig];
+        if ([renderConfig2 whiteText])
         {
           +[UIColor whiteColor];
         }
@@ -202,29 +202,29 @@
         v64 = [v62 initWithString:v63 attributes:v61];
 
         [v73 setAttributedTitle:v64 forState:0];
-        [v73 addTarget:v2 action:sel_dismissGestureKeyboardIntroduction_ forControlEvents:64];
-        [(UIView *)v2->m_view frame];
+        [v73 addTarget:selfCopy action:sel_dismissGestureKeyboardIntroduction_ forControlEvents:64];
+        [(UIView *)selfCopy->m_view frame];
         [v73 setSize:{v65 * 0.25, 20.0}];
-        [(UIView *)v2->m_view center];
+        [(UIView *)selfCopy->m_view center];
         v67 = v66;
-        [(UIView *)v2->m_view frame];
+        [(UIView *)selfCopy->m_view frame];
         [v73 setCenter:{v67, v68 * 7.0 * 0.125}];
-        [(UIView *)v2->m_view addSubview:v73];
-        v2->m_start = CFAbsoluteTimeGetCurrent();
-        [(NSTimer *)v2->m_gestureKeyboardInfoTimer invalidate];
+        [(UIView *)selfCopy->m_view addSubview:v73];
+        selfCopy->m_start = CFAbsoluteTimeGetCurrent();
+        [(NSTimer *)selfCopy->m_gestureKeyboardInfoTimer invalidate];
         v12 = 1;
-        v69 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:v2 target:sel_playGestureKeyboardIntroduction_ selector:0 userInfo:1 repeats:0.02];
-        m_gestureKeyboardInfoTimer = v2->m_gestureKeyboardInfoTimer;
-        v2->m_gestureKeyboardInfoTimer = v69;
+        v69 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:selfCopy target:sel_playGestureKeyboardIntroduction_ selector:0 userInfo:1 repeats:0.02];
+        m_gestureKeyboardInfoTimer = selfCopy->m_gestureKeyboardInfoTimer;
+        selfCopy->m_gestureKeyboardInfoTimer = v69;
 
         v20 = v77;
         goto LABEL_21;
       }
     }
 
-    v51 = [v2->m_completionBlock copy];
-    m_completionBlock = v2->m_completionBlock;
-    v2->m_completionBlock = 0;
+    v51 = [selfCopy->m_completionBlock copy];
+    m_completionBlock = selfCopy->m_completionBlock;
+    selfCopy->m_completionBlock = 0;
 
     v51[2](v51, 0);
     v12 = 0;
@@ -233,9 +233,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v10 = [v2->m_completionBlock copy];
-  v11 = v2->m_completionBlock;
-  v2->m_completionBlock = 0;
+  v10 = [selfCopy->m_completionBlock copy];
+  v11 = selfCopy->m_completionBlock;
+  selfCopy->m_completionBlock = 0;
 
   v10[2](v10, 0);
   v12 = 0;
@@ -292,19 +292,19 @@ id __64__UIGestureKeyboardIntroduction_showGestureKeyboardIntroduction__block_in
   return v25;
 }
 
-- (void)insertText:(id)a3 forKey:(id)a4
+- (void)insertText:(id)text forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  textCopy = text;
   v8 = +[UIKeyboardImpl activeInstance];
-  v9 = [(UIKeyboardLayoutStar *)self->m_layout createKeyEventForStringAction:v7 forKey:v6 inputFlags:0];
+  v9 = [(UIKeyboardLayoutStar *)self->m_layout createKeyEventForStringAction:textCopy forKey:keyCopy inputFlags:0];
 
   if (qword_1ED49F010 != -1)
   {
     dispatch_once(&qword_1ED49F010, &__block_literal_global_349);
   }
 
-  v10 = [v8 taskQueue];
+  taskQueue = [v8 taskQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __51__UIGestureKeyboardIntroduction_insertText_forKey___block_invoke_3;
@@ -314,7 +314,7 @@ id __64__UIGestureKeyboardIntroduction_showGestureKeyboardIntroduction__block_in
   v11 = _MergedGlobals_1171;
   v12 = v9;
   v13 = v8;
-  [v10 performSingleTask:v14 breadcrumb:v11];
+  [taskQueue performSingleTask:v14 breadcrumb:v11];
 
   ++self->m_insertedTextLength;
 }
@@ -326,19 +326,19 @@ void __51__UIGestureKeyboardIntroduction_insertText_forKey___block_invoke()
   _MergedGlobals_1171 = v0;
 }
 
-- (void)tryGestureKeyboardFromView:(id)a3 withEvent:(id)a4
+- (void)tryGestureKeyboardFromView:(id)view withEvent:(id)event
 {
-  v6 = a3;
-  v7 = [a4 touchesForView:v6];
-  v8 = [v7 anyObject];
+  viewCopy = view;
+  v7 = [event touchesForView:viewCopy];
+  anyObject = [v7 anyObject];
 
-  [v8 locationInView:v6];
+  [anyObject locationInView:viewCopy];
   v10 = v9;
   v12 = v11;
   v13 = v11 - self->m_initPoint.y;
-  [v6 frame];
+  [viewCopy frame];
   v15 = v13 / v14;
-  [v6 center];
+  [viewCopy center];
   v17 = v16;
   [(UIView *)self->m_view center];
   if (v17 >= v18)
@@ -352,7 +352,7 @@ void __51__UIGestureKeyboardIntroduction_insertText_forKey___block_invoke()
   }
 
   v20 = *(&self->super.isa + v19);
-  [v6 center];
+  [viewCopy center];
   v22 = v21;
   [(UIView *)self->m_view center];
   if (v22 <= v23)
@@ -366,10 +366,10 @@ void __51__UIGestureKeyboardIntroduction_insertText_forKey___block_invoke()
   }
 
   v25 = *(&self->super.isa + v24);
-  v26 = [v8 phase];
-  if (v26 > 2)
+  phase = [anyObject phase];
+  if (phase > 2)
   {
-    if (v26 == 3)
+    if (phase == 3)
     {
       if (v15 <= 0.5)
       {
@@ -378,25 +378,25 @@ void __51__UIGestureKeyboardIntroduction_insertText_forKey___block_invoke()
           goto LABEL_24;
         }
 
-        v41 = [v20 key];
-        v43 = [v41 representedString];
+        keyViewAnimator = [v20 key];
+        representedString = [keyViewAnimator representedString];
         v44 = [v20 key];
-        [(UIGestureKeyboardIntroduction *)self insertText:v43 forKey:v44];
+        [(UIGestureKeyboardIntroduction *)self insertText:representedString forKey:v44];
 
         goto LABEL_23;
       }
 
       v36 = [v20 key];
-      v37 = [v36 secondaryRepresentedStrings];
-      v38 = [v37 firstObject];
+      secondaryRepresentedStrings = [v36 secondaryRepresentedStrings];
+      firstObject = [secondaryRepresentedStrings firstObject];
       v39 = [v20 key];
-      v40 = [v39 gestureKey];
-      [(UIGestureKeyboardIntroduction *)self insertText:v38 forKey:v40];
+      gestureKey = [v39 gestureKey];
+      [(UIGestureKeyboardIntroduction *)self insertText:firstObject forKey:gestureKey];
     }
 
     else
     {
-      if (v26 != 4)
+      if (phase != 4)
       {
         goto LABEL_25;
       }
@@ -416,16 +416,16 @@ LABEL_24:
       }
     }
 
-    v41 = [(UIKeyboardLayoutStar *)self->m_layout keyViewAnimator];
-    [v41 endTransitionForKeyView:v20];
+    keyViewAnimator = [(UIKeyboardLayoutStar *)self->m_layout keyViewAnimator];
+    [keyViewAnimator endTransitionForKeyView:v20];
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  if ((v26 - 1) >= 2)
+  if ((phase - 1) >= 2)
   {
-    if (!v26)
+    if (!phase)
     {
       [(NSTimer *)self->m_gestureKeyboardInfoTimer invalidate];
       m_gestureKeyboardInfoTimer = self->m_gestureKeyboardInfoTimer;
@@ -434,12 +434,12 @@ LABEL_23:
       self->m_initPoint.x = v10;
       self->m_initPoint.y = v12;
       self->m_hasPeeked = 0;
-      v31 = [v25 superview];
+      superview = [v25 superview];
 
-      if (v31)
+      if (superview)
       {
-        v32 = [(UIKeyboardLayoutStar *)self->m_layout keyViewAnimator];
-        [v32 endTransitionForKeyView:v25];
+        keyViewAnimator2 = [(UIKeyboardLayoutStar *)self->m_layout keyViewAnimator];
+        [keyViewAnimator2 endTransitionForKeyView:v25];
 
         v33 = dispatch_time(0, 100000000);
         block[0] = MEMORY[0x1E69E9820];
@@ -450,12 +450,12 @@ LABEL_23:
         dispatch_after(v33, MEMORY[0x1E69E96A0], block);
       }
 
-      v34 = [v20 superview];
+      superview2 = [v20 superview];
 
-      if (v34)
+      if (superview2)
       {
-        v35 = [(UIKeyboardLayoutStar *)self->m_layout keyViewAnimator];
-        [v35 endTransitionForKeyView:v20];
+        keyViewAnimator3 = [(UIKeyboardLayoutStar *)self->m_layout keyViewAnimator];
+        [keyViewAnimator3 endTransitionForKeyView:v20];
       }
 
       else
@@ -467,10 +467,10 @@ LABEL_23:
 
   else
   {
-    v27 = [(UIKeyboardLayoutStar *)self->m_layout keyViewAnimator];
+    keyViewAnimator4 = [(UIKeyboardLayoutStar *)self->m_layout keyViewAnimator];
     v28 = v12 - self->m_initPoint.y;
-    [v6 frame];
-    [v27 updateTransitionForKeyView:v20 normalizedDragSize:{0.0, v28 / v29}];
+    [viewCopy frame];
+    [keyViewAnimator4 updateTransitionForKeyView:v20 normalizedDragSize:{0.0, v28 / v29}];
 
     if (v15 > 0.5)
     {
@@ -481,21 +481,21 @@ LABEL_23:
 LABEL_25:
 }
 
-- (void)playGestureKeyboardIntroduction:(id)a3
+- (void)playGestureKeyboardIntroduction:(id)introduction
 {
   v4 = CFAbsoluteTimeGetCurrent() - self->m_start;
   if (v4 >= 8.0)
   {
-    v10 = [(UIView *)self->m_firstKeyView superview];
+    superview = [(UIView *)self->m_firstKeyView superview];
 
-    if (v10)
+    if (superview)
     {
       [(UIKBKeyView *)self->m_firstKeyView removeFromSuperview];
     }
 
-    v11 = [(UIView *)self->m_secondKeyView superview];
+    superview2 = [(UIView *)self->m_secondKeyView superview];
 
-    if (v11)
+    if (superview2)
     {
       [(UIKBKeyView *)self->m_secondKeyView removeFromSuperview];
     }
@@ -511,16 +511,16 @@ LABEL_25:
     v6 = v4 - (v5 + v5);
     if (v6 < 1.3)
     {
-      v7 = [(UIView *)self->m_firstKeyView superview];
+      superview3 = [(UIView *)self->m_firstKeyView superview];
 
-      if (v7)
+      if (superview3)
       {
         [(UIKBKeyView *)self->m_firstKeyView removeFromSuperview];
       }
 
-      v8 = [(UIView *)self->m_secondKeyView superview];
+      superview4 = [(UIView *)self->m_secondKeyView superview];
 
-      if (v8)
+      if (superview4)
       {
         m_secondKeyView = self->m_secondKeyView;
 
@@ -550,8 +550,8 @@ LABEL_25:
     {
       if (self->m_isInTransition)
       {
-        v18 = [(UIKeyboardLayoutStar *)self->m_layout keyViewAnimator];
-        [v18 endTransitionForKeyView:v19];
+        keyViewAnimator = [(UIKeyboardLayoutStar *)self->m_layout keyViewAnimator];
+        [keyViewAnimator endTransitionForKeyView:v19];
 
         self->m_isInTransition = 0;
       }
@@ -559,8 +559,8 @@ LABEL_25:
 
     else
     {
-      v17 = [(UIKeyboardLayoutStar *)self->m_layout keyViewAnimator];
-      [v17 updateTransitionForKeyView:v19 normalizedDragSize:{0.0, v16 + v16}];
+      keyViewAnimator2 = [(UIKeyboardLayoutStar *)self->m_layout keyViewAnimator];
+      [keyViewAnimator2 updateTransitionForKeyView:v19 normalizedDragSize:{0.0, v16 + v16}];
 
       self->m_isInTransition = 1;
     }
@@ -569,7 +569,7 @@ LABEL_25:
   }
 }
 
-- (void)dismissGestureKeyboardIntroduction:(id)a3
+- (void)dismissGestureKeyboardIntroduction:(id)introduction
 {
   [(NSTimer *)self->m_gestureKeyboardInfoTimer invalidate];
   m_gestureKeyboardInfoTimer = self->m_gestureKeyboardInfoTimer;
@@ -605,7 +605,7 @@ LABEL_25:
     v11 = self->m_completionBlock;
     self->m_completionBlock = 0;
 
-    (v10)[2](v10, a3 != 0);
+    (v10)[2](v10, introduction != 0);
   }
 }
 

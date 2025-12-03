@@ -1,25 +1,25 @@
 @interface UGCPhotoDownloadManager
-+ (id)generateRandomizedDownloadTokenForClass:(Class)a3;
++ (id)generateRandomizedDownloadTokenForClass:(Class)class;
 + (id)sharedDownloadManager;
-- (BOOL)_canCancelDownloadOperation:(id)a3;
+- (BOOL)_canCancelDownloadOperation:(id)operation;
 - (UGCPhotoDownloadManager)init;
-- (id)_cachedImageForDownloadIdentifier:(id)a3;
-- (id)_completionOperationForPhotoInfo:(id)a3 downloadToken:(id)a4;
-- (id)_currentDownloadOperationForPhotoInfo:(id)a3;
-- (void)_updateCacheWithImage:(id)a3 forDownloadIdentifier:(id)a4;
-- (void)cancelRequestForPhotoInfo:(id)a3 downloadToken:(id)a4;
-- (void)fetchImageForPhotoInfo:(id)a3 callerIdentifier:(id)a4 callbackQueue:(id)a5 completion:(id)a6;
+- (id)_cachedImageForDownloadIdentifier:(id)identifier;
+- (id)_completionOperationForPhotoInfo:(id)info downloadToken:(id)token;
+- (id)_currentDownloadOperationForPhotoInfo:(id)info;
+- (void)_updateCacheWithImage:(id)image forDownloadIdentifier:(id)identifier;
+- (void)cancelRequestForPhotoInfo:(id)info downloadToken:(id)token;
+- (void)fetchImageForPhotoInfo:(id)info callerIdentifier:(id)identifier callbackQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation UGCPhotoDownloadManager
 
-- (id)_cachedImageForDownloadIdentifier:(id)a3
+- (id)_cachedImageForDownloadIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_workQueue);
-  if ([v4 length])
+  if ([identifierCopy length])
   {
-    v5 = [(NSCache *)self->_imageCache objectForKey:v4];
+    v5 = [(NSCache *)self->_imageCache objectForKey:identifierCopy];
   }
 
   else
@@ -30,12 +30,12 @@
   return v5;
 }
 
-- (void)_updateCacheWithImage:(id)a3 forDownloadIdentifier:(id)a4
+- (void)_updateCacheWithImage:(id)image forDownloadIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_workQueue);
-  if (!v6)
+  if (!imageCopy)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -49,7 +49,7 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (![v7 length])
+  if (![identifierCopy length])
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -65,18 +65,18 @@ LABEL_11:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = v7;
+    v11 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Adding image %@ to cache", &v10, 0xCu);
   }
 
-  [(NSCache *)self->_imageCache setObject:v6 forKey:v7 cost:1];
+  [(NSCache *)self->_imageCache setObject:imageCopy forKey:identifierCopy cost:1];
 LABEL_6:
 }
 
-- (BOOL)_canCancelDownloadOperation:(id)a3
+- (BOOL)_canCancelDownloadOperation:(id)operation
 {
-  v4 = a3;
-  if (v4)
+  operationCopy = operation;
+  if (operationCopy)
   {
     dispatch_assert_queue_V2(self->_workQueue);
     [(NSOperationQueue *)self->_completionOperationQueue operations];
@@ -98,8 +98,8 @@ LABEL_6:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dependencies];
-          v11 = [v10 containsObject:v4];
+          dependencies = [*(*(&v14 + 1) + 8 * i) dependencies];
+          v11 = [dependencies containsObject:operationCopy];
 
           if (v11)
           {
@@ -130,16 +130,16 @@ LABEL_12:
   return v12;
 }
 
-- (id)_completionOperationForPhotoInfo:(id)a3 downloadToken:(id)a4
+- (id)_completionOperationForPhotoInfo:(id)info downloadToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_workQueue);
-  v8 = [v6 downloadIdentifier];
+  downloadIdentifier = [infoCopy downloadIdentifier];
   v25[0] = @"DOWNLOAD_COMPLETION";
-  v25[1] = v7;
-  v25[2] = v8;
-  v9 = v7;
+  v25[1] = tokenCopy;
+  v25[2] = downloadIdentifier;
+  v9 = tokenCopy;
   v10 = [NSArray arrayWithObjects:v25 count:3];
 
   v11 = [v10 componentsJoinedByString:@"_"];
@@ -163,8 +163,8 @@ LABEL_12:
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
-        v17 = [v16 name];
-        v18 = [v17 isEqualToString:v11];
+        name = [v16 name];
+        v18 = [name isEqualToString:v11];
 
         if (v18)
         {
@@ -188,13 +188,13 @@ LABEL_11:
   return v13;
 }
 
-- (id)_currentDownloadOperationForPhotoInfo:(id)a3
+- (id)_currentDownloadOperationForPhotoInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_workQueue);
-  v5 = [v4 downloadIdentifier];
+  downloadIdentifier = [infoCopy downloadIdentifier];
   v21[0] = @"DOWNLOAD_OPERATION";
-  v21[1] = v5;
+  v21[1] = downloadIdentifier;
   v6 = [NSArray arrayWithObjects:v21 count:2];
   v7 = [v6 componentsJoinedByString:@"_"];
 
@@ -217,8 +217,8 @@ LABEL_11:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 name];
-        v14 = [v13 isEqualToString:v7];
+        name = [v12 name];
+        v14 = [name isEqualToString:v7];
 
         if (v14)
         {
@@ -242,17 +242,17 @@ LABEL_11:
   return v9;
 }
 
-- (void)cancelRequestForPhotoInfo:(id)a3 downloadToken:(id)a4
+- (void)cancelRequestForPhotoInfo:(id)info downloadToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  infoCopy = info;
+  tokenCopy = token;
+  if ([tokenCopy length])
   {
-    v8 = [v6 downloadIdentifier];
+    downloadIdentifier = [infoCopy downloadIdentifier];
     *buf = @"DOWNLOAD_COMPLETION";
-    v19 = v7;
-    v20 = v8;
-    v9 = v7;
+    v19 = tokenCopy;
+    v20 = downloadIdentifier;
+    v9 = tokenCopy;
     v10 = [NSArray arrayWithObjects:buf count:3];
 
     v11 = [v10 componentsJoinedByString:@"_"];
@@ -263,7 +263,7 @@ LABEL_11:
     v14[2] = sub_10078C614;
     v14[3] = &unk_101656A00;
     v14[4] = self;
-    v15 = v6;
+    v15 = infoCopy;
     v16 = v9;
     v17 = v11;
     v13 = v11;
@@ -277,13 +277,13 @@ LABEL_11:
   }
 }
 
-- (void)fetchImageForPhotoInfo:(id)a3 callerIdentifier:(id)a4 callbackQueue:(id)a5 completion:(id)a6
+- (void)fetchImageForPhotoInfo:(id)info callerIdentifier:(id)identifier callbackQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 url];
+  infoCopy = info;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  completionCopy = completion;
+  v14 = [infoCopy url];
 
   if (!v14)
   {
@@ -299,7 +299,7 @@ LABEL_15:
     goto LABEL_6;
   }
 
-  if (![v11 length])
+  if (![identifierCopy length])
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -311,7 +311,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (!v12)
+  if (!queueCopy)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -323,7 +323,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (!v13)
+  if (!completionCopy)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -341,10 +341,10 @@ LABEL_15:
   block[2] = sub_10078CA58;
   block[3] = &unk_101636B70;
   block[4] = self;
-  v18 = v10;
-  v19 = v12;
-  v21 = v13;
-  v20 = v11;
+  v18 = infoCopy;
+  v19 = queueCopy;
+  v21 = completionCopy;
+  v20 = identifierCopy;
   dispatch_async(workQueue, block);
 
 LABEL_6:
@@ -392,14 +392,14 @@ LABEL_6:
   return v3;
 }
 
-+ (id)generateRandomizedDownloadTokenForClass:(Class)a3
++ (id)generateRandomizedDownloadTokenForClass:(Class)class
 {
-  v3 = NSStringFromClass(a3);
+  v3 = NSStringFromClass(class);
   v4 = +[NSUUID UUID];
-  v5 = [v4 UUIDString];
+  uUIDString = [v4 UUIDString];
 
   v9[0] = v3;
-  v9[1] = v5;
+  v9[1] = uUIDString;
   v6 = [NSArray arrayWithObjects:v9 count:2];
   v7 = [v6 componentsJoinedByString:@":"];
 

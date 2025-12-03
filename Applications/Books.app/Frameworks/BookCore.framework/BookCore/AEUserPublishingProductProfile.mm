@@ -1,13 +1,13 @@
 @interface AEUserPublishingProductProfile
-+ (BOOL)_isContentRatingExplicitForInfo:(id)a3;
-- (AEUserPublishingProductProfile)initWithProfileDictionary:(id)a3;
++ (BOOL)_isContentRatingExplicitForInfo:(id)info;
+- (AEUserPublishingProductProfile)initWithProfileDictionary:(id)dictionary;
 - (BOOL)hasSupplementalContent;
 - (BOOL)isAudiobook;
 - (BOOL)isExplicit;
 - (BOOL)isPreorder;
 - (BOOL)isSeries;
 - (BOOL)isStoreAudiobook;
-- (BOOL)stringNeedsHTMLParsing:(id)a3;
+- (BOOL)stringNeedsHTMLParsing:(id)parsing;
 - (NSArray)children;
 - (NSArray)childrenIDs;
 - (NSArray)series_genres;
@@ -41,10 +41,10 @@
 - (NSURL)productShortURL;
 - (NSURL)productURL;
 - (double)averageRating;
-- (id)actionTextWithType:(int64_t)a3;
-- (id)artworkURLTemplateAspect:(double *)a3;
-- (id)objectForKey:(id)a3;
-- (id)urlForCoverImageOfSize:(CGSize)a3 aspect:(double *)a4;
+- (id)actionTextWithType:(int64_t)type;
+- (id)artworkURLTemplateAspect:(double *)aspect;
+- (id)objectForKey:(id)key;
+- (id)urlForCoverImageOfSize:(CGSize)size aspect:(double *)aspect;
 - (int64_t)fileSize;
 - (int64_t)offerType;
 - (unint64_t)ratingCount;
@@ -54,22 +54,22 @@
 
 - (NSArray)series_genres
 {
-  v2 = self;
-  v3 = [(AEUserPublishingProductProfile *)self children];
-  v4 = [v3 count];
+  selfCopy = self;
+  children = [(AEUserPublishingProductProfile *)self children];
+  v4 = [children count];
 
   if (v4)
   {
-    v5 = [(AEUserPublishingProductProfile *)v2 children];
-    v6 = [v5 firstObject];
-    v7 = [v6 series_genres];
+    children2 = [(AEUserPublishingProductProfile *)selfCopy children];
+    firstObject = [children2 firstObject];
+    series_genres = [firstObject series_genres];
 
     v8 = +[NSMutableOrderedSet orderedSet];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = v7;
+    obj = series_genres;
     v27 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v27)
     {
@@ -88,9 +88,9 @@
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v11 = v2;
-          v12 = [(AEUserPublishingProductProfile *)v2 children];
-          v13 = [v12 countByEnumeratingWithState:&v28 objects:v37 count:16];
+          v11 = selfCopy;
+          children3 = [(AEUserPublishingProductProfile *)selfCopy children];
+          v13 = [children3 countByEnumeratingWithState:&v28 objects:v37 count:16];
           if (v13)
           {
             v14 = v13;
@@ -101,11 +101,11 @@ LABEL_9:
             {
               if (*v29 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(children3);
               }
 
-              v17 = [*(*(&v28 + 1) + 8 * v16) series_genres];
-              v18 = [v17 containsObject:v10];
+              series_genres2 = [*(*(&v28 + 1) + 8 * v16) series_genres];
+              v18 = [series_genres2 containsObject:v10];
 
               if (!v18)
               {
@@ -114,7 +114,7 @@ LABEL_9:
 
               if (v14 == ++v16)
               {
-                v14 = [v12 countByEnumeratingWithState:&v28 objects:v37 count:16];
+                v14 = [children3 countByEnumeratingWithState:&v28 objects:v37 count:16];
                 if (v14)
                 {
                   goto LABEL_9;
@@ -126,7 +126,7 @@ LABEL_9:
           }
 
           [v8 addObject:v10];
-          v2 = v11;
+          selfCopy = v11;
         }
 
         v27 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
@@ -137,7 +137,7 @@ LABEL_9:
 
     if ([v8 count])
     {
-      v19 = [v8 array];
+      array = [v8 array];
     }
 
     else
@@ -145,28 +145,28 @@ LABEL_9:
       v22 = IMCommonCoreBundle();
       v23 = [v22 localizedStringForKey:@"Multiple" value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
       v36 = v23;
-      v19 = [NSArray arrayWithObjects:&v36 count:1];
+      array = [NSArray arrayWithObjects:&v36 count:1];
     }
   }
 
   else
   {
     objc_opt_class();
-    v20 = [(AEUserPublishingProductProfile *)v2 objectForKey:@"genres"];
+    v20 = [(AEUserPublishingProductProfile *)selfCopy objectForKey:@"genres"];
     v21 = BUDynamicCast();
 
-    v19 = sub_12B4C(v21);
+    array = sub_12B4C(v21);
   }
 
-  return v19;
+  return array;
 }
 
 - (NSString)series_genre
 {
-  v2 = [(AEUserPublishingProductProfile *)self series_genres];
-  v3 = [v2 firstObject];
+  series_genres = [(AEUserPublishingProductProfile *)self series_genres];
+  firstObject = [series_genres firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSString)series_title
@@ -180,9 +180,9 @@ LABEL_9:
 
 - (NSNumber)series_isExplicit
 {
-  v2 = [(AEUserPublishingProductProfile *)self isExplicit];
+  isExplicit = [(AEUserPublishingProductProfile *)self isExplicit];
 
-  return [NSNumber numberWithBool:v2];
+  return [NSNumber numberWithBool:isExplicit];
 }
 
 - (NSNumber)series_isAudiobook
@@ -250,31 +250,31 @@ LABEL_11:
 {
   if ([(AEUserPublishingProductProfile *)self series_isContainer])
   {
-    v3 = [(AEUserPublishingProductProfile *)self series_title];
+    series_title = [(AEUserPublishingProductProfile *)self series_title];
   }
 
   else
   {
     objc_opt_class();
-    v4 = [(AEUserPublishingProductProfile *)self series_seriesInfo];
-    v5 = [v4 objectForKeyedSubscript:@"seriesName"];
-    v3 = BUDynamicCast();
+    series_seriesInfo = [(AEUserPublishingProductProfile *)self series_seriesInfo];
+    v5 = [series_seriesInfo objectForKeyedSubscript:@"seriesName"];
+    series_title = BUDynamicCast();
   }
 
-  return v3;
+  return series_title;
 }
 
 - (NSNumber)series_position
 {
-  v2 = [(AEUserPublishingProductProfile *)self series_seriesInfo];
-  v3 = v2;
-  if (!v2)
+  series_seriesInfo = [(AEUserPublishingProductProfile *)self series_seriesInfo];
+  v3 = series_seriesInfo;
+  if (!series_seriesInfo)
   {
     v6 = 0;
     goto LABEL_10;
   }
 
-  v4 = [v2 objectForKeyedSubscript:@"sequenceNumber"];
+  v4 = [series_seriesInfo objectForKeyedSubscript:@"sequenceNumber"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -303,11 +303,11 @@ LABEL_10:
 
 - (NSString)series_displayLabel
 {
-  v3 = [(AEUserPublishingProductProfile *)self series_seriesInfo];
-  if (v3)
+  series_seriesInfo = [(AEUserPublishingProductProfile *)self series_seriesInfo];
+  if (series_seriesInfo)
   {
     objc_opt_class();
-    v4 = [v3 objectForKeyedSubscript:@"sequenceDisplayLabel"];
+    v4 = [series_seriesInfo objectForKeyedSubscript:@"sequenceDisplayLabel"];
     v5 = BUDynamicCast();
 
     if (v5)
@@ -317,12 +317,12 @@ LABEL_10:
 
     else
     {
-      v7 = [(AEUserPublishingProductProfile *)self series_position];
+      series_position = [(AEUserPublishingProductProfile *)self series_position];
 
-      if (v7)
+      if (series_position)
       {
-        v8 = [(AEUserPublishingProductProfile *)self series_position];
-        v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [v8 longValue]);
+        series_position2 = [(AEUserPublishingProductProfile *)self series_position];
+        v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [series_position2 longValue]);
       }
 
       else
@@ -340,24 +340,24 @@ LABEL_10:
   return v6;
 }
 
-- (AEUserPublishingProductProfile)initWithProfileDictionary:(id)a3
+- (AEUserPublishingProductProfile)initWithProfileDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [(AEUserPublishingProductProfile *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_profileDictionary, a3);
+    objc_storeStrong(&v6->_profileDictionary, dictionary);
   }
 
   return v7;
 }
 
-- (id)artworkURLTemplateAspect:(double *)a3
+- (id)artworkURLTemplateAspect:(double *)aspect
 {
   objc_opt_class();
-  v5 = [(AEUserPublishingProductProfile *)self profileDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"artwork"];
+  profileDictionary = [(AEUserPublishingProductProfile *)self profileDictionary];
+  v6 = [profileDictionary objectForKeyedSubscript:@"artwork"];
   v7 = BUDynamicCast();
 
   if (v7)
@@ -366,7 +366,7 @@ LABEL_10:
     v8 = [v7 objectForKeyedSubscript:@"url"];
     v9 = BUDynamicCast();
 
-    if (a3)
+    if (aspect)
     {
       v10 = [v7 objectForKeyedSubscript:@"width"];
       [v10 floatValue];
@@ -382,7 +382,7 @@ LABEL_10:
         v16 = v15 / v12;
       }
 
-      *a3 = v16;
+      *aspect = v16;
     }
   }
 
@@ -394,12 +394,12 @@ LABEL_10:
   return v9;
 }
 
-- (id)urlForCoverImageOfSize:(CGSize)a3 aspect:(double *)a4
+- (id)urlForCoverImageOfSize:(CGSize)size aspect:(double *)aspect
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [(AEUserPublishingProductProfile *)self profileDictionary];
-  v8 = [v7 objectForKeyedSubscript:@"artwork"];
+  height = size.height;
+  width = size.width;
+  profileDictionary = [(AEUserPublishingProductProfile *)self profileDictionary];
+  v8 = [profileDictionary objectForKeyedSubscript:@"artwork"];
 
   v67.origin.x = CGPointZero.x;
   v67.origin.y = CGPointZero.y;
@@ -521,7 +521,7 @@ LABEL_4:
   if ([v40 length])
   {
     v51 = [[NSURL alloc] initWithString:v40];
-    if (!a4)
+    if (!aspect)
     {
       goto LABEL_41;
     }
@@ -530,7 +530,7 @@ LABEL_4:
   else
   {
     v51 = 0;
-    if (!a4)
+    if (!aspect)
     {
       goto LABEL_41;
     }
@@ -550,18 +550,18 @@ LABEL_4:
     v58 = v57 / v54;
   }
 
-  *a4 = v58;
+  *aspect = v58;
 LABEL_41:
   v59 = v51;
 
   return v51;
 }
 
-+ (BOOL)_isContentRatingExplicitForInfo:(id)a3
++ (BOOL)_isContentRatingExplicitForInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   objc_opt_class();
-  v4 = [v3 objectForKeyedSubscript:@"contentRatingsBySystem"];
+  v4 = [infoCopy objectForKeyedSubscript:@"contentRatingsBySystem"];
 
   v5 = BUDynamicCast();
 
@@ -589,8 +589,8 @@ LABEL_41:
 - (BOOL)isExplicit
 {
   v3 = objc_opt_class();
-  v4 = [(AEUserPublishingProductProfile *)self profileDictionary];
-  LOBYTE(v3) = [v3 _isContentRatingExplicitForInfo:v4];
+  profileDictionary = [(AEUserPublishingProductProfile *)self profileDictionary];
+  LOBYTE(v3) = [v3 _isContentRatingExplicitForInfo:profileDictionary];
 
   if (v3)
   {
@@ -606,12 +606,12 @@ LABEL_41:
   v20 = 0u;
   v18 = 0u;
   objc_opt_class();
-  v6 = [(AEUserPublishingProductProfile *)self profileDictionary];
-  v7 = [v6 objectForKeyedSubscript:@"children"];
+  profileDictionary2 = [(AEUserPublishingProductProfile *)self profileDictionary];
+  v7 = [profileDictionary2 objectForKeyedSubscript:@"children"];
   v8 = BUDynamicCast();
-  v9 = [v8 objectEnumerator];
+  objectEnumerator = [v8 objectEnumerator];
 
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -622,7 +622,7 @@ LABEL_41:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v14 = objc_opt_class();
@@ -637,7 +637,7 @@ LABEL_41:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v11)
       {
         continue;
@@ -662,7 +662,7 @@ LABEL_15:
   if ([v4 count])
   {
     objc_opt_class();
-    v5 = [v4 lastObject];
+    lastObject = [v4 lastObject];
     v6 = BUDynamicCast();
   }
 
@@ -677,8 +677,8 @@ LABEL_15:
 - (NSString)buyParameters
 {
   objc_opt_class();
-  v3 = [(AEUserPublishingProductProfile *)self offer];
-  v4 = [v3 objectForKeyedSubscript:@"buyParams"];
+  offer = [(AEUserPublishingProductProfile *)self offer];
+  v4 = [offer objectForKeyedSubscript:@"buyParams"];
   v5 = BUDynamicCast();
 
   return v5;
@@ -686,11 +686,11 @@ LABEL_15:
 
 - (NSString)priceString
 {
-  v2 = [(AEUserPublishingProductProfile *)self offer];
-  if (v2)
+  offer = [(AEUserPublishingProductProfile *)self offer];
+  if (offer)
   {
     objc_opt_class();
-    v3 = [v2 objectForKeyedSubscript:@"price"];
+    v3 = [offer objectForKeyedSubscript:@"price"];
     v4 = BUDynamicCast();
 
     if ([v4 isEqualToNumber:&off_2E5888])
@@ -701,7 +701,7 @@ LABEL_15:
     else
     {
       objc_opt_class();
-      v6 = [v2 objectForKeyedSubscript:@"priceFormatted"];
+      v6 = [offer objectForKeyedSubscript:@"priceFormatted"];
       v5 = BUDynamicCast();
     }
   }
@@ -716,11 +716,11 @@ LABEL_15:
 
 - (int64_t)fileSize
 {
-  v2 = [(AEUserPublishingProductProfile *)self offer];
-  if (v2)
+  offer = [(AEUserPublishingProductProfile *)self offer];
+  if (offer)
   {
     objc_opt_class();
-    v3 = [v2 objectForKeyedSubscript:@"assets"];
+    v3 = [offer objectForKeyedSubscript:@"assets"];
     v4 = BUDynamicCast();
 
     v19 = 0u;
@@ -782,15 +782,15 @@ LABEL_15:
   return v7;
 }
 
-- (id)actionTextWithType:(int64_t)a3
+- (id)actionTextWithType:(int64_t)type
 {
   if ([(AEUserPublishingProductProfile *)self isPreorder])
   {
-    if (a3 < 3)
+    if (type < 3)
     {
       v5 = off_2C9550;
 LABEL_11:
-      v10 = v5[a3];
+      v10 = v5[type];
       v11 = IMCommonCoreBundle();
       v8 = [v11 localizedStringForKey:v10 value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
 
@@ -800,12 +800,12 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  v6 = [(AEUserPublishingProductProfile *)self priceString];
-  v7 = [v6 length];
+  priceString = [(AEUserPublishingProductProfile *)self priceString];
+  v7 = [priceString length];
 
   if (v7)
   {
-    if (a3 < 3)
+    if (type < 3)
     {
       v5 = off_2C9568;
       goto LABEL_11;
@@ -816,10 +816,10 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v9 = [(AEUserPublishingProductProfile *)self offer];
+  offer = [(AEUserPublishingProductProfile *)self offer];
 
   v8 = 0;
-  if (v9 && a3 <= 2)
+  if (offer && type <= 2)
   {
     v5 = off_2C9580;
     goto LABEL_11;
@@ -832,15 +832,15 @@ LABEL_12:
 
 - (int64_t)offerType
 {
-  v3 = [(AEUserPublishingProductProfile *)self offer];
+  offer = [(AEUserPublishingProductProfile *)self offer];
 
-  if (!v3)
+  if (!offer)
   {
     return 0;
   }
 
-  v4 = [(AEUserPublishingProductProfile *)self offer];
-  v5 = [v4 objectForKeyedSubscript:@"type"];
+  offer2 = [(AEUserPublishingProductProfile *)self offer];
+  v5 = [offer2 objectForKeyedSubscript:@"type"];
   v6 = [v5 isEqualToString:@"get"];
 
   if (v6)
@@ -848,8 +848,8 @@ LABEL_12:
     return 2;
   }
 
-  v8 = [(AEUserPublishingProductProfile *)self offer];
-  v9 = [v8 objectForKeyedSubscript:@"type"];
+  offer3 = [(AEUserPublishingProductProfile *)self offer];
+  v9 = [offer3 objectForKeyedSubscript:@"type"];
   v10 = [v9 isEqualToString:@"buy"];
 
   if (v10)
@@ -857,8 +857,8 @@ LABEL_12:
     return 1;
   }
 
-  v11 = [(AEUserPublishingProductProfile *)self offer];
-  v12 = [v11 objectForKeyedSubscript:@"type"];
+  offer4 = [(AEUserPublishingProductProfile *)self offer];
+  v12 = [offer4 objectForKeyedSubscript:@"type"];
   v13 = [v12 isEqualToString:@"preorder"];
 
   if (v13)
@@ -875,19 +875,19 @@ LABEL_12:
 - (BOOL)isPreorder
 {
   objc_opt_class();
-  v3 = [(AEUserPublishingProductProfile *)self offer];
-  v4 = [v3 objectForKeyedSubscript:@"type"];
+  offer = [(AEUserPublishingProductProfile *)self offer];
+  v4 = [offer objectForKeyedSubscript:@"type"];
   v5 = BUDynamicCast();
 
-  LOBYTE(v3) = [v5 isEqualToString:@"preorder"];
-  return v3;
+  LOBYTE(offer) = [v5 isEqualToString:@"preorder"];
+  return offer;
 }
 
 - (NSDate)expectedDate
 {
   objc_opt_class();
-  v3 = [(AEUserPublishingProductProfile *)self offer];
-  v4 = [v3 objectForKeyedSubscript:@"expectedReleaseDate"];
+  offer = [(AEUserPublishingProductProfile *)self offer];
+  v4 = [offer objectForKeyedSubscript:@"expectedReleaseDate"];
   v5 = BUDynamicCast();
 
   if ([v5 length])
@@ -926,11 +926,11 @@ LABEL_12:
   return v6;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(AEUserPublishingProductProfile *)self profileDictionary];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  profileDictionary = [(AEUserPublishingProductProfile *)self profileDictionary];
+  v6 = [profileDictionary objectForKey:keyCopy];
 
   return v6;
 }
@@ -940,9 +940,9 @@ LABEL_12:
   v2 = [(AEUserPublishingProductProfile *)self objectForKey:@"id"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 stringValue];
+    stringValue = [v2 stringValue];
 
-    v2 = v3;
+    v2 = stringValue;
   }
 
   objc_opt_class();
@@ -975,9 +975,9 @@ LABEL_12:
   v3 = [(AEUserPublishingProductProfile *)self objectForKey:@"genreNames"];
   v4 = BUDynamicCast();
 
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (NSString)standardDescription
@@ -998,19 +998,19 @@ LABEL_12:
   trimmedStandardDescription = self->_trimmedStandardDescription;
   if (!trimmedStandardDescription)
   {
-    v4 = [(AEUserPublishingProductProfile *)self standardDescription];
-    if (v4 && [(AEUserPublishingProductProfile *)self stringNeedsHTMLParsing:v4])
+    standardDescription = [(AEUserPublishingProductProfile *)self standardDescription];
+    if (standardDescription && [(AEUserPublishingProductProfile *)self stringNeedsHTMLParsing:standardDescription])
     {
-      v5 = [v4 im_stringByStrippingHTML];
+      im_stringByStrippingHTML = [standardDescription im_stringByStrippingHTML];
     }
 
     else
     {
-      v5 = v4;
+      im_stringByStrippingHTML = standardDescription;
     }
 
     v6 = self->_trimmedStandardDescription;
-    self->_trimmedStandardDescription = v5;
+    self->_trimmedStandardDescription = im_stringByStrippingHTML;
 
     trimmedStandardDescription = self->_trimmedStandardDescription;
   }
@@ -1023,19 +1023,19 @@ LABEL_12:
   trimmedStandardNotes = self->_trimmedStandardNotes;
   if (!trimmedStandardNotes)
   {
-    v4 = [(AEUserPublishingProductProfile *)self standardNotes];
-    if (v4 && [(AEUserPublishingProductProfile *)self stringNeedsHTMLParsing:v4])
+    standardNotes = [(AEUserPublishingProductProfile *)self standardNotes];
+    if (standardNotes && [(AEUserPublishingProductProfile *)self stringNeedsHTMLParsing:standardNotes])
     {
-      v5 = [v4 im_stringByStrippingHTML];
+      im_stringByStrippingHTML = [standardNotes im_stringByStrippingHTML];
     }
 
     else
     {
-      v5 = v4;
+      im_stringByStrippingHTML = standardNotes;
     }
 
     v6 = self->_trimmedStandardNotes;
-    self->_trimmedStandardNotes = v5;
+    self->_trimmedStandardNotes = im_stringByStrippingHTML;
 
     trimmedStandardNotes = self->_trimmedStandardNotes;
   }
@@ -1089,9 +1089,9 @@ LABEL_12:
   objc_opt_class();
   v5 = [v4 objectForKey:@"ratingCount"];
   v6 = BUDynamicCast();
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (NSURL)productURL
@@ -1155,10 +1155,10 @@ LABEL_12:
 {
   objc_opt_class();
   objc_opt_class();
-  v3 = [(AEUserPublishingProductProfile *)self offer];
-  v4 = [v3 objectForKeyedSubscript:@"assets"];
+  offer = [(AEUserPublishingProductProfile *)self offer];
+  v4 = [offer objectForKeyedSubscript:@"assets"];
   v5 = BUDynamicCast();
-  v6 = [v5 lastObject];
+  lastObject = [v5 lastObject];
   v7 = BUDynamicCast();
 
   objc_opt_class();
@@ -1193,8 +1193,8 @@ LABEL_12:
 
 - (BOOL)isSeries
 {
-  v2 = [(AEUserPublishingProductProfile *)self kind];
-  v3 = [v2 isEqualToString:@"epubEbookSeries"];
+  kind = [(AEUserPublishingProductProfile *)self kind];
+  v3 = [kind isEqualToString:@"epubEbookSeries"];
 
   return v3;
 }
@@ -1234,8 +1234,8 @@ LABEL_12:
     return 0;
   }
 
-  v4 = [(AEUserPublishingProductProfile *)self ebookInfo];
-  v3 = v4 == 0;
+  ebookInfo = [(AEUserPublishingProductProfile *)self ebookInfo];
+  v3 = ebookInfo == 0;
 
   return v3;
 }
@@ -1245,21 +1245,21 @@ LABEL_12:
   objc_opt_class();
   v3 = [(AEUserPublishingProductProfile *)self objectForKey:@"hasSupplementalContent"];
   v4 = BUDynamicCast();
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)stringNeedsHTMLParsing:(id)a3
+- (BOOL)stringNeedsHTMLParsing:(id)parsing
 {
   v3 = qword_3421C8;
-  v4 = a3;
+  parsingCopy = parsing;
   if (v3 != -1)
   {
     sub_1E5CF8();
   }
 
-  v5 = [v4 rangeOfCharacterFromSet:qword_3421C0];
+  v5 = [parsingCopy rangeOfCharacterFromSet:qword_3421C0];
 
   return v5 != 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -1270,9 +1270,9 @@ LABEL_12:
   v3 = [(AEUserPublishingProductProfile *)self objectForKey:@"children"];
   v4 = BUDynamicCast();
 
-  v5 = [v4 allValues];
+  allValues = [v4 allValues];
 
-  return v5;
+  return allValues;
 }
 
 - (NSArray)childrenIDs
@@ -1289,8 +1289,8 @@ LABEL_12:
 - (NSDictionary)seriesInfo
 {
   objc_opt_class();
-  v3 = [(AEUserPublishingProductProfile *)self ebookInfo];
-  v4 = [v3 objectForKeyedSubscript:@"seriesInfo"];
+  ebookInfo = [(AEUserPublishingProductProfile *)self ebookInfo];
+  v4 = [ebookInfo objectForKeyedSubscript:@"seriesInfo"];
   v5 = BUDynamicCast();
 
   return v5;
@@ -1298,14 +1298,14 @@ LABEL_12:
 
 - (NSString)seriesID
 {
-  v2 = [(AEUserPublishingProductProfile *)self seriesInfo];
-  v3 = [v2 objectForKeyedSubscript:@"seriesId"];
+  seriesInfo = [(AEUserPublishingProductProfile *)self seriesInfo];
+  v3 = [seriesInfo objectForKeyedSubscript:@"seriesId"];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 stringValue];
+    stringValue = [v3 stringValue];
 
-    v3 = v4;
+    v3 = stringValue;
   }
 
   objc_opt_class();

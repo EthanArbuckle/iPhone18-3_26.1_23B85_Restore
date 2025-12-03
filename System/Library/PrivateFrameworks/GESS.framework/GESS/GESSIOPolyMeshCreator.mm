@@ -1,19 +1,19 @@
 @interface GESSIOPolyMeshCreator
 - (BOOL)clear;
-- (BOOL)create:(id)a3;
-- (BOOL)setMtlFilePath:(id)a3;
+- (BOOL)create:(id)create;
+- (BOOL)setMtlFilePath:(id)path;
 - (id).cxx_construct;
 @end
 
 @implementation GESSIOPolyMeshCreator
 
-- (BOOL)setMtlFilePath:(id)a3
+- (BOOL)setMtlFilePath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5, v6))
+  pathCopy = path;
+  if (objc_msgSend_length(pathCopy, v4, v5, v6))
   {
-    v7 = v3;
+    v7 = pathCopy;
     v11 = objc_msgSend_UTF8String(v7, v8, v9, v10);
     v12 = strlen(v11);
     if (v12 >= 0x7FFFFFFFFFFFFFF8)
@@ -57,22 +57,22 @@
   return 0;
 }
 
-- (BOOL)create:(id)a3
+- (BOOL)create:(id)create
 {
   v222 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ((objc_msgSend_typeValid(v4, v5, v6, v7) & 1) == 0 || !objc_msgSend_length(self->_positionData, v8, v9, v10) || !objc_msgSend_length(self->_faceData, v11, v12, v13) || objc_msgSend_meshType(v4, v14, v15, v16) == 11 && !objc_msgSend_length(self->_faceVertexCountData, v17, v18, v19))
+  createCopy = create;
+  if ((objc_msgSend_typeValid(createCopy, v5, v6, v7) & 1) == 0 || !objc_msgSend_length(self->_positionData, v8, v9, v10) || !objc_msgSend_length(self->_faceData, v11, v12, v13) || objc_msgSend_meshType(createCopy, v14, v15, v16) == 11 && !objc_msgSend_length(self->_faceVertexCountData, v17, v18, v19))
   {
     goto LABEL_117;
   }
 
-  if (objc_msgSend_meshType(v4, v17, v18, v19) != 1)
+  if (objc_msgSend_meshType(createCopy, v17, v18, v19) != 1)
   {
-    objc_msgSend_meshType(v4, v20, v21, v22);
+    objc_msgSend_meshType(createCopy, v20, v21, v22);
   }
 
   v23 = objc_msgSend_length(self->_positionData, v20, v21, v22);
-  v27 = objc_msgSend_meshType(v4, v24, v25, v26);
+  v27 = objc_msgSend_meshType(createCopy, v24, v25, v26);
   v31 = v23 % 0xC;
   if (v27 == 1)
   {
@@ -132,15 +132,15 @@ LABEL_117:
     }
   }
 
-  if (objc_msgSend_meshType(v4, v52, v53, v54) == 1 || objc_msgSend_meshType(v4, v59, v60, v61) == 11)
+  if (objc_msgSend_meshType(createCopy, v52, v53, v54) == 1 || objc_msgSend_meshType(createCopy, v59, v60, v61) == 11)
   {
-    v197 = v4;
-    if (objc_msgSend_meshType(v4, v59, v60, v61) == 1)
+    v197 = createCopy;
+    if (objc_msgSend_meshType(createCopy, v59, v60, v61) == 1)
     {
       v68 = objc_msgSend_length(self->_faceData, v62, v63, v64) / 0xCuLL;
     }
 
-    else if (objc_msgSend_meshType(v4, v62, v63, v64) == 11)
+    else if (objc_msgSend_meshType(createCopy, v62, v63, v64) == 11)
     {
       LODWORD(v68) = objc_msgSend_length(self->_faceVertexCountData, v65, v66, v67);
     }
@@ -327,7 +327,7 @@ LABEL_117:
         }
       }
 
-      v4 = v197;
+      createCopy = v197;
       if (v213[1] == v214)
       {
         goto LABEL_112;

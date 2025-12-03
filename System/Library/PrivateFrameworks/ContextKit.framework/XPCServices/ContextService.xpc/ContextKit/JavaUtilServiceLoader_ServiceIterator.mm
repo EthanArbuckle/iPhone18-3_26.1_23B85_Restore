@@ -29,13 +29,13 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v1 = *(a1 + 24);
+  v1 = *(self + 24);
   if (!v1)
   {
     JreThrowNullPointerException();
   }
 
-  result = [*(a1 + 24) countByEnumeratingWithState:&v15 objects:v19 count:16];
+  result = [*(self + 24) countByEnumeratingWithState:&v15 objects:v19 count:16];
   v4 = result;
   if (result)
   {
@@ -59,14 +59,14 @@
         v8 = new_JavaIoBufferedReader_initWithJavaIoReader_(v7);
         while (1)
         {
-          v9 = [(JavaIoBufferedReader *)v8 readLine];
-          v10 = v9;
-          if (!v9)
+          readLine = [(JavaIoBufferedReader *)v8 readLine];
+          v10 = readLine;
+          if (!readLine)
           {
             break;
           }
 
-          v11 = [v9 indexOf:35];
+          v11 = [readLine indexOf:35];
           if (v11 != -1 && (v10 = [v10 substring:0 endIndex:v11]) == 0 || (v12 = objc_msgSend(v10, "trim"), (v13 = v12) == 0))
           {
             JreThrowNullPointerException();
@@ -75,7 +75,7 @@
           if (([v12 isEmpty] & 1) == 0)
           {
             sub_100250A28(v13);
-            v14 = *(a1 + 40);
+            v14 = *(self + 40);
             if (!v14)
             {
               JreThrowNullPointerException();
@@ -83,12 +83,12 @@
 
             if (([v14 containsWithId:v13] & 1) == 0)
             {
-              [*(a1 + 40) addWithId:v13];
+              [*(self + 40) addWithId:v13];
             }
           }
         }
 
-        *(a1 + 32) = 1;
+        *(self + 32) = 1;
         LibcoreIoIoUtils_closeQuietlyWithJavaLangAutoCloseable_(v8);
         v6 = v6 + 1;
       }
@@ -118,9 +118,9 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaUtilLinkedList *)queue remove];
+  remove = [(JavaUtilLinkedList *)queue remove];
   service = self->service_;
-  if (!service || (classLoader = self->classLoader_) == 0 || (v7 = [(JavaLangClassLoader *)classLoader loadClassWithNSString:v4]) == 0)
+  if (!service || (classLoader = self->classLoader_) == 0 || (v7 = [(JavaLangClassLoader *)classLoader loadClassWithNSString:remove]) == 0)
   {
     JreThrowNullPointerException();
   }

@@ -1,42 +1,42 @@
 @interface TRTermsAndConditionsManager
-- (TRTermsAndConditionsManager)initWithAuthResultsBlock:(id)a3 presentingViewController:(id)a4;
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4;
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4;
+- (TRTermsAndConditionsManager)initWithAuthResultsBlock:(id)block presentingViewController:(id)controller;
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info;
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success;
 - (void)handleAccept;
 - (void)handleDecline;
-- (void)loadProxiedTerms:(id)a3 anisetteDataProvider:(id)a4 appProvidedContext:(id)a5 acceptAction:(id)a6 declineAction:(id)a7;
+- (void)loadProxiedTerms:(id)terms anisetteDataProvider:(id)provider appProvidedContext:(id)context acceptAction:(id)action declineAction:(id)declineAction;
 - (void)presentProxiedTermsRemoteUI;
-- (void)setAcceptedTermsInfo:(id)a3;
+- (void)setAcceptedTermsInfo:(id)info;
 @end
 
 @implementation TRTermsAndConditionsManager
 
-- (TRTermsAndConditionsManager)initWithAuthResultsBlock:(id)a3 presentingViewController:(id)a4
+- (TRTermsAndConditionsManager)initWithAuthResultsBlock:(id)block presentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  blockCopy = block;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = TRTermsAndConditionsManager;
   v9 = [(TRTermsAndConditionsManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_authResult, a3);
-    objc_storeStrong(&v10->_presentingViewController, a4);
+    objc_storeStrong(&v9->_authResult, block);
+    objc_storeStrong(&v10->_presentingViewController, controller);
   }
 
   return v10;
 }
 
-- (void)loadProxiedTerms:(id)a3 anisetteDataProvider:(id)a4 appProvidedContext:(id)a5 acceptAction:(id)a6 declineAction:(id)a7
+- (void)loadProxiedTerms:(id)terms anisetteDataProvider:(id)provider appProvidedContext:(id)context acceptAction:(id)action declineAction:(id)declineAction
 {
   v33[4] = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  termsCopy = terms;
   v13 = MEMORY[0x277CBEB98];
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
+  declineActionCopy = declineAction;
+  actionCopy = action;
+  contextCopy = context;
+  providerCopy = provider;
   v18 = [v13 alloc];
   v33[0] = *MEMORY[0x277CEC738];
   v33[1] = @"HomePodSLA";
@@ -56,21 +56,21 @@
     }
   }
 
-  v23 = [objc_alloc(getAAUIProxiedTermsRemoteUIClass()) initWithAuthResults:self->_authResult proxiedDevice:v12 anisetteDataProvider:v17 appProvidedContext:v16 termsEntries:v21];
+  v23 = [objc_alloc(getAAUIProxiedTermsRemoteUIClass()) initWithAuthResults:self->_authResult proxiedDevice:termsCopy anisetteDataProvider:providerCopy appProvidedContext:contextCopy termsEntries:v21];
 
   proxiedTermsRemoteUI = self->_proxiedTermsRemoteUI;
   self->_proxiedTermsRemoteUI = v23;
 
   [(AAUIProxiedTermsRemoteUI *)self->_proxiedTermsRemoteUI setDelegate:self];
   proxiedDevice = self->_proxiedDevice;
-  self->_proxiedDevice = v12;
-  v26 = v12;
+  self->_proxiedDevice = termsCopy;
+  v26 = termsCopy;
 
-  v27 = MEMORY[0x27438C490](v15);
+  v27 = MEMORY[0x27438C490](actionCopy);
   acceptAction = self->_acceptAction;
   self->_acceptAction = v27;
 
-  v29 = MEMORY[0x27438C490](v14);
+  v29 = MEMORY[0x27438C490](declineActionCopy);
   declineAction = self->_declineAction;
   self->_declineAction = v29;
 
@@ -78,23 +78,23 @@
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAcceptedTermsInfo:(id)a3
+- (void)setAcceptedTermsInfo:(id)info
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(NSDictionary *)v4 count]&& _TRLogEnabled == 1)
+  infoCopy = info;
+  if ([(NSDictionary *)infoCopy count]&& _TRLogEnabled == 1)
   {
     v5 = TRLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = infoCopy;
       _os_log_impl(&dword_26F2A2000, v5, OS_LOG_TYPE_DEFAULT, "TRTermsAndConditionsManager Terms Info not empty %@", &v8, 0xCu);
     }
   }
 
   acceptedTermsInfo = self->_acceptedTermsInfo;
-  self->_acceptedTermsInfo = v4;
+  self->_acceptedTermsInfo = infoCopy;
 
   if (self->_didAccept)
   {
@@ -228,18 +228,18 @@
   }
 }
 
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success
 {
-  v4 = a4;
+  successCopy = success;
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  iCopy = i;
   if (_TRLogEnabled == 1)
   {
     v7 = TRLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = "no";
-      if (v4)
+      if (successCopy)
       {
         v8 = "yes";
       }
@@ -250,7 +250,7 @@
     }
   }
 
-  if (v4)
+  if (successCopy)
   {
     [(TRTermsAndConditionsManager *)self handleAccept];
   }
@@ -263,22 +263,22 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  infoCopy = info;
   if (_TRLogEnabled == 1)
   {
     v6 = TRLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v5;
+      v9 = infoCopy;
       _os_log_impl(&dword_26F2A2000, v6, OS_LOG_TYPE_DEFAULT, "TRTermsAndConditionsManager acceptedTermsInfo %@", &v8, 0xCu);
     }
   }
 
-  [(TRTermsAndConditionsManager *)self setAcceptedTermsInfo:v5];
+  [(TRTermsAndConditionsManager *)self setAcceptedTermsInfo:infoCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }

@@ -1,26 +1,26 @@
 @interface DDSTrialClient
-+ (id)createWithWorkQueue:(id)a3 query:(id)a4;
-- (DDSTrialClient)initWithWorkQueue:(id)a3 triClient:(id)a4 triNamespaceName:(id)a5;
++ (id)createWithWorkQueue:(id)queue query:(id)query;
+- (DDSTrialClient)initWithWorkQueue:(id)queue triClient:(id)client triNamespaceName:(id)name;
 - (DDSTrialClientDelegate)delegate;
 - (void)dealloc;
-- (void)fetchAssetWithCallback:(id)a3;
+- (void)fetchAssetWithCallback:(id)callback;
 - (void)start;
 @end
 
 @implementation DDSTrialClient
 
-+ (id)createWithWorkQueue:(id)a3 query:(id)a4
++ (id)createWithWorkQueue:(id)queue query:(id)query
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69DB518] clientWithIdentifier:{objc_msgSend(v6, "projectId")}];
+  queueCopy = queue;
+  queryCopy = query;
+  v7 = [MEMORY[0x1E69DB518] clientWithIdentifier:{objc_msgSend(queryCopy, "projectId")}];
   if (v7)
   {
-    v8 = [MEMORY[0x1E69DB548] namespaceNameFromId:{objc_msgSend(v6, "namespaceId")}];
+    v8 = [MEMORY[0x1E69DB548] namespaceNameFromId:{objc_msgSend(queryCopy, "namespaceId")}];
     if (v8)
     {
       v9 = [[DDSTRIClient alloc] initWithClient:v7];
-      v10 = [[DDSTrialClient alloc] initWithWorkQueue:v5 triClient:v9 triNamespaceName:v8];
+      v10 = [[DDSTrialClient alloc] initWithWorkQueue:queueCopy triClient:v9 triNamespaceName:v8];
 
       goto LABEL_10;
     }
@@ -28,7 +28,7 @@
     v11 = DefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [DDSTrialClient createWithWorkQueue:v6 query:?];
+      [DDSTrialClient createWithWorkQueue:queryCopy query:?];
     }
   }
 
@@ -37,7 +37,7 @@
     v8 = DefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [DDSTrialClient createWithWorkQueue:v6 query:?];
+      [DDSTrialClient createWithWorkQueue:queryCopy query:?];
     }
   }
 
@@ -47,20 +47,20 @@ LABEL_10:
   return v10;
 }
 
-- (DDSTrialClient)initWithWorkQueue:(id)a3 triClient:(id)a4 triNamespaceName:(id)a5
+- (DDSTrialClient)initWithWorkQueue:(id)queue triClient:(id)client triNamespaceName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  clientCopy = client;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = DDSTrialClient;
   v12 = [(DDSTrialClient *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_workQueue, a3);
-    objc_storeStrong(&v13->_triClient, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_workQueue, queue);
+    objc_storeStrong(&v13->_triClient, client);
+    v14 = [nameCopy copy];
     triNamespaceName = v13->_triNamespaceName;
     v13->_triNamespaceName = v14;
   }
@@ -70,23 +70,23 @@ LABEL_10:
 
 - (void)start
 {
-  v3 = [(DDSTrialClient *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(DDSTrialClient *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(DDSTrialClient *)self notificationToken];
+  notificationToken = [(DDSTrialClient *)self notificationToken];
 
-  if (!v4)
+  if (!notificationToken)
   {
     objc_initWeak(&location, self);
-    v5 = [(DDSTrialClient *)self triClient];
-    v6 = [(DDSTrialClient *)self triNamespaceName];
-    v7 = [(DDSTrialClient *)self workQueue];
+    triClient = [(DDSTrialClient *)self triClient];
+    triNamespaceName = [(DDSTrialClient *)self triNamespaceName];
+    workQueue2 = [(DDSTrialClient *)self workQueue];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __23__DDSTrialClient_start__block_invoke;
     v12 = &unk_1E86C6650;
     objc_copyWeak(&v13, &location);
-    v8 = [v5 addUpdateHandlerForNamespaceName:v6 queue:v7 usingBlock:&v9];
+    v8 = [triClient addUpdateHandlerForNamespaceName:triNamespaceName queue:workQueue2 usingBlock:&v9];
     [(DDSTrialClient *)self setNotificationToken:v8, v9, v10, v11, v12];
 
     objc_destroyWeak(&v13);
@@ -145,59 +145,59 @@ void __23__DDSTrialClient_start__block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (void)fetchAssetWithCallback:(id)a3
+- (void)fetchAssetWithCallback:(id)callback
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(DDSTrialClient *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  callbackCopy = callback;
+  workQueue = [(DDSTrialClient *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(DDSTrialClient *)self triClient];
-  v7 = [(DDSTrialClient *)self triNamespaceName];
-  v8 = [v6 experimentIdentifiersWithNamespaceName:v7];
+  triClient = [(DDSTrialClient *)self triClient];
+  triNamespaceName = [(DDSTrialClient *)self triNamespaceName];
+  v8 = [triClient experimentIdentifiersWithNamespaceName:triNamespaceName];
 
   if (v8)
   {
-    v9 = [(DDSTrialClient *)self triClient];
-    v10 = [(DDSTrialClient *)self triNamespaceName];
-    v11 = [v9 levelForFactor:@"languageAsset" withNamespaceName:v10];
+    triClient2 = [(DDSTrialClient *)self triClient];
+    triNamespaceName2 = [(DDSTrialClient *)self triNamespaceName];
+    v11 = [triClient2 levelForFactor:@"languageAsset" withNamespaceName:triNamespaceName2];
 
     if (v11)
     {
-      v12 = [v11 directoryValue];
-      if ([v12 hasPath])
+      directoryValue = [v11 directoryValue];
+      if ([directoryValue hasPath])
       {
-        v13 = [v11 directoryValue];
-        v14 = [v13 hasAsset];
+        directoryValue2 = [v11 directoryValue];
+        hasAsset = [directoryValue2 hasAsset];
 
-        if (v14)
+        if (hasAsset)
         {
-          v15 = [v11 directoryValue];
-          v16 = [v15 path];
+          directoryValue3 = [v11 directoryValue];
+          path = [directoryValue3 path];
 
-          v17 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
           v39 = 0;
-          v18 = [v17 contentsOfDirectoryAtPath:v16 error:&v39];
+          v18 = [defaultManager contentsOfDirectoryAtPath:path error:&v39];
           v19 = v39;
 
           if (v18)
           {
             if ([v18 count] == 1)
             {
-              v20 = [v18 firstObject];
-              v21 = [v16 stringByAppendingPathComponent:v20];
+              firstObject = [v18 firstObject];
+              v21 = [path stringByAppendingPathComponent:firstObject];
 
               v22 = [DDSTrialExperimentIdentifiers alloc];
-              v23 = [v8 experimentId];
-              v24 = [v8 deploymentId];
-              v25 = [v8 treatmentId];
-              v26 = [(TRIExperimentIdentifiers *)v22 initWithExperimentId:v23 deploymentId:v24 treatmentId:v25];
+              experimentId = [v8 experimentId];
+              deploymentId = [v8 deploymentId];
+              treatmentId = [v8 treatmentId];
+              v26 = [(TRIExperimentIdentifiers *)v22 initWithExperimentId:experimentId deploymentId:deploymentId treatmentId:treatmentId];
 
               v27 = [MEMORY[0x1E695DFF8] fileURLWithPath:v21];
               v28 = [DDSTrialAsset createWithExperimentIdentifiers:v26 localURL:v27];
               if (v28)
               {
-                v4[2](v4, v28, 0);
+                callbackCopy[2](callbackCopy, v28, 0);
               }
 
               else
@@ -209,10 +209,10 @@ void __23__DDSTrialClient_start__block_invoke_2(uint64_t a1, void *a2)
                 }
 
                 v38 = DDSTrialErrorWithCode(4);
-                (v4)[2](v4, 0, v38);
+                (callbackCopy)[2](callbackCopy, 0, v38);
               }
 
-              v16 = v21;
+              path = v21;
               goto LABEL_33;
             }
 
@@ -237,7 +237,7 @@ void __23__DDSTrialClient_start__block_invoke_2(uint64_t a1, void *a2)
           }
 
           v26 = DDSTrialErrorWithCode(v35);
-          (v4)[2](v4, 0, v26);
+          (callbackCopy)[2](callbackCopy, 0, v26);
 LABEL_33:
 
           goto LABEL_20;
@@ -270,8 +270,8 @@ LABEL_33:
       v31 = 2;
     }
 
-    v16 = DDSTrialErrorWithCode(v31);
-    (v4)[2](v4, 0, v16);
+    path = DDSTrialErrorWithCode(v31);
+    (callbackCopy)[2](callbackCopy, 0, path);
 LABEL_20:
 
     goto LABEL_21;
@@ -285,7 +285,7 @@ LABEL_20:
   }
 
   v11 = DDSTrialErrorWithCode(1);
-  (v4)[2](v4, 0, v11);
+  (callbackCopy)[2](callbackCopy, 0, v11);
 LABEL_21:
 
   v33 = *MEMORY[0x1E69E9840];

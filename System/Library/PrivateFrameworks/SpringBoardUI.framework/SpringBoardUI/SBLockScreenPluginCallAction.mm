@@ -1,14 +1,14 @@
 @interface SBLockScreenPluginCallAction
-- (SBLockScreenPluginCallAction)initWithURL:(id)a3;
+- (SBLockScreenPluginCallAction)initWithURL:(id)l;
 @end
 
 @implementation SBLockScreenPluginCallAction
 
-- (SBLockScreenPluginCallAction)initWithURL:(id)a3
+- (SBLockScreenPluginCallAction)initWithURL:(id)l
 {
   v4 = MEMORY[0x277D6EED0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithURL:v5];
+  lCopy = l;
+  v6 = [[v4 alloc] initWithURL:lCopy];
 
   if ([v6 isValid])
   {
@@ -22,15 +22,15 @@
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

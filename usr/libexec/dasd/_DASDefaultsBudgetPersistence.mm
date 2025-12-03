@@ -2,11 +2,11 @@
 + (id)persistence;
 - (NSDate)lastModulationDate;
 - (_DASDefaultsBudgetPersistence)init;
-- (id)convertNameFromFullToCompact:(id)a3;
-- (id)loadBudgetsWithExpectedNames:(id)a3;
-- (void)saveBudgets:(id)a3;
-- (void)saveModulationDate:(id)a3;
-- (void)updateBudget:(id)a3;
+- (id)convertNameFromFullToCompact:(id)compact;
+- (id)loadBudgetsWithExpectedNames:(id)names;
+- (void)saveBudgets:(id)budgets;
+- (void)saveModulationDate:(id)date;
+- (void)updateBudget:(id)budget;
 @end
 
 @implementation _DASDefaultsBudgetPersistence
@@ -57,7 +57,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000187AC;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020AE18 != -1)
   {
     dispatch_once(&qword_10020AE18, block);
@@ -68,9 +68,9 @@
   return v2;
 }
 
-- (id)loadBudgetsWithExpectedNames:(id)a3
+- (id)loadBudgetsWithExpectedNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v5 = objc_alloc_init(NSMutableArray);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -78,10 +78,10 @@
   block[2] = sub_1000188B8;
   block[3] = &unk_1001B56B8;
   block[4] = self;
-  v13 = v4;
+  v13 = namesCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
+  v8 = namesCopy;
   dispatch_sync(queue, block);
   v9 = v14;
   v10 = v7;
@@ -89,45 +89,45 @@
   return v7;
 }
 
-- (void)saveBudgets:(id)a3
+- (void)saveBudgets:(id)budgets
 {
-  v4 = a3;
+  budgetsCopy = budgets;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100018BF4;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = budgetsCopy;
+  v6 = budgetsCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)updateBudget:(id)a3
+- (void)updateBudget:(id)budget
 {
-  v4 = a3;
+  budgetCopy = budget;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100018E10;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = budgetCopy;
+  v6 = budgetCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)saveModulationDate:(id)a3
+- (void)saveModulationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100018F4C;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -153,13 +153,13 @@
   return v3;
 }
 
-- (id)convertNameFromFullToCompact:(id)a3
+- (id)convertNameFromFullToCompact:(id)compact
 {
-  v3 = a3;
-  v4 = [v3 copy];
-  if ([v3 hasPrefix:@"com.apple.dasd.widget"])
+  compactCopy = compact;
+  v4 = [compactCopy copy];
+  if ([compactCopy hasPrefix:@"com.apple.dasd.widget"])
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(@"com.apple.dasd.widget", "length")}];
+    v5 = [compactCopy substringFromIndex:{objc_msgSend(@"com.apple.dasd.widget", "length")}];
 
     v4 = v5;
   }

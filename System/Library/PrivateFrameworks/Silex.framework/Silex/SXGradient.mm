@@ -1,19 +1,19 @@
 @interface SXGradient
 - (CGPoint)endPoint;
 - (CGPoint)startPoint;
-- (SXGradient)initWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 colors:(id)a5 locations:(id)a6;
+- (SXGradient)initWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint colors:(id)colors locations:(id)locations;
 @end
 
 @implementation SXGradient
 
-- (SXGradient)initWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 colors:(id)a5 locations:(id)a6
+- (SXGradient)initWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint colors:(id)colors locations:(id)locations
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  v12 = a5;
-  v13 = a6;
+  y = endPoint.y;
+  x = endPoint.x;
+  v9 = point.y;
+  v10 = point.x;
+  colorsCopy = colors;
+  locationsCopy = locations;
   v21.receiver = self;
   v21.super_class = SXGradient;
   v14 = [(SXGradient *)&v21 init];
@@ -24,11 +24,11 @@
     v14->_startPoint.y = v9;
     v14->_endPoint.x = x;
     v14->_endPoint.y = y;
-    v16 = [v12 copy];
+    v16 = [colorsCopy copy];
     colors = v15->_colors;
     v15->_colors = v16;
 
-    v18 = [v13 copy];
+    v18 = [locationsCopy copy];
     locations = v15->_locations;
     v15->_locations = v18;
   }

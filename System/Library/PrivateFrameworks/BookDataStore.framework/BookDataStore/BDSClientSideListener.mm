@@ -1,6 +1,6 @@
 @interface BDSClientSideListener
 - (BDSClientSideProtocol)delegate;
-- (void)handleServiceNotificationNames:(id)a3 latestChangeToken:(int64_t)a4;
+- (void)handleServiceNotificationNames:(id)names latestChangeToken:(int64_t)token;
 @end
 
 @implementation BDSClientSideListener
@@ -12,11 +12,11 @@
   return WeakRetained;
 }
 
-- (void)handleServiceNotificationNames:(id)a3 latestChangeToken:(int64_t)a4
+- (void)handleServiceNotificationNames:(id)names latestChangeToken:(int64_t)token
 {
-  v6 = a3;
-  v7 = [(BDSClientSideListener *)self delegate];
-  [v7 handleServiceNotificationNames:v6 latestChangeToken:a4];
+  namesCopy = names;
+  delegate = [(BDSClientSideListener *)self delegate];
+  [delegate handleServiceNotificationNames:namesCopy latestChangeToken:token];
 }
 
 @end

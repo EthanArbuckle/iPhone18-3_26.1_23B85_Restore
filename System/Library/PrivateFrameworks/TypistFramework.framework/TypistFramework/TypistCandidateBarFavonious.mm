@@ -1,18 +1,18 @@
 @interface TypistCandidateBarFavonious
-- (BOOL)hasVisibleCandidate:(id)a3;
-- (id)candidateUIInformation:(id)a3;
+- (BOOL)hasVisibleCandidate:(id)candidate;
+- (id)candidateUIInformation:(id)information;
 - (id)getAllCandidates;
 - (id)getVisibleCandidates;
-- (int64_t)getIndexOfCandidate:(id)a3;
-- (int64_t)selectCandidate:(id)a3;
-- (int64_t)selectCandidateAtIndex:(int64_t)a3;
+- (int64_t)getIndexOfCandidate:(id)candidate;
+- (int64_t)selectCandidate:(id)candidate;
+- (int64_t)selectCandidateAtIndex:(int64_t)index;
 @end
 
 @implementation TypistCandidateBarFavonious
 
-- (id)candidateUIInformation:(id)a3
+- (id)candidateUIInformation:(id)information
 {
-  v3 = a3;
+  informationCopy = information;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -23,7 +23,7 @@
   v7[1] = 3221225472;
   v7[2] = __54__TypistCandidateBarFavonious_candidateUIInformation___block_invoke;
   v7[3] = &unk_279DF4758;
-  v4 = v3;
+  v4 = informationCopy;
   v8 = v4;
   v9 = &v10;
   [TypistKeyboardUtilities runOnMainThread:v7];
@@ -157,8 +157,8 @@ LABEL_19:
 {
   v8.receiver = self;
   v8.super_class = TypistCandidateBarFavonious;
-  v2 = [(TypistCandidateBar *)&v8 getAllCandidates];
-  v3 = [v2 mutableCopy];
+  getAllCandidates = [(TypistCandidateBar *)&v8 getAllCandidates];
+  v3 = [getAllCandidates mutableCopy];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -186,16 +186,16 @@ void __47__TypistCandidateBarFavonious_getAllCandidates__block_invoke(uint64_t a
   return [(objc_class *)v2 getVisibleCandidateList:@"typistCandidateBarTypeFavonious"];
 }
 
-- (int64_t)getIndexOfCandidate:(id)a3
+- (int64_t)getIndexOfCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [(TypistCandidateBarFavonious *)self getAllCandidates];
+  candidateCopy = candidate;
+  getAllCandidates = [(TypistCandidateBarFavonious *)self getAllCandidates];
   v6 = 0x8000000000000000;
   v7 = -1;
-  while (++v7 < [v5 count])
+  while (++v7 < [getAllCandidates count])
   {
-    v8 = [v5 objectAtIndex:v7];
-    v9 = [v8 isEqualToString:v4];
+    v8 = [getAllCandidates objectAtIndex:v7];
+    v9 = [v8 isEqualToString:candidateCopy];
 
     --v6;
     if (v9)
@@ -215,10 +215,10 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)hasVisibleCandidate:(id)a3
+- (BOOL)hasVisibleCandidate:(id)candidate
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  candidateCopy = candidate;
   [(TypistCandidateBarFavonious *)self getVisibleCandidates];
   v23 = 0u;
   v24 = 0u;
@@ -244,16 +244,16 @@ LABEL_6:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v9 candidate];
+        candidate = [v9 candidate];
 LABEL_10:
-        v11 = v10;
+        v11 = candidate;
         goto LABEL_12;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = v9;
+        candidate = v9;
         goto LABEL_10;
       }
 
@@ -263,7 +263,7 @@ LABEL_10:
 
       v11 = 0;
 LABEL_12:
-      v20 = [v11 isEqualToString:v4];
+      v20 = [v11 isEqualToString:candidateCopy];
 
       if (v20)
       {
@@ -287,17 +287,17 @@ LABEL_17:
   return v6;
 }
 
-- (int64_t)selectCandidate:(id)a3
+- (int64_t)selectCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [(TypistCandidateBarFavonious *)self getIndexOfCandidate:v4];
+  candidateCopy = candidate;
+  v5 = [(TypistCandidateBarFavonious *)self getIndexOfCandidate:candidateCopy];
   if (v5 < 0)
   {
     goto LABEL_9;
   }
 
   v6 = v5;
-  if (![(TypistCandidateBarFavonious *)self hasVisibleCandidate:v4])
+  if (![(TypistCandidateBarFavonious *)self hasVisibleCandidate:candidateCopy])
   {
     v7 = 0.0;
     do
@@ -306,10 +306,10 @@ LABEL_17:
       v7 = v7 + 0.02;
     }
 
-    while (![(TypistCandidateBarFavonious *)self hasVisibleCandidate:v4]&& v7 < 2.0);
+    while (![(TypistCandidateBarFavonious *)self hasVisibleCandidate:candidateCopy]&& v7 < 2.0);
     if (v7 >= 2.0)
     {
-      TYLogl(OS_LOG_TYPE_ERROR, @"TypistCandidateBar: Failed to find %@ in the favonious candidate bar after %fs.", v8, v9, v10, v11, v12, v13, v4);
+      TYLogl(OS_LOG_TYPE_ERROR, @"TypistCandidateBar: Failed to find %@ in the favonious candidate bar after %fs.", v8, v9, v10, v11, v12, v13, candidateCopy);
 LABEL_9:
       v14 = -1;
       goto LABEL_10;
@@ -322,17 +322,17 @@ LABEL_10:
   return v14;
 }
 
-- (int64_t)selectCandidateAtIndex:(int64_t)a3
+- (int64_t)selectCandidateAtIndex:(int64_t)index
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__TypistCandidateBarFavonious_selectCandidateAtIndex___block_invoke;
   v6[3] = &__block_descriptor_40_e34_v16__0___RCPEventStreamComposer__8l;
-  v6[4] = a3;
+  v6[4] = index;
   v4 = [MEMORY[0x277D44358] eventStreamWithEventActions:v6];
   [TypistKeyboardUtilities launchRecapWithSyntheticEventStream:v4];
 
-  return a3;
+  return index;
 }
 
 void __54__TypistCandidateBarFavonious_selectCandidateAtIndex___block_invoke(uint64_t a1, void *a2)

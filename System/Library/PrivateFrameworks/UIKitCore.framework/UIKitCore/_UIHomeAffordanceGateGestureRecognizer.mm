@@ -2,16 +2,16 @@
 + (uint64_t)isAvailable;
 - (_UIHomeAffordanceGateGestureRecognizer)init;
 - (double)_touchSloppinessFactor;
-- (void)_notifier:(id)a3 homeAffordanceDoubleTapGestureDidSucceed:(BOOL)a4;
-- (void)_notifier:(id)a3 homeAffordanceFrameDidChange:(CGRect)a4;
-- (void)_windowDidMoveToNilScene:(id)a3;
-- (void)_windowDidMoveToScene:(id)a3;
+- (void)_notifier:(id)_notifier homeAffordanceDoubleTapGestureDidSucceed:(BOOL)succeed;
+- (void)_notifier:(id)_notifier homeAffordanceFrameDidChange:(CGRect)change;
+- (void)_windowDidMoveToNilScene:(id)scene;
+- (void)_windowDidMoveToScene:(id)scene;
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)setView:(id)a3;
-- (void)tapRecognizerFailedToRecognizeTap:(id)a3;
-- (void)tapRecognizerRecognizedTap:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)setState:(int64_t)state;
+- (void)setView:(id)view;
+- (void)tapRecognizerFailedToRecognizeTap:(id)tap;
+- (void)tapRecognizerRecognizedTap:(id)tap;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation _UIHomeAffordanceGateGestureRecognizer
@@ -34,8 +34,8 @@
   objc_opt_self();
   if (!_UIDeviceSupportsGlobalEdgeSwipeTouches() || (_UIApplicationSupportsHomeAffordanceObservation() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"_UIHomeAffordanceGateGestureRecognizer.m" lineNumber:43 description:@"Home affordance gate feature is disabled."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHomeAffordanceGateGestureRecognizer.m" lineNumber:43 description:@"Home affordance gate feature is disabled."];
   }
 
   v6.receiver = self;
@@ -52,65 +52,65 @@
   self->_timeoutTimer = 0;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (a3 > 5 || ((1 << a3) & 0x29) == 0)
+  if (state > 5 || ((1 << state) & 0x29) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIHomeAffordanceGateGestureRecognizer.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"state == UIGestureRecognizerStatePossible || state == UIGestureRecognizerStateEnded || state == UIGestureRecognizerStateFailed"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHomeAffordanceGateGestureRecognizer.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"state == UIGestureRecognizerStatePossible || state == UIGestureRecognizerStateEnded || state == UIGestureRecognizerStateFailed"}];
   }
 
   [(BSAbsoluteMachTimer *)self->_timeoutTimer cancel];
   v7.receiver = self;
   v7.super_class = _UIHomeAffordanceGateGestureRecognizer;
-  [(UIGestureRecognizer *)&v7 setState:a3];
+  [(UIGestureRecognizer *)&v7 setState:state];
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v5 = [(UIGestureRecognizer *)self view];
+  view = [(UIGestureRecognizer *)self view];
   v15.receiver = self;
   v15.super_class = _UIHomeAffordanceGateGestureRecognizer;
-  [(UIGestureRecognizer *)&v15 setView:a3];
-  castToWindow(a3);
+  [(UIGestureRecognizer *)&v15 setView:view];
+  castToWindow(view);
   objc_claimAutoreleasedReturnValue();
-  castToWindow(v5);
+  castToWindow(view);
   objc_claimAutoreleasedReturnValue();
   if (self)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:@"_UIWindowDidMoveToSceneNotification" object:v5];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"_UIWindowDidMoveToSceneNotification" object:view];
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 removeObserver:self name:@"_UIWindowWillMoveToNilSceneNotification" object:v5];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self name:@"_UIWindowWillMoveToNilSceneNotification" object:view];
 
     homeAffordanceObserver = self->_homeAffordanceObserver;
     self->_homeAffordanceObserver = 0;
 
-    if (a3)
+    if (view)
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 addObserver:self selector:sel__windowDidMoveToScene_ name:@"_UIWindowDidMoveToSceneNotification" object:a3];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter3 addObserver:self selector:sel__windowDidMoveToScene_ name:@"_UIWindowDidMoveToSceneNotification" object:view];
 
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 addObserver:self selector:sel__windowDidMoveToNilScene_ name:@"_UIWindowWillMoveToNilSceneNotification" object:a3];
+      defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter4 addObserver:self selector:sel__windowDidMoveToNilScene_ name:@"_UIWindowWillMoveToNilSceneNotification" object:view];
 
-      v11 = [a3 windowScene];
-      v12 = [v11 _homeAffordanceSceneNotifier];
-      v13 = [v12 registerHomeAffordanceObserver:self inWindow:a3];
+      windowScene = [view windowScene];
+      _homeAffordanceSceneNotifier = [windowScene _homeAffordanceSceneNotifier];
+      v13 = [_homeAffordanceSceneNotifier registerHomeAffordanceObserver:self inWindow:view];
       v14 = self->_homeAffordanceObserver;
       self->_homeAffordanceObserver = v13;
     }
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (self->_didReceiveTouch || [a3 count] != 1 || (objc_msgSend(a3, "anyObject"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "_locationInSceneReferenceSpace"), v37.x = v8, v37.y = v9, v10 = CGRectContainsPoint(self->_homeAffordanceFrame, v37), v7, !v10))
+  if (self->_didReceiveTouch || [began count] != 1 || (objc_msgSend(began, "anyObject"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "_locationInSceneReferenceSpace"), v37.x = v8, v37.y = v9, v10 = CGRectContainsPoint(self->_homeAffordanceFrame, v37), v7, !v10))
   {
-    v15 = [a3 anyObject];
-    [v15 _locationInSceneReferenceSpace];
+    anyObject = [began anyObject];
+    [anyObject _locationInSceneReferenceSpace];
     v38.x = v16;
     v38.y = v17;
     v18 = CGRectContainsPoint(self->_homeAffordanceFrame, v38);
@@ -132,13 +132,13 @@
         }
 
         *buf = 134217984;
-        v33 = self;
+        selfCopy4 = self;
         v21 = "<%p> home affordance gate received the second touch";
       }
 
       else
       {
-        if ([a3 count] < 2)
+        if ([began count] < 2)
         {
           goto LABEL_19;
         }
@@ -156,7 +156,7 @@
         }
 
         *buf = 134217984;
-        v33 = self;
+        selfCopy4 = self;
         v21 = "<%p> home affordance gate received too many simultaneous touches";
       }
     }
@@ -176,7 +176,7 @@
       }
 
       *buf = 134217984;
-      v33 = self;
+      selfCopy4 = self;
       v21 = "<%p> home affordance gate received touch outside of target region";
     }
 
@@ -194,13 +194,13 @@ LABEL_19:
     {
       v25 = MEMORY[0x1E696B098];
       v26 = v24;
-      v27 = [a3 anyObject];
-      [v27 _locationInSceneReferenceSpace];
+      anyObject2 = [began anyObject];
+      [anyObject2 _locationInSceneReferenceSpace];
       v31[0] = v28;
       v31[1] = v29;
       v30 = [v25 valueWithBytes:v31 objCType:"{CGPoint=dd}"];
       *buf = 134218242;
-      v33 = self;
+      selfCopy4 = self;
       v34 = 2112;
       v35 = v30;
       _os_log_impl(&dword_188A29000, v26, OS_LOG_TYPE_ERROR, "<%p> home affordance gate received the first touch in region: %@", buf, 0x16u);
@@ -219,19 +219,19 @@ LABEL_19:
     tapRecognizer = self->_tapRecognizer;
   }
 
-  [(UITapRecognizer *)tapRecognizer touchesBegan:a3 withEvent:a4];
+  [(UITapRecognizer *)tapRecognizer touchesBegan:began withEvent:event];
 }
 
 - (double)_touchSloppinessFactor
 {
-  v2 = [(UIGestureRecognizer *)self view];
-  [v2 _touchSloppinessFactor];
+  view = [(UIGestureRecognizer *)self view];
+  [view _touchSloppinessFactor];
   v4 = v3;
 
   return v4;
 }
 
-- (void)tapRecognizerFailedToRecognizeTap:(id)a3
+- (void)tapRecognizerFailedToRecognizeTap:(id)tap
 {
   v8 = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("HomeAffordanceGestureGate", &tapRecognizerFailedToRecognizeTap____s_category);
@@ -241,7 +241,7 @@ LABEL_19:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 134217984;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "<%p> Home affordance gate failed to recognize tap.", &v6, 0xCu);
     }
   }
@@ -249,7 +249,7 @@ LABEL_19:
   [(_UIHomeAffordanceGateGestureRecognizer *)self setState:5];
 }
 
-- (void)tapRecognizerRecognizedTap:(id)a3
+- (void)tapRecognizerRecognizedTap:(id)tap
 {
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   timeoutTimer = self->_timeoutTimer;
@@ -295,12 +295,12 @@ LABEL_19:
   objc_destroyWeak(location);
 }
 
-- (void)_notifier:(id)a3 homeAffordanceFrameDidChange:(CGRect)a4
+- (void)_notifier:(id)_notifier homeAffordanceFrameDidChange:(CGRect)change
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v19 = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("HomeAffordanceGestureGate", &_notifier_homeAffordanceFrameDidChange____s_category_0);
   if (*CategoryCachedImpl)
@@ -316,7 +316,7 @@ LABEL_19:
       v12 = v10;
       v13 = [v11 valueWithBytes:v14 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
       *buf = 134218242;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
       v18 = v13;
       _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "<%p> Home affordance frame updated: %@", buf, 0x16u);
@@ -329,9 +329,9 @@ LABEL_19:
   self->_homeAffordanceFrame.size.height = height;
 }
 
-- (void)_notifier:(id)a3 homeAffordanceDoubleTapGestureDidSucceed:(BOOL)a4
+- (void)_notifier:(id)_notifier homeAffordanceDoubleTapGestureDidSucceed:(BOOL)succeed
 {
-  v4 = a4;
+  succeedCopy = succeed;
   v16 = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("HomeAffordanceGestureGate", &_notifier_homeAffordanceDoubleTapGestureDidSucceed____s_category_0);
   if (*CategoryCachedImpl)
@@ -341,16 +341,16 @@ LABEL_19:
     {
       v9 = MEMORY[0x1E696AD98];
       v10 = v8;
-      v11 = [v9 numberWithBool:v4];
+      v11 = [v9 numberWithBool:succeedCopy];
       v12 = 134218242;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
       v15 = v11;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "<%p> Home affordance double tap did succeed: %@", &v12, 0x16u);
     }
   }
 
-  if (v4)
+  if (succeedCopy)
   {
     v7 = 3;
   }
@@ -363,16 +363,16 @@ LABEL_19:
   [(_UIHomeAffordanceGateGestureRecognizer *)self setState:v7];
 }
 
-- (void)_windowDidMoveToScene:(id)a3
+- (void)_windowDidMoveToScene:(id)scene
 {
-  v22 = [a3 object];
-  v5 = [(UIGestureRecognizer *)self view];
+  object = [scene object];
+  view = [(UIGestureRecognizer *)self view];
 
-  v6 = v22;
-  if (v22 != v5)
+  v6 = object;
+  if (object != view)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    v12 = v22;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v12 = object;
     if (v12)
     {
       v13 = MEMORY[0x1E696AEC0];
@@ -386,13 +386,13 @@ LABEL_19:
       v16 = @"(nil)";
     }
 
-    v17 = [v12 windowScene];
-    if (v17)
+    windowScene = [v12 windowScene];
+    if (windowScene)
     {
       v18 = MEMORY[0x1E696AEC0];
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
-      v21 = [v18 stringWithFormat:@"<%@: %p>", v20, v17];
+      v21 = [v18 stringWithFormat:@"<%@: %p>", v20, windowScene];
     }
 
     else
@@ -400,19 +400,19 @@ LABEL_19:
       v21 = @"(nil)";
     }
 
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIHomeAffordanceGateGestureRecognizer.m" lineNumber:197 description:{@"Window scene notification is out of sync with home affordance gate: %@; window; %@; windowScene: %@;", self, v16, v21}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHomeAffordanceGateGestureRecognizer.m" lineNumber:197 description:{@"Window scene notification is out of sync with home affordance gate: %@; window; %@; windowScene: %@;", self, v16, v21}];
 
-    v6 = v22;
+    v6 = object;
   }
 
-  v7 = [v6 windowScene];
-  v8 = [v7 _homeAffordanceSceneNotifier];
-  v9 = [v8 registerHomeAffordanceObserver:self inWindow:v22];
+  windowScene2 = [v6 windowScene];
+  _homeAffordanceSceneNotifier = [windowScene2 _homeAffordanceSceneNotifier];
+  v9 = [_homeAffordanceSceneNotifier registerHomeAffordanceObserver:self inWindow:object];
   homeAffordanceObserver = self->_homeAffordanceObserver;
   self->_homeAffordanceObserver = v9;
 }
 
-- (void)_windowDidMoveToNilScene:(id)a3
+- (void)_windowDidMoveToNilScene:(id)scene
 {
   homeAffordanceObserver = self->_homeAffordanceObserver;
   self->_homeAffordanceObserver = 0;

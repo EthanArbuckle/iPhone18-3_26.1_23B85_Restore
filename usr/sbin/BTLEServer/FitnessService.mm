@@ -1,36 +1,36 @@
 @interface FitnessService
-+ (BOOL)manufacturer:(id)a3 andModel:(id)a4 matches:(id)a5;
-+ (id)hkQuantityTypeForIdentifier:(id)a3;
-- (BOOL)firstSampleTimestampOlderThan:(id)a3;
-- (BOOL)isCollectingHKQuantityType:(id)a3;
-- (BOOL)latestSampleTimestampWithinSeconds:(double)a3;
-- (BOOL)supportsHKQuantityType:(id)a3;
-- (BOOL)wasPairedAfter:(id)a3;
-- (FitnessService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5;
++ (BOOL)manufacturer:(id)manufacturer andModel:(id)model matches:(id)matches;
++ (id)hkQuantityTypeForIdentifier:(id)identifier;
+- (BOOL)firstSampleTimestampOlderThan:(id)than;
+- (BOOL)isCollectingHKQuantityType:(id)type;
+- (BOOL)latestSampleTimestampWithinSeconds:(double)seconds;
+- (BOOL)supportsHKQuantityType:(id)type;
+- (BOOL)wasPairedAfter:(id)after;
+- (FitnessService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service;
 - (NSArray)alwaysCollectQuantityTypes;
-- (id)createDatum:(double)a3 start:(id)a4 end:(id)a5 quantityType:(id)a6;
-- (unint64_t)readBytesFromNSData:(id)a3 into:(void *)a4 startingAt:(unint64_t)a5 length:(unint64_t)a6 info:(id)a7;
-- (void)createDataCollectorForQuantityType:(id)a3;
+- (id)createDatum:(double)datum start:(id)start end:(id)end quantityType:(id)type;
+- (unint64_t)readBytesFromNSData:(id)data into:(void *)into startingAt:(unint64_t)at length:(unint64_t)length info:(id)info;
+- (void)createDataCollectorForQuantityType:(id)type;
 - (void)createHKDevice;
-- (void)deviceInformation:(id)a3 readCompleteForDeviceUUID:(id)a4;
+- (void)deviceInformation:(id)information readCompleteForDeviceUUID:(id)d;
 - (void)featuresReadComplete;
-- (void)finishCollectionForQuantityType:(id)a3;
-- (void)receiveDeviceInfoUpdateNotification:(id)a3;
-- (void)recordDatum:(double)a3 start:(id)a4 end:(id)a5 quantityType:(id)a6;
-- (void)recordDatum:(id)a3 forType:(id)a4;
+- (void)finishCollectionForQuantityType:(id)type;
+- (void)receiveDeviceInfoUpdateNotification:(id)notification;
+- (void)recordDatum:(double)datum start:(id)start end:(id)end quantityType:(id)type;
+- (void)recordDatum:(id)datum forType:(id)type;
 - (void)start;
 - (void)stop;
 - (void)storeAllDatums;
-- (void)storeDatumsForQuantityType:(id)a3;
-- (void)storeDatumsForQuantityType:(id)a3 usingHKDevice:(id)a4;
-- (void)updateRequestedQuantityTypes:(id)a3;
+- (void)storeDatumsForQuantityType:(id)type;
+- (void)storeDatumsForQuantityType:(id)type usingHKDevice:(id)device;
+- (void)updateRequestedQuantityTypes:(id)types;
 @end
 
 @implementation FitnessService
 
-+ (id)hkQuantityTypeForIdentifier:(id)a3
++ (id)hkQuantityTypeForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2050000000;
@@ -48,29 +48,29 @@
   _Block_object_dispose(&v7, 8);
   if (v4)
   {
-    v4 = [v4 quantityTypeForIdentifier:v3];
+    v4 = [v4 quantityTypeForIdentifier:identifierCopy];
   }
 
   return v4;
 }
 
-+ (BOOL)manufacturer:(id)a3 andModel:(id)a4 matches:(id)a5
++ (BOOL)manufacturer:(id)manufacturer andModel:(id)model matches:(id)matches
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([@"ALL" caseInsensitiveCompare:v9])
+  manufacturerCopy = manufacturer;
+  modelCopy = model;
+  matchesCopy = matches;
+  if ([@"ALL" caseInsensitiveCompare:matchesCopy])
   {
-    v10 = [v9 componentsSeparatedByString:@"/"];
+    v10 = [matchesCopy componentsSeparatedByString:@"/"];
     if ([v10 count] == 2)
     {
       v11 = [v10 objectAtIndexedSubscript:0];
       v12 = [v10 objectAtIndexedSubscript:1];
-      v13 = [v7 uppercaseString];
-      v14 = [v11 uppercaseString];
-      v15 = [v13 hasPrefix:v14];
+      uppercaseString = [manufacturerCopy uppercaseString];
+      uppercaseString2 = [v11 uppercaseString];
+      v15 = [uppercaseString hasPrefix:uppercaseString2];
 
-      v16 = v15 && (![@"ALL" caseInsensitiveCompare:v12] || !objc_msgSend(v8, "caseInsensitiveCompare:", v12));
+      v16 = v15 && (![@"ALL" caseInsensitiveCompare:v12] || !objc_msgSend(modelCopy, "caseInsensitiveCompare:", v12));
     }
 
     else
@@ -87,26 +87,26 @@
   return v16;
 }
 
-- (FitnessService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5
+- (FitnessService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service
 {
-  v8 = a4;
-  v9 = a5;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
   v27.receiver = self;
   v27.super_class = FitnessService;
-  v10 = [(ClientService *)&v27 initWithManager:a3 peripheral:v8 service:v9];
+  v10 = [(ClientService *)&v27 initWithManager:manager peripheral:peripheralCopy service:serviceCopy];
   if (v10)
   {
     v11 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [v8 name];
-      v14 = [v9 UUID];
-      v15 = [v14 UUIDString];
+      name = [peripheralCopy name];
+      uUID = [serviceCopy UUID];
+      uUIDString = [uUID UUIDString];
       *buf = 138412546;
-      v29 = v13;
+      v29 = name;
       v30 = 2112;
-      v31 = v15;
+      v31 = uUIDString;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "FitnessService - initWithManager:peripheral:“%@” service:%@", buf, 0x16u);
     }
 
@@ -118,15 +118,15 @@
     v17 = objc_opt_new();
     [(FitnessService *)v10 setHkDatumBuffers:v17];
 
-    v18 = [(ClientService *)v10 manager];
+    manager = [(ClientService *)v10 manager];
     v19 = [CBUUID UUIDWithString:CBUUIDDeviceInformationServiceString];
-    v20 = [v18 clientServiceForUUID:v19];
+    v20 = [manager clientServiceForUUID:v19];
 
     v21 = +[NSNotificationCenter defaultCenter];
     [v21 addObserver:v10 selector:"receiveDeviceInfoUpdateNotification:" name:@"DeviceInformationUpdate" object:v20];
 
     [(FitnessService *)v10 createHKDevice];
-    v22 = [v8 customProperty:@"PairingTimestamp"];
+    v22 = [peripheralCopy customProperty:@"PairingTimestamp"];
     v23 = v22;
     if (v22)
     {
@@ -152,14 +152,14 @@
   return v3;
 }
 
-- (BOOL)supportsHKQuantityType:(id)a3
+- (BOOL)supportsHKQuantityType:(id)type
 {
-  v4 = a3;
-  v5 = [(ClientService *)self peripheral];
-  v6 = [v4 identifier];
+  typeCopy = type;
+  peripheral = [(ClientService *)self peripheral];
+  identifier = [typeCopy identifier];
 
-  LOBYTE(v4) = [v5 hasTag:v6];
-  return v4;
+  LOBYTE(typeCopy) = [peripheral hasTag:identifier];
+  return typeCopy;
 }
 
 - (void)featuresReadComplete
@@ -174,21 +174,21 @@
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(ClientService *)self service];
-    v6 = [v5 UUID];
+    service = [(ClientService *)self service];
+    uUID = [service UUID];
     v7 = [(FitnessService *)self debugDescription];
-    v8 = [(ClientService *)self peripheral];
-    v9 = [v8 name];
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
     *buf = 138413314;
-    v35 = v6;
+    v35 = uUID;
     v36 = 2112;
     v37 = v7;
     v38 = 2112;
-    v39 = v9;
+    v39 = name;
     v40 = 1024;
-    v41 = [(FitnessService *)self productID];
+    productID = [(FitnessService *)self productID];
     v42 = 1024;
-    v43 = [(FitnessService *)self vendorID];
+    vendorID = [(FitnessService *)self vendorID];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "FitnessService %@ (%@) starting for “%@” PID:0x%04X VID:0x%04X", buf, 0x2Cu);
   }
 
@@ -204,19 +204,19 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "FitnessService - allServicesAvailable", buf, 2u);
     }
 
-    v11 = [(ClientService *)self manager];
+    manager = [(ClientService *)self manager];
     v12 = CBUUIDDeviceInformationServiceString;
     v13 = [CBUUID UUIDWithString:CBUUIDDeviceInformationServiceString];
-    v14 = [v11 clientServiceForUUID:v13];
+    v14 = [manager clientServiceForUUID:v13];
 
     if (v14)
     {
       if ([v14 haveAllCharacteristicsBeenRead])
       {
-        v15 = [(ClientService *)self peripheral];
-        v16 = [v15 identifier];
-        v17 = [v16 UUIDString];
-        [(FitnessService *)self deviceInformation:v14 readCompleteForDeviceUUID:v17];
+        peripheral2 = [(ClientService *)self peripheral];
+        identifier = [peripheral2 identifier];
+        uUIDString = [identifier UUIDString];
+        [(FitnessService *)self deviceInformation:v14 readCompleteForDeviceUUID:uUIDString];
       }
 
       else
@@ -231,10 +231,10 @@
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v18 = [(ClientService *)self peripheral];
-      v19 = [v18 services];
+      peripheral3 = [(ClientService *)self peripheral];
+      services = [peripheral3 services];
 
-      v20 = [v19 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v20 = [services countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v20)
       {
         v21 = v20;
@@ -245,12 +245,12 @@
           {
             if (*v29 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(services);
             }
 
-            v24 = [*(*(&v28 + 1) + 8 * i) UUID];
+            uUID2 = [*(*(&v28 + 1) + 8 * i) UUID];
             v25 = [CBUUID UUIDWithString:v12];
-            v26 = [v24 isEqual:v25];
+            v26 = [uUID2 isEqual:v25];
 
             if (v26)
             {
@@ -264,7 +264,7 @@
             }
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v28 objects:v33 count:16];
+          v21 = [services countByEnumeratingWithState:&v28 objects:v33 count:16];
           if (v21)
           {
             continue;
@@ -287,17 +287,17 @@ LABEL_21:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(ClientService *)self service];
-    v6 = [v5 UUID];
+    service = [(ClientService *)self service];
+    uUID = [service UUID];
     v7 = [(FitnessService *)self debugDescription];
-    v8 = [(ClientService *)self peripheral];
-    v9 = [v8 name];
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
     *buf = 138412802;
-    v12 = v6;
+    v12 = uUID;
     v13 = 2112;
     v14 = v7;
     v15 = 2112;
-    v16 = v9;
+    v16 = name;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "FitnessService %@ (%@) stopping for “%@”", buf, 0x20u);
   }
 
@@ -307,32 +307,32 @@ LABEL_21:
   [(ClientService *)&v10 stop];
 }
 
-- (void)updateRequestedQuantityTypes:(id)a3
+- (void)updateRequestedQuantityTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(ClientService *)self peripheral];
-    v8 = [v7 name];
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
     *buf = 138412290;
-    v50 = v8;
+    v50 = name;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "FitnessService.updateRequestedQuantityTypes:%@", buf, 0xCu);
   }
 
-  v9 = [(FitnessService *)self alwaysCollectQuantityTypes];
-  v10 = [v9 count];
+  alwaysCollectQuantityTypes = [(FitnessService *)self alwaysCollectQuantityTypes];
+  v10 = [alwaysCollectQuantityTypes count];
 
   if (v10)
   {
-    v11 = [v4 mutableCopy];
+    v11 = [typesCopy mutableCopy];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v12 = [(FitnessService *)self alwaysCollectQuantityTypes];
-    v13 = [v12 countByEnumeratingWithState:&v42 objects:v48 count:16];
+    alwaysCollectQuantityTypes2 = [(FitnessService *)self alwaysCollectQuantityTypes];
+    v13 = [alwaysCollectQuantityTypes2 countByEnumeratingWithState:&v42 objects:v48 count:16];
     if (v13)
     {
       v14 = v13;
@@ -343,17 +343,17 @@ LABEL_21:
         {
           if (*v43 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(alwaysCollectQuantityTypes2);
           }
 
           v17 = *(*(&v42 + 1) + 8 * i);
-          if (([v4 containsObject:v17] & 1) == 0)
+          if (([typesCopy containsObject:v17] & 1) == 0)
           {
             [v11 addObject:v17];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v42 objects:v48 count:16];
+        v14 = [alwaysCollectQuantityTypes2 countByEnumeratingWithState:&v42 objects:v48 count:16];
       }
 
       while (v14);
@@ -362,11 +362,11 @@ LABEL_21:
 
   else
   {
-    v11 = v4;
+    v11 = typesCopy;
   }
 
-  v18 = [(NSMutableDictionary *)self->_hkDataCollectors allKeys];
-  v19 = [v18 count];
+  allKeys = [(NSMutableDictionary *)self->_hkDataCollectors allKeys];
+  v19 = [allKeys count];
 
   v40 = 0u;
   v41 = 0u;
@@ -404,8 +404,8 @@ LABEL_21:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v26 = [(FitnessService *)self hkQuantityTypesCollecting];
-  v27 = [v26 countByEnumeratingWithState:&v34 objects:v46 count:16];
+  hkQuantityTypesCollecting = [(FitnessService *)self hkQuantityTypesCollecting];
+  v27 = [hkQuantityTypesCollecting countByEnumeratingWithState:&v34 objects:v46 count:16];
   if (v27)
   {
     v28 = v27;
@@ -416,7 +416,7 @@ LABEL_21:
       {
         if (*v35 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(hkQuantityTypesCollecting);
         }
 
         v31 = *(*(&v34 + 1) + 8 * k);
@@ -426,14 +426,14 @@ LABEL_21:
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v34 objects:v46 count:16];
+      v28 = [hkQuantityTypesCollecting countByEnumeratingWithState:&v34 objects:v46 count:16];
     }
 
     while (v28);
   }
 
-  v32 = [(NSMutableDictionary *)self->_hkDataCollectors allKeys];
-  v33 = [v32 count];
+  allKeys2 = [(NSMutableDictionary *)self->_hkDataCollectors allKeys];
+  v33 = [allKeys2 count];
 
   if ((v19 == 0) == (v33 != 0))
   {
@@ -441,74 +441,74 @@ LABEL_21:
   }
 }
 
-- (BOOL)isCollectingHKQuantityType:(id)a3
+- (BOOL)isCollectingHKQuantityType:(id)type
 {
-  v4 = a3;
-  v5 = [(FitnessService *)self hkQuantityTypesCollecting];
-  v6 = [v5 containsObject:v4];
+  typeCopy = type;
+  hkQuantityTypesCollecting = [(FitnessService *)self hkQuantityTypesCollecting];
+  v6 = [hkQuantityTypesCollecting containsObject:typeCopy];
 
   return v6;
 }
 
-- (unint64_t)readBytesFromNSData:(id)a3 into:(void *)a4 startingAt:(unint64_t)a5 length:(unint64_t)a6 info:(id)a7
+- (unint64_t)readBytesFromNSData:(id)data into:(void *)into startingAt:(unint64_t)at length:(unint64_t)length info:(id)info
 {
-  v11 = a3;
-  v12 = a7;
-  if ([v11 length] <= a5)
+  dataCopy = data;
+  infoCopy = info;
+  if ([dataCopy length] <= at)
   {
     v15 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       v17 = 138413058;
-      *v18 = v12;
+      *v18 = infoCopy;
       *&v18[8] = 1024;
-      *&v18[10] = a5;
+      *&v18[10] = at;
       v19 = 1024;
-      v20 = a6;
+      atCopy = length;
       v21 = 2112;
-      *v22 = v11;
+      *v22 = dataCopy;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Out of range error trying to read %@ at index %d length %d from data %@", &v17, 0x22u);
     }
 
-    a6 = 0;
+    length = 0;
   }
 
-  else if (a6 + a5 <= [v11 length])
+  else if (length + at <= [dataCopy length])
   {
-    [v11 getBytes:a4 range:{a5, a6}];
+    [dataCopy getBytes:into range:{at, length}];
   }
 
   else
   {
-    v13 = [v11 length] - a5;
-    [v11 getBytes:a4 range:{a5, v13}];
+    v13 = [dataCopy length] - at;
+    [dataCopy getBytes:into range:{at, v13}];
     v14 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       v17 = 67110146;
       *v18 = v13;
       *&v18[4] = 2112;
-      *&v18[6] = v12;
+      *&v18[6] = infoCopy;
       v19 = 1024;
-      v20 = a5;
+      atCopy = at;
       v21 = 1024;
-      *v22 = a6;
+      *v22 = length;
       *&v22[4] = 2112;
-      *&v22[6] = v11;
+      *&v22[6] = dataCopy;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Could only read %d bytes from %@ at index %d instead of requested length %d from data %@", &v17, 0x28u);
     }
 
-    a6 = v13;
+    length = v13;
   }
 
-  return a6;
+  return length;
 }
 
-- (id)createDatum:(double)a3 start:(id)a4 end:(id)a5 quantityType:(id)a6
+- (id)createDatum:(double)datum start:(id)start end:(id)end quantityType:(id)type
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  startCopy = start;
+  endCopy = end;
+  typeCopy = type;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2050000000;
@@ -542,11 +542,11 @@ LABEL_21:
   if (v12 && v14)
   {
     v16 = +[FitnessDeviceManager instance];
-    v17 = [v16 hkUnitForHKQuantityType:v11];
+    v17 = [v16 hkUnitForHKQuantityType:typeCopy];
 
-    v18 = [v12 quantityWithUnit:v17 doubleValue:a3];
+    v18 = [v12 quantityWithUnit:v17 doubleValue:datum];
     v19 = +[NSUUID UUID];
-    v20 = [[NSDateInterval alloc] initWithStartDate:v9 endDate:v10];
+    v20 = [[NSDateInterval alloc] initWithStartDate:startCopy endDate:endCopy];
     v21 = [[v14 alloc] initWithIdentifier:v19 dateInterval:v20 quantity:v18 resumeContext:0];
   }
 
@@ -555,7 +555,7 @@ LABEL_21:
     v22 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
-      sub_100070DA4(v22, v11);
+      sub_100070DA4(v22, typeCopy);
     }
 
     v21 = 0;
@@ -564,19 +564,19 @@ LABEL_21:
   return v21;
 }
 
-- (BOOL)wasPairedAfter:(id)a3
+- (BOOL)wasPairedAfter:(id)after
 {
-  v4 = a3;
-  v5 = v4;
+  afterCopy = after;
+  v5 = afterCopy;
   if (self->_pairingTimestamp)
   {
-    v6 = [v4 pairingTimestamp];
+    pairingTimestamp = [afterCopy pairingTimestamp];
 
-    if (v6)
+    if (pairingTimestamp)
     {
       pairingTimestamp = self->_pairingTimestamp;
-      v8 = [v5 pairingTimestamp];
-      v9 = [(NSDate *)pairingTimestamp compare:v8]== NSOrderedAscending;
+      pairingTimestamp2 = [v5 pairingTimestamp];
+      v9 = [(NSDate *)pairingTimestamp compare:pairingTimestamp2]== NSOrderedAscending;
     }
 
     else
@@ -593,19 +593,19 @@ LABEL_21:
   return v9;
 }
 
-- (BOOL)firstSampleTimestampOlderThan:(id)a3
+- (BOOL)firstSampleTimestampOlderThan:(id)than
 {
-  v4 = a3;
-  v5 = v4;
+  thanCopy = than;
+  v5 = thanCopy;
   if (self->_firstSampleTimestamp)
   {
-    v6 = [v4 firstSampleTimestamp];
+    firstSampleTimestamp = [thanCopy firstSampleTimestamp];
 
-    if (v6)
+    if (firstSampleTimestamp)
     {
       firstSampleTimestamp = self->_firstSampleTimestamp;
-      v8 = [v5 firstSampleTimestamp];
-      v9 = [(NSDate *)firstSampleTimestamp compare:v8]== NSOrderedAscending;
+      firstSampleTimestamp2 = [v5 firstSampleTimestamp];
+      v9 = [(NSDate *)firstSampleTimestamp compare:firstSampleTimestamp2]== NSOrderedAscending;
     }
 
     else
@@ -622,23 +622,23 @@ LABEL_21:
   return v9;
 }
 
-- (BOOL)latestSampleTimestampWithinSeconds:(double)a3
+- (BOOL)latestSampleTimestampWithinSeconds:(double)seconds
 {
   latestSampleTimestamp = self->_latestSampleTimestamp;
   if (latestSampleTimestamp)
   {
     [(NSDate *)latestSampleTimestamp timeIntervalSinceNow];
-    LOBYTE(latestSampleTimestamp) = fabs(v5) < a3;
+    LOBYTE(latestSampleTimestamp) = fabs(v5) < seconds;
   }
 
   return latestSampleTimestamp;
 }
 
-- (void)recordDatum:(id)a3 forType:(id)a4
+- (void)recordDatum:(id)datum forType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  datumCopy = datum;
+  typeCopy = type;
+  if (datumCopy)
   {
     v8 = +[NSDate now];
     latestSampleTimestamp = self->_latestSampleTimestamp;
@@ -650,15 +650,15 @@ LABEL_21:
     }
 
     v10 = +[FitnessDeviceManager instance];
-    v11 = [v10 shouldForwardFitnessService:self quantityType:v7];
+    v11 = [v10 shouldForwardFitnessService:self quantityType:typeCopy];
 
     if (v11)
     {
-      v12 = [(NSMutableDictionary *)self->_hkDatumBuffers objectForKey:v7];
+      v12 = [(NSMutableDictionary *)self->_hkDatumBuffers objectForKey:typeCopy];
       v13 = v12;
       if (v12)
       {
-        [v12 addObject:v6];
+        [v12 addObject:datumCopy];
       }
 
       else
@@ -667,14 +667,14 @@ LABEL_21:
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
         {
           v15 = v14;
-          v16 = [v7 identifier];
-          v17 = [(ClientService *)self peripheral];
-          v18 = [v17 name];
+          identifier = [typeCopy identifier];
+          peripheral = [(ClientService *)self peripheral];
+          name = [peripheral name];
           hkDatumBuffers = self->_hkDatumBuffers;
           v20 = 138412802;
-          v21 = v16;
+          v21 = identifier;
           v22 = 2112;
-          v23 = v18;
+          v23 = name;
           v24 = 2112;
           v25 = hkDatumBuffers;
           _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "recordDatum:forType:%@ “%@” datumBuffer not available (hkDatumBuffers:%@)", &v20, 0x20u);
@@ -684,20 +684,20 @@ LABEL_21:
   }
 }
 
-- (void)recordDatum:(double)a3 start:(id)a4 end:(id)a5 quantityType:(id)a6
+- (void)recordDatum:(double)datum start:(id)start end:(id)end quantityType:(id)type
 {
-  v10 = a6;
-  v11 = [(FitnessService *)self createDatum:a4 start:a5 end:v10 quantityType:a3];
-  [(FitnessService *)self recordDatum:v11 forType:v10];
+  typeCopy = type;
+  v11 = [(FitnessService *)self createDatum:start start:end end:typeCopy quantityType:datum];
+  [(FitnessService *)self recordDatum:v11 forType:typeCopy];
 }
 
-- (void)storeDatumsForQuantityType:(id)a3 usingHKDevice:(id)a4
+- (void)storeDatumsForQuantityType:(id)type usingHKDevice:(id)device
 {
-  v6 = a3;
-  v29 = a4;
-  v7 = [(NSMutableDictionary *)self->_hkDataCollectors objectForKey:v6];
-  v30 = v6;
-  v8 = [(NSMutableDictionary *)self->_hkDatumBuffers objectForKey:v6];
+  typeCopy = type;
+  deviceCopy = device;
+  v7 = [(NSMutableDictionary *)self->_hkDataCollectors objectForKey:typeCopy];
+  v30 = typeCopy;
+  v8 = [(NSMutableDictionary *)self->_hkDatumBuffers objectForKey:typeCopy];
   v9 = v8;
   if (v7)
   {
@@ -715,13 +715,13 @@ LABEL_21:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       v12 = v11;
-      v13 = [v30 identifier];
+      identifier = [v30 identifier];
       *buf = 138412802;
       v42 = v7;
       v43 = 2112;
       v44 = v9;
       v45 = 2112;
-      v46 = v13;
+      v46 = identifier;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "storeDatumsForQuantityType: Missing dataCollector:%@ or datumBuffer:%@ for qty:%@", buf, 0x20u);
     }
   }
@@ -755,22 +755,22 @@ LABEL_21:
           {
             v20 = *(*(&v37 + 1) + 8 * v18);
             log = v19;
-            v31 = [v30 identifier];
-            v21 = [v29 name];
-            v33 = [v20 quantity];
-            [v33 _value];
+            identifier2 = [v30 identifier];
+            name = [deviceCopy name];
+            quantity = [v20 quantity];
+            [quantity _value];
             v23 = v22;
-            v24 = [v20 quantity];
-            v25 = [v24 _unit];
-            v26 = [v25 unitString];
+            quantity2 = [v20 quantity];
+            _unit = [quantity2 _unit];
+            unitString = [_unit unitString];
             *buf = 138413058;
-            v42 = v31;
+            v42 = identifier2;
             v43 = 2112;
-            v44 = v21;
+            v44 = name;
             v45 = 2048;
             v46 = v23;
             v47 = 2112;
-            v48 = v26;
+            v48 = unitString;
             _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "storeDatumForQuantityType:%@ - device:“%@”: value:%f %@", buf, 0x2Au);
           }
 
@@ -788,7 +788,7 @@ LABEL_21:
     v34[1] = 3221225472;
     v34[2] = sub_100006C2C;
     v34[3] = &unk_1000BD240;
-    v35 = v29;
+    v35 = deviceCopy;
     v36 = v30;
     v7 = v28;
     [v28 insertDatums:v14 device:v35 metadata:0 completion:v34];
@@ -798,12 +798,12 @@ LABEL_21:
   }
 }
 
-- (void)storeDatumsForQuantityType:(id)a3
+- (void)storeDatumsForQuantityType:(id)type
 {
-  v4 = a3;
-  v6 = [(ClientService *)self peripheral];
-  v5 = [v6 hkDevice];
-  [(FitnessService *)self storeDatumsForQuantityType:v4 usingHKDevice:v5];
+  typeCopy = type;
+  peripheral = [(ClientService *)self peripheral];
+  hkDevice = [peripheral hkDevice];
+  [(FitnessService *)self storeDatumsForQuantityType:typeCopy usingHKDevice:hkDevice];
 }
 
 - (void)storeAllDatums
@@ -812,8 +812,8 @@ LABEL_21:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_hkDataCollectors allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allKeys = [(NSMutableDictionary *)self->_hkDataCollectors allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -825,7 +825,7 @@ LABEL_21:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(FitnessService *)self storeDatumsForQuantityType:*(*(&v8 + 1) + 8 * v7)];
@@ -833,33 +833,33 @@ LABEL_21:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)finishCollectionForQuantityType:(id)a3
+- (void)finishCollectionForQuantityType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(ClientService *)self peripheral];
-    v8 = [v7 name];
-    v9 = [v4 identifier];
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
+    identifier = [typeCopy identifier];
     *buf = 138412546;
-    v23 = v8;
+    v23 = name;
     v24 = 2112;
-    v25 = v9;
+    v25 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Finishing data collection on %@ for %@", buf, 0x16u);
   }
 
-  [(FitnessService *)self storeDatumsForQuantityType:v4];
-  v10 = [(FitnessService *)self hkDataCollectors];
-  v11 = [v10 objectForKey:v4];
+  [(FitnessService *)self storeDatumsForQuantityType:typeCopy];
+  hkDataCollectors = [(FitnessService *)self hkDataCollectors];
+  v11 = [hkDataCollectors objectForKey:typeCopy];
 
   v12 = [HKDataCollectorState alloc];
   v13 = [v12 initWithType:1 priority:HKDataCollectorPriorityDefault + 10];
@@ -870,7 +870,7 @@ LABEL_21:
   v18 = sub_100007060;
   v19 = &unk_1000BD268;
   objc_copyWeak(&v21, buf);
-  v14 = v4;
+  v14 = typeCopy;
   v20 = v14;
   [v11 finishWithCompletion:&v16];
   v15 = [(FitnessService *)self hkDataCollectors:v16];
@@ -880,21 +880,21 @@ LABEL_21:
   objc_destroyWeak(buf);
 }
 
-- (void)createDataCollectorForQuantityType:(id)a3
+- (void)createDataCollectorForQuantityType:(id)type
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_hkDataCollectors objectForKey:v4];
+  typeCopy = type;
+  v5 = [(NSMutableDictionary *)self->_hkDataCollectors objectForKey:typeCopy];
   if (v5)
   {
     v6 = v5;
     v7 = [HKDataCollectorState alloc];
-    v8 = [v7 initWithType:2 priority:HKDataCollectorPriorityDefault + 10];
-    [v6 setState:v8];
+    peripheral = [v7 initWithType:2 priority:HKDataCollectorPriorityDefault + 10];
+    [v6 setState:peripheral];
     goto LABEL_3;
   }
 
   v9 = +[FitnessDeviceManager instance];
-  v6 = [v9 createHKDataCollectorForHKQuantityType:v4];
+  v6 = [v9 createHKDataCollectorForHKQuantityType:typeCopy];
 
   if (v6)
   {
@@ -905,10 +905,10 @@ LABEL_21:
       [v6 setState:v11];
     }
 
-    [(NSMutableDictionary *)self->_hkDataCollectors setObject:v6 forKey:v4];
+    [(NSMutableDictionary *)self->_hkDataCollectors setObject:v6 forKey:typeCopy];
     hkDatumBuffers = self->_hkDatumBuffers;
     v13 = objc_opt_new();
-    [(NSMutableDictionary *)hkDatumBuffers setObject:v13 forKey:v4];
+    [(NSMutableDictionary *)hkDatumBuffers setObject:v13 forKey:typeCopy];
 
     v14 = qword_1000DDBC8;
     if (!os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -917,12 +917,12 @@ LABEL_21:
     }
 
     v15 = v14;
-    v8 = [(ClientService *)self peripheral];
-    v16 = [v8 name];
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
     v18 = 138412546;
-    v19 = v16;
+    v19 = name;
     v20 = 2112;
-    v21 = v4;
+    v21 = typeCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Created data collector for device “%@” quantity type %@", &v18, 0x16u);
 
 LABEL_3:
@@ -934,7 +934,7 @@ LABEL_4:
   v17 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
   {
-    sub_100070F40(v17, self, v4);
+    sub_100070F40(v17, self, typeCopy);
   }
 
 LABEL_5:
@@ -942,23 +942,23 @@ LABEL_5:
 
 - (void)createHKDevice
 {
-  v3 = [(ClientService *)self peripheral];
+  peripheral = [(ClientService *)self peripheral];
 
-  if (v3)
+  if (peripheral)
   {
-    v4 = [(ClientService *)self peripheral];
-    v5 = [v4 hkDevice];
+    peripheral2 = [(ClientService *)self peripheral];
+    hkDevice = [peripheral2 hkDevice];
 
-    if (v5)
+    if (hkDevice)
     {
       v6 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v7 = v6;
-        v8 = [(ClientService *)self peripheral];
-        v9 = [v8 name];
+        peripheral3 = [(ClientService *)self peripheral];
+        name = [peripheral3 name];
         *buf = 138412290;
-        *&buf[4] = v9;
+        *&buf[4] = name;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "HKDevice for %@ already exists", buf, 0xCu);
       }
     }
@@ -988,62 +988,62 @@ LABEL_5:
       _Block_object_dispose(&v51, 8);
       if (v11)
       {
-        v14 = [(ClientService *)self manager];
+        manager = [(ClientService *)self manager];
         v15 = [CBUUID UUIDWithString:CBUUIDDeviceInformationServiceString];
-        v50 = [v14 clientServiceForUUID:v15];
+        v50 = [manager clientServiceForUUID:v15];
 
         self->_vendorID = [v50 vendorID];
         self->_productID = [v50 productID];
-        v16 = [(ClientService *)self peripheral];
-        v47 = [v16 name];
+        peripheral4 = [(ClientService *)self peripheral];
+        name2 = [peripheral4 name];
 
         v17 = [v11 alloc];
-        v48 = [v50 manufacturerName];
-        v18 = [v50 modelNumber];
-        v19 = [v50 hardwareRevision];
-        v20 = [v50 firmwareRevision];
-        v21 = [v50 softwareRevision];
-        v22 = [(ClientService *)self peripheral];
-        v23 = [v22 identifier];
-        v24 = [v23 UUIDString];
-        v25 = [v17 initWithName:v47 manufacturer:v48 model:v18 hardwareVersion:v19 firmwareVersion:v20 softwareVersion:v21 localIdentifier:v24 UDIDeviceIdentifier:0];
-        v26 = [(ClientService *)self peripheral];
-        [v26 setHkDevice:v25];
+        manufacturerName = [v50 manufacturerName];
+        modelNumber = [v50 modelNumber];
+        hardwareRevision = [v50 hardwareRevision];
+        firmwareRevision = [v50 firmwareRevision];
+        softwareRevision = [v50 softwareRevision];
+        peripheral5 = [(ClientService *)self peripheral];
+        identifier = [peripheral5 identifier];
+        uUIDString = [identifier UUIDString];
+        v25 = [v17 initWithName:name2 manufacturer:manufacturerName model:modelNumber hardwareVersion:hardwareRevision firmwareVersion:firmwareRevision softwareVersion:softwareRevision localIdentifier:uUIDString UDIDeviceIdentifier:0];
+        peripheral6 = [(ClientService *)self peripheral];
+        [peripheral6 setHkDevice:v25];
 
         v27 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           log = v27;
-          v49 = [(ClientService *)self peripheral];
-          v46 = [v49 hkDevice];
-          v39 = [v46 name];
-          v45 = [(ClientService *)self peripheral];
-          v44 = [v45 hkDevice];
-          v40 = [v44 manufacturer];
-          v43 = [(ClientService *)self peripheral];
-          v42 = [v43 hkDevice];
-          v28 = [v42 model];
-          v29 = [(ClientService *)self peripheral];
-          v30 = [v29 hkDevice];
-          v31 = [v30 hardwareVersion];
-          v32 = [(ClientService *)self peripheral];
-          v33 = [v32 hkDevice];
-          v34 = [v33 firmwareVersion];
-          v35 = [(ClientService *)self peripheral];
-          v36 = [v35 hkDevice];
-          v37 = [v36 localIdentifier];
+          peripheral7 = [(ClientService *)self peripheral];
+          hkDevice2 = [peripheral7 hkDevice];
+          name3 = [hkDevice2 name];
+          peripheral8 = [(ClientService *)self peripheral];
+          hkDevice3 = [peripheral8 hkDevice];
+          manufacturer = [hkDevice3 manufacturer];
+          peripheral9 = [(ClientService *)self peripheral];
+          hkDevice4 = [peripheral9 hkDevice];
+          model = [hkDevice4 model];
+          peripheral10 = [(ClientService *)self peripheral];
+          hkDevice5 = [peripheral10 hkDevice];
+          hardwareVersion = [hkDevice5 hardwareVersion];
+          peripheral11 = [(ClientService *)self peripheral];
+          hkDevice6 = [peripheral11 hkDevice];
+          firmwareVersion = [hkDevice6 firmwareVersion];
+          peripheral12 = [(ClientService *)self peripheral];
+          hkDevice7 = [peripheral12 hkDevice];
+          localIdentifier = [hkDevice7 localIdentifier];
           *buf = 138413570;
-          *&buf[4] = v39;
+          *&buf[4] = name3;
           *&buf[12] = 2112;
-          *&buf[14] = v40;
+          *&buf[14] = manufacturer;
           *&buf[22] = 2112;
-          v56 = v28;
+          v56 = model;
           *v57 = 2112;
-          *&v57[2] = v31;
+          *&v57[2] = hardwareVersion;
           v58 = 2112;
-          v59 = v34;
+          v59 = firmwareVersion;
           v60 = 2112;
-          v61 = v37;
+          v61 = localIdentifier;
           _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Created HKDevice name:“%@” manufacturer:“%@” model:“%@” HW:“%@” FW:“%@” localID:“%@”", buf, 0x3Eu);
         }
       }
@@ -1069,80 +1069,80 @@ LABEL_5:
   }
 }
 
-- (void)receiveDeviceInfoUpdateNotification:(id)a3
+- (void)receiveDeviceInfoUpdateNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 name];
-  if ([v5 isEqualToString:@"DeviceInformationUpdate"])
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  if ([name isEqualToString:@"DeviceInformationUpdate"])
   {
-    v6 = [(ClientService *)self peripheral];
-    v7 = [v6 identifier];
-    v8 = [v7 UUIDString];
-    v9 = [v4 userInfo];
-    v10 = [v9 valueForKey:@"UUID"];
-    v11 = [v8 isEqualToString:v10];
+    peripheral = [(ClientService *)self peripheral];
+    identifier = [peripheral identifier];
+    uUIDString = [identifier UUIDString];
+    userInfo = [notificationCopy userInfo];
+    v10 = [userInfo valueForKey:@"UUID"];
+    v11 = [uUIDString isEqualToString:v10];
 
     if (v11)
     {
-      v12 = [(ClientService *)self peripheral];
-      v13 = [v12 hkDevice];
+      peripheral2 = [(ClientService *)self peripheral];
+      hkDevice = [peripheral2 hkDevice];
 
-      if (v13)
+      if (hkDevice)
       {
-        v14 = [v4 userInfo];
-        v15 = [v14 valueForKey:@"ModelNumber"];
+        userInfo2 = [notificationCopy userInfo];
+        v15 = [userInfo2 valueForKey:@"ModelNumber"];
 
         if (v15)
         {
-          [v13 _setModel:v15];
+          [hkDevice _setModel:v15];
         }
 
-        v16 = [v4 userInfo];
-        v17 = [v16 valueForKey:@"FirmwareRevision"];
+        userInfo3 = [notificationCopy userInfo];
+        v17 = [userInfo3 valueForKey:@"FirmwareRevision"];
 
         if (v17)
         {
-          [v13 _setFirmwareVersion:v17];
+          [hkDevice _setFirmwareVersion:v17];
         }
 
-        v18 = [v4 userInfo];
-        v19 = [v18 valueForKey:@"HardwareRevision"];
+        userInfo4 = [notificationCopy userInfo];
+        v19 = [userInfo4 valueForKey:@"HardwareRevision"];
 
         if (v19)
         {
-          [v13 _setHardwareVersion:v19];
+          [hkDevice _setHardwareVersion:v19];
         }
 
-        v20 = [v4 userInfo];
-        v21 = [v20 valueForKey:@"ManufacturerName"];
+        userInfo5 = [notificationCopy userInfo];
+        v21 = [userInfo5 valueForKey:@"ManufacturerName"];
 
         if (v21)
         {
-          [v13 _setManufacturer:v21];
+          [hkDevice _setManufacturer:v21];
         }
 
         v22 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v23 = v22;
-          v24 = [v13 name];
-          v25 = [v13 manufacturer];
-          v26 = [v13 model];
-          v27 = [v13 hardwareVersion];
-          v28 = [v13 firmwareVersion];
-          v29 = [v13 localIdentifier];
+          name2 = [hkDevice name];
+          manufacturer = [hkDevice manufacturer];
+          model = [hkDevice model];
+          hardwareVersion = [hkDevice hardwareVersion];
+          firmwareVersion = [hkDevice firmwareVersion];
+          localIdentifier = [hkDevice localIdentifier];
           v30 = 138413570;
-          v31 = v24;
+          v31 = name2;
           v32 = 2112;
-          v33 = v25;
+          v33 = manufacturer;
           v34 = 2112;
-          v35 = v26;
+          v35 = model;
           v36 = 2112;
-          v37 = v27;
+          v37 = hardwareVersion;
           v38 = 2112;
-          v39 = v28;
+          v39 = firmwareVersion;
           v40 = 2112;
-          v41 = v29;
+          v41 = localIdentifier;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Updated HKDevice name:“%@” manufacturer:“%@” model:“%@” HW:“%@” FW:“%@” localID:“%@”", &v30, 0x3Eu);
         }
       }
@@ -1154,16 +1154,16 @@ LABEL_5:
   }
 }
 
-- (void)deviceInformation:(id)a3 readCompleteForDeviceUUID:(id)a4
+- (void)deviceInformation:(id)information readCompleteForDeviceUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  informationCopy = information;
+  dCopy = d;
   if (_os_feature_enabled_impl())
   {
-    v8 = [(ClientService *)self peripheral];
-    v9 = [v8 identifier];
-    v10 = [v9 UUIDString];
-    v11 = [v7 isEqualToString:v10];
+    peripheral = [(ClientService *)self peripheral];
+    identifier = [peripheral identifier];
+    uUIDString = [identifier UUIDString];
+    v11 = [dCopy isEqualToString:uUIDString];
 
     if (v11)
     {
@@ -1171,61 +1171,61 @@ LABEL_5:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v13 = v12;
-        v14 = [(ClientService *)self peripheral];
-        v15 = [v14 name];
+        peripheral2 = [(ClientService *)self peripheral];
+        name = [peripheral2 name];
         *buf = 138412290;
-        v33 = v15;
+        v33 = name;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "DeviceInformation for “%@” read complete for HRM", buf, 0xCu);
       }
 
-      [v6 removeReadCompleteListener:self];
-      v16 = [(ClientService *)self peripheral];
-      v17 = [v16 hkDevice];
+      [informationCopy removeReadCompleteListener:self];
+      peripheral3 = [(ClientService *)self peripheral];
+      hkDevice = [peripheral3 hkDevice];
 
-      if (v6)
+      if (informationCopy)
       {
-        if (v17)
+        if (hkDevice)
         {
-          v18 = [v6 modelNumber];
-          [v17 _setModel:v18];
+          modelNumber = [informationCopy modelNumber];
+          [hkDevice _setModel:modelNumber];
 
-          v19 = [v6 softwareRevision];
-          [v17 _setSoftwareVersion:v19];
+          softwareRevision = [informationCopy softwareRevision];
+          [hkDevice _setSoftwareVersion:softwareRevision];
 
-          v20 = [v6 firmwareRevision];
-          [v17 _setFirmwareVersion:v20];
+          firmwareRevision = [informationCopy firmwareRevision];
+          [hkDevice _setFirmwareVersion:firmwareRevision];
 
-          v21 = [v6 hardwareRevision];
-          [v17 _setHardwareVersion:v21];
+          hardwareRevision = [informationCopy hardwareRevision];
+          [hkDevice _setHardwareVersion:hardwareRevision];
 
-          v22 = [v6 manufacturerName];
-          [v17 _setManufacturer:v22];
+          manufacturerName = [informationCopy manufacturerName];
+          [hkDevice _setManufacturer:manufacturerName];
 
           v23 = qword_1000DDBC8;
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
           {
             log = v23;
-            v30 = [v17 name];
-            v24 = [v17 manufacturer];
-            v25 = [v17 model];
-            v26 = [v17 hardwareVersion];
-            v27 = [v17 softwareVersion];
-            v28 = [v17 firmwareVersion];
-            v29 = [v17 localIdentifier];
+            name2 = [hkDevice name];
+            manufacturer = [hkDevice manufacturer];
+            model = [hkDevice model];
+            hardwareVersion = [hkDevice hardwareVersion];
+            softwareVersion = [hkDevice softwareVersion];
+            firmwareVersion = [hkDevice firmwareVersion];
+            localIdentifier = [hkDevice localIdentifier];
             *buf = 138413826;
-            v33 = v30;
+            v33 = name2;
             v34 = 2112;
-            v35 = v24;
+            v35 = manufacturer;
             v36 = 2112;
-            v37 = v25;
+            v37 = model;
             v38 = 2112;
-            v39 = v26;
+            v39 = hardwareVersion;
             v40 = 2112;
-            v41 = v27;
+            v41 = softwareVersion;
             v42 = 2112;
-            v43 = v28;
+            v43 = firmwareVersion;
             v44 = 2112;
-            v45 = v29;
+            v45 = localIdentifier;
             _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Updated HKDevice name:“%@” manufacturer:“%@” model:“%@” HW:“%@” SW:“%@” FW:“%@” localID:“%@”", buf, 0x48u);
           }
         }

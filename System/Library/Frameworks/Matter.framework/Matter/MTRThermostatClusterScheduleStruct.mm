@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterScheduleStruct
 - (MTRThermostatClusterScheduleStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -26,9 +26,9 @@
     presetHandle = v3->_presetHandle;
     v3->_presetHandle = 0;
 
-    v8 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     transitions = v3->_transitions;
-    v3->_transitions = v8;
+    v3->_transitions = array;
 
     builtIn = v3->_builtIn;
     v3->_builtIn = 0;
@@ -37,26 +37,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterScheduleStruct);
-  v5 = [(MTRThermostatClusterScheduleStruct *)self scheduleHandle];
-  [(MTRThermostatClusterScheduleStruct *)v4 setScheduleHandle:v5];
+  scheduleHandle = [(MTRThermostatClusterScheduleStruct *)self scheduleHandle];
+  [(MTRThermostatClusterScheduleStruct *)v4 setScheduleHandle:scheduleHandle];
 
-  v6 = [(MTRThermostatClusterScheduleStruct *)self systemMode];
-  [(MTRThermostatClusterScheduleStruct *)v4 setSystemMode:v6];
+  systemMode = [(MTRThermostatClusterScheduleStruct *)self systemMode];
+  [(MTRThermostatClusterScheduleStruct *)v4 setSystemMode:systemMode];
 
-  v7 = [(MTRThermostatClusterScheduleStruct *)self name];
-  [(MTRThermostatClusterScheduleStruct *)v4 setName:v7];
+  name = [(MTRThermostatClusterScheduleStruct *)self name];
+  [(MTRThermostatClusterScheduleStruct *)v4 setName:name];
 
-  v8 = [(MTRThermostatClusterScheduleStruct *)self presetHandle];
-  [(MTRThermostatClusterScheduleStruct *)v4 setPresetHandle:v8];
+  presetHandle = [(MTRThermostatClusterScheduleStruct *)self presetHandle];
+  [(MTRThermostatClusterScheduleStruct *)v4 setPresetHandle:presetHandle];
 
-  v9 = [(MTRThermostatClusterScheduleStruct *)self transitions];
-  [(MTRThermostatClusterScheduleStruct *)v4 setTransitions:v9];
+  transitions = [(MTRThermostatClusterScheduleStruct *)self transitions];
+  [(MTRThermostatClusterScheduleStruct *)v4 setTransitions:transitions];
 
-  v10 = [(MTRThermostatClusterScheduleStruct *)self builtIn];
-  [(MTRThermostatClusterScheduleStruct *)v4 setBuiltIn:v10];
+  builtIn = [(MTRThermostatClusterScheduleStruct *)self builtIn];
+  [(MTRThermostatClusterScheduleStruct *)v4 setBuiltIn:builtIn];
 
   return v4;
 }

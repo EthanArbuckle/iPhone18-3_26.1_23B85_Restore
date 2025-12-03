@@ -1,8 +1,8 @@
 @interface CDMContextualSpanMatcherService
 - (id)getPredictor;
-- (id)handle:(id)a3;
+- (id)handle:(id)handle;
 - (id)handleRequestCommandTypeNames;
-- (id)setup:(id)a3;
+- (id)setup:(id)setup;
 @end
 
 @implementation CDMContextualSpanMatcherService
@@ -28,10 +28,10 @@
   return v2;
 }
 
-- (id)handle:(id)a3
+- (id)handle:(id)handle
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -40,7 +40,7 @@
     _os_log_impl(&dword_1DC287000, v5, OS_LOG_TYPE_INFO, "%s Calling ContextualSpanMatcher", &v16, 0xCu);
   }
 
-  if (v4 && ([v4 contextualSpanMatcherRequest], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  if (handleCopy && ([handleCopy contextualSpanMatcherRequest], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     if (self->_overrideSpansForReplay)
     {
@@ -57,8 +57,8 @@
 
     else
     {
-      v12 = [v4 contextualSpanMatcherRequest];
-      v13 = [(CDMContextualSpanMatcherService *)self getContextualSpansInternal:v12];
+      contextualSpanMatcherRequest = [handleCopy contextualSpanMatcherRequest];
+      v13 = [(CDMContextualSpanMatcherService *)self getContextualSpansInternal:contextualSpanMatcherRequest];
 
       v14 = CDMOSLoggerForCategory(0);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -100,10 +100,10 @@
   return v8;
 }
 
-- (id)setup:(id)a3
+- (id)setup:(id)setup
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setupCopy = setup;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -112,16 +112,16 @@
     _os_log_impl(&dword_1DC287000, v5, OS_LOG_TYPE_INFO, "%s Setting up ContextualSpanMatcher service", &v15, 0xCu);
   }
 
-  v6 = [v4 dynamicConfig];
+  dynamicConfig = [setupCopy dynamicConfig];
 
-  v7 = [v6 overrideContextualSpans];
+  overrideContextualSpans = [dynamicConfig overrideContextualSpans];
   overrideSpansForReplay = self->_overrideSpansForReplay;
-  self->_overrideSpansForReplay = v7;
+  self->_overrideSpansForReplay = overrideContextualSpans;
 
   self->super.super._serviceState = 2;
-  v9 = [(CDMContextualSpanMatcherService *)self getPredictor];
+  getPredictor = [(CDMContextualSpanMatcherService *)self getPredictor];
   contextualSpanMatcher = self->_contextualSpanMatcher;
-  self->_contextualSpanMatcher = v9;
+  self->_contextualSpanMatcher = getPredictor;
 
   v11 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -131,10 +131,10 @@
     _os_log_impl(&dword_1DC287000, v11, OS_LOG_TYPE_INFO, "%s ContextualSpanMatcher service loaded", &v15, 0xCu);
   }
 
-  v12 = [(CDMBaseService *)self createSetupResponseCommand];
+  createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
   v13 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return createSetupResponseCommand;
 }
 
 @end

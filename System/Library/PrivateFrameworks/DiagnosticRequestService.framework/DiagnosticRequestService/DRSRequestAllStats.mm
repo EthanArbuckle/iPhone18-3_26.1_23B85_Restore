@@ -1,7 +1,7 @@
 @interface DRSRequestAllStats
-+ (id)statsForRequests:(id)a3;
++ (id)statsForRequests:(id)requests;
 - (id)terminalRequestProtobufRepresentation;
-- (unint64_t)generateCoreAnalyticsEvents:(BOOL)a3;
+- (unint64_t)generateCoreAnalyticsEvents:(BOOL)events;
 @end
 
 @implementation DRSRequestAllStats
@@ -18,11 +18,11 @@
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v5 = [(DRSRequestAllStats *)self perBuildStats];
-  v6 = [v5 objectEnumerator];
+  perBuildStats = [(DRSRequestAllStats *)self perBuildStats];
+  objectEnumerator = [perBuildStats objectEnumerator];
 
-  obj = v6;
-  v56 = [v6 countByEnumeratingWithState:&v96 objects:v105 count:16];
+  obj = objectEnumerator;
+  v56 = [objectEnumerator countByEnumeratingWithState:&v96 objects:v105 count:16];
   if (v56)
   {
     v55 = *v97;
@@ -42,11 +42,11 @@
         v93 = 0u;
         v94 = 0u;
         v95 = 0u;
-        v9 = [v8 perTeamIDStats];
-        v10 = [v9 objectEnumerator];
+        perTeamIDStats = [v8 perTeamIDStats];
+        objectEnumerator2 = [perTeamIDStats objectEnumerator];
 
-        v58 = v10;
-        v60 = [v10 countByEnumeratingWithState:&v92 objects:v104 count:16];
+        v58 = objectEnumerator2;
+        v60 = [objectEnumerator2 countByEnumeratingWithState:&v92 objects:v104 count:16];
         if (v60)
         {
           v59 = *v93;
@@ -66,11 +66,11 @@
               v89 = 0u;
               v90 = 0u;
               v91 = 0u;
-              v13 = [v12 perIssueCategoryStats];
-              v14 = [v13 objectEnumerator];
+              perIssueCategoryStats = [v12 perIssueCategoryStats];
+              objectEnumerator3 = [perIssueCategoryStats objectEnumerator];
 
-              v62 = v14;
-              v64 = [v14 countByEnumeratingWithState:&v88 objects:v103 count:16];
+              v62 = objectEnumerator3;
+              v64 = [objectEnumerator3 countByEnumeratingWithState:&v88 objects:v103 count:16];
               if (v64)
               {
                 v63 = *v89;
@@ -90,11 +90,11 @@
                     v85 = 0u;
                     v86 = 0u;
                     v87 = 0u;
-                    v17 = [v16 perIssueDescriptionStats];
-                    v18 = [v17 objectEnumerator];
+                    perIssueDescriptionStats = [v16 perIssueDescriptionStats];
+                    objectEnumerator4 = [perIssueDescriptionStats objectEnumerator];
 
-                    v67 = v18;
-                    v69 = [v18 countByEnumeratingWithState:&v84 objects:v102 count:16];
+                    v67 = objectEnumerator4;
+                    v69 = [objectEnumerator4 countByEnumeratingWithState:&v84 objects:v102 count:16];
                     if (v69)
                     {
                       v68 = *v85;
@@ -108,35 +108,35 @@
                           }
 
                           v20 = *(*(&v84 + 1) + 8 * i);
-                          v21 = [v20 requests];
-                          v22 = [v21 firstObject];
+                          requests = [v20 requests];
+                          firstObject = [requests firstObject];
 
-                          if (v22)
+                          if (firstObject)
                           {
                             v71 = i;
                             v23 = objc_alloc_init(DRSProtoDiagnosticRequestStats);
-                            v24 = [v22 build];
-                            [(DRSProtoDiagnosticRequestStats *)v23 setBuild:v24];
+                            build = [firstObject build];
+                            [(DRSProtoDiagnosticRequestStats *)v23 setBuild:build];
 
-                            v25 = [v22 teamID];
-                            [(DRSProtoDiagnosticRequestStats *)v23 setTeamId:v25];
+                            teamID = [firstObject teamID];
+                            [(DRSProtoDiagnosticRequestStats *)v23 setTeamId:teamID];
 
-                            v26 = [v22 issueCategory];
-                            [(DRSProtoDiagnosticRequestStats *)v23 setIssueCategory:v26];
+                            issueCategory = [firstObject issueCategory];
+                            [(DRSProtoDiagnosticRequestStats *)v23 setIssueCategory:issueCategory];
 
-                            v70 = v22;
-                            v27 = [v22 issueDescription];
-                            [(DRSProtoDiagnosticRequestStats *)v23 setIssueDescription:v27];
+                            v70 = firstObject;
+                            issueDescription = [firstObject issueDescription];
+                            [(DRSProtoDiagnosticRequestStats *)v23 setIssueDescription:issueDescription];
 
                             v82 = 0u;
                             v83 = 0u;
                             v80 = 0u;
                             v81 = 0u;
-                            v28 = [v20 perOutcomeStats];
-                            v29 = [v28 objectEnumerator];
+                            perOutcomeStats = [v20 perOutcomeStats];
+                            objectEnumerator5 = [perOutcomeStats objectEnumerator];
 
-                            v74 = v29;
-                            v30 = [v29 countByEnumeratingWithState:&v80 objects:v101 count:16];
+                            v74 = objectEnumerator5;
+                            v30 = [objectEnumerator5 countByEnumeratingWithState:&v80 objects:v101 count:16];
                             if (v30)
                             {
                               v31 = v30;
@@ -154,20 +154,20 @@
                                   }
 
                                   v34 = *(*(&v80 + 1) + 8 * v33);
-                                  v35 = [v34 requests];
-                                  v36 = [v35 firstObject];
+                                  requests2 = [v34 requests];
+                                  firstObject2 = [requests2 firstObject];
 
-                                  if (v36 && [v36 requestOutcome])
+                                  if (firstObject2 && [firstObject2 requestOutcome])
                                   {
-                                    v75 = v36;
+                                    v75 = firstObject2;
                                     v78 = 0u;
                                     v79 = 0u;
                                     v76 = 0u;
                                     v77 = 0u;
-                                    v37 = [v34 perStateStats];
-                                    v38 = [v37 objectEnumerator];
+                                    perStateStats = [v34 perStateStats];
+                                    objectEnumerator6 = [perStateStats objectEnumerator];
 
-                                    v39 = [v38 countByEnumeratingWithState:&v76 objects:v100 count:16];
+                                    v39 = [objectEnumerator6 countByEnumeratingWithState:&v76 objects:v100 count:16];
                                     if (v39)
                                     {
                                       v40 = v39;
@@ -178,24 +178,24 @@
                                         {
                                           if (*v77 != v41)
                                           {
-                                            objc_enumerationMutation(v38);
+                                            objc_enumerationMutation(objectEnumerator6);
                                           }
 
                                           v43 = *(*(&v76 + 1) + 8 * j);
-                                          v44 = [v43 requests];
-                                          v45 = [v44 firstObject];
+                                          requests3 = [v43 requests];
+                                          firstObject3 = [requests3 firstObject];
 
-                                          if (v45)
+                                          if (firstObject3)
                                           {
                                             v46 = objc_alloc_init(DRSProtoDiagnosticRequestOutcomeBucket);
                                             -[DRSProtoDiagnosticRequestOutcomeBucket setCount:](v46, "setCount:", [v43 requestCount]);
-                                            -[DRSProtoDiagnosticRequestOutcomeBucket setOutcome:](v46, "setOutcome:", [v45 requestOutcome]);
-                                            -[DRSProtoDiagnosticRequestOutcomeBucket setRequestState:](v46, "setRequestState:", [v45 requestState]);
+                                            -[DRSProtoDiagnosticRequestOutcomeBucket setOutcome:](v46, "setOutcome:", [firstObject3 requestOutcome]);
+                                            -[DRSProtoDiagnosticRequestOutcomeBucket setRequestState:](v46, "setRequestState:", [firstObject3 requestState]);
                                             [(DRSProtoDiagnosticRequestStats *)v23 addOutcomes:v46];
                                           }
                                         }
 
-                                        v40 = [v38 countByEnumeratingWithState:&v76 objects:v100 count:16];
+                                        v40 = [objectEnumerator6 countByEnumeratingWithState:&v76 objects:v100 count:16];
                                       }
 
                                       while (v40);
@@ -203,7 +203,7 @@
 
                                     v32 = v72;
                                     v31 = v73;
-                                    v36 = v75;
+                                    firstObject2 = v75;
                                   }
 
                                   ++v33;
@@ -216,15 +216,15 @@
                               while (v31);
                             }
 
-                            v47 = [(DRSProtoDiagnosticRequestStats *)v23 outcomes];
-                            v48 = [v47 count];
+                            outcomes = [(DRSProtoDiagnosticRequestStats *)v23 outcomes];
+                            v48 = [outcomes count];
 
                             if (v48)
                             {
                               [(DRSProtoDiagnosticRequestStatsBatch *)v66 addRequestsResultsStats:v23];
                             }
 
-                            v22 = v70;
+                            firstObject = v70;
                             i = v71;
                           }
                         }
@@ -265,8 +265,8 @@
     while (v56);
   }
 
-  v49 = [(DRSProtoDiagnosticRequestStatsBatch *)v66 requestsResultsStats];
-  v50 = [v49 count];
+  requestsResultsStats = [(DRSProtoDiagnosticRequestStatsBatch *)v66 requestsResultsStats];
+  v50 = [requestsResultsStats count];
 
   if (v50)
   {
@@ -283,19 +283,19 @@
   return v51;
 }
 
-- (unint64_t)generateCoreAnalyticsEvents:(BOOL)a3
+- (unint64_t)generateCoreAnalyticsEvents:(BOOL)events
 {
-  v74 = a3;
+  eventsCopy = events;
   v108 = *MEMORY[0x277D85DE8];
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v3 = [(DRSRequestAllStats *)self perBuildStats];
-  v4 = [v3 objectEnumerator];
+  perBuildStats = [(DRSRequestAllStats *)self perBuildStats];
+  objectEnumerator = [perBuildStats objectEnumerator];
 
-  obj = v4;
-  v54 = [v4 countByEnumeratingWithState:&v96 objects:v107 count:16];
+  obj = objectEnumerator;
+  v54 = [objectEnumerator countByEnumeratingWithState:&v96 objects:v107 count:16];
   if (v54)
   {
     v75 = 0;
@@ -318,11 +318,11 @@
         v93 = 0u;
         v94 = 0u;
         v95 = 0u;
-        v8 = [v7 perTeamIDStats];
-        v9 = [v8 objectEnumerator];
+        perTeamIDStats = [v7 perTeamIDStats];
+        objectEnumerator2 = [perTeamIDStats objectEnumerator];
 
-        v56 = v9;
-        v58 = [v9 countByEnumeratingWithState:&v92 objects:v106 count:16];
+        v56 = objectEnumerator2;
+        v58 = [objectEnumerator2 countByEnumeratingWithState:&v92 objects:v106 count:16];
         if (v58)
         {
           v57 = *v93;
@@ -344,11 +344,11 @@
               v89 = 0u;
               v90 = 0u;
               v91 = 0u;
-              v13 = [v12 perIssueCategoryStats];
-              v14 = [v13 objectEnumerator];
+              perIssueCategoryStats = [v12 perIssueCategoryStats];
+              objectEnumerator3 = [perIssueCategoryStats objectEnumerator];
 
-              v60 = v14;
-              v62 = [v14 countByEnumeratingWithState:&v88 objects:v105 count:16];
+              v60 = objectEnumerator3;
+              v62 = [objectEnumerator3 countByEnumeratingWithState:&v88 objects:v105 count:16];
               if (v62)
               {
                 v61 = *v89;
@@ -370,11 +370,11 @@
                     v85 = 0u;
                     v86 = 0u;
                     v87 = 0u;
-                    v18 = [v17 perIssueDescriptionStats];
-                    v19 = [v18 objectEnumerator];
+                    perIssueDescriptionStats = [v17 perIssueDescriptionStats];
+                    objectEnumerator4 = [perIssueDescriptionStats objectEnumerator];
 
-                    v64 = v19;
-                    v66 = [v19 countByEnumeratingWithState:&v84 objects:v104 count:16];
+                    v64 = objectEnumerator4;
+                    v66 = [objectEnumerator4 countByEnumeratingWithState:&v84 objects:v104 count:16];
                     if (v66)
                     {
                       v65 = *v85;
@@ -390,32 +390,32 @@
 
                           v68 = v20;
                           v21 = *(*(&v84 + 1) + 8 * v20);
-                          v22 = [v21 requests];
-                          v23 = [v22 firstObject];
+                          requests = [v21 requests];
+                          firstObject = [requests firstObject];
 
-                          if (v23)
+                          if (firstObject)
                           {
                             v102[0] = kTeamIDKey;
-                            v24 = [v23 teamID];
-                            v103[0] = v24;
+                            teamID = [firstObject teamID];
+                            v103[0] = teamID;
                             v102[1] = kDiagnosticRequestStatsKey_IssueCategory;
-                            v25 = [v23 issueCategory];
-                            v103[1] = v25;
+                            issueCategory = [firstObject issueCategory];
+                            v103[1] = issueCategory;
                             v102[2] = kDiagnosticRequestStatsKey_IssueDescription;
-                            v67 = v23;
-                            v26 = [v23 issueDescription];
-                            v103[2] = v26;
+                            v67 = firstObject;
+                            issueDescription = [firstObject issueDescription];
+                            v103[2] = issueDescription;
                             v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v103 forKeys:v102 count:3];
 
                             v82 = 0u;
                             v83 = 0u;
                             v80 = 0u;
                             v81 = 0u;
-                            v28 = [v21 perOutcomeStats];
-                            v29 = [v28 objectEnumerator];
+                            perOutcomeStats = [v21 perOutcomeStats];
+                            objectEnumerator5 = [perOutcomeStats objectEnumerator];
 
-                            v71 = v29;
-                            v30 = [v29 countByEnumeratingWithState:&v80 objects:v101 count:16];
+                            v71 = objectEnumerator5;
+                            v30 = [objectEnumerator5 countByEnumeratingWithState:&v80 objects:v101 count:16];
                             if (v30)
                             {
                               v31 = v30;
@@ -433,21 +433,21 @@
                                   }
 
                                   v34 = *(*(&v80 + 1) + 8 * v33);
-                                  v35 = [v34 requests];
-                                  v36 = [v35 firstObject];
+                                  requests2 = [v34 requests];
+                                  firstObject2 = [requests2 firstObject];
 
-                                  if (v36 && [v36 requestOutcome])
+                                  if (firstObject2 && [firstObject2 requestOutcome])
                                   {
-                                    v72 = v36;
+                                    v72 = firstObject2;
                                     v73 = v33;
                                     v78 = 0u;
                                     v79 = 0u;
                                     v76 = 0u;
                                     v77 = 0u;
-                                    v37 = [v34 perStateStats];
-                                    v38 = [v37 objectEnumerator];
+                                    perStateStats = [v34 perStateStats];
+                                    objectEnumerator6 = [perStateStats objectEnumerator];
 
-                                    v39 = [v38 countByEnumeratingWithState:&v76 objects:v100 count:16];
+                                    v39 = [objectEnumerator6 countByEnumeratingWithState:&v76 objects:v100 count:16];
                                     if (v39)
                                     {
                                       v40 = v39;
@@ -458,26 +458,26 @@
                                         {
                                           if (*v77 != v41)
                                           {
-                                            objc_enumerationMutation(v38);
+                                            objc_enumerationMutation(objectEnumerator6);
                                           }
 
                                           v43 = *(*(&v76 + 1) + 8 * i);
-                                          v44 = [v43 requests];
-                                          v45 = [v44 firstObject];
+                                          requests3 = [v43 requests];
+                                          firstObject3 = [requests3 firstObject];
 
-                                          if (v45 && [v43 requestCount])
+                                          if (firstObject3 && [v43 requestCount])
                                           {
                                             v46 = [v27 mutableCopy];
                                             v47 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v43, "requestCount")}];
                                             [v46 setObject:v47 forKeyedSubscript:kDiagnosticRequestStatsKey_RequestCount];
 
-                                            v48 = [v34 requestOutcome];
-                                            [v46 setObject:v48 forKeyedSubscript:kDiagnosticRequestStatsKey_RequestOutcome];
+                                            requestOutcome = [v34 requestOutcome];
+                                            [v46 setObject:requestOutcome forKeyedSubscript:kDiagnosticRequestStatsKey_RequestOutcome];
 
-                                            v49 = [v43 requestState];
-                                            [v46 setObject:v49 forKeyedSubscript:kDiagnosticRequestStatsKey_RequestState];
+                                            requestState = [v43 requestState];
+                                            [v46 setObject:requestState forKeyedSubscript:kDiagnosticRequestStatsKey_RequestState];
 
-                                            if (v74)
+                                            if (eventsCopy)
                                             {
                                               DRSCoreAnalyticsSendEvent(kDiagnosticRequestStatsName, v46);
                                             }
@@ -486,7 +486,7 @@
                                           }
                                         }
 
-                                        v40 = [v38 countByEnumeratingWithState:&v76 objects:v100 count:16];
+                                        v40 = [objectEnumerator6 countByEnumeratingWithState:&v76 objects:v100 count:16];
                                       }
 
                                       while (v40);
@@ -494,7 +494,7 @@
 
                                     v32 = v69;
                                     v31 = v70;
-                                    v36 = v72;
+                                    firstObject2 = v72;
                                     v33 = v73;
                                   }
 
@@ -508,7 +508,7 @@
                               while (v31);
                             }
 
-                            v23 = v67;
+                            firstObject = v67;
                           }
 
                           v20 = v68 + 1;
@@ -560,16 +560,16 @@
   return v75;
 }
 
-+ (id)statsForRequests:(id)a3
++ (id)statsForRequests:(id)requests
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requestsCopy = requests;
   v4 = objc_alloc_init(DRSRequestAllStats);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = requestsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {

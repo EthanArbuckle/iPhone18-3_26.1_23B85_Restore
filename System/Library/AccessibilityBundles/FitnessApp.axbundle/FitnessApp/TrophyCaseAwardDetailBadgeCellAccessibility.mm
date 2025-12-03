@@ -1,16 +1,16 @@
 @interface TrophyCaseAwardDetailBadgeCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation TrophyCaseAwardDetailBadgeCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FitnessApp.TrophyCaseAwardDetailBadgeCell" hasSwiftField:@"badgeViewContainer" withSwiftType:"UIView"];
-  [v3 validateClass:@"FitnessApp.TrophyCaseAwardDetailBadgeCell" hasSwiftField:@"achievementTitleLabel" withSwiftType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FitnessApp.TrophyCaseAwardDetailBadgeCell" hasSwiftField:@"badgeViewContainer" withSwiftType:"UIView"];
+  [validationsCopy validateClass:@"FitnessApp.TrophyCaseAwardDetailBadgeCell" hasSwiftField:@"achievementTitleLabel" withSwiftType:"UILabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,14 +22,14 @@
   v4 = [(TrophyCaseAwardDetailBadgeCellAccessibility *)self safeSwiftValueForKey:@"achievementTitleLabel"];
   [v3 setIsAccessibilityElement:1];
   v5 = accessibilityLocalizedString(@"achievement.badge.format");
-  v6 = [v4 accessibilityLabel];
-  v7 = [NSString stringWithFormat:v5, v6];
+  accessibilityLabel = [v4 accessibilityLabel];
+  v7 = [NSString stringWithFormat:v5, accessibilityLabel];
   [v3 setAccessibilityLabel:v7];
 
-  v8 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:UIAccessibilityTraitImage | v8];
-  v9 = [v4 accessibilityTraits];
-  [v4 setAccessibilityTraits:UIAccessibilityTraitHeader | v9];
+  accessibilityTraits = [v3 accessibilityTraits];
+  [v3 setAccessibilityTraits:UIAccessibilityTraitImage | accessibilityTraits];
+  accessibilityTraits2 = [v4 accessibilityTraits];
+  [v4 setAccessibilityTraits:UIAccessibilityTraitHeader | accessibilityTraits2];
 }
 
 - (void)layoutSubviews

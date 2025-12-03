@@ -19,23 +19,23 @@
 + (id)fc_orderedSet:()FCAdditions
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   if (v3)
   {
-    v3[2](v3, v4);
+    v3[2](v3, orderedSet);
   }
 
-  if (v4)
+  if (orderedSet)
   {
-    v5 = [v4 copy];
+    orderedSet2 = [orderedSet copy];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB8] orderedSet];
+    orderedSet2 = [MEMORY[0x1E695DFB8] orderedSet];
   }
 
-  v6 = v5;
+  v6 = orderedSet2;
 
   return v6;
 }
@@ -52,7 +52,7 @@
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v11];
+  [self enumerateObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -126,7 +126,7 @@ LABEL_6:
   v28 = v10;
   v11 = _Block_copy(aBlock);
   v12 = [v8 fc_orderedSetByTransformingWithBlock:v11];
-  v13 = [a1 fc_orderedSetByTransformingWithBlock:v11];
+  v13 = [self fc_orderedSetByTransformingWithBlock:v11];
   v14 = [v13 fc_diffAgainstOrderedSet:v12];
   v15 = [v14 mutableCopy];
 
@@ -141,7 +141,7 @@ LABEL_6:
   v31 = v18;
   v33 = v16;
   v34 = v9;
-  v32 = a1;
+  selfCopy = self;
   v19 = v16;
   v20 = v9;
   v21 = v18;
@@ -160,9 +160,9 @@ LABEL_6:
   v4 = a3;
   if (v4)
   {
-    v5 = a1;
+    selfCopy = self;
     v28 = [v4 set];
-    v27 = [v5 set];
+    v27 = [selfCopy set];
     v6 = [v27 fc_diffAgainstSet:v28];
     v7 = [v6 objectForKeyedSubscript:@"FCInsertedElementsKey"];
     v8 = [v6 objectForKeyedSubscript:@"FCDeletedElementsKey"];
@@ -193,7 +193,7 @@ LABEL_6:
     v35[3] = &unk_1E7C43B40;
     v13 = v10;
     v36 = v13;
-    v14 = [v5 indexesOfObjectsPassingTest:v35];
+    v14 = [selfCopy indexesOfObjectsPassingTest:v35];
     v15 = objc_opt_new();
     v16 = objc_opt_new();
     v29[0] = MEMORY[0x1E69E9820];
@@ -209,7 +209,7 @@ LABEL_6:
     v18 = v15;
     v19 = v11;
     v20 = v13;
-    [v5 enumerateObjectsUsingBlock:v29];
+    [selfCopy enumerateObjectsUsingBlock:v29];
 
     v43[0] = @"insertedIndices";
     v43[1] = @"deletedIndices";
@@ -250,7 +250,7 @@ LABEL_6:
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -270,10 +270,10 @@ LABEL_6:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 indexOfObject:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self indexOfObject:{*(*(&v14 + 1) + 8 * i), v14}];
         if (v11 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v5 addIndex:v11];
+          [indexSet addIndex:v11];
         }
       }
 
@@ -285,7 +285,7 @@ LABEL_6:
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return indexSet;
 }
 
 - (id)fc_firstObjectPassingTest:()FCAdditions
@@ -306,8 +306,8 @@ LABEL_6:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [a1 objectEnumerator];
-  v6 = [v5 fc_firstObjectPassingTest:v4];
+  objectEnumerator = [self objectEnumerator];
+  v6 = [objectEnumerator fc_firstObjectPassingTest:v4];
 
   v7 = *MEMORY[0x1E69E9840];
 
@@ -332,7 +332,7 @@ LABEL_6:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [a1 fc_firstObjectPassingTest:v4];
+  v5 = [self fc_firstObjectPassingTest:v4];
   v6 = v5 != 0;
 
   v7 = *MEMORY[0x1E69E9840];
@@ -362,8 +362,8 @@ LABEL_6:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -374,7 +374,7 @@ LABEL_6:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -384,7 +384,7 @@ LABEL_6:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -398,7 +398,7 @@ LABEL_6:
 - (id)fc_orderedSetWithObjectsAtIndexes:()FCAdditions
 {
   v1 = MEMORY[0x1E695DFB8];
-  v2 = [a1 objectsAtIndexes:?];
+  v2 = [self objectsAtIndexes:?];
   v3 = [v1 orderedSetWithArray:v2];
 
   return v3;
@@ -408,7 +408,7 @@ LABEL_6:
 {
   v4 = MEMORY[0x1E695DFA0];
   v5 = a3;
-  v6 = [v4 orderedSetWithOrderedSet:a1];
+  v6 = [v4 orderedSetWithOrderedSet:self];
   [v6 minusOrderedSet:v5];
 
   return v6;
@@ -423,8 +423,8 @@ LABEL_6:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -435,15 +435,15 @@ LABEL_6:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v4[2](v4, *(*(&v15 + 1) + 8 * i));
-        v12 = [v11 array];
-        [v5 addObjectsFromArray:v12];
+        array = [v11 array];
+        [v5 addObjectsFromArray:array];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -457,7 +457,7 @@ LABEL_6:
 - (id)fc_orderedSetByAddingObject:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 addObject:v4];
 
   return v5;
@@ -466,8 +466,8 @@ LABEL_6:
 - (BOOL)fc_isEqualToOrderedSet:()FCAdditions inRange:
 {
   v8 = a3;
-  v18 = a1;
-  v9 = [a1 count];
+  selfCopy = self;
+  v9 = [self count];
   v10 = [v8 count];
   v11 = a4 + a5;
   if (a4 >= a4 + a5)
@@ -488,7 +488,7 @@ LABEL_6:
 
       else
       {
-        v14 = [v18 objectAtIndexedSubscript:a4];
+        v14 = [selfCopy objectAtIndexedSubscript:a4];
       }
 
       if (a4 >= v12)

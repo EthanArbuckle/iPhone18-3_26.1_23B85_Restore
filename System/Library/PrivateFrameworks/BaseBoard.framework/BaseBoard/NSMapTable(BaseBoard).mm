@@ -10,7 +10,7 @@
 
 - (id)bs_safeObjectForKey:()BaseBoard ofType:
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v2 = v1;
@@ -33,8 +33,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = a1;
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    selfCopy = self;
+    v5 = [selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = *v11;
@@ -44,15 +44,15 @@
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(selfCopy);
           }
 
           v8 = *(*(&v10 + 1) + 8 * i);
-          v9 = [v4 objectForKey:{v8, v10}];
+          v9 = [selfCopy objectForKey:{v8, v10}];
           (*(a3 + 16))(a3, v8, v9);
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v5);
@@ -62,7 +62,7 @@
 
 - (id)bs_filter:()BaseBoard
 {
-  v5 = [a1 copy];
+  v5 = [self copy];
   v6 = v5;
   if (a3)
   {
@@ -72,7 +72,7 @@
     v8[3] = &unk_1E72CAB20;
     v10 = a3;
     v9 = v5;
-    [a1 bs_each:v8];
+    [self bs_each:v8];
   }
 
   return v6;
@@ -84,19 +84,19 @@
   {
     if (a4)
     {
-      return [a1 setObject:? forKey:?];
+      return [self setObject:? forKey:?];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)bs_takeObjectForKey:()BaseBoard
 {
-  v5 = [a1 objectForKey:?];
+  v5 = [self objectForKey:?];
   if (v5)
   {
-    [a1 removeObjectForKey:a3];
+    [self removeObjectForKey:a3];
     v6 = v5;
   }
 

@@ -1,27 +1,27 @@
 @interface MPModelStoreBrowseContentItemBuilder
 + (id)allSupportedProperties;
-- (MPModelStoreBrowseContentItemBuilder)initWithRequestedPropertySet:(id)a3;
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5;
-- (int64_t)contentItemTypeForMusicAPIType:(id)a3;
-- (int64_t)contentItemTypeForRawResponseKindIdentifierValue:(int64_t)a3;
-- (int64_t)contentItemTypeForRawResponseKindIdentifiers:(id)a3;
-- (int64_t)contentItemTypeForStoreItemMetadata:(id)a3;
-- (void)setPreventStoreItemMetadataCaching:(BOOL)a3;
+- (MPModelStoreBrowseContentItemBuilder)initWithRequestedPropertySet:(id)set;
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity;
+- (int64_t)contentItemTypeForMusicAPIType:(id)type;
+- (int64_t)contentItemTypeForRawResponseKindIdentifierValue:(int64_t)value;
+- (int64_t)contentItemTypeForRawResponseKindIdentifiers:(id)identifiers;
+- (int64_t)contentItemTypeForStoreItemMetadata:(id)metadata;
+- (void)setPreventStoreItemMetadataCaching:(BOOL)caching;
 @end
 
 @implementation MPModelStoreBrowseContentItemBuilder
 
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity
 {
-  v159 = a3;
-  v8 = a4;
-  v158 = a5;
-  v143 = v8;
+  metadataCopy = metadata;
+  objectCopy = object;
+  identityCopy = identity;
+  v143 = objectCopy;
   if ((*&self->_requestedBrowseContentItemProperties & 1) == 0)
   {
-    v9 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-    v10 = [v9 properties];
-    if ([v10 containsObject:@"MPModelStoreBrowseContentItemPropertyItemType"])
+    requestedPropertySet = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+    properties = [requestedPropertySet properties];
+    if ([properties containsObject:@"MPModelStoreBrowseContentItemPropertyItemType"])
     {
       v11 = 2;
     }
@@ -32,7 +32,7 @@
     }
 
     self->_requestedBrowseContentItemProperties = (*&self->_requestedBrowseContentItemProperties & 0xFFFFFFFD | v11);
-    if ([v10 containsObject:@"MPModelStoreBrowseContentItemPropertyDetailedItemType"])
+    if ([properties containsObject:@"MPModelStoreBrowseContentItemPropertyDetailedItemType"])
     {
       v12 = 4;
     }
@@ -43,8 +43,8 @@
     }
 
     self->_requestedBrowseContentItemProperties = (*&self->_requestedBrowseContentItemProperties & 0xFFFFFFFB | v12);
-    v154 = v10;
-    if ([v10 containsObject:@"MPModelStoreBrowseContentItemPropertyArtistUploadedContentType"])
+    v154 = properties;
+    if ([properties containsObject:@"MPModelStoreBrowseContentItemPropertyArtistUploadedContentType"])
     {
       v13 = 0x8000;
     }
@@ -55,9 +55,9 @@
     }
 
     self->_requestedBrowseContentItemProperties = (*&self->_requestedBrowseContentItemProperties & 0xFFFF7FFF | v13);
-    v156 = v9;
-    v14 = [v9 relationships];
-    v15 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipAlbum"];
+    v156 = requestedPropertySet;
+    relationships = [requestedPropertySet relationships];
+    v15 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipAlbum"];
     if (v15)
     {
       *&self->_requestedBrowseContentItemProperties |= 0x10u;
@@ -69,7 +69,7 @@
     self->_albumBuilder = v16;
 
     [(MPStoreModelObjectBuilder *)self->_albumBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
-    v18 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipArtist"];
+    v18 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipArtist"];
     if (v18)
     {
       *&self->_requestedBrowseContentItemProperties |= 8u;
@@ -81,7 +81,7 @@
     self->_artistBuilder = v19;
 
     [(MPStoreModelObjectBuilder *)self->_artistBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
-    v21 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipCurator"];
+    v21 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipCurator"];
     if (v21)
     {
       *&self->_requestedBrowseContentItemProperties |= 0x20u;
@@ -93,7 +93,7 @@
     self->_curatorBuilder = v22;
 
     [(MPStoreModelObjectBuilder *)self->_curatorBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
-    v24 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipMovie"];
+    v24 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipMovie"];
     if (v24)
     {
       *&self->_requestedBrowseContentItemProperties |= 0x80u;
@@ -105,7 +105,7 @@
     self->_movieBuilder = v25;
 
     [(MPStoreModelObjectBuilder *)self->_movieBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
-    v27 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipPlaylist"];
+    v27 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipPlaylist"];
     if (v27)
     {
       *&self->_requestedBrowseContentItemProperties |= 0x100u;
@@ -117,7 +117,7 @@
     self->_playlistBuilder = v28;
 
     [(MPStoreModelObjectBuilder *)self->_playlistBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
-    v30 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipRadioStation"];
+    v30 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipRadioStation"];
     if (v30)
     {
       *&self->_requestedBrowseContentItemProperties |= 0x200u;
@@ -129,7 +129,7 @@
     self->_radioStationBuilder = v31;
 
     [(MPStoreModelObjectBuilder *)self->_radioStationBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
-    v33 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipSong"];
+    v33 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipSong"];
     if (v33)
     {
       *&self->_requestedBrowseContentItemProperties |= 0x800u;
@@ -141,7 +141,7 @@
     self->_songBuilder = v34;
 
     [(MPStoreModelObjectBuilder *)self->_songBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
-    v36 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipTVEpisode"];
+    v36 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipTVEpisode"];
     if (v36)
     {
       *&self->_requestedBrowseContentItemProperties |= 0x40u;
@@ -153,7 +153,7 @@
     self->_episodeBuilder = v37;
 
     [(MPStoreModelObjectBuilder *)self->_episodeBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
-    v39 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipTVSeason"];
+    v39 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipTVSeason"];
     if (v39)
     {
       *&self->_requestedBrowseContentItemProperties |= 0x1000u;
@@ -164,7 +164,7 @@
     self->_seasonBuilder = v40;
 
     [(MPStoreModelObjectBuilder *)self->_seasonBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
-    v42 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipTVShow"];
+    v42 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipTVShow"];
     if (v42)
     {
       *&self->_requestedBrowseContentItemProperties |= 0x2000u;
@@ -175,7 +175,7 @@
     self->_showBuilder = v43;
 
     [(MPStoreModelObjectBuilder *)self->_showBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
-    v45 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipTVShowCreator"];
+    v45 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipTVShowCreator"];
     if (v45)
     {
       *&self->_requestedBrowseContentItemProperties |= 0x4000u;
@@ -186,7 +186,7 @@
     self->_showCreatorBuilder = v46;
 
     [(MPStoreModelObjectBuilder *)self->_showCreatorBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
-    v48 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipSocialPerson"];
+    v48 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipSocialPerson"];
     if (v48)
     {
       *&self->_requestedBrowseContentItemProperties |= 0x400u;
@@ -197,7 +197,7 @@
     self->_socialPersonBuilder = v49;
 
     [(MPStoreModelObjectBuilder *)self->_socialPersonBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
-    v51 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipRecordLabel"];
+    v51 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipRecordLabel"];
     if (v51)
     {
       *&self->_requestedBrowseContentItemProperties |= 0x10000u;
@@ -209,7 +209,7 @@
 
     [(MPStoreModelObjectBuilder *)self->_recordLabelBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
     *&self->_requestedBrowseContentItemProperties |= 1u;
-    v54 = [v14 objectForKey:@"MPModelStoreBrowseContentItemRelationshipCreditsArtist"];
+    v54 = [relationships objectForKey:@"MPModelStoreBrowseContentItemRelationshipCreditsArtist"];
     if (v54)
     {
       *&self->_requestedBrowseContentItemProperties |= 0x20000u;
@@ -222,30 +222,30 @@
     [(MPStoreModelObjectBuilder *)self->_creditsArtistBuilder setPreventStoreItemMetadataCaching:[(MPStoreModelObjectBuilder *)self preventStoreItemMetadataCaching]];
     *&self->_requestedBrowseContentItemProperties |= 1u;
 
-    v8 = v143;
+    objectCopy = v143;
   }
 
-  v57 = [(MPModelStoreBrowseContentItemBuilder *)self contentItemTypeForStoreItemMetadata:v159];
+  v57 = [(MPModelStoreBrowseContentItemBuilder *)self contentItemTypeForStoreItemMetadata:metadataCopy];
   v58 = 0;
   switch(v57)
   {
     case 0:
       goto LABEL_108;
     case 1:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v75 = self->_albumBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipAlbum"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipAlbum"])
       {
-        v76 = [v8 album];
-        v155 = [(MPStoreModelAlbumBuilder *)v75 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v76 userIdentity:v158];
+        album = [objectCopy album];
+        v155 = [(MPStoreModelAlbumBuilder *)v75 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:album userIdentity:identityCopy];
       }
 
       else
       {
-        v155 = [(MPStoreModelAlbumBuilder *)v75 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v155 = [(MPStoreModelAlbumBuilder *)v75 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
-      v64 = [v155 identifiers];
+      identifiers = [v155 identifiers];
       v151 = 0;
       v153 = 0;
       v157 = 0;
@@ -262,20 +262,20 @@
       v65 = 1;
       goto LABEL_98;
     case 2:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v77 = self->_artistBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipArtist"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipArtist"])
       {
-        v78 = [v8 artist];
-        v153 = [(MPStoreModelArtistBuilder *)v77 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v78 userIdentity:v158];
+        artist = [objectCopy artist];
+        v153 = [(MPStoreModelArtistBuilder *)v77 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:artist userIdentity:identityCopy];
       }
 
       else
       {
-        v153 = [(MPStoreModelArtistBuilder *)v77 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v153 = [(MPStoreModelArtistBuilder *)v77 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
-      v64 = [v153 identifiers];
+      identifiers = [v153 identifiers];
       v155 = 0;
       v157 = 0;
       v149 = 0;
@@ -294,20 +294,20 @@
     case 3:
     case 4:
     case 5:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v59 = self->_curatorBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipCurator"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipCurator"])
       {
-        v60 = [v8 curator];
-        v157 = [(MPStoreModelCuratorBuilder *)v59 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v60 userIdentity:v158];
+        curator = [objectCopy curator];
+        v157 = [(MPStoreModelCuratorBuilder *)v59 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:curator userIdentity:identityCopy];
       }
 
       else
       {
-        v157 = [(MPStoreModelCuratorBuilder *)v59 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v157 = [(MPStoreModelCuratorBuilder *)v59 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
-      v64 = [v157 identifiers];
+      identifiers = [v157 identifiers];
       v153 = 0;
       v155 = 0;
       v149 = 0;
@@ -325,21 +325,21 @@
       goto LABEL_98;
     case 6:
     case 10:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v61 = self->_songBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipSong"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipSong"])
       {
-        v62 = [v8 song];
-        v63 = [(MPStoreModelSongBuilder *)v61 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v62 userIdentity:v158];
+        song = [objectCopy song];
+        v63 = [(MPStoreModelSongBuilder *)v61 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:song userIdentity:identityCopy];
       }
 
       else
       {
-        v63 = [(MPStoreModelSongBuilder *)v61 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v63 = [(MPStoreModelSongBuilder *)v61 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
       v136 = v63;
-      v64 = [v63 identifiers];
+      identifiers = [v63 identifiers];
       v153 = 0;
       v155 = 0;
       v157 = 0;
@@ -356,21 +356,21 @@
       v65 = 7;
       goto LABEL_98;
     case 7:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v88 = self->_playlistBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipPlaylist"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipPlaylist"])
       {
-        v89 = [v8 playlist];
-        v90 = [(MPStoreModelPlaylistBuilder *)v88 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v89 userIdentity:v158];
+        playlist = [objectCopy playlist];
+        v90 = [(MPStoreModelPlaylistBuilder *)v88 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:playlist userIdentity:identityCopy];
       }
 
       else
       {
-        v90 = [(MPStoreModelPlaylistBuilder *)v88 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v90 = [(MPStoreModelPlaylistBuilder *)v88 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
       v145 = v90;
-      v64 = [v90 identifiers];
+      identifiers = [v90 identifiers];
       v153 = 0;
       v155 = 0;
       v157 = 0;
@@ -387,21 +387,21 @@
       v65 = 4;
       goto LABEL_98;
     case 8:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v85 = self->_radioStationBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipRadioStation"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipRadioStation"])
       {
-        v86 = [v8 radioStation];
-        v87 = [(MPStoreModelRadioStationBuilder *)v85 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v86 userIdentity:v158];
+        radioStation = [objectCopy radioStation];
+        v87 = [(MPStoreModelRadioStationBuilder *)v85 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:radioStation userIdentity:identityCopy];
       }
 
       else
       {
-        v87 = [(MPStoreModelRadioStationBuilder *)v85 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v87 = [(MPStoreModelRadioStationBuilder *)v85 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
       v138 = v87;
-      v64 = [v87 identifiers];
+      identifiers = [v87 identifiers];
       v153 = 0;
       v155 = 0;
       v157 = 0;
@@ -418,21 +418,21 @@
       v65 = 5;
       goto LABEL_98;
     case 9:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v97 = self->_socialPersonBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipSocialPerson"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipSocialPerson"])
       {
-        v98 = [v8 socialPerson];
-        v99 = [(MPStoreModelSocialPersonBuilder *)v97 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v98 userIdentity:v158];
+        socialPerson = [objectCopy socialPerson];
+        v99 = [(MPStoreModelSocialPersonBuilder *)v97 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:socialPerson userIdentity:identityCopy];
       }
 
       else
       {
-        v99 = [(MPStoreModelSocialPersonBuilder *)v97 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v99 = [(MPStoreModelSocialPersonBuilder *)v97 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
       v132 = v99;
-      v64 = [v99 identifiers];
+      identifiers = [v99 identifiers];
       v153 = 0;
       v155 = 0;
       v157 = 0;
@@ -449,21 +449,21 @@
       v65 = 6;
       goto LABEL_98;
     case 11:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v72 = self->_episodeBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipTVEpisode"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipTVEpisode"])
       {
-        v73 = [v8 episode];
-        v74 = [(MPStoreModelTVEpisodeBuilder *)v72 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v73 userIdentity:v158];
+        episode = [objectCopy episode];
+        v74 = [(MPStoreModelTVEpisodeBuilder *)v72 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:episode userIdentity:identityCopy];
       }
 
       else
       {
-        v74 = [(MPStoreModelTVEpisodeBuilder *)v72 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v74 = [(MPStoreModelTVEpisodeBuilder *)v72 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
       v149 = v74;
-      v64 = [v74 identifiers];
+      identifiers = [v74 identifiers];
       v153 = 0;
       v155 = 0;
       v157 = 0;
@@ -480,21 +480,21 @@
       v65 = 8;
       goto LABEL_98;
     case 12:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v69 = self->_seasonBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipTVSeason"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipTVSeason"])
       {
-        v70 = [v8 season];
-        v71 = [(MPStoreModelObjectBuilder *)v69 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v70 userIdentity:v158];
+        season = [objectCopy season];
+        v71 = [(MPStoreModelObjectBuilder *)v69 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:season userIdentity:identityCopy];
       }
 
       else
       {
-        v71 = [(MPStoreModelObjectBuilder *)v69 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v71 = [(MPStoreModelObjectBuilder *)v69 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
       v135 = v71;
-      v64 = [v71 identifiers];
+      identifiers = [v71 identifiers];
       v153 = 0;
       v155 = 0;
       v157 = 0;
@@ -511,21 +511,21 @@
       v65 = 10;
       goto LABEL_98;
     case 13:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v66 = self->_showBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipTVShow"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipTVShow"])
       {
-        v67 = [v8 show];
-        v68 = [(MPStoreModelTVShowBuilder *)v66 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v67 userIdentity:v158];
+        show = [objectCopy show];
+        v68 = [(MPStoreModelTVShowBuilder *)v66 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:show userIdentity:identityCopy];
       }
 
       else
       {
-        v68 = [(MPStoreModelTVShowBuilder *)v66 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v68 = [(MPStoreModelTVShowBuilder *)v66 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
       v134 = v68;
-      v64 = [v68 identifiers];
+      identifiers = [v68 identifiers];
       v153 = 0;
       v155 = 0;
       v157 = 0;
@@ -542,21 +542,21 @@
       v65 = 9;
       goto LABEL_98;
     case 14:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v79 = self->_showCreatorBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipTVShowCreator"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipTVShowCreator"])
       {
-        v80 = [v8 showCreator];
-        v81 = [(MPStoreModelObjectBuilder *)v79 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v80 userIdentity:v158];
+        showCreator = [objectCopy showCreator];
+        v81 = [(MPStoreModelObjectBuilder *)v79 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:showCreator userIdentity:identityCopy];
       }
 
       else
       {
-        v81 = [(MPStoreModelObjectBuilder *)v79 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v81 = [(MPStoreModelObjectBuilder *)v79 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
       v133 = v81;
-      v64 = [v81 identifiers];
+      identifiers = [v81 identifiers];
       v153 = 0;
       v155 = 0;
       v157 = 0;
@@ -573,21 +573,21 @@
       v65 = 11;
       goto LABEL_98;
     case 15:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v82 = self->_movieBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipMovie"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipMovie"])
       {
-        v83 = [v8 movie];
-        v84 = [(MPStoreModelMovieBuilder *)v82 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v83 userIdentity:v158];
+        movie = [objectCopy movie];
+        v84 = [(MPStoreModelMovieBuilder *)v82 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:movie userIdentity:identityCopy];
       }
 
       else
       {
-        v84 = [(MPStoreModelMovieBuilder *)v82 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v84 = [(MPStoreModelMovieBuilder *)v82 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
       v151 = v84;
-      v64 = [v84 identifiers];
+      identifiers = [v84 identifiers];
       v153 = 0;
       v155 = 0;
       v157 = 0;
@@ -604,21 +604,21 @@
       v65 = 12;
       goto LABEL_98;
     case 17:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v94 = self->_recordLabelBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipRecordLabel"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipRecordLabel"])
       {
-        v95 = [v8 recordLabel];
-        v96 = [(MPStoreModelRecordLabelBuilder *)v94 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v95 userIdentity:v158];
+        recordLabel = [objectCopy recordLabel];
+        v96 = [(MPStoreModelRecordLabelBuilder *)v94 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:recordLabel userIdentity:identityCopy];
       }
 
       else
       {
-        v96 = [(MPStoreModelRecordLabelBuilder *)v94 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v96 = [(MPStoreModelRecordLabelBuilder *)v94 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
       v131 = v96;
-      v64 = [v96 identifiers];
+      identifiers = [v96 identifiers];
       v153 = 0;
       v155 = 0;
       v157 = 0;
@@ -635,21 +635,21 @@
       v65 = 14;
       goto LABEL_98;
     case 18:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v91 = self->_creditsArtistBuilder;
-      if ([v8 hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipCreditsArtist"])
+      if ([objectCopy hasLoadedValueForKey:@"MPModelStoreBrowseContentItemRelationshipCreditsArtist"])
       {
-        v92 = [v8 creditsArtist];
-        v93 = [(MPStoreModelCreditsArtistBuilder *)v91 modelObjectWithStoreItemMetadata:v159 sourceModelObject:v92 userIdentity:v158];
+        creditsArtist = [objectCopy creditsArtist];
+        v93 = [(MPStoreModelCreditsArtistBuilder *)v91 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:creditsArtist userIdentity:identityCopy];
       }
 
       else
       {
-        v93 = [(MPStoreModelCreditsArtistBuilder *)v91 modelObjectWithStoreItemMetadata:v159 sourceModelObject:0 userIdentity:v158];
+        v93 = [(MPStoreModelCreditsArtistBuilder *)v91 modelObjectWithStoreItemMetadata:metadataCopy sourceModelObject:0 userIdentity:identityCopy];
       }
 
       v130 = v93;
-      v64 = [v93 identifiers];
+      identifiers = [v93 identifiers];
       v153 = 0;
       v155 = 0;
       v157 = 0;
@@ -666,7 +666,7 @@
       v65 = 15;
       goto LABEL_98;
     default:
-      v147 = [v159 artistUploadedContentType];
+      artistUploadedContentType = [metadataCopy artistUploadedContentType];
       v149 = 0;
       v65 = 0;
       v153 = 0;
@@ -682,55 +682,55 @@
       v133 = 0;
       v130 = 0;
       v131 = 0;
-      v64 = 0;
+      identifiers = 0;
 LABEL_98:
-      v100 = [v159 recommendationID];
-      v140 = v100;
-      v142 = v64;
-      if (v64)
+      recommendationID = [metadataCopy recommendationID];
+      v140 = recommendationID;
+      v142 = identifiers;
+      if (identifiers)
       {
-        v101 = v100;
+        v101 = recommendationID;
         v129 = v57;
-        v102 = [v64 personalizedStore];
-        v103 = [v102 personID];
-        v104 = v103;
-        if (v103)
+        personalizedStore = [identifiers personalizedStore];
+        personID = [personalizedStore personID];
+        v104 = personID;
+        if (personID)
         {
-          v105 = v103;
+          v105 = personID;
         }
 
         else
         {
           [MEMORY[0x1E69E4688] defaultIdentityStore];
-          v116 = v115 = v64;
-          v117 = [v116 DSIDForUserIdentity:v158 outError:0];
-          v118 = [v117 stringValue];
+          v116 = v115 = identifiers;
+          v117 = [v116 DSIDForUserIdentity:identityCopy outError:0];
+          stringValue = [v117 stringValue];
 
-          v64 = v115;
-          v105 = v118;
+          identifiers = v115;
+          v105 = stringValue;
         }
 
         v127 = v105;
         if ([v105 length])
         {
           v119 = [MPIdentifierSet alloc];
-          v120 = [v64 sources];
-          v121 = [v120 firstObject];
-          v122 = v64;
-          v123 = v121;
-          v124 = [v122 modelKind];
+          sources = [identifiers sources];
+          firstObject = [sources firstObject];
+          v122 = identifiers;
+          v123 = firstObject;
+          modelKind = [v122 modelKind];
           v178[0] = MEMORY[0x1E69E9820];
           v178[1] = 3221225472;
           v178[2] = __104__MPModelStoreBrowseContentItemBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke;
           v178[3] = &unk_1E767EE00;
           v179 = v105;
           v180 = v101;
-          v128 = [(MPIdentifierSet *)v119 initWithSource:v123 modelKind:v124 block:v178];
+          v128 = [(MPIdentifierSet *)v119 initWithSource:v123 modelKind:modelKind block:v178];
         }
 
         else
         {
-          v128 = v64;
+          v128 = identifiers;
         }
 
         v125 = [MPModelStoreBrowseContentItem alloc];
@@ -759,7 +759,7 @@ LABEL_98:
         v171 = v133;
         v112 = v132;
         v172 = v132;
-        v173 = v147;
+        v173 = artistUploadedContentType;
         v114 = v131;
         v174 = v131;
         v113 = v130;
@@ -783,7 +783,7 @@ LABEL_98:
         v114 = v131;
       }
 
-      v8 = v143;
+      objectCopy = v143;
 LABEL_108:
 
       return v58;
@@ -1032,60 +1032,60 @@ LABEL_18:
 LABEL_19:
 }
 
-- (int64_t)contentItemTypeForMusicAPIType:(id)a3
+- (int64_t)contentItemTypeForMusicAPIType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"albums"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"albums"])
   {
     v5 = 2;
   }
 
-  else if ([v4 isEqualToString:@"artists"])
+  else if ([typeCopy isEqualToString:@"artists"])
   {
     v5 = 20;
   }
 
-  else if ([v4 isEqualToString:@"playlists"])
+  else if ([typeCopy isEqualToString:@"playlists"])
   {
     v5 = 46;
   }
 
-  else if ([v4 isEqualToString:@"music-videos"])
+  else if ([typeCopy isEqualToString:@"music-videos"])
   {
     v5 = 5;
   }
 
-  else if ([v4 isEqualToString:@"songs"])
+  else if ([typeCopy isEqualToString:@"songs"])
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"stations"])
+  else if ([typeCopy isEqualToString:@"stations"])
   {
     v5 = 40;
   }
 
-  else if ([v4 isEqualToString:@"shows"])
+  else if ([typeCopy isEqualToString:@"shows"])
   {
     v5 = 8;
   }
 
-  else if ([v4 isEqualToString:@"tv-episodes"])
+  else if ([typeCopy isEqualToString:@"tv-episodes"])
   {
     v5 = 6;
   }
 
-  else if ([v4 isEqualToString:@"tv-seasons"])
+  else if ([typeCopy isEqualToString:@"tv-seasons"])
   {
     v5 = 7;
   }
 
-  else if ([v4 isEqualToString:@"record-labels"])
+  else if ([typeCopy isEqualToString:@"record-labels"])
   {
     v5 = 52;
   }
 
-  else if ([v4 isEqualToString:@"credits-artist"])
+  else if ([typeCopy isEqualToString:@"credits-artist"])
   {
     v5 = 53;
   }
@@ -1100,90 +1100,90 @@ LABEL_19:
   return v6;
 }
 
-- (int64_t)contentItemTypeForStoreItemMetadata:(id)a3
+- (int64_t)contentItemTypeForStoreItemMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 itemKind];
-  if ([v5 isEqualToString:@"album"])
+  metadataCopy = metadata;
+  itemKind = [metadataCopy itemKind];
+  if ([itemKind isEqualToString:@"album"])
   {
     v6 = 2;
   }
 
-  else if ([v5 isEqualToString:@"artist"])
+  else if ([itemKind isEqualToString:@"artist"])
   {
     v6 = 20;
   }
 
-  else if ([v5 isEqualToString:@"creditsArtist"])
+  else if ([itemKind isEqualToString:@"creditsArtist"])
   {
     v6 = 53;
   }
 
-  else if ([v5 isEqualToString:@"playlist"])
+  else if ([itemKind isEqualToString:@"playlist"])
   {
     v6 = 46;
   }
 
-  else if ([v5 isEqualToString:@"movie"])
+  else if ([itemKind isEqualToString:@"movie"])
   {
     v6 = 10;
   }
 
-  else if ([v5 isEqualToString:@"song"])
+  else if ([itemKind isEqualToString:@"song"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"tvEpisode"])
+  else if ([itemKind isEqualToString:@"tvEpisode"])
   {
     v6 = 6;
   }
 
-  else if ([v5 isEqualToString:@"tvSeason"])
+  else if ([itemKind isEqualToString:@"tvSeason"])
   {
     v6 = 7;
   }
 
-  else if ([v5 isEqualToString:@"uploadedAudio"])
+  else if ([itemKind isEqualToString:@"uploadedAudio"])
   {
     v6 = 50;
   }
 
-  else if ([v5 isEqualToString:@"musicVideo"])
+  else if ([itemKind isEqualToString:@"musicVideo"])
   {
     v6 = 5;
   }
 
-  else if ([v5 isEqualToString:@"uploadedVideo"])
+  else if ([itemKind isEqualToString:@"uploadedVideo"])
   {
     v6 = 51;
   }
 
-  else if ([v5 isEqualToString:@"radioStation"])
+  else if ([itemKind isEqualToString:@"radioStation"])
   {
     v6 = 40;
   }
 
-  else if ([v5 isEqualToString:@"socialProfile"])
+  else if ([itemKind isEqualToString:@"socialProfile"])
   {
     v6 = 27;
   }
 
-  else if ([v5 isEqualToString:@"activity"])
+  else if ([itemKind isEqualToString:@"activity"])
   {
     v6 = 47;
   }
 
-  else if ([v5 isEqualToString:@"brand"])
+  else if ([itemKind isEqualToString:@"brand"])
   {
     v6 = 48;
   }
 
-  else if (([v5 isEqualToString:@"iTunesBrand"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"showBrand"))
+  else if (([itemKind isEqualToString:@"iTunesBrand"] & 1) != 0 || objc_msgSend(itemKind, "isEqualToString:", @"showBrand"))
   {
-    v7 = [v4 iTunesBrandType];
-    v8 = v7;
-    if (v7 && (([v7 isEqualToString:@"Linear"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Non-Linear") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Standalone") & 1) != 0))
+    iTunesBrandType = [metadataCopy iTunesBrandType];
+    v8 = iTunesBrandType;
+    if (iTunesBrandType && (([iTunesBrandType isEqualToString:@"Linear"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Non-Linear") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Standalone") & 1) != 0))
     {
       v9 = 8;
     }
@@ -1198,7 +1198,7 @@ LABEL_19:
     v6 = v12;
   }
 
-  else if (([v5 isEqualToString:@"recordLabel"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"record-labels"))
+  else if (([itemKind isEqualToString:@"recordLabel"] & 1) != 0 || objc_msgSend(itemKind, "isEqualToString:", @"record-labels"))
   {
     v6 = 52;
   }
@@ -1213,17 +1213,17 @@ LABEL_19:
   return v10;
 }
 
-- (int64_t)contentItemTypeForRawResponseKindIdentifiers:(id)a3
+- (int64_t)contentItemTypeForRawResponseKindIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F1550CB8])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy conformsToProtocol:&unk_1F1550CB8])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v4;
+    v5 = identifiersCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -1276,16 +1276,16 @@ LABEL_14:
   return v12;
 }
 
-- (int64_t)contentItemTypeForRawResponseKindIdentifierValue:(int64_t)a3
+- (int64_t)contentItemTypeForRawResponseKindIdentifierValue:(int64_t)value
 {
   result = 0;
-  if (a3 <= 39)
+  if (value <= 39)
   {
-    if (a3 > 6)
+    if (value > 6)
     {
-      if (a3 <= 9)
+      if (value <= 9)
       {
-        if (a3 == 7)
+        if (value == 7)
         {
           v10 = !self->_allowsVideoContent;
           v11 = 12;
@@ -1293,7 +1293,7 @@ LABEL_14:
 
         else
         {
-          if (a3 != 8)
+          if (value != 8)
           {
             return result;
           }
@@ -1305,16 +1305,16 @@ LABEL_14:
 
       else
       {
-        if (a3 != 10)
+        if (value != 10)
         {
           v5 = 2;
           v6 = 9;
-          if (a3 != 27)
+          if (value != 27)
           {
             v6 = 0;
           }
 
-          v7 = a3 == 20;
+          v7 = value == 20;
 LABEL_28:
           if (v7)
           {
@@ -1334,11 +1334,11 @@ LABEL_28:
       goto LABEL_46;
     }
 
-    if (a3 <= 4)
+    if (value <= 4)
     {
-      if (a3 != 1)
+      if (value != 1)
       {
-        v8 = a3 == 2;
+        v8 = value == 2;
         v9 = 1;
         goto LABEL_20;
       }
@@ -1346,7 +1346,7 @@ LABEL_28:
       return 10;
     }
 
-    if (a3 != 5)
+    if (value != 5)
     {
       v10 = !self->_allowsVideoContent;
       v11 = 11;
@@ -1361,24 +1361,24 @@ LABEL_28:
     goto LABEL_40;
   }
 
-  if (a3 <= 48)
+  if (value <= 48)
   {
-    if (a3 > 46)
+    if (value > 46)
     {
       v5 = 5;
       v6 = 4;
-      if (a3 != 48)
+      if (value != 48)
       {
         v6 = 0;
       }
 
-      v7 = a3 == 47;
+      v7 = value == 47;
       goto LABEL_28;
     }
 
-    if (a3 != 40)
+    if (value != 40)
     {
-      v8 = a3 == 46;
+      v8 = value == 46;
       v9 = 7;
 LABEL_20:
       if (v8)
@@ -1406,9 +1406,9 @@ LABEL_46:
     }
   }
 
-  if (a3 <= 50)
+  if (value <= 50)
   {
-    if (a3 == 49)
+    if (value == 49)
     {
       return 3;
     }
@@ -1416,7 +1416,7 @@ LABEL_46:
     return 10;
   }
 
-  switch(a3)
+  switch(value)
   {
     case '5':
       return 18;
@@ -1432,40 +1432,40 @@ LABEL_40:
   return result;
 }
 
-- (void)setPreventStoreItemMetadataCaching:(BOOL)a3
+- (void)setPreventStoreItemMetadataCaching:(BOOL)caching
 {
-  v3 = a3;
+  cachingCopy = caching;
   v5.receiver = self;
   v5.super_class = MPModelStoreBrowseContentItemBuilder;
   [(MPStoreModelObjectBuilder *)&v5 setPreventStoreItemMetadataCaching:?];
-  [(MPStoreModelObjectBuilder *)self->_albumBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_artistBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_curatorBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_episodeBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_movieBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_radioStationBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_socialPersonBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_playlistBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_seasonBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_songBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_showBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_showCreatorBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_recordLabelBuilder setPreventStoreItemMetadataCaching:v3];
-  [(MPStoreModelObjectBuilder *)self->_creditsArtistBuilder setPreventStoreItemMetadataCaching:v3];
+  [(MPStoreModelObjectBuilder *)self->_albumBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_artistBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_curatorBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_episodeBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_movieBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_radioStationBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_socialPersonBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_playlistBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_seasonBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_songBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_showBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_showCreatorBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_recordLabelBuilder setPreventStoreItemMetadataCaching:cachingCopy];
+  [(MPStoreModelObjectBuilder *)self->_creditsArtistBuilder setPreventStoreItemMetadataCaching:cachingCopy];
 }
 
-- (MPModelStoreBrowseContentItemBuilder)initWithRequestedPropertySet:(id)a3
+- (MPModelStoreBrowseContentItemBuilder)initWithRequestedPropertySet:(id)set
 {
   v7.receiver = self;
   v7.super_class = MPModelStoreBrowseContentItemBuilder;
-  v3 = [(MPStoreModelObjectBuilder *)&v7 initWithRequestedPropertySet:a3];
+  v3 = [(MPStoreModelObjectBuilder *)&v7 initWithRequestedPropertySet:set];
   v4 = v3;
   if (v3)
   {
     v3->_allowsRadioStations = 1;
     v3->_allowsVideoContent = 1;
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4->_shouldFakeEpisodes = [v5 BOOLForKey:@"MusicShouldFakeTVEpisodes"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4->_shouldFakeEpisodes = [standardUserDefaults BOOLForKey:@"MusicShouldFakeTVEpisodes"];
   }
 
   return v4;

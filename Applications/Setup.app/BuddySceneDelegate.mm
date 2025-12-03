@@ -1,23 +1,23 @@
 @interface BuddySceneDelegate
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation BuddySceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, scene);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, session);
   v40 = 0;
-  objc_storeStrong(&v40, a5);
+  objc_storeStrong(&v40, options);
   v39 = _BYLoggingFacility();
   v38 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -25,8 +25,8 @@
     v7 = location[0];
     v8 = v41;
     v9 = v40;
-    v10 = [v40 URLContexts];
-    sub_1001321D4(buf, v7, v8, v9, v10);
+    uRLContexts = [v40 URLContexts];
+    sub_1001321D4(buf, v7, v8, v9, uRLContexts);
     _os_log_impl(&_mh_execute_header, v39, v38, "scene: %@ willConnectToSession: %@ options: %@ URL contexts %@", buf, 0x2Au);
   }
 
@@ -47,8 +47,8 @@
   v24 = 0u;
   v23 = 0u;
   v22 = 0u;
-  v11 = [v40 URLContexts];
-  v12 = [v11 countByEnumeratingWithState:&v22 objects:v44 count:16];
+  uRLContexts2 = [v40 URLContexts];
+  v12 = [uRLContexts2 countByEnumeratingWithState:&v22 objects:v44 count:16];
   if (v12)
   {
     v13 = *v23;
@@ -58,13 +58,13 @@
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(uRLContexts2);
         }
 
         v26 = *(*(&v22 + 1) + 8 * i);
         v15 = [v26 URL];
-        v16 = [v15 absoluteString];
-        v17 = [v16 isEqualToString:BYSetupAssistantLaunchMigrationSourceUIURL];
+        absoluteString = [v15 absoluteString];
+        v17 = [absoluteString isEqualToString:BYSetupAssistantLaunchMigrationSourceUIURL];
 
         if (v17)
         {
@@ -73,7 +73,7 @@
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v22 objects:v44 count:16];
+      v12 = [uRLContexts2 countByEnumeratingWithState:&v22 objects:v44 count:16];
     }
 
     while (v12);
@@ -101,18 +101,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, scene);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, contexts);
   v5 = +[BuddyApplicationAndSceneSharedStorage setupController];
-  v6 = [(SetupController *)v5 launchedForMigration];
+  launchedForMigration = [(SetupController *)v5 launchedForMigration];
 
-  v21 = v6 & 1;
+  v21 = launchedForMigration & 1;
   memset(__b, 0, sizeof(__b));
   v7 = v22;
   v8 = [v7 countByEnumeratingWithState:__b objects:v24 count:16];
@@ -130,9 +130,9 @@
 
         v20 = *(__b[1] + 8 * i);
         v11 = [v20 URL];
-        v12 = [v11 absoluteString];
+        absoluteString = [v11 absoluteString];
         v13 = 0;
-        if ([v12 isEqualToString:BYSetupAssistantLaunchMigrationSourceUIURL])
+        if ([absoluteString isEqualToString:BYSetupAssistantLaunchMigrationSourceUIURL])
         {
           v13 = v21 ^ 1;
         }
@@ -163,36 +163,36 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, active);
   v3 = +[BuddyApplicationAndSceneSharedStorage setupController];
   [(SetupController *)v3 willResignActive];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, active);
   v3 = +[BuddyApplicationAndSceneSharedStorage setupController];
   [(SetupController *)v3 didBecomeActive];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, background);
   v3 = +[BuddyApplicationAndSceneSharedStorage setupController];
   [(SetupController *)v3 didEnterBackground];
 

@@ -1,20 +1,20 @@
 @interface VenueFloorViewController
-- (BOOL)isFocusedOnVenue:(id)a3;
+- (BOOL)isFocusedOnVenue:(id)venue;
 - (BOOL)isHidden;
-- (BOOL)lacksSearchResultsForFloorOrdinal:(id)a3;
+- (BOOL)lacksSearchResultsForFloorOrdinal:(id)ordinal;
 - (BOOL)shouldBeHidden;
 - (UIView)closedPlaceholderView;
-- (VenueFloorViewController)initWithDelegate:(id)a3 venuesManager:(id)a4 visualEffectDisabled:(BOOL)a5;
+- (VenueFloorViewController)initWithDelegate:(id)delegate venuesManager:(id)manager visualEffectDisabled:(BOOL)disabled;
 - (VenueFloorViewControllerDelegate)delegate;
 - (VenuesManager)venuesManager;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)keyCommands;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)captureUserAction:(int)a3 onTarget:(int)a4 eventValue:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)delayConstraintSetupWhileExecuting:(id)a3;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)captureUserAction:(int)action onTarget:(int)target eventValue:(id)value;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)delayConstraintSetupWhileExecuting:(id)executing;
 - (void)didChangeConstraints;
-- (void)didChangeFocusedVenue:(id)a3 focusedBuilding:(id)a4 displayedFloorOrdinal:(signed __int16)a5;
+- (void)didChangeFocusedVenue:(id)venue focusedBuilding:(id)building displayedFloorOrdinal:(signed __int16)ordinal;
 - (void)didChangeSearchResultsInVenue;
 - (void)didClose;
 - (void)didFinishHiding;
@@ -23,28 +23,28 @@
 - (void)didStartHiding;
 - (void)didStartShowing;
 - (void)handleCloseButtonTap;
-- (void)handleTap:(id)a3;
+- (void)handleTap:(id)tap;
 - (void)loadView;
-- (void)scrollToDisplayedFloorAnimated:(BOOL)a3;
-- (void)scrollToFloorOrdinal:(signed __int16)a3 animated:(BOOL)a4;
-- (void)setBlurGroupName:(id)a3;
-- (void)setDisplayedFloorOrdinal:(signed __int16)a3 animated:(BOOL)a4;
-- (void)setForceHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setHidden:(BOOL)a3;
-- (void)setOpen:(BOOL)a3 animated:(BOOL)a4;
-- (void)setUserLocationFloorOrdinal:(id)a3;
-- (void)setVenue:(id)a3 focusedBuilding:(id)a4 animated:(BOOL)a5 forceUpdate:(BOOL)a6;
+- (void)scrollToDisplayedFloorAnimated:(BOOL)animated;
+- (void)scrollToFloorOrdinal:(signed __int16)ordinal animated:(BOOL)animated;
+- (void)setBlurGroupName:(id)name;
+- (void)setDisplayedFloorOrdinal:(signed __int16)ordinal animated:(BOOL)animated;
+- (void)setForceHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion;
+- (void)setHidden:(BOOL)hidden;
+- (void)setOpen:(BOOL)open animated:(BOOL)animated;
+- (void)setUserLocationFloorOrdinal:(id)ordinal;
+- (void)setVenue:(id)venue focusedBuilding:(id)building animated:(BOOL)animated forceUpdate:(BOOL)update;
 - (void)setupGestures;
 - (void)updateCloseButtonVisibility;
-- (void)updateDisplayedFloorAnimated:(BOOL)a3;
+- (void)updateDisplayedFloorAnimated:(BOOL)animated;
 - (void)updateFloorOptimalOpenHeightConstraint;
-- (void)updateForOpenChangedAnimated:(BOOL)a3;
-- (void)updateHiddenAnimated:(BOOL)a3 completion:(id)a4;
-- (void)updateShowSelectionWithForceClipCorners:(BOOL)a3;
-- (void)updateVenueAndBuildingsAnimated:(BOOL)a3 forced:(BOOL)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateForOpenChangedAnimated:(BOOL)animated;
+- (void)updateHiddenAnimated:(BOOL)animated completion:(id)completion;
+- (void)updateShowSelectionWithForceClipCorners:(BOOL)corners;
+- (void)updateVenueAndBuildingsAnimated:(BOOL)animated forced:(BOOL)forced;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VenueFloorViewController
@@ -65,94 +65,94 @@
 
 - (void)didClose
 {
-  v3 = [(VenueFloorViewController *)self delegate];
-  [v3 venueFloorViewControllerDidClose:self];
+  delegate = [(VenueFloorViewController *)self delegate];
+  [delegate venueFloorViewControllerDidClose:self];
 }
 
 - (void)didOpen
 {
-  v3 = [(VenueFloorViewController *)self delegate];
-  [v3 venueFloorViewControllerDidOpen:self];
+  delegate = [(VenueFloorViewController *)self delegate];
+  [delegate venueFloorViewControllerDidOpen:self];
 }
 
 - (void)didFinishShowing
 {
-  v3 = [(VenueFloorViewController *)self delegate];
-  [v3 venueFloorViewControllerDidFinishShowing:self];
+  delegate = [(VenueFloorViewController *)self delegate];
+  [delegate venueFloorViewControllerDidFinishShowing:self];
 }
 
 - (void)didStartShowing
 {
-  v3 = [(VenueFloorViewController *)self delegate];
-  [v3 venueFloorViewControllerDidStartShowing:self];
+  delegate = [(VenueFloorViewController *)self delegate];
+  [delegate venueFloorViewControllerDidStartShowing:self];
 }
 
 - (void)didFinishHiding
 {
-  v3 = [(VenueFloorViewController *)self delegate];
-  [v3 venueFloorViewControllerDidFinishHiding:self];
+  delegate = [(VenueFloorViewController *)self delegate];
+  [delegate venueFloorViewControllerDidFinishHiding:self];
 }
 
 - (void)didStartHiding
 {
-  v3 = [(VenueFloorViewController *)self delegate];
-  [v3 venueFloorViewControllerDidStartHiding:self];
+  delegate = [(VenueFloorViewController *)self delegate];
+  [delegate venueFloorViewControllerDidStartHiding:self];
 }
 
 - (void)didChangeConstraints
 {
-  v3 = [(VenueFloorViewController *)self delegate];
-  [v3 venueFloorViewControllerDidChangeConstraints:self];
+  delegate = [(VenueFloorViewController *)self delegate];
+  [delegate venueFloorViewControllerDidChangeConstraints:self];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(VenueFloorViewController *)self floorOrdinals];
-  v7 = [v5 item];
+  pathCopy = path;
+  floorOrdinals = [(VenueFloorViewController *)self floorOrdinals];
+  item = [pathCopy item];
 
-  v15 = [v6 objectAtIndexedSubscript:v7];
+  v15 = [floorOrdinals objectAtIndexedSubscript:item];
 
-  v8 = [(VenueFloorViewController *)self shortFloorNames];
-  v9 = [v8 objectForKeyedSubscript:v15];
+  shortFloorNames = [(VenueFloorViewController *)self shortFloorNames];
+  v9 = [shortFloorNames objectForKeyedSubscript:v15];
 
   [(VenueFloorViewController *)self captureUserAction:4006 onTarget:644 eventValue:v9];
-  v10 = [(VenueFloorViewController *)self venuesManager];
-  v11 = [v15 shortValue];
-  v12 = [(VenueFloorViewController *)self venue];
-  [v10 setDisplayedFloorOrdinal:v11 forBuildingsInVenue:v12];
+  venuesManager = [(VenueFloorViewController *)self venuesManager];
+  shortValue = [v15 shortValue];
+  venue = [(VenueFloorViewController *)self venue];
+  [venuesManager setDisplayedFloorOrdinal:shortValue forBuildingsInVenue:venue];
 
-  v13 = [(VenueFloorViewController *)self venuesManager];
-  v14 = [v13 mapView];
-  [v14 setUserTrackingMode:0];
+  venuesManager2 = [(VenueFloorViewController *)self venuesManager];
+  mapView = [venuesManager2 mapView];
+  [mapView setUserTrackingMode:0];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 row] & 0x8000000000000000) != 0 || (v8 = objc_msgSend(v7, "item"), -[VenueFloorViewController floorOrdinals](self, "floorOrdinals"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8 >= v10))
+  viewCopy = view;
+  pathCopy = path;
+  if (([pathCopy row] & 0x8000000000000000) != 0 || (v8 = objc_msgSend(pathCopy, "item"), -[VenueFloorViewController floorOrdinals](self, "floorOrdinals"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8 >= v10))
   {
     v14 = objc_opt_new();
   }
 
   else
   {
-    v11 = [(VenueFloorViewController *)self floorOrdinals];
-    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+    floorOrdinals = [(VenueFloorViewController *)self floorOrdinals];
+    v12 = [floorOrdinals objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
     if (v12)
     {
       v13 = +[VenueFloorPickerCell reuseIdentifier];
-      v14 = [v6 dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:v7];
+      v14 = [viewCopy dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:pathCopy];
 
-      v15 = [(VenueFloorViewController *)self shortFloorNames];
-      v16 = [v15 objectForKeyedSubscript:v12];
+      shortFloorNames = [(VenueFloorViewController *)self shortFloorNames];
+      v16 = [shortFloorNames objectForKeyedSubscript:v12];
 
       [v14 setFloorOrdinal:v12];
       [v14 setFloorName:v16];
-      v17 = [(VenueFloorViewController *)self userLocationFloorOrdinal];
-      [v14 setIsUserLocation:{+[NSNumber number:isEqualToNumber:](NSNumber, "number:isEqualToNumber:", v12, v17)}];
+      userLocationFloorOrdinal = [(VenueFloorViewController *)self userLocationFloorOrdinal];
+      [v14 setIsUserLocation:{+[NSNumber number:isEqualToNumber:](NSNumber, "number:isEqualToNumber:", v12, userLocationFloorOrdinal)}];
 
       [v14 setShowSelection:{-[VenueFloorViewController isOpen](self, "isOpen")}];
       [v14 setLacksSearchResults:{-[VenueFloorViewController lacksSearchResultsForFloorOrdinal:](self, "lacksSearchResultsForFloorOrdinal:", v12)}];
@@ -167,68 +167,68 @@
   return v14;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(VenueFloorViewController *)self floorOrdinals:a3];
+  v4 = [(VenueFloorViewController *)self floorOrdinals:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)captureUserAction:(int)a3 onTarget:(int)a4 eventValue:(id)a5
+- (void)captureUserAction:(int)action onTarget:(int)target eventValue:(id)value
 {
-  v5 = *&a4;
-  v6 = *&a3;
-  v8 = a5;
+  v5 = *&target;
+  v6 = *&action;
+  valueCopy = value;
   v12 = objc_alloc_init(GEOPlaceActionDetails);
-  v9 = [(VenueFloorViewController *)self venue];
-  v10 = [v9 businessID];
+  venue = [(VenueFloorViewController *)self venue];
+  businessID = [venue businessID];
 
-  if (v10)
+  if (businessID)
   {
-    [v12 setBusinessID:v10];
+    [v12 setBusinessID:businessID];
   }
 
   v11 = +[MKMapService sharedService];
-  [v11 captureUserAction:v6 onTarget:v5 eventValue:v8 placeActionDetails:v12];
+  [v11 captureUserAction:v6 onTarget:v5 eventValue:valueCopy placeActionDetails:v12];
 }
 
-- (void)scrollToFloorOrdinal:(signed __int16)a3 animated:(BOOL)a4
+- (void)scrollToFloorOrdinal:(signed __int16)ordinal animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(VenueFloorViewController *)self floorOrdinals];
-  v8 = [NSNumber numberWithShort:v5];
-  v9 = [v7 indexOfObject:v8];
+  animatedCopy = animated;
+  ordinalCopy = ordinal;
+  floorOrdinals = [(VenueFloorViewController *)self floorOrdinals];
+  v8 = [NSNumber numberWithShort:ordinalCopy];
+  v9 = [floorOrdinals indexOfObject:v8];
 
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = [NSIndexPath indexPathForItem:v9 inSection:0];
-    v10 = [(VenueFloorViewController *)self floorCollectionView];
-    [v10 scrollToItemAtIndexPath:v11 atScrollPosition:2 animated:v4];
+    floorCollectionView = [(VenueFloorViewController *)self floorCollectionView];
+    [floorCollectionView scrollToItemAtIndexPath:v11 atScrollPosition:2 animated:animatedCopy];
   }
 }
 
-- (void)scrollToDisplayedFloorAnimated:(BOOL)a3
+- (void)scrollToDisplayedFloorAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(VenueFloorViewController *)self venue];
+  animatedCopy = animated;
+  venue = [(VenueFloorViewController *)self venue];
 
-  if (v5)
+  if (venue)
   {
-    v7 = [(VenueFloorViewController *)self venuesManager];
-    v6 = [(VenueFloorViewController *)self venue];
-    -[VenueFloorViewController scrollToFloorOrdinal:animated:](self, "scrollToFloorOrdinal:animated:", [v7 displayedFloorOrdinalForBuildingsInVenue:v6], v3);
+    venuesManager = [(VenueFloorViewController *)self venuesManager];
+    venue2 = [(VenueFloorViewController *)self venue];
+    -[VenueFloorViewController scrollToFloorOrdinal:animated:](self, "scrollToFloorOrdinal:animated:", [venuesManager displayedFloorOrdinalForBuildingsInVenue:venue2], animatedCopy);
   }
 }
 
-- (void)setDisplayedFloorOrdinal:(signed __int16)a3 animated:(BOOL)a4
+- (void)setDisplayedFloorOrdinal:(signed __int16)ordinal animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(VenueFloorViewController *)self floorOrdinals];
-  v8 = [NSNumber numberWithShort:v5];
-  v9 = [v7 indexOfObject:v8];
+  animatedCopy = animated;
+  ordinalCopy = ordinal;
+  floorOrdinals = [(VenueFloorViewController *)self floorOrdinals];
+  v8 = [NSNumber numberWithShort:ordinalCopy];
+  v9 = [floorOrdinals indexOfObject:v8];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -241,14 +241,14 @@
     if (v10)
     {
       v15 = v10;
-      v11 = [(VenueFloorViewController *)self floorCollectionView];
-      v12 = [v11 indexPathsForSelectedItems];
-      v13 = [v12 containsObject:v15];
+      floorCollectionView = [(VenueFloorViewController *)self floorCollectionView];
+      indexPathsForSelectedItems = [floorCollectionView indexPathsForSelectedItems];
+      v13 = [indexPathsForSelectedItems containsObject:v15];
 
       if ((v13 & 1) == 0)
       {
-        v14 = [(VenueFloorViewController *)self floorCollectionView];
-        [v14 selectItemAtIndexPath:v15 animated:v4 scrollPosition:2];
+        floorCollectionView2 = [(VenueFloorViewController *)self floorCollectionView];
+        [floorCollectionView2 selectItemAtIndexPath:v15 animated:animatedCopy scrollPosition:2];
       }
 
       v10 = v15;
@@ -256,47 +256,47 @@
   }
 }
 
-- (void)updateDisplayedFloorAnimated:(BOOL)a3
+- (void)updateDisplayedFloorAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(VenueFloorViewController *)self venue];
+  animatedCopy = animated;
+  venue = [(VenueFloorViewController *)self venue];
 
-  if (v5)
+  if (venue)
   {
-    v7 = [(VenueFloorViewController *)self venuesManager];
-    v6 = [(VenueFloorViewController *)self venue];
-    -[VenueFloorViewController setDisplayedFloorOrdinal:animated:](self, "setDisplayedFloorOrdinal:animated:", [v7 displayedFloorOrdinalForBuildingsInVenue:v6], v3);
+    venuesManager = [(VenueFloorViewController *)self venuesManager];
+    venue2 = [(VenueFloorViewController *)self venue];
+    -[VenueFloorViewController setDisplayedFloorOrdinal:animated:](self, "setDisplayedFloorOrdinal:animated:", [venuesManager displayedFloorOrdinalForBuildingsInVenue:venue2], animatedCopy);
   }
 }
 
-- (void)setVenue:(id)a3 focusedBuilding:(id)a4 animated:(BOOL)a5 forceUpdate:(BOOL)a6
+- (void)setVenue:(id)venue focusedBuilding:(id)building animated:(BOOL)animated forceUpdate:(BOOL)update
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = [(VKVenueFeatureMarker *)v10 buildings];
-  v12 = v11;
+  animatedCopy = animated;
+  venueCopy = venue;
+  buildings = [(VKVenueFeatureMarker *)venueCopy buildings];
+  v12 = buildings;
   v13 = &__NSArray0__struct;
-  if (v11)
+  if (buildings)
   {
-    v13 = v11;
+    v13 = buildings;
   }
 
   v14 = v13;
 
-  if (![(VenueFloorViewController *)self floorsDirty]&& !a6 && self->_venue == v10)
+  if (![(VenueFloorViewController *)self floorsDirty]&& !update && self->_venue == venueCopy)
   {
-    v33 = self;
-    v34 = v7;
+    selfCopy2 = self;
+    v34 = animatedCopy;
     v32 = 0;
     goto LABEL_22;
   }
 
-  objc_storeStrong(&self->_venue, a3);
+  objc_storeStrong(&self->_venue, venue);
   [(VenueFloorViewController *)self setFloorsDirty:1];
-  if ([(VenueFloorViewController *)self isHidden]|| ![(VenueFloorViewController *)self shouldBeHidden]|| !v7)
+  if ([(VenueFloorViewController *)self isHidden]|| ![(VenueFloorViewController *)self shouldBeHidden]|| !animatedCopy)
   {
-    v38 = v7;
-    v40 = v10;
+    v38 = animatedCopy;
+    v40 = venueCopy;
     v15 = objc_opt_new();
     v16 = objc_opt_new();
     v45 = 0u;
@@ -320,11 +320,11 @@
           }
 
           v22 = *(*(&v45 + 1) + 8 * i);
-          v23 = [v22 floorOrdinals];
-          [v16 addObjectsFromArray:v23];
+          floorOrdinals = [v22 floorOrdinals];
+          [v16 addObjectsFromArray:floorOrdinals];
 
-          v24 = [v22 shortFloorNames];
-          [v15 addEntriesFromDictionary:v24];
+          shortFloorNames = [v22 shortFloorNames];
+          [v15 addEntriesFromDictionary:shortFloorNames];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v45 objects:v51 count:16];
@@ -333,24 +333,24 @@
       while (v19);
     }
 
-    v25 = [v16 allObjects];
-    v26 = [v25 sortedArrayUsingSelector:"compare:"];
-    v27 = [v26 reverseObjectEnumerator];
-    v28 = [v27 allObjects];
+    allObjects = [v16 allObjects];
+    v26 = [allObjects sortedArrayUsingSelector:"compare:"];
+    reverseObjectEnumerator = [v26 reverseObjectEnumerator];
+    allObjects2 = [reverseObjectEnumerator allObjects];
 
-    if (!a6)
+    if (!update)
     {
-      v29 = [(VenueFloorViewController *)self floorOrdinals];
-      if ([NSArray array:v28 isEqualToArray:v29])
+      floorOrdinals2 = [(VenueFloorViewController *)self floorOrdinals];
+      if ([NSArray array:allObjects2 isEqualToArray:floorOrdinals2])
       {
-        v30 = [(VenueFloorViewController *)self shortFloorNames];
-        v31 = [NSDictionary dictionary:v15 isEqualToDictionary:v30];
+        shortFloorNames2 = [(VenueFloorViewController *)self shortFloorNames];
+        v31 = [NSDictionary dictionary:v15 isEqualToDictionary:shortFloorNames2];
 
         if (v31)
         {
           [(VenueFloorViewController *)self updateHiddenAnimated:v38 completion:0];
           v14 = v39;
-          v10 = v40;
+          venueCopy = v40;
 LABEL_33:
 
           goto LABEL_34;
@@ -362,7 +362,7 @@ LABEL_33:
       }
     }
 
-    objc_storeStrong(&self->_floorOrdinals, v28);
+    objc_storeStrong(&self->_floorOrdinals, allObjects2);
     objc_storeStrong(&self->_shortFloorNames, v15);
     [(VenueFloorViewController *)self setFloorsDirty:0];
     v44[0] = _NSConcreteStackBlock;
@@ -388,9 +388,9 @@ LABEL_33:
 
       else
       {
-        v37 = [(VenueFloorViewController *)self isHidden];
+        isHidden = [(VenueFloorViewController *)self isHidden];
         (v35[2])(v35);
-        if (v37)
+        if (isHidden)
         {
           (v36[2])(v36);
           [(VenueFloorViewController *)self updateHiddenAnimated:1 completion:0];
@@ -407,7 +407,7 @@ LABEL_33:
         }
       }
 
-      v10 = v40;
+      venueCopy = v40;
     }
 
     else
@@ -416,7 +416,7 @@ LABEL_33:
       (v36[2])(v36);
       [(VenueFloorViewController *)self updateHiddenAnimated:0 completion:0];
       v14 = v39;
-      v10 = v40;
+      venueCopy = v40;
     }
 
     goto LABEL_33;
@@ -427,29 +427,29 @@ LABEL_33:
   v49[2] = sub_100AEDCC0;
   v49[3] = &unk_101661AE0;
   v49[4] = self;
-  v50 = a6;
+  updateCopy = update;
   v32 = v49;
-  v33 = self;
+  selfCopy2 = self;
   v34 = 1;
 LABEL_22:
-  [(VenueFloorViewController *)v33 updateHiddenAnimated:v34 completion:v32];
+  [(VenueFloorViewController *)selfCopy2 updateHiddenAnimated:v34 completion:v32];
 LABEL_34:
 }
 
-- (void)updateVenueAndBuildingsAnimated:(BOOL)a3 forced:(BOOL)a4
+- (void)updateVenueAndBuildingsAnimated:(BOOL)animated forced:(BOOL)forced
 {
-  v4 = a4;
-  v5 = a3;
-  v10 = [(VenueFloorViewController *)self venuesManager];
-  v7 = [v10 venueWithFocus];
-  v8 = [(VenueFloorViewController *)self venuesManager];
-  v9 = [v8 venueBuildingWithFocus];
-  [(VenueFloorViewController *)self setVenue:v7 focusedBuilding:v9 animated:v5 forceUpdate:v4];
+  forcedCopy = forced;
+  animatedCopy = animated;
+  venuesManager = [(VenueFloorViewController *)self venuesManager];
+  venueWithFocus = [venuesManager venueWithFocus];
+  venuesManager2 = [(VenueFloorViewController *)self venuesManager];
+  venueBuildingWithFocus = [venuesManager2 venueBuildingWithFocus];
+  [(VenueFloorViewController *)self setVenue:venueWithFocus focusedBuilding:venueBuildingWithFocus animated:animatedCopy forceUpdate:forcedCopy];
 }
 
-- (void)updateShowSelectionWithForceClipCorners:(BOOL)a3
+- (void)updateShowSelectionWithForceClipCorners:(BOOL)corners
 {
-  v4 = [(VenueFloorViewController *)self isOpen]| a3;
+  v4 = [(VenueFloorViewController *)self isOpen]| corners;
   if (v4)
   {
     v5 = 10.0;
@@ -460,20 +460,20 @@ LABEL_34:
     v5 = 0.0;
   }
 
-  v6 = [(VenueFloorViewController *)self floorCollectionView];
-  [v6 _setContinuousCornerRadius:v5];
+  floorCollectionView = [(VenueFloorViewController *)self floorCollectionView];
+  [floorCollectionView _setContinuousCornerRadius:v5];
 
-  v7 = [(VenueFloorViewController *)self floorCollectionView];
-  [v7 setClipsToBounds:v4];
+  floorCollectionView2 = [(VenueFloorViewController *)self floorCollectionView];
+  [floorCollectionView2 setClipsToBounds:v4];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(VenueFloorViewController *)self floorCollectionView];
-  v9 = [v8 preparedCells];
+  floorCollectionView3 = [(VenueFloorViewController *)self floorCollectionView];
+  preparedCells = [floorCollectionView3 preparedCells];
 
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v10 = [preparedCells countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -484,7 +484,7 @@ LABEL_34:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(preparedCells);
         }
 
         v14 = *(*(&v15 + 1) + 8 * i);
@@ -495,7 +495,7 @@ LABEL_34:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [preparedCells countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
@@ -504,15 +504,15 @@ LABEL_34:
 
 - (void)updateFloorOptimalOpenHeightConstraint
 {
-  v3 = [(VenueFloorViewController *)self floorCollectionView];
-  v4 = [v3 collectionViewLayout];
-  [v4 collectionViewContentSize];
+  floorCollectionView = [(VenueFloorViewController *)self floorCollectionView];
+  collectionViewLayout = [floorCollectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v6 = v5;
-  v7 = [(VenueFloorViewController *)self floorOptimalOpenHeightConstraint];
-  [v7 setConstant:v6];
+  floorOptimalOpenHeightConstraint = [(VenueFloorViewController *)self floorOptimalOpenHeightConstraint];
+  [floorOptimalOpenHeightConstraint setConstant:v6];
 
-  v8 = [(VenueFloorViewController *)self floorCollectionView];
-  [v8 setNeedsLayout];
+  floorCollectionView2 = [(VenueFloorViewController *)self floorCollectionView];
+  [floorCollectionView2 setNeedsLayout];
 }
 
 - (void)updateCloseButtonVisibility
@@ -527,42 +527,42 @@ LABEL_34:
     v3 = 0.0;
   }
 
-  v4 = [(VenueFloorViewController *)self closeButton];
-  [v4 setAlpha:v3];
+  closeButton = [(VenueFloorViewController *)self closeButton];
+  [closeButton setAlpha:v3];
 
-  LODWORD(v4) = [(VenueFloorViewController *)self isOpen];
-  v5 = [(VenueFloorViewController *)self closeButton];
-  [v5 setHidden:v4 ^ 1];
+  LODWORD(closeButton) = [(VenueFloorViewController *)self isOpen];
+  closeButton2 = [(VenueFloorViewController *)self closeButton];
+  [closeButton2 setHidden:closeButton ^ 1];
 }
 
-- (void)updateForOpenChangedAnimated:(BOOL)a3
+- (void)updateForOpenChangedAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(VenueFloorViewController *)self isVisible]&& ![(VenueFloorViewController *)self delayConstraintSetup])
   {
     if ([(VenueFloorViewController *)self isOpen])
     {
-      v5 = [(VenueFloorViewController *)self closedConstraints];
-      [NSLayoutConstraint deactivateConstraints:v5];
+      closedConstraints = [(VenueFloorViewController *)self closedConstraints];
+      [NSLayoutConstraint deactivateConstraints:closedConstraints];
 
-      v6 = [(VenueFloorViewController *)self openConstraints];
-      [NSLayoutConstraint activateConstraints:v6];
+      openConstraints = [(VenueFloorViewController *)self openConstraints];
+      [NSLayoutConstraint activateConstraints:openConstraints];
 
       [(VenueFloorViewController *)self updateFloorOptimalOpenHeightConstraint];
     }
 
     else
     {
-      v7 = [(VenueFloorViewController *)self openConstraints];
-      [NSLayoutConstraint deactivateConstraints:v7];
+      openConstraints2 = [(VenueFloorViewController *)self openConstraints];
+      [NSLayoutConstraint deactivateConstraints:openConstraints2];
 
-      v8 = [(VenueFloorViewController *)self closedConstraints];
-      [NSLayoutConstraint activateConstraints:v8];
+      closedConstraints2 = [(VenueFloorViewController *)self closedConstraints];
+      [NSLayoutConstraint activateConstraints:closedConstraints2];
     }
 
-    v9 = [(VenueFloorViewController *)self isOpen];
-    v10 = [(VenueFloorViewController *)self floorCollectionView];
-    [v10 setScrollEnabled:v9];
+    isOpen = [(VenueFloorViewController *)self isOpen];
+    floorCollectionView = [(VenueFloorViewController *)self floorCollectionView];
+    [floorCollectionView setScrollEnabled:isOpen];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -571,7 +571,7 @@ LABEL_34:
     v16[4] = self;
     v11 = objc_retainBlock(v16);
     v12 = v11;
-    if (v3)
+    if (animatedCopy)
     {
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
@@ -595,35 +595,35 @@ LABEL_34:
   }
 }
 
-- (void)updateHiddenAnimated:(BOOL)a3 completion:(id)a4
+- (void)updateHiddenAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(VenueFloorViewController *)self updateHiddenAnimationActive])
   {
-    if (v6)
+    if (completionCopy)
     {
-      v7 = [(VenueFloorViewController *)self updateHiddenAnimationCompletionBlocks];
-      v8 = objc_retainBlock(v6);
-      [v7 addObject:v8];
+      updateHiddenAnimationCompletionBlocks = [(VenueFloorViewController *)self updateHiddenAnimationCompletionBlocks];
+      v8 = objc_retainBlock(completionCopy);
+      [updateHiddenAnimationCompletionBlocks addObject:v8];
     }
 
     goto LABEL_15;
   }
 
-  v9 = [(VenueFloorViewController *)self shouldBeHidden];
-  if (v9 == [(VenueFloorViewController *)self isHidden])
+  shouldBeHidden = [(VenueFloorViewController *)self shouldBeHidden];
+  if (shouldBeHidden == [(VenueFloorViewController *)self isHidden])
   {
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!animated)
   {
-    if (!v9)
+    if (!shouldBeHidden)
     {
       [(VenueFloorViewController *)self didStartShowing];
       [(VenueFloorViewController *)self setHidden:0];
       [(VenueFloorViewController *)self didFinishShowing];
-      if (!v6)
+      if (!completionCopy)
       {
         goto LABEL_15;
       }
@@ -636,83 +636,83 @@ LABEL_34:
     [(VenueFloorViewController *)self setOpen:0 animated:0];
     [(VenueFloorViewController *)self didFinishHiding];
 LABEL_11:
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_15;
     }
 
 LABEL_12:
-    v6[2](v6);
+    completionCopy[2](completionCopy);
     goto LABEL_15;
   }
 
   [(VenueFloorViewController *)self setUpdateHiddenAnimationActive:1];
-  v10 = [(VenueFloorViewController *)self view];
-  v11 = v10;
-  if (v9)
+  view = [(VenueFloorViewController *)self view];
+  v11 = view;
+  if (shouldBeHidden)
   {
-    v12 = [v10 superview];
+    superview = [view superview];
 
-    if (v12)
+    if (superview)
     {
-      v13 = [(VenueFloorViewController *)self closedPlaceholderView];
-      [v13 bounds];
+      closedPlaceholderView = [(VenueFloorViewController *)self closedPlaceholderView];
+      [closedPlaceholderView bounds];
       v15 = v14;
       v17 = v16;
       v19 = v18;
       v21 = v20;
-      v22 = [(VenueFloorViewController *)self closedPlaceholderView];
-      [v12 convertRect:v22 fromView:{v15, v17, v19, v21}];
+      closedPlaceholderView2 = [(VenueFloorViewController *)self closedPlaceholderView];
+      [superview convertRect:closedPlaceholderView2 fromView:{v15, v17, v19, v21}];
       v24 = v23;
       v26 = v25;
       v28 = v27;
       v30 = v29;
 
-      v50 = [(VenueFloorViewController *)self cardView];
-      v49 = [v50 leftAnchor];
-      v48 = [v12 leftAnchor];
+      cardView = [(VenueFloorViewController *)self cardView];
+      leftAnchor = [cardView leftAnchor];
+      leftAnchor2 = [superview leftAnchor];
       v57.origin.x = v24;
       v57.origin.y = v26;
       v57.size.width = v28;
       v57.size.height = v30;
-      v47 = [v49 constraintEqualToAnchor:v48 constant:CGRectGetMinX(v57)];
+      v47 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:CGRectGetMinX(v57)];
       v56[0] = v47;
-      v46 = [(VenueFloorViewController *)self cardView];
-      v45 = [v46 rightAnchor];
-      v44 = [v12 leftAnchor];
+      cardView2 = [(VenueFloorViewController *)self cardView];
+      rightAnchor = [cardView2 rightAnchor];
+      leftAnchor3 = [superview leftAnchor];
       v58.origin.x = v24;
       v58.origin.y = v26;
       v58.size.width = v28;
       v58.size.height = v30;
-      v43 = [v45 constraintEqualToAnchor:v44 constant:CGRectGetMaxX(v58)];
+      v43 = [rightAnchor constraintEqualToAnchor:leftAnchor3 constant:CGRectGetMaxX(v58)];
       v56[1] = v43;
-      v42 = [(VenueFloorViewController *)self cardView];
-      v41 = [v42 topAnchor];
-      v31 = [v12 topAnchor];
+      cardView3 = [(VenueFloorViewController *)self cardView];
+      topAnchor = [cardView3 topAnchor];
+      topAnchor2 = [superview topAnchor];
       v59.origin.x = v24;
       v59.origin.y = v26;
       v59.size.width = v28;
       v59.size.height = v30;
-      v32 = [v41 constraintEqualToAnchor:v31 constant:CGRectGetMinY(v59)];
+      v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:CGRectGetMinY(v59)];
       v56[2] = v32;
-      v33 = [(VenueFloorViewController *)self cardView];
-      v34 = [v33 bottomAnchor];
-      v35 = [v12 topAnchor];
+      cardView4 = [(VenueFloorViewController *)self cardView];
+      bottomAnchor = [cardView4 bottomAnchor];
+      topAnchor3 = [superview topAnchor];
       v60.origin.x = v24;
       v60.origin.y = v26;
       v60.size.width = v28;
       v60.size.height = v30;
-      v36 = [v34 constraintEqualToAnchor:v35 constant:CGRectGetMaxY(v60)];
+      v36 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:CGRectGetMaxY(v60)];
       v56[3] = v36;
       v37 = [NSArray arrayWithObjects:v56 count:4];
       v38 = qword_10195E5C0;
       qword_10195E5C0 = v37;
 
-      v39 = [(VenueFloorViewController *)self closedConstraints];
-      [NSLayoutConstraint deactivateConstraints:v39];
+      closedConstraints = [(VenueFloorViewController *)self closedConstraints];
+      [NSLayoutConstraint deactivateConstraints:closedConstraints];
 
-      v40 = [(VenueFloorViewController *)self openConstraints];
-      [NSLayoutConstraint deactivateConstraints:v40];
+      openConstraints = [(VenueFloorViewController *)self openConstraints];
+      [NSLayoutConstraint deactivateConstraints:openConstraints];
 
       [NSLayoutConstraint activateConstraints:qword_10195E5C0];
     }
@@ -720,44 +720,44 @@ LABEL_12:
 
   else
   {
-    [v10 setAlpha:0.0];
+    [view setAlpha:0.0];
 
     [(VenueFloorViewController *)self setHidden:0];
-    v12 = [(VenueFloorViewController *)self view];
-    [v12 layoutIfNeeded];
+    superview = [(VenueFloorViewController *)self view];
+    [superview layoutIfNeeded];
   }
 
   v54[0] = _NSConcreteStackBlock;
   v54[1] = 3221225472;
   v54[2] = sub_100AEE950;
   v54[3] = &unk_101661AE0;
-  v55 = v9;
+  v55 = shouldBeHidden;
   v54[4] = self;
   v51[0] = _NSConcreteStackBlock;
   v51[1] = 3221225472;
   v51[2] = sub_100AEEA14;
   v51[3] = &unk_10164FD60;
   v51[4] = self;
-  v53 = v9;
-  v52 = v6;
+  v53 = shouldBeHidden;
+  v52 = completionCopy;
   [UIView _animateUsingDefaultTimingWithOptions:0 animations:v54 completion:v51];
 
 LABEL_15:
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(VenueFloorViewController *)self view];
-  v6 = [v5 isHidden];
+  hiddenCopy = hidden;
+  view = [(VenueFloorViewController *)self view];
+  isHidden = [view isHidden];
 
-  if (v6 != v3)
+  if (isHidden != hiddenCopy)
   {
-    v7 = [(VenueFloorViewController *)self view];
-    [v7 setHidden:v3];
+    view2 = [(VenueFloorViewController *)self view];
+    [view2 setHidden:hiddenCopy];
 
-    v8 = [(VenueFloorViewController *)self closedPlaceholderView];
-    [v8 setHidden:v3];
+    closedPlaceholderView = [(VenueFloorViewController *)self closedPlaceholderView];
+    [closedPlaceholderView setHidden:hiddenCopy];
   }
 }
 
@@ -768,11 +768,11 @@ LABEL_15:
     return 1;
   }
 
-  v4 = [(VenueFloorViewController *)self venue];
-  if (v4)
+  venue = [(VenueFloorViewController *)self venue];
+  if (venue)
   {
-    v5 = [(VenueFloorViewController *)self floorOrdinals];
-    v3 = [v5 count] < 2;
+    floorOrdinals = [(VenueFloorViewController *)self floorOrdinals];
+    v3 = [floorOrdinals count] < 2;
   }
 
   else
@@ -783,7 +783,7 @@ LABEL_15:
   return v3;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
   if (![(VenueFloorViewController *)self isOpen])
   {
@@ -807,62 +807,62 @@ LABEL_15:
   [(VenueFloorViewController *)&v8 viewDidLayoutSubviews];
   if (_UISolariumEnabled())
   {
-    v3 = [(VenueFloorViewController *)self cardView];
-    [v3 setClipsToBounds:1];
+    cardView = [(VenueFloorViewController *)self cardView];
+    [cardView setClipsToBounds:1];
 
-    v4 = [(VenueFloorViewController *)self cardView];
-    [v4 bounds];
+    cardView2 = [(VenueFloorViewController *)self cardView];
+    [cardView2 bounds];
     v5 = CGRectGetWidth(v9) * 0.5;
-    v6 = [(VenueFloorViewController *)self cardView];
-    v7 = [v6 layer];
-    [v7 setCornerRadius:v5];
+    cardView3 = [(VenueFloorViewController *)self cardView];
+    layer = [cardView3 layer];
+    [layer setCornerRadius:v5];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(VenueFloorViewController *)self setVisible:0];
   v5.receiver = self;
   v5.super_class = VenueFloorViewController;
-  [(VenueFloorViewController *)&v5 viewDidDisappear:v3];
+  [(VenueFloorViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(VenueFloorViewController *)self setVisible:1];
   [(VenueFloorViewController *)self updateForOpenChangedAnimated:0];
   [(VenueFloorViewController *)self updateVenueAndBuildingsAnimated:0 forced:1];
   v5.receiver = self;
   v5.super_class = VenueFloorViewController;
-  [(VenueFloorViewController *)&v5 viewWillAppear:v3];
+  [(VenueFloorViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (BOOL)isFocusedOnVenue:(id)a3
+- (BOOL)isFocusedOnVenue:(id)venue
 {
-  if (!a3)
+  if (!venue)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(VenueFloorViewController *)self venue];
-  v6 = [v5 venueID];
-  v7 = [v4 venueID];
+  venueCopy = venue;
+  venue = [(VenueFloorViewController *)self venue];
+  venueID = [venue venueID];
+  venueID2 = [venueCopy venueID];
 
-  v8 = v6 == v7;
+  v8 = venueID == venueID2;
   return v8;
 }
 
-- (void)didChangeFocusedVenue:(id)a3 focusedBuilding:(id)a4 displayedFloorOrdinal:(signed __int16)a5
+- (void)didChangeFocusedVenue:(id)venue focusedBuilding:(id)building displayedFloorOrdinal:(signed __int16)ordinal
 {
-  v5 = a5;
-  [(VenueFloorViewController *)self setVenue:a3 focusedBuilding:a4 animated:1 forceUpdate:0];
-  if (a3)
+  ordinalCopy = ordinal;
+  [(VenueFloorViewController *)self setVenue:venue focusedBuilding:building animated:1 forceUpdate:0];
+  if (venue)
   {
 
-    [(VenueFloorViewController *)self setDisplayedFloorOrdinal:v5 animated:1];
+    [(VenueFloorViewController *)self setDisplayedFloorOrdinal:ordinalCopy animated:1];
   }
 }
 
@@ -872,10 +872,10 @@ LABEL_15:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(VenueFloorViewController *)self floorCollectionView];
-  v4 = [v3 preparedCells];
+  floorCollectionView = [(VenueFloorViewController *)self floorCollectionView];
+  preparedCells = [floorCollectionView preparedCells];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [preparedCells countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -887,59 +887,59 @@ LABEL_15:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(preparedCells);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 floorOrdinal];
-          [v9 setLacksSearchResults:{-[VenueFloorViewController lacksSearchResultsForFloorOrdinal:](self, "lacksSearchResultsForFloorOrdinal:", v10)}];
+          floorOrdinal = [v9 floorOrdinal];
+          [v9 setLacksSearchResults:{-[VenueFloorViewController lacksSearchResultsForFloorOrdinal:](self, "lacksSearchResultsForFloorOrdinal:", floorOrdinal)}];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [preparedCells countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)lacksSearchResultsForFloorOrdinal:(id)a3
+- (BOOL)lacksSearchResultsForFloorOrdinal:(id)ordinal
 {
-  if (!a3)
+  if (!ordinal)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(VenueFloorViewController *)self delegate];
-  v6 = [(VenueFloorViewController *)self venue];
-  v7 = [v4 shortValue];
+  ordinalCopy = ordinal;
+  delegate = [(VenueFloorViewController *)self delegate];
+  venue = [(VenueFloorViewController *)self venue];
+  shortValue = [ordinalCopy shortValue];
 
-  LOBYTE(v4) = [v5 lacksSearchResultsInVenue:v6 forFloorOrdinal:v7];
-  return v4;
+  LOBYTE(ordinalCopy) = [delegate lacksSearchResultsInVenue:venue forFloorOrdinal:shortValue];
+  return ordinalCopy;
 }
 
-- (void)setUserLocationFloorOrdinal:(id)a3
+- (void)setUserLocationFloorOrdinal:(id)ordinal
 {
-  v5 = a3;
-  if (![NSNumber number:self->_userLocationFloorOrdinal isEqualToNumber:v5])
+  ordinalCopy = ordinal;
+  if (![NSNumber number:self->_userLocationFloorOrdinal isEqualToNumber:ordinalCopy])
   {
-    v16 = v5;
-    objc_storeStrong(&self->_userLocationFloorOrdinal, a3);
+    v16 = ordinalCopy;
+    objc_storeStrong(&self->_userLocationFloorOrdinal, ordinal);
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(VenueFloorViewController *)self floorCollectionView];
-    v7 = [v6 preparedCells];
+    floorCollectionView = [(VenueFloorViewController *)self floorCollectionView];
+    preparedCells = [floorCollectionView preparedCells];
 
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v8 = [preparedCells countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -951,16 +951,16 @@ LABEL_15:
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(preparedCells);
           }
 
           v12 = *(*(&v17 + 1) + 8 * v11);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [v12 floorOrdinal];
-            v14 = [(VenueFloorViewController *)self userLocationFloorOrdinal];
-            v15 = [NSNumber number:v13 isEqualToNumber:v14];
+            floorOrdinal = [v12 floorOrdinal];
+            userLocationFloorOrdinal = [(VenueFloorViewController *)self userLocationFloorOrdinal];
+            v15 = [NSNumber number:floorOrdinal isEqualToNumber:userLocationFloorOrdinal];
 
             [v12 setIsUserLocation:v15];
           }
@@ -969,38 +969,38 @@ LABEL_15:
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [preparedCells countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);
     }
 
-    v5 = v16;
+    ordinalCopy = v16;
   }
 }
 
-- (void)setForceHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setForceHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (self->_forceHidden == v6)
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (self->_forceHidden == hiddenCopy)
   {
-    if (!v8)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v10 = v8;
-    (*(v8 + 2))(v8);
+    v10 = completionCopy;
+    (*(completionCopy + 2))(completionCopy);
   }
 
   else
   {
-    self->_forceHidden = v6;
-    v10 = v8;
-    [(VenueFloorViewController *)self updateHiddenAnimated:v5 completion:v8];
+    self->_forceHidden = hiddenCopy;
+    v10 = completionCopy;
+    [(VenueFloorViewController *)self updateHiddenAnimated:animatedCopy completion:completionCopy];
   }
 
   v9 = v10;
@@ -1009,26 +1009,26 @@ LABEL_6:
 
 - (BOOL)isHidden
 {
-  v2 = [(VenueFloorViewController *)self view];
-  v3 = [v2 isHidden];
+  view = [(VenueFloorViewController *)self view];
+  isHidden = [view isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setOpen:(BOOL)a3 animated:(BOOL)a4
+- (void)setOpen:(BOOL)open animated:(BOOL)animated
 {
-  if (self->_open != a3)
+  if (self->_open != open)
   {
-    v4 = a4;
-    self->_open = a3;
-    v6 = !a3;
-    v7 = [(VenueFloorViewController *)self openGestureRecognizer];
-    [v7 setEnabled:v6];
+    animatedCopy = animated;
+    self->_open = open;
+    v6 = !open;
+    openGestureRecognizer = [(VenueFloorViewController *)self openGestureRecognizer];
+    [openGestureRecognizer setEnabled:v6];
 
-    v8 = [(VenueFloorViewController *)self pressGestureRecognizer];
-    [v8 setEnabled:v6];
+    pressGestureRecognizer = [(VenueFloorViewController *)self pressGestureRecognizer];
+    [pressGestureRecognizer setEnabled:v6];
 
-    [(VenueFloorViewController *)self updateForOpenChangedAnimated:v4];
+    [(VenueFloorViewController *)self updateForOpenChangedAnimated:animatedCopy];
     if (v6)
     {
 
@@ -1043,15 +1043,15 @@ LABEL_6:
   }
 }
 
-- (void)setBlurGroupName:(id)a3
+- (void)setBlurGroupName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  nameCopy = name;
+  v5 = [nameCopy copy];
   blurGroupName = self->_blurGroupName;
   self->_blurGroupName = v5;
 
-  v7 = [(VenueFloorViewController *)self cardView];
-  [v7 setBlurGroupName:v4];
+  cardView = [(VenueFloorViewController *)self cardView];
+  [cardView setBlurGroupName:nameCopy];
 }
 
 - (void)setupGestures
@@ -1059,44 +1059,44 @@ LABEL_6:
   v3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"handleTap:"];
   [(VenueFloorViewController *)self setOpenGestureRecognizer:v3];
 
-  v4 = [(VenueFloorViewController *)self cardView];
-  v5 = [(VenueFloorViewController *)self openGestureRecognizer];
-  [v4 addGestureRecognizer:v5];
+  cardView = [(VenueFloorViewController *)self cardView];
+  openGestureRecognizer = [(VenueFloorViewController *)self openGestureRecognizer];
+  [cardView addGestureRecognizer:openGestureRecognizer];
 
-  LODWORD(v4) = [(VenueFloorViewController *)self isOpen];
-  v6 = [(VenueFloorViewController *)self openGestureRecognizer];
-  [v6 setEnabled:v4 ^ 1];
+  LODWORD(cardView) = [(VenueFloorViewController *)self isOpen];
+  openGestureRecognizer2 = [(VenueFloorViewController *)self openGestureRecognizer];
+  [openGestureRecognizer2 setEnabled:cardView ^ 1];
 
   v7 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"handleTap:"];
   [(VenueFloorViewController *)self setPressGestureRecognizer:v7];
 
-  v8 = [(VenueFloorViewController *)self pressGestureRecognizer];
-  [v8 setAllowedPressTypes:&off_1016ED448];
+  pressGestureRecognizer = [(VenueFloorViewController *)self pressGestureRecognizer];
+  [pressGestureRecognizer setAllowedPressTypes:&off_1016ED448];
 
-  v9 = [(VenueFloorViewController *)self pressGestureRecognizer];
-  [v9 setAllowedTouchTypes:&__NSArray0__struct];
+  pressGestureRecognizer2 = [(VenueFloorViewController *)self pressGestureRecognizer];
+  [pressGestureRecognizer2 setAllowedTouchTypes:&__NSArray0__struct];
 
-  v10 = [(VenueFloorViewController *)self cardView];
-  v11 = [(VenueFloorViewController *)self pressGestureRecognizer];
-  [v10 addGestureRecognizer:v11];
+  cardView2 = [(VenueFloorViewController *)self cardView];
+  pressGestureRecognizer3 = [(VenueFloorViewController *)self pressGestureRecognizer];
+  [cardView2 addGestureRecognizer:pressGestureRecognizer3];
 
-  LODWORD(v10) = [(VenueFloorViewController *)self isOpen];
-  v12 = [(VenueFloorViewController *)self pressGestureRecognizer];
-  [v12 setEnabled:v10 ^ 1];
+  LODWORD(cardView2) = [(VenueFloorViewController *)self isOpen];
+  pressGestureRecognizer4 = [(VenueFloorViewController *)self pressGestureRecognizer];
+  [pressGestureRecognizer4 setEnabled:cardView2 ^ 1];
 }
 
-- (void)delayConstraintSetupWhileExecuting:(id)a3
+- (void)delayConstraintSetupWhileExecuting:(id)executing
 {
-  v4 = a3;
+  executingCopy = executing;
   if ([(VenueFloorViewController *)self delayConstraintSetup])
   {
-    v4[2]();
+    executingCopy[2]();
   }
 
   else
   {
     [(VenueFloorViewController *)self setDelayConstraintSetup:1];
-    v4[2]();
+    executingCopy[2]();
     [(VenueFloorViewController *)self setDelayConstraintSetup:0];
     [(VenueFloorViewController *)self updateForOpenChangedAnimated:0];
   }
@@ -1111,12 +1111,12 @@ LABEL_6:
   [(VenueFloorViewController *)self setView:v3];
   v4 = &MKLookAroundViewDidBecomeFullyDrawnNotification_ptr;
   v5 = [UIColor colorNamed:@"VenueCloseBackgroundColor"];
-  v6 = [(VenueFloorViewController *)self view];
-  [v6 setTintColor:v5];
+  view = [(VenueFloorViewController *)self view];
+  [view setTintColor:v5];
 
   LODWORD(v5) = _UISolariumEnabled();
-  v7 = [(VenueFloorViewController *)self view];
-  [v7 setClipsToBounds:v5 ^ 1];
+  view2 = [(VenueFloorViewController *)self view];
+  [view2 setClipsToBounds:v5 ^ 1];
 
   v8 = [UIButton buttonWithType:0];
   if (_UISolariumEnabled())
@@ -1155,8 +1155,8 @@ LABEL_6:
     [v8 setImage:v14 forState:0];
 
     [v8 setPreferredSymbolConfiguration:v123 forImageInState:0];
-    v15 = [v8 layer];
-    [v15 setCornerRadius:v9 * 0.5];
+    layer = [v8 layer];
+    [layer setCornerRadius:v9 * 0.5];
 
     [v8 setClipsToBounds:1];
     v16 = +[_TtC4Maps23MapsDesignConstantsShim defaultButtonTintColor];
@@ -1166,20 +1166,20 @@ LABEL_6:
     [v11 addSubview:v8];
     [v3 setSpacing:8.0];
     [v3 addArrangedSubview:v11];
-    v121 = [v8 widthAnchor];
-    v118 = [v121 constraintEqualToConstant:v9];
+    widthAnchor = [v8 widthAnchor];
+    v118 = [widthAnchor constraintEqualToConstant:v9];
     v128[0] = v118;
-    v116 = [v8 centerYAnchor];
-    v114 = [v11 centerYAnchor];
-    v17 = [v116 constraintEqualToAnchor:v114];
+    centerYAnchor = [v8 centerYAnchor];
+    centerYAnchor2 = [v11 centerYAnchor];
+    v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v128[1] = v17;
-    v18 = [v8 centerXAnchor];
-    v19 = [v11 centerXAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerXAnchor = [v8 centerXAnchor];
+    centerXAnchor2 = [v11 centerXAnchor];
+    v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v128[2] = v20;
-    v21 = [v11 heightAnchor];
+    heightAnchor = [v11 heightAnchor];
     LODWORD(v22) = 1148829696;
-    v23 = [v21 constraintEqualToConstant:v9 priority:v22];
+    v23 = [heightAnchor constraintEqualToConstant:v9 priority:v22];
     v128[3] = v23;
     [NSArray arrayWithObjects:v128 count:4];
     v24 = v8;
@@ -1217,8 +1217,8 @@ LABEL_6:
   [(VenueFloorViewController *)self setCardView:v30];
   [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v30 setLayoutStyle:6];
-  v31 = [(VenueFloorViewController *)self blurGroupName];
-  [v30 setBlurGroupName:v31];
+  blurGroupName = [(VenueFloorViewController *)self blurGroupName];
+  [v30 setBlurGroupName:blurGroupName];
 
   [v3 addArrangedSubview:v30];
   p_cache = RAPRecordMapsSync.cache;
@@ -1231,13 +1231,13 @@ LABEL_6:
   {
     +[VenueFloorPickerCell cellHeight];
     v35 = fmax(v34, 44.0);
-    v36 = [(VenueFloorViewController *)self view];
-    v37 = [v36 window];
-    v38 = [v37 screen];
-    if (v38)
+    view3 = [(VenueFloorViewController *)self view];
+    window = [view3 window];
+    screen = [window screen];
+    if (screen)
     {
-      v39 = [v36 window];
-      [v39 screen];
+      window2 = [view3 window];
+      [window2 screen];
       v40 = v4;
       v42 = v41 = self;
       [v42 nativeScale];
@@ -1250,8 +1250,8 @@ LABEL_6:
 
     else
     {
-      v39 = +[UIScreen mainScreen];
-      [v39 nativeScale];
+      window2 = +[UIScreen mainScreen];
+      [window2 nativeScale];
       v44 = v45;
     }
 
@@ -1274,57 +1274,57 @@ LABEL_6:
   [(VenueFloorViewController *)self setFloorCollectionView:v48];
   [v48 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v48 setShowsVerticalScrollIndicator:0];
-  v49 = [v4[306] clearColor];
-  [v48 setBackgroundColor:v49];
+  clearColor = [v4[306] clearColor];
+  [v48 setBackgroundColor:clearColor];
 
   [v48 setDataSource:self];
   [v48 setDelegate:self];
   [v48 _setHiddenPocketEdges:1];
   v50 = objc_opt_class();
-  v51 = [p_cache + 158 reuseIdentifier];
-  [v48 registerClass:v50 forCellWithReuseIdentifier:v51];
+  reuseIdentifier = [p_cache + 158 reuseIdentifier];
+  [v48 registerClass:v50 forCellWithReuseIdentifier:reuseIdentifier];
 
-  v52 = [v30 contentView];
-  [v52 addSubview:v48];
+  contentView = [v30 contentView];
+  [contentView addSubview:v48];
 
-  v53 = [v48 heightAnchor];
+  heightAnchor2 = [v48 heightAnchor];
   LODWORD(v54) = 1144750080;
-  v124 = [v53 constraintEqualToConstant:0.0 priority:v54];
+  v124 = [heightAnchor2 constraintEqualToConstant:0.0 priority:v54];
 
-  v55 = [v48 widthAnchor];
+  widthAnchor2 = [v48 widthAnchor];
   v56 = *(v10 + 816);
   LODWORD(v57) = v56;
-  v58 = [v55 constraintGreaterThanOrEqualToConstant:0.0 priority:v57];
+  v58 = [widthAnchor2 constraintGreaterThanOrEqualToConstant:0.0 priority:v57];
 
-  v110 = [v3 widthAnchor];
-  v108 = [v110 constraintEqualToConstant:sub_100035D80(self)];
+  widthAnchor3 = [v3 widthAnchor];
+  v108 = [widthAnchor3 constraintEqualToConstant:sub_100035D80(self)];
   v127[0] = v108;
   v127[1] = v58;
   v117 = v58;
-  v59 = [v48 topAnchor];
-  v104 = [v30 topAnchor];
-  v106 = v59;
-  v102 = [v59 constraintEqualToAnchor:?];
+  topAnchor = [v48 topAnchor];
+  topAnchor2 = [v30 topAnchor];
+  v106 = topAnchor;
+  v102 = [topAnchor constraintEqualToAnchor:?];
   v127[2] = v102;
   v60 = v48;
-  v61 = [v48 bottomAnchor];
-  v62 = [v30 bottomAnchor];
-  v63 = [(VenueFloorViewController *)self view];
-  v64 = [v63 window];
-  v65 = [v64 screen];
-  v100 = v63;
-  if (v65)
+  bottomAnchor = [v48 bottomAnchor];
+  bottomAnchor2 = [v30 bottomAnchor];
+  view4 = [(VenueFloorViewController *)self view];
+  window3 = [view4 window];
+  screen2 = [window3 screen];
+  v100 = view4;
+  if (screen2)
   {
-    v66 = [v63 window];
-    v67 = [v66 screen];
-    [v67 nativeScale];
+    window4 = [view4 window];
+    screen3 = [window4 screen];
+    [screen3 nativeScale];
     v69 = v68;
   }
 
   else
   {
-    v66 = +[UIScreen mainScreen];
-    [v66 nativeScale];
+    window4 = +[UIScreen mainScreen];
+    [window4 nativeScale];
     v69 = v70;
   }
 
@@ -1334,23 +1334,23 @@ LABEL_6:
     v71 = 1.0 / v69;
   }
 
-  [v61 constraintEqualToAnchor:v62 constant:v71];
-  v72 = v98 = v61;
+  [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v71];
+  v72 = v98 = bottomAnchor;
   v127[3] = v72;
   v115 = v60;
-  v73 = [v60 leadingAnchor];
-  v74 = [v30 leadingAnchor];
-  v75 = [v73 constraintEqualToAnchor:v74];
+  leadingAnchor = [v60 leadingAnchor];
+  leadingAnchor2 = [v30 leadingAnchor];
+  v75 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v127[4] = v75;
-  v76 = [v60 trailingAnchor];
+  trailingAnchor = [v60 trailingAnchor];
   [v30 trailingAnchor];
-  v77 = v96 = v62;
-  [v76 constraintEqualToAnchor:v77];
+  v77 = v96 = bottomAnchor2;
+  [trailingAnchor constraintEqualToAnchor:v77];
   v78 = v122 = v30;
   v127[5] = v78;
-  v79 = [v8 heightAnchor];
+  heightAnchor3 = [v8 heightAnchor];
   LODWORD(v80) = v56;
-  [v79 constraintEqualToConstant:v9 priority:v80];
+  [heightAnchor3 constraintEqualToConstant:v9 priority:v80];
   v81 = v113 = v8;
   v127[6] = v81;
   v112 = [NSArray arrayWithObjects:v127 count:7];
@@ -1359,30 +1359,30 @@ LABEL_6:
   v82 = [NSArray arrayWithObjects:&v126 count:1];
   v111 = [v82 mutableCopy];
 
-  v83 = [(VenueFloorViewController *)self delegate];
-  v84 = [v83 venueFloorViewControllerConstraintsForViewWhenOpen:self];
+  delegate = [(VenueFloorViewController *)self delegate];
+  v84 = [delegate venueFloorViewControllerConstraintsForViewWhenOpen:self];
   [v111 addObjectsFromArray:v84];
 
   [(VenueFloorViewController *)self setOpenConstraints:v111];
-  v107 = [v122 leadingAnchor];
-  v109 = [(VenueFloorViewController *)self closedPlaceholderView];
-  v105 = [v109 leadingAnchor];
-  v103 = [v107 constraintEqualToAnchor:v105];
+  leadingAnchor3 = [v122 leadingAnchor];
+  closedPlaceholderView = [(VenueFloorViewController *)self closedPlaceholderView];
+  leadingAnchor4 = [closedPlaceholderView leadingAnchor];
+  v103 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v125[0] = v103;
-  v99 = [v122 trailingAnchor];
-  v101 = [(VenueFloorViewController *)self closedPlaceholderView];
-  v97 = [v101 trailingAnchor];
-  v95 = [v99 constraintEqualToAnchor:v97];
+  trailingAnchor2 = [v122 trailingAnchor];
+  closedPlaceholderView2 = [(VenueFloorViewController *)self closedPlaceholderView];
+  trailingAnchor3 = [closedPlaceholderView2 trailingAnchor];
+  v95 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v125[1] = v95;
-  v85 = [v122 topAnchor];
-  v86 = [(VenueFloorViewController *)self closedPlaceholderView];
-  v87 = [v86 topAnchor];
-  v88 = [v85 constraintEqualToAnchor:v87];
+  topAnchor3 = [v122 topAnchor];
+  closedPlaceholderView3 = [(VenueFloorViewController *)self closedPlaceholderView];
+  topAnchor4 = [closedPlaceholderView3 topAnchor];
+  v88 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v125[2] = v88;
-  v89 = [v122 bottomAnchor];
-  v90 = [(VenueFloorViewController *)self closedPlaceholderView];
-  v91 = [v90 bottomAnchor];
-  [v89 constraintEqualToAnchor:v91];
+  bottomAnchor3 = [v122 bottomAnchor];
+  closedPlaceholderView4 = [(VenueFloorViewController *)self closedPlaceholderView];
+  bottomAnchor4 = [closedPlaceholderView4 bottomAnchor];
+  [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v93 = v92 = self;
   v125[3] = v93;
   v94 = [NSArray arrayWithObjects:v125 count:4];
@@ -1405,12 +1405,12 @@ LABEL_6:
 
     [(UIView *)self->_closedPlaceholderView setTranslatesAutoresizingMaskIntoConstraints:0];
     v6 = sub_100035D80(self);
-    v7 = [(UIView *)self->_closedPlaceholderView heightAnchor];
-    v8 = [v7 constraintEqualToConstant:v6];
+    heightAnchor = [(UIView *)self->_closedPlaceholderView heightAnchor];
+    v8 = [heightAnchor constraintEqualToConstant:v6];
     [v8 setActive:1];
 
-    v9 = [(UIView *)self->_closedPlaceholderView widthAnchor];
-    v10 = [v9 constraintEqualToConstant:v6];
+    widthAnchor = [(UIView *)self->_closedPlaceholderView widthAnchor];
+    v10 = [widthAnchor constraintEqualToConstant:v6];
     [v10 setActive:1];
 
     closedPlaceholderView = self->_closedPlaceholderView;
@@ -1428,19 +1428,19 @@ LABEL_6:
   return v3;
 }
 
-- (VenueFloorViewController)initWithDelegate:(id)a3 venuesManager:(id)a4 visualEffectDisabled:(BOOL)a5
+- (VenueFloorViewController)initWithDelegate:(id)delegate venuesManager:(id)manager visualEffectDisabled:(BOOL)disabled
 {
-  v8 = a3;
-  v9 = a4;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = VenueFloorViewController;
   v10 = [(VenueFloorViewController *)&v19 initWithNibName:0 bundle:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_delegate, v8);
-    objc_storeWeak(&v11->_venuesManager, v9);
-    v11->_visualEffectDisabled = a5;
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    objc_storeWeak(&v11->_venuesManager, managerCopy);
+    v11->_visualEffectDisabled = disabled;
     openConstraints = v11->_openConstraints;
     v11->_openConstraints = &__NSArray0__struct;
 

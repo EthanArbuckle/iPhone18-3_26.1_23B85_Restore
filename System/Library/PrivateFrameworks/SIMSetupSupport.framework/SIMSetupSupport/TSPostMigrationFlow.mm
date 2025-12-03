@@ -1,31 +1,31 @@
 @interface TSPostMigrationFlow
-- (TSPostMigrationFlow)initWithSession:(id)a3 sourceOSVersion:(id)a4 proximitySetupState:(unint64_t)a5 transferablePlanOnSource:(BOOL)a6;
+- (TSPostMigrationFlow)initWithSession:(id)session sourceOSVersion:(id)version proximitySetupState:(unint64_t)state transferablePlanOnSource:(BOOL)source;
 - (id)_createTargetProxFlowVC;
 - (id)_createTransferCloudFlowVC;
 - (id)_createTransferFlowVC;
-- (id)_subFlowVcWithReconnectionCredentials:(BOOL)a3;
-- (id)nextViewControllerFrom:(id)a3;
-- (void)firstViewController:(id)a3;
-- (void)prepareViewController:(id)a3 completion:(id)a4;
-- (void)startOverWithFirstViewController:(id)a3;
+- (id)_subFlowVcWithReconnectionCredentials:(BOOL)credentials;
+- (id)nextViewControllerFrom:(id)from;
+- (void)firstViewController:(id)controller;
+- (void)prepareViewController:(id)controller completion:(id)completion;
+- (void)startOverWithFirstViewController:(id)controller;
 @end
 
 @implementation TSPostMigrationFlow
 
-- (TSPostMigrationFlow)initWithSession:(id)a3 sourceOSVersion:(id)a4 proximitySetupState:(unint64_t)a5 transferablePlanOnSource:(BOOL)a6
+- (TSPostMigrationFlow)initWithSession:(id)session sourceOSVersion:(id)version proximitySetupState:(unint64_t)state transferablePlanOnSource:(BOOL)source
 {
-  v11 = a3;
-  v12 = a4;
+  sessionCopy = session;
+  versionCopy = version;
   v19.receiver = self;
   v19.super_class = TSPostMigrationFlow;
   v13 = [(TSSIMSetupFlow *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_session, a3);
-    objc_storeStrong(&v14->_sourceOSVersion, a4);
-    v14->_proximitySetupState = a5;
-    v14->_transferablePlanOnSource = a6;
+    objc_storeStrong(&v13->_session, session);
+    objc_storeStrong(&v14->_sourceOSVersion, version);
+    v14->_proximitySetupState = state;
+    v14->_transferablePlanOnSource = source;
     v14->_isProxFlowShown = 0;
     v15 = objc_alloc(MEMORY[0x277CC37B0]);
     v16 = [v15 initWithQueue:MEMORY[0x277D85CD0]];
@@ -38,9 +38,9 @@
   return v14;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   ctClient = self->_ctClient;
   v7[0] = MEMORY[0x277D85DD0];
@@ -48,7 +48,7 @@
   v7[2] = __43__TSPostMigrationFlow_firstViewController___block_invoke;
   v7[3] = &unk_279B442E8;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = controllerCopy;
   v8 = v6;
   [(CoreTelephonyClient *)ctClient isPreSharedKeyForReconnectionPresent:0 completion:v7];
 
@@ -72,29 +72,29 @@ void __43__TSPostMigrationFlow_firstViewController___block_invoke(uint64_t a1, u
   }
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 subFlowType] == 5 || objc_msgSend(v4, "subFlowType") == 10002)
+  fromCopy = from;
+  if ([fromCopy subFlowType] == 5 || objc_msgSend(fromCopy, "subFlowType") == 10002)
   {
-    v5 = [(TSPostMigrationFlow *)self _createTransferCloudFlowVC];
+    _createTransferCloudFlowVC = [(TSPostMigrationFlow *)self _createTransferCloudFlowVC];
   }
 
   else
   {
-    v5 = 0;
+    _createTransferCloudFlowVC = 0;
   }
 
   v6 = _TSLogDomain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138413058;
-    v10 = v4;
+    v10 = fromCopy;
     v11 = 2048;
-    v12 = [v4 subFlowType];
+    subFlowType = [fromCopy subFlowType];
     v13 = 2112;
-    v14 = v5;
+    v14 = _createTransferCloudFlowVC;
     v15 = 2080;
     v16 = "[TSPostMigrationFlow nextViewControllerFrom:]";
     _os_log_impl(&dword_262AA8000, v6, OS_LOG_TYPE_DEFAULT, "current view:%@, current sub flow type: %lu, next view:%@ @%s", &v9, 0x2Au);
@@ -102,39 +102,39 @@ void __43__TSPostMigrationFlow_firstViewController___block_invoke(uint64_t a1, u
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return _createTransferCloudFlowVC;
 }
 
-- (void)startOverWithFirstViewController:(id)a3
+- (void)startOverWithFirstViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(TSSIMSetupFlow *)self topViewController];
+  controllerCopy = controller;
+  topViewController = [(TSSIMSetupFlow *)self topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(TSSIMSetupFlow *)self topViewController];
-    v8 = [v7 subFlow];
-    [v8 startOverWithFirstViewController:v4];
+    topViewController2 = [(TSSIMSetupFlow *)self topViewController];
+    subFlow = [topViewController2 subFlow];
+    [subFlow startOverWithFirstViewController:controllerCopy];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = TSPostMigrationFlow;
-    [(TSSIMSetupFlow *)&v9 startOverWithFirstViewController:v4];
+    [(TSSIMSetupFlow *)&v9 startOverWithFirstViewController:controllerCopy];
   }
 }
 
-- (void)prepareViewController:(id)a3 completion:(id)a4
+- (void)prepareViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  controllerCopy = controller;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (controllerCopy)
   {
-    [(TSSIMSetupFlow *)self setTopViewController:v6];
+    [(TSSIMSetupFlow *)self setTopViewController:controllerCopy];
     objc_initWeak(&location, self);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -142,8 +142,8 @@ void __43__TSPostMigrationFlow_firstViewController___block_invoke(uint64_t a1, u
     v9[3] = &unk_279B44310;
     objc_copyWeak(&v13, &location);
     v12 = v8;
-    v10 = v6;
-    v11 = self;
+    v10 = controllerCopy;
+    selfCopy = self;
     [(TSSIMSetupFlow *)self maybePrepareNextDisplayViewController:v10 completion:v9];
 
     objc_destroyWeak(&v13);
@@ -152,7 +152,7 @@ void __43__TSPostMigrationFlow_firstViewController___block_invoke(uint64_t a1, u
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -195,19 +195,19 @@ void __56__TSPostMigrationFlow_prepareViewController_completion___block_invoke(u
 LABEL_13:
 }
 
-- (id)_subFlowVcWithReconnectionCredentials:(BOOL)a3
+- (id)_subFlowVcWithReconnectionCredentials:(BOOL)credentials
 {
-  v3 = a3;
+  credentialsCopy = credentials;
   v17 = *MEMORY[0x277D85DE8];
   v5 = +[TSCoreTelephonyClientCache sharedInstance];
-  v6 = [v5 usingBootstrapDataService];
+  usingBootstrapDataService = [v5 usingBootstrapDataService];
 
   v7 = +[TSUtilities isWifiAvailable];
   v8 = _TSLogDomain();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(v15) = 67109634;
-    DWORD1(v15) = v6;
+    DWORD1(v15) = usingBootstrapDataService;
     WORD4(v15) = 1024;
     *(&v15 + 10) = v7;
     HIWORD(v15) = 2080;
@@ -221,7 +221,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v7 && (v6 & 1) != 0)
+  if (!v7 && (usingBootstrapDataService & 1) != 0)
   {
     v11 = _TSLogDomain();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -242,23 +242,23 @@ LABEL_12:
   if (!self->_transferablePlanOnSource)
   {
 LABEL_14:
-    v10 = [(TSPostMigrationFlow *)self _createTransferCloudFlowVC];
+    _createTransferCloudFlowVC = [(TSPostMigrationFlow *)self _createTransferCloudFlowVC];
     goto LABEL_15;
   }
 
   if (self->_session)
   {
-    if (v3)
+    if (credentialsCopy)
     {
       [(CoreTelephonyClient *)self->_ctClient clearReconnectionCredentials:&__block_literal_global_0];
-      v10 = [(TSPostMigrationFlow *)self _createTransferFlowVC];
+      _createTransferCloudFlowVC = [(TSPostMigrationFlow *)self _createTransferFlowVC];
       goto LABEL_15;
     }
 
     goto LABEL_14;
   }
 
-  if (!v3)
+  if (!credentialsCopy)
   {
     v11 = _TSLogDomain();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -272,11 +272,11 @@ LABEL_14:
     goto LABEL_12;
   }
 
-  v10 = [(TSPostMigrationFlow *)self _createTargetProxFlowVC];
+  _createTransferCloudFlowVC = [(TSPostMigrationFlow *)self _createTargetProxFlowVC];
 LABEL_15:
   v13 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return _createTransferCloudFlowVC;
 }
 
 - (id)_createTransferCloudFlowVC
@@ -292,8 +292,8 @@ LABEL_15:
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_isProxFlowShown];
   v12[2] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:3];
-  v7 = [(TSSIMSetupFlow *)self navigationController];
-  v8 = [(TSSubFlowViewController *)v3 initWithOptions:v6 navigationController:v7 delegate:self];
+  navigationController = [(TSSIMSetupFlow *)self navigationController];
+  v8 = [(TSSubFlowViewController *)v3 initWithOptions:v6 navigationController:navigationController delegate:self];
 
   v9 = *MEMORY[0x277D85DE8];
 
@@ -315,13 +315,13 @@ LABEL_15:
   v13[3] = MEMORY[0x277CBEC28];
   v12[3] = @"IsStandaloneProximityTransfer";
   v12[4] = @"TransferBackPlan";
-  v6 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v12[5] = @"IsPostMigrationFlowKey";
-  v13[4] = v6;
+  v13[4] = null;
   v13[5] = MEMORY[0x277CBEC38];
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:6];
-  v8 = [(TSSIMSetupFlow *)self navigationController];
-  v9 = [(TSSubFlowViewController *)v3 initWithOptions:v7 navigationController:v8 delegate:self];
+  navigationController = [(TSSIMSetupFlow *)self navigationController];
+  v9 = [(TSSubFlowViewController *)v3 initWithOptions:v7 navigationController:navigationController delegate:self];
 
   v10 = *MEMORY[0x277D85DE8];
 
@@ -338,13 +338,13 @@ LABEL_15:
   v12[1] = MEMORY[0x277CBEC28];
   v11[1] = @"IsClientKey";
   v11[2] = @"TransferBackPlan";
-  v5 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v11[3] = @"IsPostMigrationFlowKey";
-  v12[2] = v5;
+  v12[2] = null;
   v12[3] = MEMORY[0x277CBEC38];
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:4];
-  v7 = [(TSSIMSetupFlow *)self navigationController];
-  v8 = [(TSSubFlowViewController *)v3 initWithOptions:v6 navigationController:v7 delegate:self];
+  navigationController = [(TSSIMSetupFlow *)self navigationController];
+  v8 = [(TSSubFlowViewController *)v3 initWithOptions:v6 navigationController:navigationController delegate:self];
 
   v9 = *MEMORY[0x277D85DE8];
 

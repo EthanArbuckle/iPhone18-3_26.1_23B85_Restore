@@ -1,15 +1,15 @@
 @interface CLSGeoMapQueryHelper
 + (id)auditToken;
-- (CLSGeoMapQueryHelper)initWithQueryObject:(id)a3;
+- (CLSGeoMapQueryHelper)initWithQueryObject:(id)object;
 - (void)_cancel;
 - (void)_forwardToGeoThread;
-- (void)_handleError:(id)a3;
-- (void)_handleQueryResultsForQuery:(id)a3 error:(id)a4;
+- (void)_handleError:(id)error;
+- (void)_handleQueryResultsForQuery:(id)query error:(id)error;
 - (void)_heartBeat;
 - (void)_startQuery;
 - (void)cancel;
 - (void)dealloc;
-- (void)launchQueryWithCancellerBlock:(id)a3 completionBlock:(id)a4;
+- (void)launchQueryWithCancellerBlock:(id)block completionBlock:(id)completionBlock;
 @end
 
 @implementation CLSGeoMapQueryHelper
@@ -43,31 +43,31 @@
   }
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
-  v11 = a3;
+  errorCopy = error;
   Current = CFAbsoluteTimeGetCurrent();
   retryLevel = self->_retryLevel;
   self->_nextRetryTime = Current + (1 << retryLevel++) * 15.0;
   self->_retryLevel = retryLevel;
-  if (retryLevel < self->_numberOfRetries && ([v11 code] == -3 || objc_msgSend(v11, "code") == -9))
+  if (retryLevel < self->_numberOfRetries && ([errorCopy code] == -3 || objc_msgSend(errorCopy, "code") == -9))
   {
     *&self->_alreadyLaunched = 0;
   }
 
   else
   {
-    v6 = [v11 code];
+    code = [errorCopy code];
     completionBlock = self->_completionBlock;
     if (completionBlock)
     {
-      v8 = v11;
-      if (v6 == -8)
+      v8 = errorCopy;
+      if (code == -8)
       {
         v8 = 0;
       }
 
-      (completionBlock)[2](completionBlock, v6 == -8, v8, self->_query);
+      (completionBlock)[2](completionBlock, code == -8, v8, self->_query);
       v9 = self->_completionBlock;
       self->_completionBlock = 0;
     }
@@ -202,7 +202,7 @@ LABEL_14:
   {
     query = self->_query;
     *buf = 134218242;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = query;
     _os_log_debug_impl(&dword_22F907000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%p - Start query for %@", buf, 0x16u);
@@ -255,20 +255,20 @@ void __35__CLSGeoMapQueryHelper__startQuery__block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (void)_handleQueryResultsForQuery:(id)a3 error:(id)a4
+- (void)_handleQueryResultsForQuery:(id)query error:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_timerQueue);
-  if ([v6 isCancelled])
+  if ([queryCopy isCancelled])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v11 = 134218242;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
-      v14 = v6;
+      v14 = queryCopy;
       _os_log_debug_impl(&dword_22F907000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%p - Query cancelled: %@", &v11, 0x16u);
     }
   }
@@ -276,16 +276,16 @@ void __35__CLSGeoMapQueryHelper__startQuery__block_invoke(uint64_t a1, uint64_t 
   else
   {
     self->_didFinishQuery = 1;
-    if (v7)
+    if (errorCopy)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v11 = 138412290;
-        v12 = v7;
+        selfCopy = errorCopy;
         _os_log_error_impl(&dword_22F907000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "GeoService returned error %@", &v11, 0xCu);
       }
 
-      [(CLSGeoMapQueryHelper *)self _handleError:v7];
+      [(CLSGeoMapQueryHelper *)self _handleError:errorCopy];
     }
 
     else
@@ -293,7 +293,7 @@ void __35__CLSGeoMapQueryHelper__startQuery__block_invoke(uint64_t a1, uint64_t 
       completionBlock = self->_completionBlock;
       if (completionBlock)
       {
-        completionBlock[2](completionBlock, 1, 0, v6);
+        completionBlock[2](completionBlock, 1, 0, queryCopy);
         v9 = self->_completionBlock;
         self->_completionBlock = 0;
       }
@@ -317,20 +317,20 @@ void __35__CLSGeoMapQueryHelper__startQuery__block_invoke(uint64_t a1, uint64_t 
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)launchQueryWithCancellerBlock:(id)a3 completionBlock:(id)a4
+- (void)launchQueryWithCancellerBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   timerQueue = self->_timerQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__CLSGeoMapQueryHelper_launchQueryWithCancellerBlock_completionBlock___block_invoke;
   block[3] = &unk_2788A8210;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = completionBlockCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = completionBlockCopy;
   dispatch_async(timerQueue, block);
 }
 
@@ -368,9 +368,9 @@ void __70__CLSGeoMapQueryHelper_launchQueryWithCancellerBlock_completionBlock___
   }
 }
 
-- (CLSGeoMapQueryHelper)initWithQueryObject:(id)a3
+- (CLSGeoMapQueryHelper)initWithQueryObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v22.receiver = self;
   v22.super_class = CLSGeoMapQueryHelper;
   v6 = [(CLSGeoMapQueryHelper *)&v22 init];
@@ -385,7 +385,7 @@ void __70__CLSGeoMapQueryHelper_launchQueryWithCancellerBlock_completionBlock___
 
     *(v6 + 6) = 0x4034000000000000;
     *(v6 + 7) = 3;
-    objc_storeStrong(v6 + 2, a3);
+    objc_storeStrong(v6 + 2, object);
     *(v6 + 9) = 0;
     *(v6 + 8) = 0;
     v11 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(v6 + 10));
@@ -406,7 +406,7 @@ void __70__CLSGeoMapQueryHelper_launchQueryWithCancellerBlock_completionBlock___
     v16[2] = __44__CLSGeoMapQueryHelper_initWithQueryObject___block_invoke_2;
     v16[3] = &unk_2788A8198;
     objc_copyWeak(&v18, &location);
-    v17 = v5;
+    v17 = objectCopy;
     dispatch_source_set_cancel_handler(v14, v16);
 
     objc_destroyWeak(&v18);

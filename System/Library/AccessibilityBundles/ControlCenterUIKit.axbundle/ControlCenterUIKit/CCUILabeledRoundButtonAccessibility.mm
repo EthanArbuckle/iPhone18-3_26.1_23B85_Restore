@@ -1,7 +1,7 @@
 @interface CCUILabeledRoundButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
-- (CCUILabeledRoundButtonAccessibility)initWithGlyphImage:(id)a3 highlightColor:(id)a4;
+- (CCUILabeledRoundButtonAccessibility)initWithGlyphImage:(id)image highlightColor:(id)color;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -12,14 +12,14 @@
 
 @implementation CCUILabeledRoundButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"buttonView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"initWithGlyphImage:highlightColor:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"labelsVisible" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"buttonView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"initWithGlyphImage:highlightColor:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"labelsVisible" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -39,17 +39,17 @@
   if ([(CCUILabeledRoundButtonAccessibility *)self _axLabelsVisible])
   {
     v3 = [(CCUILabeledRoundButtonAccessibility *)self safeValueForKey:@"buttonView"];
-    v4 = [v3 accessibilityLabel];
+    accessibilityLabel = [v3 accessibilityLabel];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = CCUILabeledRoundButtonAccessibility;
-    v4 = [(CCUILabeledRoundButtonAccessibility *)&v6 accessibilityLabel];
+    accessibilityLabel = [(CCUILabeledRoundButtonAccessibility *)&v6 accessibilityLabel];
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
@@ -57,17 +57,17 @@
   if ([(CCUILabeledRoundButtonAccessibility *)self _axLabelsVisible])
   {
     v3 = [(CCUILabeledRoundButtonAccessibility *)self safeValueForKey:@"buttonView"];
-    v4 = [v3 accessibilityHint];
+    accessibilityHint = [v3 accessibilityHint];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = CCUILabeledRoundButtonAccessibility;
-    v4 = [(CCUILabeledRoundButtonAccessibility *)&v6 accessibilityHint];
+    accessibilityHint = [(CCUILabeledRoundButtonAccessibility *)&v6 accessibilityHint];
   }
 
-  return v4;
+  return accessibilityHint;
 }
 
 - (id)accessibilityValue
@@ -75,17 +75,17 @@
   if ([(CCUILabeledRoundButtonAccessibility *)self _axLabelsVisible])
   {
     v3 = [(CCUILabeledRoundButtonAccessibility *)self safeValueForKey:@"buttonView"];
-    v4 = [v3 accessibilityValue];
+    accessibilityValue = [v3 accessibilityValue];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = CCUILabeledRoundButtonAccessibility;
-    v4 = [(CCUILabeledRoundButtonAccessibility *)&v6 accessibilityValue];
+    accessibilityValue = [(CCUILabeledRoundButtonAccessibility *)&v6 accessibilityValue];
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
@@ -93,9 +93,9 @@
   if ([(CCUILabeledRoundButtonAccessibility *)self _axLabelsVisible])
   {
     v3 = [(CCUILabeledRoundButtonAccessibility *)self safeValueForKey:@"buttonView"];
-    v4 = [v3 accessibilityTraits];
+    accessibilityTraits = [v3 accessibilityTraits];
 
-    return v4;
+    return accessibilityTraits;
   }
 
   else
@@ -143,11 +143,11 @@
   [v4 setIsAccessibilityElement:0];
 }
 
-- (CCUILabeledRoundButtonAccessibility)initWithGlyphImage:(id)a3 highlightColor:(id)a4
+- (CCUILabeledRoundButtonAccessibility)initWithGlyphImage:(id)image highlightColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = CCUILabeledRoundButtonAccessibility;
-  v4 = [(CCUILabeledRoundButtonAccessibility *)&v6 initWithGlyphImage:a3 highlightColor:a4];
+  v4 = [(CCUILabeledRoundButtonAccessibility *)&v6 initWithGlyphImage:image highlightColor:color];
   [(CCUILabeledRoundButtonAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;

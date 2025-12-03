@@ -1,34 +1,34 @@
 @interface SBHCustomIconListLayout
-- (BOOL)respondsToSelector:(SEL)a3;
-- (SBHCustomIconListLayout)initWithBaseListLayout:(id)a3;
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (unint64_t)numberOfColumnsForOrientation:(int64_t)a3;
-- (unint64_t)numberOfRowsForOrientation:(int64_t)a3;
-- (void)removeListLayoutForSelector:(SEL)a3;
-- (void)setListLayout:(id)a3 forSelector:(SEL)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (SBHCustomIconListLayout)initWithBaseListLayout:(id)layout;
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (unint64_t)numberOfColumnsForOrientation:(int64_t)orientation;
+- (unint64_t)numberOfRowsForOrientation:(int64_t)orientation;
+- (void)removeListLayoutForSelector:(SEL)selector;
+- (void)setListLayout:(id)layout forSelector:(SEL)selector;
 @end
 
 @implementation SBHCustomIconListLayout
 
-- (SBHCustomIconListLayout)initWithBaseListLayout:(id)a3
+- (SBHCustomIconListLayout)initWithBaseListLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = SBHCustomIconListLayout;
   v6 = [(SBHCustomIconListLayout *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseListLayout, a3);
+    objc_storeStrong(&v6->_baseListLayout, layout);
   }
 
   return v7;
 }
 
-- (void)setListLayout:(id)a3 forSelector:(SEL)a4
+- (void)setListLayout:(id)layout forSelector:(SEL)selector
 {
-  v9 = a3;
+  layoutCopy = layout;
   overriddenSelectors = self->_overriddenSelectors;
   if (!overriddenSelectors)
   {
@@ -39,21 +39,21 @@
     overriddenSelectors = self->_overriddenSelectors;
   }
 
-  [(NSMapTable *)overriddenSelectors setObject:v9 forKey:sel_getName(a4)];
+  [(NSMapTable *)overriddenSelectors setObject:layoutCopy forKey:sel_getName(selector)];
 }
 
-- (void)removeListLayoutForSelector:(SEL)a3
+- (void)removeListLayoutForSelector:(SEL)selector
 {
   overriddenSelectors = self->_overriddenSelectors;
-  Name = sel_getName(a3);
+  Name = sel_getName(selector);
 
   [(NSMapTable *)overriddenSelectors removeObjectForKey:Name];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v5 = [(NSMapTable *)self->_overriddenSelectors objectForKey:sel_getName(a3)];
-  v6 = [(SBHCustomIconListLayout *)self baseListLayout];
+  v5 = [(NSMapTable *)self->_overriddenSelectors objectForKey:sel_getName(selector)];
+  baseListLayout = [(SBHCustomIconListLayout *)self baseListLayout];
   if (v5)
   {
     v7 = v5;
@@ -61,14 +61,14 @@
 
   else if (objc_opt_respondsToSelector())
   {
-    v7 = v6;
+    v7 = baseListLayout;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = SBHCustomIconListLayout;
-    v7 = [(SBHCustomIconListLayout *)&v11 forwardingTargetForSelector:a3];
+    v7 = [(SBHCustomIconListLayout *)&v11 forwardingTargetForSelector:selector];
   }
 
   v8 = v7;
@@ -77,7 +77,7 @@
   return v8;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = SBHCustomIconListLayout;
@@ -88,7 +88,7 @@
 
   else
   {
-    v6 = [(NSMapTable *)self->_overriddenSelectors objectForKey:sel_getName(a3)];
+    v6 = [(NSMapTable *)self->_overriddenSelectors objectForKey:sel_getName(selector)];
     if (v6)
     {
       v5 = objc_opt_respondsToSelector();
@@ -96,7 +96,7 @@
 
     else
     {
-      v7 = [(SBHCustomIconListLayout *)self baseListLayout];
+      baseListLayout = [(SBHCustomIconListLayout *)self baseListLayout];
       v5 = objc_opt_respondsToSelector();
     }
   }
@@ -104,15 +104,15 @@
   return v5 & 1;
 }
 
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation
 {
-  v6 = [(NSMapTable *)self->_overriddenSelectors objectForKey:sel_getName(a2)];
-  if (!v6)
+  baseListLayout = [(NSMapTable *)self->_overriddenSelectors objectForKey:sel_getName(a2)];
+  if (!baseListLayout)
   {
-    v6 = [(SBHCustomIconListLayout *)self baseListLayout];
+    baseListLayout = [(SBHCustomIconListLayout *)self baseListLayout];
   }
 
-  [v6 a2];
+  [baseListLayout a2];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -129,28 +129,28 @@
   return result;
 }
 
-- (unint64_t)numberOfColumnsForOrientation:(int64_t)a3
+- (unint64_t)numberOfColumnsForOrientation:(int64_t)orientation
 {
-  v6 = [(NSMapTable *)self->_overriddenSelectors objectForKey:sel_getName(a2)];
-  if (!v6)
+  baseListLayout = [(NSMapTable *)self->_overriddenSelectors objectForKey:sel_getName(a2)];
+  if (!baseListLayout)
   {
-    v6 = [(SBHCustomIconListLayout *)self baseListLayout];
+    baseListLayout = [(SBHCustomIconListLayout *)self baseListLayout];
   }
 
-  v7 = [v6 a2];
+  v7 = [baseListLayout a2];
 
   return v7;
 }
 
-- (unint64_t)numberOfRowsForOrientation:(int64_t)a3
+- (unint64_t)numberOfRowsForOrientation:(int64_t)orientation
 {
-  v6 = [(NSMapTable *)self->_overriddenSelectors objectForKey:sel_getName(a2)];
-  if (!v6)
+  baseListLayout = [(NSMapTable *)self->_overriddenSelectors objectForKey:sel_getName(a2)];
+  if (!baseListLayout)
   {
-    v6 = [(SBHCustomIconListLayout *)self baseListLayout];
+    baseListLayout = [(SBHCustomIconListLayout *)self baseListLayout];
   }
 
-  v7 = [v6 a2];
+  v7 = [baseListLayout a2];
 
   return v7;
 }

@@ -1,5 +1,5 @@
 @interface _SMTTRPDetectedMutation
-- (_SMTTRPDetectedMutation)initWithBase:(id)a3;
+- (_SMTTRPDetectedMutation)initWithBase:(id)base;
 - (double)getTrpDetectedAudioTimeStamp;
 - (id)getLastTRPCandidateId;
 - (id)getRequestId;
@@ -23,30 +23,30 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_requestId;
+    requestId = self->_requestId;
   }
 
   else
   {
-    v2 = [(SMTTRPDetected *)self->_base requestId];
+    requestId = [(SMTTRPDetected *)self->_base requestId];
   }
 
-  return v2;
+  return requestId;
 }
 
 - (id)getLastTRPCandidateId
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_lastTRPCandidateId;
+    lastTRPCandidateId = self->_lastTRPCandidateId;
   }
 
   else
   {
-    v2 = [(SMTTRPDetected *)self->_base lastTRPCandidateId];
+    lastTRPCandidateId = [(SMTTRPDetected *)self->_base lastTRPCandidateId];
   }
 
-  return v2;
+  return lastTRPCandidateId;
 }
 
 - (unint64_t)getGeneratedHostTime
@@ -62,16 +62,16 @@
   }
 }
 
-- (_SMTTRPDetectedMutation)initWithBase:(id)a3
+- (_SMTTRPDetectedMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _SMTTRPDetectedMutation;
   v6 = [(_SMTTRPDetectedMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

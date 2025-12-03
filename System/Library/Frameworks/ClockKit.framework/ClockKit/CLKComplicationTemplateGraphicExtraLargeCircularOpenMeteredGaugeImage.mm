@@ -1,21 +1,21 @@
 @interface CLKComplicationTemplateGraphicExtraLargeCircularOpenMeteredGaugeImage
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3;
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicExtraLargeCircularOpenMeteredGaugeImage
 
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CLKRenderingContext sharedRenderingContext];
-  v6 = [v5 device];
+  device = [v5 device];
 
-  __119__CLKComplicationTemplateGraphicExtraLargeCircularOpenMeteredGaugeImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, v6);
+  __119__CLKComplicationTemplateGraphicExtraLargeCircularOpenMeteredGaugeImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, device);
   v8 = *&qword_27DE91E68;
   v9 = *&_enumerateFullColorImageProviderKeysWithBlock___imageDiameter_1709[[(CLKComplicationTemplate *)self sdkVersion]];
   v11 = 0;
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*&_enumerateFullColorImageProviderKeysWithBlock___pointSize_1710];
-  v4[2](v4, @"imageProvider", 1, 1, v10, 4, &v11, v9, v9, v8, v8, v8 * 0.5);
+  blockCopy[2](blockCopy, @"imageProvider", 1, 1, v10, 4, &v11, v9, v9, v8, v8, v8 * 0.5);
 }
 
 uint64_t __119__CLKComplicationTemplateGraphicExtraLargeCircularOpenMeteredGaugeImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(uint64_t a1, void *a2)

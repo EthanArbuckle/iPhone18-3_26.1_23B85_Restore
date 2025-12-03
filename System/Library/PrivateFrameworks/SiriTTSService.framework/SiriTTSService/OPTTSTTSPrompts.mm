@@ -1,12 +1,12 @@
 @interface OPTTSTTSPrompts
 - (NSArray)prompts;
-- (OPTTSTTSPrompts)initWithFlatbuffData:(id)a3 root:(const TTSPrompts *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::TTSPrompts>)addObjectToBuffer:(void *)a3;
+- (OPTTSTTSPrompts)initWithFlatbuffData:(id)data root:(const TTSPrompts *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::TTSPrompts>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
-- (id)prompts_objectAtIndex:(unint64_t)a3;
+- (id)prompts_objectAtIndex:(unint64_t)index;
 - (unint64_t)prompts_count;
-- (void)prompts_enumerateObjectsUsingBlock:(id)a3;
-- (void)prompts_v2:(id)a3;
+- (void)prompts_enumerateObjectsUsingBlock:(id)block;
+- (void)prompts_v2:(id)prompts_v2;
 @end
 
 @implementation OPTTSTTSPrompts
@@ -40,21 +40,21 @@ apple::aiml::flatbuffers2::DetachedBuffer *__31__OPTTSTTSPrompts_flatbuffData__b
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TTSPrompts>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TTSPrompts>)addObjectToBuffer:(void *)buffer
 {
   v37 = *MEMORY[0x1E69E9840];
   v33 = 0;
   v34 = 0;
   v35 = 0;
-  v5 = [(OPTTSTTSPrompts *)self prompts];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>::reserve(&v33, [v5 count]);
+  prompts = [(OPTTSTTSPrompts *)self prompts];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>::reserve(&v33, [prompts count]);
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [(OPTTSTTSPrompts *)self prompts];
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v36 count:16];
+  prompts2 = [(OPTTSTTSPrompts *)self prompts];
+  v7 = [prompts2 countByEnumeratingWithState:&v29 objects:v36 count:16];
   if (v7)
   {
     v8 = *v30;
@@ -64,16 +64,16 @@ apple::aiml::flatbuffers2::DetachedBuffer *__31__OPTTSTTSPrompts_flatbuffData__b
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(prompts2);
         }
 
-        v10 = [*(*(&v29 + 1) + 8 * i) UTF8String];
-        v11 = strlen(v10);
-        LODWORD(v22) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v10, v11);
+        uTF8String = [*(*(&v29 + 1) + 8 * i) UTF8String];
+        v11 = strlen(uTF8String);
+        LODWORD(v22) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v11);
         std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>::push_back[abi:ne200100](&v33, &v22);
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v29 objects:v36 count:16];
+      v7 = [prompts2 countByEnumeratingWithState:&v29 objects:v36 count:16];
     }
 
     while (v7);
@@ -90,7 +90,7 @@ apple::aiml::flatbuffers2::DetachedBuffer *__31__OPTTSTTSPrompts_flatbuffData__b
     v13 = v33;
   }
 
-  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v13, (v34 - v33) >> 2);
+  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v13, (v34 - v33) >> 2);
   v22 = 0;
   v23 = &v22;
   v24 = 0x3812000000;
@@ -103,16 +103,16 @@ apple::aiml::flatbuffers2::DetachedBuffer *__31__OPTTSTTSPrompts_flatbuffData__b
   v21[2] = __37__OPTTSTTSPrompts_addObjectToBuffer___block_invoke;
   v21[3] = &unk_1E7AF38B0;
   v21[4] = &v22;
-  v21[5] = a3;
+  v21[5] = buffer;
   [(OPTTSTTSPrompts *)self prompts_v2:v21];
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v15 = *(a3 + 8);
-  v16 = *(a3 + 12);
-  v17 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<apple::aiml::flatbuffers2::Offset<apple::aiml::flatbuffers2::String>>>(a3, v14);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(a3, 6, *(v23 + 12));
-  v18.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v15 - v16 + v17);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v15 = *(buffer + 8);
+  v16 = *(buffer + 12);
+  v17 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<apple::aiml::flatbuffers2::Offset<apple::aiml::flatbuffers2::String>>>(buffer, v14);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(buffer, 6, *(v23 + 12));
+  v18.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v15 - v16 + v17);
   _Block_object_dispose(&v22, 8);
   if (v12)
   {
@@ -130,24 +130,24 @@ uint64_t __37__OPTTSTTSPrompts_addObjectToBuffer___block_invoke(uint64_t a1, con
   return result;
 }
 
-- (void)prompts_v2:(id)a3
+- (void)prompts_v2:(id)prompts_v2
 {
   root = self->_root;
   v5 = &root[-*root->var0];
-  v6 = a3;
+  prompts_v2Copy = prompts_v2;
   v7 = *root[*v5[6].var0 + *root[*v5[6].var0].var0].var0;
-  v8 = v6;
-  (*(a3 + 2))();
+  v8 = prompts_v2Copy;
+  (*(prompts_v2 + 2))();
 }
 
-- (void)prompts_enumerateObjectsUsingBlock:(id)a3
+- (void)prompts_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"prompts"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -170,7 +170,7 @@ uint64_t __37__OPTTSTTSPrompts_addObjectToBuffer___block_invoke(uint64_t a1, con
           do
           {
             v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:&v14[*v14->var0 + 4] length:*v14[*v14->var0].var0 encoding:4];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -218,13 +218,13 @@ uint64_t __37__OPTTSTTSPrompts_addObjectToBuffer___block_invoke(uint64_t a1, con
   return v5;
 }
 
-- (id)prompts_objectAtIndex:(unint64_t)a3
+- (id)prompts_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"prompts"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_9;
@@ -238,12 +238,12 @@ LABEL_3:
     if (v11)
     {
       v12 = &root[v11 + *root[v11].var0];
-      if (*v12->var0 <= a3)
+      if (*v12->var0 <= index)
       {
         __assert_rtn("Get", "flatbuffers.h", 275, "i < size()");
       }
 
-      var0 = v12[4 * a3 + 4 + *v12[4 * a3 + 4].var0].var0;
+      var0 = v12[4 * index + 4 + *v12[4 * index + 4].var0].var0;
       v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:var0 + 1 length:*var0 encoding:4];
       goto LABEL_3;
     }
@@ -260,12 +260,12 @@ LABEL_9:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"prompts"];
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __26__OPTTSTTSPrompts_prompts__block_invoke;
     v6[3] = &unk_1E7AF3888;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(OPTTSTTSPrompts *)self prompts_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"prompts"];
@@ -274,10 +274,10 @@ LABEL_9:
   return v3;
 }
 
-- (OPTTSTTSPrompts)initWithFlatbuffData:(id)a3 root:(const TTSPrompts *)a4 verify:(BOOL)a5
+- (OPTTSTTSPrompts)initWithFlatbuffData:(id)data root:(const TTSPrompts *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = OPTTSTTSPrompts;
   v10 = [(OPTTSTTSPrompts *)&v25 init];
@@ -286,35 +286,35 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1B1C41700;
   v23 = 0;

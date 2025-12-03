@@ -1,47 +1,47 @@
 @interface MTResultsChangeWrapper
-- (BOOL)isEqual:(id)a3;
-- (MTResultsChangeWrapper)initWithObject:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTResultsChangeWrapper)initWithObject:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation MTResultsChangeWrapper
 
-- (MTResultsChangeWrapper)initWithObject:(id)a3
+- (MTResultsChangeWrapper)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = MTResultsChangeWrapper;
   v5 = [(MTResultsChangeWrapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MTResultsChangeWrapper *)v5 setObject:v4];
+    [(MTResultsChangeWrapper *)v5 setObject:objectCopy];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MTResultsChangeWrapper alloc];
-  v5 = [(MTResultsChangeWrapper *)self object];
-  v6 = [(MTResultsChangeWrapper *)v4 initWithObject:v5];
+  object = [(MTResultsChangeWrapper *)self object];
+  v6 = [(MTResultsChangeWrapper *)v4 initWithObject:object];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(MTResultsChangeWrapper *)self object];
-    v7 = [v5 object];
+    v5 = equalCopy;
+    object = [(MTResultsChangeWrapper *)self object];
+    object2 = [v5 object];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [object isEqual:object2];
   }
 
   else
@@ -54,8 +54,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MTResultsChangeWrapper *)self object];
-  v3 = [v2 hash];
+  object = [(MTResultsChangeWrapper *)self object];
+  v3 = [object hash];
 
   return v3;
 }

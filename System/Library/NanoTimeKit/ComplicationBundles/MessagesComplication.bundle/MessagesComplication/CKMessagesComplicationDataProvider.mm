@@ -2,12 +2,12 @@
 - (CKMessagesComplicationDataProvider)init;
 - (id)currentSubscribers;
 - (id)urlForLastMessage;
-- (void)addSubscriber:(id)a3;
+- (void)addSubscriber:(id)subscriber;
 - (void)connectToDaemon;
 - (void)dealloc;
 - (void)disconnectFromDaemon;
-- (void)notifySubscribersAboutNewUnreadCount:(id)a3;
-- (void)removeSubscriber:(id)a3;
+- (void)notifySubscribersAboutNewUnreadCount:(id)count;
+- (void)removeSubscriber:(id)subscriber;
 - (void)startUnreadCountObservation;
 - (void)stopUnreadCountObservation;
 @end
@@ -47,17 +47,17 @@
   [(CKMessagesComplicationDataProvider *)&v23 dealloc];
 }
 
-- (void)addSubscriber:(id)a3
+- (void)addSubscriber:(id)subscriber
 {
-  v4 = a3;
+  subscriberCopy = subscriber;
   os_unfair_lock_lock(&self->_lock);
   v10 = objc_msgSend_subscribers(self, v5, v6, v7, v8, v9);
-  objc_msgSend_addObject_(v10, v11, v12, v13, v14, v15, v4);
+  objc_msgSend_addObject_(v10, v11, v12, v13, v14, v15, subscriberCopy);
 
   v21 = objc_msgSend_log(self, v16, v17, v18, v19, v20);
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    sub_23BD20BF0(v4, v21);
+    sub_23BD20BF0(subscriberCopy, v21);
   }
 
   v27 = objc_msgSend_subscribers(self, v22, v23, v24, v25, v26);
@@ -80,24 +80,24 @@
     v34[2] = sub_23BD1D30C;
     v34[3] = &unk_278B93150;
     v34[4] = self;
-    v35 = v4;
+    v35 = subscriberCopy;
     dispatch_async(MEMORY[0x277D85CD0], v34);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeSubscriber:(id)a3
+- (void)removeSubscriber:(id)subscriber
 {
-  v4 = a3;
+  subscriberCopy = subscriber;
   os_unfair_lock_lock(&self->_lock);
   v10 = objc_msgSend_subscribers(self, v5, v6, v7, v8, v9);
-  objc_msgSend_removeObject_(v10, v11, v12, v13, v14, v15, v4);
+  objc_msgSend_removeObject_(v10, v11, v12, v13, v14, v15, subscriberCopy);
 
   v21 = objc_msgSend_log(self, v16, v17, v18, v19, v20);
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    sub_23BD20C68(v4, v21);
+    sub_23BD20C68(subscriberCopy, v21);
   }
 
   v27 = objc_msgSend_subscribers(self, v22, v23, v24, v25, v26);
@@ -196,10 +196,10 @@
   }
 }
 
-- (void)notifySubscribersAboutNewUnreadCount:(id)a3
+- (void)notifySubscribersAboutNewUnreadCount:(id)count
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  countCopy = count;
   v10 = objc_msgSend_sharedRegistry(MEMORY[0x277D18D40], v5, v6, v7, v8, v9);
   v16 = objc_msgSend_unreadCount(v10, v11, v12, v13, v14, v15);
 
@@ -207,7 +207,7 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v17 = v4;
+  v17 = countCopy;
   v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, v19, v20, v21, v22, &v40, v48, 16);
   if (v23)
   {

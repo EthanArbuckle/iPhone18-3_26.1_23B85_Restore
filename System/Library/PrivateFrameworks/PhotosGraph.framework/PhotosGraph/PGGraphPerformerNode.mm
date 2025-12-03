@@ -1,9 +1,9 @@
 @interface PGGraphPerformerNode
 + (id)filter;
-- (BOOL)hasProperties:(id)a3;
+- (BOOL)hasProperties:(id)properties;
 - (NSString)featureIdentifier;
-- (PGGraphPerformerNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphPerformerNode)initWithName:(id)a3 uuid:(id)a4;
+- (PGGraphPerformerNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphPerformerNode)initWithName:(id)name uuid:(id)uuid;
 - (PGGraphPerformerNodeCollection)collection;
 - (PPNamedEntity)pg_namedEntity;
 - (id)propertyDictionary;
@@ -38,11 +38,11 @@
   return v3;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"name"];
     v7 = v6;
@@ -67,28 +67,28 @@
   return v9;
 }
 
-- (PGGraphPerformerNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphPerformerNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v6 = a5;
-  v7 = [v6 objectForKeyedSubscript:@"name"];
-  v8 = [v6 objectForKeyedSubscript:@"id"];
+  propertiesCopy = properties;
+  v7 = [propertiesCopy objectForKeyedSubscript:@"name"];
+  v8 = [propertiesCopy objectForKeyedSubscript:@"id"];
 
   v9 = [(PGGraphPerformerNode *)self initWithName:v7 uuid:v8];
   return v9;
 }
 
-- (PGGraphPerformerNode)initWithName:(id)a3 uuid:(id)a4
+- (PGGraphPerformerNode)initWithName:(id)name uuid:(id)uuid
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  uuidCopy = uuid;
   v12.receiver = self;
   v12.super_class = PGGraphPerformerNode;
   v9 = [(PGGraphNode *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_uuid, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_uuid, uuid);
   }
 
   return v10;
@@ -103,14 +103,14 @@
 
 - (PPNamedEntity)pg_namedEntity
 {
-  v3 = [(PGGraphPerformerNode *)self name];
-  v4 = v3;
-  if (v3 && [v3 length])
+  name = [(PGGraphPerformerNode *)self name];
+  v4 = name;
+  if (name && [name length])
   {
     if ([(PGGraphPerformerNode *)self domain]== 900)
     {
-      v5 = [(PGGraphPerformerNode *)self label];
-      v6 = [v5 isEqualToString:@"Performer"];
+      label = [(PGGraphPerformerNode *)self label];
+      v6 = [label isEqualToString:@"Performer"];
 
       if (v6)
       {
@@ -128,10 +128,10 @@
       v7 = 2;
     }
 
-    v9 = [MEMORY[0x277CBEAF8] currentLocale];
-    v10 = [v9 localeIdentifier];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    v8 = [objc_alloc(MEMORY[0x277D3A420]) initWithName:v4 category:v7 language:v10];
+    v8 = [objc_alloc(MEMORY[0x277D3A420]) initWithName:v4 category:v7 language:localeIdentifier];
   }
 
   else

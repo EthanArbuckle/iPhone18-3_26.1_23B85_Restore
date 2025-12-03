@@ -1,26 +1,26 @@
 @interface HFTriggerNaturalLanguageOptions
-+ (HFTriggerNaturalLanguageOptions)optionsWithHome:(id)a3 nameType:(unint64_t)a4;
-- (HFTriggerNaturalLanguageOptions)initWithHome:(id)a3 nameType:(unint64_t)a4 actions:(id)a5;
++ (HFTriggerNaturalLanguageOptions)optionsWithHome:(id)home nameType:(unint64_t)type;
+- (HFTriggerNaturalLanguageOptions)initWithHome:(id)home nameType:(unint64_t)type actions:(id)actions;
 - (HMUser)locationEventUser;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_copyFromOptions:(id)a3;
-- (void)setObjectsInContext:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_copyFromOptions:(id)options;
+- (void)setObjectsInContext:(id)context;
 @end
 
 @implementation HFTriggerNaturalLanguageOptions
 
-- (HFTriggerNaturalLanguageOptions)initWithHome:(id)a3 nameType:(unint64_t)a4 actions:(id)a5
+- (HFTriggerNaturalLanguageOptions)initWithHome:(id)home nameType:(unint64_t)type actions:(id)actions
 {
-  v9 = a3;
-  v10 = a5;
+  homeCopy = home;
+  actionsCopy = actions;
   v18.receiver = self;
   v18.super_class = HFTriggerNaturalLanguageOptions;
   v11 = [(HFNaturalLanguageOptions *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    v11->_nameType = a4;
-    objc_storeStrong(&v11->_home, a3);
+    v11->_nameType = type;
+    objc_storeStrong(&v11->_home, home);
     v12->_formattingStyle = 2;
     v13 = [MEMORY[0x277CBEB98] set];
     objectsInContext = v12->_objectsInContext;
@@ -28,10 +28,10 @@
 
     v12->_shouldUseFullDayNames = 0;
     v12->_shouldUseFirstPersonPronounIfPossible = 0;
-    if ([v10 count])
+    if ([actionsCopy count])
     {
-      objc_storeStrong(&v12->_actions, a5);
-      v15 = [[HFActionNaturalLanguageOptions alloc] initWithHome:v9 formattingContext:5];
+      objc_storeStrong(&v12->_actions, actions);
+      v15 = [[HFActionNaturalLanguageOptions alloc] initWithHome:homeCopy formattingContext:5];
       actionNaturalLanguageOptions = v12->_actionNaturalLanguageOptions;
       v12->_actionNaturalLanguageOptions = v15;
     }
@@ -40,60 +40,60 @@
   return v12;
 }
 
-+ (HFTriggerNaturalLanguageOptions)optionsWithHome:(id)a3 nameType:(unint64_t)a4
++ (HFTriggerNaturalLanguageOptions)optionsWithHome:(id)home nameType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [[HFTriggerNaturalLanguageOptions alloc] initWithHome:v5 nameType:a4];
+  homeCopy = home;
+  v6 = [[HFTriggerNaturalLanguageOptions alloc] initWithHome:homeCopy nameType:type];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = HFTriggerNaturalLanguageOptions;
-  v4 = [(HFNaturalLanguageOptions *)&v6 copyWithZone:a3];
+  v4 = [(HFNaturalLanguageOptions *)&v6 copyWithZone:zone];
   [v4 _copyFromOptions:self];
   return v4;
 }
 
-- (void)_copyFromOptions:(id)a3
+- (void)_copyFromOptions:(id)options
 {
-  v4 = a3;
-  -[HFTriggerNaturalLanguageOptions setNameType:](self, "setNameType:", [v4 nameType]);
-  v5 = [v4 home];
-  [(HFTriggerNaturalLanguageOptions *)self setHome:v5];
+  optionsCopy = options;
+  -[HFTriggerNaturalLanguageOptions setNameType:](self, "setNameType:", [optionsCopy nameType]);
+  home = [optionsCopy home];
+  [(HFTriggerNaturalLanguageOptions *)self setHome:home];
 
-  v6 = [v4 actions];
-  v7 = [v6 copy];
+  actions = [optionsCopy actions];
+  v7 = [actions copy];
   [(HFTriggerNaturalLanguageOptions *)self setActions:v7];
 
-  -[HFTriggerNaturalLanguageOptions setFormattingStyle:](self, "setFormattingStyle:", [v4 formattingStyle]);
-  v8 = [v4 objectsInContext];
-  v9 = [v8 copy];
+  -[HFTriggerNaturalLanguageOptions setFormattingStyle:](self, "setFormattingStyle:", [optionsCopy formattingStyle]);
+  objectsInContext = [optionsCopy objectsInContext];
+  v9 = [objectsInContext copy];
   [(HFTriggerNaturalLanguageOptions *)self setObjectsInContext:v9];
 
-  v10 = [v4 actionNaturalLanguageOptions];
-  v11 = [v10 copy];
+  actionNaturalLanguageOptions = [optionsCopy actionNaturalLanguageOptions];
+  v11 = [actionNaturalLanguageOptions copy];
   [(HFTriggerNaturalLanguageOptions *)self setActionNaturalLanguageOptions:v11];
 
-  -[HFTriggerNaturalLanguageOptions setShouldUseFullDayNames:](self, "setShouldUseFullDayNames:", [v4 shouldUseFullDayNames]);
-  -[HFTriggerNaturalLanguageOptions setShouldUseFirstPersonPronounIfPossible:](self, "setShouldUseFirstPersonPronounIfPossible:", [v4 shouldUseFirstPersonPronounIfPossible]);
-  v12 = [v4 locationEventUser];
+  -[HFTriggerNaturalLanguageOptions setShouldUseFullDayNames:](self, "setShouldUseFullDayNames:", [optionsCopy shouldUseFullDayNames]);
+  -[HFTriggerNaturalLanguageOptions setShouldUseFirstPersonPronounIfPossible:](self, "setShouldUseFirstPersonPronounIfPossible:", [optionsCopy shouldUseFirstPersonPronounIfPossible]);
+  locationEventUser = [optionsCopy locationEventUser];
 
-  [(HFTriggerNaturalLanguageOptions *)self setLocationEventUser:v12];
+  [(HFTriggerNaturalLanguageOptions *)self setLocationEventUser:locationEventUser];
 }
 
-- (void)setObjectsInContext:(id)a3
+- (void)setObjectsInContext:(id)context
 {
-  v8 = a3;
-  v4 = [(NSSet *)self->_objectsInContext isEqual:v8];
-  v5 = v8;
+  contextCopy = context;
+  v4 = [(NSSet *)self->_objectsInContext isEqual:contextCopy];
+  v5 = contextCopy;
   if ((v4 & 1) == 0)
   {
-    if (v8)
+    if (contextCopy)
     {
-      v6 = v8;
+      v6 = contextCopy;
     }
 
     else
@@ -104,7 +104,7 @@
     objectsInContext = self->_objectsInContext;
     self->_objectsInContext = v6;
 
-    v5 = v8;
+    v5 = contextCopy;
   }
 }
 

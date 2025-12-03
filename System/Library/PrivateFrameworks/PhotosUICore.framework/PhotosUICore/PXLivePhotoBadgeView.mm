@@ -1,12 +1,12 @@
 @interface PXLivePhotoBadgeView
 - (CGRect)trackedRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXLivePhotoBadgeView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXLivePhotoBadgeView)initWithFrame:(CGRect)frame;
 - (PXLivePhotoBadgeViewDelegate)delegate;
 - (void)layoutSubviews;
-- (void)setDelegate:(id)a3;
-- (void)setTrackedRect:(CGRect)a3;
-- (void)setWantsPlayback:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setTrackedRect:(CGRect)rect;
+- (void)setWantsPlayback:(BOOL)playback;
 @end
 
 @implementation PXLivePhotoBadgeView
@@ -40,24 +40,24 @@
   [(PXLivePhotoBadgeView *)self setTrackedRect:?];
 }
 
-- (void)setWantsPlayback:(BOOL)a3
+- (void)setWantsPlayback:(BOOL)playback
 {
   if (self->_delegateRespondsTo.wantsPlayback)
   {
-    v4 = a3;
-    v6 = [(PXLivePhotoBadgeView *)self delegate];
-    [v6 livePhotoBadgeView:self wantsPlayback:v4];
+    playbackCopy = playback;
+    delegate = [(PXLivePhotoBadgeView *)self delegate];
+    [delegate livePhotoBadgeView:self wantsPlayback:playbackCopy];
   }
 }
 
-- (void)setTrackedRect:(CGRect)a3
+- (void)setTrackedRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_trackedRect = &self->_trackedRect;
-  if (!CGRectEqualToRect(a3, self->_trackedRect))
+  if (!CGRectEqualToRect(rect, self->_trackedRect))
   {
     p_trackedRect->origin.x = x;
     p_trackedRect->origin.y = y;
@@ -66,9 +66,9 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -78,7 +78,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   width = self->_size.width;
   height = self->_size.height;
@@ -87,11 +87,11 @@
   return result;
 }
 
-- (PXLivePhotoBadgeView)initWithFrame:(CGRect)a3
+- (PXLivePhotoBadgeView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXLivePhotoBadgeView;
-  v3 = [(PXLivePhotoBadgeView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXLivePhotoBadgeView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

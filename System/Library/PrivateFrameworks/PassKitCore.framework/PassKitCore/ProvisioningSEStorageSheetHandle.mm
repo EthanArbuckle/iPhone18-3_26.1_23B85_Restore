@@ -7,9 +7,9 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AD4583EC();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for ProvisioningSEStorageSheetHandle();
   [(ProvisioningSEStorageSheetHandle *)&v3 dealloc];
 }

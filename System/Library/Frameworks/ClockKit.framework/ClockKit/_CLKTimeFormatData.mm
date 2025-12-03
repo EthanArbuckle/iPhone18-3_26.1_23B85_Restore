@@ -10,18 +10,18 @@
 
 + (void)resetTimeFormatData
 {
-  v3 = [a1 _timeFormatDataAccessLock];
-  [v3 lock];
+  _timeFormatDataAccessLock = [self _timeFormatDataAccessLock];
+  [_timeFormatDataAccessLock lock];
   v2 = __currentTimeFormatData;
   __currentTimeFormatData = 0;
 
-  [v3 unlock];
+  [_timeFormatDataAccessLock unlock];
 }
 
 + (id)instanceForCurrentLocale
 {
-  v2 = [a1 _timeFormatDataAccessLock];
-  [v2 lock];
+  _timeFormatDataAccessLock = [self _timeFormatDataAccessLock];
+  [_timeFormatDataAccessLock lock];
   v3 = __currentTimeFormatData;
   if (!__currentTimeFormatData)
   {
@@ -33,7 +33,7 @@
   }
 
   v6 = v3;
-  [v2 unlock];
+  [_timeFormatDataAccessLock unlock];
 
   return v6;
 }
@@ -53,9 +53,9 @@
 + (id)_timeLocale
 {
   v2 = objc_alloc(MEMORY[0x277CBEAF8]);
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [v3 localeIdentifier];
-  v5 = [v2 initWithLocaleIdentifier:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v5 = [v2 initWithLocaleIdentifier:localeIdentifier];
 
   return v5;
 }
@@ -67,33 +67,33 @@
   v2 = [(_CLKTimeFormatData *)&v27 init];
   if (v2)
   {
-    v3 = [objc_opt_class() _timeLocale];
-    v4 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"HHmm" options:0 locale:v3];
+    _timeLocale = [objc_opt_class() _timeLocale];
+    v4 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"HHmm" options:0 locale:_timeLocale];
     formatHourMin = v2->_formatHourMin;
     v2->_formatHourMin = v4;
 
-    v6 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"HHmmssSS" options:0 locale:v3];
+    v6 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"HHmmssSS" options:0 locale:_timeLocale];
     formatHourMinSecSubsec = v2->_formatHourMinSecSubsec;
     v2->_formatHourMinSecSubsec = v6;
 
-    v8 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"HHmmss" options:0 locale:v3];
+    v8 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"HHmmss" options:0 locale:_timeLocale];
     formatHourMinSec = v2->_formatHourMinSec;
     v2->_formatHourMinSec = v8;
 
-    v10 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"mmssSS" options:0 locale:v3];
+    v10 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"mmssSS" options:0 locale:_timeLocale];
     formatMinSecSubsec = v2->_formatMinSecSubsec;
     v2->_formatMinSecSubsec = v10;
 
-    v12 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"mmss" options:0 locale:v3];
+    v12 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"mmss" options:0 locale:_timeLocale];
     formatMinSec = v2->_formatMinSec;
     v2->_formatMinSec = v12;
 
-    v14 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"m" options:0 locale:v3];
+    v14 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"m" options:0 locale:_timeLocale];
     formatMin = v2->_formatMin;
     v2->_formatMin = v14;
 
-    v16 = [v3 localeIdentifier];
-    v17 = [v16 hasPrefix:@"ee_"];
+    localeIdentifier = [_timeLocale localeIdentifier];
+    v17 = [localeIdentifier hasPrefix:@"ee_"];
 
     if (v17)
     {

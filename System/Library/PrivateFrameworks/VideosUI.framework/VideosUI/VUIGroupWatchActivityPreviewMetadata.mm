@@ -1,52 +1,52 @@
 @interface VUIGroupWatchActivityPreviewMetadata
-+ (id)metadataFromSerializedData:(id)a3;
-- (VUIGroupWatchActivityPreviewMetadata)initWithContextData:(id)a3;
-- (VUIGroupWatchActivityPreviewMetadata)initWithMediaItem:(id)a3 fallbackUrl:(id)a4;
-- (VUIGroupWatchActivityPreviewMetadata)initWithPlayable:(id)a3 fallbackUrl:(id)a4;
-- (VUIGroupWatchActivityPreviewMetadata)initWithTitle:(id)a3 showTitle:(id)a4 seasonTitle:(id)a5 seasonNumber:(id)a6 episodeNumber:(id)a7 imageUrlFormat:(id)a8 artworkImage:(CGImage *)a9 fallbackUrl:(id)a10 isTVShow:(BOOL)a11 allowsSceneAssociation:(BOOL)a12;
-- (VUIGroupWatchActivityPreviewMetadata)initWithTitle:(id)a3 subtitle:(id)a4 imageUrlFormat:(id)a5 artworkImage:(CGImage *)a6 fallbackUrl:(id)a7 allowsSceneAssociation:(BOOL)a8;
-- (id)localizedSubtitleForSeasonNumber:(id)a3 episodeNumber:(id)a4;
-- (id)serializedDataWithSeasonTitlesEnabled:(BOOL)a3;
-- (id)subtitleWithSeasonTitlesEnabled:(BOOL)a3;
++ (id)metadataFromSerializedData:(id)data;
+- (VUIGroupWatchActivityPreviewMetadata)initWithContextData:(id)data;
+- (VUIGroupWatchActivityPreviewMetadata)initWithMediaItem:(id)item fallbackUrl:(id)url;
+- (VUIGroupWatchActivityPreviewMetadata)initWithPlayable:(id)playable fallbackUrl:(id)url;
+- (VUIGroupWatchActivityPreviewMetadata)initWithTitle:(id)title showTitle:(id)showTitle seasonTitle:(id)seasonTitle seasonNumber:(id)number episodeNumber:(id)episodeNumber imageUrlFormat:(id)format artworkImage:(CGImage *)image fallbackUrl:(id)self0 isTVShow:(BOOL)self1 allowsSceneAssociation:(BOOL)self2;
+- (VUIGroupWatchActivityPreviewMetadata)initWithTitle:(id)title subtitle:(id)subtitle imageUrlFormat:(id)format artworkImage:(CGImage *)image fallbackUrl:(id)url allowsSceneAssociation:(BOOL)association;
+- (id)localizedSubtitleForSeasonNumber:(id)number episodeNumber:(id)episodeNumber;
+- (id)serializedDataWithSeasonTitlesEnabled:(BOOL)enabled;
+- (id)subtitleWithSeasonTitlesEnabled:(BOOL)enabled;
 @end
 
 @implementation VUIGroupWatchActivityPreviewMetadata
 
-- (VUIGroupWatchActivityPreviewMetadata)initWithTitle:(id)a3 subtitle:(id)a4 imageUrlFormat:(id)a5 artworkImage:(CGImage *)a6 fallbackUrl:(id)a7 allowsSceneAssociation:(BOOL)a8
+- (VUIGroupWatchActivityPreviewMetadata)initWithTitle:(id)title subtitle:(id)subtitle imageUrlFormat:(id)format artworkImage:(CGImage *)image fallbackUrl:(id)url allowsSceneAssociation:(BOOL)association
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  formatCopy = format;
+  urlCopy = url;
   v22.receiver = self;
   v22.super_class = VUIGroupWatchActivityPreviewMetadata;
   v18 = [(VUIGroupWatchActivityPreviewMetadata *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_title, a3);
-    objc_storeStrong(&v19->_seasonTitle, a4);
-    objc_storeStrong(&v19->_imageUrlFormat, a5);
-    v19->_artworkImage = a6;
-    objc_storeStrong(&v19->_fallbackUrl, a7);
-    v19->_allowsSceneAssociation = a8;
+    objc_storeStrong(&v18->_title, title);
+    objc_storeStrong(&v19->_seasonTitle, subtitle);
+    objc_storeStrong(&v19->_imageUrlFormat, format);
+    v19->_artworkImage = image;
+    objc_storeStrong(&v19->_fallbackUrl, url);
+    v19->_allowsSceneAssociation = association;
   }
 
   return v19;
 }
 
-- (VUIGroupWatchActivityPreviewMetadata)initWithContextData:(id)a3
+- (VUIGroupWatchActivityPreviewMetadata)initWithContextData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 vui_stringForKey:@"title"];
-  v5 = [v3 vui_stringForKey:@"showTitle"];
-  v6 = [v3 vui_stringForKey:@"seasonTitle"];
-  v7 = [v3 vui_numberForKey:@"seasonNumber"];
-  v8 = [v3 vui_numberForKey:@"episodeNumber"];
-  v9 = [v3 vui_stringForKey:@"imageUrlFormat"];
-  v10 = [v3 vui_URLForKey:@"fallbackUrl"];
-  v11 = [v3 vui_BOOLForKey:@"isTVShow" defaultValue:0];
-  v12 = [v3 vui_BOOLForKey:@"allowsSceneAssociation" defaultValue:1];
+  dataCopy = data;
+  v4 = [dataCopy vui_stringForKey:@"title"];
+  v5 = [dataCopy vui_stringForKey:@"showTitle"];
+  v6 = [dataCopy vui_stringForKey:@"seasonTitle"];
+  v7 = [dataCopy vui_numberForKey:@"seasonNumber"];
+  v8 = [dataCopy vui_numberForKey:@"episodeNumber"];
+  v9 = [dataCopy vui_stringForKey:@"imageUrlFormat"];
+  v10 = [dataCopy vui_URLForKey:@"fallbackUrl"];
+  v11 = [dataCopy vui_BOOLForKey:@"isTVShow" defaultValue:0];
+  v12 = [dataCopy vui_BOOLForKey:@"allowsSceneAssociation" defaultValue:1];
 
   BYTE1(v15) = v12;
   LOBYTE(v15) = v11;
@@ -55,70 +55,70 @@
   return v13;
 }
 
-- (VUIGroupWatchActivityPreviewMetadata)initWithPlayable:(id)a3 fallbackUrl:(id)a4
+- (VUIGroupWatchActivityPreviewMetadata)initWithPlayable:(id)playable fallbackUrl:(id)url
 {
-  v7 = a3;
-  v27 = self;
-  objc_storeStrong(&self->_playable, a3);
-  v29 = a4;
-  v8 = [v7 metadata];
-  if ([v8 contentType] == 3)
+  playableCopy = playable;
+  selfCopy = self;
+  objc_storeStrong(&self->_playable, playable);
+  urlCopy = url;
+  metadata = [playableCopy metadata];
+  if ([metadata contentType] == 3)
   {
     v9 = 1;
   }
 
   else
   {
-    v10 = [v7 metadata];
-    if ([v10 contentType] == 1)
+    metadata2 = [playableCopy metadata];
+    if ([metadata2 contentType] == 1)
     {
       v9 = 1;
     }
 
     else
     {
-      v11 = [v7 metadata];
-      v12 = [v11 contentType] == 4;
+      metadata3 = [playableCopy metadata];
+      v12 = [metadata3 contentType] == 4;
 
       v9 = v12;
     }
   }
 
-  v26 = [v7 metadata];
-  v30 = [v26 title];
-  v25 = [v7 metadata];
-  v13 = [v25 showTitle];
-  v24 = [v7 metadata];
-  v14 = [v24 seasonTitle];
-  v23 = [v7 metadata];
-  v15 = [v23 seasonNumber];
-  v16 = [v7 metadata];
-  v17 = [v16 episodeNumber];
-  v18 = [v7 metadata];
-  v19 = [v18 artworkURLFormat];
-  v20 = [v7 playbackModes];
-  BYTE1(v22) = [v20 containsObject:@"Immersive"] ^ 1;
+  metadata4 = [playableCopy metadata];
+  title = [metadata4 title];
+  metadata5 = [playableCopy metadata];
+  showTitle = [metadata5 showTitle];
+  metadata6 = [playableCopy metadata];
+  seasonTitle = [metadata6 seasonTitle];
+  metadata7 = [playableCopy metadata];
+  seasonNumber = [metadata7 seasonNumber];
+  metadata8 = [playableCopy metadata];
+  episodeNumber = [metadata8 episodeNumber];
+  metadata9 = [playableCopy metadata];
+  artworkURLFormat = [metadata9 artworkURLFormat];
+  playbackModes = [playableCopy playbackModes];
+  BYTE1(v22) = [playbackModes containsObject:@"Immersive"] ^ 1;
   LOBYTE(v22) = v9;
-  v28 = [(VUIGroupWatchActivityPreviewMetadata *)v27 initWithTitle:v30 showTitle:v13 seasonTitle:v14 seasonNumber:v15 episodeNumber:v17 imageUrlFormat:v19 artworkImage:0 fallbackUrl:v29 isTVShow:v22 allowsSceneAssociation:?];
+  v28 = [(VUIGroupWatchActivityPreviewMetadata *)selfCopy initWithTitle:title showTitle:showTitle seasonTitle:seasonTitle seasonNumber:seasonNumber episodeNumber:episodeNumber imageUrlFormat:artworkURLFormat artworkImage:0 fallbackUrl:urlCopy isTVShow:v22 allowsSceneAssociation:?];
 
   return v28;
 }
 
-- (VUIGroupWatchActivityPreviewMetadata)initWithMediaItem:(id)a3 fallbackUrl:(id)a4
+- (VUIGroupWatchActivityPreviewMetadata)initWithMediaItem:(id)item fallbackUrl:(id)url
 {
-  v6 = a3;
+  itemCopy = item;
   v7 = *MEMORY[0x1E69D5AB0];
-  v8 = a4;
-  v9 = [v6 mediaItemMetadataForProperty:v7];
+  urlCopy = url;
+  v9 = [itemCopy mediaItemMetadataForProperty:v7];
   imageProxy = self->_imageProxy;
   self->_imageProxy = v9;
 
-  v11 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
-  v12 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D38]];
-  v13 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D30]];
-  v14 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B80]];
+  v11 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
+  v12 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D38]];
+  v13 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D30]];
+  v14 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5B80]];
   v15 = *MEMORY[0x1E69D5DB8];
-  v16 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DB8]];
+  v16 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DB8]];
   if ([v16 length])
   {
     v17 = v15;
@@ -129,24 +129,24 @@
     v17 = *MEMORY[0x1E69D5AB8];
   }
 
-  v18 = [v6 mediaItemMetadataForProperty:v17];
-  v19 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
+  v18 = [itemCopy mediaItemMetadataForProperty:v17];
+  v19 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
   BYTE1(v22) = 1;
   LOBYTE(v22) = [v19 isEqualToString:*MEMORY[0x1E69D5ED0]];
-  v20 = [(VUIGroupWatchActivityPreviewMetadata *)self initWithTitle:v11 showTitle:v12 seasonTitle:0 seasonNumber:v13 episodeNumber:v14 imageUrlFormat:v18 artworkImage:0 fallbackUrl:v8 isTVShow:v22 allowsSceneAssociation:?];
+  v20 = [(VUIGroupWatchActivityPreviewMetadata *)self initWithTitle:v11 showTitle:v12 seasonTitle:0 seasonNumber:v13 episodeNumber:v14 imageUrlFormat:v18 artworkImage:0 fallbackUrl:urlCopy isTVShow:v22 allowsSceneAssociation:?];
 
   return v20;
 }
 
-- (VUIGroupWatchActivityPreviewMetadata)initWithTitle:(id)a3 showTitle:(id)a4 seasonTitle:(id)a5 seasonNumber:(id)a6 episodeNumber:(id)a7 imageUrlFormat:(id)a8 artworkImage:(CGImage *)a9 fallbackUrl:(id)a10 isTVShow:(BOOL)a11 allowsSceneAssociation:(BOOL)a12
+- (VUIGroupWatchActivityPreviewMetadata)initWithTitle:(id)title showTitle:(id)showTitle seasonTitle:(id)seasonTitle seasonNumber:(id)number episodeNumber:(id)episodeNumber imageUrlFormat:(id)format artworkImage:(CGImage *)image fallbackUrl:(id)self0 isTVShow:(BOOL)self1 allowsSceneAssociation:(BOOL)self2
 {
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a10;
+  titleCopy = title;
+  showTitleCopy = showTitle;
+  seasonTitleCopy = seasonTitle;
+  numberCopy = number;
+  episodeNumberCopy = episodeNumber;
+  formatCopy = format;
+  urlCopy = url;
   v32.receiver = self;
   v32.super_class = VUIGroupWatchActivityPreviewMetadata;
   v21 = [(VUIGroupWatchActivityPreviewMetadata *)&v32 init];
@@ -154,96 +154,96 @@
   if (v21)
   {
     p_title = &v21->_title;
-    if (a11)
+    if (show)
     {
-      objc_storeStrong(&v21->_title, a4);
-      objc_storeStrong(&v22->_seasonTitle, a5);
-      objc_storeStrong(&v22->_seasonNumber, a6);
+      objc_storeStrong(&v21->_title, showTitle);
+      objc_storeStrong(&v22->_seasonTitle, seasonTitle);
+      objc_storeStrong(&v22->_seasonNumber, number);
       p_title = &v22->_episodeNumber;
-      v24 = v18;
+      v24 = episodeNumberCopy;
     }
 
     else
     {
-      v24 = v31;
+      v24 = titleCopy;
     }
 
     v25 = v24;
     v26 = *p_title;
     *p_title = v25;
 
-    objc_storeStrong(&v22->_imageUrlFormat, a8);
-    v22->_artworkImage = a9;
-    objc_storeStrong(&v22->_fallbackUrl, a10);
-    v22->_allowsSceneAssociation = a12;
+    objc_storeStrong(&v22->_imageUrlFormat, format);
+    v22->_artworkImage = image;
+    objc_storeStrong(&v22->_fallbackUrl, url);
+    v22->_allowsSceneAssociation = association;
   }
 
   return v22;
 }
 
-- (id)subtitleWithSeasonTitlesEnabled:(BOOL)a3
+- (id)subtitleWithSeasonTitlesEnabled:(BOOL)enabled
 {
-  if (!a3 && ([(VUIGroupWatchActivityPreviewMetadata *)self seasonNumber], (v4 = objc_claimAutoreleasedReturnValue()) != 0) && (v5 = v4, [(VUIGroupWatchActivityPreviewMetadata *)self episodeNumber], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  if (!enabled && ([(VUIGroupWatchActivityPreviewMetadata *)self seasonNumber], (v4 = objc_claimAutoreleasedReturnValue()) != 0) && (v5 = v4, [(VUIGroupWatchActivityPreviewMetadata *)self episodeNumber], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v7 = [(VUIGroupWatchActivityPreviewMetadata *)self seasonNumber];
-    v8 = [(VUIGroupWatchActivityPreviewMetadata *)self episodeNumber];
-    v9 = [(VUIGroupWatchActivityPreviewMetadata *)self localizedSubtitleForSeasonNumber:v7 episodeNumber:v8];
+    seasonNumber = [(VUIGroupWatchActivityPreviewMetadata *)self seasonNumber];
+    episodeNumber = [(VUIGroupWatchActivityPreviewMetadata *)self episodeNumber];
+    seasonTitle = [(VUIGroupWatchActivityPreviewMetadata *)self localizedSubtitleForSeasonNumber:seasonNumber episodeNumber:episodeNumber];
   }
 
   else
   {
-    v9 = [(VUIGroupWatchActivityPreviewMetadata *)self seasonTitle];
+    seasonTitle = [(VUIGroupWatchActivityPreviewMetadata *)self seasonTitle];
   }
 
-  return v9;
+  return seasonTitle;
 }
 
-- (id)localizedSubtitleForSeasonNumber:(id)a3 episodeNumber:(id)a4
+- (id)localizedSubtitleForSeasonNumber:(id)number episodeNumber:(id)episodeNumber
 {
-  v5 = a4;
-  v6 = a3;
+  episodeNumberCopy = episodeNumber;
+  numberCopy = number;
   v7 = +[VUILocalizationManager sharedInstance];
   v8 = [v7 localizedStringForKey:@"TV.SeasonEpisode.Abbreviated"];
-  v9 = [v6 vui_languageAwareDescription];
+  vui_languageAwareDescription = [numberCopy vui_languageAwareDescription];
 
-  v10 = [v8 stringByReplacingOccurrencesOfString:@"@@seasonNumber@@" withString:v9];
-  v11 = [v5 vui_languageAwareDescription];
+  v10 = [v8 stringByReplacingOccurrencesOfString:@"@@seasonNumber@@" withString:vui_languageAwareDescription];
+  vui_languageAwareDescription2 = [episodeNumberCopy vui_languageAwareDescription];
 
-  v12 = [v10 stringByReplacingOccurrencesOfString:@"@@episodeNumber@@" withString:v11];
+  v12 = [v10 stringByReplacingOccurrencesOfString:@"@@episodeNumber@@" withString:vui_languageAwareDescription2];
 
   return v12;
 }
 
-- (id)serializedDataWithSeasonTitlesEnabled:(BOOL)a3
+- (id)serializedDataWithSeasonTitlesEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [(VUIGroupWatchActivityPreviewMetadata *)self title];
-  [v5 vui_setObjectIfNotNil:v6 forKey:@"title"];
+  enabledCopy = enabled;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  title = [(VUIGroupWatchActivityPreviewMetadata *)self title];
+  [dictionary vui_setObjectIfNotNil:title forKey:@"title"];
 
-  v7 = [(VUIGroupWatchActivityPreviewMetadata *)self subtitleWithSeasonTitlesEnabled:v3];
-  [v5 vui_setObjectIfNotNil:v7 forKey:@"subtitle"];
+  v7 = [(VUIGroupWatchActivityPreviewMetadata *)self subtitleWithSeasonTitlesEnabled:enabledCopy];
+  [dictionary vui_setObjectIfNotNil:v7 forKey:@"subtitle"];
 
-  v8 = [(VUIGroupWatchActivityPreviewMetadata *)self imageUrlFormat];
-  [v5 vui_setObjectIfNotNil:v8 forKey:@"imageUrlFormat"];
+  imageUrlFormat = [(VUIGroupWatchActivityPreviewMetadata *)self imageUrlFormat];
+  [dictionary vui_setObjectIfNotNil:imageUrlFormat forKey:@"imageUrlFormat"];
 
-  v9 = [(VUIGroupWatchActivityPreviewMetadata *)self fallbackUrl];
-  v10 = [v9 absoluteString];
-  [v5 vui_setObjectIfNotNil:v10 forKey:@"fallbackUrl"];
+  fallbackUrl = [(VUIGroupWatchActivityPreviewMetadata *)self fallbackUrl];
+  absoluteString = [fallbackUrl absoluteString];
+  [dictionary vui_setObjectIfNotNil:absoluteString forKey:@"fallbackUrl"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[VUIGroupWatchActivityPreviewMetadata allowsSceneAssociation](self, "allowsSceneAssociation")}];
-  [v5 setObject:v11 forKey:@"allowsSceneAssociation"];
+  [dictionary setObject:v11 forKey:@"allowsSceneAssociation"];
 
   v14 = 0;
-  v12 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v5 options:0 error:&v14];
+  v12 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:&v14];
 
   return v12;
 }
 
-+ (id)metadataFromSerializedData:(id)a3
++ (id)metadataFromSerializedData:(id)data
 {
   v10 = 0;
-  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v10];
+  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:data options:0 error:&v10];
   v4 = [v3 vui_stringForKey:@"title"];
   v5 = [v3 vui_stringForKey:@"subtitle"];
   v6 = [v3 vui_stringForKey:@"imageUrlFormat"];

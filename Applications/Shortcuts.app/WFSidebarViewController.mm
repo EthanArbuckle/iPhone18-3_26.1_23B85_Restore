@@ -1,96 +1,96 @@
 @interface WFSidebarViewController
-- (WFSidebarViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (WFSidebarViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)addFolder;
-- (void)databaseDidChange:(id)a3 modified:(id)a4 inserted:(id)a5 removed:(id)a6;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)databaseDidChange:(id)change modified:(id)modified inserted:(id)inserted removed:(id)removed;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)endEditing;
-- (void)keyboardWillChange:(id)a3;
-- (void)presentFolderEditorWithSender:(id)a3;
+- (void)keyboardWillChange:(id)change;
+- (void)presentFolderEditorWithSender:(id)sender;
 - (void)startEditing;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFSidebarViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000A2188();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000A2A34(a3);
+  selfCopy = self;
+  sub_1000A2A34(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000A2BC4(a3);
+  selfCopy = self;
+  sub_1000A2BC4(appear);
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_1000A2CE8(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1000A2CE8(controller);
 }
 
-- (void)keyboardWillChange:(id)a3
+- (void)keyboardWillChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000A2DA8(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1000A2DA8(changeCopy);
 }
 
 - (void)startEditing
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000A3404(1);
 }
 
 - (void)endEditing
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000A3404(0);
 }
 
 - (void)addFolder
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000A39D0();
 }
 
-- (void)presentFolderEditorWithSender:(id)a3
+- (void)presentFolderEditorWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_1000A3A8C();
 }
 
-- (WFSidebarViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFSidebarViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1000A3B50();
 }
 
-- (void)databaseDidChange:(id)a3 modified:(id)a4 inserted:(id)a5 removed:(id)a6
+- (void)databaseDidChange:(id)change modified:(id)modified inserted:(id)inserted removed:(id)removed
 {
   sub_100002FC4(0, &qword_1001002D8);
   sub_1000A4FA8();
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = a3;
-  v9 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_1000A3CB8();
 }
 

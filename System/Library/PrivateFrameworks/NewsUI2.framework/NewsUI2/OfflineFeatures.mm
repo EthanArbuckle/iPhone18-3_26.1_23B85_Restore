@@ -1,13 +1,13 @@
 @interface OfflineFeatures
 - (_TtC7NewsUI215OfflineFeatures)init;
-- (void)bundleSubscriptionDidSubscribe:(void *)a1;
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe;
 @end
 
 @implementation OfflineFeatures
 
-- (void)bundleSubscriptionDidSubscribe:(void *)a1
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe
 {
-  v1 = a1;
+  subscribeCopy = subscribe;
   sub_21870A434();
 }
 

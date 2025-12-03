@@ -1,25 +1,25 @@
 @interface MNDestinationArrivalInfoUpdater
 - (MNDestinationArrivalInfoUpdater)init;
 - (void)dealloc;
-- (void)remainingTimeUpdater:(id)a3 didUpdateDisplayETAInfo:(id)a4 reason:(int64_t)a5;
-- (void)setNavigationSessionState:(id)a3;
+- (void)remainingTimeUpdater:(id)updater didUpdateDisplayETAInfo:(id)info reason:(int64_t)reason;
+- (void)setNavigationSessionState:(id)state;
 @end
 
 @implementation MNDestinationArrivalInfoUpdater
 
-- (void)setNavigationSessionState:(id)a3
+- (void)setNavigationSessionState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D3123AFC(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1D3123AFC(stateCopy);
 }
 
-- (void)remainingTimeUpdater:(id)a3 didUpdateDisplayETAInfo:(id)a4 reason:(int64_t)a5
+- (void)remainingTimeUpdater:(id)updater didUpdateDisplayETAInfo:(id)info reason:(int64_t)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_1D3128F88(v9, a5);
+  updaterCopy = updater;
+  infoCopy = info;
+  selfCopy = self;
+  sub_1D3128F88(infoCopy, reason);
 }
 
 - (void)dealloc
@@ -29,7 +29,7 @@
   swift_unknownObjectWeakAssign();
   v5.receiver = self;
   v5.super_class = type metadata accessor for DestinationArrivalInfoUpdater();
-  v4 = self;
+  selfCopy = self;
   [(MNDestinationArrivalInfoUpdater *)&v5 dealloc];
 }
 

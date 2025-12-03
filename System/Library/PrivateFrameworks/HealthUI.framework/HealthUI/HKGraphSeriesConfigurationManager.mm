@@ -1,15 +1,15 @@
 @interface HKGraphSeriesConfigurationManager
-- (BOOL)configurationContainsDisplayType:(id)a3;
+- (BOOL)configurationContainsDisplayType:(id)type;
 - (HKGraphSeriesConfigurationManager)init;
-- (id)_configurationManagerForZoom:(int64_t)a3;
+- (id)_configurationManagerForZoom:(int64_t)zoom;
 - (id)allDisplayTypes;
-- (id)allDisplayTypesForZoom:(int64_t)a3;
-- (id)allGraphSeriesForZoom:(int64_t)a3;
-- (id)configurationForDisplayType:(id)a3 zoom:(int64_t)a4;
-- (id)configurationForGraphSeries:(id)a3 zoom:(int64_t)a4;
-- (int64_t)_zoomLevelForGraphZoom:(int64_t)a3;
-- (void)addConfiguration:(id)a3 zoom:(int64_t)a4;
-- (void)removeConfigurationsForDisplayType:(id)a3;
+- (id)allDisplayTypesForZoom:(int64_t)zoom;
+- (id)allGraphSeriesForZoom:(int64_t)zoom;
+- (id)configurationForDisplayType:(id)type zoom:(int64_t)zoom;
+- (id)configurationForGraphSeries:(id)series zoom:(int64_t)zoom;
+- (int64_t)_zoomLevelForGraphZoom:(int64_t)zoom;
+- (void)addConfiguration:(id)configuration zoom:(int64_t)zoom;
+- (void)removeConfigurationsForDisplayType:(id)type;
 - (void)reset;
 @end
 
@@ -30,10 +30,10 @@
   return v2;
 }
 
-- (void)addConfiguration:(id)a3 zoom:(int64_t)a4
+- (void)addConfiguration:(id)configuration zoom:(int64_t)zoom
 {
-  v6 = a3;
-  v7 = [(HKGraphSeriesConfigurationManager *)self _zoomLevelForGraphZoom:a4];
+  configurationCopy = configuration;
+  v7 = [(HKGraphSeriesConfigurationManager *)self _zoomLevelForGraphZoom:zoom];
   zoomLevelConfigurationManagers = self->_zoomLevelConfigurationManagers;
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
   v10 = [(NSMutableDictionary *)zoomLevelConfigurationManagers objectForKeyedSubscript:v9];
@@ -49,19 +49,19 @@
   v14 = self->_zoomLevelConfigurationManagers;
   v16 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
   v15 = [(NSMutableDictionary *)v14 objectForKeyedSubscript:v16];
-  [v15 addConfiguration:v6];
+  [v15 addConfiguration:configurationCopy];
 }
 
-- (void)removeConfigurationsForDisplayType:(id)a3
+- (void)removeConfigurationsForDisplayType:(id)type
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->_zoomLevelConfigurationManagers allValues];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_zoomLevelConfigurationManagers allValues];
+  v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -73,14 +73,14 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) removeConfigurationForDisplayType:v4];
+        [*(*(&v10 + 1) + 8 * v9++) removeConfigurationForDisplayType:typeCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -94,8 +94,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_zoomLevelConfigurationManagers allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_zoomLevelConfigurationManagers allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -107,34 +107,34 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) reset];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (id)configurationForDisplayType:(id)a3 zoom:(int64_t)a4
+- (id)configurationForDisplayType:(id)type zoom:(int64_t)zoom
 {
-  v6 = a3;
-  v7 = [(HKGraphSeriesConfigurationManager *)self _configurationManagerForZoom:a4];
-  v8 = [v7 configurationForDisplayType:v6];
+  typeCopy = type;
+  v7 = [(HKGraphSeriesConfigurationManager *)self _configurationManagerForZoom:zoom];
+  v8 = [v7 configurationForDisplayType:typeCopy];
 
   return v8;
 }
 
-- (id)configurationForGraphSeries:(id)a3 zoom:(int64_t)a4
+- (id)configurationForGraphSeries:(id)series zoom:(int64_t)zoom
 {
-  v6 = a3;
-  v7 = [(HKGraphSeriesConfigurationManager *)self _configurationManagerForZoom:a4];
-  v8 = [v7 configurationForGraphSeries:v6];
+  seriesCopy = series;
+  v7 = [(HKGraphSeriesConfigurationManager *)self _configurationManagerForZoom:zoom];
+  v8 = [v7 configurationForGraphSeries:seriesCopy];
 
   return v8;
 }
@@ -148,37 +148,37 @@
     [v3 addObjectsFromArray:v5];
   }
 
-  v6 = [v3 array];
+  array = [v3 array];
 
-  return v6;
+  return array;
 }
 
-- (id)allDisplayTypesForZoom:(int64_t)a3
+- (id)allDisplayTypesForZoom:(int64_t)zoom
 {
-  v3 = [(HKGraphSeriesConfigurationManager *)self _configurationManagerForZoom:a3];
-  v4 = [v3 allDisplayTypes];
+  v3 = [(HKGraphSeriesConfigurationManager *)self _configurationManagerForZoom:zoom];
+  allDisplayTypes = [v3 allDisplayTypes];
 
-  return v4;
+  return allDisplayTypes;
 }
 
-- (id)allGraphSeriesForZoom:(int64_t)a3
+- (id)allGraphSeriesForZoom:(int64_t)zoom
 {
-  v3 = [(HKGraphSeriesConfigurationManager *)self _configurationManagerForZoom:a3];
-  v4 = [v3 allGraphSeries];
+  v3 = [(HKGraphSeriesConfigurationManager *)self _configurationManagerForZoom:zoom];
+  allGraphSeries = [v3 allGraphSeries];
 
-  return v4;
+  return allGraphSeries;
 }
 
-- (BOOL)configurationContainsDisplayType:(id)a3
+- (BOOL)configurationContainsDisplayType:(id)type
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(HKGraphSeriesConfigurationManager *)self allDisplayTypes];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allDisplayTypes = [(HKGraphSeriesConfigurationManager *)self allDisplayTypes];
+  v6 = [allDisplayTypes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -188,17 +188,17 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allDisplayTypes);
         }
 
-        if (*(*(&v10 + 1) + 8 * i) == v4)
+        if (*(*(&v10 + 1) + 8 * i) == typeCopy)
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allDisplayTypes countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -213,22 +213,22 @@ LABEL_11:
   return v6;
 }
 
-- (int64_t)_zoomLevelForGraphZoom:(int64_t)a3
+- (int64_t)_zoomLevelForGraphZoom:(int64_t)zoom
 {
   result = 3;
-  if (a3 > 3)
+  if (zoom > 3)
   {
-    if (a3 > 6)
+    if (zoom > 6)
     {
-      if (a3 == 7)
+      if (zoom == 7)
       {
         return 1;
       }
 
-      else if (a3 == 8)
+      else if (zoom == 8)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"HKGraphSeriesConfigurationManager.m" lineNumber:145 description:@"Invalid zoom level provided"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"HKGraphSeriesConfigurationManager.m" lineNumber:145 description:@"Invalid zoom level provided"];
 
         return 3;
       }
@@ -237,12 +237,12 @@ LABEL_11:
     else
     {
       v9 = 2;
-      if (a3 != 6)
+      if (zoom != 6)
       {
         v9 = 3;
       }
 
-      if (a3 == 4)
+      if (zoom == 4)
       {
         return 4;
       }
@@ -258,29 +258,29 @@ LABEL_11:
   {
     v5 = 6;
     v6 = 5;
-    if (a3 != 3)
+    if (zoom != 3)
     {
       v6 = 3;
     }
 
-    if (a3 != 2)
+    if (zoom != 2)
     {
       v5 = v6;
     }
 
     v7 = 8;
     v8 = 7;
-    if (a3 != 1)
+    if (zoom != 1)
     {
       v8 = 3;
     }
 
-    if (a3)
+    if (zoom)
     {
       v7 = v8;
     }
 
-    if (a3 <= 1)
+    if (zoom <= 1)
     {
       return v7;
     }
@@ -294,9 +294,9 @@ LABEL_11:
   return result;
 }
 
-- (id)_configurationManagerForZoom:(int64_t)a3
+- (id)_configurationManagerForZoom:(int64_t)zoom
 {
-  v4 = [(HKGraphSeriesConfigurationManager *)self _zoomLevelForGraphZoom:a3];
+  v4 = [(HKGraphSeriesConfigurationManager *)self _zoomLevelForGraphZoom:zoom];
   zoomLevelConfigurationManagers = self->_zoomLevelConfigurationManagers;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
   v7 = [(NSMutableDictionary *)zoomLevelConfigurationManagers objectForKeyedSubscript:v6];

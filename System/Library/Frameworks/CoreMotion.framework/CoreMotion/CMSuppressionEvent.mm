@@ -1,44 +1,44 @@
 @interface CMSuppressionEvent
-+ (id)stringForEventFacedownState:(unint64_t)a3;
-+ (id)stringForEventReason:(unint64_t)a3;
-+ (id)stringForEventType:(int64_t)a3;
-- (CMSuppressionEvent)initWithCoder:(id)a3;
-- (CMSuppressionEvent)initWithEventType:(int64_t)a3 reason:(unint64_t)a4 facedownState:(unint64_t)a5 timestamp:(double)a6 timeSinceLastFacedownStatic:(double)a7;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)stringForEventFacedownState:(unint64_t)state;
++ (id)stringForEventReason:(unint64_t)reason;
++ (id)stringForEventType:(int64_t)type;
+- (CMSuppressionEvent)initWithCoder:(id)coder;
+- (CMSuppressionEvent)initWithEventType:(int64_t)type reason:(unint64_t)reason facedownState:(unint64_t)state timestamp:(double)timestamp timeSinceLastFacedownStatic:(double)static;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMSuppressionEvent
 
-- (CMSuppressionEvent)initWithEventType:(int64_t)a3 reason:(unint64_t)a4 facedownState:(unint64_t)a5 timestamp:(double)a6 timeSinceLastFacedownStatic:(double)a7
+- (CMSuppressionEvent)initWithEventType:(int64_t)type reason:(unint64_t)reason facedownState:(unint64_t)state timestamp:(double)timestamp timeSinceLastFacedownStatic:(double)static
 {
   v12.receiver = self;
   v12.super_class = CMSuppressionEvent;
-  result = [(CMLogItem *)&v12 initWithTimestamp:a6];
+  result = [(CMLogItem *)&v12 initWithTimestamp:timestamp];
   if (result)
   {
-    result->fType = a3;
-    result->fReason = a4;
-    result->fFacedownState = a5;
-    result->fTimeSinceLastFacedownStatic = a7;
+    result->fType = type;
+    result->fReason = reason;
+    result->fFacedownState = state;
+    result->fTimeSinceLastFacedownStatic = static;
   }
 
   return result;
 }
 
-- (CMSuppressionEvent)initWithCoder:(id)a3
+- (CMSuppressionEvent)initWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = CMSuppressionEvent;
   v5 = [(CMLogItem *)&v14 initWithCoder:?];
   if (v5)
   {
-    v5->fType = objc_msgSend_decodeObjectForKey_(a3, v4, @"kCMSuppressionEventCodingKeyType");
-    v5->fReason = objc_msgSend_decodeObjectForKey_(a3, v6, @"kCMSuppressionEventCodingKeyReason");
-    v5->fFacedownState = objc_msgSend_decodeObjectForKey_(a3, v7, @"kCMSuppressionEventCodingKeyFacedownState");
-    v9 = objc_msgSend_decodeObjectForKey_(a3, v8, @"kCMSuppressionEventCodingKeyTimeSinceLastFacedownStatic");
+    v5->fType = objc_msgSend_decodeObjectForKey_(coder, v4, @"kCMSuppressionEventCodingKeyType");
+    v5->fReason = objc_msgSend_decodeObjectForKey_(coder, v6, @"kCMSuppressionEventCodingKeyReason");
+    v5->fFacedownState = objc_msgSend_decodeObjectForKey_(coder, v7, @"kCMSuppressionEventCodingKeyFacedownState");
+    v9 = objc_msgSend_decodeObjectForKey_(coder, v8, @"kCMSuppressionEventCodingKeyTimeSinceLastFacedownStatic");
     objc_msgSend_doubleValue(v9, v10, v11);
     v5->fTimeSinceLastFacedownStatic = v12;
   }
@@ -46,19 +46,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v18.receiver = self;
   v18.super_class = CMSuppressionEvent;
   [(CMLogItem *)&v18 encodeWithCoder:?];
   v6 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v5, self->fType);
-  objc_msgSend_encodeObject_forKey_(a3, v7, v6, @"kCMSuppressionEventCodingKeyType");
+  objc_msgSend_encodeObject_forKey_(coder, v7, v6, @"kCMSuppressionEventCodingKeyType");
   v9 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v8, self->fReason);
-  objc_msgSend_encodeObject_forKey_(a3, v10, v9, @"kCMSuppressionEventCodingKeyReason");
+  objc_msgSend_encodeObject_forKey_(coder, v10, v9, @"kCMSuppressionEventCodingKeyReason");
   v12 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v11, self->fReason);
-  objc_msgSend_encodeObject_forKey_(a3, v13, v12, @"kCMSuppressionEventCodingKeyFacedownState");
+  objc_msgSend_encodeObject_forKey_(coder, v13, v12, @"kCMSuppressionEventCodingKeyFacedownState");
   v16 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v14, v15, self->fTimeSinceLastFacedownStatic);
-  objc_msgSend_encodeObject_forKey_(a3, v17, v16, @"kCMSuppressionEventCodingKeyTimeSinceLastFacedownStatic");
+  objc_msgSend_encodeObject_forKey_(coder, v17, v16, @"kCMSuppressionEventCodingKeyTimeSinceLastFacedownStatic");
 }
 
 - (void)dealloc
@@ -68,11 +68,11 @@
   [(CMLogItem *)&v2 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = CMSuppressionEvent;
-  result = [(CMLogItem *)&v5 copyWithZone:a3];
+  result = [(CMLogItem *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 2) = self->fType;
@@ -97,39 +97,39 @@
   return objc_msgSend_stringWithFormat_(v3, v13, @"%@ %@ %@ %@ timeSinceLastFacedownStatic=%f @ %f", v5, v7, v9, v11, *&fTimeSinceLastFacedownStatic, v14);
 }
 
-+ (id)stringForEventType:(int64_t)a3
++ (id)stringForEventType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], a2, "Unexpected");
   }
 
   else
   {
-    return objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], a2, off_1E7533FE8[a3]);
+    return objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], a2, off_1E7533FE8[type]);
   }
 }
 
-+ (id)stringForEventReason:(unint64_t)a3
++ (id)stringForEventReason:(unint64_t)reason
 {
-  if (!a3)
+  if (!reason)
   {
     return @"Unknown";
   }
 
-  v3 = a3;
+  reasonCopy = reason;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = v4;
-  if ((v3 & 1) == 0)
+  if ((reasonCopy & 1) == 0)
   {
-    if ((v3 & 2) == 0)
+    if ((reasonCopy & 2) == 0)
     {
       goto LABEL_4;
     }
 
 LABEL_10:
     objc_msgSend_addObject_(v7, v5, @"SmartPowerNap");
-    if ((v3 & 4) == 0)
+    if ((reasonCopy & 4) == 0)
     {
       goto LABEL_6;
     }
@@ -138,13 +138,13 @@ LABEL_10:
   }
 
   objc_msgSend_addObject_(v4, v5, @"ViewObstructed");
-  if ((v3 & 2) != 0)
+  if ((reasonCopy & 2) != 0)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if ((v3 & 4) != 0)
+  if ((reasonCopy & 4) != 0)
   {
 LABEL_5:
     objc_msgSend_addObject_(v7, v5, @"DevicePresence");
@@ -161,16 +161,16 @@ LABEL_6:
   return v9;
 }
 
-+ (id)stringForEventFacedownState:(unint64_t)a3
++ (id)stringForEventFacedownState:(unint64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
     return objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], a2, "Unexpected");
   }
 
   else
   {
-    return objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], a2, off_1E7534008[a3]);
+    return objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], a2, off_1E7534008[state]);
   }
 }
 

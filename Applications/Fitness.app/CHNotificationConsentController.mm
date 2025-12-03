@@ -1,21 +1,21 @@
 @interface CHNotificationConsentController
-+ (id)makeNotificationConsentViewController:(BOOL)a3 buttonHandler:(id)a4;
++ (id)makeNotificationConsentViewController:(BOOL)controller buttonHandler:(id)handler;
 + (void)updateAuthorization;
 - (CHNotificationConsentController)init;
 @end
 
 @implementation CHNotificationConsentController
 
-+ (id)makeNotificationConsentViewController:(BOOL)a3 buttonHandler:(id)a4
++ (id)makeNotificationConsentViewController:(BOOL)controller buttonHandler:(id)handler
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = type metadata accessor for ContentAvailability();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v19 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v10);
   v12 = &v19 - v11;
-  v13 = _Block_copy(a4);
+  v13 = _Block_copy(handler);
   if (v13)
   {
     v14 = swift_allocObject();
@@ -29,7 +29,7 @@
   }
 
   v15 = &enum case for ContentAvailability.available(_:);
-  if (!v5)
+  if (!controllerCopy)
   {
     v15 = &enum case for ContentAvailability.unavailableStoreFront(_:);
   }
@@ -53,7 +53,7 @@
 {
   if (([objc_opt_self() isRunningInStoreDemoMode] & 1) == 0)
   {
-    v2 = [objc_opt_self() currentNotificationCenter];
+    currentNotificationCenter = [objc_opt_self() currentNotificationCenter];
     v4[4] = sub_1004DD284;
     v4[5] = 0;
     v4[0] = _NSConcreteStackBlock;
@@ -61,7 +61,7 @@
     v4[2] = sub_1004DCFFC;
     v4[3] = &unk_10085D390;
     v3 = _Block_copy(v4);
-    [v2 requestAuthorizationWithOptions:39 completionHandler:v3];
+    [currentNotificationCenter requestAuthorizationWithOptions:39 completionHandler:v3];
 
     _Block_release(v3);
   }

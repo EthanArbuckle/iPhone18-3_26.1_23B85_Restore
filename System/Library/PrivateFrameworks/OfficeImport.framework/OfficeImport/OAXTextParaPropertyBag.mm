@@ -1,89 +1,89 @@
 @interface OAXTextParaPropertyBag
-+ (id)readSpacing:(_xmlNode *)a3 drawingState:(id)a4;
-+ (int)readBulletScheme:(id)a3;
-+ (void)readAlign:(id)a3 paragraphProperties:(id)a4;
-+ (void)readFontAlign:(id)a3 paragraphProperties:(id)a4;
-+ (void)readParagraphProperties:(_xmlNode *)a3 paragraphProperties:(id)a4 drawingState:(id)a5;
-+ (void)readTabList:(_xmlNode *)a3 paragraphProperties:(id)a4 drawingState:(id)a5;
++ (id)readSpacing:(_xmlNode *)spacing drawingState:(id)state;
++ (int)readBulletScheme:(id)scheme;
++ (void)readAlign:(id)align paragraphProperties:(id)properties;
++ (void)readFontAlign:(id)align paragraphProperties:(id)properties;
++ (void)readParagraphProperties:(_xmlNode *)properties paragraphProperties:(id)paragraphProperties drawingState:(id)state;
++ (void)readTabList:(_xmlNode *)list paragraphProperties:(id)properties drawingState:(id)state;
 @end
 
 @implementation OAXTextParaPropertyBag
 
-+ (void)readParagraphProperties:(_xmlNode *)a3 paragraphProperties:(id)a4 drawingState:(id)a5
++ (void)readParagraphProperties:(_xmlNode *)properties paragraphProperties:(id)paragraphProperties drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3)
+  paragraphPropertiesCopy = paragraphProperties;
+  stateCopy = state;
+  if (properties)
   {
     v53 = 0;
     v52 = 0;
     v51 = 0.0;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "marL", &v53))
+    if (CXOptionalLongAttribute(properties, CXNoNamespace, "marL", &v53))
     {
       v10 = v53 / 12700.0;
       *&v10 = v10;
-      [v8 setLeftMargin:v10];
+      [paragraphPropertiesCopy setLeftMargin:v10];
     }
 
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "marR", &v53))
+    if (CXOptionalLongAttribute(properties, CXNoNamespace, "marR", &v53))
     {
       v11 = v53 / 12700.0;
       *&v11 = v11;
-      [v8 setRightMargin:v11];
+      [paragraphPropertiesCopy setRightMargin:v11];
     }
 
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "lvl", &v53))
+    if (CXOptionalLongAttribute(properties, CXNoNamespace, "lvl", &v53))
     {
-      [v8 setLevel:v53];
+      [paragraphPropertiesCopy setLevel:v53];
     }
 
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "indent", &v53))
+    if (CXOptionalLongAttribute(properties, CXNoNamespace, "indent", &v53))
     {
       v12 = v53 / 12700.0;
       *&v12 = v12;
-      [v8 setIndent:v12];
+      [paragraphPropertiesCopy setIndent:v12];
     }
 
     v50 = 0;
-    v13 = CXOptionalStringAttribute(a3, CXNoNamespace, "algn", &v50);
+    v13 = CXOptionalStringAttribute(properties, CXNoNamespace, "algn", &v50);
     v14 = v50;
     if (v13)
     {
-      [a1 readAlign:v14 paragraphProperties:v8];
+      [self readAlign:v14 paragraphProperties:paragraphPropertiesCopy];
     }
 
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "defTabSz", &v53, 12))
+    if (CXOptionalLongAttribute(properties, CXNoNamespace, "defTabSz", &v53, 12))
     {
       v15 = v53 / 12700.0;
       *&v15 = v15;
-      [v8 setDefaultTab:v15];
+      [paragraphPropertiesCopy setDefaultTab:v15];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "rtl", &v52))
+    if (CXOptionalBoolAttribute(properties, CXNoNamespace, "rtl", &v52))
     {
-      [v8 setIsRightToLeft:v52];
+      [paragraphPropertiesCopy setIsRightToLeft:v52];
     }
 
     v49 = 0;
-    v16 = CXOptionalStringAttribute(a3, CXNoNamespace, "fontAlgn", &v49);
+    v16 = CXOptionalStringAttribute(properties, CXNoNamespace, "fontAlgn", &v49);
     v17 = v49;
     if (v16)
     {
-      [a1 readFontAlign:v17 paragraphProperties:v8];
+      [self readFontAlign:v17 paragraphProperties:paragraphPropertiesCopy];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "latinLnBrk", &v52))
+    if (CXOptionalBoolAttribute(properties, CXNoNamespace, "latinLnBrk", &v52))
     {
-      [v8 setIsLatinLineBreak:v52];
+      [paragraphPropertiesCopy setIsLatinLineBreak:v52];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "hangingPunct", &v52))
+    if (CXOptionalBoolAttribute(properties, CXNoNamespace, "hangingPunct", &v52))
     {
-      [v8 setIsHangingPunctuation:v52];
+      [paragraphPropertiesCopy setIsHangingPunctuation:v52];
     }
 
     v44 = v17;
-    for (i = OCXFirstChild(a3); ; i = OCXNextSibling(i))
+    for (i = OCXFirstChild(properties); ; i = OCXNextSibling(i))
     {
       if (!i)
       {
@@ -93,35 +93,35 @@
 
       if (xmlStrEqual(i->name, "lnSpc"))
       {
-        v19 = [a1 readSpacing:i drawingState:v9];
-        [v8 setLineSpacing:v19];
+        v19 = [self readSpacing:i drawingState:stateCopy];
+        [paragraphPropertiesCopy setLineSpacing:v19];
         goto LABEL_42;
       }
 
       if (xmlStrEqual(i->name, "spcBef"))
       {
-        v19 = [a1 readSpacing:i drawingState:v9];
-        [v8 setBeforeSpacing:v19];
+        v19 = [self readSpacing:i drawingState:stateCopy];
+        [paragraphPropertiesCopy setBeforeSpacing:v19];
         goto LABEL_42;
       }
 
       if (xmlStrEqual(i->name, "spcAft"))
       {
-        v19 = [a1 readSpacing:i drawingState:v9];
-        [v8 setAfterSpacing:v19];
+        v19 = [self readSpacing:i drawingState:stateCopy];
+        [paragraphPropertiesCopy setAfterSpacing:v19];
         goto LABEL_42;
       }
 
       if (xmlStrEqual(i->name, "tabLst"))
       {
-        [a1 readTabList:i paragraphProperties:v8 drawingState:v9];
+        [self readTabList:i paragraphProperties:paragraphPropertiesCopy drawingState:stateCopy];
         v19 = 0;
         goto LABEL_42;
       }
 
       if (xmlStrEqual(i->name, "defRPr"))
       {
-        [OAXTextCharPropertyBag readCharacterProperties:i characterProperties:v8 drawingState:v9];
+        [OAXTextCharPropertyBag readCharacterProperties:i characterProperties:paragraphPropertiesCopy drawingState:stateCopy];
         v19 = 0;
         goto LABEL_42;
       }
@@ -132,7 +132,7 @@
         if (v20)
         {
           v21 = [[OADBulletColorSpecification alloc] initWithBulletColor:v20];
-          [v8 setBulletColor:v21];
+          [paragraphPropertiesCopy setBulletColor:v21];
 LABEL_37:
         }
       }
@@ -142,7 +142,7 @@ LABEL_37:
         if (xmlStrEqual(i->name, "buClrTx"))
         {
           v20 = objc_alloc_init(OADBulletColorFollowText);
-          [v8 setBulletColor:v20];
+          [paragraphPropertiesCopy setBulletColor:v20];
           goto LABEL_40;
         }
 
@@ -155,7 +155,7 @@ LABEL_37:
 
           v22 = [OADPointBulletSize alloc];
           v20 = [(OADPointBulletSize *)v22 initWithPoints:(v53 / 100)];
-          [v8 setBulletSize:v20];
+          [paragraphPropertiesCopy setBulletSize:v20];
         }
 
         else
@@ -171,14 +171,14 @@ LABEL_37:
             v24 = v51 * 100.0;
             *&v24 = v51 * 100.0;
             v20 = [(OADPercentBulletSize *)v23 initWithPercent:v24];
-            [v8 setBulletSize:v20];
+            [paragraphPropertiesCopy setBulletSize:v20];
             goto LABEL_40;
           }
 
           if (xmlStrEqual(i->name, "buSzTx"))
           {
             v20 = objc_alloc_init(OADBulletSizeFollowText);
-            [v8 setBulletSize:v20];
+            [paragraphPropertiesCopy setBulletSize:v20];
             goto LABEL_40;
           }
 
@@ -197,12 +197,12 @@ LABEL_37:
               v26 = objc_alloc_init(OADBulletFontFollowText);
             }
 
-            [v8 setBulletFont:v26];
+            [paragraphPropertiesCopy setBulletFont:v26];
 
             v47 = 0;
             if (CXOptionalUnsignedLongAttribute(i, CXNoNamespace, "charset", &v47))
             {
-              [v8 setBulletCharSet:v47];
+              [paragraphPropertiesCopy setBulletCharSet:v47];
             }
 
             goto LABEL_40;
@@ -211,7 +211,7 @@ LABEL_37:
           if (xmlStrEqual(i->name, "buFontTx"))
           {
             v20 = objc_alloc_init(OADBulletFontFollowText);
-            [v8 setBulletFont:v20];
+            [paragraphPropertiesCopy setBulletFont:v20];
             goto LABEL_40;
           }
 
@@ -240,7 +240,7 @@ LABEL_37:
               }
 
               v32 = [(OADAutoNumberBulletProperties *)v30 initWithAutoNumberSchemeType:v39 startIndex:v31];
-              [v8 setBulletProperties:v32];
+              [paragraphPropertiesCopy setBulletProperties:v32];
 
               v20 = v40;
             }
@@ -291,7 +291,7 @@ LABEL_37:
             v42 = [(OADBulletColorFollowText *)v20 substringToIndex:v41];
             v21 = [(OADCharacterBulletProperties *)v38 initWithBullet:v42];
 
-            [v8 setBulletProperties:v21];
+            [paragraphPropertiesCopy setBulletProperties:v21];
             goto LABEL_37;
           }
 
@@ -303,17 +303,17 @@ LABEL_37:
             }
 
             v20 = objc_alloc_init(OADNullBulletProperties);
-            [v8 setBulletProperties:v20];
+            [paragraphPropertiesCopy setBulletProperties:v20];
             goto LABEL_40;
           }
 
-          v43 = [v9 packagePart];
-          v20 = [OAXFill readBlipRefFromXmlNode:i packagePart:v43 forDrawable:0 drawingState:v9 forBullet:1];
+          packagePart = [stateCopy packagePart];
+          v20 = [OAXFill readBlipRefFromXmlNode:i packagePart:packagePart forDrawable:0 drawingState:stateCopy forBullet:1];
 
           if (v20 && ([(OADBulletColorFollowText *)v20 isNull]& 1) == 0)
           {
             v21 = [[OADImageBulletProperties alloc] initWithBlipRef:v20];
-            [v8 setBulletProperties:v21];
+            [paragraphPropertiesCopy setBulletProperties:v21];
             goto LABEL_37;
           }
         }
@@ -328,14 +328,14 @@ LABEL_42:
   }
 }
 
-+ (id)readSpacing:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readSpacing:(_xmlNode *)spacing drawingState:(id)state
 {
-  v5 = a4;
-  v6 = [v5 OAXMainNamespace];
-  v7 = OCXFindChild(a3, v6, "spcPct");
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v7 = OCXFindChild(spacing, oAXMainNamespace, "spcPct");
 
-  v8 = [v5 OAXMainNamespace];
-  v9 = OCXFindChild(a3, v8, "spcPts");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v9 = OCXFindChild(spacing, oAXMainNamespace2, "spcPts");
 
   if (v7)
   {
@@ -371,13 +371,13 @@ LABEL_15:
   return v18;
 }
 
-+ (void)readTabList:(_xmlNode *)a3 paragraphProperties:(id)a4 drawingState:(id)a5
++ (void)readTabList:(_xmlNode *)list paragraphProperties:(id)properties drawingState:(id)state
 {
-  v7 = a4;
-  v8 = a5;
+  propertiesCopy = properties;
+  stateCopy = state;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [v8 OAXMainNamespace];
-  Child = OCXFindChild(a3, v10, "tab");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  Child = OCXFindChild(list, oAXMainNamespace, "tab");
 
   while (Child)
   {
@@ -408,46 +408,46 @@ LABEL_15:
       v13 = 0;
     }
 
-    v16 = [v8 OAXMainNamespace];
-    Child = OCXFindNextChild(Child, v16, "tab");
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+    Child = OCXFindNextChild(Child, oAXMainNamespace2, "tab");
   }
 
-  [v7 setTabStops:v9];
+  [propertiesCopy setTabStops:v9];
 }
 
-+ (void)readAlign:(id)a3 paragraphProperties:(id)a4
++ (void)readAlign:(id)align paragraphProperties:(id)properties
 {
-  v7 = a3;
-  v5 = a4;
+  alignCopy = align;
+  propertiesCopy = properties;
   if (textAlignEnumMap(void)::once != -1)
   {
     +[OAXTextParaPropertyBag(Private) readAlign:paragraphProperties:];
   }
 
   v6 = textAlignEnumMap(void)::theEnumMap;
-  [v5 setAlign:{objc_msgSend(v6, "valueForString:", v7)}];
+  [propertiesCopy setAlign:{objc_msgSend(v6, "valueForString:", alignCopy)}];
 }
 
-+ (void)readFontAlign:(id)a3 paragraphProperties:(id)a4
++ (void)readFontAlign:(id)align paragraphProperties:(id)properties
 {
-  v7 = a3;
-  v5 = a4;
+  alignCopy = align;
+  propertiesCopy = properties;
   if (fontAlignEnumMap(void)::once != -1)
   {
     +[OAXTextParaPropertyBag(Private) readFontAlign:paragraphProperties:];
   }
 
   v6 = fontAlignEnumMap(void)::theEnumMap;
-  [v5 setFontAlign:{objc_msgSend(v6, "valueForString:", v7)}];
+  [propertiesCopy setFontAlign:{objc_msgSend(v6, "valueForString:", alignCopy)}];
 }
 
-+ (int)readBulletScheme:(id)a3
++ (int)readBulletScheme:(id)scheme
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  schemeCopy = scheme;
+  v4 = schemeCopy;
+  if (schemeCopy)
   {
-    if ([v3 isEqualToString:@"alphaLcParenBoth"])
+    if ([schemeCopy isEqualToString:@"alphaLcParenBoth"])
     {
       v5 = 1;
     }

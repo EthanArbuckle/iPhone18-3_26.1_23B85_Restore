@@ -1,22 +1,22 @@
 @interface COSSatellitePairingHelper
-+ (void)popToLoginControllerFromController:(id)a3;
++ (void)popToLoginControllerFromController:(id)controller;
 - (UIViewController)alertPresentationViewController;
 - (id)_accountManager;
 - (id)_familyEligibilityRequester;
-- (id)accountsForAccountManager:(id)a3;
-- (void)_checkFamilyEligibilityWithCompletion:(id)a3;
-- (void)_finishedWithResult:(unint64_t)a3 completion:(id)a4;
-- (void)checkPairingPreconditionsWithCompletion:(id)a3;
+- (id)accountsForAccountManager:(id)manager;
+- (void)_checkFamilyEligibilityWithCompletion:(id)completion;
+- (void)_finishedWithResult:(unint64_t)result completion:(id)completion;
+- (void)checkPairingPreconditionsWithCompletion:(id)completion;
 @end
 
 @implementation COSSatellitePairingHelper
 
-- (void)checkPairingPreconditionsWithCompletion:(id)a3
+- (void)checkPairingPreconditionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(COSSatellitePairingHelper *)self alertPresentationViewController];
+  completionCopy = completion;
+  alertPresentationViewController = [(COSSatellitePairingHelper *)self alertPresentationViewController];
 
-  if (!v5)
+  if (!alertPresentationViewController)
   {
     v6 = pbb_setupflow_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -29,27 +29,27 @@
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = +[CDPAccount sharedInstance];
-    v16 = [v15 primaryAccountUsername];
+    primaryAccountUsername = [v15 primaryAccountUsername];
     v17 = +[CDPAccount sharedInstance];
-    v18 = [v17 primaryAccountDSID];
+    primaryAccountDSID = [v17 primaryAccountDSID];
     v19 = +[CDPAccount sharedInstance];
-    v20 = [v19 primaryAccountAltDSID];
+    primaryAccountAltDSID = [v19 primaryAccountAltDSID];
     *buf = 138412802;
-    v34 = v16;
+    v34 = primaryAccountUsername;
     v35 = 2112;
-    v36 = v18;
+    v36 = primaryAccountDSID;
     v37 = 2112;
-    v38 = v20;
+    v38 = primaryAccountAltDSID;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "########## %@ -- %@ -- %@", buf, 0x20u);
   }
 
   v21 = +[CDPAccount sharedInstance];
-  v22 = [v21 primaryAccountAltDSID];
-  v23 = v22 == 0;
+  primaryAccountAltDSID2 = [v21 primaryAccountAltDSID];
+  v23 = primaryAccountAltDSID2 == 0;
 
   if (v23)
   {
-    [(COSSatellitePairingHelper *)self _finishedWithResult:1 completion:v4];
+    [(COSSatellitePairingHelper *)self _finishedWithResult:1 completion:completionCopy];
   }
 
   else
@@ -57,7 +57,7 @@
     objc_initWeak(buf, self);
     v24 = objc_alloc_init(FAFetchFamilyCircleRequest);
     [v24 setCachePolicy:2];
-    v25 = [UIApp setupController];
+    setupController = [UIApp setupController];
     v26 = pbb_accountsignin_log();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
@@ -69,10 +69,10 @@
     v28[1] = 3221225472;
     v28[2] = sub_1000CD064;
     v28[3] = &unk_10026B3A0;
-    v27 = v25;
+    v27 = setupController;
     v29 = v27;
     objc_copyWeak(&v31, buf);
-    v30 = v4;
+    v30 = completionCopy;
     [v24 startRequestWithCompletionHandler:v28];
 
     objc_destroyWeak(&v31);
@@ -80,41 +80,41 @@
   }
 }
 
-- (void)_checkFamilyEligibilityWithCompletion:(id)a3
+- (void)_checkFamilyEligibilityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(COSSatellitePairingHelper *)self _familyEligibilityRequester];
+  _familyEligibilityRequester = [(COSSatellitePairingHelper *)self _familyEligibilityRequester];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CD824;
   v7[3] = &unk_10026B3C8;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 requestFamilyEligibilityWithCompletion:v7];
+  [_familyEligibilityRequester requestFamilyEligibilityWithCompletion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_finishedWithResult:(unint64_t)a3 completion:(id)a4
+- (void)_finishedWithResult:(unint64_t)result completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = pbb_setupflow_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v29 = a3;
+    resultCopy = result;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Finished checking pairing preconditions with result: %lu", buf, 0xCu);
   }
 
   v8 = 0;
-  if (a3 > 3)
+  if (result > 3)
   {
-    if (a3 <= 5)
+    if (result <= 5)
     {
-      if (a3 == 4)
+      if (result == 4)
       {
         v17 = +[NSBundle mainBundle];
         v8 = [v17 localizedStringForKey:@"DEVICE_IS_NOT_PARENT_TITLE" value:&stru_10026E598 table:@"Localizable-tinker"];
@@ -137,7 +137,7 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    if (a3 == 6)
+    if (result == 6)
     {
       v11 = +[NSBundle mainBundle];
       v12 = v11;
@@ -147,7 +147,7 @@ LABEL_21:
 
     v9 = 0;
     v10 = 0;
-    if (a3 == 7)
+    if (result == 7)
     {
       v11 = +[NSBundle mainBundle];
       v12 = v11;
@@ -162,11 +162,11 @@ LABEL_23:
     v19[3] = &unk_10026B418;
     v20 = v8;
     v21 = v9;
-    v24 = v6;
-    v25 = a3;
+    v24 = completionCopy;
+    resultCopy2 = result;
     v22 = v10;
-    v23 = self;
-    v18 = v6;
+    selfCopy = self;
+    v18 = completionCopy;
     v16 = v9;
     v15 = v8;
     dispatch_async(&_dispatch_main_q, v19);
@@ -174,11 +174,11 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (a3 > 1)
+  if (result > 1)
   {
     v11 = +[NSBundle mainBundle];
     v12 = v11;
-    if (a3 == 2)
+    if (result == 2)
     {
       v13 = @"GUARDIAN_DEVICE_IS_FAMILY_INELIGIBLE";
     }
@@ -191,11 +191,11 @@ LABEL_23:
     goto LABEL_20;
   }
 
-  if (a3)
+  if (result)
   {
     v9 = 0;
     v10 = 0;
-    if (a3 == 1)
+    if (result == 1)
     {
       v11 = +[NSBundle mainBundle];
       v12 = v11;
@@ -213,8 +213,8 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = sub_1000CDE34;
   block[3] = &unk_100269120;
-  v27 = v6;
-  v15 = v6;
+  v27 = completionCopy;
+  v15 = completionCopy;
   dispatch_async(&_dispatch_main_q, block);
   v16 = v27;
 LABEL_24:
@@ -223,8 +223,8 @@ LABEL_24:
 - (id)_familyEligibilityRequester
 {
   v3 = [FAFamilyEligibilityRequester alloc];
-  v4 = [(COSSatellitePairingHelper *)self _accountManager];
-  v5 = [v3 initWithAccountManager:v4];
+  _accountManager = [(COSSatellitePairingHelper *)self _accountManager];
+  v5 = [v3 initWithAccountManager:_accountManager];
 
   return v5;
 }
@@ -267,14 +267,14 @@ LABEL_24:
   return accountManager;
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 accountStore];
-  v6 = [v5 aa_primaryAppleAccount];
+  accountStore = [managerCopy accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
 
-  if (v6)
+  if (aa_primaryAppleAccount)
   {
     v12 = 0;
     v13 = &v12;
@@ -297,7 +297,7 @@ LABEL_24:
       _Unwind_Resume(v11);
     }
 
-    [v4 setObject:v6 forKeyedSubscript:*v7];
+    [v4 setObject:aa_primaryAppleAccount forKeyedSubscript:*v7];
   }
 
   v9 = [v4 copy];
@@ -305,23 +305,23 @@ LABEL_24:
   return v9;
 }
 
-+ (void)popToLoginControllerFromController:(id)a3
++ (void)popToLoginControllerFromController:(id)controller
 {
-  v30 = a3;
-  v3 = [UIApp setupController];
-  v4 = [v3 navigationController];
+  controllerCopy = controller;
+  setupController = [UIApp setupController];
+  navigationController = [setupController navigationController];
 
-  v29 = v4;
-  v5 = [v4 viewControllers];
-  v6 = [v5 mutableCopy];
+  v29 = navigationController;
+  viewControllers = [navigationController viewControllers];
+  v6 = [viewControllers mutableCopy];
 
-  v7 = [UIApp setupController];
+  setupController2 = [UIApp setupController];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v8 = [v7 buddyControllers];
-  v9 = [v8 countByEnumeratingWithState:&v35 objects:v42 count:16];
+  buddyControllers = [setupController2 buddyControllers];
+  v9 = [buddyControllers countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v9)
   {
     v10 = v9;
@@ -333,7 +333,7 @@ LABEL_24:
       {
         if (*v36 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(buddyControllers);
         }
 
         v14 = *(*(&v35 + 1) + 8 * i);
@@ -346,7 +346,7 @@ LABEL_24:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v35 objects:v42 count:16];
+      v10 = [buddyControllers countByEnumeratingWithState:&v35 objects:v42 count:16];
     }
 
     while (v10);
@@ -361,27 +361,27 @@ LABEL_24:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v17 = [v6 reverseObjectEnumerator];
-  v18 = [v17 countByEnumeratingWithState:&v31 objects:v41 count:16];
+  reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+  v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v31 objects:v41 count:16];
   if (v18)
   {
     v19 = v18;
     v20 = *v32;
-    v28 = v7;
+    v28 = setupController2;
     while (2)
     {
       for (j = 0; j != v19; j = j + 1)
       {
         if (*v32 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v22 = *(*(&v31 + 1) + 8 * j);
         v23 = objc_opt_class();
         if ([v23 isEqual:objc_opt_class()])
         {
-          v7 = v28;
+          setupController2 = v28;
           [v11 setDelegate:v28];
           [v6 removeObject:v22];
           goto LABEL_22;
@@ -390,8 +390,8 @@ LABEL_24:
         [v6 removeObject:v22];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v31 objects:v41 count:16];
-      v7 = v28;
+      v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v31 objects:v41 count:16];
+      setupController2 = v28;
       if (v19)
       {
         continue;
@@ -405,32 +405,32 @@ LABEL_22:
 
   if (v11)
   {
-    v24 = [v11 viewController];
+    viewController = [v11 viewController];
     v25 = pbb_accountsignin_log();
-    v26 = v30;
+    v26 = controllerCopy;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v40 = v24;
+      v40 = viewController;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "sign in vc: %@", buf, 0xCu);
     }
 
-    [v6 addObject:v24];
+    [v6 addObject:viewController];
     [v29 setViewControllers:v6 animated:1];
   }
 
   else
   {
     v27 = pbb_accountsignin_log();
-    v26 = v30;
+    v26 = controllerCopy;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "COSTinkeriCloudLoginViewController not in navstack.  Pushing to it", buf, 2u);
     }
 
-    v24 = [v30 delegate];
-    [v24 buddyControllerDone:v30 nextControllerClass:objc_opt_class()];
+    viewController = [controllerCopy delegate];
+    [viewController buddyControllerDone:controllerCopy nextControllerClass:objc_opt_class()];
   }
 }
 

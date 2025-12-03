@@ -1,14 +1,14 @@
 @interface EDThreadMigratorManager
 + (OS_os_log)log;
 - (EDThreadMigratorManager)init;
-- (id)findThreadMigratorWithThreadScope:(id)a3 inMemoryThreadQueryHandler:(id *)a4;
-- (void)_removeThreadMigratorWithThreadScope:(id)a3;
-- (void)addThreadMigrator:(id)a3 inMemoryThreadQueryHandler:(id)a4 withThreadScope:(id)a5;
+- (id)findThreadMigratorWithThreadScope:(id)scope inMemoryThreadQueryHandler:(id *)handler;
+- (void)_removeThreadMigratorWithThreadScope:(id)scope;
+- (void)addThreadMigrator:(id)migrator inMemoryThreadQueryHandler:(id)handler withThreadScope:(id)scope;
 - (void)dealloc;
 - (void)init;
 - (void)tearDown;
-- (void)threadMigratorDidComplete:(id)a3;
-- (void)threadMigratorDidFail:(id)a3;
+- (void)threadMigratorDidComplete:(id)complete;
+- (void)threadMigratorDidFail:(id)fail;
 @end
 
 @implementation EDThreadMigratorManager
@@ -45,7 +45,7 @@
   block[1] = 3221225472;
   block[2] = __30__EDThreadMigratorManager_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_101 != -1)
   {
     dispatch_once(&log_onceToken_101, block);
@@ -68,7 +68,7 @@ void __30__EDThreadMigratorManager_log__block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 134217984;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1C61EF000, a2, OS_LOG_TYPE_DEBUG, "%p: EDThreadMigratorManager deallocating", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -81,8 +81,8 @@ void __30__EDThreadMigratorManager_log__block_invoke(uint64_t a1)
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(NSMutableDictionary *)self->_threadMigrators allValues];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  allValues = [(NSMutableDictionary *)self->_threadMigrators allValues];
+  v4 = [allValues countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v4)
   {
     v5 = *v17;
@@ -93,14 +93,14 @@ void __30__EDThreadMigratorManager_log__block_invoke(uint64_t a1)
       {
         if (*v17 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v16 + 1) + 8 * v6++) cancel];
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v4);
@@ -110,8 +110,8 @@ void __30__EDThreadMigratorManager_log__block_invoke(uint64_t a1)
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(NSMutableDictionary *)self->_queryHandlers allValues];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v20 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_queryHandlers allValues];
+  v8 = [allValues2 countByEnumeratingWithState:&v12 objects:v20 count:16];
   if (v8)
   {
     v9 = *v13;
@@ -122,14 +122,14 @@ void __30__EDThreadMigratorManager_log__block_invoke(uint64_t a1)
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues2);
         }
 
         [*(*(&v12 + 1) + 8 * v10++) cancel];
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v12 objects:v20 count:16];
+      v8 = [allValues2 countByEnumeratingWithState:&v12 objects:v20 count:16];
     }
 
     while (v8);
@@ -141,41 +141,41 @@ void __30__EDThreadMigratorManager_log__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addThreadMigrator:(id)a3 inMemoryThreadQueryHandler:(id)a4 withThreadScope:(id)a5
+- (void)addThreadMigrator:(id)migrator inMemoryThreadQueryHandler:(id)handler withThreadScope:(id)scope
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  migratorCopy = migrator;
+  handlerCopy = handler;
+  scopeCopy = scope;
   os_unfair_lock_lock(&self->_lock);
-  if (v9)
+  if (migratorCopy)
   {
-    if (v10)
+    if (handlerCopy)
     {
-      if (v11)
+      if (scopeCopy)
       {
 LABEL_4:
-        [(NSMutableDictionary *)self->_threadMigrators setObject:v9 forKeyedSubscript:v11];
-        [(NSMutableDictionary *)self->_queryHandlers setObject:v10 forKeyedSubscript:v11];
+        [(NSMutableDictionary *)self->_threadMigrators setObject:migratorCopy forKeyedSubscript:scopeCopy];
+        [(NSMutableDictionary *)self->_queryHandlers setObject:handlerCopy forKeyedSubscript:scopeCopy];
         os_unfair_lock_unlock(&self->_lock);
-        [v9 startObservingWithObserver:self];
+        [migratorCopy startObservingWithObserver:self];
         goto LABEL_6;
       }
     }
 
     else
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"EDThreadMigratorManager.m" lineNumber:66 description:@"EDInMemoryThreadQueryHandler is missing"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EDThreadMigratorManager.m" lineNumber:66 description:@"EDInMemoryThreadQueryHandler is missing"];
 
-      if (v11)
+      if (scopeCopy)
       {
         goto LABEL_4;
       }
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"EDThreadMigratorManager.m" lineNumber:67 description:@"EMThreadScope is missing"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EDThreadMigratorManager.m" lineNumber:67 description:@"EMThreadScope is missing"];
 
     goto LABEL_4;
   }
@@ -186,26 +186,26 @@ LABEL_6:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v16 = 134218754;
-    v17 = self;
+    selfCopy = self;
     v18 = 2048;
-    v19 = v9;
+    v19 = migratorCopy;
     v20 = 2048;
-    v21 = v10;
+    v21 = handlerCopy;
     v22 = 2112;
-    v23 = v11;
+    v23 = scopeCopy;
     _os_log_debug_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_DEBUG, "%p: Added thread migrator %p, handler %p, thread scope\n%@", &v16, 0x2Au);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeThreadMigratorWithThreadScope:(id)a3
+- (void)_removeThreadMigratorWithThreadScope:(id)scope
 {
-  v4 = a3;
+  scopeCopy = scope;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_threadMigrators objectForKeyedSubscript:v4];
-  [(NSMutableDictionary *)self->_threadMigrators setObject:0 forKeyedSubscript:v4];
-  [(NSMutableDictionary *)self->_queryHandlers setObject:0 forKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_threadMigrators objectForKeyedSubscript:scopeCopy];
+  [(NSMutableDictionary *)self->_threadMigrators setObject:0 forKeyedSubscript:scopeCopy];
+  [(NSMutableDictionary *)self->_queryHandlers setObject:0 forKeyedSubscript:scopeCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
@@ -215,20 +215,20 @@ LABEL_6:
   v6 = +[EDThreadMigratorManager log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(EDThreadMigratorManager *)self _removeThreadMigratorWithThreadScope:v4, v6];
+    [(EDThreadMigratorManager *)self _removeThreadMigratorWithThreadScope:scopeCopy, v6];
   }
 }
 
-- (id)findThreadMigratorWithThreadScope:(id)a3 inMemoryThreadQueryHandler:(id *)a4
+- (id)findThreadMigratorWithThreadScope:(id)scope inMemoryThreadQueryHandler:(id *)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  scopeCopy = scope;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NSMutableDictionary *)self->_threadMigrators objectForKeyedSubscript:v6];
-  if (a4)
+  v7 = [(NSMutableDictionary *)self->_threadMigrators objectForKeyedSubscript:scopeCopy];
+  if (handler)
   {
-    v8 = [(NSMutableDictionary *)self->_queryHandlers objectForKeyedSubscript:v6];
-    *a4 = v8;
+    v8 = [(NSMutableDictionary *)self->_queryHandlers objectForKeyedSubscript:scopeCopy];
+    *handler = v8;
   }
 
   else
@@ -241,13 +241,13 @@ LABEL_6:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v12 = 134218754;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
     v15 = v7;
     v16 = 2048;
     v17 = v8;
     v18 = 2112;
-    v19 = v6;
+    v19 = scopeCopy;
     _os_log_debug_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEBUG, "%p: Found thread migrator %p, handler %p, for thread scope\n%@", &v12, 0x2Au);
   }
 
@@ -256,15 +256,15 @@ LABEL_6:
   return v7;
 }
 
-- (void)threadMigratorDidComplete:(id)a3
+- (void)threadMigratorDidComplete:(id)complete
 {
-  v4 = [a3 threadScope];
+  threadScope = [complete threadScope];
   [(EDThreadMigratorManager *)self _removeThreadMigratorWithThreadScope:?];
 }
 
-- (void)threadMigratorDidFail:(id)a3
+- (void)threadMigratorDidFail:(id)fail
 {
-  v4 = [a3 threadScope];
+  threadScope = [fail threadScope];
   [(EDThreadMigratorManager *)self _removeThreadMigratorWithThreadScope:?];
 }
 
@@ -272,7 +272,7 @@ LABEL_6:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 134217984;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1C61EF000, a2, OS_LOG_TYPE_DEBUG, "%p: EDThreadMigratorManager initializing", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

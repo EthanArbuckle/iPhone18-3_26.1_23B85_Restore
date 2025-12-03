@@ -1,44 +1,44 @@
 @interface SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier
-- (BOOL)shouldInterruptForActivity:(id)a3;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withPerspectiveAngle:(CGPoint)a5;
-- (SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier)initWithFromAppLayout:(id)a3 toAppLayout:(id)a4;
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3;
-- (SBWindowingItemFrame)frameForItem:(SEL)a3;
-- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForItem:(id)a3;
+- (BOOL)shouldInterruptForActivity:(id)activity;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)role inAppLayout:(id)layout withPerspectiveAngle:(CGPoint)angle;
+- (SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier)initWithFromAppLayout:(id)layout toAppLayout:(id)appLayout;
+- (SBWindowingItemCorners)cornersForItem:(SEL)item;
+- (SBWindowingItemFrame)frameForItem:(SEL)item;
+- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)item;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForItem:(id)item;
 - (void)didComplete;
-- (void)timerFired:(id)a3;
-- (void)transitionDidUpdate:(id)a3;
-- (void)transitionWillBegin:(id)a3;
+- (void)timerFired:(id)fired;
+- (void)transitionDidUpdate:(id)update;
+- (void)transitionWillBegin:(id)begin;
 - (void)willBegin;
 @end
 
 @implementation SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier
 
-- (SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier)initWithFromAppLayout:(id)a3 toAppLayout:(id)a4
+- (SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier)initWithFromAppLayout:(id)layout toAppLayout:(id)appLayout
 {
-  v8 = a3;
-  v9 = a4;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v17.receiver = self;
   v17.super_class = SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier;
   v10 = [(SBWindowingModifier *)&v17 init];
   if (v10)
   {
-    if (v8)
+    if (layoutCopy)
     {
-      if (v9)
+      if (appLayoutCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v10->_fromAppLayout, a3);
-        objc_storeStrong(&v10->_toAppLayout, a4);
+        objc_storeStrong(&v10->_fromAppLayout, layout);
+        objc_storeStrong(&v10->_toAppLayout, appLayout);
         v10->_animationPhase = 0;
         v11 = MEMORY[0x277CCACA8];
-        v12 = [MEMORY[0x277CCAD78] UUID];
-        v13 = [v12 UUIDString];
-        v14 = [v11 stringWithFormat:@"%@:%@", @"SBContinuousExposeFullScreenCrossblurTransitionSwitcherModifierTimerEventReason", v13];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        uUIDString = [uUID UUIDString];
+        v14 = [v11 stringWithFormat:@"%@:%@", @"SBContinuousExposeFullScreenCrossblurTransitionSwitcherModifierTimerEventReason", uUIDString];
         timerReason = v10->_timerReason;
         v10->_timerReason = v14;
 
@@ -49,7 +49,7 @@ LABEL_4:
     else
     {
       [SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier initWithFromAppLayout:a2 toAppLayout:v10];
-      if (v9)
+      if (appLayoutCopy)
       {
         goto LABEL_4;
       }
@@ -66,16 +66,16 @@ LABEL_5:
 
 - (void)willBegin
 {
-  v3 = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self displayItemInSlideOver];
-  v4 = v3;
+  displayItemInSlideOver = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self displayItemInSlideOver];
+  v4 = displayItemInSlideOver;
   toAppLayout = self->_toAppLayout;
-  if (v3)
+  if (displayItemInSlideOver)
   {
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __70__SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier_willBegin__block_invoke;
     v26[3] = &unk_2783A8C90;
-    v6 = v3;
+    v6 = displayItemInSlideOver;
     v27 = v6;
     v7 = [(SBAppLayout *)toAppLayout appLayoutWithItemsPassingTest:v26];
     adjustedToAppLayout = self->_adjustedToAppLayout;
@@ -120,43 +120,43 @@ LABEL_5:
   self->_toAppLayoutInitialCornerRadius = v15;
 }
 
-- (BOOL)shouldInterruptForActivity:(id)a3
+- (BOOL)shouldInterruptForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_transitionID && [v4 isTransitionEvent])
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (self->_transitionID && [activityCopy isTransitionEvent])
   {
-    v6 = [v5 transitionID];
+    transitionID = [v5 transitionID];
     if (BSEqualObjects())
     {
-      v7 = [v5 isGestureEvent];
+      isGestureEvent = [v5 isGestureEvent];
     }
 
     else
     {
-      v7 = 1;
+      isGestureEvent = 1;
     }
   }
 
   else
   {
-    v7 = [v5 isGestureEvent];
+    isGestureEvent = [v5 isGestureEvent];
   }
 
-  return v7;
+  return isGestureEvent;
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v4 = [a3 transitionID];
+  transitionID = [begin transitionID];
   transitionID = self->_transitionID;
-  self->_transitionID = v4;
+  self->_transitionID = transitionID;
 
   v6 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
   [(SBWindowingModifier *)self appendResponse:v6];
 }
 
-- (void)transitionDidUpdate:(id)a3
+- (void)transitionDidUpdate:(id)update
 {
   if (!self->_animationPhase)
   {
@@ -171,11 +171,11 @@ LABEL_5:
   [(SBWindowingModifier *)self appendResponse:v3];
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 reason];
-  v5 = [v4 isEqualToString:self->_timerReason];
+  reason = [fired reason];
+  v5 = [reason isEqualToString:self->_timerReason];
 
   if (v5)
   {
@@ -253,14 +253,14 @@ LABEL_13:
   }
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   v16.receiver = self;
   v16.super_class = SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier;
-  v5 = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)&v16 adjustedAppLayoutsForAppLayouts:v4];
-  v6 = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self displayItemInSlideOver];
-  if (v6)
+  v5 = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)&v16 adjustedAppLayoutsForAppLayouts:layoutsCopy];
+  displayItemInSlideOver = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self displayItemInSlideOver];
+  if (displayItemInSlideOver)
   {
     v7 = [v5 mutableCopy];
     v8 = [v5 indexOfObject:self->_fromAppLayout];
@@ -277,7 +277,7 @@ LABEL_13:
       v10 = v9;
     }
 
-    v12 = [(SBAppLayout *)self->_toAppLayout leafAppLayoutForItem:v6];
+    v12 = [(SBAppLayout *)self->_toAppLayout leafAppLayoutForItem:displayItemInSlideOver];
     slideOverAppLayout = self->_slideOverAppLayout;
     self->_slideOverAppLayout = v12;
 
@@ -291,13 +291,13 @@ LABEL_13:
   {
     v15.receiver = self;
     v15.super_class = SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier;
-    v7 = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)&v15 adjustedAppLayoutsForAppLayouts:v4];
+    v7 = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)&v15 adjustedAppLayoutsForAppLayouts:layoutsCopy];
   }
 
   return v7;
 }
 
-- (SBWindowingItemFrame)frameForItem:(SEL)a3
+- (SBWindowingItemFrame)frameForItem:(SEL)item
 {
   v6 = a4;
   if ([v6 isAppLayout])
@@ -311,8 +311,8 @@ LABEL_13:
     v36.receiver = self;
     v36.super_class = SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier;
     [(SBWindowingItemFrame *)&v36 frameForItem:v6];
-    v7 = [v6 appLayout];
-    if ([v7 isEqual:self->_adjustedFromAppLayout])
+    appLayout = [v6 appLayout];
+    if ([appLayout isEqual:self->_adjustedFromAppLayout])
     {
       animationPhase = self->_animationPhase;
       if (animationPhase > 2)
@@ -325,12 +325,12 @@ LABEL_13:
 
       else
       {
-        v9 = [(SBWindowingModifier *)self flexibleAutoLayoutSpaceForAppLayout:v7];
+        v9 = [(SBWindowingModifier *)self flexibleAutoLayoutSpaceForAppLayout:appLayout];
         [v9 boundingBox];
 
-        v10 = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self switcherSettings];
-        v11 = [v10 animationSettings];
-        [v11 crossblurDosidoLargeScale];
+        switcherSettings = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self switcherSettings];
+        animationSettings = [switcherSettings animationSettings];
+        [animationSettings crossblurDosidoLargeScale];
         v13 = v12;
 
         SBRectWithSize();
@@ -349,14 +349,14 @@ LABEL_13:
       }
     }
 
-    else if ([v7 isEqual:self->_adjustedToAppLayout])
+    else if ([appLayout isEqual:self->_adjustedToAppLayout])
     {
       v25 = self->_animationPhase;
       if (v25 == 1)
       {
-        v31 = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self switcherSettings];
-        v32 = [v31 animationSettings];
-        [v32 crossblurDosidoSmallScale];
+        switcherSettings2 = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self switcherSettings];
+        animationSettings2 = [switcherSettings2 animationSettings];
+        [animationSettings2 crossblurDosidoSmallScale];
         v34 = v33;
 
         retstr->scale.x = v34;
@@ -397,11 +397,11 @@ LABEL_13:
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  v9 = [v8 itemForLayoutRole:a3];
-  v10 = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self displayItemInSlideOver];
+  layoutCopy = layout;
+  v9 = [layoutCopy itemForLayoutRole:role];
+  displayItemInSlideOver = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self displayItemInSlideOver];
   v11 = BSEqualObjects();
 
   v12 = 1.0;
@@ -431,7 +431,7 @@ LABEL_13:
 LABEL_8:
         v16.receiver = self;
         v16.super_class = SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier;
-        [(SBWindowingModifier *)&v16 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+        [(SBWindowingModifier *)&v16 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
         v12 = v14;
       }
     }
@@ -442,10 +442,10 @@ LABEL_9:
   return v12;
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 isEqual:self->_adjustedFromAppLayout] && self->_animationPhase <= 2)
   {
@@ -457,18 +457,18 @@ LABEL_9:
   {
     v16.receiver = self;
     v16.super_class = SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier;
-    [(SBWindowingModifier *)&v16 perspectiveAngleForIndex:a3];
+    [(SBWindowingModifier *)&v16 perspectiveAngleForIndex:index];
     v8 = v9;
     v7 = v10;
   }
 
   else
   {
-    v13 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
-    v14 = [(SBWindowingModifier *)self windowingConfiguration];
-    [v14 stripTiltAngle];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    windowingConfiguration = [(SBWindowingModifier *)self windowingConfiguration];
+    [windowingConfiguration stripTiltAngle];
     v7 = v15;
-    if (v13 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v7 = -v15;
     }
@@ -483,13 +483,13 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withPerspectiveAngle:(CGPoint)a5
+- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)role inAppLayout:(id)layout withPerspectiveAngle:(CGPoint)angle
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
-  v10 = [v9 itemForLayoutRole:a3];
-  v11 = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self displayItemInSlideOver];
+  y = angle.y;
+  x = angle.x;
+  layoutCopy = layout;
+  v10 = [layoutCopy itemForLayoutRole:role];
+  displayItemInSlideOver = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self displayItemInSlideOver];
   if (BSEqualObjects())
   {
 
@@ -515,11 +515,11 @@ LABEL_3:
 
   if ([(SBAppLayout *)self->_adjustedToAppLayout containsItem:v10]&& !self->_animationPhase)
   {
-    v19 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
-    v20 = [(SBWindowingModifier *)self windowingConfiguration];
-    [v20 stripTiltAngle];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    windowingConfiguration = [(SBWindowingModifier *)self windowingConfiguration];
+    [windowingConfiguration stripTiltAngle];
     v12 = v21;
-    if (v19 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v12 = -v21;
     }
@@ -531,7 +531,7 @@ LABEL_3:
   {
     v22.receiver = self;
     v22.super_class = SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier;
-    [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)&v22 perspectiveAngleForLayoutRole:a3 inAppLayout:v9 withPerspectiveAngle:x, y];
+    [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)&v22 perspectiveAngleForLayoutRole:role inAppLayout:layoutCopy withPerspectiveAngle:x, y];
     v13 = v15;
     v12 = v16;
   }
@@ -545,7 +545,7 @@ LABEL_11:
   return result;
 }
 
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3
+- (SBWindowingItemCorners)cornersForItem:(SEL)item
 {
   v6 = a4;
   *&retstr->cornerRadii.topLeft = 0u;
@@ -556,12 +556,12 @@ LABEL_11:
   [(SBWindowingItemCorners *)&v13 cornersForItem:v6];
   if ([v6 isAppLayout])
   {
-    v7 = [v6 appLayout];
-    if ([v7 isEqual:self->_adjustedFromAppLayout])
+    appLayout = [v6 appLayout];
+    if ([appLayout isEqual:self->_adjustedFromAppLayout])
     {
       if (self->_animationPhase > 2)
       {
-        if (![v7 isEqual:self->_adjustedToAppLayout] || self->_animationPhase)
+        if (![appLayout isEqual:self->_adjustedToAppLayout] || self->_animationPhase)
         {
           goto LABEL_8;
         }
@@ -569,7 +569,7 @@ LABEL_11:
 
       else
       {
-        [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:v7];
+        [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:appLayout];
         [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self frameForItem:v6];
       }
 
@@ -586,7 +586,7 @@ LABEL_8:
   return result;
 }
 
-- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)a3
+- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)item
 {
   v6 = a4;
   *&retstr->titleAndIconOpacity = 0u;
@@ -597,8 +597,8 @@ LABEL_8:
   [(SBWindowingItemTitleStyle *)&v9 titleStyleForItem:v6];
   if ([v6 isAppLayout])
   {
-    v7 = [v6 appLayout];
-    if ([v7 isEqual:self->_adjustedFromAppLayout] && self->_animationPhase < 3 || objc_msgSend(v7, "isEqual:", self->_adjustedToAppLayout) && self->_animationPhase <= 1)
+    appLayout = [v6 appLayout];
+    if ([appLayout isEqual:self->_adjustedFromAppLayout] && self->_animationPhase < 3 || objc_msgSend(appLayout, "isEqual:", self->_adjustedToAppLayout) && self->_animationPhase <= 1)
     {
       retstr->titleAndIconOpacity = 0.0;
     }
@@ -607,17 +607,17 @@ LABEL_8:
   return result;
 }
 
-- (id)animationAttributesForItem:(id)a3
+- (id)animationAttributesForItem:(id)item
 {
   v11.receiver = self;
   v11.super_class = SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier;
-  v4 = [(SBWindowingModifier *)&v11 animationAttributesForItem:a3];
+  v4 = [(SBWindowingModifier *)&v11 animationAttributesForItem:item];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
-  v8 = [v7 crossblurDosidoSettings];
-  v9 = [v8 copy];
+  switcherSettings = [(SBFullScreenCrossBlurBehindSlideOverItemWindowingModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  crossblurDosidoSettings = [animationSettings crossblurDosidoSettings];
+  v9 = [crossblurDosidoSettings copy];
 
   [v9 setResponse:0.45];
   [v9 setDampingRatio:0.92];

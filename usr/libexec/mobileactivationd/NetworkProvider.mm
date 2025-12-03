@@ -25,8 +25,8 @@
 
 + (id)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!sharedInstance_networkProvider)
   {
     v3 = objc_alloc_init(NetworkProvider);
@@ -34,7 +34,7 @@
     sharedInstance_networkProvider = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = sharedInstance_networkProvider;
 
@@ -43,11 +43,11 @@
 
 - (BOOL)networkReachable
 {
-  v2 = [(NetworkProvider *)self networkPathEvaluator];
-  v3 = [(NWPathEvaluator *)v2 path];
-  v4 = [v3 status];
+  networkPathEvaluator = [(NetworkProvider *)self networkPathEvaluator];
+  path = [(NWPathEvaluator *)networkPathEvaluator path];
+  status = [path status];
 
-  return ((v4 - 1) & 0xFFFFFFFFFFFFFFFDLL) == 0;
+  return ((status - 1) & 0xFFFFFFFFFFFFFFFDLL) == 0;
 }
 
 @end

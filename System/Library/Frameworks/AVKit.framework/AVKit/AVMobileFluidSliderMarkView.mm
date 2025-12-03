@@ -1,7 +1,7 @@
 @interface AVMobileFluidSliderMarkView
 - (AVMobileFluidSliderMarkView)init;
 - (void)layoutSubviews;
-- (void)setMarkColor:(id)a3;
+- (void)setMarkColor:(id)color;
 @end
 
 @implementation AVMobileFluidSliderMarkView
@@ -17,13 +17,13 @@
   [(CALayer *)self->_markColorLayer setFrame:v3, v4];
 }
 
-- (void)setMarkColor:(id)a3
+- (void)setMarkColor:(id)color
 {
-  v5 = a3;
-  if (self->_markColor != v5)
+  colorCopy = color;
+  if (self->_markColor != colorCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_markColor, a3);
+    v10 = colorCopy;
+    objc_storeStrong(&self->_markColor, color);
     [MEMORY[0x1E69DD250] inheritedAnimationDuration];
     v7 = v6;
     [MEMORY[0x1E6979518] begin];
@@ -43,7 +43,7 @@
     [(CALayer *)markColorLayer setBackgroundColor:[(UIColor *)v10 CGColor]];
     [(AVMobileFluidSliderMarkView *)self setBackgroundColor:v10];
     [MEMORY[0x1E6979518] commit];
-    v5 = v10;
+    colorCopy = v10;
   }
 }
 
@@ -54,15 +54,15 @@
   v2 = [(AVMobileFluidSliderMarkView *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] blackColor];
-    [(AVMobileFluidSliderMarkView *)v2 setBackgroundColor:v3];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(AVMobileFluidSliderMarkView *)v2 setBackgroundColor:blackColor];
 
-    v4 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     markColorLayer = v2->_markColorLayer;
-    v2->_markColorLayer = v4;
+    v2->_markColorLayer = layer;
 
-    v6 = [(AVMobileFluidSliderMarkView *)v2 layer];
-    [v6 addSublayer:v2->_markColorLayer];
+    layer2 = [(AVMobileFluidSliderMarkView *)v2 layer];
+    [layer2 addSublayer:v2->_markColorLayer];
   }
 
   return v2;

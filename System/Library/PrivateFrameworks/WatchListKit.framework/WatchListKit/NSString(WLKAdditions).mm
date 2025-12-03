@@ -7,9 +7,9 @@
 
 - (unint64_t)wlk_unsignedLongLongValue
 {
-  v1 = [a1 UTF8String];
+  uTF8String = [self UTF8String];
 
-  return strtoull(v1, 0, 0);
+  return strtoull(uTF8String, 0, 0);
 }
 
 - (id)wlk_stringByAppendingPathComponents:()WLKAdditions
@@ -22,7 +22,7 @@
   }
 
   v5 = objc_alloc(MEMORY[0x277CCAB68]);
-  v6 = [a1 stringByTrimmingCharactersInSet:wlk_stringByAppendingPathComponents___slash];
+  v6 = [self stringByTrimmingCharactersInSet:wlk_stringByAppendingPathComponents___slash];
   v7 = [v5 initWithString:v6];
 
   v19 = 0u;

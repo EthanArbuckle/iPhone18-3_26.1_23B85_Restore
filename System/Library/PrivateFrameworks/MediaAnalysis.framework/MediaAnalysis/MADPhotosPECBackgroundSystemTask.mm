@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = sub_100006B10;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B80A8 != -1)
   {
     dispatch_once(&qword_1002B80A8, block);
@@ -24,9 +24,9 @@
 
 - (void)ensureTaskSubmission
 {
-  v2 = [objc_opt_class() identifier];
+  identifier = [objc_opt_class() identifier];
   v3 = +[BGSystemTaskScheduler sharedScheduler];
-  v4 = [v3 taskRequestForIdentifier:v2];
+  v4 = [v3 taskRequestForIdentifier:identifier];
 
   if (v4)
   {
@@ -36,7 +36,7 @@
       if (os_log_type_enabled(&_os_log_default, v5))
       {
         v6 = 138412290;
-        v7 = v2;
+        v7 = identifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "%@ task already exists, no need to reschedule", &v6, 0xCu);
       }
     }
@@ -46,7 +46,7 @@
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
-      sub_100006CFC(v2);
+      sub_100006CFC(identifier);
     }
 
     +[VCPMADPECSingleRequestProcessingTask reschedule];

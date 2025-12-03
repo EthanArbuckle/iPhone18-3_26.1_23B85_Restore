@@ -1,6 +1,6 @@
 @interface _NFXPCSession
 - (BOOL)resume;
-- (BOOL)suspendWithInfo:(id)a3;
+- (BOOL)suspendWithInfo:(id)info;
 - (NSXPCConnection)connection;
 - (id)bundleIdentifier;
 - (id)checkSessionAllowed;
@@ -8,12 +8,12 @@
 - (id)debugDescription;
 - (id)powerAssertionIdentifier;
 - (int)processIdentifier;
-- (void)activateWithToken:(id)a3 completion:(id)a4;
-- (void)createHandoffTokenWithCompletion:(id)a3;
-- (void)didStartSession:(id)a3;
-- (void)endSession:(id)a3;
+- (void)activateWithToken:(id)token completion:(id)completion;
+- (void)createHandoffTokenWithCompletion:(id)completion;
+- (void)didStartSession:(id)session;
+- (void)endSession:(id)session;
 - (void)handleXPCInvalidation;
-- (void)prioritizeSessionWithCompletion:(id)a3;
+- (void)prioritizeSessionWithCompletion:(id)completion;
 - (void)releaseObjects;
 @end
 
@@ -23,27 +23,27 @@
 {
   v6.receiver = self;
   v6.super_class = _NFXPCSession;
-  v2 = [(_NFSession *)&v6 checkSessionAllowed];
-  v3 = v2;
-  if (v2)
+  checkSessionAllowed = [(_NFSession *)&v6 checkSessionAllowed];
+  v3 = checkSessionAllowed;
+  if (checkSessionAllowed)
   {
-    v4 = v2;
+    v4 = checkSessionAllowed;
   }
 
   return v3;
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v8.receiver = self;
   v8.super_class = _NFXPCSession;
   [(_NFSession *)&v8 didStartSession:?];
-  if (!a3)
+  if (!session)
   {
     v5 = +[_NFHardwareManager sharedHardwareManager];
-    v6 = [v5 expressModeManager];
+    expressModeManager = [v5 expressModeManager];
     expressModeManager = self->_expressModeManager;
-    self->_expressModeManager = v6;
+    self->_expressModeManager = expressModeManager;
   }
 }
 
@@ -57,16 +57,16 @@
   [(_NFSession *)&v4 releaseObjects];
 }
 
-- (BOOL)suspendWithInfo:(id)a3
+- (BOOL)suspendWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v8.receiver = self;
   v8.super_class = _NFXPCSession;
-  v5 = [(_NFSession *)&v8 suspendWithInfo:v4];
+  v5 = [(_NFSession *)&v8 suspendWithInfo:infoCopy];
   if (v5)
   {
-    v6 = [(_NFXPCSession *)self remoteObject];
-    [v6 handleSessionSuspended:v4];
+    remoteObject = [(_NFXPCSession *)self remoteObject];
+    [remoteObject handleSessionSuspended:infoCopy];
   }
 
   return v5;
@@ -76,41 +76,41 @@
 {
   v6.receiver = self;
   v6.super_class = _NFXPCSession;
-  v3 = [(_NFSession *)&v6 resume];
-  if (v3)
+  resume = [(_NFSession *)&v6 resume];
+  if (resume)
   {
-    v4 = [(_NFXPCSession *)self remoteObject];
-    [v4 handleSessionResumed];
+    remoteObject = [(_NFXPCSession *)self remoteObject];
+    [remoteObject handleSessionResumed];
   }
 
-  return v3;
+  return resume;
 }
 
 - (id)powerAssertionIdentifier
 {
-  v3 = [(_NFXPCSession *)self clientName];
-  v4 = v3;
-  if (!v3 || ![(__CFString *)v3 length])
+  clientName = [(_NFXPCSession *)self clientName];
+  v4 = clientName;
+  if (!clientName || ![(__CFString *)clientName length])
   {
 
     v4 = @"unavailable";
   }
 
   v5 = [NSString alloc];
-  v6 = [(_NFXPCSession *)self processIdentifier];
+  processIdentifier = [(_NFXPCSession *)self processIdentifier];
   ClassName = object_getClassName(self);
   v10.receiver = self;
   v10.super_class = _NFXPCSession;
-  v8 = [v5 initWithFormat:@"process:%@, pid:%d, %s, sessionID:%d", v4, v6, ClassName, -[_NFSession sessionID](&v10, "sessionID")];
+  v8 = [v5 initWithFormat:@"process:%@, pid:%d, %s, sessionID:%d", v4, processIdentifier, ClassName, -[_NFSession sessionID](&v10, "sessionID")];
 
   return v8;
 }
 
 - (id)clientName
 {
-  v3 = [(_NFXPCSession *)self connection];
+  connection = [(_NFXPCSession *)self connection];
 
-  if (!v3 || (-[_NFXPCSession connection](self, "connection"), v4 = objc_claimAutoreleasedReturnValue(), [v4 NF_clientName], v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  if (!connection || (-[_NFXPCSession connection](self, "connection"), v4 = objc_claimAutoreleasedReturnValue(), [v4 NF_clientName], v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
   {
     v5 = &stru_10031EA18;
   }
@@ -121,30 +121,30 @@
 - (id)debugDescription
 {
   v3 = [NSString alloc];
-  v4 = [(_NFSession *)self sessionUID];
-  v5 = [(_NFXPCSession *)self clientName];
-  v6 = [v3 initWithFormat:@"%@, %@", v4, v5];
+  sessionUID = [(_NFSession *)self sessionUID];
+  clientName = [(_NFXPCSession *)self clientName];
+  v6 = [v3 initWithFormat:@"%@, %@", sessionUID, clientName];
 
   return v6;
 }
 
 - (int)processIdentifier
 {
-  v2 = [(_NFXPCSession *)self connection];
-  v3 = [v2 processIdentifier];
+  connection = [(_NFXPCSession *)self connection];
+  processIdentifier = [connection processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (id)bundleIdentifier
 {
-  v3 = [(_NFXPCSession *)self connection];
+  connection = [(_NFXPCSession *)self connection];
 
-  if (v3)
+  if (connection)
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v5 = [WeakRetained NF_userInfo];
-    v6 = [v5 objectForKeyedSubscript:@"BundleIdentifier"];
+    nF_userInfo = [WeakRetained NF_userInfo];
+    v6 = [nF_userInfo objectForKeyedSubscript:@"BundleIdentifier"];
 
     if (v6)
     {
@@ -175,32 +175,32 @@
   objc_sync_exit(obj);
 }
 
-- (void)endSession:(id)a3
+- (void)endSession:(id)session
 {
   v3.receiver = self;
   v3.super_class = _NFXPCSession;
-  [(_NFSession *)&v3 endSession:a3];
+  [(_NFSession *)&v3 endSession:session];
 }
 
-- (void)prioritizeSessionWithCompletion:(id)a3
+- (void)prioritizeSessionWithCompletion:(id)completion
 {
   v3.receiver = self;
   v3.super_class = _NFXPCSession;
-  [(_NFSession *)&v3 prioritizeSessionWithCompletion:a3];
+  [(_NFSession *)&v3 prioritizeSessionWithCompletion:completion];
 }
 
-- (void)activateWithToken:(id)a3 completion:(id)a4
+- (void)activateWithToken:(id)token completion:(id)completion
 {
   v4.receiver = self;
   v4.super_class = _NFXPCSession;
-  [(_NFSession *)&v4 activateWithToken:a3 completion:a4];
+  [(_NFSession *)&v4 activateWithToken:token completion:completion];
 }
 
-- (void)createHandoffTokenWithCompletion:(id)a3
+- (void)createHandoffTokenWithCompletion:(id)completion
 {
   v3.receiver = self;
   v3.super_class = _NFXPCSession;
-  [(_NFSession *)&v3 createHandoffTokenWithCompletion:a3];
+  [(_NFSession *)&v3 createHandoffTokenWithCompletion:completion];
 }
 
 - (NSXPCConnection)connection

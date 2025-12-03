@@ -1,16 +1,16 @@
 @interface SettingsCenterListener
 - (_TtC21UserNotificationsCore22SettingsCenterListener)init;
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSourceIdentifiers:(id)a4;
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSourceIdentifiers:(id)identifiers;
 @end
 
 @implementation SettingsCenterListener
 
-- (void)userNotificationSettingsCenter:(id)a3 didUpdateNotificationSourceIdentifiers:(id)a4
+- (void)userNotificationSettingsCenter:(id)center didUpdateNotificationSourceIdentifiers:(id)identifiers
 {
   v6 = sub_1DA940E94();
-  v7 = a3;
-  v8 = self;
-  sub_1DA82FF78(v7, v6);
+  centerCopy = center;
+  selfCopy = self;
+  sub_1DA82FF78(centerCopy, v6);
 }
 
 - (_TtC21UserNotificationsCore22SettingsCenterListener)init

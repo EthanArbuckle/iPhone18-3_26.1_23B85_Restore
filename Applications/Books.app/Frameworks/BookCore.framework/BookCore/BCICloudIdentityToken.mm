@@ -1,12 +1,12 @@
 @interface BCICloudIdentityToken
 + (id)tokenForCurrentIdentityIfICloudDriveEnabled;
 - (BCICloudIdentityToken)initWithCurrentIdentity;
-- (BCICloudIdentityToken)initWithToken:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_hashFor:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BCICloudIdentityToken)initWithToken:(id)token;
+- (BOOL)isEqual:(id)equal;
+- (id)_hashFor:(id)for;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initFromArchive:(id)a3;
+- (id)initFromArchive:(id)archive;
 @end
 
 @implementation BCICloudIdentityToken
@@ -14,9 +14,9 @@
 + (id)tokenForCurrentIdentityIfICloudDriveEnabled
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 isUserSignedInToiCloud];
+  isUserSignedInToiCloud = [v2 isUserSignedInToiCloud];
 
-  if ((v3 & 1) == 0)
+  if ((isUserSignedInToiCloud & 1) == 0)
   {
     v6 = BCUbiquityEnabledLog();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -58,14 +58,14 @@ LABEL_13:
     }
 
 LABEL_14:
-    v4 = 0;
+    initWithCurrentIdentity = 0;
     goto LABEL_15;
   }
 
-  v4 = [[BCICloudIdentityToken alloc] initWithCurrentIdentity];
+  initWithCurrentIdentity = [[BCICloudIdentityToken alloc] initWithCurrentIdentity];
   v5 = BCUbiquityEnabledLog();
   v6 = v5;
-  if (v4)
+  if (initWithCurrentIdentity)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -81,39 +81,39 @@ LABEL_14:
 
 LABEL_15:
 
-  return v4;
+  return initWithCurrentIdentity;
 }
 
-- (BCICloudIdentityToken)initWithToken:(id)a3
+- (BCICloudIdentityToken)initWithToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v10.receiver = self;
     v10.super_class = BCICloudIdentityToken;
     v5 = [(BCICloudIdentityToken *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [tokenCopy copy];
       token = v5->_token;
       v5->_token = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)initFromArchive:(id)a3
+- (id)initFromArchive:(id)archive
 {
-  v4 = a3;
+  archiveCopy = archive;
   objc_opt_class();
   v5 = BUDynamicCast();
 
@@ -124,7 +124,7 @@ LABEL_15:
 - (BCICloudIdentityToken)initWithCurrentIdentity
 {
   v3 = +[BUAccountsProvider sharedProvider];
-  v4 = [v3 iCloudIdentity];
+  iCloudIdentity = [v3 iCloudIdentity];
 
   v5 = BCUbiquityEnabledLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -132,39 +132,39 @@ LABEL_15:
     v9 = 141558274;
     v10 = 1752392040;
     v11 = 2112;
-    v12 = v4;
+    v12 = iCloudIdentity;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "BCICloudIdentityToken: initWithCurrentIdentity: %{mask.hash}@", &v9, 0x16u);
   }
 
-  v6 = [(BCICloudIdentityToken *)self _hashFor:v4];
+  v6 = [(BCICloudIdentityToken *)self _hashFor:iCloudIdentity];
   v7 = [(BCICloudIdentityToken *)self initWithToken:v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(BCICloudIdentityToken *)self token];
+  equalCopy = equal;
+  token = [(BCICloudIdentityToken *)self token];
   objc_opt_class();
   v6 = BUDynamicCast();
 
-  v7 = [v6 token];
-  v8 = [v5 isEqualToString:v7];
+  token2 = [v6 token];
+  v8 = [token isEqualToString:token2];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(BCICloudIdentityToken *)self token];
-  v6 = [v4 initWithToken:v5];
+  token = [(BCICloudIdentityToken *)self token];
+  v6 = [v4 initWithToken:token];
 
   return v6;
 }
@@ -173,18 +173,18 @@ LABEL_15:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BCICloudIdentityToken *)self token];
-  v6 = [NSString stringWithFormat:@"<%@:%p %@>", v4, self, v5];
+  token = [(BCICloudIdentityToken *)self token];
+  v6 = [NSString stringWithFormat:@"<%@:%p %@>", v4, self, token];
 
   return v6;
 }
 
-- (id)_hashFor:(id)a3
+- (id)_hashFor:(id)for
 {
-  v3 = [a3 dataUsingEncoding:4];
-  v4 = [v3 bu_md5UpperCase];
+  v3 = [for dataUsingEncoding:4];
+  bu_md5UpperCase = [v3 bu_md5UpperCase];
 
-  return v4;
+  return bu_md5UpperCase;
 }
 
 @end

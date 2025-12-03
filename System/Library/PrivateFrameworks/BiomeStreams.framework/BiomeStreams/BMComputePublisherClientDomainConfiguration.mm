@@ -1,10 +1,10 @@
 @interface BMComputePublisherClientDomainConfiguration
-- (BMComputePublisherClientDomainConfiguration)initWithDomain:(unint64_t)a3;
+- (BMComputePublisherClientDomainConfiguration)initWithDomain:(unint64_t)domain;
 @end
 
 @implementation BMComputePublisherClientDomainConfiguration
 
-- (BMComputePublisherClientDomainConfiguration)initWithDomain:(unint64_t)a3
+- (BMComputePublisherClientDomainConfiguration)initWithDomain:(unint64_t)domain
 {
   v13.receiver = self;
   v13.super_class = BMComputePublisherClientDomainConfiguration;
@@ -15,7 +15,7 @@
     v6 = +[BMDaemon systemComputePublisherStreamName];
     v7 = +[BMDaemon biomedLaunchNotification];
     machServiceName = v4->_machServiceName;
-    v4->_domain = a3;
+    v4->_domain = domain;
     v4->_machServiceName = v5;
 
     XPCPublisherStreamName = v4->_XPCPublisherStreamName;

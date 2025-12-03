@@ -1,23 +1,23 @@
 @interface MUStackLayout
-- (MUStackLayout)initWithContainer:(id)a3 axis:(int64_t)a4;
+- (MUStackLayout)initWithContainer:(id)container axis:(int64_t)axis;
 - (NSDirectionalEdgeInsets)insets;
-- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)a3;
-- (UIOffset)offsetForArrangedLayoutItem:(id)a3;
+- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)item;
+- (UIOffset)offsetForArrangedLayoutItem:(id)item;
 @end
 
 @implementation MUStackLayout
 
-- (UIOffset)offsetForArrangedLayoutItem:(id)a3
+- (UIOffset)offsetForArrangedLayoutItem:(id)item
 {
-  [(MUStackLayoutInternal *)self->_internal offsetForArrangedLayoutItem:a3];
+  [(MUStackLayoutInternal *)self->_internal offsetForArrangedLayoutItem:item];
   result.vertical = v4;
   result.horizontal = v3;
   return result;
 }
 
-- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)a3
+- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)item
 {
-  [(MUStackLayoutInternal *)self->_internal paddingForArrangedLayoutItem:a3];
+  [(MUStackLayoutInternal *)self->_internal paddingForArrangedLayoutItem:item];
   result.trailing = v6;
   result.bottom = v5;
   result.leading = v4;
@@ -35,10 +35,10 @@
   return result;
 }
 
-- (MUStackLayout)initWithContainer:(id)a3 axis:(int64_t)a4
+- (MUStackLayout)initWithContainer:(id)container axis:(int64_t)axis
 {
-  v6 = a3;
-  v7 = [[MUStackLayoutInternal alloc] initWithContainer:v6 axis:a4];
+  containerCopy = container;
+  v7 = [[MUStackLayoutInternal alloc] initWithContainer:containerCopy axis:axis];
 
   v11.receiver = self;
   v11.super_class = MUStackLayout;

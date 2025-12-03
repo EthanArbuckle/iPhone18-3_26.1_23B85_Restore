@@ -1,74 +1,74 @@
 @interface OUFrame
 - (__n128)referenceOriginTransform;
-- (__n128)setReferenceOriginTransform:(__n128)a3;
-- (void)setColorBuffer:(__CVBuffer *)a3;
-- (void)setSceneColorBuffer:(__CVBuffer *)a3;
-- (void)setSceneDepthBuffer:(__CVBuffer *)a3;
-- (void)setSceneDepthConfidenceBuffer:(__CVBuffer *)a3;
-- (void)setSemanticConfidenceBuffer:(__CVBuffer *)a3;
-- (void)setSemanticLabelBuffer:(__CVBuffer *)a3;
+- (__n128)setReferenceOriginTransform:(__n128)transform;
+- (void)setColorBuffer:(__CVBuffer *)buffer;
+- (void)setSceneColorBuffer:(__CVBuffer *)buffer;
+- (void)setSceneDepthBuffer:(__CVBuffer *)buffer;
+- (void)setSceneDepthConfidenceBuffer:(__CVBuffer *)buffer;
+- (void)setSemanticConfidenceBuffer:(__CVBuffer *)buffer;
+- (void)setSemanticLabelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation OUFrame
 
 - (__n128)referenceOriginTransform
 {
-  result = *(a1 + 48);
-  v2 = *(a1 + 64);
-  v3 = *(a1 + 80);
-  v4 = *(a1 + 96);
+  result = *(self + 48);
+  v2 = *(self + 64);
+  v3 = *(self + 80);
+  v4 = *(self + 96);
   return result;
 }
 
-- (__n128)setReferenceOriginTransform:(__n128)a3
+- (__n128)setReferenceOriginTransform:(__n128)transform
 {
   result[3] = a2;
-  result[4] = a3;
+  result[4] = transform;
   result[5] = a4;
   result[6] = a5;
   return result;
 }
 
-- (void)setColorBuffer:(__CVBuffer *)a3
+- (void)setColorBuffer:(__CVBuffer *)buffer
 {
   colorBuffer = self->colorBuffer;
-  self->colorBuffer = a3;
-  v3 = a3;
+  self->colorBuffer = buffer;
+  bufferCopy = buffer;
 }
 
-- (void)setSceneColorBuffer:(__CVBuffer *)a3
+- (void)setSceneColorBuffer:(__CVBuffer *)buffer
 {
   sceneColorBuffer = self->sceneColorBuffer;
-  self->sceneColorBuffer = a3;
-  v3 = a3;
+  self->sceneColorBuffer = buffer;
+  bufferCopy = buffer;
 }
 
-- (void)setSceneDepthBuffer:(__CVBuffer *)a3
+- (void)setSceneDepthBuffer:(__CVBuffer *)buffer
 {
   sceneDepthBuffer = self->sceneDepthBuffer;
-  self->sceneDepthBuffer = a3;
-  v3 = a3;
+  self->sceneDepthBuffer = buffer;
+  bufferCopy = buffer;
 }
 
-- (void)setSceneDepthConfidenceBuffer:(__CVBuffer *)a3
+- (void)setSceneDepthConfidenceBuffer:(__CVBuffer *)buffer
 {
   sceneDepthConfidenceBuffer = self->sceneDepthConfidenceBuffer;
-  self->sceneDepthConfidenceBuffer = a3;
-  v3 = a3;
+  self->sceneDepthConfidenceBuffer = buffer;
+  bufferCopy = buffer;
 }
 
-- (void)setSemanticLabelBuffer:(__CVBuffer *)a3
+- (void)setSemanticLabelBuffer:(__CVBuffer *)buffer
 {
   semanticLabelBuffer = self->semanticLabelBuffer;
-  self->semanticLabelBuffer = a3;
-  v3 = a3;
+  self->semanticLabelBuffer = buffer;
+  bufferCopy = buffer;
 }
 
-- (void)setSemanticConfidenceBuffer:(__CVBuffer *)a3
+- (void)setSemanticConfidenceBuffer:(__CVBuffer *)buffer
 {
   semanticConfidenceBuffer = self->semanticConfidenceBuffer;
-  self->semanticConfidenceBuffer = a3;
-  v3 = a3;
+  self->semanticConfidenceBuffer = buffer;
+  bufferCopy = buffer;
 }
 
 @end

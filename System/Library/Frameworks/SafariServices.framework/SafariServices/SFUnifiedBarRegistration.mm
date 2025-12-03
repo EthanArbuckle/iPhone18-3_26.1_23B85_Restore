@@ -1,45 +1,45 @@
 @interface SFUnifiedBarRegistration
-- (BOOL)_isBarItemHidden:(int64_t)a3;
-- (BOOL)containsBarItem:(int64_t)a3;
-- (SFUnifiedBarRegistration)initWithBar:(id)a3 barManager:(id)a4 persona:(int64_t)a5;
-- (id)_imageForBarItem:(int64_t)a3;
-- (id)_makeBarItemForSFBarItem:(int64_t)a3;
-- (id)_unifiedBarItemsForSFBarItems:(id)a3;
-- (id)popoverSourceInfoForItem:(int64_t)a3;
-- (id)unifiedBarItemForSFBarItem:(int64_t)a3;
-- (id)viewForBarItem:(int64_t)a3;
-- (int64_t)_SFBarItemForUnifiedBarItem:(id)a3;
-- (void)_itemReceivedTap:(id)a3;
+- (BOOL)_isBarItemHidden:(int64_t)hidden;
+- (BOOL)containsBarItem:(int64_t)item;
+- (SFUnifiedBarRegistration)initWithBar:(id)bar barManager:(id)manager persona:(int64_t)persona;
+- (id)_imageForBarItem:(int64_t)item;
+- (id)_makeBarItemForSFBarItem:(int64_t)item;
+- (id)_unifiedBarItemsForSFBarItems:(id)items;
+- (id)popoverSourceInfoForItem:(int64_t)item;
+- (id)unifiedBarItemForSFBarItem:(int64_t)item;
+- (id)viewForBarItem:(int64_t)item;
+- (int64_t)_SFBarItemForUnifiedBarItem:(id)item;
+- (void)_itemReceivedTap:(id)tap;
 - (void)_updateItems;
 - (void)_updateItemsIfNeeded;
-- (void)pulseBarItem:(int64_t)a3;
-- (void)setAttributedTitle:(id)a3 forBarItem:(int64_t)a4;
-- (void)setBarItem:(int64_t)a3 enabled:(BOOL)a4;
-- (void)setBarItem:(int64_t)a3 hidden:(BOOL)a4;
-- (void)setBarItem:(int64_t)a3 menu:(id)a4;
-- (void)setContentMode:(int64_t)a3;
-- (void)setImage:(id)a3 forBarItem:(int64_t)a4;
-- (void)setProgress:(double)a3 forBarItem:(int64_t)a4;
-- (void)setState:(int64_t)a3;
-- (void)setTitle:(id)a3 forBarItem:(int64_t)a4;
-- (void)updateBarAnimated:(BOOL)a3;
+- (void)pulseBarItem:(int64_t)item;
+- (void)setAttributedTitle:(id)title forBarItem:(int64_t)item;
+- (void)setBarItem:(int64_t)item enabled:(BOOL)enabled;
+- (void)setBarItem:(int64_t)item hidden:(BOOL)hidden;
+- (void)setBarItem:(int64_t)item menu:(id)menu;
+- (void)setContentMode:(int64_t)mode;
+- (void)setImage:(id)image forBarItem:(int64_t)item;
+- (void)setProgress:(double)progress forBarItem:(int64_t)item;
+- (void)setState:(int64_t)state;
+- (void)setTitle:(id)title forBarItem:(int64_t)item;
+- (void)updateBarAnimated:(BOOL)animated;
 @end
 
 @implementation SFUnifiedBarRegistration
 
-- (SFUnifiedBarRegistration)initWithBar:(id)a3 barManager:(id)a4 persona:(int64_t)a5
+- (SFUnifiedBarRegistration)initWithBar:(id)bar barManager:(id)manager persona:(int64_t)persona
 {
-  v8 = a3;
-  v9 = a4;
+  barCopy = bar;
+  managerCopy = manager;
   v48.receiver = self;
   v48.super_class = SFUnifiedBarRegistration;
   v10 = [(SFUnifiedBarRegistration *)&v48 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_bar, v8);
-    objc_storeWeak(&v11->_barManager, v9);
-    v11->_persona = a5;
+    objc_storeWeak(&v10->_bar, barCopy);
+    objc_storeWeak(&v11->_barManager, managerCopy);
+    v11->_persona = persona;
     v12 = [MEMORY[0x1E695DFA8] set];
     disabledBarItems = v11->_disabledBarItems;
     v11->_disabledBarItems = v12;
@@ -95,9 +95,9 @@
     downloadsButton = v11->_downloadsButton;
     v11->_downloadsButton = v35;
 
-    v37 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+    isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
     v38 = @"trailing";
-    if (!v37)
+    if (!isSolariumEnabled)
     {
       v38 = 0;
     }
@@ -291,8 +291,8 @@ LABEL_47:
 
   v26 = [(SFUnifiedBarRegistration *)self _imageForBarItem:3];
   [(SFUnifiedBarButton *)self->_bookmarksAndSidebarButton setImage:v26];
-  v24 = [(SFUnifiedBarButton *)self->_bookmarksAndSidebarButton view];
-  [v24 setLargeContentImage:v26];
+  view = [(SFUnifiedBarButton *)self->_bookmarksAndSidebarButton view];
+  [view setLargeContentImage:v26];
   if (self->_contentMode > 6uLL)
   {
     v25 = 0;
@@ -303,13 +303,13 @@ LABEL_47:
     v25 = _WBSLocalizedString();
   }
 
-  [v24 setLargeContentTitle:v25];
+  [view setLargeContentTitle:v25];
 }
 
-- (id)_makeBarItemForSFBarItem:(int64_t)a3
+- (id)_makeBarItemForSFBarItem:(int64_t)item
 {
   objc_initWeak(&location, self);
-  v5 = [(SFUnifiedBarRegistration *)self _imageForBarItem:a3];
+  v5 = [(SFUnifiedBarRegistration *)self _imageForBarItem:item];
   v6 = objc_alloc(MEMORY[0x1E69B1C00]);
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
@@ -317,18 +317,18 @@ LABEL_47:
   v22 = &unk_1E8496718;
   objc_copyWeak(&v23, &location);
   v7 = [v6 initWithImage:v5 action:&v19];
-  v8 = [v7 view];
+  view = [v7 view];
   v9 = SFAccessibilityTitleForBarItem();
-  [v8 sf_configureLargeContentViewerWithImage:v5 title:v9];
+  [view sf_configureLargeContentViewerWithImage:v5 title:v9];
 
-  if (a3 == 2)
+  if (item == 2)
   {
     [v7 setShowsMenuFromSource:0];
     v10 = 0;
     v11 = 1;
   }
 
-  else if (a3 == 12)
+  else if (item == 12)
   {
     v10 = _WBSLocalizedString();
     if (v10)
@@ -353,12 +353,12 @@ LABEL_47:
     }
 
     [v7 setSpacingOptions:8];
-    v12 = [v7 view];
-    [v12 setShowsMenuAsPrimaryAction:1];
+    view2 = [v7 view];
+    [view2 setShowsMenuAsPrimaryAction:1];
     goto LABEL_15;
   }
 
-  if (a3 == 3)
+  if (item == 3)
   {
     [v7 setSpacingOptions:1];
   }
@@ -366,15 +366,15 @@ LABEL_47:
   if (v11)
   {
     [v7 setSpacingOptions:10];
-    v12 = [v7 view];
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    [v12 setTintColor:v13];
+    view2 = [v7 view];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [view2 setTintColor:labelColor];
 
-    [v12 setShowsMenuAsPrimaryAction:1];
-    v14 = [v12 titleLabel];
-    [v14 setText:v10];
+    [view2 setShowsMenuAsPrimaryAction:1];
+    titleLabel = [view2 titleLabel];
+    [titleLabel setText:v10];
 
-    [v12 updateTitleFont];
+    [view2 updateTitleFont];
 LABEL_15:
   }
 
@@ -383,7 +383,7 @@ LABEL_16:
   [v7 setAccessibilityIdentifier:v15];
 
   v16 = [MEMORY[0x1E69C8880] isSolariumEnabled] ^ 1;
-  if (a3 > 0xB)
+  if (item > 0xB)
   {
     LOBYTE(v16) = 1;
   }
@@ -395,7 +395,7 @@ LABEL_16:
 
   else
   {
-    v17 = off_1E84967D0[a3];
+    v17 = off_1E84967D0[item];
   }
 
   [v7 setGroupIdentifier:v17];
@@ -417,9 +417,9 @@ void __53__SFUnifiedBarRegistration__makeBarItemForSFBarItem___block_invoke(uint
   }
 }
 
-- (id)_imageForBarItem:(int64_t)a3
+- (id)_imageForBarItem:(int64_t)item
 {
-  if (a3 == 3)
+  if (item == 3)
   {
     v3 = self->_contentMode - 2;
     if (v3 > 4)
@@ -443,23 +443,23 @@ void __53__SFUnifiedBarRegistration__makeBarItemForSFBarItem___block_invoke(uint
   return v5;
 }
 
-- (void)setBarItem:(int64_t)a3 enabled:(BOOL)a4
+- (void)setBarItem:(int64_t)item enabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   disabledBarItems = self->_disabledBarItems;
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   LODWORD(disabledBarItems) = [(NSMutableSet *)disabledBarItems containsObject:v8];
 
-  if (disabledBarItems == v4)
+  if (disabledBarItems == enabledCopy)
   {
-    if (a3 <= 1)
+    if (item <= 1)
     {
       self->_nextUpdateShouldPinScrollPositionToTrailingEdge = 1;
     }
 
     v9 = self->_disabledBarItems;
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    if (v4)
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:item];
+    if (enabledCopy)
     {
       [(NSMutableSet *)v9 removeObject:v10];
     }
@@ -469,22 +469,22 @@ void __53__SFUnifiedBarRegistration__makeBarItemForSFBarItem___block_invoke(uint
       [(NSMutableSet *)v9 addObject:v10];
     }
 
-    if (a3 > 1 || self->_contentMode <= 3uLL && (a3 != 1 || ([MEMORY[0x1E69C8880] isSolariumEnabled] & 1) == 0))
+    if (item > 1 || self->_contentMode <= 3uLL && (item != 1 || ([MEMORY[0x1E69C8880] isSolariumEnabled] & 1) == 0))
     {
-      v11 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:a3];
-      [v11 setEnabled:v4];
+      v11 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:item];
+      [v11 setEnabled:enabledCopy];
     }
   }
 }
 
-- (void)setBarItem:(int64_t)a3 hidden:(BOOL)a4
+- (void)setBarItem:(int64_t)item hidden:(BOOL)hidden
 {
-  v4 = a4;
-  if ([(SFUnifiedBarRegistration *)self _isBarItemHidden:?]!= a4)
+  hiddenCopy = hidden;
+  if ([(SFUnifiedBarRegistration *)self _isBarItemHidden:?]!= hidden)
   {
     hiddenBarItems = self->_hiddenBarItems;
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    if (v4)
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:item];
+    if (hiddenCopy)
     {
       [(NSMutableSet *)hiddenBarItems addObject:v8];
     }
@@ -498,21 +498,21 @@ void __53__SFUnifiedBarRegistration__makeBarItemForSFBarItem___block_invoke(uint
   }
 }
 
-- (BOOL)_isBarItemHidden:(int64_t)a3
+- (BOOL)_isBarItemHidden:(int64_t)hidden
 {
-  if (a3 || self->_contentMode < 4uLL)
+  if (hidden || self->_contentMode < 4uLL)
   {
     hiddenBarItems = self->_hiddenBarItems;
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:hidden];
     if (([(NSMutableSet *)hiddenBarItems containsObject:v6]& 1) != 0)
     {
       v7 = 1;
     }
 
-    else if (a3 <= 1 && (self->_contentMode > 3uLL || a3 == 1 && [MEMORY[0x1E69C8880] isSolariumEnabled]))
+    else if (hidden <= 1 && (self->_contentMode > 3uLL || hidden == 1 && [MEMORY[0x1E69C8880] isSolariumEnabled]))
     {
       disabledBarItems = self->_disabledBarItems;
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v9 = [MEMORY[0x1E696AD98] numberWithInteger:hidden];
       v7 = [(NSMutableSet *)disabledBarItems containsObject:v9];
     }
 
@@ -570,9 +570,9 @@ LABEL_8:
   [v7 setEnabled:v6];
 }
 
-- (void)updateBarAnimated:(BOOL)a3
+- (void)updateBarAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(SFUnifiedBarRegistration *)self _updateItemsIfNeeded];
   WeakRetained = objc_loadWeakRetained(&self->_bar);
   [WeakRetained setInlineContentViewPinsScrollPositionToTrailingEdgeDuringResize:self->_nextUpdateShouldPinScrollPositionToTrailingEdge];
@@ -581,19 +581,19 @@ LABEL_8:
   v7 = [(SFUnifiedBarRegistration *)self _unifiedBarItemsForSFBarItems:self->_trailingBarItems];
   v8 = [v5 initWithLeadingItems:v6 trailingItems:v7];
 
-  [WeakRetained setItemArrangement:v8 animated:v3];
+  [WeakRetained setItemArrangement:v8 animated:animatedCopy];
   [WeakRetained setInlineContentViewPinsScrollPositionToTrailingEdgeDuringResize:0];
   self->_nextUpdateShouldPinScrollPositionToTrailingEdge = 0;
 }
 
-- (id)_unifiedBarItemsForSFBarItems:(id)a3
+- (id)_unifiedBarItemsForSFBarItems:(id)items
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __58__SFUnifiedBarRegistration__unifiedBarItemsForSFBarItems___block_invoke;
   v5[3] = &unk_1E8496768;
   v5[4] = self;
-  v3 = [a3 safari_mapAndFilterObjectsUsingBlock:v5];
+  v3 = [items safari_mapAndFilterObjectsUsingBlock:v5];
 
   return v3;
 }
@@ -614,55 +614,55 @@ id __58__SFUnifiedBarRegistration__unifiedBarItemsForSFBarItems___block_invoke(u
   return v4;
 }
 
-- (int64_t)_SFBarItemForUnifiedBarItem:(id)a3
+- (int64_t)_SFBarItemForUnifiedBarItem:(id)item
 {
-  v4 = a3;
-  if (self->_backButton == v4)
+  itemCopy = item;
+  if (self->_backButton == itemCopy)
   {
     v5 = 0;
   }
 
-  else if (self->_bookmarksAndSidebarButton == v4)
+  else if (self->_bookmarksAndSidebarButton == itemCopy)
   {
     v5 = 3;
   }
 
-  else if (self->_forwardButton == v4)
+  else if (self->_forwardButton == itemCopy)
   {
     v5 = 1;
   }
 
-  else if (self->_tabGroupButton == v4)
+  else if (self->_tabGroupButton == itemCopy)
   {
     v5 = 2;
   }
 
-  else if (self->_shareButton == v4)
+  else if (self->_shareButton == itemCopy)
   {
     v5 = 6;
   }
 
-  else if (self->_newTabButton == v4)
+  else if (self->_newTabButton == itemCopy)
   {
     v5 = 7;
   }
 
-  else if (self->_tabOverviewButton == v4)
+  else if (self->_tabOverviewButton == itemCopy)
   {
     v5 = 8;
   }
 
-  else if (self->_downloadsButton == v4)
+  else if (self->_downloadsButton == itemCopy)
   {
     v5 = 11;
   }
 
-  else if (self->_cancelButton == v4)
+  else if (self->_cancelButton == itemCopy)
   {
     v5 = 12;
   }
 
-  else if (self->_collaborationButton == v4)
+  else if (self->_collaborationButton == itemCopy)
   {
     v5 = 16;
   }
@@ -675,11 +675,11 @@ id __58__SFUnifiedBarRegistration__unifiedBarItemsForSFBarItems___block_invoke(u
   return v5;
 }
 
-- (id)unifiedBarItemForSFBarItem:(int64_t)a3
+- (id)unifiedBarItemForSFBarItem:(int64_t)item
 {
-  if (a3 <= 0x10 && ((0x119CFu >> a3) & 1) != 0)
+  if (item <= 0x10 && ((0x119CFu >> item) & 1) != 0)
   {
-    v4 = *(&self->super.isa + qword_1D47DF9A0[a3]);
+    v4 = *(&self->super.isa + qword_1D47DF9A0[item]);
   }
 
   else
@@ -690,22 +690,22 @@ id __58__SFUnifiedBarRegistration__unifiedBarItemsForSFBarItems___block_invoke(u
   return v4;
 }
 
-- (void)_itemReceivedTap:(id)a3
+- (void)_itemReceivedTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   WeakRetained = objc_loadWeakRetained(&self->_barManager);
-  v5 = [(SFUnifiedBarRegistration *)self _SFBarItemForUnifiedBarItem:v4];
+  v5 = [(SFUnifiedBarRegistration *)self _SFBarItemForUnifiedBarItem:tapCopy];
 
   [WeakRetained barRegistration:self didReceiveTapForBarItem:v5];
 }
 
-- (BOOL)containsBarItem:(int64_t)a3
+- (BOOL)containsBarItem:(int64_t)item
 {
   allBarItems = self->_allBarItems;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   if ([(NSSet *)allBarItems containsObject:v6])
   {
-    v7 = ![(SFUnifiedBarRegistration *)self _isBarItemHidden:a3];
+    v7 = ![(SFUnifiedBarRegistration *)self _isBarItemHidden:item];
   }
 
   else
@@ -716,14 +716,14 @@ id __58__SFUnifiedBarRegistration__unifiedBarItemsForSFBarItems___block_invoke(u
   return v7;
 }
 
-- (id)popoverSourceInfoForItem:(int64_t)a3
+- (id)popoverSourceInfoForItem:(int64_t)item
 {
-  v3 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:a3];
-  v4 = [v3 view];
+  v3 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:item];
+  view = [v3 view];
 
-  if (v4)
+  if (view)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69B1C78]) initWithView:v4];
+    v5 = [objc_alloc(MEMORY[0x1E69B1C78]) initWithView:view];
   }
 
   else
@@ -734,102 +734,102 @@ id __58__SFUnifiedBarRegistration__unifiedBarItemsForSFBarItems___block_invoke(u
   return v5;
 }
 
-- (id)viewForBarItem:(int64_t)a3
+- (id)viewForBarItem:(int64_t)item
 {
-  v3 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:a3];
-  v4 = [v3 view];
+  v3 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:item];
+  view = [v3 view];
 
-  return v4;
+  return view;
 }
 
-- (void)setBarItem:(int64_t)a3 menu:(id)a4
+- (void)setBarItem:(int64_t)item menu:(id)menu
 {
-  v6 = a4;
-  v8 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:a3];
-  v7 = [v8 view];
-  [v7 setMenu:v6];
+  menuCopy = menu;
+  v8 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:item];
+  view = [v8 view];
+  [view setMenu:menuCopy];
 }
 
-- (void)setProgress:(double)a3 forBarItem:(int64_t)a4
+- (void)setProgress:(double)progress forBarItem:(int64_t)item
 {
-  if (a4 == 11)
+  if (item == 11)
   {
-    [(SFDownloadsUnifiedBarItem *)self->_downloadsButton setProgress:a3];
+    [(SFDownloadsUnifiedBarItem *)self->_downloadsButton setProgress:progress];
   }
 }
 
-- (void)pulseBarItem:(int64_t)a3
+- (void)pulseBarItem:(int64_t)item
 {
-  if (a3 == 11)
+  if (item == 11)
   {
     [(SFDownloadsUnifiedBarItem *)self->_downloadsButton pulse];
   }
 }
 
-- (void)setTitle:(id)a3 forBarItem:(int64_t)a4
+- (void)setTitle:(id)title forBarItem:(int64_t)item
 {
-  v6 = a3;
-  if (v6)
+  titleCopy = title;
+  if (titleCopy)
   {
-    v8 = v6;
-    v7 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:a4];
+    v8 = titleCopy;
+    v7 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:item];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v7 setTitle:v8];
     }
 
-    v6 = v8;
+    titleCopy = v8;
   }
 }
 
-- (void)setImage:(id)a3 forBarItem:(int64_t)a4
+- (void)setImage:(id)image forBarItem:(int64_t)item
 {
-  v8 = a3;
-  v6 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:a4];
+  imageCopy = image;
+  v6 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v8)
+    if (imageCopy)
     {
-      [v6 setImage:v8];
+      [v6 setImage:imageCopy];
     }
 
     else
     {
-      v7 = [(SFUnifiedBarRegistration *)self _imageForBarItem:a4];
+      v7 = [(SFUnifiedBarRegistration *)self _imageForBarItem:item];
       [v6 setImage:v7];
     }
   }
 }
 
-- (void)setAttributedTitle:(id)a3 forBarItem:(int64_t)a4
+- (void)setAttributedTitle:(id)title forBarItem:(int64_t)item
 {
-  v7 = a3;
-  v6 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:a4];
+  titleCopy = title;
+  v6 = [(SFUnifiedBarRegistration *)self unifiedBarItemForSFBarItem:item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setAttributedTitle:v7];
+    [v6 setAttributedTitle:titleCopy];
   }
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  if (self->_contentMode != a3)
+  if (self->_contentMode != mode)
   {
-    self->_contentMode = a3;
+    self->_contentMode = mode;
     [(SFUnifiedBarRegistration *)self _updateEnabledBarItems];
 
     [(SFUnifiedBarRegistration *)self _setNeedsUpdateItems];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(SFUnifiedBarRegistration *)self _setNeedsUpdateItems];
   }
 }

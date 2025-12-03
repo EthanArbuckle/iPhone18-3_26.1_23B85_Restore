@@ -1,15 +1,15 @@
 @interface HKMedicalRecordOriginIdentifier
-+ (HKMedicalRecordOriginIdentifier)originIdentifierWithFHIRResourceType:(id)a3 identifier:(id)a4;
++ (HKMedicalRecordOriginIdentifier)originIdentifierWithFHIRResourceType:(id)type identifier:(id)identifier;
 + (id)unitTesting_identifierWithAllPropertiesAllocated;
 + (id)unitTesting_identifierWithNeitherPropertyAllocated;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKMedicalRecordOriginIdentifier)init;
-- (HKMedicalRecordOriginIdentifier)initWithCoder:(id)a3;
-- (id)_initWithFHIRIdentifier:(id)a3 signedClinicalDataRecordIdentifier:(id)a4;
+- (HKMedicalRecordOriginIdentifier)initWithCoder:(id)coder;
+- (id)_initWithFHIRIdentifier:(id)identifier signedClinicalDataRecordIdentifier:(id)recordIdentifier;
 - (id)description;
-- (void)_setFhirIdentifier:(id)a3;
-- (void)_setSignedClinicalDataRecordIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setFhirIdentifier:(id)identifier;
+- (void)_setSignedClinicalDataRecordIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicalRecordOriginIdentifier
@@ -24,23 +24,23 @@
   return 0;
 }
 
-+ (HKMedicalRecordOriginIdentifier)originIdentifierWithFHIRResourceType:(id)a3 identifier:(id)a4
++ (HKMedicalRecordOriginIdentifier)originIdentifierWithFHIRResourceType:(id)type identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  v9 = [[HKFHIRIdentifier alloc] initWithResourceType:v7 identifier:v6];
+  identifierCopy = identifier;
+  typeCopy = type;
+  v8 = [self alloc];
+  v9 = [[HKFHIRIdentifier alloc] initWithResourceType:typeCopy identifier:identifierCopy];
 
   v10 = [v8 initWithFHIRIdentifier:v9];
 
   return v10;
 }
 
-- (id)_initWithFHIRIdentifier:(id)a3 signedClinicalDataRecordIdentifier:(id)a4
+- (id)_initWithFHIRIdentifier:(id)identifier signedClinicalDataRecordIdentifier:(id)recordIdentifier
 {
-  v7 = a3;
-  v8 = a4;
-  if ((v7 != 0) != (v8 == 0))
+  identifierCopy = identifier;
+  recordIdentifierCopy = recordIdentifier;
+  if ((identifierCopy != 0) != (recordIdentifierCopy == 0))
   {
     [HKMedicalRecordOriginIdentifier _initWithFHIRIdentifier:a2 signedClinicalDataRecordIdentifier:self];
   }
@@ -50,11 +50,11 @@
   v9 = [(HKMedicalRecordOriginIdentifier *)&v15 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [identifierCopy copy];
     fhirIdentifier = v9->_fhirIdentifier;
     v9->_fhirIdentifier = v10;
 
-    v12 = [v8 copy];
+    v12 = [recordIdentifierCopy copy];
     signedClinicalDataRecordIdentifier = v9->_signedClinicalDataRecordIdentifier;
     v9->_signedClinicalDataRecordIdentifier = v12;
   }
@@ -62,18 +62,18 @@
   return v9;
 }
 
-- (void)_setFhirIdentifier:(id)a3
+- (void)_setFhirIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   fhirIdentifier = self->_fhirIdentifier;
   self->_fhirIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setSignedClinicalDataRecordIdentifier:(id)a3
+- (void)_setSignedClinicalDataRecordIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   signedClinicalDataRecordIdentifier = self->_signedClinicalDataRecordIdentifier;
   self->_signedClinicalDataRecordIdentifier = v4;
 
@@ -91,19 +91,19 @@
 + (id)unitTesting_identifierWithAllPropertiesAllocated
 {
   v2 = [HKMedicalRecordOriginIdentifier originIdentifierWithFHIRResourceType:@"ResourceType" identifier:@"identifier"];
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  [v2 _setSignedClinicalDataRecordIdentifier:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [v2 _setSignedClinicalDataRecordIdentifier:uUID];
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (self != v6)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (self != equalCopy)
   {
-    v8 = v6;
+    v8 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -114,14 +114,14 @@ LABEL_18:
     }
 
     fhirIdentifier = self->_fhirIdentifier;
-    v10 = [(HKMedicalRecordOriginIdentifier *)v8 fhirIdentifier];
-    if (fhirIdentifier == v10)
+    fhirIdentifier = [(HKMedicalRecordOriginIdentifier *)v8 fhirIdentifier];
+    if (fhirIdentifier == fhirIdentifier)
     {
       goto LABEL_9;
     }
 
-    v11 = [(HKMedicalRecordOriginIdentifier *)v8 fhirIdentifier];
-    if (!v11)
+    fhirIdentifier2 = [(HKMedicalRecordOriginIdentifier *)v8 fhirIdentifier];
+    if (!fhirIdentifier2)
     {
       v13 = 0;
 LABEL_17:
@@ -129,16 +129,16 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v3 = v11;
+    v3 = fhirIdentifier2;
     v12 = self->_fhirIdentifier;
-    v4 = [(HKMedicalRecordOriginIdentifier *)v8 fhirIdentifier];
-    if ([(HKFHIRIdentifier *)v12 isEqual:v4])
+    fhirIdentifier3 = [(HKMedicalRecordOriginIdentifier *)v8 fhirIdentifier];
+    if ([(HKFHIRIdentifier *)v12 isEqual:fhirIdentifier3])
     {
 LABEL_9:
       signedClinicalDataRecordIdentifier = self->_signedClinicalDataRecordIdentifier;
-      v15 = [(HKMedicalRecordOriginIdentifier *)v8 signedClinicalDataRecordIdentifier];
-      v16 = v15;
-      if (signedClinicalDataRecordIdentifier == v15)
+      signedClinicalDataRecordIdentifier = [(HKMedicalRecordOriginIdentifier *)v8 signedClinicalDataRecordIdentifier];
+      v16 = signedClinicalDataRecordIdentifier;
+      if (signedClinicalDataRecordIdentifier == signedClinicalDataRecordIdentifier)
       {
 
         v13 = 1;
@@ -146,13 +146,13 @@ LABEL_9:
 
       else
       {
-        v17 = [(HKMedicalRecordOriginIdentifier *)v8 signedClinicalDataRecordIdentifier];
-        if (v17)
+        signedClinicalDataRecordIdentifier2 = [(HKMedicalRecordOriginIdentifier *)v8 signedClinicalDataRecordIdentifier];
+        if (signedClinicalDataRecordIdentifier2)
         {
-          v18 = v17;
+          v18 = signedClinicalDataRecordIdentifier2;
           v19 = self->_signedClinicalDataRecordIdentifier;
-          v20 = [(HKMedicalRecordOriginIdentifier *)v8 signedClinicalDataRecordIdentifier];
-          v13 = [(NSUUID *)v19 isEqual:v20];
+          signedClinicalDataRecordIdentifier3 = [(HKMedicalRecordOriginIdentifier *)v8 signedClinicalDataRecordIdentifier];
+          v13 = [(NSUUID *)v19 isEqual:signedClinicalDataRecordIdentifier3];
         }
 
         else
@@ -162,7 +162,7 @@ LABEL_9:
         }
       }
 
-      if (fhirIdentifier == v10)
+      if (fhirIdentifier == fhirIdentifier)
       {
         goto LABEL_17;
       }
@@ -214,19 +214,19 @@ LABEL_19:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fhirIdentifier = self->_fhirIdentifier;
-  v5 = a3;
-  [v5 encodeObject:fhirIdentifier forKey:@"FHIRIdentifier"];
-  [v5 encodeObject:self->_signedClinicalDataRecordIdentifier forKey:@"SignedClinicalDataRecordIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:fhirIdentifier forKey:@"FHIRIdentifier"];
+  [coderCopy encodeObject:self->_signedClinicalDataRecordIdentifier forKey:@"SignedClinicalDataRecordIdentifier"];
 }
 
-- (HKMedicalRecordOriginIdentifier)initWithCoder:(id)a3
+- (HKMedicalRecordOriginIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FHIRIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SignedClinicalDataRecordIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FHIRIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SignedClinicalDataRecordIdentifier"];
 
   v7 = [[HKMedicalRecordOriginIdentifier alloc] _initWithFHIRIdentifier:v5 signedClinicalDataRecordIdentifier:v6];
   return v7;

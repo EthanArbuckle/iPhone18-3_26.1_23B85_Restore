@@ -1,28 +1,28 @@
 @interface PGMonthEnrichmentRule
-- (PGMonthEnrichmentRule)initWithModelReader:(id)a3 loggingConnection:(id)a4;
-- (double)promotionScoreForHighlightItemList:(id)a3;
-- (id)_momentNodesAtWorkWithGraph:(id)a3;
-- (id)bestItemsFromSortedItemsByWeekOfMonth:(id)a3 previouslySelectedItemsCountByWeek:(id)a4 maximumNumberOfItems:(unint64_t)a5 sortDescriptors:(id)a6;
-- (id)sortedItemsByWeekOfMonthFromItems:(id)a3 sortDescriptors:(id)a4;
-- (unsigned)_legacyVisibilityStateForItemPromotedToMonths:(id)a3;
-- (unsigned)_visibilityStateForItemPromotedToMonths:(id)a3;
-- (void)enumerateChildVisibilityStateForHighlightItemList:(id)a3 sharingFilter:(unsigned __int16)a4 withGraph:(id)a5 neighborScoreComputer:(id)a6 usingBlock:(id)a7 maximumNumberOfVisibleItems:(unint64_t)a8 maximumNumberOfVisibleRegularItems:(unint64_t)a9;
+- (PGMonthEnrichmentRule)initWithModelReader:(id)reader loggingConnection:(id)connection;
+- (double)promotionScoreForHighlightItemList:(id)list;
+- (id)_momentNodesAtWorkWithGraph:(id)graph;
+- (id)bestItemsFromSortedItemsByWeekOfMonth:(id)month previouslySelectedItemsCountByWeek:(id)week maximumNumberOfItems:(unint64_t)items sortDescriptors:(id)descriptors;
+- (id)sortedItemsByWeekOfMonthFromItems:(id)items sortDescriptors:(id)descriptors;
+- (unsigned)_legacyVisibilityStateForItemPromotedToMonths:(id)months;
+- (unsigned)_visibilityStateForItemPromotedToMonths:(id)months;
+- (void)enumerateChildVisibilityStateForHighlightItemList:(id)list sharingFilter:(unsigned __int16)filter withGraph:(id)graph neighborScoreComputer:(id)computer usingBlock:(id)block maximumNumberOfVisibleItems:(unint64_t)items maximumNumberOfVisibleRegularItems:(unint64_t)regularItems;
 @end
 
 @implementation PGMonthEnrichmentRule
 
-- (id)sortedItemsByWeekOfMonthFromItems:(id)a3 sortDescriptors:(id)a4
+- (id)sortedItemsByWeekOfMonthFromItems:(id)items sortDescriptors:(id)descriptors
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v20 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [MEMORY[0x277CBEA80] currentCalendar];
+  itemsCopy = items;
+  descriptorsCopy = descriptors;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
+  obj = itemsCopy;
   v8 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -38,18 +38,18 @@
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v12 startDate];
-        v14 = [v7 components:4096 fromDate:v13];
+        startDate = [v12 startDate];
+        v14 = [currentCalendar components:4096 fromDate:startDate];
 
         v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v14, "weekOfMonth")}];
-        v16 = [v6 objectForKeyedSubscript:v15];
-        if (!v16)
+        array = [dictionary objectForKeyedSubscript:v15];
+        if (!array)
         {
-          v16 = [MEMORY[0x277CBEB18] array];
-          [v6 setObject:v16 forKeyedSubscript:v15];
+          array = [MEMORY[0x277CBEB18] array];
+          [dictionary setObject:array forKeyedSubscript:v15];
         }
 
-        [v16 addObject:v12];
+        [array addObject:v12];
       }
 
       v9 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -62,46 +62,46 @@
   v22[1] = 3221225472;
   v22[2] = __75__PGMonthEnrichmentRule_sortedItemsByWeekOfMonthFromItems_sortDescriptors___block_invoke;
   v22[3] = &unk_278884F30;
-  v23 = v20;
-  v17 = v20;
-  [v6 enumerateKeysAndObjectsUsingBlock:v22];
+  v23 = descriptorsCopy;
+  v17 = descriptorsCopy;
+  [dictionary enumerateKeysAndObjectsUsingBlock:v22];
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return dictionary;
 }
 
-- (id)bestItemsFromSortedItemsByWeekOfMonth:(id)a3 previouslySelectedItemsCountByWeek:(id)a4 maximumNumberOfItems:(unint64_t)a5 sortDescriptors:(id)a6
+- (id)bestItemsFromSortedItemsByWeekOfMonth:(id)month previouslySelectedItemsCountByWeek:(id)week maximumNumberOfItems:(unint64_t)items sortDescriptors:(id)descriptors
 {
   v58 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v45 = a6;
-  v11 = [MEMORY[0x277CBEB18] array];
+  monthCopy = month;
+  weekCopy = week;
+  descriptorsCopy = descriptors;
+  array = [MEMORY[0x277CBEB18] array];
   v12 = [MEMORY[0x277CBEB58] set];
-  v13 = [MEMORY[0x277CBEA80] currentCalendar];
-  v44 = a5;
-  if ([v11 count] < a5)
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  itemsCopy = items;
+  if ([array count] < items)
   {
-    v46 = a5;
-    v43 = v11;
+    itemsCopy2 = items;
+    v43 = array;
     v51 = v12;
-    v49 = v13;
+    v49 = currentCalendar;
     do
     {
-      if (![v9 count])
+      if (![monthCopy count])
       {
         break;
       }
 
-      v47 = [MEMORY[0x277CBEB18] array];
-      v14 = [v9 allKeys];
+      array2 = [MEMORY[0x277CBEB18] array];
+      allKeys = [monthCopy allKeys];
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
-      obj = v14;
-      v15 = [v14 countByEnumeratingWithState:&v53 objects:v57 count:16];
+      obj = allKeys;
+      v15 = [allKeys countByEnumeratingWithState:&v53 objects:v57 count:16];
       if (v15)
       {
         v16 = v15;
@@ -119,36 +119,36 @@
             }
 
             v19 = *(*(&v53 + 1) + 8 * v18);
-            v20 = [v9 objectForKeyedSubscript:v19];
-            v21 = [v10 objectForKeyedSubscript:v19];
+            v20 = [monthCopy objectForKeyedSubscript:v19];
+            v21 = [weekCopy objectForKeyedSubscript:v19];
             v22 = v21;
             if (v21)
             {
-              v23 = [v21 unsignedIntegerValue];
-              if (v23 == 1)
+              unsignedIntegerValue = [v21 unsignedIntegerValue];
+              if (unsignedIntegerValue == 1)
               {
-                [v10 removeObjectForKey:v19];
+                [weekCopy removeObjectForKey:v19];
               }
 
               else
               {
-                v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v23 - 1];
-                [v10 setObject:v24 forKeyedSubscript:v19];
+                v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue - 1];
+                [weekCopy setObject:v24 forKeyedSubscript:v19];
               }
             }
 
             else
             {
-              v25 = v10;
-              v26 = v9;
-              v27 = [v20 firstObject];
-              v28 = [v27 startDate];
-              v29 = [v49 components:16 fromDate:v28];
+              v25 = weekCopy;
+              v26 = monthCopy;
+              firstObject = [v20 firstObject];
+              startDate = [firstObject startDate];
+              v29 = [v49 components:16 fromDate:startDate];
 
               v30 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v29, "day")}];
               if (([v51 containsObject:v30] & 1) == 0)
               {
-                [v47 addObject:v27];
+                [array2 addObject:firstObject];
               }
 
               if ([v20 count] == 1)
@@ -158,11 +158,11 @@
 
               else
               {
-                [v20 removeObject:v27];
+                [v20 removeObject:firstObject];
               }
 
-              v9 = v26;
-              v10 = v25;
+              monthCopy = v26;
+              weekCopy = v25;
               v17 = v48;
               v16 = v50;
             }
@@ -177,65 +177,65 @@
         while (v16);
       }
 
-      v31 = v47;
-      v32 = [v47 count];
-      if (v46 >= v32)
+      v31 = array2;
+      v32 = [array2 count];
+      if (itemsCopy2 >= v32)
       {
         v33 = v32;
       }
 
       else
       {
-        v33 = v46;
+        v33 = itemsCopy2;
       }
 
-      [v47 sortUsingDescriptors:v45];
-      v11 = v43;
-      v13 = v49;
+      [array2 sortUsingDescriptors:descriptorsCopy];
+      array = v43;
+      currentCalendar = v49;
       if (v33)
       {
         for (i = 0; i != v33; ++i)
         {
           v35 = [v31 objectAtIndexedSubscript:i];
-          [v11 addObject:v35];
-          v36 = [v35 startDate];
-          [v13 components:16 fromDate:v36];
-          v37 = v13;
-          v39 = v38 = v11;
+          [array addObject:v35];
+          startDate2 = [v35 startDate];
+          [currentCalendar components:16 fromDate:startDate2];
+          v37 = currentCalendar;
+          v39 = v38 = array;
 
           v40 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v39, "day")}];
           [v51 addObject:v40];
 
-          v31 = v47;
-          v11 = v38;
-          v13 = v37;
+          v31 = array2;
+          array = v38;
+          currentCalendar = v37;
         }
       }
 
-      v46 -= v33;
+      itemsCopy2 -= v33;
 
       v12 = v51;
     }
 
-    while ([v11 count] < v44);
+    while ([array count] < itemsCopy);
   }
 
   v41 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return array;
 }
 
-- (id)_momentNodesAtWorkWithGraph:(id)a3
+- (id)_momentNodesAtWorkWithGraph:(id)graph
 {
   momentNodesAtWork = self->_momentNodesAtWork;
   if (!momentNodesAtWork)
   {
-    v5 = [a3 meNodeCollection];
-    v6 = [v5 workNodes];
-    v7 = [v6 addressNodes];
-    v8 = [v7 momentNodes];
+    meNodeCollection = [graph meNodeCollection];
+    workNodes = [meNodeCollection workNodes];
+    addressNodes = [workNodes addressNodes];
+    momentNodes = [addressNodes momentNodes];
     v9 = self->_momentNodesAtWork;
-    self->_momentNodesAtWork = v8;
+    self->_momentNodesAtWork = momentNodes;
 
     momentNodesAtWork = self->_momentNodesAtWork;
   }
@@ -243,54 +243,54 @@
   return momentNodesAtWork;
 }
 
-- (unsigned)_visibilityStateForItemPromotedToMonths:(id)a3
+- (unsigned)_visibilityStateForItemPromotedToMonths:(id)months
 {
-  v4 = a3;
+  monthsCopy = months;
   if (_os_feature_enabled_impl())
   {
-    v5 = [v4 type];
+    type = [monthsCopy type];
 
-    if (v5 >= 8)
+    if (type >= 8)
     {
       return 0;
     }
 
     else
     {
-      return word_22F78C190[v5];
+      return word_22F78C190[type];
     }
   }
 
   else
   {
-    v7 = [(PGMonthEnrichmentRule *)self _legacyVisibilityStateForItemPromotedToMonths:v4];
+    v7 = [(PGMonthEnrichmentRule *)self _legacyVisibilityStateForItemPromotedToMonths:monthsCopy];
 
     return v7;
   }
 }
 
-- (unsigned)_legacyVisibilityStateForItemPromotedToMonths:(id)a3
+- (unsigned)_legacyVisibilityStateForItemPromotedToMonths:(id)months
 {
-  v3 = [a3 type];
-  if (v3 > 7)
+  type = [months type];
+  if (type > 7)
   {
     return 0;
   }
 
   else
   {
-    return word_22F78C180[v3];
+    return word_22F78C180[type];
   }
 }
 
-- (void)enumerateChildVisibilityStateForHighlightItemList:(id)a3 sharingFilter:(unsigned __int16)a4 withGraph:(id)a5 neighborScoreComputer:(id)a6 usingBlock:(id)a7 maximumNumberOfVisibleItems:(unint64_t)a8 maximumNumberOfVisibleRegularItems:(unint64_t)a9
+- (void)enumerateChildVisibilityStateForHighlightItemList:(id)list sharingFilter:(unsigned __int16)filter withGraph:(id)graph neighborScoreComputer:(id)computer usingBlock:(id)block maximumNumberOfVisibleItems:(unint64_t)items maximumNumberOfVisibleRegularItems:(unint64_t)regularItems
 {
-  obj = a4;
+  obj = filter;
   v179[3] = *MEMORY[0x277D85DE8];
-  v127 = a3;
-  v125 = a5;
-  v130 = a6;
-  v12 = a7;
+  listCopy = list;
+  graphCopy = graph;
+  computerCopy = computer;
+  blockCopy = block;
   v13 = MEMORY[0x277CCA920];
   v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d", @"type", 5];
   v179[0] = v14;
@@ -325,8 +325,8 @@
     v25 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:off_278884F50[obj] ascending:0];
   }
 
-  v120 = [v127 sortedChildHighlightItems];
-  v26 = [v127 childHighlightItemsForHighlightFilter:obj];
+  sortedChildHighlightItems = [listCopy sortedChildHighlightItems];
+  v26 = [listCopy childHighlightItemsForHighlightFilter:obj];
   v164[0] = MEMORY[0x277D85DD0];
   v164[1] = 3221225472;
   v164[2] = __195__PGMonthEnrichmentRule_enumerateChildVisibilityStateForHighlightItemList_sharingFilter_withGraph_neighborScoreComputer_usingBlock_maximumNumberOfVisibleItems_maximumNumberOfVisibleRegularItems___block_invoke;
@@ -348,12 +348,12 @@
   v177[3] = v31;
   v128 = [MEMORY[0x277CBEA60] arrayWithObjects:v177 count:4];
 
-  v32 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %f", @"promotionScore", 0x3FECCCCCCCCCCCCDLL];
+  0x3FECCCCCCCCCCCCDLL = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %f", @"promotionScore", 0x3FECCCCCCCCCCCCDLL];
   v33 = _os_feature_enabled_impl();
   v34 = MEMORY[0x277CCA920];
   if (v33)
   {
-    v176[0] = v32;
+    v176[0] = 0x3FECCCCCCCCCCCCDLL;
     v35 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %d", @"type", 5];
     v176[1] = v35;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v176 count:2];
@@ -362,7 +362,7 @@
 
   else
   {
-    v175[0] = v32;
+    v175[0] = 0x3FECCCCCCCCCCCCDLL;
     v35 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d", @"type", 3];
     v175[1] = v35;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v175 count:2];
@@ -373,9 +373,9 @@
   v118 = v37;
   v117 = [v126 filteredArrayUsingPredicate:v37];
   v38 = [PGMonthEnrichmentRule sortedItemsByWeekOfMonthFromItems:"sortedItemsByWeekOfMonthFromItems:sortDescriptors:" sortDescriptors:?];
-  v39 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v116 = v38;
-  v40 = [(PGMonthEnrichmentRule *)self bestItemsFromSortedItemsByWeekOfMonth:v38 previouslySelectedItemsCountByWeek:v39 maximumNumberOfItems:a8 sortDescriptors:v128];
+  v40 = [(PGMonthEnrichmentRule *)self bestItemsFromSortedItemsByWeekOfMonth:v38 previouslySelectedItemsCountByWeek:dictionary maximumNumberOfItems:items sortDescriptors:v128];
 
   v174[0] = v25;
   v41 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"promotionScore" ascending:0];
@@ -389,14 +389,14 @@
   v44 = v40;
   v45 = [v40 count];
   v121 = v25;
-  if (a8 <= v45)
+  if (items <= v45)
   {
-    v78 = self;
+    selfCopy3 = self;
   }
 
   else
   {
-    v111 = a8 - v45;
+    v111 = items - v45;
     v112 = v45;
     v138 = v40;
     v46 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v126, "count")}];
@@ -419,8 +419,8 @@
             objc_enumerationMutation(v47);
           }
 
-          v52 = [*(*(&v160 + 1) + 8 * i) uuid];
-          [v46 addObject:v52];
+          uuid = [*(*(&v160 + 1) + 8 * i) uuid];
+          [v46 addObject:uuid];
         }
 
         v49 = [v47 countByEnumeratingWithState:&v160 objects:v173 count:16];
@@ -430,10 +430,10 @@
     }
 
     v115 = v46;
-    v114 = [PGGraphHighlightNodeCollection highlightNodesForArrayOfUUIDs:v46 inGraph:v125];
-    v134 = [v114 highlightNodeByHighlightUUID];
-    v133 = [(PGMonthEnrichmentRule *)self _momentNodesAtWorkWithGraph:v125];
-    v131 = [MEMORY[0x277CBEB18] array];
+    v114 = [PGGraphHighlightNodeCollection highlightNodesForArrayOfUUIDs:v46 inGraph:graphCopy];
+    highlightNodeByHighlightUUID = [v114 highlightNodeByHighlightUUID];
+    v133 = [(PGMonthEnrichmentRule *)self _momentNodesAtWorkWithGraph:graphCopy];
+    array = [MEMORY[0x277CBEB18] array];
     v156 = 0u;
     v157 = 0u;
     v158 = 0u;
@@ -459,21 +459,21 @@
           v61 = v60;
           if (([v55 containsObject:v59] & 1) == 0 && objc_msgSend(v59, "type") != 3 && v61 > 0.25)
           {
-            v63 = [v59 uuid];
-            v64 = [v134 objectForKeyedSubscript:v63];
+            uuid2 = [v59 uuid];
+            v64 = [highlightNodeByHighlightUUID objectForKeyedSubscript:uuid2];
 
             if (v64)
             {
-              if (v61 >= 0.5 || [v59 numberOfAssetsInExtendedForSharingFilter:obj] > 4 || (objc_msgSend(v130, "neighborScoreWithHighlightNode:", v64), v65 >= 0.4))
+              if (v61 >= 0.5 || [v59 numberOfAssetsInExtendedForSharingFilter:obj] > 4 || (objc_msgSend(computerCopy, "neighborScoreWithHighlightNode:", v64), v65 >= 0.4))
               {
-                v66 = [v64 collection];
-                v67 = [v66 momentNodes];
-                v68 = [v133 containsCollection:v67];
+                collection = [v64 collection];
+                momentNodes = [collection momentNodes];
+                v68 = [v133 containsCollection:momentNodes];
 
                 v55 = v138;
                 if ((v68 & 1) == 0)
                 {
-                  [v131 addObject:v59];
+                  [array addObject:v59];
                 }
               }
             }
@@ -498,19 +498,19 @@
     }
 
     v70 = +[PGUserDefaults minimumNumberOfVisibleItems];
-    v71 = v131;
-    if ([v131 count] + v112 >= v70)
+    v71 = array;
+    if ([array count] + v112 >= v70)
     {
-      v123 = [(PGMonthEnrichmentRule *)self sortedItemsByWeekOfMonthFromItems:v131 sortDescriptors:v124];
-      v79 = v111;
-      if (v111 >= a9)
+      v123 = [(PGMonthEnrichmentRule *)self sortedItemsByWeekOfMonthFromItems:array sortDescriptors:v124];
+      regularItemsCopy = v111;
+      if (v111 >= regularItems)
       {
-        v79 = a9;
+        regularItemsCopy = regularItems;
       }
 
-      v113 = v79;
-      v74 = [MEMORY[0x277CBEB38] dictionary];
-      v77 = [MEMORY[0x277CBEA80] currentCalendar];
+      v113 = regularItemsCopy;
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
       v152 = 0u;
       v153 = 0u;
       v154 = 0u;
@@ -530,17 +530,17 @@
               objc_enumerationMutation(obja);
             }
 
-            v83 = [*(*(&v152 + 1) + 8 * k) startDate];
-            [v77 components:4096 fromDate:v83];
-            v85 = v84 = v77;
+            startDate = [*(*(&v152 + 1) + 8 * k) startDate];
+            [currentCalendar components:4096 fromDate:startDate];
+            v85 = v84 = currentCalendar;
 
             v86 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v85, "weekOfMonth")}];
             v87 = MEMORY[0x277CCABB0];
-            v88 = [v74 objectForKeyedSubscript:v86];
+            v88 = [dictionary2 objectForKeyedSubscript:v86];
             v89 = [v87 numberWithUnsignedInteger:{objc_msgSend(v88, "unsignedIntegerValue") + 1}];
-            [v74 setObject:v89 forKeyedSubscript:v86];
+            [dictionary2 setObject:v89 forKeyedSubscript:v86];
 
-            v77 = v84;
+            currentCalendar = v84;
           }
 
           v81 = [obja countByEnumeratingWithState:&v152 objects:v169 count:16];
@@ -549,21 +549,21 @@
         while (v81);
       }
 
-      v78 = self;
+      selfCopy3 = self;
       v73 = v123;
-      v90 = [(PGMonthEnrichmentRule *)self bestItemsFromSortedItemsByWeekOfMonth:v123 previouslySelectedItemsCountByWeek:v74 maximumNumberOfItems:v113 sortDescriptors:v124];
+      v90 = [(PGMonthEnrichmentRule *)self bestItemsFromSortedItemsByWeekOfMonth:v123 previouslySelectedItemsCountByWeek:dictionary2 maximumNumberOfItems:v113 sortDescriptors:v124];
       v44 = [obja arrayByAddingObjectsFromArray:v90];
 
-      v71 = v131;
+      v71 = array;
     }
 
     else
     {
-      v72 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %f", @"promotionScore", 0x3FD0000000000000];
-      v73 = [v53 filteredArrayUsingPredicate:v72];
+      0x3FD0000000000000 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %f", @"promotionScore", 0x3FD0000000000000];
+      v73 = [v53 filteredArrayUsingPredicate:0x3FD0000000000000];
 
-      v74 = [v73 sortedArrayUsingDescriptors:v128];
-      v75 = [v74 count];
+      dictionary2 = [v73 sortedArrayUsingDescriptors:v128];
+      v75 = [dictionary2 count];
       if (v70 >= v75)
       {
         v76 = v75;
@@ -574,9 +574,9 @@
         v76 = v70;
       }
 
-      [v74 subarrayWithRange:{0, v76}];
-      v44 = v77 = v55;
-      v78 = self;
+      [dictionary2 subarrayWithRange:{0, v76}];
+      v44 = currentCalendar = v55;
+      selfCopy3 = self;
     }
   }
 
@@ -599,7 +599,7 @@
           objc_enumerationMutation(v91);
         }
 
-        v12[2](v12, *(*(&v148 + 1) + 8 * m), [(PGMonthEnrichmentRule *)v78 _visibilityStateForItemPromotedToMonths:*(*(&v148 + 1) + 8 * m)]);
+        blockCopy[2](blockCopy, *(*(&v148 + 1) + 8 * m), [(PGMonthEnrichmentRule *)selfCopy3 _visibilityStateForItemPromotedToMonths:*(*(&v148 + 1) + 8 * m)]);
       }
 
       v93 = [v91 countByEnumeratingWithState:&v148 objects:v168 count:16];
@@ -631,16 +631,16 @@
         [v101 promotionScore];
         if (v102 >= 0.25)
         {
-          v104 = [v101 type];
+          type = [v101 type];
           v103 = 0;
-          if (v104 <= 7)
+          if (type <= 7)
           {
-            if (((1 << v104) & 0xA9) != 0)
+            if (((1 << type) & 0xA9) != 0)
             {
               v103 = 1;
             }
 
-            else if (((1 << v104) & 0x16) != 0)
+            else if (((1 << type) & 0x16) != 0)
             {
               v103 = _os_feature_enabled_impl();
             }
@@ -652,7 +652,7 @@
           v103 = 0;
         }
 
-        (v12)[2](v12, v101, v103);
+        (blockCopy)[2](blockCopy, v101, v103);
       }
 
       v98 = [v96 countByEnumeratingWithState:&v144 objects:v167 count:16];
@@ -661,7 +661,7 @@
     while (v98);
   }
 
-  v105 = [v120 arrayByExcludingObjectsInArray:v129];
+  v105 = [sortedChildHighlightItems arrayByExcludingObjectsInArray:v129];
   v140 = 0u;
   v141 = 0u;
   v142 = 0u;
@@ -680,7 +680,7 @@
           objc_enumerationMutation(v105);
         }
 
-        v12[2](v12, *(*(&v140 + 1) + 8 * ii), 0);
+        blockCopy[2](blockCopy, *(*(&v140 + 1) + 8 * ii), 0);
       }
 
       v107 = [v105 countByEnumeratingWithState:&v140 objects:v166 count:16];
@@ -692,15 +692,15 @@
   v110 = *MEMORY[0x277D85DE8];
 }
 
-- (double)promotionScoreForHighlightItemList:(id)a3
+- (double)promotionScoreForHighlightItemList:(id)list
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 sortedChildHighlightItems];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  sortedChildHighlightItems = [list sortedChildHighlightItems];
+  v4 = [sortedChildHighlightItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -712,7 +712,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sortedChildHighlightItems);
         }
 
         [*(*(&v12 + 1) + 8 * i) promotionScore];
@@ -722,7 +722,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [sortedChildHighlightItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -737,18 +737,18 @@
   return v7;
 }
 
-- (PGMonthEnrichmentRule)initWithModelReader:(id)a3 loggingConnection:(id)a4
+- (PGMonthEnrichmentRule)initWithModelReader:(id)reader loggingConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  readerCopy = reader;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = PGMonthEnrichmentRule;
   v9 = [(PGMonthEnrichmentRule *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_modelReader, a3);
-    objc_storeStrong(&v10->_loggingConnection, a4);
+    objc_storeStrong(&v9->_modelReader, reader);
+    objc_storeStrong(&v10->_loggingConnection, connection);
   }
 
   return v10;

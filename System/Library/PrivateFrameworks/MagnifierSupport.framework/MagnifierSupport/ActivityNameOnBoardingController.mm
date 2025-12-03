@@ -1,13 +1,13 @@
 @interface ActivityNameOnBoardingController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldClear:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (_TtC16MagnifierSupport32ActivityNameOnBoardingController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC16MagnifierSupport32ActivityNameOnBoardingController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)activityNameFromTextFieldWithTextField:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (_TtC16MagnifierSupport32ActivityNameOnBoardingController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC16MagnifierSupport32ActivityNameOnBoardingController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)activityNameFromTextFieldWithTextField:(id)field;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -15,62 +15,62 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_257CCF5C8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for ActivityNameOnBoardingController();
   v4 = v6.receiver;
-  [(OBBaseWelcomeController *)&v6 viewDidAppear:v3];
+  [(OBBaseWelcomeController *)&v6 viewDidAppear:appearCopy];
   v5 = *&v4[OBJC_IVAR____TtC16MagnifierSupport32ActivityNameOnBoardingController_activityNameTextField];
   [v5 becomeFirstResponder];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = self;
-  sub_257CCFAD0(v4);
+  returnCopy = return;
+  selfCopy = self;
+  sub_257CCFAD0(returnCopy);
 
   return 1;
 }
 
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = self;
-  sub_257CCFF30(v6, a4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_257CCFF30(editingCopy, reason);
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
   v7 = objc_opt_self();
-  v8 = a3;
-  v9 = self;
-  [v7 cancelPreviousPerformRequestsWithTarget:v9 selector:sel_activityNameFromTextFieldWithTextField_ object:v8];
-  [(ActivityNameOnBoardingController *)v9 performSelector:sel_activityNameFromTextFieldWithTextField_ withObject:v8 afterDelay:0.01];
+  fieldCopy = field;
+  selfCopy = self;
+  [v7 cancelPreviousPerformRequestsWithTarget:selfCopy selector:sel_activityNameFromTextFieldWithTextField_ object:fieldCopy];
+  [(ActivityNameOnBoardingController *)selfCopy performSelector:sel_activityNameFromTextFieldWithTextField_ withObject:fieldCopy afterDelay:0.01];
 
   return 1;
 }
 
-- (void)activityNameFromTextFieldWithTextField:(id)a3
+- (void)activityNameFromTextFieldWithTextField:(id)field
 {
-  v4 = a3;
-  v5 = self;
-  sub_257CD01FC(v4);
+  fieldCopy = field;
+  selfCopy = self;
+  sub_257CD01FC(fieldCopy);
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
   v4 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport32ActivityNameOnBoardingController_activityNameTakenLabel);
-  v5 = a3;
-  v6 = self;
+  clearCopy = clear;
+  selfCopy = self;
   [v4 setHidden_];
-  v7 = v6 + OBJC_IVAR____TtC16MagnifierSupport32ActivityNameOnBoardingController_createActivityDelegate;
+  v7 = selfCopy + OBJC_IVAR____TtC16MagnifierSupport32ActivityNameOnBoardingController_createActivityDelegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v8 = *(v7 + 1);
@@ -87,14 +87,14 @@
   return 1;
 }
 
-- (_TtC16MagnifierSupport32ActivityNameOnBoardingController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC16MagnifierSupport32ActivityNameOnBoardingController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   v9 = sub_257ECF500();
   v11 = v10;
-  if (!a4)
+  if (!text)
   {
     v13 = 0;
-    if (a5)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -102,12 +102,12 @@
 LABEL_5:
     v14 = 0;
     v16 = 0;
-    return sub_257CD0CA8(v9, v11, a4, v13, v14, v16, a6);
+    return sub_257CD0CA8(v9, v11, text, v13, v14, v16, layout);
   }
 
-  a4 = sub_257ECF500();
+  text = sub_257ECF500();
   v13 = v12;
-  if (!a5)
+  if (!name)
   {
     goto LABEL_5;
   }
@@ -115,16 +115,16 @@ LABEL_5:
 LABEL_3:
   v14 = sub_257ECF500();
   v16 = v15;
-  return sub_257CD0CA8(v9, v11, a4, v13, v14, v16, a6);
+  return sub_257CD0CA8(v9, v11, text, v13, v14, v16, layout);
 }
 
-- (_TtC16MagnifierSupport32ActivityNameOnBoardingController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC16MagnifierSupport32ActivityNameOnBoardingController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   v9 = sub_257ECF500();
   v11 = v10;
-  if (a4)
+  if (text)
   {
-    a4 = sub_257ECF500();
+    text = sub_257ECF500();
     v13 = v12;
   }
 
@@ -133,14 +133,14 @@ LABEL_3:
     v13 = 0;
   }
 
-  v14 = a5;
-  return sub_257CD0EF8(v9, v11, a4, v13, a5, a6);
+  iconCopy = icon;
+  return sub_257CD0EF8(v9, v11, text, v13, icon, layout);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_257CD1290();
 }
 

@@ -1,23 +1,23 @@
 @interface TRIExperimentUpdateScheduler
-- (TRIExperimentUpdateScheduler)initWithExperimentDatabase:(id)a3 taskQueue:(id)a4;
-- (void)scheduleExperimentUpdateOperationsForExperimentWithNewEndDate:(id)a3 withDeployment:(id)a4;
+- (TRIExperimentUpdateScheduler)initWithExperimentDatabase:(id)database taskQueue:(id)queue;
+- (void)scheduleExperimentUpdateOperationsForExperimentWithNewEndDate:(id)date withDeployment:(id)deployment;
 @end
 
 @implementation TRIExperimentUpdateScheduler
 
-- (TRIExperimentUpdateScheduler)initWithExperimentDatabase:(id)a3 taskQueue:(id)a4
+- (TRIExperimentUpdateScheduler)initWithExperimentDatabase:(id)database taskQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = TRIExperimentUpdateScheduler;
   v9 = [(TRIExperimentUpdateScheduler *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a4);
-    objc_storeStrong(&v10->_experimentDatabase, a3);
-    v11 = [[TRIExperimentUpdateProcessor alloc] initWithExperimentDatabase:v7];
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_experimentDatabase, database);
+    v11 = [[TRIExperimentUpdateProcessor alloc] initWithExperimentDatabase:databaseCopy];
     v12 = _experimentUpdateProcessor;
     _experimentUpdateProcessor = v11;
   }
@@ -25,17 +25,17 @@
   return v10;
 }
 
-- (void)scheduleExperimentUpdateOperationsForExperimentWithNewEndDate:(id)a3 withDeployment:(id)a4
+- (void)scheduleExperimentUpdateOperationsForExperimentWithNewEndDate:(id)date withDeployment:(id)deployment
 {
-  v11 = a3;
-  v6 = a4;
+  dateCopy = date;
+  deploymentCopy = deployment;
   v7 = objc_autoreleasePoolPush();
-  v8 = [_experimentUpdateProcessor processUpdateOperationForExistingExperimentWithEndDate:v11 withExperimentDeployment:v6];
+  v8 = [_experimentUpdateProcessor processUpdateOperationForExistingExperimentWithEndDate:dateCopy withExperimentDeployment:deploymentCopy];
   if (v8)
   {
-    v9 = [(TRIExperimentUpdateScheduler *)self queue];
+    queue = [(TRIExperimentUpdateScheduler *)self queue];
     v10 = [TRITaskQueuingOptions optionsWithDuplicateTaskResolution:1];
-    [v9 addTask:v8 options:v10];
+    [queue addTask:v8 options:v10];
   }
 
   objc_autoreleasePoolPop(v7);

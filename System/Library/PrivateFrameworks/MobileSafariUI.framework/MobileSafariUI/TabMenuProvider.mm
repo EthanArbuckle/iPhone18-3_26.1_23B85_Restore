@@ -1,64 +1,64 @@
 @interface TabMenuProvider
-+ (BOOL)canMoveTabsToNewWindow:(id)a3;
-+ (id)_bottomMenuForTab:(id)a3 dataSource:(id)a4 options:(unint64_t)a5;
-+ (id)_closeActionForTab:(id)a3 dataSource:(id)a4;
-+ (id)_closeActionForTab:(id)a3 inBackgroundTabGroup:(id)a4 dataSource:(id)a5;
++ (BOOL)canMoveTabsToNewWindow:(id)window;
++ (id)_bottomMenuForTab:(id)tab dataSource:(id)source options:(unint64_t)options;
++ (id)_closeActionForTab:(id)tab dataSource:(id)source;
++ (id)_closeActionForTab:(id)tab inBackgroundTabGroup:(id)group dataSource:(id)source;
 + (id)_closeCommandForMultipleTabSelection;
-+ (id)_closeOtherTabsActionForTab:(id)a3 dataSource:(id)a4;
-+ (id)_closeOtherTabsActionForTab:(id)a3 inBackgroundTabGroup:(id)a4 dataSource:(id)a5;
-+ (id)_copyActionsForTab:(id)a3 options:(unint64_t)a4;
++ (id)_closeOtherTabsActionForTab:(id)tab dataSource:(id)source;
++ (id)_closeOtherTabsActionForTab:(id)tab inBackgroundTabGroup:(id)group dataSource:(id)source;
++ (id)_copyActionsForTab:(id)tab options:(unint64_t)options;
 + (id)_copyCommandForMultipleTabSelection;
-+ (id)_copyMenuForTabGroupTab:(id)a3;
-+ (id)_duplicateActionForWBTabs:(id)a3 dataSource:(id)a4;
-+ (id)_mainMenuForTab:(id)a3 dataSource:(id)a4 options:(unint64_t)a5;
-+ (id)_moveMenuForMultipleTabSelection:(id)a3 dataSource:(id)a4;
-+ (id)_moveMenuForTabGroupTab:(id)a3 inTabGroup:(id)a4 dataSource:(id)a5;
-+ (id)_moveToNewWindowActionForTabs:(id)a3 dataSource:(id)a4;
-+ (id)_pinTabActionForTabGroupTab:(id)a3 inTabGroup:(id)a4 dataSource:(id)a5;
-+ (id)_readerActionForTabDocument:(id)a3;
-+ (id)_sortMenuForTab:(id)a3 dataSource:(id)a4;
-+ (id)_stopReloadActionForTabDocument:(id)a3;
-+ (id)_toggleVoiceSearchActionForTabDocument:(id)a3;
-+ (id)actionProviderForMultipleTabSelection:(id)a3 dataSource:(id)a4;
-+ (id)actionProviderForTab:(id)a3 dataSource:(id)a4 options:(unint64_t)a5;
-+ (id)actionProviderForTabGroupTab:(id)a3 inTabGroup:(id)a4 dataSource:(id)a5 options:(unint64_t)a6;
-+ (id)addressFieldActionProviderForTab:(id)a3 dataSource:(id)a4;
-+ (id)bookmarkActionForTabGroup:(id)a3 dataSource:(id)a4;
-+ (id)closeAllTabsCommandWithDataSource:(id)a3;
-+ (id)copyLinksActionForTabGroup:(id)a3;
-+ (id)moveMenuForTab:(id)a3 dataSource:(id)a4 showTitle:(BOOL)a5 dismissHandler:(id)a6;
-+ (id)moveMenuForTabGroup:(id)a3 dataSource:(id)a4;
-+ (id)pinTabActionForTab:(id)a3 dataSource:(id)a4;
-+ (id)sortMenuForTabGroup:(id)a3 dataSource:(id)a4;
-+ (id)switchTabGroupMenuWithDataSource:(id)a3;
++ (id)_copyMenuForTabGroupTab:(id)tab;
++ (id)_duplicateActionForWBTabs:(id)tabs dataSource:(id)source;
++ (id)_mainMenuForTab:(id)tab dataSource:(id)source options:(unint64_t)options;
++ (id)_moveMenuForMultipleTabSelection:(id)selection dataSource:(id)source;
++ (id)_moveMenuForTabGroupTab:(id)tab inTabGroup:(id)group dataSource:(id)source;
++ (id)_moveToNewWindowActionForTabs:(id)tabs dataSource:(id)source;
++ (id)_pinTabActionForTabGroupTab:(id)tab inTabGroup:(id)group dataSource:(id)source;
++ (id)_readerActionForTabDocument:(id)document;
++ (id)_sortMenuForTab:(id)tab dataSource:(id)source;
++ (id)_stopReloadActionForTabDocument:(id)document;
++ (id)_toggleVoiceSearchActionForTabDocument:(id)document;
++ (id)actionProviderForMultipleTabSelection:(id)selection dataSource:(id)source;
++ (id)actionProviderForTab:(id)tab dataSource:(id)source options:(unint64_t)options;
++ (id)actionProviderForTabGroupTab:(id)tab inTabGroup:(id)group dataSource:(id)source options:(unint64_t)options;
++ (id)addressFieldActionProviderForTab:(id)tab dataSource:(id)source;
++ (id)bookmarkActionForTabGroup:(id)group dataSource:(id)source;
++ (id)closeAllTabsCommandWithDataSource:(id)source;
++ (id)copyLinksActionForTabGroup:(id)group;
++ (id)moveMenuForTab:(id)tab dataSource:(id)source showTitle:(BOOL)title dismissHandler:(id)handler;
++ (id)moveMenuForTabGroup:(id)group dataSource:(id)source;
++ (id)pinTabActionForTab:(id)tab dataSource:(id)source;
++ (id)sortMenuForTabGroup:(id)group dataSource:(id)source;
++ (id)switchTabGroupMenuWithDataSource:(id)source;
 @end
 
 @implementation TabMenuProvider
 
-+ (id)actionProviderForTab:(id)a3 dataSource:(id)a4 options:(unint64_t)a5
++ (id)actionProviderForTab:(id)tab dataSource:(id)source options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [a1 _mainMenuForTab:v8 dataSource:v9 options:a5];
-  [v10 safari_addObjectUnlessNil:v11];
+  tabCopy = tab;
+  sourceCopy = source;
+  array = [MEMORY[0x277CBEB18] array];
+  v11 = [self _mainMenuForTab:tabCopy dataSource:sourceCopy options:options];
+  [array safari_addObjectUnlessNil:v11];
 
-  if ((a5 & 0x44) == 4)
+  if ((options & 0x44) == 4)
   {
-    v12 = [MEMORY[0x277D75710] sf_bookmarkMenu];
-    [v10 addObject:v12];
+    sf_bookmarkMenu = [MEMORY[0x277D75710] sf_bookmarkMenu];
+    [array addObject:sf_bookmarkMenu];
   }
 
-  v13 = [a1 _bottomMenuForTab:v8 dataSource:v9 options:a5];
-  [v10 safari_addObjectUnlessNil:v13];
+  v13 = [self _bottomMenuForTab:tabCopy dataSource:sourceCopy options:options];
+  [array safari_addObjectUnlessNil:v13];
 
-  if ([v10 count])
+  if ([array count])
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __59__TabMenuProvider_actionProviderForTab_dataSource_options___block_invoke;
     aBlock[3] = &unk_2781DA500;
-    v17 = v10;
+    v17 = array;
     v14 = _Block_copy(aBlock);
   }
 
@@ -70,25 +70,25 @@
   return v14;
 }
 
-+ (id)actionProviderForTabGroupTab:(id)a3 inTabGroup:(id)a4 dataSource:(id)a5 options:(unint64_t)a6
++ (id)actionProviderForTabGroupTab:(id)tab inTabGroup:(id)group dataSource:(id)source options:(unint64_t)options
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = [a1 _copyMenuForTabGroupTab:v10];
-  [v13 safari_addObjectUnlessNil:v14];
+  optionsCopy = options;
+  tabCopy = tab;
+  groupCopy = group;
+  sourceCopy = source;
+  array = [MEMORY[0x277CBEB18] array];
+  v14 = [self _copyMenuForTabGroupTab:tabCopy];
+  [array safari_addObjectUnlessNil:v14];
 
-  if ((v6 & 0x1000) != 0)
+  if ((optionsCopy & 0x1000) != 0)
   {
-    v20 = [a1 _pinTabActionForTabGroupTab:v10 inTabGroup:v11 dataSource:v12];
-    [v13 safari_addObjectUnlessNil:v20];
+    v20 = [self _pinTabActionForTabGroupTab:tabCopy inTabGroup:groupCopy dataSource:sourceCopy];
+    [array safari_addObjectUnlessNil:v20];
 
-    if ((v6 & 0x10) == 0)
+    if ((optionsCopy & 0x10) == 0)
     {
 LABEL_3:
-      if ((v6 & 0x20) == 0)
+      if ((optionsCopy & 0x20) == 0)
       {
         goto LABEL_4;
       }
@@ -97,18 +97,18 @@ LABEL_3:
     }
   }
 
-  else if ((v6 & 0x10) == 0)
+  else if ((optionsCopy & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  v21 = [a1 _moveMenuForTabGroupTab:v10 inTabGroup:v11 dataSource:v12];
-  [v13 safari_addObjectUnlessNil:v21];
+  v21 = [self _moveMenuForTabGroupTab:tabCopy inTabGroup:groupCopy dataSource:sourceCopy];
+  [array safari_addObjectUnlessNil:v21];
 
-  if ((v6 & 0x20) == 0)
+  if ((optionsCopy & 0x20) == 0)
   {
 LABEL_4:
-    if ((v6 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -117,17 +117,17 @@ LABEL_4:
   }
 
 LABEL_11:
-  v22 = [a1 sortMenuForTabGroup:v11 dataSource:v12];
-  [v13 safari_addObjectUnlessNil:v22];
+  v22 = [self sortMenuForTabGroup:groupCopy dataSource:sourceCopy];
+  [array safari_addObjectUnlessNil:v22];
 
-  if ((v6 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
 LABEL_5:
-    v15 = [a1 _closeActionForTab:v10 inBackgroundTabGroup:v11 dataSource:v12];
-    [v13 safari_addObjectUnlessNil:v15];
+    v15 = [self _closeActionForTab:tabCopy inBackgroundTabGroup:groupCopy dataSource:sourceCopy];
+    [array safari_addObjectUnlessNil:v15];
 
-    v16 = [a1 _closeOtherTabsActionForTab:v10 inBackgroundTabGroup:v11 dataSource:v12];
-    [v13 safari_addObjectUnlessNil:v16];
+    v16 = [self _closeOtherTabsActionForTab:tabCopy inBackgroundTabGroup:groupCopy dataSource:sourceCopy];
+    [array safari_addObjectUnlessNil:v16];
   }
 
 LABEL_6:
@@ -135,18 +135,18 @@ LABEL_6:
   aBlock[1] = 3221225472;
   aBlock[2] = __78__TabMenuProvider_actionProviderForTabGroupTab_inTabGroup_dataSource_options___block_invoke;
   aBlock[3] = &unk_2781DA500;
-  v24 = v13;
-  v17 = v13;
+  v24 = array;
+  v17 = array;
   v18 = _Block_copy(aBlock);
 
   return v18;
 }
 
-+ (id)bookmarkActionForTabGroup:(id)a3 dataSource:(id)a4
++ (id)bookmarkActionForTabGroup:(id)group dataSource:(id)source
 {
-  v5 = a4;
-  v6 = [a3 unpinnedTabs];
-  v7 = [v6 safari_filterObjectsUsingBlock:&__block_literal_global_55];
+  sourceCopy = source;
+  unpinnedTabs = [group unpinnedTabs];
+  v7 = [unpinnedTabs safari_filterObjectsUsingBlock:&__block_literal_global_55];
 
   v8 = [v7 count];
   if (v8)
@@ -170,7 +170,7 @@ LABEL_6:
     v17[1] = 3221225472;
     v17[2] = __56__TabMenuProvider_bookmarkActionForTabGroup_dataSource___block_invoke_2;
     v17[3] = &unk_2781D9420;
-    v18 = v5;
+    v18 = sourceCopy;
     v19 = v7;
     v11 = [v14 actionWithTitle:v10 image:v15 identifier:0 handler:v17];
   }
@@ -183,14 +183,14 @@ LABEL_6:
   return v11;
 }
 
-+ (id)copyLinksActionForTabGroup:(id)a3
++ (id)copyLinksActionForTabGroup:(id)group
 {
-  v3 = a3;
-  v4 = [v3 tabCountForPasteboard];
-  if (v4)
+  groupCopy = group;
+  tabCountForPasteboard = [groupCopy tabCountForPasteboard];
+  if (tabCountForPasteboard)
   {
-    v5 = v4;
-    if (v4 == 1)
+    v5 = tabCountForPasteboard;
+    if (tabCountForPasteboard == 1)
     {
       v6 = _WBSLocalizedString();
     }
@@ -208,7 +208,7 @@ LABEL_6:
     v13[1] = 3221225472;
     v13[2] = __46__TabMenuProvider_copyLinksActionForTabGroup___block_invoke;
     v13[3] = &unk_2781D93D0;
-    v14 = v3;
+    v14 = groupCopy;
     v7 = [v10 actionWithTitle:v6 image:v11 identifier:0 handler:v13];
   }
 
@@ -226,89 +226,89 @@ void __46__TabMenuProvider_copyLinksActionForTabGroup___block_invoke(uint64_t a1
   [v2 safari_copyLinksForTabGroup:*(a1 + 32)];
 }
 
-+ (id)actionProviderForMultipleTabSelection:(id)a3 dataSource:(id)a4
++ (id)actionProviderForMultipleTabSelection:(id)selection dataSource:(id)source
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 array];
-  v10 = [a1 _copyCommandForMultipleTabSelection];
-  [v9 addObject:v10];
+  sourceCopy = source;
+  selectionCopy = selection;
+  array = [v6 array];
+  _copyCommandForMultipleTabSelection = [self _copyCommandForMultipleTabSelection];
+  [array addObject:_copyCommandForMultipleTabSelection];
 
-  v11 = [a1 _duplicateActionForWBTabs:v8 dataSource:v7];
-  [v9 safari_addObjectUnlessNil:v11];
+  v11 = [self _duplicateActionForWBTabs:selectionCopy dataSource:sourceCopy];
+  [array safari_addObjectUnlessNil:v11];
 
-  v12 = [a1 _moveToNewWindowActionForTabs:v8 dataSource:v7];
-  [v9 safari_addObjectUnlessNil:v12];
+  v12 = [self _moveToNewWindowActionForTabs:selectionCopy dataSource:sourceCopy];
+  [array safari_addObjectUnlessNil:v12];
 
-  v13 = [a1 _moveMenuForMultipleTabSelection:v8 dataSource:v7];
+  v13 = [self _moveMenuForMultipleTabSelection:selectionCopy dataSource:sourceCopy];
 
-  [v9 safari_addObjectUnlessNil:v13];
-  v14 = [a1 _closeCommandForMultipleTabSelection];
-  [v9 addObject:v14];
+  [array safari_addObjectUnlessNil:v13];
+  _closeCommandForMultipleTabSelection = [self _closeCommandForMultipleTabSelection];
+  [array addObject:_closeCommandForMultipleTabSelection];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__TabMenuProvider_actionProviderForMultipleTabSelection_dataSource___block_invoke;
   aBlock[3] = &unk_2781DA500;
-  v19 = v9;
-  v15 = v9;
+  v19 = array;
+  v15 = array;
   v16 = _Block_copy(aBlock);
 
   return v16;
 }
 
-+ (id)addressFieldActionProviderForTab:(id)a3 dataSource:(id)a4
++ (id)addressFieldActionProviderForTab:(id)tab dataSource:(id)source
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 array];
-  v10 = [a1 _mainMenuForTab:v8 dataSource:v7 options:10241];
-  [v9 addObject:v10];
+  sourceCopy = source;
+  tabCopy = tab;
+  array = [v6 array];
+  v10 = [self _mainMenuForTab:tabCopy dataSource:sourceCopy options:10241];
+  [array addObject:v10];
 
   v11 = MEMORY[0x277D75710];
-  v12 = [MEMORY[0x277CBEB18] array];
-  v13 = [a1 switchTabGroupMenuWithDataSource:v7];
-  [v12 safari_addObjectUnlessNil:v13];
+  array2 = [MEMORY[0x277CBEB18] array];
+  v13 = [self switchTabGroupMenuWithDataSource:sourceCopy];
+  [array2 safari_addObjectUnlessNil:v13];
 
-  v14 = [a1 moveMenuForTab:v8 dataSource:v7];
-  [v12 safari_addObjectUnlessNil:v14];
+  v14 = [self moveMenuForTab:tabCopy dataSource:sourceCopy];
+  [array2 safari_addObjectUnlessNil:v14];
 
-  v15 = [v11 menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v12];
-  [v9 addObject:v15];
+  v15 = [v11 menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array2];
+  [array addObject:v15];
 
   v16 = MEMORY[0x277D75710];
-  v17 = [MEMORY[0x277CBEB18] array];
-  v18 = [a1 closeAllTabsCommandWithDataSource:v7];
-  [v17 safari_addObjectUnlessNil:v18];
+  array3 = [MEMORY[0x277CBEB18] array];
+  v18 = [self closeAllTabsCommandWithDataSource:sourceCopy];
+  [array3 safari_addObjectUnlessNil:v18];
 
-  v19 = [a1 _closeActionForTab:v8 dataSource:v7];
+  v19 = [self _closeActionForTab:tabCopy dataSource:sourceCopy];
 
-  [v17 safari_addObjectUnlessNil:v19];
-  v20 = [v16 menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v17];
-  [v9 addObject:v20];
+  [array3 safari_addObjectUnlessNil:v19];
+  v20 = [v16 menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array3];
+  [array addObject:v20];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__TabMenuProvider_addressFieldActionProviderForTab_dataSource___block_invoke;
   aBlock[3] = &unk_2781DA500;
-  v25 = v9;
-  v21 = v9;
+  v25 = array;
+  v21 = array;
   v22 = _Block_copy(aBlock);
 
   return v22;
 }
 
-+ (id)switchTabGroupMenuWithDataSource:(id)a3
++ (id)switchTabGroupMenuWithDataSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __52__TabMenuProvider_switchTabGroupMenuWithDataSource___block_invoke;
   v11[3] = &unk_2781D9BD8;
-  v12 = v3;
-  v4 = v3;
+  v12 = sourceCopy;
+  v4 = sourceCopy;
   v5 = [v4 tabGroupsMenuElementsWithOptions:15 newTabGroupName:0 hostTitle:0 descendantCount:0 movingSelectedTabs:0 actionHandler:v11 dismissHandler:&__block_literal_global_30];
   v6 = MEMORY[0x277D75710];
   v7 = _WBSLocalizedString();
@@ -335,16 +335,16 @@ void __52__TabMenuProvider_switchTabGroupMenuWithDataSource___block_invoke(uint6
   return v5;
 }
 
-+ (id)_moveMenuForMultipleTabSelection:(id)a3 dataSource:(id)a4
++ (id)_moveMenuForMultipleTabSelection:(id)selection dataSource:(id)source
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  selectionCopy = selection;
+  sourceCopy = source;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v5;
+  v7 = selectionCopy;
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
@@ -383,7 +383,7 @@ void __52__TabMenuProvider_switchTabGroupMenuWithDataSource___block_invoke(uint6
   v20[2] = __63__TabMenuProvider__moveMenuForMultipleTabSelection_dataSource___block_invoke;
   v20[3] = &unk_2781DA550;
   v21 = v7;
-  v22 = v6;
+  v22 = sourceCopy;
   v13 = [v22 tabGroupsMenuElementsWithOptions:23 newTabGroupName:0 hostTitle:0 descendantCount:0 movingSelectedTabs:v21 actionHandler:v20 dismissHandler:&__block_literal_global_50];
   v14 = MEMORY[0x277D75710];
   v15 = _WBSLocalizedString();
@@ -465,10 +465,10 @@ void __63__TabMenuProvider__moveMenuForMultipleTabSelection_dataSource___block_i
   return v5;
 }
 
-+ (BOOL)canMoveTabsToNewWindow:(id)a3
++ (BOOL)canMoveTabsToNewWindow:(id)window
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  windowCopy = window;
   if (![*MEMORY[0x277D76620] supportsMultipleScenes])
   {
     goto LABEL_18;
@@ -478,7 +478,7 @@ void __63__TabMenuProvider__moveMenuForMultipleTabSelection_dataSource___block_i
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v3;
+  v4 = windowCopy;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v5)
   {
@@ -489,10 +489,10 @@ LABEL_18:
   }
 
   v6 = v5;
-  v7 = 0;
-  v8 = 0;
+  isPinned = 0;
+  isPrivateBrowsing = 0;
   v9 = *v16;
-  v10 = 1;
+  isPrivateBrowsing2 = 1;
   do
   {
     for (i = 0; i != v6; ++i)
@@ -503,10 +503,10 @@ LABEL_18:
       }
 
       v12 = *(*(&v15 + 1) + 8 * i);
-      if (v7)
+      if (isPinned)
       {
-        v7 = 1;
-        if ((v8 & 1) == 0)
+        isPinned = 1;
+        if ((isPrivateBrowsing & 1) == 0)
         {
           goto LABEL_9;
         }
@@ -514,12 +514,12 @@ LABEL_18:
 
       else
       {
-        v7 = [*(*(&v15 + 1) + 8 * i) isPinned];
-        if ((v8 & 1) == 0)
+        isPinned = [*(*(&v15 + 1) + 8 * i) isPinned];
+        if ((isPrivateBrowsing & 1) == 0)
         {
 LABEL_9:
-          v8 = [v12 isPrivateBrowsing];
-          if ((v10 & 1) == 0)
+          isPrivateBrowsing = [v12 isPrivateBrowsing];
+          if ((isPrivateBrowsing2 & 1) == 0)
           {
             goto LABEL_10;
           }
@@ -528,16 +528,16 @@ LABEL_9:
         }
       }
 
-      v8 = 1;
-      if ((v10 & 1) == 0)
+      isPrivateBrowsing = 1;
+      if ((isPrivateBrowsing2 & 1) == 0)
       {
 LABEL_10:
-        v10 = 0;
+        isPrivateBrowsing2 = 0;
         continue;
       }
 
 LABEL_13:
-      v10 = [v12 isPrivateBrowsing];
+      isPrivateBrowsing2 = [v12 isPrivateBrowsing];
     }
 
     v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -545,19 +545,19 @@ LABEL_13:
 
   while (v6);
 
-  v13 = (v7 | v8 ^ v10) ^ 1;
+  v13 = (isPinned | isPrivateBrowsing ^ isPrivateBrowsing2) ^ 1;
 LABEL_19:
 
   return v13 & 1;
 }
 
-+ (id)_moveToNewWindowActionForTabs:(id)a3 dataSource:(id)a4
++ (id)_moveToNewWindowActionForTabs:(id)tabs dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 canMoveTabsToNewWindow:v6])
+  tabsCopy = tabs;
+  sourceCopy = source;
+  if ([self canMoveTabsToNewWindow:tabsCopy])
   {
-    if ([v6 count] == 1)
+    if ([tabsCopy count] == 1)
     {
       v8 = _WBSLocalizedString();
     }
@@ -566,7 +566,7 @@ LABEL_19:
     {
       v10 = MEMORY[0x277CCACA8];
       v11 = _WBSLocalizedString();
-      v8 = [v10 localizedStringWithFormat:v11, objc_msgSend(v6, "count")];
+      v8 = [v10 localizedStringWithFormat:v11, objc_msgSend(tabsCopy, "count")];
     }
 
     v12 = MEMORY[0x277D750C8];
@@ -575,8 +575,8 @@ LABEL_19:
     v15[1] = 3221225472;
     v15[2] = __60__TabMenuProvider__moveToNewWindowActionForTabs_dataSource___block_invoke;
     v15[3] = &unk_2781D9420;
-    v16 = v7;
-    v17 = v6;
+    v16 = sourceCopy;
+    v17 = tabsCopy;
     v9 = [v12 actionWithTitle:v8 image:v13 identifier:0 handler:v15];
   }
 
@@ -588,18 +588,18 @@ LABEL_19:
   return v9;
 }
 
-+ (id)_duplicateActionForWBTabs:(id)a3 dataSource:(id)a4
++ (id)_duplicateActionForWBTabs:(id)tabs dataSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 safari_allObjectsPassTest:&__block_literal_global_78_0])
+  tabsCopy = tabs;
+  sourceCopy = source;
+  if ([tabsCopy safari_allObjectsPassTest:&__block_literal_global_78_0])
   {
     v7 = 0;
   }
 
   else
   {
-    if ([v5 count] == 1)
+    if ([tabsCopy count] == 1)
     {
       v8 = _WBSLocalizedString();
     }
@@ -608,7 +608,7 @@ LABEL_19:
     {
       v9 = MEMORY[0x277CCACA8];
       v10 = _WBSLocalizedString();
-      v8 = [v9 localizedStringWithFormat:v10, objc_msgSend(v5, "count")];
+      v8 = [v9 localizedStringWithFormat:v10, objc_msgSend(tabsCopy, "count")];
     }
 
     v11 = MEMORY[0x277D750C8];
@@ -617,29 +617,29 @@ LABEL_19:
     v14[1] = 3221225472;
     v14[2] = __56__TabMenuProvider__duplicateActionForWBTabs_dataSource___block_invoke_2;
     v14[3] = &unk_2781D9420;
-    v15 = v6;
-    v16 = v5;
+    v15 = sourceCopy;
+    v16 = tabsCopy;
     v7 = [v11 actionWithTitle:v8 image:v12 identifier:0 handler:v14];
   }
 
   return v7;
 }
 
-+ (id)moveMenuForTabGroup:(id)a3 dataSource:(id)a4
++ (id)moveMenuForTabGroup:(id)group dataSource:(id)source
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 hasMultipleProfiles] && objc_msgSend(v5, "isNamed"))
+  groupCopy = group;
+  sourceCopy = source;
+  if ([sourceCopy hasMultipleProfiles] && objc_msgSend(groupCopy, "isNamed"))
   {
-    v20[0] = v5;
+    v20[0] = groupCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __50__TabMenuProvider_moveMenuForTabGroup_dataSource___block_invoke;
     v17 = &unk_2781DA578;
-    v18 = v6;
-    v19 = v5;
+    v18 = sourceCopy;
+    v19 = groupCopy;
     v8 = [v18 profilesMenuElementsWithOptions:3 movingSelectedTabGroups:v7 actionHandler:&v14];
 
     v9 = MEMORY[0x277D75710];
@@ -658,13 +658,13 @@ LABEL_19:
   return v12;
 }
 
-+ (id)_copyMenuForTabGroupTab:(id)a3
++ (id)_copyMenuForTabGroupTab:(id)tab
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D75810];
-  v4 = a3;
-  v5 = [v3 generalPasteboard];
-  v6 = [v4 url];
+  tabCopy = tab;
+  generalPasteboard = [v3 generalPasteboard];
+  v6 = [tabCopy url];
 
   if (v6)
   {
@@ -675,7 +675,7 @@ LABEL_19:
     v16 = 3221225472;
     v17 = __43__TabMenuProvider__copyMenuForTabGroupTab___block_invoke;
     v18 = &unk_2781D9420;
-    v19 = v5;
+    v19 = generalPasteboard;
     v20 = v6;
     v10 = [v7 actionWithTitle:v8 image:v9 identifier:0 handler:&v15];
 
@@ -694,38 +694,38 @@ LABEL_19:
   return v13;
 }
 
-+ (id)_moveMenuForTabGroupTab:(id)a3 inTabGroup:(id)a4 dataSource:(id)a5
++ (id)_moveMenuForTabGroupTab:(id)tab inTabGroup:(id)group dataSource:(id)source
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7 || ([v7 isPrivateBrowsing] & 1) != 0 || (objc_msgSend(v7, "isPinned") & 1) != 0)
+  tabCopy = tab;
+  groupCopy = group;
+  sourceCopy = source;
+  if (!tabCopy || ([tabCopy isPrivateBrowsing] & 1) != 0 || (objc_msgSend(tabCopy, "isPinned") & 1) != 0)
   {
     v10 = 0;
   }
 
   else
   {
-    v12 = [v7 url];
-    v13 = [v12 safari_userVisibleHostWithoutWWWSubdomain];
-    if (![v13 length] || (objc_msgSend(v12, "safari_isHTTPFamilyURL") & 1) == 0)
+    v12 = [tabCopy url];
+    safari_userVisibleHostWithoutWWWSubdomain = [v12 safari_userVisibleHostWithoutWWWSubdomain];
+    if (![safari_userVisibleHostWithoutWWWSubdomain length] || (objc_msgSend(v12, "safari_isHTTPFamilyURL") & 1) == 0)
     {
-      v14 = [v7 title];
+      title = [tabCopy title];
 
-      v13 = v14;
+      safari_userVisibleHostWithoutWWWSubdomain = title;
     }
 
-    v24[0] = v7;
+    v24[0] = tabCopy;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __65__TabMenuProvider__moveMenuForTabGroupTab_inTabGroup_dataSource___block_invoke;
     v20[3] = &unk_2781DA5A0;
-    v21 = v9;
-    v22 = v7;
-    v23 = v8;
-    v16 = [v21 tabGroupsMenuElementsWithOptions:23 newTabGroupName:0 hostTitle:v13 descendantCount:0 movingSelectedTabs:v15 actionHandler:v20];
+    v21 = sourceCopy;
+    v22 = tabCopy;
+    v23 = groupCopy;
+    v16 = [v21 tabGroupsMenuElementsWithOptions:23 newTabGroupName:0 hostTitle:safari_userVisibleHostWithoutWWWSubdomain descendantCount:0 movingSelectedTabs:v15 actionHandler:v20];
 
     v17 = MEMORY[0x277D75710];
     v18 = _WBSLocalizedString();
@@ -751,14 +751,14 @@ void __65__TabMenuProvider__moveMenuForTabGroupTab_inTabGroup_dataSource___block
   }
 }
 
-+ (id)sortMenuForTabGroup:(id)a3 dataSource:(id)a4
++ (id)sortMenuForTabGroup:(id)group dataSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 unpinnedTabs];
-  if ([v7 count] >= 2)
+  groupCopy = group;
+  sourceCopy = source;
+  unpinnedTabs = [groupCopy unpinnedTabs];
+  if ([unpinnedTabs count] >= 2)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v10 = MEMORY[0x277D750C8];
     v11 = _WBSLocalizedString();
     v12 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.up.arrow.down"];
@@ -766,12 +766,12 @@ void __65__TabMenuProvider__moveMenuForTabGroupTab_inTabGroup_dataSource___block
     v30[1] = 3221225472;
     v30[2] = __50__TabMenuProvider_sortMenuForTabGroup_dataSource___block_invoke;
     v30[3] = &unk_2781D9420;
-    v13 = v6;
+    v13 = sourceCopy;
     v31 = v13;
-    v14 = v5;
+    v14 = groupCopy;
     v32 = v14;
     v15 = [v10 actionWithTitle:v11 image:v12 identifier:0 handler:v30];
-    [v9 addObject:v15];
+    [array addObject:v15];
 
     v16 = MEMORY[0x277D750C8];
     v17 = _WBSLocalizedString();
@@ -783,12 +783,12 @@ void __65__TabMenuProvider__moveMenuForTabGroupTab_inTabGroup_dataSource___block
     v28 = v13;
     v29 = v14;
     v19 = [v16 actionWithTitle:v17 image:v18 identifier:0 handler:&v24];
-    [v9 addObject:{v19, v24, v25, v26, v27}];
+    [array addObject:{v19, v24, v25, v26, v27}];
 
     v20 = MEMORY[0x277D75710];
     v21 = _WBSLocalizedString();
     v22 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.up.arrow.down"];
-    v8 = [v20 menuWithTitle:v21 image:v22 identifier:0 options:0 children:v9];
+    v8 = [v20 menuWithTitle:v21 image:v22 identifier:0 options:0 children:array];
   }
 
   else
@@ -813,11 +813,11 @@ void __50__TabMenuProvider_sortMenuForTabGroup_dataSource___block_invoke_2(uint6
   [v1 sortTabsInTabGroupWithUUIDString:v2 withSortMode:1];
 }
 
-+ (id)_closeActionForTab:(id)a3 inBackgroundTabGroup:(id)a4 dataSource:(id)a5
++ (id)_closeActionForTab:(id)tab inBackgroundTabGroup:(id)group dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  tabCopy = tab;
+  groupCopy = group;
+  sourceCopy = source;
   v10 = MEMORY[0x277D750C8];
   v11 = _WBSLocalizedString();
   v12 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark"];
@@ -825,12 +825,12 @@ void __50__TabMenuProvider_sortMenuForTabGroup_dataSource___block_invoke_2(uint6
   v18[1] = 3221225472;
   v18[2] = __70__TabMenuProvider__closeActionForTab_inBackgroundTabGroup_dataSource___block_invoke;
   v18[3] = &unk_2781DA5C8;
-  v19 = v9;
-  v20 = v7;
-  v21 = v8;
-  v13 = v8;
-  v14 = v7;
-  v15 = v9;
+  v19 = sourceCopy;
+  v20 = tabCopy;
+  v21 = groupCopy;
+  v13 = groupCopy;
+  v14 = tabCopy;
+  v15 = sourceCopy;
   v16 = [v10 actionWithTitle:v11 image:v12 identifier:0 handler:v18];
 
   [v16 setAttributes:2];
@@ -850,20 +850,20 @@ void __70__TabMenuProvider__closeActionForTab_inBackgroundTabGroup_dataSource___
   [v3 closeTabs:v4 inInactiveTabGroup:a1[6]];
 }
 
-+ (id)_closeOtherTabsActionForTab:(id)a3 inBackgroundTabGroup:(id)a4 dataSource:(id)a5
++ (id)_closeOtherTabsActionForTab:(id)tab inBackgroundTabGroup:(id)group dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 isPinned])
+  tabCopy = tab;
+  groupCopy = group;
+  sourceCopy = source;
+  if ([tabCopy isPinned])
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [v8 unpinnedTabs];
-    if ([v11 count] >= 2)
+    unpinnedTabs = [groupCopy unpinnedTabs];
+    if ([unpinnedTabs count] >= 2)
     {
       v12 = MEMORY[0x277D750C8];
       v13 = _WBSLocalizedString();
@@ -872,10 +872,10 @@ void __70__TabMenuProvider__closeActionForTab_inBackgroundTabGroup_dataSource___
       v17 = 3221225472;
       v18 = __79__TabMenuProvider__closeOtherTabsActionForTab_inBackgroundTabGroup_dataSource___block_invoke;
       v19 = &unk_2781DA5F0;
-      v20 = v11;
-      v21 = v7;
-      v22 = v9;
-      v23 = v8;
+      v20 = unpinnedTabs;
+      v21 = tabCopy;
+      v22 = sourceCopy;
+      v23 = groupCopy;
       v10 = [v12 actionWithTitle:v13 image:v14 identifier:0 handler:&v16];
 
       [v10 setAttributes:{2, v16, v17, v18, v19}];
@@ -912,38 +912,38 @@ uint64_t __79__TabMenuProvider__closeOtherTabsActionForTab_inBackgroundTabGroup_
   return v5 ^ 1u;
 }
 
-+ (id)_mainMenuForTab:(id)a3 dataSource:(id)a4 options:(unint64_t)a5
++ (id)_mainMenuForTab:(id)tab dataSource:(id)source options:(unint64_t)options
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [MEMORY[0x277CBEB18] array];
+  tabCopy = tab;
+  array = [MEMORY[0x277CBEB18] array];
   v9 = MEMORY[0x277D75370];
   v10 = _WBSLocalizedString();
   v11 = [MEMORY[0x277D755B8] systemImageNamed:@"square.and.arrow.up"];
   v12 = [v9 commandWithTitle:v10 image:v11 action:sel_shareCurrentPage_ propertyList:0];
-  [v8 addObject:v12];
+  [array addObject:v12];
 
-  v13 = [a1 _copyActionsForTab:v7 options:a5];
-  [v8 addObjectsFromArray:v13];
+  v13 = [self _copyActionsForTab:tabCopy options:options];
+  [array addObjectsFromArray:v13];
 
-  v14 = [MEMORY[0x277D75810] generalPasteboard];
-  v15 = v14;
-  if (a5)
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  v15 = generalPasteboard;
+  if (options)
   {
-    v16 = [v14 safari_pasteAndNavigateCommands];
-    [v8 addObjectsFromArray:v16];
+    safari_pasteAndNavigateCommands = [generalPasteboard safari_pasteAndNavigateCommands];
+    [array addObjectsFromArray:safari_pasteAndNavigateCommands];
   }
 
-  if ((~a5 & 0x44) == 0)
+  if ((~options & 0x44) == 0)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = [MEMORY[0x277D75710] sf_bookmarkMenu];
-    v18 = [v17 children];
+    sf_bookmarkMenu = [MEMORY[0x277D75710] sf_bookmarkMenu];
+    children = [sf_bookmarkMenu children];
 
-    v19 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v19 = [children countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v19)
     {
       v20 = v19;
@@ -954,32 +954,32 @@ uint64_t __79__TabMenuProvider__closeOtherTabsActionForTab_inBackgroundTabGroup_
         {
           if (*v27 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(children);
           }
 
-          [v8 addObject:*(*(&v26 + 1) + 8 * i)];
+          [array addObject:*(*(&v26 + 1) + 8 * i)];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v20 = [children countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v20);
     }
   }
 
-  if ((a5 & 0x800) != 0)
+  if ((options & 0x800) != 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = [a1 _toggleVoiceSearchActionForTabDocument:v7];
-      [v8 safari_addObjectUnlessNil:v23];
+      v23 = [self _toggleVoiceSearchActionForTabDocument:tabCopy];
+      [array safari_addObjectUnlessNil:v23];
     }
   }
 
-  if ([v8 count])
+  if ([array count])
   {
-    v24 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v8];
+    v24 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array];
   }
 
   else
@@ -990,19 +990,19 @@ uint64_t __79__TabMenuProvider__closeOtherTabsActionForTab_inBackgroundTabGroup_
   return v24;
 }
 
-+ (id)_copyActionsForTab:(id)a3 options:(unint64_t)a4
++ (id)_copyActionsForTab:(id)tab options:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v40[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 urlForSharing];
-  if (v6)
+  tabCopy = tab;
+  urlForSharing = [tabCopy urlForSharing];
+  if (urlForSharing)
   {
-    v7 = [MEMORY[0x277D75810] generalPasteboard];
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v5;
+      v8 = tabCopy;
     }
 
     else
@@ -1012,10 +1012,10 @@ uint64_t __79__TabMenuProvider__closeOtherTabsActionForTab_inBackgroundTabGroup_
 
     v9 = v8;
     v10 = v9;
-    if ((v4 & 0x2000) != 0)
+    if ((optionsCopy & 0x2000) != 0)
     {
-      v12 = [v9 currentSearchQuery];
-      v31 = v12 != 0;
+      currentSearchQuery = [v9 currentSearchQuery];
+      v31 = currentSearchQuery != 0;
     }
 
     else
@@ -1024,10 +1024,10 @@ uint64_t __79__TabMenuProvider__closeOtherTabsActionForTab_inBackgroundTabGroup_
     }
 
     v13 = _WBSLocalizedString();
-    v14 = [v10 currentSearchQuery];
-    v15 = [v14 safari_wordCount];
+    currentSearchQuery2 = [v10 currentSearchQuery];
+    safari_wordCount = [currentSearchQuery2 safari_wordCount];
 
-    if (v15 >= 2)
+    if (safari_wordCount >= 2)
     {
       v16 = _WBSLocalizedString();
 
@@ -1040,7 +1040,7 @@ uint64_t __79__TabMenuProvider__closeOtherTabsActionForTab_inBackgroundTabGroup_
     v36[1] = 3221225472;
     v36[2] = __46__TabMenuProvider__copyActionsForTab_options___block_invoke;
     v36[3] = &unk_2781D9420;
-    v19 = v7;
+    v19 = generalPasteboard;
     v37 = v19;
     v20 = v10;
     v38 = v20;
@@ -1054,8 +1054,8 @@ uint64_t __79__TabMenuProvider__closeOtherTabsActionForTab_inBackgroundTabGroup_
     v32[1] = 3221225472;
     v32[2] = __46__TabMenuProvider__copyActionsForTab_options___block_invoke_2;
     v32[3] = &unk_2781DA5C8;
-    v33 = v5;
-    v34 = v6;
+    v33 = tabCopy;
+    v34 = urlForSharing;
     v25 = v19;
     v35 = v25;
     v26 = [v23 actionWithTitle:v22 image:v24 identifier:0 handler:v32];
@@ -1114,31 +1114,31 @@ void __46__TabMenuProvider__copyActionsForTab_options___block_invoke_2(id *a1)
   [a1[6] setItemProviders:v5];
 }
 
-+ (id)_bottomMenuForTab:(id)a3 dataSource:(id)a4 options:(unint64_t)a5
++ (id)_bottomMenuForTab:(id)tab dataSource:(id)source options:(unint64_t)options
 {
-  v5 = a5;
+  optionsCopy = options;
   v27[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEB18] array];
-  if ((v5 & 0x1000) != 0)
+  tabCopy = tab;
+  sourceCopy = source;
+  array = [MEMORY[0x277CBEB18] array];
+  if ((optionsCopy & 0x1000) != 0)
   {
-    v11 = [a1 pinTabActionForTab:v8 dataSource:v9];
-    [v10 safari_addObjectUnlessNil:v11];
+    v11 = [self pinTabActionForTab:tabCopy dataSource:sourceCopy];
+    [array safari_addObjectUnlessNil:v11];
   }
 
-  if ((v5 & 0x4000) != 0)
+  if ((optionsCopy & 0x4000) != 0)
   {
-    v17 = [v8 wbTab];
-    v27[0] = v17;
+    wbTab = [tabCopy wbTab];
+    v27[0] = wbTab;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
-    v19 = [a1 _duplicateActionForWBTabs:v18 dataSource:v9];
-    [v10 safari_addObjectUnlessNil:v19];
+    v19 = [self _duplicateActionForWBTabs:v18 dataSource:sourceCopy];
+    [array safari_addObjectUnlessNil:v19];
 
-    if ((v5 & 0x8000) == 0)
+    if ((optionsCopy & 0x8000) == 0)
     {
 LABEL_5:
-      if ((v5 & 0x10) == 0)
+      if ((optionsCopy & 0x10) == 0)
       {
         goto LABEL_6;
       }
@@ -1147,30 +1147,30 @@ LABEL_5:
     }
   }
 
-  else if ((v5 & 0x8000) == 0)
+  else if ((optionsCopy & 0x8000) == 0)
   {
     goto LABEL_5;
   }
 
-  v20 = [v8 wbTab];
-  v26 = v20;
+  wbTab2 = [tabCopy wbTab];
+  v26 = wbTab2;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
-  v22 = [a1 _moveToNewWindowActionForTabs:v21 dataSource:v9];
-  [v10 safari_addObjectUnlessNil:v22];
+  v22 = [self _moveToNewWindowActionForTabs:v21 dataSource:sourceCopy];
+  [array safari_addObjectUnlessNil:v22];
 
-  if ((v5 & 0x10) == 0)
+  if ((optionsCopy & 0x10) == 0)
   {
 LABEL_6:
-    if ((v5 & 0x20) == 0)
+    if ((optionsCopy & 0x20) == 0)
     {
       goto LABEL_7;
     }
 
 LABEL_20:
-    v24 = [a1 _sortMenuForTab:v8 dataSource:v9];
-    [v10 safari_addObjectUnlessNil:v24];
+    v24 = [self _sortMenuForTab:tabCopy dataSource:sourceCopy];
+    [array safari_addObjectUnlessNil:v24];
 
-    if ((v5 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
       goto LABEL_9;
     }
@@ -1179,49 +1179,49 @@ LABEL_20:
   }
 
 LABEL_19:
-  v23 = [a1 moveMenuForTab:v8 dataSource:v9];
-  [v10 safari_addObjectUnlessNil:v23];
+  v23 = [self moveMenuForTab:tabCopy dataSource:sourceCopy];
+  [array safari_addObjectUnlessNil:v23];
 
-  if ((v5 & 0x20) != 0)
+  if ((optionsCopy & 0x20) != 0)
   {
     goto LABEL_20;
   }
 
 LABEL_7:
-  if ((v5 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
 LABEL_8:
-    v12 = [a1 _closeActionForTab:v8 dataSource:v9];
-    [v10 safari_addObjectUnlessNil:v12];
+    v12 = [self _closeActionForTab:tabCopy dataSource:sourceCopy];
+    [array safari_addObjectUnlessNil:v12];
 
-    v13 = [a1 _closeOtherTabsActionForTab:v8 dataSource:v9];
-    [v10 safari_addObjectUnlessNil:v13];
+    v13 = [self _closeOtherTabsActionForTab:tabCopy dataSource:sourceCopy];
+    [array safari_addObjectUnlessNil:v13];
   }
 
 LABEL_9:
-  if ((v5 & 0x80) != 0)
+  if ((optionsCopy & 0x80) != 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [a1 _stopReloadActionForTabDocument:v8];
-      [v10 safari_addObjectUnlessNil:v14];
+      v14 = [self _stopReloadActionForTabDocument:tabCopy];
+      [array safari_addObjectUnlessNil:v14];
     }
   }
 
-  if ((v5 & 0x100) != 0)
+  if ((optionsCopy & 0x100) != 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [a1 _readerActionForTabDocument:v8];
-      [v10 safari_addObjectUnlessNil:v15];
+      v15 = [self _readerActionForTabDocument:tabCopy];
+      [array safari_addObjectUnlessNil:v15];
     }
   }
 
-  if ([v10 count])
+  if ([array count])
   {
-    v16 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v10];
+    v16 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array];
   }
 
   else
@@ -1232,13 +1232,13 @@ LABEL_9:
   return v16;
 }
 
-+ (id)_toggleVoiceSearchActionForTabDocument:(id)a3
++ (id)_toggleVoiceSearchActionForTabDocument:(id)document
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D28EB8] sharedManager];
-  v5 = [v4 availability];
+  documentCopy = document;
+  mEMORY[0x277D28EB8] = [MEMORY[0x277D28EB8] sharedManager];
+  availability = [mEMORY[0x277D28EB8] availability];
 
-  if (v5)
+  if (availability)
   {
     v6 = MEMORY[0x277D750C8];
     v7 = _WBSLocalizedString();
@@ -1247,11 +1247,11 @@ LABEL_9:
     v10[1] = 3221225472;
     v10[2] = __58__TabMenuProvider__toggleVoiceSearchActionForTabDocument___block_invoke;
     v10[3] = &unk_2781D93D0;
-    v11 = v3;
-    v5 = [v6 actionWithTitle:v7 image:v8 identifier:0 handler:v10];
+    v11 = documentCopy;
+    availability = [v6 actionWithTitle:v7 image:v8 identifier:0 handler:v10];
   }
 
-  return v5;
+  return availability;
 }
 
 void __58__TabMenuProvider__toggleVoiceSearchActionForTabDocument___block_invoke(uint64_t a1)
@@ -1260,18 +1260,18 @@ void __58__TabMenuProvider__toggleVoiceSearchActionForTabDocument___block_invoke
   [v1 toggleVoiceSearch];
 }
 
-+ (id)_stopReloadActionForTabDocument:(id)a3
++ (id)_stopReloadActionForTabDocument:(id)document
 {
-  v3 = a3;
-  if ([v3 isBlank])
+  documentCopy = document;
+  if ([documentCopy isBlank])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 canStopLoading];
-    if (v5)
+    canStopLoading = [documentCopy canStopLoading];
+    if (canStopLoading)
     {
       v6 = @"xmark";
     }
@@ -1288,8 +1288,8 @@ void __58__TabMenuProvider__toggleVoiceSearchActionForTabDocument___block_invoke
     v11[1] = 3221225472;
     v11[2] = __51__TabMenuProvider__stopReloadActionForTabDocument___block_invoke;
     v11[3] = &unk_2781D9B88;
-    v13 = v5;
-    v12 = v3;
+    v13 = canStopLoading;
+    v12 = documentCopy;
     v4 = [v9 actionWithTitle:v7 image:v8 identifier:0 handler:v11];
   }
 
@@ -1311,15 +1311,15 @@ uint64_t __51__TabMenuProvider__stopReloadActionForTabDocument___block_invoke(ui
   }
 }
 
-+ (id)_readerActionForTabDocument:(id)a3
++ (id)_readerActionForTabDocument:(id)document
 {
-  v3 = a3;
-  if ([v3 isReaderAvailable])
+  documentCopy = document;
+  if ([documentCopy isReaderAvailable])
   {
-    [v3 isShowingReader];
+    [documentCopy isShowingReader];
     v5 = _WBSLocalizedString();
     v6 = MEMORY[0x277D755B8];
-    if ([v3 isShowingReader])
+    if ([documentCopy isShowingReader])
     {
       v8 = @"doc.plaintext.fill";
     }
@@ -1335,7 +1335,7 @@ uint64_t __51__TabMenuProvider__stopReloadActionForTabDocument___block_invoke(ui
     v12[1] = 3221225472;
     v12[2] = __47__TabMenuProvider__readerActionForTabDocument___block_invoke;
     v12[3] = &unk_2781D93D0;
-    v13 = v3;
+    v13 = documentCopy;
     v4 = [v10 actionWithTitle:v5 image:v9 identifier:0 handler:v12];
   }
 
@@ -1353,34 +1353,34 @@ void __47__TabMenuProvider__readerActionForTabDocument___block_invoke(uint64_t a
   [v2 setShowingReader:objc_msgSend(*(a1 + 32) animated:"isShowingReader") ^ 1 forTabDocument:{1, *(a1 + 32)}];
 }
 
-+ (id)moveMenuForTab:(id)a3 dataSource:(id)a4 showTitle:(BOOL)a5 dismissHandler:(id)a6
++ (id)moveMenuForTab:(id)tab dataSource:(id)source showTitle:(BOOL)title dismissHandler:(id)handler
 {
-  v7 = a5;
+  titleCopy = title;
   v28[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if ([v9 isPrivateBrowsingEnabled] & 1) != 0 || (objc_msgSend(v9, "isPinned"))
+  tabCopy = tab;
+  sourceCopy = source;
+  handlerCopy = handler;
+  if ([tabCopy isPrivateBrowsingEnabled] & 1) != 0 || (objc_msgSend(tabCopy, "isPinned"))
   {
     v12 = 0;
   }
 
   else
   {
-    v13 = [v9 url];
-    v14 = [v13 safari_userVisibleHostWithoutWWWSubdomain];
-    if (![v14 length] || (objc_msgSend(v13, "safari_isHTTPFamilyURL") & 1) == 0)
+    v13 = [tabCopy url];
+    safari_userVisibleHostWithoutWWWSubdomain = [v13 safari_userVisibleHostWithoutWWWSubdomain];
+    if (![safari_userVisibleHostWithoutWWWSubdomain length] || (objc_msgSend(v13, "safari_isHTTPFamilyURL") & 1) == 0)
     {
-      v15 = [v9 title];
+      title = [tabCopy title];
 
-      v14 = v15;
+      safari_userVisibleHostWithoutWWWSubdomain = title;
     }
 
-    v16 = [v9 wbTab];
-    v17 = v16;
-    if (v16)
+    wbTab = [tabCopy wbTab];
+    v17 = wbTab;
+    if (wbTab)
     {
-      v28[0] = v16;
+      v28[0] = wbTab;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
     }
 
@@ -1393,11 +1393,11 @@ void __47__TabMenuProvider__readerActionForTabDocument___block_invoke(uint64_t a
     v25[1] = 3221225472;
     v25[2] = __70__TabMenuProvider_moveMenuForTab_dataSource_showTitle_dismissHandler___block_invoke;
     v25[3] = &unk_2781DA550;
-    v26 = v10;
-    v27 = v9;
-    v19 = [v26 tabGroupsMenuElementsWithOptions:23 newTabGroupName:0 hostTitle:v14 descendantCount:0 movingSelectedTabs:v18 actionHandler:v25 dismissHandler:v11];
+    v26 = sourceCopy;
+    v27 = tabCopy;
+    v19 = [v26 tabGroupsMenuElementsWithOptions:23 newTabGroupName:0 hostTitle:safari_userVisibleHostWithoutWWWSubdomain descendantCount:0 movingSelectedTabs:v18 actionHandler:v25 dismissHandler:handlerCopy];
     v24 = v13;
-    if (v7)
+    if (titleCopy)
     {
       v20 = _WBSLocalizedString();
     }
@@ -1426,11 +1426,11 @@ void __70__TabMenuProvider_moveMenuForTab_dataSource_showTitle_dismissHandler___
   }
 }
 
-+ (id)pinTabActionForTab:(id)a3 dataSource:(id)a4
++ (id)pinTabActionForTab:(id)tab dataSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 canSetPinned] && ((v7 = objc_msgSend(v5, "isPinned"), objc_msgSend(v5, "wbTab"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v6, "isTabPinnable:", v8), v8, (v9 & 1) != 0) || v7))
+  tabCopy = tab;
+  sourceCopy = source;
+  if ([tabCopy canSetPinned] && ((v7 = objc_msgSend(tabCopy, "isPinned"), objc_msgSend(tabCopy, "wbTab"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(sourceCopy, "isTabPinnable:", v8), v8, (v9 & 1) != 0) || v7))
   {
     if (v7)
     {
@@ -1449,8 +1449,8 @@ void __70__TabMenuProvider_moveMenuForTab_dataSource_showTitle_dismissHandler___
     v19 = 3221225472;
     v20 = __49__TabMenuProvider_pinTabActionForTab_dataSource___block_invoke;
     v21 = &unk_2781D9420;
-    v22 = v6;
-    v15 = v5;
+    v22 = sourceCopy;
+    v15 = tabCopy;
     v23 = v15;
     v10 = [v14 actionWithTitle:v12 image:v13 identifier:0 handler:&v18];
     if ([v15 isPinnedTab])
@@ -1483,14 +1483,14 @@ uint64_t __49__TabMenuProvider_pinTabActionForTab_dataSource___block_invoke(uint
   return [v1 setTab:v2 isPinned:v3];
 }
 
-+ (id)_pinTabActionForTabGroupTab:(id)a3 inTabGroup:(id)a4 dataSource:(id)a5
++ (id)_pinTabActionForTabGroupTab:(id)tab inTabGroup:(id)group dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 canSetPinned])
+  tabCopy = tab;
+  groupCopy = group;
+  sourceCopy = source;
+  if ([tabCopy canSetPinned])
   {
-    if ([v7 isPinned])
+    if ([tabCopy isPinned])
     {
       v10 = @"pin.slash";
       v11 = @"UnpinTabButton";
@@ -1502,16 +1502,16 @@ LABEL_6:
       v17[1] = 3221225472;
       v17[2] = __69__TabMenuProvider__pinTabActionForTabGroupTab_inTabGroup_dataSource___block_invoke;
       v17[3] = &unk_2781DA5C8;
-      v18 = v9;
-      v19 = v7;
-      v20 = v8;
+      v18 = sourceCopy;
+      v19 = tabCopy;
+      v20 = groupCopy;
       v15 = [v14 actionWithTitle:v12 image:v13 identifier:0 handler:v17];
       [v15 setAccessibilityIdentifier:v11];
 
       goto LABEL_8;
     }
 
-    if ([v8 isTabPinnable:v7])
+    if ([groupCopy isTabPinnable:tabCopy])
     {
       v10 = @"pin";
       v11 = @"PinTabButton";
@@ -1525,15 +1525,15 @@ LABEL_8:
   return v15;
 }
 
-+ (id)_sortMenuForTab:(id)a3 dataSource:(id)a4
++ (id)_sortMenuForTab:(id)tab dataSource:(id)source
 {
-  v4 = a4;
-  v5 = [v4 currentTabs];
-  v6 = [v5 count];
+  sourceCopy = source;
+  currentTabs = [sourceCopy currentTabs];
+  v6 = [currentTabs count];
 
   if (v6 >= 2)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v9 = MEMORY[0x277D750C8];
     v10 = _WBSLocalizedString();
     v11 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.up.arrow.down"];
@@ -1541,10 +1541,10 @@ LABEL_8:
     v27[1] = 3221225472;
     v27[2] = __46__TabMenuProvider__sortMenuForTab_dataSource___block_invoke;
     v27[3] = &unk_2781D93D0;
-    v12 = v4;
+    v12 = sourceCopy;
     v28 = v12;
     v13 = [v9 actionWithTitle:v10 image:v11 identifier:0 handler:v27];
-    [v8 addObject:v13];
+    [array addObject:v13];
 
     v14 = MEMORY[0x277D750C8];
     v15 = _WBSLocalizedString();
@@ -1555,12 +1555,12 @@ LABEL_8:
     v25 = &unk_2781D93D0;
     v26 = v12;
     v17 = [v14 actionWithTitle:v15 image:v16 identifier:0 handler:&v22];
-    [v8 addObject:{v17, v22, v23, v24, v25}];
+    [array addObject:{v17, v22, v23, v24, v25}];
 
     v18 = MEMORY[0x277D75710];
     v19 = _WBSLocalizedString();
     v20 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.up.arrow.down"];
-    v7 = [v18 menuWithTitle:v19 image:v20 identifier:0 options:0 children:v8];
+    v7 = [v18 menuWithTitle:v19 image:v20 identifier:0 options:0 children:array];
   }
 
   else
@@ -1571,12 +1571,12 @@ LABEL_8:
   return v7;
 }
 
-+ (id)_closeActionForTab:(id)a3 dataSource:(id)a4
++ (id)_closeActionForTab:(id)tab dataSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 uuid];
-  v8 = [v6 canCloseTabWithUUID:v7];
+  tabCopy = tab;
+  sourceCopy = source;
+  uuid = [tabCopy uuid];
+  v8 = [sourceCopy canCloseTabWithUUID:uuid];
 
   if (v8)
   {
@@ -1587,8 +1587,8 @@ LABEL_8:
     v15 = 3221225472;
     v16 = __49__TabMenuProvider__closeActionForTab_dataSource___block_invoke;
     v17 = &unk_2781D9420;
-    v18 = v6;
-    v19 = v5;
+    v18 = sourceCopy;
+    v19 = tabCopy;
     v12 = [v9 actionWithTitle:v10 image:v11 identifier:0 handler:&v14];
 
     [v12 setAttributes:{2, v14, v15, v16, v17}];
@@ -1613,10 +1613,10 @@ uint64_t __49__TabMenuProvider__closeActionForTab_dataSource___block_invoke(uint
   return [v3 closeTab:v4 animated:1];
 }
 
-+ (id)closeAllTabsCommandWithDataSource:(id)a3
++ (id)closeAllTabsCommandWithDataSource:(id)source
 {
-  v3 = [a3 unpinnedTabs];
-  v4 = [v3 count];
+  unpinnedTabs = [source unpinnedTabs];
+  v4 = [unpinnedTabs count];
 
   if (v4 >= 2)
   {
@@ -1636,19 +1636,19 @@ uint64_t __49__TabMenuProvider__closeActionForTab_dataSource___block_invoke(uint
   return v5;
 }
 
-+ (id)_closeOtherTabsActionForTab:(id)a3 dataSource:(id)a4
++ (id)_closeOtherTabsActionForTab:(id)tab dataSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isPinned])
+  tabCopy = tab;
+  sourceCopy = source;
+  if ([tabCopy isPinned])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v6 unpinnedTabs];
-    if ([v8 count] >= 2)
+    unpinnedTabs = [sourceCopy unpinnedTabs];
+    if ([unpinnedTabs count] >= 2)
     {
       v9 = MEMORY[0x277D750C8];
       v10 = _WBSLocalizedString();
@@ -1657,9 +1657,9 @@ uint64_t __49__TabMenuProvider__closeActionForTab_dataSource___block_invoke(uint
       v13[1] = 3221225472;
       v13[2] = __58__TabMenuProvider__closeOtherTabsActionForTab_dataSource___block_invoke;
       v13[3] = &unk_2781DA5C8;
-      v14 = v8;
-      v15 = v5;
-      v16 = v6;
+      v14 = unpinnedTabs;
+      v15 = tabCopy;
+      v16 = sourceCopy;
       v7 = [v9 actionWithTitle:v10 image:v11 identifier:0 handler:v13];
 
       [v7 setAttributes:2];

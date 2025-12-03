@@ -1,23 +1,23 @@
 @interface HFActivityStateManager
 - (HFActivityStateManager)init;
 - (void)fetchActivityState;
-- (void)fetchHomeActivityStateStatusWithCompletionHandler:(id)a3;
-- (void)home:(id)a3 didUpdateHomeActivityState:(unint64_t)a4 isActivityStateHoldActive:(BOOL)a5 activityStateHoldEndDate:(id)a6 transitionalStateEndDate:(id)a7;
-- (void)homeKitDispatcher:(id)a3 manager:(id)a4 didChangeHome:(id)a5;
-- (void)residentDevice:(id)a3 didUpdateStatus:(unint64_t)a4;
-- (void)updateHomeActivityHoldStateWithCompletionHandler:(id)a3;
-- (void)updateHomeActivityStateTo:(unint64_t)a3 completionHandler:(id)a4;
+- (void)fetchHomeActivityStateStatusWithCompletionHandler:(id)handler;
+- (void)home:(id)home didUpdateHomeActivityState:(unint64_t)state isActivityStateHoldActive:(BOOL)active activityStateHoldEndDate:(id)date transitionalStateEndDate:(id)endDate;
+- (void)homeKitDispatcher:(id)dispatcher manager:(id)manager didChangeHome:(id)home;
+- (void)residentDevice:(id)device didUpdateStatus:(unint64_t)status;
+- (void)updateHomeActivityHoldStateWithCompletionHandler:(id)handler;
+- (void)updateHomeActivityStateTo:(unint64_t)to completionHandler:(id)handler;
 @end
 
 @implementation HFActivityStateManager
 
-- (void)fetchHomeActivityStateStatusWithCompletionHandler:(id)a3
+- (void)fetchHomeActivityStateStatusWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C8443F0, &qword_20DD93820);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -33,25 +33,25 @@
   v13[3] = 0;
   v13[4] = &unk_20DD969F0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_20DAB35AC(0, 0, v8, &unk_20DD969F8, v13);
 }
 
 - (void)fetchActivityState
 {
-  v2 = self;
+  selfCopy = self;
   sub_20DA8D3EC();
 }
 
-- (void)updateHomeActivityStateTo:(unint64_t)a3 completionHandler:(id)a4
+- (void)updateHomeActivityStateTo:(unint64_t)to completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C8443F0, &qword_20DD93820);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = to;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_20DD65114();
@@ -66,17 +66,17 @@
   v15[3] = 0;
   v15[4] = &unk_20DD969D0;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_20DAB35AC(0, 0, v10, &unk_20DD969D8, v15);
 }
 
-- (void)updateHomeActivityHoldStateWithCompletionHandler:(id)a3
+- (void)updateHomeActivityHoldStateWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C8443F0, &qword_20DD93820);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -92,20 +92,20 @@
   v13[3] = 0;
   v13[4] = &unk_20DD94D90;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_20DAB35AC(0, 0, v8, &unk_20DD95520, v13);
 }
 
-- (void)home:(id)a3 didUpdateHomeActivityState:(unint64_t)a4 isActivityStateHoldActive:(BOOL)a5 activityStateHoldEndDate:(id)a6 transitionalStateEndDate:(id)a7
+- (void)home:(id)home didUpdateHomeActivityState:(unint64_t)state isActivityStateHoldActive:(BOOL)active activityStateHoldEndDate:(id)date transitionalStateEndDate:(id)endDate
 {
-  v9 = a5;
+  activeCopy = active;
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27C843810, &qword_20DD93F00);
   v14 = *(*(v13 - 8) + 64);
   v15 = MEMORY[0x28223BE20](v13 - 8);
   v17 = &v26 - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v15);
   v19 = &v26 - v18;
-  if (a6)
+  if (date)
   {
     sub_20DD63674();
     v20 = sub_20DD636C4();
@@ -118,7 +118,7 @@
     (*(*(v21 - 8) + 56))(v19, 1, 1, v21);
   }
 
-  if (a7)
+  if (endDate)
   {
     sub_20DD63674();
     v22 = 0;
@@ -131,28 +131,28 @@
 
   v23 = sub_20DD636C4();
   (*(*(v23 - 8) + 56))(v17, v22, 1, v23);
-  v24 = a3;
-  v25 = self;
-  sub_20DA907CC(v24, a4, v9, v19, v17);
+  homeCopy = home;
+  selfCopy = self;
+  sub_20DA907CC(homeCopy, state, activeCopy, v19, v17);
 
   sub_20D9D76EC(v17, &unk_27C843810, &qword_20DD93F00);
   sub_20D9D76EC(v19, &unk_27C843810, &qword_20DD93F00);
 }
 
-- (void)residentDevice:(id)a3 didUpdateStatus:(unint64_t)a4
+- (void)residentDevice:(id)device didUpdateStatus:(unint64_t)status
 {
-  v5 = a3;
-  v6 = self;
+  deviceCopy = device;
+  selfCopy = self;
   sub_20DA92880();
 }
 
-- (void)homeKitDispatcher:(id)a3 manager:(id)a4 didChangeHome:(id)a5
+- (void)homeKitDispatcher:(id)dispatcher manager:(id)manager didChangeHome:(id)home
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_20DA92F24(a5);
+  dispatcherCopy = dispatcher;
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  sub_20DA92F24(home);
 }
 
 - (HFActivityStateManager)init

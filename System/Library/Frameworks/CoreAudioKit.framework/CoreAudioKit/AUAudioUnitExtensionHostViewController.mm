@@ -1,24 +1,24 @@
 @interface AUAudioUnitExtensionHostViewController
-- (AUAudioUnitExtensionHostViewController)initWithConfiguration:(id)a3;
-- (AUAudioUnitExtensionHostViewController)initWithConfiguration:(id)a3 completion:(id)a4;
-- (CGSize)determineViewSize:(id)a3;
+- (AUAudioUnitExtensionHostViewController)initWithConfiguration:(id)configuration;
+- (AUAudioUnitExtensionHostViewController)initWithConfiguration:(id)configuration completion:(id)completion;
+- (CGSize)determineViewSize:(id)size;
 - (id)_containedRemoteViewController;
-- (void)addChildViewController:(id)a3;
+- (void)addChildViewController:(id)controller;
 - (void)dealloc;
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
-- (void)setAUContainerViewConstraints:(id)a3 childView:(id)a4 auViewSize:(CGSize)a5;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
+- (void)setAUContainerViewConstraints:(id)constraints childView:(id)view auViewSize:(CGSize)size;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AUAudioUnitExtensionHostViewController
 
-- (AUAudioUnitExtensionHostViewController)initWithConfiguration:(id)a3
+- (AUAudioUnitExtensionHostViewController)initWithConfiguration:(id)configuration
 {
   v7.receiver = self;
   v7.super_class = AUAudioUnitExtensionHostViewController;
-  v3 = [(_EXHostViewController *)&v7 initWithConfiguration:a3];
+  v3 = [(_EXHostViewController *)&v7 initWithConfiguration:configuration];
   v4 = v3;
   if (v3)
   {
@@ -30,14 +30,14 @@
   return v4;
 }
 
-- (AUAudioUnitExtensionHostViewController)initWithConfiguration:(id)a3 completion:(id)a4
+- (AUAudioUnitExtensionHostViewController)initWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(AUAudioUnitExtensionHostViewController *)self initWithConfiguration:a3];
+  completionCopy = completion;
+  v7 = [(AUAudioUnitExtensionHostViewController *)self initWithConfiguration:configuration];
   v8 = v7;
   if (v7)
   {
-    [(AUAudioUnitExtensionHostViewController *)v7 setDidBeginHostingCallback:v6];
+    [(AUAudioUnitExtensionHostViewController *)v7 setDidBeginHostingCallback:completionCopy];
   }
 
   return v8;
@@ -45,87 +45,87 @@
 
 - (id)_containedRemoteViewController
 {
-  v2 = [(AUAudioUnitExtensionHostViewController *)self childViewControllers];
-  v3 = [v2 firstObject];
+  childViewControllers = [(AUAudioUnitExtensionHostViewController *)self childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)addChildViewController:(id)a3
+- (void)addChildViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = AUAudioUnitExtensionHostViewController;
-  [(AUAudioUnitExtensionHostViewController *)&v20 addChildViewController:v5];
+  [(AUAudioUnitExtensionHostViewController *)&v20 addChildViewController:controllerCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_auViewController, a3);
-    v6 = [v5 view];
-    [(AUAudioUnitExtensionHostViewController *)self determineViewSize:v5];
+    objc_storeStrong(&self->_auViewController, controller);
+    view = [controllerCopy view];
+    [(AUAudioUnitExtensionHostViewController *)self determineViewSize:controllerCopy];
     v8 = v7;
     v10 = v9;
     [(AUAudioUnitExtensionHostViewController *)self setPreferredContentSize:?];
-    v11 = [(AUAudioUnitExtensionHostViewController *)self view];
-    v12 = [v11 window];
-    [(AUAudioUnitExtensionHostViewController *)self resizeWindow:v12 size:v8, v10];
+    view2 = [(AUAudioUnitExtensionHostViewController *)self view];
+    window = [view2 window];
+    [(AUAudioUnitExtensionHostViewController *)self resizeWindow:window size:v8, v10];
 
-    v13 = [(AUAudioUnitExtensionHostViewController *)self view];
-    [v13 setFrame:{0.0, 0.0, v8, v10}];
+    view3 = [(AUAudioUnitExtensionHostViewController *)self view];
+    [view3 setFrame:{0.0, 0.0, v8, v10}];
 
-    v14 = [(AUAudioUnitExtensionHostViewController *)self view];
-    [v14 addSubview:v6];
+    view4 = [(AUAudioUnitExtensionHostViewController *)self view];
+    [view4 addSubview:view];
 
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [(AUAudioUnitExtensionHostViewController *)self view];
-    [(AUAudioUnitExtensionHostViewController *)self setAUContainerViewConstraints:v15 childView:v6 auViewSize:v8, v10];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    view5 = [(AUAudioUnitExtensionHostViewController *)self view];
+    [(AUAudioUnitExtensionHostViewController *)self setAUContainerViewConstraints:view5 childView:view auViewSize:v8, v10];
 
-    v16 = [(AUAudioUnitExtensionHostViewController *)self view];
-    [(AUAudioUnitExtensionHostViewController *)self markViewForRedraw:v16];
+    view6 = [(AUAudioUnitExtensionHostViewController *)self view];
+    [(AUAudioUnitExtensionHostViewController *)self markViewForRedraw:view6];
 
-    [(AUAudioUnitExtensionHostViewController *)self markViewForRedraw:v6];
-    v17 = [(AUAudioUnitExtensionHostViewController *)self didBeginHostingCallback];
+    [(AUAudioUnitExtensionHostViewController *)self markViewForRedraw:view];
+    didBeginHostingCallback = [(AUAudioUnitExtensionHostViewController *)self didBeginHostingCallback];
 
-    if (v17)
+    if (didBeginHostingCallback)
     {
-      v18 = [(AUAudioUnitExtensionHostViewController *)self didBeginHostingCallback];
-      v19 = [(AUAudioUnitExtensionHostViewController *)self connection];
-      (v18)[2](v18, self, v19, 0);
+      didBeginHostingCallback2 = [(AUAudioUnitExtensionHostViewController *)self didBeginHostingCallback];
+      connection = [(AUAudioUnitExtensionHostViewController *)self connection];
+      (didBeginHostingCallback2)[2](didBeginHostingCallback2, self, connection, 0);
 
       [(AUAudioUnitExtensionHostViewController *)self setDidBeginHostingCallback:0];
     }
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = AUAudioUnitExtensionHostViewController;
-  [(_EXHostViewController *)&v5 viewWillAppear:a3];
-  v4 = [(UIViewController *)self->_auViewController view];
-  [v4 setHidden:0];
+  [(_EXHostViewController *)&v5 viewWillAppear:appear];
+  view = [(UIViewController *)self->_auViewController view];
+  [view setHidden:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = AUAudioUnitExtensionHostViewController;
-  [(_EXHostViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(UIViewController *)self->_auViewController view];
-  [v4 setHidden:1];
+  [(_EXHostViewController *)&v5 viewDidDisappear:disappear];
+  view = [(UIViewController *)self->_auViewController view];
+  [view setHidden:1];
 }
 
-- (CGSize)determineViewSize:(id)a3
+- (CGSize)determineViewSize:(id)size
 {
-  v3 = a3;
-  [v3 preferredContentSize];
+  sizeCopy = size;
+  [sizeCopy preferredContentSize];
   v5 = v4;
-  [v3 preferredContentSize];
+  [sizeCopy preferredContentSize];
   v7 = v6;
   if (!v5)
   {
-    v10 = [v3 view];
-    [v10 frame];
+    view = [sizeCopy view];
+    [view frame];
     v8 = v11;
 
     if (v7)
@@ -134,8 +134,8 @@
     }
 
 LABEL_5:
-    v12 = [v3 view];
-    [v12 frame];
+    view2 = [sizeCopy view];
+    [view2 frame];
     v9 = v13;
 
     goto LABEL_6;
@@ -158,15 +158,15 @@ LABEL_6:
   return result;
 }
 
-- (void)setAUContainerViewConstraints:(id)a3 childView:(id)a4 auViewSize:(CGSize)a5
+- (void)setAUContainerViewConstraints:(id)constraints childView:(id)view auViewSize:(CGSize)size
 {
-  v6 = a3;
-  v9 = _NSDictionaryOfVariableBindings(&cfstr_Childview.isa, a4, 0);
+  constraintsCopy = constraints;
+  v9 = _NSDictionaryOfVariableBindings(&cfstr_Childview.isa, view, 0);
   v7 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[childView]|" options:0 metrics:0 views:v9];
-  [v6 addConstraints:v7];
+  [constraintsCopy addConstraints:v7];
 
   v8 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[childView]|" options:0 metrics:0 views:v9];
-  [v6 addConstraints:v8];
+  [constraintsCopy addConstraints:v8];
 }
 
 - (void)dealloc
@@ -176,8 +176,8 @@ LABEL_6:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(AUAudioUnitExtensionHostViewController *)self childViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  childViewControllers = [(AUAudioUnitExtensionHostViewController *)self childViewControllers];
+  v4 = [childViewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -189,17 +189,17 @@ LABEL_6:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) view];
-        [v8 removeFromSuperview];
+        view = [*(*(&v10 + 1) + 8 * v7) view];
+        [view removeFromSuperview];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -210,9 +210,9 @@ LABEL_6:
   [(_EXHostViewController *)&v9 dealloc];
 }
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   v20 = 0;
   v5 = [(_EXHostViewController *)self makeXPCConnectionWithError:&v20];
   v6 = v20;
@@ -334,9 +334,9 @@ void __72__AUAudioUnitExtensionHostViewController_hostViewControllerDidActivate_
   }
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
-  v5 = [(AUAudioUnitExtensionHostViewController *)self connection:a3];
+  v5 = [(AUAudioUnitExtensionHostViewController *)self connection:deactivate];
   [v5 invalidate];
 
   [(AUAudioUnitExtensionHostViewController *)self setConnection:0];

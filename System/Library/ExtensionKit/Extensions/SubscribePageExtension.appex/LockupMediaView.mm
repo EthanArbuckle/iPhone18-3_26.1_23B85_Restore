@@ -1,6 +1,6 @@
 @interface LockupMediaView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC22SubscribePageExtension15LockupMediaView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC22SubscribePageExtension15LockupMediaView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,13 +8,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10062F644();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_10062F904();
   v6 = v5;
 
@@ -25,7 +25,7 @@
   return result;
 }
 
-- (_TtC22SubscribePageExtension15LockupMediaView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension15LockupMediaView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

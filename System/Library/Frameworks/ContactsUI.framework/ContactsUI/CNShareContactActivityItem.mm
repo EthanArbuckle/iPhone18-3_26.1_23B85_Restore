@@ -1,62 +1,62 @@
 @interface CNShareContactActivityItem
-- (CNShareContactActivityItem)initWithContact:(id)a3;
-- (CNShareContactActivityItem)initWithContacts:(id)a3 inGroupNamed:(id)a4;
+- (CNShareContactActivityItem)initWithContact:(id)contact;
+- (CNShareContactActivityItem)initWithContacts:(id)contacts inGroupNamed:(id)named;
 - (LPLinkMetadata)linkMetadata;
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5;
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size;
 - (id)displayString;
 - (id)thumbnailImage;
 @end
 
 @implementation CNShareContactActivityItem
 
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type
 {
-  v5 = [(CNShareContactActivityItem *)self contacts:a3];
+  v5 = [(CNShareContactActivityItem *)self contacts:controller];
   v6 = [v5 count];
 
   if (v6 == 1)
   {
-    v7 = [(CNShareContactActivityItem *)self contacts];
-    v8 = [v7 firstObject];
-    v9 = [CNUIVCardUtilities fileNameForContact:v8];
+    contacts = [(CNShareContactActivityItem *)self contacts];
+    firstObject = [contacts firstObject];
+    v9 = [CNUIVCardUtilities fileNameForContact:firstObject];
   }
 
   else
   {
     v10 = MEMORY[0x1E696AEC0];
-    v7 = [(CNShareContactActivityItem *)self displayString];
-    v9 = [v10 stringWithFormat:@"%@.vcf", v7];
+    contacts = [(CNShareContactActivityItem *)self displayString];
+    v9 = [v10 stringWithFormat:@"%@.vcf", contacts];
   }
 
   return v9;
 }
 
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size
 {
-  width = a5.width;
-  v7 = a4;
-  v8 = [(CNShareContactActivityItem *)self contacts];
-  v9 = [v8 count];
+  width = size.width;
+  typeCopy = type;
+  contacts = [(CNShareContactActivityItem *)self contacts];
+  v9 = [contacts count];
 
   if (v9 == 1)
   {
-    v10 = [(CNShareContactActivityItem *)self contacts];
-    v11 = [v10 firstObject];
+    contacts2 = [(CNShareContactActivityItem *)self contacts];
+    firstObject = [contacts2 firstObject];
 
-    if ([v7 isEqualToString:*MEMORY[0x1E69CDA78]])
+    if ([typeCopy isEqualToString:*MEMORY[0x1E69CDA78]])
     {
-      v12 = [[CNMonogrammer alloc] initWithStyle:2 diameter:width];
-      [(CNMonogrammer *)v12 monogramForContact:v11];
+      thumbnailImageData = [[CNMonogrammer alloc] initWithStyle:2 diameter:width];
+      [(CNMonogrammer *)thumbnailImageData monogramForContact:firstObject];
     }
 
     else
     {
       v14 = MEMORY[0x1E69DCAB8];
-      v12 = [v11 thumbnailImageData];
-      [v14 imageWithData:v12];
+      thumbnailImageData = [firstObject thumbnailImageData];
+      [v14 imageWithData:thumbnailImageData];
     }
     v13 = ;
   }
@@ -69,29 +69,29 @@
   return v13;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
-  v4 = [(CNShareContactActivityItem *)self linkMetadata:a3];
-  v5 = [v4 title];
+  v4 = [(CNShareContactActivityItem *)self linkMetadata:controller];
+  title = [v4 title];
 
-  return v5;
+  return title;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v5 = [MEMORY[0x1E69E4B40] optionsFromPreferences];
-  [v5 setIncludePhotos:1];
-  [v5 setIncludeNotes:1];
-  v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v7 = [v6 featureFlags];
-  if ([v7 isFeatureEnabled:23])
+  optionsFromPreferences = [MEMORY[0x1E69E4B40] optionsFromPreferences];
+  [optionsFromPreferences setIncludePhotos:1];
+  [optionsFromPreferences setIncludeNotes:1];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  if ([featureFlags isFeatureEnabled:23])
   {
-    v8 = [(CNShareContactActivityItem *)self canSharePronouns];
+    canSharePronouns = [(CNShareContactActivityItem *)self canSharePronouns];
 
-    if (v8)
+    if (canSharePronouns)
     {
-      [v5 setIncludePronouns:1];
-      [v5 setUseUnencryptedPronouns:1];
+      [optionsFromPreferences setIncludePronouns:1];
+      [optionsFromPreferences setUseUnencryptedPronouns:1];
     }
   }
 
@@ -99,45 +99,45 @@
   {
   }
 
-  [v5 setIncludeMeCardOnlySharingProperties:{-[CNShareContactActivityItem canShareMeCardOnlySharingProperties](self, "canShareMeCardOnlySharingProperties")}];
+  [optionsFromPreferences setIncludeMeCardOnlySharingProperties:{-[CNShareContactActivityItem canShareMeCardOnlySharingProperties](self, "canShareMeCardOnlySharingProperties")}];
   v9 = MEMORY[0x1E695CE30];
-  v10 = [(CNShareContactActivityItem *)self contacts];
-  v11 = [v9 dataWithContacts:v10 options:v5 error:0];
+  contacts = [(CNShareContactActivityItem *)self contacts];
+  v11 = [v9 dataWithContacts:contacts options:optionsFromPreferences error:0];
 
   return v11;
 }
 
 - (id)thumbnailImage
 {
-  v3 = [(CNShareContactActivityItem *)self contacts];
-  v4 = [v3 count];
+  contacts = [(CNShareContactActivityItem *)self contacts];
+  v4 = [contacts count];
 
   if (v4 == 1)
   {
-    v5 = [(CNShareContactActivityItem *)self contacts];
-    v6 = [v5 firstObject];
+    contacts2 = [(CNShareContactActivityItem *)self contacts];
+    firstObject = [contacts2 firstObject];
 
-    v7 = [v6 thumbnailImageData];
+    thumbnailImageData = [firstObject thumbnailImageData];
 
-    if (v7)
+    if (thumbnailImageData)
     {
       v8 = MEMORY[0x1E69DCAB8];
-      v9 = [v6 thumbnailImageData];
-      v10 = [v8 imageWithData:v9];
+      thumbnailImageData2 = [firstObject thumbnailImageData];
+      v10 = [v8 imageWithData:thumbnailImageData2];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v11 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v13 = v12;
 
-      v9 = +[CNAvatarImageRenderingScope scopeWithPointSize:scale:rightToLeft:style:color:](CNAvatarImageRenderingScope, "scopeWithPointSize:scale:rightToLeft:style:color:", [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1, 0, 0, 160.0, 160.0, v13);
+      thumbnailImageData2 = +[CNAvatarImageRenderingScope scopeWithPointSize:scale:rightToLeft:style:color:](CNAvatarImageRenderingScope, "scopeWithPointSize:scale:rightToLeft:style:color:", [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1, 0, 0, 160.0, 160.0, v13);
       v14 = [CNAvatarImageRenderer alloc];
       v15 = +[CNAvatarImageRendererSettings defaultSettings];
       v16 = [(CNAvatarImageRenderer *)v14 initWithSettings:v15];
 
-      v10 = [(CNAvatarImageRenderer *)v16 renderMonogramForContact:v6 color:0 scope:v9 prohibitedSources:0];
+      v10 = [(CNAvatarImageRenderer *)v16 renderMonogramForContact:firstObject color:0 scope:thumbnailImageData2 prohibitedSources:0];
     }
   }
 
@@ -151,16 +151,16 @@
 
 - (id)displayString
 {
-  v3 = [(CNShareContactActivityItem *)self contacts];
-  v4 = [v3 count];
+  contacts = [(CNShareContactActivityItem *)self contacts];
+  v4 = [contacts count];
 
   if (v4 == 1)
   {
-    v5 = [(CNShareContactActivityItem *)self contacts];
-    v6 = [v5 firstObject];
+    contacts2 = [(CNShareContactActivityItem *)self contacts];
+    firstObject = [contacts2 firstObject];
 
-    v7 = [(CNShareContactActivityItem *)self contactFormatter];
-    v8 = [v7 stringFromContact:v6];
+    contactFormatter = [(CNShareContactActivityItem *)self contactFormatter];
+    v8 = [contactFormatter stringFromContact:firstObject];
 
     v9 = *MEMORY[0x1E6996568];
     if (!(*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v8))
@@ -168,34 +168,34 @@
       goto LABEL_7;
     }
 
-    v10 = [v6 phoneNumbers];
-    v11 = [v10 firstObject];
-    v12 = [v11 value];
+    phoneNumbers = [firstObject phoneNumbers];
+    firstObject2 = [phoneNumbers firstObject];
+    value = [firstObject2 value];
 
-    v13 = [v12 formattedStringValue];
+    formattedStringValue = [value formattedStringValue];
 
-    if ((*(v9 + 16))(v9, v13))
+    if ((*(v9 + 16))(v9, formattedStringValue))
     {
-      v14 = [v6 emailAddresses];
-      v15 = [v14 firstObject];
-      v16 = [v15 value];
+      emailAddresses = [firstObject emailAddresses];
+      firstObject3 = [emailAddresses firstObject];
+      value2 = [firstObject3 value];
 
-      v13 = v16;
+      formattedStringValue = value2;
     }
   }
 
   else
   {
     v17 = [CNGroupIdentity alloc];
-    v18 = [(CNShareContactActivityItem *)self groupName];
-    v19 = [(CNShareContactActivityItem *)self contacts];
-    v6 = [(CNGroupIdentity *)v17 initGroupWithName:v18 photo:0 contacts:v19];
+    groupName = [(CNShareContactActivityItem *)self groupName];
+    contacts3 = [(CNShareContactActivityItem *)self contacts];
+    firstObject = [(CNGroupIdentity *)v17 initGroupWithName:groupName photo:0 contacts:contacts3];
 
-    v12 = [(CNShareContactActivityItem *)self contactFormatter];
-    v13 = [v12 stringFromGroupIdentity:v6];
+    value = [(CNShareContactActivityItem *)self contactFormatter];
+    formattedStringValue = [value stringFromGroupIdentity:firstObject];
   }
 
-  v8 = v13;
+  v8 = formattedStringValue;
 LABEL_7:
 
   return v8;
@@ -214,22 +214,22 @@ LABEL_7:
     fileMetadata = self->_fileMetadata;
     self->_fileMetadata = v6;
 
-    v8 = [(CNShareContactActivityItem *)self displayString];
-    [(LPFileMetadata *)self->_fileMetadata setName:v8];
+    displayString = [(CNShareContactActivityItem *)self displayString];
+    [(LPFileMetadata *)self->_fileMetadata setName:displayString];
 
     v9 = getkUTTypeVCard();
     [(LPFileMetadata *)self->_fileMetadata setType:v9];
 
-    v10 = [(CNShareContactActivityItem *)self thumbnailImage];
-    if (v10)
+    thumbnailImage = [(CNShareContactActivityItem *)self thumbnailImage];
+    if (thumbnailImage)
     {
-      v11 = [objc_alloc(getLPImageClass()) initWithPlatformImage:v10];
+      v11 = [objc_alloc(getLPImageClass()) initWithPlatformImage:thumbnailImage];
       [(LPFileMetadata *)self->_fileMetadata setThumbnail:v11];
     }
 
     [(LPLinkMetadata *)self->_linkMetadata setSpecialization:self->_fileMetadata];
-    v12 = [(CNShareContactActivityItem *)self displayString];
-    [(LPLinkMetadata *)self->_linkMetadata setTitle:v12];
+    displayString2 = [(CNShareContactActivityItem *)self displayString];
+    [(LPLinkMetadata *)self->_linkMetadata setTitle:displayString2];
 
     linkMetadata = self->_linkMetadata;
   }
@@ -237,18 +237,18 @@ LABEL_7:
   return linkMetadata;
 }
 
-- (CNShareContactActivityItem)initWithContacts:(id)a3 inGroupNamed:(id)a4
+- (CNShareContactActivityItem)initWithContacts:(id)contacts inGroupNamed:(id)named
 {
-  v7 = a3;
-  v8 = a4;
+  contactsCopy = contacts;
+  namedCopy = named;
   v15.receiver = self;
   v15.super_class = CNShareContactActivityItem;
   v9 = [(CNShareContactActivityItem *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contacts, a3);
-    objc_storeStrong(&v10->_groupName, a4);
+    objc_storeStrong(&v9->_contacts, contacts);
+    objc_storeStrong(&v10->_groupName, named);
     v11 = objc_alloc_init(MEMORY[0x1E695CD80]);
     contactFormatter = v10->_contactFormatter;
     v10->_contactFormatter = v11;
@@ -260,15 +260,15 @@ LABEL_7:
   return v10;
 }
 
-- (CNShareContactActivityItem)initWithContact:(id)a3
+- (CNShareContactActivityItem)initWithContact:(id)contact
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  contactCopy = contact;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  contactCopy2 = contact;
+  v6 = [v4 arrayWithObjects:&contactCopy count:1];
 
-  v7 = [(CNShareContactActivityItem *)self initWithContacts:v6 inGroupNamed:0, v9, v10];
+  v7 = [(CNShareContactActivityItem *)self initWithContacts:v6 inGroupNamed:0, contactCopy, v10];
   return v7;
 }
 

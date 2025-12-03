@@ -1,26 +1,26 @@
 @interface CAMModeAndDeviceCommandAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)executeWithContext:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMModeAndDeviceCommandAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMModeAndDeviceCommand" hasInstanceMethod:@"executeWithContext:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CAMModeAndDeviceCommand" hasInstanceMethod:@"_resolvedGraphConfiguration" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMCaptureGraphConfiguration" hasInstanceMethod:@"videoConfiguration" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMCaptureGraphConfiguration" hasInstanceMethod:@"videoEncodingBehavior" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMCaptureCommandContext" hasInstanceMethod:@"currentCaptureSession" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMModeAndDeviceCommand" hasInstanceMethod:@"executeWithContext:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CAMModeAndDeviceCommand" hasInstanceMethod:@"_resolvedGraphConfiguration" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMCaptureGraphConfiguration" hasInstanceMethod:@"videoConfiguration" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMCaptureGraphConfiguration" hasInstanceMethod:@"videoEncodingBehavior" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMCaptureCommandContext" hasInstanceMethod:@"currentCaptureSession" withFullSignature:{"@", 0}];
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = CAMModeAndDeviceCommandAccessibility;
-  [(CAMModeAndDeviceCommandAccessibility *)&v12 executeWithContext:v4];
+  [(CAMModeAndDeviceCommandAccessibility *)&v12 executeWithContext:contextCopy];
   v5 = [(CAMModeAndDeviceCommandAccessibility *)self safeValueForKey:@"_resolvedGraphConfiguration"];
   v6 = [v5 safeIntegerForKey:@"videoConfiguration"];
   v7 = [v5 safeIntegerForKey:@"videoEncodingBehavior"];
@@ -48,7 +48,7 @@ LABEL_7:
     v10 = v9;
     if (v8)
     {
-      v11 = [v4 safeValueForKey:@"currentCaptureSession"];
+      v11 = [contextCopy safeValueForKey:@"currentCaptureSession"];
       [v10 setCaptureSession:v11];
     }
 

@@ -1,17 +1,17 @@
 @interface MPSImageTranspose
-- (MPSImageTranspose)initWithCoder:(id)a3 device:(id)a4;
-- (MPSImageTranspose)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPSImageTranspose)initWithCoder:(id)coder device:(id)device;
+- (MPSImageTranspose)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSImageTranspose
 
-- (MPSImageTranspose)initWithDevice:(id)a3
+- (MPSImageTranspose)initWithDevice:(id)device
 {
   v10.receiver = self;
   v10.super_class = MPSImageTranspose;
-  result = [(MPSUnaryImageKernel *)&v10 initWithDevice:a3];
+  result = [(MPSUnaryImageKernel *)&v10 initWithDevice:device];
   if (result)
   {
     v9 = result;
@@ -23,11 +23,11 @@
   return result;
 }
 
-- (MPSImageTranspose)initWithCoder:(id)a3 device:(id)a4
+- (MPSImageTranspose)initWithCoder:(id)coder device:(id)device
 {
   v13.receiver = self;
   v13.super_class = MPSImageTranspose;
-  v4 = [(MPSUnaryImageKernel *)&v13 initWithCoder:a3 device:a4];
+  v4 = [(MPSUnaryImageKernel *)&v13 initWithCoder:coder device:device];
   v10 = v4;
   if (!v4)
   {
@@ -51,19 +51,19 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v3.receiver = self;
   v3.super_class = MPSImageTranspose;
-  [(MPSUnaryImageKernel *)&v3 encodeWithCoder:a3];
+  [(MPSUnaryImageKernel *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v11.receiver = self;
   v11.super_class = MPSImageTranspose;
-  result = [(MPSUnaryImageKernel *)&v11 copyWithZone:a3 device:a4];
+  result = [(MPSUnaryImageKernel *)&v11 copyWithZone:zone device:device];
   if (result)
   {
     v10 = result;

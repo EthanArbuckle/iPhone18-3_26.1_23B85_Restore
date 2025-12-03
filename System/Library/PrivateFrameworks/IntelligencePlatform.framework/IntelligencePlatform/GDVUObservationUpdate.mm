@@ -7,7 +7,7 @@
 
 - (int64_t)observationIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GDVUObservationUpdate.observationIdentifier.getter();
 
   return v3;
@@ -15,7 +15,7 @@
 
 - (GDEntityIdentifier)entityIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GDVUObservationUpdate.entityIdentifier.getter();
 
   return v3;

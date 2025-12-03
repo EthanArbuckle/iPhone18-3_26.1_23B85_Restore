@@ -1,29 +1,29 @@
 @interface CUIKViewEntityAnnotation
 - (CGRect)rect;
-- (CUIKViewEntityAnnotation)initWithEvent:(id)a3 rect:(CGRect)a4 state:(unint64_t)a5;
+- (CUIKViewEntityAnnotation)initWithEvent:(id)event rect:(CGRect)rect state:(unint64_t)state;
 @end
 
 @implementation CUIKViewEntityAnnotation
 
-- (CUIKViewEntityAnnotation)initWithEvent:(id)a3 rect:(CGRect)a4 state:(unint64_t)a5
+- (CUIKViewEntityAnnotation)initWithEvent:(id)event rect:(CGRect)rect state:(unint64_t)state
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = CUIKViewEntityAnnotation;
   v13 = [(CUIKViewEntityAnnotation *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_event, a3);
+    objc_storeStrong(&v13->_event, event);
     v14->_rect.origin.x = x;
     v14->_rect.origin.y = y;
     v14->_rect.size.width = width;
     v14->_rect.size.height = height;
-    v14->_state = a5;
+    v14->_state = state;
   }
 
   return v14;

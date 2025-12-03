@@ -2,55 +2,55 @@
 + (id)defaultModelsDirectory;
 + (id)defaultStoresDirectory;
 + (id)protectedStoreFilesExtensions;
-+ (unint64_t)storeTypeForURL:(id)a3;
-- (BOOL)_generateDiagnosticFilesAtURL:(id)a3 error:(id *)a4;
++ (unint64_t)storeTypeForURL:(id)l;
+- (BOOL)_generateDiagnosticFilesAtURL:(id)l error:(id *)error;
 - (BOOL)_setupPersistenceContainers;
 - (BOOL)initializeContainer;
 - (BOOL)initializePersistenceStores;
-- (BOOL)persistenceContextPerformedSave:(id)a3 error:(id *)a4;
+- (BOOL)persistenceContextPerformedSave:(id)save error:(id *)error;
 - (RTPersistenceDelegate)delegate;
 - (RTPersistenceManager)init;
-- (RTPersistenceManager)initWithModelsDirectory:(id)a3 storesDirectory:(id)a4;
+- (RTPersistenceManager)initWithModelsDirectory:(id)directory storesDirectory:(id)storesDirectory;
 - (RTPersistenceMirroringDelegate)mirroringDelegate;
-- (id)URLForStoreType:(unint64_t)a3;
-- (id)historyTokenForStoreType:(unint64_t)a3;
+- (id)URLForStoreType:(unint64_t)type;
+- (id)historyTokenForStoreType:(unint64_t)type;
 - (id)latestModel;
 - (id)managedObjectContext;
-- (id)modelFollowingModel:(id)a3;
-- (id)modelNamed:(id)a3;
+- (id)modelFollowingModel:(id)model;
+- (id)modelNamed:(id)named;
 - (id)outstandingContexts;
-- (id)persistenceContextWithOptions:(unint64_t)a3;
+- (id)persistenceContextWithOptions:(unint64_t)options;
 - (id)persistenceStoreConfigurations;
-- (id)persistenceStoreForType:(unint64_t)a3;
+- (id)persistenceStoreForType:(unint64_t)type;
 - (id)sortedModelNames;
-- (id)storeDescriptionForStoreWithType:(unint64_t)a3;
+- (id)storeDescriptionForStoreWithType:(unint64_t)type;
 - (id)storeURL;
-- (id)urlForModelWithName:(id)a3;
+- (id)urlForModelWithName:(id)name;
 - (id)waitForPersistenceContext;
-- (int64_t)mirroringDelegateStateForStoreType:(unint64_t)a3;
+- (int64_t)mirroringDelegateStateForStoreType:(unint64_t)type;
 - (unint64_t)countOfPersistenceStores;
-- (void)_onCoreDataResetSync:(id)a3;
-- (void)_schemaUpdateWithModelFile:(id)a3 handler:(id)a4;
+- (void)_onCoreDataResetSync:(id)sync;
+- (void)_schemaUpdateWithModelFile:(id)file handler:(id)handler;
 - (void)_setupRemoteStoreServers;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_updateAvailabilityAfterSetupAttemptWithAvailability:(unint64_t)a3;
-- (void)_updateStoreAvailability:(unint64_t)a3;
-- (void)createManagedObjectContext:(id)a3;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_updateAvailabilityAfterSetupAttemptWithAvailability:(unint64_t)availability;
+- (void)_updateStoreAvailability:(unint64_t)availability;
+- (void)createManagedObjectContext:(id)context;
 - (void)dealloc;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)mirroringDelegateSetupState:(id)a3;
-- (void)onCoreDataResetSync:(id)a3;
-- (void)performExportMirroringRequest:(id)a3;
-- (void)performImportMirroringRequest:(id)a3;
-- (void)performMirroringRequestOfType:(int64_t)a3 qualityOfService:(int64_t)a4 handler:(id)a5;
-- (void)performZoneResetMirroringRequest:(id)a3;
-- (void)persistenceContext:(id)a3 encounteredError:(id)a4;
-- (void)schemaUpdateWithModelFile:(id)a3 handler:(id)a4;
-- (void)sendDiagnosticsToURL:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)setupPersistenceContainers:(id)a3;
-- (void)tearDownPersistenceStack:(id)a3;
-- (void)trackContext:(id)a3;
-- (void)updateStoreAvailability:(unint64_t)a3;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)mirroringDelegateSetupState:(id)state;
+- (void)onCoreDataResetSync:(id)sync;
+- (void)performExportMirroringRequest:(id)request;
+- (void)performImportMirroringRequest:(id)request;
+- (void)performMirroringRequestOfType:(int64_t)type qualityOfService:(int64_t)service handler:(id)handler;
+- (void)performZoneResetMirroringRequest:(id)request;
+- (void)persistenceContext:(id)context encounteredError:(id)error;
+- (void)schemaUpdateWithModelFile:(id)file handler:(id)handler;
+- (void)sendDiagnosticsToURL:(id)l options:(id)options handler:(id)handler;
+- (void)setupPersistenceContainers:(id)containers;
+- (void)tearDownPersistenceStack:(id)stack;
+- (void)trackContext:(id)context;
+- (void)updateStoreAvailability:(unint64_t)availability;
 @end
 
 @implementation RTPersistenceManager
@@ -64,12 +64,12 @@
   return v5;
 }
 
-- (RTPersistenceManager)initWithModelsDirectory:(id)a3 storesDirectory:(id)a4
+- (RTPersistenceManager)initWithModelsDirectory:(id)directory storesDirectory:(id)storesDirectory
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isFileURL] & 1) == 0)
+  directoryCopy = directory;
+  storesDirectoryCopy = storesDirectory;
+  if (([directoryCopy isFileURL] & 1) == 0)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -82,7 +82,7 @@
     }
   }
 
-  if (([v7 isFileURL] & 1) == 0)
+  if (([storesDirectoryCopy isFileURL] & 1) == 0)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -95,7 +95,7 @@
     }
   }
 
-  if (![v6 isFileURL] || !objc_msgSend(v7, "isFileURL"))
+  if (![directoryCopy isFileURL] || !objc_msgSend(storesDirectoryCopy, "isFileURL"))
   {
     goto LABEL_18;
   }
@@ -108,14 +108,14 @@
   {
     v10->_availability = 0;
     v11 = MEMORY[0x277CBEBC0];
-    v12 = [v6 path];
-    v13 = [v11 fileURLWithPath:v12 isDirectory:1];
+    path = [directoryCopy path];
+    v13 = [v11 fileURLWithPath:path isDirectory:1];
     modelsDirectory = self->_modelsDirectory;
     self->_modelsDirectory = v13;
 
     v15 = MEMORY[0x277CBEBC0];
-    v16 = [v7 path];
-    v17 = [v15 fileURLWithPath:v16 isDirectory:1];
+    path2 = [storesDirectoryCopy path];
+    v17 = [v15 fileURLWithPath:path2 isDirectory:1];
     storesDirectory = self->_storesDirectory;
     self->_storesDirectory = v17;
 
@@ -131,19 +131,19 @@
     remoteServers = self->_remoteServers;
     self->_remoteServers = v23;
 
-    v25 = [(RTPersistenceManager *)self latestModel];
-    if (v25)
+    latestModel = [(RTPersistenceManager *)self latestModel];
+    if (latestModel)
     {
-      v26 = v25;
-      v27 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v27 addObserver:self selector:sel_onCoreDataResetSync_ name:*MEMORY[0x277CBE140] object:0];
+      v26 = latestModel;
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_onCoreDataResetSync_ name:*MEMORY[0x277CBE140] object:0];
 
-      v28 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v28 addObserver:self selector:sel_onCoreDataResetSync_ name:*MEMORY[0x277CBE130] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel_onCoreDataResetSync_ name:*MEMORY[0x277CBE130] object:0];
 
-      v29 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+      weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
       outstandingContexts = self->_outstandingContexts;
-      self->_outstandingContexts = v29;
+      self->_outstandingContexts = weakObjectsPointerArray;
 
       goto LABEL_14;
     }
@@ -159,16 +159,16 @@
     }
 
 LABEL_18:
-    v31 = 0;
+    selfCopy = 0;
     goto LABEL_19;
   }
 
 LABEL_14:
   self = self;
-  v31 = self;
+  selfCopy = self;
 LABEL_19:
 
-  return v31;
+  return selfCopy;
 }
 
 - (BOOL)initializePersistenceStores
@@ -225,24 +225,24 @@ LABEL_19:
   return v3;
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  handlerCopy = handler;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v5 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v5 = handlerCopy;
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = RTPersistenceManager;
@@ -291,11 +291,11 @@ LABEL_19:
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Expected a delegate. (in %s:%d)", &v13, 0x12u);
     }
 
-    v6 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    persistenceStoreConfigurations = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
+    if (os_log_type_enabled(persistenceStoreConfigurations, OS_LOG_TYPE_FAULT))
     {
       LOWORD(v13) = 0;
-      _os_log_fault_impl(&dword_2304B3000, v6, OS_LOG_TYPE_FAULT, "Expected a delegate.", &v13, 2u);
+      _os_log_fault_impl(&dword_2304B3000, persistenceStoreConfigurations, OS_LOG_TYPE_FAULT, "Expected a delegate.", &v13, 2u);
     }
 
     goto LABEL_15;
@@ -303,10 +303,10 @@ LABEL_19:
 
   if ([(RTPersistenceManager *)self initializePersistenceStores])
   {
-    v6 = [(RTPersistenceManager *)self persistenceStoreConfigurations];
+    persistenceStoreConfigurations = [(RTPersistenceManager *)self persistenceStoreConfigurations];
     v7 = [RTPersistenceContainer alloc];
-    v8 = [(RTPersistenceManager *)self latestModel];
-    v9 = [(RTPersistenceContainer *)v7 initWithName:@"All" model:v8 configurations:v6];
+    latestModel = [(RTPersistenceManager *)self latestModel];
+    v9 = [(RTPersistenceContainer *)v7 initWithName:@"All" model:latestModel configurations:persistenceStoreConfigurations];
     container = self->_container;
     self->_container = v9;
 
@@ -338,17 +338,17 @@ LABEL_16:
   return v2;
 }
 
-- (void)createManagedObjectContext:(id)a3
+- (void)createManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   container = self->_container;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__RTPersistenceManager_createManagedObjectContext___block_invoke;
   v7[3] = &unk_2788CC548;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   [(RTPersistenceContainer *)container persistenceContextWithHandler:v7];
 }
 
@@ -363,16 +363,16 @@ void __51__RTPersistenceManager_createManagedObjectContext___block_invoke(uint64
 
 - (id)managedObjectContext
 {
-  v3 = [(RTPersistenceContainer *)self->_container persistenceContext];
-  [v3 setDelegate:self];
-  [(RTPersistenceManager *)self trackContext:v3];
+  persistenceContext = [(RTPersistenceContainer *)self->_container persistenceContext];
+  [persistenceContext setDelegate:self];
+  [(RTPersistenceManager *)self trackContext:persistenceContext];
 
-  return v3;
+  return persistenceContext;
 }
 
-- (id)persistenceContextWithOptions:(unint64_t)a3
+- (id)persistenceContextWithOptions:(unint64_t)options
 {
-  v4 = [(RTPersistenceContainer *)self->_container persistenceContextWithOptions:a3];
+  v4 = [(RTPersistenceContainer *)self->_container persistenceContextWithOptions:options];
   [v4 setDelegate:self];
   [(RTPersistenceManager *)self trackContext:v4];
 
@@ -381,37 +381,37 @@ void __51__RTPersistenceManager_createManagedObjectContext___block_invoke(uint64
 
 - (id)waitForPersistenceContext
 {
-  v3 = [(RTPersistenceContainer *)self->_container waitForPersistenceContext];
-  [v3 setDelegate:self];
-  [(RTPersistenceManager *)self trackContext:v3];
+  waitForPersistenceContext = [(RTPersistenceContainer *)self->_container waitForPersistenceContext];
+  [waitForPersistenceContext setDelegate:self];
+  [(RTPersistenceManager *)self trackContext:waitForPersistenceContext];
 
-  return v3;
+  return waitForPersistenceContext;
 }
 
-- (void)trackContext:(id)a3
+- (void)trackContext:(id)context
 {
   pointerArrayLock = self->_pointerArrayLock;
-  v5 = a3;
+  contextCopy = context;
   [(NSRecursiveLock *)pointerArrayLock lock];
-  [(NSPointerArray *)self->_outstandingContexts addPointer:v5];
+  [(NSPointerArray *)self->_outstandingContexts addPointer:contextCopy];
 
   v6 = self->_pointerArrayLock;
 
   [(NSRecursiveLock *)v6 unlock];
 }
 
-- (void)setupPersistenceContainers:(id)a3
+- (void)setupPersistenceContainers:(id)containers
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  containersCopy = containers;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__RTPersistenceManager_setupPersistenceContainers___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = containersCopy;
+  v6 = containersCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __51__RTPersistenceManager_setupPersistenceContainers___block_invoke(uint64_t a1)
@@ -443,8 +443,8 @@ uint64_t __51__RTPersistenceManager_setupPersistenceContainers___block_invoke(ui
       }
     }
 
-    v5 = [(RTPersistenceManager *)self persistenceStoreConfigurations];
-    v6 = [(RTPersistenceContainer *)self->_container updateContainerConfigurations:v5];
+    persistenceStoreConfigurations = [(RTPersistenceManager *)self persistenceStoreConfigurations];
+    v6 = [(RTPersistenceContainer *)self->_container updateContainerConfigurations:persistenceStoreConfigurations];
     container = self->_container;
     if (v6)
     {
@@ -471,18 +471,18 @@ uint64_t __51__RTPersistenceManager_setupPersistenceContainers___block_invoke(ui
   return [(RTPersistenceManager *)self availability]== 2;
 }
 
-- (void)tearDownPersistenceStack:(id)a3
+- (void)tearDownPersistenceStack:(id)stack
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  stackCopy = stack;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__RTPersistenceManager_tearDownPersistenceStack___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = stackCopy;
+  v6 = stackCopy;
+  dispatch_async(queue, v7);
 }
 
 void __49__RTPersistenceManager_tearDownPersistenceStack___block_invoke(uint64_t a1)
@@ -511,9 +511,9 @@ void __49__RTPersistenceManager_tearDownPersistenceStack___block_invoke(uint64_t
       v4 = [WeakRetained remoteServerOptionsForStoreWithType:i];
       if (v4)
       {
-        v5 = [(RTPersistenceManager *)self sortedModelNames];
-        v6 = [v5 lastObject];
-        v7 = [(RTPersistenceManager *)self urlForModelWithName:v6];
+        sortedModelNames = [(RTPersistenceManager *)self sortedModelNames];
+        lastObject = [sortedModelNames lastObject];
+        v7 = [(RTPersistenceManager *)self urlForModelWithName:lastObject];
 
         v8 = [RTPersistenceRemoteStoreServer alloc];
         v9 = [(RTPersistenceManager *)self URLForStoreType:i];
@@ -529,10 +529,10 @@ void __49__RTPersistenceManager_tearDownPersistenceStack___block_invoke(uint64_t
   }
 }
 
-- (id)URLForStoreType:(unint64_t)a3
+- (id)URLForStoreType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 >= 4)
+  if (type >= 4)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -545,25 +545,25 @@ void __49__RTPersistenceManager_tearDownPersistenceStack___block_invoke(uint64_t
     }
   }
 
-  if (a3 > 3)
+  if (type > 3)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(NSURL *)self->_storesDirectory URLByAppendingPathComponent:off_2788CC600[a3]];
+    v6 = [(NSURL *)self->_storesDirectory URLByAppendingPathComponent:off_2788CC600[type]];
     v7 = [v6 URLByAppendingPathExtension:@"sqlite"];
   }
 
   return v7;
 }
 
-+ (unint64_t)storeTypeForURL:(id)a3
++ (unint64_t)storeTypeForURL:(id)l
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  lCopy = l;
+  if (!lCopy)
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -576,24 +576,24 @@ void __49__RTPersistenceManager_tearDownPersistenceStack___block_invoke(uint64_t
     }
   }
 
-  v5 = [v3 lastPathComponent];
-  v6 = [v5 stringByDeletingPathExtension];
-  if ([v6 isEqualToString:@"Cache"])
+  lastPathComponent = [lCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  if ([stringByDeletingPathExtension isEqualToString:@"Cache"])
   {
     v7 = 0;
   }
 
-  else if ([v6 isEqualToString:@"Cloud-V2"])
+  else if ([stringByDeletingPathExtension isEqualToString:@"Cloud-V2"])
   {
     v7 = 1;
   }
 
-  else if ([v6 isEqualToString:@"Local"])
+  else if ([stringByDeletingPathExtension isEqualToString:@"Local"])
   {
     v7 = 2;
   }
 
-  else if ([v6 isEqualToString:@"SafetyCache"])
+  else if ([stringByDeletingPathExtension isEqualToString:@"SafetyCache"])
   {
     v7 = 3;
   }
@@ -629,13 +629,13 @@ void __49__RTPersistenceManager_tearDownPersistenceStack___block_invoke(uint64_t
       }
 
       v10 = [RTPersistenceMigrator alloc];
-      v11 = [(RTPersistenceManager *)self delegate];
-      v12 = [(RTPersistenceMigrator *)v10 initWithStore:v7 modelProvider:self delegate:v11];
+      delegate = [(RTPersistenceManager *)self delegate];
+      v12 = [(RTPersistenceMigrator *)v10 initWithStore:v7 modelProvider:self delegate:delegate];
       [(RTPersistenceStore *)v7 setMigrator:v12];
 
-      v13 = [(RTPersistenceStore *)v7 migrator];
+      migrator = [(RTPersistenceStore *)v7 migrator];
 
-      if (!v13)
+      if (!migrator)
       {
         v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -676,10 +676,10 @@ void __49__RTPersistenceManager_tearDownPersistenceStack___block_invoke(uint64_t
   return v4;
 }
 
-- (id)storeDescriptionForStoreWithType:(unint64_t)a3
+- (id)storeDescriptionForStoreWithType:(unint64_t)type
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (a3 >= 4)
+  if (type >= 4)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -692,7 +692,7 @@ void __49__RTPersistenceManager_tearDownPersistenceStack___block_invoke(uint64_t
     }
   }
 
-  v6 = [(RTPersistenceManager *)self URLForStoreType:a3];
+  v6 = [(RTPersistenceManager *)self URLForStoreType:type];
   if (v6)
   {
     v7 = objc_opt_new();
@@ -703,13 +703,13 @@ void __49__RTPersistenceManager_tearDownPersistenceStack___block_invoke(uint64_t
     [v7 setType:*MEMORY[0x277CBE2E8]];
     [v7 setOption:*MEMORY[0x277CCA198] forKey:*MEMORY[0x277CBE240]];
     [v7 setValue:@"WAL" forPragmaNamed:@"journal_mode"];
-    if (a3 - 1 <= 2)
+    if (type - 1 <= 2)
     {
       [v7 setOption:MEMORY[0x277CBEC10] forKey:*MEMORY[0x277CBE210]];
     }
 
-    v8 = [(RTPersistenceManager *)self delegate];
-    if (v8)
+    delegate = [(RTPersistenceManager *)self delegate];
+    if (delegate)
     {
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
@@ -750,7 +750,7 @@ LABEL_21:
       }
 
       v23 = 0;
-      v9 = [v8 optionsForStoreWithType:a3 error:&v23];
+      v9 = [delegate optionsForStoreWithType:type error:&v23];
       if (!v23)
       {
         goto LABEL_21;
@@ -796,14 +796,14 @@ LABEL_30:
   return v10;
 }
 
-- (int64_t)mirroringDelegateStateForStoreType:(unint64_t)a3
+- (int64_t)mirroringDelegateStateForStoreType:(unint64_t)type
 {
-  if (a3 < 4)
+  if (type < 4)
   {
     [(NSRecursiveLock *)self->_storesArrayLock lock];
-    v7 = [(RTPersistenceStore *)self->_stores[a3] mirroringDelegateState];
+    mirroringDelegateState = [(RTPersistenceStore *)self->_stores[type] mirroringDelegateState];
     [(NSRecursiveLock *)self->_storesArrayLock unlock];
-    return v7;
+    return mirroringDelegateState;
   }
 
   else
@@ -819,18 +819,18 @@ LABEL_30:
   }
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   v8 = +[(RTNotification *)RTPersistenceManagerNotificationAvailabilityDidChange];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [nameCopy isEqualToString:v8];
 
   if (v9)
   {
     v10 = [[RTPersistenceManagerNotificationAvailabilityDidChange alloc] initWithAvailability:[(RTPersistenceManager *)self availability]];
-    [(RTNotifier *)self postNotification:v10 toObserver:v6];
+    [(RTNotifier *)self postNotification:v10 toObserver:observerCopy];
   }
 
   else
@@ -839,7 +839,7 @@ LABEL_30:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v7;
+      v14 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "unhandled notification %@", &v13, 0xCu);
     }
 
@@ -847,7 +847,7 @@ LABEL_30:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412802;
-      v14 = v7;
+      v14 = nameCopy;
       v15 = 2080;
       v16 = "[RTPersistenceManager internalAddObserver:name:]";
       v17 = 1024;
@@ -857,16 +857,16 @@ LABEL_30:
   }
 }
 
-- (void)updateStoreAvailability:(unint64_t)a3
+- (void)updateStoreAvailability:(unint64_t)availability
 {
-  v5 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__RTPersistenceManager_updateStoreAvailability___block_invoke;
   v6[3] = &unk_2788C52E8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = availability;
+  dispatch_async(queue, v6);
 }
 
 uint64_t __48__RTPersistenceManager_updateStoreAvailability___block_invoke(uint64_t a1)
@@ -888,25 +888,25 @@ uint64_t __48__RTPersistenceManager_updateStoreAvailability___block_invoke(uint6
   return [v3 _updateStoreAvailability:v4];
 }
 
-- (void)_updateStoreAvailability:(unint64_t)a3
+- (void)_updateStoreAvailability:(unint64_t)availability
 {
   v12 = *MEMORY[0x277D85DE8];
-  if ([(RTPersistenceManager *)self availability]!= a3)
+  if ([(RTPersistenceManager *)self availability]!= availability)
   {
-    [(RTPersistenceManager *)self setAvailability:a3];
+    [(RTPersistenceManager *)self setAvailability:availability];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v6 = [(RTPersistenceManager *)self availability];
+        availability = [(RTPersistenceManager *)self availability];
         v7 = @"Unknown";
-        if (v6 == 1)
+        if (availability == 1)
         {
           v7 = @"Unavailable";
         }
 
-        if (v6 == 2)
+        if (availability == 2)
         {
           v7 = @"Available";
         }
@@ -928,9 +928,9 @@ uint64_t __48__RTPersistenceManager_updateStoreAvailability___block_invoke(uint6
   latestModel = self->_latestModel;
   if (!latestModel)
   {
-    v4 = [(RTPersistenceManager *)self sortedModelNames];
-    v5 = [v4 lastObject];
-    v6 = [(RTPersistenceManager *)self modelNamed:v5];
+    sortedModelNames = [(RTPersistenceManager *)self sortedModelNames];
+    lastObject = [sortedModelNames lastObject];
+    v6 = [(RTPersistenceManager *)self modelNamed:lastObject];
     v7 = self->_latestModel;
     self->_latestModel = v6;
 
@@ -940,20 +940,20 @@ uint64_t __48__RTPersistenceManager_updateStoreAvailability___block_invoke(uint6
   return latestModel;
 }
 
-- (id)modelFollowingModel:(id)a3
+- (id)modelFollowingModel:(id)model
 {
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
-    v5 = [(RTPersistenceManager *)self sortedModelNames];
-    v6 = [v4 versionIdentifiers];
-    v7 = [v6 anyObject];
+    sortedModelNames = [(RTPersistenceManager *)self sortedModelNames];
+    versionIdentifiers = [modelCopy versionIdentifiers];
+    anyObject = [versionIdentifiers anyObject];
 
-    v8 = [v5 indexOfObject:v7 inSortedRange:0 options:objc_msgSend(v5 usingComparator:{"count"), 1536, &__block_literal_global_75}];
+    v8 = [sortedModelNames indexOfObject:anyObject inSortedRange:0 options:objc_msgSend(sortedModelNames usingComparator:{"count"), 1536, &__block_literal_global_75}];
     v9 = 0;
-    if (v8 < [v5 count])
+    if (v8 < [sortedModelNames count])
     {
-      v10 = [v5 objectAtIndexedSubscript:v8];
+      v10 = [sortedModelNames objectAtIndexedSubscript:v8];
       v9 = [(RTPersistenceManager *)self modelNamed:v10];
     }
   }
@@ -1003,11 +1003,11 @@ uint64_t __48__RTPersistenceManager_updateStoreAvailability___block_invoke(uint6
   return sortedModelNames;
 }
 
-- (id)urlForModelWithName:(id)a3
+- (id)urlForModelWithName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v4 = [a3 stringByAppendingPathExtension:@"mom"];
+    v4 = [name stringByAppendingPathExtension:@"mom"];
     v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4 isDirectory:1 relativeToURL:self->_modelsDirectory];
   }
 
@@ -1026,13 +1026,13 @@ uint64_t __48__RTPersistenceManager_updateStoreAvailability___block_invoke(uint6
   return v5;
 }
 
-- (id)modelNamed:(id)a3
+- (id)modelNamed:(id)named
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  namedCopy = named;
+  if (namedCopy)
   {
-    v5 = [(RTPersistenceManager *)self urlForModelWithName:v4];
+    v5 = [(RTPersistenceManager *)self urlForModelWithName:namedCopy];
     v6 = [objc_alloc(MEMORY[0x277CBE450]) initWithContentsOfURL:v5];
     if (!v6)
     {
@@ -1040,7 +1040,7 @@ uint64_t __48__RTPersistenceManager_updateStoreAvailability___block_invoke(uint6
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         v10 = 138412802;
-        v11 = v4;
+        v11 = namedCopy;
         v12 = 2080;
         v13 = "[RTPersistenceManager modelNamed:]";
         v14 = 1024;
@@ -1049,7 +1049,7 @@ uint64_t __48__RTPersistenceManager_updateStoreAvailability___block_invoke(uint6
       }
     }
 
-    v8 = [MEMORY[0x277CBEB98] setWithObject:v4];
+    v8 = [MEMORY[0x277CBEB98] setWithObject:namedCopy];
     [v6 setVersionIdentifiers:v8];
   }
 
@@ -1068,35 +1068,35 @@ uint64_t __48__RTPersistenceManager_updateStoreAvailability___block_invoke(uint6
   return v6;
 }
 
-- (void)persistenceContext:(id)a3 encounteredError:(id)a4
+- (void)persistenceContext:(id)context encounteredError:(id)error
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 domain];
+  contextCopy = context;
+  errorCopy = error;
+  domain = [errorCopy domain];
   v9 = *MEMORY[0x277CBE2C8];
-  v10 = [v8 isEqualToString:*MEMORY[0x277CBE2C8]];
+  v10 = [domain isEqualToString:*MEMORY[0x277CBE2C8]];
 
   if (v10)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "code")}];
+    v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     if (v11)
     {
       goto LABEL_3;
     }
 
 LABEL_15:
-    v23 = [v7 domain];
-    v24 = [v23 isEqual:*MEMORY[0x277CCA050]];
+    domain2 = [errorCopy domain];
+    v24 = [domain2 isEqual:*MEMORY[0x277CCA050]];
 
     if (!v24)
     {
       goto LABEL_29;
     }
 
-    v25 = [v7 code];
+    code = [errorCopy code];
     v17 = 0;
-    if (v25 == 256 || v25 == 259)
+    if (code == 256 || code == 259)
     {
       v15 = 0;
     }
@@ -1104,24 +1104,24 @@ LABEL_15:
     else
     {
       v15 = 0;
-      if (v25 != 512)
+      if (code != 512)
       {
         goto LABEL_29;
       }
     }
 
 LABEL_25:
-    v26 = [(RTPersistenceManager *)self delegate];
+    delegate = [(RTPersistenceManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v26 persistenceStore:v17 encounteredCriticalError:v7];
+      [delegate persistenceStore:v17 encounteredCriticalError:errorCopy];
     }
 
     goto LABEL_28;
   }
 
-  v22 = [v7 userInfo];
-  v11 = [v22 objectForKeyedSubscript:v9];
+  userInfo = [errorCopy userInfo];
+  v11 = [userInfo objectForKeyedSubscript:v9];
 
   if (!v11)
   {
@@ -1129,11 +1129,11 @@ LABEL_25:
   }
 
 LABEL_3:
-  v12 = [v11 intValue];
-  if (v12 == 11 || v12 == 26)
+  intValue = [v11 intValue];
+  if (intValue == 11 || intValue == 26)
   {
-    v14 = [v7 userInfo];
-    v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277CCA170]];
+    userInfo2 = [errorCopy userInfo];
+    v15 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CCA170]];
 
     if (v15)
     {
@@ -1141,12 +1141,12 @@ LABEL_3:
       [(NSRecursiveLock *)self->_storesArrayLock lock];
       v17 = self->_stores[[RTPersistenceManager storeTypeForURL:v16]];
       [(NSRecursiveLock *)self->_storesArrayLock unlock];
-      v18 = [v6 persistentStoreCoordinator];
+      persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
       v30 = @"RTPersistentStoreMetadataStoreCorruptKey";
       v31[0] = MEMORY[0x277CBEC38];
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
       v27 = 0;
-      [(RTPersistenceStore *)v17 updateMetadata:v19 coordinator:v18 error:&v27];
+      [(RTPersistenceStore *)v17 updateMetadata:v19 coordinator:persistentStoreCoordinator error:&v27];
       v20 = v27;
 
       if (v20)
@@ -1169,7 +1169,7 @@ LABEL_3:
     goto LABEL_25;
   }
 
-  if (v12 == 1555)
+  if (intValue == 1555)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -1184,20 +1184,20 @@ LABEL_28:
 LABEL_29:
 }
 
-- (BOOL)persistenceContextPerformedSave:(id)a3 error:(id *)a4
+- (BOOL)persistenceContextPerformedSave:(id)save error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v20 = a3;
+  saveCopy = save;
   WeakRetained = objc_loadWeakRetained(&self->_mirroringDelegate);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v20 persistentStoreCoordinator];
-  v6 = [v5 persistentStores];
+  persistentStoreCoordinator = [saveCopy persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
 
-  v7 = v6;
-  v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v7 = persistentStores;
+  v8 = [persistentStores countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1214,13 +1214,13 @@ LABEL_29:
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 options];
-        v16 = [v15 objectForKey:v11];
+        options = [v14 options];
+        v16 = [options objectForKey:v11];
         v17 = [v16 objectForKey:v12];
 
         if (v17)
         {
-          [WeakRetained performMirroringRequestWithType:1 affectedStore:v14 qualityOfService:objc_msgSend(v20 handler:{"mirroringQualityOfService"), 0}];
+          [WeakRetained performMirroringRequestWithType:1 affectedStore:v14 qualityOfService:objc_msgSend(saveCopy handler:{"mirroringQualityOfService"), 0}];
         }
       }
 
@@ -1230,26 +1230,26 @@ LABEL_29:
     while (v9);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (void)performMirroringRequestOfType:(int64_t)a3 qualityOfService:(int64_t)a4 handler:(id)a5
+- (void)performMirroringRequestOfType:(int64_t)type qualityOfService:(int64_t)service handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __79__RTPersistenceManager_performMirroringRequestOfType_qualityOfService_handler___block_invoke;
   v10[3] = &unk_2788CC5C0;
   v10[4] = self;
-  v11 = v8;
-  v12 = a3;
-  v13 = a4;
-  v9 = v8;
+  v11 = handlerCopy;
+  typeCopy = type;
+  serviceCopy = service;
+  v9 = handlerCopy;
   [(RTPersistenceManager *)self createManagedObjectContext:v10];
 }
 
@@ -1422,27 +1422,27 @@ void __79__RTPersistenceManager_performMirroringRequestOfType_qualityOfService_h
   }
 }
 
-- (void)onCoreDataResetSync:(id)a3
+- (void)onCoreDataResetSync:(id)sync
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  syncCopy = sync;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__RTPersistenceManager_onCoreDataResetSync___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = syncCopy;
+  v6 = syncCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)_onCoreDataResetSync:(id)a3
+- (void)_onCoreDataResetSync:(id)sync
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  syncCopy = sync;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v4 name];
-  v7 = [v6 isEqualToString:*MEMORY[0x277CBE140]];
+  name = [syncCopy name];
+  v7 = [name isEqualToString:*MEMORY[0x277CBE140]];
 
   if (v7)
   {
@@ -1451,17 +1451,17 @@ void __79__RTPersistenceManager_performMirroringRequestOfType_qualityOfService_h
       v8 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [v4 userInfo];
-        v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CBE138]];
+        userInfo = [syncCopy userInfo];
+        v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBE138]];
         v20 = 134217984;
-        v21 = [v10 unsignedIntegerValue];
+        unsignedIntegerValue = [v10 unsignedIntegerValue];
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "received will reset sync notification, reason %lu", &v20, 0xCu);
       }
     }
 
-    v11 = [v4 userInfo];
+    userInfo2 = [syncCopy userInfo];
     v12 = [(RTPersistenceContainer *)self->_container persistenceContextWithOptions:1];
-    [WeakRetained persistenceManagerWillStartResetSync:self userInfo:v11 context:v12];
+    [WeakRetained persistenceManagerWillStartResetSync:self userInfo:userInfo2 context:v12];
 
     [(RTPersistenceContainer *)self->_container suspendPersistenceStores];
     [(RTPersistenceManager *)self _updateStoreAvailability:1];
@@ -1469,8 +1469,8 @@ void __79__RTPersistenceManager_performMirroringRequestOfType_qualityOfService_h
 
   else
   {
-    v13 = [v4 name];
-    v14 = [v13 isEqualToString:*MEMORY[0x277CBE130]];
+    name2 = [syncCopy name];
+    v14 = [name2 isEqualToString:*MEMORY[0x277CBE130]];
 
     if (v14)
     {
@@ -1484,8 +1484,8 @@ void __79__RTPersistenceManager_performMirroringRequestOfType_qualityOfService_h
         }
       }
 
-      v16 = [v4 userInfo];
-      [WeakRetained persistenceManagerDidFinishResetSync:self userInfo:v16];
+      userInfo3 = [syncCopy userInfo];
+      [WeakRetained persistenceManagerDidFinishResetSync:self userInfo:userInfo3];
 
       [(RTPersistenceContainer *)self->_container resumePersistenceStores];
       [(RTPersistenceManager *)self _updateStoreAvailability:2];
@@ -1507,9 +1507,9 @@ void __79__RTPersistenceManager_performMirroringRequestOfType_qualityOfService_h
       v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v4 name];
+        name3 = [syncCopy name];
         v20 = 138412802;
-        v21 = v19;
+        unsignedIntegerValue = name3;
         v22 = 2080;
         v23 = "[RTPersistenceManager _onCoreDataResetSync:]";
         v24 = 1024;
@@ -1539,29 +1539,29 @@ void __45__RTPersistenceManager__onCoreDataResetSync___block_invoke(uint64_t a1,
 - (id)outstandingContexts
 {
   [(NSRecursiveLock *)self->_pointerArrayLock lock];
-  v3 = [(NSPointerArray *)self->_outstandingContexts allObjects];
+  allObjects = [(NSPointerArray *)self->_outstandingContexts allObjects];
   [(NSRecursiveLock *)self->_pointerArrayLock unlock];
 
-  return v3;
+  return allObjects;
 }
 
-- (id)historyTokenForStoreType:(unint64_t)a3
+- (id)historyTokenForStoreType:(unint64_t)type
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  if (a3 < 4)
+  if (type < 4)
   {
     v3 = [(RTPersistenceManager *)self URLForStoreType:?];
     if (v3)
     {
-      v5 = [(RTPersistenceContainer *)self->_container coordinator];
-      v6 = [v5 persistentStoreForURL:v3];
+      coordinator = [(RTPersistenceContainer *)self->_container coordinator];
+      v6 = [coordinator persistentStoreForURL:v3];
 
       if (v6)
       {
-        v7 = [(RTPersistenceContainer *)self->_container coordinator];
+        coordinator2 = [(RTPersistenceContainer *)self->_container coordinator];
         v12[0] = v6;
         v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-        v9 = [v7 currentPersistentHistoryTokenFromStores:v8];
+        v9 = [coordinator2 currentPersistentHistoryTokenFromStores:v8];
       }
 
       else
@@ -1589,12 +1589,12 @@ LABEL_10:
   return v9;
 }
 
-- (id)persistenceStoreForType:(unint64_t)a3
+- (id)persistenceStoreForType:(unint64_t)type
 {
-  if (a3 < 4)
+  if (type < 4)
   {
     [(NSRecursiveLock *)self->_storesArrayLock lock];
-    v4 = self->_stores[a3];
+    v4 = self->_stores[type];
     [(NSRecursiveLock *)self->_storesArrayLock unlock];
   }
 
@@ -1622,18 +1622,18 @@ LABEL_10:
 
 + (id)defaultModelsDirectory
 {
-  v2 = [MEMORY[0x277CCA8D8] _coreroutineBundle];
-  v3 = [v2 URLForResource:@"CoreRoutine" withExtension:@"momd"];
+  _coreroutineBundle = [MEMORY[0x277CCA8D8] _coreroutineBundle];
+  v3 = [_coreroutineBundle URLForResource:@"CoreRoutine" withExtension:@"momd"];
 
   return v3;
 }
 
 + (id)defaultStoresDirectory
 {
-  v2 = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
-  if (v2)
+  routineCacheDirectoryPath = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
+  if (routineCacheDirectoryPath)
   {
-    v3 = [MEMORY[0x277CBEBC0] fileURLWithPath:v2 isDirectory:1];
+    v3 = [MEMORY[0x277CBEBC0] fileURLWithPath:routineCacheDirectoryPath isDirectory:1];
   }
 
   else
@@ -1644,9 +1644,9 @@ LABEL_10:
   return v3;
 }
 
-- (void)_updateAvailabilityAfterSetupAttemptWithAvailability:(unint64_t)a3
+- (void)_updateAvailabilityAfterSetupAttemptWithAvailability:(unint64_t)availability
 {
-  [(RTPersistenceManager *)self _updateStoreAvailability:a3];
+  [(RTPersistenceManager *)self _updateStoreAvailability:availability];
   if ([(RTPersistenceManager *)self availability]== 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1659,12 +1659,12 @@ LABEL_10:
   }
 }
 
-- (BOOL)_generateDiagnosticFilesAtURL:(id)a3 error:(id *)a4
+- (BOOL)_generateDiagnosticFilesAtURL:(id)l error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(RTPersistenceManager *)self delegate];
-  if (v8)
+  lCopy = l;
+  delegate = [(RTPersistenceManager *)self delegate];
+  if (delegate)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -1673,7 +1673,7 @@ LABEL_10:
     }
 
     aSelector = a2;
-    v28 = a4;
+    errorCopy = error;
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     for (i = 0; i != 4; ++i)
     {
@@ -1683,7 +1683,7 @@ LABEL_10:
       if (v11)
       {
         v29 = 0;
-        v12 = [v8 copyPersistenceStore:v11 outputURL:v7 error:&v29];
+        v12 = [delegate copyPersistenceStore:v11 outputURL:lCopy error:&v29];
         v13 = v29;
         if ((v12 & 1) == 0)
         {
@@ -1711,10 +1711,10 @@ LABEL_10:
     v15 = _RTSafeArray();
     v16 = _RTMultiErrorCreate();
 
-    if (v28)
+    if (errorCopy)
     {
       v17 = v16;
-      *v28 = v16;
+      *errorCopy = v16;
     }
 
     v18 = [v9 count];
@@ -1763,25 +1763,25 @@ LABEL_28:
   return v19;
 }
 
-- (void)sendDiagnosticsToURL:(id)a3 options:(id)a4 handler:(id)a5
+- (void)sendDiagnosticsToURL:(id)l options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTNotifier *)self queue];
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__RTPersistenceManager_sendDiagnosticsToURL_options_handler___block_invoke;
   block[3] = &unk_2788C47F8;
-  v19 = v11;
+  v19 = handlerCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v10;
-  v18 = v9;
-  v13 = v9;
-  v14 = v11;
-  v15 = v10;
-  dispatch_async(v12, block);
+  v17 = optionsCopy;
+  v18 = lCopy;
+  v13 = lCopy;
+  v14 = handlerCopy;
+  v15 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
 void __61__RTPersistenceManager_sendDiagnosticsToURL_options_handler___block_invoke(uint64_t a1)
@@ -1855,10 +1855,10 @@ void __61__RTPersistenceManager_sendDiagnosticsToURL_options_handler___block_inv
 
 - (id)storeURL
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_storesDirectory;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_storesDirectory;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1877,15 +1877,15 @@ void __61__RTPersistenceManager_sendDiagnosticsToURL_options_handler___block_inv
   return WeakRetained;
 }
 
-- (void)performImportMirroringRequest:(id)a3
+- (void)performImportMirroringRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__RTPersistenceManager_Internal__performImportMirroringRequest___block_invoke;
   v6[3] = &unk_2788C7D58;
-  v7 = v4;
-  v5 = v4;
+  v7 = requestCopy;
+  v5 = requestCopy;
   [(RTPersistenceManager *)self performImportMirroringRequestWithQualityOfService:3 handler:v6];
 }
 
@@ -1922,15 +1922,15 @@ void __64__RTPersistenceManager_Internal__performImportMirroringRequest___block_
   }
 }
 
-- (void)performExportMirroringRequest:(id)a3
+- (void)performExportMirroringRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__RTPersistenceManager_Internal__performExportMirroringRequest___block_invoke;
   v6[3] = &unk_2788C7D58;
-  v7 = v4;
-  v5 = v4;
+  v7 = requestCopy;
+  v5 = requestCopy;
   [(RTPersistenceManager *)self performExportMirroringRequestWithQualityOfService:3 handler:v6];
 }
 
@@ -1967,15 +1967,15 @@ void __64__RTPersistenceManager_Internal__performExportMirroringRequest___block_
   }
 }
 
-- (void)performZoneResetMirroringRequest:(id)a3
+- (void)performZoneResetMirroringRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__RTPersistenceManager_Internal__performZoneResetMirroringRequest___block_invoke;
   v6[3] = &unk_2788C7D58;
-  v7 = v4;
-  v5 = v4;
+  v7 = requestCopy;
+  v5 = requestCopy;
   [(RTPersistenceManager *)self performZoneResetMirroringRequestWithQualityOfService:3 handler:v6];
 }
 
@@ -2012,12 +2012,12 @@ void __67__RTPersistenceManager_Internal__performZoneResetMirroringRequest___blo
   }
 }
 
-- (void)_schemaUpdateWithModelFile:(id)a3 handler:(id)a4
+- (void)_schemaUpdateWithModelFile:(id)file handler:(id)handler
 {
   v82[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v61 = a4;
-  if (!v61)
+  fileCopy = file;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2030,8 +2030,8 @@ void __67__RTPersistenceManager_Internal__performZoneResetMirroringRequest___blo
     }
   }
 
-  v60 = v5;
-  if (v5)
+  v60 = fileCopy;
+  if (fileCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2046,7 +2046,7 @@ void __67__RTPersistenceManager_Internal__performZoneResetMirroringRequest___blo
         *&buf[12] = 2112;
         *&buf[14] = v10;
         *&buf[22] = 2112;
-        v77 = v5;
+        v77 = fileCopy;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@:%@, CloudKit schema update started with modelFile, %@", buf, 0x20u);
       }
     }
@@ -2121,11 +2121,11 @@ void __67__RTPersistenceManager_Internal__performZoneResetMirroringRequest___blo
       v28 = v27;
       v29 = objc_opt_new();
       v30 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_151];
-      v31 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v32 = [v31 filteredArrayUsingPredicate:v30];
-      v33 = [v32 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v32 = [callStackSymbols filteredArrayUsingPredicate:v30];
+      firstObject = [v32 firstObject];
 
-      [v29 submitToCoreAnalytics:v33 type:1 duration:v28];
+      [v29 submitToCoreAnalytics:firstObject type:1 duration:v28];
       v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
       {
@@ -2174,7 +2174,7 @@ void __67__RTPersistenceManager_Internal__performZoneResetMirroringRequest___blo
         _os_log_error_impl(&dword_2304B3000, v40, OS_LOG_TYPE_ERROR, "%@:%@, CloudKit schema update in progress - error while adding persistent store, %@", v71, 0x20u);
       }
 
-      v61[2](v61, *(*&buf[8] + 40));
+      handlerCopy[2](handlerCopy, *(*&buf[8] + 40));
     }
 
     else
@@ -2224,7 +2224,7 @@ void __67__RTPersistenceManager_Internal__performZoneResetMirroringRequest___blo
       v65 = v39;
       v66 = buf;
       [v50 performBlockAndWait:v63];
-      v61[2](v61, *(*&buf[8] + 40));
+      handlerCopy[2](handlerCopy, *(*&buf[8] + 40));
     }
 
     _Block_object_dispose(buf, 8);
@@ -2236,7 +2236,7 @@ void __67__RTPersistenceManager_Internal__performZoneResetMirroringRequest___blo
     v81 = @"file path to model is required.";
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
     v62 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v11];
-    (v61)[2](v61, v62);
+    (handlerCopy)[2](handlerCopy, v62);
   }
 }
 
@@ -2438,18 +2438,18 @@ void __69__RTPersistenceManager_Internal___schemaUpdateWithModelFile_handler___b
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)schemaUpdateWithModelFile:(id)a3 handler:(id)a4
+- (void)schemaUpdateWithModelFile:(id)file handler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__RTPersistenceManager_Internal__schemaUpdateWithModelFile_handler___block_invoke;
   v9[3] = &unk_2788C56C0;
-  v10 = v7;
+  v10 = handlerCopy;
   v11 = a2;
   v9[4] = self;
-  v8 = v7;
-  [(RTPersistenceManager *)self _schemaUpdateWithModelFile:a3 handler:v9];
+  v8 = handlerCopy;
+  [(RTPersistenceManager *)self _schemaUpdateWithModelFile:file handler:v9];
 }
 
 void __68__RTPersistenceManager_Internal__schemaUpdateWithModelFile_handler___block_invoke(uint64_t a1, void *a2)
@@ -2508,15 +2508,15 @@ LABEL_4:
   }
 }
 
-- (void)mirroringDelegateSetupState:(id)a3
+- (void)mirroringDelegateSetupState:(id)state
 {
-  v6 = a3;
+  stateCopy = state;
   v4 = [(RTPersistenceManager *)self mirroringDelegateStateForStoreType:1];
-  v5 = v6;
-  if (v6)
+  v5 = stateCopy;
+  if (stateCopy)
   {
-    (*(v6 + 2))(v6, v4, 0);
-    v5 = v6;
+    (*(stateCopy + 2))(stateCopy, v4, 0);
+    v5 = stateCopy;
   }
 }
 

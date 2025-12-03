@@ -1,7 +1,7 @@
 @interface _UIWindowSceneTraitProvider
 - (UIScene)_scene;
 - (UITraitCollection)_traitOverrides;
-- (_UIWindowSceneTraitProvider)initWithScene:(id)a3;
+- (_UIWindowSceneTraitProvider)initWithScene:(id)scene;
 - (_UIWindowSceneTraitSource)source;
 - (void)invalidateTraitOverrides;
 @end
@@ -10,8 +10,8 @@
 
 - (UITraitCollection)_traitOverrides
 {
-  v3 = [(_UIWindowSceneTraitProvider *)self source];
-  v4 = [v3 traitOverridesForTraitProvider:self];
+  source = [(_UIWindowSceneTraitProvider *)self source];
+  v4 = [source traitOverridesForTraitProvider:self];
 
   return v4;
 }
@@ -32,24 +32,24 @@
 
 - (void)invalidateTraitOverrides
 {
-  v3 = [(_UIWindowSceneTraitProvider *)self _scene];
+  _scene = [(_UIWindowSceneTraitProvider *)self _scene];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 _componentDidUpdateTraitOverrides:self];
+    [_scene _componentDidUpdateTraitOverrides:self];
   }
 }
 
-- (_UIWindowSceneTraitProvider)initWithScene:(id)a3
+- (_UIWindowSceneTraitProvider)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = _UIWindowSceneTraitProvider;
   v5 = [(_UIWindowSceneTraitProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
   }
 
   return v6;

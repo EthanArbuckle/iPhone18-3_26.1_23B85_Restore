@@ -1,30 +1,30 @@
 @interface STAlwaysAllowListController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
 - (STAlwaysAllowListController)init;
 - (STAlwaysAllowListControllerDelegate)delegate;
-- (id)_allowedContactsDuringDowntimeText:(id)a3;
-- (id)appSpecifiersForBundleIDs:(id)a3;
+- (id)_allowedContactsDuringDowntimeText:(id)text;
+- (id)appSpecifiersForBundleIDs:(id)ds;
 - (id)createAllowedAppsSpecifiers;
 - (id)createChooseAppsSpecifiers;
 - (id)removeMessagesConfirmationPrompt;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_alwaysAllowListDidChange:(id)a3;
-- (void)_communicationLimitsDidChangeFrom:(id)a3 to:(id)a4;
-- (void)_insertAllowedAppSpecifier:(id)a3;
-- (void)_removeAllowedAppSpecifier:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_alwaysAllowListDidChange:(id)change;
+- (void)_communicationLimitsDidChangeFrom:(id)from to:(id)to;
+- (void)_insertAllowedAppSpecifier:(id)specifier;
+- (void)_removeAllowedAppSpecifier:(id)specifier;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeAllowedIdentifier:(id)a3 withSpecifier:(id)a4;
-- (void)setCoordinator:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeAllowedIdentifier:(id)identifier withSpecifier:(id)specifier;
+- (void)setCoordinator:(id)coordinator;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willResignActive;
 @end
 
@@ -44,68 +44,68 @@
 
   v7.receiver = v2;
   v7.super_class = STAlwaysAllowListController;
-  v5 = [(STPINListViewController *)&v7 coordinator];
-  [v5 addObserver:v2 forKeyPath:@"timeAllowancesCoordinator.viewModel.alwaysAllowList" options:3 context:"KVOContextAlwaysAllowedListController"];
-  [v5 addObserver:v2 forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" options:3 context:"KVOContextAlwaysAllowedListController"];
+  coordinator = [(STPINListViewController *)&v7 coordinator];
+  [coordinator addObserver:v2 forKeyPath:@"timeAllowancesCoordinator.viewModel.alwaysAllowList" options:3 context:"KVOContextAlwaysAllowedListController"];
+  [coordinator addObserver:v2 forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" options:3 context:"KVOContextAlwaysAllowedListController"];
 
   return v2;
 }
 
 - (void)dealloc
 {
-  v3 = [(STPINListViewController *)self coordinator];
-  [v3 removeObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.alwaysAllowList" context:"KVOContextAlwaysAllowedListController"];
-  [v3 removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" context:"KVOContextAlwaysAllowedListController"];
+  coordinator = [(STPINListViewController *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.alwaysAllowList" context:"KVOContextAlwaysAllowedListController"];
+  [coordinator removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" context:"KVOContextAlwaysAllowedListController"];
 
   v4.receiver = self;
   v4.super_class = STAlwaysAllowListController;
   [(STListViewController *)&v4 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STPINListViewController *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.alwaysAllowList" context:"KVOContextAlwaysAllowedListController"];
-  [v5 removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" context:"KVOContextAlwaysAllowedListController"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STPINListViewController *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.alwaysAllowList" context:"KVOContextAlwaysAllowedListController"];
+  [coordinator removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" context:"KVOContextAlwaysAllowedListController"];
   v12.receiver = self;
   v12.super_class = STAlwaysAllowListController;
-  [(STPINListViewController *)&v12 setCoordinator:v4];
-  v6 = [v5 contentPrivacyCoordinator];
-  v7 = [v6 viewModel];
-  v8 = [v7 communicationLimits];
-  v9 = [v4 contentPrivacyCoordinator];
-  v10 = [v9 viewModel];
-  v11 = [v10 communicationLimits];
-  [(STAlwaysAllowListController *)self _communicationLimitsDidChangeFrom:v8 to:v11];
+  [(STPINListViewController *)&v12 setCoordinator:coordinatorCopy];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  communicationLimits = [viewModel communicationLimits];
+  contentPrivacyCoordinator2 = [coordinatorCopy contentPrivacyCoordinator];
+  viewModel2 = [contentPrivacyCoordinator2 viewModel];
+  communicationLimits2 = [viewModel2 communicationLimits];
+  [(STAlwaysAllowListController *)self _communicationLimitsDidChangeFrom:communicationLimits to:communicationLimits2];
 
-  [v4 addObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.alwaysAllowList" options:3 context:"KVOContextAlwaysAllowedListController"];
-  [v4 addObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" options:3 context:"KVOContextAlwaysAllowedListController"];
+  [coordinatorCopy addObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.alwaysAllowList" options:3 context:"KVOContextAlwaysAllowedListController"];
+  [coordinatorCopy addObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" options:3 context:"KVOContextAlwaysAllowedListController"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6 == "KVOContextAlwaysAllowedListController")
+  pathCopy = path;
+  changeCopy = change;
+  if (context == "KVOContextAlwaysAllowedListController")
   {
     [(STPINListViewController *)self coordinator];
 
-    if ([v10 isEqualToString:@"contentPrivacyCoordinator.viewModel.communicationLimits"])
+    if ([pathCopy isEqualToString:@"contentPrivacyCoordinator.viewModel.communicationLimits"])
     {
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v13 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v13)
+      if (v12 == null)
       {
 
         v12 = 0;
       }
 
-      v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v15 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v15)
+      if (v14 == null2)
       {
 
         v14 = 0;
@@ -118,15 +118,15 @@
     {
       [(STPINListViewController *)self coordinator];
 
-      if (![v10 isEqualToString:@"timeAllowancesCoordinator.viewModel.alwaysAllowList"])
+      if (![pathCopy isEqualToString:@"timeAllowancesCoordinator.viewModel.alwaysAllowList"])
       {
         goto LABEL_14;
       }
 
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v16 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null3 = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v16)
+      if (v12 == null3)
       {
 
         v12 = 0;
@@ -140,23 +140,23 @@
 
   v17.receiver = self;
   v17.super_class = STAlwaysAllowListController;
-  [(STListViewController *)&v17 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+  [(STListViewController *)&v17 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
 LABEL_14:
 }
 
-- (void)_alwaysAllowListDidChange:(id)a3
+- (void)_alwaysAllowListDidChange:(id)change
 {
-  v31 = a3;
+  changeCopy = change;
   v4 = MEMORY[0x277CBEB98];
-  v5 = [(STAlwaysAllowListController *)self alwaysAllowList];
-  v6 = [v5 allowedBundleIDs];
-  v7 = [v4 setWithArray:v6];
+  alwaysAllowList = [(STAlwaysAllowListController *)self alwaysAllowList];
+  allowedBundleIDs = [alwaysAllowList allowedBundleIDs];
+  v7 = [v4 setWithArray:allowedBundleIDs];
 
   v8 = MEMORY[0x277CBEB98];
-  if (v31)
+  if (changeCopy)
   {
-    v9 = [v31 allowedBundleIDs];
-    v10 = [v8 setWithArray:v9];
+    allowedBundleIDs2 = [changeCopy allowedBundleIDs];
+    v10 = [v8 setWithArray:allowedBundleIDs2];
   }
 
   else
@@ -166,11 +166,11 @@ LABEL_14:
 
   if (([v7 isEqualToSet:v10] & 1) == 0)
   {
-    v11 = [(STPINListViewController *)self coordinator];
-    v12 = [v11 timeAllowancesCoordinator];
-    v13 = [v12 viewModel];
-    v14 = [v13 alwaysAllowList];
-    [(STAlwaysAllowListController *)self setAlwaysAllowList:v14];
+    coordinator = [(STPINListViewController *)self coordinator];
+    timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
+    viewModel = [timeAllowancesCoordinator viewModel];
+    alwaysAllowList2 = [viewModel alwaysAllowList];
+    [(STAlwaysAllowListController *)self setAlwaysAllowList:alwaysAllowList2];
 
     v15 = objc_opt_new();
     v16 = [MEMORY[0x277CF9650] systemUnblockableBundleIdentifiersForDeviceFamily:102];
@@ -210,33 +210,33 @@ LABEL_14:
     }
 
     v22 = objc_alloc(MEMORY[0x277CBEB58]);
-    v23 = [(STAlwaysAllowListController *)self alwaysAllowList];
-    v24 = [v23 allowedBundleIDs];
-    v25 = [v22 initWithArray:v24];
+    alwaysAllowList3 = [(STAlwaysAllowListController *)self alwaysAllowList];
+    allowedBundleIDs3 = [alwaysAllowList3 allowedBundleIDs];
+    v25 = [v22 initWithArray:allowedBundleIDs3];
 
     [v25 unionSet:v15];
-    v26 = [(STPINListViewController *)self coordinator];
-    v27 = [v26 viewModel];
-    v28 = [v27 installedBundleIDs];
+    coordinator2 = [(STPINListViewController *)self coordinator];
+    viewModel2 = [coordinator2 viewModel];
+    installedBundleIDs = [viewModel2 installedBundleIDs];
 
-    [(STAlwaysAllowListController *)self setInstalledBundleIDs:v28];
-    v29 = [v28 mutableCopy];
+    [(STAlwaysAllowListController *)self setInstalledBundleIDs:installedBundleIDs];
+    v29 = [installedBundleIDs mutableCopy];
     [v29 minusSet:v25];
-    v30 = [v29 allObjects];
-    [(STAlwaysAllowListController *)self setChooseBundleIDs:v30];
+    allObjects = [v29 allObjects];
+    [(STAlwaysAllowListController *)self setChooseBundleIDs:allObjects];
 
     [(STAlwaysAllowListController *)self reloadSpecifiers];
   }
 }
 
-- (void)_communicationLimitsDidChangeFrom:(id)a3 to:(id)a4
+- (void)_communicationLimitsDidChangeFrom:(id)from to:(id)to
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8 != v6 && ([v8 isEqual:v6] & 1) == 0)
+  fromCopy = from;
+  toCopy = to;
+  if (fromCopy != toCopy && ([fromCopy isEqual:toCopy] & 1) == 0)
   {
-    v7 = [(STAlwaysAllowListController *)self allowedContactsSpecifier];
-    [(STAlwaysAllowListController *)self reloadSpecifier:v7];
+    allowedContactsSpecifier = [(STAlwaysAllowListController *)self allowedContactsSpecifier];
+    [(STAlwaysAllowListController *)self reloadSpecifier:allowedContactsSpecifier];
   }
 }
 
@@ -255,38 +255,38 @@ LABEL_14:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = STAlwaysAllowListController;
-  [(STPINListViewController *)&v16 viewDidAppear:a3];
+  [(STPINListViewController *)&v16 viewDidAppear:appear];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.ScreenTime/ALWAYS_ALLOWED"];
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v7 = +[STScreenTimeSettingsUIBundle bundle];
-  v8 = [v7 bundleURL];
-  v9 = [v5 initWithKey:@"AlwaysAllowTitle" table:@"Localizable" locale:v6 bundleURL:v8];
+  bundleURL = [v7 bundleURL];
+  v9 = [v5 initWithKey:@"AlwaysAllowTitle" table:@"Localizable" locale:currentLocale bundleURL:bundleURL];
 
   v10 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v11 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
   v12 = +[STScreenTimeSettingsUIBundle bundle];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"ScreenTimeControllerTitle" table:@"Localizable" locale:v11 bundleURL:v13];
+  bundleURL2 = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"ScreenTimeControllerTitle" table:@"Localizable" locale:currentLocale2 bundleURL:bundleURL2];
 
   v17[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   [(STAlwaysAllowListController *)self pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:@"com.apple.graphic-icon.screen-time" title:v9 localizedNavigationComponents:v15 deepLink:v4];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(STAlwaysAllowListController *)self delegate];
+  disappearCopy = disappear;
+  delegate = [(STAlwaysAllowListController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(STAlwaysAllowListController *)self alwaysAllowList];
-    [v5 alwaysAllowListController:self didFinishEditingAlwaysAllowList:v6];
+    alwaysAllowList = [(STAlwaysAllowListController *)self alwaysAllowList];
+    [delegate alwaysAllowListController:self didFinishEditingAlwaysAllowList:alwaysAllowList];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -297,16 +297,16 @@ LABEL_14:
 
   v7.receiver = self;
   v7.super_class = STAlwaysAllowListController;
-  [(STAlwaysAllowListController *)&v7 viewWillDisappear:v3];
+  [(STAlwaysAllowListController *)&v7 viewWillDisappear:disappearCopy];
 }
 
 - (void)willResignActive
 {
-  v3 = [(STAlwaysAllowListController *)self delegate];
+  delegate = [(STAlwaysAllowListController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(STAlwaysAllowListController *)self alwaysAllowList];
-    [v3 alwaysAllowListController:self didFinishEditingAlwaysAllowList:v4];
+    alwaysAllowList = [(STAlwaysAllowListController *)self alwaysAllowList];
+    [delegate alwaysAllowListController:self didFinishEditingAlwaysAllowList:alwaysAllowList];
   }
 
   v5.receiver = self;
@@ -326,9 +326,9 @@ LABEL_14:
 
   v5 = objc_opt_new();
   v6 = +[STScreenTimeSettingsUIBundle bundle];
-  v53 = [(STPINListViewController *)self coordinator];
-  v7 = [v53 viewModel];
-  v8 = [v7 me];
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v8 = [viewModel me];
 
   v51 = v8;
   v52 = v6;
@@ -338,16 +338,16 @@ LABEL_14:
     v10 = [v6 localizedStringForKey:@"AllowedContactsGroupSpecifierName" value:&stru_28766E5A8 table:0];
     v11 = [v9 groupSpecifierWithName:v10];
 
-    v12 = [v8 givenName];
+    givenName = [v8 givenName];
     if ([v8 isRemoteUser])
     {
-      if (v12)
+      if (givenName)
       {
         v13 = [v6 localizedStringForKey:@"AllowedContactsGroupSpecifierRemoteHeader" value:&stru_28766E5A8 table:0];
         v14 = v6;
         v15 = objc_alloc(MEMORY[0x277CCACA8]);
-        v16 = [MEMORY[0x277CBEAF8] currentLocale];
-        v17 = [v15 initWithFormat:v13 locale:v16, v12];
+        currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+        v17 = [v15 initWithFormat:v13 locale:currentLocale, givenName];
 
 LABEL_10:
         v18 = *MEMORY[0x277D3FFA8];
@@ -374,7 +374,7 @@ LABEL_10:
         v27 = _Block_copy(v26);
         [v23 setObject:v27 forKeyedSubscript:0x287675888];
 
-        [v23 setObject:v53 forKeyedSubscript:0x287675C48];
+        [v23 setObject:coordinator forKeyedSubscript:0x287675C48];
         [(STAlwaysAllowListController *)self setAllowedContactsSpecifier:v23];
         [v5 addObject:v23];
 
@@ -411,23 +411,23 @@ LABEL_11:
   v34 = [v32 groupSpecifierWithName:v33];
   [(STAlwaysAllowListController *)self setChooseAppsGroupSpecifier:v34];
 
-  v35 = [(STAlwaysAllowListController *)self createAllowedAppsSpecifiers];
-  [(STAlwaysAllowListController *)self setAllowedAppsSpecifiers:v35];
+  createAllowedAppsSpecifiers = [(STAlwaysAllowListController *)self createAllowedAppsSpecifiers];
+  [(STAlwaysAllowListController *)self setAllowedAppsSpecifiers:createAllowedAppsSpecifiers];
 
-  v36 = [(STAlwaysAllowListController *)self allowedAppsSpecifiers];
-  [v5 addObjectsFromArray:v36];
+  allowedAppsSpecifiers = [(STAlwaysAllowListController *)self allowedAppsSpecifiers];
+  [v5 addObjectsFromArray:allowedAppsSpecifiers];
 
-  v37 = [(STAlwaysAllowListController *)self chooseAppsGroupSpecifier];
-  [v5 addObject:v37];
+  chooseAppsGroupSpecifier = [(STAlwaysAllowListController *)self chooseAppsGroupSpecifier];
+  [v5 addObject:chooseAppsGroupSpecifier];
 
-  v38 = [(STAlwaysAllowListController *)self createChooseAppsSpecifiers];
-  [(STAlwaysAllowListController *)self setChooseAppsSpecifiers:v38];
+  createChooseAppsSpecifiers = [(STAlwaysAllowListController *)self createChooseAppsSpecifiers];
+  [(STAlwaysAllowListController *)self setChooseAppsSpecifiers:createChooseAppsSpecifiers];
 
-  v39 = [(STAlwaysAllowListController *)self chooseAppsSpecifiers];
-  [v5 addObjectsFromArray:v39];
+  chooseAppsSpecifiers = [(STAlwaysAllowListController *)self chooseAppsSpecifiers];
+  [v5 addObjectsFromArray:chooseAppsSpecifiers];
 
-  v40 = [(STAlwaysAllowListController *)self alwaysAllowList];
-  LOBYTE(v33) = [v40 shouldAllowEditing];
+  alwaysAllowList = [(STAlwaysAllowListController *)self alwaysAllowList];
+  LOBYTE(v33) = [alwaysAllowList shouldAllowEditing];
 
   if ((v33 & 1) == 0)
   {
@@ -486,22 +486,22 @@ void __41__STAlwaysAllowListController_specifiers__block_invoke(uint64_t a1, int
   }
 }
 
-- (id)_allowedContactsDuringDowntimeText:(id)a3
+- (id)_allowedContactsDuringDowntimeText:(id)text
 {
-  v3 = [(STPINListViewController *)self coordinator];
-  v4 = [v3 contentPrivacyCoordinator];
-  v5 = [v4 viewModel];
-  v6 = [v5 communicationLimits];
-  v7 = [v6 downtimeCommunicationLimit];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  communicationLimits = [viewModel communicationLimits];
+  downtimeCommunicationLimit = [communicationLimits downtimeCommunicationLimit];
 
-  if (v7 > 3)
+  if (downtimeCommunicationLimit > 3)
   {
     v10 = 0;
   }
 
   else
   {
-    v8 = off_279B7CD78[v7];
+    v8 = off_279B7CD78[downtimeCommunicationLimit];
     v9 = +[STScreenTimeSettingsUIBundle bundle];
     v10 = [v9 localizedStringForKey:v8 value:&stru_28766E5A8 table:0];
   }
@@ -512,17 +512,17 @@ void __41__STAlwaysAllowListController_specifiers__block_invoke(uint64_t a1, int
 - (id)createAllowedAppsSpecifiers
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D4B928] defaultAlwaysAllowBundleIDs];
-  v4 = [(STAlwaysAllowListController *)self alwaysAllowList];
-  v5 = [v4 allowedBundleIDs];
-  v6 = [v5 mutableCopy];
+  defaultAlwaysAllowBundleIDs = [MEMORY[0x277D4B928] defaultAlwaysAllowBundleIDs];
+  alwaysAllowList = [(STAlwaysAllowListController *)self alwaysAllowList];
+  allowedBundleIDs = [alwaysAllowList allowedBundleIDs];
+  v6 = [allowedBundleIDs mutableCopy];
 
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(defaultAlwaysAllowBundleIDs, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v3;
+  v8 = defaultAlwaysAllowBundleIDs;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -563,8 +563,8 @@ void __41__STAlwaysAllowListController_specifiers__block_invoke(uint64_t a1, int
 
 - (id)createChooseAppsSpecifiers
 {
-  v3 = [(STAlwaysAllowListController *)self chooseBundleIDs];
-  v4 = [(STAlwaysAllowListController *)self appSpecifiersForBundleIDs:v3];
+  chooseBundleIDs = [(STAlwaysAllowListController *)self chooseBundleIDs];
+  v4 = [(STAlwaysAllowListController *)self appSpecifiersForBundleIDs:chooseBundleIDs];
   v5 = [v4 mutableCopy];
 
   [v5 sortUsingSelector:sel_titleCompare_];
@@ -572,28 +572,28 @@ void __41__STAlwaysAllowListController_specifiers__block_invoke(uint64_t a1, int
   return v5;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = [(STAlwaysAllowListController *)self indexForIndexPath:a4];
+  v5 = [(STAlwaysAllowListController *)self indexForIndexPath:path];
   v6 = [*(&self->super.super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndexedSubscript:v5];
-  v7 = [v6 userInfo];
-  v8 = [v7 isEqualToString:@"com.apple.mobilephone"];
+  userInfo = [v6 userInfo];
+  v8 = [userInfo isEqualToString:@"com.apple.mobilephone"];
 
   return v8 ^ 1;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = [(STAlwaysAllowListController *)self indexForIndexPath:a4];
+  v5 = [(STAlwaysAllowListController *)self indexForIndexPath:path];
   v6 = [*(&self->super.super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndexedSubscript:v5];
-  v7 = [v6 cellType];
-  v8 = [v6 userInfo];
-  v9 = v8;
-  if (v7 == 3 && ([v8 isEqualToString:@"com.apple.mobilephone"] & 1) == 0)
+  cellType = [v6 cellType];
+  userInfo = [v6 userInfo];
+  v9 = userInfo;
+  if (cellType == 3 && ([userInfo isEqualToString:@"com.apple.mobilephone"] & 1) == 0)
   {
-    v11 = [(STAlwaysAllowListController *)self alwaysAllowList];
-    v12 = [v11 allowedBundleIDs];
-    v13 = [v12 containsObject:v9];
+    alwaysAllowList = [(STAlwaysAllowListController *)self alwaysAllowList];
+    allowedBundleIDs = [alwaysAllowList allowedBundleIDs];
+    v13 = [allowedBundleIDs containsObject:v9];
 
     if (v13)
     {
@@ -614,34 +614,34 @@ void __41__STAlwaysAllowListController_specifiers__block_invoke(uint64_t a1, int
   return v10;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(STAlwaysAllowListController *)self allowedContactsSpecifier];
-  v7 = [(STAlwaysAllowListController *)self specifierAtIndexPath:v5];
+  pathCopy = path;
+  allowedContactsSpecifier = [(STAlwaysAllowListController *)self allowedContactsSpecifier];
+  v7 = [(STAlwaysAllowListController *)self specifierAtIndexPath:pathCopy];
 
-  return v6 == v7;
+  return allowedContactsSpecifier == v7;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(STAlwaysAllowListController *)self allowedContactsSpecifier];
-  v7 = [(STAlwaysAllowListController *)self specifierAtIndexPath:v5];
+  pathCopy = path;
+  allowedContactsSpecifier = [(STAlwaysAllowListController *)self allowedContactsSpecifier];
+  v7 = [(STAlwaysAllowListController *)self specifierAtIndexPath:pathCopy];
 
-  return v6 != v7;
+  return allowedContactsSpecifier != v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = STAlwaysAllowListController;
-  v6 = a4;
-  v7 = [(STListViewController *)&v11 tableView:a3 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [(STListViewController *)&v11 tableView:view cellForRowAtIndexPath:pathCopy];
   v8 = [(STAlwaysAllowListController *)self allowedContactsSpecifier:v11.receiver];
   v9 = [(STAlwaysAllowListController *)self indexPathForSpecifier:v8];
 
-  if (v9 == v6)
+  if (v9 == pathCopy)
   {
     [v7 setEditingAccessoryType:1];
   }
@@ -651,18 +651,18 @@ void __41__STAlwaysAllowListController_specifiers__block_invoke(uint64_t a1, int
 
 - (id)removeMessagesConfirmationPrompt
 {
-  v3 = [(STPINListViewController *)self coordinator];
-  v4 = [v3 viewModel];
-  v5 = [v4 me];
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v5 = [viewModel me];
 
-  LODWORD(v4) = [v5 isRemoteUser];
+  LODWORD(viewModel) = [v5 isRemoteUser];
   v6 = +[STScreenTimeSettingsUIBundle bundle];
-  if (v4)
+  if (viewModel)
   {
-    v7 = [v5 givenName];
-    if (v7)
+    givenName = [v5 givenName];
+    if (givenName)
     {
-      v8 = v7;
+      v8 = givenName;
       v9 = MEMORY[0x277CCACA8];
       v10 = [v6 localizedStringForKey:@"AlwaysAllowRemoveMessagesConfirmPromptRemote" value:&stru_28766E5A8 table:0];
       v11 = [v9 localizedStringWithFormat:v10, v8];
@@ -673,11 +673,11 @@ void __41__STAlwaysAllowListController_specifiers__block_invoke(uint64_t a1, int
 
   else
   {
-    v12 = [(STPINListViewController *)self coordinator];
-    v13 = [v12 viewModel];
-    v14 = [v13 isCloudSyncEnabled];
+    coordinator2 = [(STPINListViewController *)self coordinator];
+    viewModel2 = [coordinator2 viewModel];
+    isCloudSyncEnabled = [viewModel2 isCloudSyncEnabled];
 
-    if (!v14)
+    if (!isCloudSyncEnabled)
     {
       v15 = @"AlwaysAllowRemoveMessagesConfirmPromptLocal";
       goto LABEL_7;
@@ -692,16 +692,16 @@ LABEL_8:
   return v11;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = [(STAlwaysAllowListController *)self indexForIndexPath:a5];
+  v7 = [(STAlwaysAllowListController *)self indexForIndexPath:path];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = [*(&self->super.super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndexedSubscript:v7];
-    v9 = [(STPINListViewController *)self coordinator];
-    if ([v9 isPasscodeEnabled])
+    coordinator = [(STPINListViewController *)self coordinator];
+    if ([coordinator isPasscodeEnabled])
     {
-      v10 = [v9 hasAlreadyEnteredPINForSession] ^ 1;
+      v10 = [coordinator hasAlreadyEnteredPINForSession] ^ 1;
     }
 
     else
@@ -709,7 +709,7 @@ LABEL_8:
       v10 = 0;
     }
 
-    if (a4 == 1)
+    if (style == 1)
     {
       if (!v10)
       {
@@ -729,7 +729,7 @@ LABEL_8:
 
     else
     {
-      if (a4 != 2)
+      if (style != 2)
       {
 LABEL_14:
 
@@ -776,33 +776,33 @@ uint64_t __78__STAlwaysAllowListController_tableView_commitEditingStyle_forRowAt
   return result;
 }
 
-- (void)_insertAllowedAppSpecifier:(id)a3
+- (void)_insertAllowedAppSpecifier:(id)specifier
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(STAlwaysAllowListController *)self chooseBundleIDs];
-  v7 = [v6 mutableCopy];
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  chooseBundleIDs = [(STAlwaysAllowListController *)self chooseBundleIDs];
+  v7 = [chooseBundleIDs mutableCopy];
 
-  [v7 removeObject:v5];
+  [v7 removeObject:identifier];
   v30 = v7;
   v8 = [v7 copy];
   [(STAlwaysAllowListController *)self setChooseBundleIDs:v8];
 
-  v9 = [(STAlwaysAllowListController *)self chooseAppsSpecifiers];
-  v10 = [v9 mutableCopy];
+  chooseAppsSpecifiers = [(STAlwaysAllowListController *)self chooseAppsSpecifiers];
+  v10 = [chooseAppsSpecifiers mutableCopy];
 
-  [v10 removeObject:v4];
+  [v10 removeObject:specifierCopy];
   [(STAlwaysAllowListController *)self setChooseAppsSpecifiers:v10];
-  [(STAlwaysAllowListController *)self removeSpecifier:v4 animated:1];
-  v11 = [(STAlwaysAllowListController *)self alwaysAllowList];
-  v12 = [v11 allowedBundleIDs];
-  v13 = [v12 mutableCopy];
+  [(STAlwaysAllowListController *)self removeSpecifier:specifierCopy animated:1];
+  alwaysAllowList = [(STAlwaysAllowListController *)self alwaysAllowList];
+  allowedBundleIDs = [alwaysAllowList allowedBundleIDs];
+  v13 = [allowedBundleIDs mutableCopy];
 
-  [v13 addObject:v5];
+  [v13 addObject:identifier];
   v14 = [v13 copy];
-  v15 = [(STAlwaysAllowListController *)self alwaysAllowList];
-  [v15 setAllowedBundleIDs:v14];
+  alwaysAllowList2 = [(STAlwaysAllowListController *)self alwaysAllowList];
+  [alwaysAllowList2 setAllowedBundleIDs:v14];
 
   [(STAlwaysAllowListController *)self createAllowedAppsSpecifiers];
   v31 = 0u;
@@ -826,8 +826,8 @@ uint64_t __78__STAlwaysAllowListController_tableView_commitEditingStyle_forRowAt
         }
 
         v21 = *(*(&v31 + 1) + 8 * i);
-        v22 = [v21 identifier];
-        v23 = [v22 isEqualToString:v5];
+        identifier2 = [v21 identifier];
+        v23 = [identifier2 isEqualToString:identifier];
 
         if (v23)
         {
@@ -856,10 +856,10 @@ LABEL_11:
     v24 = 0;
   }
 
-  v25 = [(STAlwaysAllowListController *)self allowedAppsSpecifiers];
-  v26 = [v25 mutableCopy];
+  allowedAppsSpecifiers = [(STAlwaysAllowListController *)self allowedAppsSpecifiers];
+  v26 = [allowedAppsSpecifiers mutableCopy];
 
-  [v26 insertObject:v4 atIndex:v24];
+  [v26 insertObject:specifierCopy atIndex:v24];
   [(STAlwaysAllowListController *)self setAllowedAppsSpecifiers:v26];
   if (v24)
   {
@@ -871,19 +871,19 @@ LABEL_11:
     [(STAlwaysAllowListController *)self allowedAppsGroupSpecifier];
   }
   v27 = ;
-  [(STAlwaysAllowListController *)self insertSpecifier:v4 afterSpecifier:v27 animated:1];
+  [(STAlwaysAllowListController *)self insertSpecifier:specifierCopy afterSpecifier:v27 animated:1];
 }
 
-- (void)_removeAllowedAppSpecifier:(id)a3
+- (void)_removeAllowedAppSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"com.apple.MobileSMS"])
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  if ([identifier isEqualToString:@"com.apple.MobileSMS"])
   {
     v6 = +[STScreenTimeSettingsUIBundle bundle];
     v7 = [v6 localizedStringForKey:@"AlwaysAllowRemoveMessagesConfirmTitle" value:&stru_28766E5A8 table:0];
-    v8 = [(STAlwaysAllowListController *)self removeMessagesConfirmationPrompt];
-    v9 = [MEMORY[0x277D75110] alertControllerWithTitle:v7 message:v8 preferredStyle:1];
+    removeMessagesConfirmationPrompt = [(STAlwaysAllowListController *)self removeMessagesConfirmationPrompt];
+    v9 = [MEMORY[0x277D75110] alertControllerWithTitle:v7 message:removeMessagesConfirmationPrompt preferredStyle:1];
     v10 = MEMORY[0x277D750F8];
     v11 = [v6 localizedStringForKey:@"AlwaysAllowRemove" value:&stru_28766E5A8 table:0];
     v16[0] = MEMORY[0x277D85DD0];
@@ -891,8 +891,8 @@ LABEL_11:
     v16[2] = __58__STAlwaysAllowListController__removeAllowedAppSpecifier___block_invoke;
     v16[3] = &unk_279B7CD58;
     v16[4] = self;
-    v17 = v5;
-    v18 = v4;
+    v17 = identifier;
+    v18 = specifierCopy;
     v12 = [v10 actionWithTitle:v11 style:2 handler:v16];
     [v9 addAction:v12];
 
@@ -906,35 +906,35 @@ LABEL_11:
 
   else
   {
-    [(STAlwaysAllowListController *)self removeAllowedIdentifier:v5 withSpecifier:v4];
+    [(STAlwaysAllowListController *)self removeAllowedIdentifier:identifier withSpecifier:specifierCopy];
   }
 }
 
-- (void)removeAllowedIdentifier:(id)a3 withSpecifier:(id)a4
+- (void)removeAllowedIdentifier:(id)identifier withSpecifier:(id)specifier
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STAlwaysAllowListController *)self alwaysAllowList];
-  v9 = [v8 allowedBundleIDs];
-  v10 = [v9 mutableCopy];
+  identifierCopy = identifier;
+  specifierCopy = specifier;
+  alwaysAllowList = [(STAlwaysAllowListController *)self alwaysAllowList];
+  allowedBundleIDs = [alwaysAllowList allowedBundleIDs];
+  v10 = [allowedBundleIDs mutableCopy];
 
-  [v10 removeObject:v6];
+  [v10 removeObject:identifierCopy];
   v32 = v10;
   v11 = [v10 copy];
-  v12 = [(STAlwaysAllowListController *)self alwaysAllowList];
-  [v12 setAllowedBundleIDs:v11];
+  alwaysAllowList2 = [(STAlwaysAllowListController *)self alwaysAllowList];
+  [alwaysAllowList2 setAllowedBundleIDs:v11];
 
-  v13 = [(STAlwaysAllowListController *)self allowedAppsSpecifiers];
-  v14 = [v13 mutableCopy];
+  allowedAppsSpecifiers = [(STAlwaysAllowListController *)self allowedAppsSpecifiers];
+  v14 = [allowedAppsSpecifiers mutableCopy];
 
-  [v14 removeObject:v7];
+  [v14 removeObject:specifierCopy];
   [(STAlwaysAllowListController *)self setAllowedAppsSpecifiers:v14];
-  [(STAlwaysAllowListController *)self removeSpecifier:v7 animated:0];
-  v15 = [(STAlwaysAllowListController *)self chooseBundleIDs];
-  v16 = [v15 mutableCopy];
+  [(STAlwaysAllowListController *)self removeSpecifier:specifierCopy animated:0];
+  chooseBundleIDs = [(STAlwaysAllowListController *)self chooseBundleIDs];
+  v16 = [chooseBundleIDs mutableCopy];
 
-  [v16 addObject:v6];
+  [v16 addObject:identifierCopy];
   v17 = [v16 copy];
   [(STAlwaysAllowListController *)self setChooseBundleIDs:v17];
 
@@ -960,8 +960,8 @@ LABEL_11:
         }
 
         v23 = *(*(&v33 + 1) + 8 * i);
-        v24 = [v23 identifier];
-        v25 = [v24 isEqualToString:v6];
+        identifier = [v23 identifier];
+        v25 = [identifier isEqualToString:identifierCopy];
 
         if (v25)
         {
@@ -990,10 +990,10 @@ LABEL_11:
     v26 = 0;
   }
 
-  v27 = [(STAlwaysAllowListController *)self chooseAppsSpecifiers];
-  v28 = [v27 mutableCopy];
+  chooseAppsSpecifiers = [(STAlwaysAllowListController *)self chooseAppsSpecifiers];
+  v28 = [chooseAppsSpecifiers mutableCopy];
 
-  [v28 insertObject:v7 atIndex:v26];
+  [v28 insertObject:specifierCopy atIndex:v26];
   [(STAlwaysAllowListController *)self setChooseAppsSpecifiers:v28];
   if (v26)
   {
@@ -1005,27 +1005,27 @@ LABEL_11:
     [(STAlwaysAllowListController *)self chooseAppsGroupSpecifier];
   }
   v29 = ;
-  [(STAlwaysAllowListController *)self insertSpecifier:v7 afterSpecifier:v29 animated:1];
+  [(STAlwaysAllowListController *)self insertSpecifier:specifierCopy afterSpecifier:v29 animated:1];
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  v4 = [STScreenTimeSettingsUIBundle bundle:a3];
+  v4 = [STScreenTimeSettingsUIBundle bundle:view];
   v5 = [v4 localizedStringForKey:@"AlwaysAllowRemove" value:&stru_28766E5A8 table:0];
 
   return v5;
 }
 
-- (id)appSpecifiersForBundleIDs:(id)a3
+- (id)appSpecifiersForBundleIDs:(id)ds
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v3;
+  obj = dsCopy;
   v4 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v4)
   {
@@ -1050,8 +1050,8 @@ LABEL_11:
 
         v10 = *(*(&v29 + 1) + 8 * i);
         v11 = [v10 isEqualToString:v7];
-        v12 = [MEMORY[0x277D4B8C0] sharedCache];
-        v13 = [v12 appInfoForBundleIdentifier:v10 localOnly:v11];
+        mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
+        v13 = [mEMORY[0x277D4B8C0] appInfoForBundleIdentifier:v10 localOnly:v11];
 
         if (v11 && [v13 source] != 2)
         {
@@ -1065,8 +1065,8 @@ LABEL_11:
 
         else
         {
-          v14 = [v13 displayName];
-          v15 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v14 target:self set:0 get:0 detail:0 cell:3 edit:objc_opt_class()];
+          displayName = [v13 displayName];
+          v15 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:displayName target:self set:0 get:0 detail:0 cell:3 edit:objc_opt_class()];
           v16 = objc_opt_class();
           v17 = NSStringFromClass(v16);
           [v15 setObject:v17 forKeyedSubscript:v26];

@@ -1,39 +1,39 @@
 @interface NUResponse
 - (NUResponse)init;
-- (NUResponse)initWithError:(id)a3;
-- (NUResponse)initWithResult:(id)a3;
+- (NUResponse)initWithError:(id)error;
+- (NUResponse)initWithResult:(id)result;
 - (id)description;
-- (id)result:(id *)a3;
+- (id)result:(id *)result;
 @end
 
 @implementation NUResponse
 
 - (id)description
 {
-  v3 = [(NUResponse *)self result];
+  result = [(NUResponse *)self result];
 
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  if (v3)
+  if (result)
   {
-    v6 = [(NUResponse *)self result];
-    [v4 stringWithFormat:@"<%@:%p> result=%@", v5, self, v6];
+    result2 = [(NUResponse *)self result];
+    [v4 stringWithFormat:@"<%@:%p> result=%@", v5, self, result2];
   }
 
   else
   {
-    v6 = [(NUResponse *)self error];
-    [v4 stringWithFormat:@"<%@:%p> error=%@", v5, self, v6];
+    result2 = [(NUResponse *)self error];
+    [v4 stringWithFormat:@"<%@:%p> error=%@", v5, self, result2];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)result:(id *)a3
+- (id)result:(id *)result
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!result)
   {
     v7 = NUAssertLogger_7332();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -54,8 +54,8 @@
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v14;
         v25 = 2114;
@@ -66,8 +66,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -76,20 +76,20 @@
     _NUAssertFailHandler("[NUResponse result:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUResponse.m", 39, @"Invalid parameter not satisfying: %s", v19, v20, v21, v22, "error != nil");
   }
 
-  v5 = [(NUResponse *)self result];
-  if (!v5)
+  result = [(NUResponse *)self result];
+  if (!result)
   {
-    *a3 = [(NUResponse *)self error];
+    *result = [(NUResponse *)self error];
   }
 
-  return v5;
+  return result;
 }
 
-- (NUResponse)initWithError:(id)a3
+- (NUResponse)initWithError:(id)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v9 = NUAssertLogger_7332();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -110,8 +110,8 @@
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -122,8 +122,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -132,7 +132,7 @@
     _NUAssertFailHandler("[NUResponse initWithError:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUResponse.m", 31, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "error != nil");
   }
 
-  v5 = v4;
+  v5 = errorCopy;
   v25.receiver = self;
   v25.super_class = NUResponse;
   v6 = [(NUResponse *)&v25 init];
@@ -142,11 +142,11 @@
   return v6;
 }
 
-- (NUResponse)initWithResult:(id)a3
+- (NUResponse)initWithResult:(id)result
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  resultCopy = result;
+  if (!resultCopy)
   {
     v9 = NUAssertLogger_7332();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -167,8 +167,8 @@
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -179,8 +179,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -189,7 +189,7 @@
     _NUAssertFailHandler("[NUResponse initWithResult:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUResponse.m", 24, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "result != nil");
   }
 
-  v5 = v4;
+  v5 = resultCopy;
   v25.receiver = self;
   v25.super_class = NUResponse;
   v6 = [(NUResponse *)&v25 init];
@@ -245,8 +245,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -262,8 +262,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

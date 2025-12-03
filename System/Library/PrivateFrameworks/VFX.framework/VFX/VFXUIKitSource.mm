@@ -23,7 +23,7 @@
     block[1] = 3221225472;
     v5 = sub_1AF28DD50;
     v6 = &unk_1E7A7A770;
-    v7 = self;
+    selfCopy = self;
     if (pthread_main_np() == 1)
     {
       (v5)(block);

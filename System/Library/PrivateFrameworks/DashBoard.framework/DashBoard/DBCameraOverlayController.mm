@@ -1,25 +1,25 @@
 @interface DBCameraOverlayController
 - (CAFCar)car;
 - (_TtC9DashBoard25DBCameraOverlayController)init;
-- (_TtC9DashBoard25DBCameraOverlayController)initWithWindowScene:(id)a3 windowFrame:(CGRect)a4 cameraScene:(id)a5 environment:(id)a6;
-- (void)cameraGeneralService:(id)a3 didUpdateOn:(BOOL)a4;
-- (void)carDidUpdateAccessories:(id)a3;
+- (_TtC9DashBoard25DBCameraOverlayController)initWithWindowScene:(id)scene windowFrame:(CGRect)frame cameraScene:(id)cameraScene environment:(id)environment;
+- (void)cameraGeneralService:(id)service didUpdateOn:(BOOL)on;
+- (void)carDidUpdateAccessories:(id)accessories;
 - (void)invalidate;
-- (void)setCar:(id)a3;
+- (void)setCar:(id)car;
 @end
 
 @implementation DBCameraOverlayController
 
-- (_TtC9DashBoard25DBCameraOverlayController)initWithWindowScene:(id)a3 windowFrame:(CGRect)a4 cameraScene:(id)a5 environment:(id)a6
+- (_TtC9DashBoard25DBCameraOverlayController)initWithWindowScene:(id)scene windowFrame:(CGRect)frame cameraScene:(id)cameraScene environment:(id)environment
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  sceneCopy = scene;
+  cameraSceneCopy = cameraScene;
   swift_unknownObjectRetain();
-  v13 = sub_24831118C(v11, v12, x, y, width, height);
+  v13 = sub_24831118C(sceneCopy, cameraSceneCopy, x, y, width, height);
 
   swift_unknownObjectRelease();
   return v13;
@@ -32,14 +32,14 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCar:(id)a3
+- (void)setCar:(id)car
 {
   v5 = OBJC_IVAR____TtC9DashBoard25DBCameraOverlayController_car;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.isa + v5) = car;
+  carCopy = car;
+  selfCopy = self;
   sub_2483100E4(v6);
 }
 
@@ -52,22 +52,22 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   DBCameraOverlayController.invalidate()();
 }
 
-- (void)cameraGeneralService:(id)a3 didUpdateOn:(BOOL)a4
+- (void)cameraGeneralService:(id)service didUpdateOn:(BOOL)on
 {
-  v6 = a3;
-  v7 = self;
-  DBCameraOverlayController.cameraGeneralService(_:didUpdateOn:)(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  DBCameraOverlayController.cameraGeneralService(_:didUpdateOn:)(serviceCopy, on);
 }
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = self;
-  DBCameraOverlayController.carDidUpdateAccessories(_:)(v4);
+  accessoriesCopy = accessories;
+  selfCopy = self;
+  DBCameraOverlayController.carDidUpdateAccessories(_:)(accessoriesCopy);
 }
 
 @end

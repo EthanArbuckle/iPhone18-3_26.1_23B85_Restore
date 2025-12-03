@@ -1,17 +1,17 @@
 @interface AKTwoPointRectangularTextPointOfInterestHelper
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5;
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6;
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller;
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment;
 @end
 
 @implementation AKTwoPointRectangularTextPointOfInterestHelper
 
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment
 {
-  v8 = a5;
-  v9 = a6;
+  annotationCopy = annotation;
+  alignmentCopy = alignment;
   v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
   v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-  [v8 rectangle];
+  [annotationCopy rectangle];
   x = v65.origin.x;
   y = v65.origin.y;
   width = v65.size.width;
@@ -22,10 +22,10 @@
   v66.size.width = width;
   v66.size.height = height;
   MidY = CGRectGetMidY(v66);
-  v18 = [v8 originalExifOrientation];
-  v19 = [AKGeometryHelper inverseExifOrientation:v18];
+  originalExifOrientation = [annotationCopy originalExifOrientation];
+  v19 = [AKGeometryHelper inverseExifOrientation:originalExifOrientation];
   v64[0] = 0.0;
-  v20 = [AKGeometryHelper annotationHasRotation:v8 outAngle:v64];
+  v20 = [AKGeometryHelper annotationHasRotation:annotationCopy outAngle:v64];
   v21 = *(MEMORY[0x277CBF2C0] + 16);
   v63[0] = *MEMORY[0x277CBF2C0];
   v63[1] = v21;
@@ -47,22 +47,22 @@
     [AKGeometryHelper adjustPoint:v19 forExifOrientation:0.0 aboutCenter:v22, MidX, MidY];
     v24 = v23;
     v26 = v25;
-    v27 = [v9 geometryHelper];
-    [v27 screenPixelAlignedPointForPoint:{v24, v26}];
+    geometryHelper = [alignmentCopy geometryHelper];
+    [geometryHelper screenPixelAlignedPointForPoint:{v24, v26}];
     v29 = v28;
     v31 = v30;
 
-    [AKGeometryHelper adjustPoint:v18 forExifOrientation:v29 aboutCenter:v31, MidX, MidY];
+    [AKGeometryHelper adjustPoint:originalExifOrientation forExifOrientation:v29 aboutCenter:v31, MidX, MidY];
     v61 = v32;
-    [v8 strokeWidth];
-    [AKGeometryHelper renderingStrokeAlignedRectForRect:v9 withStrokeWidth:0 alignToScreenUsingPageController:0 orAlignToContext:x usingAnnotation:y, width, height, v33];
+    [annotationCopy strokeWidth];
+    [AKGeometryHelper renderingStrokeAlignedRectForRect:alignmentCopy withStrokeWidth:0 alignToScreenUsingPageController:0 orAlignToContext:x usingAnnotation:y, width, height, v33];
     x = v34;
     y = v35;
     width = v36;
     height = v37;
   }
 
-  [AKAnnotationRenderer draggingBoundsInsetsForAnnotation:v8];
+  [AKAnnotationRenderer draggingBoundsInsetsForAnnotation:annotationCopy];
   v39 = v38;
   v41 = v40;
   v68.origin.x = x;
@@ -76,8 +76,8 @@
   v45 = v69.size.height;
   if ((v20 & 1) == 0)
   {
-    v46 = [v9 geometryHelper];
-    [v46 screenPixelAlignedRectForRect:{v42, v43, v44, v45}];
+    geometryHelper2 = [alignmentCopy geometryHelper];
+    [geometryHelper2 screenPixelAlignedRectForRect:{v42, v43, v44, v45}];
     v42 = v47;
     v43 = v48;
     v44 = v49;
@@ -95,7 +95,7 @@
   v71.size.width = v53;
   v71.size.height = v54;
   MaxX = CGRectGetMaxX(v71);
-  if ([v8 conformsToAKTextAnnotationProtocol] && objc_msgSend(v8, "textIsClipped"))
+  if ([annotationCopy conformsToAKTextAnnotationProtocol] && objc_msgSend(annotationCopy, "textIsClipped"))
   {
     v72.origin.x = v51;
     v72.origin.y = v52;
@@ -107,22 +107,22 @@
     v73.size.width = v53;
     v73.size.height = v54;
     MinY = CGRectGetMinY(v73);
-    sub_23F41C094(2, v18, v9, v20, v63, v10, v11, v60, MinY, MidX, MidY);
+    sub_23F41C094(2, originalExifOrientation, alignmentCopy, v20, v63, v10, v11, v60, MinY, MidX, MidY);
   }
 
-  sub_23F41C094(0, v18, v9, v20, v63, v10, v11, MaxX, v61, MidX, MidY);
-  sub_23F41C094(0, v18, v9, v20, v63, v10, v11, MinX, v61, MidX, MidY);
+  sub_23F41C094(0, originalExifOrientation, alignmentCopy, v20, v63, v10, v11, MaxX, v61, MidX, MidY);
+  sub_23F41C094(0, originalExifOrientation, alignmentCopy, v20, v63, v10, v11, MinX, v61, MidX, MidY);
   v58 = v10;
-  *a3 = v10;
+  *interest = v10;
   v59 = v11;
-  *a4 = v11;
+  *style = v11;
 }
 
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller
 {
-  if (a3)
+  if (index)
   {
-    v6 = 8 * (a3 == 1);
+    v6 = 8 * (index == 1);
   }
 
   else
@@ -130,13 +130,13 @@
     v6 = 4;
   }
 
-  v7 = a5;
-  v8 = [a4 originalExifOrientation];
-  v9 = [v7 currentModelToScreenExifOrientation];
+  controllerCopy = controller;
+  originalExifOrientation = [annotation originalExifOrientation];
+  currentModelToScreenExifOrientation = [controllerCopy currentModelToScreenExifOrientation];
 
-  v10 = [AKGeometryHelper draggableArea:v6 convertedForExif:v8];
+  v10 = [AKGeometryHelper draggableArea:v6 convertedForExif:originalExifOrientation];
 
-  return [AKGeometryHelper draggableArea:v10 convertedForExif:v9];
+  return [AKGeometryHelper draggableArea:v10 convertedForExif:currentModelToScreenExifOrientation];
 }
 
 @end

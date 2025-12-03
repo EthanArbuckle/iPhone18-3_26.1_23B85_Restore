@@ -8,7 +8,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11NotesEditor32iOSLinkAcceleratorViewController_kvoToken);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     v5 = v3;
@@ -22,7 +22,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21534DC7C();
 }
 

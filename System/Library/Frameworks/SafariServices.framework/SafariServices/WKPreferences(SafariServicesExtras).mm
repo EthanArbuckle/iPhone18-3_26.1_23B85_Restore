@@ -6,8 +6,8 @@
 
 - (void)sf_applySafariStorageBlockingPolicy
 {
-  v4 = [MEMORY[0x1E695AC00] sharedHTTPCookieStorage];
-  v2 = [v4 cookieAcceptPolicy] - 1;
+  mEMORY[0x1E695AC00] = [MEMORY[0x1E695AC00] sharedHTTPCookieStorage];
+  v2 = [mEMORY[0x1E695AC00] cookieAcceptPolicy] - 1;
   if (v2 > 2)
   {
     v3 = 0;
@@ -18,7 +18,7 @@
     v3 = qword_1D47DE720[v2];
   }
 
-  [a1 _setStorageBlockingPolicy:v3];
+  [self _setStorageBlockingPolicy:v3];
 }
 
 @end

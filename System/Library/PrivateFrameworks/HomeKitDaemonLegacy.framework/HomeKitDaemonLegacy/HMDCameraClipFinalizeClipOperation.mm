@@ -10,13 +10,13 @@
   v10.receiver = self;
   v10.super_class = HMDCameraClipFinalizeClipOperation;
   [(HMDCameraClipOperation *)&v10 main];
-  v3 = [(HMDCameraClipOperation *)self fetchClipModel];
+  fetchClipModel = [(HMDCameraClipOperation *)self fetchClipModel];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__HMDCameraClipFinalizeClipOperation_main__block_invoke;
   v9[3] = &unk_2797278A0;
   v9[4] = self;
-  v4 = [v3 flatMap:v9];
+  v4 = [fetchClipModel flatMap:v9];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__HMDCameraClipFinalizeClipOperation_main__block_invoke_3;

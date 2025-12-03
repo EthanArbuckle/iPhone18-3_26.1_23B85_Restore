@@ -1,20 +1,20 @@
 @interface THReflowableContentPaginationOperation
-- (CGPoint)canvasOriginForPageController:(id)a3;
-- (CGSize)pageSizeForPagePositionController:(id)a3;
-- (THReflowableContentPaginationOperation)initWithContentNode:(id)a3 paginationResults:(id)a4 flowModelContentNodeBody:(id)a5 presentationType:(id)a6 documentRoot:(id)a7 isForegroundPagination:(BOOL)a8 delegate:(id)a9;
-- (id)bodyStorageForPageController:(id)a3 presentationType:(id)a4;
+- (CGPoint)canvasOriginForPageController:(id)controller;
+- (CGSize)pageSizeForPagePositionController:(id)controller;
+- (THReflowableContentPaginationOperation)initWithContentNode:(id)node paginationResults:(id)results flowModelContentNodeBody:(id)body presentationType:(id)type documentRoot:(id)root isForegroundPagination:(BOOL)pagination delegate:(id)delegate;
+- (id)bodyStorageForPageController:(id)controller presentationType:(id)type;
 - (id)p_addPageToContentBody;
-- (id)pageInfoForPageController:(id)a3 pageIndex:(unint64_t)a4 presentationType:(id)a5;
-- (unint64_t)pageCountForPageController:(id)a3 presentationType:(id)a4;
+- (id)pageInfoForPageController:(id)controller pageIndex:(unint64_t)index presentationType:(id)type;
+- (unint64_t)pageCountForPageController:(id)controller presentationType:(id)type;
 - (void)cancel;
 - (void)dealloc;
 - (void)main;
-- (void)p_accumulateStorageUIDsForChildrenInObject:(id)a3 forRelativePageIndex:(unint64_t)a4;
+- (void)p_accumulateStorageUIDsForChildrenInObject:(id)object forRelativePageIndex:(unint64_t)index;
 @end
 
 @implementation THReflowableContentPaginationOperation
 
-- (THReflowableContentPaginationOperation)initWithContentNode:(id)a3 paginationResults:(id)a4 flowModelContentNodeBody:(id)a5 presentationType:(id)a6 documentRoot:(id)a7 isForegroundPagination:(BOOL)a8 delegate:(id)a9
+- (THReflowableContentPaginationOperation)initWithContentNode:(id)node paginationResults:(id)results flowModelContentNodeBody:(id)body presentationType:(id)type documentRoot:(id)root isForegroundPagination:(BOOL)pagination delegate:(id)delegate
 {
   v18.receiver = self;
   v18.super_class = THReflowableContentPaginationOperation;
@@ -22,13 +22,13 @@
   v16 = v15;
   if (v15)
   {
-    v15->_contentNode = a3;
-    v15->_documentRoot = a7;
-    v16->_flowModelContentNodeBody = a5;
-    v16->_presentationType = [a6 copyFixingSize];
-    v16->_paginationResults = a4;
-    v16->_isForegroundPagination = a8;
-    v16->_delegate = a9;
+    v15->_contentNode = node;
+    v15->_documentRoot = root;
+    v16->_flowModelContentNodeBody = body;
+    v16->_presentationType = [type copyFixingSize];
+    v16->_paginationResults = results;
+    v16->_isForegroundPagination = pagination;
+    v16->_delegate = delegate;
   }
 
   return v16;
@@ -59,14 +59,14 @@
   [(THPaginatedPageController *)self->_pageController teardown];
 }
 
-- (void)p_accumulateStorageUIDsForChildrenInObject:(id)a3 forRelativePageIndex:(unint64_t)a4
+- (void)p_accumulateStorageUIDsForChildrenInObject:(id)object forRelativePageIndex:(unint64_t)index
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 childEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  childEnumerator = [object childEnumerator];
+  v7 = [childEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -78,7 +78,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childEnumerator);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -86,19 +86,19 @@
         v12 = TSUDynamicCast();
         if (v12)
         {
-          -[THModelContentNodeReflowablePaginationResults assignRelativePageIndex:toStorageUID:](-[THReflowableContentPaginationOperation paginationResults](self, "paginationResults"), "assignRelativePageIndex:toStorageUID:", a4, -[THModelContentNodeBody nodeUniqueIDForInfo:](-[THReflowableContentPaginationOperation flowModelContentNodeBody](self, "flowModelContentNodeBody"), "nodeUniqueIDForInfo:", [v12 containedStorage]));
+          -[THModelContentNodeReflowablePaginationResults assignRelativePageIndex:toStorageUID:](-[THReflowableContentPaginationOperation paginationResults](self, "paginationResults"), "assignRelativePageIndex:toStorageUID:", index, -[THModelContentNodeBody nodeUniqueIDForInfo:](-[THReflowableContentPaginationOperation flowModelContentNodeBody](self, "flowModelContentNodeBody"), "nodeUniqueIDForInfo:", [v12 containedStorage]));
         }
 
         else if (objc_opt_respondsToSelector())
         {
-          [(THReflowableContentPaginationOperation *)self p_accumulateStorageUIDsForChildrenInObject:v11 forRelativePageIndex:a4];
+          [(THReflowableContentPaginationOperation *)self p_accumulateStorageUIDsForChildrenInObject:v11 forRelativePageIndex:index];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [childEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -121,8 +121,8 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v4 = [(THModelContentNodeBody *)self->_flowModelContentNodeBody infos];
-    v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    infos = [(THModelContentNodeBody *)self->_flowModelContentNodeBody infos];
+    v5 = [infos countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v5)
     {
       v6 = v5;
@@ -134,7 +134,7 @@
         {
           if (*v21 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(infos);
           }
 
           [(THModelContentNodeBody *)self->_paginatedModelContentNodeBody setNodeUniqueID:[(THModelContentNodeBody *)self->_flowModelContentNodeBody nodeUniqueIDForInfo:*(*(&v20 + 1) + 8 * v8)] forInfo:*(*(&v20 + 1) + 8 * v8)];
@@ -142,7 +142,7 @@
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v6 = [infos countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v6);
@@ -155,11 +155,11 @@
         v9 = 0;
         do
         {
-          v10 = [(THReflowableContentPaginationOperation *)self p_addPageToContentBody];
+          p_addPageToContentBody = [(THReflowableContentPaginationOperation *)self p_addPageToContentBody];
           v11 = [(THModelContentNodeReflowablePaginationResults *)[(THReflowableContentPaginationOperation *)self paginationResults] hintRangeForRelativePageIndex:v9];
           v13 = v12;
-          [v10 setPageStartCharIndex:v11];
-          [v10 setPageEndCharIndex:&v11[v13]];
+          [p_addPageToContentBody setPageStartCharIndex:v11];
+          [p_addPageToContentBody setPageEndCharIndex:&v11[v13]];
           ++v9;
         }
 
@@ -183,15 +183,15 @@
       {
         [(THModelContentNodeReflowablePaginationResults *)[(THReflowableContentPaginationOperation *)self paginationResults] setPageHints:[(NSArray *)[(THPageHintController *)[(THPaginatedPageController *)[(THReflowableContentPaginationOperation *)self pageController] pageHints] pageHints] mutableCopy]];
         [(THModelContentNodeReflowablePaginationResults *)[(THReflowableContentPaginationOperation *)self paginationResults] setBodyStorageUID:[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] nodeUniqueIDForInfo:[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] bodyStorage]]];
-        v15 = [(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] bodyStorage];
+        bodyStorage = [(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] bodyStorage];
         v16 = objc_opt_class();
-        v17 = [(THWPStorage *)v15 range];
+        range = [(THWPStorage *)bodyStorage range];
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;
         v19[2] = sub_49930;
         v19[3] = &unk_45BA80;
         v19[4] = self;
-        [(THWPStorage *)v15 enumerateAttachmentsOfClass:v16 inTextRange:v17 usingBlock:v18, v19];
+        [(THWPStorage *)bodyStorage enumerateAttachmentsOfClass:v16 inTextRange:range usingBlock:v18, v19];
       }
     }
   }
@@ -207,8 +207,8 @@
 
 - (id)p_addPageToContentBody
 {
-  v3 = [(THWGutterDrawableStorage *)[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] gutterDrawableStorage] context];
-  v4 = [[THModelPageInfo alloc] initWithContext:v3];
+  context = [(THWGutterDrawableStorage *)[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] gutterDrawableStorage] context];
+  v4 = [[THModelPageInfo alloc] initWithContext:context];
   v5 = [TSDInfoGeometry alloc];
   [(THPresentationType *)[(THReflowableContentPaginationOperation *)self presentationType] pageSize];
   v6 = [v5 initWithSize:?];
@@ -222,48 +222,48 @@
   [(THPresentationType *)[(THReflowableContentPaginationOperation *)self presentationType] contentInsets];
   v15 = v9 - (v13 + v14);
   v17 = [[TSDInfoGeometry alloc] initWithPosition:CGPointZero.x + v13 size:{y + v12, v15, v11 - (v12 + v16)}];
-  v18 = [[THModelBodyTextInfo alloc] initWithContext:v3 geometry:v17];
+  v18 = [[THModelBodyTextInfo alloc] initWithContext:context geometry:v17];
 
   v19 = [[TSSPropertyMap alloc] initWithCapacity:3];
   [v19 setObject:+[TSWPPadding padding](TSWPPadding forProperty:{"padding"), 145}];
-  v20 = [(THPresentationType *)[(THReflowableContentPaginationOperation *)self presentationType] columnCount];
-  if (v20 < 2)
+  columnCount = [(THPresentationType *)[(THReflowableContentPaginationOperation *)self presentationType] columnCount];
+  if (columnCount < 2)
   {
     [v19 setObject:+[TSWPColumns columns](TSWPColumns forProperty:{"columns"), 148}];
   }
 
   else
   {
-    v21 = v20;
+    v21 = columnCount;
     [(THPresentationType *)[(THReflowableContentPaginationOperation *)self presentationType] gutterWidth];
     v23 = [[TSWPColumns alloc] initWithEqualColumnCount:v21 gapFraction:v22 / v15];
     [v19 setObject:v23 forProperty:148];
   }
 
-  v24 = [[TSWPColumnStyle alloc] initWithContext:v3 name:0 overridePropertyMap:v19 isVariation:0];
+  v24 = [[TSWPColumnStyle alloc] initWithContext:context name:0 overridePropertyMap:v19 isVariation:0];
   [(THModelBodyTextInfo *)v18 setColumnStyle:v24];
 
   [(THModelBodyTextInfo *)v18 setExteriorTextWrap:+[TSDExteriorTextWrap exteriorTextWrap]];
   [(THModelPageInfo *)v4 addBodyBoxInfo:v18 insertContext:0];
-  v25 = [(THModelPageInfo *)v4 drawablesZOrder];
-  [(THDrawablesZOrder *)v25 addDrawable:[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] bodyStorage]];
-  [(THDrawablesZOrder *)v25 addDrawable:v18];
+  drawablesZOrder = [(THModelPageInfo *)v4 drawablesZOrder];
+  [(THDrawablesZOrder *)drawablesZOrder addDrawable:[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] bodyStorage]];
+  [(THDrawablesZOrder *)drawablesZOrder addDrawable:v18];
   [(THModelPageInfo *)v4 setParent:[(THReflowableContentPaginationOperation *)self contentNode]];
 
   return v4;
 }
 
-- (CGSize)pageSizeForPagePositionController:(id)a3
+- (CGSize)pageSizeForPagePositionController:(id)controller
 {
-  v3 = [(THReflowableContentPaginationOperation *)self presentationType];
+  presentationType = [(THReflowableContentPaginationOperation *)self presentationType];
 
-  [(THPresentationType *)v3 pageSize];
+  [(THPresentationType *)presentationType pageSize];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGPoint)canvasOriginForPageController:(id)a3
+- (CGPoint)canvasOriginForPageController:(id)controller
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -272,9 +272,9 @@
   return result;
 }
 
-- (unint64_t)pageCountForPageController:(id)a3 presentationType:(id)a4
+- (unint64_t)pageCountForPageController:(id)controller presentationType:(id)type
 {
-  v5 = [(NSArray *)[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody:a3] pages] count];
+  v5 = [(NSArray *)[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody:controller] pages] count];
   if (([(THReflowableContentPaginationOperation *)self isCancelled]& 1) == 0)
   {
     if (v5)
@@ -286,10 +286,10 @@
         v8 = v7;
         if (v7 != +[NSNull null])
         {
-          v9 = [(THWPStorage *)[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] bodyStorage] range];
-          v11 = &v9[v10];
-          v12 = [(NSNull *)v8 range];
-          if (v11 <= &v12[v13])
+          range = [(THWPStorage *)[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] bodyStorage] range];
+          v11 = &range[v10];
+          range2 = [(NSNull *)v8 range];
+          if (v11 <= &range2[v13])
           {
             v6 = v5;
           }
@@ -318,24 +318,24 @@
   return v5;
 }
 
-- (id)bodyStorageForPageController:(id)a3 presentationType:(id)a4
+- (id)bodyStorageForPageController:(id)controller presentationType:(id)type
 {
-  v4 = [(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody:a3];
+  v4 = [(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody:controller];
 
   return [(THModelContentNodeBody *)v4 bodyStorage];
 }
 
-- (id)pageInfoForPageController:(id)a3 pageIndex:(unint64_t)a4 presentationType:(id)a5
+- (id)pageInfoForPageController:(id)controller pageIndex:(unint64_t)index presentationType:(id)type
 {
-  if ([(THReflowableContentPaginationOperation *)self pageController:a3]!= a3)
+  if ([(THReflowableContentPaginationOperation *)self pageController:controller]!= controller)
   {
     return 0;
   }
 
-  if ([(NSArray *)[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] pages] count]<= a4 || ![(NSArray *)[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] pages] objectAtIndex:a4])
+  if ([(NSArray *)[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] pages] count]<= index || ![(NSArray *)[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] pages] objectAtIndex:index])
   {
     v8 = [(NSArray *)[(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] pages] count];
-    if (v8 <= a4)
+    if (v8 <= index)
     {
       v9 = v8;
       do
@@ -344,13 +344,13 @@
         ++v9;
       }
 
-      while (v9 <= a4);
+      while (v9 <= index);
     }
   }
 
-  v10 = [(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] pages];
+  pages = [(THModelContentNodeBody *)[(THReflowableContentPaginationOperation *)self paginatedModelContentNodeBody] pages];
 
-  return [(NSArray *)v10 objectAtIndex:a4];
+  return [(NSArray *)pages objectAtIndex:index];
 }
 
 @end

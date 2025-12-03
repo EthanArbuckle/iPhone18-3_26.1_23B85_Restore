@@ -1,14 +1,14 @@
 @interface _DKResourceIdentifier
-+ (id)withResource:(id)a3;
++ (id)withResource:(id)resource;
 @end
 
 @implementation _DKResourceIdentifier
 
-+ (id)withResource:(id)a3
++ (id)withResource:(id)resource
 {
-  v4 = a3;
-  v5 = [a1 type];
-  v6 = [_DKIdentifier identifierWithString:v4 type:v5];
+  resourceCopy = resource;
+  type = [self type];
+  v6 = [_DKIdentifier identifierWithString:resourceCopy type:type];
 
   return v6;
 }

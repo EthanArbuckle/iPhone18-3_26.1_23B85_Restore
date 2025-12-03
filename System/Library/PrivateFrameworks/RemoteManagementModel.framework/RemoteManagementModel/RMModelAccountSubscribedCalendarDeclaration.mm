@@ -1,12 +1,12 @@
 @interface RMModelAccountSubscribedCalendarDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 calendarURL:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 visibleName:(id)a4 calendarURL:(id)a5 authenticationCredentialsAssetReference:(id)a6;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier calendarURL:(id)l;
++ (id)buildWithIdentifier:(id)identifier visibleName:(id)name calendarURL:(id)l authenticationCredentialsAssetReference:(id)reference;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAccountSubscribedCalendarDeclaration
@@ -50,55 +50,55 @@ void __62__RMModelAccountSubscribedCalendarDeclaration_assetReferences__block_in
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 visibleName:(id)a4 calendarURL:(id)a5 authenticationCredentialsAssetReference:(id)a6
++ (id)buildWithIdentifier:(id)identifier visibleName:(id)name calendarURL:(id)l authenticationCredentialsAssetReference:(id)reference
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  identifierCopy = identifier;
+  referenceCopy = reference;
+  lCopy = l;
+  nameCopy = name;
   v13 = objc_opt_new();
   [v13 setDeclarationType:@"com.apple.configuration.account.subscribed-calendar"];
-  if (v9)
+  if (identifierCopy)
   {
-    [v13 setDeclarationIdentifier:v9];
+    [v13 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
-    [v13 setDeclarationIdentifier:v15];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v13 setDeclarationIdentifier:uUIDString];
   }
 
-  [v13 setPayloadVisibleName:v12];
+  [v13 setPayloadVisibleName:nameCopy];
 
-  [v13 setPayloadCalendarURL:v11];
-  [v13 setPayloadAuthenticationCredentialsAssetReference:v10];
+  [v13 setPayloadCalendarURL:lCopy];
+  [v13 setPayloadAuthenticationCredentialsAssetReference:referenceCopy];
 
   [v13 updateServerToken];
 
   return v13;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 calendarURL:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier calendarURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.account.subscribed-calendar"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadCalendarURL:v6];
+  [v7 setPayloadCalendarURL:lCopy];
 
   [v7 updateServerToken];
 
@@ -143,12 +143,12 @@ void __62__RMModelAccountSubscribedCalendarDeclaration_assetReferences__block_in
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAccountSubscribedCalendarDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -156,32 +156,32 @@ void __62__RMModelAccountSubscribedCalendarDeclaration_assetReferences__block_in
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"CalendarURL" forKeyPath:@"payloadCalendarURL" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"AuthenticationCredentialsAssetReference" forKeyPath:@"payloadAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"CalendarURL" forKeyPath:@"payloadCalendarURL" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"AuthenticationCredentialsAssetReference" forKeyPath:@"payloadAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAccountSubscribedCalendarDeclaration *)self payloadVisibleName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"VisibleName" value:v5 isRequired:0 defaultValue:0];
+  payloadVisibleName = [(RMModelAccountSubscribedCalendarDeclaration *)self payloadVisibleName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"VisibleName" value:payloadVisibleName isRequired:0 defaultValue:0];
 
-  v6 = [(RMModelAccountSubscribedCalendarDeclaration *)self payloadCalendarURL];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"CalendarURL" value:v6 isRequired:1 defaultValue:0];
+  payloadCalendarURL = [(RMModelAccountSubscribedCalendarDeclaration *)self payloadCalendarURL];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"CalendarURL" value:payloadCalendarURL isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelAccountSubscribedCalendarDeclaration *)self payloadAuthenticationCredentialsAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AuthenticationCredentialsAssetReference" value:v7 isRequired:0 defaultValue:0];
+  payloadAuthenticationCredentialsAssetReference = [(RMModelAccountSubscribedCalendarDeclaration *)self payloadAuthenticationCredentialsAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AuthenticationCredentialsAssetReference" value:payloadAuthenticationCredentialsAssetReference isRequired:0 defaultValue:0];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelAccountSubscribedCalendarDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v12 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadVisibleName copy];
   v6 = v4[6];
   v4[6] = v5;

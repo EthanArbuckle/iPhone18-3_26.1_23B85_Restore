@@ -1,20 +1,20 @@
 @interface WBSChromeHistoryImporterDelegateProxy
-- (WBSChromeHistoryImporterDelegateProxy)initWithDelegate:(id)a3;
-- (void)finishWithCompletionHandler:(id)a3;
+- (WBSChromeHistoryImporterDelegateProxy)initWithDelegate:(id)delegate;
+- (void)finishWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSChromeHistoryImporterDelegateProxy
 
-- (WBSChromeHistoryImporterDelegateProxy)initWithDelegate:(id)a3
+- (WBSChromeHistoryImporterDelegateProxy)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = WBSChromeHistoryImporterDelegateProxy;
   v6 = [(WBSChromeHistoryImporterDelegateProxy *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v8 = [MEMORY[0x1E695DFA8] set];
     uniqueHighLevelDomains = v7->_uniqueHighLevelDomains;
     v7->_uniqueHighLevelDomains = v8;
@@ -35,13 +35,13 @@ void __219__WBSChromeHistoryImporterDelegateProxy_addVisitWithURLString_visitTim
   }
 }
 
-- (void)finishWithCompletionHandler:(id)a3
+- (void)finishWithCompletionHandler:(id)handler
 {
   uniqueHighLevelDomains = self->_uniqueHighLevelDomains;
-  v5 = a3;
+  handlerCopy = handler;
   self->_numberOfVisitImported = [(NSMutableSet *)uniqueHighLevelDomains count];
-  v6 = [(WBSHistoryImporterDelegate *)self->_delegate remoteObjectProxyWithErrorHandler:v5];
-  [v6 finishWithCompletionHandler:v5];
+  v6 = [(WBSHistoryImporterDelegate *)self->_delegate remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v6 finishWithCompletionHandler:handlerCopy];
 }
 
 void __219__WBSChromeHistoryImporterDelegateProxy_addVisitWithURLString_visitTime_title_loadSuccessful_httpGet_redirectSourceURLString_redirectSourceVisitTime_redirectDestinationURLString_redirectDestinationVisitTime_visitCount___block_invoke_cold_1(void *a1, void *a2)

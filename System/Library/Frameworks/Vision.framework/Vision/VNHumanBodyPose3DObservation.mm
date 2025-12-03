@@ -11,7 +11,7 @@
 - (float)bodyHeight;
 - (id)debugQuickLookObject;
 - (simd_float4x4)cameraOriginMatrix;
-- (void)_addAllJointsToPath:(double)a3 imageSize:(double)a4;
+- (void)_addAllJointsToPath:(double)path imageSize:(double)size;
 @end
 
 @implementation VNHumanBodyPose3DObservation
@@ -25,11 +25,11 @@
     v4 = Mutable;
     v12.receiver = self;
     v12.super_class = VNHumanBodyPose3DObservation;
-    v5 = [(VNObservation *)&v12 debugQuickLookObject];
-    v6 = v5;
-    if (v5)
+    debugQuickLookObject = [(VNObservation *)&v12 debugQuickLookObject];
+    v6 = debugQuickLookObject;
+    if (debugQuickLookObject)
     {
-      v7 = VNDebugImageSizeFromObject(v5);
+      v7 = VNDebugImageSizeFromObject(debugQuickLookObject);
       [(VNHumanBodyPose3DObservation *)self _addAllJointsToPath:v4 imageSize:v7, v8];
       v13[0] = xmmword_1A6052420;
       v13[1] = unk_1A6052430;
@@ -55,12 +55,12 @@
   return v10;
 }
 
-- (void)_addAllJointsToPath:(double)a3 imageSize:(double)a4
+- (void)_addAllJointsToPath:(double)path imageSize:(double)size
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [a1 availableJointNames];
+    [self availableJointNames];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -69,8 +69,8 @@
     if (v9)
     {
       v10 = 0;
-      v11 = 7.0 / a3;
-      v12 = 7.0 / a4;
+      v11 = 7.0 / path;
+      v12 = 7.0 / size;
       v13 = *v23;
       do
       {
@@ -85,7 +85,7 @@
 
           v16 = *(*(&v22 + 1) + 8 * v14);
           v21 = v15;
-          v17 = [a1 pointInImageForJointName:v16 error:&v21];
+          v17 = [self pointInImageForJointName:v16 error:&v21];
           v10 = v21;
 
           [v17 location];
@@ -112,8 +112,8 @@
 
 - (VNHumanBodyPose3DObservationHeightEstimation)heightEstimation
 {
-  v2 = [(VNRecognizedPoints3DObservation *)self recognizedPointsSpecifier];
-  [v2 heightEstimatedScale];
+  recognizedPointsSpecifier = [(VNRecognizedPoints3DObservation *)self recognizedPointsSpecifier];
+  [recognizedPointsSpecifier heightEstimatedScale];
   v4 = (v3 != -1.0);
 
   return v4;
@@ -121,8 +121,8 @@
 
 - (CGSize)_inputSize
 {
-  v2 = [(VNRecognizedPoints3DObservation *)self recognizedPointsSpecifier];
-  [v2 inputSize];
+  recognizedPointsSpecifier = [(VNRecognizedPoints3DObservation *)self recognizedPointsSpecifier];
+  [recognizedPointsSpecifier inputSize];
   v4 = v3;
   v6 = v5;
 
@@ -135,8 +135,8 @@
 
 - (__n128)_cameraIntrinsics
 {
-  v1 = [a1 recognizedPointsSpecifier];
-  [v1 cameraIntrinsics];
+  recognizedPointsSpecifier = [self recognizedPointsSpecifier];
+  [recognizedPointsSpecifier cameraIntrinsics];
   v4 = v2;
 
   return v4;
@@ -144,8 +144,8 @@
 
 - (__n128)_cameraRootTransform
 {
-  v1 = [a1 recognizedPointsSpecifier];
-  [v1 cameraTransformMatrix];
+  recognizedPointsSpecifier = [self recognizedPointsSpecifier];
+  [recognizedPointsSpecifier cameraTransformMatrix];
   v4 = v2;
 
   return v4;
@@ -153,8 +153,8 @@
 
 - (simd_float4x4)cameraOriginMatrix
 {
-  v2 = [(VNRecognizedPoints3DObservation *)self recognizedPointsSpecifier];
-  [v2 cameraRenderTransformMatrix];
+  recognizedPointsSpecifier = [(VNRecognizedPoints3DObservation *)self recognizedPointsSpecifier];
+  [recognizedPointsSpecifier cameraRenderTransformMatrix];
   v14 = v3;
   v12 = v5;
   v13 = v4;
@@ -173,8 +173,8 @@
 
 - (float)bodyHeight
 {
-  v2 = [(VNRecognizedPoints3DObservation *)self recognizedPointsSpecifier];
-  [v2 bodyHeight];
+  recognizedPointsSpecifier = [(VNRecognizedPoints3DObservation *)self recognizedPointsSpecifier];
+  [recognizedPointsSpecifier bodyHeight];
   v4 = v3;
 
   return v4;
@@ -189,8 +189,8 @@
     [v5 position];
     if (self)
     {
-      v7 = [(VNRecognizedPoints3DObservation *)self recognizedPointsSpecifier];
-      [v7 cameraIntrinsics];
+      recognizedPointsSpecifier = [(VNRecognizedPoints3DObservation *)self recognizedPointsSpecifier];
+      [recognizedPointsSpecifier cameraIntrinsics];
       v17 = v9;
       v18 = v8;
       v16 = v10;
@@ -259,9 +259,9 @@
 - (VNHumanBodyPose3DObservationJointName)parentJointNameForJointName:(VNHumanBodyPose3DObservationJointName)jointName
 {
   v3 = [(VNRecognizedPoints3DObservation *)self recognizedPointForKey:jointName error:0];
-  v4 = [v3 parentJoint];
+  parentJoint = [v3 parentJoint];
 
-  return v4;
+  return parentJoint;
 }
 
 - (NSDictionary)recognizedPointsForJointsGroupName:(VNHumanBodyPose3DObservationJointsGroupName)jointsGroupName error:(NSError *)error

@@ -1,19 +1,19 @@
 @interface AXHearingProgramCell
-- (AXHearingProgramCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AXHearingProgramCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setChecked:(BOOL)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setChecked:(BOOL)checked;
 @end
 
 @implementation AXHearingProgramCell
 
-- (AXHearingProgramCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXHearingProgramCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = AXHearingProgramCell;
-  v4 = [(AXHearingProgramCell *)&v7 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(AXHearingProgramCell *)&v7 initWithStyle:3 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -31,16 +31,16 @@
   [(AXHearingProgramCell *)&v3 dealloc];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = AXHearingProgramCell;
-  v4 = a3;
-  [(AXHearingProgramCell *)&v6 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 userInfo];
+  specifierCopy = specifier;
+  [(AXHearingProgramCell *)&v6 refreshCellContentsWithSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
 
-  self->_showStreamingIcon = [v5 isStreamOrMixingStream];
-  -[AXHearingProgramCell setChecked:](self, "setChecked:", [v5 isSelected]);
+  self->_showStreamingIcon = [userInfo isStreamOrMixingStream];
+  -[AXHearingProgramCell setChecked:](self, "setChecked:", [userInfo isSelected]);
 }
 
 - (void)prepareForReuse
@@ -58,12 +58,12 @@
   }
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  if (self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__checked] != a3)
+  if (self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__checked] != checked)
   {
-    self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__checked] = a3;
-    if (a3)
+    self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__checked] = checked;
+    if (checked)
     {
       if (self->_showStreamingIcon)
       {
@@ -96,8 +96,8 @@
         [(UIImageView *)v15 setTintColor:v16];
       }
 
-      v17 = [(AXHearingProgramCell *)self contentView];
-      [v17 addSubview:self->_checkedView];
+      contentView = [(AXHearingProgramCell *)self contentView];
+      [contentView addSubview:self->_checkedView];
 
       [(AXHearingProgramCell *)self setNeedsLayout];
     }
@@ -122,15 +122,15 @@
     [(UIImageView *)checkedView frame];
     v5 = v4;
     v7 = v6;
-    v8 = [(AXHearingProgramCell *)self contentView];
-    [v8 frame];
+    contentView = [(AXHearingProgramCell *)self contentView];
+    [contentView frame];
     v10 = floor(v9 * 0.5);
     v11 = floor(v7 * 0.5);
     v12 = (v10 - v11);
 
-    v13 = [UIApp userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
     v14 = 10.0;
-    if (!v13)
+    if (!userInterfaceLayoutDirection)
     {
       [(AXHearingProgramCell *)self bounds];
       v14 = v15 - v5 + -10.0;
@@ -139,14 +139,14 @@
     [(UIImageView *)self->_checkedView setFrame:v14, v12, v5, v7];
   }
 
-  v16 = [(AXHearingProgramCell *)self titleLabel];
-  [v16 frame];
+  titleLabel = [(AXHearingProgramCell *)self titleLabel];
+  [titleLabel frame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  v23 = [(AXHearingProgramCell *)self contentView];
-  [v23 frame];
+  contentView2 = [(AXHearingProgramCell *)self contentView];
+  [contentView2 frame];
   v25 = v24;
   [(UIImageView *)self->_checkedView frame];
   v27 = v25 - v26 + -30.0;
@@ -157,8 +157,8 @@
     v18 = v28 - v27 + -14.0 + -10.0;
   }
 
-  v29 = [(AXHearingProgramCell *)self titleLabel];
-  [v29 setFrame:{v18, v20, v27, v22}];
+  titleLabel2 = [(AXHearingProgramCell *)self titleLabel];
+  [titleLabel2 setFrame:{v18, v20, v27, v22}];
 }
 
 @end

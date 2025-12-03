@@ -1,6 +1,6 @@
 @interface OADShapeProperties
 + (id)defaultProperties;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -26,19 +26,19 @@
   return [(OADGraphicProperties *)&v4 hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v6 = v4;
+    v6 = equalCopy;
     v7 = [(OADShapeProperties *)self hash];
     if (v7 == [v6 hash])
     {
-      v8 = [v6 isTextBox];
-      if (v8 == [(OADShapeProperties *)self isTextBox])
+      isTextBox = [v6 isTextBox];
+      if (isTextBox == [(OADShapeProperties *)self isTextBox])
       {
         v10.receiver = self;
         v10.super_class = OADShapeProperties;

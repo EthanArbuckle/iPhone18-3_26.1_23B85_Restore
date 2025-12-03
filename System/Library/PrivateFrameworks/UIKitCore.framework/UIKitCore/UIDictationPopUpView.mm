@@ -1,7 +1,7 @@
 @interface UIDictationPopUpView
 - (void)layoutSubviews;
 - (void)returnToKeyboard;
-- (void)setState:(int)a3;
+- (void)setState:(int)state;
 @end
 
 @implementation UIDictationPopUpView
@@ -9,9 +9,9 @@
 - (void)returnToKeyboard
 {
   v3 = +[UIDictationController sharedInstance];
-  v4 = [v3 state];
+  state = [v3 state];
 
-  if (v4 != 1)
+  if (state != 1)
   {
     v5 = +[UIKeyboardDictationMenu sharedInstance];
     [v5 hide];
@@ -27,10 +27,10 @@
   }
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  v3 = *&a3;
-  if (a3 == 1)
+  v3 = *&state;
+  if (state == 1)
   {
     [(UIView *)self bounds];
     v6 = v5;
@@ -44,8 +44,8 @@
     else
     {
       v9 = [SUICFlamesViewClass alloc];
-      v10 = [objc_opt_self() mainScreen];
-      v11 = [v9 initWithFrame:v10 screen:2 fidelity:{0.0, 0.0, v6, 100.0}];
+      mainScreen = [objc_opt_self() mainScreen];
+      v11 = [v9 initWithFrame:mainScreen screen:2 fidelity:{0.0, 0.0, v6, 100.0}];
       v12 = self->super._flamesView;
       self->super._flamesView = v11;
     }

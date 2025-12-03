@@ -1,6 +1,6 @@
 @interface MedicationScheduleControlObserver
 - (_TtC27HealthMedicationsExperience33MedicationScheduleControlObserver)init;
-- (void)scheduleControl:(id)a3 didAddOrModifySchedules:(id)a4;
+- (void)scheduleControl:(id)control didAddOrModifySchedules:(id)schedules;
 - (void)scheduleControlDidRescheduleItems;
 @end
 
@@ -13,19 +13,19 @@
     v3 = *(&self->super.isa + OBJC_IVAR____TtC27HealthMedicationsExperience33MedicationScheduleControlObserver_scheduleChangedSubject);
     sub_1D165A76C();
     sub_1D165A848();
-    v5 = self;
+    selfCopy = self;
     sub_1D166F6D4();
   }
 }
 
-- (void)scheduleControl:(id)a3 didAddOrModifySchedules:(id)a4
+- (void)scheduleControl:(id)control didAddOrModifySchedules:(id)schedules
 {
   if ((*(&self->super.isa + OBJC_IVAR____TtC27HealthMedicationsExperience33MedicationScheduleControlObserver_observerOptions) & 2) != 0)
   {
     v5 = *(&self->super.isa + OBJC_IVAR____TtC27HealthMedicationsExperience33MedicationScheduleControlObserver_scheduleChangedSubject);
     sub_1D165A76C();
     sub_1D165A848();
-    v7 = self;
+    selfCopy = self;
     sub_1D166F6D4();
   }
 }

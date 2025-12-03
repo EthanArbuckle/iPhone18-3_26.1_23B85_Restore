@@ -1,27 +1,27 @@
 @interface SBSRelaunchAction
-+ (id)actionWithReason:(id)a3 options:(unint64_t)a4 targetURL:(id)a5;
++ (id)actionWithReason:(id)reason options:(unint64_t)options targetURL:(id)l;
 - (NSString)reason;
 - (NSURL)targetURL;
-- (SBSRelaunchAction)initWithReason:(id)a3 options:(unint64_t)a4 targetURL:(id)a5;
+- (SBSRelaunchAction)initWithReason:(id)reason options:(unint64_t)options targetURL:(id)l;
 - (unint64_t)options;
 @end
 
 @implementation SBSRelaunchAction
 
-+ (id)actionWithReason:(id)a3 options:(unint64_t)a4 targetURL:(id)a5
++ (id)actionWithReason:(id)reason options:(unint64_t)options targetURL:(id)l
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithReason:v9 options:a4 targetURL:v8];
+  lCopy = l;
+  reasonCopy = reason;
+  v10 = [[self alloc] initWithReason:reasonCopy options:options targetURL:lCopy];
 
   return v10;
 }
 
-- (SBSRelaunchAction)initWithReason:(id)a3 options:(unint64_t)a4 targetURL:(id)a5
+- (SBSRelaunchAction)initWithReason:(id)reason options:(unint64_t)options targetURL:(id)l
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v9;
+  reasonCopy = reason;
+  lCopy = l;
+  v11 = reasonCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v11)
   {
@@ -33,7 +33,7 @@
     [SBSRelaunchAction initWithReason:a2 options:? targetURL:?];
   }
 
-  v12 = v10;
+  v12 = lCopy;
   if (v12)
   {
     NSClassFromString(&cfstr_Nsurl.isa);
@@ -47,7 +47,7 @@
   v14 = [v11 copy];
   [v13 setObject:v14 forSetting:1];
 
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
   [v13 setObject:v15 forSetting:2];
 
   if (v12)
@@ -64,25 +64,25 @@
 
 - (NSString)reason
 {
-  v2 = [(SBSRelaunchAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(SBSRelaunchAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
 
 - (unint64_t)options
 {
-  v2 = [(SBSRelaunchAction *)self info];
-  v3 = [v2 objectForSetting:2];
-  v4 = [v3 unsignedIntegerValue];
+  info = [(SBSRelaunchAction *)self info];
+  v3 = [info objectForSetting:2];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (NSURL)targetURL
 {
-  v2 = [(SBSRelaunchAction *)self info];
-  v3 = [v2 objectForSetting:3];
+  info = [(SBSRelaunchAction *)self info];
+  v3 = [info objectForSetting:3];
 
   return v3;
 }

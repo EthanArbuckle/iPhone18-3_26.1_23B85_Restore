@@ -1,6 +1,6 @@
 @interface VKCDataDetectorElementViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axIsDataDetectorOfType:(unint64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axIsDataDetectorOfType:(unint64_t)type;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (void)accessibilityLabel;
@@ -8,15 +8,15 @@
 
 @implementation VKCDataDetectorElementViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VKCDataDetectorElementView" hasInstanceMethod:@"dataDetectorElement" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VKCDataDetectorElementView" hasInstanceMethod:@"allowLongPressDDActivationOnly" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"VKCTextDataDetectorElement" isKindOfClass:@"VKCBaseDataDetectorElement"];
-  [v3 validateClass:@"VKCBaseDataDetectorElement" hasInstanceMethod:@"scannerResult" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VKCTextDataDetectorElement" hasInstanceMethod:@"dataDetectorTypes" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"DDScannerResult" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VKCDataDetectorElementView" hasInstanceMethod:@"dataDetectorElement" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VKCDataDetectorElementView" hasInstanceMethod:@"allowLongPressDDActivationOnly" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"VKCTextDataDetectorElement" isKindOfClass:@"VKCBaseDataDetectorElement"];
+  [validationsCopy validateClass:@"VKCBaseDataDetectorElement" hasInstanceMethod:@"scannerResult" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VKCTextDataDetectorElement" hasInstanceMethod:@"dataDetectorTypes" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"DDScannerResult" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityValue
@@ -29,16 +29,16 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = accessibilityLocalizedString(@"detected.data.element");
-  [v3 axSafelyAddObject:v4];
+  [array axSafelyAddObject:v4];
 
   if ([(VKCDataDetectorElementViewAccessibility *)self _axIsDataDetectorOfType:1])
   {
     v5 = @"phone.number";
 LABEL_25:
     v6 = accessibilityLocalizedString(v5);
-    [v3 axSafelyAddObject:v6];
+    [array axSafelyAddObject:v6];
 
     goto LABEL_26;
   }
@@ -125,23 +125,23 @@ LABEL_25:
   }
 
 LABEL_26:
-  v7 = MEMORY[0x29ED40430](v3);
+  v7 = MEMORY[0x29ED40430](array);
 
   return v7;
 }
 
-- (BOOL)_axIsDataDetectorOfType:(unint64_t)a3
+- (BOOL)_axIsDataDetectorOfType:(unint64_t)type
 {
   v4 = [(VKCDataDetectorElementViewAccessibility *)self safeValueForKey:@"dataDetectorElement"];
   v5 = [v4 safeUnsignedIntegerForKey:@"dataDetectorTypes"];
 
-  return (a3 & ~v5) == 0;
+  return (type & ~v5) == 0;
 }
 
 - (void)accessibilityLabel
 {
   v7 = *MEMORY[0x29EDCA608];
-  v3 = [a1 safeValueForKey:@"dataDetectorElement"];
+  v3 = [self safeValueForKey:@"dataDetectorElement"];
   v5 = 134217984;
   v6 = [v3 safeUnsignedIntegerForKey:@"dataDetectorTypes"];
   _os_log_error_impl(&dword_29C768000, a2, OS_LOG_TYPE_ERROR, "Detector type : %lu should be included in accessibility label", &v5, 0xCu);

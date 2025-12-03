@@ -1,9 +1,9 @@
 @interface GCSettingsAuxiliaryButtonRemapController
 - (id)newSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)loadDevice;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation GCSettingsAuxiliaryButtonRemapController
@@ -21,9 +21,9 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(GCSettingsAuxiliaryButtonRemapController *)self newSpecifiers];
+    newSpecifiers = [(GCSettingsAuxiliaryButtonRemapController *)self newSpecifiers];
     v6 = *&self->PSListController_opaque[v3];
-    *&self->PSListController_opaque[v3] = v5;
+    *&self->PSListController_opaque[v3] = newSpecifiers;
 
     v4 = *&self->PSListController_opaque[v3];
   }
@@ -37,14 +37,14 @@
   [(GCSettingsAuxiliaryButtonRemapController *)self loadDevice];
   if (self->_device)
   {
-    v3 = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
-    v4 = [v3 dstAuxiliaryButtons];
+    parentController = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
+    dstAuxiliaryButtons = [parentController dstAuxiliaryButtons];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = v4;
+    v5 = dstAuxiliaryButtons;
     v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v6)
     {
@@ -98,41 +98,41 @@
   return v21;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v28.receiver = self;
   v28.super_class = GCSettingsAuxiliaryButtonRemapController;
-  v7 = [(GCSettingsAuxiliaryButtonRemapController *)&v28 tableView:a3 cellForRowAtIndexPath:v6];
-  if (![v6 section])
+  v7 = [(GCSettingsAuxiliaryButtonRemapController *)&v28 tableView:view cellForRowAtIndexPath:pathCopy];
+  if (![pathCopy section])
   {
-    v27 = [(GCSettingsAuxiliaryButtonRemapController *)self specifierAtIndexPath:v6];
+    v27 = [(GCSettingsAuxiliaryButtonRemapController *)self specifierAtIndexPath:pathCopy];
     v8 = [v27 propertyForKey:@"ControllerElement"];
-    v9 = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
-    v10 = [v9 elements];
-    v11 = [v10 objectForKeyedSubscript:v8];
+    parentController = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
+    elements = [parentController elements];
+    v11 = [elements objectForKeyedSubscript:v8];
 
-    v12 = [v11 unmappedSfSymbolsName];
-    sub_A26C(v7, v12);
+    unmappedSfSymbolsName = [v11 unmappedSfSymbolsName];
+    sub_A26C(v7, unmappedSfSymbolsName);
 
-    v13 = [v7 titleLabel];
-    v14 = [v11 unmappedLocalizedName];
-    [v13 setText:v14];
+    titleLabel = [v7 titleLabel];
+    unmappedLocalizedName = [v11 unmappedLocalizedName];
+    [titleLabel setText:unmappedLocalizedName];
 
-    v15 = [(GCSettingsAuxiliaryButtonRemapController *)self specifier];
-    v16 = [v15 propertyForKey:@"ControllerElement"];
+    specifier = [(GCSettingsAuxiliaryButtonRemapController *)self specifier];
+    v16 = [specifier propertyForKey:@"ControllerElement"];
 
-    v17 = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
-    v18 = [v17 elements];
-    v19 = [v18 objectForKeyedSubscript:v16];
+    parentController2 = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
+    elements2 = [parentController2 elements];
+    v19 = [elements2 objectForKeyedSubscript:v16];
 
-    v20 = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
-    v21 = [v20 settings];
-    v22 = [v21 mappingForElement:v19];
+    parentController3 = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
+    settings = [parentController3 settings];
+    v22 = [settings mappingForElement:v19];
 
-    v23 = [v11 primaryAlias];
-    v24 = [v22 primaryAlias];
-    v25 = [v23 isEqualToString:v24];
+    primaryAlias = [v11 primaryAlias];
+    primaryAlias2 = [v22 primaryAlias];
+    v25 = [primaryAlias isEqualToString:primaryAlias2];
 
     [v7 setChecked:v25];
   }
@@ -140,34 +140,34 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v20 = a3;
-  v6 = a4;
-  if (![v6 section])
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy section])
   {
-    v7 = [(GCSettingsAuxiliaryButtonRemapController *)self specifierAtIndexPath:v6];
-    v8 = [(GCSettingsAuxiliaryButtonRemapController *)self specifier];
-    v9 = [v8 propertyForKey:@"ControllerElement"];
+    v7 = [(GCSettingsAuxiliaryButtonRemapController *)self specifierAtIndexPath:pathCopy];
+    specifier = [(GCSettingsAuxiliaryButtonRemapController *)self specifier];
+    v9 = [specifier propertyForKey:@"ControllerElement"];
 
-    v10 = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
-    v11 = [v10 elements];
-    v12 = [v11 objectForKeyedSubscript:v9];
+    parentController = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
+    elements = [parentController elements];
+    v12 = [elements objectForKeyedSubscript:v9];
 
     v13 = [v7 propertyForKey:@"ControllerElement"];
-    v14 = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
-    v15 = [v14 elements];
-    v16 = [v15 objectForKeyedSubscript:v13];
+    parentController2 = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
+    elements2 = [parentController2 elements];
+    v16 = [elements2 objectForKeyedSubscript:v13];
 
-    v17 = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
-    v18 = [v17 settings];
-    [v18 setMappingForElement:v12 toElement:v16];
+    parentController3 = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
+    settings = [parentController3 settings];
+    [settings setMappingForElement:v12 toElement:v16];
 
-    v19 = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
-    [v19 reloadSpecifiers];
+    parentController4 = [(GCSettingsAuxiliaryButtonRemapController *)self parentController];
+    [parentController4 reloadSpecifiers];
 
     [(GCSettingsAuxiliaryButtonRemapController *)self reloadSpecifiers];
-    [v20 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 }
 

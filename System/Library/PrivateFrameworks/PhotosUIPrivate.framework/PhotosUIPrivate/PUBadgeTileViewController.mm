@@ -1,48 +1,48 @@
 @interface PUBadgeTileViewController
-+ (CGSize)badgeTileSizeForAssetViewModel:(id)a3 contentWidth:(double)a4;
-+ (CGSize)leadingBadgesSizeForAssetViewModel:(id)a3 contentWidth:(double)a4;
++ (CGSize)badgeTileSizeForAssetViewModel:(id)model contentWidth:(double)width;
++ (CGSize)leadingBadgesSizeForAssetViewModel:(id)model contentWidth:(double)width;
 + (id)_adjustmentDataLoadingQueue;
-+ (void)_configureBadgeView:(id)a3 withBadgeInfo:(PXAssetBadgeInfo *)a4 isOverContent:(BOOL)a5 contentWidth:(double)a6 animated:(BOOL)a7;
-+ (void)_logEffectNameApplied:(id)a3 toAsset:(id)a4;
-+ (void)logAppliedLivePhotoEffect:(int64_t)a3 toAsset:(id)a4;
-+ (void)logToggledDepthEffect:(BOOL)a3 onAsset:(id)a4;
++ (void)_configureBadgeView:(id)view withBadgeInfo:(PXAssetBadgeInfo *)info isOverContent:(BOOL)content contentWidth:(double)width animated:(BOOL)animated;
++ (void)_logEffectNameApplied:(id)applied toAsset:(id)asset;
++ (void)logAppliedLivePhotoEffect:(int64_t)effect toAsset:(id)asset;
++ (void)logToggledDepthEffect:(BOOL)effect onAsset:(id)asset;
 - (BOOL)_needsUpdate;
 - (BOOL)isBadgeVisible;
 - (PUBadgeTileViewControllerDelegate)delegate;
 - (PXAssetBadgeInfo)_badgeInfo;
 - (UIView)livePhotoBadgeContainerView;
-- (id)_depthMenuElementsForDepthEnabled:(BOOL)a3 depthControllerExists:(BOOL)a4;
-- (id)_depthToggleActionForEnable:(BOOL)a3 handler:(id)a4;
-- (id)_depthToggleMenuForBadges:(unint64_t)a3;
-- (id)_disabledDepthMenuElementsDepthEnabled:(BOOL)a3;
-- (id)_liveVariationsMenuForBadges:(unint64_t)a3;
-- (id)_menuForBadges:(unint64_t)a3;
+- (id)_depthMenuElementsForDepthEnabled:(BOOL)enabled depthControllerExists:(BOOL)exists;
+- (id)_depthToggleActionForEnable:(BOOL)enable handler:(id)handler;
+- (id)_depthToggleMenuForBadges:(unint64_t)badges;
+- (id)_disabledDepthMenuElementsDepthEnabled:(BOOL)enabled;
+- (id)_liveVariationsMenuForBadges:(unint64_t)badges;
+- (id)_menuForBadges:(unint64_t)badges;
 - (id)loadView;
-- (id)undoManagerForActionPerformer:(id)a3;
+- (id)undoManagerForActionPerformer:(id)performer;
 - (void)_invalidateBadgeInfo;
 - (void)_invalidateBadgeProvider;
 - (void)_invalidateBadgeView;
-- (void)_performEditsIfAllowedOnAsset:(id)a3 edits:(id)a4;
-- (void)_setBadgeInfo:(PXAssetBadgeInfo *)a3;
-- (void)_setContentWidth:(double)a3;
-- (void)_setOverContent:(BOOL)a3;
-- (void)_toggleDepthForAsset:(id)a3 enable:(BOOL)a4 undoManager:(id)a5;
+- (void)_performEditsIfAllowedOnAsset:(id)asset edits:(id)edits;
+- (void)_setBadgeInfo:(PXAssetBadgeInfo *)info;
+- (void)_setContentWidth:(double)width;
+- (void)_setOverContent:(BOOL)content;
+- (void)_toggleDepthForAsset:(id)asset enable:(BOOL)enable undoManager:(id)manager;
 - (void)_updateBadgeInfoIfNeeded;
 - (void)_updateBadgeProviderIfNeeded;
 - (void)_updateBadgeViewIfNeeded;
 - (void)_updateIfNeeded;
-- (void)applyLayoutInfo:(id)a3;
-- (void)applyLivePhotoEffect:(int64_t)a3 toAsset:(id)a4 undoManager:(id)a5;
-- (void)assetBadgeView:(id)a3 dismissAnyPresentedViewControllerWithCompletion:(id)a4;
+- (void)applyLayoutInfo:(id)info;
+- (void)applyLivePhotoEffect:(int64_t)effect toAsset:(id)asset undoManager:(id)manager;
+- (void)assetBadgeView:(id)view dismissAnyPresentedViewControllerWithCompletion:(id)completion;
 - (void)becomeReusable;
 - (void)didChangeActive;
-- (void)disableLivePhotoForAsset:(id)a3 undoManager:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)disableLivePhotoForAsset:(id)asset undoManager:(id)manager;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)prepareForReuse;
-- (void)setAssetViewModel:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)setAssetViewModel:(id)model;
+- (void)setDelegate:(id)delegate;
 - (void)viewDidLoad;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUBadgeTileViewController
@@ -62,9 +62,9 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (a4 == 1 && PUBadgeInfoProviderObservationContext == a5)
+  if (change == 1 && PUBadgeInfoProviderObservationContext == context)
   {
     [(PUBadgeTileViewController *)self _invalidateBadgeView];
   }
@@ -72,9 +72,9 @@
   [(PUBadgeTileViewController *)self _updateIfNeeded];
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  if ([a4 badgeInfoChanged])
+  if ([change badgeInfoChanged])
   {
     [(PUBadgeTileViewController *)self _invalidateBadgeInfo];
   }
@@ -82,29 +82,29 @@
   [(PUBadgeTileViewController *)self _updateIfNeeded];
 }
 
-- (id)undoManagerForActionPerformer:(id)a3
+- (id)undoManagerForActionPerformer:(id)performer
 {
-  v3 = [(PUBadgeTileViewController *)self _badgeView];
-  v4 = [v3 undoManager];
+  _badgeView = [(PUBadgeTileViewController *)self _badgeView];
+  undoManager = [_badgeView undoManager];
 
-  return v4;
+  return undoManager;
 }
 
-- (void)assetBadgeView:(id)a3 dismissAnyPresentedViewControllerWithCompletion:(id)a4
+- (void)assetBadgeView:(id)view dismissAnyPresentedViewControllerWithCompletion:(id)completion
 {
   if (self->_delegateRespondsTo.userDidTapBadgeView)
   {
-    v6 = a4;
-    v7 = [(PUBadgeTileViewController *)self delegate];
-    [v7 dismissPresentedViewController:self presentMenuWithCompletion:v6];
+    completionCopy = completion;
+    delegate = [(PUBadgeTileViewController *)self delegate];
+    [delegate dismissPresentedViewController:self presentMenuWithCompletion:completionCopy];
   }
 }
 
-- (id)_depthToggleActionForEnable:(BOOL)a3 handler:(id)a4
+- (id)_depthToggleActionForEnable:(BOOL)enable handler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = PLServicesLivePortraitLocalizedFrameworkString();
-  if (a3)
+  if (enable)
   {
     [MEMORY[0x1E69DCAB8] systemImageNamed:@"f.cursive.circle"];
   }
@@ -119,8 +119,8 @@
   v12[1] = 3221225472;
   v12[2] = __65__PUBadgeTileViewController__depthToggleActionForEnable_handler___block_invoke;
   v12[3] = &unk_1E7B7CC30;
-  v13 = v5;
-  v9 = v5;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
   v10 = [v8 actionWithTitle:v6 image:v7 identifier:0 handler:v12];
 
   return v10;
@@ -137,15 +137,15 @@ uint64_t __65__PUBadgeTileViewController__depthToggleActionForEnable_handler___b
   return result;
 }
 
-- (id)_disabledDepthMenuElementsDepthEnabled:(BOOL)a3
+- (id)_disabledDepthMenuElementsDepthEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v10[2] = *MEMORY[0x1E69E9840];
   v5 = [(PUBadgeTileViewController *)self _depthToggleActionForEnable:1 handler:0];
   v6 = [(PUBadgeTileViewController *)self _depthToggleActionForEnable:0 handler:0];
   [v5 setAttributes:1];
   [v6 setAttributes:1];
-  if (v3)
+  if (enabledCopy)
   {
     v7 = v5;
   }
@@ -163,14 +163,14 @@ uint64_t __65__PUBadgeTileViewController__depthToggleActionForEnable_handler___b
   return v8;
 }
 
-- (id)_depthMenuElementsForDepthEnabled:(BOOL)a3 depthControllerExists:(BOOL)a4
+- (id)_depthMenuElementsForDepthEnabled:(BOOL)enabled depthControllerExists:(BOOL)exists
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v32[2] = *MEMORY[0x1E69E9840];
   if (self->_delegateRespondsTo.undoManager)
   {
-    v7 = [(PUBadgeTileViewController *)self delegate];
-    v8 = [v7 undoManagerForAssetActionPerformer:0];
+    delegate = [(PUBadgeTileViewController *)self delegate];
+    v8 = [delegate undoManagerForAssetActionPerformer:0];
   }
 
   else
@@ -178,18 +178,18 @@ uint64_t __65__PUBadgeTileViewController__depthToggleActionForEnable_handler___b
     v8 = 0;
   }
 
-  v9 = [(PUBadgeTileViewController *)self assetViewModel];
-  v10 = [v9 asset];
+  assetViewModel = [(PUBadgeTileViewController *)self assetViewModel];
+  asset = [assetViewModel asset];
 
   objc_initWeak(&location, self);
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __85__PUBadgeTileViewController__depthMenuElementsForDepthEnabled_depthControllerExists___block_invoke;
   v25[3] = &unk_1E7B75B18;
-  v29 = v5;
-  v30 = a4;
+  v29 = enabledCopy;
+  existsCopy = exists;
   objc_copyWeak(&v28, &location);
-  v11 = v10;
+  v11 = asset;
   v26 = v11;
   v12 = v8;
   v27 = v12;
@@ -198,16 +198,16 @@ uint64_t __65__PUBadgeTileViewController__depthToggleActionForEnable_handler___b
   v19[1] = 3221225472;
   v19[2] = __85__PUBadgeTileViewController__depthMenuElementsForDepthEnabled_depthControllerExists___block_invoke_2;
   v19[3] = &unk_1E7B75B18;
-  v23 = v5;
-  v24 = a4;
+  v23 = enabledCopy;
+  existsCopy2 = exists;
   objc_copyWeak(&v22, &location);
   v14 = v11;
   v20 = v14;
   v15 = v12;
   v21 = v15;
   v16 = [(PUBadgeTileViewController *)self _depthToggleActionForEnable:0 handler:v19];
-  [v13 setState:v5];
-  [v16 setState:!v5];
+  [v13 setState:enabledCopy];
+  [v16 setState:!enabledCopy];
   v32[0] = v13;
   v32[1] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2];
@@ -237,7 +237,7 @@ void __85__PUBadgeTileViewController__depthMenuElementsForDepthEnabled_depthCont
   }
 }
 
-- (id)_depthToggleMenuForBadges:(unint64_t)a3
+- (id)_depthToggleMenuForBadges:(unint64_t)badges
 {
   v14[1] = *MEMORY[0x1E69E9840];
   if (PECanRenderPortrait())
@@ -249,7 +249,7 @@ void __85__PUBadgeTileViewController__depthMenuElementsForDepthEnabled_depthCont
     v11[2] = __55__PUBadgeTileViewController__depthToggleMenuForBadges___block_invoke;
     v11[3] = &unk_1E7B75AF0;
     objc_copyWeak(v12, &location);
-    v12[1] = a3;
+    v12[1] = badges;
     v6 = [v5 elementWithUncachedProvider:v11];
     v7 = MEMORY[0x1E69DCC60];
     v14[0] = v6;
@@ -416,13 +416,13 @@ void __55__PUBadgeTileViewController__depthToggleMenuForBadges___block_invoke_4(
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)_liveVariationsMenuForBadges:(unint64_t)a3
+- (id)_liveVariationsMenuForBadges:(unint64_t)badges
 {
   v68[5] = *MEMORY[0x1E69E9840];
   if (self->_delegateRespondsTo.undoManager)
   {
-    v5 = [(PUBadgeTileViewController *)self delegate];
-    v6 = [v5 undoManagerForAssetActionPerformer:0];
+    delegate = [(PUBadgeTileViewController *)self delegate];
+    v6 = [delegate undoManagerForAssetActionPerformer:0];
   }
 
   else
@@ -430,13 +430,13 @@ void __55__PUBadgeTileViewController__depthToggleMenuForBadges___block_invoke_4(
     v6 = 0;
   }
 
-  v7 = [(PUBadgeTileViewController *)self assetViewModel];
-  v8 = [v7 asset];
+  assetViewModel = [(PUBadgeTileViewController *)self assetViewModel];
+  asset = [assetViewModel asset];
 
   v46 = PULocalizedString(@"LIVE_PHOTO_BADGE_MENU_ACTION_LIVE");
   v45 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"livephoto"];
-  v42 = [v8 mediaSubtypes];
-  if ((v42 & 0x10) != 0)
+  mediaSubtypes = [asset mediaSubtypes];
+  if ((mediaSubtypes & 0x10) != 0)
   {
     v9 = PLServicesLivePortraitLocalizedFrameworkString();
 
@@ -453,7 +453,7 @@ void __55__PUBadgeTileViewController__depthToggleMenuForBadges___block_invoke_4(
   v63[2] = __58__PUBadgeTileViewController__liveVariationsMenuForBadges___block_invoke;
   v63[3] = &unk_1E7B7F518;
   objc_copyWeak(&v66, &location);
-  v12 = v8;
+  v12 = asset;
   v64 = v12;
   v13 = v6;
   v65 = v13;
@@ -501,7 +501,7 @@ void __55__PUBadgeTileViewController__depthToggleMenuForBadges___block_invoke_4(
   v30 = [v25 actionWithTitle:v26 image:v27 identifier:0 handler:v51];
 
   v31 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"livephoto.slash"];
-  if ((v42 & 0x10) != 0)
+  if ((mediaSubtypes & 0x10) != 0)
   {
     v32 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"livephoto.slash.portrait"];
 
@@ -521,11 +521,11 @@ void __55__PUBadgeTileViewController__depthToggleMenuForBadges___block_invoke_4(
   v49 = v36;
   v37 = [v33 actionWithTitle:v34 image:v31 identifier:0 handler:v47];
 
-  [v44 setState:!(a3 & 0x1000000) & (a3 >> 6)];
-  [v43 setState:(a3 >> 7) & 1];
-  [v24 setState:(a3 >> 8) & 1];
-  [v30 setState:(a3 >> 9) & 1];
-  [v37 setState:(a3 >> 24) & 1];
+  [v44 setState:!(badges & 0x1000000) & (badges >> 6)];
+  [v43 setState:(badges >> 7) & 1];
+  [v24 setState:(badges >> 8) & 1];
+  [v30 setState:(badges >> 9) & 1];
+  [v37 setState:(badges >> 24) & 1];
   v38 = MEMORY[0x1E69DCC60];
   v68[0] = v44;
   v68[1] = v43;
@@ -577,30 +577,30 @@ void __58__PUBadgeTileViewController__liveVariationsMenuForBadges___block_invoke
   [WeakRetained disableLivePhotoForAsset:*(a1 + 32) undoManager:*(a1 + 40)];
 }
 
-- (id)_menuForBadges:(unint64_t)a3
+- (id)_menuForBadges:(unint64_t)badges
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  if ((a3 & 0x40000002000) != 0)
+  if ((badges & 0x40000002000) != 0)
   {
-    v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ((a3 & 0x2000) != 0)
+    asset = objc_alloc_init(MEMORY[0x1E695DF70]);
+    if ((badges & 0x2000) != 0)
     {
-      v6 = [(PUBadgeTileViewController *)self _liveVariationsMenuForBadges:a3];
-      [v5 addObject:v6];
+      v6 = [(PUBadgeTileViewController *)self _liveVariationsMenuForBadges:badges];
+      [asset addObject:v6];
     }
 
-    if ((a3 & 0x40000000000) != 0)
+    if ((badges & 0x40000000000) != 0)
     {
-      v7 = [(PUBadgeTileViewController *)self _depthToggleMenuForBadges:a3];
+      v7 = [(PUBadgeTileViewController *)self _depthToggleMenuForBadges:badges];
       if (v7)
       {
-        [v5 addObject:v7];
+        [asset addObject:v7];
       }
     }
 
-    if ([v5 count])
+    if ([asset count])
     {
-      v8 = [MEMORY[0x1E69DCC60] menuWithChildren:v5];
+      v8 = [MEMORY[0x1E69DCC60] menuWithChildren:asset];
     }
 
     else
@@ -611,16 +611,16 @@ void __58__PUBadgeTileViewController__liveVariationsMenuForBadges___block_invoke
     goto LABEL_23;
   }
 
-  if ((a3 & 0x2000000000) == 0)
+  if ((badges & 0x2000000000) == 0)
   {
     v8 = 0;
     goto LABEL_24;
   }
 
-  v10 = [(PUBadgeTileViewController *)self assetViewModel];
-  v5 = [v10 asset];
+  assetViewModel = [(PUBadgeTileViewController *)self assetViewModel];
+  asset = [assetViewModel asset];
 
-  if (v5)
+  if (asset)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -628,26 +628,26 @@ void __58__PUBadgeTileViewController__liveVariationsMenuForBadges___block_invoke
       goto LABEL_15;
     }
 
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v31 = objc_opt_class();
     v30 = NSStringFromClass(v31);
-    v32 = [v5 px_descriptionForAssertionMessage];
-    [v28 handleFailureInMethod:a2 object:self file:@"PUBadgeTileViewController.m" lineNumber:423 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetViewModel.asset", v30, v32}];
+    px_descriptionForAssertionMessage = [asset px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBadgeTileViewController.m" lineNumber:423 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetViewModel.asset", v30, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v29 = objc_opt_class();
     v30 = NSStringFromClass(v29);
-    [v28 handleFailureInMethod:a2 object:self file:@"PUBadgeTileViewController.m" lineNumber:423 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetViewModel.asset", v30}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBadgeTileViewController.m" lineNumber:423 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetViewModel.asset", v30}];
   }
 
 LABEL_15:
-  v11 = [MEMORY[0x1E69C37D8] dataSourceManagerWithAsset:v5];
+  v11 = [MEMORY[0x1E69C37D8] dataSourceManagerWithAsset:asset];
   v12 = MEMORY[0x1E69C4528];
-  v13 = [v11 dataSource];
-  v41[0] = [v13 identifier];
+  dataSource = [v11 dataSource];
+  v41[0] = [dataSource identifier];
   v41[1] = 0;
   v41[2] = 0;
   v41[3] = 0x7FFFFFFFFFFFFFFFLL;
@@ -664,7 +664,7 @@ LABEL_15:
   v17 = [objc_alloc(MEMORY[0x1E69C3798]) initWithSelectionManager:v15];
   [v17 setDataSourceManager:v11];
   [v17 setPerformerDelegate:self];
-  if ((a3 & 0x8000000000) != 0)
+  if ((badges & 0x8000000000) != 0)
   {
     v18 = MEMORY[0x1E69DC628];
     v19 = PXLocalizedSharedLibraryString();
@@ -676,13 +676,13 @@ LABEL_15:
     v21 = &v37;
     v37 = v17;
     v22 = &v38;
-    v38 = v5;
+    v38 = asset;
     v23 = v36;
   }
 
   else
   {
-    if ((a3 & 0x4000000000) == 0)
+    if ((badges & 0x4000000000) == 0)
     {
 LABEL_21:
       v8 = 0;
@@ -699,7 +699,7 @@ LABEL_21:
     v21 = &v34;
     v34 = v17;
     v22 = &v35;
-    v35 = v5;
+    v35 = asset;
     v23 = v33;
   }
 
@@ -802,31 +802,31 @@ void __44__PUBadgeTileViewController__menuForBadges___block_invoke_3(uint64_t a1
   if ([(PUBadgeTileViewController *)self _needsUpdateBadgeView])
   {
     [(PUBadgeTileViewController *)self _setNeedsUpdateBadgeView:0];
-    v3 = [(PUBadgeTileViewController *)self _badgeInfoProvider];
+    _badgeInfoProvider = [(PUBadgeTileViewController *)self _badgeInfoProvider];
     v12 = 0u;
     v13 = 0u;
     [(PUBadgeTileViewController *)self _badgeInfo];
     v10 = 0u;
     v11 = 0u;
-    if (v3)
+    if (_badgeInfoProvider)
     {
-      [v3 outputBadgeInfo];
+      [_badgeInfoProvider outputBadgeInfo];
     }
 
-    v4 = [v3 outputShouldAnimate];
-    v5 = [(PUBadgeTileViewController *)self _badgeView];
+    outputShouldAnimate = [_badgeInfoProvider outputShouldAnimate];
+    _badgeView = [(PUBadgeTileViewController *)self _badgeView];
     v8 = v12;
     v9 = v13;
     if ((PXAssetBadgeInfoIsNull() & 1) == 0)
     {
-      if (v5)
+      if (_badgeView)
       {
         v6 = objc_opt_class();
         v7 = [(PUBadgeTileViewController *)self _isOverContent:v8];
         [(PUBadgeTileViewController *)self _contentWidth];
         v8 = v10;
         v9 = v11;
-        [v6 _configureBadgeView:v5 withBadgeInfo:&v8 isOverContent:v7 contentWidth:v4 animated:?];
+        [v6 _configureBadgeView:_badgeView withBadgeInfo:&v8 isOverContent:v7 contentWidth:outputShouldAnimate animated:?];
       }
     }
   }
@@ -844,12 +844,12 @@ void __44__PUBadgeTileViewController__menuForBadges___block_invoke_3(uint64_t a1
   if ([(PUBadgeTileViewController *)self _needsUpdateBadgeProvider])
   {
     [(PUBadgeTileViewController *)self _setNeedsUpdateBadgeProvider:0];
-    v3 = [(PUBadgeTileViewController *)self _badgeInfoProvider];
-    if (!v3)
+    _badgeInfoProvider = [(PUBadgeTileViewController *)self _badgeInfoProvider];
+    if (!_badgeInfoProvider)
     {
-      v3 = objc_alloc_init(PUBadgeInfoProvider);
-      [(PUBadgeInfoProvider *)v3 registerChangeObserver:self context:PUBadgeInfoProviderObservationContext];
-      [(PUBadgeTileViewController *)self set_badgeInfoProvider:v3];
+      _badgeInfoProvider = objc_alloc_init(PUBadgeInfoProvider);
+      [(PUBadgeInfoProvider *)_badgeInfoProvider registerChangeObserver:self context:PUBadgeInfoProviderObservationContext];
+      [(PUBadgeTileViewController *)self set_badgeInfoProvider:_badgeInfoProvider];
     }
 
     v4[0] = MEMORY[0x1E69E9820];
@@ -857,7 +857,7 @@ void __44__PUBadgeTileViewController__menuForBadges___block_invoke_3(uint64_t a1
     v4[2] = __57__PUBadgeTileViewController__updateBadgeProviderIfNeeded__block_invoke;
     v4[3] = &unk_1E7B7D880;
     v4[4] = self;
-    [(PUBadgeInfoProvider *)v3 performChanges:v4];
+    [(PUBadgeInfoProvider *)_badgeInfoProvider performChanges:v4];
   }
 }
 
@@ -898,12 +898,12 @@ void __57__PUBadgeTileViewController__updateBadgeProviderIfNeeded__block_invoke(
     [(PUBadgeTileViewController *)self _setNeedsUpdateBadgeInfo:0];
     v7 = 0u;
     v8 = 0u;
-    v3 = [(PUBadgeTileViewController *)self assetViewModel];
-    v4 = [v3 badgeInfoPromise];
-    v5 = v4;
-    if (v4)
+    assetViewModel = [(PUBadgeTileViewController *)self assetViewModel];
+    badgeInfoPromise = [assetViewModel badgeInfoPromise];
+    v5 = badgeInfoPromise;
+    if (badgeInfoPromise)
     {
-      [v4 badgeInfo];
+      [badgeInfoPromise badgeInfo];
     }
 
     else
@@ -946,40 +946,40 @@ void __57__PUBadgeTileViewController__updateBadgeProviderIfNeeded__block_invoke(
       [(PUBadgeTileViewController *)self _updateBadgeViewIfNeeded];
       if ([(PUBadgeTileViewController *)self _needsUpdate])
       {
-        v4 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v4 handleFailureInMethod:a2 object:self file:@"PUBadgeTileViewController.m" lineNumber:319 description:@"updates still needed after an update cycle"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUBadgeTileViewController.m" lineNumber:319 description:@"updates still needed after an update cycle"];
       }
     }
   }
 }
 
-- (void)_setContentWidth:(double)a3
+- (void)_setContentWidth:(double)width
 {
-  if (self->__contentWidth != a3)
+  if (self->__contentWidth != width)
   {
-    self->__contentWidth = a3;
+    self->__contentWidth = width;
     [(PUBadgeTileViewController *)self _invalidateBadgeView];
   }
 }
 
-- (void)_setOverContent:(BOOL)a3
+- (void)_setOverContent:(BOOL)content
 {
-  if (self->__isOverContent != a3)
+  if (self->__isOverContent != content)
   {
-    self->__isOverContent = a3;
+    self->__isOverContent = content;
     [(PUBadgeTileViewController *)self _invalidateBadgeView];
   }
 }
 
-- (void)_setBadgeInfo:(PXAssetBadgeInfo *)a3
+- (void)_setBadgeInfo:(PXAssetBadgeInfo *)info
 {
   p_badgeInfo = &self->__badgeInfo;
-  v8 = *a3;
+  v8 = *info;
   badgeInfo = self->__badgeInfo;
   if ((PXAssetBadgeInfoEqualToBadgeInfo() & 1) == 0)
   {
-    v6 = *&a3->count;
-    *&p_badgeInfo->badges = *&a3->badges;
+    v6 = *&info->count;
+    *&p_badgeInfo->badges = *&info->badges;
     *&p_badgeInfo->count = v6;
     [(PUBadgeTileViewController *)self _invalidateBadgeProvider:*&badgeInfo.badges];
     [(PUBadgeTileViewController *)self _invalidateBadgeView];
@@ -992,23 +992,23 @@ void __57__PUBadgeTileViewController__updateBadgeProviderIfNeeded__block_invoke(
   v5.super_class = PUBadgeTileViewController;
   [(PUTileViewController *)&v5 prepareForReuse];
   [(PUBadgeTileViewController *)self setAssetViewModel:0];
-  v3 = [(PUBadgeTileViewController *)self _badgeView];
-  [v3 prepareForReuse];
+  _badgeView = [(PUBadgeTileViewController *)self _badgeView];
+  [_badgeView prepareForReuse];
 
-  v4 = [(PUBadgeTileViewController *)self _badgeInfoProvider];
-  [v4 performChanges:&__block_literal_global_263];
+  _badgeInfoProvider = [(PUBadgeTileViewController *)self _badgeInfoProvider];
+  [_badgeInfoProvider performChanges:&__block_literal_global_263];
 }
 
-- (void)applyLayoutInfo:(id)a3
+- (void)applyLayoutInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v8.receiver = self;
   v8.super_class = PUBadgeTileViewController;
-  [(PUTileViewController *)&v8 applyLayoutInfo:v4];
+  [(PUTileViewController *)&v8 applyLayoutInfo:infoCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = infoCopy;
     -[PUBadgeTileViewController _setOverContent:](self, "_setOverContent:", [v5 isOverContent]);
     [v5 contentWidth];
     v7 = v6;
@@ -1019,9 +1019,9 @@ void __57__PUBadgeTileViewController__updateBadgeProviderIfNeeded__block_invoke(
   [(PUBadgeTileViewController *)self _updateIfNeeded];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -1035,42 +1035,42 @@ void __57__PUBadgeTileViewController__updateBadgeProviderIfNeeded__block_invoke(
   }
 }
 
-- (void)setAssetViewModel:(id)a3
+- (void)setAssetViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   assetViewModel = self->_assetViewModel;
-  if (assetViewModel != v5)
+  if (assetViewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PUAssetViewModel *)assetViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_assetViewModel, a3);
+    objc_storeStrong(&self->_assetViewModel, model);
     [(PUAssetViewModel *)self->_assetViewModel registerChangeObserver:self];
     [(PUBadgeTileViewController *)self _invalidateBadgeInfo];
     [(PUBadgeTileViewController *)self _invalidateBadgeProvider];
     [(PUBadgeTileViewController *)self _invalidateBadgeView];
     assetViewModel = [(PUBadgeTileViewController *)self _updateIfNeeded];
-    v5 = v7;
+    modelCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](assetViewModel, v5);
+  MEMORY[0x1EEE66BB8](assetViewModel, modelCopy);
 }
 
 - (UIView)livePhotoBadgeContainerView
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(PUTileViewController *)self view];
+  view = [(PUTileViewController *)self view];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(PUTileViewController *)self view];
-  v5 = [v4 subviews];
+  view2 = [(PUTileViewController *)self view];
+  subviews = [view2 subviews];
 
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v6 = [subviews countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
-    v15 = v3;
+    v15 = view;
     v8 = *v20;
     while (2)
     {
@@ -1078,22 +1078,22 @@ void __57__PUBadgeTileViewController__updateBadgeProviderIfNeeded__block_invoke(
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v3 = v10;
+          view = v10;
           v17 = 0u;
           v18 = 0u;
           [(PUBadgeTileViewController *)self _badgeInfo];
-          v11 = [v3 text];
+          text = [view text];
           v16[0] = v17;
           v16[1] = v18;
           v12 = [MEMORY[0x1E69C44B8] textForBadgeInfo:v16 style:3];
-          v13 = [v11 isEqualToString:v12];
+          v13 = [text isEqualToString:v12];
 
           if (v13)
           {
@@ -1103,7 +1103,7 @@ void __57__PUBadgeTileViewController__updateBadgeProviderIfNeeded__block_invoke(
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v7)
       {
         continue;
@@ -1112,12 +1112,12 @@ void __57__PUBadgeTileViewController__updateBadgeProviderIfNeeded__block_invoke(
       break;
     }
 
-    v3 = v15;
+    view = v15;
   }
 
 LABEL_13:
 
-  return v3;
+  return view;
 }
 
 - (BOOL)isBadgeVisible
@@ -1131,8 +1131,8 @@ LABEL_13:
 {
   if (self->_delegateRespondsTo.badgeVisibilityDidChange)
   {
-    v4 = [(PUBadgeTileViewController *)self delegate];
-    [v4 badgeVisibilityDidChange:self];
+    delegate = [(PUBadgeTileViewController *)self delegate];
+    [delegate badgeVisibilityDidChange:self];
   }
 }
 
@@ -1166,11 +1166,11 @@ LABEL_13:
   return v6;
 }
 
-- (void)_performEditsIfAllowedOnAsset:(id)a3 edits:(id)a4
+- (void)_performEditsIfAllowedOnAsset:(id)asset edits:(id)edits
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  assetCopy = asset;
+  editsCopy = edits;
+  v8 = assetCopy;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v9 = v8;
@@ -1181,8 +1181,8 @@ LABEL_13:
     v9 = 0;
   }
 
-  v10 = [v9 isSpatialMedia];
-  if (v10)
+  isSpatialMedia = [v9 isSpatialMedia];
+  if (isSpatialMedia)
   {
     v11 = MEMORY[0x1E69DC650];
     v12 = PELocalizedString();
@@ -1195,7 +1195,7 @@ LABEL_13:
     v23[1] = 3221225472;
     v23[2] = __65__PUBadgeTileViewController__performEditsIfAllowedOnAsset_edits___block_invoke;
     v23[3] = &unk_1E7B80980;
-    v17 = v7;
+    v17 = editsCopy;
     v24 = v17;
     v18 = [v15 actionWithTitle:v16 style:0 handler:v23];
     [v14 addAction:v18];
@@ -1207,8 +1207,8 @@ LABEL_13:
 
     if (self->_delegateRespondsTo.presentViewController)
     {
-      v22 = [(PUBadgeTileViewController *)self delegate];
-      [v22 badgeTileViewController:self presentViewController:v14];
+      delegate = [(PUBadgeTileViewController *)self delegate];
+      [delegate badgeTileViewController:self presentViewController:v14];
     }
 
     else
@@ -1219,7 +1219,7 @@ LABEL_13:
 
   else
   {
-    v7[2](v7);
+    editsCopy[2](editsCopy);
   }
 }
 
@@ -1245,25 +1245,25 @@ void __65__PUBadgeTileViewController__performEditsIfAllowedOnAsset_edits___block
   }
 }
 
-- (void)_toggleDepthForAsset:(id)a3 enable:(BOOL)a4 undoManager:(id)a5
+- (void)_toggleDepthForAsset:(id)asset enable:(BOOL)enable undoManager:(id)manager
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  assetCopy = asset;
+  managerCopy = manager;
+  if (!assetCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUBadgeTileViewController.m" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBadgeTileViewController.m" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __69__PUBadgeTileViewController__toggleDepthForAsset_enable_undoManager___block_invoke;
   v14[3] = &unk_1E7B805E8;
-  v17 = a4;
-  v15 = v9;
-  v16 = v10;
-  v11 = v10;
-  v12 = v9;
+  enableCopy = enable;
+  v15 = assetCopy;
+  v16 = managerCopy;
+  v11 = managerCopy;
+  v12 = assetCopy;
   [(PUBadgeTileViewController *)self _performEditsIfAllowedOnAsset:v12 edits:v14];
 }
 
@@ -1318,21 +1318,21 @@ void __69__PUBadgeTileViewController__toggleDepthForAsset_enable_undoManager___b
   }
 }
 
-- (void)disableLivePhotoForAsset:(id)a3 undoManager:(id)a4
+- (void)disableLivePhotoForAsset:(id)asset undoManager:(id)manager
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 canPlayPhotoIris])
+  assetCopy = asset;
+  managerCopy = manager;
+  if ([assetCopy canPlayPhotoIris])
   {
     v7 = *MEMORY[0x1E69C3FD0];
-    v8 = [MEMORY[0x1E69C3360] sharedManager];
+    mEMORY[0x1E69C3360] = [MEMORY[0x1E69C3360] sharedManager];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __66__PUBadgeTileViewController_disableLivePhotoForAsset_undoManager___block_invoke;
     v11[3] = &unk_1E7B80280;
-    v12 = v5;
-    v9 = [v8 performEditOperationWithType:v7 asset:v12 undoManager:v6 completionHandler:v11];
+    v12 = assetCopy;
+    v9 = [mEMORY[0x1E69C3360] performEditOperationWithType:v7 asset:v12 undoManager:managerCopy completionHandler:v11];
 
     v10 = v12;
   }
@@ -1343,7 +1343,7 @@ void __69__PUBadgeTileViewController__toggleDepthForAsset_enable_undoManager___b
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v5;
+      v14 = assetCopy;
       _os_log_impl(&dword_1B36F3000, v10, OS_LOG_TYPE_DEFAULT, "User selected Live Photo Off for asset %@, but it is already off. No-op.", buf, 0xCu);
     }
   }
@@ -1378,18 +1378,18 @@ void __66__PUBadgeTileViewController_disableLivePhotoForAsset_undoManager___bloc
   }
 }
 
-- (void)applyLivePhotoEffect:(int64_t)a3 toAsset:(id)a4 undoManager:(id)a5
+- (void)applyLivePhotoEffect:(int64_t)effect toAsset:(id)asset undoManager:(id)manager
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  assetCopy = asset;
+  managerCopy = manager;
+  if (!assetCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUBadgeTileViewController.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBadgeTileViewController.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  if ([v9 canPlayPhotoIris] && (v11 = PFMetadataPlaybackVariationFromPXAssetVariation(), v11 == objc_msgSend(v9, "playbackVariation")))
+  if ([assetCopy canPlayPhotoIris] && (v11 = PFMetadataPlaybackVariationFromPXAssetVariation(), v11 == objc_msgSend(assetCopy, "playbackVariation")))
   {
     v12 = PLOneUpGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1398,7 +1398,7 @@ void __66__PUBadgeTileViewController_disableLivePhotoForAsset_undoManager___bloc
       *buf = 138412546;
       v23 = v13;
       v24 = 2112;
-      v25 = v9;
+      v25 = assetCopy;
       _os_log_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_DEFAULT, "User selected variation %@ for asset %@, but it is already applied. No-op.", buf, 0x16u);
     }
   }
@@ -1409,13 +1409,13 @@ void __66__PUBadgeTileViewController_disableLivePhotoForAsset_undoManager___bloc
     aBlock[1] = 3221225472;
     aBlock[2] = __70__PUBadgeTileViewController_applyLivePhotoEffect_toAsset_undoManager___block_invoke;
     aBlock[3] = &unk_1E7B7F350;
-    v21 = a3;
-    v14 = v9;
+    effectCopy = effect;
+    v14 = assetCopy;
     v19 = v14;
-    v20 = v10;
+    v20 = managerCopy;
     v15 = _Block_copy(aBlock);
     v16 = v15;
-    if (a3)
+    if (effect)
     {
       [(PUBadgeTileViewController *)self _performEditsIfAllowedOnAsset:v14 edits:v15];
     }
@@ -1486,22 +1486,22 @@ uint64_t __56__PUBadgeTileViewController__adjustmentDataLoadingQueue__block_invo
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (void)_configureBadgeView:(id)a3 withBadgeInfo:(PXAssetBadgeInfo *)a4 isOverContent:(BOOL)a5 contentWidth:(double)a6 animated:(BOOL)a7
++ (void)_configureBadgeView:(id)view withBadgeInfo:(PXAssetBadgeInfo *)info isOverContent:(BOOL)content contentWidth:(double)width animated:(BOOL)animated
 {
-  v7 = a7;
-  v11 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
-  v12 = *&a4->count;
-  v16 = *&a4->badges;
+  v12 = *&info->count;
+  v16 = *&info->badges;
   v17 = v12;
   v14[2] = __99__PUBadgeTileViewController__configureBadgeView_withBadgeInfo_isOverContent_contentWidth_animated___block_invoke;
   v14[3] = &unk_1E7B75A30;
-  v15 = v11;
-  v19 = a5;
-  v18 = a6;
-  v13 = v11;
-  [v13 performChanges:v14 animated:v7];
+  v15 = viewCopy;
+  contentCopy = content;
+  widthCopy = width;
+  v13 = viewCopy;
+  [v13 performChanges:v14 animated:animatedCopy];
 }
 
 uint64_t __99__PUBadgeTileViewController__configureBadgeView_withBadgeInfo_isOverContent_contentWidth_animated___block_invoke(uint64_t a1)
@@ -1516,15 +1516,15 @@ uint64_t __99__PUBadgeTileViewController__configureBadgeView_withBadgeInfo_isOve
   return [*(a1 + 32) setContentWidth:*(a1 + 72)];
 }
 
-+ (CGSize)leadingBadgesSizeForAssetViewModel:(id)a3 contentWidth:(double)a4
++ (CGSize)leadingBadgesSizeForAssetViewModel:(id)model contentWidth:(double)width
 {
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 badgeInfoPromise];
-  v6 = v5;
-  if (v5)
+  badgeInfoPromise = [model badgeInfoPromise];
+  v6 = badgeInfoPromise;
+  if (badgeInfoPromise)
   {
-    [v5 badgeInfo];
+    [badgeInfoPromise badgeInfo];
   }
 
   else
@@ -1540,21 +1540,21 @@ uint64_t __99__PUBadgeTileViewController__configureBadgeView_withBadgeInfo_isOve
   [MEMORY[0x1E69C44B8] topLeftPrimaryBadgeInfoForBadgeInfo:&v9];
   v9 = v11;
   v10 = v12;
-  [MEMORY[0x1E69C3BE0] sizeForBadgeInfo:&v9 contentWidth:a4];
+  [MEMORY[0x1E69C3BE0] sizeForBadgeInfo:&v9 contentWidth:width];
   result.height = v8;
   result.width = v7;
   return result;
 }
 
-+ (CGSize)badgeTileSizeForAssetViewModel:(id)a3 contentWidth:(double)a4
++ (CGSize)badgeTileSizeForAssetViewModel:(id)model contentWidth:(double)width
 {
   v10 = 0u;
   v11 = 0u;
-  v5 = [a3 badgeInfoPromise];
-  v6 = v5;
-  if (v5)
+  badgeInfoPromise = [model badgeInfoPromise];
+  v6 = badgeInfoPromise;
+  if (badgeInfoPromise)
   {
-    [v5 badgeInfo];
+    [badgeInfoPromise badgeInfo];
   }
 
   else
@@ -1565,37 +1565,37 @@ uint64_t __99__PUBadgeTileViewController__configureBadgeView_withBadgeInfo_isOve
 
   v9[0] = v10;
   v9[1] = v11;
-  [MEMORY[0x1E69C3BE0] sizeForBadgeInfo:v9 contentWidth:a4];
+  [MEMORY[0x1E69C3BE0] sizeForBadgeInfo:v9 contentWidth:width];
   result.height = v8;
   result.width = v7;
   return result;
 }
 
-+ (void)_logEffectNameApplied:(id)a3 toAsset:(id)a4
++ (void)_logEffectNameApplied:(id)applied toAsset:(id)asset
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  appliedCopy = applied;
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PUBadgeTileViewController.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBadgeTileViewController.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.photos.CPAnalytics.oneUpLivePhoto%@EffectSuggestionApplied", v7];
+  appliedCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.photos.CPAnalytics.oneUpLivePhoto%@EffectSuggestionApplied", appliedCopy];
   v10 = MEMORY[0x1E6991F28];
   v13 = *MEMORY[0x1E6991E18];
-  v14[0] = v8;
+  v14[0] = assetCopy;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  [v10 sendEvent:v9 withPayload:v11];
+  [v10 sendEvent:appliedCopy withPayload:v11];
 }
 
-+ (void)logToggledDepthEffect:(BOOL)a3 onAsset:(id)a4
++ (void)logToggledDepthEffect:(BOOL)effect onAsset:(id)asset
 {
-  v4 = a3;
-  v7 = a4;
+  effectCopy = effect;
+  assetCopy = asset;
   v5 = objc_opt_class();
-  if (v4)
+  if (effectCopy)
   {
     v6 = @"DepthOn";
   }
@@ -1605,15 +1605,15 @@ uint64_t __99__PUBadgeTileViewController__configureBadgeView_withBadgeInfo_isOve
     v6 = @"DepthOff";
   }
 
-  [v5 _logEffectNameApplied:v6 toAsset:v7];
+  [v5 _logEffectNameApplied:v6 toAsset:assetCopy];
 }
 
-+ (void)logAppliedLivePhotoEffect:(int64_t)a3 toAsset:(id)a4
++ (void)logAppliedLivePhotoEffect:(int64_t)effect toAsset:(id)asset
 {
-  v4 = a4;
+  assetCopy = asset;
   v5 = objc_opt_class();
   v6 = PXAssetVariationTypeDescription();
-  [v5 _logEffectNameApplied:v6 toAsset:v4];
+  [v5 _logEffectNameApplied:v6 toAsset:assetCopy];
 }
 
 @end

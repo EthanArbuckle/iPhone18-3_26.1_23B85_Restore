@@ -1,15 +1,15 @@
 @interface DaemonFetchController
 + (OS_os_log)log;
-- (DaemonFetchController)initWithAccountsProvider:(id)a3 favoritesPersistence:(id)a4 hookRegistry:(id)a5;
+- (DaemonFetchController)initWithAccountsProvider:(id)provider favoritesPersistence:(id)persistence hookRegistry:(id)registry;
 - (id)diagnosticInformation;
 - (id)visibleMailboxes;
-- (void)_autoFetchProcessFinished:(id)a3;
-- (void)accountsAdded:(id)a3;
-- (void)downloadMessageBodiesWithCompletion:(id)a3;
-- (void)fetchSchedulerDidTrigger:(id)a3;
+- (void)_autoFetchProcessFinished:(id)finished;
+- (void)accountsAdded:(id)added;
+- (void)downloadMessageBodiesWithCompletion:(id)completion;
+- (void)fetchSchedulerDidTrigger:(id)trigger;
 - (void)performFetchForOTC;
-- (void)resetPushStateWithCompletion:(id)a3;
-- (void)setSuppressedContexts:(id)a3;
+- (void)resetPushStateWithCompletion:(id)completion;
+- (void)setSuppressedContexts:(id)contexts;
 @end
 
 @implementation DaemonFetchController
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000126D4;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185518 != -1)
   {
     dispatch_once(&qword_100185518, block);
@@ -34,30 +34,30 @@
 - (id)visibleMailboxes
 {
   v2 = +[EDClientState sharedInstance];
-  v3 = [v2 visibleMailboxObjectIDs];
+  visibleMailboxObjectIDs = [v2 visibleMailboxObjectIDs];
 
-  v4 = [v3 ef_compactMap:&stru_100156B48];
+  v4 = [visibleMailboxObjectIDs ef_compactMap:&stru_100156B48];
 
   return v4;
 }
 
-- (DaemonFetchController)initWithAccountsProvider:(id)a3 favoritesPersistence:(id)a4 hookRegistry:(id)a5
+- (DaemonFetchController)initWithAccountsProvider:(id)provider favoritesPersistence:(id)persistence hookRegistry:(id)registry
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  persistenceCopy = persistence;
+  registryCopy = registry;
   v28.receiver = self;
   v28.super_class = DaemonFetchController;
-  v11 = [(DaemonFetchController *)&v28 initWithAccountsProvider:v8];
+  v11 = [(DaemonFetchController *)&v28 initWithAccountsProvider:providerCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_favoritesPersistence, a4);
+    objc_storeStrong(&v11->_favoritesPersistence, persistence);
     v13 = [[FetchXPCActivityScheduler alloc] initWithType:3 interval:v12 delegate:86400.0];
     compactScheduler = v12->_compactScheduler;
     v12->_compactScheduler = v13;
 
-    v15 = [[MFBackFillMessageBodyScheduler alloc] initWithAccountsProvider:v8];
+    v15 = [[MFBackFillMessageBodyScheduler alloc] initWithAccountsProvider:providerCopy];
     backFillScheduler = v12->_backFillScheduler;
     v12->_backFillScheduler = v15;
 
@@ -77,27 +77,27 @@
     v25[2] = sub_100012988;
     v25[3] = &unk_1001563D8;
     v26 = v12;
-    v27 = v10;
+    v27 = registryCopy;
     dispatch_async(v23, v25);
   }
 
   return v12;
 }
 
-- (void)fetchSchedulerDidTrigger:(id)a3
+- (void)fetchSchedulerDidTrigger:(id)trigger
 {
-  v4 = a3;
-  -[DaemonFetchController performFetchOfType:](self, "performFetchOfType:", sub_100012D0C(self, [v4 schedulerType]));
+  triggerCopy = trigger;
+  -[DaemonFetchController performFetchOfType:](self, "performFetchOfType:", sub_100012D0C(self, [triggerCopy schedulerType]));
 }
 
-- (void)accountsAdded:(id)a3
+- (void)accountsAdded:(id)added
 {
-  v4 = a3;
-  v5 = [v4 ef_filter:&stru_100156A38];
+  addedCopy = added;
+  v5 = [addedCopy ef_filter:&stru_100156A38];
   v6 = +[DaemonFetchController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 count]);
+    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [addedCopy count]);
     sub_1000D1198(v7, buf, v6);
   }
 
@@ -116,42 +116,42 @@
   dispatch_after(v8, self, block);
 }
 
-- (void)downloadMessageBodiesWithCompletion:(id)a3
+- (void)downloadMessageBodiesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[MFMessageBodyProcessor powernapProcessor];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100013F38;
   v6[3] = &unk_100156B28;
-  v5 = v3;
+  v5 = completionCopy;
   v7 = v5;
   [v4 runWithCompletion:v6];
 }
 
-- (void)resetPushStateWithCompletion:(id)a3
+- (void)resetPushStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v3 = +[AutoFetchController sharedController];
-  [v3 resetPushStateWithCompletion:v4];
+  [v3 resetPushStateWithCompletion:completionCopy];
 }
 
-- (void)setSuppressedContexts:(id)a3
+- (void)setSuppressedContexts:(id)contexts
 {
-  v4 = a3;
+  contextsCopy = contexts;
   v3 = +[AutoFetchController sharedController];
-  [v3 setSuppressedContexts:v4];
+  [v3 setSuppressedContexts:contextsCopy];
 }
 
 - (id)diagnosticInformation
 {
   v2 = +[AutoFetchController sharedController];
-  v3 = [v2 diagnosticInformation];
+  diagnosticInformation = [v2 diagnosticInformation];
 
-  return v3;
+  return diagnosticInformation;
 }
 
-- (void)_autoFetchProcessFinished:(id)a3
+- (void)_autoFetchProcessFinished:(id)finished
 {
   v4 = +[DaemonFetchController log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

@@ -1,15 +1,15 @@
 @interface PriceTrackingServiceFactory
-- (void)deleteCloudDataWithCompletion:(id)a3;
+- (void)deleteCloudDataWithCompletion:(id)completion;
 @end
 
 @implementation PriceTrackingServiceFactory
 
-- (void)deleteCloudDataWithCompletion:(id)a3
+- (void)deleteCloudDataWithCompletion:(id)completion
 {
   v5 = sub_1001F1160(&qword_100AD67D0);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;

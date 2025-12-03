@@ -4,15 +4,15 @@
 - (UIViewController)targetViewController;
 - (void)_signalPresentationComplete;
 - (void)cancelActiveConfiguration;
-- (void)configureAccessory:(id)a3 withConfigurationUIOnViewController:(id)a4;
-- (void)didFindNewUnconfiguredAccessories:(id)a3 andRemovedUnconfiguredAccessories:(id)a4;
+- (void)configureAccessory:(id)accessory withConfigurationUIOnViewController:(id)controller;
+- (void)didFindNewUnconfiguredAccessories:(id)accessories andRemovedUnconfiguredAccessories:(id)unconfiguredAccessories;
 - (void)openHomeAppForConfiguration;
-- (void)openURL:(id)a3;
+- (void)openURL:(id)l;
 - (void)purgeAccessoriesSet;
 - (void)setup;
 - (void)startSearchingForUnconfiguredAccessories;
 - (void)stopSearchingForUnconfiguredAccessories;
-- (void)updateState:(int64_t)a3;
+- (void)updateState:(int64_t)state;
 - (void)wifiDidShutdown;
 @end
 
@@ -63,13 +63,13 @@
   v5 = v31;
   [(EAWiFiUnconfiguredAccessoryBrowserManager *)self setExtension:v4];
 
-  v6 = [(EAWiFiUnconfiguredAccessoryBrowserManager *)self extension];
-  LODWORD(v4) = v6 == 0;
+  extension = [(EAWiFiUnconfiguredAccessoryBrowserManager *)self extension];
+  LODWORD(v4) = extension == 0;
 
   if (v4)
   {
-    v7 = [v5 localizedDescription];
-    [NSException raise:@"Unable to load WAC UI extension" format:@"Unable to load WAC UI extension: %@", v7];
+    localizedDescription = [v5 localizedDescription];
+    [NSException raise:@"Unable to load WAC UI extension" format:@"Unable to load WAC UI extension: %@", localizedDescription];
   }
 
   if (self->__debugLog)
@@ -98,8 +98,8 @@
   v24 = debugLog;
   objc_copyWeak(&v23, &location);
   [(NSExtension *)self->_extension setRequestInterruptionBlock:v22];
-  v8 = [(EAWiFiUnconfiguredAccessoryBrowserManager *)self currentRequestIdentifier];
-  v9 = v8 == 0;
+  currentRequestIdentifier = [(EAWiFiUnconfiguredAccessoryBrowserManager *)self currentRequestIdentifier];
+  v9 = currentRequestIdentifier == 0;
 
   if (v9)
   {
@@ -222,19 +222,19 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)configureAccessory:(id)a3 withConfigurationUIOnViewController:(id)a4
+- (void)configureAccessory:(id)accessory withConfigurationUIOnViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  controllerCopy = controller;
   if (self->__debugLog)
   {
-    NSLog(@"### WAC: BrowserManager: configureAccessory: self %@:  accessory: %@", self, v6);
+    NSLog(@"### WAC: BrowserManager: configureAccessory: self %@:  accessory: %@", self, accessoryCopy);
   }
 
   objc_initWeak(&location, self);
   accessoryToDeviceID = self->__accessoryToDeviceID;
-  v9 = [v6 macAddress];
-  v10 = [(NSMutableDictionary *)accessoryToDeviceID objectForKey:v9];
+  macAddress = [accessoryCopy macAddress];
+  v10 = [(NSMutableDictionary *)accessoryToDeviceID objectForKey:macAddress];
 
   debugLog = self->__debugLog;
   if (v10)
@@ -253,11 +253,11 @@
     objc_copyWeak(&v28, &location);
     v14 = &v26;
     v15 = v27;
-    v26 = v6;
-    v27[0] = v7;
+    v26 = accessoryCopy;
+    v27[0] = controllerCopy;
     v27[1] = self;
-    v16 = v7;
-    v17 = v6;
+    v16 = controllerCopy;
+    v17 = accessoryCopy;
     v18 = v25;
   }
 
@@ -277,11 +277,11 @@
     objc_copyWeak(&v24, &location);
     v14 = &v22;
     v15 = v23;
-    v22 = v6;
-    v23[0] = v7;
+    v22 = accessoryCopy;
+    v23[0] = controllerCopy;
     v23[1] = self;
-    v19 = v7;
-    v20 = v6;
+    v19 = controllerCopy;
+    v20 = accessoryCopy;
     v18 = block;
   }
 
@@ -291,10 +291,10 @@
   objc_destroyWeak(&location);
 }
 
-- (void)didFindNewUnconfiguredAccessories:(id)a3 andRemovedUnconfiguredAccessories:(id)a4
+- (void)didFindNewUnconfiguredAccessories:(id)accessories andRemovedUnconfiguredAccessories:(id)unconfiguredAccessories
 {
-  v42 = a3;
-  v6 = a4;
+  accessoriesCopy = accessories;
+  unconfiguredAccessoriesCopy = unconfiguredAccessories;
   if (!self->__accessories)
   {
     v7 = objc_alloc_init(NSMutableSet);
@@ -315,7 +315,7 @@
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v6;
+  obj = unconfiguredAccessoriesCopy;
   v12 = [obj countByEnumeratingWithState:&v57 objects:v63 count:16];
   if (v12)
   {
@@ -369,8 +369,8 @@
                 v24 = *(*(&v53 + 1) + 8 * i);
                 [(NSMutableSet *)self->__accessories removeObject:v24];
                 v25 = self->__accessoryToDeviceID;
-                v26 = [v24 macAddress];
-                [(NSMutableDictionary *)v25 removeObjectForKey:v26];
+                macAddress = [v24 macAddress];
+                [(NSMutableDictionary *)v25 removeObjectForKey:macAddress];
 
                 [v11 addObject:v24];
               }
@@ -399,7 +399,7 @@
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v48 = v42;
+  v48 = accessoriesCopy;
   v27 = [v48 countByEnumeratingWithState:&v49 objects:v61 count:16];
   v28 = v46;
   if (v27)
@@ -427,10 +427,10 @@
         if ([v34 BOOLValue])
         {
           v35 = [v32 objectForKey:@"wacSupportsSecureWAC"];
-          v36 = [v35 BOOLValue];
+          bOOLValue = [v35 BOOLValue];
 
           v28 = v46;
-          if (!v36)
+          if (!bOOLValue)
           {
             goto LABEL_35;
           }
@@ -442,8 +442,8 @@
 
           v37 = self->__accessoryToDeviceID;
           v34 = [v32 objectForKey:@"wacDeviceID"];
-          v38 = [v33 macAddress];
-          [(NSMutableDictionary *)v37 setValue:v34 forKey:v38];
+          macAddress2 = [v33 macAddress];
+          [(NSMutableDictionary *)v37 setValue:v34 forKey:macAddress2];
 
           v28 = v46;
         }
@@ -477,15 +477,15 @@ LABEL_35:
   }
 }
 
-- (void)updateState:(int64_t)a3
+- (void)updateState:(int64_t)state
 {
   [(EAWiFiUnconfiguredAccessoryBrowserManager *)self setCurrentBrowserState:?];
   if (self->__debugLog)
   {
-    NSLog(@"### WAC: %s:%d state: %d", "[EAWiFiUnconfiguredAccessoryBrowserManager updateState:]", 502, a3);
+    NSLog(@"### WAC: %s:%d state: %d", "[EAWiFiUnconfiguredAccessoryBrowserManager updateState:]", 502, state);
   }
 
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:state];
   v7 = [NSDictionary dictionaryWithObject:v5 forKey:@"EAWiFiUnconfiguredAccessoryBrowserState"];
 
   v6 = +[NSNotificationCenter defaultCenter];
@@ -529,29 +529,29 @@ LABEL_35:
 {
   if (self->__debugLog)
   {
-    v3 = [(EAWiFiUnconfiguredAccessoryBrowserManager *)self unconfiguredDeviceID];
-    NSLog(@"%s: (id: %@)", "[EAWiFiUnconfiguredAccessoryBrowserManager openHomeAppForConfiguration]", v3);
+    unconfiguredDeviceID = [(EAWiFiUnconfiguredAccessoryBrowserManager *)self unconfiguredDeviceID];
+    NSLog(@"%s: (id: %@)", "[EAWiFiUnconfiguredAccessoryBrowserManager openHomeAppForConfiguration]", unconfiguredDeviceID);
   }
 
   v4 = [NSURL URLWithString:@"com.apple.Home://reprovisionDevice/"];
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(EAWiFiUnconfiguredAccessoryBrowserManager *)self unconfiguredDeviceID];
-  v7 = [v6 length];
+  unconfiguredDeviceID2 = [(EAWiFiUnconfiguredAccessoryBrowserManager *)self unconfiguredDeviceID];
+  v7 = [unconfiguredDeviceID2 length];
 
   if (v7 >= 1)
   {
     for (i = 0; i < v7; i += 2)
     {
-      v9 = [(EAWiFiUnconfiguredAccessoryBrowserManager *)self unconfiguredDeviceID];
-      v10 = [v9 substringWithRange:{i, 2}];
+      unconfiguredDeviceID3 = [(EAWiFiUnconfiguredAccessoryBrowserManager *)self unconfiguredDeviceID];
+      v10 = [unconfiguredDeviceID3 substringWithRange:{i, 2}];
       [v5 addObject:v10];
     }
   }
 
   v11 = [v5 componentsJoinedByString:@":"];
-  v12 = [v11 uppercaseString];
+  uppercaseString = [v11 uppercaseString];
 
-  v13 = [v4 URLByAppendingPathComponent:v12];
+  v13 = [v4 URLByAppendingPathComponent:uppercaseString];
 
   if (self->__debugLog)
   {
@@ -561,13 +561,13 @@ LABEL_35:
   [(EAWiFiUnconfiguredAccessoryBrowserManager *)self openURL:v13];
 }
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
+  lCopy = l;
+  v5 = lCopy;
   if (self->__debugLog)
   {
-    NSLog(@"%s: launchURL: %@", "[EAWiFiUnconfiguredAccessoryBrowserManager openURL:]", v4);
+    NSLog(@"%s: launchURL: %@", "[EAWiFiUnconfiguredAccessoryBrowserManager openURL:]", lCopy);
   }
 
   v6 = objc_alloc_init(_LSOpenConfiguration);
@@ -578,7 +578,7 @@ LABEL_35:
   v9[2] = sub_3520;
   v9[3] = &unk_84D8;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v8 = v5;
   [v7 openURL:v8 configuration:v6 completionHandler:v9];
 }

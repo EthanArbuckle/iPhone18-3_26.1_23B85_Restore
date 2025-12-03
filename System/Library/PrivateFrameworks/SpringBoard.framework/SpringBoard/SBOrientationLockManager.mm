@@ -1,25 +1,25 @@
 @interface SBOrientationLockManager
 + (SBOrientationLockManager)sharedInstance;
 - (SBOrientationLockManager)init;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)deviceOrientationAsFarAsAppsAreConcerned;
 - (int64_t)effectiveLockedOrientation;
-- (void)_addLockOverrideReason:(id)a3 orientation:(int64_t)a4 force:(BOOL)a5;
-- (void)_beginShimmingForReason:(id)a3;
-- (void)_endShimmingForReason:(id)a3;
+- (void)_addLockOverrideReason:(id)reason orientation:(int64_t)orientation force:(BOOL)force;
+- (void)_beginShimmingForReason:(id)reason;
+- (void)_endShimmingForReason:(id)reason;
 - (void)_handler_runLoopObserverDispose;
-- (void)_removeLockOverrideReason:(id)a3;
-- (void)_setupRunLoopObserverIfNecessaryForOrientation:(int64_t)a3 andInitialLockState:(BOOL)a4;
-- (void)_updateLockStateWithOrientation:(int64_t)a3 forceUpdateHID:(BOOL)a4 changes:(id)a5;
+- (void)_removeLockOverrideReason:(id)reason;
+- (void)_setupRunLoopObserverIfNecessaryForOrientation:(int64_t)orientation andInitialLockState:(BOOL)state;
+- (void)_updateLockStateWithOrientation:(int64_t)orientation forceUpdateHID:(BOOL)d changes:(id)changes;
 - (void)dealloc;
-- (void)enableLockOverrideForReason:(id)a3 forceOrientation:(int64_t)a4;
-- (void)enableLockOverrideForReason:(id)a3 suggestOrientation:(int64_t)a4;
+- (void)enableLockOverrideForReason:(id)reason forceOrientation:(int64_t)orientation;
+- (void)enableLockOverrideForReason:(id)reason suggestOrientation:(int64_t)orientation;
 - (void)lock;
-- (void)lock:(int64_t)a3;
+- (void)lock:(int64_t)lock;
 - (void)restoreStateFromPrefs;
-- (void)setLockOverrideEnabled:(BOOL)a3 forReason:(id)a4;
+- (void)setLockOverrideEnabled:(BOOL)enabled forReason:(id)reason;
 - (void)unlock;
 - (void)updateLockOverrideForCurrentDeviceOrientation;
 @end
@@ -47,13 +47,13 @@
 - (void)restoreStateFromPrefs
 {
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 rotationDefaults];
-  v5 = [v4 lastLockedOrientation];
+  rotationDefaults = [v3 rotationDefaults];
+  lastLockedOrientation = [rotationDefaults lastLockedOrientation];
 
-  if (v5 && v5 != self->_userLockedOrientation)
+  if (lastLockedOrientation && lastLockedOrientation != self->_userLockedOrientation)
   {
 
-    [(SBOrientationLockManager *)self lock:v5];
+    [(SBOrientationLockManager *)self lock:lastLockedOrientation];
   }
 }
 
@@ -68,9 +68,9 @@
     lockOverrideReasons = v2->_lockOverrideReasons;
     v2->_lockOverrideReasons = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     shimmedDeviceOrientationAssertions = v2->_shimmedDeviceOrientationAssertions;
-    v2->_shimmedDeviceOrientationAssertions = v5;
+    v2->_shimmedDeviceOrientationAssertions = dictionary;
   }
 
   return v2;
@@ -91,7 +91,7 @@
 
 - (void)lock
 {
-  v3 = [*MEMORY[0x277D76620] activeInterfaceOrientation];
+  activeInterfaceOrientation = [*MEMORY[0x277D76620] activeInterfaceOrientation];
   if (__sb__runningInSpringBoard())
   {
     v4 = SBFEffectiveDeviceClass() == 2;
@@ -99,13 +99,13 @@
 
   else
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v5 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v4 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   if (v4)
   {
-    v6 = v3;
+    v6 = activeInterfaceOrientation;
   }
 
   else
@@ -116,18 +116,18 @@
   [(SBOrientationLockManager *)self lock:v6];
 }
 
-- (void)lock:(int64_t)a3
+- (void)lock:(int64_t)lock
 {
-  [(SBOrientationLockManager *)self _updateLockStateWithOrientation:MEMORY[0x277D85DD0] forceUpdateHID:3221225472 changes:__33__SBOrientationLockManager_lock___block_invoke, &unk_2783A8BC8, self, a3];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:*MEMORY[0x277D67A98] object:self];
+  [(SBOrientationLockManager *)self _updateLockStateWithOrientation:MEMORY[0x277D85DD0] forceUpdateHID:3221225472 changes:__33__SBOrientationLockManager_lock___block_invoke, &unk_2783A8BC8, self, lock];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D67A98] object:self];
 
   v6 = +[SBDefaults localDefaults];
-  v7 = [v6 rotationDefaults];
+  rotationDefaults = [v6 rotationDefaults];
 
-  if ([v7 lastLockedOrientation] != a3)
+  if ([rotationDefaults lastLockedOrientation] != lock)
   {
-    [v7 setLastLockedOrientation:self->_userLockedOrientation];
+    [rotationDefaults setLastLockedOrientation:self->_userLockedOrientation];
   }
 }
 
@@ -159,12 +159,12 @@ void __33__SBOrientationLockManager_lock___block_invoke(uint64_t a1)
   v6[3] = &unk_2783A8C18;
   v6[4] = self;
   [(SBOrientationLockManager *)self _updateLockStateWithChanges:v6];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:*MEMORY[0x277D67A98] object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D67A98] object:self];
 
   v4 = +[SBDefaults localDefaults];
-  v5 = [v4 rotationDefaults];
-  [v5 setLastLockedOrientation:0];
+  rotationDefaults = [v4 rotationDefaults];
+  [rotationDefaults setLastLockedOrientation:0];
 }
 
 void __34__SBOrientationLockManager_unlock__block_invoke(uint64_t a1)
@@ -203,20 +203,20 @@ void __34__SBOrientationLockManager_unlock__block_invoke(uint64_t a1)
   result = self->_userLockedOrientation;
   if (!result)
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 orientation];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    orientation = [currentDevice orientation];
 
-    return v4;
+    return orientation;
   }
 
   return result;
 }
 
-- (void)_addLockOverrideReason:(id)a3 orientation:(int64_t)a4 force:(BOOL)a5
+- (void)_addLockOverrideReason:(id)reason orientation:(int64_t)orientation force:(BOOL)force
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (([(NSMutableSet *)self->_lockOverrideReasons containsObject:v6]& 1) == 0)
+  reasonCopy = reason;
+  if (([(NSMutableSet *)self->_lockOverrideReasons containsObject:reasonCopy]& 1) == 0)
   {
     v7 = BKLogOrientationGlobal();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -224,7 +224,7 @@ void __34__SBOrientationLockManager_unlock__block_invoke(uint64_t a1)
       v8 = BSInterfaceOrientationDescription();
       v9 = NSStringFromBOOL();
       v10 = 138543874;
-      v11 = v6;
+      v11 = reasonCopy;
       v12 = 2114;
       v13 = v8;
       v14 = 2114;
@@ -233,38 +233,38 @@ void __34__SBOrientationLockManager_unlock__block_invoke(uint64_t a1)
     }
   }
 
-  [(NSMutableSet *)self->_lockOverrideReasons addObject:v6];
+  [(NSMutableSet *)self->_lockOverrideReasons addObject:reasonCopy];
 }
 
-- (void)_removeLockOverrideReason:(id)a3
+- (void)_removeLockOverrideReason:(id)reason
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(NSMutableSet *)self->_lockOverrideReasons containsObject:v4])
+  reasonCopy = reason;
+  if ([(NSMutableSet *)self->_lockOverrideReasons containsObject:reasonCopy])
   {
     v5 = BKLogOrientationGlobal();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = v4;
+      v7 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Disabling global orientation lock override for reason: %{public}@", &v6, 0xCu);
     }
   }
 
-  [(NSMutableSet *)self->_lockOverrideReasons removeObject:v4];
+  [(NSMutableSet *)self->_lockOverrideReasons removeObject:reasonCopy];
 }
 
-- (void)setLockOverrideEnabled:(BOOL)a3 forReason:(id)a4
+- (void)setLockOverrideEnabled:(BOOL)enabled forReason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__SBOrientationLockManager_setLockOverrideEnabled_forReason___block_invoke;
   v8[3] = &unk_2783A97D8;
-  v10 = a3;
+  enabledCopy = enabled;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = reasonCopy;
+  v7 = reasonCopy;
   [(SBOrientationLockManager *)self _updateLockStateWithChanges:v8];
 }
 
@@ -284,55 +284,55 @@ uint64_t __61__SBOrientationLockManager_setLockOverrideEnabled_forReason___block
   }
 }
 
-- (void)enableLockOverrideForReason:(id)a3 suggestOrientation:(int64_t)a4
+- (void)enableLockOverrideForReason:(id)reason suggestOrientation:(int64_t)orientation
 {
-  v6 = a3;
+  reasonCopy = reason;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __75__SBOrientationLockManager_enableLockOverrideForReason_suggestOrientation___block_invoke;
   v8[3] = &unk_2783AB2A8;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
-  [(SBOrientationLockManager *)self _updateLockStateWithOrientation:a4 forceUpdateHID:0 changes:v8];
+  v9 = reasonCopy;
+  orientationCopy = orientation;
+  v7 = reasonCopy;
+  [(SBOrientationLockManager *)self _updateLockStateWithOrientation:orientation forceUpdateHID:0 changes:v8];
 }
 
-- (void)enableLockOverrideForReason:(id)a3 forceOrientation:(int64_t)a4
+- (void)enableLockOverrideForReason:(id)reason forceOrientation:(int64_t)orientation
 {
-  v6 = a3;
+  reasonCopy = reason;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__SBOrientationLockManager_enableLockOverrideForReason_forceOrientation___block_invoke;
   v8[3] = &unk_2783AB2A8;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
-  [(SBOrientationLockManager *)self _updateLockStateWithOrientation:a4 forceUpdateHID:1 changes:v8];
+  v9 = reasonCopy;
+  orientationCopy = orientation;
+  v7 = reasonCopy;
+  [(SBOrientationLockManager *)self _updateLockStateWithOrientation:orientation forceUpdateHID:1 changes:v8];
 }
 
-- (void)_beginShimmingForReason:(id)a3
+- (void)_beginShimmingForReason:(id)reason
 {
-  v7 = a3;
+  reasonCopy = reason;
   v4 = [(NSMutableDictionary *)self->_shimmedDeviceOrientationAssertions objectForKey:?];
   if (!v4)
   {
     shimmedDeviceOrientationAssertions = self->_shimmedDeviceOrientationAssertions;
-    v6 = [SBApp deviceOrientationUpdateDeferralAssertionWithReason:v7];
-    [(NSMutableDictionary *)shimmedDeviceOrientationAssertions setObject:v6 forKey:v7];
+    v6 = [SBApp deviceOrientationUpdateDeferralAssertionWithReason:reasonCopy];
+    [(NSMutableDictionary *)shimmedDeviceOrientationAssertions setObject:v6 forKey:reasonCopy];
   }
 }
 
-- (void)_endShimmingForReason:(id)a3
+- (void)_endShimmingForReason:(id)reason
 {
-  v6 = a3;
+  reasonCopy = reason;
   v4 = [(NSMutableDictionary *)self->_shimmedDeviceOrientationAssertions objectForKey:?];
   v5 = v4;
   if (v4)
   {
     [v4 invalidate];
-    [(NSMutableDictionary *)self->_shimmedDeviceOrientationAssertions removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_shimmedDeviceOrientationAssertions removeObjectForKey:reasonCopy];
   }
 }
 
@@ -347,29 +347,29 @@ uint64_t __61__SBOrientationLockManager_setLockOverrideEnabled_forReason___block
   }
 }
 
-- (void)_updateLockStateWithOrientation:(int64_t)a3 forceUpdateHID:(BOOL)a4 changes:(id)a5
+- (void)_updateLockStateWithOrientation:(int64_t)orientation forceUpdateHID:(BOOL)d changes:(id)changes
 {
-  v5 = a4;
+  dCopy = d;
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [(SBOrientationLockManager *)self isEffectivelyLocked];
-  v9 = [(SBOrientationLockManager *)self lockOverrideEnabled];
-  if (v7)
+  changesCopy = changes;
+  isEffectivelyLocked = [(SBOrientationLockManager *)self isEffectivelyLocked];
+  lockOverrideEnabled = [(SBOrientationLockManager *)self lockOverrideEnabled];
+  if (changesCopy)
   {
-    v7[2](v7);
+    changesCopy[2](changesCopy);
   }
 
-  v10 = [(SBOrientationLockManager *)self isEffectivelyLocked];
-  v11 = [(SBOrientationLockManager *)self isUserLocked];
-  v12 = [(SBOrientationLockManager *)self lockOverrideEnabled];
+  isEffectivelyLocked2 = [(SBOrientationLockManager *)self isEffectivelyLocked];
+  isUserLocked = [(SBOrientationLockManager *)self isUserLocked];
+  lockOverrideEnabled2 = [(SBOrientationLockManager *)self lockOverrideEnabled];
   v13 = 0;
-  v14 = v8 ^ v10;
-  v27 = v8;
-  if (v11 && !v12)
+  v14 = isEffectivelyLocked ^ isEffectivelyLocked2;
+  v27 = isEffectivelyLocked;
+  if (isUserLocked && !lockOverrideEnabled2)
   {
     previousLockedOrientation = self->_previousLockedOrientation;
     userLockedOrientation = self->_userLockedOrientation;
-    v17 = !a3 && v9;
+    v17 = !orientation && lockOverrideEnabled;
     v13 = previousLockedOrientation != userLockedOrientation;
     if (previousLockedOrientation != userLockedOrientation && v17)
     {
@@ -379,12 +379,12 @@ uint64_t __61__SBOrientationLockManager_setLockOverrideEnabled_forReason___block
         [SBOrientationLockManager _updateLockStateWithOrientation:&self->_previousLockedOrientation forceUpdateHID:v18 changes:?];
       }
 
-      a3 = self->_userLockedOrientation;
+      orientation = self->_userLockedOrientation;
       v13 = 1;
     }
   }
 
-  v19 = (v10 && v5) | v14 | v13;
+  v19 = (isEffectivelyLocked2 && dCopy) | v14 | v13;
   v20 = BKLogOrientationDevice();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -393,8 +393,8 @@ uint64_t __61__SBOrientationLockManager_setLockOverrideEnabled_forReason___block
     v22 = NSStringFromBOOL();
     v23 = NSStringFromBOOL();
     v24 = BSDeviceOrientationDescription();
-    v25 = [(SBOrientationLockManager *)self lockOverrideEnabled];
-    if (v25)
+    lockOverrideEnabled3 = [(SBOrientationLockManager *)self lockOverrideEnabled];
+    if (lockOverrideEnabled3)
     {
       v26 = [(NSMutableSet *)self->_lockOverrideReasons description];
     }
@@ -415,18 +415,18 @@ uint64_t __61__SBOrientationLockManager_setLockOverrideEnabled_forReason___block
     v37 = 2114;
     v38 = v26;
     _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "SB orientation locked: %{public}@; user lock: %{public}@, was stale: %{public}@, orientation: %{public}@ overrides: %{public}@, ", buf, 0x34u);
-    if (v25)
+    if (lockOverrideEnabled3)
     {
     }
   }
 
   if (v19)
   {
-    [(SBOrientationLockManager *)self _setupRunLoopObserverIfNecessaryForOrientation:a3 andInitialLockState:v27];
+    [(SBOrientationLockManager *)self _setupRunLoopObserverIfNecessaryForOrientation:orientation andInitialLockState:v27];
   }
 }
 
-- (void)_setupRunLoopObserverIfNecessaryForOrientation:(int64_t)a3 andInitialLockState:(BOOL)a4
+- (void)_setupRunLoopObserverIfNecessaryForOrientation:(int64_t)orientation andInitialLockState:(BOOL)state
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -441,8 +441,8 @@ uint64_t __61__SBOrientationLockManager_setLockOverrideEnabled_forReason___block
     block[2] = __95__SBOrientationLockManager__setupRunLoopObserverIfNecessaryForOrientation_andInitialLockState___block_invoke;
     block[3] = &unk_2783B6B38;
     objc_copyWeak(v9, &location);
-    v10 = a4;
-    v9[1] = a3;
+    stateCopy = state;
+    v9[1] = orientation;
     block[4] = self;
     self->_runLoopObserver = CFRunLoopObserverCreateWithHandler(0, 0xA0uLL, 0, 0x7FFFFFFFLL, block);
     Main = CFRunLoopGetMain();
@@ -535,10 +535,10 @@ void __95__SBOrientationLockManager__setupRunLoopObserverIfNecessaryForOrientati
 
 - (id)succinctDescription
 {
-  v2 = [(SBOrientationLockManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBOrientationLockManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -561,20 +561,20 @@ void __95__SBOrientationLockManager__setupRunLoopObserverIfNecessaryForOrientati
 
   if ([(SBOrientationLockManager *)self lockOverrideEnabled])
   {
-    v10 = [(NSMutableSet *)self->_lockOverrideReasons allObjects];
-    v11 = [v10 componentsJoinedByString:{@", "}];
+    allObjects = [(NSMutableSet *)self->_lockOverrideReasons allObjects];
+    v11 = [allObjects componentsJoinedByString:{@", "}];
     v12 = [v3 appendObject:v11 withName:@"overrideReasons"];
   }
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBOrientationLockManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBOrientationLockManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)_updateLockStateWithOrientation:(uint64_t)a1 forceUpdateHID:(uint64_t)a2 changes:(NSObject *)a3 .cold.1(uint64_t a1, uint64_t a2, NSObject *a3)

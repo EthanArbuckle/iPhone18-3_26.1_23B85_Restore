@@ -1,48 +1,48 @@
 @interface SKUIStorePageViewController
-+ (id)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4;
-- (BOOL)performTestWithName:(id)a3 options:(id)a4;
-- (BOOL)sectionsViewController:(id)a3 showProductPageForItem:(id)a4;
-- (BOOL)sectionsViewController:(id)a3 showStorePageForURL:(id)a4;
++ (id)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder;
+- (BOOL)performTestWithName:(id)name options:(id)options;
+- (BOOL)sectionsViewController:(id)controller showProductPageForItem:(id)item;
+- (BOOL)sectionsViewController:(id)controller showStorePageForURL:(id)l;
 - (NSOperationQueue)operationQueue;
 - (SKUIStorePageDelegate)delegate;
-- (SKUIStorePageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SKUIStorePageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_colorScheme;
 - (id)_sectionsViewController;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_loadWithOperation:(id)a3 completionBlock:(id)a4;
-- (void)_metricsEnterEventNotification:(id)a3;
-- (void)_recordMetricsPageEvent:(id)a3 forStorePage:(id)a4;
+- (void)_loadWithOperation:(id)operation completionBlock:(id)block;
+- (void)_metricsEnterEventNotification:(id)notification;
+- (void)_recordMetricsPageEvent:(id)event forStorePage:(id)page;
 - (void)_reloadStorePage;
 - (void)_runPerformanceTestAfterIdle;
 - (void)_runPerformanceTestAfterPageLoad;
-- (void)_runScrollTestWithName:(id)a3 options:(id)a4;
-- (void)_setMetricsController:(id)a3;
-- (void)_setStorePage:(id)a3 error:(id)a4;
-- (void)_showProductPage:(id)a3 withPageEvent:(id)a4;
+- (void)_runScrollTestWithName:(id)name options:(id)options;
+- (void)_setMetricsController:(id)controller;
+- (void)_setStorePage:(id)page error:(id)error;
+- (void)_showProductPage:(id)page withPageEvent:(id)event;
 - (void)cancelPageLoad;
 - (void)dealloc;
-- (void)decodeRestorableStateWithCoder:(id)a3;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)encodeRestorableStateWithCoder:(id)a3;
-- (void)loadURL:(id)a3 withCompletionBlock:(id)a4;
-- (void)loadURL:(id)a3 withDataConsumer:(id)a4 completionBlock:(id)a5;
-- (void)loadURLRequest:(id)a3 withCompletionBlock:(id)a4;
-- (void)loadURLRequest:(id)a3 withDataConsumer:(id)a4 completionBlock:(id)a5;
+- (void)decodeRestorableStateWithCoder:(id)coder;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)encodeRestorableStateWithCoder:(id)coder;
+- (void)loadURL:(id)l withCompletionBlock:(id)block;
+- (void)loadURL:(id)l withDataConsumer:(id)consumer completionBlock:(id)block;
+- (void)loadURLRequest:(id)request withCompletionBlock:(id)block;
+- (void)loadURLRequest:(id)request withDataConsumer:(id)consumer completionBlock:(id)block;
 - (void)loadView;
-- (void)loadWithJSONData:(id)a3 fromOperation:(id)a4 completionBlock:(id)a5;
-- (void)sectionsViewControllerDidDismissOverlayController:(id)a3;
-- (void)setMetricsController:(id)a3;
-- (void)setRefreshControl:(id)a3;
-- (void)setStorePage:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)loadWithJSONData:(id)data fromOperation:(id)operation completionBlock:(id)block;
+- (void)sectionsViewControllerDidDismissOverlayController:(id)controller;
+- (void)setMetricsController:(id)controller;
+- (void)setRefreshControl:(id)control;
+- (void)setStorePage:(id)page;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SKUIStorePageViewController
 
-- (SKUIStorePageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKUIStorePageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIStorePageViewController initWithNibName:bundle:];
@@ -50,7 +50,7 @@
 
   v13.receiver = self;
   v13.super_class = SKUIStorePageViewController;
-  v8 = [(SKUIStorePageViewController *)&v13 initWithNibName:v6 bundle:v7];
+  v8 = [(SKUIStorePageViewController *)&v13 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     [(SKUIStorePageViewController *)v8 setRestorationClass:objc_opt_class()];
@@ -58,8 +58,8 @@
     v10 = NSStringFromClass(v9);
     [(SKUIStorePageViewController *)v8 setRestorationIdentifier:v10];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v8 selector:sel__metricsEnterEventNotification_ name:@"SKUIMetricsDidRecordEnterEventNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__metricsEnterEventNotification_ name:@"SKUIMetricsDidRecordEnterEventNotification" object:0];
   }
 
   return v8;
@@ -67,8 +67,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SKUIMetricsDidRecordEnterEventNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SKUIMetricsDidRecordEnterEventNotification" object:0];
   [(SKUIStorePageSectionsViewController *)self->_sectionsViewController setDelegate:0];
 
   v4.receiver = self;
@@ -84,44 +84,44 @@
   self->_loadOperation = 0;
 }
 
-- (void)loadURL:(id)a3 withCompletionBlock:(id)a4
+- (void)loadURL:(id)l withCompletionBlock:(id)block
 {
   v6 = MEMORY[0x277CBABA0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithURL:v8];
+  blockCopy = block;
+  lCopy = l;
+  v9 = [[v6 alloc] initWithURL:lCopy];
 
-  [(SKUIStorePageViewController *)self loadURLRequest:v9 withCompletionBlock:v7];
+  [(SKUIStorePageViewController *)self loadURLRequest:v9 withCompletionBlock:blockCopy];
 }
 
-- (void)loadURL:(id)a3 withDataConsumer:(id)a4 completionBlock:(id)a5
+- (void)loadURL:(id)l withDataConsumer:(id)consumer completionBlock:(id)block
 {
   v8 = MEMORY[0x277CBABA0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithURL:v11];
+  blockCopy = block;
+  consumerCopy = consumer;
+  lCopy = l;
+  v12 = [[v8 alloc] initWithURL:lCopy];
 
-  [(SKUIStorePageViewController *)self loadURLRequest:v12 withDataConsumer:v10 completionBlock:v9];
+  [(SKUIStorePageViewController *)self loadURLRequest:v12 withDataConsumer:consumerCopy completionBlock:blockCopy];
 }
 
-- (void)loadURLRequest:(id)a3 withCompletionBlock:(id)a4
+- (void)loadURLRequest:(id)request withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  requestCopy = request;
   v8 = +[(SSVURLDataConsumer *)SKUIStorePageDataConsumer];
-  [(SKUIStorePageViewController *)self loadURLRequest:v7 withDataConsumer:v8 completionBlock:v6];
+  [(SKUIStorePageViewController *)self loadURLRequest:requestCopy withDataConsumer:v8 completionBlock:blockCopy];
 }
 
-- (void)loadURLRequest:(id)a3 withDataConsumer:(id)a4 completionBlock:(id)a5
+- (void)loadURLRequest:(id)request withDataConsumer:(id)consumer completionBlock:(id)block
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v20;
-  if (v20)
+  requestCopy = request;
+  consumerCopy = consumer;
+  blockCopy = block;
+  v10 = requestCopy;
+  if (requestCopy)
   {
-    if (v8)
+    if (consumerCopy)
     {
       goto LABEL_6;
     }
@@ -135,11 +135,11 @@
   }
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:v11];
-  v10 = v20;
+  v10 = requestCopy;
 LABEL_6:
   if (self->_lastRequest != v10)
   {
-    v12 = [(NSURLRequest *)v20 copy];
+    v12 = [(NSURLRequest *)requestCopy copy];
     lastRequest = self->_lastRequest;
     self->_lastRequest = v12;
   }
@@ -152,12 +152,12 @@ LABEL_6:
   lastPageEvent = self->_lastPageEvent;
   self->_lastPageEvent = 0;
 
-  v18 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURLRequest:v20];
-  [v18 setDataConsumer:v8];
+  v18 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURLRequest:requestCopy];
+  [v18 setDataConsumer:consumerCopy];
   v19 = [(SKUIClientContext *)self->_clientContext valueForConfigurationKey:@"sfsuffix"];
   [v18 setStoreFrontSuffix:v19];
 
-  [(SKUIStorePageViewController *)self _loadWithOperation:v18 completionBlock:v9];
+  [(SKUIStorePageViewController *)self _loadWithOperation:v18 completionBlock:blockCopy];
 }
 
 - (NSOperationQueue)operationQueue
@@ -176,86 +176,86 @@ LABEL_6:
   return operationQueue;
 }
 
-- (void)setMetricsController:(id)a3
+- (void)setMetricsController:(id)controller
 {
   metricsController = self->_metricsController;
   self->_metricsController = 0;
-  v5 = a3;
+  controllerCopy = controller;
 
-  [(SKUIStorePageViewController *)self _setMetricsController:v5];
+  [(SKUIStorePageViewController *)self _setMetricsController:controllerCopy];
 }
 
-- (void)setRefreshControl:(id)a3
+- (void)setRefreshControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   refreshControl = self->_refreshControl;
-  if (refreshControl != v5)
+  if (refreshControl != controlCopy)
   {
-    v12 = v5;
+    v12 = controlCopy;
     [(UIRefreshControl *)refreshControl removeFromSuperview];
-    objc_storeStrong(&self->_refreshControl, a3);
+    objc_storeStrong(&self->_refreshControl, control);
     [(UIRefreshControl *)self->_refreshControl setAutoresizingMask:2];
-    v7 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
-    if (v7)
+    collectionView = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
+    if (collectionView)
     {
       [(UIRefreshControl *)self->_refreshControl frame];
       v9 = v8;
       v11 = v10;
-      [v7 bounds];
+      [collectionView bounds];
       [(UIRefreshControl *)self->_refreshControl setFrame:v9, v11];
-      [v7 _addContentSubview:self->_refreshControl atBack:1];
+      [collectionView _addContentSubview:self->_refreshControl atBack:1];
     }
 
-    v5 = v12;
+    controlCopy = v12;
   }
 
-  MEMORY[0x2821F96F8](refreshControl, v5);
+  MEMORY[0x2821F96F8](refreshControl, controlCopy);
 }
 
-- (void)setStorePage:(id)a3
+- (void)setStorePage:(id)page
 {
-  if (self->_storePage != a3)
+  if (self->_storePage != page)
   {
-    v4 = [a3 copy];
+    v4 = [page copy];
     storePage = self->_storePage;
     self->_storePage = v4;
 
     [(SKUIStorePageSectionsViewController *)self->_sectionsViewController dismissOverlays];
     [(SKUIStorePageViewController *)self _reloadStorePage];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:@"SKUIApplicationPageDidDisplayNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SKUIApplicationPageDidDisplayNotification" object:self];
   }
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3
+- (void)decodeRestorableStateWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
   [(SKUIStorePageViewController *)self setTitle:v5];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"consumerClass"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"consumerClass"];
   lastDataConsumerClassName = self->_lastDataConsumerClassName;
   self->_lastDataConsumerClassName = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"request"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"request"];
   lastRequest = self->_lastRequest;
   self->_lastRequest = v8;
 
   self->_loadOnAppear = self->_lastRequest != 0;
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorScheme"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorScheme"];
   placeholderColorScheme = self->_placeholderColorScheme;
   self->_placeholderColorScheme = v10;
 
-  v12 = [(SKUIStorePageViewController *)self _sectionsViewController];
-  SKUIDecodeRestorableStateWithCoder(v4, @"sectionsVC", v12);
-  v13 = [(SKUIStorePageViewController *)self _colorScheme];
-  [v12 setColorScheme:v13];
+  _sectionsViewController = [(SKUIStorePageViewController *)self _sectionsViewController];
+  SKUIDecodeRestorableStateWithCoder(coderCopy, @"sectionsVC", _sectionsViewController);
+  _colorScheme = [(SKUIStorePageViewController *)self _colorScheme];
+  [_sectionsViewController setColorScheme:_colorScheme];
 
   v14.receiver = self;
   v14.super_class = SKUIStorePageViewController;
-  [(SKUIStorePageViewController *)&v14 decodeRestorableStateWithCoder:v4];
+  [(SKUIStorePageViewController *)&v14 decodeRestorableStateWithCoder:coderCopy];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   metricsController = self->_metricsController;
   v6 = SKUIMetricsWindowOrientationForInterfaceOrientation([(SKUIStorePageViewController *)self interfaceOrientation]);
@@ -263,40 +263,40 @@ LABEL_6:
 
   v7.receiver = self;
   v7.super_class = SKUIStorePageViewController;
-  [(SKUIStorePageViewController *)&v7 didRotateFromInterfaceOrientation:a3];
+  [(SKUIStorePageViewController *)&v7 didRotateFromInterfaceOrientation:orientation];
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
   sectionsViewController = self->_sectionsViewController;
-  v5 = a3;
-  SKUIEncodeRestorableStateWithCoder(v5, @"sectionsVC", sectionsViewController);
-  v6 = [(SKUIStorePageViewController *)self _colorScheme];
-  [v5 encodeObject:v6 forKey:@"colorScheme"];
+  coderCopy = coder;
+  SKUIEncodeRestorableStateWithCoder(coderCopy, @"sectionsVC", sectionsViewController);
+  _colorScheme = [(SKUIStorePageViewController *)self _colorScheme];
+  [coderCopy encodeObject:_colorScheme forKey:@"colorScheme"];
 
-  v7 = [(SKUIStorePageViewController *)self title];
-  [v5 encodeObject:v7 forKey:@"title"];
+  title = [(SKUIStorePageViewController *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  [v5 encodeObject:self->_lastDataConsumerClassName forKey:@"consumerClass"];
-  [v5 encodeObject:self->_lastRequest forKey:@"request"];
+  [coderCopy encodeObject:self->_lastDataConsumerClassName forKey:@"consumerClass"];
+  [coderCopy encodeObject:self->_lastRequest forKey:@"request"];
   v8.receiver = self;
   v8.super_class = SKUIStorePageViewController;
-  [(SKUIStorePageViewController *)&v8 encodeRestorableStateWithCoder:v5];
+  [(SKUIStorePageViewController *)&v8 encodeRestorableStateWithCoder:coderCopy];
 }
 
 - (void)loadView
 {
   v6 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v3 = [(SKUIStorePageViewController *)self _sectionsViewController];
-  v4 = [v3 view];
-  [v4 setAutoresizingMask:18];
+  _sectionsViewController = [(SKUIStorePageViewController *)self _sectionsViewController];
+  view = [_sectionsViewController view];
+  [view setAutoresizingMask:18];
   [v6 bounds];
-  [v4 setFrame:?];
-  [v6 addSubview:v4];
+  [view setFrame:?];
+  [v6 addSubview:view];
   if (self->_refreshControl)
   {
-    v5 = [v3 collectionView];
-    [v5 _addContentSubview:self->_refreshControl atBack:1];
+    collectionView = [_sectionsViewController collectionView];
+    [collectionView _addContentSubview:self->_refreshControl atBack:1];
   }
 
   [(SKUIStorePageViewController *)self setView:v6];
@@ -317,9 +317,9 @@ LABEL_6:
   return 2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (self->_loadOnAppear)
   {
     self->_loadOnAppear = 0;
@@ -348,8 +348,8 @@ LABEL_6:
     lastPageEvent = self->_lastPageEvent;
     if (lastPageEvent)
     {
-      v10 = [MEMORY[0x277CBEAA8] date];
-      [(SSMetricsPageEvent *)lastPageEvent setOriginalTimeUsingDate:v10];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(SSMetricsPageEvent *)lastPageEvent setOriginalTimeUsingDate:date];
 
       [(SKUIMetricsController *)self->_metricsController recordEvent:self->_lastPageEvent];
     }
@@ -357,40 +357,40 @@ LABEL_6:
 
   v11.receiver = self;
   v11.super_class = SKUIStorePageViewController;
-  [(SKUIStorePageViewController *)&v11 viewWillAppear:v3];
+  [(SKUIStorePageViewController *)&v11 viewWillAppear:appearCopy];
 }
 
-- (BOOL)sectionsViewController:(id)a3 showProductPageForItem:(id)a4
+- (BOOL)sectionsViewController:(id)controller showProductPageForItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 storePage:self showProductPageForItem:v5];
+    [v8 storePage:self showProductPageForItem:itemCopy];
   }
 
   return v7 & 1;
 }
 
-- (BOOL)sectionsViewController:(id)a3 showStorePageForURL:(id)a4
+- (BOOL)sectionsViewController:(id)controller showStorePageForURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 storePage:self showStorePageForURL:v5];
+    [v8 storePage:self showStorePageForURL:lCopy];
   }
 
   return v7 & 1;
 }
 
-- (void)sectionsViewControllerDidDismissOverlayController:(id)a3
+- (void)sectionsViewControllerDidDismissOverlayController:(id)controller
 {
   if (SKUIViewControllerIsVisible(self))
   {
@@ -399,8 +399,8 @@ LABEL_6:
       lastPageEvent = self->_lastPageEvent;
       if (lastPageEvent)
       {
-        v5 = [MEMORY[0x277CBEAA8] date];
-        [(SSMetricsPageEvent *)lastPageEvent setOriginalTimeUsingDate:v5];
+        date = [MEMORY[0x277CBEAA8] date];
+        [(SSMetricsPageEvent *)lastPageEvent setOriginalTimeUsingDate:date];
 
         metricsController = self->_metricsController;
         v7 = self->_lastPageEvent;
@@ -411,44 +411,44 @@ LABEL_6:
   }
 }
 
-- (BOOL)performTestWithName:(id)a3 options:(id)a4
+- (BOOL)performTestWithName:(id)name options:(id)options
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  optionsCopy = options;
+  v7 = [name copy];
   performanceTestName = self->_performanceTestName;
   self->_performanceTestName = v7;
 
-  v9 = [v6 copy];
+  v9 = [optionsCopy copy];
   performanceTestOptions = self->_performanceTestOptions;
   self->_performanceTestOptions = v9;
 
   return 1;
 }
 
-+ (id)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4
++ (id)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   v5 = +[SKUIStateRestorationContext sharedContext];
-  v6 = [v5 clientContext];
-  [v4 setClientContext:v6];
+  clientContext = [v5 clientContext];
+  [v4 setClientContext:clientContext];
 
   return v4;
 }
 
-- (void)_metricsEnterEventNotification:(id)a3
+- (void)_metricsEnterEventNotification:(id)notification
 {
   if (SKUIViewControllerIsVisible(self) && self->_lastPageEvent)
   {
-    v4 = [(SKUIStorePageViewController *)self presentedViewController];
-    if (v4)
+    presentedViewController = [(SKUIStorePageViewController *)self presentedViewController];
+    if (presentedViewController)
     {
     }
 
     else if (![(SKUIStorePageSectionsViewController *)self->_sectionsViewController isDisplayingOverlays])
     {
       lastPageEvent = self->_lastPageEvent;
-      v6 = [MEMORY[0x277CBEAA8] date];
-      [(SSMetricsPageEvent *)lastPageEvent setOriginalTimeUsingDate:v6];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(SSMetricsPageEvent *)lastPageEvent setOriginalTimeUsingDate:date];
 
       metricsController = self->_metricsController;
       v8 = self->_lastPageEvent;
@@ -458,12 +458,12 @@ LABEL_6:
   }
 }
 
-- (void)loadWithJSONData:(id)a3 fromOperation:(id)a4 completionBlock:(id)a5
+- (void)loadWithJSONData:(id)data fromOperation:(id)operation completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  obj = [v9 URLRequest];
+  blockCopy = block;
+  operationCopy = operation;
+  dataCopy = data;
+  obj = [operationCopy URLRequest];
   if (self->_lastRequest != obj)
   {
     objc_storeStrong(&self->_lastRequest, obj);
@@ -475,11 +475,11 @@ LABEL_6:
   lastPageEvent = self->_lastPageEvent;
   self->_lastPageEvent = 0;
 
-  v13 = [objc_alloc(MEMORY[0x277D69CD8]) initWithData:v10 fromOperation:v9];
+  v13 = [objc_alloc(MEMORY[0x277D69CD8]) initWithData:dataCopy fromOperation:operationCopy];
   v14 = +[(SSVURLDataConsumer *)SKUIStorePageDataConsumer];
   [v13 setDataConsumer:v14];
 
-  [(SKUIStorePageViewController *)self _loadWithOperation:v13 completionBlock:v8];
+  [(SKUIStorePageViewController *)self _loadWithOperation:v13 completionBlock:blockCopy];
 }
 
 - (id)_colorScheme
@@ -487,13 +487,13 @@ LABEL_6:
   storePage = self->_storePage;
   if (storePage)
   {
-    v4 = [(SKUIStorePage *)storePage uber];
-    v5 = v4;
-    if (!v4 || ([v4 colorScheme], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+    uber = [(SKUIStorePage *)storePage uber];
+    v5 = uber;
+    if (!uber || ([uber colorScheme], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v7 = [(SKUIStorePage *)self->_storePage backgroundArtwork];
+      backgroundArtwork = [(SKUIStorePage *)self->_storePage backgroundArtwork];
 
-      if (v7)
+      if (backgroundArtwork)
       {
         v6 = objc_alloc_init(SKUIColorScheme);
       }
@@ -513,13 +513,13 @@ LABEL_6:
   return v6;
 }
 
-- (void)_loadWithOperation:(id)a3 completionBlock:(id)a4
+- (void)_loadWithOperation:(id)operation completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  operationCopy = operation;
+  blockCopy = block;
   [(SSVLoadURLOperation *)self->_loadOperation setOutputBlock:0];
   [(SSVLoadURLOperation *)self->_loadOperation cancel];
-  objc_storeStrong(&self->_loadOperation, a3);
+  objc_storeStrong(&self->_loadOperation, operation);
   objc_initWeak(&location, self);
   loadOperation = self->_loadOperation;
   v18[0] = MEMORY[0x277D85DD0];
@@ -527,7 +527,7 @@ LABEL_6:
   v18[2] = __66__SKUIStorePageViewController__loadWithOperation_completionBlock___block_invoke;
   v18[3] = &unk_2781FB450;
   objc_copyWeak(&v20, &location);
-  v10 = v8;
+  v10 = blockCopy;
   v19 = v10;
   [(SSVLoadURLOperation *)loadOperation setOutputBlock:v18];
   if (!self->_metricsController)
@@ -598,37 +598,37 @@ void __66__SKUIStorePageViewController__loadWithOperation_completionBlock___bloc
   [WeakRetained _setMetricsController:v3];
 }
 
-- (void)_recordMetricsPageEvent:(id)a3 forStorePage:(id)a4
+- (void)_recordMetricsPageEvent:(id)event forStorePage:(id)page
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  eventCopy = event;
+  pageCopy = page;
+  v9 = pageCopy;
   if (self->_metricsController)
   {
-    if (self->_storePage == v8)
+    if (self->_storePage == pageCopy)
     {
-      v10 = [(SKUIStorePageViewController *)self navigationController];
-      v11 = [v10 viewControllers];
-      v12 = [v11 count];
+      navigationController = [(SKUIStorePageViewController *)self navigationController];
+      viewControllers = [navigationController viewControllers];
+      v12 = [viewControllers count];
 
       if (v12 >= 2)
       {
-        [v7 setNavigationType:*MEMORY[0x277D6A4C0]];
+        [eventCopy setNavigationType:*MEMORY[0x277D6A4C0]];
       }
 
-      v13 = [MEMORY[0x277CBEAA8] date];
-      [v13 timeIntervalSince1970];
-      [v7 setPageRenderTime:?];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
+      [eventCopy setPageRenderTime:?];
 
-      v14 = [(SKUIStorePage *)v9 uber];
-      [v7 setUbered:v14 != 0];
+      uber = [(SKUIStorePage *)v9 uber];
+      [eventCopy setUbered:uber != 0];
 
       if (![(SKUIStorePageSectionsViewController *)self->_sectionsViewController isDisplayingOverlays])
       {
-        [(SKUIMetricsController *)self->_metricsController recordEvent:v7];
+        [(SKUIMetricsController *)self->_metricsController recordEvent:eventCopy];
       }
 
-      objc_storeStrong(&self->_lastPageEvent, a3);
+      objc_storeStrong(&self->_lastPageEvent, event);
     }
   }
 
@@ -641,7 +641,7 @@ void __66__SKUIStorePageViewController__loadWithOperation_completionBlock___bloc
     v16[2] = __68__SKUIStorePageViewController__recordMetricsPageEvent_forStorePage___block_invoke;
     v16[3] = &unk_2781FB4A0;
     objc_copyWeak(&v19, &location);
-    v17 = v7;
+    v17 = eventCopy;
     v18 = v9;
     [(SKUIClientContext *)clientContext getDefaultMetricsControllerWithCompletionBlock:v16];
 
@@ -666,21 +666,21 @@ void __68__SKUIStorePageViewController__recordMetricsPageEvent_forStorePage___bl
 - (void)_reloadStorePage
 {
   metricsController = self->_metricsController;
-  v4 = [(SKUIStorePage *)self->_storePage metricsConfiguration];
-  [(SKUIMetricsController *)metricsController setPageConfiguration:v4];
+  metricsConfiguration = [(SKUIStorePage *)self->_storePage metricsConfiguration];
+  [(SKUIMetricsController *)metricsController setPageConfiguration:metricsConfiguration];
 
   v5 = self->_metricsController;
-  v6 = [(SKUIStorePage *)self->_storePage pageURL];
-  v7 = [v6 absoluteString];
-  [(SKUIMetricsController *)v5 setPageURL:v7];
+  pageURL = [(SKUIStorePage *)self->_storePage pageURL];
+  absoluteString = [pageURL absoluteString];
+  [(SKUIMetricsController *)v5 setPageURL:absoluteString];
 
   sectionsViewController = self->_sectionsViewController;
-  v9 = [(SKUIStorePageViewController *)self _colorScheme];
-  [(SKUIStorePageSectionsViewController *)sectionsViewController setColorScheme:v9];
+  _colorScheme = [(SKUIStorePageViewController *)self _colorScheme];
+  [(SKUIStorePageSectionsViewController *)sectionsViewController setColorScheme:_colorScheme];
 
   v10 = self->_sectionsViewController;
-  v11 = [(SKUIStorePage *)self->_storePage pageComponents];
-  [(SKUIStorePageSectionsViewController *)v10 setSectionsWithPageComponents:v11];
+  pageComponents = [(SKUIStorePage *)self->_storePage pageComponents];
+  [(SKUIStorePageSectionsViewController *)v10 setSectionsWithPageComponents:pageComponents];
 }
 
 - (void)_runPerformanceTestAfterIdle
@@ -689,29 +689,29 @@ void __68__SKUIStorePageViewController__recordMetricsPageEvent_forStorePage___bl
   {
     v14 = SKUIViewControllerGetAncestorTabBarController(self);
     v3 = [(NSDictionary *)self->_performanceTestOptions objectForKey:@"destinationTabIndex"];
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
 
-    if ([v14 selectedIndex] != v4)
+    if ([v14 selectedIndex] != integerValue)
     {
-      v5 = [v14 viewControllers];
-      v6 = [v5 objectAtIndex:v4];
+      viewControllers = [v14 viewControllers];
+      v6 = [viewControllers objectAtIndex:integerValue];
 
-      v7 = [v6 topViewController];
+      topViewController = [v6 topViewController];
       v8 = objc_opt_respondsToSelector();
-      v9 = [MEMORY[0x277D75128] sharedApplication];
-      v10 = v9;
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      v10 = mEMORY[0x277D75128];
       performanceTestName = self->_performanceTestName;
       if (v8)
       {
-        [v9 startedTest:performanceTestName];
+        [mEMORY[0x277D75128] startedTest:performanceTestName];
 
-        [v7 performTestWithName:self->_performanceTestName options:self->_performanceTestOptions];
-        [v14 setSelectedIndex:v4];
+        [topViewController performTestWithName:self->_performanceTestName options:self->_performanceTestOptions];
+        [v14 setSelectedIndex:integerValue];
       }
 
       else
       {
-        [v9 failedTest:performanceTestName];
+        [mEMORY[0x277D75128] failedTest:performanceTestName];
       }
 
       v12 = self->_performanceTestName;
@@ -727,8 +727,8 @@ void __68__SKUIStorePageViewController__recordMetricsPageEvent_forStorePage___bl
 {
   if ([(NSString *)self->_performanceTestName hasPrefix:@"launch"])
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    [v3 finishedTest:self->_performanceTestName extraResults:0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] finishedTest:self->_performanceTestName extraResults:0];
 
     performanceTestName = self->_performanceTestName;
     self->_performanceTestName = 0;
@@ -755,13 +755,13 @@ LABEL_3:
   if ([(NSString *)self->_performanceTestName hasPrefix:@"Switch"])
   {
     v7 = [(NSDictionary *)self->_performanceTestOptions objectForKey:@"destinationTabIndex"];
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
 
     v12 = SKUIViewControllerGetAncestorTabBarController(self);
-    if ([(NSDictionary *)v12 selectedIndex]== v8)
+    if ([(NSDictionary *)v12 selectedIndex]== integerValue)
     {
-      v9 = [MEMORY[0x277D75128] sharedApplication];
-      [v9 finishedTest:self->_performanceTestName extraResults:0];
+      mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+      [mEMORY[0x277D75128]2 finishedTest:self->_performanceTestName extraResults:0];
 
       v10 = self->_performanceTestName;
       self->_performanceTestName = 0;
@@ -787,22 +787,22 @@ void __63__SKUIStorePageViewController__runPerformanceTestAfterPageLoad__block_i
   *(v4 + 1072) = 0;
 }
 
-- (void)_runScrollTestWithName:(id)a3 options:(id)a4
+- (void)_runScrollTestWithName:(id)name options:(id)options
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
-  v8 = v7;
-  if (([v7 isScrollEnabled] & 1) == 0)
+  nameCopy = name;
+  optionsCopy = options;
+  collectionView = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
+  v8 = collectionView;
+  if (([collectionView isScrollEnabled] & 1) == 0)
   {
     v9 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:0];
-    v10 = [v7 cellForItemAtIndexPath:v9];
+    v10 = [collectionView cellForItemAtIndexPath:v9];
 
-    v11 = [v10 subviews];
-    v12 = [v11 mutableCopy];
+    subviews = [v10 subviews];
+    v12 = [subviews mutableCopy];
 
     v13 = [v12 count];
-    v8 = v7;
+    v8 = collectionView;
     if (v13 >= 1)
     {
       v14 = v13;
@@ -816,16 +816,16 @@ void __63__SKUIStorePageViewController__runPerformanceTestAfterPageLoad__block_i
           break;
         }
 
-        v16 = [v8 subviews];
-        if (v16)
+        subviews2 = [v8 subviews];
+        if (subviews2)
         {
-          [v12 addObjectsFromArray:v16];
+          [v12 addObjectsFromArray:subviews2];
           v14 = [v12 count];
         }
 
         if (++v15 >= v14)
         {
-          v8 = v7;
+          v8 = collectionView;
           goto LABEL_10;
         }
       }
@@ -834,12 +834,12 @@ void __63__SKUIStorePageViewController__runPerformanceTestAfterPageLoad__block_i
 LABEL_10:
   }
 
-  v17 = [v6 objectForKey:@"iterations"];
-  v18 = [v17 intValue];
-  v19 = [v6 objectForKey:@"offset"];
-  v20 = [v19 intValue];
+  v17 = [optionsCopy objectForKey:@"iterations"];
+  intValue = [v17 intValue];
+  v19 = [optionsCopy objectForKey:@"offset"];
+  intValue2 = [v19 intValue];
   [v8 contentSize];
-  [v8 _performScrollTest:v22 iterations:v18 delta:v20 length:v21];
+  [v8 _performScrollTest:nameCopy iterations:intValue delta:intValue2 length:v21];
 }
 
 - (id)_sectionsViewController
@@ -852,25 +852,25 @@ LABEL_10:
     self->_sectionsViewController = v4;
 
     v6 = self->_sectionsViewController;
-    v7 = [(SKUIStorePageViewController *)self clientContext];
-    [(SKUIViewController *)v6 setClientContext:v7];
+    clientContext = [(SKUIStorePageViewController *)self clientContext];
+    [(SKUIViewController *)v6 setClientContext:clientContext];
 
     [(SKUIStorePageSectionsViewController *)self->_sectionsViewController setDelegate:self];
     v8 = self->_sectionsViewController;
-    v9 = [(SKUIStorePageViewController *)self operationQueue];
-    [(SKUIViewController *)v8 setOperationQueue:v9];
+    operationQueue = [(SKUIStorePageViewController *)self operationQueue];
+    [(SKUIViewController *)v8 setOperationQueue:operationQueue];
 
     v10 = self->_sectionsViewController;
-    v11 = [(SKUIStorePageViewController *)self _colorScheme];
-    [(SKUIStorePageSectionsViewController *)v10 setColorScheme:v11];
+    _colorScheme = [(SKUIStorePageViewController *)self _colorScheme];
+    [(SKUIStorePageSectionsViewController *)v10 setColorScheme:_colorScheme];
 
     [(SKUIStorePageSectionsViewController *)self->_sectionsViewController setMetricsController:self->_metricsController];
     storePage = self->_storePage;
     if (storePage)
     {
       v13 = self->_sectionsViewController;
-      v14 = [(SKUIStorePage *)storePage pageComponents];
-      [(SKUIStorePageSectionsViewController *)v13 setSectionsWithPageComponents:v14];
+      pageComponents = [(SKUIStorePage *)storePage pageComponents];
+      [(SKUIStorePageSectionsViewController *)v13 setSectionsWithPageComponents:pageComponents];
     }
 
     [(SKUIStorePageViewController *)self addChildViewController:self->_sectionsViewController];
@@ -880,94 +880,94 @@ LABEL_10:
   return sectionsViewController;
 }
 
-- (void)_setMetricsController:(id)a3
+- (void)_setMetricsController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (!self->_metricsController)
   {
-    v19 = v5;
-    objc_storeStrong(&self->_metricsController, a3);
+    v19 = controllerCopy;
+    objc_storeStrong(&self->_metricsController, controller);
     metricsController = self->_metricsController;
-    v7 = [(SKUIStorePage *)self->_storePage metricsConfiguration];
-    [(SKUIMetricsController *)metricsController setPageConfiguration:v7];
+    metricsConfiguration = [(SKUIStorePage *)self->_storePage metricsConfiguration];
+    [(SKUIMetricsController *)metricsController setPageConfiguration:metricsConfiguration];
 
     v8 = self->_metricsController;
     v9 = [(SKUIClientContext *)self->_clientContext metricsPageContextForViewController:self];
     [(SKUIMetricsController *)v8 setPageContext:v9];
 
     v10 = self->_metricsController;
-    v11 = [(SKUIStorePage *)self->_storePage pageURL];
-    v12 = [v11 absoluteString];
-    [(SKUIMetricsController *)v10 setPageURL:v12];
+    pageURL = [(SKUIStorePage *)self->_storePage pageURL];
+    absoluteString = [pageURL absoluteString];
+    [(SKUIMetricsController *)v10 setPageURL:absoluteString];
 
     v13 = self->_metricsController;
-    v14 = [MEMORY[0x277D75128] sharedApplication];
-    v15 = SKUIMetricsWindowOrientationForInterfaceOrientation([v14 statusBarOrientation]);
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v15 = SKUIMetricsWindowOrientationForInterfaceOrientation([mEMORY[0x277D75128] statusBarOrientation]);
     [(SKUIMetricsController *)v13 setWindowOrientation:v15];
 
     [(SKUIStorePageSectionsViewController *)self->_sectionsViewController setMetricsController:self->_metricsController];
     v16 = self->_metricsController;
-    v17 = [(SKUIStorePage *)self->_storePage metricsConfiguration];
-    v18 = [v17 pingURLs];
-    [(SKUIMetricsController *)v16 pingURLs:v18 withClientContext:self->_clientContext];
+    metricsConfiguration2 = [(SKUIStorePage *)self->_storePage metricsConfiguration];
+    pingURLs = [metricsConfiguration2 pingURLs];
+    [(SKUIMetricsController *)v16 pingURLs:pingURLs withClientContext:self->_clientContext];
 
-    v5 = v19;
+    controllerCopy = v19;
   }
 }
 
-- (void)_setStorePage:(id)a3 error:(id)a4
+- (void)_setStorePage:(id)page error:(id)error
 {
-  v6 = a3;
-  v7 = [v6 productPage];
-  if (v7)
+  pageCopy = page;
+  productPage = [pageCopy productPage];
+  if (productPage)
   {
-    v8 = [(SSVLoadURLOperation *)self->_loadOperation metricsPageEvent];
-    [(SKUIStorePageViewController *)self _showProductPage:v7 withPageEvent:v8];
+    metricsPageEvent = [(SSVLoadURLOperation *)self->_loadOperation metricsPageEvent];
+    [(SKUIStorePageViewController *)self _showProductPage:productPage withPageEvent:metricsPageEvent];
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v9 = [v6 pageType];
-  v10 = [v9 isEqualToString:@"itml"];
+  pageType = [pageCopy pageType];
+  v10 = [pageType isEqualToString:@"itml"];
 
   if (v10)
   {
-    v8 = [(SKUIStorePageViewController *)self clientContext];
-    v11 = [v6 ITMLData];
-    v12 = [v6 ITMLResponse];
-    [v8 sendOnPageResponseWithDocument:0 data:v11 URLResponse:v12 performanceMetrics:0];
+    metricsPageEvent = [(SKUIStorePageViewController *)self clientContext];
+    iTMLData = [pageCopy ITMLData];
+    iTMLResponse = [pageCopy ITMLResponse];
+    [metricsPageEvent sendOnPageResponseWithDocument:0 data:iTMLData URLResponse:iTMLResponse performanceMetrics:0];
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  if (v6)
+  if (pageCopy)
   {
-    objc_storeStrong(&self->_storePage, a3);
+    objc_storeStrong(&self->_storePage, page);
     [(SKUIStorePageViewController *)self _reloadStorePage];
-    v13 = [(SSVLoadURLOperation *)self->_loadOperation metricsPageEvent];
-    v8 = v13;
-    if (v13)
+    metricsPageEvent2 = [(SSVLoadURLOperation *)self->_loadOperation metricsPageEvent];
+    metricsPageEvent = metricsPageEvent2;
+    if (metricsPageEvent2)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __51__SKUIStorePageViewController__setStorePage_error___block_invoke;
       block[3] = &unk_2781F8680;
       block[4] = self;
-      v19 = v13;
-      v20 = v6;
+      v19 = metricsPageEvent2;
+      v20 = pageCopy;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
 
     metricsController = self->_metricsController;
-    v15 = [(SKUIStorePage *)self->_storePage metricsConfiguration];
-    v16 = [v15 pingURLs];
-    [(SKUIMetricsController *)metricsController pingURLs:v16 withClientContext:self->_clientContext];
+    metricsConfiguration = [(SKUIStorePage *)self->_storePage metricsConfiguration];
+    pingURLs = [metricsConfiguration pingURLs];
+    [(SKUIMetricsController *)metricsController pingURLs:pingURLs withClientContext:self->_clientContext];
 
     [(SKUIStorePageViewController *)self _runPerformanceTestAfterPageLoad];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 postNotificationName:@"SKUIApplicationPageDidDisplayNotification" object:self];
+    iTMLData = [MEMORY[0x277CCAB98] defaultCenter];
+    [iTMLData postNotificationName:@"SKUIApplicationPageDidDisplayNotification" object:self];
     goto LABEL_9;
   }
 
@@ -977,33 +977,33 @@ LABEL_11:
   self->_loadOperation = 0;
 }
 
-- (void)_showProductPage:(id)a3 withPageEvent:(id)a4
+- (void)_showProductPage:(id)page withPageEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 item];
-  v9 = [v8 itemKind];
+  pageCopy = page;
+  eventCopy = event;
+  item = [pageCopy item];
+  itemKind = [item itemKind];
 
-  if (SKUIItemKindIsSoftwareKind(v9) || v9 == 5)
+  if (SKUIItemKindIsSoftwareKind(itemKind) || itemKind == 5)
   {
-    v17 = [MEMORY[0x277D75418] currentDevice];
-    v18 = [v17 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v18 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      [(SKUIStorePageSectionsViewController *)self->_sectionsViewController showOverlayWithProductPage:v6 metricsPageEvent:v7];
+      [(SKUIStorePageSectionsViewController *)self->_sectionsViewController showOverlayWithProductPage:pageCopy metricsPageEvent:eventCopy];
     }
 
     else
     {
-      v19 = [[SKUIIPhoneProductPageViewController alloc] initWithProductPage:v6];
-      v20 = [(SKUIStorePageViewController *)self clientContext];
-      [(SKUIViewController *)v19 setClientContext:v20];
+      v19 = [[SKUIIPhoneProductPageViewController alloc] initWithProductPage:pageCopy];
+      clientContext = [(SKUIStorePageViewController *)self clientContext];
+      [(SKUIViewController *)v19 setClientContext:clientContext];
 
-      [(SKUIIPhoneProductPageViewController *)v19 configureMetricsWithPageEvent:v7];
-      v21 = [(SKUIStorePageViewController *)self navigationController];
-      v22 = [v21 viewControllers];
-      v23 = [v22 mutableCopy];
+      [(SKUIIPhoneProductPageViewController *)v19 configureMetricsWithPageEvent:eventCopy];
+      navigationController = [(SKUIStorePageViewController *)self navigationController];
+      viewControllers = [navigationController viewControllers];
+      v23 = [viewControllers mutableCopy];
 
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
@@ -1021,7 +1021,7 @@ LABEL_11:
         [v23 replaceObjectAtIndex:v24 withObject:v19];
       }
 
-      [v21 setViewControllers:v23 animated:0];
+      [navigationController setViewControllers:v23 animated:0];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __62__SKUIStorePageViewController__showProductPage_withPageEvent___block_invoke_3;
@@ -1037,8 +1037,8 @@ LABEL_11:
     [v10 setAutomaticallyDismisses:1];
     v11 = objc_alloc(MEMORY[0x277CBEAC0]);
     v12 = MEMORY[0x277CCABB0];
-    v13 = [v6 item];
-    v14 = [v12 numberWithLongLong:{objc_msgSend(v13, "itemIdentifier")}];
+    item2 = [pageCopy item];
+    v14 = [v12 numberWithLongLong:{objc_msgSend(item2, "itemIdentifier")}];
     v15 = [v11 initWithObjectsAndKeys:{v14, *MEMORY[0x277CDD450], 0}];
 
     v27[0] = MEMORY[0x277D85DD0];

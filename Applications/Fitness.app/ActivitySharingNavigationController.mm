@@ -1,9 +1,9 @@
 @interface ActivitySharingNavigationController
-- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithCoder:(id)a3;
-- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithRootViewController:(id)a3;
-- (void)handleActivitySharingURL:(id)a3;
+- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithCoder:(id)coder;
+- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithRootViewController:(id)controller;
+- (void)handleActivitySharingURL:(id)l;
 - (void)scrollToTop;
 @end
 
@@ -36,41 +36,41 @@
   v15[11] = v11;
   v15[12] = v10;
   v15[10] = v12;
-  v13 = self;
+  selfCopy = self;
   sub_1000262F0(v15, v14);
   sub_10014846C();
   sub_100026328(v15);
 }
 
-- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithCoder:(id)a3
+- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithRootViewController:(id)a3
+- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10FitnessApp35ActivitySharingNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)handleActivitySharingURL:(id)a3
+- (void)handleActivitySharingURL:(id)l
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
@@ -102,7 +102,7 @@
   v22[11] = v17;
   v22[12] = v16;
   v22[10] = v18;
-  v19 = self;
+  selfCopy = self;
   sub_1000262F0(v22, &v21);
   sub_1001485A4(v7);
   sub_100026328(v22);

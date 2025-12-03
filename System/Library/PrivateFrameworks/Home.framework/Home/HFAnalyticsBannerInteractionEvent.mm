@@ -1,15 +1,15 @@
 @interface HFAnalyticsBannerInteractionEvent
-- (HFAnalyticsBannerInteractionEvent)initWithData:(id)a3;
+- (HFAnalyticsBannerInteractionEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsBannerInteractionEvent
 
-- (HFAnalyticsBannerInteractionEvent)initWithData:(id)a3
+- (HFAnalyticsBannerInteractionEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"item"];
+  v5 = [dataCopy objectForKeyedSubscript:@"item"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -28,7 +28,7 @@
   if (v8)
   {
     objc_opt_class();
-    v9 = [v4 objectForKeyedSubscript:@"overrideItemClassName"];
+    v9 = [dataCopy objectForKeyedSubscript:@"overrideItemClassName"];
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
@@ -56,7 +56,7 @@
     v8->_itemClassName = v12;
 
     objc_opt_class();
-    v15 = [v4 objectForKeyedSubscript:@"hiddenBannerCount"];
+    v15 = [dataCopy objectForKeyedSubscript:@"hiddenBannerCount"];
     if (objc_opt_isKindOfClass())
     {
       v16 = v15;
@@ -77,14 +77,14 @@
 {
   v8.receiver = self;
   v8.super_class = HFAnalyticsBannerInteractionEvent;
-  v3 = [(HFAnalyticsEvent *)&v8 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v8 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsBannerInteractionEvent *)self itemClassName];
-  [v4 na_safeSetObject:v5 forKey:@"item"];
+  itemClassName = [(HFAnalyticsBannerInteractionEvent *)self itemClassName];
+  [v4 na_safeSetObject:itemClassName forKey:@"item"];
 
-  v6 = [(HFAnalyticsBannerInteractionEvent *)self hiddenBannerCount];
-  [v4 na_safeSetObject:v6 forKey:@"hiddenBannerCount"];
+  hiddenBannerCount = [(HFAnalyticsBannerInteractionEvent *)self hiddenBannerCount];
+  [v4 na_safeSetObject:hiddenBannerCount forKey:@"hiddenBannerCount"];
 
   [v4 na_safeSetObject:&unk_2825244B0 forKey:@"homeAppEventCount"];
 

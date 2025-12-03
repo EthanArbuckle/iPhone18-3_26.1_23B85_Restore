@@ -1,26 +1,26 @@
 @interface IOSurfaceRemotePerSurfaceGlobalState
-+ (id)globalStateForSurface:(__IOSurfaceClient *)a3 mappedAddress:(void *)a4 mappedSize:(unint64_t)a5 extraData:(id)a6;
-- (id)mergeExtraData:(id)a3;
++ (id)globalStateForSurface:(__IOSurfaceClient *)surface mappedAddress:(void *)address mappedSize:(unint64_t)size extraData:(id)data;
+- (id)mergeExtraData:(id)data;
 - (void)dealloc;
 @end
 
 @implementation IOSurfaceRemotePerSurfaceGlobalState
 
-+ (id)globalStateForSurface:(__IOSurfaceClient *)a3 mappedAddress:(void *)a4 mappedSize:(unint64_t)a5 extraData:(id)a6
++ (id)globalStateForSurface:(__IOSurfaceClient *)surface mappedAddress:(void *)address mappedSize:(unint64_t)size extraData:(id)data
 {
-  v9 = a6;
+  dataCopy = data;
   if (globalStateForSurface_mappedAddress_mappedSize_extraData__onceToken != -1)
   {
     +[IOSurfaceRemotePerSurfaceGlobalState globalStateForSurface:mappedAddress:mappedSize:extraData:];
   }
 
-  ID = IOSurfaceClientGetID(a3);
+  ID = IOSurfaceClientGetID(surface);
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:ID];
   os_unfair_lock_lock(globalStateForSurface_mappedAddress_mappedSize_extraData__lock);
   v12 = [globalStateForSurface_mappedAddress_mappedSize_extraData__table objectForKey:v11];
   if (!v12)
   {
-    v12 = [[IOSurfaceRemotePerSurfaceGlobalState alloc] initWithSurfaceID:ID mappedAddress:a4 mappedSize:a5 extraData:v9];
+    v12 = [[IOSurfaceRemotePerSurfaceGlobalState alloc] initWithSurfaceID:ID mappedAddress:address mappedSize:size extraData:dataCopy];
     [globalStateForSurface_mappedAddress_mappedSize_extraData__table setObject:v12 forKey:v11];
   }
 
@@ -37,16 +37,16 @@ uint64_t __97__IOSurfaceRemotePerSurfaceGlobalState_globalStateForSurface_mapped
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)mergeExtraData:(id)a3
+- (id)mergeExtraData:(id)data
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_lock);
   v6 = self->_extraData;
   if (v6)
   {
     v7 = v6;
-    if (v5)
+    if (dataCopy)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -54,14 +54,14 @@ uint64_t __97__IOSurfaceRemotePerSurfaceGlobalState_globalStateForSurface_mapped
       v10[3] = &unk_1E7A91A60;
       v7 = v6;
       v11 = v7;
-      xpc_dictionary_apply(v5, v10);
+      xpc_dictionary_apply(dataCopy, v10);
     }
   }
 
   else
   {
-    v7 = v5;
-    objc_storeStrong(&self->_extraData, a3);
+    v7 = dataCopy;
+    objc_storeStrong(&self->_extraData, data);
   }
 
   os_unfair_lock_unlock(&self->_lock);

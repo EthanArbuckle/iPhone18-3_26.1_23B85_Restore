@@ -1,23 +1,23 @@
 @interface MUPlaceMapItemActivityProvider
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
 @end
 
 @implementation MUPlaceMapItemActivityProvider
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v5 = a4;
-  if ([v5 isEqualToString:*MEMORY[0x1E69CDAB0]] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69CDA78]))
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x1E69CDAB0]] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E69CDA78]))
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(MUPlaceActivityProvider *)self dataProvider];
-    v8 = [v7 mapItemAsSerializedData];
+    dataProvider = [(MUPlaceActivityProvider *)self dataProvider];
+    mapItemAsSerializedData = [dataProvider mapItemAsSerializedData];
 
-    v6 = [v8 copy];
+    v6 = [mapItemAsSerializedData copy];
   }
 
   return v6;

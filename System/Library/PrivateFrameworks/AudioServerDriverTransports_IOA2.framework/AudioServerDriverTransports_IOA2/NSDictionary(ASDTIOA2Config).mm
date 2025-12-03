@@ -6,10 +6,10 @@
 
 - (uint64_t)asdtIsolatedInputUseCaseID
 {
-  v1 = [a1 asdtNumberForKey:@"IsolatedInputUseCaseID"];
-  v2 = [v1 unsignedLongLongValue];
+  v1 = [self asdtNumberForKey:@"IsolatedInputUseCaseID"];
+  unsignedLongLongValue = [v1 unsignedLongLongValue];
 
-  return v2;
+  return unsignedLongLongValue;
 }
 
 @end

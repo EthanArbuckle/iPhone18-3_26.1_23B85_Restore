@@ -1,25 +1,25 @@
 @interface PLUSSchemaPLUSContactGroundTruthGenerated
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSContactGroundTruthGenerated)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSContactGroundTruthGenerated)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSContactGroundTruthGenerated)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSContactGroundTruthGenerated)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSContactGroundTruthGenerated
 
-- (PLUSSchemaPLUSContactGroundTruthGenerated)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSContactGroundTruthGenerated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PLUSSchemaPLUSContactGroundTruthGenerated;
   v5 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originalPlusId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originalPlusId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(PLUSSchemaPLUSContactGroundTruthGenerated *)v5 setOriginalPlusId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"groundTruth"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"groundTruth"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSContactGroundTruthGenerated)initWithJSON:(id)a3
+- (PLUSSchemaPLUSContactGroundTruthGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_groundTruth)
   {
-    v4 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    groundTruth = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
+    dictionaryRepresentation = [groundTruth dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"groundTruth"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"groundTruth"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"groundTruth"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"groundTruth"];
     }
   }
 
   if (self->_originalPlusId)
   {
-    v7 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    originalPlusId = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
+    dictionaryRepresentation2 = [originalPlusId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"originalPlusId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"originalPlusId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"originalPlusId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"originalPlusId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
-  v6 = [v4 originalPlusId];
-  if ((v5 != 0) == (v6 == 0))
+  originalPlusId = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
+  originalPlusId2 = [equalCopy originalPlusId];
+  if ((originalPlusId != 0) == (originalPlusId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
-  if (v7)
+  originalPlusId3 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
+  if (originalPlusId3)
   {
-    v8 = v7;
-    v9 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
-    v10 = [v4 originalPlusId];
-    v11 = [v9 isEqual:v10];
+    v8 = originalPlusId3;
+    originalPlusId4 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
+    originalPlusId5 = [equalCopy originalPlusId];
+    v11 = [originalPlusId4 isEqual:originalPlusId5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
-  v6 = [v4 groundTruth];
-  if ((v5 != 0) != (v6 == 0))
+  originalPlusId = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
+  originalPlusId2 = [equalCopy groundTruth];
+  if ((originalPlusId != 0) != (originalPlusId2 == 0))
   {
-    v12 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
-    if (!v12)
+    groundTruth = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
+    if (!groundTruth)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
-    v15 = [v4 groundTruth];
-    v16 = [v14 isEqual:v15];
+    v13 = groundTruth;
+    groundTruth2 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
+    groundTruth3 = [equalCopy groundTruth];
+    v16 = [groundTruth2 isEqual:groundTruth3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
+  toCopy = to;
+  originalPlusId = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
 
-  if (v4)
+  if (originalPlusId)
   {
-    v5 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
+    originalPlusId2 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
+  groundTruth = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
 
-  if (v6)
+  if (groundTruth)
   {
-    v7 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
+    groundTruth2 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = PLUSSchemaPLUSContactGroundTruthGenerated;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  originalPlusId = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self originalPlusId];
+  v7 = [originalPlusId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PLUSSchemaPLUSContactGroundTruthGenerated *)self deleteOriginalPlusId];
   }
 
-  v9 = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  groundTruth = [(PLUSSchemaPLUSContactGroundTruthGenerated *)self groundTruth];
+  v10 = [groundTruth applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PLUSSchemaPLUSContactGroundTruthGenerated *)self deleteGroundTruth];
   }

@@ -1,12 +1,12 @@
 @interface CKServerChangeToken
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKServerChangeToken)init;
-- (CKServerChangeToken)initWithCoder:(id)a3;
-- (CKServerChangeToken)initWithData:(id)a3;
+- (CKServerChangeToken)initWithCoder:(id)coder;
+- (CKServerChangeToken)initWithData:(id)data;
 - (id)CKPropertiesDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKServerChangeToken
@@ -40,15 +40,15 @@
   objc_exception_throw(v6);
 }
 
-- (CKServerChangeToken)initWithData:(id)a3
+- (CKServerChangeToken)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = CKServerChangeToken;
   v7 = [(CKServerChangeToken *)&v11 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(dataCopy, v5, v6);
     data = v7->_data;
     v7->_data = v8;
   }
@@ -56,19 +56,19 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_data(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v9, v8, v7, @"ChangeTokenData");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"ChangeTokenData");
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKServerChangeToken)initWithCoder:(id)a3
+- (CKServerChangeToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CKServerChangeToken;
   v5 = [(CKServerChangeToken *)&v12 init];
@@ -76,7 +76,7 @@
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"ChangeTokenData");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"ChangeTokenData");
     data = v5->_data;
     v5->_data = v9;
 
@@ -86,10 +86,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -99,7 +99,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_data(self, v6, v7);
       v11 = objc_msgSend_data(v5, v9, v10);
 

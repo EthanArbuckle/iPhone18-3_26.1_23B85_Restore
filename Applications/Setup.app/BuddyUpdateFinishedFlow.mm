@@ -1,45 +1,45 @@
 @interface BuddyUpdateFinishedFlow
 + (id)allowedFlowItems;
-- (BuddyUpdateFinishedFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6;
-- (void)flowItemDone:(id)a3;
-- (void)flowItemDone:(id)a3 nextItem:(id)a4;
-- (void)flowItemDone:(id)a3 nextItemClass:(Class)a4;
+- (BuddyUpdateFinishedFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector;
+- (void)flowItemDone:(id)done;
+- (void)flowItemDone:(id)done nextItem:(id)item;
+- (void)flowItemDone:(id)done nextItemClass:(Class)class;
 @end
 
 @implementation BuddyUpdateFinishedFlow
 
-- (BuddyUpdateFinishedFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6
+- (BuddyUpdateFinishedFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, delegate);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, starter);
   v14 = 0;
-  objc_storeStrong(&v14, a6);
-  v9 = v18;
-  v18 = 0;
+  objc_storeStrong(&v14, injector);
+  v9 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v9;
   v13.super_class = BuddyUpdateFinishedFlow;
-  v18 = [(BuddyUpdateFinishedFlow *)&v13 initWithNavigationController:location[0] flowDelegate:v16 flowStarter:v15 dependencyInjector:v14];
-  objc_storeStrong(&v18, v18);
-  if (v18)
+  selfCopy = [(BuddyUpdateFinishedFlow *)&v13 initWithNavigationController:location[0] flowDelegate:v16 flowStarter:v15 dependencyInjector:v14];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v19[0] = objc_opt_class();
     v19[1] = objc_opt_class();
     v10 = [NSArray arrayWithObjects:v19 count:2];
-    [v18 setClassList:v10];
+    [selfCopy setClassList:v10];
   }
 
-  v11 = v18;
+  v11 = selfCopy;
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
@@ -50,38 +50,38 @@
   return [NSArray arrayWithObjects:v3 count:2];
 }
 
-- (void)flowItemDone:(id)a3 nextItem:(id)a4
+- (void)flowItemDone:(id)done nextItem:(id)item
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, done);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5.receiver = v8;
+  objc_storeStrong(&v6, item);
+  v5.receiver = selfCopy;
   v5.super_class = BuddyUpdateFinishedFlow;
   [(BuddyUpdateFinishedFlow *)&v5 flowItemDone:location[0] nextItem:0];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3 nextItemClass:(Class)a4
+- (void)flowItemDone:(id)done nextItemClass:(Class)class
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyUpdateFinishedFlow *)v6 flowItemDone:location[0] nextItem:0, a4];
+  objc_storeStrong(location, done);
+  [(BuddyUpdateFinishedFlow *)selfCopy flowItemDone:location[0] nextItem:0, class];
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3
+- (void)flowItemDone:(id)done
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyUpdateFinishedFlow *)v4 flowItemDone:location[0] nextItem:0];
+  objc_storeStrong(location, done);
+  [(BuddyUpdateFinishedFlow *)selfCopy flowItemDone:location[0] nextItem:0];
   objc_storeStrong(location, 0);
 }
 

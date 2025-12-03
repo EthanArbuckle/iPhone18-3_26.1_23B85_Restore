@@ -1,13 +1,13 @@
 @interface TSPReadOnlyFileDataStorage
-- (TSPReadOnlyFileDataStorage)initWithURL:(id)a3;
+- (TSPReadOnlyFileDataStorage)initWithURL:(id)l;
 @end
 
 @implementation TSPReadOnlyFileDataStorage
 
-- (TSPReadOnlyFileDataStorage)initWithURL:(id)a3
+- (TSPReadOnlyFileDataStorage)initWithURL:(id)l
 {
-  v5 = a3;
-  if ((objc_msgSend_isFileURL(v5, v6, v7) & 1) == 0)
+  lCopy = l;
+  if ((objc_msgSend_isFileURL(lCopy, v6, v7) & 1) == 0)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSPReadOnlyFileDataStorage initWithURL:]");
@@ -23,7 +23,7 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_URL, a3);
+    objc_storeStrong(&v16->_URL, l);
     v18 = v17;
   }
 

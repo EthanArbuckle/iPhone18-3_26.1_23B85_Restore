@@ -1,25 +1,25 @@
 @interface DAEvent
-+ (id)allocInitWithXPCObject:(id)a3 error:(id *)a4;
-- (DAEvent)initWithCoder:(id)a3;
-- (DAEvent)initWithEventType:(int64_t)a3;
-- (DAEvent)initWithEventType:(int64_t)a3 error:(id)a4;
-- (DAEvent)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
++ (id)allocInitWithXPCObject:(id)object error:(id *)error;
+- (DAEvent)initWithCoder:(id)coder;
+- (DAEvent)initWithEventType:(int64_t)type;
+- (DAEvent)initWithEventType:(int64_t)type error:(id)error;
+- (DAEvent)initWithXPCObject:(id)object error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation DAEvent
 
-- (DAEvent)initWithCoder:(id)a3
+- (DAEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = DAEvent;
   v5 = [(DAEvent *)&v10 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   error = self->_error;
-  v7 = v4;
+  v7 = coderCopy;
   if (error)
   {
-    [v4 encodeObject:error forKey:@"errr"];
-    v4 = v7;
+    [coderCopy encodeObject:error forKey:@"errr"];
+    coderCopy = v7;
   }
 
   eventType = self->_eventType;
   if (eventType)
   {
     [v7 encodeInteger:eventType forKey:@"evTy"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   error = self->_error;
-  xdict = v4;
+  xdict = objectCopy;
   CUXPCEncodeNSError();
   eventType = self->_eventType;
   if (eventType)
@@ -72,37 +72,37 @@
   }
 }
 
-- (DAEvent)initWithEventType:(int64_t)a3
+- (DAEvent)initWithEventType:(int64_t)type
 {
   v4 = [(DAEvent *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->_eventType = a3;
+    v4->_eventType = type;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (DAEvent)initWithEventType:(int64_t)a3 error:(id)a4
+- (DAEvent)initWithEventType:(int64_t)type error:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   v8 = [(DAEvent *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_error, a4);
-    v9->_eventType = a3;
+    objc_storeStrong(&v8->_error, error);
+    v9->_eventType = type;
     v10 = v9;
   }
 
   return v9;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -146,27 +146,27 @@
   return v11;
 }
 
-+ (id)allocInitWithXPCObject:(id)a3 error:(id *)a4
++ (id)allocInitWithXPCObject:(id)object error:(id *)error
 {
-  v5 = a3;
+  objectCopy = object;
   v6 = CUXPCDecodeSInt64RangedEx();
   if (v6 == 6)
   {
     JUMPOUT(0);
   }
 
-  if (v6 != 5 && a4)
+  if (v6 != 5 && error)
   {
     v7 = OUTLINED_FUNCTION_8();
-    *a4 = DAErrorF(v7, v8, v9, v10, v11, v12, v13, v14, 0);
+    *error = DAErrorF(v7, v8, v9, v10, v11, v12, v13, v14, 0);
   }
 
   return 0;
 }
 
-- (DAEvent)initWithXPCObject:(id)a3 error:(id *)a4
+- (DAEvent)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = OUTLINED_FUNCTION_4_0(self, a2, a3);
+  v6 = OUTLINED_FUNCTION_4_0(self, a2, object);
   v20.receiver = v4;
   v20.super_class = DAEvent;
   v7 = [(DAEvent *)&v20 init];

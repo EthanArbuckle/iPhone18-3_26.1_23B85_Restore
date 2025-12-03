@@ -1,21 +1,21 @@
 @interface CaptureMTL4Archive
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTL4Archive)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTL4Archive)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context;
 - (NSString)description;
-- (id)newBinaryFunctionWithDescriptor:(id)a3 error:(id *)a4;
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor error:(id *)error;
 - (unint64_t)streamReference;
 - (void)dealloc;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 - (void)touch;
 @end
 
 @implementation CaptureMTL4Archive
 
-- (id)newBinaryFunctionWithDescriptor:(id)a3 error:(id *)a4
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTL4Archive_newBinaryFunctionWithDescriptor_error", "Metal 4 Binary Functions", 0, 0);
-  v7 = [(MTL4Archive *)self->_baseObject newBinaryFunctionWithDescriptor:v6 error:a4];
+  v7 = [(MTL4Archive *)self->_baseObject newBinaryFunctionWithDescriptor:descriptorCopy error:error];
 
   if (v7)
   {
@@ -38,20 +38,20 @@
   [(CaptureMTL4Archive *)&v3 dealloc];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTL4Archive_setLabel", "Metal 4 Archive", 0, 0);
-  [(MTL4Archive *)self->_baseObject setLabel:v4];
+  [(MTL4Archive *)self->_baseObject setLabel:labelCopy];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTL4Archive *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTL4Archive *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -106,19 +106,19 @@
   }
 }
 
-- (CaptureMTL4Archive)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4
+- (CaptureMTL4Archive)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context
 {
-  v7 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = CaptureMTL4Archive;
   v8 = [(CaptureMTL4Archive *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_baseObject, a3);
-    v9->_traceContext = a4;
-    v10 = DEVICEOBJECT(v7);
-    v9->_traceStream = GTTraceContext_openStream(a4, v10, v9);
+    objc_storeStrong(&v8->_baseObject, object);
+    v9->_traceContext = context;
+    v10 = DEVICEOBJECT(objectCopy);
+    v9->_traceStream = GTTraceContext_openStream(context, v10, v9);
   }
 
   return v9;

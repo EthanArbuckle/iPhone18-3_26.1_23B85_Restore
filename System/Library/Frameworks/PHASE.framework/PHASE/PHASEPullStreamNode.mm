@@ -1,10 +1,10 @@
 @interface PHASEPullStreamNode
-- (void)setRenderBlock:(id)a3;
+- (void)setRenderBlock:(id)block;
 @end
 
 @implementation PHASEPullStreamNode
 
-- (void)setRenderBlock:(id)a3
+- (void)setRenderBlock:(id)block
 {
   if (self->_renderBlock)
   {
@@ -15,7 +15,7 @@
 
   else
   {
-    self->_renderBlock = _Block_copy(a3);
+    self->_renderBlock = _Block_copy(block);
 
     MEMORY[0x2821F96F8]();
   }

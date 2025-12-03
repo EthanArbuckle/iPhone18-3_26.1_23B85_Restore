@@ -1,25 +1,25 @@
 @interface DMDEventStreamEvent
-- (DMDEventStreamEvent)initWithEventType:(id)a3 details:(id)a4;
+- (DMDEventStreamEvent)initWithEventType:(id)type details:(id)details;
 - (id)description;
-- (id)eventStatusMessageWithPayloadIdentifier:(id)a3;
+- (id)eventStatusMessageWithPayloadIdentifier:(id)identifier;
 @end
 
 @implementation DMDEventStreamEvent
 
-- (DMDEventStreamEvent)initWithEventType:(id)a3 details:(id)a4
+- (DMDEventStreamEvent)initWithEventType:(id)type details:(id)details
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  detailsCopy = details;
   v16.receiver = self;
   v16.super_class = DMDEventStreamEvent;
   v8 = [(DMDEventStreamEvent *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [typeCopy copy];
     eventType = v8->_eventType;
     v8->_eventType = v9;
 
-    v11 = [v7 copy];
+    v11 = [detailsCopy copy];
     details = v8->_details;
     v8->_details = v11;
 
@@ -41,20 +41,20 @@
   return v3;
 }
 
-- (id)eventStatusMessageWithPayloadIdentifier:(id)a3
+- (id)eventStatusMessageWithPayloadIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [[NSMutableDictionary alloc] initWithCapacity:4];
-  [v5 setObject:v4 forKeyedSubscript:DMFDeclarationEventsMessageInReplyToKey];
+  [v5 setObject:identifierCopy forKeyedSubscript:DMFDeclarationEventsMessageInReplyToKey];
 
-  v6 = [(DMDEventStreamEvent *)self eventType];
-  [v5 setObject:v6 forKeyedSubscript:DMFDeclarationEventsMessageEventTypeKey];
+  eventType = [(DMDEventStreamEvent *)self eventType];
+  [v5 setObject:eventType forKeyedSubscript:DMFDeclarationEventsMessageEventTypeKey];
 
-  v7 = [(DMDEventStreamEvent *)self timestamp];
-  [v5 setObject:v7 forKeyedSubscript:DMFDeclarationEventsMessageEventTimestampKey];
+  timestamp = [(DMDEventStreamEvent *)self timestamp];
+  [v5 setObject:timestamp forKeyedSubscript:DMFDeclarationEventsMessageEventTimestampKey];
 
-  v8 = [(DMDEventStreamEvent *)self details];
-  [v5 setObject:v8 forKeyedSubscript:DMFDeclarationEventsMessageEventPayloadKey];
+  details = [(DMDEventStreamEvent *)self details];
+  [v5 setObject:details forKeyedSubscript:DMFDeclarationEventsMessageEventPayloadKey];
 
   return v5;
 }

@@ -1,8 +1,8 @@
 @interface CDMVocTrieProtoSpanMatcher
 + (id)getCDMServiceAssetConfig;
-- (BOOL)utteranceStartsWithVoiceTriggerSpan:(id)a3;
-- (CDMVocTrieProtoSpanMatcher)initWithVocTriePath:(id)a3 useNormalizedValues:(BOOL)a4;
-- (id)matchSpansForTokenChain:(id)a3 asrHypothesis:(id)a4;
+- (BOOL)utteranceStartsWithVoiceTriggerSpan:(id)span;
+- (CDMVocTrieProtoSpanMatcher)initWithVocTriePath:(id)path useNormalizedValues:(BOOL)values;
+- (id)matchSpansForTokenChain:(id)chain asrHypothesis:(id)hypothesis;
 @end
 
 @implementation CDMVocTrieProtoSpanMatcher
@@ -23,12 +23,12 @@
   return v2;
 }
 
-- (id)matchSpansForTokenChain:(id)a3 asrHypothesis:(id)a4
+- (id)matchSpansForTokenChain:(id)chain asrHypothesis:(id)hypothesis
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  chainCopy = chain;
+  hypothesisCopy = hypothesis;
+  array = [MEMORY[0x1E695DF70] array];
   v9 = os_signpost_id_generate(CDMLogContext);
   v10 = CDMLogContext;
   v11 = v10;
@@ -52,17 +52,17 @@
     v36 = &v35;
     v37 = 0x2020000000;
     v38 = 0;
-    v15 = self;
+    selfCopy = self;
     useNormalizedValues = self->useNormalizedValues;
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __68__CDMVocTrieProtoSpanMatcher_matchSpansForTokenChain_asrHypothesis___block_invoke;
     v30[3] = &unk_1E862F5B8;
-    v30[4] = v15;
-    v31 = v6;
+    v30[4] = selfCopy;
+    v31 = chainCopy;
     p_buf = &buf;
     v34 = &v35;
-    v17 = v8;
+    v17 = array;
     v32 = v17;
     [CDMProtoSpanMatcherHelper enumerateTokenChain:v31 useNormalizedValues:useNormalizedValues withCallback:v30];
     v18 = v9;
@@ -105,8 +105,8 @@
           _os_log_debug_impl(&dword_1DC287000, v25, OS_LOG_TYPE_DEBUG, "%s VOC spans exceeding 100, sort based on identifer count to promote important spans", v39, 0xCu);
         }
 
-        v26 = [objc_opt_class() spanIdentifierCountComparator];
-        v22 = [v17 sortedArrayUsingComparator:v26];
+        spanIdentifierCountComparator = [objc_opt_class() spanIdentifierCountComparator];
+        v22 = [v17 sortedArrayUsingComparator:spanIdentifierCountComparator];
       }
     }
 
@@ -124,7 +124,7 @@
       _os_log_impl(&dword_1DC287000, v27, OS_LOG_TYPE_INFO, "%s VocTrie Invalid", &buf, 0xCu);
     }
 
-    v22 = v8;
+    v22 = array;
   }
 
   v28 = *MEMORY[0x1E69E9840];
@@ -343,36 +343,36 @@ LABEL_38:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)utteranceStartsWithVoiceTriggerSpan:(id)a3
+- (BOOL)utteranceStartsWithVoiceTriggerSpan:(id)span
 {
-  v3 = a3;
-  if ([v3 startTokenIndex])
+  spanCopy = span;
+  if ([spanCopy startTokenIndex])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 label];
-    v4 = [v5 isEqualToString:@"voiceTrigger"];
+    label = [spanCopy label];
+    v4 = [label isEqualToString:@"voiceTrigger"];
   }
 
   return v4;
 }
 
-- (CDMVocTrieProtoSpanMatcher)initWithVocTriePath:(id)a3 useNormalizedValues:(BOOL)a4
+- (CDMVocTrieProtoSpanMatcher)initWithVocTriePath:(id)path useNormalizedValues:(BOOL)values
 {
-  v6 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = CDMVocTrieProtoSpanMatcher;
   v7 = [(CDMVocTrieProtoSpanMatcher *)&v11 init];
   if (v7)
   {
-    v8 = [[CDMVocTrie alloc] initWithTriePath:v6];
+    v8 = [[CDMVocTrie alloc] initWithTriePath:pathCopy];
     trie = v7->trie;
     v7->trie = v8;
 
-    v7->useNormalizedValues = a4;
+    v7->useNormalizedValues = values;
   }
 
   return v7;

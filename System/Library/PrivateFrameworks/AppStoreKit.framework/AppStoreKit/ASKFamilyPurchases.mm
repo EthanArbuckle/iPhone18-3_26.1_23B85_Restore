@@ -1,7 +1,7 @@
 @interface ASKFamilyPurchases
 + (ASKFamilyPurchases)shared;
 - (ASKFamilyPurchases)init;
-- (void)reloadDataWithBag:(id)a3 completion:(id)a4;
+- (void)reloadDataWithBag:(id)bag completion:(id)completion;
 @end
 
 @implementation ASKFamilyPurchases
@@ -32,19 +32,19 @@ void __28__ASKFamilyPurchases_shared__block_invoke()
   return [(ASKFamilyPurchases *)&v3 init];
 }
 
-- (void)reloadDataWithBag:(id)a3 completion:(id)a4
+- (void)reloadDataWithBag:(id)bag completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  bagCopy = bag;
+  completionCopy = completion;
   v7 = dispatch_get_global_queue(0, 0);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__ASKFamilyPurchases_reloadDataWithBag_completion___block_invoke;
   v10[3] = &unk_1E870C5A8;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = bagCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = bagCopy;
   dispatch_async(v7, v10);
 }
 

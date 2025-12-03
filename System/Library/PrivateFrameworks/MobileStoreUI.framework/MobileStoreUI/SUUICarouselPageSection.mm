@@ -1,59 +1,59 @@
 @interface SUUICarouselPageSection
-- (BOOL)_isItemEnabledAtIndexPath:(id)a3;
+- (BOOL)_isItemEnabledAtIndexPath:(id)path;
 - (CGSize)_legacyItemSize;
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (Class)_cellClassForLockup:(id)a3;
-- (Class)_cellClassForViewElement:(id)a3;
-- (SUUICarouselPageSection)initWithPageComponent:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (Class)_cellClassForLockup:(id)lockup;
+- (Class)_cellClassForViewElement:(id)element;
+- (SUUICarouselPageSection)initWithPageComponent:(id)component;
 - (UIEdgeInsets)sectionContentInset;
 - (double)_actualContentWidth;
 - (double)_legacyItemSpacing;
 - (id)_carouselCollectionView;
-- (id)_dequeueCellForLockup:(id)a3 collectionView:(id)a4 indexPath:(id)a5;
-- (id)_dequeueCellForViewElement:(id)a3 collectionView:(id)a4 indexPath:(id)a5;
+- (id)_dequeueCellForLockup:(id)lockup collectionView:(id)view indexPath:(id)path;
+- (id)_dequeueCellForViewElement:(id)element collectionView:(id)view indexPath:(id)path;
 - (id)_missingItemLoader;
-- (id)backgroundColorForIndexPath:(id)a3;
-- (id)cellForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)backgroundColorForIndexPath:(id)path;
+- (id)cellForIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (int64_t)_currentPageIndex;
-- (int64_t)applyUpdateType:(int64_t)a3;
+- (int64_t)applyUpdateType:(int64_t)type;
 - (int64_t)defaultItemPinningStyle;
 - (int64_t)numberOfCells;
-- (void)_addImpressionForIndex:(int64_t)a3 toSession:(id)a4;
+- (void)_addImpressionForIndex:(int64_t)index toSession:(id)session;
 - (void)_cancelCycleTimer;
 - (void)_fireCycleTimer;
-- (void)_loadMissingItemsFromIndex:(int64_t)a3 withReason:(int64_t)a4;
+- (void)_loadMissingItemsFromIndex:(int64_t)index withReason:(int64_t)reason;
 - (void)_reloadLegacySizing;
 - (void)_reloadViewElementProperties;
-- (void)_scrollToItemAtIndexPath:(id)a3 animated:(BOOL)a4;
+- (void)_scrollToItemAtIndexPath:(id)path animated:(BOOL)animated;
 - (void)_startCycleTimerIfNecessary;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
-- (void)collectionView:(id)a3 carouselLayout:(id)a4 willApplyLayoutAttributes:(id)a5;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
+- (void)collectionView:(id)view carouselLayout:(id)layout willApplyLayoutAttributes:(id)attributes;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4;
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context;
 - (void)invalidateCachedLayoutInformation;
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5;
-- (void)prefetchResourcesWithReason:(int64_t)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)willAppearInContext:(id)a3;
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers;
+- (void)prefetchResourcesWithReason:(int64_t)reason;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)willAppearInContext:(id)context;
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUICarouselPageSection
 
-- (SUUICarouselPageSection)initWithPageComponent:(id)a3
+- (SUUICarouselPageSection)initWithPageComponent:(id)component
 {
   v6.receiver = self;
   v6.super_class = SUUICarouselPageSection;
-  v3 = [(SUUIStorePageSection *)&v6 initWithPageComponent:a3];
+  v3 = [(SUUIStorePageSection *)&v6 initWithPageComponent:component];
   v4 = v3;
   if (v3)
   {
@@ -79,22 +79,22 @@
   [(SUUIStorePageSection *)&v4 dealloc];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (![(SUUICarouselPageSection *)self _indexPathIsProgressIndicator:a3])
+  sessionCopy = session;
+  if (![(SUUICarouselPageSection *)self _indexPathIsProgressIndicator:path])
   {
-    v7 = [(SUUIStorePageSection *)self pageComponent];
-    v8 = [v7 viewElement];
-    [v6 addItemViewElement:v8];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
+    [sessionCopy addItemViewElement:viewElement];
 
-    v9 = [(UICollectionView *)self->_carouselCollectionView indexPathsForVisibleItems];
+    indexPathsForVisibleItems = [(UICollectionView *)self->_carouselCollectionView indexPathsForVisibleItems];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v10 = [indexPathsForVisibleItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -106,17 +106,17 @@
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(indexPathsForVisibleItems);
           }
 
           v14 = -[NSArray objectAtIndex:](self->_modelObjects, "objectAtIndex:", [*(*(&v15 + 1) + 8 * v13) item] % -[NSArray count](self->_modelObjects, "count"));
-          [v6 addItemViewElement:v14];
+          [sessionCopy addItemViewElement:v14];
 
           ++v13;
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [indexPathsForVisibleItems countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);
@@ -124,18 +124,18 @@
   }
 }
 
-- (int64_t)applyUpdateType:(int64_t)a3
+- (int64_t)applyUpdateType:(int64_t)type
 {
   [(SUUICarouselPageSection *)self _reloadViewElementProperties];
-  v5 = a3 != 2 || self->_needsReload;
+  v5 = type != 2 || self->_needsReload;
   self->_needsReload = v5;
   if (v5)
   {
-    v6 = [(SUUIStorePageSection *)self pageComponent];
-    v7 = [v6 viewElement];
-    v8 = [v7 updateType];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
+    updateType = [viewElement updateType];
 
-    if ((v8 - 3) < 2)
+    if ((updateType - 3) < 2)
     {
       v9 = 0;
 LABEL_6:
@@ -166,29 +166,29 @@ LABEL_6:
 LABEL_7:
   v18.receiver = self;
   v18.super_class = SUUICarouselPageSection;
-  return [(SUUIStorePageSection *)&v18 applyUpdateType:a3];
+  return [(SUUIStorePageSection *)&v18 applyUpdateType:type];
 }
 
-- (id)backgroundColorForIndexPath:(id)a3
+- (id)backgroundColorForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
-  v7 = [v6 style];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  style = [viewElement style];
 
-  v8 = [v7 ikBackgroundColor];
-  v9 = [v8 color];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v9)
+  if (color)
   {
-    v10 = v9;
+    v10 = color;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = SUUICarouselPageSection;
-    v10 = [(SUUIStorePageSection *)&v13 backgroundColorForIndexPath:v4];
+    v10 = [(SUUIStorePageSection *)&v13 backgroundColorForIndexPath:pathCopy];
   }
 
   v11 = v10;
@@ -196,19 +196,19 @@ LABEL_7:
   return v11;
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [(SUUICarouselPageSection *)self _indexPathIsProgressIndicator:v4];
-  v7 = [v5 collectionView];
-  v8 = v7;
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  v6 = [(SUUICarouselPageSection *)self _indexPathIsProgressIndicator:pathCopy];
+  collectionView = [context collectionView];
+  v8 = collectionView;
   if (v6)
   {
-    v9 = [v7 dequeueReusableCellWithReuseIdentifier:0x286AFF040 forIndexPath:v4];
+    v9 = [collectionView dequeueReusableCellWithReuseIdentifier:0x286AFF040 forIndexPath:pathCopy];
 
     progressIndicatorElement = self->_progressIndicatorElement;
-    [v5 activePageWidth];
+    [context activePageWidth];
     [v9 reloadWithViewElement:progressIndicatorElement width:self->_cellLayoutContext context:?];
     [v9 setContentInset:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
     [v9 setCurrentPage:{-[SUUICarouselPageSection _currentPageIndex](self, "_currentPageIndex")}];
@@ -217,13 +217,13 @@ LABEL_7:
 
   else
   {
-    v9 = [v7 dequeueReusableCellWithReuseIdentifier:0x286AF9C20 forIndexPath:v4];
+    v9 = [collectionView dequeueReusableCellWithReuseIdentifier:0x286AF9C20 forIndexPath:pathCopy];
 
-    v11 = [(SUUICarouselPageSection *)self _carouselCollectionView];
-    v12 = v11;
+    _carouselCollectionView = [(SUUICarouselPageSection *)self _carouselCollectionView];
+    v12 = _carouselCollectionView;
     if (self->_needsReload)
     {
-      [v11 reloadData];
+      [_carouselCollectionView reloadData];
       self->_needsReload = 0;
       reloadIndexPath = self->_reloadIndexPath;
       if (reloadIndexPath)
@@ -238,14 +238,14 @@ LABEL_7:
     [v9 setContentInset:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
     [v9 setRendersWithPerspective:0];
     [v9 setRendersWithParallax:0];
-    v15 = [(SUUIStorePageSection *)self context];
-    [v15 activePageWidth];
+    context2 = [(SUUIStorePageSection *)self context];
+    [context2 activePageWidth];
     v17 = v16;
 
     [(SUUICarouselPageSection *)self _actualContentWidth];
     v19 = v18;
-    v20 = [(SUUIStorePageSection *)self context];
-    [v20 activePageWidth];
+    context3 = [(SUUIStorePageSection *)self context];
+    [context3 activePageWidth];
     v22 = v21 + v21;
 
     if (v19 <= v22)
@@ -266,15 +266,15 @@ LABEL_7:
   return v9;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  [v5 activePageWidth];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  [context activePageWidth];
   v7 = v6;
 
-  if ([(SUUICarouselPageSection *)self _indexPathIsProgressIndicator:v4])
+  if ([(SUUICarouselPageSection *)self _indexPathIsProgressIndicator:pathCopy])
   {
     [SUUIPageControlCollectionViewCell sizeThatFitsWidth:self->_progressIndicatorElement viewElement:self->_cellLayoutContext context:v7];
     height = v8;
@@ -324,10 +324,10 @@ LABEL_7:
 
       self->_itemSize.height = v14;
       self->_needsHeightCalculation = 0;
-      v17 = [(SUUICarouselPageSection *)self _carouselCollectionView];
-      v18 = [v17 collectionViewLayout];
+      _carouselCollectionView = [(SUUICarouselPageSection *)self _carouselCollectionView];
+      collectionViewLayout = [_carouselCollectionView collectionViewLayout];
 
-      [v18 setItemSize:{self->_itemSize.width, self->_itemSize.height}];
+      [collectionViewLayout setItemSize:{self->_itemSize.width, self->_itemSize.height}];
     }
 
     height = self->_itemSize.height;
@@ -340,41 +340,41 @@ LABEL_7:
   return result;
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (![(SUUICarouselPageSection *)self _indexPathIsProgressIndicator:v4])
+  pathCopy = path;
+  if (![(SUUICarouselPageSection *)self _indexPathIsProgressIndicator:pathCopy])
   {
-    v5 = [(SUUIStorePageSection *)self pageComponent];
-    v6 = [v5 viewElement];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
 
-    v7 = [(SUUIStorePageSection *)self context];
-    v8 = [v7 activeMetricsImpressionSession];
-    [v8 beginActiveImpressionForViewElement:v6];
+    context = [(SUUIStorePageSection *)self context];
+    activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+    [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
   }
 
   v9.receiver = self;
   v9.super_class = SUUICarouselPageSection;
-  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (![(SUUICarouselPageSection *)self _indexPathIsProgressIndicator:v4])
+  pathCopy = path;
+  if (![(SUUICarouselPageSection *)self _indexPathIsProgressIndicator:pathCopy])
   {
     [(SUUICarouselPageSection *)self _cancelCycleTimer];
-    v5 = [(SUUIStorePageSection *)self pageComponent];
-    v6 = [v5 viewElement];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
 
-    v7 = [(SUUIStorePageSection *)self context];
-    v8 = [v7 activeMetricsImpressionSession];
-    [v8 endActiveImpressionForViewElement:v6];
+    context = [(SUUIStorePageSection *)self context];
+    activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+    [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
   }
 
   v9.receiver = self;
   v9.super_class = SUUICarouselPageSection;
-  [(SUUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
 - (int64_t)defaultItemPinningStyle
@@ -389,11 +389,11 @@ LABEL_7:
   return [(SUUIStorePageSection *)&v4 defaultItemPinningStyle];
 }
 
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  contextCopy = context;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -427,15 +427,15 @@ LABEL_7:
 
   v13.receiver = self;
   v13.super_class = SUUICarouselPageSection;
-  [(SUUIStorePageSection *)&v13 entityProvider:v6 didInvalidateWithContext:v7];
+  [(SUUIStorePageSection *)&v13 entityProvider:providerCopy didInvalidateWithContext:contextCopy];
 }
 
 - (void)invalidateCachedLayoutInformation
 {
-  v3 = [(SUUIStorePageSection *)self pageComponent];
-  v4 = [v3 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  if (v4)
+  if (viewElement)
   {
     self->_needsHeightCalculation = 1;
   }
@@ -473,11 +473,11 @@ LABEL_7:
   }
 }
 
-- (void)prefetchResourcesWithReason:(int64_t)a3
+- (void)prefetchResourcesWithReason:(int64_t)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
   v16 = 0u;
   v17 = 0u;
@@ -498,15 +498,15 @@ LABEL_7:
           objc_enumerationMutation(v7);
         }
 
-        if (v6)
+        if (viewElement)
         {
-          [(objc_class *)[(SUUICarouselPageSection *)self _cellClassForViewElement:*(*(&v14 + 1) + 8 * i)] prefetchResourcesForViewElement:*(*(&v14 + 1) + 8 * i) reason:a3 context:self->_cellLayoutContext];
+          [(objc_class *)[(SUUICarouselPageSection *)self _cellClassForViewElement:*(*(&v14 + 1) + 8 * i)] prefetchResourcesForViewElement:*(*(&v14 + 1) + 8 * i) reason:reason context:self->_cellLayoutContext];
         }
 
         else
         {
           v12 = [*(*(&v14 + 1) + 8 * i) artworkForSize:{self->_itemSize.width, self->_itemSize.height}];
-          [(SUUIViewElementLayoutContext *)self->_cellLayoutContext loadImageForArtwork:v12 reason:a3];
+          [(SUUIViewElementLayoutContext *)self->_cellLayoutContext loadImageForArtwork:v12 reason:reason];
         }
       }
 
@@ -516,32 +516,32 @@ LABEL_7:
     while (v9);
   }
 
-  if (!v6)
+  if (!viewElement)
   {
-    [(SUUICarouselPageSection *)self _loadMissingItemsFromIndex:0 withReason:a3];
+    [(SUUICarouselPageSection *)self _loadMissingItemsFromIndex:0 withReason:reason];
   }
 
   v13.receiver = self;
   v13.super_class = SUUICarouselPageSection;
-  [(SUUIStorePageSection *)&v13 prefetchResourcesWithReason:a3];
+  [(SUUIStorePageSection *)&v13 prefetchResourcesWithReason:reason];
 }
 
 - (UIEdgeInsets)sectionContentInset
 {
   if (!self->_progressIndicatorElement || self->_progressIndicatorCellIndex != 1)
   {
-    v7 = [(SUUIStorePageSection *)self pageComponent];
-    v8 = [v7 viewElement];
-    v9 = [v8 style];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
+    style = [viewElement style];
 
-    v10 = [v9 valueForStyle:*MEMORY[0x277D1AFF0]];
+    v10 = [style valueForStyle:*MEMORY[0x277D1AFF0]];
     if (v10)
     {
     }
 
     else
     {
-      v11 = [v9 valueForStyle:@"itml-padding"];
+      v11 = [style valueForStyle:@"itml-padding"];
 
       if (!v11)
       {
@@ -552,7 +552,7 @@ LABEL_7:
       }
     }
 
-    [v9 elementPadding];
+    [style elementPadding];
 LABEL_8:
     v3 = v12;
     v4 = v13;
@@ -578,30 +578,30 @@ LABEL_9:
   return result;
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFF040];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF9C20];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFF040];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF9C20];
   v6 = self->_cellLayoutContext;
-  v7 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:v4 previousLayoutContext:v6];
+  v7 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:contextCopy previousLayoutContext:v6];
   cellLayoutContext = self->_cellLayoutContext;
   self->_cellLayoutContext = v7;
 
   [(SUUIViewElementLayoutContext *)self->_cellLayoutContext setArtworkRequestDelegate:self];
-  v9 = [(SUUIStorePageSection *)self pageComponent];
-  v10 = [v9 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  -[SUUIViewElementLayoutContext setContainerViewElementType:](self->_cellLayoutContext, "setContainerViewElementType:", [v10 elementType]);
+  -[SUUIViewElementLayoutContext setContainerViewElementType:](self->_cellLayoutContext, "setContainerViewElementType:", [viewElement elementType]);
   v11 = &OBJC_IVAR___SUUIDeveloperInfoLineItemView__contentInset;
   v12 = &OBJC_IVAR___SUUIDeveloperInfoLineItemView__contentInset;
-  v53 = v10;
+  v53 = viewElement;
   v54 = v6;
-  if (v10)
+  if (viewElement)
   {
-    v52 = v5;
+    v52 = collectionView;
     self->_itemSize = *MEMORY[0x277CBF3A8];
     itemWidth = self->_itemWidth;
     if (itemWidth > 0.0)
@@ -610,8 +610,8 @@ LABEL_9:
     }
 
     self->_needsHeightCalculation = 1;
-    v14 = [v10 style];
-    [v14 elementPadding];
+    style = [viewElement style];
+    [style elementPadding];
     v16 = v15;
     v18 = v17;
 
@@ -662,7 +662,7 @@ LABEL_9:
     v57 = 0u;
     v27 = self->_modelObjects;
     v28 = [(NSArray *)v27 countByEnumeratingWithState:&v56 objects:v64 count:16];
-    v5 = v52;
+    collectionView = v52;
     if (v28)
     {
       v29 = v28;
@@ -694,20 +694,20 @@ LABEL_9:
     [(SUUICarouselPageSection *)self _reloadLegacySizing];
   }
 
-  [v4 activePageWidth];
+  [contextCopy activePageWidth];
   v33 = v32;
-  v34 = [(SUUICarouselPageSection *)self _carouselCollectionView];
-  [v34 setSemanticContentAttribute:storeSemanticContentAttribute()];
+  _carouselCollectionView = [(SUUICarouselPageSection *)self _carouselCollectionView];
+  [_carouselCollectionView setSemanticContentAttribute:storeSemanticContentAttribute()];
   v35 = (self + v11[954]);
-  [v34 setFrame:{0.0, 0.0, v33, v35[1]}];
-  v36 = [v34 collectionViewLayout];
-  [v36 setItemSize:{*v35, v35[1]}];
+  [_carouselCollectionView setFrame:{0.0, 0.0, v33, v35[1]}];
+  collectionViewLayout = [_carouselCollectionView collectionViewLayout];
+  [collectionViewLayout setItemSize:{*v35, v35[1]}];
   v37 = v12[948];
   v38 = [*(&self->super.super.isa + v37) count];
   if (v38)
   {
     v39 = v38;
-    [v34 contentInset];
+    [_carouselCollectionView contentInset];
     v41 = v40;
     v43 = v42;
     [(SUUICarouselPageSection *)self _actualContentWidth];
@@ -730,8 +730,8 @@ LABEL_9:
     }
 
     v49 = v54;
-    [v34 setAlwaysBounceHorizontal:v48];
-    [v34 setContentInset:{v41, v47, v43, v47}];
+    [_carouselCollectionView setAlwaysBounceHorizontal:v48];
+    [_carouselCollectionView setContentInset:{v41, v47, v43, v47}];
     v50 = v53;
     if (v46)
     {
@@ -761,24 +761,24 @@ LABEL_9:
 
   v55.receiver = self;
   v55.super_class = SUUICarouselPageSection;
-  [(SUUIStorePageSection *)&v55 willAppearInContext:v4];
+  [(SUUIStorePageSection *)&v55 willAppearInContext:contextCopy];
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v8 = [(NSArray *)self->_modelObjects count];
   if (v8 >= 1)
   {
     v9 = v8;
     v35 = height;
-    v10 = [(SUUICarouselPageSection *)self _carouselCollectionView];
-    [v10 contentInset];
+    _carouselCollectionView = [(SUUICarouselPageSection *)self _carouselCollectionView];
+    [_carouselCollectionView contentInset];
     v12 = v11;
     v14 = v13;
-    [v10 bounds];
+    [_carouselCollectionView bounds];
     x = v43.origin.x;
     y = v43.origin.y;
     v17 = v43.size.width;
@@ -788,21 +788,21 @@ LABEL_9:
     v44.origin.y = y;
     v44.size.width = v17;
     v44.size.height = v18;
-    v20 = [v10 indexPathForItemAtPoint:{MidX, CGRectGetMidY(v44)}];
-    v21 = [v20 item];
+    v20 = [_carouselCollectionView indexPathForItemAtPoint:{MidX, CGRectGetMidY(v44)}];
+    item = [v20 item];
 
-    v22 = [(SUUIStorePageSection *)self pageComponent];
-    v23 = [v22 viewElement];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
 
-    if (!v23)
+    if (!viewElement)
     {
       [(SUUICarouselPageSection *)self _reloadLegacySizing];
       [(SUUICarouselPageSection *)self prefetchResourcesWithReason:0];
     }
 
-    v24 = v21 % v9;
-    v25 = [(SUUIStorePageSection *)self context];
-    [v25 activePageWidth];
+    v24 = item % v9;
+    context = [(SUUIStorePageSection *)self context];
+    [context activePageWidth];
     v27 = v26;
 
     [(SUUICarouselPageSection *)self _actualContentWidth];
@@ -823,18 +823,18 @@ LABEL_9:
       v31 = 1;
     }
 
-    [v10 setAlwaysBounceHorizontal:v31];
-    [v10 setContentInset:{v12, v30, v14, v30}];
+    [_carouselCollectionView setAlwaysBounceHorizontal:v31];
+    [_carouselCollectionView setContentInset:{v12, v30, v14, v30}];
     v33 = MEMORY[0x277D75D18];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __74__SUUICarouselPageSection_willTransitionToSize_withTransitionCoordinator___block_invoke;
     v38[3] = &unk_2798F81C8;
     v41 = v27;
-    v39 = v10;
-    v40 = self;
+    v39 = _carouselCollectionView;
+    selfCopy = self;
     v42 = v24;
-    v34 = v10;
+    v34 = _carouselCollectionView;
     [v33 performWithoutAnimation:v38];
     [(SUUICarouselPageSection *)self _cancelCycleTimer];
     v37[0] = MEMORY[0x277D85DD0];
@@ -842,14 +842,14 @@ LABEL_9:
     v37[2] = __74__SUUICarouselPageSection_willTransitionToSize_withTransitionCoordinator___block_invoke_2;
     v37[3] = &unk_2798F5A88;
     v37[4] = self;
-    [v7 animateAlongsideTransition:0 completion:v37];
+    [coordinatorCopy animateAlongsideTransition:0 completion:v37];
 
     height = v35;
   }
 
   v36.receiver = self;
   v36.super_class = SUUICarouselPageSection;
-  [(SUUIStorePageSection *)&v36 willTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SUUIStorePageSection *)&v36 willTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 void __74__SUUICarouselPageSection_willTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -872,11 +872,11 @@ void __74__SUUICarouselPageSection_willTransitionToSize_withTransitionCoordinato
   [v4 reloadItemsAtIndexPaths:v5];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  imageCopy = image;
   [(UICollectionView *)self->_carouselCollectionView indexPathsForVisibleItems];
   v15 = 0u;
   v16 = 0u;
@@ -897,7 +897,7 @@ LABEL_3:
       }
 
       v13 = [(UICollectionView *)self->_carouselCollectionView cellForItemAtIndexPath:*(*(&v15 + 1) + 8 * v12), v15];
-      v14 = [v13 setImage:v7 forArtworkRequest:v6 context:self->_cellLayoutContext];
+      v14 = [v13 setImage:imageCopy forArtworkRequest:requestCopy context:self->_cellLayoutContext];
 
       if (v14)
       {
@@ -918,45 +918,45 @@ LABEL_3:
   }
 }
 
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers
 {
-  v7 = a4;
-  if ([v7 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v6 = [(SUUIStorePageSection *)self pageComponent];
-    [v6 updateWithMissingItems:v7];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    [pageComponent updateWithMissingItems:itemsCopy];
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 item];
-  v9 = v8 % [(NSArray *)self->_modelObjects count];
+  pathCopy = path;
+  viewCopy = view;
+  item = [pathCopy item];
+  v9 = item % [(NSArray *)self->_modelObjects count];
   v10 = [(NSArray *)self->_modelObjects objectAtIndex:v9];
-  v11 = [(SUUIStorePageSection *)self pageComponent];
-  v12 = [v11 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  if (v12)
+  if (viewElement)
   {
-    v13 = [(SUUICarouselPageSection *)self _dequeueCellForViewElement:v10 collectionView:v7 indexPath:v6];
+    v13 = [(SUUICarouselPageSection *)self _dequeueCellForViewElement:v10 collectionView:viewCopy indexPath:pathCopy];
 
     [v13 reloadWithViewElement:v10 width:self->_cellLayoutContext context:self->_itemSize.width];
   }
 
   else
   {
-    v13 = [v7 dequeueReusableCellWithReuseIdentifier:0x286AF3680 forIndexPath:v6];
+    v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:0x286AF3680 forIndexPath:pathCopy];
 
     [v13 reloadWithCarouselItem:v10 size:self->_cellLayoutContext context:{self->_itemSize.width, self->_itemSize.height}];
-    v14 = [(SUUIStorePageSection *)self context];
-    v15 = [v14 metricsController];
-    v16 = [v15 activeImpressionsSession];
+    context = [(SUUIStorePageSection *)self context];
+    metricsController = [context metricsController];
+    activeImpressionsSession = [metricsController activeImpressionsSession];
 
-    if (v16)
+    if (activeImpressionsSession)
     {
-      [(SUUICarouselPageSection *)self _addImpressionForIndex:v9 toSession:v16];
+      [(SUUICarouselPageSection *)self _addImpressionForIndex:v9 toSession:activeImpressionsSession];
     }
 
     [(SUUICarouselPageSection *)self _loadMissingItemsFromIndex:v9 withReason:1];
@@ -965,85 +965,85 @@ LABEL_3:
   return v13;
 }
 
-- (void)collectionView:(id)a3 carouselLayout:(id)a4 willApplyLayoutAttributes:(id)a5
+- (void)collectionView:(id)view carouselLayout:(id)layout willApplyLayoutAttributes:(id)attributes
 {
-  v16 = a3;
-  v7 = a5;
-  v8 = [(SUUIStorePageSection *)self pageComponent];
-  v9 = [v8 viewElement];
+  viewCopy = view;
+  attributesCopy = attributes;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  if (!v9 || (modelObjects = self->_modelObjects, [v7 indexPath], v11 = objc_claimAutoreleasedReturnValue(), -[NSArray objectAtIndex:](modelObjects, "objectAtIndex:", objc_msgSend(v11, "item") % -[NSArray count](self->_modelObjects, "count")), v12 = objc_claimAutoreleasedReturnValue(), v11, objc_msgSend(v12, "style"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "ikBackgroundColor"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "color"), v15 = objc_claimAutoreleasedReturnValue(), v14, v13, v12, !v15))
+  if (!viewElement || (modelObjects = self->_modelObjects, [attributesCopy indexPath], v11 = objc_claimAutoreleasedReturnValue(), -[NSArray objectAtIndex:](modelObjects, "objectAtIndex:", objc_msgSend(v11, "item") % -[NSArray count](self->_modelObjects, "count")), v12 = objc_claimAutoreleasedReturnValue(), v11, objc_msgSend(v12, "style"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "ikBackgroundColor"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "color"), backgroundColor = objc_claimAutoreleasedReturnValue(), v14, v13, v12, !backgroundColor))
   {
-    v15 = [v16 backgroundColor];
+    backgroundColor = [viewCopy backgroundColor];
   }
 
-  [v7 setBackgroundColor:v15];
+  [attributesCopy setBackgroundColor:backgroundColor];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 item];
-  v9 = v8 % [(NSArray *)self->_modelObjects count];
-  v10 = [(SUUIStorePageSection *)self pageComponent];
-  v16 = [v10 viewElement];
+  pathCopy = path;
+  viewCopy = view;
+  item = [pathCopy item];
+  v9 = item % [(NSArray *)self->_modelObjects count];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
   v11 = [(NSArray *)self->_modelObjects objectAtIndex:v9];
-  if (v16)
+  if (viewElement)
   {
     [v11 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
   }
 
   else
   {
-    v12 = [v11 link];
-    v13 = [(SUUIStorePageSection *)self clickEventWithLink:v12 elementName:*MEMORY[0x277D6A4D8] index:v9];
+    link = [v11 link];
+    v13 = [(SUUIStorePageSection *)self clickEventWithLink:link elementName:*MEMORY[0x277D6A4D8] index:v9];
     if (v13)
     {
-      v14 = [(SUUIStorePageSection *)self context];
-      v15 = [v14 metricsController];
-      [v15 recordEvent:v13];
+      context = [(SUUIStorePageSection *)self context];
+      metricsController = [context metricsController];
+      [metricsController recordEvent:v13];
     }
 
-    [(SUUIStorePageSection *)self showPageWithLink:v12];
+    [(SUUIStorePageSection *)self showPageWithLink:link];
   }
 
-  [v7 deselectItemAtIndexPath:v6 animated:1];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = -[NSArray objectAtIndex:](self->_modelObjects, "objectAtIndex:", [a5 item] % -[NSArray count](self->_modelObjects, "count"));
-  v6 = [(SUUIStorePageSection *)self context];
-  v7 = [v6 activeMetricsImpressionSession];
-  [v7 beginActiveImpressionForViewElement:v8];
+  v8 = -[NSArray objectAtIndex:](self->_modelObjects, "objectAtIndex:", [path item] % -[NSArray count](self->_modelObjects, "count"));
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:v8];
 
   [v8 dispatchEventOfType:9 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v9 = a5;
+  pathCopy = path;
   if ([(NSArray *)self->_modelObjects count])
   {
-    v6 = -[NSArray objectAtIndex:](self->_modelObjects, "objectAtIndex:", [v9 item] % -[NSArray count](self->_modelObjects, "count"));
-    v7 = [(SUUIStorePageSection *)self context];
-    v8 = [v7 activeMetricsImpressionSession];
-    [v8 endActiveImpressionForViewElement:v6];
+    v6 = -[NSArray objectAtIndex:](self->_modelObjects, "objectAtIndex:", [pathCopy item] % -[NSArray count](self->_modelObjects, "count"));
+    context = [(SUUIStorePageSection *)self context];
+    activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+    [activeMetricsImpressionSession endActiveImpressionForViewElement:v6];
 
     [v6 dispatchEventOfType:10 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   if (self->_progressIndicatorElement)
   {
-    v4 = [(SUUIStorePageSection *)self context];
-    v5 = [v4 collectionView];
+    context = [(SUUIStorePageSection *)self context];
+    collectionView = [context collectionView];
     v6 = [MEMORY[0x277CCAA70] indexPathForItem:self->_progressIndicatorCellIndex inSection:{-[SUUIStorePageSection sectionIndex](self, "sectionIndex")}];
-    v7 = [v5 cellForItemAtIndexPath:v6];
+    v7 = [collectionView cellForItemAtIndexPath:v6];
 
     [v7 setCurrentPage:{-[SUUICarouselPageSection _currentPageIndex](self, "_currentPageIndex")}];
   }
@@ -1051,20 +1051,20 @@ LABEL_3:
   [(SUUICarouselPageSection *)self _startCycleTimerIfNecessary];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   if (self->_progressIndicatorElement)
   {
-    v4 = [(SUUIStorePageSection *)self context];
-    v5 = [v4 collectionView];
+    context = [(SUUIStorePageSection *)self context];
+    collectionView = [context collectionView];
     v6 = [MEMORY[0x277CCAA70] indexPathForItem:self->_progressIndicatorCellIndex inSection:{-[SUUIStorePageSection sectionIndex](self, "sectionIndex")}];
-    v7 = [v5 cellForItemAtIndexPath:v6];
+    v7 = [collectionView cellForItemAtIndexPath:v6];
 
     [v7 setCurrentPage:{-[SUUICarouselPageSection _currentPageIndex](self, "_currentPageIndex")}];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   cycleTimer = self->_cycleTimer;
   if (cycleTimer)
@@ -1087,12 +1087,12 @@ LABEL_3:
   return result;
 }
 
-- (void)_addImpressionForIndex:(int64_t)a3 toSession:(id)a4
+- (void)_addImpressionForIndex:(int64_t)index toSession:(id)session
 {
   modelObjects = self->_modelObjects;
-  v6 = a4;
-  v7 = [(NSArray *)modelObjects objectAtIndex:a3];
-  [v6 addItemIdentifier:{objc_msgSend(v7, "carouselItemIdentifier")}];
+  sessionCopy = session;
+  v7 = [(NSArray *)modelObjects objectAtIndex:index];
+  [sessionCopy addItemIdentifier:{objc_msgSend(v7, "carouselItemIdentifier")}];
 }
 
 - (void)_cancelCycleTimer
@@ -1145,9 +1145,9 @@ LABEL_3:
   return carouselCollectionView;
 }
 
-- (Class)_cellClassForLockup:(id)a3
+- (Class)_cellClassForLockup:(id)lockup
 {
-  if ([a3 lockupViewType] <= 8)
+  if ([lockup lockupViewType] <= 8)
   {
     v3 = objc_opt_class();
   }
@@ -1155,20 +1155,20 @@ LABEL_3:
   return v3;
 }
 
-- (Class)_cellClassForViewElement:(id)a3
+- (Class)_cellClassForViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 elementType];
+  elementCopy = element;
+  elementType = [elementCopy elementType];
   v6 = 0;
-  if (v5 > 65)
+  if (elementType > 65)
   {
-    if (v5 == 66)
+    if (elementType == 66)
     {
-      v7 = [(SUUICarouselPageSection *)self _cellClassForLockup:v4];
+      v7 = [(SUUICarouselPageSection *)self _cellClassForLockup:elementCopy];
       goto LABEL_9;
     }
 
-    if (v5 != 152)
+    if (elementType != 152)
     {
       goto LABEL_10;
     }
@@ -1180,7 +1180,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v5 == 14 || v5 == 49)
+  if (elementType == 14 || elementType == 49)
   {
     goto LABEL_7;
   }
@@ -1192,8 +1192,8 @@ LABEL_10:
 
 - (int64_t)_currentPageIndex
 {
-  v3 = [(SUUICarouselPageSection *)self _carouselCollectionView];
-  [v3 bounds];
+  _carouselCollectionView = [(SUUICarouselPageSection *)self _carouselCollectionView];
+  [_carouselCollectionView bounds];
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -1203,49 +1203,49 @@ LABEL_10:
   v14.origin.y = y;
   v14.size.width = width;
   v14.size.height = height;
-  v9 = [v3 indexPathForItemAtPoint:{MidX, CGRectGetMidY(v14)}];
-  v10 = [v9 item];
-  v11 = v10 % [(NSArray *)self->_modelObjects count];
+  v9 = [_carouselCollectionView indexPathForItemAtPoint:{MidX, CGRectGetMidY(v14)}];
+  item = [v9 item];
+  v11 = item % [(NSArray *)self->_modelObjects count];
 
   return v11;
 }
 
-- (id)_dequeueCellForLockup:(id)a3 collectionView:(id)a4 indexPath:(id)a5
+- (id)_dequeueCellForLockup:(id)lockup collectionView:(id)view indexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 lockupViewType];
-  if (v9 > 8)
+  viewCopy = view;
+  pathCopy = path;
+  lockupViewType = [lockup lockupViewType];
+  if (lockupViewType > 8)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [v7 dequeueReusableCellWithReuseIdentifier:*off_2798F96B0[v9] forIndexPath:v8];
+    v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:*off_2798F96B0[lockupViewType] forIndexPath:pathCopy];
   }
 
   return v10;
 }
 
-- (id)_dequeueCellForViewElement:(id)a3 collectionView:(id)a4 indexPath:(id)a5
+- (id)_dequeueCellForViewElement:(id)element collectionView:(id)view indexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 elementType];
+  elementCopy = element;
+  viewCopy = view;
+  pathCopy = path;
+  elementType = [elementCopy elementType];
   v12 = 0;
-  if (v11 > 48)
+  if (elementType > 48)
   {
-    if (v11 != 49)
+    if (elementType != 49)
     {
-      if (v11 == 66)
+      if (elementType == 66)
       {
-        v14 = [(SUUICarouselPageSection *)self _dequeueCellForLockup:v8 collectionView:v9 indexPath:v10];
+        v14 = [(SUUICarouselPageSection *)self _dequeueCellForLockup:elementCopy collectionView:viewCopy indexPath:pathCopy];
         goto LABEL_11;
       }
 
-      if (v11 != 152)
+      if (elementType != 152)
       {
         goto LABEL_12;
       }
@@ -1253,15 +1253,15 @@ LABEL_10:
 
     v13 = 0x286AF3680;
 LABEL_9:
-    v14 = [v9 dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:v10];
+    v14 = [viewCopy dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:pathCopy];
 LABEL_11:
     v12 = v14;
     goto LABEL_12;
   }
 
-  if (v11 != 14)
+  if (elementType != 14)
   {
-    if (v11 != 28)
+    if (elementType != 28)
     {
       goto LABEL_12;
     }
@@ -1270,7 +1270,7 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  v12 = [v9 dequeueReusableCellWithReuseIdentifier:0x286AFFD60 forIndexPath:v10];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:0x286AFFD60 forIndexPath:pathCopy];
   [v12 setArtworkBoundingSize:0];
   [v12 setContentInset:{0.0, 15.0, 0.0, 15.0}];
 LABEL_12:
@@ -1280,8 +1280,8 @@ LABEL_12:
 
 - (void)_fireCycleTimer
 {
-  v11 = [(SUUICarouselPageSection *)self _carouselCollectionView];
-  [v11 bounds];
+  _carouselCollectionView = [(SUUICarouselPageSection *)self _carouselCollectionView];
+  [_carouselCollectionView bounds];
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -1291,45 +1291,45 @@ LABEL_12:
   v14.origin.y = y;
   v14.size.width = width;
   v14.size.height = height;
-  v8 = [v11 indexPathForItemAtPoint:{MidX, CGRectGetMidY(v14)}];
-  v9 = [v8 item];
+  v8 = [_carouselCollectionView indexPathForItemAtPoint:{MidX, CGRectGetMidY(v14)}];
+  item = [v8 item];
 
-  v10 = [MEMORY[0x277CCAA70] indexPathForItem:v9 + 1 inSection:0];
+  v10 = [MEMORY[0x277CCAA70] indexPathForItem:item + 1 inSection:0];
   [(SUUICarouselPageSection *)self _scrollToItemAtIndexPath:v10 animated:1];
 }
 
-- (BOOL)_isItemEnabledAtIndexPath:(id)a3
+- (BOOL)_isItemEnabledAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  if (v6)
+  if (viewElement)
   {
-    v7 = -[NSArray objectAtIndex:](self->_modelObjects, "objectAtIndex:", [v4 item] % -[NSArray count](self->_modelObjects, "count"));
-    v8 = [v7 isEnabled];
+    v7 = -[NSArray objectAtIndex:](self->_modelObjects, "objectAtIndex:", [pathCopy item] % -[NSArray count](self->_modelObjects, "count"));
+    isEnabled = [v7 isEnabled];
   }
 
   else
   {
-    v8 = 1;
+    isEnabled = 1;
   }
 
-  return v8;
+  return isEnabled;
 }
 
 - (CGSize)_legacyItemSize
 {
-  v2 = [(SUUIStorePageSection *)self context];
-  [v2 activePageWidth];
+  context = [(SUUIStorePageSection *)self context];
+  [context activePageWidth];
   v4 = v3;
-  v5 = [v2 clientContext];
-  v6 = SUUIUserInterfaceIdiom(v5);
+  clientContext = [context clientContext];
+  v6 = SUUIUserInterfaceIdiom(clientContext);
 
   if (v6 == 1)
   {
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v9 = v8;
 
     if (v4 >= v9)
@@ -1378,16 +1378,16 @@ LABEL_12:
 
 - (double)_legacyItemSpacing
 {
-  v2 = [(SUUIStorePageSection *)self context];
-  [v2 activePageWidth];
+  context = [(SUUIStorePageSection *)self context];
+  [context activePageWidth];
   v4 = v3;
-  v5 = [v2 clientContext];
-  v6 = SUUIUserInterfaceIdiom(v5);
+  clientContext = [context clientContext];
+  v6 = SUUIUserInterfaceIdiom(clientContext);
 
   if (v6 == 1)
   {
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v9 = v8;
 
     v10 = v9 * 0.5;
@@ -1413,13 +1413,13 @@ LABEL_12:
   return v12;
 }
 
-- (void)_loadMissingItemsFromIndex:(int64_t)a3 withReason:(int64_t)a4
+- (void)_loadMissingItemsFromIndex:(int64_t)index withReason:(int64_t)reason
 {
-  v8 = [(SUUIStorePageSection *)self pageComponent];
-  if ([v8 isMissingItemData])
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  if ([pageComponent isMissingItemData])
   {
-    v7 = [(SUUICarouselPageSection *)self _missingItemLoader];
-    [v7 loadItemsForPageComponent:v8 startIndex:a3 reason:a4];
+    _missingItemLoader = [(SUUICarouselPageSection *)self _missingItemLoader];
+    [_missingItemLoader loadItemsForPageComponent:pageComponent startIndex:index reason:reason];
   }
 }
 
@@ -1429,9 +1429,9 @@ LABEL_12:
   if (!missingItemLoader)
   {
     v4 = [SUUIMissingItemLoader alloc];
-    v5 = [(SUUIStorePageSection *)self context];
-    v6 = [v5 resourceLoader];
-    v7 = [(SUUIMissingItemLoader *)v4 initWithResourceLoader:v6];
+    context = [(SUUIStorePageSection *)self context];
+    resourceLoader = [context resourceLoader];
+    v7 = [(SUUIMissingItemLoader *)v4 initWithResourceLoader:resourceLoader];
     v8 = self->_missingItemLoader;
     self->_missingItemLoader = v7;
 
@@ -1463,14 +1463,14 @@ LABEL_12:
 
 - (void)_reloadViewElementProperties
 {
-  v16 = [(SUUIStorePageSection *)self pageComponent];
-  v3 = [v16 viewElement];
-  v4 = [v3 style];
-  v5 = [v4 itemWidth];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  style = [viewElement style];
+  itemWidth = [style itemWidth];
 
-  if (v5)
+  if (itemWidth)
   {
-    [v5 floatValue];
+    [itemWidth floatValue];
     v7 = v6;
   }
 
@@ -1480,29 +1480,29 @@ LABEL_12:
   }
 
   self->_itemWidth = v7;
-  if (v3)
+  if (viewElement)
   {
-    v8 = [v3 flattenedChildren];
+    flattenedChildren = [viewElement flattenedChildren];
     modelObjects = self->_modelObjects;
-    self->_modelObjects = v8;
+    self->_modelObjects = flattenedChildren;
 
-    v10 = [v3 progressIndicatorElement];
+    progressIndicatorElement = [viewElement progressIndicatorElement];
   }
 
   else
   {
-    v11 = [v16 carouselItems];
+    carouselItems = [pageComponent carouselItems];
     v12 = self->_modelObjects;
-    self->_modelObjects = v11;
+    self->_modelObjects = carouselItems;
 
-    v10 = 0;
+    progressIndicatorElement = 0;
   }
 
   progressIndicatorElement = self->_progressIndicatorElement;
-  self->_progressIndicatorElement = v10;
+  self->_progressIndicatorElement = progressIndicatorElement;
 
-  v14 = [(SUUIProgressIndicatorViewElement *)self->_progressIndicatorElement style];
-  v15 = [v14 elementPosition] != 2;
+  style2 = [(SUUIProgressIndicatorViewElement *)self->_progressIndicatorElement style];
+  v15 = [style2 elementPosition] != 2;
 
   self->_progressIndicatorCellIndex = v15;
 }
@@ -1511,16 +1511,16 @@ LABEL_12:
 {
   if (!self->_cycleTimer)
   {
-    v3 = [(SUUIStorePageSection *)self pageComponent];
-    [v3 cycleInterval];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    [pageComponent cycleInterval];
     v5 = v4;
 
     if (v5 > 2.22044605e-16)
     {
       [(SUUICarouselPageSection *)self _actualContentWidth];
       v7 = v6;
-      v8 = [(SUUIStorePageSection *)self context];
-      [v8 activePageWidth];
+      context = [(SUUIStorePageSection *)self context];
+      [context activePageWidth];
       v10 = v9 + v9;
 
       if (v7 > v10)
@@ -1555,17 +1555,17 @@ void __54__SUUICarouselPageSection__startCycleTimerIfNecessary__block_invoke(uin
   [WeakRetained _fireCycleTimer];
 }
 
-- (void)_scrollToItemAtIndexPath:(id)a3 animated:(BOOL)a4
+- (void)_scrollToItemAtIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(SUUICarouselPageSection *)self _carouselCollectionView];
-  v7 = [v6 numberOfItemsInSection:0];
+  animatedCopy = animated;
+  pathCopy = path;
+  _carouselCollectionView = [(SUUICarouselPageSection *)self _carouselCollectionView];
+  v7 = [_carouselCollectionView numberOfItemsInSection:0];
 
-  if ([v9 row] < v7)
+  if ([pathCopy row] < v7)
   {
-    v8 = [(SUUICarouselPageSection *)self _carouselCollectionView];
-    [v8 scrollToItemAtIndexPath:v9 atScrollPosition:16 animated:v4];
+    _carouselCollectionView2 = [(SUUICarouselPageSection *)self _carouselCollectionView];
+    [_carouselCollectionView2 scrollToItemAtIndexPath:pathCopy atScrollPosition:16 animated:animatedCopy];
   }
 }
 

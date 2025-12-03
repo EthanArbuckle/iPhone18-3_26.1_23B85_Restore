@@ -1,12 +1,12 @@
 @interface HAP2TLVAccessorySignatureReadRequest
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAP2TLVAccessorySignatureReadRequest)init;
-- (HAP2TLVAccessorySignatureReadRequest)initWithAccessoryList:(id)a3;
+- (HAP2TLVAccessorySignatureReadRequest)initWithAccessoryList:(id)list;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAP2TLVAccessorySignatureReadRequest
@@ -14,16 +14,16 @@
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HAP2TLVAccessorySignatureReadRequest *)self accessoryList];
-  v4 = [v2 stringWithFormat:@"<HAP2TLVAccessorySignatureReadRequest accessoryList=%@>", v3];
+  accessoryList = [(HAP2TLVAccessorySignatureReadRequest *)self accessoryList];
+  v4 = [v2 stringWithFormat:@"<HAP2TLVAccessorySignatureReadRequest accessoryList=%@>", accessoryList];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -33,19 +33,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HAP2TLVAccessorySignatureReadRequest *)self accessoryList];
-      v7 = [(HAP2TLVAccessorySignatureReadRequest *)v5 accessoryList];
-      if (v6 == v7)
+      v5 = equalCopy;
+      accessoryList = [(HAP2TLVAccessorySignatureReadRequest *)self accessoryList];
+      accessoryList2 = [(HAP2TLVAccessorySignatureReadRequest *)v5 accessoryList];
+      if (accessoryList == accessoryList2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(HAP2TLVAccessorySignatureReadRequest *)self accessoryList];
-        v9 = [(HAP2TLVAccessorySignatureReadRequest *)v5 accessoryList];
-        v10 = [v8 isEqual:v9];
+        accessoryList3 = [(HAP2TLVAccessorySignatureReadRequest *)self accessoryList];
+        accessoryList4 = [(HAP2TLVAccessorySignatureReadRequest *)v5 accessoryList];
+        v10 = [accessoryList3 isEqual:accessoryList4];
       }
     }
 
@@ -58,16 +58,16 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAP2TLVAccessorySignatureReadRequest allocWithZone:a3];
-  v5 = [(HAP2TLVAccessorySignatureReadRequest *)self accessoryList];
-  v6 = [(HAP2TLVAccessorySignatureReadRequest *)v4 initWithAccessoryList:v5];
+  v4 = [HAP2TLVAccessorySignatureReadRequest allocWithZone:zone];
+  accessoryList = [(HAP2TLVAccessorySignatureReadRequest *)self accessoryList];
+  v6 = [(HAP2TLVAccessorySignatureReadRequest *)v4 initWithAccessoryList:accessoryList];
 
   return v6;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
   v40 = 0u;
@@ -92,32 +92,32 @@
   v21 = 0u;
   v22 = 0u;
   TLV8BufferInit();
-  v5 = [(HAP2TLVAccessorySignatureReadRequest *)self accessoryList];
+  accessoryList = [(HAP2TLVAccessorySignatureReadRequest *)self accessoryList];
 
-  if (!v5)
+  if (!accessoryList)
   {
     goto LABEL_20;
   }
 
-  v6 = [(HAP2TLVAccessorySignatureReadRequest *)self accessoryList];
+  accessoryList2 = [(HAP2TLVAccessorySignatureReadRequest *)self accessoryList];
   v20 = 0;
-  v7 = [v6 serializeWithError:&v20];
+  v7 = [accessoryList2 serializeWithError:&v20];
   v8 = v20;
 
   if (!v8)
   {
-    v11 = [v7 bytes];
-    v12 = v11 + [v7 length];
+    bytes = [v7 bytes];
+    v12 = bytes + [v7 length];
     do
     {
-      if ((v12 - v11) >= 255)
+      if ((v12 - bytes) >= 255)
       {
         v13 = 255;
       }
 
       else
       {
-        v13 = v12 - v11;
+        v13 = v12 - bytes;
       }
 
       v14 = TLV8BufferAppend();
@@ -131,7 +131,7 @@
         v15 = v13;
       }
 
-      v11 += v15;
+      bytes += v15;
       if (v14)
       {
         v16 = 1;
@@ -139,7 +139,7 @@
 
       else
       {
-        v16 = v11 >= v12;
+        v16 = bytes >= v12;
       }
     }
 
@@ -148,11 +148,11 @@
 
     if (v17)
     {
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v17);
         v8 = 0;
-        *a3 = v10 = 0;
+        *error = v10 = 0;
         goto LABEL_23;
       }
 
@@ -166,11 +166,11 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  if (a3)
+  if (error)
   {
     v9 = v8;
     v10 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_23;
   }
 
@@ -184,11 +184,11 @@ LABEL_23:
   return v10;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
@@ -202,7 +202,7 @@ LABEL_13:
   {
     v9 = 0;
     v10 = 0;
-    v11 = v7 + v8;
+    v11 = bytes + v8;
     while (1)
     {
       v24 = 0;
@@ -212,10 +212,10 @@ LABEL_13:
       Next = TLV8GetNext();
       if (Next)
       {
-        if (a4)
+        if (error)
         {
           HMErrorFromOSStatus(Next);
-          *a4 = v16 = 0;
+          *error = v16 = 0;
           goto LABEL_20;
         }
 
@@ -230,7 +230,7 @@ LABEL_13:
       if (v24 == 24)
       {
         v21 = v10;
-        v13 = HAPTLVParseContiguousTlvs(24, v7, v11, v22, &v21);
+        v13 = HAPTLVParseContiguousTlvs(24, bytes, v11, v22, &v21);
         v14 = v21;
 
         if (!v14)
@@ -245,7 +245,7 @@ LABEL_13:
         v10 = v14;
       }
 
-      v7 = v22[0];
+      bytes = v22[0];
       if (v22[0] >= v11)
       {
         if (!v10)
@@ -266,11 +266,11 @@ LABEL_13:
     }
 
 LABEL_17:
-    if (a4)
+    if (error)
     {
       v18 = v10;
       v16 = 0;
-      *a4 = v10;
+      *error = v10;
       goto LABEL_20;
     }
 
@@ -283,16 +283,16 @@ LABEL_20:
   return v16;
 }
 
-- (HAP2TLVAccessorySignatureReadRequest)initWithAccessoryList:(id)a3
+- (HAP2TLVAccessorySignatureReadRequest)initWithAccessoryList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v9.receiver = self;
   v9.super_class = HAP2TLVAccessorySignatureReadRequest;
   v6 = [(HAP2TLVAccessorySignatureReadRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accessoryList, a3);
+    objc_storeStrong(&v6->_accessoryList, list);
   }
 
   return v7;
@@ -305,24 +305,24 @@ LABEL_20:
   return [(HAP2TLVAccessorySignatureReadRequest *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAP2TLVAccessorySignatureReadRequest);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAP2TLVAccessorySignatureReadRequest *)v6 parseFromData:v5 error:&v11];
+    [(HAP2TLVAccessorySignatureReadRequest *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

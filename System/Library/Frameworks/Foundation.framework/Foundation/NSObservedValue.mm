@@ -4,9 +4,9 @@
 - (id)debugDescription;
 - (id)value;
 - (void)dealloc;
-- (void)setError:(id)a3;
-- (void)setFinished:(BOOL)a3;
-- (void)setValue:(id)a3;
+- (void)setError:(id)error;
+- (void)setFinished:(BOOL)finished;
+- (void)setValue:(id)value;
 @end
 
 @implementation NSObservedValue
@@ -20,14 +20,14 @@
   [(NSObservedValue *)&v3 dealloc];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   self->_tag = 1;
   contents = self->_contents;
-  if (contents != a3)
+  if (contents != value)
   {
 
-    self->_contents = a3;
+    self->_contents = value;
   }
 }
 
@@ -44,14 +44,14 @@
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
   self->_tag = 2;
   contents = self->_contents;
-  if (contents != a3)
+  if (contents != error)
   {
 
-    self->_contents = a3;
+    self->_contents = error;
   }
 }
 
@@ -68,7 +68,7 @@
   }
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
   self->_tag = 3;
 

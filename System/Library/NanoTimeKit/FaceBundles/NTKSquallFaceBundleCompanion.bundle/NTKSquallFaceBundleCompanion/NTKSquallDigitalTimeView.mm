@@ -1,43 +1,43 @@
 @interface NTKSquallDigitalTimeView
-- (CGRect)_hourFrameForLinkingFraction:(double)a3 font:(id)a4;
-- (CGRect)_minuteFrameForLinkingFraction:(double)a3 font:(id)a4;
-- (NTKSquallDigitalTimeView)initWithDevice:(id)a3;
-- (double)_hourYForLinkingFraction:(double)a3 font:(id)a4;
-- (double)_minuteYForLinkingFraction:(double)a3 font:(id)a4;
-- (id)_attributedStringForHour:(id)a3 linkingFraction:(double)a4 colorShiftFraction:(double)a5;
-- (id)_attributedStringForLink:(id)a3 linkingFraction:(double)a4 colorShiftFraction:(double)a5;
-- (id)_attributedStringForMinute:(id)a3 linkingFraction:(double)a4 colorShiftFraction:(double)a5;
-- (id)_fontForHour:(BOOL)a3 linkingFraction:(double)a4;
-- (id)_linkedHourFontForDigitBelow:(unint64_t)a3 linkingFraction:(double)a4;
-- (id)_timeWithFaking:(id)a3 formatter:(id)a4;
-- (id)stringAttributesForHour:(BOOL)a3 fontSize:(double)a4;
-- (int64_t)_shiftDirectionForTime:(id)a3;
-- (void)_centerDateAnimated:(BOOL)a3;
+- (CGRect)_hourFrameForLinkingFraction:(double)fraction font:(id)font;
+- (CGRect)_minuteFrameForLinkingFraction:(double)fraction font:(id)font;
+- (NTKSquallDigitalTimeView)initWithDevice:(id)device;
+- (double)_hourYForLinkingFraction:(double)fraction font:(id)font;
+- (double)_minuteYForLinkingFraction:(double)fraction font:(id)font;
+- (id)_attributedStringForHour:(id)hour linkingFraction:(double)fraction colorShiftFraction:(double)shiftFraction;
+- (id)_attributedStringForLink:(id)link linkingFraction:(double)fraction colorShiftFraction:(double)shiftFraction;
+- (id)_attributedStringForMinute:(id)minute linkingFraction:(double)fraction colorShiftFraction:(double)shiftFraction;
+- (id)_fontForHour:(BOOL)hour linkingFraction:(double)fraction;
+- (id)_linkedHourFontForDigitBelow:(unint64_t)below linkingFraction:(double)fraction;
+- (id)_timeWithFaking:(id)faking formatter:(id)formatter;
+- (id)stringAttributesForHour:(BOOL)hour fontSize:(double)size;
+- (int64_t)_shiftDirectionForTime:(id)time;
+- (void)_centerDateAnimated:(BOOL)animated;
 - (void)_layoutTime;
 - (void)_startClockUpdates;
 - (void)_stopClockUpdates;
 - (void)_updateAnimating;
-- (void)_updateLabelsAnimated:(BOOL)a3;
+- (void)_updateLabelsAnimated:(BOOL)animated;
 - (void)_updateLocale;
-- (void)applyColorPalette:(id)a3;
+- (void)applyColorPalette:(id)palette;
 - (void)layoutSubviews;
-- (void)setFrozen:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setFrozen:(BOOL)frozen;
+- (void)setHidden:(BOOL)hidden;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKSquallDigitalTimeView
 
-- (NTKSquallDigitalTimeView)initWithDevice:(id)a3
+- (NTKSquallDigitalTimeView)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v45.receiver = self;
   v45.super_class = NTKSquallDigitalTimeView;
   v6 = [(NTKSquallDigitalTimeView *)&v45 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = +[NTKSquallFontLoader squallFontDescriptor];
     v48 = kCTFontVariationAttribute;
     v9 = [NSNumber numberWithUnsignedInt:TextToFourCharCode()];
@@ -109,7 +109,7 @@
     bezelProvider = v7->_bezelProvider;
     v7->_bezelProvider = v37;
 
-    v39 = [[NTKSquallTimeBezelView alloc] initWithDevice:v5 progressProvider:v7->_bezelProvider];
+    v39 = [[NTKSquallTimeBezelView alloc] initWithDevice:deviceCopy progressProvider:v7->_bezelProvider];
     bezelView = v7->_bezelView;
     v7->_bezelView = v39;
 
@@ -146,66 +146,66 @@
   [(CLKUIColoringLabel *)overlayLabel setFrame:?];
 }
 
-- (void)applyColorPalette:(id)a3
+- (void)applyColorPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
-  v5 = a3;
-  [(NTKSquallBezelView *)self->_bezelView applyColorPalette:v5];
+  objc_storeStrong(&self->_palette, palette);
+  paletteCopy = palette;
+  [(NTKSquallBezelView *)self->_bezelView applyColorPalette:paletteCopy];
 
   [(NTKSquallDigitalTimeView *)self _updateLabelsAnimated:0];
 }
 
-- (double)_hourYForLinkingFraction:(double)a3 font:(id)a4
+- (double)_hourYForLinkingFraction:(double)fraction font:(id)font
 {
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
   device = self->_device;
-  v5 = a4;
+  fontCopy = font;
   sub_2D30(device, &v13);
   CLKInterpolateBetweenFloatsClipped();
   v7 = v6;
-  [v5 lineHeight];
+  [fontCopy lineHeight];
   v9 = v8;
-  [v5 descender];
+  [fontCopy descender];
   v11 = v10;
 
   return v7 - (v9 + v11);
 }
 
-- (double)_minuteYForLinkingFraction:(double)a3 font:(id)a4
+- (double)_minuteYForLinkingFraction:(double)fraction font:(id)font
 {
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
   device = self->_device;
-  v5 = a4;
+  fontCopy = font;
   sub_2D30(device, &v13);
   CLKInterpolateBetweenFloatsClipped();
   v7 = v6;
-  [v5 lineHeight];
+  [fontCopy lineHeight];
   v9 = v8;
-  [v5 descender];
+  [fontCopy descender];
   v11 = v10;
 
   return v7 - (v9 + v11);
 }
 
-- (CGRect)_hourFrameForLinkingFraction:(double)a3 font:(id)a4
+- (CGRect)_hourFrameForLinkingFraction:(double)fraction font:(id)font
 {
-  v6 = a4;
-  if (!v6)
+  fontCopy = font;
+  if (!fontCopy)
   {
-    v6 = [(NTKSquallDigitalTimeView *)self _fontForHour:1 linkingFraction:a3];
+    fontCopy = [(NTKSquallDigitalTimeView *)self _fontForHour:1 linkingFraction:fraction];
   }
 
   [(NTKSquallDigitalTimeView *)self bounds];
   v8 = v7;
-  [(NTKSquallDigitalTimeView *)self _hourYForLinkingFraction:v6 font:a3];
+  [(NTKSquallDigitalTimeView *)self _hourYForLinkingFraction:fontCopy font:fraction];
   v10 = v9;
-  [v6 lineHeight];
+  [fontCopy lineHeight];
   v12 = v11;
 
   v13 = 0.0;
@@ -219,19 +219,19 @@
   return result;
 }
 
-- (CGRect)_minuteFrameForLinkingFraction:(double)a3 font:(id)a4
+- (CGRect)_minuteFrameForLinkingFraction:(double)fraction font:(id)font
 {
-  v6 = a4;
-  if (!v6)
+  fontCopy = font;
+  if (!fontCopy)
   {
-    v6 = [(NTKSquallDigitalTimeView *)self _fontForHour:0 linkingFraction:a3];
+    fontCopy = [(NTKSquallDigitalTimeView *)self _fontForHour:0 linkingFraction:fraction];
   }
 
   [(NTKSquallDigitalTimeView *)self bounds];
   v8 = v7;
-  [(NTKSquallDigitalTimeView *)self _minuteYForLinkingFraction:v6 font:a3];
+  [(NTKSquallDigitalTimeView *)self _minuteYForLinkingFraction:fontCopy font:fraction];
   v10 = v9;
-  [v6 lineHeight];
+  [fontCopy lineHeight];
   v12 = v11;
 
   v13 = 0.0;
@@ -245,9 +245,9 @@
   return result;
 }
 
-- (void)_updateLabelsAnimated:(BOOL)a3
+- (void)_updateLabelsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   hourLabel = self->_hourLabel;
   v6 = [(NTKSquallDigitalTimeView *)self _attributedStringForHour:self->_date linkingFraction:0.0 colorShiftFraction:0.0];
   [(CLKUIColoringLabel *)hourLabel setAttributedText:v6];
@@ -260,17 +260,17 @@
   v10 = [(NTKSquallDigitalTimeView *)self _attributedStringForLink:self->_date linkingFraction:0.0 colorShiftFraction:0.0];
   [(CLKUIColoringLabel *)overlayLabel setAttributedText:v10];
 
-  [(NTKSquallDigitalTimeView *)self _centerDateAnimated:v3];
-  if (!v3)
+  [(NTKSquallDigitalTimeView *)self _centerDateAnimated:animatedCopy];
+  if (!animatedCopy)
   {
 
     [(NTKSquallDigitalTimeView *)self _layoutTime];
   }
 }
 
-- (id)_timeWithFaking:(id)a3 formatter:(id)a4
+- (id)_timeWithFaking:(id)faking formatter:(id)formatter
 {
-  v4 = [a4 stringFromDate:a3];
+  v4 = [formatter stringFromDate:faking];
   v5 = v4;
   if (v4)
   {
@@ -287,18 +287,18 @@
   return v6;
 }
 
-- (id)_attributedStringForLink:(id)a3 linkingFraction:(double)a4 colorShiftFraction:(double)a5
+- (id)_attributedStringForLink:(id)link linkingFraction:(double)fraction colorShiftFraction:(double)shiftFraction
 {
-  v7 = a3;
-  v8 = [(NTKSquallDigitalTimeView *)self _hourString:v7];
+  linkCopy = link;
+  v8 = [(NTKSquallDigitalTimeView *)self _hourString:linkCopy];
   v9 = +[NSCalendar currentCalendar];
-  v10 = [v9 components:64 fromDate:v7];
+  v10 = [v9 components:64 fromDate:linkCopy];
 
-  v11 = [v10 minute];
+  minute = [v10 minute];
   v12 = [[NSMutableAttributedString alloc] initWithString:v8];
-  v13 = [(NTKSquallDigitalTimeView *)self _linkedHourFontForDigitBelow:v11 / 0xA linkingFraction:a4];
+  v13 = [(NTKSquallDigitalTimeView *)self _linkedHourFontForDigitBelow:minute / 0xA linkingFraction:fraction];
   [v12 addAttribute:NSFontAttributeName value:v13 range:{0, 1}];
-  v14 = [(NTKSquallDigitalTimeView *)self _linkedHourFontForDigitBelow:v11 % 0xA linkingFraction:a4];
+  v14 = [(NTKSquallDigitalTimeView *)self _linkedHourFontForDigitBelow:minute % 0xA linkingFraction:fraction];
   [v12 addAttribute:NSFontAttributeName value:v14 range:{1, 1}];
   sub_2D30(self->_device, &v22);
   v15 = [NSNumber numberWithDouble:v23];
@@ -307,10 +307,10 @@
   palette = self->_palette;
   if (palette)
   {
-    v17 = [(NTKSquallColorPalette *)palette hourNumeralsFill];
-    v18 = [v17 colorWithAlphaComponent:0.0];
+    hourNumeralsFill = [(NTKSquallColorPalette *)palette hourNumeralsFill];
+    v18 = [hourNumeralsFill colorWithAlphaComponent:0.0];
 
-    v19 = [(NTKSquallColorPalette *)self->_palette hourNumeralsFillLinked];
+    hourNumeralsFillLinked = [(NTKSquallColorPalette *)self->_palette hourNumeralsFillLinked];
     v20 = CLKInterpolateBetweenColors();
 
     [v12 addAttribute:NSForegroundColorAttributeName value:v20 range:{0, 2}];
@@ -319,11 +319,11 @@
   return v12;
 }
 
-- (id)_attributedStringForHour:(id)a3 linkingFraction:(double)a4 colorShiftFraction:(double)a5
+- (id)_attributedStringForHour:(id)hour linkingFraction:(double)fraction colorShiftFraction:(double)shiftFraction
 {
-  v7 = [(NTKSquallDigitalTimeView *)self _hourString:a3];
+  v7 = [(NTKSquallDigitalTimeView *)self _hourString:hour];
   v8 = [[NSMutableAttributedString alloc] initWithString:v7];
-  v9 = [(NTKSquallDigitalTimeView *)self _fontForHour:1 linkingFraction:a4];
+  v9 = [(NTKSquallDigitalTimeView *)self _fontForHour:1 linkingFraction:fraction];
   [v8 addAttribute:NSFontAttributeName value:v9 range:{0, 2}];
   sub_2D30(self->_device, &v16);
   v10 = [NSNumber numberWithDouble:v17];
@@ -332,8 +332,8 @@
   palette = self->_palette;
   if (palette)
   {
-    v12 = [(NTKSquallColorPalette *)palette hourNumeralsFill];
-    v13 = [(NTKSquallColorPalette *)self->_palette hourNumeralsFillLinked];
+    hourNumeralsFill = [(NTKSquallColorPalette *)palette hourNumeralsFill];
+    hourNumeralsFillLinked = [(NTKSquallColorPalette *)self->_palette hourNumeralsFillLinked];
     v14 = CLKInterpolateBetweenColors();
 
     [v8 addAttribute:NSForegroundColorAttributeName value:v14 range:{0, 2}];
@@ -342,11 +342,11 @@
   return v8;
 }
 
-- (id)_attributedStringForMinute:(id)a3 linkingFraction:(double)a4 colorShiftFraction:(double)a5
+- (id)_attributedStringForMinute:(id)minute linkingFraction:(double)fraction colorShiftFraction:(double)shiftFraction
 {
-  v7 = [(NTKSquallDigitalTimeView *)self _minuteString:a3];
+  v7 = [(NTKSquallDigitalTimeView *)self _minuteString:minute];
   v8 = [[NSMutableAttributedString alloc] initWithString:v7];
-  v9 = [(NTKSquallDigitalTimeView *)self _fontForHour:0 linkingFraction:a4];
+  v9 = [(NTKSquallDigitalTimeView *)self _fontForHour:0 linkingFraction:fraction];
   [v8 addAttribute:NSFontAttributeName value:v9 range:{0, 2}];
   sub_2D30(self->_device, &v16);
   v10 = [NSNumber numberWithDouble:v17];
@@ -355,8 +355,8 @@
   palette = self->_palette;
   if (palette)
   {
-    v12 = [(NTKSquallColorPalette *)palette minuteNumeralsFill];
-    v13 = [(NTKSquallColorPalette *)self->_palette minuteNumeralsFillLinked];
+    minuteNumeralsFill = [(NTKSquallColorPalette *)palette minuteNumeralsFill];
+    minuteNumeralsFillLinked = [(NTKSquallColorPalette *)self->_palette minuteNumeralsFillLinked];
     v14 = CLKInterpolateBetweenColors();
 
     [v8 addAttribute:NSForegroundColorAttributeName value:v14 range:{0, 2}];
@@ -365,27 +365,27 @@
   return v8;
 }
 
-- (int64_t)_shiftDirectionForTime:(id)a3
+- (int64_t)_shiftDirectionForTime:(id)time
 {
   v4 = +[NSCalendar currentCalendar];
   v5 = [v4 components:96 fromDate:self->_date];
-  v6 = [v5 minute];
-  v7 = [v5 hour];
+  minute = [v5 minute];
+  hour = [v5 hour];
   if (self->_is24HourMode)
   {
-    v8 = v7;
+    v8 = hour;
   }
 
   else
   {
-    v8 = v7 % 0xC;
+    v8 = hour % 0xC;
   }
 
   v9 = v8 - 10;
   v10 = __ROR8__(0xCCCCCCCCCCCCCCCDLL * v8 + 0x3333333333333333, 1);
-  v11 = __ROR8__(0xCCCCCCCCCCCCCCCDLL * v6 + 0x3333333333333333, 1);
-  v14 = v6 - 10 > &dword_8 + 1 && v9 > 9 && v11 < 0x199999999999999ALL;
-  v17 = v6 - 10 < &dword_8 + 2 && v9 < 0xA && v11 > 0x1999999999999999;
+  v11 = __ROR8__(0xCCCCCCCCCCCCCCCDLL * minute + 0x3333333333333333, 1);
+  v14 = minute - 10 > &dword_8 + 1 && v9 > 9 && v11 < 0x199999999999999ALL;
+  v17 = minute - 10 < &dword_8 + 2 && v9 < 0xA && v11 > 0x1999999999999999;
   v18 = v17 << 63 >> 63;
   if (v10 >= 0x199999999999999ALL)
   {
@@ -400,7 +400,7 @@
   return v19;
 }
 
-- (void)_centerDateAnimated:(BOOL)a3
+- (void)_centerDateAnimated:(BOOL)animated
 {
   v4 = [(NTKSquallDigitalTimeView *)self _shiftDirectionForTime:self->_date];
   if (v4 != self->_currentHorizontalShift)
@@ -427,11 +427,11 @@
   }
 }
 
-- (id)stringAttributesForHour:(BOOL)a3 fontSize:(double)a4
+- (id)stringAttributesForHour:(BOOL)hour fontSize:(double)size
 {
-  v6 = [(NTKSquallDigitalTimeView *)self _fontForHour:a3 linkingFraction:0.0];
+  v6 = [(NTKSquallDigitalTimeView *)self _fontForHour:hour linkingFraction:0.0];
   v13[0] = NSFontAttributeName;
-  v7 = [v6 fontWithSize:a4];
+  v7 = [v6 fontWithSize:size];
   v14[0] = v7;
   v13[1] = NSTrackingAttributeName;
   sub_2D30(self->_device, &v11);
@@ -442,9 +442,9 @@
   return v9;
 }
 
-- (id)_fontForHour:(BOOL)a3 linkingFraction:(double)a4
+- (id)_fontForHour:(BOOL)hour linkingFraction:(double)fraction
 {
-  if (a3)
+  if (hour)
   {
     v22[0] = UIFontFeatureTypeIdentifierKey;
     v22[1] = UIFontFeatureSelectorIdentifierKey;
@@ -472,7 +472,7 @@
   [v9 setObject:v8 forKey:UIFontDescriptorFeatureSettingsAttribute];
   v10 = [NSNumber numberWithUnsignedInt:TextToFourCharCode()];
   v17 = v10;
-  v11 = [NSNumber numberWithDouble:a4];
+  v11 = [NSNumber numberWithDouble:fraction];
   v18 = v11;
   v12 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
   [v9 setObject:v12 forKey:kCTFontVariationAttribute];
@@ -484,7 +484,7 @@
   return v14;
 }
 
-- (id)_linkedHourFontForDigitBelow:(unint64_t)a3 linkingFraction:(double)a4
+- (id)_linkedHourFontForDigitBelow:(unint64_t)below linkingFraction:(double)fraction
 {
   v23[0] = UIFontFeatureTypeIdentifierKey;
   v23[1] = UIFontFeatureSelectorIdentifierKey;
@@ -495,7 +495,7 @@
   v21[1] = UIFontFeatureSelectorIdentifierKey;
   v22[0] = &off_10920;
   v21[0] = UIFontFeatureTypeIdentifierKey;
-  v8 = [NSNumber numberWithInt:dword_9A20[a3 % 0xA]];
+  v8 = [NSNumber numberWithInt:dword_9A20[below % 0xA]];
   v22[1] = v8;
   v9 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
   v25[1] = v9;
@@ -505,7 +505,7 @@
   [v11 setObject:v10 forKey:UIFontDescriptorFeatureSettingsAttribute];
   v12 = [NSNumber numberWithUnsignedInt:TextToFourCharCode()];
   v19 = v12;
-  v13 = [NSNumber numberWithDouble:a4];
+  v13 = [NSNumber numberWithDouble:fraction];
   v20 = v13;
   v14 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
   [v11 setObject:v14 forKey:kCTFontVariationAttribute];
@@ -548,23 +548,23 @@
   [(NTKSquallDigitalTimeView *)self _updateLabelsAnimated:0];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v5 = a3;
-  [(NTKSquallDigitalTimeView *)self setDate:v5];
-  [(NTKSquallTimeProvider *)self->_bezelProvider setDate:v5];
+  dateCopy = date;
+  [(NTKSquallDigitalTimeView *)self setDate:dateCopy];
+  [(NTKSquallTimeProvider *)self->_bezelProvider setDate:dateCopy];
 
   bezelView = self->_bezelView;
 
   [(NTKSquallBezelView *)bezelView bezelProgressUpdated];
 }
 
-- (void)setFrozen:(BOOL)a3
+- (void)setFrozen:(BOOL)frozen
 {
-  v3 = a3;
-  self->_frozen = a3;
+  frozenCopy = frozen;
+  self->_frozen = frozen;
   [(NTKSquallDigitalTimeView *)self _updateAnimating];
-  if (v3)
+  if (frozenCopy)
   {
 
     [(NTKSquallDigitalTimeView *)self _stopClockUpdates];
@@ -606,11 +606,11 @@
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = NTKSquallDigitalTimeView;
-  [(NTKSquallDigitalTimeView *)&v4 setHidden:a3];
+  [(NTKSquallDigitalTimeView *)&v4 setHidden:hidden];
   [(NTKSquallDigitalTimeView *)self _updateAnimating];
 }
 

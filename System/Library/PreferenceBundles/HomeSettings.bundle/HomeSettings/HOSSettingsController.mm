@@ -3,12 +3,12 @@
 - (BOOL)_showMyHomesGroup;
 - (BOOL)_showNoHomesGroup;
 - (BOOL)_showSharedHomesGroup;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (HMHomeManager)homeManager;
 - (HOSSettingsController)init;
 - (HUEditLocationViewController)detailController;
 - (id)_sortByNameDescriptor;
-- (id)_sortedHomesPassingTest:(id)a3;
+- (id)_sortedHomesPassingTest:(id)test;
 - (id)createAppReinstallSpecifiers;
 - (id)createGroupSpecifierForHomeHub;
 - (id)createGroupSpecifierForMyHomes;
@@ -17,28 +17,28 @@
 - (id)createHomeHubSpecifiers;
 - (id)createMyHomesSpecifiers;
 - (id)createSharedHomesSpecifiers;
-- (id)createSpecifierForHome:(id)a3;
+- (id)createSpecifierForHome:(id)home;
 - (id)createSpecifierForHomeHub;
 - (id)createSpecifierForHomeKitReset;
-- (id)homeHubEnabled:(id)a3;
-- (id)specifierForHome:(id)a3;
+- (id)homeHubEnabled:(id)enabled;
+- (id)specifierForHome:(id)home;
 - (id)specifiers;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (int64_t)specifierIndexForHome:(id)a3;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (int64_t)specifierIndexForHome:(id)home;
 - (void)_resetButtonConfirmed;
-- (void)_resetButtonPressed:(id)a3;
+- (void)_resetButtonPressed:(id)pressed;
 - (void)_setUpActiveAssertion;
 - (void)_tearDownActiveAssertion;
-- (void)deleteHome:(id)a3;
-- (void)home:(id)a3 didAddUser:(id)a4;
-- (void)home:(id)a3 didRemoveUser:(id)a4;
-- (void)homeDidUpdateName:(id)a3;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManagerDidUpdateHomes:(id)a3;
-- (void)receivedApplicationDidEnterBackground:(id)a3;
-- (void)setHomeHubEnabled:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)deleteHome:(id)home;
+- (void)home:(id)home didAddUser:(id)user;
+- (void)home:(id)home didRemoveUser:(id)user;
+- (void)homeDidUpdateName:(id)name;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManagerDidUpdateHomes:(id)homes;
+- (void)receivedApplicationDidEnterBackground:(id)background;
+- (void)setHomeHubEnabled:(id)enabled specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateHomesSections;
 @end
 
@@ -66,9 +66,9 @@
     [(HOSSettingsController *)v2 setTitle:v4];
 
     v5 = +[HFHomeKitDispatcher sharedDispatcher];
-    v6 = [v5 homeManager];
+    homeManager = [v5 homeManager];
 
-    if (!v6)
+    if (!homeManager)
     {
       v7 = HFLogForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -93,25 +93,25 @@
 
 - (void)_setUpActiveAssertion
 {
-  v3 = [(HOSSettingsController *)self activeAssertion];
+  activeAssertion = [(HOSSettingsController *)self activeAssertion];
 
-  if (!v3)
+  if (!activeAssertion)
   {
-    v5 = [(HOSSettingsController *)self homeManager];
-    v4 = [v5 _beginActiveAssertionWithReason:@"HOSSettingsHomeVisible"];
+    homeManager = [(HOSSettingsController *)self homeManager];
+    v4 = [homeManager _beginActiveAssertionWithReason:@"HOSSettingsHomeVisible"];
     [(HOSSettingsController *)self setActiveAssertion:v4];
   }
 }
 
 - (void)_tearDownActiveAssertion
 {
-  v3 = [(HOSSettingsController *)self activeAssertion];
+  activeAssertion = [(HOSSettingsController *)self activeAssertion];
 
-  if (v3)
+  if (activeAssertion)
   {
-    v4 = [(HOSSettingsController *)self homeManager];
-    v5 = [(HOSSettingsController *)self activeAssertion];
-    [v4 _endActiveAssertion:v5];
+    homeManager = [(HOSSettingsController *)self homeManager];
+    activeAssertion2 = [(HOSSettingsController *)self activeAssertion];
+    [homeManager _endActiveAssertion:activeAssertion2];
 
     [(HOSSettingsController *)self setActiveAssertion:0];
   }
@@ -120,9 +120,9 @@
 - (HMHomeManager)homeManager
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 homeManager];
+  homeManager = [v2 homeManager];
 
-  return v3;
+  return homeManager;
 }
 
 - (id)specifiers
@@ -132,53 +132,53 @@
   if (!v4)
   {
     v5 = +[NSMutableArray array];
-    v6 = [(HOSSettingsController *)self homeManager];
-    v7 = [v6 isThisDeviceResidentCapable];
+    homeManager = [(HOSSettingsController *)self homeManager];
+    isThisDeviceResidentCapable = [homeManager isThisDeviceResidentCapable];
 
-    if (v7)
+    if (isThisDeviceResidentCapable)
     {
-      v8 = [(HOSSettingsController *)self createHomeHubSpecifiers];
-      [v5 addObjectsFromArray:v8];
+      createHomeHubSpecifiers = [(HOSSettingsController *)self createHomeHubSpecifiers];
+      [v5 addObjectsFromArray:createHomeHubSpecifiers];
     }
 
     v9 = [LSApplicationProxy applicationProxyForIdentifier:@"com.apple.Home"];
-    v10 = [v9 appState];
-    v11 = [v10 isInstalled];
+    appState = [v9 appState];
+    isInstalled = [appState isInstalled];
 
-    if ((v11 & 1) == 0)
+    if ((isInstalled & 1) == 0)
     {
-      v12 = [(HOSSettingsController *)self createAppReinstallSpecifiers];
-      [v5 addObjectsFromArray:v12];
+      createAppReinstallSpecifiers = [(HOSSettingsController *)self createAppReinstallSpecifiers];
+      [v5 addObjectsFromArray:createAppReinstallSpecifiers];
 
       if ([(HOSSettingsController *)self _showMyHomesGroup])
       {
-        v13 = [(HOSSettingsController *)self createMyHomesSpecifiers];
-        [v5 addObjectsFromArray:v13];
+        createMyHomesSpecifiers = [(HOSSettingsController *)self createMyHomesSpecifiers];
+        [v5 addObjectsFromArray:createMyHomesSpecifiers];
       }
 
       if ([(HOSSettingsController *)self _showSharedHomesGroup])
       {
-        v14 = [(HOSSettingsController *)self createGroupSpecifierForSharedHomes];
-        [v5 addObject:v14];
+        createGroupSpecifierForSharedHomes = [(HOSSettingsController *)self createGroupSpecifierForSharedHomes];
+        [v5 addObject:createGroupSpecifierForSharedHomes];
 
-        v15 = [(HOSSettingsController *)self createSharedHomesSpecifiers];
-        [v5 addObjectsFromArray:v15];
+        createSharedHomesSpecifiers = [(HOSSettingsController *)self createSharedHomesSpecifiers];
+        [v5 addObjectsFromArray:createSharedHomesSpecifiers];
       }
     }
 
     if ([(HOSSettingsController *)self _showNoHomesGroup])
     {
-      v16 = [(HOSSettingsController *)self createGroupSpecifierForNoHomes];
-      [v5 addObject:v16];
+      createGroupSpecifierForNoHomes = [(HOSSettingsController *)self createGroupSpecifierForNoHomes];
+      [v5 addObject:createGroupSpecifierForNoHomes];
     }
 
     if (CFPreferencesGetAppBooleanValue(@"kDisplayResetButton", @"com.apple.HomeSettings", 0))
     {
-      v17 = [(HOSSettingsController *)self createGroupSpecifierForResetButton];
-      [v5 addObject:v17];
+      createGroupSpecifierForResetButton = [(HOSSettingsController *)self createGroupSpecifierForResetButton];
+      [v5 addObject:createGroupSpecifierForResetButton];
 
-      v18 = [(HOSSettingsController *)self createSpecifierForHomeKitReset];
-      [v5 addObject:v18];
+      createSpecifierForHomeKitReset = [(HOSSettingsController *)self createSpecifierForHomeKitReset];
+      [v5 addObject:createSpecifierForHomeKitReset];
     }
 
     v19 = *&self->PSListController_opaque[v3];
@@ -197,25 +197,25 @@
   return v2;
 }
 
-- (id)_sortedHomesPassingTest:(id)a3
+- (id)_sortedHomesPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(HOSSettingsController *)self homeManager];
-  v6 = [v5 homes];
+  testCopy = test;
+  homeManager = [(HOSSettingsController *)self homeManager];
+  homes = [homeManager homes];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1C3C;
   v16[3] = &unk_10628;
-  v17 = v4;
-  v7 = v4;
-  v8 = [v6 indexesOfObjectsPassingTest:v16];
+  v17 = testCopy;
+  v7 = testCopy;
+  v8 = [homes indexesOfObjectsPassingTest:v16];
 
-  v9 = [(HOSSettingsController *)self homeManager];
-  v10 = [v9 homes];
-  v11 = [v10 objectsAtIndexes:v8];
+  homeManager2 = [(HOSSettingsController *)self homeManager];
+  homes2 = [homeManager2 homes];
+  v11 = [homes2 objectsAtIndexes:v8];
 
-  v12 = [(HOSSettingsController *)self _sortByNameDescriptor];
-  v18 = v12;
+  _sortByNameDescriptor = [(HOSSettingsController *)self _sortByNameDescriptor];
+  v18 = _sortByNameDescriptor;
   v13 = [NSArray arrayWithObjects:&v18 count:1];
   v14 = [v11 sortedArrayUsingDescriptors:v13];
 
@@ -224,16 +224,16 @@
 
 - (BOOL)_showMyHomesGroup
 {
-  v2 = [(HOSSettingsController *)self _sortedMyHomes];
-  v3 = [v2 count] != 0;
+  _sortedMyHomes = [(HOSSettingsController *)self _sortedMyHomes];
+  v3 = [_sortedMyHomes count] != 0;
 
   return v3;
 }
 
 - (BOOL)_showSharedHomesGroup
 {
-  v2 = [(HOSSettingsController *)self _sortedSharedHomes];
-  v3 = [v2 count] != 0;
+  _sortedSharedHomes = [(HOSSettingsController *)self _sortedSharedHomes];
+  v3 = [_sortedSharedHomes count] != 0;
 
   return v3;
 }
@@ -251,29 +251,29 @@
   }
 }
 
-- (id)homeHubEnabled:(id)a3
+- (id)homeHubEnabled:(id)enabled
 {
-  v3 = [(HOSSettingsController *)self homeManager];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isResidentEnabledForThisDevice]);
+  homeManager = [(HOSSettingsController *)self homeManager];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [homeManager isResidentEnabledForThisDevice]);
 
   return v4;
 }
 
-- (void)setHomeHubEnabled:(id)a3 specifier:(id)a4
+- (void)setHomeHubEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
-  v8 = [(HOSSettingsController *)self homeManager];
-  v9 = [v6 BOOLValue];
+  homeManager = [(HOSSettingsController *)self homeManager];
+  bOOLValue = [enabledCopy BOOLValue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1EC8;
   v11[3] = &unk_106B0;
   objc_copyWeak(&v13, &location);
-  v10 = v7;
+  v10 = specifierCopy;
   v12 = v10;
-  [v8 updateResidentEnabledForThisDevice:v9 completionHandler:v11];
+  [homeManager updateResidentEnabledForThisDevice:bOOLValue completionHandler:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -281,10 +281,10 @@
 
 - (id)createHomeHubSpecifiers
 {
-  v3 = [(HOSSettingsController *)self createGroupSpecifierForHomeHub];
-  v7[0] = v3;
-  v4 = [(HOSSettingsController *)self createSpecifierForHomeHub];
-  v7[1] = v4;
+  createGroupSpecifierForHomeHub = [(HOSSettingsController *)self createGroupSpecifierForHomeHub];
+  v7[0] = createGroupSpecifierForHomeHub;
+  createSpecifierForHomeHub = [(HOSSettingsController *)self createSpecifierForHomeHub];
+  v7[1] = createSpecifierForHomeHub;
   v5 = [NSArray arrayWithObjects:v7 count:2];
 
   return v5;
@@ -320,15 +320,15 @@
 - (id)createMyHomesSpecifiers
 {
   v3 = objc_opt_new();
-  v4 = [(HOSSettingsController *)self createGroupSpecifierForMyHomes];
-  [v3 addObject:v4];
+  createGroupSpecifierForMyHomes = [(HOSSettingsController *)self createGroupSpecifierForMyHomes];
+  [v3 addObject:createGroupSpecifierForMyHomes];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(HOSSettingsController *)self _sortedMyHomes];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _sortedMyHomes = [(HOSSettingsController *)self _sortedMyHomes];
+  v6 = [_sortedMyHomes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -339,14 +339,14 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_sortedMyHomes);
         }
 
         v10 = [(HOSSettingsController *)self createSpecifierForHome:*(*(&v12 + 1) + 8 * i)];
         [v3 addObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [_sortedMyHomes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -362,8 +362,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(HOSSettingsController *)self _sortedSharedHomes];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _sortedSharedHomes = [(HOSSettingsController *)self _sortedSharedHomes];
+  v5 = [_sortedSharedHomes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -374,14 +374,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_sortedSharedHomes);
         }
 
         v9 = [(HOSSettingsController *)self createSpecifierForHome:*(*(&v11 + 1) + 8 * i)];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [_sortedSharedHomes countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -461,34 +461,34 @@
   return v5;
 }
 
-- (id)createSpecifierForHome:(id)a3
+- (id)createSpecifierForHome:(id)home
 {
-  v4 = a3;
-  if ([v4 hos_isMyHome])
+  homeCopy = home;
+  if ([homeCopy hos_isMyHome])
   {
-    v5 = [v4 name];
+    name = [homeCopy name];
 LABEL_4:
-    [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+    [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
     goto LABEL_5;
   }
 
-  v6 = [v4 administrator];
-  v7 = [v6 name];
+  administrator = [homeCopy administrator];
+  name2 = [administrator name];
 
-  v5 = [v4 name];
-  if (v7)
+  name = [homeCopy name];
+  if (name2)
   {
     goto LABEL_4;
   }
 
-  [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:3 edit:0];
+  [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:0 detail:0 cell:3 edit:0];
   v8 = LABEL_5:;
 
-  v9 = [v4 uniqueIdentifier];
-  v10 = [v9 UUIDString];
-  [v8 setIdentifier:v10];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  [v8 setIdentifier:uUIDString];
 
-  [v8 setProperty:v4 forKey:kHUHomePropertyKey];
+  [v8 setProperty:homeCopy forKey:kHUHomePropertyKey];
   v11 = NSStringFromSelector("reloadSpecifier:");
   [v8 setProperty:v11 forKey:kHUUpdateSpecifierActionKey];
 
@@ -499,22 +499,22 @@ LABEL_4:
   return v8;
 }
 
-- (int64_t)specifierIndexForHome:(id)a3
+- (int64_t)specifierIndexForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [(HOSSettingsController *)self specifiers];
+  specifiers = [(HOSSettingsController *)self specifiers];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_2C24;
   v9[3] = &unk_106D8;
-  v6 = v4;
+  v6 = homeCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [specifiers enumerateObjectsUsingBlock:v9];
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -522,28 +522,28 @@ LABEL_4:
   return v7;
 }
 
-- (id)specifierForHome:(id)a3
+- (id)specifierForHome:(id)home
 {
-  v4 = [a3 uniqueIdentifier];
-  v5 = [v4 UUIDString];
-  v6 = [(HOSSettingsController *)self specifierForID:v5];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v6 = [(HOSSettingsController *)self specifierForID:uUIDString];
 
   return v6;
 }
 
-- (void)deleteHome:(id)a3
+- (void)deleteHome:(id)home
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:kHUHomePropertyKey];
-  v6 = [(HOSSettingsController *)self homeManager];
+  homeCopy = home;
+  v5 = [homeCopy propertyForKey:kHUHomePropertyKey];
+  homeManager = [(HOSSettingsController *)self homeManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_2DE4;
   v8[3] = &unk_10700;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 removeHome:v5 completionHandler:v8];
+  v9 = homeCopy;
+  v7 = homeCopy;
+  [homeManager removeHome:v5 completionHandler:v8];
 }
 
 - (id)createSpecifierForHomeKitReset
@@ -555,7 +555,7 @@ LABEL_4:
   return v5;
 }
 
-- (void)_resetButtonPressed:(id)a3
+- (void)_resetButtonPressed:(id)pressed
 {
   v16 = objc_alloc_init(PSConfirmationSpecifier);
   v14 = [NSBundle bundleForClass:objc_opt_class()];
@@ -580,10 +580,10 @@ LABEL_4:
 
 - (void)_resetButtonConfirmed
 {
-  v3 = [(HOSSettingsController *)self homeManager];
-  v4 = [(HOSSettingsController *)self homeManager];
+  homeManager = [(HOSSettingsController *)self homeManager];
+  homeManager2 = [(HOSSettingsController *)self homeManager];
 
-  if (!v4)
+  if (!homeManager2)
   {
     v5 = HFLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -592,7 +592,7 @@ LABEL_4:
     }
 
     v6 = objc_alloc_init(HMHomeManager);
-    v3 = v6;
+    homeManager = v6;
   }
 
   v7[0] = _NSConcreteStackBlock;
@@ -600,14 +600,14 @@ LABEL_4:
   v7[2] = sub_324C;
   v7[3] = &unk_10728;
   v7[4] = self;
-  [v3 eraseHomeDataWithCompletionHandler:v7];
+  [homeManager eraseHomeDataWithCompletionHandler:v7];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HOSSettingsController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(HOSSettingsController *)self specifierAtIndexPath:pathCopy];
   v9 = [v8 propertyForKey:kHUHomePropertyKey];
   if (v9)
   {
@@ -622,32 +622,32 @@ LABEL_4:
   {
     v12.receiver = self;
     v12.super_class = HOSSettingsController;
-    [(HOSSettingsController *)&v12 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(HOSSettingsController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(HOSSettingsController *)self specifierAtIndexPath:a4];
+  v4 = [(HOSSettingsController *)self specifierAtIndexPath:path];
   v5 = [v4 propertyForKey:kHUHomePropertyKey];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HOSSettingsController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(HOSSettingsController *)self specifierAtIndexPath:pathCopy];
   v9 = [v8 propertyForKey:kHUHomePropertyKey];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 hos_isMyHome];
+    hos_isMyHome = [v9 hos_isMyHome];
     v12 = [NSBundle bundleForClass:objc_opt_class()];
     v13 = v12;
-    if (v11)
+    if (hos_isMyHome)
     {
       v14 = @"HOSRemoveHomeTitle";
     }
@@ -664,7 +664,7 @@ LABEL_4:
   {
     v17.receiver = self;
     v17.super_class = HOSSettingsController;
-    v15 = [(HOSSettingsController *)&v17 tableView:v6 titleForDeleteConfirmationButtonForRowAtIndexPath:v7];
+    v15 = [(HOSSettingsController *)&v17 tableView:viewCopy titleForDeleteConfirmationButtonForRowAtIndexPath:pathCopy];
   }
 
   return v15;
@@ -684,8 +684,8 @@ LABEL_4:
 
     if (!v3)
     {
-      v4 = [(HOSSettingsController *)self createGroupSpecifierForMyHomes];
-      [(HOSSettingsController *)self hos_insertSpecifier:v4 atEndOfGroup:v9 animated:1];
+      createGroupSpecifierForMyHomes = [(HOSSettingsController *)self createGroupSpecifierForMyHomes];
+      [(HOSSettingsController *)self hos_insertSpecifier:createGroupSpecifierForMyHomes atEndOfGroup:v9 animated:1];
     }
 
     ++v9;
@@ -702,8 +702,8 @@ LABEL_4:
 
     if (!v5)
     {
-      v6 = [(HOSSettingsController *)self createGroupSpecifierForSharedHomes];
-      [(HOSSettingsController *)self hos_insertSpecifier:v6 atEndOfGroup:v9 animated:1];
+      createGroupSpecifierForSharedHomes = [(HOSSettingsController *)self createGroupSpecifierForSharedHomes];
+      [(HOSSettingsController *)self hos_insertSpecifier:createGroupSpecifierForSharedHomes atEndOfGroup:v9 animated:1];
     }
 
     ++v9;
@@ -720,8 +720,8 @@ LABEL_4:
 
     if (!v7)
     {
-      v8 = [(HOSSettingsController *)self createGroupSpecifierForNoHomes];
-      [(HOSSettingsController *)self hos_insertSpecifier:v8 atEndOfGroup:v9 animated:1];
+      createGroupSpecifierForNoHomes = [(HOSSettingsController *)self createGroupSpecifierForNoHomes];
+      [(HOSSettingsController *)self hos_insertSpecifier:createGroupSpecifierForNoHomes atEndOfGroup:v9 animated:1];
     }
   }
 
@@ -731,27 +731,27 @@ LABEL_4:
   }
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
+  homesCopy = homes;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_39B8;
   v13[3] = &unk_10750;
   v13[4] = self;
   v5 = [NSPredicate predicateWithBlock:v13];
-  v6 = [(HOSSettingsController *)self detailController];
-  if (v6)
+  detailController = [(HOSSettingsController *)self detailController];
+  if (detailController)
   {
-    v7 = v6;
-    v8 = [v4 homes];
-    v9 = [v8 filteredArrayUsingPredicate:v5];
+    v7 = detailController;
+    homes = [homesCopy homes];
+    v9 = [homes filteredArrayUsingPredicate:v5];
     v10 = [v9 count];
 
     if (!v10)
     {
-      v11 = [(HOSSettingsController *)self navigationController];
-      v12 = [v11 popToViewController:self animated:1];
+      navigationController = [(HOSSettingsController *)self navigationController];
+      v12 = [navigationController popToViewController:self animated:1];
 
       [(HOSSettingsController *)self setDetailController:0];
       [(HOSSettingsController *)self _tearDownActiveAssertion];
@@ -761,10 +761,10 @@ LABEL_4:
   [(HOSSettingsController *)self reloadSpecifiers];
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
-  v15 = a4;
-  if ([v15 hos_isMyHome])
+  homeCopy = home;
+  if ([homeCopy hos_isMyHome])
   {
     [(HOSSettingsController *)self _sortedMyHomes];
   }
@@ -774,8 +774,8 @@ LABEL_4:
     [(HOSSettingsController *)self _sortedSharedHomes];
   }
   v6 = ;
-  [v15 setDelegate:self];
-  v7 = [v6 indexOfObject:v15];
+  [homeCopy setDelegate:self];
+  v7 = [v6 indexOfObject:homeCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = +[NSAssertionHandler currentHandler];
@@ -791,12 +791,12 @@ LABEL_4:
       v10 = [v6 objectAtIndexedSubscript:v9 - 1];
       v8 = [(HOSSettingsController *)self specifierForHome:v10];
 
-      v11 = v15;
+      v11 = homeCopy;
     }
 
     else
     {
-      if ([v15 hos_isMyHome])
+      if ([homeCopy hos_isMyHome])
       {
         v12 = @"HOSSettingsMyHomesGroupID";
       }
@@ -807,7 +807,7 @@ LABEL_4:
       }
 
       v13 = [(HOSSettingsController *)self specifierForID:v12];
-      v11 = v15;
+      v11 = homeCopy;
       v8 = v13;
     }
 
@@ -816,55 +816,55 @@ LABEL_4:
   }
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  v13 = a4;
-  v5 = [(HOSSettingsController *)self detailController];
-  if (v5)
+  homeCopy = home;
+  detailController = [(HOSSettingsController *)self detailController];
+  if (detailController)
   {
-    v6 = v5;
-    v7 = [(HOSSettingsController *)self detailController];
-    v8 = [v7 homeBuilder];
-    v9 = [v8 home];
+    v6 = detailController;
+    detailController2 = [(HOSSettingsController *)self detailController];
+    homeBuilder = [detailController2 homeBuilder];
+    home = [homeBuilder home];
 
-    if (v9 == v13)
+    if (home == homeCopy)
     {
-      v10 = [(HOSSettingsController *)self navigationController];
-      v11 = [v10 popToViewController:self animated:1];
+      navigationController = [(HOSSettingsController *)self navigationController];
+      v11 = [navigationController popToViewController:self animated:1];
 
       [(HOSSettingsController *)self setDetailController:0];
       [(HOSSettingsController *)self _tearDownActiveAssertion];
     }
   }
 
-  v12 = [(HOSSettingsController *)self specifierForHome:v13];
+  v12 = [(HOSSettingsController *)self specifierForHome:homeCopy];
   [(HOSSettingsController *)self removeSpecifier:v12 animated:1];
   [(HOSSettingsController *)self updateHomesSections];
 }
 
-- (void)homeDidUpdateName:(id)a3
+- (void)homeDidUpdateName:(id)name
 {
-  v4 = a3;
-  v6 = [(HOSSettingsController *)self specifierForHome:v4];
-  v5 = [v4 name];
+  nameCopy = name;
+  v6 = [(HOSSettingsController *)self specifierForHome:nameCopy];
+  name = [nameCopy name];
 
-  [v6 setName:v5];
+  [v6 setName:name];
   [(HOSSettingsController *)self reloadSpecifier:v6 animated:1];
 }
 
-- (void)home:(id)a3 didAddUser:(id)a4
+- (void)home:(id)home didAddUser:(id)user
 {
-  v5 = [(HOSSettingsController *)self specifierForHome:a3, a4];
-  [(HOSSettingsController *)self reloadSpecifier:v5 animated:1];
+  user = [(HOSSettingsController *)self specifierForHome:home, user];
+  [(HOSSettingsController *)self reloadSpecifier:user animated:1];
 }
 
-- (void)home:(id)a3 didRemoveUser:(id)a4
+- (void)home:(id)home didRemoveUser:(id)user
 {
-  v5 = [(HOSSettingsController *)self specifierForHome:a3, a4];
-  [(HOSSettingsController *)self reloadSpecifier:v5 animated:1];
+  user = [(HOSSettingsController *)self specifierForHome:home, user];
+  [(HOSSettingsController *)self reloadSpecifier:user animated:1];
 }
 
-- (void)receivedApplicationDidEnterBackground:(id)a3
+- (void)receivedApplicationDidEnterBackground:(id)background
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

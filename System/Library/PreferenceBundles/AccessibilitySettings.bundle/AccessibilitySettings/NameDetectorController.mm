@@ -1,6 +1,6 @@
 @interface NameDetectorController
 - (AXSDKeyboardReturnDelegate)delegate;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (void)_constrainContentView;
 - (void)_constrainNameSoundTextField;
 - (void)_setUpNameSoundTextField;
@@ -18,11 +18,11 @@
   [(NameDetectorController *)self _setUpNameSoundTextField];
   v3 = [UIBarButtonItem alloc];
   v4 = settingsLocString(@"NAME_SOUND_TITLE", @"SoundDetection");
-  v5 = [(NameDetectorController *)self navigationItem];
-  v6 = [v5 backBarButtonItem];
-  v7 = [v3 initWithTitle:v4 style:objc_msgSend(v6 target:"style") action:{0, 0}];
-  v8 = [(NameDetectorController *)self navigationItem];
-  [v8 setBackBarButtonItem:v7];
+  navigationItem = [(NameDetectorController *)self navigationItem];
+  backBarButtonItem = [navigationItem backBarButtonItem];
+  v7 = [v3 initWithTitle:v4 style:objc_msgSend(backBarButtonItem target:"style") action:{0, 0}];
+  navigationItem2 = [(NameDetectorController *)self navigationItem];
+  [navigationItem2 setBackBarButtonItem:v7];
 
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 addObserver:self selector:"_fontSizeChange:" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -34,68 +34,68 @@
   [(NameDetectorController *)self setDetectorNameTextField:v3];
 
   v4 = settingsLocString(@"CUSTOM_SOUND_PLACEHOLDER", @"SoundDetection");
-  v5 = [(NameDetectorController *)self detectorNameTextField];
-  [v5 setPlaceholder:v4];
+  detectorNameTextField = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField setPlaceholder:v4];
 
-  v6 = [(NameDetectorController *)self detectorName];
+  detectorName = [(NameDetectorController *)self detectorName];
 
-  if (v6)
+  if (detectorName)
   {
-    v7 = [(NameDetectorController *)self detectorName];
-    v8 = [(NameDetectorController *)self detectorNameTextField];
-    [v8 setText:v7];
+    detectorName2 = [(NameDetectorController *)self detectorName];
+    detectorNameTextField2 = [(NameDetectorController *)self detectorNameTextField];
+    [detectorNameTextField2 setText:detectorName2];
   }
 
-  v9 = [(NameDetectorController *)self detectorNameTextField];
-  [v9 setDelegate:self];
+  detectorNameTextField3 = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField3 setDelegate:self];
 
-  v10 = [(NameDetectorController *)self detectorNameTextField];
-  [v10 setBorderStyle:0];
+  detectorNameTextField4 = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField4 setBorderStyle:0];
 
   v11 = +[UIColor tertiarySystemFillColor];
-  v12 = [(NameDetectorController *)self detectorNameTextField];
-  [v12 setBackgroundColor:v11];
+  detectorNameTextField5 = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField5 setBackgroundColor:v11];
 
   v13 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v14 = [(NameDetectorController *)self detectorNameTextField];
-  [v14 setFont:v13];
+  detectorNameTextField6 = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField6 setFont:v13];
 
-  v15 = [(NameDetectorController *)self detectorNameTextField];
-  [v15 setAdjustsFontForContentSizeCategory:1];
+  detectorNameTextField7 = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField7 setAdjustsFontForContentSizeCategory:1];
 
-  v16 = [(NameDetectorController *)self detectorNameTextField];
-  [v16 _setCornerRadius:15.0];
+  detectorNameTextField8 = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField8 _setCornerRadius:15.0];
 
-  v17 = [(NameDetectorController *)self detectorNameTextField];
-  [v17 setReturnKeyType:11];
+  detectorNameTextField9 = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField9 setReturnKeyType:11];
 
-  v18 = [(NameDetectorController *)self detectorNameTextField];
-  [v18 setEnablesReturnKeyOnNonWhiteSpaceContent:1];
+  detectorNameTextField10 = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField10 setEnablesReturnKeyOnNonWhiteSpaceContent:1];
 
-  v19 = [(NameDetectorController *)self detectorNameTextField];
-  [v19 setAutocapitalizationType:1];
+  detectorNameTextField11 = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField11 setAutocapitalizationType:1];
 
-  v20 = [(NameDetectorController *)self detectorNameTextField];
-  [v20 setClearButtonMode:1];
+  detectorNameTextField12 = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField12 setClearButtonMode:1];
 
-  v21 = [(NameDetectorController *)self contentView];
-  v22 = [(NameDetectorController *)self detectorNameTextField];
-  [v21 addSubview:v22];
+  contentView = [(NameDetectorController *)self contentView];
+  detectorNameTextField13 = [(NameDetectorController *)self detectorNameTextField];
+  [contentView addSubview:detectorNameTextField13];
 
   [(NameDetectorController *)self _constrainNameSoundTextField];
   [(NameDetectorController *)self _constrainContentView];
   v25 = [[UIView alloc] initWithFrame:{0.0, 0.0, 15.0, 20.0}];
-  v23 = [(NameDetectorController *)self detectorNameTextField];
-  [v23 setLeftView:v25];
+  detectorNameTextField14 = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField14 setLeftView:v25];
 
-  v24 = [(NameDetectorController *)self detectorNameTextField];
-  [v24 setLeftViewMode:3];
+  detectorNameTextField15 = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField15 setLeftViewMode:3];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v3 = [(NameDetectorController *)self delegate];
-  [v3 keyboardReturnPressed];
+  delegate = [(NameDetectorController *)self delegate];
+  [delegate keyboardReturnPressed];
 
   return 1;
 }
@@ -106,34 +106,34 @@
   [v3 _scaledValueForValue:45.0];
   v5 = v4;
 
-  v6 = [(NameDetectorController *)self detectorNameTextField];
-  v7 = [v6 heightAnchor];
-  v8 = [v7 constraintEqualToConstant:v5];
+  detectorNameTextField = [(NameDetectorController *)self detectorNameTextField];
+  heightAnchor = [detectorNameTextField heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:v5];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v8;
 
-  v10 = [(NameDetectorController *)self detectorNameTextField];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  detectorNameTextField2 = [(NameDetectorController *)self detectorNameTextField];
+  [detectorNameTextField2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(NameDetectorController *)self detectorNameTextField];
-  v12 = [v11 leftAnchor];
-  v13 = [(NameDetectorController *)self contentView];
-  v14 = [v13 leftAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  detectorNameTextField3 = [(NameDetectorController *)self detectorNameTextField];
+  leftAnchor = [detectorNameTextField3 leftAnchor];
+  contentView = [(NameDetectorController *)self contentView];
+  leftAnchor2 = [contentView leftAnchor];
+  v15 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v15 setActive:1];
 
-  v16 = [(NameDetectorController *)self detectorNameTextField];
-  v17 = [v16 rightAnchor];
-  v18 = [(NameDetectorController *)self contentView];
-  v19 = [v18 rightAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  detectorNameTextField4 = [(NameDetectorController *)self detectorNameTextField];
+  rightAnchor = [detectorNameTextField4 rightAnchor];
+  contentView2 = [(NameDetectorController *)self contentView];
+  rightAnchor2 = [contentView2 rightAnchor];
+  v20 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v20 setActive:1];
 
-  v21 = [(NameDetectorController *)self detectorNameTextField];
-  v22 = [v21 topAnchor];
-  v23 = [(NameDetectorController *)self contentView];
-  v24 = [v23 topAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24 constant:10.0];
+  detectorNameTextField5 = [(NameDetectorController *)self detectorNameTextField];
+  topAnchor = [detectorNameTextField5 topAnchor];
+  contentView3 = [(NameDetectorController *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   [v25 setActive:1];
 
   v26 = self->_heightConstraint;
@@ -143,14 +143,14 @@
 
 - (void)_constrainContentView
 {
-  v3 = [(NameDetectorController *)self contentView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(NameDetectorController *)self contentView];
+  [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(NameDetectorController *)self contentView];
-  v4 = [v8 bottomAnchor];
-  v5 = [(NameDetectorController *)self detectorNameTextField];
-  v6 = [v5 bottomAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6 constant:10.0];
+  contentView2 = [(NameDetectorController *)self contentView];
+  bottomAnchor = [contentView2 bottomAnchor];
+  detectorNameTextField = [(NameDetectorController *)self detectorNameTextField];
+  bottomAnchor2 = [detectorNameTextField bottomAnchor];
+  v7 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:10.0];
   [v7 setActive:1];
 }
 
@@ -161,9 +161,9 @@
   v5 = v4;
 
   [(NSLayoutConstraint *)self->_heightConstraint setActive:0];
-  v6 = [(NameDetectorController *)self detectorNameTextField];
-  v7 = [v6 heightAnchor];
-  v8 = [v7 constraintEqualToConstant:v5];
+  detectorNameTextField = [(NameDetectorController *)self detectorNameTextField];
+  heightAnchor = [detectorNameTextField heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:v5];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v8;
 

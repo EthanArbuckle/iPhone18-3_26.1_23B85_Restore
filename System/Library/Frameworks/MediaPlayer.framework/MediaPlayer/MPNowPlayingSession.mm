@@ -1,42 +1,42 @@
 @interface MPNowPlayingSession
-+ (id)nowPlayingSessionForPlayerID:(id)a3;
-+ (id)nowPlayingSessionForPlayerPath:(id)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)netTimeForGrossTime:(SEL)a3;
++ (id)nowPlayingSessionForPlayerID:(id)d;
++ (id)nowPlayingSessionForPlayerPath:(id)path;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)netTimeForGrossTime:(SEL)time;
 - (AVAudioSession)audioSession;
-- (BOOL)hasInvalidAdTimeRange:(id)a3 totalDuration:(id)a4;
+- (BOOL)hasInvalidAdTimeRange:(id)range totalDuration:(id)duration;
 - (MPNowPlayingInfoCenter)nowPlayingInfoCenter;
-- (MPNowPlayingSession)initWithPlayerPath:(id)a3 routingContextID:(id)a4;
+- (MPNowPlayingSession)initWithPlayerPath:(id)path routingContextID:(id)d;
 - (MPNowPlayingSession)initWithPlayers:(NSArray *)players;
-- (float)effectivePlaybackRateWithPlayer:(id)a3;
+- (float)effectivePlaybackRateWithPlayer:(id)player;
 - (id)delegate;
 - (id)mediaExperienceIDs;
 - (unsigned)audioSessionID;
-- (void)_playerItemNowPlayingInfoDidChange:(id)a3;
-- (void)activePlayerDidChangeNotification:(id)a3;
+- (void)_playerItemNowPlayingInfoDidChange:(id)change;
+- (void)activePlayerDidChangeNotification:(id)notification;
 - (void)addPlayer:(AVPlayer *)player;
-- (void)addPlayerItemObservers:(id)a3;
-- (void)addPlayerObservers:(id)a3;
+- (void)addPlayerItemObservers:(id)observers;
+- (void)addPlayerObservers:(id)observers;
 - (void)becomeActiveIfPossibleWithCompletion:(void *)completion;
 - (void)dealloc;
-- (void)endpointWithCompletion:(id)a3;
+- (void)endpointWithCompletion:(id)completion;
 - (void)extractNowPlayingInfoFromPlayersAndUpdateAdRanges;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)playerItemDidPlayToEnd:(id)a3;
-- (void)playerItemPlaybackStalled:(id)a3;
-- (void)playerItemTimeJumped:(id)a3;
-- (void)playerPictureInPictureEnabledDidChangeNotification:(id)a3;
-- (void)playerRateDidChange:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)playerItemDidPlayToEnd:(id)end;
+- (void)playerItemPlaybackStalled:(id)stalled;
+- (void)playerItemTimeJumped:(id)jumped;
+- (void)playerPictureInPictureEnabledDidChangeNotification:(id)notification;
+- (void)playerRateDidChange:(id)change;
 - (void)removePlayer:(AVPlayer *)player;
-- (void)removePlayerItemObservers:(id)a3;
-- (void)removePlayerObservers:(id)a3;
-- (void)setActive:(BOOL)a3;
+- (void)removePlayerItemObservers:(id)observers;
+- (void)removePlayerObservers:(id)observers;
+- (void)setActive:(BOOL)active;
 - (void)setAutomaticallyPublishesNowPlayingInfo:(BOOL)automaticallyPublishesNowPlayingInfo;
-- (void)setCanBecomeActive:(BOOL)a3;
-- (void)setCurrentAdTimeRanges:(id)a3;
-- (void)setCurrentAssetNetCreditsStartTime:(double)a3;
-- (void)setPictureInPictureEnabled:(BOOL)a3;
-- (void)updateAudioSession:(id)a3;
+- (void)setCanBecomeActive:(BOOL)active;
+- (void)setCurrentAdTimeRanges:(id)ranges;
+- (void)setCurrentAssetNetCreditsStartTime:(double)time;
+- (void)setPictureInPictureEnabled:(BOOL)enabled;
+- (void)updateAudioSession:(id)session;
 - (void)updateMediaExperienceIDs;
 - (void)updateNowPlayingInfo;
 @end
@@ -50,36 +50,36 @@
   return WeakRetained;
 }
 
-- (void)endpointWithCompletion:(id)a3
+- (void)endpointWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"MPNowPlayingSession.m" lineNumber:808 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPNowPlayingSession.m" lineNumber:808 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E69B0998]);
-  v7 = [(MPNowPlayingSession *)self routingContextID];
+  routingContextID = [(MPNowPlayingSession *)self routingContextID];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__MPNowPlayingSession_endpointWithCompletion___block_invoke;
   v10[3] = &unk_1E7680D68;
-  v11 = v5;
-  v8 = v5;
-  [v6 searchEndpointsForRoutingContextUID:v7 timeout:@"MPNowPlayingSession.endpointWithCompletion" reason:MEMORY[0x1E69E96A0] queue:v10 completion:7.0];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  [v6 searchEndpointsForRoutingContextUID:routingContextID timeout:@"MPNowPlayingSession.endpointWithCompletion" reason:MEMORY[0x1E69E96A0] queue:v10 completion:7.0];
 }
 
-- (void)playerPictureInPictureEnabledDidChangeNotification:(id)a3
+- (void)playerPictureInPictureEnabledDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __74__MPNowPlayingSession_playerPictureInPictureEnabledDidChangeNotification___block_invoke;
   v6[3] = &unk_1E76823C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = notificationCopy;
+  v5 = notificationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -115,16 +115,16 @@ uint64_t __74__MPNowPlayingSession_playerPictureInPictureEnabledDidChangeNotific
   return result;
 }
 
-- (void)activePlayerDidChangeNotification:(id)a3
+- (void)activePlayerDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__MPNowPlayingSession_activePlayerDidChangeNotification___block_invoke;
   v6[3] = &unk_1E76823C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = notificationCopy;
+  v5 = notificationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -140,7 +140,7 @@ void __57__MPNowPlayingSession_activePlayerDidChangeNotification___block_invoke(
   }
 }
 
-- (void)playerItemDidPlayToEnd:(id)a3
+- (void)playerItemDidPlayToEnd:(id)end
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
@@ -149,7 +149,7 @@ void __57__MPNowPlayingSession_activePlayerDidChangeNotification___block_invoke(
     v6 = 138412546;
     v7 = objc_opt_class();
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v5 = v7;
     _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_DEBUG, "<%@: %p> playerItemDidPlayToEnd", &v6, 0x16u);
   }
@@ -157,7 +157,7 @@ void __57__MPNowPlayingSession_activePlayerDidChangeNotification___block_invoke(
   [(MPNowPlayingSession *)self updateNowPlayingInfo];
 }
 
-- (void)playerItemPlaybackStalled:(id)a3
+- (void)playerItemPlaybackStalled:(id)stalled
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
@@ -166,7 +166,7 @@ void __57__MPNowPlayingSession_activePlayerDidChangeNotification___block_invoke(
     v6 = 138412546;
     v7 = objc_opt_class();
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v5 = v7;
     _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_DEBUG, "<%@: %p> playerItemPlaybackStalled", &v6, 0x16u);
   }
@@ -174,7 +174,7 @@ void __57__MPNowPlayingSession_activePlayerDidChangeNotification___block_invoke(
   [(MPNowPlayingSession *)self updateNowPlayingInfo];
 }
 
-- (void)playerItemTimeJumped:(id)a3
+- (void)playerItemTimeJumped:(id)jumped
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
@@ -183,7 +183,7 @@ void __57__MPNowPlayingSession_activePlayerDidChangeNotification___block_invoke(
     v6 = 138412546;
     v7 = objc_opt_class();
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v5 = v7;
     _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_DEBUG, "<%@: %p> playerItemTimeJumped", &v6, 0x16u);
   }
@@ -191,7 +191,7 @@ void __57__MPNowPlayingSession_activePlayerDidChangeNotification___block_invoke(
   [(MPNowPlayingSession *)self updateNowPlayingInfo];
 }
 
-- (void)_playerItemNowPlayingInfoDidChange:(id)a3
+- (void)_playerItemNowPlayingInfoDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
@@ -200,7 +200,7 @@ void __57__MPNowPlayingSession_activePlayerDidChangeNotification___block_invoke(
     v6 = 138412546;
     v7 = objc_opt_class();
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v5 = v7;
     _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_DEBUG, "<%@: %p> _playerItemNowPlayingInfoDidChange", &v6, 0x16u);
   }
@@ -209,7 +209,7 @@ void __57__MPNowPlayingSession_activePlayerDidChangeNotification___block_invoke(
   [(MPNowPlayingSession *)self updateNowPlayingInfo];
 }
 
-- (void)playerRateDidChange:(id)a3
+- (void)playerRateDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
@@ -218,7 +218,7 @@ void __57__MPNowPlayingSession_activePlayerDidChangeNotification___block_invoke(
     v6 = 138412546;
     v7 = objc_opt_class();
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v5 = v7;
     _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_DEBUG, "<%@: %p> playerRateDidChange", &v6, 0x16u);
   }
@@ -226,79 +226,79 @@ void __57__MPNowPlayingSession_activePlayerDidChangeNotification___block_invoke(
   [(MPNowPlayingSession *)self updateNowPlayingInfo];
 }
 
-- (void)removePlayerItemObservers:(id)a3
+- (void)removePlayerItemObservers:(id)observers
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  [v7 removeObserver:self name:*MEMORY[0x1E6987A50] object:v5];
-  [v7 removeObserver:self name:*MEMORY[0x1E6987A48] object:v5];
-  [v7 removeObserver:self name:*MEMORY[0x1E6987A10] object:v5];
+  observersCopy = observers;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6987A50] object:observersCopy];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6987A48] object:observersCopy];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6987A10] object:observersCopy];
   v6 = NSStringFromSelector(sel_duration);
-  [v5 removeObserver:self forKeyPath:v6 context:MPNowPlayingPublisherPlayerItemDurationObserverContext];
+  [observersCopy removeObserver:self forKeyPath:v6 context:MPNowPlayingPublisherPlayerItemDurationObserverContext];
 }
 
-- (void)addPlayerItemObservers:(id)a3
+- (void)addPlayerItemObservers:(id)observers
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  [v7 addObserver:self selector:sel_playerItemTimeJumped_ name:*MEMORY[0x1E6987A50] object:v5];
-  [v7 addObserver:self selector:sel_playerItemPlaybackStalled_ name:*MEMORY[0x1E6987A48] object:v5];
-  [v7 addObserver:self selector:sel_playerItemDidPlayToEnd_ name:*MEMORY[0x1E6987A10] object:v5];
+  observersCopy = observers;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter addObserver:self selector:sel_playerItemTimeJumped_ name:*MEMORY[0x1E6987A50] object:observersCopy];
+  [defaultCenter addObserver:self selector:sel_playerItemPlaybackStalled_ name:*MEMORY[0x1E6987A48] object:observersCopy];
+  [defaultCenter addObserver:self selector:sel_playerItemDidPlayToEnd_ name:*MEMORY[0x1E6987A10] object:observersCopy];
   v6 = NSStringFromSelector(sel_duration);
-  [v5 addObserver:self forKeyPath:v6 options:1 context:MPNowPlayingPublisherPlayerItemDurationObserverContext];
+  [observersCopy addObserver:self forKeyPath:v6 options:1 context:MPNowPlayingPublisherPlayerItemDurationObserverContext];
 }
 
-- (void)removePlayerObservers:(id)a3
+- (void)removePlayerObservers:(id)observers
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v8 = [v4 defaultCenter];
-  [v8 removeObserver:self name:*MEMORY[0x1E6987A70] object:v5];
+  observersCopy = observers;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6987A70] object:observersCopy];
   v6 = NSStringFromSelector(sel_currentItem);
-  [v5 removeObserver:self forKeyPath:v6 context:MPNowPlayingPublisherPlayerItemObserverContext];
+  [observersCopy removeObserver:self forKeyPath:v6 context:MPNowPlayingPublisherPlayerItemObserverContext];
 
   v7 = NSStringFromSelector(sel_timeControlStatus);
-  [v5 removeObserver:self forKeyPath:v7 context:MPNowPlayingPublisherPlayerTimeControlObserverContext];
+  [observersCopy removeObserver:self forKeyPath:v7 context:MPNowPlayingPublisherPlayerTimeControlObserverContext];
 }
 
-- (void)addPlayerObservers:(id)a3
+- (void)addPlayerObservers:(id)observers
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v8 = [v4 defaultCenter];
-  [v8 addObserver:self selector:sel_playerRateDidChange_ name:*MEMORY[0x1E6987A70] object:v5];
+  observersCopy = observers;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter addObserver:self selector:sel_playerRateDidChange_ name:*MEMORY[0x1E6987A70] object:observersCopy];
   v6 = NSStringFromSelector(sel_currentItem);
-  [v5 addObserver:self forKeyPath:v6 options:3 context:MPNowPlayingPublisherPlayerItemObserverContext];
+  [observersCopy addObserver:self forKeyPath:v6 options:3 context:MPNowPlayingPublisherPlayerItemObserverContext];
 
   v7 = NSStringFromSelector(sel_timeControlStatus);
-  [v5 addObserver:self forKeyPath:v7 options:0 context:MPNowPlayingPublisherPlayerTimeControlObserverContext];
+  [observersCopy addObserver:self forKeyPath:v7 options:0 context:MPNowPlayingPublisherPlayerTimeControlObserverContext];
 }
 
 - (void)updateNowPlayingInfo
 {
-  v3 = [(MPNowPlayingSession *)self players];
-  v4 = [v3 firstObject];
+  players = [(MPNowPlayingSession *)self players];
+  firstObject = [players firstObject];
 
-  v5 = [v4 currentItem];
-  if (!v5)
+  currentItem = [firstObject currentItem];
+  if (!currentItem)
   {
     [(MPNowPlayingInfoCenter *)self->_nowPlayingInfoCenter setNowPlayingInfo:0];
     goto LABEL_15;
   }
 
-  v6 = [(MPNowPlayingSession *)self baseNowPlayingInfo];
-  v7 = [v6 mutableCopy];
+  baseNowPlayingInfo = [(MPNowPlayingSession *)self baseNowPlayingInfo];
+  v7 = [baseNowPlayingInfo mutableCopy];
 
   v8 = MEMORY[0x1E696AD98];
-  [(MPNowPlayingSession *)self effectivePlaybackRateWithPlayer:v4];
+  [(MPNowPlayingSession *)self effectivePlaybackRateWithPlayer:firstObject];
   v9 = [v8 numberWithFloat:?];
   [v7 setObject:v9 forKeyedSubscript:@"MPNowPlayingInfoPropertyPlaybackRate"];
 
   v23 = 0uLL;
   v24 = 0;
-  if (!v4 || ([v4 currentTime], (~HIDWORD(v23) & 0x11) != 0))
+  if (!firstObject || ([firstObject currentTime], (~HIDWORD(v23) & 0x11) != 0))
   {
     v20 = v23;
     v21 = v24;
@@ -329,31 +329,31 @@ void __57__MPNowPlayingSession_activePlayerDidChangeNotification___block_invoke(
       v19 = Seconds / v18 * 100.0;
     }
 
-    v10 = [MEMORY[0x1E696AD98] numberWithDouble:round(v19) / 100.0];
+    currentDate = [MEMORY[0x1E696AD98] numberWithDouble:round(v19) / 100.0];
     v11 = @"MPNowPlayingInfoPropertyPlaybackProgress";
     goto LABEL_12;
   }
 
   [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"MPNowPlayingInfoPropertyIsLiveStream"];
-  v10 = [v5 currentDate];
-  if (v10)
+  currentDate = [currentItem currentDate];
+  if (currentDate)
   {
     v11 = @"MPNowPlayingInfoPropertyCurrentPlaybackDate";
 LABEL_12:
-    [v7 setObject:v10 forKeyedSubscript:v11];
+    [v7 setObject:currentDate forKeyedSubscript:v11];
   }
 
   [(MPNowPlayingInfoCenter *)self->_nowPlayingInfoCenter setNowPlayingInfo:v7];
 LABEL_15:
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)netTimeForGrossTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)netTimeForGrossTime:(SEL)time
 {
   if ((a4->var2 & 0x11) == 1)
   {
-    v6 = self;
-    v7 = [($3CC8671D27C23BF42ADDB32F2B5E48AE *)self currentAdTimeRanges];
-    if (v7)
+    selfCopy = self;
+    currentAdTimeRanges = [($3CC8671D27C23BF42ADDB32F2B5E48AE *)self currentAdTimeRanges];
+    if (currentAdTimeRanges)
     {
       v16 = 0;
       v17 = &v16;
@@ -361,7 +361,7 @@ LABEL_15:
       v19 = "";
       v20 = *MEMORY[0x1E6960CC0];
       v21 = *(MEMORY[0x1E6960CC0] + 16);
-      v8 = [($3CC8671D27C23BF42ADDB32F2B5E48AE *)v6 currentAdTimeRanges];
+      currentAdTimeRanges2 = [($3CC8671D27C23BF42ADDB32F2B5E48AE *)selfCopy currentAdTimeRanges];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __43__MPNowPlayingSession_netTimeForGrossTime___block_invoke;
@@ -369,7 +369,7 @@ LABEL_15:
       v14 = *&a4->var0;
       var3 = a4->var3;
       v13[4] = &v16;
-      [v8 enumerateObjectsUsingBlock:v13];
+      [currentAdTimeRanges2 enumerateObjectsUsingBlock:v13];
 
       lhs = *a4;
       v11 = *(v17 + 4);
@@ -477,26 +477,26 @@ LABEL_13:
 LABEL_14:
 }
 
-- (float)effectivePlaybackRateWithPlayer:(id)a3
+- (float)effectivePlaybackRateWithPlayer:(id)player
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 timeControlStatus] == 2)
+  playerCopy = player;
+  if ([playerCopy timeControlStatus] == 2)
   {
     memset(&v28, 0, sizeof(v28));
-    if (v4)
+    if (playerCopy)
     {
-      [v4 currentTime];
+      [playerCopy currentTime];
     }
 
-    v5 = [(MPNowPlayingSession *)self currentAdTimeRanges];
-    if ([v5 count])
+    currentAdTimeRanges = [(MPNowPlayingSession *)self currentAdTimeRanges];
+    if ([currentAdTimeRanges count])
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v6 = v5;
+      v6 = currentAdTimeRanges;
       v7 = [v6 countByEnumeratingWithState:&v24 objects:v31 count:16];
       if (v7)
       {
@@ -572,7 +572,7 @@ LABEL_14:
       }
     }
 
-    [v4 rate];
+    [playerCopy rate];
     v14 = v13;
 LABEL_26:
   }
@@ -596,13 +596,13 @@ LABEL_26:
   return v14;
 }
 
-- (void)setCurrentAdTimeRanges:(id)a3
+- (void)setCurrentAdTimeRanges:(id)ranges
 {
   v46 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  objc_storeStrong(&self->_currentAdTimeRanges, a3);
-  v5 = [(MPNowPlayingSession *)self players];
-  v23 = [v5 firstObject];
+  rangesCopy = ranges;
+  objc_storeStrong(&self->_currentAdTimeRanges, ranges);
+  players = [(MPNowPlayingSession *)self players];
+  firstObject = [players firstObject];
 
   objc_initWeak(&location, self);
   v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -611,8 +611,8 @@ LABEL_26:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v7 = [(MPNowPlayingSession *)self currentAdTimeRanges];
-  v8 = [v7 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  currentAdTimeRanges = [(MPNowPlayingSession *)self currentAdTimeRanges];
+  v8 = [currentAdTimeRanges countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v8)
   {
     v9 = *v41;
@@ -622,7 +622,7 @@ LABEL_26:
       {
         if (*v41 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(currentAdTimeRanges);
         }
 
         v11 = *(*(&v40 + 1) + 8 * i);
@@ -641,7 +641,7 @@ LABEL_26:
 
         *&v39.value = v36;
         v39.epoch = v37;
-        v13 = [v12 valueWithCMTime:{&v39, v22}];
+        v13 = [v12 valueWithCMTime:{&v39, rangesCopy}];
         [v24 addObject:v13];
 
         v14 = MEMORY[0x1E696B098];
@@ -669,30 +669,30 @@ LABEL_26:
         [v6 addObject:v15];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v40 objects:v45 count:16];
+      v8 = [currentAdTimeRanges countByEnumeratingWithState:&v40 objects:v45 count:16];
     }
 
     while (v8);
   }
 
   v16 = [v24 copy];
-  v17 = [(MPNowPlayingSession *)self privateQueue];
+  privateQueue = [(MPNowPlayingSession *)self privateQueue];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __46__MPNowPlayingSession_setCurrentAdTimeRanges___block_invoke;
   v27[3] = &unk_1E76825E8;
   objc_copyWeak(&v28, &location);
-  v18 = [v23 addBoundaryTimeObserverForTimes:v16 queue:v17 usingBlock:v27];
+  v18 = [firstObject addBoundaryTimeObserverForTimes:v16 queue:privateQueue usingBlock:v27];
 
   [(MPNowPlayingSession *)self setAdTimeRangesStartObserverToken:v18];
   v19 = [v6 copy];
-  v20 = [(MPNowPlayingSession *)self privateQueue];
+  privateQueue2 = [(MPNowPlayingSession *)self privateQueue];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __46__MPNowPlayingSession_setCurrentAdTimeRanges___block_invoke_74;
   v25[3] = &unk_1E76825E8;
   objc_copyWeak(&v26, &location);
-  v21 = [v23 addBoundaryTimeObserverForTimes:v19 queue:v20 usingBlock:v25];
+  v21 = [firstObject addBoundaryTimeObserverForTimes:v19 queue:privateQueue2 usingBlock:v25];
 
   [(MPNowPlayingSession *)self setAdTimeRangesEndObserverToken:v21];
   objc_destroyWeak(&v26);
@@ -765,27 +765,27 @@ void __46__MPNowPlayingSession_setCurrentAdTimeRanges___block_invoke_74(uint64_t
   }
 }
 
-- (void)setCurrentAssetNetCreditsStartTime:(double)a3
+- (void)setCurrentAssetNetCreditsStartTime:(double)time
 {
   v31 = *MEMORY[0x1E69E9840];
-  self->_currentAssetNetCreditsStartTime = a3;
+  self->_currentAssetNetCreditsStartTime = time;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [(MPNowPlayingSession *)self currentAdTimeRanges];
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  currentAdTimeRanges = [(MPNowPlayingSession *)self currentAdTimeRanges];
+  v6 = [currentAdTimeRanges countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v6)
   {
     v7 = *v26;
-    v8 = a3;
+    timeCopy2 = time;
     do
     {
       for (i = 0; i != v6; ++i)
       {
         if (*v26 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(currentAdTimeRanges);
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
@@ -796,14 +796,14 @@ void __46__MPNowPlayingSession_setCurrentAdTimeRanges___block_invoke_74(uint64_t
         }
 
         time = v24[0];
-        if (CMTimeGetSeconds(&time) < a3)
+        if (CMTimeGetSeconds(&time) < time)
         {
           time = v24[1];
-          v8 = v8 + CMTimeGetSeconds(&time);
+          timeCopy2 = timeCopy2 + CMTimeGetSeconds(&time);
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v6 = [currentAdTimeRanges countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v6);
@@ -811,26 +811,26 @@ void __46__MPNowPlayingSession_setCurrentAdTimeRanges___block_invoke_74(uint64_t
 
   else
   {
-    v8 = a3;
+    timeCopy2 = time;
   }
 
-  v11 = [(MPNowPlayingSession *)self players];
-  v12 = [v11 firstObject];
+  players = [(MPNowPlayingSession *)self players];
+  firstObject = [players firstObject];
 
   memset(v24, 0, 24);
-  CMTimeMakeWithSeconds(v24, v8, 1000000000);
+  CMTimeMakeWithSeconds(v24, timeCopy2, 1000000000);
   objc_initWeak(&location, self);
   time = v24[0];
   v13 = [MEMORY[0x1E696B098] valueWithCMTime:&time];
   v29 = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
-  v15 = [(MPNowPlayingSession *)self privateQueue];
+  privateQueue = [(MPNowPlayingSession *)self privateQueue];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __58__MPNowPlayingSession_setCurrentAssetNetCreditsStartTime___block_invoke;
   v20 = &unk_1E76825E8;
   objc_copyWeak(&v21, &location);
-  v16 = [v12 addBoundaryTimeObserverForTimes:v14 queue:v15 usingBlock:&v17];
+  v16 = [firstObject addBoundaryTimeObserverForTimes:v14 queue:privateQueue usingBlock:&v17];
 
   [(MPNowPlayingSession *)self setCreditsTimeObserverToken:v16, v17, v18, v19, v20];
   objc_destroyWeak(&v21);
@@ -869,10 +869,10 @@ void __58__MPNowPlayingSession_setCurrentAssetNetCreditsStartTime___block_invoke
   }
 }
 
-- (BOOL)hasInvalidAdTimeRange:(id)a3 totalDuration:(id)a4
+- (BOOL)hasInvalidAdTimeRange:(id)range totalDuration:(id)duration
 {
-  v5 = a3;
-  v6 = a4;
+  rangeCopy = range;
+  durationCopy = duration;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -888,9 +888,9 @@ void __58__MPNowPlayingSession_setCurrentAssetNetCreditsStartTime___block_invoke
   v15[2] = __59__MPNowPlayingSession_hasInvalidAdTimeRange_totalDuration___block_invoke;
   v15[3] = &unk_1E7680CF0;
   v18 = &v26;
-  v7 = v6;
+  v7 = durationCopy;
   v16 = v7;
-  v8 = v5;
+  v8 = rangeCopy;
   v17 = v8;
   v19 = &v20;
   [v8 enumerateObjectsUsingBlock:v15];
@@ -1081,15 +1081,15 @@ LABEL_25:
         }
 
         v9 = *(*(&v52 + 1) + 8 * i);
-        v10 = [v9 currentItem];
-        v11 = v10;
-        if (v10)
+        currentItem = [v9 currentItem];
+        v11 = currentItem;
+        if (currentItem)
         {
-          v12 = [v10 nowPlayingInfo];
-          v13 = v12;
-          if (v12)
+          nowPlayingInfo = [currentItem nowPlayingInfo];
+          v13 = nowPlayingInfo;
+          if (nowPlayingInfo)
           {
-            v14 = [v12 mutableCopy];
+            v14 = [nowPlayingInfo mutableCopy];
             [v14 removeObjectsForKeys:v4];
             [v3 addEntriesFromDictionary:v14];
           }
@@ -1103,16 +1103,16 @@ LABEL_25:
               *buf = 138412802;
               v58 = v16;
               v59 = 2048;
-              v60 = self;
+              selfCopy3 = self;
               v61 = 2112;
               v62 = v11;
-              v17 = self;
+              selfCopy2 = self;
               v18 = v3;
               v19 = v16;
               _os_log_impl(&dword_1A238D000, v14, OS_LOG_TYPE_DEFAULT, "<%@: %p> player item has no nowPlayingInfo dictionary: %@", buf, 0x20u);
 
               v3 = v18;
-              self = v17;
+              self = selfCopy2;
               v4 = v46;
             }
           }
@@ -1130,7 +1130,7 @@ LABEL_25:
           *buf = 138412802;
           v58 = v15;
           v59 = 2048;
-          v60 = self;
+          selfCopy3 = self;
           v61 = 2112;
           v62 = v9;
           v14 = v15;
@@ -1150,7 +1150,7 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = self;
+    selfCopy4 = self;
     v22 = v3;
     v50 = 0u;
     v51 = 0u;
@@ -1185,46 +1185,46 @@ LABEL_14:
       while (v25);
     }
 
-    v29 = [v45 allObjects];
-    v30 = [v29 sortedArrayUsingComparator:&__block_literal_global_68_53208];
+    allObjects = [v45 allObjects];
+    v30 = [allObjects sortedArrayUsingComparator:&__block_literal_global_68_53208];
 
     v31 = [v3 objectForKey:@"playbackDuration"];
-    if ([(MPNowPlayingSession *)v21 hasInvalidAdTimeRange:v30 totalDuration:v31])
+    if ([(MPNowPlayingSession *)selfCopy4 hasInvalidAdTimeRange:v30 totalDuration:v31])
     {
 
-      v32 = [(MPRemoteCommandCenter *)v21->_remoteCommandCenter seekForwardCommand];
-      [v32 setForceDisabled:1];
+      seekForwardCommand = [(MPRemoteCommandCenter *)selfCopy4->_remoteCommandCenter seekForwardCommand];
+      [seekForwardCommand setForceDisabled:1];
 
-      v33 = [(MPRemoteCommandCenter *)v21->_remoteCommandCenter specialSeekForwardCommand];
-      [v33 setForceDisabled:1];
+      specialSeekForwardCommand = [(MPRemoteCommandCenter *)selfCopy4->_remoteCommandCenter specialSeekForwardCommand];
+      [specialSeekForwardCommand setForceDisabled:1];
 
-      v34 = [(MPRemoteCommandCenter *)v21->_remoteCommandCenter seekForwardCommand];
-      [v34 setDisabledReason:3];
+      seekForwardCommand2 = [(MPRemoteCommandCenter *)selfCopy4->_remoteCommandCenter seekForwardCommand];
+      [seekForwardCommand2 setDisabledReason:3];
 
-      v35 = [(MPRemoteCommandCenter *)v21->_remoteCommandCenter specialSeekForwardCommand];
-      [v35 setDisabledReason:3];
+      specialSeekForwardCommand2 = [(MPRemoteCommandCenter *)selfCopy4->_remoteCommandCenter specialSeekForwardCommand];
+      [specialSeekForwardCommand2 setDisabledReason:3];
       v30 = MEMORY[0x1E695E0F0];
     }
 
     else
     {
-      v36 = [(MPRemoteCommandCenter *)v21->_remoteCommandCenter seekForwardCommand];
-      [v36 setForceDisabled:0];
+      seekForwardCommand3 = [(MPRemoteCommandCenter *)selfCopy4->_remoteCommandCenter seekForwardCommand];
+      [seekForwardCommand3 setForceDisabled:0];
 
-      v35 = [(MPRemoteCommandCenter *)v21->_remoteCommandCenter specialSeekForwardCommand];
-      [v35 setForceDisabled:0];
+      specialSeekForwardCommand2 = [(MPRemoteCommandCenter *)selfCopy4->_remoteCommandCenter specialSeekForwardCommand];
+      [specialSeekForwardCommand2 setForceDisabled:0];
     }
 
-    v37 = [(MPNowPlayingSession *)v21 currentAdTimeRanges];
-    v38 = [v37 isEqual:v30];
+    currentAdTimeRanges = [(MPNowPlayingSession *)selfCopy4 currentAdTimeRanges];
+    v38 = [currentAdTimeRanges isEqual:v30];
 
     if ((v38 & 1) == 0)
     {
-      [(MPNowPlayingSession *)v21 setCurrentAdTimeRanges:v30];
+      [(MPNowPlayingSession *)selfCopy4 setCurrentAdTimeRanges:v30];
     }
 
     v3 = v22;
-    self = v21;
+    self = selfCopy4;
   }
 
   v39 = [v3 objectForKey:@"MPNowPlayingInfoPropertyCreditsStartTime"];
@@ -1288,11 +1288,11 @@ uint64_t __72__MPNowPlayingSession_extractNowPlayingInfoFromPlayersAndUpdateAdRa
   return v6;
 }
 
-- (void)setPictureInPictureEnabled:(BOOL)a3
+- (void)setPictureInPictureEnabled:(BOOL)enabled
 {
-  if (!self->_invalidated && self->_pictureInPictureEnabled != a3)
+  if (!self->_invalidated && self->_pictureInPictureEnabled != enabled)
   {
-    self->_pictureInPictureEnabled = a3;
+    self->_pictureInPictureEnabled = enabled;
     MRMediaRemoteSetPictureInPictureStatusForPlayer();
   }
 }
@@ -1311,11 +1311,11 @@ uint64_t __50__MPNowPlayingSession_setPictureInPictureEnabled___block_invoke(uin
   return result;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
@@ -1367,11 +1367,11 @@ uint64_t __60__MPNowPlayingSession_becomeActiveIfPossibleWithCompletion___block_
   return result;
 }
 
-- (void)setCanBecomeActive:(BOOL)a3
+- (void)setCanBecomeActive:(BOOL)active
 {
-  if (self->_canBecomeActive != a3)
+  if (self->_canBecomeActive != active)
   {
-    self->_canBecomeActive = a3;
+    self->_canBecomeActive = active;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
@@ -1382,51 +1382,51 @@ uint64_t __60__MPNowPlayingSession_becomeActiveIfPossibleWithCompletion___block_
 
 - (AVAudioSession)audioSession
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_audioSession;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_audioSession;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (unsigned)audioSessionID
 {
-  v2 = [(MPNowPlayingSession *)self audioSession];
-  v3 = [v2 opaqueSessionID];
+  audioSession = [(MPNowPlayingSession *)self audioSession];
+  opaqueSessionID = [audioSession opaqueSessionID];
 
-  return v3;
+  return opaqueSessionID;
 }
 
-- (void)updateAudioSession:(id)a3
+- (void)updateAudioSession:(id)session
 {
-  v7 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_storeStrong(&v5->_audioSession, a3);
-  objc_sync_exit(v5);
+  sessionCopy = session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_audioSession, session);
+  objc_sync_exit(selfCopy);
 
-  if (!v5->_invalidated)
+  if (!selfCopy->_invalidated)
   {
-    [v7 opaqueSessionID];
+    [sessionCopy opaqueSessionID];
     MRMediaRemoteSetAVAudioSessionOpaqueSessionIDForPlayer();
   }
 
-  v6 = [(MPNowPlayingSession *)v5 delegate];
+  delegate = [(MPNowPlayingSession *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 nowPlayingSession:v5 audioSessionDidChange:v7];
+    [delegate nowPlayingSession:selfCopy audioSessionDidChange:sessionCopy];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if ([(NSMutableSet *)self->_playerSet containsObject:a4])
+  pathCopy = path;
+  changeCopy = change;
+  if ([(NSMutableSet *)self->_playerSet containsObject:object])
   {
-    v12 = [(MPNowPlayingSession *)self mxSessionIDKeyPath];
-    v13 = [v10 isEqualToString:v12];
+    mxSessionIDKeyPath = [(MPNowPlayingSession *)self mxSessionIDKeyPath];
+    v13 = [pathCopy isEqualToString:mxSessionIDKeyPath];
 
     if (v13)
     {
@@ -1435,14 +1435,14 @@ uint64_t __60__MPNowPlayingSession_becomeActiveIfPossibleWithCompletion___block_
     }
   }
 
-  if (MPNowPlayingPublisherPlayerItemObserverContext == a6)
+  if (MPNowPlayingPublisherPlayerItemObserverContext == context)
   {
-    v14 = [v11 objectForKey:*MEMORY[0x1E696A500]];
-    v15 = [v11 objectForKey:*MEMORY[0x1E696A4F0]];
+    v14 = [changeCopy objectForKey:*MEMORY[0x1E696A500]];
+    v15 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
     if (v14)
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      v17 = [v14 isEqual:v16];
+      null = [MEMORY[0x1E695DFB0] null];
+      v17 = [v14 isEqual:null];
 
       if ((v17 & 1) == 0)
       {
@@ -1452,8 +1452,8 @@ uint64_t __60__MPNowPlayingSession_becomeActiveIfPossibleWithCompletion___block_
 
     if (v15)
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      v19 = [v15 isEqual:v18];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      v19 = [v15 isEqual:null2];
 
       if ((v19 & 1) == 0)
       {
@@ -1467,9 +1467,9 @@ uint64_t __60__MPNowPlayingSession_becomeActiveIfPossibleWithCompletion___block_
     goto LABEL_19;
   }
 
-  if (MPNowPlayingPublisherPlayerItemDurationObserverContext == a6)
+  if (MPNowPlayingPublisherPlayerItemDurationObserverContext == context)
   {
-    v20 = [v11 objectForKey:*MEMORY[0x1E696A4F0]];
+    v20 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
     v14 = v20;
     memset(&v21[56], 0, 24);
     if (!v20 || ([v20 CMTimeValue], (~*&v21[68] & 0x11) != 0))
@@ -1487,7 +1487,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (MPNowPlayingPublisherPlayerTimeControlObserverContext == a6)
+  if (MPNowPlayingPublisherPlayerTimeControlObserverContext == context)
   {
     [(MPNowPlayingSession *)self updateNowPlayingInfo];
   }
@@ -1519,12 +1519,12 @@ LABEL_20:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 mxSessionID];
+        mxSessionID = [v9 mxSessionID];
 
-        if (v10)
+        if (mxSessionID)
         {
-          v11 = [v9 mxSessionID];
-          [v3 addObject:v11];
+          mxSessionID2 = [v9 mxSessionID];
+          [v3 addObject:mxSessionID2];
         }
       }
 
@@ -1571,18 +1571,18 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
   playerSet = self->_playerSet;
   v5 = player;
   [(NSMutableSet *)playerSet removeObject:v5];
-  v6 = [(MPNowPlayingSession *)self mxSessionIDKeyPath];
-  [(AVPlayer *)v5 removeObserver:self forKeyPath:v6];
+  mxSessionIDKeyPath = [(MPNowPlayingSession *)self mxSessionIDKeyPath];
+  [(AVPlayer *)v5 removeObserver:self forKeyPath:mxSessionIDKeyPath];
 
   [(MPNowPlayingSession *)self updateMediaExperienceIDs];
   [(MPNowPlayingSession *)self removePlayerObservers:v5];
-  v8 = [(AVPlayer *)v5 currentItem];
+  currentItem = [(AVPlayer *)v5 currentItem];
 
-  v7 = v8;
-  if (v8)
+  v7 = currentItem;
+  if (currentItem)
   {
-    [(MPNowPlayingSession *)self removePlayerItemObservers:v8];
-    v7 = v8;
+    [(MPNowPlayingSession *)self removePlayerItemObservers:currentItem];
+    v7 = currentItem;
   }
 }
 
@@ -1590,19 +1590,19 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
 {
   v8 = player;
   [(NSMutableSet *)self->_playerSet addObject:v8];
-  v4 = [(MPNowPlayingSession *)self mxSessionIDKeyPath];
-  [(AVPlayer *)v8 addObserver:self forKeyPath:v4 options:1 context:0];
+  mxSessionIDKeyPath = [(MPNowPlayingSession *)self mxSessionIDKeyPath];
+  [(AVPlayer *)v8 addObserver:self forKeyPath:mxSessionIDKeyPath options:1 context:0];
 
   [(MPNowPlayingSession *)self updateMediaExperienceIDs];
-  v5 = [(MPNowPlayingSession *)self automaticallyPublishesNowPlayingInfo];
+  automaticallyPublishesNowPlayingInfo = [(MPNowPlayingSession *)self automaticallyPublishesNowPlayingInfo];
   v6 = v8;
-  if (v5)
+  if (automaticallyPublishesNowPlayingInfo)
   {
     [(MPNowPlayingSession *)self addPlayerObservers:v8];
-    v7 = [(AVPlayer *)v8 currentItem];
-    if (v7)
+    currentItem = [(AVPlayer *)v8 currentItem];
+    if (currentItem)
     {
-      [(MPNowPlayingSession *)self addPlayerItemObservers:v7];
+      [(MPNowPlayingSession *)self addPlayerItemObservers:currentItem];
     }
 
     v6 = v8;
@@ -1628,7 +1628,7 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
     v8 = 138412802;
     v9 = v4;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = playerPath;
     v6 = v4;
@@ -1670,8 +1670,8 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(MPNowPlayingSession *)self mxSessionIDKeyPath];
-        [v8 removeObserver:self forKeyPath:v9];
+        mxSessionIDKeyPath = [(MPNowPlayingSession *)self mxSessionIDKeyPath];
+        [v8 removeObserver:self forKeyPath:mxSessionIDKeyPath];
 
         ++v7;
       }
@@ -1719,7 +1719,7 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
       *buf = 138413314;
       v24 = v6;
       v25 = 2048;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
       v28 = playerPath;
       v29 = 2080;
@@ -1734,8 +1734,8 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(MPNowPlayingSession *)self playerSet];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    playerSet = [(MPNowPlayingSession *)self playerSet];
+    v10 = [playerSet countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1746,7 +1746,7 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(playerSet);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
@@ -1760,30 +1760,30 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
             [(MPNowPlayingSession *)self addPlayerObservers:v14];
           }
 
-          v15 = [v14 currentItem];
-          if (v15)
+          currentItem = [v14 currentItem];
+          if (currentItem)
           {
-            [(MPNowPlayingSession *)self addPlayerItemObservers:v15];
+            [(MPNowPlayingSession *)self addPlayerItemObservers:currentItem];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [playerSet countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
     }
 
     self->_automaticallyPublishesNowPlayingInfo = v3;
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    v17 = v16;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v17 = defaultCenter;
     if (v3)
     {
-      [v16 addObserver:self selector:sel__playerItemNowPlayingInfoDidChange_ name:@"MPPlayerItemNowPlayingInfoDidChangeNotification" object:0];
+      [defaultCenter addObserver:self selector:sel__playerItemNowPlayingInfoDidChange_ name:@"MPPlayerItemNowPlayingInfoDidChangeNotification" object:0];
     }
 
     else
     {
-      [v16 removeObserver:self name:@"MPPlayerItemNowPlayingInfoDidChangeNotification" object:0];
+      [defaultCenter removeObserver:self name:@"MPPlayerItemNowPlayingInfoDidChangeNotification" object:0];
     }
 
     [(MPNowPlayingSession *)self extractNowPlayingInfoFromPlayersAndUpdateAdRanges];
@@ -1795,14 +1795,14 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
 {
   v31 = *MEMORY[0x1E69E9840];
   v5 = players;
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v8 = [objc_alloc(MEMORY[0x1E69B0AC8]) initWithIdentifier:v7 displayName:v7];
+  v8 = [objc_alloc(MEMORY[0x1E69B0AC8]) initWithIdentifier:uUIDString displayName:uUIDString];
   v9 = objc_alloc(MEMORY[0x1E69B0AD0]);
-  v10 = [MEMORY[0x1E69B0AA0] localOrigin];
-  v11 = [MEMORY[0x1E69B09D8] localClient];
-  v12 = [v9 initWithOrigin:v10 client:v11 player:v8];
+  localOrigin = [MEMORY[0x1E69B0AA0] localOrigin];
+  localClient = [MEMORY[0x1E69B09D8] localClient];
+  v12 = [v9 initWithOrigin:localOrigin client:localClient player:v8];
 
   v13 = [(MPNowPlayingSession *)self initWithPlayerPath:v12 routingContextID:0];
   if (v13)
@@ -1810,8 +1810,8 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
     v25 = v8;
     if (!v5 || ![(NSArray *)v5 count])
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:v13 file:@"MPNowPlayingSession.m" lineNumber:156 description:@"MPNowPlayingSession must be initialized with one or more AVPlayer instances."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v13 file:@"MPNowPlayingSession.m" lineNumber:156 description:@"MPNowPlayingSession must be initialized with one or more AVPlayer instances."];
     }
 
     v14 = [MEMORY[0x1E695DFA8] setWithArray:v5];
@@ -1839,8 +1839,8 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
           }
 
           v21 = *(*(&v26 + 1) + 8 * v20);
-          v22 = [(MPNowPlayingSession *)v13 mxSessionIDKeyPath];
-          [v21 addObserver:v13 forKeyPath:v22 options:1 context:0];
+          mxSessionIDKeyPath = [(MPNowPlayingSession *)v13 mxSessionIDKeyPath];
+          [v21 addObserver:v13 forKeyPath:mxSessionIDKeyPath options:1 context:0];
 
           ++v20;
         }
@@ -1859,10 +1859,10 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
   return v13;
 }
 
-- (MPNowPlayingSession)initWithPlayerPath:(id)a3 routingContextID:(id)a4
+- (MPNowPlayingSession)initWithPlayerPath:(id)path routingContextID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  dCopy = d;
   v30.receiver = self;
   v30.super_class = MPNowPlayingSession;
   v9 = [(MPNowPlayingSession *)&v30 init];
@@ -1876,11 +1876,11 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
     privateQueue = v10->_privateQueue;
     v10->_privateQueue = v12;
 
-    v14 = [MEMORY[0x1E69B0AD0] localResolvedPlayerPathFromPlayerPath:v7];
+    v14 = [MEMORY[0x1E69B0AD0] localResolvedPlayerPathFromPlayerPath:pathCopy];
     playerPath = v10->_playerPath;
     v10->_playerPath = v14;
 
-    objc_storeStrong(&v10->_routingContextID, a4);
+    objc_storeStrong(&v10->_routingContextID, d);
     v16 = objc_opt_class();
     objc_sync_enter(v16);
     if (initWithPlayerPath_routingContextID__onceToken != -1)
@@ -1892,14 +1892,14 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
 
     if (v17)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v29 handleFailureInMethod:a2 object:v10 file:@"MPNowPlayingSession.m" lineNumber:126 description:{@"Cannot have two MPNowPlayingSession for the same playerPath: %@", v7}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"MPNowPlayingSession.m" lineNumber:126 description:{@"Cannot have two MPNowPlayingSession for the same playerPath: %@", pathCopy}];
     }
 
-    [__nowPlayingSessionMap setObject:v10 forKey:v7];
+    [__nowPlayingSessionMap setObject:v10 forKey:pathCopy];
     objc_sync_exit(v16);
 
-    v18 = [MPNowPlayingInfoCenter infoCenterForPlayerPath:v7];
+    v18 = [MPNowPlayingInfoCenter infoCenterForPlayerPath:pathCopy];
     nowPlayingInfoCenter = v10->_nowPlayingInfoCenter;
     v10->_nowPlayingInfoCenter = v18;
 
@@ -1916,18 +1916,18 @@ void __47__MPNowPlayingSession_updateMediaExperienceIDs__block_invoke(uint64_t a
 
     if (!v10->_remoteCommandCenter)
     {
-      v24 = [[MPRemoteCommandCenter alloc] initWithPlayerPath:v7];
+      v24 = [[MPRemoteCommandCenter alloc] initWithPlayerPath:pathCopy];
       v25 = v10->_remoteCommandCenter;
       v10->_remoteCommandCenter = v24;
     }
 
     v10->_canBecomeActive = MRMediaRemoteCanBecomeActivePlayer();
     MRMediaRemoteSetWantsNowPlayingNotifications();
-    v26 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v26 addObserver:v10 selector:sel_activePlayerDidChangeNotification_ name:*MEMORY[0x1E69B0C28] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_activePlayerDidChangeNotification_ name:*MEMORY[0x1E69B0C28] object:0];
 
-    v27 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v27 addObserver:v10 selector:sel_playerPictureInPictureEnabledDidChangeNotification_ name:*MEMORY[0x1E69B12C0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v10 selector:sel_playerPictureInPictureEnabledDidChangeNotification_ name:*MEMORY[0x1E69B12C0] object:0];
   }
 
   return v10;
@@ -1940,35 +1940,35 @@ void __59__MPNowPlayingSession_initWithPlayerPath_routingContextID___block_invok
   __nowPlayingSessionMap = v0;
 }
 
-+ (id)nowPlayingSessionForPlayerPath:(id)a3
++ (id)nowPlayingSessionForPlayerPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_opt_class();
   objc_sync_enter(v4);
-  v5 = [__nowPlayingSessionMap objectForKey:v3];
+  v5 = [__nowPlayingSessionMap objectForKey:pathCopy];
   objc_sync_exit(v4);
 
   return v5;
 }
 
-+ (id)nowPlayingSessionForPlayerID:(id)a3
++ (id)nowPlayingSessionForPlayerID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E69B0AC8]) initWithIdentifier:v3 displayName:v3];
+    defaultPlayer = [objc_alloc(MEMORY[0x1E69B0AC8]) initWithIdentifier:dCopy displayName:dCopy];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69B0AC8] defaultPlayer];
+    defaultPlayer = [MEMORY[0x1E69B0AC8] defaultPlayer];
   }
 
-  v5 = v4;
+  v5 = defaultPlayer;
   v6 = objc_alloc(MEMORY[0x1E69B0AD0]);
-  v7 = [MEMORY[0x1E69B0AA0] localOrigin];
-  v8 = [MEMORY[0x1E69B09D8] localClient];
-  v9 = [v6 initWithOrigin:v7 client:v8 player:v5];
+  localOrigin = [MEMORY[0x1E69B0AA0] localOrigin];
+  localClient = [MEMORY[0x1E69B09D8] localClient];
+  v9 = [v6 initWithOrigin:localOrigin client:localClient player:v5];
 
   v10 = [objc_opt_class() nowPlayingSessionForPlayerPath:v9];
 

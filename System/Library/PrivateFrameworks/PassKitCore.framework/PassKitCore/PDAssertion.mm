@@ -1,26 +1,26 @@
 @interface PDAssertion
-- (PDAssertion)initWithType:(unint64_t)a3 identifier:(id)a4 reason:(id)a5;
+- (PDAssertion)initWithType:(unint64_t)type identifier:(id)identifier reason:(id)reason;
 - (id)description;
 @end
 
 @implementation PDAssertion
 
-- (PDAssertion)initWithType:(unint64_t)a3 identifier:(id)a4 reason:(id)a5
+- (PDAssertion)initWithType:(unint64_t)type identifier:(id)identifier reason:(id)reason
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  reasonCopy = reason;
   v17.receiver = self;
   v17.super_class = PDAssertion;
   v10 = [(PDAssertion *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v12 = [v8 copy];
+    v10->_type = type;
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [reasonCopy copy];
     reason = v11->_reason;
     v11->_reason = v14;
 

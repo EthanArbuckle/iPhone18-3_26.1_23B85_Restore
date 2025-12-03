@@ -1,13 +1,13 @@
 @interface LibraryTableNavigationTitleView
 - (CGSize)intrinsicContentSize;
-- (_TtC5Music31LibraryTableNavigationTitleView)initWithCoder:(id)a3;
-- (_TtC5Music31LibraryTableNavigationTitleView)initWithFrame:(CGRect)a3;
+- (_TtC5Music31LibraryTableNavigationTitleView)initWithCoder:(id)coder;
+- (_TtC5Music31LibraryTableNavigationTitleView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation LibraryTableNavigationTitleView
 
-- (_TtC5Music31LibraryTableNavigationTitleView)initWithCoder:(id)a3
+- (_TtC5Music31LibraryTableNavigationTitleView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -40,7 +40,7 @@
   [v7 setFrame:?];
 }
 
-- (_TtC5Music31LibraryTableNavigationTitleView)initWithFrame:(CGRect)a3
+- (_TtC5Music31LibraryTableNavigationTitleView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

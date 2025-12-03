@@ -1,12 +1,12 @@
 @interface JUContentUnavailableViewController
-- (_TtC5JetUI34JUContentUnavailableViewController)initWithCoder:(id)a3;
-- (_TtC5JetUI34JUContentUnavailableViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5JetUI34JUContentUnavailableViewController)initWithCoder:(id)coder;
+- (_TtC5JetUI34JUContentUnavailableViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation JUContentUnavailableViewController
 
-- (_TtC5JetUI34JUContentUnavailableViewController)initWithCoder:(id)a3
+- (_TtC5JetUI34JUContentUnavailableViewController)initWithCoder:(id)coder
 {
   result = sub_1BAD9D8B8();
   __break(1u);
@@ -15,11 +15,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   JUContentUnavailableViewController.viewDidLoad()();
 }
 
-- (_TtC5JetUI34JUContentUnavailableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5JetUI34JUContentUnavailableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

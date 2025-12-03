@@ -1,15 +1,15 @@
 @interface _GCDevicePhysicalInputPressInput
 + (unsigned)updateContextSize;
 - (BOOL)_isAnalog;
-- (BOOL)_setPressedDidChangeHandler:(id)a3;
+- (BOOL)_setPressedDidChangeHandler:(id)handler;
 - (BOOL)isAnalog;
-- (BOOL)isEqualToInput:(_BOOL8)a1;
+- (BOOL)isEqualToInput:(_BOOL8)input;
 - (BOOL)isPressed;
-- (BOOL)update:(void *)a3 forUsages:(unint64_t)a4 with:(id)a5;
+- (BOOL)update:(void *)update forUsages:(unint64_t)usages with:(id)with;
 - (NSSet)sources;
 - (NSString)description;
-- (_GCDevicePhysicalInputPressInput)initWithParameters:(id)a3;
-- (_GCDevicePhysicalInputPressInput)initWithTemplate:(id)a3 context:(id)a4;
+- (_GCDevicePhysicalInputPressInput)initWithParameters:(id)parameters;
+- (_GCDevicePhysicalInputPressInput)initWithTemplate:(id)template context:(id)context;
 - (double)_lastPressedTimestamp;
 - (double)_lastValueTimestamp;
 - (double)_pressedThreshold;
@@ -32,28 +32,28 @@
 - (uint64_t)_setValueDidChangeHandler:(uint64_t)result;
 - (uint64_t)_sources;
 - (uint64_t)_valueDidChangeHandler;
-- (uint64_t)update:(uint64_t)a1 withValue:(uint64_t)a2 timestamp:(float)a3;
-- (void)postCommit:(const void *)a3 sender:(id)a4;
-- (void)preCommit:(const void *)a3 sender:(id)a4;
+- (uint64_t)update:(uint64_t)update withValue:(uint64_t)value timestamp:(float)timestamp;
+- (void)postCommit:(const void *)commit sender:(id)sender;
+- (void)preCommit:(const void *)commit sender:(id)sender;
 @end
 
 @implementation _GCDevicePhysicalInputPressInput
 
-- (_GCDevicePhysicalInputPressInput)initWithTemplate:(id)a3 context:(id)a4
+- (_GCDevicePhysicalInputPressInput)initWithTemplate:(id)template context:(id)context
 {
   v10.receiver = self;
   v10.super_class = _GCDevicePhysicalInputPressInput;
-  v5 = a4;
-  v6 = a3;
-  v7 = [(_GCDevicePhysicalInputView *)&v10 initWithTemplate:v6 context:v5];
-  v7->_sourcesSlot = [v5 view:v7 allocateObjectSlot:1 withCopyOfValueFromView:v6 slot:{v6[3], v10.receiver, v10.super_class}];
-  v7->_isAnalogSlot = [v5 view:v7 allocatePrimitiveSlot:1 withCopyOfValueFromView:v6 slot:v6[4]];
-  v7->_pressedThresholdSlot = [v5 view:v7 allocatePrimitiveSlot:1 withCopyOfValueFromView:v6 slot:v6[5]];
-  v7->_valueChangedHandlerSlot = [v5 view:v7 allocateObjectSlot:2 withCopyOfValueFromView:v6 slot:v6[6]];
-  v7->_pressedChangedHandlerSlot = [v5 view:v7 allocateObjectSlot:2 withCopyOfValueFromView:v6 slot:v6[7]];
-  v7->_valueSlot = [v5 view:v7 allocatePrimitiveSlot:3 withCopyOfValueFromView:v6 slot:v6[8]];
-  v7->_valueTimestampSlot = [v5 view:v7 allocatePrimitiveSlot:3 withCopyOfValueFromView:v6 slot:v6[9]];
-  v8 = [v5 view:v7 allocatePrimitiveSlot:3 withCopyOfValueFromView:v6 slot:v6[10]];
+  contextCopy = context;
+  templateCopy = template;
+  v7 = [(_GCDevicePhysicalInputView *)&v10 initWithTemplate:templateCopy context:contextCopy];
+  v7->_sourcesSlot = [contextCopy view:v7 allocateObjectSlot:1 withCopyOfValueFromView:templateCopy slot:{templateCopy[3], v10.receiver, v10.super_class}];
+  v7->_isAnalogSlot = [contextCopy view:v7 allocatePrimitiveSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[4]];
+  v7->_pressedThresholdSlot = [contextCopy view:v7 allocatePrimitiveSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[5]];
+  v7->_valueChangedHandlerSlot = [contextCopy view:v7 allocateObjectSlot:2 withCopyOfValueFromView:templateCopy slot:templateCopy[6]];
+  v7->_pressedChangedHandlerSlot = [contextCopy view:v7 allocateObjectSlot:2 withCopyOfValueFromView:templateCopy slot:templateCopy[7]];
+  v7->_valueSlot = [contextCopy view:v7 allocatePrimitiveSlot:3 withCopyOfValueFromView:templateCopy slot:templateCopy[8]];
+  v7->_valueTimestampSlot = [contextCopy view:v7 allocatePrimitiveSlot:3 withCopyOfValueFromView:templateCopy slot:templateCopy[9]];
+  v8 = [contextCopy view:v7 allocatePrimitiveSlot:3 withCopyOfValueFromView:templateCopy slot:templateCopy[10]];
 
   v7->_pressedTimestampSlot = v8;
   return v7;
@@ -61,14 +61,14 @@
 
 + (unsigned)updateContextSize
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS____GCDevicePhysicalInputPressInput;
   return objc_msgSendSuper2(&v3, sel_updateContextSize) + 2;
 }
 
-- (BOOL)update:(void *)a3 forUsages:(unint64_t)a4 with:(id)a5
+- (BOOL)update:(void *)update forUsages:(unint64_t)usages with:(id)with
 {
-  v6 = a4;
+  usagesCopy = usages;
   v37.receiver = self;
   v37.super_class = _GCDevicePhysicalInputPressInput;
   v9 = [_GCDevicePhysicalInputView update:sel_update_forUsages_with_ forUsages:? with:?];
@@ -77,10 +77,10 @@
   {
     v10 = +[_GCDevicePhysicalInputView updateContextSize];
     MyUpdateContext_Offset_0 = v10;
-    if ((v6 & 2) == 0)
+    if ((usagesCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v6 & 4) == 0)
+      if ((usagesCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -89,18 +89,18 @@ LABEL_3:
     }
   }
 
-  else if ((v6 & 2) == 0)
+  else if ((usagesCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  v22 = [(_GCDevicePhysicalInputPressInput *)a5 _sources];
-  v23 = [(_GCDevicePhysicalInputPressInput *)self _setSources:v22];
-  *(a3 + v10) = *(a3 + v10) & 0xFFFE | v23;
+  _sources = [(_GCDevicePhysicalInputPressInput *)with _sources];
+  v23 = [(_GCDevicePhysicalInputPressInput *)self _setSources:_sources];
+  *(update + v10) = *(update + v10) & 0xFFFE | v23;
 
-  if (a5)
+  if (with)
   {
-    v24 = [(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?]!= 0;
+    v24 = [(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?]!= 0;
     if (self)
     {
       goto LABEL_26;
@@ -131,10 +131,10 @@ LABEL_26:
   }
 
 LABEL_29:
-  *(a3 + v10) = *(a3 + v10) & 0xFFFD | v26;
-  if (a5)
+  *(update + v10) = *(update + v10) & 0xFFFD | v26;
+  if (with)
   {
-    v27 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?]);
+    v27 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?]);
     v28 = v27;
     if (self)
     {
@@ -166,20 +166,20 @@ LABEL_31:
   }
 
 LABEL_34:
-  *(a3 + v10) = *(a3 + v10) & 0xFFFB | v30;
+  *(update + v10) = *(update + v10) & 0xFFFB | v30;
   v9 |= v23 | v25 | v29;
-  if ((v6 & 4) == 0)
+  if ((usagesCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v6 & 8) == 0)
+    if ((usagesCopy & 8) == 0)
     {
       return v9 & 1;
     }
 
 LABEL_5:
-    if (a5)
+    if (with)
     {
-      v11 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?]);
+      v11 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?]);
       v12 = v11;
       if (self)
       {
@@ -205,10 +205,10 @@ LABEL_7:
         }
 
 LABEL_10:
-        *(a3 + v10) = *(a3 + v10) & 0xFFDF | v14;
-        if (a5)
+        *(update + v10) = *(update + v10) & 0xFFDF | v14;
+        if (with)
         {
-          v15 = [(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?];
+          v15 = [(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?];
           if (self)
           {
             goto LABEL_12;
@@ -233,10 +233,10 @@ LABEL_12:
             }
 
 LABEL_15:
-            *(a3 + v10) = *(a3 + v10) & 0xFFBF | v17;
-            if (a5)
+            *(update + v10) = *(update + v10) & 0xFFBF | v17;
+            if (with)
             {
-              v18 = [(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?];
+              v18 = [(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?];
             }
 
             else
@@ -264,7 +264,7 @@ LABEL_15:
               v20 = 0;
             }
 
-            *(a3 + v10) = *(a3 + v10) & 0xFEFF | v20;
+            *(update + v10) = *(update + v10) & 0xFEFF | v20;
             v9 |= v13 | v16 | v19;
             return v9 & 1;
           }
@@ -282,8 +282,8 @@ LABEL_15:
   }
 
 LABEL_35:
-  v31 = [(_GCDevicePhysicalInputPressInput *)a5 _valueDidChangeHandler];
-  v32 = [(_GCDevicePhysicalInputPressInput *)self _setValueDidChangeHandler:v31];
+  _valueDidChangeHandler = [(_GCDevicePhysicalInputPressInput *)with _valueDidChangeHandler];
+  v32 = [(_GCDevicePhysicalInputPressInput *)self _setValueDidChangeHandler:_valueDidChangeHandler];
   if (v32)
   {
     v33 = 8;
@@ -294,10 +294,10 @@ LABEL_35:
     v33 = 0;
   }
 
-  *(a3 + v10) = *(a3 + v10) & 0xFFF7 | v33;
+  *(update + v10) = *(update + v10) & 0xFFF7 | v33;
 
-  v34 = [a5 pressedDidChangeHandler];
-  v35 = [(_GCDevicePhysicalInputPressInput *)self _setPressedDidChangeHandler:v34];
+  pressedDidChangeHandler = [with pressedDidChangeHandler];
+  v35 = [(_GCDevicePhysicalInputPressInput *)self _setPressedDidChangeHandler:pressedDidChangeHandler];
   if (v35)
   {
     v36 = 16;
@@ -308,10 +308,10 @@ LABEL_35:
     v36 = 0;
   }
 
-  *(a3 + v10) = *(a3 + v10) & 0xFFEF | v36;
+  *(update + v10) = *(update + v10) & 0xFFEF | v36;
   v9 |= v32 | v35;
 
-  if ((v6 & 8) != 0)
+  if ((usagesCopy & 8) != 0)
   {
     goto LABEL_5;
   }
@@ -319,11 +319,11 @@ LABEL_35:
   return v9 & 1;
 }
 
-- (void)preCommit:(const void *)a3 sender:(id)a4
+- (void)preCommit:(const void *)commit sender:(id)sender
 {
   v8.receiver = self;
   v8.super_class = _GCDevicePhysicalInputPressInput;
-  [(_GCDevicePhysicalInputView *)&v8 preCommit:a3 sender:a4];
+  [(_GCDevicePhysicalInputView *)&v8 preCommit:commit sender:sender];
   v6 = MyUpdateContext_Offset_0;
   if (MyUpdateContext_Offset_0 == -1)
   {
@@ -331,11 +331,11 @@ LABEL_35:
     MyUpdateContext_Offset_0 = v6;
   }
 
-  v7 = *(a3 + v6);
+  v7 = *(commit + v6);
   if (v7)
   {
     [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-    v7 = *(a3 + v6);
+    v7 = *(commit + v6);
     if ((v7 & 2) == 0)
     {
 LABEL_5:
@@ -354,7 +354,7 @@ LABEL_5:
   }
 
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-  v7 = *(a3 + v6);
+  v7 = *(commit + v6);
   if ((v7 & 8) == 0)
   {
 LABEL_6:
@@ -368,7 +368,7 @@ LABEL_6:
 
 LABEL_15:
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-  v7 = *(a3 + v6);
+  v7 = *(commit + v6);
   if ((v7 & 0x10) == 0)
   {
 LABEL_7:
@@ -382,7 +382,7 @@ LABEL_7:
 
 LABEL_16:
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-  v7 = *(a3 + v6);
+  v7 = *(commit + v6);
   if ((v7 & 0x20) == 0)
   {
 LABEL_8:
@@ -396,7 +396,7 @@ LABEL_8:
 
 LABEL_17:
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-  v7 = *(a3 + v6);
+  v7 = *(commit + v6);
   if ((v7 & 0x40) == 0)
   {
 LABEL_9:
@@ -411,7 +411,7 @@ LABEL_9:
 LABEL_18:
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-  v7 = *(a3 + v6);
+  v7 = *(commit + v6);
   if ((v7 & 0x80) == 0)
   {
 LABEL_10:
@@ -425,7 +425,7 @@ LABEL_10:
 
 LABEL_19:
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-  if ((*(a3 + v6) & 0x100) == 0)
+  if ((*(commit + v6) & 0x100) == 0)
   {
     return;
   }
@@ -435,7 +435,7 @@ LABEL_11:
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
 }
 
-- (void)postCommit:(const void *)a3 sender:(id)a4
+- (void)postCommit:(const void *)commit sender:(id)sender
 {
   v11.receiver = self;
   v11.super_class = _GCDevicePhysicalInputPressInput;
@@ -447,11 +447,11 @@ LABEL_11:
     MyUpdateContext_Offset_0 = v7;
   }
 
-  v8 = *(a3 + v7);
+  v8 = *(commit + v7);
   if (v8)
   {
     [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-    v8 = *(a3 + v7);
+    v8 = *(commit + v7);
     if ((v8 & 2) == 0)
     {
 LABEL_5:
@@ -470,7 +470,7 @@ LABEL_5:
   }
 
   [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-  v8 = *(a3 + v7);
+  v8 = *(commit + v7);
   if ((v8 & 8) == 0)
   {
 LABEL_6:
@@ -484,7 +484,7 @@ LABEL_6:
 
 LABEL_16:
   [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-  v8 = *(a3 + v7);
+  v8 = *(commit + v7);
   if ((v8 & 0x10) == 0)
   {
 LABEL_7:
@@ -498,7 +498,7 @@ LABEL_7:
 
 LABEL_17:
   [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-  v8 = *(a3 + v7);
+  v8 = *(commit + v7);
   if ((v8 & 0x20) == 0)
   {
 LABEL_8:
@@ -512,7 +512,7 @@ LABEL_8:
 
 LABEL_18:
   [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-  v8 = *(a3 + v7);
+  v8 = *(commit + v7);
   if ((v8 & 0x40) == 0)
   {
 LABEL_9:
@@ -527,7 +527,7 @@ LABEL_9:
 LABEL_19:
   [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
   [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-  v8 = *(a3 + v7);
+  v8 = *(commit + v7);
   if ((v8 & 0x80) == 0)
   {
 LABEL_10:
@@ -541,7 +541,7 @@ LABEL_10:
 
 LABEL_20:
   [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-  v8 = *(a3 + v7);
+  v8 = *(commit + v7);
   if ((v8 & 0x100) == 0)
   {
 LABEL_11:
@@ -556,7 +556,7 @@ LABEL_11:
 LABEL_21:
   [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
   [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-  v8 = *(a3 + v7);
+  v8 = *(commit + v7);
   if ((v8 & 0x20) == 0)
   {
 LABEL_12:
@@ -569,20 +569,20 @@ LABEL_12:
   }
 
 LABEL_22:
-  v9 = [(_GCDevicePhysicalInputPressInput *)self valueDidChangeHandler];
-  if (v9)
+  valueDidChangeHandler = [(_GCDevicePhysicalInputPressInput *)self valueDidChangeHandler];
+  if (valueDidChangeHandler)
   {
     [(_GCDevicePhysicalInputPressInput *)self value];
-    (v9)[2](v9, a4, self);
+    (valueDidChangeHandler)[2](valueDidChangeHandler, sender, self);
   }
 
-  if ((*(a3 + v7) & 0x80) != 0)
+  if ((*(commit + v7) & 0x80) != 0)
   {
 LABEL_25:
-    v10 = [(_GCDevicePhysicalInputPressInput *)self pressedDidChangeHandler];
-    if (v10)
+    pressedDidChangeHandler = [(_GCDevicePhysicalInputPressInput *)self pressedDidChangeHandler];
+    if (pressedDidChangeHandler)
     {
-      (v10)[2](v10, a4, self, [(_GCDevicePhysicalInputPressInput *)self isPressed]);
+      (pressedDidChangeHandler)[2](pressedDidChangeHandler, sender, self, [(_GCDevicePhysicalInputPressInput *)self isPressed]);
     }
   }
 }
@@ -592,9 +592,9 @@ LABEL_25:
   v3 = MEMORY[0x1E696AEC0];
   [(_GCDevicePhysicalInputPressInput *)self value];
   v5 = v4;
-  v6 = [(_GCDevicePhysicalInputPressInput *)self isPressed];
+  isPressed = [(_GCDevicePhysicalInputPressInput *)self isPressed];
   v7 = &stru_1F4E3B4E0;
-  if (v6)
+  if (isPressed)
   {
     v7 = @" (pressed)";
   }
@@ -602,25 +602,25 @@ LABEL_25:
   return [v3 stringWithFormat:@"<PressInput; value = %f%@>", *&v5, v7];
 }
 
-- (BOOL)_setPressedDidChangeHandler:(id)a3
+- (BOOL)_setPressedDidChangeHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   LOBYTE(self) = [(_GCDevicePhysicalInputView *)self _testAndSetObjectValue:v4 forSlot:&self->_pressedChangedHandlerSlot policy:771];
 
   return self;
 }
 
-- (_GCDevicePhysicalInputPressInput)initWithParameters:(id)a3
+- (_GCDevicePhysicalInputPressInput)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v16.receiver = self;
   v16.super_class = _GCDevicePhysicalInputPressInput;
-  v5 = [(_GCDevicePhysicalInputView *)&v16 initWithParameters:v4];
+  v5 = [(_GCDevicePhysicalInputView *)&v16 initWithParameters:parametersCopy];
   v6 = v5;
-  if (v4)
+  if (parametersCopy)
   {
     [(_GCDevicePhysicalInputPressInput *)v5 _setSources:?];
-    v7 = *(v4 + 8);
+    v7 = *(parametersCopy + 8);
     if (!v6)
     {
       goto LABEL_4;
@@ -638,7 +638,7 @@ LABEL_3:
   }
 
 LABEL_4:
-  if (!v4)
+  if (!parametersCopy)
   {
     if (!v6)
     {
@@ -648,7 +648,7 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v11 = v4[3];
+  v11 = parametersCopy[3];
   if (v6)
   {
 LABEL_6:
@@ -668,8 +668,8 @@ LABEL_7:
     v3 = result;
     if (!a2)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:sel__setSources_ object:v3 file:@"_GCDevicePhysicalInputPressInput.m" lineNumber:214 description:{@"Invalid parameter not satisfying: %s", "newValue != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__setSources_ object:v3 file:@"_GCDevicePhysicalInputPressInput.m" lineNumber:214 description:{@"Invalid parameter not satisfying: %s", "newValue != nil"}];
     }
 
     v4 = OUTLINED_FUNCTION_2_3();
@@ -723,12 +723,12 @@ LABEL_7:
 
 - (double)_pressedThreshold
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = [(_GCDevicePhysicalInputView *)a1 _primitiveValueForSlot:?];
+  v1 = [(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?];
   *&result = OUTLINED_FUNCTION_3_3(v1);
   return result;
 }
@@ -760,12 +760,12 @@ LABEL_7:
 
 - (double)_value
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = [(_GCDevicePhysicalInputView *)a1 _primitiveValueForSlot:?];
+  v1 = [(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?];
   *&result = OUTLINED_FUNCTION_3_3(v1);
   return result;
 }
@@ -782,9 +782,9 @@ LABEL_7:
 
 - (double)_lastValueTimestamp
 {
-  if (a1)
+  if (self)
   {
-    return COERCE_DOUBLE([(_GCDevicePhysicalInputView *)a1 _primitiveValueForSlot:?]);
+    return COERCE_DOUBLE([(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?]);
   }
 
   else
@@ -805,9 +805,9 @@ LABEL_7:
 
 - (double)_lastPressedTimestamp
 {
-  if (a1)
+  if (self)
   {
-    return COERCE_DOUBLE([(_GCDevicePhysicalInputView *)a1 _primitiveValueForSlot:?]);
+    return COERCE_DOUBLE([(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?]);
   }
 
   else
@@ -826,29 +826,29 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqualToInput:(_BOOL8)a1
+- (BOOL)isEqualToInput:(_BOOL8)input
 {
-  v2 = a1;
-  if (a1)
+  inputCopy = input;
+  if (input)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:sel_isEqualToInput_ object:v2 file:@"_GCDevicePhysicalInputPressInput.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %s", "[otherElement isKindOfClass:_GCDevicePhysicalInputPressInput.class]"}];
-      v2 = 0;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_isEqualToInput_ object:inputCopy file:@"_GCDevicePhysicalInputPressInput.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %s", "[otherElement isKindOfClass:_GCDevicePhysicalInputPressInput.class]"}];
+      inputCopy = 0;
 LABEL_15:
 
-      return v2;
+      return inputCopy;
     }
 
     v4 = objc_opt_class();
     if ([v4 isEqual:objc_opt_class()])
     {
       v5 = OUTLINED_FUNCTION_4_2();
-      v7 = [(_GCDevicePhysicalInputView *)v5 _objectValueForSlot:v6];
-      v8 = [a2 sources];
-      if ([v7 isEqual:v8])
+      currentHandler = [(_GCDevicePhysicalInputView *)v5 _objectValueForSlot:v6];
+      sources = [a2 sources];
+      if ([currentHandler isEqual:sources])
       {
         v9 = OUTLINED_FUNCTION_4_2();
         v11 = [(_GCDevicePhysicalInputView *)v9 _primitiveValueForSlot:v10];
@@ -870,7 +870,7 @@ LABEL_7:
               v16 = 0.0;
             }
 
-            v2 = v16 == v14;
+            inputCopy = v16 == v14;
             goto LABEL_14;
           }
         }
@@ -881,7 +881,7 @@ LABEL_7:
         }
       }
 
-      v2 = 0;
+      inputCopy = 0;
 LABEL_14:
 
       goto LABEL_15;
@@ -890,7 +890,7 @@ LABEL_14:
     return 0;
   }
 
-  return v2;
+  return inputCopy;
 }
 
 - (uint64_t)__setValue:(uint64_t)result
@@ -925,9 +925,9 @@ LABEL_14:
 
 - (id)valueDidChangeHandler
 {
-  v2 = [(_GCDevicePhysicalInputPressInput *)self _valueDidChangeHandler];
+  _valueDidChangeHandler = [(_GCDevicePhysicalInputPressInput *)self _valueDidChangeHandler];
 
-  return v2;
+  return _valueDidChangeHandler;
 }
 
 - (float)value
@@ -987,18 +987,18 @@ LABEL_14:
 
 - (NSSet)sources
 {
-  v2 = [(_GCDevicePhysicalInputPressInput *)self _sources];
+  _sources = [(_GCDevicePhysicalInputPressInput *)self _sources];
 
-  return v2;
+  return _sources;
 }
 
 - (BOOL)isPressed
 {
   if (self)
   {
-    v2 = self;
+    selfCopy = self;
     v3 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?]);
-    v4 = [(_GCDevicePhysicalInputView *)v2 _primitiveValueForSlot:?];
+    v4 = [(_GCDevicePhysicalInputView *)selfCopy _primitiveValueForSlot:?];
     LOBYTE(self) = (v3 - OUTLINED_FUNCTION_3_3(v4)) > 0.00000011921;
   }
 
@@ -1039,9 +1039,9 @@ LABEL_14:
   return OUTLINED_FUNCTION_5_3(v4, &lastPressedStateLatency_sTimebaseInfo) / 1000000000.0 - v3;
 }
 
-- (uint64_t)update:(uint64_t)a1 withValue:(uint64_t)a2 timestamp:(float)a3
+- (uint64_t)update:(uint64_t)update withValue:(uint64_t)value timestamp:(float)timestamp
 {
-  if (!a1)
+  if (!update)
   {
     return 0;
   }
@@ -1059,22 +1059,22 @@ LABEL_14:
   v11 = [(_GCDevicePhysicalInputView *)v9 _primitiveValueForSlot:v10];
   v12 = OUTLINED_FUNCTION_3_3(v11);
   v13 = v8 - v12;
-  v14 = a3 - v12;
-  v15 = v8 != a3;
-  if (v8 != a3)
+  v14 = timestamp - v12;
+  v15 = v8 != timestamp;
+  if (v8 != timestamp)
   {
     v16 = OUTLINED_FUNCTION_2_3();
     [(_GCDevicePhysicalInputView *)v16 _setPrimitiveValue:v17 forSlot:v18];
     v19 = OUTLINED_FUNCTION_2_3();
     [(_GCDevicePhysicalInputView *)v19 _setPrimitiveValue:v20 forSlot:v21];
-    *(a2 + v5) |= 0x60u;
+    *(value + v5) |= 0x60u;
   }
 
   if (v14 > 0.00000011921 != v13 > 0.00000011921)
   {
     v22 = OUTLINED_FUNCTION_2_3();
     [(_GCDevicePhysicalInputView *)v22 _setPrimitiveValue:v23 forSlot:v24];
-    *(a2 + v5) |= 0x180u;
+    *(value + v5) |= 0x180u;
     return 1;
   }
 

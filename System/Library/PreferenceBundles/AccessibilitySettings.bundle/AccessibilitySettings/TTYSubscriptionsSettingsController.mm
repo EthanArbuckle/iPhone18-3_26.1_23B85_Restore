@@ -1,21 +1,21 @@
 @interface TTYSubscriptionsSettingsController
-- (BOOL)rttSupportedForContext:(id)a3;
-- (id)labelForContext:(id)a3;
+- (BOOL)rttSupportedForContext:(id)context;
+- (id)labelForContext:(id)context;
 - (id)specifiers;
-- (id)ttyEnabledForSpecifier:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (id)ttyEnabledForSpecifier:(id)specifier;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TTYSubscriptionsSettingsController
 
-- (id)labelForContext:(id)a3
+- (id)labelForContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = +[RTTTelephonyUtilities sharedUtilityProvider];
-  v5 = [v3 uuid];
+  uuid = [contextCopy uuid];
 
-  v6 = [v5 UUIDString];
-  v7 = [v4 labelFromUUID:v6];
+  uUIDString = [uuid UUIDString];
+  v7 = [v4 labelFromUUID:uUIDString];
 
   return v7;
 }
@@ -28,7 +28,7 @@
   {
     v5 = objc_alloc_init(NSMutableArray);
     v6 = +[RTTTelephonyUtilities sharedUtilityProvider];
-    v7 = [v6 subscriptionContexts];
+    subscriptionContexts = [v6 subscriptionContexts];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __48__TTYSubscriptionsSettingsController_specifiers__block_invoke;
@@ -36,7 +36,7 @@
     v12[4] = self;
     v8 = v5;
     v13 = v8;
-    [v7 enumerateObjectsUsingBlock:v12];
+    [subscriptionContexts enumerateObjectsUsingBlock:v12];
 
     v9 = *&self->AXUISettingsBaseListController_opaque[v3];
     *&self->AXUISettingsBaseListController_opaque[v3] = v8;
@@ -64,19 +64,19 @@ void __48__TTYSubscriptionsSettingsController_specifiers__block_invoke(uint64_t 
   [*(a1 + 40) addObject:v8];
 }
 
-- (BOOL)rttSupportedForContext:(id)a3
+- (BOOL)rttSupportedForContext:(id)context
 {
-  v3 = a3;
-  if (v3)
+  contextCopy = context;
+  if (contextCopy)
   {
-    if (([RTTTelephonyUtilities isTTYSupportedForContext:v3]& 1) != 0)
+    if (([RTTTelephonyUtilities isTTYSupportedForContext:contextCopy]& 1) != 0)
     {
       v4 = 1;
     }
 
     else
     {
-      v4 = [RTTTelephonyUtilities isRTTSupportedForContext:v3];
+      v4 = [RTTTelephonyUtilities isRTTSupportedForContext:contextCopy];
     }
   }
 
@@ -88,9 +88,9 @@ void __48__TTYSubscriptionsSettingsController_specifiers__block_invoke(uint64_t 
   return v4;
 }
 
-- (id)ttyEnabledForSpecifier:(id)a3
+- (id)ttyEnabledForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:PSSubscriptionContextKey];
+  v4 = [specifier propertyForKey:PSSubscriptionContextKey];
   if (!v4)
   {
     v6 = @"OFF";
@@ -122,11 +122,11 @@ LABEL_11:
   return v9;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = TTYSubscriptionsSettingsController;
-  [(TTYSubscriptionsSettingsController *)&v4 viewWillAppear:a3];
+  [(TTYSubscriptionsSettingsController *)&v4 viewWillAppear:appear];
   [(TTYSubscriptionsSettingsController *)self reloadSpecifiers];
 }
 

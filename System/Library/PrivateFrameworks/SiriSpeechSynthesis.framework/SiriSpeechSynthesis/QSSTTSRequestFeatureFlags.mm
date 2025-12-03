@@ -3,8 +3,8 @@
 - (BOOL)disable_prompts;
 - (BOOL)fe_feature;
 - (BOOL)fe_feature_only;
-- (Offset<siri::speech::schema_fb::TTSRequestFeatureFlags>)addObjectToBuffer:(void *)a3;
-- (QSSTTSRequestFeatureFlags)initWithFlatbuffData:(id)a3 root:(const TTSRequestFeatureFlags *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::TTSRequestFeatureFlags>)addObjectToBuffer:(void *)buffer;
+- (QSSTTSRequestFeatureFlags)initWithFlatbuffData:(id)data root:(const TTSRequestFeatureFlags *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int64_t)phoneset_type;
 @end
@@ -40,25 +40,25 @@ flatbuffers::DetachedBuffer *__41__QSSTTSRequestFeatureFlags_flatbuffData__block
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TTSRequestFeatureFlags>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TTSRequestFeatureFlags>)addObjectToBuffer:(void *)buffer
 {
-  v4 = self;
-  v5 = [(QSSTTSRequestFeatureFlags *)self fe_feature];
-  v6 = [(QSSTTSRequestFeatureFlags *)v4 fe_feature_only];
-  v7 = [(QSSTTSRequestFeatureFlags *)v4 disable_prompts];
-  v8 = [(QSSTTSRequestFeatureFlags *)v4 cache_only];
-  LODWORD(v4) = [(QSSTTSRequestFeatureFlags *)v4 phoneset_type];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v9 = *(a3 + 10);
-  v10 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 6, v6);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 8, v7);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 10, v8);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 12, v4);
+  selfCopy = self;
+  fe_feature = [(QSSTTSRequestFeatureFlags *)self fe_feature];
+  fe_feature_only = [(QSSTTSRequestFeatureFlags *)selfCopy fe_feature_only];
+  disable_prompts = [(QSSTTSRequestFeatureFlags *)selfCopy disable_prompts];
+  cache_only = [(QSSTTSRequestFeatureFlags *)selfCopy cache_only];
+  LODWORD(selfCopy) = [(QSSTTSRequestFeatureFlags *)selfCopy phoneset_type];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v9 = *(buffer + 10);
+  v10 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, fe_feature);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 6, fe_feature_only);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 8, disable_prompts);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 10, cache_only);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 12, selfCopy);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v10 + v9);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v10 + v9);
 }
 
 - (int64_t)phoneset_type
@@ -104,42 +104,42 @@ flatbuffers::DetachedBuffer *__41__QSSTTSRequestFeatureFlags_flatbuffData__block
   return *v3->var0 >= 5u && (v4 = *v3[4].var0) != 0 && root[v4].var0[0] != 0;
 }
 
-- (QSSTTSRequestFeatureFlags)initWithFlatbuffData:(id)a3 root:(const TTSRequestFeatureFlags *)a4 verify:(BOOL)a5
+- (QSSTTSRequestFeatureFlags)initWithFlatbuffData:(id)data root:(const TTSRequestFeatureFlags *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSTTSRequestFeatureFlags;
   v10 = [(QSSTTSRequestFeatureFlags *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -161,9 +161,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

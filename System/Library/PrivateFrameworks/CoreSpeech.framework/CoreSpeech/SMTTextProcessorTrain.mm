@@ -1,8 +1,8 @@
 @interface SMTTextProcessorTrain
-- (SMTTextProcessorTrain)initWithVocab:(id)a3;
-- (void)addText:(id)a3;
-- (void)addText:(id)a3 length:(unint64_t)a4;
-- (void)addTokenizedText:(id)a3 length:(unint64_t)a4;
+- (SMTTextProcessorTrain)initWithVocab:(id)vocab;
+- (void)addText:(id)text;
+- (void)addText:(id)text length:(unint64_t)length;
+- (void)addTokenizedText:(id)text length:(unint64_t)length;
 - (void)shuffleSamples;
 @end
 
@@ -25,41 +25,41 @@
   }
 }
 
-- (void)addTokenizedText:(id)a3 length:(unint64_t)a4
+- (void)addTokenizedText:(id)text length:(unint64_t)length
 {
-  v29 = a3;
-  v6 = [v29 count];
-  if (a4 && v6)
+  textCopy = text;
+  v6 = [textCopy count];
+  if (length && v6)
   {
-    v7 = [(SMTKaldiVocab *)self->_vocab endOfSentenceIndex];
-    v8 = [(SMTKaldiVocab *)self->_vocab beginOfSentenceIndex];
+    endOfSentenceIndex = [(SMTKaldiVocab *)self->_vocab endOfSentenceIndex];
+    beginOfSentenceIndex = [(SMTKaldiVocab *)self->_vocab beginOfSentenceIndex];
     text = self->_text;
-    v10 = [[SMTTextSequenceTrain alloc] initWithLength:a4];
+    v10 = [[SMTTextSequenceTrain alloc] initWithLength:length];
     [(NSMutableArray *)text addObject:v10];
 
     vocab = self->_vocab;
-    v12 = [v29 objectAtIndexedSubscript:0];
+    v12 = [textCopy objectAtIndexedSubscript:0];
     v13 = [(SMTKaldiVocab *)vocab indexForWord:v12];
 
     v14 = [(NSMutableArray *)self->_text objectAtIndexedSubscript:[(NSMutableArray *)self->_text count]- 1];
-    v15 = 1;
-    [v14 addWordWithInputId:v8 target:v13 mask:1];
+    lengthCopy = 1;
+    [v14 addWordWithInputId:beginOfSentenceIndex target:v13 mask:1];
 
-    if ([v29 count])
+    if ([textCopy count])
     {
       v16 = 1;
-      v15 = 1;
+      lengthCopy = 1;
       do
       {
         v17 = self->_vocab;
-        v18 = [v29 objectAtIndexedSubscript:v16 - 1];
+        v18 = [textCopy objectAtIndexedSubscript:v16 - 1];
         v19 = [(SMTKaldiVocab *)v17 indexForWord:v18];
 
-        v20 = v7;
-        if ((v16 - 1) < [v29 count] - 1)
+        v20 = endOfSentenceIndex;
+        if ((v16 - 1) < [textCopy count] - 1)
         {
           v21 = self->_vocab;
-          v22 = [v29 objectAtIndexedSubscript:v16];
+          v22 = [textCopy objectAtIndexedSubscript:v16];
           v20 = [(SMTKaldiVocab *)v21 indexForWord:v22];
         }
 
@@ -67,30 +67,30 @@
         [v23 addWordWithInputId:v19 target:v20 mask:1];
 
         ++self->_numValidTokens;
-        if (++v15 == a4)
+        if (++lengthCopy == length)
         {
-          v15 = a4;
-          if ((v16 - 1) != [v29 count] - 1)
+          lengthCopy = length;
+          if ((v16 - 1) != [textCopy count] - 1)
           {
             v24 = self->_text;
-            v25 = [[SMTTextSequenceTrain alloc] initWithLength:a4];
+            v25 = [[SMTTextSequenceTrain alloc] initWithLength:length];
             [(NSMutableArray *)v24 addObject:v25];
 
-            v15 = 0;
+            lengthCopy = 0;
           }
         }
       }
 
-      while (v16++ < [v29 count]);
+      while (v16++ < [textCopy count]);
     }
 
-    v27 = a4 - v15;
-    if (a4 > v15)
+    v27 = length - lengthCopy;
+    if (length > lengthCopy)
     {
       do
       {
         v28 = [(NSMutableArray *)self->_text objectAtIndexedSubscript:[(NSMutableArray *)self->_text count]- 1];
-        [v28 addWordWithInputId:v7 target:v7 mask:0];
+        [v28 addWordWithInputId:endOfSentenceIndex target:endOfSentenceIndex mask:0];
 
         --v27;
       }
@@ -100,28 +100,28 @@
   }
 }
 
-- (void)addText:(id)a3 length:(unint64_t)a4
+- (void)addText:(id)text length:(unint64_t)length
 {
-  v24 = a3;
+  textCopy = text;
   v6 = +[NSCharacterSet whitespaceCharacterSet];
-  v7 = [v24 componentsSeparatedByCharactersInSet:v6];
+  v7 = [textCopy componentsSeparatedByCharactersInSet:v6];
 
-  v8 = [(SMTKaldiVocab *)self->_vocab endOfSentenceIndex];
-  v9 = [(SMTKaldiVocab *)self->_vocab beginOfSentenceIndex];
+  endOfSentenceIndex = [(SMTKaldiVocab *)self->_vocab endOfSentenceIndex];
+  beginOfSentenceIndex = [(SMTKaldiVocab *)self->_vocab beginOfSentenceIndex];
   v10 = [v7 count];
-  if (a4 && v10)
+  if (length && v10)
   {
     text = self->_text;
-    v12 = [[SMTTextSequenceTrain alloc] initWithLength:a4];
+    v12 = [[SMTTextSequenceTrain alloc] initWithLength:length];
     [(NSMutableArray *)text addObject:v12];
 
     v13 = [(NSMutableArray *)self->_text objectAtIndexedSubscript:[(NSMutableArray *)self->_text count]- 1];
-    [v13 addWordWithInputId:v9];
+    [v13 addWordWithInputId:beginOfSentenceIndex];
 
     if ([v7 count])
     {
       v14 = 0;
-      v15 = 1;
+      lengthCopy = 1;
       do
       {
         vocab = self->_vocab;
@@ -132,16 +132,16 @@
         [v19 addWordWithInputId:v18];
 
         ++self->_numValidTokens;
-        if (++v15 == a4)
+        if (++lengthCopy == length)
         {
-          v15 = a4;
+          lengthCopy = length;
           if (v14 != [v7 count] - 1)
           {
             v20 = self->_text;
-            v21 = [[SMTTextSequenceTrain alloc] initWithLength:a4];
+            v21 = [[SMTTextSequenceTrain alloc] initWithLength:length];
             [(NSMutableArray *)v20 addObject:v21];
 
-            v15 = 0;
+            lengthCopy = 0;
           }
         }
 
@@ -153,16 +153,16 @@
 
     else
     {
-      v15 = 1;
+      lengthCopy = 1;
     }
 
-    v22 = a4 - v15;
-    if (a4 > v15)
+    v22 = length - lengthCopy;
+    if (length > lengthCopy)
     {
       do
       {
         v23 = [(NSMutableArray *)self->_text objectAtIndexedSubscript:[(NSMutableArray *)self->_text count]- 1];
-        [v23 addWordWithInputId:v8];
+        [v23 addWordWithInputId:endOfSentenceIndex];
 
         --v22;
       }
@@ -172,14 +172,14 @@
   }
 }
 
-- (void)addText:(id)a3
+- (void)addText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = +[NSCharacterSet whitespaceCharacterSet];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  v6 = [textCopy componentsSeparatedByCharactersInSet:v5];
 
   v7 = objc_alloc_init(SMTTextSequenceTrain);
-  v8 = [(SMTKaldiVocab *)self->_vocab endOfSentenceIndex];
+  endOfSentenceIndex = [(SMTKaldiVocab *)self->_vocab endOfSentenceIndex];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -212,13 +212,13 @@
     while (v11);
   }
 
-  [(SMTTextSequenceTrain *)v7 addWordWithInputId:v8];
+  [(SMTTextSequenceTrain *)v7 addWordWithInputId:endOfSentenceIndex];
   [(NSMutableArray *)self->_text addObject:v7];
 }
 
-- (SMTTextProcessorTrain)initWithVocab:(id)a3
+- (SMTTextProcessorTrain)initWithVocab:(id)vocab
 {
-  v5 = a3;
+  vocabCopy = vocab;
   v10.receiver = self;
   v10.super_class = SMTTextProcessorTrain;
   v6 = [(SMTTextProcessorTrain *)&v10 init];
@@ -228,7 +228,7 @@
     text = v6->_text;
     v6->_text = v7;
 
-    objc_storeStrong(&v6->_vocab, a3);
+    objc_storeStrong(&v6->_vocab, vocab);
     v6->_numValidTokens = 0;
   }
 

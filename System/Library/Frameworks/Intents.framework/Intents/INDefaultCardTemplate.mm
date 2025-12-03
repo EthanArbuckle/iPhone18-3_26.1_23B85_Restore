@@ -1,20 +1,20 @@
 @interface INDefaultCardTemplate
-- (BOOL)isEqual:(id)a3;
-- (INDefaultCardTemplate)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INDefaultCardTemplate)initWithCoder:(id)coder;
 - (INDefaultCardTemplate)initWithTitle:(NSString *)title;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_injectProxiesForImages:(id)images completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INDefaultCardTemplate
 
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4
+- (void)_injectProxiesForImages:(id)images completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  imagesCopy = images;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = [(INDefaultCardTemplate *)self copy];
     v9 = objc_alloc_init(MEMORY[0x1E696ADC8]);
@@ -29,14 +29,14 @@
     v16[2] = __83__INDefaultCardTemplate_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke;
     v16[3] = &unk_1E7287140;
     v16[4] = v8;
-    v17 = v7;
+    v17 = completionCopy;
     v12 = [v11 blockOperationWithBlock:v16];
-    v13 = [(INDefaultCardTemplate *)self image];
-    if (v13)
+    image = [(INDefaultCardTemplate *)self image];
+    if (image)
     {
       v14 = objc_alloc_init(INImageProxyInjectionOperation);
-      [(INImageProxyInjectionOperation *)v14 setInjector:v13];
-      [(INImageProxyInjectionOperation *)v14 setImageProxyRequestBlock:v6];
+      [(INImageProxyInjectionOperation *)v14 setInjector:image];
+      [(INImageProxyInjectionOperation *)v14 setImageProxyRequestBlock:imagesCopy];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __83__INDefaultCardTemplate_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke_2;
@@ -62,18 +62,18 @@ uint64_t __83__INDefaultCardTemplate_INImageProxyInjecting___injectProxiesForIma
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v5 encodeObject:self->_image forKey:@"image"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_image forKey:@"image"];
 }
 
-- (INDefaultCardTemplate)initWithCoder:(id)a3
+- (INDefaultCardTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = INDefaultCardTemplate;
   v5 = [(INDefaultCardTemplate *)&v20 init];
@@ -82,18 +82,18 @@ uint64_t __83__INDefaultCardTemplate_INImageProxyInjecting___injectProxiesForIma
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"title"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"title"];
     title = v5->_title;
     v5->_title = v9;
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"subtitle"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
     image = v5->_image;
     v5->_image = v16;
 
@@ -103,10 +103,10 @@ uint64_t __83__INDefaultCardTemplate_INImageProxyInjecting___injectProxiesForIma
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -116,19 +116,19 @@ uint64_t __83__INDefaultCardTemplate_INImageProxyInjecting___injectProxiesForIma
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       title = self->_title;
-      v7 = [(INDefaultCardTemplate *)v5 title];
-      v8 = v7;
-      if (title == v7)
+      title = [(INDefaultCardTemplate *)v5 title];
+      v8 = title;
+      if (title == title)
       {
       }
 
       else
       {
         v9 = self->_title;
-        v10 = [(INDefaultCardTemplate *)v5 title];
-        LODWORD(v9) = [(NSString *)v9 isEqualToString:v10];
+        title2 = [(INDefaultCardTemplate *)v5 title];
+        LODWORD(v9) = [(NSString *)v9 isEqualToString:title2];
 
         if (!v9)
         {
@@ -137,17 +137,17 @@ uint64_t __83__INDefaultCardTemplate_INImageProxyInjecting___injectProxiesForIma
       }
 
       subtitle = self->_subtitle;
-      v13 = [(INDefaultCardTemplate *)v5 subtitle];
-      v14 = v13;
-      if (subtitle == v13)
+      subtitle = [(INDefaultCardTemplate *)v5 subtitle];
+      v14 = subtitle;
+      if (subtitle == subtitle)
       {
       }
 
       else
       {
         v15 = self->_subtitle;
-        v16 = [(INDefaultCardTemplate *)v5 subtitle];
-        LODWORD(v15) = [(NSString *)v15 isEqualToString:v16];
+        subtitle2 = [(INDefaultCardTemplate *)v5 subtitle];
+        LODWORD(v15) = [(NSString *)v15 isEqualToString:subtitle2];
 
         if (!v15)
         {
@@ -160,8 +160,8 @@ LABEL_17:
       }
 
       image = self->_image;
-      v18 = [(INDefaultCardTemplate *)v5 image];
-      if (image == v18)
+      image = [(INDefaultCardTemplate *)v5 image];
+      if (image == image)
       {
         v11 = 1;
       }
@@ -169,8 +169,8 @@ LABEL_17:
       else
       {
         v19 = self->_image;
-        v20 = [(INDefaultCardTemplate *)v5 image];
-        v11 = [(INImage *)v19 isEqual:v20];
+        image2 = [(INDefaultCardTemplate *)v5 image];
+        v11 = [(INImage *)v19 isEqual:image2];
       }
 
       goto LABEL_17;
@@ -191,17 +191,17 @@ LABEL_18:
   return v4 ^ [(INImage *)self->_image hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(INDefaultCardTemplate *)self title];
-  v6 = [v4 initWithTitle:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  title = [(INDefaultCardTemplate *)self title];
+  v6 = [v4 initWithTitle:title];
 
-  v7 = [(INDefaultCardTemplate *)self subtitle];
-  [v6 setSubtitle:v7];
+  subtitle = [(INDefaultCardTemplate *)self subtitle];
+  [v6 setSubtitle:subtitle];
 
-  v8 = [(INDefaultCardTemplate *)self image];
-  [v6 setImage:v8];
+  image = [(INDefaultCardTemplate *)self image];
+  [v6 setImage:image];
 
   return v6;
 }

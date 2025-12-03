@@ -1,15 +1,15 @@
 @interface FCLegacyFeedPersonalizer
 - (FCLegacyFeedPersonalizer)init;
-- (FCLegacyFeedPersonalizer)initWithFeedPersonalizer:(id)a3 functionProvider:(id)a4;
+- (FCLegacyFeedPersonalizer)initWithFeedPersonalizer:(id)personalizer functionProvider:(id)provider;
 - (double)decayedPublisherDiversificationPenalty;
-- (id)diversifyItems:(id)a3 limit:(unint64_t)a4;
-- (id)limitItemsByFlowRate:(id)a3 timeInterval:(double)a4 publisherCount:(unint64_t)a5;
-- (id)limitItemsByMinimumItemQuality:(id)a3;
-- (id)rankTagIDsDescending:(id)a3;
-- (id)scoresForTagIDs:(id)a3;
-- (id)sortItems:(id)a3 options:(int64_t)a4 configurationSet:(int64_t)a5;
-- (void)prepareForUseWithCompletionHandler:(id)a3;
-- (void)prewarmWithTabiScores:(id)a3 configurationSet:(int64_t)a4;
+- (id)diversifyItems:(id)items limit:(unint64_t)limit;
+- (id)limitItemsByFlowRate:(id)rate timeInterval:(double)interval publisherCount:(unint64_t)count;
+- (id)limitItemsByMinimumItemQuality:(id)quality;
+- (id)rankTagIDsDescending:(id)descending;
+- (id)scoresForTagIDs:(id)ds;
+- (id)sortItems:(id)items options:(int64_t)options configurationSet:(int64_t)set;
+- (void)prepareForUseWithCompletionHandler:(id)handler;
+- (void)prewarmWithTabiScores:(id)scores configurationSet:(int64_t)set;
 @end
 
 @implementation FCLegacyFeedPersonalizer
@@ -40,12 +40,12 @@
   objc_exception_throw(v6);
 }
 
-- (FCLegacyFeedPersonalizer)initWithFeedPersonalizer:(id)a3 functionProvider:(id)a4
+- (FCLegacyFeedPersonalizer)initWithFeedPersonalizer:(id)personalizer functionProvider:(id)provider
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  personalizerCopy = personalizer;
+  providerCopy = provider;
+  if (!personalizerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "feedPersonalizer"];
     *buf = 136315906;
@@ -58,13 +58,13 @@
     v23 = v13;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v8)
+    if (providerCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (providerCopy)
   {
     goto LABEL_6;
   }
@@ -90,93 +90,93 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_feedPersonalizer, a3);
-    objc_storeStrong(&v10->_functionProvider, a4);
+    objc_storeStrong(&v9->_feedPersonalizer, personalizer);
+    objc_storeStrong(&v10->_functionProvider, provider);
   }
 
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (void)prepareForUseWithCompletionHandler:(id)a3
+- (void)prepareForUseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
-  [v5 prepareForUseWithCompletionHandler:v4];
+  handlerCopy = handler;
+  feedPersonalizer = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
+  [feedPersonalizer prepareForUseWithCompletionHandler:handlerCopy];
 }
 
-- (id)rankTagIDsDescending:(id)a3
+- (id)rankTagIDsDescending:(id)descending
 {
-  v4 = a3;
-  v5 = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
-  v6 = [v5 rankTagIDsDescending:v4];
+  descendingCopy = descending;
+  feedPersonalizer = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
+  v6 = [feedPersonalizer rankTagIDsDescending:descendingCopy];
 
   return v6;
 }
 
-- (id)scoresForTagIDs:(id)a3
+- (id)scoresForTagIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
-  v6 = [v5 scoresForTagIDs:v4];
+  dsCopy = ds;
+  feedPersonalizer = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
+  v6 = [feedPersonalizer scoresForTagIDs:dsCopy];
 
   return v6;
 }
 
 - (double)decayedPublisherDiversificationPenalty
 {
-  v2 = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
-  [v2 decayedPublisherDiversificationPenalty];
+  feedPersonalizer = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
+  [feedPersonalizer decayedPublisherDiversificationPenalty];
   v4 = v3;
 
   return v4;
 }
 
-- (id)limitItemsByFlowRate:(id)a3 timeInterval:(double)a4 publisherCount:(unint64_t)a5
+- (id)limitItemsByFlowRate:(id)rate timeInterval:(double)interval publisherCount:(unint64_t)count
 {
-  v8 = a3;
-  v9 = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
-  v10 = [v9 limitItemsByFlowRate:v8 timeInterval:a5 publisherCount:a4];
+  rateCopy = rate;
+  feedPersonalizer = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
+  v10 = [feedPersonalizer limitItemsByFlowRate:rateCopy timeInterval:count publisherCount:interval];
 
   return v10;
 }
 
-- (id)limitItemsByMinimumItemQuality:(id)a3
+- (id)limitItemsByMinimumItemQuality:(id)quality
 {
-  v4 = a3;
-  v5 = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
-  v6 = [v5 limitItemsByMinimumItemQuality:v4];
+  qualityCopy = quality;
+  feedPersonalizer = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
+  v6 = [feedPersonalizer limitItemsByMinimumItemQuality:qualityCopy];
 
   return v6;
 }
 
-- (id)sortItems:(id)a3 options:(int64_t)a4 configurationSet:(int64_t)a5
+- (id)sortItems:(id)items options:(int64_t)options configurationSet:(int64_t)set
 {
-  v8 = a3;
-  v9 = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
-  v10 = [v9 sortItems:v8 options:a4 configurationSet:a5];
+  itemsCopy = items;
+  feedPersonalizer = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
+  v10 = [feedPersonalizer sortItems:itemsCopy options:options configurationSet:set];
 
   return v10;
 }
 
-- (void)prewarmWithTabiScores:(id)a3 configurationSet:(int64_t)a4
+- (void)prewarmWithTabiScores:(id)scores configurationSet:(int64_t)set
 {
-  v9 = a3;
-  v6 = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
+  scoresCopy = scores;
+  feedPersonalizer = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
-    [v8 prewarmWithTabiScores:v9 configurationSet:a4];
+    feedPersonalizer2 = [(FCLegacyFeedPersonalizer *)self feedPersonalizer];
+    [feedPersonalizer2 prewarmWithTabiScores:scoresCopy configurationSet:set];
   }
 }
 
-- (id)diversifyItems:(id)a3 limit:(unint64_t)a4
+- (id)diversifyItems:(id)items limit:(unint64_t)limit
 {
-  v6 = a3;
-  v7 = [(FCLegacyFeedPersonalizer *)self functionProvider];
-  v8 = [v7 diversifyItems:v6 limit:a4];
+  itemsCopy = items;
+  functionProvider = [(FCLegacyFeedPersonalizer *)self functionProvider];
+  v8 = [functionProvider diversifyItems:itemsCopy limit:limit];
 
   return v8;
 }

@@ -1,41 +1,41 @@
 @interface AAUIAppleIDSignInConfigForSkippingBackup
-- (AAUIAppleIDSignInConfigForSkippingBackup)initWithNavController:(id)a3;
-- (id)_serviceContextWithNavController:(id)a3;
-- (void)setUsername:(id)a3;
+- (AAUIAppleIDSignInConfigForSkippingBackup)initWithNavController:(id)controller;
+- (id)_serviceContextWithNavController:(id)controller;
+- (void)setUsername:(id)username;
 @end
 
 @implementation AAUIAppleIDSignInConfigForSkippingBackup
 
-- (AAUIAppleIDSignInConfigForSkippingBackup)initWithNavController:(id)a3
+- (AAUIAppleIDSignInConfigForSkippingBackup)initWithNavController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = AAUIAppleIDSignInConfigForSkippingBackup;
-  v5 = [(AAUIAppleIDSignInConfiguration *)&v12 initWithNavController:v4];
+  v5 = [(AAUIAppleIDSignInConfiguration *)&v12 initWithNavController:controllerCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(AAUIAppleIDSignInConfiguration *)v5 signInConfiguration];
-    [v7 setAllowSkip:1];
+    signInConfiguration = [(AAUIAppleIDSignInConfiguration *)v5 signInConfiguration];
+    [signInConfiguration setAllowSkip:1];
 
-    v8 = [(AAUIAppleIDSignInConfiguration *)v6 signInConfiguration];
-    [v8 setNewSignInReauth:1];
+    signInConfiguration2 = [(AAUIAppleIDSignInConfiguration *)v6 signInConfiguration];
+    [signInConfiguration2 setNewSignInReauth:1];
 
-    v9 = [(AAUIAppleIDSignInConfigForSkippingBackup *)v6 _serviceContextWithNavController:v4];
-    v10 = [(AAUIAppleIDSignInConfiguration *)v6 signInConfiguration];
-    [v10 setServiceContext:v9];
+    v9 = [(AAUIAppleIDSignInConfigForSkippingBackup *)v6 _serviceContextWithNavController:controllerCopy];
+    signInConfiguration3 = [(AAUIAppleIDSignInConfiguration *)v6 signInConfiguration];
+    [signInConfiguration3 setServiceContext:v9];
   }
 
   return v6;
 }
 
-- (id)_serviceContextWithNavController:(id)a3
+- (id)_serviceContextWithNavController:(id)controller
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E698C258];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_alloc_init(v3);
-  v6 = [[AAUISignInFlowControllerDelegate alloc] initWithPresentingViewController:v4];
+  v6 = [[AAUISignInFlowControllerDelegate alloc] initWithPresentingViewController:controllerCopy];
 
   [(AAUISignInFlowControllerDelegate *)v6 setNewSignInReauth:1];
   v9 = *MEMORY[0x1E698C218];
@@ -46,14 +46,14 @@
   return v5;
 }
 
-- (void)setUsername:(id)a3
+- (void)setUsername:(id)username
 {
-  v4 = a3;
-  v5 = [(AAUIAppleIDSignInConfiguration *)self signInConfiguration];
-  [v5 setUsername:v4];
+  usernameCopy = username;
+  signInConfiguration = [(AAUIAppleIDSignInConfiguration *)self signInConfiguration];
+  [signInConfiguration setUsername:usernameCopy];
 
-  v6 = [(AAUIAppleIDSignInConfiguration *)self signInConfiguration];
-  [v6 setCanEditUsername:0];
+  signInConfiguration2 = [(AAUIAppleIDSignInConfiguration *)self signInConfiguration];
+  [signInConfiguration2 setCanEditUsername:0];
 }
 
 @end

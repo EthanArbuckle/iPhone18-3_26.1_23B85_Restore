@@ -1,25 +1,25 @@
 @interface SUDocumentationAssetMatcher
-+ (id)matcherDocumentationFromAsset:(id)a3;
-+ (id)matcherForInstalledDocumentationFromAsset:(id)a3;
-- (id)_findMatchFromCandidates:(id)a3 error:(id *)a4;
-- (id)_queryPredicateForProperties:(id)a3;
-- (id)_sortedMatcherPredicatesFromSoftwareUpdateAsset:(id)a3;
-- (void)_modifyMADownloadOptions:(id)a3;
++ (id)matcherDocumentationFromAsset:(id)asset;
++ (id)matcherForInstalledDocumentationFromAsset:(id)asset;
+- (id)_findMatchFromCandidates:(id)candidates error:(id *)error;
+- (id)_queryPredicateForProperties:(id)properties;
+- (id)_sortedMatcherPredicatesFromSoftwareUpdateAsset:(id)asset;
+- (void)_modifyMADownloadOptions:(id)options;
 - (void)dealloc;
 @end
 
 @implementation SUDocumentationAssetMatcher
 
-+ (id)matcherForInstalledDocumentationFromAsset:(id)a3
++ (id)matcherForInstalledDocumentationFromAsset:(id)asset
 {
-  v3 = [[SUDocumentationAssetMatcher alloc] initWithSoftwareUpdateAsset:a3 limitingToStates:4];
+  v3 = [[SUDocumentationAssetMatcher alloc] initWithSoftwareUpdateAsset:asset limitingToStates:4];
 
   return v3;
 }
 
-+ (id)matcherDocumentationFromAsset:(id)a3
++ (id)matcherDocumentationFromAsset:(id)asset
 {
-  v3 = [[SUDocumentationAssetMatcher alloc] initWithSoftwareUpdateAsset:a3];
+  v3 = [[SUDocumentationAssetMatcher alloc] initWithSoftwareUpdateAsset:asset];
 
   return v3;
 }
@@ -31,7 +31,7 @@
   [(SUDocumentationAssetMatcher *)&v3 dealloc];
 }
 
-- (id)_findMatchFromCandidates:(id)a3 error:(id *)a4
+- (id)_findMatchFromCandidates:(id)candidates error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
   v23 = [(SUDocumentationAssetMatcher *)self _sortedMatcherPredicatesFromSoftwareUpdateAsset:self->_suAsset];
@@ -46,7 +46,7 @@
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v10 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v10 = [candidates countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v10)
       {
         v11 = v10;
@@ -57,7 +57,7 @@ LABEL_5:
         {
           if (*v25 != v12)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(candidates);
           }
 
           v14 = *(*(&v24 + 1) + 8 * v13);
@@ -70,7 +70,7 @@ LABEL_5:
           objc_autoreleasePoolPop(v15);
           if (v11 == ++v13)
           {
-            v11 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+            v11 = [candidates countByEnumeratingWithState:&v24 objects:v28 count:16];
             if (v11)
             {
               goto LABEL_5;
@@ -89,18 +89,18 @@ LABEL_5:
       }
 
 LABEL_13:
-      v17 = [v9 predicateFormat];
-      v18 = [(SUAssetStateMatcher *)self assetType];
+      predicateFormat = [v9 predicateFormat];
+      assetType = [(SUAssetStateMatcher *)self assetType];
       [(SUAssetStateMatcher *)self assetType];
       v19 = ASServerURLForAssetType();
-      NSLog(&cfstr_FailedToFindAs.isa, v17, v18, v19);
+      NSLog(&cfstr_FailedToFindAs.isa, predicateFormat, assetType, v19);
     }
   }
 
   v16 = 0;
-  if (a4)
+  if (error)
   {
-    *a4 = [SUUtility errorWithCode:38];
+    *error = [SUUtility errorWithCode:38];
   }
 
 LABEL_16:
@@ -109,7 +109,7 @@ LABEL_16:
   return result;
 }
 
-- (void)_modifyMADownloadOptions:(id)a3
+- (void)_modifyMADownloadOptions:(id)options
 {
   if (MGGetBoolAnswer())
   {
@@ -121,26 +121,26 @@ LABEL_16:
     v5 = 30;
   }
 
-  [a3 setTimeoutIntervalForResource:v5];
-  [a3 setDiscretionary:0];
-  [a3 setAllowsCellularAccess:1];
-  [a3 setAllowsExpensiveAccess:1];
+  [options setTimeoutIntervalForResource:v5];
+  [options setDiscretionary:0];
+  [options setAllowsCellularAccess:1];
+  [options setAllowsExpensiveAccess:1];
   v6 = [-[MAAsset attributes](self->_suAsset "attributes")];
   v7 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v6, @"SUDocumentationID", +[SUUtility currentProductCategory](SUUtility, "currentProductCategory"), @"Device", 0}];
 
-  [a3 setAdditionalServerParams:v7];
+  [options setAdditionalServerParams:v7];
 }
 
-- (id)_queryPredicateForProperties:(id)a3
+- (id)_queryPredicateForProperties:(id)properties
 {
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__SUDocumentationAssetMatcher__queryPredicateForProperties___block_invoke;
   v6[3] = &unk_279CAAA00;
-  v6[4] = v4;
-  [a3 enumerateKeysAndObjectsUsingBlock:v6];
-  return [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v4];
+  v6[4] = array;
+  [properties enumerateKeysAndObjectsUsingBlock:v6];
+  return [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array];
 }
 
 uint64_t __60__SUDocumentationAssetMatcher__queryPredicateForProperties___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -151,11 +151,11 @@ uint64_t __60__SUDocumentationAssetMatcher__queryPredicateForProperties___block_
   return [v5 addObject:v4];
 }
 
-- (id)_sortedMatcherPredicatesFromSoftwareUpdateAsset:(id)a3
+- (id)_sortedMatcherPredicatesFromSoftwareUpdateAsset:(id)asset
 {
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [objc_msgSend(a3 "attributes")];
+  v7 = [objc_msgSend(asset "attributes")];
   v8 = +[SUUtility currentDeviceName];
   if (v7)
   {
@@ -178,10 +178,10 @@ uint64_t __60__SUDocumentationAssetMatcher__queryPredicateForProperties___block_
   v9 = [(SUDocumentationAssetMatcher *)self _queryPredicateForProperties:v6];
   if (v9)
   {
-    [v5 addObject:v9];
+    [array addObject:v9];
   }
 
-  return v5;
+  return array;
 }
 
 @end

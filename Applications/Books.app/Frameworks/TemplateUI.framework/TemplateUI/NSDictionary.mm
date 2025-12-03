@@ -1,13 +1,13 @@
 @interface NSDictionary
-- (id)dictionaryByAddingEntriesFromDictionary:(id)a3;
-- (id)tui_valueForProperty:(id)a3;
+- (id)dictionaryByAddingEntriesFromDictionary:(id)dictionary;
+- (id)tui_valueForProperty:(id)property;
 @end
 
 @implementation NSDictionary
 
-- (id)tui_valueForProperty:(id)a3
+- (id)tui_valueForProperty:(id)property
 {
-  if (a3)
+  if (property)
   {
     v4 = [(NSDictionary *)self objectForKey:?];
   }
@@ -20,19 +20,19 @@
   return v4;
 }
 
-- (id)dictionaryByAddingEntriesFromDictionary:(id)a3
+- (id)dictionaryByAddingEntriesFromDictionary:(id)dictionary
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (dictionary)
   {
-    v5 = a3;
-    v6 = [(NSDictionary *)v4 mutableCopy];
-    [(NSDictionary *)v6 addEntriesFromDictionary:v5];
+    dictionaryCopy = dictionary;
+    v6 = [(NSDictionary *)selfCopy mutableCopy];
+    [(NSDictionary *)v6 addEntriesFromDictionary:dictionaryCopy];
 
-    v4 = v6;
+    selfCopy = v6;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

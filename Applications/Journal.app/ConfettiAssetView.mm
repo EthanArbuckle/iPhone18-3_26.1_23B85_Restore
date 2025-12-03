@@ -7,7 +7,7 @@
 - (void)horizontalSizeClassDidChange
 {
   v2 = *((swift_isaMask & self->super.super.super.super.isa) + 0x100);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 

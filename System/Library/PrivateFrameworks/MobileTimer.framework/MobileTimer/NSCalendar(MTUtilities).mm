@@ -17,11 +17,11 @@
   v14[1] = 3221225472;
   v14[2] = __77__NSCalendar_MTUtilities___mtNextDateAfterDate_matchingComponents_backwards___block_invoke;
   v14[3] = &unk_1E7B0E868;
-  v14[4] = a1;
+  v14[4] = self;
   v15 = v8;
   v16 = v10;
   v11 = v8;
-  v12 = [a1 _nextDateHelperAfterDate:v9 nextDateBlock:v14];
+  v12 = [self _nextDateHelperAfterDate:v9 nextDateBlock:v14];
 
   return v12;
 }
@@ -34,11 +34,11 @@
   v14[1] = 3221225472;
   v14[2] = __77__NSCalendar_MTUtilities___mtNextDateAfterDate_matchingUnit_value_backwards___block_invoke;
   v14[3] = &unk_1E7B0E890;
-  v14[4] = a1;
+  v14[4] = self;
   v14[5] = a4;
   v14[6] = a5;
   v14[7] = v11;
-  v12 = [a1 _nextDateHelperAfterDate:v10 nextDateBlock:v14];
+  v12 = [self _nextDateHelperAfterDate:v10 nextDateBlock:v14];
 
   return v12;
 }
@@ -47,15 +47,15 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 timeZone];
-  [v8 daylightSavingTimeOffsetForDate:v6];
+  timeZone = [self timeZone];
+  [timeZone daylightSavingTimeOffsetForDate:v6];
   v10 = v9;
 
   if (v10 > 0.0)
   {
     v11 = [v6 dateByAddingTimeInterval:-v10];
-    v12 = [a1 timeZone];
-    [v12 daylightSavingTimeOffsetForDate:v11];
+    timeZone2 = [self timeZone];
+    [timeZone2 daylightSavingTimeOffsetForDate:v11];
     v14 = v13;
 
     if (v10 > v14)
@@ -90,15 +90,15 @@ LABEL_8:
 
 - (uint64_t)mtDateRequiresSingularTimeString:()MTUtilities
 {
-  result = [a1 component:32 fromDate:a3];
+  result = [self component:32 fromDate:a3];
   if (result != 1)
   {
     if (result == 13)
     {
-      v5 = [a1 locale];
-      v6 = [v5 mtIsIn24HourTime];
+      locale = [self locale];
+      mtIsIn24HourTime = [locale mtIsIn24HourTime];
 
-      return v6;
+      return mtIsIn24HourTime;
     }
 
     else

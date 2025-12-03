@@ -1,79 +1,79 @@
 @interface ICDFileProviderExtension
-- (BOOL)_isLoggedInOrError:(id *)a3;
-- (ICDFileProviderExtension)initWithDomain:(id)a3;
-- (id)_defaultApplicationContainerForBundleIdentifier:(id)a3 completionHandler:(id)a4;
-- (id)_fetchContentsForItemWithIdentifier:(id)a3 existingContents:(id)a4 version:(id)a5 request:(id)a6 completionHandler:(id)a7;
-- (id)_fetchThumbnailsForItemIdentifiersWithVersionMap:(id)a3 requestedSize:(CGSize)a4 perThumbnailCompletionHandler:(id)a5 completionHandler:(id)a6;
-- (id)_getAsyncProxyWithErrorHandler:(id)a3;
+- (BOOL)_isLoggedInOrError:(id *)error;
+- (ICDFileProviderExtension)initWithDomain:(id)domain;
+- (id)_defaultApplicationContainerForBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (id)_fetchContentsForItemWithIdentifier:(id)identifier existingContents:(id)contents version:(id)version request:(id)request completionHandler:(id)handler;
+- (id)_fetchThumbnailsForItemIdentifiersWithVersionMap:(id)map requestedSize:(CGSize)size perThumbnailCompletionHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)_getAsyncProxyWithErrorHandler:(id)handler;
 - (id)_getDatabaseIDFromDomain;
-- (id)_refreshDatabaseIDForcingRefresh:(BOOL)a3;
-- (id)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 contents:(id)a5 options:(unint64_t)a6 request:(id)a7 completionHandler:(id)a8;
-- (id)deleteItemWithIdentifier:(id)a3 baseVersion:(id)a4 options:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7;
-- (id)enumeratorForContainerItemIdentifier:(id)a3 request:(id)a4 error:(id *)a5;
-- (id)enumeratorForVersionsOfItemWithIdentifier:(id)a3 request:(id)a4 error:(id *)a5;
-- (id)fetchContentsForItemWithIdentifier:(id)a3 version:(id)a4 usingExistingContentsAtURL:(id)a5 existingVersion:(id)a6 request:(id)a7 completionHandler:(id)a8;
-- (id)fetchThumbnailsForDictionary:(id)a3 requestedSize:(CGSize)a4 perThumbnailCompletionHandler:(id)a5 completionHandler:(id)a6;
-- (id)fetchThumbnailsForDictionary:(id)a3 requestedSize:(CGSize)a4 perThumbnailCompletionHandlerDataURLWithMetadata:(id)a5 completionHandler:(id)a6;
-- (id)fetchThumbnailsForDictionary:(id)a3 requestedSize:(CGSize)a4 perThumbnailCompletionHandlerWithMetadata:(id)a5 completionHandler:(id)a6;
-- (id)fetchThumbnailsForItemIdentifiers:(id)a3 requestedSize:(CGSize)a4 perThumbnailCompletionHandler:(id)a5 completionHandler:(id)a6;
-- (id)fetchThumbnailsForItemIdentifiers:(id)a3 requestedSize:(CGSize)a4 perThumbnailCompletionHandlerWithType:(id)a5 completionHandler:(id)a6;
-- (id)itemForIdentifier:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (id)modifyItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 options:(unint64_t)a7 request:(id)a8 completionHandler:(id)a9;
-- (id)populateNonCodableAttributesOfTemplate:(id)a3;
-- (id)supportedServiceSourcesForItemIdentifier:(id)a3 completionHandler:(id)a4;
+- (id)_refreshDatabaseIDForcingRefresh:(BOOL)refresh;
+- (id)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (id)deleteItemWithIdentifier:(id)identifier baseVersion:(id)version options:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (id)enumeratorForContainerItemIdentifier:(id)identifier request:(id)request error:(id *)error;
+- (id)enumeratorForVersionsOfItemWithIdentifier:(id)identifier request:(id)request error:(id *)error;
+- (id)fetchContentsForItemWithIdentifier:(id)identifier version:(id)version usingExistingContentsAtURL:(id)l existingVersion:(id)existingVersion request:(id)request completionHandler:(id)handler;
+- (id)fetchThumbnailsForDictionary:(id)dictionary requestedSize:(CGSize)size perThumbnailCompletionHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)fetchThumbnailsForDictionary:(id)dictionary requestedSize:(CGSize)size perThumbnailCompletionHandlerDataURLWithMetadata:(id)metadata completionHandler:(id)handler;
+- (id)fetchThumbnailsForDictionary:(id)dictionary requestedSize:(CGSize)size perThumbnailCompletionHandlerWithMetadata:(id)metadata completionHandler:(id)handler;
+- (id)fetchThumbnailsForItemIdentifiers:(id)identifiers requestedSize:(CGSize)size perThumbnailCompletionHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)fetchThumbnailsForItemIdentifiers:(id)identifiers requestedSize:(CGSize)size perThumbnailCompletionHandlerWithType:(id)type completionHandler:(id)handler;
+- (id)itemForIdentifier:(id)identifier request:(id)request completionHandler:(id)handler;
+- (id)modifyItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (id)populateNonCodableAttributesOfTemplate:(id)template;
+- (id)supportedServiceSourcesForItemIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)_accountDidChange;
-- (void)_getQueryItemForFileObjectID:(id)a3 completionHandler:(id)a4;
-- (void)_isSharableItem:(id)a3 withCompletionHandler:(id)a4;
+- (void)_getQueryItemForFileObjectID:(id)d completionHandler:(id)handler;
+- (void)_isSharableItem:(id)item withCompletionHandler:(id)handler;
 - (void)_startWaitingForDomainToBeFullySetup;
 - (void)_waitForDomainSetup;
-- (void)collaborationCoordinator:(id)a3 handleStartCollaborationAction:(id)a4;
-- (void)collaborationMetadataForItemWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)collaborationCoordinator:(id)coordinator handleStartCollaborationAction:(id)action;
+- (void)collaborationMetadataForItemWithIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)dealloc;
-- (void)importDidFinishWithCompletionHandler:(id)a3;
+- (void)importDidFinishWithCompletionHandler:(id)handler;
 - (void)invalidate;
-- (void)waitForStabilizationWithCompletionHandler:(id)a3;
+- (void)waitForStabilizationWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICDFileProviderExtension
 
 - (id)_getDatabaseIDFromDomain
 {
-  v2 = [(NSFileProviderDomain *)self->_domain userInfo];
-  v3 = [v2 objectForKeyedSubscript:BRDomainDatabaseIDKey];
+  userInfo = [(NSFileProviderDomain *)self->_domain userInfo];
+  v3 = [userInfo objectForKeyedSubscript:BRDomainDatabaseIDKey];
 
   return v3;
 }
 
-- (id)_refreshDatabaseIDForcingRefresh:(BOOL)a3
+- (id)_refreshDatabaseIDForcingRefresh:(BOOL)refresh
 {
-  v5 = [(NSFileProviderDomain *)self->_domain identifier];
-  if (v5)
+  identifier = [(NSFileProviderDomain *)self->_domain identifier];
+  if (identifier)
   {
-    if (a3)
+    if (refresh)
     {
-      v6 = 0;
+      _getDatabaseIDFromDomain = 0;
     }
 
     else
     {
-      v6 = [(ICDFileProviderExtension *)self _getDatabaseIDFromDomain];
+      _getDatabaseIDFromDomain = [(ICDFileProviderExtension *)self _getDatabaseIDFromDomain];
     }
 
-    v10 = [(NSFileProviderDomain *)self->_domain identifier];
+    identifier2 = [(NSFileProviderDomain *)self->_domain identifier];
     domain = self->_domain;
     v13 = domain != 0;
-    if (domain && !v6)
+    if (domain && !_getDatabaseIDFromDomain)
     {
       v14 = 0;
       *&v11 = 134218242;
       v24 = v11;
       do
       {
-        v15 = [(NSFileProviderManager *)self->_fileProviderManager br_getFPDomainWithIdentifier:v5 withError:0, v24];
+        v15 = [(NSFileProviderManager *)self->_fileProviderManager br_getFPDomainWithIdentifier:identifier withError:0, v24];
         v16 = self->_domain;
         self->_domain = v15;
 
-        v6 = [(ICDFileProviderExtension *)self _getDatabaseIDFromDomain];
+        _getDatabaseIDFromDomain = [(ICDFileProviderExtension *)self _getDatabaseIDFromDomain];
         v17 = brc_bread_crumbs();
         v18 = brc_default_log();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -93,7 +93,7 @@
           break;
         }
 
-        if (v6)
+        if (_getDatabaseIDFromDomain)
         {
           break;
         }
@@ -104,7 +104,7 @@
 
     if (v13)
     {
-      v9 = v6;
+      v9 = _getDatabaseIDFromDomain;
     }
 
     else
@@ -160,20 +160,20 @@
   dispatch_async(domainSetupWaiterQueue, block);
 }
 
-- (id)_getAsyncProxyWithErrorHandler:(id)a3
+- (id)_getAsyncProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(ICDFileProviderExtension *)self _waitForDomainSetup];
   v5 = +[BRDaemonConnection defaultConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  v6 = [v5 remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)enumeratorForContainerItemIdentifier:(id)a3 request:(id)a4 error:(id *)a5
+- (id)enumeratorForContainerItemIdentifier:(id)identifier request:(id)request error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  requestCopy = request;
   if (!self->_isCiconiaDomain)
   {
     memset(v24, 0, sizeof(v24));
@@ -185,24 +185,24 @@
       *buf = 134218498;
       v26 = v24[0];
       v27 = 2112;
-      v28 = v8;
+      v28 = identifierCopy;
       v29 = 2112;
       v30 = v18;
       _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx requested enumerator for %@%@", buf, 0x20u);
     }
 
     [(ICDFileProviderExtension *)self _waitForDomainSetup];
-    if ([v8 isEqualToString:NSFileProviderWorkingSetContainerItemIdentifier])
+    if ([identifierCopy isEqualToString:NSFileProviderWorkingSetContainerItemIdentifier])
     {
       v20 = [[BRBaseWorkingSetEnumerator alloc] initWithFileProviderManager:self->_fileProviderManager];
     }
 
     else
     {
-      if (![v8 isEqualToString:NSFileProviderTrashContainerItemIdentifier])
+      if (![identifierCopy isEqualToString:NSFileProviderTrashContainerItemIdentifier])
       {
-        v21 = [BRFileObjectID fileObjectIDWithString:v8];
-        v17 = [[ICDFileEnumerator alloc] initWithFileObjectID:v21 itemIdentifier:v8 recursive:0 request:v9 fileProviderManager:self->_fileProviderManager];
+        v21 = [BRFileObjectID fileObjectIDWithString:identifierCopy];
+        v17 = [[ICDFileEnumerator alloc] initWithFileObjectID:v21 itemIdentifier:identifierCopy recursive:0 request:requestCopy fileProviderManager:self->_fileProviderManager];
 
         goto LABEL_18;
       }
@@ -239,7 +239,7 @@ LABEL_18:
       *buf = 136315906;
       v26 = "[ICDFileProviderExtension enumeratorForContainerItemIdentifier:request:error:]";
       v27 = 2080;
-      if (!a5)
+      if (!error)
       {
         v23 = "(ignored by caller)";
       }
@@ -253,10 +253,10 @@ LABEL_18:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v16 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   v17 = 0;
@@ -265,30 +265,30 @@ LABEL_19:
   return v17;
 }
 
-- (id)populateNonCodableAttributesOfTemplate:(id)a3
+- (id)populateNonCodableAttributesOfTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 symlinkTargetPath];
+  symlinkTargetPath = [templateCopy symlinkTargetPath];
 
-  if (v5)
+  if (symlinkTargetPath)
   {
-    v6 = [v3 symlinkTargetPath];
-    [v4 setObject:v6 forKey:@"symlink-target"];
+    symlinkTargetPath2 = [templateCopy symlinkTargetPath];
+    [v4 setObject:symlinkTargetPath2 forKey:@"symlink-target"];
   }
 
   return v4;
 }
 
-- (id)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 contents:(id)a5 options:(unint64_t)a6 request:(id)a7 completionHandler:(id)a8
+- (id)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
-  v51 = a3;
-  v13 = a5;
-  v14 = a7;
-  v52 = a8;
+  templateCopy = template;
+  contentsCopy = contents;
+  requestCopy = request;
+  handlerCopy = handler;
   if (!self->_isCiconiaDomain)
   {
-    v49 = a4;
+    fieldsCopy = fields;
     memset(v62, 0, sizeof(v62));
     sub_10001A20C(1, "[ICDFileProviderExtension createItemBasedOnTemplate:fields:contents:options:request:completionHandler:]", 263, 0, v62);
     v20 = brc_bread_crumbs();
@@ -296,7 +296,7 @@ LABEL_19:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       v22 = v62[0];
-      v23 = [v13 path];
+      path = [contentsCopy path];
       v24 = BRCPrettyPrintBitmap();
       v25 = BRCPrettyPrintBitmap();
       *buf = 134219522;
@@ -304,9 +304,9 @@ LABEL_19:
       *&buf[12] = 2080;
       *&buf[14] = "[ICDFileProviderExtension createItemBasedOnTemplate:fields:contents:options:request:completionHandler:]";
       *&buf[22] = 2112;
-      *v64 = v51;
+      *v64 = templateCopy;
       *&v64[8] = 2112;
-      *v65 = v23;
+      *v65 = path;
       *&v65[8] = 2112;
       *v66 = v24;
       *&v66[8] = 2112;
@@ -316,10 +316,10 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s createItemBasedOnTemplate %@ at '%@' fields:%@ options:%@%@", buf, 0x48u);
     }
 
-    if (v13)
+    if (contentsCopy)
     {
       v61 = 0;
-      v26 = [FPSandboxingURLWrapper wrapperWithURL:v13 readonly:0 error:&v61];
+      v26 = [FPSandboxingURLWrapper wrapperWithURL:contentsCopy readonly:0 error:&v61];
       v27 = v61;
       if (v27)
       {
@@ -343,7 +343,7 @@ LABEL_19:
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %d, %d, %@)%@", buf, 0x36u);
         }
 
-        (*(v52 + 2))(v52, 0, 0, 0, v28);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v28);
         v19 = 0;
         goto LABEL_26;
       }
@@ -354,8 +354,8 @@ LABEL_19:
       v26 = 0;
     }
 
-    v31 = [v51 filename];
-    v32 = [v31 br_isExcludedWithMaximumDepth:1];
+    filename = [templateCopy filename];
+    v32 = [filename br_isExcludedWithMaximumDepth:1];
 
     if (v32)
     {
@@ -364,7 +364,7 @@ LABEL_19:
       v34 = brc_default_log();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
-        v35 = [v28 br_fileProviderError];
+        br_fileProviderError = [v28 br_fileProviderError];
         *buf = 136316418;
         *&buf[4] = "[ICDFileProviderExtension createItemBasedOnTemplate:fields:contents:options:request:completionHandler:]";
         *&buf[12] = 2112;
@@ -374,24 +374,24 @@ LABEL_19:
         *&v64[4] = 1024;
         *&v64[6] = 0;
         *v65 = 2112;
-        *&v65[2] = v35;
+        *&v65[2] = br_fileProviderError;
         *v66 = 2112;
         *&v66[2] = v33;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %d, %d, %@)%@", buf, 0x36u);
       }
 
-      v36 = [v28 br_fileProviderError];
-      (*(v52 + 2))(v52, 0, 0, 0, v36);
+      br_fileProviderError2 = [v28 br_fileProviderError];
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, br_fileProviderError2);
 
       v19 = 0;
     }
 
     else
     {
-      v37 = [v51 filename];
-      v38 = [v37 br_isSideFaultName];
+      filename2 = [templateCopy filename];
+      br_isSideFaultName = [filename2 br_isSideFaultName];
 
-      if (v38)
+      if (br_isSideFaultName)
       {
         v39 = brc_bread_crumbs();
         v40 = brc_default_log();
@@ -423,7 +423,7 @@ LABEL_19:
           _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %d, %d, %@)%@", buf, 0x36u);
         }
 
-        (*(v52 + 2))(v52, 0, 0, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0);
         v19 = [NSProgress progressWithTotalUnitCount:0];
         goto LABEL_27;
       }
@@ -432,7 +432,7 @@ LABEL_19:
       v59[1] = 3221225472;
       v59[2] = sub_10000EF38;
       v59[3] = &unk_100044598;
-      v43 = v52;
+      v43 = handlerCopy;
       v60 = v43;
       v44 = [(ICDFileProviderExtension *)self _getAsyncProxyWithErrorHandler:v59];
       v57 = 0uLL;
@@ -447,7 +447,7 @@ LABEL_19:
 
       *buf = v57;
       *&buf[16] = v58;
-      v47 = [(ICDFileProviderExtension *)self populateNonCodableAttributesOfTemplate:v51];
+      v47 = [(ICDFileProviderExtension *)self populateNonCodableAttributesOfTemplate:templateCopy];
       v53[0] = _NSConcreteStackBlock;
       v53[1] = 3221225472;
       v53[2] = sub_10000F070;
@@ -456,7 +456,7 @@ LABEL_19:
       v55 = *buf;
       v56 = *&buf[16];
       v54 = v43;
-      [v44 createItemBasedOnTemplate:v51 fields:v49 contents:v26 options:a6 additionalItemAttributes:v47 completionHandler:v53];
+      [v44 createItemBasedOnTemplate:templateCopy fields:fieldsCopy contents:v26 options:options additionalItemAttributes:v47 completionHandler:v53];
 
       v19 = [NSProgress progressWithTotalUnitCount:0];
 
@@ -483,7 +483,7 @@ LABEL_27:
   }
 
   v18 = +[NSError brc_errorLoggedOut];
-  (*(v52 + 2))(v52, 0, 0, 0, v18);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v18);
 
   v19 = 0;
 LABEL_28:
@@ -491,16 +491,16 @@ LABEL_28:
   return v19;
 }
 
-- (id)deleteItemWithIdentifier:(id)a3 baseVersion:(id)a4 options:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7
+- (id)deleteItemWithIdentifier:(id)identifier baseVersion:(id)version options:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v30 = a6;
-  v14 = a7;
+  identifierCopy = identifier;
+  versionCopy = version;
+  requestCopy = request;
+  handlerCopy = handler;
   if (self->_isCiconiaDomain)
   {
     v15 = brc_bread_crumbs();
-    v16 = v12;
+    v16 = identifierCopy;
     v17 = brc_default_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -513,7 +513,7 @@ LABEL_28:
     }
 
     v19 = +[NSError brc_errorLoggedOut];
-    v14[2](v14, v19);
+    handlerCopy[2](handlerCopy, v19);
 
     v20 = 0;
   }
@@ -522,24 +522,24 @@ LABEL_28:
   {
     memset(v39, 0, sizeof(v39));
     sub_10001A20C(1, "[ICDFileProviderExtension deleteItemWithIdentifier:baseVersion:options:request:completionHandler:]", 327, 0, v39);
-    v16 = v12;
+    v16 = identifierCopy;
     v21 = brc_bread_crumbs();
     v22 = brc_default_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v23 = v39[0];
-      v24 = [v13 br_prettyDescription];
+      br_prettyDescription = [versionCopy br_prettyDescription];
       *buf = 134219266;
       *&buf[4] = v23;
       *&buf[12] = 2080;
       *&buf[14] = "[ICDFileProviderExtension deleteItemWithIdentifier:baseVersion:options:request:completionHandler:]";
       *&buf[22] = 2112;
-      v16 = v12;
-      v41 = v12;
+      v16 = identifierCopy;
+      v41 = identifierCopy;
       v42 = 2112;
-      v43 = v24;
+      v43 = br_prettyDescription;
       v44 = 2048;
-      v45 = a5;
+      optionsCopy = options;
       v46 = 2112;
       v47 = v21;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s deleteItemWithIdentifier %@ baseVersion %@ options:%llu%@", buf, 0x3Eu);
@@ -549,7 +549,7 @@ LABEL_28:
     v37[1] = 3221225472;
     v37[2] = sub_10000F794;
     v37[3] = &unk_100044598;
-    v25 = v14;
+    v25 = handlerCopy;
     v38 = v25;
     v26 = [(ICDFileProviderExtension *)self _getAsyncProxyWithErrorHandler:v37];
     v35 = 0uLL;
@@ -572,7 +572,7 @@ LABEL_28:
     v33 = v35;
     v34 = v36;
     v32 = v25;
-    [v26 deleteItemWithIdentifier:v16 baseVersion:v13 options:a5 completionHandler:v31];
+    [v26 deleteItemWithIdentifier:v16 baseVersion:versionCopy options:options completionHandler:v31];
     v20 = [NSProgress progressWithTotalUnitCount:0];
 
     sub_10001A3DC(v39);
@@ -581,13 +581,13 @@ LABEL_28:
   return v20;
 }
 
-- (id)_fetchContentsForItemWithIdentifier:(id)a3 existingContents:(id)a4 version:(id)a5 request:(id)a6 completionHandler:(id)a7
+- (id)_fetchContentsForItemWithIdentifier:(id)identifier existingContents:(id)contents version:(id)version request:(id)request completionHandler:(id)handler
 {
-  v53 = a3;
-  v52 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  identifierCopy = identifier;
+  contentsCopy = contents;
+  versionCopy = version;
+  requestCopy = request;
+  handlerCopy = handler;
   if (!self->_isCiconiaDomain)
   {
     memset(v63, 0, sizeof(v63));
@@ -597,22 +597,22 @@ LABEL_28:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       v22 = v63[0];
-      v23 = [v12 br_prettyDescription];
-      v24 = [v13 isSpeculativeDownload];
+      br_prettyDescription = [versionCopy br_prettyDescription];
+      isSpeculativeDownload = [requestCopy isSpeculativeDownload];
       v25 = "NO";
       *buf = 134219266;
       *&buf[4] = v22;
       *&buf[12] = 2080;
-      if (v24)
+      if (isSpeculativeDownload)
       {
         v25 = "YES";
       }
 
       *&buf[14] = "[ICDFileProviderExtension _fetchContentsForItemWithIdentifier:existingContents:version:request:completionHandler:]";
       *&buf[22] = 2112;
-      v65 = v53;
+      v65 = identifierCopy;
       v66 = 2112;
-      v67 = v23;
+      v67 = br_prettyDescription;
       v68 = 2080;
       v69 = v25;
       v70 = 2112;
@@ -620,10 +620,10 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s fetchContentsForItemWithIdentifier %@ requestedVersion %@ speculative %s%@", buf, 0x3Eu);
     }
 
-    if (v12)
+    if (versionCopy)
     {
-      v26 = [v12 br_contentEtag];
-      if (!v26)
+      br_contentEtag = [versionCopy br_contentEtag];
+      if (!br_contentEtag)
       {
         v27 = brc_bread_crumbs();
         v28 = brc_default_log();
@@ -632,12 +632,12 @@ LABEL_28:
           sub_10002758C();
         }
 
-        v26 = +[NSError brc_errorNoEtagInContentSignature];
+        br_contentEtag = +[NSError brc_errorNoEtagInContentSignature];
         v29 = brc_bread_crumbs();
         v30 = brc_default_log();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
         {
-          v31 = [v26 br_fileProviderErrorForDownloadFlow];
+          br_fileProviderErrorForDownloadFlow = [br_contentEtag br_fileProviderErrorForDownloadFlow];
           *buf = 136316162;
           *&buf[4] = "[ICDFileProviderExtension _fetchContentsForItemWithIdentifier:existingContents:version:request:completionHandler:]";
           *&buf[12] = 2112;
@@ -645,14 +645,14 @@ LABEL_28:
           *&buf[22] = 2112;
           v65 = 0;
           v66 = 2112;
-          v67 = v31;
+          v67 = br_fileProviderErrorForDownloadFlow;
           v68 = 2112;
           v69 = v29;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %@, %@)%@", buf, 0x34u);
         }
 
-        v32 = [v26 br_fileProviderErrorForDownloadFlow];
-        (*(v14 + 2))(v14, 0, 0, v32);
+        br_fileProviderErrorForDownloadFlow2 = [br_contentEtag br_fileProviderErrorForDownloadFlow];
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, br_fileProviderErrorForDownloadFlow2);
         v19 = 0;
 LABEL_36:
 
@@ -663,10 +663,10 @@ LABEL_36:
 
     else
     {
-      v26 = 0;
+      br_contentEtag = 0;
     }
 
-    if ([v13 isSpeculativeDownload] && (+[BRReachabilityMonitor sharedReachabilityMonitor](BRReachabilityMonitor, "sharedReachabilityMonitor"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "isCellularNetwork"), v33, v34))
+    if ([requestCopy isSpeculativeDownload] && (+[BRReachabilityMonitor sharedReachabilityMonitor](BRReachabilityMonitor, "sharedReachabilityMonitor"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "isCellularNetwork"), v33, v34))
     {
       v35 = brc_bread_crumbs();
       v36 = brc_default_log();
@@ -675,12 +675,12 @@ LABEL_36:
         sub_100027600();
       }
 
-      v32 = +[NSError brc_errorShouldNotDownloadOverCellular];
+      br_fileProviderErrorForDownloadFlow2 = +[NSError brc_errorShouldNotDownloadOverCellular];
       v37 = brc_bread_crumbs();
       v38 = brc_default_log();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
       {
-        v39 = [v32 br_fileProviderErrorForDownloadFlow];
+        v32Br_fileProviderErrorForDownloadFlow = [br_fileProviderErrorForDownloadFlow2 br_fileProviderErrorForDownloadFlow];
         *buf = 136316162;
         *&buf[4] = "[ICDFileProviderExtension _fetchContentsForItemWithIdentifier:existingContents:version:request:completionHandler:]";
         *&buf[12] = 2112;
@@ -688,14 +688,14 @@ LABEL_36:
         *&buf[22] = 2112;
         v65 = 0;
         v66 = 2112;
-        v67 = v39;
+        v67 = v32Br_fileProviderErrorForDownloadFlow;
         v68 = 2112;
         v69 = v37;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %@, %@)%@", buf, 0x34u);
       }
 
-      v40 = [v32 br_fileProviderErrorForDownloadFlow];
-      (*(v14 + 2))(v14, 0, 0, v40);
+      v32Br_fileProviderErrorForDownloadFlow2 = [br_fileProviderErrorForDownloadFlow2 br_fileProviderErrorForDownloadFlow];
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v32Br_fileProviderErrorForDownloadFlow2);
       v19 = 0;
     }
 
@@ -705,7 +705,7 @@ LABEL_36:
       v61[1] = 3221225472;
       v61[2] = sub_100010344;
       v61[3] = &unk_100044598;
-      v41 = v14;
+      v41 = handlerCopy;
       v62 = v41;
       v42 = [(ICDFileProviderExtension *)self _getAsyncProxyWithErrorHandler:v61];
       v59 = 0uLL;
@@ -720,8 +720,8 @@ LABEL_36:
 
       *buf = v59;
       *&buf[16] = v60;
-      v45 = [BRFileObjectID fileObjectIDWithString:v53];
-      if ([v13 isSpeculativeDownload])
+      v45 = [BRFileObjectID fileObjectIDWithString:identifierCopy];
+      if ([requestCopy isSpeculativeDownload])
       {
         v46 = 8;
       }
@@ -731,9 +731,9 @@ LABEL_36:
         v46 = 0;
       }
 
-      if (v52)
+      if (contentsCopy)
       {
-        v47 = [FPSandboxingURLWrapper wrapperWithURL:v52 readonly:1 error:0];
+        v47 = [FPSandboxingURLWrapper wrapperWithURL:contentsCopy readonly:1 error:0];
       }
 
       else
@@ -746,7 +746,7 @@ LABEL_36:
       v54[2] = sub_10001046C;
       v54[3] = &unk_100044C88;
       v54[4] = self;
-      v48 = v26;
+      v48 = br_contentEtag;
       v55 = v48;
       v57 = *buf;
       v58 = *&buf[16];
@@ -759,10 +759,10 @@ LABEL_36:
         v49 = v50;
       }
 
-      v32 = v49;
+      br_fileProviderErrorForDownloadFlow2 = v49;
 
-      v40 = v62;
-      v19 = v32;
+      v32Br_fileProviderErrorForDownloadFlow2 = v62;
+      v19 = br_fileProviderErrorForDownloadFlow2;
     }
 
     goto LABEL_36;
@@ -781,7 +781,7 @@ LABEL_36:
   }
 
   v18 = +[NSError brc_errorLoggedOut];
-  (*(v14 + 2))(v14, 0, 0, v18);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v18);
 
   v19 = 0;
 LABEL_37:
@@ -789,11 +789,11 @@ LABEL_37:
   return v19;
 }
 
-- (void)_getQueryItemForFileObjectID:(id)a3 completionHandler:(id)a4
+- (void)_getQueryItemForFileObjectID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  dCopy = d;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   if (self->_isCiconiaDomain)
   {
     v9 = brc_bread_crumbs();
@@ -818,7 +818,7 @@ LABEL_37:
     v17[1] = 3221225472;
     v17[2] = sub_100010A08;
     v17[3] = &unk_100044598;
-    v13 = v7;
+    v13 = handlerCopy;
     v18 = v13;
     v14 = [(ICDFileProviderExtension *)self _getAsyncProxyWithErrorHandler:v17];
     v15[0] = _NSConcreteStackBlock;
@@ -826,25 +826,25 @@ LABEL_37:
     v15[2] = sub_100010A20;
     v15[3] = &unk_100044CB0;
     v16 = v13;
-    [v14 getQueryItemForBRFileObjectID:v6 reply:v15];
+    [v14 getQueryItemForBRFileObjectID:dCopy reply:v15];
 
     v12 = v18;
   }
 }
 
-- (id)fetchContentsForItemWithIdentifier:(id)a3 version:(id)a4 usingExistingContentsAtURL:(id)a5 existingVersion:(id)a6 request:(id)a7 completionHandler:(id)a8
+- (id)fetchContentsForItemWithIdentifier:(id)identifier version:(id)version usingExistingContentsAtURL:(id)l existingVersion:(id)existingVersion request:(id)request completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v58 = a5;
-  v57 = a6;
-  v56 = a7;
-  v16 = a8;
+  identifierCopy = identifier;
+  versionCopy = version;
+  lCopy = l;
+  existingVersionCopy = existingVersion;
+  requestCopy = request;
+  handlerCopy = handler;
   if (!self->_isCiconiaDomain)
   {
-    v21 = [v15 br_contentSignature];
-    v18 = v14;
-    v55 = [v57 br_contentSignature];
+    br_contentSignature = [versionCopy br_contentSignature];
+    v18 = identifierCopy;
+    br_contentSignature2 = [existingVersionCopy br_contentSignature];
     memset(v81, 0, sizeof(v81));
     sub_10001A20C(1, "[ICDFileProviderExtension fetchContentsForItemWithIdentifier:version:usingExistingContentsAtURL:existingVersion:request:completionHandler:]", 464, 0, v81);
     v23 = brc_bread_crumbs();
@@ -852,20 +852,20 @@ LABEL_37:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       v25 = v81[0];
-      v26 = [v15 br_prettyDescription];
+      br_prettyDescription = [versionCopy br_prettyDescription];
       *buf = 134219522;
       v83 = v25;
       v84 = 2080;
       v85 = "[ICDFileProviderExtension fetchContentsForItemWithIdentifier:version:usingExistingContentsAtURL:existingVersion:request:completionHandler:]";
       v86 = 2112;
-      v18 = v14;
-      v87 = v14;
+      v18 = identifierCopy;
+      v87 = identifierCopy;
       v88 = 2112;
-      v89 = v26;
+      v89 = br_prettyDescription;
       v90 = 2112;
-      v91 = v58;
+      v91 = lCopy;
       v92 = 2112;
-      v93 = v57;
+      v93 = existingVersionCopy;
       v94 = 2112;
       v95 = v23;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s fetchContentsForItemWithIdentifier %@ requestedVersion %@ usingExistingContentsAtURL %@ existingVersion %@%@", buf, 0x48u);
@@ -884,7 +884,7 @@ LABEL_37:
     v72 = sub_100011488;
     v73 = sub_100011498;
     v74 = 0;
-    if (!v15)
+    if (!versionCopy)
     {
       v28 = dispatch_group_create();
       dispatch_group_enter(v28);
@@ -899,10 +899,10 @@ LABEL_37:
       [(ICDFileProviderExtension *)self _getQueryItemForFileObjectID:v27 completionHandler:v65];
       dispatch_group_wait(v29, 0xFFFFFFFFFFFFFFFFLL);
       v30 = [BRFieldContentSignature alloc];
-      v31 = [v76[5] contentVersion];
-      v32 = [v30 initWithData:v31];
+      contentVersion = [v76[5] contentVersion];
+      v32 = [v30 initWithData:contentVersion];
 
-      v21 = v32;
+      br_contentSignature = v32;
     }
 
     v33 = brc_bread_crumbs();
@@ -910,15 +910,15 @@ LABEL_37:
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v83 = v21;
+      v83 = br_contentSignature;
       v84 = 2112;
-      v85 = v55;
+      v85 = br_contentSignature2;
       v86 = 2112;
       v87 = v33;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "[INFO] req:%@, exist:%@%@", buf, 0x20u);
     }
 
-    if (v21 && ([v55 isPendingSignature] && (objc_msgSend(v21, "hasPopulatedVersionAndSignature") & 1) != 0 || !objc_msgSend(v21, "contentDiffersWithSignature:", v55) || (objc_msgSend(v21, "hasOnlyLocalEditsOnTopOfSignature:", v55) & 1) != 0 || !v15 && objc_msgSend(v21, "containsLocalEdits")))
+    if (br_contentSignature && ([br_contentSignature2 isPendingSignature] && (objc_msgSend(br_contentSignature, "hasPopulatedVersionAndSignature") & 1) != 0 || !objc_msgSend(br_contentSignature, "contentDiffersWithSignature:", br_contentSignature2) || (objc_msgSend(br_contentSignature, "hasOnlyLocalEditsOnTopOfSignature:", br_contentSignature2) & 1) != 0 || !versionCopy && objc_msgSend(br_contentSignature, "containsLocalEdits")))
     {
       v35 = brc_bread_crumbs();
       v36 = brc_default_log();
@@ -933,13 +933,13 @@ LABEL_37:
         v38 = brc_default_log();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
         {
-          v39 = [v76[5] asFileProviderItem];
+          asFileProviderItem = [v76[5] asFileProviderItem];
           *buf = 136316162;
           v83 = "[ICDFileProviderExtension fetchContentsForItemWithIdentifier:version:usingExistingContentsAtURL:existingVersion:request:completionHandler:]";
           v84 = 2112;
-          v85 = v58;
+          v85 = lCopy;
           v86 = 2112;
-          v87 = v39;
+          v87 = asFileProviderItem;
           v88 = 2112;
           v89 = 0;
           v90 = 2112;
@@ -947,8 +947,8 @@ LABEL_37:
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %@, %@)%@", buf, 0x34u);
         }
 
-        v40 = [v76[5] asFileProviderItem];
-        v16[2](v16, v58, v40, 0);
+        asFileProviderItem2 = [v76[5] asFileProviderItem];
+        handlerCopy[2](handlerCopy, lCopy, asFileProviderItem2, 0);
       }
 
       else
@@ -957,17 +957,17 @@ LABEL_37:
         v62[1] = 3221225472;
         v62[2] = sub_10001153C;
         v62[3] = &unk_100044D00;
-        v63 = v58;
-        v64 = v16;
+        v63 = lCopy;
+        v64 = handlerCopy;
         [(ICDFileProviderExtension *)self _getQueryItemForFileObjectID:v27 completionHandler:v62];
 
-        v40 = v63;
+        asFileProviderItem2 = v63;
       }
     }
 
     else
     {
-      if (![v21 containsLocalEdits])
+      if (![br_contentSignature containsLocalEdits])
       {
         v51 = brc_bread_crumbs();
         v52 = brc_default_log();
@@ -976,7 +976,7 @@ LABEL_37:
           sub_1000276D0();
         }
 
-        v53 = [(ICDFileProviderExtension *)self _fetchContentsForItemWithIdentifier:v18 existingContents:v58 version:v15 request:v56 completionHandler:v16];
+        v53 = [(ICDFileProviderExtension *)self _fetchContentsForItemWithIdentifier:v18 existingContents:lCopy version:versionCopy request:requestCopy completionHandler:handlerCopy];
         goto LABEL_40;
       }
 
@@ -1000,24 +1000,24 @@ LABEL_37:
         v46 = brc_default_log();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
         {
-          v47 = [v76[5] asFileProviderItem];
-          v48 = [v70[5] br_fileProviderErrorForDownloadFlow];
+          asFileProviderItem3 = [v76[5] asFileProviderItem];
+          br_fileProviderErrorForDownloadFlow = [v70[5] br_fileProviderErrorForDownloadFlow];
           *buf = 136316162;
           v83 = "[ICDFileProviderExtension fetchContentsForItemWithIdentifier:version:usingExistingContentsAtURL:existingVersion:request:completionHandler:]";
           v84 = 2112;
           v85 = 0;
           v86 = 2112;
-          v87 = v47;
+          v87 = asFileProviderItem3;
           v88 = 2112;
-          v89 = v48;
+          v89 = br_fileProviderErrorForDownloadFlow;
           v90 = 2112;
           v91 = v45;
           _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %@, %@)%@", buf, 0x34u);
         }
 
-        v49 = [v76[5] asFileProviderItem];
-        v50 = [v70[5] br_fileProviderErrorForDownloadFlow];
-        (v16)[2](v16, 0, v49, v50);
+        asFileProviderItem4 = [v76[5] asFileProviderItem];
+        br_fileProviderErrorForDownloadFlow2 = [v70[5] br_fileProviderErrorForDownloadFlow];
+        (handlerCopy)[2](handlerCopy, 0, asFileProviderItem4, br_fileProviderErrorForDownloadFlow2);
       }
 
       else
@@ -1027,8 +1027,8 @@ LABEL_37:
         v59[2] = sub_1000116DC;
         v59[3] = &unk_100044D50;
         v59[4] = self;
-        v60 = v58;
-        v61 = v16;
+        v60 = lCopy;
+        v61 = handlerCopy;
         [(ICDFileProviderExtension *)self _getQueryItemForFileObjectID:v27 completionHandler:v59];
       }
     }
@@ -1045,7 +1045,7 @@ LABEL_40:
   }
 
   v17 = brc_bread_crumbs();
-  v18 = v14;
+  v18 = identifierCopy;
   v19 = brc_default_log();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -1057,47 +1057,47 @@ LABEL_40:
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[WARNING] Initialized with a Ciconia domain %@. This is not supported%@", buf, 0x16u);
   }
 
-  v21 = +[NSError brc_errorLoggedOut];
-  (v16)[2](v16, 0, 0, v21);
+  br_contentSignature = +[NSError brc_errorLoggedOut];
+  (handlerCopy)[2](handlerCopy, 0, 0, br_contentSignature);
   v22 = 0;
 LABEL_41:
 
   return v22;
 }
 
-- (ICDFileProviderExtension)initWithDomain:(id)a3
+- (ICDFileProviderExtension)initWithDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v28.receiver = self;
   v28.super_class = ICDFileProviderExtension;
   v6 = [(ICDFileProviderExtension *)&v28 init];
   if (v6)
   {
     v27 = 0;
-    v7 = [v5 identifier];
+    identifier = [domainCopy identifier];
     v8 = [NSString br_currentPersonaIDWithIsDataSeparated:&v27];
     personaID = v6->_personaID;
     v6->_personaID = v8;
 
-    objc_storeStrong(&v6->_domain, a3);
-    v10 = [NSFileProviderManager managerForDomain:v5];
+    objc_storeStrong(&v6->_domain, domain);
+    v10 = [NSFileProviderManager managerForDomain:domainCopy];
     fileProviderManager = v6->_fileProviderManager;
     v6->_fileProviderManager = v10;
 
-    v12 = [NSString stringWithFormat:@"com.apple.CloudDocs.%@.responseQueue", v7];
-    v13 = [v12 UTF8String];
+    v12 = [NSString stringWithFormat:@"com.apple.CloudDocs.%@.responseQueue", identifier];
+    uTF8String = [v12 UTF8String];
     v14 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(v14, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v16 = dispatch_queue_create(v13, v15);
+    v16 = dispatch_queue_create(uTF8String, v15);
 
     responseQueue = v6->_responseQueue;
     v6->_responseQueue = v16;
 
-    v18 = [NSString stringWithFormat:@"com.apple.CloudDocs.%@.xpcConnectionQueue", v7];
-    v19 = [v18 UTF8String];
+    v18 = [NSString stringWithFormat:@"com.apple.CloudDocs.%@.xpcConnectionQueue", identifier];
+    uTF8String2 = [v18 UTF8String];
     v20 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v21 = dispatch_queue_attr_make_with_autorelease_frequency(v20, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v22 = dispatch_queue_create(v19, v21);
+    v22 = dispatch_queue_create(uTF8String2, v21);
 
     domainSetupWaiterQueue = v6->_domainSetupWaiterQueue;
     v6->_domainSetupWaiterQueue = v22;
@@ -1133,12 +1133,12 @@ LABEL_41:
   }
 
   v6 = +[UMUserManager sharedManager];
-  v7 = [v6 currentPersona];
+  currentPersona = [v6 currentPersona];
 
   v24 = 0;
-  v8 = [v7 userPersonaUniqueString];
-  v9 = v8;
-  if (v8 == v4 || [(NSString *)v8 isEqualToString:v4])
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  v9 = userPersonaUniqueString;
+  if (userPersonaUniqueString == v4 || [(NSString *)userPersonaUniqueString isEqualToString:v4])
   {
     v10 = 0;
     goto LABEL_10;
@@ -1147,7 +1147,7 @@ LABEL_41:
   if (voucher_process_can_use_arbitrary_personas())
   {
     v23 = 0;
-    v13 = [v7 copyCurrentPersonaContextWithError:&v23];
+    v13 = [currentPersona copyCurrentPersonaContextWithError:&v23];
     v14 = v23;
     v15 = v24;
     v24 = v13;
@@ -1162,7 +1162,7 @@ LABEL_41:
       }
     }
 
-    v10 = [v7 br_generateAndRestorePersonaContextWithPersonaUniqueString:v4];
+    v10 = [currentPersona br_generateAndRestorePersonaContextWithPersonaUniqueString:v4];
 
     if (v10)
     {
@@ -1186,7 +1186,7 @@ LABEL_29:
 
   else
   {
-    if (v5 && ([v7 isDataSeparatedPersona] & 1) == 0)
+    if (v5 && ([currentPersona isDataSeparatedPersona] & 1) == 0)
     {
       v18 = brc_bread_crumbs();
       v19 = brc_default_log();
@@ -1248,7 +1248,7 @@ LABEL_10:
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_isLoggedInOrError:(id *)a3
+- (BOOL)_isLoggedInOrError:(id *)error
 {
   v16 = 0;
   v4 = [BRAccount currentCachedLoggedInAccountWithError:&v16];
@@ -1278,7 +1278,7 @@ LABEL_11:
         *buf = 136315906;
         v18 = "[ICDFileProviderExtension _isLoggedInOrError:]";
         v19 = 2080;
-        if (!a3)
+        if (!error)
         {
           v15 = "(ignored by caller)";
         }
@@ -1292,10 +1292,10 @@ LABEL_11:
       }
     }
 
-    if (a3)
+    if (error)
     {
       v13 = v10;
-      *a3 = v10;
+      *error = v10;
     }
 
     goto LABEL_11;
@@ -1307,9 +1307,9 @@ LABEL_12:
   return v7;
 }
 
-- (void)waitForStabilizationWithCompletionHandler:(id)a3
+- (void)waitForStabilizationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_isCiconiaDomain)
   {
     v5 = brc_bread_crumbs();
@@ -1339,7 +1339,7 @@ LABEL_12:
     }
 
     v11 = +[NSError brc_errorLoggedOut];
-    v4[2](v4, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 
   else if ((+[UMUserManager br_isInSyncBubble]& 1) != 0)
@@ -1363,7 +1363,7 @@ LABEL_12:
     v22[1] = 3221225472;
     v22[2] = sub_100012910;
     v22[3] = &unk_100044598;
-    v14 = v4;
+    v14 = handlerCopy;
     v23 = v14;
     v15 = [(ICDFileProviderExtension *)self _getAsyncProxyWithErrorHandler:v22];
     v20[0] = _NSConcreteStackBlock;
@@ -1398,15 +1398,15 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@)%@", buf, 0x20u);
     }
 
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (id)itemForIdentifier:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (id)itemForIdentifier:(id)identifier request:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  requestCopy = request;
+  handlerCopy = handler;
   if (self->_isCiconiaDomain)
   {
     v11 = brc_bread_crumbs();
@@ -1438,7 +1438,7 @@ LABEL_12:
     }
 
     v17 = +[NSError brc_errorLoggedOut];
-    v10[2](v10, 0, v17);
+    handlerCopy[2](handlerCopy, 0, v17);
 
     v18 = 0;
   }
@@ -1456,7 +1456,7 @@ LABEL_12:
       *&buf[12] = 2080;
       *&buf[14] = "[ICDFileProviderExtension itemForIdentifier:request:completionHandler:]";
       *&buf[22] = 2112;
-      v48 = v8;
+      v48 = identifierCopy;
       v49 = 2112;
       v50 = v19;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s itemForIdentifier %@%@", buf, 0x2Au);
@@ -1468,7 +1468,7 @@ LABEL_12:
     v22 = v45;
     if (v21)
     {
-      if ([v8 isEqualToString:NSFileProviderTrashContainerItemIdentifier])
+      if ([identifierCopy isEqualToString:NSFileProviderTrashContainerItemIdentifier])
       {
         v23 = objc_opt_new();
         v24 = brc_bread_crumbs();
@@ -1493,13 +1493,13 @@ LABEL_12:
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %@)%@", buf, 0x2Au);
         }
 
-        (v10)[2](v10, v23, 0);
+        (handlerCopy)[2](handlerCopy, v23, 0);
         v28 = v18;
       }
 
       else
       {
-        v32 = [BRFileObjectID fileObjectIDWithString:v8];
+        v32 = [BRFileObjectID fileObjectIDWithString:identifierCopy];
         v43 = 0uLL;
         v44 = 0;
         sub_10001A20C(0, "[ICDFileProviderExtension itemForIdentifier:request:completionHandler:]", 679, 0, &v43);
@@ -1521,7 +1521,7 @@ LABEL_12:
         v39 = v35;
         v41 = *buf;
         v42 = *&buf[16];
-        v40 = v10;
+        v40 = handlerCopy;
         [(ICDFileProviderExtension *)self _getQueryItemForFileObjectID:v35 completionHandler:v38];
         v36 = v18;
       }
@@ -1544,7 +1544,7 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %@)%@", buf, 0x2Au);
       }
 
-      v10[2](v10, 0, v22);
+      handlerCopy[2](handlerCopy, 0, v22);
       v31 = v18;
     }
 
@@ -1554,9 +1554,9 @@ LABEL_12:
   return v18;
 }
 
-- (id)enumeratorForVersionsOfItemWithIdentifier:(id)a3 request:(id)a4 error:(id *)a5
+- (id)enumeratorForVersionsOfItemWithIdentifier:(id)identifier request:(id)request error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (self->_isCiconiaDomain)
   {
     v7 = brc_bread_crumbs();
@@ -1576,20 +1576,20 @@ LABEL_12:
 
   else
   {
-    v11 = [BRFileObjectID fileObjectIDWithString:v6];
-    v10 = [(BRBaseFileEnumerator *)[BRFileVersionsEnumerator alloc] initWithFileObjectID:v11 itemIdentifier:v6 recursive:0 fileProviderManager:self->_fileProviderManager];
+    v11 = [BRFileObjectID fileObjectIDWithString:identifierCopy];
+    v10 = [(BRBaseFileEnumerator *)[BRFileVersionsEnumerator alloc] initWithFileObjectID:v11 itemIdentifier:identifierCopy recursive:0 fileProviderManager:self->_fileProviderManager];
   }
 
   return v10;
 }
 
-- (id)modifyItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 options:(unint64_t)a7 request:(id)a8 completionHandler:(id)a9
+- (id)modifyItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
-  v60 = a3;
-  v58 = a4;
-  v59 = a6;
-  v57 = a8;
-  v15 = a9;
+  itemCopy = item;
+  versionCopy = version;
+  contentsCopy = contents;
+  requestCopy = request;
+  handlerCopy = handler;
   if (!self->_isCiconiaDomain)
   {
     memset(v77, 0, sizeof(v77));
@@ -1598,9 +1598,9 @@ LABEL_12:
     v22 = brc_default_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = a5;
+      fieldsCopy = fields;
       v24 = v77[0];
-      v25 = v23;
+      v25 = fieldsCopy;
       v26 = BRCPrettyPrintBitmap();
       v27 = BRCPrettyPrintBitmap();
       *buf = 134219266;
@@ -1608,7 +1608,7 @@ LABEL_12:
       *&buf[12] = 2080;
       *&buf[14] = "[ICDFileProviderExtension modifyItem:baseVersion:changedFields:contents:options:request:completionHandler:]";
       *&buf[22] = 2112;
-      *v79 = v60;
+      *v79 = itemCopy;
       *&v79[8] = 2112;
       *v80 = v26;
       *&v80[8] = 2112;
@@ -1617,11 +1617,11 @@ LABEL_12:
       v82 = v21;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s modifyItem %@ fields:%@ options:%@%@", buf, 0x3Eu);
 
-      a5 = v25;
+      fields = v25;
     }
 
-    v28 = [v60 itemIdentifier];
-    v29 = [v28 isEqualToString:NSFileProviderTrashContainerItemIdentifier];
+    itemIdentifier = [itemCopy itemIdentifier];
+    v29 = [itemIdentifier isEqualToString:NSFileProviderTrashContainerItemIdentifier];
 
     if (v29)
     {
@@ -1648,14 +1648,14 @@ LABEL_12:
       }
 
       v33 = objc_opt_new();
-      (*(v15 + 2))(v15, v33, 0, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, v33, 0, 0, 0);
 
       v20 = objc_opt_new();
       goto LABEL_33;
     }
 
-    v34 = [v60 filename];
-    v35 = [v34 br_isExcludedWithMaximumDepth:1];
+    filename = [itemCopy filename];
+    v35 = [filename br_isExcludedWithMaximumDepth:1];
 
     if (v35)
     {
@@ -1664,7 +1664,7 @@ LABEL_12:
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
       {
         v38 = +[NSError brc_errorExcludedFromSyncDueToFilename];
-        v39 = [v38 br_fileProviderError];
+        br_fileProviderError = [v38 br_fileProviderError];
         *buf = 136316418;
         *&buf[4] = "[ICDFileProviderExtension modifyItem:baseVersion:changedFields:contents:options:request:completionHandler:]";
         *&buf[12] = 2112;
@@ -1674,15 +1674,15 @@ LABEL_12:
         *&v79[4] = 1024;
         *&v79[6] = 0;
         *v80 = 2112;
-        *&v80[2] = v39;
+        *&v80[2] = br_fileProviderError;
         *v81 = 2112;
         *&v81[2] = v36;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %d, %d, %@)%@", buf, 0x36u);
       }
 
       v40 = +[NSError brc_errorExcludedFromSyncDueToFilename];
-      v41 = [v40 br_fileProviderError];
-      (*(v15 + 2))(v15, 0, 0, 0, v41);
+      br_fileProviderError2 = [v40 br_fileProviderError];
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, br_fileProviderError2);
 
       v20 = 0;
       goto LABEL_32;
@@ -1692,12 +1692,12 @@ LABEL_12:
     v75[1] = 3221225472;
     v75[2] = sub_1000140C0;
     v75[3] = &unk_100044598;
-    v42 = v15;
+    v42 = handlerCopy;
     v76 = v42;
     v56 = [(ICDFileProviderExtension *)self _getAsyncProxyWithErrorHandler:v75];
-    if (v59 && (a5 & 1) != 0)
+    if (contentsCopy && (fields & 1) != 0)
     {
-      if ((a7 & 6) != 0)
+      if ((options & 6) != 0)
       {
         v73 = 0uLL;
         v74 = 0;
@@ -1711,8 +1711,8 @@ LABEL_12:
 
         *buf = v73;
         *&buf[16] = v74;
-        v45 = [[NSSecurityScopedURLWrapper alloc] initWithURL:v59 readonly:1];
-        v46 = [v60 itemIdentifier];
+        v45 = [[NSSecurityScopedURLWrapper alloc] initWithURL:contentsCopy readonly:1];
+        itemIdentifier2 = [itemCopy itemIdentifier];
         v66[0] = _NSConcreteStackBlock;
         v66[1] = 3221225472;
         v66[2] = sub_1000141F8;
@@ -1720,23 +1720,23 @@ LABEL_12:
         v70 = *buf;
         v71 = *&buf[16];
         v69 = v42;
-        v72 = a5;
-        v67 = v60;
-        v68 = self;
-        v20 = [v56 uploadItemIdentifier:v46 withContents:v45 baseVersion:v58 basedOnOriginalVersion:1 options:~(a7 >> 1) & 1 reply:v66];
+        fieldsCopy2 = fields;
+        v67 = itemCopy;
+        selfCopy = self;
+        v20 = [v56 uploadItemIdentifier:itemIdentifier2 withContents:v45 baseVersion:versionCopy basedOnOriginalVersion:1 options:~(options >> 1) & 1 reply:v66];
 
         goto LABEL_31;
       }
     }
 
-    else if (!v59)
+    else if (!contentsCopy)
     {
       v47 = 0;
       goto LABEL_27;
     }
 
     v65 = 0;
-    v47 = [FPSandboxingURLWrapper wrapperWithURL:v59 readonly:0 error:&v65];
+    v47 = [FPSandboxingURLWrapper wrapperWithURL:contentsCopy readonly:0 error:&v65];
     v48 = v65;
     if (v48)
     {
@@ -1787,7 +1787,7 @@ LABEL_27:
 
     *buf = v73;
     *&buf[16] = v74;
-    v54 = [(ICDFileProviderExtension *)self populateNonCodableAttributesOfTemplate:v60];
+    v54 = [(ICDFileProviderExtension *)self populateNonCodableAttributesOfTemplate:itemCopy];
     v61[0] = _NSConcreteStackBlock;
     v61[1] = 3221225472;
     v61[2] = sub_1000147B4;
@@ -1796,7 +1796,7 @@ LABEL_27:
     v63 = *buf;
     v64 = *&buf[16];
     v62 = v42;
-    [v56 modifyItem:v60 baseVersion:v58 changedFields:a5 contents:v47 options:a7 additionalAttrs:v54 completionHandler:v61];
+    [v56 modifyItem:itemCopy baseVersion:versionCopy changedFields:fields contents:v47 options:options additionalAttrs:v54 completionHandler:v61];
 
     v20 = [NSProgress progressWithTotalUnitCount:0];
 
@@ -1816,7 +1816,7 @@ LABEL_27:
   }
 
   v19 = +[NSError brc_errorLoggedOut];
-  (*(v15 + 2))(v15, 0, 0, 0, v19);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v19);
 
   v20 = 0;
 LABEL_34:
@@ -1824,11 +1824,11 @@ LABEL_34:
   return v20;
 }
 
-- (void)_isSharableItem:(id)a3 withCompletionHandler:(id)a4
+- (void)_isSharableItem:(id)item withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [BRFileObjectID fileObjectIDWithString:v6];
+  itemCopy = item;
+  handlerCopy = handler;
+  v8 = [BRFileObjectID fileObjectIDWithString:itemCopy];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -1839,7 +1839,7 @@ LABEL_34:
     v15[1] = 3221225472;
     v15[2] = sub_100014C7C;
     v15[3] = &unk_100044598;
-    v9 = v7;
+    v9 = handlerCopy;
     v16 = v9;
     v10 = [(ICDFileProviderExtension *)self _getAsyncProxyWithErrorHandler:v15];
     v11[0] = _NSConcreteStackBlock;
@@ -1847,23 +1847,23 @@ LABEL_34:
     v11[2] = sub_100014C94;
     v11[3] = &unk_100044EB8;
     v14 = &v17;
-    v12 = v6;
+    v12 = itemCopy;
     v13 = v9;
     [v10 checkIfItemIsShareableWithItemIdentifier:v12 reply:v11];
   }
 
   else
   {
-    (*(v7 + 2))(v7, *(v18 + 24), 0);
+    (*(handlerCopy + 2))(handlerCopy, *(v18 + 24), 0);
   }
 
   _Block_object_dispose(&v17, 8);
 }
 
-- (id)supportedServiceSourcesForItemIdentifier:(id)a3 completionHandler:(id)a4
+- (id)supportedServiceSourcesForItemIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (self->_isCiconiaDomain)
   {
     v8 = brc_bread_crumbs();
@@ -1879,7 +1879,7 @@ LABEL_34:
     }
 
     v11 = +[NSError brc_errorLoggedOut];
-    v7[2](v7, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
 
     v12 = 0;
   }
@@ -1888,24 +1888,24 @@ LABEL_34:
   {
     [(ICDFileProviderExtension *)self _waitForDomainSetup];
     v12 = [NSProgress progressWithTotalUnitCount:0];
-    if ([v6 isEqualToString:NSFileProviderRootContainerItemIdentifier])
+    if ([identifierCopy isEqualToString:NSFileProviderRootContainerItemIdentifier])
     {
       v13 = objc_opt_new();
-      (v7)[2](v7, v13, 0);
+      (handlerCopy)[2](handlerCopy, v13, 0);
     }
 
     else
     {
-      v14 = [(NSFileProviderDomain *)self->_domain identifier];
+      identifier = [(NSFileProviderDomain *)self->_domain identifier];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10001500C;
       v17[3] = &unk_100044EE0;
-      v20 = v7;
+      v20 = handlerCopy;
       v17[4] = self;
-      v18 = v6;
-      v19 = v14;
-      v15 = v14;
+      v18 = identifierCopy;
+      v19 = identifier;
+      v15 = identifier;
       [(ICDFileProviderExtension *)self _isSharableItem:v18 withCompletionHandler:v17];
     }
   }
@@ -1913,9 +1913,9 @@ LABEL_34:
   return v12;
 }
 
-- (void)importDidFinishWithCompletionHandler:(id)a3
+- (void)importDidFinishWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_isCiconiaDomain)
   {
     v5 = brc_bread_crumbs();
@@ -1930,7 +1930,7 @@ LABEL_34:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[WARNING] Initialized with a Ciconia domain %@. This is not supported%@", buf, 0x16u);
     }
 
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
   else
@@ -1946,7 +1946,7 @@ LABEL_34:
     v14[1] = 3221225472;
     v14[2] = sub_100015468;
     v14[3] = &unk_100044598;
-    v10 = v4;
+    v10 = handlerCopy;
     v15 = v10;
     v11 = [(ICDFileProviderExtension *)self _getAsyncProxyWithErrorHandler:v14];
     v12[0] = _NSConcreteStackBlock;
@@ -1959,10 +1959,10 @@ LABEL_34:
   }
 }
 
-- (id)_defaultApplicationContainerForBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (id)_defaultApplicationContainerForBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (self->_isCiconiaDomain)
   {
     v8 = brc_bread_crumbs();
@@ -1978,7 +1978,7 @@ LABEL_34:
     }
 
     v11 = +[NSError brc_errorLoggedOut];
-    v7[2](v7, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
   }
 
   else
@@ -1992,27 +1992,27 @@ LABEL_34:
       *buf = 134218498;
       v44 = v42[0];
       v45 = 2112;
-      v46 = v6;
+      v46 = identifierCopy;
       v47 = 2112;
       v48 = v12;
       _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx lookup for default location of %@%@", buf, 0x20u);
     }
 
-    if (v6 && ![v6 isEqualToString:@"com.apple.DocumentsApp"])
+    if (identifierCopy && ![identifierCopy isEqualToString:@"com.apple.DocumentsApp"])
     {
       v39 = 0;
-      v15 = [LSApplicationRecord bundleRecordWithBundleIdentifier:v6 allowPlaceholder:0 error:&v39];
+      v15 = [LSApplicationRecord bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v39];
       v14 = v39;
       if (v15)
       {
-        v16 = [v15 entitlements];
+        entitlements = [v15 entitlements];
         v34 = BREntitledContainerIdentifiersForPropertyList();
         v17 = brc_bread_crumbs();
         v18 = brc_default_log();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412802;
-          v44 = v6;
+          v44 = identifierCopy;
           v45 = 2112;
           v46 = v34;
           v47 = 2112;
@@ -2027,7 +2027,7 @@ LABEL_34:
           v37[1] = 3221225472;
           v37[2] = sub_100016024;
           v37[3] = &unk_100044598;
-          v20 = v7;
+          v20 = handlerCopy;
           v38 = v20;
           v21 = [(ICDFileProviderExtension *)self _getAsyncProxyWithErrorHandler:v37];
           v35[0] = _NSConcreteStackBlock;
@@ -2038,7 +2038,7 @@ LABEL_34:
           v36 = v20;
           [v21 getDefaultAppContainerItemForContainerID:v19 recreateDocumentsIfNeeded:1 reply:v35];
 
-          v22 = v38;
+          br_fileProviderError2 = v38;
         }
 
         else
@@ -2055,20 +2055,20 @@ LABEL_34:
           v31 = brc_default_log();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
           {
-            v32 = [v19 br_fileProviderError];
+            br_fileProviderError = [v19 br_fileProviderError];
             *buf = 136315906;
             v44 = "[ICDFileProviderExtension _defaultApplicationContainerForBundleIdentifier:completionHandler:]";
             v45 = 2112;
             v46 = 0;
             v47 = 2112;
-            v48 = v32;
+            v48 = br_fileProviderError;
             v49 = 2112;
             v50 = v30;
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %@)%@", buf, 0x2Au);
           }
 
-          v22 = [v19 br_fileProviderError];
-          v7[2](v7, 0, v22);
+          br_fileProviderError2 = [v19 br_fileProviderError];
+          handlerCopy[2](handlerCopy, 0, br_fileProviderError2);
         }
       }
 
@@ -2085,20 +2085,20 @@ LABEL_34:
         v26 = brc_default_log();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
-          v27 = [v14 br_fileProviderError];
+          br_fileProviderError3 = [v14 br_fileProviderError];
           *buf = 136315906;
           v44 = "[ICDFileProviderExtension _defaultApplicationContainerForBundleIdentifier:completionHandler:]";
           v45 = 2112;
           v46 = 0;
           v47 = 2112;
-          v48 = v27;
+          v48 = br_fileProviderError3;
           v49 = 2112;
           v50 = v25;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "[INFO] %s: reply(%@, %@)%@", buf, 0x2Au);
         }
 
-        v16 = [v14 br_fileProviderError];
-        v7[2](v7, 0, v16);
+        entitlements = [v14 br_fileProviderError];
+        handlerCopy[2](handlerCopy, 0, entitlements);
       }
     }
 
@@ -2110,7 +2110,7 @@ LABEL_34:
       v40[2] = sub_100015DB8;
       v40[3] = &unk_100044D00;
       v40[4] = self;
-      v41 = v7;
+      v41 = handlerCopy;
       [(ICDFileProviderExtension *)self _getQueryItemForFileObjectID:v14 completionHandler:v40];
     }
 
@@ -2120,34 +2120,34 @@ LABEL_34:
   return 0;
 }
 
-- (id)fetchThumbnailsForItemIdentifiers:(id)a3 requestedSize:(CGSize)a4 perThumbnailCompletionHandler:(id)a5 completionHandler:(id)a6
+- (id)fetchThumbnailsForItemIdentifiers:(id)identifiers requestedSize:(CGSize)size perThumbnailCompletionHandler:(id)handler completionHandler:(id)completionHandler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100016530;
   v14[3] = &unk_100044F58;
-  v15 = a5;
-  v11 = v15;
-  v12 = [(ICDFileProviderExtension *)self fetchThumbnailsForItemIdentifiers:a3 requestedSize:v14 perThumbnailCompletionHandlerWithType:a6 completionHandler:width, height];
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  height = [(ICDFileProviderExtension *)self fetchThumbnailsForItemIdentifiers:identifiers requestedSize:v14 perThumbnailCompletionHandlerWithType:completionHandler completionHandler:width, height];
 
-  return v12;
+  return height;
 }
 
-- (id)fetchThumbnailsForItemIdentifiers:(id)a3 requestedSize:(CGSize)a4 perThumbnailCompletionHandlerWithType:(id)a5 completionHandler:(id)a6
+- (id)fetchThumbnailsForItemIdentifiers:(id)identifiers requestedSize:(CGSize)size perThumbnailCompletionHandlerWithType:(id)type completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v11, "count")}];
+  height = size.height;
+  width = size.width;
+  identifiersCopy = identifiers;
+  typeCopy = type;
+  handlerCopy = handler;
+  v14 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v15 = v11;
+  v15 = identifiersCopy;
   v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v16)
   {
@@ -2175,39 +2175,39 @@ LABEL_34:
   v23[1] = 3221225472;
   v23[2] = sub_100016748;
   v23[3] = &unk_100044F80;
-  v24 = v12;
-  v20 = v12;
-  v21 = [(ICDFileProviderExtension *)self fetchThumbnailsForDictionary:v14 requestedSize:v23 perThumbnailCompletionHandlerWithMetadata:v13 completionHandler:width, height];
+  v24 = typeCopy;
+  v20 = typeCopy;
+  height = [(ICDFileProviderExtension *)self fetchThumbnailsForDictionary:v14 requestedSize:v23 perThumbnailCompletionHandlerWithMetadata:handlerCopy completionHandler:width, height];
 
-  return v21;
+  return height;
 }
 
-- (id)fetchThumbnailsForDictionary:(id)a3 requestedSize:(CGSize)a4 perThumbnailCompletionHandlerWithMetadata:(id)a5 completionHandler:(id)a6
+- (id)fetchThumbnailsForDictionary:(id)dictionary requestedSize:(CGSize)size perThumbnailCompletionHandlerWithMetadata:(id)metadata completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100016844;
   v14[3] = &unk_100044868;
-  v15 = a5;
-  v11 = v15;
-  v12 = [(ICDFileProviderExtension *)self fetchThumbnailsForDictionary:a3 requestedSize:v14 perThumbnailCompletionHandlerDataURLWithMetadata:a6 completionHandler:width, height];
+  metadataCopy = metadata;
+  v11 = metadataCopy;
+  height = [(ICDFileProviderExtension *)self fetchThumbnailsForDictionary:dictionary requestedSize:v14 perThumbnailCompletionHandlerDataURLWithMetadata:handler completionHandler:width, height];
 
-  return v12;
+  return height;
 }
 
-- (id)fetchThumbnailsForDictionary:(id)a3 requestedSize:(CGSize)a4 perThumbnailCompletionHandlerDataURLWithMetadata:(id)a5 completionHandler:(id)a6
+- (id)fetchThumbnailsForDictionary:(id)dictionary requestedSize:(CGSize)size perThumbnailCompletionHandlerDataURLWithMetadata:(id)metadata completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v38 = a5;
-  v31 = a6;
+  height = size.height;
+  width = size.width;
+  dictionaryCopy = dictionary;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   queue = dispatch_get_global_queue(17, 0);
   group = dispatch_group_create();
   v33 = objc_opt_new();
-  v35 = [v10 allKeys];
+  allKeys = [dictionaryCopy allKeys];
   v11 = 0;
   do
   {
@@ -2216,7 +2216,7 @@ LABEL_34:
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    obj = v35;
+    obj = allKeys;
     v13 = 0;
     v14 = [obj countByEnumeratingWithState:&v53 objects:v58 count:16];
     if (!v14)
@@ -2235,13 +2235,13 @@ LABEL_34:
         }
 
         v17 = *(*(&v53 + 1) + 8 * i);
-        v18 = [v10 objectForKeyedSubscript:v17];
+        v18 = [dictionaryCopy objectForKeyedSubscript:v17];
         v19 = v11 < [v18 count];
 
         if (v19)
         {
           v20 = [BRThumbnailRequest alloc];
-          v21 = [v10 objectForKeyedSubscript:v17];
+          v21 = [dictionaryCopy objectForKeyedSubscript:v17];
           v22 = [(BRThumbnailRequest *)v21 objectAtIndexedSubscript:v11];
           v23 = [(BRThumbnailRequest *)v20 initWithIdentifier:v17 version:v22];
           [v12 addObject:v23];
@@ -2306,10 +2306,10 @@ LABEL_14:
         v44[4] = v27;
         v46 = v51;
         v45 = group;
-        v28 = [(ICDFileProviderExtension *)self _fetchThumbnailsForItemIdentifiersWithVersionMap:v27 requestedSize:v38 perThumbnailCompletionHandler:v44 completionHandler:width, height];
-        if (v28)
+        height = [(ICDFileProviderExtension *)self _fetchThumbnailsForItemIdentifiersWithVersionMap:v27 requestedSize:metadataCopy perThumbnailCompletionHandler:v44 completionHandler:width, height];
+        if (height)
         {
-          [v36 addChild:v28 withPendingUnitCount:{objc_msgSend(v27, "count")}];
+          [v36 addChild:height withPendingUnitCount:{objc_msgSend(v27, "count")}];
         }
       }
 
@@ -2323,9 +2323,9 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = sub_100016F84;
   block[3] = &unk_100044FD0;
-  v42 = v31;
+  v42 = handlerCopy;
   v43 = v51;
-  v29 = v31;
+  v29 = handlerCopy;
   dispatch_group_notify(group, queue, block);
 
   _Block_object_dispose(v51, 8);
@@ -2333,11 +2333,11 @@ LABEL_14:
   return v36;
 }
 
-- (id)_fetchThumbnailsForItemIdentifiersWithVersionMap:(id)a3 requestedSize:(CGSize)a4 perThumbnailCompletionHandler:(id)a5 completionHandler:(id)a6
+- (id)_fetchThumbnailsForItemIdentifiersWithVersionMap:(id)map requestedSize:(CGSize)size perThumbnailCompletionHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  mapCopy = map;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v12 = dispatch_group_create();
   v13 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
   v14 = dispatch_queue_attr_make_with_autorelease_frequency(v13, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -2366,14 +2366,14 @@ LABEL_14:
   v18 = v16;
   v27 = v18;
   v19 = objc_retainBlock(v26);
-  v20 = sub_100007664(v9, v17, v10, v19);
+  v20 = sub_100007664(mapCopy, v17, handlerCopy, v19);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100017714;
   v23[3] = &unk_100044FD0;
-  v24 = v11;
+  v24 = completionHandlerCopy;
   v25 = v29;
-  v21 = v11;
+  v21 = completionHandlerCopy;
   dispatch_group_notify(v18, v15, v23);
 
   _Block_object_dispose(v29, 8);
@@ -2381,25 +2381,25 @@ LABEL_14:
   return v20;
 }
 
-- (id)fetchThumbnailsForDictionary:(id)a3 requestedSize:(CGSize)a4 perThumbnailCompletionHandler:(id)a5 completionHandler:(id)a6
+- (id)fetchThumbnailsForDictionary:(id)dictionary requestedSize:(CGSize)size perThumbnailCompletionHandler:(id)handler completionHandler:(id)completionHandler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100017810;
   v14[3] = &unk_100044F80;
-  v15 = a5;
-  v11 = v15;
-  v12 = [(ICDFileProviderExtension *)self fetchThumbnailsForDictionary:a3 requestedSize:v14 perThumbnailCompletionHandlerWithMetadata:a6 completionHandler:width, height];
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  height = [(ICDFileProviderExtension *)self fetchThumbnailsForDictionary:dictionary requestedSize:v14 perThumbnailCompletionHandlerWithMetadata:completionHandler completionHandler:width, height];
 
-  return v12;
+  return height;
 }
 
-- (void)collaborationMetadataForItemWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)collaborationMetadataForItemWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
@@ -2407,15 +2407,15 @@ LABEL_14:
   v15[4] = sub_10001DF64;
   v16 = 0;
   v7 = objc_alloc_init(NSOperationQueue);
-  v8 = [[BRShareCopyOperation alloc] initWithItemID:v5];
+  v8 = [[BRShareCopyOperation alloc] initWithItemID:identifierCopy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001DF6C;
   v11[3] = &unk_100045288;
   v14 = v15;
-  v9 = v5;
+  v9 = identifierCopy;
   v12 = v9;
-  v10 = v6;
+  v10 = handlerCopy;
   v13 = v10;
   [v8 setRootShareCopyCompletionBlock:v11];
   [v7 addOperation:v8];
@@ -2423,14 +2423,14 @@ LABEL_14:
   _Block_object_dispose(v15, 8);
 }
 
-- (void)collaborationCoordinator:(id)a3 handleStartCollaborationAction:(id)a4
+- (void)collaborationCoordinator:(id)coordinator handleStartCollaborationAction:(id)action
 {
-  v4 = a4;
-  v5 = [v4 collaborationMetadata];
-  v6 = [v5 localIdentifier];
+  actionCopy = action;
+  collaborationMetadata = [actionCopy collaborationMetadata];
+  localIdentifier = [collaborationMetadata localIdentifier];
 
-  v8 = v4;
-  v7 = v4;
+  v8 = actionCopy;
+  v7 = actionCopy;
   BRFetchCollaborationIdentifierForItemWithIdentifier();
 }
 

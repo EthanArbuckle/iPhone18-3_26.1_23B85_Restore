@@ -1,17 +1,17 @@
 @interface ATXChronoServicesProvider
 - (ATXChronoServicesProvider)init;
-- (ATXChronoServicesProvider)initWithProactiveService:(id)a3 widgetMetricsService:(id)a4;
+- (ATXChronoServicesProvider)initWithProactiveService:(id)service widgetMetricsService:(id)metricsService;
 - (ATXChronoServicesProviderDelegate)delegate;
-- (BOOL)_allReloadsAreCompletedInGuardedData:(id)a3;
-- (BOOL)_isCurrentTimelineRelevanceScoreNonPositiveForEntries:(id)a3;
-- (id)_recordFromSuggestionLayout:(id)a3 guardedData:(id)a4;
-- (id)_widgetFromSuggestionLayout:(id)a3;
-- (void)_chronoDidReplyHandle:(id)a3 timelineEntries:(id)a4 forWidget:(id)a5 withError:(id)a6;
-- (void)_removeOudatedFailureEntriesInGuardedData:(id)a3;
-- (void)_requestChronoToLoadWidget:(id)a3 inGuardedData:(id)a4;
-- (void)_updateAndSendHomeScreenSuggestionsToDelegateWithGuardedData:(id)a3;
-- (void)_updateGuardedData:(id)a3 withNewCachedSuggestions:(id)a4;
-- (void)resetToPrewarmWidgetsInSuggestions:(id)a3;
+- (BOOL)_allReloadsAreCompletedInGuardedData:(id)data;
+- (BOOL)_isCurrentTimelineRelevanceScoreNonPositiveForEntries:(id)entries;
+- (id)_recordFromSuggestionLayout:(id)layout guardedData:(id)data;
+- (id)_widgetFromSuggestionLayout:(id)layout;
+- (void)_chronoDidReplyHandle:(id)handle timelineEntries:(id)entries forWidget:(id)widget withError:(id)error;
+- (void)_removeOudatedFailureEntriesInGuardedData:(id)data;
+- (void)_requestChronoToLoadWidget:(id)widget inGuardedData:(id)data;
+- (void)_updateAndSendHomeScreenSuggestionsToDelegateWithGuardedData:(id)data;
+- (void)_updateGuardedData:(id)data withNewCachedSuggestions:(id)suggestions;
+- (void)resetToPrewarmWidgetsInSuggestions:(id)suggestions;
 @end
 
 @implementation ATXChronoServicesProvider
@@ -25,18 +25,18 @@
   return v5;
 }
 
-- (ATXChronoServicesProvider)initWithProactiveService:(id)a3 widgetMetricsService:(id)a4
+- (ATXChronoServicesProvider)initWithProactiveService:(id)service widgetMetricsService:(id)metricsService
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  metricsServiceCopy = metricsService;
   v21.receiver = self;
   v21.super_class = ATXChronoServicesProvider;
   v9 = [(ATXChronoServicesProvider *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_proactiveService, a3);
-    objc_storeStrong(&v10->_widgetMetricService, a4);
+    objc_storeStrong(&v9->_proactiveService, service);
+    objc_storeStrong(&v10->_widgetMetricService, metricsService);
     v11 = objc_opt_new();
     v12 = v11[1];
     v11[1] = 0;
@@ -59,17 +59,17 @@
   return v10;
 }
 
-- (void)resetToPrewarmWidgetsInSuggestions:(id)a3
+- (void)resetToPrewarmWidgetsInSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__ATXChronoServicesProvider_resetToPrewarmWidgetsInSuggestions___block_invoke;
   v7[3] = &unk_1E80C3F78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = suggestionsCopy;
+  v6 = suggestionsCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v7];
 }
 
@@ -146,16 +146,16 @@ void __64__ATXChronoServicesProvider_resetToPrewarmWidgetsInSuggestions___block_
   }
 }
 
-- (void)_removeOudatedFailureEntriesInGuardedData:(id)a3
+- (void)_removeOudatedFailureEntriesInGuardedData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v6 = 0;
   v7 = &v6;
   v8 = 0x3032000000;
   v9 = __Block_byref_object_copy__12;
   v10 = __Block_byref_object_dispose__12;
   v11 = 0;
-  v4 = v3[3];
+  v4 = dataCopy[3];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __71__ATXChronoServicesProvider__removeOudatedFailureEntriesInGuardedData___block_invoke;
@@ -164,7 +164,7 @@ void __64__ATXChronoServicesProvider_resetToPrewarmWidgetsInSuggestions___block_
   [v4 enumerateKeysAndObjectsUsingBlock:v5];
   if ([v7[5] count])
   {
-    [v3[3] removeObjectsForKeys:v7[5]];
+    [dataCopy[3] removeObjectsForKeys:v7[5]];
   }
 
   _Block_object_dispose(&v6, 8);
@@ -191,18 +191,18 @@ void __71__ATXChronoServicesProvider__removeOudatedFailureEntriesInGuardedData__
   }
 }
 
-- (void)_updateGuardedData:(id)a3 withNewCachedSuggestions:(id)a4
+- (void)_updateGuardedData:(id)data withNewCachedSuggestions:(id)suggestions
 {
   v46 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v6 = a4;
+  dataCopy = data;
+  suggestionsCopy = suggestions;
   v30 = objc_opt_new();
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v26 = v6;
-  obj = [v6 cachedSuggestedWidgetsLayouts];
+  v26 = suggestionsCopy;
+  obj = [suggestionsCopy cachedSuggestedWidgetsLayouts];
   v27 = [obj countByEnumeratingWithState:&v36 objects:v45 count:16];
   if (v27)
   {
@@ -219,8 +219,8 @@ void __71__ATXChronoServicesProvider__removeOudatedFailureEntriesInGuardedData__
 
         v28 = v7;
         v8 = *(*(&v36 + 1) + 8 * v7);
-        v9 = [v26 cachedSuggestedWidgetsLayouts];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        cachedSuggestedWidgetsLayouts = [v26 cachedSuggestedWidgetsLayouts];
+        v10 = [cachedSuggestedWidgetsLayouts objectForKeyedSubscript:v8];
 
         v34 = 0u;
         v35 = 0u;
@@ -245,15 +245,15 @@ void __71__ATXChronoServicesProvider__removeOudatedFailureEntriesInGuardedData__
               v16 = [(ATXChronoServicesProvider *)self _widgetFromSuggestionLayout:v15];
               if (v16)
               {
-                v17 = [v31[2] objectForKeyedSubscript:v16];
+                v17 = [dataCopy[2] objectForKeyedSubscript:v16];
                 if (!v17)
                 {
                   v17 = objc_opt_new();
                   [v17 setState:0];
                 }
 
-                v18 = [v16 extensionIdentity];
-                v19 = [v18 extensionBundleIdentifier];
+                extensionIdentity = [v16 extensionIdentity];
+                extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
                 IsSpecialWidgetExtensionBundleId = ATXBundleIdIsSpecialWidgetExtensionBundleId();
 
                 if (IsSpecialWidgetExtensionBundleId)
@@ -296,28 +296,28 @@ void __71__ATXChronoServicesProvider__removeOudatedFailureEntriesInGuardedData__
     while (v27);
   }
 
-  v21 = v31[1];
-  v31[1] = v26;
+  v21 = dataCopy[1];
+  dataCopy[1] = v26;
   v22 = v26;
 
-  v23 = v31[2];
-  v31[2] = v30;
+  v23 = dataCopy[2];
+  dataCopy[2] = v30;
 }
 
-- (id)_widgetFromSuggestionLayout:(id)a3
+- (id)_widgetFromSuggestionLayout:(id)layout
 {
-  v3 = [ATXHomeScreenStackSuggestion widgetFromSuggestionLayout:a3];
+  v3 = [ATXHomeScreenStackSuggestion widgetFromSuggestionLayout:layout];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E6994370]);
     v5 = objc_alloc(MEMORY[0x1E6994290]);
-    v6 = [v3 extensionBundleId];
-    v7 = [v3 appBundleId];
-    v8 = [v5 initWithExtensionBundleIdentifier:v6 containerBundleIdentifier:v7 deviceIdentifier:0];
-    v9 = [v3 widgetKind];
+    extensionBundleId = [v3 extensionBundleId];
+    appBundleId = [v3 appBundleId];
+    v8 = [v5 initWithExtensionBundleIdentifier:extensionBundleId containerBundleIdentifier:appBundleId deviceIdentifier:0];
+    widgetKind = [v3 widgetKind];
     v10 = CHSWidgetFamilyFromATXStackLayoutSize([v3 size]);
-    v11 = [v3 intent];
-    v12 = [v4 initWithExtensionIdentity:v8 kind:v9 family:v10 intent:v11 activityIdentifier:0];
+    intent = [v3 intent];
+    v12 = [v4 initWithExtensionIdentity:v8 kind:widgetKind family:v10 intent:intent activityIdentifier:0];
   }
 
   else
@@ -328,35 +328,35 @@ void __71__ATXChronoServicesProvider__removeOudatedFailureEntriesInGuardedData__
   return v12;
 }
 
-- (void)_requestChronoToLoadWidget:(id)a3 inGuardedData:(id)a4
+- (void)_requestChronoToLoadWidget:(id)widget inGuardedData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  widgetCopy = widget;
+  dataCopy = data;
   v8 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = widgetCopy;
     _os_log_impl(&dword_1BF549000, v8, OS_LOG_TYPE_DEFAULT, "ATXChronoServicesProvider: Requesting Chrono to load widget %@", buf, 0xCu);
   }
 
-  v9 = [v7[2] objectForKeyedSubscript:v6];
+  v9 = [dataCopy[2] objectForKeyedSubscript:widgetCopy];
   if (v9)
   {
-    v10 = [(SBSWidgetMetricsService *)self->_widgetMetricService systemMetricsForWidget:v6];
+    v10 = [(SBSWidgetMetricsService *)self->_widgetMetricService systemMetricsForWidget:widgetCopy];
     if (v10)
     {
       [v9 setState:1];
       proactiveService = self->_proactiveService;
-      v12 = [v9 suggestedStackId];
+      suggestedStackId = [v9 suggestedStackId];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __70__ATXChronoServicesProvider__requestChronoToLoadWidget_inGuardedData___block_invoke;
       v15[3] = &unk_1E80C3FC8;
       v15[4] = self;
-      v16 = v6;
-      [(CHSProactiveService *)proactiveService loadSuggestedWidget:v16 metrics:v10 stackIdentifier:v12 completion:v15];
+      v16 = widgetCopy;
+      [(CHSProactiveService *)proactiveService loadSuggestedWidget:v16 metrics:v10 stackIdentifier:suggestedStackId completion:v15];
     }
 
     else
@@ -364,12 +364,12 @@ void __71__ATXChronoServicesProvider__removeOudatedFailureEntriesInGuardedData__
       v13 = __atxlog_handle_home_screen();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [ATXChronoServicesProvider _requestChronoToLoadWidget:v6 inGuardedData:v13];
+        [ATXChronoServicesProvider _requestChronoToLoadWidget:widgetCopy inGuardedData:v13];
       }
 
       [v9 setState:3];
       v14 = [MEMORY[0x1E695DF00] now];
-      [v7[3] setObject:v14 forKeyedSubscript:v6];
+      [dataCopy[3] setObject:v14 forKeyedSubscript:widgetCopy];
     }
   }
 
@@ -378,31 +378,31 @@ void __71__ATXChronoServicesProvider__removeOudatedFailureEntriesInGuardedData__
     v10 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      [ATXChronoServicesProvider _requestChronoToLoadWidget:v6 inGuardedData:v10];
+      [ATXChronoServicesProvider _requestChronoToLoadWidget:widgetCopy inGuardedData:v10];
     }
   }
 }
 
-- (void)_chronoDidReplyHandle:(id)a3 timelineEntries:(id)a4 forWidget:(id)a5 withError:(id)a6
+- (void)_chronoDidReplyHandle:(id)handle timelineEntries:(id)entries forWidget:(id)widget withError:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  handleCopy = handle;
+  entriesCopy = entries;
+  widgetCopy = widget;
+  errorCopy = error;
   lock = self->_lock;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __87__ATXChronoServicesProvider__chronoDidReplyHandle_timelineEntries_forWidget_withError___block_invoke;
   v19[3] = &unk_1E80C3FF0;
-  v20 = v10;
-  v21 = v13;
-  v22 = v12;
-  v23 = self;
-  v24 = v11;
-  v15 = v11;
-  v16 = v12;
-  v17 = v13;
-  v18 = v10;
+  v20 = handleCopy;
+  v21 = errorCopy;
+  v22 = widgetCopy;
+  selfCopy = self;
+  v24 = entriesCopy;
+  v15 = entriesCopy;
+  v16 = widgetCopy;
+  v17 = errorCopy;
+  v18 = handleCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v19];
 }
 
@@ -558,10 +558,10 @@ LABEL_26:
 LABEL_32:
 }
 
-- (BOOL)_isCurrentTimelineRelevanceScoreNonPositiveForEntries:(id)a3
+- (BOOL)_isCurrentTimelineRelevanceScoreNonPositiveForEntries:(id)entries
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [a3 sortedArrayUsingComparator:&__block_literal_global_63];
+  v3 = [entries sortedArrayUsingComparator:&__block_literal_global_63];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v5 = v4;
   v26 = 0u;
@@ -591,8 +591,8 @@ LABEL_3:
     }
 
     v12 = *(*(&v26 + 1) + 8 * v11);
-    v13 = [v12 date];
-    [v13 timeIntervalSinceReferenceDate];
+    date = [v12 date];
+    [date timeIntervalSinceReferenceDate];
     v15 = v14;
 
     if (v15 > v5)
@@ -600,16 +600,16 @@ LABEL_3:
       break;
     }
 
-    v16 = [v12 relevance];
+    relevance = [v12 relevance];
 
-    if (v16)
+    if (relevance)
     {
-      v17 = [v12 relevance];
+      relevance2 = [v12 relevance];
 
-      v18 = [v12 date];
+      date2 = [v12 date];
 
-      v8 = v18;
-      v9 = v17;
+      v8 = date2;
+      v9 = relevance2;
     }
 
     if (v7 == ++v11)
@@ -680,15 +680,15 @@ uint64_t __83__ATXChronoServicesProvider__isCurrentTimelineRelevanceScoreNonPosi
   }
 }
 
-- (BOOL)_allReloadsAreCompletedInGuardedData:(id)a3
+- (BOOL)_allReloadsAreCompletedInGuardedData:(id)data
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [*(a3 + 2) allValues];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [*(data + 2) allValues];
+  v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -699,7 +699,7 @@ uint64_t __83__ATXChronoServicesProvider__isCurrentTimelineRelevanceScoreNonPosi
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -710,7 +710,7 @@ uint64_t __83__ATXChronoServicesProvider__isCurrentTimelineRelevanceScoreNonPosi
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       v9 = 1;
       if (v5)
       {
@@ -731,23 +731,23 @@ LABEL_13:
   return v9;
 }
 
-- (void)_updateAndSendHomeScreenSuggestionsToDelegateWithGuardedData:(id)a3
+- (void)_updateAndSendHomeScreenSuggestionsToDelegateWithGuardedData:(id)data
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v49 = self;
+  dataCopy = data;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     v6 = objc_opt_new();
-    [v4[1] cachedTopOfStackLayouts];
+    [dataCopy[1] cachedTopOfStackLayouts];
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
     obj = v61 = 0u;
     v7 = [obj countByEnumeratingWithState:&v58 objects:v68 count:16];
-    v8 = v4;
+    v8 = dataCopy;
     v42 = v6;
     if (!v7)
     {
@@ -773,7 +773,7 @@ LABEL_13:
           goto LABEL_18;
         }
 
-        v14 = [(ATXChronoServicesProvider *)v49 _recordFromSuggestionLayout:v13 guardedData:v4];
+        v14 = [(ATXChronoServicesProvider *)selfCopy _recordFromSuggestionLayout:v13 guardedData:dataCopy];
         if (!v14)
         {
           v15 = __atxlog_handle_home_screen();
@@ -801,7 +801,7 @@ LABEL_13:
             _os_log_impl(&dword_1BF549000, v16, OS_LOG_TYPE_DEFAULT, "ATXChronoServicesProvider: widgetkit developer mode on, allowing topOfStackLayout for stack %{public}@. Layout %@", buf, 0x16u);
           }
 
-          v4 = v8;
+          dataCopy = v8;
 LABEL_17:
 
 LABEL_18:
@@ -824,7 +824,7 @@ LABEL_18:
           _os_log_impl(&dword_1BF549000, v17, OS_LOG_TYPE_DEFAULT, "ATXChronoServicesProvider: Skipping topOfStackLayout for stack %{public}@ because it's a suggested widget and it's not ready for display. Layout %@", buf, 0x16u);
         }
 
-        v4 = v8;
+        dataCopy = v8;
 LABEL_19:
 
         ++v11;
@@ -837,7 +837,7 @@ LABEL_19:
       {
 LABEL_25:
         v44 = objc_opt_new();
-        [v4[1] cachedSuggestedWidgetsLayouts];
+        [dataCopy[1] cachedSuggestedWidgetsLayouts];
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
@@ -883,7 +883,7 @@ LABEL_25:
                   }
 
                   v27 = *(*(&v50 + 1) + 8 * v26);
-                  v28 = [(ATXChronoServicesProvider *)v49 _recordFromSuggestionLayout:v27 guardedData:v8];
+                  v28 = [(ATXChronoServicesProvider *)selfCopy _recordFromSuggestionLayout:v27 guardedData:v8];
                   if (!v28)
                   {
                     v29 = __atxlog_handle_home_screen();
@@ -951,19 +951,19 @@ LABEL_45:
           {
 LABEL_53:
             v33 = objc_alloc(MEMORY[0x1E69C5B80]);
-            v4 = v8;
-            v34 = [v8[1] uuid];
-            v35 = [v4[1] cachedSuggestionWidgetLayouts];
-            v36 = [v4[1] cachedAppPredictionPanelLayouts];
-            v37 = [v4[1] fallbackSuggestions];
-            v38 = [v33 initWithUUID:v34 suggestionWidgetLayouts:v35 appPredictionPanelLayouts:v36 topOfStackLayouts:v42 suggestedWidgetLayouts:v44 fallbackSuggestions:v37];
+            dataCopy = v8;
+            uuid = [v8[1] uuid];
+            cachedSuggestionWidgetLayouts = [dataCopy[1] cachedSuggestionWidgetLayouts];
+            cachedAppPredictionPanelLayouts = [dataCopy[1] cachedAppPredictionPanelLayouts];
+            fallbackSuggestions = [dataCopy[1] fallbackSuggestions];
+            v38 = [v33 initWithUUID:uuid suggestionWidgetLayouts:cachedSuggestionWidgetLayouts appPredictionPanelLayouts:cachedAppPredictionPanelLayouts topOfStackLayouts:v42 suggestedWidgetLayouts:v44 fallbackSuggestions:fallbackSuggestions];
 
-            v39 = v4[1];
-            v4[1] = v38;
+            v39 = dataCopy[1];
+            dataCopy[1] = v38;
             v40 = v38;
 
-            v41 = objc_loadWeakRetained(&v49->_delegate);
-            [v41 chronoServiceProvider:v49 finishedPrewarmingSuggestions:v40];
+            v41 = objc_loadWeakRetained(&selfCopy->_delegate);
+            [v41 chronoServiceProvider:selfCopy finishedPrewarmingSuggestions:v40];
 
             goto LABEL_54;
           }
@@ -975,13 +975,13 @@ LABEL_53:
 LABEL_54:
 }
 
-- (id)_recordFromSuggestionLayout:(id)a3 guardedData:(id)a4
+- (id)_recordFromSuggestionLayout:(id)layout guardedData:(id)data
 {
-  v6 = a4;
-  v7 = [(ATXChronoServicesProvider *)self _widgetFromSuggestionLayout:a3];
+  dataCopy = data;
+  v7 = [(ATXChronoServicesProvider *)self _widgetFromSuggestionLayout:layout];
   if (v7)
   {
-    v8 = [v6[2] objectForKeyedSubscript:v7];
+    v8 = [dataCopy[2] objectForKeyedSubscript:v7];
   }
 
   else

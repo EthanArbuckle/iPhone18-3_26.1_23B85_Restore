@@ -1,20 +1,20 @@
 @interface ICDocCamImageQuadEditPanGestureRecognizer
 - (ICDocCamImageQuadEditPanGestureRecognizerDelegate)quadEditorDelegate;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation ICDocCamImageQuadEditPanGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = ICDocCamImageQuadEditPanGestureRecognizer;
-  [(ICDocCamImageQuadEditPanGestureRecognizer *)&v6 touchesBegan:a3 withEvent:a4];
+  [(ICDocCamImageQuadEditPanGestureRecognizer *)&v6 touchesBegan:began withEvent:event];
   if ([(ICDocCamImageQuadEditPanGestureRecognizer *)self state]<= 0)
   {
     [(ICDocCamImageQuadEditPanGestureRecognizer *)self setState:1];
-    v5 = [(ICDocCamImageQuadEditPanGestureRecognizer *)self quadEditorDelegate];
-    [v5 touchesBeganOnQuadEditPanGestureRecognizerDelegate:self];
+    quadEditorDelegate = [(ICDocCamImageQuadEditPanGestureRecognizer *)self quadEditorDelegate];
+    [quadEditorDelegate touchesBeganOnQuadEditPanGestureRecognizerDelegate:self];
   }
 }
 

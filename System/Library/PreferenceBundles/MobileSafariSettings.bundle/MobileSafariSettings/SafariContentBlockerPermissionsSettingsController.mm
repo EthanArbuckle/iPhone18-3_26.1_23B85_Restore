@@ -1,14 +1,14 @@
 @interface SafariContentBlockerPermissionsSettingsController
 - (SafariContentBlockerPermissionsSettingsController)init;
 - (id)_contentBlockerManager;
-- (id)_enabledStateOfContentBlockerForSpecifier:(id)a3;
-- (id)_enabledStateOfContentBlockerInPrivateBrowsingForSpecifier:(id)a3;
-- (id)_hostAppDisplayName:(id)a3;
+- (id)_enabledStateOfContentBlockerForSpecifier:(id)specifier;
+- (id)_enabledStateOfContentBlockerInPrivateBrowsingForSpecifier:(id)specifier;
+- (id)_hostAppDisplayName:(id)name;
 - (id)_specifiersForEnablingExtension;
 - (id)specifiers;
 - (void)_reloadSpecifiersSoon;
-- (void)_setContentBlockerEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)_setContentBlockerEnabledInPrivateBrowsing:(id)a3 forSpecifier:(id)a4;
+- (void)_setContentBlockerEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)_setContentBlockerEnabledInPrivateBrowsing:(id)browsing forSpecifier:(id)specifier;
 - (void)_setExtensionIfNeeded;
 @end
 
@@ -36,21 +36,21 @@
 - (id)specifiers
 {
   [(SafariContentBlockerPermissionsSettingsController *)self _setExtensionIfNeeded];
-  v3 = [(SafariContentBlockerPermissionsSettingsController *)self _contentBlockerManager];
-  v4 = [(SafariContentBlockerPermissionsSettingsController *)self navigationController];
-  v5 = [v3 extensions];
-  if ([v5 containsObject:self->_extension])
+  _contentBlockerManager = [(SafariContentBlockerPermissionsSettingsController *)self _contentBlockerManager];
+  navigationController = [(SafariContentBlockerPermissionsSettingsController *)self navigationController];
+  extensions = [_contentBlockerManager extensions];
+  if ([extensions containsObject:self->_extension])
   {
   }
 
   else
   {
-    v6 = [(SafariContentBlockerPermissionsSettingsController *)self viewIfLoaded];
-    v7 = [v6 window];
+    viewIfLoaded = [(SafariContentBlockerPermissionsSettingsController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
 
-    if (v7)
+    if (window)
     {
-      v8 = [v4 popViewControllerAnimated:1];
+      v8 = [navigationController popViewControllerAnimated:1];
       v9 = 0;
       goto LABEL_10;
     }
@@ -68,11 +68,11 @@
     v12 = +[NSMutableArray array];
     v32 = [PSSpecifier groupSpecifierWithID:@"EXTENSION_INFO_GROUP"];
     [v12 addObject:v32];
-    v30 = [v3 displayNameForExtension:self->_extension];
+    v30 = [_contentBlockerManager displayNameForExtension:self->_extension];
     v35 = [PSSpecifier preferenceSpecifierNamed:"preferenceSpecifierNamed:target:set:get:detail:cell:edit:" target:0 set:? get:? detail:? cell:? edit:?];
-    v13 = [(NSExtension *)self->_extension _plugIn];
-    v14 = [v13 uuid];
-    v15 = [LSPlugInKitProxy pluginKitProxyForUUID:v14];
+    _plugIn = [(NSExtension *)self->_extension _plugIn];
+    uuid = [_plugIn uuid];
+    v15 = [LSPlugInKitProxy pluginKitProxyForUUID:uuid];
 
     v31 = v15;
     v33 = [UIImage _iconForResourceProxy:v15 format:0];
@@ -83,8 +83,8 @@
     v17 = [PSSpecifier preferenceSpecifierNamed:v16 target:self set:0 get:"_hostAppDisplayName:" detail:0 cell:4 edit:0];
     [v12 addObject:v17];
 
-    v34 = [(NSExtension *)self->_extension safari_humanReadableDescription];
-    if ([v34 length])
+    safari_humanReadableDescription = [(NSExtension *)self->_extension safari_humanReadableDescription];
+    if ([safari_humanReadableDescription length])
     {
       v18 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
       [v18 setProperty:@"DESCRIPTION" forKey:PSIDKey];
@@ -92,7 +92,7 @@
       v19 = SafariSettingsLocalizedString(@"Description", @"Extensions");
       v36[1] = @"subtitle";
       v37[0] = v19;
-      v37[1] = v34;
+      v37[1] = safari_humanReadableDescription;
       v20 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:2];
       [v18 setUserInfo:v20];
 
@@ -100,15 +100,15 @@
       [v12 addObject:v18];
     }
 
-    v21 = [(SafariContentBlockerPermissionsSettingsController *)self _specifiersForEnablingExtension];
-    [v12 addObjectsFromArray:v21];
+    _specifiersForEnablingExtension = [(SafariContentBlockerPermissionsSettingsController *)self _specifiersForEnablingExtension];
+    [v12 addObjectsFromArray:_specifiersForEnablingExtension];
 
     v22 = [SafariExtensionPermissionsExplanation alloc];
     extension = self->_extension;
-    v24 = [v3 displayNameForExtension:extension];
+    v24 = [_contentBlockerManager displayNameForExtension:extension];
     v25 = [(SafariExtensionPermissionsExplanation *)v22 initWithContentBlocker:extension withDisplayName:v24];
-    v26 = [(SafariExtensionPermissionsExplanation *)v25 specifiers];
-    [v12 addObjectsFromArray:v26];
+    specifiers = [(SafariExtensionPermissionsExplanation *)v25 specifiers];
+    [v12 addObjectsFromArray:specifiers];
 
     v27 = [v12 copy];
     v28 = *&self->super.PSListController_opaque[v10];
@@ -129,9 +129,9 @@ LABEL_10:
   v4 = SafariSettingsLocalizedString(@"Allow Extension", @"Extensions");
   v50 = [PSSpecifier preferenceSpecifierNamed:"preferenceSpecifierNamed:target:set:get:detail:cell:edit:" target:v4 set:self get:0 detail:? cell:? edit:?];
 
-  v5 = [(SafariContentBlockerPermissionsSettingsController *)self _contentBlockerManager];
-  v6 = [v5 webExtensionsController];
-  v48 = [v6 composedIdentifierForExtensionStateForExtension:self->_extension];
+  _contentBlockerManager = [(SafariContentBlockerPermissionsSettingsController *)self _contentBlockerManager];
+  webExtensionsController = [_contentBlockerManager webExtensionsController];
+  v48 = [webExtensionsController composedIdentifierForExtensionStateForExtension:self->_extension];
 
   v7 = +[WBSManagedExtensionsController sharedController];
   v8 = [v7 managedExtensionStateForComposedIdentifier:v48];
@@ -156,8 +156,8 @@ LABEL_10:
   [v50 setUserInfo:v12];
 
   [v3 addObject:v50];
-  v13 = [(SafariContentBlockerPermissionsSettingsController *)self _contentBlockerManager];
-  v47 = [v13 extensionIsEnabled:self->_extension];
+  _contentBlockerManager2 = [(SafariContentBlockerPermissionsSettingsController *)self _contentBlockerManager];
+  v47 = [_contentBlockerManager2 extensionIsEnabled:self->_extension];
 
   if (v47)
   {
@@ -191,8 +191,8 @@ LABEL_10:
   }
 
   v20 = +[SafariSettingsController tabGroupManager];
-  v21 = [v20 namedProfiles];
-  v22 = [v21 count] == 0;
+  namedProfiles = [v20 namedProfiles];
+  v22 = [namedProfiles count] == 0;
 
   if (v22)
   {
@@ -213,12 +213,12 @@ LABEL_10:
 
     [v55 addObject:v46];
     v24 = +[SafariSettingsController tabGroupManager];
-    v25 = [v24 defaultProfile];
-    obja = [NSArray arrayWithObject:v25];
+    defaultProfile = [v24 defaultProfile];
+    obja = [NSArray arrayWithObject:defaultProfile];
 
     v26 = +[SafariSettingsController tabGroupManager];
-    v27 = [v26 namedProfiles];
-    v28 = [obja arrayByAddingObjectsFromArray:v27];
+    namedProfiles2 = [v26 namedProfiles];
+    v28 = [obja arrayByAddingObjectsFromArray:namedProfiles2];
 
     v58 = 0u;
     v59 = 0u;
@@ -240,16 +240,16 @@ LABEL_10:
           }
 
           v33 = *(*(&v56 + 1) + 8 * i);
-          v34 = [v33 title];
-          v35 = [PSSpecifier preferenceSpecifierNamed:v34 target:self set:"_setContentBlockerEnabled:forSpecifier:" get:"_enabledStateOfContentBlockerForSpecifier:" detail:0 cell:6 edit:0];
+          title = [v33 title];
+          v35 = [PSSpecifier preferenceSpecifierNamed:title target:self set:"_setContentBlockerEnabled:forSpecifier:" get:"_enabledStateOfContentBlockerForSpecifier:" detail:0 cell:6 edit:0];
 
           [v35 setObject:&__kCFBooleanTrue forKeyedSubscript:v31];
           v36 = self->_extension;
           v60[0] = @"Extension";
           v60[1] = @"ProfileServerID";
           v61[0] = v36;
-          v37 = [v33 identifierForExtensions];
-          v61[1] = v37;
+          identifierForExtensions = [v33 identifierForExtensions];
+          v61[1] = identifierForExtensions;
           v38 = [NSDictionary dictionaryWithObjects:v61 forKeys:v60 count:2];
           [v35 setUserInfo:v38];
 
@@ -289,8 +289,8 @@ LABEL_10:
 - (id)_contentBlockerManager
 {
   v2 = +[SafariSettingsController extensionsProfilesDataSource];
-  v3 = [v2 profileServerIDToContentBlockerManagers];
-  v4 = [v3 objectForKeyedSubscript:WBSDefaultProfileIdentifier];
+  profileServerIDToContentBlockerManagers = [v2 profileServerIDToContentBlockerManagers];
+  v4 = [profileServerIDToContentBlockerManagers objectForKeyedSubscript:WBSDefaultProfileIdentifier];
 
   return v4;
 }
@@ -299,13 +299,13 @@ LABEL_10:
 {
   if (!self->_extension)
   {
-    v3 = [(SafariContentBlockerPermissionsSettingsController *)self specifier];
-    v4 = [v3 userInfo];
+    specifier = [(SafariContentBlockerPermissionsSettingsController *)self specifier];
+    userInfo = [specifier userInfo];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = userInfo;
     }
 
     else
@@ -315,78 +315,78 @@ LABEL_10:
 
     v8 = v5;
 
-    v6 = [v8 extension];
+    extension = [v8 extension];
     extension = self->_extension;
-    self->_extension = v6;
+    self->_extension = extension;
   }
 }
 
-- (id)_enabledStateOfContentBlockerForSpecifier:(id)a3
+- (id)_enabledStateOfContentBlockerForSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"Extension"];
+  specifierCopy = specifier;
+  userInfo = [specifierCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"Extension"];
 
   v6 = +[SafariSettingsController extensionsProfilesDataSource];
-  v7 = [v6 profileServerIDToContentBlockerManagers];
-  v8 = [v3 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"ProfileServerID"];
-  v10 = [v7 objectForKeyedSubscript:v9];
+  profileServerIDToContentBlockerManagers = [v6 profileServerIDToContentBlockerManagers];
+  userInfo2 = [specifierCopy userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:@"ProfileServerID"];
+  v10 = [profileServerIDToContentBlockerManagers objectForKeyedSubscript:v9];
 
   v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 extensionIsEnabled:v5]);
 
   return v11;
 }
 
-- (void)_setContentBlockerEnabled:(id)a3 forSpecifier:(id)a4
+- (void)_setContentBlockerEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v13 = a3;
-  v5 = a4;
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"Extension"];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  userInfo = [specifierCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"Extension"];
 
   v8 = +[SafariSettingsController extensionsProfilesDataSource];
-  v9 = [v8 profileServerIDToContentBlockerManagers];
-  v10 = [v5 userInfo];
-  v11 = [v10 objectForKeyedSubscript:@"ProfileServerID"];
-  v12 = [v9 objectForKeyedSubscript:v11];
+  profileServerIDToContentBlockerManagers = [v8 profileServerIDToContentBlockerManagers];
+  userInfo2 = [specifierCopy userInfo];
+  v11 = [userInfo2 objectForKeyedSubscript:@"ProfileServerID"];
+  v12 = [profileServerIDToContentBlockerManagers objectForKeyedSubscript:v11];
 
-  [v12 setExtension:v7 isEnabled:objc_msgSend(v13 byUserGesture:{"BOOLValue"), 1}];
+  [v12 setExtension:v7 isEnabled:objc_msgSend(enabledCopy byUserGesture:{"BOOLValue"), 1}];
 }
 
-- (id)_enabledStateOfContentBlockerInPrivateBrowsingForSpecifier:(id)a3
+- (id)_enabledStateOfContentBlockerInPrivateBrowsingForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(SafariContentBlockerPermissionsSettingsController *)self _contentBlockerManager];
-  v6 = [v4 userInfo];
-  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 isContentBlockerAllowedInPrivateBrowsing:v6]);
+  specifierCopy = specifier;
+  _contentBlockerManager = [(SafariContentBlockerPermissionsSettingsController *)self _contentBlockerManager];
+  userInfo = [specifierCopy userInfo];
+  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [_contentBlockerManager isContentBlockerAllowedInPrivateBrowsing:userInfo]);
 
   return v7;
 }
 
-- (void)_setContentBlockerEnabledInPrivateBrowsing:(id)a3 forSpecifier:(id)a4
+- (void)_setContentBlockerEnabledInPrivateBrowsing:(id)browsing forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 userInfo];
-  v9 = [(SafariContentBlockerPermissionsSettingsController *)self _contentBlockerManager];
-  [v9 setExtension:v8 isEnabledInPrivateBrowsing:objc_msgSend(v6 updateUserContentController:{"BOOLValue"), 0}];
+  browsingCopy = browsing;
+  specifierCopy = specifier;
+  userInfo = [specifierCopy userInfo];
+  _contentBlockerManager = [(SafariContentBlockerPermissionsSettingsController *)self _contentBlockerManager];
+  [_contentBlockerManager setExtension:userInfo isEnabledInPrivateBrowsing:objc_msgSend(browsingCopy updateUserContentController:{"BOOLValue"), 0}];
 
   v10 = +[NSDistributedNotificationCenter defaultCenter];
   v13[0] = WBSContentBlockerIdentifierNotificationKey;
-  v11 = [v8 identifier];
+  identifier = [userInfo identifier];
   v13[1] = WBSExtensionEnabledInPrivateBrowsingNotificationKey;
-  v14[0] = v11;
-  v14[1] = v6;
+  v14[0] = identifier;
+  v14[1] = browsingCopy;
   v12 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
   [v10 postNotificationName:WBSContentBlockerExtensionDidChangeEnabledStateInPrivateBrowsingNotification object:0 userInfo:v12 deliverImmediately:1];
 }
 
-- (id)_hostAppDisplayName:(id)a3
+- (id)_hostAppDisplayName:(id)name
 {
-  v3 = [(NSExtension *)self->_extension safari_localizedContainingAppDisplayName];
+  safari_localizedContainingAppDisplayName = [(NSExtension *)self->_extension safari_localizedContainingAppDisplayName];
 
-  return v3;
+  return safari_localizedContainingAppDisplayName;
 }
 
 - (void)_reloadSpecifiersSoon

@@ -1,17 +1,17 @@
 @interface HUServiceDetailsCameraDoorbellChimeMuteItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUServiceDetailsCameraDoorbellChimeMuteItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v34[1] = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v4 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = sourceServiceItem;
   }
 
   else
@@ -23,18 +23,18 @@
 
   if (v6)
   {
-    v7 = [v6 profile];
-    v8 = [v7 hf_doorbellChimeMuteCharacteristic];
+    profile = [v6 profile];
+    hf_doorbellChimeMuteCharacteristic = [profile hf_doorbellChimeMuteCharacteristic];
 
-    if (v8)
+    if (hf_doorbellChimeMuteCharacteristic)
     {
-      v9 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v10 = _HULocalizedStringWithDefaultValue(@"HUCameraDoorbellChimeMuteSwitchTitle", @"HUCameraDoorbellChimeMuteSwitchTitle", 1);
-      [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x277D13F60]];
+      [dictionary setObject:v10 forKeyedSubscript:*MEMORY[0x277D13F60]];
 
-      v11 = [MEMORY[0x277D146E8] sharedDispatcher];
-      v12 = [v11 home];
-      if ([v12 hf_currentUserIsAdministrator])
+      mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+      home = [mEMORY[0x277D146E8] home];
+      if ([home hf_currentUserIsAdministrator])
       {
         v13 = MEMORY[0x277CBEC28];
       }
@@ -44,13 +44,13 @@
         v13 = MEMORY[0x277CBEC38];
       }
 
-      [v9 setObject:v13 forKeyedSubscript:*MEMORY[0x277D13EA8]];
+      [dictionary setObject:v13 forKeyedSubscript:*MEMORY[0x277D13EA8]];
 
       objc_opt_class();
-      v14 = [v8 value];
+      value = [hf_doorbellChimeMuteCharacteristic value];
       if (objc_opt_isKindOfClass())
       {
-        v15 = v14;
+        v15 = value;
       }
 
       else
@@ -60,10 +60,10 @@
 
       v16 = v15;
 
-      v17 = [v16 BOOLValue];
-      v18 = v17 ^ 1;
+      bOOLValue = [v16 BOOLValue];
+      v18 = bOOLValue ^ 1;
       v19 = [MEMORY[0x277CCABB0] numberWithInteger:HFPrimaryStateFromBOOL()];
-      [v9 setObject:v19 forKeyedSubscript:*MEMORY[0x277D14068]];
+      [dictionary setObject:v19 forKeyedSubscript:*MEMORY[0x277D14068]];
 
       v20 = HFLogForCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -90,11 +90,11 @@
       v27 = MEMORY[0x277D14780];
       v31 = *MEMORY[0x277D13FB8];
       v32 = MEMORY[0x277CBEC38];
-      v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
+      dictionary = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
       v22 = v27;
     }
 
-    v28 = [v22 outcomeWithResults:v9];
+    v28 = [v22 outcomeWithResults:dictionary];
     v25 = [v21 futureWithResult:v28];
   }
 
@@ -104,9 +104,9 @@
     v24 = MEMORY[0x277D14780];
     v33 = *MEMORY[0x277D13FB8];
     v34[0] = MEMORY[0x277CBEC38];
-    v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-    v9 = [v24 outcomeWithResults:v8];
-    v25 = [v23 futureWithResult:v9];
+    hf_doorbellChimeMuteCharacteristic = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
+    dictionary = [v24 outcomeWithResults:hf_doorbellChimeMuteCharacteristic];
+    v25 = [v23 futureWithResult:dictionary];
   }
 
   return v25;

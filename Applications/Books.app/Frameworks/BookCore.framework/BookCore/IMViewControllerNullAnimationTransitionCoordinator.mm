@@ -1,9 +1,9 @@
 @interface IMViewControllerNullAnimationTransitionCoordinator
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5;
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion;
 - (CGAffineTransform)targetTransform;
-- (id)_alongsideAnimations:(BOOL)a3;
-- (id)_alongsideCompletions:(BOOL)a3;
-- (void)_applyBlocks:(id)a3 releaseBlocks:(id)a4;
+- (id)_alongsideAnimations:(BOOL)animations;
+- (id)_alongsideCompletions:(BOOL)completions;
+- (void)_applyBlocks:(id)blocks releaseBlocks:(id)releaseBlocks;
 - (void)_runAlongsideAnimations;
 - (void)_runAlongsideCompletionsAfterCommit;
 @end
@@ -19,7 +19,7 @@
   return self;
 }
 
-- (id)_alongsideAnimations:(BOOL)a3
+- (id)_alongsideAnimations:(BOOL)animations
 {
   alongsideAnimations = self->_alongsideAnimations;
   if (alongsideAnimations)
@@ -29,7 +29,7 @@
 
   else
   {
-    v5 = !a3;
+    v5 = !animations;
   }
 
   if (!v5)
@@ -44,7 +44,7 @@
   return alongsideAnimations;
 }
 
-- (id)_alongsideCompletions:(BOOL)a3
+- (id)_alongsideCompletions:(BOOL)completions
 {
   alongsideCompletions = self->_alongsideCompletions;
   if (alongsideCompletions)
@@ -54,7 +54,7 @@
 
   else
   {
-    v5 = !a3;
+    v5 = !completions;
   }
 
   if (!v5)
@@ -69,29 +69,29 @@
   return alongsideCompletions;
 }
 
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  animationCopy = animation;
+  completionCopy = completion;
   transitionIsInFlight = self->_transitionIsInFlight;
-  if (v9 && !self->_transitionIsInFlight)
+  if (animationCopy && !self->_transitionIsInFlight)
   {
-    v12 = [v9 copy];
+    v12 = [animationCopy copy];
     v13 = [(IMViewControllerNullAnimationTransitionCoordinator *)self _alongsideAnimations:1];
     v14 = objc_retainBlock(v12);
     [v13 addObject:v14];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v15 = [v10 copy];
+    v15 = [completionCopy copy];
     v16 = [(IMViewControllerNullAnimationTransitionCoordinator *)self _alongsideCompletions:1];
     v17 = objc_retainBlock(v15);
     [v16 addObject:v17];
   }
 
-  return v9 == 0 || !transitionIsInFlight;
+  return animationCopy == 0 || !transitionIsInFlight;
 }
 
 - (void)_runAlongsideAnimations
@@ -133,18 +133,18 @@
   [(IMViewControllerNullAnimationTransitionCoordinator *)self _applyBlocks:v3 releaseBlocks:v4];
 }
 
-- (void)_applyBlocks:(id)a3 releaseBlocks:(id)a4
+- (void)_applyBlocks:(id)blocks releaseBlocks:(id)releaseBlocks
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  blocksCopy = blocks;
+  releaseBlocksCopy = releaseBlocks;
+  if ([blocksCopy count])
   {
-    v7[2](v7);
+    releaseBlocksCopy[2](releaseBlocksCopy);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = v6;
+    v8 = blocksCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {

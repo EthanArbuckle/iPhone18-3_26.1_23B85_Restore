@@ -1,32 +1,32 @@
 @interface ICQOffer
-+ (id)_settingsBannerSpecificationWithServerDictionary:(id)a3 bundleId:(id)a4;
-+ (id)offerReasonForServerReason:(id)a3;
-+ (id)sampleOfferForLevel:(int64_t)a3;
++ (id)_settingsBannerSpecificationWithServerDictionary:(id)dictionary bundleId:(id)id;
++ (id)offerReasonForServerReason:(id)reason;
++ (id)sampleOfferForLevel:(int64_t)level;
 - (BOOL)isExpired;
 - (BOOL)showsPhotoVideoCounts;
-- (ICQOffer)initWithCoder:(id)a3;
-- (ICQOffer)initWithServerDictionary:(id)a3 accountAltDSID:(id)a4 notificationID:(id)a5 retrievalDate:(id)a6 callbackInterval:(double)a7 appLaunchLink:(id)a8 bundleIdentifier:(id)a9;
+- (ICQOffer)initWithCoder:(id)coder;
+- (ICQOffer)initWithServerDictionary:(id)dictionary accountAltDSID:(id)d notificationID:(id)iD retrievalDate:(id)date callbackInterval:(double)interval appLaunchLink:(id)link bundleIdentifier:(id)identifier;
 - (NSDate)lastUpdated;
 - (NSURL)serverUIURL;
 - (_ICQDynamicUISpecification)dynamicUISpecification;
 - (double)_callbackInterval;
-- (id)_processICQURL:(id)a3;
-- (id)alertSpecificationAtIndex:(unint64_t)a3;
-- (id)alertSpecificationForAlertKey:(id)a3;
-- (id)inAppMessageSpecificationForReason:(id)a3 bundleId:(id)a4;
-- (id)journeyLinkForId:(id)a3;
-- (id)messageSpecificationForPlacement:(id)a3;
-- (id)messageSpecificationForReason:(id)a3 bundleId:(id)a4 placement:(id)a5;
-- (id)settingsBannerSpecificationForReason:(id)a3 bundleId:(id)a4;
-- (id)storagePurchaseKeybagForButtonId:(id)a3;
+- (id)_processICQURL:(id)l;
+- (id)alertSpecificationAtIndex:(unint64_t)index;
+- (id)alertSpecificationForAlertKey:(id)key;
+- (id)inAppMessageSpecificationForReason:(id)reason bundleId:(id)id;
+- (id)journeyLinkForId:(id)id;
+- (id)messageSpecificationForPlacement:(id)placement;
+- (id)messageSpecificationForReason:(id)reason bundleId:(id)id placement:(id)placement;
+- (id)settingsBannerSpecificationForReason:(id)reason bundleId:(id)id;
+- (id)storagePurchaseKeybagForButtonId:(id)id;
 - (id)universalLink;
-- (id)universalLinkForContext:(id)a3;
+- (id)universalLinkForContext:(id)context;
 - (id)universalSuccessLink;
 - (int64_t)action;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)universalLink;
 - (void)universalSuccessLink;
-- (void)updateOfferWithPlanDetails:(id)a3 actionString:(id)a4;
+- (void)updateOfferWithPlanDetails:(id)details actionString:(id)string;
 @end
 
 @implementation ICQOffer
@@ -34,8 +34,8 @@
 - (BOOL)isExpired
 {
   expirationDate = self->_expirationDate;
-  v3 = [MEMORY[0x277CBEAA8] date];
-  LOBYTE(expirationDate) = [(NSDate *)expirationDate compare:v3]== NSOrderedAscending;
+  date = [MEMORY[0x277CBEAA8] date];
+  LOBYTE(expirationDate) = [(NSDate *)expirationDate compare:date]== NSOrderedAscending;
 
   return expirationDate;
 }
@@ -43,16 +43,16 @@
 - (BOOL)showsPhotoVideoCounts
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(ICQOffer *)self bundleIdentifier];
-  if (![v3 isEqualToString:@"com.apple.mobileslideshow"] || !-[ICQOffer isDetailAppBannerOffer](self, "isDetailAppBannerOffer"))
+  bundleIdentifier = [(ICQOffer *)self bundleIdentifier];
+  if (![bundleIdentifier isEqualToString:@"com.apple.mobileslideshow"] || !-[ICQOffer isDetailAppBannerOffer](self, "isDetailAppBannerOffer"))
   {
 
     goto LABEL_8;
   }
 
-  v4 = [(ICQOffer *)self placeholderExists];
+  placeholderExists = [(ICQOffer *)self placeholderExists];
 
-  if (!v4)
+  if (!placeholderExists)
   {
 LABEL_8:
     result = 0;
@@ -63,7 +63,7 @@ LABEL_8:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_275572000, v5, OS_LOG_TYPE_DEFAULT, "Offer %@ will show count", &v8, 0xCu);
   }
 
@@ -73,29 +73,29 @@ LABEL_9:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   serverDictionary = self->_serverDictionary;
-  v6 = a3;
-  [v6 encodeObject:serverDictionary forKey:@"serverDict"];
-  [v6 encodeObject:self->_accountAltDSID forKey:@"accountAltDSID"];
-  [v6 encodeObject:self->_notificationID forKey:@"notificationID"];
-  [v6 encodeObject:self->_retrievalDate forKey:@"retrievalDate"];
-  [v6 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [v6 encodeObject:self->_appVersionId forKey:@"appVersionId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:serverDictionary forKey:@"serverDict"];
+  [coderCopy encodeObject:self->_accountAltDSID forKey:@"accountAltDSID"];
+  [coderCopy encodeObject:self->_notificationID forKey:@"notificationID"];
+  [coderCopy encodeObject:self->_retrievalDate forKey:@"retrievalDate"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_appVersionId forKey:@"appVersionId"];
   [(ICQOffer *)self _callbackInterval];
-  [v6 encodeDouble:@"callbackInterval" forKey:?];
-  [v6 encodeObject:self->_context forKey:@"context"];
-  v5 = [(ICQOffer *)self requestedServerUIURL];
-  [v6 encodeObject:v5 forKey:@"requestedServerUIURL"];
+  [coderCopy encodeDouble:@"callbackInterval" forKey:?];
+  [coderCopy encodeObject:self->_context forKey:@"context"];
+  requestedServerUIURL = [(ICQOffer *)self requestedServerUIURL];
+  [coderCopy encodeObject:requestedServerUIURL forKey:@"requestedServerUIURL"];
 
-  [v6 encodeInteger:self->_actionOverride forKey:@"actionOverride"];
-  [v6 encodeObject:self->_appLaunchLink forKey:@"appLaunchLink"];
+  [coderCopy encodeInteger:self->_actionOverride forKey:@"actionOverride"];
+  [coderCopy encodeObject:self->_appLaunchLink forKey:@"appLaunchLink"];
 }
 
-- (ICQOffer)initWithCoder:(id)a3
+- (ICQOffer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = ICQOffer;
   v5 = [(ICQOffer *)&v25 init];
@@ -108,20 +108,20 @@ LABEL_9:
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v24 = [v6 setWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v24 forKey:@"serverDict"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountAltDSID"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"notificationID"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"retrievalDate"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-    [v4 decodeDoubleForKey:@"callbackInterval"];
+    v23 = [coderCopy decodeObjectOfClasses:v24 forKey:@"serverDict"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountAltDSID"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notificationID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"retrievalDate"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    [coderCopy decodeDoubleForKey:@"callbackInterval"];
     v17 = v16;
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appVersionId"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appLaunchLink"];
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedServerUIURL"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appVersionId"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appLaunchLink"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedServerUIURL"];
     [(ICQOffer *)v5 setRequestedServerUIURL:v21];
 
-    v5->_actionOverride = [v4 decodeIntegerForKey:@"actionOverride"];
+    v5->_actionOverride = [coderCopy decodeIntegerForKey:@"actionOverride"];
     [(ICQOffer *)v5 setContext:v18];
     [(ICQOffer *)v5 setAppVersionId:v19];
     v5 = [(ICQOffer *)v5 initWithServerDictionary:v23 accountAltDSID:v12 notificationID:v13 retrievalDate:v14 callbackInterval:v20 appLaunchLink:v15 bundleIdentifier:v17];
@@ -132,36 +132,36 @@ LABEL_9:
 
 - (NSURL)serverUIURL
 {
-  v3 = [(ICQOffer *)self requestedServerUIURL];
+  requestedServerUIURL = [(ICQOffer *)self requestedServerUIURL];
 
-  if (v3)
+  if (requestedServerUIURL)
   {
-    v4 = [(ICQOffer *)self requestedServerUIURL];
+    requestedServerUIURL2 = [(ICQOffer *)self requestedServerUIURL];
   }
 
   else
   {
-    v5 = [(_ICQBannerSpecification *)self->_bannerSpecification serverUIURL];
+    serverUIURL = [(_ICQBannerSpecification *)self->_bannerSpecification serverUIURL];
 
-    if (v5)
+    if (serverUIURL)
     {
       bannerSpecification = self->_bannerSpecification;
     }
 
     else
     {
-      v7 = [(_ICQFollowupSpecification *)self->_followupSpecification serverUIURL];
+      serverUIURL2 = [(_ICQFollowupSpecification *)self->_followupSpecification serverUIURL];
 
-      if (v7)
+      if (serverUIURL2)
       {
         bannerSpecification = self->_followupSpecification;
       }
 
       else
       {
-        v8 = [(_ICQBannerSpecification *)self->_universalLinkSpecification serverUIURL];
+        serverUIURL3 = [(_ICQBannerSpecification *)self->_universalLinkSpecification serverUIURL];
 
-        if (!v8)
+        if (!serverUIURL3)
         {
           goto LABEL_15;
         }
@@ -170,82 +170,82 @@ LABEL_9:
       }
     }
 
-    v4 = [bannerSpecification serverUIURL];
+    requestedServerUIURL2 = [bannerSpecification serverUIURL];
   }
 
-  v8 = v4;
-  if (v4)
+  serverUIURL3 = requestedServerUIURL2;
+  if (requestedServerUIURL2)
   {
-    v9 = [(ICQOffer *)self bundleIdentifier];
-    if ([v9 isEqualToString:@"com.apple.icq"])
+    bundleIdentifier = [(ICQOffer *)self bundleIdentifier];
+    if ([bundleIdentifier isEqualToString:@"com.apple.icq"])
     {
-      v10 = [(ICQOffer *)self context];
+      context = [(ICQOffer *)self context];
 
-      if (!v10)
+      if (!context)
       {
         goto LABEL_15;
       }
 
-      [(ICQOffer *)self _processICQURL:v8];
-      v8 = v9 = v8;
+      [(ICQOffer *)self _processICQURL:serverUIURL3];
+      serverUIURL3 = bundleIdentifier = serverUIURL3;
     }
   }
 
 LABEL_15:
 
-  return v8;
+  return serverUIURL3;
 }
 
 - (_ICQDynamicUISpecification)dynamicUISpecification
 {
-  v3 = [(ICQOffer *)self serverUIURL];
+  serverUIURL = [(ICQOffer *)self serverUIURL];
   p_bannerSpecification = &self->_bannerSpecification;
-  v5 = [(_ICQBannerSpecification *)self->_bannerSpecification dynamicUIRouteURL];
+  dynamicUIRouteURL = [(_ICQBannerSpecification *)self->_bannerSpecification dynamicUIRouteURL];
 
-  if (v5)
+  if (dynamicUIRouteURL)
   {
     goto LABEL_5;
   }
 
   p_bannerSpecification = &self->_followupSpecification;
-  v6 = [(_ICQFollowupSpecification *)self->_followupSpecification dynamicUIRouteURL];
+  dynamicUIRouteURL2 = [(_ICQFollowupSpecification *)self->_followupSpecification dynamicUIRouteURL];
 
-  if (v6)
+  if (dynamicUIRouteURL2)
   {
     goto LABEL_5;
   }
 
   universalLinkSpecification = self->_universalLinkSpecification;
   p_universalLinkSpecification = &self->_universalLinkSpecification;
-  v9 = [(_ICQBannerSpecification *)universalLinkSpecification dynamicUIRouteURL];
+  dynamicUIRouteURL3 = [(_ICQBannerSpecification *)universalLinkSpecification dynamicUIRouteURL];
 
-  if (v9)
+  if (dynamicUIRouteURL3)
   {
     p_bannerSpecification = p_universalLinkSpecification;
 LABEL_5:
-    v10 = [*p_bannerSpecification dynamicUIRouteURL];
-    v9 = [*p_bannerSpecification purchaseAttribution];
+    dynamicUIRouteURL4 = [*p_bannerSpecification dynamicUIRouteURL];
+    dynamicUIRouteURL3 = [*p_bannerSpecification purchaseAttribution];
     goto LABEL_6;
   }
 
-  v10 = 0;
+  dynamicUIRouteURL4 = 0;
 LABEL_6:
-  v11 = [[_ICQDynamicUISpecification alloc] initWithRouteURL:v10 pageContentsURL:v3 attributionSuffix:v9];
+  v11 = [[_ICQDynamicUISpecification alloc] initWithRouteURL:dynamicUIRouteURL4 pageContentsURL:serverUIURL attributionSuffix:dynamicUIRouteURL3];
 
   return v11;
 }
 
 - (id)universalLink
 {
-  v3 = [(ICQOffer *)self universalLinkSpecification];
-  v4 = [v3 links];
-  v5 = [v4 count];
+  universalLinkSpecification = [(ICQOffer *)self universalLinkSpecification];
+  links = [universalLinkSpecification links];
+  v5 = [links count];
 
   if (v5)
   {
-    v6 = [(ICQOffer *)self universalLinkSpecification];
-    v7 = [v6 links];
-    v8 = [v7 firstObject];
+    universalLinkSpecification2 = [(ICQOffer *)self universalLinkSpecification];
+    links2 = [universalLinkSpecification2 links];
+    firstObject = [links2 firstObject];
   }
 
   else
@@ -256,23 +256,23 @@ LABEL_6:
       [(ICQOffer *)self universalLink];
     }
 
-    v8 = 0;
+    firstObject = 0;
   }
 
-  return v8;
+  return firstObject;
 }
 
 - (id)universalSuccessLink
 {
-  v3 = [(ICQOffer *)self universalSuccessInfoSpecification];
-  v4 = [v3 links];
-  v5 = [v4 count];
+  universalSuccessInfoSpecification = [(ICQOffer *)self universalSuccessInfoSpecification];
+  links = [universalSuccessInfoSpecification links];
+  v5 = [links count];
 
   if (v5)
   {
-    v6 = [(ICQOffer *)self universalSuccessInfoSpecification];
-    v7 = [v6 links];
-    v8 = [v7 firstObject];
+    universalSuccessInfoSpecification2 = [(ICQOffer *)self universalSuccessInfoSpecification];
+    links2 = [universalSuccessInfoSpecification2 links];
+    firstObject = [links2 firstObject];
   }
 
   else
@@ -283,25 +283,25 @@ LABEL_6:
       [(ICQOffer *)self universalSuccessLink];
     }
 
-    v8 = 0;
+    firstObject = 0;
   }
 
-  return v8;
+  return firstObject;
 }
 
-- (id)_processICQURL:(id)a3
+- (id)_processICQURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ICQOffer *)self context];
-  v6 = [v4 icq_URLByAppendingQueryParamtersFromContext:v5];
+  lCopy = l;
+  context = [(ICQOffer *)self context];
+  v6 = [lCopy icq_URLByAppendingQueryParamtersFromContext:context];
 
   return v6;
 }
 
-- (id)journeyLinkForId:(id)a3
+- (id)journeyLinkForId:(id)id
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   [(NSDictionary *)self->_serverDictionary objectForKeyedSubscript:@"journeyLinks"];
   v19 = 0u;
   v20 = 0u;
@@ -323,7 +323,7 @@ LABEL_6:
 
         v10 = *(*(&v19 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:{@"btnId", v19}];
-        if ([v11 isEqualToString:v4])
+        if ([v11 isEqualToString:idCopy])
         {
           v13 = [v10 objectForKeyedSubscript:@"btnTitle"];
           v14 = [v10 objectForKeyedSubscript:@"btnAction"];
@@ -353,16 +353,16 @@ LABEL_11:
   return v12;
 }
 
-- (id)universalLinkForContext:(id)a3
+- (id)universalLinkForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICQOffer universalLinkForContext:];
   }
 
-  v6 = [(ICQActionBasedUniversalLinkSpecification *)self->_actionBasedUniversalLinkSpecification icqLinkForContext:v4];
+  v6 = [(ICQActionBasedUniversalLinkSpecification *)self->_actionBasedUniversalLinkSpecification icqLinkForContext:contextCopy];
   v7 = _ICQGetLogSystem();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
   if (v6)
@@ -373,7 +373,7 @@ LABEL_11:
       _os_log_impl(&dword_275572000, v7, OS_LOG_TYPE_DEFAULT, "universalLinkForContext found action based link", buf, 2u);
     }
 
-    v9 = v6;
+    universalLink = v6;
   }
 
   else
@@ -384,25 +384,25 @@ LABEL_11:
       _os_log_impl(&dword_275572000, v7, OS_LOG_TYPE_DEFAULT, "universalLinkForContext falling back to legacy universal link", v12, 2u);
     }
 
-    v9 = [(ICQOffer *)self universalLink];
+    universalLink = [(ICQOffer *)self universalLink];
   }
 
-  v10 = v9;
+  v10 = universalLink;
 
   return v10;
 }
 
-- (id)messageSpecificationForPlacement:(id)a3
+- (id)messageSpecificationForPlacement:(id)placement
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"InSettingsAppDetail"])
+  placementCopy = placement;
+  if ([placementCopy isEqualToString:@"InSettingsAppDetail"])
   {
-    v5 = [(ICQOffer *)self settingsBannerSpecification];
+    settingsBannerSpecification = [(ICQOffer *)self settingsBannerSpecification];
   }
 
   else
   {
-    if ([v4 isEqualToString:@"InAppConcise"])
+    if ([placementCopy isEqualToString:@"InAppConcise"])
     {
       [(ICQOffer *)self conciseInAppMessageSpecification];
     }
@@ -411,37 +411,37 @@ LABEL_11:
     {
       [(ICQOffer *)self inAppMessageSpecification];
     }
-    v5 = ;
+    settingsBannerSpecification = ;
   }
 
-  v6 = v5;
+  v6 = settingsBannerSpecification;
 
   return v6;
 }
 
-- (id)messageSpecificationForReason:(id)a3 bundleId:(id)a4 placement:(id)a5
+- (id)messageSpecificationForReason:(id)reason bundleId:(id)id placement:(id)placement
 {
-  v8 = a4;
-  v9 = a3;
-  if ([a5 isEqualToString:@"InSettingsAppDetail"])
+  idCopy = id;
+  reasonCopy = reason;
+  if ([placement isEqualToString:@"InSettingsAppDetail"])
   {
-    [(ICQOffer *)self settingsBannerSpecificationForReason:v9 bundleId:v8];
+    [(ICQOffer *)self settingsBannerSpecificationForReason:reasonCopy bundleId:idCopy];
   }
 
   else
   {
-    [(ICQOffer *)self inAppMessageSpecificationForReason:v9 bundleId:v8];
+    [(ICQOffer *)self inAppMessageSpecificationForReason:reasonCopy bundleId:idCopy];
   }
   v10 = ;
 
   return v10;
 }
 
-- (id)inAppMessageSpecificationForReason:(id)a3 bundleId:(id)a4
+- (id)inAppMessageSpecificationForReason:(id)reason bundleId:(id)id
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  idCopy = id;
   v8 = [(NSDictionary *)self->_serverDictionary objectForKeyedSubscript:@"detailAppBannerInfo"];
   if (v8)
   {
@@ -455,7 +455,7 @@ LABEL_11:
   {
 LABEL_4:
     v10 = [(NSDictionary *)self->_serverDictionary objectForKeyedSubscript:@"bubbleBannerInfo"];
-    v11 = _ICQBubbleBannerSpecificationForServerDict(v10, v7);
+    v11 = _ICQBubbleBannerSpecificationForServerDict(v10, idCopy);
 
     if (v11)
     {
@@ -468,18 +468,18 @@ LABEL_4:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = _ICQServerDictionaryForBundleIdentifier(v13, v7, v6, 0);
+      v14 = _ICQServerDictionaryForBundleIdentifier(v13, idCopy, reasonCopy, 0);
       if (!v14)
       {
         v15 = _ICQGetLogSystem();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           v22 = 138412290;
-          v23 = v6;
+          v23 = reasonCopy;
           _os_log_impl(&dword_275572000, v15, OS_LOG_TYPE_DEFAULT, "Using banner fallback search for reason %@", &v22, 0xCu);
         }
 
-        v14 = _ICQServerDictionaryForBundleIdentifier(v13, @"__WILDCARD__", v6, 0);
+        v14 = _ICQServerDictionaryForBundleIdentifier(v13, @"__WILDCARD__", reasonCopy, 0);
       }
 
       objc_opt_class();
@@ -546,11 +546,11 @@ LABEL_26:
   return v12;
 }
 
-- (id)settingsBannerSpecificationForReason:(id)a3 bundleId:(id)a4
+- (id)settingsBannerSpecificationForReason:(id)reason bundleId:(id)id
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  idCopy = id;
   v8 = [(NSDictionary *)self->_serverDictionary objectForKeyedSubscript:@"settingsBannerInfo"];
 
   if (v8)
@@ -560,7 +560,7 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = _ICQServerDictionaryForBundleIdentifier(v10, v7, v6, 0);
+      v11 = _ICQServerDictionaryForBundleIdentifier(v10, idCopy, reasonCopy, 0);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -624,12 +624,12 @@ LABEL_18:
   return v12;
 }
 
-+ (id)_settingsBannerSpecificationWithServerDictionary:(id)a3 bundleId:(id)a4
++ (id)_settingsBannerSpecificationWithServerDictionary:(id)dictionary bundleId:(id)id
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"settingsBannerInfo"];
+  dictionaryCopy = dictionary;
+  idCopy = id;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"settingsBannerInfo"];
 
   if (!v7)
   {
@@ -637,7 +637,7 @@ LABEL_18:
     goto LABEL_16;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"settingsBannerInfo"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"settingsBannerInfo"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -661,7 +661,7 @@ LABEL_18:
     goto LABEL_13;
   }
 
-  v9 = _ICQServerDictionaryForBundleIdentifier(v8, v6, 0, 0);
+  v9 = _ICQServerDictionaryForBundleIdentifier(v8, idCopy, 0, 0);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -695,38 +695,38 @@ LABEL_16:
   return v10;
 }
 
-+ (id)sampleOfferForLevel:(int64_t)a3
++ (id)sampleOfferForLevel:(int64_t)level
 {
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   [v4 setRetrievalDate:v5];
 
-  [v4 setLevel:a3];
+  [v4 setLevel:level];
   [v4 setAccountAltDSID:&stru_288431E38];
   [v4 setNotificationID:&stru_288431E38];
   [v4 setOfferId:&stru_288431E38];
-  v6 = [_ICQBannerSpecification bannerSpecificationSampleForLevel:a3];
+  v6 = [_ICQBannerSpecification bannerSpecificationSampleForLevel:level];
   [v4 setBannerSpecification:v6];
 
-  v7 = [_ICQButtonSpecification buttonSpecificationSampleForLevel:a3];
+  v7 = [_ICQButtonSpecification buttonSpecificationSampleForLevel:level];
   [v4 setButtonSpecification:v7];
 
-  v8 = [_ICQUpgradeFlowSpecification upgradeFlowSpecificationSampleForLevel:a3];
+  v8 = [_ICQUpgradeFlowSpecification upgradeFlowSpecificationSampleForLevel:level];
   [v4 setUpgradeFlowSpecification:v8];
 
   return v4;
 }
 
-- (ICQOffer)initWithServerDictionary:(id)a3 accountAltDSID:(id)a4 notificationID:(id)a5 retrievalDate:(id)a6 callbackInterval:(double)a7 appLaunchLink:(id)a8 bundleIdentifier:(id)a9
+- (ICQOffer)initWithServerDictionary:(id)dictionary accountAltDSID:(id)d notificationID:(id)iD retrievalDate:(id)date callbackInterval:(double)interval appLaunchLink:(id)link bundleIdentifier:(id)identifier
 {
   v165 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v151 = a6;
-  obj = a8;
-  v150 = a8;
-  v19 = a9;
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
+  obj = link;
+  linkCopy = link;
+  identifierCopy = identifier;
   v152.receiver = self;
   v152.super_class = ICQOffer;
   v20 = [(ICQOffer *)&v152 init];
@@ -735,41 +735,41 @@ LABEL_16:
     goto LABEL_103;
   }
 
-  v21 = [v16 copy];
+  v21 = [dictionaryCopy copy];
   serverDictionary = v20->_serverDictionary;
   v20->_serverDictionary = v21;
 
-  v23 = [v19 copy];
+  v23 = [identifierCopy copy];
   bundleIdentifier = v20->_bundleIdentifier;
   v20->_bundleIdentifier = v23;
 
-  objc_storeStrong(&v20->_retrievalDate, a6);
-  v25 = [(NSDate *)v20->_retrievalDate dateByAddingTimeInterval:a7];
+  objc_storeStrong(&v20->_retrievalDate, date);
+  v25 = [(NSDate *)v20->_retrievalDate dateByAddingTimeInterval:interval];
   expirationDate = v20->_expirationDate;
   v20->_expirationDate = v25;
 
-  _ICQServerDictToOfferTypeAndLevel(v16, &v20->_offerType, &v20->_level);
-  v27 = [v17 copy];
+  _ICQServerDictToOfferTypeAndLevel(dictionaryCopy, &v20->_offerType, &v20->_level);
+  v27 = [dCopy copy];
   accountAltDSID = v20->_accountAltDSID;
   v20->_accountAltDSID = v27;
 
-  v29 = [v18 copy];
+  v29 = [iDCopy copy];
   notificationID = v20->_notificationID;
   v20->_notificationID = v29;
 
-  v31 = _ICQStringForKey(v16, @"offerId");
+  v31 = _ICQStringForKey(dictionaryCopy, @"offerId");
   offerId = v20->_offerId;
   v20->_offerId = v31;
 
-  v33 = _ICQDetailBannerSpecificationForServerDict(v16, v19, 0);
+  v33 = _ICQDetailBannerSpecificationForServerDict(dictionaryCopy, identifierCopy, 0);
   bannerSpecification = v20->_bannerSpecification;
   v20->_bannerSpecification = v33;
 
-  v35 = v19;
-  v36 = [v16 objectForKeyedSubscript:@"iCloudInAppRecommendations"];
+  v35 = identifierCopy;
+  v36 = [dictionaryCopy objectForKeyedSubscript:@"iCloudInAppRecommendations"];
   objc_opt_class();
   v37 = 0x277CBE000uLL;
-  v147 = v19;
+  v147 = identifierCopy;
   if (objc_opt_isKindOfClass())
   {
     v38 = _ICQServerDictionaryForBundleIdentifier(v36, v35, 0, 0);
@@ -784,7 +784,7 @@ LABEL_13:
 
     if (v38)
     {
-      v42 = v18;
+      v42 = iDCopy;
       v43 = _ICQGetLogSystem();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
@@ -798,7 +798,7 @@ LABEL_13:
       }
 
       v39 = 0;
-      v18 = v42;
+      iDCopy = v42;
       goto LABEL_13;
     }
 
@@ -831,7 +831,7 @@ LABEL_14:
   v20->_recommendationSpecification = v39;
 
   v47 = v35;
-  v48 = [v16 objectForKeyedSubscript:@"appBannerInfo"];
+  v48 = [dictionaryCopy objectForKeyedSubscript:@"appBannerInfo"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -847,7 +847,7 @@ LABEL_25:
 
     if (v49)
     {
-      v53 = v18;
+      v53 = iDCopy;
       v54 = _ICQGetLogSystem();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
@@ -861,7 +861,7 @@ LABEL_25:
       }
 
       v50 = 0;
-      v18 = v53;
+      iDCopy = v53;
       goto LABEL_25;
     }
 
@@ -893,7 +893,7 @@ LABEL_26:
   buttonSpecification = v20->_buttonSpecification;
   v20->_buttonSpecification = v50;
 
-  v58 = v16;
+  v58 = dictionaryCopy;
   v59 = [v58 objectForKeyedSubscript:@"followUpInfo"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -903,7 +903,7 @@ LABEL_26:
 
   else if (v59)
   {
-    v61 = v18;
+    v61 = iDCopy;
     v62 = _ICQGetLogSystem();
     if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
     {
@@ -917,7 +917,7 @@ LABEL_26:
     }
 
     v60 = 0;
-    v18 = v61;
+    iDCopy = v61;
   }
 
   else
@@ -932,7 +932,7 @@ LABEL_26:
   v67 = v47;
   v68 = [v66 objectForKeyedSubscript:@"appContextInfo"];
   v69 = v66;
-  v148 = v17;
+  v148 = dCopy;
   if (!v68)
   {
 LABEL_66:
@@ -944,19 +944,19 @@ LABEL_66:
   if (objc_opt_isKindOfClass())
   {
     v145 = v66;
-    v146 = v18;
+    v146 = iDCopy;
     v144 = v68;
     v70 = v68;
     v71 = v67;
     if ([v71 isEqualToString:@"__WILDCARD__"])
     {
-      v72 = [v70 firstObject];
+      firstObject = [v70 firstObject];
     }
 
     else
     {
       v142 = v67;
-      v143 = v16;
+      v143 = dictionaryCopy;
       v155 = 0u;
       v156 = 0u;
       v153 = 0u;
@@ -988,9 +988,9 @@ LABEL_66:
 
               if (v89)
               {
-                v72 = v85;
+                firstObject = v85;
 
-                v16 = v143;
+                dictionaryCopy = v143;
                 v37 = v86;
                 goto LABEL_57;
               }
@@ -1021,8 +1021,8 @@ LABEL_66:
         while (v82);
       }
 
-      v72 = 0;
-      v16 = v143;
+      firstObject = 0;
+      dictionaryCopy = v143;
 LABEL_57:
       v70 = v141;
       v67 = v142;
@@ -1030,7 +1030,7 @@ LABEL_57:
 
     v94 = _ICQGetLogSystem();
     v95 = os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT);
-    if (v72)
+    if (firstObject)
     {
       if (v95)
       {
@@ -1039,7 +1039,7 @@ LABEL_57:
         _os_log_impl(&dword_275572000, v94, OS_LOG_TYPE_DEFAULT, "found app-specific flow for %@", buf, 0xCu);
       }
 
-      v69 = v72;
+      v69 = firstObject;
       v66 = v145;
       v94 = v145;
     }
@@ -1057,13 +1057,13 @@ LABEL_57:
       v69 = v145;
     }
 
-    v18 = v146;
+    iDCopy = v146;
     v68 = v144;
     goto LABEL_66;
   }
 
-  v73 = v16;
-  v74 = v18;
+  v73 = dictionaryCopy;
+  v74 = iDCopy;
   v75 = v68;
   v76 = _ICQGetLogSystem();
   if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
@@ -1080,8 +1080,8 @@ LABEL_57:
   v79 = 0;
   v69 = v66;
   v68 = v75;
-  v18 = v74;
-  v16 = v73;
+  iDCopy = v74;
+  dictionaryCopy = v73;
 LABEL_67:
 
   upgradeFlowSpecification = v20->_upgradeFlowSpecification;
@@ -1268,8 +1268,8 @@ LABEL_95:
   v20->_iTunesAccountExists = _ICQBooleanForServerObjectDefault(v138, 1);
 
   objc_storeStrong(&v20->_appLaunchLink, obj);
-  v19 = v147;
-  v17 = v148;
+  identifierCopy = v147;
+  dCopy = v148;
 LABEL_103:
 
   v139 = *MEMORY[0x277D85DE8];
@@ -1281,45 +1281,45 @@ LABEL_103:
   actionOverride = self->_actionOverride;
   if (!actionOverride)
   {
-    v4 = [(ICQOffer *)self buttonSpecification];
-    v5 = [v4 buttonLink];
-    actionOverride = [v5 action];
+    buttonSpecification = [(ICQOffer *)self buttonSpecification];
+    buttonLink = [buttonSpecification buttonLink];
+    actionOverride = [buttonLink action];
 
     if (!actionOverride)
     {
-      v6 = [(ICQOffer *)self followupSpecification];
-      actionOverride = [v6 primaryAction];
+      followupSpecification = [(ICQOffer *)self followupSpecification];
+      actionOverride = [followupSpecification primaryAction];
     }
   }
 
   return actionOverride;
 }
 
-- (void)updateOfferWithPlanDetails:(id)a3 actionString:(id)a4
+- (void)updateOfferWithPlanDetails:(id)details actionString:(id)string
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  stringCopy = string;
+  v7 = [details copy];
   planDetailsOverride = self->_planDetailsOverride;
   self->_planDetailsOverride = v7;
 
-  v9 = _ICQActionForServerActionString(v6);
+  v9 = _ICQActionForServerActionString(stringCopy);
   self->_actionOverride = v9;
 }
 
 - (double)_callbackInterval
 {
-  v3 = [(ICQOffer *)self expirationDate];
-  v4 = [(ICQOffer *)self retrievalDate];
-  [v3 timeIntervalSinceDate:v4];
+  expirationDate = [(ICQOffer *)self expirationDate];
+  retrievalDate = [(ICQOffer *)self retrievalDate];
+  [expirationDate timeIntervalSinceDate:retrievalDate];
   v6 = v5;
 
   return v6;
 }
 
-- (id)storagePurchaseKeybagForButtonId:(id)a3
+- (id)storagePurchaseKeybagForButtonId:(id)id
 {
-  v4 = a3;
-  v5 = v4;
+  idCopy = id;
+  v5 = idCopy;
   planDetailsOverride = self->_planDetailsOverride;
   if (planDetailsOverride)
   {
@@ -1329,7 +1329,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!v4 || (_ICQDictionaryForKey(self->_serverDictionary, @"planDetailsByBtnId"), v8 = objc_claimAutoreleasedReturnValue(), _ICQDictionaryForKey(v8, v5), v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+  if (!idCopy || (_ICQDictionaryForKey(self->_serverDictionary, @"planDetailsByBtnId"), v8 = objc_claimAutoreleasedReturnValue(), _ICQDictionaryForKey(v8, v5), v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
   {
     v7 = _ICQDictionaryForKey(self->_serverDictionary, @"planDetails");
     goto LABEL_6;
@@ -1340,10 +1340,10 @@ LABEL_7:
   return v9;
 }
 
-- (id)alertSpecificationForAlertKey:(id)a3
+- (id)alertSpecificationForAlertKey:(id)key
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = [(NSDictionary *)self->_serverDictionary objectForKeyedSubscript:@"inlineAlertInfo"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1382,7 +1382,7 @@ LABEL_7:
             v16 = [v14 objectForKeyedSubscript:v11];
             v17 = *(v12 + 3240);
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) != 0 && [v16 isEqualToString:v4])
+            if ((objc_opt_isKindOfClass() & 1) != 0 && [v16 isEqualToString:keyCopy])
             {
               v38 = @"alertInfo";
               v39 = v14;
@@ -1393,10 +1393,10 @@ LABEL_7:
               v21 = v6;
               v22 = v11;
               v23 = v12;
-              v25 = v24 = v4;
+              v25 = v24 = keyCopy;
 
               v31 = v25;
-              v4 = v24;
+              keyCopy = v24;
               v12 = v23;
               v11 = v22;
               v6 = v21;
@@ -1446,18 +1446,18 @@ LABEL_7:
   return v26;
 }
 
-- (id)alertSpecificationAtIndex:(unint64_t)a3
+- (id)alertSpecificationAtIndex:(unint64_t)index
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v4 = [(NSDictionary *)self->_serverDictionary objectForKeyedSubscript:@"inlineAlertInfo"];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || [v4 count] <= a3)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || [v4 count] <= index)
   {
     v8 = 0;
     goto LABEL_11;
   }
 
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  v5 = [v4 objectAtIndexedSubscript:index];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1494,22 +1494,22 @@ LABEL_11:
   return v8;
 }
 
-+ (id)offerReasonForServerReason:(id)a3
++ (id)offerReasonForServerReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"iCloudFullViolation"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"iCloudFullViolation"])
   {
     v4 = @"iCloudStorageFull";
   }
 
-  else if ([v3 isEqualToString:@"iCloudAlmostFullViolation"])
+  else if ([reasonCopy isEqualToString:@"iCloudAlmostFullViolation"])
   {
     v4 = @"iCloudStorageAlmostFull";
   }
 
   else
   {
-    v4 = v3;
+    v4 = reasonCopy;
   }
 
   return v4;
@@ -1518,27 +1518,27 @@ LABEL_11:
 - (NSDate)lastUpdated
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [(ICQOffer *)self recommendationSpecification];
-  v3 = v2;
-  if (v2 && ([v2 reason], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  recommendationSpecification = [(ICQOffer *)self recommendationSpecification];
+  v3 = recommendationSpecification;
+  if (recommendationSpecification && ([recommendationSpecification reason], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [v3 decayUntil];
-    [v5 doubleValue];
+    decayUntil = [v3 decayUntil];
+    [decayUntil doubleValue];
     v7 = v6;
 
-    v8 = [v3 reason];
-    v9 = [_ICQHelperFunctions lastUpdatedForReason:v8 decayUntil:v7];
+    reason = [v3 reason];
+    date = [_ICQHelperFunctions lastUpdatedForReason:reason decayUntil:v7];
 
     v10 = _ICQBannerLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v3 reason];
+      reason2 = [v3 reason];
       v15 = 138412802;
-      v16 = v11;
+      v16 = reason2;
       v17 = 2048;
       v18 = v7;
       v19 = 2112;
-      v20 = v9;
+      v20 = date;
       _os_log_impl(&dword_275572000, v10, OS_LOG_TYPE_DEFAULT, "Providing last updated for Photos Bubble Banner - Reason: %@ Decay: %f lastUpdated: %@", &v15, 0x20u);
     }
   }
@@ -1552,18 +1552,18 @@ LABEL_11:
       _os_log_impl(&dword_275572000, v12, OS_LOG_TYPE_DEFAULT, "We do not have a recommendation banner spec. In this case sending the current timestamp.", &v15, 2u);
     }
 
-    v9 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return date;
 }
 
 - (void)universalLink
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = [a1 debugDescription];
+  v1 = [self debugDescription];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_1_1(&dword_275572000, v2, v3, "Universal link is not available in offer %@", v4, v5, v6, v7, v9);
 
@@ -1573,7 +1573,7 @@ LABEL_11:
 - (void)universalSuccessLink
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = [a1 debugDescription];
+  v1 = [self debugDescription];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_1_1(&dword_275572000, v2, v3, "Universal success link is not available in offer %@", v4, v5, v6, v7, v9);
 

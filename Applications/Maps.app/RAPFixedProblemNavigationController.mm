@@ -1,21 +1,21 @@
 @interface RAPFixedProblemNavigationController
-+ (id)fixedProblemNavigationControllerWithProblemStatusResponse:(id)a3;
-- (void)handleDone:(id)a3;
++ (id)fixedProblemNavigationControllerWithProblemStatusResponse:(id)response;
+- (void)handleDone:(id)done;
 @end
 
 @implementation RAPFixedProblemNavigationController
 
-- (void)handleDone:(id)a3
+- (void)handleDone:(id)done
 {
-  v3 = [(RAPFixedProblemNavigationController *)self doneHandler];
-  v3[2]();
+  doneHandler = [(RAPFixedProblemNavigationController *)self doneHandler];
+  doneHandler[2]();
 }
 
-+ (id)fixedProblemNavigationControllerWithProblemStatusResponse:(id)a3
++ (id)fixedProblemNavigationControllerWithProblemStatusResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = objc_alloc_init(RAPFixedProblemViewController);
-  [(RAPFixedProblemViewController *)v4 setProblemStatusResponse:v3];
+  [(RAPFixedProblemViewController *)v4 setProblemStatusResponse:responseCopy];
 
   v5 = [[RAPFixedProblemNavigationController alloc] initWithRootViewController:v4];
   [(RAPFixedProblemNavigationController *)v5 setFixedProblemViewController:v4];

@@ -1,28 +1,28 @@
 @interface PhotosControlCommand
 + (id)name;
-- (BOOL)processArgc:(int)a3 argv:(char *)a4;
-- (BOOL)processOption:(int)a3 arg:(id)a4;
-- (BOOL)writeData:(id)a3 toPathOrStdout:(id)a4;
+- (BOOL)processArgc:(int)argc argv:(char *)argv;
+- (BOOL)processOption:(int)option arg:(id)arg;
+- (BOOL)writeData:(id)data toPathOrStdout:(id)stdout;
 - (PhotosControlCommand)init;
-- (PhotosControlCommand)initWithArgc:(int)a3 argv:(char *)a4;
-- (id)dataForPathOrStdin:(id)a3;
+- (PhotosControlCommand)initWithArgc:(int)argc argv:(char *)argv;
+- (id)dataForPathOrStdin:(id)stdin;
 - (id)description;
-- (id)formatDuration:(double)a3;
-- (id)libraryURLFromArgument:(id)a3;
+- (id)formatDuration:(double)duration;
+- (id)libraryURLFromArgument:(id)argument;
 - (id)nonBindingAssetsdClient;
 - (int)run;
-- (void)_output:(uint64_t)a3 arguments:(FILE *)a4 file:;
-- (void)installInterruptHandler:(id)a3;
-- (void)outputCompactJsonObject:(id)a3;
-- (void)outputErrorWithJsonOutput:(BOOL)a3 format:(id)a4;
-- (void)outputJsonObject:(id)a3;
+- (void)_output:(uint64_t)_output arguments:(FILE *)arguments file:;
+- (void)installInterruptHandler:(id)handler;
+- (void)outputCompactJsonObject:(id)object;
+- (void)outputErrorWithJsonOutput:(BOOL)output format:(id)format;
+- (void)outputJsonObject:(id)object;
 @end
 
 @implementation PhotosControlCommand
 
-- (void)installInterruptHandler:(id)a3
+- (void)installInterruptHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _Block_copy(self->_interruptHandler);
   v6 = v5;
   if (v5)
@@ -32,7 +32,7 @@
     v15[2] = __48__PhotosControlCommand_installInterruptHandler___block_invoke_2;
     v15[3] = &unk_1E75712A0;
     v16 = v5;
-    v17 = v4;
+    v17 = handlerCopy;
     v7 = _Block_copy(v15);
     interruptHandler = self->_interruptHandler;
     self->_interruptHandler = v7;
@@ -58,7 +58,7 @@
     self->_interruptSource = v10;
     v12 = v10;
 
-    v13 = _Block_copy(v4);
+    v13 = _Block_copy(handlerCopy);
     v14 = self->_interruptHandler;
     self->_interruptHandler = v13;
 
@@ -102,19 +102,19 @@ uint64_t __48__PhotosControlCommand_installInterruptHandler___block_invoke_2(uin
   return nonBindingAssetsdClient;
 }
 
-- (id)libraryURLFromArgument:(id)a3
+- (id)libraryURLFromArgument:(id)argument
 {
-  v4 = a3;
-  v5 = [v4 integerValue];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
-  v7 = [v6 stringValue];
-  v8 = [v7 isEqualToString:v4];
+  argumentCopy = argument;
+  integerValue = [argumentCopy integerValue];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
+  stringValue = [v6 stringValue];
+  v8 = [stringValue isEqualToString:argumentCopy];
 
   if (v8)
   {
-    if ((v5 - 1) >= 3)
+    if ((integerValue - 1) >= 3)
     {
-      if (!v5)
+      if (!integerValue)
       {
         v11 = [MEMORY[0x1E696AD98] numberWithInteger:0];
         v12 = PLStringFromWellKnownPhotoLibraryIdentifier();
@@ -124,11 +124,11 @@ uint64_t __48__PhotosControlCommand_installInterruptHandler___block_invoke_2(uin
 
     else
     {
-      v9 = [MEMORY[0x1E69BF2A0] wellKnownPhotoLibraryURLForIdentifier:v5];
+      libraryURL = [MEMORY[0x1E69BF2A0] wellKnownPhotoLibraryURLForIdentifier:integerValue];
       v10 = PLStringFromWellKnownPhotoLibraryIdentifier();
-      [(PhotosControlCommand *)self output:@"Selected %@ at %@\n", v10, v9];
+      [(PhotosControlCommand *)self output:@"Selected %@ at %@\n", v10, libraryURL];
 
-      if (v9)
+      if (libraryURL)
       {
         goto LABEL_20;
       }
@@ -139,19 +139,19 @@ uint64_t __48__PhotosControlCommand_installInterruptHandler___block_invoke_2(uin
   valid = PLIsValidUUIDString();
   v31 = 0;
   v32 = 0;
-  v14 = PLPhotoLibraryIdentifierDecodeIdentifierPropertiesFromArchivalStringRepresentation(v4, &v32, &v31, &v33);
+  v14 = PLPhotoLibraryIdentifierDecodeIdentifierPropertiesFromArchivalStringRepresentation(argumentCopy, &v32, &v31, &v33);
   v15 = v32;
   v16 = v31;
   if ((valid & 1) != 0 || v14)
   {
-    v18 = objc_alloc_init(MEMORY[0x1E69BF288]);
-    v19 = [v18 libraryManagementClient];
+    stringByStandardizingPath = objc_alloc_init(MEMORY[0x1E69BF288]);
+    libraryManagementClient = [stringByStandardizingPath libraryManagementClient];
     v20 = objc_alloc_init(PLPhotoLibrarySearchCriteria);
     v21 = v20;
-    v29 = self;
+    selfCopy = self;
     if (valid)
     {
-      [(PLPhotoLibrarySearchCriteria *)v20 setUuid:v4];
+      [(PLPhotoLibrarySearchCriteria *)v20 setUuid:argumentCopy];
     }
 
     else
@@ -162,16 +162,16 @@ uint64_t __48__PhotosControlCommand_installInterruptHandler___block_invoke_2(uin
     }
 
     v30 = 0;
-    v28 = v19;
-    v22 = [v19 findPhotoLibraryIdentifiersMatchingSearchCriteria:v21 error:&v30];
+    v28 = libraryManagementClient;
+    v22 = [libraryManagementClient findPhotoLibraryIdentifiersMatchingSearchCriteria:v21 error:&v30];
     v23 = v30;
-    v24 = [v22 firstObject];
-    v9 = [v24 libraryURL];
+    firstObject = [v22 firstObject];
+    libraryURL = [firstObject libraryURL];
 
-    if (v9)
+    if (libraryURL)
     {
-      v25 = [v9 path];
-      [(PhotosControlCommand *)v29 output:@"Found library with identifier %@ at %@\n", v4, v25];
+      path = [libraryURL path];
+      [(PhotosControlCommand *)selfCopy output:@"Found library with identifier %@ at %@\n", argumentCopy, path];
     }
 
     else
@@ -182,33 +182,33 @@ uint64_t __48__PhotosControlCommand_installInterruptHandler___block_invoke_2(uin
         v26 = v23;
       }
 
-      [(PhotosControlCommand *)v29 outputError:@"Failed to find library with identifier %@: %@\n", v4, v26];
+      [(PhotosControlCommand *)selfCopy outputError:@"Failed to find library with identifier %@: %@\n", argumentCopy, v26];
     }
   }
 
   else
   {
     v17 = objc_alloc(MEMORY[0x1E695DFF8]);
-    v18 = [v4 stringByStandardizingPath];
-    v9 = [v17 initFileURLWithPath:v18 isDirectory:1];
+    stringByStandardizingPath = [argumentCopy stringByStandardizingPath];
+    libraryURL = [v17 initFileURLWithPath:stringByStandardizingPath isDirectory:1];
   }
 
 LABEL_20:
 
-  return v9;
+  return libraryURL;
 }
 
-- (id)formatDuration:(double)a3
+- (id)formatDuration:(double)duration
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3 == 0.0)
+  if (duration == 0.0)
   {
     v3 = @"0.0 s";
   }
 
   else
   {
-    v4 = a3;
+    durationCopy = duration;
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -228,13 +228,13 @@ LABEL_20:
             objc_enumerationMutation(&unk_1F0FBFE68);
           }
 
-          if (fabs(v4) >= 1.0)
+          if (fabs(durationCopy) >= 1.0)
           {
-            [MEMORY[0x1E696AEC0] stringWithFormat:@"%3.2f %@", *&v4, *(*(&v11 + 1) + 8 * v8)];
+            [MEMORY[0x1E696AEC0] stringWithFormat:@"%3.2f %@", *&durationCopy, *(*(&v11 + 1) + 8 * v8)];
             goto LABEL_13;
           }
 
-          v4 = v4 * 1000.0;
+          durationCopy = durationCopy * 1000.0;
           ++v8;
         }
 
@@ -249,21 +249,21 @@ LABEL_20:
       }
     }
 
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%3.2f ns", *&v4, v10];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%3.2f ns", *&durationCopy, v10];
     v3 = LABEL_13:;
   }
 
   return v3;
 }
 
-- (BOOL)writeData:(id)a3 toPathOrStdout:(id)a4
+- (BOOL)writeData:(id)data toPathOrStdout:(id)stdout
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dataCopy = data;
+  stdoutCopy = stdout;
+  v9 = stdoutCopy;
+  if (dataCopy)
   {
-    if (v8)
+    if (stdoutCopy)
     {
       goto LABEL_3;
     }
@@ -271,8 +271,8 @@ LABEL_20:
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PhotosControlCommand.m" lineNumber:294 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PhotosControlCommand.m" lineNumber:294 description:{@"Invalid parameter not satisfying: %@", @"data"}];
 
     if (v9)
     {
@@ -280,15 +280,15 @@ LABEL_20:
     }
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"PhotosControlCommand.m" lineNumber:295 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PhotosControlCommand.m" lineNumber:295 description:{@"Invalid parameter not satisfying: %@", @"path"}];
 
 LABEL_3:
   if ([v9 isEqualToString:@"-"])
   {
-    v10 = [MEMORY[0x1E696AC00] fileHandleWithStandardOutput];
+    fileHandleWithStandardOutput = [MEMORY[0x1E696AC00] fileHandleWithStandardOutput];
     v21 = 0;
-    v11 = [v10 writeData:v7 error:&v21];
+    v11 = [fileHandleWithStandardOutput writeData:dataCopy error:&v21];
     v12 = v21;
 
     if (v11)
@@ -307,7 +307,7 @@ LABEL_3:
   {
     v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9 isDirectory:0];
     v20 = 0;
-    v13 = [v7 writeToURL:v14 options:0 error:&v20];
+    v13 = [dataCopy writeToURL:v14 options:0 error:&v20];
     v15 = v20;
     v16 = v15;
     if ((v13 & 1) == 0)
@@ -321,38 +321,38 @@ LABEL_3:
   return v13;
 }
 
-- (id)dataForPathOrStdin:(id)a3
+- (id)dataForPathOrStdin:(id)stdin
 {
-  v5 = a3;
-  if (!v5)
+  stdinCopy = stdin;
+  if (!stdinCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PhotosControlCommand.m" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PhotosControlCommand.m" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
-  if (![v5 isEqualToString:@"-"])
+  if (![stdinCopy isEqualToString:@"-"])
   {
-    v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5 isDirectory:0];
+    v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:stdinCopy isDirectory:0];
     v13 = 0;
-    v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v8 options:0 error:&v13];
+    readDataToEndOfFile = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v8 options:0 error:&v13];
     v9 = v13;
-    if (!v7 || ![v7 length])
+    if (!readDataToEndOfFile || ![readDataToEndOfFile length])
     {
-      [(PhotosControlCommand *)self outputError:@"Unable to read data of file at path %@: %@\n", v5, v9];
+      [(PhotosControlCommand *)self outputError:@"Unable to read data of file at path %@: %@\n", stdinCopy, v9];
 
       goto LABEL_12;
     }
 
 LABEL_10:
-    v7 = v7;
-    v10 = v7;
+    readDataToEndOfFile = readDataToEndOfFile;
+    v10 = readDataToEndOfFile;
     goto LABEL_13;
   }
 
-  v6 = [MEMORY[0x1E696AC00] fileHandleWithStandardInput];
-  v7 = [v6 readDataToEndOfFile];
+  fileHandleWithStandardInput = [MEMORY[0x1E696AC00] fileHandleWithStandardInput];
+  readDataToEndOfFile = [fileHandleWithStandardInput readDataToEndOfFile];
 
-  if (v7 && [v7 length])
+  if (readDataToEndOfFile && [readDataToEndOfFile length])
   {
     goto LABEL_10;
   }
@@ -365,30 +365,30 @@ LABEL_13:
   return v10;
 }
 
-- (void)_output:(uint64_t)a3 arguments:(FILE *)a4 file:
+- (void)_output:(uint64_t)_output arguments:(FILE *)arguments file:
 {
-  if (a1)
+  if (self)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = a2;
-    v9 = [[v6 alloc] initWithFormat:v7 arguments:a3];
+    v9 = [[v6 alloc] initWithFormat:v7 arguments:_output];
 
     v8 = v9;
-    fputs([v9 UTF8String], a4);
+    fputs([v9 UTF8String], arguments);
   }
 }
 
-- (void)outputErrorWithJsonOutput:(BOOL)a3 format:(id)a4
+- (void)outputErrorWithJsonOutput:(BOOL)output format:(id)format
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (output)
   {
     v10 = @"error";
     v5 = MEMORY[0x1E696AEC0];
-    v6 = a4;
-    v7 = [[v5 alloc] initWithFormat:v6 arguments:&v12];
+    formatCopy = format;
+    formatCopy2 = [[v5 alloc] initWithFormat:formatCopy arguments:&v12];
 
-    v11[0] = v7;
+    v11[0] = formatCopy2;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     [(PhotosControlCommand *)self outputJsonObject:v8];
   }
@@ -396,15 +396,15 @@ LABEL_13:
   else
   {
     v9 = *MEMORY[0x1E69E9848];
-    v7 = a4;
-    [(PhotosControlCommand *)self _output:v7 arguments:&v12 file:v9];
+    formatCopy2 = format;
+    [(PhotosControlCommand *)self _output:formatCopy2 arguments:&v12 file:v9];
   }
 }
 
-- (void)outputCompactJsonObject:(id)a3
+- (void)outputCompactJsonObject:(id)object
 {
   v6 = 0;
-  v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:0 error:&v6];
+  v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:object options:0 error:&v6];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v4 encoding:4];
@@ -412,10 +412,10 @@ LABEL_13:
   }
 }
 
-- (void)outputJsonObject:(id)a3
+- (void)outputJsonObject:(id)object
 {
   v6 = 0;
-  v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:1 error:&v6];
+  v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:object options:1 error:&v6];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v4 encoding:4];
@@ -432,7 +432,7 @@ LABEL_13:
   return 70;
 }
 
-- (BOOL)processOption:(int)a3 arg:(id)a4
+- (BOOL)processOption:(int)option arg:(id)arg
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
@@ -444,41 +444,41 @@ LABEL_13:
   return 0;
 }
 
-- (BOOL)processArgc:(int)a3 argv:(char *)a4
+- (BOOL)processArgc:(int)argc argv:(char *)argv
 {
-  v7 = [objc_opt_class() minimumArgs];
-  v8 = [objc_opt_class() maximumArgs];
-  if (v7 > a3)
+  minimumArgs = [objc_opt_class() minimumArgs];
+  maximumArgs = [objc_opt_class() maximumArgs];
+  if (minimumArgs > argc)
   {
     args = [objc_opt_class() name];
-    [(PhotosControlCommand *)self outputError:@"command '%@' expects at least %ld non-option arguments\n", args, v7];
+    [(PhotosControlCommand *)self outputError:@"command '%@' expects at least %ld non-option arguments\n", args, minimumArgs];
 LABEL_5:
     v11 = 0;
     goto LABEL_10;
   }
 
-  v10 = v8;
-  if (v8 < a3)
+  v10 = maximumArgs;
+  if (maximumArgs < argc)
   {
     args = [objc_opt_class() name];
     [(PhotosControlCommand *)self outputError:@"command '%@' expects at most %ld non-option arguments\n", args, v10];
     goto LABEL_5;
   }
 
-  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
-  if (a3 >= 1)
+  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:argc];
+  if (argc >= 1)
   {
-    v13 = a3;
+    argcCopy = argc;
     do
     {
-      v14 = *a4++;
+      v14 = *argv++;
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v14];
       [(NSArray *)v12 addObject:v15];
 
-      --v13;
+      --argcCopy;
     }
 
-    while (v13);
+    while (argcCopy);
   }
 
   args = self->_args;
@@ -492,14 +492,14 @@ LABEL_10:
 - (id)description
 {
   v2 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v3 = [objc_opt_class() name];
-  v4 = [objc_opt_class() usage];
-  v5 = [v2 initWithFormat:@"%@ %@", v3, v4];
+  name = [objc_opt_class() name];
+  usage = [objc_opt_class() usage];
+  v5 = [v2 initWithFormat:@"%@ %@", name, usage];
 
   return v5;
 }
 
-- (PhotosControlCommand)initWithArgc:(int)a3 argv:(char *)a4
+- (PhotosControlCommand)initWithArgc:(int)argc argv:(char *)argv
 {
   v29.receiver = self;
   v29.super_class = PhotosControlCommand;
@@ -509,21 +509,21 @@ LABEL_10:
     return v6;
   }
 
-  v7 = (a3 - 1);
-  if (a3 >= 1)
+  v7 = (argc - 1);
+  if (argc >= 1)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*a4];
+    v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*argv];
     invokedName = v6->_invokedName;
     v6->_invokedName = v8;
   }
 
   [(PhotosControlCommand *)v6 willProcessOptions];
-  v10 = [objc_opt_class() longopts];
-  v11 = [objc_opt_class() optstring];
-  v12 = v11;
-  if (v10)
+  longopts = [objc_opt_class() longopts];
+  optstring = [objc_opt_class() optstring];
+  v12 = optstring;
+  if (longopts)
   {
-    if (!v11)
+    if (!optstring)
     {
       v23 = *MEMORY[0x1E69E9848];
       v24 = objc_opt_class();
@@ -537,7 +537,7 @@ LABEL_28:
     v13 = MEMORY[0x1E69E98E0];
     while (1)
     {
-      v14 = getopt_long(a3, a4, v12, v10, 0);
+      v14 = getopt_long(argc, argv, v12, longopts, 0);
       if (v14 == -1)
       {
         goto LABEL_25;
@@ -569,12 +569,12 @@ LABEL_13:
     }
   }
 
-  if (v11)
+  if (optstring)
   {
     v18 = MEMORY[0x1E69E98E0];
     while (1)
     {
-      v19 = getopt(a3, a4, v12);
+      v19 = getopt(argc, argv, v12);
       if (v19 == -1)
       {
         break;
@@ -607,12 +607,12 @@ LABEL_22:
 
 LABEL_25:
     v26 = *MEMORY[0x1E69E98F0];
-    v7 = (a3 - v26);
-    v27 = &a4[v26];
+    v7 = (argc - v26);
+    v27 = &argv[v26];
     goto LABEL_27;
   }
 
-  v27 = a4 + 1;
+  v27 = argv + 1;
 LABEL_27:
   if (![(PhotosControlCommand *)v6 processArgc:v7 argv:v27])
   {
@@ -649,16 +649,16 @@ LABEL_27:
     }
 
     v8 = [v3 substringWithRange:{v4, v7}];
-    v9 = [v8 lowercaseString];
+    lowercaseString = [v8 lowercaseString];
   }
 
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"class %@ must be named with prefix %@", v3, @"PhotosCtl"}];
-    v9 = v3;
+    lowercaseString = v3;
   }
 
-  return v9;
+  return lowercaseString;
 }
 
 @end

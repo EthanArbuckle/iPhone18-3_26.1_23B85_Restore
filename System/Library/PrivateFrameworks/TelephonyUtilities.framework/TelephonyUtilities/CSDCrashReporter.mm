@@ -1,15 +1,15 @@
 @interface CSDCrashReporter
-+ (void)simulateCrashReportWithFormat:(id)a3;
++ (void)simulateCrashReportWithFormat:(id)format;
 @end
 
 @implementation CSDCrashReporter
 
-+ (void)simulateCrashReportWithFormat:(id)a3
++ (void)simulateCrashReportWithFormat:(id)format
 {
-  v4 = a3;
-  v5 = [[NSString alloc] initWithFormat:v4 arguments:&v6];
+  formatCopy = format;
+  v5 = [[NSString alloc] initWithFormat:formatCopy arguments:&v6];
 
-  [a1 simulateCrashReportWithReason:v5 pid:getpid() code:14593455];
+  [self simulateCrashReportWithReason:v5 pid:getpid() code:14593455];
 }
 
 @end

@@ -171,32 +171,32 @@
 
 - (uint64_t)firstline
 {
-  v2 = [a1 rangeOfString:@"\n"];
+  v2 = [self rangeOfString:@"\n"];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a1;
+    return self;
   }
 
-  return [a1 substringToIndex:v2];
+  return [self substringToIndex:v2];
 }
 
 - (void)pathRelativeTo:()OFNSStringExtensions
 {
-  v3 = a1;
-  if (a3 && [a1 hasPrefix:?])
+  selfCopy = self;
+  if (a3 && [self hasPrefix:?])
   {
-    v3 = [MEMORY[0x277CCAB68] stringWithString:v3];
-    [v3 replaceOccurrencesOfString:a3 withString:&stru_287AB5E40 options:1 range:{0, objc_msgSend(a3, "length")}];
-    [v3 replaceOccurrencesOfString:@"/" withString:&stru_287AB5E40 options:1 range:{0, 1}];
+    selfCopy = [MEMORY[0x277CCAB68] stringWithString:selfCopy];
+    [selfCopy replaceOccurrencesOfString:a3 withString:&stru_287AB5E40 options:1 range:{0, objc_msgSend(a3, "length")}];
+    [selfCopy replaceOccurrencesOfString:@"/" withString:&stru_287AB5E40 options:1 range:{0, 1}];
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)javaScriptEscapedString
 {
-  v2 = [MEMORY[0x277CCAB68] string];
-  v3 = [a1 length];
+  string = [MEMORY[0x277CCAB68] string];
+  v3 = [self length];
   if (v3 >= 1)
   {
     v4 = v3;
@@ -204,7 +204,7 @@
     v6 = 0;
     while (1)
     {
-      v7 = [a1 characterAtIndex:v6];
+      v7 = [self characterAtIndex:v6];
       v8 = v7;
       if (v7 <= 11)
       {
@@ -246,17 +246,17 @@ LABEL_19:
           v10 = v6 - v5;
           if (v6 != v5)
           {
-            [v2 appendString:{objc_msgSend(a1, "substringWithRange:", v5, v10)}];
+            [string appendString:{objc_msgSend(self, "substringWithRange:", v5, v10)}];
           }
 
           if (v9 == 117)
           {
-            [v2 appendFormat:@"\\%c%04X", v10, 117, v8];
+            [string appendFormat:@"\\%c%04X", v10, 117, v8];
           }
 
           else
           {
-            [v2 appendFormat:@"\\%c", v10, v9, v13];
+            [string appendFormat:@"\\%c", v10, v9, v13];
           }
 
           v5 = v6 + 1;
@@ -290,20 +290,20 @@ LABEL_25:
 
   v5 = 0;
 LABEL_32:
-  [v2 appendString:{objc_msgSend(a1, "substringFromIndex:", v5)}];
-  return v2;
+  [string appendString:{objc_msgSend(self, "substringFromIndex:", v5)}];
+  return string;
 }
 
 - (uint64_t)stringByDeletingTrailingSlash
 {
-  if (![a1 length] || objc_msgSend(a1, "characterAtIndex:", objc_msgSend(a1, "length") - 1) != 47)
+  if (![self length] || objc_msgSend(self, "characterAtIndex:", objc_msgSend(self, "length") - 1) != 47)
   {
-    return a1;
+    return self;
   }
 
-  v2 = [a1 length] - 1;
+  v2 = [self length] - 1;
 
-  return [a1 substringToIndex:v2];
+  return [self substringToIndex:v2];
 }
 
 - (uint64_t)stringByAddingPercentEscapes
@@ -315,21 +315,21 @@ LABEL_32:
 
   v2 = stringByAddingPercentEscapes_sAllowedCharacterSet;
 
-  return [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  return [self stringByAddingPercentEncodingWithAllowedCharacters:v2];
 }
 
 - (uint64_t)stringByAddingPercentEscapesForURLPath
 {
-  v2 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+  uRLPathAllowedCharacterSet = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
 
-  return [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  return [self stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 }
 
 - (uint64_t)stringByCapitalizingFirstCharacter
 {
-  v2 = [objc_msgSend(a1 substringToIndex:{1), "capitalizedString"}];
+  v2 = [objc_msgSend(self substringToIndex:{1), "capitalizedString"}];
 
-  return [a1 stringByReplacingCharactersInRange:0 withString:{1, v2}];
+  return [self stringByReplacingCharactersInRange:0 withString:{1, v2}];
 }
 
 @end

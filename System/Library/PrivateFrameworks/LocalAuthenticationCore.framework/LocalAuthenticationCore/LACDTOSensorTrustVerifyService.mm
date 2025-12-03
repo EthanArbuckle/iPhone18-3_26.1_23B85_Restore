@@ -1,18 +1,18 @@
 @interface LACDTOSensorTrustVerifyService
-- (BOOL)shouldVerifySensorTrustWithFeatureState:(id)a3 trustState:(id)a4;
-- (id)verifySensorTrustWithFeatureState:(id)a3 trustState:(id)a4 repairState:(id)a5;
+- (BOOL)shouldVerifySensorTrustWithFeatureState:(id)state trustState:(id)trustState;
+- (id)verifySensorTrustWithFeatureState:(id)state trustState:(id)trustState repairState:(id)repairState;
 @end
 
 @implementation LACDTOSensorTrustVerifyService
 
-- (BOOL)shouldVerifySensorTrustWithFeatureState:(id)a3 trustState:(id)a4
+- (BOOL)shouldVerifySensorTrustWithFeatureState:(id)state trustState:(id)trustState
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEnabled])
+  stateCopy = state;
+  trustStateCopy = trustState;
+  if ([stateCopy isEnabled])
   {
-    if ([v6 isDisapproved])
+    if ([trustStateCopy isDisapproved])
     {
       v7 = LACLogDTOSensor();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -26,8 +26,8 @@ LABEL_7:
 
     else
     {
-      v11 = [v6 installedSensorID];
-      v12 = [v11 length];
+      installedSensorID = [trustStateCopy installedSensorID];
+      v12 = [installedSensorID length];
 
       if (!v12)
       {
@@ -42,9 +42,9 @@ LABEL_7:
         goto LABEL_7;
       }
 
-      v13 = [v6 installedSensorID];
-      v14 = [v6 trustedSensorID];
-      v15 = [v13 isEqual:v14];
+      installedSensorID2 = [trustStateCopy installedSensorID];
+      trustedSensorID = [trustStateCopy trustedSensorID];
+      v15 = [installedSensorID2 isEqual:trustedSensorID];
 
       if (v15)
       {
@@ -59,10 +59,10 @@ LABEL_7:
         goto LABEL_7;
       }
 
-      v16 = [v5 requirements];
-      v17 = [v16 hasBiometricEnrollments];
+      requirements = [stateCopy requirements];
+      hasBiometricEnrollments = [requirements hasBiometricEnrollments];
 
-      if (!v17)
+      if (!hasBiometricEnrollments)
       {
         v8 = 1;
         goto LABEL_9;
@@ -98,22 +98,22 @@ LABEL_9:
   return v8;
 }
 
-- (id)verifySensorTrustWithFeatureState:(id)a3 trustState:(id)a4 repairState:(id)a5
+- (id)verifySensorTrustWithFeatureState:(id)state trustState:(id)trustState repairState:(id)repairState
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [[LACDTOMutableSensorTrustState alloc] initWithTrustState:v8];
-  v12 = [(LACDTOSensorTrustVerifyService *)self shouldVerifySensorTrustWithFeatureState:v10 trustState:v8];
+  trustStateCopy = trustState;
+  repairStateCopy = repairState;
+  stateCopy = state;
+  v11 = [[LACDTOMutableSensorTrustState alloc] initWithTrustState:trustStateCopy];
+  v12 = [(LACDTOSensorTrustVerifyService *)self shouldVerifySensorTrustWithFeatureState:stateCopy trustState:trustStateCopy];
 
-  v13 = v8;
+  v13 = trustStateCopy;
   if (v12)
   {
-    v14 = [v9 repairFlag];
+    repairFlag = [repairStateCopy repairFlag];
     v15 = LACLogDTOSensor();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-    if (v14 == 3)
+    if (repairFlag == 3)
     {
       if (v16)
       {

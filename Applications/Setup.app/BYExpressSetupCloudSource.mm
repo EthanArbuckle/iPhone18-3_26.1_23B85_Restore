@@ -1,6 +1,6 @@
 @interface BYExpressSetupCloudSource
 - (BOOL)dataAvailable;
-- (BYExpressSetupCloudSource)initWithSettings:(id)a3;
+- (BYExpressSetupCloudSource)initWithSettings:(id)settings;
 - (id)appAnalyticsOptIn;
 - (id)deviceAnalyticsOptIn;
 - (id)iPadMultitaskingMode;
@@ -19,26 +19,26 @@
 
 @implementation BYExpressSetupCloudSource
 
-- (BYExpressSetupCloudSource)initWithSettings:(id)a3
+- (BYExpressSetupCloudSource)initWithSettings:(id)settings
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, settings);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = BYExpressSetupCloudSource;
-  v8 = [(BYExpressSetupCloudSource *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(BYExpressSetupCloudSource *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(v8 + 1, location[0]);
+    objc_storeStrong(selfCopy + 1, location[0]);
   }
 
-  v4 = v8;
+  v4 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v4;
 }
 
@@ -53,20 +53,20 @@
 - (id)sourceDeviceClass
 {
   v2 = [(BYExpressSetupCloudSource *)self expressSettings:a2];
-  v3 = [(SASExpressSettings *)v2 deviceClass];
+  deviceClass = [(SASExpressSettings *)v2 deviceClass];
 
-  return v3;
+  return deviceClass;
 }
 
 - (id)locationServicesOptIn
 {
-  v2 = [(BYExpressSetupCloudSource *)self expressSettings];
-  v3 = [(SASExpressSettings *)v2 hasLocationServicesOptIn];
+  expressSettings = [(BYExpressSetupCloudSource *)self expressSettings];
+  hasLocationServicesOptIn = [(SASExpressSettings *)expressSettings hasLocationServicesOptIn];
 
-  if (v3)
+  if (hasLocationServicesOptIn)
   {
-    v4 = [(BYExpressSetupCloudSource *)self expressSettings];
-    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)v4 locationServicesOptIn]& 1];
+    expressSettings2 = [(BYExpressSetupCloudSource *)self expressSettings];
+    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)expressSettings2 locationServicesOptIn]& 1];
   }
 
   else
@@ -79,13 +79,13 @@
 
 - (id)appAnalyticsOptIn
 {
-  v2 = [(BYExpressSetupCloudSource *)self expressSettings];
-  v3 = [(SASExpressSettings *)v2 hasAppAnalyticsOptIn];
+  expressSettings = [(BYExpressSetupCloudSource *)self expressSettings];
+  hasAppAnalyticsOptIn = [(SASExpressSettings *)expressSettings hasAppAnalyticsOptIn];
 
-  if (v3)
+  if (hasAppAnalyticsOptIn)
   {
-    v4 = [(BYExpressSetupCloudSource *)self expressSettings];
-    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)v4 appAnalyticsOptIn]& 1];
+    expressSettings2 = [(BYExpressSetupCloudSource *)self expressSettings];
+    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)expressSettings2 appAnalyticsOptIn]& 1];
   }
 
   else
@@ -98,13 +98,13 @@
 
 - (id)deviceAnalyticsOptIn
 {
-  v2 = [(BYExpressSetupCloudSource *)self expressSettings];
-  v3 = [(SASExpressSettings *)v2 hasDeviceAnalyticsOptIn];
+  expressSettings = [(BYExpressSetupCloudSource *)self expressSettings];
+  hasDeviceAnalyticsOptIn = [(SASExpressSettings *)expressSettings hasDeviceAnalyticsOptIn];
 
-  if (v3)
+  if (hasDeviceAnalyticsOptIn)
   {
-    v4 = [(BYExpressSetupCloudSource *)self expressSettings];
-    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)v4 deviceAnalyticsOptIn]& 1];
+    expressSettings2 = [(BYExpressSetupCloudSource *)self expressSettings];
+    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)expressSettings2 deviceAnalyticsOptIn]& 1];
   }
 
   else
@@ -117,13 +117,13 @@
 
 - (id)siriOptIn
 {
-  v2 = [(BYExpressSetupCloudSource *)self expressSettings];
-  v3 = [(SASExpressSettings *)v2 hasSiriOptIn];
+  expressSettings = [(BYExpressSetupCloudSource *)self expressSettings];
+  hasSiriOptIn = [(SASExpressSettings *)expressSettings hasSiriOptIn];
 
-  if (v3)
+  if (hasSiriOptIn)
   {
-    v4 = [(BYExpressSetupCloudSource *)self expressSettings];
-    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)v4 siriOptIn]& 1];
+    expressSettings2 = [(BYExpressSetupCloudSource *)self expressSettings];
+    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)expressSettings2 siriOptIn]& 1];
   }
 
   else
@@ -136,13 +136,13 @@
 
 - (id)siriVoiceTriggerEnabled
 {
-  v2 = [(BYExpressSetupCloudSource *)self expressSettings];
-  v3 = [(SASExpressSettings *)v2 hasSiriVoiceTriggerEnabled];
+  expressSettings = [(BYExpressSetupCloudSource *)self expressSettings];
+  hasSiriVoiceTriggerEnabled = [(SASExpressSettings *)expressSettings hasSiriVoiceTriggerEnabled];
 
-  if (v3)
+  if (hasSiriVoiceTriggerEnabled)
   {
-    v4 = [(BYExpressSetupCloudSource *)self expressSettings];
-    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)v4 siriVoiceTriggerEnabled]& 1];
+    expressSettings2 = [(BYExpressSetupCloudSource *)self expressSettings];
+    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)expressSettings2 siriVoiceTriggerEnabled]& 1];
   }
 
   else
@@ -155,13 +155,13 @@
 
 - (id)screenTimeEnabled
 {
-  v2 = [(BYExpressSetupCloudSource *)self expressSettings];
-  v3 = [(SASExpressSettings *)v2 hasScreenTimeEnabled];
+  expressSettings = [(BYExpressSetupCloudSource *)self expressSettings];
+  hasScreenTimeEnabled = [(SASExpressSettings *)expressSettings hasScreenTimeEnabled];
 
-  if (v3)
+  if (hasScreenTimeEnabled)
   {
-    v4 = [(BYExpressSetupCloudSource *)self expressSettings];
-    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)v4 screenTimeEnabled]& 1];
+    expressSettings2 = [(BYExpressSetupCloudSource *)self expressSettings];
+    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)expressSettings2 screenTimeEnabled]& 1];
   }
 
   else
@@ -174,13 +174,13 @@
 
 - (id)softwareUpdateAutoUpdateEnabled
 {
-  v2 = [(BYExpressSetupCloudSource *)self expressSettings];
-  v3 = [(SASExpressSettings *)v2 hasSoftwareUpdateAutoUpdateEnabled];
+  expressSettings = [(BYExpressSetupCloudSource *)self expressSettings];
+  hasSoftwareUpdateAutoUpdateEnabled = [(SASExpressSettings *)expressSettings hasSoftwareUpdateAutoUpdateEnabled];
 
-  if (v3)
+  if (hasSoftwareUpdateAutoUpdateEnabled)
   {
-    v4 = [(BYExpressSetupCloudSource *)self expressSettings];
-    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)v4 softwareUpdateAutoUpdateEnabled]& 1];
+    expressSettings2 = [(BYExpressSetupCloudSource *)self expressSettings];
+    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)expressSettings2 softwareUpdateAutoUpdateEnabled]& 1];
   }
 
   else
@@ -193,13 +193,13 @@
 
 - (id)softwareUpdateAutoDownloadEnabled
 {
-  v2 = [(BYExpressSetupCloudSource *)self expressSettings];
-  v3 = [(SASExpressSettings *)v2 hasSoftwareUpdateAutoDownloadEnabled];
+  expressSettings = [(BYExpressSetupCloudSource *)self expressSettings];
+  hasSoftwareUpdateAutoDownloadEnabled = [(SASExpressSettings *)expressSettings hasSoftwareUpdateAutoDownloadEnabled];
 
-  if (v3)
+  if (hasSoftwareUpdateAutoDownloadEnabled)
   {
-    v4 = [(BYExpressSetupCloudSource *)self expressSettings];
-    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)v4 softwareUpdateAutoDownloadEnabled]& 1];
+    expressSettings2 = [(BYExpressSetupCloudSource *)self expressSettings];
+    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)expressSettings2 softwareUpdateAutoDownloadEnabled]& 1];
   }
 
   else
@@ -213,39 +213,39 @@
 - (int64_t)userInterfaceStyleModeValue
 {
   v2 = [(BYExpressSetupCloudSource *)self expressSettings:a2];
-  v3 = [(SASExpressSettings *)v2 buddy_userInterfaceStyleModeValue];
+  buddy_userInterfaceStyleModeValue = [(SASExpressSettings *)v2 buddy_userInterfaceStyleModeValue];
 
-  return v3;
+  return buddy_userInterfaceStyleModeValue;
 }
 
 - (id)walletMetadata
 {
-  v2 = [(BYExpressSetupCloudSource *)self expressSettings];
-  v3 = [(SASExpressSettings *)v2 hasWalletData];
+  expressSettings = [(BYExpressSetupCloudSource *)self expressSettings];
+  hasWalletData = [(SASExpressSettings *)expressSettings hasWalletData];
 
-  if (v3)
+  if (hasWalletData)
   {
-    v4 = [(BYExpressSetupCloudSource *)self expressSettings];
-    v7 = [(SASExpressSettings *)v4 walletData];
+    expressSettings2 = [(BYExpressSetupCloudSource *)self expressSettings];
+    walletData = [(SASExpressSettings *)expressSettings2 walletData];
   }
 
   else
   {
-    v7 = 0;
+    walletData = 0;
   }
 
-  return v7;
+  return walletData;
 }
 
 - (id)stolenDeviceProtectionEnabled
 {
-  v2 = [(BYExpressSetupCloudSource *)self expressSettings];
-  v3 = [(SASExpressSettings *)v2 hasStolenDeviceProtectionEnabled];
+  expressSettings = [(BYExpressSetupCloudSource *)self expressSettings];
+  hasStolenDeviceProtectionEnabled = [(SASExpressSettings *)expressSettings hasStolenDeviceProtectionEnabled];
 
-  if (v3)
+  if (hasStolenDeviceProtectionEnabled)
   {
-    v4 = [(BYExpressSetupCloudSource *)self expressSettings];
-    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)v4 stolenDeviceProtectionEnabled]& 1];
+    expressSettings2 = [(BYExpressSetupCloudSource *)self expressSettings];
+    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)expressSettings2 stolenDeviceProtectionEnabled]& 1];
   }
 
   else
@@ -258,13 +258,13 @@
 
 - (id)stolenDeviceProtectionStrictModeEnabled
 {
-  v2 = [(BYExpressSetupCloudSource *)self expressSettings];
-  v3 = [(SASExpressSettings *)v2 hasStolenDeviceProtectionStrictModeEnabled];
+  expressSettings = [(BYExpressSetupCloudSource *)self expressSettings];
+  hasStolenDeviceProtectionStrictModeEnabled = [(SASExpressSettings *)expressSettings hasStolenDeviceProtectionStrictModeEnabled];
 
-  if (v3)
+  if (hasStolenDeviceProtectionStrictModeEnabled)
   {
-    v4 = [(BYExpressSetupCloudSource *)self expressSettings];
-    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)v4 stolenDeviceProtectionStrictModeEnabled]& 1];
+    expressSettings2 = [(BYExpressSetupCloudSource *)self expressSettings];
+    v7 = [NSNumber numberWithBool:[(SASExpressSettings *)expressSettings2 stolenDeviceProtectionStrictModeEnabled]& 1];
   }
 
   else
@@ -278,9 +278,9 @@
 - (id)iPadMultitaskingMode
 {
   v2 = [(BYExpressSetupCloudSource *)self expressSettings:a2];
-  v3 = [(SASExpressSettings *)v2 buddy_iPadMultitaskingMode];
+  buddy_iPadMultitaskingMode = [(SASExpressSettings *)v2 buddy_iPadMultitaskingMode];
 
-  return v3;
+  return buddy_iPadMultitaskingMode;
 }
 
 @end

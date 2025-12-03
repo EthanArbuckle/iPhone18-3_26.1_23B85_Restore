@@ -1,43 +1,43 @@
 @interface NUDeviceTrait
 - (BOOL)isLandscape;
-- (NUDeviceTrait)initWithDeviceTraitSize:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NUDeviceTrait)initWithDeviceTraitSize:(unint64_t)size;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NUDeviceTrait
 
-- (NUDeviceTrait)initWithDeviceTraitSize:(unint64_t)a3
+- (NUDeviceTrait)initWithDeviceTraitSize:(unint64_t)size
 {
   v5.receiver = self;
   v5.super_class = NUDeviceTrait;
   result = [(NUDeviceTrait *)&v5 init];
   if (result)
   {
-    result->_deviceTraitSize = a3;
+    result->_deviceTraitSize = size;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NUDeviceTrait alloc];
-  v5 = [(NUDeviceTrait *)self deviceTraitSize];
+  deviceTraitSize = [(NUDeviceTrait *)self deviceTraitSize];
 
-  return [(NUDeviceTrait *)v4 initWithDeviceTraitSize:v5];
+  return [(NUDeviceTrait *)v4 initWithDeviceTraitSize:deviceTraitSize];
 }
 
 - (BOOL)isLandscape
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 windows];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  windows = [mEMORY[0x277D75128] windows];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v3;
+  v4 = windows;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -73,8 +73,8 @@ LABEL_3:
 
     if (v9)
     {
-      v10 = [v9 windowScene];
-      LOBYTE(v5) = ([v10 interfaceOrientation] - 3) < 2;
+      windowScene = [v9 windowScene];
+      LOBYTE(v5) = ([windowScene interfaceOrientation] - 3) < 2;
 
       goto LABEL_12;
     }

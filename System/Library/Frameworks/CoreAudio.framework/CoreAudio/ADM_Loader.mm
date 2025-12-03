@@ -9,12 +9,12 @@
 - (id)createFactory
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [(ADM_Loader *)self admLibrary];
-  v4 = v3;
+  admLibrary = [(ADM_Loader *)self admLibrary];
+  v4 = admLibrary;
   v5 = atomic_load(StaticContainer<AMCP::Log::AMCP_Scope_Registry_Statics>::s_statics_initialized);
   if ((v5 & 1) == 0)
   {
-    AMCP::Log::AMCP_Scope_Registry::initialize(v3);
+    AMCP::Log::AMCP_Scope_Registry::initialize(admLibrary);
   }
 
   v6 = **StaticContainer<AMCP::Log::AMCP_Scope_Registry_Statics>::s_statics;

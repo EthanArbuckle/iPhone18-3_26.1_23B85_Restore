@@ -1,7 +1,7 @@
 @interface _MFMessageCollector
 - (BOOL)shouldCancel;
 - (_MFMessageCollector)init;
-- (void)newMessagesAvailable:(id)a3;
+- (void)newMessagesAvailable:(id)available;
 @end
 
 @implementation _MFMessageCollector
@@ -23,18 +23,18 @@
   return v2;
 }
 
-- (void)newMessagesAvailable:(id)a3
+- (void)newMessagesAvailable:(id)available
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  availableCopy = available;
+  v5 = availableCopy;
   if (self->_transmogrifier)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = availableCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -65,7 +65,7 @@
 
   else
   {
-    [(NSMutableArray *)self->_messages addObjectsFromArray:v4];
+    [(NSMutableArray *)self->_messages addObjectsFromArray:availableCopy];
   }
 
   v12 = *MEMORY[0x1E69E9840];

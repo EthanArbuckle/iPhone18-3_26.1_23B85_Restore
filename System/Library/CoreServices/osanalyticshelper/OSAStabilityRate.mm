@@ -1,10 +1,10 @@
 @interface OSAStabilityRate
-- (OSAStabilityRate)initWithAppUptime:(double)a3 crashCount:(unint64_t)a4;
+- (OSAStabilityRate)initWithAppUptime:(double)uptime crashCount:(unint64_t)count;
 @end
 
 @implementation OSAStabilityRate
 
-- (OSAStabilityRate)initWithAppUptime:(double)a3 crashCount:(unint64_t)a4
+- (OSAStabilityRate)initWithAppUptime:(double)uptime crashCount:(unint64_t)count
 {
   v11.receiver = self;
   v11.super_class = OSAStabilityRate;
@@ -12,11 +12,11 @@
   v7 = v6;
   if (v6)
   {
-    v6->_uptime = a3;
-    v6->_crashCount = a4;
-    if (a4)
+    v6->_uptime = uptime;
+    v6->_crashCount = count;
+    if (count)
     {
-      v8 = [NSNumber numberWithDouble:a3 / a4];
+      v8 = [NSNumber numberWithDouble:uptime / count];
       MTBF = v7->_MTBF;
       v7->_MTBF = v8;
     }

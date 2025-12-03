@@ -1,14 +1,14 @@
 @interface VCMediaRecorderHistoryBuffer
 - (CFIndex)flushBuffer;
-- (VCMediaRecorderHistoryBuffer)initWithDelegate:(id)a3 bufferLength:(int)a4;
-- (opaqueCMSampleBuffer)getClosestSampleForTimestamp:(unsigned int)a3;
+- (VCMediaRecorderHistoryBuffer)initWithDelegate:(id)delegate bufferLength:(int)length;
+- (opaqueCMSampleBuffer)getClosestSampleForTimestamp:(unsigned int)timestamp;
 - (void)dealloc;
 - (void)flushBuffer;
 @end
 
 @implementation VCMediaRecorderHistoryBuffer
 
-- (VCMediaRecorderHistoryBuffer)initWithDelegate:(id)a3 bufferLength:(int)a4
+- (VCMediaRecorderHistoryBuffer)initWithDelegate:(id)delegate bufferLength:(int)length
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -17,9 +17,9 @@
   v7 = v6;
   if (v6)
   {
-    if (a3)
+    if (delegate)
     {
-      objc_storeWeak(&v6->_delegate, a3);
+      objc_storeWeak(&v6->_delegate, delegate);
       v8 = *MEMORY[0x1E695E480];
       Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9C0]);
       v7->_timestampQueue = Mutable;
@@ -32,7 +32,7 @@
           VCAllocatorFirstCome_Create(v8, "VCMediaRecorderHistoryBufferTimestampAllocator", &v7->_timestampAllocator);
           if (v7->_timestampAllocator)
           {
-            v7->_bufferLength = a4;
+            v7->_bufferLength = length;
             return v7;
           }
 
@@ -90,7 +90,7 @@
   [(VCMediaRecorderHistoryBuffer *)&v6 dealloc];
 }
 
-- (opaqueCMSampleBuffer)getClosestSampleForTimestamp:(unsigned int)a3
+- (opaqueCMSampleBuffer)getClosestSampleForTimestamp:(unsigned int)timestamp
 {
   v35 = *MEMORY[0x1E69E9840];
   Count = CFDictionaryGetCount(self->_sampleMap);
@@ -99,7 +99,7 @@
     return 0;
   }
 
-  valuePtr = 480 * (a3 / 0x1E0);
+  valuePtr = 480 * (timestamp / 0x1E0);
   v6 = *MEMORY[0x1E695E480];
   v7 = 31;
   while (1)
@@ -136,7 +136,7 @@
           v27 = 1024;
           v28 = 107;
           v29 = 1024;
-          v30 = a3;
+          timestampCopy = timestamp;
           v31 = 1024;
           v32 = valuePtr;
           v33 = 1024;
@@ -251,7 +251,7 @@
 {
   do
   {
-    VCMediaRecorderHistoryBuffer_DequeueOneFrame(a1);
+    VCMediaRecorderHistoryBuffer_DequeueOneFrame(self);
     result = CFArrayGetCount(*a2);
   }
 

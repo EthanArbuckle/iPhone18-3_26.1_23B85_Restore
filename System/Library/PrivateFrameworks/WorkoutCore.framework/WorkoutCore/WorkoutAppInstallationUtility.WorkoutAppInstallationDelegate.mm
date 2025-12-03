@@ -1,12 +1,12 @@
 @interface WorkoutAppInstallationUtility.WorkoutAppInstallationDelegate
 - (_TtCC11WorkoutCore29WorkoutAppInstallationUtility30WorkoutAppInstallationDelegate)init;
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4;
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d;
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d;
 @end
 
 @implementation WorkoutAppInstallationUtility.WorkoutAppInstallationDelegate
 
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -16,13 +16,13 @@
   type metadata accessor for ACXRemoteApplication();
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = self;
+  selfCopy = self;
   WorkoutAppInstallationUtility.WorkoutAppInstallationDelegate.applicationsInstalled(_:onDeviceWithPairingID:)(v10, v9);
 
   (*(v6 + 8))(v9, v5);
 }
 
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -31,7 +31,7 @@
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = self;
+  selfCopy = self;
   WorkoutAppInstallationUtility.WorkoutAppInstallationDelegate.applicationsUninstalled(_:onDeviceWithPairingID:)(v10, v9);
 
   (*(v6 + 8))(v9, v5);

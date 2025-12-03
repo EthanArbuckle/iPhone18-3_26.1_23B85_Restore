@@ -1,18 +1,18 @@
 @interface PLModelMigrationAction_ResetFilesystemImportToken
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetFilesystemImportToken
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:0];
-  v8 = [[PLGlobalValues alloc] initWithManagedObjectContext:v6];
+  v8 = [[PLGlobalValues alloc] initWithManagedObjectContext:contextCopy];
   [(PLGlobalValues *)v8 setImportFilesystemAssetsState:-1];
   v34 = 0;
-  v9 = [v6 save:&v34];
+  v9 = [contextCopy save:&v34];
 
   v10 = v34;
   if (v9)
@@ -23,9 +23,9 @@
 
     if (v12)
     {
-      v13 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v13)
+      if (logger)
       {
         v68 = 0u;
         v69 = 0u;
@@ -96,9 +96,9 @@
 
     if (v18)
     {
-      v19 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v19)
+      if (logger2)
       {
         v68 = 0u;
         v69 = 0u;
@@ -169,9 +169,9 @@
 
     [(PLModelMigrationActionCore *)self finalizeProgress];
     v31 = v10;
-    if (a4)
+    if (error)
     {
-      *a4 = v31;
+      *error = v31;
     }
 
     v27 = 3;

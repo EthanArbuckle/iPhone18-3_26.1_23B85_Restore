@@ -1,13 +1,13 @@
 @interface InCallControlsIgnoreLMIRequestsCell
-- (void)didToggleMuteState:(id)a3;
+- (void)didToggleMuteState:(id)state;
 @end
 
 @implementation InCallControlsIgnoreLMIRequestsCell
 
-- (void)didToggleMuteState:(id)a3
+- (void)didToggleMuteState:(id)state
 {
-  v4 = a3;
-  v5 = self;
+  stateCopy = state;
+  selfCopy = self;
   InCallControlsIgnoreLMIRequestsCell.didToggleMuteState(_:)();
 }
 

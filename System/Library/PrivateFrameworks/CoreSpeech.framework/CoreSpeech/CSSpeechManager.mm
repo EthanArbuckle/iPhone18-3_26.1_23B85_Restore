@@ -1,50 +1,50 @@
 @interface CSSpeechManager
 + (id)sharedManager;
-- (BOOL)_prepareForBluetoothDeviceWithDeviceType:(unint64_t)a3;
+- (BOOL)_prepareForBluetoothDeviceWithDeviceType:(unint64_t)type;
 - (CSSpeechManager)init;
-- (id)_getAudioRecorderWithError:(id *)a3;
-- (id)_myriadSelfTriggerCoordinatorIfNeeded:(BOOL)a3;
-- (id)_preMyriadCoordinatorCreateIfNeeded:(BOOL)a3;
-- (id)_voiceTriggerEventNotifierCreateIfNeeded:(BOOL)a3;
-- (id)_voiceTriggerFileLoggerCreateIfNeeded:(BOOL)a3;
-- (id)audioProviderWithContext:(id)a3 error:(id *)a4;
-- (id)audioProviderWithStreamID:(unint64_t)a3;
-- (id)audioProviderWithUUID:(id)a3;
-- (id)audioTapProviderWithType:(unint64_t)a3;
+- (id)_getAudioRecorderWithError:(id *)error;
+- (id)_myriadSelfTriggerCoordinatorIfNeeded:(BOOL)needed;
+- (id)_preMyriadCoordinatorCreateIfNeeded:(BOOL)needed;
+- (id)_voiceTriggerEventNotifierCreateIfNeeded:(BOOL)needed;
+- (id)_voiceTriggerFileLoggerCreateIfNeeded:(BOOL)needed;
+- (id)audioProviderWithContext:(id)context error:(id *)error;
+- (id)audioProviderWithStreamID:(unint64_t)d;
+- (id)audioProviderWithUUID:(id)d;
+- (id)audioTapProviderWithType:(unint64_t)type;
 - (id)clientController;
 - (id)fetchFallbackAudioSessionReleaseProvider;
-- (void)CSAudioRouteChangeMonitor:(id)a3 didReceiveAudioRouteChangeEvent:(int64_t)a4;
+- (void)CSAudioRouteChangeMonitor:(id)monitor didReceiveAudioRouteChangeEvent:(int64_t)event;
 - (void)_createClearLoggingFileTimer;
-- (void)_getVoiceTriggerAssetIfNeeded:(id)a3;
+- (void)_getVoiceTriggerAssetIfNeeded:(id)needed;
 - (void)_handleClearLoggingFileTimer;
-- (void)_mapAssetToExclaveKit:(id)a3 completion:(id)a4;
-- (void)_prepareRemoraDeviceWithConnectedDeviceIds:(id)a3;
-- (void)_reinitializeSmartSiriVolumeWithAsset:(id)a3;
+- (void)_mapAssetToExclaveKit:(id)kit completion:(id)completion;
+- (void)_prepareRemoraDeviceWithConnectedDeviceIds:(id)ids;
+- (void)_reinitializeSmartSiriVolumeWithAsset:(id)asset;
 - (void)_reinitializeVoiceTriggerIfNeeded;
-- (void)_reinitializeVoiceTriggerWithAsset:(id)a3;
-- (void)_retryMapAssetToExclaveKit:(id)a3;
-- (void)_setAssetForBuiltInVoiceTrigger:(id)a3 completion:(id)a4;
-- (void)_setupForBluetoothDeviceIfNeededWithDeviceType:(unint64_t)a3 prepareCompletion:(id)a4 completion:(id)a5;
-- (void)_setupForHearstIfNeededWithPrepareCompletion:(id)a3 completion:(id)a4;
-- (void)_setupForJarvisIfNeededWithPrepareCompletion:(id)a3 completion:(id)a4;
-- (void)_setupForRemoraIfNeededWithCompletion:(id)a3;
-- (void)_setupSpeakerRecognitionWithVTAsset:(id)a3;
-- (void)_setupVoiceTriggerWithCompletion:(id)a3;
+- (void)_reinitializeVoiceTriggerWithAsset:(id)asset;
+- (void)_retryMapAssetToExclaveKit:(id)kit;
+- (void)_setAssetForBuiltInVoiceTrigger:(id)trigger completion:(id)completion;
+- (void)_setupForBluetoothDeviceIfNeededWithDeviceType:(unint64_t)type prepareCompletion:(id)completion completion:(id)a5;
+- (void)_setupForHearstIfNeededWithPrepareCompletion:(id)completion completion:(id)a4;
+- (void)_setupForJarvisIfNeededWithPrepareCompletion:(id)completion completion:(id)a4;
+- (void)_setupForRemoraIfNeededWithCompletion:(id)completion;
+- (void)_setupSpeakerRecognitionWithVTAsset:(id)asset;
+- (void)_setupVoiceTriggerWithCompletion:(id)completion;
 - (void)_startAllClients;
 - (void)_startClearLoggingFilesTimer;
-- (void)_startForBluetoothDeviceWithDeviceType:(unint64_t)a3 asset:(id)a4;
+- (void)_startForBluetoothDeviceWithDeviceType:(unint64_t)type asset:(id)asset;
 - (void)_startVoiceTrigger;
 - (void)_tearDownBuiltInVoiceTrigger;
 - (void)_teardownForBluetoothDevice;
-- (void)activationEventNotificationHandler:(id)a3 event:(id)a4 completion:(id)a5;
-- (void)audioProviderInvalidated:(id)a3 streamHandleId:(unint64_t)a4;
-- (void)audioRecorderWillBeDestroyed:(id)a3;
+- (void)activationEventNotificationHandler:(id)handler event:(id)event completion:(id)completion;
+- (void)audioProviderInvalidated:(id)invalidated streamHandleId:(unint64_t)id;
+- (void)audioRecorderWillBeDestroyed:(id)destroyed;
 - (void)dealloc;
-- (void)opportuneSpeakEventMonitor:(id)a3 didStreamStateChanged:(BOOL)a4;
-- (void)registerSiriClientProxy:(id)a3;
-- (void)registerSpeechController:(id)a3;
+- (void)opportuneSpeakEventMonitor:(id)monitor didStreamStateChanged:(BOOL)changed;
+- (void)registerSiriClientProxy:(id)proxy;
+- (void)registerSpeechController:(id)controller;
 - (void)startManager;
-- (void)voiceTriggerAssetHandler:(id)a3 endpointId:(id)a4 didChangeCachedAsset:(id)a5;
+- (void)voiceTriggerAssetHandler:(id)handler endpointId:(id)id didChangeCachedAsset:(id)asset;
 @end
 
 @implementation CSSpeechManager
@@ -68,18 +68,18 @@
   return WeakRetained;
 }
 
-- (void)opportuneSpeakEventMonitor:(id)a3 didStreamStateChanged:(BOOL)a4
+- (void)opportuneSpeakEventMonitor:(id)monitor didStreamStateChanged:(BOOL)changed
 {
-  v6 = a3;
+  monitorCopy = monitor;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10012E488;
   block[3] = &unk_100253900;
-  v11 = a4;
+  changedCopy = changed;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = monitorCopy;
+  v8 = monitorCopy;
   dispatch_async(queue, block);
 }
 
@@ -118,17 +118,17 @@
   self->_voiceTriggerFirstPassJarvisAP = 0;
 }
 
-- (void)_prepareRemoraDeviceWithConnectedDeviceIds:(id)a3
+- (void)_prepareRemoraDeviceWithConnectedDeviceIds:(id)ids
 {
   if (!self->_voiceTriggerFirstPassRemora)
   {
-    v5 = a3;
+    idsCopy = ids;
     v6 = objc_alloc_init(CSVoiceTriggerFirstPassRemora);
     voiceTriggerFirstPassRemora = self->_voiceTriggerFirstPassRemora;
     self->_voiceTriggerFirstPassRemora = v6;
 
     [(CSVoiceTriggerFirstPassRemora *)self->_voiceTriggerFirstPassRemora start];
-    [(CSVoiceTriggerFirstPassRemora *)self->_voiceTriggerFirstPassRemora setConnectedDeviceIds:v5];
+    [(CSVoiceTriggerFirstPassRemora *)self->_voiceTriggerFirstPassRemora setConnectedDeviceIds:idsCopy];
 
     v8 = [(CSSpeechManager *)self _preMyriadCoordinatorCreateIfNeeded:1];
     [(CSVoiceTriggerFirstPassRemora *)self->_voiceTriggerFirstPassRemora setDelegate:v8];
@@ -137,12 +137,12 @@
   }
 }
 
-- (void)_startForBluetoothDeviceWithDeviceType:(unint64_t)a3 asset:(id)a4
+- (void)_startForBluetoothDeviceWithDeviceType:(unint64_t)type asset:(id)asset
 {
-  v6 = a4;
-  if (a3)
+  assetCopy = asset;
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
@@ -157,17 +157,17 @@
     v8 = 160;
   }
 
-  v9 = v6;
-  [*(&self->super.isa + v8) setAsset:v6];
+  v9 = assetCopy;
+  [*(&self->super.isa + v8) setAsset:assetCopy];
   [*(&self->super.isa + v7) setAsset:v9];
-  v6 = v9;
+  assetCopy = v9;
 LABEL_6:
 }
 
-- (BOOL)_prepareForBluetoothDeviceWithDeviceType:(unint64_t)a3
+- (BOOL)_prepareForBluetoothDeviceWithDeviceType:(unint64_t)type
 {
   v5 = [(CSSpeechManager *)self _voiceTriggerFileLoggerCreateIfNeeded:1];
-  if (a3 == 1)
+  if (type == 1)
   {
     voiceTriggerFirstPassJarvis = self->_voiceTriggerFirstPassJarvis;
     LOBYTE(v7) = voiceTriggerFirstPassJarvis == 0;
@@ -193,7 +193,7 @@ LABEL_6:
 
   else
   {
-    if (a3)
+    if (type)
     {
       LOBYTE(v7) = 0;
       return v7;
@@ -236,14 +236,14 @@ LABEL_12:
   return v7;
 }
 
-- (void)_setupForBluetoothDeviceIfNeededWithDeviceType:(unint64_t)a3 prepareCompletion:(id)a4 completion:(id)a5
+- (void)_setupForBluetoothDeviceIfNeededWithDeviceType:(unint64_t)type prepareCompletion:(id)completion completion:(id)a5
 {
-  v8 = a4;
+  completionCopy = completion;
   v9 = a5;
-  v10 = [(CSSpeechManager *)self _prepareForBluetoothDeviceWithDeviceType:a3];
-  if (v8)
+  v10 = [(CSSpeechManager *)self _prepareForBluetoothDeviceWithDeviceType:type];
+  if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 
   if (v10)
@@ -253,7 +253,7 @@ LABEL_12:
     v11[2] = sub_10012EBFC;
     v11[3] = &unk_1002523F8;
     v11[4] = self;
-    v13 = a3;
+    typeCopy = type;
     v12 = v9;
     [(CSSpeechManager *)self _getVoiceTriggerAssetIfNeeded:v11];
   }
@@ -264,7 +264,7 @@ LABEL_12:
   }
 }
 
-- (void)_setupForRemoraIfNeededWithCompletion:(id)a3
+- (void)_setupForRemoraIfNeededWithCompletion:(id)completion
 {
   v3 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -275,9 +275,9 @@ LABEL_12:
   }
 }
 
-- (void)_setupForJarvisIfNeededWithPrepareCompletion:(id)a3 completion:(id)a4
+- (void)_setupForJarvisIfNeededWithPrepareCompletion:(id)completion completion:(id)a4
 {
-  v6 = a3;
+  completionCopy = completion;
   v7 = a4;
   v8 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -287,12 +287,12 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s setup VoiceTrigger due to Jarvis connection", &v9, 0xCu);
   }
 
-  [(CSSpeechManager *)self _setupForBluetoothDeviceIfNeededWithDeviceType:1 prepareCompletion:v6 completion:v7];
+  [(CSSpeechManager *)self _setupForBluetoothDeviceIfNeededWithDeviceType:1 prepareCompletion:completionCopy completion:v7];
 }
 
-- (void)_setupForHearstIfNeededWithPrepareCompletion:(id)a3 completion:(id)a4
+- (void)_setupForHearstIfNeededWithPrepareCompletion:(id)completion completion:(id)a4
 {
-  v6 = a3;
+  completionCopy = completion;
   v7 = a4;
   v8 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -302,10 +302,10 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s setup VoiceTrigger due to Hearst connection", &v9, 0xCu);
   }
 
-  [(CSSpeechManager *)self _setupForBluetoothDeviceIfNeededWithDeviceType:0 prepareCompletion:v6 completion:v7];
+  [(CSSpeechManager *)self _setupForBluetoothDeviceIfNeededWithDeviceType:0 prepareCompletion:completionCopy completion:v7];
 }
 
-- (void)CSAudioRouteChangeMonitor:(id)a3 didReceiveAudioRouteChangeEvent:(int64_t)a4
+- (void)CSAudioRouteChangeMonitor:(id)monitor didReceiveAudioRouteChangeEvent:(int64_t)event
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -313,27 +313,27 @@ LABEL_12:
   v5[2] = sub_10012F000;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = event;
   dispatch_async(queue, v5);
 }
 
-- (void)activationEventNotificationHandler:(id)a3 event:(id)a4 completion:(id)a5
+- (void)activationEventNotificationHandler:(id)handler event:(id)event completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlerCopy = handler;
+  eventCopy = event;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10012F310;
   v15[3] = &unk_100252E58;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = eventCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = handlerCopy;
+  v14 = eventCopy;
   dispatch_async(queue, v15);
 }
 
@@ -419,18 +419,18 @@ LABEL_12:
   }
 }
 
-- (void)_reinitializeSmartSiriVolumeWithAsset:(id)a3
+- (void)_reinitializeSmartSiriVolumeWithAsset:(id)asset
 {
   ssvManager = self->_ssvManager;
   if (ssvManager)
   {
-    [(CSSmartSiriVolumeManager *)ssvManager setAsset:a3];
+    [(CSSmartSiriVolumeManager *)ssvManager setAsset:asset];
   }
 }
 
-- (void)_reinitializeVoiceTriggerWithAsset:(id)a3
+- (void)_reinitializeVoiceTriggerWithAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -439,57 +439,57 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s new asset available, change to new model", &v7, 0xCu);
   }
 
-  if (v4)
+  if (assetCopy)
   {
-    [(CSSpeechManager *)self _setAssetForBuiltInVoiceTrigger:v4 completion:0];
+    [(CSSpeechManager *)self _setAssetForBuiltInVoiceTrigger:assetCopy completion:0];
     v6 = +[CSVoiceTriggerStatistics sharedInstance];
     [v6 resetVTEstimationStatistics];
 
     if (+[CSUtils supportBluetoothDeviceVoiceTrigger])
     {
-      [(CSVoiceTriggerFirstPassHearstAP *)self->_voiceTriggerFirstPassHearstAP setAsset:v4];
-      [(CSVoiceTriggerFirstPassHearst *)self->_voiceTriggerFirstPassHearst setAsset:v4];
-      [(CSVoiceTriggerFirstPassJarvis *)self->_voiceTriggerFirstPassJarvis setAsset:v4];
-      [(CSVoiceTriggerFirstPassJarvisAP *)self->_voiceTriggerFirstPassJarvisAP setAsset:v4];
+      [(CSVoiceTriggerFirstPassHearstAP *)self->_voiceTriggerFirstPassHearstAP setAsset:assetCopy];
+      [(CSVoiceTriggerFirstPassHearst *)self->_voiceTriggerFirstPassHearst setAsset:assetCopy];
+      [(CSVoiceTriggerFirstPassJarvis *)self->_voiceTriggerFirstPassJarvis setAsset:assetCopy];
+      [(CSVoiceTriggerFirstPassJarvisAP *)self->_voiceTriggerFirstPassJarvisAP setAsset:assetCopy];
     }
 
     +[CSUtils supportRemoraVoiceTrigger];
-    [(CSSelfTriggerController *)self->_selfTriggerController setAsset:v4];
-    [(CSKeywordDetector *)self->_keywordDetector setAsset:v4];
-    [(CSSpeechManager *)self _reinitializeSmartSiriVolumeWithAsset:v4];
+    [(CSSelfTriggerController *)self->_selfTriggerController setAsset:assetCopy];
+    [(CSKeywordDetector *)self->_keywordDetector setAsset:assetCopy];
+    [(CSSpeechManager *)self _reinitializeSmartSiriVolumeWithAsset:assetCopy];
     if ((CSIsCommunalDevice() & 1) == 0)
     {
-      [(CSVoiceProfileRetrainManager *)self->_voiceTriggerRetrainer triggerVoiceProfileRetrainingWithAsset:v4 withSecureAsset:0];
+      [(CSVoiceProfileRetrainManager *)self->_voiceTriggerRetrainer triggerVoiceProfileRetrainingWithAsset:assetCopy withSecureAsset:0];
     }
   }
 }
 
-- (void)_setAssetForBuiltInVoiceTrigger:(id)a3 completion:(id)a4
+- (void)_setAssetForBuiltInVoiceTrigger:(id)trigger completion:(id)completion
 {
-  v6 = a3;
+  triggerCopy = trigger;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10012FE00;
   v15[3] = &unk_100252368;
-  v7 = a4;
-  v16 = v7;
+  completionCopy = completion;
+  v16 = completionCopy;
   v8 = objc_retainBlock(v15);
   if (!self->_isExclaveHardware)
   {
     goto LABEL_12;
   }
 
-  v9 = [v6 assetProvider];
-  v10 = [v6 assetVariant];
-  v11 = v10;
-  v13 = v9 == 2 && v10 == 2;
+  assetProvider = [triggerCopy assetProvider];
+  assetVariant = [triggerCopy assetVariant];
+  v11 = assetVariant;
+  v13 = assetProvider == 2 && assetVariant == 2;
   v14 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v18 = "[CSSpeechManager _setAssetForBuiltInVoiceTrigger:completion:]";
     v19 = 2048;
-    v20 = v9;
+    v20 = assetProvider;
     v21 = 2048;
     v22 = v11;
     v23 = 1024;
@@ -499,13 +499,13 @@ LABEL_12:
 
   if (v13)
   {
-    [(CSSpeechManager *)self _mapAssetToExclaveKit:v6 completion:v8];
+    [(CSSpeechManager *)self _mapAssetToExclaveKit:triggerCopy completion:v8];
   }
 
   else
   {
 LABEL_12:
-    [(CSBuiltInVoiceTrigger *)self->_voiceTrigger setAsset:v6];
+    [(CSBuiltInVoiceTrigger *)self->_voiceTrigger setAsset:triggerCopy];
     if (v8)
     {
       (v8[2])(v8, 0);
@@ -513,42 +513,42 @@ LABEL_12:
   }
 }
 
-- (void)_mapAssetToExclaveKit:(id)a3 completion:(id)a4
+- (void)_mapAssetToExclaveKit:(id)kit completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  kitCopy = kit;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(CSSpeechManager *)self assetHandler];
+  assetHandler = [(CSSpeechManager *)self assetHandler];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10012FF4C;
   v11[3] = &unk_100252340;
   v11[4] = self;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = kitCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = completionCopy;
   v13 = v10;
-  [v8 mapAssetToExclaveKit:v9 completion:v11];
+  [assetHandler mapAssetToExclaveKit:v9 completion:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)_retryMapAssetToExclaveKit:(id)a3
+- (void)_retryMapAssetToExclaveKit:(id)kit
 {
-  v4 = a3;
+  kitCopy = kit;
   objc_initWeak(&location, self);
-  v5 = [(CSSpeechManager *)self assetHandler];
+  assetHandler = [(CSSpeechManager *)self assetHandler];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001305D4;
   v7[3] = &unk_1002522F0;
   v7[4] = self;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = kitCopy;
   v8 = v6;
-  [v5 retryMappingAssetToExclaveKit:v6 completion:v7];
+  [assetHandler retryMappingAssetToExclaveKit:v6 completion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -568,7 +568,7 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)voiceTriggerAssetHandler:(id)a3 endpointId:(id)a4 didChangeCachedAsset:(id)a5
+- (void)voiceTriggerAssetHandler:(id)handler endpointId:(id)id didChangeCachedAsset:(id)asset
 {
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -581,7 +581,7 @@ LABEL_12:
   [(CSSpeechManager *)self _reinitializeVoiceTriggerIfNeeded];
 }
 
-- (void)audioRecorderWillBeDestroyed:(id)a3
+- (void)audioRecorderWillBeDestroyed:(id)destroyed
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -592,31 +592,31 @@ LABEL_12:
   dispatch_async(queue, block);
 }
 
-- (void)audioProviderInvalidated:(id)a3 streamHandleId:(unint64_t)a4
+- (void)audioProviderInvalidated:(id)invalidated streamHandleId:(unint64_t)id
 {
-  v6 = a3;
+  invalidatedCopy = invalidated;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100130DF0;
   block[3] = &unk_1002533C8;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v8 = v6;
+  selfCopy = self;
+  idCopy = id;
+  v10 = invalidatedCopy;
+  v8 = invalidatedCopy;
   dispatch_async(queue, block);
 }
 
-- (id)_getAudioRecorderWithError:(id *)a3
+- (id)_getAudioRecorderWithError:(id *)error
 {
   if (self->_audioRecorder)
   {
     v5 = 0;
-    if (a3)
+    if (error)
     {
 LABEL_3:
       v6 = v5;
-      *a3 = v5;
+      *error = v5;
     }
   }
 
@@ -631,11 +631,11 @@ LABEL_3:
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
         v22 = v11;
-        v23 = [v5 localizedDescription];
+        localizedDescription = [v5 localizedDescription];
         *buf = 136315394;
         v31 = "[CSSpeechManager _getAudioRecorderWithError:]";
         v32 = 2114;
-        v33 = v23;
+        v33 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%s Failed to create audio recorder : %{public}@", buf, 0x16u);
       }
     }
@@ -644,8 +644,8 @@ LABEL_3:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v12 = [(CSSpeechManager *)self audioProviders];
-    v13 = [v12 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    audioProviders = [(CSSpeechManager *)self audioProviders];
+    v13 = [audioProviders countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v13)
     {
       v14 = v13;
@@ -657,19 +657,19 @@ LABEL_3:
         {
           if (*v25 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(audioProviders);
           }
 
           v17 = *(*(&v24 + 1) + 8 * v16);
-          v18 = [(CSSpeechManager *)self audioProviders];
-          v19 = [v18 objectForKey:v17];
+          audioProviders2 = [(CSSpeechManager *)self audioProviders];
+          v19 = [audioProviders2 objectForKey:v17];
 
           [v19 setAudioRecorder:v10];
           v16 = v16 + 1;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v14 = [audioProviders countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v14);
@@ -683,7 +683,7 @@ LABEL_3:
     audioRecorder = self->_audioRecorder;
     self->_audioRecorder = v10;
 
-    if (a3)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -717,7 +717,7 @@ LABEL_3:
   return v3;
 }
 
-- (id)audioProviderWithStreamID:(unint64_t)a3
+- (id)audioProviderWithStreamID:(unint64_t)d
 {
   v7 = 0;
   v8 = &v7;
@@ -731,7 +731,7 @@ LABEL_3:
   block[2] = sub_1001314B8;
   block[3] = &unk_100252170;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = d;
   block[4] = self;
   dispatch_sync(queue, block);
   v4 = v8[5];
@@ -740,16 +740,16 @@ LABEL_3:
   return v4;
 }
 
-- (id)audioProviderWithContext:(id)a3 error:(id *)a4
+- (id)audioProviderWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     *&buf[4] = "[CSSpeechManager audioProviderWithContext:error:]";
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = contextCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s context = %{public}@", buf, 0x16u);
   }
 
@@ -772,13 +772,13 @@ LABEL_3:
   v12[3] = &unk_100252278;
   v12[4] = self;
   v14 = &v16;
-  v9 = v6;
+  v9 = contextCopy;
   v13 = v9;
   v15 = buf;
   dispatch_sync(queue, v12);
-  if (a4)
+  if (error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   v10 = *(*&buf[8] + 40);
@@ -789,9 +789,9 @@ LABEL_3:
   return v10;
 }
 
-- (id)audioProviderWithUUID:(id)a3
+- (id)audioProviderWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -804,9 +804,9 @@ LABEL_3:
   block[2] = sub_100131FE8;
   block[3] = &unk_100252228;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -815,16 +815,16 @@ LABEL_3:
   return v7;
 }
 
-- (void)registerSiriClientProxy:(id)a3
+- (void)registerSiriClientProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v11 = "[CSSpeechManager registerSiriClientProxy:]";
     v12 = 2050;
-    v13 = v4;
+    v13 = proxyCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s xpcListener = %{public}p", buf, 0x16u);
   }
 
@@ -834,28 +834,28 @@ LABEL_3:
   v8[2] = sub_10013224C;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = proxyCopy;
+  v7 = proxyCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)registerSpeechController:(id)a3
+- (void)registerSpeechController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[CSSpeechManager registerSpeechController:]";
     v9 = 2050;
-    v10 = v4;
+    v10 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s speechController = %{public}p", &v7, 0x16u);
   }
 
-  [(CSVoiceTriggerEventsCoordinator *)self->_voiceTriggerEventsCoordinator registerObserver:v4];
+  [(CSVoiceTriggerEventsCoordinator *)self->_voiceTriggerEventsCoordinator registerObserver:controllerCopy];
   v6 = [(CSSpeechManager *)self _myriadSelfTriggerCoordinatorIfNeeded:+[CSSelfTriggerController shouldSetupSelfTrigger]];
-  [v6 setDelegate:v4];
-  objc_storeWeak(&self->_clientController, v4);
+  [v6 setDelegate:controllerCopy];
+  objc_storeWeak(&self->_clientController, controllerCopy);
 }
 
 - (void)_startAllClients
@@ -891,9 +891,9 @@ LABEL_3:
   [(CSBuiltInVoiceTrigger *)self->_voiceTrigger start];
 }
 
-- (void)_setupVoiceTriggerWithCompletion:(id)a3
+- (void)_setupVoiceTriggerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -959,14 +959,14 @@ LABEL_3:
   v17[2] = sub_1001327CC;
   v17[3] = &unk_100252878;
   v17[4] = self;
-  v18 = v4;
-  v16 = v4;
+  v18 = completionCopy;
+  v16 = completionCopy;
   [(CSSpeechManager *)self _getVoiceTriggerAssetIfNeeded:v17];
 }
 
-- (void)_setupSpeakerRecognitionWithVTAsset:(id)a3
+- (void)_setupSpeakerRecognitionWithVTAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -976,9 +976,9 @@ LABEL_3:
   }
 
   v6 = +[CSUtils supportsPersonalizedHeySiri];
-  if (v4 && v6)
+  if (assetCopy && v6)
   {
-    [(CSVoiceProfileRetrainManager *)self->_voiceTriggerRetrainer triggerVoiceProfileRetrainingWithAsset:v4 withSecureAsset:0];
+    [(CSVoiceProfileRetrainManager *)self->_voiceTriggerRetrainer triggerVoiceProfileRetrainingWithAsset:assetCopy withSecureAsset:0];
   }
 
   else
@@ -1008,9 +1008,9 @@ LABEL_3:
   }
 }
 
-- (id)_myriadSelfTriggerCoordinatorIfNeeded:(BOOL)a3
+- (id)_myriadSelfTriggerCoordinatorIfNeeded:(BOOL)needed
 {
-  if (a3 && !self->_myriadSelfTriggerCoordinator)
+  if (needed && !self->_myriadSelfTriggerCoordinator)
   {
     v4 = objc_alloc_init(CSMyriadSelfTriggerCoordinator);
     myriadSelfTriggerCoordinator = self->_myriadSelfTriggerCoordinator;
@@ -1022,9 +1022,9 @@ LABEL_3:
   return v6;
 }
 
-- (id)_voiceTriggerFileLoggerCreateIfNeeded:(BOOL)a3
+- (id)_voiceTriggerFileLoggerCreateIfNeeded:(BOOL)needed
 {
-  if (a3 && !self->_voiceTriggerFileLogger)
+  if (needed && !self->_voiceTriggerFileLogger)
   {
     v4 = objc_alloc_init(CSVoiceTriggerFileLogger);
     voiceTriggerFileLogger = self->_voiceTriggerFileLogger;
@@ -1039,9 +1039,9 @@ LABEL_3:
   return v7;
 }
 
-- (id)_preMyriadCoordinatorCreateIfNeeded:(BOOL)a3
+- (id)_preMyriadCoordinatorCreateIfNeeded:(BOOL)needed
 {
-  if (a3 && !self->_preMyriadCoordinator)
+  if (needed && !self->_preMyriadCoordinator)
   {
     v4 = objc_alloc_init(CSPreMyriadCoordinator);
     preMyriadCoordinator = self->_preMyriadCoordinator;
@@ -1057,9 +1057,9 @@ LABEL_3:
   return v8;
 }
 
-- (id)_voiceTriggerEventNotifierCreateIfNeeded:(BOOL)a3
+- (id)_voiceTriggerEventNotifierCreateIfNeeded:(BOOL)needed
 {
-  if (a3 && !self->_voiceTriggerEventsCoordinator)
+  if (needed && !self->_voiceTriggerEventsCoordinator)
   {
     v4 = +[CSVoiceTriggerEventsCoordinator sharedInstance];
     voiceTriggerEventsCoordinator = self->_voiceTriggerEventsCoordinator;
@@ -1084,14 +1084,14 @@ LABEL_3:
   return v11;
 }
 
-- (void)_getVoiceTriggerAssetIfNeeded:(id)a3
+- (void)_getVoiceTriggerAssetIfNeeded:(id)needed
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100133708;
   v6[3] = &unk_100252198;
-  v3 = a3;
-  v7 = v3;
+  neededCopy = needed;
+  v7 = neededCopy;
   v4 = objc_retainBlock(v6);
   if ((+[CSUtils isLocalVoiceTriggerAvailable](CSUtils, "isLocalVoiceTriggerAvailable") & 1) != 0 || +[CSUtils supportBluetoothDeviceVoiceTrigger])
   {
@@ -1105,7 +1105,7 @@ LABEL_3:
   }
 }
 
-- (id)audioTapProviderWithType:(unint64_t)a3
+- (id)audioTapProviderWithType:(unint64_t)type
 {
   v9 = 0;
   v10 = &v9;
@@ -1113,7 +1113,7 @@ LABEL_3:
   v12 = sub_100131344;
   v13 = sub_100131354;
   v14 = 0;
-  if (a3 < 2)
+  if (type < 2)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -1121,7 +1121,7 @@ LABEL_3:
     block[2] = sub_1001338AC;
     block[3] = &unk_100252170;
     block[5] = &v9;
-    block[6] = a3;
+    block[6] = type;
     block[4] = self;
     dispatch_sync(queue, block);
   }
@@ -1216,9 +1216,9 @@ LABEL_6:
   {
     CSLogInitIfNeeded();
     v4 = [objc_opt_class() description];
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_get_global_queue(33, 0);
-    v7 = dispatch_queue_create_with_target_V2(v5, 0, v6);
+    v7 = dispatch_queue_create_with_target_V2(uTF8String, 0, v6);
     queue = v3->_queue;
     v3->_queue = v7;
 

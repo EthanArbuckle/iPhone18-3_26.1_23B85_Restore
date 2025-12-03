@@ -7,16 +7,16 @@
 
 - (NSString)definitionMode
 {
-  v2 = [(SUUITemplateDefinitionViewElement *)self attributes];
-  v3 = [v2 objectForKey:@"mode"];
+  attributes = [(SUUITemplateDefinitionViewElement *)self attributes];
+  v3 = [attributes objectForKey:@"mode"];
 
   return v3;
 }
 
 - (NSString)definitionType
 {
-  v2 = [(SUUITemplateDefinitionViewElement *)self attributes];
-  v3 = [v2 objectForKey:@"type"];
+  attributes = [(SUUITemplateDefinitionViewElement *)self attributes];
+  v3 = [attributes objectForKey:@"type"];
 
   return v3;
 }

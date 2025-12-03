@@ -1,38 +1,38 @@
 @interface BRCPendingChangesStream
-- (BOOL)_dropExistingTablesWithDB:(id)a3;
-- (BOOL)_finishedFetchingRecordMetadata:(id)a3 withDB:(id)a4;
-- (BOOL)_saveSubResourceRecord:(id)a3 withDB:(id)a4;
-- (BOOL)dumpTablesToContext:(id)a3 includeAllItems:(BOOL)a4 error:(id *)a5;
-- (BOOL)enumerateRecordsNeedingMetadataFetchWithBlock:(id)a3;
-- (BOOL)enumerateRecordsNeedingXattrFetchWithBlock:(id)a3;
-- (BOOL)enumerateRecordsOfType:(int64_t)a3 block:(id)a4;
-- (BOOL)hasFetchRecordByID:(id)a3;
+- (BOOL)_dropExistingTablesWithDB:(id)b;
+- (BOOL)_finishedFetchingRecordMetadata:(id)metadata withDB:(id)b;
+- (BOOL)_saveSubResourceRecord:(id)record withDB:(id)b;
+- (BOOL)dumpTablesToContext:(id)context includeAllItems:(BOOL)items error:(id *)error;
+- (BOOL)enumerateRecordsNeedingMetadataFetchWithBlock:(id)block;
+- (BOOL)enumerateRecordsNeedingXattrFetchWithBlock:(id)block;
+- (BOOL)enumerateRecordsOfType:(int64_t)type block:(id)block;
+- (BOOL)hasFetchRecordByID:(id)d;
 - (BOOL)hasRecordDeletes;
-- (BOOL)hasRecordIDBlockedOnSubResources:(id)a3;
+- (BOOL)hasRecordIDBlockedOnSubResources:(id)resources;
 - (BOOL)hasRecordIDsToDeserialize;
 - (BOOL)hasSubResourceRecords;
 - (BOOL)hasXattrsToFetch;
-- (BOOL)saveEditedRecords:(id)a3 deletedRecordIDs:(id)a4 deletedShareIDs:(id)a5 subResourceEditedRecords:(id)a6 serverChangeToken:(id)a7 clientChangeToken:(int64_t)a8;
-- (BOOL)saveEditedRecords:(id)a3 subResourceEditedRecords:(id)a4 queryCursor:(id)a5;
-- (BOOL)saveSubResourceRecords:(id)a3 afterSavingMainTableItems:(id)a4 queryCursor:(id)a5;
-- (BOOL)unblockRecord:(id)a3 waitingOnRecord:(id)a4;
-- (BRCPendingChangesStream)initWithServerZone:(id)a3;
+- (BOOL)saveEditedRecords:(id)records deletedRecordIDs:(id)ds deletedShareIDs:(id)iDs subResourceEditedRecords:(id)editedRecords serverChangeToken:(id)token clientChangeToken:(int64_t)changeToken;
+- (BOOL)saveEditedRecords:(id)records subResourceEditedRecords:(id)editedRecords queryCursor:(id)cursor;
+- (BOOL)saveSubResourceRecords:(id)records afterSavingMainTableItems:(id)items queryCursor:(id)cursor;
+- (BOOL)unblockRecord:(id)record waitingOnRecord:(id)onRecord;
+- (BRCPendingChangesStream)initWithServerZone:(id)zone;
 - (id)_getChangesStreamSafeDBHolder;
-- (id)_initDeltaSyncWithChangeToken:(id)a3 serverZone:(id)a4;
-- (id)initForListingWithParent:(id)a3 serverZone:(id)a4;
-- (int64_t)_recordTypeFromRecordID:(id)a3 isShare:(BOOL)a4 isDelete:(BOOL)a5;
-- (int64_t)copyBlockingSaveRecordsToNeedingFetchIgnoringRecords:(id)a3;
+- (id)_initDeltaSyncWithChangeToken:(id)token serverZone:(id)zone;
+- (id)initForListingWithParent:(id)parent serverZone:(id)zone;
+- (int64_t)_recordTypeFromRecordID:(id)d isShare:(BOOL)share isDelete:(BOOL)delete;
+- (int64_t)copyBlockingSaveRecordsToNeedingFetchIgnoringRecords:(id)records;
 - (void)_closeChangeStream;
-- (void)_closeDatabaseAndDestroy:(BOOL)a3;
+- (void)_closeDatabaseAndDestroy:(BOOL)destroy;
 - (void)_createSchemaIfNecessary;
-- (void)_dbBecameCorrupted:(id)a3 withDescription:(id)a4;
+- (void)_dbBecameCorrupted:(id)corrupted withDescription:(id)description;
 - (void)_openDB;
 - (void)_wasClosed;
 - (void)dealloc;
-- (void)fetchQueryCursor:(id)a3;
-- (void)fetchTokenState:(id)a3;
-- (void)finishedFetchingXattrSignatures:(id)a3;
-- (void)unblockRecordSavesWaitingOnRecordID:(id)a3;
+- (void)fetchQueryCursor:(id)cursor;
+- (void)fetchTokenState:(id)state;
+- (void)finishedFetchingXattrSignatures:(id)signatures;
+- (void)unblockRecordSavesWaitingOnRecordID:(id)d;
 @end
 
 @implementation BRCPendingChangesStream
@@ -41,8 +41,8 @@
 {
   if (self->_hasBeenCreated)
   {
-    v3 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v4 = v3;
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    v4 = _getChangesStreamSafeDBHolder;
     if (self->_error)
     {
       v5 = 0;
@@ -54,7 +54,7 @@
       v10 = &v9;
       v11 = 0x2020000000;
       v12 = 0;
-      v6 = [v3 db];
+      v6 = [_getChangesStreamSafeDBHolder db];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __43__BRCPendingChangesStream_hasXattrsToFetch__block_invoke;
@@ -79,8 +79,8 @@
 {
   if (self->_hasBeenCreated)
   {
-    v3 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v4 = v3;
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    v4 = _getChangesStreamSafeDBHolder;
     if (self->_error)
     {
       v5 = 0;
@@ -92,7 +92,7 @@
       v10 = &v9;
       v11 = 0x2020000000;
       v12 = 0;
-      v6 = [v3 db];
+      v6 = [_getChangesStreamSafeDBHolder db];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __52__BRCPendingChangesStream_hasRecordIDsToDeserialize__block_invoke;
@@ -117,8 +117,8 @@
 {
   if (self->_hasBeenCreated)
   {
-    v3 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v4 = v3;
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    v4 = _getChangesStreamSafeDBHolder;
     if (self->_error)
     {
       v5 = 0;
@@ -130,7 +130,7 @@
       v10 = &v9;
       v11 = 0x2020000000;
       v12 = 0;
-      v6 = [v3 db];
+      v6 = [_getChangesStreamSafeDBHolder db];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __48__BRCPendingChangesStream_hasSubResourceRecords__block_invoke;
@@ -155,7 +155,7 @@
 {
   OUTLINED_FUNCTION_18();
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [*(v0 + 8) path];
+  path = [*(v0 + 8) path];
   OUTLINED_FUNCTION_11_0();
   OUTLINED_FUNCTION_2_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x20u);
@@ -192,20 +192,20 @@
   [v8 setObject:v9 forKey:self];
 
   v10 = [BRCUserDefaults defaultsForMangledID:0];
-  v11 = [v10 pendingChangesStreamSoftOpenCount];
+  pendingChangesStreamSoftOpenCount = [v10 pendingChangesStreamSoftOpenCount];
 
   v12 = [BRCUserDefaults defaultsForMangledID:0];
-  v13 = [v12 pendingChangesStreamHardOpenCount];
+  pendingChangesStreamHardOpenCount = [v12 pendingChangesStreamHardOpenCount];
 
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __56__BRCPendingChangesStream__getChangesStreamSafeDBHolder__block_invoke_103;
   v35[3] = &__block_descriptor_40_e5_v8__0l;
-  v35[4] = v11;
+  v35[4] = pendingChangesStreamSoftOpenCount;
   v14 = MEMORY[0x22AA4A310](v35);
-  if ([_pendingChangesStreamPool count] <= v13)
+  if ([_pendingChangesStreamPool count] <= pendingChangesStreamHardOpenCount)
   {
-    if ([_pendingChangesStreamPool count] > v11 && !_getChangesStreamSafeDBHolder__closeChangesTimer)
+    if ([_pendingChangesStreamPool count] > pendingChangesStreamSoftOpenCount && !_getChangesStreamSafeDBHolder__closeChangesTimer)
     {
       v17 = brc_bread_crumbs();
       v18 = brc_default_log();
@@ -215,17 +215,17 @@
       }
 
       v19 = [(BRCClientZone *)self->_clientZone db];
-      v20 = [v19 serialQueue];
-      v21 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v20);
+      serialQueue = [v19 serialQueue];
+      v21 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, serialQueue);
       v22 = _getChangesStreamSafeDBHolder__closeChangesTimer;
       _getChangesStreamSafeDBHolder__closeChangesTimer = v21;
 
       v23 = [BRCUserDefaults defaultsForMangledID:0];
-      v24 = [v23 pendingChangesStreamCloseDelay];
+      pendingChangesStreamCloseDelay = [v23 pendingChangesStreamCloseDelay];
 
       v25 = _getChangesStreamSafeDBHolder__closeChangesTimer;
-      v26 = dispatch_time(0, v24);
-      dispatch_source_set_timer(v25, v26, 0xFFFFFFFFFFFFFFFFLL, v24 / 0xA);
+      v26 = dispatch_time(0, pendingChangesStreamCloseDelay);
+      dispatch_source_set_timer(v25, v26, 0xFFFFFFFFFFFFFFFFLL, pendingChangesStreamCloseDelay / 0xA);
       v27 = _getChangesStreamSafeDBHolder__closeChangesTimer;
       v28 = v14;
       v29 = v27;
@@ -335,11 +335,11 @@ uint64_t __56__BRCPendingChangesStream__getChangesStreamSafeDBHolder__block_invo
   objc_sync_exit(obj);
 }
 
-- (void)_dbBecameCorrupted:(id)a3 withDescription:(id)a4
+- (void)_dbBecameCorrupted:(id)corrupted withDescription:(id)description
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_error, a3);
+  corruptedCopy = corrupted;
+  descriptionCopy = description;
+  objc_storeStrong(&self->_error, corrupted);
   v9 = _pendingChangesStreamPool;
   objc_sync_enter(v9);
   v10 = self->_dbSafeHolder;
@@ -351,18 +351,18 @@ uint64_t __56__BRCPendingChangesStream__getChangesStreamSafeDBHolder__block_invo
 
   if (v10)
   {
-    v12 = [(BRCClientZone *)self->_clientZone session];
-    v13 = [v12 diskReclaimer];
+    session = [(BRCClientZone *)self->_clientZone session];
+    diskReclaimer = [session diskReclaimer];
 
-    v14 = [(NSURL *)self->_databaseURL path];
+    path = [(NSURL *)self->_databaseURL path];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __62__BRCPendingChangesStream__dbBecameCorrupted_withDescription___block_invoke;
     v17[3] = &unk_2784FFFA8;
-    v18 = v14;
-    v19 = v13;
-    v15 = v13;
-    v16 = v14;
+    v18 = path;
+    v19 = diskReclaimer;
+    v15 = diskReclaimer;
+    v16 = path;
     [(BRCSafeDBHolder *)v10 asyncCloseWithCompletionHandler:v17];
   }
 }
@@ -379,35 +379,35 @@ uint64_t __62__BRCPendingChangesStream__dbBecameCorrupted_withDescription___bloc
   return [*(a1 + 40) renameAndUnlinkInBackgroundItemAt:0xFFFFFFFFLL path:*(a1 + 32)];
 }
 
-- (id)_initDeltaSyncWithChangeToken:(id)a3 serverZone:(id)a4
+- (id)_initDeltaSyncWithChangeToken:(id)token serverZone:(id)zone
 {
-  v7 = a3;
-  v8 = a4;
+  tokenCopy = token;
+  zoneCopy = zone;
   v25.receiver = self;
   v25.super_class = BRCPendingChangesStream;
   v9 = [(BRCPendingChangesStream *)&v25 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_startingChangeToken, a3);
-    v11 = [v8 clientZone];
+    objc_storeStrong(&v9->_startingChangeToken, token);
+    clientZone = [zoneCopy clientZone];
     clientZone = v10->_clientZone;
-    v10->_clientZone = v11;
+    v10->_clientZone = clientZone;
 
-    objc_storeStrong(&v10->_serverZone, a4);
-    v13 = [v8 session];
-    v14 = [v13 stageRegistry];
+    objc_storeStrong(&v10->_serverZone, zone);
+    session = [zoneCopy session];
+    stageRegistry = [session stageRegistry];
     startingChangeToken = v10->_startingChangeToken;
-    v16 = [v8 zoneID];
-    v17 = [v14 pendingDeltaFetchRecordDirWithStartingChangeToken:startingChangeToken recordZoneID:v16];
+    zoneID = [zoneCopy zoneID];
+    v17 = [stageRegistry pendingDeltaFetchRecordDirWithStartingChangeToken:startingChangeToken recordZoneID:zoneID];
     databaseURL = v10->_databaseURL;
     v10->_databaseURL = v17;
 
     v10->_hasBeenCreated = [(NSURL *)v10->_databaseURL checkResourceIsReachableAndReturnError:0];
-    v19 = [v8 mangledID];
+    mangledID = [zoneCopy mangledID];
     v20 = MEMORY[0x277CCACA8];
-    v21 = [v19 appLibraryOrZoneName];
-    v22 = [v20 stringWithFormat:@"change-stream/%@", v21];
+    appLibraryOrZoneName = [mangledID appLibraryOrZoneName];
+    v22 = [v20 stringWithFormat:@"change-stream/%@", appLibraryOrZoneName];
     label = v10->_label;
     v10->_label = v22;
   }
@@ -415,60 +415,60 @@ uint64_t __62__BRCPendingChangesStream__dbBecameCorrupted_withDescription___bloc
   return v10;
 }
 
-- (BRCPendingChangesStream)initWithServerZone:(id)a3
+- (BRCPendingChangesStream)initWithServerZone:(id)zone
 {
-  v4 = a3;
-  v5 = [v4 changeState];
-  v6 = [v5 changeToken];
-  v7 = [(BRCPendingChangesStream *)self _initDeltaSyncWithChangeToken:v6 serverZone:v4];
+  zoneCopy = zone;
+  changeState = [zoneCopy changeState];
+  changeToken = [changeState changeToken];
+  v7 = [(BRCPendingChangesStream *)self _initDeltaSyncWithChangeToken:changeToken serverZone:zoneCopy];
 
   return v7;
 }
 
-- (id)initForListingWithParent:(id)a3 serverZone:(id)a4
+- (id)initForListingWithParent:(id)parent serverZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
+  parentCopy = parent;
+  zoneCopy = zone;
   v30.receiver = self;
   v30.super_class = BRCPendingChangesStream;
   v8 = [(BRCPendingChangesStream *)&v30 init];
   if (v8)
   {
-    v9 = [v7 changeState];
-    v10 = [v9 changeToken];
+    changeState = [zoneCopy changeState];
+    changeToken = [changeState changeToken];
     startingChangeToken = v8->_startingChangeToken;
-    v8->_startingChangeToken = v10;
+    v8->_startingChangeToken = changeToken;
 
-    v29 = [v7 session];
-    v12 = [v29 stageRegistry];
-    v13 = [v12 pendingListRecordDirWithStartingChangeToken:v6];
+    session = [zoneCopy session];
+    stageRegistry = [session stageRegistry];
+    v13 = [stageRegistry pendingListRecordDirWithStartingChangeToken:parentCopy];
     databaseURL = v8->_databaseURL;
     v8->_databaseURL = v13;
 
     v8->_hasBeenCreated = [(NSURL *)v8->_databaseURL checkResourceIsReachableAndReturnError:0];
-    v15 = [v7 clientZone];
+    clientZone = [zoneCopy clientZone];
     clientZone = v8->_clientZone;
-    v8->_clientZone = v15;
+    v8->_clientZone = clientZone;
 
     v28 = MEMORY[0x277CCACA8];
-    v17 = [v6 recordName];
-    v18 = [v6 zoneID];
-    v19 = [v18 zoneName];
-    v20 = [v6 zoneID];
-    v21 = [v20 ownerName];
-    v22 = [v21 isEqualToString:*MEMORY[0x277CBBF28]];
+    recordName = [parentCopy recordName];
+    zoneID = [parentCopy zoneID];
+    zoneName = [zoneID zoneName];
+    zoneID2 = [parentCopy zoneID];
+    ownerName = [zoneID2 ownerName];
+    v22 = [ownerName isEqualToString:*MEMORY[0x277CBBF28]];
     if (v22)
     {
-      v23 = &stru_2837504F0;
+      ownerName2 = &stru_2837504F0;
     }
 
     else
     {
-      v27 = [v6 zoneID];
-      v23 = [v27 ownerName];
+      zoneID3 = [parentCopy zoneID];
+      ownerName2 = [zoneID3 ownerName];
     }
 
-    v24 = [v28 stringWithFormat:@"list-dir/%@/%@%@", v17, v19, v23];
+    v24 = [v28 stringWithFormat:@"list-dir/%@/%@%@", recordName, zoneName, ownerName2];
     label = v8->_label;
     v8->_label = v24;
 
@@ -480,9 +480,9 @@ uint64_t __62__BRCPendingChangesStream__dbBecameCorrupted_withDescription___bloc
   return v8;
 }
 
-- (BOOL)_dropExistingTablesWithDB:(id)a3
+- (BOOL)_dropExistingTablesWithDB:(id)b
 {
-  v3 = a3;
+  bCopy = b;
   v4 = brc_bread_crumbs();
   v5 = brc_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -490,9 +490,9 @@ uint64_t __62__BRCPendingChangesStream__dbBecameCorrupted_withDescription___bloc
     [BRCPendingChangesStream _dropExistingTablesWithDB:];
   }
 
-  if ([v3 execute:@"DROP TABLE IF EXISTS fetch_state"] && objc_msgSend(v3, "execute:", @"DROP TABLE IF EXISTS list_state") && objc_msgSend(v3, "execute:", @"DROP TABLE IF EXISTS record_changes"))
+  if ([bCopy execute:@"DROP TABLE IF EXISTS fetch_state"] && objc_msgSend(bCopy, "execute:", @"DROP TABLE IF EXISTS list_state") && objc_msgSend(bCopy, "execute:", @"DROP TABLE IF EXISTS record_changes"))
   {
-    v6 = [v3 execute:@"DROP INDEX IF EXISTS record_changes/record_type"];
+    v6 = [bCopy execute:@"DROP INDEX IF EXISTS record_changes/record_type"];
   }
 
   else
@@ -506,17 +506,17 @@ uint64_t __62__BRCPendingChangesStream__dbBecameCorrupted_withDescription___bloc
 - (void)_createSchemaIfNecessary
 {
   v3 = [(BRCSafeDBHolder *)self->_dbSafeHolder db];
-  v4 = [v3 userVersion];
-  v5 = [v4 intValue];
+  userVersion = [v3 userVersion];
+  intValue = [userVersion intValue];
 
-  if (v5 <= 1)
+  if (intValue <= 1)
   {
     v6 = [(BRCSafeDBHolder *)self->_dbSafeHolder db];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __51__BRCPendingChangesStream__createSchemaIfNecessary__block_invoke;
     v7[3] = &unk_278506730;
-    v8 = v5;
+    v8 = intValue;
     v7[4] = self;
     [v6 performWithFlags:8 action:v7];
   }
@@ -582,12 +582,12 @@ uint64_t __51__BRCPendingChangesStream__createSchemaIfNecessary__block_invoke(ui
     v4 = brc_default_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [(NSURL *)self->_databaseURL path];
-      [(BRCPendingChangesStream *)v5 _openDB:v3];
+      path = [(NSURL *)self->_databaseURL path];
+      [(BRCPendingChangesStream *)path _openDB:v3];
     }
 
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    [v6 createDirectoryAtURL:self->_databaseURL withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager createDirectoryAtURL:self->_databaseURL withIntermediateDirectories:1 attributes:0 error:0];
 
     self->_hasBeenCreated = 1;
   }
@@ -600,9 +600,9 @@ uint64_t __51__BRCPendingChangesStream__createSchemaIfNecessary__block_invoke(ui
   v23[3] = &unk_2784FF828;
   objc_copyWeak(&v24, &location);
   v9 = [(BRCPQLConnection *)v7 initWithLabel:label dbCorruptionHandler:v23];
-  v10 = [(BRCServerZone *)self->_serverZone session];
-  v11 = [v10 personaIdentifier];
-  [(BRCPQLConnection *)v9 setAssertionPersonaIdentifier:v11];
+  session = [(BRCServerZone *)self->_serverZone session];
+  personaIdentifier = [session personaIdentifier];
+  [(BRCPQLConnection *)v9 setAssertionPersonaIdentifier:personaIdentifier];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -778,21 +778,21 @@ void __34__BRCPendingChangesStream__openDB__block_invoke_191(uint64_t a1, void *
   objc_sync_exit(v5);
 }
 
-- (void)fetchTokenState:(id)a3
+- (void)fetchTokenState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
+  stateCopy = state;
+  v5 = stateCopy;
   if (self->_hasBeenCreated)
   {
-    v6 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v7 = [(BRCClientZone *)self->_clientZone session];
-    [v7 assertNotOnZoneMutex];
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    session = [(BRCClientZone *)self->_clientZone session];
+    [session assertNotOnZoneMutex];
 
     if (!self->_error)
     {
-      if (v6)
+      if (_getChangesStreamSafeDBHolder)
       {
-        v8 = [v6 db];
+        v8 = [_getChangesStreamSafeDBHolder db];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __43__BRCPendingChangesStream_fetchTokenState___block_invoke;
@@ -824,7 +824,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  (*(v4 + 2))(v4, 0, 0, 0);
+  (*(stateCopy + 2))(stateCopy, 0, 0, 0);
 LABEL_8:
 }
 
@@ -890,21 +890,21 @@ uint64_t __43__BRCPendingChangesStream_fetchTokenState___block_invoke(uint64_t a
   return 1;
 }
 
-- (void)fetchQueryCursor:(id)a3
+- (void)fetchQueryCursor:(id)cursor
 {
-  v4 = a3;
-  v5 = v4;
+  cursorCopy = cursor;
+  v5 = cursorCopy;
   if (self->_hasBeenCreated)
   {
-    v6 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v7 = [(BRCClientZone *)self->_clientZone session];
-    [v7 assertNotOnZoneMutex];
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    session = [(BRCClientZone *)self->_clientZone session];
+    [session assertNotOnZoneMutex];
 
     if (!self->_error)
     {
-      if (v6)
+      if (_getChangesStreamSafeDBHolder)
       {
-        v8 = [v6 db];
+        v8 = [_getChangesStreamSafeDBHolder db];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __44__BRCPendingChangesStream_fetchQueryCursor___block_invoke;
@@ -936,7 +936,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  (*(v4 + 2))(v4, 0, 0, 0, 0);
+  (*(cursorCopy + 2))(cursorCopy, 0, 0, 0, 0);
 LABEL_8:
 }
 
@@ -1005,30 +1005,30 @@ uint64_t __44__BRCPendingChangesStream_fetchQueryCursor___block_invoke(uint64_t 
   return 1;
 }
 
-- (BOOL)enumerateRecordsOfType:(int64_t)a3 block:(id)a4
+- (BOOL)enumerateRecordsOfType:(int64_t)type block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   if (self->_hasBeenCreated)
   {
-    v7 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v8 = [(BRCClientZone *)self->_clientZone session];
-    [v8 assertNotOnZoneMutex];
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    session = [(BRCClientZone *)self->_clientZone session];
+    [session assertNotOnZoneMutex];
 
     if (!self->_error)
     {
-      if (v7)
+      if (_getChangesStreamSafeDBHolder)
       {
         v20 = 0;
         v21 = &v20;
         v22 = 0x2020000000;
         v23 = 1;
-        v10 = [v7 db];
+        v10 = [_getChangesStreamSafeDBHolder db];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __56__BRCPendingChangesStream_enumerateRecordsOfType_block___block_invoke;
         v16[3] = &unk_278506758;
-        v19 = a3;
-        v17 = v6;
+        typeCopy = type;
+        v17 = blockCopy;
         v18 = &v20;
         v16[4] = self;
         [v10 performWithFlags:1 action:v16];
@@ -1116,13 +1116,13 @@ LABEL_4:
   return 1;
 }
 
-- (int64_t)_recordTypeFromRecordID:(id)a3 isShare:(BOOL)a4 isDelete:(BOOL)a5
+- (int64_t)_recordTypeFromRecordID:(id)d isShare:(BOOL)share isDelete:(BOOL)delete
 {
-  v5 = a5;
-  v7 = a3;
+  deleteCopy = delete;
+  dCopy = d;
   if (_recordTypeFromRecordID_isShare_isDelete__onceToken == -1)
   {
-    if (a4)
+    if (share)
     {
 LABEL_3:
       v8 = 3;
@@ -1133,20 +1133,20 @@ LABEL_3:
   else
   {
     [BRCPendingChangesStream _recordTypeFromRecordID:isShare:isDelete:];
-    if (a4)
+    if (share)
     {
       goto LABEL_3;
     }
   }
 
-  v9 = [v7 recordName];
-  v10 = [v9 rangeOfString:@"/"];
+  recordName = [dCopy recordName];
+  v10 = [recordName rangeOfString:@"/"];
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_6;
   }
 
-  v14 = [v9 substringToIndex:v10 + v11];
+  v14 = [recordName substringToIndex:v10 + v11];
   if ([v14 isEqualToString:@"documentContent/"])
   {
     v8 = 2;
@@ -1171,7 +1171,7 @@ LABEL_6:
 
   v8 = 0;
 LABEL_14:
-  if (v5)
+  if (deleteCopy)
   {
     v15 = -v8;
   }
@@ -1200,15 +1200,15 @@ void __68__BRCPendingChangesStream__recordTypeFromRecordID_isShare_isDelete___bl
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)saveEditedRecords:(id)a3 deletedRecordIDs:(id)a4 deletedShareIDs:(id)a5 subResourceEditedRecords:(id)a6 serverChangeToken:(id)a7 clientChangeToken:(int64_t)a8
+- (BOOL)saveEditedRecords:(id)records deletedRecordIDs:(id)ds deletedShareIDs:(id)iDs subResourceEditedRecords:(id)editedRecords serverChangeToken:(id)token clientChangeToken:(int64_t)changeToken
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-  v20 = v19;
+  recordsCopy = records;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  editedRecordsCopy = editedRecords;
+  tokenCopy = token;
+  _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+  v20 = _getChangesStreamSafeDBHolder;
   if (self->_error)
   {
     v21 = 0;
@@ -1216,18 +1216,18 @@ void __68__BRCPendingChangesStream__recordTypeFromRecordID_isShare_isDelete___bl
 
   else
   {
-    v22 = [v19 db];
+    v22 = [_getChangesStreamSafeDBHolder db];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __139__BRCPendingChangesStream_saveEditedRecords_deletedRecordIDs_deletedShareIDs_subResourceEditedRecords_serverChangeToken_clientChangeToken___block_invoke;
     v24[3] = &unk_278506780;
-    v25 = v14;
-    v26 = self;
-    v27 = v15;
-    v28 = v16;
-    v29 = v17;
-    v30 = v18;
-    v31 = a8;
+    v25 = recordsCopy;
+    selfCopy = self;
+    v27 = dsCopy;
+    v28 = iDsCopy;
+    v29 = editedRecordsCopy;
+    v30 = tokenCopy;
+    changeTokenCopy = changeToken;
     v21 = [v22 performWithFlags:25 action:v24];
   }
 
@@ -1533,12 +1533,12 @@ LABEL_72:
   return v54;
 }
 
-- (BOOL)saveEditedRecords:(id)a3 subResourceEditedRecords:(id)a4 queryCursor:(id)a5
+- (BOOL)saveEditedRecords:(id)records subResourceEditedRecords:(id)editedRecords queryCursor:(id)cursor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+  recordsCopy = records;
+  editedRecordsCopy = editedRecords;
+  cursorCopy = cursor;
+  _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
   if (self->_error)
   {
     v12 = 0;
@@ -1546,18 +1546,18 @@ LABEL_72:
 
   else
   {
-    v13 = [(BRCClientZone *)self->_clientZone session];
-    [v13 assertNotOnZoneMutex];
+    session = [(BRCClientZone *)self->_clientZone session];
+    [session assertNotOnZoneMutex];
 
-    v14 = [v11 db];
+    v14 = [_getChangesStreamSafeDBHolder db];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __82__BRCPendingChangesStream_saveEditedRecords_subResourceEditedRecords_queryCursor___block_invoke;
     v16[3] = &unk_278504940;
-    v17 = v8;
-    v18 = self;
-    v19 = v9;
-    v20 = v10;
+    v17 = recordsCopy;
+    selfCopy = self;
+    v19 = editedRecordsCopy;
+    v20 = cursorCopy;
     v12 = [v14 performWithFlags:25 action:v16];
   }
 
@@ -1754,12 +1754,12 @@ LABEL_46:
   return v34;
 }
 
-- (BOOL)saveSubResourceRecords:(id)a3 afterSavingMainTableItems:(id)a4 queryCursor:(id)a5
+- (BOOL)saveSubResourceRecords:(id)records afterSavingMainTableItems:(id)items queryCursor:(id)cursor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+  recordsCopy = records;
+  itemsCopy = items;
+  cursorCopy = cursor;
+  _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
   if (self->_error)
   {
     v12 = 0;
@@ -1767,18 +1767,18 @@ LABEL_46:
 
   else
   {
-    v13 = [(BRCClientZone *)self->_clientZone session];
-    [v13 assertNotOnZoneMutex];
+    session = [(BRCClientZone *)self->_clientZone session];
+    [session assertNotOnZoneMutex];
 
-    v14 = [v11 db];
+    v14 = [_getChangesStreamSafeDBHolder db];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __88__BRCPendingChangesStream_saveSubResourceRecords_afterSavingMainTableItems_queryCursor___block_invoke;
     v16[3] = &unk_278504940;
-    v17 = v8;
-    v18 = self;
-    v19 = v10;
-    v20 = v9;
+    v17 = recordsCopy;
+    selfCopy = self;
+    v19 = cursorCopy;
+    v20 = itemsCopy;
     v12 = [v14 performWithFlags:25 action:v16];
   }
 
@@ -1939,13 +1939,13 @@ LABEL_23:
   return v18;
 }
 
-- (int64_t)copyBlockingSaveRecordsToNeedingFetchIgnoringRecords:(id)a3
+- (int64_t)copyBlockingSaveRecordsToNeedingFetchIgnoringRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   if (self->_hasBeenCreated)
   {
-    v5 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v6 = v5;
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    v6 = _getChangesStreamSafeDBHolder;
     if (self->_error)
     {
       v7 = 0;
@@ -1957,7 +1957,7 @@ LABEL_23:
       v12 = &v11;
       v13 = 0x2020000000;
       v14 = 0;
-      v8 = [v5 db];
+      v8 = [_getChangesStreamSafeDBHolder db];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __80__BRCPendingChangesStream_copyBlockingSaveRecordsToNeedingFetchIgnoringRecords___block_invoke;
@@ -1990,13 +1990,13 @@ uint64_t __80__BRCPendingChangesStream_copyBlockingSaveRecordsToNeedingFetchIgno
   return v4;
 }
 
-- (BOOL)enumerateRecordsNeedingXattrFetchWithBlock:(id)a3
+- (BOOL)enumerateRecordsNeedingXattrFetchWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_hasBeenCreated)
   {
-    v5 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v6 = v5;
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    v6 = _getChangesStreamSafeDBHolder;
     if (self->_error)
     {
       v7 = 0;
@@ -2004,13 +2004,13 @@ uint64_t __80__BRCPendingChangesStream_copyBlockingSaveRecordsToNeedingFetchIgno
 
     else
     {
-      v8 = [v5 db];
+      v8 = [_getChangesStreamSafeDBHolder db];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __70__BRCPendingChangesStream_enumerateRecordsNeedingXattrFetchWithBlock___block_invoke;
       v10[3] = &unk_2785067D0;
       v10[4] = self;
-      v11 = v4;
+      v11 = blockCopy;
       [v8 performWithFlags:1 action:v10];
 
       v7 = self->_error == 0;
@@ -2052,13 +2052,13 @@ uint64_t __70__BRCPendingChangesStream_enumerateRecordsNeedingXattrFetchWithBloc
   return 1;
 }
 
-- (BOOL)enumerateRecordsNeedingMetadataFetchWithBlock:(id)a3
+- (BOOL)enumerateRecordsNeedingMetadataFetchWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_hasBeenCreated)
   {
-    v5 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v6 = v5;
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    v6 = _getChangesStreamSafeDBHolder;
     if (self->_error)
     {
       v7 = 0;
@@ -2066,13 +2066,13 @@ uint64_t __70__BRCPendingChangesStream_enumerateRecordsNeedingXattrFetchWithBloc
 
     else
     {
-      v8 = [v5 db];
+      v8 = [_getChangesStreamSafeDBHolder db];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __73__BRCPendingChangesStream_enumerateRecordsNeedingMetadataFetchWithBlock___block_invoke;
       v10[3] = &unk_2785067D0;
       v10[4] = self;
-      v11 = v4;
+      v11 = blockCopy;
       [v8 performWithFlags:1 action:v10];
 
       v7 = self->_error == 0;
@@ -2110,13 +2110,13 @@ uint64_t __73__BRCPendingChangesStream_enumerateRecordsNeedingMetadataFetchWithB
   return 1;
 }
 
-- (BOOL)hasFetchRecordByID:(id)a3
+- (BOOL)hasFetchRecordByID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (self->_hasBeenCreated)
   {
-    v5 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v6 = v5;
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    v6 = _getChangesStreamSafeDBHolder;
     if (self->_error)
     {
       v7 = 1;
@@ -2128,13 +2128,13 @@ uint64_t __73__BRCPendingChangesStream_enumerateRecordsNeedingMetadataFetchWithB
       v14 = &v13;
       v15 = 0x2020000000;
       v16 = 0;
-      v8 = [v5 db];
+      v8 = [_getChangesStreamSafeDBHolder db];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __46__BRCPendingChangesStream_hasFetchRecordByID___block_invoke;
       v10[3] = &unk_278502320;
       v12 = &v13;
-      v11 = v4;
+      v11 = dCopy;
       [v8 performWithFlags:1 action:v10];
 
       v7 = *(v14 + 24);
@@ -2158,13 +2158,13 @@ uint64_t __46__BRCPendingChangesStream_hasFetchRecordByID___block_invoke(uint64_
   return 1;
 }
 
-- (BOOL)hasRecordIDBlockedOnSubResources:(id)a3
+- (BOOL)hasRecordIDBlockedOnSubResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   if (self->_hasBeenCreated)
   {
-    v5 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v6 = v5;
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    v6 = _getChangesStreamSafeDBHolder;
     if (self->_error)
     {
       v7 = 1;
@@ -2176,13 +2176,13 @@ uint64_t __46__BRCPendingChangesStream_hasFetchRecordByID___block_invoke(uint64_
       v14 = &v13;
       v15 = 0x2020000000;
       v16 = 0;
-      v8 = [v5 db];
+      v8 = [_getChangesStreamSafeDBHolder db];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __60__BRCPendingChangesStream_hasRecordIDBlockedOnSubResources___block_invoke;
       v10[3] = &unk_278502320;
       v12 = &v13;
-      v11 = v4;
+      v11 = resourcesCopy;
       [v8 performWithFlags:1 action:v10];
 
       v7 = *(v14 + 24);
@@ -2230,31 +2230,31 @@ uint64_t __48__BRCPendingChangesStream_hasSubResourceRecords__block_invoke(uint6
   return 1;
 }
 
-- (BOOL)dumpTablesToContext:(id)a3 includeAllItems:(BOOL)a4 error:(id *)a5
+- (BOOL)dumpTablesToContext:(id)context includeAllItems:(BOOL)items error:(id *)error
 {
-  v8 = a3;
+  contextCopy = context;
   if (self->_hasBeenCreated)
   {
-    v9 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
     error = self->_error;
     v11 = error == 0;
     if (error)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = error;
+        *error = error;
       }
     }
 
     else
     {
-      v12 = [v9 db];
+      v12 = [_getChangesStreamSafeDBHolder db];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __69__BRCPendingChangesStream_dumpTablesToContext_includeAllItems_error___block_invoke;
       v14[3] = &unk_2784FF3B0;
-      v16 = a4;
-      v15 = v8;
+      itemsCopy = items;
+      v15 = contextCopy;
       [v12 performWithFlags:1 action:v14];
     }
   }
@@ -2351,8 +2351,8 @@ uint64_t __69__BRCPendingChangesStream_dumpTablesToContext_includeAllItems_error
 {
   if (self->_hasBeenCreated)
   {
-    v3 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v4 = v3;
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    v4 = _getChangesStreamSafeDBHolder;
     if (self->_error)
     {
       v5 = 0;
@@ -2364,7 +2364,7 @@ uint64_t __69__BRCPendingChangesStream_dumpTablesToContext_includeAllItems_error
       v10 = &v9;
       v11 = 0x2020000000;
       v12 = 0;
-      v6 = [v3 db];
+      v6 = [_getChangesStreamSafeDBHolder db];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __43__BRCPendingChangesStream_hasRecordDeletes__block_invoke;
@@ -2393,43 +2393,43 @@ uint64_t __43__BRCPendingChangesStream_hasRecordDeletes__block_invoke(uint64_t a
   return 1;
 }
 
-- (BOOL)_saveSubResourceRecord:(id)a3 withDB:(id)a4
+- (BOOL)_saveSubResourceRecord:(id)record withDB:(id)b
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recordID];
-  v9 = [v7 execute:{@"DELETE FROM record_changes WHERE record_id = %@", v8}];
+  recordCopy = record;
+  bCopy = b;
+  recordID = [recordCopy recordID];
+  v9 = [bCopy execute:{@"DELETE FROM record_changes WHERE record_id = %@", recordID}];
 
   if (v9)
   {
-    if ([v7 changes])
+    if ([bCopy changes])
     {
       v10 = brc_bread_crumbs();
       v11 = brc_default_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v6 recordID];
+        recordID2 = [recordCopy recordID];
         *buf = 138412546;
-        v31 = v12;
+        v31 = recordID2;
         v32 = 2112;
         v33 = v10;
         _os_log_impl(&dword_223E7A000, v11, OS_LOG_TYPE_DEFAULT, "[WARNING] Removed recordID %@ from record changes table because it now needs sub resources%@", buf, 0x16u);
       }
     }
 
-    v13 = [v6 recordID];
-    v14 = [v6 recordType];
-    v15 = [v6 record];
-    v16 = [v6 xattrSignature];
-    v17 = [v6 recordIDNeedingFetch];
-    v18 = [v6 recordIDBlockingSave];
-    v9 = [v7 execute:{@"INSERT OR REPLACE INTO records_needing_subresources (record_id, record_type, record, xattr_sig, record_id_needing_fetch, record_id_blocking_save) VALUES (%@, %ld, %@, %@, %@, %@)", v13, v14, v15, v16, v17, v18}];
+    recordID3 = [recordCopy recordID];
+    recordType = [recordCopy recordType];
+    record = [recordCopy record];
+    xattrSignature = [recordCopy xattrSignature];
+    recordIDNeedingFetch = [recordCopy recordIDNeedingFetch];
+    recordIDBlockingSave = [recordCopy recordIDBlockingSave];
+    v9 = [bCopy execute:{@"INSERT OR REPLACE INTO records_needing_subresources (record_id, record_type, record, xattr_sig, record_id_needing_fetch, record_id_blocking_save) VALUES (%@, %ld, %@, %@, %@, %@)", recordID3, recordType, record, xattrSignature, recordIDNeedingFetch, recordIDBlockingSave}];
   }
 
-  v19 = [v6 record];
+  record2 = [recordCopy record];
 
-  if (!v19)
+  if (!record2)
   {
     if (v9)
     {
@@ -2437,10 +2437,10 @@ uint64_t __43__BRCPendingChangesStream_hasRecordDeletes__block_invoke(uint64_t a
     }
 
 LABEL_16:
-    v25 = [v7 lastError];
+    lastError = [bCopy lastError];
     v24 = 0;
     error = self->_error;
-    self->_error = v25;
+    self->_error = lastError;
 LABEL_17:
 
     goto LABEL_18;
@@ -2451,26 +2451,26 @@ LABEL_17:
     goto LABEL_16;
   }
 
-  v20 = [v6 recordID];
-  v21 = [v7 execute:{@"UPDATE records_needing_subresources SET record_id_needing_fetch = NULL WHERE record_id_needing_fetch = %@", v20}];
+  recordID4 = [recordCopy recordID];
+  v21 = [bCopy execute:{@"UPDATE records_needing_subresources SET record_id_needing_fetch = NULL WHERE record_id_needing_fetch = %@", recordID4}];
 
   if (!v21)
   {
     goto LABEL_16;
   }
 
-  if ([v7 changes])
+  if ([bCopy changes])
   {
     error = brc_bread_crumbs();
     v23 = brc_default_log();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      v28 = [v7 changes];
-      v29 = [v6 recordID];
+      changes = [bCopy changes];
+      recordID5 = [recordCopy recordID];
       *buf = 134218498;
-      v31 = v28;
+      v31 = changes;
       v32 = 2112;
-      v33 = v29;
+      v33 = recordID5;
       v34 = 2112;
       v35 = error;
       _os_log_debug_impl(&dword_223E7A000, v23, OS_LOG_TYPE_DEBUG, "[DEBUG] Unblocked %lld records waiting on save of %@ even though it's a sub-resource record%@", buf, 0x20u);
@@ -2488,22 +2488,22 @@ LABEL_18:
   return v24;
 }
 
-- (void)finishedFetchingXattrSignatures:(id)a3
+- (void)finishedFetchingXattrSignatures:(id)signatures
 {
-  v4 = a3;
+  signaturesCopy = signatures;
   if (self->_hasBeenCreated)
   {
-    v5 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v6 = v5;
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    v6 = _getChangesStreamSafeDBHolder;
     if (!self->_error)
     {
-      v7 = [v5 db];
+      v7 = [_getChangesStreamSafeDBHolder db];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __59__BRCPendingChangesStream_finishedFetchingXattrSignatures___block_invoke;
       v8[3] = &unk_278500FA8;
-      v9 = v4;
-      v10 = self;
+      v9 = signaturesCopy;
+      selfCopy = self;
       [v7 performWithFlags:9 action:v8];
     }
   }
@@ -2580,22 +2580,22 @@ LABEL_15:
   return v13;
 }
 
-- (void)unblockRecordSavesWaitingOnRecordID:(id)a3
+- (void)unblockRecordSavesWaitingOnRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (self->_hasBeenCreated)
   {
-    v5 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v6 = v5;
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    v6 = _getChangesStreamSafeDBHolder;
     if (!self->_error)
     {
-      v7 = [v5 db];
+      v7 = [_getChangesStreamSafeDBHolder db];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __63__BRCPendingChangesStream_unblockRecordSavesWaitingOnRecordID___block_invoke;
       v8[3] = &unk_278500FA8;
-      v9 = v4;
-      v10 = self;
+      v9 = dCopy;
+      selfCopy = self;
       [v7 performWithFlags:9 action:v8];
     }
   }
@@ -2681,14 +2681,14 @@ uint64_t __63__BRCPendingChangesStream_unblockRecordSavesWaitingOnRecordID___blo
   return v4;
 }
 
-- (BOOL)unblockRecord:(id)a3 waitingOnRecord:(id)a4
+- (BOOL)unblockRecord:(id)record waitingOnRecord:(id)onRecord
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  onRecordCopy = onRecord;
   if (self->_hasBeenCreated)
   {
-    v8 = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
-    v9 = v8;
+    _getChangesStreamSafeDBHolder = [(BRCPendingChangesStream *)self _getChangesStreamSafeDBHolder];
+    v9 = _getChangesStreamSafeDBHolder;
     if (self->_error)
     {
       v10 = 0;
@@ -2696,13 +2696,13 @@ uint64_t __63__BRCPendingChangesStream_unblockRecordSavesWaitingOnRecordID___blo
 
     else
     {
-      v11 = [v8 db];
+      v11 = [_getChangesStreamSafeDBHolder db];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __57__BRCPendingChangesStream_unblockRecord_waitingOnRecord___block_invoke;
       v13[3] = &unk_278500FA8;
-      v14 = v6;
-      v15 = v7;
+      v14 = recordCopy;
+      v15 = onRecordCopy;
       v10 = [v11 performWithFlags:9 action:v13];
     }
   }
@@ -2748,52 +2748,52 @@ uint64_t __57__BRCPendingChangesStream_unblockRecord_waitingOnRecord___block_inv
   return v6;
 }
 
-- (BOOL)_finishedFetchingRecordMetadata:(id)a3 withDB:(id)a4
+- (BOOL)_finishedFetchingRecordMetadata:(id)metadata withDB:(id)b
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  [v6 assertOnQueue];
-  if (([v6 isInTransaction] & 1) == 0)
+  metadataCopy = metadata;
+  bCopy = b;
+  [bCopy assertOnQueue];
+  if (([bCopy isInTransaction] & 1) == 0)
   {
     [BRCPendingChangesStream _finishedFetchingRecordMetadata:withDB:];
   }
 
-  v7 = [v5 recordID];
-  if (![v6 execute:{@"UPDATE records_needing_subresources SET record_id_needing_fetch = NULL WHERE record_id_needing_fetch = %@", v7}])
+  recordID = [metadataCopy recordID];
+  if (![bCopy execute:{@"UPDATE records_needing_subresources SET record_id_needing_fetch = NULL WHERE record_id_needing_fetch = %@", recordID}])
   {
     goto LABEL_14;
   }
 
-  if ([v6 changes])
+  if ([bCopy changes])
   {
     v8 = brc_bread_crumbs();
     v9 = brc_default_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218498;
-      v17 = [v6 changes];
+      changes = [bCopy changes];
       v18 = 2112;
-      v19 = v7;
+      v19 = recordID;
       v20 = 2112;
       v21 = v8;
       _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] Updated %llu items to be unblocked for fetching %@%@", buf, 0x20u);
     }
   }
 
-  if ([v6 execute:{@"UPDATE records_needing_subresources SET record_id_blocking_save = NULL WHERE record_id_blocking_save = %@", v7}])
+  if ([bCopy execute:{@"UPDATE records_needing_subresources SET record_id_blocking_save = NULL WHERE record_id_blocking_save = %@", recordID}])
   {
-    if ([v6 changes])
+    if ([bCopy changes])
     {
       v10 = brc_bread_crumbs();
       v11 = brc_default_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v15 = [v6 changes];
+        changes2 = [bCopy changes];
         *buf = 134218498;
-        v17 = v15;
+        changes = changes2;
         v18 = 2112;
-        v19 = v7;
+        v19 = recordID;
         v20 = 2112;
         v21 = v10;
         _os_log_debug_impl(&dword_223E7A000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] Updated %llu items to be unblocked for saving %@%@", buf, 0x20u);
@@ -2813,12 +2813,12 @@ LABEL_14:
   return v12;
 }
 
-- (void)_closeDatabaseAndDestroy:(BOOL)a3
+- (void)_closeDatabaseAndDestroy:(BOOL)destroy
 {
-  v3 = a3;
+  destroyCopy = destroy;
   v25 = *MEMORY[0x277D85DE8];
   v5 = @"Closing";
-  if (a3)
+  if (destroy)
   {
     v5 = @"Destroying";
   }
@@ -2829,7 +2829,7 @@ LABEL_14:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v17 = 138412802;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v6;
     v21 = 2112;
@@ -2840,7 +2840,7 @@ LABEL_14:
   if (self->_hasBeenCreated)
   {
     v9 = [(BRCPendingChangesStream *)self description];
-    v10 = [(NSURL *)self->_databaseURL path];
+    path = [(NSURL *)self->_databaseURL path];
     v11 = _pendingChangesStreamPool;
     objc_sync_enter(v11);
     [(BRCSafeDBHolder *)self->_dbSafeHolder closeDatabaseSynchronously:1 dispatchToSerialQueue:1 completionHandler:0];
@@ -2849,21 +2849,21 @@ LABEL_14:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v17 = 138413058;
-      v18 = v9;
+      selfCopy = v9;
       v19 = 2112;
       v20 = v6;
       v21 = 2112;
-      v22 = v10;
+      v22 = path;
       v23 = 2112;
       v24 = v12;
       _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - %@ database at path: %@%@", &v17, 0x2Au);
     }
 
-    if (v3)
+    if (destroyCopy)
     {
-      v14 = [(BRCClientZone *)self->_clientZone session];
-      v15 = [v14 diskReclaimer];
-      [v15 renameAndUnlinkInBackgroundItemAt:0xFFFFFFFFLL path:v10];
+      session = [(BRCClientZone *)self->_clientZone session];
+      diskReclaimer = [session diskReclaimer];
+      [diskReclaimer renameAndUnlinkInBackgroundItemAt:0xFFFFFFFFLL path:path];
     }
 
     [(BRCPendingChangesStream *)self _closeChangeStream];

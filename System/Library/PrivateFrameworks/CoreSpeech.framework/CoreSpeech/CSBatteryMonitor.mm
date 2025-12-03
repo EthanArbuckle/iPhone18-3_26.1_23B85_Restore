@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (CSBatteryMonitor)init;
 - (unsigned)_checkBatteryState;
-- (void)_didReceiveBatteryStatusChanged:(unsigned __int8)a3;
-- (void)_didReceiveBatteryStatusChangedInQueue:(unsigned __int8)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveBatteryStatusChanged:(unsigned __int8)changed;
+- (void)_didReceiveBatteryStatusChangedInQueue:(unsigned __int8)queue;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -40,25 +40,25 @@
   }
 }
 
-- (void)_didReceiveBatteryStatusChanged:(unsigned __int8)a3
+- (void)_didReceiveBatteryStatusChanged:(unsigned __int8)changed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100168248;
   v3[3] = &unk_1002537E8;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(CSBatteryMonitor *)self enumerateObservers:v3];
 }
 
-- (void)_didReceiveBatteryStatusChangedInQueue:(unsigned __int8)a3
+- (void)_didReceiveBatteryStatusChangedInQueue:(unsigned __int8)queue
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1001682CC;
   v3[3] = &unk_1002537E8;
   v3[4] = self;
-  v4 = a3;
+  queueCopy = queue;
   [(CSBatteryMonitor *)self enumerateObserversInQueue:v3];
 }
 
@@ -79,9 +79,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     handler[0] = _NSConcreteStackBlock;
@@ -89,7 +89,7 @@
     handler[2] = sub_10016853C;
     handler[3] = &unk_1002537C0;
     handler[4] = self;
-    notify_register_dispatch("com.apple.system.powersources.source", &self->_notifyToken, v4, handler);
+    notify_register_dispatch("com.apple.system.powersources.source", &self->_notifyToken, queueCopy, handler);
     v5 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {

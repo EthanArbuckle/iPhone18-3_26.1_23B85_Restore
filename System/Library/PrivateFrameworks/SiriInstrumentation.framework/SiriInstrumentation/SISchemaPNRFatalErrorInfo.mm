@@ -1,24 +1,24 @@
 @interface SISchemaPNRFatalErrorInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaPNRFatalErrorInfo)initWithDictionary:(id)a3;
-- (SISchemaPNRFatalErrorInfo)initWithJSON:(id)a3;
+- (SISchemaPNRFatalErrorInfo)initWithDictionary:(id)dictionary;
+- (SISchemaPNRFatalErrorInfo)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaPNRFatalErrorInfo
 
-- (SISchemaPNRFatalErrorInfo)initWithDictionary:(id)a3
+- (SISchemaPNRFatalErrorInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SISchemaPNRFatalErrorInfo;
   v5 = [(SISchemaPNRFatalErrorInfo *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"errorDomain"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"errorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -26,7 +26,7 @@
       [(SISchemaPNRFatalErrorInfo *)v5 setErrorDomain:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (SISchemaPNRFatalErrorInfo)initWithJSON:(id)a3
+- (SISchemaPNRFatalErrorInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaPNRFatalErrorInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaPNRFatalErrorInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaPNRFatalErrorInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,48 +76,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_errorCode)
   {
-    v4 = [(SISchemaPNRFatalErrorInfo *)self errorCode];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"errorCode"];
+    errorCode = [(SISchemaPNRFatalErrorInfo *)self errorCode];
+    v5 = [errorCode copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"errorCode"];
   }
 
   if (self->_errorDomain)
   {
-    v6 = [(SISchemaPNRFatalErrorInfo *)self errorDomain];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"errorDomain"];
+    errorDomain = [(SISchemaPNRFatalErrorInfo *)self errorDomain];
+    v7 = [errorDomain copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"errorDomain"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaPNRFatalErrorInfo *)self errorDomain];
-  v6 = [v4 errorDomain];
-  if ((v5 != 0) == (v6 == 0))
+  errorDomain = [(SISchemaPNRFatalErrorInfo *)self errorDomain];
+  errorDomain2 = [equalCopy errorDomain];
+  if ((errorDomain != 0) == (errorDomain2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SISchemaPNRFatalErrorInfo *)self errorDomain];
-  if (v7)
+  errorDomain3 = [(SISchemaPNRFatalErrorInfo *)self errorDomain];
+  if (errorDomain3)
   {
-    v8 = v7;
-    v9 = [(SISchemaPNRFatalErrorInfo *)self errorDomain];
-    v10 = [v4 errorDomain];
-    v11 = [v9 isEqual:v10];
+    v8 = errorDomain3;
+    errorDomain4 = [(SISchemaPNRFatalErrorInfo *)self errorDomain];
+    errorDomain5 = [equalCopy errorDomain];
+    v11 = [errorDomain4 isEqual:errorDomain5];
 
     if (!v11)
     {
@@ -129,12 +129,12 @@
   {
   }
 
-  v5 = [(SISchemaPNRFatalErrorInfo *)self errorCode];
-  v6 = [v4 errorCode];
-  if ((v5 != 0) != (v6 == 0))
+  errorDomain = [(SISchemaPNRFatalErrorInfo *)self errorCode];
+  errorDomain2 = [equalCopy errorCode];
+  if ((errorDomain != 0) != (errorDomain2 == 0))
   {
-    v12 = [(SISchemaPNRFatalErrorInfo *)self errorCode];
-    if (!v12)
+    errorCode = [(SISchemaPNRFatalErrorInfo *)self errorCode];
+    if (!errorCode)
     {
 
 LABEL_15:
@@ -142,10 +142,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(SISchemaPNRFatalErrorInfo *)self errorCode];
-    v15 = [v4 errorCode];
-    v16 = [v14 isEqual:v15];
+    v13 = errorCode;
+    errorCode2 = [(SISchemaPNRFatalErrorInfo *)self errorCode];
+    errorCode3 = [equalCopy errorCode];
+    v16 = [errorCode2 isEqual:errorCode3];
 
     if (v16)
     {
@@ -165,19 +165,19 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(SISchemaPNRFatalErrorInfo *)self errorDomain];
+  toCopy = to;
+  errorDomain = [(SISchemaPNRFatalErrorInfo *)self errorDomain];
 
-  if (v4)
+  if (errorDomain)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaPNRFatalErrorInfo *)self errorCode];
+  errorCode = [(SISchemaPNRFatalErrorInfo *)self errorCode];
 
-  if (v5)
+  if (errorCode)
   {
     PBDataWriterWriteStringField();
   }

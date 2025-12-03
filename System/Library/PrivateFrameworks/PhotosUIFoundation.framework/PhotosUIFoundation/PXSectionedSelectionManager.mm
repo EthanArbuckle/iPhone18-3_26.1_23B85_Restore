@@ -1,39 +1,39 @@
 @interface PXSectionedSelectionManager
-- (BOOL)hasAnyChangesFromSelection:(id)a3;
+- (BOOL)hasAnyChangesFromSelection:(id)selection;
 - (PXAssetSelectionTypeCounter)assetTypeCounter;
 - (PXSectionedSelectionManager)init;
-- (PXSectionedSelectionManager)initWithDataSourceManager:(id)a3;
+- (PXSectionedSelectionManager)initWithDataSourceManager:(id)manager;
 - (PXSectionedSelectionManagerSnapshotValidator)snapshotValidator;
 - (PXSimpleIndexPath)cursorIndexPath;
 - (PXSimpleIndexPath)pendingIndexPath;
 - (PXSimpleIndexPath)pressedIndexPath;
-- (id)_snapshotWithSelectableItemsForSnapshot:(id)a3;
-- (id)_validatedSnapshotForSnapshot:(id)a3;
-- (void)_makeSimpleModificationToSelectedIndexPathsUsingBlock:(id)a3;
-- (void)_setCursorIndexPath:(PXSimpleIndexPath *)a3;
-- (void)_setDataSource:(id)a3;
-- (void)_setDataSource:(id)a3 withChangeHistory:(id)a4;
-- (void)_setPendingIndexPath:(PXSimpleIndexPath *)a3;
-- (void)_setPressedIndexPath:(PXSimpleIndexPath *)a3;
-- (void)_setSelectedIndexPaths:(id)a3;
-- (void)_setSelectionSnapshot:(id)a3;
+- (id)_snapshotWithSelectableItemsForSnapshot:(id)snapshot;
+- (id)_validatedSnapshotForSnapshot:(id)snapshot;
+- (void)_makeSimpleModificationToSelectedIndexPathsUsingBlock:(id)block;
+- (void)_setCursorIndexPath:(PXSimpleIndexPath *)path;
+- (void)_setDataSource:(id)source;
+- (void)_setDataSource:(id)source withChangeHistory:(id)history;
+- (void)_setPendingIndexPath:(PXSimpleIndexPath *)path;
+- (void)_setPressedIndexPath:(PXSimpleIndexPath *)path;
+- (void)_setSelectedIndexPaths:(id)paths;
+- (void)_setSelectionSnapshot:(id)snapshot;
 - (void)_updateIfNeeded;
 - (void)_updateSelectionSnapshotIfNeeded;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
 - (void)selectAllItems;
-- (void)selectAllItemsInSection:(PXSimpleIndexPath *)a3;
-- (void)setCursorIndexPath:(PXSimpleIndexPath *)a3;
-- (void)setOverallSelectionOrder:(id)a3;
-- (void)setPendingIndexPath:(PXSimpleIndexPath *)a3;
-- (void)setPressedIndexPath:(PXSimpleIndexPath *)a3;
-- (void)setSelectedIndexPath:(PXSimpleIndexPath *)a3;
-- (void)setSelectedIndexPaths:(id)a3;
-- (void)setSelectedState:(BOOL)a3 forIndexPath:(PXSimpleIndexPath *)a4;
-- (void)setSelectedState:(BOOL)a3 forIndexPath:(PXSimpleIndexPath *)a4 andUpdateCursorIndexPath:(BOOL)a5;
-- (void)setSelectedState:(BOOL)a3 forIndexPathSet:(id)a4;
-- (void)setSelectionLimitReached:(BOOL)a3;
+- (void)selectAllItemsInSection:(PXSimpleIndexPath *)section;
+- (void)setCursorIndexPath:(PXSimpleIndexPath *)path;
+- (void)setOverallSelectionOrder:(id)order;
+- (void)setPendingIndexPath:(PXSimpleIndexPath *)path;
+- (void)setPressedIndexPath:(PXSimpleIndexPath *)path;
+- (void)setSelectedIndexPath:(PXSimpleIndexPath *)path;
+- (void)setSelectedIndexPaths:(id)paths;
+- (void)setSelectedState:(BOOL)state forIndexPath:(PXSimpleIndexPath *)path;
+- (void)setSelectedState:(BOOL)state forIndexPath:(PXSimpleIndexPath *)path andUpdateCursorIndexPath:(BOOL)indexPath;
+- (void)setSelectedState:(BOOL)state forIndexPathSet:(id)set;
+- (void)setSelectionLimitReached:(BOOL)reached;
 @end
 
 @implementation PXSectionedSelectionManager
@@ -51,8 +51,8 @@
   [(PXSectionedSelectionManager *)self _updateSelectionSnapshotIfNeeded];
   if ([(PXSectionedSelectionManager *)self _needsUpdate])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXSectionedSelectionManager.m" lineNumber:171 description:@"Selection manager still needs to update after an update pass"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedSelectionManager.m" lineNumber:171 description:@"Selection manager still needs to update after an update pass"];
   }
 }
 
@@ -62,17 +62,17 @@
   if (self->_needsUpdateFlags.selectionSnapshot)
   {
     self->_needsUpdateFlags.selectionSnapshot = 0;
-    v4 = [(PXSectionedSelectionManager *)self selectedIndexPaths];
-    v5 = [v4 copy];
+    selectedIndexPaths = [(PXSectionedSelectionManager *)self selectedIndexPaths];
+    v5 = [selectedIndexPaths copy];
 
-    v6 = [(PXSectionedSelectionManager *)self dataSource];
-    v7 = [v6 identifier];
+    dataSource = [(PXSectionedSelectionManager *)self dataSource];
+    identifier = [dataSource identifier];
 
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __63__PXSectionedSelectionManager__updateSelectionSnapshotIfNeeded__block_invoke;
     v36[3] = &unk_1E7BB5F10;
-    v36[5] = v7;
+    v36[5] = identifier;
     v36[6] = a2;
     v36[4] = self;
     [v5 enumerateDataSourceIdentifiers:v36];
@@ -80,24 +80,24 @@
     v35 = 0u;
     [(PXSectionedSelectionManager *)self cursorIndexPath];
     v8 = [PXSelectionSnapshot alloc];
-    v9 = [(PXSectionedSelectionManager *)self dataSource];
+    dataSource2 = [(PXSectionedSelectionManager *)self dataSource];
     [(PXSectionedSelectionManager *)self pendingIndexPath];
     [(PXSectionedSelectionManager *)self pressedIndexPath];
-    v10 = [(PXSectionedSelectionManager *)self selectionLimitReached];
-    v11 = [(PXSectionedSelectionManager *)self emptySelectionAvoided];
-    v12 = [(PXSectionedSelectionManager *)self overallSelectionOrder];
+    selectionLimitReached = [(PXSectionedSelectionManager *)self selectionLimitReached];
+    emptySelectionAvoided = [(PXSectionedSelectionManager *)self emptySelectionAvoided];
+    overallSelectionOrder = [(PXSectionedSelectionManager *)self overallSelectionOrder];
     v32[0] = v34;
     v32[1] = v35;
-    LOBYTE(v25) = v11;
-    v13 = [(PXSelectionSnapshot *)v8 initWithDataSource:v9 selectedIndexPaths:v5 cursorIndexPath:v32 pendingIndexPath:buf pressedIndexPath:v33 selectionLimitReached:v10 emptySelectionAvoided:v25 overallSelectionOrder:v12];
+    LOBYTE(v25) = emptySelectionAvoided;
+    v13 = [(PXSelectionSnapshot *)v8 initWithDataSource:dataSource2 selectedIndexPaths:v5 cursorIndexPath:v32 pendingIndexPath:buf pressedIndexPath:v33 selectionLimitReached:selectionLimitReached emptySelectionAvoided:v25 overallSelectionOrder:overallSelectionOrder];
 
-    v14 = [(PXSectionedSelectionManager *)self selectionSnapshot];
-    v15 = [v14 dataSource];
-    v16 = [v15 identifier];
-    v17 = [(PXSelectionSnapshot *)v13 dataSource];
-    v18 = [v17 identifier];
+    selectionSnapshot = [(PXSectionedSelectionManager *)self selectionSnapshot];
+    dataSource3 = [selectionSnapshot dataSource];
+    identifier2 = [dataSource3 identifier];
+    dataSource4 = [(PXSelectionSnapshot *)v13 dataSource];
+    identifier3 = [dataSource4 identifier];
 
-    if (v16 == v18)
+    if (identifier2 == identifier3)
     {
       v19 = [(PXSectionedSelectionManager *)self _validatedSnapshotForSnapshot:v13];
       v20 = v19;
@@ -105,10 +105,10 @@
       {
         v21 = v19;
 
-        v22 = [(PXSectionedSelectionManager *)self selectedIndexPaths];
-        [v22 removeAllIndexPaths];
-        v23 = [(PXSelectionSnapshot *)v21 selectedIndexPaths];
-        [v22 unionIndexPathSet:v23];
+        selectedIndexPaths2 = [(PXSectionedSelectionManager *)self selectedIndexPaths];
+        [selectedIndexPaths2 removeAllIndexPaths];
+        selectedIndexPaths3 = [(PXSelectionSnapshot *)v21 selectedIndexPaths];
+        [selectedIndexPaths2 unionIndexPathSet:selectedIndexPaths3];
 
         if (v21)
         {
@@ -139,8 +139,8 @@
         v38 = v27;
         [(PXSectionedSelectionManager *)self _setPressedIndexPath:buf];
         [(PXSectionedSelectionManager *)self _setSelectionLimitReached:[(PXSelectionSnapshot *)v21 isSelectionLimitReached]];
-        v24 = [(PXSelectionSnapshot *)v21 overallSelectionOrder];
-        [(PXSectionedSelectionManager *)self _setOverallSelectionOrder:v24];
+        overallSelectionOrder2 = [(PXSelectionSnapshot *)v21 overallSelectionOrder];
+        [(PXSectionedSelectionManager *)self _setOverallSelectionOrder:overallSelectionOrder2];
 
         v13 = v21;
       }
@@ -179,8 +179,8 @@
   v3 = objc_getAssociatedObject(self, PXAssetTypeCounterKey);
   if (!v3)
   {
-    v4 = [(PXSectionedSelectionManager *)self selectionSnapshot];
-    v5 = [v4 dataSource];
+    selectionSnapshot = [(PXSectionedSelectionManager *)self selectionSnapshot];
+    dataSource = [selectionSnapshot dataSource];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -206,61 +206,61 @@
   return WeakRetained;
 }
 
-- (void)_setPressedIndexPath:(PXSimpleIndexPath *)a3
+- (void)_setPressedIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  *&self->_pressedIndexPath.dataSourceIdentifier = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  *&self->_pressedIndexPath.dataSourceIdentifier = *&path->dataSourceIdentifier;
   *&self->_pressedIndexPath.item = v3;
 }
 
-- (void)_setPendingIndexPath:(PXSimpleIndexPath *)a3
+- (void)_setPendingIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  *&self->_pendingIndexPath.dataSourceIdentifier = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  *&self->_pendingIndexPath.dataSourceIdentifier = *&path->dataSourceIdentifier;
   *&self->_pendingIndexPath.item = v3;
 }
 
-- (void)_setCursorIndexPath:(PXSimpleIndexPath *)a3
+- (void)_setCursorIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  *&self->_cursorIndexPath.dataSourceIdentifier = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  *&self->_cursorIndexPath.dataSourceIdentifier = *&path->dataSourceIdentifier;
   *&self->_cursorIndexPath.item = v3;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if ((v6 & 1) != 0 && PXSelectionManagerDataSourceObserverContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if ((changeCopy & 1) != 0 && PXSelectionManagerDataSourceObserverContext == context)
   {
     if ([(PXObservable *)self isPerformingChanges])
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"PXSectionedSelectionManager.m" lineNumber:416 description:{@"Invalid parameter not satisfying: %@", @"!self.isPerformingChanges"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedSelectionManager.m" lineNumber:416 description:{@"Invalid parameter not satisfying: %@", @"!self.isPerformingChanges"}];
     }
 
-    v10 = v9;
-    v11 = [v10 dataSource];
-    v12 = [v10 changeHistory];
+    v10 = observableCopy;
+    dataSource = [v10 dataSource];
+    changeHistory = [v10 changeHistory];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __60__PXSectionedSelectionManager_observable_didChange_context___block_invoke;
     v16[3] = &unk_1E7BB6018;
     v16[4] = self;
-    v17 = v11;
-    v18 = v12;
-    v13 = v12;
-    v14 = v11;
+    v17 = dataSource;
+    v18 = changeHistory;
+    v13 = changeHistory;
+    v14 = dataSource;
     [(PXSectionedSelectionManager *)self performChanges:v16];
   }
 }
 
-- (void)setOverallSelectionOrder:(id)a3
+- (void)setOverallSelectionOrder:(id)order
 {
-  if (self->_overallSelectionOrder != a3)
+  if (self->_overallSelectionOrder != order)
   {
-    v4 = [a3 copy];
+    v4 = [order copy];
     overallSelectionOrder = self->_overallSelectionOrder;
     self->_overallSelectionOrder = v4;
 
@@ -268,86 +268,86 @@
   }
 }
 
-- (void)setSelectionLimitReached:(BOOL)a3
+- (void)setSelectionLimitReached:(BOOL)reached
 {
-  if (self->_selectionLimitReached != a3)
+  if (self->_selectionLimitReached != reached)
   {
-    self->_selectionLimitReached = a3;
+    self->_selectionLimitReached = reached;
     [(PXSectionedSelectionManager *)self _invalidateSelectionSnapshot];
   }
 }
 
-- (void)setPressedIndexPath:(PXSimpleIndexPath *)a3
+- (void)setPressedIndexPath:(PXSimpleIndexPath *)path
 {
   [(PXSectionedSelectionManager *)self pressedIndexPath];
-  v6 = v8 == a3->dataSourceIdentifier && *(&v8 + 1) == a3->section && v9 == a3->item;
-  if (!v6 || *(&v9 + 1) != a3->subitem)
+  v6 = v8 == path->dataSourceIdentifier && *(&v8 + 1) == path->section && v9 == path->item;
+  if (!v6 || *(&v9 + 1) != path->subitem)
   {
-    v7 = *&a3->item;
-    v8 = *&a3->dataSourceIdentifier;
+    v7 = *&path->item;
+    v8 = *&path->dataSourceIdentifier;
     v9 = v7;
     [(PXSectionedSelectionManager *)self _setPressedIndexPath:&v8];
     [(PXSectionedSelectionManager *)self _invalidateSelectionSnapshot];
   }
 }
 
-- (void)setPendingIndexPath:(PXSimpleIndexPath *)a3
+- (void)setPendingIndexPath:(PXSimpleIndexPath *)path
 {
   [(PXSectionedSelectionManager *)self pendingIndexPath];
-  v6 = v8 == a3->dataSourceIdentifier && *(&v8 + 1) == a3->section && v9 == a3->item;
-  if (!v6 || *(&v9 + 1) != a3->subitem)
+  v6 = v8 == path->dataSourceIdentifier && *(&v8 + 1) == path->section && v9 == path->item;
+  if (!v6 || *(&v9 + 1) != path->subitem)
   {
-    v7 = *&a3->item;
-    v8 = *&a3->dataSourceIdentifier;
+    v7 = *&path->item;
+    v8 = *&path->dataSourceIdentifier;
     v9 = v7;
     [(PXSectionedSelectionManager *)self _setPendingIndexPath:&v8];
     [(PXSectionedSelectionManager *)self _invalidateSelectionSnapshot];
   }
 }
 
-- (void)setCursorIndexPath:(PXSimpleIndexPath *)a3
+- (void)setCursorIndexPath:(PXSimpleIndexPath *)path
 {
   [(PXSectionedSelectionManager *)self cursorIndexPath];
-  v6 = v8 == a3->dataSourceIdentifier && *(&v8 + 1) == a3->section && v9 == a3->item;
-  if (!v6 || *(&v9 + 1) != a3->subitem)
+  v6 = v8 == path->dataSourceIdentifier && *(&v8 + 1) == path->section && v9 == path->item;
+  if (!v6 || *(&v9 + 1) != path->subitem)
   {
-    v7 = *&a3->item;
-    v8 = *&a3->dataSourceIdentifier;
+    v7 = *&path->item;
+    v8 = *&path->dataSourceIdentifier;
     v9 = v7;
     [(PXSectionedSelectionManager *)self _setCursorIndexPath:&v8];
     [(PXSectionedSelectionManager *)self _invalidateSelectionSnapshot];
   }
 }
 
-- (void)setSelectedIndexPath:(PXSimpleIndexPath *)a3
+- (void)setSelectedIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = *&a3->item;
-  v8 = *&a3->dataSourceIdentifier;
+  v5 = *&path->item;
+  v8 = *&path->dataSourceIdentifier;
   v9 = v5;
   v6 = [(PXIndexPathSet *)PXMutableIndexPathSet indexPathSetWithIndexPath:&v8];
   [(PXSectionedSelectionManager *)self _setSelectedIndexPaths:v6];
 
-  v7 = *&a3->item;
-  v8 = *&a3->dataSourceIdentifier;
+  v7 = *&path->item;
+  v8 = *&path->dataSourceIdentifier;
   v9 = v7;
   [(PXSectionedSelectionManager *)self _setCursorIndexPath:&v8];
   [(PXSectionedSelectionManager *)self _invalidateSelectionSnapshot];
 }
 
-- (void)setSelectedIndexPaths:(id)a3
+- (void)setSelectedIndexPaths:(id)paths
 {
-  v4 = [a3 mutableCopy];
+  v4 = [paths mutableCopy];
   [(PXSectionedSelectionManager *)self _setSelectedIndexPaths:v4];
 
   [(PXSectionedSelectionManager *)self _invalidateSelectionSnapshot];
 }
 
-- (void)selectAllItemsInSection:(PXSimpleIndexPath *)a3
+- (void)selectAllItemsInSection:(PXSimpleIndexPath *)section
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
-  v3 = *&a3->item;
-  v5 = *&a3->dataSourceIdentifier;
+  v3 = *&section->item;
+  v5 = *&section->dataSourceIdentifier;
   v4[2] = __55__PXSectionedSelectionManager_selectAllItemsInSection___block_invoke;
   v4[3] = &unk_1E7BB5FF0;
   v4[4] = self;
@@ -398,28 +398,28 @@ void __55__PXSectionedSelectionManager_selectAllItemsInSection___block_invoke_2(
 
 - (void)selectAllItems
 {
-  v3 = [(PXSectionedSelectionManager *)self dataSource];
-  v4 = [v3 allItemIndexPaths];
+  dataSource = [(PXSectionedSelectionManager *)self dataSource];
+  allItemIndexPaths = [dataSource allItemIndexPaths];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__PXSectionedSelectionManager_selectAllItems__block_invoke;
   v6[3] = &unk_1E7BB5F80;
-  v7 = v4;
-  v5 = v4;
+  v7 = allItemIndexPaths;
+  v5 = allItemIndexPaths;
   [(PXSectionedSelectionManager *)self _makeSimpleModificationToSelectedIndexPathsUsingBlock:v6];
 }
 
-- (void)setSelectedState:(BOOL)a3 forIndexPathSet:(id)a4
+- (void)setSelectedState:(BOOL)state forIndexPathSet:(id)set
 {
-  v6 = a4;
+  setCopy = set;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__PXSectionedSelectionManager_setSelectedState_forIndexPathSet___block_invoke;
   v8[3] = &unk_1E7BB5F58;
-  v10 = a3;
-  v9 = v6;
-  v7 = v6;
+  stateCopy = state;
+  v9 = setCopy;
+  v7 = setCopy;
   [(PXSectionedSelectionManager *)self _makeSimpleModificationToSelectedIndexPathsUsingBlock:v8];
 }
 
@@ -437,46 +437,46 @@ uint64_t __64__PXSectionedSelectionManager_setSelectedState_forIndexPathSet___bl
   }
 }
 
-- (void)setSelectedState:(BOOL)a3 forIndexPath:(PXSimpleIndexPath *)a4 andUpdateCursorIndexPath:(BOOL)a5
+- (void)setSelectedState:(BOOL)state forIndexPath:(PXSimpleIndexPath *)path andUpdateCursorIndexPath:(BOOL)indexPath
 {
-  v5 = a5;
-  v8 = *&a4->item;
-  v10 = *&a4->dataSourceIdentifier;
+  indexPathCopy = indexPath;
+  v8 = *&path->item;
+  v10 = *&path->dataSourceIdentifier;
   v11 = v8;
-  [(PXSectionedSelectionManager *)self setSelectedState:a3 forIndexPath:&v10];
-  if (v5)
+  [(PXSectionedSelectionManager *)self setSelectedState:state forIndexPath:&v10];
+  if (indexPathCopy)
   {
-    v9 = *&a4->item;
-    v10 = *&a4->dataSourceIdentifier;
+    v9 = *&path->item;
+    v10 = *&path->dataSourceIdentifier;
     v11 = v9;
     [(PXSectionedSelectionManager *)self setCursorIndexPath:&v10];
   }
 }
 
-- (void)setSelectedState:(BOOL)a3 forIndexPath:(PXSimpleIndexPath *)a4
+- (void)setSelectedState:(BOOL)state forIndexPath:(PXSimpleIndexPath *)path
 {
   v26 = *MEMORY[0x1E69E9840];
-  dataSourceIdentifier = a4->dataSourceIdentifier;
-  if (a4->dataSourceIdentifier)
+  dataSourceIdentifier = path->dataSourceIdentifier;
+  if (path->dataSourceIdentifier)
   {
-    v8 = [(PXSectionedSelectionManager *)self dataSource];
-    v9 = [v8 identifier];
+    dataSource = [(PXSectionedSelectionManager *)self dataSource];
+    identifier = [dataSource identifier];
 
-    if (dataSourceIdentifier != v9)
+    if (dataSourceIdentifier != identifier)
     {
       v10 = PXAssertGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v12 = a4->dataSourceIdentifier;
-        v13 = [(PXSectionedSelectionManager *)self dataSource];
-        v14 = [v13 identifier];
-        v15 = [(PXSectionedSelectionManager *)self dataSource];
+        v12 = path->dataSourceIdentifier;
+        dataSource2 = [(PXSectionedSelectionManager *)self dataSource];
+        identifier2 = [dataSource2 identifier];
+        dataSource3 = [(PXSectionedSelectionManager *)self dataSource];
         *buf = 134218498;
         v21 = v12;
         v22 = 2048;
-        v23 = v14;
+        v23 = identifier2;
         v24 = 2112;
-        v25 = v15;
+        v25 = dataSource3;
         _os_log_error_impl(&dword_1B3F73000, v10, OS_LOG_TYPE_ERROR, "Invalid use, data source identifier mismatch %lu!=%lu, can only select indexPaths in the current data source version: %@", buf, 0x20u);
       }
     }
@@ -485,9 +485,9 @@ uint64_t __64__PXSectionedSelectionManager_setSelectedState_forIndexPathSet___bl
     v16[1] = 3221225472;
     v16[2] = __61__PXSectionedSelectionManager_setSelectedState_forIndexPath___block_invoke;
     v16[3] = &__block_descriptor_65_e31_v16__0__PXMutableIndexPathSet_8l;
-    v19 = a3;
-    v11 = *&a4->item;
-    v17 = *&a4->dataSourceIdentifier;
+    stateCopy = state;
+    v11 = *&path->item;
+    v17 = *&path->dataSourceIdentifier;
     v18 = v11;
     [(PXSectionedSelectionManager *)self _makeSimpleModificationToSelectedIndexPathsUsingBlock:v16];
   }
@@ -511,27 +511,27 @@ uint64_t __61__PXSectionedSelectionManager_setSelectedState_forIndexPath___block
   }
 }
 
-- (BOOL)hasAnyChangesFromSelection:(id)a3
+- (BOOL)hasAnyChangesFromSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(PXSectionedSelectionManager *)self selectionSnapshot];
-  v6 = [v5 selectedIndexPaths];
-  v7 = [v6 count];
-  v8 = [v4 selectedIndexPaths];
-  v9 = [v8 count];
+  selectionCopy = selection;
+  selectionSnapshot = [(PXSectionedSelectionManager *)self selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  v7 = [selectedIndexPaths count];
+  selectedIndexPaths2 = [selectionCopy selectedIndexPaths];
+  v9 = [selectedIndexPaths2 count];
 
   if (v7 == v9)
   {
-    v10 = [v4 dataSource];
-    v11 = [v10 identifier];
+    dataSource = [selectionCopy dataSource];
+    identifier = [dataSource identifier];
 
-    v12 = [(PXSectionedSelectionManager *)self selectionSnapshot];
-    v13 = [v12 dataSource];
-    v14 = [v13 identifier];
+    selectionSnapshot2 = [(PXSectionedSelectionManager *)self selectionSnapshot];
+    dataSource2 = [selectionSnapshot2 dataSource];
+    identifier2 = [dataSource2 identifier];
 
-    v15 = [(PXSectionedSelectionManager *)self dataSourceManager];
-    v16 = [v15 changeHistory];
-    v17 = [v16 coalescedChangeDetailsFromDataSourceIdentifier:v11 toDataSourceIdentifier:v14];
+    dataSourceManager = [(PXSectionedSelectionManager *)self dataSourceManager];
+    changeHistory = [dataSourceManager changeHistory];
+    v17 = [changeHistory coalescedChangeDetailsFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2];
 
     if (v17)
     {
@@ -539,19 +539,19 @@ uint64_t __61__PXSectionedSelectionManager_setSelectedState_forIndexPath___block
       v29 = &v28;
       v30 = 0x2020000000;
       v31 = 0;
-      v18 = [(PXSectionedSelectionManager *)self selectionSnapshot];
-      v19 = [v18 selectedIndexPaths];
+      selectionSnapshot3 = [(PXSectionedSelectionManager *)self selectionSnapshot];
+      selectedIndexPaths3 = [selectionSnapshot3 selectedIndexPaths];
 
-      v20 = [v4 selectedIndexPaths];
+      selectedIndexPaths4 = [selectionCopy selectedIndexPaths];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __58__PXSectionedSelectionManager_hasAnyChangesFromSelection___block_invoke;
       v24[3] = &unk_1E7BB85B8;
       v25 = v17;
-      v21 = v19;
+      v21 = selectedIndexPaths3;
       v26 = v21;
       v27 = &v28;
-      [v20 enumerateItemIndexPathsUsingBlock:v24];
+      [selectedIndexPaths4 enumerateItemIndexPathsUsingBlock:v24];
       v22 = *(v29 + 24);
 
       _Block_object_dispose(&v28, 8);
@@ -604,31 +604,31 @@ void __63__PXSectionedSelectionManager__updateSelectionSnapshotIfNeeded__block_i
   }
 }
 
-- (id)_snapshotWithSelectableItemsForSnapshot:(id)a3
+- (id)_snapshotWithSelectableItemsForSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [(PXSectionedSelectionManager *)self canSelectIndexPathBlock];
-  if (v5)
+  snapshotCopy = snapshot;
+  canSelectIndexPathBlock = [(PXSectionedSelectionManager *)self canSelectIndexPathBlock];
+  if (canSelectIndexPathBlock)
   {
-    v6 = [v4 selectedIndexPaths];
-    v7 = [v6 mutableCopy];
+    selectedIndexPaths = [snapshotCopy selectedIndexPaths];
+    v7 = [selectedIndexPaths mutableCopy];
 
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __71__PXSectionedSelectionManager__snapshotWithSelectableItemsForSnapshot___block_invoke;
     v16 = &unk_1E7BB6108;
     v17 = v7;
-    v18 = v5;
+    v18 = canSelectIndexPathBlock;
     v8 = v7;
     [v8 enumerateAllIndexPathsUsingBlock:&v13];
     v9 = [PXSelectionSnapshot alloc];
-    v10 = [v4 dataSource];
-    v11 = [(PXSelectionSnapshot *)v9 initWithDataSource:v10 selectedIndexPaths:v8];
+    dataSource = [snapshotCopy dataSource];
+    v11 = [(PXSelectionSnapshot *)v9 initWithDataSource:dataSource selectedIndexPaths:v8];
   }
 
   else
   {
-    v11 = v4;
+    v11 = snapshotCopy;
   }
 
   return v11;
@@ -654,36 +654,36 @@ uint64_t __71__PXSectionedSelectionManager__snapshotWithSelectableItemsForSnapsh
   return result;
 }
 
-- (id)_validatedSnapshotForSnapshot:(id)a3
+- (id)_validatedSnapshotForSnapshot:(id)snapshot
 {
-  v4 = [(PXSectionedSelectionManager *)self _snapshotWithSelectableItemsForSnapshot:a3];
-  v5 = [(PXSectionedSelectionManager *)self snapshotValidator];
-  v6 = v5;
-  if (v5)
+  v4 = [(PXSectionedSelectionManager *)self _snapshotWithSelectableItemsForSnapshot:snapshot];
+  snapshotValidator = [(PXSectionedSelectionManager *)self snapshotValidator];
+  v6 = snapshotValidator;
+  if (snapshotValidator)
   {
-    v7 = [v5 selectionManager:self validateSnapshot:v4];
+    v7 = [snapshotValidator selectionManager:self validateSnapshot:v4];
     if (v7)
     {
       goto LABEL_6;
     }
 
-    v8 = [(PXSectionedSelectionManager *)self selectionSnapshot];
+    selectionSnapshot = [(PXSectionedSelectionManager *)self selectionSnapshot];
   }
 
   else
   {
-    v8 = v4;
+    selectionSnapshot = v4;
   }
 
-  v7 = v8;
+  v7 = selectionSnapshot;
 LABEL_6:
 
   return v7;
 }
 
-- (void)_makeSimpleModificationToSelectedIndexPathsUsingBlock:(id)a3
+- (void)_makeSimpleModificationToSelectedIndexPathsUsingBlock:(id)block
 {
-  v9 = a3;
+  blockCopy = block;
   if (self->_needsUpdateFlags.selectionSnapshot)
   {
     v4 = -1;
@@ -691,12 +691,12 @@ LABEL_6:
 
   else
   {
-    v5 = [(PXSectionedSelectionManager *)self selectedIndexPaths];
-    v4 = [v5 count];
+    selectedIndexPaths = [(PXSectionedSelectionManager *)self selectedIndexPaths];
+    v4 = [selectedIndexPaths count];
   }
 
-  v6 = [(PXSectionedSelectionManager *)self selectedIndexPaths];
-  v9[2](v9, v6);
+  selectedIndexPaths2 = [(PXSectionedSelectionManager *)self selectedIndexPaths];
+  blockCopy[2](blockCopy, selectedIndexPaths2);
 
   if (self->_needsUpdateFlags.selectionSnapshot)
   {
@@ -705,8 +705,8 @@ LABEL_6:
 
   else
   {
-    v8 = [(PXSectionedSelectionManager *)self selectedIndexPaths];
-    v7 = [v8 count];
+    selectedIndexPaths3 = [(PXSectionedSelectionManager *)self selectedIndexPaths];
+    v7 = [selectedIndexPaths3 count];
   }
 
   if (v4 != v7)
@@ -715,51 +715,51 @@ LABEL_6:
   }
 }
 
-- (void)_setSelectionSnapshot:(id)a3
+- (void)_setSelectionSnapshot:(id)snapshot
 {
-  v5 = a3;
-  if (self->_selectionSnapshot != v5)
+  snapshotCopy = snapshot;
+  if (self->_selectionSnapshot != snapshotCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectionSnapshot, a3);
+    v6 = snapshotCopy;
+    objc_storeStrong(&self->_selectionSnapshot, snapshot);
     [(PXObservable *)self signalChange:1];
-    v5 = v6;
+    snapshotCopy = v6;
   }
 }
 
-- (void)_setDataSource:(id)a3 withChangeHistory:(id)a4
+- (void)_setDataSource:(id)source withChangeHistory:(id)history
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXSectionedSelectionManager *)self dataSource];
-  [(PXSectionedSelectionManager *)self _setDataSource:v6];
+  sourceCopy = source;
+  historyCopy = history;
+  dataSource = [(PXSectionedSelectionManager *)self dataSource];
+  [(PXSectionedSelectionManager *)self _setDataSource:sourceCopy];
   v38 = *PXSimpleIndexPathNull;
   v39 = *&PXSimpleIndexPathNull[16];
   v36 = *PXSimpleIndexPathNull;
   v37 = *&PXSimpleIndexPathNull[16];
   v34 = *PXSimpleIndexPathNull;
   v35 = *&PXSimpleIndexPathNull[16];
-  if (v7)
+  if (historyCopy)
   {
-    v9 = [v8 identifier];
-    v10 = [v7 changeDetailsFromDataSourceIdentifier:v9 toDataSourceIdentifier:{objc_msgSend(v6, "identifier")}];
-    v11 = [(PXSectionedSelectionManager *)self selectedIndexPaths];
-    v12 = [PXSectionedDataSourceChangeDetails indexPathSetAfterApplyingChanges:v10 toIndexPathSet:v11 hasIncrementalChanges:0];
+    identifier = [dataSource identifier];
+    v10 = [historyCopy changeDetailsFromDataSourceIdentifier:identifier toDataSourceIdentifier:{objc_msgSend(sourceCopy, "identifier")}];
+    selectedIndexPaths = [(PXSectionedSelectionManager *)self selectedIndexPaths];
+    v12 = [PXSectionedDataSourceChangeDetails indexPathSetAfterApplyingChanges:v10 toIndexPathSet:selectedIndexPaths hasIncrementalChanges:0];
     v32 = 0u;
     v33 = 0u;
-    if (v11)
+    if (selectedIndexPaths)
     {
-      [v11 firstItemIndexPathForDataSourceIdentifier:v9];
+      [selectedIndexPaths firstItemIndexPathForDataSourceIdentifier:identifier];
     }
 
-    v13 = [(PXSectionedSelectionManager *)self snapshotValidator];
-    v19 = v6;
-    if ([v13 selectionManagerShouldAvoidEmptySelection:self])
+    snapshotValidator = [(PXSectionedSelectionManager *)self snapshotValidator];
+    v19 = sourceCopy;
+    if ([snapshotValidator selectionManagerShouldAvoidEmptySelection:self])
     {
       v14 = 0;
       if (!v32 || v33 == 0x7FFFFFFFFFFFFFFFLL || *(&v33 + 1) != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v15 = v8;
+        v15 = dataSource;
         goto LABEL_22;
       }
 
@@ -780,12 +780,12 @@ LABEL_6:
         v25[4] = &v28;
         v23 = v32;
         v24 = v33;
-        [v8 enumerateItemIndexPathsStartingAtIndexPath:&v23 reverseDirection:1 usingBlock:v25];
+        [dataSource enumerateItemIndexPathsStartingAtIndexPath:&v23 reverseDirection:1 usingBlock:v25];
         v23 = 0u;
         v24 = 0u;
-        if (v6)
+        if (sourceCopy)
         {
-          [v6 firstItemIndexPath];
+          [sourceCopy firstItemIndexPath];
         }
 
         v14 = 0;
@@ -813,7 +813,7 @@ LABEL_6:
         v21 = v23;
         v22 = v24;
         v18 = [PXIndexPathSet indexPathSetWithIndexPath:&v21];
-        v15 = v8;
+        v15 = dataSource;
 
         _Block_object_dispose(&v28, 8);
         v12 = v18;
@@ -821,7 +821,7 @@ LABEL_6:
       }
     }
 
-    v15 = v8;
+    v15 = dataSource;
     v14 = 0;
 LABEL_22:
     v16 = [v12 mutableCopy];
@@ -832,8 +832,8 @@ LABEL_22:
     [(PXSectionedSelectionManager *)self pressedIndexPath];
     [PXSectionedDataSourceChangeDetails indexPathAfterApplyingChanges:v10 toIndexPath:&v28 hasIncrementalChanges:0 objectChanged:0];
 
-    v8 = v15;
-    v6 = v19;
+    dataSource = v15;
+    sourceCopy = v19;
     goto LABEL_23;
   }
 
@@ -870,67 +870,67 @@ __n128 __64__PXSectionedSelectionManager__setDataSource_withChangeHistory___bloc
   return result;
 }
 
-- (void)_setDataSource:(id)a3
+- (void)_setDataSource:(id)source
 {
-  v5 = a3;
-  if (self->_dataSource != v5)
+  sourceCopy = source;
+  if (self->_dataSource != sourceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_dataSource, a3);
+    v6 = sourceCopy;
+    objc_storeStrong(&self->_dataSource, source);
     [(PXObservable *)self signalChange:2];
     [(PXSectionedSelectionManager *)self _invalidateSelectionSnapshot];
-    v5 = v6;
+    sourceCopy = v6;
   }
 }
 
-- (void)_setSelectedIndexPaths:(id)a3
+- (void)_setSelectedIndexPaths:(id)paths
 {
-  v5 = a3;
-  if (self->_selectedIndexPaths != v5)
+  pathsCopy = paths;
+  if (self->_selectedIndexPaths != pathsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectedIndexPaths, a3);
+    v6 = pathsCopy;
+    objc_storeStrong(&self->_selectedIndexPaths, paths);
     [(PXSectionedSelectionManager *)self _invalidateSelectionSnapshot];
-    v5 = v6;
+    pathsCopy = v6;
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXSectionedSelectionManager;
-  [(PXObservable *)&v3 performChanges:a3];
+  [(PXObservable *)&v3 performChanges:changes];
 }
 
 - (PXSectionedSelectionManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSectionedSelectionManager.m" lineNumber:49 description:@"Not supported"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedSelectionManager.m" lineNumber:49 description:@"Not supported"];
 
   abort();
 }
 
-- (PXSectionedSelectionManager)initWithDataSourceManager:(id)a3
+- (PXSectionedSelectionManager)initWithDataSourceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = PXSectionedSelectionManager;
   v6 = [(PXObservable *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSourceManager, a3);
+    objc_storeStrong(&v6->_dataSourceManager, manager);
     v8 = +[(PXIndexPathSet *)PXMutableIndexPathSet];
     selectedIndexPaths = v7->_selectedIndexPaths;
     v7->_selectedIndexPaths = v8;
 
-    [v5 registerChangeObserver:v7 context:PXSelectionManagerDataSourceObserverContext];
+    [managerCopy registerChangeObserver:v7 context:PXSelectionManagerDataSourceObserverContext];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __57__PXSectionedSelectionManager_initWithDataSourceManager___block_invoke;
     v11[3] = &unk_1E7BB5EC0;
     v12 = v7;
-    v13 = v5;
+    v13 = managerCopy;
     [(PXSectionedSelectionManager *)v12 performChanges:v11];
   }
 

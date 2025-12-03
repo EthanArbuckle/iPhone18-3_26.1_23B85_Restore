@@ -1,29 +1,29 @@
 @interface CCUISensorEntityHeaderView
 + (CGSize)iconSize;
-- (CCUISensorEntityHeaderView)initWithSensorEntity:(id)a3 maxSize:(CGSize)a4;
+- (CCUISensorEntityHeaderView)initWithSensorEntity:(id)entity maxSize:(CGSize)size;
 - (CGRect)cachedExpandedRect;
 - (CGSize)expectedSize;
-- (id)_titleLabelForSensorAttributionEntity:(id)a3 maxSize:(CGSize)a4;
-- (void)setBlurRadius:(double)a3;
+- (id)_titleLabelForSensorAttributionEntity:(id)entity maxSize:(CGSize)size;
+- (void)setBlurRadius:(double)radius;
 @end
 
 @implementation CCUISensorEntityHeaderView
 
-- (id)_titleLabelForSensorAttributionEntity:(id)a3 maxSize:(CGSize)a4
+- (id)_titleLabelForSensorAttributionEntity:(id)entity maxSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v20[3] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D756B8];
-  v7 = a3;
+  entityCopy = entity;
   v8 = objc_alloc_init(v6);
-  v9 = [v7 displayNameForCompactView];
+  displayNameForCompactView = [entityCopy displayNameForCompactView];
 
-  v10 = [MEMORY[0x277CF0D60] defaultFontProvider];
-  v11 = [v10 preferredFontForTextStyle:*MEMORY[0x277D76998] hiFontStyle:4];
+  defaultFontProvider = [MEMORY[0x277CF0D60] defaultFontProvider];
+  v11 = [defaultFontProvider preferredFontForTextStyle:*MEMORY[0x277D76998] hiFontStyle:4];
 
-  v12 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v13 = [v12 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v13 = [defaultParagraphStyle mutableCopy];
 
   [v13 setUsesDefaultHyphenation:1];
   v14 = *MEMORY[0x277D740A8];
@@ -32,11 +32,11 @@
   v20[0] = v13;
   v20[1] = v11;
   v19[2] = *MEMORY[0x277D740C0];
-  v15 = [MEMORY[0x277D75348] whiteColor];
-  v20[2] = v15;
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v20[2] = whiteColor;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
-  v17 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v9 attributes:v16];
+  v17 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:displayNameForCompactView attributes:v16];
   [v8 setNumberOfLines:0];
   [v8 setAttributedText:v17];
   [v8 sizeThatFits:{width, height}];
@@ -47,32 +47,32 @@
   return v8;
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  v5 = [(CCUISensorEntityHeaderView *)self layer];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+  layer = [(CCUISensorEntityHeaderView *)self layer];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
+  [layer setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 }
 
-- (CCUISensorEntityHeaderView)initWithSensorEntity:(id)a3 maxSize:(CGSize)a4
+- (CCUISensorEntityHeaderView)initWithSensorEntity:(id)entity maxSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v48[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  entityCopy = entity;
   v47.receiver = self;
   v47.super_class = CCUISensorEntityHeaderView;
   v8 = [(CCUISensorEntityHeaderView *)&v47 init];
   if (v8)
   {
-    v9 = [v7 bundleIdentifier];
+    bundleIdentifier = [entityCopy bundleIdentifier];
     [objc_opt_class() iconSize];
     v11 = v10;
     v12 = width - (v10 + 16.0);
-    if (v9)
+    if (bundleIdentifier)
     {
       v13 = +[CCUISensorEntityIconCache sharedInstance];
-      v14 = [v13 imageForEntity:v7];
+      v14 = [v13 imageForEntity:entityCopy];
     }
 
     else
@@ -86,32 +86,32 @@
 
     [(CCUISensorEntityHeaderView *)v8 addSubview:v8->_entityIconView];
     v17 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
-    v18 = [(CCUISensorEntityHeaderView *)v8 layer];
+    layer = [(CCUISensorEntityHeaderView *)v8 layer];
     v48[0] = v17;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:1];
-    [v18 setFilters:v19];
+    [layer setFilters:v19];
 
     [(SBFView *)v8 setAnimatedLayerProperties:&unk_28302E3D0];
     [(CCUISensorEntityHeaderView *)v8 setClipsToBounds:0];
-    v20 = [(CCUISensorEntityHeaderView *)v8 _titleLabelForSensorAttributionEntity:v7 maxSize:v12, height];
+    height = [(CCUISensorEntityHeaderView *)v8 _titleLabelForSensorAttributionEntity:entityCopy maxSize:v12, height];
     appNameLabel = v8->_appNameLabel;
-    v8->_appNameLabel = v20;
+    v8->_appNameLabel = height;
 
     [(CCUISensorEntityHeaderView *)v8 addSubview:v8->_appNameLabel];
-    v22 = [MEMORY[0x277D75128] sharedApplication];
-    v23 = [v22 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
     v24 = 0.0;
-    if (v23 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       [(UILabel *)v8->_appNameLabel bounds];
       v24 = v25 + 8.0;
     }
 
-    v26 = [MEMORY[0x277D75128] sharedApplication];
-    v27 = [v26 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection2 = [mEMORY[0x277D75128]2 userInterfaceLayoutDirection];
 
-    if (v27 == 1)
+    if (userInterfaceLayoutDirection2 == 1)
     {
       [(UILabel *)v8->_appNameLabel bounds];
       v29 = v28;
@@ -136,9 +136,9 @@
     v37 = v36;
     [(UILabel *)v8->_appNameLabel center];
     [(UIImageView *)v35 setCenter:v37];
-    v38 = [MEMORY[0x277D75128] sharedApplication];
-    v39 = [v38 userInterfaceLayoutDirection];
-    if (v39 == 1)
+    mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection3 = [mEMORY[0x277D75128]3 userInterfaceLayoutDirection];
+    if (userInterfaceLayoutDirection3 == 1)
     {
       v40 = v24;
     }
@@ -149,7 +149,7 @@
     }
 
     v41 = 0.0;
-    if (v39 == 1)
+    if (userInterfaceLayoutDirection3 == 1)
     {
       v42 = v11;
     }
@@ -159,7 +159,7 @@
       v42 = v29;
     }
 
-    if (v39 == 1)
+    if (userInterfaceLayoutDirection3 == 1)
     {
       v43 = v11;
     }

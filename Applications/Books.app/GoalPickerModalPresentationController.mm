@@ -1,17 +1,17 @@
 @interface GoalPickerModalPresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (_TtC5Books37GoalPickerModalPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (_TtC5Books37GoalPickerModalPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 @end
 
 @implementation GoalPickerModalPresentationController
 
-- (_TtC5Books37GoalPickerModalPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtC5Books37GoalPickerModalPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v12.receiver = self;
   v12.super_class = swift_getObjectType();
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GoalPickerModalPresentationController *)&v12 initWithPresentedViewController:v6 presentingViewController:v7];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  v8 = [(GoalPickerModalPresentationController *)&v12 initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
   sub_100640918();
   v9 = v8;
   isa = sub_1007A3134(0.0, 0.0, 0.0, 0.49818).super.isa;
@@ -22,7 +22,7 @@
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1006DECCC();
   v5 = v4;
   v7 = v6;

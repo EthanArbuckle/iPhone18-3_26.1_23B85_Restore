@@ -1,14 +1,14 @@
 @interface UGCPhotoThumbnailCheckmarkCollectionViewCell
-- (UGCPhotoThumbnailCheckmarkCollectionViewCell)initWithFrame:(CGRect)a3;
+- (UGCPhotoThumbnailCheckmarkCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_setupSubview;
 - (void)_updateCheckmarkImageView;
 - (void)_updateEnableStatus;
 - (void)_updateLoadingState;
 - (void)prepareForReuse;
-- (void)setChecked:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setIsLoading:(BOOL)a3;
-- (void)setViewModel:(id)a3;
+- (void)setChecked:(BOOL)checked;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setIsLoading:(BOOL)loading;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation UGCPhotoThumbnailCheckmarkCollectionViewCell
@@ -16,15 +16,15 @@
 - (void)_updateEnableStatus
 {
   enabled = self->_enabled;
-  v3 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v5 = v3;
+  photoImageView = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  v5 = photoImageView;
   v4 = 0.5;
   if (enabled)
   {
     v4 = 1.0;
   }
 
-  [v3 setAlpha:v4];
+  [photoImageView setAlpha:v4];
 }
 
 - (void)_updateCheckmarkImageView
@@ -52,9 +52,9 @@
 
   v10 = +[UIColor systemWhiteColor];
   v7 = v10;
-  v8 = [v10 CGColor];
-  v9 = [(UIImageView *)*p_checkmarkImageView layer];
-  [v9 setBorderColor:v8];
+  cGColor = [v10 CGColor];
+  layer = [(UIImageView *)*p_checkmarkImageView layer];
+  [layer setBorderColor:cGColor];
 }
 
 - (void)_updateLoadingState
@@ -68,29 +68,29 @@
   dispatch_after(v3, &_dispatch_main_q, block);
 }
 
-- (void)setIsLoading:(BOOL)a3
+- (void)setIsLoading:(BOOL)loading
 {
-  if (self->_isLoading != a3)
+  if (self->_isLoading != loading)
   {
-    self->_isLoading = a3;
+    self->_isLoading = loading;
     [(UGCPhotoThumbnailCheckmarkCollectionViewCell *)self _updateLoadingState];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(UGCPhotoThumbnailCheckmarkCollectionViewCell *)self _updateEnableStatus];
   }
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  if (self->_checked != a3)
+  if (self->_checked != checked)
   {
-    self->_checked = a3;
+    self->_checked = checked;
     [(UGCPhotoThumbnailCheckmarkCollectionViewCell *)self _updateCheckmarkImageView];
   }
 }
@@ -127,21 +127,21 @@
   v9 = +[UIScreen mainScreen];
   [v9 nativeScale];
   v11 = 1.5 / v10;
-  v12 = [(UIImageView *)self->_checkmarkImageView layer];
-  [v12 setBorderWidth:v11];
+  layer = [(UIImageView *)self->_checkmarkImageView layer];
+  [layer setBorderWidth:v11];
 
   v13 = +[UIColor systemWhiteColor];
-  v14 = [v13 CGColor];
-  v15 = [(UIImageView *)self->_checkmarkImageView layer];
-  [v15 setBorderColor:v14];
+  cGColor = [v13 CGColor];
+  layer2 = [(UIImageView *)self->_checkmarkImageView layer];
+  [layer2 setBorderColor:cGColor];
 
   [(UIImageView *)self->_checkmarkImageView setContentMode:4];
   v16 = [UIImageSymbolConfiguration configurationWithPointSize:24.0];
   [(UIImageView *)self->_checkmarkImageView setPreferredSymbolConfiguration:v16];
 
-  v17 = [[MapsPieProgressView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [[MapsPieProgressView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   progressView = self->_progressView;
-  self->_progressView = v17;
+  self->_progressView = height;
 
   [(MapsPieProgressView *)self->_progressView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MapsPieProgressView *)self->_progressView setProgress:0.0];
@@ -158,93 +158,93 @@
   [(UIView *)self->_backgroundViewForProgressView setBackgroundColor:v22];
 
   [(UIView *)self->_backgroundViewForProgressView setHidden:1];
-  v23 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v24 = [v23 layer];
-  [v24 setCornerRadius:15.0];
+  photoImageView = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  layer3 = [photoImageView layer];
+  [layer3 setCornerRadius:15.0];
 
-  v25 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  [v25 addSubview:self->_backgroundViewForProgressView];
+  photoImageView2 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  [photoImageView2 addSubview:self->_backgroundViewForProgressView];
 
-  v26 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  [v26 addSubview:self->_progressView];
+  photoImageView3 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  [photoImageView3 addSubview:self->_progressView];
 
-  v27 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  [v27 addSubview:self->_checkmarkImageView];
+  photoImageView4 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  [photoImageView4 addSubview:self->_checkmarkImageView];
 
-  v70 = [(UIImageView *)self->_checkmarkImageView widthAnchor];
-  v69 = [v70 constraintEqualToConstant:24.0];
+  widthAnchor = [(UIImageView *)self->_checkmarkImageView widthAnchor];
+  v69 = [widthAnchor constraintEqualToConstant:24.0];
   v71[0] = v69;
-  v68 = [(UIImageView *)self->_checkmarkImageView heightAnchor];
-  v67 = [(UIImageView *)self->_checkmarkImageView widthAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67];
+  heightAnchor = [(UIImageView *)self->_checkmarkImageView heightAnchor];
+  widthAnchor2 = [(UIImageView *)self->_checkmarkImageView widthAnchor];
+  v66 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v71[1] = v66;
-  v64 = [(UIImageView *)self->_checkmarkImageView trailingAnchor];
-  v65 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v63 = [v65 trailingAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63 constant:-8.0];
+  trailingAnchor = [(UIImageView *)self->_checkmarkImageView trailingAnchor];
+  photoImageView5 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  trailingAnchor2 = [photoImageView5 trailingAnchor];
+  v62 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
   v71[2] = v62;
-  v60 = [(UIImageView *)self->_checkmarkImageView bottomAnchor];
-  v61 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v59 = [v61 bottomAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59 constant:-8.0];
+  bottomAnchor = [(UIImageView *)self->_checkmarkImageView bottomAnchor];
+  photoImageView6 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  bottomAnchor2 = [photoImageView6 bottomAnchor];
+  v58 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
   v71[3] = v58;
-  v57 = [(MapsPieProgressView *)self->_progressView widthAnchor];
-  v56 = [v57 constraintEqualToConstant:24.0];
+  widthAnchor3 = [(MapsPieProgressView *)self->_progressView widthAnchor];
+  v56 = [widthAnchor3 constraintEqualToConstant:24.0];
   v71[4] = v56;
-  v55 = [(MapsPieProgressView *)self->_progressView heightAnchor];
-  v54 = [(MapsPieProgressView *)self->_progressView widthAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  heightAnchor2 = [(MapsPieProgressView *)self->_progressView heightAnchor];
+  widthAnchor4 = [(MapsPieProgressView *)self->_progressView widthAnchor];
+  v53 = [heightAnchor2 constraintEqualToAnchor:widthAnchor4];
   v71[5] = v53;
-  v51 = [(MapsPieProgressView *)self->_progressView centerXAnchor];
-  v52 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v50 = [v52 centerXAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  centerXAnchor = [(MapsPieProgressView *)self->_progressView centerXAnchor];
+  photoImageView7 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  centerXAnchor2 = [photoImageView7 centerXAnchor];
+  v49 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v71[6] = v49;
-  v47 = [(MapsPieProgressView *)self->_progressView centerYAnchor];
-  v48 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v46 = [v48 centerYAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  centerYAnchor = [(MapsPieProgressView *)self->_progressView centerYAnchor];
+  photoImageView8 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  centerYAnchor2 = [photoImageView8 centerYAnchor];
+  v45 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v71[7] = v45;
-  v43 = [(UIView *)self->_backgroundViewForProgressView leadingAnchor];
-  v44 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v42 = [v44 leadingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  leadingAnchor = [(UIView *)self->_backgroundViewForProgressView leadingAnchor];
+  photoImageView9 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  leadingAnchor2 = [photoImageView9 leadingAnchor];
+  v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v71[8] = v41;
-  v39 = [(UIView *)self->_backgroundViewForProgressView trailingAnchor];
-  v40 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v38 = [v40 trailingAnchor];
-  v28 = [v39 constraintEqualToAnchor:v38];
+  trailingAnchor3 = [(UIView *)self->_backgroundViewForProgressView trailingAnchor];
+  photoImageView10 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  trailingAnchor4 = [photoImageView10 trailingAnchor];
+  v28 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v71[9] = v28;
-  v29 = [(UIView *)self->_backgroundViewForProgressView topAnchor];
-  v30 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v31 = [v30 topAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
+  topAnchor = [(UIView *)self->_backgroundViewForProgressView topAnchor];
+  photoImageView11 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  topAnchor2 = [photoImageView11 topAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v71[10] = v32;
-  v33 = [(UIView *)self->_backgroundViewForProgressView bottomAnchor];
-  v34 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v35 = [v34 bottomAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  bottomAnchor3 = [(UIView *)self->_backgroundViewForProgressView bottomAnchor];
+  photoImageView12 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  bottomAnchor4 = [photoImageView12 bottomAnchor];
+  v36 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v71[11] = v36;
   v37 = [NSArray arrayWithObjects:v71 count:12];
   [NSLayoutConstraint activateConstraints:v37];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  objc_storeStrong(&self->_viewModel, a3);
-  v5 = a3;
-  -[UGCPhotoThumbnailCheckmarkCollectionViewCell setChecked:](self, "setChecked:", [v5 checked]);
-  -[UGCPhotoThumbnailCheckmarkCollectionViewCell setEnabled:](self, "setEnabled:", [v5 enabled]);
-  v6 = [v5 isLoading];
+  objc_storeStrong(&self->_viewModel, model);
+  modelCopy = model;
+  -[UGCPhotoThumbnailCheckmarkCollectionViewCell setChecked:](self, "setChecked:", [modelCopy checked]);
+  -[UGCPhotoThumbnailCheckmarkCollectionViewCell setEnabled:](self, "setEnabled:", [modelCopy enabled]);
+  isLoading = [modelCopy isLoading];
 
-  [(UGCPhotoThumbnailCheckmarkCollectionViewCell *)self setIsLoading:v6];
+  [(UGCPhotoThumbnailCheckmarkCollectionViewCell *)self setIsLoading:isLoading];
 }
 
-- (UGCPhotoThumbnailCheckmarkCollectionViewCell)initWithFrame:(CGRect)a3
+- (UGCPhotoThumbnailCheckmarkCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UGCPhotoThumbnailCheckmarkCollectionViewCell;
-  v3 = [(UGCPhotoThumbnailCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UGCPhotoThumbnailCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

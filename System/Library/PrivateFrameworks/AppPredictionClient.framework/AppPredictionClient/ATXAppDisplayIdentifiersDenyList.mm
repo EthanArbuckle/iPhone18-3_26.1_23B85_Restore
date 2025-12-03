@@ -144,7 +144,7 @@ LABEL_31:
 - (void)bundleIdentifiersNotAllowed
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = *a1;
+  v3 = *self;
   v4 = 138412546;
   v5 = v3;
   v6 = 2112;

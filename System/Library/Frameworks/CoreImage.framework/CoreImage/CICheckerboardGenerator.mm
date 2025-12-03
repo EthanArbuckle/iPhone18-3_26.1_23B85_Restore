@@ -90,7 +90,7 @@
   v14 = 0.25 / v9 + v13;
   [(CIVector *)self->inputCenter Y];
   v16 = [CIVector vectorWithX:v14 Y:v12 + v15];
-  v17 = [(CICheckerboardGenerator *)self _kernel];
+  _kernel = [(CICheckerboardGenerator *)self _kernel];
   v18 = *MEMORY[0x1E695F040];
   v19 = *(MEMORY[0x1E695F040] + 8);
   v20 = *(MEMORY[0x1E695F040] + 16);
@@ -100,7 +100,7 @@
   v24[1] = inputColor0;
   v24[2] = v7;
   v24[3] = v11;
-  return [v17 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v24, 4), v18, v19, v20, v21}];
+  return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v24, 4), v18, v19, v20, v21}];
 }
 
 @end

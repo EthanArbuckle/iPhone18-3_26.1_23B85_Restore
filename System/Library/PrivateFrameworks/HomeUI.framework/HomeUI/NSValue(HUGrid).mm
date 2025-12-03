@@ -11,7 +11,7 @@
 {
   v6[0] = a3;
   v6[1] = a4;
-  v4 = [a1 valueWithBytes:v6 objCType:"{HUGridPosition=qq}"];
+  v4 = [self valueWithBytes:v6 objCType:"{HUGridPosition=qq}"];
 
   return v4;
 }
@@ -20,7 +20,7 @@
 {
   v6[0] = a3;
   v6[1] = a4;
-  v4 = [a1 valueWithBytes:v6 objCType:"{HUGridSize=qq}"];
+  v4 = [self valueWithBytes:v6 objCType:"{HUGridSize=qq}"];
 
   return v4;
 }
@@ -29,7 +29,7 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getValue:v2];
+  [self getValue:v2];
   return v2[0];
 }
 
@@ -37,7 +37,7 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getValue:v2];
+  [self getValue:v2];
   return v2[0];
 }
 

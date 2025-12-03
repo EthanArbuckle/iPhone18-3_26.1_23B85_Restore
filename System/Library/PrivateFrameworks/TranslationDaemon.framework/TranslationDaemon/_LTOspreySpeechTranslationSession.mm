@@ -1,35 +1,35 @@
 @interface _LTOspreySpeechTranslationSession
 - (BOOL)_receivedEmptyFinalASRResults;
 - (NSString)description;
-- (_LTOspreySpeechTranslationSession)initWithService:(id)a3 context:(id)a4 delegate:(id)a5 selfLoggingManager:(id)a6;
-- (_LTOspreySpeechTranslationSession)initWithService:(id)a3 context:(id)a4 text:(id)a5 delegate:(id)a6 selfLoggingManager:(id)a7;
+- (_LTOspreySpeechTranslationSession)initWithService:(id)service context:(id)context delegate:(id)delegate selfLoggingManager:(id)manager;
+- (_LTOspreySpeechTranslationSession)initWithService:(id)service context:(id)context text:(id)text delegate:(id)delegate selfLoggingManager:(id)manager;
 - (_LTSpeechTranslationDelegate)delegate;
-- (id)_bestSourceTextForResponse:(id)a3;
+- (id)_bestSourceTextForResponse:(id)response;
 - (id)_primaryLanguageRecognized;
-- (id)_translationForLocale:(id)a3;
-- (void)_handleAudioLimitExceededResponse:(id)a3;
-- (void)_handleFinalBlazarResponse:(id)a3;
-- (void)_handleFinalRecognitionResponse:(id)a3;
-- (void)_handlePartialRecognitionResponse:(id)a3;
-- (void)_handleServerEndpointFeatures:(id)a3;
-- (void)_handleTTSResponse:(id)a3;
-- (void)_handleTranslationResponse:(id)a3;
+- (id)_translationForLocale:(id)locale;
+- (void)_handleAudioLimitExceededResponse:(id)response;
+- (void)_handleFinalBlazarResponse:(id)response;
+- (void)_handleFinalRecognitionResponse:(id)response;
+- (void)_handlePartialRecognitionResponse:(id)response;
+- (void)_handleServerEndpointFeatures:(id)features;
+- (void)_handleTTSResponse:(id)response;
+- (void)_handleTranslationResponse:(id)response;
 - (void)cancel;
 - (void)cancelServerTimeout;
 - (void)confirmDataIfNeeded;
-- (void)didCompressPackets:(id)a3 totalPacketCount:(unint64_t)a4;
+- (void)didCompressPackets:(id)packets totalPacketCount:(unint64_t)count;
 - (void)endpoint;
 - (void)initCommon;
 - (void)sendAnalyticsEvent;
-- (void)sendAudioData:(id)a3;
+- (void)sendAudioData:(id)data;
 - (void)sendEndAudio;
 - (void)serverTimeoutFired;
-- (void)setLanguagesRecognized:(id)a3;
+- (void)setLanguagesRecognized:(id)recognized;
 - (void)startServerTimeoutTimer;
-- (void)streamDidReceiveSpeechTranslationStreamingResponse:(id)a3;
-- (void)streamFailVerifySpeechTranslationStreamingResponse:(id)a3;
-- (void)translationDidFinishWithError:(id)a3;
-- (void)updateServerTimeout:(double)a3;
+- (void)streamDidReceiveSpeechTranslationStreamingResponse:(id)response;
+- (void)streamFailVerifySpeechTranslationStreamingResponse:(id)response;
+- (void)translationDidFinishWithError:(id)error;
+- (void)updateServerTimeout:(double)timeout;
 @end
 
 @implementation _LTOspreySpeechTranslationSession
@@ -165,57 +165,57 @@
   return v28;
 }
 
-- (_LTOspreySpeechTranslationSession)initWithService:(id)a3 context:(id)a4 delegate:(id)a5 selfLoggingManager:(id)a6
+- (_LTOspreySpeechTranslationSession)initWithService:(id)service context:(id)context delegate:(id)delegate selfLoggingManager:(id)manager
 {
   v54 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  serviceCopy = service;
+  contextCopy = context;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v47.receiver = self;
   v47.super_class = _LTOspreySpeechTranslationSession;
   v15 = [(_LTOspreySpeechTranslationSession *)&v47 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_delegate, v13);
-    objc_storeStrong(&v16->_context, a4);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    objc_storeStrong(&v16->_context, context);
     v17 = [[_LTSpeechCompressor alloc] initWithDelegate:v16];
     speechCompressor = v16->_speechCompressor;
     v16->_speechCompressor = v17;
 
     [(_LTSpeechCompressor *)v16->_speechCompressor startCompressionNarrowband:0];
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     finalASRResults = v16->_finalASRResults;
-    v16->_finalASRResults = v19;
+    v16->_finalASRResults = dictionary;
 
-    v21 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     mtResults = v16->_mtResults;
-    v16->_mtResults = v21;
+    v16->_mtResults = array;
 
-    v23 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     confirmedTranslations = v16->_confirmedTranslations;
-    v16->_confirmedTranslations = v23;
+    v16->_confirmedTranslations = array2;
 
     v16->_audioPacketCount = 0;
     v16->_didSendTranslationDidFinish = 0;
     *&v16->_sentAudio = 0;
     v16->_didReceiveFinalBlazarResponse = 0;
-    objc_storeStrong(&v16->_selfLoggingManager, a6);
+    objc_storeStrong(&v16->_selfLoggingManager, manager);
     v25 = _LTOSLogTranslationEngine();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       v26 = v25;
-      v27 = [v12 uniqueID];
-      v28 = [v12 sessionID];
-      v29 = _LTPreferencesSessionIDOverride(v28);
-      v30 = [v12 dataSharingOptInStatus];
+      uniqueID = [contextCopy uniqueID];
+      sessionID = [contextCopy sessionID];
+      v29 = _LTPreferencesSessionIDOverride(sessionID);
+      dataSharingOptInStatus = [contextCopy dataSharingOptInStatus];
       *buf = 138543874;
-      v49 = v27;
+      v49 = uniqueID;
       v50 = 2114;
       v51 = v29;
       v52 = 2048;
-      v53 = v30;
+      v53 = dataSharingOptInStatus;
       _os_log_impl(&dword_232E53000, v26, OS_LOG_TYPE_INFO, "Starting speech translation with request ID: %{public}@ session ID: %{public}@, opt in status: %zd", buf, 0x20u);
     }
 
@@ -224,7 +224,7 @@
     v45[1] = 3221225472;
     v45[2] = __89___LTOspreySpeechTranslationSession_initWithService_context_delegate_selfLoggingManager___block_invoke;
     v45[3] = &unk_2789B78F8;
-    v31 = v12;
+    v31 = contextCopy;
     v46 = v31;
     v39 = MEMORY[0x277D85DD0];
     v40 = 3221225472;
@@ -234,7 +234,7 @@
     v43 = v32;
     v44[1] = a2;
     objc_copyWeak(v44, buf);
-    v33 = [v11 performSpeechTranslationWithDelegate:v32 requestBuilder:v45 completion:&v39];
+    v33 = [serviceCopy performSpeechTranslationWithDelegate:v32 requestBuilder:v45 completion:&v39];
     v34 = v32[1];
     v32[1] = v33;
 
@@ -251,20 +251,20 @@
   return v16;
 }
 
-- (_LTOspreySpeechTranslationSession)initWithService:(id)a3 context:(id)a4 text:(id)a5 delegate:(id)a6 selfLoggingManager:(id)a7
+- (_LTOspreySpeechTranslationSession)initWithService:(id)service context:(id)context text:(id)text delegate:(id)delegate selfLoggingManager:(id)manager
 {
   v51 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  serviceCopy = service;
+  contextCopy = context;
+  textCopy = text;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v44.receiver = self;
   v44.super_class = _LTOspreySpeechTranslationSession;
   v17 = [(_LTOspreySpeechTranslationSession *)&v44 init];
   if (v17)
   {
-    if (!v14)
+    if (!textCopy)
     {
       v18 = _LTOSLogTranslationEngine();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -273,35 +273,35 @@
       }
     }
 
-    objc_storeWeak(&v17->_delegate, v15);
-    objc_storeStrong(&v17->_context, a4);
-    v19 = [MEMORY[0x277CBEB18] array];
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    objc_storeStrong(&v17->_context, context);
+    array = [MEMORY[0x277CBEB18] array];
     mtResults = v17->_mtResults;
-    v17->_mtResults = v19;
+    v17->_mtResults = array;
 
-    v21 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     confirmedTranslations = v17->_confirmedTranslations;
-    v17->_confirmedTranslations = v21;
+    v17->_confirmedTranslations = array2;
 
-    v23 = [v14 copy];
+    v23 = [textCopy copy];
     cachedUserTypedText = v17->_cachedUserTypedText;
     v17->_cachedUserTypedText = v23;
 
-    objc_storeStrong(&v17->_selfLoggingManager, a7);
+    objc_storeStrong(&v17->_selfLoggingManager, manager);
     v25 = _LTOSLogTranslationEngine();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       v26 = v25;
-      v27 = [v13 uniqueID];
-      v28 = [v13 sessionID];
-      v29 = _LTPreferencesSessionIDOverride(v28);
-      v30 = [v13 dataSharingOptInStatus];
+      uniqueID = [contextCopy uniqueID];
+      sessionID = [contextCopy sessionID];
+      v29 = _LTPreferencesSessionIDOverride(sessionID);
+      dataSharingOptInStatus = [contextCopy dataSharingOptInStatus];
       *buf = 138543874;
-      v46 = v27;
+      v46 = uniqueID;
       v47 = 2114;
       v48 = v29;
       v49 = 2048;
-      v50 = v30;
+      v50 = dataSharingOptInStatus;
       _os_log_impl(&dword_232E53000, v26, OS_LOG_TYPE_INFO, "Starting text to speech translation with request ID: %{public}@, session ID: %{public}@, opt in status: %zd", buf, 0x20u);
     }
 
@@ -310,7 +310,7 @@
     v42[1] = 3221225472;
     v42[2] = __94___LTOspreySpeechTranslationSession_initWithService_context_text_delegate_selfLoggingManager___block_invoke;
     v42[3] = &unk_2789B78F8;
-    v31 = v13;
+    v31 = contextCopy;
     v43 = v31;
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
@@ -319,11 +319,11 @@
     v32 = v17;
     v40 = v32;
     objc_copyWeak(&v41, buf);
-    v33 = [v12 performSpeechTranslationWithDelegate:v32 requestBuilder:v42 completion:v39];
+    v33 = [serviceCopy performSpeechTranslationWithDelegate:v32 requestBuilder:v42 completion:v39];
     v34 = v32[1];
     v32[1] = v33;
 
-    v35 = [v31 _ospreyTextToSpeechTranslationRequestWithText:v14];
+    v35 = [v31 _ospreyTextToSpeechTranslationRequestWithText:textCopy];
     [v32[1] sendSpeechTranslationStreamingRequest:v35];
     [v32 initCommon];
     v36 = v32;
@@ -347,9 +347,9 @@
 
   [(_LTOspreySpeechTranslationSession *)self startServerTimeoutTimer];
   selfLoggingManager = self->_selfLoggingManager;
-  v7 = [(_LTTranslationContext *)self->_context logIdentifier];
-  v6 = [(_LTTranslationContext *)self->_context uniqueID];
-  [(_LTDSELFLoggingManager *)selfLoggingManager sendSpeechTranslationFrameworkRequestSentWithInvocationId:v7 qssSessionId:v6 requestRoute:1 payloadSizeInBytes:0];
+  logIdentifier = [(_LTTranslationContext *)self->_context logIdentifier];
+  uniqueID = [(_LTTranslationContext *)self->_context uniqueID];
+  [(_LTDSELFLoggingManager *)selfLoggingManager sendSpeechTranslationFrameworkRequestSentWithInvocationId:logIdentifier qssSessionId:uniqueID requestRoute:1 payloadSizeInBytes:0];
 }
 
 - (void)startServerTimeoutTimer
@@ -367,7 +367,7 @@
   }
 }
 
-- (void)updateServerTimeout:(double)a3
+- (void)updateServerTimeout:(double)timeout
 {
   if (self->_serverTimer)
   {
@@ -382,11 +382,11 @@
     v6 = _LTOSLogTranslationEngine();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [(_LTOspreySpeechTranslationSession *)v6 updateServerTimeout:a3];
+      [(_LTOspreySpeechTranslationSession *)v6 updateServerTimeout:timeout];
     }
 
     v7 = self->_serverTimer;
-    v8 = dispatch_time(0, (a3 * 1000000000.0));
+    v8 = dispatch_time(0, (timeout * 1000000000.0));
     dispatch_source_set_timer(v7, v8, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -414,15 +414,15 @@
   }
 
   self->_didTimeout = 1;
-  v4 = [MEMORY[0x277CCA9B8] lt_translationTimeout];
-  [(_LTOspreySpeechTranslationSession *)self translationDidFinishWithError:v4];
+  lt_translationTimeout = [MEMORY[0x277CCA9B8] lt_translationTimeout];
+  [(_LTOspreySpeechTranslationSession *)self translationDidFinishWithError:lt_translationTimeout];
 
   [(_LTOspreySpeechTranslationSession *)self cancel];
 }
 
-- (void)sendAudioData:(id)a3
+- (void)sendAudioData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self->_didReceiveFinalRecognitionResponse)
   {
     v5 = _LTOSLogTranslationEngine();
@@ -462,7 +462,7 @@
         _os_log_impl(&dword_232E53000, v9, OS_LOG_TYPE_INFO, "sendAudioData: Start compressing audio", v10, 2u);
       }
 
-      [(_LTSpeechCompressor *)self->_speechCompressor addAudioSampleData:v4];
+      [(_LTSpeechCompressor *)self->_speechCompressor addAudioSampleData:dataCopy];
       self->_sentAudio = 1;
     }
   }
@@ -519,42 +519,42 @@
   objc_storeWeak(&self->_delegate, 0);
 }
 
-- (void)setLanguagesRecognized:(id)a3
+- (void)setLanguagesRecognized:(id)recognized
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_lidResult, a3);
-  v6 = [v5 isFinal];
+  recognizedCopy = recognized;
+  objc_storeStrong(&self->_lidResult, recognized);
+  isFinal = [recognizedCopy isFinal];
   v7 = _LTOSLogTranslationEngine();
   v8 = v7;
-  if (v6)
+  if (isFinal)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v9 = v8;
-      v10 = [(_LTOspreySpeechTranslationSession *)self _primaryLanguageRecognized];
-      v11 = [v10 _ltLocaleIdentifier];
+      _primaryLanguageRecognized = [(_LTOspreySpeechTranslationSession *)self _primaryLanguageRecognized];
+      _ltLocaleIdentifier = [_primaryLanguageRecognized _ltLocaleIdentifier];
       *buf = 138543362;
-      v36 = v11;
+      v36 = _ltLocaleIdentifier;
       _os_log_impl(&dword_232E53000, v9, OS_LOG_TYPE_INFO, "LID result received. Primary language recognized: %{public}@", buf, 0xCu);
     }
 
-    v29 = self;
+    selfCopy = self;
     [(_LTOspreySpeechTranslationSession *)self confirmDataIfNeeded];
     v12 = objc_alloc_init(FTMutableLanguageDetected);
-    v13 = [v5 dominantLanguage];
-    v14 = [v13 _ltLocaleIdentifier];
-    [(FTMutableLanguageDetected *)v12 setDetected_locale:v14];
+    dominantLanguage = [recognizedCopy dominantLanguage];
+    _ltLocaleIdentifier2 = [dominantLanguage _ltLocaleIdentifier];
+    [(FTMutableLanguageDetected *)v12 setDetected_locale:_ltLocaleIdentifier2];
 
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v16 = [v5 confidences];
-    v17 = [v16 allKeys];
+    confidences = [recognizedCopy confidences];
+    allKeys = [confidences allKeys];
 
-    v18 = [v17 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    v18 = [allKeys countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v18)
     {
       v19 = v18;
@@ -565,33 +565,33 @@
         {
           if (*v31 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allKeys);
           }
 
           v22 = *(*(&v30 + 1) + 8 * i);
           v23 = objc_alloc_init(FTMutableLanguageDetectionPrediction);
-          v24 = [v22 _ltLocaleIdentifier];
-          [(FTMutableLanguageDetectionPrediction *)v23 setLocale:v24];
+          _ltLocaleIdentifier3 = [v22 _ltLocaleIdentifier];
+          [(FTMutableLanguageDetectionPrediction *)v23 setLocale:_ltLocaleIdentifier3];
 
-          v25 = [v5 confidences];
-          v26 = [v25 objectForKeyedSubscript:v22];
+          confidences2 = [recognizedCopy confidences];
+          v26 = [confidences2 objectForKeyedSubscript:v22];
           [v26 floatValue];
           [(FTMutableLanguageDetectionPrediction *)v23 setConfidence:?];
 
-          [v15 addObject:v23];
+          [array addObject:v23];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v19 = [allKeys countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v19);
     }
 
-    [(FTMutableLanguageDetected *)v12 setPredictions:v15];
+    [(FTMutableLanguageDetected *)v12 setPredictions:array];
     v27 = objc_alloc_init(FTMutableSpeechTranslationStreamingRequest);
     [(FTMutableSpeechTranslationStreamingRequest *)v27 setContent_type:2];
     [(FTMutableSpeechTranslationStreamingRequest *)v27 setContentAsFTLanguageDetected:v12];
-    [(FTSpeechTranslationStreamingContext *)v29->_streamContext sendSpeechTranslationStreamingRequest:v27];
+    [(FTSpeechTranslationStreamingContext *)selfCopy->_streamContext sendSpeechTranslationStreamingRequest:v27];
   }
 
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -609,34 +609,34 @@
     lidResult = self->_lidResult;
     if (lidResult)
     {
-      v4 = [(_LTLanguageDetectionResult *)lidResult dominantLanguage];
+      dominantLanguage = [(_LTLanguageDetectionResult *)lidResult dominantLanguage];
     }
 
     else
     {
-      v4 = 0;
+      dominantLanguage = 0;
     }
   }
 
   else
   {
-    v5 = [(_LTTranslationContext *)self->_context localePair];
-    v4 = [v5 sourceLocale];
+    localePair = [(_LTTranslationContext *)self->_context localePair];
+    dominantLanguage = [localePair sourceLocale];
   }
 
-  return v4;
+  return dominantLanguage;
 }
 
-- (id)_translationForLocale:(id)a3
+- (id)_translationForLocale:(id)locale
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  localeCopy = locale;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NSMutableArray *)self->_mtResults reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_mtResults reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -646,12 +646,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 locale];
-        v11 = [v10 _ltEqual:v4];
+        locale = [v9 locale];
+        v11 = [locale _ltEqual:localeCopy];
 
         if (v11)
         {
@@ -660,7 +660,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -677,11 +677,11 @@ LABEL_11:
   return v6;
 }
 
-- (void)translationDidFinishWithError:(id)a3
+- (void)translationDidFinishWithError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_error, a3);
+  errorCopy = error;
+  objc_storeStrong(&self->_error, error);
   [(_LTOspreySpeechTranslationSession *)self sendEndAudio];
   [(_LTOspreySpeechTranslationSession *)self cancelServerTimeout];
   if (!self->_didSendTranslationDidFinish)
@@ -693,14 +693,14 @@ LABEL_11:
     {
       self->_didSendTranslationDidFinish = 1;
       v8 = objc_loadWeakRetained(&self->_delegate);
-      [v8 translationDidFinishWithError:v5];
+      [v8 translationDidFinishWithError:errorCopy];
     }
 
     else
     {
       v9 = _LTOSLogTranslationEngine();
       v10 = v9;
-      if (v5)
+      if (errorCopy)
       {
         if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
         {
@@ -711,7 +711,7 @@ LABEL_11:
       else if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v12 = 134217984;
-        v13 = self;
+        selfCopy = self;
         _os_log_impl(&dword_232E53000, v10, OS_LOG_TYPE_INFO, "Warning: Speech session %p finished successfully but there's no delegate to inform", &v12, 0xCu);
       }
     }
@@ -723,27 +723,27 @@ LABEL_11:
 - (void)confirmDataIfNeeded
 {
   v7 = a2;
-  v8 = [a3 locale];
-  v9 = [v8 _ltLocaleIdentifier];
-  *a1 = 138543362;
-  *a4 = v9;
-  _os_log_debug_impl(&dword_232E53000, v7, OS_LOG_TYPE_DEBUG, "Result locale: %{public}@", a1, 0xCu);
+  locale = [a3 locale];
+  _ltLocaleIdentifier = [locale _ltLocaleIdentifier];
+  *self = 138543362;
+  *a4 = _ltLocaleIdentifier;
+  _os_log_debug_impl(&dword_232E53000, v7, OS_LOG_TYPE_DEBUG, "Result locale: %{public}@", self, 0xCu);
 }
 
-- (void)didCompressPackets:(id)a3 totalPacketCount:(unint64_t)a4
+- (void)didCompressPackets:(id)packets totalPacketCount:(unint64_t)count
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  packetsCopy = packets;
   v6 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
     v12 = 134217984;
-    v13 = [v5 count];
+    v13 = [packetsCopy count];
     _os_log_impl(&dword_232E53000, v7, OS_LOG_TYPE_INFO, "Sending %zu packets from compressor", &v12, 0xCu);
   }
 
-  v8 = [v5 _ltCompactMap:&__block_literal_global_25];
+  v8 = [packetsCopy _ltCompactMap:&__block_literal_global_25];
   v9 = objc_alloc_init(FTMutableSpeechTranslationAudioPacket);
   [(FTMutableSpeechTranslationAudioPacket *)v9 setAudio_frames:v8];
   v10 = objc_alloc_init(FTMutableSpeechTranslationStreamingRequest);
@@ -755,7 +755,7 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAudioLimitExceededResponse:(id)a3
+- (void)_handleAudioLimitExceededResponse:(id)response
 {
   self->_didReceiveAudioLimitExceededResponse = 1;
   v4 = _LTOSLogTranslationEngine();
@@ -764,31 +764,31 @@ LABEL_11:
     [_LTOspreySpeechTranslationSession _handleAudioLimitExceededResponse:];
   }
 
-  v5 = [MEMORY[0x277CCA9B8] lt_speechLimitExceeded];
-  [(_LTOspreySpeechTranslationSession *)self translationDidFinishWithError:v5];
+  lt_speechLimitExceeded = [MEMORY[0x277CCA9B8] lt_speechLimitExceeded];
+  [(_LTOspreySpeechTranslationSession *)self translationDidFinishWithError:lt_speechLimitExceeded];
 }
 
-- (void)_handlePartialRecognitionResponse:(id)a3
+- (void)_handlePartialRecognitionResponse:(id)response
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   self->_didReceivePartialRecognitionResponse = 1;
-  v5 = [v4 source_locale];
+  source_locale = [responseCopy source_locale];
 
-  if (v5)
+  if (source_locale)
   {
     [(_LTOspreySpeechTranslationSession *)self updateServerTimeout:self->_onlineTimeout];
     v6 = _LTOSLogTranslationEngine();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = v6;
-      v8 = [v4 source_locale];
+      source_locale2 = [responseCopy source_locale];
       v14 = 138543362;
-      v15 = v8;
+      v15 = source_locale2;
       _os_log_impl(&dword_232E53000, v7, OS_LOG_TYPE_INFO, "Always sending ASR partial %{public}@", &v14, 0xCu);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CE1B90]) initWithOspreyPartialRecognitionResponse:v4 isSanitized:{-[_LTTranslationContext censorSpeech](self->_context, "censorSpeech")}];
+    v9 = [objc_alloc(MEMORY[0x277CE1B90]) initWithOspreyPartialRecognitionResponse:responseCopy isSanitized:{-[_LTTranslationContext censorSpeech](self->_context, "censorSpeech")}];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
 
@@ -802,9 +802,9 @@ LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleFinalRecognitionResponse:(id)a3
+- (void)_handleFinalRecognitionResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -815,23 +815,23 @@ LABEL_11:
   v6 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(_LTOspreySpeechTranslationSession *)v6 _handleFinalRecognitionResponse:v4];
+    [(_LTOspreySpeechTranslationSession *)v6 _handleFinalRecognitionResponse:responseCopy];
   }
 
   self->_didReceiveFinalRecognitionResponse = 1;
   v7 = objc_alloc(MEMORY[0x277CBEAF8]);
-  v8 = [v4 source_locale];
-  v9 = [v7 initWithLocaleIdentifier:v8];
+  source_locale = [responseCopy source_locale];
+  v9 = [v7 initWithLocaleIdentifier:source_locale];
 
-  v10 = _LTPreferencesServerASRConfidenceThreshold(v9);
+  asrConfidenceThreshold = _LTPreferencesServerASRConfidenceThreshold(v9);
   if (([(_LTTranslationContext *)self->_context asrConfidenceThreshold]& 0x8000000000000000) == 0)
   {
-    v10 = [(_LTTranslationContext *)self->_context asrConfidenceThreshold];
+    asrConfidenceThreshold = [(_LTTranslationContext *)self->_context asrConfidenceThreshold];
   }
 
-  v11 = [objc_alloc(MEMORY[0x277CE1B90]) initWithOspreyResponse:v4 confidenceThreshold:v10 isSanitized:{-[_LTTranslationContext censorSpeech](self->_context, "censorSpeech")}];
-  v12 = [v11 transcriptions];
-  v13 = [v12 _ltCompactMap:&__block_literal_global_72_0];
+  v11 = [objc_alloc(MEMORY[0x277CE1B90]) initWithOspreyResponse:responseCopy confidenceThreshold:asrConfidenceThreshold isSanitized:{-[_LTTranslationContext censorSpeech](self->_context, "censorSpeech")}];
+  transcriptions = [v11 transcriptions];
+  v13 = [transcriptions _ltCompactMap:&__block_literal_global_72_0];
 
   v14 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -849,22 +849,22 @@ LABEL_11:
   }
 
   finalASRResults = self->_finalASRResults;
-  v19 = [v11 locale];
-  [(NSMutableDictionary *)finalASRResults setObject:v11 forKeyedSubscript:v19];
+  locale = [v11 locale];
+  [(NSMutableDictionary *)finalASRResults setObject:v11 forKeyedSubscript:locale];
 
   [(_LTOspreySpeechTranslationSession *)self confirmDataIfNeeded];
 }
 
-- (void)_handleServerEndpointFeatures:(id)a3
+- (void)_handleServerEndpointFeatures:(id)features
 {
-  v4 = a3;
-  v5 = [v4 source_locale];
-  if (v5 && (v6 = v5, [v4 server_endpoint_features], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  featuresCopy = features;
+  source_locale = [featuresCopy source_locale];
+  if (source_locale && (v6 = source_locale, [featuresCopy server_endpoint_features], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     [(_LTOspreySpeechTranslationSession *)self updateServerTimeout:self->_onlineTimeout];
     v8 = objc_alloc(MEMORY[0x277CE1B70]);
-    v9 = [v4 server_endpoint_features];
-    v10 = [v8 initWithResponse:v9];
+    server_endpoint_features = [featuresCopy server_endpoint_features];
+    v10 = [v8 initWithResponse:server_endpoint_features];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -873,8 +873,8 @@ LABEL_11:
     {
       v13 = objc_loadWeakRetained(&self->_delegate);
       v14 = objc_alloc(MEMORY[0x277CBEAF8]);
-      v15 = [v4 source_locale];
-      v16 = [v14 initWithLocaleIdentifier:v15];
+      source_locale2 = [featuresCopy source_locale];
+      v16 = [v14 initWithLocaleIdentifier:source_locale2];
       [v13 serverEndpointerFeatures:v10 locale:v16];
     }
   }
@@ -889,37 +889,37 @@ LABEL_11:
   }
 }
 
-- (id)_bestSourceTextForResponse:(id)a3
+- (id)_bestSourceTextForResponse:(id)response
 {
   cachedUserTypedText = self->_cachedUserTypedText;
   if (cachedUserTypedText)
   {
-    v4 = cachedUserTypedText;
+    formattedString = cachedUserTypedText;
   }
 
   else
   {
-    v6 = [a3 translation_locale_pair];
-    v7 = [v6 source_locale];
+    translation_locale_pair = [response translation_locale_pair];
+    source_locale = [translation_locale_pair source_locale];
 
-    v8 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v7];
+    v8 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:source_locale];
     v9 = [(NSMutableDictionary *)self->_finalASRResults objectForKeyedSubscript:v8];
-    v10 = [v9 bestTranscription];
-    v4 = [v10 formattedString];
+    bestTranscription = [v9 bestTranscription];
+    formattedString = [bestTranscription formattedString];
   }
 
-  return v4;
+  return formattedString;
 }
 
-- (void)_handleTranslationResponse:(id)a3
+- (void)_handleTranslationResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(_LTOspreySpeechTranslationSession *)self _bestSourceTextForResponse:v4];
-  v6 = [objc_alloc(MEMORY[0x277CE1C18]) initWithOspreySpeechTranslationMTResponse:v4 sourceText:v5 censorSpeech:{-[_LTTranslationContext censorSpeech](self->_context, "censorSpeech")}];
+  responseCopy = response;
+  v5 = [(_LTOspreySpeechTranslationSession *)self _bestSourceTextForResponse:responseCopy];
+  v6 = [objc_alloc(MEMORY[0x277CE1C18]) initWithOspreySpeechTranslationMTResponse:responseCopy sourceText:v5 censorSpeech:{-[_LTTranslationContext censorSpeech](self->_context, "censorSpeech")}];
   [(_LTOspreySpeechTranslationSession *)self updateServerTimeout:self->_onlineTimeout];
-  v7 = [v4 is_final];
+  is_final = [responseCopy is_final];
 
-  if (v7)
+  if (is_final)
   {
     self->_didReceiveTranslationResponse = 1;
   }
@@ -934,60 +934,60 @@ LABEL_11:
   [(_LTOspreySpeechTranslationSession *)self confirmDataIfNeeded];
 }
 
-- (void)_handleTTSResponse:(id)a3
+- (void)_handleTTSResponse:(id)response
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   self->_didReceiveTTSResponse = 1;
   v5 = _LTOSLogTTS();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [v4 target_locale];
-    v8 = [v4 text_to_speech_response];
+    target_locale = [responseCopy target_locale];
+    text_to_speech_response = [responseCopy text_to_speech_response];
     *buf = 138543618;
-    *&buf[4] = v7;
+    *&buf[4] = target_locale;
     *&buf[12] = 2048;
-    *&buf[14] = [v8 audio_type];
+    *&buf[14] = [text_to_speech_response audio_type];
     _os_log_impl(&dword_232E53000, v6, OS_LOG_TYPE_INFO, "Received TTS response: %{public}@ (%zd)", buf, 0x16u);
   }
 
   [(_LTOspreySpeechTranslationSession *)self updateServerTimeout:self->_onlineTimeout];
   v9 = MEMORY[0x277CBEAF8];
-  v10 = [v4 target_locale];
-  v11 = [v9 localeWithLocaleIdentifier:v10];
+  target_locale2 = [responseCopy target_locale];
+  v11 = [v9 localeWithLocaleIdentifier:target_locale2];
 
   v35 = v11;
   v34 = [(_LTOspreySpeechTranslationSession *)self _translationForLocale:v11];
-  v12 = [v34 translations];
-  v13 = [v12 firstObject];
+  translations = [v34 translations];
+  firstObject = [translations firstObject];
 
-  v14 = [v13 sanitizedFormattedString];
-  v15 = v14;
-  if (v14)
+  sanitizedFormattedString = [firstObject sanitizedFormattedString];
+  v15 = sanitizedFormattedString;
+  if (sanitizedFormattedString)
   {
-    v16 = v14;
+    formattedString = sanitizedFormattedString;
   }
 
   else
   {
-    v16 = [v13 formattedString];
+    formattedString = [firstObject formattedString];
   }
 
-  v17 = v16;
+  v17 = formattedString;
 
   v18 = MEMORY[0x277CE1C50];
-  v19 = [v4 text_to_speech_response];
-  v20 = [v19 word_timing_info];
-  v21 = [v18 wordTimingInfoFromArray:v20 text:v17];
+  text_to_speech_response2 = [responseCopy text_to_speech_response];
+  word_timing_info = [text_to_speech_response2 word_timing_info];
+  v21 = [v18 wordTimingInfoFromArray:word_timing_info text:v17];
 
   v22 = [_LTAudioData alloc];
-  v23 = [v4 text_to_speech_response];
-  v24 = [v23 decoder_description];
-  v25 = v24;
-  if (v24)
+  text_to_speech_response3 = [responseCopy text_to_speech_response];
+  decoder_description = [text_to_speech_response3 decoder_description];
+  v25 = decoder_description;
+  if (decoder_description)
   {
-    [v24 audioStreamBasicDescription];
+    [decoder_description audioStreamBasicDescription];
   }
 
   else
@@ -996,9 +996,9 @@ LABEL_11:
     memset(buf, 0, sizeof(buf));
   }
 
-  v26 = [v4 text_to_speech_response];
-  v27 = [v26 audio];
-  v28 = [(_LTAudioData *)v22 initWithASBD:buf rawData:v27 wordTimingInfo:v21];
+  text_to_speech_response4 = [responseCopy text_to_speech_response];
+  audio = [text_to_speech_response4 audio];
+  v28 = [(_LTAudioData *)v22 initWithASBD:buf rawData:audio wordTimingInfo:v21];
 
   if (!v28)
   {
@@ -1010,8 +1010,8 @@ LABEL_11:
   }
 
   v30 = MEMORY[0x277CCACA8];
-  v31 = [v4 target_locale];
-  v32 = [v30 stringWithFormat:@"%@-%@", v31, v17];
+  target_locale3 = [responseCopy target_locale];
+  v32 = [v30 stringWithFormat:@"%@-%@", target_locale3, v17];
 
   [(_LTTextToSpeechCache *)self->_ttsCache cacheAudioData:v28 forKey:v32];
   v33 = *MEMORY[0x277D85DE8];
@@ -1026,8 +1026,8 @@ LABEL_11:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v3 = [(NSMutableDictionary *)self->_finalASRResults allValues];
-    v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allValues = [(NSMutableDictionary *)self->_finalASRResults allValues];
+    v4 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1038,17 +1038,17 @@ LABEL_11:
         {
           if (*v18 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           v8 = *(*(&v17 + 1) + 8 * i);
-          v9 = [v8 bestTranscription];
-          if (v9)
+          bestTranscription = [v8 bestTranscription];
+          if (bestTranscription)
           {
-            v10 = v9;
-            v11 = [v8 bestTranscription];
-            v12 = [v11 formattedString];
-            v13 = [v12 isEqualToString:&stru_284834138];
+            v10 = bestTranscription;
+            bestTranscription2 = [v8 bestTranscription];
+            formattedString = [bestTranscription2 formattedString];
+            v13 = [formattedString isEqualToString:&stru_284834138];
 
             if (!v13)
             {
@@ -1058,7 +1058,7 @@ LABEL_11:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v5)
         {
           continue;
@@ -1081,14 +1081,14 @@ LABEL_14:
   return v14;
 }
 
-- (void)_handleFinalBlazarResponse:(id)a3
+- (void)_handleFinalBlazarResponse:(id)response
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   [(_LTOspreySpeechTranslationSession *)self cancelServerTimeout];
   self->_didReceiveFinalBlazarResponse = 1;
   [(FTSpeechTranslationStreamingContext *)self->_streamContext closeStream];
-  if (_LTRemoteStatusIsSuccess([v4 return_code]))
+  if (_LTRemoteStatusIsSuccess([responseCopy return_code]))
   {
     if (![(_LTOspreySpeechTranslationSession *)self _receivedEmptyFinalASRResults])
     {
@@ -1102,14 +1102,14 @@ LABEL_14:
       [_LTOspreySpeechTranslationSession _handleFinalBlazarResponse:];
     }
 
-    v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    return_str = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = MEMORY[0x277CCA9B8];
     v8 = *MEMORY[0x277CE1C58];
     v17[0] = *MEMORY[0x277CCA450];
-    v9 = [v6 localizedStringForKey:@"EMPTY_RECOGNITION_ERROR_DESCRIPTION" value:&stru_284834138 table:0];
+    v9 = [return_str localizedStringForKey:@"EMPTY_RECOGNITION_ERROR_DESCRIPTION" value:&stru_284834138 table:0];
     v18[0] = v9;
     v17[1] = *MEMORY[0x277CCA470];
-    v10 = [v6 localizedStringForKey:@"SPEECH_NOT_RECOGNIZED_ERROR_DESCRIPTION" value:&stru_284834138 table:0];
+    v10 = [return_str localizedStringForKey:@"SPEECH_NOT_RECOGNIZED_ERROR_DESCRIPTION" value:&stru_284834138 table:0];
     v18[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
     v12 = [v7 errorWithDomain:v8 code:10 userInfo:v11];
@@ -1120,12 +1120,12 @@ LABEL_14:
     v13 = _LTOSLogTranslationEngine();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(_LTOspreySpeechTranslationSession *)v13 _handleFinalBlazarResponse:v4];
+      [(_LTOspreySpeechTranslationSession *)v13 _handleFinalBlazarResponse:responseCopy];
     }
 
-    v14 = [v4 return_code];
-    v6 = [v4 return_str];
-    v12 = _LTErrorFromRemoteFailure(v14, v6);
+    return_code = [responseCopy return_code];
+    return_str = [responseCopy return_str];
+    v12 = _LTErrorFromRemoteFailure(return_code, return_str);
   }
 
 LABEL_11:
@@ -1142,10 +1142,10 @@ LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)streamFailVerifySpeechTranslationStreamingResponse:(id)a3
+- (void)streamFailVerifySpeechTranslationStreamingResponse:(id)response
 {
-  v4 = a3;
-  [(_LTOspreySpeechTranslationSession *)self translationDidFinishWithError:v4];
+  responseCopy = response;
+  [(_LTOspreySpeechTranslationSession *)self translationDidFinishWithError:responseCopy];
   v5 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -1153,9 +1153,9 @@ LABEL_11:
   }
 }
 
-- (void)streamDidReceiveSpeechTranslationStreamingResponse:(id)a3
+- (void)streamDidReceiveSpeechTranslationStreamingResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1163,66 +1163,66 @@ LABEL_11:
     _os_log_impl(&dword_232E53000, v5, OS_LOG_TYPE_INFO, "Received server message", v8, 2u);
   }
 
-  v6 = [v4 content_type];
-  if (v6 > 3)
+  content_type = [responseCopy content_type];
+  if (content_type > 3)
   {
-    if (v6 <= 5)
+    if (content_type <= 5)
     {
-      if (v6 == 4)
+      if (content_type == 4)
       {
-        v7 = [v4 contentAsFTSpeechTranslationMtResponse];
-        [(_LTOspreySpeechTranslationSession *)self _handleTranslationResponse:v7];
+        contentAsFTSpeechTranslationMtResponse = [responseCopy contentAsFTSpeechTranslationMtResponse];
+        [(_LTOspreySpeechTranslationSession *)self _handleTranslationResponse:contentAsFTSpeechTranslationMtResponse];
       }
 
       else
       {
-        v7 = [v4 contentAsFTSpeechTranslationTextToSpeechResponse];
-        [(_LTOspreySpeechTranslationSession *)self _handleTTSResponse:v7];
+        contentAsFTSpeechTranslationMtResponse = [responseCopy contentAsFTSpeechTranslationTextToSpeechResponse];
+        [(_LTOspreySpeechTranslationSession *)self _handleTTSResponse:contentAsFTSpeechTranslationMtResponse];
       }
 
       goto LABEL_20;
     }
 
-    if (v6 == 6)
+    if (content_type == 6)
     {
-      v7 = [v4 contentAsFTFinalBlazarResponse];
-      [(_LTOspreySpeechTranslationSession *)self _handleFinalBlazarResponse:v7];
+      contentAsFTSpeechTranslationMtResponse = [responseCopy contentAsFTFinalBlazarResponse];
+      [(_LTOspreySpeechTranslationSession *)self _handleFinalBlazarResponse:contentAsFTSpeechTranslationMtResponse];
       goto LABEL_20;
     }
 
-    if (v6 == 12)
+    if (content_type == 12)
     {
-      v7 = [v4 contentAsFTSpeechTranslationServerEndpointFeatures];
-      [(_LTOspreySpeechTranslationSession *)self _handleServerEndpointFeatures:v7];
+      contentAsFTSpeechTranslationMtResponse = [responseCopy contentAsFTSpeechTranslationServerEndpointFeatures];
+      [(_LTOspreySpeechTranslationSession *)self _handleServerEndpointFeatures:contentAsFTSpeechTranslationMtResponse];
       goto LABEL_20;
     }
   }
 
   else
   {
-    if (v6 > 1)
+    if (content_type > 1)
     {
-      if (v6 == 2)
+      if (content_type == 2)
       {
-        v7 = [v4 contentAsFTSpeechTranslationFinalRecognitionResponse];
-        [(_LTOspreySpeechTranslationSession *)self _handleFinalRecognitionResponse:v7];
+        contentAsFTSpeechTranslationMtResponse = [responseCopy contentAsFTSpeechTranslationFinalRecognitionResponse];
+        [(_LTOspreySpeechTranslationSession *)self _handleFinalRecognitionResponse:contentAsFTSpeechTranslationMtResponse];
       }
 
       else
       {
-        v7 = [v4 contentAsFTAudioLimitExceeded];
-        [(_LTOspreySpeechTranslationSession *)self _handleAudioLimitExceededResponse:v7];
+        contentAsFTSpeechTranslationMtResponse = [responseCopy contentAsFTAudioLimitExceeded];
+        [(_LTOspreySpeechTranslationSession *)self _handleAudioLimitExceededResponse:contentAsFTSpeechTranslationMtResponse];
       }
 
       goto LABEL_20;
     }
 
-    if (v6)
+    if (content_type)
     {
-      if (v6 == 1)
+      if (content_type == 1)
       {
-        v7 = [v4 contentAsFTSpeechTranslationPartialRecognitionResponse];
-        [(_LTOspreySpeechTranslationSession *)self _handlePartialRecognitionResponse:v7];
+        contentAsFTSpeechTranslationMtResponse = [responseCopy contentAsFTSpeechTranslationPartialRecognitionResponse];
+        [(_LTOspreySpeechTranslationSession *)self _handlePartialRecognitionResponse:contentAsFTSpeechTranslationMtResponse];
 LABEL_20:
       }
     }

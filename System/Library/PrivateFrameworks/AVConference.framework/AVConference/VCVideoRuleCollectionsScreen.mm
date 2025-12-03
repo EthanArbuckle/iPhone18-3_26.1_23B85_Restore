@@ -1,14 +1,14 @@
 @interface VCVideoRuleCollectionsScreen
 + (id)sharedInstance;
-+ (void)addRulesForU1ToCollection:(id)a3;
-+ (void)updateScreenRuleCollections:(id)a3 size:(CGSize)a4;
++ (void)addRulesForU1ToCollection:(id)collection;
++ (void)updateScreenRuleCollections:(id)collections size:(CGSize)size;
 - (BOOL)setupH264Rules;
 - (BOOL)setupMacDecodingOnlyRules;
-- (VCVideoRuleCollectionsScreen)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsScreen)initWithHardwareSettings:(id)settings;
 - (id)initForMacDecodingOnly;
 - (void)initForMacDecodingOnly;
 - (void)initSupportedPayloads;
-- (void)selectPreferredRule:(id)a3 screenSize:(CGSize)a4;
+- (void)selectPreferredRule:(id)rule screenSize:(CGSize)size;
 - (void)setupH264Rules;
 @end
 
@@ -27,7 +27,7 @@
   return sharedInstance__videoRulesCollection_0;
 }
 
-- (VCVideoRuleCollectionsScreen)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsScreen)initWithHardwareSettings:(id)settings
 {
   v16 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -36,7 +36,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_hardwareSettings = a3;
+    v4->_hardwareSettings = settings;
     [(VCVideoRuleCollectionsScreen *)v4 initSupportedPayloads];
     if (([(VCVideoRuleCollections *)v5 isPayloadSupported:126]|| [(VCVideoRuleCollections *)v5 isPayloadSupported:123]) && ![(VCVideoRuleCollectionsScreen *)v5 setupH264Rules])
     {
@@ -87,10 +87,10 @@
   return v3;
 }
 
-+ (void)updateScreenRuleCollections:(id)a3 size:(CGSize)a4
++ (void)updateScreenRuleCollections:(id)collections size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v22 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
@@ -113,29 +113,29 @@
         objc_enumerationMutation(&unk_1F579E0E8);
       }
 
-      v11 = [*(*(&v18 + 1) + 8 * i) intValue];
+      intValue = [*(*(&v18 + 1) + 8 * i) intValue];
       v12 = [VCVideoRule alloc];
       *&v13 = +[VCHardwareSettings maxFrameRateSupportedScreenShare];
-      v14 = [(VCVideoRule *)v12 initWithFrameWidth:width frameHeight:height frameRate:v11 payload:v13];
+      v14 = [(VCVideoRule *)v12 initWithFrameWidth:width frameHeight:height frameRate:intValue payload:v13];
       if (!v14)
       {
-        [VCVideoRuleCollectionsScreen updateScreenRuleCollections:a3 size:?];
+        [VCVideoRuleCollectionsScreen updateScreenRuleCollections:collections size:?];
         return;
       }
 
       v15 = v14;
       v16 = [MEMORY[0x1E695DF70] arrayWithObject:v14];
-      if (v11 != 100)
+      if (intValue != 100)
       {
-        [a3 addVideoRules:v16 transportType:1 payload:v11 encodingType:1];
+        [collections addVideoRules:v16 transportType:1 payload:intValue encodingType:1];
 LABEL_13:
-        [a3 addVideoRules:v16 transportType:1 payload:v11 encodingType:2];
+        [collections addVideoRules:v16 transportType:1 payload:intValue encodingType:2];
         goto LABEL_14;
       }
 
       if (+[VCHardwareSettings supportsHEVCEncoding])
       {
-        [a3 addVideoRules:v16 transportType:1 payload:100 encodingType:1];
+        [collections addVideoRules:v16 transportType:1 payload:100 encodingType:1];
       }
 
       if (+[VCHardwareSettings supportsHEVCDecoding])
@@ -156,7 +156,7 @@ LABEL_14:
   }
 }
 
-+ (void)addRulesForU1ToCollection:(id)a3
++ (void)addRulesForU1ToCollection:(id)collection
 {
   [VideoUtil computeResolutionForMainDisplayWithMaxScreenPixelCount:5603328];
   if (v6)
@@ -177,30 +177,30 @@ LABEL_14:
   else
   {
 
-    [a1 updateScreenRuleCollections:a3 size:?];
+    [self updateScreenRuleCollections:collection size:?];
   }
 }
 
 - (void)initSupportedPayloads
 {
-  v3 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
-  if (v3 <= 8 && ((1 << v3) & 0x14E) != 0)
+  deviceClass = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
+  if (deviceClass <= 8 && ((1 << deviceClass) & 0x14E) != 0)
   {
 
     [(VCVideoRuleCollections *)self addSupportedPayload:123];
   }
 }
 
-- (void)selectPreferredRule:(id)a3 screenSize:(CGSize)a4
+- (void)selectPreferredRule:(id)rule screenSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v23 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v19 objects:v18 count:16];
+  v7 = [rule countByEnumeratingWithState:&v19 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -213,16 +213,16 @@ LABEL_14:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(rule);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
         if (width == [v13 iWidth])
         {
-          v14 = [v13 iHeight];
-          if (height == v14)
+          iHeight = [v13 iHeight];
+          if (height == iHeight)
           {
-            LODWORD(v14) = 1.0;
+            LODWORD(iHeight) = 1.0;
             v17 = v13;
             goto LABEL_22;
           }
@@ -243,7 +243,7 @@ LABEL_14:
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v19 objects:v18 count:16];
+      v8 = [rule countByEnumeratingWithState:&v19 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -254,10 +254,10 @@ LABEL_14:
 
     if (v9)
     {
-      LODWORD(v14) = 1.0;
+      LODWORD(iHeight) = 1.0;
       v17 = v9;
 LABEL_22:
-      [v17 setFPref:v14];
+      [v17 setFPref:iHeight];
     }
   }
 }
@@ -286,8 +286,8 @@ LABEL_22:
     goto LABEL_116;
   }
 
-  v3 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenWidth];
-  if (!v3)
+  screenWidth = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenWidth];
+  if (!screenWidth)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -301,9 +301,9 @@ LABEL_22:
     goto LABEL_116;
   }
 
-  v4 = v3;
-  v5 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenHeight];
-  if (!v5)
+  v4 = screenWidth;
+  screenHeight = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenHeight];
+  if (!screenHeight)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -317,9 +317,9 @@ LABEL_22:
     goto LABEL_116;
   }
 
-  v6 = v5;
-  v7 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings videoEncoderType];
-  if (v7 <= 0)
+  v6 = screenHeight;
+  videoEncoderType = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings videoEncoderType];
+  if (videoEncoderType <= 0)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -338,9 +338,9 @@ LABEL_116:
     goto LABEL_117;
   }
 
-  v8 = v7;
-  v9 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
-  if ((v9 - 1) < 2)
+  v8 = videoEncoderType;
+  deviceClass = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
+  if ((deviceClass - 1) < 2)
   {
     if (v8 == 1)
     {
@@ -509,7 +509,7 @@ LABEL_116:
     goto LABEL_91;
   }
 
-  if (v9 == 3 || v9 == 8)
+  if (deviceClass == 3 || deviceClass == 8)
   {
     if (v8 == 1)
     {

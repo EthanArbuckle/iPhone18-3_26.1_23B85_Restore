@@ -1,34 +1,34 @@
 @interface SMSessionModifyConfigRemoteControlMessage
-- (SMSessionModifyConfigRemoteControlMessage)initWithCoder:(id)a3;
-- (SMSessionModifyConfigRemoteControlMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 sourceDeviceType:(int64_t)a6 sourceDeviceID:(id)a7 updatedSessionConfiguration:(id)a8;
-- (SMSessionModifyConfigRemoteControlMessage)initWithDictionary:(id)a3;
-- (SMSessionModifyConfigRemoteControlMessage)initWithSourceDeviceType:(int64_t)a3 sourceDeviceID:(id)a4 updatedSessionConfiguration:(id)a5;
+- (SMSessionModifyConfigRemoteControlMessage)initWithCoder:(id)coder;
+- (SMSessionModifyConfigRemoteControlMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD sourceDeviceType:(int64_t)type sourceDeviceID:(id)deviceID updatedSessionConfiguration:(id)configuration;
+- (SMSessionModifyConfigRemoteControlMessage)initWithDictionary:(id)dictionary;
+- (SMSessionModifyConfigRemoteControlMessage)initWithSourceDeviceType:(int64_t)type sourceDeviceID:(id)d updatedSessionConfiguration:(id)configuration;
 - (id)outputToDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMSessionModifyConfigRemoteControlMessage
 
-- (SMSessionModifyConfigRemoteControlMessage)initWithSourceDeviceType:(int64_t)a3 sourceDeviceID:(id)a4 updatedSessionConfiguration:(id)a5
+- (SMSessionModifyConfigRemoteControlMessage)initWithSourceDeviceType:(int64_t)type sourceDeviceID:(id)d updatedSessionConfiguration:(id)configuration
 {
-  v8 = a5;
-  v9 = a4;
+  configurationCopy = configuration;
+  dCopy = d;
   v10 = objc_opt_new();
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  v12 = [v8 sessionID];
-  v13 = [(SMSessionModifyConfigRemoteControlMessage *)self initWithDate:v10 messageID:v11 sessionID:v12 sourceDeviceType:a3 sourceDeviceID:v9 updatedSessionConfiguration:v8];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  sessionID = [configurationCopy sessionID];
+  v13 = [(SMSessionModifyConfigRemoteControlMessage *)self initWithDate:v10 messageID:uUID sessionID:sessionID sourceDeviceType:type sourceDeviceID:dCopy updatedSessionConfiguration:configurationCopy];
 
   return v13;
 }
 
-- (SMSessionModifyConfigRemoteControlMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 sourceDeviceType:(int64_t)a6 sourceDeviceID:(id)a7 updatedSessionConfiguration:(id)a8
+- (SMSessionModifyConfigRemoteControlMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD sourceDeviceType:(int64_t)type sourceDeviceID:(id)deviceID updatedSessionConfiguration:(id)configuration
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  if (!v14)
+  dateCopy = date;
+  dCopy = d;
+  iDCopy = iD;
+  deviceIDCopy = deviceID;
+  configurationCopy = configuration;
+  if (!dateCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -43,7 +43,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v15)
+  if (!dCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -56,7 +56,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v16)
+  if (!iDCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -68,34 +68,34 @@ LABEL_13:
 
 LABEL_14:
 
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
   v25.receiver = self;
   v25.super_class = SMSessionModifyConfigRemoteControlMessage;
-  v19 = [(SMMessage *)&v25 initWithDate:v14 messageID:v15 sessionID:v16];
+  v19 = [(SMMessage *)&v25 initWithDate:dateCopy messageID:dCopy sessionID:iDCopy];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_updatedSessionConfiguration, a8);
-    objc_storeStrong(&v20->_sourceDeviceID, a7);
-    v20->_sourceDeviceType = a6;
+    objc_storeStrong(&v19->_updatedSessionConfiguration, configuration);
+    objc_storeStrong(&v20->_sourceDeviceID, deviceID);
+    v20->_sourceDeviceType = type;
   }
 
   self = v20;
-  v21 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v21;
+  return selfCopy;
 }
 
-- (SMSessionModifyConfigRemoteControlMessage)initWithDictionary:(id)a3
+- (SMSessionModifyConfigRemoteControlMessage)initWithDictionary:(id)dictionary
 {
   v67 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -107,10 +107,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v7 = [v5 valueForKey:@"messageType"];
-  v8 = [v7 intValue];
+  v7 = [dictionaryCopy valueForKey:@"messageType"];
+  intValue = [v7 intValue];
 
-  if ([objc_opt_class() messageType] != v8)
+  if ([objc_opt_class() messageType] != intValue)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -126,9 +126,9 @@ LABEL_15:
     v61 = 2112;
     v62 = v31;
     v63 = 1024;
-    v64 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v65 = 1024;
-    v66 = v8;
+    v66 = intValue;
     v32 = "#RemoteControl%@,%@,extracted non-matching message type,expected,%d,got,%d";
     v33 = v12;
     v34 = 34;
@@ -139,9 +139,9 @@ LABEL_31:
   }
 
   v9 = [v6 valueForKey:@"interfaceVersion"];
-  v10 = [v9 intValue];
+  intValue2 = [v9 intValue];
 
-  if (v10 == 1)
+  if (intValue2 == 1)
   {
     v11 = [v6 valueForKey:@"sendDate"];
     v12 = v11;
@@ -160,7 +160,7 @@ LABEL_31:
         _os_log_error_impl(&dword_26455D000, v14, OS_LOG_TYPE_ERROR, "#RemoteControl,%@,%@,missing date", buf, 0x16u);
       }
 
-      v28 = 0;
+      selfCopy = 0;
       goto LABEL_42;
     }
 
@@ -186,7 +186,7 @@ LABEL_31:
         _os_log_error_impl(&dword_26455D000, v20, OS_LOG_TYPE_ERROR, "#RemoteControl,%@,%@,missing messageID", buf, 0x16u);
       }
 
-      v28 = 0;
+      selfCopy = 0;
       goto LABEL_41;
     }
 
@@ -209,7 +209,7 @@ LABEL_31:
         _os_log_error_impl(&dword_26455D000, v22, OS_LOG_TYPE_ERROR, "#RemoteControl,%@,%@,missing sessionID", buf, 0x16u);
       }
 
-      v28 = 0;
+      selfCopy = 0;
       goto LABEL_40;
     }
 
@@ -233,11 +233,11 @@ LABEL_31:
         v27 = v52;
       }
 
-      v28 = 0;
+      selfCopy = 0;
       goto LABEL_39;
     }
 
-    v23 = [v21 intValue];
+    intValue3 = [v21 intValue];
     v58 = [v6 valueForKey:@"sourceDeviceId"];
     if (v58)
     {
@@ -245,10 +245,10 @@ LABEL_31:
       if (v24)
       {
         p_super = &v24->super;
-        v26 = v23;
+        v26 = intValue3;
         v27 = v58;
         self = [(SMSessionModifyConfigRemoteControlMessage *)self initWithDate:v14 messageID:v17 sessionID:v20 sourceDeviceType:v26 sourceDeviceID:v58 updatedSessionConfiguration:v24];
-        v28 = self;
+        selfCopy = self;
 LABEL_38:
 
 LABEL_39:
@@ -292,7 +292,7 @@ LABEL_42:
       }
     }
 
-    v28 = 0;
+    selfCopy = 0;
     v27 = v58;
     goto LABEL_38;
   }
@@ -308,7 +308,7 @@ LABEL_42:
     v61 = 2112;
     v62 = v31;
     v63 = 1024;
-    v64 = v10;
+    messageType = intValue2;
     v32 = "#RemoteControl%@,%@,unrecognized interface version,%d";
     v33 = v12;
     v34 = 28;
@@ -316,36 +316,36 @@ LABEL_42:
   }
 
 LABEL_16:
-  v28 = 0;
+  selfCopy = 0;
 LABEL_17:
 
   v35 = *MEMORY[0x277D85DE8];
-  return v28;
+  return selfCopy;
 }
 
 - (id)outputToDictionary
 {
   v9.receiver = self;
   v9.super_class = SMSessionModifyConfigRemoteControlMessage;
-  v3 = [(SMMessage *)&v9 outputToDictionary];
+  outputToDictionary = [(SMMessage *)&v9 outputToDictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SMSessionModifyConfigRemoteControlMessage sourceDeviceType](self, "sourceDeviceType")}];
-  [v3 setObject:v4 forKey:@"idsDeviceType"];
+  [outputToDictionary setObject:v4 forKey:@"idsDeviceType"];
 
-  v5 = [(SMSessionModifyConfigRemoteControlMessage *)self sourceDeviceID];
-  [v3 setObject:v5 forKey:@"sourceDeviceId"];
+  sourceDeviceID = [(SMSessionModifyConfigRemoteControlMessage *)self sourceDeviceID];
+  [outputToDictionary setObject:sourceDeviceID forKey:@"sourceDeviceId"];
 
-  v6 = [(SMSessionModifyConfigRemoteControlMessage *)self updatedSessionConfiguration];
-  v7 = [v6 outputToDictionary];
-  [v3 addEntriesFromDictionary:v7];
+  updatedSessionConfiguration = [(SMSessionModifyConfigRemoteControlMessage *)self updatedSessionConfiguration];
+  outputToDictionary2 = [updatedSessionConfiguration outputToDictionary];
+  [outputToDictionary addEntriesFromDictionary:outputToDictionary2];
 
-  return v3;
+  return outputToDictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  coderCopy = coder;
+  if (!coderCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -360,23 +360,23 @@ LABEL_17:
 
   v9.receiver = self;
   v9.super_class = SMSessionModifyConfigRemoteControlMessage;
-  [(SMMessage *)&v9 encodeWithCoder:v4];
-  v6 = [(SMSessionModifyConfigRemoteControlMessage *)self updatedSessionConfiguration];
-  [v4 encodeObject:v6 forKey:@"updatedSessionConfiguration"];
+  [(SMMessage *)&v9 encodeWithCoder:coderCopy];
+  updatedSessionConfiguration = [(SMSessionModifyConfigRemoteControlMessage *)self updatedSessionConfiguration];
+  [coderCopy encodeObject:updatedSessionConfiguration forKey:@"updatedSessionConfiguration"];
 
-  [v4 encodeInteger:-[SMSessionModifyConfigRemoteControlMessage sourceDeviceType](self forKey:{"sourceDeviceType"), @"idsDeviceType"}];
-  v7 = [(SMSessionModifyConfigRemoteControlMessage *)self sourceDeviceID];
-  [v4 encodeObject:v7 forKey:@"sourceDeviceId"];
+  [coderCopy encodeInteger:-[SMSessionModifyConfigRemoteControlMessage sourceDeviceType](self forKey:{"sourceDeviceType"), @"idsDeviceType"}];
+  sourceDeviceID = [(SMSessionModifyConfigRemoteControlMessage *)self sourceDeviceID];
+  [coderCopy encodeObject:sourceDeviceID forKey:@"sourceDeviceId"];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (SMSessionModifyConfigRemoteControlMessage)initWithCoder:(id)a3
+- (SMSessionModifyConfigRemoteControlMessage)initWithCoder:(id)coder
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  coderCopy = coder;
+  v6 = coderCopy;
+  if (!coderCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -388,7 +388,7 @@ LABEL_17:
     goto LABEL_15;
   }
 
-  v7 = [v5 decodeIntegerForKey:@"messageType"];
+  v7 = [coderCopy decodeIntegerForKey:@"messageType"];
   if ([objc_opt_class() messageType] != v7)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -405,7 +405,7 @@ LABEL_17:
     v45 = 2112;
     v46 = v19;
     v47 = 1024;
-    v48 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v49 = 1024;
     v50 = v7;
     v20 = "#RemoteControl,%@,%@,extracted non-matching message type,expected,%d,got,%d";
@@ -436,7 +436,7 @@ LABEL_29:
         _os_log_error_impl(&dword_26455D000, v10, OS_LOG_TYPE_ERROR, "#RemoteControl,%@,%@,missing messageID", &v43, 0x16u);
       }
 
-      v16 = 0;
+      selfCopy = 0;
       goto LABEL_37;
     }
 
@@ -456,7 +456,7 @@ LABEL_29:
         _os_log_error_impl(&dword_26455D000, v11, OS_LOG_TYPE_ERROR, "#RemoteControl,%@,%@,missing date", &v43, 0x16u);
       }
 
-      v16 = 0;
+      selfCopy = 0;
       goto LABEL_36;
     }
 
@@ -476,7 +476,7 @@ LABEL_29:
         _os_log_error_impl(&dword_26455D000, v12, OS_LOG_TYPE_ERROR, "#RemoteControl,%@,%@,missing sessionID", &v43, 0x16u);
       }
 
-      v16 = 0;
+      selfCopy = 0;
       goto LABEL_35;
     }
 
@@ -489,7 +489,7 @@ LABEL_29:
       {
         v15 = v14;
         self = [(SMSessionModifyConfigRemoteControlMessage *)self initWithDate:v10 messageID:v9 sessionID:v11 sourceDeviceType:v13 sourceDeviceID:v12 updatedSessionConfiguration:v14];
-        v16 = self;
+        selfCopy = self;
 LABEL_34:
 
 LABEL_35:
@@ -531,7 +531,7 @@ LABEL_37:
       }
     }
 
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_34;
   }
 
@@ -547,7 +547,7 @@ LABEL_37:
     v45 = 2112;
     v46 = v19;
     v47 = 1024;
-    v48 = v23;
+    messageType = v23;
     v20 = "#RemoteControl,%@,%@,unrecognized interface version,%d";
     v21 = v9;
     v22 = 28;
@@ -555,11 +555,11 @@ LABEL_37:
   }
 
 LABEL_15:
-  v16 = 0;
+  selfCopy = 0;
 LABEL_16:
 
   v24 = *MEMORY[0x277D85DE8];
-  return v16;
+  return selfCopy;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface BLTSimpleCache
-- (BLTSimpleCache)initWithCapacity:(unint64_t)a3;
+- (BLTSimpleCache)initWithCapacity:(unint64_t)capacity;
 - (id)description;
 - (id)objects;
-- (void)cacheObject:(id)a3;
+- (void)cacheObject:(id)object;
 @end
 
 @implementation BLTSimpleCache
 
-- (BLTSimpleCache)initWithCapacity:(unint64_t)a3
+- (BLTSimpleCache)initWithCapacity:(unint64_t)capacity
 {
   v9.receiver = self;
   v9.super_class = BLTSimpleCache;
@@ -16,21 +16,21 @@
   if (v4)
   {
     v4->_lock._os_unfair_lock_opaque = 0;
-    v4->_capacity = a3;
-    v6 = [MEMORY[0x277CBEB18] array];
+    v4->_capacity = capacity;
+    array = [MEMORY[0x277CBEB18] array];
     objects = v5->_objects;
-    v5->_objects = v6;
+    v5->_objects = array;
   }
 
   return v5;
 }
 
-- (void)cacheObject:(id)a3
+- (void)cacheObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_objects removeObject:v4];
-  [(NSMutableArray *)self->_objects insertObject:v4 atIndex:0];
+  [(NSMutableArray *)self->_objects removeObject:objectCopy];
+  [(NSMutableArray *)self->_objects insertObject:objectCopy atIndex:0];
 
   if ([(NSMutableArray *)self->_objects count]> self->_capacity)
   {
@@ -52,12 +52,12 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(BLTSimpleCache *)self objects];
-  v5 = [v3 appendObject:v4 withName:@"objects" skipIfNil:0];
+  objects = [(BLTSimpleCache *)self objects];
+  v5 = [v3 appendObject:objects withName:@"objects" skipIfNil:0];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

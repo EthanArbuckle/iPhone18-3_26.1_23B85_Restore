@@ -1,62 +1,62 @@
 @interface FAResendFamilyInviteHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)loadResendRequestWithAttributes:(id)a3 completion:(id)a4;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)loadResendRequestWithAttributes:(id)attributes completion:(id)completion;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation FAResendFamilyInviteHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"family:resendInvite"];
+  name = [element name];
+  v4 = [name isEqualToString:@"family:resendInvite"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEC988]];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277CEC988]];
   v5 = [v4 isEqualToString:@"family:resendInvite"];
 
   return v5;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a6;
+  elementCopy = element;
+  completionCopy = completion;
   v10 = _FALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 attributes];
+    attributes = [elementCopy attributes];
     v14 = 138412290;
-    v15 = v11;
+    v15 = attributes;
     _os_log_impl(&dword_21BB35000, v10, OS_LOG_TYPE_DEFAULT, "process element attributes %@", &v14, 0xCu);
   }
 
-  v12 = [v8 attributes];
-  [(FAResendFamilyInviteHook *)self loadResendRequestWithAttributes:v12 completion:v9];
+  attributes2 = [elementCopy attributes];
+  [(FAResendFamilyInviteHook *)self loadResendRequestWithAttributes:attributes2 completion:completionCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 clientInfo];
-  [(FAResendFamilyInviteHook *)self loadResendRequestWithAttributes:v7 completion:v6];
+  completionCopy = completion;
+  clientInfo = [model clientInfo];
+  [(FAResendFamilyInviteHook *)self loadResendRequestWithAttributes:clientInfo completion:completionCopy];
 }
 
-- (void)loadResendRequestWithAttributes:(id)a3 completion:(id)a4
+- (void)loadResendRequestWithAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 objectForKeyedSubscript:@"resendInviteUrl"];
+  completionCopy = completion;
+  v7 = [attributes objectForKeyedSubscript:@"resendInviteUrl"];
   WeakRetained = objc_loadWeakRetained(&self->delegate);
   v9 = [WeakRetained presentationContextForHook:self];
 
@@ -71,7 +71,7 @@
     v13[1] = 3221225472;
     v13[2] = __71__FAResendFamilyInviteHook_loadResendRequestWithAttributes_completion___block_invoke;
     v13[3] = &unk_2782F2E88;
-    v14 = v6;
+    v14 = completionCopy;
     [(FACircleStateController *)v12 performWithContext:v10 completion:v13];
   }
 }

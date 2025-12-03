@@ -1,9 +1,9 @@
 @interface PKMetalUtility
-+ (CGAffineTransform)transformConvertingRect:(SEL)a3 toRect:(CGRect)a4 percent:(CGRect)a5;
-+ (CGSize)clampedPixelSize:(CGSize)a3;
++ (CGAffineTransform)transformConvertingRect:(SEL)rect toRect:(CGRect)toRect percent:(CGRect)percent;
++ (CGSize)clampedPixelSize:(CGSize)size;
 + (double)layerContentsScale;
 + (id)defaultDevice;
-+ (id)textureFromImage:(CGImage *)a3 device:(id)a4;
++ (id)textureFromImage:(CGImage *)image device:(id)device;
 @end
 
 @implementation PKMetalUtility
@@ -17,27 +17,27 @@
 
 + (double)layerContentsScale
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 nativeScale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen nativeScale];
   v4 = v3;
 
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.PaperKit.MarkupPhotoEditingExtension"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [bundleIdentifier isEqualToString:@"com.apple.PaperKit.MarkupPhotoEditingExtension"];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v9 = [v8 bundleIdentifier];
-    if ([v9 isEqualToString:@"com.apple.quicklook.extension.previewUI"])
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+    if ([bundleIdentifier2 isEqualToString:@"com.apple.quicklook.extension.previewUI"])
     {
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AAE8] mainBundle];
-      v11 = [v10 bundleIdentifier];
-      v12 = [v11 isEqualToString:@"com.apple.quicklook.UIExtension"];
+      mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier3 = [mainBundle3 bundleIdentifier];
+      v12 = [bundleIdentifier3 isEqualToString:@"com.apple.quicklook.UIExtension"];
 
       if ((v12 & 1) == 0 && !PKIsQuickNoteOnPhone())
       {
@@ -72,27 +72,27 @@
   return v4;
 }
 
-+ (CGSize)clampedPixelSize:(CGSize)a3
++ (CGSize)clampedPixelSize:(CGSize)size
 {
-  if (a3.width > 8192.0)
+  if (size.width > 8192.0)
   {
-    a3.height = round(a3.height * 8192.0 / a3.width);
-    a3.width = 8192.0;
+    size.height = round(size.height * 8192.0 / size.width);
+    size.width = 8192.0;
   }
 
-  if (a3.height > 8192.0)
+  if (size.height > 8192.0)
   {
-    a3.width = round(a3.width * 8192.0 / a3.height);
-    a3.height = 8192.0;
+    size.width = round(size.width * 8192.0 / size.height);
+    size.height = 8192.0;
   }
 
-  v3 = round(a3.width);
+  v3 = round(size.width);
   if (v3 < 1.0)
   {
     v3 = 1.0;
   }
 
-  v4 = round(a3.height);
+  v4 = round(size.height);
   if (v4 < 1.0)
   {
     v4 = 1.0;
@@ -103,12 +103,12 @@
   return result;
 }
 
-+ (id)textureFromImage:(CGImage *)a3 device:(id)a4
++ (id)textureFromImage:(CGImage *)image device:(id)device
 {
   v14[3] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E6974438];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithDevice:v6];
+  deviceCopy = device;
+  v7 = [[v5 alloc] initWithDevice:deviceCopy];
 
   v8 = *MEMORY[0x1E6974400];
   v13[0] = *MEMORY[0x1E6974408];
@@ -119,20 +119,20 @@
   v14[2] = MEMORY[0x1E695E110];
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v12 = 0;
-  v10 = [v7 newTextureWithCGImage:a3 options:v9 error:&v12];
+  v10 = [v7 newTextureWithCGImage:image options:v9 error:&v12];
 
   return v10;
 }
 
-+ (CGAffineTransform)transformConvertingRect:(SEL)a3 toRect:(CGRect)a4 percent:(CGRect)a5
++ (CGAffineTransform)transformConvertingRect:(SEL)rect toRect:(CGRect)toRect percent:(CGRect)percent
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  v8 = a4.size.height;
-  v9 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = DKDSubtractPoints(a5.origin.x, a5.origin.y, a4.origin.x);
+  height = percent.size.height;
+  width = percent.size.width;
+  v8 = toRect.size.height;
+  v9 = toRect.size.width;
+  y = toRect.origin.y;
+  x = toRect.origin.x;
+  v13 = DKDSubtractPoints(percent.origin.x, percent.origin.y, toRect.origin.x);
   v15 = DKDMultiplyPointScalar(v13, v14, a6);
   v16 = MEMORY[0x1E695EFD0];
   v17 = *MEMORY[0x1E695EFD0];

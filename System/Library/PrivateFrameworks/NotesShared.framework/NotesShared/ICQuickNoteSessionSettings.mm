@@ -5,8 +5,8 @@
 + (int64_t)showOnLockScreenSettingValue;
 + (void)disableNotesOnLockScreenIfNecessary;
 + (void)initialize;
-+ (void)setSessionDuration:(int64_t)a3;
-+ (void)setShowOnLockScreen:(int64_t)a3;
++ (void)setSessionDuration:(int64_t)duration;
++ (void)setShowOnLockScreen:(int64_t)screen;
 + (void)updateNotesOnLockScreenWhenAccountSupportingLockScreenAdded;
 @end
 
@@ -37,18 +37,18 @@
 
   if (v4 && ([v4 unsignedIntegerValue], objc_msgSend(v4, "unsignedIntegerValue") <= 3))
   {
-    v2 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
   else
   {
-    v2 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
-+ (void)setShowOnLockScreen:(int64_t)a3
++ (void)setShowOnLockScreen:(int64_t)screen
 {
   v4 = MEMORY[0x277D36260];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -56,27 +56,27 @@
 
   v6 = MEMORY[0x277D36260];
 
-  [v6 setBool:a3 == 0 forKey:@"DisableOnLockScreen"];
+  [v6 setBool:screen == 0 forKey:@"DisableOnLockScreen"];
 }
 
 + (int64_t)sessionDuration
 {
   v2 = [MEMORY[0x277D36260] objectForKey:@"QuickNoteSessionExpiration"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-+ (void)setSessionDuration:(int64_t)a3
++ (void)setSessionDuration:(int64_t)duration
 {
   v3 = MEMORY[0x277D36260];
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:duration];
   [v3 setObject:v4 forKey:@"QuickNoteSessionExpiration"];
 }
 
 + (void)disableNotesOnLockScreenIfNecessary
 {
-  if (([a1 hasAccountSupportingLockScreen] & 1) == 0)
+  if (([self hasAccountSupportingLockScreen] & 1) == 0)
   {
     v2 = os_log_create("com.apple.notes", "QuickNote");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -90,14 +90,14 @@
 
 + (void)updateNotesOnLockScreenWhenAccountSupportingLockScreenAdded
 {
-  if ([a1 hasAccountSupportingLockScreen])
+  if ([self hasAccountSupportingLockScreen])
   {
     if ([MEMORY[0x277D36260] BOOLForKey:@"DisableOnLockScreen"])
     {
-      v3 = [a1 showOnLockScreenSettingValue];
-      if (v3)
+      showOnLockScreenSettingValue = [self showOnLockScreenSettingValue];
+      if (showOnLockScreenSettingValue)
       {
-        v4 = v3;
+        v4 = showOnLockScreenSettingValue;
         v5 = os_log_create("com.apple.notes", "QuickNote");
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
@@ -108,7 +108,7 @@
         [MEMORY[0x277D36260] setBool:0 forKey:@"DisableOnLockScreen"];
         if (v4 != 1)
         {
-          [a1 setShowOnLockScreen:1];
+          [self setShowOnLockScreen:1];
         }
       }
     }
@@ -130,9 +130,9 @@
 + (BOOL)hasAccountSupportingLockScreen
 {
   v2 = +[ICNoteContext sharedContext];
-  v3 = [v2 workerManagedObjectContext];
+  workerManagedObjectContext = [v2 workerManagedObjectContext];
 
-  LOBYTE(v2) = [ICAccount hasModernAccountInContext:v3];
+  LOBYTE(v2) = [ICAccount hasModernAccountInContext:workerManagedObjectContext];
   return v2;
 }
 
@@ -144,15 +144,15 @@
 
   if (v3 && ([v3 unsignedIntegerValue], objc_msgSend(v3, "unsignedIntegerValue") <= 3))
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 @end

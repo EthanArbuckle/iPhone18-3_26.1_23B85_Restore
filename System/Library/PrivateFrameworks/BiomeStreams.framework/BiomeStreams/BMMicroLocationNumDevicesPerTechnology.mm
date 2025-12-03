@@ -1,9 +1,9 @@
 @interface BMMicroLocationNumDevicesPerTechnology
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMMicroLocationNumDevicesPerTechnology)initWithProto:(id)a3;
-- (BMMicroLocationNumDevicesPerTechnology)initWithProtoData:(id)a3;
-- (BMMicroLocationNumDevicesPerTechnology)initWithTechnology:(id)a3 numDevices:(unsigned int)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMMicroLocationNumDevicesPerTechnology)initWithProto:(id)proto;
+- (BMMicroLocationNumDevicesPerTechnology)initWithProtoData:(id)data;
+- (BMMicroLocationNumDevicesPerTechnology)initWithTechnology:(id)technology numDevices:(unsigned int)devices;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
@@ -11,30 +11,30 @@
 
 @implementation BMMicroLocationNumDevicesPerTechnology
 
-- (BMMicroLocationNumDevicesPerTechnology)initWithTechnology:(id)a3 numDevices:(unsigned int)a4
+- (BMMicroLocationNumDevicesPerTechnology)initWithTechnology:(id)technology numDevices:(unsigned int)devices
 {
-  v6 = a3;
+  technologyCopy = technology;
   v11.receiver = self;
   v11.super_class = BMMicroLocationNumDevicesPerTechnology;
   v7 = [(BMMicroLocationNumDevicesPerTechnology *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [technologyCopy copy];
     technology = v7->_technology;
     v7->_technology = v8;
 
-    v7->_numDevices = a4;
+    v7->_numDevices = devices;
   }
 
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -53,27 +53,27 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMMicroLocationNumDevicesPerTechnology *)self proto];
-  v3 = [v2 data];
+  proto = [(BMMicroLocationNumDevicesPerTechnology *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMMicroLocationNumDevicesPerTechnology)initWithProto:(id)a3
+- (BMMicroLocationNumDevicesPerTechnology)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasTechnologyString]&& ([v5 hasNumber]& 1) != 0)
       {
-        v6 = [v5 technologyString];
-        self = [(BMMicroLocationNumDevicesPerTechnology *)self initWithTechnology:v6 numDevices:[v5 number]];
+        technologyString = [v5 technologyString];
+        self = [(BMMicroLocationNumDevicesPerTechnology *)self initWithTechnology:technologyString numDevices:[v5 number]];
 
-        v7 = self;
+        selfCopy = self;
 LABEL_13:
 
         goto LABEL_14;
@@ -95,33 +95,33 @@ LABEL_13:
       }
     }
 
-    v7 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v7 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v7;
+  return selfCopy;
 }
 
-- (BMMicroLocationNumDevicesPerTechnology)initWithProtoData:(id)a3
+- (BMMicroLocationNumDevicesPerTechnology)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBNumDevicesPerTechnology alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBNumDevicesPerTechnology alloc] initWithData:dataCopy];
 
     self = [(BMMicroLocationNumDevicesPerTechnology *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -142,20 +142,20 @@ LABEL_14:
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
     v7 = v6;
     technology = self->_technology;
     v9 = technology;
     if (!technology)
     {
-      v3 = [v6 technology];
-      if (!v3)
+      technology = [v6 technology];
+      if (!technology)
       {
         numDevices = self->_numDevices;
         v12 = numDevices == [v7 numDevices];
@@ -168,8 +168,8 @@ LABEL_13:
       v9 = self->_technology;
     }
 
-    v10 = [v7 technology];
-    if ([(NSString *)v9 isEqualToString:v10])
+    technology2 = [v7 technology];
+    if ([(NSString *)v9 isEqualToString:technology2])
     {
       v11 = self->_numDevices;
       v12 = v11 == [v7 numDevices];

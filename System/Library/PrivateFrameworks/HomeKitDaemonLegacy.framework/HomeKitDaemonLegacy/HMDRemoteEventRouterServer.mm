@@ -1,59 +1,59 @@
 @interface HMDRemoteEventRouterServer
 + (id)logCategory;
-- (BOOL)isErrorHMENotAcceptingConnections:(id)a3;
-- (BOOL)server:(id)a3 shouldProcessEventsForConnection:(id)a4 shouldLogState:(BOOL)a5;
-- (BOOL)shouldAllowEvent:(id)a3 topic:(id)a4 connection:(id)a5;
-- (HMDRemoteEventRouterServer)initWithPrimaryModeUUID:(id)a3 residentModeUUID:(id)a4 queue:(id)a5 messageDispatcher:(id)a6 dataSource:(id)a7 notificationCenter:(id)a8 requestMessageName:(id)a9 updateMessageName:(id)a10 multiHopFetchResponseMessageName:(id)a11 logCategory:(const char *)a12 logEventSubmitter:(id)a13 connectionServerFactory:(id)a14;
-- (HMDRemoteEventRouterServer)initWithPrimaryModeUUID:(id)a3 residentModeUUID:(id)a4 queue:(id)a5 messageDispatcher:(id)a6 dataSource:(id)a7 notificationCenter:(id)a8 requestMessageName:(id)a9 updateMessageName:(id)a10 multiHopFetchResponseMessageName:(id)a11 subscriptionProvider:(id)a12 registrationEventRouter:(id)a13 storeReadHandle:(id)a14;
+- (BOOL)isErrorHMENotAcceptingConnections:(id)connections;
+- (BOOL)server:(id)server shouldProcessEventsForConnection:(id)connection shouldLogState:(BOOL)state;
+- (BOOL)shouldAllowEvent:(id)event topic:(id)topic connection:(id)connection;
+- (HMDRemoteEventRouterServer)initWithPrimaryModeUUID:(id)d residentModeUUID:(id)iD queue:(id)queue messageDispatcher:(id)dispatcher dataSource:(id)source notificationCenter:(id)center requestMessageName:(id)name updateMessageName:(id)self0 multiHopFetchResponseMessageName:(id)self1 logCategory:(const char *)self2 logEventSubmitter:(id)self3 connectionServerFactory:(id)self4;
+- (HMDRemoteEventRouterServer)initWithPrimaryModeUUID:(id)d residentModeUUID:(id)iD queue:(id)queue messageDispatcher:(id)dispatcher dataSource:(id)source notificationCenter:(id)center requestMessageName:(id)name updateMessageName:(id)self0 multiHopFetchResponseMessageName:(id)self1 subscriptionProvider:(id)self2 registrationEventRouter:(id)self3 storeReadHandle:(id)self4;
 - (NSString)description;
 - (NSUUID)messageTargetUUID;
 - (NSUUID)residentModeUUID;
 - (OS_dispatch_queue)messageReceiveQueue;
 - (double)diagnosticLastConnectTime;
-- (double)serverDebounceTimeInterval:(id)a3;
-- (id)_underlyingMessageDataFromFragmentMessageData:(id)a3 error:(id *)a4;
+- (double)serverDebounceTimeInterval:(id)interval;
+- (id)_underlyingMessageDataFromFragmentMessageData:(id)data error:(id *)error;
 - (id)diagnosticInfo;
 - (id)dumpStateDescription;
 - (id)logIdentifier;
-- (id)messageTargetForMode:(int64_t)a3;
-- (id)responseHandlerForSendMessageIdentifier:(id)a3 completion:(id)a4;
-- (id)server:(id)a3 expandedTopicsForTopics:(id)a4;
-- (id)server:(id)a3 forwardingTopicsForTopics:(id)a4;
-- (id)server:(id)a3 upstreamTopicsForTopic:(id)a4;
-- (id)serverTimerProvider:(id)a3;
+- (id)messageTargetForMode:(int64_t)mode;
+- (id)responseHandlerForSendMessageIdentifier:(id)identifier completion:(id)completion;
+- (id)server:(id)server expandedTopicsForTopics:(id)topics;
+- (id)server:(id)server forwardingTopicsForTopics:(id)topics;
+- (id)server:(id)server upstreamTopicsForTopic:(id)topic;
+- (id)serverTimerProvider:(id)provider;
 - (uint64_t)isPrimaryResident;
-- (unint64_t)serverFragmentEventsDataSize:(id)a3;
-- (void)_handleChangeRegistrationsRequest:(id)a3 originalMessage:(id)a4;
-- (void)_handleConnectRequest:(id)a3 originalMessage:(id)a4 connectionMode:(int64_t)a5;
-- (void)_handleDisconnectRequest:(id)a3 originalMessage:(id)a4;
-- (void)_handleFetchEventsRequest:(id)a3 originalMessage:(id)a4 connectionMode:(int64_t)a5;
-- (void)_handleKeepAliveRequest:(id)a3 originalMessage:(id)a4;
-- (void)_handleProtoRequest:(id)a3 originalMessage:(id)a4 connectionMode:(int64_t)a5;
-- (void)_handleRequestMessage:(id)a3 connectionMode:(int64_t)a4;
-- (void)_handleUserPrivilegeChange:(id)a3;
-- (void)_registerForAccessoryMessages:(id)a3;
-- (void)_registerForMessages:(id)a3 withHome:(id)a4;
-- (void)handleHomeUserRemovedNotification:(id)a3;
-- (void)handlePrimaryResidentIsCurrentDeviceChangeNotification:(id)a3;
-- (void)logMetricsForLiveEvents:(id)a3 cachedEvents:(id)a4 destinationDevice:(id)a5 destinationDeviceIdentifier:(id)a6 responseMessageType:(unint64_t)a7;
-- (void)pendingEventCollectionDidComplete:(id)a3;
-- (void)refreshConnections:(id)a3;
-- (void)respondToMessage:(id)a3 underlyingResponseData:(id)a4 connection:(id)a5 label:(id)a6;
-- (void)respondToMessage:(id)a3 underlyingResponseData:(id)a4 supportsFragmentMessage:(BOOL)a5 label:(id)a6;
-- (void)sendMessageWithPayloadMessage:(id)a3 destination:(id)a4 messageType:(int64_t)a5 completion:(id)a6;
-- (void)server:(id)a3 connectionDidConnect:(id)a4;
-- (void)server:(id)a3 connectionDidExpire:(id)a4;
-- (void)server:(id)a3 connectionDidFail:(id)a4;
-- (void)server:(id)a3 sendEvents:(id)a4 cachedEvents:(id)a5 connection:(id)a6 completion:(id)a7;
-- (void)submitLogEvent:(id)a3;
-- (void)submitLogEvent:(id)a3 error:(id)a4;
+- (unint64_t)serverFragmentEventsDataSize:(id)size;
+- (void)_handleChangeRegistrationsRequest:(id)request originalMessage:(id)message;
+- (void)_handleConnectRequest:(id)request originalMessage:(id)message connectionMode:(int64_t)mode;
+- (void)_handleDisconnectRequest:(id)request originalMessage:(id)message;
+- (void)_handleFetchEventsRequest:(id)request originalMessage:(id)message connectionMode:(int64_t)mode;
+- (void)_handleKeepAliveRequest:(id)request originalMessage:(id)message;
+- (void)_handleProtoRequest:(id)request originalMessage:(id)message connectionMode:(int64_t)mode;
+- (void)_handleRequestMessage:(id)message connectionMode:(int64_t)mode;
+- (void)_handleUserPrivilegeChange:(id)change;
+- (void)_registerForAccessoryMessages:(id)messages;
+- (void)_registerForMessages:(id)messages withHome:(id)home;
+- (void)handleHomeUserRemovedNotification:(id)notification;
+- (void)handlePrimaryResidentIsCurrentDeviceChangeNotification:(id)notification;
+- (void)logMetricsForLiveEvents:(id)events cachedEvents:(id)cachedEvents destinationDevice:(id)device destinationDeviceIdentifier:(id)identifier responseMessageType:(unint64_t)type;
+- (void)pendingEventCollectionDidComplete:(id)complete;
+- (void)refreshConnections:(id)connections;
+- (void)respondToMessage:(id)message underlyingResponseData:(id)data connection:(id)connection label:(id)label;
+- (void)respondToMessage:(id)message underlyingResponseData:(id)data supportsFragmentMessage:(BOOL)fragmentMessage label:(id)label;
+- (void)sendMessageWithPayloadMessage:(id)message destination:(id)destination messageType:(int64_t)type completion:(id)completion;
+- (void)server:(id)server connectionDidConnect:(id)connect;
+- (void)server:(id)server connectionDidExpire:(id)expire;
+- (void)server:(id)server connectionDidFail:(id)fail;
+- (void)server:(id)server sendEvents:(id)events cachedEvents:(id)cachedEvents connection:(id)connection completion:(id)completion;
+- (void)submitLogEvent:(id)event;
+- (void)submitLogEvent:(id)event error:(id)error;
 @end
 
 @implementation HMDRemoteEventRouterServer
 
-- (void)pendingEventCollectionDidComplete:(id)a3
+- (void)pendingEventCollectionDidComplete:(id)complete
 {
-  v5 = a3;
+  completeCopy = complete;
   if (self)
   {
     Property = objc_getProperty(self, v4, 32, 1);
@@ -69,8 +69,8 @@
   v8[2] = __64__HMDRemoteEventRouterServer_pendingEventCollectionDidComplete___block_invoke;
   v8[3] = &unk_2797359B0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = completeCopy;
+  v7 = completeCopy;
   dispatch_async(Property, v8);
 }
 
@@ -258,8 +258,8 @@ void __64__HMDRemoteEventRouterServer_pendingEventCollectionDidComplete___block_
     [v3 setLastConnected:-[HMDRemoteEventRouterServer diagnosticLastConnectTime](self)];
   }
 
-  v4 = [(HMDRemoteEventRouterServer *)self currentConnections];
-  v5 = [v4 count];
+  currentConnections = [(HMDRemoteEventRouterServer *)self currentConnections];
+  v5 = [currentConnections count];
 
   if (v5)
   {
@@ -271,8 +271,8 @@ void __64__HMDRemoteEventRouterServer_pendingEventCollectionDidComplete___block_
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = [(HMDRemoteEventRouterServer *)self currentConnections];
-    v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    currentConnections2 = [(HMDRemoteEventRouterServer *)self currentConnections];
+    v8 = [currentConnections2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
       v9 = v8;
@@ -284,7 +284,7 @@ void __64__HMDRemoteEventRouterServer_pendingEventCollectionDidComplete___block_
         {
           if (*v23 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(currentConnections2);
           }
 
           v12 = *(*(&v22 + 1) + 8 * v11);
@@ -300,17 +300,17 @@ void __64__HMDRemoteEventRouterServer_pendingEventCollectionDidComplete___block_
           }
 
           v15 = v14;
-          v16 = [v15 UUIDString];
-          [v13 setConnectedClientIdentifierString:v16];
+          uUIDString = [v15 UUIDString];
+          [v13 setConnectedClientIdentifierString:uUIDString];
 
-          v17 = [v3 connectedClients];
-          [v17 addObject:v13];
+          connectedClients = [v3 connectedClients];
+          [connectedClients addObject:v13];
 
           ++v11;
         }
 
         while (v9 != v11);
-        v18 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v18 = [currentConnections2 countByEnumeratingWithState:&v22 objects:v26 count:16];
         v9 = v18;
       }
 
@@ -341,24 +341,24 @@ void __64__HMDRemoteEventRouterServer_pendingEventCollectionDidComplete___block_
 
 - (double)diagnosticLastConnectTime
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   os_unfair_lock_lock_with_options();
-  v2 = *(a1 + 24);
-  os_unfair_lock_unlock((a1 + 16));
+  v2 = *(self + 24);
+  os_unfair_lock_unlock((self + 16));
   return v2;
 }
 
 - (uint64_t)isPrimaryResident
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    v2 = *(a1 + 20);
-    os_unfair_lock_unlock((a1 + 16));
+    v2 = *(self + 20);
+    os_unfair_lock_unlock((self + 16));
   }
 
   else
@@ -387,8 +387,8 @@ void __64__HMDRemoteEventRouterServer_pendingEventCollectionDidComplete___block_
     Property = 0;
   }
 
-  v9 = [Property dumpStateDescription];
-  v10 = [v3 stringWithFormat:@"[HMDRemoteEventRouterServer primary: %@, resident event providing: %@, \n\t server: %@]", v4, v6, v9];
+  dumpStateDescription = [Property dumpStateDescription];
+  v10 = [v3 stringWithFormat:@"[HMDRemoteEventRouterServer primary: %@, resident event providing: %@, \n\t server: %@]", v4, v6, dumpStateDescription];
 
   return v10;
 }
@@ -404,15 +404,15 @@ void __64__HMDRemoteEventRouterServer_pendingEventCollectionDidComplete___block_
   return self;
 }
 
-- (BOOL)shouldAllowEvent:(id)a3 topic:(id)a4 connection:(id)a5
+- (BOOL)shouldAllowEvent:(id)event topic:(id)topic connection:(id)connection
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  topicCopy = topic;
+  connectionCopy = connection;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = connectionCopy;
   }
 
   else
@@ -437,7 +437,7 @@ void __64__HMDRemoteEventRouterServer_pendingEventCollectionDidComplete___block_
     *buf = 138412546;
     v33 = v10;
     v34 = 2112;
-    v35 = v7;
+    v35 = topicCopy;
     _os_log_debug_impl(&dword_2531F8000, logger, OS_LOG_TYPE_DEBUG, "Checking access control connection: %@, topic: %@", buf, 0x16u);
   }
 
@@ -450,11 +450,11 @@ void __64__HMDRemoteEventRouterServer_pendingEventCollectionDidComplete___block_
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 productInfo];
-      v17 = [v16 productPlatform];
+      productInfo = [v14 productInfo];
+      productPlatform = [productInfo productPlatform];
 
       v18 = 1;
-      if (v17 != 4)
+      if (productPlatform != 4)
       {
         v18 = 2;
       }
@@ -470,17 +470,17 @@ void __64__HMDRemoteEventRouterServer_pendingEventCollectionDidComplete___block_
       {
         if ((isPrimaryResident & 1) == 0 && ((v20 ^ 1) & 1) == 0)
         {
-          isPrimaryResident = [WeakRetained canTopicBeForwardedToPrimaryFromResident:v7];
+          isPrimaryResident = [WeakRetained canTopicBeForwardedToPrimaryFromResident:topicCopy];
         }
 
-        v23 = [v15 identifier];
-        v24 = [WeakRetained shouldAllowTopic:v7 forDeviceWithMessageIdentifier:v23];
+        identifier = [v15 identifier];
+        v24 = [WeakRetained shouldAllowTopic:topicCopy forDeviceWithMessageIdentifier:identifier];
 
         v25 = 0;
         if (isPrimaryResident && v24)
         {
-          v26 = [WeakRetained remoteEventAccessControlProvider];
-          v25 = [v26 remoteEventAllowedForTopic:v7 deviceType:v31 userType:{objc_msgSend(v22, "allowedRemoteEventAccessUserTypes")}];
+          remoteEventAccessControlProvider = [WeakRetained remoteEventAccessControlProvider];
+          v25 = [remoteEventAccessControlProvider remoteEventAllowedForTopic:topicCopy deviceType:v31 userType:{objc_msgSend(v22, "allowedRemoteEventAccessUserTypes")}];
         }
 
         goto LABEL_26;
@@ -501,9 +501,9 @@ void __64__HMDRemoteEventRouterServer_pendingEventCollectionDidComplete___block_
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v33 = v7;
+        v33 = topicCopy;
         v34 = 2112;
-        v35 = v8;
+        v35 = connectionCopy;
         _os_log_debug_impl(&dword_2531F8000, v27, OS_LOG_TYPE_DEBUG, "No device when attempting to check access control for %@ to %@", buf, 0x16u);
       }
     }
@@ -521,51 +521,51 @@ LABEL_27:
   return v25;
 }
 
-- (void)logMetricsForLiveEvents:(id)a3 cachedEvents:(id)a4 destinationDevice:(id)a5 destinationDeviceIdentifier:(id)a6 responseMessageType:(unint64_t)a7
+- (void)logMetricsForLiveEvents:(id)events cachedEvents:(id)cachedEvents destinationDevice:(id)device destinationDeviceIdentifier:(id)identifier responseMessageType:(unint64_t)type
 {
-  v11 = a6;
-  v9 = a5;
+  identifierCopy = identifier;
+  deviceCopy = device;
   [(HMDRemoteEventRouterServer *)self isPrimaryResident];
   if (self)
   {
     self = objc_loadWeakRetained(&self->_dataSource);
-    [(HMDRemoteEventRouterServer *)self isDeviceIdentifierPrimaryResident:v11];
-    v10 = [v9 productInfo];
-    [v10 productPlatform];
+    [(HMDRemoteEventRouterServer *)self isDeviceIdentifierPrimaryResident:identifierCopy];
+    productInfo = [deviceCopy productInfo];
+    [productInfo productPlatform];
   }
 
   else
   {
-    [0 isDeviceIdentifierPrimaryResident:v11];
+    [0 isDeviceIdentifierPrimaryResident:identifierCopy];
   }
 }
 
-- (void)server:(id)a3 sendEvents:(id)a4 cachedEvents:(id)a5 connection:(id)a6 completion:(id)a7
+- (void)server:(id)server sendEvents:(id)events cachedEvents:(id)cachedEvents connection:(id)connection completion:(id)completion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  eventsCopy = events;
+  cachedEventsCopy = cachedEvents;
+  connectionCopy = connection;
+  completionCopy = completion;
   v15 = objc_alloc_init(HMDRemoteEventRouterProtoServerMessage);
-  v16 = [MEMORY[0x277CCAD78] UUID];
-  v17 = [v16 UUIDString];
-  [(HMDRemoteEventRouterProtoServerMessage *)v15 setIdentifier:v17];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [(HMDRemoteEventRouterProtoServerMessage *)v15 setIdentifier:uUIDString];
 
   v18 = objc_alloc_init(HMDRemoteEventRouterProtoEventsMessage);
   [(HMDRemoteEventRouterProtoServerMessage *)v15 setUpdatedEvents:v18];
 
-  v19 = [v11 na_map:&__block_literal_global_171_71237];
+  v19 = [eventsCopy na_map:&__block_literal_global_171_71237];
   v20 = [v19 mutableCopy];
-  v21 = [(HMDRemoteEventRouterProtoServerMessage *)v15 updatedEvents];
-  [v21 setEvents:v20];
+  updatedEvents = [(HMDRemoteEventRouterProtoServerMessage *)v15 updatedEvents];
+  [updatedEvents setEvents:v20];
 
-  v22 = [v12 na_map:&__block_literal_global_173_71238];
+  v22 = [cachedEventsCopy na_map:&__block_literal_global_173_71238];
   v23 = [v22 mutableCopy];
-  v24 = [(HMDRemoteEventRouterProtoServerMessage *)v15 updatedEvents];
-  [v24 setCachedEvents:v23];
+  updatedEvents2 = [(HMDRemoteEventRouterProtoServerMessage *)v15 updatedEvents];
+  [updatedEvents2 setCachedEvents:v23];
 
-  v25 = v13;
+  v25 = connectionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -592,41 +592,41 @@ LABEL_27:
       if (v32)
       {
         v33 = v27[2];
-        [(HMDRemoteEventRouterServer *)self logMetricsForLiveEvents:v11 cachedEvents:v12 destinationDevice:v29 destinationDeviceIdentifier:v33 responseMessageType:4];
+        [(HMDRemoteEventRouterServer *)self logMetricsForLiveEvents:eventsCopy cachedEvents:cachedEventsCopy destinationDevice:v29 destinationDeviceIdentifier:v33 responseMessageType:4];
 
         logger = self->_logger;
-        v46 = v11;
+        v46 = eventsCopy;
         if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
         {
           v35 = MEMORY[0x277CCABB0];
           v36 = logger;
-          v45 = [(HMDRemoteEventRouterProtoServerMessage *)v15 data];
-          v37 = [v35 numberWithUnsignedInteger:{objc_msgSend(v45, "length")}];
+          data = [(HMDRemoteEventRouterProtoServerMessage *)v15 data];
+          v37 = [v35 numberWithUnsignedInteger:{objc_msgSend(data, "length")}];
           *buf = 138412290;
           v48 = v37;
           _os_log_impl(&dword_2531F8000, v36, OS_LOG_TYPE_DEFAULT, "Sending events of size: %@", buf, 0xCu);
 
-          v11 = v46;
+          eventsCopy = v46;
           logger = self->_logger;
         }
 
         if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v48 = v11;
+          v48 = eventsCopy;
           _os_log_debug_impl(&dword_2531F8000, logger, OS_LOG_TYPE_DEBUG, "Sending events: %@", buf, 0xCu);
         }
 
-        v38 = [(HMDRemoteEventRouterProtoServerMessage *)v15 data];
-        [(HMDRemoteEventRouterServer *)self sendMessageWithPayloadMessage:v38 destination:v32 messageType:1 completion:v14];
+        data2 = [(HMDRemoteEventRouterProtoServerMessage *)v15 data];
+        [(HMDRemoteEventRouterServer *)self sendMessageWithPayloadMessage:data2 destination:v32 messageType:1 completion:completionCopy];
 
-        v11 = v46;
+        eventsCopy = v46;
       }
 
       else
       {
         v42 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-        v14[2](v14, v42);
+        completionCopy[2](completionCopy, v42);
 
         v43 = self->_logger;
         if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -640,7 +640,7 @@ LABEL_27:
     else
     {
       v40 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      v14[2](v14, v40);
+      completionCopy[2](completionCopy, v40);
 
       v41 = self->_logger;
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -665,54 +665,54 @@ LABEL_27:
     }
 
     v29 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    v14[2](v14, v29);
+    completionCopy[2](completionCopy, v29);
   }
 
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)server:(id)a3 connectionDidFail:(id)a4
+- (void)server:(id)server connectionDidFail:(id)fail
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  failCopy = fail;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = failCopy;
     _os_log_error_impl(&dword_2531F8000, logger, OS_LOG_TYPE_ERROR, "Removing connection on error %@", &v9, 0xCu);
   }
 
-  v7 = [(HMDRemoteEventRouterServer *)self currentConnections];
-  [v7 removeObject:v5];
+  currentConnections = [(HMDRemoteEventRouterServer *)self currentConnections];
+  [currentConnections removeObject:failCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)server:(id)a3 connectionDidExpire:(id)a4
+- (void)server:(id)server connectionDidExpire:(id)expire
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  expireCopy = expire;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = expireCopy;
     _os_log_error_impl(&dword_2531F8000, logger, OS_LOG_TYPE_ERROR, "Removing connection on expiry %@", &v9, 0xCu);
   }
 
-  v7 = [(HMDRemoteEventRouterServer *)self currentConnections];
-  [v7 removeObject:v5];
+  currentConnections = [(HMDRemoteEventRouterServer *)self currentConnections];
+  [currentConnections removeObject:expireCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)server:(id)a3 connectionDidConnect:(id)a4
+- (void)server:(id)server connectionDidConnect:(id)connect
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v6 timeIntervalSince1970];
+  connectCopy = connect;
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   if (self)
   {
     v8 = v7;
@@ -723,7 +723,7 @@ LABEL_27:
 
   if ([(HMDRemoteEventRouterServer *)self isPrimaryResident])
   {
-    v9 = v5;
+    v9 = connectCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -749,22 +749,22 @@ LABEL_27:
 
     v13 = v12;
 
-    v14 = [v13 deviceAddress];
-    v15 = [v14 idsIdentifier];
+    deviceAddress = [v13 deviceAddress];
+    idsIdentifier = [deviceAddress idsIdentifier];
 
-    if (v15)
+    if (idsIdentifier)
     {
       logger = self->_logger;
       if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v26 = v15;
+        v26 = idsIdentifier;
         _os_log_impl(&dword_2531F8000, logger, OS_LOG_TYPE_DEFAULT, "Notifying on connecting to primary %@", buf, 0xCu);
       }
 
       Property = objc_getProperty(self, v17, 88, 1);
       v23 = @"idsIdentifier";
-      v24 = v15;
+      v24 = idsIdentifier;
       v19 = MEMORY[0x277CBEAC0];
       v20 = Property;
       v21 = [v19 dictionaryWithObjects:&v24 forKeys:&v23 count:1];
@@ -775,7 +775,7 @@ LABEL_27:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)serverFragmentEventsDataSize:(id)a3
+- (unint64_t)serverFragmentEventsDataSize:(id)size
 {
   if (_os_feature_enabled_impl())
   {
@@ -788,7 +788,7 @@ LABEL_27:
   }
 }
 
-- (id)serverTimerProvider:(id)a3
+- (id)serverTimerProvider:(id)provider
 {
   if (self)
   {
@@ -799,11 +799,11 @@ LABEL_27:
   return self;
 }
 
-- (double)serverDebounceTimeInterval:(id)a3
+- (double)serverDebounceTimeInterval:(id)interval
 {
-  v3 = [(HMDRemoteEventRouterServer *)self isPrimaryResident];
+  isPrimaryResident = [(HMDRemoteEventRouterServer *)self isPrimaryResident];
   result = 0.5;
-  if (v3)
+  if (isPrimaryResident)
   {
     return 5.0;
   }
@@ -811,18 +811,18 @@ LABEL_27:
   return result;
 }
 
-- (BOOL)server:(id)a3 shouldProcessEventsForConnection:(id)a4 shouldLogState:(BOOL)a5
+- (BOOL)server:(id)server shouldProcessEventsForConnection:(id)connection shouldLogState:(BOOL)state
 {
-  v5 = a5;
+  stateCopy = state;
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v10 = a4;
+  serverCopy = server;
+  connectionCopy = connection;
   if (self)
   {
     Property = objc_getProperty(self, v9, 32, 1);
     dispatch_assert_queue_V2(Property);
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    if (!v5)
+    if (!stateCopy)
     {
       goto LABEL_5;
     }
@@ -832,7 +832,7 @@ LABEL_27:
   {
     dispatch_assert_queue_V2(0);
     WeakRetained = 0;
-    if (!v5)
+    if (!stateCopy)
     {
       goto LABEL_5;
     }
@@ -842,14 +842,14 @@ LABEL_27:
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v35 = 138412546;
-    v36 = v10;
+    v36 = connectionCopy;
     v37 = 2112;
     v38 = WeakRetained;
     _os_log_impl(&dword_2531F8000, logger, OS_LOG_TYPE_DEFAULT, "Checking if server should process events for connection: %@, dataSource: %@", &v35, 0x16u);
   }
 
 LABEL_5:
-  v14 = v10;
+  v14 = connectionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -881,8 +881,8 @@ LABEL_5:
       {
         if (self)
         {
-          v18 = self->_isResidentEventProviding & v23;
-          if (!v5)
+          isPrimaryResident = self->_isResidentEventProviding & v23;
+          if (!stateCopy)
           {
             goto LABEL_30;
           }
@@ -890,8 +890,8 @@ LABEL_5:
 
         else
         {
-          v18 = 0;
-          if (!v5)
+          isPrimaryResident = 0;
+          if (!stateCopy)
           {
             goto LABEL_30;
           }
@@ -922,7 +922,7 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      if (v5)
+      if (stateCopy)
       {
         v24 = self->_logger;
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -957,19 +957,19 @@ LABEL_23:
       }
     }
 
-    v18 = 0;
+    isPrimaryResident = 0;
     goto LABEL_30;
   }
 
   if (isa)
   {
 LABEL_14:
-    v18 = 0;
+    isPrimaryResident = 0;
     goto LABEL_31;
   }
 
-  v18 = [(HMDRemoteEventRouterServer *)self isPrimaryResident];
-  if (v5)
+  isPrimaryResident = [(HMDRemoteEventRouterServer *)self isPrimaryResident];
+  if (stateCopy)
   {
     v19 = self->_logger;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -988,12 +988,12 @@ LABEL_29:
 LABEL_31:
 
   v33 = *MEMORY[0x277D85DE8];
-  return v18 & 1;
+  return isPrimaryResident & 1;
 }
 
-- (id)server:(id)a3 forwardingTopicsForTopics:(id)a4
+- (id)server:(id)server forwardingTopicsForTopics:(id)topics
 {
-  v6 = a4;
+  topicsCopy = topics;
   if (self)
   {
     Property = objc_getProperty(self, v5, 40, 1);
@@ -1004,20 +1004,20 @@ LABEL_31:
     Property = 0;
   }
 
-  v8 = [HMDHomeEventsGenerated forwardingTopicsWithTopics:v6 forHomeRouterWithUUID:Property];
+  v8 = [HMDHomeEventsGenerated forwardingTopicsWithTopics:topicsCopy forHomeRouterWithUUID:Property];
 
   return v8;
 }
 
-- (id)server:(id)a3 expandedTopicsForTopics:(id)a4
+- (id)server:(id)server expandedTopicsForTopics:(id)topics
 {
-  v5 = a4;
+  topicsCopy = topics;
   if (self)
   {
     self = objc_loadWeakRetained(&self->_dataSource);
   }
 
-  v6 = [(HMDRemoteEventRouterServer *)self expandedTopicsWithTopics:v5];
+  v6 = [(HMDRemoteEventRouterServer *)self expandedTopicsWithTopics:topicsCopy];
   v7 = v6;
   if (v6)
   {
@@ -1034,12 +1034,12 @@ LABEL_31:
   return v8;
 }
 
-- (id)server:(id)a3 upstreamTopicsForTopic:(id)a4
+- (id)server:(id)server upstreamTopicsForTopic:(id)topic
 {
-  v5 = a4;
+  topicCopy = topic;
   if ([(HMDRemoteEventRouterServer *)self isPrimaryResident])
   {
-    v7 = [HMDHomeEventsGenerated upstreamTopicsForTopic:v5];
+    v7 = [HMDHomeEventsGenerated upstreamTopicsForTopic:topicCopy];
   }
 
   else
@@ -1056,26 +1056,26 @@ LABEL_31:
       Property = 0;
     }
 
-    v7 = [HMDHomeEventsGenerated upstreamHomeAndAccessoryTopicsForTopic:v5 homeUUID:v8 accessoryUUID:Property];
+    v7 = [HMDHomeEventsGenerated upstreamHomeAndAccessoryTopicsForTopic:topicCopy homeUUID:v8 accessoryUUID:Property];
   }
 
   return v7;
 }
 
-- (id)responseHandlerForSendMessageIdentifier:(id)a3 completion:(id)a4
+- (id)responseHandlerForSendMessageIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __81__HMDRemoteEventRouterServer_responseHandlerForSendMessageIdentifier_completion___block_invoke;
   v12[3] = &unk_279731AF8;
   objc_copyWeak(&v15, &location);
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = identifierCopy;
+  v14 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   v10 = _Block_copy(v12);
 
   objc_destroyWeak(&v15);
@@ -1140,14 +1140,14 @@ uint64_t __81__HMDRemoteEventRouterServer_responseHandlerForSendMessageIdentifie
   return result;
 }
 
-- (void)sendMessageWithPayloadMessage:(id)a3 destination:(id)a4 messageType:(int64_t)a5 completion:(id)a6
+- (void)sendMessageWithPayloadMessage:(id)message destination:(id)destination messageType:(int64_t)type completion:(id)completion
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
-  v14 = [(HMDRemoteEventRouterServer *)self isPrimaryResident];
-  if (a5 == 2)
+  messageCopy = message;
+  completionCopy = completion;
+  destinationCopy = destination;
+  isPrimaryResident = [(HMDRemoteEventRouterServer *)self isPrimaryResident];
+  if (type == 2)
   {
     if (self)
     {
@@ -1160,7 +1160,7 @@ LABEL_17:
     goto LABEL_8;
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
     if (self)
     {
@@ -1177,7 +1177,7 @@ LABEL_8:
 
   v17 = 0;
 LABEL_10:
-  if (v14)
+  if (isPrimaryResident)
   {
     v18 = -1;
   }
@@ -1188,13 +1188,13 @@ LABEL_10:
   }
 
   v27 = @"message.payload";
-  v19 = [v10 copy];
+  v19 = [messageCopy copy];
   v28[0] = v19;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-  v21 = [HMDRemoteMessage secureMessageWithName:v17 qualityOfService:-1 destination:v12 messagePayload:v20 timeout:v18 restriction:150.0];
+  v21 = [HMDRemoteMessage secureMessageWithName:v17 qualityOfService:-1 destination:destinationCopy messagePayload:v20 timeout:v18 restriction:150.0];
 
-  v22 = [v21 identifier];
-  v23 = [(HMDRemoteEventRouterServer *)self responseHandlerForSendMessageIdentifier:v22 completion:v11];
+  identifier = [v21 identifier];
+  v23 = [(HMDRemoteEventRouterServer *)self responseHandlerForSendMessageIdentifier:identifier completion:completionCopy];
 
   [v21 setResponseHandler:v23];
   if (self)
@@ -1212,33 +1212,33 @@ LABEL_10:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitLogEvent:(id)a3
+- (void)submitLogEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (self)
   {
     self = objc_loadWeakRetained(&self->_logEventSubmitter);
   }
 
-  [(HMDRemoteEventRouterServer *)self submitLogEvent:v4];
+  [(HMDRemoteEventRouterServer *)self submitLogEvent:eventCopy];
 }
 
-- (void)submitLogEvent:(id)a3 error:(id)a4
+- (void)submitLogEvent:(id)event error:(id)error
 {
-  v7 = a3;
-  v6 = a4;
+  eventCopy = event;
+  errorCopy = error;
   if (self)
   {
     self = objc_loadWeakRetained(&self->_logEventSubmitter);
   }
 
-  [(HMDRemoteEventRouterServer *)self submitLogEvent:v7 error:v6];
+  [(HMDRemoteEventRouterServer *)self submitLogEvent:eventCopy error:errorCopy];
 }
 
-- (void)_handleFetchEventsRequest:(id)a3 originalMessage:(id)a4 connectionMode:(int64_t)a5
+- (void)_handleFetchEventsRequest:(id)request originalMessage:(id)message connectionMode:(int64_t)mode
 {
-  v8 = a3;
-  v10 = a4;
+  requestCopy = request;
+  messageCopy = message;
   if (self)
   {
     Property = objc_getProperty(self, v9, 32, 1);
@@ -1250,62 +1250,62 @@ LABEL_10:
   }
 
   dispatch_assert_queue_V2(Property);
-  if (v8)
+  if (requestCopy)
   {
-    v12 = [v10 remoteSourceDevice];
-    v13 = [v12 identifier];
-    v14 = v13;
-    if (v12 && v13)
+    remoteSourceDevice = [messageCopy remoteSourceDevice];
+    identifier = [remoteSourceDevice identifier];
+    v14 = identifier;
+    if (remoteSourceDevice && identifier)
     {
       if (self && self->_isResidentEventProviding)
       {
         WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-        v16 = [WeakRetained routerServerUserAccessControlProviderIdentifierForMessage:v10];
+        v16 = [WeakRetained routerServerUserAccessControlProviderIdentifierForMessage:messageCopy];
         if (v16 && ([WeakRetained routerServerUserAccessControlProviderForIdentifier:v16], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v18 = v17;
-          v49 = -[HMDRemoteEventRouterServerConnection initWithDevice:connectionMode:supportsFragmentMessage:userAccessControlProviderUUID:]([HMDRemoteEventRouterServerConnection alloc], "initWithDevice:connectionMode:supportsFragmentMessage:userAccessControlProviderUUID:", v12, a5, [v10 BOOLForKey:@"isFragmented"], v16);
-          v19 = [v8 topics];
-          v20 = [v19 count];
+          v49 = -[HMDRemoteEventRouterServerConnection initWithDevice:connectionMode:supportsFragmentMessage:userAccessControlProviderUUID:]([HMDRemoteEventRouterServerConnection alloc], "initWithDevice:connectionMode:supportsFragmentMessage:userAccessControlProviderUUID:", remoteSourceDevice, mode, [messageCopy BOOLForKey:@"isFragmented"], v16);
+          topics = [requestCopy topics];
+          v20 = [topics count];
 
           if (v20)
           {
             v47 = v18;
-            v21 = [v8 topics];
+            topics2 = [requestCopy topics];
             v51[0] = MEMORY[0x277D85DD0];
             v51[1] = 3221225472;
             v51[2] = __87__HMDRemoteEventRouterServer__handleFetchEventsRequest_originalMessage_connectionMode___block_invoke;
             v51[3] = &unk_2797287A8;
             v51[4] = self;
-            v22 = [v21 na_map:v51];
+            v22 = [topics2 na_map:v51];
 
             v23 = objc_alloc_init(MEMORY[0x277D174E8]);
             [v23 setDelegate:self];
             v25 = objc_getProperty(self, v24, 104, 1);
             v50 = 0;
             v48 = v22;
-            LOBYTE(v22) = [v25 fetchCachedEventsForTopics:v22 isMultiHop:objc_msgSend(v8 connection:"fetchType") == 1 cachedEventCollection:v49 error:{v23, &v50}];
+            LOBYTE(v22) = [v25 fetchCachedEventsForTopics:v22 isMultiHop:objc_msgSend(requestCopy connection:"fetchType") == 1 cachedEventCollection:v49 error:{v23, &v50}];
 
             v26 = v50;
             v27 = v26;
             if (v22)
             {
               v45 = v26;
-              v43 = [v23 isFinishedAddingItems];
+              isFinishedAddingItems = [v23 isFinishedAddingItems];
               v46 = v23;
               v28 = [v23 popEventItemsUpWithFragments:0 toSizeInBytes:0 usedBytes:0];
               v29 = [v28 na_map:&__block_literal_global_157_71270];
-              [(HMDRemoteEventRouterServer *)self logMetricsForLiveEvents:MEMORY[0x277CBEBF8] cachedEvents:v28 destinationDevice:v12 destinationDeviceIdentifier:v14 responseMessageType:1];
+              [(HMDRemoteEventRouterServer *)self logMetricsForLiveEvents:MEMORY[0x277CBEBF8] cachedEvents:v28 destinationDevice:remoteSourceDevice destinationDeviceIdentifier:v14 responseMessageType:1];
               v30 = objc_alloc_init(HMDRemoteEventRouterProtoFetchEventsResponse);
               v44 = v29;
               v31 = [v29 mutableCopy];
               [(HMDRemoteEventRouterProtoFetchEventsResponse *)v30 setChangedEvents:v31];
 
-              v32 = [(HMDRemoteEventRouterProtoFetchEventsResponse *)v30 data];
-              [(HMDRemoteEventRouterServer *)self respondToMessage:v10 underlyingResponseData:v32 supportsFragmentMessage:0 label:@"FetchEvents"];
+              data = [(HMDRemoteEventRouterProtoFetchEventsResponse *)v30 data];
+              [(HMDRemoteEventRouterServer *)self respondToMessage:messageCopy underlyingResponseData:data supportsFragmentMessage:0 label:@"FetchEvents"];
 
               v34 = v49;
-              if ((v43 & 1) == 0)
+              if ((isFinishedAddingItems & 1) == 0)
               {
                 [objc_getProperty(self v33];
               }
@@ -1321,7 +1321,7 @@ LABEL_10:
                 v27 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
               }
 
-              [v10 respondWithError:v27];
+              [messageCopy respondWithError:v27];
               v34 = v49;
             }
 
@@ -1339,7 +1339,7 @@ LABEL_10:
             }
 
             v42 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-            [v10 respondWithError:v42];
+            [messageCopy respondWithError:v42];
           }
         }
 
@@ -1353,7 +1353,7 @@ LABEL_10:
           }
 
           v18 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-          [v10 respondWithError:v18];
+          [messageCopy respondWithError:v18];
         }
 
         goto LABEL_37;
@@ -1384,7 +1384,7 @@ LABEL_10:
     }
 
     WeakRetained = [v37 hmErrorWithCode:v38];
-    [v10 respondWithError:WeakRetained];
+    [messageCopy respondWithError:WeakRetained];
 LABEL_37:
 
     goto LABEL_38;
@@ -1397,8 +1397,8 @@ LABEL_37:
     _os_log_error_impl(&dword_2531F8000, v35, OS_LOG_TYPE_ERROR, "Did not find fetch request in payload.", buf, 2u);
   }
 
-  v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-  [v10 respondWithError:v12];
+  remoteSourceDevice = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
+  [messageCopy respondWithError:remoteSourceDevice];
 LABEL_38:
 }
 
@@ -1422,27 +1422,27 @@ id __87__HMDRemoteEventRouterServer__handleFetchEventsRequest_originalMessage_co
   return v7;
 }
 
-- (void)_handleKeepAliveRequest:(id)a3 originalMessage:(id)a4
+- (void)_handleKeepAliveRequest:(id)request originalMessage:(id)message
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  requestCopy = request;
+  messageCopy = message;
+  v8 = messageCopy;
+  if (requestCopy)
   {
-    v9 = [v7 remoteSourceDevice];
-    v10 = [v9 identifier];
-    v11 = v10;
-    if (v9 && v10)
+    remoteSourceDevice = [messageCopy remoteSourceDevice];
+    identifier = [remoteSourceDevice identifier];
+    v11 = identifier;
+    if (remoteSourceDevice && identifier)
     {
-      v12 = [(HMDRemoteEventRouterServer *)self currentConnections];
+      currentConnections = [(HMDRemoteEventRouterServer *)self currentConnections];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __70__HMDRemoteEventRouterServer__handleKeepAliveRequest_originalMessage___block_invoke;
       v26[3] = &unk_2797286A0;
       v13 = v11;
       v27 = v13;
-      v14 = [v12 na_firstObjectPassingTest:v26];
+      v14 = [currentConnections na_firstObjectPassingTest:v26];
 
       if (v14)
       {
@@ -1466,9 +1466,9 @@ id __87__HMDRemoteEventRouterServer__handleFetchEventsRequest_originalMessage_co
         if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
         {
           v22 = logger;
-          v23 = [(HMDRemoteEventRouterServer *)self currentConnections];
+          currentConnections2 = [(HMDRemoteEventRouterServer *)self currentConnections];
           *buf = 138412546;
-          v29 = v23;
+          v29 = currentConnections2;
           v30 = 2112;
           v31 = v13;
           _os_log_error_impl(&dword_2531F8000, v22, OS_LOG_TYPE_ERROR, "No connection was found for keep alive request in current connections: %@ device identifier: %@", buf, 0x16u);
@@ -1504,8 +1504,8 @@ id __87__HMDRemoteEventRouterServer__handleFetchEventsRequest_originalMessage_co
       _os_log_error_impl(&dword_2531F8000, v17, OS_LOG_TYPE_ERROR, "Did not keep-alive request in payload.", buf, 2u);
     }
 
-    v9 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    [v8 respondWithError:v9];
+    remoteSourceDevice = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
+    [v8 respondWithError:remoteSourceDevice];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -1543,27 +1543,27 @@ uint64_t __70__HMDRemoteEventRouterServer__handleKeepAliveRequest_originalMessag
   }
 }
 
-- (void)_handleChangeRegistrationsRequest:(id)a3 originalMessage:(id)a4
+- (void)_handleChangeRegistrationsRequest:(id)request originalMessage:(id)message
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  requestCopy = request;
+  messageCopy = message;
+  v8 = messageCopy;
+  if (requestCopy)
   {
-    v9 = [v7 remoteSourceDevice];
-    v10 = [v9 identifier];
-    v11 = v10;
-    if (v9 && v10)
+    remoteSourceDevice = [messageCopy remoteSourceDevice];
+    identifier = [remoteSourceDevice identifier];
+    v11 = identifier;
+    if (remoteSourceDevice && identifier)
     {
-      v12 = [(HMDRemoteEventRouterServer *)self currentConnections];
+      currentConnections = [(HMDRemoteEventRouterServer *)self currentConnections];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __80__HMDRemoteEventRouterServer__handleChangeRegistrationsRequest_originalMessage___block_invoke;
       v37[3] = &unk_2797286A0;
       v13 = v11;
       v38 = v13;
-      v14 = [v12 na_firstObjectPassingTest:v37];
+      v14 = [currentConnections na_firstObjectPassingTest:v37];
 
       if (v14)
       {
@@ -1579,18 +1579,18 @@ uint64_t __70__HMDRemoteEventRouterServer__handleKeepAliveRequest_originalMessag
         }
 
         v17 = Property;
-        v29 = [v6 topicFilterAdditions];
-        v18 = [v29 na_map:&__block_literal_global_140_71286];
-        v19 = [v6 topicFilterRemovals];
-        v20 = [v19 na_map:&__block_literal_global_142];
+        topicFilterAdditions = [requestCopy topicFilterAdditions];
+        v18 = [topicFilterAdditions na_map:&__block_literal_global_140_71286];
+        topicFilterRemovals = [requestCopy topicFilterRemovals];
+        v20 = [topicFilterRemovals na_map:&__block_literal_global_142];
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __80__HMDRemoteEventRouterServer__handleChangeRegistrationsRequest_originalMessage___block_invoke_3;
         v31[3] = &unk_279728780;
         v32 = v14;
-        v33 = self;
+        selfCopy = self;
         v34 = v8;
-        v35 = v9;
+        v35 = remoteSourceDevice;
         v36 = v30;
         [v17 changeRegistrationsForConnection:v32 topicFilterAdditions:v18 topicFilterRemovals:v20 completion:v31];
 
@@ -1603,9 +1603,9 @@ uint64_t __70__HMDRemoteEventRouterServer__handleKeepAliveRequest_originalMessag
         if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
         {
           v27 = logger;
-          v28 = [(HMDRemoteEventRouterServer *)self currentConnections];
+          currentConnections2 = [(HMDRemoteEventRouterServer *)self currentConnections];
           *buf = 138412546;
-          v40 = v28;
+          v40 = currentConnections2;
           v41 = 2112;
           v42 = v13;
           _os_log_error_impl(&dword_2531F8000, v27, OS_LOG_TYPE_ERROR, "No connection was found during change registrations request in current connections: %@ device identifier: %@", buf, 0x16u);
@@ -1641,8 +1641,8 @@ uint64_t __70__HMDRemoteEventRouterServer__handleKeepAliveRequest_originalMessag
       _os_log_error_impl(&dword_2531F8000, v22, OS_LOG_TYPE_ERROR, "Did not change registrations request in payload.", buf, 2u);
     }
 
-    v9 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    [v8 respondWithError:v9];
+    remoteSourceDevice = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
+    [v8 respondWithError:remoteSourceDevice];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -1714,10 +1714,10 @@ id __80__HMDRemoteEventRouterServer__handleChangeRegistrationsRequest_originalMe
   return v7;
 }
 
-- (void)_handleDisconnectRequest:(id)a3 originalMessage:(id)a4
+- (void)_handleDisconnectRequest:(id)request originalMessage:(id)message
 {
-  v6 = a3;
-  v8 = a4;
+  requestCopy = request;
+  messageCopy = message;
   if (self)
   {
     Property = objc_getProperty(self, v7, 32, 1);
@@ -1729,20 +1729,20 @@ id __80__HMDRemoteEventRouterServer__handleChangeRegistrationsRequest_originalMe
   }
 
   dispatch_assert_queue_V2(Property);
-  if (v6)
+  if (requestCopy)
   {
-    v10 = [v8 remoteSourceDevice];
-    v11 = [v10 identifier];
-    v12 = v11;
-    if (v10 && v11)
+    remoteSourceDevice = [messageCopy remoteSourceDevice];
+    identifier = [remoteSourceDevice identifier];
+    v12 = identifier;
+    if (remoteSourceDevice && identifier)
     {
-      v13 = [(HMDRemoteEventRouterServer *)self currentConnections];
+      currentConnections = [(HMDRemoteEventRouterServer *)self currentConnections];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __71__HMDRemoteEventRouterServer__handleDisconnectRequest_originalMessage___block_invoke;
       v22[3] = &unk_2797286A0;
       v23 = v12;
-      v14 = [v13 na_firstObjectPassingTest:v22];
+      v14 = [currentConnections na_firstObjectPassingTest:v22];
 
       if (v14)
       {
@@ -1757,7 +1757,7 @@ id __80__HMDRemoteEventRouterServer__handleChangeRegistrationsRequest_originalMe
         }
 
         [v16 disconnectConnection:v14];
-        [v8 respondWithSuccess];
+        [messageCopy respondWithSuccess];
       }
 
       else
@@ -1770,7 +1770,7 @@ id __80__HMDRemoteEventRouterServer__handleChangeRegistrationsRequest_originalMe
         }
 
         v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-        [v8 respondWithError:v21];
+        [messageCopy respondWithError:v21];
       }
 
       v19 = v23;
@@ -1786,7 +1786,7 @@ id __80__HMDRemoteEventRouterServer__handleChangeRegistrationsRequest_originalMe
       }
 
       v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      [v8 respondWithError:v19];
+      [messageCopy respondWithError:v19];
     }
   }
 
@@ -1799,8 +1799,8 @@ id __80__HMDRemoteEventRouterServer__handleChangeRegistrationsRequest_originalMe
       _os_log_error_impl(&dword_2531F8000, v17, OS_LOG_TYPE_ERROR, "Did not find disconnect request in payload.", buf, 2u);
     }
 
-    v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    [v8 respondWithError:v10];
+    remoteSourceDevice = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
+    [messageCopy respondWithError:remoteSourceDevice];
   }
 }
 
@@ -1822,10 +1822,10 @@ uint64_t __71__HMDRemoteEventRouterServer__handleDisconnectRequest_originalMessa
   return v5;
 }
 
-- (void)refreshConnections:(id)a3
+- (void)refreshConnections:(id)connections
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  connectionsCopy = connections;
   if (self)
   {
     Property = objc_getProperty(self, v4, 32, 1);
@@ -1838,7 +1838,7 @@ uint64_t __71__HMDRemoteEventRouterServer__handleDisconnectRequest_originalMessa
 
   dispatch_assert_queue_V2(Property);
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -1846,20 +1846,20 @@ uint64_t __71__HMDRemoteEventRouterServer__handleDisconnectRequest_originalMessa
     *buf = 138543618;
     v18 = v10;
     v19 = 2112;
-    v20 = v5;
+    v20 = connectionsCopy;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Refresh connections for user:%@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HMDRemoteEventRouterServer *)v8 currentConnections];
+  currentConnections = [(HMDRemoteEventRouterServer *)selfCopy currentConnections];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __49__HMDRemoteEventRouterServer_refreshConnections___block_invoke;
   v14[3] = &unk_279728758;
-  v15 = v5;
-  v16 = v8;
-  v12 = v5;
-  [v11 na_each:v14];
+  v15 = connectionsCopy;
+  v16 = selfCopy;
+  v12 = connectionsCopy;
+  [currentConnections na_each:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -1892,23 +1892,23 @@ void __49__HMDRemoteEventRouterServer_refreshConnections___block_invoke(uint64_t
   }
 }
 
-- (void)_handleConnectRequest:(id)a3 originalMessage:(id)a4 connectionMode:(int64_t)a5
+- (void)_handleConnectRequest:(id)request originalMessage:(id)message connectionMode:(int64_t)mode
 {
   v63 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v10 = a4;
+  requestCopy = request;
+  messageCopy = message;
   if (self)
   {
     Property = objc_getProperty(self, v9, 32, 1);
     dispatch_assert_queue_V2(Property);
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    if (v8)
+    if (requestCopy)
     {
 LABEL_3:
-      v13 = [v10 remoteSourceDevice];
-      v14 = [v13 identifier];
-      v15 = v14;
-      if (!v13 || !v14)
+      remoteSourceDevice = [messageCopy remoteSourceDevice];
+      identifier = [remoteSourceDevice identifier];
+      v15 = identifier;
+      if (!remoteSourceDevice || !identifier)
       {
         logger = self->_logger;
         if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
@@ -1918,11 +1918,11 @@ LABEL_3:
         }
 
         v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-        [v10 respondWithError:v16];
+        [messageCopy respondWithError:v16];
         goto LABEL_38;
       }
 
-      v16 = [WeakRetained routerServerUserAccessControlProviderIdentifierForMessage:v10];
+      v16 = [WeakRetained routerServerUserAccessControlProviderIdentifierForMessage:messageCopy];
       if (!v16)
       {
         v24 = self->_logger;
@@ -1933,31 +1933,31 @@ LABEL_3:
         }
 
         v25 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-        [v10 respondWithError:v25];
+        [messageCopy respondWithError:v25];
         goto LABEL_37;
       }
 
-      v17 = [(HMDRemoteEventRouterServer *)self currentConnections];
+      currentConnections = [(HMDRemoteEventRouterServer *)self currentConnections];
       v59[0] = MEMORY[0x277D85DD0];
       v59[1] = 3221225472;
       v59[2] = __83__HMDRemoteEventRouterServer__handleConnectRequest_originalMessage_connectionMode___block_invoke;
       v59[3] = &unk_2797286A0;
       v50 = v15;
       v60 = v50;
-      v18 = [v17 na_firstObjectPassingTest:v59];
+      v18 = [currentConnections na_firstObjectPassingTest:v59];
 
       v51 = v15;
       v52 = WeakRetained;
       if (v18)
       {
-        if (v18->_connectionMode == a5)
+        if (v18->_connectionMode == mode)
         {
 LABEL_26:
-          if ([v8 hasConnectEvent])
+          if ([requestCopy hasConnectEvent])
           {
             v31 = MEMORY[0x277D174A8];
-            v32 = [v8 connectEvent];
-            v49 = [v31 fromProtobuff:v32];
+            connectEvent = [requestCopy connectEvent];
+            v49 = [v31 fromProtobuff:connectEvent];
           }
 
           else
@@ -1965,11 +1965,11 @@ LABEL_26:
             v49 = 0;
           }
 
-          if ([v8 hasUnregisterEvent])
+          if ([requestCopy hasUnregisterEvent])
           {
             v33 = MEMORY[0x277D174A8];
-            v34 = [v8 unregisterEvent];
-            v47 = [v33 fromProtobuff:v34];
+            unregisterEvent = [requestCopy unregisterEvent];
+            v47 = [v33 fromProtobuff:unregisterEvent];
           }
 
           else
@@ -1977,15 +1977,15 @@ LABEL_26:
             v47 = 0;
           }
 
-          v35 = [MEMORY[0x277CBEB18] array];
-          v36 = [v8 topicFilterAdditions];
-          v37 = [v36 count];
+          array = [MEMORY[0x277CBEB18] array];
+          topicFilterAdditions = [requestCopy topicFilterAdditions];
+          v37 = [topicFilterAdditions count];
 
           if (v37)
           {
-            v39 = [v8 topicFilterAdditions];
-            v40 = [v39 na_map:&__block_literal_global_125];
-            [v35 addObjectsFromArray:v40];
+            topicFilterAdditions2 = [requestCopy topicFilterAdditions];
+            v40 = [topicFilterAdditions2 na_map:&__block_literal_global_125];
+            [array addObjectsFromArray:v40];
           }
 
           if (self)
@@ -1999,15 +1999,15 @@ LABEL_26:
           }
 
           v42 = v41;
-          v43 = [v35 copy];
+          v43 = [array copy];
           v53[0] = MEMORY[0x277D85DD0];
           v53[1] = 3221225472;
           v53[2] = __83__HMDRemoteEventRouterServer__handleConnectRequest_originalMessage_connectionMode___block_invoke_2;
           v53[3] = &unk_279728730;
-          v58 = a5;
+          modeCopy = mode;
           v53[4] = self;
-          v54 = v10;
-          v55 = v13;
+          v54 = messageCopy;
+          v55 = remoteSourceDevice;
           v56 = v50;
           v57 = v18;
           v44 = v18;
@@ -2030,12 +2030,12 @@ LABEL_38:
           _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_DEFAULT, "Connection mode is different remove existing %@", buf, 0xCu);
         }
 
-        v20 = [(HMDRemoteEventRouterServer *)self currentConnections];
-        [v20 removeObject:v18];
+        currentConnections2 = [(HMDRemoteEventRouterServer *)self currentConnections];
+        [currentConnections2 removeObject:v18];
       }
 
-      v18 = -[HMDRemoteEventRouterServerConnection initWithDevice:connectionMode:supportsFragmentMessage:userAccessControlProviderUUID:]([HMDRemoteEventRouterServerConnection alloc], "initWithDevice:connectionMode:supportsFragmentMessage:userAccessControlProviderUUID:", v13, a5, [v10 BOOLForKey:@"isFragmented"], v16);
-      if (a5 == 1)
+      v18 = -[HMDRemoteEventRouterServerConnection initWithDevice:connectionMode:supportsFragmentMessage:userAccessControlProviderUUID:]([HMDRemoteEventRouterServerConnection alloc], "initWithDevice:connectionMode:supportsFragmentMessage:userAccessControlProviderUUID:", remoteSourceDevice, mode, [messageCopy BOOLForKey:@"isFragmented"], v16);
+      if (mode == 1)
       {
         v21 = self->_logger;
         if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -2050,18 +2050,18 @@ LABEL_38:
 
       else
       {
-        if (a5 || (v21 = self->_logger, !os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT)))
+        if (mode || (v21 = self->_logger, !os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT)))
         {
 LABEL_24:
-          v26 = [(HMDRemoteEventRouterServer *)self currentConnections];
-          [v26 addObject:v18];
+          currentConnections3 = [(HMDRemoteEventRouterServer *)self currentConnections];
+          [currentConnections3 addObject:v18];
 
           v27 = self->_logger;
           if (os_signpost_enabled(v27))
           {
             v28 = MEMORY[0x277CCABB0];
             v29 = v27;
-            v30 = [v28 numberWithInteger:a5];
+            v30 = [v28 numberWithInteger:mode];
             *buf = 138412290;
             v62 = v30;
             _os_signpost_emit_with_name_impl(&dword_2531F8000, v29, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "EventRouterServerConnectionCreated", "connectionMode=%{signpost.description:attribute}@ ", buf, 0xCu);
@@ -2084,7 +2084,7 @@ LABEL_24:
   {
     dispatch_assert_queue_V2(0);
     WeakRetained = 0;
-    if (v8)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
@@ -2097,8 +2097,8 @@ LABEL_24:
     _os_log_error_impl(&dword_2531F8000, v45, OS_LOG_TYPE_ERROR, "Did not find connect request in payload.", buf, 2u);
   }
 
-  v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-  [v10 respondWithError:v13];
+  remoteSourceDevice = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
+  [messageCopy respondWithError:remoteSourceDevice];
 LABEL_43:
 
   v46 = *MEMORY[0x277D85DE8];
@@ -2169,10 +2169,10 @@ id __83__HMDRemoteEventRouterServer__handleConnectRequest_originalMessage_connec
   return v7;
 }
 
-- (id)_underlyingMessageDataFromFragmentMessageData:(id)a3 error:(id *)a4
+- (id)_underlyingMessageDataFromFragmentMessageData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [[HMDRemoteEventRouterProtoFragmentedMessage alloc] initWithData:v6];
+  dataCopy = data;
+  v7 = [[HMDRemoteEventRouterProtoFragmentedMessage alloc] initWithData:dataCopy];
   v8 = v7;
   if (v7)
   {
@@ -2186,59 +2186,59 @@ id __83__HMDRemoteEventRouterServer__handleConnectRequest_originalMessage_connec
       }
 
       [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      *a4 = v10 = 0;
+      *error = fragmentData = 0;
     }
 
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = [(HMDRemoteEventRouterProtoFragmentedMessage *)v8 fragmentData];
+      fragmentData = [(HMDRemoteEventRouterProtoFragmentedMessage *)v8 fragmentData];
       objc_autoreleasePoolPop(v9);
     }
   }
 
   else
   {
-    v10 = 0;
+    fragmentData = 0;
   }
 
-  return v10;
+  return fragmentData;
 }
 
-- (void)_handleProtoRequest:(id)a3 originalMessage:(id)a4 connectionMode:(int64_t)a5
+- (void)_handleProtoRequest:(id)request originalMessage:(id)message connectionMode:(int64_t)mode
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 request];
-  if (v10 > 2)
+  requestCopy = request;
+  messageCopy = message;
+  request = [requestCopy request];
+  if (request > 2)
   {
-    if (v10 == 3)
+    if (request == 3)
     {
-      v11 = [v8 keepAlive];
-      [(HMDRemoteEventRouterServer *)self _handleKeepAliveRequest:v11 originalMessage:v9];
+      keepAlive = [requestCopy keepAlive];
+      [(HMDRemoteEventRouterServer *)self _handleKeepAliveRequest:keepAlive originalMessage:messageCopy];
       goto LABEL_21;
     }
 
-    if (v10 == 4)
+    if (request == 4)
     {
-      v11 = [v8 disconnect];
-      [(HMDRemoteEventRouterServer *)self _handleDisconnectRequest:v11 originalMessage:v9];
+      keepAlive = [requestCopy disconnect];
+      [(HMDRemoteEventRouterServer *)self _handleDisconnectRequest:keepAlive originalMessage:messageCopy];
       goto LABEL_21;
     }
 
-    if (v10 != 5)
+    if (request != 5)
     {
       goto LABEL_14;
     }
 
-    v12 = [v8 fetchEvents];
-    [(HMDRemoteEventRouterServer *)self _handleFetchEventsRequest:v12 originalMessage:v9 connectionMode:a5];
+    fetchEvents = [requestCopy fetchEvents];
+    [(HMDRemoteEventRouterServer *)self _handleFetchEventsRequest:fetchEvents originalMessage:messageCopy connectionMode:mode];
 LABEL_19:
 
     goto LABEL_22;
   }
 
-  switch(v10)
+  switch(request)
   {
     case 0:
       logger = self->_logger;
@@ -2252,12 +2252,12 @@ LABEL_19:
       v15 = 3;
       goto LABEL_17;
     case 1:
-      v12 = [v8 connect];
-      [(HMDRemoteEventRouterServer *)self _handleConnectRequest:v12 originalMessage:v9 connectionMode:a5];
+      fetchEvents = [requestCopy connect];
+      [(HMDRemoteEventRouterServer *)self _handleConnectRequest:fetchEvents originalMessage:messageCopy connectionMode:mode];
       goto LABEL_19;
     case 2:
-      v11 = [v8 changeRegistrations];
-      [(HMDRemoteEventRouterServer *)self _handleChangeRegistrationsRequest:v11 originalMessage:v9];
+      keepAlive = [requestCopy changeRegistrations];
+      [(HMDRemoteEventRouterServer *)self _handleChangeRegistrationsRequest:keepAlive originalMessage:messageCopy];
 LABEL_21:
 
       goto LABEL_22;
@@ -2275,30 +2275,30 @@ LABEL_14:
   v15 = -1;
 LABEL_17:
   v17 = [v14 hmErrorWithCode:v15];
-  [v9 respondWithError:v17];
+  [messageCopy respondWithError:v17];
 
 LABEL_22:
 }
 
-- (void)_handleRequestMessage:(id)a3 connectionMode:(int64_t)a4
+- (void)_handleRequestMessage:(id)message connectionMode:(int64_t)mode
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  messageCopy = message;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_INFO))
   {
     v8 = logger;
-    v9 = [v6 identifier];
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    identifier = [messageCopy identifier];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
     *buf = 138412546;
-    v25 = v9;
+    v25 = identifier;
     v26 = 2112;
     v27 = v10;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "Handle request message: %@ connection mode: %@", buf, 0x16u);
   }
 
-  v11 = [v6 BOOLForKey:@"isFragmented"];
-  v12 = [v6 dataForKey:@"message.payload"];
+  v11 = [messageCopy BOOLForKey:@"isFragmented"];
+  v12 = [messageCopy dataForKey:@"message.payload"];
   if (!v12)
   {
     v16 = self->_logger;
@@ -2346,7 +2346,7 @@ LABEL_22:
     }
 
 LABEL_23:
-    [v6 respondWithError:v15];
+    [messageCopy respondWithError:v15];
     goto LABEL_24;
   }
 
@@ -2355,7 +2355,7 @@ LABEL_11:
   v17 = [[HMDRemoteEventRouterProtoMessage alloc] initWithData:v15];
   if ([(HMDRemoteEventRouterProtoMessage *)v17 hasRequest])
   {
-    [(HMDRemoteEventRouterServer *)self _handleProtoRequest:v17 originalMessage:v6 connectionMode:a4];
+    [(HMDRemoteEventRouterServer *)self _handleProtoRequest:v17 originalMessage:messageCopy connectionMode:mode];
   }
 
   else
@@ -2368,19 +2368,19 @@ LABEL_11:
     }
 
     v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    [v6 respondWithError:v19];
+    [messageCopy respondWithError:v19];
   }
 
 LABEL_24:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleUserPrivilegeChange:(id)a3
+- (void)_handleUserPrivilegeChange:(id)change
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"kUserUUIDKey"];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"kUserUUIDKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2419,7 +2419,7 @@ LABEL_24:
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -2435,13 +2435,13 @@ LABEL_24:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isErrorHMENotAcceptingConnections:(id)a3
+- (BOOL)isErrorHMENotAcceptingConnections:(id)connections
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277D17490]])
+  connectionsCopy = connections;
+  domain = [connectionsCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277D17490]])
   {
-    v5 = [v3 code] == 4;
+    v5 = [connectionsCopy code] == 4;
   }
 
   else
@@ -2452,14 +2452,14 @@ LABEL_24:
   return v5;
 }
 
-- (void)respondToMessage:(id)a3 underlyingResponseData:(id)a4 supportsFragmentMessage:(BOOL)a5 label:(id)a6
+- (void)respondToMessage:(id)message underlyingResponseData:(id)data supportsFragmentMessage:(BOOL)fragmentMessage label:(id)label
 {
-  v7 = a5;
+  fragmentMessageCopy = fragmentMessage;
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v7)
+  messageCopy = message;
+  dataCopy = data;
+  labelCopy = label;
+  if (fragmentMessageCopy)
   {
     v13 = objc_autoreleasePoolPush();
     logger = self->_logger;
@@ -2467,27 +2467,27 @@ LABEL_24:
     {
       v15 = MEMORY[0x277CCABB0];
       v16 = logger;
-      v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(v11, "length")}];
+      v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
       *buf = 138412546;
-      v32 = v12;
+      v32 = labelCopy;
       v33 = 2112;
       v34 = v17;
       _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_DEFAULT, "Responding to %@ with message size: %@, fragment: 0", buf, 0x16u);
     }
 
     v18 = objc_alloc_init(HMDRemoteEventRouterProtoFragmentedMessage);
-    [(HMDRemoteEventRouterProtoFragmentedMessage *)v18 setFragmentData:v11];
+    [(HMDRemoteEventRouterProtoFragmentedMessage *)v18 setFragmentData:dataCopy];
     [(HMDRemoteEventRouterProtoFragmentedMessage *)v18 setFragmentNumber:0];
     [(HMDRemoteEventRouterProtoFragmentedMessage *)v18 setTotalFragments:1];
-    -[HMDRemoteEventRouterProtoFragmentedMessage setTotalSize:](v18, "setTotalSize:", [v11 length]);
+    -[HMDRemoteEventRouterProtoFragmentedMessage setTotalSize:](v18, "setTotalSize:", [dataCopy length]);
     [(HMDRemoteEventRouterProtoFragmentedMessage *)v18 setRouterVersion:0];
     v29[0] = @"message.payload";
-    v19 = [(HMDRemoteEventRouterProtoFragmentedMessage *)v18 data];
+    data = [(HMDRemoteEventRouterProtoFragmentedMessage *)v18 data];
     v29[1] = @"isFragmented";
-    v30[0] = v19;
+    v30[0] = data;
     v30[1] = MEMORY[0x277CBEC38];
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
-    [v10 respondWithPayload:v20];
+    [messageCopy respondWithPayload:v20];
 
     objc_autoreleasePoolPop(v13);
   }
@@ -2499,31 +2499,31 @@ LABEL_24:
     {
       v22 = MEMORY[0x277CCABB0];
       v23 = v21;
-      v24 = [v22 numberWithUnsignedInteger:{objc_msgSend(v11, "length")}];
+      v24 = [v22 numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
       *buf = 138412546;
-      v32 = v12;
+      v32 = labelCopy;
       v33 = 2112;
       v34 = v24;
       _os_log_impl(&dword_2531F8000, v23, OS_LOG_TYPE_DEFAULT, "Responding to %@ with message size: %@", buf, 0x16u);
     }
 
     v27 = @"message.payload";
-    v28 = v11;
+    v28 = dataCopy;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-    [v10 respondWithPayload:v25];
+    [messageCopy respondWithPayload:v25];
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)respondToMessage:(id)a3 underlyingResponseData:(id)a4 connection:(id)a5 label:(id)a6
+- (void)respondToMessage:(id)message underlyingResponseData:(id)data connection:(id)connection label:(id)label
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  if (a5)
+  labelCopy = label;
+  dataCopy = data;
+  messageCopy = message;
+  if (connection)
   {
-    v13 = *(a5 + 8);
+    v13 = *(connection + 8);
   }
 
   else
@@ -2531,13 +2531,13 @@ LABEL_24:
     v13 = 0;
   }
 
-  v14 = v12;
-  [(HMDRemoteEventRouterServer *)self respondToMessage:v12 underlyingResponseData:v11 supportsFragmentMessage:v13 & 1 label:v10];
+  v14 = messageCopy;
+  [(HMDRemoteEventRouterServer *)self respondToMessage:messageCopy underlyingResponseData:dataCopy supportsFragmentMessage:v13 & 1 label:labelCopy];
 }
 
-- (id)messageTargetForMode:(int64_t)a3
+- (id)messageTargetForMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     if (!self)
     {
@@ -2585,9 +2585,9 @@ LABEL_7:
   return self;
 }
 
-- (void)handleHomeUserRemovedNotification:(id)a3
+- (void)handleHomeUserRemovedNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   if (self)
   {
     Property = objc_getProperty(self, v4, 32, 1);
@@ -2602,9 +2602,9 @@ LABEL_7:
   v8[1] = 3221225472;
   v8[2] = __64__HMDRemoteEventRouterServer_handleHomeUserRemovedNotification___block_invoke;
   v8[3] = &unk_2797359B0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = notificationCopy;
+  selfCopy = self;
+  v7 = notificationCopy;
   dispatch_async(Property, v8);
 }
 
@@ -2699,9 +2699,9 @@ void __64__HMDRemoteEventRouterServer_handleHomeUserRemovedNotification___block_
   [v4 removeObject:v3];
 }
 
-- (void)handlePrimaryResidentIsCurrentDeviceChangeNotification:(id)a3
+- (void)handlePrimaryResidentIsCurrentDeviceChangeNotification:(id)notification
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 32, 1);
@@ -2711,7 +2711,7 @@ void __64__HMDRemoteEventRouterServer_handleHomeUserRemovedNotification___block_
   block[1] = 3221225472;
   block[2] = __85__HMDRemoteEventRouterServer_handlePrimaryResidentIsCurrentDeviceChangeNotification___block_invoke;
   block[3] = &unk_279735D00;
-  block[4] = v3;
+  block[4] = selfCopy;
   dispatch_async(&self->super, block);
 }
 
@@ -2779,11 +2779,11 @@ LABEL_6:
   return result;
 }
 
-- (void)_registerForAccessoryMessages:(id)a3
+- (void)_registerForAccessoryMessages:(id)messages
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 na_firstObjectPassingTest:&__block_literal_global_106];
+  messagesCopy = messages;
+  v5 = [messagesCopy na_firstObjectPassingTest:&__block_literal_global_106];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2820,7 +2820,7 @@ LABEL_6:
   v20 = objc_getProperty(self, v19, 32, 1);
   v21 = v18;
   v22 = v20;
-  v23 = self;
+  selfCopy = self;
   if (v15)
   {
     *v39 = v15;
@@ -2831,7 +2831,7 @@ LABEL_6:
     {
       objc_storeStrong(v24 + 1, v17);
       objc_storeStrong(v25 + 2, v20);
-      objc_storeWeak(v25 + 3, v23);
+      objc_storeWeak(v25 + 3, selfCopy);
     }
   }
 
@@ -2840,12 +2840,12 @@ LABEL_6:
     v25 = 0;
   }
 
-  objc_setProperty_atomic(v23, v26, v25, 136);
-  v28 = objc_getProperty(v23, v27, 136, 1);
-  v30 = objc_getProperty(v23, v29, 80, 1);
+  objc_setProperty_atomic(selfCopy, v26, v25, 136);
+  v28 = objc_getProperty(selfCopy, v27, 136, 1);
+  v30 = objc_getProperty(selfCopy, v29, 80, 1);
   if (v28)
   {
-    v31 = v4;
+    v31 = messagesCopy;
     WeakRetained = objc_loadWeakRetained(v28 + 3);
     v33 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
     *v39 = v33;
@@ -2877,11 +2877,11 @@ uint64_t __60__HMDRemoteEventRouterServer__registerForAccessoryMessages___block_
   return isKindOfClass & (v2 != 0);
 }
 
-- (void)_registerForMessages:(id)a3 withHome:(id)a4
+- (void)_registerForMessages:(id)messages withHome:(id)home
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  homeCopy = home;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
@@ -2895,7 +2895,7 @@ uint64_t __60__HMDRemoteEventRouterServer__registerForAccessoryMessages___block_
   v9 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
   v32[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
-  v11 = [v10 arrayByAddingObjectsFromArray:v6];
+  v11 = [v10 arrayByAddingObjectsFromArray:messagesCopy];
 
   if (self)
   {
@@ -2908,7 +2908,7 @@ uint64_t __60__HMDRemoteEventRouterServer__registerForAccessoryMessages___block_
   }
 
   v14 = Property;
-  v15 = [v6 na_firstObjectPassingTest:&__block_literal_global_95];
+  v15 = [messagesCopy na_firstObjectPassingTest:&__block_literal_global_95];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2997,21 +2997,21 @@ uint64_t __60__HMDRemoteEventRouterServer__registerForMessages_withHome___block_
   return v14;
 }
 
-- (HMDRemoteEventRouterServer)initWithPrimaryModeUUID:(id)a3 residentModeUUID:(id)a4 queue:(id)a5 messageDispatcher:(id)a6 dataSource:(id)a7 notificationCenter:(id)a8 requestMessageName:(id)a9 updateMessageName:(id)a10 multiHopFetchResponseMessageName:(id)a11 logCategory:(const char *)a12 logEventSubmitter:(id)a13 connectionServerFactory:(id)a14
+- (HMDRemoteEventRouterServer)initWithPrimaryModeUUID:(id)d residentModeUUID:(id)iD queue:(id)queue messageDispatcher:(id)dispatcher dataSource:(id)source notificationCenter:(id)center requestMessageName:(id)name updateMessageName:(id)self0 multiHopFetchResponseMessageName:(id)self1 logCategory:(const char *)self2 logEventSubmitter:(id)self3 connectionServerFactory:(id)self4
 {
-  v49 = a3;
-  v40 = a4;
-  v48 = a4;
-  v47 = a5;
-  v46 = a6;
-  v19 = a7;
-  v45 = a8;
-  v44 = a9;
-  v43 = a10;
-  v42 = a11;
-  v20 = v19;
-  v50 = a13;
-  v21 = a14;
+  dCopy = d;
+  iDCopy = iD;
+  iDCopy2 = iD;
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
+  sourceCopy = source;
+  centerCopy = center;
+  nameCopy = name;
+  messageNameCopy = messageName;
+  responseMessageNameCopy = responseMessageName;
+  v20 = sourceCopy;
+  submitterCopy = submitter;
+  factoryCopy = factory;
   v51.receiver = self;
   v51.super_class = HMDRemoteEventRouterServer;
   v22 = [(HMDRemoteEventRouterServer *)&v51 init];
@@ -3023,7 +3023,7 @@ uint64_t __60__HMDRemoteEventRouterServer__registerForMessages_withHome___block_
     logger = v23->_logger;
     v23->_logger = v24;
 
-    v26 = os_log_create("com.apple.HomeKitDaemon", a12);
+    v26 = os_log_create("com.apple.HomeKitDaemon", category);
     v27 = v23->_logger;
     v23->_logger = v26;
 
@@ -3031,74 +3031,74 @@ uint64_t __60__HMDRemoteEventRouterServer__registerForMessages_withHome___block_
     timerProvider = v23->_timerProvider;
     v23->_timerProvider = v28;
 
-    objc_storeStrong(&v23->_homeUUID, a3);
-    objc_storeStrong(&v23->_accessoryUUID, v40);
-    objc_storeStrong(&v23->_messageDispatcher, a6);
-    objc_storeStrong(&v23->_workQueue, a5);
+    objc_storeStrong(&v23->_homeUUID, d);
+    objc_storeStrong(&v23->_accessoryUUID, iDCopy);
+    objc_storeStrong(&v23->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v23->_workQueue, queue);
     objc_storeWeak(&v23->_dataSource, v20);
-    objc_storeStrong(&v23->_notificationCenter, a8);
-    objc_storeStrong(&v23->_routerRequestMessageName, a9);
-    objc_storeStrong(&v23->_routerUpdateMessageName, a10);
-    objc_storeStrong(&v23->_routerMultiHopFetchResponseMessageName, a11);
-    v30 = v21[2](v21);
+    objc_storeStrong(&v23->_notificationCenter, center);
+    objc_storeStrong(&v23->_routerRequestMessageName, name);
+    objc_storeStrong(&v23->_routerUpdateMessageName, messageName);
+    objc_storeStrong(&v23->_routerMultiHopFetchResponseMessageName, responseMessageName);
+    v30 = factoryCopy[2](factoryCopy);
     connectionServer = v23->_connectionServer;
     v23->_connectionServer = v30;
 
     [(HMEMessageDatagramServer *)v23->_connectionServer setDelegate:v23];
     [(HMEMessageDatagramServer *)v23->_connectionServer setDataSource:v23];
-    v32 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     currentConnections = v23->_currentConnections;
-    v23->_currentConnections = v32;
+    v23->_currentConnections = array;
 
     *&v23->_isPrimaryResident = 0;
-    v34 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     accessControls = v23->_accessControls;
-    v23->_accessControls = v34;
+    v23->_accessControls = dictionary;
 
-    v36 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     pendingFetchRequests = v23->_pendingFetchRequests;
-    v23->_pendingFetchRequests = v36;
+    v23->_pendingFetchRequests = strongToStrongObjectsMapTable;
 
-    objc_storeWeak(&v23->_logEventSubmitter, v50);
+    objc_storeWeak(&v23->_logEventSubmitter, submitterCopy);
   }
 
   return v23;
 }
 
-- (HMDRemoteEventRouterServer)initWithPrimaryModeUUID:(id)a3 residentModeUUID:(id)a4 queue:(id)a5 messageDispatcher:(id)a6 dataSource:(id)a7 notificationCenter:(id)a8 requestMessageName:(id)a9 updateMessageName:(id)a10 multiHopFetchResponseMessageName:(id)a11 subscriptionProvider:(id)a12 registrationEventRouter:(id)a13 storeReadHandle:(id)a14
+- (HMDRemoteEventRouterServer)initWithPrimaryModeUUID:(id)d residentModeUUID:(id)iD queue:(id)queue messageDispatcher:(id)dispatcher dataSource:(id)source notificationCenter:(id)center requestMessageName:(id)name updateMessageName:(id)self0 multiHopFetchResponseMessageName:(id)self1 subscriptionProvider:(id)self2 registrationEventRouter:(id)self3 storeReadHandle:(id)self4
 {
-  v36 = a5;
-  v33 = a12;
-  v18 = a13;
-  v19 = a14;
-  v41 = a11;
-  v40 = a10;
-  v38 = a9;
-  v39 = a8;
-  v37 = a7;
-  v35 = a6;
-  v20 = a4;
-  v21 = a3;
-  v22 = [v21 UUIDString];
-  v23 = [@"RemoteEventRouter.Server." stringByAppendingString:v22];
+  queueCopy = queue;
+  providerCopy = provider;
+  routerCopy = router;
+  handleCopy = handle;
+  responseMessageNameCopy = responseMessageName;
+  messageNameCopy = messageName;
+  nameCopy = name;
+  centerCopy = center;
+  sourceCopy = source;
+  dispatcherCopy = dispatcher;
+  iDCopy = iD;
+  dCopy = d;
+  uUIDString = [dCopy UUIDString];
+  v23 = [@"RemoteEventRouter.Server." stringByAppendingString:uUIDString];
 
-  v24 = [v23 UTF8String];
+  uTF8String = [v23 UTF8String];
   v28 = +[HMDMetricsManager sharedLogEventSubmitter];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __256__HMDRemoteEventRouterServer_initWithPrimaryModeUUID_residentModeUUID_queue_messageDispatcher_dataSource_notificationCenter_requestMessageName_updateMessageName_multiHopFetchResponseMessageName_subscriptionProvider_registrationEventRouter_storeReadHandle___block_invoke;
   v43[3] = &unk_279728658;
-  v44 = v36;
-  v45 = v33;
-  v46 = v18;
-  v47 = v19;
+  v44 = queueCopy;
+  v45 = providerCopy;
+  v46 = routerCopy;
+  v47 = handleCopy;
   v48 = v23;
   v32 = v23;
-  v30 = v19;
-  v29 = v18;
-  v34 = v33;
-  v25 = v36;
-  v26 = [(HMDRemoteEventRouterServer *)self initWithPrimaryModeUUID:v21 residentModeUUID:v20 queue:v25 messageDispatcher:v35 dataSource:v37 notificationCenter:v39 requestMessageName:v38 updateMessageName:v40 multiHopFetchResponseMessageName:v41 logCategory:v24 logEventSubmitter:v28 connectionServerFactory:v43];
+  v30 = handleCopy;
+  v29 = routerCopy;
+  v34 = providerCopy;
+  v25 = queueCopy;
+  v26 = [(HMDRemoteEventRouterServer *)self initWithPrimaryModeUUID:dCopy residentModeUUID:iDCopy queue:v25 messageDispatcher:dispatcherCopy dataSource:sourceCopy notificationCenter:centerCopy requestMessageName:nameCopy updateMessageName:messageNameCopy multiHopFetchResponseMessageName:responseMessageNameCopy logCategory:uTF8String logEventSubmitter:v28 connectionServerFactory:v43];
 
   return v26;
 }

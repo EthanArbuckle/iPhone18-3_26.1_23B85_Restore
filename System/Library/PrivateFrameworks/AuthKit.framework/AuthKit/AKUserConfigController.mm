@@ -1,29 +1,29 @@
 @interface AKUserConfigController
 + (id)sharedController;
 - (AKUserConfigController)init;
-- (id)_decodeConfigurationInfo:(id)a3;
-- (id)_requestProvider:(id)a3 client:(id)a4 dataCenter:(id)a5 urlBagKey:(id)a6;
-- (id)_userConfigChangeNotificationDictionaryForAccount:(id)a3 configurationInfo:(id)a4;
-- (void)fetchUserConfigForAltDSID:(id)a3 client:(id)a4 dataCenter:(id)a5 forIdentifiers:(id)a6 completion:(id)a7;
-- (void)processPushMessage:(id)a3;
-- (void)setPrivacyConsentForAltDSID:(id)a3 client:(id)a4 value:(id)a5 version:(id)a6 completion:(id)a7;
-- (void)setUserConfigForAltDSID:(id)a3 client:(id)a4 configurationInfo:(id)a5 forIdentifier:(id)a6 completion:(id)a7;
-- (void)updateUserConfigForAccount:(id)a3 configurationInfo:(id)a4;
-- (void)updateUserConfigForAltDSID:(id)a3 configurationInfo:(id)a4;
+- (id)_decodeConfigurationInfo:(id)info;
+- (id)_requestProvider:(id)provider client:(id)client dataCenter:(id)center urlBagKey:(id)key;
+- (id)_userConfigChangeNotificationDictionaryForAccount:(id)account configurationInfo:(id)info;
+- (void)fetchUserConfigForAltDSID:(id)d client:(id)client dataCenter:(id)center forIdentifiers:(id)identifiers completion:(id)completion;
+- (void)processPushMessage:(id)message;
+- (void)setPrivacyConsentForAltDSID:(id)d client:(id)client value:(id)value version:(id)version completion:(id)completion;
+- (void)setUserConfigForAltDSID:(id)d client:(id)client configurationInfo:(id)info forIdentifier:(id)identifier completion:(id)completion;
+- (void)updateUserConfigForAccount:(id)account configurationInfo:(id)info;
+- (void)updateUserConfigForAltDSID:(id)d configurationInfo:(id)info;
 @end
 
 @implementation AKUserConfigController
 
 + (id)sharedController
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000E5AF0;
   v8 = &unk_100322AA0;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &unk_100374780;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -60,20 +60,20 @@
   return v5;
 }
 
-- (void)fetchUserConfigForAltDSID:(id)a3 client:(id)a4 dataCenter:(id)a5 forIdentifiers:(id)a6 completion:(id)a7
+- (void)fetchUserConfigForAltDSID:(id)d client:(id)client dataCenter:(id)center forIdentifiers:(id)identifiers completion:(id)completion
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, client);
   v42 = 0;
-  objc_storeStrong(&v42, a5);
+  objc_storeStrong(&v42, center);
   v41 = 0;
-  objc_storeStrong(&v41, a6);
+  objc_storeStrong(&v41, identifiers);
   v40 = 0;
-  objc_storeStrong(&v40, a7);
+  objc_storeStrong(&v40, completion);
   v38 = 0;
   v21 = 1;
   if ([v41 count])
@@ -82,7 +82,7 @@
     v21 = 1;
     if (objc_opt_isKindOfClass())
     {
-      v39 = [v41 firstObject];
+      firstObject = [v41 firstObject];
       v38 = 1;
       objc_opt_class();
       v21 = (objc_opt_isKindOfClass() & 1) == 0;
@@ -91,7 +91,7 @@
 
   if (v38)
   {
-    _objc_release(v39);
+    _objc_release(firstObject);
   }
 
   if (v21)
@@ -122,7 +122,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v31 = [(AKUserConfigController *)v45 _requestProvider:location[0] client:v43 dataCenter:v42 urlBagKey:AKURLBagKeyFetchConfigData];
+      v31 = [(AKUserConfigController *)selfCopy _requestProvider:location[0] client:v43 dataCenter:v42 urlBagKey:AKURLBagKeyFetchConfigData];
       v46 = @"cdks";
       v47 = v41;
       v9 = [NSDictionary dictionaryWithObjects:&v47 forKeys:&v46 count:1];
@@ -137,7 +137,7 @@
       v25 = sub_1000E61E0;
       v26 = &unk_10031F110;
       v29 = _objc_retain(v40);
-      v27 = _objc_retain(v45);
+      v27 = _objc_retain(selfCopy);
       v28 = _objc_retain(location[0]);
       [(AKServiceControllerImpl *)v10 executeRequestWithCompletion:&v22];
       objc_storeStrong(&v28, 0);
@@ -180,20 +180,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setUserConfigForAltDSID:(id)a3 client:(id)a4 configurationInfo:(id)a5 forIdentifier:(id)a6 completion:(id)a7
+- (void)setUserConfigForAltDSID:(id)d client:(id)client configurationInfo:(id)info forIdentifier:(id)identifier completion:(id)completion
 {
-  v75 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v73 = 0;
-  objc_storeStrong(&v73, a4);
+  objc_storeStrong(&v73, client);
   v72 = 0;
-  objc_storeStrong(&v72, a5);
+  objc_storeStrong(&v72, info);
   v71 = 0;
-  objc_storeStrong(&v71, a6);
+  objc_storeStrong(&v71, identifier);
   v70 = 0;
-  objc_storeStrong(&v70, a7);
+  objc_storeStrong(&v70, completion);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -321,7 +321,7 @@ LABEL_30:
           v50 = [v54 base64EncodedStringWithOptions:0];
           if (v50)
           {
-            v46 = [AKUserConfigController _requestProvider:v75 client:"_requestProvider:client:dataCenter:urlBagKey:" dataCenter:location[0] urlBagKey:v73];
+            v46 = [AKUserConfigController _requestProvider:selfCopy client:"_requestProvider:client:dataCenter:urlBagKey:" dataCenter:location[0] urlBagKey:v73];
             v76 = v71;
             v77 = v50;
             v11 = [NSDictionary dictionaryWithObjects:&v77 forKeys:&v76 count:1];
@@ -433,20 +433,20 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)setPrivacyConsentForAltDSID:(id)a3 client:(id)a4 value:(id)a5 version:(id)a6 completion:(id)a7
+- (void)setPrivacyConsentForAltDSID:(id)d client:(id)client value:(id)value version:(id)version completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, client);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, value);
   v21 = 0;
-  objc_storeStrong(&v21, a6);
+  objc_storeStrong(&v21, version);
   v20 = 0;
-  objc_storeStrong(&v20, a7);
+  objc_storeStrong(&v20, completion);
   if (v22 && v21 && [v22 length] && objc_msgSend(v21, "length"))
   {
     v26[0] = AKAppleAccountConsentValueKey;
@@ -454,7 +454,7 @@ LABEL_30:
     v26[1] = AKAppleAccountConsentVersionKey;
     v27[1] = v21;
     v15 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:2];
-    [(AKUserConfigController *)v25 setUserConfigForAltDSID:location[0] client:v23 configurationInfo:v15 forIdentifier:AKAppleAccountPrivacyConsentKey completion:v20];
+    [(AKUserConfigController *)selfCopy setUserConfigForAltDSID:location[0] client:v23 configurationInfo:v15 forIdentifier:AKAppleAccountPrivacyConsentKey completion:v20];
     objc_storeStrong(&v15, 0);
     v16 = 0;
   }
@@ -490,33 +490,33 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)updateUserConfigForAltDSID:(id)a3 configurationInfo:(id)a4
+- (void)updateUserConfigForAltDSID:(id)d configurationInfo:(id)info
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(AKAccountManager *)v8->_accountManager authKitAccountWithAltDSID:location[0] error:0];
-  [(AKUserConfigController *)v8 updateUserConfigForAccount:v5 configurationInfo:v6];
+  objc_storeStrong(&v6, info);
+  v5 = [(AKAccountManager *)selfCopy->_accountManager authKitAccountWithAltDSID:location[0] error:0];
+  [(AKUserConfigController *)selfCopy updateUserConfigForAccount:v5 configurationInfo:v6];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)updateUserConfigForAccount:(id)a3 configurationInfo:(id)a4
+- (void)updateUserConfigForAccount:(id)account configurationInfo:(id)info
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
+  objc_storeStrong(&v32, info);
   v31 = 0;
   if (location[0])
   {
-    v4 = [(AKUserConfigController *)v34 _userConfigChangeNotificationDictionaryForAccount:location[0] configurationInfo:v32];
+    v4 = [(AKUserConfigController *)selfCopy _userConfigChangeNotificationDictionaryForAccount:location[0] configurationInfo:v32];
     v5 = v31;
     v31 = v4;
     _objc_release(v5);
@@ -541,7 +541,7 @@ LABEL_30:
 
           v25 = *(__b[1] + 8 * v10);
           v23 = [v31 objectForKeyedSubscript:v25];
-          [(AKAccountManager *)v34->_accountManager setConfigValue:v23 forKey:v25 forAccount:location[0]];
+          [(AKAccountManager *)selfCopy->_accountManager setConfigValue:v23 forKey:v25 forAccount:location[0]];
           v26 = 1;
           objc_storeStrong(&v23, 0);
           ++v10;
@@ -562,7 +562,7 @@ LABEL_30:
       v21 = 0;
       if (v26)
       {
-        accountManager = v34->_accountManager;
+        accountManager = selfCopy->_accountManager;
         v20 = v21;
         v7 = [(AKAccountManager *)accountManager saveAccount:location[0] error:&v20];
         objc_storeStrong(&v21, v20);
@@ -613,12 +613,12 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)processPushMessage:(id)a3
+- (void)processPushMessage:(id)message
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   if ([location[0] command] == 1400)
   {
     v27 = _AKLogSystem();
@@ -632,9 +632,9 @@ LABEL_30:
     }
 
     objc_storeStrong(&v27, 0);
-    v15 = [location[0] userInfo];
-    v24 = [v15 objectForKeyedSubscript:@"userinfodata"];
-    _objc_release(v15);
+    userInfo = [location[0] userInfo];
+    v24 = [userInfo objectForKeyedSubscript:@"userinfodata"];
+    _objc_release(userInfo);
     v23 = 0;
     v22 = 0;
     v21 = 0;
@@ -646,14 +646,14 @@ LABEL_30:
       _objc_release(v4);
       if (v23)
       {
-        accountManager = v29->_accountManager;
-        v14 = [location[0] altDSID];
+        accountManager = selfCopy->_accountManager;
+        altDSID = [location[0] altDSID];
         v5 = [AKAccountManager authKitAccountWithAltDSID:"authKitAccountWithAltDSID:error:" error:?];
         v6 = v22;
         v22 = v5;
         _objc_release(v6);
-        _objc_release(v14);
-        v7 = [(AKAccountManager *)v29->_accountManager configDataVersionForAccount:v22];
+        _objc_release(altDSID);
+        v7 = [(AKAccountManager *)selfCopy->_accountManager configDataVersionForAccount:v22];
         v8 = v21;
         v21 = v7;
         _objc_release(v8);
@@ -662,18 +662,18 @@ LABEL_30:
 
     if (v23 && !sub_1000E827C(v23, v21))
     {
-      v9 = [location[0] eventDetails];
-      v20 = [v9 objectForKeyedSubscript:@"dataCenter"];
-      _objc_release(v9);
+      eventDetails = [location[0] eventDetails];
+      v20 = [eventDetails objectForKeyedSubscript:@"dataCenter"];
+      _objc_release(eventDetails);
       v19 = os_transaction_create();
-      v10 = v29;
-      v12 = [location[0] altDSID];
+      v10 = selfCopy;
+      altDSID2 = [location[0] altDSID];
       v30 = AKAllConfigsKey;
       v11 = [NSArray arrayWithObjects:&v30 count:1];
       v18 = _objc_retain(v19);
-      [AKUserConfigController fetchUserConfigForAltDSID:v10 client:"fetchUserConfigForAltDSID:client:dataCenter:forIdentifiers:completion:" dataCenter:v12 forIdentifiers:? completion:?];
+      [AKUserConfigController fetchUserConfigForAltDSID:v10 client:"fetchUserConfigForAltDSID:client:dataCenter:forIdentifiers:completion:" dataCenter:altDSID2 forIdentifiers:? completion:?];
       _objc_release(v11);
-      _objc_release(v12);
+      _objc_release(altDSID2);
       objc_storeStrong(&v18, 0);
       objc_storeStrong(&v19, 0);
       objc_storeStrong(&v20, 0);
@@ -688,18 +688,18 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (id)_requestProvider:(id)a3 client:(id)a4 dataCenter:(id)a5 urlBagKey:(id)a6
+- (id)_requestProvider:(id)provider client:(id)client dataCenter:(id)center urlBagKey:(id)key
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, provider);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, client);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, center);
   v14 = 0;
-  objc_storeStrong(&v14, a6);
+  objc_storeStrong(&v14, key);
   v13 = objc_alloc_init(AKAppleIDAuthenticationContext);
   [v13 setAltDSID:location[0]];
   v6 = [AKGrandSlamRequestProvider alloc];
@@ -718,12 +718,12 @@ LABEL_30:
   return v11;
 }
 
-- (id)_decodeConfigurationInfo:(id)a3
+- (id)_decodeConfigurationInfo:(id)info
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v11 = [location[0] objectForKeyedSubscript:@"cd"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -732,10 +732,10 @@ LABEL_30:
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [v7 allKeys];
-      sub_1000194D4(v14, v5);
+      allKeys = [v7 allKeys];
+      sub_1000194D4(v14, allKeys);
       _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Fetch configuration info completed with keys: %@", v14, 0xCu);
-      _objc_release(v5);
+      _objc_release(allKeys);
     }
 
     objc_storeStrong(&oslog, 0);
@@ -766,14 +766,14 @@ LABEL_30:
   return v3;
 }
 
-- (id)_userConfigChangeNotificationDictionaryForAccount:(id)a3 configurationInfo:(id)a4
+- (id)_userConfigChangeNotificationDictionaryForAccount:(id)account configurationInfo:(id)info
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, info);
   v17 = +[NSMutableDictionary dictionary];
   memset(__b, 0, sizeof(__b));
   v11 = _objc_retain(v18);
@@ -793,7 +793,7 @@ LABEL_30:
 
       v16 = *(__b[1] + 8 * v8);
       v14 = [v18 objectForKeyedSubscript:v16];
-      v13 = [(AKAccountManager *)v20->_accountManager configValue:v16 forAccount:location[0]];
+      v13 = [(AKAccountManager *)selfCopy->_accountManager configValue:v16 forAccount:location[0]];
       if (v14 && !sub_1000E827C(v14, v13))
       {
         [v17 setObject:v14 forKeyedSubscript:v16];

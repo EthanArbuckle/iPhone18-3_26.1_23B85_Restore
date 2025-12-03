@@ -1,6 +1,6 @@
 @interface MUNearestStationProvider
 - (void)cancel;
-- (void)fetchStationForLineItemIdentifier:(id)a3 completion:(id)a4;
+- (void)fetchStationForLineItemIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation MUNearestStationProvider
@@ -12,24 +12,24 @@
   self->_lastRequestedNearestID = 0;
 }
 
-- (void)fetchStationForLineItemIdentifier:(id)a3 completion:(id)a4
+- (void)fetchStationForLineItemIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v6 muid])
+    if ([identifierCopy muid])
     {
       objc_initWeak(&location, self);
-      v8 = [MEMORY[0x1E696F268] sharedLocationManager];
+      mEMORY[0x1E696F268] = [MEMORY[0x1E696F268] sharedLocationManager];
       v11 = MEMORY[0x1E69E9820];
       v12 = 3221225472;
       v13 = __73__MUNearestStationProvider_fetchStationForLineItemIdentifier_completion___block_invoke;
       v14 = &unk_1E8218CF8;
       objc_copyWeak(&v17, &location);
-      v16 = v7;
-      v15 = v6;
-      v9 = [v8 singleLocationUpdateWithHandler:&v11];
+      v16 = completionCopy;
+      v15 = identifierCopy;
+      v9 = [mEMORY[0x1E696F268] singleLocationUpdateWithHandler:&v11];
       locationOperation = self->_locationOperation;
       self->_locationOperation = v9;
 
@@ -40,7 +40,7 @@
 
     else
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 }

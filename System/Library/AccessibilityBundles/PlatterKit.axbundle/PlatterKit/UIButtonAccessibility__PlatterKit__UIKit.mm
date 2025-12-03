@@ -13,22 +13,22 @@
   y = v5;
   width = v7;
   height = v9;
-  v11 = self;
-  v12 = [(UIButtonAccessibility__PlatterKit__UIKit *)v11 accessibilityIdentification];
-  v13 = [v12 isEqualToString:@"HeaderAppIcon"];
+  selfCopy = self;
+  accessibilityIdentification = [(UIButtonAccessibility__PlatterKit__UIKit *)selfCopy accessibilityIdentification];
+  v13 = [accessibilityIdentification isEqualToString:@"HeaderAppIcon"];
 
   if (v13)
   {
-    v14 = [(UIButtonAccessibility__PlatterKit__UIKit *)v11 superview];
-    v15 = v14;
-    if (v14)
+    superview = [(UIButtonAccessibility__PlatterKit__UIKit *)selfCopy superview];
+    v15 = superview;
+    if (superview)
     {
-      [(UIView *)v14 bounds];
+      [(UIView *)superview bounds];
       v17 = v16;
       v19 = v18;
       v21 = v20;
       v23 = v22;
-      [(UIButtonAccessibility__PlatterKit__UIKit *)v11 frame];
+      [(UIButtonAccessibility__PlatterKit__UIKit *)selfCopy frame];
       v33.origin.x = v17;
       v33.origin.y = v19;
       v33.size.width = v21;

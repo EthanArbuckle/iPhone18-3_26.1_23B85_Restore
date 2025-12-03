@@ -1,5 +1,5 @@
 @interface EKFrozenReminderStructuredLocation
-- (EKFrozenReminderStructuredLocation)initWithAlternateUniverseObject:(id)a3 inEventStore:(id)a4 withUpdatedChildObjects:(id)a5;
+- (EKFrozenReminderStructuredLocation)initWithAlternateUniverseObject:(id)object inEventStore:(id)store withUpdatedChildObjects:(id)objects;
 - (NSString)uniqueIdentifier;
 - (double)latitude;
 - (double)longitude;
@@ -8,34 +8,34 @@
 - (id)mapKitHandle;
 - (id)title;
 - (id)updatedStructuredLocation;
-- (void)setLatitudeAndLongitudeFromAlternateUniverseObject:(id)a3 inChangeSet:(id)a4;
+- (void)setLatitudeAndLongitudeFromAlternateUniverseObject:(id)object inChangeSet:(id)set;
 @end
 
 @implementation EKFrozenReminderStructuredLocation
 
-- (EKFrozenReminderStructuredLocation)initWithAlternateUniverseObject:(id)a3 inEventStore:(id)a4 withUpdatedChildObjects:(id)a5
+- (EKFrozenReminderStructuredLocation)initWithAlternateUniverseObject:(id)object inEventStore:(id)store withUpdatedChildObjects:(id)objects
 {
-  v7 = a4;
-  v8 = a3;
+  storeCopy = store;
+  objectCopy = object;
   v9 = objc_alloc_init(EKChangeSet);
   [(EKChangeSet *)v9 setSkipsPersistentObjectCopy:1];
-  v10 = [v8 valueForKey:@"title"];
+  v10 = [objectCopy valueForKey:@"title"];
   [(EKChangeSet *)v9 changeSingleValue:v10 forKey:@"title" basedOn:0];
 
-  v11 = [v8 valueForKey:@"radius"];
+  v11 = [objectCopy valueForKey:@"radius"];
   [(EKChangeSet *)v9 changeSingleValue:v11 forKey:@"radius" basedOn:0];
 
-  v12 = [v8 valueForKey:@"address"];
+  v12 = [objectCopy valueForKey:@"address"];
   [(EKChangeSet *)v9 changeSingleValue:v12 forKey:@"address" basedOn:0];
 
-  v13 = [MEMORY[0x1E696AFB0] UUID];
-  v14 = [v13 UUIDString];
-  [(EKChangeSet *)v9 changeSingleValue:v14 forKey:@"uniqueIdentifier" basedOn:0];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(EKChangeSet *)v9 changeSingleValue:uUIDString forKey:@"uniqueIdentifier" basedOn:0];
 
-  [(EKFrozenReminderStructuredLocation *)self setLatitudeAndLongitudeFromAlternateUniverseObject:v8 inChangeSet:v9];
-  v15 = [v7 reminderStore];
+  [(EKFrozenReminderStructuredLocation *)self setLatitudeAndLongitudeFromAlternateUniverseObject:objectCopy inChangeSet:v9];
+  reminderStore = [storeCopy reminderStore];
 
-  v16 = [(EKFrozenReminderObject *)self initWithREMObject:0 inStore:v15 withChanges:v9];
+  v16 = [(EKFrozenReminderObject *)self initWithREMObject:0 inStore:reminderStore withChanges:v9];
   return v16;
 }
 
@@ -61,8 +61,8 @@ id __54__EKFrozenReminderStructuredLocation_uniqueIdentifier__block_invoke(uint6
 
 - (id)updatedStructuredLocation
 {
-  v3 = [(EKFrozenReminderStructuredLocation *)self title];
-  v4 = [(EKFrozenReminderStructuredLocation *)self uniqueIdentifier];
+  title = [(EKFrozenReminderStructuredLocation *)self title];
+  uniqueIdentifier = [(EKFrozenReminderStructuredLocation *)self uniqueIdentifier];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -81,18 +81,18 @@ id __54__EKFrozenReminderStructuredLocation_uniqueIdentifier__block_invoke(uint6
 
   v6 = v5;
   _Block_object_dispose(&v12, 8);
-  v7 = [[v5 alloc] initWithTitle:v3 locationUID:v4];
+  v7 = [[v5 alloc] initWithTitle:title locationUID:uniqueIdentifier];
   [(EKFrozenReminderStructuredLocation *)self latitude];
   [v7 setLatitude:?];
   [(EKFrozenReminderStructuredLocation *)self longitude];
   [v7 setLongitude:?];
   [(EKFrozenReminderStructuredLocation *)self radius];
   [v7 setRadius:?];
-  v8 = [(EKFrozenReminderStructuredLocation *)self address];
-  [v7 setAddress:v8];
+  address = [(EKFrozenReminderStructuredLocation *)self address];
+  [v7 setAddress:address];
 
-  v9 = [(EKFrozenReminderStructuredLocation *)self mapKitHandle];
-  [v7 setMapKitHandle:v9];
+  mapKitHandle = [(EKFrozenReminderStructuredLocation *)self mapKitHandle];
+  [v7 setMapKitHandle:mapKitHandle];
 
   return v7;
 }
@@ -229,16 +229,16 @@ id __44__EKFrozenReminderStructuredLocation_radius__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLatitudeAndLongitudeFromAlternateUniverseObject:(id)a3 inChangeSet:(id)a4
+- (void)setLatitudeAndLongitudeFromAlternateUniverseObject:(id)object inChangeSet:(id)set
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 valueForKey:@"latitude"];
-  [v5 changeSingleValue:v7 forKey:@"latitude" basedOn:0];
+  setCopy = set;
+  objectCopy = object;
+  v7 = [objectCopy valueForKey:@"latitude"];
+  [setCopy changeSingleValue:v7 forKey:@"latitude" basedOn:0];
 
-  v8 = [v6 valueForKey:@"latitude"];
+  v8 = [objectCopy valueForKey:@"latitude"];
 
-  [v5 changeSingleValue:v8 forKey:@"latitude" basedOn:0];
+  [setCopy changeSingleValue:v8 forKey:@"latitude" basedOn:0];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface MPModelPlaylistEntryKind
-+ (MPModelPlaylistEntryKind)kindWithKinds:(id)a3;
++ (MPModelPlaylistEntryKind)kindWithKinds:(id)kinds;
 + (id)identityKind;
-- (BOOL)isEqual:(id)a3;
-- (MPModelPlaylistEntryKind)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPModelPlaylistEntryKind)initWithCoder:(id)coder;
 - (id)humanDescription;
-- (id)msv_initWithJSONValue:(id)a3;
+- (id)msv_initWithJSONValue:(id)value;
 - (id)msv_jsonValue;
 - (unint64_t)hash;
-- (void)applyToView:(shared_ptr<mlcore:(id)a4 :LibraryView>)a3 withContext:;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyToView:(shared_ptr<mlcore:(id)view :LibraryView>)a3 withContext:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPModelPlaylistEntryKind
@@ -23,22 +23,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPModelPlaylistEntryKind;
-  v4 = a3;
-  [(MPModelKind *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_kinds forKey:{@"kinds", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(MPModelKind *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_kinds forKey:{@"kinds", v5.receiver, v5.super_class}];
 }
 
-- (MPModelPlaylistEntryKind)initWithCoder:(id)a3
+- (MPModelPlaylistEntryKind)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"kinds"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"kinds"];
 
   if (v8)
   {
@@ -57,20 +57,20 @@
 {
   v8.receiver = self;
   v8.super_class = MPModelPlaylistEntryKind;
-  v3 = [(MPModelKind *)&v8 msv_jsonValue];
-  v4 = [v3 mutableCopy];
+  msv_jsonValue = [(MPModelKind *)&v8 msv_jsonValue];
+  v4 = [msv_jsonValue mutableCopy];
 
-  v5 = [(NSArray *)self->_kinds msv_jsonValue];
-  [v4 setObject:v5 forKeyedSubscript:@"kinds"];
+  msv_jsonValue2 = [(NSArray *)self->_kinds msv_jsonValue];
+  [v4 setObject:msv_jsonValue2 forKeyedSubscript:@"kinds"];
 
   v6 = [v4 copy];
 
   return v6;
 }
 
-- (id)msv_initWithJSONValue:(id)a3
+- (id)msv_initWithJSONValue:(id)value
 {
-  v3 = [a3 objectForKeyedSubscript:@"kinds"];
+  v3 = [value objectForKeyedSubscript:@"kinds"];
   v4 = [v3 msv_map:&__block_literal_global_25];
 
   v5 = [objc_opt_class() kindWithKinds:v4];
@@ -87,14 +87,14 @@ id __50__MPModelPlaylistEntryKind_msv_initWithJSONValue___block_invoke(uint64_t 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = MPModelPlaylistEntryKind;
-  if ([(MPModelKind *)&v7 isEqual:v4])
+  if ([(MPModelKind *)&v7 isEqual:equalCopy])
   {
-    v5 = [(NSArray *)self->_kinds isEqual:v4[2]];
+    v5 = [(NSArray *)self->_kinds isEqual:equalCopy[2]];
   }
 
   else
@@ -113,16 +113,16 @@ id __50__MPModelPlaylistEntryKind_msv_initWithJSONValue___block_invoke(uint64_t 
   return [(NSArray *)self->_kinds hash]^ v3;
 }
 
-+ (MPModelPlaylistEntryKind)kindWithKinds:(id)a3
++ (MPModelPlaylistEntryKind)kindWithKinds:(id)kinds
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  kindsCopy = kinds;
   v5 = [MEMORY[0x1E696AD60] stringWithString:@"PlaylistEntry:k"];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_23397];
+  v6 = [kindsCopy sortedArrayUsingComparator:&__block_literal_global_23397];
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -151,9 +151,9 @@ id __50__MPModelPlaylistEntryKind_msv_initWithJSONValue___block_invoke(uint64_t 
   v15[1] = 3221225472;
   v15[2] = __42__MPModelPlaylistEntryKind_kindWithKinds___block_invoke_2;
   v15[3] = &unk_1E767A098;
-  v16 = v4;
-  v12 = v4;
-  v13 = [a1 kindWithModelClass:v11 cacheKey:v5 block:v15];
+  v16 = kindsCopy;
+  v12 = kindsCopy;
+  v13 = [self kindWithModelClass:v11 cacheKey:v5 block:v15];
 
   return v13;
 }
@@ -165,7 +165,7 @@ id __50__MPModelPlaylistEntryKind_msv_initWithJSONValue___block_invoke(uint64_t 
   return [MPModelKind kindWithModelClass:v2];
 }
 
-- (void)applyToView:(shared_ptr<mlcore:(id)a4 :LibraryView>)a3 withContext:
+- (void)applyToView:(shared_ptr<mlcore:(id)view :LibraryView>)a3 withContext:
 {
   v29 = *MEMORY[0x1E69E9840];
   v5 = a3.var1;
@@ -177,8 +177,8 @@ id __50__MPModelPlaylistEntryKind_msv_initWithJSONValue___block_invoke(uint64_t 
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(MPModelPlaylistEntryKind *)self kinds];
-  isKindOfClass = [v6 countByEnumeratingWithState:&v21 objects:v28 count:16];
+  kinds = [(MPModelPlaylistEntryKind *)self kinds];
+  isKindOfClass = [kinds countByEnumeratingWithState:&v21 objects:v28 count:16];
   v8 = isKindOfClass;
   if (isKindOfClass)
   {
@@ -190,7 +190,7 @@ id __50__MPModelPlaylistEntryKind_msv_initWithJSONValue___block_invoke(uint64_t 
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(kinds);
         }
 
         v11 = *(*(&v21 + 1) + 8 * v10);
@@ -241,7 +241,7 @@ id __50__MPModelPlaylistEntryKind_msv_initWithJSONValue___block_invoke(uint64_t 
       }
 
       while (v8 != v10);
-      isKindOfClass = [v6 countByEnumeratingWithState:&v21 objects:v28 count:16];
+      isKindOfClass = [kinds countByEnumeratingWithState:&v21 objects:v28 count:16];
       v8 = isKindOfClass;
     }
 

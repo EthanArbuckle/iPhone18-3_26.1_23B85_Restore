@@ -1,46 +1,46 @@
 @interface FBKContentItem
-+ (id)areaFilterGroupWithContentItems:(id)a3;
++ (id)areaFilterGroupWithContentItems:(id)items;
 + (id)assignedToMeFilter;
 + (id)closedFilter;
 + (id)filterGroupsForAll;
-+ (id)filterGroupsForTeam:(id)a3;
++ (id)filterGroupsForTeam:(id)team;
 + (id)openFilter;
 + (id)originatedByMeFilter;
 + (id)orphanedFilter;
 + (id)personalActionsFilterGroup;
 + (id)responsePendingFilter;
-+ (id)teamActionsFilterGroupWithTeam:(id)a3;
++ (id)teamActionsFilterGroupWithTeam:(id)team;
 + (id)teamsFilterGroup;
 - (BOOL)canResolveNeedsAction;
 - (UIColor)itemTitleColor;
 - (UIColor)needsActionTintColor;
 - (UIColor)orphanBadgeTintColor;
 - (UIColor)secondaryTextColor;
-- (id)colorForActive:(BOOL)a3;
+- (id)colorForActive:(BOOL)active;
 @end
 
 @implementation FBKContentItem
 
 - (UIColor)needsActionTintColor
 {
-  v3 = [(FBKContentItem *)self canResolveNeedsAction];
+  canResolveNeedsAction = [(FBKContentItem *)self canResolveNeedsAction];
 
-  return [(FBKContentItem *)self colorForActive:v3];
+  return [(FBKContentItem *)self colorForActive:canResolveNeedsAction];
 }
 
 - (BOOL)canResolveNeedsAction
 {
   if ([(FBKContentItem *)self itemType]== 4)
   {
-    v3 = [(FBKContentItem *)self singleTeam];
-    v4 = [v3 teamType];
-    v5 = [(FBKContentItem *)self assignee];
-    v6 = [v5 ID];
-    v7 = [(FBKContentItem *)self user];
-    v8 = [v7 ID];
+    singleTeam = [(FBKContentItem *)self singleTeam];
+    teamType = [singleTeam teamType];
+    assignee = [(FBKContentItem *)self assignee];
+    v6 = [assignee ID];
+    user = [(FBKContentItem *)self user];
+    v8 = [user ID];
     v9 = [v6 isEqualToNumber:v8];
 
-    if (v4)
+    if (teamType)
     {
       v10 = v9;
     }
@@ -52,7 +52,7 @@
 
     if ([(FBKContentItem *)self isOrphaned])
     {
-      v10 |= [v3 role] == 2;
+      v10 |= [singleTeam role] == 2;
     }
   }
 
@@ -66,14 +66,14 @@
 
 - (UIColor)orphanBadgeTintColor
 {
-  v3 = [(FBKContentItem *)self canReassignFeedback];
+  canReassignFeedback = [(FBKContentItem *)self canReassignFeedback];
 
-  return [(FBKContentItem *)self colorForActive:v3];
+  return [(FBKContentItem *)self colorForActive:canReassignFeedback];
 }
 
-- (id)colorForActive:(BOOL)a3
+- (id)colorForActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     +[iFBAConstants tintColor];
   }
@@ -119,10 +119,10 @@
   return v2;
 }
 
-+ (id)filterGroupsForTeam:(id)a3
++ (id)filterGroupsForTeam:(id)team
 {
-  v3 = a3;
-  sub_10007D294(v3);
+  teamCopy = team;
+  sub_10007D294(teamCopy);
 
   type metadata accessor for FBAFilterGroup();
   v4.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -181,10 +181,10 @@
   return v2;
 }
 
-+ (id)teamActionsFilterGroupWithTeam:(id)a3
++ (id)teamActionsFilterGroupWithTeam:(id)team
 {
-  v4 = a3;
-  v5 = sub_10007CA3C(a3);
+  teamCopy = team;
+  v5 = sub_10007CA3C(team);
 
   return v5;
 }
@@ -203,7 +203,7 @@
   return v2;
 }
 
-+ (id)areaFilterGroupWithContentItems:(id)a3
++ (id)areaFilterGroupWithContentItems:(id)items
 {
   sub_1000497E4(0, &qword_100109990, FBKContentItem_ptr);
   sub_10007DA50(&qword_100109998, &qword_100109990, FBKContentItem_ptr);

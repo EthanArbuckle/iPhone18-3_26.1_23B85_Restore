@@ -1,11 +1,11 @@
 @interface MediaInstructionView
 + (BOOL)isInstructionAllowed;
 + (void)disallowInstruction;
-- (CGSize)_textLabelSizeForSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_textLabelSizeForSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MediaInstructionView)init;
 - (void)_updateTextLabelFrame;
-- (void)updateForVideoState:(unint64_t)a3;
+- (void)updateForVideoState:(unint64_t)state;
 @end
 
 @implementation MediaInstructionView
@@ -14,9 +14,9 @@
 {
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"HideMediaInstruction"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4 ^ 1;
+  return bOOLValue ^ 1;
 }
 
 + (void)disallowInstruction
@@ -72,35 +72,35 @@
   [(UILabel *)textLabel setFrame:v9, v12, v8];
 }
 
-- (void)updateForVideoState:(unint64_t)a3
+- (void)updateForVideoState:(unint64_t)state
 {
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = v5;
-  if (a3 > 6)
+  if (state > 6)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 localizedStringForKey:off_247C8[a3] value:&stru_24D60 table:@"DigitalTouchBalloonProvider-Localizable"];
+    v6 = [v5 localizedStringForKey:off_247C8[state] value:&stru_24D60 table:@"DigitalTouchBalloonProvider-Localizable"];
   }
 
   [(UILabel *)self->_textLabel setText:v6];
   [(MediaInstructionView *)self _updateTextLabelFrame];
 }
 
-- (CGSize)_textLabelSizeForSize:(CGSize)a3
+- (CGSize)_textLabelSizeForSize:(CGSize)size
 {
-  [(UILabel *)self->_textLabel sizeThatFits:a3.width + -30.0, 1.79769313e308];
+  [(UILabel *)self->_textLabel sizeThatFits:size.width + -30.0, 1.79769313e308];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(MediaInstructionView *)self _textLabelSizeForSize:a3.width, a3.height];
+  [(MediaInstructionView *)self _textLabelSizeForSize:fits.width, fits.height];
   v4 = v3 + 30.0;
   v6 = v5 + 30.0;
   result.height = v6;

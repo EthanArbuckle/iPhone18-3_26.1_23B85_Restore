@@ -1,11 +1,11 @@
 @interface HGMLInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation HGMLInput
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_251130F18();
   v5 = v4;

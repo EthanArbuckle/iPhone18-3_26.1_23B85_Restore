@@ -1,10 +1,10 @@
 @interface SWSystemSleepMonitorProvider
 - (SWSystemSleepMonitorProvider)init;
-- (void)allowPowerChange:(int64_t)a3;
-- (void)cancelPowerChange:(int64_t)a3;
+- (void)allowPowerChange:(int64_t)change;
+- (void)cancelPowerChange:(int64_t)change;
 - (void)dealloc;
 - (void)invalidate;
-- (void)registerForSystemPowerOnQueue:(id)a3 withDelegate:(id)a4;
+- (void)registerForSystemPowerOnQueue:(id)queue withDelegate:(id)delegate;
 @end
 
 @implementation SWSystemSleepMonitorProvider
@@ -22,11 +22,11 @@
   return result;
 }
 
-- (void)registerForSystemPowerOnQueue:(id)a3 withDelegate:(id)a4
+- (void)registerForSystemPowerOnQueue:(id)queue withDelegate:(id)delegate
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_registered)
   {
@@ -37,11 +37,11 @@
       v20 = objc_opt_class();
       v21 = NSStringFromClass(v20);
       *buf = 138544642;
-      v29 = v19;
+      selfCopy3 = v19;
       v30 = 2114;
       v31 = v21;
       v32 = 2048;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2114;
       v35 = @"SWSystemSleepMonitor.m";
       v36 = 1024;
@@ -58,9 +58,9 @@
     JUMPOUT(0x26C65C07CLL);
   }
 
-  objc_storeStrong(&self->_lock_queue, a3);
+  objc_storeStrong(&self->_lock_queue, queue);
   self->_lock_registered = 1;
-  v10 = [MEMORY[0x277CF0D30] referenceWithObject:v9];
+  v10 = [MEMORY[0x277CF0D30] referenceWithObject:delegateCopy];
   lock_weakDelegateWrapper = self->_lock_weakDelegateWrapper;
   self->_lock_weakDelegateWrapper = v10;
 
@@ -75,11 +75,11 @@
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
       *buf = 138544642;
-      v29 = v24;
+      selfCopy3 = v24;
       v30 = 2114;
       v31 = v26;
       v32 = 2048;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2114;
       v35 = @"SWSystemSleepMonitor.m";
       v36 = 1024;
@@ -96,7 +96,7 @@
     JUMPOUT(0x26C65C180);
   }
 
-  IONotificationPortSetDispatchQueue(self->_lock_systemPowerPort, v8);
+  IONotificationPortSetDispatchQueue(self->_lock_systemPowerPort, queueCopy);
   v13 = SWLogPower();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -104,11 +104,11 @@
     lock_systemPowerPort = self->_lock_systemPowerPort;
     lock_systemPowerNotifier = self->_lock_systemPowerNotifier;
     *buf = 134219264;
-    v29 = self;
+    selfCopy3 = self;
     v30 = 2048;
-    v31 = v8;
+    v31 = queueCopy;
     v32 = 2048;
-    v33 = v9;
+    selfCopy2 = delegateCopy;
     v34 = 2048;
     v35 = lock_systemPowerConnection;
     v36 = 2048;
@@ -139,7 +139,7 @@
       v18 = 2114;
       v19 = v11;
       v20 = 2048;
-      v21 = self;
+      selfCopy = self;
       v22 = 2114;
       v23 = @"SWSystemSleepMonitor.m";
       v24 = 1024;
@@ -188,7 +188,7 @@
       lock_systemPowerPort = self->_lock_systemPowerPort;
       lock_systemPowerNotifier = self->_lock_systemPowerNotifier;
       v13 = 134218752;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2048;
       v16 = lock_systemPowerConnection;
       v17 = 2048;
@@ -207,14 +207,14 @@
 
     if (v6)
     {
-      v7 = [(BSZeroingWeakReference *)self->_lock_weakDelegateWrapper object];
+      object = [(BSZeroingWeakReference *)self->_lock_weakDelegateWrapper object];
       v8 = SWLogPower();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         v13 = 134218240;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2048;
-        v16 = v7;
+        v16 = object;
         _os_log_debug_impl(&dword_26C657000, v8, OS_LOG_TYPE_DEBUG, "%p invalidated sleep monitor: %p", &v13, 0x16u);
       }
     }
@@ -224,7 +224,7 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allowPowerChange:(int64_t)a3
+- (void)allowPowerChange:(int64_t)change
 {
   v24 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -241,7 +241,7 @@
       v14 = 2114;
       v15 = v10;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"SWSystemSleepMonitor.m";
       v20 = 1024;
@@ -258,13 +258,13 @@
     JUMPOUT(0x26C65C7B8);
   }
 
-  IOAllowPowerChange(self->_lock_systemPowerConnection, a3);
+  IOAllowPowerChange(self->_lock_systemPowerConnection, change);
   v6 = *MEMORY[0x277D85DE8];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)cancelPowerChange:(int64_t)a3
+- (void)cancelPowerChange:(int64_t)change
 {
   v24 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -281,7 +281,7 @@
       v14 = 2114;
       v15 = v10;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"SWSystemSleepMonitor.m";
       v20 = 1024;
@@ -298,7 +298,7 @@
     JUMPOUT(0x26C65C980);
   }
 
-  IOCancelPowerChange(self->_lock_systemPowerConnection, a3);
+  IOCancelPowerChange(self->_lock_systemPowerConnection, change);
   v6 = *MEMORY[0x277D85DE8];
 
   os_unfair_lock_unlock(&self->_lock);

@@ -1,10 +1,10 @@
 @interface CAScrollLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
 - (CAScrollLayerScrollMode)scrollMode;
-- (CGRect)_visibleRectOfLayer:(id)a3;
-- (void)_scrollPoint:(CGPoint)a3 fromLayer:(id)a4;
-- (void)_scrollRect:(CGRect)a3 fromLayer:(id)a4;
+- (CGRect)_visibleRectOfLayer:(id)layer;
+- (void)_scrollPoint:(CGPoint)point fromLayer:(id)layer;
+- (void)_scrollRect:(CGRect)rect fromLayer:(id)layer;
 - (void)scrollToPoint:(CGPoint)p;
 - (void)scrollToRect:(CGRect)r;
 - (void)setScrollMode:(CAScrollLayerScrollMode)scrollMode;
@@ -12,17 +12,17 @@
 
 @implementation CAScrollLayer
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CAScrollLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
 - (void)setScrollMode:(CAScrollLayerScrollMode)scrollMode
@@ -40,15 +40,15 @@
   return v3[0];
 }
 
-- (CGRect)_visibleRectOfLayer:(id)a3
+- (CGRect)_visibleRectOfLayer:(id)layer
 {
   [(CALayer *)self bounds];
-  [(CALayer *)self convertRect:a3 toLayer:?];
+  [(CALayer *)self convertRect:layer toLayer:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [a3 bounds];
+  [layer bounds];
   v17 = v6;
   v18 = v8;
   v19 = v10;
@@ -57,16 +57,16 @@
   return CGRectIntersection(*&v13, *&v17);
 }
 
-- (void)_scrollRect:(CGRect)a3 fromLayer:(id)a4
+- (void)_scrollRect:(CGRect)rect fromLayer:(id)layer
 {
-  [(CALayer *)self convertRect:a4 fromLayer:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CALayer *)self convertRect:layer fromLayer:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 
   [(CAScrollLayer *)self scrollToRect:?];
 }
 
-- (void)_scrollPoint:(CGPoint)a3 fromLayer:(id)a4
+- (void)_scrollPoint:(CGPoint)point fromLayer:(id)layer
 {
-  [(CALayer *)self convertPoint:a4 fromLayer:a3.x, a3.y];
+  [(CALayer *)self convertPoint:layer fromLayer:point.x, point.y];
 
   [(CAScrollLayer *)self scrollToPoint:?];
 }
@@ -178,10 +178,10 @@
   [(CALayer *)self setBounds:v7, v9, v11, v13];
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v8 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   if (v5 == 626)
   {
     return @"both";
@@ -192,9 +192,9 @@
     return *MEMORY[0x1E695E4D0];
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CAScrollLayer;
-  return objc_msgSendSuper2(&v7, sel_defaultValueForKey_, a3);
+  return objc_msgSendSuper2(&v7, sel_defaultValueForKey_, key);
 }
 
 @end

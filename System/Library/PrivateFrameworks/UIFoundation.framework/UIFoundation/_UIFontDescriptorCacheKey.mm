@@ -1,5 +1,5 @@
 @interface _UIFontDescriptorCacheKey
-- (BOOL)_isEqualToKey:(id)a3;
+- (BOOL)_isEqualToKey:(id)key;
 - (unint64_t)_hash;
 - (void)dealloc;
 @end
@@ -20,28 +20,28 @@
   return [(NSString *)self->_textStyleForScaling hash]^ v3 ^ self->_textLegibility ^ v4;
 }
 
-- (BOOL)_isEqualToKey:(id)a3
+- (BOOL)_isEqualToKey:(id)key
 {
-  if (self->super._hash != *(a3 + 1))
+  if (self->super._hash != *(key + 1))
   {
     LOBYTE(v6) = 0;
     return v6;
   }
 
-  if (vabdd_f64(self->_pointSize, *(a3 + 4)) >= 0.00000011920929)
+  if (vabdd_f64(self->_pointSize, *(key + 4)) >= 0.00000011920929)
   {
     goto LABEL_11;
   }
 
   fontDescriptor = self->_fontDescriptor;
-  if (fontDescriptor == *(a3 + 3) || (v6 = [(UIFontDescriptor *)fontDescriptor isEqual:?]) != 0)
+  if (fontDescriptor == *(key + 3) || (v6 = [(UIFontDescriptor *)fontDescriptor isEqual:?]) != 0)
   {
     textStyleForScaling = self->_textStyleForScaling;
-    if (textStyleForScaling == *(a3 + 5) || (v6 = [(NSString *)textStyleForScaling isEqualToString:?]) != 0)
+    if (textStyleForScaling == *(key + 5) || (v6 = [(NSString *)textStyleForScaling isEqualToString:?]) != 0)
     {
-      if (self->_pointSizeForScaling == *(a3 + 6) && self->_maximumPointSizeAfterScaling == *(a3 + 7))
+      if (self->_pointSizeForScaling == *(key + 6) && self->_maximumPointSizeAfterScaling == *(key + 7))
       {
-        LOBYTE(v6) = self->_textLegibility == *(a3 + 16);
+        LOBYTE(v6) = self->_textLegibility == *(key + 16);
         return v6;
       }
 

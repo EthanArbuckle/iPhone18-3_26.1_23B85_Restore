@@ -15,14 +15,14 @@
 
 - (BOOL)_IXUninstallAppIPA
 {
-  v2 = [(MSDOperation *)self context];
-  v3 = [v2 identifier];
+  context = [(MSDOperation *)self context];
+  identifier = [context identifier];
 
   v4 = sub_100063A54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v3;
+    *(&buf + 4) = identifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Uninstallig app: %{public}@", &buf, 0xCu);
   }
 
@@ -39,7 +39,7 @@
   v19[1] = 3221225472;
   v19[2] = sub_100084564;
   v19[3] = &unk_10016B940;
-  v7 = v3;
+  v7 = identifier;
   v20 = v7;
   p_buf = &buf;
   v8 = v5;

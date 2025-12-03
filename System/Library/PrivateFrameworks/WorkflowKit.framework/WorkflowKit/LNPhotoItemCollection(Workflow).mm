@@ -8,8 +8,8 @@
 - (id)serializedRepresentation
 {
   v2 = objc_opt_new();
-  v3 = [a1 items];
-  v4 = [v3 if_map:&__block_literal_global_178_29777];
+  items = [self items];
+  v4 = [items if_map:&__block_literal_global_178_29777];
 
   [v2 setObject:v4 forKey:@"items"];
 
@@ -31,23 +31,23 @@
     if (v9)
     {
       v10 = [v9 if_map:&__block_literal_global_29783];
-      a1 = [a1 initWithItems:v10];
+      self = [self initWithItems:v10];
 
-      v11 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

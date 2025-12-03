@@ -1,11 +1,11 @@
 @interface DDGroup
-+ (DDGroup)groupWithName:(id)a3 fullName:(id)a4;
-- (DDGroup)groupWithName:(id)a3 fullName:(id)a4;
++ (DDGroup)groupWithName:(id)name fullName:(id)fullName;
+- (DDGroup)groupWithName:(id)name fullName:(id)fullName;
 - (DDGroup)init;
 - (NSSet)aliases;
 - (NSSet)nestedGroups;
 - (int64_t)hash;
-- (void)setAliases:(id)a3;
+- (void)setAliases:(id)aliases;
 @end
 
 @implementation DDGroup
@@ -28,7 +28,7 @@
   return v9;
 }
 
-- (void)setAliases:(id)a3
+- (void)setAliases:(id)aliases
 {
   v4 = type metadata accessor for Group();
   v5 = *(*(v4 - 8) + 64);
@@ -38,7 +38,7 @@
   v9 = OBJC_IVAR___DDGroup__group;
   swift_beginAccess();
   sub_2480D1F28(self + v9, &v15);
-  v10 = self;
+  selfCopy = self;
   swift_dynamicCast();
   v11 = *(v4 + 32);
   v12 = *&v7[v11];
@@ -62,7 +62,7 @@
   v7 = OBJC_IVAR___DDGroup__group;
   swift_beginAccess();
   sub_2480D1F28(self + v7, v17);
-  v8 = self;
+  selfCopy = self;
   swift_dynamicCast();
   v9 = *&v6[*(v3 + 36)];
 
@@ -78,7 +78,7 @@
   return v14;
 }
 
-- (DDGroup)groupWithName:(id)a3 fullName:(id)a4
+- (DDGroup)groupWithName:(id)name fullName:(id)fullName
 {
   result = sub_2480DCC8C();
   __break(1u);
@@ -92,7 +92,7 @@
   return result;
 }
 
-+ (DDGroup)groupWithName:(id)a3 fullName:(id)a4
++ (DDGroup)groupWithName:(id)name fullName:(id)fullName
 {
   v4 = sub_2480DCA8C();
   v6 = v5;
@@ -104,7 +104,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DDGroup.hash.getter();
 
   return v3;

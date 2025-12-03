@@ -1,16 +1,16 @@
 @interface BRCTransferStream
-- (BRCTransferStream)initWithSyncContext:(id)a3 name:(id)a4 scheduler:(id)a5 maxCountOfBatchesInFlight:(unint64_t)a6;
+- (BRCTransferStream)initWithSyncContext:(id)context name:(id)name scheduler:(id)scheduler maxCountOfBatchesInFlight:(unint64_t)flight;
 - (NSArray)operations;
 - (NSString)description;
-- (double)progressForTransferID:(id)a3 operationID:(id)a4;
-- (int64_t)_compareTransferBatchOperationByQoSAndStartDateWithFirstOp:(id)a3 secondOp:(id)a4;
-- (void)_addBatchOperation:(id)a3;
+- (double)progressForTransferID:(id)d operationID:(id)iD;
+- (int64_t)_compareTransferBatchOperationByQoSAndStartDateWithFirstOp:(id)op secondOp:(id)secondOp;
+- (void)_addBatchOperation:(id)operation;
 - (void)_evaluateCap;
-- (void)_scheduleOneBatchWithQoS:(int64_t)a3;
-- (void)_setReachedCap:(BOOL)a3;
-- (void)addBatchOperation:(id)a3;
+- (void)_scheduleOneBatchWithQoS:(int64_t)s;
+- (void)_setReachedCap:(BOOL)cap;
+- (void)addBatchOperation:(id)operation;
 - (void)cancel;
-- (void)cancelTransferID:(id)a3 operationID:(id)a4;
+- (void)cancelTransferID:(id)d operationID:(id)iD;
 - (void)close;
 - (void)endSchedulingMultipleItemsInteractively;
 - (void)forceSchedulingPendingInteractiveTransfers;
@@ -21,30 +21,30 @@
 
 - (NSArray)operations
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_inFlightOpByID allValues];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allValues = [(NSMutableDictionary *)selfCopy->_inFlightOpByID allValues];
+  v4 = [allValues copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (BRCTransferStream)initWithSyncContext:(id)a3 name:(id)a4 scheduler:(id)a5 maxCountOfBatchesInFlight:(unint64_t)a6
+- (BRCTransferStream)initWithSyncContext:(id)context name:(id)name scheduler:(id)scheduler maxCountOfBatchesInFlight:(unint64_t)flight
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  contextCopy = context;
+  nameCopy = name;
+  schedulerCopy = scheduler;
   v31.receiver = self;
   v31.super_class = BRCTransferStream;
   v14 = [(BRCTransferStream *)&v31 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_syncContext, a3);
-    v15->_session = [v11 session];
-    if (!v13)
+    objc_storeStrong(&v14->_syncContext, context);
+    v15->_session = [contextCopy session];
+    if (!schedulerCopy)
     {
       abc_report_panic_with_signature();
       v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"scheduler is nil"];
@@ -56,11 +56,11 @@
       }
 
       brc_append_system_info_to_message();
-      v29 = [objc_claimAutoreleasedReturnValue() UTF8String];
-      __assert_rtn("[BRCTransferStream initWithSyncContext:name:scheduler:maxCountOfBatchesInFlight:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/sync/transfers/BRCTransferStream.m", 66, v29);
+      uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+      __assert_rtn("[BRCTransferStream initWithSyncContext:name:scheduler:maxCountOfBatchesInFlight:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/sync/transfers/BRCTransferStream.m", 66, uTF8String);
     }
 
-    v16 = [[BRCDeadlineSource alloc] initWithScheduler:v13 name:v12];
+    v16 = [[BRCDeadlineSource alloc] initWithScheduler:schedulerCopy name:nameCopy];
     schedulingSource = v15->_schedulingSource;
     v15->_schedulingSource = v16;
 
@@ -68,7 +68,7 @@
     inFlightOpByID = v15->_inFlightOpByID;
     v15->_inFlightOpByID = v18;
 
-    v20 = dispatch_workloop_create([v12 UTF8String]);
+    v20 = dispatch_workloop_create([nameCopy UTF8String]);
     transferWorkloop = v15->_transferWorkloop;
     v15->_transferWorkloop = v20;
 
@@ -84,7 +84,7 @@
     v30[4] = v15;
     [(BRCDeadlineSource *)v24 setEventHandler:v30];
     [(BRCDeadlineSource *)v15->_schedulingSource setWorkloop:v15->_transferWorkloop];
-    v15->_maxCountOfBatchesInFlight = a6;
+    v15->_maxCountOfBatchesInFlight = flight;
   }
 
   return v15;
@@ -109,15 +109,15 @@ void __82__BRCTransferStream_initWithSyncContext_name_scheduler_maxCountOfBatche
   [(BRCDeadlineSource *)self->_schedulingSource signalWithDeadline:minSignalTime];
 }
 
-- (void)_setReachedCap:(BOOL)a3
+- (void)_setReachedCap:(BOOL)cap
 {
-  v3 = a3;
+  capCopy = cap;
   dispatch_assert_queue_V2(self->_transferWorkloop);
-  if (self->_hasReachedCap != v3)
+  if (self->_hasReachedCap != capCopy)
   {
-    self->_hasReachedCap = v3;
+    self->_hasReachedCap = capCopy;
     schedulingSource = self->_schedulingSource;
-    if (v3)
+    if (capCopy)
     {
 
       [(BRCDeadlineSource *)schedulingSource suspend];
@@ -147,19 +147,19 @@ void __82__BRCTransferStream_initWithSyncContext_name_scheduler_maxCountOfBatche
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_compareTransferBatchOperationByQoSAndStartDateWithFirstOp:(id)a3 secondOp:(id)a4
+- (int64_t)_compareTransferBatchOperationByQoSAndStartDateWithFirstOp:(id)op secondOp:(id)secondOp
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 qualityOfService];
-  if (v7 >= [v6 qualityOfService])
+  opCopy = op;
+  secondOpCopy = secondOp;
+  qualityOfService = [opCopy qualityOfService];
+  if (qualityOfService >= [secondOpCopy qualityOfService])
   {
-    v9 = [v5 qualityOfService];
-    if (v9 <= [v6 qualityOfService])
+    qualityOfService2 = [opCopy qualityOfService];
+    if (qualityOfService2 <= [secondOpCopy qualityOfService])
     {
-      v10 = [v5 startDate];
-      v11 = [v6 startDate];
-      v8 = [v10 compare:v11];
+      startDate = [opCopy startDate];
+      startDate2 = [secondOpCopy startDate];
+      v8 = [startDate compare:startDate2];
     }
 
     else
@@ -180,7 +180,7 @@ void __82__BRCTransferStream_initWithSyncContext_name_scheduler_maxCountOfBatche
 {
   v6 = *MEMORY[0x277D85DE8];
   LODWORD(v4) = 134218242;
-  *(&v4 + 4) = *a1;
+  *(&v4 + 4) = *self;
   OUTLINED_FUNCTION_4_0();
   *v5 = v1;
   OUTLINED_FUNCTION_4(&dword_223E7A000, v1, v2, "[DEBUG] ┏%llx force scheduling interactive transfers%@", v4, DWORD2(v4), *&v5[2], v6);
@@ -344,8 +344,8 @@ void *__63__BRCTransferStream_forceSchedulingPendingInteractiveTransfers__block_
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = [(NSMutableDictionary *)self->_inFlightOpByID objectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_inFlightOpByID objectEnumerator];
+    v4 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v4)
     {
       v5 = v4;
@@ -356,7 +356,7 @@ void *__63__BRCTransferStream_forceSchedulingPendingInteractiveTransfers__block_
         {
           if (*v13 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v8 = *(*(&v12 + 1) + 8 * i);
@@ -369,7 +369,7 @@ void *__63__BRCTransferStream_forceSchedulingPendingInteractiveTransfers__block_
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v5)
         {
           continue;
@@ -385,10 +385,10 @@ LABEL_15:
   }
 }
 
-- (void)_addBatchOperation:(id)a3
+- (void)_addBatchOperation:(id)operation
 {
-  v4 = a3;
-  if (!v4)
+  operationCopy = operation;
+  if (!operationCopy)
   {
     [BRCTransferStream _addBatchOperation:];
   }
@@ -401,39 +401,39 @@ LABEL_15:
     [BRCTransferStream _addBatchOperation:];
   }
 
-  if (v4)
+  if (operationCopy)
   {
-    v7 = [v4 operationID];
-    v8 = [v4 finishBlock];
+    operationID = [operationCopy operationID];
+    finishBlock = [operationCopy finishBlock];
     objc_initWeak(&location, self);
-    v9 = [v4 totalSize];
+    totalSize = [operationCopy totalSize];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __40__BRCTransferStream__addBatchOperation___block_invoke;
     v21[3] = &unk_2784FFDF8;
     objc_copyWeak(&v22, &location);
     v21[4] = self;
-    [v4 setDidProgressBlock:v21];
+    [operationCopy setDidProgressBlock:v21];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __40__BRCTransferStream__addBatchOperation___block_invoke_3;
     v16 = &unk_278504E48;
     objc_copyWeak(v20, &location);
-    v10 = v8;
+    v10 = finishBlock;
     v19 = v10;
-    v17 = self;
-    v20[1] = v9;
-    v11 = v7;
+    selfCopy = self;
+    v20[1] = totalSize;
+    v11 = operationID;
     v18 = v11;
-    [v4 setFinishBlock:&v13];
-    self->_inFlightSize += v9;
-    v12 = self;
-    objc_sync_enter(v12);
-    [(NSMutableDictionary *)v12->_inFlightOpByID setObject:v4 forKeyedSubscript:v11, v13, v14, v15, v16, v17];
-    objc_sync_exit(v12);
+    [operationCopy setFinishBlock:&v13];
+    self->_inFlightSize += totalSize;
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    [(NSMutableDictionary *)selfCopy2->_inFlightOpByID setObject:operationCopy forKeyedSubscript:v11, v13, v14, v15, v16, selfCopy];
+    objc_sync_exit(selfCopy2);
 
-    [v4 schedule];
-    [(BRCTransferStream *)v12 _evaluateCap];
+    [operationCopy schedule];
+    [(BRCTransferStream *)selfCopy2 _evaluateCap];
 
     objc_destroyWeak(v20);
     objc_destroyWeak(&v22);
@@ -522,9 +522,9 @@ uint64_t __40__BRCTransferStream__addBatchOperation___block_invoke_7(uint64_t a1
   return [v3 _evaluateCap];
 }
 
-- (void)addBatchOperation:(id)a3
+- (void)addBatchOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   if (!self->_isWaitingForTransferBatch)
   {
     [BRCTransferStream addBatchOperation:];
@@ -537,8 +537,8 @@ uint64_t __40__BRCTransferStream__addBatchOperation___block_invoke_7(uint64_t a1
   v8[2] = __39__BRCTransferStream_addBatchOperation___block_invoke;
   v8[3] = &unk_2784FF478;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = operationCopy;
+  v7 = operationCopy;
   dispatch_group_async(transferBatchRequestWaiter, transferWorkloop, v8);
 }
 
@@ -555,21 +555,21 @@ uint64_t __39__BRCTransferStream_addBatchOperation___block_invoke(uint64_t a1)
   return [v2 _addBatchOperation:v3];
 }
 
-- (void)_scheduleOneBatchWithQoS:(int64_t)a3
+- (void)_scheduleOneBatchWithQoS:(int64_t)s
 {
   dispatch_assert_queue_V2(self->_transferWorkloop);
-  v5 = [(BRCSyncContext *)self->_syncContext defaults];
+  defaults = [(BRCSyncContext *)self->_syncContext defaults];
   [(BRCDeadlineSource *)self->_schedulingSource suspend];
   dispatch_group_enter(self->_transferBatchRequestWaiter);
   self->_isWaitingForTransferBatch = 1;
   streamDidBecomeReadyToTransferRecords = self->_streamDidBecomeReadyToTransferRecords;
-  [v5 transferQueueTransferBudget];
+  [defaults transferQueueTransferBudget];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__BRCTransferStream__scheduleOneBatchWithQoS___block_invoke;
   v8[3] = &unk_2784FF450;
   v8[4] = self;
-  streamDidBecomeReadyToTransferRecords[2](streamDidBecomeReadyToTransferRecords, v7, a3, v8);
+  streamDidBecomeReadyToTransferRecords[2](streamDidBecomeReadyToTransferRecords, v7, s, v8);
 }
 
 void __46__BRCTransferStream__scheduleOneBatchWithQoS___block_invoke(uint64_t a1)
@@ -593,11 +593,11 @@ void __46__BRCTransferStream__scheduleOneBatchWithQoS___block_invoke_2(uint64_t 
   dispatch_group_leave(v2);
 }
 
-- (void)cancelTransferID:(id)a3 operationID:(id)a4
+- (void)cancelTransferID:(id)d operationID:(id)iD
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   memset(v19, 0, sizeof(v19));
   __brc_create_section(0, "[BRCTransferStream cancelTransferID:operationID:]", 320, 0, v19);
   v8 = brc_bread_crumbs();
@@ -605,13 +605,13 @@ void __46__BRCTransferStream__scheduleOneBatchWithQoS___block_invoke_2(uint64_t 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v14 = v19[0];
-    v15 = [v7 UUIDString];
+    uUIDString = [iDCopy UUIDString];
     *buf = 134218754;
     v21 = v14;
     v22 = 2112;
-    v23 = v6;
+    v23 = dCopy;
     v24 = 2112;
-    v25 = v15;
+    v25 = uUIDString;
     v26 = 2112;
     v27 = v8;
     _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx cancelling entry %@ in %@%@", buf, 0x2Au);
@@ -623,9 +623,9 @@ void __46__BRCTransferStream__scheduleOneBatchWithQoS___block_invoke_2(uint64_t 
   v16[2] = __50__BRCTransferStream_cancelTransferID_operationID___block_invoke;
   v16[3] = &unk_2784FF4A0;
   v16[4] = self;
-  v11 = v7;
+  v11 = iDCopy;
   v17 = v11;
-  v12 = v6;
+  v12 = dCopy;
   v18 = v12;
   dispatch_async_with_logs_7(transferWorkloop, v16);
 
@@ -639,16 +639,16 @@ void __50__BRCTransferStream_cancelTransferID_operationID___block_invoke(void *a
   [v2 cancelTransferID:a1[6]];
 }
 
-- (double)progressForTransferID:(id)a3 operationID:(id)a4
+- (double)progressForTransferID:(id)d operationID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(NSMutableDictionary *)v8->_inFlightOpByID objectForKeyedSubscript:v7];
-  objc_sync_exit(v8);
+  dCopy = d;
+  iDCopy = iD;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(NSMutableDictionary *)selfCopy->_inFlightOpByID objectForKeyedSubscript:iDCopy];
+  objc_sync_exit(selfCopy);
 
-  [v9 progressForTransferID:v6];
+  [v9 progressForTransferID:dCopy];
   v11 = v10;
 
   return v11;

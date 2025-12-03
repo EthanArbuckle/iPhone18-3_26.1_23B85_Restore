@@ -1,39 +1,39 @@
 @interface MEDecodeContext
-- (MEDecodeContext)initWithCoder:(id)a3;
-- (MEDecodeContext)initWithDecodeReason:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MEDecodeContext)initWithCoder:(id)coder;
+- (MEDecodeContext)initWithDecodeReason:(int64_t)reason;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MEDecodeContext
 
-- (MEDecodeContext)initWithDecodeReason:(int64_t)a3
+- (MEDecodeContext)initWithDecodeReason:(int64_t)reason
 {
   v5.receiver = self;
   v5.super_class = MEDecodeContext;
   result = [(MEDecodeContext *)&v5 init];
   if (result)
   {
-    result->_decodeReason = a3;
+    result->_decodeReason = reason;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[MEDecodeContext decodeReason](self forKey:{"decodeReason"), @"EFPropertyKey_decodeReason"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[MEDecodeContext decodeReason](self forKey:{"decodeReason"), @"EFPropertyKey_decodeReason"}];
 }
 
-- (MEDecodeContext)initWithCoder:(id)a3
+- (MEDecodeContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MEDecodeContext;
   v5 = [(MEDecodeContext *)&v7 init];
   if (v5)
   {
-    v5->_decodeReason = [v4 decodeIntegerForKey:@"EFPropertyKey_decodeReason"];
+    v5->_decodeReason = [coderCopy decodeIntegerForKey:@"EFPropertyKey_decodeReason"];
   }
 
   return v5;

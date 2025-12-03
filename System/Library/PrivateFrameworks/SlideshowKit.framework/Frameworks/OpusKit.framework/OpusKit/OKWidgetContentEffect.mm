@@ -1,13 +1,13 @@
 @interface OKWidgetContentEffect
 + (id)supportedSettings;
 - (OKWidgetContentEffect)init;
-- (OKWidgetContentEffect)initWithSettings:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (OKWidgetContentEffect)initWithSettings:(id)settings;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)applySettings;
 - (void)applySettingsIfNeeded;
 - (void)dealloc;
 - (void)pauseAnimation;
-- (void)prepareContentEffectWithView:(id)a3;
+- (void)prepareContentEffectWithView:(id)view;
 - (void)resumeAnimation;
 - (void)stopAnimation;
 @end
@@ -31,12 +31,12 @@
   return v2;
 }
 
-- (OKWidgetContentEffect)initWithSettings:(id)a3
+- (OKWidgetContentEffect)initWithSettings:(id)settings
 {
   v4 = [(OKWidgetContentEffect *)self init];
   if (v4)
   {
-    v4->_settings = a3;
+    v4->_settings = settings;
   }
 
   return v4;
@@ -72,20 +72,20 @@
   [(OKWidgetContentEffect *)&v6 dealloc];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  if ([a3 isEqual:{objc_msgSend(-[OFUIView layer](-[OKWidgetContentEffect animatedView](self, "animatedView"), "layer"), "animationForKey:", self->_uuid)}])
+  finishedCopy = finished;
+  if ([stop isEqual:{objc_msgSend(-[OFUIView layer](-[OKWidgetContentEffect animatedView](self, "animatedView"), "layer"), "animationForKey:", self->_uuid)}])
   {
     [(CAAnimation *)[(OKWidgetContentEffect *)self animation] setDelegate:0];
-    if (v4 && self->_loop && self->_animation)
+    if (finishedCopy && self->_loop && self->_animation)
     {
       [(CAAnimation *)[(OKWidgetContentEffect *)self animation] setDelegate:self];
-      v6 = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
+      layer = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
       animation = self->_animation;
       uuid = self->_uuid;
 
-      [v6 addAnimation:animation forKey:uuid];
+      [layer addAnimation:animation forKey:uuid];
     }
   }
 }
@@ -93,7 +93,7 @@
 + (id)supportedSettings
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v8[0] = @"loop";
   v6[0] = @"type";
   v6[1] = @"default";
@@ -106,8 +106,8 @@
   v5[0] = &unk_287AF1610;
   v5[1] = MEMORY[0x277CBEC38];
   v9[1] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:v4 count:2];
-  [v2 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v9, v8, 2)}];
-  return v2;
+  [dictionary addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v9, v8, 2)}];
+  return dictionary;
 }
 
 - (void)applySettingsIfNeeded
@@ -129,23 +129,23 @@
   v4 = [(NSDictionary *)self->_settings objectForKey:@"autoplay"];
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
-    [(OKWidgetContentEffect *)self setAutoplay:v5];
+    [(OKWidgetContentEffect *)self setAutoplay:bOOLValue];
   }
 }
 
-- (void)prepareContentEffectWithView:(id)a3
+- (void)prepareContentEffectWithView:(id)view
 {
-  [(OKWidgetContentEffect *)self setAnimatedView:a3];
+  [(OKWidgetContentEffect *)self setAnimatedView:view];
   [(CAAnimation *)[(OKWidgetContentEffect *)self animation] setDelegate:self];
   if (self->_animation)
   {
-    v4 = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
+    layer = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
     animation = self->_animation;
     uuid = self->_uuid;
 
-    [v4 addAnimation:animation forKey:uuid];
+    [layer addAnimation:animation forKey:uuid];
   }
 }
 
@@ -168,10 +168,10 @@
 - (void)stopAnimation
 {
   [(CAAnimation *)[(OKWidgetContentEffect *)self animation] setDelegate:0];
-  v3 = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
+  layer = [(OFUIView *)[(OKWidgetContentEffect *)self animatedView] layer];
   uuid = self->_uuid;
 
-  [v3 removeAnimationForKey:uuid];
+  [layer removeAnimationForKey:uuid];
 }
 
 @end

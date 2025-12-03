@@ -1,22 +1,22 @@
 @interface _CPLEngineWrapperOpenError
 - (BOOL)shouldTryReopeningWithoutLibrary;
-- (_CPLEngineWrapperOpenError)initWithParameters:(id)a3 openError:(id)a4;
+- (_CPLEngineWrapperOpenError)initWithParameters:(id)parameters openError:(id)error;
 @end
 
 @implementation _CPLEngineWrapperOpenError
 
-- (_CPLEngineWrapperOpenError)initWithParameters:(id)a3 openError:(id)a4
+- (_CPLEngineWrapperOpenError)initWithParameters:(id)parameters openError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  parametersCopy = parameters;
+  errorCopy = error;
   v14.receiver = self;
   v14.super_class = _CPLEngineWrapperOpenError;
   v9 = [(_CPLEngineWrapperOpenError *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_parameters, a3);
-    objc_storeStrong(&v10->_openError, a4);
+    objc_storeStrong(&v9->_parameters, parameters);
+    objc_storeStrong(&v10->_openError, error);
     v11 = +[NSDate date];
     errorDate = v10->_errorDate;
     v10->_errorDate = v11;

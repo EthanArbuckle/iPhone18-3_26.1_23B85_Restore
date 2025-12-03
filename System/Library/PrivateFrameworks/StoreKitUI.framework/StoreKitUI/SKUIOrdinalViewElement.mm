@@ -1,15 +1,15 @@
 @interface SKUIOrdinalViewElement
-- (SKUIOrdinalViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUIOrdinalViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIOrdinalViewElement
 
-- (SKUIOrdinalViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIOrdinalViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIOrdinalViewElement initWithDOMElement:parent:elementFactory:];
@@ -17,10 +17,10 @@
 
   v15.receiver = self;
   v15.super_class = SKUIOrdinalViewElement;
-  v11 = [(SKUIViewElement *)&v15 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [(IKTextParser *)SKUIViewElementText textWithDOMElement:v8 usingParseBlock:0];
+    v12 = [(IKTextParser *)SKUIViewElementText textWithDOMElement:elementCopy usingParseBlock:0];
     text = v11->_text;
     v11->_text = v12;
   }
@@ -28,18 +28,18 @@
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SKUIOrdinalViewElement;
-  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    v7 = [(SKUIOrdinalViewElement *)v4 text];
+    text = [(SKUIOrdinalViewElement *)elementCopy text];
     text = self->_text;
-    self->_text = v7;
+    self->_text = text;
   }
 
   return v6;

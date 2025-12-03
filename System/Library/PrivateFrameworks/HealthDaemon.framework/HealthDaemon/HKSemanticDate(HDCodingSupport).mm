@@ -19,8 +19,8 @@
       if (v5)
       {
         v6 = MEMORY[0x277CCD900];
-        v7 = [v4 keyPath];
-        v8 = [v6 semanticDateWithKeyPath:v7 date:v5];
+        keyPath = [v4 keyPath];
+        v8 = [v6 semanticDateWithKeyPath:keyPath date:v5];
       }
 
       else
@@ -46,11 +46,11 @@
 - (HDCodableSemanticDate)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableSemanticDate);
-  v3 = [a1 keyPath];
-  [(HDCodableSemanticDate *)v2 setKeyPath:v3];
+  keyPath = [self keyPath];
+  [(HDCodableSemanticDate *)v2 setKeyPath:keyPath];
 
-  v4 = [a1 date];
-  [v4 timeIntervalSinceReferenceDate];
+  date = [self date];
+  [date timeIntervalSinceReferenceDate];
   [(HDCodableSemanticDate *)v2 setDate:?];
 
   return v2;

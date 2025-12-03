@@ -1,53 +1,53 @@
 @interface MKStarRatingView
-+ (id)colorForRating:(double)a3;
-+ (id)ratingAsAttributedString:(double)a3 baseFont:(id)a4 style:(int64_t)a5 theme:(id)a6;
-+ (id)ratingShortAsAttributedString:(double)a3 baseFont:(id)a4 theme:(id)a5;
-+ (id)textAttachmentimageNamed:(id)a3 font:(id)a4;
++ (id)colorForRating:(double)rating;
++ (id)ratingAsAttributedString:(double)string baseFont:(id)font style:(int64_t)style theme:(id)theme;
++ (id)ratingShortAsAttributedString:(double)string baseFont:(id)font theme:(id)theme;
++ (id)textAttachmentimageNamed:(id)named font:(id)font;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MKStarRatingView)initWithCoder:(id)a3;
-- (MKStarRatingView)initWithFrame:(CGRect)a3;
-- (MKStarRatingView)initWithStyle:(int64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MKStarRatingView)initWithCoder:(id)coder;
+- (MKStarRatingView)initWithFrame:(CGRect)frame;
+- (MKStarRatingView)initWithStyle:(int64_t)style;
 - (UIEdgeInsets)alignmentRectInsets;
-- (id)imageWithName:(id)a3 andColor:(id)a4;
+- (id)imageWithName:(id)name andColor:(id)color;
 - (void)_commonInit;
-- (void)_layoutStarViewsCreatingIfNeeded:(BOOL)a3;
+- (void)_layoutStarViewsCreatingIfNeeded:(BOOL)needed;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setNumberOfRatingLevels:(unint64_t)a3;
-- (void)setRating:(double)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setNumberOfRatingLevels:(unint64_t)levels;
+- (void)setRating:(double)rating;
 @end
 
 @implementation MKStarRatingView
 
-- (void)setRating:(double)a3
+- (void)setRating:(double)rating
 {
-  if (self->_rating != a3)
+  if (self->_rating != rating)
   {
-    self->_rating = a3;
+    self->_rating = rating;
     [(MKStarRatingView *)self _layoutStarViewsCreatingIfNeeded:0];
 
     [(MKStarRatingView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(MKStarRatingView *)self _layoutStarViewsCreatingIfNeeded:0];
 
     [(MKStarRatingView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setNumberOfRatingLevels:(unint64_t)a3
+- (void)setNumberOfRatingLevels:(unint64_t)levels
 {
-  if (self->_numLevels != a3)
+  if (self->_numLevels != levels)
   {
-    self->_numLevels = a3;
+    self->_numLevels = levels;
     [(MKStarRatingView *)self _layoutStarViewsCreatingIfNeeded:1];
 
     [(MKStarRatingView *)self invalidateIntrinsicContentSize];
@@ -70,9 +70,9 @@
   [(MKStarRatingView *)&v3 layoutSubviews];
 }
 
-- (void)_layoutStarViewsCreatingIfNeeded:(BOOL)a3
+- (void)_layoutStarViewsCreatingIfNeeded:(BOOL)needed
 {
-  if (a3)
+  if (needed)
   {
     [(NSMutableArray *)self->_ratingViews makeObjectsPerformSelector:sel_removeFromSuperview];
     [(NSMutableArray *)self->_ratingViews removeAllObjects];
@@ -136,7 +136,7 @@
       {
         v19 = [(NSMutableArray *)self->_ratingViews objectAtIndexedSubscript:v13];
         v20 = v19;
-        if (!a3 && v19)
+        if (!needed && v19)
         {
           goto LABEL_26;
         }
@@ -147,9 +147,9 @@
       v20 = v21;
 LABEL_26:
       [v20 setImage:v18];
-      v22 = [v20 superview];
+      superview = [v20 superview];
 
-      if (!v22)
+      if (!superview)
       {
         [(MKStarRatingView *)self addSubview:v20];
         if ([(NSMutableArray *)self->_ratingViews indexOfObject:v20]== 0x7FFFFFFFFFFFFFFFLL)
@@ -191,7 +191,7 @@ LABEL_26:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = self->_fullStarImage;
   [(UIImage *)v3 size];
@@ -217,21 +217,21 @@ LABEL_26:
   return result;
 }
 
-- (id)imageWithName:(id)a3 andColor:(id)a4
+- (id)imageWithName:(id)name andColor:(id)color
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  nameCopy = name;
+  colorCopy = color;
+  v7 = nameCopy;
   v8 = v7;
-  if (v6)
+  if (colorCopy)
   {
-    v8 = [v7 stringByAppendingFormat:@"_%lu", objc_msgSend(v6, "hash")];
+    v8 = [v7 stringByAppendingFormat:@"_%lu", objc_msgSend(colorCopy, "hash")];
   }
 
   v9 = [0 objectForKeyedSubscript:v8];
   if (!v9)
   {
-    if (v6 && ([MEMORY[0x1E69DCAB8] _mapkit_imageNamed:v7], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "_flatImageWithColor:", v6), v9 = objc_claimAutoreleasedReturnValue(), v10, v9) || (objc_msgSend(MEMORY[0x1E69DCAB8], "_mapkit_imageNamed:", v7), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (colorCopy && ([MEMORY[0x1E69DCAB8] _mapkit_imageNamed:v7], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "_flatImageWithColor:", colorCopy), v9 = objc_claimAutoreleasedReturnValue(), v10, v9) || (objc_msgSend(MEMORY[0x1E69DCAB8], "_mapkit_imageNamed:", v7), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       [0 setObject:v9 forKeyedSubscript:v8];
     }
@@ -242,86 +242,86 @@ LABEL_26:
 
 - (void)_commonInit
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   ratingViews = self->_ratingViews;
-  self->_ratingViews = v3;
+  self->_ratingViews = array;
 
   self->_numReviews = 0x7FFFFFFFFFFFFFFFLL;
   self->_starStyle = 0;
   if (MKApplicationLayoutDirectionIsRightToLeft())
   {
     CATransform3DMakeScale(&v7, -1.0, 1.0, 1.0);
-    v5 = [(MKStarRatingView *)self layer];
+    layer = [(MKStarRatingView *)self layer];
     v6 = v7;
-    [v5 setTransform:&v6];
+    [layer setTransform:&v6];
   }
 }
 
-- (MKStarRatingView)initWithStyle:(int64_t)a3
+- (MKStarRatingView)initWithStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = MKStarRatingView;
   v4 = [(MKStarRatingView *)&v6 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(MKStarRatingView *)v4 _commonInit];
   [(MKStarRatingView *)v4 setNumberOfRatingLevels:5];
-  [(MKStarRatingView *)v4 setStarStyle:a3];
+  [(MKStarRatingView *)v4 setStarStyle:style];
   return v4;
 }
 
-- (MKStarRatingView)initWithCoder:(id)a3
+- (MKStarRatingView)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MKStarRatingView;
-  v3 = [(MKStarRatingView *)&v5 initWithCoder:a3];
+  v3 = [(MKStarRatingView *)&v5 initWithCoder:coder];
   [(MKStarRatingView *)v3 _commonInit];
   [(MKStarRatingView *)v3 setStarStyle:0];
   return v3;
 }
 
-- (MKStarRatingView)initWithFrame:(CGRect)a3
+- (MKStarRatingView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = MKStarRatingView;
-  v3 = [(MKStarRatingView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKStarRatingView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(MKStarRatingView *)v3 _commonInit];
   [(MKStarRatingView *)v3 setStarStyle:0];
   return v3;
 }
 
-+ (id)ratingAsAttributedString:(double)a3 baseFont:(id)a4 style:(int64_t)a5 theme:(id)a6
++ (id)ratingAsAttributedString:(double)string baseFont:(id)font style:(int64_t)style theme:(id)theme
 {
   v49[2] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  if (!v10)
+  fontCopy = font;
+  themeCopy = theme;
+  if (!fontCopy)
   {
     v12 = +[MKFontManager sharedManager];
-    v10 = [v12 subtitleFont];
+    fontCopy = [v12 subtitleFont];
   }
 
-  if (a5 == 3)
+  if (style == 3)
   {
-    v13 = [a1 ratingShortAsAttributedString:v10 baseFont:v11 theme:a3];
+    v13 = [self ratingShortAsAttributedString:fontCopy baseFont:themeCopy theme:string];
     goto LABEL_32;
   }
 
   IsRightToLeft = MKApplicationLayoutDirectionIsRightToLeft();
-  if (a5 != 1)
+  if (style != 1)
   {
-    v16 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
     goto LABEL_9;
   }
 
   v15 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.588235319 blue:0.0 alpha:1.0];
-  v16 = v15;
+  tertiaryLabelColor = v15;
   if (!v15)
   {
 LABEL_9:
-    v18 = [a1 colorForRating:a3];
+    v18 = [self colorForRating:string];
     if (!v18)
     {
-      v18 = v16;
-      v16 = v18;
+      v18 = tertiaryLabelColor;
+      tertiaryLabelColor = v18;
     }
 
     v17 = v18;
@@ -330,17 +330,17 @@ LABEL_9:
 
   v17 = v15;
 LABEL_12:
-  v19 = v10;
+  v19 = fontCopy;
   v20 = v19;
   v13 = 0;
-  if (!v19 || !v17 || !v16)
+  if (!v19 || !v17 || !tertiaryLabelColor)
   {
     goto LABEL_31;
   }
 
   v40 = IsRightToLeft;
-  v42 = v10;
-  v43 = v11;
+  v42 = fontCopy;
+  v43 = themeCopy;
   v22 = *MEMORY[0x1E69DB650];
   v48[0] = *MEMORY[0x1E69DB648];
   v21 = v48[0];
@@ -352,26 +352,26 @@ LABEL_12:
   v46[0] = v21;
   v46[1] = v22;
   v47[0] = v20;
-  v47[1] = v16;
-  v41 = v16;
+  v47[1] = tertiaryLabelColor;
+  v41 = tertiaryLabelColor;
   v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:2];
   v24 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  v25 = round(a3 + a3) * 0.5;
+  v25 = round(string + string) * 0.5;
   v26 = 5;
-  v45 = a5;
+  styleCopy = style;
   do
   {
     if (v25 >= 1.0)
     {
       v27 = MEMORY[0x1E696AAB0];
-      v28 = [a1 fullStarTextAttachmentWithFont:v20];
+      v28 = [self fullStarTextAttachmentWithFont:v20];
       goto LABEL_20;
     }
 
     if (v25 == 0.5)
     {
       v27 = MEMORY[0x1E696AAB0];
-      v28 = [a1 halfStarTextAttachmentWithFont:v20];
+      v28 = [self halfStarTextAttachmentWithFont:v20];
 LABEL_20:
       v29 = v28;
       v30 = [v27 attributedStringWithAttachment:v28];
@@ -382,15 +382,15 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (a5 == 1)
+    if (style == 1)
     {
-      v32 = [a1 emptyStarTextAttachmentWithFont:v20];
+      v32 = [self emptyStarTextAttachmentWithFont:v20];
       v33 = v23;
     }
 
     else
     {
-      v32 = [a1 fullStarTextAttachmentWithFont:v20];
+      v32 = [self fullStarTextAttachmentWithFont:v20];
       v33 = v44;
     }
 
@@ -402,7 +402,7 @@ LABEL_20:
     [v36 addAttributes:v31 range:{0, objc_msgSend(v36, "length")}];
     [v24 appendAttributedString:v36];
 
-    a5 = v45;
+    style = styleCopy;
 LABEL_21:
 
     v25 = v25 + -1.0;
@@ -423,9 +423,9 @@ LABEL_21:
   [v24 addAttribute:*MEMORY[0x1E69DB778] value:v37 range:{0, objc_msgSend(v24, "length")}];
   v13 = [v24 copy];
 
-  v10 = v42;
-  v11 = v43;
-  v16 = v41;
+  fontCopy = v42;
+  themeCopy = v43;
+  tertiaryLabelColor = v41;
   v17 = v39;
 LABEL_31:
 
@@ -434,18 +434,18 @@ LABEL_32:
   return v13;
 }
 
-+ (id)ratingShortAsAttributedString:(double)a3 baseFont:(id)a4 theme:(id)a5
++ (id)ratingShortAsAttributedString:(double)string baseFont:(id)font theme:(id)theme
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [a1 colorForRating:a3];
-  v9 = [a1 fullStarTextAttachmentWithFont:v7];
-  v10 = [v7 _mapkit_fontWithWeight:*MEMORY[0x1E69DB958]];
+  fontCopy = font;
+  v8 = [self colorForRating:string];
+  v9 = [self fullStarTextAttachmentWithFont:fontCopy];
+  v10 = [fontCopy _mapkit_fontWithWeight:*MEMORY[0x1E69DB958]];
   v12 = *MEMORY[0x1E69DB650];
   v26[0] = *MEMORY[0x1E69DB648];
   v11 = v26[0];
   v26[1] = v12;
-  v27[0] = v7;
+  v27[0] = fontCopy;
   v27[1] = v8;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
   v24[0] = v11;
@@ -463,7 +463,7 @@ LABEL_32:
   [v17 appendAttributedString:v18];
 
   v19 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.1f", *&a3];
+  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.1f", *&string];
 
   v21 = [v19 initWithString:v20 attributes:v14];
   [v17 appendAttributedString:v21];
@@ -473,13 +473,13 @@ LABEL_32:
   return v22;
 }
 
-+ (id)textAttachmentimageNamed:(id)a3 font:(id)a4
++ (id)textAttachmentimageNamed:(id)named font:(id)font
 {
   v5 = MEMORY[0x1E69DCAB8];
-  v6 = a4;
-  v7 = [v5 systemImageNamed:a3];
+  fontCopy = font;
+  v7 = [v5 systemImageNamed:named];
   v8 = MEMORY[0x1E69DCAD8];
-  [v6 pointSize];
+  [fontCopy pointSize];
   v10 = v9;
 
   v11 = [v8 configurationWithPointSize:2 weight:1 scale:v10];
@@ -493,9 +493,9 @@ LABEL_32:
   return v14;
 }
 
-+ (id)colorForRating:(double)a3
++ (id)colorForRating:(double)rating
 {
-  v5 = vcvtpd_s64_f64(a3);
+  v5 = vcvtpd_s64_f64(rating);
   if (v5 > 4)
   {
     v6 = 0.450980395;

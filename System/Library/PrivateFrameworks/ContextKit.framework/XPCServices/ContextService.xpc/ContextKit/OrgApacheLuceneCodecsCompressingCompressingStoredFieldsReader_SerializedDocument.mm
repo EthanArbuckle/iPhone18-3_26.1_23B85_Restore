@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneCodecsCompressingCompressingStoredFieldsReader_SerializedDocument
-- (OrgApacheLuceneCodecsCompressingCompressingStoredFieldsReader_SerializedDocument)initWithOrgApacheLuceneStoreDataInput:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (OrgApacheLuceneCodecsCompressingCompressingStoredFieldsReader_SerializedDocument)initWithOrgApacheLuceneStoreDataInput:(id)input withInt:(int)int withInt:(int)withInt;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsCompressingCompressingStoredFieldsReader_SerializedDocument
 
-- (OrgApacheLuceneCodecsCompressingCompressingStoredFieldsReader_SerializedDocument)initWithOrgApacheLuceneStoreDataInput:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (OrgApacheLuceneCodecsCompressingCompressingStoredFieldsReader_SerializedDocument)initWithOrgApacheLuceneStoreDataInput:(id)input withInt:(int)int withInt:(int)withInt
 {
-  JreStrongAssign(&self->in_, a3);
-  self->length_ = a4;
-  self->numStoredFields_ = a5;
+  JreStrongAssign(&self->in_, input);
+  self->length_ = int;
+  self->numStoredFields_ = withInt;
   return self;
 }
 

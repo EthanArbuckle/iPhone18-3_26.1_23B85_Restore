@@ -1,23 +1,23 @@
 @interface NPKNanoPassDaemonConnection
 - (NPKNanoPassDaemonConnection)init;
-- (id)_errorHandlerWithCompletion:(id)a3;
-- (id)_remoteObjectProxySynchronous:(BOOL)a3 withFailureHandler:(id)a4;
-- (void)_addLegacyExpressModeEnabledUserNotificationForPassUniqueID:(id)a3 completion:(id)a4;
-- (void)addRemoteDevicePendingProvisionings:(id)a3;
-- (void)addUserNotificationForEnabledExpressMode:(unint64_t)a3 passUniqueID:(id)a4 completion:(id)a5;
-- (void)addUserNotificationOfType:(unint64_t)a3 passUniqueID:(id)a4 completion:(id)a5;
-- (void)canAcceptInvitationOnRemoteDeviceForInvitation:(id)a3 completion:(id)a4;
-- (void)canNotifyAboutExpressModeWithCompletion:(id)a3;
-- (void)fetchIdentityProofingConfigurationForCountry:(id)a3 state:(id)a4 completion:(id)a5;
-- (void)fetchRelevantPassInformationWithCompletion:(id)a3;
-- (void)handleApplicationRedirectRequestOnPairedDeviceForPaymentPass:(id)a3 transaction:(id)a4;
-- (void)handleMetadataRequestOnPairedDevice:(id)a3 withAssociatedApplicationIdentifiers:(id)a4 completion:(id)a5;
-- (void)remoteService:(id)a3 didEstablishConnection:(id)a4;
-- (void)remoteService:(id)a3 didInterruptConnection:(id)a4;
-- (void)remoteServiceDidResume:(id)a3;
-- (void)remoteServiceDidSuspend:(id)a3;
-- (void)startSubcredentialProvisioningOnRemoteDeviceForInvitation:(id)a3;
-- (void)startSubcredentialProvisioningOnRemoteDeviceForMailboxAddress:(id)a3 activationCode:(id)a4;
+- (id)_errorHandlerWithCompletion:(id)completion;
+- (id)_remoteObjectProxySynchronous:(BOOL)synchronous withFailureHandler:(id)handler;
+- (void)_addLegacyExpressModeEnabledUserNotificationForPassUniqueID:(id)d completion:(id)completion;
+- (void)addRemoteDevicePendingProvisionings:(id)provisionings;
+- (void)addUserNotificationForEnabledExpressMode:(unint64_t)mode passUniqueID:(id)d completion:(id)completion;
+- (void)addUserNotificationOfType:(unint64_t)type passUniqueID:(id)d completion:(id)completion;
+- (void)canAcceptInvitationOnRemoteDeviceForInvitation:(id)invitation completion:(id)completion;
+- (void)canNotifyAboutExpressModeWithCompletion:(id)completion;
+- (void)fetchIdentityProofingConfigurationForCountry:(id)country state:(id)state completion:(id)completion;
+- (void)fetchRelevantPassInformationWithCompletion:(id)completion;
+- (void)handleApplicationRedirectRequestOnPairedDeviceForPaymentPass:(id)pass transaction:(id)transaction;
+- (void)handleMetadataRequestOnPairedDevice:(id)device withAssociatedApplicationIdentifiers:(id)identifiers completion:(id)completion;
+- (void)remoteService:(id)service didEstablishConnection:(id)connection;
+- (void)remoteService:(id)service didInterruptConnection:(id)connection;
+- (void)remoteServiceDidResume:(id)resume;
+- (void)remoteServiceDidSuspend:(id)suspend;
+- (void)startSubcredentialProvisioningOnRemoteDeviceForInvitation:(id)invitation;
+- (void)startSubcredentialProvisioningOnRemoteDeviceForMailboxAddress:(id)address activationCode:(id)code;
 @end
 
 @implementation NPKNanoPassDaemonConnection
@@ -58,14 +58,14 @@
   return v2;
 }
 
-- (void)handleMetadataRequestOnPairedDevice:(id)a3 withAssociatedApplicationIdentifiers:(id)a4 completion:(id)a5
+- (void)handleMetadataRequestOnPairedDevice:(id)device withAssociatedApplicationIdentifiers:(id)identifiers completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  deviceCopy = device;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = a4;
+    identifiersCopy = identifiers;
     v11 = pk_General_log();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -75,7 +75,7 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v24 = v8;
+        v24 = deviceCopy;
         _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Connection handleMetadataRequestOnPairedDevice %@", buf, 0xCu);
       }
     }
@@ -84,17 +84,17 @@
     v21[1] = 3221225472;
     v21[2] = __115__NPKNanoPassDaemonConnection_handleMetadataRequestOnPairedDevice_withAssociatedApplicationIdentifiers_completion___block_invoke;
     v21[3] = &unk_279945198;
-    v14 = v9;
+    v14 = completionCopy;
     v22 = v14;
     v15 = [(NPKNanoPassDaemonConnection *)self _remoteObjectProxySynchronous:0 withFailureHandler:v21];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __115__NPKNanoPassDaemonConnection_handleMetadataRequestOnPairedDevice_withAssociatedApplicationIdentifiers_completion___block_invoke_2;
     v17[3] = &unk_279945668;
-    v18 = v8;
-    v19 = self;
+    v18 = deviceCopy;
+    selfCopy = self;
     v20 = v14;
-    [v15 handleMetadataRequestOnPairedDevice:v18 withAssociatedApplicationIdentifiers:v10 completion:v17];
+    [v15 handleMetadataRequestOnPairedDevice:v18 withAssociatedApplicationIdentifiers:identifiersCopy completion:v17];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -136,11 +136,11 @@ void __115__NPKNanoPassDaemonConnection_handleMetadataRequestOnPairedDevice_with
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleApplicationRedirectRequestOnPairedDeviceForPaymentPass:(id)a3 transaction:(id)a4
+- (void)handleApplicationRedirectRequestOnPairedDeviceForPaymentPass:(id)pass transaction:(id)transaction
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  transactionCopy = transaction;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -150,15 +150,15 @@ void __115__NPKNanoPassDaemonConnection_handleMetadataRequestOnPairedDevice_with
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = v6;
+      v14 = passCopy;
       v15 = 2112;
-      v16 = v7;
+      v16 = transactionCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Connection applicationRedirectRequestOnPairDevice %@-%@", &v13, 0x16u);
     }
   }
 
   v11 = [(NPKNanoPassDaemonConnection *)self _remoteObjectProxySynchronous:0 withFailureHandler:&__block_literal_global_1];
-  [v11 handleApplicationRedirectRequestOnPairedDeviceForPaymentPass:v6 transaction:v7];
+  [v11 handleApplicationRedirectRequestOnPairedDeviceForPaymentPass:passCopy transaction:transactionCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -179,11 +179,11 @@ void __104__NPKNanoPassDaemonConnection_handleApplicationRedirectRequestOnPaired
   }
 }
 
-- (void)canAcceptInvitationOnRemoteDeviceForInvitation:(id)a3 completion:(id)a4
+- (void)canAcceptInvitationOnRemoteDeviceForInvitation:(id)invitation completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  completionCopy = completion;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -192,9 +192,9 @@ void __104__NPKNanoPassDaemonConnection_handleApplicationRedirectRequestOnPaired
     v10 = pk_General_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = _Block_copy(v7);
+      v11 = _Block_copy(completionCopy);
       *buf = 138412546;
-      v24 = v6;
+      v24 = invitationCopy;
       v25 = 2112;
       v26 = v11;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Connection canAcceptInvitationOnRemoteDeviceForInvitation: %@ completion: %@", buf, 0x16u);
@@ -205,18 +205,18 @@ void __104__NPKNanoPassDaemonConnection_handleApplicationRedirectRequestOnPaired
   v21[1] = 3221225472;
   v21[2] = __89__NPKNanoPassDaemonConnection_canAcceptInvitationOnRemoteDeviceForInvitation_completion___block_invoke;
   v21[3] = &unk_279945198;
-  v12 = v7;
+  v12 = completionCopy;
   v22 = v12;
   v13 = [(NPKNanoPassDaemonConnection *)self _remoteObjectProxySynchronous:0 withFailureHandler:v21];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __89__NPKNanoPassDaemonConnection_canAcceptInvitationOnRemoteDeviceForInvitation_completion___block_invoke_58;
   v17[3] = &unk_2799456B0;
-  v19 = self;
+  selfCopy = self;
   v20 = v12;
-  v18 = v6;
+  v18 = invitationCopy;
   v14 = v12;
-  v15 = v6;
+  v15 = invitationCopy;
   [v13 canAcceptInvitationOnRemoteDeviceForInvitation:v15 completion:v17];
 
   v16 = *MEMORY[0x277D85DE8];
@@ -283,10 +283,10 @@ void __89__NPKNanoPassDaemonConnection_canAcceptInvitationOnRemoteDeviceForInvit
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSubcredentialProvisioningOnRemoteDeviceForInvitation:(id)a3
+- (void)startSubcredentialProvisioningOnRemoteDeviceForInvitation:(id)invitation
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invitationCopy = invitation;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -296,13 +296,13 @@ void __89__NPKNanoPassDaemonConnection_canAcceptInvitationOnRemoteDeviceForInvit
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = invitationCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Connection startSubcredentialProvisioningOnRemoteDeviceForInvitation: %@", &v10, 0xCu);
     }
   }
 
   v8 = [(NPKNanoPassDaemonConnection *)self _remoteObjectProxySynchronous:0 withFailureHandler:&__block_literal_global_67];
-  [v8 startSubcredentialProvisioningOnRemoteDeviceForInvitation:v4];
+  [v8 startSubcredentialProvisioningOnRemoteDeviceForInvitation:invitationCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -323,11 +323,11 @@ void __89__NPKNanoPassDaemonConnection_startSubcredentialProvisioningOnRemoteDev
   }
 }
 
-- (void)startSubcredentialProvisioningOnRemoteDeviceForMailboxAddress:(id)a3 activationCode:(id)a4
+- (void)startSubcredentialProvisioningOnRemoteDeviceForMailboxAddress:(id)address activationCode:(id)code
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  codeCopy = code;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -337,15 +337,15 @@ void __89__NPKNanoPassDaemonConnection_startSubcredentialProvisioningOnRemoteDev
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138478083;
-      v14 = v6;
+      v14 = addressCopy;
       v15 = 2113;
-      v16 = v7;
+      v16 = codeCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Connection startSubcredentialProvisioningOnRemoteDeviceForMailboxAddress: %{private}@, activationCode: %{private}@", &v13, 0x16u);
     }
   }
 
   v11 = [(NPKNanoPassDaemonConnection *)self _remoteObjectProxySynchronous:0 withFailureHandler:&__block_literal_global_69];
-  [v11 startSubcredentialProvisioningOnRemoteDeviceForMailboxAddress:v6 activationCode:v7];
+  [v11 startSubcredentialProvisioningOnRemoteDeviceForMailboxAddress:addressCopy activationCode:codeCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -418,10 +418,10 @@ void __149__NPKNanoPassDaemonConnection_startSubcredentialProvisioningOnLocalDev
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addRemoteDevicePendingProvisionings:(id)a3
+- (void)addRemoteDevicePendingProvisionings:(id)provisionings
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  provisioningsCopy = provisionings;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -431,13 +431,13 @@ void __149__NPKNanoPassDaemonConnection_startSubcredentialProvisioningOnLocalDev
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = provisioningsCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Connection addRemoteDevicePendingProvisionings: %@", &v10, 0xCu);
     }
   }
 
   v8 = [(NPKNanoPassDaemonConnection *)self _remoteObjectProxySynchronous:0 withFailureHandler:&__block_literal_global_73];
-  [v8 addRemoteDevicePendingProvisionings:v4];
+  [v8 addRemoteDevicePendingProvisionings:provisioningsCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -551,11 +551,11 @@ uint64_t __78__NPKNanoPassDaemonConnection_identityPassPrearmStatusSynchronous_c
   return result;
 }
 
-- (void)addUserNotificationOfType:(unint64_t)a3 passUniqueID:(id)a4 completion:(id)a5
+- (void)addUserNotificationOfType:(unint64_t)type passUniqueID:(id)d completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v10 = pk_General_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -564,18 +564,18 @@ uint64_t __78__NPKNanoPassDaemonConnection_identityPassPrearmStatusSynchronous_c
     v12 = pk_General_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = NSStringFromNPKNanoPassbookUserNotificationType(a3);
+      v13 = NSStringFromNPKNanoPassbookUserNotificationType(type);
       v17 = 138412546;
       v18 = v13;
       v19 = 2112;
-      v20 = v8;
+      v20 = dCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Request to add user notification of type: %@ for passUniqueID: %@", &v17, 0x16u);
     }
   }
 
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v15 = 3;
     }
@@ -585,7 +585,7 @@ uint64_t __78__NPKNanoPassDaemonConnection_identityPassPrearmStatusSynchronous_c
       v15 = 0;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v14 = 2;
     }
@@ -598,26 +598,26 @@ uint64_t __78__NPKNanoPassDaemonConnection_identityPassPrearmStatusSynchronous_c
 
   else
   {
-    if (!a3)
+    if (!type)
     {
-      [(NPKNanoPassDaemonConnection *)self _addLegacyExpressModeEnabledUserNotificationForPassUniqueID:v8 completion:v9];
+      [(NPKNanoPassDaemonConnection *)self _addLegacyExpressModeEnabledUserNotificationForPassUniqueID:dCopy completion:completionCopy];
       goto LABEL_15;
     }
 
-    v14 = a3 == 1;
+    v14 = type == 1;
   }
 
-  [(NPKNanoPassDaemonConnection *)self addUserNotificationForEnabledExpressMode:v14 passUniqueID:v8 completion:v9];
+  [(NPKNanoPassDaemonConnection *)self addUserNotificationForEnabledExpressMode:v14 passUniqueID:dCopy completion:completionCopy];
 LABEL_15:
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addUserNotificationForEnabledExpressMode:(unint64_t)a3 passUniqueID:(id)a4 completion:(id)a5
+- (void)addUserNotificationForEnabledExpressMode:(unint64_t)mode passUniqueID:(id)d completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v10 = pk_General_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -627,9 +627,9 @@ LABEL_15:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v26 = a3;
+      modeCopy = mode;
       v27 = 2112;
-      v28 = v8;
+      v28 = dCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Connection started addUserNotificationForEnabledExpressMode: %lu, pass unique ID: %@", buf, 0x16u);
     }
   }
@@ -638,7 +638,7 @@ LABEL_15:
   v23[1] = 3221225472;
   v23[2] = __96__NPKNanoPassDaemonConnection_addUserNotificationForEnabledExpressMode_passUniqueID_completion___block_invoke;
   v23[3] = &unk_279945198;
-  v13 = v9;
+  v13 = completionCopy;
   v24 = v13;
   v14 = [(NPKNanoPassDaemonConnection *)self _remoteObjectProxySynchronous:0 withFailureHandler:v23];
   v18[0] = MEMORY[0x277D85DD0];
@@ -646,12 +646,12 @@ LABEL_15:
   v18[2] = __96__NPKNanoPassDaemonConnection_addUserNotificationForEnabledExpressMode_passUniqueID_completion___block_invoke_77;
   v18[3] = &unk_279945750;
   v21 = v13;
-  v22 = a3;
-  v19 = v8;
-  v20 = self;
+  modeCopy2 = mode;
+  v19 = dCopy;
+  selfCopy = self;
   v15 = v13;
-  v16 = v8;
-  [v14 addUserNotificationForEnabledExpressMode:a3 passUniqueID:v16 completion:v18];
+  v16 = dCopy;
+  [v14 addUserNotificationForEnabledExpressMode:mode passUniqueID:v16 completion:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -712,10 +712,10 @@ void __96__NPKNanoPassDaemonConnection_addUserNotificationForEnabledExpressMode_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)canNotifyAboutExpressModeWithCompletion:(id)a3
+- (void)canNotifyAboutExpressModeWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -724,7 +724,7 @@ void __96__NPKNanoPassDaemonConnection_addUserNotificationForEnabledExpressMode_
     v7 = pk_General_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = _Block_copy(v4);
+      v8 = _Block_copy(completionCopy);
       *buf = 138412290;
       v18 = v8;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Connection started canNotifyAboutExpressModeWithCompletion %@", buf, 0xCu);
@@ -735,7 +735,7 @@ void __96__NPKNanoPassDaemonConnection_addUserNotificationForEnabledExpressMode_
   v15[1] = 3221225472;
   v15[2] = __71__NPKNanoPassDaemonConnection_canNotifyAboutExpressModeWithCompletion___block_invoke;
   v15[3] = &unk_279945198;
-  v9 = v4;
+  v9 = completionCopy;
   v16 = v9;
   v10 = [(NPKNanoPassDaemonConnection *)self _remoteObjectProxySynchronous:0 withFailureHandler:v15];
   v13[0] = MEMORY[0x277D85DD0];
@@ -805,10 +805,10 @@ uint64_t __71__NPKNanoPassDaemonConnection_canNotifyAboutExpressModeWithCompleti
   return result;
 }
 
-- (void)fetchRelevantPassInformationWithCompletion:(id)a3
+- (void)fetchRelevantPassInformationWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -817,7 +817,7 @@ uint64_t __71__NPKNanoPassDaemonConnection_canNotifyAboutExpressModeWithCompleti
     v7 = pk_General_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = _Block_copy(v4);
+      v8 = _Block_copy(completionCopy);
       *buf = 138412290;
       v18 = v8;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Connection started fetchRelevantPassInformationWithCompletion %@", buf, 0xCu);
@@ -828,7 +828,7 @@ uint64_t __71__NPKNanoPassDaemonConnection_canNotifyAboutExpressModeWithCompleti
   v15[1] = 3221225472;
   v15[2] = __74__NPKNanoPassDaemonConnection_fetchRelevantPassInformationWithCompletion___block_invoke;
   v15[3] = &unk_279945198;
-  v9 = v4;
+  v9 = completionCopy;
   v16 = v9;
   v10 = [(NPKNanoPassDaemonConnection *)self _remoteObjectProxySynchronous:0 withFailureHandler:v15];
   v13[0] = MEMORY[0x277D85DD0];
@@ -908,12 +908,12 @@ void __135__NPKNanoPassDaemonConnection_insertBridgeBulletinWithTitle_message_ac
   }
 }
 
-- (void)fetchIdentityProofingConfigurationForCountry:(id)a3 state:(id)a4 completion:(id)a5
+- (void)fetchIdentityProofingConfigurationForCountry:(id)country state:(id)state completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  stateCopy = state;
+  countryCopy = country;
   v11 = pk_General_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -922,7 +922,7 @@ void __135__NPKNanoPassDaemonConnection_insertBridgeBulletinWithTitle_message_ac
     v13 = pk_General_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = _Block_copy(v8);
+      v14 = _Block_copy(completionCopy);
       *buf = 138412290;
       v24 = v14;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Connection started fetchIdentityProofingConfigurationForCountry:state:completion %@", buf, 0xCu);
@@ -933,7 +933,7 @@ void __135__NPKNanoPassDaemonConnection_insertBridgeBulletinWithTitle_message_ac
   v21[1] = 3221225472;
   v21[2] = __93__NPKNanoPassDaemonConnection_fetchIdentityProofingConfigurationForCountry_state_completion___block_invoke;
   v21[3] = &unk_279945198;
-  v15 = v8;
+  v15 = completionCopy;
   v22 = v15;
   v16 = [(NPKNanoPassDaemonConnection *)self _remoteObjectProxySynchronous:0 withFailureHandler:v21];
   v19[0] = MEMORY[0x277D85DD0];
@@ -943,7 +943,7 @@ void __135__NPKNanoPassDaemonConnection_insertBridgeBulletinWithTitle_message_ac
   v19[4] = self;
   v20 = v15;
   v17 = v15;
-  [v16 fetchIdentityProofingConfigurationForCountry:v10 state:v9 completion:v19];
+  [v16 fetchIdentityProofingConfigurationForCountry:countryCopy state:stateCopy completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -1001,21 +1001,21 @@ void __93__NPKNanoPassDaemonConnection_fetchIdentityProofingConfigurationForCoun
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_remoteObjectProxySynchronous:(BOOL)a3 withFailureHandler:(id)a4
+- (id)_remoteObjectProxySynchronous:(BOOL)synchronous withFailureHandler:(id)handler
 {
-  v4 = a3;
+  synchronousCopy = synchronous;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(NPKNanoPassDaemonConnection *)self remoteService];
-  v8 = [(NPKNanoPassDaemonConnection *)self _errorHandlerWithCompletion:v6];
-  if (v4)
+  handlerCopy = handler;
+  remoteService = [(NPKNanoPassDaemonConnection *)self remoteService];
+  v8 = [(NPKNanoPassDaemonConnection *)self _errorHandlerWithCompletion:handlerCopy];
+  if (synchronousCopy)
   {
-    [v7 synchronousRemoteObjectProxyWithErrorHandler:v8];
+    [remoteService synchronousRemoteObjectProxyWithErrorHandler:v8];
   }
 
   else
   {
-    [v7 remoteObjectProxyWithErrorHandler:v8];
+    [remoteService remoteObjectProxyWithErrorHandler:v8];
   }
   v9 = ;
 
@@ -1036,7 +1036,7 @@ void __93__NPKNanoPassDaemonConnection_fetchIdentityProofingConfigurationForCoun
         v19 = 2048;
         v20 = 307;
         v21 = 1024;
-        v22 = v4;
+        v22 = synchronousCopy;
         _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_ERROR, "Error: *** NPKAssertion failure in %{public}s, %{public}s:%ld (reason: [NPKNanoPassDaemonConnection _remoteObjectProxySynchronous:withFailureHandler:] (synchronous:%d) would have returned nil)", &v15, 0x26u);
       }
     }
@@ -1049,15 +1049,15 @@ void __93__NPKNanoPassDaemonConnection_fetchIdentityProofingConfigurationForCoun
   return v9;
 }
 
-- (id)_errorHandlerWithCompletion:(id)a3
+- (id)_errorHandlerWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__NPKNanoPassDaemonConnection__errorHandlerWithCompletion___block_invoke;
   aBlock[3] = &unk_279945218;
-  v9 = v3;
-  v4 = v3;
+  v9 = completionCopy;
+  v4 = completionCopy;
   v5 = _Block_copy(aBlock);
   v6 = _Block_copy(v5);
 
@@ -1091,11 +1091,11 @@ void __59__NPKNanoPassDaemonConnection__errorHandlerWithCompletion___block_invok
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addLegacyExpressModeEnabledUserNotificationForPassUniqueID:(id)a3 completion:(id)a4
+- (void)_addLegacyExpressModeEnabledUserNotificationForPassUniqueID:(id)d completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
 
@@ -1105,7 +1105,7 @@ void __59__NPKNanoPassDaemonConnection__errorHandlerWithCompletion___block_invok
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v24 = v6;
+      v24 = dCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_ERROR, "Error: [NanoPassdXPC] Handling legacy express mode enabled codepath for pass unique ID: %@", buf, 0xCu);
     }
   }
@@ -1114,7 +1114,7 @@ void __59__NPKNanoPassDaemonConnection__errorHandlerWithCompletion___block_invok
   v21[1] = 3221225472;
   v21[2] = __102__NPKNanoPassDaemonConnection__addLegacyExpressModeEnabledUserNotificationForPassUniqueID_completion___block_invoke;
   v21[3] = &unk_279945198;
-  v11 = v7;
+  v11 = completionCopy;
   v22 = v11;
   v12 = [(NPKNanoPassDaemonConnection *)self _remoteObjectProxySynchronous:0 withFailureHandler:v21];
   v16[0] = MEMORY[0x277D85DD0];
@@ -1123,10 +1123,10 @@ void __59__NPKNanoPassDaemonConnection__errorHandlerWithCompletion___block_invok
   v16[3] = &unk_279945750;
   v19 = v11;
   v20 = 0;
-  v17 = v6;
-  v18 = self;
+  v17 = dCopy;
+  selfCopy = self;
   v13 = v11;
-  v14 = v6;
+  v14 = dCopy;
   [v12 addUserNotificationOfType:0 passUniqueID:v14 completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -1188,11 +1188,11 @@ void __102__NPKNanoPassDaemonConnection__addLegacyExpressModeEnabledUserNotifica
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteService:(id)a3 didEstablishConnection:(id)a4
+- (void)remoteService:(id)service didEstablishConnection:(id)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  connectionCopy = connection;
   v7 = pk_General_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -1202,9 +1202,9 @@ void __102__NPKNanoPassDaemonConnection__addLegacyExpressModeEnabledUserNotifica
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = v5;
+      v12 = serviceCopy;
       v13 = 2112;
-      v14 = v6;
+      v14 = connectionCopy;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Service %@ didEstablishConnection: %@", &v11, 0x16u);
     }
   }
@@ -1212,11 +1212,11 @@ void __102__NPKNanoPassDaemonConnection__addLegacyExpressModeEnabledUserNotifica
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteService:(id)a3 didInterruptConnection:(id)a4
+- (void)remoteService:(id)service didInterruptConnection:(id)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  connectionCopy = connection;
   v7 = pk_General_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -1226,9 +1226,9 @@ void __102__NPKNanoPassDaemonConnection__addLegacyExpressModeEnabledUserNotifica
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = v5;
+      v12 = serviceCopy;
       v13 = 2112;
-      v14 = v6;
+      v14 = connectionCopy;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Service %@ didInterruptConnection: %@", &v11, 0x16u);
     }
   }
@@ -1236,10 +1236,10 @@ void __102__NPKNanoPassDaemonConnection__addLegacyExpressModeEnabledUserNotifica
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteServiceDidResume:(id)a3
+- (void)remoteServiceDidResume:(id)resume
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  resumeCopy = resume;
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -1249,7 +1249,7 @@ void __102__NPKNanoPassDaemonConnection__addLegacyExpressModeEnabledUserNotifica
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = resumeCopy;
       _os_log_impl(&dword_25B300000, v6, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Service didResume: %@", &v8, 0xCu);
     }
   }
@@ -1257,10 +1257,10 @@ void __102__NPKNanoPassDaemonConnection__addLegacyExpressModeEnabledUserNotifica
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteServiceDidSuspend:(id)a3
+- (void)remoteServiceDidSuspend:(id)suspend
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  suspendCopy = suspend;
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -1270,7 +1270,7 @@ void __102__NPKNanoPassDaemonConnection__addLegacyExpressModeEnabledUserNotifica
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = suspendCopy;
       _os_log_impl(&dword_25B300000, v6, OS_LOG_TYPE_DEFAULT, "Notice: [NanoPassdXPC] Service didSuspend: %@", &v8, 0xCu);
     }
   }

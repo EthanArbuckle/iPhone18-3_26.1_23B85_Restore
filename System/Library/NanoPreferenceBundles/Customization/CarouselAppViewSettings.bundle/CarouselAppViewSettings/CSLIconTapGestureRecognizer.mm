@@ -1,21 +1,21 @@
 @interface CSLIconTapGestureRecognizer
-- (CGPoint)locationInView:(id)a3;
-- (CSLIconTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)_longPressTimerFired:(id)a3;
+- (CGPoint)locationInView:(id)view;
+- (CSLIconTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)_longPressTimerFired:(id)fired;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation CSLIconTapGestureRecognizer
 
-- (CSLIconTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (CSLIconTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v11.receiver = self;
   v11.super_class = CSLIconTapGestureRecognizer;
-  v7 = [(CSLIconTapGestureRecognizer *)&v11 initWithTarget:v6 action:a4];
+  v7 = [(CSLIconTapGestureRecognizer *)&v11 initWithTarget:targetCopy action:action];
   v8 = v7;
   if (v7)
   {
@@ -28,14 +28,14 @@
   return v8;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = CSLIconTapGestureRecognizer;
-  [(CSLIconTapGestureRecognizer *)&v14 touchesBegan:v6 withEvent:v7];
-  if ([v6 count] < 2)
+  [(CSLIconTapGestureRecognizer *)&v14 touchesBegan:beganCopy withEvent:eventCopy];
+  if ([beganCopy count] < 2)
   {
     if (self->_trackingTouch)
     {
@@ -44,11 +44,11 @@
 
     else
     {
-      v8 = [v6 anyObject];
-      objc_storeStrong(&self->_trackingTouch, v8);
-      v9 = [v8 window];
-      [v8 locationInView:0];
-      [v9 _convertPointToSceneReferenceSpace:?];
+      anyObject = [beganCopy anyObject];
+      objc_storeStrong(&self->_trackingTouch, anyObject);
+      window = [anyObject window];
+      [anyObject locationInView:0];
+      [window _convertPointToSceneReferenceSpace:?];
       self->_startLocation.x = v10;
       self->_startLocation.y = v11;
 
@@ -69,14 +69,14 @@
   }
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (viewCopy)
   {
-    v6 = [v4 window];
-    [v6 _convertPointFromSceneReferenceSpace:{self->_startLocation.x, self->_startLocation.y}];
+    window = [viewCopy window];
+    [window _convertPointFromSceneReferenceSpace:{self->_startLocation.x, self->_startLocation.y}];
     [v5 convertPoint:0 fromView:?];
     x = v7;
     y = v9;
@@ -95,26 +95,26 @@
   return result;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  cancelledCopy = cancelled;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = CSLIconTapGestureRecognizer;
-  [(CSLIconTapGestureRecognizer *)&v9 touchesCancelled:v6 withEvent:v7];
+  [(CSLIconTapGestureRecognizer *)&v9 touchesCancelled:cancelledCopy withEvent:eventCopy];
   trackingTouch = self->_trackingTouch;
   self->_trackingTouch = 0;
 
   [(CSLIconTapGestureRecognizer *)self setState:4];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = CSLIconTapGestureRecognizer;
-  [(CSLIconTapGestureRecognizer *)&v9 touchesEnded:v6 withEvent:v7];
+  [(CSLIconTapGestureRecognizer *)&v9 touchesEnded:endedCopy withEvent:eventCopy];
   trackingTouch = self->_trackingTouch;
   self->_trackingTouch = 0;
 
@@ -133,7 +133,7 @@
   self->_isLongPress = 0;
 }
 
-- (void)_longPressTimerFired:(id)a3
+- (void)_longPressTimerFired:(id)fired
 {
   v4 = cslprf_icon_field_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))

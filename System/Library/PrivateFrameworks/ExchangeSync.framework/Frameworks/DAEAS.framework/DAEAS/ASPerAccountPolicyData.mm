@@ -1,26 +1,26 @@
 @interface ASPerAccountPolicyData
-- (ASPerAccountPolicyData)initWithAccountPersistentUUID:(id)a3;
+- (ASPerAccountPolicyData)initWithAccountPersistentUUID:(id)d;
 - (NSDictionary)policyValues;
 - (NSString)policyKey;
 - (id)description;
-- (void)setPolicyKey:(id)a3 policyValues:(id)a4;
+- (void)setPolicyKey:(id)key policyValues:(id)values;
 @end
 
 @implementation ASPerAccountPolicyData
 
-- (ASPerAccountPolicyData)initWithAccountPersistentUUID:(id)a3
+- (ASPerAccountPolicyData)initWithAccountPersistentUUID:(id)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dCopy = d;
   v20.receiver = self;
   v20.super_class = ASPerAccountPolicyData;
   v6 = [(ASPerAccountPolicyData *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountPersistentUUID, a3);
-    v8 = [MEMORY[0x277D262A0] sharedConnection];
-    v9 = [v8 userInfoForClientUUID:v7->_accountPersistentUUID];
+    objc_storeStrong(&v6->_accountPersistentUUID, d);
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v9 = [mEMORY[0x277D262A0] userInfoForClientUUID:v7->_accountPersistentUUID];
 
     v10 = [v9 objectForKeyedSubscript:@"deviceId"];
     v11 = v10;
@@ -40,8 +40,8 @@
           _os_log_impl(&dword_24A0AC000, v14, v15, "Found an outdated deviceId %@ in policy data (compared to current device id of %@).  Blowing it away and starting fresh", buf, 0x16u);
         }
 
-        v17 = [MEMORY[0x277D262A0] sharedConnection];
-        [v17 setUserInfo:0 forClientUUID:v7->_accountPersistentUUID];
+        mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+        [mEMORY[0x277D262A0]2 setUserInfo:0 forClientUUID:v7->_accountPersistentUUID];
       }
     }
   }
@@ -55,17 +55,17 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ASPerAccountPolicyData *)self policyKey];
-  v7 = [(ASPerAccountPolicyData *)self policyValues];
-  v8 = [v3 stringWithFormat:@"<%@: key %@\npolicies:\n%@>", v5, v6, v7];
+  policyKey = [(ASPerAccountPolicyData *)self policyKey];
+  policyValues = [(ASPerAccountPolicyData *)self policyValues];
+  v8 = [v3 stringWithFormat:@"<%@: key %@\npolicies:\n%@>", v5, policyKey, policyValues];
 
   return v8;
 }
 
 - (NSString)policyKey
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 userInfoForClientUUID:self->_accountPersistentUUID];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v4 = [mEMORY[0x277D262A0] userInfoForClientUUID:self->_accountPersistentUUID];
 
   v5 = [v4 objectForKeyedSubscript:@"policyKey"];
 
@@ -74,34 +74,34 @@
 
 - (NSDictionary)policyValues
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 userInfoForClientUUID:self->_accountPersistentUUID];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v4 = [mEMORY[0x277D262A0] userInfoForClientUUID:self->_accountPersistentUUID];
 
   v5 = [v4 objectForKeyedSubscript:@"policyValues"];
 
   return v5;
 }
 
-- (void)setPolicyKey:(id)a3 policyValues:(id)a4
+- (void)setPolicyKey:(id)key policyValues:(id)values
 {
-  v10 = a3;
-  v6 = a4;
+  keyCopy = key;
+  valuesCopy = values;
   v7 = objc_opt_new();
-  if (v10)
+  if (keyCopy)
   {
-    [v7 setObject:v10 forKeyedSubscript:@"policyKey"];
+    [v7 setObject:keyCopy forKeyedSubscript:@"policyKey"];
   }
 
-  if (v6)
+  if (valuesCopy)
   {
-    [v7 setObject:v6 forKeyedSubscript:@"policyValues"];
+    [v7 setObject:valuesCopy forKeyedSubscript:@"policyValues"];
   }
 
   v8 = asDeviceID();
   [v7 setObject:v8 forKeyedSubscript:@"deviceId"];
 
-  v9 = [MEMORY[0x277D262A0] sharedConnection];
-  [v9 setUserInfo:v7 forClientUUID:self->_accountPersistentUUID];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] setUserInfo:v7 forClientUUID:self->_accountPersistentUUID];
 }
 
 @end

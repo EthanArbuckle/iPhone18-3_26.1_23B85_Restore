@@ -1,15 +1,15 @@
 @interface WFShowContentDialogViewController
 - (BOOL)hasCustomHomeGestureBehavior;
 - (BOOL)shouldHideSashView;
-- (double)contentHeightForWidth:(double)a3 withMaximumVisibleHeight:(double)a4;
-- (double)contentHeightWithPreferredHeight:(double)a3 maxVisibleHeight:(double)a4;
-- (double)targetHeightForAnimatingToProposedHeight:(double)a3;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
+- (double)contentHeightForWidth:(double)width withMaximumVisibleHeight:(double)height;
+- (double)contentHeightWithPreferredHeight:(double)height maxVisibleHeight:(double)visibleHeight;
+- (double)targetHeightForAnimatingToProposedHeight:(double)height;
+- (id)visualStylingProviderForCategory:(int64_t)category;
 - (void)askContainerForHomeGestureUpdate;
-- (void)configureCell:(id)a3;
+- (void)configureCell:(id)cell;
 - (void)homeGestureDidPassThreshold;
 - (void)loadView;
-- (void)prepareForPresentationWithCompletionHandler:(id)a3;
+- (void)prepareForPresentationWithCompletionHandler:(id)handler;
 - (void)updateActions;
 @end
 
@@ -17,17 +17,17 @@
 
 - (BOOL)shouldHideSashView
 {
-  v2 = [(WFShowContentDialogViewController *)self contentCollectionPreviewController];
-  v3 = [v2 shouldHideSashView];
+  contentCollectionPreviewController = [(WFShowContentDialogViewController *)self contentCollectionPreviewController];
+  shouldHideSashView = [contentCollectionPreviewController shouldHideSashView];
 
-  return v3;
+  return shouldHideSashView;
 }
 
 - (void)homeGestureDidPassThreshold
 {
-  v3 = [(WFShowContentDialogViewController *)self presentedViewController];
+  presentedViewController = [(WFShowContentDialogViewController *)self presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
 
     [(WFShowContentDialogViewController *)self dismissViewControllerAnimated:1 completion:0];
@@ -36,38 +36,38 @@
 
 - (BOOL)hasCustomHomeGestureBehavior
 {
-  v2 = [(WFShowContentDialogViewController *)self presentedViewController];
-  v3 = v2 != 0;
+  presentedViewController = [(WFShowContentDialogViewController *)self presentedViewController];
+  v3 = presentedViewController != 0;
 
   return v3;
 }
 
 - (void)askContainerForHomeGestureUpdate
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"WFBannerShouldUpdateHomeGestureOwnershipNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WFBannerShouldUpdateHomeGestureOwnershipNotification" object:0];
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
-  v4 = [(WFCompactPlatterViewController *)self platterView];
-  v5 = [v4 visualStylingProviderForCategory:a3];
+  platterView = [(WFCompactPlatterViewController *)self platterView];
+  v5 = [platterView visualStylingProviderForCategory:category];
 
   return v5;
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(WFCompactPlatterViewController *)self appearanceProvider];
-  [v5 configureChooseFromListDialogCell:v4];
+  cellCopy = cell;
+  appearanceProvider = [(WFCompactPlatterViewController *)self appearanceProvider];
+  [appearanceProvider configureChooseFromListDialogCell:cellCopy];
 }
 
-- (double)targetHeightForAnimatingToProposedHeight:(double)a3
+- (double)targetHeightForAnimatingToProposedHeight:(double)height
 {
   [(WFCompactPlatterViewController *)self maximumExpectedVisibleContentHeight];
 
-  [(WFShowContentDialogViewController *)self contentHeightWithPreferredHeight:a3 maxVisibleHeight:v5];
+  [(WFShowContentDialogViewController *)self contentHeightWithPreferredHeight:height maxVisibleHeight:v5];
   return result;
 }
 
@@ -75,24 +75,24 @@
 {
   v3 = objc_opt_new();
   objc_initWeak(&location, self);
-  v4 = [(WFCompactDialogViewController *)self request];
-  v5 = [v4 doneButton];
+  request = [(WFCompactDialogViewController *)self request];
+  doneButton = [request doneButton];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __50__WFShowContentDialogViewController_updateActions__block_invoke;
   v12[3] = &unk_279EE8908;
   objc_copyWeak(&v13, &location);
-  v6 = [WFCompactDialogAction actionForButton:v5 handler:v12];
+  v6 = [WFCompactDialogAction actionForButton:doneButton handler:v12];
   [v3 addObject:v6];
 
-  v7 = [(WFCompactDialogViewController *)self request];
-  v8 = [v7 cancelButton];
+  request2 = [(WFCompactDialogViewController *)self request];
+  cancelButton = [request2 cancelButton];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __50__WFShowContentDialogViewController_updateActions__block_invoke_2;
   v10[3] = &unk_279EE8908;
   objc_copyWeak(&v11, &location);
-  v9 = [WFCompactDialogAction actionForButton:v8 handler:v10];
+  v9 = [WFCompactDialogAction actionForButton:cancelButton handler:v10];
   [v3 addObject:v9];
 
   [(WFCompactDialogViewController *)self configureActionGroupWithActions:v3];
@@ -115,18 +115,18 @@ void __50__WFShowContentDialogViewController_updateActions__block_invoke_2(uint6
   [WeakRetained finishWithResponse:v1];
 }
 
-- (void)prepareForPresentationWithCompletionHandler:(id)a3
+- (void)prepareForPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFCompactDialogViewController *)self request];
+  handlerCopy = handler;
+  request = [(WFCompactDialogViewController *)self request];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__WFShowContentDialogViewController_prepareForPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_279EE7ED0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 getContentCollectionWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [request getContentCollectionWithCompletionHandler:v7];
 }
 
 void __81__WFShowContentDialogViewController_prepareForPresentationWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -159,39 +159,39 @@ uint64_t __81__WFShowContentDialogViewController_prepareForPresentationWithCompl
   return v2();
 }
 
-- (double)contentHeightWithPreferredHeight:(double)a3 maxVisibleHeight:(double)a4
+- (double)contentHeightWithPreferredHeight:(double)height maxVisibleHeight:(double)visibleHeight
 {
-  v6 = [(WFShowContentDialogViewController *)self contentCollectionPreviewController];
-  v7 = [v6 contentAllowsScrolling];
+  contentCollectionPreviewController = [(WFShowContentDialogViewController *)self contentCollectionPreviewController];
+  contentAllowsScrolling = [contentCollectionPreviewController contentAllowsScrolling];
 
-  if (a3 < a4)
+  if (height < visibleHeight)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = v7;
+    v8 = contentAllowsScrolling;
   }
 
   if (v8)
   {
-    return a3;
+    return height;
   }
 
   else
   {
-    return a4;
+    return visibleHeight;
   }
 }
 
-- (double)contentHeightForWidth:(double)a3 withMaximumVisibleHeight:(double)a4
+- (double)contentHeightForWidth:(double)width withMaximumVisibleHeight:(double)height
 {
-  v7 = [(WFShowContentDialogViewController *)self contentCollectionPreviewController];
-  [v7 contentHeightForWidth:a3];
+  contentCollectionPreviewController = [(WFShowContentDialogViewController *)self contentCollectionPreviewController];
+  [contentCollectionPreviewController contentHeightForWidth:width];
   v9 = v8;
 
-  [(WFShowContentDialogViewController *)self contentHeightWithPreferredHeight:v9 maxVisibleHeight:a4];
+  [(WFShowContentDialogViewController *)self contentHeightWithPreferredHeight:v9 maxVisibleHeight:height];
   return result;
 }
 
@@ -200,8 +200,8 @@ uint64_t __81__WFShowContentDialogViewController_prepareForPresentationWithCompl
   v4.receiver = self;
   v4.super_class = WFShowContentDialogViewController;
   [(WFCompactDialogViewController *)&v4 loadView];
-  v3 = [(WFCompactPlatterViewController *)self platterView];
-  [v3 setArrangeActionsVertically:1];
+  platterView = [(WFCompactPlatterViewController *)self platterView];
+  [platterView setArrangeActionsVertically:1];
   [(WFShowContentDialogViewController *)self updateActions];
 }
 

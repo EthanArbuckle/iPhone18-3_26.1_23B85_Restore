@@ -1,14 +1,14 @@
 @interface CHASActivitySetupViewController
 - (BOOL)_currentPageHasGoalSchedule;
-- (BOOL)_isGoalSchedule:(id)a3 theSameAs:(id)a4;
+- (BOOL)_isGoalSchedule:(id)schedule theSameAs:(id)as;
 - (BOOL)_isStandalonePhoneFitnessMode;
 - (BOOL)_shouldShowChangeGoalFooter;
 - (BOOL)shouldAccountForHeaderHeight;
 - (BPSBuddyControllerDelegate)delegate;
-- (CHASActivitySetupViewController)initWithPresentationContext:(int64_t)a3;
-- (CHASActivitySetupViewController)initWithPresentationContext:(int64_t)a3 goalType:(int64_t)a4 editTodayOnly:(BOOL)a5;
+- (CHASActivitySetupViewController)initWithPresentationContext:(int64_t)context;
+- (CHASActivitySetupViewController)initWithPresentationContext:(int64_t)context goalType:(int64_t)type editTodayOnly:(BOOL)only;
 - (id)_activityLevelView;
-- (id)_createGoalViewWithFrame:(CGRect)a3 configuration:(id)a4;
+- (id)_createGoalViewWithFrame:(CGRect)frame configuration:(id)configuration;
 - (id)_exerciseGoalViewConfiguration;
 - (id)_exerciseQuantityForToday;
 - (id)_existingActivityGoalScheduleForCurrentPage;
@@ -18,51 +18,51 @@
 - (id)_standGoalViewConfiguration;
 - (id)_standQuantityForToday;
 - (id)_unitManager;
-- (id)activityLevelForSegmentedControlIndex:(int64_t)a3;
+- (id)activityLevelForSegmentedControlIndex:(int64_t)index;
 - (id)advanceGoalHeaderTitle;
 - (id)continueButtonTitle;
 - (id)healthStore;
 - (id)tapToRadarMetadata;
 - (int64_t)_activityGoalTypeForCurrentPage;
-- (void)_activityLevelPresetChanged:(id)a3;
-- (void)_fetchActiveExerciseGoalSampleWithCompletion:(id)a3;
-- (void)_fetchActiveMoveGoalSampleWithCompletion:(id)a3;
-- (void)_fetchActiveSampleForQuantityType:(id)a3 completion:(id)a4;
-- (void)_fetchActiveStandGoalSampleWithCompletion:(id)a3;
-- (void)_fetchMostRecentDailyExerciseGoalSampleWithCompletion:(id)a3;
-- (void)_fetchMostRecentDailyGoalSampleForQuantityType:(id)a3 completion:(id)a4;
-- (void)_fetchMostRecentDailyMoveGoalSampleWithCompletion:(id)a3;
-- (void)_fetchMostRecentDailyStandGoalSampleWithCompletion:(id)a3;
-- (void)_fetchMostRecentGoalSchedulesWithCompletion:(id)a3;
+- (void)_activityLevelPresetChanged:(id)changed;
+- (void)_fetchActiveExerciseGoalSampleWithCompletion:(id)completion;
+- (void)_fetchActiveMoveGoalSampleWithCompletion:(id)completion;
+- (void)_fetchActiveSampleForQuantityType:(id)type completion:(id)completion;
+- (void)_fetchActiveStandGoalSampleWithCompletion:(id)completion;
+- (void)_fetchMostRecentDailyExerciseGoalSampleWithCompletion:(id)completion;
+- (void)_fetchMostRecentDailyGoalSampleForQuantityType:(id)type completion:(id)completion;
+- (void)_fetchMostRecentDailyMoveGoalSampleWithCompletion:(id)completion;
+- (void)_fetchMostRecentDailyStandGoalSampleWithCompletion:(id)completion;
+- (void)_fetchMostRecentGoalSchedulesWithCompletion:(id)completion;
 - (void)_loadExerciseAndStandGoalViews;
 - (void)_loadMoveGoalView;
 - (void)_removeAdvancedView;
-- (void)_removeGoalsOfType:(id)a3 after:(id)a4;
+- (void)_removeGoalsOfType:(id)type after:(id)after;
 - (void)_saveGoalsAndDismiss;
-- (void)_setGoalQuantity:(id)a3 goalView:(id)a4;
-- (void)_setGoalQuantityForGoalView:(id)a3;
-- (void)_setGoalSchedules:(id)a3;
+- (void)_setGoalQuantity:(id)quantity goalView:(id)view;
+- (void)_setGoalQuantityForGoalView:(id)view;
+- (void)_setGoalSchedules:(id)schedules;
 - (void)_showAdvancedViewForCurrentGoalPage;
 - (void)_showAdvancedViewIfNeeded;
 - (void)_storeGoals;
 - (void)_toggleAdvancedMode;
-- (void)_updateAdvanceViewButton:(id)a3;
+- (void)_updateAdvanceViewButton:(id)button;
 - (void)_updateGoalSchedule;
 - (void)alignGoalViews;
 - (void)computeMaxYForGoalViews;
 - (void)generateHeaders;
-- (void)setActivityLevels:(id)a3 activityMoveMode:(int64_t)a4;
-- (void)tappedContinue:(id)a3;
+- (void)setActivityLevels:(id)levels activityMoveMode:(int64_t)mode;
+- (void)tappedContinue:(id)continue;
 - (void)updateContinueButton;
 - (void)updateHeaderViewContent;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CHASActivitySetupViewController
 
-- (CHASActivitySetupViewController)initWithPresentationContext:(int64_t)a3
+- (CHASActivitySetupViewController)initWithPresentationContext:(int64_t)context
 {
   v5.receiver = self;
   v5.super_class = CHASActivitySetupViewController;
@@ -70,22 +70,22 @@
   if (result)
   {
     result->_goalType = -1;
-    result->_presentationContext = a3;
+    result->_presentationContext = context;
   }
 
   return result;
 }
 
-- (CHASActivitySetupViewController)initWithPresentationContext:(int64_t)a3 goalType:(int64_t)a4 editTodayOnly:(BOOL)a5
+- (CHASActivitySetupViewController)initWithPresentationContext:(int64_t)context goalType:(int64_t)type editTodayOnly:(BOOL)only
 {
   v9.receiver = self;
   v9.super_class = CHASActivitySetupViewController;
   result = [(CHASActivitySetupViewController *)&v9 initWithTitle:&stru_35FD0 detailText:0 icon:0];
   if (result)
   {
-    result->_goalType = a4;
-    result->_editTodayOnly = a5;
-    result->_presentationContext = a3;
+    result->_goalType = type;
+    result->_editTodayOnly = only;
+    result->_presentationContext = context;
   }
 
   return result;
@@ -93,15 +93,15 @@
 
 - (id)advanceGoalHeaderTitle
 {
-  v4 = [(CHASActivitySetupViewController *)self _activityGoalTypeForCurrentPage];
-  if (v4 < 2)
+  _activityGoalTypeForCurrentPage = [(CHASActivitySetupViewController *)self _activityGoalTypeForCurrentPage];
+  if (_activityGoalTypeForCurrentPage < 2)
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = v6;
     v8 = @"CUSTOM_MOVE_GOAL";
   }
 
-  else if (v4 == 2)
+  else if (_activityGoalTypeForCurrentPage == 2)
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = v6;
@@ -110,7 +110,7 @@
 
   else
   {
-    if (v4 != 3)
+    if (_activityGoalTypeForCurrentPage != 3)
     {
       goto LABEL_10;
     }
@@ -164,21 +164,21 @@ LABEL_10:
   else if (self->_isTinkerPaired)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v11 = [WeakRetained setupFlowUserInfo];
-    v8 = [v11 objectForKeyedSubscript:BPSPairingFlowFamilyMember];
+    setupFlowUserInfo = [WeakRetained setupFlowUserInfo];
+    v8 = [setupFlowUserInfo objectForKeyedSubscript:BPSPairingFlowFamilyMember];
 
-    v12 = [v8 firstName];
-    v13 = [v12 localizedCapitalizedString];
+    firstName = [v8 firstName];
+    localizedCapitalizedString = [firstName localizedCapitalizedString];
 
     v46 = [NSString stringWithFormat:@"SET_UP_MOVE_GOAL%@", v49];
-    if (v13)
+    if (localizedCapitalizedString)
     {
       v14 = [NSString stringWithFormat:@"DAILY_MOVE_GOAL_DESCRIPTION_FITNESS_JR_TINKER%@_%@", v49, @"%@"];
       v15 = [NSBundle bundleForClass:objc_opt_class()];
       v44 = v14;
       [v15 localizedStringForKey:v14 value:&stru_35FD0 table:@"ActivitySetup"];
       v17 = v16 = v4;
-      v9 = [NSString stringWithFormat:v17, v13];
+      v9 = [NSString stringWithFormat:v17, localizedCapitalizedString];
 
       v4 = v16;
       v3 = v48;
@@ -291,23 +291,23 @@ LABEL_10:
     if (v3)
     {
       v6 = [v4 initWithBarButtonSystemItem:1 target:self action:"_dismiss:"];
-      v7 = [(CHASActivitySetupViewController *)self navigationItem];
-      [v7 setLeftBarButtonItem:v6];
+      navigationItem = [(CHASActivitySetupViewController *)self navigationItem];
+      [navigationItem setLeftBarButtonItem:v6];
     }
 
     else
     {
       v6 = FIUIBundle();
-      v7 = [v6 localizedStringForKey:@"CANCEL_BUTTON" value:&stru_35FD0 table:@"Localizable"];
-      v8 = [v5 initWithTitle:v7 style:0 target:self action:"_dismiss:"];
-      v9 = [(CHASActivitySetupViewController *)self navigationItem];
-      [v9 setLeftBarButtonItem:v8];
+      navigationItem = [v6 localizedStringForKey:@"CANCEL_BUTTON" value:&stru_35FD0 table:@"Localizable"];
+      v8 = [v5 initWithTitle:navigationItem style:0 target:self action:"_dismiss:"];
+      navigationItem2 = [(CHASActivitySetupViewController *)self navigationItem];
+      [navigationItem2 setLeftBarButtonItem:v8];
     }
   }
 
   v10 = [FIActivitySettingsController alloc];
-  v11 = [(CHASActivitySetupViewController *)self healthStore];
-  v122 = [v10 initWithHealthStore:v11];
+  healthStore = [(CHASActivitySetupViewController *)self healthStore];
+  v122 = [v10 initWithHealthStore:healthStore];
 
   [v122 populateExistingCharacteristics];
   self->_activityMoveMode = 1;
@@ -327,13 +327,13 @@ LABEL_10:
 
   if (v118)
   {
-    v13 = [v118 integerValue];
+    integerValue = [v118 integerValue];
   }
 
   else
   {
-    v17 = [v122 dateOfBirth];
-    if (!v17)
+    dateOfBirth = [v122 dateOfBirth];
+    if (!dateOfBirth)
     {
       goto LABEL_12;
     }
@@ -345,21 +345,21 @@ LABEL_10:
       goto LABEL_12;
     }
 
-    v19 = [v122 dateOfBirth];
+    dateOfBirth2 = [v122 dateOfBirth];
     FIAgeInYearsForDateOfBirth();
 
-    v13 = FIDefaultActivityMoveModeWithAge();
+    integerValue = FIDefaultActivityMoveModeWithAge();
   }
 
-  self->_activityMoveMode = v13;
+  self->_activityMoveMode = integerValue;
 LABEL_12:
   self->_isRTL = FIUILocaleIsRightToLeft();
-  v14 = [(CHASActivitySetupViewController *)self delegate];
-  v15 = [v14 activePairingDevice];
-  v16 = v15;
-  if (v15)
+  delegate = [(CHASActivitySetupViewController *)self delegate];
+  activePairingDevice = [delegate activePairingDevice];
+  v16 = activePairingDevice;
+  if (activePairingDevice)
   {
-    v117 = v15;
+    v117 = activePairingDevice;
   }
 
   else
@@ -404,30 +404,30 @@ LABEL_12:
     v24 = [HKUnit gramUnitWithMetricPrefix:9];
     [v23 doubleValueForUnit:v24];
 
-    v25 = [v122 height];
+    height = [v122 height];
     v26 = [HKUnit meterUnitWithMetricPrefix:7];
-    [v25 doubleValueForUnit:v26];
+    [height doubleValueForUnit:v26];
 
-    v27 = [v122 dateOfBirth];
+    dateOfBirth3 = [v122 dateOfBirth];
     FIAgeInYearsForDateOfBirth();
 
     [v122 wheelchairUse];
     FICMotionConditionForWheelchairUse();
     [(CHASActivitySetupViewController *)self _isStandalonePhoneFitnessMode];
-    v28 = [(CHASActivitySetupViewController *)self _formattingManager];
+    _formattingManager = [(CHASActivitySetupViewController *)self _formattingManager];
     FIUIActivityLevelsForFitnessJrAndIsStandalonePhoneFitnessMode();
   }
 
   else
     v29 = {;
-    v30 = [v122 leanBodyMass];
-    v31 = [v122 height];
-    v32 = [v122 dateOfBirth];
+    leanBodyMass = [v122 leanBodyMass];
+    height2 = [v122 height];
+    dateOfBirth4 = [v122 dateOfBirth];
     [v122 wheelchairUse];
     FIUICalculateBMR();
 
     [(CHASActivitySetupViewController *)self _isStandalonePhoneFitnessMode];
-    v28 = [(CHASActivitySetupViewController *)self _formattingManager];
+    _formattingManager = [(CHASActivitySetupViewController *)self _formattingManager];
     FIUIActivityLevelsForBMRAndIsStandalonePhoneFitnessMode();
   }
   v116 = ;
@@ -442,28 +442,28 @@ LABEL_12:
   [(UIScrollView *)self->_scrollView setUserInteractionEnabled:1];
   [(UIScrollView *)self->_scrollView setExclusiveTouch:0];
   [(UIScrollView *)self->_scrollView setCanCancelContentTouches:1];
-  v35 = [(CHASActivitySetupViewController *)self contentView];
-  [v35 addSubview:self->_scrollView];
+  contentView = [(CHASActivitySetupViewController *)self contentView];
+  [contentView addSubview:self->_scrollView];
 
-  v36 = [(CHASActivitySetupViewController *)self contentView];
-  v37 = [v36 topAnchor];
-  v38 = [(UIScrollView *)self->_scrollView topAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38];
+  contentView2 = [(CHASActivitySetupViewController *)self contentView];
+  topAnchor = [contentView2 topAnchor];
+  topAnchor2 = [(UIScrollView *)self->_scrollView topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v39 setActive:1];
 
-  v40 = [(CHASActivitySetupViewController *)self contentView];
-  v41 = [v40 bottomAnchor];
-  v42 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
+  contentView3 = [(CHASActivitySetupViewController *)self contentView];
+  bottomAnchor = [contentView3 bottomAnchor];
+  bottomAnchor2 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  v43 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v43 setActive:1];
 
   [(CHASActivitySetupViewController *)self _loadMoveGoalView];
   [(CHASActivitySetupViewController *)self setActivityLevels:v116 activityMoveMode:self->_activityMoveMode];
   v44 = +[_HKBehavior sharedBehavior];
-  v45 = [v44 features];
-  LODWORD(v41) = [v45 scheduledGoals];
+  features = [v44 features];
+  LODWORD(bottomAnchor) = [features scheduledGoals];
 
-  if (v41)
+  if (bottomAnchor)
   {
     v46 = +[UIButtonConfiguration plainButtonConfiguration];
     v120 = [UIFont hk_preferredFontForTextStyle:UIFontTextStyleCaption1];
@@ -502,8 +502,8 @@ LABEL_12:
     if (!self->_editTodayOnly)
     {
       v55 = [[UIBarButtonItem alloc] initWithCustomView:self->_advancedButton];
-      v56 = [(CHASActivitySetupViewController *)self navigationItem];
-      [v56 setRightBarButtonItem:v55];
+      navigationItem3 = [(CHASActivitySetupViewController *)self navigationItem];
+      [navigationItem3 setRightBarButtonItem:v55];
     }
 
     v129[0] = _NSConcreteStackBlock;
@@ -523,17 +523,17 @@ LABEL_12:
   {
     if (self->_activityMoveMode == 2)
     {
-      v57 = +[HKUnit minuteUnit];
+      userActiveEnergyBurnedUnit = +[HKUnit minuteUnit];
     }
 
     else
     {
-      v58 = [(FIUIFormattingManager *)self->_formattingManager unitManager];
-      v57 = [v58 userActiveEnergyBurnedUnit];
+      unitManager = [(FIUIFormattingManager *)self->_formattingManager unitManager];
+      userActiveEnergyBurnedUnit = [unitManager userActiveEnergyBurnedUnit];
     }
 
     [(NSNumber *)self->_recommendedMoveGoal doubleValue];
-    v59 = [HKQuantity quantityWithUnit:v57 doubleValue:?];
+    v59 = [HKQuantity quantityWithUnit:userActiveEnergyBurnedUnit doubleValue:?];
     [(CHASActivitySetupViewController *)self _setGoalQuantity:v59 goalView:self->_moveGoalView];
   }
 
@@ -551,12 +551,12 @@ LABEL_12:
   }
 
   [(CHASActivitySetupViewController *)self _loadExerciseAndStandGoalViews];
-  v121 = [(CHASActivitySetupViewController *)self _activityLevelView];
-  [(UIScrollView *)self->_scrollView addSubview:v121];
-  [v121 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v60 = [v121 topAnchor];
-  v61 = [(CHASActivitySetupViewController *)self contentView];
-  v62 = [v61 topAnchor];
+  _activityLevelView = [(CHASActivitySetupViewController *)self _activityLevelView];
+  [(UIScrollView *)self->_scrollView addSubview:_activityLevelView];
+  [_activityLevelView setTranslatesAutoresizingMaskIntoConstraints:0];
+  topAnchor3 = [_activityLevelView topAnchor];
+  contentView4 = [(CHASActivitySetupViewController *)self contentView];
+  topAnchor4 = [contentView4 topAnchor];
   *location = 0u;
   v124 = 0u;
   __asm { FMOV            V0.2D, #16.0 }
@@ -564,25 +564,25 @@ LABEL_12:
   v125 = _Q0;
   v126 = _Q0;
   BPSScreenValueGetRelevantValue();
-  v68 = [v60 constraintEqualToAnchor:v62 constant:?];
+  v68 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:?];
   [v68 setActive:1];
 
-  v69 = [v121 centerXAnchor];
-  v70 = [(CHASActivitySetupViewController *)self contentView];
-  v71 = [v70 centerXAnchor];
-  v72 = [v69 constraintEqualToAnchor:v71];
+  centerXAnchor = [_activityLevelView centerXAnchor];
+  contentView5 = [(CHASActivitySetupViewController *)self contentView];
+  centerXAnchor2 = [contentView5 centerXAnchor];
+  v72 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v72 setActive:1];
 
-  v73 = [v121 leadingAnchor];
-  v74 = [(CHASActivitySetupViewController *)self contentView];
-  v75 = [v74 leadingAnchor];
-  v76 = [v73 constraintEqualToAnchor:v75];
+  leadingAnchor = [_activityLevelView leadingAnchor];
+  contentView6 = [(CHASActivitySetupViewController *)self contentView];
+  leadingAnchor2 = [contentView6 leadingAnchor];
+  v76 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v76 setActive:1];
 
-  v77 = [v121 trailingAnchor];
-  v78 = [(CHASActivitySetupViewController *)self contentView];
-  v79 = [v78 trailingAnchor];
-  v80 = [v77 constraintEqualToAnchor:v79];
+  trailingAnchor = [_activityLevelView trailingAnchor];
+  contentView7 = [(CHASActivitySetupViewController *)self contentView];
+  trailingAnchor2 = [contentView7 trailingAnchor];
+  v80 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v80 setActive:1];
 
   v81 = +[OBBoldTrayButton boldButton];
@@ -594,17 +594,17 @@ LABEL_12:
   v84 = BPSPillSelectedColor();
   [(OBBoldTrayButton *)v83 setTintColor:v84];
 
-  v119 = [(OBBoldTrayButton *)self->_continueButton configuration];
+  configuration = [(OBBoldTrayButton *)self->_continueButton configuration];
   v85 = +[ARUIMetricColors keyColors];
-  v86 = [v85 nonGradientTextColor];
-  [v119 setBaseForegroundColor:v86];
+  nonGradientTextColor = [v85 nonGradientTextColor];
+  [configuration setBaseForegroundColor:nonGradientTextColor];
 
-  v87 = [(CHASActivitySetupViewController *)self continueButtonTitle];
-  [v119 setTitle:v87];
+  continueButtonTitle = [(CHASActivitySetupViewController *)self continueButtonTitle];
+  [configuration setTitle:continueButtonTitle];
 
-  [(OBBoldTrayButton *)self->_continueButton setConfiguration:v119];
-  v88 = [(CHASActivitySetupViewController *)self buttonTray];
-  [v88 addButton:self->_continueButton];
+  [(OBBoldTrayButton *)self->_continueButton setConfiguration:configuration];
+  buttonTray = [(CHASActivitySetupViewController *)self buttonTray];
+  [buttonTray addButton:self->_continueButton];
 
   v89 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   footerLabel = self->_footerLabel;
@@ -625,20 +625,20 @@ LABEL_12:
   [(UILabel *)self->_footerLabel setTextAlignment:4];
   if ([(CHASActivitySetupViewController *)self _shouldShowChangeGoalFooter])
   {
-    v95 = [(CHASActivitySetupViewController *)self buttonTray];
-    [v95 addSubview:self->_footerLabel];
+    buttonTray2 = [(CHASActivitySetupViewController *)self buttonTray];
+    [buttonTray2 addSubview:self->_footerLabel];
 
-    v114 = [(UILabel *)self->_footerLabel bottomAnchor];
-    v113 = [(OBBoldTrayButton *)self->_continueButton topAnchor];
-    v96 = [v114 constraintEqualToAnchor:v113 constant:-15.0];
+    bottomAnchor3 = [(UILabel *)self->_footerLabel bottomAnchor];
+    topAnchor5 = [(OBBoldTrayButton *)self->_continueButton topAnchor];
+    v96 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5 constant:-15.0];
     v141[0] = v96;
-    v97 = [(UILabel *)self->_footerLabel leadingAnchor];
-    v98 = [(OBBoldTrayButton *)self->_continueButton leadingAnchor];
-    v99 = [v97 constraintEqualToAnchor:v98];
+    leadingAnchor3 = [(UILabel *)self->_footerLabel leadingAnchor];
+    leadingAnchor4 = [(OBBoldTrayButton *)self->_continueButton leadingAnchor];
+    v99 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v141[1] = v99;
-    v100 = [(UILabel *)self->_footerLabel trailingAnchor];
-    v101 = [(OBBoldTrayButton *)self->_continueButton trailingAnchor];
-    v102 = [v100 constraintEqualToAnchor:v101];
+    trailingAnchor3 = [(UILabel *)self->_footerLabel trailingAnchor];
+    trailingAnchor4 = [(OBBoldTrayButton *)self->_continueButton trailingAnchor];
+    v102 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v141[2] = v102;
     v103 = [NSArray arrayWithObjects:v141 count:3];
     [NSLayoutConstraint activateConstraints:v103];
@@ -662,15 +662,15 @@ LABEL_12:
     v111 = [v110 localizedStringForKey:@"SKIP_LABEL" value:&stru_35FD0 table:@"ActivitySetup"];
     [(OBLinkTrayButton *)v109 setTitle:v111 forState:0];
 
-    v112 = [(CHASActivitySetupViewController *)self buttonTray];
-    [v112 addButton:self->_notNowButton];
+    buttonTray3 = [(CHASActivitySetupViewController *)self buttonTray];
+    [buttonTray3 addButton:self->_notNowButton];
   }
 }
 
-- (void)_updateAdvanceViewButton:(id)a3
+- (void)_updateAdvanceViewButton:(id)button
 {
-  v4 = a3;
-  v14 = [v4 configuration];
+  buttonCopy = button;
+  configuration = [buttonCopy configuration];
   advancedGoalView = self->_advancedGoalView;
   v6 = _UISolariumEnabled();
   if (advancedGoalView)
@@ -697,13 +697,13 @@ LABEL_12:
 
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:v8 value:&stru_35FD0 table:@"ActivitySetup"];
-    [v14 setTitle:v10];
+    [configuration setTitle:v10];
   }
 
   if (_UISolariumEnabled())
   {
     v11 = [UIImage _systemImageNamed:v7];
-    [v14 setImage:v11];
+    [configuration setImage:v11];
   }
 
   else
@@ -711,13 +711,13 @@ LABEL_12:
     v11 = [UIFont hk_preferredFontForTextStyle:UIFontTextStyleCaption1];
     v12 = [UIImageSymbolConfiguration configurationWithFont:v11];
     v13 = [UIImage _systemImageNamed:v7 withConfiguration:v12];
-    [v14 setImage:v13];
+    [configuration setImage:v13];
   }
 
-  [v4 setConfiguration:v14];
+  [buttonCopy setConfiguration:configuration];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   goalType = self->_goalType;
   if (goalType == 2)
@@ -739,8 +739,8 @@ LABEL_12:
   v40.receiver = self;
   v40.super_class = CHASActivitySetupViewController;
   [(CHASActivitySetupViewController *)&v40 viewWillLayoutSubviews];
-  v3 = [(CHASActivitySetupViewController *)self view];
-  [v3 bounds];
+  view = [(CHASActivitySetupViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   goalType = self->_goalType;
@@ -805,30 +805,30 @@ LABEL_11:
     v22 = v22 + self->_maxHeaderViewHeight - v11;
   }
 
-  v23 = [(CHASActivitySetupViewController *)self contentView];
-  [v23 frame];
+  contentView = [(CHASActivitySetupViewController *)self contentView];
+  [contentView frame];
   v25 = v13 + v22 + v24;
-  v26 = [(CHASActivitySetupViewController *)self view];
-  [v26 frame];
+  view2 = [(CHASActivitySetupViewController *)self view];
+  [view2 frame];
   MidY = CGRectGetMidY(v41);
 
   if (v25 < MidY)
   {
-    v28 = [(CHASActivitySetupViewController *)self view];
-    [v28 frame];
+    view3 = [(CHASActivitySetupViewController *)self view];
+    [view3 frame];
     v29 = CGRectGetMidY(v42);
-    v30 = [(CHASActivitySetupViewController *)self contentView];
-    [v30 frame];
+    contentView2 = [(CHASActivitySetupViewController *)self contentView];
+    [contentView2 frame];
     v22 = v22 + v29 - (v13 + v22 + v31);
   }
 
   v32 = self->_scrollView;
-  v33 = [(CHASActivitySetupViewController *)self view];
-  [v33 bounds];
+  view4 = [(CHASActivitySetupViewController *)self view];
+  [view4 bounds];
   [(UIScrollView *)v32 setFrame:0.0, 0.0];
 
-  v34 = [(CHASActivitySetupViewController *)self contentView];
-  [v34 bounds];
+  contentView3 = [(CHASActivitySetupViewController *)self contentView];
+  [contentView3 bounds];
   v36 = v35 * 3.0;
   [(CHASActivitySetupGoalView *)self->_moveGoalView intrinsicContentSize];
   [(UIScrollView *)self->_scrollView setContentSize:v36, v22 + v37];
@@ -838,8 +838,8 @@ LABEL_11:
 
 - (void)computeMaxYForGoalViews
 {
-  v3 = [(CHASActivitySetupViewController *)self headerView];
-  [v3 bounds];
+  headerView = [(CHASActivitySetupViewController *)self headerView];
+  [headerView bounds];
   v5 = v4;
 
   self->_headerHeights = malloc_type_malloc(0x18uLL, 0x100004000313F17uLL);
@@ -849,22 +849,22 @@ LABEL_11:
     v7 = 0.0;
     do
     {
-      v8 = [(CHASActivitySetupViewController *)self headerView];
+      headerView2 = [(CHASActivitySetupViewController *)self headerView];
       v9 = [(NSArray *)self->_pageTitles objectAtIndexedSubscript:v6];
-      [v8 setTitle:v9];
+      [headerView2 setTitle:v9];
 
-      v10 = [(CHASActivitySetupViewController *)self headerView];
+      headerView3 = [(CHASActivitySetupViewController *)self headerView];
       v11 = [(NSArray *)self->_pageDetailTexts objectAtIndexedSubscript:v6];
-      [v10 setDetailText:v11];
+      [headerView3 setDetailText:v11];
 
-      v12 = [(CHASActivitySetupViewController *)self headerView];
+      headerView4 = [(CHASActivitySetupViewController *)self headerView];
       LODWORD(v13) = 1148846080;
       LODWORD(v14) = 1112014848;
-      [v12 _systemLayoutSizeFittingSize:v5 withHorizontalFittingPriority:1.79769313e308 verticalFittingPriority:{v13, v14}];
+      [headerView4 _systemLayoutSizeFittingSize:v5 withHorizontalFittingPriority:1.79769313e308 verticalFittingPriority:{v13, v14}];
       v16 = v15;
 
-      v17 = [(CHASActivitySetupViewController *)self headerView];
-      [v17 frame];
+      headerView5 = [(CHASActivitySetupViewController *)self headerView];
+      [headerView5 frame];
       v19 = v16 + v18;
 
       if (v19 > v7)
@@ -892,7 +892,7 @@ LABEL_11:
 - (void)updateHeaderViewContent
 {
   advancedGoalView = self->_advancedGoalView;
-  v4 = [(CHASActivitySetupViewController *)self headerView];
+  headerView = [(CHASActivitySetupViewController *)self headerView];
   if (advancedGoalView)
   {
     [(CHASActivitySetupViewController *)self advanceGoalHeaderTitle];
@@ -903,19 +903,19 @@ LABEL_11:
     [(NSArray *)self->_pageTitles objectAtIndexedSubscript:self->_currentPageIndex];
   }
   v5 = ;
-  [v4 setTitle:v5];
+  [headerView setTitle:v5];
 
-  v7 = [(CHASActivitySetupViewController *)self headerView];
+  headerView2 = [(CHASActivitySetupViewController *)self headerView];
   v6 = [(NSArray *)self->_pageDetailTexts objectAtIndexedSubscript:self->_currentPageIndex];
-  [v7 setDetailText:v6];
+  [headerView2 setDetailText:v6];
 }
 
 - (id)continueButtonTitle
 {
-  v4 = [(CHASActivitySetupViewController *)self _activityGoalTypeForCurrentPage];
+  _activityGoalTypeForCurrentPage = [(CHASActivitySetupViewController *)self _activityGoalTypeForCurrentPage];
   if (!self->_advancedGoalView)
   {
-    if (v4 < 2)
+    if (_activityGoalTypeForCurrentPage < 2)
     {
       if (!self->_defaultDailyMoveGoalQuantity)
       {
@@ -936,7 +936,7 @@ LABEL_11:
       [NSString stringWithFormat:@"CHANGE_MOVE_GOAL%@", v12, v19];
     }
 
-    else if (v4 == 2)
+    else if (_activityGoalTypeForCurrentPage == 2)
     {
       if (!self->_defaultDailyExerciseGoalQuantity)
       {
@@ -959,7 +959,7 @@ LABEL_11:
 
     else
     {
-      if (v4 != 3)
+      if (_activityGoalTypeForCurrentPage != 3)
       {
         v7 = 0;
         goto LABEL_45;
@@ -1013,7 +1013,7 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if (v4 < 2)
+  if (_activityGoalTypeForCurrentPage < 2)
   {
     hasMoveGoalSchedule = self->_hasMoveGoalSchedule;
     v7 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1028,7 +1028,7 @@ LABEL_45:
     }
   }
 
-  else if (v4 == 2)
+  else if (_activityGoalTypeForCurrentPage == 2)
   {
     hasExerciseGoalSchedule = self->_hasExerciseGoalSchedule;
     v7 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1045,7 +1045,7 @@ LABEL_45:
 
   else
   {
-    if (v4 != 3)
+    if (_activityGoalTypeForCurrentPage != 3)
     {
       goto LABEL_47;
     }
@@ -1074,11 +1074,11 @@ LABEL_47:
 
 - (void)updateContinueButton
 {
-  v8 = [(OBBoldTrayButton *)self->_continueButton configuration];
-  v3 = [(CHASActivitySetupViewController *)self continueButtonTitle];
-  [v8 setTitle:v3];
+  configuration = [(OBBoldTrayButton *)self->_continueButton configuration];
+  continueButtonTitle = [(CHASActivitySetupViewController *)self continueButtonTitle];
+  [configuration setTitle:continueButtonTitle];
 
-  [(OBBoldTrayButton *)self->_continueButton setConfiguration:v8];
+  [(OBBoldTrayButton *)self->_continueButton setConfiguration:configuration];
   advancedGoalView = self->_advancedGoalView;
   v5 = advancedGoalView == 0;
   if (advancedGoalView)
@@ -1107,20 +1107,20 @@ LABEL_47:
 
 - (BOOL)shouldAccountForHeaderHeight
 {
-  v3 = [(CHASActivitySetupViewController *)self headerView];
-  [v3 frame];
+  headerView = [(CHASActivitySetupViewController *)self headerView];
+  [headerView frame];
   v5 = v4;
-  v6 = [(CHASActivitySetupViewController *)self headerView];
-  [v6 bounds];
+  headerView2 = [(CHASActivitySetupViewController *)self headerView];
+  [headerView2 bounds];
   v8 = v5 + v7;
-  v9 = [(CHASActivitySetupViewController *)self contentView];
-  [v9 bounds];
+  contentView = [(CHASActivitySetupViewController *)self contentView];
+  [contentView bounds];
   v11 = v8 + v10;
-  v12 = [(CHASActivitySetupViewController *)self buttonTray];
-  [v12 bounds];
+  buttonTray = [(CHASActivitySetupViewController *)self buttonTray];
+  [buttonTray bounds];
   v14 = v11 + v13;
-  v15 = [(CHASActivitySetupViewController *)self view];
-  [v15 bounds];
+  view = [(CHASActivitySetupViewController *)self view];
+  [view bounds];
   v17 = v14 < v16;
 
   return v17;
@@ -1128,8 +1128,8 @@ LABEL_47:
 
 - (void)alignGoalViews
 {
-  v3 = [(CHASActivitySetupViewController *)self view];
-  [v3 bounds];
+  view = [(CHASActivitySetupViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   [(CHASActivitySetupGoalView *)self->_moveGoalView intrinsicContentSize];
@@ -1161,40 +1161,40 @@ LABEL_47:
     [(CHASActivitySetupGoalView *)moveGoalView removeFromSuperview];
   }
 
-  v6 = [(CHASActivitySetupViewController *)self _moveGoalViewConfiguration];
-  v4 = [(CHASActivitySetupViewController *)self _createGoalViewWithFrame:v6 configuration:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+  _moveGoalViewConfiguration = [(CHASActivitySetupViewController *)self _moveGoalViewConfiguration];
+  v4 = [(CHASActivitySetupViewController *)self _createGoalViewWithFrame:_moveGoalViewConfiguration configuration:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v5 = self->_moveGoalView;
   self->_moveGoalView = v4;
 
   objc_storeStrong(&self->_currentlyPresentedView, self->_moveGoalView);
 }
 
-- (id)_createGoalViewWithFrame:(CGRect)a3 configuration:(id)a4
+- (id)_createGoalViewWithFrame:(CGRect)frame configuration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [[CHASActivitySetupGoalView alloc] initWithFrame:v9 configuration:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
+  height = [[CHASActivitySetupGoalView alloc] initWithFrame:configurationCopy configuration:x, y, width, height];
 
-  [(UIScrollView *)self->_scrollView addSubview:v10];
+  [(UIScrollView *)self->_scrollView addSubview:height];
 
-  return v10;
+  return height;
 }
 
-- (void)_removeGoalsOfType:(id)a3 after:(id)a4
+- (void)_removeGoalsOfType:(id)type after:(id)after
 {
-  v6 = a3;
-  v7 = [NSPredicate predicateWithFormat:@"startDate > %@", a4];
-  v8 = [(CHASActivitySetupViewController *)self healthStore];
+  typeCopy = type;
+  after = [NSPredicate predicateWithFormat:@"startDate > %@", after];
+  healthStore = [(CHASActivitySetupViewController *)self healthStore];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_8578;
   v10[3] = &unk_357C8;
-  v11 = v6;
-  v9 = v6;
-  [v8 deleteObjectsOfType:v9 predicate:v7 withCompletion:v10];
+  v11 = typeCopy;
+  v9 = typeCopy;
+  [healthStore deleteObjectsOfType:v9 predicate:after withCompletion:v10];
 }
 
 - (void)_storeGoals
@@ -1321,8 +1321,8 @@ LABEL_47:
       }
 
       [v3 addObject:v28];
-      v29 = [v24[345] standGoal];
-      [(CHASActivitySetupViewController *)self _removeGoalsOfType:v29 after:v6];
+      standGoal = [v24[345] standGoal];
+      [(CHASActivitySetupViewController *)self _removeGoalsOfType:standGoal after:v6];
 
       hasStandGoalSchedule = self->_hasStandGoalSchedule;
     }
@@ -1338,12 +1338,12 @@ LABEL_47:
 
   if (self->_activityMoveMode == 2)
   {
-    v32 = [v4[440] currentCalendar];
+    currentCalendar = [v4[440] currentCalendar];
     v33 = +[NSDate date];
-    v34 = [v32 startOfDayForDate:v33];
+    v34 = [currentCalendar startOfDayForDate:v33];
 
-    v35 = [v4[440] currentCalendar];
-    v36 = [v35 components:_HKRequiredCalendarUnitsForCacheIndexDateComponents fromDate:v34];
+    currentCalendar2 = [v4[440] currentCalendar];
+    v36 = [currentCalendar2 components:_HKRequiredCalendarUnitsForCacheIndexDateComponents fromDate:v34];
 
     v37 = [NSDate dateWithTimeIntervalSinceReferenceDate:_HKCacheIndexFromDateComponents()];
     v38 = [HKObjectType categoryTypeForIdentifier:_HKCategoryTypeIdentifierActivityMoveModeChange];
@@ -1352,14 +1352,14 @@ LABEL_47:
   }
 
   v40 = dispatch_semaphore_create(0);
-  v41 = [(CHASActivitySetupViewController *)self healthStore];
+  healthStore = [(CHASActivitySetupViewController *)self healthStore];
   v52[0] = _NSConcreteStackBlock;
   v52[1] = 3221225472;
   v52[2] = sub_8E94;
   v52[3] = &unk_35510;
   v42 = v40;
   v53 = v42;
-  [v41 saveObjects:v3 withCompletion:v52];
+  [healthStore saveObjects:v3 withCompletion:v52];
 
   v43 = dispatch_time(0, 5000000000);
   v44 = dispatch_semaphore_wait(v42, v43);
@@ -1399,8 +1399,8 @@ LABEL_47:
   if (!unitManager)
   {
     v4 = [FIUIUnitManager alloc];
-    v5 = [(CHASActivitySetupViewController *)self healthStore];
-    v6 = [v4 initWithHealthStore:v5];
+    healthStore = [(CHASActivitySetupViewController *)self healthStore];
+    v6 = [v4 initWithHealthStore:healthStore];
     v7 = self->_unitManager;
     self->_unitManager = v6;
 
@@ -1416,8 +1416,8 @@ LABEL_47:
   if (!formattingManager)
   {
     v4 = [FIUIFormattingManager alloc];
-    v5 = [(CHASActivitySetupViewController *)self _unitManager];
-    v6 = [v4 initWithUnitManager:v5];
+    _unitManager = [(CHASActivitySetupViewController *)self _unitManager];
+    v6 = [v4 initWithUnitManager:_unitManager];
     v7 = self->_formattingManager;
     self->_formattingManager = v6;
 
@@ -1432,8 +1432,8 @@ LABEL_47:
   healthStore = self->_healthStore;
   if (!healthStore)
   {
-    v4 = [(CHASActivitySetupViewController *)self delegate];
-    v5 = [v4 activePairingDevice];
+    delegate = [(CHASActivitySetupViewController *)self delegate];
+    activePairingDevice = [delegate activePairingDevice];
 
     v6 = FIUIHealthStoreForDevice();
     v7 = self->_healthStore;
@@ -1451,11 +1451,11 @@ LABEL_47:
   if (self->_isTinkerPaired)
   {
     v3 = [[HKSecondaryDevicePairingAgent alloc] initWithHealthStore:self->_healthStore];
-    v4 = [(CHASActivitySetupViewController *)self delegate];
-    v5 = [v4 activePairingDevice];
-    v6 = [v5 pairingID];
+    delegate = [(CHASActivitySetupViewController *)self delegate];
+    activePairingDevice = [delegate activePairingDevice];
+    pairingID = [activePairingDevice pairingID];
 
-    [v3 performEndToEndCloudSyncWithNRDeviceUUID:v6 syncParticipantFirst:1 completion:&stru_35808];
+    [v3 performEndToEndCloudSyncWithNRDeviceUUID:pairingID syncParticipantFirst:1 completion:&stru_35808];
   }
 
   else
@@ -1471,12 +1471,12 @@ LABEL_47:
     FIActivityAnalyticsSubmission();
   }
 
-  v10 = [(CHASActivitySetupViewController *)self delegate];
+  delegate2 = [(CHASActivitySetupViewController *)self delegate];
 
-  if (v10)
+  if (delegate2)
   {
-    v11 = [(CHASActivitySetupViewController *)self delegate];
-    [v11 buddyControllerDone:self];
+    delegate3 = [(CHASActivitySetupViewController *)self delegate];
+    [delegate3 buddyControllerDone:self];
   }
 
   else
@@ -1497,9 +1497,9 @@ LABEL_47:
   }
 
   v6 = +[_HKBehavior sharedBehavior];
-  v7 = [v6 isStandalonePhoneFitnessMode];
+  isStandalonePhoneFitnessMode = [v6 isStandalonePhoneFitnessMode];
 
-  return v7;
+  return isStandalonePhoneFitnessMode;
 }
 
 - (BOOL)_shouldShowChangeGoalFooter
@@ -1515,7 +1515,7 @@ LABEL_47:
   return v4;
 }
 
-- (void)tappedContinue:(id)a3
+- (void)tappedContinue:(id)continue
 {
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
@@ -1523,8 +1523,8 @@ LABEL_47:
   v27[3] = &unk_35560;
   v27[4] = self;
   v5 = objc_retainBlock(v27);
-  v6 = [(CHASActivitySetupViewController *)self _currentPageHasGoalSchedule];
-  if (a3 && v6 && !self->_editTodayOnly)
+  _currentPageHasGoalSchedule = [(CHASActivitySetupViewController *)self _currentPageHasGoalSchedule];
+  if (continue && _currentPageHasGoalSchedule && !self->_editTodayOnly)
   {
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"REMOVE_SCHEDULE_TITLE" value:&stru_35FD0 table:@"ActivitySetup"];
@@ -1536,20 +1536,20 @@ LABEL_47:
     v13 = [v12 localizedStringForKey:@"CANCEL" value:&stru_35FD0 table:@"ActivitySetup"];
     v14 = [UIAlertAction actionWithTitle:v13 style:0 handler:&stru_35848];
 
-    v15 = [(CHASActivitySetupViewController *)self _existingActivityGoalScheduleForCurrentPage];
+    _existingActivityGoalScheduleForCurrentPage = [(CHASActivitySetupViewController *)self _existingActivityGoalScheduleForCurrentPage];
     v16 = [NSBundle bundleForClass:objc_opt_class()];
     v17 = [v16 localizedStringForKey:@"REMOVE" value:&stru_35FD0 table:@"ActivitySetup"];
     v20 = _NSConcreteStackBlock;
     v21 = 3221225472;
     v22 = sub_A3C4;
     v23 = &unk_358B8;
-    v24 = self;
-    v25 = v15;
+    selfCopy = self;
+    v25 = _existingActivityGoalScheduleForCurrentPage;
     v26 = v5;
-    v18 = v15;
+    v18 = _existingActivityGoalScheduleForCurrentPage;
     v19 = [UIAlertAction actionWithTitle:v17 style:2 handler:&v20];
 
-    [v11 addAction:{v14, v20, v21, v22, v23, v24}];
+    [v11 addAction:{v14, v20, v21, v22, v23, selfCopy}];
     [v11 addAction:v19];
     [v11 setPreferredAction:v19];
     [(CHASActivitySetupViewController *)self presentViewController:v11 animated:1 completion:0];
@@ -1566,19 +1566,19 @@ LABEL_47:
   if (self->_advancedGoalView)
   {
     [(CHASActivitySetupViewController *)self _removeAdvancedView];
-    v3 = [(CHASActivitySetupViewController *)self contentView];
-    [v3 addSubview:self->_scrollView];
+    contentView = [(CHASActivitySetupViewController *)self contentView];
+    [contentView addSubview:self->_scrollView];
 
-    v4 = [(CHASActivitySetupViewController *)self contentView];
-    v5 = [v4 topAnchor];
-    v6 = [(UIScrollView *)self->_scrollView topAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6];
+    contentView2 = [(CHASActivitySetupViewController *)self contentView];
+    topAnchor = [contentView2 topAnchor];
+    topAnchor2 = [(UIScrollView *)self->_scrollView topAnchor];
+    v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v7 setActive:1];
 
-    v8 = [(CHASActivitySetupViewController *)self contentView];
-    v9 = [v8 bottomAnchor];
-    v10 = [(UIScrollView *)self->_scrollView bottomAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    contentView3 = [(CHASActivitySetupViewController *)self contentView];
+    bottomAnchor = [contentView3 bottomAnchor];
+    bottomAnchor2 = [(UIScrollView *)self->_scrollView bottomAnchor];
+    v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v11 setActive:1];
   }
 
@@ -1592,12 +1592,12 @@ LABEL_47:
 
 - (void)_showAdvancedViewIfNeeded
 {
-  v3 = [(CHASActivitySetupViewController *)self _existingActivityGoalScheduleForCurrentPage];
-  if (v3 && !self->_editTodayOnly)
+  _existingActivityGoalScheduleForCurrentPage = [(CHASActivitySetupViewController *)self _existingActivityGoalScheduleForCurrentPage];
+  if (_existingActivityGoalScheduleForCurrentPage && !self->_editTodayOnly)
   {
-    v4 = v3;
+    v4 = _existingActivityGoalScheduleForCurrentPage;
     [(CHASActivitySetupViewController *)self _showAdvancedViewForCurrentGoalPage];
-    v3 = v4;
+    _existingActivityGoalScheduleForCurrentPage = v4;
   }
 }
 
@@ -1610,20 +1610,20 @@ LABEL_47:
   [(UIButton *)self->_advancedButton setNeedsUpdateConfiguration];
   if ([(CHASActivitySetupViewController *)self _shouldShowChangeGoalFooter])
   {
-    v4 = [(CHASActivitySetupViewController *)self buttonTray];
-    [v4 addSubview:self->_footerLabel];
+    buttonTray = [(CHASActivitySetupViewController *)self buttonTray];
+    [buttonTray addSubview:self->_footerLabel];
 
-    v5 = [(UILabel *)self->_footerLabel bottomAnchor];
-    v6 = [(OBBoldTrayButton *)self->_continueButton topAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6 constant:-15.0];
+    bottomAnchor = [(UILabel *)self->_footerLabel bottomAnchor];
+    topAnchor = [(OBBoldTrayButton *)self->_continueButton topAnchor];
+    v7 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-15.0];
     v15[0] = v7;
-    v8 = [(UILabel *)self->_footerLabel leadingAnchor];
-    v9 = [(OBBoldTrayButton *)self->_continueButton leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    leadingAnchor = [(UILabel *)self->_footerLabel leadingAnchor];
+    leadingAnchor2 = [(OBBoldTrayButton *)self->_continueButton leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v15[1] = v10;
-    v11 = [(UILabel *)self->_footerLabel trailingAnchor];
-    v12 = [(OBBoldTrayButton *)self->_continueButton trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    trailingAnchor = [(UILabel *)self->_footerLabel trailingAnchor];
+    trailingAnchor2 = [(OBBoldTrayButton *)self->_continueButton trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v15[2] = v13;
     v14 = [NSArray arrayWithObjects:v15 count:3];
     [NSLayoutConstraint activateConstraints:v14];
@@ -1632,13 +1632,13 @@ LABEL_47:
 
 - (id)_existingActivityGoalScheduleForCurrentPage
 {
-  v3 = [(CHASActivitySetupViewController *)self _activityGoalTypeForCurrentPage];
+  _activityGoalTypeForCurrentPage = [(CHASActivitySetupViewController *)self _activityGoalTypeForCurrentPage];
   goalSchedules = self->_goalSchedules;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_A95C;
   v7[3] = &unk_358D8;
-  v7[4] = v3;
+  v7[4] = _activityGoalTypeForCurrentPage;
   v5 = [(NSArray *)goalSchedules hk_firstObjectPassingTest:v7];
 
   return v5;
@@ -1646,15 +1646,15 @@ LABEL_47:
 
 - (BOOL)_currentPageHasGoalSchedule
 {
-  v3 = [(CHASActivitySetupViewController *)self _activityGoalTypeForCurrentPage];
-  if (v3 > 3)
+  _activityGoalTypeForCurrentPage = [(CHASActivitySetupViewController *)self _activityGoalTypeForCurrentPage];
+  if (_activityGoalTypeForCurrentPage > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = self->OBTableWelcomeController_opaque[*off_35A48[v3]];
+    v4 = self->OBTableWelcomeController_opaque[*off_35A48[_activityGoalTypeForCurrentPage]];
   }
 
   return v4 & 1;
@@ -1680,47 +1680,47 @@ LABEL_47:
 {
   [(UIScrollView *)self->_scrollView removeFromSuperview];
   [(UILabel *)self->_footerLabel removeFromSuperview];
-  v39 = [(CHASActivitySetupViewController *)self _existingActivityGoalScheduleForCurrentPage];
-  if (!v39)
+  _existingActivityGoalScheduleForCurrentPage = [(CHASActivitySetupViewController *)self _existingActivityGoalScheduleForCurrentPage];
+  if (!_existingActivityGoalScheduleForCurrentPage)
   {
-    v3 = [(CHASActivitySetupViewController *)self _activityGoalTypeForCurrentPage];
-    v4 = v3;
-    if (v3 < 2)
+    _activityGoalTypeForCurrentPage = [(CHASActivitySetupViewController *)self _activityGoalTypeForCurrentPage];
+    v4 = _activityGoalTypeForCurrentPage;
+    if (_activityGoalTypeForCurrentPage < 2)
     {
-      v5 = [(CHASActivitySetupViewController *)self currentMoveGoal];
+      currentMoveGoal = [(CHASActivitySetupViewController *)self currentMoveGoal];
     }
 
-    else if (v3 == 2)
+    else if (_activityGoalTypeForCurrentPage == 2)
     {
-      v5 = [(CHASActivitySetupViewController *)self currentExerciseGoal];
+      currentMoveGoal = [(CHASActivitySetupViewController *)self currentExerciseGoal];
     }
 
     else
     {
-      if (v3 != 3)
+      if (_activityGoalTypeForCurrentPage != 3)
       {
         v6 = 0;
         goto LABEL_9;
       }
 
-      v5 = [(CHASActivitySetupViewController *)self currentStandGoal];
+      currentMoveGoal = [(CHASActivitySetupViewController *)self currentStandGoal];
     }
 
-    v6 = v5;
+    v6 = currentMoveGoal;
 LABEL_9:
     v7 = +[NSDate date];
     v8 = +[HKDevice localDevice];
-    v39 = [HKActivityGoalSchedule activityGoalScheduleWithDate:v7 goalType:v4 goal:v6 device:v8 metadata:0];
+    _existingActivityGoalScheduleForCurrentPage = [HKActivityGoalSchedule activityGoalScheduleWithDate:v7 goalType:v4 goal:v6 device:v8 metadata:0];
   }
 
-  v9 = [[_TtC19ActivityBridgeSetup13GoalDaysModel alloc] initWithGoalSchedule:v39];
+  v9 = [[_TtC19ActivityBridgeSetup13GoalDaysModel alloc] initWithGoalSchedule:_existingActivityGoalScheduleForCurrentPage];
   goalDaysModel = self->_goalDaysModel;
   self->_goalDaysModel = v9;
 
   currentPageIndex = self->_currentPageIndex;
   if (currentPageIndex == 1)
   {
-    v12 = [(CHASActivitySetupViewController *)self _exerciseGoalViewConfiguration];
+    _exerciseGoalViewConfiguration = [(CHASActivitySetupViewController *)self _exerciseGoalViewConfiguration];
   }
 
   else
@@ -1734,12 +1734,12 @@ LABEL_9:
     {
       [(CHASActivitySetupViewController *)self _moveGoalViewConfiguration];
     }
-    v12 = ;
+    _exerciseGoalViewConfiguration = ;
   }
 
-  v13 = v12;
+  v13 = _exerciseGoalViewConfiguration;
   [(UIView *)self->_advancedGoalView removeFromSuperview];
-  v14 = +[CHASAdvancedGoalViewFactory makeViewWithGoalSchedule:goalDaysModel:wheelchairUser:goalType:formattingManager:showFooter:](CHASAdvancedGoalViewFactory, "makeViewWithGoalSchedule:goalDaysModel:wheelchairUser:goalType:formattingManager:showFooter:", v39, self->_goalDaysModel, self->_isWheelchairUser, [v39 goalType], self->_formattingManager, -[CHASActivitySetupViewController _shouldShowChangeGoalFooter](self, "_shouldShowChangeGoalFooter"));
+  v14 = +[CHASAdvancedGoalViewFactory makeViewWithGoalSchedule:goalDaysModel:wheelchairUser:goalType:formattingManager:showFooter:](CHASAdvancedGoalViewFactory, "makeViewWithGoalSchedule:goalDaysModel:wheelchairUser:goalType:formattingManager:showFooter:", _existingActivityGoalScheduleForCurrentPage, self->_goalDaysModel, self->_isWheelchairUser, [_existingActivityGoalScheduleForCurrentPage goalType], self->_formattingManager, -[CHASActivitySetupViewController _shouldShowChangeGoalFooter](self, "_shouldShowChangeGoalFooter"));
   advancedGoalView = self->_advancedGoalView;
   self->_advancedGoalView = v14;
 
@@ -1747,52 +1747,52 @@ LABEL_9:
   [(UIView *)self->_advancedGoalView setBackgroundColor:v16];
 
   [(UIView *)self->_advancedGoalView setAccessibilityViewIsModal:1];
-  v17 = [(CHASActivitySetupViewController *)self contentView];
-  [v17 addSubview:self->_advancedGoalView];
+  contentView = [(CHASActivitySetupViewController *)self contentView];
+  [contentView addSubview:self->_advancedGoalView];
 
   [(UIView *)self->_advancedGoalView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v18 = [(UIView *)self->_advancedGoalView topAnchor];
-  v19 = [(CHASActivitySetupViewController *)self contentView];
-  v20 = [v19 safeAreaLayoutGuide];
-  v21 = [v20 topAnchor];
-  v22 = [v18 constraintEqualToAnchor:v21];
+  topAnchor = [(UIView *)self->_advancedGoalView topAnchor];
+  contentView2 = [(CHASActivitySetupViewController *)self contentView];
+  safeAreaLayoutGuide = [contentView2 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v22 setActive:1];
 
-  v23 = [(UIView *)self->_advancedGoalView leadingAnchor];
-  v24 = [(CHASActivitySetupViewController *)self contentView];
-  v25 = [v24 safeAreaLayoutGuide];
-  v26 = [v25 leadingAnchor];
-  v27 = [v23 constraintEqualToAnchor:v26];
+  leadingAnchor = [(UIView *)self->_advancedGoalView leadingAnchor];
+  contentView3 = [(CHASActivitySetupViewController *)self contentView];
+  safeAreaLayoutGuide2 = [contentView3 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+  v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v27 setActive:1];
 
-  v28 = [(UIView *)self->_advancedGoalView trailingAnchor];
-  v29 = [(CHASActivitySetupViewController *)self contentView];
-  v30 = [v29 safeAreaLayoutGuide];
-  v31 = [v30 trailingAnchor];
-  v32 = [v28 constraintEqualToAnchor:v31];
+  trailingAnchor = [(UIView *)self->_advancedGoalView trailingAnchor];
+  contentView4 = [(CHASActivitySetupViewController *)self contentView];
+  safeAreaLayoutGuide3 = [contentView4 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+  v32 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v32 setActive:1];
 
-  v33 = [(UIView *)self->_advancedGoalView bottomAnchor];
-  v34 = [(CHASActivitySetupViewController *)self contentView];
-  v35 = [v34 safeAreaLayoutGuide];
-  v36 = [v35 bottomAnchor];
-  v37 = [v33 constraintEqualToAnchor:v36];
+  bottomAnchor = [(UIView *)self->_advancedGoalView bottomAnchor];
+  contentView5 = [(CHASActivitySetupViewController *)self contentView];
+  safeAreaLayoutGuide4 = [contentView5 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+  v37 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v37 setActive:1];
 
   [(UIButton *)self->_advancedButton setNeedsUpdateConfiguration];
-  v38 = [(CHASActivitySetupViewController *)self view];
-  [v38 setNeedsLayout];
+  view = [(CHASActivitySetupViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)setActivityLevels:(id)a3 activityMoveMode:(int64_t)a4
+- (void)setActivityLevels:(id)levels activityMoveMode:(int64_t)mode
 {
-  v8 = a3;
-  objc_storeStrong(&self->_activityLevels, a3);
-  self->_activityMoveMode = a4;
+  levelsCopy = levels;
+  objc_storeStrong(&self->_activityLevels, levels);
+  self->_activityMoveMode = mode;
   if ([(NSArray *)self->_activityLevels count])
   {
-    v7 = [v8 objectAtIndexedSubscript:0];
-    [(CHASActivitySetupViewController *)self _setActivityLevel:v7 activityMoveMode:a4];
+    v7 = [levelsCopy objectAtIndexedSubscript:0];
+    [(CHASActivitySetupViewController *)self _setActivityLevel:v7 activityMoveMode:mode];
   }
 }
 
@@ -1809,8 +1809,8 @@ LABEL_9:
     v7 = BPSSetupBackgroundColor();
     [(CHASActivitySetupLevelView *)v6 setBackgroundColor:v7];
 
-    v8 = [(CHASActivitySetupLevelView *)self->_activityLevelView segmentedControl];
-    [v8 addTarget:self action:"_activityLevelPresetChanged:" forControlEvents:4096];
+    segmentedControl = [(CHASActivitySetupLevelView *)self->_activityLevelView segmentedControl];
+    [segmentedControl addTarget:self action:"_activityLevelPresetChanged:" forControlEvents:4096];
 
     activityLevelView = self->_activityLevelView;
   }
@@ -1818,25 +1818,25 @@ LABEL_9:
   return activityLevelView;
 }
 
-- (void)_activityLevelPresetChanged:(id)a3
+- (void)_activityLevelPresetChanged:(id)changed
 {
-  v4 = [(CHASActivitySetupLevelView *)self->_activityLevelView segmentedControl];
-  v5 = [v4 selectedSegmentIndex];
+  segmentedControl = [(CHASActivitySetupLevelView *)self->_activityLevelView segmentedControl];
+  selectedSegmentIndex = [segmentedControl selectedSegmentIndex];
 
-  v6 = [(CHASActivitySetupViewController *)self activityLevelForSegmentedControlIndex:v5];
+  v6 = [(CHASActivitySetupViewController *)self activityLevelForSegmentedControlIndex:selectedSegmentIndex];
   [(CHASActivitySetupViewController *)self _setActivityLevel:v6 activityMoveMode:self->_activityMoveMode];
 }
 
-- (id)activityLevelForSegmentedControlIndex:(int64_t)a3
+- (id)activityLevelForSegmentedControlIndex:(int64_t)index
 {
-  if ([(NSArray *)self->_activityLevels count]<= a3)
+  if ([(NSArray *)self->_activityLevels count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_activityLevels objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_activityLevels objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -1846,13 +1846,13 @@ LABEL_9:
 {
   v3 = objc_alloc_init(CHASActivitySetupGoalViewConfiguration);
   v4 = +[ARUIMetricColors energyColors];
-  v5 = [v4 nonGradientTextColor];
-  [(CHASActivitySetupGoalViewConfiguration *)v3 setGoalColor:v5];
+  nonGradientTextColor = [v4 nonGradientTextColor];
+  [(CHASActivitySetupGoalViewConfiguration *)v3 setGoalColor:nonGradientTextColor];
 
-  v6 = [(CHASActivitySetupViewController *)self _unitManager];
-  v7 = [v6 userActiveEnergyBurnedUnit];
+  _unitManager = [(CHASActivitySetupViewController *)self _unitManager];
+  userActiveEnergyBurnedUnit = [_unitManager userActiveEnergyBurnedUnit];
 
-  [(CHASActivitySetupGoalViewConfiguration *)v3 setUnit:v7];
+  [(CHASActivitySetupGoalViewConfiguration *)v3 setUnit:userActiveEnergyBurnedUnit];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_B320;
@@ -1919,8 +1919,8 @@ LABEL_9:
 {
   v3 = objc_alloc_init(CHASActivitySetupGoalViewConfiguration);
   v4 = +[ARUIMetricColors briskColors];
-  v5 = [v4 nonGradientTextColor];
-  [(CHASActivitySetupGoalViewConfiguration *)v3 setGoalColor:v5];
+  nonGradientTextColor = [v4 nonGradientTextColor];
+  [(CHASActivitySetupGoalViewConfiguration *)v3 setGoalColor:nonGradientTextColor];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -1958,8 +1958,8 @@ LABEL_9:
 {
   v3 = objc_alloc_init(CHASActivitySetupGoalViewConfiguration);
   v4 = +[ARUIMetricColors sedentaryColors];
-  v5 = [v4 nonGradientTextColor];
-  [(CHASActivitySetupGoalViewConfiguration *)v3 setGoalColor:v5];
+  nonGradientTextColor = [v4 nonGradientTextColor];
+  [(CHASActivitySetupGoalViewConfiguration *)v3 setGoalColor:nonGradientTextColor];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -1995,32 +1995,32 @@ LABEL_9:
 
 - (void)_loadExerciseAndStandGoalViews
 {
-  v11 = [(CHASActivitySetupViewController *)self _exerciseGoalViewConfiguration];
+  _exerciseGoalViewConfiguration = [(CHASActivitySetupViewController *)self _exerciseGoalViewConfiguration];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v6 = [(CHASActivitySetupViewController *)self _createGoalViewWithFrame:v11 configuration:CGRectZero.origin.x, y, width, height];
+  height = [(CHASActivitySetupViewController *)self _createGoalViewWithFrame:_exerciseGoalViewConfiguration configuration:CGRectZero.origin.x, y, width, height];
   exerciseGoalView = self->_exerciseGoalView;
-  self->_exerciseGoalView = v6;
+  self->_exerciseGoalView = height;
 
-  v8 = [(CHASActivitySetupViewController *)self _standGoalViewConfiguration];
-  v9 = [(CHASActivitySetupViewController *)self _createGoalViewWithFrame:v8 configuration:CGRectZero.origin.x, y, width, height];
+  _standGoalViewConfiguration = [(CHASActivitySetupViewController *)self _standGoalViewConfiguration];
+  height2 = [(CHASActivitySetupViewController *)self _createGoalViewWithFrame:_standGoalViewConfiguration configuration:CGRectZero.origin.x, y, width, height];
   standGoalView = self->_standGoalView;
-  self->_standGoalView = v9;
+  self->_standGoalView = height2;
 }
 
-- (void)_setGoalQuantityForGoalView:(id)a3
+- (void)_setGoalQuantityForGoalView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   editTodayOnly = self->_editTodayOnly;
-  v9 = v4;
-  if (self->_moveGoalView == v4)
+  v9 = viewCopy;
+  if (self->_moveGoalView == viewCopy)
   {
     if (self->_hasMoveGoalSchedule)
     {
       if (!self->_editTodayOnly)
       {
-        v6 = [(CHASActivitySetupViewController *)self _moveQuantityForToday];
+        _moveQuantityForToday = [(CHASActivitySetupViewController *)self _moveQuantityForToday];
         goto LABEL_12;
       }
     }
@@ -2034,13 +2034,13 @@ LABEL_9:
     v8 = 144;
   }
 
-  else if (self->_exerciseGoalView == v4)
+  else if (self->_exerciseGoalView == viewCopy)
   {
     if (self->_hasExerciseGoalSchedule)
     {
       if (!self->_editTodayOnly)
       {
-        v6 = [(CHASActivitySetupViewController *)self _exerciseQuantityForToday];
+        _moveQuantityForToday = [(CHASActivitySetupViewController *)self _exerciseQuantityForToday];
         goto LABEL_12;
       }
     }
@@ -2060,10 +2060,10 @@ LABEL_9:
     {
       if (!self->_editTodayOnly)
       {
-        v6 = [(CHASActivitySetupViewController *)self _standQuantityForToday];
+        _moveQuantityForToday = [(CHASActivitySetupViewController *)self _standQuantityForToday];
 LABEL_12:
-        v7 = v6;
-        [(CHASActivitySetupViewController *)self _setGoalQuantity:v6 goalView:v9];
+        v7 = _moveQuantityForToday;
+        [(CHASActivitySetupViewController *)self _setGoalQuantity:_moveQuantityForToday goalView:v9];
 
         goto LABEL_23;
       }
@@ -2079,76 +2079,76 @@ LABEL_12:
   }
 
 LABEL_22:
-  [(CHASActivitySetupViewController *)self _setGoalQuantity:*&self->OBTableWelcomeController_opaque[v8] goalView:v4];
+  [(CHASActivitySetupViewController *)self _setGoalQuantity:*&self->OBTableWelcomeController_opaque[v8] goalView:viewCopy];
 LABEL_23:
 }
 
-- (void)_setGoalQuantity:(id)a3 goalView:(id)a4
+- (void)_setGoalQuantity:(id)quantity goalView:(id)view
 {
-  if (a3)
+  if (quantity)
   {
-    [a4 setGoal:?];
+    [view setGoal:?];
   }
 }
 
 - (id)_moveQuantityForToday
 {
   v2 = [(NSArray *)self->_goalSchedules hk_filter:&stru_35940];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 goalQuantityForToday];
+    goalQuantityForToday = [firstObject goalQuantityForToday];
   }
 
   else
   {
-    v4 = 0;
+    goalQuantityForToday = 0;
   }
 
-  return v4;
+  return goalQuantityForToday;
 }
 
 - (id)_exerciseQuantityForToday
 {
   v2 = [(NSArray *)self->_goalSchedules hk_filter:&stru_35960];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 goalQuantityForToday];
+    goalQuantityForToday = [firstObject goalQuantityForToday];
   }
 
   else
   {
-    v4 = 0;
+    goalQuantityForToday = 0;
   }
 
-  return v4;
+  return goalQuantityForToday;
 }
 
 - (id)_standQuantityForToday
 {
   v2 = [(NSArray *)self->_goalSchedules hk_filter:&stru_35980];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 goalQuantityForToday];
+    goalQuantityForToday = [firstObject goalQuantityForToday];
   }
 
   else
   {
-    v4 = 0;
+    goalQuantityForToday = 0;
   }
 
-  return v4;
+  return goalQuantityForToday;
 }
 
-- (void)_fetchActiveMoveGoalSampleWithCompletion:(id)a3
+- (void)_fetchActiveMoveGoalSampleWithCompletion:(id)completion
 {
   activityMoveMode = self->_activityMoveMode;
-  v5 = a3;
+  completionCopy = completion;
   if (activityMoveMode == 2)
   {
     +[HKObjectType moveMinuteGoal];
@@ -2159,28 +2159,28 @@ LABEL_23:
     +[HKObjectType calorieGoal];
   }
   v6 = ;
-  [(CHASActivitySetupViewController *)self _fetchActiveSampleForQuantityType:v6 completion:v5];
+  [(CHASActivitySetupViewController *)self _fetchActiveSampleForQuantityType:v6 completion:completionCopy];
 }
 
-- (void)_fetchActiveExerciseGoalSampleWithCompletion:(id)a3
+- (void)_fetchActiveExerciseGoalSampleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[HKObjectType exerciseGoal];
-  [(CHASActivitySetupViewController *)self _fetchActiveSampleForQuantityType:v5 completion:v4];
+  [(CHASActivitySetupViewController *)self _fetchActiveSampleForQuantityType:v5 completion:completionCopy];
 }
 
-- (void)_fetchActiveStandGoalSampleWithCompletion:(id)a3
+- (void)_fetchActiveStandGoalSampleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[HKObjectType standGoal];
-  [(CHASActivitySetupViewController *)self _fetchActiveSampleForQuantityType:v5 completion:v4];
+  [(CHASActivitySetupViewController *)self _fetchActiveSampleForQuantityType:v5 completion:completionCopy];
 }
 
-- (void)_fetchActiveSampleForQuantityType:(id)a3 completion:(id)a4
+- (void)_fetchActiveSampleForQuantityType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  typeCopy = type;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = +[NSDate date];
     v9 = [NSPredicate predicateWithFormat:@"startDate <= %@", v8];
@@ -2193,18 +2193,18 @@ LABEL_23:
     v14[1] = 3221225472;
     v14[2] = sub_C2A8;
     v14[3] = &unk_359A8;
-    v15 = v6;
-    v16 = v7;
+    v15 = typeCopy;
+    v16 = completionCopy;
     v13 = [v11 initWithSampleType:v15 predicate:v9 limit:1 sortDescriptors:v12 resultsHandler:v14];
 
     [(HKHealthStore *)self->_healthStore executeQuery:v13];
   }
 }
 
-- (void)_fetchMostRecentDailyMoveGoalSampleWithCompletion:(id)a3
+- (void)_fetchMostRecentDailyMoveGoalSampleWithCompletion:(id)completion
 {
   activityMoveMode = self->_activityMoveMode;
-  v5 = a3;
+  completionCopy = completion;
   if (activityMoveMode == 2)
   {
     +[HKObjectType moveMinuteGoal];
@@ -2215,28 +2215,28 @@ LABEL_23:
     +[HKObjectType calorieGoal];
   }
   v6 = ;
-  [(CHASActivitySetupViewController *)self _fetchMostRecentDailyGoalSampleForQuantityType:v6 completion:v5];
+  [(CHASActivitySetupViewController *)self _fetchMostRecentDailyGoalSampleForQuantityType:v6 completion:completionCopy];
 }
 
-- (void)_fetchMostRecentDailyExerciseGoalSampleWithCompletion:(id)a3
+- (void)_fetchMostRecentDailyExerciseGoalSampleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[HKObjectType exerciseGoal];
-  [(CHASActivitySetupViewController *)self _fetchMostRecentDailyGoalSampleForQuantityType:v5 completion:v4];
+  [(CHASActivitySetupViewController *)self _fetchMostRecentDailyGoalSampleForQuantityType:v5 completion:completionCopy];
 }
 
-- (void)_fetchMostRecentDailyStandGoalSampleWithCompletion:(id)a3
+- (void)_fetchMostRecentDailyStandGoalSampleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[HKObjectType standGoal];
-  [(CHASActivitySetupViewController *)self _fetchMostRecentDailyGoalSampleForQuantityType:v5 completion:v4];
+  [(CHASActivitySetupViewController *)self _fetchMostRecentDailyGoalSampleForQuantityType:v5 completion:completionCopy];
 }
 
-- (void)_fetchMostRecentDailyGoalSampleForQuantityType:(id)a3 completion:(id)a4
+- (void)_fetchMostRecentDailyGoalSampleForQuantityType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  typeCopy = type;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = +[NSDate date];
     v9 = [NSPredicate predicateWithFormat:@"startDate <= %@", v8];
@@ -2255,18 +2255,18 @@ LABEL_23:
     v17[1] = 3221225472;
     v17[2] = sub_C72C;
     v17[3] = &unk_359A8;
-    v18 = v6;
-    v19 = v7;
+    v18 = typeCopy;
+    v19 = completionCopy;
     v16 = [v14 initWithSampleType:v18 predicate:v13 limit:1 sortDescriptors:v15 resultsHandler:v17];
 
     [(HKHealthStore *)self->_healthStore executeQuery:v16];
   }
 }
 
-- (void)_fetchMostRecentGoalSchedulesWithCompletion:(id)a3
+- (void)_fetchMostRecentGoalSchedulesWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = [NSSortDescriptor sortDescriptorWithKey:HKSampleSortIdentifierStartDate ascending:0];
     v6 = +[HKObjectType activityGoalScheduleType];
@@ -2278,7 +2278,7 @@ LABEL_23:
     v13 = sub_C970;
     v14 = &unk_359A8;
     v15 = v6;
-    v16 = v4;
+    v16 = completionCopy;
     v9 = v6;
     v10 = [v7 initWithSampleType:v9 predicate:0 limit:0 sortDescriptors:v8 resultsHandler:&v11];
 
@@ -2286,10 +2286,10 @@ LABEL_23:
   }
 }
 
-- (void)_setGoalSchedules:(id)a3
+- (void)_setGoalSchedules:(id)schedules
 {
-  objc_storeStrong(&self->_goalSchedules, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_goalSchedules, schedules);
+  schedulesCopy = schedules;
   self->_hasMoveGoalSchedule = 0;
   self->_hasExerciseGoalSchedule = 0;
   self->_hasStandGoalSchedule = 0;
@@ -2298,13 +2298,13 @@ LABEL_23:
   v6[2] = sub_CAC0;
   v6[3] = &unk_359D0;
   v6[4] = self;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [schedulesCopy enumerateObjectsUsingBlock:v6];
 }
 
 - (void)_updateGoalSchedule
 {
-  v3 = [(GoalDaysModel *)self->_goalDaysModel goalDays];
-  v4 = [HKActivityGoalSchedule scheduleFrom:v3 goalType:[(GoalDaysModel *)self->_goalDaysModel goalType]];
+  goalDays = [(GoalDaysModel *)self->_goalDaysModel goalDays];
+  v4 = [HKActivityGoalSchedule scheduleFrom:goalDays goalType:[(GoalDaysModel *)self->_goalDaysModel goalType]];
 
   if (!v4)
   {
@@ -2331,10 +2331,10 @@ LABEL_5:
     [(HKHealthStore *)self->_healthStore saveObject:v6 withCompletion:&stru_35A10];
   }
 
-  v8 = [v6 goalType];
-  if (v8 <= 3)
+  goalType = [v6 goalType];
+  if (goalType <= 3)
   {
-    self->OBTableWelcomeController_opaque[*off_35A48[v8]] = 1;
+    self->OBTableWelcomeController_opaque[*off_35A48[goalType]] = 1;
   }
 
   [(CHASActivitySetupViewController *)self tappedContinue:0];
@@ -2342,35 +2342,35 @@ LABEL_5:
 LABEL_9:
 }
 
-- (BOOL)_isGoalSchedule:(id)a3 theSameAs:(id)a4
+- (BOOL)_isGoalSchedule:(id)schedule theSameAs:(id)as
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 goalType];
-  if (v7 != [v6 goalType])
+  scheduleCopy = schedule;
+  asCopy = as;
+  goalType = [scheduleCopy goalType];
+  if (goalType != [asCopy goalType])
   {
     goto LABEL_37;
   }
 
-  v8 = [v5 mondayGoal];
-  v9 = [v6 mondayGoal];
-  v10 = v9;
-  if (v8 == v9)
+  mondayGoal = [scheduleCopy mondayGoal];
+  mondayGoal2 = [asCopy mondayGoal];
+  v10 = mondayGoal2;
+  if (mondayGoal == mondayGoal2)
   {
   }
 
   else
   {
-    v11 = [v6 mondayGoal];
-    if (!v11)
+    mondayGoal3 = [asCopy mondayGoal];
+    if (!mondayGoal3)
     {
       goto LABEL_36;
     }
 
-    v12 = v11;
-    v13 = [v5 mondayGoal];
-    v14 = [v6 mondayGoal];
-    v15 = [v13 isEqual:v14];
+    v12 = mondayGoal3;
+    mondayGoal4 = [scheduleCopy mondayGoal];
+    mondayGoal5 = [asCopy mondayGoal];
+    v15 = [mondayGoal4 isEqual:mondayGoal5];
 
     if (!v15)
     {
@@ -2378,25 +2378,25 @@ LABEL_9:
     }
   }
 
-  v8 = [v5 tuesdayGoal];
-  v16 = [v6 tuesdayGoal];
-  v10 = v16;
-  if (v8 == v16)
+  mondayGoal = [scheduleCopy tuesdayGoal];
+  tuesdayGoal = [asCopy tuesdayGoal];
+  v10 = tuesdayGoal;
+  if (mondayGoal == tuesdayGoal)
   {
   }
 
   else
   {
-    v17 = [v6 tuesdayGoal];
-    if (!v17)
+    tuesdayGoal2 = [asCopy tuesdayGoal];
+    if (!tuesdayGoal2)
     {
       goto LABEL_36;
     }
 
-    v18 = v17;
-    v19 = [v5 tuesdayGoal];
-    v20 = [v6 tuesdayGoal];
-    v21 = [v19 isEqual:v20];
+    v18 = tuesdayGoal2;
+    tuesdayGoal3 = [scheduleCopy tuesdayGoal];
+    tuesdayGoal4 = [asCopy tuesdayGoal];
+    v21 = [tuesdayGoal3 isEqual:tuesdayGoal4];
 
     if (!v21)
     {
@@ -2404,25 +2404,25 @@ LABEL_9:
     }
   }
 
-  v8 = [v5 wednesdayGoal];
-  v22 = [v6 wednesdayGoal];
-  v10 = v22;
-  if (v8 == v22)
+  mondayGoal = [scheduleCopy wednesdayGoal];
+  wednesdayGoal = [asCopy wednesdayGoal];
+  v10 = wednesdayGoal;
+  if (mondayGoal == wednesdayGoal)
   {
   }
 
   else
   {
-    v23 = [v6 wednesdayGoal];
-    if (!v23)
+    wednesdayGoal2 = [asCopy wednesdayGoal];
+    if (!wednesdayGoal2)
     {
       goto LABEL_36;
     }
 
-    v24 = v23;
-    v25 = [v5 wednesdayGoal];
-    v26 = [v6 wednesdayGoal];
-    v27 = [v25 isEqual:v26];
+    v24 = wednesdayGoal2;
+    wednesdayGoal3 = [scheduleCopy wednesdayGoal];
+    wednesdayGoal4 = [asCopy wednesdayGoal];
+    v27 = [wednesdayGoal3 isEqual:wednesdayGoal4];
 
     if (!v27)
     {
@@ -2430,25 +2430,25 @@ LABEL_9:
     }
   }
 
-  v8 = [v5 thursdayGoal];
-  v28 = [v6 thursdayGoal];
-  v10 = v28;
-  if (v8 == v28)
+  mondayGoal = [scheduleCopy thursdayGoal];
+  thursdayGoal = [asCopy thursdayGoal];
+  v10 = thursdayGoal;
+  if (mondayGoal == thursdayGoal)
   {
   }
 
   else
   {
-    v29 = [v6 thursdayGoal];
-    if (!v29)
+    thursdayGoal2 = [asCopy thursdayGoal];
+    if (!thursdayGoal2)
     {
       goto LABEL_36;
     }
 
-    v30 = v29;
-    v31 = [v5 thursdayGoal];
-    v32 = [v6 thursdayGoal];
-    v33 = [v31 isEqual:v32];
+    v30 = thursdayGoal2;
+    thursdayGoal3 = [scheduleCopy thursdayGoal];
+    thursdayGoal4 = [asCopy thursdayGoal];
+    v33 = [thursdayGoal3 isEqual:thursdayGoal4];
 
     if (!v33)
     {
@@ -2456,25 +2456,25 @@ LABEL_9:
     }
   }
 
-  v8 = [v5 fridayGoal];
-  v34 = [v6 fridayGoal];
-  v10 = v34;
-  if (v8 == v34)
+  mondayGoal = [scheduleCopy fridayGoal];
+  fridayGoal = [asCopy fridayGoal];
+  v10 = fridayGoal;
+  if (mondayGoal == fridayGoal)
   {
   }
 
   else
   {
-    v35 = [v6 fridayGoal];
-    if (!v35)
+    fridayGoal2 = [asCopy fridayGoal];
+    if (!fridayGoal2)
     {
       goto LABEL_36;
     }
 
-    v36 = v35;
-    v37 = [v5 fridayGoal];
-    v38 = [v6 fridayGoal];
-    v39 = [v37 isEqual:v38];
+    v36 = fridayGoal2;
+    fridayGoal3 = [scheduleCopy fridayGoal];
+    fridayGoal4 = [asCopy fridayGoal];
+    v39 = [fridayGoal3 isEqual:fridayGoal4];
 
     if (!v39)
     {
@@ -2482,27 +2482,27 @@ LABEL_9:
     }
   }
 
-  v8 = [v5 saturdayGoal];
-  v40 = [v6 saturdayGoal];
-  v10 = v40;
-  if (v8 == v40)
+  mondayGoal = [scheduleCopy saturdayGoal];
+  saturdayGoal = [asCopy saturdayGoal];
+  v10 = saturdayGoal;
+  if (mondayGoal == saturdayGoal)
   {
 
     goto LABEL_32;
   }
 
-  v41 = [v6 saturdayGoal];
-  if (!v41)
+  saturdayGoal2 = [asCopy saturdayGoal];
+  if (!saturdayGoal2)
   {
 LABEL_36:
 
     goto LABEL_37;
   }
 
-  v42 = v41;
-  v43 = [v5 saturdayGoal];
-  v44 = [v6 saturdayGoal];
-  v45 = [v43 isEqual:v44];
+  v42 = saturdayGoal2;
+  saturdayGoal3 = [scheduleCopy saturdayGoal];
+  saturdayGoal4 = [asCopy saturdayGoal];
+  v45 = [saturdayGoal3 isEqual:saturdayGoal4];
 
   if (!v45)
   {
@@ -2510,10 +2510,10 @@ LABEL_36:
   }
 
 LABEL_32:
-  v8 = [v5 sundayGoal];
-  v46 = [v6 sundayGoal];
-  v10 = v46;
-  if (v8 == v46)
+  mondayGoal = [scheduleCopy sundayGoal];
+  sundayGoal = [asCopy sundayGoal];
+  v10 = sundayGoal;
+  if (mondayGoal == sundayGoal)
   {
 
 LABEL_40:
@@ -2521,16 +2521,16 @@ LABEL_40:
     goto LABEL_38;
   }
 
-  v47 = [v6 sundayGoal];
-  if (!v47)
+  sundayGoal2 = [asCopy sundayGoal];
+  if (!sundayGoal2)
   {
     goto LABEL_36;
   }
 
-  v48 = v47;
-  v49 = [v5 sundayGoal];
-  v50 = [v6 sundayGoal];
-  v51 = [v49 isEqual:v50];
+  v48 = sundayGoal2;
+  sundayGoal3 = [scheduleCopy sundayGoal];
+  sundayGoal4 = [asCopy sundayGoal];
+  v51 = [sundayGoal3 isEqual:sundayGoal4];
 
   if (v51)
   {

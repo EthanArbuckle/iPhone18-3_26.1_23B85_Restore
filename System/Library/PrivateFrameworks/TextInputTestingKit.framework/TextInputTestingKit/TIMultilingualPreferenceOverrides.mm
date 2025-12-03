@@ -1,23 +1,23 @@
 @interface TIMultilingualPreferenceOverrides
-- (TIMultilingualPreferenceOverrides)initWithPreferredSecondaryInputMode:(id)a3 userEnabledInputModes:(id)a4 userPreferredLanguages:(id)a5;
+- (TIMultilingualPreferenceOverrides)initWithPreferredSecondaryInputMode:(id)mode userEnabledInputModes:(id)modes userPreferredLanguages:(id)languages;
 @end
 
 @implementation TIMultilingualPreferenceOverrides
 
-- (TIMultilingualPreferenceOverrides)initWithPreferredSecondaryInputMode:(id)a3 userEnabledInputModes:(id)a4 userPreferredLanguages:(id)a5
+- (TIMultilingualPreferenceOverrides)initWithPreferredSecondaryInputMode:(id)mode userEnabledInputModes:(id)modes userPreferredLanguages:(id)languages
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  modeCopy = mode;
+  modesCopy = modes;
+  languagesCopy = languages;
   v15.receiver = self;
   v15.super_class = TIMultilingualPreferenceOverrides;
   v12 = [(TIMultilingualPreferenceOverrides *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_preferredSecondaryInputMode, a3);
-    objc_storeStrong(&v13->_userEnabledInputModes, a4);
-    objc_storeStrong(&v13->_userPreferredLanguages, a5);
+    objc_storeStrong(&v12->_preferredSecondaryInputMode, mode);
+    objc_storeStrong(&v13->_userEnabledInputModes, modes);
+    objc_storeStrong(&v13->_userPreferredLanguages, languages);
   }
 
   return v13;

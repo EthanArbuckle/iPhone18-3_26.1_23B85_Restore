@@ -5,23 +5,23 @@
 - (PXGViewRenderer)init;
 - (UIView)rootView;
 - (__n128)cameraConfiguration;
-- (__n128)setCameraConfiguration:(uint64_t)a3;
+- (__n128)setCameraConfiguration:(uint64_t)configuration;
 - (double)_screenScale;
-- (id)_dequeueViewWithClass:(Class)a3;
-- (id)trackingContainerViewForSpriteIndex:(unsigned int)a3;
-- (id)viewForSpriteIndex:(unsigned int)a3;
-- (void)_configureTrackingContainerView:(id)a3 spriteIndex:(unsigned int)a4 sprites:(id *)a5 screenScale:(double)a6;
+- (id)_dequeueViewWithClass:(Class)class;
+- (id)trackingContainerViewForSpriteIndex:(unsigned int)index;
+- (id)viewForSpriteIndex:(unsigned int)index;
+- (void)_configureTrackingContainerView:(id)view spriteIndex:(unsigned int)index sprites:(id *)sprites screenScale:(double)scale;
 - (void)_ensureUnderlayHostingView;
-- (void)_makeViewInfoReusable:(id)a3;
-- (void)_resizeBuffersForSpriteCount:(int64_t)a3;
+- (void)_makeViewInfoReusable:(id)reusable;
+- (void)_resizeBuffersForSpriteCount:(int64_t)count;
 - (void)_shiftViewsToCompensateForDeferredVisibleOrigin;
 - (void)dealloc;
 - (void)releaseResources;
-- (void)renderSpritesWithTextures:(id)a3 dataStore:(id)a4 presentationDataStore:(id)a5 presentationMetadataStore:(id)a6 layout:(id)a7;
-- (void)setCustomAssetImageViewClassConfigurator:(id)a3;
-- (void)setInteractionState:(id *)a3;
-- (void)setScrollViewController:(id)a3;
-- (void)updateWithChangeDetails:(id)a3;
+- (void)renderSpritesWithTextures:(id)textures dataStore:(id)store presentationDataStore:(id)dataStore presentationMetadataStore:(id)metadataStore layout:(id)layout;
+- (void)setCustomAssetImageViewClassConfigurator:(id)configurator;
+- (void)setInteractionState:(id *)state;
+- (void)setScrollViewController:(id)controller;
+- (void)updateWithChangeDetails:(id)details;
 @end
 
 @implementation PXGViewRenderer
@@ -37,17 +37,17 @@
     textureConverter = v2->_textureConverter;
     v2->_textureConverter = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     reusableViewsByClass = v2->_reusableViewsByClass;
-    v2->_reusableViewsByClass = v5;
+    v2->_reusableViewsByClass = dictionary;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     reusableViewInfoBySpriteIndex = v2->_reusableViewInfoBySpriteIndex;
-    v2->_reusableViewInfoBySpriteIndex = v7;
+    v2->_reusableViewInfoBySpriteIndex = dictionary2;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     trackingContainerViewInfoBySpriteIndex = v2->_trackingContainerViewInfoBySpriteIndex;
-    v2->_trackingContainerViewInfoBySpriteIndex = v9;
+    v2->_trackingContainerViewInfoBySpriteIndex = dictionary3;
 
     v2->_renderedVisibleOrigin = *MEMORY[0x277D3CFB0];
     PXEdgeInsetsMake();
@@ -80,8 +80,8 @@
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v12 = [(NSMutableDictionary *)self->_reusableViewInfoBySpriteIndex objectEnumerator];
-      v13 = [v12 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      objectEnumerator = [(NSMutableDictionary *)self->_reusableViewInfoBySpriteIndex objectEnumerator];
+      v13 = [objectEnumerator countByEnumeratingWithState:&v32 objects:v37 count:16];
       if (v13)
       {
         v14 = v13;
@@ -93,7 +93,7 @@
           {
             if (*v33 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             v17 = *(*(&v32 + 1) + 8 * v16);
@@ -112,7 +112,7 @@
           }
 
           while (v14 != v16);
-          v19 = [v12 countByEnumeratingWithState:&v32 objects:v37 count:16];
+          v19 = [objectEnumerator countByEnumeratingWithState:&v32 objects:v37 count:16];
           v14 = v19;
         }
 
@@ -123,8 +123,8 @@
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v20 = [(NSMutableDictionary *)self->_trackingContainerViewInfoBySpriteIndex objectEnumerator];
-      v21 = [v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      objectEnumerator2 = [(NSMutableDictionary *)self->_trackingContainerViewInfoBySpriteIndex objectEnumerator];
+      v21 = [objectEnumerator2 countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (v21)
       {
         v22 = v21;
@@ -136,7 +136,7 @@
           {
             if (*v29 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(objectEnumerator2);
             }
 
             v25 = *(*(&v28 + 1) + 8 * v24);
@@ -155,7 +155,7 @@
           }
 
           while (v22 != v24);
-          v27 = [v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          v27 = [objectEnumerator2 countByEnumeratingWithState:&v28 objects:v36 count:16];
           v22 = v27;
         }
 
@@ -170,8 +170,8 @@
 
 - (double)_screenScale
 {
-  v2 = [(PXScrollViewController *)self->_scrollViewController scrollView];
-  [v2 px_screenScale];
+  scrollView = [(PXScrollViewController *)self->_scrollViewController scrollView];
+  [scrollView px_screenScale];
   v4 = v3;
 
   return v4;
@@ -197,63 +197,63 @@
   return WeakRetained;
 }
 
-- (__n128)setCameraConfiguration:(uint64_t)a3
+- (__n128)setCameraConfiguration:(uint64_t)configuration
 {
-  *(a1 + 112) = *a3;
-  v3 = *(a3 + 16);
-  v4 = *(a3 + 32);
-  v5 = *(a3 + 64);
-  *(a1 + 160) = *(a3 + 48);
-  *(a1 + 176) = v5;
-  *(a1 + 128) = v3;
-  *(a1 + 144) = v4;
-  v6 = *(a3 + 80);
-  v7 = *(a3 + 96);
-  v8 = *(a3 + 128);
-  *(a1 + 224) = *(a3 + 112);
-  *(a1 + 240) = v8;
-  *(a1 + 192) = v6;
-  *(a1 + 208) = v7;
-  result = *(a3 + 144);
-  v10 = *(a3 + 160);
-  v11 = *(a3 + 192);
-  *(a1 + 288) = *(a3 + 176);
-  *(a1 + 304) = v11;
-  *(a1 + 256) = result;
-  *(a1 + 272) = v10;
+  *(self + 112) = *configuration;
+  v3 = *(configuration + 16);
+  v4 = *(configuration + 32);
+  v5 = *(configuration + 64);
+  *(self + 160) = *(configuration + 48);
+  *(self + 176) = v5;
+  *(self + 128) = v3;
+  *(self + 144) = v4;
+  v6 = *(configuration + 80);
+  v7 = *(configuration + 96);
+  v8 = *(configuration + 128);
+  *(self + 224) = *(configuration + 112);
+  *(self + 240) = v8;
+  *(self + 192) = v6;
+  *(self + 208) = v7;
+  result = *(configuration + 144);
+  v10 = *(configuration + 160);
+  v11 = *(configuration + 192);
+  *(self + 288) = *(configuration + 176);
+  *(self + 304) = v11;
+  *(self + 256) = result;
+  *(self + 272) = v10;
   return result;
 }
 
 - (__n128)cameraConfiguration
 {
-  v2 = *(a1 + 288);
-  *(a2 + 160) = *(a1 + 272);
+  v2 = *(self + 288);
+  *(a2 + 160) = *(self + 272);
   *(a2 + 176) = v2;
-  *(a2 + 192) = *(a1 + 304);
-  v3 = *(a1 + 224);
-  *(a2 + 96) = *(a1 + 208);
+  *(a2 + 192) = *(self + 304);
+  v3 = *(self + 224);
+  *(a2 + 96) = *(self + 208);
   *(a2 + 112) = v3;
-  v4 = *(a1 + 256);
-  *(a2 + 128) = *(a1 + 240);
+  v4 = *(self + 256);
+  *(a2 + 128) = *(self + 240);
   *(a2 + 144) = v4;
-  v5 = *(a1 + 160);
-  *(a2 + 32) = *(a1 + 144);
+  v5 = *(self + 160);
+  *(a2 + 32) = *(self + 144);
   *(a2 + 48) = v5;
-  v6 = *(a1 + 192);
-  *(a2 + 64) = *(a1 + 176);
+  v6 = *(self + 192);
+  *(a2 + 64) = *(self + 176);
   *(a2 + 80) = v6;
-  result = *(a1 + 128);
-  *a2 = *(a1 + 112);
+  result = *(self + 128);
+  *a2 = *(self + 112);
   *(a2 + 16) = result;
   return result;
 }
 
-- (void)setInteractionState:(id *)a3
+- (void)setInteractionState:(id *)state
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var4;
-  size = a3->var8.size;
-  self->_interactionState.targetRect.origin = a3->var8.origin;
+  v3 = *&state->var0;
+  v4 = *&state->var4;
+  size = state->var8.size;
+  self->_interactionState.targetRect.origin = state->var8.origin;
   self->_interactionState.targetRect.size = size;
   *&self->_interactionState.scrollRegime = v3;
   *&self->_interactionState.contentChangeTrend = v4;
@@ -277,9 +277,9 @@
   return WeakRetained;
 }
 
-- (void)setCustomAssetImageViewClassConfigurator:(id)a3
+- (void)setCustomAssetImageViewClassConfigurator:(id)configurator
 {
-  v4 = MEMORY[0x21CEE40A0](a3, a2);
+  v4 = MEMORY[0x21CEE40A0](configurator, a2);
   customAssetImageViewClassConfigurator = self->_customAssetImageViewClassConfigurator;
   self->_customAssetImageViewClassConfigurator = v4;
 
@@ -291,18 +291,18 @@
   [(PXGViewRenderer *)self interactionState];
   if ((v9 & 1) == 0)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     reusableViewInfoBySpriteIndex = self->_reusableViewInfoBySpriteIndex;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __35__PXGViewRenderer_releaseResources__block_invoke;
     v7[3] = &unk_2782AA798;
-    v8 = v3;
-    v5 = v3;
+    v8 = array;
+    v5 = array;
     [(NSMutableDictionary *)reusableViewInfoBySpriteIndex enumerateKeysAndObjectsUsingBlock:v7];
     [(NSMutableDictionary *)self->_reusableViewInfoBySpriteIndex removeObjectsForKeys:v5];
-    v6 = [(PXGViewRenderer *)self delegate];
-    [v6 rendererNeedsUpdate:self];
+    delegate = [(PXGViewRenderer *)self delegate];
+    [delegate rendererNeedsUpdate:self];
   }
 
   [(NSMutableDictionary *)self->_reusableViewsByClass enumerateKeysAndObjectsUsingBlock:&__block_literal_global_14122];
@@ -371,24 +371,24 @@ void __35__PXGViewRenderer_releaseResources__block_invoke_2(uint64_t a1, uint64_
   }
 }
 
-- (void)_configureTrackingContainerView:(id)a3 spriteIndex:(unsigned int)a4 sprites:(id *)a5 screenScale:(double)a6
+- (void)_configureTrackingContainerView:(id)view spriteIndex:(unsigned int)index sprites:(id *)sprites screenScale:(double)scale
 {
   v33 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = v11;
-  if (a5->var0 > a4)
+  viewCopy = view;
+  v12 = viewCopy;
+  if (sprites->var0 > index)
   {
-    if (v11 && (v13 = v11[5]) != 0)
+    if (viewCopy && (v13 = viewCopy[5]) != 0)
     {
       v14 = v13;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_5:
-        var3 = a5->var3;
-        v16 = a5->var2 + 32 * a4;
-        v17 = a5->var4 + 40 * a4;
-        v18 = (var3 + 160 * a4);
+        var3 = sprites->var3;
+        v16 = sprites->var2 + 32 * index;
+        v17 = sprites->var4 + 40 * index;
+        v18 = (var3 + 160 * index);
         v19 = v18[1];
         v32[0] = *v18;
         v32[1] = v19;
@@ -408,24 +408,24 @@ LABEL_5:
         v32[7] = v24;
         LODWORD(v32[0]) = 1065353216;
         LOBYTE(v31) = [(PXGViewRenderer *)self shouldSeparateViewLayers];
-        [v14 pxg_configureWithTexture:0 geometry:v16 info:v17 style:v32 textureInfo:0 resizableCapInsets:v12 reusableViewInfo:0.0 screenScale:0.0 separateLayers:{0.0, 0.0, a6, v31}];
+        [v14 pxg_configureWithTexture:0 geometry:v16 info:v17 style:v32 textureInfo:0 resizableCapInsets:v12 reusableViewInfo:0.0 screenScale:0.0 separateLayers:{0.0, 0.0, scale, v31}];
 
         goto LABEL_6;
       }
 
-      v26 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v29 = objc_opt_class();
       v28 = NSStringFromClass(v29);
-      v30 = [v14 px_descriptionForAssertionMessage];
-      [v26 handleFailureInMethod:a2 object:self file:@"PXGViewRenderer.m" lineNumber:680 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"viewInfo.view", v28, v30}];
+      px_descriptionForAssertionMessage = [v14 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGViewRenderer.m" lineNumber:680 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"viewInfo.view", v28, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v26 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v27 = objc_opt_class();
       v28 = NSStringFromClass(v27);
-      [v26 handleFailureInMethod:a2 object:self file:@"PXGViewRenderer.m" lineNumber:680 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"viewInfo.view", v28}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGViewRenderer.m" lineNumber:680 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"viewInfo.view", v28}];
       v14 = 0;
     }
 
@@ -435,9 +435,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (id)trackingContainerViewForSpriteIndex:(unsigned int)a3
+- (id)trackingContainerViewForSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
+  v3 = *&index;
   trackingContainerViewInfoBySpriteIndex = self->_trackingContainerViewInfoBySpriteIndex;
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:?];
   v8 = [(NSMutableDictionary *)trackingContainerViewInfoBySpriteIndex objectForKeyedSubscript:v7];
@@ -466,8 +466,8 @@ LABEL_6:
     [(PXGViewRenderer *)self _screenScale];
     [(PXGViewRenderer *)self _configureTrackingContainerView:v8 spriteIndex:v3 sprites:v21 screenScale:?];
     [(PXScrollViewController *)self->_scrollViewController addSubview:v9];
-    v18 = [(PXGViewRenderer *)self delegate];
-    [v18 rendererNeedsUpdate:self];
+    delegate = [(PXGViewRenderer *)self delegate];
+    [delegate rendererNeedsUpdate:self];
 
     goto LABEL_9;
   }
@@ -481,19 +481,19 @@ LABEL_6:
       goto LABEL_9;
     }
 
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [(PXGTrackingContainerView *)v9 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXGViewRenderer.m" lineNumber:658 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"viewInfo.view", v12, v13}];
+    px_descriptionForAssertionMessage = [(PXGTrackingContainerView *)v9 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGViewRenderer.m" lineNumber:658 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"viewInfo.view", v12, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v20 = objc_opt_class();
     v12 = NSStringFromClass(v20);
-    [v10 handleFailureInMethod:a2 object:self file:@"PXGViewRenderer.m" lineNumber:658 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"viewInfo.view", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGViewRenderer.m" lineNumber:658 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"viewInfo.view", v12}];
   }
 
 LABEL_9:
@@ -501,10 +501,10 @@ LABEL_9:
   return v9;
 }
 
-- (id)viewForSpriteIndex:(unsigned int)a3
+- (id)viewForSpriteIndex:(unsigned int)index
 {
   reusableViewInfoBySpriteIndex = self->_reusableViewInfoBySpriteIndex;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&index];
   v5 = [(NSMutableDictionary *)reusableViewInfoBySpriteIndex objectForKey:v4];
   v6 = v5;
   if (v5)
@@ -522,19 +522,19 @@ LABEL_9:
   return v7;
 }
 
-- (void)renderSpritesWithTextures:(id)a3 dataStore:(id)a4 presentationDataStore:(id)a5 presentationMetadataStore:(id)a6 layout:(id)a7
+- (void)renderSpritesWithTextures:(id)textures dataStore:(id)store presentationDataStore:(id)dataStore presentationMetadataStore:(id)metadataStore layout:(id)layout
 {
   v217 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v163 = a7;
-  v16 = [(PXGViewRenderer *)self recordingSession];
+  texturesCopy = textures;
+  storeCopy = store;
+  dataStoreCopy = dataStore;
+  metadataStoreCopy = metadataStore;
+  layoutCopy = layout;
+  recordingSession = [(PXGViewRenderer *)self recordingSession];
 
-  if (v16)
+  if (recordingSession)
   {
-    v17 = [(PXGViewRenderer *)self recordingSession];
+    recordingSession2 = [(PXGViewRenderer *)self recordingSession];
     [(PXGViewRenderer *)self visibleRect];
     v19 = v18;
     v21 = v20;
@@ -543,30 +543,30 @@ LABEL_9:
     v25 = v24;
     [(PXGViewRenderer *)self _screenScale];
     v27 = [PXGViewRecordingFrameStartEvent eventWithViewSize:v19 renderOrigin:v21 screenScale:v23, v25, v26];
-    [v17 recordEvent:v27];
+    [recordingSession2 recordEvent:v27];
   }
 
   [(PXGViewRenderer *)self _screenScale];
   v29 = v28;
-  v149 = self;
-  objc_storeStrong(&self->_lastPresentationDataStore, a5);
+  selfCopy = self;
+  objc_storeStrong(&self->_lastPresentationDataStore, dataStore);
   v213 = 0;
   v30 = 0uLL;
   v211 = 0u;
   v212 = 0u;
-  if (v13)
+  if (storeCopy)
   {
-    [v13 sprites];
+    [storeCopy sprites];
     v30 = 0uLL;
   }
 
   v210 = 0;
   v208 = v30;
   v209 = v30;
-  v142 = v14;
-  if (v14)
+  v142 = dataStoreCopy;
+  if (dataStoreCopy)
   {
-    [v14 sprites];
+    [dataStoreCopy sprites];
     v146 = *(&v209 + 1);
     v150 = v209;
     v154 = v210;
@@ -579,9 +579,9 @@ LABEL_9:
     v150 = 0;
   }
 
-  v143 = v13;
-  v141 = v15;
-  v138 = [v15 resizableCapInsets];
+  v143 = storeCopy;
+  v141 = metadataStoreCopy;
+  resizableCapInsets = [metadataStoreCopy resizableCapInsets];
   [(PXGViewRenderer *)self visibleRect];
   self->_renderedVisibleOrigin.x = v31;
   self->_renderedVisibleOrigin.y = v32;
@@ -590,8 +590,8 @@ LABEL_9:
   v36 = v35;
   v38 = v37;
   v40 = v39;
-  v41 = [(PXGViewRenderer *)self scrollViewController];
-  [v41 visibleRectOutsideBounds];
+  scrollViewController = [(PXGViewRenderer *)self scrollViewController];
+  [scrollViewController visibleRectOutsideBounds];
   v220.origin.x = v42;
   v220.origin.y = v43;
   v220.size.width = v44;
@@ -606,12 +606,12 @@ LABEL_9:
   width = v219.size.width;
   height = v219.size.height;
 
-  v50 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v204 = 0u;
   v205 = 0u;
   v206 = 0u;
   v207 = 0u;
-  v51 = v12;
+  v51 = texturesCopy;
   v52 = [v51 countByEnumeratingWithState:&v204 objects:v216 count:16];
   if (v52)
   {
@@ -636,7 +636,7 @@ LABEL_9:
         v201 = y;
         v202 = width;
         v203 = height;
-        v198 = v50;
+        v198 = indexSet;
         [v56 enumerateSpriteIndexes:v197];
       }
 
@@ -646,16 +646,16 @@ LABEL_9:
     while (v53);
   }
 
-  v57 = [MEMORY[0x277CCAB58] indexSet];
-  v58 = self;
+  indexSet2 = [MEMORY[0x277CCAB58] indexSet];
+  selfCopy2 = self;
   reusableViewInfoBySpriteIndex = self->_reusableViewInfoBySpriteIndex;
   v194[0] = MEMORY[0x277D85DD0];
   v194[1] = 3221225472;
   v194[2] = __110__PXGViewRenderer_renderSpritesWithTextures_dataStore_presentationDataStore_presentationMetadataStore_layout___block_invoke_2;
   v194[3] = &unk_2782AA6A8;
-  v60 = v50;
+  v60 = indexSet;
   v195 = v60;
-  v61 = v57;
+  v61 = indexSet2;
   v196 = v61;
   [(NSMutableDictionary *)reusableViewInfoBySpriteIndex enumerateKeysAndObjectsUsingBlock:v194];
   v193[0] = MEMORY[0x277D85DD0];
@@ -670,7 +670,7 @@ LABEL_9:
   v191[1] = 3221225472;
   v191[2] = __110__PXGViewRenderer_renderSpritesWithTextures_dataStore_presentationDataStore_presentationMetadataStore_layout___block_invoke_4;
   v191[3] = &unk_2782AA6D0;
-  v139 = v163;
+  v139 = layoutCopy;
   v192 = v139;
   v137 = MEMORY[0x21CEE40A0](v191);
   v187 = 0u;
@@ -698,9 +698,9 @@ LABEL_9:
 
         v152 = v65;
         v66 = *(*(&v187 + 1) + 8 * v65);
-        v67 = [v66 spriteCount];
-        [(PXGViewRenderer *)v58 _resizeBuffersForSpriteCount:v67];
-        [v66 getSpriteIndexes:v58->_spriteIndexes maxSpriteCount:v67];
+        spriteCount = [v66 spriteCount];
+        [(PXGViewRenderer *)selfCopy2 _resizeBuffersForSpriteCount:spriteCount];
+        [v66 getSpriteIndexes:selfCopy2->_spriteIndexes maxSpriteCount:spriteCount];
         objc_opt_class();
         v157 = v66;
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -713,8 +713,8 @@ LABEL_9:
           }
 
           v71 = v66;
-          v72 = [v71 payload];
-          if (v72)
+          payload = [v71 payload];
+          if (payload)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -722,40 +722,40 @@ LABEL_9:
               goto LABEL_28;
             }
 
-            v117 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
             v120 = objc_opt_class();
             v119 = NSStringFromClass(v120);
-            v160 = v72;
-            v121 = [v72 px_descriptionForAssertionMessage];
-            [v117 handleFailureInMethod:a2 object:v58 file:@"PXGViewRenderer.m" lineNumber:416 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"payloadTexture.payload", v119, v121, v137}];
+            v160 = payload;
+            px_descriptionForAssertionMessage = [payload px_descriptionForAssertionMessage];
+            [currentHandler handleFailureInMethod:a2 object:selfCopy2 file:@"PXGViewRenderer.m" lineNumber:416 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"payloadTexture.payload", v119, px_descriptionForAssertionMessage, v137}];
           }
 
           else
           {
             v160 = 0;
-            v117 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
             v118 = objc_opt_class();
             v119 = NSStringFromClass(v118);
-            [v117 handleFailureInMethod:a2 object:v58 file:@"PXGViewRenderer.m" lineNumber:416 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"payloadTexture.payload", v119}];
+            [currentHandler handleFailureInMethod:a2 object:selfCopy2 file:@"PXGViewRenderer.m" lineNumber:416 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"payloadTexture.payload", v119}];
           }
 
           v66 = v157;
-          v72 = v160;
+          payload = v160;
 LABEL_28:
-          v69 = [v72 viewClass];
+          viewClass = [payload viewClass];
 
           v158 = 0;
-          v70 = v72;
-          if (!v69)
+          v70 = payload;
+          if (!viewClass)
           {
             goto LABEL_109;
           }
 
 LABEL_29:
-          v156 = v69;
+          v156 = viewClass;
           v159 = v70;
-          v73 = [v70 userData];
-          if (v73)
+          userData = [v70 userData];
+          if (userData)
           {
             isKindOfClass = 1;
           }
@@ -777,19 +777,19 @@ LABEL_108:
           v75 = v158;
           while (2)
           {
-            v76 = v58->_spriteIndexes[v74];
+            v76 = selfCopy2->_spriteIndexes[v74];
             if (![v60 containsIndex:v76])
             {
               goto LABEL_96;
             }
 
-            v77 = [(PXGViewRenderer *)v58 customAssetImageViewClass];
+            customAssetImageViewClass = [(PXGViewRenderer *)selfCopy2 customAssetImageViewClass];
             v78 = v156;
-            if (v77)
+            if (customAssetImageViewClass)
             {
               if (*(v154 + 40 * v76 + 1) == 2)
               {
-                v78 = v77;
+                v78 = customAssetImageViewClass;
               }
 
               else
@@ -798,7 +798,7 @@ LABEL_108:
               }
             }
 
-            v79 = v58->_spritesNeedUpate && v78 == [(PXGViewRenderer *)v58 customAssetImageViewClass];
+            v79 = selfCopy2->_spritesNeedUpate && v78 == [(PXGViewRenderer *)selfCopy2 customAssetImageViewClass];
             if (v158)
             {
               v80 = v75;
@@ -811,7 +811,7 @@ LABEL_108:
 
             v161 = v80;
             v164 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v76];
-            v81 = [(NSMutableDictionary *)v58->_reusableViewInfoBySpriteIndex objectForKeyedSubscript:?];
+            v81 = [(NSMutableDictionary *)selfCopy2->_reusableViewInfoBySpriteIndex objectForKeyedSubscript:?];
             if (PXFloatGreaterThanFloat())
             {
               v82 = 1;
@@ -835,8 +835,8 @@ LABEL_108:
             if (v83)
             {
 LABEL_53:
-              [(NSMutableDictionary *)v58->_reusableViewInfoBySpriteIndex setObject:0 forKeyedSubscript:v164];
-              [(PXGViewRenderer *)v58 _makeViewInfoReusable:v81];
+              [(NSMutableDictionary *)selfCopy2->_reusableViewInfoBySpriteIndex setObject:0 forKeyedSubscript:v164];
+              [(PXGViewRenderer *)selfCopy2 _makeViewInfoReusable:v81];
 
               v81 = 0;
               goto LABEL_54;
@@ -855,15 +855,15 @@ LABEL_53:
               goto LABEL_53;
             }
 
-            v110 = [v159 userData];
-            if (v110)
+            userData2 = [v159 userData];
+            if (userData2)
             {
-              v111 = v110;
+              v111 = userData2;
               v112 = v81[5];
-              v113 = [v159 userData];
-              v151 = [v112 shouldReloadForUserData:v113];
+              userData3 = [v159 userData];
+              v151 = [v112 shouldReloadForUserData:userData3];
 
-              v58 = v149;
+              selfCopy2 = selfCopy;
               if (v151)
               {
                 goto LABEL_53;
@@ -886,11 +886,11 @@ LABEL_54:
             v66 = v157;
             if ((v79 | (v81 == 0) & isKindOfClass & v82) == 1)
             {
-              v84 = [(PXGViewRenderer *)v58 _dequeueViewWithClass:v78];
+              v84 = [(PXGViewRenderer *)selfCopy2 _dequeueViewWithClass:v78];
               v85 = [[_PXGReusableViewInfo alloc] initWithReusableView:v84];
 
               v86 = v164;
-              [(NSMutableDictionary *)v58->_reusableViewInfoBySpriteIndex setObject:v85 forKeyedSubscript:v164];
+              [(NSMutableDictionary *)selfCopy2->_reusableViewInfoBySpriteIndex setObject:v85 forKeyedSubscript:v164];
               v87 = objc_alloc_init(_PXGViewSetupParameters);
               if (v87)
               {
@@ -956,21 +956,21 @@ LABEL_67:
                   v95 = 0;
                 }
 
-                v96 = [v95 pxg_hasSuperview];
+                pxg_hasSuperview = [v95 pxg_hasSuperview];
                 if (v88)
                 {
-                  v88->_needsParenting = v96 ^ 1;
+                  v88->_needsParenting = pxg_hasSuperview ^ 1;
                 }
 
-                v97 = [(PXGViewRenderer *)v58 shouldSeparateViewLayers];
-                if (v97)
+                shouldSeparateViewLayers = [(PXGViewRenderer *)selfCopy2 shouldSeparateViewLayers];
+                if (shouldSeparateViewLayers)
                 {
-                  LOBYTE(v97) = [v159 shouldSeparateViewLayers];
+                  LOBYTE(shouldSeparateViewLayers) = [v159 shouldSeparateViewLayers];
                 }
 
                 if (v88)
                 {
-                  v88->_separateLayers = v97;
+                  v88->_separateLayers = shouldSeparateViewLayers;
                   v88->_floatingAxis = [v159 floatingAxis];
                 }
 
@@ -979,11 +979,11 @@ LABEL_67:
                   [v159 floatingAxis];
                 }
 
-                v98 = [(PXGViewRenderer *)v58 recordingSession];
+                recordingSession3 = [(PXGViewRenderer *)selfCopy2 recordingSession];
 
-                if (v98)
+                if (recordingSession3)
                 {
-                  v99 = [(PXGViewRenderer *)v58 recordingSession];
+                  recordingSession4 = [(PXGViewRenderer *)selfCopy2 recordingSession];
                   if (v88)
                   {
                     texture = v88->_texture;
@@ -995,7 +995,7 @@ LABEL_67:
                   }
 
                   v101 = texture;
-                  v102 = [v159 viewClass];
+                  viewClass2 = [v159 viewClass];
                   if (v88)
                   {
                     spriteIndex = v88->_spriteIndex;
@@ -1008,12 +1008,12 @@ LABEL_67:
                     needsParenting = 0;
                   }
 
-                  v105 = [PXGViewRecordingViewEvent eventWithSpriteTexture:v101 viewClass:v102 spriteIndex:spriteIndex needsParenting:needsParenting];
+                  v105 = [PXGViewRecordingViewEvent eventWithSpriteTexture:v101 viewClass:viewClass2 spriteIndex:spriteIndex needsParenting:needsParenting];
 
-                  [v99 recordEvent:v105];
-                  v106 = [(PXGViewRenderer *)v58 recordingSession];
-                  v107 = [v106 frameState];
-                  v108 = v107;
+                  [recordingSession4 recordEvent:v105];
+                  recordingSession5 = [(PXGViewRenderer *)selfCopy2 recordingSession];
+                  frameState = [recordingSession5 frameState];
+                  v108 = frameState;
                   if (v88)
                   {
                     v109 = v88->_spriteIndex;
@@ -1024,7 +1024,7 @@ LABEL_67:
                     v109 = 0;
                   }
 
-                  [v107 addRecordedSpriteIndex:v109];
+                  [frameState addRecordedSpriteIndex:v109];
 
                   v86 = v164;
                 }
@@ -1089,16 +1089,16 @@ LABEL_96:
           goto LABEL_65;
         }
 
-        textureInfos = v58->_textureInfos;
+        textureInfos = selfCopy2->_textureInfos;
         if (textureInfos)
         {
-          [v66 getTextureInfos:v58->_textureInfos forSpriteIndexes:v58->_spriteIndexes geometries:v150 spriteStyles:v146 spriteInfos:v154 screenScale:v67 count:v29];
+          [v66 getTextureInfos:selfCopy2->_textureInfos forSpriteIndexes:selfCopy2->_spriteIndexes geometries:v150 spriteStyles:v146 spriteInfos:v154 screenScale:spriteCount count:v29];
         }
 
         v158 = textureInfos;
-        v69 = objc_opt_class();
+        viewClass = objc_opt_class();
         v70 = 0;
-        if (v69)
+        if (viewClass)
         {
           goto LABEL_29;
         }
@@ -1122,12 +1122,12 @@ LABEL_109:
   v174[3] = &unk_2782AA748;
   v177 = v208;
   v178 = v209;
-  v174[4] = v58;
+  v174[4] = selfCopy2;
   v179 = v210;
   v123 = v137;
   v176 = v123;
   v180 = a2;
-  v181 = v138;
+  v181 = resizableCapInsets;
   v182 = v29;
   v124 = v153;
   v175 = v124;
@@ -1137,12 +1137,12 @@ LABEL_109:
   {
     while (1)
     {
-      v127 = [v124 allValues];
+      allValues = [v124 allValues];
       v170 = 0u;
       v171 = 0u;
       v172 = 0u;
       v173 = 0u;
-      v128 = v127;
+      v128 = allValues;
       v129 = [v128 countByEnumeratingWithState:&v170 objects:v214 count:16];
       if (v129)
       {
@@ -1181,28 +1181,28 @@ LABEL_109:
   }
 
 LABEL_127:
-  trackingContainerViewInfoBySpriteIndex = v149->_trackingContainerViewInfoBySpriteIndex;
+  trackingContainerViewInfoBySpriteIndex = selfCopy->_trackingContainerViewInfoBySpriteIndex;
   v165[0] = MEMORY[0x277D85DD0];
   v165[1] = 3221225472;
   v166 = v208;
   v165[2] = __110__PXGViewRenderer_renderSpritesWithTextures_dataStore_presentationDataStore_presentationMetadataStore_layout___block_invoke_4_64;
   v165[3] = &unk_2782AA770;
-  v165[4] = v149;
+  v165[4] = selfCopy;
   v167 = v209;
   v168 = v210;
   v169 = v29;
   [(NSMutableDictionary *)trackingContainerViewInfoBySpriteIndex enumerateKeysAndObjectsUsingBlock:v165];
-  [(PXGViewRenderer *)v149 _shiftViewsToCompensateForDeferredVisibleOrigin];
-  v134 = [(PXGViewRenderer *)v149 recordingSession];
+  [(PXGViewRenderer *)selfCopy _shiftViewsToCompensateForDeferredVisibleOrigin];
+  recordingSession6 = [(PXGViewRenderer *)selfCopy recordingSession];
 
-  if (v134)
+  if (recordingSession6)
   {
-    v135 = [(PXGViewRenderer *)v149 recordingSession];
+    recordingSession7 = [(PXGViewRenderer *)selfCopy recordingSession];
     v136 = +[PXGViewRecordingFrameEndEvent event];
-    [v135 recordEvent:v136];
+    [recordingSession7 recordEvent:v136];
   }
 
-  v149->_spritesNeedUpate = 0;
+  selfCopy->_spritesNeedUpate = 0;
 }
 
 uint64_t __110__PXGViewRenderer_renderSpritesWithTextures_dataStore_presentationDataStore_presentationMetadataStore_layout___block_invoke(uint64_t result, unsigned int a2)
@@ -1649,7 +1649,7 @@ double __110__PXGViewRenderer_renderSpritesWithTextures_dataStore_presentationDa
   return v11;
 }
 
-- (void)updateWithChangeDetails:(id)a3
+- (void)updateWithChangeDetails:(id)details
 {
   reusableViewInfoBySpriteIndex = self->_reusableViewInfoBySpriteIndex;
   v9[0] = MEMORY[0x277D85DD0];
@@ -1657,8 +1657,8 @@ double __110__PXGViewRenderer_renderSpritesWithTextures_dataStore_presentationDa
   v9[2] = __43__PXGViewRenderer_updateWithChangeDetails___block_invoke;
   v9[3] = &unk_2782AA630;
   v9[4] = self;
-  v6 = a3;
-  [v6 applyToDictionary:reusableViewInfoBySpriteIndex removalHandler:v9];
+  detailsCopy = details;
+  [detailsCopy applyToDictionary:reusableViewInfoBySpriteIndex removalHandler:v9];
   trackingContainerViewInfoBySpriteIndex = self->_trackingContainerViewInfoBySpriteIndex;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -1666,7 +1666,7 @@ double __110__PXGViewRenderer_renderSpritesWithTextures_dataStore_presentationDa
   v8[3] = &unk_2782AA658;
   v8[4] = self;
   v8[5] = a2;
-  [v6 applyToDictionary:trackingContainerViewInfoBySpriteIndex removalHandler:v8];
+  [detailsCopy applyToDictionary:trackingContainerViewInfoBySpriteIndex removalHandler:v8];
 }
 
 void __43__PXGViewRenderer_updateWithChangeDetails___block_invoke_2(uint64_t a1, uint64_t a2, void *a3)
@@ -1706,47 +1706,47 @@ LABEL_4:
   [v6 setIsSpriteRemoved:1];
 }
 
-- (id)_dequeueViewWithClass:(Class)a3
+- (id)_dequeueViewWithClass:(Class)class
 {
   v5 = [(NSMutableDictionary *)self->_reusableViewsByClass objectForKeyedSubscript:?];
   if ([v5 count])
   {
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     [v5 removeObjectAtIndex:0];
-    [v6 pxg_prepareForReuse];
+    [firstObject pxg_prepareForReuse];
   }
 
   else
   {
-    v6 = objc_alloc_init(a3);
+    firstObject = objc_alloc_init(class);
   }
 
-  if ([(PXGViewRenderer *)self customAssetImageViewClass]== a3)
+  if ([(PXGViewRenderer *)self customAssetImageViewClass]== class)
   {
-    v7 = [(PXGViewRenderer *)self customAssetImageViewClassConfigurator];
+    customAssetImageViewClassConfigurator = [(PXGViewRenderer *)self customAssetImageViewClassConfigurator];
 
-    if (v7)
+    if (customAssetImageViewClassConfigurator)
     {
-      v8 = [(PXGViewRenderer *)self customAssetImageViewClassConfigurator];
-      (v8)[2](v8, v6);
+      customAssetImageViewClassConfigurator2 = [(PXGViewRenderer *)self customAssetImageViewClassConfigurator];
+      (customAssetImageViewClassConfigurator2)[2](customAssetImageViewClassConfigurator2, firstObject);
     }
   }
 
-  return v6;
+  return firstObject;
 }
 
-- (void)_makeViewInfoReusable:(id)a3
+- (void)_makeViewInfoReusable:(id)reusable
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  reusableCopy = reusable;
+  v5 = reusableCopy;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  if (v4)
+  if (reusableCopy)
   {
-    v6 = [v4[1] copy];
+    v6 = [reusableCopy[1] copy];
   }
 
   else
@@ -1823,23 +1823,23 @@ LABEL_4:
 
   v15 = v14;
   [v15 pxg_becomeReusable];
-  v16 = [(NSMutableDictionary *)self->_reusableViewsByClass objectForKeyedSubscript:objc_opt_class()];
-  if (!v16)
+  array = [(NSMutableDictionary *)self->_reusableViewsByClass objectForKeyedSubscript:objc_opt_class()];
+  if (!array)
   {
-    v16 = [MEMORY[0x277CBEB18] array];
-    [(NSMutableDictionary *)self->_reusableViewsByClass setObject:v16 forKeyedSubscript:objc_opt_class()];
+    array = [MEMORY[0x277CBEB18] array];
+    [(NSMutableDictionary *)self->_reusableViewsByClass setObject:array forKeyedSubscript:objc_opt_class()];
   }
 
-  [v16 addObject:v15];
+  [array addObject:v15];
 }
 
-- (void)_resizeBuffersForSpriteCount:(int64_t)a3
+- (void)_resizeBuffersForSpriteCount:(int64_t)count
 {
-  if (self->_spriteBufferCapacity < a3)
+  if (self->_spriteBufferCapacity < count)
   {
-    self->_spriteBufferCapacity = a3;
-    self->_spriteIndexes = malloc_type_realloc(self->_spriteIndexes, 4 * a3, 0x100004052888210uLL);
-    self->_textureInfos = malloc_type_realloc(self->_textureInfos, a3 << 6, 0x1000040FB6E31C6uLL);
+    self->_spriteBufferCapacity = count;
+    self->_spriteIndexes = malloc_type_realloc(self->_spriteIndexes, 4 * count, 0x100004052888210uLL);
+    self->_textureInfos = malloc_type_realloc(self->_textureInfos, count << 6, 0x1000040FB6E31C6uLL);
   }
 }
 
@@ -1849,20 +1849,20 @@ LABEL_4:
 
   if (!WeakRetained)
   {
-    v5 = [(PXGViewRenderer *)self rootView];
-    objc_storeWeak(&self->_underlayHostingView, v5);
+    rootView = [(PXGViewRenderer *)self rootView];
+    objc_storeWeak(&self->_underlayHostingView, rootView);
 
     v6 = objc_loadWeakRetained(&self->_underlayHostingView);
     if (!v6)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXGViewRenderer.m" lineNumber:203 description:{@"Invalid parameter not satisfying: %@", @"_underlayHostingView != nil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGViewRenderer.m" lineNumber:203 description:{@"Invalid parameter not satisfying: %@", @"_underlayHostingView != nil"}];
     }
 
     v7 = objc_loadWeakRetained(&self->_underlayHostingView);
-    v8 = [v7 enableUnderlaySupport];
+    enableUnderlaySupport = [v7 enableUnderlaySupport];
 
-    if ((v8 & 1) == 0)
+    if ((enableUnderlaySupport & 1) == 0)
     {
       v9 = PXAssertGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -1874,17 +1874,17 @@ LABEL_4:
   }
 }
 
-- (void)setScrollViewController:(id)a3
+- (void)setScrollViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   scrollViewController = self->_scrollViewController;
-  if (scrollViewController != v5)
+  if (scrollViewController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXScrollViewController *)scrollViewController unregisterObserver:self];
-    objc_storeStrong(&self->_scrollViewController, a3);
+    objc_storeStrong(&self->_scrollViewController, controller);
     [(PXScrollViewController *)self->_scrollViewController registerObserver:self];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 

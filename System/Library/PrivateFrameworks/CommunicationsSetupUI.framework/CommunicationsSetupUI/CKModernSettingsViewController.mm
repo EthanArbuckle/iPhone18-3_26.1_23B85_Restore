@@ -32,9 +32,9 @@
   {
     v5 = objc_alloc_init(v3);
     [(CKModernSettingsViewController *)self addChildViewController:v5];
-    v6 = [(CKModernSettingsViewController *)self view];
-    v7 = [(UIViewController *)v5 view];
-    [v6 addSubview:v7];
+    view = [(CKModernSettingsViewController *)self view];
+    view2 = [(UIViewController *)v5 view];
+    [view addSubview:view2];
 
     [(UIViewController *)v5 didMoveToParentViewController:self];
     settingsViewController = self->_settingsViewController;
@@ -47,14 +47,14 @@
   v13.receiver = self;
   v13.super_class = CKModernSettingsViewController;
   [(CKModernSettingsViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(CKModernSettingsViewController *)self view];
-  [v3 bounds];
+  view = [(CKModernSettingsViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UIViewController *)self->_settingsViewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(UIViewController *)self->_settingsViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 @end

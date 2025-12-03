@@ -1,17 +1,17 @@
 @interface SASUserEngagementContext
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SASUserEngagementContext)initWithBuilder:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SASUserEngagementContext)initWithBuilder:(id)builder;
 - (id)description;
 - (id)initInternal;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 @end
 
 @implementation SASUserEngagementContext
 
-- (SASUserEngagementContext)initWithBuilder:(id)a3
+- (SASUserEngagementContext)initWithBuilder:(id)builder
 {
-  v4 = [SASUserEngagementContext newWithBuilder:a3];
+  v4 = [SASUserEngagementContext newWithBuilder:builder];
 
   return v4;
 }
@@ -32,16 +32,16 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -49,36 +49,36 @@
   return isKindOfClass & 1;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SASUserEngagementContextMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SASUserEngagementContextMutation *)v4 generate];
+  generate = [(_SASUserEngagementContextMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SASUserEngagementContextMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SASUserEngagementContextMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SASUserEngagementContextMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SASUserEngagementContext *)self copy];
+    generate = [(SASUserEngagementContext *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
 @end

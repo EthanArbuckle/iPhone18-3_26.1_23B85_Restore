@@ -1,16 +1,16 @@
 @interface UIInputViewSetPlacementInvisible
-+ (id)placementWithPlacement:(id)a3;
++ (id)placementWithPlacement:(id)placement;
 - (CGAffineTransform)transform;
-- (id)applicatorInfoForOwner:(id)a3;
+- (id)applicatorInfoForOwner:(id)owner;
 @end
 
 @implementation UIInputViewSetPlacementInvisible
 
-+ (id)placementWithPlacement:(id)a3
++ (id)placementWithPlacement:(id)placement
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isVisible] & 1) == 0)
+  placementCopy = placement;
+  if (([placementCopy isVisible] & 1) == 0)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -35,16 +35,16 @@
     }
   }
 
-  if ([v4 isVisible])
+  if ([placementCopy isVisible])
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___UIInputViewSetPlacementInvisible;
-    v5 = objc_msgSendSuper2(&v10, sel_placementWithPlacement_, v4);
+    v5 = objc_msgSendSuper2(&v10, sel_placementWithPlacement_, placementCopy);
   }
 
   else
   {
-    v5 = v4;
+    v5 = placementCopy;
   }
 
   v6 = v5;
@@ -82,11 +82,11 @@
   return result;
 }
 
-- (id)applicatorInfoForOwner:(id)a3
+- (id)applicatorInfoForOwner:(id)owner
 {
   v15[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF90];
-  v5 = [(UIInputViewSetPlacement *)self->super._actualPlacement applicatorInfoForOwner:a3];
+  v5 = [(UIInputViewSetPlacement *)self->super._actualPlacement applicatorInfoForOwner:owner];
   v6 = [v4 dictionaryWithDictionary:v5];
 
   v14[0] = @"Alpha";

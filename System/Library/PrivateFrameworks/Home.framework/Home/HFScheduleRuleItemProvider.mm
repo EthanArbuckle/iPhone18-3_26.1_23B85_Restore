@@ -1,26 +1,26 @@
 @interface HFScheduleRuleItemProvider
 - (HFScheduleRuleItemProvider)init;
-- (HFScheduleRuleItemProvider)initWithScheduleBuilder:(id)a3 home:(id)a4;
-- (id)_scheduleRulesFromHome:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFScheduleRuleItemProvider)initWithScheduleBuilder:(id)builder home:(id)home;
+- (id)_scheduleRulesFromHome:(id)home;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFScheduleRuleItemProvider
 
-- (HFScheduleRuleItemProvider)initWithScheduleBuilder:(id)a3 home:(id)a4
+- (HFScheduleRuleItemProvider)initWithScheduleBuilder:(id)builder home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  builderCopy = builder;
+  homeCopy = home;
   v14.receiver = self;
   v14.super_class = HFScheduleRuleItemProvider;
   v9 = [(HFItemProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a4);
-    objc_storeStrong(&v10->_scheduleBuilder, a3);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_scheduleBuilder, builder);
     v11 = objc_opt_new();
     items = v10->_items;
     v10->_items = v11;
@@ -31,46 +31,46 @@
 
 - (HFScheduleRuleItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithScheduleBuilder_home_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFScheduleRuleItemProvider.m" lineNumber:44 description:{@"%s is unavailable; use %@ instead", "-[HFScheduleRuleItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFScheduleRuleItemProvider.m" lineNumber:44 description:{@"%s is unavailable; use %@ instead", "-[HFScheduleRuleItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFScheduleRuleItemProvider *)self scheduleBuilder];
-  v6 = [(HFScheduleRuleItemProvider *)self home];
-  v7 = [v4 initWithScheduleBuilder:v5 home:v6];
+  scheduleBuilder = [(HFScheduleRuleItemProvider *)self scheduleBuilder];
+  home = [(HFScheduleRuleItemProvider *)self home];
+  v7 = [v4 initWithScheduleBuilder:scheduleBuilder home:home];
 
   return v7;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HFScheduleRuleItemProvider *)self home];
-  if (v3)
+  home = [(HFScheduleRuleItemProvider *)self home];
+  if (home)
   {
-    v4 = [(HFScheduleRuleItemProvider *)self home];
-    [(HFScheduleRuleItemProvider *)self _scheduleRulesFromHome:v4];
+    home2 = [(HFScheduleRuleItemProvider *)self home];
+    [(HFScheduleRuleItemProvider *)self _scheduleRulesFromHome:home2];
   }
 
   else
   {
-    v4 = [(HFScheduleRuleItemProvider *)self scheduleBuilder];
-    [v4 rules];
+    home2 = [(HFScheduleRuleItemProvider *)self scheduleBuilder];
+    [home2 rules];
   }
   v5 = ;
 
-  v6 = [v5 allObjects];
+  allObjects = [v5 allObjects];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __41__HFScheduleRuleItemProvider_reloadItems__block_invoke_3;
   v11[3] = &unk_277E00F40;
   v11[4] = self;
-  v7 = [(HFItemProvider *)self reloadItemsWithObjects:v6 keyAdaptor:&__block_literal_global_212 itemAdaptor:&__block_literal_global_11_9 filter:0 itemMap:v11];
+  v7 = [(HFItemProvider *)self reloadItemsWithObjects:allObjects keyAdaptor:&__block_literal_global_212 itemAdaptor:&__block_literal_global_11_9 filter:0 itemMap:v11];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __41__HFScheduleRuleItemProvider_reloadItems__block_invoke_5;
@@ -161,8 +161,8 @@ id __41__HFScheduleRuleItemProvider_reloadItems__block_invoke_5(uint64_t a1, voi
 {
   v6.receiver = self;
   v6.super_class = HFScheduleRuleItemProvider;
-  v2 = [(HFItemProvider *)&v6 invalidationReasons];
-  v3 = [v2 mutableCopy];
+  invalidationReasons = [(HFItemProvider *)&v6 invalidationReasons];
+  v3 = [invalidationReasons mutableCopy];
 
   [v3 addObject:@"home"];
   [v3 addObject:@"user"];
@@ -171,20 +171,20 @@ id __41__HFScheduleRuleItemProvider_reloadItems__block_invoke_5(uint64_t a1, voi
   return v4;
 }
 
-- (id)_scheduleRulesFromHome:(id)a3
+- (id)_scheduleRulesFromHome:(id)home
 {
-  v3 = a3;
-  v4 = [v3 currentUser];
-  v5 = [v3 homeAccessControlForUser:v4];
+  homeCopy = home;
+  currentUser = [homeCopy currentUser];
+  v5 = [homeCopy homeAccessControlForUser:currentUser];
 
-  v6 = [v5 restrictedGuestAccessSettings];
-  v7 = [v6 guestAccessSchedule];
-  v8 = [HFScheduleBuilder scheduleBuilderFromHomeAccessSchedule:v7];
-  v9 = [v8 rules];
-  v10 = v9;
-  if (v9)
+  restrictedGuestAccessSettings = [v5 restrictedGuestAccessSettings];
+  guestAccessSchedule = [restrictedGuestAccessSettings guestAccessSchedule];
+  v8 = [HFScheduleBuilder scheduleBuilderFromHomeAccessSchedule:guestAccessSchedule];
+  rules = [v8 rules];
+  v10 = rules;
+  if (rules)
   {
-    v11 = v9;
+    v11 = rules;
   }
 
   else

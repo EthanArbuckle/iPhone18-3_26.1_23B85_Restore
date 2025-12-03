@@ -1,30 +1,30 @@
 @interface MPIdentifierSet
 + (MPIdentifierSet)emptyIdentifierSet;
-- (BOOL)hasCommonIdentifierWithIdentifierSet:(id)a3;
-- (BOOL)intersectsSet:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MPIdentifierSet)initWithBlock:(id)a3;
-- (MPIdentifierSet)initWithCoder:(id)a3;
-- (MPIdentifierSet)initWithSource:(id)a3 modelKind:(id)a4 block:(id)a5;
-- (MPIdentifierSet)initWithSource:(id)a3 modelKind:(id)a4 musicKitBlock:(id)a5;
+- (BOOL)hasCommonIdentifierWithIdentifierSet:(id)set;
+- (BOOL)intersectsSet:(id)set;
+- (BOOL)isEqual:(id)equal;
+- (MPIdentifierSet)initWithBlock:(id)block;
+- (MPIdentifierSet)initWithCoder:(id)coder;
+- (MPIdentifierSet)initWithSource:(id)source modelKind:(id)kind block:(id)block;
+- (MPIdentifierSet)initWithSource:(id)source modelKind:(id)kind musicKitBlock:(id)block;
 - (MPLocalLibraryIdentifiers)library;
 - (MPPersonalStoreIdentifiers)personalizedStore;
 - (MPRadioIdentifiers)radio;
 - (MPUniversalStoreIdentifiers)universalStore;
 - (NSString)description;
 - (NSString)humanDescription;
-- (id)_copyWithSource:(id)a3 asPlaylistEntryOccurence:(int64_t)a4;
-- (id)_copyWithSources:(id)a3 block:(id)a4;
-- (id)_initWithSources:(id)a3 modelKind:(id)a4 block:(id)a5;
+- (id)_copyWithSource:(id)source asPlaylistEntryOccurence:(int64_t)occurence;
+- (id)_copyWithSources:(id)sources block:(id)block;
+- (id)_initWithSources:(id)sources modelKind:(id)kind block:(id)block;
 - (id)_stateDumpObject;
-- (id)copyWithSource:(id)a3 block:(id)a4;
-- (id)copyWithSource:(id)a3 musicKitBlock:(id)a4;
-- (id)identifierDescriptions:(BOOL)a3;
-- (id)msv_initWithJSONValue:(id)a3;
+- (id)copyWithSource:(id)source block:(id)block;
+- (id)copyWithSource:(id)source musicKitBlock:(id)block;
+- (id)identifierDescriptions:(BOOL)descriptions;
+- (id)msv_initWithJSONValue:(id)value;
 - (id)msv_jsonValue;
-- (id)preferredStoreStringIdentifierForPersonID:(id)a3;
-- (id)prioritizedStoreStringIdentifiersForPersonID:(id)a3;
-- (id)unionSet:(id)a3 block:(id)a4;
+- (id)preferredStoreStringIdentifierForPersonID:(id)d;
+- (id)prioritizedStoreStringIdentifiersForPersonID:(id)d;
+- (id)unionSet:(id)set block:(id)block;
 - (unint64_t)hash;
 - (void)_setDefaultDatabaseIDIfNeeded;
 - (void)_setDefaultPersonIDIfNeeded;
@@ -32,17 +32,17 @@
 - (void)clearPersonalStoreIdentifiers;
 - (void)clearRadioIdentifiers;
 - (void)clearUniversalStoreIdentifiers;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCloudUniversalLibraryID:(id)a3;
-- (void)setFormerStoreAdamIDs:(id)a3;
-- (void)setLibraryIdentifiersWithDatabaseID:(id)a3 block:(id)a4;
-- (void)setModelKind:(id)a3;
-- (void)setPersonalStoreIdentifiersWithPersonID:(id)a3 block:(id)a4;
-- (void)setRadioStationHash:(id)a3;
-- (void)setRadioStationStringID:(id)a3;
-- (void)setStoreCloudAlbumID:(id)a3;
-- (void)setStoreCloudArtistID:(id)a3;
-- (void)setStoreRecommendationID:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCloudUniversalLibraryID:(id)d;
+- (void)setFormerStoreAdamIDs:(id)ds;
+- (void)setLibraryIdentifiersWithDatabaseID:(id)d block:(id)block;
+- (void)setModelKind:(id)kind;
+- (void)setPersonalStoreIdentifiersWithPersonID:(id)d block:(id)block;
+- (void)setRadioStationHash:(id)hash;
+- (void)setRadioStationStringID:(id)d;
+- (void)setStoreCloudAlbumID:(id)d;
+- (void)setStoreCloudArtistID:(id)d;
+- (void)setStoreRecommendationID:(id)d;
 @end
 
 @implementation MPIdentifierSet
@@ -52,7 +52,7 @@
   v8 = *MEMORY[0x1E69E9840];
   if ([(NSString *)self->_databaseID length])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
@@ -63,40 +63,40 @@
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
       {
         v6 = 138543362;
-        v7 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_ERROR, "Omitting library IDs [missing databaseID] identifierSet=%{public}@", &v6, 0xCu);
       }
     }
 
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (MPUniversalStoreIdentifiers)universalStore
 {
   if ([(NSString *)self->_globalPlaylistID length]|| self->_adamID || [(NSArray *)self->_formerAdamIDs count]|| [(NSString *)self->_universalCloudLibraryID length]|| self->_purchasedAdamID || self->_subscriptionAdamID || [(NSString *)self->_socialProfileID length]|| [(NSString *)self->_informalMediaClipID length]|| [(NSString *)self->_informalStaticAssetID length]|| self->_reportingAdamID || self->_assetAdamID || self->_lyricsAdamID)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)_setDefaultPersonIDIfNeeded
 {
   if (![(NSString *)self->_personID length])
   {
-    v5 = [MEMORY[0x1E69E4680] activeAccount];
-    v3 = [v5 accountDSID];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+    accountDSID = [activeAccount accountDSID];
     personID = self->_personID;
-    self->_personID = v3;
+    self->_personID = accountDSID;
   }
 }
 
@@ -104,20 +104,20 @@
 {
   if (![(NSString *)self->_databaseID length])
   {
-    v6 = [MEMORY[0x1E69E4680] activeAccount];
-    v3 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v6];
-    v4 = [v3 uniqueIdentifier];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+    v3 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:activeAccount];
+    uniqueIdentifier = [v3 uniqueIdentifier];
     databaseID = self->_databaseID;
-    self->_databaseID = v4;
+    self->_databaseID = uniqueIdentifier;
   }
 }
 
 - (id)msv_jsonValue
 {
   v103 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() emptyIdentifierSet];
+  emptyIdentifierSet = [objc_opt_class() emptyIdentifierSet];
 
-  if (v3 == self)
+  if (emptyIdentifierSet == self)
   {
     v17 = MEMORY[0x1E695E0F8];
   }
@@ -125,20 +125,20 @@
   else
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v5 = [(MPModelKind *)self->_modelKind msv_jsonValue];
-    [v4 setObject:v5 forKeyedSubscript:@"kind"];
+    msv_jsonValue = [(MPModelKind *)self->_modelKind msv_jsonValue];
+    [v4 setObject:msv_jsonValue forKeyedSubscript:@"kind"];
 
-    v6 = [(NSArray *)self->_sources msv_jsonValue];
-    [v4 setObject:v6 forKeyedSubscript:@"sources"];
+    msv_jsonValue2 = [(NSArray *)self->_sources msv_jsonValue];
+    [v4 setObject:msv_jsonValue2 forKeyedSubscript:@"sources"];
 
-    v7 = [(MPIdentifierSet *)self library];
-    if (v7)
+    library = [(MPIdentifierSet *)self library];
+    if (library)
     {
       v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
-      v9 = [v7 databaseID];
-      [v8 setObject:v9 forKeyedSubscript:@"db-id"];
+      databaseID = [library databaseID];
+      [v8 setObject:databaseID forKeyedSubscript:@"db-id"];
 
-      quot = [v7 persistentID];
+      quot = [library persistentID];
       if (quot)
       {
         v11 = quot;
@@ -179,17 +179,17 @@
 
       [v8 setObject:v16 forKeyedSubscript:@"pid"];
 
-      if ([v7 containedPersistentID])
+      if ([library containedPersistentID])
       {
-        v18 = [v7 containedPersistentID];
-        if (v18)
+        containedPersistentID = [library containedPersistentID];
+        if (containedPersistentID)
         {
-          v19 = v18;
+          v19 = containedPersistentID;
           v20 = &v103 + 1;
           do
           {
-            v21 = lldiv(v18, 10);
-            v18 = v21.quot;
+            v21 = lldiv(containedPersistentID, 10);
+            containedPersistentID = v21.quot;
             if (v21.rem >= 0)
             {
               LOBYTE(v22) = v21.rem;
@@ -228,17 +228,17 @@
         [v8 setObject:0 forKeyedSubscript:@"contained-pid"];
       }
 
-      if ([v7 syncID])
+      if ([library syncID])
       {
-        v25 = [v7 syncID];
-        if (v25)
+        syncID = [library syncID];
+        if (syncID)
         {
-          v26 = v25;
+          v26 = syncID;
           v27 = &v103 + 1;
           do
           {
-            v28 = lldiv(v25, 10);
-            v25 = v28.quot;
+            v28 = lldiv(syncID, 10);
+            syncID = v28.quot;
             if (v28.rem >= 0)
             {
               LOBYTE(v29) = v28.rem;
@@ -280,24 +280,24 @@
       [v4 setObject:v8 forKeyedSubscript:@"library"];
     }
 
-    v32 = [(MPIdentifierSet *)self personalizedStore];
-    if (v32)
+    personalizedStore = [(MPIdentifierSet *)self personalizedStore];
+    if (personalizedStore)
     {
       v33 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
-      v34 = [v32 personID];
-      [v33 setObject:v34 forKeyedSubscript:@"person-id"];
+      personID = [personalizedStore personID];
+      [v33 setObject:personID forKeyedSubscript:@"person-id"];
 
-      if ([v32 cloudID])
+      if ([personalizedStore cloudID])
       {
-        v35 = [v32 cloudID];
-        if (v35)
+        cloudID = [personalizedStore cloudID];
+        if (cloudID)
         {
-          v36 = v35;
+          v36 = cloudID;
           v37 = &v103 + 1;
           do
           {
-            v38 = lldiv(v35, 10);
-            v35 = v38.quot;
+            v38 = lldiv(cloudID, 10);
+            cloudID = v38.quot;
             if (v38.rem >= 0)
             {
               LOBYTE(v39) = v38.rem;
@@ -336,33 +336,33 @@
         [v33 setObject:0 forKeyedSubscript:@"cloud"];
       }
 
-      v42 = [v32 cloudAlbumID];
-      [v33 setObject:v42 forKeyedSubscript:@"cloud-album"];
+      cloudAlbumID = [personalizedStore cloudAlbumID];
+      [v33 setObject:cloudAlbumID forKeyedSubscript:@"cloud-album"];
 
-      v43 = [v32 recommendationID];
-      [v33 setObject:v43 forKeyedSubscript:@"reco-id"];
+      recommendationID = [personalizedStore recommendationID];
+      [v33 setObject:recommendationID forKeyedSubscript:@"reco-id"];
 
       [v4 setObject:v33 forKeyedSubscript:@"personal"];
     }
 
-    v44 = [(MPIdentifierSet *)self universalStore];
-    if (v44)
+    universalStore = [(MPIdentifierSet *)self universalStore];
+    if (universalStore)
     {
       v45 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:9];
-      v46 = [v44 globalPlaylistID];
-      [v45 setObject:v46 forKeyedSubscript:@"global-playlist"];
+      globalPlaylistID = [universalStore globalPlaylistID];
+      [v45 setObject:globalPlaylistID forKeyedSubscript:@"global-playlist"];
 
-      if ([v44 adamID])
+      if ([universalStore adamID])
       {
-        v47 = [v44 adamID];
-        if (v47)
+        adamID = [universalStore adamID];
+        if (adamID)
         {
-          v48 = v47;
+          v48 = adamID;
           v49 = &v103 + 1;
           do
           {
-            v50 = lldiv(v47, 10);
-            v47 = v50.quot;
+            v50 = lldiv(adamID, 10);
+            adamID = v50.quot;
             if (v50.rem >= 0)
             {
               LOBYTE(v51) = v50.rem;
@@ -401,11 +401,11 @@
         [v45 setObject:0 forKeyedSubscript:@"adam"];
       }
 
-      v54 = [v44 formerAdamIDs];
-      if ([v54 count])
+      formerAdamIDs = [universalStore formerAdamIDs];
+      if ([formerAdamIDs count])
       {
-        v55 = [v44 formerAdamIDs];
-        v56 = [v55 msv_map:&__block_literal_global_450];
+        formerAdamIDs2 = [universalStore formerAdamIDs];
+        v56 = [formerAdamIDs2 msv_map:&__block_literal_global_450];
         [v45 setObject:v56 forKeyedSubscript:@"former-ids"];
       }
 
@@ -414,20 +414,20 @@
         [v45 setObject:0 forKeyedSubscript:@"former-ids"];
       }
 
-      v57 = [v44 universalCloudLibraryID];
-      [v45 setObject:v57 forKeyedSubscript:@"ulid"];
+      universalCloudLibraryID = [universalStore universalCloudLibraryID];
+      [v45 setObject:universalCloudLibraryID forKeyedSubscript:@"ulid"];
 
-      if ([v44 purchasedAdamID])
+      if ([universalStore purchasedAdamID])
       {
-        v58 = [v44 purchasedAdamID];
-        if (v58)
+        purchasedAdamID = [universalStore purchasedAdamID];
+        if (purchasedAdamID)
         {
-          v59 = v58;
+          v59 = purchasedAdamID;
           v60 = &v103 + 1;
           do
           {
-            v61 = lldiv(v58, 10);
-            v58 = v61.quot;
+            v61 = lldiv(purchasedAdamID, 10);
+            purchasedAdamID = v61.quot;
             if (v61.rem >= 0)
             {
               LOBYTE(v62) = v61.rem;
@@ -466,17 +466,17 @@
         [v45 setObject:0 forKeyedSubscript:@"purchased"];
       }
 
-      if ([v44 subscriptionAdamID])
+      if ([universalStore subscriptionAdamID])
       {
-        v65 = [v44 subscriptionAdamID];
-        if (v65)
+        subscriptionAdamID = [universalStore subscriptionAdamID];
+        if (subscriptionAdamID)
         {
-          v66 = v65;
+          v66 = subscriptionAdamID;
           v67 = &v103 + 1;
           do
           {
-            v68 = lldiv(v65, 10);
-            v65 = v68.quot;
+            v68 = lldiv(subscriptionAdamID, 10);
+            subscriptionAdamID = v68.quot;
             if (v68.rem >= 0)
             {
               LOBYTE(v69) = v68.rem;
@@ -515,26 +515,26 @@
         [v45 setObject:0 forKeyedSubscript:@"subscription"];
       }
 
-      v72 = [v44 socialProfileID];
-      [v45 setObject:v72 forKeyedSubscript:@"social-profile"];
+      socialProfileID = [universalStore socialProfileID];
+      [v45 setObject:socialProfileID forKeyedSubscript:@"social-profile"];
 
-      v73 = [v44 informalMediaClipID];
-      [v45 setObject:v73 forKeyedSubscript:@"media-clip"];
+      informalMediaClipID = [universalStore informalMediaClipID];
+      [v45 setObject:informalMediaClipID forKeyedSubscript:@"media-clip"];
 
-      v74 = [v44 informalStaticAssetID];
-      [v45 setObject:v74 forKeyedSubscript:@"static-asset"];
+      informalStaticAssetID = [universalStore informalStaticAssetID];
+      [v45 setObject:informalStaticAssetID forKeyedSubscript:@"static-asset"];
 
-      if ([v44 reportingAdamID])
+      if ([universalStore reportingAdamID])
       {
-        v75 = [v44 reportingAdamID];
-        if (v75)
+        reportingAdamID = [universalStore reportingAdamID];
+        if (reportingAdamID)
         {
-          v76 = v75;
+          v76 = reportingAdamID;
           v77 = &v103 + 1;
           do
           {
-            v78 = lldiv(v75, 10);
-            v75 = v78.quot;
+            v78 = lldiv(reportingAdamID, 10);
+            reportingAdamID = v78.quot;
             if (v78.rem >= 0)
             {
               LOBYTE(v79) = v78.rem;
@@ -573,17 +573,17 @@
         [v45 setObject:0 forKeyedSubscript:@"reporting-adam-id"];
       }
 
-      if ([v44 assetAdamID])
+      if ([universalStore assetAdamID])
       {
-        v82 = [v44 assetAdamID];
-        if (v82)
+        assetAdamID = [universalStore assetAdamID];
+        if (assetAdamID)
         {
-          v83 = v82;
+          v83 = assetAdamID;
           v84 = &v103 + 1;
           do
           {
-            v85 = lldiv(v82, 10);
-            v82 = v85.quot;
+            v85 = lldiv(assetAdamID, 10);
+            assetAdamID = v85.quot;
             if (v85.rem >= 0)
             {
               LOBYTE(v86) = v85.rem;
@@ -625,19 +625,19 @@
       [v4 setObject:v45 forKeyedSubscript:@"universal"];
     }
 
-    v89 = [(MPIdentifierSet *)self radio];
-    if (v89)
+    radio = [(MPIdentifierSet *)self radio];
+    if (radio)
     {
       v90 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
-      v91 = [v89 stationStringID];
-      [v90 setObject:v91 forKeyedSubscript:@"station-string"];
+      stationStringID = [radio stationStringID];
+      [v90 setObject:stationStringID forKeyedSubscript:@"station-string"];
 
-      v92 = [v89 stationHash];
-      [v90 setObject:v92 forKeyedSubscript:@"station-hash"];
+      stationHash = [radio stationHash];
+      [v90 setObject:stationHash forKeyedSubscript:@"station-hash"];
 
-      if ([v89 stationID])
+      if ([radio stationID])
       {
-        v93 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v89, "stationID")}];
+        v93 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(radio, "stationID")}];
         [v90 setObject:v93 forKeyedSubscript:@"station-id"];
       }
 
@@ -649,26 +649,26 @@
       [v4 setObject:v90 forKeyedSubscript:@"radio"];
     }
 
-    v94 = [(MPIdentifierSet *)self containerUniqueID];
-    [v4 setObject:v94 forKeyedSubscript:@"containerUniqueID"];
+    containerUniqueID = [(MPIdentifierSet *)self containerUniqueID];
+    [v4 setObject:containerUniqueID forKeyedSubscript:@"containerUniqueID"];
 
-    v95 = [(MPIdentifierSet *)self handoffCorrelationID];
-    [v4 setObject:v95 forKeyedSubscript:@"handoffCorrelationID"];
+    handoffCorrelationID = [(MPIdentifierSet *)self handoffCorrelationID];
+    [v4 setObject:handoffCorrelationID forKeyedSubscript:@"handoffCorrelationID"];
 
-    v96 = [(MPIdentifierSet *)self contentItemID];
-    [v4 setObject:v96 forKeyedSubscript:@"contentItemID"];
+    contentItemID = [(MPIdentifierSet *)self contentItemID];
+    [v4 setObject:contentItemID forKeyedSubscript:@"contentItemID"];
 
-    v97 = [(MPIdentifierSet *)self lyricsID];
-    [v4 setObject:v97 forKeyedSubscript:@"lyricsID"];
+    lyricsID = [(MPIdentifierSet *)self lyricsID];
+    [v4 setObject:lyricsID forKeyedSubscript:@"lyricsID"];
 
-    v98 = [(MPIdentifierSet *)self vendorID];
-    [v4 setObject:v98 forKeyedSubscript:@"vendorID"];
+    vendorID = [(MPIdentifierSet *)self vendorID];
+    [v4 setObject:vendorID forKeyedSubscript:@"vendorID"];
 
-    v99 = [(MPIdentifierSet *)self opaqueID];
-    [v4 setObject:v99 forKeyedSubscript:@"opaqueID"];
+    opaqueID = [(MPIdentifierSet *)self opaqueID];
+    [v4 setObject:opaqueID forKeyedSubscript:@"opaqueID"];
 
-    v100 = [(MPIdentifierSet *)self versionHash];
-    [v4 setObject:v100 forKeyedSubscript:@"versionHash"];
+    versionHash = [(MPIdentifierSet *)self versionHash];
+    [v4 setObject:versionHash forKeyedSubscript:@"versionHash"];
 
     v101 = [MEMORY[0x1E696AD98] numberWithBool:{-[MPIdentifierSet isPlaceholder](self, "isPlaceholder")}];
     [v4 setObject:v101 forKeyedSubscript:@"placeholder"];
@@ -724,12 +724,12 @@ __CFString *__32__MPIdentifierSet_msv_jsonValue__block_invoke(uint64_t a1, void 
   return v8;
 }
 
-- (id)msv_initWithJSONValue:(id)a3
+- (id)msv_initWithJSONValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   if (_NSIsNSDictionary())
   {
-    v5 = v4;
+    v5 = valueCopy;
     v6 = [MPModelKind alloc];
     v7 = [v5 objectForKeyedSubscript:@"kind"];
     v8 = [(MPModelKind *)v6 msv_initWithJSONValue:v7];
@@ -737,14 +737,14 @@ __CFString *__32__MPIdentifierSet_msv_jsonValue__block_invoke(uint64_t a1, void 
     v9 = [v5 objectForKeyedSubscript:@"sources"];
     v10 = [v9 arrayByAddingObject:@"json"];
 
-    v11 = self;
+    selfCopy = self;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __41__MPIdentifierSet_msv_initWithJSONValue___block_invoke;
     v15[3] = &unk_1E7680B28;
     v16 = v5;
     v12 = v5;
-    v13 = [(MPIdentifierSet *)v11 _initWithSources:v10 modelKind:v8 block:v15];
+    v13 = [(MPIdentifierSet *)selfCopy _initWithSources:v10 modelKind:v8 block:v15];
   }
 
   else
@@ -933,60 +933,60 @@ uint64_t __41__MPIdentifierSet_msv_initWithJSONValue___block_invoke_5(uint64_t a
   return [v2 numberWithLongLong:v3];
 }
 
-- (id)_copyWithSource:(id)a3 asPlaylistEntryOccurence:(int64_t)a4
+- (id)_copyWithSource:(id)source asPlaylistEntryOccurence:(int64_t)occurence
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sourceCopy = source;
   v7 = +[MPModelPlaylistEntryKind identityKind];
-  v8 = [(MPIdentifierSet *)self modelKind];
-  v9 = [v8 identityKind];
+  modelKind = [(MPIdentifierSet *)self modelKind];
+  identityKind = [modelKind identityKind];
 
-  if (v9 == v7)
+  if (identityKind == v7)
   {
-    v10 = [(MPIdentifierSet *)self modelKind];
+    modelKind2 = [(MPIdentifierSet *)self modelKind];
   }
 
   else
   {
-    v10 = 0;
+    modelKind2 = 0;
   }
 
-  v11 = [(MPIdentifierSet *)self modelKind];
-  v12 = [v11 isPlaylistableKind];
+  modelKind3 = [(MPIdentifierSet *)self modelKind];
+  isPlaylistableKind = [modelKind3 isPlaylistableKind];
 
-  if (v12)
+  if (isPlaylistableKind)
   {
-    v13 = [(MPIdentifierSet *)self modelKind];
-    v14 = [(MPIdentifierSet *)self modelKind];
-    v15 = [v14 identityKind];
+    modelKind4 = [(MPIdentifierSet *)self modelKind];
+    modelKind5 = [(MPIdentifierSet *)self modelKind];
+    identityKind2 = [modelKind5 identityKind];
 
-    if (v13 == v15)
+    if (modelKind4 == identityKind2)
     {
       v19 = v7;
 
-      v10 = v19;
+      modelKind2 = v19;
     }
 
     else
     {
-      v16 = [(MPIdentifierSet *)self modelKind];
-      v28[0] = v16;
+      modelKind6 = [(MPIdentifierSet *)self modelKind];
+      v28[0] = modelKind6;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
       v18 = [MPModelPlaylistEntry kindWithKinds:v17];
 
-      v10 = v18;
+      modelKind2 = v18;
     }
   }
 
-  v20 = [@"PlaylistEntryMorph::" stringByAppendingString:v6];
+  v20 = [@"PlaylistEntryMorph::" stringByAppendingString:sourceCopy];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invoke;
   v24[3] = &unk_1E767FAE8;
-  v25 = v10;
-  v26 = self;
-  v27 = a4;
-  v21 = v10;
+  v25 = modelKind2;
+  selfCopy = self;
+  occurenceCopy = occurence;
+  v21 = modelKind2;
   v22 = [(MPIdentifierSet *)self copyWithSource:v20 block:v24];
 
   return v22;
@@ -1039,65 +1039,65 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
   [v2 setPersistentID:0];
 }
 
-- (id)prioritizedStoreStringIdentifiersForPersonID:(id)a3
+- (id)prioritizedStoreStringIdentifiersForPersonID:(id)d
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:10];
-  v6 = [(MPIdentifierSet *)self universalStore];
-  v7 = [v6 globalPlaylistID];
+  universalStore = [(MPIdentifierSet *)self universalStore];
+  globalPlaylistID = [universalStore globalPlaylistID];
 
-  if ([v7 length])
+  if ([globalPlaylistID length])
   {
-    [v5 addObject:v7];
+    [v5 addObject:globalPlaylistID];
   }
 
-  v8 = [(MPIdentifierSet *)self radio];
-  v9 = [v8 stationStringID];
+  radio = [(MPIdentifierSet *)self radio];
+  stationStringID = [radio stationStringID];
 
-  if ([v9 length])
+  if ([stationStringID length])
   {
-    [v5 addObject:v9];
+    [v5 addObject:stationStringID];
   }
 
-  v10 = [(MPIdentifierSet *)self radio];
-  v11 = [v10 stationEventID];
+  radio2 = [(MPIdentifierSet *)self radio];
+  stationEventID = [radio2 stationEventID];
 
-  if ([v11 length])
+  if ([stationEventID length])
   {
-    [v5 addObject:v11];
+    [v5 addObject:stationEventID];
   }
 
-  v12 = [(MPIdentifierSet *)self universalStore];
-  v13 = [v12 socialProfileID];
+  universalStore2 = [(MPIdentifierSet *)self universalStore];
+  socialProfileID = [universalStore2 socialProfileID];
 
-  if ([v13 length])
+  if ([socialProfileID length])
   {
-    [v5 addObject:v13];
+    [v5 addObject:socialProfileID];
   }
 
-  v14 = [(MPIdentifierSet *)self personalizedStore];
-  v15 = [v14 personID];
+  personalizedStore = [(MPIdentifierSet *)self personalizedStore];
+  personID = [personalizedStore personID];
 
-  if ([v4 length] && objc_msgSend(v15, "length") && objc_msgSend(v4, "isEqualToString:", v15))
+  if ([dCopy length] && objc_msgSend(personID, "length") && objc_msgSend(dCopy, "isEqualToString:", personID))
   {
-    v16 = [(MPIdentifierSet *)self universalStore];
-    v17 = [v16 universalCloudLibraryID];
+    universalStore3 = [(MPIdentifierSet *)self universalStore];
+    universalCloudLibraryID = [universalStore3 universalCloudLibraryID];
 
-    if ([v17 length])
+    if ([universalCloudLibraryID length])
     {
-      [v5 addObject:v17];
+      [v5 addObject:universalCloudLibraryID];
     }
   }
 
-  v47 = v4;
-  v18 = [(MPIdentifierSet *)self universalStore];
-  v19 = [v18 subscriptionAdamID];
+  v47 = dCopy;
+  universalStore4 = [(MPIdentifierSet *)self universalStore];
+  subscriptionAdamID = [universalStore4 subscriptionAdamID];
 
-  if (v19)
+  if (subscriptionAdamID)
   {
     v20 = &v48 + 1;
-    quot = v19;
+    quot = subscriptionAdamID;
     do
     {
       v22 = lldiv(quot, 10);
@@ -1118,7 +1118,7 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
     }
 
     while (v22.quot);
-    if (v19 < 0)
+    if (subscriptionAdamID < 0)
     {
       *(v20 - 2) = 45;
       v24 = (v20 - 2);
@@ -1128,13 +1128,13 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
     [v5 addObject:v25];
   }
 
-  v26 = [(MPIdentifierSet *)self universalStore];
-  v27 = [v26 adamID];
+  universalStore5 = [(MPIdentifierSet *)self universalStore];
+  adamID = [universalStore5 adamID];
 
-  if (v27 && v27 != v19)
+  if (adamID && adamID != subscriptionAdamID)
   {
     v28 = &v48 + 1;
-    v29 = v27;
+    v29 = adamID;
     do
     {
       v30 = lldiv(v29, 10);
@@ -1155,7 +1155,7 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
     }
 
     while (v30.quot);
-    if (v27 < 0)
+    if (adamID < 0)
     {
       *(v28 - 2) = 45;
       v32 = (v28 - 2);
@@ -1165,13 +1165,13 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
     [v5 addObject:v33];
   }
 
-  v34 = [(MPIdentifierSet *)self universalStore];
-  v35 = [v34 purchasedAdamID];
+  universalStore6 = [(MPIdentifierSet *)self universalStore];
+  purchasedAdamID = [universalStore6 purchasedAdamID];
 
-  if (v35 && v35 != v27 && v35 != v19)
+  if (purchasedAdamID && purchasedAdamID != adamID && purchasedAdamID != subscriptionAdamID)
   {
     v36 = &v48 + 1;
-    v37 = v35;
+    v37 = purchasedAdamID;
     do
     {
       v38 = lldiv(v37, 10);
@@ -1192,7 +1192,7 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
     }
 
     while (v38.quot);
-    if (v35 < 0)
+    if (purchasedAdamID < 0)
     {
       *(v36 - 2) = 45;
       v40 = (v36 - 2);
@@ -1202,29 +1202,29 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
     [v5 addObject:v41];
   }
 
-  v42 = [(MPIdentifierSet *)self opaqueID];
-  if ([v42 length])
+  opaqueID = [(MPIdentifierSet *)self opaqueID];
+  if ([opaqueID length])
   {
-    [v5 addObject:v42];
+    [v5 addObject:opaqueID];
   }
 
-  v43 = [v5 array];
-  v44 = [v43 copy];
+  array = [v5 array];
+  v44 = [array copy];
 
   return v44;
 }
 
-- (id)preferredStoreStringIdentifierForPersonID:(id)a3
+- (id)preferredStoreStringIdentifierForPersonID:(id)d
 {
-  v3 = [(MPIdentifierSet *)self prioritizedStoreStringIdentifiersForPersonID:a3];
-  v4 = [v3 firstObject];
+  v3 = [(MPIdentifierSet *)self prioritizedStoreStringIdentifiersForPersonID:d];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)identifierDescriptions:(BOOL)a3
+- (id)identifierDescriptions:(BOOL)descriptions
 {
-  v3 = a3;
+  descriptionsCopy = descriptions;
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:50];
   v6 = v5;
   if (self->_placeholder)
@@ -1441,15 +1441,15 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
   {
     v42 = MEMORY[0x1E696AEC0];
     modelKind = self->_modelKind;
-    if (v3)
+    if (descriptionsCopy)
     {
       modelKind = [modelKind humanDescription];
     }
 
-    v44 = [v42 stringWithFormat:@"kind=%@", modelKind];
-    [v6 addObject:v44];
+    modelKind = [v42 stringWithFormat:@"kind=%@", modelKind];
+    [v6 addObject:modelKind];
 
-    if (v3)
+    if (descriptionsCopy)
     {
     }
   }
@@ -1490,60 +1490,60 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
   return v8;
 }
 
-- (void)setStoreRecommendationID:(id)a3
+- (void)setStoreRecommendationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MPIdentifierSet *)self _setDefaultPersonIDIfNeeded];
-  v5 = [v4 copy];
+  v5 = [dCopy copy];
 
   recommendationID = self->_recommendationID;
   self->_recommendationID = v5;
 }
 
-- (void)setStoreCloudArtistID:(id)a3
+- (void)setStoreCloudArtistID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MPIdentifierSet *)self _setDefaultPersonIDIfNeeded];
-  v5 = [v4 copy];
+  v5 = [dCopy copy];
 
   cloudArtistID = self->_cloudArtistID;
   self->_cloudArtistID = v5;
 }
 
-- (void)setStoreCloudAlbumID:(id)a3
+- (void)setStoreCloudAlbumID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MPIdentifierSet *)self _setDefaultPersonIDIfNeeded];
-  v5 = [v4 copy];
+  v5 = [dCopy copy];
 
   cloudAlbumID = self->_cloudAlbumID;
   self->_cloudAlbumID = v5;
 }
 
-- (void)setCloudUniversalLibraryID:(id)a3
+- (void)setCloudUniversalLibraryID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   universalCloudLibraryID = self->_universalCloudLibraryID;
   self->_universalCloudLibraryID = v4;
 }
 
-- (void)setFormerStoreAdamIDs:(id)a3
+- (void)setFormerStoreAdamIDs:(id)ds
 {
-  v4 = [a3 copy];
+  v4 = [ds copy];
   formerAdamIDs = self->_formerAdamIDs;
   self->_formerAdamIDs = v4;
 }
 
-- (void)setRadioStationHash:(id)a3
+- (void)setRadioStationHash:(id)hash
 {
-  v4 = [a3 copy];
+  v4 = [hash copy];
   stationHash = self->_stationHash;
   self->_stationHash = v4;
 }
 
-- (void)setRadioStationStringID:(id)a3
+- (void)setRadioStationStringID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   stationStringID = self->_stationStringID;
   self->_stationStringID = v4;
 }
@@ -1561,9 +1561,9 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
   self->_stationEventID = 0;
 }
 
-- (void)setModelKind:(id)a3
+- (void)setModelKind:(id)kind
 {
-  v4 = [a3 copy];
+  v4 = [kind copy];
   modelKind = self->_modelKind;
   self->_modelKind = v4;
 }
@@ -1613,26 +1613,26 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
   self->_recommendationID = 0;
 }
 
-- (void)setPersonalStoreIdentifiersWithPersonID:(id)a3 block:(id)a4
+- (void)setPersonalStoreIdentifiersWithPersonID:(id)d block:(id)block
 {
-  v14 = a3;
-  v7 = a4;
-  if (![(NSString *)v14 length])
+  dCopy = d;
+  blockCopy = block;
+  if (![(NSString *)dCopy length])
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MPIdentifierSet.m" lineNumber:867 description:{@"Invalid parameter not satisfying: %@", @"personID.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPIdentifierSet.m" lineNumber:867 description:{@"Invalid parameter not satisfying: %@", @"personID.length > 0"}];
   }
 
   personID = self->_personID;
-  v9 = v14;
-  if (personID != v14)
+  v9 = dCopy;
+  if (personID != dCopy)
   {
-    v10 = [(NSString *)personID isEqual:v14];
-    v9 = v14;
+    v10 = [(NSString *)personID isEqual:dCopy];
+    v9 = dCopy;
     if ((v10 & 1) == 0)
     {
       [(MPIdentifierSet *)self clearPersonalStoreIdentifiers];
-      v9 = v14;
+      v9 = dCopy;
     }
   }
 
@@ -1640,7 +1640,7 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
   v12 = self->_personID;
   self->_personID = v11;
 
-  v7[2](v7, self);
+  blockCopy[2](blockCopy, self);
 }
 
 - (void)clearLibraryIdentifiers
@@ -1653,26 +1653,26 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
   self->_syncID = 0;
 }
 
-- (void)setLibraryIdentifiersWithDatabaseID:(id)a3 block:(id)a4
+- (void)setLibraryIdentifiersWithDatabaseID:(id)d block:(id)block
 {
-  v14 = a3;
-  v7 = a4;
-  if (![(NSString *)v14 length])
+  dCopy = d;
+  blockCopy = block;
+  if (![(NSString *)dCopy length])
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MPIdentifierSet.m" lineNumber:851 description:{@"Invalid parameter not satisfying: %@", @"databaseID.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPIdentifierSet.m" lineNumber:851 description:{@"Invalid parameter not satisfying: %@", @"databaseID.length > 0"}];
   }
 
   databaseID = self->_databaseID;
-  v9 = v14;
-  if (databaseID != v14)
+  v9 = dCopy;
+  if (databaseID != dCopy)
   {
-    v10 = [(NSString *)databaseID isEqual:v14];
-    v9 = v14;
+    v10 = [(NSString *)databaseID isEqual:dCopy];
+    v9 = dCopy;
     if ((v10 & 1) == 0)
     {
       [(MPIdentifierSet *)self clearLibraryIdentifiers];
-      v9 = v14;
+      v9 = dCopy;
     }
   }
 
@@ -1680,17 +1680,17 @@ void __60__MPIdentifierSet__copyWithSource_asPlaylistEntryOccurence___block_invo
   v12 = self->_databaseID;
   self->_databaseID = v11;
 
-  v7[2](v7, self);
+  blockCopy[2](blockCopy, self);
 }
 
-- (id)unionSet:(id)a3 block:(id)a4
+- (id)unionSet:(id)set block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  setCopy = set;
+  blockCopy = block;
+  if (!setCopy)
   {
 LABEL_10:
-    v17 = self;
+    selfCopy = self;
     goto LABEL_11;
   }
 
@@ -1708,24 +1708,24 @@ LABEL_10:
     {
       v11 = +[MPIdentifierSet emptyIdentifierSet];
       v12 = v11;
-      if (v11 == v6)
+      if (v11 == setCopy)
       {
       }
 
       else
       {
-        v13 = [v6 isEqual:v11];
+        v13 = [setCopy isEqual:v11];
 
         if (!v13)
         {
-          v14 = [v6 sources];
-          v15 = [&unk_1F150ABD0 arrayByAddingObjectsFromArray:v14];
+          sources = [setCopy sources];
+          v15 = [&unk_1F150ABD0 arrayByAddingObjectsFromArray:sources];
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
           v19[2] = __34__MPIdentifierSet_unionSet_block___block_invoke;
           v19[3] = &unk_1E767FA50;
-          v20 = v6;
-          v21 = v7;
+          v20 = setCopy;
+          v21 = blockCopy;
           v16 = [(MPIdentifierSet *)self _copyWithSources:v15 block:v19];
 
           goto LABEL_12;
@@ -1736,9 +1736,9 @@ LABEL_10:
     }
   }
 
-  v17 = v6;
+  selfCopy = setCopy;
 LABEL_11:
-  v16 = v17;
+  v16 = selfCopy;
 LABEL_12:
 
   return v16;
@@ -2094,12 +2094,12 @@ void __34__MPIdentifierSet_unionSet_block___block_invoke_5(uint64_t a1, void *a2
   }
 }
 
-- (BOOL)hasCommonIdentifierWithIdentifierSet:(id)a3
+- (BOOL)hasCommonIdentifierWithIdentifierSet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
+  setCopy = set;
+  v5 = setCopy;
   persistentID = self->_persistentID;
-  if (persistentID && ([v4 library], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "persistentID"), v7, persistentID == v8)
+  if (persistentID && ([setCopy library], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "persistentID"), v7, persistentID == v8)
     || (adamID = self->_adamID) != 0 && ([v5 universalStore], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "adamID"), v10, adamID == v11)
     || (purchasedAdamID = self->_purchasedAdamID) != 0 && ([v5 universalStore], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "purchasedAdamID"), v13, purchasedAdamID == v14)
     || (subscriptionAdamID = self->_subscriptionAdamID) != 0 && ([v5 universalStore], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "subscriptionAdamID"), v16, subscriptionAdamID == v17)
@@ -2139,60 +2139,60 @@ void __34__MPIdentifierSet_unionSet_block___block_invoke_5(uint64_t a1, void *a2
   return musicKit_possibleLibraryPersistentID;
 }
 
-- (BOOL)intersectsSet:(id)a3
+- (BOOL)intersectsSet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  setCopy = set;
+  v5 = setCopy;
+  if (self != setCopy)
   {
     if (!self->_modelKind)
     {
       goto LABEL_15;
     }
 
-    v6 = [(MPIdentifierSet *)v4 modelKind];
+    modelKind = [(MPIdentifierSet *)setCopy modelKind];
 
-    if (!v6)
+    if (!modelKind)
     {
       goto LABEL_15;
     }
 
-    v7 = [(MPModelKind *)self->_modelKind modelClass];
-    if (v7 == objc_opt_class())
+    modelClass = [(MPModelKind *)self->_modelKind modelClass];
+    if (modelClass == objc_opt_class())
     {
       goto LABEL_15;
     }
 
-    v8 = [(MPModelKind *)self->_modelKind modelClass];
-    if (v8 == objc_opt_class())
+    modelClass2 = [(MPModelKind *)self->_modelKind modelClass];
+    if (modelClass2 == objc_opt_class())
     {
       goto LABEL_15;
     }
 
-    v9 = [(MPModelKind *)self->_modelKind modelClass];
-    if (v9 == objc_opt_class())
+    modelClass3 = [(MPModelKind *)self->_modelKind modelClass];
+    if (modelClass3 == objc_opt_class())
     {
       goto LABEL_15;
     }
 
-    v10 = [(MPIdentifierSet *)v5 modelKind];
-    v11 = [v10 modelClass];
-    if (v11 != objc_opt_class())
+    modelKind2 = [(MPIdentifierSet *)v5 modelKind];
+    modelClass4 = [modelKind2 modelClass];
+    if (modelClass4 != objc_opt_class())
     {
-      v12 = [(MPIdentifierSet *)v5 modelKind];
-      v13 = [v12 modelClass];
-      if (v13 != objc_opt_class())
+      modelKind3 = [(MPIdentifierSet *)v5 modelKind];
+      modelClass5 = [modelKind3 modelClass];
+      if (modelClass5 != objc_opt_class())
       {
-        v14 = [(MPIdentifierSet *)v5 modelKind];
-        v15 = [v14 modelClass];
+        modelKind4 = [(MPIdentifierSet *)v5 modelKind];
+        modelClass6 = [modelKind4 modelClass];
         v16 = objc_opt_class();
 
-        if (v15 != v16)
+        if (modelClass6 != v16)
         {
-          v17 = [(MPModelKind *)self->_modelKind identityKind];
-          v18 = [(MPIdentifierSet *)v5 modelKind];
-          v19 = [v18 identityKind];
-          v20 = [v17 isEqual:v19];
+          identityKind = [(MPModelKind *)self->_modelKind identityKind];
+          modelKind5 = [(MPIdentifierSet *)v5 modelKind];
+          identityKind2 = [modelKind5 identityKind];
+          v20 = [identityKind isEqual:identityKind2];
 
           if ((v20 & 1) == 0)
           {
@@ -2201,17 +2201,17 @@ void __34__MPIdentifierSet_unionSet_block___block_invoke_5(uint64_t a1, void *a2
         }
 
 LABEL_15:
-        v21 = [(MPIdentifierSet *)self containerUniqueID];
-        if (v21)
+        containerUniqueID = [(MPIdentifierSet *)self containerUniqueID];
+        if (containerUniqueID)
         {
-          v22 = v21;
-          v23 = [(MPIdentifierSet *)v5 containerUniqueID];
+          v22 = containerUniqueID;
+          containerUniqueID2 = [(MPIdentifierSet *)v5 containerUniqueID];
 
-          if (v23)
+          if (containerUniqueID2)
           {
-            v24 = [(MPIdentifierSet *)self containerUniqueID];
-            v25 = [(MPIdentifierSet *)v5 containerUniqueID];
-            v26 = [v24 isEqualToString:v25];
+            containerUniqueID3 = [(MPIdentifierSet *)self containerUniqueID];
+            containerUniqueID4 = [(MPIdentifierSet *)v5 containerUniqueID];
+            v26 = [containerUniqueID3 isEqualToString:containerUniqueID4];
 
             if (!v26)
             {
@@ -2222,206 +2222,206 @@ LABEL_27:
           }
         }
 
-        v27 = [(MPIdentifierSet *)self handoffCorrelationID];
-        if (v27)
+        handoffCorrelationID = [(MPIdentifierSet *)self handoffCorrelationID];
+        if (handoffCorrelationID)
         {
-          v28 = v27;
-          v29 = [(MPIdentifierSet *)v5 handoffCorrelationID];
+          v28 = handoffCorrelationID;
+          handoffCorrelationID2 = [(MPIdentifierSet *)v5 handoffCorrelationID];
 
-          if (v29)
+          if (handoffCorrelationID2)
           {
-            v30 = [(MPIdentifierSet *)self handoffCorrelationID];
-            v31 = [(MPIdentifierSet *)v5 handoffCorrelationID];
+            handoffCorrelationID3 = [(MPIdentifierSet *)self handoffCorrelationID];
+            handoffCorrelationID4 = [(MPIdentifierSet *)v5 handoffCorrelationID];
 LABEL_40:
-            v48 = v31;
-            LOBYTE(self) = [v30 isEqualToString:v31];
+            v48 = handoffCorrelationID4;
+            LOBYTE(self) = [handoffCorrelationID3 isEqualToString:handoffCorrelationID4];
 LABEL_41:
 
             goto LABEL_42;
           }
         }
 
-        v32 = [(MPIdentifierSet *)self contentItemID];
-        if (v32)
+        contentItemID = [(MPIdentifierSet *)self contentItemID];
+        if (contentItemID)
         {
-          v33 = v32;
-          v34 = [(MPIdentifierSet *)v5 contentItemID];
+          v33 = contentItemID;
+          contentItemID2 = [(MPIdentifierSet *)v5 contentItemID];
 
-          if (v34)
+          if (contentItemID2)
           {
-            v30 = [(MPIdentifierSet *)self contentItemID];
-            v31 = [(MPIdentifierSet *)v5 contentItemID];
+            handoffCorrelationID3 = [(MPIdentifierSet *)self contentItemID];
+            handoffCorrelationID4 = [(MPIdentifierSet *)v5 contentItemID];
             goto LABEL_40;
           }
         }
 
-        v35 = [(MPIdentifierSet *)self lyricsID];
-        if (v35)
+        lyricsID = [(MPIdentifierSet *)self lyricsID];
+        if (lyricsID)
         {
-          v36 = v35;
-          v37 = [(MPIdentifierSet *)v5 lyricsID];
+          v36 = lyricsID;
+          lyricsID2 = [(MPIdentifierSet *)v5 lyricsID];
 
-          if (v37)
+          if (lyricsID2)
           {
-            v30 = [(MPIdentifierSet *)self lyricsID];
-            v31 = [(MPIdentifierSet *)v5 lyricsID];
+            handoffCorrelationID3 = [(MPIdentifierSet *)self lyricsID];
+            handoffCorrelationID4 = [(MPIdentifierSet *)v5 lyricsID];
             goto LABEL_40;
           }
         }
 
-        v38 = [(MPIdentifierSet *)self vendorID];
-        if (v38)
+        vendorID = [(MPIdentifierSet *)self vendorID];
+        if (vendorID)
         {
-          v39 = v38;
-          v40 = [(MPIdentifierSet *)v5 vendorID];
+          v39 = vendorID;
+          vendorID2 = [(MPIdentifierSet *)v5 vendorID];
 
-          if (v40)
+          if (vendorID2)
           {
-            v30 = [(MPIdentifierSet *)self vendorID];
-            v31 = [(MPIdentifierSet *)v5 vendorID];
+            handoffCorrelationID3 = [(MPIdentifierSet *)self vendorID];
+            handoffCorrelationID4 = [(MPIdentifierSet *)v5 vendorID];
             goto LABEL_40;
           }
         }
 
         if ([(MPIdentifierSet *)self musicKit_possibleLibraryPersistentID]&& [(MPIdentifierSet *)v5 musicKit_possibleLibraryPersistentID])
         {
-          v41 = [(MPIdentifierSet *)self musicKit_possibleLibraryPersistentID];
-          LOBYTE(self) = v41 == [(MPIdentifierSet *)v5 musicKit_possibleLibraryPersistentID];
+          musicKit_possibleLibraryPersistentID = [(MPIdentifierSet *)self musicKit_possibleLibraryPersistentID];
+          LOBYTE(self) = musicKit_possibleLibraryPersistentID == [(MPIdentifierSet *)v5 musicKit_possibleLibraryPersistentID];
           goto LABEL_42;
         }
 
-        v42 = [(MPIdentifierSet *)self opaqueID];
-        if (v42)
+        opaqueID = [(MPIdentifierSet *)self opaqueID];
+        if (opaqueID)
         {
-          v43 = v42;
-          v44 = [(MPIdentifierSet *)v5 opaqueID];
+          v43 = opaqueID;
+          opaqueID2 = [(MPIdentifierSet *)v5 opaqueID];
 
-          if (v44)
+          if (opaqueID2)
           {
-            v30 = [(MPIdentifierSet *)self opaqueID];
-            v31 = [(MPIdentifierSet *)v5 opaqueID];
+            handoffCorrelationID3 = [(MPIdentifierSet *)self opaqueID];
+            handoffCorrelationID4 = [(MPIdentifierSet *)v5 opaqueID];
             goto LABEL_40;
           }
         }
 
-        v45 = [(MPIdentifierSet *)self versionHash];
-        if (v45)
+        versionHash = [(MPIdentifierSet *)self versionHash];
+        if (versionHash)
         {
-          v46 = v45;
-          v47 = [(MPIdentifierSet *)v5 versionHash];
+          v46 = versionHash;
+          versionHash2 = [(MPIdentifierSet *)v5 versionHash];
 
-          if (v47)
+          if (versionHash2)
           {
-            v30 = [(MPIdentifierSet *)self versionHash];
-            v31 = [(MPIdentifierSet *)v5 versionHash];
+            handoffCorrelationID3 = [(MPIdentifierSet *)self versionHash];
+            handoffCorrelationID4 = [(MPIdentifierSet *)v5 versionHash];
             goto LABEL_40;
           }
         }
 
-        v30 = [(MPIdentifierSet *)self library];
-        v50 = [(MPIdentifierSet *)v5 library];
-        v48 = v50;
-        if (v30)
+        handoffCorrelationID3 = [(MPIdentifierSet *)self library];
+        library = [(MPIdentifierSet *)v5 library];
+        v48 = library;
+        if (handoffCorrelationID3)
         {
-          if (v50)
+          if (library)
           {
-            v51 = [v30 databaseID];
-            v52 = [v48 databaseID];
-            v53 = [v51 isEqual:v52];
+            databaseID = [handoffCorrelationID3 databaseID];
+            databaseID2 = [v48 databaseID];
+            v53 = [databaseID isEqual:databaseID2];
 
             if (v53)
             {
-              if ([v30 persistentID] && objc_msgSend(v48, "persistentID"))
+              if ([handoffCorrelationID3 persistentID] && objc_msgSend(v48, "persistentID"))
               {
-                self = [v30 persistentID];
-                v54 = [v48 persistentID];
+                self = [handoffCorrelationID3 persistentID];
+                persistentID = [v48 persistentID];
 LABEL_55:
-                LOBYTE(self) = self == v54;
+                LOBYTE(self) = self == persistentID;
                 goto LABEL_41;
               }
 
-              if ([v30 containedPersistentID] && objc_msgSend(v48, "containedPersistentID"))
+              if ([handoffCorrelationID3 containedPersistentID] && objc_msgSend(v48, "containedPersistentID"))
               {
-                self = [v30 containedPersistentID];
-                v54 = [v48 containedPersistentID];
+                self = [handoffCorrelationID3 containedPersistentID];
+                persistentID = [v48 containedPersistentID];
                 goto LABEL_55;
               }
 
-              if ([v30 syncID] && objc_msgSend(v48, "syncID"))
+              if ([handoffCorrelationID3 syncID] && objc_msgSend(v48, "syncID"))
               {
-                self = [v30 syncID];
-                v54 = [v48 syncID];
+                self = [handoffCorrelationID3 syncID];
+                persistentID = [v48 syncID];
                 goto LABEL_55;
               }
             }
           }
         }
 
-        v55 = [(MPIdentifierSet *)self personalizedStore];
-        v56 = [(MPIdentifierSet *)v5 personalizedStore];
-        v57 = v56;
-        if (v55)
+        personalizedStore = [(MPIdentifierSet *)self personalizedStore];
+        personalizedStore2 = [(MPIdentifierSet *)v5 personalizedStore];
+        v57 = personalizedStore2;
+        if (personalizedStore)
         {
-          if (v56)
+          if (personalizedStore2)
           {
-            v58 = [v55 personID];
-            v59 = [v57 personID];
-            v60 = [v58 isEqual:v59];
+            personID = [personalizedStore personID];
+            personID2 = [v57 personID];
+            v60 = [personID isEqual:personID2];
 
             if (v60)
             {
-              if ([v55 cloudID] && objc_msgSend(v57, "cloudID"))
+              if ([personalizedStore cloudID] && objc_msgSend(v57, "cloudID"))
               {
-                self = [v55 cloudID];
+                self = [personalizedStore cloudID];
                 LOBYTE(self) = self == [v57 cloudID];
 LABEL_137:
 
                 goto LABEL_41;
               }
 
-              v61 = [v55 cloudAlbumID];
-              if (v61)
+              cloudAlbumID = [personalizedStore cloudAlbumID];
+              if (cloudAlbumID)
               {
-                v62 = v61;
-                v63 = [v57 cloudAlbumID];
+                v62 = cloudAlbumID;
+                cloudAlbumID2 = [v57 cloudAlbumID];
 
-                if (v63)
+                if (cloudAlbumID2)
                 {
-                  v64 = [v55 cloudAlbumID];
-                  v65 = [v57 cloudAlbumID];
+                  cloudAlbumID3 = [personalizedStore cloudAlbumID];
+                  cloudAlbumID4 = [v57 cloudAlbumID];
 LABEL_71:
-                  v72 = v65;
-                  LOBYTE(self) = [v64 isEqualToString:v65];
+                  v72 = cloudAlbumID4;
+                  LOBYTE(self) = [cloudAlbumID3 isEqualToString:cloudAlbumID4];
 LABEL_136:
 
                   goto LABEL_137;
                 }
               }
 
-              v66 = [v55 recommendationID];
-              if (v66)
+              recommendationID = [personalizedStore recommendationID];
+              if (recommendationID)
               {
-                v67 = v66;
-                v68 = [v57 recommendationID];
+                v67 = recommendationID;
+                recommendationID2 = [v57 recommendationID];
 
-                if (v68)
+                if (recommendationID2)
                 {
-                  v64 = [v55 recommendationID];
-                  v65 = [v57 recommendationID];
+                  cloudAlbumID3 = [personalizedStore recommendationID];
+                  cloudAlbumID4 = [v57 recommendationID];
                   goto LABEL_71;
                 }
               }
 
-              v69 = [v55 cloudArtistID];
-              if (v69)
+              cloudArtistID = [personalizedStore cloudArtistID];
+              if (cloudArtistID)
               {
-                v70 = v69;
-                v71 = [v57 cloudArtistID];
+                v70 = cloudArtistID;
+                cloudArtistID2 = [v57 cloudArtistID];
 
-                if (v71)
+                if (cloudArtistID2)
                 {
-                  v64 = [v55 cloudArtistID];
-                  v65 = [v57 cloudArtistID];
+                  cloudAlbumID3 = [personalizedStore cloudArtistID];
+                  cloudAlbumID4 = [v57 cloudArtistID];
                   goto LABEL_71;
                 }
               }
@@ -2429,136 +2429,136 @@ LABEL_136:
           }
         }
 
-        v64 = [(MPIdentifierSet *)self universalStore];
-        v73 = [(MPIdentifierSet *)v5 universalStore];
-        v72 = v73;
-        if (v64 && v73)
+        cloudAlbumID3 = [(MPIdentifierSet *)self universalStore];
+        universalStore = [(MPIdentifierSet *)v5 universalStore];
+        v72 = universalStore;
+        if (cloudAlbumID3 && universalStore)
         {
-          v74 = [v64 globalPlaylistID];
-          if (v74)
+          globalPlaylistID = [cloudAlbumID3 globalPlaylistID];
+          if (globalPlaylistID)
           {
-            v75 = v74;
-            v76 = [v72 globalPlaylistID];
+            v75 = globalPlaylistID;
+            globalPlaylistID2 = [v72 globalPlaylistID];
 
-            if (v76)
+            if (globalPlaylistID2)
             {
-              v77 = [v64 globalPlaylistID];
-              v78 = [v72 globalPlaylistID];
+              globalPlaylistID3 = [cloudAlbumID3 globalPlaylistID];
+              globalPlaylistID4 = [v72 globalPlaylistID];
 LABEL_89:
-              v91 = v78;
-              LOBYTE(self) = [v77 isEqualToString:v78];
+              v91 = globalPlaylistID4;
+              LOBYTE(self) = [globalPlaylistID3 isEqualToString:globalPlaylistID4];
 LABEL_135:
 
               goto LABEL_136;
             }
           }
 
-          v79 = [v64 universalCloudLibraryID];
-          if (v79)
+          universalCloudLibraryID = [cloudAlbumID3 universalCloudLibraryID];
+          if (universalCloudLibraryID)
           {
-            v80 = v79;
-            v81 = [v72 universalCloudLibraryID];
+            v80 = universalCloudLibraryID;
+            universalCloudLibraryID2 = [v72 universalCloudLibraryID];
 
-            if (v81)
+            if (universalCloudLibraryID2)
             {
-              v77 = [v64 universalCloudLibraryID];
-              v78 = [v72 universalCloudLibraryID];
+              globalPlaylistID3 = [cloudAlbumID3 universalCloudLibraryID];
+              globalPlaylistID4 = [v72 universalCloudLibraryID];
               goto LABEL_89;
             }
           }
 
-          v82 = [v64 socialProfileID];
-          if (v82)
+          socialProfileID = [cloudAlbumID3 socialProfileID];
+          if (socialProfileID)
           {
-            v83 = v82;
-            v84 = [v72 socialProfileID];
+            v83 = socialProfileID;
+            socialProfileID2 = [v72 socialProfileID];
 
-            if (v84)
+            if (socialProfileID2)
             {
-              v77 = [v64 socialProfileID];
-              v78 = [v72 socialProfileID];
+              globalPlaylistID3 = [cloudAlbumID3 socialProfileID];
+              globalPlaylistID4 = [v72 socialProfileID];
               goto LABEL_89;
             }
           }
 
-          v85 = [v64 informalMediaClipID];
-          if (v85)
+          informalMediaClipID = [cloudAlbumID3 informalMediaClipID];
+          if (informalMediaClipID)
           {
-            v86 = v85;
-            v87 = [v72 informalMediaClipID];
+            v86 = informalMediaClipID;
+            informalMediaClipID2 = [v72 informalMediaClipID];
 
-            if (v87)
+            if (informalMediaClipID2)
             {
-              v77 = [v64 informalMediaClipID];
-              v78 = [v72 informalMediaClipID];
+              globalPlaylistID3 = [cloudAlbumID3 informalMediaClipID];
+              globalPlaylistID4 = [v72 informalMediaClipID];
               goto LABEL_89;
             }
           }
 
-          v88 = [v64 informalStaticAssetID];
-          if (v88)
+          informalStaticAssetID = [cloudAlbumID3 informalStaticAssetID];
+          if (informalStaticAssetID)
           {
-            v89 = v88;
-            v90 = [v72 informalStaticAssetID];
+            v89 = informalStaticAssetID;
+            informalStaticAssetID2 = [v72 informalStaticAssetID];
 
-            if (v90)
+            if (informalStaticAssetID2)
             {
-              v77 = [v64 informalStaticAssetID];
-              v78 = [v72 informalStaticAssetID];
+              globalPlaylistID3 = [cloudAlbumID3 informalStaticAssetID];
+              globalPlaylistID4 = [v72 informalStaticAssetID];
               goto LABEL_89;
             }
           }
 
           v126 = v57;
           v92 = MEMORY[0x1E695DFA8];
-          v93 = [v64 formerAdamIDs];
-          v77 = [v92 setWithCapacity:{objc_msgSend(v93, "count") + 6}];
+          formerAdamIDs = [cloudAlbumID3 formerAdamIDs];
+          globalPlaylistID3 = [v92 setWithCapacity:{objc_msgSend(formerAdamIDs, "count") + 6}];
 
-          v94 = [v64 formerAdamIDs];
-          [v77 addObjectsFromArray:v94];
+          formerAdamIDs2 = [cloudAlbumID3 formerAdamIDs];
+          [globalPlaylistID3 addObjectsFromArray:formerAdamIDs2];
 
-          if ([v64 subscriptionAdamID])
+          if ([cloudAlbumID3 subscriptionAdamID])
           {
-            v95 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v64, "subscriptionAdamID")}];
-            [v77 addObject:v95];
+            v95 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(cloudAlbumID3, "subscriptionAdamID")}];
+            [globalPlaylistID3 addObject:v95];
           }
 
-          if ([v64 purchasedAdamID])
+          if ([cloudAlbumID3 purchasedAdamID])
           {
-            v96 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v64, "purchasedAdamID")}];
-            [v77 addObject:v96];
+            v96 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(cloudAlbumID3, "purchasedAdamID")}];
+            [globalPlaylistID3 addObject:v96];
           }
 
-          if ([v64 adamID])
+          if ([cloudAlbumID3 adamID])
           {
-            v97 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v64, "adamID")}];
-            [v77 addObject:v97];
+            v97 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(cloudAlbumID3, "adamID")}];
+            [globalPlaylistID3 addObject:v97];
           }
 
-          if ([v64 reportingAdamID])
+          if ([cloudAlbumID3 reportingAdamID])
           {
-            v98 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v64, "reportingAdamID")}];
-            [v77 addObject:v98];
+            v98 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(cloudAlbumID3, "reportingAdamID")}];
+            [globalPlaylistID3 addObject:v98];
           }
 
-          if ([v64 assetAdamID])
+          if ([cloudAlbumID3 assetAdamID])
           {
-            v99 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v64, "assetAdamID")}];
-            [v77 addObject:v99];
+            v99 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(cloudAlbumID3, "assetAdamID")}];
+            [globalPlaylistID3 addObject:v99];
           }
 
-          if ([v64 lyricsAdamID])
+          if ([cloudAlbumID3 lyricsAdamID])
           {
-            v100 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v64, "lyricsAdamID")}];
-            [v77 addObject:v100];
+            v100 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(cloudAlbumID3, "lyricsAdamID")}];
+            [globalPlaylistID3 addObject:v100];
           }
 
           v101 = MEMORY[0x1E695DFA8];
-          v102 = [v72 formerAdamIDs];
-          v91 = [v101 setWithCapacity:{objc_msgSend(v102, "count") + 6}];
+          formerAdamIDs3 = [v72 formerAdamIDs];
+          v91 = [v101 setWithCapacity:{objc_msgSend(formerAdamIDs3, "count") + 6}];
 
-          v103 = [v72 formerAdamIDs];
-          [v91 addObjectsFromArray:v103];
+          formerAdamIDs4 = [v72 formerAdamIDs];
+          [v91 addObjectsFromArray:formerAdamIDs4];
 
           if ([v72 subscriptionAdamID])
           {
@@ -2597,9 +2597,9 @@ LABEL_135:
             [v91 addObject:v109];
           }
 
-          if ([v77 count] && objc_msgSend(v91, "count"))
+          if ([globalPlaylistID3 count] && objc_msgSend(v91, "count"))
           {
-            LOBYTE(self) = [v77 intersectsSet:v91];
+            LOBYTE(self) = [globalPlaylistID3 intersectsSet:v91];
 LABEL_134:
             v48 = v125;
             goto LABEL_135;
@@ -2608,50 +2608,50 @@ LABEL_134:
           v48 = v125;
         }
 
-        v77 = [(MPIdentifierSet *)self radio];
-        v110 = [(MPIdentifierSet *)v5 radio];
-        v91 = v110;
+        globalPlaylistID3 = [(MPIdentifierSet *)self radio];
+        radio = [(MPIdentifierSet *)v5 radio];
+        v91 = radio;
         LOBYTE(self) = 0;
-        if (!v77 || !v110)
+        if (!globalPlaylistID3 || !radio)
         {
           goto LABEL_135;
         }
 
         v125 = v48;
         v127 = v57;
-        v111 = [v77 stationStringID];
-        if (v111 && (v112 = v111, [v91 stationStringID], v113 = objc_claimAutoreleasedReturnValue(), v113, v112, v113))
+        stationStringID = [globalPlaylistID3 stationStringID];
+        if (stationStringID && (v112 = stationStringID, [v91 stationStringID], v113 = objc_claimAutoreleasedReturnValue(), v113, v112, v113))
         {
-          v114 = [v77 stationStringID];
-          v115 = [v91 stationStringID];
-          LOBYTE(self) = [v114 isEqualToString:v115];
+          stationStringID2 = [globalPlaylistID3 stationStringID];
+          stationStringID3 = [v91 stationStringID];
+          LOBYTE(self) = [stationStringID2 isEqualToString:stationStringID3];
         }
 
         else
         {
-          v116 = [v77 stationHash];
-          if (v116 && (v117 = v116, [v91 stationHash], v118 = objc_claimAutoreleasedReturnValue(), v118, v117, v118))
+          stationHash = [globalPlaylistID3 stationHash];
+          if (stationHash && (v117 = stationHash, [v91 stationHash], v118 = objc_claimAutoreleasedReturnValue(), v118, v117, v118))
           {
-            v119 = [v77 stationHash];
-            v120 = [v91 stationHash];
-            LOBYTE(self) = [v119 isEqualToString:v120];
+            stationHash2 = [globalPlaylistID3 stationHash];
+            stationHash3 = [v91 stationHash];
+            LOBYTE(self) = [stationHash2 isEqualToString:stationHash3];
           }
 
           else
           {
-            if (![v77 stationID] || !objc_msgSend(v91, "stationID"))
+            if (![globalPlaylistID3 stationID] || !objc_msgSend(v91, "stationID"))
             {
-              self = [v77 stationEventID];
+              self = [globalPlaylistID3 stationEventID];
               v57 = v127;
               if (self)
               {
-                v122 = [v91 stationEventID];
+                stationEventID = [v91 stationEventID];
 
-                if (v122)
+                if (stationEventID)
                 {
-                  v123 = [v77 stationEventID];
-                  v124 = [v91 stationEventID];
-                  LOBYTE(self) = [v123 isEqualToString:v124];
+                  stationEventID2 = [globalPlaylistID3 stationEventID];
+                  stationEventID3 = [v91 stationEventID];
+                  LOBYTE(self) = [stationEventID2 isEqualToString:stationEventID3];
 
                   v57 = v127;
                 }
@@ -2665,8 +2665,8 @@ LABEL_134:
               goto LABEL_134;
             }
 
-            v121 = [v77 stationID];
-            LOBYTE(self) = v121 == [v91 stationID];
+            stationID = [globalPlaylistID3 stationID];
+            LOBYTE(self) = stationID == [v91 stationID];
           }
         }
 
@@ -2687,12 +2687,12 @@ LABEL_42:
 
 - (MPRadioIdentifiers)radio
 {
-  if ([(NSString *)self->_stationStringID length]|| self->_stationID || [(NSString *)self->_stationHash length]|| (v3 = [(NSString *)self->_stationEventID length]) != 0)
+  if ([(NSString *)self->_stationStringID length]|| self->_stationID || [(NSString *)self->_stationHash length]|| (selfCopy = [(NSString *)self->_stationEventID length]) != 0)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (MPPersonalStoreIdentifiers)personalizedStore
@@ -2700,41 +2700,41 @@ LABEL_42:
   v8 = *MEMORY[0x1E69E9840];
   if ([(NSString *)self->_personID length])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  else if (self->_cloudID || [(NSString *)self->_cloudAlbumID length]|| [(NSString *)self->_cloudArtistID length]|| (v3 = [(NSString *)self->_recommendationID length]) != 0)
+  else if (self->_cloudID || [(NSString *)self->_cloudAlbumID length]|| [(NSString *)self->_cloudArtistID length]|| (selfCopy = [(NSString *)self->_recommendationID length]) != 0)
   {
     v4 = os_log_create("com.apple.amp.mediaplayer", "Library");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v6 = 138543362;
-      v7 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_ERROR, "Omitting personalizedStore IDs [missing databaseID] identifierSet=%{public}@", &v6, 0xCu);
     }
 
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (MPIdentifierSet)initWithCoder:(id)a3
+- (MPIdentifierSet)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPIdentifierSetCodingKeyModelKind"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPIdentifierSetCodingKeyModelKind"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"MPIdentifierSetCodingKeySources"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"MPIdentifierSetCodingKeySources"];
 
   v10 = [v9 arrayByAddingObject:@"Decoded"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __33__MPIdentifierSet_initWithCoder___block_invoke;
   v14[3] = &unk_1E7680B28;
-  v15 = v4;
-  v11 = v4;
+  v15 = coderCopy;
+  v11 = coderCopy;
   v12 = [(MPIdentifierSet *)self _initWithSources:v10 modelKind:v5 block:v14];
 
   return v12;
@@ -2876,67 +2876,67 @@ void __33__MPIdentifierSet_initWithCoder___block_invoke_5(uint64_t a1, void *a2)
   [v4 setStationEventID:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modelKind = self->_modelKind;
-  v5 = a3;
-  [v5 encodeObject:modelKind forKey:@"MPIdentifierSetCodingKeyModelKind"];
-  [v5 encodeObject:self->_sources forKey:@"MPIdentifierSetCodingKeySources"];
-  [v5 encodeObject:self->_databaseID forKey:@"MPIdentifierSetCodingKeyDatabaseID"];
-  [v5 encodeInt64:self->_persistentID forKey:@"MPIdentifierSetDeviceLibraryPersistentID"];
-  [v5 encodeInt64:self->_containedPersistentID forKey:@"MPIdentifierSetDeviceLibraryContainedPersistentID"];
-  [v5 encodeInt64:self->_syncID forKey:@"MPIdentifierSetSyncID"];
-  [v5 encodeInt64:self->_musicKit_possibleLibraryPersistentID forKey:@"_MPIdentifierSetCodingKeyMusicKitPossibleLibraryPersistentID"];
-  [v5 encodeObject:self->_personID forKey:@"MPIdentifierSetCodingKeyPersonID"];
-  [v5 encodeInt64:self->_cloudID forKey:@"MPIdentifierSetStoreCloudID"];
-  [v5 encodeObject:self->_cloudAlbumID forKey:@"MPIdentifierSetStoreCloudAlbumID"];
-  [v5 encodeObject:self->_cloudArtistID forKey:@"MPIdentifierSetStoreCloudArtistID"];
-  [v5 encodeObject:self->_recommendationID forKey:@"MPIdentifierSetStoreRecommendationID"];
-  [v5 encodeObject:self->_globalPlaylistID forKey:@"MPIdentifierSetGlobalPlaylistID"];
-  [v5 encodeInt64:self->_adamID forKey:@"MPIdentifierSetStoreAdamID"];
-  [v5 encodeObject:self->_formerAdamIDs forKey:@"MPIdentifierSetFormerStoreAdamIDs"];
-  [v5 encodeObject:self->_universalCloudLibraryID forKey:@"MPIdentifierSetCloudUniversalLibraryID"];
-  [v5 encodeInt64:self->_purchasedAdamID forKey:@"MPIdentifierSetStorePurchasedAdamID"];
-  [v5 encodeInt64:self->_subscriptionAdamID forKey:@"MPIdentifierSetStoreSubscriptionAdamID"];
-  [v5 encodeObject:self->_socialProfileID forKey:@"MPIdentifierSetSocialProfileID"];
-  [v5 encodeObject:self->_informalMediaClipID forKey:@"MPIdentifierSetInformalMediaClipID"];
-  [v5 encodeObject:self->_informalStaticAssetID forKey:@"MPIdentifierSetInformalStaticAssetID"];
-  [v5 encodeInt64:self->_reportingAdamID forKey:@"MPIdentifierSetReportingAdamID"];
-  [v5 encodeInt64:self->_assetAdamID forKey:@"MPIdentifierSetAssetAdamID"];
-  [v5 encodeInt64:self->_lyricsAdamID forKey:@"MPIdentifierSetLyricsAdamID"];
-  [v5 encodeObject:self->_stationStringID forKey:@"MPIdentifierSetRadioStationStringID"];
-  [v5 encodeObject:self->_stationHash forKey:@"MPIdentifierSetRadioStationHash"];
-  [v5 encodeInt64:self->_stationID forKey:@"MPIdentifierSetRadioStationID"];
-  [v5 encodeObject:self->_stationEventID forKey:@"MPIdentifierSetRadioStationEventID"];
-  [v5 encodeObject:self->_containerUniqueID forKey:@"MPIdentifierSetContainerUniqueID"];
-  [v5 encodeObject:self->_handoffCorrelationID forKey:@"MPIdentifierSetHandoffCorrelationID"];
-  [v5 encodeObject:self->_contentItemID forKey:@"MPIdentifierSetContentItemID"];
-  [v5 encodeObject:self->_lyricsID forKey:@"MPIdentifierSetLyricsID"];
-  [v5 encodeBool:self->_shouldExcludeFromShuffle forKey:@"MPIdentifierSetShouldExcludeFromShuffle"];
-  [v5 encodeBool:self->_placeholder forKey:@"MPIdentifierSetIsPlaceholder"];
-  [v5 encodeObject:self->_vendorID forKey:@"MPIdentifierSetVendorID"];
-  [v5 encodeObject:self->_opaqueID forKey:@"MPIdentifierSetOpaqueID"];
-  [v5 encodeObject:self->_versionHash forKey:@"MPIdentifierSetVersionHash"];
+  coderCopy = coder;
+  [coderCopy encodeObject:modelKind forKey:@"MPIdentifierSetCodingKeyModelKind"];
+  [coderCopy encodeObject:self->_sources forKey:@"MPIdentifierSetCodingKeySources"];
+  [coderCopy encodeObject:self->_databaseID forKey:@"MPIdentifierSetCodingKeyDatabaseID"];
+  [coderCopy encodeInt64:self->_persistentID forKey:@"MPIdentifierSetDeviceLibraryPersistentID"];
+  [coderCopy encodeInt64:self->_containedPersistentID forKey:@"MPIdentifierSetDeviceLibraryContainedPersistentID"];
+  [coderCopy encodeInt64:self->_syncID forKey:@"MPIdentifierSetSyncID"];
+  [coderCopy encodeInt64:self->_musicKit_possibleLibraryPersistentID forKey:@"_MPIdentifierSetCodingKeyMusicKitPossibleLibraryPersistentID"];
+  [coderCopy encodeObject:self->_personID forKey:@"MPIdentifierSetCodingKeyPersonID"];
+  [coderCopy encodeInt64:self->_cloudID forKey:@"MPIdentifierSetStoreCloudID"];
+  [coderCopy encodeObject:self->_cloudAlbumID forKey:@"MPIdentifierSetStoreCloudAlbumID"];
+  [coderCopy encodeObject:self->_cloudArtistID forKey:@"MPIdentifierSetStoreCloudArtistID"];
+  [coderCopy encodeObject:self->_recommendationID forKey:@"MPIdentifierSetStoreRecommendationID"];
+  [coderCopy encodeObject:self->_globalPlaylistID forKey:@"MPIdentifierSetGlobalPlaylistID"];
+  [coderCopy encodeInt64:self->_adamID forKey:@"MPIdentifierSetStoreAdamID"];
+  [coderCopy encodeObject:self->_formerAdamIDs forKey:@"MPIdentifierSetFormerStoreAdamIDs"];
+  [coderCopy encodeObject:self->_universalCloudLibraryID forKey:@"MPIdentifierSetCloudUniversalLibraryID"];
+  [coderCopy encodeInt64:self->_purchasedAdamID forKey:@"MPIdentifierSetStorePurchasedAdamID"];
+  [coderCopy encodeInt64:self->_subscriptionAdamID forKey:@"MPIdentifierSetStoreSubscriptionAdamID"];
+  [coderCopy encodeObject:self->_socialProfileID forKey:@"MPIdentifierSetSocialProfileID"];
+  [coderCopy encodeObject:self->_informalMediaClipID forKey:@"MPIdentifierSetInformalMediaClipID"];
+  [coderCopy encodeObject:self->_informalStaticAssetID forKey:@"MPIdentifierSetInformalStaticAssetID"];
+  [coderCopy encodeInt64:self->_reportingAdamID forKey:@"MPIdentifierSetReportingAdamID"];
+  [coderCopy encodeInt64:self->_assetAdamID forKey:@"MPIdentifierSetAssetAdamID"];
+  [coderCopy encodeInt64:self->_lyricsAdamID forKey:@"MPIdentifierSetLyricsAdamID"];
+  [coderCopy encodeObject:self->_stationStringID forKey:@"MPIdentifierSetRadioStationStringID"];
+  [coderCopy encodeObject:self->_stationHash forKey:@"MPIdentifierSetRadioStationHash"];
+  [coderCopy encodeInt64:self->_stationID forKey:@"MPIdentifierSetRadioStationID"];
+  [coderCopy encodeObject:self->_stationEventID forKey:@"MPIdentifierSetRadioStationEventID"];
+  [coderCopy encodeObject:self->_containerUniqueID forKey:@"MPIdentifierSetContainerUniqueID"];
+  [coderCopy encodeObject:self->_handoffCorrelationID forKey:@"MPIdentifierSetHandoffCorrelationID"];
+  [coderCopy encodeObject:self->_contentItemID forKey:@"MPIdentifierSetContentItemID"];
+  [coderCopy encodeObject:self->_lyricsID forKey:@"MPIdentifierSetLyricsID"];
+  [coderCopy encodeBool:self->_shouldExcludeFromShuffle forKey:@"MPIdentifierSetShouldExcludeFromShuffle"];
+  [coderCopy encodeBool:self->_placeholder forKey:@"MPIdentifierSetIsPlaceholder"];
+  [coderCopy encodeObject:self->_vendorID forKey:@"MPIdentifierSetVendorID"];
+  [coderCopy encodeObject:self->_opaqueID forKey:@"MPIdentifierSetOpaqueID"];
+  [coderCopy encodeObject:self->_versionHash forKey:@"MPIdentifierSetVersionHash"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (![(MPIdentifierSet *)v4 isMemberOfClass:objc_opt_class()])
+    if (![(MPIdentifierSet *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       goto LABEL_89;
     }
 
     modelKind = self->_modelKind;
-    v6 = [(MPIdentifierSet *)v4 modelKind];
-    LODWORD(modelKind) = [(MPModelKind *)modelKind isEqual:v6];
+    modelKind = [(MPIdentifierSet *)equalCopy modelKind];
+    LODWORD(modelKind) = [(MPModelKind *)modelKind isEqual:modelKind];
 
     if (!modelKind)
     {
@@ -2944,17 +2944,17 @@ void __33__MPIdentifierSet_initWithCoder___block_invoke_5(uint64_t a1, void *a2)
     }
 
     databaseID = self->_databaseID;
-    v8 = [(MPIdentifierSet *)v4 databaseID];
-    v9 = v8;
-    if (databaseID == v8)
+    databaseID = [(MPIdentifierSet *)equalCopy databaseID];
+    v9 = databaseID;
+    if (databaseID == databaseID)
     {
     }
 
     else
     {
       v10 = self->_databaseID;
-      v11 = [(MPIdentifierSet *)v4 databaseID];
-      LODWORD(v10) = [(NSString *)v10 isEqual:v11];
+      databaseID2 = [(MPIdentifierSet *)equalCopy databaseID];
+      LODWORD(v10) = [(NSString *)v10 isEqual:databaseID2];
 
       if (!v10)
       {
@@ -2963,35 +2963,35 @@ void __33__MPIdentifierSet_initWithCoder___block_invoke_5(uint64_t a1, void *a2)
     }
 
     persistentID = self->_persistentID;
-    if (persistentID != [(MPIdentifierSet *)v4 persistentID])
+    if (persistentID != [(MPIdentifierSet *)equalCopy persistentID])
     {
       goto LABEL_89;
     }
 
     containedPersistentID = self->_containedPersistentID;
-    if (containedPersistentID != [(MPIdentifierSet *)v4 containedPersistentID])
+    if (containedPersistentID != [(MPIdentifierSet *)equalCopy containedPersistentID])
     {
       goto LABEL_89;
     }
 
     syncID = self->_syncID;
-    if (syncID != [(MPIdentifierSet *)v4 syncID])
+    if (syncID != [(MPIdentifierSet *)equalCopy syncID])
     {
       goto LABEL_89;
     }
 
     personID = self->_personID;
-    v17 = [(MPIdentifierSet *)v4 personID];
-    v18 = v17;
-    if (personID == v17)
+    personID = [(MPIdentifierSet *)equalCopy personID];
+    v18 = personID;
+    if (personID == personID)
     {
     }
 
     else
     {
       v19 = self->_personID;
-      v20 = [(MPIdentifierSet *)v4 personID];
-      LODWORD(v19) = [(NSString *)v19 isEqual:v20];
+      personID2 = [(MPIdentifierSet *)equalCopy personID];
+      LODWORD(v19) = [(NSString *)v19 isEqual:personID2];
 
       if (!v19)
       {
@@ -3000,23 +3000,23 @@ void __33__MPIdentifierSet_initWithCoder___block_invoke_5(uint64_t a1, void *a2)
     }
 
     cloudID = self->_cloudID;
-    if (cloudID != [(MPIdentifierSet *)v4 cloudID])
+    if (cloudID != [(MPIdentifierSet *)equalCopy cloudID])
     {
       goto LABEL_89;
     }
 
     cloudAlbumID = self->_cloudAlbumID;
-    v23 = [(MPIdentifierSet *)v4 cloudAlbumID];
-    v24 = v23;
-    if (cloudAlbumID == v23)
+    cloudAlbumID = [(MPIdentifierSet *)equalCopy cloudAlbumID];
+    v24 = cloudAlbumID;
+    if (cloudAlbumID == cloudAlbumID)
     {
     }
 
     else
     {
       v25 = self->_cloudAlbumID;
-      v26 = [(MPIdentifierSet *)v4 cloudAlbumID];
-      LODWORD(v25) = [(NSString *)v25 isEqual:v26];
+      cloudAlbumID2 = [(MPIdentifierSet *)equalCopy cloudAlbumID];
+      LODWORD(v25) = [(NSString *)v25 isEqual:cloudAlbumID2];
 
       if (!v25)
       {
@@ -3025,17 +3025,17 @@ void __33__MPIdentifierSet_initWithCoder___block_invoke_5(uint64_t a1, void *a2)
     }
 
     cloudArtistID = self->_cloudArtistID;
-    v28 = [(MPIdentifierSet *)v4 cloudArtistID];
-    v29 = v28;
-    if (cloudArtistID == v28)
+    cloudArtistID = [(MPIdentifierSet *)equalCopy cloudArtistID];
+    v29 = cloudArtistID;
+    if (cloudArtistID == cloudArtistID)
     {
     }
 
     else
     {
       v30 = self->_cloudArtistID;
-      v31 = [(MPIdentifierSet *)v4 cloudArtistID];
-      LODWORD(v30) = [(NSString *)v30 isEqual:v31];
+      cloudArtistID2 = [(MPIdentifierSet *)equalCopy cloudArtistID];
+      LODWORD(v30) = [(NSString *)v30 isEqual:cloudArtistID2];
 
       if (!v30)
       {
@@ -3044,17 +3044,17 @@ void __33__MPIdentifierSet_initWithCoder___block_invoke_5(uint64_t a1, void *a2)
     }
 
     recommendationID = self->_recommendationID;
-    v33 = [(MPIdentifierSet *)v4 recommendationID];
-    v34 = v33;
-    if (recommendationID == v33)
+    recommendationID = [(MPIdentifierSet *)equalCopy recommendationID];
+    v34 = recommendationID;
+    if (recommendationID == recommendationID)
     {
     }
 
     else
     {
       v35 = self->_recommendationID;
-      v36 = [(MPIdentifierSet *)v4 recommendationID];
-      LODWORD(v35) = [(NSString *)v35 isEqual:v36];
+      recommendationID2 = [(MPIdentifierSet *)equalCopy recommendationID];
+      LODWORD(v35) = [(NSString *)v35 isEqual:recommendationID2];
 
       if (!v35)
       {
@@ -3063,35 +3063,35 @@ void __33__MPIdentifierSet_initWithCoder___block_invoke_5(uint64_t a1, void *a2)
     }
 
     musicKit_possibleLibraryPersistentID = self->_musicKit_possibleLibraryPersistentID;
-    if (musicKit_possibleLibraryPersistentID != [(MPIdentifierSet *)v4 musicKit_possibleLibraryPersistentID])
+    if (musicKit_possibleLibraryPersistentID != [(MPIdentifierSet *)equalCopy musicKit_possibleLibraryPersistentID])
     {
       goto LABEL_89;
     }
 
     globalPlaylistID = self->_globalPlaylistID;
-    if (globalPlaylistID != v4->_globalPlaylistID && ![(NSString *)globalPlaylistID isEqual:?])
+    if (globalPlaylistID != equalCopy->_globalPlaylistID && ![(NSString *)globalPlaylistID isEqual:?])
     {
       goto LABEL_89;
     }
 
     adamID = self->_adamID;
-    if (adamID != [(MPIdentifierSet *)v4 adamID])
+    if (adamID != [(MPIdentifierSet *)equalCopy adamID])
     {
       goto LABEL_89;
     }
 
     formerAdamIDs = self->_formerAdamIDs;
-    v41 = [(MPIdentifierSet *)v4 formerAdamIDs];
-    v42 = v41;
-    if (formerAdamIDs == v41)
+    formerAdamIDs = [(MPIdentifierSet *)equalCopy formerAdamIDs];
+    v42 = formerAdamIDs;
+    if (formerAdamIDs == formerAdamIDs)
     {
     }
 
     else
     {
       v43 = self->_formerAdamIDs;
-      v44 = [(MPIdentifierSet *)v4 formerAdamIDs];
-      LODWORD(v43) = [(NSArray *)v43 isEqual:v44];
+      formerAdamIDs2 = [(MPIdentifierSet *)equalCopy formerAdamIDs];
+      LODWORD(v43) = [(NSArray *)v43 isEqual:formerAdamIDs2];
 
       if (!v43)
       {
@@ -3100,17 +3100,17 @@ void __33__MPIdentifierSet_initWithCoder___block_invoke_5(uint64_t a1, void *a2)
     }
 
     universalCloudLibraryID = self->_universalCloudLibraryID;
-    v46 = [(MPIdentifierSet *)v4 universalCloudLibraryID];
-    v47 = v46;
-    if (universalCloudLibraryID == v46)
+    universalCloudLibraryID = [(MPIdentifierSet *)equalCopy universalCloudLibraryID];
+    v47 = universalCloudLibraryID;
+    if (universalCloudLibraryID == universalCloudLibraryID)
     {
     }
 
     else
     {
       v48 = self->_universalCloudLibraryID;
-      v49 = [(MPIdentifierSet *)v4 universalCloudLibraryID];
-      LODWORD(v48) = [(NSString *)v48 isEqual:v49];
+      universalCloudLibraryID2 = [(MPIdentifierSet *)equalCopy universalCloudLibraryID];
+      LODWORD(v48) = [(NSString *)v48 isEqual:universalCloudLibraryID2];
 
       if (!v48)
       {
@@ -3119,52 +3119,52 @@ void __33__MPIdentifierSet_initWithCoder___block_invoke_5(uint64_t a1, void *a2)
     }
 
     purchasedAdamID = self->_purchasedAdamID;
-    if (purchasedAdamID != [(MPIdentifierSet *)v4 purchasedAdamID])
+    if (purchasedAdamID != [(MPIdentifierSet *)equalCopy purchasedAdamID])
     {
       goto LABEL_89;
     }
 
     subscriptionAdamID = self->_subscriptionAdamID;
-    if (subscriptionAdamID != [(MPIdentifierSet *)v4 subscriptionAdamID])
+    if (subscriptionAdamID != [(MPIdentifierSet *)equalCopy subscriptionAdamID])
     {
       goto LABEL_89;
     }
 
     socialProfileID = self->_socialProfileID;
-    if (socialProfileID != v4->_socialProfileID && ![(NSString *)socialProfileID isEqual:?])
+    if (socialProfileID != equalCopy->_socialProfileID && ![(NSString *)socialProfileID isEqual:?])
     {
       goto LABEL_89;
     }
 
     informalMediaClipID = self->_informalMediaClipID;
-    if (informalMediaClipID != v4->_informalMediaClipID && ![(NSString *)informalMediaClipID isEqual:?])
+    if (informalMediaClipID != equalCopy->_informalMediaClipID && ![(NSString *)informalMediaClipID isEqual:?])
     {
       goto LABEL_89;
     }
 
     informalStaticAssetID = self->_informalStaticAssetID;
-    if (informalStaticAssetID != v4->_informalStaticAssetID && ![(NSString *)informalStaticAssetID isEqual:?])
+    if (informalStaticAssetID != equalCopy->_informalStaticAssetID && ![(NSString *)informalStaticAssetID isEqual:?])
     {
       goto LABEL_89;
     }
 
-    if (self->_reportingAdamID != v4->_reportingAdamID || self->_assetAdamID != v4->_assetAdamID || self->_lyricsAdamID != v4->_lyricsAdamID)
+    if (self->_reportingAdamID != equalCopy->_reportingAdamID || self->_assetAdamID != equalCopy->_assetAdamID || self->_lyricsAdamID != equalCopy->_lyricsAdamID)
     {
       goto LABEL_89;
     }
 
     stationStringID = self->_stationStringID;
-    v56 = [(MPIdentifierSet *)v4 stationStringID];
-    v57 = v56;
-    if (stationStringID == v56)
+    stationStringID = [(MPIdentifierSet *)equalCopy stationStringID];
+    v57 = stationStringID;
+    if (stationStringID == stationStringID)
     {
     }
 
     else
     {
       v58 = self->_stationStringID;
-      v59 = [(MPIdentifierSet *)v4 stationStringID];
-      LODWORD(v58) = [(NSString *)v58 isEqual:v59];
+      stationStringID2 = [(MPIdentifierSet *)equalCopy stationStringID];
+      LODWORD(v58) = [(NSString *)v58 isEqual:stationStringID2];
 
       if (!v58)
       {
@@ -3173,17 +3173,17 @@ void __33__MPIdentifierSet_initWithCoder___block_invoke_5(uint64_t a1, void *a2)
     }
 
     stationHash = self->_stationHash;
-    v61 = [(MPIdentifierSet *)v4 stationHash];
-    v62 = v61;
-    if (stationHash == v61)
+    stationHash = [(MPIdentifierSet *)equalCopy stationHash];
+    v62 = stationHash;
+    if (stationHash == stationHash)
     {
     }
 
     else
     {
       v63 = self->_stationHash;
-      v64 = [(MPIdentifierSet *)v4 stationHash];
-      LODWORD(v63) = [(NSString *)v63 isEqual:v64];
+      stationHash2 = [(MPIdentifierSet *)equalCopy stationHash];
+      LODWORD(v63) = [(NSString *)v63 isEqual:stationHash2];
 
       if (!v63)
       {
@@ -3192,7 +3192,7 @@ void __33__MPIdentifierSet_initWithCoder___block_invoke_5(uint64_t a1, void *a2)
     }
 
     stationID = self->_stationID;
-    if (stationID != [(MPIdentifierSet *)v4 stationID])
+    if (stationID != [(MPIdentifierSet *)equalCopy stationID])
     {
 LABEL_89:
       v12 = 0;
@@ -3200,17 +3200,17 @@ LABEL_89:
     }
 
     stationEventID = self->_stationEventID;
-    v67 = [(MPIdentifierSet *)v4 stationEventID];
-    v68 = v67;
-    if (stationEventID == v67)
+    stationEventID = [(MPIdentifierSet *)equalCopy stationEventID];
+    v68 = stationEventID;
+    if (stationEventID == stationEventID)
     {
     }
 
     else
     {
       v69 = self->_stationEventID;
-      v70 = [(MPIdentifierSet *)v4 stationEventID];
-      LODWORD(v69) = [(NSString *)v69 isEqual:v70];
+      stationEventID2 = [(MPIdentifierSet *)equalCopy stationEventID];
+      LODWORD(v69) = [(NSString *)v69 isEqual:stationEventID2];
 
       if (!v69)
       {
@@ -3219,17 +3219,17 @@ LABEL_89:
     }
 
     containerUniqueID = self->_containerUniqueID;
-    v72 = [(MPIdentifierSet *)v4 containerUniqueID];
-    v73 = v72;
-    if (containerUniqueID == v72)
+    containerUniqueID = [(MPIdentifierSet *)equalCopy containerUniqueID];
+    v73 = containerUniqueID;
+    if (containerUniqueID == containerUniqueID)
     {
     }
 
     else
     {
       v74 = self->_containerUniqueID;
-      v75 = [(MPIdentifierSet *)v4 containerUniqueID];
-      LODWORD(v74) = [(NSString *)v74 isEqual:v75];
+      containerUniqueID2 = [(MPIdentifierSet *)equalCopy containerUniqueID];
+      LODWORD(v74) = [(NSString *)v74 isEqual:containerUniqueID2];
 
       if (!v74)
       {
@@ -3238,17 +3238,17 @@ LABEL_89:
     }
 
     handoffCorrelationID = self->_handoffCorrelationID;
-    v77 = [(MPIdentifierSet *)v4 handoffCorrelationID];
-    v78 = v77;
-    if (handoffCorrelationID == v77)
+    handoffCorrelationID = [(MPIdentifierSet *)equalCopy handoffCorrelationID];
+    v78 = handoffCorrelationID;
+    if (handoffCorrelationID == handoffCorrelationID)
     {
     }
 
     else
     {
       v79 = self->_handoffCorrelationID;
-      v80 = [(MPIdentifierSet *)v4 handoffCorrelationID];
-      LODWORD(v79) = [(NSString *)v79 isEqual:v80];
+      handoffCorrelationID2 = [(MPIdentifierSet *)equalCopy handoffCorrelationID];
+      LODWORD(v79) = [(NSString *)v79 isEqual:handoffCorrelationID2];
 
       if (!v79)
       {
@@ -3257,17 +3257,17 @@ LABEL_89:
     }
 
     contentItemID = self->_contentItemID;
-    v82 = [(MPIdentifierSet *)v4 contentItemID];
-    v83 = v82;
-    if (contentItemID == v82)
+    contentItemID = [(MPIdentifierSet *)equalCopy contentItemID];
+    v83 = contentItemID;
+    if (contentItemID == contentItemID)
     {
     }
 
     else
     {
       v84 = self->_contentItemID;
-      v85 = [(MPIdentifierSet *)v4 contentItemID];
-      LODWORD(v84) = [(NSString *)v84 isEqual:v85];
+      contentItemID2 = [(MPIdentifierSet *)equalCopy contentItemID];
+      LODWORD(v84) = [(NSString *)v84 isEqual:contentItemID2];
 
       if (!v84)
       {
@@ -3276,17 +3276,17 @@ LABEL_89:
     }
 
     lyricsID = self->_lyricsID;
-    v87 = [(MPIdentifierSet *)v4 lyricsID];
-    v88 = v87;
-    if (lyricsID == v87)
+    lyricsID = [(MPIdentifierSet *)equalCopy lyricsID];
+    v88 = lyricsID;
+    if (lyricsID == lyricsID)
     {
     }
 
     else
     {
       v89 = self->_lyricsID;
-      v90 = [(MPIdentifierSet *)v4 lyricsID];
-      LODWORD(v89) = [(NSString *)v89 isEqual:v90];
+      lyricsID2 = [(MPIdentifierSet *)equalCopy lyricsID];
+      LODWORD(v89) = [(NSString *)v89 isEqual:lyricsID2];
 
       if (!v89)
       {
@@ -3295,29 +3295,29 @@ LABEL_89:
     }
 
     shouldExcludeFromShuffle = self->_shouldExcludeFromShuffle;
-    if (shouldExcludeFromShuffle != [(MPIdentifierSet *)v4 shouldExcludeFromShuffle])
+    if (shouldExcludeFromShuffle != [(MPIdentifierSet *)equalCopy shouldExcludeFromShuffle])
     {
       goto LABEL_89;
     }
 
     placeholder = self->_placeholder;
-    if (placeholder != [(MPIdentifierSet *)v4 isPlaceholder])
+    if (placeholder != [(MPIdentifierSet *)equalCopy isPlaceholder])
     {
       goto LABEL_89;
     }
 
     vendorID = self->_vendorID;
-    v94 = [(MPIdentifierSet *)v4 vendorID];
-    v95 = v94;
-    if (vendorID == v94)
+    vendorID = [(MPIdentifierSet *)equalCopy vendorID];
+    v95 = vendorID;
+    if (vendorID == vendorID)
     {
     }
 
     else
     {
       v96 = self->_vendorID;
-      v97 = [(MPIdentifierSet *)v4 vendorID];
-      LODWORD(v96) = [(NSString *)v96 isEqual:v97];
+      vendorID2 = [(MPIdentifierSet *)equalCopy vendorID];
+      LODWORD(v96) = [(NSString *)v96 isEqual:vendorID2];
 
       if (!v96)
       {
@@ -3326,15 +3326,15 @@ LABEL_89:
     }
 
     opaqueID = self->_opaqueID;
-    v99 = [(MPIdentifierSet *)v4 opaqueID];
-    v100 = v99;
-    if (opaqueID == v99)
+    opaqueID = [(MPIdentifierSet *)equalCopy opaqueID];
+    v100 = opaqueID;
+    if (opaqueID == opaqueID)
     {
     }
 
     else
     {
-      v101 = [(NSString *)opaqueID isEqual:v99];
+      v101 = [(NSString *)opaqueID isEqual:opaqueID];
 
       if (!v101)
       {
@@ -3343,15 +3343,15 @@ LABEL_89:
     }
 
     versionHash = self->_versionHash;
-    v104 = [(MPIdentifierSet *)v4 versionHash];
-    if (versionHash == v104)
+    versionHash = [(MPIdentifierSet *)equalCopy versionHash];
+    if (versionHash == versionHash)
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = [(NSString *)versionHash isEqual:v104];
+      v12 = [(NSString *)versionHash isEqual:versionHash];
     }
   }
 
@@ -3384,7 +3384,7 @@ LABEL_90:
   v1104 = v17;
 
   v20 = self->_databaseID;
-  v21 = [(NSString *)v20 UTF8String];
+  uTF8String = [(NSString *)v20 UTF8String];
   v22 = [(NSString *)v20 length];
   if (v22 < 8)
   {
@@ -3396,8 +3396,8 @@ LABEL_90:
     v23 = v22 & 0xFFFFFFFFFFFFFFF8;
     do
     {
-      v24 = *v21;
-      v21 += 8;
+      v24 = *uTF8String;
+      uTF8String += 8;
       v25 = (v19 + v17) ^ __ROR8__(v17, 51);
       v26 = v18 + (v16 ^ v24);
       v27 = __ROR8__(v16 ^ v24, 48);
@@ -3424,7 +3424,7 @@ LABEL_90:
     v32 = v22;
     do
     {
-      v33 = *v21++;
+      v33 = *uTF8String++;
       v31 |= v33 << v30;
       v30 += 8;
       --v32;
@@ -3568,7 +3568,7 @@ LABEL_23:
 LABEL_24:
   v1145 = v75;
   v91 = self->_personID;
-  v92 = [(NSString *)v91 UTF8String];
+  uTF8String2 = [(NSString *)v91 UTF8String];
   v93 = [(NSString *)v91 length];
   v94 = v93;
   v95 = HIBYTE(v1145);
@@ -3584,7 +3584,7 @@ LABEL_24:
     }
 
     v100 = 8 * v97;
-    v101 = v92;
+    v101 = uTF8String2;
     v102 = v1145 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -3604,7 +3604,7 @@ LABEL_24:
     v1132 = v108;
     v1093 = v107 ^ v102;
     v1106 = v109 ^ __ROR8__(v104, 47);
-    v92 += v98;
+    uTF8String2 += v98;
     v1145 = (v98 + v95) << 56;
     v94 = v99;
   }
@@ -3617,8 +3617,8 @@ LABEL_24:
     v112 = v1132;
     do
     {
-      v114 = *v92;
-      v92 += 8;
+      v114 = *uTF8String2;
+      uTF8String2 += 8;
       v115 = v112 ^ v114;
       v116 = v110 + v111;
       v117 = v116 ^ __ROR8__(v111, 51);
@@ -3650,7 +3650,7 @@ LABEL_33:
     v124 = v94;
     do
     {
-      v125 = *v92++;
+      v125 = *uTF8String2++;
       v123 |= v125 << v122;
       v122 += 8;
       --v124;
@@ -3739,7 +3739,7 @@ LABEL_42:
 
   v1146 = v144;
   v153 = self->_cloudAlbumID;
-  v154 = [(NSString *)v153 UTF8String];
+  uTF8String3 = [(NSString *)v153 UTF8String];
   v155 = [(NSString *)v153 length];
   v156 = v155;
   v157 = HIBYTE(v1146);
@@ -3755,7 +3755,7 @@ LABEL_42:
     }
 
     v162 = 8 * v159;
-    v163 = v154;
+    v163 = uTF8String3;
     v164 = v1146 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -3775,7 +3775,7 @@ LABEL_42:
     v1133 = v170;
     v1094 = v169 ^ v164;
     v1107 = v171 ^ __ROR8__(v166, 47);
-    v154 += v160;
+    uTF8String3 += v160;
     v1146 = (v160 + v157) << 56;
     v156 = v161;
   }
@@ -3788,8 +3788,8 @@ LABEL_42:
     v174 = v1133;
     do
     {
-      v176 = *v154;
-      v154 += 8;
+      v176 = *uTF8String3;
+      uTF8String3 += 8;
       v177 = v174 ^ v176;
       v178 = v172 + v173;
       v179 = v178 ^ __ROR8__(v173, 51);
@@ -3821,7 +3821,7 @@ LABEL_57:
     v186 = v156;
     do
     {
-      v187 = *v154++;
+      v187 = *uTF8String3++;
       v185 |= v187 << v184;
       v184 += 8;
       --v186;
@@ -3853,7 +3853,7 @@ LABEL_57:
 LABEL_66:
 
   v189 = self->_cloudArtistID;
-  v190 = [(NSString *)v189 UTF8String];
+  uTF8String4 = [(NSString *)v189 UTF8String];
   v191 = [(NSString *)v189 length];
   v192 = v191;
   v193 = HIBYTE(v1146);
@@ -3869,7 +3869,7 @@ LABEL_66:
     }
 
     v198 = 8 * v195;
-    v199 = v190;
+    v199 = uTF8String4;
     v200 = v1146 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -3889,7 +3889,7 @@ LABEL_66:
     v1133 = v206;
     v1094 = v205 ^ v200;
     v1107 = v207 ^ __ROR8__(v202, 47);
-    v190 += v196;
+    uTF8String4 += v196;
     v1146 = (v196 + v193) << 56;
     v192 = v197;
   }
@@ -3902,8 +3902,8 @@ LABEL_66:
     v210 = v1133;
     do
     {
-      v212 = *v190;
-      v190 += 8;
+      v212 = *uTF8String4;
+      uTF8String4 += 8;
       v213 = v210 ^ v212;
       v214 = v208 + v209;
       v215 = v214 ^ __ROR8__(v209, 51);
@@ -3935,7 +3935,7 @@ LABEL_75:
     v222 = v192;
     do
     {
-      v223 = *v190++;
+      v223 = *uTF8String4++;
       v221 |= v223 << v220;
       v220 += 8;
       --v222;
@@ -3967,7 +3967,7 @@ LABEL_75:
 LABEL_84:
 
   v225 = self->_recommendationID;
-  v226 = [(NSString *)v225 UTF8String];
+  uTF8String5 = [(NSString *)v225 UTF8String];
   v227 = [(NSString *)v225 length];
   v228 = v227;
   v229 = HIBYTE(v1146);
@@ -3983,7 +3983,7 @@ LABEL_84:
     }
 
     v234 = 8 * v231;
-    v235 = v226;
+    v235 = uTF8String5;
     v236 = v1146 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -4003,7 +4003,7 @@ LABEL_84:
     v1133 = v242;
     v1094 = v241 ^ v236;
     v1107 = v243 ^ __ROR8__(v238, 47);
-    v226 += v232;
+    uTF8String5 += v232;
     v1146 = (v232 + v229) << 56;
     v228 = v233;
   }
@@ -4016,8 +4016,8 @@ LABEL_84:
     v246 = v1133;
     do
     {
-      v248 = *v226;
-      v226 += 8;
+      v248 = *uTF8String5;
+      uTF8String5 += 8;
       v249 = v246 ^ v248;
       v250 = v244 + v245;
       v251 = v250 ^ __ROR8__(v245, 51);
@@ -4049,7 +4049,7 @@ LABEL_93:
     v258 = v228;
     do
     {
-      v259 = *v226++;
+      v259 = *uTF8String5++;
       v257 |= v259 << v256;
       v256 += 8;
       --v258;
@@ -4138,7 +4138,7 @@ LABEL_102:
 
   v1147 = v278;
   v287 = self->_globalPlaylistID;
-  v288 = [(NSString *)v287 UTF8String];
+  uTF8String6 = [(NSString *)v287 UTF8String];
   v289 = [(NSString *)v287 length];
   v290 = v289;
   v291 = HIBYTE(v1147);
@@ -4154,7 +4154,7 @@ LABEL_102:
     }
 
     v296 = 8 * v293;
-    v297 = v288;
+    v297 = uTF8String6;
     v298 = v1147 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -4174,7 +4174,7 @@ LABEL_102:
     v1134 = v304;
     v1095 = v303 ^ v298;
     v1108 = v305 ^ __ROR8__(v300, 47);
-    v288 += v294;
+    uTF8String6 += v294;
     v1147 = (v294 + v291) << 56;
     v290 = v295;
   }
@@ -4187,8 +4187,8 @@ LABEL_102:
     v308 = v1134;
     do
     {
-      v310 = *v288;
-      v288 += 8;
+      v310 = *uTF8String6;
+      uTF8String6 += 8;
       v311 = v308 ^ v310;
       v312 = v306 + v307;
       v313 = v312 ^ __ROR8__(v307, 51);
@@ -4220,7 +4220,7 @@ LABEL_117:
     v320 = v290;
     do
     {
-      v321 = *v288++;
+      v321 = *uTF8String6++;
       v319 |= v321 << v318;
       v318 += 8;
       --v320;
@@ -4368,7 +4368,7 @@ LABEL_126:
   v1149 = v367;
 
   v376 = self->_universalCloudLibraryID;
-  v377 = [(NSString *)v376 UTF8String];
+  uTF8String7 = [(NSString *)v376 UTF8String];
   v378 = [(NSString *)v376 length];
   v379 = v378;
   v380 = HIBYTE(v1149);
@@ -4384,7 +4384,7 @@ LABEL_126:
     }
 
     v385 = 8 * v382;
-    v386 = v377;
+    v386 = uTF8String7;
     v387 = v1149 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -4404,7 +4404,7 @@ LABEL_126:
     v1136 = v393;
     v1097 = v392 ^ v387;
     v1110 = v394 ^ __ROR8__(v389, 47);
-    v377 += v383;
+    uTF8String7 += v383;
     v1149 = (v383 + v380) << 56;
     v379 = v384;
   }
@@ -4417,8 +4417,8 @@ LABEL_126:
     v397 = v1136;
     do
     {
-      v399 = *v377;
-      v377 += 8;
+      v399 = *uTF8String7;
+      uTF8String7 += 8;
       v400 = v397 ^ v399;
       v401 = v395 + v396;
       v402 = v401 ^ __ROR8__(v396, 51);
@@ -4450,7 +4450,7 @@ LABEL_147:
     v409 = v379;
     do
     {
-      v410 = *v377++;
+      v410 = *uTF8String7++;
       v408 |= v410 << v407;
       v407 += 8;
       --v409;
@@ -4608,7 +4608,7 @@ LABEL_168:
 LABEL_169:
   v1151 = v452;
   v468 = self->_socialProfileID;
-  v469 = [(NSString *)v468 UTF8String];
+  uTF8String8 = [(NSString *)v468 UTF8String];
   v470 = [(NSString *)v468 length];
   v471 = v470;
   v472 = HIBYTE(v1151);
@@ -4624,7 +4624,7 @@ LABEL_169:
     }
 
     v477 = 8 * v474;
-    v478 = v469;
+    v478 = uTF8String8;
     v479 = v1151 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -4644,7 +4644,7 @@ LABEL_169:
     v1138 = v485;
     v1099 = v484 ^ v479;
     v1112 = v486 ^ __ROR8__(v481, 47);
-    v469 += v475;
+    uTF8String8 += v475;
     v1151 = (v475 + v472) << 56;
     v471 = v476;
   }
@@ -4657,8 +4657,8 @@ LABEL_169:
     v489 = v1138;
     do
     {
-      v491 = *v469;
-      v469 += 8;
+      v491 = *uTF8String8;
+      uTF8String8 += 8;
       v492 = v489 ^ v491;
       v493 = v487 + v488;
       v494 = v493 ^ __ROR8__(v488, 51);
@@ -4690,7 +4690,7 @@ LABEL_178:
     v501 = v471;
     do
     {
-      v502 = *v469++;
+      v502 = *uTF8String8++;
       v500 |= v502 << v499;
       v499 += 8;
       --v501;
@@ -4722,7 +4722,7 @@ LABEL_178:
 LABEL_187:
 
   v504 = self->_informalMediaClipID;
-  v505 = [(NSString *)v504 UTF8String];
+  uTF8String9 = [(NSString *)v504 UTF8String];
   v506 = [(NSString *)v504 length];
   v507 = v506;
   v508 = HIBYTE(v1151);
@@ -4738,7 +4738,7 @@ LABEL_187:
     }
 
     v513 = 8 * v510;
-    v514 = v505;
+    v514 = uTF8String9;
     v515 = v1151 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -4758,7 +4758,7 @@ LABEL_187:
     v1138 = v521;
     v1099 = v520 ^ v515;
     v1112 = v522 ^ __ROR8__(v517, 47);
-    v505 += v511;
+    uTF8String9 += v511;
     v1151 = (v511 + v508) << 56;
     v507 = v512;
   }
@@ -4771,8 +4771,8 @@ LABEL_187:
     v525 = v1138;
     do
     {
-      v527 = *v505;
-      v505 += 8;
+      v527 = *uTF8String9;
+      uTF8String9 += 8;
       v528 = v525 ^ v527;
       v529 = v523 + v524;
       v530 = v529 ^ __ROR8__(v524, 51);
@@ -4804,7 +4804,7 @@ LABEL_196:
     v537 = v507;
     do
     {
-      v538 = *v505++;
+      v538 = *uTF8String9++;
       v536 |= v538 << v535;
       v535 += 8;
       --v537;
@@ -4836,7 +4836,7 @@ LABEL_196:
 LABEL_205:
 
   v540 = self->_informalStaticAssetID;
-  v541 = [(NSString *)v540 UTF8String];
+  uTF8String10 = [(NSString *)v540 UTF8String];
   v542 = [(NSString *)v540 length];
   v543 = v542;
   v544 = HIBYTE(v1151);
@@ -4852,7 +4852,7 @@ LABEL_205:
     }
 
     v549 = 8 * v546;
-    v550 = v541;
+    v550 = uTF8String10;
     v551 = v1151 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -4872,7 +4872,7 @@ LABEL_205:
     v1138 = v557;
     v1099 = v556 ^ v551;
     v1112 = v558 ^ __ROR8__(v553, 47);
-    v541 += v547;
+    uTF8String10 += v547;
     v1151 = (v547 + v544) << 56;
     v543 = v548;
   }
@@ -4885,8 +4885,8 @@ LABEL_205:
     v561 = v1138;
     do
     {
-      v563 = *v541;
-      v541 += 8;
+      v563 = *uTF8String10;
+      uTF8String10 += 8;
       v564 = v561 ^ v563;
       v565 = v559 + v560;
       v566 = v565 ^ __ROR8__(v560, 51);
@@ -4918,7 +4918,7 @@ LABEL_214:
     v573 = v543;
     do
     {
-      v574 = *v541++;
+      v574 = *uTF8String10++;
       v572 |= v574 << v571;
       v571 += 8;
       --v573;
@@ -5112,7 +5112,7 @@ LABEL_223:
 
   v1154 = v649;
   v657 = self->_stationStringID;
-  v658 = [(NSString *)v657 UTF8String];
+  uTF8String11 = [(NSString *)v657 UTF8String];
   v659 = [(NSString *)v657 length];
   v660 = v659;
   v661 = HIBYTE(v1154);
@@ -5128,7 +5128,7 @@ LABEL_223:
     }
 
     v666 = 8 * v663;
-    v667 = v658;
+    v667 = uTF8String11;
     v668 = v1154 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -5148,7 +5148,7 @@ LABEL_223:
     v1141 = v674;
     v1102 = v673 ^ v668;
     v1115 = v675 ^ __ROR8__(v670, 47);
-    v658 += v664;
+    uTF8String11 += v664;
     v1154 = (v664 + v661) << 56;
     v660 = v665;
   }
@@ -5161,8 +5161,8 @@ LABEL_223:
     v678 = v1141;
     do
     {
-      v680 = *v658;
-      v658 += 8;
+      v680 = *uTF8String11;
+      uTF8String11 += 8;
       v681 = v678 ^ v680;
       v682 = v676 + v677;
       v683 = v682 ^ __ROR8__(v677, 51);
@@ -5194,7 +5194,7 @@ LABEL_247:
     v690 = v660;
     do
     {
-      v691 = *v658++;
+      v691 = *uTF8String11++;
       v689 |= v691 << v688;
       v688 += 8;
       --v690;
@@ -5226,7 +5226,7 @@ LABEL_247:
 LABEL_256:
 
   v693 = self->_stationHash;
-  v694 = [(NSString *)v693 UTF8String];
+  uTF8String12 = [(NSString *)v693 UTF8String];
   v695 = [(NSString *)v693 length];
   v696 = v695;
   v697 = HIBYTE(v1154);
@@ -5242,7 +5242,7 @@ LABEL_256:
     }
 
     v702 = 8 * v699;
-    v703 = v694;
+    v703 = uTF8String12;
     v704 = v1154 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -5262,7 +5262,7 @@ LABEL_256:
     v1141 = v710;
     v1102 = v709 ^ v704;
     v1115 = v711 ^ __ROR8__(v706, 47);
-    v694 += v700;
+    uTF8String12 += v700;
     v1154 = (v700 + v697) << 56;
     v696 = v701;
   }
@@ -5275,8 +5275,8 @@ LABEL_256:
     v714 = v1141;
     do
     {
-      v716 = *v694;
-      v694 += 8;
+      v716 = *uTF8String12;
+      uTF8String12 += 8;
       v717 = v714 ^ v716;
       v718 = v712 + v713;
       v719 = v718 ^ __ROR8__(v713, 51);
@@ -5308,7 +5308,7 @@ LABEL_265:
     v726 = v696;
     do
     {
-      v727 = *v694++;
+      v727 = *uTF8String12++;
       v725 |= v727 << v724;
       v724 += 8;
       --v726;
@@ -5394,7 +5394,7 @@ LABEL_274:
 
   v1155 = v748;
   v756 = self->_stationEventID;
-  v757 = [(NSString *)v756 UTF8String];
+  uTF8String13 = [(NSString *)v756 UTF8String];
   v758 = [(NSString *)v756 length];
   v759 = v758;
   v760 = HIBYTE(v1155);
@@ -5410,7 +5410,7 @@ LABEL_274:
     }
 
     v765 = 8 * v762;
-    v766 = v757;
+    v766 = uTF8String13;
     v767 = v1155 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -5430,7 +5430,7 @@ LABEL_274:
     v1142 = v773;
     v1103 = v772 ^ v767;
     v1116 = v774 ^ __ROR8__(v769, 47);
-    v757 += v763;
+    uTF8String13 += v763;
     v1155 = (v763 + v760) << 56;
     v759 = v764;
   }
@@ -5443,8 +5443,8 @@ LABEL_274:
     v777 = v1142;
     do
     {
-      v779 = *v757;
-      v757 += 8;
+      v779 = *uTF8String13;
+      uTF8String13 += 8;
       v780 = v777 ^ v779;
       v781 = v775 + v776;
       v782 = v781 ^ __ROR8__(v776, 51);
@@ -5476,7 +5476,7 @@ LABEL_288:
     v789 = v759;
     do
     {
-      v790 = *v757++;
+      v790 = *uTF8String13++;
       v788 |= v790 << v787;
       v787 += 8;
       --v789;
@@ -5508,7 +5508,7 @@ LABEL_288:
 LABEL_297:
 
   v792 = self->_containerUniqueID;
-  v793 = [(NSString *)v792 UTF8String];
+  uTF8String14 = [(NSString *)v792 UTF8String];
   v794 = [(NSString *)v792 length];
   v795 = v794;
   v796 = HIBYTE(v1155);
@@ -5524,7 +5524,7 @@ LABEL_297:
     }
 
     v801 = 8 * v798;
-    v802 = v793;
+    v802 = uTF8String14;
     v803 = v1155 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -5544,7 +5544,7 @@ LABEL_297:
     v1142 = v809;
     v1103 = v808 ^ v803;
     v1116 = v810 ^ __ROR8__(v805, 47);
-    v793 += v799;
+    uTF8String14 += v799;
     v1155 = (v799 + v796) << 56;
     v795 = v800;
   }
@@ -5557,8 +5557,8 @@ LABEL_297:
     v813 = v1142;
     do
     {
-      v815 = *v793;
-      v793 += 8;
+      v815 = *uTF8String14;
+      uTF8String14 += 8;
       v816 = v813 ^ v815;
       v817 = v811 + v812;
       v818 = v817 ^ __ROR8__(v812, 51);
@@ -5590,7 +5590,7 @@ LABEL_306:
     v825 = v795;
     do
     {
-      v826 = *v793++;
+      v826 = *uTF8String14++;
       v824 |= v826 << v823;
       v823 += 8;
       --v825;
@@ -5622,7 +5622,7 @@ LABEL_306:
 LABEL_315:
 
   v828 = self->_handoffCorrelationID;
-  v829 = [(NSString *)v828 UTF8String];
+  uTF8String15 = [(NSString *)v828 UTF8String];
   v830 = [(NSString *)v828 length];
   v831 = v830;
   v832 = HIBYTE(v1155);
@@ -5638,7 +5638,7 @@ LABEL_315:
     }
 
     v837 = 8 * v834;
-    v838 = v829;
+    v838 = uTF8String15;
     v839 = v1155 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -5658,7 +5658,7 @@ LABEL_315:
     v1142 = v845;
     v1103 = v844 ^ v839;
     v1116 = v846 ^ __ROR8__(v841, 47);
-    v829 += v835;
+    uTF8String15 += v835;
     v1155 = (v835 + v832) << 56;
     v831 = v836;
   }
@@ -5671,8 +5671,8 @@ LABEL_315:
     v849 = v1142;
     do
     {
-      v851 = *v829;
-      v829 += 8;
+      v851 = *uTF8String15;
+      uTF8String15 += 8;
       v852 = v849 ^ v851;
       v853 = v847 + v848;
       v854 = v853 ^ __ROR8__(v848, 51);
@@ -5704,7 +5704,7 @@ LABEL_324:
     v861 = v831;
     do
     {
-      v862 = *v829++;
+      v862 = *uTF8String15++;
       v860 |= v862 << v859;
       v859 += 8;
       --v861;
@@ -5736,7 +5736,7 @@ LABEL_324:
 LABEL_333:
 
   v864 = self->_contentItemID;
-  v865 = [(NSString *)v864 UTF8String];
+  uTF8String16 = [(NSString *)v864 UTF8String];
   v866 = [(NSString *)v864 length];
   v867 = v866;
   v868 = HIBYTE(v1155);
@@ -5752,7 +5752,7 @@ LABEL_333:
     }
 
     v873 = 8 * v870;
-    v874 = v865;
+    v874 = uTF8String16;
     v875 = v1155 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -5772,7 +5772,7 @@ LABEL_333:
     v1142 = v881;
     v1103 = v880 ^ v875;
     v1116 = v882 ^ __ROR8__(v877, 47);
-    v865 += v871;
+    uTF8String16 += v871;
     v1155 = (v871 + v868) << 56;
     v867 = v872;
   }
@@ -5785,8 +5785,8 @@ LABEL_333:
     v885 = v1142;
     do
     {
-      v887 = *v865;
-      v865 += 8;
+      v887 = *uTF8String16;
+      uTF8String16 += 8;
       v888 = v885 ^ v887;
       v889 = v883 + v884;
       v890 = v889 ^ __ROR8__(v884, 51);
@@ -5818,7 +5818,7 @@ LABEL_342:
     v897 = v867;
     do
     {
-      v898 = *v865++;
+      v898 = *uTF8String16++;
       v896 |= v898 << v895;
       v895 += 8;
       --v897;
@@ -5850,7 +5850,7 @@ LABEL_342:
 LABEL_351:
 
   v900 = self->_lyricsID;
-  v901 = [(NSString *)v900 UTF8String];
+  uTF8String17 = [(NSString *)v900 UTF8String];
   v902 = [(NSString *)v900 length];
   v903 = v902;
   v904 = HIBYTE(v1155);
@@ -5866,7 +5866,7 @@ LABEL_351:
     }
 
     v909 = 8 * v906;
-    v910 = v901;
+    v910 = uTF8String17;
     v911 = v1155 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -5886,7 +5886,7 @@ LABEL_351:
     v1142 = v917;
     v1103 = v916 ^ v911;
     v1116 = v918 ^ __ROR8__(v913, 47);
-    v901 += v907;
+    uTF8String17 += v907;
     v1155 = (v907 + v904) << 56;
     v903 = v908;
   }
@@ -5899,8 +5899,8 @@ LABEL_351:
     v921 = v1142;
     do
     {
-      v923 = *v901;
-      v901 += 8;
+      v923 = *uTF8String17;
+      uTF8String17 += 8;
       v924 = v921 ^ v923;
       v925 = v919 + v920;
       v926 = v925 ^ __ROR8__(v920, 51);
@@ -5932,7 +5932,7 @@ LABEL_360:
     v933 = v903;
     do
     {
-      v934 = *v901++;
+      v934 = *uTF8String17++;
       v932 |= v934 << v931;
       v931 += 8;
       --v933;
@@ -6010,7 +6010,7 @@ LABEL_369:
 
   v1157 = v946;
   v954 = self->_vendorID;
-  v955 = [(NSString *)v954 UTF8String];
+  uTF8String18 = [(NSString *)v954 UTF8String];
   v956 = [(NSString *)v954 length];
   v957 = v956;
   v958 = HIBYTE(v1157);
@@ -6026,7 +6026,7 @@ LABEL_369:
     }
 
     v963 = 8 * v960;
-    v964 = v955;
+    v964 = uTF8String18;
     v965 = v1157 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -6046,7 +6046,7 @@ LABEL_369:
     v1142 = v971;
     v1103 = v970 ^ v965;
     v1116 = v972 ^ __ROR8__(v967, 47);
-    v955 += v961;
+    uTF8String18 += v961;
     v1157 = (v961 + v958) << 56;
     v957 = v962;
   }
@@ -6059,8 +6059,8 @@ LABEL_369:
     v975 = v1142;
     do
     {
-      v977 = *v955;
-      v955 += 8;
+      v977 = *uTF8String18;
+      uTF8String18 += 8;
       v978 = v975 ^ v977;
       v979 = v973 + v974;
       v980 = v979 ^ __ROR8__(v974, 51);
@@ -6092,7 +6092,7 @@ LABEL_384:
     v987 = v957;
     do
     {
-      v988 = *v955++;
+      v988 = *uTF8String18++;
       v986 |= v988 << v985;
       v985 += 8;
       --v987;
@@ -6124,7 +6124,7 @@ LABEL_384:
 LABEL_393:
 
   v990 = self->_opaqueID;
-  v991 = [(NSString *)v990 UTF8String];
+  uTF8String19 = [(NSString *)v990 UTF8String];
   v992 = [(NSString *)v990 length];
   v993 = v992;
   v994 = HIBYTE(v1157);
@@ -6140,7 +6140,7 @@ LABEL_393:
     }
 
     v999 = 8 * v996;
-    v1000 = v991;
+    v1000 = uTF8String19;
     v1001 = v1157 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -6160,7 +6160,7 @@ LABEL_393:
     v1142 = v1007;
     v1103 = v1006 ^ v1001;
     v1116 = v1008 ^ __ROR8__(v1003, 47);
-    v991 += v997;
+    uTF8String19 += v997;
     v1157 = (v997 + v994) << 56;
     v993 = v998;
   }
@@ -6173,8 +6173,8 @@ LABEL_393:
     v1011 = v1142;
     do
     {
-      v1013 = *v991;
-      v991 += 8;
+      v1013 = *uTF8String19;
+      uTF8String19 += 8;
       v1014 = v1011 ^ v1013;
       v1015 = v1009 + v1010;
       v1016 = v1015 ^ __ROR8__(v1010, 51);
@@ -6206,7 +6206,7 @@ LABEL_402:
     v1023 = v993;
     do
     {
-      v1024 = *v991++;
+      v1024 = *uTF8String19++;
       v1022 |= v1024 << v1021;
       v1021 += 8;
       --v1023;
@@ -6238,7 +6238,7 @@ LABEL_402:
 LABEL_411:
 
   v1026 = self->_versionHash;
-  v1027 = [(NSString *)v1026 UTF8String];
+  uTF8String20 = [(NSString *)v1026 UTF8String];
   v1028 = [(NSString *)v1026 length];
   v1029 = v1028;
   v1030 = HIBYTE(v1157);
@@ -6254,7 +6254,7 @@ LABEL_411:
     }
 
     v1035 = 8 * v1032;
-    v1036 = v1027;
+    v1036 = uTF8String20;
     v1037 = v1157 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -6274,7 +6274,7 @@ LABEL_411:
     v1142 = v1043;
     v1103 = v1042 ^ v1037;
     v1116 = v1044 ^ __ROR8__(v1039, 47);
-    v1027 += v1033;
+    uTF8String20 += v1033;
     v1157 = (v1033 + v1030) << 56;
     v1029 = v1034;
   }
@@ -6287,8 +6287,8 @@ LABEL_411:
     v1047 = v1142;
     do
     {
-      v1049 = *v1027;
-      v1027 += 8;
+      v1049 = *uTF8String20;
+      uTF8String20 += 8;
       v1050 = v1047 ^ v1049;
       v1051 = v1045 + v1046;
       v1052 = v1051 ^ __ROR8__(v1046, 51);
@@ -6320,7 +6320,7 @@ LABEL_420:
     v1059 = v1029;
     do
     {
-      v1060 = *v1027++;
+      v1060 = *uTF8String20++;
       v1058 |= v1060 << v1057;
       v1057 += 8;
       --v1059;
@@ -6394,15 +6394,15 @@ LABEL_428:
     v6 = MEMORY[0x1E696AEC0];
     if (v5)
     {
-      v7 = [v4 componentsJoinedByString:@" "];
-      v8 = [(NSArray *)self->_sources msv_compactDescription];
-      v9 = [v6 stringWithFormat:@"(%@) from [%@]", v7, v8];
+      msv_compactDescription2 = [v4 componentsJoinedByString:@" "];
+      msv_compactDescription = [(NSArray *)self->_sources msv_compactDescription];
+      v9 = [v6 stringWithFormat:@"(%@) from [%@]", msv_compactDescription2, msv_compactDescription];
     }
 
     else
     {
-      v7 = [(NSArray *)self->_sources msv_compactDescription];
-      v9 = [v6 stringWithFormat:@"<MPIdentifierSet EMPTY (not-singleton) sources=[%@]>", v7];
+      msv_compactDescription2 = [(NSArray *)self->_sources msv_compactDescription];
+      v9 = [v6 stringWithFormat:@"<MPIdentifierSet EMPTY (not-singleton) sources=[%@]>", msv_compactDescription2];
     }
   }
 
@@ -6426,38 +6426,38 @@ LABEL_428:
     if (v5)
     {
       v7 = objc_opt_class();
-      v8 = [(NSArray *)self->_sources msv_compactDescription];
+      msv_compactDescription = [(NSArray *)self->_sources msv_compactDescription];
       v9 = [v4 componentsJoinedByString:@" "];;
-      v10 = [v6 stringWithFormat:@"<%@ sources=[%@] %@>", v7, v8, v9];
+      v10 = [v6 stringWithFormat:@"<%@ sources=[%@] %@>", v7, msv_compactDescription, v9];
     }
 
     else
     {
-      v8 = [(NSArray *)self->_sources msv_compactDescription];
-      v10 = [v6 stringWithFormat:@"<MPIdentifierSet EMPTY (not-singleton) sources=[%@]>", v8];
+      msv_compactDescription = [(NSArray *)self->_sources msv_compactDescription];
+      v10 = [v6 stringWithFormat:@"<MPIdentifierSet EMPTY (not-singleton) sources=[%@]>", msv_compactDescription];
     }
   }
 
   return v10;
 }
 
-- (id)_copyWithSources:(id)a3 block:(id)a4
+- (id)_copyWithSources:(id)sources block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  sourcesCopy = sources;
   v8 = objc_alloc(objc_opt_class());
-  v9 = [(MPIdentifierSet *)self sources];
-  v10 = [v9 arrayByAddingObjectsFromArray:v7];
+  sources = [(MPIdentifierSet *)self sources];
+  v10 = [sources arrayByAddingObjectsFromArray:sourcesCopy];
 
-  v11 = [(MPIdentifierSet *)self modelKind];
+  modelKind = [(MPIdentifierSet *)self modelKind];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __42__MPIdentifierSet__copyWithSources_block___block_invoke;
   v15[3] = &unk_1E767FA50;
   v15[4] = self;
-  v16 = v6;
-  v12 = v6;
-  v13 = [v8 _initWithSources:v10 modelKind:v11 block:v15];
+  v16 = blockCopy;
+  v12 = blockCopy;
+  v13 = [v8 _initWithSources:v10 modelKind:modelKind block:v15];
 
   return v13;
 }
@@ -6559,88 +6559,88 @@ void __42__MPIdentifierSet__copyWithSources_block___block_invoke(uint64_t a1, vo
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)copyWithSource:(id)a3 musicKitBlock:(id)a4
+- (id)copyWithSource:(id)source musicKitBlock:(id)block
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  sourceCopy = source;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v12 count:1];
+  blockCopy = block;
+  sourceCopy2 = source;
+  v9 = [v6 arrayWithObjects:&sourceCopy count:1];
 
-  v10 = [(MPIdentifierSet *)self _copyWithSources:v9 block:v7, v12, v13];
+  v10 = [(MPIdentifierSet *)self _copyWithSources:v9 block:blockCopy, sourceCopy, v13];
   return v10;
 }
 
-- (id)copyWithSource:(id)a3 block:(id)a4
+- (id)copyWithSource:(id)source block:(id)block
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  sourceCopy = source;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v12 count:1];
+  blockCopy = block;
+  sourceCopy2 = source;
+  v9 = [v6 arrayWithObjects:&sourceCopy count:1];
 
-  v10 = [(MPIdentifierSet *)self _copyWithSources:v9 block:v7, v12, v13];
+  v10 = [(MPIdentifierSet *)self _copyWithSources:v9 block:blockCopy, sourceCopy, v13];
   return v10;
 }
 
-- (MPIdentifierSet)initWithBlock:(id)a3
+- (MPIdentifierSet)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[MPModelKind unknownKind];
-  v6 = [(MPIdentifierSet *)self _initWithSources:&unk_1F150AB88 modelKind:v5 block:v4];
+  v6 = [(MPIdentifierSet *)self _initWithSources:&unk_1F150AB88 modelKind:v5 block:blockCopy];
 
   return v6;
 }
 
-- (MPIdentifierSet)initWithSource:(id)a3 modelKind:(id)a4 block:(id)a5
+- (MPIdentifierSet)initWithSource:(id)source modelKind:(id)kind block:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  sourceCopy = source;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithObjects:&v15 count:1];
+  blockCopy = block;
+  kindCopy = kind;
+  sourceCopy2 = source;
+  v12 = [v8 arrayWithObjects:&sourceCopy count:1];
 
-  v13 = [(MPIdentifierSet *)self _initWithSources:v12 modelKind:v10 block:v9, v15, v16];
+  v13 = [(MPIdentifierSet *)self _initWithSources:v12 modelKind:kindCopy block:blockCopy, sourceCopy, v16];
   return v13;
 }
 
-- (MPIdentifierSet)initWithSource:(id)a3 modelKind:(id)a4 musicKitBlock:(id)a5
+- (MPIdentifierSet)initWithSource:(id)source modelKind:(id)kind musicKitBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  sourceCopy = source;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithObjects:&v15 count:1];
+  blockCopy = block;
+  kindCopy = kind;
+  sourceCopy2 = source;
+  v12 = [v8 arrayWithObjects:&sourceCopy count:1];
 
-  v13 = [(MPIdentifierSet *)self _initWithSources:v12 modelKind:v10 block:v9, v15, v16];
+  v13 = [(MPIdentifierSet *)self _initWithSources:v12 modelKind:kindCopy block:blockCopy, sourceCopy, v16];
   return v13;
 }
 
-- (id)_initWithSources:(id)a3 modelKind:(id)a4 block:(id)a5
+- (id)_initWithSources:(id)sources modelKind:(id)kind block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourcesCopy = sources;
+  kindCopy = kind;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = MPIdentifierSet;
   v11 = [(MPIdentifierSet *)&v16 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [sourcesCopy copy];
     sources = v11->_sources;
     v11->_sources = v12;
 
-    objc_storeStrong(&v11->_modelKind, a4);
+    objc_storeStrong(&v11->_modelKind, kind);
     formerAdamIDs = v11->_formerAdamIDs;
     v11->_formerAdamIDs = MEMORY[0x1E695E0F0];
 
-    v10[2](v10, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   return v11;

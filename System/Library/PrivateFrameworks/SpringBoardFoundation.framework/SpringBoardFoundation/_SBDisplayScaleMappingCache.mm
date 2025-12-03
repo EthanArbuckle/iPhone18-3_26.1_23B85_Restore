@@ -1,9 +1,9 @@
 @interface _SBDisplayScaleMappingCache
 + (id)sharedInstance;
 - (_SBDisplayScaleMappingCache)init;
-- (void)cacheMapping:(id)a3;
+- (void)cacheMapping:(id)mapping;
 - (void)dealloc;
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4;
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity;
 @end
 
 @implementation _SBDisplayScaleMappingCache
@@ -15,13 +15,13 @@
   v2 = [(_SBDisplayScaleMappingCache *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     hardwareIdentifierToMappings = v2->_hardwareIdentifierToMappings;
-    v2->_hardwareIdentifierToMappings = v3;
+    v2->_hardwareIdentifierToMappings = dictionary;
 
-    v5 = [MEMORY[0x1E699F7A8] sharedInstance];
+    mEMORY[0x1E699F7A8] = [MEMORY[0x1E699F7A8] sharedInstance];
     displayManager = v2->_displayManager;
-    v2->_displayManager = v5;
+    v2->_displayManager = mEMORY[0x1E699F7A8];
 
     [(FBDisplayManager *)v2->_displayManager addObserver:v2];
   }
@@ -43,7 +43,7 @@
   block[1] = 3221225472;
   block[2] = __45___SBDisplayScaleMappingCache_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_7 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_7, block);
@@ -54,31 +54,31 @@
   return v2;
 }
 
-- (void)cacheMapping:(id)a3
+- (void)cacheMapping:(id)mapping
 {
-  v5 = a3;
-  v6 = [v5 displayHardwareIdentifier];
+  mappingCopy = mapping;
+  displayHardwareIdentifier = [mappingCopy displayHardwareIdentifier];
 
-  if (!v6)
+  if (!displayHardwareIdentifier)
   {
     [(_SBDisplayScaleMappingCache *)a2 cacheMapping:?];
   }
 
   hardwareIdentifierToMappings = self->_hardwareIdentifierToMappings;
-  v8 = [v5 displayHardwareIdentifier];
-  [(NSMutableDictionary *)hardwareIdentifierToMappings setObject:v5 forKey:v8];
+  displayHardwareIdentifier2 = [mappingCopy displayHardwareIdentifier];
+  [(NSMutableDictionary *)hardwareIdentifierToMappings setObject:mappingCopy forKey:displayHardwareIdentifier2];
 }
 
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity
 {
-  v8 = [a3 configurationForIdentity:a4];
-  v5 = [v8 hardwareIdentifier];
+  v8 = [monitor configurationForIdentity:identity];
+  hardwareIdentifier = [v8 hardwareIdentifier];
 
-  if (v5)
+  if (hardwareIdentifier)
   {
     hardwareIdentifierToMappings = self->_hardwareIdentifierToMappings;
-    v7 = [v8 hardwareIdentifier];
-    [(NSMutableDictionary *)hardwareIdentifierToMappings removeObjectForKey:v7];
+    hardwareIdentifier2 = [v8 hardwareIdentifier];
+    [(NSMutableDictionary *)hardwareIdentifierToMappings removeObjectForKey:hardwareIdentifier2];
   }
 }
 

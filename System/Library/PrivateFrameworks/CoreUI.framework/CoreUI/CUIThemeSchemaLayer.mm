@@ -1,15 +1,15 @@
 @interface CUIThemeSchemaLayer
-+ (id)layerWithRenditions:(id)a3 name:(id)a4 index:(unint64_t)a5;
-- (CUIThemeSchemaLayer)initWithRenditions:(id)a3 name:(id)a4 index:(unint64_t)a5;
-- (double)translateFromWidthsOrHeightsToLeftsOrTops:(id)a3 leftsOrTops:(id *)a4;
++ (id)layerWithRenditions:(id)renditions name:(id)name index:(unint64_t)index;
+- (CUIThemeSchemaLayer)initWithRenditions:(id)renditions name:(id)name index:(unint64_t)index;
+- (double)translateFromWidthsOrHeightsToLeftsOrTops:(id)tops leftsOrTops:(id *)orTops;
 - (id)description;
-- (void)calculateColumLefts:(id *)a3 rowTops:(id *)a4 totalSize:(CGSize *)a5 forPartFeatures:(unint64_t)a6;
+- (void)calculateColumLefts:(id *)lefts rowTops:(id *)tops totalSize:(CGSize *)size forPartFeatures:(unint64_t)features;
 - (void)dealloc;
 @end
 
 @implementation CUIThemeSchemaLayer
 
-- (CUIThemeSchemaLayer)initWithRenditions:(id)a3 name:(id)a4 index:(unint64_t)a5
+- (CUIThemeSchemaLayer)initWithRenditions:(id)renditions name:(id)name index:(unint64_t)index
 {
   v11.receiver = self;
   v11.super_class = CUIThemeSchemaLayer;
@@ -17,9 +17,9 @@
   v9 = v8;
   if (v8)
   {
-    [(CUIThemeSchemaLayer *)v8 setRenditions:a3];
-    [(CUIThemeSchemaLayer *)v9 setName:a4];
-    [(CUIThemeSchemaLayer *)v9 setIndex:a5];
+    [(CUIThemeSchemaLayer *)v8 setRenditions:renditions];
+    [(CUIThemeSchemaLayer *)v9 setName:name];
+    [(CUIThemeSchemaLayer *)v9 setIndex:index];
   }
 
   return v9;
@@ -41,16 +41,16 @@
   return [-[CUIThemeSchemaLayer description](&v3 description)];
 }
 
-+ (id)layerWithRenditions:(id)a3 name:(id)a4 index:(unint64_t)a5
++ (id)layerWithRenditions:(id)renditions name:(id)name index:(unint64_t)index
 {
-  v5 = [[a1 alloc] initWithRenditions:a3 name:a4 index:a5];
+  v5 = [[self alloc] initWithRenditions:renditions name:name index:index];
 
   return v5;
 }
 
-- (double)translateFromWidthsOrHeightsToLeftsOrTops:(id)a3 leftsOrTops:(id *)a4
+- (double)translateFromWidthsOrHeightsToLeftsOrTops:(id)tops leftsOrTops:(id *)orTops
 {
-  v6 = [a3 count];
+  v6 = [tops count];
   v7 = [NSMutableArray arrayWithCapacity:v6];
   if (v6 < 1)
   {
@@ -65,7 +65,7 @@
     {
       *&v8 = v10;
       [(NSMutableArray *)v7 addObject:[NSNumber numberWithFloat:v8]];
-      [objc_msgSend(a3 objectForKey:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v9)), "floatValue"}];
+      [objc_msgSend(tops objectForKey:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v9)), "floatValue"}];
       v8 = v11;
       v10 = v10 + v8;
       ++v9;
@@ -74,11 +74,11 @@
     while (v6 != v9);
   }
 
-  *a4 = v7;
+  *orTops = v7;
   return v10;
 }
 
-- (void)calculateColumLefts:(id *)a3 rowTops:(id *)a4 totalSize:(CGSize *)a5 forPartFeatures:(unint64_t)a6
+- (void)calculateColumLefts:(id *)lefts rowTops:(id *)tops totalSize:(CGSize *)size forPartFeatures:(unint64_t)features
 {
   v8 = [NSMutableDictionary dictionaryWithCapacity:2];
   v9 = [NSMutableDictionary dictionaryWithCapacity:2];
@@ -86,9 +86,9 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v29 = self;
-  v10 = [(CUIThemeSchemaLayer *)self renditions];
-  v11 = [(NSArray *)v10 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  selfCopy = self;
+  renditions = [(CUIThemeSchemaLayer *)self renditions];
+  v11 = [(NSArray *)renditions countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v11)
   {
     v12 = v11;
@@ -99,11 +99,11 @@
       {
         if (*v36 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(renditions);
         }
 
         v15 = *(*(&v35 + 1) + 8 * i);
-        [v15 renditionCoordinatesForPartFeatures:a6];
+        [v15 renditionCoordinatesForPartFeatures:features];
         v17 = v16;
         v19 = v18;
         v20 = [objc_msgSend(v15 "referenceImage")];
@@ -124,22 +124,22 @@
         }
       }
 
-      v12 = [(NSArray *)v10 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v12 = [(NSArray *)renditions countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v12);
   }
 
   v34 = 0;
-  [(CUIThemeSchemaLayer *)v29 translateFromWidthsOrHeightsToLeftsOrTops:v8 leftsOrTops:&v34];
+  [(CUIThemeSchemaLayer *)selfCopy translateFromWidthsOrHeightsToLeftsOrTops:v8 leftsOrTops:&v34];
   v26 = v25;
   v33 = 0;
-  [(CUIThemeSchemaLayer *)v29 translateFromWidthsOrHeightsToLeftsOrTops:v9 leftsOrTops:&v33];
+  [(CUIThemeSchemaLayer *)selfCopy translateFromWidthsOrHeightsToLeftsOrTops:v9 leftsOrTops:&v33];
   v27 = v33;
-  *a3 = v34;
-  *a4 = v27;
-  a5->width = v26;
-  a5->height = v28;
+  *lefts = v34;
+  *tops = v27;
+  size->width = v26;
+  size->height = v28;
 }
 
 @end

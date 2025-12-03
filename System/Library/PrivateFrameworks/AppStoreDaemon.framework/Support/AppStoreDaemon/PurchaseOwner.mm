@@ -1,5 +1,5 @@
 @interface PurchaseOwner
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
@@ -15,16 +15,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_8;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     LOBYTE(self) = 1;
     goto LABEL_13;

@@ -3,29 +3,29 @@
 - (BOOL)hasiCloudDriveEnabled;
 - (BOOL)isManagedAppleID;
 - (BOOL)isSignedInToiCloudAccount;
-- (JSAAccount)initWithDelegate:(id)a3;
+- (JSAAccount)initWithDelegate:(id)delegate;
 - (JSAAccountDelegate)delegate;
 - (NSString)accountName;
 - (NSString)firstName;
 - (NSString)lastName;
 - (NSString)localizedName;
 - (NSString)uniqueIdentifier;
-- (void)signOut:(id)a3;
-- (void)signOutWithCompletion:(id)a3;
+- (void)signOut:(id)out;
+- (void)signOutWithCompletion:(id)completion;
 @end
 
 @implementation JSAAccount
 
-- (JSAAccount)initWithDelegate:(id)a3
+- (JSAAccount)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = JSAAccount;
   v5 = [(JSAAccount *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -34,116 +34,116 @@
 - (NSString)uniqueIdentifier
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 activeStoreAccount];
-  v4 = [v3 ams_DSID];
-  v5 = [v4 stringValue];
+  activeStoreAccount = [v2 activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
+  stringValue = [ams_DSID stringValue];
 
-  return v5;
+  return stringValue;
 }
 
 - (NSString)accountName
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 activeStoreAccount];
-  v4 = [v3 username];
+  activeStoreAccount = [v2 activeStoreAccount];
+  username = [activeStoreAccount username];
 
-  return v4;
+  return username;
 }
 
 - (NSString)firstName
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 activeStoreAccount];
-  v4 = [v3 ams_firstName];
+  activeStoreAccount = [v2 activeStoreAccount];
+  ams_firstName = [activeStoreAccount ams_firstName];
 
-  return v4;
+  return ams_firstName;
 }
 
 - (NSString)lastName
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 activeStoreAccount];
-  v4 = [v3 ams_lastName];
+  activeStoreAccount = [v2 activeStoreAccount];
+  ams_lastName = [activeStoreAccount ams_lastName];
 
-  return v4;
+  return ams_lastName;
 }
 
 - (NSString)localizedName
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 activeStoreAccount];
-  v4 = [v3 ams_fullName];
+  activeStoreAccount = [v2 activeStoreAccount];
+  ams_fullName = [activeStoreAccount ams_fullName];
 
-  return v4;
+  return ams_fullName;
 }
 
 - (BOOL)isManagedAppleID
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 isStoreAccountManagedAppleID];
+  isStoreAccountManagedAppleID = [v2 isStoreAccountManagedAppleID];
 
-  return v3;
+  return isStoreAccountManagedAppleID;
 }
 
 - (BOOL)isSignedInToiCloudAccount
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 isUserSignedInToiCloud];
+  isUserSignedInToiCloud = [v2 isUserSignedInToiCloud];
 
-  return v3;
+  return isUserSignedInToiCloud;
 }
 
 - (BOOL)hasiCloudDriveEnabled
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 isGlobalICloudDriveSyncOptedIn];
+  isGlobalICloudDriveSyncOptedIn = [v2 isGlobalICloudDriveSyncOptedIn];
 
-  return v3;
+  return isGlobalICloudDriveSyncOptedIn;
 }
 
 - (BOOL)hasRecommendationsEnabled
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 hasRecommendationsEnabled];
+  hasRecommendationsEnabled = [v2 hasRecommendationsEnabled];
 
-  return v3;
+  return hasRecommendationsEnabled;
 }
 
-- (void)signOut:(id)a3
+- (void)signOut:(id)out
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_FFF4;
   v5[3] = &unk_B29C0;
-  v6 = a3;
-  v4 = v6;
+  outCopy = out;
+  v4 = outCopy;
   [(JSAAccount *)self signOutWithCompletion:v5];
 }
 
-- (void)signOutWithCompletion:(id)a3
+- (void)signOutWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[BUAccountsProvider sharedProvider];
-  v6 = [v5 activeStoreAccount];
+  activeStoreAccount = [v5 activeStoreAccount];
 
-  if (v6)
+  if (activeStoreAccount)
   {
-    v7 = [(JSAAccount *)self delegate];
-    [v7 accountWillAttemptSignOut:self];
+    delegate = [(JSAAccount *)self delegate];
+    [delegate accountWillAttemptSignOut:self];
 
-    v8 = [v6 bu_signOut];
+    bu_signOut = [activeStoreAccount bu_signOut];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10234;
     v11[3] = &unk_B29E8;
     v11[4] = self;
-    v12 = v4;
-    [v8 addFinishBlock:v11];
+    v12 = completionCopy;
+    [bu_signOut addFinishBlock:v11];
   }
 
   else
   {
-    v9 = objc_retainBlock(v4);
+    v9 = objc_retainBlock(completionCopy);
     v10 = v9;
     if (v9)
     {

@@ -1,26 +1,26 @@
 @interface PKCompactNavigationWrapperViewController
-- (CGRect)_wrappedViewControllerFrameForBounds:(CGRect)a3 navigationBarHeight:(double)a4;
-- (PKCompactNavigationWrapperViewController)initWithWrappedViewController:(id)a3 parentNavigationController:(id)a4;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
-- (void)didMoveToParentViewController:(id)a3;
+- (CGRect)_wrappedViewControllerFrameForBounds:(CGRect)bounds navigationBarHeight:(double)height;
+- (PKCompactNavigationWrapperViewController)initWithWrappedViewController:(id)controller parentNavigationController:(id)navigationController;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)setTargetNavigationHeight:(double)a3;
+- (void)setTargetNavigationHeight:(double)height;
 - (void)viewDidLayoutSubviews;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKCompactNavigationWrapperViewController
 
-- (PKCompactNavigationWrapperViewController)initWithWrappedViewController:(id)a3 parentNavigationController:(id)a4
+- (PKCompactNavigationWrapperViewController)initWithWrappedViewController:(id)controller parentNavigationController:(id)navigationController
 {
-  v6 = a4;
+  navigationControllerCopy = navigationController;
   v10.receiver = self;
   v10.super_class = PKCompactNavigationWrapperViewController;
-  v7 = [(PKWrapperViewController *)&v10 initWithWrappedViewController:a3 type:1];
+  v7 = [(PKWrapperViewController *)&v10 initWithWrappedViewController:controller type:1];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_parentNavigationController, v6);
+    objc_storeWeak(&v7->_parentNavigationController, navigationControllerCopy);
     v8->_needsInitialLayout = 1;
   }
 
@@ -32,27 +32,27 @@
   v7.receiver = self;
   v7.super_class = PKCompactNavigationWrapperViewController;
   [(PKWrapperViewController *)&v7 loadView];
-  v3 = [(PKCompactNavigationWrapperViewController *)self view];
-  [v3 setAutoresizesSubviews:0];
+  view = [(PKCompactNavigationWrapperViewController *)self view];
+  [view setAutoresizesSubviews:0];
 
-  v4 = [(PKWrapperViewController *)self wrappedViewController];
-  v5 = [v4 view];
-  v6 = [v5 layer];
-  [v6 setAnchorPoint:{0.5, 0.0}];
+  wrappedViewController = [(PKWrapperViewController *)self wrappedViewController];
+  view2 = [wrappedViewController view];
+  layer = [view2 layer];
+  [layer setAnchorPoint:{0.5, 0.0}];
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
-  v6 = a3;
-  v7 = [(PKWrapperViewController *)self wrappedViewController];
-  v8 = v7;
-  if (v7 != v6)
+  controllerCopy = controller;
+  wrappedViewController = [(PKWrapperViewController *)self wrappedViewController];
+  v8 = wrappedViewController;
+  if (wrappedViewController != controllerCopy)
   {
 
 LABEL_3:
     v28.receiver = self;
     v28.super_class = PKCompactNavigationWrapperViewController;
-    [(PKCompactNavigationWrapperViewController *)&v28 _edgeInsetsForChildViewController:v6 insetsAreAbsolute:a4];
+    [(PKCompactNavigationWrapperViewController *)&v28 _edgeInsetsForChildViewController:controllerCopy insetsAreAbsolute:absolute];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -67,27 +67,27 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  if (a4)
+  if (absolute)
   {
-    *a4 = 1;
+    *absolute = 1;
   }
 
   v18 = MEMORY[0x1E69DDCE0];
   v10 = *MEMORY[0x1E69DDCE0];
-  v19 = [(PKCompactNavigationWrapperViewController *)self viewIfLoaded];
-  v20 = v19;
-  if (v19)
+  viewIfLoaded = [(PKCompactNavigationWrapperViewController *)self viewIfLoaded];
+  v20 = viewIfLoaded;
+  if (viewIfLoaded)
   {
-    [v19 safeAreaInsets];
+    [viewIfLoaded safeAreaInsets];
     v10 = fmax(v21, v10);
   }
 
   v14 = v18[2];
-  v22 = [WeakRetained viewIfLoaded];
+  viewIfLoaded2 = [WeakRetained viewIfLoaded];
 
-  if (v22)
+  if (viewIfLoaded2)
   {
-    [v22 safeAreaInsets];
+    [viewIfLoaded2 safeAreaInsets];
     v14 = fmax(v23, v14);
   }
 
@@ -111,22 +111,22 @@ LABEL_12:
   v17.receiver = self;
   v17.super_class = PKCompactNavigationWrapperViewController;
   [(PKWrapperViewController *)&v17 viewWillLayoutSubviews];
-  v3 = [(PKCompactNavigationWrapperViewController *)self view];
-  v4 = [(PKWrapperViewController *)self wrappedViewController];
-  v5 = [v4 view];
+  view = [(PKCompactNavigationWrapperViewController *)self view];
+  wrappedViewController = [(PKWrapperViewController *)self wrappedViewController];
+  view2 = [wrappedViewController view];
 
-  [v3 bounds];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(PKCompactNavigationWrapperViewController *)self navigationController];
-  v15 = [v14 navigationBar];
-  [v15 frame];
+  navigationController = [(PKCompactNavigationWrapperViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   self->_navigationBarHeight = v16;
 
   [(PKCompactNavigationWrapperViewController *)self _wrappedViewControllerFrameForBounds:v7 navigationBarHeight:v9, v11, v13, self->_navigationBarHeight];
-  [v5 setFrame:?];
+  [view2 setFrame:?];
 }
 
 - (void)viewDidLayoutSubviews
@@ -140,47 +140,47 @@ LABEL_12:
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = PKCompactNavigationWrapperViewController;
   [(PKCompactNavigationWrapperViewController *)&v6 didMoveToParentViewController:?];
-  if (a3)
+  if (controller)
   {
-    v5 = [(PKCompactNavigationWrapperViewController *)self viewIfLoaded];
-    [v5 setNeedsLayout];
+    viewIfLoaded = [(PKCompactNavigationWrapperViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
-- (void)setTargetNavigationHeight:(double)a3
+- (void)setTargetNavigationHeight:(double)height
 {
-  if (!self->_hasExplicitTargetNavigationHeight || self->_targetNavigationHeight != a3 || (navigationBarHeight = self->_navigationBarHeight, -[PKCompactNavigationWrapperViewController navigationController](self, "navigationController"), v6 = objc_claimAutoreleasedReturnValue(), [v6 navigationBar], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "frame"), v9 = v8, v7, v6, navigationBarHeight != v9))
+  if (!self->_hasExplicitTargetNavigationHeight || self->_targetNavigationHeight != height || (navigationBarHeight = self->_navigationBarHeight, -[PKCompactNavigationWrapperViewController navigationController](self, "navigationController"), v6 = objc_claimAutoreleasedReturnValue(), [v6 navigationBar], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "frame"), v9 = v8, v7, v6, navigationBarHeight != v9))
   {
-    self->_targetNavigationHeight = a3;
+    self->_targetNavigationHeight = height;
     self->_hasExplicitTargetNavigationHeight = 1;
-    v10 = [(PKCompactNavigationWrapperViewController *)self viewIfLoaded];
-    [v10 setNeedsLayout];
+    viewIfLoaded = [(PKCompactNavigationWrapperViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
-- (CGRect)_wrappedViewControllerFrameForBounds:(CGRect)a3 navigationBarHeight:(double)a4
+- (CGRect)_wrappedViewControllerFrameForBounds:(CGRect)bounds navigationBarHeight:(double)height
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(PKWrapperViewController *)self edgesForExtendedLayout:a3.origin.x];
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v9 = [(PKWrapperViewController *)self edgesForExtendedLayout:bounds.origin.x];
   if (self->_hasExplicitTargetNavigationHeight)
   {
     targetNavigationHeight = self->_targetNavigationHeight;
     if ((v9 & 1) == 0)
     {
-      targetNavigationHeight = fmax(targetNavigationHeight - a4, 0.0);
+      targetNavigationHeight = fmax(targetNavigationHeight - height, 0.0);
     }
   }
 
   else if (v9)
   {
-    targetNavigationHeight = a4;
+    targetNavigationHeight = height;
   }
 
   else

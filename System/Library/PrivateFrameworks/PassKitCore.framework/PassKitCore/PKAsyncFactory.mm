@@ -1,24 +1,24 @@
 @interface PKAsyncFactory
-+ (id)createObjectWithOperation:(id)a3 completion:(id)a4;
++ (id)createObjectWithOperation:(id)operation completion:(id)completion;
 @end
 
 @implementation PKAsyncFactory
 
-+ (id)createObjectWithOperation:(id)a3 completion:(id)a4
++ (id)createObjectWithOperation:(id)operation completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  operationCopy = operation;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
-    if (v5)
+    if (operationCopy)
     {
       v8 = objc_alloc_init(PKAsyncUnaryOperationComposer);
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __55__PKAsyncFactory_createObjectWithOperation_completion___block_invoke;
       v14[3] = &unk_1E79CBA40;
-      v15 = v5;
+      v15 = operationCopy;
       [(PKAsyncUnaryOperationComposer *)v8 addOperation:v14];
       v9 = objc_alloc_init(PKAsyncFactoryOperationContainer);
       v12[0] = MEMORY[0x1E69E9820];
@@ -31,7 +31,7 @@
       goto LABEL_6;
     }
 
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
   v10 = 0;

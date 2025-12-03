@@ -1,27 +1,27 @@
 @interface BKAnchorLocation
-+ (id)deserializeLocationFromDictionary:(id)a3;
-- (BKAnchorLocation)initWithCoder:(id)a3;
-- (BKAnchorLocation)initWithLocationDictionary:(id)a3;
-- (BKAnchorLocation)initWithOrdinal:(int64_t)a3 andAnchor:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)deserializeLocationFromDictionary:(id)dictionary;
+- (BKAnchorLocation)initWithCoder:(id)coder;
+- (BKAnchorLocation)initWithLocationDictionary:(id)dictionary;
+- (BKAnchorLocation)initWithOrdinal:(int64_t)ordinal andAnchor:(id)anchor;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)serializeLocationToDictionary;
 - (id)stringValue;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKAnchorLocation
 
-- (BKAnchorLocation)initWithCoder:(id)a3
+- (BKAnchorLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = BKAnchorLocation;
-  v5 = [(BKLocation *)&v10 initWithCoder:v4];
+  v5 = [(BKLocation *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anchor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anchor"];
     v7 = [v6 copy];
     anchor = v5->_anchor;
     v5->_anchor = v7;
@@ -30,16 +30,16 @@
   return v5;
 }
 
-- (BKAnchorLocation)initWithLocationDictionary:(id)a3
+- (BKAnchorLocation)initWithLocationDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"super"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"super"];
   v11.receiver = self;
   v11.super_class = BKAnchorLocation;
   v6 = [(BKLocation *)&v11 initWithLocationDictionary:v5];
   if (v6)
   {
-    v7 = [v4 objectForKey:@"anchor"];
+    v7 = [dictionaryCopy objectForKey:@"anchor"];
     v8 = [v7 copy];
     anchor = v6->_anchor;
     v6->_anchor = v8;
@@ -48,15 +48,15 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = BKAnchorLocation, [(BKLocation *)&v9 isEqual:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = BKAnchorLocation, [(BKLocation *)&v9 isEqual:equalCopy]))
   {
-    v5 = [v4 anchor];
-    v6 = [(BKAnchorLocation *)self anchor];
-    v7 = [v5 isEqualToString:v6];
+    anchor = [equalCopy anchor];
+    anchor2 = [(BKAnchorLocation *)self anchor];
+    v7 = [anchor isEqualToString:anchor2];
   }
 
   else
@@ -79,20 +79,20 @@
 {
   v7.receiver = self;
   v7.super_class = BKAnchorLocation;
-  v3 = [(BKLocation *)&v7 serializeLocationToDictionary];
-  v4 = [(BKAnchorLocation *)self anchor];
-  v5 = [NSDictionary dictionaryWithObjectsAndKeys:v3, @"super", v4, @"anchor", @"BKAnchorLocation", @"class", 0];
+  serializeLocationToDictionary = [(BKLocation *)&v7 serializeLocationToDictionary];
+  anchor = [(BKAnchorLocation *)self anchor];
+  v5 = [NSDictionary dictionaryWithObjectsAndKeys:serializeLocationToDictionary, @"super", anchor, @"anchor", @"BKAnchorLocation", @"class", 0];
 
   return v5;
 }
 
-+ (id)deserializeLocationFromDictionary:(id)a3
++ (id)deserializeLocationFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"class"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"class"];
   if ([v4 isEqualToString:@"BKAnchorLocation"])
   {
-    v5 = [[BKAnchorLocation alloc] initWithLocationDictionary:v3];
+    v5 = [[BKAnchorLocation alloc] initWithLocationDictionary:dictionaryCopy];
   }
 
   else
@@ -103,15 +103,15 @@
   return v5;
 }
 
-- (BKAnchorLocation)initWithOrdinal:(int64_t)a3 andAnchor:(id)a4
+- (BKAnchorLocation)initWithOrdinal:(int64_t)ordinal andAnchor:(id)anchor
 {
-  v6 = a4;
+  anchorCopy = anchor;
   v11.receiver = self;
   v11.super_class = BKAnchorLocation;
-  v7 = [(BKLocation *)&v11 initWithOrdinal:a3];
+  v7 = [(BKLocation *)&v11 initWithOrdinal:ordinal];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [anchorCopy copy];
     anchor = v7->_anchor;
     v7->_anchor = v8;
   }
@@ -119,21 +119,21 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BKAnchorLocation;
-  v4 = a3;
-  [(BKLocation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_anchor forKey:{@"anchor", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(BKLocation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_anchor forKey:{@"anchor", v5.receiver, v5.super_class}];
 }
 
 - (id)stringValue
 {
   v6.receiver = self;
   v6.super_class = BKAnchorLocation;
-  v3 = [(BKLocation *)&v6 stringValue];
-  v4 = [NSString stringWithFormat:@"{ %@, anchor:%@ }", v3, self->_anchor];
+  stringValue = [(BKLocation *)&v6 stringValue];
+  v4 = [NSString stringWithFormat:@"{ %@, anchor:%@ }", stringValue, self->_anchor];
 
   return v4;
 }

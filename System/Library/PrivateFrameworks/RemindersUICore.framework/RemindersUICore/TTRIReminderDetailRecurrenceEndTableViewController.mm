@@ -1,32 +1,32 @@
 @interface TTRIReminderDetailRecurrenceEndTableViewController
-- (_TtC15RemindersUICore50TTRIReminderDetailRecurrenceEndTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC15RemindersUICore50TTRIReminderDetailRecurrenceEndTableViewController)initWithStyle:(int64_t)a3;
+- (_TtC15RemindersUICore50TTRIReminderDetailRecurrenceEndTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC15RemindersUICore50TTRIReminderDetailRecurrenceEndTableViewController)initWithStyle:(int64_t)style;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TTRIReminderDetailRecurrenceEndTableViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D311C98();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_21D312944(a3);
+  selfCopy = self;
+  sub_21D312944(disappear);
 }
 
-- (_TtC15RemindersUICore50TTRIReminderDetailRecurrenceEndTableViewController)initWithStyle:(int64_t)a3
+- (_TtC15RemindersUICore50TTRIReminderDetailRecurrenceEndTableViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15RemindersUICore50TTRIReminderDetailRecurrenceEndTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15RemindersUICore50TTRIReminderDetailRecurrenceEndTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

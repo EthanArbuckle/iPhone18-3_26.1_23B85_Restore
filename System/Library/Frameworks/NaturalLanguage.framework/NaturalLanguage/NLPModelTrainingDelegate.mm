@@ -1,20 +1,20 @@
 @interface NLPModelTrainingDelegate
-- (NLPModelTrainingDelegate)initWithLogHandler:(id)a3;
-- (void)modelTrainer:(id)a3 logMessage:(id)a4;
+- (NLPModelTrainingDelegate)initWithLogHandler:(id)handler;
+- (void)modelTrainer:(id)trainer logMessage:(id)message;
 @end
 
 @implementation NLPModelTrainingDelegate
 
-- (NLPModelTrainingDelegate)initWithLogHandler:(id)a3
+- (NLPModelTrainingDelegate)initWithLogHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10.receiver = self;
   v10.super_class = NLPModelTrainingDelegate;
   v5 = [(NLPModelTrainingDelegate *)&v10 init];
   v6 = v5;
-  if (v4 && v5)
+  if (handlerCopy && v5)
   {
-    v7 = MEMORY[0x19EAFC6F0](v4);
+    v7 = MEMORY[0x19EAFC6F0](handlerCopy);
     logHandler = v6->_logHandler;
     v6->_logHandler = v7;
   }
@@ -22,16 +22,16 @@
   return v6;
 }
 
-- (void)modelTrainer:(id)a3 logMessage:(id)a4
+- (void)modelTrainer:(id)trainer logMessage:(id)message
 {
   v9 = 0;
   logHandler = self->_logHandler;
   v6 = logHandler[2];
-  v7 = a4;
-  v6(logHandler, v7, &v9);
-  v8 = [v7 UTF8String];
+  messageCopy = message;
+  v6(logHandler, messageCopy, &v9);
+  uTF8String = [messageCopy UTF8String];
 
-  puts(v8);
+  puts(uTF8String);
   if (v9)
   {
     self->_stop = v9;

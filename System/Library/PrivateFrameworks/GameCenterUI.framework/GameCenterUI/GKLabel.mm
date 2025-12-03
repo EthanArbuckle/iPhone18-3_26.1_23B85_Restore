@@ -1,17 +1,17 @@
 @interface GKLabel
 + (void)initialize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)shrinkFontToFitSize:(CGSize)a3;
-- (GKLabel)initWithFrame:(CGRect)a3;
+- (CGSize)shrinkFontToFitSize:(CGSize)size;
+- (GKLabel)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)titleEdgeInsets;
 - (double)actualFontShrinkageFactor;
-- (void)applyTextStyle:(id)a3;
+- (void)applyTextStyle:(id)style;
 - (void)replayAndApplyStyleUnlessInhibited;
-- (void)replayAndApplyStyleWithSystemContentChange:(BOOL)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setBaseStyle:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setText:(id)a3;
+- (void)replayAndApplyStyleWithSystemContentChange:(BOOL)change;
+- (void)setAttributedText:(id)text;
+- (void)setBaseStyle:(id)style;
+- (void)setBounds:(CGRect)bounds;
+- (void)setText:(id)text;
 - (void)updateConstraints;
 @end
 
@@ -26,21 +26,21 @@
   }
 }
 
-- (void)replayAndApplyStyleWithSystemContentChange:(BOOL)a3
+- (void)replayAndApplyStyleWithSystemContentChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [(GKLabel *)self usingAttributedText];
+  changeCopy = change;
+  usingAttributedText = [(GKLabel *)self usingAttributedText];
   baseStyle = self->_baseStyle;
-  if (v5)
+  if (usingAttributedText)
   {
     if (!baseStyle)
     {
       return;
     }
 
-    v7 = [(GKLabel *)self attributedText];
-    v8 = [MEMORY[0x277D0C8B0] attributedString:v7 byReplayingFromBaseStyle:self->_baseStyle systemContentSizeDidChange:v3];
-    if (v8 != v7)
+    attributedText = [(GKLabel *)self attributedText];
+    v8 = [MEMORY[0x277D0C8B0] attributedString:attributedText byReplayingFromBaseStyle:self->_baseStyle systemContentSizeDidChange:changeCopy];
+    if (v8 != attributedText)
     {
       v13.receiver = self;
       v13.super_class = GKLabel;
@@ -50,43 +50,43 @@
 
   else
   {
-    v7 = baseStyle;
+    attributedText = baseStyle;
     appliedStyle = self->_appliedStyle;
     if (appliedStyle)
     {
-      v10 = [(GKTextStyle *)appliedStyle replayOnBaseStyle:self->_baseStyle systemContentSizeDidChange:v3];
+      v10 = [(GKTextStyle *)appliedStyle replayOnBaseStyle:self->_baseStyle systemContentSizeDidChange:changeCopy];
 
-      v7 = v10;
+      attributedText = v10;
     }
 
-    if (!v7)
+    if (!attributedText)
     {
       goto LABEL_10;
     }
 
     v12 = 0.0;
-    v8 = [(GKTextStyle *)v7 resolveFontAndLineSpacing:&v12];
+    v8 = [(GKTextStyle *)attributedText resolveFontAndLineSpacing:&v12];
     [(GKLabel *)self setFont:v8];
-    v11 = [(GKTextStyle *)v7 color];
-    [(GKLabel *)self setTextColor:v11];
+    color = [(GKTextStyle *)attributedText color];
+    [(GKLabel *)self setTextColor:color];
 
-    [(GKLabel *)self setLineBreakMode:[(GKTextStyle *)v7 lineBreakMode]];
-    [(GKLabel *)self setTextAlignment:[(GKTextStyle *)v7 textAlignment]];
+    [(GKLabel *)self setLineBreakMode:[(GKTextStyle *)attributedText lineBreakMode]];
+    [(GKLabel *)self setTextAlignment:[(GKTextStyle *)attributedText textAlignment]];
     [(GKLabel *)self setLineSpacing:v12];
   }
 
 LABEL_10:
 }
 
-- (void)setBaseStyle:(id)a3
+- (void)setBaseStyle:(id)style
 {
-  v5 = a3;
-  if (self->_baseStyle != v5)
+  styleCopy = style;
+  if (self->_baseStyle != styleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_baseStyle, a3);
+    v6 = styleCopy;
+    objc_storeStrong(&self->_baseStyle, style);
     [(GKLabel *)self replayAndApplyStyleWithSystemContentChange:0];
-    v5 = v6;
+    styleCopy = v6;
   }
 }
 
@@ -146,17 +146,17 @@ LABEL_10:
   [v17 setBaseStyle:v18];
 }
 
-- (GKLabel)initWithFrame:(CGRect)a3
+- (GKLabel)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = GKLabel;
-  v3 = [(GKLabel *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKLabel *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v5 != 1 || (v6 = 0x277D0C8B8, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
+    if (userInterfaceIdiom != 1 || (v6 = 0x277D0C8B8, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
     {
       v6 = 0x277D0C8C0;
     }
@@ -168,30 +168,30 @@ LABEL_10:
   return v3;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v4.receiver = self;
   v4.super_class = GKLabel;
-  [(GKLabel *)&v4 setAttributedText:a3];
+  [(GKLabel *)&v4 setAttributedText:text];
   self->_usingAttributedText = 1;
   [(GKLabel *)self replayAndApplyStyleUnlessInhibited];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = GKLabel;
-  [(GKLabel *)&v4 setText:a3];
+  [(GKLabel *)&v4 setText:text];
   self->_usingAttributedText = 0;
 }
 
-- (void)applyTextStyle:(id)a3
+- (void)applyTextStyle:(id)style
 {
-  appliedStyle = a3;
+  appliedStyle = style;
   v6 = appliedStyle;
   if (self->_appliedStyle != appliedStyle)
   {
-    objc_storeStrong(&self->_appliedStyle, a3);
+    objc_storeStrong(&self->_appliedStyle, style);
     appliedStyle = self->_appliedStyle;
   }
 
@@ -212,10 +212,10 @@ LABEL_10:
   return result;
 }
 
-- (CGSize)shrinkFontToFitSize:(CGSize)a3
+- (CGSize)shrinkFontToFitSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v41[2] = *MEMORY[0x277D85DE8];
   [(GKLabel *)self replayAndApplyStyleUnlessInhibited];
   if (width == 0.0 || (v39 = height, v6 = width, height == 0.0))
@@ -232,7 +232,7 @@ LABEL_10:
     v6 = v7;
   }
 
-  v9 = [(GKLabel *)self text];
+  text = [(GKLabel *)self text];
   if ([(GKLabel *)self numberOfLines]== 1)
   {
     v10 = 0;
@@ -241,8 +241,8 @@ LABEL_10:
 
   else
   {
-    v12 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v13 = [v9 componentsSeparatedByCharactersInSet:v12];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v13 = [text componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     if ([v13 count] < 2)
     {
@@ -257,13 +257,13 @@ LABEL_10:
     }
   }
 
-  v14 = [(GKLabel *)self font];
-  [v14 pointSize];
+  font = [(GKLabel *)self font];
+  [font pointSize];
   v16 = v15;
   [(GKLabel *)self minimumScaleFactor];
   v18 = v16 * v17;
-  v19 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v20 = [v19 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v20 = [defaultParagraphStyle mutableCopy];
 
   [v20 setLineBreakMode:v11];
   LODWORD(v21) = *"333?";
@@ -277,10 +277,10 @@ LABEL_10:
     {
       v40[0] = v22;
       v40[1] = v23;
-      v41[0] = v14;
+      v41[0] = font;
       v41[1] = v20;
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:2];
-      [v9 boundingRectWithSize:1 options:v24 attributes:0 context:{v6, 1.79769313e308}];
+      [text boundingRectWithSize:1 options:v24 attributes:0 context:{v6, 1.79769313e308}];
       v27 = v26;
       v28 = v25;
       if (v26 < v6 && v25 < v39)
@@ -298,11 +298,11 @@ LABEL_10:
       }
 
       v16 = v16 + -0.5;
-      v31 = [v14 fontWithSize:v16];
+      v31 = [font fontWithSize:v16];
 
       width = v27;
       height = v28;
-      v14 = v31;
+      font = v31;
       if (v16 < v18)
       {
         goto LABEL_24;
@@ -310,19 +310,19 @@ LABEL_10:
     }
   }
 
-  v31 = v14;
+  v31 = font;
   v28 = height;
   v27 = width;
 LABEL_24:
   if (v16 != v38)
   {
     [(GKLabel *)self setFont:v31];
-    v32 = [(GKLabel *)self attributedText];
+    attributedText = [(GKLabel *)self attributedText];
 
-    if (v32)
+    if (attributedText)
     {
-      v33 = [(GKLabel *)self attributedText];
-      v34 = [v33 attributesAtIndex:0 effectiveRange:0];
+      attributedText2 = [(GKLabel *)self attributedText];
+      v34 = [attributedText2 attributesAtIndex:0 effectiveRange:0];
 
       v35 = [v34 objectForKeyedSubscript:@"GKRecorderAttribute"];
       objc_opt_class();
@@ -361,12 +361,12 @@ LABEL_30:
   [(GKLabel *)&v5 updateConstraints];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(GKLabel *)self shouldEnforcePreferredWidth])
   {
     v10.origin.x = x;

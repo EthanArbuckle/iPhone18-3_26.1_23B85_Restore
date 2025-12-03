@@ -1,14 +1,14 @@
 @interface PEAdjustmentStraighten
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7;
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation PEAdjustmentStraighten
 
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a7;
-  v11 = [a4 autoCropValuesWithAccuracy:0];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  v11 = [calculator autoCropValuesWithAccuracy:0];
   v12 = [v11 objectForKeyedSubscript:@"angle"];
   [v12 doubleValue];
   v14 = v13;
@@ -62,10 +62,10 @@
     *&v30[6] = v23;
     *&v30[7] = v26;
     v30[8] = v14;
-    [v9 modifyAdjustmentWithKey:v29 modificationBlock:v30];
+    [controllerCopy modifyAdjustmentWithKey:v29 modificationBlock:v30];
   }
 
-  v10[2](v10, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
 void __125__PEAdjustmentStraighten_applyToCompositionController_valuesCalculator_asset_livePortraitBehaviorDelegate_completionHandler___block_invoke(double *a1, void *a2)

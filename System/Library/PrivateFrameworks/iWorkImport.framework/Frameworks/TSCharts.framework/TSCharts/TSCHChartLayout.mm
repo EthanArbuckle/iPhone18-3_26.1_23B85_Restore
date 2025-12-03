@@ -1,17 +1,17 @@
 @interface TSCHChartLayout
-+ (CGRect)normalizeRect:(CGRect)a3 outerRect:(CGRect)a4;
-+ (CGRect)outerRectForRects:(id)a3;
-+ (CGSize)legendSizeForChartInfo:(id)a3 initialWidth:(double)a4;
-+ (id)chartLayoutWithChartInfo:(id)a3;
++ (CGRect)normalizeRect:(CGRect)rect outerRect:(CGRect)outerRect;
++ (CGRect)outerRectForRects:(id)rects;
++ (CGSize)legendSizeForChartInfo:(id)info initialWidth:(double)width;
++ (id)chartLayoutWithChartInfo:(id)info;
 - (BOOL)layoutFrameShouldEncloseInfoGeometry;
 - (CGAffineTransform)transformToConvertChartLayoutToNatural;
-- (CGPoint)convertChartLayoutSpaceToNaturalSpace:(CGPoint)a3;
-- (CGPoint)convertNaturalSpaceToChartLayoutSpace:(CGPoint)a3;
+- (CGPoint)convertChartLayoutSpaceToNaturalSpace:(CGPoint)space;
+- (CGPoint)convertNaturalSpaceToChartLayoutSpace:(CGPoint)space;
 - (CGRect)boundsForResize;
 - (CGRect)chartAreaFrame;
 - (CGRect)chartBodyFrame;
-- (CGRect)convertChartLayoutSpaceRectToNaturalSpaceRect:(CGRect)a3;
-- (CGRect)convertNaturalSpaceRectToChartLayoutSpaceRect:(CGRect)a3;
+- (CGRect)convertChartLayoutSpaceRectToNaturalSpaceRect:(CGRect)rect;
+- (CGRect)convertNaturalSpaceRectToChartLayoutSpaceRect:(CGRect)rect;
 - (CGRect)legendDrawingFrame;
 - (CGRect)legendFrame;
 - (CGRect)legendGeometryFrame;
@@ -19,25 +19,25 @@
 - (CGRect)outerLayoutFrame;
 - (CGRect)outerShadowFrame;
 - (CGRect)titleFrame;
-- (TSCHChartLayout)initWithChartInfo:(id)a3;
+- (TSCHChartLayout)initWithChartInfo:(id)info;
 - (TSWPStyleProviding)styleProvidingSource;
-- (void)setForceLegendAtBottom:(BOOL)a3;
-- (void)setForceOmitLabelPlacement:(BOOL)a3;
-- (void)setForceOmitLegend:(BOOL)a3;
-- (void)setForceTitleAtTop:(BOOL)a3;
+- (void)setForceLegendAtBottom:(BOOL)bottom;
+- (void)setForceOmitLabelPlacement:(BOOL)placement;
+- (void)setForceOmitLegend:(BOOL)legend;
+- (void)setForceTitleAtTop:(BOOL)top;
 @end
 
 @implementation TSCHChartLayout
 
-+ (CGSize)legendSizeForChartInfo:(id)a3 initialWidth:(double)a4
++ (CGSize)legendSizeForChartInfo:(id)info initialWidth:(double)width
 {
-  v7 = objc_msgSend_chartLayoutWithChartInfo_styleProvidingSource_(TSCHChartRootLayoutItem, a2, a4, v4, v5, a3, 0);
+  v7 = objc_msgSend_chartLayoutWithChartInfo_styleProvidingSource_(TSCHChartRootLayoutItem, a2, width, v4, v5, info, 0);
   v8 = [TSCHLegendAreaLayoutItem alloc];
   v13 = objc_msgSend_initWithParent_(v8, v9, v10, v11, v12, v7);
   v16 = v13;
   if (v13)
   {
-    objc_msgSend_setLayoutSize_(v13, v14, a4, 0.0, v15);
+    objc_msgSend_setLayoutSize_(v13, v14, width, 0.0, v15);
     objc_msgSend_layoutSize(v16, v17, v18, v19, v20);
     v22 = v21;
     v24 = v23;
@@ -56,20 +56,20 @@
   return result;
 }
 
-+ (id)chartLayoutWithChartInfo:(id)a3
++ (id)chartLayoutWithChartInfo:(id)info
 {
-  v3 = a3;
-  v8 = objc_msgSend_chartType(v3, v4, v5, v6, v7);
+  infoCopy = info;
+  v8 = objc_msgSend_chartType(infoCopy, v4, v5, v6, v7);
   v13 = objc_alloc(objc_msgSend_chartLayoutClass(v8, v9, v10, v11, v12));
-  v18 = objc_msgSend_initWithChartInfo_(v13, v14, v15, v16, v17, v3);
+  v18 = objc_msgSend_initWithChartInfo_(v13, v14, v15, v16, v17, infoCopy);
 
   return v18;
 }
 
-- (TSCHChartLayout)initWithChartInfo:(id)a3
+- (TSCHChartLayout)initWithChartInfo:(id)info
 {
-  v6 = a3;
-  if (!v6)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v7, v8, v9, "[TSCHChartLayout initWithChartInfo:]");
@@ -85,7 +85,7 @@
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_chartInfo, a3);
+    objc_storeStrong(&v25->_chartInfo, info);
     v26->_needsLayout = 1;
     sub_27635FB94(&v28);
     *&v26->_layoutSettings.forceOmitLegend = v28;
@@ -232,9 +232,9 @@
   return CGAffineTransformMakeTranslation(retstr, v8, v10);
 }
 
-- (CGPoint)convertChartLayoutSpaceToNaturalSpace:(CGPoint)a3
+- (CGPoint)convertChartLayoutSpaceToNaturalSpace:(CGPoint)space
 {
-  objc_msgSend_outerShadowFrame(self, a2, a3.x, a3.y, v3);
+  objc_msgSend_outerShadowFrame(self, a2, space.x, space.y, v3);
 
   TSUSubtractPoints();
   result.y = v5;
@@ -242,9 +242,9 @@
   return result;
 }
 
-- (CGPoint)convertNaturalSpaceToChartLayoutSpace:(CGPoint)a3
+- (CGPoint)convertNaturalSpaceToChartLayoutSpace:(CGPoint)space
 {
-  objc_msgSend_outerShadowFrame(self, a2, a3.x, a3.y, v3);
+  objc_msgSend_outerShadowFrame(self, a2, space.x, space.y, v3);
 
   TSUAddPoints();
   result.y = v5;
@@ -252,13 +252,13 @@
   return result;
 }
 
-- (CGRect)convertChartLayoutSpaceRectToNaturalSpaceRect:(CGRect)a3
+- (CGRect)convertChartLayoutSpaceRectToNaturalSpaceRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsNull(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectIsNull(rect))
   {
     v24.origin.x = x;
     v24.origin.y = y;
@@ -300,13 +300,13 @@
   return result;
 }
 
-- (CGRect)convertNaturalSpaceRectToChartLayoutSpaceRect:(CGRect)a3
+- (CGRect)convertNaturalSpaceRectToChartLayoutSpaceRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsNull(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectIsNull(rect))
   {
     v24.origin.x = x;
     v24.origin.y = y;
@@ -348,60 +348,60 @@
   return result;
 }
 
-- (void)setForceOmitLegend:(BOOL)a3
+- (void)setForceOmitLegend:(BOOL)legend
 {
-  v6 = a3;
+  legendCopy = legend;
   v13 = 0uLL;
   v14 = 0;
   objc_msgSend_layoutSettings(self, a2, v3, v4, v5);
-  if (v6)
+  if (legendCopy)
   {
-    LOBYTE(v13) = v6;
+    LOBYTE(v13) = legendCopy;
     v11 = v13;
     v12 = v14;
     objc_msgSend_setLayoutSettings_(self, v8, *&v13, v9, v10, &v11);
   }
 }
 
-- (void)setForceOmitLabelPlacement:(BOOL)a3
+- (void)setForceOmitLabelPlacement:(BOOL)placement
 {
-  v6 = a3;
+  placementCopy = placement;
   v13 = 0uLL;
   v14 = 0;
   objc_msgSend_layoutSettings(self, a2, v3, v4, v5);
-  if (v6)
+  if (placementCopy)
   {
-    BYTE3(v13) = v6;
+    BYTE3(v13) = placementCopy;
     v11 = v13;
     v12 = v14;
     objc_msgSend_setLayoutSettings_(self, v8, *&v13, v9, v10, &v11);
   }
 }
 
-- (void)setForceTitleAtTop:(BOOL)a3
+- (void)setForceTitleAtTop:(BOOL)top
 {
-  v6 = a3;
+  topCopy = top;
   v13 = 0uLL;
   v14 = 0;
   objc_msgSend_layoutSettings(self, a2, v3, v4, v5);
-  if (v6)
+  if (topCopy)
   {
-    BYTE4(v13) = v6;
+    BYTE4(v13) = topCopy;
     v11 = v13;
     v12 = v14;
     objc_msgSend_setLayoutSettings_(self, v8, *&v13, v9, v10, &v11);
   }
 }
 
-- (void)setForceLegendAtBottom:(BOOL)a3
+- (void)setForceLegendAtBottom:(BOOL)bottom
 {
-  v6 = a3;
+  bottomCopy = bottom;
   v13 = 0uLL;
   v14 = 0;
   objc_msgSend_layoutSettings(self, a2, v3, v4, v5);
-  if (v6)
+  if (bottomCopy)
   {
-    BYTE5(v13) = v6;
+    BYTE5(v13) = bottomCopy;
     v11 = v13;
     v12 = v14;
     objc_msgSend_setLayoutSettings_(self, v8, *&v13, v9, v10, &v11);
@@ -429,7 +429,7 @@
   return result;
 }
 
-+ (CGRect)normalizeRect:(CGRect)a3 outerRect:(CGRect)a4
++ (CGRect)normalizeRect:(CGRect)rect outerRect:(CGRect)outerRect
 {
   TSUSubtractPoints();
 
@@ -441,7 +441,7 @@
   return result;
 }
 
-+ (CGRect)outerRectForRects:(id)a3
++ (CGRect)outerRectForRects:(id)rects
 {
   type metadata accessor for CGRect(0);
   v3 = sub_2764B1228();

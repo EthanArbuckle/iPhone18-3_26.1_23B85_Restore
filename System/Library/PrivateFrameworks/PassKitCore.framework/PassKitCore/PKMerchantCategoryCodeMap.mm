@@ -1,6 +1,6 @@
 @interface PKMerchantCategoryCodeMap
 - (PKMerchantCategoryCodeMap)init;
-- (int64_t)categoryForIndustryCode:(int64_t)a3;
+- (int64_t)categoryForIndustryCode:(int64_t)code;
 @end
 
 @implementation PKMerchantCategoryCodeMap
@@ -102,9 +102,9 @@ void __33__PKMerchantCategoryCodeMap_init__block_invoke(uint64_t a1, void *a2, v
   }
 }
 
-- (int64_t)categoryForIndustryCode:(int64_t)a3
+- (int64_t)categoryForIndustryCode:(int64_t)code
 {
-  if (a3 < 1)
+  if (code < 1)
   {
     return 0;
   }
@@ -117,9 +117,9 @@ void __33__PKMerchantCategoryCodeMap_init__block_invoke(uint64_t a1, void *a2, v
 
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   v5 = [(NSDictionary *)mccCodeToMerchantCategory objectForKey:v4];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
 @end

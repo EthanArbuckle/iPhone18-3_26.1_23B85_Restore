@@ -40,17 +40,17 @@
   if (byte_10008DB80 == 1)
   {
     v3 = [CKContainer containerWithIdentifier:@"com.apple.iCloud.CommCenter"];
-    v4 = [v3 privateCloudDatabase];
+    privateCloudDatabase = [v3 privateCloudDatabase];
   }
 
   else
   {
-    v4 = 0;
+    privateCloudDatabase = 0;
   }
 
   objc_autoreleasePoolPop(v2);
 
-  return v4;
+  return privateCloudDatabase;
 }
 
 - (id)createCKModifyRecordsOperation

@@ -1,22 +1,22 @@
 @interface RTPeopleDensity
-- (BOOL)isEqual:(id)a3;
-- (RTPeopleDensity)initWithBundleUUID:(id)a3 startDate:(id)a4 endDate:(id)a5 densityScore:(double)a6 scanDuration:(double)a7 rssiHistogram:(id)a8;
-- (RTPeopleDensity)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTPeopleDensity)initWithBundleUUID:(id)d startDate:(id)date endDate:(id)endDate densityScore:(double)score scanDuration:(double)duration rssiHistogram:(id)histogram;
+- (RTPeopleDensity)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPeopleDensity
 
-- (RTPeopleDensity)initWithBundleUUID:(id)a3 startDate:(id)a4 endDate:(id)a5 densityScore:(double)a6 scanDuration:(double)a7 rssiHistogram:(id)a8
+- (RTPeopleDensity)initWithBundleUUID:(id)d startDate:(id)date endDate:(id)endDate densityScore:(double)score scanDuration:(double)duration rssiHistogram:(id)histogram
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  if (v16)
+  dCopy = d;
+  dateCopy = date;
+  endDateCopy = endDate;
+  histogramCopy = histogram;
+  if (dateCopy)
   {
     v24.receiver = self;
     v24.super_class = RTPeopleDensity;
@@ -24,16 +24,16 @@
     v20 = v19;
     if (v19)
     {
-      objc_storeStrong(&v19->_uuid, a3);
-      objc_storeStrong(&v20->_startDate, a4);
-      objc_storeStrong(&v20->_endDate, a5);
-      v20->_densityScore = a6;
-      v20->_scanDuration = a7;
-      objc_storeStrong(&v20->_rssiHistogram, a8);
+      objc_storeStrong(&v19->_uuid, d);
+      objc_storeStrong(&v20->_startDate, date);
+      objc_storeStrong(&v20->_endDate, endDate);
+      v20->_densityScore = score;
+      v20->_scanDuration = duration;
+      objc_storeStrong(&v20->_rssiHistogram, histogram);
     }
 
     self = v20;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
@@ -45,16 +45,16 @@
       _os_log_error_impl(&dword_1BF1C4000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate", buf, 2u);
     }
 
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -64,11 +64,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTPeopleDensity *)self uuid];
-      v7 = [(RTPeopleDensity *)v5 uuid];
+      v5 = equalCopy;
+      uuid = [(RTPeopleDensity *)self uuid];
+      uuid2 = [(RTPeopleDensity *)v5 uuid];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [uuid isEqual:uuid2];
     }
 
     else
@@ -87,8 +87,8 @@
   uuid = self->_uuid;
   if (uuid)
   {
-    v5 = [(NSUUID *)uuid UUIDString];
-    [v3 setObject:v5 forKey:@"UUID"];
+    uUIDString = [(NSUUID *)uuid UUIDString];
+    [v3 setObject:uUIDString forKey:@"UUID"];
   }
 
   else
@@ -99,8 +99,8 @@
   startDate = self->_startDate;
   if (startDate)
   {
-    v7 = [(NSDate *)startDate getFormattedDateString];
-    [v3 setObject:v7 forKey:@"StartDate"];
+    getFormattedDateString = [(NSDate *)startDate getFormattedDateString];
+    [v3 setObject:getFormattedDateString forKey:@"StartDate"];
   }
 
   else
@@ -111,8 +111,8 @@
   endDate = self->_endDate;
   if (endDate)
   {
-    v9 = [(NSDate *)endDate getFormattedDateString];
-    [v3 setObject:v9 forKey:@"EndDate"];
+    getFormattedDateString2 = [(NSDate *)endDate getFormattedDateString];
+    [v3 setObject:getFormattedDateString2 forKey:@"EndDate"];
   }
 
   else
@@ -133,8 +133,8 @@
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v13 = [(NSDictionary *)self->_rssiHistogram allKeys];
-    v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    allKeys = [(NSDictionary *)self->_rssiHistogram allKeys];
+    v14 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
       v15 = v14;
@@ -145,16 +145,16 @@
         {
           if (*v24 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allKeys);
           }
 
           v18 = *(*(&v23 + 1) + 8 * i);
           v19 = [(NSDictionary *)self->_rssiHistogram objectForKeyedSubscript:v18];
-          v20 = [v18 stringValue];
-          [v12 setObject:v19 forKey:v20];
+          stringValue = [v18 stringValue];
+          [v12 setObject:v19 forKey:stringValue];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v15 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v15);
@@ -171,9 +171,9 @@
 - (id)description
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(RTPeopleDensity *)self descriptionDictionary];
+  descriptionDictionary = [(RTPeopleDensity *)self descriptionDictionary];
   v12 = 0;
-  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:3 error:&v12];
+  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:descriptionDictionary options:3 error:&v12];
   v4 = v12;
   if (v4)
   {
@@ -189,22 +189,22 @@
       _os_log_error_impl(&dword_1BF1C4000, v5, OS_LOG_TYPE_ERROR, "%@ instance failed to create description:%@", buf, 0x16u);
     }
 
-    v6 = [MEMORY[0x1E696AEC0] string];
+    string = [MEMORY[0x1E696AEC0] string];
   }
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];
+    string = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];
   }
 
-  v7 = v6;
+  v7 = string;
 
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   uuid = self->_uuid;
@@ -217,35 +217,35 @@
   return [v4 initWithBundleUUID:uuid startDate:startDate endDate:endDate densityScore:rssiHistogram scanDuration:densityScore rssiHistogram:scanDuration];
 }
 
-- (RTPeopleDensity)initWithCoder:(id)a3
+- (RTPeopleDensity)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"StartDate"];
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"EndDate"];
-  [v5 decodeDoubleForKey:@"Score"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StartDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EndDate"];
+  [coderCopy decodeDoubleForKey:@"Score"];
   v12 = v11;
-  [v5 decodeDoubleForKey:@"ScanDuration"];
+  [coderCopy decodeDoubleForKey:@"ScanDuration"];
   v14 = v13;
-  v15 = [v5 decodeObjectOfClasses:v7 forKey:@"rssiHistogram"];
+  v15 = [coderCopy decodeObjectOfClasses:v7 forKey:@"rssiHistogram"];
 
   v16 = [(RTPeopleDensity *)self initWithBundleUUID:v8 startDate:v9 endDate:v10 densityScore:v15 scanDuration:v12 rssiHistogram:v14];
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 encodeObject:uuid forKey:@"UUID"];
-  [v5 encodeObject:self->_startDate forKey:@"StartDate"];
-  [v5 encodeObject:self->_endDate forKey:@"EndDate"];
-  [v5 encodeDouble:@"Score" forKey:self->_densityScore];
-  [v5 encodeDouble:@"ScanDuration" forKey:self->_scanDuration];
-  [v5 encodeObject:self->_rssiHistogram forKey:@"rssiHistogram"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"UUID"];
+  [coderCopy encodeObject:self->_startDate forKey:@"StartDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"EndDate"];
+  [coderCopy encodeDouble:@"Score" forKey:self->_densityScore];
+  [coderCopy encodeDouble:@"ScanDuration" forKey:self->_scanDuration];
+  [coderCopy encodeObject:self->_rssiHistogram forKey:@"rssiHistogram"];
 }
 
 @end

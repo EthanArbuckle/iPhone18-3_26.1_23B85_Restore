@@ -1,11 +1,11 @@
 @interface PUIMediaLibraryStorageController
 + (PUIMediaLibraryStorageController)shared;
 - (BOOL)shouldDisplayStorageCleanupTip;
-- (int64_t)observeStorageCleanupChange:(id)a3;
+- (int64_t)observeStorageCleanupChange:(id)change;
 - (void)mediaLibraryDidChange;
 - (void)refreshDownloadedAssets;
-- (void)removeStorageCleanupChangeObserverWith:(int64_t)a3;
-- (void)setShouldDisplayStorageCleanupTip:(BOOL)a3;
+- (void)removeStorageCleanupChangeObserverWith:(int64_t)with;
+- (void)setShouldDisplayStorageCleanupTip:(BOOL)tip;
 @end
 
 @implementation PUIMediaLibraryStorageController
@@ -25,17 +25,17 @@
 - (BOOL)shouldDisplayStorageCleanupTip
 {
   swift_beginAccess();
-  v3 = self;
+  selfCopy = self;
 
   sub_21B4C7918();
 
   return v5;
 }
 
-- (void)setShouldDisplayStorageCleanupTip:(BOOL)a3
+- (void)setShouldDisplayStorageCleanupTip:(BOOL)tip
 {
   swift_beginAccess();
-  v4 = self;
+  selfCopy = self;
 
   sub_21B4C7918();
 
@@ -44,11 +44,11 @@
   sub_21B4B48FC(v5);
 }
 
-- (int64_t)observeStorageCleanupChange:(id)a3
+- (int64_t)observeStorageCleanupChange:(id)change
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(change);
   *(swift_allocObject() + 16) = v4;
-  v5 = self;
+  selfCopy = self;
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD88E28);
   sub_21B4C61B8();
@@ -56,9 +56,9 @@
   return 0;
 }
 
-- (void)removeStorageCleanupChangeObserverWith:(int64_t)a3
+- (void)removeStorageCleanupChangeObserverWith:(int64_t)with
 {
-  v3 = self;
+  selfCopy = self;
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD88E28);
   sub_21B4C61B8();
@@ -66,14 +66,14 @@
 
 - (void)mediaLibraryDidChange
 {
-  v2 = self;
+  selfCopy = self;
   MediaLibraryStorageController.refreshDownloadedAssets()();
   sub_21B4B5698(sub_21B4B759C, &block_descriptor_41);
 }
 
 - (void)refreshDownloadedAssets
 {
-  v2 = self;
+  selfCopy = self;
   MediaLibraryStorageController.refreshDownloadedAssets()();
 }
 

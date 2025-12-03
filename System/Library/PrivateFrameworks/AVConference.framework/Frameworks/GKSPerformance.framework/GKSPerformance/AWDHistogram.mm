@@ -1,18 +1,18 @@
 @interface AWDHistogram
-- (AWDHistogram)initWithBuckets:(unsigned int *)a3 size:(unsigned int)a4;
-- (AWDHistogram)initWithFloatBuckets:(float *)a3 size:(unsigned int)a4;
+- (AWDHistogram)initWithBuckets:(unsigned int *)buckets size:(unsigned int)size;
+- (AWDHistogram)initWithFloatBuckets:(float *)buckets size:(unsigned int)size;
 - (id)array;
 - (id)newArray;
-- (void)addFloatValue:(float)a3;
-- (void)addValue:(unsigned int)a3 withIncrements:(unsigned int)a4;
+- (void)addFloatValue:(float)value;
+- (void)addValue:(unsigned int)value withIncrements:(unsigned int)increments;
 - (void)dealloc;
 - (void)print;
-- (void)reduceFrequencyByFactor:(unsigned int)a3;
+- (void)reduceFrequencyByFactor:(unsigned int)factor;
 @end
 
 @implementation AWDHistogram
 
-- (AWDHistogram)initWithBuckets:(unsigned int *)a3 size:(unsigned int)a4
+- (AWDHistogram)initWithBuckets:(unsigned int *)buckets size:(unsigned int)size
 {
   v9.receiver = self;
   v9.super_class = AWDHistogram;
@@ -20,15 +20,15 @@
   v7 = v6;
   if (v6)
   {
-    v6->buckets = a3;
-    v6->histogram = malloc_type_calloc(a4, 4uLL, 0x100004052888210uLL);
-    v7->size = a4;
+    v6->buckets = buckets;
+    v6->histogram = malloc_type_calloc(size, 4uLL, 0x100004052888210uLL);
+    v7->size = size;
   }
 
   return v7;
 }
 
-- (AWDHistogram)initWithFloatBuckets:(float *)a3 size:(unsigned int)a4
+- (AWDHistogram)initWithFloatBuckets:(float *)buckets size:(unsigned int)size
 {
   v9.receiver = self;
   v9.super_class = AWDHistogram;
@@ -36,9 +36,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->floatBuckets = a3;
-    v6->histogram = malloc_type_calloc(a4, 4uLL, 0x100004052888210uLL);
-    v7->size = a4;
+    v6->floatBuckets = buckets;
+    v6->histogram = malloc_type_calloc(size, 4uLL, 0x100004052888210uLL);
+    v7->size = size;
   }
 
   return v7;
@@ -57,29 +57,29 @@
   [(AWDHistogram *)&v4 dealloc];
 }
 
-- (void)addValue:(unsigned int)a3 withIncrements:(unsigned int)a4
+- (void)addValue:(unsigned int)value withIncrements:(unsigned int)increments
 {
   size = self->size;
   v5 = (size - 1) & ((size - 1) >> 31);
   while (--size >= 1)
   {
-    if (self->buckets[size & 0x7FFFFFFF] < a3)
+    if (self->buckets[size & 0x7FFFFFFF] < value)
     {
       v5 = size;
       break;
     }
   }
 
-  self->histogram[v5] += a4;
+  self->histogram[v5] += increments;
 }
 
-- (void)addFloatValue:(float)a3
+- (void)addFloatValue:(float)value
 {
   size = self->size;
   v4 = (size - 1) & ((size - 1) >> 31);
   while (--size >= 1)
   {
-    if (self->floatBuckets[size & 0x7FFFFFFF] < a3)
+    if (self->floatBuckets[size & 0x7FFFFFFF] < value)
     {
       v4 = size;
       break;
@@ -89,15 +89,15 @@
   ++self->histogram[v4];
 }
 
-- (void)reduceFrequencyByFactor:(unsigned int)a3
+- (void)reduceFrequencyByFactor:(unsigned int)factor
 {
-  if (a3 && self->size)
+  if (factor && self->size)
   {
     v3 = 0;
     histogram = self->histogram;
     do
     {
-      histogram[v3++] /= a3;
+      histogram[v3++] /= factor;
     }
 
     while (v3 < self->size);

@@ -15,7 +15,7 @@
       v7 = 136315394;
       v8 = "[NSNull(SiriCoreSQLiteValue) siriCoreSQLiteValue_escapedString:]";
       v9 = 2112;
-      v10 = a1;
+      selfCopy = self;
       _os_log_error_impl(&dword_2669D1000, v4, OS_LOG_TYPE_ERROR, "%s Using %@ as identifier is NOT supported.", &v7, 0x16u);
     }
 

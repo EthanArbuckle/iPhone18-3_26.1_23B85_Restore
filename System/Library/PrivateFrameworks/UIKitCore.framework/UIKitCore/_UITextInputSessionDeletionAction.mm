@@ -1,17 +1,17 @@
 @interface _UITextInputSessionDeletionAction
 - (id)description;
-- (int64_t)mergeActionIfPossible:(id)a3;
+- (int64_t)mergeActionIfPossible:(id)possible;
 @end
 
 @implementation _UITextInputSessionDeletionAction
 
-- (int64_t)mergeActionIfPossible:(id)a3
+- (int64_t)mergeActionIfPossible:(id)possible
 {
-  v4 = a3;
-  if ([(_UITextInputSessionAction *)self isMergeableWith:v4])
+  possibleCopy = possible;
+  if ([(_UITextInputSessionAction *)self isMergeableWith:possibleCopy])
   {
-    v5 = [v4 asDeletion];
-    if (!v5)
+    asDeletion = [possibleCopy asDeletion];
+    if (!asDeletion)
     {
       v10 = 0;
 LABEL_13:
@@ -19,33 +19,33 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    -[_UITextInputSessionAction setRemovedTextLengthWithoutTracking:](self, "setRemovedTextLengthWithoutTracking:", [v5 removedTextLength] + -[_UITextInputSessionAction removedTextLength](self, "removedTextLength"));
-    -[_UITextInputSessionAction setInputActionCountFromMergedActions:](self, "setInputActionCountFromMergedActions:", -[_UITextInputSessionAction inputActionCountFromMergedActions](self, "inputActionCountFromMergedActions") + [v5 inputActionCount]);
-    -[_UITextInputSessionDeletionAction setOptions:](self, "setOptions:", [v5 options] | -[_UITextInputSessionDeletionAction options](self, "options"));
-    -[_UITextInputSessionAction setRemovedEmojiCount:](self, "setRemovedEmojiCount:", -[_UITextInputSessionAction removedEmojiCount](self, "removedEmojiCount") + [v5 removedEmojiCount]);
-    v6 = [(_UITextInputSessionAction *)self largestSingleDeletionLength];
-    v7 = [v5 removedTextLength];
-    if (v6 <= v7)
+    -[_UITextInputSessionAction setRemovedTextLengthWithoutTracking:](self, "setRemovedTextLengthWithoutTracking:", [asDeletion removedTextLength] + -[_UITextInputSessionAction removedTextLength](self, "removedTextLength"));
+    -[_UITextInputSessionAction setInputActionCountFromMergedActions:](self, "setInputActionCountFromMergedActions:", -[_UITextInputSessionAction inputActionCountFromMergedActions](self, "inputActionCountFromMergedActions") + [asDeletion inputActionCount]);
+    -[_UITextInputSessionDeletionAction setOptions:](self, "setOptions:", [asDeletion options] | -[_UITextInputSessionDeletionAction options](self, "options"));
+    -[_UITextInputSessionAction setRemovedEmojiCount:](self, "setRemovedEmojiCount:", -[_UITextInputSessionAction removedEmojiCount](self, "removedEmojiCount") + [asDeletion removedEmojiCount]);
+    largestSingleDeletionLength = [(_UITextInputSessionAction *)self largestSingleDeletionLength];
+    removedTextLength = [asDeletion removedTextLength];
+    if (largestSingleDeletionLength <= removedTextLength)
     {
-      v8 = v7;
+      v8 = removedTextLength;
     }
 
     else
     {
-      v8 = v6;
+      v8 = largestSingleDeletionLength;
     }
 
     [(_UITextInputSessionAction *)self setLargestSingleDeletionLength:v8];
-    v9 = [v4 language];
-    if (v9)
+    language = [possibleCopy language];
+    if (language)
     {
     }
 
     else
     {
-      v11 = [v4 region];
+      region = [possibleCopy region];
 
-      if (!v11)
+      if (!region)
       {
 LABEL_12:
         v10 = 1;
@@ -53,20 +53,20 @@ LABEL_12:
       }
     }
 
-    v12 = [v4 language];
-    [(_UITextInputSessionAction *)self setLanguage:v12];
+    language2 = [possibleCopy language];
+    [(_UITextInputSessionAction *)self setLanguage:language2];
 
-    v13 = [v4 region];
-    [(_UITextInputSessionAction *)self setRegion:v13];
+    region2 = [possibleCopy region];
+    [(_UITextInputSessionAction *)self setRegion:region2];
 
-    v14 = [v4 keyboardVariant];
-    [(_UITextInputSessionAction *)self setKeyboardVariant:v14];
+    keyboardVariant = [possibleCopy keyboardVariant];
+    [(_UITextInputSessionAction *)self setKeyboardVariant:keyboardVariant];
 
-    v15 = [v4 keyboardLayout];
-    [(_UITextInputSessionAction *)self setKeyboardLayout:v15];
+    keyboardLayout = [possibleCopy keyboardLayout];
+    [(_UITextInputSessionAction *)self setKeyboardLayout:keyboardLayout];
 
-    v16 = [v4 keyboardType];
-    [(_UITextInputSessionAction *)self setKeyboardType:v16];
+    keyboardType = [possibleCopy keyboardType];
+    [(_UITextInputSessionAction *)self setKeyboardType:keyboardType];
 
     goto LABEL_12;
   }
@@ -82,14 +82,14 @@ LABEL_14:
   v10.receiver = self;
   v10.super_class = _UITextInputSessionDeletionAction;
   v3 = [(_UITextInputSessionAction *)&v10 description];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"removedTextLength=%lu", -[_UITextInputSessionAction removedTextLength](self, "removedTextLength")];
-  [v4 addObject:v5];
+  [array addObject:v5];
 
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"removedEmojiCount=%lu", -[_UITextInputSessionAction removedEmojiCount](self, "removedEmojiCount")];
-  [v4 addObject:v6];
+  [array addObject:v6];
 
-  v7 = [v4 componentsJoinedByString:{@", "}];
+  v7 = [array componentsJoinedByString:{@", "}];
   v8 = [v3 stringByAppendingFormat:@", %@", v7];
 
   return v8;

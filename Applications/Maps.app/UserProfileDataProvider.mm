@@ -1,10 +1,10 @@
 @interface UserProfileDataProvider
-- (void)dataDidUpdateForUserProfileLinkType:(int64_t)a3;
+- (void)dataDidUpdateForUserProfileLinkType:(int64_t)type;
 @end
 
 @implementation UserProfileDataProvider
 
-- (void)dataDidUpdateForUserProfileLinkType:(int64_t)a3
+- (void)dataDidUpdateForUserProfileLinkType:(int64_t)type
 {
   v4 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v4 - 8);
@@ -12,12 +12,12 @@
   v7 = type metadata accessor for TaskPriority();
   (*(*(v7 - 8) + 56))(v6, 1, 1, v7);
   type metadata accessor for MainActor();
-  v8 = self;
+  selfCopy = self;
   v9 = static MainActor.shared.getter();
   v10 = swift_allocObject();
   v10[2] = v9;
   v10[3] = &protocol witness table for MainActor;
-  v10[4] = v8;
+  v10[4] = selfCopy;
   sub_10020AAE4(0, 0, v6, &unk_1011E6F70, v10);
 }
 

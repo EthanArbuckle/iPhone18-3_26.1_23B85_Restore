@@ -9,7 +9,7 @@
 {
   v3 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  v4 = self;
+  selfCopy = self;
 
   sub_23DD04DA0(sub_23DD2B820, v3);
 }

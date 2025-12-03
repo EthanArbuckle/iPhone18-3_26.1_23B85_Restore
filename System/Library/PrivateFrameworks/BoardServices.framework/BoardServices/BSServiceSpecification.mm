@@ -1,14 +1,14 @@
 @interface BSServiceSpecification
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BSServiceSpecification)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)optionForKey:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)optionForKey:(id)key;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_appendBodySectionIfNecessaryToBuilder:(void *)a3 withName:(void *)a4 multilinePrefix:(int)a5 includeDerived:;
-- (void)_appendManagerDumpBodyToBuilder:(void *)a3 withMultilinePrefix:;
-- (void)_initWithIdentifier:(char)a3 hiddenAtLaunch:(char)a4 derived:(void *)a5 options:;
+- (void)_appendBodySectionIfNecessaryToBuilder:(void *)builder withName:(void *)name multilinePrefix:(int)prefix includeDerived:;
+- (void)_appendManagerDumpBodyToBuilder:(void *)builder withMultilinePrefix:;
+- (void)_initWithIdentifier:(char)identifier hiddenAtLaunch:(char)launch derived:(void *)derived options:;
 @end
 
 @implementation BSServiceSpecification
@@ -27,7 +27,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSServiceSpecification.m";
     v18 = 1024;
@@ -44,19 +44,19 @@
   return result;
 }
 
-- (id)optionForKey:(id)a3
+- (id)optionForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_options objectForKey:a3];
+  v3 = [(NSDictionary *)self->_options objectForKey:key];
 
   return v3;
 }
 
-- (void)_initWithIdentifier:(char)a3 hiddenAtLaunch:(char)a4 derived:(void *)a5 options:
+- (void)_initWithIdentifier:(char)identifier hiddenAtLaunch:(char)launch derived:(void *)derived options:
 {
   v36 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a5;
-  if (a1)
+  derivedCopy = derived;
+  if (self)
   {
     if (!v9)
     {
@@ -71,7 +71,7 @@
         v26 = 2114;
         v27 = v21;
         v28 = 2048;
-        v29 = a1;
+        selfCopy = self;
         v30 = 2114;
         v31 = @"BSServiceSpecification.m";
         v32 = 1024;
@@ -88,7 +88,7 @@
       JUMPOUT(0x19A87B768);
     }
 
-    v23.receiver = a1;
+    v23.receiver = self;
     v23.super_class = BSServiceSpecification;
     v11 = objc_msgSendSuper2(&v23, sel_init);
     if (v11)
@@ -97,9 +97,9 @@
       v13 = v11[3];
       v11[3] = v12;
 
-      *(v11 + 17) = a3;
-      *(v11 + 16) = a4;
-      v14 = [v10 copy];
+      *(v11 + 17) = identifier;
+      *(v11 + 16) = launch;
+      v14 = [derivedCopy copy];
       v15 = v11[1];
       v11[1] = v14;
     }
@@ -114,38 +114,38 @@
   return v11;
 }
 
-- (void)_appendManagerDumpBodyToBuilder:(void *)a3 withMultilinePrefix:
+- (void)_appendManagerDumpBodyToBuilder:(void *)builder withMultilinePrefix:
 {
   v6 = a2;
-  v5 = a3;
-  if (a1)
+  builderCopy = builder;
+  if (self)
   {
-    [(BSServiceSpecification *)a1 _appendBodySectionIfNecessaryToBuilder:v6 withName:@"specification" multilinePrefix:v5 includeDerived:1];
+    [(BSServiceSpecification *)self _appendBodySectionIfNecessaryToBuilder:v6 withName:@"specification" multilinePrefix:builderCopy includeDerived:1];
   }
 }
 
-- (void)_appendBodySectionIfNecessaryToBuilder:(void *)a3 withName:(void *)a4 multilinePrefix:(int)a5 includeDerived:
+- (void)_appendBodySectionIfNecessaryToBuilder:(void *)builder withName:(void *)name multilinePrefix:(int)prefix includeDerived:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1 && (a5 && (*(a1 + 16) & 1) != 0 || ([a1 isHiddenAtLaunch] & 1) != 0 || objc_msgSend(*(a1 + 8), "count")))
+  builderCopy = builder;
+  nameCopy = name;
+  if (self && (prefix && (*(self + 16) & 1) != 0 || ([self isHiddenAtLaunch] & 1) != 0 || objc_msgSend(*(self + 8), "count")))
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __105__BSServiceSpecification__appendBodySectionIfNecessaryToBuilder_withName_multilinePrefix_includeDerived___block_invoke;
     v12[3] = &unk_1E7520920;
-    v15 = a5;
+    prefixCopy = prefix;
     v13 = v9;
-    v14 = a1;
-    [v13 appendBodySectionWithName:v10 multilinePrefix:v11 block:v12];
+    selfCopy = self;
+    [v13 appendBodySectionWithName:builderCopy multilinePrefix:nameCopy block:v12];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -153,10 +153,10 @@
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && (identifier = self->_identifier, v7 = v4->_identifier, BSEqualStrings()) && self->_hiddenAtLaunch == v4->_hiddenAtLaunch && self->_derived == v4->_derived)
+    if (v5 == objc_opt_class() && (identifier = self->_identifier, v7 = equalCopy->_identifier, BSEqualStrings()) && self->_hiddenAtLaunch == equalCopy->_hiddenAtLaunch && self->_derived == equalCopy->_derived)
     {
       options = self->_options;
-      v9 = v4->_options;
+      v9 = equalCopy->_options;
       v10 = BSEqualObjects();
     }
 
@@ -171,10 +171,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BSServiceSpecification *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSServiceSpecification *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -199,21 +199,21 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSServiceSpecification *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSServiceSpecification *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(BSServiceSpecification *)self succinctDescriptionBuilder];
-  [(BSServiceSpecification *)self _appendBodySectionIfNecessaryToBuilder:v5 withName:0 multilinePrefix:v4 includeDerived:0];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(BSServiceSpecification *)self succinctDescriptionBuilder];
+  [(BSServiceSpecification *)self _appendBodySectionIfNecessaryToBuilder:succinctDescriptionBuilder withName:0 multilinePrefix:prefixCopy includeDerived:0];
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 uint64_t __105__BSServiceSpecification__appendBodySectionIfNecessaryToBuilder_withName_multilinePrefix_includeDerived___block_invoke(uint64_t a1)

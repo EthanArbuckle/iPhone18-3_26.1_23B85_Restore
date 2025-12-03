@@ -1,6 +1,6 @@
 @interface HKDisplayTypeContextItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContextItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContextItem:(id)item;
 - (HKDisplayTypeContextItem)init;
 - (id)debugDescription;
 - (unint64_t)hash;
@@ -27,10 +27,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -38,7 +38,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HKDisplayTypeContextItem *)self isEqualToContextItem:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HKDisplayTypeContextItem *)self isEqualToContextItem:equalCopy];
   }
 
   return v5;
@@ -58,11 +58,11 @@
   return v8 ^ v11 ^ [(NSString *)self->_analyticsIdentifier hash];
 }
 
-- (BOOL)isEqualToContextItem:(id)a3
+- (BOOL)isEqualToContextItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ((v6 = *(v4 + 2), !(v6 | self->_title)) || [v6 isEqualToString:?]) && *(v5 + 3) == self->_titleAccessory && *(v5 + 4) == self->_selectedTitleAccessory && v5[8] == self->_infoHidden && v5[9] == self->_useTightSpacingBetweenValueAndUnit && v5[10] == self->_isUnitIncludedInValue && v5[11] == self->_userInteractive && ((v7 = *(v5 + 6), !(v7 | self->_value)) || objc_msgSend(v7, "isEqualToString:")) && ((v8 = *(v5 + 7), !(v8 | self->_valueContext)) || objc_msgSend(v8, "isEqualToString:")) && objc_msgSend(*(v5 + 8), "isEqual:", self->_attributedLabelTextOverride) && ((v9 = *(v5 + 5), !(v9 | self->_unit)) || objc_msgSend(v9, "isEqualToString:")) && ((v10 = *(v5 + 9), !(v10 | self->_dateString)) || objc_msgSend(v10, "isEqualToString:")))
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy && ((v6 = *(itemCopy + 2), !(v6 | self->_title)) || [v6 isEqualToString:?]) && *(v5 + 3) == self->_titleAccessory && *(v5 + 4) == self->_selectedTitleAccessory && v5[8] == self->_infoHidden && v5[9] == self->_useTightSpacingBetweenValueAndUnit && v5[10] == self->_isUnitIncludedInValue && v5[11] == self->_userInteractive && ((v7 = *(v5 + 6), !(v7 | self->_value)) || objc_msgSend(v7, "isEqualToString:")) && ((v8 = *(v5 + 7), !(v8 | self->_valueContext)) || objc_msgSend(v8, "isEqualToString:")) && objc_msgSend(*(v5 + 8), "isEqual:", self->_attributedLabelTextOverride) && ((v9 = *(v5 + 5), !(v9 | self->_unit)) || objc_msgSend(v9, "isEqualToString:")) && ((v10 = *(v5 + 9), !(v10 | self->_dateString)) || objc_msgSend(v10, "isEqualToString:")))
   {
     v11 = *(v5 + 10);
     if (v11 | self->_analyticsIdentifier)

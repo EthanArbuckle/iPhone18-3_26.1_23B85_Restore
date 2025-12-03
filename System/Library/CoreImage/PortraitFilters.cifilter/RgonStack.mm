@@ -1,20 +1,20 @@
 @interface RgonStack
 - (RgonStack)init;
-- (RgonStack)initWithCoder:(id)a3;
-- (float)DistToPointX:(float)a3 Y:(float)a4 Z:(float)a5;
-- (int)containsPointPlanarConditionalX2:(float)a3 Y:(float)a4 Z:(float)a5 epsilonDark:(float)a6 epsilonLight:(float)a7 epsilonMid:(float)a8 shouldPrint:(BOOL)a9;
-- (int)containsPointPlanarConditionalX:(float)a3 Y:(float)a4 Z:(float)a5 epsilonDark:(float)a6 epsilonLight:(float)a7;
-- (int)containsPointPlanarX:(float)a3 Y:(float)a4 Z:(float)a5;
-- (int)containsPointX:(float)a3 Y:(float)a4 Z:(float)a5;
-- (void)AdjustForPointX:(double)a3 Y:(double)a4 Z:(double)a5;
+- (RgonStack)initWithCoder:(id)coder;
+- (float)DistToPointX:(float)x Y:(float)y Z:(float)z;
+- (int)containsPointPlanarConditionalX2:(float)x2 Y:(float)y Z:(float)z epsilonDark:(float)dark epsilonLight:(float)light epsilonMid:(float)mid shouldPrint:(BOOL)print;
+- (int)containsPointPlanarConditionalX:(float)x Y:(float)y Z:(float)z epsilonDark:(float)dark epsilonLight:(float)light;
+- (int)containsPointPlanarX:(float)x Y:(float)y Z:(float)z;
+- (int)containsPointX:(float)x Y:(float)y Z:(float)z;
+- (void)AdjustForPointX:(double)x Y:(double)y Z:(double)z;
 - (void)CalculateEdges;
 - (void)CalculateVertices;
 - (void)PrintConstraints;
 - (void)PrintFacets;
 - (void)PrintVertices;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)normalVectorForRgon1:(id)a3 withZ1:(float)a4 rgon2:(id)a5 withZ2:(float)a6 atIndex:(int)a7 placedInto:(float *)a8;
+- (void)encodeWithCoder:(id)coder;
+- (void)normalVectorForRgon1:(id)rgon1 withZ1:(float)z1 rgon2:(id)rgon2 withZ2:(float)z2 atIndex:(int)index placedInto:(float *)into;
 @end
 
 @implementation RgonStack
@@ -42,40 +42,40 @@
   return v2;
 }
 
-- (RgonStack)initWithCoder:(id)a3
+- (RgonStack)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = RgonStack;
   v4 = [(RgonStack *)&v10 init];
   if (v4)
   {
-    v4->stack = [a3 decodeObjectForKey:@"RGON_STACK"];
-    v4->binCount = [a3 decodeIntegerForKey:@"BIN_COUNT"];
-    v4->binOffset = [a3 decodeIntegerForKey:@"BIN_OFFSET"];
-    [a3 decodeDoubleForKey:@"BIN_SIZE"];
+    v4->stack = [coder decodeObjectForKey:@"RGON_STACK"];
+    v4->binCount = [coder decodeIntegerForKey:@"BIN_COUNT"];
+    v4->binOffset = [coder decodeIntegerForKey:@"BIN_OFFSET"];
+    [coder decodeDoubleForKey:@"BIN_SIZE"];
     v4->binSize = v5;
-    [a3 decodeDoubleForKey:@"LOW_Z"];
+    [coder decodeDoubleForKey:@"LOW_Z"];
     v4->zMin = v6;
-    [a3 decodeDoubleForKey:@"HIGH_Z"];
+    [coder decodeDoubleForKey:@"HIGH_Z"];
     v4->zMax = v7;
-    [a3 decodeDoubleForKey:@"DARKTHR_Z"];
+    [coder decodeDoubleForKey:@"DARKTHR_Z"];
     v4->zDarkThr = v8;
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->stack forKey:@"RGON_STACK"];
-  [a3 encodeInteger:self->binCount forKey:@"BIN_COUNT"];
-  [a3 encodeInteger:self->binOffset forKey:@"BIN_OFFSET"];
-  [a3 encodeDouble:@"BIN_SIZE" forKey:self->binSize];
-  [a3 encodeDouble:@"LOW_Z" forKey:self->zMin];
-  [a3 encodeDouble:@"HIGH_Z" forKey:self->zMax];
+  [coder encodeObject:self->stack forKey:@"RGON_STACK"];
+  [coder encodeInteger:self->binCount forKey:@"BIN_COUNT"];
+  [coder encodeInteger:self->binOffset forKey:@"BIN_OFFSET"];
+  [coder encodeDouble:@"BIN_SIZE" forKey:self->binSize];
+  [coder encodeDouble:@"LOW_Z" forKey:self->zMin];
+  [coder encodeDouble:@"HIGH_Z" forKey:self->zMax];
   zDarkThr = self->zDarkThr;
 
-  [a3 encodeDouble:@"DARKTHR_Z" forKey:zDarkThr];
+  [coder encodeDouble:@"DARKTHR_Z" forKey:zDarkThr];
 }
 
 - (void)dealloc
@@ -85,33 +85,33 @@
   [(RgonStack *)&v3 dealloc];
 }
 
-- (void)AdjustForPointX:(double)a3 Y:(double)a4 Z:(double)a5
+- (void)AdjustForPointX:(double)x Y:(double)y Z:(double)z
 {
-  if (self->zMin > a5)
+  if (self->zMin > z)
   {
-    self->zMin = a5;
+    self->zMin = z;
   }
 
-  if (self->zMax < a5)
+  if (self->zMax < z)
   {
-    self->zMax = a5;
+    self->zMax = z;
   }
 
-  v8 = [(NSMutableArray *)self->stack objectAtIndex:(a5 / self->binSize + 0.5)];
+  v8 = [(NSMutableArray *)self->stack objectAtIndex:(z / self->binSize + 0.5)];
   [v8 count];
   if (!v9)
   {
     ++self->binCount;
   }
 
-  *&v9 = a3;
-  *&v10 = a4;
+  *&v9 = x;
+  *&v10 = y;
   [v8 AdjustForPointX:v9 Y:v10];
 }
 
-- (int)containsPointX:(float)a3 Y:(float)a4 Z:(float)a5
+- (int)containsPointX:(float)x Y:(float)y Z:(float)z
 {
-  v8 = a5 / self->binSize;
+  v8 = z / self->binSize;
   v9 = vcvtpd_s64_f64(v8);
   v10 = [(NSMutableArray *)self->stack objectAtIndex:vcvtmd_s64_f64(v8)];
   v11 = [(NSMutableArray *)self->stack objectAtIndex:v9];
@@ -120,15 +120,15 @@
     v14 = v11;
     if (v10)
     {
-      *&v12 = a3;
-      *&v13 = a4;
+      *&v12 = x;
+      *&v13 = y;
       LODWORD(v10) = [v10 containsPointX:v12 Y:v13] != 0;
     }
 
     if (v14)
     {
-      *&v12 = a3;
-      *&v13 = a4;
+      *&v12 = x;
+      *&v13 = y;
       if ([v14 containsPointX:v12 Y:v13])
       {
         LODWORD(v10) = 1;
@@ -144,16 +144,16 @@
   return v10;
 }
 
-- (float)DistToPointX:(float)a3 Y:(float)a4 Z:(float)a5
+- (float)DistToPointX:(float)x Y:(float)y Z:(float)z
 {
-  v7 = [(NSMutableArray *)self->stack objectAtIndex:(a5 / self->binSize)];
+  v7 = [(NSMutableArray *)self->stack objectAtIndex:(z / self->binSize)];
   if (!v7)
   {
     return 1000.0;
   }
 
-  *&v8 = a3;
-  *&v9 = a4;
+  *&v8 = x;
+  *&v9 = y;
 
   [v7 DistToPointX:v8 Y:v9];
   return result;
@@ -244,7 +244,7 @@
   if (v4 >= 2)
   {
     v22 = v4;
-    v23 = self;
+    selfCopy = self;
     v7 = 1;
     do
     {
@@ -255,19 +255,19 @@
       v24 = v7;
       [objc_msgSend(v25 objectAtIndex:{v7), "floatValue"}];
       v13 = self->binSize * v12;
-      v14 = [v8 rgonPtr];
-      v15 = [v9 rgonPtr];
+      rgonPtr = [v8 rgonPtr];
+      rgonPtr2 = [v9 rgonPtr];
       v16 = v11;
       v17 = v13;
-      v18 = (v15 + 16);
-      v19 = (v14 + 16);
+      v18 = (rgonPtr2 + 16);
+      v19 = (rgonPtr + 16);
       for (i = 1; i != 33; ++i)
       {
         printf(" Line[ { ");
         printf(" {%5.2f,%5.2f,%5.2f},", *(v19 - 1), *v19, v16);
         v21 = 28 * (i & 0x1F);
-        printf(" {%5.2f,%5.2f,%5.2f},", *&v14[v21 + 12], *&v14[v21 + 16], v16);
-        printf(" {%5.2f,%5.2f,%5.2f},", *&v15[v21 + 12], *&v15[v21 + 16], v17);
+        printf(" {%5.2f,%5.2f,%5.2f},", *&rgonPtr[v21 + 12], *&rgonPtr[v21 + 16], v16);
+        printf(" {%5.2f,%5.2f,%5.2f},", *&rgonPtr2[v21 + 12], *&rgonPtr2[v21 + 16], v17);
         printf(" {%5.2f,%5.2f,%5.2f},", *(v18 - 1), *v18, v17);
         printf(" {%5.2f,%5.2f,%5.2f} ", *(v19 - 1), *v19, v16);
         puts(" }] ,");
@@ -275,7 +275,7 @@
         v19 += 7;
       }
 
-      self = v23;
+      self = selfCopy;
       v7 = v24 + 1;
     }
 
@@ -285,9 +285,9 @@
   puts("\n end rgon stack print");
 }
 
-- (int)containsPointPlanarX:(float)a3 Y:(float)a4 Z:(float)a5
+- (int)containsPointPlanarX:(float)x Y:(float)y Z:(float)z
 {
-  v9 = a5 / self->binSize;
+  v9 = z / self->binSize;
   v10 = vcvtmd_s64_f64(v9);
   v11 = vcvtpd_s64_f64(v9);
   v12 = [(NSMutableArray *)self->stack objectAtIndex:v10];
@@ -308,11 +308,11 @@
   }
 
   v16 = v13;
-  v17 = [v12 rgonPtr];
-  v18 = [v16 rgonPtr];
+  rgonPtr = [v12 rgonPtr];
+  rgonPtr2 = [v16 rgonPtr];
   v19 = 0;
-  v20 = (v18 + 16);
-  v21 = (v17 + 16);
+  v20 = (rgonPtr2 + 16);
+  v21 = (rgonPtr + 16);
   do
   {
     v22 = v19;
@@ -322,7 +322,7 @@
     }
 
     ++v19;
-    v23 = &v17[28 * ((v22 + 1) & 0x1F)];
+    v23 = &rgonPtr[28 * ((v22 + 1) & 0x1F)];
     v24 = *(v21 - 1);
     v25 = v24 - v23[3];
     v26 = *v21 - v23[4];
@@ -338,11 +338,11 @@
     v21 += 7;
   }
 
-  while (((((v32 * a4) + (v31 * a3)) + (v33 * a5)) - v34) <= 20.0);
+  while (((((v32 * y) + (v31 * x)) + (v33 * z)) - v34) <= 20.0);
   return v22 > 0x1F;
 }
 
-- (int)containsPointPlanarConditionalX:(float)a3 Y:(float)a4 Z:(float)a5 epsilonDark:(float)a6 epsilonLight:(float)a7
+- (int)containsPointPlanarConditionalX:(float)x Y:(float)y Z:(float)z epsilonDark:(float)dark epsilonLight:(float)light
 {
   zMin = self->zMin;
   zMax = self->zMax;
@@ -351,8 +351,8 @@
     return 0;
   }
 
-  v15 = a5;
-  v16 = a5 / self->binSize;
+  zCopy = z;
+  v16 = z / self->binSize;
   v17 = vcvtmd_s64_f64(v16);
   v18 = vcvtpd_s64_f64(v16);
   v19 = [(NSMutableArray *)self->stack objectAtIndex:v17];
@@ -383,13 +383,13 @@
     }
   }
 
-  v27 = (v15 - zMin) / (zMax - zMin);
-  v28 = ((1.0 - v27) * a6) + (v27 * a7);
-  v29 = [v19 rgonPtr];
-  v30 = [v21 rgonPtr];
+  v27 = (zCopy - zMin) / (zMax - zMin);
+  v28 = ((1.0 - v27) * dark) + (v27 * light);
+  rgonPtr = [v19 rgonPtr];
+  rgonPtr2 = [v21 rgonPtr];
   v31 = 0;
-  v32 = (v30 + 16);
-  v33 = (v29 + 16);
+  v32 = (rgonPtr2 + 16);
+  v33 = (rgonPtr + 16);
   do
   {
     v34 = v31;
@@ -399,7 +399,7 @@
     }
 
     ++v31;
-    v35 = &v29[28 * ((v34 + 1) & 0x1F)];
+    v35 = &rgonPtr[28 * ((v34 + 1) & 0x1F)];
     v36 = *(v33 - 1);
     v37 = -(*(v33 - 3) - ((v36 - v35[3]) * 0.0));
     v38 = *(v33 - 4) + ((*v33 - v35[4]) * 0.0);
@@ -415,11 +415,11 @@
     v33 += 7;
   }
 
-  while (((((v44 * a4) + (v43 * a3)) + (v45 * a5)) - v46) <= v28);
+  while (((((v44 * y) + (v43 * x)) + (v45 * z)) - v46) <= v28);
   return v34 > 0x1F;
 }
 
-- (int)containsPointPlanarConditionalX2:(float)a3 Y:(float)a4 Z:(float)a5 epsilonDark:(float)a6 epsilonLight:(float)a7 epsilonMid:(float)a8 shouldPrint:(BOOL)a9
+- (int)containsPointPlanarConditionalX2:(float)x2 Y:(float)y Z:(float)z epsilonDark:(float)dark epsilonLight:(float)light epsilonMid:(float)mid shouldPrint:(BOOL)print
 {
   zMin = self->zMin;
   zMax = self->zMax;
@@ -428,8 +428,8 @@
     return 0;
   }
 
-  v16 = a5;
-  v17 = a5 / self->binSize;
+  zCopy = z;
+  v17 = z / self->binSize;
   v18 = vcvtmd_s64_f64(v17);
   v19 = vcvtpd_s64_f64(v17);
   v20 = [(NSMutableArray *)self->stack objectAtIndex:v18];
@@ -441,17 +441,17 @@
 
   v23 = v21;
   v24 = zMax - zMin;
-  v25 = (v16 - zMin) / (zMax - zMin);
+  v25 = (zCopy - zMin) / (zMax - zMin);
   *&v25 = v25;
-  v26 = ((1.0 - *&v25) * a6) + (*&v25 * a7);
+  v26 = ((1.0 - *&v25) * dark) + (*&v25 * light);
   v46 = -1;
   v47[0] = -1;
-  *&v25 = a3;
-  *&v24 = a4;
+  *&v25 = x2;
+  *&v24 = y;
   *&v22 = v26;
   v27 = [v20 containsPointX:v47 Y:v25 withTolerance:v24 returnIndex:v22];
-  *&v28 = a3;
-  *&v29 = a4;
+  *&v28 = x2;
+  *&v29 = y;
   *&v30 = v26;
   v31 = [v23 containsPointX:&v46 Y:v28 withTolerance:v29 returnIndex:v30];
   if (v27)
@@ -468,18 +468,18 @@
   {
     if (v27 | v31)
     {
-      v33 = (v16 - v18 * self->binSize) / self->binSize;
+      v33 = (zCopy - v18 * self->binSize) / self->binSize;
       v45 = v33;
-      v34 = [v20 rgonPtr];
-      v35 = [v23 rgonPtr];
+      rgonPtr = [v20 rgonPtr];
+      rgonPtr2 = [v23 rgonPtr];
       v36 = 0;
       *v37.i32 = 1.0 - v45;
       v38 = vdup_lane_s32(v37, 0);
       do
       {
         v39 = &v47[v36 / 4 + 1];
-        v39[1] = vmla_f32(vmul_n_f32(*&v35[v36 + 8], v45), *&v34[v36 + 8], v38);
-        v39[2].f32[0] = (*&v35[v36 + 16] * v45) + (*v37.i32 * *&v34[v36 + 16]);
+        v39[1] = vmla_f32(vmul_n_f32(*&rgonPtr2[v36 + 8], v45), *&rgonPtr[v36 + 8], v38);
+        v39[2].f32[0] = (*&rgonPtr2[v36 + 16] * v45) + (*v37.i32 * *&rgonPtr[v36 + 16]);
         v36 += 28;
       }
 
@@ -503,7 +503,7 @@
         while (1)
         {
           v44 = &v47[7 * dword_550E0[v43] + 1];
-          if (((v44[1] * a4) + (*v44 * a3)) < (v44[2] - v26))
+          if (((v44[1] * y) + (*v44 * x2)) < (v44[2] - v26))
           {
             break;
           }
@@ -522,22 +522,22 @@
   return 1;
 }
 
-- (void)normalVectorForRgon1:(id)a3 withZ1:(float)a4 rgon2:(id)a5 withZ2:(float)a6 atIndex:(int)a7 placedInto:(float *)a8
+- (void)normalVectorForRgon1:(id)rgon1 withZ1:(float)z1 rgon2:(id)rgon2 withZ2:(float)z2 atIndex:(int)index placedInto:(float *)into
 {
-  v13 = [a3 rgonPtr];
-  v14 = [a5 rgonPtr];
+  rgonPtr = [rgon1 rgonPtr];
+  rgonPtr2 = [rgon2 rgonPtr];
   v15 = 0;
-  v16 = 28 * a7;
-  v17 = &v13[v16];
-  v18 = &v14[v16];
+  v16 = 28 * index;
+  v17 = &rgonPtr[v16];
+  v18 = &rgonPtr2[v16];
   v19 = v17[3];
   v20 = v17[4];
   v21 = v19 - v18[3];
   v22 = v20 - v18[4];
   v23 = v17[10] - v19;
   v24 = v17[11] - v20;
-  v27 = (v22 * 0.0) - ((a4 - a6) * v24);
-  v28 = (v21 * -0.0) + ((a4 - a6) * v23);
+  v27 = (v22 * 0.0) - ((z1 - z2) * v24);
+  v28 = (v21 * -0.0) + ((z1 - z2) * v23);
   v29 = (v21 * v24) - (v22 * v23);
   v25 = sqrtf(((v28 * v28) + (v27 * v27)) + (v29 * v29));
   if (v25 < 0.00001)
@@ -547,16 +547,16 @@
 
   do
   {
-    a8[v15] = (*(&v27 + v15 * 4) * 3.0) / v25;
+    into[v15] = (*(&v27 + v15 * 4) * 3.0) / v25;
     ++v15;
   }
 
   while (v15 != 3);
-  v26 = &v14[28 * a7 + 28];
-  a8[3] = (((v17[3] + v18[3]) + v17[10]) + v26[3]) * 0.25;
-  a8[4] = (((v17[4] + v18[4]) + v17[11]) + v26[4]) * 0.25;
-  a8[5] = (a4 + a6) * 0.5;
-  printf("Hue[.4],Line[{{%5.2f,%5.2f,%5.2f}, {%5.2f,%5.2f,%5.2f} }],\n", v18[3], v18[4], a6, v26[3], v26[4], a6);
+  v26 = &rgonPtr2[28 * index + 28];
+  into[3] = (((v17[3] + v18[3]) + v17[10]) + v26[3]) * 0.25;
+  into[4] = (((v17[4] + v18[4]) + v17[11]) + v26[4]) * 0.25;
+  into[5] = (z1 + z2) * 0.5;
+  printf("Hue[.4],Line[{{%5.2f,%5.2f,%5.2f}, {%5.2f,%5.2f,%5.2f} }],\n", v18[3], v18[4], z2, v26[3], v26[4], z2);
 }
 
 @end

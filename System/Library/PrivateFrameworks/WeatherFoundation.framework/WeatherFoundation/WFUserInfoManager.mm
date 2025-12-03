@@ -27,10 +27,10 @@
     encryptedStore = v2->_encryptedStore;
     v2->_encryptedStore = v9;
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v12 = *MEMORY[0x277CCA7C0];
-    v13 = [(WFUserInfoManager *)v2 encryptedStore];
-    [v11 addObserver:v2 selector:sel_encryptedStoreChanged_ name:v12 object:v13];
+    encryptedStore = [(WFUserInfoManager *)v2 encryptedStore];
+    [defaultCenter addObserver:v2 selector:sel_encryptedStoreChanged_ name:v12 object:encryptedStore];
   }
 
   return v2;
@@ -38,8 +38,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = WFUserInfoManager;
@@ -48,13 +48,13 @@
 
 - (void)readUserIdentifierAndNotify
 {
-  v3 = [(WFUserInfoManager *)self ubiquitousKVSCommunicationsQueue];
+  ubiquitousKVSCommunicationsQueue = [(WFUserInfoManager *)self ubiquitousKVSCommunicationsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__WFUserInfoManager_readUserIdentifierAndNotify__block_invoke;
   block[3] = &unk_279E6D9A8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(ubiquitousKVSCommunicationsQueue, block);
 }
 
 void __48__WFUserInfoManager_readUserIdentifierAndNotify__block_invoke(uint64_t a1)

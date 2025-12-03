@@ -6,8 +6,8 @@
 
 - (id)as_authenticationServicesManagedConfigurationURL
 {
-  v1 = [a1 safari_mobileSafariContainerDirectoryURL];
-  v2 = [v1 URLByAppendingPathComponent:@"Library/Safari"];
+  safari_mobileSafariContainerDirectoryURL = [self safari_mobileSafariContainerDirectoryURL];
+  v2 = [safari_mobileSafariContainerDirectoryURL URLByAppendingPathComponent:@"Library/Safari"];
 
   v3 = [v2 URLByAppendingPathComponent:@"AuthenticationServicesManagedConfiguration.plist"];
 

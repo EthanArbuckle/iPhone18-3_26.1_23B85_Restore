@@ -1,39 +1,39 @@
 @interface RAPGraphDirectionsRecorder
-- (BOOL)_bucketHasOnlyMissedStep:(id)a3;
-- (BOOL)_bucketHasOnlyStoredSteps:(id)a3;
+- (BOOL)_bucketHasOnlyMissedStep:(id)step;
+- (BOOL)_bucketHasOnlyStoredSteps:(id)steps;
 - (GEOComposedRoute)observedRoute;
 - (RAPGraphDirectionsRecorder)init;
-- (id)_userPathEntryWithRouteIndex:(unint64_t)a3 stepIndex:(unint64_t)a4;
-- (id)_userSearchInputForWaypoint:(id)a3;
+- (id)_userPathEntryWithRouteIndex:(unint64_t)index stepIndex:(unint64_t)stepIndex;
+- (id)_userSearchInputForWaypoint:(id)waypoint;
 - (id)copyCurrentPartialRecording;
-- (void)_dispatch:(id)a3;
-- (void)_handleNewRoute:(id)a3 fromStepIndex:(unint64_t)a4;
-- (void)_immediatelyUpdateRecording:(id)a3 withAuxiliaryControlsRecording:(id)a4;
+- (void)_dispatch:(id)_dispatch;
+- (void)_handleNewRoute:(id)route fromStepIndex:(unint64_t)index;
+- (void)_immediatelyUpdateRecording:(id)recording withAuxiliaryControlsRecording:(id)controlsRecording;
 - (void)_optimizeRecordingData;
-- (void)_replaceUserPathWithRouteIndex:(unint64_t)a3 stepIndex:(unint64_t)a4 traversal:(int)a5;
-- (void)_storeUserPathWithRouteIndex:(unint64_t)a3 stepIndex:(unint64_t)a4;
-- (void)_updateRideSelectionsWithComposedRoute:(id)a3;
+- (void)_replaceUserPathWithRouteIndex:(unint64_t)index stepIndex:(unint64_t)stepIndex traversal:(int)traversal;
+- (void)_storeUserPathWithRouteIndex:(unint64_t)index stepIndex:(unint64_t)stepIndex;
+- (void)_updateRideSelectionsWithComposedRoute:(id)route;
 - (void)clearAll;
-- (void)composedRoute:(id)a3 changedSelectedRideInClusteredSegment:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6;
+- (void)composedRoute:(id)route changedSelectedRideInClusteredSegment:(id)segment fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
 - (void)dealloc;
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5;
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6;
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
-- (void)navigationServiceWillReroute:(id)a3;
-- (void)recordNewRequest:(id)a3;
-- (void)recordNewResponse:(id)a3;
-- (void)recordNewRoute:(id)a3 fromStepIndex:(unint64_t)a4;
-- (void)recordNewSessionID:(GEOSessionID)a3;
-- (void)recordWaypoints:(id)a3 startWaypointSearchTicket:(id)a4 endWaypointSearchTicket:(id)a5;
-- (void)savePartialRecordingWithCompletion:(id)a3;
-- (void)setLastGoodLocation:(id)a3;
-- (void)setObservedRoute:(id)a3;
-- (void)setOriginatingDeviceFromOrigin:(int64_t)a3;
-- (void)setSelectedRoute:(id)a3 fromRouteList:(id)a4;
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason;
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic;
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location;
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
+- (void)navigationServiceWillReroute:(id)reroute;
+- (void)recordNewRequest:(id)request;
+- (void)recordNewResponse:(id)response;
+- (void)recordNewRoute:(id)route fromStepIndex:(unint64_t)index;
+- (void)recordNewSessionID:(GEOSessionID)d;
+- (void)recordWaypoints:(id)waypoints startWaypointSearchTicket:(id)ticket endWaypointSearchTicket:(id)searchTicket;
+- (void)savePartialRecordingWithCompletion:(id)completion;
+- (void)setLastGoodLocation:(id)location;
+- (void)setObservedRoute:(id)route;
+- (void)setOriginatingDeviceFromOrigin:(int64_t)origin;
+- (void)setSelectedRoute:(id)route fromRouteList:(id)list;
 - (void)startRecording;
 - (void)stopRecording;
-- (void)updateRideSelectionsWithComposedRoute:(id)a3;
+- (void)updateRideSelectionsWithComposedRoute:(id)route;
 @end
 
 @implementation RAPGraphDirectionsRecorder
@@ -45,7 +45,7 @@
   return WeakRetained;
 }
 
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic
 {
   v7 = sub_100798874();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -57,9 +57,9 @@
   self->_switchedTransportTypeWaitingForLocation = 1;
 }
 
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason
 {
-  v6 = a4;
+  rerouteCopy = reroute;
   v7 = sub_100798874();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -67,32 +67,32 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Did reroute", v8, 2u);
   }
 
-  [(RAPGraphDirectionsRecorder *)self _handleNewRoute:v6 fromStepIndex:0];
+  [(RAPGraphDirectionsRecorder *)self _handleNewRoute:rerouteCopy fromStepIndex:0];
 }
 
-- (void)_handleNewRoute:(id)a3 fromStepIndex:(unint64_t)a4
+- (void)_handleNewRoute:(id)route fromStepIndex:(unint64_t)index
 {
-  v10 = a3;
-  v6 = [v10 routeInitializerData];
-  v7 = [v6 directionsRequest];
-  [(RAPGraphDirectionsRecorder *)self recordNewRequest:v7];
+  routeCopy = route;
+  routeInitializerData = [routeCopy routeInitializerData];
+  directionsRequest = [routeInitializerData directionsRequest];
+  [(RAPGraphDirectionsRecorder *)self recordNewRequest:directionsRequest];
 
-  v8 = [v10 routeInitializerData];
-  v9 = [v8 directionsResponse];
-  [(RAPGraphDirectionsRecorder *)self recordNewResponse:v9];
+  routeInitializerData2 = [routeCopy routeInitializerData];
+  directionsResponse = [routeInitializerData2 directionsResponse];
+  [(RAPGraphDirectionsRecorder *)self recordNewResponse:directionsResponse];
 
-  [(RAPGraphDirectionsRecorder *)self recordNewRoute:v10 fromStepIndex:a4];
-  [(RAPGraphDirectionsRecorder *)self setObservedRoute:v10];
+  [(RAPGraphDirectionsRecorder *)self recordNewRoute:routeCopy fromStepIndex:index];
+  [(RAPGraphDirectionsRecorder *)self setObservedRoute:routeCopy];
 }
 
-- (id)_userPathEntryWithRouteIndex:(unint64_t)a3 stepIndex:(unint64_t)a4
+- (id)_userPathEntryWithRouteIndex:(unint64_t)index stepIndex:(unint64_t)stepIndex
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(RAPDirectionsRecording *)self->_recording userPaths];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  userPaths = [(RAPDirectionsRecording *)self->_recording userPaths];
+  v7 = [userPaths countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -103,18 +103,18 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(userPaths);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 routeIndex] == a3 && objc_msgSend(v11, "stepIndex") == a4)
+        if ([v11 routeIndex] == index && objc_msgSend(v11, "stepIndex") == stepIndex)
         {
           v12 = v11;
           goto LABEL_12;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [userPaths countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -130,10 +130,10 @@ LABEL_12:
   return v12;
 }
 
-- (void)_replaceUserPathWithRouteIndex:(unint64_t)a3 stepIndex:(unint64_t)a4 traversal:(int)a5
+- (void)_replaceUserPathWithRouteIndex:(unint64_t)index stepIndex:(unint64_t)stepIndex traversal:(int)traversal
 {
-  v5 = *&a5;
-  v7 = [(RAPGraphDirectionsRecorder *)self _userPathEntryWithRouteIndex:a3 stepIndex:a4];
+  v5 = *&traversal;
+  v7 = [(RAPGraphDirectionsRecorder *)self _userPathEntryWithRouteIndex:index stepIndex:stepIndex];
   v8 = v7;
   if (v7)
   {
@@ -149,32 +149,32 @@ LABEL_12:
 
       [(GEORouteMatch *)self->_lastGoodLocation locationCoordinate3D];
       v14 = v13;
-      v15 = [v8 rerouteLocation];
-      [v15 setElevationM:v14];
+      rerouteLocation = [v8 rerouteLocation];
+      [rerouteLocation setElevationM:v14];
     }
 
     v16 = sub_100798874();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [v8 routeIndex];
-      v18 = [v8 stepIndex];
-      v19 = [v8 traversal];
-      if (v19 >= 3)
+      routeIndex = [v8 routeIndex];
+      stepIndex = [v8 stepIndex];
+      traversal = [v8 traversal];
+      if (traversal >= 3)
       {
-        v20 = [NSString stringWithFormat:@"(unknown: %i)", v19];
+        v20 = [NSString stringWithFormat:@"(unknown: %i)", traversal];
       }
 
       else
       {
-        v20 = off_10162AC28[v19];
+        v20 = off_10162AC28[traversal];
       }
 
       *buf = 134218754;
       v22 = v8;
       v23 = 2048;
-      v24 = v17;
+      v24 = routeIndex;
       v25 = 2048;
-      v26 = v18;
+      v26 = stepIndex;
       v27 = 2112;
       v28 = v20;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "\nReplaced path entry %p:\n\trte: %lu\n\tstp: %lu\n\ttrv: %@\n", buf, 0x2Au);
@@ -182,34 +182,34 @@ LABEL_12:
   }
 }
 
-- (void)_storeUserPathWithRouteIndex:(unint64_t)a3 stepIndex:(unint64_t)a4
+- (void)_storeUserPathWithRouteIndex:(unint64_t)index stepIndex:(unint64_t)stepIndex
 {
   v7 = objc_alloc_init(RAPUserPathEntry);
-  [(RAPUserPathEntry *)v7 setRouteIndex:a3];
-  [(RAPUserPathEntry *)v7 setStepIndex:a4];
+  [(RAPUserPathEntry *)v7 setRouteIndex:index];
+  [(RAPUserPathEntry *)v7 setStepIndex:stepIndex];
   [(RAPUserPathEntry *)v7 setTraversal:0];
   v8 = sub_100798874();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(RAPUserPathEntry *)v7 routeIndex];
-    v10 = [(RAPUserPathEntry *)v7 stepIndex];
-    v11 = [(RAPUserPathEntry *)v7 traversal];
-    if (v11 >= 3)
+    routeIndex = [(RAPUserPathEntry *)v7 routeIndex];
+    stepIndex = [(RAPUserPathEntry *)v7 stepIndex];
+    traversal = [(RAPUserPathEntry *)v7 traversal];
+    if (traversal >= 3)
     {
-      v12 = [NSString stringWithFormat:@"(unknown: %i)", v11];
+      v12 = [NSString stringWithFormat:@"(unknown: %i)", traversal];
     }
 
     else
     {
-      v12 = off_10162AC28[v11];
+      v12 = off_10162AC28[traversal];
     }
 
     *buf = 134218754;
     v14 = v7;
     v15 = 2048;
-    v16 = v9;
+    v16 = routeIndex;
     v17 = 2048;
-    v18 = v10;
+    v18 = stepIndex;
     v19 = 2112;
     v20 = v12;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "\nStoring path entry %p:\n\trte: %lu\n\tstp: %lu\n\ttrv: %@\n", buf, 0x2Au);
@@ -218,7 +218,7 @@ LABEL_12:
   [(RAPDirectionsRecording *)self->_recording addUserPath:v7];
 }
 
-- (void)navigationServiceWillReroute:(id)a3
+- (void)navigationServiceWillReroute:(id)reroute
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -228,9 +228,9 @@ LABEL_12:
   [(RAPGraphDirectionsRecorder *)self _dispatch:v3];
 }
 
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
-  if (a4 <= 0x7FFFFFFFFFFFFFFELL && self->_numRecordedRoutes != 0)
+  if (index <= 0x7FFFFFFFFFFFFFFELL && self->_numRecordedRoutes != 0)
   {
     v8[7] = v5;
     v8[8] = v6;
@@ -239,46 +239,46 @@ LABEL_12:
     v8[2] = sub_1007E910C;
     v8[3] = &unk_1016575B0;
     v8[4] = self;
-    v8[5] = a4;
-    v8[6] = a5;
+    v8[5] = index;
+    v8[6] = segmentIndex;
     [(RAPGraphDirectionsRecorder *)self _dispatch:v8];
   }
 }
 
-- (void)setLastGoodLocation:(id)a3
+- (void)setLastGoodLocation:(id)location
 {
-  v5 = a3;
+  locationCopy = location;
   dispatch_assert_queue_V2(self->_recordingQueue);
-  objc_storeStrong(&self->_lastGoodLocation, a3);
+  objc_storeStrong(&self->_lastGoodLocation, location);
   v6 = sub_100798874();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(GEORouteMatch *)self->_lastGoodLocation stepIndex];
+    stepIndex = [(GEORouteMatch *)self->_lastGoodLocation stepIndex];
     v8 = 134217984;
-    v9 = v7;
+    v9 = stepIndex;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Changing last good location:\tcurr step: %lu\n", &v8, 0xCu);
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 routeMatch];
-  if (v8)
+  serviceCopy = service;
+  locationCopy = location;
+  routeMatch = [locationCopy routeMatch];
+  if (routeMatch)
   {
-    v9 = v8;
-    v10 = [v7 routeMatch];
-    v11 = [v10 isGoodMatch];
+    v9 = routeMatch;
+    routeMatch2 = [locationCopy routeMatch];
+    isGoodMatch = [routeMatch2 isGoodMatch];
 
-    if (v11)
+    if (isGoodMatch)
     {
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_1007E9418;
       v13[3] = &unk_101661A90;
       v13[4] = self;
-      v14 = v7;
+      v14 = locationCopy;
       [(RAPGraphDirectionsRecorder *)self _dispatch:v13];
     }
   }
@@ -286,27 +286,27 @@ LABEL_12:
   if (self->_switchedTransportTypeWaitingForLocation)
   {
     self->_switchedTransportTypeWaitingForLocation = 0;
-    v12 = [v6 route];
-    -[RAPGraphDirectionsRecorder _handleNewRoute:fromStepIndex:](self, "_handleNewRoute:fromStepIndex:", v12, [v7 stepIndex]);
+    route = [serviceCopy route];
+    -[RAPGraphDirectionsRecorder _handleNewRoute:fromStepIndex:](self, "_handleNewRoute:fromStepIndex:", route, [locationCopy stepIndex]);
   }
 }
 
-- (void)composedRoute:(id)a3 changedSelectedRideInClusteredSegment:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6
+- (void)composedRoute:(id)route changedSelectedRideInClusteredSegment:(id)segment fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v9 = a3;
-  v7 = [(RAPGraphDirectionsRecorder *)self observedRoute];
+  routeCopy = route;
+  observedRoute = [(RAPGraphDirectionsRecorder *)self observedRoute];
 
-  v8 = v9;
-  if (v7 == v9)
+  v8 = routeCopy;
+  if (observedRoute == routeCopy)
   {
-    [(RAPGraphDirectionsRecorder *)self updateRideSelectionsWithComposedRoute:v9];
-    v8 = v9;
+    [(RAPGraphDirectionsRecorder *)self updateRideSelectionsWithComposedRoute:routeCopy];
+    v8 = routeCopy;
   }
 }
 
-- (void)setObservedRoute:(id)a3
+- (void)setObservedRoute:(id)route
 {
-  obj = a3;
+  obj = route;
   WeakRetained = objc_loadWeakRetained(&self->_observedRoute);
 
   if (WeakRetained != obj)
@@ -319,10 +319,10 @@ LABEL_12:
   }
 }
 
-- (void)_dispatch:(id)a3
+- (void)_dispatch:(id)_dispatch
 {
-  v4 = a3;
-  v5 = v4;
+  _dispatchCopy = _dispatch;
+  v5 = _dispatchCopy;
   recordingQueue = self->_recordingQueue;
   if (recordingQueue)
   {
@@ -330,19 +330,19 @@ LABEL_12:
     block[1] = 3221225472;
     block[2] = sub_1007E9628;
     block[3] = &unk_101661760;
-    v8 = v4;
+    v8 = _dispatchCopy;
     dispatch_async(recordingQueue, block);
   }
 }
 
-- (void)recordNewSessionID:(GEOSessionID)a3
+- (void)recordNewSessionID:(GEOSessionID)d
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1007E96E4;
   v3[3] = &unk_1016575B0;
   v3[4] = self;
-  v4 = a3;
+  dCopy = d;
   [(RAPGraphDirectionsRecorder *)self _dispatch:v3];
 }
 
@@ -356,123 +356,123 @@ LABEL_12:
   [(RAPGraphDirectionsRecorder *)self _dispatch:v2];
 }
 
-- (void)recordNewRoute:(id)a3 fromStepIndex:(unint64_t)a4
+- (void)recordNewRoute:(id)route fromStepIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [v6 geoWaypointRoute];
+  routeCopy = route;
+  geoWaypointRoute = [routeCopy geoWaypointRoute];
 
-  if (v7)
+  if (geoWaypointRoute)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1007E98F4;
     v8[3] = &unk_10165E668;
     v8[4] = self;
-    v9 = v6;
-    v10 = a4;
+    v9 = routeCopy;
+    indexCopy = index;
     [(RAPGraphDirectionsRecorder *)self _dispatch:v8];
   }
 }
 
-- (void)recordNewResponse:(id)a3
+- (void)recordNewResponse:(id)response
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  responseCopy = response;
+  v5 = responseCopy;
+  if (responseCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1007E9ADC;
     v6[3] = &unk_101661A90;
     v6[4] = self;
-    v7 = v4;
+    v7 = responseCopy;
     [(RAPGraphDirectionsRecorder *)self _dispatch:v6];
   }
 }
 
-- (void)recordNewRequest:(id)a3
+- (void)recordNewRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  requestCopy = request;
+  v5 = requestCopy;
+  if (requestCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1007E9C50;
     v6[3] = &unk_101661A90;
     v6[4] = self;
-    v7 = v4;
+    v7 = requestCopy;
     [(RAPGraphDirectionsRecorder *)self _dispatch:v6];
   }
 }
 
-- (void)recordWaypoints:(id)a3 startWaypointSearchTicket:(id)a4 endWaypointSearchTicket:(id)a5
+- (void)recordWaypoints:(id)waypoints startWaypointSearchTicket:(id)ticket endWaypointSearchTicket:(id)searchTicket
 {
-  v8 = a4;
-  v9 = a5;
+  ticketCopy = ticket;
+  searchTicketCopy = searchTicket;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1007E9E3C;
   v17[3] = &unk_10162AC08;
   v17[4] = self;
-  sub_100021DB0(a3, v17);
+  sub_100021DB0(waypoints, v17);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1007E9EB8;
   v13[3] = &unk_101656A00;
   v14 = v13[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v10 = v9;
-  v11 = v8;
+  v15 = ticketCopy;
+  v16 = searchTicketCopy;
+  v10 = searchTicketCopy;
+  v11 = ticketCopy;
   v12 = v14;
   [(RAPGraphDirectionsRecorder *)self _dispatch:v13];
 }
 
-- (id)_userSearchInputForWaypoint:(id)a3
+- (id)_userSearchInputForWaypoint:(id)waypoint
 {
-  v3 = a3;
+  waypointCopy = waypoint;
   v4 = objc_alloc_init(RAPUserSearchInput);
-  v5 = [v3 requestSearchString];
-  [(RAPUserSearchInput *)v4 setSearchString:v5];
+  requestSearchString = [waypointCopy requestSearchString];
+  [(RAPUserSearchInput *)v4 setSearchString:requestSearchString];
 
-  v6 = [v3 requestAddress];
+  requestAddress = [waypointCopy requestAddress];
 
-  if (v6)
+  if (requestAddress)
   {
-    v7 = [v3 requestAddress];
-    v8 = [v7 singleLineAddress];
-    [(RAPUserSearchInput *)v4 setSingleLineAddressString:v8];
+    requestAddress2 = [waypointCopy requestAddress];
+    singleLineAddress = [requestAddress2 singleLineAddress];
+    [(RAPUserSearchInput *)v4 setSingleLineAddressString:singleLineAddress];
   }
 
-  v9 = [v3 requestSearch];
-  v10 = [v9 mapItem];
+  requestSearch = [waypointCopy requestSearch];
+  mapItem = [requestSearch mapItem];
 
-  v11 = [v10 _geoMapItem];
+  _geoMapItem = [mapItem _geoMapItem];
 
-  if (v11)
+  if (_geoMapItem)
   {
-    v12 = [v10 _geoMapItemStorageForPersistence];
-    [(RAPUserSearchInput *)v4 setPlaceMapItemStorage:v12];
+    _geoMapItemStorageForPersistence = [mapItem _geoMapItemStorageForPersistence];
+    [(RAPUserSearchInput *)v4 setPlaceMapItemStorage:_geoMapItemStorageForPersistence];
   }
 
-  v13 = [v3 completion];
-  v14 = [v13 copyStorage];
-  [(RAPUserSearchInput *)v4 setCompletionStorage:v14];
+  completion = [waypointCopy completion];
+  copyStorage = [completion copyStorage];
+  [(RAPUserSearchInput *)v4 setCompletionStorage:copyStorage];
 
-  v15 = [v3 requestSearch];
-  v16 = v15;
-  if (v15)
+  requestSearch2 = [waypointCopy requestSearch];
+  v16 = requestSearch2;
+  if (requestSearch2)
   {
-    v17 = [v15 type];
-    if (v17 == 3)
+    type = [requestSearch2 type];
+    if (type == 3)
     {
       v18 = 3;
     }
 
     else
     {
-      v18 = 2 * (v17 == 4);
+      v18 = 2 * (type == 4);
     }
 
     [(RAPUserSearchInput *)v4 setOrigin:v18];
@@ -482,72 +482,72 @@ LABEL_12:
     [v16 coordinate];
     [v19 setLng:v20];
     [(RAPUserSearchInput *)v4 setCoordinate:v19];
-    v21 = [v16 findMyHandle];
+    findMyHandle = [v16 findMyHandle];
 
-    if (v21)
+    if (findMyHandle)
     {
-      v22 = [v16 findMyHandle];
-      v23 = [v22 identifier];
-      [(RAPUserSearchInput *)v4 setFindMyHandleID:v23];
+      findMyHandle2 = [v16 findMyHandle];
+      identifier = [findMyHandle2 identifier];
+      [(RAPUserSearchInput *)v4 setFindMyHandleID:identifier];
     }
   }
 
   return v4;
 }
 
-- (void)updateRideSelectionsWithComposedRoute:(id)a3
+- (void)updateRideSelectionsWithComposedRoute:(id)route
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1007EA26C;
   v4[3] = &unk_101661A90;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(RAPGraphDirectionsRecorder *)v5 _dispatch:v4];
+  selfCopy = self;
+  routeCopy = route;
+  v3 = routeCopy;
+  [(RAPGraphDirectionsRecorder *)selfCopy _dispatch:v4];
 }
 
-- (void)_updateRideSelectionsWithComposedRoute:(id)a3
+- (void)_updateRideSelectionsWithComposedRoute:(id)route
 {
-  v4 = a3;
-  v5 = [v4 rideSelectionsAsNSData];
-  v6 = [v5 bytes];
+  routeCopy = route;
+  rideSelectionsAsNSData = [routeCopy rideSelectionsAsNSData];
+  bytes = [rideSelectionsAsNSData bytes];
 
-  v7 = [v4 rideSelections];
+  rideSelections = [routeCopy rideSelections];
 
-  v8 = [v7 count];
+  v8 = [rideSelections count];
   recording = self->_recording;
 
-  [(RAPDirectionsRecording *)recording setClusteredRouteRideSelections:v6 count:v8];
+  [(RAPDirectionsRecording *)recording setClusteredRouteRideSelections:bytes count:v8];
 }
 
-- (void)setSelectedRoute:(id)a3 fromRouteList:(id)a4
+- (void)setSelectedRoute:(id)route fromRouteList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 transportType] == 1;
-  [(RAPGraphDirectionsRecorder *)self setObservedRoute:v6];
+  routeCopy = route;
+  listCopy = list;
+  v8 = [routeCopy transportType] == 1;
+  [(RAPGraphDirectionsRecorder *)self setObservedRoute:routeCopy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1007EA3E8;
   v11[3] = &unk_101651258;
   v15 = v8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = routeCopy;
+  selfCopy = self;
+  v14 = listCopy;
+  v9 = listCopy;
+  v10 = routeCopy;
   [(RAPGraphDirectionsRecorder *)self _dispatch:v11];
 }
 
-- (BOOL)_bucketHasOnlyMissedStep:(id)a3
+- (BOOL)_bucketHasOnlyMissedStep:(id)step
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  stepCopy = step;
+  v4 = [stepCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = 0;
@@ -559,7 +559,7 @@ LABEL_12:
         v8 = v5;
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(stepCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -572,7 +572,7 @@ LABEL_12:
         v5 = v9;
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [stepCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -588,14 +588,14 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)_bucketHasOnlyStoredSteps:(id)a3
+- (BOOL)_bucketHasOnlyStoredSteps:(id)steps
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  stepsCopy = steps;
+  v4 = [stepsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -606,7 +606,7 @@ LABEL_14:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(stepsCopy);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) traversal])
@@ -616,7 +616,7 @@ LABEL_14:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [stepsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -635,24 +635,24 @@ LABEL_11:
 - (void)_optimizeRecordingData
 {
   dispatch_assert_queue_V2(self->_recordingQueue);
-  v54 = [(RAPDirectionsRecording *)self->_recording directionsResponses];
-  if ([v54 count] == 1)
+  directionsResponses = [(RAPDirectionsRecording *)self->_recording directionsResponses];
+  if ([directionsResponses count] == 1)
   {
   }
 
   else
   {
-    v3 = [(RAPDirectionsRecording *)self->_recording userPaths];
-    v4 = [v3 count];
+    userPaths = [(RAPDirectionsRecording *)self->_recording userPaths];
+    v4 = [userPaths count];
 
     if (v4)
     {
-      v52 = self;
-      v5 = [(RAPDirectionsRecording *)self->_recording directionsResponsesCount];
-      v6 = [[NSMutableArray alloc] initWithCapacity:v5];
-      if (v5)
+      selfCopy = self;
+      directionsResponsesCount = [(RAPDirectionsRecording *)self->_recording directionsResponsesCount];
+      v6 = [[NSMutableArray alloc] initWithCapacity:directionsResponsesCount];
+      if (directionsResponsesCount)
       {
-        v7 = v5;
+        v7 = directionsResponsesCount;
         do
         {
           v8 = +[NSMutableArray array];
@@ -668,8 +668,8 @@ LABEL_11:
       v71 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v9 = [(RAPDirectionsRecording *)v52->_recording userPaths];
-      v10 = [v9 countByEnumeratingWithState:&v68 objects:v77 count:16];
+      userPaths2 = [(RAPDirectionsRecording *)selfCopy->_recording userPaths];
+      v10 = [userPaths2 countByEnumeratingWithState:&v68 objects:v77 count:16];
       if (v10)
       {
         v11 = v10;
@@ -680,18 +680,18 @@ LABEL_11:
           {
             if (*v69 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(userPaths2);
             }
 
             v14 = *(*(&v68 + 1) + 8 * i);
-            if (v5 <= [v14 routeIndex])
+            if (directionsResponsesCount <= [v14 routeIndex])
             {
               v15 = sub_100798874();
               if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
               {
-                v16 = [v14 routeIndex];
+                routeIndex = [v14 routeIndex];
                 *buf = 67109120;
-                LODWORD(v75) = v16;
+                LODWORD(v75) = routeIndex;
                 _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_FAULT, "Route index: %u out of bounds for RAP user path entry.", buf, 8u);
               }
             }
@@ -703,14 +703,14 @@ LABEL_11:
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v68 objects:v77 count:16];
+          v11 = [userPaths2 countByEnumeratingWithState:&v68 objects:v77 count:16];
         }
 
         while (v11);
       }
 
       v50 = objc_opt_new();
-      v17 = v52;
+      v17 = selfCopy;
       v49 = objc_opt_new();
       v18 = +[NSMutableArray array];
       v64 = 0u;
@@ -748,8 +748,8 @@ LABEL_11:
               v24 = sub_100798874();
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
               {
-                v25 = [(RAPDirectionsRecording *)v17->_recording directionsRequests];
-                v26 = [v25 objectAtIndexedSubscript:v20];
+                directionsRequests = [(RAPDirectionsRecording *)v17->_recording directionsRequests];
+                v26 = [directionsRequests objectAtIndexedSubscript:v20];
                 *buf = 134217984;
                 v75 = v26;
                 _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "\t Request: %p", buf, 0xCu);
@@ -759,8 +759,8 @@ LABEL_11:
               v27 = sub_100798874();
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
               {
-                v28 = [(RAPDirectionsRecording *)v17->_recording directionsResponses];
-                v29 = [v28 objectAtIndexedSubscript:v20];
+                directionsResponses2 = [(RAPDirectionsRecording *)v17->_recording directionsResponses];
+                v29 = [directionsResponses2 objectAtIndexedSubscript:v20];
                 *buf = 134217984;
                 v75 = v29;
                 _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "\tResponse: %p", buf, 0xCu);
@@ -795,7 +795,7 @@ LABEL_11:
                 while (v32);
               }
 
-              for (k = (v20 + 1); k < v5; ++k)
+              for (k = (v20 + 1); k < directionsResponsesCount; ++k)
               {
                 v36 = [v19 objectAtIndexedSubscript:k];
                 v56 = 0u;
@@ -854,7 +854,7 @@ LABEL_11:
 LABEL_55:
             ++v20;
             v21 = v55 + 1;
-            v17 = v52;
+            v17 = selfCopy;
           }
 
           while ((v55 + 1) != v53);
@@ -864,14 +864,14 @@ LABEL_55:
         while (v53);
       }
 
-      v44 = [(RAPDirectionsRecording *)v17->_recording directionsRequests];
-      [v44 removeObjectsAtIndexes:v50];
+      directionsRequests2 = [(RAPDirectionsRecording *)v17->_recording directionsRequests];
+      [directionsRequests2 removeObjectsAtIndexes:v50];
 
-      v45 = [(RAPDirectionsRecording *)v17->_recording directionsResponses];
-      [v45 removeObjectsAtIndexes:v49];
+      directionsResponses3 = [(RAPDirectionsRecording *)v17->_recording directionsResponses];
+      [directionsResponses3 removeObjectsAtIndexes:v49];
 
-      v46 = [(RAPDirectionsRecording *)v17->_recording userPaths];
-      [v46 removeObjectsInArray:v18];
+      userPaths3 = [(RAPDirectionsRecording *)v17->_recording userPaths];
+      [userPaths3 removeObjectsInArray:v18];
 
       v17->_numRecordedRoutes = [(RAPDirectionsRecording *)v17->_recording directionsResponsesCount];
       v47 = sub_100798874();
@@ -899,14 +899,14 @@ LABEL_55:
   [(RAPGraphDirectionsRecorder *)self setIsRecording:0];
 }
 
-- (void)savePartialRecordingWithCompletion:(id)a3
+- (void)savePartialRecordingWithCompletion:(id)completion
 {
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_1007EB228;
   v25[3] = &unk_10162ABE0;
-  v4 = a3;
-  v26 = v4;
+  completionCopy = completion;
+  v26 = completionCopy;
   v5 = objc_retainBlock(v25);
   if (![(RAPGraphDirectionsRecorder *)self isRecording])
   {
@@ -917,23 +917,23 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v6 = [(RAPGraphDirectionsRecorder *)self historyItemIdentifier];
+  historyItemIdentifier = [(RAPGraphDirectionsRecorder *)self historyItemIdentifier];
 
-  if (!v6)
+  if (!historyItemIdentifier)
   {
     v16 = @"historyItemIdentifier wasn't set when trying to save partial recording";
     goto LABEL_10;
   }
 
-  v7 = [(RAPAuxiliaryControlsRecorder *)self->_auxiliaryControlsRecorder copyCurrentPartialRecording];
+  copyCurrentPartialRecording = [(RAPAuxiliaryControlsRecorder *)self->_auxiliaryControlsRecorder copyCurrentPartialRecording];
   v8 = +[RAPStorageHistoryContainer directionsRecordingStorage];
   recordingQueue = self->_recordingQueue;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v19 = sub_1007EB300;
   v20 = &unk_101660380;
-  v21 = self;
-  v10 = v7;
+  selfCopy = self;
+  v10 = copyCurrentPartialRecording;
   v22 = v10;
   v11 = v8;
   v23 = v11;
@@ -957,9 +957,9 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)setOriginatingDeviceFromOrigin:(int64_t)a3
+- (void)setOriginatingDeviceFromOrigin:(int64_t)origin
 {
-  self->_auxiliaryControlsOrigin = a3;
+  self->_auxiliaryControlsOrigin = origin;
   self->_hasAuxiliaryControlsOrigin = 1;
   auxiliaryControlsRecorder = self->_auxiliaryControlsRecorder;
   if (auxiliaryControlsRecorder)
@@ -968,25 +968,25 @@ LABEL_13:
   }
 }
 
-- (void)_immediatelyUpdateRecording:(id)a3 withAuxiliaryControlsRecording:(id)a4
+- (void)_immediatelyUpdateRecording:(id)recording withAuxiliaryControlsRecording:(id)controlsRecording
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  recordingCopy = recording;
+  controlsRecordingCopy = controlsRecording;
+  v6 = controlsRecordingCopy;
+  if (controlsRecordingCopy)
   {
-    v7 = [v5 auxiliaryControls];
-    v8 = [v7 mutableCopy];
-    [v9 setAuxiliaryControls:v8];
+    auxiliaryControls = [controlsRecordingCopy auxiliaryControls];
+    v8 = [auxiliaryControls mutableCopy];
+    [recordingCopy setAuxiliaryControls:v8];
 
     if ([v6 hasOriginatingAuxiliaryControlIndex])
     {
-      [v9 setOriginatingAuxiliaryControlIndex:{objc_msgSend(v6, "originatingAuxiliaryControlIndex")}];
+      [recordingCopy setOriginatingAuxiliaryControlIndex:{objc_msgSend(v6, "originatingAuxiliaryControlIndex")}];
     }
 
     else
     {
-      [v9 setHasOriginatingAuxiliaryControlIndex:0];
+      [recordingCopy setHasOriginatingAuxiliaryControlIndex:0];
     }
   }
 }
@@ -1009,7 +1009,7 @@ LABEL_13:
   v14 = 3221225472;
   v15 = sub_1007EB6D8;
   v16 = &unk_101661600;
-  v17 = self;
+  selfCopy = self;
   v18 = &v19;
   v4 = recordingQueue;
   v5 = &v13;

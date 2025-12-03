@@ -1,5 +1,5 @@
 @interface PLFaceDimension
-- (PLFaceDimension)initWithSourceWidth:(int64_t)a3 sourceHeight:(int64_t)a4 centerX:(double)a5 centerY:(double)a6 size:(double)a7 bodyCenterX:(double)a8 bodyCenterY:(double)a9 bodyWidth:(double)a10 bodyHeight:(double)a11;
+- (PLFaceDimension)initWithSourceWidth:(int64_t)width sourceHeight:(int64_t)height centerX:(double)x centerY:(double)y size:(double)size bodyCenterX:(double)centerX bodyCenterY:(double)centerY bodyWidth:(double)self0 bodyHeight:(double)self1;
 - (id)description;
 @end
 
@@ -37,22 +37,22 @@
   return v10;
 }
 
-- (PLFaceDimension)initWithSourceWidth:(int64_t)a3 sourceHeight:(int64_t)a4 centerX:(double)a5 centerY:(double)a6 size:(double)a7 bodyCenterX:(double)a8 bodyCenterY:(double)a9 bodyWidth:(double)a10 bodyHeight:(double)a11
+- (PLFaceDimension)initWithSourceWidth:(int64_t)width sourceHeight:(int64_t)height centerX:(double)x centerY:(double)y size:(double)size bodyCenterX:(double)centerX bodyCenterY:(double)centerY bodyWidth:(double)self0 bodyHeight:(double)self1
 {
   v21.receiver = self;
   v21.super_class = PLFaceDimension;
   result = [(PLFaceDimension *)&v21 init];
   if (result)
   {
-    result->_sourceWidth = a3;
-    result->_sourceHeight = a4;
-    result->_centerX = a5;
-    result->_centerY = a6;
-    result->_size = a7;
-    result->_bodyCenterX = a8;
-    result->_bodyCenterY = a9;
-    result->_bodyWidth = a10;
-    result->_bodyHeight = a11;
+    result->_sourceWidth = width;
+    result->_sourceHeight = height;
+    result->_centerX = x;
+    result->_centerY = y;
+    result->_size = size;
+    result->_bodyCenterX = centerX;
+    result->_bodyCenterY = centerY;
+    result->_bodyWidth = bodyWidth;
+    result->_bodyHeight = bodyHeight;
   }
 
   return result;

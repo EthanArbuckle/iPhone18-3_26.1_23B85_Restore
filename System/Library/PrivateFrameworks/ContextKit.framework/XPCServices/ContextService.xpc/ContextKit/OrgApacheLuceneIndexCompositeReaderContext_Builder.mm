@@ -1,17 +1,17 @@
 @interface OrgApacheLuceneIndexCompositeReaderContext_Builder
-- (OrgApacheLuceneIndexCompositeReaderContext_Builder)initWithOrgApacheLuceneIndexCompositeReader:(id)a3;
+- (OrgApacheLuceneIndexCompositeReaderContext_Builder)initWithOrgApacheLuceneIndexCompositeReader:(id)reader;
 - (id)build;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexCompositeReaderContext_Builder
 
-- (OrgApacheLuceneIndexCompositeReaderContext_Builder)initWithOrgApacheLuceneIndexCompositeReader:(id)a3
+- (OrgApacheLuceneIndexCompositeReaderContext_Builder)initWithOrgApacheLuceneIndexCompositeReader:(id)reader
 {
   v5 = new_JavaUtilArrayList_init();
   JreStrongAssignAndConsume(&self->leaves_, v5);
   self->leafDocBase_ = 0;
-  JreStrongAssign(&self->reader_, a3);
+  JreStrongAssign(&self->reader_, reader);
   return self;
 }
 

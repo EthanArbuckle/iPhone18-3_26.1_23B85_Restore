@@ -15,12 +15,12 @@
 - (NSArray)sourceImageHandles;
 - (NSArray)sourceStateHandles;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)reloadFromDataSources;
-- (void)setOptions:(unint64_t)a3;
+- (void)setOptions:(unint64_t)options;
 @end
 
 @implementation MPSNNGraph
@@ -35,7 +35,7 @@
 + (MPSNNGraph)graphWithDevice:(id)device resultImage:(MPSNNImageNode *)resultImage resultImageIsNeeded:(BOOL)resultIsNeeded
 {
   v5 = resultIsNeeded;
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   IsNeeded = objc_msgSend_initWithDevice_resultImage_resultImageIsNeeded_(v8, v9, device, resultImage, v5, v10, v11, v12);
 
   return IsNeeded;
@@ -43,7 +43,7 @@
 
 + (MPSNNGraph)graphWithDevice:(id)device resultImage:(MPSNNImageNode *)resultImage
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v12 = objc_msgSend_initWithDevice_resultImage_(v6, v7, device, resultImage, v8, v9, v10, v11);
 
   return v12;
@@ -115,7 +115,7 @@ LABEL_7:
 
 + (MPSNNGraph)graphWithDevice:(id)device resultImages:(NSArray *)resultImages resultsAreNeeded:(BOOL *)areResultsNeeded
 {
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v13 = objc_msgSend_initWithDevice_resultImages_resultsAreNeeded_(v8, v9, device, resultImages, areResultsNeeded, v10, v11, v12);
 
   return v13;
@@ -316,20 +316,20 @@ LABEL_7:
     p_graph = &self->_graph;
     if (self->_graph._graphSourceStates._count)
     {
-      v7 = self;
+      selfCopy = self;
       v8 = sourceImages;
       v9 = commandBuffer;
       v10 = MTLReportFailureTypeEnabled();
       commandBuffer = v9;
       sourceImages = v8;
       v11 = v10;
-      self = v7;
+      self = selfCopy;
       if (v11)
       {
         v12 = objc_opt_class();
         NSStringFromClass(v12);
         MTLReportFailure();
-        self = v7;
+        self = selfCopy;
         commandBuffer = v9;
         sourceImages = v8;
       }
@@ -337,20 +337,20 @@ LABEL_7:
 
     if (p_graph->_graphResultStates._count)
     {
-      v13 = self;
+      selfCopy2 = self;
       v14 = sourceImages;
       v15 = commandBuffer;
       v16 = MTLReportFailureTypeEnabled();
       commandBuffer = v15;
       sourceImages = v14;
       v17 = v16;
-      self = v13;
+      self = selfCopy2;
       if (v17)
       {
         v18 = objc_opt_class();
         NSStringFromClass(v18);
         MTLReportFailure();
-        self = v13;
+        self = selfCopy2;
         commandBuffer = v15;
         sourceImages = v14;
       }
@@ -358,20 +358,20 @@ LABEL_7:
 
     if (p_graph->_graphIntermediateImages._count)
     {
-      v19 = self;
+      selfCopy3 = self;
       v20 = sourceImages;
       v21 = commandBuffer;
       v22 = MTLReportFailureTypeEnabled();
       commandBuffer = v21;
       sourceImages = v20;
       v23 = v22;
-      self = v19;
+      self = selfCopy3;
       if (v23)
       {
         v24 = objc_opt_class();
         NSStringFromClass(v24);
         MTLReportFailure();
-        self = v19;
+        self = selfCopy3;
         commandBuffer = v21;
         sourceImages = v20;
       }
@@ -387,7 +387,7 @@ LABEL_7:
 {
   if ((*(&self->super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0 && self->_graph._graphResultStates._count)
   {
-    v7 = self;
+    selfCopy = self;
     v8 = sourceStates;
     v9 = sourceImages;
     v10 = commandBuffer;
@@ -396,13 +396,13 @@ LABEL_7:
     sourceImages = v9;
     sourceStates = v8;
     v12 = v11;
-    self = v7;
+    self = selfCopy;
     if (v12)
     {
       v13 = objc_opt_class();
       NSStringFromClass(v13);
       MTLReportFailure();
-      self = v7;
+      self = selfCopy;
       commandBuffer = v10;
       sourceImages = v9;
       sourceStates = v8;
@@ -1350,7 +1350,7 @@ LABEL_49:
   return objc_msgSend_stringWithFormat_(v19, v40, @"%@\n\toutputStateIsTemporary:              %s\n\tdestinatonImageAllocator:            %s\n\tdefault intermediate storage foramt: %s\n\tresult is needed:                    %s\n\tlist of nodes:\n\n\t\t(Note: missing nodes have been optimized away.)\n\t%@", v41, v42, v43, v44, v45, v20, v39, v17, Name, v38, v37);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v142.receiver = self;
@@ -1358,11 +1358,11 @@ LABEL_49:
   [(MPSKernel *)&v142 encodeWithCoder:?];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  objc_msgSend_encodeObject_forKey_(a3, v7, v6, @"MPSNNGraphc", v8, v9, v10, v11);
-  objc_msgSend_encodeObject_forKey_(a3, v12, self->_destinationImageAllocator, @"MPSNNGraphA", v13, v14, v15, v16);
-  objc_msgSend_encodeInteger_forKey_(a3, v17, self->_format, @"MPSNNGraphFI", v18, v19, v20, v21);
-  objc_msgSend_encodeBool_forKey_(a3, v22, self->_resultIsNeeded, @"MPSNNGraphResultIsNeeded", v23, v24, v25, v26);
-  objc_msgSend_encodeBool_forKey_(a3, v27, self->_outputStateIsTemporary, @"MPSNNGraphOutputStateIsTemporary", v28, v29, v30, v31);
+  objc_msgSend_encodeObject_forKey_(coder, v7, v6, @"MPSNNGraphc", v8, v9, v10, v11);
+  objc_msgSend_encodeObject_forKey_(coder, v12, self->_destinationImageAllocator, @"MPSNNGraphA", v13, v14, v15, v16);
+  objc_msgSend_encodeInteger_forKey_(coder, v17, self->_format, @"MPSNNGraphFI", v18, v19, v20, v21);
+  objc_msgSend_encodeBool_forKey_(coder, v22, self->_resultIsNeeded, @"MPSNNGraphResultIsNeeded", v23, v24, v25, v26);
+  objc_msgSend_encodeBool_forKey_(coder, v27, self->_outputStateIsTemporary, @"MPSNNGraphOutputStateIsTemporary", v28, v29, v30, v31);
   p_graph = &self->_graph;
   count = self->_graph._filters._count;
   v34 = objc_autoreleasePoolPush();
@@ -1376,7 +1376,7 @@ LABEL_49:
     }
   }
 
-  objc_msgSend_encodeObject_forKey_(a3, v41, v47, @"MPSNNGraph.filterNodes", v43, v44, v45, v46);
+  objc_msgSend_encodeObject_forKey_(coder, v41, v47, @"MPSNNGraph.filterNodes", v43, v44, v45, v46);
   objc_autoreleasePoolPop(v34);
   v55 = p_graph->_images._count;
   v56 = objc_autoreleasePoolPush();
@@ -1390,7 +1390,7 @@ LABEL_49:
     }
   }
 
-  objc_msgSend_encodeObject_forKey_(a3, v63, v69, @"MPSNNGraph.imageNodes", v65, v66, v67, v68);
+  objc_msgSend_encodeObject_forKey_(coder, v63, v69, @"MPSNNGraph.imageNodes", v65, v66, v67, v68);
   objc_autoreleasePoolPop(v56);
   v77 = p_graph->_states._count;
   v78 = objc_autoreleasePoolPush();
@@ -1404,10 +1404,10 @@ LABEL_49:
     }
   }
 
-  objc_msgSend_encodeObject_forKey_(a3, v85, v91, @"MPSNNGraph.stateNodes", v87, v88, v89, v90);
+  objc_msgSend_encodeObject_forKey_(coder, v85, v91, @"MPSNNGraph.stateNodes", v87, v88, v89, v90);
   objc_autoreleasePoolPop(v78);
   v99 = p_graph->_graphResultImages._count;
-  objc_msgSend_encodeInt32_forKey_(a3, v100, v99, @"MPSNNGraph.resultIndexCount", v101, v102, v103, v104);
+  objc_msgSend_encodeInt32_forKey_(coder, v100, v99, @"MPSNNGraph.resultIndexCount", v101, v102, v103, v104);
   v105 = malloc_type_malloc(4 * v99, 0x100004052888210uLL);
   if (v105)
   {
@@ -1457,13 +1457,13 @@ LABEL_49:
     }
 
 LABEL_19:
-    objc_msgSend_encodeBytes_length_forKey_(a3, v106, v105, 4 * v99, @"MPSNNGraph.resultIndices", v108, v109, v110);
+    objc_msgSend_encodeBytes_length_forKey_(coder, v106, v105, 4 * v99, @"MPSNNGraph.resultIndices", v108, v109, v110);
     free(v111);
   }
 
-  objc_msgSend_encodeInt32_forKey_(a3, v106, LODWORD(p_graph->_filters._count), @"MPSNNGraph.filterCount", v107, v108, v109, v110);
-  objc_msgSend_encodeInt32_forKey_(a3, v122, LODWORD(p_graph->_images._count), @"MPSNNGraph.imageCount", v123, v124, v125, v126);
-  objc_msgSend_encodeInt32_forKey_(a3, v127, LODWORD(p_graph->_states._count), @"MPSNNGraph.stateCount", v128, v129, v130, v131);
+  objc_msgSend_encodeInt32_forKey_(coder, v106, LODWORD(p_graph->_filters._count), @"MPSNNGraph.filterCount", v107, v108, v109, v110);
+  objc_msgSend_encodeInt32_forKey_(coder, v122, LODWORD(p_graph->_images._count), @"MPSNNGraph.imageCount", v123, v124, v125, v126);
+  objc_msgSend_encodeInt32_forKey_(coder, v127, LODWORD(p_graph->_states._count), @"MPSNNGraph.stateCount", v128, v129, v130, v131);
   v132 = 2 * p_graph->_graphIntermediateImages._count + 2;
   v133 = malloc_type_malloc(v132, 0x1000040BDFB0063uLL);
   v138 = v133;
@@ -1501,7 +1501,7 @@ LABEL_19:
   }
 
 LABEL_28:
-  objc_msgSend_encodeBytes_length_forKey_(a3, v134, v133, v132, @"MPSNNGraph.exportedImages", v135, v136, v137);
+  objc_msgSend_encodeBytes_length_forKey_(coder, v134, v133, v132, @"MPSNNGraph.exportedImages", v135, v136, v137);
   free(v138);
 }
 
@@ -1894,11 +1894,11 @@ LABEL_76:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v49.receiver = self;
   v49.super_class = MPSNNGraph;
-  v5 = [(MPSKernel *)&v49 copyWithZone:a3 device:a4];
+  v5 = [(MPSKernel *)&v49 copyWithZone:zone device:device];
   if (!v5)
   {
     return v5;
@@ -2216,7 +2216,7 @@ LABEL_8:
   return v53;
 }
 
-- (void)setOptions:(unint64_t)a3
+- (void)setOptions:(unint64_t)options
 {
   p_graph = &self->_graph;
   count = self->_graph._filters._count;
@@ -2225,11 +2225,11 @@ LABEL_8:
     for (i = 0; i != count; ++i)
     {
       v8 = p_graph->_filters._items[i];
-      (*(*v8 + 264))(v8, a3);
+      (*(*v8 + 264))(v8, options);
     }
   }
 
-  *(&self->super.super.isa + *MEMORY[0x277CD7378]) = a3;
+  *(&self->super.super.isa + *MEMORY[0x277CD7378]) = options;
 }
 
 - (void)reloadFromDataSources

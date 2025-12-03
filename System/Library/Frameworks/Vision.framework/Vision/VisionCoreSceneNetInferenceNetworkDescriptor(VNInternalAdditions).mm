@@ -7,7 +7,7 @@
 - (id)VNSceneprintFromData:()VNInternalAdditions labelsAndConfidences:originatingRequestSpecifier:error:
 {
   v10 = a4;
-  v11 = [a1 VNSceneprintFromData:a3 originatingRequestSpecifier:a5 error:a6];
+  v11 = [self VNSceneprintFromData:a3 originatingRequestSpecifier:a5 error:a6];
   v12 = v11;
   if (v11)
   {

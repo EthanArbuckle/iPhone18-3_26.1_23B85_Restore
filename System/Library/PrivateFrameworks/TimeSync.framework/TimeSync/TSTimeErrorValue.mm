@@ -1,20 +1,20 @@
 @interface TSTimeErrorValue
-+ (id)timeErrorSequenceWithTimestamps:(unint64_t *)a3 timeError:(int64_t *)a4 count:(int64_t)a5;
-- (TSTimeErrorValue)initWithTimestamp:(unint64_t)a3 andError:(int64_t)a4;
++ (id)timeErrorSequenceWithTimestamps:(unint64_t *)timestamps timeError:(int64_t *)error count:(int64_t)count;
+- (TSTimeErrorValue)initWithTimestamp:(unint64_t)timestamp andError:(int64_t)error;
 - (id)description;
 @end
 
 @implementation TSTimeErrorValue
 
-- (TSTimeErrorValue)initWithTimestamp:(unint64_t)a3 andError:(int64_t)a4
+- (TSTimeErrorValue)initWithTimestamp:(unint64_t)timestamp andError:(int64_t)error
 {
   v7.receiver = self;
   v7.super_class = TSTimeErrorValue;
   result = [(TSTimeErrorValue *)&v7 init];
   if (result)
   {
-    result->_timestamp = a3;
-    result->_error = a4;
+    result->_timestamp = timestamp;
+    result->_error = error;
   }
 
   return result;
@@ -30,27 +30,27 @@
   return v6;
 }
 
-+ (id)timeErrorSequenceWithTimestamps:(unint64_t *)a3 timeError:(int64_t *)a4 count:(int64_t)a5
++ (id)timeErrorSequenceWithTimestamps:(unint64_t *)timestamps timeError:(int64_t *)error count:(int64_t)count
 {
-  v8 = [MEMORY[0x277CBEB18] array];
-  if (a3 && a4 && a5 >= 1)
+  array = [MEMORY[0x277CBEB18] array];
+  if (timestamps && error && count >= 1)
   {
     do
     {
       v9 = [TSTimeErrorValue alloc];
-      v11 = *a3++;
+      v11 = *timestamps++;
       v10 = v11;
-      v12 = *a4++;
+      v12 = *error++;
       v13 = [(TSTimeErrorValue *)v9 initWithTimestamp:v10 andError:v12];
-      [v8 addObject:v13];
+      [array addObject:v13];
 
-      --a5;
+      --count;
     }
 
-    while (a5);
+    while (count);
   }
 
-  return v8;
+  return array;
 }
 
 @end

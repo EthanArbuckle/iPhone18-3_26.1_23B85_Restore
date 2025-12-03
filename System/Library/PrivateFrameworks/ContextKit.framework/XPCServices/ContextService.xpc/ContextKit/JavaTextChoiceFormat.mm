@@ -1,63 +1,63 @@
 @interface JavaTextChoiceFormat
-+ (double)nextDoubleWithDouble:(double)a3 withBoolean:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (JavaTextChoiceFormat)formatWithDouble:(double)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5;
-- (JavaTextChoiceFormat)initWithDoubleArray:(id)a3 withNSStringArray:(id)a4;
-- (JavaTextChoiceFormat)initWithNSString:(id)a3;
++ (double)nextDoubleWithDouble:(double)double withBoolean:(BOOL)boolean;
+- (BOOL)isEqual:(id)equal;
+- (JavaTextChoiceFormat)formatWithDouble:(double)double withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position;
+- (JavaTextChoiceFormat)initWithDoubleArray:(id)array withNSStringArray:(id)stringArray;
+- (JavaTextChoiceFormat)initWithNSString:(id)string;
 - (id)clone;
-- (id)parseWithNSString:(id)a3 withJavaTextParsePosition:(id)a4;
+- (id)parseWithNSString:(id)string withJavaTextParsePosition:(id)position;
 - (id)toPattern;
 - (unint64_t)hash;
-- (void)applyPatternWithNSString:(id)a3;
+- (void)applyPatternWithNSString:(id)string;
 - (void)dealloc;
-- (void)setChoicesWithDoubleArray:(id)a3 withNSStringArray:(id)a4;
+- (void)setChoicesWithDoubleArray:(id)array withNSStringArray:(id)stringArray;
 @end
 
 @implementation JavaTextChoiceFormat
 
-- (JavaTextChoiceFormat)initWithDoubleArray:(id)a3 withNSStringArray:(id)a4
+- (JavaTextChoiceFormat)initWithDoubleArray:(id)array withNSStringArray:(id)stringArray
 {
   JavaTextNumberFormat_init(self, a2);
-  [(JavaTextChoiceFormat *)self setChoicesWithDoubleArray:a3 withNSStringArray:a4];
+  [(JavaTextChoiceFormat *)self setChoicesWithDoubleArray:array withNSStringArray:stringArray];
   return self;
 }
 
-- (JavaTextChoiceFormat)initWithNSString:(id)a3
+- (JavaTextChoiceFormat)initWithNSString:(id)string
 {
   JavaTextNumberFormat_init(self, a2);
-  [(JavaTextChoiceFormat *)self applyPatternWithNSString:a3];
+  [(JavaTextChoiceFormat *)self applyPatternWithNSString:string];
   return self;
 }
 
-- (void)applyPatternWithNSString:(id)a3
+- (void)applyPatternWithNSString:(id)string
 {
   v5 = [IOSDoubleArray arrayWithLength:5];
   v6 = new_JavaUtilArrayList_init();
-  if (!a3)
+  if (!string)
   {
 LABEL_42:
     JreThrowNullPointerException();
   }
 
   v7 = v6;
-  v8 = [a3 length];
+  v8 = [string length];
   v9 = new_JavaLangStringBuffer_init();
   if ((atomic_load_explicit(JavaUtilLocale__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1000458CC();
   }
 
-  v52 = self;
+  selfCopy = self;
   InstanceWithJavaUtilLocale = JavaTextNumberFormat_getInstanceWithJavaUtilLocale_(JavaUtilLocale_US_);
   v11 = new_JavaTextParsePosition_initWithInt_(0);
-  v12 = sub_1001D147C(a3, 0);
+  v12 = sub_1001D147C(string, 0);
   if (v12 < v8)
   {
     v13 = v12;
     v14 = 0;
     v15 = 0;
     v53 = InstanceWithJavaUtilLocale;
-    v54 = a3;
+    stringCopy = string;
     while (1)
     {
       [(JavaTextParsePosition *)v11 setIndexWithInt:v13];
@@ -66,8 +66,8 @@ LABEL_42:
         goto LABEL_42;
       }
 
-      v16 = [InstanceWithJavaUtilLocale parseWithNSString:a3 withJavaTextParsePosition:v11];
-      v17 = sub_1001D147C(a3, [(JavaTextParsePosition *)v11 getIndex]);
+      v16 = [InstanceWithJavaUtilLocale parseWithNSString:string withJavaTextParsePosition:v11];
+      v17 = sub_1001D147C(string, [(JavaTextParsePosition *)v11 getIndex]);
       if ([(JavaTextParsePosition *)v11 getErrorIndex]!= -1 || v17 >= v8)
       {
         if ((atomic_load_explicit(LibcoreUtilEmptyArray__initialized, memory_order_acquire) & 1) == 0)
@@ -75,7 +75,7 @@ LABEL_42:
           sub_1001BBB54();
         }
 
-        JreStrongAssign((&v52->super.minimumFractionDigits_ + 1), LibcoreUtilEmptyArray_DOUBLE_);
+        JreStrongAssign((&selfCopy->super.minimumFractionDigits_ + 1), LibcoreUtilEmptyArray_DOUBLE_);
         if ((atomic_load_explicit(LibcoreUtilEmptyArray__initialized, memory_order_acquire) & 1) == 0)
         {
           sub_1001BBB54();
@@ -83,13 +83,13 @@ LABEL_42:
 
         v49 = LibcoreUtilEmptyArray_STRING_;
 
-        JreStrongAssign((&v52->choiceLimits_ + 4), v49);
+        JreStrongAssign((&selfCopy->choiceLimits_ + 4), v49);
         return;
       }
 
-      v18 = a3;
+      stringCopy2 = string;
       v19 = v9;
-      v27 = [v18 charAtWithInt:v17];
+      v27 = [stringCopy2 charAtWithInt:v17];
       if (v15 == v5->super.size_)
       {
         v28 = [IOSDoubleArray arrayWithLength:v14];
@@ -124,7 +124,7 @@ LABEL_42:
 LABEL_18:
       v43 = DoubleWithDouble;
       v9 = v19;
-      a3 = v54;
+      string = stringCopy;
       if (v15 >= 1)
       {
         size = v5->super.size_;
@@ -142,8 +142,8 @@ LABEL_18:
 
       [(JavaLangStringBuffer *)v9 setLengthWithInt:0];
       [(JavaTextParsePosition *)v11 setIndexWithInt:(v17 + 1)];
-      JavaTextFormat_upToWithNSString_withJavaTextParsePosition_withJavaLangStringBuffer_withChar_(v54, v11, v9, 124);
-      v45 = [(JavaTextParsePosition *)v11 getIndex];
+      JavaTextFormat_upToWithNSString_withJavaTextParsePosition_withJavaLangStringBuffer_withChar_(stringCopy, v11, v9, 124);
+      getIndex = [(JavaTextParsePosition *)v11 getIndex];
       v46 = v5->super.size_;
       if ((v15 & 0x80000000) != 0 || v15 >= v46)
       {
@@ -152,7 +152,7 @@ LABEL_18:
 
       v5->buffer_[v15] = v43;
       [(JavaUtilArrayList *)v7 addWithId:[(JavaLangStringBuffer *)v9 description]];
-      v13 = sub_1001D147C(v54, v45);
+      v13 = sub_1001D147C(stringCopy, getIndex);
       v14 += 2;
       v15 = (v15 + 1);
       InstanceWithJavaUtilLocale = v53;
@@ -184,23 +184,23 @@ LABEL_14:
 LABEL_28:
   if (v15 == v5->super.size_)
   {
-    JreStrongAssign((&v52->super.minimumFractionDigits_ + 1), v5);
+    JreStrongAssign((&selfCopy->super.minimumFractionDigits_ + 1), v5);
   }
 
   else
   {
-    JreStrongAssignAndConsume((&v52->super.minimumFractionDigits_ + 1), [IOSDoubleArray newArrayWithLength:v15]);
-    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(v5, 0, *(&v52->super.minimumFractionDigits_ + 1), 0, v15);
+    JreStrongAssignAndConsume((&selfCopy->super.minimumFractionDigits_ + 1), [IOSDoubleArray newArrayWithLength:v15]);
+    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(v5, 0, *(&selfCopy->super.minimumFractionDigits_ + 1), 0, v15);
   }
 
   v47 = [IOSObjectArray newArrayWithLength:[(JavaUtilArrayList *)v7 size] type:NSString_class_()];
-  JreStrongAssignAndConsume((&v52->choiceLimits_ + 4), v47);
+  JreStrongAssignAndConsume((&selfCopy->choiceLimits_ + 4), v47);
   if ([(JavaUtilArrayList *)v7 size]>= 1)
   {
     v48 = 0;
     do
     {
-      IOSObjectArray_Set(*(&v52->choiceLimits_ + 4), v48, [(JavaUtilArrayList *)v7 getWithInt:v48]);
+      IOSObjectArray_Set(*(&selfCopy->choiceLimits_ + 4), v48, [(JavaUtilArrayList *)v7 getWithInt:v48]);
       ++v48;
     }
 
@@ -212,9 +212,9 @@ LABEL_28:
 {
   v7.receiver = self;
   v7.super_class = JavaTextChoiceFormat;
-  v3 = [(JavaTextNumberFormat *)&v7 clone];
+  clone = [(JavaTextNumberFormat *)&v7 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     goto LABEL_6;
   }
@@ -225,19 +225,19 @@ LABEL_28:
   }
 
   v4 = *(&self->super.minimumFractionDigits_ + 1);
-  if (!v4 || (JreStrongAssign((v3 + 28), [v4 clone]), (v5 = *(&self->choiceLimits_ + 4)) == 0))
+  if (!v4 || (JreStrongAssign((clone + 28), [v4 clone]), (v5 = *(&self->choiceLimits_ + 4)) == 0))
   {
 LABEL_6:
     JreThrowNullPointerException();
   }
 
-  JreStrongAssign((v3 + 36), [v5 clone]);
-  return v3;
+  JreStrongAssign((clone + 36), [v5 clone]);
+  return clone;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
@@ -248,7 +248,7 @@ LABEL_6:
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      if (!a3)
+      if (!equal)
       {
         JreThrowNullPointerException();
       }
@@ -258,11 +258,11 @@ LABEL_6:
         JreThrowClassCastException();
       }
 
-      v5 = JavaUtilArrays_equalsWithDoubleArray_withDoubleArray_(*(&self->super.minimumFractionDigits_ + 1), *(a3 + 28));
+      v5 = JavaUtilArrays_equalsWithDoubleArray_withDoubleArray_(*(&self->super.minimumFractionDigits_ + 1), *(equal + 28));
       if (v5)
       {
         v6 = *(&self->choiceLimits_ + 4);
-        v7 = *(a3 + 36);
+        v7 = *(equal + 36);
 
         LOBYTE(v5) = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(v6, v7);
       }
@@ -277,7 +277,7 @@ LABEL_6:
   return v5;
 }
 
-- (JavaTextChoiceFormat)formatWithDouble:(double)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5
+- (JavaTextChoiceFormat)formatWithDouble:(double)double withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position
 {
   v5 = *(&self->super.minimumFractionDigits_ + 1);
   if (!v5)
@@ -303,9 +303,9 @@ LABEL_6:
     }
 
     v12 = v9-- & 0x7FFFFFFF;
-    if (*(v10 + 16 + 8 * v12) <= a3)
+    if (*(v10 + 16 + 8 * v12) <= double)
     {
-      if (a4)
+      if (buffer)
       {
         v16 = *(&self->choiceLimits_ + 4);
         if (v16)
@@ -335,10 +335,10 @@ LABEL_21:
   v14 = *(v13 + 8);
   if (!v14)
   {
-    return a4;
+    return buffer;
   }
 
-  if (!a4)
+  if (!buffer)
   {
     goto LABEL_21;
   }
@@ -352,7 +352,7 @@ LABEL_21:
 LABEL_17:
   v18 = *v15;
 
-  return [a4 appendWithNSString:{v18, a5}];
+  return [buffer appendWithNSString:{v18, position}];
 }
 
 - (unint64_t)hash
@@ -398,50 +398,50 @@ LABEL_11:
   return v5;
 }
 
-+ (double)nextDoubleWithDouble:(double)a3 withBoolean:(BOOL)a4
++ (double)nextDoubleWithDouble:(double)double withBoolean:(BOOL)boolean
 {
-  if (a4)
+  if (boolean)
   {
-    return JavaTextChoiceFormat_nextDoubleWithDouble_(a3);
+    return JavaTextChoiceFormat_nextDoubleWithDouble_(double);
   }
 
   else
   {
-    return JavaTextChoiceFormat_previousDoubleWithDouble_(a3);
+    return JavaTextChoiceFormat_previousDoubleWithDouble_(double);
   }
 }
 
-- (id)parseWithNSString:(id)a3 withJavaTextParsePosition:(id)a4
+- (id)parseWithNSString:(id)string withJavaTextParsePosition:(id)position
 {
-  if (!a4)
+  if (!position)
   {
     goto LABEL_8;
   }
 
-  v7 = [a4 getIndex];
+  getIndex = [position getIndex];
   v8 = *(&self->choiceLimits_ + 4);
   if (!v8)
   {
     goto LABEL_8;
   }
 
-  v9 = v7;
+  v9 = getIndex;
   v10 = 0;
   while (1)
   {
     if (v10 >= *(v8 + 8))
     {
-      [a4 setErrorIndexWithInt:v9];
+      [position setErrorIndexWithInt:v9];
       v12 = NAN;
       goto LABEL_15;
     }
 
-    if (!a3)
+    if (!string)
     {
       goto LABEL_8;
     }
 
-    v11 = [a3 hasPrefix:*(v8 + 24 + 8 * v10) offset:v9];
+    v11 = [string hasPrefix:*(v8 + 24 + 8 * v10) offset:v9];
     v8 = *(&self->choiceLimits_ + 4);
     if (v11)
     {
@@ -462,7 +462,7 @@ LABEL_11:
   }
 
   v14 = *(v8 + 24 + 8 * v10);
-  if (!v14 || ([a4 setIndexWithInt:{v9 + objc_msgSend(v14, "length")}], (v15 = *(&self->super.minimumFractionDigits_ + 1)) == 0))
+  if (!v14 || ([position setIndexWithInt:{v9 + objc_msgSend(v14, "length")}], (v15 = *(&self->super.minimumFractionDigits_ + 1)) == 0))
   {
 LABEL_8:
     JreThrowNullPointerException();
@@ -481,25 +481,25 @@ LABEL_15:
   return v17;
 }
 
-- (void)setChoicesWithDoubleArray:(id)a3 withNSStringArray:(id)a4
+- (void)setChoicesWithDoubleArray:(id)array withNSStringArray:(id)stringArray
 {
-  if (!a3 || !a4)
+  if (!array || !stringArray)
   {
     JreThrowNullPointerException();
   }
 
-  if (*(a3 + 2) != *(a4 + 2))
+  if (*(array + 2) != *(stringArray + 2))
   {
-    v13 = *(a4 + 2);
-    v12 = *(a3 + 2);
-    v10 = JreStrcat("$I$I", a2, a3, a4, v4, v5, v6, v7, @"limits.length != formats.length: ");
+    v13 = *(stringArray + 2);
+    v12 = *(array + 2);
+    v10 = JreStrcat("$I$I", a2, array, stringArray, v4, v5, v6, v7, @"limits.length != formats.length: ");
     v11 = new_JavaLangIllegalArgumentException_initWithNSString_(v10);
     objc_exception_throw(v11);
   }
 
-  JreStrongAssign((&self->super.minimumFractionDigits_ + 1), a3);
+  JreStrongAssign((&self->super.minimumFractionDigits_ + 1), array);
 
-  JreStrongAssign((&self->choiceLimits_ + 4), a4);
+  JreStrongAssign((&self->choiceLimits_ + 4), stringArray);
 }
 
 - (id)toPattern

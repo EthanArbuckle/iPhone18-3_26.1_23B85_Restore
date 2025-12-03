@@ -1,12 +1,12 @@
 @interface ICMapViewController
-- (ICMapViewController)initWithAnnotation:(id)a3;
-- (void)_toolbarItemPressed:(id)a3;
+- (ICMapViewController)initWithAnnotation:(id)annotation;
+- (void)_toolbarItemPressed:(id)pressed;
 - (void)dealloc;
 - (void)loadView;
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4;
+- (void)mapView:(id)view didAddAnnotationViews:(id)views;
 - (void)selectPin;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ICMapViewController
@@ -51,16 +51,16 @@
     [(MKMapView *)self->_mapView setOverrideUserInterfaceStyle:1];
   }
 
-  v10 = [(ICMapViewController *)self navigationController];
+  navigationController = [(ICMapViewController *)self navigationController];
 
-  [v10 setToolbarHidden:0];
+  [navigationController setToolbarHidden:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = ICMapViewController;
-  [(ICMapViewController *)&v7 viewWillAppear:a3];
+  [(ICMapViewController *)&v7 viewWillAppear:appear];
   if (objc_opt_class())
   {
     if (objc_opt_class())
@@ -75,18 +75,18 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_selectPin object:0];
   v5.receiver = self;
   v5.super_class = ICMapViewController;
-  [(ICMapViewController *)&v5 viewWillDisappear:v3];
+  [(ICMapViewController *)&v5 viewWillDisappear:disappearCopy];
   [(ICMapViewController *)self setToolbarItems:0];
   [-[ICMapViewController navigationController](self "navigationController")];
 }
 
-- (ICMapViewController)initWithAnnotation:(id)a3
+- (ICMapViewController)initWithAnnotation:(id)annotation
 {
   v7.receiver = self;
   v7.super_class = ICMapViewController;
@@ -94,20 +94,20 @@
   v5 = v4;
   if (v4)
   {
-    [(ICMapViewController *)v4 setAnnotation:a3];
+    [(ICMapViewController *)v4 setAnnotation:annotation];
   }
 
   return v5;
 }
 
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4
+- (void)mapView:(id)view didAddAnnotationViews:(id)views
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_selectPin object:0];
 
   [(ICMapViewController *)self performSelector:sel_selectPin withObject:0 afterDelay:0.7];
 }
 
-- (void)_toolbarItemPressed:(id)a3
+- (void)_toolbarItemPressed:(id)pressed
 {
   if ([(ICMapViewController *)self mapItem])
   {
@@ -133,10 +133,10 @@
 
 - (void)selectPin
 {
-  v3 = [(ICMapViewController *)self mapView];
-  v4 = [(ICMapViewController *)self annotation];
+  mapView = [(ICMapViewController *)self mapView];
+  annotation = [(ICMapViewController *)self annotation];
 
-  [(MKMapView *)v3 selectAnnotation:v4 animated:1];
+  [(MKMapView *)mapView selectAnnotation:annotation animated:1];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface JavaUtilCollections_CheckedSortedMap
-- (JavaUtilCollections_CheckedSortedMap)initWithJavaUtilSortedMap:(id)a3 withIOSClass:(id)a4 withIOSClass:(id)a5;
+- (JavaUtilCollections_CheckedSortedMap)initWithJavaUtilSortedMap:(id)map withIOSClass:(id)class withIOSClass:(id)sClass;
 - (id)comparator;
 - (id)firstKey;
-- (id)headMapWithId:(id)a3;
+- (id)headMapWithId:(id)id;
 - (id)lastKey;
-- (id)subMapWithId:(id)a3 withId:(id)a4;
-- (id)tailMapWithId:(id)a3;
+- (id)subMapWithId:(id)id withId:(id)withId;
+- (id)tailMapWithId:(id)id;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilCollections_CheckedSortedMap
 
-- (JavaUtilCollections_CheckedSortedMap)initWithJavaUtilSortedMap:(id)a3 withIOSClass:(id)a4 withIOSClass:(id)a5
+- (JavaUtilCollections_CheckedSortedMap)initWithJavaUtilSortedMap:(id)map withIOSClass:(id)class withIOSClass:(id)sClass
 {
-  sub_1001C8940(&self->super.super.isa, a3, a4, a5);
-  JreStrongAssign(&self->sm_, a3);
+  sub_1001C8940(&self->super.super.isa, map, class, sClass);
+  JreStrongAssign(&self->sm_, map);
   return self;
 }
 
@@ -29,7 +29,7 @@
   return [(JavaUtilSortedMap *)sm comparator];
 }
 
-- (id)subMapWithId:(id)a3 withId:(id)a4
+- (id)subMapWithId:(id)id withId:(id)withId
 {
   sm = self->sm_;
   if (!sm)
@@ -37,12 +37,12 @@
     JreThrowNullPointerException();
   }
 
-  v6 = sub_1001C2680([(JavaUtilSortedMap *)sm subMapWithId:a3 withId:a4], self->super.keyType_, self->super.valueType_);
+  v6 = sub_1001C2680([(JavaUtilSortedMap *)sm subMapWithId:id withId:withId], self->super.keyType_, self->super.valueType_);
 
   return v6;
 }
 
-- (id)headMapWithId:(id)a3
+- (id)headMapWithId:(id)id
 {
   sm = self->sm_;
   if (!sm)
@@ -50,12 +50,12 @@
     JreThrowNullPointerException();
   }
 
-  v5 = sub_1001C2680([(JavaUtilSortedMap *)sm headMapWithId:a3], self->super.keyType_, self->super.valueType_);
+  v5 = sub_1001C2680([(JavaUtilSortedMap *)sm headMapWithId:id], self->super.keyType_, self->super.valueType_);
 
   return v5;
 }
 
-- (id)tailMapWithId:(id)a3
+- (id)tailMapWithId:(id)id
 {
   sm = self->sm_;
   if (!sm)
@@ -63,7 +63,7 @@
     JreThrowNullPointerException();
   }
 
-  v5 = sub_1001C2680([(JavaUtilSortedMap *)sm tailMapWithId:a3], self->super.keyType_, self->super.valueType_);
+  v5 = sub_1001C2680([(JavaUtilSortedMap *)sm tailMapWithId:id], self->super.keyType_, self->super.valueType_);
 
   return v5;
 }

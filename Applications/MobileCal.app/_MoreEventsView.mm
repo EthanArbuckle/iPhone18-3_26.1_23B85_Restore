@@ -6,10 +6,10 @@
 - (void)_updateString;
 - (void)draw;
 - (void)loadViewsIfNeeded;
-- (void)setFrame:(CGRect)a3;
-- (void)setIsCompact:(BOOL)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setIsCompact:(BOOL)compact;
 - (void)update;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation _MoreEventsView
@@ -41,8 +41,8 @@
     [(UILabel *)self->_label setClipsToBounds:0];
     v5 = [NSAttributedString alloc];
     string = self->_string;
-    v7 = [(_MoreEventsView *)self stringAttributes];
-    v8 = [v5 initWithString:string attributes:v7];
+    stringAttributes = [(_MoreEventsView *)self stringAttributes];
+    v8 = [v5 initWithString:string attributes:stringAttributes];
     [(UILabel *)self->_label setAttributedText:v8];
 
     v9 = self->_label;
@@ -51,22 +51,22 @@
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  if (a3)
+  if (superview)
   {
     [(_MoreEventsView *)self loadViewsIfNeeded];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_renderFrame = &self->_renderFrame;
-  v9 = self->_renderFrame.size.width == a3.size.width && self->_renderFrame.size.height == a3.size.height;
+  v9 = self->_renderFrame.size.width == frame.size.width && self->_renderFrame.size.height == frame.size.height;
   if (v9 && ((v10 = self->_label) == 0 || (([(UILabel *)v10 frame], v12 == width) ? (v13 = v11 == height) : (v13 = 0), v13)))
   {
     v19.origin.x = x;
@@ -107,11 +107,11 @@
   p_renderFrame->size.height = height;
 }
 
-- (void)setIsCompact:(BOOL)a3
+- (void)setIsCompact:(BOOL)compact
 {
-  if (self->_isCompact != a3)
+  if (self->_isCompact != compact)
   {
-    self->_isCompact = a3;
+    self->_isCompact = compact;
     [(_MoreEventsView *)self _updateString];
   }
 }
@@ -150,8 +150,8 @@
       {
         v6 = [NSAttributedString alloc];
         string = self->_string;
-        v8 = [(_MoreEventsView *)self stringAttributes];
-        v9 = [v6 initWithString:string attributes:v8];
+        stringAttributes = [(_MoreEventsView *)self stringAttributes];
+        v9 = [v6 initWithString:string attributes:stringAttributes];
         [(UILabel *)self->_label setAttributedText:v9];
       }
     }
@@ -227,8 +227,8 @@
 
   v10 = [NSAttributedString alloc];
   string = self->_string;
-  v12 = [(_MoreEventsView *)self stringAttributes];
-  v16 = [v10 initWithString:string attributes:v12];
+  stringAttributes = [(_MoreEventsView *)self stringAttributes];
+  v16 = [v10 initWithString:string attributes:stringAttributes];
 
   [v16 size];
   CalRoundToScreenScale();

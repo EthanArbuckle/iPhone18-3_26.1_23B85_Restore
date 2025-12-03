@@ -1,19 +1,19 @@
 @interface _UIAlertControllerTextFieldView
-- (_UIAlertControllerTextFieldView)initWithFrame:(CGRect)a3;
+- (_UIAlertControllerTextFieldView)initWithFrame:(CGRect)frame;
 - (double)_borderWidth;
 - (id)_textFieldFont;
 - (void)_loadConstraints;
 - (void)dealloc;
-- (void)setContainerView:(id)a3;
+- (void)setContainerView:(id)view;
 @end
 
 @implementation _UIAlertControllerTextFieldView
 
-- (_UIAlertControllerTextFieldView)initWithFrame:(CGRect)a3
+- (_UIAlertControllerTextFieldView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _UIAlertControllerTextFieldView;
-  v3 = [(UIView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(_UIAlertControllerTextField);
@@ -22,8 +22,8 @@
 
     [(_UIAlertControllerTextField *)v3->_textField setTextFieldView:v3];
     v6 = v3->_textField;
-    v7 = [(_UIAlertControllerTextFieldView *)v3 _textFieldFont];
-    [(UITextField *)v6 setFont:v7];
+    _textFieldFont = [(_UIAlertControllerTextFieldView *)v3 _textFieldFont];
+    [(UITextField *)v6 setFont:_textFieldFont];
 
     [(UIView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v3->_textField setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -54,16 +54,16 @@
   {
     [(UIView *)containerView setTranslatesAutoresizingMaskIntoConstraints:0];
     v10 = _NSDictionaryOfVariableBindings(&cfstr_TextfieldConta.isa, self->_textField, self->_containerView, 0);
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"H:|[_containerView]|" options:0 metrics:0 views:v10];
-    [(NSArray *)v5 addObjectsFromArray:v6];
+    [(NSArray *)array addObjectsFromArray:v6];
 
     v7 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"V:|[_containerView]|" options:0 metrics:0 views:v10];
-    [(NSArray *)v5 addObjectsFromArray:v7];
+    [(NSArray *)array addObjectsFromArray:v7];
 
     v8 = self->_containerViewConstraints;
-    self->_containerViewConstraints = v5;
-    v9 = v5;
+    self->_containerViewConstraints = array;
+    v9 = array;
 
     [MEMORY[0x1E69977A0] activateConstraints:self->_containerViewConstraints];
   }
@@ -97,13 +97,13 @@
   return v5;
 }
 
-- (void)setContainerView:(id)a3
+- (void)setContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->_containerView removeFromSuperview];
   containerView = self->_containerView;
-  self->_containerView = v4;
-  v6 = v4;
+  self->_containerView = viewCopy;
+  v6 = viewCopy;
 
   [(UIView *)self addSubview:self->_containerView];
 

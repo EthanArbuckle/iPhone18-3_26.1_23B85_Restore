@@ -1,17 +1,17 @@
 @interface SecDbKeychainSecretData
 - (SecDbKeychainAKSWrappedKey)wrappedKey;
-- (SecDbKeychainSecretData)initWithCiphertext:(id)a3 wrappedKey:(id)a4 tamperCheck:(id)a5 error:(id *)a6;
-- (SecDbKeychainSecretData)initWithData:(id)a3;
+- (SecDbKeychainSecretData)initWithCiphertext:(id)ciphertext wrappedKey:(id)key tamperCheck:(id)check error:(id *)error;
+- (SecDbKeychainSecretData)initWithData:(id)data;
 - (_SFAuthenticatedCiphertext)ciphertext;
 @end
 
 @implementation SecDbKeychainSecretData
 
-- (SecDbKeychainSecretData)initWithCiphertext:(id)a3 wrappedKey:(id)a4 tamperCheck:(id)a5 error:(id *)a6
+- (SecDbKeychainSecretData)initWithCiphertext:(id)ciphertext wrappedKey:(id)key tamperCheck:(id)check error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  ciphertextCopy = ciphertext;
+  keyCopy = key;
+  checkCopy = check;
   v24.receiver = self;
   v24.super_class = SecDbKeychainSecretData;
   v13 = [(SecDbKeychainSecretData *)&v24 init];
@@ -24,15 +24,15 @@
   serializedHolder = v13->_serializedHolder;
   v13->_serializedHolder = v14;
 
-  v16 = [NSKeyedArchiver archivedDataWithRootObject:v10 requiringSecureCoding:1 error:a6];
+  v16 = [NSKeyedArchiver archivedDataWithRootObject:ciphertextCopy requiringSecureCoding:1 error:error];
   [(SecDbKeychainSerializedSecretData *)v13->_serializedHolder setCiphertext:v16];
 
-  v17 = [v11 serializedRepresentation];
-  [(SecDbKeychainSerializedSecretData *)v13->_serializedHolder setWrappedKey:v17];
+  serializedRepresentation = [keyCopy serializedRepresentation];
+  [(SecDbKeychainSerializedSecretData *)v13->_serializedHolder setWrappedKey:serializedRepresentation];
 
-  [(SecDbKeychainSerializedSecretData *)v13->_serializedHolder setTamperCheck:v12];
-  v18 = [(SecDbKeychainSerializedSecretData *)v13->_serializedHolder ciphertext];
-  if (!v18)
+  [(SecDbKeychainSerializedSecretData *)v13->_serializedHolder setTamperCheck:checkCopy];
+  ciphertext = [(SecDbKeychainSerializedSecretData *)v13->_serializedHolder ciphertext];
+  if (!ciphertext)
   {
 LABEL_7:
 
@@ -40,18 +40,18 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v19 = v18;
-  v20 = [(SecDbKeychainSerializedSecretData *)v13->_serializedHolder wrappedKey];
-  if (!v20)
+  v19 = ciphertext;
+  wrappedKey = [(SecDbKeychainSerializedSecretData *)v13->_serializedHolder wrappedKey];
+  if (!wrappedKey)
   {
 
     goto LABEL_7;
   }
 
-  v21 = v20;
-  v22 = [(SecDbKeychainSerializedSecretData *)v13->_serializedHolder tamperCheck];
+  v21 = wrappedKey;
+  tamperCheck = [(SecDbKeychainSerializedSecretData *)v13->_serializedHolder tamperCheck];
 
-  if (!v22)
+  if (!tamperCheck)
   {
     goto LABEL_7;
   }
@@ -61,9 +61,9 @@ LABEL_8:
   return v13;
 }
 
-- (SecDbKeychainSecretData)initWithData:(id)a3
+- (SecDbKeychainSecretData)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = SecDbKeychainSecretData;
   v5 = [(SecDbKeychainSecretData *)&v14 init];
@@ -72,12 +72,12 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v6 = [[SecDbKeychainSerializedSecretData alloc] initWithData:v4];
+  v6 = [[SecDbKeychainSerializedSecretData alloc] initWithData:dataCopy];
   serializedHolder = v5->_serializedHolder;
   v5->_serializedHolder = v6;
 
-  v8 = [(SecDbKeychainSerializedSecretData *)v5->_serializedHolder ciphertext];
-  if (!v8)
+  ciphertext = [(SecDbKeychainSerializedSecretData *)v5->_serializedHolder ciphertext];
+  if (!ciphertext)
   {
 LABEL_7:
 
@@ -85,18 +85,18 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = v8;
-  v10 = [(SecDbKeychainSerializedSecretData *)v5->_serializedHolder wrappedKey];
-  if (!v10)
+  v9 = ciphertext;
+  wrappedKey = [(SecDbKeychainSerializedSecretData *)v5->_serializedHolder wrappedKey];
+  if (!wrappedKey)
   {
 
     goto LABEL_7;
   }
 
-  v11 = v10;
-  v12 = [(SecDbKeychainSerializedSecretData *)v5->_serializedHolder tamperCheck];
+  v11 = wrappedKey;
+  tamperCheck = [(SecDbKeychainSerializedSecretData *)v5->_serializedHolder tamperCheck];
 
-  if (!v12)
+  if (!tamperCheck)
   {
     goto LABEL_7;
   }
@@ -110,9 +110,9 @@ LABEL_8:
 {
   v3 = objc_autoreleasePoolPush();
   v4 = objc_opt_class();
-  v5 = [(SecDbKeychainSerializedSecretData *)self->_serializedHolder ciphertext];
+  ciphertext = [(SecDbKeychainSerializedSecretData *)self->_serializedHolder ciphertext];
   v10 = 0;
-  v6 = [NSKeyedUnarchiver unarchivedObjectOfClass:v4 fromData:v5 error:&v10];
+  v6 = [NSKeyedUnarchiver unarchivedObjectOfClass:v4 fromData:ciphertext error:&v10];
   v7 = v10;
 
   objc_autoreleasePoolPop(v3);
@@ -133,8 +133,8 @@ LABEL_8:
 - (SecDbKeychainAKSWrappedKey)wrappedKey
 {
   v3 = [SecDbKeychainAKSWrappedKey alloc];
-  v4 = [(SecDbKeychainSerializedSecretData *)self->_serializedHolder wrappedKey];
-  v5 = [(SecDbKeychainAKSWrappedKey *)v3 initWithData:v4];
+  wrappedKey = [(SecDbKeychainSerializedSecretData *)self->_serializedHolder wrappedKey];
+  v5 = [(SecDbKeychainAKSWrappedKey *)v3 initWithData:wrappedKey];
 
   return v5;
 }

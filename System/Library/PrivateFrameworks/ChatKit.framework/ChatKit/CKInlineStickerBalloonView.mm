@@ -1,46 +1,46 @@
 @interface CKInlineStickerBalloonView
-- (void)addFilter:(id)a3;
+- (void)addFilter:(id)filter;
 - (void)clearFilters;
-- (void)configureForMessagePart:(id)a3;
+- (void)configureForMessagePart:(id)part;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation CKInlineStickerBalloonView
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v12 = a3;
-  v7 = [v12 balloonFilters];
+  filterCopy = filter;
+  balloonFilters = [filterCopy balloonFilters];
 
-  if (v7)
+  if (balloonFilters)
   {
-    v8 = [(CKInlineStickerBalloonView *)self layer];
-    v9 = [v8 filters];
-    if (v9)
+    layer = [(CKInlineStickerBalloonView *)self layer];
+    filters = [layer filters];
+    if (filters)
     {
-      v3 = [(CKInlineStickerBalloonView *)self layer];
-      v4 = [v3 filters];
-      v5 = [v12 balloonFilters];
-      [v4 arrayByAddingObjectsFromArray:v5];
+      layer2 = [(CKInlineStickerBalloonView *)self layer];
+      filters2 = [layer2 filters];
+      balloonFilters2 = [filterCopy balloonFilters];
+      [filters2 arrayByAddingObjectsFromArray:balloonFilters2];
     }
 
     else
     {
-      [v12 balloonFilters];
+      [filterCopy balloonFilters];
     }
     v10 = ;
-    v11 = [(CKInlineStickerBalloonView *)self layer];
-    [v11 setFilters:v10];
+    layer3 = [(CKInlineStickerBalloonView *)self layer];
+    [layer3 setFilters:v10];
 
-    if (v9)
+    if (filters)
     {
 
-      v10 = v3;
+      v10 = layer2;
     }
   }
 
-  [v12 contentAlpha];
+  [filterCopy contentAlpha];
   [(CKInlineStickerBalloonView *)self setAlpha:?];
 }
 
@@ -49,8 +49,8 @@
   v4.receiver = self;
   v4.super_class = CKInlineStickerBalloonView;
   [(CKImageBalloonView *)&v4 clearFilters];
-  v3 = [(CKInlineStickerBalloonView *)self layer];
-  [v3 setFilters:0];
+  layer = [(CKInlineStickerBalloonView *)self layer];
+  [layer setFilters:0];
 
   [(CKInlineStickerBalloonView *)self setAlpha:1.0];
 }
@@ -69,17 +69,17 @@
   [(CKImageBalloonView *)&v2 prepareForReuse];
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
   v9.receiver = self;
   v9.super_class = CKInlineStickerBalloonView;
-  v4 = a3;
-  [(CKImageBalloonView *)&v9 configureForMessagePart:v4];
-  v5 = [v4 mediaObject];
+  partCopy = part;
+  [(CKImageBalloonView *)&v9 configureForMessagePart:partCopy];
+  mediaObject = [partCopy mediaObject];
 
-  v6 = [v5 transfer];
-  v7 = [v6 attributionInfo];
-  v8 = [v7 objectForKey:*MEMORY[0x1E69A6F98]];
+  transfer = [mediaObject transfer];
+  attributionInfo = [transfer attributionInfo];
+  v8 = [attributionInfo objectForKey:*MEMORY[0x1E69A6F98]];
 
   if ([v8 length])
   {

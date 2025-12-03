@@ -1,46 +1,46 @@
 @interface AAFeatureOnboarding
 + (id)sharedInstance;
 - (AAFeatureOnboarding)init;
-- (id)_connectedDeviceWithIdentifier:(id)a3;
-- (id)_notificationContentForAssetManagerDownload:(id)a3;
-- (id)_notificationContentForDEOCTrainingWithDevice:(id)a3;
-- (id)_notificationContentForFitEducationNotificationForDevice:(id)a3;
-- (id)_notificationContentForPTAppDownload:(id)a3;
-- (unint64_t)_fitEducationNotificationsShownForDevice:(id)a3;
+- (id)_connectedDeviceWithIdentifier:(id)identifier;
+- (id)_notificationContentForAssetManagerDownload:(id)download;
+- (id)_notificationContentForDEOCTrainingWithDevice:(id)device;
+- (id)_notificationContentForFitEducationNotificationForDevice:(id)device;
+- (id)_notificationContentForPTAppDownload:(id)download;
+- (unint64_t)_fitEducationNotificationsShownForDevice:(id)device;
 - (void)_aaPairedDeviceDiscoveryEnsureStarted;
 - (void)_aaPairedDeviceDiscoveryEnsureStopped;
 - (void)_activate;
 - (void)_addAssetManagerNotificationCategory;
 - (void)_addDEOCOnboardingCategory;
 - (void)_addFitEducationNotificationCategory;
-- (void)_connectedDeviceFound:(id)a3;
-- (void)_connectedDeviceLost:(id)a3;
-- (void)_deocNotificationShownForDeviceWithBluetoothAddress:(id)a3;
+- (void)_connectedDeviceFound:(id)found;
+- (void)_connectedDeviceLost:(id)lost;
+- (void)_deocNotificationShownForDeviceWithBluetoothAddress:(id)address;
 - (void)_deviceDiscoveryEnsureStarted;
 - (void)_deviceDiscoveryEnsureStopped;
-- (void)_dismissFitEducationNotificationForDisconnectedDevice:(id)a3;
-- (void)_incrementFitEducationNotificationsShownForIdentifier:(id)a3;
+- (void)_dismissFitEducationNotificationForDisconnectedDevice:(id)device;
+- (void)_incrementFitEducationNotificationsShownForIdentifier:(id)identifier;
 - (void)_invalidate;
-- (void)_launchDEOCProxCardForDeviceWithBTAddress:(id)a3;
+- (void)_launchDEOCProxCardForDeviceWithBTAddress:(id)address;
 - (void)_loadPreferences;
-- (void)_postDEOCOnboardingIfNeeded:(id)a3;
-- (void)_presentDeocNotification:(id)a3;
-- (void)_receivedAssetManagerNotificationAction:(id)a3 forDevice:(id)a4 withAddress:(id)a5;
-- (void)_receivedAssetManagerPTAppDownloadNotificationAction:(id)a3 forDevice:(id)a4 withAddress:(id)a5;
-- (void)_receivedDEOCNotificationAction:(id)a3 forDeviceWithAddress:(id)a4;
-- (void)_receivedFitEducationNotificationAction:(id)a3 forDevice:(id)a4 withAddress:(id)a5;
+- (void)_postDEOCOnboardingIfNeeded:(id)needed;
+- (void)_presentDeocNotification:(id)notification;
+- (void)_receivedAssetManagerNotificationAction:(id)action forDevice:(id)device withAddress:(id)address;
+- (void)_receivedAssetManagerPTAppDownloadNotificationAction:(id)action forDevice:(id)device withAddress:(id)address;
+- (void)_receivedDEOCNotificationAction:(id)action forDeviceWithAddress:(id)address;
+- (void)_receivedFitEducationNotificationAction:(id)action forDevice:(id)device withAddress:(id)address;
 - (void)_registerForSystemNotifications;
-- (void)_saveFitEducationNotificationsShown:(id)a3 withCount:(unint64_t)a4;
+- (void)_saveFitEducationNotificationsShown:(id)shown withCount:(unint64_t)count;
 - (void)_unregisterFromSystemNotifications;
 - (void)_userNotificationCenterEnsureStarted;
 - (void)_userNotificationCenterEnsureStopped;
 - (void)activate;
 - (void)invalidate;
-- (void)pairedDeviceLost:(id)a3;
-- (void)receivedNotificationResponse:(id)a3 forRequest:(id)a4;
-- (void)showAssetManagerDownloadPTAppNotificationForDevice:(id)a3 withErrorHandler:(id)a4;
-- (void)showAssetManagerShowDownloadNotificationForDevice:(id)a3 withErrorHandler:(id)a4;
-- (void)showFitEducationNotificationForIdentifier:(id)a3 withErrorHandler:(id)a4;
+- (void)pairedDeviceLost:(id)lost;
+- (void)receivedNotificationResponse:(id)response forRequest:(id)request;
+- (void)showAssetManagerDownloadPTAppNotificationForDevice:(id)device withErrorHandler:(id)handler;
+- (void)showAssetManagerShowDownloadNotificationForDevice:(id)device withErrorHandler:(id)handler;
+- (void)showFitEducationNotificationForIdentifier:(id)identifier withErrorHandler:(id)handler;
 @end
 
 @implementation AAFeatureOnboarding
@@ -89,13 +89,13 @@
 
 - (void)activate
 {
-  v3 = [(AAFeatureOnboarding *)self dispatchQueue];
+  dispatchQueue = [(AAFeatureOnboarding *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C5C54;
   block[3] = &unk_1002B6880;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_activate
@@ -113,13 +113,13 @@
 
 - (void)invalidate
 {
-  v3 = [(AAFeatureOnboarding *)self dispatchQueue];
+  dispatchQueue = [(AAFeatureOnboarding *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C5D4C;
   block[3] = &unk_1002B6880;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_invalidate
@@ -133,9 +133,9 @@
 
 - (void)_deviceDiscoveryEnsureStarted
 {
-  v3 = [(AAFeatureOnboarding *)self deviceManager];
+  deviceManager = [(AAFeatureOnboarding *)self deviceManager];
 
-  if (!v3)
+  if (!deviceManager)
   {
     if (dword_1002F71B8 <= 30 && (dword_1002F71B8 != -1 || _LogCategory_Initialize()))
     {
@@ -143,11 +143,11 @@
     }
 
     v4 = objc_alloc_init(AADeviceManager);
-    v5 = [(AAFeatureOnboarding *)self aaServicesDaemon];
-    [v4 setInternalServicesDaemon:v5];
+    aaServicesDaemon = [(AAFeatureOnboarding *)self aaServicesDaemon];
+    [v4 setInternalServicesDaemon:aaServicesDaemon];
 
-    v6 = [(AAFeatureOnboarding *)self dispatchQueue];
-    [v4 setDispatchQueue:v6];
+    dispatchQueue = [(AAFeatureOnboarding *)self dispatchQueue];
+    [v4 setDispatchQueue:dispatchQueue];
 
     [v4 setInterruptionHandler:&stru_1002BAE30];
     [v4 setInvalidationHandler:&stru_1002BAE50];
@@ -170,7 +170,7 @@
     v11[4] = self;
     [v4 setDeviceBatteryInfoUpdatedHandler:v11];
     [(AAFeatureOnboarding *)self setDeviceManager:v4];
-    v7 = [(AAFeatureOnboarding *)self deviceManager];
+    deviceManager2 = [(AAFeatureOnboarding *)self deviceManager];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000C60B0;
@@ -178,7 +178,7 @@
     v9[4] = self;
     v10 = v4;
     v8 = v4;
-    [v7 activateWithCompletion:v9];
+    [deviceManager2 activateWithCompletion:v9];
   }
 }
 
@@ -189,62 +189,62 @@
     sub_1001F7A94();
   }
 
-  v3 = [(AAFeatureOnboarding *)self deviceManager];
+  deviceManager = [(AAFeatureOnboarding *)self deviceManager];
 
-  if (v3)
+  if (deviceManager)
   {
-    v4 = [(AAFeatureOnboarding *)self deviceManager];
-    [v4 invalidate];
+    deviceManager2 = [(AAFeatureOnboarding *)self deviceManager];
+    [deviceManager2 invalidate];
 
     [(AAFeatureOnboarding *)self setDeviceManager:0];
   }
 }
 
-- (void)_connectedDeviceFound:(id)a3
+- (void)_connectedDeviceFound:(id)found
 {
-  v4 = a3;
-  v5 = [(AAFeatureOnboarding *)self devicesMap];
+  foundCopy = found;
+  devicesMap = [(AAFeatureOnboarding *)self devicesMap];
 
-  if (!v5)
+  if (!devicesMap)
   {
     v6 = objc_alloc_init(NSMutableDictionary);
     [(AAFeatureOnboarding *)self setDevicesMap:v6];
   }
 
-  v8 = [v4 identifier];
-  v7 = [(AAFeatureOnboarding *)self devicesMap];
-  [v7 setObject:v4 forKeyedSubscript:v8];
+  identifier = [foundCopy identifier];
+  devicesMap2 = [(AAFeatureOnboarding *)self devicesMap];
+  [devicesMap2 setObject:foundCopy forKeyedSubscript:identifier];
 }
 
-- (void)_connectedDeviceLost:(id)a3
+- (void)_connectedDeviceLost:(id)lost
 {
-  v8 = a3;
-  v4 = [v8 identifier];
-  v5 = [(AAFeatureOnboarding *)self devicesMap];
-  [v5 removeObjectForKey:v4];
+  lostCopy = lost;
+  identifier = [lostCopy identifier];
+  devicesMap = [(AAFeatureOnboarding *)self devicesMap];
+  [devicesMap removeObjectForKey:identifier];
 
-  v6 = [(AAFeatureOnboarding *)self devicesMap];
-  v7 = [v6 count];
+  devicesMap2 = [(AAFeatureOnboarding *)self devicesMap];
+  v7 = [devicesMap2 count];
 
   if (!v7)
   {
     [(AAFeatureOnboarding *)self setDevicesMap:0];
   }
 
-  [(AAFeatureOnboarding *)self _dismissFitEducationNotificationForDisconnectedDevice:v8];
+  [(AAFeatureOnboarding *)self _dismissFitEducationNotificationForDisconnectedDevice:lostCopy];
 }
 
-- (id)_connectedDeviceWithIdentifier:(id)a3
+- (id)_connectedDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(AAFeatureOnboarding *)self deviceManager];
-  v6 = [v5 discoveredDevices];
+  deviceManager = [(AAFeatureOnboarding *)self deviceManager];
+  discoveredDevices = [deviceManager discoveredDevices];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [discoveredDevices countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -254,13 +254,13 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(discoveredDevices);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = v4;
-        v13 = v11;
+        identifier = [v10 identifier];
+        v12 = identifierCopy;
+        v13 = identifier;
         v14 = v13;
         if (v13 == v12)
         {
@@ -270,7 +270,7 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        if ((v4 != 0) != (v13 == 0))
+        if ((identifierCopy != 0) != (v13 == 0))
         {
           v15 = [v12 isEqual:v13];
 
@@ -285,7 +285,7 @@ LABEL_15:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [discoveredDevices countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -302,47 +302,47 @@ LABEL_16:
 
 - (void)_aaPairedDeviceDiscoveryEnsureStarted
 {
-  v3 = [(AAFeatureOnboarding *)self pairedDeviceManager];
-  [v3 subscribeToPairedDiscovery:self];
+  pairedDeviceManager = [(AAFeatureOnboarding *)self pairedDeviceManager];
+  [pairedDeviceManager subscribeToPairedDiscovery:self];
 }
 
 - (void)_aaPairedDeviceDiscoveryEnsureStopped
 {
-  v3 = [(AAFeatureOnboarding *)self pairedDeviceManager];
-  [v3 unsubscribeFromPairedDiscovery:self];
+  pairedDeviceManager = [(AAFeatureOnboarding *)self pairedDeviceManager];
+  [pairedDeviceManager unsubscribeFromPairedDiscovery:self];
 }
 
-- (void)pairedDeviceLost:(id)a3
+- (void)pairedDeviceLost:(id)lost
 {
-  v4 = a3;
-  v5 = [(AAFeatureOnboarding *)self dispatchQueue];
+  lostCopy = lost;
+  dispatchQueue = [(AAFeatureOnboarding *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C66B4;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = lostCopy;
+  selfCopy = self;
+  v6 = lostCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_deocNotificationShownForDeviceWithBluetoothAddress:(id)a3
+- (void)_deocNotificationShownForDeviceWithBluetoothAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   if (dword_1002F71B8 <= 30 && (dword_1002F71B8 != -1 || _LogCategory_Initialize()))
   {
     sub_1001F7AB0();
   }
 
-  v3 = [[AAProxCardsInfo alloc] initWithBluetoothAddress:v5];
+  v3 = [[AAProxCardsInfo alloc] initWithBluetoothAddress:addressCopy];
   [v3 setDynamicEndOfChargeNotificationVersion:1];
   v4 = +[_TtC15audioaccessoryd13DeviceManager singleton];
   [v4 updateAAProxCardsInfoWithProxCardsInfo:v3 completion:&stru_1002BAE98];
 }
 
-- (void)_launchDEOCProxCardForDeviceWithBTAddress:(id)a3
+- (void)_launchDEOCProxCardForDeviceWithBTAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   if (dword_1002F71B8 <= 30 && (dword_1002F71B8 != -1 || _LogCategory_Initialize()))
   {
     sub_1001F7B0C();
@@ -350,7 +350,7 @@ LABEL_16:
 
   v5 = +[NSMutableDictionary dictionary];
   [v5 setObject:@"AAFeatureOnboardingDynamicEndOfCharge" forKeyedSubscript:@"launchSource"];
-  [v5 setObject:v4 forKeyedSubscript:@"deviceAddress"];
+  [v5 setObject:addressCopy forKeyedSubscript:@"deviceAddress"];
   v6 = [[AAProxCardHandler alloc] initWithInfo:v5];
   [(AAFeatureOnboarding *)self setDeocProxCardHandler:v6];
   v7[0] = _NSConcreteStackBlock;
@@ -362,26 +362,26 @@ LABEL_16:
   [(AAProxCardHandler *)v6 launchWithCompletion:&stru_1002BAEB8];
 }
 
-- (void)_presentDeocNotification:(id)a3
+- (void)_presentDeocNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(AAFeatureOnboarding *)self _notificationContentForDEOCTrainingWithDevice:v4];
-  v6 = [(AAFeatureOnboarding *)self unCenter];
+  notificationCopy = notification;
+  v5 = [(AAFeatureOnboarding *)self _notificationContentForDEOCTrainingWithDevice:notificationCopy];
+  unCenter = [(AAFeatureOnboarding *)self unCenter];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000C6BC8;
   v8[3] = &unk_1002B7B40;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 deliverNotificationWithContent:v5 completion:v8];
+  v9 = notificationCopy;
+  v7 = notificationCopy;
+  [unCenter deliverNotificationWithContent:v5 completion:v8];
 }
 
-- (void)_receivedDEOCNotificationAction:(id)a3 forDeviceWithAddress:(id)a4
+- (void)_receivedDEOCNotificationAction:(id)action forDeviceWithAddress:(id)address
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  actionCopy = action;
+  addressCopy = address;
+  v8 = actionCopy;
   v13 = v8;
   if (UNNotificationDismissActionIdentifier == v8)
   {
@@ -428,43 +428,43 @@ LABEL_11:
   if (v12)
   {
 LABEL_16:
-    [(AAFeatureOnboarding *)self _launchDEOCProxCardForDeviceWithBTAddress:v7];
+    [(AAFeatureOnboarding *)self _launchDEOCProxCardForDeviceWithBTAddress:addressCopy];
   }
 
 LABEL_18:
 }
 
-- (void)_incrementFitEducationNotificationsShownForIdentifier:(id)a3
+- (void)_incrementFitEducationNotificationsShownForIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v4 = [(AAFeatureOnboarding *)self _fitEducationNotificationsShownForDevice:?]+ 1;
   if (dword_1002F71B8 <= 30 && (dword_1002F71B8 != -1 || _LogCategory_Initialize()))
   {
-    v5 = v7;
+    v5 = identifierCopy;
     v6 = v4;
     LogPrintF();
   }
 
-  [(AAFeatureOnboarding *)self _saveFitEducationNotificationsShown:v7 withCount:v4, v5, v6];
+  [(AAFeatureOnboarding *)self _saveFitEducationNotificationsShown:identifierCopy withCount:v4, v5, v6];
 }
 
-- (unint64_t)_fitEducationNotificationsShownForDevice:(id)a3
+- (unint64_t)_fitEducationNotificationsShownForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = +[_TtC15audioaccessoryd13DeviceManager singleton];
-  v5 = [v4 fetchAAProxCardsInfoSyncWithAddress:v3];
+  v5 = [v4 fetchAAProxCardsInfoSyncWithAddress:deviceCopy];
 
   if (v5)
   {
     if (dword_1002F71B8 <= 30 && (dword_1002F71B8 != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
-      v6 = [v5 fitEducationNotificationsShownCount];
+      fitEducationNotificationsShownCount = [v5 fitEducationNotificationsShownCount];
     }
 
     else
     {
-      v6 = [v5 fitEducationNotificationsShownCount];
+      fitEducationNotificationsShownCount = [v5 fitEducationNotificationsShownCount];
     }
   }
 
@@ -475,54 +475,54 @@ LABEL_18:
       sub_1001F7D10();
     }
 
-    v6 = 0;
+    fitEducationNotificationsShownCount = 0;
   }
 
-  return v6;
+  return fitEducationNotificationsShownCount;
 }
 
-- (void)_saveFitEducationNotificationsShown:(id)a3 withCount:(unint64_t)a4
+- (void)_saveFitEducationNotificationsShown:(id)shown withCount:(unint64_t)count
 {
-  v5 = a3;
-  v6 = [[AAProxCardsInfo alloc] initWithBluetoothAddress:v5];
-  [v6 setFitEducationNotificationsShownCount:a4];
+  shownCopy = shown;
+  v6 = [[AAProxCardsInfo alloc] initWithBluetoothAddress:shownCopy];
+  [v6 setFitEducationNotificationsShownCount:count];
   v7 = +[_TtC15audioaccessoryd13DeviceManager singleton];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000C71A4;
   v9[3] = &unk_1002B68A8;
   v10 = 0;
-  v11 = v5;
-  v8 = v5;
+  v11 = shownCopy;
+  v8 = shownCopy;
   [v7 updateAAProxCardsInfoWithProxCardsInfo:v6 completion:v9];
 }
 
-- (void)showFitEducationNotificationForIdentifier:(id)a3 withErrorHandler:(id)a4
+- (void)showFitEducationNotificationForIdentifier:(id)identifier withErrorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AAFeatureOnboarding *)self dispatchQueue];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  dispatchQueue = [(AAFeatureOnboarding *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C7364;
   block[3] = &unk_1002BAF30;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = handlerCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)_receivedFitEducationNotificationAction:(id)a3 forDevice:(id)a4 withAddress:(id)a5
+- (void)_receivedFitEducationNotificationAction:(id)action forDevice:(id)device withAddress:(id)address
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AAFeatureOnboarding *)self fitEducationNotificationIdsForDeviceIds];
-  [v11 setObject:0 forKeyedSubscript:v9];
+  actionCopy = action;
+  deviceCopy = device;
+  addressCopy = address;
+  fitEducationNotificationIdsForDeviceIds = [(AAFeatureOnboarding *)self fitEducationNotificationIdsForDeviceIds];
+  [fitEducationNotificationIdsForDeviceIds setObject:0 forKeyedSubscript:deviceCopy];
 
-  v12 = v8;
+  v12 = actionCopy;
   v13 = v12;
   if (UNNotificationDismissActionIdentifier == v12)
   {
@@ -565,10 +565,10 @@ LABEL_33:
       }
 
       v16 = +[AAPairedDeviceDaemon sharedAAPairedDeviceDaemon];
-      v18 = [v16 deviceWithIdentifier:v9];
+      v18 = [v16 deviceWithIdentifier:deviceCopy];
       if ([v18 productID] == 8231 || objc_msgSend(v18, "productID") == 8232)
       {
-        [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.Bluetooth/HeadphoneDetail/AboutFitFeature/?identifier=%@", v10];
+        [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.Bluetooth/HeadphoneDetail/AboutFitFeature/?identifier=%@", addressCopy];
       }
 
       else
@@ -598,16 +598,16 @@ LABEL_32:
 LABEL_20:
           if (dword_1002F71B8 <= 30 && (dword_1002F71B8 != -1 || _LogCategory_Initialize()))
           {
-            v24 = v10;
+            v24 = addressCopy;
             v25 = v19;
-            v23 = v9;
+            v23 = deviceCopy;
             LogPrintF();
           }
 
           goto LABEL_32;
         }
 
-        [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.Bluetooth/HeadphoneDetail/?identifier=%@&Selection=heartRateSensorSpecifierID", v10];
+        [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.Bluetooth/HeadphoneDetail/?identifier=%@&Selection=heartRateSensorSpecifierID", addressCopy];
       }
       v19 = ;
       goto LABEL_20;
@@ -622,46 +622,46 @@ LABEL_20:
 LABEL_34:
 }
 
-- (void)showAssetManagerShowDownloadNotificationForDevice:(id)a3 withErrorHandler:(id)a4
+- (void)showAssetManagerShowDownloadNotificationForDevice:(id)device withErrorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AAFeatureOnboarding *)self dispatchQueue];
+  deviceCopy = device;
+  handlerCopy = handler;
+  dispatchQueue = [(AAFeatureOnboarding *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C800C;
   block[3] = &unk_1002BAF30;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = deviceCopy;
+  v9 = deviceCopy;
+  v10 = handlerCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)showAssetManagerDownloadPTAppNotificationForDevice:(id)a3 withErrorHandler:(id)a4
+- (void)showAssetManagerDownloadPTAppNotificationForDevice:(id)device withErrorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AAFeatureOnboarding *)self dispatchQueue];
+  deviceCopy = device;
+  handlerCopy = handler;
+  dispatchQueue = [(AAFeatureOnboarding *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C8560;
   block[3] = &unk_1002BAF30;
-  v12 = v6;
-  v13 = v7;
+  v12 = deviceCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = deviceCopy;
+  v10 = handlerCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)_receivedAssetManagerNotificationAction:(id)a3 forDevice:(id)a4 withAddress:(id)a5
+- (void)_receivedAssetManagerNotificationAction:(id)action forDevice:(id)device withAddress:(id)address
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v7;
+  actionCopy = action;
+  deviceCopy = device;
+  addressCopy = address;
+  v10 = actionCopy;
   v20 = v10;
   if (UNNotificationDismissActionIdentifier == v10)
   {
@@ -681,7 +681,7 @@ LABEL_34:
     {
 LABEL_11:
       v12 = v20;
-      v13 = v12;
+      addressCopy = v12;
       if (UNNotificationDefaultActionIdentifier == v12)
       {
       }
@@ -703,17 +703,17 @@ LABEL_21:
         }
       }
 
-      v13 = [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.Bluetooth/HeadphoneDetail/LiveTranslation-LanguageDownload/?identifier=%@", v9];
+      addressCopy = [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.Bluetooth/HeadphoneDetail/LiveTranslation-LanguageDownload/?identifier=%@", addressCopy];
       if (dword_1002F71B8 <= 30 && (dword_1002F71B8 != -1 || _LogCategory_Initialize()))
       {
-        v18 = v9;
-        v19 = v13;
-        v17 = v8;
+        v18 = addressCopy;
+        v19 = addressCopy;
+        v17 = deviceCopy;
         LogPrintF();
       }
 
       v15 = [LSApplicationWorkspace defaultWorkspace:v17];
-      v16 = [NSURL URLWithString:v13];
+      v16 = [NSURL URLWithString:addressCopy];
       [v15 openSensitiveURL:v16 withOptions:0];
 
       goto LABEL_21;
@@ -728,12 +728,12 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)_receivedAssetManagerPTAppDownloadNotificationAction:(id)a3 forDevice:(id)a4 withAddress:(id)a5
+- (void)_receivedAssetManagerPTAppDownloadNotificationAction:(id)action forDevice:(id)device withAddress:(id)address
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v7;
+  actionCopy = action;
+  deviceCopy = device;
+  addressCopy = address;
+  v10 = actionCopy;
   v11 = v10;
   if (UNNotificationDismissActionIdentifier == v10)
   {
@@ -800,7 +800,7 @@ LABEL_11:
   v17 = CULocalizedStringEx();
   v24 = CULocalizedStringEx();
   CULocalizedStringEx();
-  v18 = v25 = v8;
+  v18 = v25 = deviceCopy;
   v19 = CULocalizedStringEx();
   v29[0] = FBSOpenApplicationOptionKeyUnlockDevice;
   v29[1] = FBSOpenApplicationOptionKeyPromptUnlockDevice;
@@ -818,24 +818,24 @@ LABEL_11:
   v22 = [NSURL URLWithString:@"settings-navigation://"];
   [v21 openSensitiveURL:v22 withOptions:v20 error:0];
 
-  v8 = v25;
+  deviceCopy = v25;
 LABEL_25:
 }
 
-- (id)_notificationContentForDEOCTrainingWithDevice:(id)a3
+- (id)_notificationContentForDEOCTrainingWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [NSBundle bundleWithPath:@"/System/Library/UserNotifications/Bundles/com.apple.AudioAccessoryUserNotifications.bundle"];
   v6 = objc_alloc_init(UNMutableNotificationContent);
   [v6 setCategoryIdentifier:@"AADynamicEndOfChargeTrainingUserNotifications"];
-  v7 = [(AAFeatureOnboarding *)self unCenter];
-  v8 = [v7 deviceIconForProductID:{objc_msgSend(v4, "productID")}];
+  unCenter = [(AAFeatureOnboarding *)self unCenter];
+  v8 = [unCenter deviceIconForProductID:{objc_msgSend(deviceCopy, "productID")}];
   [v6 setIcon:v8];
 
   v9 = CULocalizedStringEx();
   v10 = CULocalizedStringEx();
-  v11 = [v4 name];
-  v12 = [NSString stringWithFormat:v10, v11];
+  name = [deviceCopy name];
+  v12 = [NSString stringWithFormat:v10, name];
 
   [v6 setTitle:v9];
   [v6 setBody:v12];
@@ -843,36 +843,36 @@ LABEL_25:
   [v6 setShouldSuppressDefaultAction:0];
   [v6 setShouldBackgroundDefaultAction:1];
   v13 = +[NSMutableDictionary dictionary];
-  v14 = [v4 bluetoothAddress];
+  bluetoothAddress = [deviceCopy bluetoothAddress];
 
-  [v13 setObject:v14 forKeyedSubscript:@"btAddress"];
+  [v13 setObject:bluetoothAddress forKeyedSubscript:@"btAddress"];
   [v6 setUserInfo:v13];
 
   return v6;
 }
 
-- (id)_notificationContentForFitEducationNotificationForDevice:(id)a3
+- (id)_notificationContentForFitEducationNotificationForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [NSBundle bundleWithPath:@"/System/Library/UserNotifications/Bundles/com.apple.AudioAccessoryUserNotifications.bundle"];
   v6 = objc_alloc_init(UNMutableNotificationContent);
   [v6 setCategoryIdentifier:@"AAFitEducationNotificationUserNotifications"];
-  v7 = [(AAFeatureOnboarding *)self unCenter];
-  v8 = [v7 deviceIconForProductID:{objc_msgSend(v4, "productID")}];
+  unCenter = [(AAFeatureOnboarding *)self unCenter];
+  v8 = [unCenter deviceIconForProductID:{objc_msgSend(deviceCopy, "productID")}];
   [v6 setIcon:v8];
 
   v9 = CULocalizedStringEx();
   v10 = CULocalizedStringEx();
-  v11 = [v4 productID];
-  if (v11 > 619)
+  productID = [deviceCopy productID];
+  if (productID > 619)
   {
-    if (v11 <= 799)
+    if (productID <= 799)
     {
-      if (v11 > 776)
+      if (productID > 776)
       {
-        if (v11 <= 780)
+        if (productID <= 780)
         {
-          if (v11 == 777)
+          if (productID == 777)
           {
             v13 = [NSBundle bundleWithIdentifier:@"com.apple.CoreBluetooth"];
             v14 = v13;
@@ -880,7 +880,7 @@ LABEL_25:
             goto LABEL_49;
           }
 
-          if (v11 != 780)
+          if (productID != 780)
           {
             goto LABEL_68;
           }
@@ -889,16 +889,16 @@ LABEL_25:
           v14 = v13;
           v15 = @"apple_mighty_mouse";
 LABEL_49:
-          v16 = [v13 localizedStringForKey:v15 value:&stru_1002C1358 table:@"CBLocalizable"];
+          productName = [v13 localizedStringForKey:v15 value:&stru_1002C1358 table:@"CBLocalizable"];
 LABEL_50:
-          v17 = v16;
+          v17 = productName;
 
           goto LABEL_51;
         }
 
-        if (v11 != 781)
+        if (productID != 781)
         {
-          if (v11 != 782)
+          if (productID != 782)
           {
             goto LABEL_68;
           }
@@ -909,9 +909,9 @@ LABEL_50:
         goto LABEL_64;
       }
 
-      if (v11 <= 667)
+      if (productID <= 667)
       {
-        if (v11 == 620)
+        if (productID == 620)
         {
           v13 = [NSBundle bundleWithIdentifier:@"com.apple.CoreBluetooth"];
           v14 = v13;
@@ -919,7 +919,7 @@ LABEL_50:
           goto LABEL_49;
         }
 
-        if (v11 != 666)
+        if (productID != 666)
         {
           goto LABEL_68;
         }
@@ -927,7 +927,7 @@ LABEL_50:
         goto LABEL_26;
       }
 
-      if (v11 == 668)
+      if (productID == 668)
       {
 LABEL_60:
         v13 = [NSBundle bundleWithIdentifier:@"com.apple.CoreBluetooth"];
@@ -936,7 +936,7 @@ LABEL_60:
         goto LABEL_49;
       }
 
-      if (v11 != 671)
+      if (productID != 671)
       {
         goto LABEL_68;
       }
@@ -944,18 +944,18 @@ LABEL_60:
 
     else
     {
-      if (v11 > 803)
+      if (productID > 803)
       {
-        if (v11 > 8215)
+        if (productID > 8215)
         {
-          if (v11 == 8216 || v11 == 8220)
+          if (productID == 8216 || productID == 8220)
           {
             goto LABEL_42;
           }
 
           v12 = 8233;
 LABEL_41:
-          if (v11 == v12)
+          if (productID == v12)
           {
 LABEL_42:
             v13 = [NSBundle bundleWithIdentifier:@"com.apple.CoreBluetooth"];
@@ -965,12 +965,12 @@ LABEL_42:
           }
 
 LABEL_68:
-          v14 = [CBProductInfo productInfoWithProductID:v11];
-          v16 = [v14 productName];
+          v14 = [CBProductInfo productInfoWithProductID:productID];
+          productName = [v14 productName];
           goto LABEL_50;
         }
 
-        if (v11 != 804)
+        if (productID != 804)
         {
           v12 = 8213;
           goto LABEL_41;
@@ -983,9 +983,9 @@ LABEL_63:
         goto LABEL_49;
       }
 
-      if (v11 <= 801)
+      if (productID <= 801)
       {
-        if (v11 != 800)
+        if (productID != 800)
         {
 LABEL_26:
           v13 = [NSBundle bundleWithIdentifier:@"com.apple.CoreBluetooth"];
@@ -997,7 +997,7 @@ LABEL_26:
         goto LABEL_60;
       }
 
-      if (v11 != 802)
+      if (productID != 802)
       {
 LABEL_64:
         v13 = [NSBundle bundleWithIdentifier:@"com.apple.CoreBluetooth"];
@@ -1013,18 +1013,18 @@ LABEL_64:
     goto LABEL_49;
   }
 
-  if (v11 > 569)
+  if (productID > 569)
   {
-    if (v11 > 598)
+    if (productID > 598)
     {
-      if (v11 > 614)
+      if (productID > 614)
       {
-        if (v11 == 615)
+        if (productID == 615)
         {
           goto LABEL_60;
         }
 
-        if (v11 != 617)
+        if (productID != 617)
         {
           goto LABEL_68;
         }
@@ -1032,9 +1032,9 @@ LABEL_64:
         goto LABEL_64;
       }
 
-      if (v11 != 599)
+      if (productID != 599)
       {
-        if (v11 != 613)
+        if (productID != 613)
         {
           goto LABEL_68;
         }
@@ -1043,7 +1043,7 @@ LABEL_64:
       }
     }
 
-    else if (v11 <= 596 && v11 != 570 && v11 != 571)
+    else if (productID <= 596 && productID != 570 && productID != 571)
     {
       goto LABEL_68;
     }
@@ -1055,9 +1055,9 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if (v11 > 555)
+  if (productID > 555)
   {
-    if (v11 > 558 && v11 != 569)
+    if (productID > 558 && productID != 569)
     {
       goto LABEL_68;
     }
@@ -1065,9 +1065,9 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (v11 > 520)
+  if (productID > 520)
   {
-    if (v11 != 521 && v11 != 522)
+    if (productID != 521 && productID != 522)
     {
       goto LABEL_68;
     }
@@ -1075,9 +1075,9 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (v11)
+  if (productID)
   {
-    if (v11 != 520)
+    if (productID != 520)
     {
       goto LABEL_68;
     }
@@ -1095,25 +1095,25 @@ LABEL_51:
   [v6 setShouldSuppressDefaultAction:0];
   [v6 setShouldBackgroundDefaultAction:1];
   v19 = +[NSMutableDictionary dictionary];
-  v20 = [v4 identifier];
-  [v19 setObject:v20 forKeyedSubscript:@"identifier"];
+  identifier = [deviceCopy identifier];
+  [v19 setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v21 = [v4 bluetoothAddress];
-  [v19 setObject:v21 forKeyedSubscript:@"btAddress"];
+  bluetoothAddress = [deviceCopy bluetoothAddress];
+  [v19 setObject:bluetoothAddress forKeyedSubscript:@"btAddress"];
 
   [v6 setUserInfo:v19];
 
   return v6;
 }
 
-- (id)_notificationContentForAssetManagerDownload:(id)a3
+- (id)_notificationContentForAssetManagerDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   v5 = [NSBundle bundleWithPath:@"/System/Library/UserNotifications/Bundles/com.apple.AudioAccessoryUserNotifications.bundle"];
   v6 = objc_alloc_init(UNMutableNotificationContent);
   [v6 setCategoryIdentifier:@"AAAssetManagerNotificationUserNotifications"];
-  v7 = [(AAFeatureOnboarding *)self unCenter];
-  v8 = [v7 deviceIconForProductID:{objc_msgSend(v4, "productID")}];
+  unCenter = [(AAFeatureOnboarding *)self unCenter];
+  v8 = [unCenter deviceIconForProductID:{objc_msgSend(downloadCopy, "productID")}];
   [v6 setIcon:v8];
 
   v9 = CULocalizedStringEx();
@@ -1124,25 +1124,25 @@ LABEL_51:
   [v6 setShouldSuppressDefaultAction:0];
   [v6 setShouldBackgroundDefaultAction:1];
   v11 = +[NSMutableDictionary dictionary];
-  v12 = [v4 identifier];
-  [v11 setObject:v12 forKeyedSubscript:@"identifier"];
+  identifier = [downloadCopy identifier];
+  [v11 setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v13 = [v4 bluetoothAddress];
+  bluetoothAddress = [downloadCopy bluetoothAddress];
 
-  [v11 setObject:v13 forKeyedSubscript:@"btAddress"];
+  [v11 setObject:bluetoothAddress forKeyedSubscript:@"btAddress"];
   [v6 setUserInfo:v11];
 
   return v6;
 }
 
-- (id)_notificationContentForPTAppDownload:(id)a3
+- (id)_notificationContentForPTAppDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   v5 = [NSBundle bundleWithPath:@"/System/Library/UserNotifications/Bundles/com.apple.AudioAccessoryUserNotifications.bundle"];
   v6 = objc_alloc_init(UNMutableNotificationContent);
   [v6 setCategoryIdentifier:@"AAAssetManagerMissingTranslateAppNotifications"];
-  v7 = [(AAFeatureOnboarding *)self unCenter];
-  v8 = [v7 deviceIconForProductID:{objc_msgSend(v4, "productID")}];
+  unCenter = [(AAFeatureOnboarding *)self unCenter];
+  v8 = [unCenter deviceIconForProductID:{objc_msgSend(downloadCopy, "productID")}];
   [v6 setIcon:v8];
 
   v9 = CULocalizedStringEx();
@@ -1153,62 +1153,62 @@ LABEL_51:
   [v6 setShouldSuppressDefaultAction:0];
   [v6 setShouldBackgroundDefaultAction:1];
   v11 = +[NSMutableDictionary dictionary];
-  v12 = [v4 identifier];
-  [v11 setObject:v12 forKeyedSubscript:@"identifier"];
+  identifier = [downloadCopy identifier];
+  [v11 setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v13 = [v4 bluetoothAddress];
+  bluetoothAddress = [downloadCopy bluetoothAddress];
 
-  [v11 setObject:v13 forKeyedSubscript:@"btAddress"];
+  [v11 setObject:bluetoothAddress forKeyedSubscript:@"btAddress"];
   [v6 setUserInfo:v11];
 
   return v6;
 }
 
-- (void)receivedNotificationResponse:(id)a3 forRequest:(id)a4
+- (void)receivedNotificationResponse:(id)response forRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AAFeatureOnboarding *)self dispatchQueue];
+  responseCopy = response;
+  requestCopy = request;
+  dispatchQueue = [(AAFeatureOnboarding *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C9BE0;
   block[3] = &unk_1002B6CF0;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = responseCopy;
+  v13 = requestCopy;
+  selfCopy = self;
+  v9 = requestCopy;
+  v10 = responseCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_addDEOCOnboardingCategory
 {
   v5 = [UNNotificationCategory categoryWithIdentifier:@"AADynamicEndOfChargeTrainingUserNotifications" actions:&__NSArray0__struct intentIdentifiers:&__NSArray0__struct options:1];
-  v3 = [(AAFeatureOnboarding *)self unCategories];
-  v4 = [v5 identifier];
-  [v3 setObject:v5 forKeyedSubscript:v4];
+  unCategories = [(AAFeatureOnboarding *)self unCategories];
+  identifier = [v5 identifier];
+  [unCategories setObject:v5 forKeyedSubscript:identifier];
 }
 
 - (void)_addFitEducationNotificationCategory
 {
   v5 = [UNNotificationCategory categoryWithIdentifier:@"AAFitEducationNotificationUserNotifications" actions:&__NSArray0__struct intentIdentifiers:&__NSArray0__struct options:1];
-  v3 = [(AAFeatureOnboarding *)self unCategories];
-  v4 = [v5 identifier];
-  [v3 setObject:v5 forKeyedSubscript:v4];
+  unCategories = [(AAFeatureOnboarding *)self unCategories];
+  identifier = [v5 identifier];
+  [unCategories setObject:v5 forKeyedSubscript:identifier];
 }
 
 - (void)_addAssetManagerNotificationCategory
 {
   v3 = [UNNotificationCategory categoryWithIdentifier:@"AAAssetManagerNotificationUserNotifications" actions:&__NSArray0__struct intentIdentifiers:&__NSArray0__struct options:1];
-  v4 = [(AAFeatureOnboarding *)self unCategories];
-  v5 = [v3 identifier];
-  [v4 setObject:v3 forKeyedSubscript:v5];
+  unCategories = [(AAFeatureOnboarding *)self unCategories];
+  identifier = [v3 identifier];
+  [unCategories setObject:v3 forKeyedSubscript:identifier];
 
   v8 = [UNNotificationCategory categoryWithIdentifier:@"AAAssetManagerMissingTranslateAppNotifications" actions:&__NSArray0__struct intentIdentifiers:&__NSArray0__struct options:1];
 
-  v6 = [(AAFeatureOnboarding *)self unCategories];
-  v7 = [v8 identifier];
-  [v6 setObject:v8 forKeyedSubscript:v7];
+  unCategories2 = [(AAFeatureOnboarding *)self unCategories];
+  identifier2 = [v8 identifier];
+  [unCategories2 setObject:v8 forKeyedSubscript:identifier2];
 }
 
 - (void)_loadPreferences
@@ -1240,13 +1240,13 @@ LABEL_51:
 {
   if ([(AAFeatureOnboarding *)self prefsChangedNotifyToken]== -1)
   {
-    v3 = [(AAFeatureOnboarding *)self dispatchQueue];
+    dispatchQueue = [(AAFeatureOnboarding *)self dispatchQueue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_1000CA3FC;
     handler[3] = &unk_1002B6DF0;
     handler[4] = self;
-    notify_register_dispatch("com.apple.AudioAccessory.prefsChanged", &self->_prefsChangedNotifyToken, v3, handler);
+    notify_register_dispatch("com.apple.AudioAccessory.prefsChanged", &self->_prefsChangedNotifyToken, dispatchQueue, handler);
   }
 }
 
@@ -1262,9 +1262,9 @@ LABEL_51:
 
 - (void)_userNotificationCenterEnsureStarted
 {
-  v3 = [(AAFeatureOnboarding *)self unCenter];
+  unCenter = [(AAFeatureOnboarding *)self unCenter];
 
-  if (!v3)
+  if (!unCenter)
   {
     v4 = +[AAUserNotificationCenter sharedInstance];
     [v4 activate];
@@ -1272,52 +1272,52 @@ LABEL_51:
     v5 = +[AAUserNotificationCenter sharedInstance];
     [(AAFeatureOnboarding *)self setUnCenter:v5];
 
-    v8 = [(AAFeatureOnboarding *)self unCenter];
-    v6 = [(AAFeatureOnboarding *)self unCategories];
-    v7 = [v6 allValues];
-    [v8 registerNotificationCategories:v7 responseDelegate:self];
+    unCenter2 = [(AAFeatureOnboarding *)self unCenter];
+    unCategories = [(AAFeatureOnboarding *)self unCategories];
+    allValues = [unCategories allValues];
+    [unCenter2 registerNotificationCategories:allValues responseDelegate:self];
   }
 }
 
 - (void)_userNotificationCenterEnsureStopped
 {
-  v3 = [(AAFeatureOnboarding *)self unCenter];
-  v4 = [(AAFeatureOnboarding *)self unCategories];
-  v5 = [v4 allKeys];
-  [v3 deregisterNotificationCategoryWithIdentifiers:v5];
+  unCenter = [(AAFeatureOnboarding *)self unCenter];
+  unCategories = [(AAFeatureOnboarding *)self unCategories];
+  allKeys = [unCategories allKeys];
+  [unCenter deregisterNotificationCategoryWithIdentifiers:allKeys];
 
   [(AAFeatureOnboarding *)self setUnCenter:0];
 }
 
-- (void)_postDEOCOnboardingIfNeeded:(id)a3
+- (void)_postDEOCOnboardingIfNeeded:(id)needed
 {
-  v33 = a3;
-  v4 = [v33 visibleBatteryCombinedLeftRight];
-  if ([v4 chargingDEOC])
+  neededCopy = needed;
+  visibleBatteryCombinedLeftRight = [neededCopy visibleBatteryCombinedLeftRight];
+  if ([visibleBatteryCombinedLeftRight chargingDEOC])
   {
     goto LABEL_4;
   }
 
-  v5 = [v33 visibleBatteryLeft];
-  if ([v5 chargingDEOC])
+  visibleBatteryLeft = [neededCopy visibleBatteryLeft];
+  if ([visibleBatteryLeft chargingDEOC])
   {
 
 LABEL_4:
     goto LABEL_6;
   }
 
-  v6 = [v33 visibleBatteryRight];
-  v7 = [v6 chargingDEOC];
+  visibleBatteryRight = [neededCopy visibleBatteryRight];
+  chargingDEOC = [visibleBatteryRight chargingDEOC];
 
-  if ((v7 & 1) == 0)
+  if ((chargingDEOC & 1) == 0)
   {
     goto LABEL_20;
   }
 
 LABEL_6:
-  v8 = [v33 identifier];
-  v9 = [(AAFeatureOnboarding *)self deocOnboardedDeviceIdentifiers];
-  v10 = [v9 containsObject:v8];
+  identifier = [neededCopy identifier];
+  deocOnboardedDeviceIdentifiers = [(AAFeatureOnboarding *)self deocOnboardedDeviceIdentifiers];
+  v10 = [deocOnboardedDeviceIdentifiers containsObject:identifier];
 
   if (v10)
   {
@@ -1338,13 +1338,13 @@ LABEL_6:
     goto LABEL_30;
   }
 
-  v19 = [v33 bluetoothAddress];
+  bluetoothAddress = [neededCopy bluetoothAddress];
 
-  if (v19)
+  if (bluetoothAddress)
   {
     v20 = +[_TtC15audioaccessoryd13DeviceManager singleton];
-    v21 = [v33 bluetoothAddress];
-    v22 = [v20 fetchAAProxCardsInfoSyncWithAddress:v21];
+    bluetoothAddress2 = [neededCopy bluetoothAddress];
+    v22 = [v20 fetchAAProxCardsInfoSyncWithAddress:bluetoothAddress2];
 
     if (v22 && (v23 = [v22 dynamicEndOfChargeNotificationVersion]) != 0)
     {
@@ -1352,7 +1352,7 @@ LABEL_6:
       {
         if (dword_1002F71B8 != -1 || (v23 = _LogCategory_Initialize(), v23))
         {
-          sub_1000CA7A0(v23, v24, v25, v26, v27, v28, v29, v30, v32, v33);
+          sub_1000CA7A0(v23, v24, v25, v26, v27, v28, v29, v30, v32, neededCopy);
           LogPrintF();
         }
       }
@@ -1364,16 +1364,16 @@ LABEL_6:
       {
         if (dword_1002F71B8 != -1 || (v23 = _LogCategory_Initialize(), v23))
         {
-          sub_1000CA7A0(v23, v24, v25, v26, v27, v28, v29, v30, v32, v33);
+          sub_1000CA7A0(v23, v24, v25, v26, v27, v28, v29, v30, v32, neededCopy);
           LogPrintF();
         }
       }
 
-      [(AAFeatureOnboarding *)self _presentDeocNotification:v33];
+      [(AAFeatureOnboarding *)self _presentDeocNotification:neededCopy];
     }
 
-    v31 = [(AAFeatureOnboarding *)self deocOnboardedDeviceIdentifiers];
-    [v31 addObject:v8];
+    deocOnboardedDeviceIdentifiers2 = [(AAFeatureOnboarding *)self deocOnboardedDeviceIdentifiers];
+    [deocOnboardedDeviceIdentifiers2 addObject:identifier];
 
     goto LABEL_19;
   }
@@ -1383,7 +1383,7 @@ LABEL_6:
     if (dword_1002F71B8 != -1 || (v11 = _LogCategory_Initialize(), v11))
     {
 LABEL_30:
-      sub_1000CA7A0(v11, v12, v13, v14, v15, v16, v17, v18, v32, v33);
+      sub_1000CA7A0(v11, v12, v13, v14, v15, v16, v17, v18, v32, neededCopy);
       LogPrintF();
     }
   }
@@ -1393,27 +1393,27 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)_dismissFitEducationNotificationForDisconnectedDevice:(id)a3
+- (void)_dismissFitEducationNotificationForDisconnectedDevice:(id)device
 {
-  v11 = a3;
-  v4 = [(AAFeatureOnboarding *)self fitEducationNotificationIdsForDeviceIds];
-  v5 = [v11 identifier];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  deviceCopy = device;
+  fitEducationNotificationIdsForDeviceIds = [(AAFeatureOnboarding *)self fitEducationNotificationIdsForDeviceIds];
+  identifier = [deviceCopy identifier];
+  v6 = [fitEducationNotificationIdsForDeviceIds objectForKeyedSubscript:identifier];
 
   if (v6)
   {
     if (dword_1002F71B8 <= 30 && (dword_1002F71B8 != -1 || _LogCategory_Initialize()))
     {
-      v10 = [v11 identifier];
+      identifier2 = [deviceCopy identifier];
       LogPrintF();
     }
 
-    v7 = [(AAFeatureOnboarding *)self unCenter];
-    [v7 dismissUserNotificationWithIdentifier:v6];
+    unCenter = [(AAFeatureOnboarding *)self unCenter];
+    [unCenter dismissUserNotificationWithIdentifier:v6];
 
-    v8 = [(AAFeatureOnboarding *)self fitEducationNotificationIdsForDeviceIds];
-    v9 = [v11 identifier];
-    [v8 setObject:0 forKeyedSubscript:v9];
+    fitEducationNotificationIdsForDeviceIds2 = [(AAFeatureOnboarding *)self fitEducationNotificationIdsForDeviceIds];
+    identifier3 = [deviceCopy identifier];
+    [fitEducationNotificationIdsForDeviceIds2 setObject:0 forKeyedSubscript:identifier3];
   }
 }
 

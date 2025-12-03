@@ -1,5 +1,5 @@
 @interface CSLPRFAppTableCellHelper
-- (CSLPRFAppTableCellHelper)initWithTableCell:(id)a3;
+- (CSLPRFAppTableCellHelper)initWithTableCell:(id)cell;
 - (id)blankIcon;
 - (id)getLazyIcon;
 @end
@@ -9,30 +9,30 @@
 - (id)getLazyIcon
 {
   WeakRetained = objc_loadWeakRetained(&self->_tableCell);
-  v4 = [WeakRetained getLazyIconID];
+  getLazyIconID = [WeakRetained getLazyIconID];
 
-  if (v4)
+  if (getLazyIconID)
   {
     v5 = +[CSLPRFIconCache sharedIconCache];
-    v6 = [v5 iconForName:v4 fallBackToPersistentStoreIfNecessary:0];
+    v6 = [v5 iconForName:getLazyIconID fallBackToPersistentStoreIfNecessary:0];
 
     if (v6)
     {
       goto LABEL_10;
     }
 
-    v7 = self;
-    objc_sync_enter(v7);
-    if (!v7->_requestInProgress)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy->_requestInProgress)
     {
-      v7->_requestInProgress = 1;
-      objc_initWeak(&location, v7);
-      v8 = [MEMORY[0x277D759A0] mainScreen];
-      v9 = [v8 traitCollection];
-      [v9 displayScale];
+      selfCopy->_requestInProgress = 1;
+      objc_initWeak(&location, selfCopy);
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      traitCollection = [mainScreen traitCollection];
+      [traitCollection displayScale];
       v11 = v10;
 
-      v12 = [MEMORY[0x277D2BD60] sharedInstance];
+      mEMORY[0x277D2BD60] = [MEMORY[0x277D2BD60] sharedInstance];
       if (v11 <= 2.0)
       {
         v13 = 47;
@@ -49,14 +49,14 @@
       v16[2] = __39__CSLPRFAppTableCellHelper_getLazyIcon__block_invoke;
       v16[3] = &unk_278744E40;
       objc_copyWeak(&v18, &location);
-      v17 = v4;
-      [v12 getIconForBundleID:v17 iconVariant:v13 queue:v14 block:v16 timeout:60.0];
+      v17 = getLazyIconID;
+      [mEMORY[0x277D2BD60] getIconForBundleID:v17 iconVariant:v13 queue:v14 block:v16 timeout:60.0];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(&location);
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   v6 = 0;
@@ -101,39 +101,39 @@ void __39__CSLPRFAppTableCellHelper_getLazyIcon__block_invoke_2(uint64_t a1)
 - (id)blankIcon
 {
   WeakRetained = objc_loadWeakRetained(&self->_tableCell);
-  v4 = [WeakRetained getLazyIconID];
+  getLazyIconID = [WeakRetained getLazyIconID];
 
   v5 = +[CSLPRFIconCache sharedIconCache];
-  v6 = [v5 iconForName:v4 fallBackToPersistentStoreIfNecessary:1];
+  v6 = [v5 iconForName:getLazyIconID fallBackToPersistentStoreIfNecessary:1];
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_tableCell);
-    v8 = [v7 specifier];
-    v9 = [v8 propertyForKey:*MEMORY[0x277D3FFC8]];
-    v10 = [v9 BOOLValue];
+    specifier = [v7 specifier];
+    v9 = [specifier propertyForKey:*MEMORY[0x277D3FFC8]];
+    bOOLValue = [v9 BOOLValue];
 
-    if (v10)
+    if (bOOLValue)
     {
-      v11 = [v6 imageFlippedForRightToLeftLayoutDirection];
+      imageFlippedForRightToLeftLayoutDirection = [v6 imageFlippedForRightToLeftLayoutDirection];
 
-      v6 = v11;
+      v6 = imageFlippedForRightToLeftLayoutDirection;
     }
   }
 
   return v6;
 }
 
-- (CSLPRFAppTableCellHelper)initWithTableCell:(id)a3
+- (CSLPRFAppTableCellHelper)initWithTableCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v8.receiver = self;
   v8.super_class = CSLPRFAppTableCellHelper;
   v5 = [(CSLPRFAppTableCellHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_tableCell, v4);
+    objc_storeWeak(&v5->_tableCell, cellCopy);
   }
 
   return v6;

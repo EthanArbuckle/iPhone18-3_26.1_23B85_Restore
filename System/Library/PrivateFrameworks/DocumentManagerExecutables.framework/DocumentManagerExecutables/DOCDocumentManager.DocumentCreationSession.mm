@@ -7,9 +7,9 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   DOCDocumentManager.DocumentCreationSession.endDisablingScreenUpdates()();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for DOCDocumentManager.DocumentCreationSession();
   [(DOCDocumentManager.DocumentCreationSession *)&v3 dealloc];
 }

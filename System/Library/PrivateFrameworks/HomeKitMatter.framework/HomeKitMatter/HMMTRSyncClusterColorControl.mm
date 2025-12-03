@@ -1,16 +1,16 @@
 @interface HMMTRSyncClusterColorControl
 + (id)logCategory;
 - (id)logIdentifier;
-- (id)readAttributePluginColorTemperatureMiredsWithParams:(id)a3;
-- (void)moveToCustomColorTemperatureValue:(id)a3 transitionTime:(id)a4 completionHandler:(id)a5;
-- (void)moveToCustomColorTemperatureWithParams:(id)a3 completionHandler:(id)a4;
-- (void)moveToPluginColorTemperatureWithParams:(id)a3 expectedValues:(id)a4 expectedValueInterval:(id)a5 completionHandler:(id)a6;
-- (void)readColorModeAndColorTemperatureWithCompletion:(id)a3;
-- (void)readColorTemperatureAttributesWithCompletion:(id)a3;
-- (void)readStartUpColorTemperatureWithCompletion:(id)a3;
-- (void)stopMoveToColorTemperatureCommandWithCompletion:(id)a3;
-- (void)supportsColorTemperatureRangeWithMinColorTemperature:(id)a3 maxColorTemperature:(id)a4 completion:(id)a5;
-- (void)writeStartUpColorTemperature:(id)a3 completion:(id)a4;
+- (id)readAttributePluginColorTemperatureMiredsWithParams:(id)params;
+- (void)moveToCustomColorTemperatureValue:(id)value transitionTime:(id)time completionHandler:(id)handler;
+- (void)moveToCustomColorTemperatureWithParams:(id)params completionHandler:(id)handler;
+- (void)moveToPluginColorTemperatureWithParams:(id)params expectedValues:(id)values expectedValueInterval:(id)interval completionHandler:(id)handler;
+- (void)readColorModeAndColorTemperatureWithCompletion:(id)completion;
+- (void)readColorTemperatureAttributesWithCompletion:(id)completion;
+- (void)readStartUpColorTemperatureWithCompletion:(id)completion;
+- (void)stopMoveToColorTemperatureCommandWithCompletion:(id)completion;
+- (void)supportsColorTemperatureRangeWithMinColorTemperature:(id)temperature maxColorTemperature:(id)colorTemperature completion:(id)completion;
+- (void)writeStartUpColorTemperature:(id)temperature completion:(id)completion;
 @end
 
 @implementation HMMTRSyncClusterColorControl
@@ -38,16 +38,16 @@ uint64_t __43__HMMTRSyncClusterColorControl_logCategory__block_invoke()
 - (id)logIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMMTRSyncClusterColorControl *)self endpointID];
-  v4 = [v2 stringWithFormat:@"endPoint/%@", v3];
+  endpointID = [(HMMTRSyncClusterColorControl *)self endpointID];
+  v4 = [v2 stringWithFormat:@"endPoint/%@", endpointID];
 
   return v4;
 }
 
-- (void)readColorTemperatureAttributesWithCompletion:(id)a3
+- (void)readColorTemperatureAttributesWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(HMMTRColorControlColorTemperatureAttributes);
   v6 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:8 userInfo:0];
@@ -55,7 +55,7 @@ uint64_t __43__HMMTRSyncClusterColorControl_logCategory__block_invoke()
   if (!v8)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy3 = self;
     v24 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -94,7 +94,7 @@ LABEL_20:
   if (!v14)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy3 = self;
     v24 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -128,7 +128,7 @@ LABEL_20:
   if (!v18)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy3 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -142,7 +142,7 @@ LABEL_20:
 LABEL_21:
 
     objc_autoreleasePoolPop(v22);
-    v4[2](v4, 0, v7);
+    completionCopy[2](completionCopy, 0, v7);
     goto LABEL_22;
   }
 
@@ -161,18 +161,18 @@ LABEL_21:
   v21 = v20;
 
   [(HMMTRColorControlColorTemperatureAttributes *)v5 setColorTemperatureMireds:v21];
-  (v4)[2](v4, v5, 0);
+  (completionCopy)[2](completionCopy, v5, 0);
 
 LABEL_22:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readColorModeAndColorTemperatureWithCompletion:(id)a3
+- (void)readColorModeAndColorTemperatureWithCompletion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -185,7 +185,7 @@ LABEL_22:
   objc_autoreleasePoolPop(v5);
   v9 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:8 userInfo:0];
-  v11 = [(MTRClusterColorControl *)v6 readAttributeColorModeWithParams:v9];
+  v11 = [(MTRClusterColorControl *)selfCopy readAttributeColorModeWithParams:v9];
   if (v11)
   {
     v12 = v11;
@@ -204,7 +204,7 @@ LABEL_22:
 
     v16 = v15;
 
-    v17 = [(MTRClusterColorControl *)v6 readAttributeColorTemperatureMiredsWithParams:v9];
+    v17 = [(MTRClusterColorControl *)selfCopy readAttributeColorTemperatureMiredsWithParams:v9];
 
     if (v17)
     {
@@ -222,13 +222,13 @@ LABEL_22:
 
       v20 = v19;
 
-      v4[2](v4, v16, v20, 0);
+      completionCopy[2](completionCopy, v16, v20, 0);
     }
 
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = v6;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
@@ -239,14 +239,14 @@ LABEL_22:
       }
 
       objc_autoreleasePoolPop(v25);
-      (v4)[2](v4, 0, 0, v10);
+      (completionCopy)[2](completionCopy, 0, 0, v10);
     }
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = v6;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
@@ -257,16 +257,16 @@ LABEL_22:
     }
 
     objc_autoreleasePoolPop(v21);
-    (v4)[2](v4, 0, 0, v10);
+    (completionCopy)[2](completionCopy, 0, 0, v10);
   }
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopMoveToColorTemperatureCommandWithCompletion:(id)a3
+- (void)stopMoveToColorTemperatureCommandWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v6 = *MEMORY[0x277D0F1A0];
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:8 userInfo:0];
@@ -299,7 +299,7 @@ LABEL_22:
         v23[1] = 3221225472;
         v23[2] = __80__HMMTRSyncClusterColorControl_stopMoveToColorTemperatureCommandWithCompletion___block_invoke;
         v23[3] = &unk_2786F0BC0;
-        v24 = v4;
+        v24 = completionCopy;
         [(MTRClusterColorControl *)self stopMoveStepWithParams:v13 expectedValues:0 expectedValueInterval:&unk_283EE79C8 completion:v23];
 
 LABEL_14:
@@ -319,13 +319,13 @@ LABEL_14:
     }
 
     v21 = [v18 errorWithDomain:v19 code:v20 userInfo:0];
-    (*(v4 + 2))(v4, v21);
+    (*(completionCopy + 2))(completionCopy, v21);
 
     goto LABEL_14;
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -336,16 +336,16 @@ LABEL_14:
   }
 
   objc_autoreleasePoolPop(v14);
-  (*(v4 + 2))(v4, v7);
+  (*(completionCopy + 2))(completionCopy, v7);
 LABEL_15:
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readStartUpColorTemperatureWithCompletion:(id)a3
+- (void)readStartUpColorTemperatureWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:8 userInfo:0];
   v7 = [(MTRClusterColorControl *)self readAttributeStartUpColorTemperatureMiredsWithParams:v5];
@@ -366,13 +366,13 @@ LABEL_15:
 
     v11 = v10;
 
-    v4[2](v4, v11, 0);
+    completionCopy[2](completionCopy, v11, 0);
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -383,30 +383,30 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v12);
-    (v4)[2](v4, 0, v6);
+    (completionCopy)[2](completionCopy, 0, v6);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeStartUpColorTemperature:(id)a3 completion:(id)a4
+- (void)writeStartUpColorTemperature:(id)temperature completion:(id)completion
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 dictionary];
-  [v9 setValue:v8 forKey:*MEMORY[0x277CD51A0]];
+  completionCopy = completion;
+  temperatureCopy = temperature;
+  dictionary = [v6 dictionary];
+  [dictionary setValue:temperatureCopy forKey:*MEMORY[0x277CD51A0]];
 
-  [(MTRClusterColorControl *)self writeAttributeStartUpColorTemperatureMiredsWithValue:v9 expectedValueInterval:&unk_283EE79C8 params:0];
-  v7[2](v7, 0);
+  [(MTRClusterColorControl *)self writeAttributeStartUpColorTemperatureMiredsWithValue:dictionary expectedValueInterval:&unk_283EE79C8 params:0];
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)supportsColorTemperatureRangeWithMinColorTemperature:(id)a3 maxColorTemperature:(id)a4 completion:(id)a5
+- (void)supportsColorTemperatureRangeWithMinColorTemperature:(id)temperature maxColorTemperature:(id)colorTemperature completion:(id)completion
 {
   v73 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  temperatureCopy = temperature;
+  colorTemperatureCopy = colorTemperature;
+  completionCopy = completion;
   v11 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v12 = *MEMORY[0x277D0F1A0];
   v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:8 userInfo:0];
@@ -415,7 +415,7 @@ LABEL_15:
   {
     v15 = v14;
     v59 = v13;
-    v60 = v9;
+    v60 = colorTemperatureCopy;
     v16 = *MEMORY[0x277CD51A0];
     v17 = [v14 objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
     objc_opt_class();
@@ -431,7 +431,7 @@ LABEL_15:
 
     v19 = v18;
 
-    v20 = [v19 unsignedIntegerValue];
+    unsignedIntegerValue = [v19 unsignedIntegerValue];
     v21 = [(MTRClusterColorControl *)self readAttributeColorTempPhysicalMinMiredsWithParams:v11];
 
     if (v21)
@@ -470,7 +470,7 @@ LABEL_15:
         v57 = v26;
 
         v27 = objc_autoreleasePoolPush();
-        v28 = self;
+        selfCopy = self;
         v29 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
@@ -485,18 +485,18 @@ LABEL_15:
           v67 = 2112;
           v68 = v57;
           v69 = 2112;
-          v70 = v8;
+          v70 = temperatureCopy;
           v71 = 2112;
           v72 = v60;
           _os_log_impl(&dword_22AEAE000, v29, OS_LOG_TYPE_INFO, "%{public}@Read color control attribute colorCapabilities supportsColorTempFeature: %@ accessoryRange: [%@ : %@]  allowedRange: [%@ : %@]", buf, 0x3Eu);
         }
 
         objc_autoreleasePoolPop(v27);
-        v9 = v60;
-        if ((v20 & 0x10) != 0 && (v32 = [v58 longValue], v32 <= objc_msgSend(v60, "longValue")) && (v33 = objc_msgSend(v57, "longValue"), v33 >= objc_msgSend(v8, "longValue")))
+        colorTemperatureCopy = v60;
+        if ((unsignedIntegerValue & 0x10) != 0 && (v32 = [v58 longValue], v32 <= objc_msgSend(v60, "longValue")) && (v33 = objc_msgSend(v57, "longValue"), v33 >= objc_msgSend(temperatureCopy, "longValue")))
         {
           v52 = objc_autoreleasePoolPush();
-          v53 = v28;
+          v53 = selfCopy;
           v54 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
           {
@@ -507,13 +507,13 @@ LABEL_15:
           }
 
           objc_autoreleasePoolPop(v52);
-          v10[2](v10, 1, 0, v58, v57);
+          completionCopy[2](completionCopy, 1, 0, v58, v57);
         }
 
         else
         {
           v34 = objc_autoreleasePoolPush();
-          v35 = v28;
+          v35 = selfCopy;
           v36 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
           {
@@ -522,12 +522,12 @@ LABEL_15:
             v62 = v37;
             _os_log_impl(&dword_22AEAE000, v36, OS_LOG_TYPE_INFO, "%{public}@Accessory does not support expected color temp range", buf, 0xCu);
 
-            v9 = v60;
+            colorTemperatureCopy = v60;
           }
 
           objc_autoreleasePoolPop(v34);
           v38 = [MEMORY[0x277CCA9B8] errorWithDomain:v12 code:3 userInfo:0];
-          (v10)[2](v10, 0, v38, v58, v57);
+          (completionCopy)[2](completionCopy, 0, v38, v58, v57);
         }
 
         v13 = v59;
@@ -536,9 +536,9 @@ LABEL_15:
       else
       {
         v47 = objc_autoreleasePoolPush();
-        v48 = self;
+        selfCopy2 = self;
         v49 = HMFGetOSLogHandle();
-        v9 = v60;
+        colorTemperatureCopy = v60;
         if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
         {
           v50 = HMFGetLogIdentifier();
@@ -549,14 +549,14 @@ LABEL_15:
 
         objc_autoreleasePoolPop(v47);
         v13 = v59;
-        (v10)[2](v10, 0, v59, v58, 0);
+        (completionCopy)[2](completionCopy, 0, v59, v58, 0);
       }
     }
 
     else
     {
       v43 = objc_autoreleasePoolPush();
-      v44 = self;
+      selfCopy3 = self;
       v45 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
       {
@@ -568,15 +568,15 @@ LABEL_15:
 
       objc_autoreleasePoolPop(v43);
       v13 = v59;
-      (v10)[2](v10, 0, v59, 0, 0);
-      v9 = v60;
+      (completionCopy)[2](completionCopy, 0, v59, 0, 0);
+      colorTemperatureCopy = v60;
     }
   }
 
   else
   {
     v39 = objc_autoreleasePoolPush();
-    v40 = self;
+    selfCopy4 = self;
     v41 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
     {
@@ -587,24 +587,24 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v39);
-    (v10)[2](v10, 0, v13, 0, 0);
+    (completionCopy)[2](completionCopy, 0, v13, 0, 0);
   }
 
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)moveToCustomColorTemperatureWithParams:(id)a3 completionHandler:(id)a4
+- (void)moveToCustomColorTemperatureWithParams:(id)params completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x277CD52C8];
-  v8 = a3;
+  paramsCopy = params;
   v9 = objc_alloc_init(v7);
-  v10 = [v8 colorTemperatureMireds];
-  [v9 setColorTemperatureMireds:v10];
+  colorTemperatureMireds = [paramsCopy colorTemperatureMireds];
+  [v9 setColorTemperatureMireds:colorTemperatureMireds];
 
-  v11 = [v8 transitionTime];
+  transitionTime = [paramsCopy transitionTime];
 
-  [v9 setTransitionTime:v11];
+  [v9 setTransitionTime:transitionTime];
   [v9 setOptionsMask:&unk_283EE7998];
   [v9 setOptionsOverride:&unk_283EE7998];
   v14[0] = MEMORY[0x277D85DD0];
@@ -613,8 +613,8 @@ LABEL_15:
   v14[3] = &unk_2786F0C10;
   v14[4] = self;
   v15 = v9;
-  v16 = v6;
-  v12 = v6;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v9;
   [(MTRClusterColorControl *)self moveToColorTemperatureWithParams:v13 expectedValues:0 expectedValueInterval:0 completion:v14];
 }
@@ -648,16 +648,16 @@ void __89__HMMTRSyncClusterColorControl_moveToCustomColorTemperatureWithParams_c
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)moveToCustomColorTemperatureValue:(id)a3 transitionTime:(id)a4 completionHandler:(id)a5
+- (void)moveToCustomColorTemperatureValue:(id)value transitionTime:(id)time completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CD52C8];
-  v10 = a4;
-  v11 = a3;
+  timeCopy = time;
+  valueCopy = value;
   v12 = objc_alloc_init(v9);
-  [v12 setColorTemperatureMireds:v11];
+  [v12 setColorTemperatureMireds:valueCopy];
 
-  [v12 setTransitionTime:v10];
+  [v12 setTransitionTime:timeCopy];
   [v12 setOptionsMask:&unk_283EE7998];
   [v12 setOptionsOverride:&unk_283EE7998];
   v15[0] = MEMORY[0x277D85DD0];
@@ -666,8 +666,8 @@ void __89__HMMTRSyncClusterColorControl_moveToCustomColorTemperatureWithParams_c
   v15[3] = &unk_2786F0C10;
   v15[4] = self;
   v16 = v12;
-  v17 = v8;
-  v13 = v8;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
   v14 = v12;
   [(MTRClusterColorControl *)self moveToColorTemperatureWithParams:v14 expectedValues:0 expectedValueInterval:0 completion:v15];
 }
@@ -704,10 +704,10 @@ void __99__HMMTRSyncClusterColorControl_moveToCustomColorTemperatureValue_transi
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readAttributePluginColorTemperatureMiredsWithParams:(id)a3
+- (id)readAttributePluginColorTemperatureMiredsWithParams:(id)params
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  paramsCopy = params;
   v5 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v6 = [(MTRClusterColorControl *)self readAttributeColorModeWithParams:v5];
   v7 = v6;
@@ -728,8 +728,8 @@ void __99__HMMTRSyncClusterColorControl_moveToCustomColorTemperatureValue_transi
 
     v11 = v10;
 
-    v12 = [v11 unsignedIntegerValue];
-    if (v12 == 2)
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
+    if (unsignedIntegerValue == 2)
     {
       v13 = [(MTRClusterColorControl *)self readAttributeColorTemperatureMiredsWithParams:v5];
       v14 = v13;
@@ -749,8 +749,8 @@ void __99__HMMTRSyncClusterColorControl_moveToCustomColorTemperatureValue_transi
 
         v17 = v16;
 
-        v18 = [v17 unsignedIntegerValue];
-        v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v18, *MEMORY[0x277CD5188], v8, *MEMORY[0x277CD5198]}];
+        unsignedIntegerValue2 = [v17 unsignedIntegerValue];
+        v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{unsignedIntegerValue2, *MEMORY[0x277CD5188], v8, *MEMORY[0x277CD5198]}];
         v39[1] = v19;
         v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:2];
       }
@@ -758,7 +758,7 @@ void __99__HMMTRSyncClusterColorControl_moveToCustomColorTemperatureValue_transi
       else
       {
         v32 = objc_autoreleasePoolPush();
-        v33 = self;
+        selfCopy = self;
         v34 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
@@ -776,13 +776,13 @@ void __99__HMMTRSyncClusterColorControl_moveToCustomColorTemperatureValue_transi
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy2 = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
-        v30 = [(HMMTRSyncClusterColorControl *)v26 endpointID];
+        v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+        endpointID = [(HMMTRSyncClusterColorControl *)selfCopy2 endpointID];
         *buf = 138544130;
         v43 = v28;
         v44 = 2112;
@@ -790,7 +790,7 @@ void __99__HMMTRSyncClusterColorControl_moveToCustomColorTemperatureValue_transi
         v46 = 2112;
         v47 = v29;
         v48 = 2112;
-        v49 = v30;
+        v49 = endpointID;
         _os_log_impl(&dword_22AEAE000, v27, OS_LOG_TYPE_INFO, "%{public}@Returning color temp: %@ because colorMode: %@ on accessory endPoint: %@ is not color temp", buf, 0x2Au);
       }
 
@@ -807,7 +807,7 @@ void __99__HMMTRSyncClusterColorControl_moveToCustomColorTemperatureValue_transi
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy3 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -826,18 +826,18 @@ void __99__HMMTRSyncClusterColorControl_moveToCustomColorTemperatureValue_transi
   return v20;
 }
 
-- (void)moveToPluginColorTemperatureWithParams:(id)a3 expectedValues:(id)a4 expectedValueInterval:(id)a5 completionHandler:(id)a6
+- (void)moveToPluginColorTemperatureWithParams:(id)params expectedValues:(id)values expectedValueInterval:(id)interval completionHandler:(id)handler
 {
-  v8 = a6;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CD52C8];
-  v10 = a3;
+  paramsCopy = params;
   v11 = objc_alloc_init(v9);
-  v12 = [v10 colorTemperature];
-  [v11 setColorTemperature:v12];
+  colorTemperature = [paramsCopy colorTemperature];
+  [v11 setColorTemperature:colorTemperature];
 
-  v13 = [v10 transitionTime];
+  transitionTime = [paramsCopy transitionTime];
 
-  [v11 setTransitionTime:v13];
+  [v11 setTransitionTime:transitionTime];
   [v11 setOptionsMask:&unk_283EE7998];
   [v11 setOptionsOverride:&unk_283EE7998];
   v16[0] = MEMORY[0x277D85DD0];
@@ -846,8 +846,8 @@ void __99__HMMTRSyncClusterColorControl_moveToCustomColorTemperatureValue_transi
   v16[3] = &unk_2786F0C10;
   v16[4] = self;
   v17 = v11;
-  v18 = v8;
-  v14 = v8;
+  v18 = handlerCopy;
+  v14 = handlerCopy;
   v15 = v11;
   [(MTRClusterColorControl *)self moveToColorTemperatureWithParams:v15 expectedValues:0 expectedValueInterval:0 completionHandler:v16];
 }

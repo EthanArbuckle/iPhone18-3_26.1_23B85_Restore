@@ -1,30 +1,30 @@
 @interface BKPagingScrollView
-- (BKPagingScrollView)initWithFrame:(CGRect)a3;
-- (BOOL)_installViewAtIndex:(int64_t)a3;
-- (CGRect)_frameForPageAtIndex:(int64_t)a3;
+- (BKPagingScrollView)initWithFrame:(CGRect)frame;
+- (BOOL)_installViewAtIndex:(int64_t)index;
+- (CGRect)_frameForPageAtIndex:(int64_t)index;
 - (NSArray)allViews;
 - (NSArray)surroundingViews;
 - (UIView)currentView;
-- (int64_t)_indexForView:(id)a3;
+- (int64_t)_indexForView:(id)view;
 - (void)_updateContentOffset;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)purgeCachedPages;
-- (void)removeSubview:(id)a3 atIndex:(int64_t)a4;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPageCount:(int64_t)a3;
-- (void)setPageOffset:(int64_t)a3;
+- (void)removeSubview:(id)subview atIndex:(int64_t)index;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setFrame:(CGRect)frame;
+- (void)setPageCount:(int64_t)count;
+- (void)setPageOffset:(int64_t)offset;
 - (void)updateCachedPages;
 @end
 
 @implementation BKPagingScrollView
 
-- (BKPagingScrollView)initWithFrame:(CGRect)a3
+- (BKPagingScrollView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = BKPagingScrollView;
-  v3 = [(BKPagingScrollView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKPagingScrollView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -50,12 +50,12 @@
   [(BKPagingScrollView *)&v4 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v63.receiver = self;
   v63.super_class = BKPagingScrollView;
   [(BKPagingScrollView *)&v63 frame];
@@ -69,12 +69,12 @@
   v65.size.height = height;
   if (!CGRectEqualToRect(v65, v70))
   {
-    v12 = [(BKPagingScrollView *)self navigationOrientation];
+    navigationOrientation = [(BKPagingScrollView *)self navigationOrientation];
     [(BKPagingScrollView *)self contentOffset];
     v14 = v13;
     v16 = v15;
     [(BKPagingScrollView *)self bounds];
-    if (v12)
+    if (navigationOrientation)
     {
       v19 = v18;
     }
@@ -84,7 +84,7 @@
       v19 = v17;
     }
 
-    if (v12)
+    if (navigationOrientation)
     {
       v20 = v16;
     }
@@ -126,22 +126,22 @@
       v66.size.width = v29;
       v66.size.height = v31;
       v32 = CGRectGetWidth(v66);
-      v33 = [(BKPagingScrollView *)self pageCount];
+      pageCount = [(BKPagingScrollView *)self pageCount];
       v67.origin.x = v25;
       v67.origin.y = v27;
       v67.size.width = v29;
       v67.size.height = v31;
-      v34 = CGRectGetHeight(v67) * v33;
+      v34 = CGRectGetHeight(v67) * pageCount;
     }
 
     else
     {
-      v35 = [(BKPagingScrollView *)self pageCount];
+      pageCount2 = [(BKPagingScrollView *)self pageCount];
       v68.origin.x = v25;
       v68.origin.y = v27;
       v68.size.width = v29;
       v68.size.height = v31;
-      v32 = CGRectGetWidth(v68) * v35;
+      v32 = CGRectGetWidth(v68) * pageCount2;
       v69.origin.x = v25;
       v69.origin.y = v27;
       v69.size.width = v29;
@@ -154,8 +154,8 @@
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v36 = [(BKPagingScrollView *)self subviews];
-    v37 = [v36 countByEnumeratingWithState:&v58 objects:v64 count:16];
+    subviews = [(BKPagingScrollView *)self subviews];
+    v37 = [subviews countByEnumeratingWithState:&v58 objects:v64 count:16];
     if (v37)
     {
       v38 = v37;
@@ -166,7 +166,7 @@
         {
           if (*v59 != v39)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(subviews);
           }
 
           v41 = *(*(&v58 + 1) + 8 * i);
@@ -188,23 +188,23 @@
           }
         }
 
-        v38 = [v36 countByEnumeratingWithState:&v58 objects:v64 count:16];
+        v38 = [subviews countByEnumeratingWithState:&v58 objects:v64 count:16];
       }
 
       while (v38);
     }
 
-    v49 = [(BKPagingScrollView *)self navigationOrientation];
+    navigationOrientation2 = [(BKPagingScrollView *)self navigationOrientation];
     [(BKPagingScrollView *)self bounds];
-    if (v49)
+    if (navigationOrientation2)
     {
       v52 = CGRectGetHeight(*&v50);
     }
 
     v54 = v22 * v52 + v21 * v52;
-    v55 = [(BKPagingScrollView *)self navigationOrientation];
+    navigationOrientation3 = [(BKPagingScrollView *)self navigationOrientation];
     v56 = 0.0;
-    if (v55)
+    if (navigationOrientation3)
     {
       v57 = 0.0;
     }
@@ -214,7 +214,7 @@
       v57 = v54;
     }
 
-    if (v55)
+    if (navigationOrientation3)
     {
       v56 = v54;
     }
@@ -231,9 +231,9 @@
   [(BKPagingScrollView *)self contentOffset];
   v4 = v3;
   v6 = v5;
-  v7 = [(BKPagingScrollView *)self navigationOrientation];
+  navigationOrientation = [(BKPagingScrollView *)self navigationOrientation];
   [(BKPagingScrollView *)self bounds];
-  if (v7)
+  if (navigationOrientation)
   {
     v12 = v6 / CGRectGetHeight(*&v8);
   }
@@ -243,8 +243,8 @@
     v12 = v4 / v10;
   }
 
-  v13 = [(BKPagingScrollView *)self pageCount];
-  if (v13 == 0x7FFFFFFFFFFFFFFFLL)
+  pageCount = [(BKPagingScrollView *)self pageCount];
+  if (pageCount == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (self->_pageOffset != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -254,7 +254,7 @@
 
   else
   {
-    v14 = v13;
+    v14 = pageCount;
     if ([(BKPagingScrollView *)self layoutDirection]== &dword_0 + 1)
     {
       v12 = [(BKPagingScrollView *)self pageCount]- v12 + -1.0;
@@ -282,10 +282,10 @@
   }
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v25.receiver = self;
   v25.super_class = BKPagingScrollView;
   [(BKPagingScrollView *)&v25 contentOffset];
@@ -301,9 +301,9 @@
       v11 = v10;
       v13 = v12;
 
-      v14 = [(BKPagingScrollView *)self navigationOrientation];
+      navigationOrientation = [(BKPagingScrollView *)self navigationOrientation];
       [(BKPagingScrollView *)self bounds];
-      if (v14)
+      if (navigationOrientation)
       {
         v19 = v13 / CGRectGetHeight(*&v15);
       }
@@ -320,46 +320,46 @@
 
       if (v19 != self->_pageOffset)
       {
-        v20 = [(BKPagingScrollView *)self delegate];
+        delegate = [(BKPagingScrollView *)self delegate];
         v21 = [(BKPagingScrollView *)self viewAtIndex:self->_pageOffset];
-        [v20 pagingScrollView:self viewDidDisappear:v21 atIndex:self->_pageOffset];
+        [delegate pagingScrollView:self viewDidDisappear:v21 atIndex:self->_pageOffset];
 
         self->_pageOffset = v19;
-        v22 = [(BKPagingScrollView *)self delegate];
+        delegate2 = [(BKPagingScrollView *)self delegate];
         v23 = [(BKPagingScrollView *)self viewAtIndex:self->_pageOffset];
-        [v22 pagingScrollView:self viewDidAppear:v23 atIndex:self->_pageOffset];
+        [delegate2 pagingScrollView:self viewDidAppear:v23 atIndex:self->_pageOffset];
       }
     }
   }
 }
 
-- (void)setPageOffset:(int64_t)a3
+- (void)setPageOffset:(int64_t)offset
 {
   pageOffset = self->_pageOffset;
-  if (pageOffset != a3)
+  if (pageOffset != offset)
   {
     if (pageOffset != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [(BKPagingScrollView *)self delegate];
+      delegate = [(BKPagingScrollView *)self delegate];
       v7 = [(BKPagingScrollView *)self viewAtIndex:self->_pageOffset];
-      [v6 pagingScrollView:self viewDidDisappear:v7 atIndex:self->_pageOffset];
+      [delegate pagingScrollView:self viewDidDisappear:v7 atIndex:self->_pageOffset];
     }
 
-    self->_pageOffset = a3;
+    self->_pageOffset = offset;
     [(BKPagingScrollView *)self _updateContentOffset];
-    v8 = [(BKPagingScrollView *)self delegate];
+    delegate2 = [(BKPagingScrollView *)self delegate];
     v9 = [(BKPagingScrollView *)self viewAtIndex:self->_pageOffset];
-    [v8 pagingScrollView:self viewDidAppear:v9 atIndex:self->_pageOffset];
+    [delegate2 pagingScrollView:self viewDidAppear:v9 atIndex:self->_pageOffset];
 
     [(BKPagingScrollView *)self setNeedsLayout];
   }
 }
 
-- (void)setPageCount:(int64_t)a3
+- (void)setPageCount:(int64_t)count
 {
-  if (self->_pageCount != a3)
+  if (self->_pageCount != count)
   {
-    self->_pageCount = a3;
+    self->_pageCount = count;
     [(BKPagingScrollView *)self bounds];
     v6 = v5;
     v8 = v7;
@@ -372,22 +372,22 @@
       v17.size.width = v10;
       v17.size.height = v12;
       Width = CGRectGetWidth(v17);
-      v14 = [(BKPagingScrollView *)self pageCount];
+      pageCount = [(BKPagingScrollView *)self pageCount];
       v18.origin.x = v6;
       v18.origin.y = v8;
       v18.size.width = v10;
       v18.size.height = v12;
-      Height = CGRectGetHeight(v18) * v14;
+      Height = CGRectGetHeight(v18) * pageCount;
     }
 
     else
     {
-      v16 = [(BKPagingScrollView *)self pageCount];
+      pageCount2 = [(BKPagingScrollView *)self pageCount];
       v19.origin.x = v6;
       v19.origin.y = v8;
       v19.size.width = v10;
       v19.size.height = v12;
-      Width = CGRectGetWidth(v19) * v16;
+      Width = CGRectGetWidth(v19) * pageCount2;
       v20.origin.x = v6;
       v20.origin.y = v8;
       v20.size.width = v10;
@@ -409,8 +409,8 @@
     [(BKPagingScrollView *)self _frameForPageAtIndex:[(BKPagingScrollView *)self pageOffset]];
     v4 = v3;
     v6 = v5;
-    v7 = [(BKPagingScrollView *)self navigationOrientation];
-    if (v7)
+    navigationOrientation = [(BKPagingScrollView *)self navigationOrientation];
+    if (navigationOrientation)
     {
       v8 = v6 + -20.0;
     }
@@ -420,7 +420,7 @@
       v8 = v6;
     }
 
-    if (v7)
+    if (navigationOrientation)
     {
       v9 = v4;
     }
@@ -434,7 +434,7 @@
   }
 }
 
-- (CGRect)_frameForPageAtIndex:(int64_t)a3
+- (CGRect)_frameForPageAtIndex:(int64_t)index
 {
   [(BKPagingScrollView *)self bounds];
   v6 = v5;
@@ -447,7 +447,7 @@
     v21.origin.y = v8;
     v21.size.width = v10;
     v21.size.height = v12;
-    v13 = a3 * CGRectGetHeight(v21) + 20.0;
+    v13 = index * CGRectGetHeight(v21) + 20.0;
     v22.origin.x = v6;
     v22.origin.y = v8;
     v22.size.width = v10;
@@ -463,17 +463,17 @@
 
   else
   {
-    v17 = [(BKPagingScrollView *)self layoutDirection];
-    if ([(BKPagingScrollView *)self pageCount]!= 0x7FFFFFFFFFFFFFFFLL && v17 == 1)
+    layoutDirection = [(BKPagingScrollView *)self layoutDirection];
+    if ([(BKPagingScrollView *)self pageCount]!= 0x7FFFFFFFFFFFFFFFLL && layoutDirection == 1)
     {
-      a3 = [(BKPagingScrollView *)self pageCount]+ ~a3;
+      index = [(BKPagingScrollView *)self pageCount]+ ~index;
     }
 
     v24.origin.x = v6;
     v24.origin.y = v8;
     v24.size.width = v10;
     v24.size.height = v12;
-    v16 = a3 * CGRectGetWidth(v24) + 20.0;
+    v16 = index * CGRectGetWidth(v24) + 20.0;
     v25.origin.x = v6;
     v25.origin.y = v8;
     v25.size.width = v10;
@@ -497,9 +497,9 @@
   return result;
 }
 
-- (int64_t)_indexForView:(id)a3
+- (int64_t)_indexForView:(id)view
 {
-  v3 = [a3 tag];
+  v3 = [view tag];
   if (v3 <= 999999)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -513,9 +513,9 @@
 
 - (UIView)currentView
 {
-  v3 = [(BKPagingScrollView *)self pageOffset];
+  pageOffset = [(BKPagingScrollView *)self pageOffset];
 
-  return [(BKPagingScrollView *)self viewAtIndex:v3];
+  return [(BKPagingScrollView *)self viewAtIndex:pageOffset];
 }
 
 - (NSArray)surroundingViews
@@ -525,8 +525,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BKPagingScrollView *)self subviews];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subviews = [(BKPagingScrollView *)self subviews];
+  v5 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -537,7 +537,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -548,7 +548,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -564,8 +564,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BKPagingScrollView *)self subviews];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subviews = [(BKPagingScrollView *)self subviews];
+  v5 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -576,7 +576,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -586,7 +586,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -595,37 +595,37 @@
   return v3;
 }
 
-- (BOOL)_installViewAtIndex:(int64_t)a3
+- (BOOL)_installViewAtIndex:(int64_t)index
 {
   v5 = [(BKPagingScrollView *)self viewAtIndex:?];
   if (v5)
   {
-    [(BKPagingScrollView *)self _frameForPageAtIndex:a3];
+    [(BKPagingScrollView *)self _frameForPageAtIndex:index];
     [v5 setFrame:?];
   }
 
   else
   {
-    v6 = [(BKPagingScrollView *)self delegate];
-    v7 = [v6 pagingScrollView:self viewAtIndex:a3];
+    delegate = [(BKPagingScrollView *)self delegate];
+    v7 = [delegate pagingScrollView:self viewAtIndex:index];
 
-    [v7 setTag:a3 + 1000000];
-    [(BKPagingScrollView *)self _frameForPageAtIndex:a3];
+    [v7 setTag:index + 1000000];
+    [(BKPagingScrollView *)self _frameForPageAtIndex:index];
     [v7 setFrame:?];
     [(BKPagingScrollView *)self addSubview:v7];
-    v8 = [(BKPagingScrollView *)self delegate];
-    [v8 pagingScrollView:self didAddView:v7 atIndex:a3];
+    delegate2 = [(BKPagingScrollView *)self delegate];
+    [delegate2 pagingScrollView:self didAddView:v7 atIndex:index];
   }
 
   return v5 == 0;
 }
 
-- (void)removeSubview:(id)a3 atIndex:(int64_t)a4
+- (void)removeSubview:(id)subview atIndex:(int64_t)index
 {
-  v6 = a3;
-  [v6 removeFromSuperview];
-  v7 = [(BKPagingScrollView *)self delegate];
-  [v7 pagingScrollView:self didRemoveView:v6 atIndex:a4];
+  subviewCopy = subview;
+  [subviewCopy removeFromSuperview];
+  delegate = [(BKPagingScrollView *)self delegate];
+  [delegate pagingScrollView:self didRemoveView:subviewCopy atIndex:index];
 }
 
 - (void)updateCachedPages
@@ -634,8 +634,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(BKPagingScrollView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  subviews = [(BKPagingScrollView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -646,7 +646,7 @@
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v23 + 1) + 8 * i);
@@ -654,22 +654,22 @@
         if (v9 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v10 = v9;
-          v11 = [(BKPagingScrollView *)self pageOffset];
-          if (v10 < (v11 + ~[(BKPagingScrollView *)self pageCacheDistance]) || (v12 = [(BKPagingScrollView *)self pageOffset], v10 > [(BKPagingScrollView *)self pageCacheDistance]+ v12 + 1))
+          pageOffset = [(BKPagingScrollView *)self pageOffset];
+          if (v10 < (pageOffset + ~[(BKPagingScrollView *)self pageCacheDistance]) || (v12 = [(BKPagingScrollView *)self pageOffset], v10 > [(BKPagingScrollView *)self pageCacheDistance]+ v12 + 1))
           {
             [(BKPagingScrollView *)self removeSubview:v8 atIndex:v10];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v5);
   }
 
-  v13 = [(BKPagingScrollView *)self pageOffset];
-  if (v13 + 1 >= [(BKPagingScrollView *)self pageCount])
+  pageOffset2 = [(BKPagingScrollView *)self pageOffset];
+  if (pageOffset2 + 1 >= [(BKPagingScrollView *)self pageCount])
   {
     v14 = 0;
   }
@@ -679,34 +679,34 @@
     v14 = 0;
     do
     {
-      v15 = [(BKPagingScrollView *)self pageOffset];
-      if (v13 >= [(BKPagingScrollView *)self pageCacheDistance]+ v15)
+      pageOffset3 = [(BKPagingScrollView *)self pageOffset];
+      if (pageOffset2 >= [(BKPagingScrollView *)self pageCacheDistance]+ pageOffset3)
       {
         break;
       }
 
-      v16 = [(BKPagingScrollView *)self viewAtIndex:v13 + 1];
+      v16 = [(BKPagingScrollView *)self viewAtIndex:pageOffset2 + 1];
       if (!((v16 != 0) | v14 & 1))
       {
-        v14 = [(BKPagingScrollView *)self _installViewAtIndex:v13 + 1];
+        v14 = [(BKPagingScrollView *)self _installViewAtIndex:pageOffset2 + 1];
       }
 
-      v17 = [(BKPagingScrollView *)self pageCount];
-      v18 = v13 + 2;
-      ++v13;
+      pageCount = [(BKPagingScrollView *)self pageCount];
+      v18 = pageOffset2 + 2;
+      ++pageOffset2;
     }
 
-    while (v18 < v17);
+    while (v18 < pageCount);
   }
 
-  v19 = [(BKPagingScrollView *)self pageOffset];
-  if (v19 >= 1)
+  pageOffset4 = [(BKPagingScrollView *)self pageOffset];
+  if (pageOffset4 >= 1)
   {
-    v20 = v19;
+    v20 = pageOffset4;
     do
     {
-      v21 = [(BKPagingScrollView *)self pageOffset];
-      if (v20 <= v21 - [(BKPagingScrollView *)self pageCacheDistance])
+      pageOffset5 = [(BKPagingScrollView *)self pageOffset];
+      if (v20 <= pageOffset5 - [(BKPagingScrollView *)self pageCacheDistance])
       {
         break;
       }
@@ -728,8 +728,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(BKPagingScrollView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  subviews = [(BKPagingScrollView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -740,7 +740,7 @@
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v23 + 1) + 8 * i);
@@ -769,7 +769,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v5);

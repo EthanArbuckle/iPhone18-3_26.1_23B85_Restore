@@ -1,8 +1,8 @@
 @interface SXComponentViewPostProcessorManager
 - (SXComponentViewPostProcessorManager)init;
-- (void)addProcessor:(id)a3;
-- (void)processComponent:(id)a3 view:(id)a4;
-- (void)removeProcessor:(id)a3;
+- (void)addProcessor:(id)processor;
+- (void)processComponent:(id)component view:(id)view;
+- (void)removeProcessor:(id)processor;
 @end
 
 @implementation SXComponentViewPostProcessorManager
@@ -14,25 +14,25 @@
   v2 = [(SXComponentViewPostProcessorManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     processors = v2->_processors;
-    v2->_processors = v3;
+    v2->_processors = array;
   }
 
   return v2;
 }
 
-- (void)processComponent:(id)a3 view:(id)a4
+- (void)processComponent:(id)component view:(id)view
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  viewCopy = view;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(SXComponentViewPostProcessorManager *)self processors];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  processors = [(SXComponentViewPostProcessorManager *)self processors];
+  v9 = [processors countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -44,43 +44,43 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(processors);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) processComponent:v6 view:v7];
+        [*(*(&v13 + 1) + 8 * v12++) processComponent:componentCopy view:viewCopy];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [processors countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)addProcessor:(id)a3
+- (void)addProcessor:(id)processor
 {
-  v7 = a3;
-  if (v7)
+  processorCopy = processor;
+  if (processorCopy)
   {
-    v4 = [(SXComponentViewPostProcessorManager *)self processors];
-    v5 = [v4 containsObject:v7];
+    processors = [(SXComponentViewPostProcessorManager *)self processors];
+    v5 = [processors containsObject:processorCopy];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(SXComponentViewPostProcessorManager *)self processors];
-      [v6 addObject:v7];
+      processors2 = [(SXComponentViewPostProcessorManager *)self processors];
+      [processors2 addObject:processorCopy];
     }
   }
 }
 
-- (void)removeProcessor:(id)a3
+- (void)removeProcessor:(id)processor
 {
-  if (a3)
+  if (processor)
   {
-    v4 = a3;
-    v5 = [(SXComponentViewPostProcessorManager *)self processors];
-    [v5 removeObject:v4];
+    processorCopy = processor;
+    processors = [(SXComponentViewPostProcessorManager *)self processors];
+    [processors removeObject:processorCopy];
   }
 }
 

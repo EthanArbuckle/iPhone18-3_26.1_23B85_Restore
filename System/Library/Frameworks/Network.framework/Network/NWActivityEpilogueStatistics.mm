@@ -1,32 +1,32 @@
 @interface NWActivityEpilogueStatistics
-+ (id)createActivityEpilogueDictionary:(nw_activity_epilogue_report_s *)a3;
++ (id)createActivityEpilogueDictionary:(nw_activity_epilogue_report_s *)dictionary;
 - (NSMutableDictionary)dictionaryReport;
 - (NSString)bundleID;
 - (NSUUID)activityUUID;
 - (NSUUID)parentUUID;
-- (NWActivityEpilogueStatistics)initWithJSONData:(id)a3;
-- (NWActivityEpilogueStatistics)initWithNWActivityEpilogueReport:(nw_activity_epilogue_report_s *)a3 length:(unint64_t)a4;
+- (NWActivityEpilogueStatistics)initWithJSONData:(id)data;
+- (NWActivityEpilogueStatistics)initWithNWActivityEpilogueReport:(nw_activity_epilogue_report_s *)report length:(unint64_t)length;
 - (unint64_t)durationMsecs;
 - (unint64_t)investigation_identifier;
 - (unsigned)metricType;
-- (void)setBundleID:(id)a3;
+- (void)setBundleID:(id)d;
 @end
 
 @implementation NWActivityEpilogueStatistics
 
-- (NWActivityEpilogueStatistics)initWithJSONData:(id)a3
+- (NWActivityEpilogueStatistics)initWithJSONData:(id)data
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v22.receiver = self;
   v22.super_class = NWActivityEpilogueStatistics;
   v5 = [(NWActivityEpilogueStatistics *)&v22 init];
   if (v5)
   {
-    if (v4 && [v4 length])
+    if (dataCopy && [dataCopy length])
     {
       v19 = 0;
-      v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v4 options:1 error:&v19];
+      v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:1 error:&v19];
       v7 = v19;
       dictionaryReport = v5->_dictionaryReport;
       v5->_dictionaryReport = v6;
@@ -110,14 +110,14 @@ LABEL_6:
   return v5;
 }
 
-- (NWActivityEpilogueStatistics)initWithNWActivityEpilogueReport:(nw_activity_epilogue_report_s *)a3 length:(unint64_t)a4
+- (NWActivityEpilogueStatistics)initWithNWActivityEpilogueReport:(nw_activity_epilogue_report_s *)report length:(unint64_t)length
 {
   v9[75] = *MEMORY[0x1E69E9840];
-  if (a4 == 592)
+  if (length == 592)
   {
-    memcpy(v9, a3, 0x250uLL);
+    memcpy(v9, report, 0x250uLL);
     [(NWActivityEpilogueStatistics *)self setReport:v9];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -132,14 +132,14 @@ LABEL_6:
       WORD2(v9[1]) = 2048;
       *(&v9[1] + 6) = 592;
       HIWORD(v9[2]) = 2048;
-      v9[3] = a4;
+      v9[3] = length;
       _os_log_impl(&dword_181A37000, v7, OS_LOG_TYPE_ERROR, "%{public}s failure to initialize statistics object from nw_activity epilogue report, expected size %lu actual size %zu", v9, 0x20u);
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSMutableDictionary)dictionaryReport
@@ -159,43 +159,43 @@ LABEL_2:
   if (v4)
   {
     v7 = v4;
-    v8 = [(NWActivityEpilogueStatistics *)self externallyVisibleActivityUUID];
+    externallyVisibleActivityUUID = [(NWActivityEpilogueStatistics *)self externallyVisibleActivityUUID];
 
-    if (v8)
+    if (externallyVisibleActivityUUID)
     {
-      v9 = [(NWActivityEpilogueStatistics *)self externallyVisibleActivityUUID];
-      v8 = [v9 UUIDString];
+      externallyVisibleActivityUUID2 = [(NWActivityEpilogueStatistics *)self externallyVisibleActivityUUID];
+      externallyVisibleActivityUUID = [externallyVisibleActivityUUID2 UUIDString];
     }
 
-    v10 = [(NWActivityEpilogueStatistics *)self externallyVisibleParentUUID];
+    externallyVisibleParentUUID = [(NWActivityEpilogueStatistics *)self externallyVisibleParentUUID];
 
-    if (v10)
+    if (externallyVisibleParentUUID)
     {
-      v11 = [(NWActivityEpilogueStatistics *)self externallyVisibleParentUUID];
-      v10 = [v11 UUIDString];
+      externallyVisibleParentUUID2 = [(NWActivityEpilogueStatistics *)self externallyVisibleParentUUID];
+      externallyVisibleParentUUID = [externallyVisibleParentUUID2 UUIDString];
     }
 
     [(NWActivityEpilogueStatistics *)self report];
     memcpy(__dst, v20, 0x138uLL);
-    v12 = [NWActivityStatistics createActivityReportDictionary:__dst uuidString:v8 parentUUIDString:v10];
+    v12 = [NWActivityStatistics createActivityReportDictionary:__dst uuidString:externallyVisibleActivityUUID parentUUIDString:externallyVisibleParentUUID];
     if (v12)
     {
       v13 = v12;
       [(NSMutableDictionary *)v7 setObject:v12 forKeyedSubscript:@"activity"];
-      v14 = [(NWActivityEpilogueStatistics *)self layer2Report];
+      layer2Report = [(NWActivityEpilogueStatistics *)self layer2Report];
 
-      if (v14)
+      if (layer2Report)
       {
-        v15 = [(NWActivityEpilogueStatistics *)self layer2Report];
-        [(NSMutableDictionary *)v7 setObject:v15 forKeyedSubscript:@"l2Report"];
+        layer2Report2 = [(NWActivityEpilogueStatistics *)self layer2Report];
+        [(NSMutableDictionary *)v7 setObject:layer2Report2 forKeyedSubscript:@"l2Report"];
       }
 
-      v16 = [(NWActivityEpilogueStatistics *)self deviceReport];
+      deviceReport = [(NWActivityEpilogueStatistics *)self deviceReport];
 
-      if (v16)
+      if (deviceReport)
       {
-        v17 = [(NWActivityEpilogueStatistics *)self deviceReport];
-        [(NSMutableDictionary *)v7 setObject:v17 forKeyedSubscript:@"deviceReport"];
+        deviceReport2 = [(NWActivityEpilogueStatistics *)self deviceReport];
+        [(NSMutableDictionary *)v7 setObject:deviceReport2 forKeyedSubscript:@"deviceReport"];
       }
 
       [(NWActivityEpilogueStatistics *)self setMetricType:4];
@@ -238,10 +238,10 @@ LABEL_3:
   }
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if (gLogDatapath == 1)
   {
     v5 = __nwlog_obj();
@@ -250,15 +250,15 @@ LABEL_3:
       *buf = 136446722;
       v8 = "[NWActivityEpilogueStatistics setBundleID:]";
       v9 = 2112;
-      v10 = v4;
+      v10 = dCopy;
       v11 = 2112;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_181A37000, v5, OS_LOG_TYPE_DEBUG, "%{public}s Set bundle ID to %@ for %@", buf, 0x20u);
     }
   }
 
   [(NWActivityEpilogueStatistics *)self report];
-  strlcpy(v6, [v4 UTF8String], 0x100uLL);
+  strlcpy(v6, [dCopy UTF8String], 0x100uLL);
 }
 
 - (NSString)bundleID
@@ -327,18 +327,18 @@ LABEL_3:
   return v6;
 }
 
-+ (id)createActivityEpilogueDictionary:(nw_activity_epilogue_report_s *)a3
++ (id)createActivityEpilogueDictionary:(nw_activity_epilogue_report_s *)dictionary
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3->duration_msecs];
+    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:dictionary->duration_msecs];
     [v4 setObject:v5 forKeyedSubscript:@"durationMsecs"];
 
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->fragments_quenched];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:dictionary->fragments_quenched];
     [v4 setObject:v6 forKeyedSubscript:@"fragmentsQuenched"];
 
-    v7 = a3->completion_reason - 1;
+    v7 = dictionary->completion_reason - 1;
     if (v7 > 3)
     {
       v8 = @"NW_ACTIVITY_COMPLETION_REASON_INVALID";
@@ -350,13 +350,13 @@ LABEL_3:
     }
 
     [v4 setObject:v8 forKeyedSubscript:@"completionReason"];
-    v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3->underlying_error_domain_string];
+    v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:dictionary->underlying_error_domain_string];
     [v4 setObject:v9 forKeyedSubscript:@"underlyingErrorDomainString"];
 
-    v10 = [MEMORY[0x1E696AD98] numberWithInt:a3->underlying_error_domain];
+    v10 = [MEMORY[0x1E696AD98] numberWithInt:dictionary->underlying_error_domain];
     [v4 setObject:v10 forKeyedSubscript:@"underlyingErrorDomain"];
 
-    v11 = [MEMORY[0x1E696AD98] numberWithInt:a3->underlying_error_code];
+    v11 = [MEMORY[0x1E696AD98] numberWithInt:dictionary->underlying_error_code];
     [v4 setObject:v11 forKeyedSubscript:@"underlyingErrorCode"];
 
     v12 = v4;

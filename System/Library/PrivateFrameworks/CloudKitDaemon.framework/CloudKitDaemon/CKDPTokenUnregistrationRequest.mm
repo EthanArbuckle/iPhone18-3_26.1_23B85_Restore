@@ -1,12 +1,12 @@
 @interface CKDPTokenUnregistrationRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPTokenUnregistrationRequest
@@ -48,7 +48,7 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_tokenRegistrationBody)
   {
@@ -56,35 +56,35 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   tokenRegistrationBody = self->_tokenRegistrationBody;
   if (tokenRegistrationBody)
   {
-    objc_msgSend_setTokenRegistrationBody_(a3, a2, tokenRegistrationBody);
+    objc_msgSend_setTokenRegistrationBody_(to, a2, tokenRegistrationBody);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_tokenRegistrationBody, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_tokenRegistrationBody, v11, zone);
   v13 = v10[1];
   v10[1] = v12;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     tokenRegistrationBody = self->_tokenRegistrationBody;
-    v9 = v4[1];
+    v9 = equalCopy[1];
     if (tokenRegistrationBody | v9)
     {
       isEqual = objc_msgSend_isEqual_(tokenRegistrationBody, v7, v9);
@@ -104,22 +104,22 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   tokenRegistrationBody = self->_tokenRegistrationBody;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (tokenRegistrationBody)
   {
     if (v6)
     {
-      objc_msgSend_mergeFrom_(tokenRegistrationBody, v4, v6);
+      objc_msgSend_mergeFrom_(tokenRegistrationBody, fromCopy, v6);
     }
   }
 
   else if (v6)
   {
-    objc_msgSend_setTokenRegistrationBody_(self, v4, v6);
+    objc_msgSend_setTokenRegistrationBody_(self, fromCopy, v6);
   }
 
   MEMORY[0x2821F96F8]();

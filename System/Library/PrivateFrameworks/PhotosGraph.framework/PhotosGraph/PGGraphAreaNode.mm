@@ -6,23 +6,23 @@
 + (MARelation)countyOfArea;
 + (MARelation)stateOfArea;
 + (id)filter;
-+ (id)filterWithName:(id)a3;
-+ (id)filterWithNames:(id)a3;
-+ (void)setPopularityScore:(double)a3 onNodeForIdentifier:(unint64_t)a4 inGraph:(id)a5;
-- (BOOL)diameterIsLargerThanDiameter:(double)a3;
-- (BOOL)hasProperties:(id)a3;
++ (id)filterWithName:(id)name;
++ (id)filterWithNames:(id)names;
++ (void)setPopularityScore:(double)score onNodeForIdentifier:(unint64_t)identifier inGraph:(id)graph;
+- (BOOL)diameterIsLargerThanDiameter:(double)diameter;
+- (BOOL)hasProperties:(id)properties;
 - (CLLocationCoordinate2D)centroidCoordinate;
 - (CLLocationCoordinate2D)coordinate;
 - (NSString)description;
 - (NSString)featureIdentifier;
 - (NSString)fullname;
-- (PGGraphAreaNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphAreaNode)initWithName:(id)a3 isBlocked:(BOOL)a4 popularityScore:(double)a5;
+- (PGGraphAreaNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphAreaNode)initWithName:(id)name isBlocked:(BOOL)blocked popularityScore:(double)score;
 - (PGGraphAreaNodeCollection)collection;
 - (PGGraphLocationNode)stateOrBiggerParentLocationNode;
 - (id)addressNodes;
 - (id)propertyDictionary;
-- (id)propertyForKey:(id)a3;
+- (id)propertyForKey:(id)key;
 @end
 
 @implementation PGGraphAreaNode
@@ -41,8 +41,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphAreaNode *)self name];
-  v7 = [v3 stringWithFormat:@"%@|%@", v5, v6];
+  name = [(PGGraphAreaNode *)self name];
+  v7 = [v3 stringWithFormat:@"%@|%@", v5, name];
 
   return v7;
 }
@@ -59,9 +59,9 @@
   p_centroidCoordinate = &self->_centroidCoordinate;
   if (!CLLocationCoordinate2DIsValid(self->_centroidCoordinate))
   {
-    v4 = [(PGGraphAreaNode *)self collection];
-    v5 = [v4 addressNodes];
-    [v5 centroidCoordinate];
+    collection = [(PGGraphAreaNode *)self collection];
+    addressNodes = [collection addressNodes];
+    [addressNodes centroidCoordinate];
     p_centroidCoordinate->latitude = v6;
     p_centroidCoordinate->longitude = v7;
   }
@@ -75,14 +75,14 @@
 
 - (id)addressNodes
 {
-  v2 = [(PGGraphAreaNode *)self collection];
-  v3 = [v2 addressNodes];
-  v4 = [v3 temporarySet];
+  collection = [(PGGraphAreaNode *)self collection];
+  addressNodes = [collection addressNodes];
+  temporarySet = [addressNodes temporarySet];
 
-  return v4;
+  return temporarySet;
 }
 
-- (BOOL)diameterIsLargerThanDiameter:(double)a3
+- (BOOL)diameterIsLargerThanDiameter:(double)diameter
 {
   v12 = 0;
   v13 = &v12;
@@ -97,7 +97,7 @@
   v6 = v5;
   v9 = v6;
   v10 = &v12;
-  v11 = a3;
+  diameterCopy = diameter;
   [(MANode *)self enumerateNeighborNodesThroughEdgesWithLabel:@"AREA" domain:201 usingBlock:v8];
   LOBYTE(self) = *(v13 + 24);
 
@@ -148,92 +148,92 @@ void __48__PGGraphAreaNode_diameterIsLargerThanDiameter___block_invoke_2(uint64_
 
 - (PGGraphLocationNode)stateOrBiggerParentLocationNode
 {
-  v2 = [(PGGraphAreaNode *)self collection];
-  v3 = [v2 addressNodes];
-  v4 = [v3 anyNode];
+  collection = [(PGGraphAreaNode *)self collection];
+  addressNodes = [collection addressNodes];
+  anyNode = [addressNodes anyNode];
 
-  if (v4)
+  if (anyNode)
   {
     do
     {
-      if ([v4 locationMask] > 0x3F)
+      if ([anyNode locationMask] > 0x3F)
       {
         break;
       }
 
-      v5 = [v4 locationNodeCollection];
-      v6 = [v5 parentLocationNodes];
-      v7 = [v6 anyNode];
+      locationNodeCollection = [anyNode locationNodeCollection];
+      parentLocationNodes = [locationNodeCollection parentLocationNodes];
+      anyNode2 = [parentLocationNodes anyNode];
 
-      v4 = v7;
+      anyNode = anyNode2;
     }
 
-    while (v7);
+    while (anyNode2);
   }
 
-  return v4;
+  return anyNode;
 }
 
 - (NSString)fullname
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-  v4 = [(PGGraphAreaNode *)self name];
-  if ([v4 length])
+  name = [(PGGraphAreaNode *)self name];
+  if ([name length])
   {
-    [v3 addObject:v4];
+    [v3 addObject:name];
   }
 
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [(PGGraphAreaNode *)self collection];
-  v7 = [v6 addressNodes];
-  v8 = [v7 anyNode];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  collection = [(PGGraphAreaNode *)self collection];
+  addressNodes = [collection addressNodes];
+  anyNode = [addressNodes anyNode];
 
-  if (v8)
+  if (anyNode)
   {
     *&v9 = 138412290;
     v22 = v9;
     do
     {
-      v10 = [v8 locationMask];
-      if (v10 >= 0x40)
+      locationMask = [anyNode locationMask];
+      if (locationMask >= 0x40)
       {
-        v11 = v10;
-        v12 = [v8 name];
+        v11 = locationMask;
+        name2 = [anyNode name];
         if (v11 == 128)
         {
-          v13 = [v5 localizedStringForCountryCode:v12];
+          v13 = [currentLocale localizedStringForCountryCode:name2];
 
-          v12 = v13;
+          name2 = v13;
         }
 
-        if ([v12 length])
+        if ([name2 length])
         {
-          [v3 addObject:v12];
+          [v3 addObject:name2];
         }
 
         else
         {
           v14 = +[PGLogging sharedLogging];
-          v15 = [v14 loggingConnection];
+          loggingConnection = [v14 loggingConnection];
 
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
             *buf = v22;
-            v24 = v8;
-            _os_log_error_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_ERROR, "Empty location name for node %@", buf, 0xCu);
+            v24 = anyNode;
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Empty location name for node %@", buf, 0xCu);
           }
         }
       }
 
-      v16 = [v8 locationNodeCollection];
-      v17 = [v16 parentLocationNodes];
-      v18 = [v17 anyNode];
+      locationNodeCollection = [anyNode locationNodeCollection];
+      parentLocationNodes = [locationNodeCollection parentLocationNodes];
+      anyNode2 = [parentLocationNodes anyNode];
 
-      v8 = v18;
+      anyNode = anyNode2;
     }
 
-    while (v18);
+    while (anyNode2);
   }
 
   v19 = [v3 componentsJoinedByString:{@", "}];
@@ -276,11 +276,11 @@ void __48__PGGraphAreaNode_diameterIsLargerThanDiameter___block_invoke_2(uint64_
   return v8;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"blocked"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"blocked"])
   {
     v5 = [MEMORY[0x277CCABB0] numberWithBool:*(self + 32) & 1];
 LABEL_7:
@@ -288,13 +288,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"popularityScore"])
+  if ([keyCopy isEqualToString:@"popularityScore"])
   {
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_popularityScore];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"name"])
+  if ([keyCopy isEqualToString:@"name"])
   {
     v5 = self->_name;
     goto LABEL_7;
@@ -303,7 +303,7 @@ LABEL_7:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = keyCopy;
     _os_log_fault_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "Unsupported property '%@' accessed on PGGraphAreaNode.", &v9, 0xCu);
   }
 
@@ -333,11 +333,11 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"name"];
     v7 = v6;
@@ -378,35 +378,35 @@ LABEL_9:
   return v11;
 }
 
-- (PGGraphAreaNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphAreaNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v6 = a5;
-  v7 = [v6 objectForKeyedSubscript:@"name"];
-  v8 = [v6 objectForKeyedSubscript:@"blocked"];
-  v9 = [v8 BOOLValue];
+  propertiesCopy = properties;
+  v7 = [propertiesCopy objectForKeyedSubscript:@"name"];
+  v8 = [propertiesCopy objectForKeyedSubscript:@"blocked"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v6 objectForKeyedSubscript:@"popularityScore"];
+  v10 = [propertiesCopy objectForKeyedSubscript:@"popularityScore"];
 
   [v10 doubleValue];
   v12 = v11;
 
-  v13 = [(PGGraphAreaNode *)self initWithName:v7 isBlocked:v9 popularityScore:v12];
+  v13 = [(PGGraphAreaNode *)self initWithName:v7 isBlocked:bOOLValue popularityScore:v12];
   return v13;
 }
 
-- (PGGraphAreaNode)initWithName:(id)a3 isBlocked:(BOOL)a4 popularityScore:(double)a5
+- (PGGraphAreaNode)initWithName:(id)name isBlocked:(BOOL)blocked popularityScore:(double)score
 {
-  v9 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = PGGraphAreaNode;
   v10 = [(PGGraphNode *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_name, a3);
-    *(v11 + 32) = *(v11 + 32) & 0xFE | a4;
+    objc_storeStrong(&v10->_name, name);
+    *(v11 + 32) = *(v11 + 32) & 0xFE | blocked;
     v11->_centroidCoordinate = *MEMORY[0x277CE4278];
-    v11->_popularityScore = a5;
+    v11->_popularityScore = score;
   }
 
   return v11;
@@ -416,8 +416,8 @@ LABEL_9:
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
-  v3 = [a1 addressOfArea];
-  v9[0] = v3;
+  addressOfArea = [self addressOfArea];
+  v9[0] = addressOfArea;
   v4 = +[PGGraphAddressNode countryOfAddress];
   v9[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
@@ -432,8 +432,8 @@ LABEL_9:
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
-  v3 = [a1 addressOfArea];
-  v9[0] = v3;
+  addressOfArea = [self addressOfArea];
+  v9[0] = addressOfArea;
   v4 = +[PGGraphAddressNode stateOfAddress];
   v9[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
@@ -448,8 +448,8 @@ LABEL_9:
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
-  v3 = [a1 addressOfArea];
-  v9[0] = v3;
+  addressOfArea = [self addressOfArea];
+  v9[0] = addressOfArea;
   v4 = +[PGGraphAddressNode countyOfAddress];
   v9[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
@@ -463,43 +463,43 @@ LABEL_9:
 + (MARelation)addressOfArea
 {
   v2 = +[PGGraphAreaEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
-+ (void)setPopularityScore:(double)a3 onNodeForIdentifier:(unint64_t)a4 inGraph:(id)a5
++ (void)setPopularityScore:(double)score onNodeForIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
   v7 = MEMORY[0x277CCABB0];
-  v8 = a5;
-  v9 = [v7 numberWithDouble:a3];
-  [v8 persistModelProperty:v9 forKey:@"popularityScore" forNodeWithIdentifier:a4];
+  graphCopy = graph;
+  v9 = [v7 numberWithDouble:score];
+  [graphCopy persistModelProperty:v9 forKey:@"popularityScore" forNodeWithIdentifier:identifier];
 }
 
-+ (id)filterWithNames:(id)a3
++ (id)filterWithNames:(id)names
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 filter];
+  namesCopy = names;
+  filter = [self filter];
   v10 = @"name";
-  v11[0] = v4;
+  v11[0] = namesCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [v5 filterBySettingProperties:v6];
+  v7 = [filter filterBySettingProperties:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (id)filterWithName:(id)a3
++ (id)filterWithName:(id)name
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D22C78];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 alloc];
   v10 = @"name";
-  v11[0] = v4;
+  v11[0] = nameCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
   v7 = [v5 initWithLabel:@"Area" domain:201 properties:v6];

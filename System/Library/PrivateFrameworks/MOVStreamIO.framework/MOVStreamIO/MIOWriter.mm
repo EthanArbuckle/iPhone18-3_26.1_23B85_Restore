@@ -1,90 +1,90 @@
 @interface MIOWriter
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)sessionStartTime;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeWithSeconds:(SEL)a3;
-- (BOOL)addInput:(id)a3 error:(id *)a4;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeWithSeconds:(SEL)seconds;
+- (BOOL)addInput:(id)input error:(id *)error;
 - (BOOL)canWrite;
-- (BOOL)checkStatus:(unsigned int)a3;
-- (BOOL)setTrackMetadata:(id)a3 forMetadataStream:(id)a4 error:(id *)a5;
-- (BOOL)setTrackMetadata:(id)a3 forStream:(id)a4 error:(id *)a5;
-- (BOOL)setVideoTransform:(CGAffineTransform *)a3 forStream:(id)a4;
+- (BOOL)checkStatus:(unsigned int)status;
+- (BOOL)setTrackMetadata:(id)metadata forMetadataStream:(id)stream error:(id *)error;
+- (BOOL)setTrackMetadata:(id)metadata forStream:(id)stream error:(id *)error;
+- (BOOL)setVideoTransform:(CGAffineTransform *)transform forStream:(id)stream;
 - (BOOL)startSession;
 - (BOOL)startWriting;
 - (MIOMovieMetadataUtility)movieMetadataUtility;
-- (MIOWriter)initWithFilePath:(id)a3 error:(id *)a4;
-- (MIOWriter)initWithURL:(id)a3 andExpectedFrameRate:(double)a4;
+- (MIOWriter)initWithFilePath:(id)path error:(id *)error;
+- (MIOWriter)initWithURL:(id)l andExpectedFrameRate:(double)rate;
 - (id)getFailHandler;
 - (id)getWarningHandler;
-- (id)newWritingThreadWithName:(id)a3 threadPriority:(double)a4 qualityOfService:(int64_t)a5;
-- (id)writerInputsWithMediaType:(int64_t)a3;
-- (id)writerInputsWithMediaType:(int64_t)a3 streamId:(id)a4;
+- (id)newWritingThreadWithName:(id)name threadPriority:(double)priority qualityOfService:(int64_t)service;
+- (id)writerInputsWithMediaType:(int64_t)type;
+- (id)writerInputsWithMediaType:(int64_t)type streamId:(id)id;
 - (unsigned)status;
-- (void)addMetadataTrack:(id)a3;
-- (void)addTrackForStreamWithIdentifier:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 recordingConfiguration:(id)a5;
-- (void)appendMetadata:(id)a3 withTimeStamp:(id *)a4 toStream:(id)a5;
-- (void)appendPixelBuffer:(__CVBuffer *)a3 presentationTime:(id *)a4 toStreamId:(id)a5;
-- (void)cancelRecordingWithCompletionHandler:(id)a3;
+- (void)addMetadataTrack:(id)track;
+- (void)addTrackForStreamWithIdentifier:(id)identifier formatDescription:(opaqueCMFormatDescription *)description recordingConfiguration:(id)configuration;
+- (void)appendMetadata:(id)metadata withTimeStamp:(id *)stamp toStream:(id)stream;
+- (void)appendPixelBuffer:(__CVBuffer *)buffer presentationTime:(id *)time toStreamId:(id)id;
+- (void)cancelRecordingWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)fail;
-- (void)finishWithCompletionHandler:(id)a3;
-- (void)finishWithEndTime:(id *)a3 completionHandler:(id)a4;
-- (void)finishWithTimeout:(double)a3 completionHandler:(id)a4;
-- (void)finishWithTimeout:(double)a3 endTime:(id *)a4 completionHandler:(id)a5;
-- (void)prepareToRecordWithMovieMetadata:(id)a3;
-- (void)prepareWriterWithCompletionHandler:(id)a3;
-- (void)proposeSessionStartTime:(id *)a3;
-- (void)reportError:(id)a3;
-- (void)reportWarning:(id)a3;
-- (void)setBaseMediaTimeScale:(int)a3;
-- (void)setBufferCacheMode:(int)a3;
-- (void)setCustomMOVMetadata:(id)a3;
-- (void)setDefaultFrameRate:(double)a3;
-- (void)setEnableAVEHighPerformanceProfile:(BOOL)a3;
-- (void)setFailHandler:(id)a3;
-- (void)setFifoBufferCapacity:(unint64_t)a3;
-- (void)setInProcessRecording:(BOOL)a3;
-- (void)setMovieFragmentInterval:(id *)a3;
-- (void)setPreferCustomCompression:(BOOL)a3;
-- (void)setPreserveSessionStartTime:(BOOL)a3;
-- (void)setRealTime:(BOOL)a3;
-- (void)setSessionStartTime:(id *)a3;
-- (void)setShouldOptimizeForNetworkUse:(BOOL)a3;
-- (void)setStatus:(unsigned int)a3;
-- (void)setWarningHandler:(id)a3;
+- (void)finishWithCompletionHandler:(id)handler;
+- (void)finishWithEndTime:(id *)time completionHandler:(id)handler;
+- (void)finishWithTimeout:(double)timeout completionHandler:(id)handler;
+- (void)finishWithTimeout:(double)timeout endTime:(id *)time completionHandler:(id)handler;
+- (void)prepareToRecordWithMovieMetadata:(id)metadata;
+- (void)prepareWriterWithCompletionHandler:(id)handler;
+- (void)proposeSessionStartTime:(id *)time;
+- (void)reportError:(id)error;
+- (void)reportWarning:(id)warning;
+- (void)setBaseMediaTimeScale:(int)scale;
+- (void)setBufferCacheMode:(int)mode;
+- (void)setCustomMOVMetadata:(id)metadata;
+- (void)setDefaultFrameRate:(double)rate;
+- (void)setEnableAVEHighPerformanceProfile:(BOOL)profile;
+- (void)setFailHandler:(id)handler;
+- (void)setFifoBufferCapacity:(unint64_t)capacity;
+- (void)setInProcessRecording:(BOOL)recording;
+- (void)setMovieFragmentInterval:(id *)interval;
+- (void)setPreferCustomCompression:(BOOL)compression;
+- (void)setPreserveSessionStartTime:(BOOL)time;
+- (void)setRealTime:(BOOL)time;
+- (void)setSessionStartTime:(id *)time;
+- (void)setShouldOptimizeForNetworkUse:(BOOL)use;
+- (void)setStatus:(unsigned int)status;
+- (void)setWarningHandler:(id)handler;
 - (void)signalWritingThreadsProceed;
 - (void)simulateFailure;
 @end
 
 @implementation MIOWriter
 
-- (MIOWriter)initWithURL:(id)a3 andExpectedFrameRate:(double)a4
+- (MIOWriter)initWithURL:(id)l andExpectedFrameRate:(double)rate
 {
-  v5 = [a3 path];
-  v6 = [(MIOWriter *)self initWithFilePath:v5 error:0];
+  path = [l path];
+  v6 = [(MIOWriter *)self initWithFilePath:path error:0];
 
   return v6;
 }
 
-- (void)prepareToRecordWithMovieMetadata:(id)a3
+- (void)prepareToRecordWithMovieMetadata:(id)metadata
 {
-  [(MIOWriter *)self setCustomMOVMetadata:a3];
+  [(MIOWriter *)self setCustomMOVMetadata:metadata];
 
   [(MIOWriter *)self prepareWriterWithCompletionHandler:&__block_literal_global_2];
 }
 
-- (void)addTrackForStreamWithIdentifier:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 recordingConfiguration:(id)a5
+- (void)addTrackForStreamWithIdentifier:(id)identifier formatDescription:(opaqueCMFormatDescription *)description recordingConfiguration:(id)configuration
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[MIOWriterPixelBufferStreamInput alloc] initWithStreamId:v9 format:a4 recordingConfig:v8];
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  v10 = [[MIOWriterPixelBufferStreamInput alloc] initWithStreamId:identifierCopy format:description recordingConfig:configurationCopy];
 
   [(MIOWriter *)self addInput:v10 error:0];
 }
 
-- (BOOL)setTrackMetadata:(id)a3 forStream:(id)a4 error:(id *)a5
+- (BOOL)setTrackMetadata:(id)metadata forStream:(id)stream error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  metadataCopy = metadata;
+  streamCopy = stream;
   [(MIOWriter *)self writerInputsWithMediaType:0];
   v21 = 0u;
   v22 = 0u;
@@ -105,14 +105,14 @@
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 streamId];
-        v17 = [v16 isEqualToString:v9];
+        streamId = [v15 streamId];
+        v17 = [streamId isEqualToString:streamCopy];
 
         if (v17)
         {
-          [v15 setCustomMetadata:v8];
+          [v15 setCustomMetadata:metadataCopy];
           v19 = 1;
-          v18 = v10;
+          streamCopy = v10;
           goto LABEL_12;
         }
       }
@@ -127,11 +127,11 @@
     }
   }
 
-  if (a5)
+  if (error)
   {
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown stream %@.", v9];
-    [MEMORY[0x277CCA9B8] internalErrorWithMessage:v18 code:7];
-    *a5 = v19 = 0;
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown stream %@.", streamCopy];
+    [MEMORY[0x277CCA9B8] internalErrorWithMessage:streamCopy code:7];
+    *error = v19 = 0;
 LABEL_12:
   }
 
@@ -143,19 +143,19 @@ LABEL_12:
   return v19;
 }
 
-- (void)addMetadataTrack:(id)a3
+- (void)addMetadataTrack:(id)track
 {
-  v4 = a3;
-  v5 = [[MIOWriterDataStreamInput alloc] initWithStreamId:v4];
+  trackCopy = track;
+  v5 = [[MIOWriterDataStreamInput alloc] initWithStreamId:trackCopy];
 
   [(MIOWriter *)self addInput:v5 error:0];
 }
 
-- (BOOL)setTrackMetadata:(id)a3 forMetadataStream:(id)a4 error:(id *)a5
+- (BOOL)setTrackMetadata:(id)metadata forMetadataStream:(id)stream error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  metadataCopy = metadata;
+  streamCopy = stream;
   [(MIOWriter *)self writerInputsWithMediaType:2];
   v21 = 0u;
   v22 = 0u;
@@ -176,14 +176,14 @@ LABEL_12:
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 streamId];
-        v17 = [v16 isEqualToString:v9];
+        streamId = [v15 streamId];
+        v17 = [streamId isEqualToString:streamCopy];
 
         if (v17)
         {
-          [v15 setCustomMetadata:v8];
+          [v15 setCustomMetadata:metadataCopy];
           v19 = 1;
-          v18 = v10;
+          streamCopy = v10;
           goto LABEL_12;
         }
       }
@@ -198,11 +198,11 @@ LABEL_12:
     }
   }
 
-  if (a5)
+  if (error)
   {
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown stream %@.", v9];
-    [MEMORY[0x277CCA9B8] internalErrorWithMessage:v18 code:7];
-    *a5 = v19 = 0;
+    streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown stream %@.", streamCopy];
+    [MEMORY[0x277CCA9B8] internalErrorWithMessage:streamCopy code:7];
+    *error = v19 = 0;
 LABEL_12:
   }
 
@@ -214,15 +214,15 @@ LABEL_12:
   return v19;
 }
 
-- (void)setFifoBufferCapacity:(unint64_t)a3
+- (void)setFifoBufferCapacity:(unint64_t)capacity
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MIOWriter *)self writerInputs];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  writerInputs = [(MIOWriter *)self writerInputs];
+  v5 = [writerInputs countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -234,24 +234,24 @@ LABEL_12:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(writerInputs);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setBufferingCapacity:a3];
+        [*(*(&v9 + 1) + 8 * v8++) setBufferingCapacity:capacity];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [writerInputs countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)appendPixelBuffer:(__CVBuffer *)a3 presentationTime:(id *)a4 toStreamId:(id)a5
+- (void)appendPixelBuffer:(__CVBuffer *)buffer presentationTime:(id *)time toStreamId:(id)id
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  idCopy = id;
   [(MIOWriter *)self writerInputsWithMediaType:0];
   v23 = 0u;
   v24 = 0u;
@@ -262,7 +262,7 @@ LABEL_12:
   {
 LABEL_9:
 
-    [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown video stream '%@'", v8];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown video stream '%@'", idCopy];
     goto LABEL_13;
   }
 
@@ -278,8 +278,8 @@ LABEL_3:
     }
 
     v14 = *(*(&v23 + 1) + 8 * v13);
-    v15 = [v14 streamId];
-    v16 = [v15 isEqualToString:v8];
+    streamId = [v14 streamId];
+    v16 = [streamId isEqualToString:idCopy];
 
     if (v16)
     {
@@ -298,10 +298,10 @@ LABEL_3:
     }
   }
 
-  v20 = *&a4->var0;
-  var3 = a4->var3;
+  v20 = *&time->var0;
+  var3 = time->var3;
   v22 = 0;
-  v17 = [v14 appendPixelBuffer:a3 pts:&v20 error:&v22];
+  v17 = [v14 appendPixelBuffer:buffer pts:&v20 error:&v22];
   v18 = v22;
   if ((v17 & 1) == 0)
   {
@@ -312,11 +312,11 @@ LABEL_13:
   }
 }
 
-- (void)appendMetadata:(id)a3 withTimeStamp:(id *)a4 toStream:(id)a5
+- (void)appendMetadata:(id)metadata withTimeStamp:(id *)stamp toStream:(id)stream
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  metadataCopy = metadata;
+  streamCopy = stream;
   [(MIOWriter *)self writerInputsWithMediaType:2];
   v24 = 0u;
   v25 = 0u;
@@ -327,7 +327,7 @@ LABEL_13:
   {
 LABEL_9:
 
-    [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown metadata stream '%@'", v9];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown metadata stream '%@'", streamCopy];
     goto LABEL_13;
   }
 
@@ -343,8 +343,8 @@ LABEL_3:
     }
 
     v15 = *(*(&v24 + 1) + 8 * v14);
-    v16 = [v15 streamId];
-    v17 = [v16 isEqualToString:v9];
+    streamId = [v15 streamId];
+    v17 = [streamId isEqualToString:streamCopy];
 
     if (v17)
     {
@@ -363,10 +363,10 @@ LABEL_3:
     }
   }
 
-  v21 = *&a4->var0;
-  var3 = a4->var3;
+  v21 = *&stamp->var0;
+  var3 = stamp->var3;
   v23 = 0;
-  v18 = [v15 appendMetadata:v8 withTimeStamp:&v21 error:&v23];
+  v18 = [v15 appendMetadata:metadataCopy withTimeStamp:&v21 error:&v23];
   v19 = v23;
   if ((v18 & 1) == 0)
   {
@@ -377,10 +377,10 @@ LABEL_13:
   }
 }
 
-- (BOOL)setVideoTransform:(CGAffineTransform *)a3 forStream:(id)a4
+- (BOOL)setVideoTransform:(CGAffineTransform *)transform forStream:(id)stream
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  streamCopy = stream;
   [(MIOWriter *)self writerInputsWithMediaType:0];
   v19 = 0u;
   v20 = 0u;
@@ -401,15 +401,15 @@ LABEL_13:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 streamId];
-        v14 = [v13 isEqualToString:v6];
+        streamId = [v12 streamId];
+        v14 = [streamId isEqualToString:streamCopy];
 
         if (v14)
         {
-          v16 = *&a3->c;
-          v18[0] = *&a3->a;
+          v16 = *&transform->c;
+          v18[0] = *&transform->a;
           v18[1] = v16;
-          v18[2] = *&a3->tx;
+          v18[2] = *&transform->tx;
           [v12 setTransform:v18];
           v15 = 1;
           goto LABEL_11;
@@ -432,20 +432,20 @@ LABEL_11:
   return v15;
 }
 
-- (MIOWriter)initWithFilePath:(id)a3 error:(id *)a4
+- (MIOWriter)initWithFilePath:(id)path error:(id *)error
 {
-  v7 = a3;
-  v8 = v7;
-  if (!v7)
+  pathCopy = path;
+  v8 = pathCopy;
+  if (!pathCopy)
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = @"MIOWriter file path cannot be nil.";
 LABEL_8:
-    [v13 populateStreamError:a4 message:v14 code:5];
+    [v13 populateStreamError:error message:v14 code:5];
     goto LABEL_9;
   }
 
-  if (![v7 length])
+  if (![pathCopy length])
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = @"MIOWriter file path cannot be empty string.";
@@ -453,17 +453,17 @@ LABEL_8:
   }
 
   v34 = 0;
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8 isDirectory:&v34];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:v8 isDirectory:&v34];
   v11 = v34;
 
   if (v10 && (v11 & 1) != 0)
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"File path '%@' is an existing directory", v8];
-    [MEMORY[0x277CCA9B8] populateStreamError:a4 message:v12 code:5];
+    [MEMORY[0x277CCA9B8] populateStreamError:error message:v12 code:5];
 
 LABEL_9:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -481,7 +481,7 @@ LABEL_9:
     v20 = *(v19 + 16);
     *(v17 + 36) = v20;
     *(v17 + 26) = 1768843636;
-    objc_storeStrong(v17 + 23, a3);
+    objc_storeStrong(v17 + 23, path);
     v21 = objc_opt_new();
     v22 = v18[25];
     v18[25] = v21;
@@ -518,10 +518,10 @@ LABEL_9:
   }
 
   self = v18;
-  v15 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v15;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -547,10 +547,10 @@ LABEL_10:
   if ([(MIOWriter *)self checkStatus:1685024357]&& !self->_movieMetadataUtility)
   {
     v3 = [MIOMovieMetadataUtility alloc];
-    v4 = [(MIOWriter *)self avWriter];
-    v5 = [v4 outputURL];
+    avWriter = [(MIOWriter *)self avWriter];
+    outputURL = [avWriter outputURL];
     v12 = 0;
-    v6 = [(MIOMovieMetadataUtility *)v3 initWithURL:v5 error:&v12];
+    v6 = [(MIOMovieMetadataUtility *)v3 initWithURL:outputURL error:&v12];
     v7 = v12;
     movieMetadataUtility = self->_movieMetadataUtility;
     self->_movieMetadataUtility = v6;
@@ -572,7 +572,7 @@ LABEL_10:
   return v10;
 }
 
-- (id)writerInputsWithMediaType:(int64_t)a3
+- (id)writerInputsWithMediaType:(int64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
@@ -580,8 +580,8 @@ LABEL_10:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(MIOOrderedKeysMutableMap *)self->_inputs allValues];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(MIOOrderedKeysMutableMap *)self->_inputs allValues];
+  v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -592,17 +592,17 @@ LABEL_10:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 mediaType] == a3)
+        if ([v11 mediaType] == type)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -611,11 +611,11 @@ LABEL_10:
   return v5;
 }
 
-- (id)writerInputsWithMediaType:(int64_t)a3 streamId:(id)a4
+- (id)writerInputsWithMediaType:(int64_t)type streamId:(id)id
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [(MIOWriter *)self writerInputsWithMediaType:a3];
+  idCopy = id;
+  [(MIOWriter *)self writerInputsWithMediaType:type];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -634,8 +634,8 @@ LABEL_10:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 streamId];
-        v13 = [v12 isEqualToString:v6];
+        streamId = [v11 streamId];
+        v13 = [streamId isEqualToString:idCopy];
 
         if (v13)
         {
@@ -690,7 +690,7 @@ void __19__MIOWriter_status__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setStatus:(unsigned int)a3
+- (void)setStatus:(unsigned int)status
 {
   objc_initWeak(&location, self);
   statusQueue = self->_statusQueue;
@@ -699,7 +699,7 @@ void __19__MIOWriter_status__block_invoke(uint64_t a1)
   block[2] = __23__MIOWriter_setStatus___block_invoke;
   block[3] = &unk_279848068;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  statusCopy = status;
   dispatch_async(statusQueue, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -714,7 +714,7 @@ void __23__MIOWriter_setStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)checkStatus:(unsigned int)a3
+- (BOOL)checkStatus:(unsigned int)status
 {
   v11 = 0;
   v12 = &v11;
@@ -728,13 +728,13 @@ void __23__MIOWriter_setStatus___block_invoke(uint64_t a1)
   v7[3] = &unk_279848090;
   objc_copyWeak(&v8, &location);
   v7[4] = &v11;
-  v9 = a3;
+  statusCopy = status;
   dispatch_sync(statusQueue, v7);
-  LOBYTE(a3) = *(v12 + 24);
+  LOBYTE(status) = *(v12 + 24);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
   _Block_object_dispose(&v11, 8);
-  return a3;
+  return status;
 }
 
 void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
@@ -746,11 +746,11 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setBaseMediaTimeScale:(int)a3
+- (void)setBaseMediaTimeScale:(int)scale
 {
   if ([(MIOWriter *)self checkStatus:1768843636])
   {
-    self->_baseMediaTimeScale = a3;
+    self->_baseMediaTimeScale = scale;
   }
 
   else
@@ -760,7 +760,7 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSessionStartTime:(id *)a3
+- (void)setSessionStartTime:(id *)time
 {
   obj = self;
   objc_sync_enter(obj);
@@ -773,18 +773,18 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
 
   else
   {
-    v4 = *&a3->var0;
-    *&obj->_sessionStartTime.flags = a3->var3;
+    v4 = *&time->var0;
+    *&obj->_sessionStartTime.flags = time->var3;
     *(&obj->_sessionStarted + 4) = v4;
     objc_sync_exit(obj);
   }
 }
 
-- (void)setRealTime:(BOOL)a3
+- (void)setRealTime:(BOOL)time
 {
   if ([(MIOWriter *)self checkStatus:1768843636])
   {
-    self->_realTime = a3;
+    self->_realTime = time;
   }
 
   else
@@ -794,11 +794,11 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setInProcessRecording:(BOOL)a3
+- (void)setInProcessRecording:(BOOL)recording
 {
   if ([(MIOWriter *)self checkStatus:1768843636])
   {
-    self->_inProcessRecording = a3;
+    self->_inProcessRecording = recording;
   }
 
   else
@@ -808,11 +808,11 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setShouldOptimizeForNetworkUse:(BOOL)a3
+- (void)setShouldOptimizeForNetworkUse:(BOOL)use
 {
   if ([(MIOWriter *)self checkStatus:1768843636])
   {
-    self->_shouldOptimizeForNetworkUse = a3;
+    self->_shouldOptimizeForNetworkUse = use;
   }
 
   else
@@ -822,11 +822,11 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPreferCustomCompression:(BOOL)a3
+- (void)setPreferCustomCompression:(BOOL)compression
 {
   if ([(MIOWriter *)self checkStatus:1768843636])
   {
-    self->_preferCustomCompression = a3;
+    self->_preferCustomCompression = compression;
   }
 
   else
@@ -836,11 +836,11 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setEnableAVEHighPerformanceProfile:(BOOL)a3
+- (void)setEnableAVEHighPerformanceProfile:(BOOL)profile
 {
   if ([(MIOWriter *)self checkStatus:1768843636])
   {
-    self->_enableAVEHighPerformanceProfile = a3;
+    self->_enableAVEHighPerformanceProfile = profile;
   }
 
   else
@@ -850,11 +850,11 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDefaultFrameRate:(double)a3
+- (void)setDefaultFrameRate:(double)rate
 {
   if ([(MIOWriter *)self checkStatus:1768843636])
   {
-    self->_defaultFrameRate = a3;
+    self->_defaultFrameRate = rate;
   }
 
   else
@@ -864,12 +864,12 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCustomMOVMetadata:(id)a3
+- (void)setCustomMOVMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   if ([(MIOWriter *)self checkStatus:1768843636])
   {
-    objc_storeStrong(&self->_customMOVMetadata, a3);
+    objc_storeStrong(&self->_customMOVMetadata, metadata);
   }
 
   else
@@ -878,11 +878,11 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setBufferCacheMode:(int)a3
+- (void)setBufferCacheMode:(int)mode
 {
   if ([(MIOWriter *)self checkStatus:1768843636])
   {
-    self->_bufferCacheMode = a3;
+    self->_bufferCacheMode = mode;
   }
 
   else
@@ -892,12 +892,12 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setMovieFragmentInterval:(id *)a3
+- (void)setMovieFragmentInterval:(id *)interval
 {
   if ([(MIOWriter *)self checkStatus:1768843636])
   {
-    v5 = *&a3->var0;
-    self->_movieFragmentInterval.epoch = a3->var3;
+    v5 = *&interval->var0;
+    self->_movieFragmentInterval.epoch = interval->var3;
     *&self->_movieFragmentInterval.value = v5;
   }
 
@@ -908,11 +908,11 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPreserveSessionStartTime:(BOOL)a3
+- (void)setPreserveSessionStartTime:(BOOL)time
 {
   if ([(MIOWriter *)self checkStatus:1768843636])
   {
-    self->_preserveSessionStartTime = a3;
+    self->_preserveSessionStartTime = time;
   }
 
   else
@@ -932,16 +932,16 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
   return [(MIOWriter *)self checkStatus:1718186856];
 }
 
-- (void)setFailHandler:(id)a3
+- (void)setFailHandler:(id)handler
 {
-  self->_failHandler = MEMORY[0x259C68980](a3, a2);
+  self->_failHandler = MEMORY[0x259C68980](handler, a2);
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setWarningHandler:(id)a3
+- (void)setWarningHandler:(id)handler
 {
-  self->_warningHandler = MEMORY[0x259C68980](a3, a2);
+  self->_warningHandler = MEMORY[0x259C68980](handler, a2);
 
   MEMORY[0x2821F96F8]();
 }
@@ -960,20 +960,20 @@ void __25__MIOWriter_checkStatus___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)reportError:(id)a3
+- (void)reportError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(MIOWriter *)self fail];
   objc_initWeak(&location, self);
-  v5 = [(MIOWriter *)self defaultNotificationQueue];
+  defaultNotificationQueue = [(MIOWriter *)self defaultNotificationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __25__MIOWriter_reportError___block_invoke;
   block[3] = &unk_2798480B8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(defaultNotificationQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -991,28 +991,28 @@ void __25__MIOWriter_reportError___block_invoke(uint64_t a1)
   }
 }
 
-- (void)reportWarning:(id)a3
+- (void)reportWarning:(id)warning
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  warningCopy = warning;
   v5 = +[MIOLog defaultLog];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = warningCopy;
     _os_log_impl(&dword_257883000, v5, OS_LOG_TYPE_ERROR, "WARNING: %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v6 = [(MIOWriter *)self defaultNotificationQueue];
+  defaultNotificationQueue = [(MIOWriter *)self defaultNotificationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __27__MIOWriter_reportWarning___block_invoke;
   v8[3] = &unk_2798480B8;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = warningCopy;
+  v7 = warningCopy;
+  dispatch_async(defaultNotificationQueue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -1030,34 +1030,34 @@ void __27__MIOWriter_reportWarning___block_invoke(uint64_t a1)
   }
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeWithSeconds:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeWithSeconds:(SEL)seconds
 {
-  v6 = [(MIOWriter *)self baseMediaTimeScale];
+  baseMediaTimeScale = [(MIOWriter *)self baseMediaTimeScale];
 
-  return CMTimeMakeWithSeconds(retstr, a4, v6);
+  return CMTimeMakeWithSeconds(retstr, a4, baseMediaTimeScale);
 }
 
-- (BOOL)addInput:(id)a3 error:(id *)a4
+- (BOOL)addInput:(id)input error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  inputCopy = input;
   if (![(MIOWriter *)self checkStatus:1768843636])
   {
-    [MEMORY[0x277CCA9B8] populateStreamError:a4 message:@"MIOWriter status not MIOWriterInit code:{cannot add input.", 13}];
+    [MEMORY[0x277CCA9B8] populateStreamError:error message:@"MIOWriter status not MIOWriterInit code:{cannot add input.", 13}];
     goto LABEL_26;
   }
 
   inputs = self->_inputs;
-  v8 = [v6 uuid];
-  v9 = [(MIOOrderedKeysMutableMap *)inputs objectForKey:v8];
+  uuid = [inputCopy uuid];
+  v9 = [(MIOOrderedKeysMutableMap *)inputs objectForKey:uuid];
 
   if (v9)
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [v6 streamId];
-    v12 = [v10 stringWithFormat:@"Stream '%@' with same media type already exists.", v11];
+    streamId = [inputCopy streamId];
+    v12 = [v10 stringWithFormat:@"Stream '%@' with same media type already exists.", streamId];
 
-    [MEMORY[0x277CCA9B8] populateStreamError:a4 message:v12 code:13];
+    [MEMORY[0x277CCA9B8] populateStreamError:error message:v12 code:13];
 LABEL_26:
     v25 = 0;
     goto LABEL_27;
@@ -1067,8 +1067,8 @@ LABEL_26:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v13 = [v6 underlyingInputs];
-  v14 = [v13 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  underlyingInputs = [inputCopy underlyingInputs];
+  v14 = [underlyingInputs countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1079,10 +1079,10 @@ LABEL_26:
       {
         if (*v36 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(underlyingInputs);
         }
 
-        if (![(MIOWriter *)self addInput:*(*(&v35 + 1) + 8 * i) error:a4])
+        if (![(MIOWriter *)self addInput:*(*(&v35 + 1) + 8 * i) error:error])
         {
 LABEL_25:
 
@@ -1090,7 +1090,7 @@ LABEL_25:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v15 = [underlyingInputs countByEnumeratingWithState:&v35 objects:v40 count:16];
       if (v15)
       {
         continue;
@@ -1107,8 +1107,8 @@ LABEL_25:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v13 = [(MIOWriter *)self writerInputs];
-    v18 = [v13 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    underlyingInputs = [(MIOWriter *)self writerInputs];
+    v18 = [underlyingInputs countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v18)
     {
       v19 = v18;
@@ -1119,7 +1119,7 @@ LABEL_25:
         {
           if (*v32 != v20)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(underlyingInputs);
           }
 
           v22 = *(*(&v31 + 1) + 8 * j);
@@ -1127,16 +1127,16 @@ LABEL_25:
           if (objc_opt_isKindOfClass())
           {
             v26 = MEMORY[0x277CCACA8];
-            v27 = [v22 streamId];
-            v28 = [v6 streamId];
-            v29 = [v26 stringWithFormat:@"Input of type 'MIOWriterTimeRangeMetadataStreamInput' ('%@') was already added. Cannot add input '%@'.", v27, v28];
+            streamId2 = [v22 streamId];
+            streamId3 = [inputCopy streamId];
+            v29 = [v26 stringWithFormat:@"Input of type 'MIOWriterTimeRangeMetadataStreamInput' ('%@') was already added. Cannot add input '%@'.", streamId2, streamId3];
 
-            [MEMORY[0x277CCA9B8] populateStreamError:a4 message:v29 code:13];
+            [MEMORY[0x277CCA9B8] populateStreamError:error message:v29 code:13];
             goto LABEL_25;
           }
         }
 
-        v19 = [v13 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v19 = [underlyingInputs countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v19)
         {
           continue;
@@ -1148,8 +1148,8 @@ LABEL_25:
   }
 
   v23 = self->_inputs;
-  v24 = [v6 uuid];
-  [(MIOOrderedKeysMutableMap *)v23 setObject:v6 forKey:v24];
+  uuid2 = [inputCopy uuid];
+  [(MIOOrderedKeysMutableMap *)v23 setObject:inputCopy forKey:uuid2];
 
   v25 = 1;
 LABEL_27:
@@ -1157,21 +1157,21 @@ LABEL_27:
   return v25;
 }
 
-- (void)prepareWriterWithCompletionHandler:(id)a3
+- (void)prepareWriterWithCompletionHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if ([(MIOWriter *)self checkStatus:1768843636])
   {
-    v23 = v4;
+    v23 = handlerCopy;
     [(MIOWriter *)self setStatus:1886545264];
     v24 = objc_opt_new();
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v5 = [(MIOWriter *)self writerInputs];
-    v6 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    writerInputs = [(MIOWriter *)self writerInputs];
+    v6 = [writerInputs countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1183,7 +1183,7 @@ LABEL_27:
         {
           if (*v30 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(writerInputs);
           }
 
           v11 = *(*(&v29 + 1) + 8 * i);
@@ -1192,8 +1192,8 @@ LABEL_27:
             if ([v11 useOwnWritingThread])
             {
               v12 = MEMORY[0x277CCACA8];
-              v13 = [v11 streamId];
-              v14 = [v12 stringWithFormat:@"mio.writing.%@.%ld", v13, objc_msgSend(v11, "mediaType")];
+              streamId = [v11 streamId];
+              v14 = [v12 stringWithFormat:@"mio.writing.%@.%ld", streamId, objc_msgSend(v11, "mediaType")];
 
               [v11 writingThreadPriority];
               v16 = -[MIOWriter newWritingThreadWithName:threadPriority:qualityOfService:](self, "newWritingThreadWithName:threadPriority:qualityOfService:", v14, [v11 writingThreadQualityOfService], v15);
@@ -1218,7 +1218,7 @@ LABEL_27:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v7 = [writerInputs countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v7);
@@ -1241,7 +1241,7 @@ LABEL_27:
     block[2] = __48__MIOWriter_prepareWriterWithCompletionHandler___block_invoke;
     block[3] = &unk_2798480E0;
     objc_copyWeak(&v27, &location);
-    v4 = v23;
+    handlerCopy = v23;
     block[4] = self;
     v26 = v23;
     dispatch_async(v22, block);
@@ -1254,7 +1254,7 @@ LABEL_27:
   {
     v19 = [MEMORY[0x277CCA9B8] writerErrorWithMessage:@"Writer not in MIOWriterInit state." code:17];
     [(MIOWriter *)self setStatus:1717660012];
-    (*(v4 + 2))(v4, 0, v19);
+    (*(handlerCopy + 2))(handlerCopy, 0, v19);
   }
 }
 
@@ -1521,31 +1521,31 @@ LABEL_48:
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)finishWithCompletionHandler:(id)a3
+- (void)finishWithCompletionHandler:(id)handler
 {
   finishStepDefaultTimeout = self->_finishStepDefaultTimeout;
   v4 = *MEMORY[0x277CC0890];
   v5 = *(MEMORY[0x277CC0890] + 16);
-  [(MIOWriter *)self finishWithTimeout:&v4 endTime:a3 completionHandler:finishStepDefaultTimeout];
+  [(MIOWriter *)self finishWithTimeout:&v4 endTime:handler completionHandler:finishStepDefaultTimeout];
 }
 
-- (void)finishWithEndTime:(id *)a3 completionHandler:(id)a4
+- (void)finishWithEndTime:(id *)time completionHandler:(id)handler
 {
   finishStepDefaultTimeout = self->_finishStepDefaultTimeout;
-  v5 = *a3;
-  [(MIOWriter *)self finishWithTimeout:&v5 endTime:a4 completionHandler:finishStepDefaultTimeout];
+  v5 = *time;
+  [(MIOWriter *)self finishWithTimeout:&v5 endTime:handler completionHandler:finishStepDefaultTimeout];
 }
 
-- (void)finishWithTimeout:(double)a3 completionHandler:(id)a4
+- (void)finishWithTimeout:(double)timeout completionHandler:(id)handler
 {
   v4 = *MEMORY[0x277CC0890];
   v5 = *(MEMORY[0x277CC0890] + 16);
-  [(MIOWriter *)self finishWithTimeout:&v4 endTime:a4 completionHandler:a3];
+  [(MIOWriter *)self finishWithTimeout:&v4 endTime:handler completionHandler:timeout];
 }
 
-- (void)finishWithTimeout:(double)a3 endTime:(id *)a4 completionHandler:(id)a5
+- (void)finishWithTimeout:(double)timeout endTime:(id *)time completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   if ([(MIOWriter *)self checkStatus:1919247481])
   {
     [(MIOWriter *)self setStatus:1718186856];
@@ -1556,10 +1556,10 @@ LABEL_48:
     v12[2] = __57__MIOWriter_finishWithTimeout_endTime_completionHandler___block_invoke;
     v12[3] = &unk_279848130;
     objc_copyWeak(v14, &location);
-    v10 = v8;
-    v14[1] = *&a3;
-    v15 = *&a4->var0;
-    var3 = a4->var3;
+    v10 = handlerCopy;
+    v14[1] = *&timeout;
+    v15 = *&time->var0;
+    var3 = time->var3;
     v12[4] = self;
     v13 = v10;
     dispatch_async(v9, v12);
@@ -1571,7 +1571,7 @@ LABEL_48:
   else
   {
     v11 = [MEMORY[0x277CCA9B8] writerErrorWithMessage:@"Writer not in MIOWriterReady state." code:17];
-    (*(v8 + 2))(v8, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
@@ -1831,9 +1831,9 @@ void __57__MIOWriter_finishWithTimeout_endTime_completionHandler___block_invoke_
   }
 }
 
-- (void)cancelRecordingWithCompletionHandler:(id)a3
+- (void)cancelRecordingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(MIOWriter *)self checkStatus:1919247481])
   {
     [(MIOWriter *)self setStatus:1718186856];
@@ -1845,7 +1845,7 @@ void __57__MIOWriter_finishWithTimeout_endTime_completionHandler___block_invoke_
     v7[2] = __50__MIOWriter_cancelRecordingWithCompletionHandler___block_invoke;
     v7[3] = &unk_279848158;
     objc_copyWeak(v9, &location);
-    v8 = v4;
+    v8 = handlerCopy;
     v9[1] = *&finishStepDefaultTimeout;
     dispatch_async(v6, v7);
 
@@ -1856,7 +1856,7 @@ void __57__MIOWriter_finishWithTimeout_endTime_completionHandler___block_invoke_
   else
   {
     [(MIOWriter *)self setStatus:1668178796];
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -2000,41 +2000,41 @@ void __50__MIOWriter_cancelRecordingWithCompletionHandler___block_invoke(uint64_
   }
 }
 
-- (void)proposeSessionStartTime:(id *)a3
+- (void)proposeSessionStartTime:(id *)time
 {
   if ((self->_sessionStartTime.timescale & 1) == 0)
   {
-    v3 = *&a3->var0;
-    *&self->_sessionStartTime.flags = a3->var3;
+    v3 = *&time->var0;
+    *&self->_sessionStartTime.flags = time->var3;
     *(&self->_sessionStarted + 4) = v3;
   }
 }
 
 - (BOOL)startSession
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_sessionStarted)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_sessionStarted)
   {
-    [(MIOWriter *)v2 sessionStartTime];
+    [(MIOWriter *)selfCopy sessionStartTime];
     if ((v7[36] & 0x1D) != 1)
     {
       v5 = [MEMORY[0x277CCA9B8] writerErrorWithMessage:@"Writer invalid sessionStartTime code:{startSession failed.", 16}];
-      [(MIOWriter *)v2 reportError:v5];
+      [(MIOWriter *)selfCopy reportError:v5];
 
       v4 = 0;
       goto LABEL_6;
     }
 
-    v2->_sessionStarted = 1;
-    avWriter = v2->_avWriter;
-    [(MIOWriter *)v2 sessionStartTime];
+    selfCopy->_sessionStarted = 1;
+    avWriter = selfCopy->_avWriter;
+    [(MIOWriter *)selfCopy sessionStartTime];
     [(AVAssetWriter *)avWriter startSessionAtSourceTime:v7];
   }
 
   v4 = 1;
 LABEL_6:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -2047,8 +2047,8 @@ LABEL_6:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(MIOOrderedKeysMutableMap *)self->_inputs allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(MIOOrderedKeysMutableMap *)self->_inputs allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2060,14 +2060,14 @@ LABEL_6:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) invalidate];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -2108,19 +2108,19 @@ LABEL_6:
   }
 }
 
-- (id)newWritingThreadWithName:(id)a3 threadPriority:(double)a4 qualityOfService:(int64_t)a5
+- (id)newWritingThreadWithName:(id)name threadPriority:(double)priority qualityOfService:(int64_t)service
 {
-  v8 = a3;
+  nameCopy = name;
   objc_initWeak(&location, self);
   v9 = [MIOThread alloc];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__MIOWriter_newWritingThreadWithName_threadPriority_qualityOfService___block_invoke;
   v12[3] = &unk_279848180;
-  v13[1] = *&a4;
+  v13[1] = *&priority;
   objc_copyWeak(v13, &location);
-  v10 = [(MIOThread *)v9 initWithName:v8 block:v12];
-  [(MIOThread *)v10 setQualityOfService:a5];
+  v10 = [(MIOThread *)v9 initWithName:nameCopy block:v12];
+  [(MIOThread *)v10 setQualityOfService:service];
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 
@@ -2358,8 +2358,8 @@ LABEL_55:
 - (BOOL)startWriting
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(MIOWriter *)self canWrite];
-  if (v3)
+  canWrite = [(MIOWriter *)self canWrite];
+  if (canWrite)
   {
     v12 = 0u;
     v13 = 0u;
@@ -2400,7 +2400,7 @@ LABEL_55:
     }
   }
 
-  return v3;
+  return canWrite;
 }
 
 - (void)simulateFailure

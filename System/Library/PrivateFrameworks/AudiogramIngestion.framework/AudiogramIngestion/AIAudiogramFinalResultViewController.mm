@@ -1,46 +1,46 @@
 @interface AIAudiogramFinalResultViewController
 - (AIAudiogramConfirmResultsViewControllerDelegate)audiogramConfirmationDelegate;
-- (AIAudiogramFinalResultViewController)initWithAudiogram:(id)a3 selectedFrequencies:(id)a4 audiogramConfirmationDelegate:(id)a5 audiogramManualIngestionDelegate:(id)a6;
+- (AIAudiogramFinalResultViewController)initWithAudiogram:(id)audiogram selectedFrequencies:(id)frequencies audiogramConfirmationDelegate:(id)delegate audiogramManualIngestionDelegate:(id)ingestionDelegate;
 - (AIAudiogramManualIngestionDelegate)audiogramManualIngestionDelegate;
 - (BOOL)_isAudiogramValid;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_cancelTapped:(id)a3;
-- (void)_editFrequencyTapped:(id)a3;
-- (void)_saveToHealth:(id)a3;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_cancelTapped:(id)tapped;
+- (void)_editFrequencyTapped:(id)tapped;
+- (void)_saveToHealth:(id)health;
 - (void)_updateMaxHearingLevelWidth;
 - (void)_updateTableViewHeight;
-- (void)contentCategoryDidChange:(id)a3;
-- (void)dateCellDidPickDate:(id)a3;
+- (void)contentCategoryDidChange:(id)change;
+- (void)dateCellDidPickDate:(id)date;
 - (void)enableDoneButton;
-- (void)reloadAudiogram:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateFrequencies:(id)a3;
+- (void)reloadAudiogram:(id)audiogram;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateFrequencies:(id)frequencies;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AIAudiogramFinalResultViewController
 
-- (AIAudiogramFinalResultViewController)initWithAudiogram:(id)a3 selectedFrequencies:(id)a4 audiogramConfirmationDelegate:(id)a5 audiogramManualIngestionDelegate:(id)a6
+- (AIAudiogramFinalResultViewController)initWithAudiogram:(id)audiogram selectedFrequencies:(id)frequencies audiogramConfirmationDelegate:(id)delegate audiogramManualIngestionDelegate:(id)ingestionDelegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  audiogramCopy = audiogram;
+  frequenciesCopy = frequencies;
+  delegateCopy = delegate;
+  ingestionDelegateCopy = ingestionDelegate;
   v37.receiver = self;
   v37.super_class = AIAudiogramFinalResultViewController;
   v14 = [(AIAudiogramFinalResultViewController *)&v37 initWithTitle:&stru_28535F0B0 detailText:0 symbolName:0 contentLayout:3];
   v15 = v14;
   if (v14)
   {
-    [(AIAudiogramFinalResultViewController *)v14 setAudiogramConfirmationDelegate:v12];
-    [(AIAudiogramFinalResultViewController *)v15 setAudiogramManualIngestionDelegate:v13];
-    [(AIAudiogramFinalResultViewController *)v15 setFrequencies:v11];
-    [(AIAudiogramFinalResultViewController *)v15 setAudiogram:v10];
+    [(AIAudiogramFinalResultViewController *)v14 setAudiogramConfirmationDelegate:delegateCopy];
+    [(AIAudiogramFinalResultViewController *)v15 setAudiogramManualIngestionDelegate:ingestionDelegateCopy];
+    [(AIAudiogramFinalResultViewController *)v15 setFrequencies:frequenciesCopy];
+    [(AIAudiogramFinalResultViewController *)v15 setAudiogram:audiogramCopy];
     v43 = 0;
     v44 = &v43;
     v45 = 0x2050000000;
@@ -81,70 +81,70 @@
     v20 = v19;
     _Block_object_dispose(&v43, 8);
     v21 = [v19 alloc];
-    v22 = [(AIAudiogramFinalResultViewController *)v15 healthStore];
-    v23 = [(AIAudiogramFinalResultViewController *)v15 audiogram];
-    v24 = [v21 initWithHealthStore:v22 staticAudiogram:v23 selectedFrequency:0];
+    healthStore = [(AIAudiogramFinalResultViewController *)v15 healthStore];
+    audiogram = [(AIAudiogramFinalResultViewController *)v15 audiogram];
+    v24 = [v21 initWithHealthStore:healthStore staticAudiogram:audiogram selectedFrequency:0];
     [(AIAudiogramFinalResultViewController *)v15 setChartViewController:v24];
 
-    v25 = [(AIAudiogramFinalResultViewController *)v15 chartViewController];
-    v26 = [v25 view];
-    v27 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v26 setBackgroundColor:v27];
+    chartViewController = [(AIAudiogramFinalResultViewController *)v15 chartViewController];
+    view = [chartViewController view];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [view setBackgroundColor:systemBackgroundColor];
 
-    v28 = [MEMORY[0x277D37618] boldButton];
-    [(AIAudiogramFinalResultViewController *)v15 setDoneButton:v28];
+    boldButton = [MEMORY[0x277D37618] boldButton];
+    [(AIAudiogramFinalResultViewController *)v15 setDoneButton:boldButton];
 
-    v29 = [(AIAudiogramFinalResultViewController *)v15 doneButton];
+    doneButton = [(AIAudiogramFinalResultViewController *)v15 doneButton];
     v30 = aiLocString(@"AudiogramIngestionButtonDone");
-    [v29 setTitle:v30 forState:0];
+    [doneButton setTitle:v30 forState:0];
 
-    v31 = [(AIAudiogramFinalResultViewController *)v15 doneButton];
-    [v31 addTarget:v15 action:sel__saveToHealth_ forControlEvents:64];
+    doneButton2 = [(AIAudiogramFinalResultViewController *)v15 doneButton];
+    [doneButton2 addTarget:v15 action:sel__saveToHealth_ forControlEvents:64];
 
-    v32 = [(AIAudiogramFinalResultViewController *)v15 buttonTray];
-    v33 = [(AIAudiogramFinalResultViewController *)v15 doneButton];
-    [v32 addButton:v33];
+    buttonTray = [(AIAudiogramFinalResultViewController *)v15 buttonTray];
+    doneButton3 = [(AIAudiogramFinalResultViewController *)v15 doneButton];
+    [buttonTray addButton:doneButton3];
 
     [(AIAudiogramFinalResultViewController *)v15 enableDoneButton];
     v34 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v15 action:sel__cancelTapped_];
-    v35 = [(OBBaseWelcomeController *)v15 navigationItem];
-    [v35 setRightBarButtonItem:v34];
+    navigationItem = [(OBBaseWelcomeController *)v15 navigationItem];
+    [navigationItem setRightBarButtonItem:v34];
   }
 
   return v15;
 }
 
-- (void)_cancelTapped:(id)a3
+- (void)_cancelTapped:(id)tapped
 {
-  v3 = [(AIAudiogramFinalResultViewController *)self audiogramManualIngestionDelegate];
-  [v3 cancelButtonTapped];
+  audiogramManualIngestionDelegate = [(AIAudiogramFinalResultViewController *)self audiogramManualIngestionDelegate];
+  [audiogramManualIngestionDelegate cancelButtonTapped];
 }
 
-- (void)_editFrequencyTapped:(id)a3
+- (void)_editFrequencyTapped:(id)tapped
 {
   v4 = [AIAudiogramFrequencySelectionViewController alloc];
   v5 = aiLocString(@"AudiogramFrequencyAddRemoveFrequenciesTitle");
   v6 = aiLocString(@"AudiogramFrequencyAddRemoveFrequenciesSubtitle");
-  v7 = [(AIAudiogramFinalResultViewController *)self frequencies];
-  v8 = [(AIAudiogramFinalResultViewController *)self audiogramManualIngestionDelegate];
-  v10 = [(AIAudiogramFrequencySelectionViewController *)v4 initWithTitle:v5 detailText:v6 selectedFrequencies:v7 delegate:v8 isModal:1];
+  frequencies = [(AIAudiogramFinalResultViewController *)self frequencies];
+  audiogramManualIngestionDelegate = [(AIAudiogramFinalResultViewController *)self audiogramManualIngestionDelegate];
+  v10 = [(AIAudiogramFrequencySelectionViewController *)v4 initWithTitle:v5 detailText:v6 selectedFrequencies:frequencies delegate:audiogramManualIngestionDelegate isModal:1];
 
   v9 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v10];
   [(AIAudiogramFinalResultViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)_saveToHealth:(id)a3
+- (void)_saveToHealth:(id)health
 {
   if ([(AIAudiogramFinalResultViewController *)self _isAudiogramValid])
   {
-    v4 = [(AIAudiogramFinalResultViewController *)self healthStore];
-    v5 = [(AIAudiogramFinalResultViewController *)self audiogram];
+    healthStore = [(AIAudiogramFinalResultViewController *)self healthStore];
+    audiogram = [(AIAudiogramFinalResultViewController *)self audiogram];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __54__AIAudiogramFinalResultViewController__saveToHealth___block_invoke;
     v6[3] = &unk_278CEC370;
     v6[4] = self;
-    [v4 saveObject:v5 withCompletion:v6];
+    [healthStore saveObject:audiogram withCompletion:v6];
   }
 }
 
@@ -219,18 +219,18 @@ void __54__AIAudiogramFinalResultViewController__saveToHealth___block_invoke_331
 
 - (void)enableDoneButton
 {
-  v3 = [(AIAudiogramFinalResultViewController *)self doneButton];
-  [v3 setEnabled:{-[AIAudiogramFinalResultViewController _isAudiogramValid](self, "_isAudiogramValid")}];
+  doneButton = [(AIAudiogramFinalResultViewController *)self doneButton];
+  [doneButton setEnabled:{-[AIAudiogramFinalResultViewController _isAudiogramValid](self, "_isAudiogramValid")}];
 }
 
 - (BOOL)_isAudiogramValid
 {
-  v3 = [(AIAudiogramFinalResultViewController *)self audiogram];
-  if (v3)
+  audiogram = [(AIAudiogramFinalResultViewController *)self audiogram];
+  if (audiogram)
   {
-    v4 = [(AIAudiogramFinalResultViewController *)self audiogram];
-    v5 = [v4 sensitivityPoints];
-    v6 = [v5 count] != 0;
+    audiogram2 = [(AIAudiogramFinalResultViewController *)self audiogram];
+    sensitivityPoints = [audiogram2 sensitivityPoints];
+    v6 = [sensitivityPoints count] != 0;
   }
 
   else
@@ -277,189 +277,189 @@ void __54__AIAudiogramFinalResultViewController__saveToHealth___block_invoke_331
 
   [v11 setAxis:1];
   [v11 setSpacing:4.0];
-  v12 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v11 setBackgroundColor:v12];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [v11 setBackgroundColor:systemBackgroundColor];
 
   [v11 setLayoutMarginsRelativeArrangement:1];
   [v11 setLayoutMargins:{4.0, 16.0, 4.0, 16.0}];
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [(AIAudiogramFinalResultViewController *)self contentView];
+  contentView = [(AIAudiogramFinalResultViewController *)self contentView];
   v14 = v11;
-  [v13 addSubview:v11];
+  [contentView addSubview:v11];
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 addObserver:self selector:sel_contentCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contentCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
 
-  v16 = [(AIAudiogramFinalResultViewController *)self chartViewController];
-  v17 = [v16 view];
-  [v17 setUserInteractionEnabled:0];
+  chartViewController = [(AIAudiogramFinalResultViewController *)self chartViewController];
+  view = [chartViewController view];
+  [view setUserInteractionEnabled:0];
 
-  v18 = [(AIAudiogramFinalResultViewController *)self chartViewController];
-  v19 = [v18 view];
-  [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+  chartViewController2 = [(AIAudiogramFinalResultViewController *)self chartViewController];
+  view2 = [chartViewController2 view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v20 = [(AIAudiogramFinalResultViewController *)self contentView];
-  v21 = [(AIAudiogramFinalResultViewController *)self chartViewController];
-  v22 = [v21 view];
-  [v20 addSubview:v22];
+  contentView2 = [(AIAudiogramFinalResultViewController *)self contentView];
+  chartViewController3 = [(AIAudiogramFinalResultViewController *)self chartViewController];
+  view3 = [chartViewController3 view];
+  [contentView2 addSubview:view3];
 
-  v23 = [(AIAudiogramFinalResultViewController *)self chartViewController];
-  [(AIAudiogramFinalResultViewController *)self addChildViewController:v23];
+  chartViewController4 = [(AIAudiogramFinalResultViewController *)self chartViewController];
+  [(AIAudiogramFinalResultViewController *)self addChildViewController:chartViewController4];
 
-  v24 = [(AIAudiogramFinalResultViewController *)self chartViewController];
-  [v24 didMoveToParentViewController:self];
+  chartViewController5 = [(AIAudiogramFinalResultViewController *)self chartViewController];
+  [chartViewController5 didMoveToParentViewController:self];
 
-  v25 = [(AIAudiogramFinalResultViewController *)self chartViewController];
-  v26 = [v25 view];
-  [v26 _setSafeAreaInsetsFrozen:1];
+  chartViewController6 = [(AIAudiogramFinalResultViewController *)self chartViewController];
+  view4 = [chartViewController6 view];
+  [view4 _setSafeAreaInsetsFrozen:1];
 
   v27 = objc_alloc(MEMORY[0x277D75B40]);
   v28 = [v27 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(AIAudiogramFinalResultViewController *)self setTableView:v28];
 
-  v29 = [(AIAudiogramFinalResultViewController *)self tableView];
-  [v29 setDataSource:self];
+  tableView = [(AIAudiogramFinalResultViewController *)self tableView];
+  [tableView setDataSource:self];
 
-  v30 = [(AIAudiogramFinalResultViewController *)self tableView];
-  [v30 setDelegate:self];
+  tableView2 = [(AIAudiogramFinalResultViewController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v31 = [(AIAudiogramFinalResultViewController *)self tableView];
-  [v31 setScrollEnabled:0];
+  tableView3 = [(AIAudiogramFinalResultViewController *)self tableView];
+  [tableView3 setScrollEnabled:0];
 
-  v32 = [(AIAudiogramFinalResultViewController *)self tableView];
-  [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView4 = [(AIAudiogramFinalResultViewController *)self tableView];
+  [tableView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v33 = [(AIAudiogramFinalResultViewController *)self tableView];
-  v34 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  [v33 setBackgroundColor:v34];
+  tableView5 = [(AIAudiogramFinalResultViewController *)self tableView];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  [tableView5 setBackgroundColor:systemGroupedBackgroundColor];
 
-  v35 = [(AIAudiogramFinalResultViewController *)self tableView];
-  [v35 setSectionHeaderTopPadding:8.0];
+  tableView6 = [(AIAudiogramFinalResultViewController *)self tableView];
+  [tableView6 setSectionHeaderTopPadding:8.0];
 
-  v36 = [(AIAudiogramFinalResultViewController *)self contentView];
-  v37 = [(AIAudiogramFinalResultViewController *)self tableView];
-  [v36 addSubview:v37];
+  contentView3 = [(AIAudiogramFinalResultViewController *)self contentView];
+  tableView7 = [(AIAudiogramFinalResultViewController *)self tableView];
+  [contentView3 addSubview:tableView7];
 
-  v38 = [(AIAudiogramFinalResultViewController *)self view];
-  v39 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  [v38 setBackgroundColor:v39];
+  view5 = [(AIAudiogramFinalResultViewController *)self view];
+  systemGroupedBackgroundColor2 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  [view5 setBackgroundColor:systemGroupedBackgroundColor2];
 
   v79 = MEMORY[0x277CCAAD0];
-  v102 = [v14 topAnchor];
-  v103 = [(AIAudiogramFinalResultViewController *)self contentView];
-  v101 = [v103 topAnchor];
-  v100 = [v102 constraintEqualToAnchor:v101 constant:-50.0];
+  topAnchor = [v14 topAnchor];
+  contentView4 = [(AIAudiogramFinalResultViewController *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v100 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-50.0];
   v108[0] = v100;
-  v98 = [v14 leadingAnchor];
-  v99 = [(AIAudiogramFinalResultViewController *)self view];
-  v97 = [v99 leadingAnchor];
-  v96 = [v98 constraintEqualToAnchor:v97];
+  leadingAnchor = [v14 leadingAnchor];
+  view6 = [(AIAudiogramFinalResultViewController *)self view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v96 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v108[1] = v96;
   v104 = v14;
-  v94 = [v14 trailingAnchor];
-  v95 = [(AIAudiogramFinalResultViewController *)self view];
-  v93 = [v95 trailingAnchor];
-  v92 = [v94 constraintEqualToAnchor:v93];
+  trailingAnchor = [v14 trailingAnchor];
+  view7 = [(AIAudiogramFinalResultViewController *)self view];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v92 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v108[2] = v92;
-  v91 = [(AIAudiogramFinalResultViewController *)self chartViewController];
-  v90 = [v91 view];
-  v89 = [v90 topAnchor];
-  v88 = [v14 bottomAnchor];
-  v87 = [v89 constraintEqualToAnchor:v88];
+  chartViewController7 = [(AIAudiogramFinalResultViewController *)self chartViewController];
+  view8 = [chartViewController7 view];
+  topAnchor3 = [view8 topAnchor];
+  bottomAnchor = [v14 bottomAnchor];
+  v87 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v108[3] = v87;
-  v86 = [(AIAudiogramFinalResultViewController *)self chartViewController];
-  v85 = [v86 view];
-  v83 = [v85 leadingAnchor];
-  v84 = [(AIAudiogramFinalResultViewController *)self view];
-  v82 = [v84 leadingAnchor];
-  v81 = [v83 constraintEqualToAnchor:v82];
+  chartViewController8 = [(AIAudiogramFinalResultViewController *)self chartViewController];
+  view9 = [chartViewController8 view];
+  leadingAnchor3 = [view9 leadingAnchor];
+  view10 = [(AIAudiogramFinalResultViewController *)self view];
+  leadingAnchor4 = [view10 leadingAnchor];
+  v81 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v108[4] = v81;
-  v80 = [(AIAudiogramFinalResultViewController *)self chartViewController];
-  v78 = [v80 view];
-  v76 = [v78 trailingAnchor];
-  v77 = [(AIAudiogramFinalResultViewController *)self view];
-  v75 = [v77 trailingAnchor];
-  v74 = [v76 constraintEqualToAnchor:v75];
+  chartViewController9 = [(AIAudiogramFinalResultViewController *)self chartViewController];
+  view11 = [chartViewController9 view];
+  trailingAnchor3 = [view11 trailingAnchor];
+  view12 = [(AIAudiogramFinalResultViewController *)self view];
+  trailingAnchor4 = [view12 trailingAnchor];
+  v74 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v108[5] = v74;
-  v73 = [(AIAudiogramFinalResultViewController *)self chartViewController];
-  v72 = [v73 view];
-  v70 = [v72 heightAnchor];
-  v71 = [(AIAudiogramFinalResultViewController *)self view];
-  v69 = [v71 heightAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69 multiplier:0.4];
+  chartViewController10 = [(AIAudiogramFinalResultViewController *)self chartViewController];
+  view13 = [chartViewController10 view];
+  heightAnchor = [view13 heightAnchor];
+  view14 = [(AIAudiogramFinalResultViewController *)self view];
+  heightAnchor2 = [view14 heightAnchor];
+  v68 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.4];
   v108[6] = v68;
-  v67 = [(AIAudiogramFinalResultViewController *)self tableView];
-  v65 = [v67 topAnchor];
-  v66 = [(AIAudiogramFinalResultViewController *)self chartViewController];
-  v64 = [v66 view];
-  v63 = [v64 bottomAnchor];
-  v62 = [v65 constraintEqualToAnchor:v63];
+  tableView8 = [(AIAudiogramFinalResultViewController *)self tableView];
+  topAnchor4 = [tableView8 topAnchor];
+  chartViewController11 = [(AIAudiogramFinalResultViewController *)self chartViewController];
+  view15 = [chartViewController11 view];
+  bottomAnchor2 = [view15 bottomAnchor];
+  v62 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2];
   v108[7] = v62;
-  v61 = [(AIAudiogramFinalResultViewController *)self tableView];
-  v59 = [v61 leadingAnchor];
-  v60 = [(AIAudiogramFinalResultViewController *)self view];
-  v58 = [v60 leadingAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  tableView9 = [(AIAudiogramFinalResultViewController *)self tableView];
+  leadingAnchor5 = [tableView9 leadingAnchor];
+  view16 = [(AIAudiogramFinalResultViewController *)self view];
+  leadingAnchor6 = [view16 leadingAnchor];
+  v57 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v108[8] = v57;
-  v56 = [(AIAudiogramFinalResultViewController *)self tableView];
-  v55 = [v56 trailingAnchor];
-  v40 = [(AIAudiogramFinalResultViewController *)self view];
-  v41 = [v40 trailingAnchor];
-  v42 = [v55 constraintEqualToAnchor:v41];
+  tableView10 = [(AIAudiogramFinalResultViewController *)self tableView];
+  trailingAnchor5 = [tableView10 trailingAnchor];
+  view17 = [(AIAudiogramFinalResultViewController *)self view];
+  trailingAnchor6 = [view17 trailingAnchor];
+  v42 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v108[9] = v42;
-  v43 = [(AIAudiogramFinalResultViewController *)self tableView];
-  v44 = [v43 bottomAnchor];
-  v45 = [(AIAudiogramFinalResultViewController *)self contentView];
-  v46 = [v45 bottomAnchor];
-  v47 = [v44 constraintEqualToAnchor:v46];
+  tableView11 = [(AIAudiogramFinalResultViewController *)self tableView];
+  bottomAnchor3 = [tableView11 bottomAnchor];
+  contentView5 = [(AIAudiogramFinalResultViewController *)self contentView];
+  bottomAnchor4 = [contentView5 bottomAnchor];
+  v47 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v108[10] = v47;
   v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v108 count:11];
   [v79 activateConstraints:v48];
 
-  v49 = [(AIAudiogramFinalResultViewController *)self tableView];
+  tableView12 = [(AIAudiogramFinalResultViewController *)self tableView];
   v50 = objc_opt_class();
   v51 = +[AIAudiogramFrequencyInputCell reuseIdentifier];
-  [v49 registerClass:v50 forCellReuseIdentifier:v51];
+  [tableView12 registerClass:v50 forCellReuseIdentifier:v51];
 
-  v52 = [(AIAudiogramFinalResultViewController *)self tableView];
+  tableView13 = [(AIAudiogramFinalResultViewController *)self tableView];
   v53 = objc_opt_class();
   v54 = +[AIAudiogramV2ResultDateCell reuseIdentifier];
-  [v52 registerClass:v53 forCellReuseIdentifier:v54];
+  [tableView13 registerClass:v53 forCellReuseIdentifier:v54];
 
   [(AIAudiogramFinalResultViewController *)self _updateMaxHearingLevelWidth];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = AIAudiogramFinalResultViewController;
-  [(AIAudiogramFinalResultViewController *)&v13 viewWillAppear:a3];
+  [(AIAudiogramFinalResultViewController *)&v13 viewWillAppear:appear];
   if (![(AIAudiogramFinalResultViewController *)self didAddBackgroundLayer])
   {
-    v4 = [MEMORY[0x277CD9ED0] layer];
-    v5 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v4 setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
+    layer = [MEMORY[0x277CD9ED0] layer];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [layer setBackgroundColor:{objc_msgSend(systemBackgroundColor, "CGColor")}];
 
-    v6 = [(AIAudiogramFinalResultViewController *)self view];
-    [v6 bounds];
+    view = [(AIAudiogramFinalResultViewController *)self view];
+    [view bounds];
     v8 = v7;
-    v9 = [(AIAudiogramFinalResultViewController *)self view];
-    [v9 bounds];
-    [v4 setFrame:{0.0, 0.0, v8, v10 * 0.4}];
+    view2 = [(AIAudiogramFinalResultViewController *)self view];
+    [view2 bounds];
+    [layer setFrame:{0.0, 0.0, v8, v10 * 0.4}];
 
-    v11 = [(AIAudiogramFinalResultViewController *)self view];
-    v12 = [v11 layer];
-    [v12 insertSublayer:v4 atIndex:0];
+    view3 = [(AIAudiogramFinalResultViewController *)self view];
+    layer2 = [view3 layer];
+    [layer2 insertSublayer:layer atIndex:0];
 
     [(AIAudiogramFinalResultViewController *)self setDidAddBackgroundLayer:1];
   }
 }
 
-- (void)contentCategoryDidChange:(id)a3
+- (void)contentCategoryDidChange:(id)change
 {
   [(AIAudiogramFinalResultViewController *)self _updateMaxHearingLevelWidth];
-  v4 = [(AIAudiogramFinalResultViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(AIAudiogramFinalResultViewController *)self tableView];
+  [tableView reloadData];
 
   [(AIAudiogramFinalResultViewController *)self _updateTableViewHeight];
 }
@@ -477,30 +477,30 @@ void __54__AIAudiogramFinalResultViewController__saveToHealth___block_invoke_331
   [(UITableView *)self->_tableView layoutIfNeeded];
   [(UITableView *)self->_tableView contentSize];
   v4 = v3 + 100.0;
-  v5 = [(AIAudiogramFinalResultViewController *)self tableViewHeightConstraint];
-  if (v5)
+  tableViewHeightConstraint = [(AIAudiogramFinalResultViewController *)self tableViewHeightConstraint];
+  if (tableViewHeightConstraint)
   {
   }
 
   else
   {
-    v9 = [(AIAudiogramFinalResultViewController *)self tableView];
+    tableView = [(AIAudiogramFinalResultViewController *)self tableView];
 
-    if (v9)
+    if (tableView)
     {
-      v10 = [(AIAudiogramFinalResultViewController *)self tableView];
-      v11 = [v10 heightAnchor];
-      v12 = [v11 constraintEqualToConstant:v4];
+      tableView2 = [(AIAudiogramFinalResultViewController *)self tableView];
+      heightAnchor = [tableView2 heightAnchor];
+      v12 = [heightAnchor constraintEqualToConstant:v4];
       [(AIAudiogramFinalResultViewController *)self setTableViewHeightConstraint:v12];
 
-      v13 = [(AIAudiogramFinalResultViewController *)self tableViewHeightConstraint];
-      [v13 setActive:1];
+      tableViewHeightConstraint2 = [(AIAudiogramFinalResultViewController *)self tableViewHeightConstraint];
+      [tableViewHeightConstraint2 setActive:1];
       goto LABEL_7;
     }
   }
 
-  v6 = [(AIAudiogramFinalResultViewController *)self tableViewHeightConstraint];
-  [v6 constant];
+  tableViewHeightConstraint3 = [(AIAudiogramFinalResultViewController *)self tableViewHeightConstraint];
+  [tableViewHeightConstraint3 constant];
   v8 = v7;
 
   if (v4 == v8)
@@ -508,36 +508,36 @@ void __54__AIAudiogramFinalResultViewController__saveToHealth___block_invoke_331
     return;
   }
 
-  v13 = [(AIAudiogramFinalResultViewController *)self tableViewHeightConstraint];
-  [v13 setConstant:v4];
+  tableViewHeightConstraint2 = [(AIAudiogramFinalResultViewController *)self tableViewHeightConstraint];
+  [tableViewHeightConstraint2 setConstant:v4];
 LABEL_7:
 }
 
-- (void)reloadAudiogram:(id)a3
+- (void)reloadAudiogram:(id)audiogram
 {
-  v4 = a3;
-  [(AIAudiogramFinalResultViewController *)self setAudiogram:v4];
-  v5 = [(AIAudiogramFinalResultViewController *)self chartViewController];
-  [v5 updateStaticAudiogram:v4];
+  audiogramCopy = audiogram;
+  [(AIAudiogramFinalResultViewController *)self setAudiogram:audiogramCopy];
+  chartViewController = [(AIAudiogramFinalResultViewController *)self chartViewController];
+  [chartViewController updateStaticAudiogram:audiogramCopy];
 
   [(AIAudiogramFinalResultViewController *)self _updateMaxHearingLevelWidth];
-  v6 = [(AIAudiogramFinalResultViewController *)self tableView];
-  [v6 reloadData];
+  tableView = [(AIAudiogramFinalResultViewController *)self tableView];
+  [tableView reloadData];
 
   [(AIAudiogramFinalResultViewController *)self enableDoneButton];
 }
 
-- (void)updateFrequencies:(id)a3
+- (void)updateFrequencies:(id)frequencies
 {
-  [(AIAudiogramFinalResultViewController *)self setFrequencies:a3];
-  v4 = [(AIAudiogramFinalResultViewController *)self tableView];
-  [v4 reloadData];
+  [(AIAudiogramFinalResultViewController *)self setFrequencies:frequencies];
+  tableView = [(AIAudiogramFinalResultViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_updateMaxHearingLevelWidth
 {
   v69[1] = *MEMORY[0x277D85DE8];
-  v57 = [getHKUnitClass_0() decibelHearingLevelUnit];
+  decibelHearingLevelUnit = [getHKUnitClass_0() decibelHearingLevelUnit];
   v3 = aiLocString(@"AudiogramIngestionDecibelAbbreviation");
   v68 = *MEMORY[0x277D740A8];
   v4 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
@@ -557,12 +557,12 @@ LABEL_7:
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v50 = self;
-  v12 = [(AIAudiogramFinalResultViewController *)self audiogram];
-  v13 = [v12 sensitivityPoints];
+  selfCopy = self;
+  audiogram = [(AIAudiogramFinalResultViewController *)self audiogram];
+  sensitivityPoints = [audiogram sensitivityPoints];
 
-  obj = v13;
-  v53 = [v13 countByEnumeratingWithState:&v62 objects:v67 count:16];
+  obj = sensitivityPoints;
+  v53 = [sensitivityPoints countByEnumeratingWithState:&v62 objects:v67 count:16];
   v49 = v9;
   if (!v53)
   {
@@ -588,8 +588,8 @@ LABEL_7:
       v59 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v18 = [v17 tests];
-      v19 = [v18 countByEnumeratingWithState:&v58 objects:v66 count:16];
+      tests = [v17 tests];
+      v19 = [tests countByEnumeratingWithState:&v58 objects:v66 count:16];
       if (!v19)
       {
 
@@ -609,12 +609,12 @@ LABEL_7:
         {
           if (*v59 != v23)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(tests);
           }
 
           v26 = *(*(&v58 + 1) + 8 * j);
-          v27 = [v26 sensitivity];
-          [v27 doubleValueForUnit:v57];
+          sensitivity = [v26 sensitivity];
+          [sensitivity doubleValueForUnit:decibelHearingLevelUnit];
           v29 = v28;
 
           v30 = MEMORY[0x277CCACA8];
@@ -624,10 +624,10 @@ LABEL_7:
 
           [v33 sizeWithAttributes:v55];
           v35 = v34;
-          v36 = [v26 side];
+          side = [v26 side];
           v37 = fmax(v14, v35);
           v38 = fmax(v24, v35);
-          if (v36)
+          if (side)
           {
             v21 = 1;
           }
@@ -637,7 +637,7 @@ LABEL_7:
             v22 = 1;
           }
 
-          if (v36)
+          if (side)
           {
             v14 = v37;
           }
@@ -648,7 +648,7 @@ LABEL_7:
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v58 objects:v66 count:16];
+        v20 = [tests countByEnumeratingWithState:&v58 objects:v66 count:16];
       }
 
       while (v20);
@@ -681,11 +681,11 @@ LABEL_25:
   while (v53);
 LABEL_30:
 
-  v39 = [(AIAudiogramFinalResultViewController *)v50 audiogram];
-  v40 = [v39 sensitivityPoints];
-  v41 = [v40 count];
-  v42 = [(AIAudiogramFinalResultViewController *)v50 frequencies];
-  v43 = [v42 count];
+  audiogram2 = [(AIAudiogramFinalResultViewController *)selfCopy audiogram];
+  sensitivityPoints2 = [audiogram2 sensitivityPoints];
+  v41 = [sensitivityPoints2 count];
+  frequencies = [(AIAudiogramFinalResultViewController *)selfCopy frequencies];
+  v43 = [frequencies count];
 
   v44 = fmax(v15, v11);
   v45 = fmax(v14, v11);
@@ -705,17 +705,17 @@ LABEL_30:
   }
 
   v47 = [MEMORY[0x277CCABB0] numberWithDouble:v44];
-  [(AIAudiogramFinalResultViewController *)v50 setMaxLeftHearingLevelWidth:v47];
+  [(AIAudiogramFinalResultViewController *)selfCopy setMaxLeftHearingLevelWidth:v47];
 
   v48 = [MEMORY[0x277CCABB0] numberWithDouble:v46];
-  [(AIAudiogramFinalResultViewController *)v50 setMaxRightHearingLevelWidth:v48];
+  [(AIAudiogramFinalResultViewController *)selfCopy setMaxRightHearingLevelWidth:v48];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v47 = 0;
     v48 = &v47;
@@ -729,10 +729,10 @@ LABEL_30:
     v44 = __Block_byref_object_copy__1;
     v45 = __Block_byref_object_dispose__1;
     v46 = 0;
-    v8 = [(AIAudiogramFinalResultViewController *)self frequencies];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v7, "row")}];
+    frequencies = [(AIAudiogramFinalResultViewController *)self frequencies];
+    v9 = [frequencies objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v10 = [getHKUnitClass_0() decibelHearingLevelUnit];
+    decibelHearingLevelUnit = [getHKUnitClass_0() decibelHearingLevelUnit];
     v37 = 0;
     v38 = &v37;
     v39 = 0x2020000000;
@@ -741,8 +741,8 @@ LABEL_30:
     v34 = &v33;
     v35 = 0x2020000000;
     v36 = 0;
-    v11 = [(AIAudiogramFinalResultViewController *)self audiogram];
-    v12 = [v11 sensitivityPoints];
+    audiogram = [(AIAudiogramFinalResultViewController *)self audiogram];
+    sensitivityPoints = [audiogram sensitivityPoints];
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __72__AIAudiogramFinalResultViewController_tableView_cellForRowAtIndexPath___block_invoke;
@@ -750,21 +750,21 @@ LABEL_30:
     v13 = v9;
     v27 = v13;
     v29 = &v47;
-    v14 = v10;
+    v14 = decibelHearingLevelUnit;
     v28 = v14;
     v30 = &v37;
     v31 = &v41;
     v32 = &v33;
-    [v12 enumerateObjectsUsingBlock:&v23];
+    [sensitivityPoints enumerateObjectsUsingBlock:&v23];
 
     v15 = [AIAudiogramFrequencyInputCell reuseIdentifier:v23];
-    v16 = [v6 dequeueReusableCellWithIdentifier:v15];
+    v16 = [viewCopy dequeueReusableCellWithIdentifier:v15];
 
-    v17 = [(AIAudiogramFinalResultViewController *)self maxLeftHearingLevelWidth];
-    [v16 setLeftEarLabelWidth:v17];
+    maxLeftHearingLevelWidth = [(AIAudiogramFinalResultViewController *)self maxLeftHearingLevelWidth];
+    [v16 setLeftEarLabelWidth:maxLeftHearingLevelWidth];
 
-    v18 = [(AIAudiogramFinalResultViewController *)self maxRightHearingLevelWidth];
-    [v16 setRightEarLabelWidth:v18];
+    maxRightHearingLevelWidth = [(AIAudiogramFinalResultViewController *)self maxRightHearingLevelWidth];
+    [v16 setRightEarLabelWidth:maxRightHearingLevelWidth];
 
     [v16 setFrequency:v13];
     [v16 setLeftHearingLevel:v48[5]];
@@ -784,11 +784,11 @@ LABEL_30:
   else
   {
     v19 = +[AIAudiogramV2ResultDateCell reuseIdentifier];
-    v16 = [v6 dequeueReusableCellWithIdentifier:v19];
+    v16 = [viewCopy dequeueReusableCellWithIdentifier:v19];
 
-    v20 = [(AIAudiogramFinalResultViewController *)self audiogramManualIngestionDelegate];
-    v21 = [v20 getPickedDate];
-    [v16 setDate:v21];
+    audiogramManualIngestionDelegate = [(AIAudiogramFinalResultViewController *)self audiogramManualIngestionDelegate];
+    getPickedDate = [audiogramManualIngestionDelegate getPickedDate];
+    [v16 setDate:getPickedDate];
 
     [v16 setDelegate:self];
     [v16 setSelectionStyle:0];
@@ -859,106 +859,106 @@ void __72__AIAudiogramFinalResultViewController_tableView_cellForRowAtIndexPath_
 LABEL_6:
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (!a4)
+  if (!section)
   {
     return 1;
   }
 
-  v4 = [(AIAudiogramFinalResultViewController *)self frequencies];
-  v5 = [v4 count];
+  frequencies = [(AIAudiogramFinalResultViewController *)self frequencies];
+  v5 = [frequencies count];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  [v10 deselectRowAtIndexPath:v6 animated:1];
-  if ([v6 section])
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  if ([pathCopy section])
   {
-    v7 = [v10 cellForRowAtIndexPath:v6];
-    v8 = [v7 frequency];
-    v9 = [(AIAudiogramFinalResultViewController *)self audiogramManualIngestionDelegate];
-    [v9 didSelectNodeToEditWithSelectedFrequency:v8];
+    v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    frequency = [v7 frequency];
+    audiogramManualIngestionDelegate = [(AIAudiogramFinalResultViewController *)self audiogramManualIngestionDelegate];
+    [audiogramManualIngestionDelegate didSelectNodeToEditWithSelectedFrequency:frequency];
   }
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v46[4] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (section)
   {
     v5 = MEMORY[0x277D75D18];
-    v45 = a3;
+    viewCopy = view;
     v6 = [v5 alloc];
     v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     v8 = objc_alloc_init(MEMORY[0x277D75A68]);
     [(AIAudiogramFinalResultViewController *)self setStackView:v8];
 
-    v9 = [(AIAudiogramFinalResultViewController *)self stackView];
-    [v9 setAxis:1];
+    stackView = [(AIAudiogramFinalResultViewController *)self stackView];
+    [stackView setAxis:1];
 
-    v10 = [(AIAudiogramFinalResultViewController *)self stackView];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    stackView2 = [(AIAudiogramFinalResultViewController *)self stackView];
+    [stackView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v11 = [(AIAudiogramFinalResultViewController *)self stackView];
-    [v7 addSubview:v11];
+    stackView3 = [(AIAudiogramFinalResultViewController *)self stackView];
+    [v7 addSubview:stackView3];
 
     v12 = [MEMORY[0x277D75220] buttonWithType:1];
     v13 = aiLocString(@"AudiogramFrequencyAddRemoveFrequenciesTitle");
     [v12 setTitle:v13 forState:0];
 
     v14 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-    v15 = [v12 titleLabel];
-    [v15 setFont:v14];
+    titleLabel = [v12 titleLabel];
+    [titleLabel setFont:v14];
 
-    v16 = [v12 titleLabel];
-    [v16 setNumberOfLines:0];
+    titleLabel2 = [v12 titleLabel];
+    [titleLabel2 setNumberOfLines:0];
 
     [v12 setContentHorizontalAlignment:4];
     v44 = v12;
     [v12 addTarget:self action:sel__editFrequencyTapped_ forControlEvents:64];
-    v17 = [(AIAudiogramFinalResultViewController *)self stackView];
-    [v17 addArrangedSubview:v12];
+    stackView4 = [(AIAudiogramFinalResultViewController *)self stackView];
+    [stackView4 addArrangedSubview:v12];
 
     v36 = MEMORY[0x277CCAAD0];
-    v43 = [(AIAudiogramFinalResultViewController *)self stackView];
-    v42 = [v43 leadingAnchor];
-    v41 = [v7 leadingAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41 constant:16.0];
+    stackView5 = [(AIAudiogramFinalResultViewController *)self stackView];
+    leadingAnchor = [stackView5 leadingAnchor];
+    leadingAnchor2 = [v7 leadingAnchor];
+    v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v46[0] = v40;
-    v39 = [(AIAudiogramFinalResultViewController *)self stackView];
-    v37 = [v39 trailingAnchor];
-    v35 = [v7 trailingAnchor];
-    v34 = [v37 constraintEqualToAnchor:v35 constant:-16.0];
+    stackView6 = [(AIAudiogramFinalResultViewController *)self stackView];
+    trailingAnchor = [stackView6 trailingAnchor];
+    trailingAnchor2 = [v7 trailingAnchor];
+    v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     v46[1] = v34;
-    v18 = [(AIAudiogramFinalResultViewController *)self stackView];
-    v19 = [v18 topAnchor];
+    stackView7 = [(AIAudiogramFinalResultViewController *)self stackView];
+    topAnchor = [stackView7 topAnchor];
     v38 = v7;
-    v20 = [v7 topAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:14.0];
+    topAnchor2 = [v7 topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:14.0];
     v46[2] = v21;
-    v22 = [(AIAudiogramFinalResultViewController *)self stackView];
-    v23 = [v22 bottomAnchor];
-    v24 = [v7 bottomAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    stackView8 = [(AIAudiogramFinalResultViewController *)self stackView];
+    bottomAnchor = [stackView8 bottomAnchor];
+    bottomAnchor2 = [v7 bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v46[3] = v25;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:4];
     [v36 activateConstraints:v26];
 
-    v27 = [(AIAudiogramFinalResultViewController *)self stackView];
-    [v27 layoutIfNeeded];
+    stackView9 = [(AIAudiogramFinalResultViewController *)self stackView];
+    [stackView9 layoutIfNeeded];
 
-    [v45 frame];
+    [viewCopy frame];
     v29 = v28;
 
-    v30 = self;
+    selfCopy = self;
     v31 = v38;
-    v32 = [(AIAudiogramFinalResultViewController *)v30 stackView];
-    [v32 frame];
+    stackView10 = [(AIAudiogramFinalResultViewController *)selfCopy stackView];
+    [stackView10 frame];
     [v38 setFrame:{0.0, 0.0, v29}];
   }
 
@@ -970,10 +970,10 @@ LABEL_6:
   return v31;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   result = *MEMORY[0x277D76F30];
-  if (!a4)
+  if (!section)
   {
     return 0.01;
   }
@@ -981,11 +981,11 @@ LABEL_6:
   return result;
 }
 
-- (void)dateCellDidPickDate:(id)a3
+- (void)dateCellDidPickDate:(id)date
 {
-  v4 = a3;
-  v5 = [(AIAudiogramFinalResultViewController *)self audiogramManualIngestionDelegate];
-  [v5 updateAudiogramDate:v4];
+  dateCopy = date;
+  audiogramManualIngestionDelegate = [(AIAudiogramFinalResultViewController *)self audiogramManualIngestionDelegate];
+  [audiogramManualIngestionDelegate updateAudiogramDate:dateCopy];
 }
 
 - (AIAudiogramConfirmResultsViewControllerDelegate)audiogramConfirmationDelegate

@@ -1,33 +1,33 @@
 @interface BWStillImageFocusPixelDisparityNode
-- (BWStillImageFocusPixelDisparityNode)initWithNodeConfiguration:(id)a3 sensorConfiguration:(id)a4 disparityMapWidth:(unint64_t)a5 disparityMapHeight:(unint64_t)a6 depthIsAlwaysHighQuality:(BOOL)a7 defaultZoomFactor:(float)a8;
-- (uint64_t)_loadAndConfigureDisparityGeneratorForZoomFactor:(uint64_t)a1;
-- (void)_attachDepthMetadataToSampleBuffer:(uint64_t)a1;
-- (void)_processDisparityForSampleBuffer:(uint64_t)a1;
-- (void)_removeConsumedAttachedMediaFromSampleBuffer:(uint64_t)a1;
+- (BWStillImageFocusPixelDisparityNode)initWithNodeConfiguration:(id)configuration sensorConfiguration:(id)sensorConfiguration disparityMapWidth:(unint64_t)width disparityMapHeight:(unint64_t)height depthIsAlwaysHighQuality:(BOOL)quality defaultZoomFactor:(float)factor;
+- (uint64_t)_loadAndConfigureDisparityGeneratorForZoomFactor:(uint64_t)factor;
+- (void)_attachDepthMetadataToSampleBuffer:(uint64_t)buffer;
+- (void)_processDisparityForSampleBuffer:(uint64_t)buffer;
+- (void)_removeConsumedAttachedMediaFromSampleBuffer:(uint64_t)buffer;
 - (void)dealloc;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)processorOptionsForProcessorVersion:(float)a3 zoomFactor:;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)processorOptionsForProcessorVersion:(float)version zoomFactor:;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWStillImageFocusPixelDisparityNode
 
-- (BWStillImageFocusPixelDisparityNode)initWithNodeConfiguration:(id)a3 sensorConfiguration:(id)a4 disparityMapWidth:(unint64_t)a5 disparityMapHeight:(unint64_t)a6 depthIsAlwaysHighQuality:(BOOL)a7 defaultZoomFactor:(float)a8
+- (BWStillImageFocusPixelDisparityNode)initWithNodeConfiguration:(id)configuration sensorConfiguration:(id)sensorConfiguration disparityMapWidth:(unint64_t)width disparityMapHeight:(unint64_t)height depthIsAlwaysHighQuality:(BOOL)quality defaultZoomFactor:(float)factor
 {
   v42.receiver = self;
   v42.super_class = BWStillImageFocusPixelDisparityNode;
   v14 = [(BWNode *)&v42 init];
   if (v14)
   {
-    if (a3)
+    if (configuration)
     {
-      v14->_nodeConfiguration = a3;
-      if (a4)
+      v14->_nodeConfiguration = configuration;
+      if (sensorConfiguration)
       {
-        v15 = a4;
-        v14->_sensorConfiguration = v15;
-        if ([(BWSensorConfiguration *)v15 cameraInfo])
+        sensorConfigurationCopy = sensorConfiguration;
+        v14->_sensorConfiguration = sensorConfigurationCopy;
+        if ([(BWSensorConfiguration *)sensorConfigurationCopy cameraInfo])
         {
           v16 = [(NSDictionary *)[(BWSensorConfiguration *)v14->_sensorConfiguration cameraInfo] objectForKeyedSubscript:*off_1E7989F18];
           if (v16)
@@ -35,8 +35,8 @@
             [v16 doubleValue];
             *&v17 = v17 * 0.001;
             v14->_pixelSizeInMm = *&v17;
-            v14->_depthIsAlwaysHighQuality = a7;
-            v14->_defaultZoomFactor = a8;
+            v14->_depthIsAlwaysHighQuality = quality;
+            v14->_defaultZoomFactor = factor;
             v18 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v14];
             v19 = objc_alloc_init(BWVideoFormatRequirements);
             [(BWVideoFormatRequirements *)v19 setSupportedPixelFormats:&unk_1F22480D0];
@@ -45,8 +45,8 @@
             [(BWNodeInput *)v18 setPassthroughMode:1];
             [(BWNode *)v14 addInput:v18];
 
-            v20 = [(BWStillImageNodeConfiguration *)v14->_nodeConfiguration depthDataType];
-            switch(v20)
+            depthDataType = [(BWStillImageNodeConfiguration *)v14->_nodeConfiguration depthDataType];
+            switch(depthDataType)
             {
               case 9:
                 v28 = objc_alloc_init(BWNodeInputMediaConfiguration);
@@ -105,18 +105,18 @@ LABEL_13:
                 [(BWNodeInputMediaConfiguration *)v34 setPassthroughMode:0];
                 [(BWNodeInput *)v14->super._input setMediaConfiguration:v34 forAttachedMediaKey:0x1F21AAC70];
                 v36 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v14];
-                v37 = [(BWNodeOutput *)v36 primaryMediaConfiguration];
+                primaryMediaConfiguration = [(BWNodeOutput *)v36 primaryMediaConfiguration];
                 v38 = objc_alloc_init(BWVideoFormatRequirements);
                 [(BWVideoFormatRequirements *)v38 setSupportedPixelFormats:&unk_1F2248190];
-                [(BWNodeOutputMediaConfiguration *)v37 setFormatRequirements:v38];
+                [(BWNodeOutputMediaConfiguration *)primaryMediaConfiguration setFormatRequirements:v38];
 
-                [(BWNodeOutputMediaConfiguration *)v37 setProvidesPixelBufferPool:0];
-                [(BWNodeOutputMediaConfiguration *)v37 setPassthroughMode:1];
+                [(BWNodeOutputMediaConfiguration *)primaryMediaConfiguration setProvidesPixelBufferPool:0];
+                [(BWNodeOutputMediaConfiguration *)primaryMediaConfiguration setPassthroughMode:1];
                 v39 = objc_alloc_init(BWNodeOutputMediaConfiguration);
                 v40 = objc_alloc_init(BWVideoFormatRequirements);
                 [(BWVideoFormatRequirements *)v40 setSupportedPixelFormats:&unk_1F22481A8];
-                [(BWVideoFormatRequirements *)v40 setWidth:a5];
-                [(BWVideoFormatRequirements *)v40 setHeight:a6];
+                [(BWVideoFormatRequirements *)v40 setWidth:width];
+                [(BWVideoFormatRequirements *)v40 setHeight:height];
                 [(BWNodeOutputMediaConfiguration *)v39 setFormatRequirements:v40];
 
                 [(BWNodeOutputMediaConfiguration *)v39 setPassthroughMode:0];
@@ -176,20 +176,20 @@ LABEL_13:
   [(BWNode *)&v4 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if ([a5 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     output = self->super._output;
 
-    [(BWNodeOutput *)output setFormat:a3];
+    [(BWNodeOutput *)output setFormat:format];
   }
 
-  else if (([a5 isEqualToString:0x1F21AAB50] & 1) == 0 && (objc_msgSend(a5, "isEqualToString:", 0x1F21AAB10) & 1) == 0 && (objc_msgSend(a5, "isEqualToString:", 0x1F21AAAF0) & 1) == 0 && (objc_msgSend(a5, "isEqualToString:", 0x1F21AAC70) & 1) == 0 && (objc_msgSend(a5, "isEqualToString:", 0x1F21AAC90) & 1) == 0)
+  else if (([key isEqualToString:0x1F21AAB50] & 1) == 0 && (objc_msgSend(key, "isEqualToString:", 0x1F21AAB10) & 1) == 0 && (objc_msgSend(key, "isEqualToString:", 0x1F21AAAF0) & 1) == 0 && (objc_msgSend(key, "isEqualToString:", 0x1F21AAC70) & 1) == 0 && (objc_msgSend(key, "isEqualToString:", 0x1F21AAC90) & 1) == 0)
   {
     v10.receiver = self;
     v10.super_class = BWStillImageFocusPixelDisparityNode;
-    [(BWNode *)&v10 didSelectFormat:a3 forInput:a4 forAttachedMediaKey:a5];
+    [(BWNode *)&v10 didSelectFormat:format forInput:input forAttachedMediaKey:key];
   }
 }
 
@@ -204,17 +204,17 @@ LABEL_13:
   }
 }
 
-- (uint64_t)_loadAndConfigureDisparityGeneratorForZoomFactor:(uint64_t)a1
+- (uint64_t)_loadAndConfigureDisparityGeneratorForZoomFactor:(uint64_t)factor
 {
-  if (!a1)
+  if (!factor)
   {
     return 0;
   }
 
-  *(a1 + 152) = 0;
-  v4 = -[FigCaptureCameraParameters focusPixelDisparityVersionForPortType:sensorIDString:](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "focusPixelDisparityVersionForPortType:sensorIDString:", [*(a1 + 144) portType], objc_msgSend(*(a1 + 144), "sensorIDString"));
-  v5 = [*(a1 + 136) depthDataType];
-  if (v5 == 9)
+  *(factor + 152) = 0;
+  v4 = -[FigCaptureCameraParameters focusPixelDisparityVersionForPortType:sensorIDString:](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "focusPixelDisparityVersionForPortType:sensorIDString:", [*(factor + 144) portType], objc_msgSend(*(factor + 144), "sensorIDString"));
+  depthDataType = [*(factor + 136) depthDataType];
+  if (depthDataType == 9)
   {
     if (v4 >= 3)
     {
@@ -224,7 +224,7 @@ LABEL_13:
     return 0;
   }
 
-  if (v5 == 5)
+  if (depthDataType == 5)
   {
     if (v4 >= 2)
     {
@@ -234,14 +234,14 @@ LABEL_13:
     return 0;
   }
 
-  if (v5 == 4 && v4 != 1)
+  if (depthDataType == 4 && v4 != 1)
   {
     return 0;
   }
 
 LABEL_9:
-  v7 = [(BWStillImageFocusPixelDisparityNode *)a1 processorOptionsForProcessorVersion:v4 zoomFactor:a2];
-  if (!v7 || (v8 = v7, (v9 = BWLoadProcessorBundle(@"FPDisparity", v4)) == 0) || (v10 = [objc_alloc(objc_msgSend(v9 "principalClass"))], (*(a1 + 152) = v10) == 0))
+  v7 = [(BWStillImageFocusPixelDisparityNode *)factor processorOptionsForProcessorVersion:v4 zoomFactor:a2];
+  if (!v7 || (v8 = v7, (v9 = BWLoadProcessorBundle(@"FPDisparity", v4)) == 0) || (v10 = [objc_alloc(objc_msgSend(v9 "principalClass"))], (*(factor + 152) = v10) == 0))
   {
     OUTLINED_FUNCTION_2_7();
     fig_log_get_emitter();
@@ -259,25 +259,25 @@ LABEL_9:
   }
 
   [v10 setOptions:v8];
-  [*(a1 + 152) setFocusPixelMetadata:0];
-  [*(a1 + 152) setQualityEstimationEnabled:(*(a1 + 244) & 1) == 0];
-  if ([*(a1 + 152) prepareToProcess:0])
+  [*(factor + 152) setFocusPixelMetadata:0];
+  [*(factor + 152) setQualityEstimationEnabled:(*(factor + 244) & 1) == 0];
+  if ([*(factor + 152) prepareToProcess:0])
   {
     v11 = 4294954516;
 LABEL_22:
 
-    *(a1 + 152) = 0;
+    *(factor + 152) = 0;
     return v11;
   }
 
   v11 = 0;
-  *(a1 + 252) = a2;
+  *(factor + 252) = a2;
   return v11;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (!a3)
+  if (!buffer)
   {
     FigCaptureGetFrameworkRadarComponent();
     v25 = OUTLINED_FUNCTION_11_5();
@@ -343,10 +343,10 @@ LABEL_37:
     goto LABEL_17;
   }
 
-  v9 = [v8 captureFlags];
-  if ((v9 & 0x800) != 0)
+  captureFlags = [v8 captureFlags];
+  if ((captureFlags & 0x800) != 0)
   {
-    v10 = OUTLINED_FUNCTION_16_7(v9, @"StillSettings");
+    v10 = OUTLINED_FUNCTION_16_7(captureFlags, @"StillSettings");
     if (!v10)
     {
       goto LABEL_31;
@@ -354,7 +354,7 @@ LABEL_37:
 
     v11 = v10;
     v12 = OUTLINED_FUNCTION_16_7(v10, *off_1E798A3C8);
-    v13 = BWPixelBufferDimensionsFromSampleBuffer(a3);
+    v13 = BWPixelBufferDimensionsFromSampleBuffer(buffer);
     v39 = *MEMORY[0x1E695F050];
     v40 = *(MEMORY[0x1E695F050] + 16);
     if (!FigCFDictionaryGetCGRectIfPresent())
@@ -397,7 +397,7 @@ LABEL_31:
 
       if (v23 == self->_currentZoomFactorForFocusPixelDisparityGenerator || (v24 = [(BWStillImageFocusPixelDisparityNode *)self _loadAndConfigureDisparityGeneratorForZoomFactor:v23]) == 0)
       {
-        [(BWStillImageFocusPixelDisparityNode *)self _processDisparityForSampleBuffer:a3];
+        [(BWStillImageFocusPixelDisparityNode *)self _processDisparityForSampleBuffer:buffer];
         goto LABEL_17;
       }
 
@@ -413,15 +413,15 @@ LABEL_31:
 LABEL_17:
   if ([(BWStillImageNodeConfiguration *)self->_nodeConfiguration depthDataType:v37]== 5 || [(BWStillImageNodeConfiguration *)self->_nodeConfiguration depthDataType]== 9)
   {
-    [(BWStillImageFocusPixelDisparityNode *)self _removeConsumedAttachedMediaFromSampleBuffer:a3];
+    [(BWStillImageFocusPixelDisparityNode *)self _removeConsumedAttachedMediaFromSampleBuffer:buffer];
   }
 
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
 }
 
-- (void)_processDisparityForSampleBuffer:(uint64_t)a1
+- (void)_processDisparityForSampleBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return;
   }
@@ -430,7 +430,7 @@ LABEL_17:
   v4 = *(MEMORY[0x1E695F050] + 16);
   rect.origin = *MEMORY[0x1E695F050];
   rect.size = v4;
-  if (!*(a1 + 152))
+  if (!*(buffer + 152))
   {
     FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -447,18 +447,18 @@ LABEL_17:
     goto LABEL_46;
   }
 
-  v5 = [*(a1 + 136) depthDataType];
+  depthDataType = [*(buffer + 136) depthDataType];
   v45 = v2;
-  switch(v5)
+  switch(depthDataType)
   {
     case 9:
       v17 = +[FigCaptureCameraParameters sharedInstance];
-      v18 = [OUTLINED_FUNCTION_14_1() portType];
-      -[FigCaptureCameraParameters focusPixelDisparityVersionForPortType:sensorIDString:](v17, "focusPixelDisparityVersionForPortType:sensorIDString:", v18, [OUTLINED_FUNCTION_14_1() sensorIDString]);
-      v19 = [OUTLINED_FUNCTION_14_1() portType];
-      v20 = [OUTLINED_FUNCTION_14_1() sensorIDString];
-      LODWORD(v21) = *(a1 + 252);
-      v22 = [(FigCaptureCameraParameters *)v17 focusPixelDisparityTuningParametersForPortType:v19 sensorIDString:v20 zoomFactor:v21];
+      portType = [OUTLINED_FUNCTION_14_1() portType];
+      -[FigCaptureCameraParameters focusPixelDisparityVersionForPortType:sensorIDString:](v17, "focusPixelDisparityVersionForPortType:sensorIDString:", portType, [OUTLINED_FUNCTION_14_1() sensorIDString]);
+      portType2 = [OUTLINED_FUNCTION_14_1() portType];
+      sensorIDString = [OUTLINED_FUNCTION_14_1() sensorIDString];
+      LODWORD(v21) = *(buffer + 252);
+      v22 = [(FigCaptureCameraParameters *)v17 focusPixelDisparityTuningParametersForPortType:portType2 sensorIDString:sensorIDString zoomFactor:v21];
       if (!v22)
       {
         goto LABEL_53;
@@ -629,7 +629,7 @@ LABEL_66:
     goto LABEL_46;
   }
 
-  if ([*(a1 + 136) depthDataType] != 9)
+  if ([*(buffer + 136) depthDataType] != 9)
   {
     v32 = [v9 objectForKeyedSubscript:*off_1E798B798];
     if (!v32)
@@ -691,7 +691,7 @@ LABEL_58:
     v9 = 0;
   }
 
-  ImageBuffer = [objc_msgSend(objc_msgSend(*(a1 + 16) mediaPropertiesForAttachedMediaKey:{@"Depth", "livePixelBufferPool"), "newPixelBuffer"}];
+  ImageBuffer = [objc_msgSend(objc_msgSend(*(buffer + 16) mediaPropertiesForAttachedMediaKey:{@"Depth", "livePixelBufferPool"), "newPixelBuffer"}];
   if (!ImageBuffer)
   {
     fig_log_get_emitter();
@@ -725,7 +725,7 @@ LABEL_58:
   }
 
   v2 = v45;
-  [(BWStillImageFocusPixelDisparityNode *)a1 _removeConsumedAttachedMediaFromSampleBuffer:v45];
+  [(BWStillImageFocusPixelDisparityNode *)buffer _removeConsumedAttachedMediaFromSampleBuffer:v45];
   v38 = OUTLINED_FUNCTION_2_7();
   if (BWCMSampleBufferCreateCopyWithNewPixelBuffer(v38, v39, v40, v41))
   {
@@ -735,7 +735,7 @@ LABEL_58:
 
   else
   {
-    [(BWStillImageFocusPixelDisparityNode *)a1 _attachDepthMetadataToSampleBuffer:v45];
+    [(BWStillImageFocusPixelDisparityNode *)buffer _attachDepthMetadataToSampleBuffer:v45];
     BWSampleBufferSetAttachedMedia(v45, @"Depth", 0);
   }
 
@@ -758,13 +758,13 @@ LABEL_46:
 
   if ((v9 & 1) == 0)
   {
-    [(BWStillImageFocusPixelDisparityNode *)a1 _removeConsumedAttachedMediaFromSampleBuffer:v2];
+    [(BWStillImageFocusPixelDisparityNode *)buffer _removeConsumedAttachedMediaFromSampleBuffer:v2];
   }
 }
 
-- (void)_removeConsumedAttachedMediaFromSampleBuffer:(uint64_t)a1
+- (void)_removeConsumedAttachedMediaFromSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
     BWSampleBufferRemoveAttachedMedia(a2, 0x1F21AAB10);
     BWSampleBufferRemoveAttachedMedia(a2, 0x1F21AAAF0);
@@ -777,18 +777,18 @@ LABEL_46:
   }
 }
 
-- (void)processorOptionsForProcessorVersion:(float)a3 zoomFactor:
+- (void)processorOptionsForProcessorVersion:(float)version zoomFactor:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v6 = +[FigCaptureCameraParameters sharedInstance];
-  v7 = [OUTLINED_FUNCTION_10_5() portType];
-  v8 = [OUTLINED_FUNCTION_10_5() sensorIDString];
-  *&v9 = a3;
-  v10 = [(FigCaptureCameraParameters *)v6 focusPixelDisparityTuningParametersForPortType:v7 sensorIDString:v8 zoomFactor:v9];
+  portType = [OUTLINED_FUNCTION_10_5() portType];
+  sensorIDString = [OUTLINED_FUNCTION_10_5() sensorIDString];
+  *&v9 = version;
+  v10 = [(FigCaptureCameraParameters *)v6 focusPixelDisparityTuningParametersForPortType:portType sensorIDString:sensorIDString zoomFactor:v9];
   if (!v10)
   {
     return 0;
@@ -812,28 +812,28 @@ LABEL_46:
 
     v13 = v12;
     v14 = [objc_msgSend(objc_msgSend(v12 objectForKeyedSubscript:{@"disparity_size", "objectForKeyedSubscript:", @"width", "intValue"}];
-    if (v14 != [*(a1 + 136) depthDataOutputDimensions])
+    if (v14 != [*(self + 136) depthDataOutputDimensions])
     {
       return 0;
     }
 
     v15 = [objc_msgSend(objc_msgSend(v13 objectForKeyedSubscript:{@"disparity_size", "objectForKeyedSubscript:", @"height", "intValue"}];
-    if (v15 != [*(a1 + 136) depthDataOutputDimensions] >> 32)
+    if (v15 != [*(self + 136) depthDataOutputDimensions] >> 32)
     {
       return 0;
     }
 
-    v16 = [OUTLINED_FUNCTION_10_5() portType];
-    v17 = -[FigCaptureCameraParameters focusPixelsPatternsForPortType:sensorIDString:](v6, "focusPixelsPatternsForPortType:sensorIDString:", v16, [OUTLINED_FUNCTION_10_5() sensorIDString]);
+    portType2 = [OUTLINED_FUNCTION_10_5() portType];
+    v17 = -[FigCaptureCameraParameters focusPixelsPatternsForPortType:sensorIDString:](v6, "focusPixelsPatternsForPortType:sensorIDString:", portType2, [OUTLINED_FUNCTION_10_5() sensorIDString]);
     if (!v17)
     {
       return 0;
     }
   }
 
-  v24 = [OUTLINED_FUNCTION_10_5() portType];
-  v25 = [OUTLINED_FUNCTION_10_5() cameraInfo];
-  v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
+  portType3 = [OUTLINED_FUNCTION_10_5() portType];
+  cameraInfo = [OUTLINED_FUNCTION_10_5() cameraInfo];
+  v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&cameraInfo forKeys:&portType3 count:1];
   if (!v18)
   {
     fig_log_get_emitter();
@@ -853,12 +853,12 @@ LABEL_15:
   return v20;
 }
 
-- (void)_attachDepthMetadataToSampleBuffer:(uint64_t)a1
+- (void)_attachDepthMetadataToSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    if (v4 && ((v5 = -[FigCaptureCameraParameters focusPixelDisparityVersionForPortType:sensorIDString:](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "focusPixelDisparityVersionForPortType:sensorIDString:", [*(a1 + 144) portType], objc_msgSend(*(a1 + 144), "sensorIDString")), !-[FigCaptureCameraParameters portraitTapToRefocusPrevented](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "portraitTapToRefocusPrevented")) ? (v6 = -15536) : (v6 = -14536), v5 <= 1 ? (v7 = 30000) : (v7 = v6), (CurrentMajorVersion = FigDepthDataGetCurrentMajorVersion(), (*(a1 + 244) & 1) == 0) ? (v9 = objc_msgSend(*(a1 + 152), "disparityQuality")) : (v9 = 1), CMGetAttachment(a2, *off_1E798A3C8, 0) && (size = *MEMORY[0x1E695F060], (v10 = CMGetAttachment(a2, @"OriginalCameraIntrinsicMatrixReferenceDimensions", 0)) != 0)))
+    if (v4 && ((v5 = -[FigCaptureCameraParameters focusPixelDisparityVersionForPortType:sensorIDString:](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "focusPixelDisparityVersionForPortType:sensorIDString:", [*(buffer + 144) portType], objc_msgSend(*(buffer + 144), "sensorIDString")), !-[FigCaptureCameraParameters portraitTapToRefocusPrevented](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "portraitTapToRefocusPrevented")) ? (v6 = -15536) : (v6 = -14536), v5 <= 1 ? (v7 = 30000) : (v7 = v6), (CurrentMajorVersion = FigDepthDataGetCurrentMajorVersion(), (*(buffer + 244) & 1) == 0) ? (v9 = objc_msgSend(*(buffer + 152), "disparityQuality")) : (v9 = 1), CMGetAttachment(a2, *off_1E798A3C8, 0) && (size = *MEMORY[0x1E695F060], (v10 = CMGetAttachment(a2, @"OriginalCameraIntrinsicMatrixReferenceDimensions", 0)) != 0)))
     {
       v11 = v10;
       if (CGSizeMakeWithDictionaryRepresentation(v10, &size))
@@ -871,11 +871,11 @@ LABEL_15:
           [v4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v9), *off_1E798D008}];
           [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*off_1E798CFD0];
           [v4 setObject:&unk_1F22426B8 forKeyedSubscript:*off_1E798CFC0];
-          LODWORD(v14) = *(a1 + 240);
+          LODWORD(v14) = *(buffer + 240);
           [v4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v14), *off_1E798D000}];
           [v4 setObject:v13 forKeyedSubscript:*off_1E798CFD8];
           [v4 setObject:v11 forKeyedSubscript:*off_1E798CFE0];
-          [v4 setObject:objc_msgSend(MEMORY[0x1E695DEF0] forKeyedSubscript:{"dataWithBytes:length:", a1 + 176, 64), *off_1E798CFC8}];
+          [v4 setObject:objc_msgSend(MEMORY[0x1E695DEF0] forKeyedSubscript:{"dataWithBytes:length:", buffer + 176, 64), *off_1E798CFC8}];
           CMSetAttachment(a2, *off_1E798D2B8, v4, 1u);
 LABEL_17:
 

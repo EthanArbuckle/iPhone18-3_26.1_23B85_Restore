@@ -1,12 +1,12 @@
 @interface RMUILegacyProfilesViewModelProvider
-- (RMUILegacyProfilesViewModelProvider)initWithScope:(int64_t)a3;
-- (void)_updateViewModelsWithDeclarations:(id)a3;
-- (void)loadProfilesFromConfigurationsWithCompletionHandler:(id)a3;
+- (RMUILegacyProfilesViewModelProvider)initWithScope:(int64_t)scope;
+- (void)_updateViewModelsWithDeclarations:(id)declarations;
+- (void)loadProfilesFromConfigurationsWithCompletionHandler:(id)handler;
 @end
 
 @implementation RMUILegacyProfilesViewModelProvider
 
-- (RMUILegacyProfilesViewModelProvider)initWithScope:(int64_t)a3
+- (RMUILegacyProfilesViewModelProvider)initWithScope:(int64_t)scope
 {
   v8.receiver = self;
   v8.super_class = RMUILegacyProfilesViewModelProvider;
@@ -17,24 +17,24 @@
     profileViewModels = v4->_profileViewModels;
     v4->_profileViewModels = v5;
 
-    v4->_scope = a3;
+    v4->_scope = scope;
   }
 
   return v4;
 }
 
-- (void)_updateViewModelsWithDeclarations:(id)a3
+- (void)_updateViewModelsWithDeclarations:(id)declarations
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RMUILegacyProfilesViewModelProvider *)self profileViewModels];
-  [v5 removeAllObjects];
+  declarationsCopy = declarations;
+  profileViewModels = [(RMUILegacyProfilesViewModelProvider *)self profileViewModels];
+  [profileViewModels removeAllObjects];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = declarationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -52,30 +52,30 @@
 
         v11 = *(*(&v22 + 1) + 8 * v10);
         v12 = objc_opt_new();
-        v13 = [v11 label];
-        [v12 setTitle:v13];
+        label = [v11 label];
+        [v12 setTitle:label];
 
-        v14 = [v11 profileIdentifier];
-        [v12 setProfileIdentifier:v14];
+        profileIdentifier = [v11 profileIdentifier];
+        [v12 setProfileIdentifier:profileIdentifier];
 
-        v15 = [v11 declaration];
-        [v12 setDeclaration:v15];
+        declaration = [v11 declaration];
+        [v12 setDeclaration:declaration];
 
         [v12 setSymbol:1];
         [v12 setIsInteractiveProfile:{objc_msgSend(v11, "isRequired") ^ 1}];
         if ([v12 isInteractiveProfile])
         {
-          v16 = [v11 label];
-          v17 = [v12 toggleViewModel];
-          [v17 setTitle:v16];
+          label2 = [v11 label];
+          toggleViewModel = [v12 toggleViewModel];
+          [toggleViewModel setTitle:label2];
 
-          v18 = [v11 isActive];
-          v19 = [v11 profileIdentifier];
-          [v12 setInteractiveProfileActive:v18 profileIdentifier:v19];
+          isActive = [v11 isActive];
+          profileIdentifier2 = [v11 profileIdentifier];
+          [v12 setInteractiveProfileActive:isActive profileIdentifier:profileIdentifier2];
         }
 
-        v20 = [(RMUILegacyProfilesViewModelProvider *)self profileViewModels];
-        [v20 addObject:v12];
+        profileViewModels2 = [(RMUILegacyProfilesViewModelProvider *)self profileViewModels];
+        [profileViewModels2 addObject:v12];
 
         ++v10;
       }
@@ -90,20 +90,20 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadProfilesFromConfigurationsWithCompletionHandler:(id)a3
+- (void)loadProfilesFromConfigurationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __91__RMUILegacyProfilesViewModelProvider_loadProfilesFromConfigurationsWithCompletionHandler___block_invoke;
   v12[3] = &unk_279B07CB0;
   objc_copyWeak(&v14, &location);
-  v5 = v4;
+  v5 = handlerCopy;
   v13 = v5;
   v6 = MEMORY[0x266720D10](v12);
-  v7 = [(RMUILegacyProfilesViewModelProvider *)self observerStore];
-  if (v7)
+  observerStore = [(RMUILegacyProfilesViewModelProvider *)self observerStore];
+  if (observerStore)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -111,7 +111,7 @@
     v9[3] = &unk_279B07CD8;
     v11 = v6;
     v9[4] = self;
-    v10 = v7;
+    v10 = observerStore;
     [v10 displayableProfileConfigurationsWithCompletionHandler:v9];
   }
 

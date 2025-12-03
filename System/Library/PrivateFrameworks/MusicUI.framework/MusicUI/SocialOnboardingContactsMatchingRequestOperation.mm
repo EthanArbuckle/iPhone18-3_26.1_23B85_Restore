@@ -1,21 +1,21 @@
 @interface SocialOnboardingContactsMatchingRequestOperation
 - (void)execute;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation SocialOnboardingContactsMatchingRequestOperation
 
 - (void)execute
 {
-  v2 = self;
+  selfCopy = self;
   sub_2169995C0();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_216999C70(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_216999C70(error);
 }
 
 @end

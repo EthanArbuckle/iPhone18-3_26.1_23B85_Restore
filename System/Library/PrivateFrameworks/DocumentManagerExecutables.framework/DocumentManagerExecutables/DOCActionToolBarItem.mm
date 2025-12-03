@@ -1,6 +1,6 @@
 @interface DOCActionToolBarItem
 - (_TtC26DocumentManagerExecutables20DOCActionToolBarItem)init;
-- (_TtC26DocumentManagerExecutables20DOCActionToolBarItem)initWithCoder:(id)a3;
+- (_TtC26DocumentManagerExecutables20DOCActionToolBarItem)initWithCoder:(id)coder;
 @end
 
 @implementation DOCActionToolBarItem
@@ -14,14 +14,14 @@
   return [(DOCActionToolBarItem *)&v3 init];
 }
 
-- (_TtC26DocumentManagerExecutables20DOCActionToolBarItem)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables20DOCActionToolBarItem)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables20DOCActionToolBarItem_docAction) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables20DOCActionToolBarItem_onSelectedItems) = 1;
   v7.receiver = self;
   v7.super_class = type metadata accessor for DOCActionToolBarItem();
-  v4 = a3;
-  v5 = [(DOCActionToolBarItem *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(DOCActionToolBarItem *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

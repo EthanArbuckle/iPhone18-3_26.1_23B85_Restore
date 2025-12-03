@@ -3,10 +3,10 @@
 + (id)_initialStrings;
 + (id)sharedCache;
 - (_DWORD)initInternal;
-- (id)cachedStringIfAvailable:(id)a3;
-- (id)dictionaryReplacingKeysFromDictionary:(id)a3;
+- (id)cachedStringIfAvailable:(id)available;
+- (id)dictionaryReplacingKeysFromDictionary:(id)dictionary;
 - (void)unittest_resetCache;
-- (void)updateCacheWithStrings:(id)a3;
+- (void)updateCacheWithStrings:(id)strings;
 @end
 
 @implementation HKStringCache
@@ -249,11 +249,11 @@
   return v3;
 }
 
-- (id)cachedStringIfAvailable:(id)a3
+- (id)cachedStringIfAvailable:(id)available
 {
   cacheDictionary = self->_cacheDictionary;
-  v4 = a3;
-  v5 = [(NSDictionary *)cacheDictionary objectForKeyedSubscript:v4];
+  availableCopy = available;
+  v5 = [(NSDictionary *)cacheDictionary objectForKeyedSubscript:availableCopy];
   v6 = v5;
   if (v5)
   {
@@ -262,7 +262,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = availableCopy;
   }
 
   v8 = v7;
@@ -270,12 +270,12 @@
   return v7;
 }
 
-- (id)dictionaryReplacingKeysFromDictionary:(id)a3
+- (id)dictionaryReplacingKeysFromDictionary:(id)dictionary
 {
   v4 = self->_cacheDictionary;
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  dictionaryCopy = dictionary;
+  v7 = [v5 dictionaryWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __55__HKStringCache_dictionaryReplacingKeysFromDictionary___block_invoke;
@@ -284,7 +284,7 @@
   v8 = v7;
   v15 = v8;
   v9 = v4;
-  [v6 enumerateKeysAndObjectsUsingBlock:v13];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v13];
 
   v10 = v15;
   v11 = v8;
@@ -313,17 +313,17 @@ void __55__HKStringCache_dictionaryReplacingKeysFromDictionary___block_invoke(ui
   [*(a1 + 40) setObject:v6 forKeyedSubscript:v9];
 }
 
-- (void)updateCacheWithStrings:(id)a3
+- (void)updateCacheWithStrings:(id)strings
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringsCopy = strings;
   os_unfair_lock_lock(&self->_lock);
   v5 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:self->_cacheDictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = stringsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -370,12 +370,12 @@ void __55__HKStringCache_dictionaryReplacingKeysFromDictionary___block_invoke(ui
 
 - (_DWORD)initInternal
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = HKStringCache;
   v1 = objc_msgSendSuper2(&v6, sel_init);
   v2 = v1;

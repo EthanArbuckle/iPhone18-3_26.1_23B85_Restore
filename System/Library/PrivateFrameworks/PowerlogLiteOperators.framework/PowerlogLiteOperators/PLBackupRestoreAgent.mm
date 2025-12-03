@@ -1,8 +1,8 @@
 @interface PLBackupRestoreAgent
 + (void)load;
 - (PLBackupRestoreAgent)init;
-- (void)didChangeEvent:(id)a3 toState:(BOOL)a4;
-- (void)handleFastPassCallback:(id)a3;
+- (void)didChangeEvent:(id)event toState:(BOOL)state;
+- (void)handleFastPassCallback:(id)callback;
 - (void)initOperatorDependancies;
 - (void)logEventForwardBackupRestore;
 - (void)updateBackupState;
@@ -13,7 +13,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLBackupRestoreAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -23,7 +23,7 @@
   v42 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D3F208] isHomePod] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F208], "nonUIBuild"))
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -46,9 +46,9 @@
         v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLBackupRestoreAgent::init: _backupState=%i, _restoreState=%i", v5->_backupState, v5->_restoreState];
         v9 = MEMORY[0x277D3F178];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLBackupRestoreAgent.m"];
-        v11 = [v10 lastPathComponent];
+        lastPathComponent = [v10 lastPathComponent];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBackupRestoreAgent init]"];
-        [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:96];
+        [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:96];
 
         v13 = PLLogCommon();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -60,37 +60,37 @@
       }
 
       out_token = -1;
-      v14 = [*MEMORY[0x277D28A90] UTF8String];
-      v15 = [(PLOperator *)v5 workQueue];
+      uTF8String = [*MEMORY[0x277D28A90] UTF8String];
+      workQueue = [(PLOperator *)v5 workQueue];
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
       handler[2] = __28__PLBackupRestoreAgent_init__block_invoke;
       handler[3] = &unk_278260C40;
       v16 = v5;
       v38 = v16;
-      notify_register_dispatch(v14, &out_token, v15, handler);
+      notify_register_dispatch(uTF8String, &out_token, workQueue, handler);
 
       v36 = -1;
       v17 = *MEMORY[0x277D28AA8];
-      v18 = [*MEMORY[0x277D28AA8] UTF8String];
-      v19 = [(PLOperator *)v16 workQueue];
+      uTF8String2 = [*MEMORY[0x277D28AA8] UTF8String];
+      workQueue2 = [(PLOperator *)v16 workQueue];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __28__PLBackupRestoreAgent_init__block_invoke_33;
       v34[3] = &unk_278260C40;
       v20 = v16;
       v35 = v20;
-      notify_register_dispatch(v18, &v36, v19, v34);
+      notify_register_dispatch(uTF8String2, &v36, workQueue2, v34);
 
       v21 = objc_alloc(MEMORY[0x277D3F160]);
-      v22 = [(PLOperator *)v20 workQueue];
+      workQueue3 = [(PLOperator *)v20 workQueue];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __28__PLBackupRestoreAgent_init__block_invoke_38;
       v32[3] = &unk_2782597E8;
       v23 = v20;
       v33 = v23;
-      v24 = [v21 initWithWorkQueue:v22 forNotification:v17 requireState:1 withBlock:v32];
+      v24 = [v21 initWithWorkQueue:workQueue3 forNotification:v17 requireState:1 withBlock:v32];
       [(PLBackupRestoreAgent *)v23 setBackupRestoreNotification:v24];
 
       v25 = objc_alloc(MEMORY[0x277D3F1A8]);
@@ -105,11 +105,11 @@
     }
 
     self = v5;
-    v3 = self;
+    selfCopy = self;
   }
 
   v28 = *MEMORY[0x277D85DE8];
-  return v3;
+  return selfCopy;
 }
 
 uint64_t __28__PLBackupRestoreAgent_init__block_invoke(uint64_t a1)
@@ -207,20 +207,20 @@ void __28__PLBackupRestoreAgent_init__block_invoke_41(uint64_t a1, void *a2)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFastPassCallback:(id)a3
+- (void)handleFastPassCallback:(id)callback
 {
   v53 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  callbackCopy = callback;
   v4 = PLLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v52 = v3;
+    v52 = callbackCopy;
     _os_log_debug_impl(&dword_21A4C6000, v4, OS_LOG_TYPE_DEBUG, "Ongoing Restore: Fast Pass Process state changed. UserInfo: %@", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v6 = [v3 objectForKey:@"entry"];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  v6 = [callbackCopy objectForKey:@"entry"];
   v7 = v6;
   if (v6)
   {
@@ -233,14 +233,14 @@ void __28__PLBackupRestoreAgent_init__block_invoke_41(uint64_t a1, void *a2)
       if (v10)
       {
         v11 = [v7 objectForKeyedSubscript:@"state"];
-        v12 = [v11 intValue];
+        intValue = [v11 intValue];
 
         v13 = [v7 objectForKeyedSubscript:@"processName"];
         v14 = PLLogCommon();
         v15 = v14;
-        if (v12 > 29)
+        if (intValue > 29)
         {
-          if (v12 == 30)
+          if (intValue == 30)
           {
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
             {
@@ -272,8 +272,8 @@ void __28__PLBackupRestoreAgent_init__block_invoke_41(uint64_t a1, void *a2)
                 }
 
                 v32 = *(*(&v40 + 1) + 8 * i);
-                v33 = [MEMORY[0x277D3F0C0] sharedInstance];
-                [v33 createQualificationEventForwardWithQualificationID:16 withRemovingChildNodeName:v32 withStartDate:v5];
+                mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+                [mEMORY[0x277D3F0C0] createQualificationEventForwardWithQualificationID:16 withRemovingChildNodeName:v32 withStartDate:monotonicDate];
               }
 
               v29 = [v15 countByEnumeratingWithState:&v40 objects:v49 count:16];
@@ -283,7 +283,7 @@ void __28__PLBackupRestoreAgent_init__block_invoke_41(uint64_t a1, void *a2)
             goto LABEL_44;
           }
 
-          if (v12 == 60)
+          if (intValue == 60)
           {
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
             {
@@ -315,8 +315,8 @@ void __28__PLBackupRestoreAgent_init__block_invoke_41(uint64_t a1, void *a2)
                 }
 
                 v26 = *(*(&v36 + 1) + 8 * j);
-                v27 = [MEMORY[0x277D3F0C0] sharedInstance];
-                [v27 createQualificationEventForwardWithQualificationID:16 withRemovingChildNodeName:v26 withStartDate:v5];
+                mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+                [mEMORY[0x277D3F0C0]2 createQualificationEventForwardWithQualificationID:16 withRemovingChildNodeName:v26 withStartDate:monotonicDate];
               }
 
               v23 = [v15 countByEnumeratingWithState:&v36 objects:v48 count:16];
@@ -329,7 +329,7 @@ void __28__PLBackupRestoreAgent_init__block_invoke_41(uint64_t a1, void *a2)
 
         else
         {
-          if (v12 == 10)
+          if (intValue == 10)
           {
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
             {
@@ -340,7 +340,7 @@ void __28__PLBackupRestoreAgent_init__block_invoke_41(uint64_t a1, void *a2)
             goto LABEL_45;
           }
 
-          if (v12 == 20)
+          if (intValue == 20)
           {
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
             {
@@ -372,8 +372,8 @@ void __28__PLBackupRestoreAgent_init__block_invoke_41(uint64_t a1, void *a2)
                 }
 
                 v20 = *(*(&v44 + 1) + 8 * k);
-                v21 = [MEMORY[0x277D3F0C0] sharedInstance];
-                [v21 createQualificationEventForwardWithQualificationID:16 withAddingChildNodeName:v20 withStartDate:v5];
+                mEMORY[0x277D3F0C0]3 = [MEMORY[0x277D3F0C0] sharedInstance];
+                [mEMORY[0x277D3F0C0]3 createQualificationEventForwardWithQualificationID:16 withAddingChildNodeName:v20 withStartDate:monotonicDate];
               }
 
               v17 = [v15 countByEnumeratingWithState:&v44 objects:v50 count:16];
@@ -410,42 +410,42 @@ LABEL_46:
   {
     [(PLBackupRestoreAgent *)self updateBackupState];
     [(PLBackupRestoreAgent *)self updateRestoreState];
-    v4 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v3 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [v4 createDistributionEventForwardWithDistributionID:39 withChildNodeNameToWeight:&unk_282C1A3F8 withStartDate:v3];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:39 withChildNodeNameToWeight:&unk_282C1A3F8 withStartDate:monotonicDate];
   }
 }
 
-- (void)didChangeEvent:(id)a3 toState:(BOOL)a4
+- (void)didChangeEvent:(id)event toState:(BOOL)state
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (([MEMORY[0x277D3F208] nonUIBuild] & 1) == 0 && ((objc_msgSend(v5, "isEqualToString:", @"Backup") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"Restore")))
+  eventCopy = event;
+  if (([MEMORY[0x277D3F208] nonUIBuild] & 1) == 0 && ((objc_msgSend(eventCopy, "isEqualToString:", @"Backup") & 1) != 0 || objc_msgSend(eventCopy, "isEqualToString:", @"Restore")))
   {
-    v6 = [MEMORY[0x277CBEAA8] monotonicDate];
-    if (a4)
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    if (state)
     {
-      v15 = v5;
+      v15 = eventCopy;
       v16[0] = &unk_282C1CE28;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-      v8 = [MEMORY[0x277D3F0C0] sharedInstance];
-      [v8 createDistributionEventForwardWithDistributionID:12 withChildNodeNameToWeight:v7 withStartDate:v6];
+      mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+      [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:12 withChildNodeNameToWeight:v7 withStartDate:monotonicDate];
 
-      v13 = v5;
+      v13 = eventCopy;
       v14 = &unk_282C1CE28;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
     }
 
     else
     {
-      v10 = [MEMORY[0x277D3F0C0] sharedInstance];
-      [v10 createDistributionEventForwardWithDistributionID:12 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:v6];
+      mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+      [mEMORY[0x277D3F0C0]2 createDistributionEventForwardWithDistributionID:12 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:monotonicDate];
 
       v9 = &unk_282C1A420;
     }
 
-    v11 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v11 createDistributionEventForwardWithDistributionID:39 withChildNodeNameToWeight:v9 withStartDate:v6];
+    mEMORY[0x277D3F0C0]3 = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0]3 createDistributionEventForwardWithDistributionID:39 withChildNodeNameToWeight:v9 withStartDate:monotonicDate];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -453,19 +453,19 @@ LABEL_46:
 
 - (void)updateBackupState
 {
-  v4 = [(PLBackupRestoreAgent *)self backupRestoreManager];
-  v3 = [v4 backupState];
-  -[PLBackupRestoreAgent setBackupState:](self, "setBackupState:", [v3 state] == 2);
+  backupRestoreManager = [(PLBackupRestoreAgent *)self backupRestoreManager];
+  backupState = [backupRestoreManager backupState];
+  -[PLBackupRestoreAgent setBackupState:](self, "setBackupState:", [backupState state] == 2);
 }
 
 - (void)updateRestoreState
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(PLBackupRestoreAgent *)self backupRestoreManager];
-  v4 = [v3 restoreState];
-  v5 = [v4 state];
+  backupRestoreManager = [(PLBackupRestoreAgent *)self backupRestoreManager];
+  restoreState = [backupRestoreManager restoreState];
+  state = [restoreState state];
 
-  [(PLBackupRestoreAgent *)self setRestoreState:v5 == 2];
+  [(PLBackupRestoreAgent *)self setRestoreState:state == 2];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v6 = objc_opt_class();
@@ -481,12 +481,12 @@ LABEL_46:
 
     if (_MergedGlobals_1_67 == 1)
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLBackupRestoreAgent::restoreState:%d", v5, block, v18, v19, v20, v21];
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLBackupRestoreAgent::restoreState:%d", state, block, v18, v19, v20, v21];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLBackupRestoreAgent.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBackupRestoreAgent updateRestoreState]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:229];
+      [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:229];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -498,7 +498,7 @@ LABEL_46:
     }
   }
 
-  v13 = (v5 - 1) < 3;
+  v13 = (state - 1) < 3;
   v14 = MEMORY[0x277D3F180];
   v15 = [MEMORY[0x277CCABB0] numberWithBool:v13];
   [v14 setObject:v15 forKey:@"ongoingRestore" forApplicationID:@"com.apple.powerlogd" saveToDisk:1];
@@ -517,8 +517,8 @@ uint64_t __42__PLBackupRestoreAgent_updateRestoreState__block_invoke(uint64_t a1
 {
   v14 = *MEMORY[0x277D85DE8];
   state64 = 0;
-  v3 = [(PLBackupRestoreAgent *)self backupRestoreNotification];
-  state = notify_get_state([v3 stateToken], &state64);
+  backupRestoreNotification = [(PLBackupRestoreAgent *)self backupRestoreNotification];
+  state = notify_get_state([backupRestoreNotification stateToken], &state64);
 
   v5 = PLLogCommon();
   v6 = v5;

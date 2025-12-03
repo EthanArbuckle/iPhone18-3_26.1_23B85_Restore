@@ -1,75 +1,75 @@
 @interface SWHighlightIdentifier
-- (BOOL)isEqual:(id)a3;
-- (SWHighlightIdentifier)initWithCoder:(id)a3;
-- (SWHighlightIdentifier)initWithStringIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SWHighlightIdentifier)initWithCoder:(id)coder;
+- (SWHighlightIdentifier)initWithStringIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SWHighlightIdentifier
 
-- (SWHighlightIdentifier)initWithStringIdentifier:(id)a3
+- (SWHighlightIdentifier)initWithStringIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = SWHighlightIdentifier;
   v5 = [(SWHighlightIdentifier *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SWHighlightIdentifier *)v5 setStringIdentifier:v4];
+    [(SWHighlightIdentifier *)v5 setStringIdentifier:identifierCopy];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SWHighlightIdentifier *)self stringIdentifier];
-  [v4 encodeObject:v5 forKey:@"sid"];
+  coderCopy = coder;
+  stringIdentifier = [(SWHighlightIdentifier *)self stringIdentifier];
+  [coderCopy encodeObject:stringIdentifier forKey:@"sid"];
 }
 
-- (SWHighlightIdentifier)initWithCoder:(id)a3
+- (SWHighlightIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = SWHighlightIdentifier;
   v5 = [(SWHighlightIdentifier *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
     [(SWHighlightIdentifier *)v5 setStringIdentifier:v6];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_alloc_init(objc_opt_class());
-  v4 = [v3 stringIdentifier];
-  [v3 setStringIdentifier:v4];
+  stringIdentifier = [v3 stringIdentifier];
+  [v3 setStringIdentifier:stringIdentifier];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(SWHighlightIdentifier *)self stringIdentifier];
-    if (v7 || ([v6 stringIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = equalCopy;
+    stringIdentifier = [(SWHighlightIdentifier *)self stringIdentifier];
+    if (stringIdentifier || ([v6 stringIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [(SWHighlightIdentifier *)self stringIdentifier];
-      v9 = [v6 stringIdentifier];
-      v10 = [v8 isEqualToString:v9];
+      stringIdentifier2 = [(SWHighlightIdentifier *)self stringIdentifier];
+      stringIdentifier3 = [v6 stringIdentifier];
+      v10 = [stringIdentifier2 isEqualToString:stringIdentifier3];
 
-      if (v7)
+      if (stringIdentifier)
       {
 LABEL_9:
 
@@ -93,8 +93,8 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v2 = [(SWHighlightIdentifier *)self stringIdentifier];
-  v3 = [v2 hash];
+  stringIdentifier = [(SWHighlightIdentifier *)self stringIdentifier];
+  v3 = [stringIdentifier hash];
 
   return v3;
 }

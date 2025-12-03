@@ -1,16 +1,16 @@
 @interface _UISceneExternalSettingsModifierSettingsExtension
-+ (void)configureSetting:(id)a3;
++ (void)configureSetting:(id)setting;
 @end
 
 @implementation _UISceneExternalSettingsModifierSettingsExtension
 
-+ (void)configureSetting:(id)a3
++ (void)configureSetting:(id)setting
 {
-  v3 = a3;
-  if ([v3 matchesProperty:sel_externalSettingsModifierEndpoint])
+  settingCopy = setting;
+  if ([settingCopy matchesProperty:sel_externalSettingsModifierEndpoint])
   {
-    [v3 setPropagating:1];
-    [v3 setNullPreserving:1];
+    [settingCopy setPropagating:1];
+    [settingCopy setNullPreserving:1];
   }
 }
 

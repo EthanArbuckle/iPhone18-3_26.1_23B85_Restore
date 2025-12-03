@@ -1,15 +1,15 @@
 @interface PXPhotosViewInteraction
-+ (id)interactionWithViewModel:(id)a3;
++ (id)interactionWithViewModel:(id)model;
 - (PXPhotosContentController)contentController;
-- (PXPhotosViewInteraction)initWithViewModel:(id)a3;
+- (PXPhotosViewInteraction)initWithViewModel:(id)model;
 - (PXPhotosViewInteractionDelegate)delegate;
 - (UIViewController)presentingViewController;
-- (id)assetHitTestResultAtPoint:(CGPoint)a3 coordinateSpace:(id)a4;
-- (id)assetReferenceAtLocation:(CGPoint)a3 withPadding:(UIEdgeInsets)a4 inCoordinateSpace:(id)a5;
-- (id)regionOfInterestForAssetReference:(id)a3 image:(CGImage *)a4 fallbackMediaProvider:(id)a5 shouldSnapshot:(BOOL)a6;
-- (id)zoomablePhotosInteraction:(id)a3 assetReferenceAtLocation:(CGPoint)a4;
-- (void)setZoomablePhotosInteraction:(id)a3;
-- (void)zoomablePhotosInteractionWillBegin:(id)a3;
+- (id)assetHitTestResultAtPoint:(CGPoint)point coordinateSpace:(id)space;
+- (id)assetReferenceAtLocation:(CGPoint)location withPadding:(UIEdgeInsets)padding inCoordinateSpace:(id)space;
+- (id)regionOfInterestForAssetReference:(id)reference image:(CGImage *)image fallbackMediaProvider:(id)provider shouldSnapshot:(BOOL)snapshot;
+- (id)zoomablePhotosInteraction:(id)interaction assetReferenceAtLocation:(CGPoint)location;
+- (void)setZoomablePhotosInteraction:(id)interaction;
+- (void)zoomablePhotosInteractionWillBegin:(id)begin;
 @end
 
 @implementation PXPhotosViewInteraction
@@ -28,62 +28,62 @@
   return WeakRetained;
 }
 
-- (id)zoomablePhotosInteraction:(id)a3 assetReferenceAtLocation:(CGPoint)a4
+- (id)zoomablePhotosInteraction:(id)interaction assetReferenceAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(PXGInteraction *)self view];
-  v8 = [(PXPhotosViewInteraction *)self assetHitTestResultAtPoint:v7 coordinateSpace:x, y];
+  y = location.y;
+  x = location.x;
+  view = [(PXGInteraction *)self view];
+  v8 = [(PXPhotosViewInteraction *)self assetHitTestResultAtPoint:view coordinateSpace:x, y];
 
-  v9 = [v8 userData];
+  userData = [v8 userData];
 
-  return v9;
+  return userData;
 }
 
-- (void)zoomablePhotosInteractionWillBegin:(id)a3
+- (void)zoomablePhotosInteractionWillBegin:(id)begin
 {
-  v3 = [(PXPhotosViewInteraction *)self viewModel];
-  v6 = [v3 dataSourceManager];
+  viewModel = [(PXPhotosViewInteraction *)self viewModel];
+  dataSourceManager = [viewModel dataSourceManager];
 
-  v4 = [v6 dataSource];
-  v5 = [v4 areAllSectionsConsideredAccurate];
+  dataSource = [dataSourceManager dataSource];
+  areAllSectionsConsideredAccurate = [dataSource areAllSectionsConsideredAccurate];
 
-  if ((v5 & 1) == 0)
+  if ((areAllSectionsConsideredAccurate & 1) == 0)
   {
-    [v6 performChanges:&__block_literal_global_4];
+    [dataSourceManager performChanges:&__block_literal_global_4];
   }
 }
 
 - (UIViewController)presentingViewController
 {
-  v3 = [(PXPhotosViewInteraction *)self delegate];
-  v4 = [v3 presentingViewControllerForPhotosInteraction:self];
+  delegate = [(PXPhotosViewInteraction *)self delegate];
+  v4 = [delegate presentingViewControllerForPhotosInteraction:self];
 
   return v4;
 }
 
-- (id)regionOfInterestForAssetReference:(id)a3 image:(CGImage *)a4 fallbackMediaProvider:(id)a5 shouldSnapshot:(BOOL)a6
+- (id)regionOfInterestForAssetReference:(id)reference image:(CGImage *)image fallbackMediaProvider:(id)provider shouldSnapshot:(BOOL)snapshot
 {
-  v9 = a5;
-  v10 = a3;
-  v11 = [(PXGInteraction *)self view];
-  v12 = [(PXGInteraction *)self layout];
-  v13 = PXRegionOfInterestForAssetReference(v11, v12, v10, a4, v9);
+  providerCopy = provider;
+  referenceCopy = reference;
+  view = [(PXGInteraction *)self view];
+  layout = [(PXGInteraction *)self layout];
+  v13 = PXRegionOfInterestForAssetReference(view, layout, referenceCopy, image, providerCopy);
 
   return v13;
 }
 
-- (id)assetReferenceAtLocation:(CGPoint)a3 withPadding:(UIEdgeInsets)a4 inCoordinateSpace:(id)a5
+- (id)assetReferenceAtLocation:(CGPoint)location withPadding:(UIEdgeInsets)padding inCoordinateSpace:(id)space
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  y = a3.y;
-  x = a3.x;
-  v12 = a5;
-  v13 = [(PXGInteraction *)self view];
-  [v13 convertPoint:v12 fromCoordinateSpace:{x, y}];
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
+  y = location.y;
+  x = location.x;
+  spaceCopy = space;
+  view = [(PXGInteraction *)self view];
+  [view convertPoint:spaceCopy fromCoordinateSpace:{x, y}];
   v15 = v14;
   v17 = v16;
 
@@ -93,8 +93,8 @@
   v26 = __Block_byref_object_copy__1506;
   v27 = __Block_byref_object_dispose__1507;
   v28 = 0;
-  v18 = [(PXGInteraction *)self view];
-  v19 = [v18 hitTestResultsAtPoint:0 padding:v15 passingTest:{v17, top, left, bottom, right}];
+  view2 = [(PXGInteraction *)self view];
+  v19 = [view2 hitTestResultsAtPoint:0 padding:v15 passingTest:{v17, top, left, bottom, right}];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __82__PXPhotosViewInteraction_assetReferenceAtLocation_withPadding_inCoordinateSpace___block_invoke;
@@ -135,12 +135,12 @@ LABEL_5:
   }
 }
 
-- (id)assetHitTestResultAtPoint:(CGPoint)a3 coordinateSpace:(id)a4
+- (id)assetHitTestResultAtPoint:(CGPoint)point coordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PXGInteraction *)self view];
-  v7 = [v6 hitTestResultsAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  view = [(PXGInteraction *)self view];
+  v7 = [view hitTestResultsAtPoint:{x, y}];
 
   v8 = PXFind();
 
@@ -164,44 +164,44 @@ uint64_t __69__PXPhotosViewInteraction_assetHitTestResultAtPoint_coordinateSpace
   return v4;
 }
 
-- (void)setZoomablePhotosInteraction:(id)a3
+- (void)setZoomablePhotosInteraction:(id)interaction
 {
-  v9 = a3;
+  interactionCopy = interaction;
   v5 = self->_zoomablePhotosInteraction;
-  v6 = v5;
-  if (v5 != v9)
+  view = v5;
+  if (v5 != interactionCopy)
   {
-    v7 = [(PXZoomablePhotosInteraction *)v5 isEqual:v9];
+    v7 = [(PXZoomablePhotosInteraction *)v5 isEqual:interactionCopy];
 
-    v8 = v9;
+    v8 = interactionCopy;
     if (v7)
     {
       goto LABEL_5;
     }
 
     [(PXZoomablePhotosInteraction *)self->_zoomablePhotosInteraction setDelegate:0];
-    objc_storeStrong(&self->_zoomablePhotosInteraction, a3);
-    [(PXZoomablePhotosInteraction *)v9 setDelegate:self];
-    v6 = [(PXGInteraction *)self view];
-    [(PXZoomablePhotosInteraction *)v9 setView:v6];
+    objc_storeStrong(&self->_zoomablePhotosInteraction, interaction);
+    [(PXZoomablePhotosInteraction *)interactionCopy setDelegate:self];
+    view = [(PXGInteraction *)self view];
+    [(PXZoomablePhotosInteraction *)interactionCopy setView:view];
   }
 
-  v8 = v9;
+  v8 = interactionCopy;
 LABEL_5:
 }
 
-- (PXPhotosViewInteraction)initWithViewModel:(id)a3
+- (PXPhotosViewInteraction)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = PXPhotosViewInteraction;
   v6 = [(PXPhotosViewInteraction *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
-    v8 = [v5 viewModelHelper];
-    v9 = [v8 createInteractionHelperWithInteraction:v7 viewModel:v5];
+    objc_storeStrong(&v6->_viewModel, model);
+    viewModelHelper = [modelCopy viewModelHelper];
+    v9 = [viewModelHelper createInteractionHelperWithInteraction:v7 viewModel:modelCopy];
     interactionHelper = v7->_interactionHelper;
     v7->_interactionHelper = v9;
   }
@@ -209,10 +209,10 @@ LABEL_5:
   return v7;
 }
 
-+ (id)interactionWithViewModel:(id)a3
++ (id)interactionWithViewModel:(id)model
 {
-  v3 = a3;
-  v4 = [(PXPhotosViewInteraction *)[PXPhotosViewUIInteraction alloc] initWithViewModel:v3];
+  modelCopy = model;
+  v4 = [(PXPhotosViewInteraction *)[PXPhotosViewUIInteraction alloc] initWithViewModel:modelCopy];
 
   return v4;
 }

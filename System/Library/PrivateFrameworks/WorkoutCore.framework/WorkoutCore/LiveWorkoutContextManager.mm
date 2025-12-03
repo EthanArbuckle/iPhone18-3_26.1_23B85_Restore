@@ -1,10 +1,10 @@
 @interface LiveWorkoutContextManager
 - (_TtC11WorkoutCore25LiveWorkoutContextManager)init;
-- (void)activityRingsUpdatedWithSummary:(id)a3;
-- (void)completedActivityRing:(int64_t)a3 activitySummary:(id)a4;
-- (void)dataProvider:(id)a3 didUpdate:(unint64_t)a4;
-- (void)splitComplete:(id)a3 currentSplitEvents:(id)a4;
-- (void)workout:(id)a3 didMoveToState:(int64_t)a4;
+- (void)activityRingsUpdatedWithSummary:(id)summary;
+- (void)completedActivityRing:(int64_t)ring activitySummary:(id)summary;
+- (void)dataProvider:(id)provider didUpdate:(unint64_t)update;
+- (void)splitComplete:(id)complete currentSplitEvents:(id)events;
+- (void)workout:(id)workout didMoveToState:(int64_t)state;
 @end
 
 @implementation LiveWorkoutContextManager
@@ -16,42 +16,42 @@
   return result;
 }
 
-- (void)dataProvider:(id)a3 didUpdate:(unint64_t)a4
+- (void)dataProvider:(id)provider didUpdate:(unint64_t)update
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  LiveWorkoutContextManager.dataProvider(_:didUpdate:)(a3, a4);
+  selfCopy = self;
+  LiveWorkoutContextManager.dataProvider(_:didUpdate:)(provider, update);
   swift_unknownObjectRelease();
 }
 
-- (void)splitComplete:(id)a3 currentSplitEvents:(id)a4
+- (void)splitComplete:(id)complete currentSplitEvents:(id)events
 {
   type metadata accessor for NSUnitPower(0, &lazy cache variable for type metadata for HKWorkoutEvent, 0x277CCDC68);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
-  LiveWorkoutContextManager.splitComplete(_:currentSplitEvents:)(v7, v6);
+  completeCopy = complete;
+  selfCopy = self;
+  LiveWorkoutContextManager.splitComplete(_:currentSplitEvents:)(completeCopy, v6);
 }
 
-- (void)activityRingsUpdatedWithSummary:(id)a3
+- (void)activityRingsUpdatedWithSummary:(id)summary
 {
-  v4 = a3;
-  v5 = self;
-  LiveWorkoutContextManager.activityRingsUpdated(with:)(v4);
+  summaryCopy = summary;
+  selfCopy = self;
+  LiveWorkoutContextManager.activityRingsUpdated(with:)(summaryCopy);
 }
 
-- (void)completedActivityRing:(int64_t)a3 activitySummary:(id)a4
+- (void)completedActivityRing:(int64_t)ring activitySummary:(id)summary
 {
-  v6 = a4;
-  v7 = self;
-  LiveWorkoutContextManager.completedActivityRing(_:activitySummary:)(a3, v6);
+  summaryCopy = summary;
+  selfCopy = self;
+  LiveWorkoutContextManager.completedActivityRing(_:activitySummary:)(ring, summaryCopy);
 }
 
-- (void)workout:(id)a3 didMoveToState:(int64_t)a4
+- (void)workout:(id)workout didMoveToState:(int64_t)state
 {
-  v6 = a3;
-  v7 = self;
-  LiveWorkoutContextManager.workout(_:didMoveToState:)(v6, a4);
+  workoutCopy = workout;
+  selfCopy = self;
+  LiveWorkoutContextManager.workout(_:didMoveToState:)(workoutCopy, state);
 }
 
 @end

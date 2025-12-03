@@ -1,21 +1,21 @@
 @interface OAVGroup
-+ (id)readFromGroup:(_xmlNode *)a3 inNamespace:(id)a4 state:(id)a5;
++ (id)readFromGroup:(_xmlNode *)group inNamespace:(id)namespace state:(id)state;
 @end
 
 @implementation OAVGroup
 
-+ (id)readFromGroup:(_xmlNode *)a3 inNamespace:(id)a4 state:(id)a5
++ (id)readFromGroup:(_xmlNode *)group inNamespace:(id)namespace state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
+  namespaceCopy = namespace;
+  stateCopy = state;
   v9 = objc_alloc_init(OADGroup);
-  [OAVDrawable readFromDrawable:a3 toDrawable:v9 state:v8];
-  v10 = [OAVDrawable readDrawablesFromParent:a3 inNamespace:v7 state:v8];
+  [OAVDrawable readFromDrawable:group toDrawable:v9 state:stateCopy];
+  v10 = [OAVDrawable readDrawablesFromParent:group inNamespace:namespaceCopy state:stateCopy];
   [(OADGroup *)v9 addChildren:v10];
 
-  [OAVDrawable readCoordBounds:a3];
+  [OAVDrawable readCoordBounds:group];
   [(OADGroup *)v9 setLogicalBounds:?];
-  [objc_msgSend(v8 "client")];
+  [objc_msgSend(stateCopy "client")];
 
   return v9;
 }

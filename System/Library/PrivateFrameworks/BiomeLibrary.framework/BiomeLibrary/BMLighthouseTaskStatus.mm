@@ -1,15 +1,15 @@
 @interface BMLighthouseTaskStatus
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMLighthouseTaskStatus)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMLighthouseTaskStatus)initWithVersion:(id)a3 taskName:(id)a4 taskState:(id)a5 taskSource:(id)a6 pushMetadata:(id)a7 pullMetadata:(id)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMLighthouseTaskStatus)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMLighthouseTaskStatus)initWithVersion:(id)version taskName:(id)name taskState:(id)state taskSource:(id)source pushMetadata:(id)metadata pullMetadata:(id)pullMetadata;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMLighthouseTaskStatus
@@ -36,13 +36,13 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMLighthouseTaskStatus hasVersion](self, "hasVersion") || [v5 hasVersion])
     {
       if (![(BMLighthouseTaskStatus *)self hasVersion])
@@ -55,25 +55,25 @@
         goto LABEL_22;
       }
 
-      v6 = [(BMLighthouseTaskStatus *)self version];
-      if (v6 != [v5 version])
+      version = [(BMLighthouseTaskStatus *)self version];
+      if (version != [v5 version])
       {
         goto LABEL_22;
       }
     }
 
-    v7 = [(BMLighthouseTaskStatus *)self taskName];
-    v8 = [v5 taskName];
-    v9 = v8;
-    if (v7 == v8)
+    taskName = [(BMLighthouseTaskStatus *)self taskName];
+    taskName2 = [v5 taskName];
+    v9 = taskName2;
+    if (taskName == taskName2)
     {
     }
 
     else
     {
-      v10 = [(BMLighthouseTaskStatus *)self taskName];
-      v11 = [v5 taskName];
-      v12 = [v10 isEqual:v11];
+      taskName3 = [(BMLighthouseTaskStatus *)self taskName];
+      taskName4 = [v5 taskName];
+      v12 = [taskName3 isEqual:taskName4];
 
       if (!v12)
       {
@@ -81,18 +81,18 @@
       }
     }
 
-    v14 = [(BMLighthouseTaskStatus *)self taskState];
-    v15 = [v5 taskState];
-    v16 = v15;
-    if (v14 == v15)
+    taskState = [(BMLighthouseTaskStatus *)self taskState];
+    taskState2 = [v5 taskState];
+    v16 = taskState2;
+    if (taskState == taskState2)
     {
     }
 
     else
     {
-      v17 = [(BMLighthouseTaskStatus *)self taskState];
-      v18 = [v5 taskState];
-      v19 = [v17 isEqual:v18];
+      taskState3 = [(BMLighthouseTaskStatus *)self taskState];
+      taskState4 = [v5 taskState];
+      v19 = [taskState3 isEqual:taskState4];
 
       if (!v19)
       {
@@ -100,18 +100,18 @@
       }
     }
 
-    v20 = [(BMLighthouseTaskStatus *)self taskSource];
-    v21 = [v5 taskSource];
-    v22 = v21;
-    if (v20 == v21)
+    taskSource = [(BMLighthouseTaskStatus *)self taskSource];
+    taskSource2 = [v5 taskSource];
+    v22 = taskSource2;
+    if (taskSource == taskSource2)
     {
     }
 
     else
     {
-      v23 = [(BMLighthouseTaskStatus *)self taskSource];
-      v24 = [v5 taskSource];
-      v25 = [v23 isEqual:v24];
+      taskSource3 = [(BMLighthouseTaskStatus *)self taskSource];
+      taskSource4 = [v5 taskSource];
+      v25 = [taskSource3 isEqual:taskSource4];
 
       if (!v25)
       {
@@ -119,18 +119,18 @@
       }
     }
 
-    v26 = [(BMLighthouseTaskStatus *)self pushMetadata];
-    v27 = [v5 pushMetadata];
-    v28 = v27;
-    if (v26 == v27)
+    pushMetadata = [(BMLighthouseTaskStatus *)self pushMetadata];
+    pushMetadata2 = [v5 pushMetadata];
+    v28 = pushMetadata2;
+    if (pushMetadata == pushMetadata2)
     {
     }
 
     else
     {
-      v29 = [(BMLighthouseTaskStatus *)self pushMetadata];
-      v30 = [v5 pushMetadata];
-      v31 = [v29 isEqual:v30];
+      pushMetadata3 = [(BMLighthouseTaskStatus *)self pushMetadata];
+      pushMetadata4 = [v5 pushMetadata];
+      v31 = [pushMetadata3 isEqual:pushMetadata4];
 
       if (!v31)
       {
@@ -142,18 +142,18 @@ LABEL_23:
       }
     }
 
-    v33 = [(BMLighthouseTaskStatus *)self pullMetadata];
-    v34 = [v5 pullMetadata];
-    if (v33 == v34)
+    pullMetadata = [(BMLighthouseTaskStatus *)self pullMetadata];
+    pullMetadata2 = [v5 pullMetadata];
+    if (pullMetadata == pullMetadata2)
     {
       v13 = 1;
     }
 
     else
     {
-      v35 = [(BMLighthouseTaskStatus *)self pullMetadata];
-      v36 = [v5 pullMetadata];
-      v13 = [v35 isEqual:v36];
+      pullMetadata3 = [(BMLighthouseTaskStatus *)self pullMetadata];
+      pullMetadata4 = [v5 pullMetadata];
+      v13 = [pullMetadata3 isEqual:pullMetadata4];
     }
 
     goto LABEL_23;
@@ -178,70 +178,70 @@ LABEL_24:
     v3 = 0;
   }
 
-  v4 = [(BMLighthouseTaskStatus *)self taskName];
-  v5 = [(BMLighthouseTaskStatus *)self taskState];
-  v6 = [(BMLighthouseTaskStatus *)self taskSource];
-  v7 = [(BMLighthouseTaskStatus *)self pushMetadata];
-  v8 = [v7 jsonDictionary];
+  taskName = [(BMLighthouseTaskStatus *)self taskName];
+  taskState = [(BMLighthouseTaskStatus *)self taskState];
+  taskSource = [(BMLighthouseTaskStatus *)self taskSource];
+  pushMetadata = [(BMLighthouseTaskStatus *)self pushMetadata];
+  jsonDictionary = [pushMetadata jsonDictionary];
 
-  v9 = [(BMLighthouseTaskStatus *)self pullMetadata];
-  v10 = [v9 jsonDictionary];
+  pullMetadata = [(BMLighthouseTaskStatus *)self pullMetadata];
+  jsonDictionary2 = [pullMetadata jsonDictionary];
 
   v24[0] = @"version";
-  v11 = v3;
+  null = v3;
   if (!v3)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v11;
+  v22 = null;
   v23 = v3;
-  v25[0] = v11;
+  v25[0] = null;
   v24[1] = @"taskName";
-  v12 = v4;
-  if (!v4)
+  null2 = taskName;
+  if (!taskName)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v12;
-  v25[1] = v12;
+  v20 = null2;
+  v25[1] = null2;
   v24[2] = @"taskState";
-  v13 = v5;
-  if (!v5)
+  null3 = taskState;
+  if (!taskState)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[2] = v13;
+  v25[2] = null3;
   v24[3] = @"taskSource";
-  v14 = v6;
-  if (!v6)
+  null4 = taskSource;
+  if (!taskSource)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[3] = v14;
+  v25[3] = null4;
   v24[4] = @"pushMetadata";
-  v15 = v8;
-  if (!v8)
+  null5 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[4] = v15;
+  v25[4] = null5;
   v24[5] = @"pullMetadata";
-  v16 = v10;
-  if (!v10)
+  null6 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[5] = v16;
+  v25[5] = null6;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:{6, v20}];
-  if (v10)
+  if (jsonDictionary2)
   {
-    if (v8)
+    if (jsonDictionary)
     {
       goto LABEL_18;
     }
@@ -250,10 +250,10 @@ LABEL_24:
   else
   {
 
-    if (v8)
+    if (jsonDictionary)
     {
 LABEL_18:
-      if (v6)
+      if (taskSource)
       {
         goto LABEL_19;
       }
@@ -262,17 +262,17 @@ LABEL_18:
     }
   }
 
-  if (v6)
+  if (taskSource)
   {
 LABEL_19:
-    if (v5)
+    if (taskState)
     {
       goto LABEL_20;
     }
 
 LABEL_29:
 
-    if (v4)
+    if (taskName)
     {
       goto LABEL_21;
     }
@@ -282,13 +282,13 @@ LABEL_29:
 
 LABEL_28:
 
-  if (!v5)
+  if (!taskState)
   {
     goto LABEL_29;
   }
 
 LABEL_20:
-  if (v4)
+  if (taskName)
   {
     goto LABEL_21;
   }
@@ -305,23 +305,23 @@ LABEL_21:
   return v17;
 }
 
-- (BMLighthouseTaskStatus)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMLighthouseTaskStatus)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v69[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"version"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"version"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"taskName"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"taskName"];
     v53 = v7;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v22 = 0;
           v16 = 0;
@@ -330,7 +330,7 @@ LABEL_4:
 
         v24 = v8;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v26 = a4;
+        errorCopy = error;
         v27 = *MEMORY[0x1E698F240];
         v66 = *MEMORY[0x1E696A578];
         v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"taskName"];
@@ -339,10 +339,10 @@ LABEL_4:
         v29 = v25;
         v8 = v24;
         v30 = v27;
-        a4 = v28;
+        error = v28;
         v22 = 0;
         v16 = 0;
-        *v26 = [v29 initWithDomain:v30 code:2 userInfo:v10];
+        *errorCopy = [v29 initWithDomain:v30 code:2 userInfo:v10];
         goto LABEL_58;
       }
 
@@ -354,14 +354,14 @@ LABEL_4:
       v54 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"taskState"];
-    v55 = self;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"taskState"];
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v16 = 0;
           goto LABEL_57;
@@ -369,7 +369,7 @@ LABEL_4:
 
         v33 = v8;
         v34 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v35 = a4;
+        errorCopy2 = error;
         v36 = *MEMORY[0x1E698F240];
         v64 = *MEMORY[0x1E696A578];
         v52 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"taskState"];
@@ -378,12 +378,12 @@ LABEL_4:
         v37 = v34;
         v8 = v33;
         v38 = [v37 initWithDomain:v36 code:2 userInfo:v11];
-        a4 = 0;
+        error = 0;
         v16 = 0;
-        *v35 = v38;
+        *errorCopy2 = v38;
 LABEL_56:
 
-        self = v55;
+        self = selfCopy;
 LABEL_57:
         v22 = v54;
 LABEL_58:
@@ -400,18 +400,18 @@ LABEL_58:
       v50 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"taskSource"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"taskSource"];
     v51 = v8;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v52 = 0;
           v16 = 0;
-          a4 = v50;
+          error = v50;
           goto LABEL_56;
         }
 
@@ -426,7 +426,7 @@ LABEL_58:
         v42 = [v41 initWithDomain:v40 code:2 userInfo:v13];
         v52 = 0;
         v16 = 0;
-        *a4 = v42;
+        *error = v42;
         goto LABEL_46;
       }
 
@@ -438,19 +438,19 @@ LABEL_58:
       v52 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"pushMetadata"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"pushMetadata"];
     if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v13 = 0;
 LABEL_16:
-      v14 = [v6 objectForKeyedSubscript:@"pullMetadata"];
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"pullMetadata"];
       if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v15 = 0;
 LABEL_19:
-        a4 = v50;
-        v16 = [(BMLighthouseTaskStatus *)v55 initWithVersion:v51 taskName:v54 taskState:v50 taskSource:v52 pushMetadata:v13 pullMetadata:v15];
-        v55 = v16;
+        error = v50;
+        v16 = [(BMLighthouseTaskStatus *)selfCopy initWithVersion:v51 taskName:v54 taskState:v50 taskSource:v52 pushMetadata:v13 pullMetadata:v15];
+        selfCopy = v16;
 LABEL_52:
 
 LABEL_53:
@@ -472,19 +472,19 @@ LABEL_53:
           goto LABEL_19;
         }
 
-        if (a4)
+        if (error)
         {
           v32 = v32;
-          *a4 = v32;
+          *error = v32;
         }
       }
 
       else
       {
-        if (!a4)
+        if (!error)
         {
           v16 = 0;
-          a4 = v50;
+          error = v50;
           goto LABEL_53;
         }
 
@@ -494,21 +494,21 @@ LABEL_53:
         v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"pullMetadata"];
         v59 = v15;
         v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
-        *a4 = [v49 initWithDomain:v47 code:2 userInfo:v31];
+        *error = [v49 initWithDomain:v47 code:2 userInfo:v31];
       }
 
       v16 = 0;
-      a4 = v50;
+      error = v50;
       goto LABEL_52;
     }
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v16 = 0;
-        a4 = v50;
+        error = v50;
         goto LABEL_55;
       }
 
@@ -518,11 +518,11 @@ LABEL_53:
       v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"pushMetadata"];
       v61 = v13;
       v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
-      *a4 = [v48 initWithDomain:v43 code:2 userInfo:v44];
+      *error = [v48 initWithDomain:v43 code:2 userInfo:v44];
 
       v16 = 0;
       v17 = v12;
-      a4 = v50;
+      error = v50;
       v8 = v51;
 LABEL_54:
 
@@ -542,15 +542,15 @@ LABEL_55:
       goto LABEL_16;
     }
 
-    if (a4)
+    if (error)
     {
       v18 = v18;
-      *a4 = v18;
+      *error = v18;
     }
 
     v16 = 0;
 LABEL_46:
-    a4 = v50;
+    error = v50;
     goto LABEL_54;
   }
 
@@ -561,7 +561,7 @@ LABEL_46:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
@@ -569,7 +569,7 @@ LABEL_46:
   }
 
   v19 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v20 = a4;
+  errorCopy3 = error;
   v21 = *MEMORY[0x1E698F240];
   v68 = *MEMORY[0x1E696A578];
   v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"version"];
@@ -578,7 +578,7 @@ LABEL_46:
   v23 = [v19 initWithDomain:v21 code:2 userInfo:v9];
   v8 = 0;
   v16 = 0;
-  *v20 = v23;
+  *errorCopy3 = v23;
 LABEL_59:
 
 LABEL_60:
@@ -590,14 +590,14 @@ LABEL_60:
 {
   v3 = objc_opt_new();
   [(BMLighthouseTaskStatus *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_hasVersion)
   {
     version = self->_version;
@@ -622,21 +622,21 @@ LABEL_60:
   if (self->_pushMetadata)
   {
     PBDataWriterPlaceMark();
-    [(BMLighthouseTaskStatusPushMetadata *)self->_pushMetadata writeTo:v4];
+    [(BMLighthouseTaskStatusPushMetadata *)self->_pushMetadata writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_pullMetadata)
   {
     PBDataWriterPlaceMark();
-    [(BMLighthouseTaskStatusPullMetadata *)self->_pullMetadata writeTo:v4];
+    [(BMLighthouseTaskStatusPullMetadata *)self->_pullMetadata writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v32.receiver = self;
   v32.super_class = BMLighthouseTaskStatus;
   v5 = [(BMEventBase *)&v32 init];
@@ -645,12 +645,12 @@ LABEL_60:
     goto LABEL_54;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_52;
       }
@@ -661,18 +661,18 @@ LABEL_60:
       while (1)
       {
         LOBYTE(v33) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v33 & 0x7F) << v7;
@@ -690,9 +690,9 @@ LABEL_60:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_52;
       }
@@ -721,7 +721,7 @@ LABEL_42:
             goto LABEL_53;
           }
 
-          v18 = [[BMLighthouseTaskStatusPushMetadata alloc] initByReadFrom:v4];
+          v18 = [[BMLighthouseTaskStatusPushMetadata alloc] initByReadFrom:fromCopy];
           if (!v18)
           {
             goto LABEL_53;
@@ -737,7 +737,7 @@ LABEL_42:
             goto LABEL_53;
           }
 
-          v18 = [[BMLighthouseTaskStatusPullMetadata alloc] initByReadFrom:v4];
+          v18 = [[BMLighthouseTaskStatusPullMetadata alloc] initByReadFrom:fromCopy];
           if (!v18)
           {
             goto LABEL_53;
@@ -760,8 +760,8 @@ LABEL_39:
 
       PBReaderRecallMark();
 LABEL_51:
-      v29 = [v4 position];
-      if (v29 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_52;
       }
@@ -777,18 +777,18 @@ LABEL_51:
         while (1)
         {
           LOBYTE(v33) = 0;
-          v23 = [v4 position] + 1;
-          if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+          v23 = [fromCopy position] + 1;
+          if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
           {
-            v25 = [v4 data];
-            [v25 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v22 |= (v33 & 0x7F) << v20;
@@ -806,7 +806,7 @@ LABEL_51:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v26 = 0;
         }
@@ -835,7 +835,7 @@ LABEL_50:
   }
 
 LABEL_52:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_53:
     v30 = 0;
@@ -854,48 +854,48 @@ LABEL_54:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLighthouseTaskStatus version](self, "version")}];
-  v5 = [(BMLighthouseTaskStatus *)self taskName];
-  v6 = [(BMLighthouseTaskStatus *)self taskState];
-  v7 = [(BMLighthouseTaskStatus *)self taskSource];
-  v8 = [(BMLighthouseTaskStatus *)self pushMetadata];
-  v9 = [(BMLighthouseTaskStatus *)self pullMetadata];
-  v10 = [v3 initWithFormat:@"BMLighthouseTaskStatus with version: %@, taskName: %@, taskState: %@, taskSource: %@, pushMetadata: %@, pullMetadata: %@", v4, v5, v6, v7, v8, v9];
+  taskName = [(BMLighthouseTaskStatus *)self taskName];
+  taskState = [(BMLighthouseTaskStatus *)self taskState];
+  taskSource = [(BMLighthouseTaskStatus *)self taskSource];
+  pushMetadata = [(BMLighthouseTaskStatus *)self pushMetadata];
+  pullMetadata = [(BMLighthouseTaskStatus *)self pullMetadata];
+  v10 = [v3 initWithFormat:@"BMLighthouseTaskStatus with version: %@, taskName: %@, taskState: %@, taskSource: %@, pushMetadata: %@, pullMetadata: %@", v4, taskName, taskState, taskSource, pushMetadata, pullMetadata];
 
   return v10;
 }
 
-- (BMLighthouseTaskStatus)initWithVersion:(id)a3 taskName:(id)a4 taskState:(id)a5 taskSource:(id)a6 pushMetadata:(id)a7 pullMetadata:(id)a8
+- (BMLighthouseTaskStatus)initWithVersion:(id)version taskName:(id)name taskState:(id)state taskSource:(id)source pushMetadata:(id)metadata pullMetadata:(id)pullMetadata
 {
-  v14 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  versionCopy = version;
+  nameCopy = name;
+  stateCopy = state;
+  sourceCopy = source;
+  metadataCopy = metadata;
+  pullMetadataCopy = pullMetadata;
   v23.receiver = self;
   v23.super_class = BMLighthouseTaskStatus;
   v18 = [(BMEventBase *)&v23 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v14)
+    if (versionCopy)
     {
       v18->_hasVersion = 1;
-      v19 = [v14 intValue];
+      intValue = [versionCopy intValue];
     }
 
     else
     {
       v18->_hasVersion = 0;
-      v19 = -1;
+      intValue = -1;
     }
 
-    v18->_version = v19;
-    objc_storeStrong(&v18->_taskName, a4);
-    objc_storeStrong(&v18->_taskState, a5);
-    objc_storeStrong(&v18->_taskSource, a6);
-    objc_storeStrong(&v18->_pushMetadata, a7);
-    objc_storeStrong(&v18->_pullMetadata, a8);
+    v18->_version = intValue;
+    objc_storeStrong(&v18->_taskName, name);
+    objc_storeStrong(&v18->_taskState, state);
+    objc_storeStrong(&v18->_taskSource, source);
+    objc_storeStrong(&v18->_pushMetadata, metadata);
+    objc_storeStrong(&v18->_pullMetadata, pullMetadata);
   }
 
   return v18;
@@ -943,9 +943,9 @@ id __33__BMLighthouseTaskStatus_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -953,8 +953,8 @@ id __33__BMLighthouseTaskStatus_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMLighthouseTaskStatus alloc] initByReadFrom:v7];
     v4 = v8;

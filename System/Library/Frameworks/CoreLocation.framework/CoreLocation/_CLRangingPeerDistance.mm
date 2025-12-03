@@ -1,9 +1,9 @@
 @interface _CLRangingPeerDistance
-- (_CLRangingPeerDistance)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_CLRangingPeerDistance)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CLRangingPeerDistance
@@ -15,9 +15,9 @@
   [(_CLRangingPeerDistance *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   internal = self->_internal;
   v6 = internal[1];
   v7 = internal[2];
@@ -29,46 +29,46 @@
   return [v4 initWithPeer:v6 date:v7 distanceMeters:v8 accuracyMeters:v9 initiator:v10 shouldUnlock:v11];
 }
 
-- (_CLRangingPeerDistance)initWithCoder:(id)a3
+- (_CLRangingPeerDistance)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLCodingKeyRangingPeerDistancePeer"];
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLCodingKeyRangingPeerDistanceTimestamp"];
-  v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLCodingKeyRangingPeerDistanceDistance"];
-  v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLCodingKeyRangingPeerDistanceAccuracy"];
-  v10 = [a3 decodeBoolForKey:@"kCLCodingKeyRangingPeerDistanceInitiator"];
-  v11 = [a3 decodeBoolForKey:@"kCLCodingKeyRangingPeerDistanceUnlock"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLCodingKeyRangingPeerDistancePeer"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLCodingKeyRangingPeerDistanceTimestamp"];
+  v8 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLCodingKeyRangingPeerDistanceDistance"];
+  v9 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLCodingKeyRangingPeerDistanceAccuracy"];
+  v10 = [coder decodeBoolForKey:@"kCLCodingKeyRangingPeerDistanceInitiator"];
+  v11 = [coder decodeBoolForKey:@"kCLCodingKeyRangingPeerDistanceUnlock"];
 
   return [(_CLRangingPeerDistance *)self initWithPeer:v6 date:v7 distanceMeters:v8 accuracyMeters:v9 initiator:v10 shouldUnlock:v11];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   internal = self->_internal;
-  [a3 encodeObject:internal[1] forKey:@"kCLCodingKeyRangingPeerDistancePeer"];
-  [a3 encodeObject:internal[2] forKey:@"kCLCodingKeyRangingPeerDistanceTimestamp"];
-  [a3 encodeObject:internal[3] forKey:@"kCLCodingKeyRangingPeerDistanceDistance"];
-  [a3 encodeObject:internal[4] forKey:@"kCLCodingKeyRangingPeerDistanceAccuracy"];
-  [a3 encodeBool:*(internal + 40) forKey:@"kCLCodingKeyRangingPeerDistanceInitiator"];
+  [coder encodeObject:internal[1] forKey:@"kCLCodingKeyRangingPeerDistancePeer"];
+  [coder encodeObject:internal[2] forKey:@"kCLCodingKeyRangingPeerDistanceTimestamp"];
+  [coder encodeObject:internal[3] forKey:@"kCLCodingKeyRangingPeerDistanceDistance"];
+  [coder encodeObject:internal[4] forKey:@"kCLCodingKeyRangingPeerDistanceAccuracy"];
+  [coder encodeBool:*(internal + 40) forKey:@"kCLCodingKeyRangingPeerDistanceInitiator"];
   v7 = *(internal + 41);
 
-  [a3 encodeBool:v7 forKey:@"kCLCodingKeyRangingPeerDistanceUnlock"];
+  [coder encodeBool:v7 forKey:@"kCLCodingKeyRangingPeerDistanceUnlock"];
 }
 
 - (id)description
 {
   internal = self->_internal;
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [internal[1] getMacAddressAsString];
+  getMacAddressAsString = [internal[1] getMacAddressAsString];
   v5 = internal[2];
   [internal[3] floatValue];
   v7 = v6;
@@ -104,7 +104,7 @@
     v12 = "No";
   }
 
-  return [v3 stringWithFormat:@"Peer: %@ time:%@ distance[m]:%.02f accuracy[m]:%.02f unlock:%s secure:%s initiator:%s", v4, v5, *&v7, *&v9, v10, v11, v12];
+  return [v3 stringWithFormat:@"Peer: %@ time:%@ distance[m]:%.02f accuracy[m]:%.02f unlock:%s secure:%s initiator:%s", getMacAddressAsString, v5, *&v7, *&v9, v10, v11, v12];
 }
 
 @end

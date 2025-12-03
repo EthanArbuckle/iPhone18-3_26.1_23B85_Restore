@@ -1,9 +1,9 @@
 @interface REActiveWorkoutPredictor
 + (id)supportedFeatures;
 - (id)_init;
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6;
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context;
 - (void)_cancelMonitoringWorkoutIfNeeded;
-- (void)_processWorkoutHistoryData:(id)a3 completion:(id)a4;
+- (void)_processWorkoutHistoryData:(id)data completion:(id)completion;
 - (void)_queue_fetchWorkoutHistory;
 - (void)_scheduleFetchWorkoutTimer;
 - (void)_updateWorkoutState;
@@ -18,11 +18,11 @@
 {
   v5.receiver = self;
   v5.super_class = REActiveWorkoutPredictor;
-  v2 = [(REPredictor *)&v5 _init];
-  v3 = v2;
-  if (v2)
+  _init = [(REPredictor *)&v5 _init];
+  v3 = _init;
+  if (_init)
   {
-    [v2 setHasActiveWorkout:0];
+    [_init setHasActiveWorkout:0];
     v3[17] = 0;
     *(v3 + 9) = 0;
   }
@@ -113,13 +113,13 @@
 
       v13 = v12;
       _Block_object_dispose(&v32, 8);
-      v14 = [v12 workoutType];
+      workoutType = [v12 workoutType];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __34__REActiveWorkoutPredictor_resume__block_invoke_2;
       v22[3] = &unk_2785FAF38;
       objc_copyWeak(&v23, &location);
-      v15 = [v11 initWithSampleType:v14 predicate:0 updateHandler:v22];
+      v15 = [v11 initWithSampleType:workoutType predicate:0 updateHandler:v22];
 
       v16 = +[(RESingleton *)REHealthStore];
       v20[0] = MEMORY[0x277D85DD0];
@@ -131,9 +131,9 @@
       v21 = v17;
       [v16 accessHealthStore:v20];
 
-      v18 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v19 = RESignificantTimeChangeNotification();
-      [v18 addObserver:self selector:sel__scheduleFetchWorkoutTimer name:v19 object:0];
+      [defaultCenter addObserver:self selector:sel__scheduleFetchWorkoutTimer name:v19 object:0];
 
       [(REActiveWorkoutPredictor *)self _scheduleFetchWorkoutTimer];
       objc_destroyWeak(&v23);
@@ -190,9 +190,9 @@ void __34__REActiveWorkoutPredictor_resume__block_invoke_3(uint64_t a1, void *a2
   v7[4] = self;
   [v3 accessHealthStore:v7];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v5 = RESignificantTimeChangeNotification();
-  [v4 removeObserver:self name:v5 object:0];
+  [defaultCenter removeObserver:self name:v5 object:0];
 
   [(REUpNextTimer *)self->_workoutQueryCoalesceTimer invalidate];
   workoutQueryCoalesceTimer = self->_workoutQueryCoalesceTimer;
@@ -224,11 +224,11 @@ void __33__REActiveWorkoutPredictor_pause__block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context
 {
-  v7 = a3;
+  featureCopy = feature;
   v8 = +[REFeature activeWorkoutFeature];
-  v9 = [v7 isEqual:v8];
+  v9 = [featureCopy isEqual:v8];
 
   if (v9)
   {
@@ -238,7 +238,7 @@ void __33__REActiveWorkoutPredictor_pause__block_invoke(uint64_t a1, void *a2)
   else
   {
     v11 = +[REFeature dailyAverageWorkoutCountFeature];
-    v12 = [v7 isEqual:v11];
+    v12 = [featureCopy isEqual:v11];
 
     if (v12)
     {
@@ -367,13 +367,13 @@ uint64_t __47__REActiveWorkoutPredictor__updateWorkoutState__block_invoke_3(uint
 
 - (void)_scheduleFetchWorkoutTimer
 {
-  v3 = [(REPredictor *)self queue];
+  queue = [(REPredictor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__REActiveWorkoutPredictor__scheduleFetchWorkoutTimer__block_invoke;
   block[3] = &unk_2785F9AB8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __54__REActiveWorkoutPredictor__scheduleFetchWorkoutTimer__block_invoke(uint64_t a1)
@@ -420,12 +420,12 @@ void __54__REActiveWorkoutPredictor__scheduleFetchWorkoutTimer__block_invoke_2(u
     workoutQueryCoalesceTimer = self->_workoutQueryCoalesceTimer;
     self->_workoutQueryCoalesceTimer = 0;
 
-    v4 = [MEMORY[0x277CBEAA8] date];
-    v36 = [MEMORY[0x277CBEA80] currentCalendar];
-    v5 = [v36 dateByAddingUnit:16 value:-7 toDate:v4 options:0];
+    date = [MEMORY[0x277CBEAA8] date];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v5 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:date options:0];
     v35 = REStartOfDayForDate(v5);
 
-    v6 = REEndOfDayForDate(v4);
+    v6 = REEndOfDayForDate(date);
     v7 = MEMORY[0x277CCA920];
     v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"startDate >= %@", v35];
     v52[0] = v8;
@@ -467,8 +467,8 @@ void __54__REActiveWorkoutPredictor__scheduleFetchWorkoutTimer__block_invoke_2(u
 
     v13 = v12;
     _Block_object_dispose(&v47, 8);
-    v14 = [v12 defaultSource];
-    v15 = [v10 predicateForObjectsFromSource:v14];
+    defaultSource = [v12 defaultSource];
+    v15 = [v10 predicateForObjectsFromSource:defaultSource];
     v52[2] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:3];
     v17 = [v7 andPredicateWithSubpredicates:v16];
@@ -541,7 +541,7 @@ void __54__REActiveWorkoutPredictor__scheduleFetchWorkoutTimer__block_invoke_2(u
 
     v28 = v27;
     _Block_object_dispose(&v47, 8);
-    v29 = [v27 workoutType];
+    workoutType = [v27 workoutType];
     v51 = v23;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
     v39[0] = MEMORY[0x277D85DD0];
@@ -549,7 +549,7 @@ void __54__REActiveWorkoutPredictor__scheduleFetchWorkoutTimer__block_invoke_2(u
     v39[2] = __54__REActiveWorkoutPredictor__queue_fetchWorkoutHistory__block_invoke;
     v39[3] = &unk_2785FAFB0;
     objc_copyWeak(&v40, &location);
-    v31 = [v26 initWithSampleType:v29 predicate:v17 limit:100 sortDescriptors:v30 resultsHandler:v39];
+    v31 = [v26 initWithSampleType:workoutType predicate:v17 limit:100 sortDescriptors:v30 resultsHandler:v39];
 
     v32 = +[(RESingleton *)REHealthStore];
     v37[0] = MEMORY[0x277D85DD0];
@@ -602,17 +602,17 @@ void __54__REActiveWorkoutPredictor__queue_fetchWorkoutHistory__block_invoke(uin
   }
 }
 
-- (void)_processWorkoutHistoryData:(id)a3 completion:(id)a4
+- (void)_processWorkoutHistoryData:(id)data completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v24 = [v5 count];
+  dataCopy = data;
+  completionCopy = completion;
+  v24 = [dataCopy count];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = v5;
+  v7 = dataCopy;
   v8 = [v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v8)
   {
@@ -630,21 +630,21 @@ void __54__REActiveWorkoutPredictor__queue_fetchWorkoutHistory__block_invoke(uin
         }
 
         v14 = *(*(&v31 + 1) + 8 * i);
-        v15 = [v14 startDate];
-        v16 = REDateOccursToday(v15);
+        startDate = [v14 startDate];
+        v16 = REDateOccursToday(startDate);
 
-        v17 = [v14 endDate];
-        v18 = v17;
+        endDate = [v14 endDate];
+        v18 = endDate;
         if (v11)
         {
-          v19 = [v11 laterDate:v17];
+          v19 = [v11 laterDate:endDate];
 
           v11 = v19;
         }
 
         else
         {
-          v11 = v17;
+          v11 = endDate;
         }
 
         v10 += v16;
@@ -662,7 +662,7 @@ void __54__REActiveWorkoutPredictor__queue_fetchWorkoutHistory__block_invoke(uin
     v11 = 0;
   }
 
-  v20 = [(REPredictor *)self queue];
+  queue = [(REPredictor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__REActiveWorkoutPredictor__processWorkoutHistoryData_completion___block_invoke;
@@ -670,11 +670,11 @@ void __54__REActiveWorkoutPredictor__queue_fetchWorkoutHistory__block_invoke(uin
   v30 = v24 / 7.0;
   block[4] = self;
   v27 = v11;
-  v28 = v6;
+  v28 = completionCopy;
   v29 = v10;
-  v21 = v6;
+  v21 = completionCopy;
   v22 = v11;
-  dispatch_async(v20, block);
+  dispatch_async(queue, block);
 
   v23 = *MEMORY[0x277D85DE8];
 }

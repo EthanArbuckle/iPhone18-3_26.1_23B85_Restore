@@ -1,17 +1,17 @@
 @interface CRXCEyePrescription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRXCEyePrescription)init;
-- (CRXCEyePrescription)initWithCoder:(id)a3;
+- (CRXCEyePrescription)initWithCoder:(id)coder;
 - (NSString)description;
 - (float)cylinder;
 - (float)sphere;
 - (float)vrAdd;
 - (unint64_t)axis;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAxis:(unint64_t)a3;
-- (void)setCylinder:(float)a3;
-- (void)setSphere:(float)a3;
-- (void)setVrAdd:(float)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAxis:(unint64_t)axis;
+- (void)setCylinder:(float)cylinder;
+- (void)setSphere:(float)sphere;
+- (void)setVrAdd:(float)add;
 @end
 
 @implementation CRXCEyePrescription
@@ -23,11 +23,11 @@
   return *v2;
 }
 
-- (void)setSphere:(float)a3
+- (void)setSphere:(float)sphere
 {
   v4 = (self + OBJC_IVAR___CRXCEyePrescription_sphere);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = sphere;
 }
 
 - (float)cylinder
@@ -37,11 +37,11 @@
   return *v2;
 }
 
-- (void)setCylinder:(float)a3
+- (void)setCylinder:(float)cylinder
 {
   v4 = (self + OBJC_IVAR___CRXCEyePrescription_cylinder);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = cylinder;
 }
 
 - (unint64_t)axis
@@ -51,11 +51,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAxis:(unint64_t)a3
+- (void)setAxis:(unint64_t)axis
 {
   v5 = OBJC_IVAR___CRXCEyePrescription_axis;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = axis;
 }
 
 - (float)vrAdd
@@ -65,18 +65,18 @@
   return *v2;
 }
 
-- (void)setVrAdd:(float)a3
+- (void)setVrAdd:(float)add
 {
   v4 = (self + OBJC_IVAR___CRXCEyePrescription_vrAdd);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = add;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_247365DC4();
     swift_unknownObjectRelease();
@@ -85,7 +85,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CRXCEyePrescription.isEqual(_:)(v8);
@@ -96,7 +96,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CRXCEyePrescription.description.getter();
 
   v3 = sub_247365C44();
@@ -104,17 +104,17 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CRXCEyePrescription.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CRXCEyePrescription.encode(with:)(coderCopy);
 }
 
-- (CRXCEyePrescription)initWithCoder:(id)a3
+- (CRXCEyePrescription)initWithCoder:(id)coder
 {
-  v3 = a3;
-  sub_247356358(v3);
+  coderCopy = coder;
+  sub_247356358(coderCopy);
   v5 = v4;
 
   return v5;

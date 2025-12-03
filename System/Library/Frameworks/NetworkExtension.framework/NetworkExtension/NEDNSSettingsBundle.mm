@@ -1,40 +1,40 @@
 @interface NEDNSSettingsBundle
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (NEDNSSettingsBundle)init;
-- (NEDNSSettingsBundle)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NEDNSSettingsBundle)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEDNSSettingsBundle
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NEDNSSettingsBundle *)self settings];
+  errorsCopy = errors;
+  settings = [(NEDNSSettingsBundle *)self settings];
 
-  if (v5)
+  if (settings)
   {
-    v6 = [(NEDNSSettingsBundle *)self settings];
-    LODWORD(v5) = [v6 checkValidityAndCollectErrors:v4];
+    settings2 = [(NEDNSSettingsBundle *)self settings];
+    LODWORD(settings) = [settings2 checkValidityAndCollectErrors:errorsCopy];
   }
 
   else
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
   }
 
-  v7 = [(NEDNSSettingsBundle *)self onDemandRules];
+  onDemandRules = [(NEDNSSettingsBundle *)self onDemandRules];
 
-  if (v7)
+  if (onDemandRules)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(NEDNSSettingsBundle *)self onDemandRules];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    onDemandRules2 = [(NEDNSSettingsBundle *)self onDemandRules];
+    v9 = [onDemandRules2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -45,24 +45,24 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(onDemandRules2);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            LODWORD(v5) = [v13 checkValidityAndCollectErrors:v4] & v5;
+            LODWORD(settings) = [v13 checkValidityAndCollectErrors:errorsCopy] & settings;
           }
 
           else
           {
-            [NEConfiguration addError:v4 toList:?];
-            LODWORD(v5) = 0;
+            [NEConfiguration addError:errorsCopy toList:?];
+            LODWORD(settings) = 0;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [onDemandRules2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
@@ -70,58 +70,58 @@
   }
 
   v14 = *MEMORY[0x1E69E9840];
-  return v5;
+  return settings;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEDNSSettingsBundle allocWithZone:?]];
   [(NEDNSSettingsBundle *)v4 setEnabled:[(NEDNSSettingsBundle *)self isEnabled]];
-  v5 = [(NEDNSSettingsBundle *)self onDemandRules];
+  onDemandRules = [(NEDNSSettingsBundle *)self onDemandRules];
 
-  if (v5)
+  if (onDemandRules)
   {
     v6 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v7 = [(NEDNSSettingsBundle *)self onDemandRules];
-    v8 = [v6 initWithArray:v7 copyItems:1];
+    onDemandRules2 = [(NEDNSSettingsBundle *)self onDemandRules];
+    v8 = [v6 initWithArray:onDemandRules2 copyItems:1];
     [(NEDNSSettingsBundle *)v4 setOnDemandRules:v8];
   }
 
-  v9 = [(NEDNSSettingsBundle *)self settings];
-  [(NEDNSSettingsBundle *)v4 setSettings:v9];
+  settings = [(NEDNSSettingsBundle *)self settings];
+  [(NEDNSSettingsBundle *)v4 setSettings:settings];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[NEDNSSettingsBundle isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
-  v5 = [(NEDNSSettingsBundle *)self onDemandRules];
-  [v4 encodeObject:v5 forKey:@"OnDemandRules"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[NEDNSSettingsBundle isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
+  onDemandRules = [(NEDNSSettingsBundle *)self onDemandRules];
+  [coderCopy encodeObject:onDemandRules forKey:@"OnDemandRules"];
 
-  v6 = [(NEDNSSettingsBundle *)self settings];
-  [v4 encodeObject:v6 forKey:@"Settings"];
+  settings = [(NEDNSSettingsBundle *)self settings];
+  [coderCopy encodeObject:settings forKey:@"Settings"];
 }
 
-- (NEDNSSettingsBundle)initWithCoder:(id)a3
+- (NEDNSSettingsBundle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = NEDNSSettingsBundle;
   v5 = [(NEDNSSettingsBundle *)&v15 init];
   if (v5)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"Enabled"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"Enabled"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"OnDemandRules"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"OnDemandRules"];
     onDemandRules = v5->_onDemandRules;
     v5->_onDemandRules = v9;
 
     v11 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"Settings"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"Settings"];
     settings = v5->_settings;
     v5->_settings = v12;
   }

@@ -1,8 +1,8 @@
 @interface WFThreeWayMergingObjectGraph
 - (id)description;
-- (void)addEdgeFromVertex:(void *)a3 toVertex:;
-- (void)addStandaloneVertex:(uint64_t)a1;
-- (void)initWithVertexComparator:(void *)a1;
+- (void)addEdgeFromVertex:(void *)vertex toVertex:;
+- (void)addStandaloneVertex:(uint64_t)vertex;
+- (void)initWithVertexComparator:(void *)comparator;
 @end
 
 @implementation WFThreeWayMergingObjectGraph
@@ -28,120 +28,120 @@
   return v8;
 }
 
-- (void)initWithVertexComparator:(void *)a1
+- (void)initWithVertexComparator:(void *)comparator
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (comparator)
   {
     if (!v3)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:sel_initWithVertexComparator_ object:a1 file:@"WFThreeWayMergingObjectGraph.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"comparator"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithVertexComparator_ object:comparator file:@"WFThreeWayMergingObjectGraph.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"comparator"}];
     }
 
-    v15.receiver = a1;
+    v15.receiver = comparator;
     v15.super_class = WFThreeWayMergingObjectGraph;
-    a1 = objc_msgSendSuper2(&v15, sel_init);
-    if (a1)
+    comparator = objc_msgSendSuper2(&v15, sel_init);
+    if (comparator)
     {
       v5 = _Block_copy(v4);
-      v6 = a1[1];
-      a1[1] = v5;
+      v6 = comparator[1];
+      comparator[1] = v5;
 
       v7 = objc_opt_new();
-      v8 = a1[2];
-      a1[2] = v7;
+      v8 = comparator[2];
+      comparator[2] = v7;
 
-      v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-      v10 = a1[3];
-      a1[3] = v9;
+      strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      v10 = comparator[3];
+      comparator[3] = strongToStrongObjectsMapTable;
 
-      v11 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-      v12 = a1[4];
-      a1[4] = v11;
+      strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      v12 = comparator[4];
+      comparator[4] = strongToStrongObjectsMapTable2;
     }
   }
 
-  return a1;
+  return comparator;
 }
 
-- (void)addStandaloneVertex:(uint64_t)a1
+- (void)addStandaloneVertex:(uint64_t)vertex
 {
   v3 = a2;
-  if (a1)
+  if (vertex)
   {
     v7 = v3;
     if (!v3)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:sel_addStandaloneVertex_ object:a1 file:@"WFThreeWayMergingObjectGraph.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"vertex"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_addStandaloneVertex_ object:vertex file:@"WFThreeWayMergingObjectGraph.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"vertex"}];
     }
 
-    v4 = *(a1 + 16);
-    v5 = [v4 indexOfObject:v7 inSortedRange:0 options:objc_msgSend(v4 usingComparator:{"count"), 1024, *(a1 + 8)}];
+    v4 = *(vertex + 16);
+    v5 = [v4 indexOfObject:v7 inSortedRange:0 options:objc_msgSend(v4 usingComparator:{"count"), 1024, *(vertex + 8)}];
 
-    [*(a1 + 16) insertObject:v7 atIndex:v5];
+    [*(vertex + 16) insertObject:v7 atIndex:v5];
     v3 = v7;
   }
 }
 
-- (void)addEdgeFromVertex:(void *)a3 toVertex:
+- (void)addEdgeFromVertex:(void *)vertex toVertex:
 {
   v14 = a2;
-  v5 = a3;
-  if (!a1)
+  vertexCopy = vertex;
+  if (!self)
   {
     goto LABEL_9;
   }
 
   if (!v14)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:sel_addEdgeFromVertex_toVertex_ object:a1 file:@"WFThreeWayMergingObjectGraph.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"from"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_addEdgeFromVertex_toVertex_ object:self file:@"WFThreeWayMergingObjectGraph.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"from"}];
 
-    if (v5)
+    if (vertexCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_13:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:sel_addEdgeFromVertex_toVertex_ object:a1 file:@"WFThreeWayMergingObjectGraph.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"to"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel_addEdgeFromVertex_toVertex_ object:self file:@"WFThreeWayMergingObjectGraph.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"to"}];
 
     goto LABEL_4;
   }
 
-  if (!v5)
+  if (!vertexCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
-  v6 = *(a1 + 16);
-  v7 = [v6 indexOfObject:v14 inSortedRange:0 options:objc_msgSend(v6 usingComparator:{"count"), 1024, *(a1 + 8)}];
+  v6 = *(self + 16);
+  v7 = [v6 indexOfObject:v14 inSortedRange:0 options:objc_msgSend(v6 usingComparator:{"count"), 1024, *(self + 8)}];
 
-  [*(a1 + 16) insertObject:v14 atIndex:v7];
-  v8 = *(a1 + 16);
-  v9 = [v8 indexOfObject:v5 inSortedRange:0 options:objc_msgSend(v8 usingComparator:{"count"), 1024, *(a1 + 8)}];
+  [*(self + 16) insertObject:v14 atIndex:v7];
+  v8 = *(self + 16);
+  v9 = [v8 indexOfObject:vertexCopy inSortedRange:0 options:objc_msgSend(v8 usingComparator:{"count"), 1024, *(self + 8)}];
 
-  [*(a1 + 16) insertObject:v5 atIndex:v9];
-  v10 = [*(a1 + 24) objectForKey:v14];
+  [*(self + 16) insertObject:vertexCopy atIndex:v9];
+  v10 = [*(self + 24) objectForKey:v14];
   if (!v10)
   {
     v10 = objc_opt_new();
-    [*(a1 + 24) setObject:v10 forKey:v14];
+    [*(self + 24) setObject:v10 forKey:v14];
   }
 
-  [v10 insertObject:v5 atIndex:{objc_msgSend(v10, "indexOfObject:inSortedRange:options:usingComparator:", v5, 0, objc_msgSend(v10, "count"), 1024, *(a1 + 8))}];
-  v11 = [*(a1 + 32) objectForKey:v5];
+  [v10 insertObject:vertexCopy atIndex:{objc_msgSend(v10, "indexOfObject:inSortedRange:options:usingComparator:", vertexCopy, 0, objc_msgSend(v10, "count"), 1024, *(self + 8))}];
+  v11 = [*(self + 32) objectForKey:vertexCopy];
   if (!v11)
   {
     v11 = objc_opt_new();
-    [*(a1 + 32) setObject:v11 forKey:v5];
+    [*(self + 32) setObject:v11 forKey:vertexCopy];
   }
 
-  [v11 insertObject:v14 atIndex:{objc_msgSend(v11, "indexOfObject:inSortedRange:options:usingComparator:", v14, 0, objc_msgSend(v11, "count"), 1024, *(a1 + 8))}];
+  [v11 insertObject:v14 atIndex:{objc_msgSend(v11, "indexOfObject:inSortedRange:options:usingComparator:", v14, 0, objc_msgSend(v11, "count"), 1024, *(self + 8))}];
 
 LABEL_9:
 }

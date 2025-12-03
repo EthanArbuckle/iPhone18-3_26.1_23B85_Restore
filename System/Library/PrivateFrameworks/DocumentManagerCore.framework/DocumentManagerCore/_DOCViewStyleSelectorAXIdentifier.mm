@@ -8,24 +8,24 @@
 
 + (NSString)grid
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"grid");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"grid");
 
   return v3;
 }
 
 + (NSString)list
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"list");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"list");
 
   return v3;
 }
 
 + (NSString)column
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"column");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"column");
 
   return v3;
 }

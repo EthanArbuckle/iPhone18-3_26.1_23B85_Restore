@@ -1,29 +1,29 @@
 @interface CMContinuityCaptureTransportNWDevice
 - (BOOL)active;
 - (CMContinuityCaptureCapabilities)capabilities;
-- (CMContinuityCaptureTransportNWDevice)initWithCapabilities:(id)a3 identifier:(id)a4 remote:(BOOL)a5;
+- (CMContinuityCaptureTransportNWDevice)initWithCapabilities:(id)capabilities identifier:(id)identifier remote:(BOOL)remote;
 - (NSArray)activeStreams;
 - (OS_nw_connection)activeConnection;
-- (void)activate:(BOOL)a3;
-- (void)captureStillImage:(id)a3 entity:(int64_t)a4 completion:(id)a5;
-- (void)didCaptureStillImage:(id)a3 entity:(int64_t)a4;
-- (void)handleAVCNegotiation:(int64_t)a3 data:(id)a4;
-- (void)postEvent:(id)a3 entity:(int64_t)a4 data:(id)a5;
-- (void)sendRequest:(id)a3;
-- (void)setActiveConnection:(id)a3;
-- (void)setCapabilities:(id)a3;
-- (void)setValueForControl:(id)a3 completion:(id)a4;
+- (void)activate:(BOOL)activate;
+- (void)captureStillImage:(id)image entity:(int64_t)entity completion:(id)completion;
+- (void)didCaptureStillImage:(id)image entity:(int64_t)entity;
+- (void)handleAVCNegotiation:(int64_t)negotiation data:(id)data;
+- (void)postEvent:(id)event entity:(int64_t)entity data:(id)data;
+- (void)sendRequest:(id)request;
+- (void)setActiveConnection:(id)connection;
+- (void)setCapabilities:(id)capabilities;
+- (void)setValueForControl:(id)control completion:(id)completion;
 - (void)setupUDPNWStack;
-- (void)startStream:(id)a3 option:(unint64_t)a4 completion:(id)a5;
-- (void)stopStream:(int64_t)a3 option:(unint64_t)a4 completion:(id)a5;
+- (void)startStream:(id)stream option:(unint64_t)option completion:(id)completion;
+- (void)stopStream:(int64_t)stream option:(unint64_t)option completion:(id)completion;
 @end
 
 @implementation CMContinuityCaptureTransportNWDevice
 
-- (CMContinuityCaptureTransportNWDevice)initWithCapabilities:(id)a3 identifier:(id)a4 remote:(BOOL)a5
+- (CMContinuityCaptureTransportNWDevice)initWithCapabilities:(id)capabilities identifier:(id)identifier remote:(BOOL)remote
 {
-  v9 = a3;
-  v10 = a4;
+  capabilitiesCopy = capabilities;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = CMContinuityCaptureTransportNWDevice;
   v11 = [(CMContinuityCaptureTransportNWDevice *)&v20 init];
@@ -34,7 +34,7 @@
     queue = v11->_queue;
     v11->_queue = v13;
 
-    v11->_remote = a5;
+    v11->_remote = remote;
     v15 = [[CMContinuityCaptureMagicStateMonitor alloc] initWithDevice:v11];
     magicStateMonitor = v11->_magicStateMonitor;
     v11->_magicStateMonitor = v15;
@@ -43,87 +43,87 @@
     activeStreams = v11->_activeStreams;
     v11->_activeStreams = v17;
 
-    objc_storeStrong(&v11->_deviceIdentifier, a4);
-    objc_storeStrong(&v11->_capabilities, a3);
+    objc_storeStrong(&v11->_deviceIdentifier, identifier);
+    objc_storeStrong(&v11->_capabilities, capabilities);
     [(CMContinuityCaptureTransportNWDevice *)v11 setupUDPNWStack];
   }
 
   return v11;
 }
 
-- (void)setActiveConnection:(id)a3
+- (void)setActiveConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   obj = self;
   objc_sync_enter(obj);
   activeConnection = obj->_activeConnection;
-  obj->_activeConnection = v4;
+  obj->_activeConnection = connectionCopy;
 
   objc_sync_exit(obj);
 }
 
 - (OS_nw_connection)activeConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activeConnection;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activeConnection;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (CMContinuityCaptureCapabilities)capabilities
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_capabilities;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_capabilities;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setCapabilities:(id)a3
+- (void)setCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   obj = self;
   objc_sync_enter(obj);
   capabilities = obj->_capabilities;
-  obj->_capabilities = v4;
+  obj->_capabilities = capabilitiesCopy;
 
   objc_sync_exit(obj);
 }
 
 - (BOOL)active
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  active = v2->_active;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  active = selfCopy->_active;
+  objc_sync_exit(selfCopy);
 
   return active;
 }
 
 - (NSArray)activeStreams
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc(MEMORY[0x277CBEA60]);
-  v4 = [(NSMutableDictionary *)v2->_activeStreams allValues];
-  v5 = [v3 initWithArray:v4];
+  allValues = [(NSMutableDictionary *)selfCopy->_activeStreams allValues];
+  v5 = [v3 initWithArray:allValues];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)activate:(BOOL)a3
+- (void)activate:(BOOL)activate
 {
-  v3 = a3;
-  if (a3)
+  activateCopy2 = activate;
+  if (activate)
   {
     v27 = CMContinuityCaptureGetListOfSupportedSidebandIdentifiers();
-    v5 = [(CMContinuityCaptureTransportNWDevice *)self capabilities];
-    v6 = CMContinuityCaptureMediaIdentifiersForCapabilities(v5);
+    capabilities = [(CMContinuityCaptureTransportNWDevice *)self capabilities];
+    v6 = CMContinuityCaptureMediaIdentifiersForCapabilities(capabilities);
 
     v36 = 0u;
     v37 = 0u;
@@ -149,12 +149,12 @@
           if (v13)
           {
             [(CMContinuityCaptureTransportNWDevice *)self willChangeValueForKey:@"activeStreams"];
-            v14 = self;
-            objc_sync_enter(v14);
+            selfCopy = self;
+            objc_sync_enter(selfCopy);
             [(NSMutableDictionary *)self->_activeStreams setObject:v13 forKeyedSubscript:v12];
-            objc_sync_exit(v14);
+            objc_sync_exit(selfCopy);
 
-            [(CMContinuityCaptureTransportNWDevice *)v14 didChangeValueForKey:@"activeStreams"];
+            [(CMContinuityCaptureTransportNWDevice *)selfCopy didChangeValueForKey:@"activeStreams"];
           }
         }
 
@@ -190,12 +190,12 @@
           if (v21)
           {
             [(CMContinuityCaptureTransportNWDevice *)self willChangeValueForKey:@"activeStreams"];
-            v22 = self;
-            objc_sync_enter(v22);
+            selfCopy2 = self;
+            objc_sync_enter(selfCopy2);
             [(NSMutableDictionary *)self->_activeStreams setObject:v21 forKeyedSubscript:v20];
-            objc_sync_exit(v22);
+            objc_sync_exit(selfCopy2);
 
-            [(CMContinuityCaptureTransportNWDevice *)v22 didChangeValueForKey:@"activeStreams"];
+            [(CMContinuityCaptureTransportNWDevice *)selfCopy2 didChangeValueForKey:@"activeStreams"];
           }
         }
 
@@ -205,42 +205,42 @@
       while (v17);
     }
 
-    v3 = a3;
+    activateCopy2 = activate;
   }
 
   else
   {
     [(CMContinuityCaptureTransportNWDevice *)self willChangeValueForKey:@"activeStreams"];
-    v23 = self;
-    objc_sync_enter(v23);
-    [(NSMutableDictionary *)v23->_activeStreams removeAllObjects];
-    objc_sync_exit(v23);
+    selfCopy3 = self;
+    objc_sync_enter(selfCopy3);
+    [(NSMutableDictionary *)selfCopy3->_activeStreams removeAllObjects];
+    objc_sync_exit(selfCopy3);
 
-    [(CMContinuityCaptureTransportNWDevice *)v23 didChangeValueForKey:@"activeStreams"];
+    [(CMContinuityCaptureTransportNWDevice *)selfCopy3 didChangeValueForKey:@"activeStreams"];
   }
 
   [(CMContinuityCaptureTransportNWDevice *)self willChangeValueForKey:@"active"];
-  v24 = self;
-  objc_sync_enter(v24);
-  v24->_active = v3;
-  objc_sync_exit(v24);
+  selfCopy4 = self;
+  objc_sync_enter(selfCopy4);
+  selfCopy4->_active = activateCopy2;
+  objc_sync_exit(selfCopy4);
 
-  [(CMContinuityCaptureTransportNWDevice *)v24 didChangeValueForKey:@"active"];
+  [(CMContinuityCaptureTransportNWDevice *)selfCopy4 didChangeValueForKey:@"active"];
 }
 
-- (void)sendRequest:(id)a3
+- (void)sendRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
-  v5 = [(CMContinuityCaptureTransportNWDevice *)self activeConnection];
+  activeConnection = [(CMContinuityCaptureTransportNWDevice *)self activeConnection];
 
-  if (v5)
+  if (activeConnection)
   {
-    v6 = [v4 length] + 8;
+    v6 = [requestCopy length] + 8;
     v7 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:v6];
-    v8 = [v7 mutableBytes];
-    *v8 = v6;
-    memcpy(v8 + 1, [v4 bytes], objc_msgSend(v4, "length"));
+    mutableBytes = [v7 mutableBytes];
+    *mutableBytes = v6;
+    memcpy(mutableBytes + 1, [requestCopy bytes], objc_msgSend(requestCopy, "length"));
     v9 = CMContinuityCaptureLog(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -248,18 +248,18 @@
       *buf = 138412546;
       v16 = v10;
       v17 = 2112;
-      v18 = v4;
+      v18 = requestCopy;
       _os_log_impl(&dword_242545000, v9, OS_LOG_TYPE_DEFAULT, "%@ NW Connect Send Data %@", buf, 0x16u);
     }
 
-    v11 = [(CMContinuityCaptureTransportNWDevice *)self activeConnection];
+    activeConnection2 = [(CMContinuityCaptureTransportNWDevice *)self activeConnection];
     v12 = objc_loadWeakRetained(&location);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke;
     v13[3] = &unk_278D5DB88;
     objc_copyWeak(&v14, &location);
-    CMContinuityCaptureSendDataToNWConnection(v11, v7, v12, v13);
+    CMContinuityCaptureSendDataToNWConnection(activeConnection2, v7, v12, v13);
 
     objc_destroyWeak(&v14);
   }
@@ -282,12 +282,12 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
   }
 }
 
-- (void)captureStillImage:(id)a3 entity:(int64_t)a4 completion:(id)a5
+- (void)captureStillImage:(id)image entity:(int64_t)entity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  imageCopy = image;
+  completionCopy = completion;
   v30 = 0;
-  v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v30];
+  v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:imageCopy requiringSecureCoding:1 error:&v30];
   v11 = v30;
   if (v10)
   {
@@ -295,7 +295,7 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
     v22[0] = @"ContinuityCaptureSelector";
     v22[1] = @"ContinuityCaptureArgs";
     v21[0] = v10;
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:entity];
     v21[1] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
     v22[2] = @"identifier";
@@ -319,7 +319,7 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v25 = self;
+        selfCopy2 = self;
         v26 = 2112;
         v27 = v14;
         v28 = 2112;
@@ -330,7 +330,7 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
       v17 = v16;
     }
 
-    (v9)[2](v9, v17);
+    (completionCopy)[2](completionCopy, v17);
 
     v11 = v16;
   }
@@ -341,23 +341,23 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2112;
-      v27 = v8;
+      v27 = imageCopy;
       v28 = 2112;
       v29 = v11;
       _os_log_error_impl(&dword_242545000, v18, OS_LOG_TYPE_ERROR, "%{public}@ archivedDataWithRootObject %@ Error %@", buf, 0x20u);
     }
 
-    (v9)[2](v9, v11);
+    (completionCopy)[2](completionCopy, v11);
   }
 }
 
-- (void)didCaptureStillImage:(id)a3 entity:(int64_t)a4
+- (void)didCaptureStillImage:(id)image entity:(int64_t)entity
 {
-  v6 = a3;
+  imageCopy = image;
   v25 = 0;
-  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v25];
+  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:imageCopy requiringSecureCoding:1 error:&v25];
   v8 = v25;
   if (v7)
   {
@@ -365,7 +365,7 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
     v17[0] = @"ContinuityCaptureSelector";
     v17[1] = @"ContinuityCaptureArgs";
     v16[0] = v7;
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:entity];
     v16[1] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
     v17[2] = @"identifier";
@@ -388,7 +388,7 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2112;
         v22 = v11;
         v23 = 2112;
@@ -404,9 +404,9 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
-      v22 = v6;
+      v22 = imageCopy;
       v23 = 2112;
       v24 = v8;
       _os_log_error_impl(&dword_242545000, v11, OS_LOG_TYPE_ERROR, "%{public}@ Failed to archive request %@ error %@", buf, 0x20u);
@@ -416,15 +416,15 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
   }
 }
 
-- (void)handleAVCNegotiation:(int64_t)a3 data:(id)a4
+- (void)handleAVCNegotiation:(int64_t)negotiation data:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v22[0] = &unk_2854ECC38;
   v21[0] = @"ContinuityCaptureSelector";
   v21[1] = @"ContinuityCaptureArgs";
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:negotiation];
   v20[0] = v7;
-  v20[1] = v6;
+  v20[1] = dataCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
   v21[2] = @"identifier";
   v22[1] = v8;
@@ -435,11 +435,11 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 2080;
     v17 = "[CMContinuityCaptureTransportNWDevice handleAVCNegotiation:data:]";
     v18 = 1024;
-    v19 = a3;
+    negotiationCopy = negotiation;
     _os_log_impl(&dword_242545000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ %s for entity %d", buf, 0x1Cu);
   }
 
@@ -452,14 +452,14 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
   }
 }
 
-- (void)postEvent:(id)a3 entity:(int64_t)a4 data:(id)a5
+- (void)postEvent:(id)event entity:(int64_t)entity data:(id)data
 {
-  v7 = a3;
+  eventCopy = event;
   v15[0] = &unk_2854ECC50;
   v14[0] = @"ContinuityCaptureSelector";
   v14[1] = @"ContinuityCaptureArgs";
-  v13[0] = v7;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v13[0] = eventCopy;
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:entity];
   v13[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   v14[2] = @"identifier";
@@ -475,22 +475,22 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
   }
 }
 
-- (void)setValueForControl:(id)a3 completion:(id)a4
+- (void)setValueForControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   v8 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2114;
-    v22 = v6;
+    v22 = controlCopy;
     _os_log_impl(&dword_242545000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ setValueForControl %{public}@", buf, 0x16u);
   }
 
   v25 = 0;
-  v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v25];
+  v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:controlCopy requiringSecureCoding:1 error:&v25];
   v10 = v25;
   if (v9)
   {
@@ -523,11 +523,11 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
       v22 = v10;
       v23 = 2112;
-      v24 = v6;
+      v24 = controlCopy;
       _os_log_error_impl(&dword_242545000, v13, OS_LOG_TYPE_ERROR, "%{public}@ archivedDataWithRootObject Error %@ for control %@", buf, 0x20u);
     }
 
@@ -536,30 +536,30 @@ void __52__CMContinuityCaptureTransportNWDevice_sendRequest___block_invoke(uint6
 
   v14 = v10;
 LABEL_7:
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)startStream:(id)a3 option:(unint64_t)a4 completion:(id)a5
+- (void)startStream:(id)stream option:(unint64_t)option completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  streamCopy = stream;
+  completionCopy = completion;
   v10 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v8;
+    v27 = streamCopy;
     v28 = 1024;
-    v29 = a4;
+    optionCopy = option;
     _os_log_impl(&dword_242545000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ StartStream for configuration %{public}@ option %d", buf, 0x1Cu);
   }
 
   v23 = 0;
-  v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v23];
+  v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:streamCopy requiringSecureCoding:1 error:&v23];
   v12 = v23;
   if (v11)
   {
@@ -567,7 +567,7 @@ LABEL_7:
     v21[0] = @"ContinuityCaptureSelector";
     v21[1] = @"ContinuityCaptureArgs";
     v20[0] = v11;
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:option];
     v20[1] = v13;
     v20[2] = &unk_2854ECC80;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:3];
@@ -585,9 +585,9 @@ LABEL_7:
       [(CMContinuityCaptureTransportNWDevice *)self sendRequest:v16];
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     v12 = v17;
@@ -601,31 +601,31 @@ LABEL_7:
       [CMContinuityCaptureTransportNWDevice startStream:option:completion:];
     }
 
-    (v9)[2](v9, v12);
+    (completionCopy)[2](completionCopy, v12);
   }
 }
 
-- (void)stopStream:(int64_t)a3 option:(unint64_t)a4 completion:(id)a5
+- (void)stopStream:(int64_t)stream option:(unint64_t)option completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v21 = self;
+    selfCopy = self;
     v22 = 1024;
-    v23 = a3;
+    streamCopy = stream;
     v24 = 1024;
-    v25 = a4;
+    optionCopy = option;
     _os_log_impl(&dword_242545000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ stopStream for entity %u option %d", buf, 0x18u);
   }
 
   v19[0] = &unk_2854ECC38;
   v18[0] = @"ContinuityCaptureSelector";
   v18[1] = @"ContinuityCaptureArgs";
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:stream];
   v17[0] = v10;
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:option];
   v17[1] = v11;
   v17[2] = &unk_2854ECC80;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
@@ -642,9 +642,9 @@ LABEL_7:
     [(CMContinuityCaptureTransportNWDevice *)self sendRequest:v14];
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 

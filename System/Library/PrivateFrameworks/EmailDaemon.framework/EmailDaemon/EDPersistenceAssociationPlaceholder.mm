@@ -1,23 +1,23 @@
 @interface EDPersistenceAssociationPlaceholder
-- (BOOL)resolveWithSchema:(id)a3;
-- (EDPersistenceAssociationPlaceholder)initWithColumn:(id)a3 tableName:(id)a4;
+- (BOOL)resolveWithSchema:(id)schema;
+- (EDPersistenceAssociationPlaceholder)initWithColumn:(id)column tableName:(id)name;
 - (id)description;
 @end
 
 @implementation EDPersistenceAssociationPlaceholder
 
-- (EDPersistenceAssociationPlaceholder)initWithColumn:(id)a3 tableName:(id)a4
+- (EDPersistenceAssociationPlaceholder)initWithColumn:(id)column tableName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  columnCopy = column;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = EDPersistenceAssociationPlaceholder;
   v9 = [(EDPersistenceAssociationPlaceholder *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_column, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_column, column);
+    v11 = [nameCopy copy];
     tableName = v10->_tableName;
     v10->_tableName = v11;
   }
@@ -31,24 +31,24 @@
   v10.receiver = self;
   v10.super_class = EDPersistenceAssociationPlaceholder;
   v4 = [(EDPersistenceAssociationPlaceholder *)&v10 description];
-  v5 = [(EDPersistenceAssociationPlaceholder *)self column];
-  v6 = [v5 fullNameWithDatabaseName:0];
-  v7 = [(EDPersistenceAssociationPlaceholder *)self tableName];
-  v8 = [v3 initWithFormat:@"%@ %@ -> %@", v4, v6, v7];
+  column = [(EDPersistenceAssociationPlaceholder *)self column];
+  v6 = [column fullNameWithDatabaseName:0];
+  tableName = [(EDPersistenceAssociationPlaceholder *)self tableName];
+  v8 = [v3 initWithFormat:@"%@ %@ -> %@", v4, v6, tableName];
 
   return v8;
 }
 
-- (BOOL)resolveWithSchema:(id)a3
+- (BOOL)resolveWithSchema:(id)schema
 {
-  v4 = a3;
-  v5 = [(EDPersistenceAssociationPlaceholder *)self tableName];
-  v6 = [v4 tableForName:v5];
+  schemaCopy = schema;
+  tableName = [(EDPersistenceAssociationPlaceholder *)self tableName];
+  v6 = [schemaCopy tableForName:tableName];
 
   if (v6)
   {
-    v7 = [(EDPersistenceAssociationPlaceholder *)self column];
-    [v7 associateWithTable:v6];
+    column = [(EDPersistenceAssociationPlaceholder *)self column];
+    [column associateWithTable:v6];
   }
 
   return v6 != 0;

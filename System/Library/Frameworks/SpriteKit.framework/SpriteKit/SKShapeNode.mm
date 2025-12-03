@@ -10,19 +10,19 @@
 + (SKShapeNode)shapeNodeWithRectOfSize:(CGSize)size;
 + (SKShapeNode)shapeNodeWithRectOfSize:(CGSize)size cornerRadius:(CGFloat)cornerRadius;
 + (SKShapeNode)shapeNodeWithSplinePoints:(CGPoint *)points count:(size_t)numPoints;
-+ (SKShapeNode)shapeNodeWithTriangleA:(CGPoint)a3 B:(CGPoint)a4 C:(CGPoint)a5;
++ (SKShapeNode)shapeNodeWithTriangleA:(CGPoint)a B:(CGPoint)b C:(CGPoint)c;
 + (id)debugHierarchyPropertyDescriptions;
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)Mutable;
-- (BOOL)containsPoint:(CGPoint)a3;
-- (BOOL)isEqualToNode:(id)a3;
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)Mutable;
+- (BOOL)containsPoint:(CGPoint)point;
+- (BOOL)isEqualToNode:(id)node;
 - (SKAttributeValue)valueForAttributeNamed:(NSString *)key;
 - (SKShapeNode)init;
-- (SKShapeNode)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKShapeNode)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_didMakeBackingNode;
 - (void)_initialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAntialiased:(BOOL)antialiased;
 - (void)setFillColor:(UIColor *)fillColor;
 - (void)setFillShader:(SKShader *)fillShader;
@@ -51,17 +51,17 @@
 
 + (SKShapeNode)shapeNodeWithPath:(CGPathRef)path
 {
-  v4 = [objc_opt_class() node];
-  [v4 setPath:path];
+  node = [objc_opt_class() node];
+  [node setPath:path];
 
-  return v4;
+  return node;
 }
 
 + (SKShapeNode)shapeNodeWithPath:(CGPathRef)path centered:(BOOL)centered
 {
   v4 = centered;
-  v6 = [objc_opt_class() node];
-  v7 = v6;
+  node = [objc_opt_class() node];
+  v7 = node;
   if (v4)
   {
     PathBoundingBox = CGPathGetPathBoundingBox(path);
@@ -74,7 +74,7 @@
 
   else
   {
-    [v6 setPath:path];
+    [node setPath:path];
   }
 
   return v7;
@@ -190,23 +190,23 @@ LABEL_21:
   return [v7 shapeNodeWithRect:width * -0.5 cornerRadius:{height * -0.5, width, height, cornerRadius}];
 }
 
-+ (SKShapeNode)shapeNodeWithTriangleA:(CGPoint)a3 B:(CGPoint)a4 C:(CGPoint)a5
++ (SKShapeNode)shapeNodeWithTriangleA:(CGPoint)a B:(CGPoint)b C:(CGPoint)c
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v9 = a3.x;
+  y = c.y;
+  x = c.x;
+  v7 = b.y;
+  v8 = b.x;
+  v9 = a.x;
   Mutable = CGPathCreateMutable();
   CGPathMoveToPoint(Mutable, 0, v9, v7);
   CGPathAddLineToPoint(Mutable, 0, v8, v7);
   CGPathAddLineToPoint(Mutable, 0, x, y);
   CGPathCloseSubpath(Mutable);
-  v11 = [objc_opt_class() node];
-  [v11 setPath:Mutable];
+  node = [objc_opt_class() node];
+  [node setPath:Mutable];
   CGPathRelease(Mutable);
 
-  return v11;
+  return node;
 }
 
 + (SKShapeNode)shapeNodeWithPoints:(CGPoint *)points count:(size_t)numPoints
@@ -229,11 +229,11 @@ LABEL_21:
     while (numPoints);
   }
 
-  v11 = [objc_opt_class() node];
-  [v11 setPath:v7];
+  node = [objc_opt_class() node];
+  [node setPath:v7];
   CGPathRelease(v7);
 
-  return v11;
+  return node;
 }
 
 + (SKShapeNode)shapeNodeWithSplinePoints:(CGPoint *)points count:(size_t)numPoints
@@ -287,17 +287,17 @@ LABEL_21:
   }
 
   while (v15 != 1);
-  v19 = [objc_opt_class() node];
-  [v19 setPath:v13];
+  node = [objc_opt_class() node];
+  [node setPath:v13];
   CGPathRelease(v13);
 
-  return v19;
+  return node;
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  if (self == v4)
+  nodeCopy = node;
+  if (self == nodeCopy)
   {
     v21 = 1;
   }
@@ -307,23 +307,23 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = nodeCopy;
       v24.receiver = self;
       v24.super_class = SKShapeNode;
       if ([(SKNode *)&v24 isEqualToNode:v5]&& CGPathEqualToPath([(SKShapeNode *)self path], [(SKShapeNode *)v5 path]))
       {
-        v6 = [(SKShapeNode *)self fillColor];
-        v7 = [v6 CGColor];
-        v8 = [(SKShapeNode *)v5 fillColor];
-        if (CGColorEqualToColor(v7, [v8 CGColor]))
+        fillColor = [(SKShapeNode *)self fillColor];
+        cGColor = [fillColor CGColor];
+        fillColor2 = [(SKShapeNode *)v5 fillColor];
+        if (CGColorEqualToColor(cGColor, [fillColor2 CGColor]))
         {
-          v9 = [(SKShapeNode *)self strokeColor];
-          v10 = [v9 CGColor];
-          v11 = [(SKShapeNode *)v5 strokeColor];
-          if (CGColorEqualToColor(v10, [v11 CGColor]) && (-[SKShapeNode lineWidth](self, "lineWidth"), v13 = v12, -[SKShapeNode lineWidth](v5, "lineWidth"), v14 = v13, *&v15 = v15, (COERCE_UNSIGNED_INT(v14 - *&v15) & 0x60000000) == 0) && (-[SKShapeNode glowWidth](self, "glowWidth"), v17 = v16, -[SKShapeNode glowWidth](v5, "glowWidth"), v18 = v17, *&v19 = v19, (COERCE_UNSIGNED_INT(v18 - *&v19) & 0x60000000) == 0) && (v20 = -[SKShapeNode isAntialiased](self, "isAntialiased"), v20 == -[SKShapeNode isAntialiased](v5, "isAntialiased")))
+          strokeColor = [(SKShapeNode *)self strokeColor];
+          cGColor2 = [strokeColor CGColor];
+          strokeColor2 = [(SKShapeNode *)v5 strokeColor];
+          if (CGColorEqualToColor(cGColor2, [strokeColor2 CGColor]) && (-[SKShapeNode lineWidth](self, "lineWidth"), v13 = v12, -[SKShapeNode lineWidth](v5, "lineWidth"), v14 = v13, *&v15 = v15, (COERCE_UNSIGNED_INT(v14 - *&v15) & 0x60000000) == 0) && (-[SKShapeNode glowWidth](self, "glowWidth"), v17 = v16, -[SKShapeNode glowWidth](v5, "glowWidth"), v18 = v17, *&v19 = v19, (COERCE_UNSIGNED_INT(v18 - *&v19) & 0x60000000) == 0) && (v20 = -[SKShapeNode isAntialiased](self, "isAntialiased"), v20 == -[SKShapeNode isAntialiased](v5, "isAntialiased")))
           {
-            v23 = [(SKShapeNode *)self blendMode];
-            v21 = v23 == [(SKShapeNode *)v5 blendMode];
+            blendMode = [(SKShapeNode *)self blendMode];
+            v21 = blendMode == [(SKShapeNode *)v5 blendMode];
           }
 
           else
@@ -392,66 +392,66 @@ LABEL_21:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = SKShapeNode;
-  [(SKNode *)&v19 encodeWithCoder:v4];
+  [(SKNode *)&v19 encodeWithCoder:coderCopy];
   v5 = PKArrayFromCGPath();
-  [v4 encodeObject:v5 forKey:@"_cgPath"];
+  [coderCopy encodeObject:v5 forKey:@"_cgPath"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:*(self->_skcShapeNode + 155)];
-  [v4 encodeObject:v6 forKey:@"_lineWidth"];
+  [coderCopy encodeObject:v6 forKey:@"_lineWidth"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:*(self->_skcShapeNode + 156)];
-  [v4 encodeObject:v7 forKey:@"_smoothWidth"];
+  [coderCopy encodeObject:v7 forKey:@"_smoothWidth"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:*(self->_skcShapeNode + 644)];
-  [v4 encodeObject:v8 forKey:@"_smoothStroke"];
+  [coderCopy encodeObject:v8 forKey:@"_smoothStroke"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:*(self->_skcShapeNode + 148)];
-  [v4 encodeObject:v9 forKey:@"_fillColorR"];
+  [coderCopy encodeObject:v9 forKey:@"_fillColorR"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*(self->_skcShapeNode + 149)];
-  [v4 encodeObject:v10 forKey:@"_fillColorG"];
+  [coderCopy encodeObject:v10 forKey:@"_fillColorG"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:*(self->_skcShapeNode + 150)];
-  [v4 encodeObject:v11 forKey:@"_fillColorB"];
+  [coderCopy encodeObject:v11 forKey:@"_fillColorB"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:*(self->_skcShapeNode + 151)];
-  [v4 encodeObject:v12 forKey:@"_fillColorA"];
+  [coderCopy encodeObject:v12 forKey:@"_fillColorA"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithDouble:*(self->_skcShapeNode + 144)];
-  [v4 encodeObject:v13 forKey:@"_strokeColorR"];
+  [coderCopy encodeObject:v13 forKey:@"_strokeColorR"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:*(self->_skcShapeNode + 145)];
-  [v4 encodeObject:v14 forKey:@"_strokeColorG"];
+  [coderCopy encodeObject:v14 forKey:@"_strokeColorG"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:*(self->_skcShapeNode + 146)];
-  [v4 encodeObject:v15 forKey:@"_strokeColorB"];
+  [coderCopy encodeObject:v15 forKey:@"_strokeColorB"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:*(self->_skcShapeNode + 147)];
-  [v4 encodeObject:v16 forKey:@"_strokeColorA"];
+  [coderCopy encodeObject:v16 forKey:@"_strokeColorA"];
 
-  [v4 encodeInteger:-[SKShapeNode lineJoin](self forKey:{"lineJoin"), @"_lineJoin"}];
-  [v4 encodeInteger:-[SKShapeNode lineCap](self forKey:{"lineCap"), @"_lineCap"}];
+  [coderCopy encodeInteger:-[SKShapeNode lineJoin](self forKey:{"lineJoin"), @"_lineJoin"}];
+  [coderCopy encodeInteger:-[SKShapeNode lineCap](self forKey:{"lineCap"), @"_lineCap"}];
   [(SKShapeNode *)self miterLimit];
-  [v4 encodeDouble:@"_miterLimit" forKey:?];
-  v17 = [(SKShapeNode *)self strokeTexture];
-  [v4 encodeObject:v17 forKey:@"_strokeTexture"];
+  [coderCopy encodeDouble:@"_miterLimit" forKey:?];
+  strokeTexture = [(SKShapeNode *)self strokeTexture];
+  [coderCopy encodeObject:strokeTexture forKey:@"_strokeTexture"];
 
-  v18 = [(SKShapeNode *)self fillTexture];
-  [v4 encodeObject:v18 forKey:@"_fillTexture"];
+  fillTexture = [(SKShapeNode *)self fillTexture];
+  [coderCopy encodeObject:fillTexture forKey:@"_fillTexture"];
 }
 
-- (SKShapeNode)initWithCoder:(id)a3
+- (SKShapeNode)initWithCoder:(id)coder
 {
   v52[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v51.receiver = self;
   v51.super_class = SKShapeNode;
-  v5 = [(SKNode *)&v51 initWithCoder:v4];
+  v5 = [(SKNode *)&v51 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
@@ -464,35 +464,35 @@ LABEL_21:
     v52[6] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:7];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_cgPath"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_cgPath"];
     v10 = PKCGPathCreateFromArray();
 
     [(SKShapeNode *)v5 setPath:v10];
     CGPathRelease(v10);
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_smoothWidth"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_smoothWidth"];
     [v11 doubleValue];
     [(SKShapeNode *)v5 setGlowWidth:?];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lineWidth"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lineWidth"];
     [v12 doubleValue];
     [(SKShapeNode *)v5 setLineWidth:?];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_smoothStroke"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_smoothStroke"];
     -[SKShapeNode setAntialiased:](v5, "setAntialiased:", [v13 BOOLValue]);
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fillColorR"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fillColorR"];
     [v14 doubleValue];
     v16 = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fillColorG"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fillColorG"];
     [v17 doubleValue];
     v19 = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fillColorB"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fillColorB"];
     [v20 doubleValue];
     v22 = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fillColorA"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fillColorA"];
     [v23 doubleValue];
     v25 = v24;
 
@@ -503,19 +503,19 @@ LABEL_21:
     v30 = [MEMORY[0x277D75348] colorWithComponentRGBA:{v26, v27, v28, v29}];
     [(SKShapeNode *)v5 setFillColor:v30];
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_strokeColorR"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_strokeColorR"];
     [v31 doubleValue];
     v33 = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_strokeColorG"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_strokeColorG"];
     [v34 doubleValue];
     v36 = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_strokeColorB"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_strokeColorB"];
     [v37 doubleValue];
     v39 = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_strokeColorA"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_strokeColorA"];
     [v40 doubleValue];
     v42 = v41;
 
@@ -526,14 +526,14 @@ LABEL_21:
     v47 = [MEMORY[0x277D75348] colorWithComponentRGBA:{v43, v44, v45, v46}];
     [(SKShapeNode *)v5 setStrokeColor:v47];
 
-    -[SKShapeNode setLineJoin:](v5, "setLineJoin:", [v4 decodeIntegerForKey:@"_lineJoin"]);
-    -[SKShapeNode setLineCap:](v5, "setLineCap:", [v4 decodeIntegerForKey:@"_lineCap"]);
-    [v4 decodeDoubleForKey:@"_miterLimit"];
+    -[SKShapeNode setLineJoin:](v5, "setLineJoin:", [coderCopy decodeIntegerForKey:@"_lineJoin"]);
+    -[SKShapeNode setLineCap:](v5, "setLineCap:", [coderCopy decodeIntegerForKey:@"_lineCap"]);
+    [coderCopy decodeDoubleForKey:@"_miterLimit"];
     [(SKShapeNode *)v5 setMiterLimit:?];
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_strokeTexture"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_strokeTexture"];
     [(SKShapeNode *)v5 setStrokeTexture:v48];
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fillTexture"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fillTexture"];
     [(SKShapeNode *)v5 setFillTexture:v49];
   }
 
@@ -543,10 +543,10 @@ LABEL_21:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SKNode *)self name];
+  name = [(SKNode *)self name];
   [(SKNode *)self calculateAccumulatedFrame];
   v5 = NSStringFromCGRect(v9);
-  v6 = [v3 stringWithFormat:@"<SKShapeNode> name:'%@' accumulatedFrame:%@", v4, v5];
+  v6 = [v3 stringWithFormat:@"<SKShapeNode> name:'%@' accumulatedFrame:%@", name, v5];
 
   return v6;
 }
@@ -598,13 +598,13 @@ LABEL_21:
   SKCNode::setDirty(v11);
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
   skcShapeNode = self->_skcShapeNode;
   v5 = skcShapeNode[79];
-  x = a3.x;
+  x = point.x;
   v19 = x;
-  y = a3.y;
+  y = point.y;
   v20 = y;
   *v8.i64 = (*(*skcShapeNode + 112))(skcShapeNode, a2);
   v21 = vaddq_f32(v11, vmlaq_f32(vmlaq_n_f32(vmulq_n_f32(v8, v19), v9, v20), 0, v10)).u64[0];
@@ -727,17 +727,17 @@ LABEL_21:
   SKCNode::setDirty(skcShapeNode);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = SKShapeNode;
-  v4 = [(SKNode *)&v12 copyWithZone:a3];
+  v4 = [(SKNode *)&v12 copyWithZone:zone];
   [v4 setPath:{-[SKShapeNode path](self, "path")}];
-  v5 = [(SKShapeNode *)self fillColor];
-  [v4 setFillColor:v5];
+  fillColor = [(SKShapeNode *)self fillColor];
+  [v4 setFillColor:fillColor];
 
-  v6 = [(SKShapeNode *)self strokeColor];
-  [v4 setStrokeColor:v6];
+  strokeColor = [(SKShapeNode *)self strokeColor];
+  [v4 setStrokeColor:strokeColor];
 
   [v4 setAntialiased:{-[SKShapeNode isAntialiased](self, "isAntialiased")}];
   [(SKShapeNode *)self renderQualityRatio];
@@ -747,17 +747,17 @@ LABEL_21:
   [(SKShapeNode *)self glowWidth];
   [v4 setGlowWidth:?];
   [v4 setBlendMode:{-[SKShapeNode blendMode](self, "blendMode")}];
-  v7 = [(SKShapeNode *)self fillShader];
-  [v4 setFillShader:v7];
+  fillShader = [(SKShapeNode *)self fillShader];
+  [v4 setFillShader:fillShader];
 
-  v8 = [(SKShapeNode *)self fillTexture];
-  [v4 setFillTexture:v8];
+  fillTexture = [(SKShapeNode *)self fillTexture];
+  [v4 setFillTexture:fillTexture];
 
-  v9 = [(SKShapeNode *)self strokeShader];
-  [v4 setStrokeShader:v9];
+  strokeShader = [(SKShapeNode *)self strokeShader];
+  [v4 setStrokeShader:strokeShader];
 
-  v10 = [(SKShapeNode *)self strokeTexture];
-  [v4 setStrokeTexture:v10];
+  strokeTexture = [(SKShapeNode *)self strokeTexture];
+  [v4 setStrokeTexture:strokeTexture];
 
   [v4 setLineJoin:{-[SKShapeNode lineJoin](self, "lineJoin")}];
   [v4 setLineCap:{-[SKShapeNode lineCap](self, "lineCap")}];
@@ -893,45 +893,45 @@ LABEL_21:
   return v23;
 }
 
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)Mutable
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)Mutable
 {
   v98 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v86 = a4;
-  if ([v9 isEqualToString:@"strokeTexture"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"strokeTexture"])
   {
-    Mutable = [v86 strokeTexture];
+    Mutable = [objectCopy strokeTexture];
 
     if (!Mutable)
     {
       goto LABEL_93;
     }
 
-    v10 = [v86 strokeTexture];
-    v11 = [v10 CGImage];
+    strokeTexture = [objectCopy strokeTexture];
+    cGImage = [strokeTexture CGImage];
 
-    if (v11)
+    if (cGImage)
     {
       v12 = *MEMORY[0x277CE1E10];
-      v13 = [*MEMORY[0x277CE1E10] identifier];
+      identifier = [*MEMORY[0x277CE1E10] identifier];
       valuePtr = 1065353216;
       Mutable = CFDataCreateMutable(0, 0);
-      v14 = CGImageDestinationCreateWithData(Mutable, v13, 1uLL, 0);
+      v14 = CGImageDestinationCreateWithData(Mutable, identifier, 1uLL, 0);
       v15 = *MEMORY[0x277CBECE8];
       v16 = CFNumberCreate(*MEMORY[0x277CBECE8], kCFNumberFloatType, &valuePtr);
       keys = *MEMORY[0x277CD2D48];
       values[0] = v16;
       v17 = CFDictionaryCreate(v15, &keys, values, 1, 0, 0);
-      CGImageDestinationAddImage(v14, v11, v17);
+      CGImageDestinationAddImage(v14, cGImage, v17);
       CGImageDestinationFinalize(v14);
       CFRelease(v17);
       CFRelease(v16);
       CFRelease(v14);
 
       v92 = @"propertyFormat";
-      v18 = [v12 identifier];
-      v93 = v18;
-      *a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v93 forKeys:&v92 count:1];
+      identifier2 = [v12 identifier];
+      v93 = identifier2;
+      *options = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v93 forKeys:&v92 count:1];
     }
 
     else
@@ -940,44 +940,44 @@ LABEL_21:
     }
 
 LABEL_30:
-    CGImageRelease(v11);
+    CGImageRelease(cGImage);
     goto LABEL_93;
   }
 
-  if ([v9 isEqualToString:@"fillTexture"])
+  if ([nameCopy isEqualToString:@"fillTexture"])
   {
-    Mutable = [v86 fillTexture];
+    Mutable = [objectCopy fillTexture];
 
     if (!Mutable)
     {
       goto LABEL_93;
     }
 
-    v19 = [v86 fillTexture];
-    v11 = [v19 CGImage];
+    fillTexture = [objectCopy fillTexture];
+    cGImage = [fillTexture CGImage];
 
-    if (v11)
+    if (cGImage)
     {
       v20 = *MEMORY[0x277CE1E10];
-      v21 = [*MEMORY[0x277CE1E10] identifier];
+      identifier3 = [*MEMORY[0x277CE1E10] identifier];
       valuePtr = 1065353216;
       Mutable = CFDataCreateMutable(0, 0);
-      v22 = CGImageDestinationCreateWithData(Mutable, v21, 1uLL, 0);
+      v22 = CGImageDestinationCreateWithData(Mutable, identifier3, 1uLL, 0);
       v23 = *MEMORY[0x277CBECE8];
       v24 = CFNumberCreate(*MEMORY[0x277CBECE8], kCFNumberFloatType, &valuePtr);
       keys = *MEMORY[0x277CD2D48];
       values[0] = v24;
       v25 = CFDictionaryCreate(v23, &keys, values, 1, 0, 0);
-      CGImageDestinationAddImage(v22, v11, v25);
+      CGImageDestinationAddImage(v22, cGImage, v25);
       CGImageDestinationFinalize(v22);
       CFRelease(v25);
       CFRelease(v24);
       CFRelease(v22);
 
       v90 = @"propertyFormat";
-      v26 = [v20 identifier];
-      v91 = v26;
-      *a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
+      identifier4 = [v20 identifier];
+      v91 = identifier4;
+      *options = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
     }
 
     else
@@ -988,16 +988,16 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  if ([v9 isEqualToString:@"strokeColor"])
+  if ([nameCopy isEqualToString:@"strokeColor"])
   {
-    v85 = [v86 strokeColor];
-    v27 = [v85 CGColor];
-    if (v27)
+    strokeColor = [objectCopy strokeColor];
+    cGColor = [strokeColor CGColor];
+    if (cGColor)
     {
       Mutable = CFDictionaryCreateMutable(0, 20, MEMORY[0x277CBED60], MEMORY[0x277CBF150]);
-      space = CGColorGetColorSpace(v27);
+      space = CGColorGetColorSpace(cGColor);
       v28 = CGColorSpaceCopyName(space);
-      NumberOfComponents = CGColorGetNumberOfComponents(v27);
+      NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
       v30 = NumberOfComponents << 32;
       v31 = NumberOfComponents;
       if (NumberOfComponents << 32)
@@ -1034,7 +1034,7 @@ LABEL_30:
         v32 = &stru_282E190D8;
       }
 
-      Components = CGColorGetComponents(v27);
+      Components = CGColorGetComponents(cGColor);
       v51 = malloc_type_malloc(v30 >> 29, 0x6004044C4A2DFuLL);
       v52 = v51;
       if (v30)
@@ -1120,16 +1120,16 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if ([v9 isEqualToString:@"fillColor"])
+  if ([nameCopy isEqualToString:@"fillColor"])
   {
-    v85 = [v86 fillColor];
-    v35 = [v85 CGColor];
-    if (v35)
+    strokeColor = [objectCopy fillColor];
+    cGColor2 = [strokeColor CGColor];
+    if (cGColor2)
     {
       Mutable = CFDictionaryCreateMutable(0, 20, MEMORY[0x277CBED60], MEMORY[0x277CBF150]);
-      spacea = CGColorGetColorSpace(v35);
+      spacea = CGColorGetColorSpace(cGColor2);
       v36 = CGColorSpaceCopyName(spacea);
-      v37 = CGColorGetNumberOfComponents(v35);
+      v37 = CGColorGetNumberOfComponents(cGColor2);
       v38 = v37 << 32;
       v39 = v37;
       if (v37 << 32)
@@ -1166,7 +1166,7 @@ LABEL_30:
         v32 = &stru_282E190D8;
       }
 
-      v61 = CGColorGetComponents(v35);
+      v61 = CGColorGetComponents(cGColor2);
       v62 = malloc_type_malloc(v38 >> 29, 0x6004044C4A2DFuLL);
       v63 = v62;
       if (v38)
@@ -1258,9 +1258,9 @@ LABEL_92:
     goto LABEL_93;
   }
 
-  if ([v9 isEqualToString:@"visualRepresentationOffset"])
+  if ([nameCopy isEqualToString:@"visualRepresentationOffset"])
   {
-    [v86 _untransformedBounds];
+    [objectCopy _untransformedBounds];
     keys = v42;
     v96 = v43;
     v44 = malloc_type_malloc(0x10uLL, 0x6004044C4A2DFuLL);
@@ -1282,19 +1282,19 @@ LABEL_92:
     free(v44);
   }
 
-  else if ([v9 isEqualToString:@"visualRepresentation"])
+  else if ([nameCopy isEqualToString:@"visualRepresentation"])
   {
-    Mutable = [v86 createDebugHierarchyVisualRepresentation];
+    Mutable = [objectCopy createDebugHierarchyVisualRepresentation];
     v88 = @"propertyFormat";
-    v49 = [*MEMORY[0x277CE1E10] identifier];
-    v89 = v49;
-    *a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
+    identifier5 = [*MEMORY[0x277CE1E10] identifier];
+    v89 = identifier5;
+    *options = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
   }
 
   else
   {
-    v58 = v86;
-    v59 = v9;
+    v58 = objectCopy;
+    v59 = nameCopy;
     if (![v59 length])
     {
       goto LABEL_105;
@@ -1310,18 +1310,18 @@ LABEL_92:
     {
       if ([v59 length] < 2)
       {
-        v73 = [v59 uppercaseString];
+        uppercaseString = [v59 uppercaseString];
       }
 
       else
       {
         v70 = [v59 substringToIndex:1];
-        v71 = [v70 uppercaseString];
+        uppercaseString2 = [v70 uppercaseString];
         v72 = [v59 substringFromIndex:1];
-        v73 = [v71 stringByAppendingString:v72];
+        uppercaseString = [uppercaseString2 stringByAppendingString:v72];
       }
 
-      v74 = [@"is" stringByAppendingString:v73];
+      v74 = [@"is" stringByAppendingString:uppercaseString];
       NSSelectorFromString(v74);
       v60 = (objc_opt_respondsToSelector() & 1) != 0 ? v74 : 0;
     }

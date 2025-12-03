@@ -1,26 +1,26 @@
 @interface AXInvertColors_BiometricKitUI
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_BiometricKitUI
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BKUIPearlEnrollView" hasInstanceMethod:@"setBackgroundColor:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"BKUIPearlEnrollViewController" hasInstanceMethod:@"forceDarkBackground:animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"BKUIPearlEnrollViewController" hasInstanceVariable:@"_darkBackground" withType:"B"];
-  [v3 validateClass:@"BKUIPearlEnrollViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"BKUIPearlCoachingController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BKUIPearlEnrollView" hasInstanceMethod:@"setBackgroundColor:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"BKUIPearlEnrollViewController" hasInstanceMethod:@"forceDarkBackground:animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"BKUIPearlEnrollViewController" hasInstanceVariable:@"_darkBackground" withType:"B"];
+  [validationsCopy validateClass:@"BKUIPearlEnrollViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"BKUIPearlCoachingController" isKindOfClass:@"UIViewController"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"BKUIPearlEnrollViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"BKUIPearlEnrollViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"BKUIPearlCoachingControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"BKUIPearlEnrollViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"BKUIPearlEnrollViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"BKUIPearlCoachingControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

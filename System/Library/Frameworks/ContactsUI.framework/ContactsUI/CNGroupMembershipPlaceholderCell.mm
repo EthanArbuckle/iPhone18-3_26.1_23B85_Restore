@@ -14,9 +14,9 @@
 
 - (void)performDefaultAction
 {
-  v4 = [(CNGroupMembershipPlaceholderCell *)self delegate];
-  v3 = [(CNContactCell *)self cardGroupItem];
-  [v4 propertyCell:self performActionForItem:v3 withTransportType:0];
+  delegate = [(CNGroupMembershipPlaceholderCell *)self delegate];
+  cardGroupItem = [(CNContactCell *)self cardGroupItem];
+  [delegate propertyCell:self performActionForItem:cardGroupItem withTransportType:0];
 }
 
 @end

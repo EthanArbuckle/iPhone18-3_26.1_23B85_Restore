@@ -1,6 +1,6 @@
 @interface IDSAuthenticationCertificate
-- (IDSAuthenticationCertificate)initWithBackingCertificate:(id)a3;
-- (IDSAuthenticationCertificate)initWithDataRepresentation:(id)a3;
+- (IDSAuthenticationCertificate)initWithBackingCertificate:(id)certificate;
+- (IDSAuthenticationCertificate)initWithDataRepresentation:(id)representation;
 - (NSData)dataRepresentation;
 - (id)description;
 @end
@@ -9,31 +9,31 @@
 
 - (NSData)dataRepresentation
 {
-  v2 = [(IDSAuthenticationCertificate *)self backingCertificate];
-  v3 = [v2 dataRepresentation];
+  backingCertificate = [(IDSAuthenticationCertificate *)self backingCertificate];
+  dataRepresentation = [backingCertificate dataRepresentation];
 
-  return v3;
+  return dataRepresentation;
 }
 
-- (IDSAuthenticationCertificate)initWithDataRepresentation:(id)a3
+- (IDSAuthenticationCertificate)initWithDataRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [[IDSServerCertificate alloc] initWithDataRepresentation:v4];
+  representationCopy = representation;
+  v5 = [[IDSServerCertificate alloc] initWithDataRepresentation:representationCopy];
 
   v6 = [(IDSAuthenticationCertificate *)self initWithBackingCertificate:v5];
   return v6;
 }
 
-- (IDSAuthenticationCertificate)initWithBackingCertificate:(id)a3
+- (IDSAuthenticationCertificate)initWithBackingCertificate:(id)certificate
 {
-  v5 = a3;
+  certificateCopy = certificate;
   v9.receiver = self;
   v9.super_class = IDSAuthenticationCertificate;
   v6 = [(IDSAuthenticationCertificate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingCertificate, a3);
+    objc_storeStrong(&v6->_backingCertificate, certificate);
   }
 
   return v7;
@@ -43,8 +43,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSAuthenticationCertificate *)self backingCertificate];
-  v6 = [v3 stringWithFormat:@"<%@: %p cert: %@>", v4, self, v5];
+  backingCertificate = [(IDSAuthenticationCertificate *)self backingCertificate];
+  v6 = [v3 stringWithFormat:@"<%@: %p cert: %@>", v4, self, backingCertificate];
 
   return v6;
 }

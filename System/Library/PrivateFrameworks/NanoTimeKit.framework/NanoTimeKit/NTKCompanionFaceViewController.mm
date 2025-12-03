@@ -1,18 +1,18 @@
 @interface NTKCompanionFaceViewController
-- (NTKCompanionFaceViewController)initWithFace:(id)a3 forEditing:(BOOL)a4;
+- (NTKCompanionFaceViewController)initWithFace:(id)face forEditing:(BOOL)editing;
 @end
 
 @implementation NTKCompanionFaceViewController
 
-- (NTKCompanionFaceViewController)initWithFace:(id)a3 forEditing:(BOOL)a4
+- (NTKCompanionFaceViewController)initWithFace:(id)face forEditing:(BOOL)editing
 {
-  v6 = a3;
+  faceCopy = face;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__NTKCompanionFaceViewController_initWithFace_forEditing___block_invoke;
   v13[3] = &unk_278789648;
-  v15 = a4;
-  v7 = v6;
+  editingCopy = editing;
+  v7 = faceCopy;
   v14 = v7;
   v12.receiver = self;
   v12.super_class = NTKCompanionFaceViewController;
@@ -20,8 +20,8 @@
   v9 = v8;
   if (v8)
   {
-    v10 = [(NTKCompanionFaceViewController *)v8 view];
-    [v10 setUserInteractionEnabled:0];
+    view = [(NTKCompanionFaceViewController *)v8 view];
+    [view setUserInteractionEnabled:0];
   }
 
   return v9;

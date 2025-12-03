@@ -1,14 +1,14 @@
 @interface W5BluetoothStatus
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBluetoothStatus:(id)a3;
-- (W5BluetoothStatus)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBluetoothStatus:(id)status;
+- (W5BluetoothStatus)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDevices:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDevices:(id)devices;
 @end
 
 @implementation W5BluetoothStatus
@@ -20,16 +20,16 @@
   [(W5BluetoothStatus *)&v3 dealloc];
 }
 
-- (void)setDevices:(id)a3
+- (void)setDevices:(id)devices
 {
   devices = self->_devices;
-  if (devices != a3)
+  if (devices != devices)
   {
 
     self->_devices = 0;
-    if (a3)
+    if (devices)
     {
-      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:devices requiringSecureCoding:1 error:0];
       if (v6)
       {
         v7 = v6;
@@ -98,7 +98,7 @@
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v44 = self;
+  selfCopy = self;
   obj = self->_devices;
   v11 = [(NSArray *)obj countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (v11)
@@ -136,12 +136,12 @@
     v15 = 0;
   }
 
-  [v4 appendFormat:@"Device Count: %lu (paired=%lu cloud=%lu connected=%lu)\n\n", -[NSArray count](v44->_devices, "count"), v13, v14, v15];
+  [v4 appendFormat:@"Device Count: %lu (paired=%lu cloud=%lu connected=%lu)\n\n", -[NSArray count](selfCopy->_devices, "count"), v13, v14, v15];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obja = v44->_devices;
+  obja = selfCopy->_devices;
   v19 = [(NSArray *)obja countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v19)
   {
@@ -205,9 +205,9 @@
           v34 = v24;
           v35 = v22;
           v36 = v21;
-          v37 = [v26 majorClass];
-          v38 = [v26 minorClass];
-          v39 = v37;
+          majorClass = [v26 majorClass];
+          minorClass = [v26 minorClass];
+          v39 = majorClass;
           v21 = v36;
           v22 = v35;
           v24 = v34;
@@ -216,7 +216,7 @@
           v7 = v31;
           v20 = v30;
           v4 = v45;
-          [v45 appendFormat:@"    Type             : %s\n", objc_msgSend(W5DescriptionForBluetoothDeviceType(v39, v38), "UTF8String")];
+          [v45 appendFormat:@"    Type             : %s\n", objc_msgSend(W5DescriptionForBluetoothDeviceType(v39, minorClass), "UTF8String")];
           if ([v26 isLowEnergy])
           {
             v40 = v7;
@@ -255,27 +255,27 @@
   return result;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v5.receiver = self;
   v5.super_class = W5BluetoothStatus;
-  if (-[W5BluetoothStatus conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([a3 isEqual:&unk_288343878] & 1) != 0)
+  if (-[W5BluetoothStatus conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([protocol isEqual:&unk_288343878] & 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:&unk_2883436F0];
+    return [protocol isEqual:&unk_2883436F0];
   }
 }
 
-- (BOOL)isEqualToBluetoothStatus:(id)a3
+- (BOOL)isEqualToBluetoothStatus:(id)status
 {
   address = self->_address;
   if (!address)
   {
-    if (![a3 address])
+    if (![status address])
     {
       goto LABEL_5;
     }
@@ -283,7 +283,7 @@
     address = self->_address;
   }
 
-  v6 = -[NSString isEqual:](address, "isEqual:", [a3 address]);
+  v6 = -[NSString isEqual:](address, "isEqual:", [status address]);
   if (!v6)
   {
     return v6;
@@ -291,7 +291,7 @@
 
 LABEL_5:
   powerOn = self->_powerOn;
-  if (powerOn != [a3 powerOn] || (isDiscoverable = self->_isDiscoverable, isDiscoverable != objc_msgSend(a3, "isDiscoverable")) || (isConnectable = self->_isConnectable, isConnectable != objc_msgSend(a3, "isConnectable")) || (isScanning = self->_isScanning, isScanning != objc_msgSend(a3, "isScanning")))
+  if (powerOn != [status powerOn] || (isDiscoverable = self->_isDiscoverable, isDiscoverable != objc_msgSend(status, "isDiscoverable")) || (isConnectable = self->_isConnectable, isConnectable != objc_msgSend(status, "isConnectable")) || (isScanning = self->_isScanning, isScanning != objc_msgSend(status, "isScanning")))
   {
     LOBYTE(v6) = 0;
     return v6;
@@ -300,7 +300,7 @@ LABEL_5:
   devices = self->_devices;
   if (!devices)
   {
-    if (![a3 devices])
+    if (![status devices])
     {
       LOBYTE(v6) = 1;
       return v6;
@@ -309,20 +309,20 @@ LABEL_5:
     devices = self->_devices;
   }
 
-  v12 = [a3 devices];
+  devices = [status devices];
 
-  LOBYTE(v6) = [(NSArray *)devices isEqual:v12];
+  LOBYTE(v6) = [(NSArray *)devices isEqual:devices];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -333,7 +333,7 @@ LABEL_5:
     return 0;
   }
 
-  return [(W5BluetoothStatus *)self isEqualToBluetoothStatus:a3];
+  return [(W5BluetoothStatus *)self isEqualToBluetoothStatus:equal];
 }
 
 - (unint64_t)hash
@@ -343,7 +343,7 @@ LABEL_5:
   return v3 ^ v4 ^ [(NSArray *)self->_devices hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5BluetoothStatus allocWithZone:?]];
   [(W5BluetoothStatus *)v4 setPowerOn:self->_powerOn];
@@ -355,33 +355,33 @@ LABEL_5:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_address forKey:@"_address"];
-  [a3 encodeBool:self->_powerOn forKey:@"_powerOn"];
-  [a3 encodeBool:self->_isDiscoverable forKey:@"_isDiscoverable"];
-  [a3 encodeBool:self->_isConnectable forKey:@"_isConnectable"];
-  [a3 encodeBool:self->_isScanning forKey:@"_isScanning"];
+  [coder encodeObject:self->_address forKey:@"_address"];
+  [coder encodeBool:self->_powerOn forKey:@"_powerOn"];
+  [coder encodeBool:self->_isDiscoverable forKey:@"_isDiscoverable"];
+  [coder encodeBool:self->_isConnectable forKey:@"_isConnectable"];
+  [coder encodeBool:self->_isScanning forKey:@"_isScanning"];
   devices = self->_devices;
 
-  [a3 encodeObject:devices forKey:@"_devices"];
+  [coder encodeObject:devices forKey:@"_devices"];
 }
 
-- (W5BluetoothStatus)initWithCoder:(id)a3
+- (W5BluetoothStatus)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = W5BluetoothStatus;
   v4 = [(W5BluetoothStatus *)&v8 init];
   if (v4)
   {
-    v4->_address = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_address", "copy"}];
-    v4->_powerOn = [a3 decodeBoolForKey:@"_powerOn"];
-    v4->_isDiscoverable = [a3 decodeBoolForKey:@"_isDiscoverable"];
-    v4->_isConnectable = [a3 decodeBoolForKey:@"_isConnectable"];
-    v4->_isScanning = [a3 decodeBoolForKey:@"_isScanning"];
+    v4->_address = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_address", "copy"}];
+    v4->_powerOn = [coder decodeBoolForKey:@"_powerOn"];
+    v4->_isDiscoverable = [coder decodeBoolForKey:@"_isDiscoverable"];
+    v4->_isConnectable = [coder decodeBoolForKey:@"_isConnectable"];
+    v4->_isScanning = [coder decodeBoolForKey:@"_isScanning"];
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
-    v4->_devices = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"_devices", "copy"}];
+    v4->_devices = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"_devices", "copy"}];
   }
 
   return v4;

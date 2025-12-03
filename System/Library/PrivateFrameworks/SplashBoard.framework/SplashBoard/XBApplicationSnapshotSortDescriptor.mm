@@ -1,11 +1,11 @@
 @interface XBApplicationSnapshotSortDescriptor
-+ (id)_propertyKeyForSnapshotKey:(unint64_t)a3 overriddenForNil:(BOOL *)a4;
-+ (id)sortDescriptorWithKey:(unint64_t)a3 ascending:(BOOL)a4 comparator:(id)a5;
++ (id)_propertyKeyForSnapshotKey:(unint64_t)key overriddenForNil:(BOOL *)nil;
++ (id)sortDescriptorWithKey:(unint64_t)key ascending:(BOOL)ascending comparator:(id)comparator;
 - (NSSortDescriptor)NSSortDescriptor;
-- (XBApplicationSnapshotSortDescriptor)initWithKey:(unint64_t)a3 ascending:(BOOL)a4 comparator:(id)a5;
-- (id)_stringForKey:(unint64_t)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (XBApplicationSnapshotSortDescriptor)initWithKey:(unint64_t)key ascending:(BOOL)ascending comparator:(id)comparator;
+- (id)_stringForKey:(unint64_t)key;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
@@ -65,27 +65,27 @@ uint64_t __55__XBApplicationSnapshotSortDescriptor_NSSortDescriptor__block_invok
   return v13;
 }
 
-+ (id)sortDescriptorWithKey:(unint64_t)a3 ascending:(BOOL)a4 comparator:(id)a5
++ (id)sortDescriptorWithKey:(unint64_t)key ascending:(BOOL)ascending comparator:(id)comparator
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [[a1 alloc] initWithKey:a3 ascending:v5 comparator:v8];
+  ascendingCopy = ascending;
+  comparatorCopy = comparator;
+  v9 = [[self alloc] initWithKey:key ascending:ascendingCopy comparator:comparatorCopy];
 
   return v9;
 }
 
-- (XBApplicationSnapshotSortDescriptor)initWithKey:(unint64_t)a3 ascending:(BOOL)a4 comparator:(id)a5
+- (XBApplicationSnapshotSortDescriptor)initWithKey:(unint64_t)key ascending:(BOOL)ascending comparator:(id)comparator
 {
-  v8 = a5;
+  comparatorCopy = comparator;
   v14.receiver = self;
   v14.super_class = XBApplicationSnapshotSortDescriptor;
   v9 = [(XBApplicationSnapshotSortDescriptor *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_key = a3;
-    v9->_ascending = a4;
-    v11 = [v8 copy];
+    v9->_key = key;
+    v9->_ascending = ascending;
+    v11 = [comparatorCopy copy];
     comparator = v10->_comparator;
     v10->_comparator = v11;
   }
@@ -93,26 +93,26 @@ uint64_t __55__XBApplicationSnapshotSortDescriptor_NSSortDescriptor__block_invok
   return v10;
 }
 
-+ (id)_propertyKeyForSnapshotKey:(unint64_t)a3 overriddenForNil:(BOOL *)a4
++ (id)_propertyKeyForSnapshotKey:(unint64_t)key overriddenForNil:(BOOL *)nil
 {
   result = @"referenceSize";
-  if (a3 > 7)
+  if (key > 7)
   {
-    if (a3 > 10)
+    if (key > 10)
     {
       v5 = @"userInterfaceStyle";
       v6 = @"customSafeAreaInsets";
-      if (a3 != 13)
+      if (key != 13)
       {
         v6 = @"referenceSize";
       }
 
-      if (a3 != 12)
+      if (key != 12)
       {
         v5 = v6;
       }
 
-      if (a3 == 11)
+      if (key == 11)
       {
         return @"hasProtectedContent";
       }
@@ -123,21 +123,21 @@ uint64_t __55__XBApplicationSnapshotSortDescriptor_NSSortDescriptor__block_invok
       }
     }
 
-    else if (a3 == 8)
+    else if (key == 8)
     {
-      if (a4)
+      if (nil)
       {
-        *a4 = 1;
+        *nil = 1;
       }
 
       return @"_sortableStatusBarSettings";
     }
 
-    else if (a3 == 9)
+    else if (key == 9)
     {
-      if (a4)
+      if (nil)
       {
-        *a4 = 1;
+        *nil = 1;
       }
 
       return @"_sortableRequiredOSVersion";
@@ -149,23 +149,23 @@ uint64_t __55__XBApplicationSnapshotSortDescriptor_NSSortDescriptor__block_invok
     }
   }
 
-  else if (a3 > 3)
+  else if (key > 3)
   {
-    switch(a3)
+    switch(key)
     {
       case 4uLL:
-        if (a4)
+        if (nil)
         {
-          *a4 = 0;
+          *nil = 0;
         }
 
         return @"_interfaceOrientationMask";
       case 6uLL:
         return @"imageScale";
       case 7uLL:
-        if (a4)
+        if (nil)
         {
-          *a4 = 0;
+          *nil = 0;
         }
 
         return @"_contentTypeMask";
@@ -174,26 +174,26 @@ uint64_t __55__XBApplicationSnapshotSortDescriptor_NSSortDescriptor__block_invok
 
   else
   {
-    switch(a3)
+    switch(key)
     {
       case 1uLL:
-        if (a4)
+        if (nil)
         {
-          *a4 = 1;
+          *nil = 1;
         }
 
         return @"_sortableName";
       case 2uLL:
-        if (a4)
+        if (nil)
         {
-          *a4 = 1;
+          *nil = 1;
         }
 
         return @"_sortableScheme";
       case 3uLL:
-        if (a4)
+        if (nil)
         {
-          *a4 = 1;
+          *nil = 1;
         }
 
         return @"_sortableLaunchInterfaceIdentifier";
@@ -205,32 +205,32 @@ uint64_t __55__XBApplicationSnapshotSortDescriptor_NSSortDescriptor__block_invok
 
 - (id)succinctDescription
 {
-  v2 = [(XBApplicationSnapshotSortDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(XBApplicationSnapshotSortDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(XBApplicationSnapshotSortDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(XBApplicationSnapshotSortDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(XBApplicationSnapshotSortDescriptor *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(XBApplicationSnapshotSortDescriptor *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __77__XBApplicationSnapshotSortDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_279CF9508;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -245,16 +245,16 @@ id __77__XBApplicationSnapshotSortDescriptor_descriptionBuilderWithMultilinePref
   return [*(a1 + 32) appendBool:*(*(a1 + 40) + 16) withName:@"ascending"];
 }
 
-- (id)_stringForKey:(unint64_t)a3
+- (id)_stringForKey:(unint64_t)key
 {
-  if (a3 - 2 > 0xB)
+  if (key - 2 > 0xB)
   {
     return @"XBApplicationSnapshotNameKey";
   }
 
   else
   {
-    return off_279CF9E00[a3 - 2];
+    return off_279CF9E00[key - 2];
   }
 }
 

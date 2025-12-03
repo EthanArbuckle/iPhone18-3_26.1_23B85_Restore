@@ -1,8 +1,8 @@
 @interface MTLFunctionStitchingInputNode
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLFunctionStitchingInputNode)initWithArgumentIndex:(NSUInteger)argument;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 @end
 
 @implementation MTLFunctionStitchingInputNode
@@ -16,34 +16,34 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setArgumentIndex:{-[MTLFunctionStitchingInputNode argumentIndex](self, "argumentIndex")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
-  v7 = [(MTLFunctionStitchingInputNode *)self argumentIndex];
-  return v7 == [a3 argumentIndex];
+  argumentIndex = [(MTLFunctionStitchingInputNode *)self argumentIndex];
+  return argumentIndex == [equal argumentIndex];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v9.receiver = self;
   v9.super_class = MTLFunctionStitchingInputNode;

@@ -1,30 +1,30 @@
 @interface PDURLSessionProxyService
-- (BOOL)verifyAndUpdateIncomingSequenceNumber:(unint64_t)a3 forPriority:(int64_t)a4;
+- (BOOL)verifyAndUpdateIncomingSequenceNumber:(unint64_t)number forPriority:(int64_t)priority;
 - (PDURLSessionProxyService)init;
 - (id)defaultPairedDevice;
-- (unint64_t)bumpAndReturnOutgoingSequenceNumberForPriority:(int64_t)a3;
-- (void)_onqueue_handleFailedMessageSend:(id)a3 ofType:(unsigned __int16)a4;
-- (void)_onqueue_handleReceivedMessage:(id)a3 ofType:(unsigned __int16)a4 withReply:(id)a5;
-- (void)_onqueue_handleReceivedReply:(id)a3 forIdentifier:(id)a4 ofType:(unsigned __int16)a5 withError:(id)a6;
-- (void)_onqueue_messageWithIdentifier:(id)a3 didSendWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)_onqueue_sendMessage:(id)a3 ofType:(unsigned __int16)a4 responseIdentifier:(id)a5 forSourceApplication:(id)a6 withUrgency:(BOOL)a7 withIDSMessageTimeout:(int64_t)a8 withReply:(id)a9;
+- (unint64_t)bumpAndReturnOutgoingSequenceNumberForPriority:(int64_t)priority;
+- (void)_onqueue_handleFailedMessageSend:(id)send ofType:(unsigned __int16)type;
+- (void)_onqueue_handleReceivedMessage:(id)message ofType:(unsigned __int16)type withReply:(id)reply;
+- (void)_onqueue_handleReceivedReply:(id)reply forIdentifier:(id)identifier ofType:(unsigned __int16)type withError:(id)error;
+- (void)_onqueue_messageWithIdentifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)_onqueue_sendMessage:(id)message ofType:(unsigned __int16)type responseIdentifier:(id)identifier forSourceApplication:(id)application withUrgency:(BOOL)urgency withIDSMessageTimeout:(int64_t)timeout withReply:(id)reply;
 - (void)_onqueue_sendStartupMessage;
 - (void)_onqueue_updateDeviceState;
-- (void)devicesDidUnpair:(id)a3;
-- (void)sendProtobufMessage:(id)a3 ofType:(unsigned __int16)a4 withReply:(id)a5;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
+- (void)devicesDidUnpair:(id)unpair;
+- (void)sendProtobufMessage:(id)message ofType:(unsigned __int16)type withReply:(id)reply;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
 - (void)start;
 @end
 
 @implementation PDURLSessionProxyService
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  deviceCopy = device;
+  blockCopy = block;
   v11 = qword_1000EB1D8;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -40,20 +40,20 @@
 
   [(NSMutableSet *)self->_receivedLaunchUUIDs removeAllObjects];
   [(PDURLSessionProxyService *)self _onqueue_remoteDeviceStartedUp];
-  v10[2](v10);
+  blockCopy[2](blockCopy);
   v15 = +[NSUUID UUID];
-  v16 = [v15 UUIDString];
+  uUIDString = [v15 UUIDString];
   launchUUID = self->_launchUUID;
-  self->_launchUUID = v16;
+  self->_launchUUID = uUIDString;
 
   self->_haveReceivedMessage = 0;
   [(PDURLSessionProxyService *)self _onqueue_sendStartupMessage];
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   v8 = qword_1000EB1D8;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -62,33 +62,33 @@
     v11 = 138412546;
     v12 = v10;
     v13 = 2112;
-    v14 = v7;
+    v14 = changedCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@: activeAccountsChanged: %@", &v11, 0x16u);
   }
 
-  if ([v7 count] && self->_startupMessageFailed)
+  if ([changedCopy count] && self->_startupMessageFailed)
   {
     [(PDURLSessionProxyService *)self _onqueue_sendStartupMessage];
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
-  v10 = a5;
-  v48 = a7;
-  v11 = [v10 type];
-  v47 = [v10 data];
+  protobufCopy = protobuf;
+  contextCopy = context;
+  type = [protobufCopy type];
+  data = [protobufCopy data];
   v12 = qword_1000EB1D8;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
     v15 = NSStringFromSelector(a2);
-    v16 = [v48 outgoingResponseIdentifier];
-    v17 = [v10 isResponse];
-    v18 = [v47 length];
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+    isResponse = [protobufCopy isResponse];
+    v18 = [data length];
     *buf = 138413570;
-    if (v17)
+    if (isResponse)
     {
       v19 = 89;
     }
@@ -102,9 +102,9 @@
     v55 = 2112;
     *v56 = v15;
     *&v56[8] = 2114;
-    *v57 = v16;
+    *v57 = outgoingResponseIdentifier;
     *&v57[8] = 1024;
-    *v58 = v11;
+    *v58 = type;
     *&v58[4] = 1024;
     *&v58[6] = v19;
     v59 = 2048;
@@ -112,18 +112,18 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@::%@ outgoingResponseIdentifier = %{public}@, type = %u, isResponse = %c, data length = %lu", buf, 0x36u);
   }
 
-  v20 = +[PDURLSessionProxyCommon messageSubclassForMessageType:isReply:](PDURLSessionProxyCommon, "messageSubclassForMessageType:isReply:", v11, [v10 isResponse]);
+  v20 = +[PDURLSessionProxyCommon messageSubclassForMessageType:isReply:](PDURLSessionProxyCommon, "messageSubclassForMessageType:isReply:", type, [protobufCopy isResponse]);
   if ([(objc_class *)v20 isEqual:objc_opt_class()])
   {
-    v21 = qword_1000EB1D8;
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    data2 = qword_1000EB1D8;
+    if (os_log_type_enabled(data2, OS_LOG_TYPE_ERROR))
     {
       v41 = objc_opt_class();
       v42 = NSStringFromClass(v41);
-      v43 = [v10 isResponse];
-      v44 = [v47 length];
+      isResponse2 = [protobufCopy isResponse];
+      v44 = [data length];
       *buf = 138413058;
-      if (v43)
+      if (isResponse2)
       {
         v45 = 89;
       }
@@ -135,12 +135,12 @@
 
       v54 = v42;
       v55 = 1024;
-      *v56 = v11;
+      *v56 = type;
       *&v56[4] = 1024;
       *&v56[6] = v45;
       *v57 = 2048;
       *&v57[2] = v44;
-      _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%@ received protobuf of type %u which could not be decoded! isResponse = %c, data length = %lu", buf, 0x22u);
+      _os_log_error_impl(&_mh_execute_header, data2, OS_LOG_TYPE_ERROR, "%@ received protobuf of type %u which could not be decoded! isResponse = %c, data length = %lu", buf, 0x22u);
     }
 
     v22 = 0;
@@ -149,11 +149,11 @@
   else
   {
     v23 = [v20 alloc];
-    v21 = [v10 data];
-    v22 = [v23 initWithData:v21];
+    data2 = [protobufCopy data];
+    v22 = [v23 initWithData:data2];
   }
 
-  v24 = [v22 _nsurlsessionproxy_launchUUID];
+  _nsurlsessionproxy_launchUUID = [v22 _nsurlsessionproxy_launchUUID];
   if (!self->_haveReceivedMessage)
   {
     self->_haveReceivedMessage = 1;
@@ -163,9 +163,9 @@
     }
   }
 
-  if (!v24 || ([v10 isResponse] & 1) != 0)
+  if (!_nsurlsessionproxy_launchUUID || ([protobufCopy isResponse] & 1) != 0)
   {
-    if (v11 == 10000)
+    if (type == 10000)
     {
       v25 = qword_1000EB1D8;
       if (os_log_type_enabled(qword_1000EB1D8, OS_LOG_TYPE_DEFAULT))
@@ -182,11 +182,11 @@
     goto LABEL_21;
   }
 
-  if (([(NSMutableSet *)self->_receivedLaunchUUIDs containsObject:v24]& 1) == 0)
+  if (([(NSMutableSet *)self->_receivedLaunchUUIDs containsObject:_nsurlsessionproxy_launchUUID]& 1) == 0)
   {
     v27 = qword_1000EB1D8;
     v28 = os_log_type_enabled(qword_1000EB1D8, OS_LOG_TYPE_DEFAULT);
-    if (v11 == 10000)
+    if (type == 10000)
     {
       if (!v28)
       {
@@ -194,7 +194,7 @@
       }
 
       *buf = 138412290;
-      v54 = v24;
+      v54 = _nsurlsessionproxy_launchUUID;
       v29 = "Received PDURLSession Startup message with launchUUID %@";
     }
 
@@ -206,24 +206,24 @@
       }
 
       *buf = 138412290;
-      v54 = v24;
+      v54 = _nsurlsessionproxy_launchUUID;
       v29 = "Received PDURLSessionProxy message with new launchUUID %@";
     }
 
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, v29, buf, 0xCu);
 LABEL_28:
-    v26 = v11 != 10000;
-    if (self->_currentRemoteLaunchUUID || v11 == 10000 || self->_haveReceivedLegacyStartupMessage)
+    v26 = type != 10000;
+    if (self->_currentRemoteLaunchUUID || type == 10000 || self->_haveReceivedLegacyStartupMessage)
     {
       [(PDURLSessionProxyService *)self _onqueue_remoteDeviceStartedUp];
     }
 
-    objc_storeStrong(&self->_currentRemoteLaunchUUID, v24);
-    [(NSMutableSet *)self->_receivedLaunchUUIDs addObject:v24];
+    objc_storeStrong(&self->_currentRemoteLaunchUUID, _nsurlsessionproxy_launchUUID);
+    [(NSMutableSet *)self->_receivedLaunchUUIDs addObject:_nsurlsessionproxy_launchUUID];
     goto LABEL_31;
   }
 
-  if ([(NSString *)self->_currentRemoteLaunchUUID isEqualToString:v24])
+  if ([(NSString *)self->_currentRemoteLaunchUUID isEqualToString:_nsurlsessionproxy_launchUUID])
   {
 LABEL_21:
     v26 = 1;
@@ -234,11 +234,11 @@ LABEL_31:
       v30 = qword_1000EB1D8;
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [v48 outgoingResponseIdentifier];
-        v32 = [v10 isResponse];
-        v33 = [v47 length];
+        outgoingResponseIdentifier2 = [contextCopy outgoingResponseIdentifier];
+        isResponse3 = [protobufCopy isResponse];
+        v33 = [data length];
         *buf = 138544386;
-        if (v32)
+        if (isResponse3)
         {
           v34 = 89;
         }
@@ -250,9 +250,9 @@ LABEL_31:
 
         v54 = v46;
         v55 = 2114;
-        *v56 = v31;
+        *v56 = outgoingResponseIdentifier2;
         *&v56[8] = 1024;
-        *v57 = v11;
+        *v57 = type;
         *&v57[4] = 1024;
         *&v57[6] = v34;
         *v58 = 2048;
@@ -260,30 +260,30 @@ LABEL_31:
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ receiving NSURLSession proxy message, identifier = %{public}@, type = %u, isReply = %c, data length = %lu", buf, 0x2Cu);
       }
 
-      if ([v10 isResponse])
+      if ([protobufCopy isResponse])
       {
-        v35 = [v48 incomingResponseIdentifier];
-        [(PDURLSessionProxyService *)self _onqueue_handleReceivedReply:v22 forIdentifier:v35 ofType:v11 withError:0];
+        incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
+        [(PDURLSessionProxyService *)self _onqueue_handleReceivedReply:v22 forIdentifier:incomingResponseIdentifier ofType:type withError:0];
       }
 
       else
       {
-        v36 = [v22 _nsurlsessionproxy_sequenceNumber];
-        v37 = [v22 _nsurlsessionproxy_messagePriority];
+        _nsurlsessionproxy_sequenceNumber = [v22 _nsurlsessionproxy_sequenceNumber];
+        _nsurlsessionproxy_messagePriority = [v22 _nsurlsessionproxy_messagePriority];
         v38 = qword_1000EB1D8;
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
-          v39 = [v48 outgoingResponseIdentifier];
+          outgoingResponseIdentifier3 = [contextCopy outgoingResponseIdentifier];
           *buf = 138543874;
-          v54 = v39;
+          v54 = outgoingResponseIdentifier3;
           v55 = 2048;
-          *v56 = v37;
+          *v56 = _nsurlsessionproxy_messagePriority;
           *&v56[8] = 2048;
-          *v57 = v36;
+          *v57 = _nsurlsessionproxy_sequenceNumber;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Incoming (non-reply) message with identifier %{public}@ has priority %lld and sequence number %llu", buf, 0x20u);
         }
 
-        if ([(PDURLSessionProxyService *)self verifyAndUpdateIncomingSequenceNumber:v36 forPriority:v37])
+        if ([(PDURLSessionProxyService *)self verifyAndUpdateIncomingSequenceNumber:_nsurlsessionproxy_sequenceNumber forPriority:_nsurlsessionproxy_messagePriority])
         {
           v49[0] = _NSConcreteStackBlock;
           v49[1] = 3221225472;
@@ -291,9 +291,9 @@ LABEL_31:
           v49[3] = &unk_1000D50C0;
           v49[4] = self;
           v50 = v22;
-          v52 = v11;
-          v51 = v48;
-          [(PDURLSessionProxyService *)self _onqueue_handleReceivedMessage:v50 ofType:v11 withReply:v49];
+          v52 = type;
+          v51 = contextCopy;
+          [(PDURLSessionProxyService *)self _onqueue_handleReceivedMessage:v50 ofType:type withReply:v49];
         }
       }
     }
@@ -305,20 +305,20 @@ LABEL_31:
   if (os_log_type_enabled(qword_1000EB1D8, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v54 = v24;
+    v54 = _nsurlsessionproxy_launchUUID;
     _os_log_error_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "Dropping NSURLSessionProxy message with old launchUUID %@", buf, 0xCu);
   }
 
 LABEL_47:
 }
 
-- (void)_onqueue_messageWithIdentifier:(id)a3 didSendWithSuccess:(BOOL)a4 error:(id)a5
+- (void)_onqueue_messageWithIdentifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v13 = a3;
-  v8 = a5;
-  if (a4)
+  identifierCopy = identifier;
+  errorCopy = error;
+  if (success)
   {
-    v9 = [(NSMutableDictionary *)self->_outstandingReplies objectForKeyedSubscript:v13];
+    v9 = [(NSMutableDictionary *)self->_outstandingReplies objectForKeyedSubscript:identifierCopy];
 
     if (v9)
     {
@@ -328,38 +328,38 @@ LABEL_47:
 
   else
   {
-    v10 = [(NSMutableDictionary *)self->_outstandingMessages objectForKeyedSubscript:v13];
-    v11 = v8;
-    if (!v8)
+    v10 = [(NSMutableDictionary *)self->_outstandingMessages objectForKeyedSubscript:identifierCopy];
+    v11 = errorCopy;
+    if (!errorCopy)
     {
       v11 = [NSError errorWithDomain:NSURLErrorDomain code:-1 userInfo:0];
     }
 
-    [(PDURLSessionProxyService *)self _onqueue_handleReceivedReply:0 forIdentifier:v13 ofType:0 withError:v11];
-    if (!v8)
+    [(PDURLSessionProxyService *)self _onqueue_handleReceivedReply:0 forIdentifier:identifierCopy ofType:0 withError:v11];
+    if (!errorCopy)
     {
     }
 
-    v12 = [v10 message];
-    -[PDURLSessionProxyService _onqueue_handleFailedMessageSend:ofType:](self, "_onqueue_handleFailedMessageSend:ofType:", v12, [v10 type]);
+    message = [v10 message];
+    -[PDURLSessionProxyService _onqueue_handleFailedMessageSend:ofType:](self, "_onqueue_handleFailedMessageSend:ofType:", message, [v10 type]);
   }
 
-  [(NSMutableDictionary *)self->_outstandingMessages removeObjectForKey:v13];
+  [(NSMutableDictionary *)self->_outstandingMessages removeObjectForKey:identifierCopy];
 LABEL_10:
 }
 
-- (void)_onqueue_handleReceivedReply:(id)a3 forIdentifier:(id)a4 ofType:(unsigned __int16)a5 withError:(id)a6
+- (void)_onqueue_handleReceivedReply:(id)reply forIdentifier:(id)identifier ofType:(unsigned __int16)type withError:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(NSMutableDictionary *)self->_outstandingReplies objectForKeyedSubscript:v10];
+  replyCopy = reply;
+  identifierCopy = identifier;
+  errorCopy = error;
+  v12 = [(NSMutableDictionary *)self->_outstandingReplies objectForKeyedSubscript:identifierCopy];
   v13 = v12;
   if (v12)
   {
-    (*(v12 + 16))(v12, v9, v11);
-    [(NSMutableDictionary *)self->_outstandingReplies removeObjectForKey:v10];
-    [(NSMutableDictionary *)self->_outstandingMessages removeObjectForKey:v10];
+    (*(v12 + 16))(v12, replyCopy, errorCopy);
+    [(NSMutableDictionary *)self->_outstandingReplies removeObjectForKey:identifierCopy];
+    [(NSMutableDictionary *)self->_outstandingMessages removeObjectForKey:identifierCopy];
   }
 
   else
@@ -368,64 +368,64 @@ LABEL_10:
     if (os_log_type_enabled(qword_1000EB1D8, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v10;
+      v16 = identifierCopy;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Received a reply with identifier %@ but don't have a corresponding reply block", &v15, 0xCu);
     }
   }
 }
 
-- (void)_onqueue_handleFailedMessageSend:(id)a3 ofType:(unsigned __int16)a4
+- (void)_onqueue_handleFailedMessageSend:(id)send ofType:(unsigned __int16)type
 {
-  v4 = a3;
+  sendCopy = send;
   v5 = qword_1000EB1D8;
   if (os_log_type_enabled(qword_1000EB1D8, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = sendCopy;
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Subclass did not handle message send failure for message %@", &v6, 0xCu);
   }
 }
 
-- (void)_onqueue_handleReceivedMessage:(id)a3 ofType:(unsigned __int16)a4 withReply:(id)a5
+- (void)_onqueue_handleReceivedMessage:(id)message ofType:(unsigned __int16)type withReply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  typeCopy = type;
+  messageCopy = message;
   v7 = qword_1000EB1D8;
   if (os_log_type_enabled(qword_1000EB1D8, OS_LOG_TYPE_ERROR))
   {
     v8 = 138412546;
-    v9 = v6;
+    v9 = messageCopy;
     v10 = 1024;
-    v11 = v5;
+    v11 = typeCopy;
     _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Subclass did not handle message %@ of type %u", &v8, 0x12u);
   }
 }
 
-- (void)sendProtobufMessage:(id)a3 ofType:(unsigned __int16)a4 withReply:(id)a5
+- (void)sendProtobufMessage:(id)message ofType:(unsigned __int16)type withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  messageCopy = message;
+  replyCopy = reply;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000BAF8;
   v13[3] = &unk_1000D5070;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = messageCopy;
+  typeCopy = type;
+  v15 = replyCopy;
+  v11 = replyCopy;
+  v12 = messageCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)_onqueue_sendMessage:(id)a3 ofType:(unsigned __int16)a4 responseIdentifier:(id)a5 forSourceApplication:(id)a6 withUrgency:(BOOL)a7 withIDSMessageTimeout:(int64_t)a8 withReply:(id)a9
+- (void)_onqueue_sendMessage:(id)message ofType:(unsigned __int16)type responseIdentifier:(id)identifier forSourceApplication:(id)application withUrgency:(BOOL)urgency withIDSMessageTimeout:(int64_t)timeout withReply:(id)reply
 {
-  v68 = a4;
-  v15 = a3;
-  v69 = a5;
-  v66 = a6;
-  v67 = a9;
+  typeCopy = type;
+  messageCopy = message;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  replyCopy = reply;
   v16 = qword_1000EB1D8;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -444,7 +444,7 @@ LABEL_10:
     }
 
     *buf = 138413826;
-    if (v69)
+    if (identifierCopy)
     {
       v22 = 89;
     }
@@ -458,33 +458,33 @@ LABEL_10:
     *&v78[8] = 2112;
     *&v78[10] = v19;
     *&v78[18] = 1024;
-    *&v78[20] = v68;
+    *&v78[20] = typeCopy;
     v79 = 1024;
     v80 = v21;
     v81 = 1024;
     *v82 = v22;
     *&v82[4] = 2112;
-    *&v82[6] = v66;
+    *&v82[6] = applicationCopy;
     v83 = 2048;
-    v84 = a8;
+    timeoutCopy = timeout;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@::%@ type = %u, connected = %c, isReply = %c, sourceApplication = %@, msgTO = %ld", buf, 0x3Cu);
   }
 
   v23 = +[NSMutableDictionary dictionary];
   [v23 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionLocalDeliveryKey];
-  v24 = [NSNumber numberWithInteger:a8];
+  v24 = [NSNumber numberWithInteger:timeout];
   [v23 setObject:v24 forKeyedSubscript:IDSSendMessageOptionTimeoutKey];
 
   [v23 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionNSURLSessionKey];
   [v23 setObject:&__kCFBooleanFalse forKeyedSubscript:IDSSendMessageOptionEnforceRemoteTimeoutsKey];
-  v25 = [v15 _nsurlsessionproxy_sessionIdentifier];
-  LODWORD(v24) = (v66 | v25) != 0;
+  _nsurlsessionproxy_sessionIdentifier = [messageCopy _nsurlsessionproxy_sessionIdentifier];
+  LODWORD(v24) = (applicationCopy | _nsurlsessionproxy_sessionIdentifier) != 0;
 
-  v26 = 2 * a8 + 5;
+  v26 = 2 * timeout + 5;
   if (v24)
   {
-    v27 = [v15 _nsurlsessionproxy_sessionIdentifier];
-    v28 = v27 == 0;
+    _nsurlsessionproxy_sessionIdentifier2 = [messageCopy _nsurlsessionproxy_sessionIdentifier];
+    v28 = _nsurlsessionproxy_sessionIdentifier2 == 0;
 
     if (v28)
     {
@@ -494,10 +494,10 @@ LABEL_10:
 
     else
     {
-      v29 = [v15 _nsurlsessionproxy_sessionIdentifier];
+      _nsurlsessionproxy_sessionIdentifier3 = [messageCopy _nsurlsessionproxy_sessionIdentifier];
       v75 = 0;
       v76 = 0;
-      [PDURLSessionProxyCommon getComponentsForFullIdentifier:v29 bundleIdentifier:&v76 sessionIdentifier:&v75];
+      [PDURLSessionProxyCommon getComponentsForFullIdentifier:_nsurlsessionproxy_sessionIdentifier3 bundleIdentifier:&v76 sessionIdentifier:&v75];
       v30 = v76;
       v31 = v75;
 
@@ -511,16 +511,16 @@ LABEL_10:
       }
     }
 
-    v32 = v66;
-    if (v66)
+    v32 = applicationCopy;
+    if (applicationCopy)
     {
       v33 = v32;
     }
 
     else
     {
-      v58 = [v15 _nsurlsessionproxy_sessionIdentifier];
-      v59 = v58 == 0;
+      _nsurlsessionproxy_sessionIdentifier4 = [messageCopy _nsurlsessionproxy_sessionIdentifier];
+      v59 = _nsurlsessionproxy_sessionIdentifier4 == 0;
 
       if (v59)
       {
@@ -528,7 +528,7 @@ LABEL_10:
         goto LABEL_19;
       }
 
-      v60 = [(PDURLSessionProxyService *)self _onqueue_sourceApplicationForMessage:v15];
+      v60 = [(PDURLSessionProxyService *)self _onqueue_sourceApplicationForMessage:messageCopy];
       v61 = v60;
       if (v60)
       {
@@ -565,37 +565,37 @@ LABEL_19:
     }
   }
 
-  if (v67)
+  if (replyCopy)
   {
     [v23 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionExpectsPeerResponseKey];
   }
 
-  if (v69)
+  if (identifierCopy)
   {
-    [v23 setObject:v69 forKeyedSubscript:IDSSendMessageOptionPeerResponseIdentifierKey];
+    [v23 setObject:identifierCopy forKeyedSubscript:IDSSendMessageOptionPeerResponseIdentifierKey];
   }
 
-  if (a7)
+  if (urgency)
   {
     v37 = 300;
   }
 
   else
   {
-    v37 = [(PDURLSessionProxyService *)self _onqueue_priorityForMessage:v15 ofType:v68 isReply:v69 != 0];
+    v37 = [(PDURLSessionProxyService *)self _onqueue_priorityForMessage:messageCopy ofType:typeCopy isReply:identifierCopy != 0];
   }
 
-  if (!v69)
+  if (!identifierCopy)
   {
-    [v15 _nsurlsessionproxy_setSequenceNumber:{-[PDURLSessionProxyService bumpAndReturnOutgoingSequenceNumberForPriority:](self, "bumpAndReturnOutgoingSequenceNumberForPriority:", v37)}];
-    [v15 _nsurlsessionproxy_setMessagePriority:v37];
-    v38 = [(PDURLSessionProxyService *)self launchUUID];
-    [v15 _nsurlsessionproxy_setLaunchUUID:v38];
+    [messageCopy _nsurlsessionproxy_setSequenceNumber:{-[PDURLSessionProxyService bumpAndReturnOutgoingSequenceNumberForPriority:](self, "bumpAndReturnOutgoingSequenceNumberForPriority:", v37)}];
+    [messageCopy _nsurlsessionproxy_setMessagePriority:v37];
+    launchUUID = [(PDURLSessionProxyService *)self launchUUID];
+    [messageCopy _nsurlsessionproxy_setLaunchUUID:launchUUID];
   }
 
   v39 = [IDSProtobuf alloc];
-  v40 = [v15 data];
-  v64 = [v39 initWithProtobufData:v40 type:v68 isResponse:v69 != 0];
+  data = [messageCopy data];
+  v64 = [v39 initWithProtobufData:data type:typeCopy isResponse:identifierCopy != 0];
 
   idsService = self->_idsService;
   v42 = [NSSet setWithObject:IDSDefaultPairedDevice];
@@ -607,14 +607,14 @@ LABEL_19:
 
   if (v43)
   {
-    v46 = [[PDURLSessionProxyMessageInfo alloc] initWithMessage:v15 type:v68];
+    v46 = [[PDURLSessionProxyMessageInfo alloc] initWithMessage:messageCopy type:typeCopy];
     [(NSMutableDictionary *)self->_outstandingMessages setObject:v46 forKeyedSubscript:v44];
-    if (v67)
+    if (replyCopy)
     {
-      v47 = [v67 copy];
+      v47 = [replyCopy copy];
       [(NSMutableDictionary *)self->_outstandingReplies setObject:v47 forKeyedSubscript:v44];
 
-      if (v68 != 3001)
+      if (typeCopy != 3001)
       {
         v48 = dispatch_time(0, 1000000000 * v26);
         queue = self->_queue;
@@ -624,7 +624,7 @@ LABEL_19:
         block[3] = &unk_1000D5048;
         block[4] = self;
         v71 = v44;
-        v72 = v68;
+        v72 = typeCopy;
         dispatch_after(v48, queue, block);
       }
     }
@@ -635,17 +635,17 @@ LABEL_19:
     v50 = qword_1000EB1D8;
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
     {
-      v63 = [v45 code];
+      code = [v45 code];
       *buf = 67109634;
-      *v78 = v68;
+      *v78 = typeCopy;
       *&v78[4] = 2112;
       *&v78[6] = v45;
       *&v78[14] = 2048;
-      *&v78[16] = v63;
+      *&v78[16] = code;
       _os_log_error_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "Failed to send message! Type = %u, error = %@ [%ld]", buf, 0x1Cu);
     }
 
-    if (v67)
+    if (replyCopy)
     {
       v51 = v45;
       if (!v45)
@@ -653,20 +653,20 @@ LABEL_19:
         v51 = [NSError errorWithDomain:NSURLErrorDomain code:-1 userInfo:0];
       }
 
-      (*(v67 + 2))(v67, 0, v51);
+      (*(replyCopy + 2))(replyCopy, 0, v51);
       if (!v45)
       {
       }
     }
 
-    [(PDURLSessionProxyService *)self _onqueue_handleFailedMessageSend:v15 ofType:v68, v64];
+    [(PDURLSessionProxyService *)self _onqueue_handleFailedMessageSend:messageCopy ofType:typeCopy, v64];
   }
 
-  v52 = [(PDURLSessionProxyService *)self _onqueue_loggableDescriptionForMessage:v15, v64];
+  v52 = [(PDURLSessionProxyService *)self _onqueue_loggableDescriptionForMessage:messageCopy, v64];
   v53 = qword_1000EB1D8;
   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
   {
-    if (v69)
+    if (identifierCopy)
     {
       v54 = 89;
     }
@@ -676,8 +676,8 @@ LABEL_19:
       v54 = 78;
     }
 
-    v55 = [v15 data];
-    v56 = [v55 length];
+    data2 = [messageCopy data];
+    v56 = [data2 length];
     *buf = 138544642;
     if (v43)
     {
@@ -693,7 +693,7 @@ LABEL_19:
     *&v78[8] = 2114;
     *&v78[10] = v44;
     *&v78[18] = 1024;
-    *&v78[20] = v68;
+    *&v78[20] = typeCopy;
     v79 = 1024;
     v80 = v54;
     v81 = 2048;
@@ -704,53 +704,53 @@ LABEL_19:
   }
 }
 
-- (BOOL)verifyAndUpdateIncomingSequenceNumber:(unint64_t)a3 forPriority:(int64_t)a4
+- (BOOL)verifyAndUpdateIncomingSequenceNumber:(unint64_t)number forPriority:(int64_t)priority
 {
   incomingSequenceNumbersByPriority = self->_incomingSequenceNumbersByPriority;
-  v8 = [NSNumber numberWithLongLong:a4];
+  v8 = [NSNumber numberWithLongLong:priority];
   v9 = [(NSMutableDictionary *)incomingSequenceNumbersByPriority objectForKeyedSubscript:v8];
-  v10 = [v9 unsignedLongLongValue];
+  unsignedLongLongValue = [v9 unsignedLongLongValue];
 
-  v11 = a3 - 1;
-  if (a3 - 1 < v10)
+  v11 = number - 1;
+  if (number - 1 < unsignedLongLongValue)
   {
     v15 = qword_1000EB1D8;
     if (os_log_type_enabled(qword_1000EB1D8, OS_LOG_TYPE_ERROR))
     {
       v17 = 134218496;
-      v18 = a4;
+      priorityCopy = priority;
       v19 = 2048;
-      v20 = a3;
+      numberCopy = number;
       v21 = 2048;
-      v22 = v10;
+      v22 = unsignedLongLongValue;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Received a message of priority %ld with lower sequence number %llu than existing sequence number %llu. Dropping message.", &v17, 0x20u);
     }
   }
 
   else
   {
-    v12 = [NSNumber numberWithUnsignedLongLong:a3];
+    v12 = [NSNumber numberWithUnsignedLongLong:number];
     v13 = self->_incomingSequenceNumbersByPriority;
-    v14 = [NSNumber numberWithLongLong:a4];
+    v14 = [NSNumber numberWithLongLong:priority];
     [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:v14];
   }
 
-  return v11 >= v10;
+  return v11 >= unsignedLongLongValue;
 }
 
-- (unint64_t)bumpAndReturnOutgoingSequenceNumberForPriority:(int64_t)a3
+- (unint64_t)bumpAndReturnOutgoingSequenceNumberForPriority:(int64_t)priority
 {
   outgoingSequenceNumbersByPriority = self->_outgoingSequenceNumbersByPriority;
   v6 = [NSNumber numberWithLongLong:?];
   v7 = [(NSMutableDictionary *)outgoingSequenceNumbersByPriority objectForKeyedSubscript:v6];
-  v8 = [v7 unsignedLongLongValue];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
 
-  v9 = [NSNumber numberWithUnsignedLongLong:v8 + 1];
+  v9 = [NSNumber numberWithUnsignedLongLong:unsignedLongLongValue + 1];
   v10 = self->_outgoingSequenceNumbersByPriority;
-  v11 = [NSNumber numberWithLongLong:a3];
+  v11 = [NSNumber numberWithLongLong:priority];
   [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:v11];
 
-  return (v8 + 1);
+  return (unsignedLongLongValue + 1);
 }
 
 - (void)_onqueue_updateDeviceState
@@ -866,8 +866,8 @@ LABEL_16:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(IDSService *)self->_idsService devices];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  devices = [(IDSService *)self->_idsService devices];
+  v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -877,7 +877,7 @@ LABEL_16:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -888,7 +888,7 @@ LABEL_16:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -908,12 +908,12 @@ LABEL_11:
   if (self->_haveReceivedMessage)
   {
     v3 = objc_opt_new();
-    v4 = [(PDURLSessionProxyService *)self launchUUID];
-    [v3 setLaunchUUID:v4];
+    launchUUID = [(PDURLSessionProxyService *)self launchUUID];
+    [v3 setLaunchUUID:launchUUID];
 
     v5 = [IDSProtobuf alloc];
-    v6 = [v3 data];
-    v7 = [v5 initWithProtobufData:v6 type:10000 isResponse:0];
+    data = [v3 data];
+    v7 = [v5 initWithProtobufData:data type:10000 isResponse:0];
 
     v8 = +[NSMutableDictionary dictionary];
     [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionLocalDeliveryKey];
@@ -937,11 +937,11 @@ LABEL_11:
       v16 = qword_1000EB1D8;
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v15 code];
+        code = [v15 code];
         *buf = 138412546;
         v23 = v15;
         v24 = 2048;
-        v25 = v19;
+        v25 = code;
         _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "sendProtobuf: returned NO for PDURLSessionProxy startup message, error %@ [%ld]", buf, 0x16u);
       }
     }
@@ -964,9 +964,9 @@ LABEL_11:
   }
 }
 
-- (void)devicesDidUnpair:(id)a3
+- (void)devicesDidUnpair:(id)unpair
 {
-  v4 = a3;
+  unpairCopy = unpair;
   v5 = qword_1000EB1D8;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1032,9 +1032,9 @@ LABEL_11:
     v2->_startupMessageIdentifier = 0;
 
     v17 = +[NSUUID UUID];
-    v18 = [v17 UUIDString];
+    uUIDString = [v17 UUIDString];
     launchUUID = v2->_launchUUID;
-    v2->_launchUUID = v18;
+    v2->_launchUUID = uUIDString;
 
     v2->_haveReceivedMessage = 0;
   }

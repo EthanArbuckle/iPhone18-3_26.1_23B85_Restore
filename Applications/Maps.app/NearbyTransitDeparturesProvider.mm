@@ -1,10 +1,10 @@
 @interface NearbyTransitDeparturesProvider
 - (NSArray)storeSubscriptionTypes;
-- (id)ticketForTransitMapItemUpdater:(id)a3;
-- (void)setStoreSubscriptionTypes:(id)a3;
-- (void)storeDidChange:(id)a3;
-- (void)transitItemReferenceDateUpdater:(id)a3 didUpdateToReferenceDate:(id)a4;
-- (void)transitMapItemUpdater:(id)a3 updatedMapItem:(id)a4 error:(id)a5;
+- (id)ticketForTransitMapItemUpdater:(id)updater;
+- (void)setStoreSubscriptionTypes:(id)types;
+- (void)storeDidChange:(id)change;
+- (void)transitItemReferenceDateUpdater:(id)updater didUpdateToReferenceDate:(id)date;
+- (void)transitMapItemUpdater:(id)updater updatedMapItem:(id)item error:(id)error;
 - (void)transitMapItemUpdater:willUpdateMapItem:;
 @end
 
@@ -19,45 +19,45 @@
   return v2.super.isa;
 }
 
-- (void)setStoreSubscriptionTypes:(id)a3
+- (void)setStoreSubscriptionTypes:(id)types
 {
   sub_1000CE6B8(&qword_1019083F0);
   *(self + OBJC_IVAR____TtC4Maps31NearbyTransitDeparturesProvider_storeSubscriptionTypes) = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 }
 
-- (id)ticketForTransitMapItemUpdater:(id)a3
+- (id)ticketForTransitMapItemUpdater:(id)updater
 {
-  v4 = a3;
-  v5 = self;
+  updaterCopy = updater;
+  selfCopy = self;
   v6 = sub_100160AB8();
 
   return v6;
 }
 
-- (void)transitMapItemUpdater:(id)a3 updatedMapItem:(id)a4 error:(id)a5
+- (void)transitMapItemUpdater:(id)updater updatedMapItem:(id)item error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_100160D10(v9, a5);
+  updaterCopy = updater;
+  itemCopy = item;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100160D10(itemCopy, error);
 }
 
-- (void)transitItemReferenceDateUpdater:(id)a3 didUpdateToReferenceDate:(id)a4
+- (void)transitItemReferenceDateUpdater:(id)updater didUpdateToReferenceDate:(id)date
 {
   v6 = type metadata accessor for Date();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  updaterCopy = updater;
+  selfCopy = self;
   sub_10016108C(v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)storeDidChange:(id)a3
+- (void)storeDidChange:(id)change
 {
   v3 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v3 - 8);

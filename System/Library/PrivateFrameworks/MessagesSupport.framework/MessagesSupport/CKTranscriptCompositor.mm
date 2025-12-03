@@ -1,159 +1,159 @@
 @interface CKTranscriptCompositor
-- (CKTranscriptCompositor)initWithLayoutContext:(int64_t)a3 datasource:(id)a4;
+- (CKTranscriptCompositor)initWithLayoutContext:(int64_t)context datasource:(id)datasource;
 - (CKTranscriptCompositorDatasourceDelegate)delegate;
 - (NSArray)boundarySupplementaryItems;
 - (UICollectionView)collectionView;
 - (UICollectionViewCompositionalLayout)collectionViewLayout;
 - (double)interSectionSpacing;
 - (id)datasource;
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4;
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment;
 - (int64_t)contentsInsetReference;
 - (int64_t)layoutContext;
 - (int64_t)scrollDirection;
-- (void)setBoundarySupplementaryItems:(id)a3;
-- (void)setCollectionView:(id)a3;
-- (void)setContentsInsetReference:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setInterSectionSpacing:(double)a3;
-- (void)setScrollDirection:(int64_t)a3;
+- (void)setBoundarySupplementaryItems:(id)items;
+- (void)setCollectionView:(id)view;
+- (void)setContentsInsetReference:(int64_t)reference;
+- (void)setDelegate:(id)delegate;
+- (void)setInterSectionSpacing:(double)spacing;
+- (void)setScrollDirection:(int64_t)direction;
 @end
 
 @implementation CKTranscriptCompositor
 
-- (CKTranscriptCompositor)initWithLayoutContext:(int64_t)a3 datasource:(id)a4
+- (CKTranscriptCompositor)initWithLayoutContext:(int64_t)context datasource:(id)datasource
 {
-  v6 = a4;
+  datasourceCopy = datasource;
   v10.receiver = self;
   v10.super_class = CKTranscriptCompositor;
   v7 = [(CKTranscriptCompositor *)&v10 init];
   if (v7)
   {
-    v8 = [[CKTranscriptCompositorSwift alloc] initWithLayoutContext:a3 datasource:v6];
+    v8 = [[CKTranscriptCompositorSwift alloc] initWithLayoutContext:context datasource:datasourceCopy];
     [(CKTranscriptCompositor *)v7 setRepresentedObject:v8];
   }
 
   return v7;
 }
 
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment
 {
-  v6 = a4;
-  v7 = [(CKTranscriptCompositor *)self representedObject];
-  v8 = [v7 layoutSectionForSection:a3 layoutEnvironment:v6];
+  environmentCopy = environment;
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  v8 = [representedObject layoutSectionForSection:section layoutEnvironment:environmentCopy];
 
   return v8;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CKTranscriptCompositor *)self representedObject];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  [representedObject setDelegate:delegateCopy];
 }
 
 - (CKTranscriptCompositorDatasourceDelegate)delegate
 {
-  v2 = [(CKTranscriptCompositor *)self representedObject];
-  v3 = [v2 delegate];
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  delegate = [representedObject delegate];
 
-  return v3;
+  return delegate;
 }
 
 - (int64_t)layoutContext
 {
-  v2 = [(CKTranscriptCompositor *)self representedObject];
-  v3 = [v2 layoutContext];
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  layoutContext = [representedObject layoutContext];
 
-  return v3;
+  return layoutContext;
 }
 
 - (id)datasource
 {
-  v2 = [(CKTranscriptCompositor *)self representedObject];
-  v3 = [v2 datasource];
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  datasource = [representedObject datasource];
 
-  return v3;
+  return datasource;
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = [(CKTranscriptCompositor *)self representedObject];
-  [v5 setCollectionView:v4];
+  viewCopy = view;
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  [representedObject setCollectionView:viewCopy];
 }
 
 - (UICollectionView)collectionView
 {
-  v2 = [(CKTranscriptCompositor *)self representedObject];
-  v3 = [v2 collectionView];
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  collectionView = [representedObject collectionView];
 
-  return v3;
+  return collectionView;
 }
 
 - (UICollectionViewCompositionalLayout)collectionViewLayout
 {
-  v2 = [(CKTranscriptCompositor *)self representedObject];
-  v3 = [v2 collectionViewLayout];
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  collectionViewLayout = [representedObject collectionViewLayout];
 
-  return v3;
+  return collectionViewLayout;
 }
 
-- (void)setScrollDirection:(int64_t)a3
+- (void)setScrollDirection:(int64_t)direction
 {
-  v4 = [(CKTranscriptCompositor *)self representedObject];
-  [v4 setScrollDirection:a3];
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  [representedObject setScrollDirection:direction];
 }
 
 - (int64_t)scrollDirection
 {
-  v2 = [(CKTranscriptCompositor *)self representedObject];
-  v3 = [v2 scrollDirection];
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  scrollDirection = [representedObject scrollDirection];
 
-  return v3;
+  return scrollDirection;
 }
 
-- (void)setInterSectionSpacing:(double)a3
+- (void)setInterSectionSpacing:(double)spacing
 {
-  v4 = [(CKTranscriptCompositor *)self representedObject];
-  [v4 setInterSectionSpacing:a3];
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  [representedObject setInterSectionSpacing:spacing];
 }
 
 - (double)interSectionSpacing
 {
-  v2 = [(CKTranscriptCompositor *)self representedObject];
-  [v2 interSectionSpacing];
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  [representedObject interSectionSpacing];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBoundarySupplementaryItems:(id)a3
+- (void)setBoundarySupplementaryItems:(id)items
 {
-  v4 = a3;
-  v5 = [(CKTranscriptCompositor *)self representedObject];
-  [v5 setBoundarySupplementaryItems:v4];
+  itemsCopy = items;
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  [representedObject setBoundarySupplementaryItems:itemsCopy];
 }
 
 - (NSArray)boundarySupplementaryItems
 {
-  v2 = [(CKTranscriptCompositor *)self representedObject];
-  v3 = [v2 boundarySupplementaryItems];
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  boundarySupplementaryItems = [representedObject boundarySupplementaryItems];
 
-  return v3;
+  return boundarySupplementaryItems;
 }
 
-- (void)setContentsInsetReference:(int64_t)a3
+- (void)setContentsInsetReference:(int64_t)reference
 {
-  v4 = [(CKTranscriptCompositor *)self representedObject];
-  [v4 setContentsInsetReference:a3];
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  [representedObject setContentsInsetReference:reference];
 }
 
 - (int64_t)contentsInsetReference
 {
-  v2 = [(CKTranscriptCompositor *)self representedObject];
-  v3 = [v2 contentsInsetReference];
+  representedObject = [(CKTranscriptCompositor *)self representedObject];
+  contentsInsetReference = [representedObject contentsInsetReference];
 
-  return v3;
+  return contentsInsetReference;
 }
 
 @end

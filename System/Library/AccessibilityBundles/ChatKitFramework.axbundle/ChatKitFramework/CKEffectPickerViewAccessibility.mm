@@ -1,44 +1,44 @@
 @interface CKEffectPickerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
-- (CKEffectPickerViewAccessibility)initWithFrame:(CGRect)a3 sendButtonFrame:(CGRect)a4 balloonViewOrigin:(CGPoint)a5 composition:(id)a6 color:(char)a7 gradientReferenceView:(id)a8;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
+- (CKEffectPickerViewAccessibility)initWithFrame:(CGRect)frame sendButtonFrame:(CGRect)buttonFrame balloonViewOrigin:(CGPoint)origin composition:(id)composition color:(char)color gradientReferenceView:(id)view;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateCloseButton;
 - (void)_axUpdateScrollView;
-- (void)_touchUpInsideDotButton:(id)a3;
-- (void)addEffect:(id)a3 withDescriptiveText:(id)a4 withIdentifier:(id)a5;
+- (void)_touchUpInsideDotButton:(id)button;
+- (void)addEffect:(id)effect withDescriptiveText:(id)text withIdentifier:(id)identifier;
 - (void)cancelImpactSelection;
-- (void)effectTypeDidChange:(id)a3;
+- (void)effectTypeDidChange:(id)change;
 @end
 
 @implementation CKEffectPickerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"mainLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"typeSegmentedControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"sendMomentButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"momentTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"momentsCollectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"momentIdentifiers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"initWithFrame:sendButtonFrame:balloonViewOrigin:composition:color:gradientReferenceView:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "{CGRect={CGPoint=dd}{CGSize=dd}}", "{CGPoint=dd}", "@", "c", "@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"closeButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"balloonView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"_touchUpInsideDotButton:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"cancelImpactSelection" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"selectedMomentIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"effectTypeDidChange:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"scrollViewDidEndDecelerating:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"effectLabels" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"effectDescriptiveLabels" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"effectDotButtons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"effectSendButtons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEffectPickerView" hasInstanceMethod:@"effectIdentifiers" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"mainLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"typeSegmentedControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"sendMomentButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"momentTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"momentsCollectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"momentIdentifiers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"initWithFrame:sendButtonFrame:balloonViewOrigin:composition:color:gradientReferenceView:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "{CGRect={CGPoint=dd}{CGSize=dd}}", "{CGPoint=dd}", "@", "c", "@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"closeButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"balloonView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"_touchUpInsideDotButton:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"cancelImpactSelection" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"selectedMomentIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"effectTypeDidChange:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"scrollViewDidEndDecelerating:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"effectLabels" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"effectDescriptiveLabels" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"effectDotButtons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"effectSendButtons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEffectPickerView" hasInstanceMethod:@"effectIdentifiers" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -118,18 +118,18 @@
   {
     if (UIAccessibilityIsVoiceOverRunning())
     {
-      v8 = [(CKEffectPickerViewAccessibility *)self _axFullScreenEffectElement];
-      if (!v8)
+      _axFullScreenEffectElement = [(CKEffectPickerViewAccessibility *)self _axFullScreenEffectElement];
+      if (!_axFullScreenEffectElement)
       {
         objc_initWeak(&location, self);
-        v8 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
+        _axFullScreenEffectElement = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
         v33[0] = MEMORY[0x29EDCA5F8];
         v33[1] = 3221225472;
         v33[2] = __56__CKEffectPickerViewAccessibility_accessibilityElements__block_invoke;
         v33[3] = &unk_29F2B0890;
         objc_copyWeak(&v34, &location);
-        [v8 _setAccessibilityFrameBlock:v33];
-        [(CKEffectPickerViewAccessibility *)self _setAXFullScreenEffectElement:v8];
+        [_axFullScreenEffectElement _setAccessibilityFrameBlock:v33];
+        [(CKEffectPickerViewAccessibility *)self _setAXFullScreenEffectElement:_axFullScreenEffectElement];
         objc_destroyWeak(&v34);
         objc_destroyWeak(&location);
       }
@@ -153,9 +153,9 @@
           v32 = _AXCKFullScreenEffectString(v12, 0);
           v13 = _AXCKFullScreenEffectString(v12, 1);
           v14 = __UIAXStringForVariables();
-          [v8 setAccessibilityLabel:{v14, v13, @"__AXStringForVariablesSentinel"}];
+          [_axFullScreenEffectElement setAccessibilityLabel:{v14, v13, @"__AXStringForVariablesSentinel"}];
 
-          [v3 addObject:v8];
+          [v3 addObject:_axFullScreenEffectElement];
         }
       }
     }
@@ -168,8 +168,8 @@
 
     if (location != 1)
     {
-      v18 = [v17 text];
-      [v15 setAccessibilityLabel:v18];
+      text = [v17 text];
+      [v15 setAccessibilityLabel:text];
 
       [v3 addObject:v15];
       [v3 addObject:v7];
@@ -242,7 +242,7 @@ double __56__CKEffectPickerViewAccessibility_accessibilityElements__block_invoke
   return v6;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v13.receiver = self;
   v13.super_class = CKEffectPickerViewAccessibility;
@@ -254,7 +254,7 @@ double __56__CKEffectPickerViewAccessibility_accessibilityElements__block_invoke
   v8 = [(CKEffectPickerViewAccessibility *)self safeIntegerForKey:@"selectedMomentIndex"];
   if ([v7 _accessibilityViewIsVisible])
   {
-    if (a3 == 2)
+    if (scroll == 2)
     {
       objc_opt_class();
       v9 = [(CKEffectPickerViewAccessibility *)self safeValueForKey:@"pageControl"];
@@ -280,7 +280,7 @@ LABEL_10:
 
     else
     {
-      if (a3 == 1 && v8 >= 1)
+      if (scroll == 1 && v8 >= 1)
       {
         v10 = [MEMORY[0x29EDB9FE0] indexPathForRow:v8 - 1 inSection:0];
         [v7 scrollToItemAtIndexPath:v10 atScrollPosition:16 animated:1];
@@ -313,15 +313,15 @@ LABEL_13:
   v5 = [(CKEffectPickerViewAccessibility *)self safeValueForKey:@"pageControl"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 accessibilityValue];
+  accessibilityValue = [v6 accessibilityValue];
   UIAccessibilitySpeak();
 }
 
-- (CKEffectPickerViewAccessibility)initWithFrame:(CGRect)a3 sendButtonFrame:(CGRect)a4 balloonViewOrigin:(CGPoint)a5 composition:(id)a6 color:(char)a7 gradientReferenceView:(id)a8
+- (CKEffectPickerViewAccessibility)initWithFrame:(CGRect)frame sendButtonFrame:(CGRect)buttonFrame balloonViewOrigin:(CGPoint)origin composition:(id)composition color:(char)color gradientReferenceView:(id)view
 {
   v11.receiver = self;
   v11.super_class = CKEffectPickerViewAccessibility;
-  v8 = [(CKEffectPickerViewAccessibility *)&v11 initWithFrame:*&a5.x sendButtonFrame:*&a5.y balloonViewOrigin:a6 composition:a7 color:a8 gradientReferenceView:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height, v12, v13];
+  v8 = [(CKEffectPickerViewAccessibility *)&v11 initWithFrame:*&origin.x sendButtonFrame:*&origin.y balloonViewOrigin:composition composition:color color:view gradientReferenceView:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height, buttonFrame.origin.x, buttonFrame.origin.y, buttonFrame.size.width, buttonFrame.size.height, v12, v13];
   v9 = v8;
   if (v8)
   {
@@ -331,12 +331,12 @@ LABEL_13:
   return v9;
 }
 
-- (void)addEffect:(id)a3 withDescriptiveText:(id)a4 withIdentifier:(id)a5
+- (void)addEffect:(id)effect withDescriptiveText:(id)text withIdentifier:(id)identifier
 {
   v23.receiver = self;
   v23.super_class = CKEffectPickerViewAccessibility;
-  v8 = a3;
-  [(CKEffectPickerViewAccessibility *)&v23 addEffect:v8 withDescriptiveText:a4 withIdentifier:a5];
+  effectCopy = effect;
+  [(CKEffectPickerViewAccessibility *)&v23 addEffect:effectCopy withDescriptiveText:text withIdentifier:identifier];
   v9 = [(CKEffectPickerViewAccessibility *)self safeValueForKey:@"effectLabels"];
   v10 = [v9 safeValueForKey:@"@lastObject"];
   [v10 setIsAccessibilityElement:0];
@@ -348,33 +348,33 @@ LABEL_13:
   v13 = [(CKEffectPickerViewAccessibility *)self safeValueForKey:@"effectDotButtons"];
   v14 = [v13 safeValueForKey:@"@lastObject"];
 
-  [v14 setAccessibilityLabel:v8];
+  [v14 setAccessibilityLabel:effectCopy];
   v15 = [(CKEffectPickerViewAccessibility *)self safeValueForKey:@"effectSendButtons"];
   v16 = [v15 safeValueForKey:@"@lastObject"];
 
   v17 = MEMORY[0x29EDBA0F8];
   v18 = accessibilityLocalizedString(@"impact.effect.send");
-  v19 = [v17 stringWithFormat:v18, v8];
-  [v16 setAccessibilityLabel:v19];
+  effectCopy = [v17 stringWithFormat:v18, effectCopy];
+  [v16 setAccessibilityLabel:effectCopy];
 
   v20 = MEMORY[0x29EDBA0F8];
   v21 = accessibilityLocalizedString(@"impact.effect.send.hint.format");
-  v22 = [v20 stringWithFormat:v21, v8];
+  effectCopy2 = [v20 stringWithFormat:v21, effectCopy];
 
-  [v16 setAccessibilityHint:v22];
+  [v16 setAccessibilityHint:effectCopy2];
 }
 
-- (void)_touchUpInsideDotButton:(id)a3
+- (void)_touchUpInsideDotButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v16.receiver = self;
   v16.super_class = CKEffectPickerViewAccessibility;
-  [(CKEffectPickerViewAccessibility *)&v16 _touchUpInsideDotButton:v4];
+  [(CKEffectPickerViewAccessibility *)&v16 _touchUpInsideDotButton:buttonCopy];
   objc_opt_class();
   v5 = [(CKEffectPickerViewAccessibility *)self safeValueForKey:@"effectDotButtons"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 indexOfObject:v4];
+  v7 = [v6 indexOfObject:buttonCopy];
   v15 = 0;
   objc_opt_class();
   v8 = [(CKEffectPickerViewAccessibility *)self safeValueForKey:@"effectSendButtons"];
@@ -404,11 +404,11 @@ LABEL_13:
   UIAccessibilityPostNotification(v3, v4);
 }
 
-- (void)effectTypeDidChange:(id)a3
+- (void)effectTypeDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CKEffectPickerViewAccessibility;
-  [(CKEffectPickerViewAccessibility *)&v4 effectTypeDidChange:a3];
+  [(CKEffectPickerViewAccessibility *)&v4 effectTypeDidChange:change];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], self);
 }
 

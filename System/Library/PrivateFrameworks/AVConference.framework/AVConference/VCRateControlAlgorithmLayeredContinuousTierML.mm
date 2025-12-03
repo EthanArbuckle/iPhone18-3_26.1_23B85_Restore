@@ -1,12 +1,12 @@
 @interface VCRateControlAlgorithmLayeredContinuousTierML
 - (BOOL)setUpVTable;
-- (VCRateControlAlgorithmLayeredContinuousTierML)initWithModelPath:(id)a3;
+- (VCRateControlAlgorithmLayeredContinuousTierML)initWithModelPath:(id)path;
 - (void)dealloc;
 @end
 
 @implementation VCRateControlAlgorithmLayeredContinuousTierML
 
-- (VCRateControlAlgorithmLayeredContinuousTierML)initWithModelPath:(id)a3
+- (VCRateControlAlgorithmLayeredContinuousTierML)initWithModelPath:(id)path
 {
   v25 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -14,7 +14,7 @@
   v4 = [(VCRateControlAlgorithmLayeredContinuousTier *)&v14 init];
   if (v4)
   {
-    v4->_model = [[VCRateControlMachineLearningInference alloc] initWithModelPath:a3];
+    v4->_model = [[VCRateControlMachineLearningInference alloc] initWithModelPath:path];
     v4->super.super.super._isMLEngaged = 1;
     v4->_machineLearningModeAfterDisengagement = [objc_msgSend(+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")] ^ 1;
   }

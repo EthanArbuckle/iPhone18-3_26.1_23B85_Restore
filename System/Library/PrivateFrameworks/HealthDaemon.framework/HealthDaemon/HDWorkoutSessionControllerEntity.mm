@@ -1,6 +1,6 @@
 @interface HDWorkoutSessionControllerEntity
-+ (BOOL)retrieveArchivedStateFromRecoveryIdentifier:(id)a3 workoutSession:(id)a4 transaction:(id)a5 error:(id *)a6 block:(id)a7;
-+ (BOOL)storeArchivedStateWithRecoveryIdentifier:(id)a3 archivedState:(id)a4 workoutSession:(id)a5 transaction:(id)a6 error:(id *)a7;
++ (BOOL)retrieveArchivedStateFromRecoveryIdentifier:(id)identifier workoutSession:(id)session transaction:(id)transaction error:(id *)error block:(id)block;
++ (BOOL)storeArchivedStateWithRecoveryIdentifier:(id)identifier archivedState:(id)state workoutSession:(id)session transaction:(id)transaction error:(id *)error;
 + (id)foreignKeys;
 + (id)uniquedColumns;
 @end
@@ -31,31 +31,31 @@
   return v2;
 }
 
-+ (BOOL)storeArchivedStateWithRecoveryIdentifier:(id)a3 archivedState:(id)a4 workoutSession:(id)a5 transaction:(id)a6 error:(id *)a7
++ (BOOL)storeArchivedStateWithRecoveryIdentifier:(id)identifier archivedState:(id)state workoutSession:(id)session transaction:(id)transaction error:(id *)error
 {
   v29[3] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  identifierCopy = identifier;
+  stateCopy = state;
+  sessionCopy = session;
   v29[0] = @"workout_session_id";
   v29[1] = @"recovery_identifier";
   v29[2] = @"archived_state";
   v15 = MEMORY[0x277CBEA60];
-  v16 = a6;
+  transactionCopy = transaction;
   v17 = [v15 arrayWithObjects:v29 count:3];
-  v18 = [v16 databaseForEntityClass:a1];
+  v18 = [transactionCopy databaseForEntityClass:self];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __124__HDWorkoutSessionControllerEntity_storeArchivedStateWithRecoveryIdentifier_archivedState_workoutSession_transaction_error___block_invoke;
   v25[3] = &unk_278624170;
-  v26 = v14;
-  v27 = v12;
-  v28 = v13;
-  v19 = v13;
-  v20 = v12;
-  v21 = v14;
-  v22 = [a1 insertOrReplaceEntity:1 database:v18 properties:v17 error:a7 bindingHandler:v25];
+  v26 = sessionCopy;
+  v27 = identifierCopy;
+  v28 = stateCopy;
+  v19 = stateCopy;
+  v20 = identifierCopy;
+  v21 = sessionCopy;
+  v22 = [self insertOrReplaceEntity:1 database:v18 properties:v17 error:error bindingHandler:v25];
 
   v23 = *MEMORY[0x277D85DE8];
   return v22 != 0;
@@ -70,22 +70,22 @@ void __124__HDWorkoutSessionControllerEntity_storeArchivedStateWithRecoveryIdent
   JUMPOUT(0x22AAC6B40);
 }
 
-+ (BOOL)retrieveArchivedStateFromRecoveryIdentifier:(id)a3 workoutSession:(id)a4 transaction:(id)a5 error:(id *)a6 block:(id)a7
++ (BOOL)retrieveArchivedStateFromRecoveryIdentifier:(id)identifier workoutSession:(id)session transaction:(id)transaction error:(id *)error block:(id)block
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = v12;
+  identifierCopy = identifier;
+  blockCopy = block;
+  transactionCopy = transaction;
+  sessionCopy = session;
+  v16 = identifierCopy;
   objc_opt_self();
   v17 = [MEMORY[0x277D10B18] predicateWithProperty:@"recovery_identifier" equalToValue:v16];
 
   v18 = MEMORY[0x277D10B18];
   v19 = MEMORY[0x277CCABB0];
-  v20 = [v15 persistentID];
+  persistentID = [sessionCopy persistentID];
 
-  v21 = [v19 numberWithLongLong:v20];
+  v21 = [v19 numberWithLongLong:persistentID];
   v22 = [v18 predicateWithProperty:@"workout_session_id" equalToValue:v21];
 
   v23 = MEMORY[0x277D10B20];
@@ -94,9 +94,9 @@ void __124__HDWorkoutSessionControllerEntity_storeArchivedStateWithRecoveryIdent
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
   v25 = [v23 predicateMatchingAllPredicates:v24];
 
-  v26 = [v14 databaseForEntityClass:a1];
+  v26 = [transactionCopy databaseForEntityClass:self];
 
-  v27 = [a1 queryWithDatabase:v26 predicate:v25];
+  v27 = [self queryWithDatabase:v26 predicate:v25];
 
   v36 = @"archived_state";
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
@@ -105,13 +105,13 @@ void __124__HDWorkoutSessionControllerEntity_storeArchivedStateWithRecoveryIdent
   v33[2] = __119__HDWorkoutSessionControllerEntity_retrieveArchivedStateFromRecoveryIdentifier_workoutSession_transaction_error_block___block_invoke;
   v33[3] = &unk_27862AFF0;
   v34 = v16;
-  v35 = v13;
+  v35 = blockCopy;
   v29 = v16;
-  v30 = v13;
-  LOBYTE(a6) = [v27 enumeratePersistentIDsAndProperties:v28 error:a6 enumerationHandler:v33];
+  v30 = blockCopy;
+  LOBYTE(error) = [v27 enumeratePersistentIDsAndProperties:v28 error:error enumerationHandler:v33];
 
   v31 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
 uint64_t __119__HDWorkoutSessionControllerEntity_retrieveArchivedStateFromRecoveryIdentifier_workoutSession_transaction_error_block___block_invoke(uint64_t a1)

@@ -8,15 +8,15 @@
 {
   if (!_Failover)
   {
-    v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v2 performValidations:&__block_literal_global_5 withPreValidationHandler:&__block_literal_global_297 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_303];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global_5 withPreValidationHandler:&__block_literal_global_297 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_303];
 
     v3 = [objc_allocWithZone(AXAVKitGlue) init];
     v4 = _Failover;
     _Failover = v3;
 
-    v5 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v5 addHandler:&__block_literal_global_398 forFramework:@"MediaPlayer"];
+    mEMORY[0x29EDBD690] = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690] addHandler:&__block_literal_global_398 forFramework:@"MediaPlayer"];
   }
 }
 

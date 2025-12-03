@@ -1,5 +1,5 @@
 @interface AAUIPaneHeaderView_tvOS
-- (AAUIPaneHeaderView_tvOS)initWithFrame:(CGRect)a3;
+- (AAUIPaneHeaderView_tvOS)initWithFrame:(CGRect)frame;
 - (double)innerHeaderMaxY;
 - (void)layoutSubviews;
 - (void)makeAllTheTextFits;
@@ -7,11 +7,11 @@
 
 @implementation AAUIPaneHeaderView_tvOS
 
-- (AAUIPaneHeaderView_tvOS)initWithFrame:(CGRect)a3
+- (AAUIPaneHeaderView_tvOS)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = AAUIPaneHeaderView_tvOS;
-  v3 = [(AAUIPaneHeaderView_tvOS *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AAUIPaneHeaderView_tvOS *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v12 = 0;
@@ -59,15 +59,15 @@
 
 - (double)innerHeaderMaxY
 {
-  v3 = [(BFFPaneHeaderView *)self->_header subLabel];
-  v4 = [v3 text];
+  subLabel = [(BFFPaneHeaderView *)self->_header subLabel];
+  text = [subLabel text];
 
-  v5 = [(AAUIPaneHeaderView_tvOS *)self superview];
+  superview = [(AAUIPaneHeaderView_tvOS *)self superview];
   header = self->_header;
-  if (v4)
+  if (text)
   {
-    v7 = [(BFFPaneHeaderView *)header subLabel];
-    [v7 bounds];
+    subLabel2 = [(BFFPaneHeaderView *)header subLabel];
+    [subLabel2 bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -77,8 +77,8 @@
 
   else
   {
-    v7 = [(BFFPaneHeaderView *)header detailTextLabel];
-    [v7 bounds];
+    subLabel2 = [(BFFPaneHeaderView *)header detailTextLabel];
+    [subLabel2 bounds];
     v9 = v16;
     v11 = v17;
     v13 = v18;
@@ -86,7 +86,7 @@
     [(BFFPaneHeaderView *)self->_header detailTextLabel];
   }
   v20 = ;
-  [v5 convertRect:v20 fromView:{v9, v11, v13, v15}];
+  [superview convertRect:v20 fromView:{v9, v11, v13, v15}];
   MaxY = CGRectGetMaxY(v23);
 
   return MaxY;
@@ -94,13 +94,13 @@
 
 - (void)makeAllTheTextFits
 {
-  v3 = [(AAUIPaneHeaderView_tvOS *)self textLabel];
-  [v3 setNumberOfLines:2];
+  textLabel = [(AAUIPaneHeaderView_tvOS *)self textLabel];
+  [textLabel setNumberOfLines:2];
 
-  v4 = [(AAUIPaneHeaderView_tvOS *)self textLabel];
-  [v4 setAdjustsFontSizeToFitWidth:1];
+  textLabel2 = [(AAUIPaneHeaderView_tvOS *)self textLabel];
+  [textLabel2 setAdjustsFontSizeToFitWidth:1];
 
-  v5 = [(AAUIPaneHeaderView_tvOS *)self textLabel];
+  textLabel3 = [(AAUIPaneHeaderView_tvOS *)self textLabel];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2050000000;
@@ -119,17 +119,17 @@
 
   v7 = v6;
   _Block_object_dispose(&v17, 8);
-  v8 = [v6 sharedStyle];
-  v9 = [v8 headerTitleFont];
-  [v5 setFont:v9];
+  sharedStyle = [v6 sharedStyle];
+  headerTitleFont = [sharedStyle headerTitleFont];
+  [textLabel3 setFont:headerTitleFont];
 
-  v10 = [(AAUIPaneHeaderView_tvOS *)self detailTextLabel];
+  detailTextLabel = [(AAUIPaneHeaderView_tvOS *)self detailTextLabel];
   v11 = MEMORY[0x1E69DB878];
   v12 = *MEMORY[0x1E69DDCF8];
-  v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v14 = [v13 traitCollection];
-  v15 = [v11 preferredFontForTextStyle:v12 compatibleWithTraitCollection:v14];
-  [v10 setFont:v15];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v15 = [v11 preferredFontForTextStyle:v12 compatibleWithTraitCollection:traitCollection];
+  [detailTextLabel setFont:v15];
 }
 
 @end

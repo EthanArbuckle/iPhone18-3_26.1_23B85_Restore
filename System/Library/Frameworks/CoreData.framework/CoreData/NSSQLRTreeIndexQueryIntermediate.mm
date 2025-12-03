@@ -1,24 +1,24 @@
 @interface NSSQLRTreeIndexQueryIntermediate
-- (id)generateSQLStringInContext:(id)a3;
-- (id)initForIndexNamed:(id)a3 onEntity:(id)a4 properties:(id)a5 ranges:(id)a6 inScope:(id)a7;
-- (uint64_t)_validateCollection:(void *)a3 context:;
-- (uint64_t)_validateExpression:(void *)a3 context:;
+- (id)generateSQLStringInContext:(id)context;
+- (id)initForIndexNamed:(id)named onEntity:(id)entity properties:(id)properties ranges:(id)ranges inScope:(id)scope;
+- (uint64_t)_validateCollection:(void *)collection context:;
+- (uint64_t)_validateExpression:(void *)expression context:;
 - (void)dealloc;
 @end
 
 @implementation NSSQLRTreeIndexQueryIntermediate
 
-- (id)initForIndexNamed:(id)a3 onEntity:(id)a4 properties:(id)a5 ranges:(id)a6 inScope:(id)a7
+- (id)initForIndexNamed:(id)named onEntity:(id)entity properties:(id)properties ranges:(id)ranges inScope:(id)scope
 {
   v13.receiver = self;
   v13.super_class = NSSQLRTreeIndexQueryIntermediate;
-  v11 = [(NSSQLIntermediate *)&v13 initWithScope:a7];
+  v11 = [(NSSQLIntermediate *)&v13 initWithScope:scope];
   if (v11)
   {
-    v11->_indexName = a3;
-    v11->_entity = a4;
-    v11->_properties = a5;
-    v11->_ranges = a6;
+    v11->_indexName = named;
+    v11->_entity = entity;
+    v11->_properties = properties;
+    v11->_ranges = ranges;
   }
 
   return v11;
@@ -36,7 +36,7 @@
   [(NSSQLRTreeIndexQueryIntermediate *)&v3 dealloc];
 }
 
-- (uint64_t)_validateCollection:(void *)a3 context:
+- (uint64_t)_validateCollection:(void *)collection context:
 {
   v18[2] = *MEMORY[0x1E69E9840];
   if (result)
@@ -78,7 +78,7 @@
       v12 = v17;
     }
 
-    [a3 setObject:objc_msgSend(v6 forKey:{"exceptionWithName:reason:userInfo:", v7, v8, objc_msgSend(v10, "dictionaryWithObjects:forKeys:count:", v11, v12, 2)), @"NSUnderlyingException"}];
+    [collection setObject:objc_msgSend(v6 forKey:{"exceptionWithName:reason:userInfo:", v7, v8, objc_msgSend(v10, "dictionaryWithObjects:forKeys:count:", v11, v12, 2)), @"NSUnderlyingException"}];
     result = 0;
   }
 
@@ -87,7 +87,7 @@ LABEL_8:
   return result;
 }
 
-- (uint64_t)_validateExpression:(void *)a3 context:
+- (uint64_t)_validateExpression:(void *)expression context:
 {
   v12[2] = *MEMORY[0x1E69E9840];
   if (result)
@@ -103,7 +103,7 @@ LABEL_8:
       v11[1] = @"properties";
       v12[0] = v9;
       v12[1] = [*(v5 + 32) valueForKey:@"name"];
-      [a3 setObject:objc_msgSend(v6 forKey:{"exceptionWithName:reason:userInfo:", v7, v8, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v12, v11, 2)), @"NSUnderlyingException"}];
+      [expression setObject:objc_msgSend(v6 forKey:{"exceptionWithName:reason:userInfo:", v7, v8, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v12, v11, 2)), @"NSUnderlyingException"}];
       result = 0;
     }
 
@@ -117,10 +117,10 @@ LABEL_8:
   return result;
 }
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
   v100[2] = *MEMORY[0x1E69E9840];
-  if ([a3 objectForKey:@"NSUnderlyingException"])
+  if ([context objectForKey:@"NSUnderlyingException"])
   {
     goto LABEL_57;
   }
@@ -147,9 +147,9 @@ LABEL_7:
   indexName = self->_indexName;
   if (indexName)
   {
-    v7 = [(NSExpression *)indexName expressionType];
+    expressionType = [(NSExpression *)indexName expressionType];
     indexName = self->_indexName;
-    if (v7)
+    if (expressionType)
     {
       v8 = MEMORY[0x1E695DF30];
       v9 = *MEMORY[0x1E695D940];
@@ -164,36 +164,36 @@ LABEL_55:
     }
   }
 
-  v18 = [(NSExpression *)indexName constantValue];
-  if (([v18 isNSString] & 1) == 0)
+  constantValue = [(NSExpression *)indexName constantValue];
+  if (([constantValue isNSString] & 1) == 0)
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
     v95 = @"indexName";
-    v96 = v18;
+    v96 = constantValue;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v96 forKeys:&v95 count:1];
     v11 = @"Invalid index name (should be a string)";
     goto LABEL_55;
   }
 
-  v19 = -[NSSQLAliasGenerator initWithNestingLevel:]([NSSQLAliasGenerator alloc], "initWithNestingLevel:", [objc_msgSend(a3 objectForKey:{@"nestingLevel", "integerValue"}] + 1);
-  v71 = [(NSSQLAliasGenerator *)v19 generateTableAlias];
+  v19 = -[NSSQLAliasGenerator initWithNestingLevel:]([NSSQLAliasGenerator alloc], "initWithNestingLevel:", [objc_msgSend(context objectForKey:{@"nestingLevel", "integerValue"}] + 1);
+  generateTableAlias = [(NSSQLAliasGenerator *)v19 generateTableAlias];
 
-  v70 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (![(NSArray *)self->_properties count])
   {
     v74 = 0;
     v75 = 0;
 LABEL_60:
-    v53 = [v70 componentsJoinedByString:@" AND "];
-    result = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@ IN (SELECT %@.Z_PK FROM %@ %@ WHERE (%@))", v74, v71, v75, v71, v53];
+    v53 = [array componentsJoinedByString:@" AND "];
+    result = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@ IN (SELECT %@.Z_PK FROM %@ %@ WHERE (%@))", v74, generateTableAlias, v75, generateTableAlias, v53];
     goto LABEL_58;
   }
 
   v74 = 0;
   v75 = 0;
   v20 = 0;
-  v69 = v18;
+  v69 = constantValue;
   while (1)
   {
     v21 = [(NSArray *)self->_properties objectAtIndex:v20];
@@ -240,7 +240,7 @@ LABEL_60:
         *(&v23->super._allowToMany + 1) = 1;
       }
 
-      v25 = [(NSSQLKeypathExpressionIntermediate *)v23 generateSQLStringInContext:a3];
+      v25 = [(NSSQLKeypathExpressionIntermediate *)v23 generateSQLStringInContext:context];
 
       v74 = v25;
       if (!v25)
@@ -252,16 +252,16 @@ LABEL_60:
     v72 = v20;
     if ([v21 expressionType])
     {
-      v26 = [v21 keyPath];
+      keyPath = [v21 keyPath];
     }
 
     else
     {
-      v26 = [v21 constantValue];
+      keyPath = [v21 constantValue];
     }
 
-    v27 = v26;
-    v28 = [v26 componentsSeparatedByString:@"."];
+    v27 = keyPath;
+    v28 = [keyPath componentsSeparatedByString:@"."];
     entity = self->_entity;
     v73 = v22;
     if ([v28 count] == 1)
@@ -393,30 +393,30 @@ LABEL_38:
       v39 = v73;
     }
 
-    v40 = [v39 expressionType];
+    expressionType2 = [v39 expressionType];
     v75 = v38;
-    if (v40 == 14)
+    if (expressionType2 == 14)
     {
-      v44 = [v39 collection];
-      if (![(NSSQLRTreeIndexQueryIntermediate *)self _validateCollection:v44 context:a3])
+      collection = [v39 collection];
+      if (![(NSSQLRTreeIndexQueryIntermediate *)self _validateCollection:collection context:context])
       {
         goto LABEL_57;
       }
 
-      v45 = [v44 firstObject];
-      v46 = [v44 lastObject];
-      if (![(NSSQLRTreeIndexQueryIntermediate *)self _validateExpression:v45 context:a3]|| ![(NSSQLRTreeIndexQueryIntermediate *)self _validateExpression:v46 context:a3])
+      firstObject = [collection firstObject];
+      lastObject = [collection lastObject];
+      if (![(NSSQLRTreeIndexQueryIntermediate *)self _validateExpression:firstObject context:context]|| ![(NSSQLRTreeIndexQueryIntermediate *)self _validateExpression:lastObject context:context])
       {
         goto LABEL_57;
       }
 
-      v42 = [v45 constantValue];
-      v43 = [v46 constantValue];
+      constantValue2 = [firstObject constantValue];
+      constantValue3 = [lastObject constantValue];
     }
 
     else
     {
-      if (v40)
+      if (expressionType2)
       {
         v54 = MEMORY[0x1E695DF30];
         v55 = *MEMORY[0x1E695D940];
@@ -432,22 +432,22 @@ LABEL_38:
         goto LABEL_71;
       }
 
-      v41 = [v39 constantValue];
-      if (![(NSSQLRTreeIndexQueryIntermediate *)self _validateCollection:v41 context:a3])
+      constantValue4 = [v39 constantValue];
+      if (![(NSSQLRTreeIndexQueryIntermediate *)self _validateCollection:constantValue4 context:context])
       {
         goto LABEL_57;
       }
 
-      v42 = [v41 firstObject];
-      v43 = [v41 lastObject];
+      constantValue2 = [constantValue4 firstObject];
+      constantValue3 = [constantValue4 lastObject];
     }
 
-    v47 = v43;
-    v48 = [(NSSQLIntermediate *)self _generateSQLForConstantValue:v42 inContext:a3];
-    v49 = [(NSSQLIntermediate *)self _generateSQLForConstantValue:v47 inContext:a3];
-    v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ <= %@.%@_MIN AND %@.%@_MAX <= %@", v48, v71, objc_msgSend(v31, "columnName"), v71, objc_msgSend(v31, "columnName"), v49];
+    v47 = constantValue3;
+    v48 = [(NSSQLIntermediate *)self _generateSQLForConstantValue:constantValue2 inContext:context];
+    v49 = [(NSSQLIntermediate *)self _generateSQLForConstantValue:v47 inContext:context];
+    v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ <= %@.%@_MIN AND %@.%@_MAX <= %@", v48, generateTableAlias, objc_msgSend(v31, "columnName"), generateTableAlias, objc_msgSend(v31, "columnName"), v49];
 
-    [v70 addObject:v50];
+    [array addObject:v50];
     v20 = v72 + 1;
     if (v72 + 1 >= [(NSArray *)self->_properties count])
     {
@@ -455,7 +455,7 @@ LABEL_38:
     }
   }
 
-  if ([a3 objectForKey:@"NSUnderlyingException"])
+  if ([context objectForKey:@"NSUnderlyingException"])
   {
     goto LABEL_57;
   }
@@ -477,7 +477,7 @@ LABEL_71:
   v17 = v55;
   v11 = v56;
 LABEL_56:
-  [a3 setObject:objc_msgSend(v16 forKey:{"exceptionWithName:reason:userInfo:", v17, v11, v10), @"NSUnderlyingException"}];
+  [context setObject:objc_msgSend(v16 forKey:{"exceptionWithName:reason:userInfo:", v17, v11, v10), @"NSUnderlyingException"}];
 LABEL_57:
   result = 0;
 LABEL_58:

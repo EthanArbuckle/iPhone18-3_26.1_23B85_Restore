@@ -4,7 +4,7 @@
 - (id)snapshotBlock;
 - (void)dealloc;
 - (void)drawOverview;
-- (void)drawTopContentInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4;
+- (void)drawTopContentInRect:(CGRect)rect forPageAtIndex:(int64_t)index;
 - (void)releaseSnapshotCreator;
 @end
 
@@ -47,23 +47,23 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MapPageRenderer *)self snapshotImage];
+  snapshotImage = [(MapPageRenderer *)self snapshotImage];
 
-  if (v11)
+  if (snapshotImage)
   {
-    v12 = [(MapPageRenderer *)self snapshotImage];
-    [v12 drawInRect:{v4, v6, v8, v10}];
+    snapshotImage2 = [(MapPageRenderer *)self snapshotImage];
+    [snapshotImage2 drawInRect:{v4, v6, v8, v10}];
   }
 
   v13 = +[GEOResourceManifestManager modernManager];
-  v14 = [v13 activeTileGroup];
-  v15 = [v14 attributionsCount];
+  activeTileGroup = [v13 activeTileGroup];
+  attributionsCount = [activeTileGroup attributionsCount];
 
-  if (v15)
+  if (attributionsCount)
   {
     v16 = +[GEOResourceManifestManager modernManager];
-    v17 = [v16 activeTileGroup];
-    v18 = [v17 attributionAtIndex:0];
+    activeTileGroup2 = [v16 activeTileGroup];
+    v18 = [activeTileGroup2 attributionAtIndex:0];
   }
 
   else
@@ -71,14 +71,14 @@
     v18 = 0;
   }
 
-  v19 = [v18 badge];
-  v20 = [v19 length];
+  badge = [v18 badge];
+  v20 = [badge length];
 
   if (v20)
   {
     v21 = +[GEOResourceManager sharedManager];
-    v22 = [v18 badge];
-    v23 = [v21 dataForResourceWithName:v22 fallbackBundle:0];
+    badge2 = [v18 badge];
+    v23 = [v21 dataForResourceWithName:badge2 fallbackBundle:0];
 
     v27 = [[UIImage alloc] _initWithData:v23 scale:2.0];
   }
@@ -102,10 +102,10 @@
   [v27 drawAtPoint:{v26, -1.0 - v25 + CGRectGetMaxY(v30)}];
 }
 
-- (void)drawTopContentInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4
+- (void)drawTopContentInRect:(CGRect)rect forPageAtIndex:(int64_t)index
 {
-  v4 = a4;
-  [(MapPageRenderer *)self paperRect:a3.origin.x];
+  indexCopy = index;
+  [(MapPageRenderer *)self paperRect:rect.origin.x];
   v7 = v6;
   rect = v8;
   v10 = v9;
@@ -141,7 +141,7 @@
 
   v27 = +[NSBundle mainBundle];
   v28 = [v27 localizedStringForKey:@"Page %1$d of %2$d" value:@"localized string not found" table:0];
-  v29 = [NSString localizedStringWithFormat:v28, (v4 + 1), [(MapPageRenderer *)self numberOfPages]];
+  v29 = [NSString localizedStringWithFormat:v28, (indexCopy + 1), [(MapPageRenderer *)self numberOfPages]];
 
   v30 = [UIFont systemFontOfSize:11.0];
   [v29 _maps_sizeWithFont:v30];
@@ -159,9 +159,9 @@
   [v35 set];
 
   v36 = +[UIDevice currentDevice];
-  v37 = [v36 model];
+  model = [v36 model];
 
-  if ([v37 isEqualToString:@"iPhone"] & 1) != 0 || (objc_msgSend(v37, "isEqualToString:", @"iPhone Simulator"))
+  if ([model isEqualToString:@"iPhone"] & 1) != 0 || (objc_msgSend(model, "isEqualToString:", @"iPhone Simulator"))
   {
     v38 = @"Printed from my iPhone";
 LABEL_6:
@@ -171,13 +171,13 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v37 isEqualToString:@"iPad"] & 1) != 0 || (objc_msgSend(v37, "isEqualToString:", @"iPad Simulator"))
+  if ([model isEqualToString:@"iPad"] & 1) != 0 || (objc_msgSend(model, "isEqualToString:", @"iPad Simulator"))
   {
     v38 = @"Printed from my iPad";
     goto LABEL_6;
   }
 
-  if ([v37 isEqualToString:@"iPod touch"])
+  if ([model isEqualToString:@"iPod touch"])
   {
     v38 = @"Printed from my iPod touch";
     goto LABEL_6;

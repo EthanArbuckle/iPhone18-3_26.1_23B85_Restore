@@ -1,100 +1,100 @@
 @interface STRootViewController
-- (STRootViewController)initWithRootViewModelCoordinator:(id)a3 presentedAsModal:(BOOL)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (STRootViewController)initWithRootViewModelCoordinator:(id)coordinator presentedAsModal:(BOOL)modal;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_startObservingCoordinator;
 - (void)_stopObservingCoordinator;
-- (void)_toggleNewUsageAction:(id)a3;
+- (void)_toggleNewUsageAction:(id)action;
 - (void)dealloc;
-- (void)doneButtonAction:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setShouldRefreshUsageData:(BOOL)a3;
-- (void)setSpecifier:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)doneButtonAction:(id)action;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setShouldRefreshUsageData:(BOOL)data;
+- (void)setSpecifier:(id)specifier;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation STRootViewController
 
-- (STRootViewController)initWithRootViewModelCoordinator:(id)a3 presentedAsModal:(BOOL)a4
+- (STRootViewController)initWithRootViewModelCoordinator:(id)coordinator presentedAsModal:(BOOL)modal
 {
   v48[17] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  coordinatorCopy = coordinator;
+  if (!coordinatorCopy)
   {
     v7 = +[STUsageDetailsViewModelCoordinator defaultDeviceIdentifierForLocalUser];
     v8 = +[STUsageDetailsViewModelCoordinator defaultUsageReportTypeForLocalUser];
-    v6 = [[STRootViewModelCoordinator alloc] initWithUserDSID:0 deviceIdentifier:v7 usageReportType:v8 usageContext:0];
-    if (!v6)
+    coordinatorCopy = [[STRootViewModelCoordinator alloc] initWithUserDSID:0 deviceIdentifier:v7 usageReportType:v8 usageContext:0];
+    if (!coordinatorCopy)
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[STRootViewController initWithRootViewModelCoordinator:presentedAsModal:]"];
-      [v9 handleFailureInFunction:v10 file:@"STRootViewController.m" lineNumber:77 description:@"RootViewModelCoordinator could not be created. This is a fatal error for ScreenTime."];
+      [currentHandler handleFailureInFunction:v10 file:@"STRootViewController.m" lineNumber:77 description:@"RootViewModelCoordinator could not be created. This is a fatal error for ScreenTime."];
     }
   }
 
   v46.receiver = self;
   v46.super_class = STRootViewController;
-  v11 = [(STPINListViewController *)&v46 initWithRootViewModelCoordinator:v6];
+  v11 = [(STPINListViewController *)&v46 initWithRootViewModelCoordinator:coordinatorCopy];
   if (v11)
   {
     v12 = +[STScreenTimeSettingsUIBundle bundle];
     v13 = [v12 localizedStringForKey:@"ScreenTimeControllerTitle" value:&stru_28766E5A8 table:0];
     [(STRootViewController *)v11 setTitle:v13];
 
-    v11->_presentedAsModal = a4;
-    v14 = [STEnableScreenTimeGroupSpecifierProvider providerWithCoordinator:v6 rootViewController:v11];
+    v11->_presentedAsModal = modal;
+    v14 = [STEnableScreenTimeGroupSpecifierProvider providerWithCoordinator:coordinatorCopy rootViewController:v11];
     enableScreenTimeGroupSpecifierProvider = v11->_enableScreenTimeGroupSpecifierProvider;
     v11->_enableScreenTimeGroupSpecifierProvider = v14;
 
-    v16 = [(STRootGroupSpecifierProvider *)STScreenTimeGroupSpecifierProvider providerWithCoordinator:v6];
+    v16 = [(STRootGroupSpecifierProvider *)STScreenTimeGroupSpecifierProvider providerWithCoordinator:coordinatorCopy];
     screenTimeGroupSpecifierProvider = v11->_screenTimeGroupSpecifierProvider;
     v11->_screenTimeGroupSpecifierProvider = v16;
 
-    v18 = [(STRootGroupSpecifierProvider *)STNoUsageReportedGroupSpecifierProvider providerWithCoordinator:v6];
+    v18 = [(STRootGroupSpecifierProvider *)STNoUsageReportedGroupSpecifierProvider providerWithCoordinator:coordinatorCopy];
     noUsageReportedGroupSpecifierProvider = v11->_noUsageReportedGroupSpecifierProvider;
     v11->_noUsageReportedGroupSpecifierProvider = v18;
 
     v45 = objc_opt_new();
-    v44 = [(STRootGroupSpecifierProvider *)STAboutScreenTimeGroupSpecifierProvider providerWithCoordinator:v6];
+    v44 = [(STRootGroupSpecifierProvider *)STAboutScreenTimeGroupSpecifierProvider providerWithCoordinator:coordinatorCopy];
     v48[0] = v44;
     v48[1] = v11->_enableScreenTimeGroupSpecifierProvider;
-    v43 = [STEnableRemoteManagementGroupSpecifierProvider providerWithCoordinator:v6 rootViewController:v11];
+    v43 = [STEnableRemoteManagementGroupSpecifierProvider providerWithCoordinator:coordinatorCopy rootViewController:v11];
     v48[2] = v43;
     v48[3] = v11->_screenTimeGroupSpecifierProvider;
-    v42 = [(STRootGroupSpecifierProvider *)STUsageSharingGroupSpecifierProvider providerWithCoordinator:v6];
+    v42 = [(STRootGroupSpecifierProvider *)STUsageSharingGroupSpecifierProvider providerWithCoordinator:coordinatorCopy];
     v48[4] = v42;
-    v41 = [STAppRatingChangedGroupSpecifierProvider providerWithCoordinator:v6 rootViewController:v11];
+    v41 = [STAppRatingChangedGroupSpecifierProvider providerWithCoordinator:coordinatorCopy rootViewController:v11];
     v48[5] = v41;
-    v40 = [STCommunicationSafetyAnalyticsTipGroupSpecifierProvider providerWithCoordinator:v6 rootViewController:v11];
+    v40 = [STCommunicationSafetyAnalyticsTipGroupSpecifierProvider providerWithCoordinator:coordinatorCopy rootViewController:v11];
     v48[6] = v40;
-    v39 = [(STRootGroupSpecifierProvider *)STAskForTimeGroupSpecifierProvider providerWithCoordinator:v6];
+    v39 = [(STRootGroupSpecifierProvider *)STAskForTimeGroupSpecifierProvider providerWithCoordinator:coordinatorCopy];
     v48[7] = v39;
-    v38 = [(STRootGroupSpecifierProvider *)STManageContactsGroupSpecifierProvider providerWithCoordinator:v6];
+    v38 = [(STRootGroupSpecifierProvider *)STManageContactsGroupSpecifierProvider providerWithCoordinator:coordinatorCopy];
     v48[8] = v38;
     v48[9] = v11->_noUsageReportedGroupSpecifierProvider;
-    v20 = [STLimitUsageGroupSpecifierProvider providerWithCoordinator:v6 rootViewController:v11];
+    v20 = [STLimitUsageGroupSpecifierProvider providerWithCoordinator:coordinatorCopy rootViewController:v11];
     v48[10] = v20;
-    v21 = [(STRootGroupSpecifierProvider *)STCommunicationGroupSpecifierProvider providerWithCoordinator:v6];
+    v21 = [(STRootGroupSpecifierProvider *)STCommunicationGroupSpecifierProvider providerWithCoordinator:coordinatorCopy];
     v48[11] = v21;
-    v22 = [(STRootGroupSpecifierProvider *)STRestrictionsGroupSpecifierProvider providerWithCoordinator:v6];
+    v22 = [(STRootGroupSpecifierProvider *)STRestrictionsGroupSpecifierProvider providerWithCoordinator:coordinatorCopy];
     v48[12] = v22;
-    v23 = [(STRootGroupSpecifierProvider *)STRestrictingApplicationsGroupSpecifierProvider providerWithCoordinator:v6];
+    v23 = [(STRootGroupSpecifierProvider *)STRestrictingApplicationsGroupSpecifierProvider providerWithCoordinator:coordinatorCopy];
     v48[13] = v23;
-    v24 = [STIncludeWebsiteDataGroupSpecifierProvider providerWithCoordinator:v6 isRootView:1];
+    v24 = [STIncludeWebsiteDataGroupSpecifierProvider providerWithCoordinator:coordinatorCopy isRootView:1];
     v48[14] = v24;
-    v25 = [STFamilyMemberGroupSpecifierProvider providerWithCoordinator:v6 rootViewController:v11];
+    v25 = [STFamilyMemberGroupSpecifierProvider providerWithCoordinator:coordinatorCopy rootViewController:v11];
     v48[15] = v25;
-    v26 = [STPasscodeGroupSpecifierProvider providerWithCoordinator:v6 listController:v11 isRootView:1];
+    v26 = [STPasscodeGroupSpecifierProvider providerWithCoordinator:coordinatorCopy listController:v11 isRootView:1];
     v48[16] = v26;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:17];
     [v45 addObjectsFromArray:v27];
 
-    v28 = [(STRootGroupSpecifierProvider *)STSignInToiCloudGroupSpecifierProvider providerWithCoordinator:v6];
-    if ([(STRootViewModelCoordinator *)v6 shouldShowConnectToFamilyForSignIn])
+    v28 = [(STRootGroupSpecifierProvider *)STSignInToiCloudGroupSpecifierProvider providerWithCoordinator:coordinatorCopy];
+    if ([(STRootViewModelCoordinator *)coordinatorCopy shouldShowConnectToFamilyForSignIn])
     {
       [v45 insertObject:v28 atIndex:1];
     }
@@ -106,19 +106,19 @@
 
     if (_os_feature_enabled_impl())
     {
-      v29 = [STAgeMigrationTipGroupSpecifierProvider providerWithCoordinator:v6 rootViewController:v11];
+      v29 = [STAgeMigrationTipGroupSpecifierProvider providerWithCoordinator:coordinatorCopy rootViewController:v11];
       [v45 addObject:v29];
     }
 
-    v30 = [(STRootGroupSpecifierProvider *)STCloudSyncDataGroupSpecifierProvider providerWithCoordinator:v6];
+    v30 = [(STRootGroupSpecifierProvider *)STCloudSyncDataGroupSpecifierProvider providerWithCoordinator:coordinatorCopy];
     v47[0] = v30;
-    v31 = [STSetUpForFamilyGroupSpecifierProvider providerWithCoordinator:v6 presenter:v11];
+    v31 = [STSetUpForFamilyGroupSpecifierProvider providerWithCoordinator:coordinatorCopy presenter:v11];
     v47[1] = v31;
-    v32 = [STDisableAppAndWebsiteActivityGroupSpecifierProvider providerWithCoordinator:v6 isRootView:1];
+    v32 = [STDisableAppAndWebsiteActivityGroupSpecifierProvider providerWithCoordinator:coordinatorCopy isRootView:1];
     v47[2] = v32;
-    v33 = [(STRootGroupSpecifierProvider *)STDisableScreenTimeGroupSpecifierProvider providerWithCoordinator:v6];
+    v33 = [(STRootGroupSpecifierProvider *)STDisableScreenTimeGroupSpecifierProvider providerWithCoordinator:coordinatorCopy];
     v47[3] = v33;
-    v34 = [STStopSharingScreenTimeGroupSpecifierProvider providerWithCoordinator:v6 isRootView:1];
+    v34 = [STStopSharingScreenTimeGroupSpecifierProvider providerWithCoordinator:coordinatorCopy isRootView:1];
     v47[4] = v34;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:5];
     [v45 addObjectsFromArray:v35];
@@ -140,25 +140,25 @@
   [(STListViewController *)&v3 dealloc];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   v22.receiver = self;
   v22.super_class = STRootViewController;
-  [(STRootViewController *)&v22 setSpecifier:v4];
-  v5 = [v4 userInfo];
-  v6 = v5;
-  if (v5)
+  [(STRootViewController *)&v22 setSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
+  v6 = userInfo;
+  if (userInfo)
   {
-    v7 = [v5 name];
-    [(STRootViewController *)self setTitle:v7];
+    name = [userInfo name];
+    [(STRootViewController *)self setTitle:name];
 
-    v8 = [v6 dsid];
-    v9 = [STUsageDetailsViewModelCoordinator defaultDeviceIdentifierForChild:v8];
-    v10 = [STUsageDetailsViewModelCoordinator defaultUsageReportTypeForChild:v8];
-    v11 = [(STPINListViewController *)self coordinator];
-    v12 = [v11 coordinatorForChild:v6 deviceIdentifier:v9 usageReportType:v10];
+    dsid = [v6 dsid];
+    v9 = [STUsageDetailsViewModelCoordinator defaultDeviceIdentifierForChild:dsid];
+    v10 = [STUsageDetailsViewModelCoordinator defaultUsageReportTypeForChild:dsid];
+    coordinator = [(STPINListViewController *)self coordinator];
+    v12 = [coordinator coordinatorForChild:v6 deviceIdentifier:v9 usageReportType:v10];
 
     [(STRootViewController *)self _stopObservingCoordinator];
     [(STPINListViewController *)self setCoordinator:v12];
@@ -167,8 +167,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v13 = [(STListViewController *)self specifierProviders];
-    v14 = [v13 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    specifierProviders = [(STListViewController *)self specifierProviders];
+    v14 = [specifierProviders countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v14)
     {
       v15 = v14;
@@ -180,14 +180,14 @@
         {
           if (*v19 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(specifierProviders);
           }
 
           [*(*(&v18 + 1) + 8 * v17++) setCoordinator:v12];
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v15 = [specifierProviders countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v15);
@@ -197,35 +197,35 @@
 
 - (void)_stopObservingCoordinator
 {
-  v3 = [(STPINListViewController *)self coordinator];
-  [v3 removeObserver:self forKeyPath:@"usageDetailsCoordinator" context:"STRootViewControllerObservationContext"];
+  coordinator = [(STPINListViewController *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator" context:"STRootViewControllerObservationContext"];
 }
 
 - (void)_startObservingCoordinator
 {
-  v3 = [(STPINListViewController *)self coordinator];
+  coordinator = [(STPINListViewController *)self coordinator];
   [(STPINListViewController *)self coordinator];
 
-  [v3 addObserver:self forKeyPath:@"usageDetailsCoordinator" options:2 context:"STRootViewControllerObservationContext"];
+  [coordinator addObserver:self forKeyPath:@"usageDetailsCoordinator" options:2 context:"STRootViewControllerObservationContext"];
 }
 
-- (void)setShouldRefreshUsageData:(BOOL)a3
+- (void)setShouldRefreshUsageData:(BOOL)data
 {
-  if (self->_shouldRefreshUsageData != a3)
+  if (self->_shouldRefreshUsageData != data)
   {
-    v4 = a3;
-    self->_shouldRefreshUsageData = a3;
-    v7 = [(STPINListViewController *)self coordinator];
-    v5 = [v7 usageDetailsCoordinator];
-    v6 = v5;
-    if (v4)
+    dataCopy = data;
+    self->_shouldRefreshUsageData = data;
+    coordinator = [(STPINListViewController *)self coordinator];
+    usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
+    v6 = usageDetailsCoordinator;
+    if (dataCopy)
     {
-      [v5 startRefreshingUsageData];
+      [usageDetailsCoordinator startRefreshingUsageData];
     }
 
     else
     {
-      [v5 stopRefreshingUsageData];
+      [usageDetailsCoordinator stopRefreshingUsageData];
     }
   }
 }
@@ -241,14 +241,14 @@
     v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_doneButtonAction_];
     v11[0] = v3;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-    v5 = [(STRootViewController *)self navigationItem];
-    [v5 setRightBarButtonItems:v4];
+    navigationItem = [(STRootViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItems:v4];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v7 = [v6 BOOLForKey:@"NewUsageToggle"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v7 = [standardUserDefaults BOOLForKey:@"NewUsageToggle"];
 
     if (!v7)
     {
@@ -258,34 +258,34 @@
     v3 = [MEMORY[0x277D755B8] systemImageNamed:@"ant"];
     v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v3 style:0 target:self action:sel__toggleNewUsageAction_];
     v10 = v4;
-    v5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
-    v8 = [(STRootViewController *)self navigationItem];
-    [v8 setRightBarButtonItems:v5];
+    navigationItem = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
+    navigationItem2 = [(STRootViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItems:navigationItem];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = STRootViewController;
-  [(STPINListViewController *)&v10 viewDidAppear:a3];
+  [(STPINListViewController *)&v10 viewDidAppear:appear];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.ScreenTime"];
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v7 = +[STScreenTimeSettingsUIBundle bundle];
-  v8 = [v7 bundleURL];
-  v9 = [v5 initWithKey:@"ScreenTimeControllerTitle" table:@"Localizable" locale:v6 bundleURL:v8];
+  bundleURL = [v7 bundleURL];
+  v9 = [v5 initWithKey:@"ScreenTimeControllerTitle" table:@"Localizable" locale:currentLocale bundleURL:bundleURL];
 
   [(STRootViewController *)self pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:@"com.apple.graphic-icon.screen-time" title:v9 localizedNavigationComponents:MEMORY[0x277CBEBF8] deepLink:v4];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = STRootViewController;
-  [(STRootViewController *)&v6 viewWillAppear:a3];
+  [(STRootViewController *)&v6 viewWillAppear:appear];
   [(STRootViewController *)self setShouldRefreshUsageData:1];
-  v4 = [(STPINListViewController *)self coordinator];
+  coordinator = [(STPINListViewController *)self coordinator];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
@@ -293,11 +293,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = STRootViewController;
-  [(STRootViewController *)&v5 viewWillDisappear:a3];
+  [(STRootViewController *)&v5 viewWillDisappear:disappear];
   [(STRootViewController *)self setShouldRefreshUsageData:0];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -306,35 +306,35 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  if (a6 == "STRootViewControllerObservationContext")
+  changeCopy = change;
+  if (context == "STRootViewControllerObservationContext")
   {
-    v12 = a3;
+    pathCopy = path;
     [(STPINListViewController *)self coordinator];
 
-    v13 = [v12 isEqualToString:@"usageDetailsCoordinator"];
+    v13 = [pathCopy isEqualToString:@"usageDetailsCoordinator"];
     if (v13 && [(STRootViewController *)self shouldRefreshUsageData])
     {
-      v14 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v15 = [(STPINListViewController *)self coordinator];
-      v16 = [v15 usageDetailsCoordinator];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      coordinator = [(STPINListViewController *)self coordinator];
+      usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
 
-      v17 = [MEMORY[0x277CBEB68] null];
-      v18 = [v17 isEqual:v14];
+      null = [MEMORY[0x277CBEB68] null];
+      v18 = [null isEqual:v14];
 
       if ((v18 & 1) == 0)
       {
         [v14 stopRefreshingUsageData];
       }
 
-      v19 = [MEMORY[0x277CBEB68] null];
-      v20 = [v19 isEqual:v16];
+      null2 = [MEMORY[0x277CBEB68] null];
+      v20 = [null2 isEqual:usageDetailsCoordinator];
 
       if ((v20 & 1) == 0)
       {
-        [v16 startRefreshingUsageData];
+        [usageDetailsCoordinator startRefreshingUsageData];
       }
     }
   }
@@ -343,26 +343,26 @@
   {
     v21.receiver = self;
     v21.super_class = STRootViewController;
-    v11 = a3;
-    [(STListViewController *)&v21 observeValueForKeyPath:v11 ofObject:a4 change:v10 context:a6];
+    pathCopy2 = path;
+    [(STListViewController *)&v21 observeValueForKeyPath:pathCopy2 ofObject:object change:changeCopy context:context];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v28.receiver = self;
   v28.super_class = STRootViewController;
-  v5 = [(STListViewController *)&v28 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [(STRootViewController *)self noUsageReportedGroupSpecifierProvider];
-  v7 = [v6 specifiers];
-  v8 = [v7 firstObject];
+  v5 = [(STListViewController *)&v28 tableView:view cellForRowAtIndexPath:path];
+  noUsageReportedGroupSpecifierProvider = [(STRootViewController *)self noUsageReportedGroupSpecifierProvider];
+  specifiers = [noUsageReportedGroupSpecifierProvider specifiers];
+  firstObject = [specifiers firstObject];
 
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D40148]];
+  v9 = [firstObject objectForKeyedSubscript:*MEMORY[0x277D40148]];
   if ([v5 isEqual:v9])
   {
     v10 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.circle"];
-    v11 = [MEMORY[0x277D75348] systemRedColor];
-    v12 = [v10 imageWithTintColor:v11];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    v12 = [v10 imageWithTintColor:systemRedColor];
 
     v13 = [MEMORY[0x277D755D0] configurationWithScale:3];
     v14 = [v12 imageByApplyingSymbolConfiguration:v13];
@@ -370,45 +370,45 @@
     v15 = [MEMORY[0x277D74270] textAttachmentWithImage:v14];
     v16 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v15];
     v17 = objc_alloc(MEMORY[0x277CCAB48]);
-    v18 = [v8 objectForKeyedSubscript:*MEMORY[0x277D40160]];
+    v18 = [firstObject objectForKeyedSubscript:*MEMORY[0x277D40160]];
     v19 = [@" " stringByAppendingString:v18];
     v20 = [v17 initWithString:v19];
 
     [v20 insertAttributedString:v16 atIndex:0];
-    v21 = [MEMORY[0x277D756E0] cellConfiguration];
-    [v21 setAttributedText:v20];
-    v22 = [v21 textProperties];
-    [v22 setNumberOfLines:0];
+    cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+    [cellConfiguration setAttributedText:v20];
+    textProperties = [cellConfiguration textProperties];
+    [textProperties setNumberOfLines:0];
 
-    v23 = [v21 textProperties];
-    [v23 setLineBreakMode:0];
+    textProperties2 = [cellConfiguration textProperties];
+    [textProperties2 setLineBreakMode:0];
 
-    v24 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v25 = [v21 textProperties];
-    [v25 setColor:v24];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    textProperties3 = [cellConfiguration textProperties];
+    [textProperties3 setColor:secondaryLabelColor];
 
-    [v5 setContentConfiguration:v21];
+    [v5 setContentConfiguration:cellConfiguration];
   }
 
   if ([v5 type] == 13 || objc_msgSend(v5, "type") == 6)
   {
-    v26 = [v5 titleLabel];
-    [v26 setNumberOfLines:0];
-    [v26 setLineBreakMode:0];
+    titleLabel = [v5 titleLabel];
+    [titleLabel setNumberOfLines:0];
+    [titleLabel setLineBreakMode:0];
   }
 
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STRootViewController *)self noUsageReportedGroupSpecifierProvider];
-  v9 = [v8 specifiers];
-  v10 = [v9 firstObject];
+  viewCopy = view;
+  pathCopy = path;
+  noUsageReportedGroupSpecifierProvider = [(STRootViewController *)self noUsageReportedGroupSpecifierProvider];
+  specifiers = [noUsageReportedGroupSpecifierProvider specifiers];
+  firstObject = [specifiers firstObject];
 
-  if (v10 && (-[STRootViewController specifierAtIndexPath:](self, "specifierAtIndexPath:", v7), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqual:v10], v11, v12))
+  if (firstObject && (-[STRootViewController specifierAtIndexPath:](self, "specifierAtIndexPath:", pathCopy), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqual:firstObject], v11, v12))
   {
     v13 = *MEMORY[0x277D76F30];
   }
@@ -417,26 +417,26 @@
   {
     v16.receiver = self;
     v16.super_class = STRootViewController;
-    [(STRootViewController *)&v16 tableView:v6 heightForRowAtIndexPath:v7];
+    [(STRootViewController *)&v16 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     v13 = v14;
   }
 
   return v13;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__STRootViewController_handleURL_withCompletion___block_invoke;
   v9[3] = &unk_279B7DE58;
   v9[4] = self;
-  v6 = a4;
-  v7 = a3;
-  [v7 enumerateKeysAndObjectsUsingBlock:v9];
+  completionCopy = completion;
+  lCopy = l;
+  [lCopy enumerateKeysAndObjectsUsingBlock:v9];
   v8.receiver = self;
   v8.super_class = STRootViewController;
-  [(STRootViewController *)&v8 handleURL:v7 withCompletion:v6];
+  [(STRootViewController *)&v8 handleURL:lCopy withCompletion:completionCopy];
 }
 
 void __49__STRootViewController_handleURL_withCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3, _BYTE *a4)
@@ -468,24 +468,24 @@ void __49__STRootViewController_handleURL_withCompletion___block_invoke(uint64_t
   }
 }
 
-- (void)doneButtonAction:(id)a3
+- (void)doneButtonAction:(id)action
 {
-  v3 = [(STRootViewController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(STRootViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_toggleNewUsageAction:(id)a3
+- (void)_toggleNewUsageAction:(id)action
 {
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v8 BOOLForKey:0x287677CC8];
-  [v8 setBool:v4 ^ 1u forKey:0x287677CC8];
-  v5 = [(STPINListViewController *)self coordinator];
-  v6 = [v5 usageDetailsCoordinator];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:0x287677CC8];
+  [standardUserDefaults setBool:v4 ^ 1u forKey:0x287677CC8];
+  coordinator = [(STPINListViewController *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
 
-  v7 = [v6 viewModel];
-  [v7 setHasDeviceActivityData:v4 ^ 1u];
+  viewModel = [usageDetailsCoordinator viewModel];
+  [viewModel setHasDeviceActivityData:v4 ^ 1u];
 
-  [v6 loadViewModelWithCompletionHandler:0];
+  [usageDetailsCoordinator loadViewModelWithCompletionHandler:0];
 }
 
 @end

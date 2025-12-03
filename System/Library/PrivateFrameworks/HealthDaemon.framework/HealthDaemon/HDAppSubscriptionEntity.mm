@@ -1,50 +1,50 @@
 @interface HDAppSubscriptionEntity
-+ (BOOL)addSubscriptionWithBundleID:(id)a3 dataCode:(int64_t)a4 updateFrequency:(unint64_t)a5 profile:(id)a6 error:(id *)a7;
-+ (BOOL)removeSubscriptionsWithBundleID:(id)a3 dataCode:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)setLastAnchor:(id)a3 lastAckTime:(id)a4 forBundleID:(id)a5 dataTypes:(id)a6 profile:(id)a7 error:(id *)a8;
-+ (BOOL)setLaunchTimeHysteresis:(id)a3 forBundleID:(id)a4 dataTypes:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (id)_predicateForBundleID:(uint64_t)a3 dataCode:;
-+ (id)_predicateForBundleID:(void *)a3 dataTypes:;
-+ (id)_predicateForBundleIdentifier:(uint64_t)a1;
-+ (id)_predicateForDataCode:(uint64_t)a1;
-+ (id)_subscriptionsWithPredicate:(void *)a3 profile:(uint64_t)a4 error:;
-+ (id)allSubscriptionsForBundleID:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)allSubscriptionsForType:(int64_t)a3 profile:(id)a4 error:(id *)a5;
-+ (id)subscriptionForBundleID:(id)a3 dataCode:(int64_t)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)addSubscriptionWithBundleID:(id)d dataCode:(int64_t)code updateFrequency:(unint64_t)frequency profile:(id)profile error:(id *)error;
++ (BOOL)removeSubscriptionsWithBundleID:(id)d dataCode:(int64_t)code profile:(id)profile error:(id *)error;
++ (BOOL)setLastAnchor:(id)anchor lastAckTime:(id)time forBundleID:(id)d dataTypes:(id)types profile:(id)profile error:(id *)error;
++ (BOOL)setLaunchTimeHysteresis:(id)hysteresis forBundleID:(id)d dataTypes:(id)types profile:(id)profile error:(id *)error;
++ (id)_predicateForBundleID:(uint64_t)d dataCode:;
++ (id)_predicateForBundleID:(void *)d dataTypes:;
++ (id)_predicateForBundleIdentifier:(uint64_t)identifier;
++ (id)_predicateForDataCode:(uint64_t)code;
++ (id)_subscriptionsWithPredicate:(void *)predicate profile:(uint64_t)profile error:;
++ (id)allSubscriptionsForBundleID:(id)d profile:(id)profile error:(id *)error;
++ (id)allSubscriptionsForType:(int64_t)type profile:(id)profile error:(id *)error;
++ (id)subscriptionForBundleID:(id)d dataCode:(int64_t)code profile:(id)profile error:(id *)error;
 + (id)uniquedColumns;
 @end
 
 @implementation HDAppSubscriptionEntity
 
-+ (BOOL)addSubscriptionWithBundleID:(id)a3 dataCode:(int64_t)a4 updateFrequency:(unint64_t)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)addSubscriptionWithBundleID:(id)d dataCode:(int64_t)code updateFrequency:(unint64_t)frequency profile:(id)profile error:(id *)error
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a6;
-  if (!v13)
+  dCopy = d;
+  profileCopy = profile;
+  if (!dCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"HDAppSubscriptionEntity.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"bundleID != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAppSubscriptionEntity.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"bundleID != nil"}];
 
-    if ((a4 & 0x8000000000000000) == 0)
+    if ((code & 0x8000000000000000) == 0)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"HDAppSubscriptionEntity.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"dataCode >= 0"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDAppSubscriptionEntity.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"dataCode >= 0"}];
 
     goto LABEL_3;
   }
 
-  if (a4 < 0)
+  if (code < 0)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v15 = [v14 database];
+  database = [profileCopy database];
   v27[0] = @"bundle_id";
   v27[1] = @"code";
   v27[2] = @"update_frequency";
@@ -53,11 +53,11 @@ LABEL_3:
   v23[1] = 3221225472;
   v23[2] = __94__HDAppSubscriptionEntity_addSubscriptionWithBundleID_dataCode_updateFrequency_profile_error___block_invoke;
   v23[3] = &unk_27862EDD8;
-  v24 = v13;
-  v25 = a4;
-  v26 = a5;
-  v17 = v13;
-  v18 = [a1 insertOrReplaceEntity:1 healthDatabase:v15 properties:v16 error:a7 bindingHandler:v23];
+  v24 = dCopy;
+  codeCopy = code;
+  frequencyCopy = frequency;
+  v17 = dCopy;
+  v18 = [self insertOrReplaceEntity:1 healthDatabase:database properties:v16 error:error bindingHandler:v23];
 
   v19 = *MEMORY[0x277D85DE8];
   return v18 != 0;
@@ -72,38 +72,38 @@ void __94__HDAppSubscriptionEntity_addSubscriptionWithBundleID_dataCode_updateFr
   JUMPOUT(0x22AAC6B90);
 }
 
-+ (BOOL)removeSubscriptionsWithBundleID:(id)a3 dataCode:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)removeSubscriptionsWithBundleID:(id)d dataCode:(int64_t)code profile:(id)profile error:(id *)error
 {
-  v10 = a5;
-  v11 = [(HDAppSubscriptionEntity *)a1 _predicateForBundleID:a3 dataCode:a4];
-  v12 = [v10 database];
+  profileCopy = profile;
+  v11 = [(HDAppSubscriptionEntity *)self _predicateForBundleID:d dataCode:code];
+  database = [profileCopy database];
 
-  LOBYTE(a6) = [a1 deleteEntitiesWithPredicate:v11 healthDatabase:v12 error:a6];
-  return a6;
+  LOBYTE(error) = [self deleteEntitiesWithPredicate:v11 healthDatabase:database error:error];
+  return error;
 }
 
-+ (id)_predicateForBundleID:(uint64_t)a3 dataCode:
++ (id)_predicateForBundleID:(uint64_t)d dataCode:
 {
   v4 = a2;
   v5 = objc_opt_self();
   v6 = [(HDAppSubscriptionEntity *)v5 _predicateForBundleIdentifier:v4];
 
-  v7 = [(HDAppSubscriptionEntity *)v5 _predicateForDataCode:a3];
+  v7 = [(HDAppSubscriptionEntity *)v5 _predicateForDataCode:d];
   v8 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v7 otherPredicate:v6];
 
   return v8;
 }
 
-+ (id)allSubscriptionsForType:(int64_t)a3 profile:(id)a4 error:(id *)a5
++ (id)allSubscriptionsForType:(int64_t)type profile:(id)profile error:(id *)error
 {
-  v8 = a4;
-  v9 = [(HDAppSubscriptionEntity *)a1 _predicateForDataCode:a3];
-  v10 = [(HDAppSubscriptionEntity *)a1 _subscriptionsWithPredicate:v9 profile:v8 error:a5];
+  profileCopy = profile;
+  v9 = [(HDAppSubscriptionEntity *)self _predicateForDataCode:type];
+  v10 = [(HDAppSubscriptionEntity *)self _subscriptionsWithPredicate:v9 profile:profileCopy error:error];
 
   return v10;
 }
 
-+ (id)_predicateForDataCode:(uint64_t)a1
++ (id)_predicateForDataCode:(uint64_t)code
 {
   objc_opt_self();
   if (_HKValidDataTypeCode())
@@ -121,10 +121,10 @@ void __94__HDAppSubscriptionEntity_addSubscriptionWithBundleID_dataCode_updateFr
   return v5;
 }
 
-+ (id)_subscriptionsWithPredicate:(void *)a3 profile:(uint64_t)a4 error:
++ (id)_subscriptionsWithPredicate:(void *)predicate profile:(uint64_t)profile error:
 {
   v18[7] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  predicateCopy = predicate;
   v7 = a2;
   v8 = objc_opt_self();
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -136,7 +136,7 @@ void __94__HDAppSubscriptionEntity_addSubscriptionWithBundleID_dataCode_updateFr
   v18[5] = @"launch_time_hysteresis";
   v18[6] = @"last_association_anchor";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:7];
-  v11 = [v6 database];
+  database = [predicateCopy database];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -144,9 +144,9 @@ void __94__HDAppSubscriptionEntity_addSubscriptionWithBundleID_dataCode_updateFr
   v16[3] = &unk_278615128;
   v12 = v9;
   v17 = v12;
-  LODWORD(a4) = [v8 enumerateProperties:v10 withPredicate:v7 healthDatabase:v11 error:a4 enumerationHandler:v16];
+  LODWORD(profile) = [v8 enumerateProperties:v10 withPredicate:v7 healthDatabase:database error:profile enumerationHandler:v16];
 
-  if (a4)
+  if (profile)
   {
     v13 = [v12 copy];
   }
@@ -161,23 +161,23 @@ void __94__HDAppSubscriptionEntity_addSubscriptionWithBundleID_dataCode_updateFr
   return v13;
 }
 
-+ (id)allSubscriptionsForBundleID:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)allSubscriptionsForBundleID:(id)d profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  dCopy = d;
+  profileCopy = profile;
+  if (!dCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"HDAppSubscriptionEntity.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"bundleID != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAppSubscriptionEntity.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"bundleID != nil"}];
   }
 
-  v11 = [(HDAppSubscriptionEntity *)a1 _predicateForBundleIdentifier:v9];
-  v12 = [(HDAppSubscriptionEntity *)a1 _subscriptionsWithPredicate:v11 profile:v10 error:a5];
+  v11 = [(HDAppSubscriptionEntity *)self _predicateForBundleIdentifier:dCopy];
+  v12 = [(HDAppSubscriptionEntity *)self _subscriptionsWithPredicate:v11 profile:profileCopy error:error];
 
   return v12;
 }
 
-+ (id)_predicateForBundleIdentifier:(uint64_t)a1
++ (id)_predicateForBundleIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();
@@ -186,55 +186,55 @@ void __94__HDAppSubscriptionEntity_addSubscriptionWithBundleID_dataCode_updateFr
   return v3;
 }
 
-+ (id)subscriptionForBundleID:(id)a3 dataCode:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (id)subscriptionForBundleID:(id)d dataCode:(int64_t)code profile:(id)profile error:(id *)error
 {
-  v10 = a5;
-  v11 = [(HDAppSubscriptionEntity *)a1 _predicateForBundleID:a3 dataCode:a4];
-  v12 = [(HDAppSubscriptionEntity *)a1 _subscriptionsWithPredicate:v11 profile:v10 error:a6];
+  profileCopy = profile;
+  v11 = [(HDAppSubscriptionEntity *)self _predicateForBundleID:d dataCode:code];
+  v12 = [(HDAppSubscriptionEntity *)self _subscriptionsWithPredicate:v11 profile:profileCopy error:error];
 
-  v13 = [v12 firstObject];
+  firstObject = [v12 firstObject];
 
-  return v13;
+  return firstObject;
 }
 
-+ (BOOL)setLastAnchor:(id)a3 lastAckTime:(id)a4 forBundleID:(id)a5 dataTypes:(id)a6 profile:(id)a7 error:(id *)a8
++ (BOOL)setLastAnchor:(id)anchor lastAckTime:(id)time forBundleID:(id)d dataTypes:(id)types profile:(id)profile error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = [(HDAppSubscriptionEntity *)a1 _predicateForBundleID:a5 dataTypes:a6];
+  anchorCopy = anchor;
+  timeCopy = time;
+  profileCopy = profile;
+  v17 = [(HDAppSubscriptionEntity *)self _predicateForBundleID:d dataTypes:types];
   v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{@"last_ack_time", 0}];
-  v19 = [v14 dataAnchor];
+  dataAnchor = [anchorCopy dataAnchor];
 
-  if (v19)
+  if (dataAnchor)
   {
     [v18 addObject:@"last_anchor"];
   }
 
-  v20 = [v14 associationAnchor];
+  associationAnchor = [anchorCopy associationAnchor];
 
-  if (v20)
+  if (associationAnchor)
   {
     [v18 addObject:@"last_association_anchor"];
   }
 
-  v21 = [v16 database];
+  database = [profileCopy database];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __89__HDAppSubscriptionEntity_setLastAnchor_lastAckTime_forBundleID_dataTypes_profile_error___block_invoke;
   v26[3] = &unk_278613DE8;
-  v27 = v14;
-  v28 = v15;
-  v22 = v15;
-  v23 = v14;
-  v24 = [a1 updateProperties:v18 predicate:v17 healthDatabase:v21 error:a8 bindingHandler:v26];
+  v27 = anchorCopy;
+  v28 = timeCopy;
+  v22 = timeCopy;
+  v23 = anchorCopy;
+  v24 = [self updateProperties:v18 predicate:v17 healthDatabase:database error:error bindingHandler:v26];
 
   return v24;
 }
 
-+ (id)_predicateForBundleID:(void *)a3 dataTypes:
++ (id)_predicateForBundleID:(void *)d dataTypes:
 {
-  v4 = a3;
+  dCopy = d;
   v5 = a2;
   v6 = objc_opt_self();
   v7 = [(HDAppSubscriptionEntity *)v6 _predicateForBundleIdentifier:v5];
@@ -247,7 +247,7 @@ void __94__HDAppSubscriptionEntity_addSubscriptionWithBundleID_dataCode_updateFr
   v17 = v8;
   v18 = v6;
   v9 = v8;
-  [v4 enumerateObjectsUsingBlock:&v13];
+  [dCopy enumerateObjectsUsingBlock:&v13];
 
   v10 = [MEMORY[0x277D10B20] predicateMatchingAnyPredicates:{v9, v13, v14, v15, v16}];
   v11 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v10 otherPredicate:v7];
@@ -278,26 +278,26 @@ void __89__HDAppSubscriptionEntity_setLastAnchor_lastAckTime_forBundleID_dataTyp
   JUMPOUT(0x22AAC6BB0);
 }
 
-+ (BOOL)setLaunchTimeHysteresis:(id)a3 forBundleID:(id)a4 dataTypes:(id)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)setLaunchTimeHysteresis:(id)hysteresis forBundleID:(id)d dataTypes:(id)types profile:(id)profile error:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = [(HDAppSubscriptionEntity *)a1 _predicateForBundleID:a4 dataTypes:a5];
+  hysteresisCopy = hysteresis;
+  profileCopy = profile;
+  v14 = [(HDAppSubscriptionEntity *)self _predicateForBundleID:d dataTypes:types];
   v22[0] = @"launch_time_hysteresis";
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-  v16 = [v13 database];
+  database = [profileCopy database];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __87__HDAppSubscriptionEntity_setLaunchTimeHysteresis_forBundleID_dataTypes_profile_error___block_invoke;
   v20[3] = &unk_278614508;
-  v21 = v12;
-  v17 = v12;
-  LOBYTE(a7) = [a1 updateProperties:v15 predicate:v14 healthDatabase:v16 error:a7 bindingHandler:v20];
+  v21 = hysteresisCopy;
+  v17 = hysteresisCopy;
+  LOBYTE(error) = [self updateProperties:v15 predicate:v14 healthDatabase:database error:error bindingHandler:v20];
 
   v18 = *MEMORY[0x277D85DE8];
-  return a7;
+  return error;
 }
 
 uint64_t __69__HDAppSubscriptionEntity__subscriptionsWithPredicate_profile_error___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)

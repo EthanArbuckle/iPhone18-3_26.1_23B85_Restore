@@ -1,10 +1,10 @@
 @interface PXStoryImageAssetResourcePreloadingOperation
 + (id)_resultHandlingQueue;
 - (CGSize)targetSize;
-- (PXStoryImageAssetResourcePreloadingOperation)initWithDisplayAssetResource:(id)a3 mediaProvider:(id)a4;
-- (PXStoryImageAssetResourcePreloadingOperation)initWithDisplayAssetResource:(id)a3 targetSize:(CGSize)a4 mediaProvider:(id)a5 isInline:(BOOL)a6;
+- (PXStoryImageAssetResourcePreloadingOperation)initWithDisplayAssetResource:(id)resource mediaProvider:(id)provider;
+- (PXStoryImageAssetResourcePreloadingOperation)initWithDisplayAssetResource:(id)resource targetSize:(CGSize)size mediaProvider:(id)provider isInline:(BOOL)inline;
 - (id)diagnosticDescription;
-- (void)_handleImageLoadingResultWithImage:(CGImage *)a3 info:(id)a4;
+- (void)_handleImageLoadingResultWithImage:(CGImage *)image info:(id)info;
 - (void)cancel;
 - (void)px_start;
 @end
@@ -25,29 +25,29 @@
   v4.receiver = self;
   v4.super_class = PXStoryImageAssetResourcePreloadingOperation;
   [(PXAsyncOperation *)&v4 cancel];
-  v3 = [(PXStoryDisplayAssetResourcePreloadingOperation *)self mediaProvider];
-  [v3 cancelImageRequest:{-[PXStoryImageAssetResourcePreloadingOperation imageRequestID](self, "imageRequestID")}];
+  mediaProvider = [(PXStoryDisplayAssetResourcePreloadingOperation *)self mediaProvider];
+  [mediaProvider cancelImageRequest:{-[PXStoryImageAssetResourcePreloadingOperation imageRequestID](self, "imageRequestID")}];
 }
 
-- (void)_handleImageLoadingResultWithImage:(CGImage *)a3 info:(id)a4
+- (void)_handleImageLoadingResultWithImage:(CGImage *)image info:(id)info
 {
   v6 = *MEMORY[0x1E6978E20];
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:v6];
-  v9 = a3 | v8;
+  infoCopy = info;
+  v8 = [infoCopy objectForKeyedSubscript:v6];
+  v9 = image | v8;
 
-  v10 = [v7 objectForKeyedSubscript:*MEMORY[0x1E6978E50]];
-  v11 = [v10 BOOLValue];
+  v10 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978E50]];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [v7 objectForKeyedSubscript:*MEMORY[0x1E6978DE8]];
-  v13 = [v12 BOOLValue];
+  v12 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978DE8]];
+  bOOLValue2 = [v12 BOOLValue];
 
-  v17 = [v7 objectForKeyedSubscript:*MEMORY[0x1E6978DF0]];
+  v17 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978DF0]];
 
   v14 = v17;
   if (v9)
   {
-    v15 = (v17 != 0) | ~v11;
+    v15 = (v17 != 0) | ~bOOLValue;
   }
 
   else
@@ -55,13 +55,13 @@
     v15 = v17 != 0;
   }
 
-  if ((v15 | v13))
+  if ((v15 | bOOLValue2))
   {
-    v16 = [(PXAsyncOperation *)self isExecuting];
+    isExecuting = [(PXAsyncOperation *)self isExecuting];
     v14 = v17;
-    if (v16)
+    if (isExecuting)
     {
-      if ((v13 & 1) == 0)
+      if ((bOOLValue2 & 1) == 0)
       {
         [(PXStoryDisplayAssetResourcePreloadingOperation *)self setError:v17];
       }
@@ -93,8 +93,8 @@
   }
 
   [v3 setDownloadIntent:v4];
-  v5 = [objc_opt_class() _resultHandlingQueue];
-  [v3 setResultHandlerQueue:v5];
+  _resultHandlingQueue = [objc_opt_class() _resultHandlingQueue];
+  [v3 setResultHandlerQueue:_resultHandlingQueue];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -103,15 +103,15 @@
   aBlock[3] = &unk_1E774A490;
   objc_copyWeak(&v21, &location);
   v6 = _Block_copy(aBlock);
-  v7 = [(PXStoryDisplayAssetResourcePreloadingOperation *)self progressHandler];
-  if (v7)
+  progressHandler = [(PXStoryDisplayAssetResourcePreloadingOperation *)self progressHandler];
+  if (progressHandler)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __56__PXStoryImageAssetResourcePreloadingOperation_px_start__block_invoke_2;
     v17[3] = &unk_1E774A4B8;
     objc_copyWeak(&v19, &location);
-    v18 = v7;
+    v18 = progressHandler;
     v8 = _Block_copy(v17);
 
     objc_destroyWeak(&v19);
@@ -119,8 +119,8 @@
   }
 
   [v3 setProgressHandler:v6];
-  v9 = [(PXStoryDisplayAssetResourcePreloadingOperation *)self mediaProvider];
-  v10 = [(PXStoryDisplayAssetResourcePreloadingOperation *)self displayAsset];
+  mediaProvider = [(PXStoryDisplayAssetResourcePreloadingOperation *)self mediaProvider];
+  displayAsset = [(PXStoryDisplayAssetResourcePreloadingOperation *)self displayAsset];
   [(PXStoryImageAssetResourcePreloadingOperation *)self targetSize];
   v12 = v11;
   v14 = v13;
@@ -129,7 +129,7 @@
   v15[2] = __56__PXStoryImageAssetResourcePreloadingOperation_px_start__block_invoke_3;
   v15[3] = &unk_1E774A4E0;
   objc_copyWeak(&v16, &location);
-  -[PXStoryImageAssetResourcePreloadingOperation setImageRequestID:](self, "setImageRequestID:", [v9 requestCGImageForAsset:v10 targetSize:1 contentMode:v3 options:v15 resultHandler:{v12, v14}]);
+  -[PXStoryImageAssetResourcePreloadingOperation setImageRequestID:](self, "setImageRequestID:", [mediaProvider requestCGImageForAsset:displayAsset targetSize:1 contentMode:v3 options:v15 resultHandler:{v12, v14}]);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&v21);
@@ -174,28 +174,28 @@ void __56__PXStoryImageAssetResourcePreloadingOperation_px_start__block_invoke_3
   PXSizeGetArea();
 }
 
-- (PXStoryImageAssetResourcePreloadingOperation)initWithDisplayAssetResource:(id)a3 mediaProvider:(id)a4
+- (PXStoryImageAssetResourcePreloadingOperation)initWithDisplayAssetResource:(id)resource mediaProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXStoryImageAssetResourcePreloadingOperation.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXStoryImageAssetResourcePreloadingOperation initWithDisplayAssetResource:mediaProvider:]"}];
+  resourceCopy = resource;
+  providerCopy = provider;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryImageAssetResourcePreloadingOperation.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXStoryImageAssetResourcePreloadingOperation initWithDisplayAssetResource:mediaProvider:]"}];
 
   abort();
 }
 
-- (PXStoryImageAssetResourcePreloadingOperation)initWithDisplayAssetResource:(id)a3 targetSize:(CGSize)a4 mediaProvider:(id)a5 isInline:(BOOL)a6
+- (PXStoryImageAssetResourcePreloadingOperation)initWithDisplayAssetResource:(id)resource targetSize:(CGSize)size mediaProvider:(id)provider isInline:(BOOL)inline
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = PXStoryImageAssetResourcePreloadingOperation;
-  result = [(PXStoryDisplayAssetResourcePreloadingOperation *)&v10 initWithDisplayAssetResource:a3 mediaProvider:a5];
+  result = [(PXStoryDisplayAssetResourcePreloadingOperation *)&v10 initWithDisplayAssetResource:resource mediaProvider:provider];
   if (result)
   {
     result->_targetSize.width = width;
     result->_targetSize.height = height;
-    result->_isInline = a6;
+    result->_isInline = inline;
   }
 
   return result;

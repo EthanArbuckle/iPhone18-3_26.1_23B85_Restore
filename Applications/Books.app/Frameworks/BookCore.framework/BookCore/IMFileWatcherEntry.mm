@@ -1,22 +1,22 @@
 @interface IMFileWatcherEntry
-- (IMFileWatcherEntry)initWithQueue:(id)a3 andBlock:(id)a4;
+- (IMFileWatcherEntry)initWithQueue:(id)queue andBlock:(id)block;
 - (unint64_t)hash;
 @end
 
 @implementation IMFileWatcherEntry
 
-- (IMFileWatcherEntry)initWithQueue:(id)a3 andBlock:(id)a4
+- (IMFileWatcherEntry)initWithQueue:(id)queue andBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = IMFileWatcherEntry;
   v9 = [(IMFileWatcherEntry *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = [blockCopy copy];
     block = v10->_block;
     v10->_block = v11;
   }

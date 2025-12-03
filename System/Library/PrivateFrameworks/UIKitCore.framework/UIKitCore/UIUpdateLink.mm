@@ -1,23 +1,23 @@
 @interface UIUpdateLink
-+ (id)updateLinkForView:(id)a3 actionHandler:(id)a4;
-+ (id)updateLinkForView:(id)a3 actionTarget:(id)a4 selector:(SEL)a5;
-+ (id)updateLinkForWindowScene:(id)a3 actionHandler:(id)a4;
-+ (id)updateLinkForWindowScene:(id)a3 actionTarget:(id)a4 selector:(SEL)a5;
++ (id)updateLinkForView:(id)view actionHandler:(id)handler;
++ (id)updateLinkForView:(id)view actionTarget:(id)target selector:(SEL)selector;
++ (id)updateLinkForWindowScene:(id)scene actionHandler:(id)handler;
++ (id)updateLinkForWindowScene:(id)scene actionTarget:(id)target selector:(SEL)selector;
 - (id)_init;
 - (id)currentUpdateInfo;
 - (uint64_t)_modifyRequest:(uint64_t)result;
-- (uint64_t)_modifyRequestFlags:(int)a3 on:;
-- (void)_setActive:(uint64_t)a1;
-- (void)addActionToPhase:(id)a3 handler:(id)a4;
-- (void)addActionToPhase:(id)a3 target:(id)a4 selector:(SEL)a5;
-- (void)addActionWithHandler:(id)a3;
-- (void)addActionWithTarget:(id)a3 selector:(SEL)a4;
+- (uint64_t)_modifyRequestFlags:(int)flags on:;
+- (void)_setActive:(uint64_t)active;
+- (void)addActionToPhase:(id)phase handler:(id)handler;
+- (void)addActionToPhase:(id)phase target:(id)target selector:(SEL)selector;
+- (void)addActionWithHandler:(id)handler;
+- (void)addActionWithTarget:(id)target selector:(SEL)selector;
 - (void)dealloc;
-- (void)setEnabled:(BOOL)a3;
-- (void)setPreferredFrameRateRange:(CAFrameRateRange)a3;
-- (void)setRequiresContinuousUpdates:(BOOL)a3;
-- (void)setWantsImmediatePresentation:(BOOL)a3;
-- (void)setWantsLowLatencyEventDispatch:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setPreferredFrameRateRange:(CAFrameRateRange)range;
+- (void)setRequiresContinuousUpdates:(BOOL)updates;
+- (void)setWantsImmediatePresentation:(BOOL)presentation;
+- (void)setWantsLowLatencyEventDispatch:(BOOL)dispatch;
 @end
 
 @implementation UIUpdateLink
@@ -71,14 +71,14 @@
   [(UIUpdateLink *)&v7 dealloc];
 }
 
-- (void)addActionToPhase:(id)a3 handler:(id)a4
+- (void)addActionToPhase:(id)phase handler:(id)handler
 {
   v7 = malloc_type_calloc(1uLL, 0x28uLL, 0xA0040B0408BC2uLL);
-  v8 = _Block_copy(a4);
+  v8 = _Block_copy(handler);
   v9 = *(v7 + 1);
   *(v7 + 1) = v8;
 
-  objc_storeStrong(v7 + 2, a3);
+  objc_storeStrong(v7 + 2, phase);
   *(v7 + 3) = self;
   *v7 = self->_actions.slh_first;
   self->_actions.slh_first = v7;
@@ -99,16 +99,16 @@
   }
 }
 
-- (void)addActionToPhase:(id)a3 target:(id)a4 selector:(SEL)a5
+- (void)addActionToPhase:(id)phase target:(id)target selector:(SEL)selector
 {
-  objc_initWeak(&location, a4);
+  objc_initWeak(&location, target);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__UIUpdateLink_addActionToPhase_target_selector___block_invoke;
   v8[3] = &unk_1E7116B70;
   objc_copyWeak(v9, &location);
-  v9[1] = a5;
-  [(UIUpdateLink *)self addActionToPhase:a3 handler:v8];
+  v9[1] = selector;
+  [(UIUpdateLink *)self addActionToPhase:phase handler:v8];
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
 }
@@ -134,25 +134,25 @@ void __49__UIUpdateLink_addActionToPhase_target_selector___block_invoke(uint64_t
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    v3 = a3 && self->_engaged;
+    self->_enabled = enabled;
+    v3 = enabled && self->_engaged;
     [(UIUpdateLink *)self _setActive:v3];
   }
 }
 
-- (void)_setActive:(uint64_t)a1
+- (void)_setActive:(uint64_t)active
 {
-  if (a1 && *(a1 + 49) != a2)
+  if (active && *(active + 49) != a2)
   {
-    *(a1 + 49) = a2;
+    *(active + 49) = a2;
     if (a2)
     {
-      _UIUpdateRequestRegistryAddRecord(&mainRegistry, (a1 + 16), 0x10003Au);
-      for (i = *(a1 + 8); i; i = *i)
+      _UIUpdateRequestRegistryAddRecord(&mainRegistry, (active + 16), 0x10003Au);
+      for (i = *(active + 8); i; i = *i)
       {
         v4 = i[2];
         if (v4)
@@ -171,8 +171,8 @@ void __49__UIUpdateLink_addActionToPhase_target_selector___block_invoke(uint64_t
 
     else
     {
-      _UIUpdateRequestRegistryRemoveRecord(&mainRegistry, (a1 + 16), 0x10003Au);
-      for (j = *(a1 + 8); j; j = *j)
+      _UIUpdateRequestRegistryRemoveRecord(&mainRegistry, (active + 16), 0x10003Au);
+      for (j = *(active + 8); j; j = *j)
       {
         v7 = j[4];
         if (v7)
@@ -216,13 +216,13 @@ void __49__UIUpdateLink_addActionToPhase_target_selector___block_invoke(uint64_t
   return result;
 }
 
-- (uint64_t)_modifyRequestFlags:(int)a3 on:
+- (uint64_t)_modifyRequestFlags:(int)flags on:
 {
   if (result)
   {
     v5 = *(result + 16);
     v6 = v5 | a2;
-    if (!a3)
+    if (!flags)
     {
       v6 = v5 & ~a2;
     }
@@ -244,12 +244,12 @@ void __49__UIUpdateLink_addActionToPhase_target_selector___block_invoke(uint64_t
   return result;
 }
 
-- (void)setRequiresContinuousUpdates:(BOOL)a3
+- (void)setRequiresContinuousUpdates:(BOOL)updates
 {
   if (self->_actions.slh_first)
   {
 
-    [(UIUpdateLink *)self _modifyRequestFlags:a3 on:?];
+    [(UIUpdateLink *)self _modifyRequestFlags:updates on:?];
   }
 
   else
@@ -259,9 +259,9 @@ void __49__UIUpdateLink_addActionToPhase_target_selector___block_invoke(uint64_t
   }
 }
 
-- (void)setWantsLowLatencyEventDispatch:(BOOL)a3
+- (void)setWantsLowLatencyEventDispatch:(BOOL)dispatch
 {
-  v3 = a3;
+  dispatchCopy = dispatch;
   if (qword_1ED49F400 != -1)
   {
     dispatch_once(&qword_1ED49F400, &__block_literal_global_62_0);
@@ -270,13 +270,13 @@ void __49__UIUpdateLink_addActionToPhase_target_selector___block_invoke(uint64_t
   if (_MergedGlobals_1193 == 1)
   {
 
-    [(UIUpdateLink *)self _modifyRequestFlags:v3 on:?];
+    [(UIUpdateLink *)self _modifyRequestFlags:dispatchCopy on:?];
   }
 }
 
-- (void)setWantsImmediatePresentation:(BOOL)a3
+- (void)setWantsImmediatePresentation:(BOOL)presentation
 {
-  v3 = a3;
+  presentationCopy = presentation;
   if (qword_1ED49F400 != -1)
   {
     dispatch_once(&qword_1ED49F400, &__block_literal_global_62_0);
@@ -285,18 +285,18 @@ void __49__UIUpdateLink_addActionToPhase_target_selector___block_invoke(uint64_t
   if (_MergedGlobals_1193 == 1)
   {
 
-    [(UIUpdateLink *)self _modifyRequestFlags:v3 on:?];
+    [(UIUpdateLink *)self _modifyRequestFlags:presentationCopy on:?];
   }
 }
 
-- (void)setPreferredFrameRateRange:(CAFrameRateRange)a3
+- (void)setPreferredFrameRateRange:(CAFrameRateRange)range
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __43__UIUpdateLink_setPreferredFrameRateRange___block_invoke;
   v3[3] = &unk_1E7116B98;
   v3[4] = self;
-  v4 = a3;
+  rangeCopy = range;
   [(UIUpdateLink *)self _modifyRequest:v3];
 }
 
@@ -325,46 +325,46 @@ float __43__UIUpdateLink_setPreferredFrameRateRange___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)addActionWithHandler:(id)a3
+- (void)addActionWithHandler:(id)handler
 {
   v5 = +[UIUpdateActionPhase afterCADisplayLinkDispatch];
-  [(UIUpdateLink *)self addActionToPhase:v5 handler:a3];
+  [(UIUpdateLink *)self addActionToPhase:v5 handler:handler];
 }
 
-- (void)addActionWithTarget:(id)a3 selector:(SEL)a4
+- (void)addActionWithTarget:(id)target selector:(SEL)selector
 {
   v7 = +[UIUpdateActionPhase afterCADisplayLinkDispatch];
-  [(UIUpdateLink *)self addActionToPhase:v7 target:a3 selector:a4];
+  [(UIUpdateLink *)self addActionToPhase:v7 target:target selector:selector];
 }
 
-+ (id)updateLinkForWindowScene:(id)a3 actionHandler:(id)a4
++ (id)updateLinkForWindowScene:(id)scene actionHandler:(id)handler
 {
-  v5 = [UIUpdateLink updateLinkForWindowScene:a3];
-  [v5 addActionWithHandler:a4];
+  v5 = [UIUpdateLink updateLinkForWindowScene:scene];
+  [v5 addActionWithHandler:handler];
 
   return v5;
 }
 
-+ (id)updateLinkForWindowScene:(id)a3 actionTarget:(id)a4 selector:(SEL)a5
++ (id)updateLinkForWindowScene:(id)scene actionTarget:(id)target selector:(SEL)selector
 {
-  v7 = [UIUpdateLink updateLinkForWindowScene:a3];
-  [v7 addActionWithTarget:a4 selector:a5];
+  v7 = [UIUpdateLink updateLinkForWindowScene:scene];
+  [v7 addActionWithTarget:target selector:selector];
 
   return v7;
 }
 
-+ (id)updateLinkForView:(id)a3 actionHandler:(id)a4
++ (id)updateLinkForView:(id)view actionHandler:(id)handler
 {
-  v5 = [UIUpdateLink updateLinkForView:a3];
-  [v5 addActionWithHandler:a4];
+  v5 = [UIUpdateLink updateLinkForView:view];
+  [v5 addActionWithHandler:handler];
 
   return v5;
 }
 
-+ (id)updateLinkForView:(id)a3 actionTarget:(id)a4 selector:(SEL)a5
++ (id)updateLinkForView:(id)view actionTarget:(id)target selector:(SEL)selector
 {
-  v7 = [UIUpdateLink updateLinkForView:a3];
-  [v7 addActionWithTarget:a4 selector:a5];
+  v7 = [UIUpdateLink updateLinkForView:view];
+  [v7 addActionWithTarget:target selector:selector];
 
   return v7;
 }

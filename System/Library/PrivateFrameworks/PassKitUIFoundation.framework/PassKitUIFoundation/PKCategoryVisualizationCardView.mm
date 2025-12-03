@@ -1,10 +1,10 @@
 @interface PKCategoryVisualizationCardView
-- (PKCategoryVisualizationCardView)initWithFrame:(CGRect)a3;
+- (PKCategoryVisualizationCardView)initWithFrame:(CGRect)frame;
 - (double)_updateCircles;
 - (float)_calculateNewCirclePositions;
 - (id)rendererState;
-- (unint64_t)_updateRenderPassDescriptorWithDrawable:(void *)a1;
-- (void)_createMetalResourcesWithTextures:(uint64_t)a1;
+- (unint64_t)_updateRenderPassDescriptorWithDrawable:(void *)drawable;
+- (void)_createMetalResourcesWithTextures:(uint64_t)textures;
 - (void)_empty;
 - (void)_startMotionUpdates;
 - (void)_stopMotionUpdates;
@@ -15,25 +15,25 @@
 - (void)didMoveToWindow;
 - (void)invalidate;
 - (void)layoutSubviews;
-- (void)motionManager:(id)a3 didReceiveMotion:(id)a4;
-- (void)renderLoop:(id)a3 drawAtTime:(double)a4;
-- (void)renderLoop:(id)a3 drawableSizeDidChange:(CGSize)a4;
-- (void)renderWithTextures:(id)a3 rendererState:(id)a4;
-- (void)setBlurDisabled:(BOOL)a3;
-- (void)setMagnitudes:(id)a3 withStyle:(int64_t)a4;
-- (void)setMotionEnabled:(BOOL)a3;
-- (void)setPaused:(BOOL)a3;
+- (void)motionManager:(id)manager didReceiveMotion:(id)motion;
+- (void)renderLoop:(id)loop drawAtTime:(double)time;
+- (void)renderLoop:(id)loop drawableSizeDidChange:(CGSize)change;
+- (void)renderWithTextures:(id)textures rendererState:(id)state;
+- (void)setBlurDisabled:(BOOL)disabled;
+- (void)setMagnitudes:(id)magnitudes withStyle:(int64_t)style;
+- (void)setMotionEnabled:(BOOL)enabled;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation PKCategoryVisualizationCardView
 
 - (void)_updateTextureAndBlurShader
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 584) & 1) == 0)
+    if ((*(self + 584) & 1) == 0)
     {
-      v2 = *(a1 + 408);
+      v2 = *(self + 408);
       if (v2)
       {
         [v2 drawableSize];
@@ -52,12 +52,12 @@
         v9 = 1.0 / v8;
         LODWORD(v10) = 0;
         *(&v10 + 1) = v9;
-        *(a1 + 624) = xmmword_25E0D5B80;
-        *(a1 + 640) = v10;
-        *(a1 + 656) = xmmword_25E0D5F30;
-        *(a1 + 672) = xmmword_25E0D5B90;
-        v11 = [MEMORY[0x277D759A0] mainScreen];
-        [v11 scale];
+        *(self + 624) = xmmword_25E0D5B80;
+        *(self + 640) = v10;
+        *(self + 656) = xmmword_25E0D5F30;
+        *(self + 672) = xmmword_25E0D5B90;
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         v13 = v12 * 50.0;
 
         v14 = v13;
@@ -65,18 +65,18 @@
         v16 = (v14 / v8);
         v17 = (v5 + v16 * 2.0);
         v18 = (v6 + v14 * 2.0);
-        v19 = [*(a1 + 408) device];
-        v20 = *(a1 + 472);
-        if (!v20 || [v20 width] != v17 || objc_msgSend(*(a1 + 472), "height") != v18)
+        device = [*(self + 408) device];
+        v20 = *(self + 472);
+        if (!v20 || [v20 width] != v17 || objc_msgSend(*(self + 472), "height") != v18)
         {
-          v21 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:objc_msgSend(*(a1 + 408) width:"pixelFormat") height:v17 mipmapped:v18, 0];
+          v21 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:objc_msgSend(*(self + 408) width:"pixelFormat") height:v17 mipmapped:v18, 0];
           [v21 setUsage:5];
-          v22 = [v19 newTextureWithDescriptor:v21];
-          v23 = *(a1 + 472);
-          *(a1 + 472) = v22;
+          v22 = [device newTextureWithDescriptor:v21];
+          v23 = *(self + 472);
+          *(self + 472) = v22;
         }
 
-        if (*(a1 + 10786))
+        if (*(self + 10786))
         {
           v24 = 0.0;
         }
@@ -89,9 +89,9 @@
         v25 = OUTLINED_FUNCTION_2_0();
         if (v25)
         {
-          v26 = [v25 device];
-          v27 = v26;
-          if (v26 == v19)
+          device2 = [v25 device];
+          v27 = device2;
+          if (device2 == device)
           {
             [OUTLINED_FUNCTION_2_0() sigma];
             v29 = v28;
@@ -124,9 +124,9 @@ LABEL_22:
 
         v30 = objc_alloc(MEMORY[0x277CD7520]);
         *&v31 = v24;
-        v32 = [v30 initWithDevice:v19 sigma:v31];
-        v33 = *(a1 + 560);
-        *(a1 + 560) = v32;
+        v32 = [v30 initWithDevice:device sigma:v31];
+        v33 = *(self + 560);
+        *(self + 560) = v32;
 
         goto LABEL_22;
       }
@@ -136,43 +136,43 @@ LABEL_22:
 
 - (void)_updatePausedState
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 584))
+    if (*(self + 584))
     {
       v2 = 1;
     }
 
     else
     {
-      v2 = (*(a1 + 587) & 1) != 0 || *(a1 + 10768) ? 0 : *(a1 + 10785);
+      v2 = (*(self + 587) & 1) != 0 || *(self + 10768) ? 0 : *(self + 10785);
     }
 
     v3 = v2 & 1;
-    if (*(a1 + 585) != v3)
+    if (*(self + 585) != v3)
     {
-      *(a1 + 585) = v3;
-      [*(a1 + 408) setPaused:*(a1 + 585)];
-      [(PKCategoryVisualizationCardView *)a1 _updateMotionEnabled];
-      if ((*(a1 + 585) & 1) == 0 && *(a1 + 568) == 1)
+      *(self + 585) = v3;
+      [*(self + 408) setPaused:*(self + 585)];
+      [(PKCategoryVisualizationCardView *)self _updateMotionEnabled];
+      if ((*(self + 585) & 1) == 0 && *(self + 568) == 1)
       {
-        *(a1 + 568) = 0;
-        v5 = *(a1 + 576);
+        *(self + 568) = 0;
+        v5 = *(self + 576);
         if (v5 == 2)
         {
 
-          [(PKCategoryVisualizationCardView *)a1 _empty];
+          [(PKCategoryVisualizationCardView *)self _empty];
         }
 
         else
         {
           if (v5 == 1)
           {
-            if ((*(a1 + 10772) & 1) == 0)
+            if ((*(self + 10772) & 1) == 0)
             {
-              *(a1 + 10772) = 1;
-              *(a1 + 788) = 869711765;
-              *(a1 + 792) = 1097859072;
+              *(self + 10772) = 1;
+              *(self + 788) = 869711765;
+              *(self + 792) = 1097859072;
             }
           }
 
@@ -181,7 +181,7 @@ LABEL_22:
             return;
           }
 
-          [(PKCategoryVisualizationCardView *)a1 _updateCircles];
+          [(PKCategoryVisualizationCardView *)self _updateCircles];
         }
       }
     }
@@ -436,11 +436,11 @@ LABEL_48:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKMetalRenderLoop *)self->_renderLoop layer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  layer = [(PKMetalRenderLoop *)self->_renderLoop layer];
+  [layer setFrame:{v4, v6, v8, v10}];
 
-  v12 = [MEMORY[0x277D759A0] mainScreen];
-  [v12 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
 
   PKSizeRoundToPixelWithScale();
   v14 = v13;
@@ -454,22 +454,22 @@ LABEL_48:
 
 - (void)_updateMotionEnabled
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 10784) == 1 && (*(a1 + 585) & 1) == 0 ? [*(a1 + 408) effectiveIsPaused] ^ 1 : 0;
-    if (*(a1 + 586) != v2)
+    v2 = *(self + 10784) == 1 && (*(self + 585) & 1) == 0 ? [*(self + 408) effectiveIsPaused] ^ 1 : 0;
+    if (*(self + 586) != v2)
     {
-      *(a1 + 586) = v2;
-      if (*(a1 + 586) == 1)
+      *(self + 586) = v2;
+      if (*(self + 586) == 1)
       {
 
-        [(PKCategoryVisualizationCardView *)a1 _startMotionUpdates];
+        [(PKCategoryVisualizationCardView *)self _startMotionUpdates];
       }
 
       else
       {
 
-        [(PKCategoryVisualizationCardView *)a1 _stopMotionUpdates];
+        [(PKCategoryVisualizationCardView *)self _stopMotionUpdates];
       }
     }
   }
@@ -480,30 +480,30 @@ LABEL_48:
   v6.receiver = self;
   v6.super_class = PKCategoryVisualizationCardView;
   [(PKCategoryVisualizationCardView *)&v6 didMoveToWindow];
-  v3 = [(PKCategoryVisualizationCardView *)self window];
+  window = [(PKCategoryVisualizationCardView *)self window];
   renderLoop = self->_renderLoop;
-  v5 = [v3 windowScene];
-  [(PKRenderLoop *)renderLoop attachToWindowScene:v5];
+  windowScene = [window windowScene];
+  [(PKRenderLoop *)renderLoop attachToWindowScene:windowScene];
 
   [(PKCategoryVisualizationCardView *)self _updateMotionEnabled];
 }
 
 - (float)_calculateNewCirclePositions
 {
-  if (!a1)
+  if (!self)
   {
     return result;
   }
 
-  v3 = (a1 + 592);
-  v4 = *(a1 + 880);
+  v3 = (self + 592);
+  v4 = *(self + 880);
   if (!v4)
   {
     goto LABEL_23;
   }
 
   v5 = 0;
-  v6 = *(a1 + 10752) * -0.14 + 1.5;
+  v6 = *(self + 10752) * -0.14 + 1.5;
   __asm { FMOV            V3.2S, #-4.0 }
 
   v12 = vdup_n_s32(0x3D4CCCCDu);
@@ -602,8 +602,8 @@ LABEL_16:
     *v17[10].f32 = v44;
     *v17[12].f32 = v45;
     ++v5;
-    v3 = (a1 + 592);
-    v4 = *(a1 + 880);
+    v3 = (self + 592);
+    v4 = *(self + 880);
   }
 
   while (v5 < v4);
@@ -611,37 +611,37 @@ LABEL_23:
   v46 = v3[24].f32[1] + 0.075;
   v3[24].f32[1] = fminf(v46, v3[25].f32[0]);
   *&v47 = 0;
-  v48 = *(a1 + 788);
-  v49 = *(a1 + 792);
+  v48 = *(self + 788);
+  v49 = *(self + 792);
   LODWORD(v50) = 0;
   HIDWORD(v50) = 0;
   *(&v50 + 4) = LODWORD(v48);
   *(&v47 + 1) = LODWORD(v48);
-  *(a1 + 816) = LODWORD(v48);
-  *(a1 + 832) = v50;
-  *(a1 + 848) = v47;
-  *(a1 + 864) = xmmword_25E0D5B90;
+  *(self + 816) = LODWORD(v48);
+  *(self + 832) = v50;
+  *(self + 848) = v47;
+  *(self + 864) = xmmword_25E0D5B90;
   if (v48 == v49)
   {
-    *(a1 + 10772) = 0;
+    *(self + 10772) = 0;
   }
 
   v51 = 0.75;
-  if (!*(a1 + 10752))
+  if (!*(self + 10752))
   {
     v51 = 0.5;
   }
 
-  result = *(a1 + 752) * 0.95 + v51 * 0.05;
-  *(a1 + 752) = result;
+  result = *(self + 752) * 0.95 + v51 * 0.05;
+  *(self + 752) = result;
   return result;
 }
 
-- (PKCategoryVisualizationCardView)initWithFrame:(CGRect)a3
+- (PKCategoryVisualizationCardView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PKCategoryVisualizationCardView;
-  result = [(PKCategoryVisualizationCardView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(PKCategoryVisualizationCardView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_needsDraw = 1;
@@ -659,15 +659,15 @@ LABEL_23:
   [(PKCategoryVisualizationCardView *)&v3 dealloc];
 }
 
-- (void)renderWithTextures:(id)a3 rendererState:(id)a4
+- (void)renderWithTextures:(id)textures rendererState:(id)state
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  stateCopy = state;
   if (!self->_invalidated)
   {
-    v8 = a3;
+    texturesCopy = textures;
     PKCategoryVisualizationRendererStateDestroy(&self->_state);
-    if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (stateCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v9 = *&self->_anon_268[24];
       v24 = *&self->_anon_268[8];
@@ -675,7 +675,7 @@ LABEL_23:
       v10 = *&self->_anon_268[56];
       v26 = *&self->_anon_268[40];
       v27 = v10;
-      memcpy(v22, v6 + 16, sizeof(v22));
+      memcpy(v22, stateCopy + 16, sizeof(v22));
       PKCategoryVisualizationRendererStateCopy(v22, v23);
       memcpy(&self->_state, v23, 0x27D0uLL);
       v11 = v25;
@@ -716,7 +716,7 @@ LABEL_23:
       *&self->_anon_268[10152] = 0u;
     }
 
-    [(PKCategoryVisualizationCardView *)self _createMetalResourcesWithTextures:v8];
+    [(PKCategoryVisualizationCardView *)self _createMetalResourcesWithTextures:texturesCopy];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -754,8 +754,8 @@ float32x4_t __68__PKCategoryVisualizationCardView_renderWithTextures_rendererSta
     self->_invalidated = 1;
     [(PKRenderLoop *)self->_renderLoop setDelegate:0];
     [(PKRenderLoop *)self->_renderLoop invalidate];
-    v3 = [(PKMetalRenderLoop *)self->_renderLoop layer];
-    [v3 removeFromSuperlayer];
+    layer = [(PKMetalRenderLoop *)self->_renderLoop layer];
+    [layer removeFromSuperlayer];
 
     renderLoop = self->_renderLoop;
     self->_renderLoop = 0;
@@ -813,14 +813,14 @@ float32x4_t __68__PKCategoryVisualizationCardView_renderWithTextures_rendererSta
   }
 }
 
-- (void)setMagnitudes:(id)a3 withStyle:(int64_t)a4
+- (void)setMagnitudes:(id)magnitudes withStyle:(int64_t)style
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
+  magnitudesCopy = magnitudes;
+  v7 = magnitudesCopy;
   if (!self->_invalidated)
   {
-    v9 = [v6 copy];
+    v9 = [magnitudesCopy copy];
     magnitudes = self->_magnitudes;
     self->_magnitudes = v9;
 
@@ -852,11 +852,11 @@ float32x4_t __68__PKCategoryVisualizationCardView_renderWithTextures_rendererSta
           v17 = *(*(&v23 + 1) + 8 * i);
           [v17 magnitude];
           v19 = fmin(fmax(v18, 0.0), 1.0);
-          v20 = [v17 bucket];
-          v21 = v19 <= 0.0 || v20 < 1;
-          if (!v21 && v20 < self->_state.bucketCount)
+          bucket = [v17 bucket];
+          v21 = v19 <= 0.0 || bucket < 1;
+          if (!v21 && bucket < self->_state.bucketCount)
           {
-            self->_state.magnitudeForBucket[v20] = fmin(fmax(v19 + self->_state.magnitudeForBucket[v20], 0.0), 1.0);
+            self->_state.magnitudeForBucket[bucket] = fmin(fmax(v19 + self->_state.magnitudeForBucket[bucket], 0.0), 1.0);
           }
         }
 
@@ -870,16 +870,16 @@ float32x4_t __68__PKCategoryVisualizationCardView_renderWithTextures_rendererSta
     [(PKCategoryVisualizationCardView *)self _updatePausedState];
     if (!self->_emptying)
     {
-      if ((a4 - 1) > 1 || !self->_effectivePaused)
+      if ((style - 1) > 1 || !self->_effectivePaused)
       {
         self->_hasPendingUpdate = 0;
-        if (a4 == 2)
+        if (style == 2)
         {
           [(PKCategoryVisualizationCardView *)self _empty];
           goto LABEL_2;
         }
 
-        if (a4 == 1)
+        if (style == 1)
         {
           if ((self->_anon_268[10156] & 1) == 0)
           {
@@ -889,7 +889,7 @@ float32x4_t __68__PKCategoryVisualizationCardView_renderWithTextures_rendererSta
           }
         }
 
-        else if (a4)
+        else if (style)
         {
           goto LABEL_2;
         }
@@ -899,7 +899,7 @@ float32x4_t __68__PKCategoryVisualizationCardView_renderWithTextures_rendererSta
       }
 
       self->_hasPendingUpdate = 1;
-      self->_pendingUpdateStyle = a4;
+      self->_pendingUpdateStyle = style;
     }
   }
 
@@ -908,76 +908,76 @@ LABEL_2:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMotionEnabled:(BOOL)a3
+- (void)setMotionEnabled:(BOOL)enabled
 {
-  if (self->_motionEnabled != a3)
+  if (self->_motionEnabled != enabled)
   {
-    self->_motionEnabled = a3;
+    self->_motionEnabled = enabled;
     [(PKCategoryVisualizationCardView *)self _updateMotionEnabled];
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
+    self->_paused = paused;
     [(PKCategoryVisualizationCardView *)self _updatePausedState];
   }
 }
 
-- (void)setBlurDisabled:(BOOL)a3
+- (void)setBlurDisabled:(BOOL)disabled
 {
-  if (self->_blurDisabled != a3)
+  if (self->_blurDisabled != disabled)
   {
-    self->_blurDisabled = a3;
+    self->_blurDisabled = disabled;
     [(PKCategoryVisualizationCardView *)self _updateTextureAndBlurShader];
   }
 }
 
-- (void)renderLoop:(id)a3 drawAtTime:(double)a4
+- (void)renderLoop:(id)loop drawAtTime:(double)time
 {
-  if ([(PKMetalRenderLoop *)self->_renderLoop isDrawableAvailable:a3])
+  if ([(PKMetalRenderLoop *)self->_renderLoop isDrawableAvailable:loop])
   {
-    v5 = [(PKMetalRenderLoop *)self->_renderLoop currentDrawable];
-    if (v5 && [(PKCategoryVisualizationCardView *)self _updateRenderPassDescriptorWithDrawable:v5])
+    currentDrawable = [(PKMetalRenderLoop *)self->_renderLoop currentDrawable];
+    if (currentDrawable && [(PKCategoryVisualizationCardView *)self _updateRenderPassDescriptorWithDrawable:currentDrawable])
     {
       *&v7 = [(PKCategoryVisualizationCardView *)self _calculateNewCirclePositions];
-      v8 = [(MTLBuffer *)self->_circleUniformsBuffer contents];
-      *v8 = *&self->_anon_268[8];
+      contents = [(MTLBuffer *)self->_circleUniformsBuffer contents];
+      *contents = *&self->_anon_268[8];
       v9 = *&self->_anon_268[72];
       v11 = *&self->_anon_268[24];
       v10 = *&self->_anon_268[40];
-      v8[3] = *&self->_anon_268[56];
-      v8[4] = v9;
-      v8[1] = v11;
-      v8[2] = v10;
+      contents[3] = *&self->_anon_268[56];
+      contents[4] = v9;
+      contents[1] = v11;
+      contents[2] = v10;
       v12 = *&self->_anon_268[136];
       v14 = *&self->_anon_268[88];
       v13 = *&self->_anon_268[104];
-      v8[7] = *&self->_anon_268[120];
-      v8[8] = v12;
-      v8[5] = v14;
-      v8[6] = v13;
+      contents[7] = *&self->_anon_268[120];
+      contents[8] = v12;
+      contents[5] = v14;
+      contents[6] = v13;
       memcpy([(MTLBuffer *)self->_circleDataBuffer contents], &self->_anon_268[280], 112 * *&self->_anon_268[264]);
-      v15 = [(MTLBuffer *)self->_singleCircleDataBuffer contents];
+      contents2 = [(MTLBuffer *)self->_singleCircleDataBuffer contents];
       v17 = *&self->_anon_268[168];
       v16 = *&self->_anon_268[184];
-      *v15 = *&self->_anon_268[152];
-      v15[1] = v17;
-      v15[2] = v16;
+      *contents2 = *&self->_anon_268[152];
+      contents2[1] = v17;
+      contents2[2] = v16;
       v18 = *&self->_anon_268[248];
       v20 = *&self->_anon_268[200];
       v19 = *&self->_anon_268[216];
-      v15[5] = *&self->_anon_268[232];
-      v15[6] = v18;
-      v15[3] = v20;
-      v15[4] = v19;
-      v21 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+      contents2[5] = *&self->_anon_268[232];
+      contents2[6] = v18;
+      contents2[3] = v20;
+      contents2[4] = v19;
+      commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
       if (self->_overlayTextureLoader || self->_overlayNormalTextureLoader)
       {
-        v22 = [(PKMetalRenderLoop *)self->_renderLoop device];
-        v23 = [v21 blitCommandEncoder];
+        device = [(PKMetalRenderLoop *)self->_renderLoop device];
+        blitCommandEncoder = [commandBuffer blitCommandEncoder];
         overlayTextureLoader = self->_overlayTextureLoader;
         if (overlayTextureLoader)
         {
@@ -986,8 +986,8 @@ LABEL_2:
           v38[2] = __57__PKCategoryVisualizationCardView_renderLoop_drawAtTime___block_invoke;
           v38[3] = &unk_279A00520;
           v38[4] = self;
-          v39 = v22;
-          v40 = v23;
+          v39 = device;
+          v40 = blitCommandEncoder;
           [(PKTextureLoader *)overlayTextureLoader tiling:1 read:v38];
           v25 = self->_overlayTextureLoader;
           self->_overlayTextureLoader = 0;
@@ -1001,14 +1001,14 @@ LABEL_2:
           v35[2] = __57__PKCategoryVisualizationCardView_renderLoop_drawAtTime___block_invoke_49;
           v35[3] = &unk_279A00520;
           v35[4] = self;
-          v36 = v22;
-          v37 = v23;
+          v36 = device;
+          v37 = blitCommandEncoder;
           [(PKTextureLoader *)overlayNormalTextureLoader tiling:1 read:v35];
           v27 = self->_overlayNormalTextureLoader;
           self->_overlayNormalTextureLoader = 0;
         }
 
-        [v23 endEncoding];
+        [blitCommandEncoder endEncoding];
       }
 
       if (!self->_overlayTexture || !self->_overlayNormalTexture)
@@ -1019,7 +1019,7 @@ LABEL_26:
         goto LABEL_21;
       }
 
-      v28 = [v21 renderCommandEncoderWithDescriptor:self->_renderPassDescriptor];
+      v28 = [commandBuffer renderCommandEncoderWithDescriptor:self->_renderPassDescriptor];
       [v28 setRenderPipelineState:self->_circlePipelineState];
       [v28 setVertexBuffer:self->_vertexCoordsBuffer offset:0 atIndex:0];
       [v28 setVertexBuffer:self->_textureCoordsBuffer offset:0 atIndex:1];
@@ -1041,10 +1041,10 @@ LABEL_26:
 
       blurShader = self->_blurShader;
       texture = self->_texture;
-      v31 = [v5 texture];
-      [(MPSUnaryImageKernel *)blurShader encodeToCommandBuffer:v21 sourceTexture:texture destinationTexture:v31];
+      texture = [currentDrawable texture];
+      [(MPSUnaryImageKernel *)blurShader encodeToCommandBuffer:commandBuffer sourceTexture:texture destinationTexture:texture];
 
-      v32 = [v21 renderCommandEncoderWithDescriptor:self->_secondRenderPassDescriptor];
+      v32 = [commandBuffer renderCommandEncoderWithDescriptor:self->_secondRenderPassDescriptor];
       [v32 setRenderPipelineState:self->_overlayPipelineState];
       [v32 setVertexBuffer:self->_vertexCoordsBuffer offset:0 atIndex:0];
       [v32 setVertexBuffer:self->_textureCoordsBuffer offset:0 atIndex:1];
@@ -1053,8 +1053,8 @@ LABEL_26:
       [v32 setFragmentTexture:self->_overlayNormalTexture atIndex:1];
       [v32 drawPrimitives:4 vertexStart:0 vertexCount:4];
       [v32 endEncoding];
-      [v21 presentDrawable:v5];
-      [v21 commit];
+      [commandBuffer presentDrawable:currentDrawable];
+      [commandBuffer commit];
       if (self->_needsDraw)
       {
         self->_needsDraw = 0;
@@ -1090,7 +1090,7 @@ LABEL_25:
 
   else
   {
-    v5 = 0;
+    currentDrawable = 0;
   }
 
 LABEL_21:
@@ -1171,10 +1171,10 @@ void __41__PKCategoryVisualizationCardView__empty__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)motionManager:(id)a3 didReceiveMotion:(id)a4
+- (void)motionManager:(id)manager didReceiveMotion:(id)motion
 {
-  v5 = [a4 attitude];
-  [v5 quaternion];
+  attitude = [motion attitude];
+  [attitude quaternion];
   v7.f64[1] = v6;
   v9.f64[1] = v8;
   v40 = vcvt_hight_f32_f64(vcvt_f32_f64(v9), v7);
@@ -1223,56 +1223,56 @@ void __41__PKCategoryVisualizationCardView__empty__block_invoke_2(uint64_t a1)
   *&p_state[6].startTime = v36;
 }
 
-- (void)_createMetalResourcesWithTextures:(uint64_t)a1
+- (void)_createMetalResourcesWithTextures:(uint64_t)textures
 {
   v3 = a2;
-  if (a1 && (*(a1 + 584) & 1) == 0)
+  if (textures && (*(textures + 584) & 1) == 0)
   {
     v4 = OUTLINED_FUNCTION_1_0();
     if (v4)
     {
-      v5 = [v4 device];
+      device = [v4 device];
     }
 
     else
     {
-      v5 = MTLCreateSystemDefaultDevice();
-      if (!v5)
+      device = MTLCreateSystemDefaultDevice();
+      if (!device)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"could not create metal device"];
       }
 
-      OUTLINED_FUNCTION_0_2([[PKMetalRenderLoop alloc] initWithPixelFormat:80 forDevice:v5], 408);
-      [*(a1 + 408) setColorSpace:PKColorSpaceStandardRGB()];
+      OUTLINED_FUNCTION_0_2([[PKMetalRenderLoop alloc] initWithPixelFormat:80 forDevice:device], 408);
+      [*(textures + 408) setColorSpace:PKColorSpaceStandardRGB()];
       [OUTLINED_FUNCTION_1_0() setFramebufferOnly:0];
       v6 = OUTLINED_FUNCTION_1_0();
       LODWORD(v7) = 30.0;
       LODWORD(v8) = 30.0;
       LODWORD(v9) = 30.0;
       [v6 setPreferredFrameRateRange:{v7, v8, v9}];
-      [OUTLINED_FUNCTION_1_0() setDelegate:a1];
-      [OUTLINED_FUNCTION_1_0() setPaused:*(a1 + 585)];
-      OUTLINED_FUNCTION_0_2([v5 newCommandQueue], 448);
-      v10 = [OUTLINED_FUNCTION_1_0() layer];
-      [v10 setOpaque:0];
-      v11 = [a1 layer];
-      [v11 addSublayer:v10];
+      [OUTLINED_FUNCTION_1_0() setDelegate:textures];
+      [OUTLINED_FUNCTION_1_0() setPaused:*(textures + 585)];
+      OUTLINED_FUNCTION_0_2([device newCommandQueue], 448);
+      layer = [OUTLINED_FUNCTION_1_0() layer];
+      [layer setOpaque:0];
+      layer2 = [textures layer];
+      [layer2 addSublayer:layer];
 
-      [a1 setNeedsLayout];
+      [textures setNeedsLayout];
     }
 
-    OUTLINED_FUNCTION_0_2([v5 newBufferWithBytes:&textureCoords length:32 options:0], 528);
-    OUTLINED_FUNCTION_0_2([v5 newBufferWithBytes:&vertexCoords length:64 options:0], 520);
-    OUTLINED_FUNCTION_0_2([v5 newBufferWithLength:144 options:0], 536);
-    OUTLINED_FUNCTION_0_2([v5 newBufferWithLength:9856 options:0], 544);
-    OUTLINED_FUNCTION_0_2([v5 newBufferWithLength:112 options:0], 552);
+    OUTLINED_FUNCTION_0_2([device newBufferWithBytes:&textureCoords length:32 options:0], 528);
+    OUTLINED_FUNCTION_0_2([device newBufferWithBytes:&vertexCoords length:64 options:0], 520);
+    OUTLINED_FUNCTION_0_2([device newBufferWithLength:144 options:0], 536);
+    OUTLINED_FUNCTION_0_2([device newBufferWithLength:9856 options:0], 544);
+    OUTLINED_FUNCTION_0_2([device newBufferWithLength:112 options:0], 552);
     v12 = PKPassKitUIFoundationBundle();
-    v13 = [v5 newDefaultLibraryWithBundle:v12 error:0];
+    v13 = [device newDefaultLibraryWithBundle:v12 error:0];
     v14 = [v12 pathForResource:@"CategoryVisualizationCardView" ofType:@"pipelinelib"];
     v15 = 0;
     if (v14)
     {
-      v15 = [v5 newPipelineLibraryWithFilePath:v14 error:0];
+      v15 = [device newPipelineLibraryWithFilePath:v14 error:0];
     }
 
     v16 = objc_alloc_init(MEMORY[0x277CD6F78]);
@@ -1283,7 +1283,7 @@ void __41__PKCategoryVisualizationCardView__empty__block_invoke_2(uint64_t a1)
     [v16 colorAttachments];
     v18 = v31 = v14;
     v19 = [v18 objectAtIndexedSubscript:0];
-    [v19 setPixelFormat:objc_msgSend(*(a1 + 408), "pixelFormat")];
+    [v19 setPixelFormat:objc_msgSend(*(textures + 408), "pixelFormat")];
     [v19 setBlendingEnabled:1];
     [v19 setRgbBlendOperation:0];
     [v19 setSourceRGBBlendFactor:4];
@@ -1299,8 +1299,8 @@ void __41__PKCategoryVisualizationCardView__empty__block_invoke_2(uint64_t a1)
     v33 = v16;
     v34 = v13;
     v35 = v17;
-    v36 = v5;
-    v20 = v5;
+    v36 = device;
+    v20 = device;
     v30 = v17;
     v21 = v13;
     v22 = v16;
@@ -1312,24 +1312,24 @@ void __41__PKCategoryVisualizationCardView__empty__block_invoke_2(uint64_t a1)
     v26 = (v23)[2](v23, @"overlayVertex", @"overlayFragment");
     OUTLINED_FUNCTION_0_2(v26, 496);
     v27 = [[PKTextureLoadDescriptor alloc] initForDevice:v20];
-    v28 = [v3 overlayMaterialPropertyImage];
-    OUTLINED_FUNCTION_0_2([v27 createLoaderForCGImage:{objc_msgSend(v28, "imageRef")}], 456);
+    overlayMaterialPropertyImage = [v3 overlayMaterialPropertyImage];
+    OUTLINED_FUNCTION_0_2([v27 createLoaderForCGImage:{objc_msgSend(overlayMaterialPropertyImage, "imageRef")}], 456);
 
-    v29 = [v3 normalMaterialPropertyImage];
-    OUTLINED_FUNCTION_0_2([v27 createLoaderForCGImage:{objc_msgSend(v29, "imageRef")}], 464);
+    normalMaterialPropertyImage = [v3 normalMaterialPropertyImage];
+    OUTLINED_FUNCTION_0_2([v27 createLoaderForCGImage:{objc_msgSend(normalMaterialPropertyImage, "imageRef")}], 464);
 
-    [(PKCategoryVisualizationCardView *)a1 _updateTextureAndBlurShader];
-    *(a1 + 587) = 1;
-    [(PKCategoryVisualizationCardView *)a1 _updatePausedState];
+    [(PKCategoryVisualizationCardView *)textures _updateTextureAndBlurShader];
+    *(textures + 587) = 1;
+    [(PKCategoryVisualizationCardView *)textures _updatePausedState];
   }
 }
 
 - (void)_stopMotionUpdates
 {
-  if (a1 && (*(a1 + 584) & 1) == 0)
+  if (self && (*(self + 584) & 1) == 0)
   {
     v2 = +[PKMotionManager sharedManager];
-    [v2 unregisterClient:a1];
+    [v2 unregisterClient:self];
   }
 }
 
@@ -1375,14 +1375,14 @@ void __41__PKCategoryVisualizationCardView__empty__block_invoke_2(uint64_t a1)
 
 - (void)_startMotionUpdates
 {
-  if (a1 && (*(a1 + 584) & 1) == 0)
+  if (self && (*(self + 584) & 1) == 0)
   {
     v2 = +[PKMotionManager sharedManager];
-    [v2 registerClient:a1];
+    [v2 registerClient:self];
   }
 }
 
-- (void)renderLoop:(id)a3 drawableSizeDidChange:(CGSize)a4
+- (void)renderLoop:(id)loop drawableSizeDidChange:(CGSize)change
 {
   [(PKCategoryVisualizationCardView *)self _updateTextureAndBlurShader];
   self->_needsDraw = 1;
@@ -1390,42 +1390,42 @@ void __41__PKCategoryVisualizationCardView__empty__block_invoke_2(uint64_t a1)
   [(PKCategoryVisualizationCardView *)self _updatePausedState];
 }
 
-- (unint64_t)_updateRenderPassDescriptorWithDrawable:(void *)a1
+- (unint64_t)_updateRenderPassDescriptorWithDrawable:(void *)drawable
 {
-  v2 = a1;
-  if (a1)
+  drawableCopy = drawable;
+  if (drawable)
   {
-    v3 = [a2 texture];
-    v4 = [v3 width];
-    v5 = [v3 height];
-    if (*(v2 + 432) != v4 || *(v2 + 440) != v5)
+    texture = [a2 texture];
+    width = [texture width];
+    height = [texture height];
+    if (*(drawableCopy + 432) != width || *(drawableCopy + 440) != height)
     {
-      *(v2 + 432) = v4;
-      *(v2 + 440) = v5;
-      v6 = *(v2 + 416);
-      *(v2 + 416) = 0;
+      *(drawableCopy + 432) = width;
+      *(drawableCopy + 440) = height;
+      v6 = *(drawableCopy + 416);
+      *(drawableCopy + 416) = 0;
 
-      v7 = *(v2 + 424);
-      *(v2 + 424) = 0;
+      v7 = *(drawableCopy + 424);
+      *(drawableCopy + 424) = 0;
 
-      v4 = *(v2 + 432);
+      width = *(drawableCopy + 432);
     }
 
-    if (!v4 || !*(v2 + 440))
+    if (!width || !*(drawableCopy + 440))
     {
       goto LABEL_17;
     }
 
-    v8 = *(v2 + 424);
+    v8 = *(drawableCopy + 424);
     v9 = v8;
     if (!v8)
     {
       OUTLINED_FUNCTION_0_2(objc_alloc_init(MEMORY[0x277CD6F50]), 424);
-      v9 = *(v2 + 424);
+      v9 = *(drawableCopy + 424);
     }
 
-    v10 = [v9 colorAttachments];
-    v11 = [v10 objectAtIndexedSubscript:0];
+    colorAttachments = [v9 colorAttachments];
+    v11 = [colorAttachments objectAtIndexedSubscript:0];
     v12 = v11;
     if (!v8)
     {
@@ -1433,21 +1433,21 @@ void __41__PKCategoryVisualizationCardView__empty__block_invoke_2(uint64_t a1)
       [v12 setStoreAction:1];
     }
 
-    [v12 setTexture:v3];
-    v13 = *(v2 + 424);
+    [v12 setTexture:texture];
+    v13 = *(drawableCopy + 424);
 
     if (v13)
     {
-      v14 = *(v2 + 416);
+      v14 = *(drawableCopy + 416);
       v15 = v14;
       if (!v14)
       {
         OUTLINED_FUNCTION_0_2(objc_alloc_init(MEMORY[0x277CD6F50]), 416);
-        v15 = *(v2 + 416);
+        v15 = *(drawableCopy + 416);
       }
 
-      v16 = [v15 colorAttachments];
-      v17 = [v16 objectAtIndexedSubscript:0];
+      colorAttachments2 = [v15 colorAttachments];
+      v17 = [colorAttachments2 objectAtIndexedSubscript:0];
       v18 = v17;
       if (!v14)
       {
@@ -1456,18 +1456,18 @@ void __41__PKCategoryVisualizationCardView__empty__block_invoke_2(uint64_t a1)
         [v18 setStoreAction:1];
       }
 
-      [v18 setTexture:*(v2 + 472)];
-      v2 = *(v2 + 416) != 0;
+      [v18 setTexture:*(drawableCopy + 472)];
+      drawableCopy = *(drawableCopy + 416) != 0;
     }
 
     else
     {
 LABEL_17:
-      v2 = 0;
+      drawableCopy = 0;
     }
   }
 
-  return v2;
+  return drawableCopy;
 }
 
 uint64_t __41__PKCategoryVisualizationCardView__empty__block_invoke_cold_1(uint64_t a1, uint64_t a2)

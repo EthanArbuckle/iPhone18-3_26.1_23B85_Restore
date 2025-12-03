@@ -1,37 +1,37 @@
 @interface SFPageZoomStepperController
-- (SFPageZoomStepperController)initWithDocument:(id)a3 preferenceManager:(id)a4;
-- (id)longestTextForButton:(int64_t)a3;
-- (void)_pageZoomChanged:(id)a3;
-- (void)_updateButtonsEnabledOnMainQueueWithZoomFactor:(double)a3;
-- (void)_updateButtonsEnabledWithZoomFactor:(double)a3;
+- (SFPageZoomStepperController)initWithDocument:(id)document preferenceManager:(id)manager;
+- (id)longestTextForButton:(int64_t)button;
+- (void)_pageZoomChanged:(id)changed;
+- (void)_updateButtonsEnabledOnMainQueueWithZoomFactor:(double)factor;
+- (void)_updateButtonsEnabledWithZoomFactor:(double)factor;
 - (void)dealloc;
-- (void)decrementValue:(id)a3;
-- (void)incrementValue:(id)a3;
-- (void)prepareStepper:(id)a3;
-- (void)resetValue:(id)a3;
+- (void)decrementValue:(id)value;
+- (void)incrementValue:(id)value;
+- (void)prepareStepper:(id)stepper;
+- (void)resetValue:(id)value;
 @end
 
 @implementation SFPageZoomStepperController
 
-- (SFPageZoomStepperController)initWithDocument:(id)a3 preferenceManager:(id)a4
+- (SFPageZoomStepperController)initWithDocument:(id)document preferenceManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  documentCopy = document;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = SFPageZoomStepperController;
   v8 = [(SFPageZoomStepperController *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_tab, v6);
-    objc_storeStrong(&v9->_preferenceManager, a4);
+    objc_storeWeak(&v8->_tab, documentCopy);
+    objc_storeStrong(&v9->_preferenceManager, manager);
     v10 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     percentFormatter = v9->_percentFormatter;
     v9->_percentFormatter = v10;
 
     [(NSNumberFormatter *)v9->_percentFormatter setNumberStyle:3];
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v9 selector:sel__pageZoomChanged_ name:*MEMORY[0x1E69C9430] object:v7];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__pageZoomChanged_ name:*MEMORY[0x1E69C9430] object:managerCopy];
 
     v13 = v9;
   }
@@ -41,49 +41,49 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SFPageZoomStepperController;
   [(SFPageZoomStepperController *)&v4 dealloc];
 }
 
-- (void)prepareStepper:(id)a3
+- (void)prepareStepper:(id)stepper
 {
-  v4 = a3;
-  objc_storeWeak(&self->_stepper, v4);
+  stepperCopy = stepper;
+  objc_storeWeak(&self->_stepper, stepperCopy);
   v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"textformat.size.smaller"];
-  [v4 setImage:v5 forButton:1];
+  [stepperCopy setImage:v5 forButton:1];
 
   v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"textformat.size.larger"];
-  [v4 setImage:v6 forButton:0];
+  [stepperCopy setImage:v6 forButton:0];
 
   v7 = [(NSNumberFormatter *)self->_percentFormatter stringFromNumber:&unk_1F5022BA0];
-  [v4 setText:v7 forButton:2];
+  [stepperCopy setText:v7 forButton:2];
 
   preferenceManager = self->_preferenceManager;
   WeakRetained = objc_loadWeakRetained(&self->_tab);
-  v10 = [WeakRetained URLForPerSitePreferences];
+  uRLForPerSitePreferences = [WeakRetained URLForPerSitePreferences];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __46__SFPageZoomStepperController_prepareStepper___block_invoke;
   v11[3] = &unk_1E848F5C0;
   v11[4] = self;
-  [(WBSPageZoomPreferenceManager *)preferenceManager getPageZoomFactorForURL:v10 usingBlock:v11];
+  [(WBSPageZoomPreferenceManager *)preferenceManager getPageZoomFactorForURL:uRLForPerSitePreferences usingBlock:v11];
 }
 
-- (void)incrementValue:(id)a3
+- (void)incrementValue:(id)value
 {
   preferenceManager = self->_preferenceManager;
   WeakRetained = objc_loadWeakRetained(&self->_tab);
-  v6 = [WeakRetained URLForPerSitePreferences];
+  uRLForPerSitePreferences = [WeakRetained URLForPerSitePreferences];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__SFPageZoomStepperController_incrementValue___block_invoke;
   v7[3] = &unk_1E848F5E8;
   v7[4] = self;
-  [(WBSPageZoomPreferenceManager *)preferenceManager zoomInOnURL:v6 completionHandler:v7];
+  [(WBSPageZoomPreferenceManager *)preferenceManager zoomInOnURL:uRLForPerSitePreferences completionHandler:v7];
 }
 
 void __46__SFPageZoomStepperController_incrementValue___block_invoke(uint64_t a1, int a2)
@@ -96,17 +96,17 @@ void __46__SFPageZoomStepperController_incrementValue___block_invoke(uint64_t a1
   }
 }
 
-- (void)decrementValue:(id)a3
+- (void)decrementValue:(id)value
 {
   preferenceManager = self->_preferenceManager;
   WeakRetained = objc_loadWeakRetained(&self->_tab);
-  v6 = [WeakRetained URLForPerSitePreferences];
+  uRLForPerSitePreferences = [WeakRetained URLForPerSitePreferences];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__SFPageZoomStepperController_decrementValue___block_invoke;
   v7[3] = &unk_1E848F5E8;
   v7[4] = self;
-  [(WBSPageZoomPreferenceManager *)preferenceManager zoomOutOnURL:v6 completionHandler:v7];
+  [(WBSPageZoomPreferenceManager *)preferenceManager zoomOutOnURL:uRLForPerSitePreferences completionHandler:v7];
 }
 
 void __46__SFPageZoomStepperController_decrementValue___block_invoke(uint64_t a1, int a2)
@@ -119,17 +119,17 @@ void __46__SFPageZoomStepperController_decrementValue___block_invoke(uint64_t a1
   }
 }
 
-- (void)resetValue:(id)a3
+- (void)resetValue:(id)value
 {
   preferenceManager = self->_preferenceManager;
   WeakRetained = objc_loadWeakRetained(&self->_tab);
-  v6 = [WeakRetained URLForPerSitePreferences];
+  uRLForPerSitePreferences = [WeakRetained URLForPerSitePreferences];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__SFPageZoomStepperController_resetValue___block_invoke;
   v7[3] = &unk_1E848F5E8;
   v7[4] = self;
-  [(WBSPageZoomPreferenceManager *)preferenceManager resetZoomLevelOnURL:v6 completionHandler:v7];
+  [(WBSPageZoomPreferenceManager *)preferenceManager resetZoomLevelOnURL:uRLForPerSitePreferences completionHandler:v7];
 }
 
 void __42__SFPageZoomStepperController_resetValue___block_invoke(uint64_t a1, char a2, double a3)
@@ -159,14 +159,14 @@ void __42__SFPageZoomStepperController_resetValue___block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)longestTextForButton:(int64_t)a3
+- (id)longestTextForButton:(int64_t)button
 {
-  if (a3 == 2)
+  if (button == 2)
   {
     percentFormatter = self->_percentFormatter;
-    v4 = [MEMORY[0x1E69C8F98] pageZoomFactors];
-    v5 = [v4 lastObject];
-    v6 = [(NSNumberFormatter *)percentFormatter stringFromNumber:v5];
+    pageZoomFactors = [MEMORY[0x1E69C8F98] pageZoomFactors];
+    lastObject = [pageZoomFactors lastObject];
+    v6 = [(NSNumberFormatter *)percentFormatter stringFromNumber:lastObject];
   }
 
   else
@@ -177,37 +177,37 @@ void __42__SFPageZoomStepperController_resetValue___block_invoke_2(uint64_t a1)
   return v6;
 }
 
-- (void)_updateButtonsEnabledWithZoomFactor:(double)a3
+- (void)_updateButtonsEnabledWithZoomFactor:(double)factor
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __67__SFPageZoomStepperController__updateButtonsEnabledWithZoomFactor___block_invoke;
   v3[3] = &unk_1E848F638;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = factor;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
-- (void)_updateButtonsEnabledOnMainQueueWithZoomFactor:(double)a3
+- (void)_updateButtonsEnabledOnMainQueueWithZoomFactor:(double)factor
 {
   WeakRetained = objc_loadWeakRetained(&self->_stepper);
   percentFormatter = self->_percentFormatter;
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:factor];
   v8 = [(NSNumberFormatter *)percentFormatter stringFromNumber:v7];
 
   preferenceManager = self->_preferenceManager;
   v10 = objc_loadWeakRetained(&self->_tab);
-  v11 = [v10 URLForPerSitePreferences];
+  uRLForPerSitePreferences = [v10 URLForPerSitePreferences];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __78__SFPageZoomStepperController__updateButtonsEnabledOnMainQueueWithZoomFactor___block_invoke;
   v14[3] = &unk_1E848F688;
   v15 = WeakRetained;
-  v16 = self;
+  selfCopy = self;
   v17 = v8;
   v12 = v8;
   v13 = WeakRetained;
-  [(WBSPageZoomPreferenceManager *)preferenceManager getAvailableActionsForURL:v11 usingBlock:v14];
+  [(WBSPageZoomPreferenceManager *)preferenceManager getAvailableActionsForURL:uRLForPerSitePreferences usingBlock:v14];
 
   [v13 setText:v12 forButton:2];
 }
@@ -244,18 +244,18 @@ uint64_t __78__SFPageZoomStepperController__updateButtonsEnabledOnMainQueueWithZ
   return result;
 }
 
-- (void)_pageZoomChanged:(id)a3
+- (void)_pageZoomChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C9208]];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69C9208]];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__SFPageZoomStepperController__pageZoomChanged___block_invoke;
   block[3] = &unk_1E848F6B0;
   v9 = v5;
-  v10 = self;
-  v11 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v11 = userInfo;
+  v6 = userInfo;
   v7 = v5;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }

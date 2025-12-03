@@ -1,24 +1,24 @@
 @interface ATLocationRetriever
 - (_TtC15ArchetypeEngine19ATLocationRetriever)init;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 @end
 
 @implementation ATLocationRetriever
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC15ArchetypeEngine19ATLocationRetriever_semaphore);
-  v5 = self;
+  selfCopy = self;
   sub_240FD460C();
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_240FC0484(v8);
+  managerCopy = manager;
+  errorCopy = error;
+  selfCopy = self;
+  sub_240FC0484(errorCopy);
 }
 
 - (_TtC15ArchetypeEngine19ATLocationRetriever)init

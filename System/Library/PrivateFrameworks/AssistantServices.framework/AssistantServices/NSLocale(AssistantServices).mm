@@ -8,7 +8,7 @@
 
 - (id)af_aceTemperatureUnit
 {
-  v2 = [a1 objectForKey:*MEMORY[0x1E695D9F0]];
+  v2 = [self objectForKey:*MEMORY[0x1E695D9F0]];
   v3 = [v2 isEqualToString:*MEMORY[0x1E695D9F8]];
   v4 = MEMORY[0x1E69C7C28];
   v5 = MEMORY[0x1E69C7C28];
@@ -18,10 +18,10 @@
     {
 LABEL_5:
       v7 = MEMORY[0x1E69C7C30];
-      v8 = [a1 objectForKey:*MEMORY[0x1E695DA08]];
-      v9 = [v8 BOOLValue];
+      v8 = [self objectForKey:*MEMORY[0x1E695DA08]];
+      bOOLValue = [v8 BOOLValue];
 
-      if (v9)
+      if (bOOLValue)
       {
         v10 = v4;
       }
@@ -51,11 +51,11 @@ LABEL_9:
 
 + (void)af_setAceTemperatureUnit:()AssistantServices
 {
-  v2 = [a1 af_temperatureUnitForAceTemperatureUnit:?];
+  v2 = [self af_temperatureUnitForAceTemperatureUnit:?];
   if (v2)
   {
     v3 = v2;
-    [a1 _setPreferredTemperatureUnit:v2];
+    [self _setPreferredTemperatureUnit:v2];
     v2 = v3;
   }
 }

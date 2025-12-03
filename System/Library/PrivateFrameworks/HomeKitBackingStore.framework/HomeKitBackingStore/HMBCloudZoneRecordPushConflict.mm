@@ -1,7 +1,7 @@
 @interface HMBCloudZoneRecordPushConflict
-- (BOOL)isEqual:(id)a3;
-- (HMBCloudZoneRecordPushConflict)initWithRecordID:(id)a3 clientRecord:(id)a4 serverRecord:(id)a5 ancestorRecord:(id)a6;
-- (HMBCloudZoneRecordPushConflict)initWithRecordID:(id)a3 error:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMBCloudZoneRecordPushConflict)initWithRecordID:(id)d clientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord;
+- (HMBCloudZoneRecordPushConflict)initWithRecordID:(id)d error:(id)error;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
 @end
@@ -12,24 +12,24 @@
 {
   v22[4] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v21 = [(HMBCloudZoneRecordPushConflict *)self recordID];
-  v20 = [v21 hmbDescription];
-  v19 = [v3 initWithName:@"Record ID" value:v20];
+  recordID = [(HMBCloudZoneRecordPushConflict *)self recordID];
+  hmbDescription = [recordID hmbDescription];
+  v19 = [v3 initWithName:@"Record ID" value:hmbDescription];
   v22[0] = v19;
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMBCloudZoneRecordPushConflict *)self clientRecord];
-  v6 = [v5 hmbDescription];
-  v7 = [v4 initWithName:@"Client Record" value:v6];
+  clientRecord = [(HMBCloudZoneRecordPushConflict *)self clientRecord];
+  hmbDescription2 = [clientRecord hmbDescription];
+  v7 = [v4 initWithName:@"Client Record" value:hmbDescription2];
   v22[1] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v9 = [(HMBCloudZoneRecordPushConflict *)self serverRecord];
-  v10 = [v9 hmbDescription];
-  v11 = [v8 initWithName:@"Server Record" value:v10];
+  serverRecord = [(HMBCloudZoneRecordPushConflict *)self serverRecord];
+  hmbDescription3 = [serverRecord hmbDescription];
+  v11 = [v8 initWithName:@"Server Record" value:hmbDescription3];
   v22[2] = v11;
   v12 = objc_alloc(MEMORY[0x277D0F778]);
-  v13 = [(HMBCloudZoneRecordPushConflict *)self ancestorRecord];
-  v14 = [v13 hmbDescription];
-  v15 = [v12 initWithName:@"Ancestor Record" value:v14];
+  ancestorRecord = [(HMBCloudZoneRecordPushConflict *)self ancestorRecord];
+  hmbDescription4 = [ancestorRecord hmbDescription];
+  v15 = [v12 initWithName:@"Ancestor Record" value:hmbDescription4];
   v22[3] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
 
@@ -40,19 +40,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMBCloudZoneRecordPushConflict *)self recordID];
-  v3 = [v2 hash];
+  recordID = [(HMBCloudZoneRecordPushConflict *)self recordID];
+  v3 = [recordID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -63,15 +63,15 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMBCloudZoneRecordPushConflict *)self recordID];
-    v8 = [v6 recordID];
-    if (![v7 isEqual:v8])
+    recordID = [(HMBCloudZoneRecordPushConflict *)self recordID];
+    recordID2 = [v6 recordID];
+    if (![recordID isEqual:recordID2])
     {
       goto LABEL_9;
     }
 
-    v9 = [(HMBCloudZoneRecordPushConflict *)self clientRecord];
-    v10 = [v6 clientRecord];
+    clientRecord = [(HMBCloudZoneRecordPushConflict *)self clientRecord];
+    clientRecord2 = [v6 clientRecord];
     v11 = HMFEqualObjects();
 
     if (!v11)
@@ -79,14 +79,14 @@
       goto LABEL_9;
     }
 
-    v12 = [(HMBCloudZoneRecordPushConflict *)self serverRecord];
-    v13 = [v6 serverRecord];
+    serverRecord = [(HMBCloudZoneRecordPushConflict *)self serverRecord];
+    serverRecord2 = [v6 serverRecord];
     v14 = HMFEqualObjects();
 
     if (v14)
     {
-      v15 = [(HMBCloudZoneRecordPushConflict *)self ancestorRecord];
-      v16 = [v6 ancestorRecord];
+      ancestorRecord = [(HMBCloudZoneRecordPushConflict *)self ancestorRecord];
+      ancestorRecord2 = [v6 ancestorRecord];
       v17 = HMFEqualObjects();
     }
 
@@ -105,25 +105,25 @@ LABEL_9:
   return v17;
 }
 
-- (HMBCloudZoneRecordPushConflict)initWithRecordID:(id)a3 clientRecord:(id)a4 serverRecord:(id)a5 ancestorRecord:(id)a6
+- (HMBCloudZoneRecordPushConflict)initWithRecordID:(id)d clientRecord:(id)record serverRecord:(id)serverRecord ancestorRecord:(id)ancestorRecord
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  dCopy = d;
+  recordCopy = record;
+  serverRecordCopy = serverRecord;
+  ancestorRecordCopy = ancestorRecord;
+  if (dCopy)
   {
-    v15 = v14;
+    v15 = ancestorRecordCopy;
     v23.receiver = self;
     v23.super_class = HMBCloudZoneRecordPushConflict;
     v16 = [(HMBCloudZoneRecordPushConflict *)&v23 init];
     v17 = v16;
     if (v16)
     {
-      objc_storeStrong(&v16->_recordID, a3);
-      objc_storeStrong(&v17->_clientRecord, a4);
-      objc_storeStrong(&v17->_serverRecord, a5);
-      objc_storeStrong(&v17->_ancestorRecord, a6);
+      objc_storeStrong(&v16->_recordID, d);
+      objc_storeStrong(&v17->_clientRecord, record);
+      objc_storeStrong(&v17->_serverRecord, serverRecord);
+      objc_storeStrong(&v17->_ancestorRecord, ancestorRecord);
     }
 
     return v17;
@@ -136,32 +136,32 @@ LABEL_9:
   }
 }
 
-- (HMBCloudZoneRecordPushConflict)initWithRecordID:(id)a3 error:(id)a4
+- (HMBCloudZoneRecordPushConflict)initWithRecordID:(id)d error:(id)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![v7 hmbIsCloudKitError])
+  dCopy = d;
+  errorCopy = error;
+  if (![errorCopy hmbIsCloudKitError])
   {
     goto LABEL_18;
   }
 
-  if ([v7 code] == 11)
+  if ([errorCopy code] == 11)
   {
-    self = [(HMBCloudZoneRecordPushConflict *)self initWithRecordID:v6 clientRecord:0 serverRecord:0 ancestorRecord:0];
-    v8 = self;
+    self = [(HMBCloudZoneRecordPushConflict *)self initWithRecordID:dCopy clientRecord:0 serverRecord:0 ancestorRecord:0];
+    selfCopy2 = self;
     goto LABEL_19;
   }
 
-  if ([v7 code] != 14)
+  if ([errorCopy code] != 14)
   {
 LABEL_18:
-    v8 = 0;
+    selfCopy2 = 0;
     goto LABEL_19;
   }
 
-  v9 = [v7 userInfo];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CBBFE0]];
+  userInfo = [errorCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFE0]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -178,8 +178,8 @@ LABEL_18:
 
   if (v12)
   {
-    v13 = [v7 userInfo];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CBBFE8]];
+    userInfo2 = [errorCopy userInfo];
+    v14 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CBBFE8]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -196,8 +196,8 @@ LABEL_18:
 
     if (v16)
     {
-      v17 = [v7 userInfo];
-      v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277CBBFD8]];
+      userInfo3 = [errorCopy userInfo];
+      v18 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x277CBBFD8]];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -214,8 +214,8 @@ LABEL_18:
 
       if (v20)
       {
-        self = [(HMBCloudZoneRecordPushConflict *)self initWithRecordID:v6 clientRecord:v12 serverRecord:v16 ancestorRecord:v20];
-        v8 = self;
+        self = [(HMBCloudZoneRecordPushConflict *)self initWithRecordID:dCopy clientRecord:v12 serverRecord:v16 ancestorRecord:v20];
+        selfCopy2 = self;
       }
 
       else
@@ -226,16 +226,16 @@ LABEL_18:
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
           v33 = HMFGetLogIdentifier();
-          v34 = [v7 userInfo];
+          userInfo4 = [errorCopy userInfo];
           v35 = 138543618;
           v36 = v33;
           v37 = 2112;
-          v38 = v34;
+          v38 = userInfo4;
           _os_log_impl(&dword_22AD27000, v32, OS_LOG_TYPE_ERROR, "%{public}@Server record changed error user info does not have ancestor record: %@", &v35, 0x16u);
         }
 
         objc_autoreleasePoolPop(v31);
-        v8 = 0;
+        selfCopy2 = 0;
       }
     }
 
@@ -247,16 +247,16 @@ LABEL_18:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         v29 = HMFGetLogIdentifier();
-        v30 = [v7 userInfo];
+        userInfo5 = [errorCopy userInfo];
         v35 = 138543618;
         v36 = v29;
         v37 = 2112;
-        v38 = v30;
+        v38 = userInfo5;
         _os_log_impl(&dword_22AD27000, v28, OS_LOG_TYPE_ERROR, "%{public}@Server record changed error user info does not have server record: %@", &v35, 0x16u);
       }
 
       objc_autoreleasePoolPop(v27);
-      v8 = 0;
+      selfCopy2 = 0;
     }
   }
 
@@ -268,21 +268,21 @@ LABEL_18:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v7 userInfo];
+      userInfo6 = [errorCopy userInfo];
       v35 = 138543618;
       v36 = v25;
       v37 = 2112;
-      v38 = v26;
+      v38 = userInfo6;
       _os_log_impl(&dword_22AD27000, v24, OS_LOG_TYPE_ERROR, "%{public}@Server record changed error user info does not have client record: %@", &v35, 0x16u);
     }
 
     objc_autoreleasePoolPop(v23);
-    v8 = 0;
+    selfCopy2 = 0;
   }
 
 LABEL_19:
   v21 = *MEMORY[0x277D85DE8];
-  return v8;
+  return selfCopy2;
 }
 
 @end

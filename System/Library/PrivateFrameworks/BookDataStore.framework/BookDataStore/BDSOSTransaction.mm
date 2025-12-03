@@ -1,5 +1,5 @@
 @interface BDSOSTransaction
-- (BDSOSTransaction)initWithTransactionName:(const char *)a3;
+- (BDSOSTransaction)initWithTransactionName:(const char *)name;
 - (BDSOSTransactionDelegate)delegate;
 - (void)dealloc;
 - (void)endTransaction;
@@ -8,7 +8,7 @@
 
 @implementation BDSOSTransaction
 
-- (BDSOSTransaction)initWithTransactionName:(const char *)a3
+- (BDSOSTransaction)initWithTransactionName:(const char *)name
 {
   v15 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -24,7 +24,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446466;
-      v12 = a3;
+      nameCopy = name;
       v13 = 2048;
       v14 = v4;
       _os_log_impl(&dword_1E45E0000, v7, OS_LOG_TYPE_DEFAULT, "[Transaction]: Created transaction %{public}s(%p)", buf, 0x16u);
@@ -45,9 +45,9 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 136446466;
-      v9 = v3;
+      selfCopy2 = v3;
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1E45E0000, v4, OS_LOG_TYPE_DEFAULT, "[Transaction]: Transaction needs more time %{public}s(%p)", &v8, 0x16u);
     }
 
@@ -65,7 +65,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1E45E0000, v6, OS_LOG_TYPE_DEFAULT, "[Transaction]: transactionNeedsMoreTime was called but transaction was already nil.(%p)", &v8, 0xCu);
     }
   }
@@ -83,18 +83,18 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 136446466;
-      v11 = v3;
+      selfCopy2 = v3;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1E45E0000, v4, OS_LOG_TYPE_DEFAULT, "[Transaction]: Ending transaction %{public}s(%p)", &v10, 0x16u);
     }
 
-    v5 = [(BDSOSTransaction *)self delegate];
+    delegate = [(BDSOSTransaction *)self delegate];
 
-    if (v5)
+    if (delegate)
     {
-      v6 = [(BDSOSTransaction *)self delegate];
-      [v6 transactionWillEndWithName:v3];
+      delegate2 = [(BDSOSTransaction *)self delegate];
+      [delegate2 transactionWillEndWithName:v3];
     }
 
     if (v3)
@@ -109,7 +109,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134217984;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1E45E0000, v7, OS_LOG_TYPE_DEFAULT, "[Transaction]: EndTransaction was called but transaction was already nil.(%p)", &v10, 0xCu);
     }
   }
@@ -132,16 +132,16 @@
       *buf = 136446466;
       v10 = v3;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1E45E0000, v4, OS_LOG_TYPE_DEFAULT, "[Transaction]: Ending transaction %{public}s(%p)", buf, 0x16u);
     }
 
-    v5 = [(BDSOSTransaction *)self delegate];
+    delegate = [(BDSOSTransaction *)self delegate];
 
-    if (v5)
+    if (delegate)
     {
-      v6 = [(BDSOSTransaction *)self delegate];
-      [v6 transactionWillEndWithName:v3];
+      delegate2 = [(BDSOSTransaction *)self delegate];
+      [delegate2 transactionWillEndWithName:v3];
     }
 
     if (v3)

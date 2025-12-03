@@ -1,13 +1,13 @@
 @interface WhatDidTheySayIntent
-- (WhatDidTheySayIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (WhatDidTheySayIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (WhatDidTheySayIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (WhatDidTheySayIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation WhatDidTheySayIntent
 
-- (WhatDidTheySayIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (WhatDidTheySayIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_268B37BF4();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return WhatDidTheySayIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return WhatDidTheySayIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (WhatDidTheySayIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (WhatDidTheySayIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   sub_268B37BF4();
   sub_268B37BF4();
-  if (a5)
+  if (name)
   {
     sub_268B37B64();
   }

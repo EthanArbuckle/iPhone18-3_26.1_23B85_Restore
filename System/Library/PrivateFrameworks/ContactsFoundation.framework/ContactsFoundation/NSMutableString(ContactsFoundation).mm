@@ -20,7 +20,7 @@
     v5 = v7;
     if (v4)
     {
-      v4 = [a1 appendString:v7];
+      v4 = [self appendString:v7];
       v5 = v7;
     }
   }
@@ -30,32 +30,32 @@
 
 - (uint64_t)_cn_trim
 {
-  [a1 _cn_trimLeadingWhitespace];
+  [self _cn_trimLeadingWhitespace];
 
-  return [a1 _cn_trimTrailingWhitespace];
+  return [self _cn_trimTrailingWhitespace];
 }
 
 - (void)_cn_trimLeadingWhitespace
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  [a1 _cn_deleteCharactersInSet:v2 options:8];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  [self _cn_deleteCharactersInSet:whitespaceCharacterSet options:8];
 }
 
 - (void)_cn_trimTrailingWhitespace
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  [a1 _cn_deleteCharactersInSet:v2 options:12];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  [self _cn_deleteCharactersInSet:whitespaceCharacterSet options:12];
 }
 
 - (void)_cn_deleteCharactersInSet:()ContactsFoundation options:
 {
   v9 = a3;
-  v6 = [a1 rangeOfCharacterFromSet:? options:?];
+  v6 = [self rangeOfCharacterFromSet:? options:?];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v6; i != 0x7FFFFFFFFFFFFFFFLL; i = [a1 rangeOfCharacterFromSet:v9 options:a4])
+    for (i = v6; i != 0x7FFFFFFFFFFFFFFFLL; i = [self rangeOfCharacterFromSet:v9 options:a4])
     {
-      [a1 deleteCharactersInRange:{i, v7}];
+      [self deleteCharactersInRange:{i, v7}];
     }
   }
 }
@@ -64,7 +64,7 @@
 {
   v6 = a4;
   v7 = a3;
-  [a1 replaceOccurrencesOfString:v7 withString:v6 options:0 range:{0, objc_msgSend(a1, "length")}];
+  [self replaceOccurrencesOfString:v7 withString:v6 options:0 range:{0, objc_msgSend(self, "length")}];
 }
 
 @end

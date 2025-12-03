@@ -1,6 +1,6 @@
 @interface MTRAccessControlClusterAccessControlTargetStruct
 - (MTRAccessControlClusterAccessControlTargetStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRAccessControlClusterAccessControlTargetStruct);
-  v5 = [(MTRAccessControlClusterAccessControlTargetStruct *)self cluster];
-  [(MTRAccessControlClusterAccessControlTargetStruct *)v4 setCluster:v5];
+  cluster = [(MTRAccessControlClusterAccessControlTargetStruct *)self cluster];
+  [(MTRAccessControlClusterAccessControlTargetStruct *)v4 setCluster:cluster];
 
-  v6 = [(MTRAccessControlClusterAccessControlTargetStruct *)self endpoint];
-  [(MTRAccessControlClusterAccessControlTargetStruct *)v4 setEndpoint:v6];
+  endpoint = [(MTRAccessControlClusterAccessControlTargetStruct *)self endpoint];
+  [(MTRAccessControlClusterAccessControlTargetStruct *)v4 setEndpoint:endpoint];
 
-  v7 = [(MTRAccessControlClusterAccessControlTargetStruct *)self deviceType];
-  [(MTRAccessControlClusterAccessControlTargetStruct *)v4 setDeviceType:v7];
+  deviceType = [(MTRAccessControlClusterAccessControlTargetStruct *)self deviceType];
+  [(MTRAccessControlClusterAccessControlTargetStruct *)v4 setDeviceType:deviceType];
 
   return v4;
 }

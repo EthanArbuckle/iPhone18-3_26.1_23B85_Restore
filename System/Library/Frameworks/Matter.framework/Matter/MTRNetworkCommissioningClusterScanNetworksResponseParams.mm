@@ -1,9 +1,9 @@
 @interface MTRNetworkCommissioningClusterScanNetworksResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRNetworkCommissioningClusterScanNetworksResponseParams)init;
-- (MTRNetworkCommissioningClusterScanNetworksResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRNetworkCommissioningClusterScanNetworksResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRNetworkCommissioningClusterScanNetworksResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -36,23 +36,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRNetworkCommissioningClusterScanNetworksResponseParams);
-  v5 = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self networkingStatus];
-  [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v4 setNetworkingStatus:v5];
+  networkingStatus = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self networkingStatus];
+  [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v4 setNetworkingStatus:networkingStatus];
 
-  v6 = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self debugText];
-  [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v4 setDebugText:v6];
+  debugText = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self debugText];
+  [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v4 setDebugText:debugText];
 
-  v7 = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self wiFiScanResults];
-  [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v4 setWiFiScanResults:v7];
+  wiFiScanResults = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self wiFiScanResults];
+  [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v4 setWiFiScanResults:wiFiScanResults];
 
-  v8 = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self threadScanResults];
-  [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v4 setThreadScanResults:v8];
+  threadScanResults = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self threadScanResults];
+  [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v4 setThreadScanResults:threadScanResults];
 
-  v9 = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v4 setTimedInvokeTimeoutMs:v9];
+  timedInvokeTimeoutMs = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -114,7 +114,7 @@ LABEL_10:
   return v11;
 }
 
-- (MTRNetworkCommissioningClusterScanNetworksResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRNetworkCommissioningClusterScanNetworksResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRNetworkCommissioningClusterScanNetworksResponseParams;
@@ -122,7 +122,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -138,20 +138,20 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self setNetworkingStatus:v5];
 
-  if (*(a3 + 8) == 1)
+  if (*(struct + 8) == 1)
   {
-    v6 = sub_238DE36B8(a3 + 8);
+    v6 = sub_238DE36B8(struct + 8);
     v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v6 length:v6[1] encoding:4];
     [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self setDebugText:v7];
 
-    v8 = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self debugText];
+    debugText = [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self debugText];
 
-    if (!v8)
+    if (!debugText)
     {
       v9 = 0x15EE00000000;
       v10 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
@@ -165,11 +165,11 @@ LABEL_6:
     [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self setDebugText:0];
   }
 
-  v39 = self;
-  if (*(a3 + 32) == 1)
+  selfCopy = self;
+  if (*(struct + 32) == 1)
   {
     v12 = objc_opt_new();
-    v13 = sub_238DE36B8(a3 + 32);
+    v13 = sub_238DE36B8(struct + 32);
     sub_2393C5AAC(v42);
     v40 = 0;
     v41 = 0;
@@ -221,7 +221,7 @@ LABEL_6:
       [v12 addObject:v17];
     }
 
-    self = v39;
+    self = selfCopy;
     if (v15 != 33)
     {
       v11 = v40;
@@ -235,7 +235,7 @@ LABEL_30:
       }
     }
 
-    [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v39 setWiFiScanResults:v12];
+    [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)selfCopy setWiFiScanResults:v12];
   }
 
   else
@@ -243,8 +243,8 @@ LABEL_30:
     [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)self setWiFiScanResults:0];
   }
 
-  v25 = *(a3 + 112);
-  v24 = a3 + 112;
+  v25 = *(struct + 112);
+  v24 = struct + 112;
   if (v25 == 1)
   {
     v12 = objc_opt_new();
@@ -270,9 +270,9 @@ LABEL_30:
       v30 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*&v43[16] length:*&v43[24] encoding:4];
       [v27 setNetworkName:v30];
 
-      v31 = [v27 networkName];
+      networkName = [v27 networkName];
 
-      if (!v31)
+      if (!networkName)
       {
 
         v9 = 0x161D00000000;
@@ -310,7 +310,7 @@ LABEL_30:
       }
     }
 
-    [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)v39 setThreadScanResults:v12];
+    [(MTRNetworkCommissioningClusterScanNetworksResponseParams *)selfCopy setThreadScanResults:v12];
   }
 
   else

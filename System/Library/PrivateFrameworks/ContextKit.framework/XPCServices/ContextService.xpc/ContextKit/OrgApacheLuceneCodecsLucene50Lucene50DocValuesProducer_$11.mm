@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$11
-- (id)lookupOrdWithLong:(int64_t)a3;
+- (id)lookupOrdWithLong:(int64_t)long;
 - (id)termsEnum;
-- (int64_t)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (int64_t)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (int64_t)nextOrd;
-- (int64_t)ordAtWithInt:(int)a3;
+- (int64_t)ordAtWithInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$11
 
-- (int64_t)ordAtWithInt:(int)a3
+- (int64_t)ordAtWithInt:(int)int
 {
   v3 = self->val$table_;
   if (!v3)
@@ -19,10 +19,10 @@
 
   startOffset = self->startOffset_;
   size = v3->super.size_;
-  v6 = startOffset + a3;
-  if (startOffset + a3 < 0 || v6 >= size)
+  v6 = startOffset + int;
+  if (startOffset + int < 0 || v6 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (startOffset + a3));
+    IOSArray_throwOutOfBoundsWithMsg(size, (startOffset + int));
   }
 
   return v3->buffer_[v6];
@@ -52,7 +52,7 @@
   return v4->buffer_[offset];
 }
 
-- (id)lookupOrdWithLong:(int64_t)a3
+- (id)lookupOrdWithLong:(int64_t)long
 {
   v4 = self->val$binary_;
   if (!v4)
@@ -60,10 +60,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_LongBinaryDocValues *)v4 getWithLong:a3];
+  return [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_LongBinaryDocValues *)v4 getWithLong:long];
 }
 
-- (int64_t)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (int64_t)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   v5 = self->val$binary_;
   objc_opt_class();
@@ -81,14 +81,14 @@
       JreThrowClassCastException();
     }
 
-    return [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_LongBinaryDocValues *)v6 lookupTermWithOrgApacheLuceneUtilBytesRef:a3];
+    return [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_LongBinaryDocValues *)v6 lookupTermWithOrgApacheLuceneUtilBytesRef:ref];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer__11;
-    return [(OrgApacheLuceneIndexSortedSetDocValues *)&v8 lookupTermWithOrgApacheLuceneUtilBytesRef:a3];
+    return [(OrgApacheLuceneIndexSortedSetDocValues *)&v8 lookupTermWithOrgApacheLuceneUtilBytesRef:ref];
   }
 }
 

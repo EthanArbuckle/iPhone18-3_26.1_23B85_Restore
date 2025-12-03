@@ -1,5 +1,5 @@
 @interface AccountActiveTime
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -64,10 +64,10 @@ LABEL_9:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(AccountActiveTime);
-  v6 = [(AccountEvent *)self->_event copyWithZone:a3];
+  v6 = [(AccountEvent *)self->_event copyWithZone:zone];
   event = v5->_event;
   v5->_event = v6;
 

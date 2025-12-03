@@ -1,18 +1,18 @@
 @interface PGMeaningPOICriteria
-+ (id)criteriaWithDictionary:(id)a3;
-- (BOOL)_parkIsLargerThanMaximumDiameterWithAreaNodes:(id)a3;
++ (id)criteriaWithDictionary:(id)dictionary;
+- (BOOL)_parkIsLargerThanMaximumDiameterWithAreaNodes:(id)nodes;
 - (BOOL)isValid;
-- (BOOL)passesForMomentNode:(id)a3 momentNodeCache:(id)a4;
+- (BOOL)passesForMomentNode:(id)node momentNodeCache:(id)cache;
 - (NSString)description;
 @end
 
 @implementation PGMeaningPOICriteria
 
-+ (id)criteriaWithDictionary:(id)a3
++ (id)criteriaWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 objectForKeyedSubscript:@"positivePOIs"];
+  dictionaryCopy = dictionary;
+  v5 = objc_alloc_init(self);
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"positivePOIs"];
   v7 = v6;
   v8 = MEMORY[0x277CBEBF8];
   if (v6)
@@ -28,24 +28,24 @@
   v10 = v9;
 
   [v5 setPositivePOIs:v10];
-  v11 = [v4 objectForKeyedSubscript:@"minimumNumberOfPOIs"];
-  v12 = [v11 unsignedIntegerValue];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"minimumNumberOfPOIs"];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-  if (v12 <= 1)
+  if (unsignedIntegerValue <= 1)
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = v12;
+    v13 = unsignedIntegerValue;
   }
 
   [v5 setMinimumNumberOfPOIs:v13];
-  v14 = [v4 objectForKeyedSubscript:@"mustBeSpecial"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"mustBeSpecial"];
   [v5 setMustBeSpecial:{objc_msgSend(v14, "BOOLValue")}];
 
-  v15 = [v4 objectForKeyedSubscript:@"negativePOIs"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"negativePOIs"];
   v16 = v15;
   if (v15)
   {
@@ -60,7 +60,7 @@
   v18 = v17;
 
   [v5 setNegativePOIs:v18];
-  v19 = [v4 objectForKeyedSubscript:@"maximumParkDiameter"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"maximumParkDiameter"];
 
   [v19 doubleValue];
   [v5 setMaximumParkDiameter:?];
@@ -68,9 +68,9 @@
   return v5;
 }
 
-- (BOOL)_parkIsLargerThanMaximumDiameterWithAreaNodes:(id)a3
+- (BOOL)_parkIsLargerThanMaximumDiameterWithAreaNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   [(PGMeaningPOICriteria *)self maximumParkDiameter];
   v8 = 0;
   v9 = &v8;
@@ -82,7 +82,7 @@
   v7[3] = &unk_27887F2A8;
   v7[4] = &v8;
   v7[5] = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [nodesCopy enumerateObjectsUsingBlock:v7];
   LOBYTE(self) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
 
@@ -99,37 +99,37 @@ uint64_t __70__PGMeaningPOICriteria__parkIsLargerThanMaximumDiameterWithAreaNode
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(PGMeaningPOICriteria *)self positivePOIs];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  string = [MEMORY[0x277CCAB68] string];
+  positivePOIs = [(PGMeaningPOICriteria *)self positivePOIs];
+  v5 = [positivePOIs componentsJoinedByString:{@", "}];
 
-  v6 = [(PGMeaningPOICriteria *)self negativePOIs];
-  v7 = [v6 componentsJoinedByString:{@", "}];
+  negativePOIs = [(PGMeaningPOICriteria *)self negativePOIs];
+  v7 = [negativePOIs componentsJoinedByString:{@", "}];
 
-  [v3 appendFormat:@"positivePOIs: %@\n", v5];
-  [v3 appendFormat:@"negativePOIs: %@\n", v7];
-  [v3 appendFormat:@"minimumNumberOfPOIs: %d\n", -[PGMeaningPOICriteria minimumNumberOfPOIs](self, "minimumNumberOfPOIs")];
-  [v3 appendFormat:@"minimumNumberOfPOIs: %d\n", -[PGMeaningPOICriteria minimumNumberOfPOIs](self, "minimumNumberOfPOIs")];
-  v8 = [(PGMeaningPOICriteria *)self mustBeSpecial];
+  [string appendFormat:@"positivePOIs: %@\n", v5];
+  [string appendFormat:@"negativePOIs: %@\n", v7];
+  [string appendFormat:@"minimumNumberOfPOIs: %d\n", -[PGMeaningPOICriteria minimumNumberOfPOIs](self, "minimumNumberOfPOIs")];
+  [string appendFormat:@"minimumNumberOfPOIs: %d\n", -[PGMeaningPOICriteria minimumNumberOfPOIs](self, "minimumNumberOfPOIs")];
+  mustBeSpecial = [(PGMeaningPOICriteria *)self mustBeSpecial];
   v9 = @"NO";
-  if (v8)
+  if (mustBeSpecial)
   {
     v9 = @"YES";
   }
 
-  [v3 appendFormat:@"mustBeSpecial: %@\n", v9];
+  [string appendFormat:@"mustBeSpecial: %@\n", v9];
   [(PGMeaningPOICriteria *)self maximumParkDiameter];
-  [v3 appendFormat:@"maximumParkDiameter: %d\n", v10];
+  [string appendFormat:@"maximumParkDiameter: %d\n", v10];
 
-  return v3;
+  return string;
 }
 
 - (BOOL)isValid
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(PGMeaningPOICriteria *)self positivePOIs];
-  v4 = [(PGMeaningPOICriteria *)self negativePOIs];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  positivePOIs = [(PGMeaningPOICriteria *)self positivePOIs];
+  negativePOIs = [(PGMeaningPOICriteria *)self negativePOIs];
+  v5 = [positivePOIs arrayByAddingObjectsFromArray:negativePOIs];
 
   v6 = +[PGGraphPOINode validPOILabels];
   v20 = 0u;
@@ -158,13 +158,13 @@ uint64_t __70__PGMeaningPOICriteria__parkIsLargerThanMaximumDiameterWithAreaNode
         if (([v6 containsObject:{v14, v19, v20}] & 1) == 0)
         {
           v15 = +[PGLogging sharedLogging];
-          v16 = [v15 loggingConnection];
+          loggingConnection = [v15 loggingConnection];
 
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
           {
             *buf = v19;
             v25 = v14;
-            _os_log_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] Invalid poi %@", buf, 0xCu);
+            _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] Invalid poi %@", buf, 0xCu);
           }
 
           v12 = 0;
@@ -186,15 +186,15 @@ uint64_t __70__PGMeaningPOICriteria__parkIsLargerThanMaximumDiameterWithAreaNode
   return v12 & 1;
 }
 
-- (BOOL)passesForMomentNode:(id)a3 momentNodeCache:(id)a4
+- (BOOL)passesForMomentNode:(id)node momentNodeCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGMeaningPOICriteria *)self positivePOIs];
-  v9 = [v8 count];
+  nodeCopy = node;
+  cacheCopy = cache;
+  positivePOIs = [(PGMeaningPOICriteria *)self positivePOIs];
+  v9 = [positivePOIs count];
 
-  v10 = [(PGMeaningPOICriteria *)self negativePOIs];
-  v11 = [v10 count];
+  negativePOIs = [(PGMeaningPOICriteria *)self negativePOIs];
+  v11 = [negativePOIs count];
 
   if (v9 | v11)
   {
@@ -204,15 +204,15 @@ uint64_t __70__PGMeaningPOICriteria__parkIsLargerThanMaximumDiameterWithAreaNode
     v26 = v9 == 0;
     if ([(PGMeaningPOICriteria *)self mustBeSpecial])
     {
-      [v7 specialPOINodes];
+      [cacheCopy specialPOINodes];
     }
 
     else
     {
-      [v7 poiNodes];
+      [cacheCopy poiNodes];
     }
     v13 = ;
-    v14 = [v7 preciseAreaNodes];
+    preciseAreaNodes = [cacheCopy preciseAreaNodes];
     v22[0] = 0;
     v22[1] = v22;
     v22[2] = 0x2020000000;
@@ -223,7 +223,7 @@ uint64_t __70__PGMeaningPOICriteria__parkIsLargerThanMaximumDiameterWithAreaNode
     v17[3] = &unk_27887F280;
     v19 = &v23;
     v17[4] = self;
-    v15 = v14;
+    v15 = preciseAreaNodes;
     v18 = v15;
     v20 = v22;
     v21 = v11;

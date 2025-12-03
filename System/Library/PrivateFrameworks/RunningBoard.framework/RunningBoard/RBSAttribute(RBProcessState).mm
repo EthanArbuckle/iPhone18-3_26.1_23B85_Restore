@@ -10,8 +10,8 @@
   v6 = a3;
   if (![v6 targetIsSystem])
   {
-    v11 = [v6 originatorEntitlements];
-    if ([v6 ignoreRestrictions] & 1) != 0 || (objc_msgSend(v11, "rb_hasEntitlement:", @"com.apple.runningboard.primitiveattribute"))
+    originatorEntitlements = [v6 originatorEntitlements];
+    if ([v6 ignoreRestrictions] & 1) != 0 || (objc_msgSend(originatorEntitlements, "rb_hasEntitlement:", @"com.apple.runningboard.primitiveattribute"))
     {
       a4 = 1;
       goto LABEL_8;
@@ -29,7 +29,7 @@
     v18 = *MEMORY[0x277D47048];
     v20[0] = v17;
     v20[1] = v18;
-    v12 = [a1 description];
+    v12 = [self description];
     v21[1] = v12;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
     *a4 = [v15 errorWithDomain:v16 code:2 userInfo:v19];
@@ -50,8 +50,8 @@ LABEL_8:
     v10 = *MEMORY[0x277D47048];
     v22[0] = v9;
     v22[1] = v10;
-    v11 = [a1 description];
-    v23[1] = v11;
+    originatorEntitlements = [self description];
+    v23[1] = originatorEntitlements;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
     *a4 = [v7 errorWithDomain:v8 code:2 userInfo:v12];
     goto LABEL_4;

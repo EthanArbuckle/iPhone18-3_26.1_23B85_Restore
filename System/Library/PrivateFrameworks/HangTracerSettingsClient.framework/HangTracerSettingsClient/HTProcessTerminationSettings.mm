@@ -1,30 +1,30 @@
 @interface HTProcessTerminationSettings
 + (HTProcessTerminationSettings)sharedSettings;
-- (BOOL)_removeTrackedSubReason:(unint64_t)a3 forReason:(unint64_t)a4;
-- (BOOL)_setTrackedReasons:(unint64_t)a3 propagatingSubReasons:(BOOL)a4;
-- (BOOL)_setTrackedSubReasons:(unint64_t)a3 forReason:(unint64_t)a4;
+- (BOOL)_removeTrackedSubReason:(unint64_t)reason forReason:(unint64_t)forReason;
+- (BOOL)_setTrackedReasons:(unint64_t)reasons propagatingSubReasons:(BOOL)subReasons;
+- (BOOL)_setTrackedSubReasons:(unint64_t)reasons forReason:(unint64_t)reason;
 - (BOOL)_trackAllDefaultReasons;
 - (HTProcessTerminationSettings)init;
-- (HTProcessTerminationSettings)initWithDefaults:(id)a3;
+- (HTProcessTerminationSettings)initWithDefaults:(id)defaults;
 - (NSArray)trackedProcessNames;
 - (unint64_t)allReasonsValue;
-- (unint64_t)allSubReasonsValueForReason:(unint64_t)a3;
+- (unint64_t)allSubReasonsValueForReason:(unint64_t)reason;
 - (unint64_t)trackedReasons;
-- (unint64_t)trackedSubReasonsForReason:(unint64_t)a3;
-- (void)addTrackedProcessNamed:(id)a3;
-- (void)addTrackedReason:(unint64_t)a3;
-- (void)addTrackedSubReason:(unint64_t)a3 forReason:(unint64_t)a4;
-- (void)removeTrackedProcessNamed:(id)a3;
-- (void)removeTrackedReason:(unint64_t)a3;
-- (void)removeTrackedSubReason:(unint64_t)a3 forReason:(unint64_t)a4;
-- (void)setDisplayTerminationsInHUD:(BOOL)a3;
-- (void)setForceQuitDetectionEnabled:(BOOL)a3;
-- (void)setForceQuitDetectionThreshold:(int64_t)a3;
-- (void)setTrackedProcessNames:(id)a3;
-- (void)setTrackedReasons:(unint64_t)a3;
-- (void)setTrackedSubReasons:(unint64_t)a3 forReason:(unint64_t)a4;
+- (unint64_t)trackedSubReasonsForReason:(unint64_t)reason;
+- (void)addTrackedProcessNamed:(id)named;
+- (void)addTrackedReason:(unint64_t)reason;
+- (void)addTrackedSubReason:(unint64_t)reason forReason:(unint64_t)forReason;
+- (void)removeTrackedProcessNamed:(id)named;
+- (void)removeTrackedReason:(unint64_t)reason;
+- (void)removeTrackedSubReason:(unint64_t)reason forReason:(unint64_t)forReason;
+- (void)setDisplayTerminationsInHUD:(BOOL)d;
+- (void)setForceQuitDetectionEnabled:(BOOL)enabled;
+- (void)setForceQuitDetectionThreshold:(int64_t)threshold;
+- (void)setTrackedProcessNames:(id)names;
+- (void)setTrackedReasons:(unint64_t)reasons;
+- (void)setTrackedSubReasons:(unint64_t)reasons forReason:(unint64_t)reason;
 - (void)trackAllReasons;
-- (void)trackAllSubReasonsForReason:(unint64_t)a3;
+- (void)trackAllSubReasonsForReason:(unint64_t)reason;
 @end
 
 @implementation HTProcessTerminationSettings
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __46__HTProcessTerminationSettings_sharedSettings__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedSettings_onceToken != -1)
   {
     dispatch_once(&sharedSettings_onceToken, block);
@@ -63,28 +63,28 @@ uint64_t __46__HTProcessTerminationSettings_sharedSettings__block_invoke(uint64_
   return v5;
 }
 
-- (HTProcessTerminationSettings)initWithDefaults:(id)a3
+- (HTProcessTerminationSettings)initWithDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v9.receiver = self;
   v9.super_class = HTProcessTerminationSettings;
   v6 = [(HTProcessTerminationSettings *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_defaults, a3);
+    objc_storeStrong(&v6->_defaults, defaults);
   }
 
   return v7;
 }
 
-- (void)setForceQuitDetectionEnabled:(BOOL)a3
+- (void)setForceQuitDetectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(HTProcessTerminationSettings *)self isForceQuitDetectionEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(HTProcessTerminationSettings *)self isForceQuitDetectionEnabled]!= enabled)
   {
     defaults = self->_defaults;
-    if (v3)
+    if (enabledCopy)
     {
       [(NSUserDefaults *)defaults setBool:1 forKey:*MEMORY[0x277D0FA70]];
     }
@@ -98,32 +98,32 @@ uint64_t __46__HTProcessTerminationSettings_sharedSettings__block_invoke(uint64_
   }
 }
 
-- (void)setForceQuitDetectionThreshold:(int64_t)a3
+- (void)setForceQuitDetectionThreshold:(int64_t)threshold
 {
-  if ([(HTProcessTerminationSettings *)self forceQuitDetectionThreshold]!= a3)
+  if ([(HTProcessTerminationSettings *)self forceQuitDetectionThreshold]!= threshold)
   {
     defaults = self->_defaults;
-    if (a3 == 3000)
+    if (threshold == 3000)
     {
       [(NSUserDefaults *)defaults removeObjectForKey:*MEMORY[0x277D0FA78]];
     }
 
     else
     {
-      [(NSUserDefaults *)defaults setInteger:a3 forKey:*MEMORY[0x277D0FA78]];
+      [(NSUserDefaults *)defaults setInteger:threshold forKey:*MEMORY[0x277D0FA78]];
     }
 
     [(HTProcessTerminationSettings *)self applySettings];
   }
 }
 
-- (void)setDisplayTerminationsInHUD:(BOOL)a3
+- (void)setDisplayTerminationsInHUD:(BOOL)d
 {
-  v3 = a3;
-  if ([(HTProcessTerminationSettings *)self displayTerminationsInHUD]!= a3)
+  dCopy = d;
+  if ([(HTProcessTerminationSettings *)self displayTerminationsInHUD]!= d)
   {
     defaults = self->_defaults;
-    if (v3)
+    if (dCopy)
     {
       [(NSUserDefaults *)defaults setBool:1 forKey:*MEMORY[0x277D0FB18]];
       v6 = [(NSUserDefaults *)self->_defaults objectForKey:*MEMORY[0x277D0FB10]];
@@ -169,21 +169,21 @@ uint64_t __46__HTProcessTerminationSettings_sharedSettings__block_invoke(uint64_
   return v4;
 }
 
-- (void)setTrackedProcessNames:(id)a3
+- (void)setTrackedProcessNames:(id)names
 {
-  v10 = a3;
-  v4 = [(HTProcessTerminationSettings *)self trackedProcessNames];
-  v5 = [v4 isEqual:v10];
+  namesCopy = names;
+  trackedProcessNames = [(HTProcessTerminationSettings *)self trackedProcessNames];
+  v5 = [trackedProcessNames isEqual:namesCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v10 count];
+    v6 = [namesCopy count];
     defaults = self->_defaults;
     if (v6)
     {
-      v8 = [MEMORY[0x277CBEB70] orderedSetWithArray:v10];
-      v9 = [v8 array];
-      [(NSUserDefaults *)defaults setObject:v9 forKey:*MEMORY[0x277D0FB20]];
+      v8 = [MEMORY[0x277CBEB70] orderedSetWithArray:namesCopy];
+      array = [v8 array];
+      [(NSUserDefaults *)defaults setObject:array forKey:*MEMORY[0x277D0FB20]];
     }
 
     else
@@ -195,26 +195,26 @@ uint64_t __46__HTProcessTerminationSettings_sharedSettings__block_invoke(uint64_
   }
 }
 
-- (void)addTrackedProcessNamed:(id)a3
+- (void)addTrackedProcessNamed:(id)named
 {
-  v6 = a3;
-  v4 = [(HTProcessTerminationSettings *)self trackedProcessNames];
-  v5 = [v4 mutableCopy];
+  namedCopy = named;
+  trackedProcessNames = [(HTProcessTerminationSettings *)self trackedProcessNames];
+  v5 = [trackedProcessNames mutableCopy];
 
-  if (([v5 containsObject:v6] & 1) == 0)
+  if (([v5 containsObject:namedCopy] & 1) == 0)
   {
-    [v5 addObject:v6];
+    [v5 addObject:namedCopy];
     [(HTProcessTerminationSettings *)self setTrackedProcessNames:v5];
   }
 }
 
-- (void)removeTrackedProcessNamed:(id)a3
+- (void)removeTrackedProcessNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(HTProcessTerminationSettings *)self trackedProcessNames];
-  v7 = [v5 mutableCopy];
+  namedCopy = named;
+  trackedProcessNames = [(HTProcessTerminationSettings *)self trackedProcessNames];
+  v7 = [trackedProcessNames mutableCopy];
 
-  v6 = [v7 indexOfObject:v4];
+  v6 = [v7 indexOfObject:namedCopy];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [v7 removeObjectAtIndex:v6];
@@ -225,54 +225,54 @@ uint64_t __46__HTProcessTerminationSettings_sharedSettings__block_invoke(uint64_
 - (unint64_t)trackedReasons
 {
   v3 = [(NSUserDefaults *)self->_defaults objectForKey:*MEMORY[0x277D0FB28]];
-  v4 = [v3 unsignedLongLongValue];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  if (v4 != 1)
+  if (unsignedLongLongValue != 1)
   {
-    return v4;
+    return unsignedLongLongValue;
   }
 
   return [(HTProcessTerminationSettings *)self allReasonsValue];
 }
 
-- (void)setTrackedReasons:(unint64_t)a3
+- (void)setTrackedReasons:(unint64_t)reasons
 {
-  if ([(HTProcessTerminationSettings *)self _setTrackedReasons:a3 propagatingSubReasons:1])
+  if ([(HTProcessTerminationSettings *)self _setTrackedReasons:reasons propagatingSubReasons:1])
   {
 
     [(HTProcessTerminationSettings *)self applySettings];
   }
 }
 
-- (BOOL)_setTrackedReasons:(unint64_t)a3 propagatingSubReasons:(BOOL)a4
+- (BOOL)_setTrackedReasons:(unint64_t)reasons propagatingSubReasons:(BOOL)subReasons
 {
-  v4 = a4;
+  subReasonsCopy = subReasons;
   v24 = *MEMORY[0x277D85DE8];
-  v7 = [(HTProcessTerminationSettings *)self trackedReasons];
-  if (v7 != a3)
+  trackedReasons = [(HTProcessTerminationSettings *)self trackedReasons];
+  if (trackedReasons != reasons)
   {
-    if (a3 == 1)
+    if (reasons == 1)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [(HTProcessTerminationSettings *)self allReasonsValue]== a3 ? 1 : a3;
+      v8 = [(HTProcessTerminationSettings *)self allReasonsValue]== reasons ? 1 : reasons;
     }
 
     defaults = self->_defaults;
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v8];
     [(NSUserDefaults *)defaults setObject:v10 forKey:*MEMORY[0x277D0FB28]];
 
-    if (v4)
+    if (subReasonsCopy)
     {
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v11 = [(HTProcessTerminationSettings *)self availableReasons];
-      v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      availableReasons = [(HTProcessTerminationSettings *)self availableReasons];
+      v12 = [availableReasons countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v12)
       {
         v13 = v12;
@@ -283,22 +283,22 @@ uint64_t __46__HTProcessTerminationSettings_sharedSettings__block_invoke(uint64_
           {
             if (*v20 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(availableReasons);
             }
 
-            v16 = [*(*(&v19 + 1) + 8 * i) unsignedLongLongValue];
-            if (a3 == 1 || (v16 & a3) == v16)
+            unsignedLongLongValue = [*(*(&v19 + 1) + 8 * i) unsignedLongLongValue];
+            if (reasons == 1 || (unsignedLongLongValue & reasons) == unsignedLongLongValue)
             {
-              [(HTProcessTerminationSettings *)self _trackAllSubReasonsForReason:v16];
+              [(HTProcessTerminationSettings *)self _trackAllSubReasonsForReason:unsignedLongLongValue];
             }
 
             else
             {
-              [(HTProcessTerminationSettings *)self _setTrackedSubReasons:0 forReason:v16];
+              [(HTProcessTerminationSettings *)self _setTrackedSubReasons:0 forReason:unsignedLongLongValue];
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v13 = [availableReasons countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v13);
@@ -306,7 +306,7 @@ uint64_t __46__HTProcessTerminationSettings_sharedSettings__block_invoke(uint64_
     }
   }
 
-  result = v7 != a3;
+  result = trackedReasons != reasons;
   v18 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -321,8 +321,8 @@ uint64_t __46__HTProcessTerminationSettings_sharedSettings__block_invoke(uint64_
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(HTProcessTerminationSettings *)self availableReasons];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    availableReasons = [(HTProcessTerminationSettings *)self availableReasons];
+    v4 = [availableReasons countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -334,16 +334,16 @@ uint64_t __46__HTProcessTerminationSettings_sharedSettings__block_invoke(uint64_
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(availableReasons);
           }
 
-          v8 = [*(*(&v11 + 1) + 8 * v7) unsignedLongLongValue];
-          allReasonsValue_allReasons |= v8;
+          unsignedLongLongValue = [*(*(&v11 + 1) + 8 * v7) unsignedLongLongValue];
+          allReasonsValue_allReasons |= unsignedLongLongValue;
           ++v7;
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [availableReasons countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -356,18 +356,18 @@ uint64_t __46__HTProcessTerminationSettings_sharedSettings__block_invoke(uint64_
   return v2;
 }
 
-- (void)addTrackedReason:(unint64_t)a3
+- (void)addTrackedReason:(unint64_t)reason
 {
-  if ([(HTProcessTerminationSettings *)self _addTrackedReason:a3 propagatingSubReasons:1])
+  if ([(HTProcessTerminationSettings *)self _addTrackedReason:reason propagatingSubReasons:1])
   {
 
     [(HTProcessTerminationSettings *)self applySettings];
   }
 }
 
-- (void)removeTrackedReason:(unint64_t)a3
+- (void)removeTrackedReason:(unint64_t)reason
 {
-  if ([(HTProcessTerminationSettings *)self _removeTrackedReason:a3])
+  if ([(HTProcessTerminationSettings *)self _removeTrackedReason:reason])
   {
 
     [(HTProcessTerminationSettings *)self applySettings];
@@ -391,14 +391,14 @@ uint64_t __46__HTProcessTerminationSettings_sharedSettings__block_invoke(uint64_
   return [(HTProcessTerminationSettings *)self _removeTrackedSubReason:0x8000 forReason:2]|| v5 || v4 || v3;
 }
 
-- (unint64_t)allSubReasonsValueForReason:(unint64_t)a3
+- (unint64_t)allSubReasonsValueForReason:(unint64_t)reason
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(HTProcessTerminationSettings *)self availableSubReasonsForReason:a3, 0];
+  v3 = [(HTProcessTerminationSettings *)self availableSubReasonsForReason:reason, 0];
   v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
@@ -432,37 +432,37 @@ uint64_t __46__HTProcessTerminationSettings_sharedSettings__block_invoke(uint64_
   return v6;
 }
 
-- (unint64_t)trackedSubReasonsForReason:(unint64_t)a3
+- (unint64_t)trackedSubReasonsForReason:(unint64_t)reason
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%llu", *MEMORY[0x277D0FB28], a3];
-  v6 = [(NSUserDefaults *)self->_defaults objectForKey:v5];
-  v7 = [v6 unsignedLongLongValue];
+  reason = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%llu", *MEMORY[0x277D0FB28], reason];
+  v6 = [(NSUserDefaults *)self->_defaults objectForKey:reason];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
-  if (v7 == 1)
+  if (unsignedLongLongValue == 1)
   {
-    v7 = [(HTProcessTerminationSettings *)self allSubReasonsValueForReason:a3];
+    unsignedLongLongValue = [(HTProcessTerminationSettings *)self allSubReasonsValueForReason:reason];
   }
 
-  return v7;
+  return unsignedLongLongValue;
 }
 
-- (void)setTrackedSubReasons:(unint64_t)a3 forReason:(unint64_t)a4
+- (void)setTrackedSubReasons:(unint64_t)reasons forReason:(unint64_t)reason
 {
-  if ([(HTProcessTerminationSettings *)self _setTrackedSubReasons:a3 forReason:a4])
+  if ([(HTProcessTerminationSettings *)self _setTrackedSubReasons:reasons forReason:reason])
   {
 
     [(HTProcessTerminationSettings *)self applySettings];
   }
 }
 
-- (BOOL)_setTrackedSubReasons:(unint64_t)a3 forReason:(unint64_t)a4
+- (BOOL)_setTrackedSubReasons:(unint64_t)reasons forReason:(unint64_t)reason
 {
-  if ([(HTProcessTerminationSettings *)self trackedSubReasonsForReason:a4]== a3)
+  if ([(HTProcessTerminationSettings *)self trackedSubReasonsForReason:reason]== reasons)
   {
     return 0;
   }
 
-  v7 = [(HTProcessTerminationSettings *)self availableSubReasonsForReason:a4];
+  v7 = [(HTProcessTerminationSettings *)self availableSubReasonsForReason:reason];
   v8 = [v7 count];
 
   if (!v8)
@@ -470,70 +470,70 @@ uint64_t __46__HTProcessTerminationSettings_sharedSettings__block_invoke(uint64_
     return 0;
   }
 
-  if (a3 == 1)
+  if (reasons == 1)
   {
-    v9 = 1;
+    reasonsCopy = 1;
   }
 
-  else if ([(HTProcessTerminationSettings *)self allSubReasonsValueForReason:a4]== a3)
+  else if ([(HTProcessTerminationSettings *)self allSubReasonsValueForReason:reason]== reasons)
   {
-    v9 = 1;
+    reasonsCopy = 1;
   }
 
   else
   {
-    v9 = a3;
+    reasonsCopy = reasons;
   }
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%llu", *MEMORY[0x277D0FB28], a4];
+  reason = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%llu", *MEMORY[0x277D0FB28], reason];
   defaults = self->_defaults;
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v9];
-  [(NSUserDefaults *)defaults setObject:v13 forKey:v11];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:reasonsCopy];
+  [(NSUserDefaults *)defaults setObject:v13 forKey:reason];
 
-  v14 = [(HTProcessTerminationSettings *)self trackedReasons];
-  v15 = v14 & a4;
-  if (a3)
+  trackedReasons = [(HTProcessTerminationSettings *)self trackedReasons];
+  v15 = trackedReasons & reason;
+  if (reasons)
   {
-    if (v14 != 1 && !v15)
+    if (trackedReasons != 1 && !v15)
     {
-      [(HTProcessTerminationSettings *)self _addTrackedReason:a4 propagatingSubReasons:0];
+      [(HTProcessTerminationSettings *)self _addTrackedReason:reason propagatingSubReasons:0];
     }
   }
 
-  else if (v14 == 1 || v15 == a4)
+  else if (trackedReasons == 1 || v15 == reason)
   {
-    [(HTProcessTerminationSettings *)self _removeTrackedReason:a4 propagatingSubReasons:0];
+    [(HTProcessTerminationSettings *)self _removeTrackedReason:reason propagatingSubReasons:0];
   }
 
   return 1;
 }
 
-- (void)addTrackedSubReason:(unint64_t)a3 forReason:(unint64_t)a4
+- (void)addTrackedSubReason:(unint64_t)reason forReason:(unint64_t)forReason
 {
-  v6 = [(HTProcessTerminationSettings *)self trackedSubReasonsForReason:a4]| a3;
+  v6 = [(HTProcessTerminationSettings *)self trackedSubReasonsForReason:forReason]| reason;
 
-  [(HTProcessTerminationSettings *)self setTrackedSubReasons:v6 forReason:a4];
+  [(HTProcessTerminationSettings *)self setTrackedSubReasons:v6 forReason:forReason];
 }
 
-- (void)removeTrackedSubReason:(unint64_t)a3 forReason:(unint64_t)a4
+- (void)removeTrackedSubReason:(unint64_t)reason forReason:(unint64_t)forReason
 {
-  if ([(HTProcessTerminationSettings *)self _removeTrackedSubReason:a3 forReason:a4])
+  if ([(HTProcessTerminationSettings *)self _removeTrackedSubReason:reason forReason:forReason])
   {
 
     [(HTProcessTerminationSettings *)self applySettings];
   }
 }
 
-- (BOOL)_removeTrackedSubReason:(unint64_t)a3 forReason:(unint64_t)a4
+- (BOOL)_removeTrackedSubReason:(unint64_t)reason forReason:(unint64_t)forReason
 {
-  v6 = [(HTProcessTerminationSettings *)self trackedSubReasonsForReason:a4]& ~a3;
+  v6 = [(HTProcessTerminationSettings *)self trackedSubReasonsForReason:forReason]& ~reason;
 
-  return [(HTProcessTerminationSettings *)self _setTrackedSubReasons:v6 forReason:a4];
+  return [(HTProcessTerminationSettings *)self _setTrackedSubReasons:v6 forReason:forReason];
 }
 
-- (void)trackAllSubReasonsForReason:(unint64_t)a3
+- (void)trackAllSubReasonsForReason:(unint64_t)reason
 {
-  if ([(HTProcessTerminationSettings *)self _trackAllSubReasonsForReason:a3])
+  if ([(HTProcessTerminationSettings *)self _trackAllSubReasonsForReason:reason])
   {
 
     [(HTProcessTerminationSettings *)self applySettings];

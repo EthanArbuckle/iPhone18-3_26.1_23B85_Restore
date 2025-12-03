@@ -1,17 +1,17 @@
 @interface ADAFUtil
 + (BOOL)isProcessMediaserverd;
-+ (id)stringFromDataType:(unsigned int)a3;
++ (id)stringFromDataType:(unsigned int)type;
 @end
 
 @implementation ADAFUtil
 
-+ (id)stringFromDataType:(unsigned int)a3
++ (id)stringFromDataType:(unsigned int)type
 {
-  if (a3 > 1835623275)
+  if (type > 1835623275)
   {
-    if (a3 != 1835623276)
+    if (type != 1835623276)
     {
-      if (a3 == 1936614505)
+      if (type == 1936614505)
       {
         return @"SoundClassification";
       }
@@ -24,9 +24,9 @@
 
   else
   {
-    if (a3 != 1702260324)
+    if (type != 1702260324)
     {
-      if (a3 == 1751213428)
+      if (type == 1751213428)
       {
         return @"HeadphoneAudioExposure";
       }

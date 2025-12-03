@@ -1,32 +1,32 @@
 @interface MONotificationAnalyticsManager
 - (BOOL)isDeviceiPhone;
 - (BOOL)isReadyToSubmitNotificationAnalytics;
-- (BOOL)submitAggregatedNotificationAnalytics:(id *)a3;
-- (MONotificationAnalyticsManager)initWithUniverse:(id)a3;
+- (BOOL)submitAggregatedNotificationAnalytics:(id *)analytics;
+- (MONotificationAnalyticsManager)initWithUniverse:(id)universe;
 - (double)getAvailabilityProbabilityThreshold;
-- (id)_computeMeasures:(id)a3 deviceType:(int64_t)a4;
-- (id)analyticsDeviceTypeToBMDeviceType:(int64_t)a3;
-- (id)countEventsWithBooleanField:(id)a3 value:(BOOL)a4 events:(id)a5;
-- (id)countEventsWithEventType:(int64_t)a3 events:(id)a4;
-- (id)fetchAllNotificationEvents:(id)a3 toEndDate:(id)a4 error:(id *)a5;
-- (id)fieldExtractorForName:(id)a3;
-- (id)filterDNUGatedEvents:(id)a3;
-- (id)filterEventsByDeviceType:(id)a3 deviceType:(int64_t)a4;
-- (id)filterEventsWithEngagement:(id)a3;
-- (id)filterEventsWithRealTimeChecks:(id)a3;
-- (id)findDominantScheduleState:(id)a3;
-- (id)predicateForAnalyticsDeviceType:(int64_t)a3;
-- (unint64_t)countAvailabilityPredictionEvents:(id)a3 eligibleCount:(unint64_t *)a4;
+- (id)_computeMeasures:(id)measures deviceType:(int64_t)type;
+- (id)analyticsDeviceTypeToBMDeviceType:(int64_t)type;
+- (id)countEventsWithBooleanField:(id)field value:(BOOL)value events:(id)events;
+- (id)countEventsWithEventType:(int64_t)type events:(id)events;
+- (id)fetchAllNotificationEvents:(id)events toEndDate:(id)date error:(id *)error;
+- (id)fieldExtractorForName:(id)name;
+- (id)filterDNUGatedEvents:(id)events;
+- (id)filterEventsByDeviceType:(id)type deviceType:(int64_t)deviceType;
+- (id)filterEventsWithEngagement:(id)engagement;
+- (id)filterEventsWithRealTimeChecks:(id)checks;
+- (id)findDominantScheduleState:(id)state;
+- (id)predicateForAnalyticsDeviceType:(int64_t)type;
+- (unint64_t)countAvailabilityPredictionEvents:(id)events eligibleCount:(unint64_t *)count;
 - (unint64_t)getCurrentDeviceType;
 - (void)getAvailabilityProbabilityThreshold;
-- (void)submitNotificationAnalyticsWithCompletion:(id)a3;
+- (void)submitNotificationAnalyticsWithCompletion:(id)completion;
 @end
 
 @implementation MONotificationAnalyticsManager
 
-- (MONotificationAnalyticsManager)initWithUniverse:(id)a3
+- (MONotificationAnalyticsManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v20.receiver = self;
   v20.super_class = MONotificationAnalyticsManager;
   v5 = [(MONotificationAnalyticsManager *)&v20 init];
@@ -34,19 +34,19 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v4 getService:v7];
+    v8 = [universeCopy getService:v7];
     onboardingPersistence = v5->_onboardingPersistence;
     v5->_onboardingPersistence = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v4 getService:v11];
+    v12 = [universeCopy getService:v11];
     defaultsManager = v5->_defaultsManager;
     v5->_defaultsManager = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v4 getService:v15];
+    v16 = [universeCopy getService:v15];
     configurationManager = v5->_configurationManager;
     v5->_configurationManager = v16;
 
@@ -62,12 +62,12 @@
   return v5;
 }
 
-- (void)submitNotificationAnalyticsWithCompletion:(id)a3
+- (void)submitNotificationAnalyticsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   else
@@ -80,18 +80,18 @@
   v7 = +[NSDate date];
   [v6 setObject:v7 forKeyedSubscript:@"timestamp"];
 
-  v8 = [(MONotificationAnalyticsManager *)self getCurrentDeviceType];
-  v9 = [NSNumber numberWithUnsignedInteger:v8];
+  getCurrentDeviceType = [(MONotificationAnalyticsManager *)self getCurrentDeviceType];
+  v9 = [NSNumber numberWithUnsignedInteger:getCurrentDeviceType];
   [v6 setObject:v9 forKeyedSubscript:@"deviceType"];
 
-  if (v8 == 1)
+  if (getCurrentDeviceType == 1)
   {
     if (+[MOPlatformInfo isDNUEnabled])
     {
       if (![(MONotificationAnalyticsManager *)self isReadyToSubmitNotificationAnalytics])
       {
-        v18 = [(MONotificationAnalyticsManager *)self defaultsManager];
-        v11 = [v18 objectForKey:@"NextNotificationAnalyticsSubmissionDate"];
+        defaultsManager = [(MONotificationAnalyticsManager *)self defaultsManager];
+        v11 = [defaultsManager objectForKey:@"NextNotificationAnalyticsSubmissionDate"];
 
         [v6 setObject:@"throttled" forKeyedSubscript:@"reason"];
         if (v11)
@@ -147,8 +147,8 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v22 = [v11 domain];
-        [v12 setObject:v22 forKeyedSubscript:@"errorDomain"];
+        domain = [v11 domain];
+        [v12 setObject:domain forKeyedSubscript:@"errorDomain"];
 
         v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 code]);
         [v12 setObject:v15 forKeyedSubscript:@"errorCode"];
@@ -172,7 +172,7 @@ LABEL_24:
     v16 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [NSNumber numberWithUnsignedInteger:v8];
+      v17 = [NSNumber numberWithUnsignedInteger:getCurrentDeviceType];
       *buf = 138412290;
       v25 = v17;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Skipping analytics - device type %@ is not iPhone", buf, 0xCu);
@@ -230,8 +230,8 @@ void __76__MONotificationAnalyticsManager_submitNotificationAnalyticsWithComplet
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MONotificationAnalyticsManager *)self defaultsManager];
-    v6 = [v5 objectForKey:@"NextNotificationAnalyticsSubmissionDate"];
+    defaultsManager = [(MONotificationAnalyticsManager *)self defaultsManager];
+    v6 = [defaultsManager objectForKey:@"NextNotificationAnalyticsSubmissionDate"];
 
     if (v6 && [v6 isEqualToDate:v4])
     {
@@ -250,8 +250,8 @@ void __76__MONotificationAnalyticsManager_submitNotificationAnalyticsWithComplet
 
     else
     {
-      v9 = [(MONotificationAnalyticsManager *)self defaultsManager];
-      [v9 setObject:v4 forKey:@"NextNotificationAnalyticsSubmissionDate"];
+      defaultsManager2 = [(MONotificationAnalyticsManager *)self defaultsManager];
+      [defaultsManager2 setObject:v4 forKey:@"NextNotificationAnalyticsSubmissionDate"];
 
       v8 = 1;
     }
@@ -265,7 +265,7 @@ void __76__MONotificationAnalyticsManager_submitNotificationAnalyticsWithComplet
   return v8;
 }
 
-- (BOOL)submitAggregatedNotificationAnalytics:(id *)a3
+- (BOOL)submitAggregatedNotificationAnalytics:(id *)analytics
 {
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -276,7 +276,7 @@ void __76__MONotificationAnalyticsManager_submitNotificationAnalyticsWithComplet
 
   v6 = +[NSDate date];
   v7 = [v6 dateByAddingTimeInterval:-518400.0];
-  v8 = [(MONotificationAnalyticsManager *)self fetchAllNotificationEvents:v7 toEndDate:v6 error:a3];
+  v8 = [(MONotificationAnalyticsManager *)self fetchAllNotificationEvents:v7 toEndDate:v6 error:analytics];
   if (v8)
   {
     v20 = v7;
@@ -287,8 +287,8 @@ void __76__MONotificationAnalyticsManager_submitNotificationAnalyticsWithComplet
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [objc_opt_class() allAnalyticsDeviceTypes];
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v29 count:16];
+    allAnalyticsDeviceTypes = [objc_opt_class() allAnalyticsDeviceTypes];
+    v11 = [allAnalyticsDeviceTypes countByEnumeratingWithState:&v23 objects:v29 count:16];
     if (v11)
     {
       v12 = v11;
@@ -300,14 +300,14 @@ void __76__MONotificationAnalyticsManager_submitNotificationAnalyticsWithComplet
         {
           if (*v24 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allAnalyticsDeviceTypes);
           }
 
-          v15 = [*(*(&v23 + 1) + 8 * v14) integerValue];
-          v16 = [(MONotificationAnalyticsManager *)self filterEventsByDeviceType:v9 deviceType:v15];
+          integerValue = [*(*(&v23 + 1) + 8 * v14) integerValue];
+          v16 = [(MONotificationAnalyticsManager *)self filterEventsByDeviceType:v9 deviceType:integerValue];
           if ([v16 count])
           {
-            v22 = [(MONotificationAnalyticsManager *)self _computeMeasures:v16 deviceType:v15];
+            v22 = [(MONotificationAnalyticsManager *)self _computeMeasures:v16 deviceType:integerValue];
             v17 = v22;
             AnalyticsSendEventLazy();
           }
@@ -318,7 +318,7 @@ void __76__MONotificationAnalyticsManager_submitNotificationAnalyticsWithComplet
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
             {
               *buf = 134217984;
-              v28 = v15;
+              v28 = integerValue;
               _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "No events for deviceType %ld → skipped", buf, 0xCu);
             }
           }
@@ -327,7 +327,7 @@ void __76__MONotificationAnalyticsManager_submitNotificationAnalyticsWithComplet
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v23 objects:v29 count:16];
+        v12 = [allAnalyticsDeviceTypes countByEnumeratingWithState:&v23 objects:v29 count:16];
       }
 
       while (v12);
@@ -350,10 +350,10 @@ void __76__MONotificationAnalyticsManager_submitNotificationAnalyticsWithComplet
   return v8 != 0;
 }
 
-- (id)fetchAllNotificationEvents:(id)a3 toEndDate:(id)a4 error:(id *)a5
+- (id)fetchAllNotificationEvents:(id)events toEndDate:(id)date error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  dateCopy = date;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -367,21 +367,21 @@ void __76__MONotificationAnalyticsManager_submitNotificationAnalyticsWithComplet
   v46[3] = __Block_byref_object_dispose__31;
   v47 = 0;
   v8 = BiomeLibrary();
-  v9 = [v8 Moments];
-  v10 = [v9 Events];
-  v11 = [v10 Notifications];
+  moments = [v8 Moments];
+  events = [moments Events];
+  notifications = [events Notifications];
 
-  v12 = [v11 publisher];
+  publisher = [notifications publisher];
   v13 = dispatch_semaphore_create(0);
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = __77__MONotificationAnalyticsManager_fetchAllNotificationEvents_toEndDate_error___block_invoke;
   v42[3] = &unk_100338AB8;
-  v14 = v6;
+  v14 = eventsCopy;
   v43 = v14;
-  v15 = v7;
+  v15 = dateCopy;
   v44 = v15;
-  v16 = [v12 filterWithIsIncluded:v42];
+  v16 = [publisher filterWithIsIncluded:v42];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = __77__MONotificationAnalyticsManager_fetchAllNotificationEvents_toEndDate_error___block_invoke_2;
@@ -417,7 +417,7 @@ void __76__MONotificationAnalyticsManager_submitNotificationAnalyticsWithComplet
     }
 
     v24 = v21;
-    if (!a5)
+    if (!error)
     {
 LABEL_16:
       v32 = 0;
@@ -426,7 +426,7 @@ LABEL_16:
 
 LABEL_15:
     v32 = 0;
-    *a5 = v24;
+    *error = v24;
     goto LABEL_20;
   }
 
@@ -438,7 +438,7 @@ LABEL_15:
       [(MONotificationAnalyticsManager *)v46 fetchAllNotificationEvents:v25 toEndDate:v26 error:v27, v28, v29, v30, v31];
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -519,15 +519,15 @@ void __77__MONotificationAnalyticsManager_fetchAllNotificationEvents_toEndDate_e
   }
 }
 
-- (id)filterDNUGatedEvents:(id)a3
+- (id)filterDNUGatedEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = [NSPredicate predicateWithBlock:&__block_literal_global_245];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [eventsCopy filteredArrayUsingPredicate:v4];
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(MONotificationAnalyticsManager *)v3 filterDNUGatedEvents:v5];
+    [(MONotificationAnalyticsManager *)eventsCopy filterDNUGatedEvents:v5];
   }
 
   return v5;
@@ -549,18 +549,18 @@ BOOL __55__MONotificationAnalyticsManager_filterDNUGatedEvents___block_invoke(id
   return v4;
 }
 
-- (id)filterEventsByDeviceType:(id)a3 deviceType:(int64_t)a4
+- (id)filterEventsByDeviceType:(id)type deviceType:(int64_t)deviceType
 {
-  v6 = a3;
-  v7 = [(MONotificationAnalyticsManager *)self predicateForAnalyticsDeviceType:a4];
-  v8 = [v6 filteredArrayUsingPredicate:v7];
+  typeCopy = type;
+  v7 = [(MONotificationAnalyticsManager *)self predicateForAnalyticsDeviceType:deviceType];
+  v8 = [typeCopy filteredArrayUsingPredicate:v7];
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityAnalytics);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v11 = 134218496;
-    v12 = a4;
+    deviceTypeCopy = deviceType;
     v13 = 2048;
-    v14 = [v6 count];
+    v14 = [typeCopy count];
     v15 = 2048;
     v16 = [v8 count];
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Filtered events by device type %ld: %lu -> %lu", &v11, 0x20u);
@@ -569,28 +569,28 @@ BOOL __55__MONotificationAnalyticsManager_filterDNUGatedEvents___block_invoke(id
   return v8;
 }
 
-- (id)analyticsDeviceTypeToBMDeviceType:(int64_t)a3
+- (id)analyticsDeviceTypeToBMDeviceType:(int64_t)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     return &__NSArray0__struct;
   }
 
   else
   {
-    return off_10033D748[a3 - 1];
+    return off_10033D748[type - 1];
   }
 }
 
-- (id)predicateForAnalyticsDeviceType:(int64_t)a3
+- (id)predicateForAnalyticsDeviceType:(int64_t)type
 {
-  v3 = [(MONotificationAnalyticsManager *)self analyticsDeviceTypeToBMDeviceType:a3];
+  v3 = [(MONotificationAnalyticsManager *)self analyticsDeviceTypeToBMDeviceType:type];
   if ([v3 count])
   {
     if ([v3 count] == 1)
     {
-      v4 = [v3 firstObject];
-      v5 = [NSPredicate predicateWithFormat:@"deviceType == %@", v4];
+      firstObject = [v3 firstObject];
+      v5 = [NSPredicate predicateWithFormat:@"deviceType == %@", firstObject];
 
       goto LABEL_7;
     }
@@ -609,48 +609,48 @@ LABEL_7:
   return v5;
 }
 
-- (id)_computeMeasures:(id)a3 deviceType:(int64_t)a4
+- (id)_computeMeasures:(id)measures deviceType:(int64_t)type
 {
-  v6 = a3;
+  measuresCopy = measures;
   v7 = +[NSMutableDictionary dictionary];
-  v8 = [NSNumber numberWithInteger:a4];
+  v8 = [NSNumber numberWithInteger:type];
   [v7 setObject:v8 forKeyedSubscript:@"deviceType"];
 
-  v9 = [(MONotificationAnalyticsManager *)self onboardingPersistence];
-  v10 = [v9 getSnapshotDictionaryForAnalytics];
+  onboardingPersistence = [(MONotificationAnalyticsManager *)self onboardingPersistence];
+  getSnapshotDictionaryForAnalytics = [onboardingPersistence getSnapshotDictionaryForAnalytics];
 
-  v11 = [v10 objectForKeyedSubscript:@"settingBroaderSwitchLocation"];
+  v11 = [getSnapshotDictionaryForAnalytics objectForKeyedSubscript:@"settingBroaderSwitchLocation"];
 
   if (v11)
   {
-    v12 = [v10 objectForKeyedSubscript:@"settingBroaderSwitchLocation"];
+    v12 = [getSnapshotDictionaryForAnalytics objectForKeyedSubscript:@"settingBroaderSwitchLocation"];
     [v7 setObject:v12 forKeyedSubscript:@"isSignificantLocationEnabled"];
   }
 
-  v13 = [v10 objectForKeyedSubscript:@"systemNotificationsEnabled"];
+  v13 = [getSnapshotDictionaryForAnalytics objectForKeyedSubscript:@"systemNotificationsEnabled"];
 
   if (v13)
   {
-    v14 = [v10 objectForKeyedSubscript:@"systemNotificationsEnabled"];
+    v14 = [getSnapshotDictionaryForAnalytics objectForKeyedSubscript:@"systemNotificationsEnabled"];
     [v7 setObject:v14 forKeyedSubscript:@"isSystemNotificationsEnabled"];
   }
 
-  v15 = [v10 objectForKeyedSubscript:@"appNotificationsEnabled"];
+  v15 = [getSnapshotDictionaryForAnalytics objectForKeyedSubscript:@"appNotificationsEnabled"];
 
   if (v15)
   {
-    v16 = [v10 objectForKeyedSubscript:@"appNotificationsEnabled"];
+    v16 = [getSnapshotDictionaryForAnalytics objectForKeyedSubscript:@"appNotificationsEnabled"];
     [v7 setObject:v16 forKeyedSubscript:@"isAppNotificationsEnabled"];
   }
 
   v40 = 0;
-  v17 = [NSNumber numberWithUnsignedInteger:[(MONotificationAnalyticsManager *)self countAvailabilityPredictionEvents:v6 eligibleCount:&v40]];
+  v17 = [NSNumber numberWithUnsignedInteger:[(MONotificationAnalyticsManager *)self countAvailabilityPredictionEvents:measuresCopy eligibleCount:&v40]];
   [v7 setObject:v17 forKeyedSubscript:@"totalPredictionCount"];
 
   v18 = [NSNumber numberWithUnsignedInteger:v40];
   [v7 setObject:v18 forKeyedSubscript:@"eligiblePredictionCount"];
 
-  v19 = [(MONotificationAnalyticsManager *)self filterEventsWithRealTimeChecks:v6];
+  v19 = [(MONotificationAnalyticsManager *)self filterEventsWithRealTimeChecks:measuresCopy];
   v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v19 count]);
   [v7 setObject:v20 forKeyedSubscript:@"realTimeCheckCount"];
 
@@ -681,7 +681,7 @@ LABEL_7:
   v29 = [(MONotificationAnalyticsManager *)self countEventsWithBooleanField:@"realTimeCheckIsAtHome" value:1 events:v19];
   [v7 setObject:v29 forKeyedSubscript:@"realTimeCheckIsAtHomeCount"];
 
-  v30 = [(MONotificationAnalyticsManager *)self filterEventsWithEngagement:v6];
+  v30 = [(MONotificationAnalyticsManager *)self filterEventsWithEngagement:measuresCopy];
   v31 = [(MONotificationAnalyticsManager *)self countEventsWithEventType:1 events:v30];
   [v7 setObject:v31 forKeyedSubscript:@"notificationQueuedCount"];
 
@@ -703,7 +703,7 @@ LABEL_7:
   v37 = [(MONotificationAnalyticsManager *)self countEventsWithEventType:7 events:v30];
   [v7 setObject:v37 forKeyedSubscript:@"notificationOverwrittenCount"];
 
-  v38 = [(MONotificationAnalyticsManager *)self findDominantScheduleState:v6];
+  v38 = [(MONotificationAnalyticsManager *)self findDominantScheduleState:measuresCopy];
 
   [v7 setObject:v38 forKeyedSubscript:@"scheduleState"];
 
@@ -719,8 +719,8 @@ LABEL_7:
   *&v6 = 0.4;
   [(MOConfigurationManagerBase *)self->_configurationManager getFloatSettingForKey:@"AvailabilityPredictionProbabilityInsufficientScreentimeThresholdKey" withFallback:v6];
   v8 = v7;
-  v9 = [(MONotificationAnalyticsManager *)self defaultsManager];
-  v10 = [v9 objectForKey:@"AvailabilityPredictionOptimalDateProbability"];
+  defaultsManager = [(MONotificationAnalyticsManager *)self defaultsManager];
+  v10 = [defaultsManager objectForKey:@"AvailabilityPredictionOptimalDateProbability"];
 
   if (v10 && ([v10 doubleValue], v11 < 0.5))
   {
@@ -745,16 +745,16 @@ LABEL_7:
   return v12;
 }
 
-- (unint64_t)countAvailabilityPredictionEvents:(id)a3 eligibleCount:(unint64_t *)a4
+- (unint64_t)countAvailabilityPredictionEvents:(id)events eligibleCount:(unint64_t *)count
 {
-  v6 = a3;
+  eventsCopy = events;
   [(MONotificationAnalyticsManager *)self getAvailabilityProbabilityThreshold];
   v8 = v7;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v6;
+  v9 = eventsCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -794,77 +794,77 @@ LABEL_7:
     v13 = 0;
   }
 
-  *a4 = v12;
+  *count = v12;
   return v13;
 }
 
-- (id)filterEventsWithRealTimeChecks:(id)a3
+- (id)filterEventsWithRealTimeChecks:(id)checks
 {
-  v3 = a3;
+  checksCopy = checks;
   v4 = [NSPredicate predicateWithBlock:&__block_literal_global_325];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [checksCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (id)filterEventsWithEngagement:(id)a3
+- (id)filterEventsWithEngagement:(id)engagement
 {
-  v3 = a3;
+  engagementCopy = engagement;
   v4 = [NSPredicate predicateWithBlock:&__block_literal_global_327];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [engagementCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (id)fieldExtractorForName:(id)a3
+- (id)fieldExtractorForName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"realTimeCheckRejected"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"realTimeCheckRejected"])
   {
     v4 = &__block_literal_global_330;
   }
 
-  else if ([v3 isEqualToString:@"isSignificantLocationEnabled"])
+  else if ([nameCopy isEqualToString:@"isSignificantLocationEnabled"])
   {
     v4 = &__block_literal_global_332;
   }
 
-  else if ([v3 isEqualToString:@"realTimeCheckIsTraveling"])
+  else if ([nameCopy isEqualToString:@"realTimeCheckIsTraveling"])
   {
     v4 = &__block_literal_global_334;
   }
 
-  else if ([v3 isEqualToString:@"realTimeCheckIsPlaceEligible"])
+  else if ([nameCopy isEqualToString:@"realTimeCheckIsPlaceEligible"])
   {
     v4 = &__block_literal_global_336;
   }
 
-  else if ([v3 isEqualToString:@"realTimeCheckNoVisit"])
+  else if ([nameCopy isEqualToString:@"realTimeCheckNoVisit"])
   {
     v4 = &__block_literal_global_338;
   }
 
-  else if ([v3 isEqualToString:@"realTimeCheckIsInVisit"])
+  else if ([nameCopy isEqualToString:@"realTimeCheckIsInVisit"])
   {
     v4 = &__block_literal_global_340;
   }
 
-  else if ([v3 isEqualToString:@"realTimeCheckIsInWorkoutHealthKit"])
+  else if ([nameCopy isEqualToString:@"realTimeCheckIsInWorkoutHealthKit"])
   {
     v4 = &__block_literal_global_342_0;
   }
 
-  else if ([v3 isEqualToString:@"realTimeCheckIsInWorkoutMotion"])
+  else if ([nameCopy isEqualToString:@"realTimeCheckIsInWorkoutMotion"])
   {
     v4 = &__block_literal_global_344;
   }
 
-  else if ([v3 isEqualToString:@"realTimeCheckIsJournaling"])
+  else if ([nameCopy isEqualToString:@"realTimeCheckIsJournaling"])
   {
     v4 = &__block_literal_global_346;
   }
 
-  else if ([v3 isEqualToString:@"realTimeCheckIsAtHome"])
+  else if ([nameCopy isEqualToString:@"realTimeCheckIsAtHome"])
   {
     v4 = &__block_literal_global_348;
   }
@@ -1037,20 +1037,20 @@ NSNumber *__cdecl __56__MONotificationAnalyticsManager_fieldExtractorForName___b
   return v3;
 }
 
-- (id)countEventsWithBooleanField:(id)a3 value:(BOOL)a4 events:(id)a5
+- (id)countEventsWithBooleanField:(id)field value:(BOOL)value events:(id)events
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(MONotificationAnalyticsManager *)self fieldExtractorForName:v8];
+  valueCopy = value;
+  fieldCopy = field;
+  eventsCopy = events;
+  v10 = [(MONotificationAnalyticsManager *)self fieldExtractorForName:fieldCopy];
   if (v10)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v22 = v9;
-    v11 = v9;
+    v22 = eventsCopy;
+    v11 = eventsCopy;
     v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v12)
     {
@@ -1070,7 +1070,7 @@ NSNumber *__cdecl __56__MONotificationAnalyticsManager_fieldExtractorForName___b
           v18 = v17;
           if (v17)
           {
-            v14 += [v17 BOOLValue] ^ v6 ^ 1;
+            v14 += [v17 BOOLValue] ^ valueCopy ^ 1;
           }
         }
 
@@ -1086,7 +1086,7 @@ NSNumber *__cdecl __56__MONotificationAnalyticsManager_fieldExtractorForName___b
     }
 
     v20 = [NSNumber numberWithUnsignedInteger:v14];
-    v9 = v22;
+    eventsCopy = v22;
   }
 
   else
@@ -1103,14 +1103,14 @@ NSNumber *__cdecl __56__MONotificationAnalyticsManager_fieldExtractorForName___b
   return v20;
 }
 
-- (id)countEventsWithEventType:(int64_t)a3 events:(id)a4
+- (id)countEventsWithEventType:(int64_t)type events:(id)events
 {
-  v5 = a4;
+  eventsCopy = events;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [eventsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1122,16 +1122,16 @@ NSNumber *__cdecl __56__MONotificationAnalyticsManager_fieldExtractorForName___b
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(eventsCopy);
         }
 
-        if ([*(*(&v13 + 1) + 8 * i) eventType] == a3)
+        if ([*(*(&v13 + 1) + 8 * i) eventType] == type)
         {
           ++v8;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [eventsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -1147,18 +1147,18 @@ NSNumber *__cdecl __56__MONotificationAnalyticsManager_fieldExtractorForName___b
   return v11;
 }
 
-- (id)findDominantScheduleState:(id)a3
+- (id)findDominantScheduleState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [stateCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
-    v6 = 0;
+    schedulingState = 0;
     v7 = *v13;
     do
     {
@@ -1166,17 +1166,17 @@ NSNumber *__cdecl __56__MONotificationAnalyticsManager_fieldExtractorForName___b
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(stateCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 schedulingState] > v6)
+        if ([v9 schedulingState] > schedulingState)
         {
-          v6 = [v9 schedulingState];
+          schedulingState = [v9 schedulingState];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [stateCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -1184,10 +1184,10 @@ NSNumber *__cdecl __56__MONotificationAnalyticsManager_fieldExtractorForName___b
 
   else
   {
-    v6 = 0;
+    schedulingState = 0;
   }
 
-  v10 = [NSNumber numberWithInt:v6];
+  v10 = [NSNumber numberWithInt:schedulingState];
 
   return v10;
 }

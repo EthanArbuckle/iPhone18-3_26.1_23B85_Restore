@@ -1,27 +1,27 @@
 @interface FigAlternatePredicateValidator
-+ (BOOL)validateKeyPathForMinMaxQualifiers:(id)a3;
-- (BOOL)_allowCallingFunctionWithName:(id)a3;
-- (BOOL)_keyPathComponentIsAllowed:(id)a3;
-- (BOOL)_unsafeEvaluateKeyPathWithDummy:(id)a3;
-- (BOOL)_validateKeyPath:(id)a3;
-- (BOOL)validateWithError:(id *)a3;
-- (FigAlternatePredicateValidator)initWithPredicate:(id)a3;
++ (BOOL)validateKeyPathForMinMaxQualifiers:(id)qualifiers;
+- (BOOL)_allowCallingFunctionWithName:(id)name;
+- (BOOL)_keyPathComponentIsAllowed:(id)allowed;
+- (BOOL)_unsafeEvaluateKeyPathWithDummy:(id)dummy;
+- (BOOL)_validateKeyPath:(id)path;
+- (BOOL)validateWithError:(id *)error;
+- (FigAlternatePredicateValidator)initWithPredicate:(id)predicate;
 - (void)dealloc;
-- (void)visitPredicate:(id)a3;
-- (void)visitPredicateExpression:(id)a3;
-- (void)visitPredicateOperator:(id)a3;
+- (void)visitPredicate:(id)predicate;
+- (void)visitPredicateExpression:(id)expression;
+- (void)visitPredicateOperator:(id)operator;
 @end
 
 @implementation FigAlternatePredicateValidator
 
-- (FigAlternatePredicateValidator)initWithPredicate:(id)a3
+- (FigAlternatePredicateValidator)initWithPredicate:(id)predicate
 {
   v6.receiver = self;
   v6.super_class = FigAlternatePredicateValidator;
   v4 = [(FigAlternatePredicateValidator *)&v6 init];
   if (v4)
   {
-    v4->_predicate = [a3 copy];
+    v4->_predicate = [predicate copy];
     v4->_mutex = FigSimpleMutexCreate();
     v4->_result = 1;
   }
@@ -37,7 +37,7 @@
   [(FigAlternatePredicateValidator *)&v3 dealloc];
 }
 
-- (void)visitPredicate:(id)a3
+- (void)visitPredicate:(id)predicate
 {
   v14[1] = *MEMORY[0x1E69E9840];
   if (self->_result)
@@ -49,7 +49,7 @@
     v9 = objc_getClass("AVAssetVariantAudioSampleRatePredicate");
     v10 = objc_getClass("AVAssetVariantPresentationWidthPredicate");
     v11 = objc_getClass("AVAssetVariantPresentationHeightPredicate");
-    if (([a3 isMemberOfClass:objc_opt_class()] & 1) == 0 && (objc_msgSend(a3, "isMemberOfClass:", objc_opt_class()) & 1) == 0 && (!Class || (objc_msgSend(a3, "isMemberOfClass:", Class) & 1) == 0) && (!v6 || (objc_msgSend(a3, "isMemberOfClass:", v6) & 1) == 0) && (!v7 || (objc_msgSend(a3, "isMemberOfClass:", v7) & 1) == 0) && (!v8 || (objc_msgSend(a3, "isMemberOfClass:", v8) & 1) == 0) && (!v10 || (objc_msgSend(a3, "isMemberOfClass:", v10) & 1) == 0) && (!v11 || (objc_msgSend(a3, "isMemberOfClass:", v11) & 1) == 0) && (!v9 || (objc_msgSend(a3, "isMemberOfClass:", v9) & 1) == 0))
+    if (([predicate isMemberOfClass:objc_opt_class()] & 1) == 0 && (objc_msgSend(predicate, "isMemberOfClass:", objc_opt_class()) & 1) == 0 && (!Class || (objc_msgSend(predicate, "isMemberOfClass:", Class) & 1) == 0) && (!v6 || (objc_msgSend(predicate, "isMemberOfClass:", v6) & 1) == 0) && (!v7 || (objc_msgSend(predicate, "isMemberOfClass:", v7) & 1) == 0) && (!v8 || (objc_msgSend(predicate, "isMemberOfClass:", v8) & 1) == 0) && (!v10 || (objc_msgSend(predicate, "isMemberOfClass:", v10) & 1) == 0) && (!v11 || (objc_msgSend(predicate, "isMemberOfClass:", v11) & 1) == 0) && (!v9 || (objc_msgSend(predicate, "isMemberOfClass:", v9) & 1) == 0))
     {
       self->_result = 0;
       v13 = *MEMORY[0x1E696A278];
@@ -60,14 +60,14 @@
   }
 }
 
-- (BOOL)_unsafeEvaluateKeyPathWithDummy:(id)a3
+- (BOOL)_unsafeEvaluateKeyPathWithDummy:(id)dummy
 {
   v4 = +[FigAlternateObjC dummy];
-  v6 = [v4 valueForKeyPath:a3];
-  return [v4 validateValue:&v6 forKeyPath:a3 error:0];
+  v6 = [v4 valueForKeyPath:dummy];
+  return [v4 validateValue:&v6 forKeyPath:dummy error:0];
 }
 
-- (BOOL)_keyPathComponentIsAllowed:(id)a3
+- (BOOL)_keyPathComponentIsAllowed:(id)allowed
 {
   if (_keyPathComponentIsAllowed__buildValidKeysOnce != -1)
   {
@@ -76,7 +76,7 @@
 
   v4 = _keyPathComponentIsAllowed__sValidKeys;
 
-  return [v4 containsObject:a3];
+  return [v4 containsObject:allowed];
 }
 
 id __61__FigAlternatePredicateValidator__keyPathComponentIsAllowed___block_invoke()
@@ -86,13 +86,13 @@ id __61__FigAlternatePredicateValidator__keyPathComponentIsAllowed___block_invok
   return result;
 }
 
-- (BOOL)_validateKeyPath:(id)a3
+- (BOOL)_validateKeyPath:(id)path
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [a3 length];
+  v5 = [path length];
   if (v5)
   {
-    v6 = [(FigAlternatePredicateValidator *)self _keyPathComponents:a3];
+    v6 = [(FigAlternatePredicateValidator *)self _keyPathComponents:path];
     if ([v6 count] <= 5)
     {
       v14 = 0u;
@@ -135,7 +135,7 @@ LABEL_6:
       else
       {
 LABEL_12:
-        LOBYTE(v5) = [(FigAlternatePredicateValidator *)self _unsafeEvaluateKeyPathWithDummy:a3];
+        LOBYTE(v5) = [(FigAlternatePredicateValidator *)self _unsafeEvaluateKeyPathWithDummy:path];
       }
     }
 
@@ -148,7 +148,7 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)_allowCallingFunctionWithName:(id)a3
+- (BOOL)_allowCallingFunctionWithName:(id)name
 {
   if (_allowCallingFunctionWithName__sOnceToken != -1)
   {
@@ -157,7 +157,7 @@ LABEL_12:
 
   v4 = _allowCallingFunctionWithName__sValidFunctions;
 
-  return [v4 containsObject:a3];
+  return [v4 containsObject:name];
 }
 
 id __64__FigAlternatePredicateValidator__allowCallingFunctionWithName___block_invoke()
@@ -167,7 +167,7 @@ id __64__FigAlternatePredicateValidator__allowCallingFunctionWithName___block_in
   return result;
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
   v18[1] = *MEMORY[0x1E69E9840];
   if (!self->_result)
@@ -175,10 +175,10 @@ id __64__FigAlternatePredicateValidator__allowCallingFunctionWithName___block_in
     return;
   }
 
-  v5 = [a3 expressionType];
-  if (v5 > 9)
+  expressionType = [expression expressionType];
+  if (expressionType > 9)
   {
-    if (v5 == 19)
+    if (expressionType == 19)
     {
       v11 = *MEMORY[0x1E696A278];
       v12 = @"failed to validate NSPredicate because block expressions are not supported";
@@ -188,17 +188,17 @@ id __64__FigAlternatePredicateValidator__allowCallingFunctionWithName___block_in
       goto LABEL_14;
     }
 
-    if (v5 != 10)
+    if (expressionType != 10)
     {
       return;
     }
 
 LABEL_9:
-    v9 = [a3 keyPath];
+    keyPath = [expression keyPath];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([(FigAlternatePredicateValidator *)self _validateKeyPath:v9])
+      if ([(FigAlternatePredicateValidator *)self _validateKeyPath:keyPath])
       {
         return;
       }
@@ -222,12 +222,12 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (v5 == 3)
+  if (expressionType == 3)
   {
     goto LABEL_9;
   }
 
-  if (v5 == 4 && !-[FigAlternatePredicateValidator _allowCallingFunctionWithName:](self, "_allowCallingFunctionWithName:", [a3 function]))
+  if (expressionType == 4 && !-[FigAlternatePredicateValidator _allowCallingFunctionWithName:](self, "_allowCallingFunctionWithName:", [expression function]))
   {
     v13 = *MEMORY[0x1E696A278];
     v14 = @"failed to validate NSPredicate because calling the supplied function is forbidden";
@@ -241,10 +241,10 @@ LABEL_14:
   }
 }
 
-- (void)visitPredicateOperator:(id)a3
+- (void)visitPredicateOperator:(id)operator
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  if (self->_result && [a3 operatorType] == 11)
+  if (self->_result && [operator operatorType] == 11)
   {
     v5 = *MEMORY[0x1E696A278];
     v6[0] = @"failed to validate NSPredicate because custom selector operators are not supported";
@@ -254,10 +254,10 @@ LABEL_14:
   }
 }
 
-+ (BOOL)validateKeyPathForMinMaxQualifiers:(id)a3
++ (BOOL)validateKeyPathForMinMaxQualifiers:(id)qualifiers
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [qualifiers componentsSeparatedByString:@"."];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -304,7 +304,7 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)validateWithError:(id *)a3
+- (BOOL)validateWithError:(id *)error
 {
   FigSimpleMutexLock();
   if (!self->_isEvaluated)
@@ -313,9 +313,9 @@ LABEL_9:
   }
 
   FigSimpleMutexUnlock();
-  if (a3)
+  if (error)
   {
-    *a3 = self->_error;
+    *error = self->_error;
   }
 
   return self->_result;

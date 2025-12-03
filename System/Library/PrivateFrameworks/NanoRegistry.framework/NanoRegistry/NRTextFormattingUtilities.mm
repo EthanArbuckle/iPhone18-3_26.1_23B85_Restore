@@ -1,21 +1,21 @@
 @interface NRTextFormattingUtilities
-+ (id)dateFormatter:(id)a3;
-+ (id)nameCounter:(id)a3;
-+ (id)prefixLinesWithString:(id)a3 withText:(id)a4;
++ (id)dateFormatter:(id)formatter;
++ (id)nameCounter:(id)counter;
++ (id)prefixLinesWithString:(id)string withText:(id)text;
 @end
 
 @implementation NRTextFormattingUtilities
 
-+ (id)prefixLinesWithString:(id)a3 withText:(id)a4
++ (id)prefixLinesWithString:(id)string withText:(id)text
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  textCopy = text;
+  stringCopy = string;
   v7 = objc_opt_new();
   context = objc_autoreleasePoolPush();
-  v28 = v5;
-  v8 = [v5 componentsSeparatedByString:@"\n"];
-  v9 = [v6 stringByAppendingString:@" "];
+  v28 = textCopy;
+  v8 = [textCopy componentsSeparatedByString:@"\n"];
+  v9 = [stringCopy stringByAppendingString:@" "];
 
   v10 = [v9 length] >> 3;
   v29 = v9;
@@ -100,9 +100,9 @@
   return v7;
 }
 
-+ (id)dateFormatter:(id)a3
++ (id)dateFormatter:(id)formatter
 {
-  v3 = a3;
+  formatterCopy = formatter;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -119,7 +119,7 @@
   v9 = __43__NRTextFormattingUtilities_dateFormatter___block_invoke_2;
   v10 = &unk_1E86DB8F0;
   v12 = &v13;
-  v4 = v3;
+  v4 = formatterCopy;
   v11 = v4;
   v5 = v8;
   os_unfair_lock_lock_with_options();
@@ -155,15 +155,15 @@ uint64_t __43__NRTextFormattingUtilities_dateFormatter___block_invoke_2(uint64_t
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-+ (id)nameCounter:(id)a3
++ (id)nameCounter:(id)counter
 {
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  counterCopy = counter;
+  v4 = [counterCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -174,7 +174,7 @@ LABEL_3:
     {
       if (*v21 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(counterCopy);
       }
 
       v8 = *(*(&v20 + 1) + 8 * v7);
@@ -182,18 +182,18 @@ LABEL_3:
       v10 = [v9 mutableCopy];
 
       v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v10, "count") - 1}];
-      v12 = [v11 integerValue];
+      integerValue = [v11 integerValue];
 
-      if (v12 < 1)
+      if (integerValue < 1)
       {
         v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ 1", v8];
       }
 
       else
       {
-        v13 = v12 + 1;
-        v14 = [v10 lastObject];
-        [v10 removeObject:v14];
+        v13 = integerValue + 1;
+        lastObject = [v10 lastObject];
+        [v10 removeObject:lastObject];
 
         v15 = [v10 componentsJoinedByString:@" "];
 
@@ -201,7 +201,7 @@ LABEL_3:
         v8 = v15;
       }
 
-      v17 = [v3 containsObject:v16];
+      v17 = [counterCopy containsObject:v16];
       if (!v17)
       {
         break;
@@ -209,7 +209,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v5 = [counterCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v5)
         {
           goto LABEL_3;

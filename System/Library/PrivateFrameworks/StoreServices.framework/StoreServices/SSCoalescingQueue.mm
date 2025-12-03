@@ -1,13 +1,13 @@
 @interface SSCoalescingQueue
-- (SSCoalescingQueue)initWithBlock:(id)a3;
+- (SSCoalescingQueue)initWithBlock:(id)block;
 - (void)executeBlock;
 @end
 
 @implementation SSCoalescingQueue
 
-- (SSCoalescingQueue)initWithBlock:(id)a3
+- (SSCoalescingQueue)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = SSCoalescingQueue;
   v5 = [(SSCoalescingQueue *)&v11 init];
@@ -21,7 +21,7 @@
     v9 = *(v5 + 2);
     *(v5 + 2) = v8;
 
-    dispatch_source_set_event_handler(*(v5 + 2), v4);
+    dispatch_source_set_event_handler(*(v5 + 2), blockCopy);
     dispatch_resume(*(v5 + 2));
   }
 
@@ -30,8 +30,8 @@
 
 - (void)executeBlock
 {
-  v2 = [(SSCoalescingQueue *)self source];
-  dispatch_source_merge_data(v2, 1uLL);
+  source = [(SSCoalescingQueue *)self source];
+  dispatch_source_merge_data(source, 1uLL);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface MapsSuggestionsRealFlightRequester
-- (BOOL)requestFlightsWithFullFlightNumber:(id)a3 departureDate:(id)a4 handler:(id)a5;
+- (BOOL)requestFlightsWithFullFlightNumber:(id)number departureDate:(id)date handler:(id)handler;
 - (NSString)uniqueName;
 - (id)session;
 @end
@@ -31,13 +31,13 @@ void __45__MapsSuggestionsRealFlightRequester_session__block_invoke()
   return [v2 description];
 }
 
-- (BOOL)requestFlightsWithFullFlightNumber:(id)a3 departureDate:(id)a4 handler:(id)a5
+- (BOOL)requestFlightsWithFullFlightNumber:(id)number departureDate:(id)date handler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  numberCopy = number;
+  dateCopy = date;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v23 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -56,7 +56,7 @@ void __45__MapsSuggestionsRealFlightRequester_session__block_invoke()
     goto LABEL_15;
   }
 
-  if (![v8 length])
+  if (![numberCopy length])
   {
     v23 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -81,7 +81,7 @@ LABEL_22:
 
   v11 = GEOFindOrCreateLog();
   v12 = v11;
-  if (!v9)
+  if (!dateCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -102,18 +102,18 @@ LABEL_22:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = numberCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = dateCopy;
     _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "requestFlightsFor(%@ %@)", buf, 0x16u);
   }
 
   v13 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(MapsSuggestionsRealFlightRequester *)self uniqueName];
+    uniqueName = [(MapsSuggestionsRealFlightRequester *)self uniqueName];
     *buf = 138412546;
-    *&buf[4] = v14;
+    *&buf[4] = uniqueName;
     *&buf[12] = 2080;
     *&buf[14] = "requestFlightsFor";
     _os_log_impl(&dword_1C5126000, v13, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -139,18 +139,18 @@ LABEL_22:
   }
 
   v17 = _MapsSuggestionsBundle_s_bundleWithMapsSuggestionsIdentifier_4;
-  v18 = [v17 bundleIdentifier];
-  v19 = [v16 flightRequestForQuery:v8 date:v9 appBundleId:v18];
+  bundleIdentifier = [v17 bundleIdentifier];
+  v19 = [v16 flightRequestForQuery:numberCopy date:dateCopy appBundleId:bundleIdentifier];
 
-  v20 = [(MapsSuggestionsRealFlightRequester *)self session];
+  session = [(MapsSuggestionsRealFlightRequester *)self session];
   v25 = MEMORY[0x1E69E9820];
   v26 = 3221225472;
   v27 = __95__MapsSuggestionsRealFlightRequester_requestFlightsWithFullFlightNumber_departureDate_handler___block_invoke;
   v28 = &unk_1E81F6190;
   objc_copyWeak(&v31, &location);
-  v30 = v10;
-  v29 = v8;
-  v21 = [v20 taskWithRequest:v19 completion:&v25];
+  v30 = handlerCopy;
+  v29 = numberCopy;
+  v21 = [session taskWithRequest:v19 completion:&v25];
 
   [v21 resume];
   objc_destroyWeak(&v31);
@@ -285,23 +285,23 @@ LABEL_25:
 
 - (id)session
 {
-  if (a1)
+  if (self)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __45__MapsSuggestionsRealFlightRequester_session__block_invoke;
     block[3] = &unk_1E81F6168;
-    block[4] = a1;
+    block[4] = self;
     if (qword_1EDC51EC0 != -1)
     {
       dispatch_once(&qword_1EDC51EC0, block);
     }
 
-    a1 = _MergedGlobals_1;
+    self = _MergedGlobals_1;
     v1 = block[6];
   }
 
-  return a1;
+  return self;
 }
 
 @end

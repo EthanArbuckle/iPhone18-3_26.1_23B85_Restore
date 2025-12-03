@@ -1,40 +1,40 @@
 @interface PHPosterNameViewModel
 - (BOOL)isVisible;
-- (BOOL)shouldUpdateForCall:(id)a3;
-- (PHPosterNameViewModel)initWithCall:(id)a3 posterNameTextView:(id)a4 priorityPosterNameTextView:(id)a5;
+- (BOOL)shouldUpdateForCall:(id)call;
+- (PHPosterNameViewModel)initWithCall:(id)call posterNameTextView:(id)view priorityPosterNameTextView:(id)textView;
 - (void)removeFromSuperview;
-- (void)transitionCallToActiveStateAnimated:(BOOL)a3;
-- (void)updatePosterNameAlpha:(double)a3;
-- (void)updateStatus:(id)a3;
-- (void)updateStatusFromParticipantsView:(id)a3;
-- (void)updateViewModelForParticipantsView:(id)a3;
+- (void)transitionCallToActiveStateAnimated:(BOOL)animated;
+- (void)updatePosterNameAlpha:(double)alpha;
+- (void)updateStatus:(id)status;
+- (void)updateStatusFromParticipantsView:(id)view;
+- (void)updateViewModelForParticipantsView:(id)view;
 @end
 
 @implementation PHPosterNameViewModel
 
-- (PHPosterNameViewModel)initWithCall:(id)a3 posterNameTextView:(id)a4 priorityPosterNameTextView:(id)a5
+- (PHPosterNameViewModel)initWithCall:(id)call posterNameTextView:(id)view priorityPosterNameTextView:(id)textView
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  callCopy = call;
+  viewCopy = view;
+  textViewCopy = textView;
   v18.receiver = self;
   v18.super_class = PHPosterNameViewModel;
   v12 = [(PHPosterNameViewModel *)&v18 init];
   if (v12)
   {
-    v13 = [v10 titleText];
-    v14 = [v13 length];
+    titleText = [viewCopy titleText];
+    v14 = [titleText length];
 
     if (!v14)
     {
-      v15 = [v9 handle];
-      v16 = [v15 value];
-      [v10 setTitleText:v16];
+      handle = [callCopy handle];
+      value = [handle value];
+      [viewCopy setTitleText:value];
     }
 
-    objc_storeStrong(&v12->_call, a3);
-    objc_storeStrong(&v12->_posterNameTextView, a4);
-    objc_storeStrong(&v12->_priorityPosterNameTextView, a5);
+    objc_storeStrong(&v12->_call, call);
+    objc_storeStrong(&v12->_posterNameTextView, view);
+    objc_storeStrong(&v12->_priorityPosterNameTextView, textView);
   }
 
   return v12;
@@ -42,23 +42,23 @@
 
 - (BOOL)isVisible
 {
-  v3 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
-  v4 = v3;
-  if (v3)
+  priorityPosterNameTextView = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
+  v4 = priorityPosterNameTextView;
+  if (priorityPosterNameTextView)
   {
-    v5 = v3;
+    posterNameTextView = priorityPosterNameTextView;
   }
 
   else
   {
-    v5 = [(PHPosterNameViewModel *)self posterNameTextView];
+    posterNameTextView = [(PHPosterNameViewModel *)self posterNameTextView];
   }
 
-  v6 = v5;
+  v6 = posterNameTextView;
 
-  v7 = [v6 viewController];
-  v8 = [v7 view];
-  [v8 alpha];
+  viewController = [v6 viewController];
+  view = [viewController view];
+  [view alpha];
   v10 = v9 > 0.0;
 
   return v10;
@@ -66,124 +66,124 @@
 
 - (void)removeFromSuperview
 {
-  v3 = [(PHPosterNameViewModel *)self posterNameTextView];
-  v4 = [v3 viewController];
-  v5 = [v4 view];
-  [v5 removeFromSuperview];
+  posterNameTextView = [(PHPosterNameViewModel *)self posterNameTextView];
+  viewController = [posterNameTextView viewController];
+  view = [viewController view];
+  [view removeFromSuperview];
 
-  v6 = [(PHPosterNameViewModel *)self posterNameTextView];
-  v7 = [v6 emojiViewController];
-  v8 = [v7 view];
-  [v8 removeFromSuperview];
+  posterNameTextView2 = [(PHPosterNameViewModel *)self posterNameTextView];
+  emojiViewController = [posterNameTextView2 emojiViewController];
+  view2 = [emojiViewController view];
+  [view2 removeFromSuperview];
 
-  v9 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
+  priorityPosterNameTextView = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
 
-  if (v9)
+  if (priorityPosterNameTextView)
   {
-    v10 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
-    v11 = [v10 viewController];
-    v12 = [v11 view];
-    [v12 removeFromSuperview];
+    priorityPosterNameTextView2 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
+    viewController2 = [priorityPosterNameTextView2 viewController];
+    view3 = [viewController2 view];
+    [view3 removeFromSuperview];
 
-    v15 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
-    v13 = [v15 emojiViewController];
-    v14 = [v13 view];
-    [v14 removeFromSuperview];
+    priorityPosterNameTextView3 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
+    emojiViewController2 = [priorityPosterNameTextView3 emojiViewController];
+    view4 = [emojiViewController2 view];
+    [view4 removeFromSuperview];
   }
 }
 
-- (void)transitionCallToActiveStateAnimated:(BOOL)a3
+- (void)transitionCallToActiveStateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PHPosterNameViewModel *)self posterNameTextView];
-  [v5 transitionCallToActiveStateAnimated:v3];
+  animatedCopy = animated;
+  posterNameTextView = [(PHPosterNameViewModel *)self posterNameTextView];
+  [posterNameTextView transitionCallToActiveStateAnimated:animatedCopy];
 
-  v6 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
+  priorityPosterNameTextView = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
+
+  if (priorityPosterNameTextView)
+  {
+    priorityPosterNameTextView2 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
+    [priorityPosterNameTextView2 transitionCallToActiveStateAnimated:animatedCopy];
+  }
+}
+
+- (void)updateStatus:(id)status
+{
+  statusCopy = status;
+  posterNameTextView = [(PHPosterNameViewModel *)self posterNameTextView];
+  [posterNameTextView setStatusText:statusCopy];
+
+  priorityPosterNameTextView = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
+
+  if (priorityPosterNameTextView)
+  {
+    priorityPosterNameTextView2 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
+    [priorityPosterNameTextView2 setStatusText:statusCopy];
+  }
+}
+
+- (void)updateViewModelForParticipantsView:(id)view
+{
+  viewCopy = view;
+  currentCall = [viewCopy currentCall];
+  v6 = [(PHPosterNameViewModel *)self shouldUpdateForCall:currentCall];
+
+  singleCallLabelView = [viewCopy singleCallLabelView];
 
   if (v6)
   {
-    v7 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
-    [v7 transitionCallToActiveStateAnimated:v3];
-  }
-}
-
-- (void)updateStatus:(id)a3
-{
-  v7 = a3;
-  v4 = [(PHPosterNameViewModel *)self posterNameTextView];
-  [v4 setStatusText:v7];
-
-  v5 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
-
-  if (v5)
-  {
-    v6 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
-    [v6 setStatusText:v7];
-  }
-}
-
-- (void)updateViewModelForParticipantsView:(id)a3
-{
-  v4 = a3;
-  v5 = [v4 currentCall];
-  v6 = [(PHPosterNameViewModel *)self shouldUpdateForCall:v5];
-
-  v8 = [v4 singleCallLabelView];
-
-  if (v6)
-  {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  [v8 setPosterNameViewModel:v7];
+  [singleCallLabelView setPosterNameViewModel:selfCopy];
 }
 
-- (void)updatePosterNameAlpha:(double)a3
+- (void)updatePosterNameAlpha:(double)alpha
 {
-  v5 = [(PHPosterNameViewModel *)self posterNameTextView];
-  v6 = [v5 viewController];
-  v7 = [v6 view];
-  [v7 setAlpha:a3];
+  posterNameTextView = [(PHPosterNameViewModel *)self posterNameTextView];
+  viewController = [posterNameTextView viewController];
+  view = [viewController view];
+  [view setAlpha:alpha];
 
-  v8 = [(PHPosterNameViewModel *)self posterNameTextView];
-  v9 = [v8 emojiViewController];
-  v10 = [v9 view];
-  [v10 setAlpha:a3];
+  posterNameTextView2 = [(PHPosterNameViewModel *)self posterNameTextView];
+  emojiViewController = [posterNameTextView2 emojiViewController];
+  view2 = [emojiViewController view];
+  [view2 setAlpha:alpha];
 
-  v11 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
+  priorityPosterNameTextView = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
 
-  if (v11)
+  if (priorityPosterNameTextView)
   {
-    v12 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
-    v13 = [v12 viewController];
-    v14 = [v13 view];
-    [v14 setAlpha:a3];
+    priorityPosterNameTextView2 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
+    viewController2 = [priorityPosterNameTextView2 viewController];
+    view3 = [viewController2 view];
+    [view3 setAlpha:alpha];
 
-    v17 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
-    v15 = [v17 emojiViewController];
-    v16 = [v15 view];
-    [v16 setAlpha:a3];
+    priorityPosterNameTextView3 = [(PHPosterNameViewModel *)self priorityPosterNameTextView];
+    emojiViewController2 = [priorityPosterNameTextView3 emojiViewController];
+    view4 = [emojiViewController2 view];
+    [view4 setAlpha:alpha];
   }
 }
 
-- (void)updateStatusFromParticipantsView:(id)a3
+- (void)updateStatusFromParticipantsView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 singleCallLabelView];
-  v6 = [v5 statusLabel];
-  v9 = [v6 text];
+  viewCopy = view;
+  singleCallLabelView = [viewCopy singleCallLabelView];
+  statusLabel = [singleCallLabelView statusLabel];
+  text = [statusLabel text];
 
-  v7 = [v4 currentCall];
+  currentCall = [viewCopy currentCall];
 
-  LOBYTE(v4) = [(PHPosterNameViewModel *)self shouldUpdateForCall:v7];
-  if (v4)
+  LOBYTE(viewCopy) = [(PHPosterNameViewModel *)self shouldUpdateForCall:currentCall];
+  if (viewCopy)
   {
-    v8 = v9;
+    v8 = text;
   }
 
   else
@@ -196,18 +196,18 @@
   [(PHPosterNameViewModel *)self updateStatus:v8];
 }
 
-- (BOOL)shouldUpdateForCall:(id)a3
+- (BOOL)shouldUpdateForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(PHPosterNameViewModel *)self call];
+  callCopy = call;
+  call = [(PHPosterNameViewModel *)self call];
 
   v6 = 1;
-  if (v4 && v5)
+  if (callCopy && call)
   {
-    v7 = [(PHPosterNameViewModel *)self call];
-    v8 = [v7 uniqueProxyIdentifier];
-    v9 = [v4 uniqueProxyIdentifier];
-    v6 = [v8 isEqualToString:v9];
+    call2 = [(PHPosterNameViewModel *)self call];
+    uniqueProxyIdentifier = [call2 uniqueProxyIdentifier];
+    uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
+    v6 = [uniqueProxyIdentifier isEqualToString:uniqueProxyIdentifier2];
   }
 
   return v6;

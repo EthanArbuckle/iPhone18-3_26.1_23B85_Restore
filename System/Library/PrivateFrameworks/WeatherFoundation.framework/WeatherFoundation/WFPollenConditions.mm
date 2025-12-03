@@ -1,16 +1,16 @@
 @interface WFPollenConditions
-- (WFPollenConditions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFPollenConditions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFPollenConditions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(WFPollenConditions *)self date];
-  v7 = [v6 copyWithZone:a3];
+  date = [(WFPollenConditions *)self date];
+  v7 = [date copyWithZone:zone];
   v8 = v5[1];
   v5[1] = v7;
 
@@ -21,37 +21,37 @@
   return v5;
 }
 
-- (WFPollenConditions)initWithCoder:(id)a3
+- (WFPollenConditions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = WFPollenConditions;
   v5 = [(WFPollenConditions *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFPollenConditionsDateKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFPollenConditionsDateKey"];
     date = v5->_date;
     v5->_date = v6;
 
-    v5->_timeOfDay = [v4 decodeIntegerForKey:@"WFPollenConditionsTimeOfDayKey"];
-    v5->_grassIndex = [v4 decodeIntegerForKey:@"WFPollenConditionsGrassIndexKey"];
-    v5->_ragweedIndex = [v4 decodeIntegerForKey:@"WFPollenConditionsRagweedIndexKey"];
-    v5->_treeIndex = [v4 decodeIntegerForKey:@"WFPollenConditionsTreeIndexKey"];
+    v5->_timeOfDay = [coderCopy decodeIntegerForKey:@"WFPollenConditionsTimeOfDayKey"];
+    v5->_grassIndex = [coderCopy decodeIntegerForKey:@"WFPollenConditionsGrassIndexKey"];
+    v5->_ragweedIndex = [coderCopy decodeIntegerForKey:@"WFPollenConditionsRagweedIndexKey"];
+    v5->_treeIndex = [coderCopy decodeIntegerForKey:@"WFPollenConditionsTreeIndexKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(WFPollenConditions *)self date];
-  [v5 encodeObject:v4 forKey:@"WFPollenConditionsDateKey"];
+  coderCopy = coder;
+  date = [(WFPollenConditions *)self date];
+  [coderCopy encodeObject:date forKey:@"WFPollenConditionsDateKey"];
 
-  [v5 encodeInteger:-[WFPollenConditions timeOfDay](self forKey:{"timeOfDay"), @"WFPollenConditionsTimeOfDayKey"}];
-  [v5 encodeInteger:-[WFPollenConditions grassIndex](self forKey:{"grassIndex"), @"WFPollenConditionsGrassIndexKey"}];
-  [v5 encodeInteger:-[WFPollenConditions ragweedIndex](self forKey:{"ragweedIndex"), @"WFPollenConditionsRagweedIndexKey"}];
-  [v5 encodeInteger:-[WFPollenConditions treeIndex](self forKey:{"treeIndex"), @"WFPollenConditionsTreeIndexKey"}];
+  [coderCopy encodeInteger:-[WFPollenConditions timeOfDay](self forKey:{"timeOfDay"), @"WFPollenConditionsTimeOfDayKey"}];
+  [coderCopy encodeInteger:-[WFPollenConditions grassIndex](self forKey:{"grassIndex"), @"WFPollenConditionsGrassIndexKey"}];
+  [coderCopy encodeInteger:-[WFPollenConditions ragweedIndex](self forKey:{"ragweedIndex"), @"WFPollenConditionsRagweedIndexKey"}];
+  [coderCopy encodeInteger:-[WFPollenConditions treeIndex](self forKey:{"treeIndex"), @"WFPollenConditionsTreeIndexKey"}];
 }
 
 @end

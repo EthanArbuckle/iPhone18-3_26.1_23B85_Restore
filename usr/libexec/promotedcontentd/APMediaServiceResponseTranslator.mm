@@ -1,27 +1,27 @@
 @interface APMediaServiceResponseTranslator
-+ (BOOL)checkForNonWKDiscardOverrides:(BOOL)a3 forAdamID:(id)a4;
-+ (id)_translateAd:(id)a3 contextID:(id)a4 iAdID:(id)a5 placement:(unint64_t)a6;
-+ (id)_translateAdResult:(id)a3 contextID:(id)a4 iAdID:(id)a5;
-+ (id)_translateMediaApiResponseToAds:(id)a3 error:(id *)a4;
-+ (id)translateResponse:(id)a3 requestParams:(id)a4 responseReceivedTimestamp:(double)a5;
++ (BOOL)checkForNonWKDiscardOverrides:(BOOL)overrides forAdamID:(id)d;
++ (id)_translateAd:(id)ad contextID:(id)d iAdID:(id)iD placement:(unint64_t)placement;
++ (id)_translateAdResult:(id)result contextID:(id)d iAdID:(id)iD;
++ (id)_translateMediaApiResponseToAds:(id)ads error:(id *)error;
++ (id)translateResponse:(id)response requestParams:(id)params responseReceivedTimestamp:(double)timestamp;
 @end
 
 @implementation APMediaServiceResponseTranslator
 
-+ (id)translateResponse:(id)a3 requestParams:(id)a4 responseReceivedTimestamp:(double)a5
++ (id)translateResponse:(id)response requestParams:(id)params responseReceivedTimestamp:(double)timestamp
 {
-  v8 = a3;
-  v9 = a4;
+  responseCopy = response;
+  paramsCopy = params;
   v56 = 0;
-  v10 = [a1 _translateMediaApiResponseToAds:v8 error:&v56];
+  v10 = [self _translateMediaApiResponseToAds:responseCopy error:&v56];
   v11 = v56;
   if (!v10 || v11)
   {
     v37 = v11 == 0;
     v36 = v11;
-    v38 = [v9 context];
-    v39 = [v38 identifier];
-    v12 = _contentDataWithContextIDAndError(v39, v36);
+    context = [paramsCopy context];
+    identifier = [context identifier];
+    v12 = _contentDataWithContextIDAndError(identifier, v36);
 
     [v12 setServerUnfilledReason:1025];
     [v12 setDiagnosticCode:8 * v37];
@@ -31,11 +31,11 @@
 
   else
   {
-    v42 = v8;
+    v42 = responseCopy;
     v12 = +[NSMutableArray array];
-    v13 = [v9 context];
-    v14 = [v13 current];
-    v46 = [v14 placement];
+    context2 = [paramsCopy context];
+    current = [context2 current];
+    placement = [current placement];
 
     v54 = 0u;
     v55 = 0u;
@@ -59,23 +59,23 @@
 
           v16 = *(*(&v52 + 1) + 8 * i);
           v17 = objc_autoreleasePoolPush();
-          v18 = [v9 context];
-          v19 = [v18 identifier];
-          v20 = [v9 idAccount];
-          v21 = [v20 iAdID];
-          v22 = [APMediaServiceResponseTranslator _translateAd:v16 contextID:v19 iAdID:v21 placement:v46];
+          context3 = [paramsCopy context];
+          identifier2 = [context3 identifier];
+          idAccount = [paramsCopy idAccount];
+          iAdID = [idAccount iAdID];
+          v22 = [APMediaServiceResponseTranslator _translateAd:v16 contextID:identifier2 iAdID:iAdID placement:placement];
 
           if (v22)
           {
-            [v22 setServerResponseReceivedTimestamp:a5];
+            [v22 setServerResponseReceivedTimestamp:timestamp];
             if (![v22 serverUnfilledReason])
             {
               v50 = 0u;
               v51 = 0u;
               v48 = 0u;
               v49 = 0u;
-              v23 = [v22 representations];
-              v24 = [v23 countByEnumeratingWithState:&v48 objects:v57 count:16];
+              representations = [v22 representations];
+              v24 = [representations countByEnumeratingWithState:&v48 objects:v57 count:16];
               if (v24)
               {
                 v25 = v24;
@@ -86,18 +86,18 @@
                   {
                     if (*v49 != v26)
                     {
-                      objc_enumerationMutation(v23);
+                      objc_enumerationMutation(representations);
                     }
 
                     v28 = *(*(&v48 + 1) + 8 * j);
-                    v29 = [v9 storeFront];
-                    [v28 setStoreFront:v29];
+                    storeFront = [paramsCopy storeFront];
+                    [v28 setStoreFront:storeFront];
 
-                    v30 = [v9 storeFrontLocale];
-                    [v28 setStoreFrontLocale:v30];
+                    storeFrontLocale = [paramsCopy storeFrontLocale];
+                    [v28 setStoreFrontLocale:storeFrontLocale];
                   }
 
-                  v25 = [v23 countByEnumeratingWithState:&v48 objects:v57 count:16];
+                  v25 = [representations countByEnumeratingWithState:&v48 objects:v57 count:16];
                 }
 
                 while (v25);
@@ -119,9 +119,9 @@
               _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "Translated content for ad:\n%{public}@\ncannot be nil", buf, 0xCu);
             }
 
-            v32 = [v9 context];
-            v33 = [v32 identifier];
-            v34 = _contentDataWithContextIDAndError(v33, 0);
+            context4 = [paramsCopy context];
+            identifier3 = [context4 identifier];
+            v34 = _contentDataWithContextIDAndError(identifier3, 0);
 
             [v34 setServerUnfilledReason:-1];
             [v34 setDiagnosticCode:0];
@@ -139,26 +139,26 @@
 
     v35 = [v12 copy];
     v10 = v41;
-    v8 = v42;
+    responseCopy = v42;
     v36 = 0;
   }
 
   return v35;
 }
 
-+ (id)_translateMediaApiResponseToAds:(id)a3 error:(id *)a4
++ (id)_translateMediaApiResponseToAds:(id)ads error:(id *)error
 {
-  v5 = a3;
+  adsCopy = ads;
   v6 = objc_opt_class();
-  if (_checkClassType(v5, v6, @"Response dictionary", a4))
+  if (_checkClassType(adsCopy, v6, @"Response dictionary", error))
   {
-    v7 = [v5 objectForKey:@"results"];
+    v7 = [adsCopy objectForKey:@"results"];
     v8 = objc_opt_class();
-    if (_checkClassType(v7, v8, @"Results dictionary", a4))
+    if (_checkClassType(v7, v8, @"Results dictionary", error))
     {
       v9 = [v7 objectForKey:@"ads"];
       v10 = objc_opt_class();
-      if (_checkClassType(v9, v10, @"Ads array", a4))
+      if (_checkClassType(v9, v10, @"Ads array", error))
       {
         v11 = v9;
       }
@@ -183,17 +183,17 @@
   return v11;
 }
 
-+ (id)_translateAd:(id)a3 contextID:(id)a4 iAdID:(id)a5 placement:(unint64_t)a6
++ (id)_translateAd:(id)ad contextID:(id)d iAdID:(id)iD placement:(unint64_t)placement
 {
-  v8 = a3;
-  v104 = a4;
-  v108 = a5;
+  adCopy = ad;
+  dCopy = d;
+  iDCopy = iD;
   v9 = objc_opt_class();
   v118 = 0;
-  LODWORD(a5) = _checkClassType(v8, v9, @"ad", &v118);
+  LODWORD(iD) = _checkClassType(adCopy, v9, @"ad", &v118);
   v10 = v118;
-  v105 = v8;
-  if (!a5)
+  v105 = adCopy;
+  if (!iD)
   {
     v23 = 0;
     v24 = 0;
@@ -203,7 +203,7 @@
     goto LABEL_36;
   }
 
-  v11 = v8;
+  v11 = adCopy;
   v12 = [v11 objectForKey:@"id"];
   v13 = objc_opt_class();
   v117 = v10;
@@ -378,23 +378,23 @@ LABEL_35:
   v24 = v101;
 LABEL_36:
   v110 = [APConfigurationMediator configurationForClass:objc_opt_class()];
-  v46 = [v110 contentRestrictionEnforcementEnabled];
-  v47 = [v46 BOOLValue];
+  contentRestrictionEnforcementEnabled = [v110 contentRestrictionEnforcementEnabled];
+  bOOLValue = [contentRestrictionEnforcementEnabled BOOLValue];
 
   v107 = v25;
-  if (v47)
+  if (bOOLValue)
   {
     v48 = +[MCProfileConnection sharedConnection];
     v49 = [v48 effectiveValueForSetting:MCFeatureMaximumAppsRating];
     v50 = v49;
     if (v49)
     {
-      v51 = [v49 intValue];
+      intValue = [v49 intValue];
     }
 
     else
     {
-      v51 = 1000;
+      intValue = 1000;
     }
 
     v55 = APLogForCategory();
@@ -406,11 +406,11 @@ LABEL_36:
         goto LABEL_50;
       }
 
-      v57 = [v23 intValue];
+      intValue2 = [v23 intValue];
       *buf = 138412546;
       *&buf[4] = v16;
       *&buf[12] = 1024;
-      LODWORD(v121[0]) = v57;
+      LODWORD(v121[0]) = intValue2;
       v58 = "We GOT the app rating from MAPI for AdamID: %@ and it is: %d";
       v59 = v55;
       v60 = 18;
@@ -437,19 +437,19 @@ LABEL_50:
     if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      *&buf[4] = v51;
+      *&buf[4] = intValue;
       _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_INFO, "The device screentime setting is: %d", buf, 8u);
     }
 
-    if (!v51)
+    if (!intValue)
     {
       v66 = v23;
-      v67 = [v110 supportsDontAllow];
-      v68 = [v67 BOOLValue];
+      supportsDontAllow = [v110 supportsDontAllow];
+      bOOLValue2 = [supportsDontAllow BOOLValue];
 
       v62 = APLogForCategory();
       v69 = os_log_type_enabled(v62, OS_LOG_TYPE_INFO);
-      if (!v68)
+      if (!bOOLValue2)
       {
         v23 = v66;
         if (v69)
@@ -490,7 +490,7 @@ LABEL_73:
       goto LABEL_40;
     }
 
-    if (v51 == 1000)
+    if (intValue == 1000)
     {
       v62 = APLogForCategory();
       if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
@@ -512,10 +512,10 @@ LABEL_64:
     v70 = v16;
     v71 = v26;
     v72 = v23;
-    v73 = [v23 intValue];
+    intValue3 = [v23 intValue];
     v62 = APLogForCategory();
     v74 = os_log_type_enabled(v62, OS_LOG_TYPE_INFO);
-    if (v73 <= v51)
+    if (intValue3 <= intValue)
     {
       if (v74)
       {
@@ -532,13 +532,13 @@ LABEL_64:
       if (v74)
       {
         v23 = v72;
-        v75 = [v72 intValue];
+        intValue4 = [v72 intValue];
         *buf = 138412802;
         *&buf[4] = v70;
         *&buf[12] = 1024;
-        LODWORD(v121[0]) = v75;
+        LODWORD(v121[0]) = intValue4;
         WORD2(v121[0]) = 1024;
-        *(v121 + 6) = v51;
+        *(v121 + 6) = intValue;
         v52 = 1;
         _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_INFO, "AdamID: %@ DISCARDED due to Content Restriction. The app rating from MAPI: %d. The user Content Restriction: %d", buf, 0x18u);
 LABEL_72:
@@ -590,13 +590,13 @@ LABEL_77:
 
   if (+[APSystemInternal isAppleInternalInstall])
   {
-    LODWORD(v54) = [a1 checkForNonWKDiscardOverrides:v54 forAdamID:v16];
+    LODWORD(v54) = [self checkForNonWKDiscardOverrides:v54 forAdamID:v16];
   }
 
   if (v10 || !v16)
   {
-    v82 = v104;
-    v83 = _contentDataWithContextID(v104);
+    v82 = dCopy;
+    v83 = _contentDataWithContextID(dCopy);
     [v83 setServerUnfilledReason:1025];
     v84 = v83;
     v85 = v10 == 0;
@@ -608,19 +608,19 @@ LABEL_89:
   if (v54)
   {
     v78 = 1;
-    if (a6 != 7005)
+    if (placement != 7005)
     {
       v78 = -1;
     }
 
-    if (a6 - 7006 >= 3)
+    if (placement - 7006 >= 3)
     {
       v79 = v78;
     }
 
     else
     {
-      v79 = a6 - 7004;
+      v79 = placement - 7004;
     }
 
     v80 = +[NSMutableDictionary dictionary];
@@ -629,8 +629,8 @@ LABEL_89:
     [v80 setValue:v81 forKey:@"placement"];
 
     AnalyticsSendEvent();
-    v82 = v104;
-    v83 = _contentDataWithContextID(v104);
+    v82 = dCopy;
+    v83 = _contentDataWithContextID(dCopy);
     [v83 setServerUnfilledReason:1031];
     [v83 setDiagnosticCode:17];
 
@@ -639,8 +639,8 @@ LABEL_89:
 
   if (v52)
   {
-    v82 = v104;
-    v83 = _contentDataWithContextID(v104);
+    v82 = dCopy;
+    v83 = _contentDataWithContextID(dCopy);
     [v83 setServerUnfilledReason:1031];
     v84 = v83;
     v85 = 17;
@@ -649,21 +649,21 @@ LABEL_89:
 
   v87 = v26;
   v88 = v23;
-  v82 = v104;
+  v82 = dCopy;
   v89 = v16;
   v90 = v87;
-  v83 = [a1 _translateAdResult:? contextID:? iAdID:?];
-  v91 = [v83 representations];
-  v92 = [v91 anyObject];
+  v83 = [self _translateAdResult:? contextID:? iAdID:?];
+  representations = [v83 representations];
+  anyObject = [representations anyObject];
 
   v93 = v89;
-  [v92 setAdamID:v89];
+  [anyObject setAdamID:v89];
   if (v107)
   {
     v94 = [v105 mutableCopy];
     [v94 setObject:v107 forKeyedSubscript:@"meta"];
     v95 = [v94 copy];
-    [v92 setAppMetadata:v95];
+    [anyObject setAppMetadata:v95];
   }
 
   v23 = v88;
@@ -674,16 +674,16 @@ LABEL_90:
   return v83;
 }
 
-+ (BOOL)checkForNonWKDiscardOverrides:(BOOL)a3 forAdamID:(id)a4
++ (BOOL)checkForNonWKDiscardOverrides:(BOOL)overrides forAdamID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = [NSUserDefaults alloc];
   v7 = [v6 initWithSuiteName:APDefaultsBundleID];
   if ([v7 BOOLForKey:@"enableNonWKOverrides"])
   {
     v8 = [v7 stringForKey:@"nonWKAppsPromotedContent"];
     v9 = [v8 componentsSeparatedByString:{@", "}];
-    v10 = ([v9 containsObject:v5] & 1) != 0 || objc_msgSend(v9, "count") == 0;
+    v10 = ([v9 containsObject:dCopy] & 1) != 0 || objc_msgSend(v9, "count") == 0;
     v11 = [v7 BOOLForKey:@"enableDMAEligible"];
     v12 = APLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -702,42 +702,42 @@ LABEL_90:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v16 = 138412290;
-        v17[0] = v5;
+        v17[0] = dCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Discarding ad with adamid: %@ based off overrides.", &v16, 0xCu);
       }
     }
 
-    a3 = v13 ^ 1;
+    overrides = v13 ^ 1;
   }
 
-  return a3;
+  return overrides;
 }
 
-+ (id)_translateAdResult:(id)a3 contextID:(id)a4 iAdID:(id)a5
++ (id)_translateAdResult:(id)result contextID:(id)d iAdID:(id)iD
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = _contentDataWithContextID(a4);
+  resultCopy = result;
+  iDCopy = iD;
+  v9 = _contentDataWithContextID(d);
   v10 = +[NSDate date];
   [v9 setReceivedReferenceTime:v10];
 
   v11 = objc_alloc_init(APRepresentationData);
   [v11 setPlacementType:5];
-  v12 = [v9 identifier];
-  [v11 setContentDataIdentifier:v12];
+  identifier = [v9 identifier];
+  [v11 setContentDataIdentifier:identifier];
 
-  v13 = [v7 objectForKey:@"impressionId"];
+  v13 = [resultCopy objectForKey:@"impressionId"];
   v14 = objc_opt_class();
   v156 = 0;
-  LOBYTE(v12) = _checkClassType(v13, v14, @"impressionId", &v156);
+  LOBYTE(identifier) = _checkClassType(v13, v14, @"impressionId", &v156);
   v15 = v156;
-  if ((v12 & 1) == 0)
+  if ((identifier & 1) == 0)
   {
     goto LABEL_9;
   }
 
   [v9 setImpressionId:v13];
-  v16 = [v7 objectForKey:@"metadata"];
+  v16 = [resultCopy objectForKey:@"metadata"];
 
   v17 = objc_opt_class();
   v155 = v15;
@@ -754,7 +754,7 @@ LABEL_90:
   }
 
   [v11 setMetadata:v16];
-  v13 = [v7 objectForKey:@"privacy"];
+  v13 = [resultCopy objectForKey:@"privacy"];
 
   v20 = objc_opt_class();
   v154 = v19;
@@ -769,27 +769,27 @@ LABEL_9:
     goto LABEL_50;
   }
 
-  v128 = v8;
+  v128 = iDCopy;
   v22 = [[NSData alloc] initWithBase64EncodedString:v13 options:0];
   v23 = [[APPBTransparencyDetails alloc] initWithData:v22];
-  v24 = [(APPBTransparencyDetails *)v23 transparencyRendererPayload];
-  [v9 setDisclosureRendererPayload:v24];
+  transparencyRendererPayload = [(APPBTransparencyDetails *)v23 transparencyRendererPayload];
+  [v9 setDisclosureRendererPayload:transparencyRendererPayload];
 
   if ([(APPBTransparencyDetails *)v23 hasTransparencyRendererURL])
   {
-    v25 = [(APPBTransparencyDetails *)v23 transparencyRendererURL];
-    v26 = [NSURL URLWithString:v25];
+    transparencyRendererURL = [(APPBTransparencyDetails *)v23 transparencyRendererURL];
+    v26 = [NSURL URLWithString:transparencyRendererURL];
     [v9 setDisclosureURL:v26];
   }
 
-  v27 = [v7 objectForKey:@"targetingExpressionId"];
+  v27 = [resultCopy objectForKey:@"targetingExpressionId"];
 
   if (!v27)
   {
     v127 = v22;
     v30 = v15;
 LABEL_12:
-    v33 = [v7 objectForKey:@"journeyRelay"];
+    v33 = [resultCopy objectForKey:@"journeyRelay"];
     v34 = objc_opt_class();
     v152 = v30;
     v35 = _checkClassType(v33, v34, @"journeyRelay", &v152);
@@ -821,8 +821,8 @@ LABEL_48:
       goto LABEL_45;
     }
 
-    v42 = [v38 stringValue];
-    [v11 setJourneyRelayAdGroupId:v42];
+    stringValue = [v38 stringValue];
+    [v11 setJourneyRelayAdGroupId:stringValue];
 
     v43 = [v37 objectForKey:@"campaignId"];
 
@@ -833,10 +833,10 @@ LABEL_48:
 
     if (v45)
     {
-      v47 = [v43 stringValue];
-      [v11 setJourneyRelayCampaignId:v47];
+      stringValue2 = [v43 stringValue];
+      [v11 setJourneyRelayCampaignId:stringValue2];
 
-      v38 = [v7 objectForKey:@"clientRequestId"];
+      v38 = [resultCopy objectForKey:@"clientRequestId"];
 
       v48 = objc_opt_class();
       v149 = v46;
@@ -849,13 +849,13 @@ LABEL_48:
       }
 
       [v11 setClientRequestID:v38];
-      v43 = [v7 objectForKey:@"parentAppCheckEnabled"];
+      v43 = [resultCopy objectForKey:@"parentAppCheckEnabled"];
 
       if (!v43)
       {
         v46 = v41;
 LABEL_23:
-        v38 = [v7 objectForKey:@"installAttribution"];
+        v38 = [resultCopy objectForKey:@"installAttribution"];
 
         v55 = objc_opt_class();
         v147 = v46;
@@ -871,14 +871,14 @@ LABEL_23:
         if ((+[APSystemInternal isAppleInternalInstall]& 1) != 0)
         {
           v57 = +[APMediaServiceSettings settings];
-          v58 = [v57 responseTTL];
+          responseTTL = [v57 responseTTL];
 
-          if (v58)
+          if (responseTTL)
           {
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) != 0 && [v58 intValue] > 0)
+            if ((objc_opt_isKindOfClass() & 1) != 0 && [responseTTL intValue] > 0)
             {
-              v38 = v58;
+              v38 = responseTTL;
               v59 = v41;
               goto LABEL_31;
             }
@@ -888,10 +888,10 @@ LABEL_23:
         else
         {
 
-          v58 = 0;
+          responseTTL = 0;
         }
 
-        v38 = [v7 objectForKey:@"ttl"];
+        v38 = [resultCopy objectForKey:@"ttl"];
 
         v60 = objc_opt_class();
         v146 = v41;
@@ -912,7 +912,7 @@ LABEL_31:
         v64 = [v63 dateByAddingTimeInterval:{objc_msgSend(v62, "intValue")}];
         [v9 setExpirationDate:v64];
 
-        v38 = [v7 objectForKey:@"rank"];
+        v38 = [resultCopy objectForKey:@"rank"];
 
         v65 = objc_opt_class();
         v145 = v59;
@@ -922,7 +922,7 @@ LABEL_31:
         if (v62)
         {
           [v11 setRank:{objc_msgSend(v38, "intValue")}];
-          v66 = [v7 objectForKey:@"timeToDisplay"];
+          v66 = [resultCopy objectForKey:@"timeToDisplay"];
 
           v33 = v126;
           if (v66)
@@ -945,7 +945,7 @@ LABEL_31:
             [v11 setTimeToDisplay:{objc_msgSend(v66, "intValue")}];
           }
 
-          v38 = [v7 objectForKey:@"positionInfo"];
+          v38 = [resultCopy objectForKey:@"positionInfo"];
 
           if (!v38)
           {
@@ -974,7 +974,7 @@ LABEL_57:
 
             v33 = v126;
 LABEL_58:
-            v38 = [v7 objectForKey:@"cppIds"];
+            v38 = [resultCopy objectForKey:@"cppIds"];
             if (!v38)
             {
               v123 = v23;
@@ -1044,7 +1044,7 @@ LABEL_58:
               [v11 setCppIds:v88];
               v38 = obj;
 LABEL_70:
-              v96 = [v7 objectForKey:@"triggers"];
+              v96 = [resultCopy objectForKey:@"triggers"];
 
               if (v96)
               {
@@ -1123,7 +1123,7 @@ LABEL_90:
                 v88 = 0;
               }
 
-              v108 = [v7 objectForKey:@"creativeDetails"];
+              v108 = [resultCopy objectForKey:@"creativeDetails"];
 
               v38 = v108;
               if (v108)
@@ -1163,23 +1163,23 @@ LABEL_47:
           }
 
           [v11 setPositionInformation:v38];
-          v73 = [v11 positionInformation];
-          v74 = [v73 objectForKey:@"slot"];
+          positionInformation = [v11 positionInformation];
+          v74 = [positionInformation objectForKey:@"slot"];
           v75 = v38;
 
           v76 = objc_opt_class();
           v142 = v72;
           v38 = v74;
-          LOBYTE(v73) = _checkClassType(v74, v76, @"slot", &v142);
+          LOBYTE(positionInformation) = _checkClassType(v74, v76, @"slot", &v142);
           v41 = v142;
 
-          if (v73)
+          if (positionInformation)
           {
-            v77 = [v74 integerValue];
-            v78 = v77;
-            if ((v77 - 1) < 0xA)
+            integerValue = [v74 integerValue];
+            v78 = integerValue;
+            if ((integerValue - 1) < 0xA)
             {
-              if (v77 >= 3)
+              if (integerValue >= 3)
               {
                 v79 = APLogForCategory();
                 if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
@@ -1266,7 +1266,7 @@ LABEL_49:
 
   v13 = v27;
   v15 = v30;
-  v8 = v128;
+  iDCopy = v128;
 LABEL_50:
 
   return v9;

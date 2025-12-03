@@ -1,37 +1,37 @@
 @interface CellThroughputAdviser
 + (CellThroughputAdviser)sharedInstance;
-- (BOOL)_powerLogActionForNewAdvice:(unsigned int)a3 cause:(unint64_t)a4 at:(double)a5;
-- (BOOL)checkBackgroundTransferCauses:(unint64_t *)a3;
-- (BOOL)checkCoreMediaAssetDownloadCauses:(unint64_t *)a3;
-- (BOOL)checkLibnetcoreLargeTransferCauses:(unint64_t *)a3 andOptOuts:(unint64_t *)a4;
-- (BOOL)encodingRepresentsInt:(id)a3;
-- (BOOL)encodingRepresentsNSString:(id)a3;
-- (BOOL)encodingRepresentsNSTimeInterval:(id)a3;
-- (BOOL)encodingRepresentsNSUUID:(id)a3;
-- (BOOL)encodingRepresentsUint64:(id)a3;
+- (BOOL)_powerLogActionForNewAdvice:(unsigned int)advice cause:(unint64_t)cause at:(double)at;
+- (BOOL)checkBackgroundTransferCauses:(unint64_t *)causes;
+- (BOOL)checkCoreMediaAssetDownloadCauses:(unint64_t *)causes;
+- (BOOL)checkLibnetcoreLargeTransferCauses:(unint64_t *)causes andOptOuts:(unint64_t *)outs;
+- (BOOL)encodingRepresentsInt:(id)int;
+- (BOOL)encodingRepresentsNSString:(id)string;
+- (BOOL)encodingRepresentsNSTimeInterval:(id)interval;
+- (BOOL)encodingRepresentsNSUUID:(id)d;
+- (BOOL)encodingRepresentsUint64:(id)uint64;
 - (CellThroughputAdviser)init;
 - (CellThroughputAdviserDelegate)delegate;
 - (double)_minRequiredBackgroundTransferThroughputForCurrentRadioState;
 - (double)_minRequiredCoreMediaAssetDownloadThroughputForCurrentRadioState;
 - (double)_minRequiredLargeTransferThroughputForCurrentRadioState;
-- (double)encodingToNSTimeInterval:(id)a3;
-- (id)_causeInitiators:(unint64_t)a3;
-- (id)_getCombinedStateAt:(double)a3;
-- (id)_getState:(BOOL)a3;
-- (id)_initiatorNameSetFromCauseArray:(id)a3;
+- (double)encodingToNSTimeInterval:(id)interval;
+- (id)_causeInitiators:(unint64_t)initiators;
+- (id)_getCombinedStateAt:(double)at;
+- (id)_getState:(BOOL)state;
+- (id)_initiatorNameSetFromCauseArray:(id)array;
 - (id)currentAWDSymptomsCellularSDMPollingStatistics;
 - (id)currentAWDSymptomsCellularSDMTimeStatistics;
-- (id)encodingToNSString:(id)a3;
-- (id)encodingToNSUUID:(id)a3;
-- (id)getStateAt:(double)a3;
-- (id)jsonForAWDReport:(id)a3;
-- (id)jsonForClassification:(id)a3;
-- (id)jsonForSnapshot:(id)a3;
-- (id)jsonForTimeInterval:(double)a3 indent:(int)a4;
-- (id)jsonForUUID:(id)a3;
-- (int)configureInstance:(id)a3;
-- (int)encodingToInt:(id)a3;
-- (int64_t)configItemToLongLong:(id)a3;
+- (id)encodingToNSString:(id)string;
+- (id)encodingToNSUUID:(id)d;
+- (id)getStateAt:(double)at;
+- (id)jsonForAWDReport:(id)report;
+- (id)jsonForClassification:(id)classification;
+- (id)jsonForSnapshot:(id)snapshot;
+- (id)jsonForTimeInterval:(double)interval indent:(int)indent;
+- (id)jsonForUUID:(id)d;
+- (int)configureInstance:(id)instance;
+- (int)encodingToInt:(id)int;
+- (int64_t)configItemToLongLong:(id)long;
 - (unint64_t)_backgroundTransferActiveCauseForCurrentRadioState;
 - (unint64_t)_backgroundTransferHysteresisCauseForCurrentRadioState;
 - (unint64_t)_coreMediaAssetDownloadActiveCauseForCurrentRadioState;
@@ -39,34 +39,34 @@
 - (unint64_t)_largeTransferContinuesCauseForCurrentRadioState;
 - (unint64_t)_largeTransferFinalHysteresisCauseForCurrentRadioState;
 - (unint64_t)_largeTransferHysteresisCauseForCurrentRadioState;
-- (unint64_t)encodingToUint64:(id)a3;
-- (unsigned)determineAdvice:(unint64_t *)a3;
-- (unsigned)determineNonCoreMediaRxThroughput:(double *)a3 txThroughput:(double *)a4;
+- (unint64_t)encodingToUint64:(id)uint64;
+- (unsigned)determineAdvice:(unint64_t *)advice;
+- (unsigned)determineNonCoreMediaRxThroughput:(double *)throughput txThroughput:(double *)txThroughput;
 - (void)_assessActivityStateForQuiesce;
-- (void)_checkPendingTimers:(double)a3;
-- (void)_dumpArray:(id)a3;
+- (void)_checkPendingTimers:(double)timers;
+- (void)_dumpArray:(id)array;
 - (void)_finishPowerLogCollection;
-- (void)_initiatorArray:(id)a3 addOriginNameWithForegroundPrefix:(id)a4;
-- (void)_refreshAdvice:(int)a3;
-- (void)_setPreviousSDMParticipantsOfAdviceChangeMetric:(id)a3;
-- (void)_setPriorThroughputOfAdviceChangeMetric:(id)a3 at:(double)a4;
-- (void)_setSubsequentThroughputOfAdviceChangeMetric:(id)a3;
-- (void)_updateSDMAdviceMetricState:(id)a3 at:(double)a4;
-- (void)didPollFlowsAt:(double)a3 periodic:(BOOL)a4;
-- (void)notePollIntervalForMetrics:(double)a3;
-- (void)noteSizeableBackgroundTransferEventName:(id)a3 event:(unint64_t)a4 downloadSizeBytes:(unint64_t)a5 uploadSizeBytes:(unint64_t)a6 at:(double)a7;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performAction:(id)a3 verbose:(BOOL)a4;
+- (void)_initiatorArray:(id)array addOriginNameWithForegroundPrefix:(id)prefix;
+- (void)_refreshAdvice:(int)advice;
+- (void)_setPreviousSDMParticipantsOfAdviceChangeMetric:(id)metric;
+- (void)_setPriorThroughputOfAdviceChangeMetric:(id)metric at:(double)at;
+- (void)_setSubsequentThroughputOfAdviceChangeMetric:(id)metric;
+- (void)_updateSDMAdviceMetricState:(id)state at:(double)at;
+- (void)didPollFlowsAt:(double)at periodic:(BOOL)periodic;
+- (void)notePollIntervalForMetrics:(double)metrics;
+- (void)noteSizeableBackgroundTransferEventName:(id)name event:(unint64_t)event downloadSizeBytes:(unint64_t)bytes uploadSizeBytes:(unint64_t)sizeBytes at:(double)at;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performAction:(id)action verbose:(BOOL)verbose;
 - (void)performActivityStatsTimekeeping;
-- (void)postCAEvent:(id)a3 withName:(id)a4;
+- (void)postCAEvent:(id)event withName:(id)name;
 - (void)quiesce;
 - (void)reportPeriodicAWDStatistics;
 - (void)restoreDefaults;
-- (void)sendSDMAdviceChangeMetric:(id)a3;
-- (void)setPollingRate:(double)a3;
-- (void)setPropertyChangeTimestamp:(double)a3;
-- (void)setQueue:(id)a3;
-- (void)setTimerCallbackWithSimulatedDelay:(double)a3 context:(id)a4;
+- (void)sendSDMAdviceChangeMetric:(id)metric;
+- (void)setPollingRate:(double)rate;
+- (void)setPropertyChangeTimestamp:(double)timestamp;
+- (void)setQueue:(id)queue;
+- (void)setTimerCallbackWithSimulatedDelay:(double)delay context:(id)context;
 - (void)unquiesce;
 - (void)willPollFlows;
 @end
@@ -201,7 +201,7 @@
   block[1] = 3221225472;
   block[2] = __39__CellThroughputAdviser_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_25 != -1)
   {
     dispatch_once(&sharedInstance_pred_25, block);
@@ -239,11 +239,11 @@ void __39__CellThroughputAdviser_sharedInstance__block_invoke(uint64_t a1)
   [v9 setFlowScrutinizer:v10];
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  objc_storeStrong(&self->_queue, a3);
-  v9 = a3;
-  v5 = [[WiFiViabilityMonitor alloc] initWithQueue:v9];
+  objc_storeStrong(&self->_queue, queue);
+  queueCopy = queue;
+  v5 = [[WiFiViabilityMonitor alloc] initWithQueue:queueCopy];
   wifiViabilityMonitor = self->_wifiViabilityMonitor;
   self->_wifiViabilityMonitor = v5;
 
@@ -254,32 +254,32 @@ void __39__CellThroughputAdviser_sharedInstance__block_invoke(uint64_t a1)
   [(FlowRefreshScheduler *)self->_refreshScheduler addDelegate:self];
 }
 
-- (id)jsonForSnapshot:(id)a3
+- (id)jsonForSnapshot:(id)snapshot
 {
-  v3 = [a3 dictionaryForm];
-  v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v3 options:1 error:0];
+  dictionaryForm = [snapshot dictionaryForm];
+  v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionaryForm options:1 error:0];
   v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v4 encoding:4];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"    {\n        objectname:        NWStatsProtocolSnapshot, \n        object:\n%@\n    }, \n", v5];
 
   return v6;
 }
 
-- (id)jsonForClassification:(id)a3
+- (id)jsonForClassification:(id)classification
 {
-  if (a3)
+  if (classification)
   {
-    v3 = [a3 dictionaryForm];
+    dictionaryForm = [classification dictionaryForm];
     v4 = MEMORY[0x277CCAAA0];
   }
 
   else
   {
     v5 = MEMORY[0x277CCAAA0];
-    v3 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionaryForm = [MEMORY[0x277CBEAC0] dictionary];
     v4 = v5;
   }
 
-  v6 = [v4 dataWithJSONObject:v3 options:1 error:0];
+  v6 = [v4 dataWithJSONObject:dictionaryForm options:1 error:0];
 
   v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"    {\n        objectname:        FlowClassification, \n        object:\n%@\n    }, \n", v7];
@@ -287,13 +287,13 @@ void __39__CellThroughputAdviser_sharedInstance__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)jsonForAWDReport:(id)a3
+- (id)jsonForAWDReport:(id)report
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  reportCopy = report;
+  v4 = reportCopy;
+  if (reportCopy)
   {
-    v5 = [v3 description];
+    v5 = [reportCopy description];
     v6 = [v5 stringByReplacingOccurrencesOfString:@" withString:@"\];
     v7 = [v6 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
   }
@@ -310,38 +310,38 @@ void __39__CellThroughputAdviser_sharedInstance__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (id)jsonForUUID:(id)a3
+- (id)jsonForUUID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  dCopy = d;
+  if (!dCopy)
   {
     memset(uu, 0, sizeof(uu));
     uuid_clear(uu);
-    v3 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:uu];
+    dCopy = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:uu];
   }
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [v3 UUIDString];
-  v6 = [v4 stringWithFormat:@"    {\n        objectname:        NSUUID, \n        object:            %@\n    }, \n", v5];
+  uUIDString = [dCopy UUIDString];
+  v6 = [v4 stringWithFormat:@"    {\n        objectname:        NSUUID, \n        object:            %@\n    }, \n", uUIDString];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (BOOL)encodingRepresentsNSUUID:(id)a3
+- (BOOL)encodingRepresentsNSUUID:(id)d
 {
-  v3 = [(CellThroughputAdviser *)self encodingToNSUUID:a3];
+  v3 = [(CellThroughputAdviser *)self encodingToNSUUID:d];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)encodingToNSUUID:(id)a3
+- (id)encodingToNSUUID:(id)d
 {
-  v3 = a3;
-  if (!v3)
+  dCopy = d;
+  if (!dCopy)
   {
     goto LABEL_8;
   }
@@ -352,15 +352,15 @@ void __39__CellThroughputAdviser_sharedInstance__block_invoke(uint64_t a1)
     goto LABEL_8;
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"objectname"];
+  v4 = [dCopy objectForKeyedSubscript:@"objectname"];
   if (!v4)
   {
     goto LABEL_8;
   }
 
   v5 = v4;
-  v6 = [v3 objectForKeyedSubscript:@"objectname"];
-  if (([v6 isEqualToString:@"NSUUID"] & 1) == 0 || (objc_msgSend(v3, "objectForKeyedSubscript:", @"object"), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  v6 = [dCopy objectForKeyedSubscript:@"objectname"];
+  if (([v6 isEqualToString:@"NSUUID"] & 1) == 0 || (objc_msgSend(dCopy, "objectForKeyedSubscript:", @"object"), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     v12 = 0;
@@ -368,7 +368,7 @@ void __39__CellThroughputAdviser_sharedInstance__block_invoke(uint64_t a1)
   }
 
   v8 = v7;
-  v9 = [v3 objectForKeyedSubscript:@"object"];
+  v9 = [dCopy objectForKeyedSubscript:@"object"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -380,7 +380,7 @@ LABEL_8:
   }
 
   v11 = objc_alloc(MEMORY[0x277CCAD78]);
-  v5 = [v3 objectForKeyedSubscript:@"object"];
+  v5 = [dCopy objectForKeyedSubscript:@"object"];
   v12 = [v11 initWithUUIDString:v5];
 LABEL_13:
 
@@ -389,21 +389,21 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)encodingRepresentsUint64:(id)a3
+- (BOOL)encodingRepresentsUint64:(id)uint64
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  uint64Copy = uint64;
+  if (uint64Copy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 objectForKeyedSubscript:@"objectname"];
+    v4 = [uint64Copy objectForKeyedSubscript:@"objectname"];
     if (v4)
     {
-      v5 = [v3 objectForKeyedSubscript:@"objectname"];
+      v5 = [uint64Copy objectForKeyedSubscript:@"objectname"];
       if ([v5 isEqualToString:@"uint64_t"])
       {
-        v6 = [v3 objectForKeyedSubscript:@"object"];
+        v6 = [uint64Copy objectForKeyedSubscript:@"object"];
         if (v6)
         {
-          v7 = [v3 objectForKeyedSubscript:@"object"];
+          v7 = [uint64Copy objectForKeyedSubscript:@"object"];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
         }
@@ -434,38 +434,38 @@ LABEL_9:
   return isKindOfClass & 1;
 }
 
-- (unint64_t)encodingToUint64:(id)a3
+- (unint64_t)encodingToUint64:(id)uint64
 {
-  v4 = a3;
-  if ([(CellThroughputAdviser *)self encodingRepresentsUint64:v4])
+  uint64Copy = uint64;
+  if ([(CellThroughputAdviser *)self encodingRepresentsUint64:uint64Copy])
   {
-    v5 = [v4 objectForKeyedSubscript:@"object"];
-    v6 = [v5 unsignedLongLongValue];
+    v5 = [uint64Copy objectForKeyedSubscript:@"object"];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
-- (BOOL)encodingRepresentsInt:(id)a3
+- (BOOL)encodingRepresentsInt:(id)int
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  intCopy = int;
+  if (intCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 objectForKeyedSubscript:@"objectname"];
+    v4 = [intCopy objectForKeyedSubscript:@"objectname"];
     if (v4)
     {
-      v5 = [v3 objectForKeyedSubscript:@"objectname"];
+      v5 = [intCopy objectForKeyedSubscript:@"objectname"];
       if ([v5 isEqualToString:@"int"])
       {
-        v6 = [v3 objectForKeyedSubscript:@"object"];
+        v6 = [intCopy objectForKeyedSubscript:@"object"];
         if (v6)
         {
-          v7 = [v3 objectForKeyedSubscript:@"object"];
+          v7 = [intCopy objectForKeyedSubscript:@"object"];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
         }
@@ -496,38 +496,38 @@ LABEL_9:
   return isKindOfClass & 1;
 }
 
-- (int)encodingToInt:(id)a3
+- (int)encodingToInt:(id)int
 {
-  v4 = a3;
-  if ([(CellThroughputAdviser *)self encodingRepresentsInt:v4])
+  intCopy = int;
+  if ([(CellThroughputAdviser *)self encodingRepresentsInt:intCopy])
   {
-    v5 = [v4 objectForKeyedSubscript:@"object"];
-    v6 = [v5 intValue];
+    v5 = [intCopy objectForKeyedSubscript:@"object"];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = 0;
+    intValue = 0;
   }
 
-  return v6;
+  return intValue;
 }
 
-- (BOOL)encodingRepresentsNSString:(id)a3
+- (BOOL)encodingRepresentsNSString:(id)string
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  stringCopy = string;
+  if (stringCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 objectForKeyedSubscript:@"objectname"];
+    v4 = [stringCopy objectForKeyedSubscript:@"objectname"];
     if (v4)
     {
-      v5 = [v3 objectForKeyedSubscript:@"objectname"];
+      v5 = [stringCopy objectForKeyedSubscript:@"objectname"];
       if ([v5 isEqualToString:@"NSString"])
       {
-        v6 = [v3 objectForKeyedSubscript:@"object"];
+        v6 = [stringCopy objectForKeyedSubscript:@"object"];
         if (v6)
         {
-          v7 = [v3 objectForKeyedSubscript:@"object"];
+          v7 = [stringCopy objectForKeyedSubscript:@"object"];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
         }
@@ -558,12 +558,12 @@ LABEL_9:
   return isKindOfClass & 1;
 }
 
-- (id)encodingToNSString:(id)a3
+- (id)encodingToNSString:(id)string
 {
-  v4 = a3;
-  if ([(CellThroughputAdviser *)self encodingRepresentsNSString:v4])
+  stringCopy = string;
+  if ([(CellThroughputAdviser *)self encodingRepresentsNSString:stringCopy])
   {
-    v5 = [v4 objectForKeyedSubscript:@"object"];
+    v5 = [stringCopy objectForKeyedSubscript:@"object"];
     if (![v5 isEqualToString:@"(null)"])
     {
       goto LABEL_5;
@@ -576,18 +576,18 @@ LABEL_5:
   return v5;
 }
 
-- (id)jsonForTimeInterval:(double)a3 indent:(int)a4
+- (id)jsonForTimeInterval:(double)interval indent:(int)indent
 {
-  v6 = [MEMORY[0x277CCACA8] string];
-  v7 = v6;
-  if (a4 < 1)
+  string = [MEMORY[0x277CCACA8] string];
+  v7 = string;
+  if (indent < 1)
   {
-    v9 = v6;
+    v9 = string;
   }
 
   else
   {
-    v8 = a4 + 1;
+    v8 = indent + 1;
     do
     {
       v9 = [v7 stringByAppendingString:@" "];
@@ -600,27 +600,27 @@ LABEL_5:
   }
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = dateStringMillisecondsFromReferenceInterval(a3);
-  v12 = [v10 stringWithFormat:@"%@{\n%@    type:         NSTimeInterval, \n%@    readable:     %@, \n%@    seconds:      %f\n%@}", v9, v9, v9, v11, v9, *&a3, v9];
+  v11 = dateStringMillisecondsFromReferenceInterval(interval);
+  v12 = [v10 stringWithFormat:@"%@{\n%@    type:         NSTimeInterval, \n%@    readable:     %@, \n%@    seconds:      %f\n%@}", v9, v9, v9, v11, v9, *&interval, v9];
 
   return v12;
 }
 
-- (BOOL)encodingRepresentsNSTimeInterval:(id)a3
+- (BOOL)encodingRepresentsNSTimeInterval:(id)interval
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  intervalCopy = interval;
+  if (intervalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 objectForKeyedSubscript:@"type"];
+    v4 = [intervalCopy objectForKeyedSubscript:@"type"];
     if (v4)
     {
-      v5 = [v3 objectForKeyedSubscript:@"type"];
+      v5 = [intervalCopy objectForKeyedSubscript:@"type"];
       if ([v5 isEqualToString:@"NSTimeInterval"])
       {
-        v6 = [v3 objectForKeyedSubscript:@"seconds"];
+        v6 = [intervalCopy objectForKeyedSubscript:@"seconds"];
         if (v6)
         {
-          v7 = [v3 objectForKeyedSubscript:@"seconds"];
+          v7 = [intervalCopy objectForKeyedSubscript:@"seconds"];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
         }
@@ -651,13 +651,13 @@ LABEL_5:
   return isKindOfClass & 1;
 }
 
-- (double)encodingToNSTimeInterval:(id)a3
+- (double)encodingToNSTimeInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   v5 = 0.0;
-  if ([(CellThroughputAdviser *)self encodingRepresentsNSTimeInterval:v4])
+  if ([(CellThroughputAdviser *)self encodingRepresentsNSTimeInterval:intervalCopy])
   {
-    v6 = [v4 objectForKeyedSubscript:@"seconds"];
+    v6 = [intervalCopy objectForKeyedSubscript:@"seconds"];
     [v6 doubleValue];
     v5 = v7;
   }
@@ -665,22 +665,22 @@ LABEL_5:
   return v5;
 }
 
-- (void)_initiatorArray:(id)a3 addOriginNameWithForegroundPrefix:(id)a4
+- (void)_initiatorArray:(id)array addOriginNameWithForegroundPrefix:(id)prefix
 {
-  v11 = a3;
-  v5 = a4;
-  if (v11)
+  arrayCopy = array;
+  prefixCopy = prefix;
+  if (arrayCopy)
   {
-    if (v5)
+    if (prefixCopy)
     {
-      v6 = [v5 name];
+      name = [prefixCopy name];
 
-      if (v6)
+      if (name)
       {
-        if ([v11 count] <= 2)
+        if ([arrayCopy count] <= 2)
         {
           v7 = objc_alloc(MEMORY[0x277CCACA8]);
-          if ([v5 mostRecentFlowSeenAsForeground])
+          if ([prefixCopy mostRecentFlowSeenAsForeground])
           {
             v8 = @"fg";
           }
@@ -690,12 +690,12 @@ LABEL_5:
             v8 = @"bg";
           }
 
-          v9 = [v5 name];
-          v10 = [v7 initWithFormat:@"%@:%@", v8, v9];
+          name2 = [prefixCopy name];
+          v10 = [v7 initWithFormat:@"%@:%@", v8, name2];
 
           if (v10)
           {
-            [v11 addObject:v10];
+            [arrayCopy addObject:v10];
           }
         }
       }
@@ -703,24 +703,24 @@ LABEL_5:
   }
 }
 
-- (id)_causeInitiators:(unint64_t)a3
+- (id)_causeInitiators:(unint64_t)initiators
 {
-  v3 = a3;
+  initiatorsCopy = initiators;
   v30 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = v3 & 0x1FF;
+  v6 = initiatorsCopy & 0x1FF;
   switch(v6)
   {
     case 8:
-      v13 = [(FlowOracle *)self->_flowOracle coreMediaAssetDownloadContributors];
-      v8 = v13;
-      if (v13)
+      coreMediaAssetDownloadContributors = [(FlowOracle *)self->_flowOracle coreMediaAssetDownloadContributors];
+      busiestCellOrigin = coreMediaAssetDownloadContributors;
+      if (coreMediaAssetDownloadContributors)
       {
         v22 = 0u;
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v14 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v14 = [coreMediaAssetDownloadContributors countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v14)
         {
           v15 = v14;
@@ -731,13 +731,13 @@ LABEL_5:
             {
               if (*v21 != v16)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(busiestCellOrigin);
               }
 
               [(CellThroughputAdviser *)self _initiatorArray:v5 addOriginNameWithForegroundPrefix:*(*(&v20 + 1) + 8 * i)];
             }
 
-            v15 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v15 = [busiestCellOrigin countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v15);
@@ -746,19 +746,19 @@ LABEL_5:
 
       break;
     case 4:
-      v8 = [(FlowOracle *)self->_flowOracle busiestCellOrigin];
-      [(CellThroughputAdviser *)self _initiatorArray:v5 addOriginNameWithForegroundPrefix:v8];
+      busiestCellOrigin = [(FlowOracle *)self->_flowOracle busiestCellOrigin];
+      [(CellThroughputAdviser *)self _initiatorArray:v5 addOriginNameWithForegroundPrefix:busiestCellOrigin];
       break;
     case 1:
-      v7 = [(FlowOracle *)self->_flowOracle transferContributors];
-      v8 = v7;
-      if (v7)
+      transferContributors = [(FlowOracle *)self->_flowOracle transferContributors];
+      busiestCellOrigin = transferContributors;
+      if (transferContributors)
       {
         v26 = 0u;
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v9 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v9 = [transferContributors countByEnumeratingWithState:&v24 objects:v29 count:16];
         if (v9)
         {
           v10 = v9;
@@ -769,13 +769,13 @@ LABEL_5:
             {
               if (*v25 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(busiestCellOrigin);
               }
 
               [(CellThroughputAdviser *)self _initiatorArray:v5 addOriginNameWithForegroundPrefix:*(*(&v24 + 1) + 8 * j)];
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
+            v10 = [busiestCellOrigin countByEnumeratingWithState:&v24 objects:v29 count:16];
           }
 
           while (v10);
@@ -793,12 +793,12 @@ LABEL_23:
   return v5;
 }
 
-- (id)_initiatorNameSetFromCauseArray:(id)a3
+- (id)_initiatorNameSetFromCauseArray:(id)array
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  arrayCopy = array;
+  v4 = arrayCopy;
+  if (arrayCopy && [arrayCopy count])
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v14 = 0u;
@@ -841,74 +841,74 @@ LABEL_23:
   return v5;
 }
 
-- (void)postCAEvent:(id)a3 withName:(id)a4
+- (void)postCAEvent:(id)event withName:(id)name
 {
-  v8 = a3;
-  v6 = a4;
+  eventCopy = event;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained postCAEvent:v8 withName:v6];
+    [WeakRetained postCAEvent:eventCopy withName:nameCopy];
   }
 }
 
-- (void)sendSDMAdviceChangeMetric:(id)a3
+- (void)sendSDMAdviceChangeMetric:(id)metric
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "previousAdvice")}];
-  [v5 setObject:v6 forKeyedSubscript:@"previousAdvice"];
+  metricCopy = metric;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(metricCopy, "previousAdvice")}];
+  [dictionary setObject:v6 forKeyedSubscript:@"previousAdvice"];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "previousAdviceCause")}];
-  [v5 setObject:v7 forKeyedSubscript:@"previousAdviceCause"];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(metricCopy, "previousAdviceCause")}];
+  [dictionary setObject:v7 forKeyedSubscript:@"previousAdviceCause"];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "previousAdviceInitialCause")}];
-  [v5 setObject:v8 forKeyedSubscript:@"previousAdviceInitialCause"];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(metricCopy, "previousAdviceInitialCause")}];
+  [dictionary setObject:v8 forKeyedSubscript:@"previousAdviceInitialCause"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "previousAdviceDuration")}];
-  [v5 setObject:v9 forKeyedSubscript:@"previousAdviceDuration"];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(metricCopy, "previousAdviceDuration")}];
+  [dictionary setObject:v9 forKeyedSubscript:@"previousAdviceDuration"];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "previousScreenIsDark")}];
-  [v5 setObject:v10 forKeyedSubscript:@"previousScreenIsDark"];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(metricCopy, "previousScreenIsDark")}];
+  [dictionary setObject:v10 forKeyedSubscript:@"previousScreenIsDark"];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "previousScreenIsLocked")}];
-  [v5 setObject:v11 forKeyedSubscript:@"previousScreenIsLocked"];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(metricCopy, "previousScreenIsLocked")}];
+  [dictionary setObject:v11 forKeyedSubscript:@"previousScreenIsLocked"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "dlPriorThroughputBps")}];
-  [v5 setObject:v12 forKeyedSubscript:@"dlPriorThroughput"];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(metricCopy, "dlPriorThroughputBps")}];
+  [dictionary setObject:v12 forKeyedSubscript:@"dlPriorThroughput"];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "ulPriorThroughputBps")}];
-  [v5 setObject:v13 forKeyedSubscript:@"ulPriorThroughput"];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(metricCopy, "ulPriorThroughputBps")}];
+  [dictionary setObject:v13 forKeyedSubscript:@"ulPriorThroughput"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "newAdvice")}];
-  [v5 setObject:v14 forKeyedSubscript:@"newAdvice"];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(metricCopy, "newAdvice")}];
+  [dictionary setObject:v14 forKeyedSubscript:@"newAdvice"];
 
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "newAdviceCause")}];
-  [v5 setObject:v15 forKeyedSubscript:@"newAdviceCause"];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(metricCopy, "newAdviceCause")}];
+  [dictionary setObject:v15 forKeyedSubscript:@"newAdviceCause"];
 
-  v16 = [v4 adviceInitiatingNames];
-  [v5 setObject:v16 forKeyedSubscript:@"adviceInitiatingNames"];
+  adviceInitiatingNames = [metricCopy adviceInitiatingNames];
+  [dictionary setObject:adviceInitiatingNames forKeyedSubscript:@"adviceInitiatingNames"];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "newScreenIsDark")}];
-  [v5 setObject:v17 forKeyedSubscript:@"newScreenIsDark"];
+  v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(metricCopy, "newScreenIsDark")}];
+  [dictionary setObject:v17 forKeyedSubscript:@"newScreenIsDark"];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "newScreenIsLocked")}];
-  [v5 setObject:v18 forKeyedSubscript:@"newScreenIsLocked"];
+  v18 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(metricCopy, "newScreenIsLocked")}];
+  [dictionary setObject:v18 forKeyedSubscript:@"newScreenIsLocked"];
 
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "dlSubsequentThroughputBps")}];
-  [v5 setObject:v19 forKeyedSubscript:@"dlSubsequentThroughput"];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(metricCopy, "dlSubsequentThroughputBps")}];
+  [dictionary setObject:v19 forKeyedSubscript:@"dlSubsequentThroughput"];
 
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "ulSubsequentThroughputBps")}];
-  [v5 setObject:v20 forKeyedSubscript:@"ulSubsequentThroughput"];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(metricCopy, "ulSubsequentThroughputBps")}];
+  [dictionary setObject:v20 forKeyedSubscript:@"ulSubsequentThroughput"];
 
-  v21 = self;
-  [(CellThroughputAdviser *)self postCAEvent:v5 withName:@"com.apple.symptoms.SDM.AdviceChange"];
+  selfCopy = self;
+  [(CellThroughputAdviser *)self postCAEvent:dictionary withName:@"com.apple.symptoms.SDM.AdviceChange"];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = [v4 previousAdviceParticipants];
+  obj = [metricCopy previousAdviceParticipants];
   v22 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v22)
   {
@@ -924,25 +924,25 @@ LABEL_23:
         }
 
         v26 = *(*(&v35 + 1) + 8 * i);
-        v27 = [v26 name];
-        [v5 setObject:v27 forKeyedSubscript:@"prevAdviceParticipant_name"];
+        name = [v26 name];
+        [dictionary setObject:name forKeyedSubscript:@"prevAdviceParticipant_name"];
 
         v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v26, "participationDelta")}];
-        [v5 setObject:v28 forKeyedSubscript:@"prevAdviceParticipant_participationDelta"];
+        [dictionary setObject:v28 forKeyedSubscript:@"prevAdviceParticipant_participationDelta"];
 
         v29 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v26, "periodDuration")}];
-        [v5 setObject:v29 forKeyedSubscript:@"prevAdviceParticipant_periodDuration"];
+        [dictionary setObject:v29 forKeyedSubscript:@"prevAdviceParticipant_periodDuration"];
 
         v30 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v26, "dlThroughputBps")}];
-        [v5 setObject:v30 forKeyedSubscript:@"prevAdviceParticipant_dlThroughput"];
+        [dictionary setObject:v30 forKeyedSubscript:@"prevAdviceParticipant_dlThroughput"];
 
         v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v26, "ulThroughputBps")}];
-        [v5 setObject:v31 forKeyedSubscript:@"prevAdviceParticipant_ulThroughput"];
+        [dictionary setObject:v31 forKeyedSubscript:@"prevAdviceParticipant_ulThroughput"];
 
         v32 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v26, "additionalFlags")}];
-        [v5 setObject:v32 forKeyedSubscript:@"prevAdviceParticipant_additionalFlags"];
+        [dictionary setObject:v32 forKeyedSubscript:@"prevAdviceParticipant_additionalFlags"];
 
-        [(CellThroughputAdviser *)v21 postCAEvent:v5 withName:@"com.apple.symptoms.SDM.AdviceChange.PreviousParticipant"];
+        [(CellThroughputAdviser *)selfCopy postCAEvent:dictionary withName:@"com.apple.symptoms.SDM.AdviceChange.PreviousParticipant"];
       }
 
       v23 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -954,31 +954,31 @@ LABEL_23:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setSubsequentThroughputOfAdviceChangeMetric:(id)a3
+- (void)_setSubsequentThroughputOfAdviceChangeMetric:(id)metric
 {
   flowScrutinizer = self->_flowScrutinizer;
-  v4 = a3;
-  v5 = [(FlowScrutinizer *)flowScrutinizer cellInterfaceSampler];
-  v7 = [v5 interfaceSamples];
+  metricCopy = metric;
+  cellInterfaceSampler = [(FlowScrutinizer *)flowScrutinizer cellInterfaceSampler];
+  interfaceSamples = [cellInterfaceSampler interfaceSamples];
 
-  v6 = [v7 lastObject];
-  [v4 setDlSubsequentThroughputBps:{objc_msgSend(v6, "rxThroughputBps")}];
-  [v4 setUlSubsequentThroughputBps:{objc_msgSend(v6, "txThroughputBps")}];
+  lastObject = [interfaceSamples lastObject];
+  [metricCopy setDlSubsequentThroughputBps:{objc_msgSend(lastObject, "rxThroughputBps")}];
+  [metricCopy setUlSubsequentThroughputBps:{objc_msgSend(lastObject, "txThroughputBps")}];
 }
 
-- (void)_setPriorThroughputOfAdviceChangeMetric:(id)a3 at:(double)a4
+- (void)_setPriorThroughputOfAdviceChangeMetric:(id)metric at:(double)at
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
-  v8 = [v7 interfaceSamples];
+  metricCopy = metric;
+  cellInterfaceSampler = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
+  interfaceSamples = [cellInterfaceSampler interfaceSamples];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v8 reverseObjectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  reverseObjectEnumerator = [interfaceSamples reverseObjectEnumerator];
+  v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -989,20 +989,20 @@ LABEL_23:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
         [v14 startTimeIntervalSinceReferenceDate];
-        if (a4 - v15 > 6.0)
+        if (at - v15 > 6.0)
         {
-          [v6 setDlPriorThroughputBps:{objc_msgSend(v14, "rxThroughputBps")}];
-          [v6 setUlPriorThroughputBps:{objc_msgSend(v14, "txThroughputBps")}];
+          [metricCopy setDlPriorThroughputBps:{objc_msgSend(v14, "rxThroughputBps")}];
+          [metricCopy setUlPriorThroughputBps:{objc_msgSend(v14, "txThroughputBps")}];
           goto LABEL_11;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v11)
       {
         continue;
@@ -1017,10 +1017,10 @@ LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setPreviousSDMParticipantsOfAdviceChangeMetric:(id)a3
+- (void)_setPreviousSDMParticipantsOfAdviceChangeMetric:(id)metric
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metricCopy = metric;
   if ([(NSSet *)self->_previousSampleContributors count])
   {
     reportedCause = self->_reportedCause;
@@ -1076,40 +1076,40 @@ LABEL_8:
           }
 
           v12 = *(*(&v40 + 1) + 8 * v11);
-          v13 = [v12 sampledAsHighTransferSize];
+          sampledAsHighTransferSize = [v12 sampledAsHighTransferSize];
           if ([v12 sampledAsHighInterfaceUse])
           {
-            v13 |= 4uLL;
+            sampledAsHighTransferSize |= 4uLL;
           }
 
           if ([v12 sampledAsCoreMediaAssetDownload])
           {
-            v13 |= 8uLL;
+            sampledAsHighTransferSize |= 8uLL;
           }
 
           if ([v12 sampledCoreMediaAssetDownloadInactive])
           {
-            v13 |= 0x2000000000uLL;
+            sampledAsHighTransferSize |= 0x2000000000uLL;
           }
 
           CApreviousAdviceInitiators = self->_CApreviousAdviceInitiators;
-          v15 = [v12 name];
-          LODWORD(CApreviousAdviceInitiators) = [(NSSet *)CApreviousAdviceInitiators containsObject:v15];
+          name = [v12 name];
+          LODWORD(CApreviousAdviceInitiators) = [(NSSet *)CApreviousAdviceInitiators containsObject:name];
 
           if (CApreviousAdviceInitiators)
           {
-            v13 |= 0x1000uLL;
+            sampledAsHighTransferSize |= 0x1000uLL;
           }
 
-          v16 = v13 | [v12 sampleAdditionalFlags];
+          v16 = sampledAsHighTransferSize | [v12 sampleAdditionalFlags];
           v17 = flowScrutinyLogHandle;
           if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_INFO))
           {
             v18 = v17;
-            v19 = [v12 name];
+            name2 = [v12 name];
             v20 = cellThroughputAdviceCauseFlagsToString(v16);
             *buf = 138412802;
-            v45 = v19;
+            v45 = name2;
             v46 = 2048;
             v47 = v16;
             v48 = 2112;
@@ -1135,8 +1135,8 @@ LABEL_8:
             v23 = @"fg";
           }
 
-          v25 = [v12 name];
-          v26 = [v22 initWithFormat:@"%@:%@:%@", v24, v23, v25];
+          name3 = [v12 name];
+          v26 = [v22 initWithFormat:@"%@:%@:%@", v24, v23, name3];
           [(SDMParticipant *)v21 setName:v26];
 
           [v12 sampleStartTime];
@@ -1157,11 +1157,11 @@ LABEL_8:
           -[SDMParticipant setDlThroughputBps:](v21, "setDlThroughputBps:", [v12 sampleCellRxThroughputBps]);
           -[SDMParticipant setUlThroughputBps:](v21, "setUlThroughputBps:", [v12 sampleCellTxThroughputBps]);
           [(SDMParticipant *)v21 setAdditionalFlags:v16];
-          v31 = [v4 previousAdviceParticipants];
-          [v31 addObject:v21];
+          previousAdviceParticipants = [metricCopy previousAdviceParticipants];
+          [previousAdviceParticipants addObject:v21];
 
-          v32 = [v4 previousAdviceParticipants];
-          v33 = [v32 count];
+          previousAdviceParticipants2 = [metricCopy previousAdviceParticipants];
+          v33 = [previousAdviceParticipants2 count];
 
           if (v33 > 2)
           {
@@ -1186,14 +1186,14 @@ LABEL_8:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateSDMAdviceMetricState:(id)a3 at:(double)a4
+- (void)_updateSDMAdviceMetricState:(id)state at:(double)at
 {
-  v6 = [(CellThroughputAdviser *)self _initiatorNameSetFromCauseArray:a3];
+  v6 = [(CellThroughputAdviser *)self _initiatorNameSetFromCauseArray:state];
   CApreviousAdviceInitiators = self->_CApreviousAdviceInitiators;
   self->_CApreviousAdviceInitiators = v6;
 
   *&self->_CApreviousIsScreenDark = *&self->_isScreenDark;
-  self->_CAtimeOfLastReport = a4;
+  self->_CAtimeOfLastReport = at;
 }
 
 void __56__CellThroughputAdviser__CAActionForNewAdvice_cause_at___block_invoke(uint64_t a1)
@@ -1321,7 +1321,7 @@ void __53__CellThroughputAdviser__startPowerLogCollectionFor___block_invoke(uint
     [(NSMutableDictionary *)self->_pendingPowerLogReport setObject:v7 forKeyedSubscript:@"HighThroughputDuration"];
 
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v34 = self;
+    selfCopy = self;
     obj = self->_previousSampleContributors;
     if (obj)
     {
@@ -1344,26 +1344,26 @@ void __53__CellThroughputAdviser__startPowerLogCollectionFor___block_invoke(uint
             }
 
             v11 = *(*(&v38 + 1) + 8 * i);
-            v12 = [v11 sampledAsHighTransferSize];
+            sampledAsHighTransferSize = [v11 sampledAsHighTransferSize];
             if ([v11 sampledAsHighInterfaceUse])
             {
-              v12 |= 4uLL;
+              sampledAsHighTransferSize |= 4uLL;
             }
 
             if ([v11 sampledAsCoreMediaAssetDownload])
             {
-              v13 = v12 | 8;
+              v13 = sampledAsHighTransferSize | 8;
             }
 
             else
             {
-              v13 = v12;
+              v13 = sampledAsHighTransferSize;
             }
 
             v14 = objc_alloc(MEMORY[0x277CBEB38]);
             v44[0] = @"Participant";
-            v15 = [v11 name];
-            v45[0] = v15;
+            name = [v11 name];
+            v45[0] = name;
             v44[1] = @"Reason";
             v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v13];
             v45[1] = v16;
@@ -1402,14 +1402,14 @@ void __53__CellThroughputAdviser__startPowerLogCollectionFor___block_invoke(uint
       while ([v8 count] > 3);
     }
 
-    [(NSMutableDictionary *)v34->_pendingPowerLogReport setObject:v8 forKeyedSubscript:@"HighThroughputParticipants"];
-    WeakRetained = objc_loadWeakRetained(&v34->_delegate);
+    [(NSMutableDictionary *)selfCopy->_pendingPowerLogReport setObject:v8 forKeyedSubscript:@"HighThroughputParticipants"];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
     if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v24 = flowScrutinyLogHandle;
       if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = v34->_pendingPowerLogReport;
+        v29 = selfCopy->_pendingPowerLogReport;
         *buf = 138412290;
         v43 = v29;
         _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEFAULT, "CellThroughputAdviser send final _pendingPowerLogReport %@ to delegate", buf, 0xCu);
@@ -1417,20 +1417,20 @@ void __53__CellThroughputAdviser__startPowerLogCollectionFor___block_invoke(uint
 
       if ((activeTraceTargets & 4) != 0)
       {
-        traceCallout(2, "[CellThroughputAdviser _finishPowerLogCollection]", "sendPowerLogReport:isStart:", "%@ %d", v25, v26, v27, v28, v34->_pendingPowerLogReport);
+        traceCallout(2, "[CellThroughputAdviser _finishPowerLogCollection]", "sendPowerLogReport:isStart:", "%@ %d", v25, v26, v27, v28, selfCopy->_pendingPowerLogReport);
       }
 
-      [WeakRetained sendPowerLogReport:v34->_pendingPowerLogReport isStart:0];
+      [WeakRetained sendPowerLogReport:selfCopy->_pendingPowerLogReport isStart:0];
     }
 
-    ++v34->_powerLogSeqno;
-    v30 = v34->_pendingPowerLogReport;
-    v34->_pendingPowerLogReport = 0;
+    ++selfCopy->_powerLogSeqno;
+    v30 = selfCopy->_pendingPowerLogReport;
+    selfCopy->_pendingPowerLogReport = 0;
 
     v31 = flowScrutinyLogHandle;
     if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
     {
-      powerLogSeqno = v34->_powerLogSeqno;
+      powerLogSeqno = selfCopy->_powerLogSeqno;
       *buf = 67109120;
       LODWORD(v43) = powerLogSeqno;
       _os_log_impl(&dword_23255B000, v31, OS_LOG_TYPE_DEFAULT, "CellThroughputAdviser finish report with  seqno %d", buf, 8u);
@@ -1440,13 +1440,13 @@ void __53__CellThroughputAdviser__startPowerLogCollectionFor___block_invoke(uint
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_powerLogActionForNewAdvice:(unsigned int)a3 cause:(unint64_t)a4 at:(double)a5
+- (BOOL)_powerLogActionForNewAdvice:(unsigned int)advice cause:(unint64_t)cause at:(double)at
 {
-  if (self->_reportedAdvice != a3)
+  if (self->_reportedAdvice != advice)
   {
-    if (a3 == 3 && (a4 & 0xD) != 0)
+    if (advice == 3 && (cause & 0xD) != 0)
     {
-      [(CellThroughputAdviser *)self _startPowerLogCollectionFor:a5];
+      [(CellThroughputAdviser *)self _startPowerLogCollectionFor:at];
       return 1;
     }
 
@@ -1461,14 +1461,14 @@ void __53__CellThroughputAdviser__startPowerLogCollectionFor___block_invoke(uint
 
 - (void)reportPeriodicAWDStatistics
 {
-  v4 = [(CellThroughputAdviser *)self currentAWDSymptomsCellularSDMPollingStatistics];
-  if (v4)
+  currentAWDSymptomsCellularSDMPollingStatistics = [(CellThroughputAdviser *)self currentAWDSymptomsCellularSDMPollingStatistics];
+  if (currentAWDSymptomsCellularSDMPollingStatistics)
   {
-    [(CellThroughputAdviser *)self postAWDMetric:v4 withIdentifier:3145752];
+    [(CellThroughputAdviser *)self postAWDMetric:currentAWDSymptomsCellularSDMPollingStatistics withIdentifier:3145752];
   }
 
-  v3 = [(CellThroughputAdviser *)self currentAWDSymptomsCellularSDMTimeStatistics];
-  [(CellThroughputAdviser *)self postAWDMetric:v3 withIdentifier:3145753];
+  currentAWDSymptomsCellularSDMTimeStatistics = [(CellThroughputAdviser *)self currentAWDSymptomsCellularSDMTimeStatistics];
+  [(CellThroughputAdviser *)self postAWDMetric:currentAWDSymptomsCellularSDMTimeStatistics withIdentifier:3145753];
 }
 
 - (id)currentAWDSymptomsCellularSDMPollingStatistics
@@ -1637,7 +1637,7 @@ void __53__CellThroughputAdviser__startPowerLogCollectionFor___block_invoke(uint
   }
 }
 
-- (BOOL)checkCoreMediaAssetDownloadCauses:(unint64_t *)a3
+- (BOOL)checkCoreMediaAssetDownloadCauses:(unint64_t *)causes
 {
   v5 = apparentTime();
   if ([(FlowOracle *)self->_flowOracle numActiveCoreMediaAssetDownloads])
@@ -1649,7 +1649,7 @@ void __53__CellThroughputAdviser__startPowerLogCollectionFor___block_invoke(uint
     {
       [(FlowOracle *)self->_flowOracle markCoreMediaAssetDownloadsAsActive];
       self->_lastAssetDownloadUsageTimestamp = v5;
-      v9 = [(CellThroughputAdviser *)self _coreMediaAssetDownloadActiveCauseForCurrentRadioState];
+      _coreMediaAssetDownloadActiveCauseForCurrentRadioState = [(CellThroughputAdviser *)self _coreMediaAssetDownloadActiveCauseForCurrentRadioState];
     }
 
     else
@@ -1661,40 +1661,40 @@ void __53__CellThroughputAdviser__startPowerLogCollectionFor___block_invoke(uint
         goto LABEL_5;
       }
 
-      v9 = [(CellThroughputAdviser *)self _coreMediaAssetDownloadHysteresisCauseForCurrentRadioState];
+      _coreMediaAssetDownloadActiveCauseForCurrentRadioState = [(CellThroughputAdviser *)self _coreMediaAssetDownloadHysteresisCauseForCurrentRadioState];
     }
 
-    if (!v9)
+    if (!_coreMediaAssetDownloadActiveCauseForCurrentRadioState)
     {
-      return v9;
+      return _coreMediaAssetDownloadActiveCauseForCurrentRadioState;
     }
 
     goto LABEL_12;
   }
 
 LABEL_5:
-  v9 = [(FlowOracle *)self->_flowOracle numCandidateCoreMediaAssetDownloads];
-  if (v9)
+  _coreMediaAssetDownloadActiveCauseForCurrentRadioState = [(FlowOracle *)self->_flowOracle numCandidateCoreMediaAssetDownloads];
+  if (_coreMediaAssetDownloadActiveCauseForCurrentRadioState)
   {
     [(FlowOracle *)self->_flowOracle coreMediaAssetDownloadRelatedRecentThroughput];
     if (v10 < self->_minAssetDownloadThroughputForUpgrade)
     {
-      LOBYTE(v9) = 0;
-      return v9;
+      LOBYTE(_coreMediaAssetDownloadActiveCauseForCurrentRadioState) = 0;
+      return _coreMediaAssetDownloadActiveCauseForCurrentRadioState;
     }
 
     [(FlowOracle *)self->_flowOracle markCoreMediaAssetDownloadsAsActive];
     self->_lastAssetDownloadUsageTimestamp = v5;
-    v9 = 0x8000000008;
+    _coreMediaAssetDownloadActiveCauseForCurrentRadioState = 0x8000000008;
 LABEL_12:
-    *a3 = v9;
-    LOBYTE(v9) = 1;
+    *causes = _coreMediaAssetDownloadActiveCauseForCurrentRadioState;
+    LOBYTE(_coreMediaAssetDownloadActiveCauseForCurrentRadioState) = 1;
   }
 
-  return v9;
+  return _coreMediaAssetDownloadActiveCauseForCurrentRadioState;
 }
 
-- (BOOL)checkBackgroundTransferCauses:(unint64_t *)a3
+- (BOOL)checkBackgroundTransferCauses:(unint64_t *)causes
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = apparentTime();
@@ -1721,7 +1721,7 @@ LABEL_12:
 
     if (v5 - self->_lastBackgroundTransferUsageTimestamp <= self->_maxBackgroundTransferDurationBelowThreshold)
     {
-      v13 = [(CellThroughputAdviser *)self _backgroundTransferHysteresisCauseForCurrentRadioState];
+      _backgroundTransferHysteresisCauseForCurrentRadioState = [(CellThroughputAdviser *)self _backgroundTransferHysteresisCauseForCurrentRadioState];
       goto LABEL_10;
     }
 
@@ -1738,7 +1738,7 @@ LABEL_12:
     }
   }
 
-  v13 = 0;
+  _backgroundTransferHysteresisCauseForCurrentRadioState = 0;
 LABEL_10:
   if (![(NSMutableSet *)self->_backgroundTransfers count]|| self->_lastBackgroundTransferUsageTimestamp != 0.0)
   {
@@ -1761,7 +1761,7 @@ LABEL_10:
   if (v16 >= minBackgroundTransferThroughputForUpgrade)
   {
 LABEL_19:
-    v13 = [(CellThroughputAdviser *)self _backgroundTransferActiveCauseForCurrentRadioState];
+    _backgroundTransferHysteresisCauseForCurrentRadioState = [(CellThroughputAdviser *)self _backgroundTransferActiveCauseForCurrentRadioState];
     self->_lastBackgroundTransferUsageTimestamp = v5;
     goto LABEL_20;
   }
@@ -1781,12 +1781,12 @@ LABEL_19:
   }
 
 LABEL_20:
-  if (v13)
+  if (_backgroundTransferHysteresisCauseForCurrentRadioState)
   {
-    *a3 = v13;
+    *causes = _backgroundTransferHysteresisCauseForCurrentRadioState;
   }
 
-  result = v13 != 0;
+  result = _backgroundTransferHysteresisCauseForCurrentRadioState != 0;
   v21 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -1870,10 +1870,10 @@ LABEL_20:
   }
 }
 
-- (BOOL)checkLibnetcoreLargeTransferCauses:(unint64_t *)a3 andOptOuts:(unint64_t *)a4
+- (BOOL)checkLibnetcoreLargeTransferCauses:(unint64_t *)causes andOptOuts:(unint64_t *)outs
 {
   v7 = apparentTime();
-  v8 = [(FlowOracle *)self->_flowOracle numCloakedTransferSizes];
+  numCloakedTransferSizes = [(FlowOracle *)self->_flowOracle numCloakedTransferSizes];
   if ([(FlowOracle *)self->_flowOracle numActiveTransferSizes])
   {
     [(CellThroughputAdviser *)self _minRequiredLargeTransferThroughputForCurrentRadioState];
@@ -1882,13 +1882,13 @@ LABEL_20:
     if (v11 > v10)
     {
       self->_lastTransferSizeUsageTimestamp = v7;
-      v12 = [(CellThroughputAdviser *)self _largeTransferContinuesCauseForCurrentRadioState];
+      _largeTransferContinuesCauseForCurrentRadioState = [(CellThroughputAdviser *)self _largeTransferContinuesCauseForCurrentRadioState];
       goto LABEL_18;
     }
 
     if (self->_lastStateUpdate - self->_lastTransferSizeUsageTimestamp <= self->_lastPromotedTransferSizeDampeningInterval)
     {
-      v12 = [(CellThroughputAdviser *)self _largeTransferHysteresisCauseForCurrentRadioState];
+      _largeTransferContinuesCauseForCurrentRadioState = [(CellThroughputAdviser *)self _largeTransferHysteresisCauseForCurrentRadioState];
       goto LABEL_18;
     }
 
@@ -1934,24 +1934,24 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  v12 = [(CellThroughputAdviser *)self _largeTransferFinalHysteresisCauseForCurrentRadioState];
+  _largeTransferContinuesCauseForCurrentRadioState = [(CellThroughputAdviser *)self _largeTransferFinalHysteresisCauseForCurrentRadioState];
 LABEL_18:
-  v14 = v12;
+  v14 = _largeTransferContinuesCauseForCurrentRadioState;
 LABEL_19:
-  if (v8)
+  if (numCloakedTransferSizes)
   {
-    *a4 = 32769;
+    *outs = 32769;
   }
 
   if (v14)
   {
-    *a3 = v14;
+    *causes = v14;
   }
 
   return v14 != 0;
 }
 
-- (unsigned)determineAdvice:(unint64_t *)a3
+- (unsigned)determineAdvice:(unint64_t *)advice
 {
   v41 = *MEMORY[0x277D85DE8];
   v36 = 0;
@@ -1961,7 +1961,7 @@ LABEL_19:
   {
     v37 = 128;
     adviceForSustainedHighInterfaceThroughput = 4;
-    if (!a3)
+    if (!advice)
     {
       goto LABEL_21;
     }
@@ -2018,23 +2018,23 @@ LABEL_11:
       v25 = v23;
       LODWORD(flowOracle) = [(FlowOracle *)flowOracle hasSustainedConservativeHighCellInterfaceThroughput];
       interfaceThresholdsResponsive = self->_interfaceThresholdsResponsive;
-      v27 = [(FlowOracle *)self->_flowOracle hasSustainedResponsiveHighCellInterfaceThroughput];
+      hasSustainedResponsiveHighCellInterfaceThroughput = [(FlowOracle *)self->_flowOracle hasSustainedResponsiveHighCellInterfaceThroughput];
       *buf = 67109632;
       *v39 = flowOracle;
       *&v39[4] = 1024;
       *&v39[6] = interfaceThresholdsResponsive;
       LOWORD(v40) = 1024;
-      *(&v40 + 2) = v27;
+      *(&v40 + 2) = hasSustainedResponsiveHighCellInterfaceThroughput;
       _os_log_impl(&dword_23255B000, v25, OS_LOG_TYPE_DEBUG, "CellThroughputAdviser sustained-high-interface-usasge, conservative %d responsive-ok %d responsive %d", buf, 0x14u);
     }
 
     self->_lastHighInterfaceUse = self->_lastStateUpdate;
     adviceForSustainedHighInterfaceThroughput = self->_adviceForSustainedHighInterfaceThroughput;
-    v28 = [(FlowOracle *)self->_flowOracle hasSustainedHighCellInterfaceRxThroughput];
-    v29 = [(FlowOracle *)self->_flowOracle hasSustainedHighCellInterfaceTxThroughput];
-    if (v28)
+    hasSustainedHighCellInterfaceRxThroughput = [(FlowOracle *)self->_flowOracle hasSustainedHighCellInterfaceRxThroughput];
+    hasSustainedHighCellInterfaceTxThroughput = [(FlowOracle *)self->_flowOracle hasSustainedHighCellInterfaceTxThroughput];
+    if (hasSustainedHighCellInterfaceRxThroughput)
     {
-      if (v29)
+      if (hasSustainedHighCellInterfaceTxThroughput)
       {
         v30 = 0x800000004;
       }
@@ -2045,7 +2045,7 @@ LABEL_11:
       }
     }
 
-    else if (v29)
+    else if (hasSustainedHighCellInterfaceTxThroughput)
     {
       v30 = 0x400000004;
     }
@@ -2105,30 +2105,30 @@ LABEL_35:
 
     if (self->_avUseCasesSupported)
     {
-      v34 = [(FlowOracle *)self->_flowOracle activeHighThroughputAudioVideoTrafficForegroundFlowScore];
-      if (v34 >= 71)
+      activeHighThroughputAudioVideoTrafficForegroundFlowScore = [(FlowOracle *)self->_flowOracle activeHighThroughputAudioVideoTrafficForegroundFlowScore];
+      if (activeHighThroughputAudioVideoTrafficForegroundFlowScore >= 71)
       {
         adviceForSustainedHighInterfaceThroughput = self->_adviceForBusyAVFlows;
         v7 = 0x1000000000002;
         goto LABEL_15;
       }
 
-      if (v34 >= 41)
+      if (activeHighThroughputAudioVideoTrafficForegroundFlowScore >= 41)
       {
         adviceForSustainedHighInterfaceThroughput = self->_adviceForBusyAVFlowsLowerCertainty;
         v7 = 0x2000000000002;
         goto LABEL_15;
       }
 
-      v35 = [(FlowOracle *)self->_flowOracle activeLimitedThroughputAudioVideoTrafficForegroundFlowScore];
-      if (v35 >= 71)
+      activeLimitedThroughputAudioVideoTrafficForegroundFlowScore = [(FlowOracle *)self->_flowOracle activeLimitedThroughputAudioVideoTrafficForegroundFlowScore];
+      if (activeLimitedThroughputAudioVideoTrafficForegroundFlowScore >= 71)
       {
         adviceForSustainedHighInterfaceThroughput = self->_adviceForModestAVFlows;
         v7 = 0x4000000000002;
         goto LABEL_15;
       }
 
-      if (v35 >= 41)
+      if (activeLimitedThroughputAudioVideoTrafficForegroundFlowScore >= 41)
       {
         adviceForSustainedHighInterfaceThroughput = self->_adviceForModestAVFlowsLowerCertainty;
         v7 = 0x8000000000002;
@@ -2183,7 +2183,7 @@ LABEL_28:
       }
 
       [(FlowOracle *)self->_flowOracle logCellInterfaceUseContributors:v37, v36];
-      if (a3)
+      if (advice)
       {
         goto LABEL_20;
       }
@@ -2217,10 +2217,10 @@ LABEL_28:
   }
 
 LABEL_19:
-  if (a3)
+  if (advice)
   {
 LABEL_20:
-    *a3 = v37;
+    *advice = v37;
   }
 
 LABEL_21:
@@ -2228,7 +2228,7 @@ LABEL_21:
   return adviceForSustainedHighInterfaceThroughput;
 }
 
-- (unsigned)determineNonCoreMediaRxThroughput:(double *)a3 txThroughput:(double *)a4
+- (unsigned)determineNonCoreMediaRxThroughput:(double *)throughput txThroughput:(double *)txThroughput
 {
   result = [(FlowOracle *)self->_flowOracle cellNonCoreMediaAudioVideoOperation];
   switch(result)
@@ -2239,9 +2239,9 @@ LABEL_21:
       if (lastAudioVideoReport > 0.0 && v10 - lastAudioVideoReport >= self->_minTimeIntervalBetweenAVThroughputReport)
       {
         [(FlowOracle *)self->_flowOracle averageCellAudioVideoTrafficClassRxThroughput];
-        *a3 = v12;
+        *throughput = v12;
         [(FlowOracle *)self->_flowOracle averageCellAudioVideoTrafficClassTxThroughput];
-        *a4 = v13;
+        *txThroughput = v13;
         return 3;
       }
 
@@ -2250,19 +2250,19 @@ LABEL_21:
       return result;
     case 1u:
       [(FlowOracle *)self->_flowOracle averageCellAudioVideoTrafficClassRxThroughput];
-      *a3 = v8;
+      *throughput = v8;
       [(FlowOracle *)self->_flowOracle averageCellAudioVideoTrafficClassTxThroughput];
-      *a4 = v9;
+      *txThroughput = v9;
       return 1;
   }
 
   return 0;
 }
 
-- (void)setPollingRate:(double)a3
+- (void)setPollingRate:(double)rate
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (self->_currentPollingRate != a3)
+  if (self->_currentPollingRate != rate)
   {
     if (self->_pollingCancelToken >= 1)
     {
@@ -2273,7 +2273,7 @@ LABEL_21:
         currentPollingRate = self->_currentPollingRate;
         pollingCancelToken = self->_pollingCancelToken;
         v12 = 134218496;
-        v13 = a3;
+        rateCopy2 = rate;
         v14 = 2048;
         v15 = currentPollingRate;
         v16 = 2048;
@@ -2284,16 +2284,16 @@ LABEL_21:
       self->_pollingCancelToken = 0;
     }
 
-    if (a3 > 0.0)
+    if (rate > 0.0)
     {
-      self->_pollingCancelToken = [(FlowRefreshScheduler *)self->_refreshScheduler periodicRefreshDataUsageWithInterval:@"CellThroughputAdvisor" maxStale:a3 maxDelay:0.1 logAs:0.1];
+      self->_pollingCancelToken = [(FlowRefreshScheduler *)self->_refreshScheduler periodicRefreshDataUsageWithInterval:@"CellThroughputAdvisor" maxStale:rate maxDelay:0.1 logAs:0.1];
       v8 = flowScrutinyLogHandle;
       if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v9 = self->_currentPollingRate;
         v10 = self->_pollingCancelToken;
         v12 = 134218496;
-        v13 = a3;
+        rateCopy2 = rate;
         v14 = 2048;
         v15 = v9;
         v16 = 2048;
@@ -2302,7 +2302,7 @@ LABEL_21:
       }
     }
 
-    self->_currentPollingRate = a3;
+    self->_currentPollingRate = rate;
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -2364,10 +2364,10 @@ uint64_t __34__CellThroughputAdviser_unquiesce__block_invoke(uint64_t a1)
   return [v2 addObserver:? forKeyPath:? options:? context:?];
 }
 
-- (void)_refreshAdvice:(int)a3
+- (void)_refreshAdvice:(int)advice
 {
   v40 = *MEMORY[0x277D85DE8];
-  if (a3 != 5 && !self->_enabled)
+  if (advice != 5 && !self->_enabled)
   {
     v5 = flowScrutinyLogHandle;
     if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_INFO))
@@ -2379,7 +2379,7 @@ uint64_t __34__CellThroughputAdviser_unquiesce__block_invoke(uint64_t a1)
     goto LABEL_52;
   }
 
-  if (a3 != 2)
+  if (advice != 2)
   {
     [(FlowOracle *)self->_flowOracle refreshTransferSizeState];
   }
@@ -2410,9 +2410,9 @@ uint64_t __34__CellThroughputAdviser_unquiesce__block_invoke(uint64_t a1)
 
   *(&self->super.isa + v9) = v7;
 LABEL_13:
-  v11 = [(FlowOracle *)self->_flowOracle allContributors];
+  allContributors = [(FlowOracle *)self->_flowOracle allContributors];
   previousSampleContributors = self->_previousSampleContributors;
-  self->_previousSampleContributors = v11;
+  self->_previousSampleContributors = allContributors;
 
   v35 = 0.0;
   v36 = 0.0;
@@ -2420,7 +2420,7 @@ LABEL_13:
   if (v13)
   {
     self->_lastAudioVideoReport = apparentTime();
-    v14 = a3 == 4;
+    v14 = advice == 4;
 LABEL_15:
     if (self->_enabled)
     {
@@ -2533,8 +2533,8 @@ LABEL_15:
     goto LABEL_50;
   }
 
-  v14 = a3 == 4;
-  if (a3 == 4 || v6 != self->_reportedAdvice)
+  v14 = advice == 4;
+  if (advice == 4 || v6 != self->_reportedAdvice)
   {
     goto LABEL_15;
   }
@@ -2549,7 +2549,7 @@ LABEL_52:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPropertyChangeTimestamp:(double)a3
+- (void)setPropertyChangeTimestamp:(double)timestamp
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = flowScrutinyLogHandle;
@@ -2557,7 +2557,7 @@ LABEL_52:
   {
     propertyChangeTimestamp = self->_propertyChangeTimestamp;
     *buf = 134218240;
-    v14 = a3;
+    timestampCopy = timestamp;
     v15 = 2048;
     v16 = propertyChangeTimestamp;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "CellThroughputAdviser set propertyChangeTimestamp to %.4f, was %.4f", buf, 0x16u);
@@ -2565,42 +2565,42 @@ LABEL_52:
 
   if ((activeTraceTargets & 4) != 0)
   {
-    traceEntry(2, "[CellThroughputAdviser setPropertyChangeTimestamp:]", "%t", v6, v7, v8, v9, v10, *&a3);
+    traceEntry(2, "[CellThroughputAdviser setPropertyChangeTimestamp:]", "%t", v6, v7, v8, v9, v10, *&timestamp);
   }
 
-  self->_propertyChangeTimestamp = a3;
+  self->_propertyChangeTimestamp = timestamp;
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didPollFlowsAt:(double)a3 periodic:(BOOL)a4
+- (void)didPollFlowsAt:(double)at periodic:(BOOL)periodic
 {
-  v9 = a4;
+  periodicCopy = periodic;
   v26 = *MEMORY[0x277D85DE8];
   if ((activeTraceTargets & 4) != 0)
   {
-    traceEntry(2, "[CellThroughputAdviser didPollFlowsAt:periodic:]", "%t %d", v4, v5, v6, v7, v8, *&a3);
+    traceEntry(2, "[CellThroughputAdviser didPollFlowsAt:periodic:]", "%t %d", v4, v5, v6, v7, v8, *&at);
   }
 
   v12 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v13 = v12;
-    v14 = dateStringMillisecondsFromReferenceInterval(a3);
+    v14 = dateStringMillisecondsFromReferenceInterval(at);
     *buf = 138412546;
     v23 = v14;
     v24 = 1024;
-    v25 = v9;
+    v25 = periodicCopy;
     _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEBUG, "CellThroughputAdviser didPollFlowsAt: %@ periodic %d", buf, 0x12u);
   }
 
-  setApparentTime(a3);
+  setApparentTime(at);
   ++self->_numPolls;
   if (self->_lastPollTime > 0.0)
   {
     [(CellThroughputAdviser *)self notePollIntervalForMetrics:apparentTime() - self->_lastPollTime];
   }
 
-  self->_lastPollTime = a3;
+  self->_lastPollTime = at;
   self->_pollInProgress = 0;
   [(CellThroughputAdviser *)self _refreshAdvice:2];
   if (self->_enabled)
@@ -2635,15 +2635,15 @@ LABEL_52:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notePollIntervalForMetrics:(double)a3
+- (void)notePollIntervalForMetrics:(double)metrics
 {
-  v3 = a3;
+  metricsCopy = metrics;
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 >= 0.0 && a3 < 40.0)
+  if (metrics >= 0.0 && metrics < 40.0)
   {
-    if (a3 >= 5.0)
+    if (metrics >= 5.0)
     {
-      if (a3 >= 20.0)
+      if (metrics >= 20.0)
       {
         v8 = 35;
 LABEL_15:
@@ -2651,13 +2651,13 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v3 = a3 + -5.0;
-      v6 = ((a3 + -5.0) * 15.0 / 15.0) + 20;
+      metricsCopy = metrics + -5.0;
+      v6 = ((metrics + -5.0) * 15.0 / 15.0) + 20;
     }
 
     else
     {
-      v6 = (a3 * 20.0 / 5.0);
+      v6 = (metrics * 20.0 / 5.0);
     }
 
     if (v6 < 0x24)
@@ -2672,7 +2672,7 @@ LABEL_15:
       if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_ERROR))
       {
         v10 = 134218496;
-        v11 = v3;
+        v11 = metricsCopy;
         v12 = 1024;
         v13 = v6;
         v14 = 1024;
@@ -2688,17 +2688,17 @@ LABEL_16:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)noteSizeableBackgroundTransferEventName:(id)a3 event:(unint64_t)a4 downloadSizeBytes:(unint64_t)a5 uploadSizeBytes:(unint64_t)a6 at:(double)a7
+- (void)noteSizeableBackgroundTransferEventName:(id)name event:(unint64_t)event downloadSizeBytes:(unint64_t)bytes uploadSizeBytes:(unint64_t)sizeBytes at:(double)at
 {
   v32 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v18 = v12;
+  nameCopy = name;
+  v18 = nameCopy;
   if ((activeTraceTargets & 4) != 0)
   {
-    traceEntry(2, "[CellThroughputAdviser noteSizeableBackgroundTransferEventName:event:downloadSizeBytes:uploadSizeBytes:at:]", "%@ %lld %lld %lld %t", v13, v14, v15, v16, v17, v12);
+    traceEntry(2, "[CellThroughputAdviser noteSizeableBackgroundTransferEventName:event:downloadSizeBytes:uploadSizeBytes:at:]", "%@ %lld %lld %lld %t", v13, v14, v15, v16, v17, nameCopy);
   }
 
-  setApparentTime(a7);
+  setApparentTime(at);
   if (v18 && [v18 length])
   {
     v19 = flowScrutinyLogHandle;
@@ -2707,21 +2707,21 @@ LABEL_16:
       *buf = 138413058;
       v25 = v18;
       v26 = 2048;
-      v27 = a4;
+      eventCopy = event;
       v28 = 2048;
-      v29 = a5;
+      bytesCopy = bytes;
       v30 = 2048;
-      v31 = a6;
+      sizeBytesCopy = sizeBytes;
       _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_DEFAULT, "CellThroughputAdviser received sizeable background transfer event with name %@, event %lld, download %llu, upload %llu", buf, 0x2Au);
     }
 
-    if (a4 == 1)
+    if (event == 1)
     {
       [(NSMutableSet *)self->_backgroundTransfers addObject:v18];
-      self->_lastBackgroundTransferNotifiedTimestamp = a7;
+      self->_lastBackgroundTransferNotifiedTimestamp = at;
     }
 
-    else if (a4 == 2)
+    else if (event == 2)
     {
       [(NSMutableSet *)self->_backgroundTransfers removeObject:v18];
       if (![(NSMutableSet *)self->_backgroundTransfers count])
@@ -2770,21 +2770,21 @@ LABEL_16:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v12 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_INFO))
   {
     v13 = *MEMORY[0x277CCA300];
     v14 = v12;
-    v15 = [v11 objectForKeyedSubscript:v13];
-    v16 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v15 = [changeCopy objectForKeyedSubscript:v13];
+    v16 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     *buf = 138412802;
-    v28 = v9;
+    v28 = pathCopy;
     v29 = 2112;
     v30 = v15;
     v31 = 2112;
@@ -2792,7 +2792,7 @@ LABEL_16:
     _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_INFO, "CellThroughputAdviser: observe keyPath %@   %@ -> %@", buf, 0x20u);
   }
 
-  if ([v9 isEqualToString:@"hasForegroundCellAVTrafficClassFlows"])
+  if ([pathCopy isEqualToString:@"hasForegroundCellAVTrafficClassFlows"])
   {
     v17 = flowScrutinyLogHandle;
     if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -2801,8 +2801,8 @@ LABEL_16:
       _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_DEFAULT, "CellThroughputAdviser, hasForegroundCellAVTrafficClassFlows causes async scheduling of _refreshAdvice", buf, 2u);
     }
 
-    v18 = [(CellThroughputAdviser *)self queue];
-    v19 = v18;
+    queue = [(CellThroughputAdviser *)self queue];
+    v19 = queue;
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __72__CellThroughputAdviser_observeValueForKeyPath_ofObject_change_context___block_invoke;
@@ -2810,13 +2810,13 @@ LABEL_16:
     v26[4] = self;
     v20 = v26;
 LABEL_25:
-    dispatch_async(v18, v20);
+    dispatch_async(queue, v20);
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  if ([v9 isEqualToString:@"numExpectedTransferSignificantChanges"])
+  if ([pathCopy isEqualToString:@"numExpectedTransferSignificantChanges"])
   {
     if (self->_isScreenDark)
     {
@@ -2841,8 +2841,8 @@ LABEL_26:
         _os_log_impl(&dword_23255B000, v23, OS_LOG_TYPE_DEFAULT, "CellThroughputAdviser, numExpectedTransferSignificantChanges causes async scheduling of _refreshAdvice", buf, 2u);
       }
 
-      v18 = [(CellThroughputAdviser *)self queue];
-      v19 = v18;
+      queue = [(CellThroughputAdviser *)self queue];
+      v19 = queue;
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __72__CellThroughputAdviser_observeValueForKeyPath_ofObject_change_context___block_invoke_554;
@@ -2853,9 +2853,9 @@ LABEL_26:
     }
   }
 
-  else if ([v9 isEqualToString:@"cellThroughputAdviserShouldRun"])
+  else if ([pathCopy isEqualToString:@"cellThroughputAdviserShouldRun"])
   {
-    v19 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v19 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     if (v19)
     {
       objc_opt_class();
@@ -2903,33 +2903,33 @@ LABEL_27:
   *&self->_stateLogLevel = 0x200000003;
 }
 
-- (int64_t)configItemToLongLong:(id)a3
+- (int64_t)configItemToLongLong:(id)long
 {
-  v3 = a3;
+  longCopy = long;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = [v3 longLongValue];
+    longLongValue = [longCopy longLongValue];
   }
 
   else
   {
-    v4 = -1;
+    longLongValue = -1;
   }
 
-  return v4;
+  return longLongValue;
 }
 
-- (int)configureInstance:(id)a3
+- (int)configureInstance:(id)instance
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  instanceCopy = instance;
+  if (instanceCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = objc_alloc_init(ConfigurationParams);
     v6 = v5;
     if (v5)
     {
-      [(ConfigurationParams *)v5 setUnderlyingDictionary:v4];
+      [(ConfigurationParams *)v5 setUnderlyingDictionary:instanceCopy];
       [(ConfigurationParams *)v6 setLogHandle:flowScrutinyLogHandle];
       [(ConfigurationParams *)v6 extractKey:@"CellThroughputPollingInterval" toDouble:&self->_configuredPollingRate defaultTo:1.2];
       [(ConfigurationParams *)v6 extractKey:@"DampeningHighTransferSize" toDouble:&self->_lastHighTransferSizeDampeningInterval defaultTo:2.0];
@@ -2971,8 +2971,8 @@ LABEL_27:
 
       else
       {
-        v11 = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
-        v8 = [v11 setConfiguration:v6];
+        cellInterfaceSampler = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
+        v8 = [cellInterfaceSampler setConfiguration:v6];
       }
     }
 
@@ -2981,7 +2981,7 @@ LABEL_27:
       v8 = 0;
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"restoreDefaults"];
+    v9 = [instanceCopy objectForKeyedSubscript:@"restoreDefaults"];
     if (v9)
     {
       [(CellThroughputAdviser *)self restoreDefaults];
@@ -2996,15 +2996,15 @@ LABEL_27:
   return v8;
 }
 
-- (void)_dumpArray:(id)a3
+- (void)_dumpArray:(id)array
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v17 count:16];
+  v4 = [arrayCopy countByEnumeratingWithState:&v11 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3015,7 +3015,7 @@ LABEL_27:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v8 = flowScrutinyLogHandle;
@@ -3028,7 +3028,7 @@ LABEL_27:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v17 count:16];
+      v5 = [arrayCopy countByEnumeratingWithState:&v11 objects:v17 count:16];
     }
 
     while (v5);
@@ -3037,10 +3037,10 @@ LABEL_27:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getState:(BOOL)a3
+- (id)_getState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  stateCopy = state;
+  array = [MEMORY[0x277CBEB18] array];
   v6 = objc_alloc(MEMORY[0x277CCACA8]);
   reportedAdvice = self->_reportedAdvice;
   if ((reportedAdvice & 7) > 4)
@@ -3076,8 +3076,8 @@ LABEL_27:
   }
 
   reportedCause = self->_reportedCause;
-  v41 = v5;
-  v40 = v3;
+  v41 = array;
+  v40 = stateCopy;
   v38 = self->_reportedAdvice;
   v39 = v6;
   v36 = v10;
@@ -3421,15 +3421,15 @@ LABEL_134:
   enabled = self->_enabled;
   quiesced = self->_quiesced;
   nrFrequencyBand = self->_nrFrequencyBand;
-  v18 = [(FlowOracle *)self->_flowOracle busiestCellOrigin];
-  v19 = [v18 name];
+  busiestCellOrigin = [(FlowOracle *)self->_flowOracle busiestCellOrigin];
+  name = [busiestCellOrigin name];
   [(FlowOracle *)self->_flowOracle busiestCellOriginRecentThroughput];
   v21 = v20;
   isScreenDark = self->_isScreenDark;
   isScreenLocked = self->_isScreenLocked;
   lastStateUpdate = self->_lastStateUpdate;
   v25 = dateStringMillisecondsFromReferenceInterval(lastStateUpdate);
-  v26 = [v39 initWithFormat:@"CellThroughputAdviser: currentAdvice 0x%x (%s admin %s target %s) because %s enabled %d quiesced %d nr-frequency-band %d busiest %@ busiest-tput %0.6f Mbps screen-dark %d screen-locked %d lastCompletion %f %@ poll-rate %.3f", v38, v37, v36, v35, v14, enabled, quiesced, nrFrequencyBand, v19, v21, isScreenDark, isScreenLocked, *&lastStateUpdate, v25, *&self->_currentPollingRate];
+  v26 = [v39 initWithFormat:@"CellThroughputAdviser: currentAdvice 0x%x (%s admin %s target %s) because %s enabled %d quiesced %d nr-frequency-band %d busiest %@ busiest-tput %0.6f Mbps screen-dark %d screen-locked %d lastCompletion %f %@ poll-rate %.3f", v38, v37, v36, v35, v14, enabled, quiesced, nrFrequencyBand, name, v21, isScreenDark, isScreenLocked, *&lastStateUpdate, v25, *&self->_currentPollingRate];
 
   [v41 addObject:v26];
   if (v40)
@@ -3458,15 +3458,15 @@ LABEL_134:
     [v41 addObject:v32];
   }
 
-  v33 = [(WiFiViabilityMonitor *)self->_wifiViabilityMonitor getState];
-  [v41 addObjectsFromArray:v33];
+  getState = [(WiFiViabilityMonitor *)self->_wifiViabilityMonitor getState];
+  [v41 addObjectsFromArray:getState];
 
   return v41;
 }
 
-- (id)_getCombinedStateAt:(double)a3
+- (id)_getCombinedStateAt:(double)at
 {
-  setApparentTime(a3);
+  setApparentTime(at);
   v4 = [(CellThroughputAdviser *)self _getState:1];
   v5 = [(FlowOracle *)self->_flowOracle getState:1];
   [v4 addObjectsFromArray:v5];
@@ -3477,17 +3477,17 @@ LABEL_134:
   return v4;
 }
 
-- (id)getStateAt:(double)a3
+- (id)getStateAt:(double)at
 {
   if ((activeTraceTargets & 4) != 0)
   {
-    traceEntry(2, "[CellThroughputAdviser getStateAt:]", "%t", v3, v4, v5, v6, v7, *&a3);
+    traceEntry(2, "[CellThroughputAdviser getStateAt:]", "%t", v3, v4, v5, v6, v7, *&at);
   }
 
-  return [(CellThroughputAdviser *)self _getCombinedStateAt:a3];
+  return [(CellThroughputAdviser *)self _getCombinedStateAt:at];
 }
 
-- (void)_checkPendingTimers:(double)a3
+- (void)_checkPendingTimers:(double)timers
 {
   v30 = *MEMORY[0x277D85DE8];
   pendingDelayDetails = self->_pendingDelayDetails;
@@ -3525,12 +3525,12 @@ LABEL_134:
           if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
           {
             v15 = v14;
-            v16 = [v12 context];
+            context = [v12 context];
             [v12 fireAt];
             *buf = 138412802;
-            v24 = v16;
+            v24 = context;
             v25 = 2048;
-            v26 = a3;
+            timersCopy = timers;
             v27 = 2048;
             v28 = v17;
             _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_DEFAULT, "Replayer about to call timerCallback object %@ now %f  targetCallbackTime %f\n", buf, 0x20u);
@@ -3560,10 +3560,10 @@ LABEL_19:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTimerCallbackWithSimulatedDelay:(double)a3 context:(id)a4
+- (void)setTimerCallbackWithSimulatedDelay:(double)delay context:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  contextCopy = context;
   if (!self->_pendingDelayDetails)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -3572,8 +3572,8 @@ LABEL_19:
   }
 
   v9 = objc_alloc_init(DelayDetails);
-  [(DelayDetails *)v9 setFireAt:apparentTime() + a3];
-  [(DelayDetails *)v9 setContext:v6];
+  [(DelayDetails *)v9 setFireAt:apparentTime() + delay];
+  [(DelayDetails *)v9 setContext:contextCopy];
   [(NSMutableSet *)self->_pendingDelayDetails addObject:v9];
   v10 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -3582,7 +3582,7 @@ LABEL_19:
     v12 = apparentTime();
     v13 = dateStringMillisecondsFromTimeInterval(v12);
     v15 = 134218242;
-    v16 = a3;
+    delayCopy = delay;
     v17 = 2112;
     v18 = v13;
     _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEFAULT, "setTimerCallbackWithSimulatedDelay received %f at %@", &v15, 0x16u);
@@ -3591,22 +3591,22 @@ LABEL_19:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performAction:(id)a3 verbose:(BOOL)a4
+- (void)performAction:(id)action verbose:(BOOL)verbose
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  self->_traceVerbose = a4;
-  if (v6)
+  actionCopy = action;
+  self->_traceVerbose = verbose;
+  if (actionCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 objectForKeyedSubscript:@"set"];
-      v8 = [v6 objectForKeyedSubscript:@"call"];
+      v7 = [actionCopy objectForKeyedSubscript:@"set"];
+      v8 = [actionCopy objectForKeyedSubscript:@"call"];
       v9 = v8;
       if (v7)
       {
-        v10 = [v6 objectForKeyedSubscript:@"value"];
+        v10 = [actionCopy objectForKeyedSubscript:@"value"];
         if (v10)
         {
           objc_opt_class();
@@ -3667,7 +3667,7 @@ LABEL_17:
         }
 
         *buf = 138543362;
-        v41 = v6;
+        v41 = actionCopy;
         v12 = "CellThroughputAdviser, invalid value for setter in %{public}@";
         v13 = v11;
         v14 = 12;
@@ -3693,7 +3693,7 @@ LABEL_16:
 
           if ([v9 isEqualToString:@"getStateAt:"])
           {
-            v10 = [v6 objectForKeyedSubscript:@"param1"];
+            v10 = [actionCopy objectForKeyedSubscript:@"param1"];
             if ([(CellThroughputAdviser *)self encodingRepresentsNSTimeInterval:v10])
             {
               [(CellThroughputAdviser *)self encodingToNSTimeInterval:v10];
@@ -3712,7 +3712,7 @@ LABEL_16:
 
           else if ([v9 isEqualToString:@"didPollFlowsAt:"])
           {
-            v10 = [v6 objectForKeyedSubscript:@"param1"];
+            v10 = [actionCopy objectForKeyedSubscript:@"param1"];
             if ([(CellThroughputAdviser *)self encodingRepresentsNSTimeInterval:v10])
             {
               [(CellThroughputAdviser *)self encodingToNSTimeInterval:v10];
@@ -3738,11 +3738,11 @@ LABEL_16:
 
             if ([v9 isEqualToString:@"noteSizeableBackgroundTransferEventName:event:downloadSizeBytes:uploadSizeBytes:at:"])
             {
-              v10 = [v6 objectForKeyedSubscript:@"param1"];
-              v27 = [v6 objectForKeyedSubscript:@"param2"];
-              v28 = [v6 objectForKeyedSubscript:@"param3"];
-              v29 = [v6 objectForKeyedSubscript:@"param4"];
-              v30 = [v6 objectForKeyedSubscript:@"param5"];
+              v10 = [actionCopy objectForKeyedSubscript:@"param1"];
+              v27 = [actionCopy objectForKeyedSubscript:@"param2"];
+              v28 = [actionCopy objectForKeyedSubscript:@"param3"];
+              v29 = [actionCopy objectForKeyedSubscript:@"param4"];
+              v30 = [actionCopy objectForKeyedSubscript:@"param5"];
               if ([(CellThroughputAdviser *)self encodingRepresentsNSString:v10]&& [(CellThroughputAdviser *)self encodingRepresentsUint64:v27]&& [(CellThroughputAdviser *)self encodingRepresentsUint64:v28]&& [(CellThroughputAdviser *)self encodingRepresentsUint64:v29]&& [(CellThroughputAdviser *)self encodingRepresentsNSTimeInterval:v30])
               {
                 v39 = [(CellThroughputAdviser *)self encodingToNSString:v10];
@@ -3763,7 +3763,7 @@ LABEL_16:
                   *buf = 138543618;
                   v41 = v9;
                   v42 = 2114;
-                  v43 = v6;
+                  v43 = actionCopy;
                   _os_log_impl(&dword_23255B000, v34, OS_LOG_TYPE_ERROR, "CellThroughputAdviser, incorrect parameters for %{public}@ in %{public}@", buf, 0x16u);
                 }
               }
@@ -3782,7 +3782,7 @@ LABEL_16:
               goto LABEL_18;
             }
 
-            v10 = [v6 objectForKeyedSubscript:@"param1"];
+            v10 = [actionCopy objectForKeyedSubscript:@"param1"];
             if ([(CellThroughputAdviser *)self encodingRepresentsNSTimeInterval:v10])
             {
               [(CellThroughputAdviser *)self encodingToNSTimeInterval:v10];
@@ -3802,7 +3802,7 @@ LABEL_16:
           *buf = 138543618;
           v41 = v9;
           v42 = 2114;
-          v43 = v6;
+          v43 = actionCopy;
           v12 = "CellThroughputAdviser, incorrect parameters for %{public}@ in %{public}@";
           v13 = v26;
           v14 = 22;

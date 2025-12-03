@@ -1,49 +1,49 @@
 @interface HDHRElectrocardiogramRecordingV2UpgradeManager
-- (HDHRElectrocardiogramRecordingV2UpgradeManager)initWithProfile:(id)a3 v1FeatureAvailabilityManager:(id)a4 v2FeatureAvailabilityManager:(id)a5 analyticsSubmissionManager:(id)a6;
-- (HDHRElectrocardiogramRecordingV2UpgradeManager)initWithProfile:(id)a3 v1FeatureAvailabilityManager:(id)a4 v2FeatureAvailabilityManager:(id)a5 analyticsSubmissionManager:(id)a6 protectedDataOperation:(id)a7;
+- (HDHRElectrocardiogramRecordingV2UpgradeManager)initWithProfile:(id)profile v1FeatureAvailabilityManager:(id)manager v2FeatureAvailabilityManager:(id)availabilityManager analyticsSubmissionManager:(id)submissionManager;
+- (HDHRElectrocardiogramRecordingV2UpgradeManager)initWithProfile:(id)profile v1FeatureAvailabilityManager:(id)manager v2FeatureAvailabilityManager:(id)availabilityManager analyticsSubmissionManager:(id)submissionManager protectedDataOperation:(id)operation;
 - (id)_v1featureSettingsUponBackgroundDelivery;
-- (void)_reportAnalyticsEventForCountryCode:(void *)a3 eventType:(void *)a4 errorCategory:(void *)a5 errorDetail:;
-- (void)doWorkWithCompletion:(uint64_t)a1;
-- (void)pairedDeviceCapabilitiesDidUpdate:(id)a3;
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6;
+- (void)_reportAnalyticsEventForCountryCode:(void *)code eventType:(void *)type errorCategory:(void *)category errorDetail:;
+- (void)doWorkWithCompletion:(uint64_t)completion;
+- (void)pairedDeviceCapabilitiesDidUpdate:(id)update;
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion;
 @end
 
 @implementation HDHRElectrocardiogramRecordingV2UpgradeManager
 
-- (HDHRElectrocardiogramRecordingV2UpgradeManager)initWithProfile:(id)a3 v1FeatureAvailabilityManager:(id)a4 v2FeatureAvailabilityManager:(id)a5 analyticsSubmissionManager:(id)a6
+- (HDHRElectrocardiogramRecordingV2UpgradeManager)initWithProfile:(id)profile v1FeatureAvailabilityManager:(id)manager v2FeatureAvailabilityManager:(id)availabilityManager analyticsSubmissionManager:(id)submissionManager
 {
   v10 = MEMORY[0x277D10800];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  submissionManagerCopy = submissionManager;
+  availabilityManagerCopy = availabilityManager;
+  managerCopy = manager;
+  profileCopy = profile;
   v15 = [v10 alloc];
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
-  v18 = [v15 initWithProfile:v14 debugIdentifier:v17 delegate:0];
+  v18 = [v15 initWithProfile:profileCopy debugIdentifier:v17 delegate:0];
 
-  v19 = [(HDHRElectrocardiogramRecordingV2UpgradeManager *)self initWithProfile:v14 v1FeatureAvailabilityManager:v13 v2FeatureAvailabilityManager:v12 analyticsSubmissionManager:v11 protectedDataOperation:v18];
+  v19 = [(HDHRElectrocardiogramRecordingV2UpgradeManager *)self initWithProfile:profileCopy v1FeatureAvailabilityManager:managerCopy v2FeatureAvailabilityManager:availabilityManagerCopy analyticsSubmissionManager:submissionManagerCopy protectedDataOperation:v18];
   return v19;
 }
 
-- (HDHRElectrocardiogramRecordingV2UpgradeManager)initWithProfile:(id)a3 v1FeatureAvailabilityManager:(id)a4 v2FeatureAvailabilityManager:(id)a5 analyticsSubmissionManager:(id)a6 protectedDataOperation:(id)a7
+- (HDHRElectrocardiogramRecordingV2UpgradeManager)initWithProfile:(id)profile v1FeatureAvailabilityManager:(id)manager v2FeatureAvailabilityManager:(id)availabilityManager analyticsSubmissionManager:(id)submissionManager protectedDataOperation:(id)operation
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  profileCopy = profile;
+  managerCopy = manager;
+  availabilityManagerCopy = availabilityManager;
+  submissionManagerCopy = submissionManager;
+  operationCopy = operation;
   v20.receiver = self;
   v20.super_class = HDHRElectrocardiogramRecordingV2UpgradeManager;
   v17 = [(HDHRElectrocardiogramRecordingV2UpgradeManager *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_profile, v12);
-    objc_storeStrong(&v18->_protectedDataOperation, a7);
-    objc_storeStrong(&v18->_v1FeatureAvailabilityManager, a4);
-    objc_storeStrong(&v18->_v2FeatureAvailabilityManager, a5);
-    objc_storeStrong(&v18->_analyticsSubmissionManager, a6);
+    objc_storeWeak(&v17->_profile, profileCopy);
+    objc_storeStrong(&v18->_protectedDataOperation, operation);
+    objc_storeStrong(&v18->_v1FeatureAvailabilityManager, manager);
+    objc_storeStrong(&v18->_v2FeatureAvailabilityManager, availabilityManager);
+    objc_storeStrong(&v18->_analyticsSubmissionManager, submissionManager);
     [(HDProtectedDataOperation *)v18->_protectedDataOperation setDelegate:v18];
     [(HDProtectedDataOperation *)v18->_protectedDataOperation requestWorkWithPriority:2 error:0];
   }
@@ -73,7 +73,7 @@ uint64_t __124__HDHRElectrocardiogramRecordingV2UpgradeManager_performWorkForOpe
   return v9();
 }
 
-- (void)pairedDeviceCapabilitiesDidUpdate:(id)a3
+- (void)pairedDeviceCapabilitiesDidUpdate:(id)update
 {
   v16 = *MEMORY[0x277D85DE8];
   protectedDataOperation = self->_protectedDataOperation;
@@ -106,13 +106,13 @@ uint64_t __124__HDHRElectrocardiogramRecordingV2UpgradeManager_performWorkForOpe
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)doWorkWithCompletion:(uint64_t)a1
+- (void)doWorkWithCompletion:(uint64_t)completion
 {
   v103 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (completion)
   {
-    v4 = *(a1 + 32);
+    v4 = *(completion + 32);
     v96 = 0;
     v5 = [v4 featureOnboardingRecordWithError:&v96];
     v6 = v96;
@@ -120,9 +120,9 @@ uint64_t __124__HDHRElectrocardiogramRecordingV2UpgradeManager_performWorkForOpe
     if (!v5)
     {
       v8 = MEMORY[0x277CCACA8];
-      v9 = [v6 domain];
+      domain = [v6 domain];
       v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "code")}];
-      v11 = [v8 stringWithFormat:@"%@_%@", v9, v10];
+      v11 = [v8 stringWithFormat:@"%@_%@", domain, v10];
       v12 = *MEMORY[0x277D103E8];
       v13 = OUTLINED_FUNCTION_1_4();
       [(HDHRElectrocardiogramRecordingV2UpgradeManager *)v13 _reportAnalyticsEventForCountryCode:v14 eventType:v15 errorCategory:v16 errorDetail:v11];
@@ -160,7 +160,7 @@ LABEL_30:
       goto LABEL_8;
     }
 
-    v31 = *(a1 + 24);
+    v31 = *(completion + 24);
     v95 = v7;
     v32 = [v31 featureOnboardingRecordWithError:&v95];
     v33 = v95;
@@ -168,9 +168,9 @@ LABEL_30:
     if (!v32)
     {
       v34 = MEMORY[0x277CCACA8];
-      v35 = [v33 domain];
+      domain2 = [v33 domain];
       v36 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v33, "code")}];
-      v37 = [v34 stringWithFormat:@"%@_%@", v35, v36];
+      v37 = [v34 stringWithFormat:@"%@_%@", domain2, v36];
       v38 = *MEMORY[0x277D103E8];
       v39 = OUTLINED_FUNCTION_1_4();
       [(HDHRElectrocardiogramRecordingV2UpgradeManager *)v39 _reportAnalyticsEventForCountryCode:v40 eventType:v41 errorCategory:v42 errorDetail:v37];
@@ -209,23 +209,23 @@ LABEL_29:
       goto LABEL_17;
     }
 
-    v47 = [v32 onboardingCompletion];
-    v48 = [v47 countryCode];
+    onboardingCompletion = [v32 onboardingCompletion];
+    countryCode = [onboardingCompletion countryCode];
 
-    if (v48)
+    if (countryCode)
     {
-      v69 = *(a1 + 32);
+      v69 = *(completion + 32);
       v94 = v33;
-      v55 = [v69 onboardingEligibilityForCountryCode:v48 error:&v94];
+      v55 = [v69 onboardingEligibilityForCountryCode:countryCode error:&v94];
       v58 = v94;
 
       if (v55)
       {
-        v77 = [v55 isEligible];
+        isEligible = [v55 isEligible];
         _HKInitializeLogging();
         v78 = *MEMORY[0x277CCC2D8];
         v79 = os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_DEFAULT);
-        if (v77)
+        if (isEligible)
         {
           if (v79)
           {
@@ -234,21 +234,21 @@ LABEL_29:
             *buf = 138543618;
             v98 = v81;
             v99 = 2114;
-            v100 = v48;
+            v100 = countryCode;
             v82 = v81;
             _os_log_impl(&dword_229486000, v80, OS_LOG_TYPE_DEFAULT, "[%{public}@] Beginning ECG2 upgrade in country: %{public}@", buf, 0x16u);
           }
 
-          v83 = *(a1 + 32);
-          v84 = [(HDHRElectrocardiogramRecordingV2UpgradeManager *)a1 _v1featureSettingsUponBackgroundDelivery];
+          v83 = *(completion + 32);
+          _v1featureSettingsUponBackgroundDelivery = [(HDHRElectrocardiogramRecordingV2UpgradeManager *)completion _v1featureSettingsUponBackgroundDelivery];
           v91[0] = MEMORY[0x277D85DD0];
           v91[1] = 3221225472;
           v91[2] = __71__HDHRElectrocardiogramRecordingV2UpgradeManager_doWorkWithCompletion___block_invoke;
           v91[3] = &unk_2786600F8;
-          v91[4] = a1;
-          v92 = v48;
+          v91[4] = completion;
+          v92 = countryCode;
           v93 = v3;
-          [v83 setCurrentOnboardingVersionCompletedForCountryCode:v92 countryCodeProvenance:3 date:0 settings:v84 completion:v91];
+          [v83 setCurrentOnboardingVersionCompletedForCountryCode:v92 countryCodeProvenance:3 date:0 settings:_v1featureSettingsUponBackgroundDelivery completion:v91];
 
           goto LABEL_28;
         }
@@ -258,18 +258,18 @@ LABEL_29:
           v85 = v78;
           v86 = objc_opt_class();
           v90 = v86;
-          v87 = [v55 ineligibilityReasonsDescription];
+          ineligibilityReasonsDescription = [v55 ineligibilityReasonsDescription];
           *buf = 138543874;
           v98 = v86;
           v99 = 2114;
-          v100 = v48;
+          v100 = countryCode;
           v101 = 2114;
-          v102 = v87;
+          v102 = ineligibilityReasonsDescription;
           _os_log_impl(&dword_229486000, v85, OS_LOG_TYPE_DEFAULT, "[%{public}@] Cannot upgrade to ECG2 in ECG1 country: %{public}@: %{public}@", buf, 0x20u);
         }
 
-        v88 = [v55 ineligibilityReasonsDescription];
-        [(HDHRElectrocardiogramRecordingV2UpgradeManager *)a1 _reportAnalyticsEventForCountryCode:v48 eventType:*MEMORY[0x277D103E8] errorCategory:@"eligibility" errorDetail:v88];
+        ineligibilityReasonsDescription2 = [v55 ineligibilityReasonsDescription];
+        [(HDHRElectrocardiogramRecordingV2UpgradeManager *)completion _reportAnalyticsEventForCountryCode:countryCode eventType:*MEMORY[0x277D103E8] errorCategory:@"eligibility" errorDetail:ineligibilityReasonsDescription2];
 
         v74 = OUTLINED_FUNCTION_0_3();
         v76 = 0;
@@ -278,10 +278,10 @@ LABEL_29:
       else
       {
         v70 = MEMORY[0x277CCACA8];
-        v71 = [v58 domain];
+        domain3 = [v58 domain];
         v72 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v58, "code")}];
-        v73 = [v70 stringWithFormat:@"%@_%@", v71, v72];
-        [(HDHRElectrocardiogramRecordingV2UpgradeManager *)a1 _reportAnalyticsEventForCountryCode:v48 eventType:*MEMORY[0x277D103E8] errorCategory:@"eligibility" errorDetail:v73];
+        v73 = [v70 stringWithFormat:@"%@_%@", domain3, v72];
+        [(HDHRElectrocardiogramRecordingV2UpgradeManager *)completion _reportAnalyticsEventForCountryCode:countryCode eventType:*MEMORY[0x277D103E8] errorCategory:@"eligibility" errorDetail:v73];
 
         v74 = OUTLINED_FUNCTION_0_3();
         v76 = v58;
@@ -315,7 +315,7 @@ LABEL_31:
 - (id)_v1featureSettingsUponBackgroundDelivery
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v1 = objc_alloc(MEMORY[0x277CCD450]);
     v2 = *MEMORY[0x277CCBD10];
@@ -381,28 +381,28 @@ void __71__HDHRElectrocardiogramRecordingV2UpgradeManager_doWorkWithCompletion__
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion
 {
-  v7 = a6;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __124__HDHRElectrocardiogramRecordingV2UpgradeManager_performWorkForOperation_profile_databaseAccessibilityAssertion_completion___block_invoke;
   v9[3] = &unk_27865FD68;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(HDHRElectrocardiogramRecordingV2UpgradeManager *)self doWorkWithCompletion:v9];
 }
 
-- (void)_reportAnalyticsEventForCountryCode:(void *)a3 eventType:(void *)a4 errorCategory:(void *)a5 errorDetail:
+- (void)_reportAnalyticsEventForCountryCode:(void *)code eventType:(void *)type errorCategory:(void *)category errorDetail:
 {
   v35 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v9 = MEMORY[0x277D105D0];
-    v10 = a5;
-    v11 = a4;
-    v12 = a3;
+    categoryCopy = category;
+    typeCopy = type;
+    codeCopy = code;
     v13 = a2;
     v14 = [v9 alloc];
     if (v13)
@@ -415,9 +415,9 @@ void __71__HDHRElectrocardiogramRecordingV2UpgradeManager_doWorkWithCompletion__
       v15 = 0;
     }
 
-    v16 = [v14 initWithFeatureIdentifier:*MEMORY[0x277CCC020] eventType:v12 countryCode:v13 countryCodeProvenance:v15 errorCategory:v11 errorDetail:v10];
+    v16 = [v14 initWithFeatureIdentifier:*MEMORY[0x277CCC020] eventType:codeCopy countryCode:v13 countryCodeProvenance:v15 errorCategory:typeCopy errorDetail:categoryCopy];
 
-    v17 = *(a1 + 40);
+    v17 = *(self + 40);
     v32 = 0;
     v18 = [v17 submitEvent:v16 error:&v32];
     v19 = v32;

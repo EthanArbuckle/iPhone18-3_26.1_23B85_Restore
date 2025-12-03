@@ -1,19 +1,19 @@
 @interface EDNamedStyle
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation EDNamedStyle
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = EDNamedStyle;
   v5 = [(EDStyle *)&v10 copyWithZone:?];
   if (v5)
   {
-    v6 = [(NSString *)self->mName copyWithZone:a3];
+    v6 = [(NSString *)self->mName copyWithZone:zone];
     v7 = v5[12];
     v5[12] = v6;
 
@@ -23,14 +23,14 @@
   return v5;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
-  if (self->mName != v5)
+  nameCopy = name;
+  if (self->mName != nameCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mName, a3);
-    v5 = v6;
+    v6 = nameCopy;
+    objc_storeStrong(&self->mName, name);
+    nameCopy = v6;
   }
 }
 

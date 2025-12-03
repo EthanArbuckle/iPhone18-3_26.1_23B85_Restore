@@ -1,8 +1,8 @@
 @interface MRUVendorSpecificDeviceManager
-- (BOOL)isGroupingAvailableFor:(id)a3 activatedIDs:(id)a4 forProtocolID:(id)a5;
-- (BOOL)isGroupingAvailableForDevice:(id)a3;
-- (BOOL)resolverAddNativeRoute:(id)a3 forRouteUID:(id)a4;
-- (MRUVendorSpecificDeviceManager)initWithAppBundleID:(id)a3 serviceIdentifiers:(id)a4;
+- (BOOL)isGroupingAvailableFor:(id)for activatedIDs:(id)ds forProtocolID:(id)d;
+- (BOOL)isGroupingAvailableForDevice:(id)device;
+- (BOOL)resolverAddNativeRoute:(id)route forRouteUID:(id)d;
+- (MRUVendorSpecificDeviceManager)initWithAppBundleID:(id)d serviceIdentifiers:(id)identifiers;
 - (MRUVendorSpecificDeviceManagerDelegate)delegate;
 - (NSArray)activatedDeviceIDs;
 - (NSArray)activatingDeviceIDs;
@@ -11,38 +11,38 @@
 - (NSArray)devices;
 - (NSArray)invalidatingDeviceIDs;
 - (NSArray)pendingDeviceIDs;
-- (int64_t)latestStateForDevice:(id)a3;
-- (void)connectToDevice:(id)a3;
+- (int64_t)latestStateForDevice:(id)device;
+- (void)connectToDevice:(id)device;
 - (void)dealloc;
 - (void)disconnectAllDevices;
-- (void)handleDiscoveryEvent:(id)a3;
-- (void)handleResolverEvent:(id)a3;
-- (void)resolverAddNativeRoutes:(id)a3;
-- (void)resolverAddVendorSpecificDevice:(id)a3;
-- (void)resolverRemoveNativeRouteforRouteUID:(id)a3;
-- (void)resolverRemoveNativeRoutes:(id)a3;
-- (void)resolverRemoveVendorSpecificRoute:(id)a3;
-- (void)resolverSetLastSelectedRoute:(id)a3;
-- (void)setDevice:(id)a3 picked:(BOOL)a4;
+- (void)handleDiscoveryEvent:(id)event;
+- (void)handleResolverEvent:(id)event;
+- (void)resolverAddNativeRoutes:(id)routes;
+- (void)resolverAddVendorSpecificDevice:(id)device;
+- (void)resolverRemoveNativeRouteforRouteUID:(id)d;
+- (void)resolverRemoveNativeRoutes:(id)routes;
+- (void)resolverRemoveVendorSpecificRoute:(id)route;
+- (void)resolverSetLastSelectedRoute:(id)route;
+- (void)setDevice:(id)device picked:(BOOL)picked;
 - (void)startDiscovery;
 - (void)stopDiscovery;
-- (void)updateLocalMapWith:(id)a3 deviceIsLost:(BOOL)a4;
+- (void)updateLocalMapWith:(id)with deviceIsLost:(BOOL)lost;
 @end
 
 @implementation MRUVendorSpecificDeviceManager
 
-- (MRUVendorSpecificDeviceManager)initWithAppBundleID:(id)a3 serviceIdentifiers:(id)a4
+- (MRUVendorSpecificDeviceManager)initWithAppBundleID:(id)d serviceIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  identifiersCopy = identifiers;
   v31.receiver = self;
   v31.super_class = MRUVendorSpecificDeviceManager;
   v9 = [(MRUVendorSpecificDeviceManager *)&v31 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_appBundleID, a3);
-    objc_storeStrong(&v10->_serviceIdentifiers, a4);
+    objc_storeStrong(&v9->_appBundleID, d);
+    objc_storeStrong(&v10->_serviceIdentifiers, identifiers);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     deviceMap = v10->_deviceMap;
     v10->_deviceMap = v11;
@@ -75,7 +75,7 @@
     resolver = v10->_resolver;
     v10->_resolver = v25;
 
-    [(DADeviceResolver *)v10->_resolver setBundleID:v7];
+    [(DADeviceResolver *)v10->_resolver setBundleID:dCopy];
     objc_initWeak(&location, v10);
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
@@ -101,38 +101,38 @@ void __73__MRUVendorSpecificDeviceManager_initWithAppBundleID_serviceIdentifiers
 {
   if ([(NSMutableDictionary *)self->_deviceMap count])
   {
-    v3 = [(NSMutableDictionary *)self->_deviceMap allValues];
+    allValues = [(NSMutableDictionary *)self->_deviceMap allValues];
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
-  return v3;
+  return allValues;
 }
 
 - (NSArray)coalescedDevices
 {
   if ([(NSMutableDictionary *)self->_coalescedDeviceMap count])
   {
-    v3 = [(NSMutableDictionary *)self->_coalescedDeviceMap allValues];
+    allValues = [(NSMutableDictionary *)self->_coalescedDeviceMap allValues];
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
-  return v3;
+  return allValues;
 }
 
 - (NSArray)activatedDeviceIDs
 {
   if ([(NSMutableDictionary *)self->_activatedDeviceMap count])
   {
-    v3 = [(NSMutableDictionary *)self->_activatedDeviceMap allValues];
-    v4 = [v3 msv_map:&__block_literal_global_10];
+    allValues = [(NSMutableDictionary *)self->_activatedDeviceMap allValues];
+    v4 = [allValues msv_map:&__block_literal_global_10];
   }
 
   else
@@ -147,8 +147,8 @@ void __73__MRUVendorSpecificDeviceManager_initWithAppBundleID_serviceIdentifiers
 {
   if ([(NSMutableDictionary *)self->_activatingDeviceMap count])
   {
-    v3 = [(NSMutableDictionary *)self->_activatingDeviceMap allValues];
-    v4 = [v3 msv_map:&__block_literal_global_5];
+    allValues = [(NSMutableDictionary *)self->_activatingDeviceMap allValues];
+    v4 = [allValues msv_map:&__block_literal_global_5];
   }
 
   else
@@ -163,8 +163,8 @@ void __73__MRUVendorSpecificDeviceManager_initWithAppBundleID_serviceIdentifiers
 {
   if ([(NSMutableDictionary *)self->_invalidatingDeviceMap count])
   {
-    v3 = [(NSMutableDictionary *)self->_invalidatingDeviceMap allValues];
-    v4 = [v3 msv_map:&__block_literal_global_7_0];
+    allValues = [(NSMutableDictionary *)self->_invalidatingDeviceMap allValues];
+    v4 = [allValues msv_map:&__block_literal_global_7_0];
   }
 
   else
@@ -177,55 +177,55 @@ void __73__MRUVendorSpecificDeviceManager_initWithAppBundleID_serviceIdentifiers
 
 - (NSArray)pendingDeviceIDs
 {
-  v3 = [(MRUVendorSpecificDeviceManager *)self activatingDeviceIDs];
-  v4 = [(MRUVendorSpecificDeviceManager *)self invalidatingDeviceIDs];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  activatingDeviceIDs = [(MRUVendorSpecificDeviceManager *)self activatingDeviceIDs];
+  invalidatingDeviceIDs = [(MRUVendorSpecificDeviceManager *)self invalidatingDeviceIDs];
+  v5 = [activatingDeviceIDs arrayByAddingObjectsFromArray:invalidatingDeviceIDs];
 
   return v5;
 }
 
 - (NSArray)availableDeviceIDs
 {
-  v2 = [(MRUVendorSpecificDeviceManager *)self deviceMap];
-  v3 = [v2 allValues];
-  v4 = [v3 msv_map:&__block_literal_global_9];
+  deviceMap = [(MRUVendorSpecificDeviceManager *)self deviceMap];
+  allValues = [deviceMap allValues];
+  v4 = [allValues msv_map:&__block_literal_global_9];
 
   return v4;
 }
 
-- (int64_t)latestStateForDevice:(id)a3
+- (int64_t)latestStateForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   deviceMap = self->_deviceMap;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)deviceMap objectForKeyedSubscript:v6];
+  identifier = [deviceCopy identifier];
+  v7 = [(NSMutableDictionary *)deviceMap objectForKeyedSubscript:identifier];
 
   if (v7)
   {
     v8 = self->_deviceMap;
-    v9 = [v4 identifier];
-    v10 = [(NSMutableDictionary *)v8 objectForKeyedSubscript:v9];
-    v11 = [v10 state];
+    identifier2 = [deviceCopy identifier];
+    v10 = [(NSMutableDictionary *)v8 objectForKeyedSubscript:identifier2];
+    state = [v10 state];
   }
 
   else
   {
-    v11 = 0;
+    state = 0;
   }
 
-  return v11;
+  return state;
 }
 
-- (BOOL)isGroupingAvailableForDevice:(id)a3
+- (BOOL)isGroupingAvailableForDevice:(id)device
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 supportsGrouping])
+  deviceCopy = device;
+  if ([deviceCopy supportsGrouping])
   {
     groupableDeviceIDs = self->_groupableDeviceIDs;
-    v6 = [v4 protocolType];
-    v7 = [v6 identifier];
-    v8 = [(NSMutableDictionary *)groupableDeviceIDs objectForKeyedSubscript:v7];
+    protocolType = [deviceCopy protocolType];
+    identifier = [protocolType identifier];
+    v8 = [(NSMutableDictionary *)groupableDeviceIDs objectForKeyedSubscript:identifier];
 
     if (v8 && [v8 count] >= 2)
     {
@@ -249,9 +249,9 @@ void __73__MRUVendorSpecificDeviceManager_initWithAppBundleID_serviceIdentifiers
             }
 
             v14 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:*(*(&v18 + 1) + 8 * i), v18];
-            v15 = [v14 state];
+            state = [v14 state];
 
-            if (v15 == 20)
+            if (state == 20)
             {
               v16 = 1;
               v8 = v9;
@@ -287,27 +287,27 @@ LABEL_16:
   return v16;
 }
 
-- (BOOL)isGroupingAvailableFor:(id)a3 activatedIDs:(id)a4 forProtocolID:(id)a5
+- (BOOL)isGroupingAvailableFor:(id)for activatedIDs:(id)ds forProtocolID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count])
+  forCopy = for;
+  dsCopy = ds;
+  dCopy = d;
+  if ([dsCopy count])
   {
-    v11 = [(NSMutableDictionary *)self->_groupableDeviceIDs objectForKeyedSubscript:v10];
+    v11 = [(NSMutableDictionary *)self->_groupableDeviceIDs objectForKeyedSubscript:dCopy];
     if (v11)
     {
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v12 = v8;
+      v12 = forCopy;
       v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v13)
       {
-        v20 = v10;
-        v21 = v8;
+        v20 = dCopy;
+        v21 = forCopy;
         v14 = 0;
         v15 = 0;
         v16 = *v23;
@@ -324,7 +324,7 @@ LABEL_16:
             if ([v11 containsObject:{v18, v20, v21, v22}])
             {
               ++v14;
-              if ([v9 containsObject:v18])
+              if ([dsCopy containsObject:v18])
               {
                 v15 = 1;
               }
@@ -347,8 +347,8 @@ LABEL_16:
         }
 
 LABEL_19:
-        v10 = v20;
-        v8 = v21;
+        dCopy = v20;
+        forCopy = v21;
       }
     }
 
@@ -397,169 +397,169 @@ void __48__MRUVendorSpecificDeviceManager_startDiscovery__block_invoke(uint64_t 
   [WeakRetained handleDiscoveryEvent:v3];
 }
 
-- (void)updateLocalMapWith:(id)a3 deviceIsLost:(BOOL)a4
+- (void)updateLocalMapWith:(id)with deviceIsLost:(BOOL)lost
 {
-  v4 = a4;
-  v54 = a3;
+  lostCopy = lost;
+  withCopy = with;
   deviceMap = self->_deviceMap;
-  v7 = [v54 identifier];
-  if (v4)
+  identifier = [withCopy identifier];
+  if (lostCopy)
   {
-    [(NSMutableDictionary *)deviceMap setObject:0 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)deviceMap setObject:0 forKeyedSubscript:identifier];
 
     activatingDeviceMap = self->_activatingDeviceMap;
-    v9 = [v54 identifier];
-    [(NSMutableDictionary *)activatingDeviceMap setObject:0 forKeyedSubscript:v9];
+    identifier2 = [withCopy identifier];
+    [(NSMutableDictionary *)activatingDeviceMap setObject:0 forKeyedSubscript:identifier2];
 
     activatedDeviceMap = self->_activatedDeviceMap;
-    v11 = [v54 identifier];
-    [(NSMutableDictionary *)activatedDeviceMap setObject:0 forKeyedSubscript:v11];
+    identifier3 = [withCopy identifier];
+    [(NSMutableDictionary *)activatedDeviceMap setObject:0 forKeyedSubscript:identifier3];
 
     invalidatingDeviceMap = self->_invalidatingDeviceMap;
-    v13 = [v54 identifier];
-    [(NSMutableDictionary *)invalidatingDeviceMap setObject:0 forKeyedSubscript:v13];
+    identifier4 = [withCopy identifier];
+    [(NSMutableDictionary *)invalidatingDeviceMap setObject:0 forKeyedSubscript:identifier4];
 
     groupableDeviceIDs = self->_groupableDeviceIDs;
-    v15 = [v54 protocolType];
-    v16 = [v15 identifier];
-    v17 = [(NSMutableDictionary *)groupableDeviceIDs objectForKeyedSubscript:v16];
-    v18 = [v54 identifier];
-    [v17 removeObject:v18];
+    protocolType = [withCopy protocolType];
+    identifier5 = [protocolType identifier];
+    v17 = [(NSMutableDictionary *)groupableDeviceIDs objectForKeyedSubscript:identifier5];
+    identifier6 = [withCopy identifier];
+    [v17 removeObject:identifier6];
 
 LABEL_22:
-    v33 = v54;
+    v33 = withCopy;
     goto LABEL_23;
   }
 
-  [(NSMutableDictionary *)deviceMap setObject:v54 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)deviceMap setObject:withCopy forKeyedSubscript:identifier];
 
-  v19 = [v54 supportsGrouping];
+  supportsGrouping = [withCopy supportsGrouping];
   v20 = self->_groupableDeviceIDs;
-  v21 = [v54 protocolType];
-  v22 = [v21 identifier];
-  v23 = [(NSMutableDictionary *)v20 objectForKeyedSubscript:v22];
+  protocolType2 = [withCopy protocolType];
+  identifier7 = [protocolType2 identifier];
+  v23 = [(NSMutableDictionary *)v20 objectForKeyedSubscript:identifier7];
   v24 = v23;
-  if (v19)
+  if (supportsGrouping)
   {
 
     if (!v24)
     {
       v25 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v26 = self->_groupableDeviceIDs;
-      v27 = [v54 protocolType];
-      v28 = [v27 identifier];
-      [(NSMutableDictionary *)v26 setObject:v25 forKeyedSubscript:v28];
+      protocolType3 = [withCopy protocolType];
+      identifier8 = [protocolType3 identifier];
+      [(NSMutableDictionary *)v26 setObject:v25 forKeyedSubscript:identifier8];
     }
 
     v29 = self->_groupableDeviceIDs;
-    v21 = [v54 protocolType];
-    v22 = [v21 identifier];
-    v24 = [(NSMutableDictionary *)v29 objectForKeyedSubscript:v22];
-    v30 = [v54 identifier];
-    [v24 addObject:v30];
+    protocolType2 = [withCopy protocolType];
+    identifier7 = [protocolType2 identifier];
+    v24 = [(NSMutableDictionary *)v29 objectForKeyedSubscript:identifier7];
+    identifier9 = [withCopy identifier];
+    [v24 addObject:identifier9];
   }
 
   else
   {
-    v30 = [v54 identifier];
-    [v24 removeObject:v30];
+    identifier9 = [withCopy identifier];
+    [v24 removeObject:identifier9];
   }
 
-  v31 = [v54 state];
-  if (v31 <= 19)
+  state = [withCopy state];
+  if (state <= 19)
   {
-    if (v31)
+    if (state)
     {
-      v32 = v31 == 10;
-      v33 = v54;
+      v32 = state == 10;
+      v33 = withCopy;
       if (!v32)
       {
         goto LABEL_23;
       }
 
       v34 = self->_activatingDeviceMap;
-      v35 = [v54 identifier];
+      identifier10 = [withCopy identifier];
       v36 = v34;
-      v37 = v54;
+      v37 = withCopy;
     }
 
     else
     {
       v45 = self->_activatingDeviceMap;
-      v35 = [v54 identifier];
+      identifier10 = [withCopy identifier];
       v36 = v45;
       v37 = 0;
     }
 
-    [(NSMutableDictionary *)v36 setObject:v37 forKeyedSubscript:v35];
+    [(NSMutableDictionary *)v36 setObject:v37 forKeyedSubscript:identifier10];
 
     v46 = self->_activatedDeviceMap;
-    v47 = [v54 identifier];
+    identifier11 = [withCopy identifier];
     v48 = v46;
     v49 = 0;
     goto LABEL_20;
   }
 
-  if (v31 == 20)
+  if (state == 20)
   {
     v50 = self->_activatingDeviceMap;
-    v51 = [v54 identifier];
-    [(NSMutableDictionary *)v50 setObject:0 forKeyedSubscript:v51];
+    identifier12 = [withCopy identifier];
+    [(NSMutableDictionary *)v50 setObject:0 forKeyedSubscript:identifier12];
 
     v52 = self->_activatedDeviceMap;
-    v47 = [v54 identifier];
+    identifier11 = [withCopy identifier];
     v48 = v52;
-    v49 = v54;
+    v49 = withCopy;
 LABEL_20:
-    [(NSMutableDictionary *)v48 setObject:v49 forKeyedSubscript:v47];
+    [(NSMutableDictionary *)v48 setObject:v49 forKeyedSubscript:identifier11];
 
     v53 = self->_invalidatingDeviceMap;
-    v15 = [v54 identifier];
+    protocolType = [withCopy identifier];
     v43 = v53;
     v44 = 0;
     goto LABEL_21;
   }
 
-  v32 = v31 == 30;
-  v33 = v54;
+  v32 = state == 30;
+  v33 = withCopy;
   if (v32)
   {
     v38 = self->_activatingDeviceMap;
-    v39 = [v54 identifier];
-    [(NSMutableDictionary *)v38 setObject:0 forKeyedSubscript:v39];
+    identifier13 = [withCopy identifier];
+    [(NSMutableDictionary *)v38 setObject:0 forKeyedSubscript:identifier13];
 
     v40 = self->_activatedDeviceMap;
-    v41 = [v54 identifier];
-    [(NSMutableDictionary *)v40 setObject:0 forKeyedSubscript:v41];
+    identifier14 = [withCopy identifier];
+    [(NSMutableDictionary *)v40 setObject:0 forKeyedSubscript:identifier14];
 
     v42 = self->_invalidatingDeviceMap;
-    v15 = [v54 identifier];
+    protocolType = [withCopy identifier];
     v43 = v42;
-    v44 = v54;
+    v44 = withCopy;
 LABEL_21:
-    [(NSMutableDictionary *)v43 setObject:v44 forKeyedSubscript:v15];
+    [(NSMutableDictionary *)v43 setObject:v44 forKeyedSubscript:protocolType];
     goto LABEL_22;
   }
 
 LABEL_23:
 }
 
-- (void)resolverSetLastSelectedRoute:(id)a3
+- (void)resolverSetLastSelectedRoute:(id)route
 {
-  v14 = a3;
+  routeCopy = route;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v14;
+    v4 = routeCopy;
     v5 = objc_alloc_init(MEMORY[0x1E6999E68]);
     if ([v4 isAirPlayRoute])
     {
-      v6 = [v4 underlyingNativeRoute];
-      v7 = [v6 routeUID];
-      if (v7)
+      underlyingNativeRoute = [v4 underlyingNativeRoute];
+      routeUID = [underlyingNativeRoute routeUID];
+      if (routeUID)
       {
-        v8 = v7;
-        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-AirPlay", v7];
+        v8 = routeUID;
+        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-AirPlay", routeUID];
         [v5 setIdentifier:v9];
 
         [(DADeviceResolver *)self->_resolver selectEndpoint:v5];
@@ -568,12 +568,12 @@ LABEL_23:
       goto LABEL_9;
     }
 
-    v12 = [v4 device];
-    v6 = [v12 identifier];
+    device = [v4 device];
+    underlyingNativeRoute = [device identifier];
 
-    if (v6)
+    if (underlyingNativeRoute)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-DeviceAccess", v6];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-DeviceAccess", underlyingNativeRoute];
       [v5 setIdentifier:v13];
 
       [(DADeviceResolver *)self->_resolver selectEndpoint:v5];
@@ -584,14 +584,14 @@ LABEL_9:
   else
   {
     v4 = objc_alloc_init(MEMORY[0x1E6999E68]);
-    v10 = [v14 routeUID];
-    if (!v10)
+    routeUID2 = [routeCopy routeUID];
+    if (!routeUID2)
     {
       goto LABEL_11;
     }
 
-    v5 = v10;
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-AirPlay", v10];
+    v5 = routeUID2;
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-AirPlay", routeUID2];
     [v4 setIdentifier:v11];
 
     [(DADeviceResolver *)self->_resolver selectEndpoint:v4];
@@ -600,15 +600,15 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)resolverAddNativeRoutes:(id)a3
+- (void)resolverAddNativeRoutes:(id)routes
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  routesCopy = routes;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  v5 = [routesCopy countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v5)
   {
     v7 = v5;
@@ -621,16 +621,16 @@ LABEL_11:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(routesCopy);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 routeUID];
-        if (v11)
+        routeUID = [v10 routeUID];
+        if (routeUID)
         {
-          if ([(MRUVendorSpecificDeviceManager *)self resolverAddNativeRoute:v10 forRouteUID:v11])
+          if ([(MRUVendorSpecificDeviceManager *)self resolverAddNativeRoute:v10 forRouteUID:routeUID])
           {
-            [(NSMutableSet *)self->_mutableResolverManagedAirPlayRouteIDs addObject:v11];
+            [(NSMutableSet *)self->_mutableResolverManagedAirPlayRouteIDs addObject:routeUID];
           }
 
           else
@@ -638,36 +638,36 @@ LABEL_11:
             v12 = MCLogCategoryDeviceAccess();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
             {
-              v13 = [v10 routeName];
-              v14 = [v10 dnsNames];
+              routeName = [v10 routeName];
+              dnsNames = [v10 dnsNames];
               *buf = v15;
-              v21 = v13;
+              v21 = routeName;
               v22 = 2112;
-              v23 = v14;
+              v23 = dnsNames;
               _os_log_impl(&dword_1A20FC000, v12, OS_LOG_TYPE_DEFAULT, "Resolver: not able to find a proper dnsName for route: %@, its DNS Names are: %@", buf, 0x16u);
             }
 
-            [(NSMutableSet *)self->_mutableResolverManagedAirPlayRouteIDs removeObject:v11];
+            [(NSMutableSet *)self->_mutableResolverManagedAirPlayRouteIDs removeObject:routeUID];
           }
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v7 = [routesCopy countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)resolverRemoveNativeRoutes:(id)a3
+- (void)resolverRemoveNativeRoutes:(id)routes
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  routesCopy = routes;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [routesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -679,33 +679,33 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(routesCopy);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) routeUID];
-        if (v9)
+        routeUID = [*(*(&v10 + 1) + 8 * v8) routeUID];
+        if (routeUID)
         {
-          [(MRUVendorSpecificDeviceManager *)self resolverRemoveNativeRouteforRouteUID:v9];
-          [(NSMutableSet *)self->_mutableResolverManagedAirPlayRouteIDs removeObject:v9];
+          [(MRUVendorSpecificDeviceManager *)self resolverRemoveNativeRouteforRouteUID:routeUID];
+          [(NSMutableSet *)self->_mutableResolverManagedAirPlayRouteIDs removeObject:routeUID];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [routesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)resolverAddNativeRoute:(id)a3 forRouteUID:(id)a4
+- (BOOL)resolverAddNativeRoute:(id)route forRouteUID:(id)d
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  routeCopy = route;
+  dCopy = d;
+  v8 = routeCopy;
   [v8 dnsNames];
   v54 = 0u;
   v55 = 0u;
@@ -714,7 +714,7 @@ LABEL_11:
   v41 = [v9 countByEnumeratingWithState:&v54 objects:v62 count:16];
   if (v41)
   {
-    v37 = self;
+    selfCopy = self;
     v42 = *v55;
     v10 = 0x1E6999000uLL;
     v38 = v8;
@@ -740,7 +740,7 @@ LABEL_11:
           }
 
           v14 = objc_alloc_init(*(v10 + 3688));
-          [v14 setAirplayDeviceID:v7];
+          [v14 setAirplayDeviceID:dCopy];
           v15 = [v12 componentsSeparatedByString:@"\x1E"];
           v50 = 0u;
           v51 = 0u;
@@ -752,7 +752,7 @@ LABEL_11:
           {
             v17 = v16;
             v44 = *v51;
-            v39 = v7;
+            v39 = dCopy;
             do
             {
               for (j = 0; j != v17; ++j)
@@ -802,14 +802,14 @@ LABEL_11:
                           [v14 setBonjourFullName:v26];
                           [v14 setProtocolTypeString:@"com.apple.airplay"];
                           v8 = v38;
-                          v30 = [v38 routeName];
-                          [v14 setName:v30];
+                          routeName = [v38 routeName];
+                          [v14 setName:routeName];
 
-                          v7 = v39;
+                          dCopy = v39;
                           v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-AirPlay", v39];
                           [v14 setIdentifier:v31];
 
-                          [(DADeviceResolver *)v37->_resolver addEndpoint:v14];
+                          [(DADeviceResolver *)selfCopy->_resolver addEndpoint:v14];
                           v9 = v40;
                           goto LABEL_35;
                         }
@@ -830,7 +830,7 @@ LABEL_11:
               }
 
               v17 = [obj countByEnumeratingWithState:&v50 objects:v59 count:16];
-              v7 = v39;
+              dCopy = v39;
             }
 
             while (v17);
@@ -844,9 +844,9 @@ LABEL_11:
           v27 = [v12 componentsSeparatedByString:@":"];
           v14 = [v27 objectAtIndexedSubscript:0];
 
-          v28 = [v14 UTF8String];
+          uTF8String = [v14 UTF8String];
           v45 = 0;
-          if (inet_pton(2, v28, &v45) >= 1)
+          if (inet_pton(2, uTF8String, &v45) >= 1)
           {
             v33 = MCLogCategoryDeviceAccess();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -857,17 +857,17 @@ LABEL_11:
             }
 
             v34 = objc_alloc_init(*(v10 + 3688));
-            [v34 setAirplayDeviceID:v7];
+            [v34 setAirplayDeviceID:dCopy];
             [v34 setProtocolTypeString:@"com.apple.airplay"];
             v8 = v38;
-            v35 = [v38 routeName];
-            [v34 setName:v35];
+            routeName2 = [v38 routeName];
+            [v34 setName:routeName2];
 
-            v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-AirPlay", v7];
-            [v34 setIdentifier:v36];
+            dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-AirPlay", dCopy];
+            [v34 setIdentifier:dCopy];
 
             [v34 setIpv4String:v14];
-            [(DADeviceResolver *)v37->_resolver addEndpoint:v34];
+            [(DADeviceResolver *)selfCopy->_resolver addEndpoint:v34];
 
 LABEL_35:
             v29 = 1;
@@ -898,28 +898,28 @@ LABEL_37:
   return v29;
 }
 
-- (void)resolverRemoveNativeRouteforRouteUID:(id)a3
+- (void)resolverRemoveNativeRouteforRouteUID:(id)d
 {
   v4 = MEMORY[0x1E6999E68];
-  v5 = a3;
+  dCopy = d;
   v7 = objc_alloc_init(v4);
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-AirPlay", v5];
+  dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-AirPlay", dCopy];
 
-  [v7 setIdentifier:v6];
+  [v7 setIdentifier:dCopy];
   [(DADeviceResolver *)self->_resolver removeEndpoint:v7];
 }
 
-- (void)connectToDevice:(id)a3
+- (void)connectToDevice:(id)device
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v22 = v4;
-  if ([v4 supportsGrouping])
+  deviceCopy = device;
+  v22 = deviceCopy;
+  if ([deviceCopy supportsGrouping])
   {
     groupableDeviceIDs = self->_groupableDeviceIDs;
-    v6 = [v4 protocolType];
-    v7 = [v6 identifier];
-    v8 = [(NSMutableDictionary *)groupableDeviceIDs objectForKeyedSubscript:v7];
+    protocolType = [deviceCopy protocolType];
+    identifier = [protocolType identifier];
+    v8 = [(NSMutableDictionary *)groupableDeviceIDs objectForKeyedSubscript:identifier];
   }
 
   else
@@ -931,8 +931,8 @@ LABEL_37:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = [(MRUVendorSpecificDeviceManager *)self devices];
-  v10 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  devices = [(MRUVendorSpecificDeviceManager *)self devices];
+  v10 = [devices countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v10)
   {
     v11 = v10;
@@ -943,14 +943,14 @@ LABEL_37:
       {
         if (*v28 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(devices);
         }
 
         v14 = *(*(&v27 + 1) + 8 * i);
         if ([v14 state] == 10 || objc_msgSend(v14, "state") == 20)
         {
-          v15 = [v14 identifier];
-          v16 = [v8 containsObject:v15];
+          identifier2 = [v14 identifier];
+          v16 = [v8 containsObject:identifier2];
 
           if ((v16 & 1) == 0)
           {
@@ -971,7 +971,7 @@ LABEL_37:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v11 = [devices countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v11);
@@ -984,7 +984,7 @@ LABEL_37:
   v23[3] = &unk_1E76641F8;
   v24 = v22;
   v25 = v8;
-  v26 = self;
+  selfCopy = self;
   v20 = v8;
   v21 = v22;
   [(DADiscovery *)discovery getAuthorizedDevices:v23];
@@ -1141,8 +1141,8 @@ void __50__MRUVendorSpecificDeviceManager_connectToDevice___block_invoke_44(uint
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(MRUVendorSpecificDeviceManager *)self devices];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v17 count:16];
+  devices = [(MRUVendorSpecificDeviceManager *)self devices];
+  v6 = [devices countByEnumeratingWithState:&v11 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1153,7 +1153,7 @@ void __50__MRUVendorSpecificDeviceManager_connectToDevice___block_invoke_44(uint
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devices);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
@@ -1163,7 +1163,7 @@ void __50__MRUVendorSpecificDeviceManager_connectToDevice___block_invoke_44(uint
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v17 count:16];
+      v7 = [devices countByEnumeratingWithState:&v11 objects:v17 count:16];
     }
 
     while (v7);
@@ -1247,22 +1247,22 @@ void __54__MRUVendorSpecificDeviceManager_disconnectAllDevices__block_invoke_48(
   self->_discovery = 0;
 }
 
-- (void)setDevice:(id)a3 picked:(BOOL)a4
+- (void)setDevice:(id)device picked:(BOOL)picked
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  deviceCopy = device;
   v6 = MCLogCategoryDeviceAccess();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 name];
+    name = [deviceCopy name];
     v14 = 138412290;
-    v15 = v7;
+    v15 = name;
     _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "setting picked for device: %@", &v14, 0xCu);
   }
 
   deviceMap = self->_deviceMap;
-  v9 = [v5 identifier];
-  v10 = [(NSMutableDictionary *)deviceMap objectForKeyedSubscript:v9];
+  identifier = [deviceCopy identifier];
+  v10 = [(NSMutableDictionary *)deviceMap objectForKeyedSubscript:identifier];
 
   if (!v10)
   {
@@ -1276,18 +1276,18 @@ void __54__MRUVendorSpecificDeviceManager_disconnectAllDevices__block_invoke_48(
     goto LABEL_15;
   }
 
-  v11 = [v10 state];
-  if (v11 > 19)
+  state = [v10 state];
+  if (state > 19)
   {
-    if (v11 == 20)
+    if (state == 20)
     {
       [(DADiscovery *)self->_discovery setState:30 device:v10 completionHandler:&__block_literal_global_52];
       goto LABEL_18;
     }
 
-    if (v11 != 25)
+    if (state != 25)
     {
-      if (v11 != 30)
+      if (state != 30)
       {
         goto LABEL_18;
       }
@@ -1300,12 +1300,12 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (!v11)
+  if (!state)
   {
     goto LABEL_16;
   }
 
-  if (v11 == 10)
+  if (state == 10)
   {
 LABEL_13:
     v12 = MCLogCategoryDeviceAccess();
@@ -1337,45 +1337,45 @@ void __51__MRUVendorSpecificDeviceManager_setDevice_picked___block_invoke(uint64
   }
 }
 
-- (void)handleResolverEvent:(id)a3
+- (void)handleResolverEvent:(id)event
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 eventType];
-  switch(v5)
+  eventCopy = event;
+  eventType = [eventCopy eventType];
+  switch(eventType)
   {
     case '*':
-      v7 = [v4 device];
+      device = [eventCopy device];
       v26 = MCLogCategoryDeviceAccess();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v7 endpoints];
+        endpoints = [device endpoints];
         *buf = 138412546;
-        v38 = v7;
+        v38 = device;
         v39 = 2048;
-        v40 = [v27 count];
+        v40 = [endpoints count];
         _os_log_impl(&dword_1A20FC000, v26, OS_LOG_TYPE_DEFAULT, "Resolver - device changed %@, %lu endpoints", buf, 0x16u);
       }
 
       goto LABEL_24;
     case ')':
-      v7 = [v4 device];
-      if (v7)
+      device = [eventCopy device];
+      if (device)
       {
         v22 = MCLogCategoryDeviceAccess();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v7 endpoints];
+          endpoints2 = [device endpoints];
           *buf = 138412546;
-          v38 = v7;
+          v38 = device;
           v39 = 2048;
-          v40 = [v23 count];
+          v40 = [endpoints2 count];
           _os_log_impl(&dword_1A20FC000, v22, OS_LOG_TYPE_DEFAULT, "Resolver - device lost %@, %lu endpoints", buf, 0x16u);
         }
 
         coalescedDeviceMap = self->_coalescedDeviceMap;
-        v25 = [v7 identifier];
-        [(NSMutableDictionary *)coalescedDeviceMap setObject:0 forKeyedSubscript:v25];
+        identifier = [device identifier];
+        [(NSMutableDictionary *)coalescedDeviceMap setObject:0 forKeyedSubscript:identifier];
 
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
@@ -1387,23 +1387,23 @@ void __51__MRUVendorSpecificDeviceManager_setDevice_picked___block_invoke(uint64
 
       goto LABEL_24;
     case '(':
-      v6 = [v4 device];
-      v7 = v6;
-      if (v6)
+      device2 = [eventCopy device];
+      device = device2;
+      if (device2)
       {
-        v28 = self;
+        selfCopy = self;
         v8 = self->_coalescedDeviceMap;
-        v9 = [v6 identifier];
-        [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:v9];
+        identifier2 = [device2 identifier];
+        [(NSMutableDictionary *)v8 setObject:device forKeyedSubscript:identifier2];
 
         v10 = MCLogCategoryDeviceAccess();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v7 endpoints];
+          endpoints3 = [device endpoints];
           *buf = 138412546;
-          v38 = v7;
+          v38 = device;
           v39 = 2048;
-          v40 = [v11 count];
+          v40 = [endpoints3 count];
           _os_log_impl(&dword_1A20FC000, v10, OS_LOG_TYPE_DEFAULT, "Resolver - device found %@, %lu endpoints", buf, 0x16u);
         }
 
@@ -1411,11 +1411,11 @@ void __51__MRUVendorSpecificDeviceManager_setDevice_picked___block_invoke(uint64
         v35 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v29 = v7;
-        v12 = [v7 endpoints];
-        v13 = [v12 allValues];
+        v29 = device;
+        endpoints4 = [device endpoints];
+        allValues = [endpoints4 allValues];
 
-        v14 = [v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v14 = [allValues countByEnumeratingWithState:&v32 objects:v36 count:16];
         if (v14)
         {
           v15 = v14;
@@ -1426,24 +1426,24 @@ void __51__MRUVendorSpecificDeviceManager_setDevice_picked___block_invoke(uint64
             {
               if (*v33 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(allValues);
               }
 
               v18 = *(*(&v32 + 1) + 8 * i);
               v19 = MCLogCategoryDeviceAccess();
               if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
               {
-                v20 = [v18 name];
-                v21 = [v18 identifier];
+                name = [v18 name];
+                identifier3 = [v18 identifier];
                 *buf = 138412546;
-                v38 = v20;
+                v38 = name;
                 v39 = 2112;
-                v40 = v21;
+                v40 = identifier3;
                 _os_log_impl(&dword_1A20FC000, v19, OS_LOG_TYPE_DEFAULT, "Resolver - endpoint: %@, %@", buf, 0x16u);
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
+            v15 = [allValues countByEnumeratingWithState:&v32 objects:v36 count:16];
           }
 
           while (v15);
@@ -1453,9 +1453,9 @@ void __51__MRUVendorSpecificDeviceManager_setDevice_picked___block_invoke(uint64
         block[1] = 3221225472;
         block[2] = __54__MRUVendorSpecificDeviceManager_handleResolverEvent___block_invoke;
         block[3] = &unk_1E7663898;
-        block[4] = v28;
+        block[4] = selfCopy;
         dispatch_async(MEMORY[0x1E69E96A0], block);
-        v7 = v29;
+        device = v29;
       }
 
 LABEL_24:
@@ -1482,21 +1482,21 @@ void __54__MRUVendorSpecificDeviceManager_handleResolverEvent___block_invoke_56(
   }
 }
 
-- (void)handleDiscoveryEvent:(id)a3
+- (void)handleDiscoveryEvent:(id)event
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 eventType];
-  if (v5 <= 40)
+  eventCopy = event;
+  eventType = [eventCopy eventType];
+  if (eventType <= 40)
   {
-    if (v5 == 10)
+    if (eventType == 10)
     {
       v43 = MCLogCategoryDeviceAccess();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
-        v44 = [(DADiscovery *)self->_discovery discoveredDevices];
+        discoveredDevices = [(DADiscovery *)self->_discovery discoveredDevices];
         *buf = 138412290;
-        v66 = v44;
+        v66 = discoveredDevices;
         _os_log_impl(&dword_1A20FC000, v43, OS_LOG_TYPE_DEFAULT, "discovered devices cache: %@", buf, 0xCu);
       }
 
@@ -1504,8 +1504,8 @@ void __54__MRUVendorSpecificDeviceManager_handleResolverEvent___block_invoke_56(
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v13 = [(DADiscovery *)self->_discovery discoveredDevices];
-      v45 = [v13 countByEnumeratingWithState:&v55 objects:v64 count:16];
+      discoveredDevices2 = [(DADiscovery *)self->_discovery discoveredDevices];
+      v45 = [discoveredDevices2 countByEnumeratingWithState:&v55 objects:v64 count:16];
       if (v45)
       {
         v46 = v45;
@@ -1516,7 +1516,7 @@ void __54__MRUVendorSpecificDeviceManager_handleResolverEvent___block_invoke_56(
           {
             if (*v56 != v47)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(discoveredDevices2);
             }
 
             v49 = *(*(&v55 + 1) + 8 * i);
@@ -1524,7 +1524,7 @@ void __54__MRUVendorSpecificDeviceManager_handleResolverEvent___block_invoke_56(
             [(MRUVendorSpecificDeviceManager *)self resolverAddVendorSpecificDevice:v49];
           }
 
-          v46 = [v13 countByEnumeratingWithState:&v55 objects:v64 count:16];
+          v46 = [discoveredDevices2 countByEnumeratingWithState:&v55 objects:v64 count:16];
         }
 
         while (v46);
@@ -1533,33 +1533,33 @@ void __54__MRUVendorSpecificDeviceManager_handleResolverEvent___block_invoke_56(
 
     else
     {
-      if (v5 != 40)
+      if (eventType != 40)
       {
         goto LABEL_50;
       }
 
-      v12 = [v4 device];
-      if (!v12)
+      device = [eventCopy device];
+      if (!device)
       {
         goto LABEL_50;
       }
 
-      v13 = v12;
+      discoveredDevices2 = device;
       v14 = MCLogCategoryDeviceAccess();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v13 name];
-        [v13 state];
+        name = [discoveredDevices2 name];
+        [discoveredDevices2 state];
         v16 = DADeviceStateToString();
         *buf = 138412546;
-        v66 = v15;
+        v66 = name;
         v67 = 2112;
         v68 = v16;
         _os_log_impl(&dword_1A20FC000, v14, OS_LOG_TYPE_DEFAULT, "Discovery - got device found: %@, %@", buf, 0x16u);
       }
 
-      [(MRUVendorSpecificDeviceManager *)self updateLocalMapWith:v13 deviceIsLost:0];
-      [(MRUVendorSpecificDeviceManager *)self resolverAddVendorSpecificDevice:v13];
+      [(MRUVendorSpecificDeviceManager *)self updateLocalMapWith:discoveredDevices2 deviceIsLost:0];
+      [(MRUVendorSpecificDeviceManager *)self resolverAddVendorSpecificDevice:discoveredDevices2];
     }
 
 LABEL_46:
@@ -1567,79 +1567,79 @@ LABEL_46:
     goto LABEL_50;
   }
 
-  switch(v5)
+  switch(eventType)
   {
     case ')':
-      v17 = [v4 device];
-      if (!v17)
+      device2 = [eventCopy device];
+      if (!device2)
       {
         break;
       }
 
-      v13 = v17;
+      discoveredDevices2 = device2;
       v18 = MCLogCategoryDeviceAccess();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v13 name];
-        [v13 state];
+        name2 = [discoveredDevices2 name];
+        [discoveredDevices2 state];
         v20 = DADeviceStateToString();
         *buf = 138412546;
-        v66 = v19;
+        v66 = name2;
         v67 = 2112;
         v68 = v20;
         _os_log_impl(&dword_1A20FC000, v18, OS_LOG_TYPE_DEFAULT, "Discovery - got device lost: %@, %@", buf, 0x16u);
       }
 
-      [(MRUVendorSpecificDeviceManager *)self updateLocalMapWith:v13 deviceIsLost:1];
-      [(MRUVendorSpecificDeviceManager *)self resolverRemoveVendorSpecificRoute:v13];
+      [(MRUVendorSpecificDeviceManager *)self updateLocalMapWith:discoveredDevices2 deviceIsLost:1];
+      [(MRUVendorSpecificDeviceManager *)self resolverRemoveVendorSpecificRoute:discoveredDevices2];
       goto LABEL_46;
     case '*':
-      v21 = [v4 device];
-      if (!v21)
+      device3 = [eventCopy device];
+      if (!device3)
       {
         break;
       }
 
-      v22 = v21;
+      v22 = device3;
       v23 = MCLogCategoryDeviceAccess();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v22 name];
+        name3 = [v22 name];
         [v22 state];
         v25 = DADeviceStateToString();
         *buf = 138412546;
-        v66 = v24;
+        v66 = name3;
         v67 = 2112;
         v68 = v25;
         _os_log_impl(&dword_1A20FC000, v23, OS_LOG_TYPE_DEFAULT, "Discovery - got device change: %@, %@", buf, 0x16u);
       }
 
       deviceMap = self->_deviceMap;
-      v27 = [v22 identifier];
-      v28 = [(NSMutableDictionary *)deviceMap objectForKeyedSubscript:v27];
+      identifier = [v22 identifier];
+      v28 = [(NSMutableDictionary *)deviceMap objectForKeyedSubscript:identifier];
 
       if (v28)
       {
         v29 = self->_deviceMap;
-        v30 = [v22 identifier];
-        v31 = [(NSMutableDictionary *)v29 objectForKeyedSubscript:v30];
-        v32 = [v31 mediaPlaybackState];
+        identifier2 = [v22 identifier];
+        v31 = [(NSMutableDictionary *)v29 objectForKeyedSubscript:identifier2];
+        mediaPlaybackState = [v31 mediaPlaybackState];
 
-        if (v32 != [v22 mediaPlaybackState])
+        if (mediaPlaybackState != [v22 mediaPlaybackState])
         {
           goto LABEL_48;
         }
 
         v33 = self->_deviceMap;
-        v34 = [v22 identifier];
-        v35 = [(NSMutableDictionary *)v33 objectForKeyedSubscript:v34];
-        v36 = [v35 nowPlayingSubtitle];
+        identifier3 = [v22 identifier];
+        v35 = [(NSMutableDictionary *)v33 objectForKeyedSubscript:identifier3];
+        nowPlayingSubtitle = [v35 nowPlayingSubtitle];
 
-        v37 = [v22 nowPlayingSubtitle];
-        v38 = v37;
-        v39 = v36 != 0;
-        v40 = v36 == 0;
-        if (v37)
+        nowPlayingSubtitle2 = [v22 nowPlayingSubtitle];
+        v38 = nowPlayingSubtitle2;
+        v39 = nowPlayingSubtitle != 0;
+        v40 = nowPlayingSubtitle == 0;
+        if (nowPlayingSubtitle2)
         {
           v39 = 0;
         }
@@ -1650,9 +1650,9 @@ LABEL_46:
         }
 
         v41 = v40 || v39;
-        if (v36 && v37)
+        if (nowPlayingSubtitle && nowPlayingSubtitle2)
         {
-          v42 = v41 | [v36 isEqualToString:v37] ^ 1;
+          v42 = v41 | [nowPlayingSubtitle isEqualToString:nowPlayingSubtitle2] ^ 1;
 
           if ((v42 & 1) == 0)
           {
@@ -1700,8 +1700,8 @@ LABEL_49:
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v7 = [(MRUVendorSpecificDeviceManager *)self devices];
-      v8 = [v7 countByEnumeratingWithState:&v51 objects:v63 count:16];
+      devices = [(MRUVendorSpecificDeviceManager *)self devices];
+      v8 = [devices countByEnumeratingWithState:&v51 objects:v63 count:16];
       if (v8)
       {
         v9 = v8;
@@ -1712,13 +1712,13 @@ LABEL_49:
           {
             if (*v52 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(devices);
             }
 
             [(MRUVendorSpecificDeviceManager *)self resolverRemoveVendorSpecificRoute:*(*(&v51 + 1) + 8 * j)];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v51 objects:v63 count:16];
+          v9 = [devices countByEnumeratingWithState:&v51 objects:v63 count:16];
         }
 
         while (v9);
@@ -1768,39 +1768,39 @@ void __55__MRUVendorSpecificDeviceManager_handleDiscoveryEvent___block_invoke_2(
   return WeakRetained;
 }
 
-- (void)resolverAddVendorSpecificDevice:(id)a3
+- (void)resolverAddVendorSpecificDevice:(id)device
 {
-  v12 = a3;
-  v4 = [v12 identifier];
-  if (v4)
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
     v5 = objc_alloc_init(MEMORY[0x1E6999E68]);
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-DeviceAccess", v4];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-DeviceAccess", identifier];
     [v5 setIdentifier:v6];
 
-    v7 = [v12 name];
-    [v5 setName:v7];
+    name = [deviceCopy name];
+    [v5 setName:name];
 
-    v8 = [v12 protocolType];
-    v9 = [v8 identifier];
-    [v5 setProtocolTypeString:v9];
+    protocolType = [deviceCopy protocolType];
+    identifier2 = [protocolType identifier];
+    [v5 setProtocolTypeString:identifier2];
 
-    [v5 setUnderlyingDADevice:v12];
-    v10 = [v12 networkEndpoint];
-    v11 = [v10 description];
+    [v5 setUnderlyingDADevice:deviceCopy];
+    networkEndpoint = [deviceCopy networkEndpoint];
+    v11 = [networkEndpoint description];
     [v5 setBonjourFullName:v11];
 
     [(DADeviceResolver *)self->_resolver addEndpoint:v5];
   }
 }
 
-- (void)resolverRemoveVendorSpecificRoute:(id)a3
+- (void)resolverRemoveVendorSpecificRoute:(id)route
 {
-  v6 = [a3 identifier];
-  if (v6)
+  identifier = [route identifier];
+  if (identifier)
   {
     v4 = objc_alloc_init(MEMORY[0x1E6999E68]);
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-DeviceAccess", v6];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-DeviceAccess", identifier];
     [v4 setIdentifier:v5];
 
     [(DADeviceResolver *)self->_resolver removeEndpoint:v4];

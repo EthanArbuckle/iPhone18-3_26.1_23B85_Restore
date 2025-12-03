@@ -1,15 +1,15 @@
 @interface WFPrivacyIssue
 + (id)carrierNetworkIssue;
 + (id)dnsFilteredNetworkIssue;
-+ (id)privateAddressDisabledByCarrierIssueWithCarrierName:(id)a3;
-+ (id)privateAddressDisabledByProfileIssueWithOrganizationName:(id)a3 profileName:(id)a4 profileUUID:(id)a5;
++ (id)privateAddressDisabledByCarrierIssueWithCarrierName:(id)name;
++ (id)privateAddressDisabledByProfileIssueWithOrganizationName:(id)name profileName:(id)profileName profileUUID:(id)d;
 + (id)privateAddressDisabledBySystemIssue;
 + (id)privateAddressDisabledByUserIssue;
-- (WFPrivacyIssue)initWithPrivacyType:(unint64_t)a3 organizationName:(id)a4 profileName:(id)a5 profileUUID:(id)a6;
-- (id)_descriptionForSubType:(unint64_t)a3 organizationName:(id)a4 profileName:(id)a5;
-- (id)_privateAddressTypeToString:(unint64_t)a3;
-- (id)_recommendationForSubType:(unint64_t)a3 organizationName:(id)a4;
-- (id)_titleForSubType:(unint64_t)a3;
+- (WFPrivacyIssue)initWithPrivacyType:(unint64_t)type organizationName:(id)name profileName:(id)profileName profileUUID:(id)d;
+- (id)_descriptionForSubType:(unint64_t)type organizationName:(id)name profileName:(id)profileName;
+- (id)_privateAddressTypeToString:(unint64_t)string;
+- (id)_recommendationForSubType:(unint64_t)type organizationName:(id)name;
+- (id)_titleForSubType:(unint64_t)type;
 - (id)issueDescription;
 - (id)issueRecommendation;
 - (id)issueShortTitle;
@@ -32,20 +32,20 @@
   return v2;
 }
 
-+ (id)privateAddressDisabledByCarrierIssueWithCarrierName:(id)a3
++ (id)privateAddressDisabledByCarrierIssueWithCarrierName:(id)name
 {
-  v3 = a3;
-  v4 = [[WFPrivacyIssue alloc] initWithPrivacyType:2 organizationName:v3 profileName:0 profileUUID:0];
+  nameCopy = name;
+  v4 = [[WFPrivacyIssue alloc] initWithPrivacyType:2 organizationName:nameCopy profileName:0 profileUUID:0];
 
   return v4;
 }
 
-+ (id)privateAddressDisabledByProfileIssueWithOrganizationName:(id)a3 profileName:(id)a4 profileUUID:(id)a5
++ (id)privateAddressDisabledByProfileIssueWithOrganizationName:(id)name profileName:(id)profileName profileUUID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[WFPrivacyIssue alloc] initWithPrivacyType:4 organizationName:v9 profileName:v8 profileUUID:v7];
+  dCopy = d;
+  profileNameCopy = profileName;
+  nameCopy = name;
+  v10 = [[WFPrivacyIssue alloc] initWithPrivacyType:4 organizationName:nameCopy profileName:profileNameCopy profileUUID:dCopy];
 
   return v10;
 }
@@ -64,33 +64,33 @@
   return v2;
 }
 
-- (WFPrivacyIssue)initWithPrivacyType:(unint64_t)a3 organizationName:(id)a4 profileName:(id)a5 profileUUID:(id)a6
+- (WFPrivacyIssue)initWithPrivacyType:(unint64_t)type organizationName:(id)name profileName:(id)profileName profileUUID:(id)d
 {
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  profileNameCopy = profileName;
   v24.receiver = self;
   v24.super_class = WFPrivacyIssue;
   v11 = [(WFHealthIssue *)&v24 initWithType:0x2000];
   v12 = v11;
   if (v11)
   {
-    v13 = [(WFPrivacyIssue *)v11 _titleForSubType:a3];
+    v13 = [(WFPrivacyIssue *)v11 _titleForSubType:type];
     issueShortTitle = v12->_issueShortTitle;
     v12->_issueShortTitle = v13;
 
-    v15 = [(WFPrivacyIssue *)v12 _titleForSubType:a3];
+    v15 = [(WFPrivacyIssue *)v12 _titleForSubType:type];
     issueTitle = v12->_issueTitle;
     v12->_issueTitle = v15;
 
-    v17 = [(WFPrivacyIssue *)v12 _descriptionForSubType:a3 organizationName:v9 profileName:v10];
+    v17 = [(WFPrivacyIssue *)v12 _descriptionForSubType:type organizationName:nameCopy profileName:profileNameCopy];
     issueDescription = v12->_issueDescription;
     v12->_issueDescription = v17;
 
-    v19 = [(WFPrivacyIssue *)v12 _recommendationForSubType:a3 organizationName:v9];
+    v19 = [(WFPrivacyIssue *)v12 _recommendationForSubType:type organizationName:nameCopy];
     issueRecommendation = v12->_issueRecommendation;
     v12->_issueRecommendation = v19;
 
-    v21 = [(WFPrivacyIssue *)v12 _privateAddressTypeToString:a3];
+    v21 = [(WFPrivacyIssue *)v12 _privateAddressTypeToString:type];
     typeString = v12->_typeString;
     v12->_typeString = v21;
   }
@@ -103,17 +103,17 @@
   issueShortTitle = self->_issueShortTitle;
   if (issueShortTitle)
   {
-    v3 = issueShortTitle;
+    issueShortTitle = issueShortTitle;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = WFPrivacyIssue;
-    v3 = [(WFHealthIssue *)&v5 issueShortTitle];
+    issueShortTitle = [(WFHealthIssue *)&v5 issueShortTitle];
   }
 
-  return v3;
+  return issueShortTitle;
 }
 
 - (id)issueTitle
@@ -121,17 +121,17 @@
   issueTitle = self->_issueTitle;
   if (issueTitle)
   {
-    v3 = issueTitle;
+    issueTitle = issueTitle;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = WFPrivacyIssue;
-    v3 = [(WFHealthIssue *)&v5 issueTitle];
+    issueTitle = [(WFHealthIssue *)&v5 issueTitle];
   }
 
-  return v3;
+  return issueTitle;
 }
 
 - (id)issueDescription
@@ -139,17 +139,17 @@
   issueDescription = self->_issueDescription;
   if (issueDescription)
   {
-    v3 = issueDescription;
+    issueDescription = issueDescription;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = WFPrivacyIssue;
-    v3 = [(WFHealthIssue *)&v5 issueDescription];
+    issueDescription = [(WFHealthIssue *)&v5 issueDescription];
   }
 
-  return v3;
+  return issueDescription;
 }
 
 - (id)issueRecommendation
@@ -157,22 +157,22 @@
   issueRecommendation = self->_issueRecommendation;
   if (issueRecommendation)
   {
-    v3 = issueRecommendation;
+    issueRecommendation = issueRecommendation;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = WFPrivacyIssue;
-    v3 = [(WFHealthIssue *)&v5 issueRecommendation];
+    issueRecommendation = [(WFHealthIssue *)&v5 issueRecommendation];
   }
 
-  return v3;
+  return issueRecommendation;
 }
 
-- (id)_titleForSubType:(unint64_t)a3
+- (id)_titleForSubType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"kWFLocPrivateAddressDisabledBySystemTitle";
   }
@@ -188,17 +188,17 @@
   return v5;
 }
 
-- (id)_descriptionForSubType:(unint64_t)a3 organizationName:(id)a4 profileName:(id)a5
+- (id)_descriptionForSubType:(unint64_t)type organizationName:(id)name profileName:(id)profileName
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  nameCopy = name;
+  profileNameCopy = profileName;
+  v10 = profileNameCopy;
   v11 = 0;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
-      if (v9 && [v9 length])
+      if (profileNameCopy && [profileNameCopy length])
       {
         v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         if ([(WFHealthIssue *)self chinaDevice])
@@ -217,10 +217,10 @@
         goto LABEL_23;
       }
 
-      if (v8 && [v8 length])
+      if (nameCopy && [nameCopy length])
       {
         v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v13 = [(WFHealthIssue *)self chinaDevice];
+        chinaDevice = [(WFHealthIssue *)self chinaDevice];
         v14 = @"kWFLocPrivateAddressDisabledByProfileDescription";
         v15 = @"kWFLocPrivateAddressDisabledByProfileDescription_CH";
         goto LABEL_19;
@@ -229,18 +229,18 @@
       goto LABEL_24;
     }
 
-    if (a3 != 8)
+    if (type != 8)
     {
       goto LABEL_30;
     }
 
 LABEL_9:
     v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v17 = [(WFHealthIssue *)self chinaDevice];
+    chinaDevice2 = [(WFHealthIssue *)self chinaDevice];
     v18 = @"kWFLocPrivateAddressDisabledByGenericDescription";
     v19 = @"kWFLocPrivateAddressDisabledByGenericDescription_CH";
 LABEL_25:
-    if (v17)
+    if (chinaDevice2)
     {
       v24 = v19;
     }
@@ -254,32 +254,32 @@ LABEL_25:
     goto LABEL_29;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     goto LABEL_9;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     goto LABEL_30;
   }
 
-  if (!v8 || ![v8 length])
+  if (!nameCopy || ![nameCopy length])
   {
 LABEL_24:
     v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v17 = [(WFHealthIssue *)self chinaDevice];
+    chinaDevice2 = [(WFHealthIssue *)self chinaDevice];
     v18 = @"kWFLocPrivateAddressDisabledByOtherGenericDescription";
     v19 = @"kWFLocPrivateAddressDisabledByOtherGenericDescription_CH";
     goto LABEL_25;
   }
 
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v13 = [(WFHealthIssue *)self chinaDevice];
+  chinaDevice = [(WFHealthIssue *)self chinaDevice];
   v14 = @"kWFLocPrivateAddressDisabledByCarrierDescription";
   v15 = @"kWFLocPrivateAddressDisabledByCarrierDescription_CH";
 LABEL_19:
-  if (v13)
+  if (chinaDevice)
   {
     v22 = v15;
   }
@@ -291,7 +291,7 @@ LABEL_19:
 
   v16 = [v12 localizedStringForKey:v22 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
 
-  [MEMORY[0x277CCACA8] stringWithFormat:v16, v8];
+  [MEMORY[0x277CCACA8] stringWithFormat:v16, nameCopy];
   v23 = LABEL_23:;
 LABEL_29:
   v11 = v23;
@@ -301,9 +301,9 @@ LABEL_30:
   return v11;
 }
 
-- (id)_recommendationForSubType:(unint64_t)a3 organizationName:(id)a4
+- (id)_recommendationForSubType:(unint64_t)type organizationName:(id)name
 {
-  if ([(WFHealthIssue *)self chinaDevice:a3])
+  if ([(WFHealthIssue *)self chinaDevice:type])
   {
     v4 = [@"kWFLocPrivateAddressDisabledByAllRecommendation" stringByAppendingString:@"_CH"];
   }
@@ -319,16 +319,16 @@ LABEL_30:
   return v6;
 }
 
-- (id)_privateAddressTypeToString:(unint64_t)a3
+- (id)_privateAddressTypeToString:(unint64_t)string
 {
-  if (a3 - 1 > 7)
+  if (string - 1 > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_279EC5C40[a3 - 1];
+    return off_279EC5C40[string - 1];
   }
 }
 

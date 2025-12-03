@@ -1,12 +1,12 @@
 @interface REActivitySummaryPredictor
 + (id)supportedFeatures;
 - (id)_init;
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6;
-- (void)_runQuery:(id)a3;
-- (void)_startActivitySummaryQueryWithRetries:(int64_t)a3;
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context;
+- (void)_runQuery:(id)query;
+- (void)_startActivitySummaryQueryWithRetries:(int64_t)retries;
 - (void)_stopQueries;
-- (void)_stopQuery:(id)a3;
-- (void)_updateWithActivitySummary:(id)a3 completion:(id)a4;
+- (void)_stopQuery:(id)query;
+- (void)_updateWithActivitySummary:(id)summary completion:(id)completion;
 - (void)update;
 @end
 
@@ -16,11 +16,11 @@
 {
   v7.receiver = self;
   v7.super_class = REActivitySummaryPredictor;
-  v2 = [(REPredictor *)&v7 _init];
-  v3 = v2;
-  if (v2)
+  _init = [(REPredictor *)&v7 _init];
+  v3 = _init;
+  if (_init)
   {
-    [v2 setActiveEnergyPercentComplete:0.0];
+    [_init setActiveEnergyPercentComplete:0.0];
     [v3 setExerciseTimePercentComplete:0.0];
     [v3 setStandHourPercentComplete:0.0];
     v4 = [MEMORY[0x277CBEB98] set];
@@ -55,11 +55,11 @@
   return v7;
 }
 
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context
 {
-  v7 = a3;
+  featureCopy = feature;
   v8 = +[REFeature activeEnergyCompletionFeature];
-  v9 = [v7 isEqual:v8];
+  v9 = [featureCopy isEqual:v8];
 
   if (v9)
   {
@@ -69,7 +69,7 @@
   else
   {
     v11 = +[REFeature exerciseTimeCompletionFeature];
-    v12 = [v7 isEqual:v11];
+    v12 = [featureCopy isEqual:v11];
 
     if (v12)
     {
@@ -87,9 +87,9 @@
   return v13;
 }
 
-- (void)_startActivitySummaryQueryWithRetries:(int64_t)a3
+- (void)_startActivitySummaryQueryWithRetries:(int64_t)retries
 {
-  if (a3 <= 0)
+  if (retries <= 0)
   {
     v10 = RELogForDomain(8);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -125,8 +125,8 @@
     v13 = __68__REActivitySummaryPredictor__startActivitySummaryQueryWithRetries___block_invoke;
     v14 = &unk_2785FAE08;
     objc_copyWeak(v16, &location);
-    v16[1] = a3;
-    v15 = self;
+    v16[1] = retries;
+    selfCopy = self;
     v8 = [v7 initWithUpdateHandler:&v11];
     v9 = RELogForDomain(8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -177,17 +177,17 @@ void __68__REActivitySummaryPredictor__startActivitySummaryQueryWithRetries___bl
   }
 }
 
-- (void)_runQuery:(id)a3
+- (void)_runQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = +[(RESingleton *)REHealthStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__REActivitySummaryPredictor__runQuery___block_invoke;
   v7[3] = &unk_2785FAE30;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = queryCopy;
+  selfCopy = self;
+  v6 = queryCopy;
   [v5 accessHealthStore:v7];
 }
 
@@ -202,17 +202,17 @@ uint64_t __40__REActivitySummaryPredictor__runQuery___block_invoke(uint64_t a1, 
   return MEMORY[0x2821F96F8](v3, v5);
 }
 
-- (void)_stopQuery:(id)a3
+- (void)_stopQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = +[(RESingleton *)REHealthStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__REActivitySummaryPredictor__stopQuery___block_invoke;
   v7[3] = &unk_2785FAE30;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = queryCopy;
+  selfCopy = self;
+  v6 = queryCopy;
   [v5 accessHealthStore:v7];
 }
 
@@ -280,21 +280,21 @@ void __42__REActivitySummaryPredictor__stopQueries__block_invoke(uint64_t a1, vo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWithActivitySummary:(id)a3 completion:(id)a4
+- (void)_updateWithActivitySummary:(id)summary completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(REPredictor *)self queue];
+  summaryCopy = summary;
+  completionCopy = completion;
+  queue = [(REPredictor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__REActivitySummaryPredictor__updateWithActivitySummary_completion___block_invoke;
   block[3] = &unk_2785FAE80;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = summaryCopy;
+  v9 = summaryCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __68__REActivitySummaryPredictor__updateWithActivitySummary_completion___block_invoke(uint64_t a1)

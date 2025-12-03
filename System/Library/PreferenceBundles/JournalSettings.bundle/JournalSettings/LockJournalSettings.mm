@@ -3,11 +3,11 @@
 + (BOOL)isAppFeatureLockJournalEnabled;
 + (BOOL)isDevicePasscodeProtected;
 + (NSString)navigationTitle;
-- (_TtC15JournalSettings19LockJournalSettings)initWithCoder:(id)a3;
-- (_TtC15JournalSettings19LockJournalSettings)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)specifierValueFor:(id)a3;
+- (_TtC15JournalSettings19LockJournalSettings)initWithCoder:(id)coder;
+- (_TtC15JournalSettings19LockJournalSettings)initWithNibName:(id)name bundle:(id)bundle;
+- (id)specifierValueFor:(id)for;
 - (id)specifiers;
-- (void)setSpecifierValue:(id)a3 for:(id)a4;
+- (void)setSpecifierValue:(id)value for:(id)for;
 - (void)viewDidLoad;
 @end
 
@@ -76,7 +76,7 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_86F1C();
   v4 = v3;
 
@@ -93,11 +93,11 @@
   return v5.super.isa;
 }
 
-- (id)specifierValueFor:(id)a3
+- (id)specifierValueFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_884A4(v4, v13);
+  forCopy = for;
+  selfCopy = self;
+  sub_884A4(forCopy, v13);
 
   v6 = v14;
   if (v14)
@@ -120,12 +120,12 @@
   return v11;
 }
 
-- (void)setSpecifierValue:(id)a3 for:(id)a4
+- (void)setSpecifierValue:(id)value for:(id)for
 {
-  if (a3)
+  if (value)
   {
-    v6 = a4;
-    v7 = self;
+    forCopy = for;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_90D80();
     swift_unknownObjectRelease();
@@ -134,43 +134,43 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a4;
-    v9 = self;
+    forCopy2 = for;
+    selfCopy2 = self;
   }
 
-  sub_88708(v10, a4);
+  sub_88708(v10, for);
 
   sub_26E74(v10);
 }
 
-- (_TtC15JournalSettings19LockJournalSettings)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15JournalSettings19LockJournalSettings)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_90590();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_90550();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for LockJournalSettings();
-  v9 = [(LockJournalSettings *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(LockJournalSettings *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC15JournalSettings19LockJournalSettings)initWithCoder:(id)a3
+- (_TtC15JournalSettings19LockJournalSettings)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for LockJournalSettings();
-  v4 = a3;
-  v5 = [(LockJournalSettings *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(LockJournalSettings *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

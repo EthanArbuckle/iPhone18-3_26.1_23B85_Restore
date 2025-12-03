@@ -1,41 +1,41 @@
 @interface MapsSyncDaemonService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC9mapssyncd21MapsSyncDaemonService)init;
-- (void)cloudKitAccountChangedWithNotification:(id)a3;
-- (void)cloudKitContainerEventWithNotification:(id)a3;
-- (void)cloudKitSyncAllowedWithCompletionHandler:(id)a3;
-- (void)fetchSyncedAnalyticsIdentifierWithCompletion:(id)a3;
-- (void)getLastSyncDateWithCompletionHandler:(id)a3;
-- (void)prepareLibraryWithCompletionHandler:(id)a3;
-- (void)setSyncedAnalyticsIdentifier:(id)a3 deleteIdenifiers:(id)a4 completion:(id)a5;
+- (void)cloudKitAccountChangedWithNotification:(id)notification;
+- (void)cloudKitContainerEventWithNotification:(id)notification;
+- (void)cloudKitSyncAllowedWithCompletionHandler:(id)handler;
+- (void)fetchSyncedAnalyticsIdentifierWithCompletion:(id)completion;
+- (void)getLastSyncDateWithCompletionHandler:(id)handler;
+- (void)prepareLibraryWithCompletionHandler:(id)handler;
+- (void)setSyncedAnalyticsIdentifier:(id)identifier deleteIdenifiers:(id)idenifiers completion:(id)completion;
 @end
 
 @implementation MapsSyncDaemonService
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v7 = objc_opt_self();
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
   v11 = [v7 interfaceWithProtocol:&OBJC_PROTOCOL____TtP9mapssyncd31MapsSyncDaemonCompositeProtocol_];
-  [v9 setExportedInterface:v11];
+  [connectionCopy setExportedInterface:v11];
 
   v12 = [v7 interfaceWithProtocol:&OBJC_PROTOCOL____TtP9mapssyncd31MapsSyncDaemonCompositeProtocol_];
-  [v9 setRemoteObjectInterface:v12];
+  [connectionCopy setRemoteObjectInterface:v12];
 
-  [v9 setExportedObject:v10];
-  [v9 resume];
+  [connectionCopy setExportedObject:selfCopy];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)cloudKitSyncAllowedWithCompletionHandler:(id)a3
+- (void)cloudKitSyncAllowedWithCompletionHandler:(id)handler
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&unk_100046B40, &qword_10002B318) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -51,18 +51,18 @@
   v12[3] = 0;
   v12[4] = &unk_10002B378;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_100010930(0, 0, v7, &unk_10002B380, v12);
 }
 
-- (void)cloudKitContainerEventWithNotification:(id)a3
+- (void)cloudKitContainerEventWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000B4C0(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_10000B4C0(notificationCopy);
 }
 
-- (void)cloudKitAccountChangedWithNotification:(id)a3
+- (void)cloudKitAccountChangedWithNotification:(id)notification
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_100046B40, &qword_10002B318);
   v4 = *(*(v3 - 8) + 64);
@@ -79,27 +79,27 @@
   sub_10000BAC8(0, 0, v6, &unk_10002B3B0, v9);
 }
 
-- (void)fetchSyncedAnalyticsIdentifierWithCompletion:(id)a3
+- (void)fetchSyncedAnalyticsIdentifierWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_10000C368(sub_100011460, v5);
 }
 
-- (void)setSyncedAnalyticsIdentifier:(id)a3 deleteIdenifiers:(id)a4 completion:(id)a5
+- (void)setSyncedAnalyticsIdentifier:(id)identifier deleteIdenifiers:(id)idenifiers completion:(id)completion
 {
-  v7 = _Block_copy(a5);
-  if (a3)
+  v7 = _Block_copy(completion);
+  if (identifier)
   {
-    v8 = a4;
-    v9 = self;
-    v10 = a3;
-    a3 = sub_100028D28();
+    idenifiersCopy = idenifiers;
+    selfCopy = self;
+    identifierCopy = identifier;
+    identifier = sub_100028D28();
     v12 = v11;
 
-    if (a4)
+    if (idenifiers)
     {
 LABEL_3:
       v13 = sub_100029048();
@@ -110,10 +110,10 @@ LABEL_3:
 
   else
   {
-    v14 = a4;
-    v15 = self;
+    idenifiersCopy2 = idenifiers;
+    selfCopy2 = self;
     v12 = 0xF000000000000000;
-    if (a4)
+    if (idenifiers)
     {
       goto LABEL_3;
     }
@@ -123,18 +123,18 @@ LABEL_3:
 LABEL_6:
   v16 = swift_allocObject();
   *(v16 + 16) = v7;
-  sub_10000CCEC(a3, v12, v13, sub_100011444, v16);
+  sub_10000CCEC(identifier, v12, v13, sub_100011444, v16);
 
-  sub_10001144C(a3, v12);
+  sub_10001144C(identifier, v12);
 }
 
-- (void)prepareLibraryWithCompletionHandler:(id)a3
+- (void)prepareLibraryWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_100046B40, &qword_10002B318);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -150,17 +150,17 @@ LABEL_6:
   v13[3] = 0;
   v13[4] = &unk_10002B398;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100010930(0, 0, v8, &unk_10002B3A0, v13);
 }
 
-- (void)getLastSyncDateWithCompletionHandler:(id)a3
+- (void)getLastSyncDateWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_100046B40, &qword_10002B318);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -176,7 +176,7 @@ LABEL_6:
   v13[3] = 0;
   v13[4] = &unk_10002B338;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100010930(0, 0, v8, &unk_10002B348, v13);
 }
 

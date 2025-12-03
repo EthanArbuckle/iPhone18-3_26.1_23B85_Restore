@@ -1,23 +1,23 @@
 @interface MapsSuggestionsXPCActivityTimer
-- (MapsSuggestionsXPCActivityTimer)initWithName:(id)a3 estimatedDownload:(unint64_t)a4 estimatedUpload:(unint64_t)a5 queue:(id)a6 block:(id)a7;
-- (MapsSuggestionsXPCActivityTimer)initWithName:(id)a3 queue:(id)a4 block:(id)a5;
-- (MapsSuggestionsXPCActivityTimer)initWithName:(id)a3 queue:(id)a4 timerReturningBlock:(id)a5;
+- (MapsSuggestionsXPCActivityTimer)initWithName:(id)name estimatedDownload:(unint64_t)download estimatedUpload:(unint64_t)upload queue:(id)queue block:(id)block;
+- (MapsSuggestionsXPCActivityTimer)initWithName:(id)name queue:(id)queue block:(id)block;
+- (MapsSuggestionsXPCActivityTimer)initWithName:(id)name queue:(id)queue timerReturningBlock:(id)block;
 - (NSString)description;
 - (id)objectForJSON;
-- (void)scheduleWithTimeInterval:(double)a3 leeway:(double)a4;
+- (void)scheduleWithTimeInterval:(double)interval leeway:(double)leeway;
 - (void)unschedule;
 @end
 
 @implementation MapsSuggestionsXPCActivityTimer
 
-- (MapsSuggestionsXPCActivityTimer)initWithName:(id)a3 estimatedDownload:(unint64_t)a4 estimatedUpload:(unint64_t)a5 queue:(id)a6 block:(id)a7
+- (MapsSuggestionsXPCActivityTimer)initWithName:(id)name estimatedDownload:(unint64_t)download estimatedUpload:(unint64_t)upload queue:(id)queue block:(id)block
 {
   v34 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = v14;
-  if (!v12)
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
+  v15 = blockCopy;
+  if (!nameCopy)
   {
     v23 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -36,7 +36,7 @@
     goto LABEL_15;
   }
 
-  if (!v13)
+  if (!queueCopy)
   {
     v23 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -55,7 +55,7 @@
     goto LABEL_15;
   }
 
-  if (!v14)
+  if (!blockCopy)
   {
     v23 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -73,53 +73,53 @@
 
 LABEL_15:
 
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
   v25.receiver = self;
   v25.super_class = MapsSuggestionsXPCActivityTimer;
-  v16 = [(MapsSuggestionsBaseTrigger *)&v25 initWithName:v12 queue:v13];
+  v16 = [(MapsSuggestionsBaseTrigger *)&v25 initWithName:nameCopy queue:queueCopy];
   v17 = v16;
   if (v16)
   {
-    v16->_estimatedDownloadInBytes = a4;
-    v16->_estimatedUploadInBytes = a5;
+    v16->_estimatedDownloadInBytes = download;
+    v16->_estimatedUploadInBytes = upload;
     v18 = _Block_copy(v15);
     block = v17->_block;
     v17->_block = v18;
 
-    v20 = [@"com.apple." stringByAppendingString:v12];
+    v20 = [@"com.apple." stringByAppendingString:nameCopy];
     activityIdentifier = v17->_activityIdentifier;
     v17->_activityIdentifier = v20;
   }
 
   self = v17;
-  v22 = self;
+  selfCopy = self;
 LABEL_16:
 
-  return v22;
+  return selfCopy;
 }
 
-- (MapsSuggestionsXPCActivityTimer)initWithName:(id)a3 queue:(id)a4 block:(id)a5
+- (MapsSuggestionsXPCActivityTimer)initWithName:(id)name queue:(id)queue block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
   Integer = GEOConfigGetInteger();
-  v12 = [(MapsSuggestionsXPCActivityTimer *)self initWithName:v8 estimatedDownload:Integer estimatedUpload:GEOConfigGetInteger() queue:v9 block:v10];
+  v12 = [(MapsSuggestionsXPCActivityTimer *)self initWithName:nameCopy estimatedDownload:Integer estimatedUpload:GEOConfigGetInteger() queue:queueCopy block:blockCopy];
 
   return v12;
 }
 
-- (MapsSuggestionsXPCActivityTimer)initWithName:(id)a3 queue:(id)a4 timerReturningBlock:(id)a5
+- (MapsSuggestionsXPCActivityTimer)initWithName:(id)name queue:(id)queue timerReturningBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
+  v11 = blockCopy;
+  if (!nameCopy)
   {
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -138,7 +138,7 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  if (!v9)
+  if (!queueCopy)
   {
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -157,7 +157,7 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  if (!v10)
+  if (!blockCopy)
   {
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -175,19 +175,19 @@ LABEL_16:
 
 LABEL_15:
 
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
   v23.receiver = self;
   v23.super_class = MapsSuggestionsXPCActivityTimer;
-  v12 = [(MapsSuggestionsBaseTrigger *)&v23 initWithName:v8 queue:v9];
+  v12 = [(MapsSuggestionsBaseTrigger *)&v23 initWithName:nameCopy queue:queueCopy];
   if (v12)
   {
     objc_initWeak(location, v12);
     v12->_estimatedDownloadInBytes = GEOConfigGetInteger();
     v12->_estimatedUploadInBytes = GEOConfigGetInteger();
-    v13 = [@"com.apple." stringByAppendingString:v8];
+    v13 = [@"com.apple." stringByAppendingString:nameCopy];
     activityIdentifier = v12->_activityIdentifier;
     v12->_activityIdentifier = v13;
 
@@ -206,10 +206,10 @@ LABEL_15:
   }
 
   self = v12;
-  v17 = self;
+  selfCopy = self;
 LABEL_16:
 
-  return v17;
+  return selfCopy;
 }
 
 void __74__MapsSuggestionsXPCActivityTimer_initWithName_queue_timerReturningBlock___block_invoke(uint64_t a1)
@@ -239,23 +239,23 @@ void __74__MapsSuggestionsXPCActivityTimer_initWithName_queue_timerReturningBloc
   }
 }
 
-- (void)scheduleWithTimeInterval:(double)a3 leeway:(double)a4
+- (void)scheduleWithTimeInterval:(double)interval leeway:(double)leeway
 {
-  v7 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+  dispatchQueue = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
 
-  if (v7)
+  if (dispatchQueue)
   {
-    v8 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+    dispatchQueue2 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
     objc_initWeak(location, self);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __67__MapsSuggestionsXPCActivityTimer_scheduleWithTimeInterval_leeway___block_invoke;
     v11[3] = &unk_1E81F51E0;
     objc_copyWeak(v13, location);
-    v13[1] = *&a3;
-    v13[2] = *&a4;
-    v12 = v8;
-    v9 = v8;
+    v13[1] = *&interval;
+    v13[2] = *&leeway;
+    v12 = dispatchQueue2;
+    v9 = dispatchQueue2;
     dispatch_async(v9, v11);
 
     objc_destroyWeak(v13);
@@ -406,13 +406,13 @@ void __67__MapsSuggestionsXPCActivityTimer_scheduleWithTimeInterval_leeway___blo
 - (void)unschedule
 {
   objc_initWeak(&location, self);
-  v3 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+  dispatchQueue = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __45__MapsSuggestionsXPCActivityTimer_unschedule__block_invoke;
   v4[3] = &unk_1E81F5208;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(dispatchQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -454,8 +454,8 @@ void __45__MapsSuggestionsXPCActivityTimer_unschedule__block_invoke(uint64_t a1)
 
 - (NSString)description
 {
-  v2 = [(MapsSuggestionsXPCActivityTimer *)self objectForJSON];
-  v3 = NSStringFromMapsSuggestionsJSON(v2, 1u);
+  objectForJSON = [(MapsSuggestionsXPCActivityTimer *)self objectForJSON];
+  v3 = NSStringFromMapsSuggestionsJSON(objectForJSON, 1u);
 
   return v3;
 }
@@ -464,8 +464,8 @@ void __45__MapsSuggestionsXPCActivityTimer_unschedule__block_invoke(uint64_t a1)
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"name";
-  v3 = [(MapsSuggestionsBaseTrigger *)self uniqueName];
-  v4 = MSg::jsonFor(v3);
+  uniqueName = [(MapsSuggestionsBaseTrigger *)self uniqueName];
+  v4 = MSg::jsonFor(uniqueName);
   v13[0] = v4;
   v12[1] = @"activityIdentifier";
   v5 = MSg::jsonFor(self->_activityIdentifier);

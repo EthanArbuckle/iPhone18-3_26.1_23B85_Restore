@@ -1,5 +1,5 @@
 @interface ACCPlatformPluginWiFiSharing
-- (BOOL)handleAccessoryWiFiInformationForWirelessCarPlay:(id)a3;
+- (BOOL)handleAccessoryWiFiInformationForWirelessCarPlay:(id)play;
 - (BOOL)isDeviceConnectedToWiFi;
 - (NSString)pluginName;
 - (id)copyDeviceWiFiNetworkInformation;
@@ -252,27 +252,27 @@ LABEL_37:
   return v2;
 }
 
-- (BOOL)handleAccessoryWiFiInformationForWirelessCarPlay:(id)a3
+- (BOOL)handleAccessoryWiFiInformationForWirelessCarPlay:(id)play
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"WiFiBSSID"];
-  v5 = [v3 objectForKey:@"WiFiSSID"];
-  v6 = [v3 objectForKey:@"WiFiPassphrase"];
-  v7 = [v3 objectForKey:@"WiFiSecurityType"];
-  v29 = [v3 objectForKey:@"WiFiChannel"];
-  v8 = [v3 objectForKey:@"LegacyAccessoryExternalAccessoryConnectionID"];
+  playCopy = play;
+  v4 = [playCopy objectForKey:@"WiFiBSSID"];
+  v5 = [playCopy objectForKey:@"WiFiSSID"];
+  v6 = [playCopy objectForKey:@"WiFiPassphrase"];
+  v7 = [playCopy objectForKey:@"WiFiSecurityType"];
+  v29 = [playCopy objectForKey:@"WiFiChannel"];
+  v8 = [playCopy objectForKey:@"LegacyAccessoryExternalAccessoryConnectionID"];
   if (v7)
   {
-    v9 = [v7 unsignedIntValue];
+    unsignedIntValue = [v7 unsignedIntValue];
   }
 
   else
   {
-    v9 = 0;
+    unsignedIntValue = 0;
   }
 
-  if (!v5 || (v6 ? (v10 = v9 == 0) : (v10 = 0), v10))
+  if (!v5 || (v6 ? (v10 = unsignedIntValue == 0) : (v10 = 0), v10))
   {
     v11 = v4;
     if (gLogObjects && gNumLogObjects >= 2)
@@ -327,18 +327,18 @@ LABEL_37:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v3;
+    v31 = playCopy;
     _os_log_impl(&dword_233653000, v15, OS_LOG_TYPE_DEFAULT, "accessory wifi info for CarPlay is %@", buf, 0xCu);
   }
 
   v18 = v8;
   if (v12)
   {
-    v19 = [MEMORY[0x277CBEB38] dictionary];
-    v20 = v19;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v20 = dictionary;
     if (v17)
     {
-      [v19 setObject:v17 forKey:@"BSSID"];
+      [dictionary setObject:v17 forKey:@"BSSID"];
     }
 
     if (v5)
@@ -356,7 +356,7 @@ LABEL_37:
       [v20 setObject:v6 forKey:@"password"];
     }
 
-    if (v9 >= 3)
+    if (unsignedIntValue >= 3)
     {
       v22 = v17;
       if (gLogObjects && gNumLogObjects >= 2)
@@ -378,7 +378,7 @@ LABEL_37:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v31) = v9;
+        LODWORD(v31) = unsignedIntValue;
         _os_log_impl(&dword_233653000, v23, OS_LOG_TYPE_DEFAULT, "Invalid accessory security type %d", buf, 8u);
       }
 
@@ -389,7 +389,7 @@ LABEL_37:
 
     else
     {
-      v21 = *(&off_2789E7FC8 + v9);
+      v21 = *(&off_2789E7FC8 + unsignedIntValue);
     }
 
     [v20 setObject:v21 forKey:@"securityType"];

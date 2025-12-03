@@ -1,29 +1,29 @@
 @interface LNProperty
-- (BOOL)isEqual:(id)a3;
-- (LNProperty)initWithCoder:(id)a3;
-- (LNProperty)initWithIdentifier:(id)a3 value:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNProperty)initWithCoder:(id)coder;
+- (LNProperty)initWithIdentifier:(id)identifier value:(id)value;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNProperty
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNProperty *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNProperty *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNProperty *)self value];
-  [v4 encodeObject:v6 forKey:@"value"];
+  value = [(LNProperty *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 }
 
-- (LNProperty)initWithCoder:(id)a3
+- (LNProperty)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
 
   v7 = [(LNProperty *)self initWithIdentifier:v5 value:v6];
   return v7;
@@ -31,21 +31,21 @@
 
 - (unint64_t)hash
 {
-  v3 = [(LNProperty *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(LNProperty *)self value];
-  v6 = [v5 hash];
+  identifier = [(LNProperty *)self identifier];
+  v4 = [identifier hash];
+  value = [(LNProperty *)self value];
+  v6 = [value hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -54,10 +54,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNProperty *)self identifier];
-    v8 = [(LNProperty *)v6 identifier];
-    v9 = v7;
-    v10 = v8;
+    identifier = [(LNProperty *)self identifier];
+    identifier2 = [(LNProperty *)v6 identifier];
+    v9 = identifier;
+    v10 = identifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -84,10 +84,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNProperty *)self value];
-    v16 = [(LNProperty *)v6 value];
-    v14 = v15;
-    v17 = v16;
+    value = [(LNProperty *)self value];
+    value2 = [(LNProperty *)v6 value];
+    v14 = value;
+    v17 = value2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -117,27 +117,27 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNProperty *)self identifier];
-  v7 = [(LNProperty *)self value];
-  v8 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, value: %@>", v5, self, v6, v7];
+  identifier = [(LNProperty *)self identifier];
+  value = [(LNProperty *)self value];
+  v8 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, value: %@>", v5, self, identifier, value];
 
   return v8;
 }
 
-- (LNProperty)initWithIdentifier:(id)a3 value:(id)a4
+- (LNProperty)initWithIdentifier:(id)identifier value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = LNProperty;
   v8 = [(LNProperty *)&v13 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeStrong(&v8->_value, a4);
+    objc_storeStrong(&v8->_value, value);
     v11 = v8;
   }
 

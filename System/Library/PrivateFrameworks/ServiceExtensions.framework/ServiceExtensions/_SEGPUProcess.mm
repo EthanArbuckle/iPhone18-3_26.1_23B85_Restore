@@ -12,7 +12,7 @@
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &atoken - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_265747104(self + OBJC_IVAR____SEGPUProcess_inner, v6, type metadata accessor for _GPUProcess);
-  v7 = self;
+  selfCopy = self;
   *atoken.val = _s17ServiceExtensions11_GPUProcessV10auditTokenSo0D8_token_tavg_0();
   atoken.val[2] = v8;
   atoken.val[3] = v9;

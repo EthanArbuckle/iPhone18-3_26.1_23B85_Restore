@@ -1,15 +1,15 @@
 @interface BLAssetContainerAudiobookiOS
-- (BLAssetContainerAudiobookiOS)initWithMetadataStoreManager:(id)a3;
-- (id)installOperationForInstallInfo:(id)a3;
-- (void)cancelPurchasesWithMetadata:(id)a3 subitemsToIgnore:(id)a4;
-- (void)purchasedAssetWithMetadata:(id)a3 familyAccountID:(id)a4;
+- (BLAssetContainerAudiobookiOS)initWithMetadataStoreManager:(id)manager;
+- (id)installOperationForInstallInfo:(id)info;
+- (void)cancelPurchasesWithMetadata:(id)metadata subitemsToIgnore:(id)ignore;
+- (void)purchasedAssetWithMetadata:(id)metadata familyAccountID:(id)d;
 @end
 
 @implementation BLAssetContainerAudiobookiOS
 
-- (BLAssetContainerAudiobookiOS)initWithMetadataStoreManager:(id)a3
+- (BLAssetContainerAudiobookiOS)initWithMetadataStoreManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = BLAssetContainerAudiobookiOS;
   v6 = [(BLAssetContainerAudiobookiOS *)&v10 init];
@@ -19,55 +19,55 @@
     mediaLibraryManager = v6->_mediaLibraryManager;
     v6->_mediaLibraryManager = v7;
 
-    objc_storeStrong(&v6->_metadataStoreManager, a3);
+    objc_storeStrong(&v6->_metadataStoreManager, manager);
   }
 
   return v6;
 }
 
-- (void)purchasedAssetWithMetadata:(id)a3 familyAccountID:(id)a4
+- (void)purchasedAssetWithMetadata:(id)metadata familyAccountID:(id)d
 {
-  v9 = a4;
-  v6 = a3;
+  dCopy = d;
+  metadataCopy = metadata;
   v7 = objc_alloc_init(BLMLImporterItem);
-  [(BLMLImporterItem *)v7 setItemMetadata:v6];
+  [(BLMLImporterItem *)v7 setItemMetadata:metadataCopy];
 
-  if ([v9 longLongValue])
+  if ([dCopy longLongValue])
   {
-    [(BLMLImporterItem *)v7 setValue:v9 forAdditionalEntityProperty:ML3TrackPropertyStoreFamilyAccountID];
+    [(BLMLImporterItem *)v7 setValue:dCopy forAdditionalEntityProperty:ML3TrackPropertyStoreFamilyAccountID];
   }
 
-  v8 = [(BLAssetContainerAudiobookiOS *)self mediaLibraryManager];
-  [v8 addLibraryItemWithoutWaiting:v7];
+  mediaLibraryManager = [(BLAssetContainerAudiobookiOS *)self mediaLibraryManager];
+  [mediaLibraryManager addLibraryItemWithoutWaiting:v7];
 }
 
-- (void)cancelPurchasesWithMetadata:(id)a3 subitemsToIgnore:(id)a4
+- (void)cancelPurchasesWithMetadata:(id)metadata subitemsToIgnore:(id)ignore
 {
-  v6 = a4;
-  v7 = a3;
+  ignoreCopy = ignore;
+  metadataCopy = metadata;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000686D8;
   v10[3] = &unk_10011D218;
   v8 = objc_alloc_init(NSMutableArray);
   v11 = v8;
-  [BLMediaLibraryUtilities enumerateTracksWithStorePlaylistIdentifier:v7 usingBlock:v10];
+  [BLMediaLibraryUtilities enumerateTracksWithStorePlaylistIdentifier:metadataCopy usingBlock:v10];
 
-  [v8 removeObjectsInArray:v6];
+  [v8 removeObjectsInArray:ignoreCopy];
   if ([v8 count])
   {
-    v9 = [(BLAssetContainerAudiobookiOS *)self mediaLibraryManager];
-    [v9 removeMediaItemsForStoreIDs:v8];
+    mediaLibraryManager = [(BLAssetContainerAudiobookiOS *)self mediaLibraryManager];
+    [mediaLibraryManager removeMediaItemsForStoreIDs:v8];
   }
 }
 
-- (id)installOperationForInstallInfo:(id)a3
+- (id)installOperationForInstallInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [BLAudiobookInstallOperation alloc];
-  v6 = [(BLAssetContainerAudiobookiOS *)self mediaLibraryManager];
-  v7 = [(BLAssetContainerAudiobookiOS *)self metadataStoreManager];
-  v8 = [(BLAudiobookInstallOperation *)v5 initWithInfo:v4 mediaLibraryManager:v6 metadataStoreManager:v7];
+  mediaLibraryManager = [(BLAssetContainerAudiobookiOS *)self mediaLibraryManager];
+  metadataStoreManager = [(BLAssetContainerAudiobookiOS *)self metadataStoreManager];
+  v8 = [(BLAudiobookInstallOperation *)v5 initWithInfo:infoCopy mediaLibraryManager:mediaLibraryManager metadataStoreManager:metadataStoreManager];
 
   return v8;
 }

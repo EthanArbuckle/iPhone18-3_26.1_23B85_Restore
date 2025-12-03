@@ -1,32 +1,32 @@
 @interface AAUIAccountConversionHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_navigateBackToStartWithCompletion:(id)a3;
-- (void)_signOutAccountsWithAccount:(id)a3 shouldRemoveAppleAccount:(BOOL)a4 viewController:(id)a5 completion:(id)a6;
-- (void)_signOutWithAttributes:(id)a3 completion:(id)a4;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
-- (void)signOutPrimaryAccountWithShouldRetainTrust:(BOOL)a3 viewController:(id)a4 completion:(id)a5;
+- (void)_navigateBackToStartWithCompletion:(id)completion;
+- (void)_signOutAccountsWithAccount:(id)account shouldRemoveAppleAccount:(BOOL)appleAccount viewController:(id)controller completion:(id)completion;
+- (void)_signOutWithAttributes:(id)attributes completion:(id)completion;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
+- (void)signOutPrimaryAccountWithShouldRetainTrust:(BOOL)trust viewController:(id)controller completion:(id)completion;
 @end
 
 @implementation AAUIAccountConversionHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (+[AAUIFeatureFlags isConvertToMAIDEnabled])
   {
-    v4 = [v3 name];
-    if ([v4 isEqualToString:@"account:signout"])
+    name = [elementCopy name];
+    if ([name isEqualToString:@"account:signout"])
     {
       v5 = 1;
     }
 
     else
     {
-      v6 = [v3 name];
-      v5 = [v6 isEqualToString:@"account:navigateToSignIn"];
+      name2 = [elementCopy name];
+      v5 = [name2 isEqualToString:@"account:navigateToSignIn"];
     }
   }
 
@@ -38,14 +38,14 @@
   return v5;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   if (+[AAUIFeatureFlags isConvertToMAIDEnabled])
   {
     objc_opt_class();
-    v4 = [v3 clientInfo];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+    clientInfo = [modelCopy clientInfo];
+    v5 = [clientInfo objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -75,38 +75,38 @@
   return v7;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v15 = a3;
-  v9 = a4;
-  v10 = a6;
-  v11 = [v15 name];
-  v12 = [v11 isEqualToString:@"account:signout"];
+  elementCopy = element;
+  attributesCopy = attributes;
+  completionCopy = completion;
+  name = [elementCopy name];
+  v12 = [name isEqualToString:@"account:signout"];
 
   if (v12)
   {
-    [(AAUIAccountConversionHook *)self _signOutWithAttributes:v9 completion:v10];
+    [(AAUIAccountConversionHook *)self _signOutWithAttributes:attributesCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = [v15 name];
-    v14 = [v13 isEqualToString:@"account:navigateToSignIn"];
+    name2 = [elementCopy name];
+    v14 = [name2 isEqualToString:@"account:navigateToSignIn"];
 
     if (v14)
     {
-      [(AAUIAccountConversionHook *)self _navigateBackToStartWithCompletion:v10];
+      [(AAUIAccountConversionHook *)self _navigateBackToStartWithCompletion:completionCopy];
     }
   }
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   objc_opt_class();
-  v7 = [v11 clientInfo];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+  clientInfo = [modelCopy clientInfo];
+  v8 = [clientInfo objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -119,22 +119,22 @@
 
   if ([v9 isEqualToString:@"account:signout"])
   {
-    v10 = [v11 clientInfo];
-    [(AAUIAccountConversionHook *)self _signOutWithAttributes:v10 completion:v6];
+    clientInfo2 = [modelCopy clientInfo];
+    [(AAUIAccountConversionHook *)self _signOutWithAttributes:clientInfo2 completion:completionCopy];
   }
 
   else if ([v9 isEqualToString:@"account:navigateToSignIn"])
   {
-    [(AAUIAccountConversionHook *)self _navigateBackToStartWithCompletion:v6];
+    [(AAUIAccountConversionHook *)self _navigateBackToStartWithCompletion:completionCopy];
   }
 }
 
-- (void)_signOutWithAttributes:(id)a3 completion:(id)a4
+- (void)_signOutWithAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  attributesCopy = attributes;
   objc_opt_class();
-  v8 = [v7 objectForKeyedSubscript:@"retainTrust"];
+  v8 = [attributesCopy objectForKeyedSubscript:@"retainTrust"];
 
   v9 = v8;
   if (objc_opt_isKindOfClass())
@@ -147,34 +147,34 @@
     v10 = 0;
   }
 
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
   WeakRetained = objc_loadWeakRetained(&self->delegate);
   v12 = [WeakRetained presentationContextForHook:self];
-  [(AAUIAccountConversionHook *)self signOutPrimaryAccountWithShouldRetainTrust:v11 viewController:v12 completion:v6];
+  [(AAUIAccountConversionHook *)self signOutPrimaryAccountWithShouldRetainTrust:bOOLValue viewController:v12 completion:completionCopy];
 }
 
-- (void)signOutPrimaryAccountWithShouldRetainTrust:(BOOL)a3 viewController:(id)a4 completion:(id)a5
+- (void)signOutPrimaryAccountWithShouldRetainTrust:(BOOL)trust viewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
+  trustCopy = trust;
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   v10 = _AAUILogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [AAUIAccountConversionHook signOutPrimaryAccountWithShouldRetainTrust:v10 viewController:? completion:?];
   }
 
-  v11 = [MEMORY[0x1E6959A48] defaultStore];
-  v12 = [v11 aa_primaryAppleAccount];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  if (v12)
+  if (aa_primaryAppleAccount)
   {
     v13 = _AAUILogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = @"YES";
-      if (v6)
+      if (trustCopy)
       {
         v14 = @"NO";
       }
@@ -184,7 +184,7 @@
       _os_log_impl(&dword_1C5355000, v13, OS_LOG_TYPE_DEFAULT, "Account Conversion - Initating sign out with intent to remove the AppleAccount : %@", &v16, 0xCu);
     }
 
-    [(AAUIAccountConversionHook *)self _signOutAccountsWithAccount:v12 shouldRemoveAppleAccount:!v6 viewController:v8 completion:v9];
+    [(AAUIAccountConversionHook *)self _signOutAccountsWithAccount:aa_primaryAppleAccount shouldRemoveAppleAccount:!trustCopy viewController:controllerCopy completion:completionCopy];
   }
 
   else
@@ -196,28 +196,28 @@
       _os_log_impl(&dword_1C5355000, v15, OS_LOG_TYPE_DEFAULT, "Account Conversion - The account has already been removed. Move straight to conversion.", &v16, 2u);
     }
 
-    v9[2](v9, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)_signOutAccountsWithAccount:(id)a3 shouldRemoveAppleAccount:(BOOL)a4 viewController:(id)a5 completion:(id)a6
+- (void)_signOutAccountsWithAccount:(id)account shouldRemoveAppleAccount:(BOOL)appleAccount viewController:(id)controller completion:(id)completion
 {
-  v8 = a4;
+  appleAccountCopy = appleAccount;
   v33[1] = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v10 = a5;
-  v11 = a6;
+  accountCopy = account;
+  controllerCopy = controller;
+  completionCopy = completion;
   v12 = objc_alloc_init(MEMORY[0x1E698C258]);
-  [v12 setViewController:v10];
-  v13 = [[AAUIAccountConversionSignOutFlowControllerDelegate alloc] initWithPresentingViewController:v10 shouldRemoveAppleAccount:v8];
+  [v12 setViewController:controllerCopy];
+  v13 = [[AAUIAccountConversionSignOutFlowControllerDelegate alloc] initWithPresentingViewController:controllerCopy shouldRemoveAppleAccount:appleAccountCopy];
   v32 = *MEMORY[0x1E698C218];
   v14 = v32;
   v33[0] = v13;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
   [v12 setSignOutContexts:v15];
 
-  v16 = [MEMORY[0x1E6959A48] defaultStore];
-  v17 = [objc_alloc(MEMORY[0x1E698C268]) initWithAccountStore:v16];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  v17 = [objc_alloc(MEMORY[0x1E698C268]) initWithAccountStore:defaultStore];
   serviceOwnersManager = self->_serviceOwnersManager;
   self->_serviceOwnersManager = v17;
 
@@ -229,12 +229,12 @@
   v25[2] = __108__AAUIAccountConversionHook__signOutAccountsWithAccount_shouldRemoveAppleAccount_viewController_completion___block_invoke;
   v25[3] = &unk_1E820CF78;
   objc_copyWeak(&v29, &location);
-  v21 = v11;
+  v21 = completionCopy;
   v28 = v21;
-  v30 = v8;
+  v30 = appleAccountCopy;
   v22 = v12;
   v26 = v22;
-  v23 = v24;
+  v23 = accountCopy;
   v27 = v23;
   [(AIDAServiceOwnerProtocol *)v19 signOutService:v14 withContext:v20 completion:v25];
 
@@ -386,16 +386,16 @@ void __108__AAUIAccountConversionHook__signOutAccountsWithAccount_shouldRemoveAp
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_navigateBackToStartWithCompletion:(id)a3
+- (void)_navigateBackToStartWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__AAUIAccountConversionHook__navigateBackToStartWithCompletion___block_invoke;
   v6[3] = &unk_1E820B780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

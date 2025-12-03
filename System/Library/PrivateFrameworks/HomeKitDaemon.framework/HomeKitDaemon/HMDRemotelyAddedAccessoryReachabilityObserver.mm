@@ -1,25 +1,25 @@
 @interface HMDRemotelyAddedAccessoryReachabilityObserver
 + (id)logCategory;
-- (HMDRemotelyAddedAccessoryReachabilityObserver)initWithAccessory:(id)a3 message:(id)a4 workQueue:(id)a5;
-- (HMDRemotelyAddedAccessoryReachabilityObserver)initWithAccessory:(id)a3 message:(id)a4 workQueue:(id)a5 timer:(id)a6 notificationCenter:(id)a7;
+- (HMDRemotelyAddedAccessoryReachabilityObserver)initWithAccessory:(id)accessory message:(id)message workQueue:(id)queue;
+- (HMDRemotelyAddedAccessoryReachabilityObserver)initWithAccessory:(id)accessory message:(id)message workQueue:(id)queue timer:(id)timer notificationCenter:(id)center;
 - (id)logIdentifier;
 - (void)_respondToMessage;
 - (void)start;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDRemotelyAddedAccessoryReachabilityObserver
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self timer];
+  fireCopy = fire;
+  timer = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self timer];
 
-  if (v5 == v4)
+  if (timer == fireCopy)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -30,7 +30,7 @@
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMDRemotelyAddedAccessoryReachabilityObserver *)v7 _respondToMessage];
+    [(HMDRemotelyAddedAccessoryReachabilityObserver *)selfCopy _respondToMessage];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -38,29 +38,29 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self accessory];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  accessory = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self accessory];
+  uuid = [accessory uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (void)_respondToMessage
 {
-  v3 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self notificationToken];
+  notificationToken = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self notificationToken];
 
-  if (v4)
+  if (notificationToken)
   {
-    v5 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self message];
-    [v5 respondWithSuccess];
+    message = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self message];
+    [message respondWithSuccess];
 
     [(HMDRemotelyAddedAccessoryReachabilityObserver *)self setTimer:0];
-    v6 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self notificationCenter];
-    v7 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self notificationToken];
-    [v6 removeObserver:v7];
+    notificationCenter = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self notificationCenter];
+    notificationToken2 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self notificationToken];
+    [notificationCenter removeObserver:notificationToken2];
 
     [(HMDRemotelyAddedAccessoryReachabilityObserver *)self setNotificationToken:0];
   }
@@ -69,27 +69,27 @@
 - (void)start
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self notificationToken];
+  notificationToken = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self notificationToken];
 
-  if (v4)
+  if (notificationToken)
   {
     _HMFPreconditionFailure();
   }
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)v6 accessory];
+    accessory = [(HMDRemotelyAddedAccessoryReachabilityObserver *)selfCopy accessory];
     *buf = 138543618;
     v26 = v8;
     v27 = 2112;
-    v28 = v9;
+    v28 = accessory;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Starting tracking for remotely added accessory: %@", buf, 0x16u);
   }
 
@@ -98,30 +98,30 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __54__HMDRemotelyAddedAccessoryReachabilityObserver_start__block_invoke;
   aBlock[3] = &unk_27867E608;
-  aBlock[4] = v6;
+  aBlock[4] = selfCopy;
   v10 = _Block_copy(aBlock);
-  v11 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)v6 notificationCenter];
-  v12 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)v6 accessory];
-  v13 = [v11 addObserverForName:@"HMDAccessoryIsReachableNotification" object:v12 queue:0 usingBlock:v10];
-  [(HMDRemotelyAddedAccessoryReachabilityObserver *)v6 setNotificationToken:v13];
+  notificationCenter = [(HMDRemotelyAddedAccessoryReachabilityObserver *)selfCopy notificationCenter];
+  accessory2 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)selfCopy accessory];
+  v13 = [notificationCenter addObserverForName:@"HMDAccessoryIsReachableNotification" object:accessory2 queue:0 usingBlock:v10];
+  [(HMDRemotelyAddedAccessoryReachabilityObserver *)selfCopy setNotificationToken:v13];
 
-  v14 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)v6 timer];
-  [v14 setDelegate:v6];
+  timer = [(HMDRemotelyAddedAccessoryReachabilityObserver *)selfCopy timer];
+  [timer setDelegate:selfCopy];
 
-  v15 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)v6 workQueue];
-  v16 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)v6 timer];
-  [v16 setDelegateQueue:v15];
+  workQueue2 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)selfCopy workQueue];
+  timer2 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)selfCopy timer];
+  [timer2 setDelegateQueue:workQueue2];
 
-  v17 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)v6 timer];
-  [v17 resume];
+  timer3 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)selfCopy timer];
+  [timer3 resume];
 
-  v18 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)v6 accessory];
-  LODWORD(v16) = [v18 isReachable];
+  accessory3 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)selfCopy accessory];
+  LODWORD(timer2) = [accessory3 isReachable];
 
-  if (v16)
+  if (timer2)
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v6;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -169,43 +169,43 @@ uint64_t __54__HMDRemotelyAddedAccessoryReachabilityObserver_start__block_invoke
   return result;
 }
 
-- (HMDRemotelyAddedAccessoryReachabilityObserver)initWithAccessory:(id)a3 message:(id)a4 workQueue:(id)a5 timer:(id)a6 notificationCenter:(id)a7
+- (HMDRemotelyAddedAccessoryReachabilityObserver)initWithAccessory:(id)accessory message:(id)message workQueue:(id)queue timer:(id)timer notificationCenter:(id)center
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  accessoryCopy = accessory;
+  messageCopy = message;
+  queueCopy = queue;
+  timerCopy = timer;
+  centerCopy = center;
   v21.receiver = self;
   v21.super_class = HMDRemotelyAddedAccessoryReachabilityObserver;
   v17 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_accessory, a3);
-    objc_storeStrong(&v18->_message, a4);
-    objc_storeStrong(&v18->_workQueue, a5);
-    objc_storeStrong(&v18->_timer, a6);
-    objc_storeStrong(&v18->_notificationCenter, a7);
+    objc_storeStrong(&v17->_accessory, accessory);
+    objc_storeStrong(&v18->_message, message);
+    objc_storeStrong(&v18->_workQueue, queue);
+    objc_storeStrong(&v18->_timer, timer);
+    objc_storeStrong(&v18->_notificationCenter, center);
   }
 
   return v18;
 }
 
-- (HMDRemotelyAddedAccessoryReachabilityObserver)initWithAccessory:(id)a3 message:(id)a4 workQueue:(id)a5
+- (HMDRemotelyAddedAccessoryReachabilityObserver)initWithAccessory:(id)accessory message:(id)message workQueue:(id)queue
 {
   v8 = MEMORY[0x277D0F8D0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 sharedPreferences];
-  v13 = [v12 preferenceForKey:@"RemotelyAddedAccessoryReachabilityTimeout"];
-  v14 = [v13 numberValue];
+  queueCopy = queue;
+  messageCopy = message;
+  accessoryCopy = accessory;
+  sharedPreferences = [v8 sharedPreferences];
+  v13 = [sharedPreferences preferenceForKey:@"RemotelyAddedAccessoryReachabilityTimeout"];
+  numberValue = [v13 numberValue];
 
-  [v14 doubleValue];
+  [numberValue doubleValue];
   v16 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:v15];
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
-  v18 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self initWithAccessory:v11 message:v10 workQueue:v9 timer:v16 notificationCenter:v17];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v18 = [(HMDRemotelyAddedAccessoryReachabilityObserver *)self initWithAccessory:accessoryCopy message:messageCopy workQueue:queueCopy timer:v16 notificationCenter:defaultCenter];
 
   return v18;
 }

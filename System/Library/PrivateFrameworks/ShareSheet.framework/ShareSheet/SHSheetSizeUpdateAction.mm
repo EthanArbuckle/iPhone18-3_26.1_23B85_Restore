@@ -2,21 +2,21 @@
 - (BOOL)isCompact;
 - (BOOL)isResizable;
 - (BOOL)isSLMEnabled;
-- (SHSheetSizeUpdateAction)initWithSize:(BOOL)a3 isResizable:(BOOL)a4;
+- (SHSheetSizeUpdateAction)initWithSize:(BOOL)size isResizable:(BOOL)resizable;
 @end
 
 @implementation SHSheetSizeUpdateAction
 
-- (SHSheetSizeUpdateAction)initWithSize:(BOOL)a3 isResizable:(BOOL)a4
+- (SHSheetSizeUpdateAction)initWithSize:(BOOL)size isResizable:(BOOL)resizable
 {
-  v4 = a4;
-  v5 = a3;
+  resizableCopy = resizable;
+  sizeCopy = size;
   v7 = _ShareSheetSolariumEnabled();
   v8 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v9 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+  v9 = [MEMORY[0x1E696AD98] numberWithBool:sizeCopy];
   [v8 setObject:v9 forSetting:7];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:resizableCopy];
   [v8 setObject:v10 forSetting:8];
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:v7];
@@ -28,17 +28,17 @@
 
 - (BOOL)isCompact
 {
-  v2 = [(SHSheetSizeUpdateAction *)self info];
-  v3 = [v2 objectForSetting:7];
-  v4 = [v3 BOOLValue];
+  info = [(SHSheetSizeUpdateAction *)self info];
+  v3 = [info objectForSetting:7];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isResizable
 {
-  v2 = [(SHSheetSizeUpdateAction *)self info];
-  v3 = [v2 objectForSetting:8];
+  info = [(SHSheetSizeUpdateAction *)self info];
+  v3 = [info objectForSetting:8];
   v4 = [v3 integerValue] != 0;
 
   return v4;
@@ -46,8 +46,8 @@
 
 - (BOOL)isSLMEnabled
 {
-  v2 = [(SHSheetSizeUpdateAction *)self info];
-  v3 = [v2 objectForSetting:9];
+  info = [(SHSheetSizeUpdateAction *)self info];
+  v3 = [info objectForSetting:9];
   v4 = [v3 integerValue] != 0;
 
   return v4;

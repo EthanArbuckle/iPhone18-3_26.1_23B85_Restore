@@ -1,22 +1,22 @@
 @interface PXDiagnosticsController
 + (id)sharedController;
 + (void)_presentContextualDiagnostics;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (id)_currentRootViewController;
-- (id)_itemProvidersFromPoint:(CGPoint)a3 inCoordinateSpace:(id)a4 viewController:(id)a5;
+- (id)_itemProvidersFromPoint:(CGPoint)point inCoordinateSpace:(id)space viewController:(id)controller;
 - (id)_topMostPresentedViewController;
-- (id)consoleDescriptionForServices:(id)a3;
+- (id)consoleDescriptionForServices:(id)services;
 - (id)currentItemProviders;
-- (id)servicesWithItemProviders:(id)a3;
-- (void)_executeService:(id)a3;
-- (void)_handleGestureRecognizer:(id)a3;
+- (id)servicesWithItemProviders:(id)providers;
+- (void)_executeService:(id)service;
+- (void)_handleGestureRecognizer:(id)recognizer;
 - (void)_loadDiagnosticsServicesClasses;
-- (void)_presentContextualViewControllerFromPoint:(CGPoint)a3 inCoordinateSpace:(id)a4;
+- (void)_presentContextualViewControllerFromPoint:(CGPoint)point inCoordinateSpace:(id)space;
 - (void)_updateGestureRecognizer;
 - (void)presentContextualDiagnostics;
-- (void)presentContextualViewControllerForServices:(id)a3;
-- (void)setupOnInternalDevicesWithWindow:(id)a3;
+- (void)presentContextualViewControllerForServices:(id)services;
+- (void)setupOnInternalDevicesWithWindow:(id)window;
 @end
 
 @implementation PXDiagnosticsController
@@ -61,15 +61,15 @@ uint64_t __43__PXDiagnosticsController_sharedController__block_invoke()
 
 - (void)_updateGestureRecognizer
 {
-  v10 = [(PXDiagnosticsController *)self _gestureRecognizer];
+  _gestureRecognizer = [(PXDiagnosticsController *)self _gestureRecognizer];
   v3 = +[PXDiagnosticsSettings sharedInstance];
-  v4 = [v3 enableContextualGesture];
+  enableContextualGesture = [v3 enableContextualGesture];
 
-  if (v4)
+  if (enableContextualGesture)
   {
-    v5 = [(PXDiagnosticsController *)self _window];
-    v6 = v10;
-    if (!v10)
+    _window = [(PXDiagnosticsController *)self _window];
+    v6 = _gestureRecognizer;
+    if (!_gestureRecognizer)
     {
       v11 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleGestureRecognizer_];
       [v11 setNumberOfTouchesRequired:4];
@@ -82,113 +82,113 @@ uint64_t __43__PXDiagnosticsController_sharedController__block_invoke()
     }
 
     v12 = v6;
-    v7 = [v6 view];
+    view = [v6 view];
 
-    if (v7 != v5)
+    if (view != _window)
     {
-      v8 = [v12 view];
-      [v8 removeGestureRecognizer:v12];
+      view2 = [v12 view];
+      [view2 removeGestureRecognizer:v12];
 
-      [v5 addGestureRecognizer:v12];
+      [_window addGestureRecognizer:v12];
     }
   }
 
   else
   {
-    v9 = [v10 view];
-    [v9 removeGestureRecognizer:v10];
+    view3 = [_gestureRecognizer view];
+    [view3 removeGestureRecognizer:_gestureRecognizer];
 
-    v5 = v10;
+    _window = _gestureRecognizer;
     v12 = 0;
   }
 
   [(PXDiagnosticsController *)self _setGestureRecognizer:v12];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a4;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(PXDiagnosticsController *)self _gestureRecognizer];
+  recognizerCopy = recognizer;
+  _gestureRecognizer = [(PXDiagnosticsController *)self _gestureRecognizer];
 
-  return v6 == v5;
+  return _gestureRecognizer == recognizerCopy;
 }
 
-- (void)_executeService:(id)a3
+- (void)_executeService:(id)service
 {
-  v6 = a3;
-  v4 = [v6 contextualViewController];
-  if (v4)
+  serviceCopy = service;
+  contextualViewController = [serviceCopy contextualViewController];
+  if (contextualViewController)
   {
-    v5 = [(PXDiagnosticsController *)self _topMostPresentedViewController];
+    _topMostPresentedViewController = [(PXDiagnosticsController *)self _topMostPresentedViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 presentViewController:v4 animated:1 completion:0];
+      [_topMostPresentedViewController presentViewController:contextualViewController animated:1 completion:0];
     }
 
     else
     {
-      [v5 px_presentViewControllerInNavigationController:v4 animated:1 dimissButtonLocation:0 completion:0];
+      [_topMostPresentedViewController px_presentViewControllerInNavigationController:contextualViewController animated:1 dimissButtonLocation:0 completion:0];
     }
   }
 
-  if ([v6 canPerformAction])
+  if ([serviceCopy canPerformAction])
   {
-    [v6 performAction];
+    [serviceCopy performAction];
   }
 }
 
 - (id)_topMostPresentedViewController
 {
-  v2 = [(PXDiagnosticsController *)self _currentRootViewController];
-  v3 = [v2 presentedViewController];
+  _currentRootViewController = [(PXDiagnosticsController *)self _currentRootViewController];
+  presentedViewController = [_currentRootViewController presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
     do
     {
-      v4 = [v2 presentedViewController];
+      presentedViewController2 = [_currentRootViewController presentedViewController];
 
-      v5 = [v4 presentedViewController];
+      v4PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v2 = v4;
+      _currentRootViewController = presentedViewController2;
     }
 
-    while (v5);
+    while (v4PresentedViewController);
   }
 
   else
   {
-    v4 = v2;
+    presentedViewController2 = _currentRootViewController;
   }
 
-  return v4;
+  return presentedViewController2;
 }
 
 - (id)_currentRootViewController
 {
-  v2 = [(PXDiagnosticsController *)self _window];
-  v3 = [v2 rootViewController];
+  _window = [(PXDiagnosticsController *)self _window];
+  rootViewController = [_window rootViewController];
 
-  v4 = [v3 presentedViewController];
-  v5 = v4;
-  if (v4)
+  presentedViewController = [rootViewController presentedViewController];
+  v5 = presentedViewController;
+  if (presentedViewController)
   {
-    v6 = v4;
+    v6 = presentedViewController;
   }
 
   else
   {
-    v6 = v3;
+    v6 = rootViewController;
   }
 
   v7 = v6;
@@ -196,14 +196,14 @@ uint64_t __43__PXDiagnosticsController_sharedController__block_invoke()
   return v6;
 }
 
-- (id)_itemProvidersFromPoint:(CGPoint)a3 inCoordinateSpace:(id)a4 viewController:(id)a5
+- (id)_itemProvidersFromPoint:(CGPoint)point inCoordinateSpace:(id)space viewController:(id)controller
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v14[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [v8 px_diagnosticsItemProvidersForPoint:a4 inCoordinateSpace:{x, y}];
-  v10 = [PXDiagnosticsItemProvider providerWithItem:v8 identifier:@"PXDiagnosticsItemIdentifierViewController"];
+  controllerCopy = controller;
+  v9 = [controllerCopy px_diagnosticsItemProvidersForPoint:space inCoordinateSpace:{x, y}];
+  v10 = [PXDiagnosticsItemProvider providerWithItem:controllerCopy identifier:@"PXDiagnosticsItemIdentifierViewController"];
 
   v14[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
@@ -212,13 +212,13 @@ uint64_t __43__PXDiagnosticsController_sharedController__block_invoke()
   return v12;
 }
 
-- (void)_presentContextualViewControllerFromPoint:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (void)_presentContextualViewControllerFromPoint:(CGPoint)point inCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v10 = [(PXDiagnosticsController *)self _topMostPresentedViewController];
-  v8 = [(PXDiagnosticsController *)self _itemProvidersFromPoint:v7 inCoordinateSpace:v10 viewController:x, y];
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
+  _topMostPresentedViewController = [(PXDiagnosticsController *)self _topMostPresentedViewController];
+  v8 = [(PXDiagnosticsController *)self _itemProvidersFromPoint:spaceCopy inCoordinateSpace:_topMostPresentedViewController viewController:x, y];
 
   v9 = [(PXDiagnosticsController *)self servicesWithItemProviders:v8];
   [(PXDiagnosticsController *)self presentContextualViewControllerForServices:v9];
@@ -231,34 +231,34 @@ uint64_t __43__PXDiagnosticsController_sharedController__block_invoke()
   PXRectGetCenter();
 }
 
-- (void)_handleGestureRecognizer:(id)a3
+- (void)_handleGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
-  if ([v6 state] == 3)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 3)
   {
-    v4 = [(PXDiagnosticsController *)self _topMostPresentedViewController];
-    v5 = [v4 view];
-    [v6 locationInView:v5];
-    [(PXDiagnosticsController *)self _presentContextualViewControllerFromPoint:v5 inCoordinateSpace:?];
+    _topMostPresentedViewController = [(PXDiagnosticsController *)self _topMostPresentedViewController];
+    view = [_topMostPresentedViewController view];
+    [recognizerCopy locationInView:view];
+    [(PXDiagnosticsController *)self _presentContextualViewControllerFromPoint:view inCoordinateSpace:?];
   }
 }
 
-- (void)presentContextualViewControllerForServices:(id)a3
+- (void)presentContextualViewControllerForServices:(id)services
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 indexesOfObjectsPassingTest:&__block_literal_global_14_183076];
-  v5 = [v3 objectsAtIndexes:v4];
+  servicesCopy = services;
+  v4 = [servicesCopy indexesOfObjectsPassingTest:&__block_literal_global_14_183076];
+  v5 = [servicesCopy objectsAtIndexes:v4];
 
   if ([v5 count] == 1 && (objc_msgSend(v5, "firstObject"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "canProvideContextualViewController"), v6, v7))
   {
-    v8 = [v5 firstObject];
-    [(PXDiagnosticsController *)self _executeService:v8];
+    firstObject = [v5 firstObject];
+    [(PXDiagnosticsController *)self _executeService:firstObject];
   }
 
   else if ([v5 count])
   {
-    v23 = v3;
+    v23 = servicesCopy;
     v9 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Diagnostics" message:0 preferredStyle:1];
     v27 = 0u;
     v28 = 0u;
@@ -281,11 +281,11 @@ uint64_t __43__PXDiagnosticsController_sharedController__block_invoke()
           }
 
           v14 = *(*(&v27 + 1) + 8 * i);
-          v15 = [v14 title];
-          v16 = v15;
-          if (v15)
+          title = [v14 title];
+          v16 = title;
+          if (title)
           {
-            v17 = v15;
+            v17 = title;
           }
 
           else
@@ -315,11 +315,11 @@ uint64_t __43__PXDiagnosticsController_sharedController__block_invoke()
     v20 = [MEMORY[0x1E69DC648] actionWithTitle:@"Cancel" style:1 handler:0];
     [v9 addAction:v20];
 
-    v21 = [(PXDiagnosticsController *)self _topMostPresentedViewController];
-    [v21 presentViewController:v9 animated:1 completion:0];
+    _topMostPresentedViewController = [(PXDiagnosticsController *)self _topMostPresentedViewController];
+    [_topMostPresentedViewController presentViewController:v9 animated:1 completion:0];
 
     v5 = v22;
-    v3 = v23;
+    servicesCopy = v23;
   }
 }
 
@@ -339,16 +339,16 @@ uint64_t __70__PXDiagnosticsController_presentContextualViewControllerForService
   return v3;
 }
 
-- (id)consoleDescriptionForServices:(id)a3
+- (id)consoleDescriptionForServices:(id)services
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
+  servicesCopy = services;
+  string = [MEMORY[0x1E696AD60] string];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = servicesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -366,14 +366,14 @@ uint64_t __70__PXDiagnosticsController_presentContextualViewControllerForService
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([v10 canProvideConsoleDescription])
         {
-          if ([v4 length])
+          if ([string length])
           {
-            [v4 appendFormat:@"\n"];
+            [string appendFormat:@"\n"];
           }
 
-          v11 = [v10 title];
-          v12 = [v10 consoleDescription];
-          [v4 appendFormat:@"%@:\n%@\n", v11, v12, v14];
+          title = [v10 title];
+          consoleDescription = [v10 consoleDescription];
+          [string appendFormat:@"%@:\n%@\n", title, consoleDescription, v14];
         }
       }
 
@@ -383,20 +383,20 @@ uint64_t __70__PXDiagnosticsController_presentContextualViewControllerForService
     while (v7);
   }
 
-  return v4;
+  return string;
 }
 
-- (id)servicesWithItemProviders:(id)a3
+- (id)servicesWithItemProviders:(id)providers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  providersCopy = providers;
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(PXDiagnosticsController *)self _diagnosticsServicesClasses];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _diagnosticsServicesClasses = [(PXDiagnosticsController *)self _diagnosticsServicesClasses];
+  v7 = [_diagnosticsServicesClasses countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -407,23 +407,23 @@ uint64_t __70__PXDiagnosticsController_presentContextualViewControllerForService
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_diagnosticsServicesClasses);
         }
 
-        v11 = [objc_alloc(*(*(&v13 + 1) + 8 * i)) initWithItemProviders:v4];
+        v11 = [objc_alloc(*(*(&v13 + 1) + 8 * i)) initWithItemProviders:providersCopy];
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [_diagnosticsServicesClasses countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (id)currentItemProviders
@@ -433,12 +433,12 @@ uint64_t __70__PXDiagnosticsController_presentContextualViewControllerForService
   PXRectGetCenter();
 }
 
-- (void)setupOnInternalDevicesWithWindow:(id)a3
+- (void)setupOnInternalDevicesWithWindow:(id)window
 {
-  v6 = a3;
+  windowCopy = window;
   if (PFOSVariantHasInternalUI() && !self->__window)
   {
-    objc_storeStrong(&self->__window, a3);
+    objc_storeStrong(&self->__window, window);
     objc_setAssociatedObject(self->__window, AssociatedObjectKeyDiagnosticsController, self, 0);
     [(PXDiagnosticsController *)self _loadDiagnosticsServicesClasses];
     v5 = +[PXDiagnosticsSettings sharedInstance];
@@ -450,9 +450,9 @@ uint64_t __70__PXDiagnosticsController_presentContextualViewControllerForService
 
 + (void)_presentContextualDiagnostics
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 px_firstKeyWindow];
-  v4 = objc_getAssociatedObject(v3, AssociatedObjectKeyDiagnosticsController);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
+  v4 = objc_getAssociatedObject(px_firstKeyWindow, AssociatedObjectKeyDiagnosticsController);
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {

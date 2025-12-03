@@ -7,9 +7,9 @@
 - (SBIdleTimerDefaults)idleTimerDefaults
 {
   v2 = +[SBDefaults localDefaults];
-  v3 = [v2 idleTimerDefaults];
+  idleTimerDefaults = [v2 idleTimerDefaults];
 
-  return v3;
+  return idleTimerDefaults;
 }
 
 @end

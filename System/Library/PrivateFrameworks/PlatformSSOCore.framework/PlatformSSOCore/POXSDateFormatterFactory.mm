@@ -1,30 +1,30 @@
 @interface POXSDateFormatterFactory
 + (id)newDateFormatter;
 + (id)newDateFormatters;
-+ (id)newDateTimeFormatterWithTimeZoneStyle:(int64_t)a3;
++ (id)newDateTimeFormatterWithTimeZoneStyle:(int64_t)style;
 + (id)newDateTimeFormatters;
-+ (id)newTimeFormatterWithTimeZoneStyle:(int64_t)a3;
++ (id)newTimeFormatterWithTimeZoneStyle:(int64_t)style;
 + (id)newTimeFormatters;
 @end
 
 @implementation POXSDateFormatterFactory
 
-+ (id)newDateTimeFormatterWithTimeZoneStyle:(int64_t)a3
++ (id)newDateTimeFormatterWithTimeZoneStyle:(int64_t)style
 {
-  if (a3 > 2)
+  if (style > 2)
   {
     return 0;
   }
 
-  v3 = off_279A3E450[a3];
+  v3 = off_279A3E450[style];
   v4 = objc_opt_new();
   v5 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:@"en_US_POSIX"];
   [v4 setLocale:v5];
   [v4 setDateFormat:v3];
   v6 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
   [v4 setTimeZone:v6];
-  v7 = [v4 calendar];
-  [v7 setTimeZone:v6];
+  calendar = [v4 calendar];
+  [calendar setTimeZone:v6];
 
   return v4;
 }
@@ -38,8 +38,8 @@
   [v2 setDateFormat:@"y'-'M'-'d'T'HH':'mm':'ssXXX"];
   v4 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
   [v2 setTimeZone:v4];
-  v5 = [v2 calendar];
-  [v5 setTimeZone:v4];
+  calendar = [v2 calendar];
+  [calendar setTimeZone:v4];
 
   [v2 setLenient:1];
   v6 = objc_opt_new();
@@ -48,8 +48,8 @@
   [v6 setDateFormat:@"y'-'M'-'d'T'HH':'mm':'ss"];
   v8 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
   [v6 setTimeZone:v8];
-  v9 = [v6 calendar];
-  [v9 setTimeZone:v8];
+  calendar2 = [v6 calendar];
+  [calendar2 setTimeZone:v8];
 
   [v6 setLenient:1];
   v10 = objc_opt_new();
@@ -58,8 +58,8 @@
   [v10 setDateFormat:@"y'-'M'-'d'T'HH':'mm':'ss'.'SXXX"];
   v12 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
   [v10 setTimeZone:v12];
-  v13 = [v10 calendar];
-  [v13 setTimeZone:v12];
+  calendar3 = [v10 calendar];
+  [calendar3 setTimeZone:v12];
 
   [v10 setLenient:1];
   v14 = objc_opt_new();
@@ -68,8 +68,8 @@
   [v14 setDateFormat:@"y'-'M'-'d'T'HH':'mm':'ss'.'S"];
   v16 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
   [v14 setTimeZone:v16];
-  v17 = [v14 calendar];
-  [v17 setTimeZone:v16];
+  calendar4 = [v14 calendar];
+  [calendar4 setTimeZone:v16];
 
   [v14 setLenient:1];
   v21[0] = v2;
@@ -90,8 +90,8 @@
   [v2 setDateFormat:@"uuuu'-'MM'-'dd"];
   v4 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
   [v2 setTimeZone:v4];
-  v5 = [v2 calendar];
-  [v5 setTimeZone:v4];
+  calendar = [v2 calendar];
+  [calendar setTimeZone:v4];
 
   return v2;
 }
@@ -105,8 +105,8 @@
   [v2 setDateFormat:@"y'-'M'-'dXXX"];
   v4 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
   [v2 setTimeZone:v4];
-  v5 = [v2 calendar];
-  [v5 setTimeZone:v4];
+  calendar = [v2 calendar];
+  [calendar setTimeZone:v4];
 
   [v2 setLenient:1];
   v6 = objc_opt_new();
@@ -115,8 +115,8 @@
   [v6 setDateFormat:@"y'-'M'-'d"];
   v8 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
   [v6 setTimeZone:v8];
-  v9 = [v6 calendar];
-  [v9 setTimeZone:v8];
+  calendar2 = [v6 calendar];
+  [calendar2 setTimeZone:v8];
 
   [v6 setLenient:1];
   v13[0] = v2;
@@ -127,22 +127,22 @@
   return v10;
 }
 
-+ (id)newTimeFormatterWithTimeZoneStyle:(int64_t)a3
++ (id)newTimeFormatterWithTimeZoneStyle:(int64_t)style
 {
-  if (a3 > 2)
+  if (style > 2)
   {
     return 0;
   }
 
-  v3 = off_279A3E468[a3];
+  v3 = off_279A3E468[style];
   v4 = objc_opt_new();
   v5 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:@"en_US_POSIX"];
   [v4 setLocale:v5];
   [v4 setDateFormat:v3];
   v6 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
   [v4 setTimeZone:v6];
-  v7 = [v4 calendar];
-  [v7 setTimeZone:v6];
+  calendar = [v4 calendar];
+  [calendar setTimeZone:v6];
 
   return v4;
 }
@@ -156,8 +156,8 @@
   [v2 setDateFormat:@"HH':'mm':'ssXXX"];
   v4 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
   [v2 setTimeZone:v4];
-  v5 = [v2 calendar];
-  [v5 setTimeZone:v4];
+  calendar = [v2 calendar];
+  [calendar setTimeZone:v4];
 
   [v2 setLenient:1];
   v6 = objc_opt_new();
@@ -166,8 +166,8 @@
   [v6 setDateFormat:@"HH':'mm':'ss"];
   v8 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
   [v6 setTimeZone:v8];
-  v9 = [v6 calendar];
-  [v9 setTimeZone:v8];
+  calendar2 = [v6 calendar];
+  [calendar2 setTimeZone:v8];
 
   [v6 setLenient:1];
   v10 = objc_opt_new();
@@ -176,8 +176,8 @@
   [v10 setDateFormat:@"HH':'mm':'ss'.'SXXX"];
   v12 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
   [v10 setTimeZone:v12];
-  v13 = [v10 calendar];
-  [v13 setTimeZone:v12];
+  calendar3 = [v10 calendar];
+  [calendar3 setTimeZone:v12];
 
   [v10 setLenient:1];
   v14 = objc_opt_new();
@@ -186,8 +186,8 @@
   [v14 setDateFormat:@"HH':'mm':'ss'.'S"];
   v16 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
   [v14 setTimeZone:v16];
-  v17 = [v14 calendar];
-  [v17 setTimeZone:v16];
+  calendar4 = [v14 calendar];
+  [calendar4 setTimeZone:v16];
 
   [v14 setLenient:1];
   v21[0] = v2;

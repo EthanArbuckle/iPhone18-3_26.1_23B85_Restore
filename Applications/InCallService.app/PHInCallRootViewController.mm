@@ -1,25 +1,25 @@
 @interface PHInCallRootViewController
-+ (int64_t)cnkDeviceOrientationForUIDeviceOrientation:(int64_t)a3;
-+ (int64_t)cnkSupportedDeviceOrientationsFromUIInterfaceOrientationMask:(unint64_t)a3;
-+ (int64_t)uiDeviceOrientationForCNKDeviceOrientation:(int64_t)a3;
++ (int64_t)cnkDeviceOrientationForUIDeviceOrientation:(int64_t)orientation;
++ (int64_t)cnkSupportedDeviceOrientationsFromUIInterfaceOrientationMask:(unint64_t)mask;
++ (int64_t)uiDeviceOrientationForCNKDeviceOrientation:(int64_t)orientation;
 + (void)forceClearAllDismissalAssertions;
 + (void)initialize;
-+ (void)obtainDismissalAssertionForReason:(id)a3;
-+ (void)releaseDismissalAssertionForReason:(id)a3;
-+ (void)releaseDismissalAssertionReasons:(id)a3;
-+ (void)setStatusBarPillSuppressionForBackgroundActivities:(id)a3 onWindowScene:(id)a4;
++ (void)obtainDismissalAssertionForReason:(id)reason;
++ (void)releaseDismissalAssertionForReason:(id)reason;
++ (void)releaseDismissalAssertionReasons:(id)reasons;
++ (void)setStatusBarPillSuppressionForBackgroundActivities:(id)activities onWindowScene:(id)scene;
 - (BOOL)_shouldAutoAnswer;
 - (BOOL)currentViewControllerIsMultiway;
-- (BOOL)desiresLockAndVolumeButtonEventsForCallContainer:(id)a3;
+- (BOOL)desiresLockAndVolumeButtonEventsForCallContainer:(id)container;
 - (BOOL)desiresLockButtonEvents;
-- (BOOL)desiresLockButtonEventsForCallContainer:(id)a3;
+- (BOOL)desiresLockButtonEventsForCallContainer:(id)container;
 - (BOOL)gameControllerDidRequestActivation;
 - (BOOL)gameControllerDidRequestDismissal;
-- (BOOL)gameControllerDidRequestFocus:(BOOL)a3;
-- (BOOL)isContactBlockedWithCall:(id)a3;
+- (BOOL)gameControllerDidRequestFocus:(BOOL)focus;
+- (BOOL)isContactBlockedWithCall:(id)call;
 - (BOOL)isCurrentViewControllerAudio;
 - (BOOL)isDisplayStyleMiniWindow;
-- (BOOL)isFirstTimeInCallHistoryWithHandleValue:(id)a3 normalizedHandleValue:(id)a4;
+- (BOOL)isFirstTimeInCallHistoryWithHandleValue:(id)value normalizedHandleValue:(id)handleValue;
 - (BOOL)isFullScreen;
 - (BOOL)isMicIndicatorVisible;
 - (BOOL)isPickedRouteReceiver;
@@ -34,12 +34,12 @@
 - (BOOL)isShowingHUD;
 - (BOOL)isShownAboveCoverSheet;
 - (BOOL)prefersHomeIndicatorAutoHidden;
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (BOOL)shouldConsumeDeviceLockEvent;
 - (BOOL)shouldReleaseAudioCallViewController;
-- (BOOL)shouldShowCallEndedBlockAndReportScreen:(id)a3;
+- (BOOL)shouldShowCallEndedBlockAndReportScreen:(id)screen;
 - (BOOL)shouldShowInCallWindowScene;
-- (BOOL)shouldShowNavigationBarForViewController:(id)a3;
+- (BOOL)shouldShowNavigationBarForViewController:(id)controller;
 - (BOOL)shouldShowSOS;
 - (BOOL)shouldShowScreenTimeShield;
 - (BOOL)shouldShowVideoCallBlockAndReportScreen;
@@ -50,8 +50,8 @@
 - (CGSize)preferredPIPContentAspectRatio;
 - (NSTimer)callDurationTimerForParticipantsView;
 - (PHAudioCallViewControllerProtocol)audioCallViewController;
-- (PHInCallRootViewController)initWithCallDisplayStyleManager:(id)a3;
-- (PHInCallRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PHInCallRootViewController)initWithCallDisplayStyleManager:(id)manager;
+- (PHInCallRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PHSOSViewController)sosViewController;
 - (SBSUIInCallWindowScene)inCallWindowScene;
 - (TUFeatureFlags)featureFlags;
@@ -60,223 +60,223 @@
 - (UINavigationController)videoCallNavigationController;
 - (UIViewController)currentViewController;
 - (UIViewController)oldMultiwayPIPViewController;
-- (double)viewController:(id)a3 rubberBandConstrained:(double)a4 inRange:(double)a5;
+- (double)viewController:(id)controller rubberBandConstrained:(double)constrained inRange:(double)range;
 - (id)_remoteViewControllerProxy;
 - (id)audioCallViewControllerIfLoaded;
-- (id)audioRouteGlyphFor:(id)a3 buttonStyle:(int64_t)a4;
+- (id)audioRouteGlyphFor:(id)for buttonStyle:(int64_t)style;
 - (id)audioRouteMenu;
 - (id)backgroundActivities;
-- (id)bottomControlsViewForViewController:(id)a3;
-- (id)callForVideoCallBasedViewController:(id)a3;
-- (id)callParticipantLabelsViewForViewController:(id)a3;
-- (id)findMostRecentSilencedCallWithHandleValue:(id)a3 normalizedHandleValue:(id)a4 ignoredIdentifier:(id)a5;
-- (id)getPreferredBackgroundActivitiesToSuppress:(id)a3 whenIsPipped:(BOOL)a4 whenTemporarilyAllowAllStatusBarPills:(BOOL)a5;
-- (id)labelForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4 allowsDuration:(BOOL)a5;
-- (id)linkNameForCall:(id)a3;
-- (id)localizedSenderIdentityForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4;
-- (id)makeConversationHUDDetailsNavigationControllerWithBannerPresentationManager:(id)a3 delegate:(id)a4 shouldSetControlsManagerInCallDetailsDelegate:(BOOL)a5;
-- (id)makeMultiwayConversationViewControllerWithCall:(id)a3 bannerPresentationManager:(id)a4;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
-- (id)routesForAudioRoutingMenuController:(id)a3;
+- (id)bottomControlsViewForViewController:(id)controller;
+- (id)callForVideoCallBasedViewController:(id)controller;
+- (id)callParticipantLabelsViewForViewController:(id)controller;
+- (id)findMostRecentSilencedCallWithHandleValue:(id)value normalizedHandleValue:(id)handleValue ignoredIdentifier:(id)identifier;
+- (id)getPreferredBackgroundActivitiesToSuppress:(id)suppress whenIsPipped:(BOOL)pipped whenTemporarilyAllowAllStatusBarPills:(BOOL)pills;
+- (id)labelForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view allowsDuration:(BOOL)duration;
+- (id)linkNameForCall:(id)call;
+- (id)localizedSenderIdentityForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view;
+- (id)makeConversationHUDDetailsNavigationControllerWithBannerPresentationManager:(id)manager delegate:(id)delegate shouldSetControlsManagerInCallDetailsDelegate:(BOOL)detailsDelegate;
+- (id)makeMultiwayConversationViewControllerWithCall:(id)call bannerPresentationManager:(id)manager;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
+- (id)routesForAudioRoutingMenuController:(id)controller;
 - (id)sosHandles;
-- (id)updateContactInformationForParticipantViewWithInCallState:(unsigned __int16)a3;
-- (id)updateSecondaryStringForParticipantViewWithInCallState:(unsigned __int16)a3 allowsDuration:(BOOL)a4;
-- (unint64_t)desiredButtonEventsForCallContainer:(id)a3;
-- (unint64_t)desiredSceneButtonEventsForCallContainer:(id)a3;
+- (id)updateContactInformationForParticipantViewWithInCallState:(unsigned __int16)state;
+- (id)updateSecondaryStringForParticipantViewWithInCallState:(unsigned __int16)state allowsDuration:(BOOL)duration;
+- (unint64_t)desiredButtonEventsForCallContainer:(id)container;
+- (unint64_t)desiredSceneButtonEventsForCallContainer:(id)container;
 - (unsigned)inCallState;
 - (void)_loadAudioCallViewController;
-- (void)_loadMultiwayViewControllerForCall:(id)a3;
+- (void)_loadMultiwayViewControllerForCall:(id)call;
 - (void)_loadPTTFullScreenContainerViewController;
 - (void)_loadSOSViewController;
 - (void)_loadUserFeedbackViewController;
 - (void)_obtainThenReleaseTransitionAssertion;
 - (void)_reloadSOSHandles;
-- (void)_showFailureAlertForCall:(id)a3;
-- (void)_showTelephonyFallbackAlertForCall:(id)a3;
+- (void)_showFailureAlertForCall:(id)call;
+- (void)_showTelephonyFallbackAlertForCall:(id)call;
 - (void)_startMonitoringDisplayLayout;
 - (void)_testing_finishedAnimatingIn;
 - (void)_testing_viewDidAppear;
 - (void)_testing_viewWillAppear;
-- (void)_transitionFromViewController:(id)a3 toViewController:(id)a4;
-- (void)_transitionFromViewController:(id)a3 toViewController:(id)a4 completion:(id)a5;
-- (void)_willAppearInRemoteViewController:(id)a3;
-- (void)acceptCallButtonTapped:(id)a3;
-- (void)ambientSetIdleTimerDisabled:(BOOL)a3;
-- (void)animateInWithCompletionBlock:(id)a3;
+- (void)_transitionFromViewController:(id)controller toViewController:(id)viewController;
+- (void)_transitionFromViewController:(id)controller toViewController:(id)viewController completion:(id)completion;
+- (void)_willAppearInRemoteViewController:(id)controller;
+- (void)acceptCallButtonTapped:(id)tapped;
+- (void)ambientSetIdleTimerDisabled:(BOOL)disabled;
+- (void)animateInWithCompletionBlock:(id)block;
 - (void)animateToAlert;
-- (void)audioRoutingMenuController:(id)a3 didSelectRoute:(id)a4;
+- (void)audioRoutingMenuController:(id)controller didSelectRoute:(id)route;
 - (void)autoAnswer;
-- (void)bannerTapped:(id)a3;
-- (void)blockWithHandle:(id)a3;
-- (void)bottomBarActionPerformed:(int64_t)a3 withCompletionState:(int64_t)a4 fromBar:(id)a5;
-- (void)callConnectedNotification:(id)a3;
-- (void)callContinuityChangedNotification:(id)a3;
-- (void)callDisplayContextChanged:(id)a3;
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4;
-- (void)callDowngradedToAudioNotification:(id)a3;
-- (void)callStateChangedNotification:(id)a3;
-- (void)callUpgradedToVideoNotification:(id)a3;
+- (void)bannerTapped:(id)tapped;
+- (void)blockWithHandle:(id)handle;
+- (void)bottomBarActionPerformed:(int64_t)performed withCompletionState:(int64_t)state fromBar:(id)bar;
+- (void)callConnectedNotification:(id)notification;
+- (void)callContinuityChangedNotification:(id)notification;
+- (void)callDisplayContextChanged:(id)changed;
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle;
+- (void)callDowngradedToAudioNotification:(id)notification;
+- (void)callStateChangedNotification:(id)notification;
+- (void)callUpgradedToVideoNotification:(id)notification;
 - (void)cancelAutoAnswer;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation;
 - (void)dealloc;
-- (void)didChangeDeviceOrientationNotification:(id)a3;
+- (void)didChangeDeviceOrientationNotification:(id)notification;
 - (void)didEnterVideoMessagingFlow;
 - (void)didExitVideoMessagingFlow;
-- (void)dismissContactDetailsWithCompletion:(id)a3;
-- (void)dismissContactsViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)dismissInCallPresentationWithDismissalBlock:(id)a3;
-- (void)dismissMiniWindowViewControllerAnimated:(BOOL)a3;
-- (void)dismissPIPIfNeededForMiniWindowAnimated:(BOOL)a3;
-- (void)dismissPhoneRemoteViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissContactDetailsWithCompletion:(id)completion;
+- (void)dismissContactsViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)dismissInCallPresentationWithDismissalBlock:(id)block;
+- (void)dismissMiniWindowViewControllerAnimated:(BOOL)animated;
+- (void)dismissPIPIfNeededForMiniWindowAnimated:(BOOL)animated;
+- (void)dismissPhoneRemoteViewControllerAnimated:(BOOL)animated completion:(id)completion;
 - (void)dismissSOSIfNeeded;
 - (void)dismissScreenTimeAlertHostIfNeeded;
-- (void)dismissViewControllersWithSensitiveInformationWithCompletion:(id)a3;
-- (void)dismissalAssertionReleasedNotification:(id)a3;
-- (void)dissmissConfirmLeavePTTChannelAlertIfNeededWithBannerPresentationManager:(id)a3;
-- (void)emergencyCallbackModeChangedNotification:(id)a3;
-- (void)forceUpdateCallControllerForFilteredRequest:(id)a3;
+- (void)dismissViewControllersWithSensitiveInformationWithCompletion:(id)completion;
+- (void)dismissalAssertionReleasedNotification:(id)notification;
+- (void)dissmissConfirmLeavePTTChannelAlertIfNeededWithBannerPresentationManager:(id)manager;
+- (void)emergencyCallbackModeChangedNotification:(id)notification;
+- (void)forceUpdateCallControllerForFilteredRequest:(id)request;
 - (void)forceUpdateCallControllerForSOS;
 - (void)gameControllerDidChangeContext;
-- (void)handleAcceptCallButtonTapped:(id)a3;
-- (void)handleActivationContextDidChangeNotification:(id)a3;
+- (void)handleAcceptCallButtonTapped:(id)tapped;
+- (void)handleActivationContextDidChangeNotification:(id)notification;
 - (void)handleActivationForEndAndLock;
-- (void)handleCallBufferNotification:(id)a3;
-- (void)handleDeviceLockEventOverUPlusOneVideoViewsWithSourceType:(int64_t)a3;
-- (void)handleDeviceLockEventWithSourceType:(int64_t)a3 resultHandler:(id)a4;
+- (void)handleCallBufferNotification:(id)notification;
+- (void)handleDeviceLockEventOverUPlusOneVideoViewsWithSourceType:(int64_t)type;
+- (void)handleDeviceLockEventWithSourceType:(int64_t)type resultHandler:(id)handler;
 - (void)handleDoubleHeightStatusBarTap;
-- (void)handleFrontBoardInterfaceOrientationChange:(int64_t)a3;
+- (void)handleFrontBoardInterfaceOrientationChange:(int64_t)change;
 - (void)handleHeadsetButtonLongPressed;
 - (void)handleHeadsetButtonPressed;
 - (void)handleLockButtonPressed;
-- (void)handlePIPInterruptionChangeNotification:(id)a3;
-- (void)handlePIPViewControllerRestoredAfterPIPStopped:(id)a3;
+- (void)handlePIPInterruptionChangeNotification:(id)notification;
+- (void)handlePIPViewControllerRestoredAfterPIPStopped:(id)stopped;
 - (void)handleSOSActivationIfNecessary;
 - (void)handleScreenTimeActivationIfNecessary;
-- (void)handleSystemInitiatedPIPInterruptionStoppedNotification:(id)a3;
+- (void)handleSystemInitiatedPIPInterruptionStoppedNotification:(id)notification;
 - (void)handleVolumeDownButtonPressed;
 - (void)handleVolumeUpButtonPressed;
-- (void)hardwareButtonEventNotification:(id)a3;
-- (void)mostRecentlyDisconnectedAudioCallDidClearNotification:(id)a3;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)notifyAudioCallControllerIfNecessaryCallDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4;
+- (void)hardwareButtonEventNotification:(id)notification;
+- (void)mostRecentlyDisconnectedAudioCallDidClearNotification:(id)notification;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)notifyAudioCallControllerIfNecessaryCallDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle;
 - (void)observePrioritizedCall;
-- (void)obtainIdleTimerAssertionWithComment:(id)a3;
-- (void)participantsDidChangeLocation:(id)a3;
-- (void)participantsView:(id)a3 didPerformActionType:(int64_t)a4;
-- (void)performBottomBarActionType:(int64_t)a3;
+- (void)obtainIdleTimerAssertionWithComment:(id)comment;
+- (void)participantsDidChangeLocation:(id)location;
+- (void)participantsView:(id)view didPerformActionType:(int64_t)type;
+- (void)performBottomBarActionType:(int64_t)type;
 - (void)phoneRemoteHostViewControllerDidDismiss;
-- (void)pipControllerDidRequestReturnToFullScreenNotification:(id)a3;
-- (void)pipProxyActiveChangedNotification:(id)a3;
-- (void)pipStashChangedNotification:(id)a3;
-- (void)pipStateChangedNotification:(id)a3;
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3;
-- (void)prepareForDeviceLockWithCompletion:(id)a3;
+- (void)pipControllerDidRequestReturnToFullScreenNotification:(id)notification;
+- (void)pipProxyActiveChangedNotification:(id)notification;
+- (void)pipStashChangedNotification:(id)notification;
+- (void)pipStateChangedNotification:(id)notification;
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover;
+- (void)prepareForDeviceLockWithCompletion:(id)completion;
 - (void)prepareForDismissal;
-- (void)prepareForPopoverPresentation:(id)a3;
-- (void)presentAsPopover:(id)a3 fromView:(id)a4 completion:(id)a5;
-- (void)presentBlockAndReportAlertToBlockCall:(id)a3 forViewController:(id)a4 completion:(id)a5;
-- (void)presentContactsViewControllerForView:(id)a3;
-- (void)presentCreateContactViewControllerWithHandle:(id)a3 forViewController:(id)a4;
-- (void)presentDisconnectionAlert:(id)a3;
-- (void)presentMiniWindowViewControllerAnimated:(BOOL)a3;
-- (void)presentPhoneRemoteViewControllerForView:(id)a3;
+- (void)prepareForPopoverPresentation:(id)presentation;
+- (void)presentAsPopover:(id)popover fromView:(id)view completion:(id)completion;
+- (void)presentBlockAndReportAlertToBlockCall:(id)call forViewController:(id)controller completion:(id)completion;
+- (void)presentContactsViewControllerForView:(id)view;
+- (void)presentCreateContactViewControllerWithHandle:(id)handle forViewController:(id)controller;
+- (void)presentDisconnectionAlert:(id)alert;
+- (void)presentMiniWindowViewControllerAnimated:(BOOL)animated;
+- (void)presentPhoneRemoteViewControllerForView:(id)view;
 - (void)presentScreenTimeHostViewController;
-- (void)presentViewControllerFullScreen:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentViewControllerFullScreen:(id)screen;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)printUI;
-- (void)pttCallStateChangedNotification:(id)a3;
+- (void)pttCallStateChangedNotification:(id)notification;
 - (void)pullRelayingCallsIfNecessary;
-- (void)receptionistSessionChangedNotification:(id)a3;
-- (void)receptionistStateChangedNotification:(id)a3;
+- (void)receptionistSessionChangedNotification:(id)notification;
+- (void)receptionistStateChangedNotification:(id)notification;
 - (void)refreshBottomBarButtonLayout;
 - (void)registerForNotifications;
-- (void)releaseIdleTimerAssertionWithComment:(id)a3;
-- (void)remoteParticipantHandlesChangedNotification:(id)a3;
-- (void)removeViewController:(id)a3;
-- (void)reportWithCall:(id)a3;
+- (void)releaseIdleTimerAssertionWithComment:(id)comment;
+- (void)remoteParticipantHandlesChangedNotification:(id)notification;
+- (void)removeViewController:(id)controller;
+- (void)reportWithCall:(id)call;
 - (void)requestInCallDismissal;
 - (void)requestInCallSceneTransitionToFullScreen;
-- (void)rotatePIPForInterfaceOrientation:(int64_t)a3;
-- (void)routesChangedForRouteController:(id)a3;
+- (void)rotatePIPForInterfaceOrientation:(int64_t)orientation;
+- (void)routesChangedForRouteController:(id)controller;
 - (void)sceneDidConnect;
-- (void)screeningStateChangedNotification:(id)a3;
-- (void)sendResponseIfNecessaryWithUnhandledEvents:(unint64_t)a3;
-- (void)sendUserRating:(int)a3 dontShowPromptAgain:(BOOL)a4;
-- (void)setBackgroundStyle:(int64_t)a3 animatedWithDuration:(double)a4;
-- (void)setCurrentAlertButtonAction:(id)a3;
+- (void)screeningStateChangedNotification:(id)notification;
+- (void)sendResponseIfNecessaryWithUnhandledEvents:(unint64_t)events;
+- (void)sendUserRating:(int)rating dontShowPromptAgain:(BOOL)again;
+- (void)setBackgroundStyle:(int64_t)style animatedWithDuration:(double)duration;
+- (void)setCurrentAlertButtonAction:(id)action;
 - (void)setNeedsStatusBarPillSuppressionUpdate;
-- (void)setStatusBarHidden:(BOOL)a3 withDuration:(double)a4;
-- (void)setTemporarilyAllowAllStatusBarPills:(BOOL)a3;
+- (void)setStatusBarHidden:(BOOL)hidden withDuration:(double)duration;
+- (void)setTemporarilyAllowAllStatusBarPills:(BOOL)pills;
 - (void)setupAutoAnswer;
 - (void)showCallDetailsView;
-- (void)showFailureOrFallbackAlertIfNecessaryForCall:(id)a3;
-- (void)showHideMiniWindowViewIfNeededAnimated:(BOOL)a3;
+- (void)showFailureOrFallbackAlertIfNecessaryForCall:(id)call;
+- (void)showHideMiniWindowViewIfNeededAnimated:(BOOL)animated;
 - (void)showKeypadIfPossible;
-- (void)startObservingAcceptCallButtonTappedWithNotificationCenter:(id)a3;
+- (void)startObservingAcceptCallButtonTappedWithNotificationCenter:(id)center;
 - (void)statusBarTappedInFullScreen;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)transitionIntoPiP;
-- (void)transitionToVideoCallBasedViewController:(id)a3 shouldUpdatePipSize:(BOOL)a4;
+- (void)transitionToVideoCallBasedViewController:(id)controller shouldUpdatePipSize:(BOOL)size;
 - (void)unansweredCallUIDismissed;
-- (void)undimScreenIfNecessary:(id)a3;
+- (void)undimScreenIfNecessary:(id)necessary;
 - (void)updateAlertActivationReason;
-- (void)updateAlertActivationReasonForCall:(id)a3;
+- (void)updateAlertActivationReasonForCall:(id)call;
 - (void)updateBackgroundStartPipAuthorizationState;
-- (void)updateBannerTapGestureRecognizerForCallDisplayStyle:(int64_t)a3;
-- (void)updateBottomControlsViewWithInCallState:(unsigned __int16)a3;
+- (void)updateBannerTapGestureRecognizerForCallDisplayStyle:(int64_t)style;
+- (void)updateBottomControlsViewWithInCallState:(unsigned __int16)state;
 - (void)updateCallControllerForCurrentState;
 - (void)updateCallDetailsViewIsOnScreen;
 - (void)updateCallForUserFeedback;
-- (void)updateCallParticipantLabelsViewForViewController:(id)a3;
+- (void)updateCallParticipantLabelsViewForViewController:(id)controller;
 - (void)updateDesiredSpringboardBehavior;
 - (void)updateGameControllerManagerForCurrentState;
 - (void)updateInCallWindowSceneFaceTimeLaunchBehavior;
 - (void)updateInCallWindowScenePrefersHiddenWhenDismissed;
-- (void)updateMultiwayDeviceOrientation:(int64_t)a3;
+- (void)updateMultiwayDeviceOrientation:(int64_t)orientation;
 - (void)updateMultiwayViewControllerUIState;
-- (void)updateRemoteAlertSwipeDismissalStyleForCall:(id)a3;
+- (void)updateRemoteAlertSwipeDismissalStyleForCall:(id)call;
 - (void)updateShouldBecomeVisibleWhenWakingDisplay;
 - (void)updateTransportIndicatorView;
 - (void)updateUPlusOneVideoCallViews;
 - (void)updateVideoState;
-- (void)videoCallStateChangedNotification:(id)a3;
-- (void)viewController:(id)a3 fullScreenFocusedParticipantAspectRatioChanged:(CGSize)a4 participantGridIsFullScreen:(BOOL)a5;
-- (void)viewController:(id)a3 fullScreenFocusedParticipantOrientationChanged:(int64_t)a4;
-- (void)viewController:(id)a3 localParticipantAspectRatioChanged:(CGSize)a4;
-- (void)viewController:(id)a3 mediaPipSafeAreaFrameChanged:(CGRect)a4;
-- (void)viewController:(id)a3 pipSourceProviderNeedsUpdate:(id)a4;
-- (void)viewControllerDidRequestTemporaryPreventSuspension:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)videoCallStateChangedNotification:(id)notification;
+- (void)viewController:(id)controller fullScreenFocusedParticipantAspectRatioChanged:(CGSize)changed participantGridIsFullScreen:(BOOL)screen;
+- (void)viewController:(id)controller fullScreenFocusedParticipantOrientationChanged:(int64_t)changed;
+- (void)viewController:(id)controller localParticipantAspectRatioChanged:(CGSize)changed;
+- (void)viewController:(id)controller mediaPipSafeAreaFrameChanged:(CGRect)changed;
+- (void)viewController:(id)controller pipSourceProviderNeedsUpdate:(id)update;
+- (void)viewControllerDidRequestTemporaryPreventSuspension:(id)suspension;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewServiceDidTerminateWithError:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewServiceDidTerminateWithError:(id)error;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)wantsDismissal;
-- (void)wantsHoldMusicChangedNotification:(id)a3;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willRotate:(id)a3;
-- (void)willTransitionToFullScreenNotification:(id)a3;
+- (void)wantsHoldMusicChangedNotification:(id)notification;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willRotate:(id)rotate;
+- (void)willTransitionToFullScreenNotification:(id)notification;
 @end
 
 @implementation PHInCallRootViewController
 
 - (BOOL)isPresentingRemoteHostViewController
 {
-  v2 = [(PHInCallRootViewController *)self remoteHostViewController];
-  v3 = [v2 presentingViewController];
-  v4 = v3 != 0;
+  remoteHostViewController = [(PHInCallRootViewController *)self remoteHostViewController];
+  presentingViewController = [remoteHostViewController presentingViewController];
+  v4 = presentingViewController != 0;
 
   return v4;
 }
 
 - (BOOL)isPresentingContactsViewController
 {
-  v2 = [(PHInCallRootViewController *)self contactsViewController];
-  v3 = [v2 presentingViewController];
-  v4 = v3 != 0;
+  contactsViewController = [(PHInCallRootViewController *)self contactsViewController];
+  presentingViewController = [contactsViewController presentingViewController];
+  v4 = presentingViewController != 0;
 
   return v4;
 }
@@ -291,9 +291,9 @@
 
 - (void)dismissScreenTimeAlertHostIfNeeded
 {
-  v3 = [(PHInCallRootViewController *)self screenTimeHostViewController];
+  screenTimeHostViewController = [(PHInCallRootViewController *)self screenTimeHostViewController];
 
-  if (v3)
+  if (screenTimeHostViewController)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -304,19 +304,19 @@
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PHInCallRootViewController *)self screenTimeHostViewController];
+      screenTimeHostViewController2 = [(PHInCallRootViewController *)self screenTimeHostViewController];
       *buf = 138412290;
-      v22 = v6;
+      v22 = screenTimeHostViewController2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Dismissing screen time view controller: %@", buf, 0xCu);
     }
 
-    v7 = [(PHInCallRootViewController *)self presentedViewController];
-    v8 = [(PHInCallRootViewController *)self screenTimeHostViewController];
-    v9 = [v7 isEqual:v8];
+    presentedViewController = [(PHInCallRootViewController *)self presentedViewController];
+    screenTimeHostViewController3 = [(PHInCallRootViewController *)self screenTimeHostViewController];
+    v9 = [presentedViewController isEqual:screenTimeHostViewController3];
 
     if (v9)
     {
-      v10 = [(PHInCallRootViewController *)self presentedViewController];
+      presentedViewController2 = [(PHInCallRootViewController *)self presentedViewController];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_1000F5E04;
@@ -324,15 +324,15 @@
       v18[4] = self;
       v19 = v4;
       v11 = v4;
-      [v10 dismissViewControllerAnimated:1 completion:v18];
+      [presentedViewController2 dismissViewControllerAnimated:1 completion:v18];
 
       v12 = v19;
     }
 
     else
     {
-      v13 = [(PHInCallRootViewController *)self screenTimeHostViewController];
-      [v13 willMoveToParentViewController:0];
+      screenTimeHostViewController4 = [(PHInCallRootViewController *)self screenTimeHostViewController];
+      [screenTimeHostViewController4 willMoveToParentViewController:0];
 
       v16 = v4;
       v17[0] = _NSConcreteStackBlock;
@@ -354,21 +354,21 @@
 
 - (UINavigationController)audioCallNavigationController
 {
-  v3 = [(PHInCallRootViewController *)self features];
-  v4 = [v3 callManagerEnabled];
+  features = [(PHInCallRootViewController *)self features];
+  callManagerEnabled = [features callManagerEnabled];
 
-  if (v4)
+  if (callManagerEnabled)
   {
-    v5 = [(PHInCallRootViewController *)self callManager];
-    v6 = [v5 audioCallNavController];
+    callManager = [(PHInCallRootViewController *)self callManager];
+    audioCallNavController = [callManager audioCallNavController];
   }
 
   else
   {
-    v6 = self->_audioCallNavigationController;
+    audioCallNavController = self->_audioCallNavigationController;
   }
 
-  return v6;
+  return audioCallNavController;
 }
 
 - (BOOL)shouldShowScreenTimeShield
@@ -378,21 +378,21 @@
     return 0;
   }
 
-  v4 = [(PHInCallRootViewController *)self filteredRequest];
-  if (v4 && [qword_1003B0ED8 containsObject:@"PHScreenTimeAlertAssertionReason"])
+  filteredRequest = [(PHInCallRootViewController *)self filteredRequest];
+  if (filteredRequest && [qword_1003B0ED8 containsObject:@"PHScreenTimeAlertAssertionReason"])
   {
-    v5 = [(PHInCallRootViewController *)self callCenter];
-    v6 = [v5 incomingVideoCall];
-    if (v6)
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    incomingVideoCall = [callCenter incomingVideoCall];
+    if (incomingVideoCall)
     {
       v3 = 0;
     }
 
     else
     {
-      v7 = [(PHInCallRootViewController *)self callCenter];
-      v8 = [v7 incomingCall];
-      v3 = v8 == 0;
+      callCenter2 = [(PHInCallRootViewController *)self callCenter];
+      incomingCall = [callCenter2 incomingCall];
+      v3 = incomingCall == 0;
     }
   }
 
@@ -406,19 +406,19 @@
 
 - (void)updateGameControllerManagerForCurrentState
 {
-  v3 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-  v4 = [v3 callDisplayStyle];
+  callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (!v4)
+  if (!callDisplayStyle)
   {
     v5 = +[CNKGameControllerManager shared];
     if (v5)
     {
       v9 = v5;
-      v6 = [(PHInCallRootViewController *)self callCenter];
-      v7 = [v6 incomingCall];
-      v8 = [v6 incomingVideoCall];
-      if (v7 | v8)
+      callCenter = [(PHInCallRootViewController *)self callCenter];
+      incomingCall = [callCenter incomingCall];
+      incomingVideoCall = [callCenter incomingVideoCall];
+      if (incomingCall | incomingVideoCall)
       {
         [v9 addResponder:self];
       }
@@ -436,31 +436,31 @@
 - (SBSUIInCallWindowScene)inCallWindowScene
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
-  v4 = [v3 sceneManager];
-  v5 = [v4 callScene];
+  delegate = [v2 delegate];
+  sceneManager = [delegate sceneManager];
+  callScene = [sceneManager callScene];
 
-  return v5;
+  return callScene;
 }
 
 - (BOOL)wantsMiniWindowCoverViewController
 {
-  v3 = [(PHInCallRootViewController *)self isDisplayStyleMiniWindow];
-  if (v3)
+  isDisplayStyleMiniWindow = [(PHInCallRootViewController *)self isDisplayStyleMiniWindow];
+  if (isDisplayStyleMiniWindow)
   {
-    v4 = [(PHInCallRootViewController *)self callCenter];
-    v5 = [v4 hasCurrentCalls];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    hasCurrentCalls = [callCenter hasCurrentCalls];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isDisplayStyleMiniWindow) = hasCurrentCalls;
   }
 
-  return v3;
+  return isDisplayStyleMiniWindow;
 }
 
 - (BOOL)isDisplayStyleMiniWindow
 {
-  v2 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle] == 1;
+  callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+  v3 = [callDisplayStyleManager callDisplayStyle] == 1;
 
   return v3;
 }
@@ -468,34 +468,34 @@
 - (TUFeatureFlags)featureFlags
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 featureFlags];
+    featureFlags = [delegate featureFlags];
   }
 
   else
   {
-    v4 = 0;
+    featureFlags = 0;
   }
 
-  return v4;
+  return featureFlags;
 }
 
 - (BOOL)isFullScreen
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
-  v5 = [v4 currentInCallScene];
+  delegate = [v3 delegate];
+  currentInCallScene = [delegate currentInCallScene];
 
-  if (v5)
+  if (currentInCallScene)
   {
-    v6 = +[UIApplication sharedApplication];
-    v7 = [v6 delegate];
-    v8 = [v7 currentInCallScene];
-    if ([v8 presentationMode] == 2)
+    callDisplayStyleManager = +[UIApplication sharedApplication];
+    delegate2 = [callDisplayStyleManager delegate];
+    currentInCallScene2 = [delegate2 currentInCallScene];
+    if ([currentInCallScene2 presentationMode] == 2)
     {
       v9 = 1;
     }
@@ -503,9 +503,9 @@
     else
     {
       v10 = +[UIApplication sharedApplication];
-      v11 = [v10 delegate];
-      v12 = [v11 currentInCallScene];
-      if ([v12 presentationMode] == 3)
+      delegate3 = [v10 delegate];
+      currentInCallScene3 = [delegate3 currentInCallScene];
+      if ([currentInCallScene3 presentationMode] == 3)
       {
         v9 = 1;
       }
@@ -513,9 +513,9 @@
       else
       {
         v13 = +[UIApplication sharedApplication];
-        v14 = [v13 delegate];
-        v15 = [v14 sceneManager];
-        if ([v15 hasPendingCompletionForSceneType:0 presentationMode:2])
+        delegate4 = [v13 delegate];
+        sceneManager = [delegate4 sceneManager];
+        if ([sceneManager hasPendingCompletionForSceneType:0 presentationMode:2])
         {
           v9 = 1;
         }
@@ -534,11 +534,11 @@
     goto LABEL_15;
   }
 
-  v6 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-  if ([v6 callDisplayStyle] != 2)
+  callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 2)
   {
-    v7 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-    v9 = [v7 callDisplayStyle] == 3;
+    delegate2 = [(PHInCallRootViewController *)self callDisplayStyleManager];
+    v9 = [delegate2 callDisplayStyle] == 3;
 LABEL_15:
 
     goto LABEL_16;
@@ -552,28 +552,28 @@ LABEL_16:
 
 - (void)updateCallDetailsViewIsOnScreen
 {
-  v5 = [(PHInCallRootViewController *)self callDetailsNavigationController];
+  callDetailsNavigationController = [(PHInCallRootViewController *)self callDetailsNavigationController];
 
-  if (v5)
+  if (callDetailsNavigationController)
   {
-    v6 = [(PHInCallRootViewController *)self isPresentingCallDetailsView];
-    if (v6)
+    isPresentingCallDetailsView = [(PHInCallRootViewController *)self isPresentingCallDetailsView];
+    if (isPresentingCallDetailsView)
     {
       v9 = +[UIApplication sharedApplication];
-      v2 = [v9 delegate];
-      v3 = [v2 sceneManager];
-      v7 = [v3 hasActiveOrPendingFullScreenCallScene];
+      delegate = [v9 delegate];
+      sceneManager = [delegate sceneManager];
+      hasActiveOrPendingFullScreenCallScene = [sceneManager hasActiveOrPendingFullScreenCallScene];
     }
 
     else
     {
-      v7 = 0;
+      hasActiveOrPendingFullScreenCallScene = 0;
     }
 
-    v8 = [(PHInCallRootViewController *)self callDetailsNavigationController];
-    [v8 setIsOnScreen:v7];
+    callDetailsNavigationController2 = [(PHInCallRootViewController *)self callDetailsNavigationController];
+    [callDetailsNavigationController2 setIsOnScreen:hasActiveOrPendingFullScreenCallScene];
 
-    if (v6)
+    if (isPresentingCallDetailsView)
     {
     }
   }
@@ -581,31 +581,31 @@ LABEL_16:
 
 - (void)updateDesiredSpringboardBehavior
 {
-  v3 = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
-  if (v3)
+  audioCallViewControllerIfLoaded = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
+  if (audioCallViewControllerIfLoaded)
   {
-    v4 = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
-    v5 = [v4 allowsOrientationChangeEvents];
+    audioCallViewControllerIfLoaded2 = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
+    allowsOrientationChangeEvents = [audioCallViewControllerIfLoaded2 allowsOrientationChangeEvents];
   }
 
   else
   {
-    v5 = self->_multiwayViewController != 0;
+    allowsOrientationChangeEvents = self->_multiwayViewController != 0;
   }
 
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v36 = 67109120;
-    v37 = v5;
+    v37 = allowsOrientationChangeEvents;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Setting allowsOrientationChangeEvents to %d", &v36, 8u);
   }
 
-  v7 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-  [v7 setOrientationChangedEventsEnabled:v5];
+  _remoteViewControllerProxy = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setOrientationChangedEventsEnabled:allowsOrientationChangeEvents];
 
-  v8 = [(PHInCallRootViewController *)self callCenter];
-  v9 = [(PHInCallRootViewController *)self desiredButtonEventsForCallContainer:v8];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  v9 = [(PHInCallRootViewController *)self desiredButtonEventsForCallContainer:callCenter];
   v10 = [(PHSOSViewController *)self->_sosViewController desiredButtonEvents]| v9;
 
   v11 = sub_100004F84();
@@ -616,16 +616,16 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Setting desired hardware buttons to %d", &v36, 8u);
   }
 
-  v12 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-  [v12 setDesiredHardwareButtonEvents:v10];
+  _remoteViewControllerProxy2 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy2 setDesiredHardwareButtonEvents:v10];
 
-  v13 = [(PHInCallRootViewController *)self inCallWindowScene];
+  inCallWindowScene = [(PHInCallRootViewController *)self inCallWindowScene];
 
-  if (v13)
+  if (inCallWindowScene)
   {
-    v14 = [(PHInCallRootViewController *)self desiresLockButtonEvents];
-    v15 = [(PHInCallRootViewController *)self callCenter];
-    v16 = [(PHInCallRootViewController *)self desiredSceneButtonEventsForCallContainer:v15];
+    desiresLockButtonEvents = [(PHInCallRootViewController *)self desiresLockButtonEvents];
+    callCenter2 = [(PHInCallRootViewController *)self callCenter];
+    v16 = [(PHInCallRootViewController *)self desiredSceneButtonEventsForCallContainer:callCenter2];
     v17 = [(PHSOSViewController *)self->_sosViewController desiredSceneButtonEvents]| v16;
 
     v18 = sub_100004F84();
@@ -634,42 +634,42 @@ LABEL_16:
       v36 = 67109376;
       v37 = v17;
       v38 = 1024;
-      v39 = v14;
+      v39 = desiresLockButtonEvents;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Setting scenes desired button events to %d and desires lock button events to %d", &v36, 0xEu);
     }
 
-    v19 = [(PHInCallRootViewController *)self inCallWindowScene];
-    [v19 setSupportsDeviceLockEvents:v14];
+    inCallWindowScene2 = [(PHInCallRootViewController *)self inCallWindowScene];
+    [inCallWindowScene2 setSupportsDeviceLockEvents:desiresLockButtonEvents];
 
-    v20 = [(PHInCallRootViewController *)self inCallWindowScene];
-    [v20 setPreferredHardwareButtonEventTypes:v17];
+    inCallWindowScene3 = [(PHInCallRootViewController *)self inCallWindowScene];
+    [inCallWindowScene3 setPreferredHardwareButtonEventTypes:v17];
 
     [(PHInCallRootViewController *)self updateInCallWindowScenePrefersHiddenWhenDismissed];
     [(PHInCallRootViewController *)self updateInCallWindowSceneFaceTimeLaunchBehavior];
   }
 
-  if (v3)
+  if (audioCallViewControllerIfLoaded)
   {
-    v21 = [v3 allowsMenuButtonDismissal];
+    allowsMenuButtonDismissal = [audioCallViewControllerIfLoaded allowsMenuButtonDismissal];
   }
 
   else
   {
-    v21 = 1;
+    allowsMenuButtonDismissal = 1;
   }
 
   sosViewController = self->_sosViewController;
   if (sosViewController)
   {
-    v23 = [(PHSOSViewController *)sosViewController allowsMenuButtonDismissal];
+    allowsMenuButtonDismissal2 = [(PHSOSViewController *)sosViewController allowsMenuButtonDismissal];
   }
 
   else
   {
-    v23 = 1;
+    allowsMenuButtonDismissal2 = 1;
   }
 
-  v24 = v21 & v23;
+  v24 = allowsMenuButtonDismissal & allowsMenuButtonDismissal2;
   v25 = sub_100004F84();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
@@ -678,31 +678,31 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Setting allows menu button dismissal to %d", &v36, 8u);
   }
 
-  v26 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-  [v26 setAllowsMenuButtonDismissal:v24];
+  _remoteViewControllerProxy3 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy3 setAllowsMenuButtonDismissal:v24];
 
   [(PHInCallRootViewController *)self setAllowHomeOutDismissal:v24];
   [(PHInCallRootViewController *)self setNeedsUpdateOfHomeIndicatorAutoHidden];
-  if (v3)
+  if (audioCallViewControllerIfLoaded)
   {
-    v27 = [v3 allowsOtherAlertsToStackOnTop];
-    v28 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-    [v28 setAllowsAlertStacking:v27];
+    allowsOtherAlertsToStackOnTop = [audioCallViewControllerIfLoaded allowsOtherAlertsToStackOnTop];
+    _remoteViewControllerProxy4 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy4 setAllowsAlertStacking:allowsOtherAlertsToStackOnTop];
 
-    v29 = [v3 allowsBanners];
+    allowsBanners = [audioCallViewControllerIfLoaded allowsBanners];
   }
 
   else
   {
-    v30 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-    v29 = 1;
-    [v30 setAllowsAlertStacking:1];
+    _remoteViewControllerProxy5 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+    allowsBanners = 1;
+    [_remoteViewControllerProxy5 setAllowsAlertStacking:1];
   }
 
-  v31 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-  [v31 setAllowsBanners:v29];
+  _remoteViewControllerProxy6 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy6 setAllowsBanners:allowsBanners];
 
-  if (([v3 wantsApplicationDismissalStyle] & 1) != 0 || -[CNKMultiwayViewControllerProtocol wantsApplicationDismissalStyle](self->_multiwayViewController, "wantsApplicationDismissalStyle"))
+  if (([audioCallViewControllerIfLoaded wantsApplicationDismissalStyle] & 1) != 0 || -[CNKMultiwayViewControllerProtocol wantsApplicationDismissalStyle](self->_multiwayViewController, "wantsApplicationDismissalStyle"))
   {
     if (self->_sosViewController)
     {
@@ -720,12 +720,12 @@ LABEL_16:
     v32 = 1;
   }
 
-  v33 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-  [v33 setDismissalAnimationStyle:v32];
+  _remoteViewControllerProxy7 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy7 setDismissalAnimationStyle:v32];
 
-  v34 = [(PHInCallRootViewController *)self callCenter];
-  v35 = [v34 frontmostAudioOrVideoCall];
-  [(PHInCallRootViewController *)self updateRemoteAlertSwipeDismissalStyleForCall:v35];
+  callCenter3 = [(PHInCallRootViewController *)self callCenter];
+  frontmostAudioOrVideoCall = [callCenter3 frontmostAudioOrVideoCall];
+  [(PHInCallRootViewController *)self updateRemoteAlertSwipeDismissalStyleForCall:frontmostAudioOrVideoCall];
 
   [(PHInCallRootViewController *)self updateShouldBecomeVisibleWhenWakingDisplay];
 }
@@ -735,32 +735,32 @@ LABEL_16:
   audioCallViewController = self->_audioCallViewController;
   if (audioCallViewController)
   {
-    v3 = audioCallViewController;
+    audioCallViewController = audioCallViewController;
   }
 
   else
   {
-    v4 = [(PHInCallRootViewController *)self callManager];
-    v3 = [v4 audioCallViewController];
+    callManager = [(PHInCallRootViewController *)self callManager];
+    audioCallViewController = [callManager audioCallViewController];
   }
 
-  return v3;
+  return audioCallViewController;
 }
 
 - (UIViewController)currentViewController
 {
-  v3 = [(PHInCallRootViewController *)self audioCallNavigationController];
-  v4 = [v3 view];
-  v5 = [v4 superview];
-  if (v5)
+  audioCallNavigationController = [(PHInCallRootViewController *)self audioCallNavigationController];
+  view = [audioCallNavigationController view];
+  superview = [view superview];
+  if (superview)
   {
-    v6 = v5;
-    v7 = [(PHInCallRootViewController *)self audioCallNavigationController];
-    v8 = [v7 parentViewController];
+    v6 = superview;
+    audioCallNavigationController2 = [(PHInCallRootViewController *)self audioCallNavigationController];
+    parentViewController = [audioCallNavigationController2 parentViewController];
 
-    if (v8)
+    if (parentViewController)
     {
-      v9 = [(PHInCallRootViewController *)self audioCallNavigationController];
+      audioCallNavigationController3 = [(PHInCallRootViewController *)self audioCallNavigationController];
       goto LABEL_20;
     }
   }
@@ -770,14 +770,14 @@ LABEL_16:
   }
 
   v10 = 96;
-  v11 = [(PHEmergencyDialerViewController *)self->_emergencyDialerViewController view];
-  v12 = [v11 superview];
-  if (v12)
+  view2 = [(PHEmergencyDialerViewController *)self->_emergencyDialerViewController view];
+  superview2 = [view2 superview];
+  if (superview2)
   {
-    v13 = v12;
-    v14 = [(PHEmergencyDialerViewController *)self->_emergencyDialerViewController parentViewController];
+    v13 = superview2;
+    parentViewController2 = [(PHEmergencyDialerViewController *)self->_emergencyDialerViewController parentViewController];
 
-    if (v14)
+    if (parentViewController2)
     {
       goto LABEL_19;
     }
@@ -788,14 +788,14 @@ LABEL_16:
   }
 
   v10 = 104;
-  v15 = [(PHSOSViewController *)self->_sosViewController view];
-  v16 = [v15 superview];
-  if (v16)
+  view3 = [(PHSOSViewController *)self->_sosViewController view];
+  superview3 = [view3 superview];
+  if (superview3)
   {
-    v17 = v16;
-    v18 = [(PHSOSViewController *)self->_sosViewController parentViewController];
+    v17 = superview3;
+    parentViewController3 = [(PHSOSViewController *)self->_sosViewController parentViewController];
 
-    if (v18)
+    if (parentViewController3)
     {
       goto LABEL_19;
     }
@@ -806,34 +806,34 @@ LABEL_16:
   }
 
   v10 = 160;
-  v19 = [(UINavigationController *)self->_videoCallNavigationController view];
-  v20 = [v19 superview];
-  if (!v20)
+  view4 = [(UINavigationController *)self->_videoCallNavigationController view];
+  superview4 = [view4 superview];
+  if (!superview4)
   {
 
     goto LABEL_17;
   }
 
-  v21 = v20;
-  v22 = [(UINavigationController *)self->_videoCallNavigationController parentViewController];
+  v21 = superview4;
+  parentViewController4 = [(UINavigationController *)self->_videoCallNavigationController parentViewController];
 
-  if (v22)
+  if (parentViewController4)
   {
 LABEL_19:
-    v9 = *(&self->super.super.super.isa + v10);
+    audioCallNavigationController3 = *(&self->super.super.super.isa + v10);
     goto LABEL_20;
   }
 
 LABEL_17:
   v10 = 144;
-  v23 = [(PHPTTFullScreenContainerViewController *)self->_pttFullScreenContainerViewController view];
-  v24 = [v23 superview];
-  if (v24)
+  view5 = [(PHPTTFullScreenContainerViewController *)self->_pttFullScreenContainerViewController view];
+  superview5 = [view5 superview];
+  if (superview5)
   {
-    v25 = v24;
-    v26 = [(PHPTTFullScreenContainerViewController *)self->_pttFullScreenContainerViewController parentViewController];
+    v25 = superview5;
+    parentViewController5 = [(PHPTTFullScreenContainerViewController *)self->_pttFullScreenContainerViewController parentViewController];
 
-    if (v26)
+    if (parentViewController5)
     {
       goto LABEL_19;
     }
@@ -843,18 +843,18 @@ LABEL_17:
   {
   }
 
-  v28 = [(PHInCallRootViewController *)self callDetailsNavigationController];
-  v29 = [v28 view];
-  v30 = [v29 superview];
-  if (v30)
+  callDetailsNavigationController = [(PHInCallRootViewController *)self callDetailsNavigationController];
+  view6 = [callDetailsNavigationController view];
+  superview6 = [view6 superview];
+  if (superview6)
   {
-    v31 = v30;
-    v32 = [(PHInCallRootViewController *)self callDetailsNavigationController];
-    v33 = [v32 parentViewController];
+    v31 = superview6;
+    callDetailsNavigationController2 = [(PHInCallRootViewController *)self callDetailsNavigationController];
+    parentViewController6 = [callDetailsNavigationController2 parentViewController];
 
-    if (v33)
+    if (parentViewController6)
     {
-      v9 = [(PHInCallRootViewController *)self callDetailsNavigationController];
+      audioCallNavigationController3 = [(PHInCallRootViewController *)self callDetailsNavigationController];
       goto LABEL_20;
     }
   }
@@ -863,24 +863,24 @@ LABEL_17:
   {
   }
 
-  v9 = 0;
+  audioCallNavigationController3 = 0;
 LABEL_20:
 
-  return v9;
+  return audioCallNavigationController3;
 }
 
 - (void)_loadAudioCallViewController
 {
-  v3 = [(PHInCallRootViewController *)self callCenter];
-  v4 = [v3 frontmostAudioOrVideoCall];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  frontmostAudioOrVideoCall = [callCenter frontmostAudioOrVideoCall];
 
-  v5 = [(PHInCallRootViewController *)self features];
-  v6 = [v5 callManagerEnabled];
+  features = [(PHInCallRootViewController *)self features];
+  callManagerEnabled = [features callManagerEnabled];
 
-  if (v6)
+  if (callManagerEnabled)
   {
-    v7 = [(PHInCallRootViewController *)self callManager];
-    [v7 createAudioCallViewControllerWithCall:v4];
+    callManager = [(PHInCallRootViewController *)self callManager];
+    [callManager createAudioCallViewControllerWithCall:frontmostAudioOrVideoCall];
 LABEL_18:
 
     goto LABEL_19;
@@ -888,30 +888,30 @@ LABEL_18:
 
   if (!self->_audioCallViewController)
   {
-    v8 = [(PHInCallRootViewController *)self features];
-    v9 = [v8 isiPadPostersEnabledForCall:v4];
+    features2 = [(PHInCallRootViewController *)self features];
+    v9 = [features2 isiPadPostersEnabledForCall:frontmostAudioOrVideoCall];
 
     if (v9)
     {
-      [(PHInCallRootViewController *)self setExistingPrioritizedCall:v4];
-      v10 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-      [v10 setUsesLargeFormatUI:1];
+      [(PHInCallRootViewController *)self setExistingPrioritizedCall:frontmostAudioOrVideoCall];
+      callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+      [callDisplayStyleManager setUsesLargeFormatUI:1];
 
       v11 = [iPadAudioCallViewController alloc];
-      v12 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-      v13 = [(PHInCallRootViewController *)self callCenter];
-      v14 = [(PHInCallRootViewController *)self featureFlags];
-      v15 = [(iPadAudioCallViewController *)v11 initWithCallDisplayStyleManager:v12 callCenter:v13 featureFlags:v14 call:self->_existingPrioritizedCall];
+      callDisplayStyleManager2 = [(PHInCallRootViewController *)self callDisplayStyleManager];
+      callCenter2 = [(PHInCallRootViewController *)self callCenter];
+      featureFlags = [(PHInCallRootViewController *)self featureFlags];
+      v15 = [(iPadAudioCallViewController *)v11 initWithCallDisplayStyleManager:callDisplayStyleManager2 callCenter:callCenter2 featureFlags:featureFlags call:self->_existingPrioritizedCall];
 
       [(PHInCallRootViewController *)self setCurrentChildAudioViewController:v15];
       objc_storeStrong(&self->_audioCallViewController, v15);
-      v16 = [(TUCall *)self->_existingPrioritizedCall uniqueProxyIdentifier];
+      uniqueProxyIdentifier = [(TUCall *)self->_existingPrioritizedCall uniqueProxyIdentifier];
 
-      if (v16)
+      if (uniqueProxyIdentifier)
       {
-        v17 = [(PHInCallRootViewController *)self viewControllersDict];
-        v18 = [(TUCall *)self->_existingPrioritizedCall uniqueProxyIdentifier];
-        [v17 setObject:v15 forKey:v18];
+        viewControllersDict = [(PHInCallRootViewController *)self viewControllersDict];
+        uniqueProxyIdentifier2 = [(TUCall *)self->_existingPrioritizedCall uniqueProxyIdentifier];
+        [viewControllersDict setObject:v15 forKey:uniqueProxyIdentifier2];
       }
 
       v19 = sub_100004F84();
@@ -927,10 +927,10 @@ LABEL_18:
     else
     {
       v21 = [PHAudioCallViewController alloc];
-      v22 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-      v23 = [(PHInCallRootViewController *)self callCenter];
-      v24 = [(PHInCallRootViewController *)self featureFlags];
-      v25 = [(PHAudioCallViewController *)v21 initWithCallDisplayStyleManager:v22 callCenter:v23 featureFlags:v24];
+      callDisplayStyleManager3 = [(PHInCallRootViewController *)self callDisplayStyleManager];
+      callCenter3 = [(PHInCallRootViewController *)self callCenter];
+      featureFlags2 = [(PHInCallRootViewController *)self featureFlags];
+      v25 = [(PHAudioCallViewController *)v21 initWithCallDisplayStyleManager:callDisplayStyleManager3 callCenter:callCenter3 featureFlags:featureFlags2];
       v26 = self->_audioCallViewController;
       self->_audioCallViewController = v25;
 
@@ -944,24 +944,24 @@ LABEL_18:
       }
     }
 
-    v28 = [(PHInCallRootViewController *)self featureFlags];
-    v29 = [v28 audioCallUIModernizationEnabled];
+    featureFlags3 = [(PHInCallRootViewController *)self featureFlags];
+    audioCallUIModernizationEnabled = [featureFlags3 audioCallUIModernizationEnabled];
 
-    if (v29)
+    if (audioCallUIModernizationEnabled)
     {
       v30 = [PHAudioCallViewControllerWrapper alloc];
-      v31 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-      v32 = [(PHInCallRootViewController *)self callCenter];
-      v33 = [(PHInCallRootViewController *)self view];
-      [v33 bounds];
-      v35 = [(PHAudioCallViewControllerWrapper *)v30 initWithCallDisplayStyleManager:v31 callCenter:v32 width:self inCallRootViewController:v34];
+      callDisplayStyleManager4 = [(PHInCallRootViewController *)self callDisplayStyleManager];
+      callCenter4 = [(PHInCallRootViewController *)self callCenter];
+      view = [(PHInCallRootViewController *)self view];
+      [view bounds];
+      v35 = [(PHAudioCallViewControllerWrapper *)v30 initWithCallDisplayStyleManager:callDisplayStyleManager4 callCenter:callCenter4 width:self inCallRootViewController:v34];
       audioCallViewControllerWrapper = self->_audioCallViewControllerWrapper;
       self->_audioCallViewControllerWrapper = v35;
 
       v37 = [UINavigationController alloc];
-      v38 = [(PHInCallRootViewController *)self audioCallViewControllerWrapper];
-      v39 = [(PHAudioCallViewControllerProtocol *)v38 viewController];
-      v40 = [v37 initWithRootViewController:v39];
+      audioCallViewControllerWrapper = [(PHInCallRootViewController *)self audioCallViewControllerWrapper];
+      viewController = [(PHAudioCallViewControllerProtocol *)audioCallViewControllerWrapper viewController];
+      v40 = [v37 initWithRootViewController:viewController];
       audioCallNavigationController = self->_audioCallNavigationController;
       self->_audioCallNavigationController = v40;
     }
@@ -973,46 +973,46 @@ LABEL_18:
       {
 LABEL_17:
         [(UINavigationController *)self->_audioCallNavigationController setOverrideUserInterfaceStyle:2];
-        v44 = [(PHInCallRootViewController *)self view];
-        [v44 bounds];
+        view2 = [(PHInCallRootViewController *)self view];
+        [view2 bounds];
         v46 = v45;
         v48 = v47;
         v50 = v49;
         v52 = v51;
-        v53 = [(UINavigationController *)self->_audioCallNavigationController view];
-        [v53 setFrame:{v46, v48, v50, v52}];
+        view3 = [(UINavigationController *)self->_audioCallNavigationController view];
+        [view3 setFrame:{v46, v48, v50, v52}];
 
-        v54 = [(UINavigationController *)self->_audioCallNavigationController view];
-        [v54 setAutoresizingMask:18];
+        view4 = [(UINavigationController *)self->_audioCallNavigationController view];
+        [view4 setAutoresizingMask:18];
 
         [(UINavigationController *)self->_audioCallNavigationController setNavigationBarHidden:1];
         [(UINavigationController *)self->_audioCallNavigationController setDelegate:self];
         [(UINavigationController *)self->_audioCallNavigationController _setBuiltinTransitionStyle:1];
         [(PHAudioCallViewControllerProtocol *)self->_audioCallViewController setInCallRootViewController:self];
-        v7 = [(UINavigationController *)self->_audioCallNavigationController navigationBar];
+        callManager = [(UINavigationController *)self->_audioCallNavigationController navigationBar];
         v55 = +[UIColor clearColor];
-        [v7 setBackgroundColor:v55];
+        [callManager setBackgroundColor:v55];
 
-        [v7 setTranslucent:1];
+        [callManager setTranslucent:1];
         v56 = objc_opt_new();
-        [v7 setBackgroundImage:v56 forBarMetrics:0];
+        [callManager setBackgroundImage:v56 forBarMetrics:0];
 
         v57 = objc_opt_new();
-        [v7 setShadowImage:v57];
+        [callManager setShadowImage:v57];
 
         v58 = +[UIColor whiteColor];
-        [v7 setTintColor:v58];
+        [callManager setTintColor:v58];
 
         v59 = +[UIColor whiteColor];
         v62 = v59;
         v60 = [NSDictionary dictionaryWithObjects:&v62 forKeys:&v61 count:1];
-        [v7 setTitleTextAttributes:v60];
+        [callManager setTitleTextAttributes:v60];
 
         goto LABEL_18;
       }
 
-      v38 = self->_audioCallViewController;
-      v42 = [[UINavigationController alloc] initWithRootViewController:v38];
+      audioCallViewControllerWrapper = self->_audioCallViewController;
+      v42 = [[UINavigationController alloc] initWithRootViewController:audioCallViewControllerWrapper];
       v43 = self->_audioCallNavigationController;
       self->_audioCallNavigationController = v42;
     }
@@ -1027,63 +1027,63 @@ LABEL_19:
 - (PHAudioCallViewControllerProtocol)audioCallViewController
 {
   [(PHInCallRootViewController *)self _loadAudioCallViewController];
-  v3 = [(PHInCallRootViewController *)self features];
-  v4 = [v3 callManagerEnabled];
+  features = [(PHInCallRootViewController *)self features];
+  callManagerEnabled = [features callManagerEnabled];
 
-  if (v4)
+  if (callManagerEnabled)
   {
-    v5 = [(PHInCallRootViewController *)self callManager];
-    v6 = [v5 audioCallViewController];
+    callManager = [(PHInCallRootViewController *)self callManager];
+    audioCallViewController = [callManager audioCallViewController];
   }
 
   else
   {
-    v6 = self->_audioCallViewController;
+    audioCallViewController = self->_audioCallViewController;
   }
 
-  return v6;
+  return audioCallViewController;
 }
 
 - (BOOL)isPickedRouteReceiver
 {
-  v2 = [(PHInCallRootViewController *)self callCenter];
-  v3 = [v2 routeController];
-  v4 = [v3 pickedRoute];
-  v5 = [v4 isReceiver];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  pickedRoute = [routeController pickedRoute];
+  isReceiver = [pickedRoute isReceiver];
 
-  return v5;
+  return isReceiver;
 }
 
 - (BOOL)desiresLockButtonEvents
 {
-  v3 = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
-  if (([v3 desiresLockButtonEvents] & 1) != 0 || -[PHSOSViewController desiresLockButtonEvents](self->_sosViewController, "desiresLockButtonEvents"))
+  audioCallViewControllerIfLoaded = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
+  if (([audioCallViewControllerIfLoaded desiresLockButtonEvents] & 1) != 0 || -[PHSOSViewController desiresLockButtonEvents](self->_sosViewController, "desiresLockButtonEvents"))
   {
-    v4 = 1;
+    isPresentingViewControllerWithSensitiveInformation = 1;
   }
 
   else
   {
-    v5 = [(PHInCallRootViewController *)self callCenter];
-    if ([v5 hasCurrentVideoCalls])
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    if ([callCenter hasCurrentVideoCalls])
     {
-      v4 = 1;
+      isPresentingViewControllerWithSensitiveInformation = 1;
     }
 
     else
     {
-      v4 = [(PHInCallRootViewController *)self isPresentingViewControllerWithSensitiveInformation];
+      isPresentingViewControllerWithSensitiveInformation = [(PHInCallRootViewController *)self isPresentingViewControllerWithSensitiveInformation];
     }
   }
 
-  return v4;
+  return isPresentingViewControllerWithSensitiveInformation;
 }
 
 - (void)updateInCallWindowScenePrefersHiddenWhenDismissed
 {
-  v3 = [(PHInCallRootViewController *)self inCallWindowScene];
+  inCallWindowScene = [(PHInCallRootViewController *)self inCallWindowScene];
 
-  if (v3)
+  if (inCallWindowScene)
   {
     if (-[PHInCallRootViewController isPresentingCallDetailsView](self, "isPresentingCallDetailsView") && (+[UIApplication sharedApplication](UIApplication, "sharedApplication"), v4 = objc_claimAutoreleasedReturnValue(), [v4 delegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "didDeepLinkToCallDetailsView"), v5, v4, !v6))
     {
@@ -1092,37 +1092,37 @@ LABEL_19:
 
     else
     {
-      v7 = [(PHInCallRootViewController *)self callCenter];
-      v8 = [v7 frontmostBargeCall];
-      v9 = v8 != 0;
+      callCenter = [(PHInCallRootViewController *)self callCenter];
+      frontmostBargeCall = [callCenter frontmostBargeCall];
+      v9 = frontmostBargeCall != 0;
     }
 
-    v10 = [(PHInCallRootViewController *)self callCenter];
-    v11 = [v10 frontmostCall];
+    callCenter2 = [(PHInCallRootViewController *)self callCenter];
+    frontmostCall = [callCenter2 frontmostCall];
 
-    if (v11)
+    if (frontmostCall)
     {
-      v12 = [v11 provider];
-      if ([v12 supportsDynamicSystemUI])
+      provider = [frontmostCall provider];
+      if ([provider supportsDynamicSystemUI])
       {
-        v13 = [(PHInCallRootViewController *)self featureFlags];
-        if ([v13 groupConversations])
+        featureFlags = [(PHInCallRootViewController *)self featureFlags];
+        if ([featureFlags groupConversations])
         {
           v9 |= TUDeviceHasChinaSKU();
         }
       }
     }
 
-    v14 = [(PHInCallRootViewController *)self inCallWindowScene];
-    v15 = [v14 prefersHiddenWhenDismissed];
+    inCallWindowScene2 = [(PHInCallRootViewController *)self inCallWindowScene];
+    prefersHiddenWhenDismissed = [inCallWindowScene2 prefersHiddenWhenDismissed];
 
-    if ((v9 & 1) != v15)
+    if ((v9 & 1) != prefersHiddenWhenDismissed)
     {
       v16 = sub_100004F84();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(PHInCallRootViewController *)self inCallWindowScene];
-        v18 = v17;
+        inCallWindowScene3 = [(PHInCallRootViewController *)self inCallWindowScene];
+        v18 = inCallWindowScene3;
         v19 = @"NO";
         if (v9)
         {
@@ -1130,31 +1130,31 @@ LABEL_19:
         }
 
         v21 = 138412546;
-        v22 = v17;
+        v22 = inCallWindowScene3;
         v23 = 2112;
         v24 = v19;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Updating scene: %@ prefersHiddenWhenDismissed: %@", &v21, 0x16u);
       }
 
-      v20 = [(PHInCallRootViewController *)self inCallWindowScene];
-      [v20 setPrefersHiddenWhenDismissed:v9 & 1];
+      inCallWindowScene4 = [(PHInCallRootViewController *)self inCallWindowScene];
+      [inCallWindowScene4 setPrefersHiddenWhenDismissed:v9 & 1];
     }
   }
 }
 
 - (BOOL)isPresentingCallDetailsView
 {
-  v3 = [(PHInCallRootViewController *)self callDetailsNavigationController];
-  if (v3)
+  callDetailsNavigationController = [(PHInCallRootViewController *)self callDetailsNavigationController];
+  if (callDetailsNavigationController)
   {
-    v4 = [(PHInCallRootViewController *)self callDetailsNavigationController];
-    v5 = [v4 view];
-    v6 = [v5 superview];
-    if (v6)
+    callDetailsNavigationController2 = [(PHInCallRootViewController *)self callDetailsNavigationController];
+    view = [callDetailsNavigationController2 view];
+    superview = [view superview];
+    if (superview)
     {
-      v7 = [(PHInCallRootViewController *)self callDetailsNavigationController];
-      v8 = [v7 parentViewController];
-      v9 = v8 != 0;
+      callDetailsNavigationController3 = [(PHInCallRootViewController *)self callDetailsNavigationController];
+      parentViewController = [callDetailsNavigationController3 parentViewController];
+      v9 = parentViewController != 0;
     }
 
     else
@@ -1173,26 +1173,26 @@ LABEL_19:
 
 - (void)updateInCallWindowSceneFaceTimeLaunchBehavior
 {
-  v3 = [(PHInCallRootViewController *)self inCallWindowScene];
+  inCallWindowScene = [(PHInCallRootViewController *)self inCallWindowScene];
 
-  if (v3)
+  if (inCallWindowScene)
   {
-    v4 = [(PHInCallRootViewController *)self shouldShowInCallWindowScene];
-    v5 = [(PHInCallRootViewController *)self inCallWindowScene];
-    [v5 setShouldNeverBeShownWhenLaunchingFaceTime:v4 ^ 1];
+    shouldShowInCallWindowScene = [(PHInCallRootViewController *)self shouldShowInCallWindowScene];
+    inCallWindowScene2 = [(PHInCallRootViewController *)self inCallWindowScene];
+    [inCallWindowScene2 setShouldNeverBeShownWhenLaunchingFaceTime:shouldShowInCallWindowScene ^ 1];
   }
 }
 
 - (BOOL)shouldShowInCallWindowScene
 {
-  v3 = [(PHInCallRootViewController *)self callCenter];
-  v4 = [v3 conversationManager];
-  v5 = [v4 avLessConversation];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  conversationManager = [callCenter conversationManager];
+  avLessConversation = [conversationManager avLessConversation];
 
-  v6 = [(PHInCallRootViewController *)self currentViewController];
-  v7 = [(PHInCallRootViewController *)self pttFullScreenContainerViewController];
+  currentViewController = [(PHInCallRootViewController *)self currentViewController];
+  pttFullScreenContainerViewController = [(PHInCallRootViewController *)self pttFullScreenContainerViewController];
 
-  return v6 != v7 && v5 == 0;
+  return currentViewController != pttFullScreenContainerViewController && avLessConversation == 0;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden
@@ -1213,10 +1213,10 @@ LABEL_19:
 
 - (void)updateShouldBecomeVisibleWhenWakingDisplay
 {
-  v3 = [(PHInCallRootViewController *)self callCenter];
-  v4 = [v3 frontmostAudioOrVideoCall];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  frontmostAudioOrVideoCall = [callCenter frontmostAudioOrVideoCall];
 
-  if (!v4 || ([v4 isVideo] & 1) != 0 || (objc_msgSend(v4, "remoteParticipantHandles"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6 != 1))
+  if (!frontmostAudioOrVideoCall || ([frontmostAudioOrVideoCall isVideo] & 1) != 0 || (objc_msgSend(frontmostAudioOrVideoCall, "remoteParticipantHandles"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6 != 1))
   {
     if (![(PHInCallRootViewController *)self wantsMiniWindowCoverViewController])
     {
@@ -1230,15 +1230,15 @@ LABEL_19:
     }
   }
 
-  v7 = [v4 isScreening];
+  isScreening = [frontmostAudioOrVideoCall isScreening];
   v8 = SBUIIsSystemApertureEnabled();
-  v9 = v8 & v7 ^ 1;
-  if (v8 & 1) == 0 && (v7)
+  v9 = v8 & isScreening ^ 1;
+  if (v8 & 1) == 0 && (isScreening)
   {
 LABEL_10:
-    v10 = [(PHInCallRootViewController *)self currentViewController];
-    v11 = [(PHInCallRootViewController *)self pttFullScreenContainerViewController];
-    v9 = v10 == v11;
+    currentViewController = [(PHInCallRootViewController *)self currentViewController];
+    pttFullScreenContainerViewController = [(PHInCallRootViewController *)self pttFullScreenContainerViewController];
+    v9 = currentViewController == pttFullScreenContainerViewController;
   }
 
 LABEL_11:
@@ -1251,9 +1251,9 @@ LABEL_11:
   }
 
   v13 = +[UIApplication sharedApplication];
-  v14 = [v13 delegate];
-  v15 = [v14 currentInCallScene];
-  [v15 setShouldBecomeVisibleWhenWakingDisplay:v9];
+  delegate = [v13 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  [currentInCallScene setShouldBecomeVisibleWhenWakingDisplay:v9];
 }
 
 - (void)updateTransportIndicatorView
@@ -1264,24 +1264,24 @@ LABEL_11:
   }
 
   v3 = PHPreferencesGetValue();
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (!v4)
+  if (!bOOLValue)
   {
     return;
   }
 
-  v5 = [(PHInCallRootViewController *)self callCenter];
-  v25 = [v5 callPassingTest:&stru_100359728];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  v25 = [callCenter callPassingTest:&stru_100359728];
 
-  v6 = [(PHInCallRootViewController *)self transportIndicatorView];
+  transportIndicatorView = [(PHInCallRootViewController *)self transportIndicatorView];
   if (!v25)
   {
 
-    if (v6)
+    if (transportIndicatorView)
     {
-      v22 = [(PHInCallRootViewController *)self transportIndicatorView];
-      [v22 removeFromSuperview];
+      transportIndicatorView2 = [(PHInCallRootViewController *)self transportIndicatorView];
+      [transportIndicatorView2 removeFromSuperview];
 
       [(PHInCallRootViewController *)self setTransportIndicatorView:0];
     }
@@ -1289,52 +1289,52 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  if (!v6)
+  if (!transportIndicatorView)
   {
     v7 = [[UIView alloc] initWithFrame:{0.0, 0.0, 15.0, 15.0}];
     [(PHInCallRootViewController *)self setTransportIndicatorView:v7];
 
-    v8 = [(PHInCallRootViewController *)self transportIndicatorView];
-    [v8 setAutoresizingMask:9];
+    transportIndicatorView3 = [(PHInCallRootViewController *)self transportIndicatorView];
+    [transportIndicatorView3 setAutoresizingMask:9];
 
-    v9 = [(PHInCallRootViewController *)self transportIndicatorView];
-    v10 = [v9 layer];
-    [v10 setCornerRadius:7.5];
+    transportIndicatorView4 = [(PHInCallRootViewController *)self transportIndicatorView];
+    layer = [transportIndicatorView4 layer];
+    [layer setCornerRadius:7.5];
 
-    v11 = [(PHInCallRootViewController *)self view];
-    v12 = [(PHInCallRootViewController *)self transportIndicatorView];
-    [v11 addSubview:v12];
+    view = [(PHInCallRootViewController *)self view];
+    transportIndicatorView5 = [(PHInCallRootViewController *)self transportIndicatorView];
+    [view addSubview:transportIndicatorView5];
 
-    v13 = [(PHInCallRootViewController *)self view];
-    [v13 bounds];
+    view2 = [(PHInCallRootViewController *)self view];
+    [view2 bounds];
     v15 = v14 + -15.0 + -5.0;
-    v16 = [(PHInCallRootViewController *)self view];
-    [v16 bounds];
+    view3 = [(PHInCallRootViewController *)self view];
+    [view3 bounds];
     v18 = v17 + -15.0 + -5.0;
-    v19 = [(PHInCallRootViewController *)self transportIndicatorView];
-    [v19 setFrame:{v15, v18, 15.0, 15.0}];
+    transportIndicatorView6 = [(PHInCallRootViewController *)self transportIndicatorView];
+    [transportIndicatorView6 setFrame:{v15, v18, 15.0, 15.0}];
   }
 
-  v20 = [v25 faceTimeTransportType];
-  if (v20 == 2)
+  faceTimeTransportType = [v25 faceTimeTransportType];
+  if (faceTimeTransportType == 2)
   {
     v21 = +[UIColor systemBlueColor];
     goto LABEL_15;
   }
 
-  if (v20 == 1)
+  if (faceTimeTransportType == 1)
   {
     v21 = +[UIColor systemGreenColor];
     goto LABEL_15;
   }
 
-  if (!v20)
+  if (!faceTimeTransportType)
   {
     v21 = +[UIColor systemGrayColor];
 LABEL_15:
     v23 = v21;
-    v24 = [(PHInCallRootViewController *)self transportIndicatorView];
-    [v24 setBackgroundColor:v23];
+    transportIndicatorView7 = [(PHInCallRootViewController *)self transportIndicatorView];
+    [transportIndicatorView7 setBackgroundColor:v23];
   }
 
 LABEL_16:
@@ -1342,19 +1342,19 @@ LABEL_16:
 
 - (id)_remoteViewControllerProxy
 {
-  v3 = [(PHInCallRootViewController *)self parentViewController];
-  if (v3 && (v4 = v3, [(PHInCallRootViewController *)self parentViewController], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) != 0))
+  parentViewController = [(PHInCallRootViewController *)self parentViewController];
+  if (parentViewController && (v4 = parentViewController, [(PHInCallRootViewController *)self parentViewController], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) != 0))
   {
-    v7 = [(PHInCallRootViewController *)self parentViewController];
-    v8 = [v7 _remoteViewControllerProxy];
+    parentViewController2 = [(PHInCallRootViewController *)self parentViewController];
+    _remoteViewControllerProxy = [parentViewController2 _remoteViewControllerProxy];
   }
 
   else
   {
-    v8 = 0;
+    _remoteViewControllerProxy = 0;
   }
 
-  return v8;
+  return _remoteViewControllerProxy;
 }
 
 - (void)updateCallControllerForCurrentState
@@ -1368,14 +1368,14 @@ LABEL_16:
 
   if (!-[PHInCallRootViewController hasEverAppearedInWindow](self, "hasEverAppearedInWindow") || (-[PHInCallRootViewController view](self, "view"), v4 = objc_claimAutoreleasedReturnValue(), [v4 window], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [(PHInCallRootViewController *)self callCenter];
-    v7 = [v6 incomingCall];
-    v8 = [v6 callWithStatus:5];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    incomingCall = [callCenter incomingCall];
+    v8 = [callCenter callWithStatus:5];
     v9 = +[UIApplication sharedApplication];
-    v10 = [v9 delegate];
-    v11 = [v10 mostRecentlyDisconnectedAudioCall];
+    delegate = [v9 delegate];
+    mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
     v267 = v8;
-    if ([v11 disconnectedReasonRequiresCallBackUI])
+    if ([mostRecentlyDisconnectedAudioCall disconnectedReasonRequiresCallBackUI])
     {
       v12 = +[PHInCallUIUtilities isSpringBoardPasscodeLocked]^ 1;
     }
@@ -1383,9 +1383,9 @@ LABEL_16:
     else
     {
       v13 = +[UIApplication sharedApplication];
-      v14 = [v13 delegate];
-      v15 = [v14 mostRecentlyDisconnectedAudioCall];
-      if ([v15 shouldShowFailureAlert])
+      delegate2 = [v13 delegate];
+      mostRecentlyDisconnectedAudioCall2 = [delegate2 mostRecentlyDisconnectedAudioCall];
+      if ([mostRecentlyDisconnectedAudioCall2 shouldShowFailureAlert])
       {
         v12 = +[PHInCallUIUtilities isSpringBoardPasscodeLocked]^ 1;
       }
@@ -1397,22 +1397,22 @@ LABEL_16:
     }
 
     v16 = +[UIApplication sharedApplication];
-    v17 = [v16 delegate];
-    v18 = [v17 mostRecentlyDisconnectedVideoCall];
-    v268 = self;
-    if ([v18 disconnectedReasonRequiresCallBackUI])
+    delegate3 = [v16 delegate];
+    mostRecentlyDisconnectedVideoCall = [delegate3 mostRecentlyDisconnectedVideoCall];
+    selfCopy = self;
+    if ([mostRecentlyDisconnectedVideoCall disconnectedReasonRequiresCallBackUI])
     {
       v19 = +[PHInCallUIUtilities isSpringBoardPasscodeLocked]^ 1;
     }
 
     else
     {
-      v20 = v6;
-      v21 = v7;
+      v20 = callCenter;
+      v21 = incomingCall;
       v22 = +[UIApplication sharedApplication];
-      v23 = [v22 delegate];
-      v24 = [v23 mostRecentlyDisconnectedVideoCall];
-      if ([v24 shouldShowFailureAlert])
+      delegate4 = [v22 delegate];
+      mostRecentlyDisconnectedVideoCall2 = [delegate4 mostRecentlyDisconnectedVideoCall];
+      if ([mostRecentlyDisconnectedVideoCall2 shouldShowFailureAlert])
       {
         v25 = +[PHInCallUIUtilities isSpringBoardPasscodeLocked]^ 1;
       }
@@ -1423,52 +1423,52 @@ LABEL_16:
       }
 
       v19 = v25;
-      v7 = v21;
-      v6 = v20;
-      self = v268;
+      incomingCall = v21;
+      callCenter = v20;
+      self = selfCopy;
     }
 
     v26 = [qword_1003B0ED8 containsObject:@"PHRedialCallAssertionReason"];
     if ((v12 | v19))
     {
       v27 = +[PHPIPController defaultPIPController];
-      v28 = [v27 pipState];
+      pipState = [v27 pipState];
 
-      if (v28 == 2)
+      if (pipState == 2)
       {
         v29 = +[PHPIPController defaultPIPController];
         [v29 cancelPIPIfNeeded];
       }
     }
 
-    v30 = [v6 bargeCalls];
-    v31 = [v30 count];
+    bargeCalls = [callCenter bargeCalls];
+    v31 = [bargeCalls count];
 
-    v270 = [v6 callsPassingTest:&stru_1003594B8];
-    v32 = [v6 frontmostCall];
-    if ([v32 isActive])
+    v270 = [callCenter callsPassingTest:&stru_1003594B8];
+    frontmostCall = [callCenter frontmostCall];
+    if ([frontmostCall isActive])
     {
-      v33 = v6;
-      v34 = v7;
+      v33 = callCenter;
+      v34 = incomingCall;
       v35 = v19;
       v36 = v33;
-      v37 = [v33 frontmostCall];
-      v38 = [v37 provider];
-      if ([v38 supportsDynamicSystemUI])
+      frontmostCall2 = [v33 frontmostCall];
+      provider = [frontmostCall2 provider];
+      if ([provider supportsDynamicSystemUI])
       {
         v39 = [v270 count];
 
         v19 = v35;
-        v7 = v34;
-        v6 = v36;
-        self = v268;
+        incomingCall = v34;
+        callCenter = v36;
+        self = selfCopy;
         if (v39)
         {
           goto LABEL_30;
         }
 
-        v32 = [(PHInCallRootViewController *)v268 featureFlags];
-        if ([v32 groupConversations])
+        frontmostCall = [(PHInCallRootViewController *)selfCopy featureFlags];
+        if ([frontmostCall groupConversations])
         {
           HasChinaSKU = TUDeviceHasChinaSKU();
 
@@ -1483,9 +1483,9 @@ LABEL_16:
 
             [PHInCallRootViewController releaseDismissalAssertionReasons:qword_1003B0ED8];
             v42 = +[UIApplication sharedApplication];
-            v43 = [v42 delegate];
-            v44 = [v43 bannerPresentationManager];
-            [v44 showGreenTea3PHUD];
+            delegate5 = [v42 delegate];
+            bannerPresentationManager = [delegate5 bannerPresentationManager];
+            [bannerPresentationManager showGreenTea3PHUD];
 
 LABEL_38:
             v45 = v267;
@@ -1495,7 +1495,7 @@ LABEL_272:
           }
 
 LABEL_30:
-          if ((-[NSObject hasCurrentCalls](v6, "hasCurrentCalls") & 1) == 0 && ((+[TUCallCapabilities isEmergencyCallbackModeEnabled](TUCallCapabilities, "isEmergencyCallbackModeEnabled") | v12 | v19) & 1) == 0 && !-[PHInCallRootViewController shouldShowVideoCallBlockAndReportScreen](self, "shouldShowVideoCallBlockAndReportScreen") && !-[PHInCallRootViewController shouldShowSOS](self, "shouldShowSOS") && !-[PHInCallRootViewController shouldShowScreenTimeShield](self, "shouldShowScreenTimeShield") && (([qword_1003B0ED8 containsObject:@"PHUserScoreShowingAssertionReason"] | v26) & 1) == 0 && !v31 && (objc_msgSend(qword_1003B0ED8, "containsObject:", @"PHAVLessConversationDetailsViewAssertionReason") & 1) == 0 && (objc_msgSend(qword_1003B0ED8, "containsObject:", @"PHAVLessConversationAssertionReason") & 1) == 0 && (objc_msgSend(qword_1003B0ED8, "containsObject:", @"PHVideoMessageInProgressAssertionReason") & 1) == 0 && (objc_msgSend(qword_1003B0ED8, "containsObject:", @"PHCallEndedBlockAndReportInProgressAssertionReason") & 1) == 0)
+          if ((-[NSObject hasCurrentCalls](callCenter, "hasCurrentCalls") & 1) == 0 && ((+[TUCallCapabilities isEmergencyCallbackModeEnabled](TUCallCapabilities, "isEmergencyCallbackModeEnabled") | v12 | v19) & 1) == 0 && !-[PHInCallRootViewController shouldShowVideoCallBlockAndReportScreen](self, "shouldShowVideoCallBlockAndReportScreen") && !-[PHInCallRootViewController shouldShowSOS](self, "shouldShowSOS") && !-[PHInCallRootViewController shouldShowScreenTimeShield](self, "shouldShowScreenTimeShield") && (([qword_1003B0ED8 containsObject:@"PHUserScoreShowingAssertionReason"] | v26) & 1) == 0 && !v31 && (objc_msgSend(qword_1003B0ED8, "containsObject:", @"PHAVLessConversationDetailsViewAssertionReason") & 1) == 0 && (objc_msgSend(qword_1003B0ED8, "containsObject:", @"PHAVLessConversationAssertionReason") & 1) == 0 && (objc_msgSend(qword_1003B0ED8, "containsObject:", @"PHVideoMessageInProgressAssertionReason") & 1) == 0 && (objc_msgSend(qword_1003B0ED8, "containsObject:", @"PHCallEndedBlockAndReportInProgressAssertionReason") & 1) == 0)
           {
             v158 = +[PHPIPController defaultPIPController];
             [v158 cancelPIPIfNeeded];
@@ -1519,7 +1519,7 @@ LABEL_30:
             goto LABEL_38;
           }
 
-          if ([v6 anyCallPassesTest:&stru_1003594D8])
+          if ([callCenter anyCallPassesTest:&stru_1003594D8])
           {
             v42 = sub_100004F84();
             if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -1531,15 +1531,15 @@ LABEL_30:
             goto LABEL_38;
           }
 
-          v260 = [(PHInCallRootViewController *)self currentViewController];
-          if (self->_videoCallNavigationController == v260)
+          currentViewController = [(PHInCallRootViewController *)self currentViewController];
+          if (self->_videoCallNavigationController == currentViewController)
           {
-            v47 = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController view];
-            v48 = [v47 superview];
-            if (v48)
+            view = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController view];
+            superview = [view superview];
+            if (superview)
             {
-              v49 = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController parentViewController];
-              v248 = v49 != 0;
+              parentViewController = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController parentViewController];
+              v248 = parentViewController != 0;
             }
 
             else
@@ -1556,26 +1556,26 @@ LABEL_30:
             v46 = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
           }
 
-          v50 = [v6 currentAudioAndVideoCalls];
-          v51 = [v50 count];
+          currentAudioAndVideoCalls = [callCenter currentAudioAndVideoCalls];
+          v51 = [currentAudioAndVideoCalls count];
 
           v271[0] = _NSConcreteStackBlock;
           v271[1] = 3221225472;
           v271[2] = sub_1000F22E0;
           v271[3] = &unk_100359500;
-          v52 = v6;
+          v52 = callCenter;
           v272 = v52;
-          v273 = self;
+          selfCopy2 = self;
           v257 = [v52 callPassingTest:v271];
           v258 = [v52 callPassingTest:&stru_100359520];
-          v264 = [v52 incomingVideoCall];
+          incomingVideoCall = [v52 incomingVideoCall];
           v256 = [v52 callPassingTest:&stru_100359540];
           v255 = [v52 callPassingTest:&stru_100359560];
           v53 = [v52 callWithStatus:2];
           if (v53)
           {
-            v54 = [(PHInCallRootViewController *)self callManager];
-            [v54 updateWithCall:v53];
+            callManager = [(PHInCallRootViewController *)self callManager];
+            [callManager updateWithCall:v53];
           }
 
           v249 = v19;
@@ -1583,34 +1583,34 @@ LABEL_30:
           v55 = [v52 callPassingTest:&stru_100359580];
           if (v55)
           {
-            v56 = [(PHInCallRootViewController *)self callManager];
-            [v56 updateWithCall:v55];
+            callManager2 = [(PHInCallRootViewController *)self callManager];
+            [callManager2 updateWithCall:v55];
           }
 
           v259 = v55;
-          v57 = [v46[39] sharedApplication];
-          v58 = [v57 delegate];
-          v59 = [v58 mostRecentlyDisconnectedVideoCall];
+          sharedApplication = [v46[39] sharedApplication];
+          delegate6 = [sharedApplication delegate];
+          mostRecentlyDisconnectedVideoCall3 = [delegate6 mostRecentlyDisconnectedVideoCall];
 
-          if (v59)
+          if (mostRecentlyDisconnectedVideoCall3)
           {
-            v60 = [(PHInCallRootViewController *)self callManager];
-            [v60 updateWithCall:v59];
+            callManager3 = [(PHInCallRootViewController *)self callManager];
+            [callManager3 updateWithCall:mostRecentlyDisconnectedVideoCall3];
           }
 
-          v250 = v59;
+          v250 = mostRecentlyDisconnectedVideoCall3;
           v61 = [v52 anyCallPassesTest:&stru_1003595A0];
-          v62 = [v46[39] sharedApplication];
-          v63 = [v62 delegate];
-          v64 = [v63 mostRecentlyDisconnectedVideoCall];
+          sharedApplication2 = [v46[39] sharedApplication];
+          delegate7 = [sharedApplication2 delegate];
+          mostRecentlyDisconnectedVideoCall4 = [delegate7 mostRecentlyDisconnectedVideoCall];
 
-          v65 = [v52 hasCurrentVideoCalls];
+          hasCurrentVideoCalls = [v52 hasCurrentVideoCalls];
           v266 = v52;
-          v66 = [v52 ics_hasTooManyCallsForCallWaitingBanner];
-          if (v7)
+          ics_hasTooManyCallsForCallWaitingBanner = [v52 ics_hasTooManyCallsForCallWaitingBanner];
+          if (incomingCall)
           {
-            v67 = [(PHInCallRootViewController *)self callManager];
-            [v67 updateWithCall:v7];
+            callManager4 = [(PHInCallRootViewController *)self callManager];
+            [callManager4 updateWithCall:incomingCall];
           }
 
           v253 = ![(PHInCallRootViewController *)self shouldShowScreenTimeShield]| v61;
@@ -1619,50 +1619,50 @@ LABEL_30:
             v74 = sub_100004F84();
             if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
             {
-              v75 = [(PHInCallRootViewController *)self filteredRequest];
+              filteredRequest = [(PHInCallRootViewController *)self filteredRequest];
               *buf = 138412290;
-              v275 = v75;
+              selfCopy3 = filteredRequest;
               _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "InCallRootViewController will show screen time host view controller for request %@", buf, 0xCu);
             }
 
-            v265 = 0;
+            mostRecentlyDisconnectedVideoCall6 = 0;
             v71 = 0;
-            v69 = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
-            if (!v64)
+            activeRemoteParticipants = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
+            if (!mostRecentlyDisconnectedVideoCall4)
             {
               v261 = 0;
               v262 = 1;
-              LODWORD(v72) = 0;
+              LODWORD(presentedFullScreenedCall2) = 0;
               v73 = 0;
               goto LABEL_81;
             }
 
-            LODWORD(v72) = 0;
+            LODWORD(presentedFullScreenedCall2) = 0;
             v73 = 0;
             v261 = 0;
             goto LABEL_70;
           }
 
-          if (v264)
+          if (incomingVideoCall)
           {
             v68 = sub_100004F84();
-            v69 = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
+            activeRemoteParticipants = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
             if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v275 = v264;
+              selfCopy3 = incomingVideoCall;
               _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, "Showing video controller for ringing video call %@", buf, 0xCu);
             }
 
             if ([qword_1003B0ED8 containsObject:@"PHCallEndedBlockAndReportInProgressAssertionReason"])
             {
-              v70 = [(PHInCallRootViewController *)self multiwayViewController];
-              [v70 setIsInCallEndedBlockAndReportFlow:0];
+              multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+              [multiwayViewController setIsInCallEndedBlockAndReportFlow:0];
 
               [objc_opt_class() releaseDismissalAssertionForReason:@"PHCallEndedBlockAndReportInProgressAssertionReason"];
             }
 
-            v265 = v264;
+            mostRecentlyDisconnectedVideoCall6 = incomingVideoCall;
             goto LABEL_62;
           }
 
@@ -1672,69 +1672,69 @@ LABEL_30:
             if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v275 = v257;
+              selfCopy3 = v257;
               _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "Showing multiway controller for not-ringing multiway call %@", buf, 0xCu);
             }
 
-            v265 = v257;
+            mostRecentlyDisconnectedVideoCall6 = v257;
             v71 = 0;
-            LODWORD(v72) = 0;
+            LODWORD(presentedFullScreenedCall2) = 0;
             v73 = 0;
             v261 = 0;
             v262 = 0;
-            v69 = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
-            if (!v64)
+            activeRemoteParticipants = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
+            if (!mostRecentlyDisconnectedVideoCall4)
             {
 LABEL_81:
               v80 = +[PHPIPController defaultPIPController];
-              v81 = [v80 pipState];
+              pipState2 = [v80 pipState];
 
-              v82 = v81 == 0;
-              if (v81)
+              v82 = pipState2 == 0;
+              if (pipState2)
               {
                 v83 = 0;
               }
 
               else
               {
-                v83 = v72;
+                v83 = presentedFullScreenedCall2;
               }
 
               if (v82)
               {
-                v84 = v71;
+                didDeepLinkToPTTCallDetailsView = v71;
               }
 
               else
               {
-                v84 = 0;
+                didDeepLinkToPTTCallDetailsView = 0;
               }
 
-              v85 = [(PHInCallRootViewController *)self multiwayViewController];
+              multiwayViewController2 = [(PHInCallRootViewController *)self multiwayViewController];
 
-              if (v85)
+              if (multiwayViewController2)
               {
-                if ([(PHInCallRootViewController *)self shouldExitVideoMessageFlowConsideringShowAudioController:v84 showEmergencyCallController:v83 showSOSController:v73 showScreenTimeController:v262 & 1 showUserScoreController:v261 showPTTFullScreenController:0])
+                if ([(PHInCallRootViewController *)self shouldExitVideoMessageFlowConsideringShowAudioController:didDeepLinkToPTTCallDetailsView showEmergencyCallController:v83 showSOSController:v73 showScreenTimeController:v262 & 1 showUserScoreController:v261 showPTTFullScreenController:0])
                 {
-                  v86 = [(PHInCallRootViewController *)self multiwayViewController];
-                  v87 = [v86 isInVideoMessageFlow];
+                  multiwayViewController3 = [(PHInCallRootViewController *)self multiwayViewController];
+                  isInVideoMessageFlow = [multiwayViewController3 isInVideoMessageFlow];
 
-                  if (v87)
+                  if (isInVideoMessageFlow)
                   {
-                    v88 = [(PHInCallRootViewController *)self multiwayViewController];
-                    [v88 cancelVideoRecordingWithCompletion:0];
+                    multiwayViewController4 = [(PHInCallRootViewController *)self multiwayViewController];
+                    [multiwayViewController4 cancelVideoRecordingWithCompletion:0];
 
                     [(PHInCallRootViewController *)self setMultiwayViewController:0];
                   }
                 }
               }
 
-              v89 = [v266 frontmostBargeCall];
-              v90 = v262 | v73 | (v89 == 0) | (v265 != 0);
+              frontmostBargeCall = [v266 frontmostBargeCall];
+              v90 = v262 | v73 | (frontmostBargeCall == 0) | (mostRecentlyDisconnectedVideoCall6 != 0);
 
-              v252 = v7;
+              v252 = incomingCall;
               v269 = v73;
-              if ((v90 | v261 | v84 | v83))
+              if ((v90 | v261 | didDeepLinkToPTTCallDetailsView | v83))
               {
                 if (([qword_1003B0ED8 containsObject:@"PHInitialPTTFullScreenPresentationAssertionReason"] & 1) != 0 || objc_msgSend(qword_1003B0ED8, "containsObject:", @"PHPTTCallDetailsViewAssertionReason"))
                 {
@@ -1751,48 +1751,48 @@ LABEL_81:
                 v92 = sub_100004F84();
                 if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
                 {
-                  v93 = [v266 frontmostBargeCall];
+                  frontmostBargeCall2 = [v266 frontmostBargeCall];
                   *buf = 138412290;
-                  v275 = v93;
+                  selfCopy3 = frontmostBargeCall2;
                   _os_log_impl(&_mh_execute_header, v92, OS_LOG_TYPE_DEFAULT, "Loading PTT full screen controller %@", buf, 0xCu);
                 }
 
-                v94 = [(objc_class *)v69[39].isa sharedApplication];
-                v95 = [v94 delegate];
-                v254 = [v95 didDeepLinkToPTTCallDetailsView] ^ 1;
+                sharedApplication3 = [(objc_class *)activeRemoteParticipants[39].isa sharedApplication];
+                delegate8 = [sharedApplication3 delegate];
+                v254 = [delegate8 didDeepLinkToPTTCallDetailsView] ^ 1;
 
-                v96 = [(objc_class *)v69[39].isa sharedApplication];
-                v97 = [v96 delegate];
-                v84 = [v97 didDeepLinkToPTTCallDetailsView];
+                sharedApplication4 = [(objc_class *)activeRemoteParticipants[39].isa sharedApplication];
+                delegate9 = [sharedApplication4 delegate];
+                didDeepLinkToPTTCallDetailsView = [delegate9 didDeepLinkToPTTCallDetailsView];
 
-                if (v84)
+                if (didDeepLinkToPTTCallDetailsView)
                 {
-                  v98 = [(PHPTTFullScreenContainerViewController *)self->_pttFullScreenContainerViewController view];
-                  v99 = [v98 superview];
-                  if (v99)
+                  view2 = [(PHPTTFullScreenContainerViewController *)self->_pttFullScreenContainerViewController view];
+                  superview2 = [view2 superview];
+                  if (superview2)
                   {
-                    v100 = v99;
-                    v101 = [(objc_class *)v69[39].isa sharedApplication];
-                    v102 = [v101 delegate];
-                    v103 = [v102 currentInCallScene];
-                    v104 = [v103 presentationMode];
+                    v100 = superview2;
+                    sharedApplication5 = [(objc_class *)activeRemoteParticipants[39].isa sharedApplication];
+                    delegate10 = [sharedApplication5 delegate];
+                    currentInCallScene = [delegate10 currentInCallScene];
+                    presentationMode = [currentInCallScene presentationMode];
 
-                    if (!v104)
+                    if (!presentationMode)
                     {
                       [(PHPTTFullScreenContainerViewController *)self->_pttFullScreenContainerViewController removeFromParentViewController];
-                      v105 = [(PHPTTFullScreenContainerViewController *)self->_pttFullScreenContainerViewController view];
-                      [v105 removeFromSuperview];
+                      view3 = [(PHPTTFullScreenContainerViewController *)self->_pttFullScreenContainerViewController view];
+                      [view3 removeFromSuperview];
                     }
 
-                    v84 = 0;
+                    didDeepLinkToPTTCallDetailsView = 0;
                     v91 = 1;
-                    v69 = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
+                    activeRemoteParticipants = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
                   }
 
                   else
                   {
 
-                    v84 = 0;
+                    didDeepLinkToPTTCallDetailsView = 0;
                     v91 = 1;
                   }
                 }
@@ -1803,20 +1803,20 @@ LABEL_81:
                 }
               }
 
-              v107 = v84;
-              v108 = [v266 frontmostAudioOrVideoCall];
-              if (v108)
+              v107 = didDeepLinkToPTTCallDetailsView;
+              frontmostAudioOrVideoCall = [v266 frontmostAudioOrVideoCall];
+              if (frontmostAudioOrVideoCall)
               {
               }
 
               else
               {
-                v109 = [(objc_class *)v69[39].isa sharedApplication];
-                v110 = [v109 delegate];
-                v111 = [v110 bannerPresentationManager];
-                v112 = [v111 conversationIsAVLess];
+                sharedApplication6 = [(objc_class *)activeRemoteParticipants[39].isa sharedApplication];
+                delegate11 = [sharedApplication6 delegate];
+                bannerPresentationManager2 = [delegate11 bannerPresentationManager];
+                conversationIsAVLess = [bannerPresentationManager2 conversationIsAVLess];
 
-                if (v112)
+                if (conversationIsAVLess)
                 {
                   v113 = sub_100004F84();
                   if (os_log_type_enabled(v113, OS_LOG_TYPE_DEFAULT))
@@ -1827,17 +1827,17 @@ LABEL_81:
 
                   v91 = 1;
 LABEL_119:
-                  v119 = v107;
+                  call = v107;
                   [(PHInCallRootViewController *)self updateGameControllerManagerForCurrentState];
                   if (v83)
                   {
                     [PHInCallRootViewController obtainDismissalAssertionForReason:@"PHEmergencyCallBackModeAssertionReason"];
-                    v120 = [(PHEmergencyDialerViewController *)self->_emergencyDialerViewController view];
-                    v121 = [v120 superview];
+                    view4 = [(PHEmergencyDialerViewController *)self->_emergencyDialerViewController view];
+                    superview3 = [view4 superview];
 
                     v45 = v267;
-                    v7 = v252;
-                    if (!v121)
+                    incomingCall = v252;
+                    if (!superview3)
                     {
                       v122 = sub_100004F84();
                       if (os_log_type_enabled(v122, OS_LOG_TYPE_DEFAULT))
@@ -1858,15 +1858,15 @@ LABEL_119:
                         emergencyDialerViewController = self->_emergencyDialerViewController;
                       }
 
-                      [(PHInCallRootViewController *)self _transitionFromViewController:v260 toViewController:emergencyDialerViewController];
-                      v126 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-                      [v126 setWallpaperTunnelActive:1];
+                      [(PHInCallRootViewController *)self _transitionFromViewController:currentViewController toViewController:emergencyDialerViewController];
+                      _remoteViewControllerProxy = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+                      [_remoteViewControllerProxy setWallpaperTunnelActive:1];
                     }
 
 LABEL_185:
                     [(PHInCallRootViewController *)self showHideMiniWindowViewIfNeededAnimated:0];
-                    v154 = v265;
-                    if (v265)
+                    v154 = mostRecentlyDisconnectedVideoCall6;
+                    if (mostRecentlyDisconnectedVideoCall6)
                     {
 LABEL_186:
                       v42 = v154;
@@ -1882,30 +1882,30 @@ LABEL_186:
 LABEL_251:
                     if ([qword_1003B0ED8 containsObject:@"PHMulitwayCallAssertionReason"])
                     {
-                      v207 = [(PHInCallRootViewController *)self multiwayViewController];
-                      if (![v207 isInVideoMessageFlow])
+                      multiwayViewController5 = [(PHInCallRootViewController *)self multiwayViewController];
+                      if (![multiwayViewController5 isInVideoMessageFlow])
                       {
-                        v208 = [(PHInCallRootViewController *)self shouldShowVideoCallBlockAndReportScreen];
+                        shouldShowVideoCallBlockAndReportScreen = [(PHInCallRootViewController *)self shouldShowVideoCallBlockAndReportScreen];
 
-                        if ((v208 & 1) == 0)
+                        if ((shouldShowVideoCallBlockAndReportScreen & 1) == 0)
                         {
                           [PHInCallRootViewController releaseDismissalAssertionForReason:@"PHMulitwayCallAssertionReason"];
                         }
 
                         v42 = 0;
-                        v154 = v265;
+                        v154 = mostRecentlyDisconnectedVideoCall6;
 LABEL_258:
-                        if ((v119 | v254))
+                        if ((call | v254))
                         {
-                          v209 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-                          [v209 setWallpaperTunnelActive:1];
+                          _remoteViewControllerProxy2 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+                          [_remoteViewControllerProxy2 setWallpaperTunnelActive:1];
                         }
 
                         if (v269)
                         {
-                          v210 = [(objc_class *)v69[39].isa sharedApplication];
-                          v211 = [v210 delegate];
-                          [v211 hideCarPlayUI];
+                          sharedApplication7 = [(objc_class *)activeRemoteParticipants[39].isa sharedApplication];
+                          delegate12 = [sharedApplication7 delegate];
+                          [delegate12 hideCarPlayUI];
                         }
 
                         else
@@ -1917,14 +1917,14 @@ LABEL_258:
 
                           else
                           {
-                            v212 = v119;
+                            v212 = call;
                           }
 
-                          v213 = [(PHInCallRootViewController *)self featureFlags];
-                          if ([v213 carPlayBannersEnabled])
+                          featureFlags = [(PHInCallRootViewController *)self featureFlags];
+                          if ([featureFlags carPlayBannersEnabled])
                           {
-                            v214 = [v266 frontmostCall];
-                            v215 = [v214 status] == 3;
+                            frontmostCall3 = [v266 frontmostCall];
+                            v215 = [frontmostCall3 status] == 3;
                           }
 
                           else
@@ -1937,9 +1937,9 @@ LABEL_258:
                             goto LABEL_271;
                           }
 
-                          v210 = [(objc_class *)v69[39].isa sharedApplication];
-                          v211 = [v210 delegate];
-                          [v211 showCarPlayUIWithActivation:(v7 | v258 | v264) != 0];
+                          sharedApplication7 = [(objc_class *)activeRemoteParticipants[39].isa sharedApplication];
+                          delegate12 = [sharedApplication7 delegate];
+                          [delegate12 showCarPlayUIWithActivation:(incomingCall | v258 | incomingVideoCall) != 0];
                         }
 
 LABEL_271:
@@ -1958,19 +1958,19 @@ LABEL_271:
                   if (v107)
                   {
                     [(PHInCallRootViewController *)self _loadAudioCallViewController];
-                    v127 = [(PHInCallRootViewController *)self features];
-                    if ([v127 callManagerEnabled])
+                    features = [(PHInCallRootViewController *)self features];
+                    if ([features callManagerEnabled])
                     {
-                      v128 = [(PHInCallRootViewController *)self callCenter];
-                      v129 = [v128 frontmostCall];
+                      callCenter2 = [(PHInCallRootViewController *)self callCenter];
+                      frontmostCall4 = [callCenter2 frontmostCall];
 
                       v45 = v267;
-                      if (v129)
+                      if (frontmostCall4)
                       {
-                        v130 = [(PHInCallRootViewController *)self callManager];
-                        v131 = [(PHInCallRootViewController *)self callCenter];
-                        v132 = [v131 frontmostCall];
-                        [v130 updateWithCall:v132];
+                        callManager5 = [(PHInCallRootViewController *)self callManager];
+                        callCenter3 = [(PHInCallRootViewController *)self callCenter];
+                        frontmostCall5 = [callCenter3 frontmostCall];
+                        [callManager5 updateWithCall:frontmostCall5];
 
                         goto LABEL_141;
                       }
@@ -1982,41 +1982,41 @@ LABEL_271:
                       v45 = v267;
                     }
 
-                    v142 = [(PHInCallRootViewController *)self audioCallNavigationController];
-                    v143 = [v142 view];
-                    v144 = [v143 superview];
+                    audioCallNavigationController = [(PHInCallRootViewController *)self audioCallNavigationController];
+                    view5 = [audioCallNavigationController view];
+                    superview4 = [view5 superview];
 
-                    if (v144)
+                    if (superview4)
                     {
 LABEL_142:
-                      if (!v260)
+                      if (!currentViewController)
                       {
                         goto LABEL_181;
                       }
 
-                      v146 = [(PHInCallRootViewController *)self audioCallViewController];
-                      if (!v146)
+                      audioCallViewController = [(PHInCallRootViewController *)self audioCallViewController];
+                      if (!audioCallViewController)
                       {
                         goto LABEL_181;
                       }
 
-                      v147 = v146;
-                      v148 = [(PHInCallRootViewController *)self audioCallNavigationController];
-                      if (v148)
+                      audioCallNavigationController4 = audioCallViewController;
+                      audioCallNavigationController2 = [(PHInCallRootViewController *)self audioCallNavigationController];
+                      if (audioCallNavigationController2)
                       {
-                        v119 = v148;
-                        v149 = [(PHInCallRootViewController *)self audioCallNavigationController];
-                        v150 = [v149 view];
-                        v151 = [v150 superview];
-                        if (!(v151 | v265))
+                        call = audioCallNavigationController2;
+                        audioCallNavigationController3 = [(PHInCallRootViewController *)self audioCallNavigationController];
+                        view6 = [audioCallNavigationController3 view];
+                        superview5 = [view6 superview];
+                        if (!(superview5 | mostRecentlyDisconnectedVideoCall6))
                         {
                           multiwayViewController = self->_multiwayViewController;
 
-                          LODWORD(v119) = v107;
+                          LODWORD(call) = v107;
                           if (!multiwayViewController)
                           {
 LABEL_181:
-                            v7 = v252;
+                            incomingCall = v252;
                             if (!v252)
                             {
                               [(PHInCallRootViewController *)self releaseIdleTimerAssertionWithComment:@"showing Audio controller"];
@@ -2036,15 +2036,15 @@ LABEL_183:
                             _os_log_impl(&_mh_execute_header, v153, OS_LOG_TYPE_DEFAULT, "InCallRootViewController showing Audio controller after transitioning from multiwayViewController", buf, 2u);
                           }
 
-                          v147 = [(PHInCallRootViewController *)self audioCallNavigationController];
-                          [(PHInCallRootViewController *)self _transitionFromViewController:v260 toViewController:v147];
+                          audioCallNavigationController4 = [(PHInCallRootViewController *)self audioCallNavigationController];
+                          [(PHInCallRootViewController *)self _transitionFromViewController:currentViewController toViewController:audioCallNavigationController4];
 LABEL_180:
 
                           goto LABEL_181;
                         }
                       }
 
-                      LODWORD(v119) = v107;
+                      LODWORD(call) = v107;
                       goto LABEL_180;
                     }
 
@@ -2055,8 +2055,8 @@ LABEL_180:
                       _os_log_impl(&_mh_execute_header, v145, OS_LOG_TYPE_DEFAULT, "InCallRootViewController showing Audio controller", buf, 2u);
                     }
 
-                    v130 = [(PHInCallRootViewController *)self audioCallNavigationController];
-                    [(PHInCallRootViewController *)self _transitionFromViewController:v260 toViewController:v130];
+                    callManager5 = [(PHInCallRootViewController *)self audioCallNavigationController];
+                    [(PHInCallRootViewController *)self _transitionFromViewController:currentViewController toViewController:callManager5];
 LABEL_141:
 
                     goto LABEL_142;
@@ -2064,12 +2064,12 @@ LABEL_141:
 
                   if (v269)
                   {
-                    v133 = [(PHSOSViewController *)self->_sosViewController view];
-                    v134 = [v133 superview];
+                    view7 = [(PHSOSViewController *)self->_sosViewController view];
+                    superview6 = [view7 superview];
 
                     v45 = v267;
-                    v7 = v252;
-                    if (!v134)
+                    incomingCall = v252;
+                    if (!superview6)
                     {
                       v135 = sub_100004F84();
                       if (os_log_type_enabled(v135, OS_LOG_TYPE_DEFAULT))
@@ -2080,23 +2080,23 @@ LABEL_141:
 
                       [(PHInCallRootViewController *)self _loadSOSViewController];
                       [(PHInCallRootViewController *)self _reloadSOSHandles];
-                      [(PHInCallRootViewController *)self _transitionFromViewController:v260 toViewController:self->_sosViewController];
-                      v136 = [(objc_class *)v69[39].isa sharedApplication];
-                      v137 = [v136 delegate];
-                      [v137 transitionSceneToOverlayForSOS];
+                      [(PHInCallRootViewController *)self _transitionFromViewController:currentViewController toViewController:self->_sosViewController];
+                      sharedApplication8 = [(objc_class *)activeRemoteParticipants[39].isa sharedApplication];
+                      delegate13 = [sharedApplication8 delegate];
+                      [delegate13 transitionSceneToOverlayForSOS];
                     }
 
                     v138 = +[UIColor clearColor];
-                    v139 = [(PHInCallRootViewController *)self view];
-                    v140 = [v139 window];
-                    [v140 setBackgroundColor:v138];
+                    view8 = [(PHInCallRootViewController *)self view];
+                    window = [view8 window];
+                    [window setBackgroundColor:v138];
 
                     v141 = @"showing SOS controller";
                     goto LABEL_183;
                   }
 
-                  v154 = v265;
-                  if (v265)
+                  v154 = mostRecentlyDisconnectedVideoCall6;
+                  if (mostRecentlyDisconnectedVideoCall6)
                   {
                     v155 = sub_100004F84();
                     if (os_log_type_enabled(v155, OS_LOG_TYPE_DEFAULT))
@@ -2105,20 +2105,20 @@ LABEL_141:
                       _os_log_impl(&_mh_execute_header, v155, OS_LOG_TYPE_DEFAULT, "showMultiwayControllerCall", buf, 2u);
                     }
 
-                    v156 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-                    v157 = v266;
+                    callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+                    multiwayViewController6 = v266;
                     v45 = v267;
-                    if ([v156 callDisplayStyle])
+                    if ([callDisplayStyleManager callDisplayStyle])
                     {
                     }
 
                     else
                     {
-                      v176 = [(PHInCallRootViewController *)self featureFlags];
-                      v177 = [v176 conversationOneToOneModeEnabled];
+                      featureFlags2 = [(PHInCallRootViewController *)self featureFlags];
+                      conversationOneToOneModeEnabled = [featureFlags2 conversationOneToOneModeEnabled];
 
-                      v154 = v265;
-                      if ((v177 & 1) == 0)
+                      v154 = mostRecentlyDisconnectedVideoCall6;
+                      if ((conversationOneToOneModeEnabled & 1) == 0)
                       {
                         v178 = sub_100004F84();
                         if (os_log_type_enabled(v178, OS_LOG_TYPE_ERROR))
@@ -2131,9 +2131,9 @@ LABEL_141:
                     }
 
                     v179 = [v266 activeConversationForCall:v154];
-                    v180 = [v154 wantsStagingArea];
+                    wantsStagingArea = [v154 wantsStagingArea];
                     v263 = v179;
-                    if (v180)
+                    if (wantsStagingArea)
                     {
                       if ((+[TUConversationManager allowsVideo]& 1) == 0)
                       {
@@ -2143,28 +2143,28 @@ LABEL_141:
                       goto LABEL_200;
                     }
 
-                    v69 = [v179 activeRemoteParticipants];
-                    if (-[NSObject count](v69, "count") && [v179 state] != 3)
+                    activeRemoteParticipants = [v179 activeRemoteParticipants];
+                    if (-[NSObject count](activeRemoteParticipants, "count") && [v179 state] != 3)
                     {
-                      v157 = [(PHInCallRootViewController *)self multiwayViewController];
-                      v119 = [v157 call];
-                      if (![v119 isEqual:v154] && +[TUConversationManager allowsVideo](TUConversationManager, "allowsVideo"))
+                      multiwayViewController6 = [(PHInCallRootViewController *)self multiwayViewController];
+                      call = [multiwayViewController6 call];
+                      if (![call isEqual:v154] && +[TUConversationManager allowsVideo](TUConversationManager, "allowsVideo"))
                       {
 LABEL_200:
-                        v181 = [(PHInCallRootViewController *)self featureFlags];
-                        v182 = [v181 conversationOneToOneModeEnabled];
+                        featureFlags3 = [(PHInCallRootViewController *)self featureFlags];
+                        conversationOneToOneModeEnabled2 = [featureFlags3 conversationOneToOneModeEnabled];
 
-                        if (!v180)
+                        if (!wantsStagingArea)
                         {
                         }
 
-                        if (v182)
+                        if (conversationOneToOneModeEnabled2)
                         {
                           goto LABEL_211;
                         }
 
-                        v69 = sub_100004F84();
-                        if (os_log_type_enabled(v69, OS_LOG_TYPE_FAULT))
+                        activeRemoteParticipants = sub_100004F84();
+                        if (os_log_type_enabled(activeRemoteParticipants, OS_LOG_TYPE_FAULT))
                         {
                           sub_10025667C();
                         }
@@ -2176,14 +2176,14 @@ LABEL_200:
 LABEL_210:
 
 LABEL_211:
-                    LODWORD(v119) = 0;
-                    v7 = v252;
+                    LODWORD(call) = 0;
+                    incomingCall = v252;
                     if (!v248)
                     {
-                      v183 = [(PHInCallRootViewController *)self multiwayViewController];
-                      v184 = [v183 isInVideoMessageFlow];
+                      multiwayViewController7 = [(PHInCallRootViewController *)self multiwayViewController];
+                      isInVideoMessageFlow2 = [multiwayViewController7 isInVideoMessageFlow];
 
-                      if ((v184 & 1) == 0)
+                      if ((isInVideoMessageFlow2 & 1) == 0)
                       {
                         v185 = sub_100004F84();
                         if (os_log_type_enabled(v185, OS_LOG_TYPE_DEFAULT))
@@ -2192,32 +2192,32 @@ LABEL_211:
                           _os_log_impl(&_mh_execute_header, v185, OS_LOG_TYPE_DEFAULT, "InCallRootViewController showing Multiway controller", buf, 2u);
                         }
 
-                        v186 = [(PHInCallRootViewController *)self multiwayViewController];
-                        v187 = [v186 pipViewController];
-                        v188 = [v187 parentViewController];
+                        multiwayViewController8 = [(PHInCallRootViewController *)self multiwayViewController];
+                        pipViewController = [multiwayViewController8 pipViewController];
+                        parentViewController2 = [pipViewController parentViewController];
 
-                        [(PHInCallRootViewController *)self _loadMultiwayViewControllerForCall:v265];
-                        v189 = [(PHInCallRootViewController *)self multiwayViewController];
-                        [(PHInCallRootViewController *)self transitionToVideoCallBasedViewController:v189 shouldUpdatePipSize:1];
+                        [(PHInCallRootViewController *)self _loadMultiwayViewControllerForCall:mostRecentlyDisconnectedVideoCall6];
+                        multiwayViewController9 = [(PHInCallRootViewController *)self multiwayViewController];
+                        [(PHInCallRootViewController *)self transitionToVideoCallBasedViewController:multiwayViewController9 shouldUpdatePipSize:1];
 
                         v190 = +[PHInCallOrientationMonitor sharedInstance];
                         [v190 setOrientationEventsEnabled:1];
 
-                        v191 = [(PHInCallRootViewController *)self multiwayViewController];
+                        multiwayViewController10 = [(PHInCallRootViewController *)self multiwayViewController];
 
-                        if (v186 != v191 && v188)
+                        if (multiwayViewController8 != multiwayViewController10 && parentViewController2)
                         {
                           v192 = sub_100004F84();
                           if (os_log_type_enabled(v192, OS_LOG_TYPE_DEFAULT))
                           {
-                            v193 = [v186 pipViewController];
+                            pipViewController2 = [multiwayViewController8 pipViewController];
                             *buf = 138412290;
-                            v275 = v193;
+                            selfCopy3 = pipViewController2;
                             _os_log_impl(&_mh_execute_header, v192, OS_LOG_TYPE_DEFAULT, "Old GFT call was showing PIP view controller %@", buf, 0xCu);
                           }
 
-                          v194 = [v186 pipViewController];
-                          [(PHInCallRootViewController *)self setOldMultiwayPIPViewController:v194];
+                          pipViewController3 = [multiwayViewController8 pipViewController];
+                          [(PHInCallRootViewController *)self setOldMultiwayPIPViewController:pipViewController3];
                         }
                       }
                     }
@@ -2232,8 +2232,8 @@ LABEL_211:
                       [(PHInCallRootViewController *)self obtainIdleTimerAssertionWithComment:@"showing Multiway controller"];
                     }
 
-                    v69 = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
-                    v154 = v265;
+                    activeRemoteParticipants = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
+                    v154 = mostRecentlyDisconnectedVideoCall6;
 
                     [(PHInCallRootViewController *)self showHideMiniWindowViewIfNeededAnimated:0];
                     goto LABEL_186;
@@ -2241,13 +2241,13 @@ LABEL_211:
 
                   if (v262)
                   {
-                    v163 = [(PHInCallRootViewController *)self screenTimeHostViewController];
-                    v164 = [v163 view];
-                    v165 = [v164 superview];
+                    screenTimeHostViewController = [(PHInCallRootViewController *)self screenTimeHostViewController];
+                    view9 = [screenTimeHostViewController view];
+                    superview7 = [view9 superview];
 
                     v154 = 0;
-                    v7 = v252;
-                    if (!v165)
+                    incomingCall = v252;
+                    if (!superview7)
                     {
                       v166 = sub_100004F84();
                       if (os_log_type_enabled(v166, OS_LOG_TYPE_DEFAULT))
@@ -2268,23 +2268,23 @@ LABEL_211:
                     {
                       [(PHInCallRootViewController *)self _loadUserFeedbackViewController];
                       v195 = sub_100004F84();
-                      v7 = v252;
+                      incomingCall = v252;
                       if (os_log_type_enabled(v195, OS_LOG_TYPE_DEFAULT))
                       {
                         *buf = 0;
                         _os_log_impl(&_mh_execute_header, v195, OS_LOG_TYPE_DEFAULT, "InCallRootViewController showing User Feedback View controller", buf, 2u);
                       }
 
-                      v196 = [(PHInCallRootViewController *)self callCenter];
-                      v197 = [v196 videoDeviceController];
-                      [v197 stopPreview];
+                      callCenter4 = [(PHInCallRootViewController *)self callCenter];
+                      videoDeviceController = [callCenter4 videoDeviceController];
+                      [videoDeviceController stopPreview];
 
                       [(PHInCallRootViewController *)self presentViewController:self->_userFeedbackViewController animated:1 completion:0];
                     }
 
                     else
                     {
-                      v7 = v252;
+                      incomingCall = v252;
                       if (!v254)
                       {
                         if (v91 && ![(PHInCallRootViewController *)self isPresentingCallDetailsView])
@@ -2295,10 +2295,10 @@ LABEL_211:
                         goto LABEL_250;
                       }
 
-                      v201 = [(PHPTTFullScreenContainerViewController *)self->_pttFullScreenContainerViewController view];
-                      v202 = [v201 superview];
+                      view10 = [(PHPTTFullScreenContainerViewController *)self->_pttFullScreenContainerViewController view];
+                      superview8 = [view10 superview];
 
-                      if (!v202)
+                      if (!superview8)
                       {
                         v203 = sub_100004F84();
                         if (os_log_type_enabled(v203, OS_LOG_TYPE_DEFAULT))
@@ -2308,11 +2308,11 @@ LABEL_211:
                         }
 
                         [(PHInCallRootViewController *)self _loadPTTFullScreenContainerViewController];
-                        [(PHInCallRootViewController *)self _transitionFromViewController:v260 toViewController:self->_pttFullScreenContainerViewController];
-                        v204 = [(objc_class *)v69[39].isa sharedApplication];
-                        v205 = [v204 delegate];
-                        v206 = [v205 currentInCallScene];
-                        [v206 requestTransitionToPresentationMode:0 shouldDismissCMASAlerts:0 analyticsSource:0];
+                        [(PHInCallRootViewController *)self _transitionFromViewController:currentViewController toViewController:self->_pttFullScreenContainerViewController];
+                        sharedApplication9 = [(objc_class *)activeRemoteParticipants[39].isa sharedApplication];
+                        delegate14 = [sharedApplication9 delegate];
+                        currentInCallScene2 = [delegate14 currentInCallScene];
+                        [currentInCallScene2 requestTransitionToPresentationMode:0 shouldDismissCMASAlerts:0 analyticsSource:0];
                       }
 
                       [(PHInCallRootViewController *)self releaseIdleTimerAssertionWithComment:@"showing PTT Full Screen controller"];
@@ -2328,25 +2328,25 @@ LABEL_250:
                 }
               }
 
-              v114 = [(objc_class *)v69[39].isa sharedApplication];
-              v115 = [v114 delegate];
-              v116 = [v115 bannerPresentationManager];
-              if ([v116 onlyHasPlaceholderCall])
+              sharedApplication10 = [(objc_class *)activeRemoteParticipants[39].isa sharedApplication];
+              delegate15 = [sharedApplication10 delegate];
+              bannerPresentationManager3 = [delegate15 bannerPresentationManager];
+              if ([bannerPresentationManager3 onlyHasPlaceholderCall])
               {
               }
 
               else
               {
-                v117 = [v266 conversationManager];
-                v118 = [v117 avLessConversation];
+                conversationManager = [v266 conversationManager];
+                avLessConversation = [conversationManager avLessConversation];
 
-                if (!v118)
+                if (!avLessConversation)
                 {
                   [PHInCallRootViewController releaseDismissalAssertionForReason:@"PHAVLessConversationAssertionReason"];
                   [PHInCallRootViewController releaseDismissalAssertionForReason:@"PHAVLessConversationDetailsViewAssertionReason"];
                 }
 
-                v69 = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
+                activeRemoteParticipants = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
               }
 
               goto LABEL_119;
@@ -2361,20 +2361,20 @@ LABEL_70:
               _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEFAULT, "setting ICSAppDelegate.mostRecentlyDisconnectedVideoCall to nil", buf, 2u);
             }
 
-            v77 = [(objc_class *)v69[39].isa sharedApplication];
-            v78 = [v77 delegate];
-            [v78 setMostRecentlyDisconnectedVideoCall:0];
+            sharedApplication11 = [(objc_class *)activeRemoteParticipants[39].isa sharedApplication];
+            delegate16 = [sharedApplication11 delegate];
+            [delegate16 setMostRecentlyDisconnectedVideoCall:0];
 
             goto LABEL_73;
           }
 
-          if (v7)
+          if (incomingCall)
           {
-            v106 = [(PHInCallRootViewController *)self features];
-            if ([v106 shouldShowFullScreenCallWaiting] & 1 | ((v65 & 1) == 0) | v66 & 1)
+            features2 = [(PHInCallRootViewController *)self features];
+            if ([features2 shouldShowFullScreenCallWaiting] & 1 | ((hasCurrentVideoCalls & 1) == 0) | ics_hasTooManyCallsForCallWaitingBanner & 1)
             {
 
-              v69 = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
+              activeRemoteParticipants = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
 LABEL_190:
               v172 = sub_100004F84();
               if (!os_log_type_enabled(v172, OS_LOG_TYPE_DEFAULT))
@@ -2385,7 +2385,7 @@ LABEL_193:
               }
 
               *buf = 138412290;
-              v275 = v7;
+              selfCopy3 = incomingCall;
               v173 = "Showing audio controller for incomingCall %@";
               v174 = v172;
               v175 = 12;
@@ -2394,14 +2394,14 @@ LABEL_192:
               goto LABEL_193;
             }
 
-            v169 = [(PHInCallRootViewController *)self features];
-            v69 = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
-            if ([v169 callManagerEnabled])
+            features3 = [(PHInCallRootViewController *)self features];
+            activeRemoteParticipants = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
+            if ([features3 callManagerEnabled])
             {
-              v170 = [(PHInCallRootViewController *)self callManager];
-              v171 = [v170 presentedFullScreenedCall];
+              callManager6 = [(PHInCallRootViewController *)self callManager];
+              presentedFullScreenedCall = [callManager6 presentedFullScreenedCall];
 
-              if (v171)
+              if (presentedFullScreenedCall)
               {
                 goto LABEL_190;
               }
@@ -2418,7 +2418,7 @@ LABEL_230:
               if (os_log_type_enabled(v198, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v275 = v258;
+                selfCopy3 = v258;
                 _os_log_impl(&_mh_execute_header, v198, OS_LOG_TYPE_DEFAULT, "Showing multiway controller for sending video call %@", buf, 0xCu);
               }
 
@@ -2437,27 +2437,27 @@ LABEL_230:
               if (os_log_type_enabled(v200, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v275 = v256;
+                selfCopy3 = v256;
                 _os_log_impl(&_mh_execute_header, v200, OS_LOG_TYPE_DEFAULT, "Showing audio controller for active audio call %@", buf, 0xCu);
               }
 
-              v265 = 0;
+              mostRecentlyDisconnectedVideoCall6 = 0;
               v71 = 1;
               goto LABEL_300;
             }
 
-            v216 = [v266 currentVideoCalls];
-            if ([v216 count] == 1)
+            currentVideoCalls = [v266 currentVideoCalls];
+            if ([currentVideoCalls count] == 1)
             {
-              v217 = [v266 currentVideoCalls];
-              v218 = [v217 objectAtIndex:0];
-              v219 = [v218 isConversation];
+              currentVideoCalls2 = [v266 currentVideoCalls];
+              v218 = [currentVideoCalls2 objectAtIndex:0];
+              isConversation = [v218 isConversation];
 
-              if (v219)
+              if (isConversation)
               {
                 if (!v255)
                 {
-                  v265 = 0;
+                  mostRecentlyDisconnectedVideoCall6 = 0;
                   goto LABEL_299;
                 }
 
@@ -2465,38 +2465,38 @@ LABEL_230:
                 if (os_log_type_enabled(v220, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
-                  v275 = v255;
+                  selfCopy3 = v255;
                   _os_log_impl(&_mh_execute_header, v220, OS_LOG_TYPE_DEFAULT, "Showing video controller for active video call %@", buf, 0xCu);
                 }
 
                 v199 = v255;
 LABEL_234:
-                v265 = v199;
+                mostRecentlyDisconnectedVideoCall6 = v199;
 LABEL_299:
                 v71 = 0;
 LABEL_300:
-                v230 = [(PHInCallRootViewController *)self features];
-                v231 = [v230 callManagerEnabled];
-                if ((v71 & 1) != 0 || !v231)
+                features4 = [(PHInCallRootViewController *)self features];
+                callManagerEnabled = [features4 callManagerEnabled];
+                if ((v71 & 1) != 0 || !callManagerEnabled)
                 {
 
                   goto LABEL_63;
                 }
 
-                v232 = [(PHInCallRootViewController *)self callManager];
-                v72 = [v232 presentedFullScreenedCall];
+                callManager7 = [(PHInCallRootViewController *)self callManager];
+                presentedFullScreenedCall2 = [callManager7 presentedFullScreenedCall];
 
-                if (!v72)
+                if (!presentedFullScreenedCall2)
                 {
-                  v233 = [(PHInCallRootViewController *)self callManager];
-                  [v233 cleanUp];
+                  callManager8 = [(PHInCallRootViewController *)self callManager];
+                  [callManager8 cleanUp];
 
                   v71 = 0;
 LABEL_64:
                   v73 = 0;
                   v261 = 0;
                   v262 = 0;
-                  if (!v64)
+                  if (!mostRecentlyDisconnectedVideoCall4)
                   {
                     goto LABEL_81;
                   }
@@ -2507,7 +2507,7 @@ LABEL_64:
 LABEL_62:
                 v71 = 0;
 LABEL_63:
-                LODWORD(v72) = 0;
+                LODWORD(presentedFullScreenedCall2) = 0;
                 goto LABEL_64;
               }
             }
@@ -2523,30 +2523,30 @@ LABEL_63:
               _os_log_impl(&_mh_execute_header, v228, OS_LOG_TYPE_DEFAULT, "Showing video controller", buf, 2u);
             }
 
-            v229 = [v266 currentVideoCalls];
-            v265 = [v229 objectAtIndex:0];
+            currentVideoCalls3 = [v266 currentVideoCalls];
+            mostRecentlyDisconnectedVideoCall6 = [currentVideoCalls3 objectAtIndex:0];
 
             goto LABEL_299;
           }
 
-          v69 = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
-          if (v65)
+          activeRemoteParticipants = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
+          if (hasCurrentVideoCalls)
           {
             goto LABEL_230;
           }
 
           if ([v266 currentCallCount])
           {
-            if (v260 && ((v260 == self->_emergencyDialerViewController) & v61) == 1)
+            if (currentViewController && ((currentViewController == self->_emergencyDialerViewController) & v61) == 1)
             {
               v167 = sub_100004F84();
               if (os_log_type_enabled(v167, OS_LOG_TYPE_DEFAULT))
               {
-                v168 = [v266 currentCalls];
+                currentCalls = [v266 currentCalls];
                 *buf = 138412546;
-                v275 = v168;
+                selfCopy3 = currentCalls;
                 v276 = 2112;
-                v277 = v260;
+                v277 = currentViewController;
                 _os_log_impl(&_mh_execute_header, v167, OS_LOG_TYPE_DEFAULT, "InCallRootViewController will show emergency viewcontroller for currentCalls %@ (the view controller currently being shown is %@)", buf, 0x16u);
               }
 
@@ -2555,11 +2555,11 @@ LABEL_63:
 
             if ([v266 currentCallCount]== 1)
             {
-              v221 = [v266 currentCalls];
-              v222 = [v221 objectAtIndexedSubscript:0];
-              v223 = [v222 isScreening];
+              currentCalls2 = [v266 currentCalls];
+              v222 = [currentCalls2 objectAtIndexedSubscript:0];
+              isScreening = [v222 isScreening];
 
-              if (v223)
+              if (isScreening)
               {
                 [(PHInCallRootViewController *)self releaseIdleTimerAssertionWithComment:@"Showing audio controller for Screening, enabling idleTimer"];
               }
@@ -2568,11 +2568,11 @@ LABEL_63:
             v224 = sub_100004F84();
             if (os_log_type_enabled(v224, OS_LOG_TYPE_DEFAULT))
             {
-              v225 = [v266 currentCalls];
+              currentCalls3 = [v266 currentCalls];
               *buf = 138412546;
-              v275 = v225;
+              selfCopy3 = currentCalls3;
               v276 = 2112;
-              v277 = v260;
+              v277 = currentViewController;
               _os_log_impl(&_mh_execute_header, v224, OS_LOG_TYPE_DEFAULT, "InCallRootViewController will show audio viewcontroller for currentCalls %@ (the view controller currently being shown is %@)", buf, 0x16u);
 
 LABEL_288:
@@ -2587,11 +2587,11 @@ LABEL_288:
             v224 = sub_100004F84();
             if (os_log_type_enabled(v224, OS_LOG_TYPE_DEFAULT))
             {
-              v225 = +[UIApplication sharedApplication];
-              v226 = [(PHInCallRootViewController *)v225 delegate];
-              v227 = [v226 mostRecentlyDisconnectedAudioCall];
+              currentCalls3 = +[UIApplication sharedApplication];
+              delegate17 = [(PHInCallRootViewController *)currentCalls3 delegate];
+              mostRecentlyDisconnectedAudioCall3 = [delegate17 mostRecentlyDisconnectedAudioCall];
               *buf = 138412290;
-              v275 = v227;
+              selfCopy3 = mostRecentlyDisconnectedAudioCall3;
               _os_log_impl(&_mh_execute_header, v224, OS_LOG_TYPE_DEFAULT, "InCallRootViewController will show audio view controller for disconnected call %@", buf, 0xCu);
 
               goto LABEL_288;
@@ -2600,13 +2600,13 @@ LABEL_288:
 LABEL_289:
 
 LABEL_290:
-            LODWORD(v72) = 0;
+            LODWORD(presentedFullScreenedCall2) = 0;
             v73 = 0;
-            v265 = 0;
+            mostRecentlyDisconnectedVideoCall6 = 0;
             v261 = 0;
             v262 = 0;
             v71 = 1;
-            if (!v64)
+            if (!mostRecentlyDisconnectedVideoCall4)
             {
               goto LABEL_81;
             }
@@ -2620,22 +2620,22 @@ LABEL_290:
             if (os_log_type_enabled(v234, OS_LOG_TYPE_DEFAULT))
             {
               v235 = +[UIApplication sharedApplication];
-              v236 = [v235 delegate];
-              v237 = [v236 mostRecentlyDisconnectedVideoCall];
+              delegate18 = [v235 delegate];
+              mostRecentlyDisconnectedVideoCall5 = [delegate18 mostRecentlyDisconnectedVideoCall];
               *buf = 138412290;
-              v275 = v237;
+              selfCopy3 = mostRecentlyDisconnectedVideoCall5;
               _os_log_impl(&_mh_execute_header, v234, OS_LOG_TYPE_DEFAULT, "InCallRootViewController will show video view controller for disconnected call %@", buf, 0xCu);
             }
 
-            v77 = [(PHInCallRootViewController *)self multiwayViewController];
-            if ([v77 isOneToOneModeEnabled])
+            sharedApplication11 = [(PHInCallRootViewController *)self multiwayViewController];
+            if ([sharedApplication11 isOneToOneModeEnabled])
             {
               v238 = +[UIApplication sharedApplication];
-              v72 = [v238 delegate];
-              v265 = [v72 mostRecentlyDisconnectedVideoCall];
+              presentedFullScreenedCall2 = [v238 delegate];
+              mostRecentlyDisconnectedVideoCall6 = [presentedFullScreenedCall2 mostRecentlyDisconnectedVideoCall];
 
               v71 = 0;
-              LODWORD(v72) = 0;
+              LODWORD(presentedFullScreenedCall2) = 0;
               v73 = 0;
               v262 = 0;
 LABEL_314:
@@ -2677,8 +2677,8 @@ LABEL_73:
                   }
 
                   v71 = 0;
-                  LODWORD(v72) = 0;
-                  v265 = 0;
+                  LODWORD(presentedFullScreenedCall2) = 0;
+                  mostRecentlyDisconnectedVideoCall6 = 0;
                   v261 = 0;
                   v262 = 0;
                   v73 = 1;
@@ -2693,9 +2693,9 @@ LABEL_73:
                     _os_log_impl(&_mh_execute_header, v244, OS_LOG_TYPE_DEFAULT, "PHInCallRootViewController will show audio controller since we're waiting for an idle call state", buf, 2u);
                   }
 
-                  LODWORD(v72) = 0;
+                  LODWORD(presentedFullScreenedCall2) = 0;
                   v73 = 0;
-                  v265 = 0;
+                  mostRecentlyDisconnectedVideoCall6 = 0;
                   v261 = 0;
                   v262 = 0;
                   v71 = 1;
@@ -2711,9 +2711,9 @@ LABEL_73:
                   }
 
                   v71 = 0;
-                  LODWORD(v72) = 0;
+                  LODWORD(presentedFullScreenedCall2) = 0;
                   v73 = 0;
-                  v265 = 0;
+                  mostRecentlyDisconnectedVideoCall6 = 0;
                   v261 = 1;
                   v262 = 0;
                 }
@@ -2722,8 +2722,8 @@ LABEL_73:
                 {
                   if (v51 || ![qword_1003B0ED8 containsObject:@"PHAVLessConversationAssertionReason"])
                   {
-                    v265 = 0;
-                    self = v268;
+                    mostRecentlyDisconnectedVideoCall6 = 0;
+                    self = selfCopy;
                     goto LABEL_62;
                   }
 
@@ -2738,15 +2738,15 @@ LABEL_73:
                   [v247 cancelPIPIfNeeded];
 
                   v71 = 0;
-                  LODWORD(v72) = 0;
+                  LODWORD(presentedFullScreenedCall2) = 0;
                   v73 = 0;
-                  v265 = 0;
+                  mostRecentlyDisconnectedVideoCall6 = 0;
                   v261 = 0;
                   v262 = 0;
                 }
 
-                self = v268;
-                if (!v64)
+                self = selfCopy;
+                if (!mostRecentlyDisconnectedVideoCall4)
                 {
                   goto LABEL_81;
                 }
@@ -2764,11 +2764,11 @@ LABEL_73:
 LABEL_176:
               v71 = 0;
               v73 = 0;
-              v265 = 0;
+              mostRecentlyDisconnectedVideoCall6 = 0;
               v261 = 0;
               v262 = 0;
-              LODWORD(v72) = 1;
-              if (!v64)
+              LODWORD(presentedFullScreenedCall2) = 1;
+              if (!mostRecentlyDisconnectedVideoCall4)
               {
                 goto LABEL_81;
               }
@@ -2776,23 +2776,23 @@ LABEL_176:
               goto LABEL_70;
             }
 
-            v77 = sub_100004F84();
-            if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
+            sharedApplication11 = sub_100004F84();
+            if (os_log_type_enabled(sharedApplication11, OS_LOG_TYPE_DEFAULT))
             {
               v239 = +[UIApplication sharedApplication];
-              v240 = [v239 delegate];
-              v241 = [v240 mostRecentlyDisconnectedVideoCall];
+              delegate19 = [v239 delegate];
+              mostRecentlyDisconnectedVideoCall7 = [delegate19 mostRecentlyDisconnectedVideoCall];
               *buf = 138412290;
-              v275 = v241;
-              _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, "updateCallControllerForCurrentState InCallRootViewController will show video view controller for disconnected call %@", buf, 0xCu);
+              selfCopy3 = mostRecentlyDisconnectedVideoCall7;
+              _os_log_impl(&_mh_execute_header, sharedApplication11, OS_LOG_TYPE_DEFAULT, "updateCallControllerForCurrentState InCallRootViewController will show video view controller for disconnected call %@", buf, 0xCu);
             }
           }
 
           v71 = 0;
-          LODWORD(v72) = 0;
+          LODWORD(presentedFullScreenedCall2) = 0;
           v73 = 0;
           v262 = 0;
-          v265 = 0;
+          mostRecentlyDisconnectedVideoCall6 = 0;
           goto LABEL_314;
         }
       }
@@ -2801,21 +2801,21 @@ LABEL_176:
       {
 
         v19 = v35;
-        v7 = v34;
-        v6 = v36;
-        self = v268;
+        incomingCall = v34;
+        callCenter = v36;
+        self = selfCopy;
       }
     }
 
     goto LABEL_30;
   }
 
-  v6 = sub_100004F84();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  callCenter = sub_100004F84();
+  if (os_log_type_enabled(callCenter, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v275 = self;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "This instance of PHInCallRootVC %@ no longer has a window, not continuing with updateCallControllerForCurrentState", buf, 0xCu);
+    selfCopy3 = self;
+    _os_log_impl(&_mh_execute_header, callCenter, OS_LOG_TYPE_DEFAULT, "This instance of PHInCallRootVC %@ no longer has a window, not continuing with updateCallControllerForCurrentState", buf, 0xCu);
   }
 
 LABEL_273:
@@ -2823,16 +2823,16 @@ LABEL_273:
 
 - (BOOL)shouldShowSOS
 {
-  v3 = [(PHInCallRootViewController *)self callCenter];
-  if ([v3 currentCallCount])
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  if ([callCenter currentCallCount])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(PHInCallRootViewController *)self callCenter];
-    if ([v5 currentVideoCallCount])
+    callCenter2 = [(PHInCallRootViewController *)self callCenter];
+    if ([callCenter2 currentVideoCallCount])
     {
       v4 = 0;
     }
@@ -2880,11 +2880,11 @@ LABEL_273:
 
 - (void)updateMultiwayViewControllerUIState
 {
-  v3 = [(PHInCallRootViewController *)self isFullScreen];
+  isFullScreen = [(PHInCallRootViewController *)self isFullScreen];
   v4 = +[PHPIPController defaultPIPController];
-  v5 = [v4 isPIPProxyActive];
+  isPIPProxyActive = [v4 isPIPProxyActive];
 
-  if (v3 || v5)
+  if (isFullScreen || isPIPProxyActive)
   {
     v7 = +[PHPIPController defaultPIPController];
     if ([v7 isPIPProxyInterrupted])
@@ -2903,68 +2903,68 @@ LABEL_273:
     v6 = 0;
   }
 
-  v8 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-  v9 = [v8 callDisplayStyle];
+  callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  v10 = [(PHInCallRootViewController *)self multiwayViewController];
+  multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
 
-  if (v10)
+  if (multiwayViewController)
   {
     if (v6)
     {
-      v11 = [(PHInCallRootViewController *)self currentViewControllerIsMultiway];
+      currentViewControllerIsMultiway = [(PHInCallRootViewController *)self currentViewControllerIsMultiway];
     }
 
     else
     {
-      v11 = 0;
+      currentViewControllerIsMultiway = 0;
     }
 
     v12 = sub_100004F84();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(PHInCallRootViewController *)self multiwayViewController];
-      v14 = [(PHInCallRootViewController *)self callDisplayStyleManager];
+      multiwayViewController2 = [(PHInCallRootViewController *)self multiwayViewController];
+      callDisplayStyleManager2 = [(PHInCallRootViewController *)self callDisplayStyleManager];
       v25 = 138413058;
-      v26 = v13;
+      v26 = multiwayViewController2;
       v27 = 1024;
-      v28 = v11;
+      v28 = currentViewControllerIsMultiway;
       v29 = 1024;
-      v30 = v5;
+      v30 = isPIPProxyActive;
       v31 = 2048;
-      v32 = [v14 callDisplayStyle];
+      callDisplayStyle2 = [callDisplayStyleManager2 callDisplayStyle];
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Updating %@ isMultiwayVisibleOnScreen=%d isPipped=%d callDisplayStyle=%ld", &v25, 0x22u);
     }
 
     v15 = +[PHPIPController defaultPIPController];
-    v16 = [v15 pipState];
-    v17 = [(PHInCallRootViewController *)self multiwayViewController];
-    [v17 setPipState:v16];
+    pipState = [v15 pipState];
+    multiwayViewController3 = [(PHInCallRootViewController *)self multiwayViewController];
+    [multiwayViewController3 setPipState:pipState];
 
-    v18 = [(PHInCallRootViewController *)self multiwayViewController];
-    [v18 setIsOnScreen:v11];
+    multiwayViewController4 = [(PHInCallRootViewController *)self multiwayViewController];
+    [multiwayViewController4 setIsOnScreen:currentViewControllerIsMultiway];
 
-    v19 = [(PHInCallRootViewController *)self multiwayViewController];
-    [v19 setIsDisplayedInBanner:v9 == 0];
+    multiwayViewController5 = [(PHInCallRootViewController *)self multiwayViewController];
+    [multiwayViewController5 setIsDisplayedInBanner:callDisplayStyle == 0];
 
-    v20 = [(PHInCallRootViewController *)self multiwayViewController];
-    [v20 setIsFullScreen:v3];
+    multiwayViewController6 = [(PHInCallRootViewController *)self multiwayViewController];
+    [multiwayViewController6 setIsFullScreen:isFullScreen];
 
     [(PHInCallRootViewController *)self refreshBottomBarButtonLayout];
     [(PHInCallRootViewController *)self setNeedsStatusBarPillSuppressionUpdate];
     v21 = +[PHInCallOrientationMonitor sharedInstance];
     v22 = v21;
-    if (v5)
+    if (isPIPProxyActive)
     {
-      v23 = [v21 currentOrientation];
+      currentOrientation = [v21 currentOrientation];
     }
 
     else
     {
-      v23 = [v21 lastValidOrientation];
+      currentOrientation = [v21 lastValidOrientation];
     }
 
-    v24 = v23;
+    v24 = currentOrientation;
 
     [(PHInCallRootViewController *)self updateMultiwayDeviceOrientation:v24];
   }
@@ -2982,25 +2982,25 @@ LABEL_273:
 
 - (BOOL)isPresentingEffectsBrowser
 {
-  v3 = [(PHInCallRootViewController *)self currentViewController];
-  v4 = [PHInCallUIUtilities handleNavigationControllerIfNecessary:v3];
+  currentViewController = [(PHInCallRootViewController *)self currentViewController];
+  v4 = [PHInCallUIUtilities handleNavigationControllerIfNecessary:currentViewController];
 
   if ([(PHInCallRootViewController *)self viewControllerSupportsEffects:v4])
   {
-    v5 = [v4 isPresentingEffectsBrowser];
+    isPresentingEffectsBrowser = [v4 isPresentingEffectsBrowser];
   }
 
   else
   {
-    v5 = 0;
+    isPresentingEffectsBrowser = 0;
   }
 
-  return v5;
+  return isPresentingEffectsBrowser;
 }
 
 - (BOOL)isPresentingContactDetails
 {
-  v3 = [(PHInCallRootViewController *)self presentedViewController];
+  presentedViewController = [(PHInCallRootViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3011,7 +3011,7 @@ LABEL_273:
 
   else
   {
-    v6 = [(PHInCallRootViewController *)self presentedViewController];
+    presentedViewController2 = [(PHInCallRootViewController *)self presentedViewController];
     objc_opt_class();
     v7 = objc_opt_isKindOfClass();
 
@@ -3021,9 +3021,9 @@ LABEL_273:
       v16 = 0u;
       v14 = 0u;
       v8 = [(PHInCallRootViewController *)self presentedViewController:0];
-      v9 = [v8 viewControllers];
+      viewControllers = [v8 viewControllers];
 
-      v5 = [v9 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         v10 = *v14;
@@ -3033,7 +3033,7 @@ LABEL_273:
           {
             if (*v14 != v10)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(viewControllers);
             }
 
             objc_opt_class();
@@ -3044,7 +3044,7 @@ LABEL_273:
             }
           }
 
-          v5 = [v9 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v5 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
           if (v5)
           {
             continue;
@@ -3068,10 +3068,10 @@ LABEL_15:
 
 - (void)statusBarTappedInFullScreen
 {
-  v5 = [(PHInCallRootViewController *)self callManager];
-  v3 = [(PHInCallRootViewController *)self callCenter];
-  v4 = [v3 frontmostAudioOrVideoCall];
-  [v5 prioritizeCall:v4];
+  callManager = [(PHInCallRootViewController *)self callManager];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  frontmostAudioOrVideoCall = [callCenter frontmostAudioOrVideoCall];
+  [callManager prioritizeCall:frontmostAudioOrVideoCall];
 }
 
 - (void)_testing_viewWillAppear
@@ -3112,7 +3112,7 @@ LABEL_15:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc_init(NSMutableSet);
     v3 = qword_1003B0ED8;
@@ -3122,19 +3122,19 @@ LABEL_15:
   }
 }
 
-+ (void)setStatusBarPillSuppressionForBackgroundActivities:(id)a3 onWindowScene:(id)a4
++ (void)setStatusBarPillSuppressionForBackgroundActivities:(id)activities onWindowScene:(id)scene
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  if (v6)
+  activitiesCopy = activities;
+  sceneCopy = scene;
+  v7 = activitiesCopy;
+  if (sceneCopy)
   {
-    v8 = [v6 preferredBackgroundActivitiesToSuppress];
-    v9 = [v8 isEqual:v7];
+    preferredBackgroundActivitiesToSuppress = [sceneCopy preferredBackgroundActivitiesToSuppress];
+    v9 = [preferredBackgroundActivitiesToSuppress isEqual:v7];
 
     if ((v9 & 1) == 0)
     {
-      [v6 setPreferredBackgroundActivitiesToSuppress:v7];
+      [sceneCopy setPreferredBackgroundActivitiesToSuppress:v7];
     }
   }
 
@@ -3149,9 +3149,9 @@ LABEL_15:
   }
 }
 
-- (void)setCurrentAlertButtonAction:(id)a3
+- (void)setCurrentAlertButtonAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   currentAlertButtonAction = self->_currentAlertButtonAction;
   if (currentAlertButtonAction)
   {
@@ -3159,7 +3159,7 @@ LABEL_15:
   }
 
   v6 = self->_currentAlertButtonAction;
-  self->_currentAlertButtonAction = v4;
+  self->_currentAlertButtonAction = actionCopy;
 }
 
 - (void)forceUpdateCallControllerForSOS
@@ -3171,41 +3171,41 @@ LABEL_15:
   }
 }
 
-- (void)sendResponseIfNecessaryWithUnhandledEvents:(unint64_t)a3
+- (void)sendResponseIfNecessaryWithUnhandledEvents:(unint64_t)events
 {
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PHInCallRootViewController *)self currentAlertButtonAction];
+    currentAlertButtonAction = [(PHInCallRootViewController *)self currentAlertButtonAction];
     v10 = 138412546;
-    v11 = v6;
+    v11 = currentAlertButtonAction;
     v12 = 2048;
-    v13 = a3;
+    eventsCopy = events;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Sending Response on currentAlertButtonAction: %@ with SBUIRemoteAlertServiceButtonEvents: %ld", &v10, 0x16u);
   }
 
-  v7 = [(PHInCallRootViewController *)self currentAlertButtonAction];
+  currentAlertButtonAction2 = [(PHInCallRootViewController *)self currentAlertButtonAction];
 
-  if (v7)
+  if (currentAlertButtonAction2)
   {
-    v8 = [(PHInCallRootViewController *)self currentAlertButtonAction];
-    [v8 sendResponseWithUnHandledEvents:a3];
+    currentAlertButtonAction3 = [(PHInCallRootViewController *)self currentAlertButtonAction];
+    [currentAlertButtonAction3 sendResponseWithUnHandledEvents:events];
 
     currentAlertButtonAction = self->_currentAlertButtonAction;
     self->_currentAlertButtonAction = 0;
   }
 }
 
-- (PHInCallRootViewController)initWithCallDisplayStyleManager:(id)a3
+- (PHInCallRootViewController)initWithCallDisplayStyleManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v28.receiver = self;
   v28.super_class = PHInCallRootViewController;
   v6 = [(PHInCallRootViewController *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callDisplayStyleManager, a3);
+    objc_storeStrong(&v6->_callDisplayStyleManager, manager);
     v8 = objc_opt_new();
     labelDescriptorFactory = v7->_labelDescriptorFactory;
     v7->_labelDescriptorFactory = v8;
@@ -3228,10 +3228,10 @@ LABEL_15:
     v7->_bannerTapGestureRecognizer = v17;
 
     [(UITapGestureRecognizer *)v7->_bannerTapGestureRecognizer setNumberOfTapsRequired:1];
-    v19 = [(PHInCallRootViewController *)v7 features];
-    v20 = [v19 callManagerEnabled];
+    features = [(PHInCallRootViewController *)v7 features];
+    callManagerEnabled = [features callManagerEnabled];
 
-    if (v20)
+    if (callManagerEnabled)
     {
       v21 = [ICSCallManagerBridge alloc];
       callDisplayStyleManager = v7->_callDisplayStyleManager;
@@ -3241,7 +3241,7 @@ LABEL_15:
       v7->_callManager = v24;
     }
 
-    -[PHInCallRootViewController updateBannerTapGestureRecognizerForCallDisplayStyle:](v7, "updateBannerTapGestureRecognizerForCallDisplayStyle:", [v5 callDisplayStyle]);
+    -[PHInCallRootViewController updateBannerTapGestureRecognizerForCallDisplayStyle:](v7, "updateBannerTapGestureRecognizerForCallDisplayStyle:", [managerCopy callDisplayStyle]);
     v26 = objc_alloc_init(NSMutableDictionary);
     [(PHInCallRootViewController *)v7 setViewControllersDict:v26];
   }
@@ -3249,11 +3249,11 @@ LABEL_15:
   return v7;
 }
 
-- (PHInCallRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHInCallRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v20.receiver = self;
   v20.super_class = PHInCallRootViewController;
-  v4 = [(PHInCallRootViewController *)&v20 initWithNibName:a3 bundle:a4];
+  v4 = [(PHInCallRootViewController *)&v20 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -3287,9 +3287,9 @@ LABEL_15:
     [v15 setAutoAssociateWiFiAsForegroundClient:1];
 
     v16 = +[CNKFeatures sharedInstance];
-    v17 = [v16 isEnhancedEmergencyEnabled];
+    isEnhancedEmergencyEnabled = [v16 isEnhancedEmergencyEnabled];
 
-    if ((v17 & 1) == 0)
+    if ((isEnhancedEmergencyEnabled & 1) == 0)
     {
       v18 = +[PHSOSDisconnectionConfirmation sharedInstance];
       [v18 addDelegate:v4];
@@ -3351,18 +3351,18 @@ LABEL_15:
   }
 
   [v13 addObserver:self selector:"pttCallStateChangedNotification:" name:TUBargeCallStatusChangedNotification object:0];
-  v9 = [(PHInCallRootViewController *)self callCenter];
-  v10 = [v9 routeController];
-  [v10 addDelegate:self];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  [routeController addDelegate:self];
 
-  v11 = [(PHInCallRootViewController *)self callCenter];
-  v12 = [v11 conversationManager];
-  [v12 addDelegate:self queue:&_dispatch_main_q];
+  callCenter2 = [(PHInCallRootViewController *)self callCenter];
+  conversationManager = [callCenter2 conversationManager];
+  [conversationManager addDelegate:self queue:&_dispatch_main_q];
 }
 
-- (void)_willAppearInRemoteViewController:(id)a3
+- (void)_willAppearInRemoteViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3370,13 +3370,13 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "_willAppearInRemoteViewController", buf, 2u);
   }
 
-  v6 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-  [v6 setWallpaperTunnelActive:1];
+  _remoteViewControllerProxy = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setWallpaperTunnelActive:1];
 
-  [v4 setBackgroundStyle:4 withDuration:0.1];
-  [v4 setDismissalAnimationStyle:1];
-  [v4 setShouldDismissOnUILock:1];
-  [v4 setShouldDisableFadeInAnimation:0];
+  [controllerCopy setBackgroundStyle:4 withDuration:0.1];
+  [controllerCopy setDismissalAnimationStyle:1];
+  [controllerCopy setShouldDismissOnUILock:1];
+  [controllerCopy setShouldDisableFadeInAnimation:0];
 
   [(PHInCallRootViewController *)self updateDesiredSpringboardBehavior];
   if ([(PHInCallRootViewController *)self dismissalWasDemandedBeforeRemoteViewControllerWasAvailable])
@@ -3398,14 +3398,14 @@ LABEL_15:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "dealloc %@", buf, 0xCu);
   }
 
   v4 = +[CNKFeatures sharedInstance];
-  v5 = [v4 isEnhancedEmergencyEnabled];
+  isEnhancedEmergencyEnabled = [v4 isEnhancedEmergencyEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((isEnhancedEmergencyEnabled & 1) == 0)
   {
     v6 = +[PHSOSDisconnectionConfirmation sharedInstance];
     [v6 removeDelegate:self];
@@ -3416,9 +3416,9 @@ LABEL_15:
 
   [(PHInCallRootViewController *)self releaseIdleTimerAssertionWithComment:@"dealloc"];
   [(PHInCallRootViewController *)self setStatusBarHidden:0 withDuration:0.0];
-  v8 = [(PHInCallRootViewController *)self remoteHostViewController];
-  v9 = [v8 remoteViewController];
-  [v9 setDelegate:0];
+  remoteHostViewController = [(PHInCallRootViewController *)self remoteHostViewController];
+  remoteViewController = [remoteHostViewController remoteViewController];
+  [remoteViewController setDelegate:0];
 
   [(PHInCallRootViewController *)self setRemoteHostViewController:0];
   [(PHInCallRootViewController *)self setContactsViewController:0];
@@ -3441,8 +3441,8 @@ LABEL_15:
     v5 = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
     if ([v4 length])
     {
-      v6 = [TUHandle normalizedPhoneNumberHandleForValue:v4 isoCountryCode:0];
-      if (v6)
+      callProviderManager2 = [TUHandle normalizedPhoneNumberHandleForValue:v4 isoCountryCode:0];
+      if (callProviderManager2)
       {
         goto LABEL_7;
       }
@@ -3452,21 +3452,21 @@ LABEL_15:
     {
       v31 = v4;
       v14 = +[ICSApplicationServices sharedInstance];
-      v15 = [v14 callProviderManager];
+      callProviderManager = [v14 callProviderManager];
 
-      v16 = [v15 emergencyProvider];
+      emergencyProvider = [callProviderManager emergencyProvider];
       v17 = objc_alloc_init(TUSenderIdentityClient);
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v18 = [v16 prioritizedSenderIdentities];
-      v19 = [v18 countByEnumeratingWithState:&v33 objects:v43 count:16];
+      prioritizedSenderIdentities = [emergencyProvider prioritizedSenderIdentities];
+      v19 = [prioritizedSenderIdentities countByEnumeratingWithState:&v33 objects:v43 count:16];
       if (v19)
       {
         v20 = v19;
-        v28 = v16;
-        v29 = v15;
+        v28 = emergencyProvider;
+        v29 = callProviderManager;
         v30 = v2;
         v21 = 0;
         v22 = *v34;
@@ -3477,15 +3477,15 @@ LABEL_15:
         {
           if (*v34 != v22)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(prioritizedSenderIdentities);
           }
 
-          v25 = [*(*(&v33 + 1) + 8 * v23) accountUUID];
+          accountUUID = [*(*(&v33 + 1) + 8 * v23) accountUUID];
           v32 = v24;
-          v6 = [v17 testEmergencyHandleForAccountUUID:v25 error:&v32];
+          callProviderManager2 = [v17 testEmergencyHandleForAccountUUID:accountUUID error:&v32];
           v21 = v32;
 
-          if (v6)
+          if (callProviderManager2)
           {
             break;
           }
@@ -3494,13 +3494,13 @@ LABEL_15:
           v24 = v21;
           if (v20 == v23)
           {
-            v20 = [v18 countByEnumeratingWithState:&v33 objects:v43 count:16];
+            v20 = [prioritizedSenderIdentities countByEnumeratingWithState:&v33 objects:v43 count:16];
             if (v20)
             {
               goto LABEL_15;
             }
 
-            v6 = 0;
+            callProviderManager2 = 0;
             break;
           }
         }
@@ -3508,70 +3508,70 @@ LABEL_15:
         v2 = v30;
         v4 = v31;
         v5 = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
-        v16 = v28;
-        v15 = v29;
+        emergencyProvider = v28;
+        callProviderManager = v29;
       }
 
       else
       {
-        v6 = 0;
+        callProviderManager2 = 0;
       }
 
-      if (v6)
+      if (callProviderManager2)
       {
         goto LABEL_7;
       }
     }
 
-    v6 = [v5[407] normalizedPhoneNumberHandleForValue:@"822" isoCountryCode:0];
+    callProviderManager2 = [v5[407] normalizedPhoneNumberHandleForValue:@"822" isoCountryCode:0];
 LABEL_7:
-    v7 = [v3 BOOLValue];
-    v8 = [[TULabeledHandle alloc] initWithHandle:v6 label:@"EMERGENCY_DISAMBIGUATION_AMBULANCE" isSuggested:0];
-    v9 = v8;
-    if (v7)
+    bOOLValue = [v3 BOOLValue];
+    v8 = [[TULabeledHandle alloc] initWithHandle:callProviderManager2 label:@"EMERGENCY_DISAMBIGUATION_AMBULANCE" isSuggested:0];
+    emergencyProvider2 = v8;
+    if (bOOLValue)
     {
       v42[0] = v8;
-      v10 = [[TULabeledHandle alloc] initWithHandle:v6 label:@"EMERGENCY_DISAMBIGUATION_FIRE" isSuggested:0];
+      v10 = [[TULabeledHandle alloc] initWithHandle:callProviderManager2 label:@"EMERGENCY_DISAMBIGUATION_FIRE" isSuggested:0];
       v42[1] = v10;
-      v11 = [[TULabeledHandle alloc] initWithHandle:v6 label:@"EMERGENCY_DISAMBIGUATION_POLICE" isSuggested:0];
+      v11 = [[TULabeledHandle alloc] initWithHandle:callProviderManager2 label:@"EMERGENCY_DISAMBIGUATION_POLICE" isSuggested:0];
       v42[2] = v11;
-      v12 = [NSArray arrayWithObjects:v42 count:3];
+      emergencyLabeledHandles = [NSArray arrayWithObjects:v42 count:3];
     }
 
     else
     {
       v41 = v8;
-      v12 = [NSArray arrayWithObjects:&v41 count:1];
+      emergencyLabeledHandles = [NSArray arrayWithObjects:&v41 count:1];
     }
 
     goto LABEL_10;
   }
 
   v26 = +[ICSApplicationServices sharedInstance];
-  v6 = [v26 callProviderManager];
+  callProviderManager2 = [v26 callProviderManager];
 
-  v9 = [v6 emergencyProvider];
-  v12 = [v9 emergencyLabeledHandles];
+  emergencyProvider2 = [callProviderManager2 emergencyProvider];
+  emergencyLabeledHandles = [emergencyProvider2 emergencyLabeledHandles];
   v27 = sub_100004F84();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v38 = v9;
+    v38 = emergencyProvider2;
     v39 = 2112;
-    v40 = v12;
+    v40 = emergencyLabeledHandles;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "SOS Numbers: Emergency call provider is %@ with numbers %@", buf, 0x16u);
   }
 
 LABEL_10:
 
-  return v12;
+  return emergencyLabeledHandles;
 }
 
 - (void)_reloadSOSHandles
 {
   sosViewController = self->_sosViewController;
-  v3 = [(PHInCallRootViewController *)self sosHandles];
-  [(PHSOSViewController *)sosViewController updateSOSHandles:v3];
+  sosHandles = [(PHInCallRootViewController *)self sosHandles];
+  [(PHSOSViewController *)sosViewController updateSOSHandles:sosHandles];
 }
 
 - (void)_loadSOSViewController
@@ -3579,8 +3579,8 @@ LABEL_10:
   if (!self->_sosViewController)
   {
     v3 = [PHSOSViewController alloc];
-    v6 = [(PHInCallRootViewController *)self sosHandles];
-    v4 = [(PHSOSViewController *)v3 initWithSOSHandles:v6];
+    sosHandles = [(PHInCallRootViewController *)self sosHandles];
+    v4 = [(PHSOSViewController *)v3 initWithSOSHandles:sosHandles];
     sosViewController = self->_sosViewController;
     self->_sosViewController = v4;
   }
@@ -3603,17 +3603,17 @@ LABEL_10:
     v5 = self->_videoCallNavigationController;
     self->_videoCallNavigationController = v4;
 
-    v6 = [(PHInCallRootViewController *)self view];
-    [v6 bounds];
+    view = [(PHInCallRootViewController *)self view];
+    [view bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(UINavigationController *)self->_videoCallNavigationController view];
-    [v15 setFrame:{v8, v10, v12, v14}];
+    view2 = [(UINavigationController *)self->_videoCallNavigationController view];
+    [view2 setFrame:{v8, v10, v12, v14}];
 
-    v16 = [(UINavigationController *)self->_videoCallNavigationController view];
-    [v16 setAutoresizingMask:18];
+    view3 = [(UINavigationController *)self->_videoCallNavigationController view];
+    [view3 setAutoresizingMask:18];
 
     [(UINavigationController *)self->_videoCallNavigationController setNavigationBarHidden:1];
     [(UINavigationController *)self->_videoCallNavigationController setDelegate:self];
@@ -3623,15 +3623,15 @@ LABEL_10:
   return videoCallNavigationController;
 }
 
-- (void)presentCreateContactViewControllerWithHandle:(id)a3 forViewController:(id)a4
+- (void)presentCreateContactViewControllerWithHandle:(id)handle forViewController:(id)controller
 {
-  if (a3)
+  if (handle)
   {
-    if (a4)
+    if (controller)
     {
-      v6 = a4;
-      v7 = [a3 value];
-      v12 = v7;
+      controllerCopy = controller;
+      value = [handle value];
+      v12 = value;
       v8 = [NSArray arrayWithObjects:&v12 count:1];
       v9 = [CNContact contactWithDisplayName:0 handleStrings:v8];
 
@@ -3640,16 +3640,16 @@ LABEL_10:
       [v10 setAllowsEditing:1];
       [v10 setAllowsActions:1];
       v11 = [[UINavigationController alloc] initWithRootViewController:v10];
-      [v6 presentViewController:v11 animated:1 completion:0];
+      [controllerCopy presentViewController:v11 animated:1 completion:0];
     }
   }
 }
 
-- (void)presentViewControllerFullScreen:(id)a3
+- (void)presentViewControllerFullScreen:(id)screen
 {
-  v4 = a3;
-  v5 = [(PHInCallRootViewController *)self currentViewController];
-  [(PHInCallRootViewController *)self _transitionFromViewController:v5 toViewController:v4];
+  screenCopy = screen;
+  currentViewController = [(PHInCallRootViewController *)self currentViewController];
+  [(PHInCallRootViewController *)self _transitionFromViewController:currentViewController toViewController:screenCopy];
 }
 
 - (void)_loadPTTFullScreenContainerViewController
@@ -3658,17 +3658,17 @@ LABEL_10:
   {
     v3 = [PHPTTFullScreenContainerViewController alloc];
     v8 = +[UIApplication sharedApplication];
-    v4 = [v8 delegate];
-    v5 = [v4 bannerPresentationManager];
-    v6 = [(PHPTTFullScreenContainerViewController *)v3 initWithBannerPresentationManager:v5];
+    delegate = [v8 delegate];
+    bannerPresentationManager = [delegate bannerPresentationManager];
+    v6 = [(PHPTTFullScreenContainerViewController *)v3 initWithBannerPresentationManager:bannerPresentationManager];
     pttFullScreenContainerViewController = self->_pttFullScreenContainerViewController;
     self->_pttFullScreenContainerViewController = v6;
   }
 }
 
-- (void)pttCallStateChangedNotification:(id)a3
+- (void)pttCallStateChangedNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -3676,9 +3676,9 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "pttCallStateChangedNotification", buf, 2u);
   }
 
-  v5 = [v3 object];
+  object = [notificationCopy object];
 
-  if ([v5 isPTT] && objc_msgSend(v5, "status") - 5 <= 1)
+  if ([object isPTT] && objc_msgSend(object, "status") - 5 <= 1)
   {
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -3688,18 +3688,18 @@ LABEL_10:
     }
 
     v7 = +[UIApplication sharedApplication];
-    v8 = [v7 delegate];
-    [v8 setDidDeepLinkToPTTCallDetailsView:0];
+    delegate = [v7 delegate];
+    [delegate setDidDeepLinkToPTTCallDetailsView:0];
 
     [PHInCallRootViewController releaseDismissalAssertionForReason:@"PHPTTCallDetailsViewAssertionReason"];
   }
 }
 
-- (void)_loadMultiwayViewControllerForCall:(id)a3
+- (void)_loadMultiwayViewControllerForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController call];
-  v6 = [v5 isEqual:v4];
+  callCopy = call;
+  call = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController call];
+  v6 = [call isEqual:callCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -3707,16 +3707,16 @@ LABEL_10:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138412546;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
-      v26 = v4;
+      v26 = callCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ Creating a CNKFaceTimeMultiwayConversationViewController instance for call: %@", &v23, 0x16u);
     }
 
     v8 = +[UIApplication sharedApplication];
-    v9 = [v8 delegate];
-    v10 = [v9 bannerPresentationManager];
-    v11 = [(PHInCallRootViewController *)self makeMultiwayConversationViewControllerWithCall:v4 bannerPresentationManager:v10];
+    delegate = [v8 delegate];
+    bannerPresentationManager = [delegate bannerPresentationManager];
+    v11 = [(PHInCallRootViewController *)self makeMultiwayConversationViewControllerWithCall:callCopy bannerPresentationManager:bannerPresentationManager];
     multiwayViewController = self->_multiwayViewController;
     self->_multiwayViewController = v11;
 
@@ -3725,7 +3725,7 @@ LABEL_10:
     {
       v14 = self->_multiwayViewController;
       v23 = 138412546;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
       v26 = v14;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@ Created a CNKFaceTimeMultiwayConversationViewController instance %@", &v23, 0x16u);
@@ -3741,19 +3741,19 @@ LABEL_10:
 
     else
     {
-      v17 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-      v18 = [v17 callDisplayStyle];
+      callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+      callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
       v15 = self->_multiwayViewController;
-      v16 = v18 == 3;
+      v16 = callDisplayStyle == 3;
     }
 
     [(CNKMultiwayViewControllerProtocol *)v15 setSupportedDeviceOrientations:v16];
-    v19 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-    -[CNKMultiwayViewControllerProtocol setIsDisplayedInBanner:](self->_multiwayViewController, "setIsDisplayedInBanner:", [v19 callDisplayStyle] == 0);
+    callDisplayStyleManager2 = [(PHInCallRootViewController *)self callDisplayStyleManager];
+    -[CNKMultiwayViewControllerProtocol setIsDisplayedInBanner:](self->_multiwayViewController, "setIsDisplayedInBanner:", [callDisplayStyleManager2 callDisplayStyle] == 0);
 
-    v20 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-    -[CNKMultiwayViewControllerProtocol setIsAmbient:](self->_multiwayViewController, "setIsAmbient:", [v20 callDisplayStyle] == 3);
+    callDisplayStyleManager3 = [(PHInCallRootViewController *)self callDisplayStyleManager];
+    -[CNKMultiwayViewControllerProtocol setIsAmbient:](self->_multiwayViewController, "setIsAmbient:", [callDisplayStyleManager3 callDisplayStyle] == 3);
 
     v21 = +[PHPIPController defaultPIPController];
     -[CNKMultiwayViewControllerProtocol setPipState:](self->_multiwayViewController, "setPipState:", [v21 pipState]);
@@ -3765,43 +3765,43 @@ LABEL_10:
   }
 }
 
-- (void)handleFrontBoardInterfaceOrientationChange:(int64_t)a3
+- (void)handleFrontBoardInterfaceOrientationChange:(int64_t)change
 {
-  v5 = [(PHInCallRootViewController *)self multiwayViewController];
-  v6 = [v5 frontBoardInterfaceOrientation];
+  multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+  frontBoardInterfaceOrientation = [multiwayViewController frontBoardInterfaceOrientation];
 
-  if (a3)
+  if (change)
   {
-    if (v6 != a3)
+    if (frontBoardInterfaceOrientation != change)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000EFABC;
       block[3] = &unk_1003574B0;
       block[4] = self;
-      block[5] = a3;
-      block[6] = a3;
+      block[5] = change;
+      block[6] = change;
       dispatch_async(&_dispatch_main_q, block);
     }
   }
 }
 
-- (void)rotatePIPForInterfaceOrientation:(int64_t)a3
+- (void)rotatePIPForInterfaceOrientation:(int64_t)orientation
 {
   v5 = +[PHPIPController defaultPIPController];
-  v6 = [v5 pipState];
+  pipState = [v5 pipState];
 
-  if (v6 == 2)
+  if (pipState == 2)
   {
     v7 = sub_100004F84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v12 = a3;
+      orientationCopy = orientation;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Rotating PIP due to interface orientation change %ld", buf, 0xCu);
     }
 
-    v8 = [PHInCallUIUtilities deviceOrientationForBSInterfaceOrientation:a3];
+    v8 = [PHInCallUIUtilities deviceOrientationForBSInterfaceOrientation:orientation];
     v9 = +[PHPIPController defaultPIPController];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -3812,17 +3812,17 @@ LABEL_10:
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
   v10 = sub_100004F84();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = v11;
-    [(PHInCallRootViewController *)self shouldShowNavigationBarForViewController:v8];
+    [(PHInCallRootViewController *)self shouldShowNavigationBarForViewController:viewControllerCopy];
     v13 = NSStringFromBOOL();
     v14 = 138412546;
     v15 = v11;
@@ -3831,12 +3831,12 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "TTYC: , viewController: %@ setHidden: %@", &v14, 0x16u);
   }
 
-  [v9 setNavigationBarHidden:-[PHInCallRootViewController shouldShowNavigationBarForViewController:](self animated:{"shouldShowNavigationBarForViewController:", v8) ^ 1, v5}];
+  [controllerCopy setNavigationBarHidden:-[PHInCallRootViewController shouldShowNavigationBarForViewController:](self animated:{"shouldShowNavigationBarForViewController:", viewControllerCopy) ^ 1, animatedCopy}];
 }
 
-- (BOOL)shouldShowNavigationBarForViewController:(id)a3
+- (BOOL)shouldShowNavigationBarForViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = qword_1003B0EE8;
   if (!qword_1003B0EE8)
   {
@@ -3859,9 +3859,9 @@ LABEL_10:
   return v8;
 }
 
-- (void)screeningStateChangedNotification:(id)a3
+- (void)screeningStateChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3869,17 +3869,17 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "screeningStateChangedNotification", v8, 2u);
   }
 
-  v6 = [v4 object];
+  object = [notificationCopy object];
 
-  v7 = [(PHInCallRootViewController *)self callManager];
-  [v7 updateWithCall:v6];
+  callManager = [(PHInCallRootViewController *)self callManager];
+  [callManager updateWithCall:object];
 
   [(PHInCallRootViewController *)self updateDesiredSpringboardBehavior];
 }
 
-- (void)receptionistStateChangedNotification:(id)a3
+- (void)receptionistStateChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3887,17 +3887,17 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "receptionistStateChangedNotification", v8, 2u);
   }
 
-  v6 = [v4 object];
+  object = [notificationCopy object];
 
-  v7 = [(PHInCallRootViewController *)self callManager];
-  [v7 updateWithCall:v6];
+  callManager = [(PHInCallRootViewController *)self callManager];
+  [callManager updateWithCall:object];
 
   [(PHInCallRootViewController *)self updateDesiredSpringboardBehavior];
 }
 
-- (void)receptionistSessionChangedNotification:(id)a3
+- (void)receptionistSessionChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3905,15 +3905,15 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "receptionistSessionChangedNotification", v8, 2u);
   }
 
-  v6 = [v4 object];
+  object = [notificationCopy object];
 
-  v7 = [(PHInCallRootViewController *)self callManager];
-  [v7 updateWithCall:v6];
+  callManager = [(PHInCallRootViewController *)self callManager];
+  [callManager updateWithCall:object];
 }
 
-- (void)callStateChangedNotification:(id)a3
+- (void)callStateChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3921,23 +3921,23 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "callStateChangedNotification", v7, 2u);
   }
 
-  v6 = [v4 object];
+  object = [notificationCopy object];
 
-  [(PHInCallRootViewController *)self updateAlertActivationReasonForCall:v6];
-  [(PHInCallRootViewController *)self updateRemoteAlertSwipeDismissalStyleForCall:v6];
+  [(PHInCallRootViewController *)self updateAlertActivationReasonForCall:object];
+  [(PHInCallRootViewController *)self updateRemoteAlertSwipeDismissalStyleForCall:object];
   [(PHInCallRootViewController *)self prepareToDismissScreenTime];
   [(PHInCallRootViewController *)self updateCallControllerForCurrentState];
   [(PHInCallRootViewController *)self dismissScreenTimeAlertHostIfNeeded];
   [(PHInCallRootViewController *)self dismissPhoneRemoteViewController];
   [(PHInCallRootViewController *)self dismissContactsViewController];
   [(PHInCallRootViewController *)self updateTransportIndicatorView];
-  [(PHInCallRootViewController *)self undimScreenIfNecessary:v6];
+  [(PHInCallRootViewController *)self undimScreenIfNecessary:object];
   [(PHInCallRootViewController *)self updateDesiredSpringboardBehavior];
 }
 
-- (void)callDisplayContextChanged:(id)a3
+- (void)callDisplayContextChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3945,15 +3945,15 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "callDisplayContextChanged", v8, 2u);
   }
 
-  v6 = [v4 object];
+  object = [changedCopy object];
 
-  v7 = [(PHInCallRootViewController *)self callManager];
-  [v7 updateWithCall:v6];
+  callManager = [(PHInCallRootViewController *)self callManager];
+  [callManager updateWithCall:object];
 }
 
-- (void)videoCallStateChangedNotification:(id)a3
+- (void)videoCallStateChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3961,11 +3961,11 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "videoCallStateChangedNotification", v7, 2u);
   }
 
-  v6 = [v4 object];
+  object = [notificationCopy object];
 
   [(PHInCallRootViewController *)self updateCallForUserFeedback];
-  [(PHInCallRootViewController *)self updateAlertActivationReasonForCall:v6];
-  [(PHInCallRootViewController *)self showFailureOrFallbackAlertIfNecessaryForCall:v6];
+  [(PHInCallRootViewController *)self updateAlertActivationReasonForCall:object];
+  [(PHInCallRootViewController *)self showFailureOrFallbackAlertIfNecessaryForCall:object];
   [(PHInCallRootViewController *)self prepareToDismissScreenTime];
   [(PHInCallRootViewController *)self updateCallControllerForCurrentState];
   [(PHInCallRootViewController *)self dismissScreenTimeAlertHostIfNeeded];
@@ -3973,10 +3973,10 @@ LABEL_10:
   [(PHInCallRootViewController *)self dismissContactsViewController];
   [(PHInCallRootViewController *)self updateTransportIndicatorView];
   [(PHInCallRootViewController *)self updateUPlusOneVideoCallViews];
-  [(PHInCallRootViewController *)self undimScreenIfNecessary:v6];
+  [(PHInCallRootViewController *)self undimScreenIfNecessary:object];
 }
 
-- (void)callConnectedNotification:(id)a3
+- (void)callConnectedNotification:(id)notification
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -3990,9 +3990,9 @@ LABEL_10:
   [(PHInCallRootViewController *)self updateBackgroundStartPipAuthorizationState];
 }
 
-- (void)willTransitionToFullScreenNotification:(id)a3
+- (void)willTransitionToFullScreenNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -4001,13 +4001,13 @@ LABEL_10:
   }
 
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 delegate];
-  v8 = [v7 isPresentingFullScreenCallUI];
+  delegate = [v6 delegate];
+  isPresentingFullScreenCallUI = [delegate isPresentingFullScreenCallUI];
 
-  if ((v8 & 1) == 0)
+  if ((isPresentingFullScreenCallUI & 1) == 0)
   {
-    v9 = [v4 object];
-    v10 = [v9 isEqual:&off_10036A358];
+    object = [notificationCopy object];
+    v10 = [object isEqual:&off_10036A358];
 
     if (v10)
     {
@@ -4016,37 +4016,37 @@ LABEL_10:
   }
 }
 
-- (void)remoteParticipantHandlesChangedNotification:(id)a3
+- (void)remoteParticipantHandlesChangedNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 uniqueProxyIdentifier];
+    uniqueProxyIdentifier = [object uniqueProxyIdentifier];
     v7 = 138412290;
-    v8 = v6;
+    v8 = uniqueProxyIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "remoteParticipantHandlesChangedNotification for call: %@", &v7, 0xCu);
   }
 
-  if ([v4 isConversation])
+  if ([object isConversation])
   {
     [(PHInCallRootViewController *)self updateCallControllerForCurrentState];
   }
 }
 
-- (void)undimScreenIfNecessary:(id)a3
+- (void)undimScreenIfNecessary:(id)necessary
 {
-  if ([a3 status] == 4)
+  if ([necessary status] == 4)
   {
-    v9 = [(PHInCallRootViewController *)self traitCollection];
-    if ([v9 _backlightLuminance] == 1)
+    traitCollection = [(PHInCallRootViewController *)self traitCollection];
+    if ([traitCollection _backlightLuminance] == 1)
     {
       v4 = +[UIApplication sharedApplication];
-      v5 = [v4 delegate];
-      v6 = [v5 currentInCallScene];
-      v7 = [v6 presentationMode];
+      delegate = [v4 delegate];
+      currentInCallScene = [delegate currentInCallScene];
+      presentationMode = [currentInCallScene presentationMode];
 
-      if (v7 == 2)
+      if (presentationMode == 2)
       {
         v8 = sub_100004F84();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4067,56 +4067,56 @@ LABEL_10:
 
 - (BOOL)transitionFromBannerToDismissedIfNecessary
 {
-  v3 = [(PHInCallRootViewController *)self featureFlags];
-  v4 = [v3 expanseEnabled];
+  featureFlags = [(PHInCallRootViewController *)self featureFlags];
+  expanseEnabled = [featureFlags expanseEnabled];
 
-  if (v4)
+  if (expanseEnabled)
   {
-    v5 = [(PHInCallRootViewController *)self callCenter];
-    v6 = [v5 frontmostAudioOrVideoCall];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    frontmostAudioOrVideoCall = [callCenter frontmostAudioOrVideoCall];
 
-    v7 = [(PHInCallRootViewController *)self callCenter];
-    v8 = [v7 activeConversationForCall:v6];
+    callCenter2 = [(PHInCallRootViewController *)self callCenter];
+    v8 = [callCenter2 activeConversationForCall:frontmostAudioOrVideoCall];
 
-    v9 = [(PHInCallRootViewController *)self featureFlags];
-    if ([v9 sharePlayInCallsEnabled])
+    featureFlags2 = [(PHInCallRootViewController *)self featureFlags];
+    if ([featureFlags2 sharePlayInCallsEnabled])
     {
-      v10 = [v6 provider];
-      if ([v10 isTelephonyProvider])
+      provider = [frontmostAudioOrVideoCall provider];
+      if ([provider isTelephonyProvider])
       {
-        LODWORD(v11) = [v6 isSharePlayCapable];
+        LODWORD(callCenter3) = [frontmostAudioOrVideoCall isSharePlayCapable];
       }
 
       else
       {
-        LODWORD(v11) = 0;
+        LODWORD(callCenter3) = 0;
       }
     }
 
     else
     {
-      LODWORD(v11) = 0;
+      LODWORD(callCenter3) = 0;
     }
 
-    v12 = [v6 provider];
-    v13 = [v12 isFaceTimeProvider];
+    provider2 = [frontmostAudioOrVideoCall provider];
+    isFaceTimeProvider = [provider2 isFaceTimeProvider];
 
-    if ((v13 & 1) == 0 && !v11)
+    if ((isFaceTimeProvider & 1) == 0 && !callCenter3)
     {
       goto LABEL_23;
     }
 
-    v14 = [(PHInCallRootViewController *)self inCallWindowScene];
+    inCallWindowScene = [(PHInCallRootViewController *)self inCallWindowScene];
 
     v15 = +[UIApplication sharedApplication];
-    v16 = [v15 delegate];
-    v17 = [v16 currentInCallScene];
-    v18 = [v17 presentationMode];
+    delegate = [v15 delegate];
+    currentInCallScene = [delegate currentInCallScene];
+    presentationMode = [currentInCallScene presentationMode];
 
-    v19 = [v6 provider];
-    LODWORD(v16) = [v19 isFaceTimeProvider];
+    provider3 = [frontmostAudioOrVideoCall provider];
+    LODWORD(delegate) = [provider3 isFaceTimeProvider];
 
-    if (v16)
+    if (delegate)
     {
       if ([v8 resolvedAudioVideoMode] != 1)
       {
@@ -4124,44 +4124,44 @@ LABEL_10:
       }
     }
 
-    else if (!v11)
+    else if (!callCenter3)
     {
       goto LABEL_17;
     }
 
-    if ([v6 status] == 1)
+    if ([frontmostAudioOrVideoCall status] == 1)
     {
-      v20 = [v6 wantsHoldMusic];
+      wantsHoldMusic = [frontmostAudioOrVideoCall wantsHoldMusic];
 LABEL_18:
-      v11 = [(PHInCallRootViewController *)self callCenter];
-      v21 = [v11 currentAudioAndVideoCallCount];
+      callCenter3 = [(PHInCallRootViewController *)self callCenter];
+      currentAudioAndVideoCallCount = [callCenter3 currentAudioAndVideoCallCount];
 
-      LOBYTE(v11) = 0;
-      if (v21 == 1 && (v20 & 1) == 0 && v14 && v18 == 1)
+      LOBYTE(callCenter3) = 0;
+      if (currentAudioAndVideoCallCount == 1 && (wantsHoldMusic & 1) == 0 && inCallWindowScene && presentationMode == 1)
       {
-        v23 = v6;
+        v23 = frontmostAudioOrVideoCall;
         TUDispatchMainIfNecessary();
 
-        LOBYTE(v11) = 1;
+        LOBYTE(callCenter3) = 1;
       }
 
 LABEL_23:
 
-      return v11;
+      return callCenter3;
     }
 
 LABEL_17:
-    v20 = 1;
+    wantsHoldMusic = 1;
     goto LABEL_18;
   }
 
-  LOBYTE(v11) = 0;
-  return v11;
+  LOBYTE(callCenter3) = 0;
+  return callCenter3;
 }
 
-- (void)callUpgradedToVideoNotification:(id)a3
+- (void)callUpgradedToVideoNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -4169,27 +4169,27 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "callUpgradedToVideoNotification", v6, 2u);
   }
 
-  [(PHInCallRootViewController *)self videoCallStateChangedNotification:v4];
+  [(PHInCallRootViewController *)self videoCallStateChangedNotification:notificationCopy];
 }
 
 - (void)updateCallForUserFeedback
 {
-  v3 = [(PHInCallRootViewController *)self featureFlags];
-  v4 = [v3 FTUserScore];
+  featureFlags = [(PHInCallRootViewController *)self featureFlags];
+  fTUserScore = [featureFlags FTUserScore];
 
-  if (v4)
+  if (fTUserScore)
   {
-    v5 = [(PHInCallRootViewController *)self callCenter];
-    v6 = [v5 currentVideoCall];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    currentVideoCall = [callCenter currentVideoCall];
 
-    if ([v6 isConnected] && (objc_msgSend(v6, "status") == 5 || objc_msgSend(v6, "status") == 6))
+    if ([currentVideoCall isConnected] && (objc_msgSend(currentVideoCall, "status") == 5 || objc_msgSend(currentVideoCall, "status") == 6))
     {
       v7 = +[ICSPreferences sharedPreferences];
-      v8 = [v7 hasUserScoreFeedbackViewHidden];
+      hasUserScoreFeedbackViewHidden = [v7 hasUserScoreFeedbackViewHidden];
 
       v9 = sub_100004F84();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-      if (v8)
+      if (hasUserScoreFeedbackViewHidden)
       {
         if (v10)
         {
@@ -4197,9 +4197,9 @@ LABEL_17:
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "UserFeedbackScore : No Assertion Added, send to TU immediately", v14, 2u);
         }
 
-        v11 = [(PHInCallRootViewController *)self callCenter];
-        v12 = [(PHInCallRootViewController *)self disconnectCallUUID];
-        [v11 sendUserScoreToRTCReporting:v12 withScore:0];
+        callCenter2 = [(PHInCallRootViewController *)self callCenter];
+        disconnectCallUUID = [(PHInCallRootViewController *)self disconnectCallUUID];
+        [callCenter2 sendUserScoreToRTCReporting:disconnectCallUUID withScore:0];
       }
 
       else
@@ -4210,8 +4210,8 @@ LABEL_17:
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "UserFeedbackScore : adding Assertion to show feedback view", buf, 2u);
         }
 
-        v13 = [v6 callUUID];
-        [(PHInCallRootViewController *)self setDisconnectCallUUID:v13];
+        callUUID = [currentVideoCall callUUID];
+        [(PHInCallRootViewController *)self setDisconnectCallUUID:callUUID];
 
         [objc_opt_class() obtainDismissalAssertionForReason:@"PHUserScoreShowingAssertionReason"];
       }
@@ -4255,20 +4255,20 @@ LABEL_17:
   }
 }
 
-- (void)callDowngradedToAudioNotification:(id)a3
+- (void)callDowngradedToAudioNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "callDowngradedToAudioNotification: %@", buf, 0xCu);
   }
 
   [(PHInCallRootViewController *)self updateCallControllerForCurrentState];
-  v6 = [v4 object];
-  if (([v6 isEndpointOnCurrentDevice] & 1) == 0)
+  object = [notificationCopy object];
+  if (([object isEndpointOnCurrentDevice] & 1) == 0)
   {
     v7 = sub_100004F84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -4284,10 +4284,10 @@ LABEL_17:
   }
 }
 
-- (void)callContinuityChangedNotification:(id)a3
+- (void)callContinuityChangedNotification:(id)notification
 {
-  v3 = [a3 object];
-  if ([v3 isConversation] && (objc_msgSend(v3, "isEndpointOnCurrentDevice") & 1) == 0)
+  object = [notification object];
+  if ([object isConversation] && (objc_msgSend(object, "isEndpointOnCurrentDevice") & 1) == 0)
   {
     v4 = sub_100004F84();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -4301,25 +4301,25 @@ LABEL_17:
   }
 }
 
-- (void)pipStateChangedNotification:(id)a3
+- (void)pipStateChangedNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   v6 = +[PHPIPController defaultPIPController];
-  v7 = [v6 pipState];
+  pipState = [v6 pipState];
 
-  v8 = sub_100004F84();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  multiwayViewController2 = sub_100004F84();
+  if (os_log_type_enabled(multiwayViewController2, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 134217984;
-    v21 = v7;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "pipStateChangedNotification; new state=%lu", &v20, 0xCu);
+    v21 = pipState;
+    _os_log_impl(&_mh_execute_header, multiwayViewController2, OS_LOG_TYPE_DEFAULT, "pipStateChangedNotification; new state=%lu", &v20, 0xCu);
   }
 
-  if ((v7 - 1) <= 1 && (v9 = [(PHInCallRootViewController *)self shouldStartMultiwayPIP], v9))
+  if ((pipState - 1) <= 1 && (parentViewController = [(PHInCallRootViewController *)self shouldStartMultiwayPIP], parentViewController))
   {
-    v10 = [(PHInCallRootViewController *)self multiwayViewController];
+    multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
 
-    if (v10)
+    if (multiwayViewController)
     {
       [(PHInCallRootViewController *)self transitionIntoPiP];
     }
@@ -4337,22 +4337,22 @@ LABEL_17:
 
   else
   {
-    if (v7 == 3 || v7 == 0)
+    if (pipState == 3 || pipState == 0)
     {
-      v8 = [(PHInCallRootViewController *)self multiwayViewController];
-      v3 = [v8 pipViewController];
-      v9 = [v3 parentViewController];
-      if (v9)
+      multiwayViewController2 = [(PHInCallRootViewController *)self multiwayViewController];
+      pipViewController = [multiwayViewController2 pipViewController];
+      parentViewController = [pipViewController parentViewController];
+      if (parentViewController)
       {
         v12 = 1;
       }
 
       else
       {
-        v13 = [(PHInCallRootViewController *)self oldMultiwayPIPViewController];
-        v12 = v13 != 0;
+        oldMultiwayPIPViewController = [(PHInCallRootViewController *)self oldMultiwayPIPViewController];
+        v12 = oldMultiwayPIPViewController != 0;
 
-        v9 = 0;
+        parentViewController = 0;
       }
     }
 
@@ -4361,16 +4361,16 @@ LABEL_17:
       v12 = 0;
     }
 
-    if (v7 == 3 || !v7)
+    if (pipState == 3 || !pipState)
     {
     }
 
     if (v12)
     {
-      v14 = [(PHInCallRootViewController *)self multiwayViewController];
-      [v14 setPipState:v7];
+      multiwayViewController3 = [(PHInCallRootViewController *)self multiwayViewController];
+      [multiwayViewController3 setPipState:pipState];
 
-      if (v7)
+      if (pipState)
       {
         goto LABEL_28;
       }
@@ -4378,14 +4378,14 @@ LABEL_17:
 
     else
     {
-      if (v7)
+      if (pipState)
       {
         goto LABEL_28;
       }
 
-      v15 = [(PHInCallRootViewController *)self multiwayViewController];
+      multiwayViewController4 = [(PHInCallRootViewController *)self multiwayViewController];
 
-      if (v15)
+      if (multiwayViewController4)
       {
         v16 = +[PHPIPController defaultPIPController];
         [v16 updatePIPFrame];
@@ -4398,31 +4398,31 @@ LABEL_17:
 LABEL_28:
   [(PHInCallRootViewController *)self updateMultiwayViewControllerUIState];
   [(PHInCallRootViewController *)self updateCallDetailsViewIsOnScreen];
-  v18 = [v5 object];
+  object = [notificationCopy object];
 
   v19 = +[PHPIPController defaultPIPController];
 
-  if (v18 == v19)
+  if (object == v19)
   {
     [(PHInCallRootViewController *)self updateBackgroundStartPipAuthorizationState];
   }
 }
 
-- (void)pipStashChangedNotification:(id)a3
+- (void)pipStashChangedNotification:(id)notification
 {
   v4 = +[PHPIPController defaultPIPController];
-  v5 = [v4 isPIPProxyActiveAndHidden];
+  isPIPProxyActiveAndHidden = [v4 isPIPProxyActiveAndHidden];
 
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v5;
+    v8[1] = isPIPProxyActiveAndHidden;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "pipStashChangedNotification; isStashed=%u", v8, 8u);
   }
 
-  v7 = [(PHInCallRootViewController *)self multiwayViewController];
-  [v7 setIsPipStashed:v5];
+  multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+  [multiwayViewController setIsPipStashed:isPIPProxyActiveAndHidden];
 }
 
 - (void)transitionIntoPiP
@@ -4436,13 +4436,13 @@ LABEL_28:
 
   [(PHInCallRootViewController *)self updateMultiwayViewControllerUIState];
   v4 = objc_opt_class();
-  v5 = [(PHInCallRootViewController *)self multiwayViewController];
-  v6 = [v4 uiDeviceOrientationForCNKDeviceOrientation:{objc_msgSend(v5, "fullScreenFocusedParticipantOrientation")}];
+  multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+  v6 = [v4 uiDeviceOrientationForCNKDeviceOrientation:{objc_msgSend(multiwayViewController, "fullScreenFocusedParticipantOrientation")}];
   v7 = +[PHPIPController defaultPIPController];
   [v7 setPipDeviceOrientation:v6];
 }
 
-- (void)pipProxyActiveChangedNotification:(id)a3
+- (void)pipProxyActiveChangedNotification:(id)notification
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -4454,47 +4454,47 @@ LABEL_28:
   [(PHInCallRootViewController *)self updateMultiwayViewControllerUIState];
 }
 
-- (void)handlePIPViewControllerRestoredAfterPIPStopped:(id)a3
+- (void)handlePIPViewControllerRestoredAfterPIPStopped:(id)stopped
 {
-  v4 = a3;
-  v5 = [(PHInCallRootViewController *)self view];
-  [v5 bounds];
+  stoppedCopy = stopped;
+  view = [(PHInCallRootViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v4 view];
-  [v14 setBounds:{v7, v9, v11, v13}];
+  view2 = [stoppedCopy view];
+  [view2 setBounds:{v7, v9, v11, v13}];
 
-  v15 = [(PHInCallRootViewController *)self view];
-  [v15 center];
+  view3 = [(PHInCallRootViewController *)self view];
+  [view3 center];
   v17 = v16;
   v19 = v18;
-  v20 = [v4 view];
+  view4 = [stoppedCopy view];
 
-  [v20 setCenter:{v17, v19}];
-  v21 = [(PHInCallRootViewController *)self multiwayViewController];
-  v22 = [v21 pipViewController];
-  v23 = [v22 parentViewController];
-  if (v23)
+  [view4 setCenter:{v17, v19}];
+  multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+  pipViewController = [multiwayViewController pipViewController];
+  parentViewController = [pipViewController parentViewController];
+  if (parentViewController)
   {
-    v24 = [(PHInCallRootViewController *)self multiwayViewController];
-    v25 = [v24 pipViewController];
+    multiwayViewController2 = [(PHInCallRootViewController *)self multiwayViewController];
+    pipViewController2 = [multiwayViewController2 pipViewController];
   }
 
   else
   {
-    v25 = [(PHInCallRootViewController *)self oldMultiwayPIPViewController];
+    pipViewController2 = [(PHInCallRootViewController *)self oldMultiwayPIPViewController];
   }
 
   v26 = sub_100004F84();
   v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
-  if (v25)
+  if (pipViewController2)
   {
     if (v27)
     {
       v28 = 138412290;
-      v29 = v25;
+      v29 = pipViewController2;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Cross-fading away from PIP view controller %@", &v28, 0xCu);
     }
 
@@ -4513,22 +4513,22 @@ LABEL_28:
 
 - (BOOL)shouldStartMultiwayPIP
 {
-  v3 = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController view];
-  v4 = [v3 superview];
-  if (!v4)
+  view = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController view];
+  superview = [view superview];
+  if (!superview)
   {
 
     goto LABEL_5;
   }
 
-  v5 = v4;
+  v5 = superview;
   v6 = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController isChildOf:self];
 
   if ((v6 & 1) == 0)
   {
 LABEL_5:
-    v8 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-    v7 = [v8 callDisplayStyle] == 4;
+    callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+    v7 = [callDisplayStyleManager callDisplayStyle] == 4;
 
     return v7;
   }
@@ -4536,7 +4536,7 @@ LABEL_5:
   return 1;
 }
 
-- (void)handlePIPInterruptionChangeNotification:(id)a3
+- (void)handlePIPInterruptionChangeNotification:(id)notification
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -4548,9 +4548,9 @@ LABEL_5:
   if ([(PHInCallRootViewController *)self isDisplayStyleMiniWindow])
   {
     v5 = +[PHPIPController defaultPIPController];
-    v6 = [v5 isPIPProxyInterrupted];
+    isPIPProxyInterrupted = [v5 isPIPProxyInterrupted];
 
-    if (v6)
+    if (isPIPProxyInterrupted)
     {
       v7 = sub_100004F84();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -4566,40 +4566,40 @@ LABEL_5:
   [(PHInCallRootViewController *)self updateMultiwayViewControllerUIState];
 }
 
-- (void)handleSystemInitiatedPIPInterruptionStoppedNotification:(id)a3
+- (void)handleSystemInitiatedPIPInterruptionStoppedNotification:(id)notification
 {
-  v4 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-  v5 = [v4 sceneSessionIdentifier];
+  callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+  sceneSessionIdentifier = [callDisplayStyleManager sceneSessionIdentifier];
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 delegate];
-  v8 = [v7 currentInCallScene];
-  v9 = [v8 session];
-  v10 = [v9 persistentIdentifier];
-  v11 = [v5 isEqualToString:v10];
+  delegate = [v6 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  session = [currentInCallScene session];
+  persistentIdentifier = [session persistentIdentifier];
+  v11 = [sceneSessionIdentifier isEqualToString:persistentIdentifier];
 
   if (v11)
   {
     v12 = +[PHPIPController defaultPIPController];
-    v13 = [v12 pipInterruptedCallIdentifier];
+    pipInterruptedCallIdentifier = [v12 pipInterruptedCallIdentifier];
 
-    v14 = [(PHInCallRootViewController *)self callCenter];
-    v15 = [v14 callWithUniqueProxyIdentifier:v13];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    v15 = [callCenter callWithUniqueProxyIdentifier:pipInterruptedCallIdentifier];
 
     v16 = sub_100004F84();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138412290;
-      v24 = v13;
+      v24 = pipInterruptedCallIdentifier;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "handleSystemInitiatedPIPInterruptionStoppedNotification for call identifier: %@", &v23, 0xCu);
     }
 
-    if ([v13 length]&& v15)
+    if ([pipInterruptedCallIdentifier length]&& v15)
     {
       v17 = sub_100004F84();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 138412290;
-        v24 = v13;
+        v24 = pipInterruptedCallIdentifier;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Call %@ which was originally pip interrupted has been uninterrupted. Stop that calls video since the interruption-stop was not user-initiated", &v23, 0xCu);
       }
 
@@ -4610,15 +4610,15 @@ LABEL_5:
 
       else
       {
-        v18 = [(PHInCallRootViewController *)self callCenter];
-        v19 = [v18 frontmostAudioOrVideoCall];
-        v20 = [v19 isVideo];
+        callCenter2 = [(PHInCallRootViewController *)self callCenter];
+        frontmostAudioOrVideoCall = [callCenter2 frontmostAudioOrVideoCall];
+        isVideo = [frontmostAudioOrVideoCall isVideo];
 
-        if ((v20 & 1) == 0)
+        if ((isVideo & 1) == 0)
         {
-          v21 = [(PHInCallRootViewController *)self callCenter];
-          v22 = [v21 videoDeviceController];
-          [v22 stopPreview];
+          callCenter3 = [(PHInCallRootViewController *)self callCenter];
+          videoDeviceController = [callCenter3 videoDeviceController];
+          [videoDeviceController stopPreview];
         }
       }
 
@@ -4628,21 +4628,21 @@ LABEL_5:
 
   else
   {
-    v13 = sub_100004F84();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    pipInterruptedCallIdentifier = sub_100004F84();
+    if (os_log_type_enabled(pipInterruptedCallIdentifier, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v23) = 0;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[WARN] Not handling PHPIPControllerSystemInitiatedPIPInterruptionStoppedNotification since scene does not match the scene currently used by InCallService.", &v23, 2u);
+      _os_log_impl(&_mh_execute_header, pipInterruptedCallIdentifier, OS_LOG_TYPE_DEFAULT, "[WARN] Not handling PHPIPControllerSystemInitiatedPIPInterruptionStoppedNotification since scene does not match the scene currently used by InCallService.", &v23, 2u);
     }
   }
 }
 
-- (void)pipControllerDidRequestReturnToFullScreenNotification:(id)a3
+- (void)pipControllerDidRequestReturnToFullScreenNotification:(id)notification
 {
   v4 = +[ICSPreferences sharedPreferences];
-  v5 = [v4 hasAdoptedModernInCallAPI];
+  hasAdoptedModernInCallAPI = [v4 hasAdoptedModernInCallAPI];
 
-  if ((v5 & 1) == 0)
+  if ((hasAdoptedModernInCallAPI & 1) == 0)
   {
 
     [(PHInCallRootViewController *)self animateToAlert];
@@ -4651,36 +4651,36 @@ LABEL_5:
 
 - (BOOL)shouldShowVideoCallBlockAndReportScreen
 {
-  v3 = [(PHInCallRootViewController *)self callCenter];
-  v4 = [v3 currentVideoCall];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  currentVideoCall = [callCenter currentVideoCall];
 
-  if (v4)
+  if (currentVideoCall)
   {
-    v5 = [(PHInCallRootViewController *)self callCenter];
-    v6 = [v5 currentVideoCall];
+    callCenter2 = [(PHInCallRootViewController *)self callCenter];
+    currentVideoCall2 = [callCenter2 currentVideoCall];
 LABEL_7:
 
-    v12 = [(PHInCallRootViewController *)self shouldShowCallEndedBlockAndReportScreen:v6];
+    v12 = [(PHInCallRootViewController *)self shouldShowCallEndedBlockAndReportScreen:currentVideoCall2];
     goto LABEL_8;
   }
 
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 delegate];
-  v9 = [v8 mostRecentlyDisconnectedVideoCall];
+  delegate = [v7 delegate];
+  mostRecentlyDisconnectedVideoCall = [delegate mostRecentlyDisconnectedVideoCall];
 
-  v6 = sub_100004F84();
-  v10 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  currentVideoCall2 = sub_100004F84();
+  v10 = os_log_type_enabled(currentVideoCall2, OS_LOG_TYPE_DEFAULT);
+  if (mostRecentlyDisconnectedVideoCall)
   {
     if (v10)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[self.callCenter currentVideoCall] is nil, using mostRecentlyDisconnectedVideoCall", buf, 2u);
+      _os_log_impl(&_mh_execute_header, currentVideoCall2, OS_LOG_TYPE_DEFAULT, "[self.callCenter currentVideoCall] is nil, using mostRecentlyDisconnectedVideoCall", buf, 2u);
     }
 
-    v5 = +[UIApplication sharedApplication];
-    v11 = [v5 delegate];
-    v6 = [v11 mostRecentlyDisconnectedVideoCall];
+    callCenter2 = +[UIApplication sharedApplication];
+    delegate2 = [callCenter2 delegate];
+    currentVideoCall2 = [delegate2 mostRecentlyDisconnectedVideoCall];
 
     goto LABEL_7;
   }
@@ -4688,7 +4688,7 @@ LABEL_7:
   if (v10)
   {
     *v14 = 0;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ICSAppDelegate.mostRecentlyDisconnectedVideoCall is nil so shouldShowVideoCallBlockAndReportScreen is false", v14, 2u);
+    _os_log_impl(&_mh_execute_header, currentVideoCall2, OS_LOG_TYPE_DEFAULT, "ICSAppDelegate.mostRecentlyDisconnectedVideoCall is nil so shouldShowVideoCallBlockAndReportScreen is false", v14, 2u);
   }
 
   v12 = 0;
@@ -4697,29 +4697,29 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)shouldShowCallEndedBlockAndReportScreen:(id)a3
+- (BOOL)shouldShowCallEndedBlockAndReportScreen:(id)screen
 {
-  v4 = a3;
-  v5 = [v4 contactIdentifier];
+  screenCopy = screen;
+  contactIdentifier = [screenCopy contactIdentifier];
 
-  v6 = [v4 remoteParticipantHandles];
-  v7 = [v6 count];
+  remoteParticipantHandles = [screenCopy remoteParticipantHandles];
+  v7 = [remoteParticipantHandles count];
 
   if (v7 != 1)
   {
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 remoteParticipantHandles];
+      remoteParticipantHandles2 = [screenCopy remoteParticipantHandles];
       v32 = 134217984;
-      v33[0] = [v10 count];
+      v33[0] = [remoteParticipantHandles2 count];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "it's not a 1-1 facetime call, %lu", &v32, 0xCu);
     }
 
     goto LABEL_17;
   }
 
-  if (v5)
+  if (contactIdentifier)
   {
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4734,10 +4734,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v11 = [v4 provider];
-  v12 = [v11 isFaceTimeProvider];
+  provider = [screenCopy provider];
+  isFaceTimeProvider = [provider isFaceTimeProvider];
 
-  if ((v12 & 1) == 0)
+  if ((isFaceTimeProvider & 1) == 0)
   {
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4750,9 +4750,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = [v4 dateConnected];
+  dateConnected = [screenCopy dateConnected];
 
-  if (!v13)
+  if (!dateConnected)
   {
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4765,7 +4765,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if ([(PHInCallRootViewController *)self isContactBlockedWithCall:v4])
+  if ([(PHInCallRootViewController *)self isContactBlockedWithCall:screenCopy])
   {
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4780,27 +4780,27 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v16 = [v4 handle];
-  v17 = [v16 value];
-  v18 = [v4 handle];
-  v19 = [v18 normalizedValue];
-  v20 = [(PHInCallRootViewController *)self isFirstTimeInCallHistoryWithHandleValue:v17 normalizedHandleValue:v19];
+  handle = [screenCopy handle];
+  value = [handle value];
+  handle2 = [screenCopy handle];
+  normalizedValue = [handle2 normalizedValue];
+  v20 = [(PHInCallRootViewController *)self isFirstTimeInCallHistoryWithHandleValue:value normalizedHandleValue:normalizedValue];
 
-  v21 = [v4 handle];
-  v22 = [v21 value];
-  v23 = [v4 handle];
-  v24 = [v23 normalizedValue];
-  v25 = [v4 uniqueProxyIdentifier];
-  v8 = [(PHInCallRootViewController *)self findMostRecentSilencedCallWithHandleValue:v22 normalizedHandleValue:v24 ignoredIdentifier:v25];
+  handle3 = [screenCopy handle];
+  value2 = [handle3 value];
+  handle4 = [screenCopy handle];
+  normalizedValue2 = [handle4 normalizedValue];
+  uniqueProxyIdentifier = [screenCopy uniqueProxyIdentifier];
+  v8 = [(PHInCallRootViewController *)self findMostRecentSilencedCallWithHandleValue:value2 normalizedHandleValue:normalizedValue2 ignoredIdentifier:uniqueProxyIdentifier];
 
   if (v20)
   {
-    v26 = [v4 isIncoming];
+    isIncoming = [screenCopy isIncoming];
   }
 
   else
   {
-    v26 = 0;
+    isIncoming = 0;
   }
 
   v27 = sub_100004F84();
@@ -4809,28 +4809,28 @@ LABEL_17:
     v32 = 67109376;
     LODWORD(v33[0]) = v20;
     WORD2(v33[0]) = 1024;
-    *(v33 + 6) = [v4 isIncoming];
+    *(v33 + 6) = [screenCopy isIncoming];
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "(isFirstTimeInCallHistory :%d && call.isIncoming: %d)", &v32, 0xEu);
   }
 
   if (v8)
   {
-    v28 = [v4 isOutgoing];
+    isOutgoing = [screenCopy isOutgoing];
   }
 
   else
   {
-    v28 = 0;
+    isOutgoing = 0;
   }
 
   v29 = sub_100004F84();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v4 isOutgoing];
+    isOutgoing2 = [screenCopy isOutgoing];
     v32 = 67109376;
     LODWORD(v33[0]) = v8 != 0;
     WORD2(v33[0]) = 1024;
-    *(v33 + 6) = v30;
+    *(v33 + 6) = isOutgoing2;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "(filteredMostRecent != nil :%d && disconnectedCall.isOutgoing: %d", &v32, 0xEu);
   }
 
@@ -4838,58 +4838,58 @@ LABEL_17:
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
     v32 = 67109376;
-    LODWORD(v33[0]) = v26;
+    LODWORD(v33[0]) = isIncoming;
     WORD2(v33[0]) = 1024;
-    *(v33 + 6) = v28;
+    *(v33 + 6) = isOutgoing;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "shouldShowCallEndedBlockAndReportScreen: \n (isUnknownFirstTimeCallerConnectedIncomingCall: %d || isFilteredConnectedOutgoingCall): %d \n", &v32, 0xEu);
   }
 
-  v14 = v26 | v28;
+  v14 = isIncoming | isOutgoing;
 LABEL_18:
 
   return v14 & 1;
 }
 
-- (void)showHideMiniWindowViewIfNeededAnimated:(BOOL)a3
+- (void)showHideMiniWindowViewIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(PHInCallRootViewController *)self wantsMiniWindowCoverViewController])
   {
     v5 = +[PHPIPController defaultPIPController];
-    v6 = [v5 isPipped];
+    isPipped = [v5 isPipped];
 
-    if (v6)
+    if (isPipped)
     {
 
-      [(PHInCallRootViewController *)self dismissPIPIfNeededForMiniWindowAnimated:v3];
+      [(PHInCallRootViewController *)self dismissPIPIfNeededForMiniWindowAnimated:animatedCopy];
       return;
     }
 
-    v11 = [(PHInCallRootViewController *)self coverViewController];
-    if ([v11 isBeingPresented])
+    coverViewController = [(PHInCallRootViewController *)self coverViewController];
+    if ([coverViewController isBeingPresented])
     {
       goto LABEL_14;
     }
 
-    v12 = [(PHInCallRootViewController *)self coverViewController];
-    v13 = [v12 presentingViewController];
-    if (v13)
+    coverViewController2 = [(PHInCallRootViewController *)self coverViewController];
+    presentingViewController = [coverViewController2 presentingViewController];
+    if (presentingViewController)
     {
 
 LABEL_14:
       goto LABEL_15;
     }
 
-    v17 = [(PHInCallRootViewController *)self parentViewController];
-    v18 = [v17 view];
-    v19 = [v18 window];
+    parentViewController = [(PHInCallRootViewController *)self parentViewController];
+    view = [parentViewController view];
+    window = [view window];
 
-    if (!v19)
+    if (!window)
     {
 LABEL_15:
-      v14 = [(PHInCallRootViewController *)self coverViewController];
+      coverViewController3 = [(PHInCallRootViewController *)self coverViewController];
 
-      if (v14)
+      if (coverViewController3)
       {
         v15 = sub_100004F84();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -4898,26 +4898,26 @@ LABEL_15:
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "InCallRootViewController mini window already visible, updating views", v20, 2u);
         }
 
-        v16 = [(PHInCallRootViewController *)self coverViewController];
-        [v16 updateViews];
+        coverViewController4 = [(PHInCallRootViewController *)self coverViewController];
+        [coverViewController4 updateViews];
       }
 
       return;
     }
 
-    [(PHInCallRootViewController *)self presentMiniWindowViewControllerAnimated:v3];
+    [(PHInCallRootViewController *)self presentMiniWindowViewControllerAnimated:animatedCopy];
   }
 
   else
   {
-    v7 = [(PHInCallRootViewController *)self coverViewController];
-    if (v7)
+    coverViewController5 = [(PHInCallRootViewController *)self coverViewController];
+    if (coverViewController5)
     {
-      v8 = v7;
-      v9 = [(PHInCallRootViewController *)self coverViewController];
-      v10 = [v9 isBeingDismissed];
+      v8 = coverViewController5;
+      coverViewController6 = [(PHInCallRootViewController *)self coverViewController];
+      isBeingDismissed = [coverViewController6 isBeingDismissed];
 
-      if ((v10 & 1) == 0)
+      if ((isBeingDismissed & 1) == 0)
       {
 
         [(PHInCallRootViewController *)self dismissMiniWindowViewControllerAnimated:1];
@@ -4926,12 +4926,12 @@ LABEL_15:
   }
 }
 
-- (void)dismissPIPIfNeededForMiniWindowAnimated:(BOOL)a3
+- (void)dismissPIPIfNeededForMiniWindowAnimated:(BOOL)animated
 {
   v5 = +[PHPIPController defaultPIPController];
-  v6 = [v5 isPIPProxyActiveAndHidden];
+  isPIPProxyActiveAndHidden = [v5 isPIPProxyActiveAndHidden];
 
-  if (v6)
+  if (isPIPProxyActiveAndHidden)
   {
     v7 = +[PHPIPController defaultPIPController];
     v8[0] = _NSConcreteStackBlock;
@@ -4939,14 +4939,14 @@ LABEL_15:
     v8[2] = sub_1000F2754;
     v8[3] = &unk_100356BB8;
     v8[4] = self;
-    v9 = a3;
+    animatedCopy = animated;
     [v7 manuallyStopPIPWithCompletion:v8];
   }
 }
 
-- (void)presentMiniWindowViewControllerAnimated:(BOOL)a3
+- (void)presentMiniWindowViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -4957,82 +4957,82 @@ LABEL_15:
   if (!self->_coverViewController)
   {
     v6 = [ICSCoverViewController alloc];
-    v7 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-    v8 = [(ICSCoverViewController *)v6 initWithCallDisplayStyleManager:v7];
+    callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+    v8 = [(ICSCoverViewController *)v6 initWithCallDisplayStyleManager:callDisplayStyleManager];
     coverViewController = self->_coverViewController;
     self->_coverViewController = v8;
   }
 
-  v10 = [(PHInCallRootViewController *)self coverViewController];
-  [v10 setModalPresentationStyle:0];
+  coverViewController = [(PHInCallRootViewController *)self coverViewController];
+  [coverViewController setModalPresentationStyle:0];
 
-  v11 = [(PHInCallRootViewController *)self coverViewController];
-  [v11 setModalTransitionStyle:2];
+  coverViewController2 = [(PHInCallRootViewController *)self coverViewController];
+  [coverViewController2 setModalTransitionStyle:2];
 
-  v12 = [(PHInCallRootViewController *)self coverViewController];
+  coverViewController3 = [(PHInCallRootViewController *)self coverViewController];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000F28D8;
   v13[3] = &unk_100356988;
   v13[4] = self;
-  [(PHInCallRootViewController *)self presentViewController:v12 animated:v3 completion:v13];
+  [(PHInCallRootViewController *)self presentViewController:coverViewController3 animated:animatedCopy completion:v13];
 }
 
-- (void)dismissMiniWindowViewControllerAnimated:(BOOL)a3
+- (void)dismissMiniWindowViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PHInCallRootViewController *)self coverViewController];
+  animatedCopy = animated;
+  coverViewController = [(PHInCallRootViewController *)self coverViewController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F2978;
   v6[3] = &unk_100356988;
   v6[4] = self;
-  [v5 dismissViewControllerAnimated:v3 completion:v6];
+  [coverViewController dismissViewControllerAnimated:animatedCopy completion:v6];
 }
 
-- (void)_showFailureAlertForCall:(id)a3
+- (void)_showFailureAlertForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   [PHInCallRootViewController obtainDismissalAssertionForReason:@"PHFailureAlertShowingAssertionReason"];
   [(PHInCallRootViewController *)self requestInCallSceneTransitionToFullScreen];
-  v5 = [v4 errorAlertTitle];
-  v6 = [v4 errorAlertMessage];
-  v7 = [PHAlertController alertControllerWithTitle:v5 message:v6 preferredStyle:1];
+  errorAlertTitle = [callCopy errorAlertTitle];
+  errorAlertMessage = [callCopy errorAlertMessage];
+  v7 = [PHAlertController alertControllerWithTitle:errorAlertTitle message:errorAlertMessage preferredStyle:1];
   [(PHInCallRootViewController *)self setFailureAlertController:v7];
 
   objc_initWeak(&location, self);
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"OK" value:&stru_100361FD0 table:@"InCallService"];
 
-  if ([v4 disconnectedReason] == 30 || objc_msgSend(v4, "disconnectedReason") == 49)
+  if ([callCopy disconnectedReason] == 30 || objc_msgSend(callCopy, "disconnectedReason") == 49)
   {
-    v10 = [v4 contactIdentifiers];
-    if ([v10 count] == 1)
+    contactIdentifiers = [callCopy contactIdentifiers];
+    if ([contactIdentifiers count] == 1)
     {
-      if ([v4 originatingUIType] == 8)
+      if ([callCopy originatingUIType] == 8)
       {
 
 LABEL_12:
         v23 = +[NSBundle mainBundle];
         v12 = [v23 localizedStringForKey:@"NOT_NOW" value:&stru_100361FD0 table:@"InCallService"];
 
-        v24 = [(PHInCallRootViewController *)self failureAlertController];
+        failureAlertController = [(PHInCallRootViewController *)self failureAlertController];
         v25 = +[NSBundle mainBundle];
         v26 = [v25 localizedStringForKey:@"SHOW_CONTACT_CARD" value:&stru_100361FD0 table:@"InCallService"];
         v50[0] = _NSConcreteStackBlock;
         v50[1] = 3221225472;
         v50[2] = sub_1000F3284;
         v50[3] = &unk_1003595C8;
-        v51 = v4;
+        v51 = callCopy;
         objc_copyWeak(&v52, &location);
         v27 = [UIAlertAction actionWithTitle:v26 style:0 handler:v50];
-        [v24 addAction:v27];
+        [failureAlertController addAction:v27];
 
         objc_destroyWeak(&v52);
         goto LABEL_15;
       }
 
-      v22 = [v4 originatingUIType] == 9;
+      v22 = [callCopy originatingUIType] == 9;
 
       if (v22)
       {
@@ -5045,12 +5045,12 @@ LABEL_12:
     }
   }
 
-  if ([v4 disconnectedReason] == 44)
+  if ([callCopy disconnectedReason] == 44)
   {
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@"CANCEL" value:&stru_100361FD0 table:@"InCallService"];
 
-    v13 = [(PHInCallRootViewController *)self failureAlertController];
+    failureAlertController2 = [(PHInCallRootViewController *)self failureAlertController];
     v14 = +[NSBundle mainBundle];
     v15 = [v14 localizedStringForKey:@"SIGN_IN" value:&stru_100361FD0 table:@"InCallService"];
     v48[0] = _NSConcreteStackBlock;
@@ -5059,17 +5059,17 @@ LABEL_12:
     v48[3] = &unk_100359390;
     objc_copyWeak(&v49, &location);
     v16 = [UIAlertAction actionWithTitle:v15 style:0 handler:v48];
-    [v13 addAction:v16];
+    [failureAlertController2 addAction:v16];
 
     objc_destroyWeak(&v49);
   }
 
-  else if ([v4 disconnectedReason] == 45)
+  else if ([callCopy disconnectedReason] == 45)
   {
     v17 = +[NSBundle mainBundle];
     v12 = [v17 localizedStringForKey:@"CANCEL" value:&stru_100361FD0 table:@"InCallService"];
 
-    v18 = [(PHInCallRootViewController *)self failureAlertController];
+    failureAlertController3 = [(PHInCallRootViewController *)self failureAlertController];
     v19 = +[NSBundle mainBundle];
     v20 = [v19 localizedStringForKey:@"SHOW_APP_STORE" value:&stru_100361FD0 table:@"InCallService"];
     v46[0] = _NSConcreteStackBlock;
@@ -5078,14 +5078,14 @@ LABEL_12:
     v46[3] = &unk_100359390;
     objc_copyWeak(&v47, &location);
     v21 = [UIAlertAction actionWithTitle:v20 style:0 handler:v46];
-    [v18 addAction:v21];
+    [failureAlertController3 addAction:v21];
 
     objc_destroyWeak(&v47);
   }
 
   else
   {
-    if ([v4 disconnectedReason] != 8)
+    if ([callCopy disconnectedReason] != 8)
     {
       goto LABEL_16;
     }
@@ -5093,7 +5093,7 @@ LABEL_12:
     v28 = +[NSBundle mainBundle];
     v12 = [v28 localizedStringForKey:@"CANCEL" value:&stru_100361FD0 table:@"InCallService"];
 
-    v29 = [(PHInCallRootViewController *)self failureAlertController];
+    failureAlertController4 = [(PHInCallRootViewController *)self failureAlertController];
     v30 = +[NSBundle mainBundle];
     v31 = [v30 localizedStringForKey:@"LEARN_MORE" value:&stru_100361FD0 table:@"InCallService"];
     v44[0] = _NSConcreteStackBlock;
@@ -5102,7 +5102,7 @@ LABEL_12:
     v44[3] = &unk_100359390;
     objc_copyWeak(&v45, &location);
     v32 = [UIAlertAction actionWithTitle:v31 style:0 handler:v44];
-    [v29 addAction:v32];
+    [failureAlertController4 addAction:v32];
 
     objc_destroyWeak(&v45);
   }
@@ -5110,29 +5110,29 @@ LABEL_12:
 LABEL_15:
   v9 = v12;
 LABEL_16:
-  v33 = [(PHInCallRootViewController *)self failureAlertController];
+  failureAlertController5 = [(PHInCallRootViewController *)self failureAlertController];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_1000F3620;
   v42[3] = &unk_100359390;
   objc_copyWeak(&v43, &location);
   v34 = [UIAlertAction actionWithTitle:v9 style:1 handler:v42];
-  [v33 addAction:v34];
+  [failureAlertController5 addAction:v34];
 
-  v35 = [(PHInCallRootViewController *)self failureAlertController];
-  [v35 setDismissalAssertionReason:@"PHFailureAlertShowingAssertionReason"];
+  failureAlertController6 = [(PHInCallRootViewController *)self failureAlertController];
+  [failureAlertController6 setDismissalAssertionReason:@"PHFailureAlertShowingAssertionReason"];
 
   v36 = sub_100004F84();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
   {
-    v37 = [v4 errorAlertTitle];
-    v38 = [v4 errorAlertMessage];
-    sub_1002566BC(v37, v38, buf, v36);
+    errorAlertTitle2 = [callCopy errorAlertTitle];
+    errorAlertMessage2 = [callCopy errorAlertMessage];
+    sub_1002566BC(errorAlertTitle2, errorAlertMessage2, buf, v36);
   }
 
-  v39 = [(PHInCallRootViewController *)self presentedViewController];
+  presentedViewController = [(PHInCallRootViewController *)self presentedViewController];
 
-  if (v39)
+  if (presentedViewController)
   {
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
@@ -5144,8 +5144,8 @@ LABEL_16:
 
   else
   {
-    v40 = [(PHInCallRootViewController *)self failureAlertController];
-    [(PHInCallRootViewController *)self presentViewController:v40 animated:1 completion:0];
+    failureAlertController7 = [(PHInCallRootViewController *)self failureAlertController];
+    [(PHInCallRootViewController *)self presentViewController:failureAlertController7 animated:1 completion:0];
   }
 
   objc_destroyWeak(&v43);
@@ -5153,9 +5153,9 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (void)_showTelephonyFallbackAlertForCall:(id)a3
+- (void)_showTelephonyFallbackAlertForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5165,107 +5165,107 @@ LABEL_16:
 
   [PHInCallRootViewController obtainDismissalAssertionForReason:@"PHFallbackToTelephonyAssertionReason"];
   [(PHInCallRootViewController *)self requestInCallSceneTransitionToFullScreen];
-  v6 = [[ICSFallbackToTelephonyAlert alloc] initWithDisconnectedCall:v4];
+  v6 = [[ICSFallbackToTelephonyAlert alloc] initWithDisconnectedCall:callCopy];
 
   [(ICSFallbackToTelephonyAlert *)v6 setCancelAction:&stru_1003595E8];
   [(ICSFallbackToTelephonyAlert *)v6 show];
 }
 
-- (void)showFailureOrFallbackAlertIfNecessaryForCall:(id)a3
+- (void)showFailureOrFallbackAlertIfNecessaryForCall:(id)call
 {
-  v4 = a3;
-  v5 = [v4 shouldShowFailureAlert];
+  callCopy = call;
+  shouldShowFailureAlert = [callCopy shouldShowFailureAlert];
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 uniqueProxyIdentifierUUID];
+    uniqueProxyIdentifierUUID = [callCopy uniqueProxyIdentifierUUID];
     v9 = 138412546;
-    v10 = v7;
+    v10 = uniqueProxyIdentifierUUID;
     v11 = 1024;
-    v12 = v5;
+    v12 = shouldShowFailureAlert;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "showFailureOrFallbackAlertIfNecessaryForCall %@ shouldShowFailureAlert: %d", &v9, 0x12u);
   }
 
-  if (v5)
+  if (shouldShowFailureAlert)
   {
-    v8 = [(PHInCallRootViewController *)self failureAlertController];
-    if (v8)
+    failureAlertController = [(PHInCallRootViewController *)self failureAlertController];
+    if (failureAlertController)
     {
     }
 
     else if ((+[PHInCallUIUtilities isSpringBoardPasscodeLocked]& 1) == 0)
     {
-      [(PHInCallRootViewController *)self _showFailureAlertForCall:v4];
+      [(PHInCallRootViewController *)self _showFailureAlertForCall:callCopy];
       goto LABEL_9;
     }
   }
 
-  if ([v4 shouldShowAutomaticTelephonyCallFallback])
+  if ([callCopy shouldShowAutomaticTelephonyCallFallback])
   {
-    [(PHInCallRootViewController *)self _showTelephonyFallbackAlertForCall:v4];
+    [(PHInCallRootViewController *)self _showTelephonyFallbackAlertForCall:callCopy];
   }
 
 LABEL_9:
 }
 
-- (void)_transitionFromViewController:(id)a3 toViewController:(id)a4
+- (void)_transitionFromViewController:(id)controller toViewController:(id)viewController
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F39EC;
   v7[3] = &unk_100356988;
-  v8 = a4;
-  v6 = v8;
-  [(PHInCallRootViewController *)self _transitionFromViewController:a3 toViewController:v6 completion:v7];
+  viewControllerCopy = viewController;
+  v6 = viewControllerCopy;
+  [(PHInCallRootViewController *)self _transitionFromViewController:controller toViewController:v6 completion:v7];
 }
 
-- (void)_transitionFromViewController:(id)a3 toViewController:(id)a4 completion:(id)a5
+- (void)_transitionFromViewController:(id)controller toViewController:(id)viewController completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  completionCopy = completion;
   v11 = sub_100004F84();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v38 = v8;
+    v38 = controllerCopy;
     v39 = 2112;
-    v40 = v9;
+    v40 = viewControllerCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Transitioning from %@ to a new view controller, and setting it as the currentViewController: %@", buf, 0x16u);
   }
 
   [(PHInCallRootViewController *)self _obtainThenReleaseTransitionAssertion];
-  v12 = [(PHInCallRootViewController *)self view];
-  [v12 bounds];
+  view = [(PHInCallRootViewController *)self view];
+  [view bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v9 view];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  view2 = [viewControllerCopy view];
+  [view2 setFrame:{v14, v16, v18, v20}];
 
-  v22 = [v9 view];
-  [v22 setAutoresizingMask:18];
+  view3 = [viewControllerCopy view];
+  [view3 setAutoresizingMask:18];
 
-  v23 = [v9 view];
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:1];
+  view4 = [viewControllerCopy view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:1];
 
-  v24 = [v9 view];
-  [v24 setHidden:0];
+  view5 = [viewControllerCopy view];
+  [view5 setHidden:0];
 
-  if (v8 && ([v8 parentViewController], v25 = objc_claimAutoreleasedReturnValue(), v26 = v25 == self, v25, v26))
+  if (controllerCopy && ([controllerCopy parentViewController], v25 = objc_claimAutoreleasedReturnValue(), v26 = v25 == self, v25, v26))
   {
-    [(PHInCallRootViewController *)self addChildViewController:v9];
-    [v8 willMoveToParentViewController:0];
+    [(PHInCallRootViewController *)self addChildViewController:viewControllerCopy];
+    [controllerCopy willMoveToParentViewController:0];
     objc_initWeak(buf, self);
     v29 = _NSConcreteStackBlock;
     v30 = 3221225472;
     v31 = sub_1000F3E20;
     v32 = &unk_100359610;
-    v33 = v8;
-    v34 = v9;
+    v33 = controllerCopy;
+    v34 = viewControllerCopy;
     objc_copyWeak(&v36, buf);
-    v35 = v10;
+    v35 = completionCopy;
     [(PHInCallRootViewController *)self transitionFromViewController:v33 toViewController:v34 duration:5242880 options:0 animations:&v29 completion:0.5];
 
     objc_destroyWeak(&v36);
@@ -5274,20 +5274,20 @@ LABEL_9:
 
   else
   {
-    [v9 willMoveToParentViewController:self];
-    v27 = [(PHInCallRootViewController *)self view];
-    v28 = [v9 view];
-    [v27 addSubview:v28];
+    [viewControllerCopy willMoveToParentViewController:self];
+    view6 = [(PHInCallRootViewController *)self view];
+    view7 = [viewControllerCopy view];
+    [view6 addSubview:view7];
 
-    [(PHInCallRootViewController *)self addChildViewController:v9];
-    [v9 didMoveToParentViewController:self];
-    if (v10)
+    [(PHInCallRootViewController *)self addChildViewController:viewControllerCopy];
+    [viewControllerCopy didMoveToParentViewController:self];
+    if (completionCopy)
     {
-      v10[2](v10);
+      completionCopy[2](completionCopy);
     }
   }
 
-  [(PHInCallRootViewController *)self setCurrentViewController:v9, v29, v30, v31, v32];
+  [(PHInCallRootViewController *)self setCurrentViewController:viewControllerCopy, v29, v30, v31, v32];
   [(PHInCallRootViewController *)self setNeedsWhitePointAdaptivityStyleUpdate];
 }
 
@@ -5296,10 +5296,10 @@ LABEL_9:
   v14.receiver = self;
   v14.super_class = PHInCallRootViewController;
   [(PHInCallRootViewController *)&v14 viewDidLoad];
-  v3 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-  v4 = [v3 callDisplayStyle];
+  callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v4 == 3)
+  if (callDisplayStyle == 3)
   {
     +[UIColor blackColor];
   }
@@ -5309,23 +5309,23 @@ LABEL_9:
     +[UIColor clearColor];
   }
   v5 = ;
-  v6 = [(PHInCallRootViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  view = [(PHInCallRootViewController *)self view];
+  [view setBackgroundColor:v5];
 
-  v7 = [(PHInCallRootViewController *)self view];
-  [v7 setOpaque:0];
+  view2 = [(PHInCallRootViewController *)self view];
+  [view2 setOpaque:0];
 
-  v8 = [(PHInCallRootViewController *)self view];
-  v9 = [v8 layer];
-  [v9 setAllowsGroupBlending:0];
+  view3 = [(PHInCallRootViewController *)self view];
+  layer = [view3 layer];
+  [layer setAllowsGroupBlending:0];
 
-  v10 = [(PHInCallRootViewController *)self view];
-  v11 = [v10 layer];
-  [v11 setAllowsGroupOpacity:0];
+  view4 = [(PHInCallRootViewController *)self view];
+  layer2 = [view4 layer];
+  [layer2 setAllowsGroupOpacity:0];
 
-  v12 = [(PHInCallRootViewController *)self view];
-  v13 = [(PHInCallRootViewController *)self bannerTapGestureRecognizer];
-  [v12 addGestureRecognizer:v13];
+  view5 = [(PHInCallRootViewController *)self view];
+  bannerTapGestureRecognizer = [(PHInCallRootViewController *)self bannerTapGestureRecognizer];
+  [view5 addGestureRecognizer:bannerTapGestureRecognizer];
 
   [(PHInCallRootViewController *)self handleScreenTimeActivationIfNecessary];
   [(PHInCallRootViewController *)self updateCallControllerForCurrentState];
@@ -5336,29 +5336,29 @@ LABEL_9:
   v3 = sub_100004F84();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PHInCallRootViewController *)self view];
-    v5 = [v4 recursiveDescription];
+    view = [(PHInCallRootViewController *)self view];
+    recursiveDescription = [view recursiveDescription];
     v6 = 138412290;
-    v7 = v5;
+    v7 = recursiveDescription;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@", &v6, 0xCu);
   }
 
   [(PHInCallRootViewController *)self performSelector:"printUI" withObject:0 afterDelay:30.0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[UIApplication sharedApplication];
-    v7 = [v6 delegate];
-    v8 = [v7 currentInCallScene];
-    [v8 presentationMode];
+    delegate = [v6 delegate];
+    currentInCallScene = [delegate currentInCallScene];
+    [currentInCallScene presentationMode];
     v9 = SBSInCallPresentationModeDescription();
     *buf = 134218242;
-    v32 = self;
+    selfCopy = self;
     v33 = 2114;
     v34 = v9;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHInCallRootViewController (%p) viewWillAppear presentationMode: %{public}@", buf, 0x16u);
@@ -5367,35 +5367,35 @@ LABEL_9:
   [(PHInCallRootViewController *)self _testing_viewWillAppear];
   v30.receiver = self;
   v30.super_class = PHInCallRootViewController;
-  [(PHInCallRootViewController *)&v30 viewWillAppear:v3];
-  v10 = [(PHInCallRootViewController *)self callCenter];
-  v11 = [v10 currentVideoCallCount];
+  [(PHInCallRootViewController *)&v30 viewWillAppear:appearCopy];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  currentVideoCallCount = [callCenter currentVideoCallCount];
 
-  if (v11)
+  if (currentVideoCallCount)
   {
     [(PHInCallRootViewController *)self obtainIdleTimerAssertionWithComment:@"viewWillAppear"];
   }
 
-  v12 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-  [v12 setBackgroundStyle:4 withDuration:0.100000001];
+  _remoteViewControllerProxy = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setBackgroundStyle:4 withDuration:0.100000001];
 
-  v13 = [(PHInCallRootViewController *)self presentedViewController];
-  if (!v13)
+  presentedViewController = [(PHInCallRootViewController *)self presentedViewController];
+  if (!presentedViewController)
   {
     goto LABEL_11;
   }
 
-  v14 = v13;
-  v15 = [(PHInCallRootViewController *)self presentedViewController];
-  v16 = [(PHInCallRootViewController *)self coverViewController];
-  v17 = v16;
-  if (v15 == v16)
+  v14 = presentedViewController;
+  presentedViewController2 = [(PHInCallRootViewController *)self presentedViewController];
+  coverViewController = [(PHInCallRootViewController *)self coverViewController];
+  v17 = coverViewController;
+  if (presentedViewController2 == coverViewController)
   {
 
     goto LABEL_11;
   }
 
-  v18 = [(PHInCallRootViewController *)self presentedViewController];
+  presentedViewController3 = [(PHInCallRootViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -5420,10 +5420,10 @@ LABEL_13:
   [(PHInCallRootViewController *)self updateAlertActivationReason];
   [(PHInCallRootViewController *)self registerForNotifications];
   [(PHInCallRootViewController *)self observePrioritizedCall];
-  v21 = [(PHInCallRootViewController *)self callCenter];
-  v22 = [v21 routeController];
-  v23 = [v22 routes];
-  v24 = [v23 count];
+  callCenter2 = [(PHInCallRootViewController *)self callCenter];
+  routeController = [callCenter2 routeController];
+  routes = [routeController routes];
+  v24 = [routes count];
 
   if (!v24)
   {
@@ -5434,60 +5434,60 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Currently have no routes, re-querying...", buf, 2u);
     }
 
-    v26 = [(PHInCallRootViewController *)self callCenter];
-    v27 = [v26 routeController];
-    [v27 requeryRoutes];
+    callCenter3 = [(PHInCallRootViewController *)self callCenter];
+    routeController2 = [callCenter3 routeController];
+    [routeController2 requeryRoutes];
   }
 
   if (self->_multiwayViewController)
   {
     v28 = +[PHInCallOrientationMonitor sharedInstance];
-    v29 = [v28 lastValidOrientation];
+    lastValidOrientation = [v28 lastValidOrientation];
 
-    [(PHInCallRootViewController *)self updateMultiwayDeviceOrientation:v29];
+    [(PHInCallRootViewController *)self updateMultiwayDeviceOrientation:lastValidOrientation];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PHInCallRootViewController *)self view];
-    v7 = [v6 window];
-    v8 = [v7 windowScene];
+    view = [(PHInCallRootViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
     *buf = 134218240;
-    v23 = self;
+    selfCopy = self;
     v24 = 2048;
-    v25 = v8;
+    v25 = windowScene;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHInCallRootViewController (%p) viewDidAppear in windowScene (%p)", buf, 0x16u);
   }
 
   v21.receiver = self;
   v21.super_class = PHInCallRootViewController;
-  [(PHInCallRootViewController *)&v21 viewDidAppear:v3];
+  [(PHInCallRootViewController *)&v21 viewDidAppear:appearCopy];
   v9 = dispatch_time(0, 500000000);
   dispatch_after(v9, &_dispatch_main_q, &stru_100359630);
   [(PHInCallRootViewController *)self _testing_viewDidAppear];
   [(PHInCallRootViewController *)self _testing_finishedAnimatingIn];
-  v10 = [(PHInCallRootViewController *)self callCenter];
-  v11 = [v10 lastDaemonConnectTime];
-  if (!v11)
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  lastDaemonConnectTime = [callCenter lastDaemonConnectTime];
+  if (!lastDaemonConnectTime)
   {
 
     goto LABEL_9;
   }
 
-  v12 = v11;
-  v13 = [(PHInCallRootViewController *)self callCenter];
-  v14 = [v13 lastDaemonConnectTime];
-  [v14 timeIntervalSinceNow];
+  v12 = lastDaemonConnectTime;
+  callCenter2 = [(PHInCallRootViewController *)self callCenter];
+  lastDaemonConnectTime2 = [callCenter2 lastDaemonConnectTime];
+  [lastDaemonConnectTime2 timeIntervalSinceNow];
   if (v15 <= 0.0)
   {
-    v16 = [(PHInCallRootViewController *)self callCenter];
-    v17 = [v16 lastDaemonConnectTime];
-    [v17 timeIntervalSinceNow];
+    callCenter3 = [(PHInCallRootViewController *)self callCenter];
+    lastDaemonConnectTime3 = [callCenter3 lastDaemonConnectTime];
+    [lastDaemonConnectTime3 timeIntervalSinceNow];
     v19 = v18;
 
     if (v19 < -1.0)
@@ -5508,34 +5508,34 @@ LABEL_10:
   [(PHInCallRootViewController *)self setupAutoAnswer];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHInCallRootViewController (%p) viewWillDisappear", buf, 0xCu);
   }
 
   [(PHInCallRootViewController *)self releaseIdleTimerAssertionWithComment:@"viewWillDisappear"];
   v9.receiver = self;
   v9.super_class = PHInCallRootViewController;
-  [(PHInCallRootViewController *)&v9 viewWillDisappear:v3];
+  [(PHInCallRootViewController *)&v9 viewWillDisappear:disappearCopy];
   [(PHInCallRootViewController *)self dismissScreenTimeAlertHostIfNeeded];
-  v6 = [(PHInCallRootViewController *)self callCenter];
-  v7 = [v6 currentAudioAndVideoCallCount];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  currentAudioAndVideoCallCount = [callCenter currentAudioAndVideoCallCount];
 
-  if (!v7)
+  if (!currentAudioAndVideoCallCount)
   {
     +[PHInCallRootViewController forceClearAllDismissalAssertions];
     if (+[PHSOSViewController isSOSDismissalAssertionActive])
     {
       if (BKSHIDServicesIsSmartCoverClosed() && self->_sosViewController)
       {
-        v8 = [(PHInCallRootViewController *)self sosViewController];
-        [v8 deactivateSOSWithSOSDismissalType:1];
+        sosViewController = [(PHInCallRootViewController *)self sosViewController];
+        [sosViewController deactivateSOSWithSOSDismissalType:1];
       }
     }
   }
@@ -5543,20 +5543,20 @@ LABEL_10:
   [(PHInCallRootViewController *)self cancelAutoAnswer];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHInCallRootViewController (%p) viewDidDisappear", buf, 0xCu);
   }
 
   v7.receiver = self;
   v7.super_class = PHInCallRootViewController;
-  [(PHInCallRootViewController *)&v7 viewDidDisappear:v3];
+  [(PHInCallRootViewController *)&v7 viewDidDisappear:disappearCopy];
   [(PHInCallRootViewController *)self dismissViewControllersWithSensitiveInformation];
   if (byte_1003B0EE0 == 1)
   {
@@ -5572,32 +5572,32 @@ LABEL_10:
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v10.receiver = self;
   v10.super_class = PHInCallRootViewController;
-  [(PHInCallRootViewController *)&v10 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
+  [(PHInCallRootViewController *)&v10 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v6;
+    v14 = windowCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "viewDidMoveToWindow %@ window %@", buf, 0x16u);
   }
 
-  v8 = [(PHInCallRootViewController *)self hasEverAppearedInWindow];
-  if (v6)
+  hasEverAppearedInWindow = [(PHInCallRootViewController *)self hasEverAppearedInWindow];
+  if (windowCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v8;
+    v9 = hasEverAppearedInWindow;
   }
 
   [(PHInCallRootViewController *)self setHasEverAppearedInWindow:v9];
@@ -5605,9 +5605,9 @@ LABEL_10:
 
 - (void)requestInCallSceneTransitionToFullScreen
 {
-  v2 = [(PHInCallRootViewController *)self inCallWindowScene];
+  inCallWindowScene = [(PHInCallRootViewController *)self inCallWindowScene];
 
-  if (v2)
+  if (inCallWindowScene)
   {
     TUDispatchMainIfNecessary();
   }
@@ -5618,11 +5618,11 @@ LABEL_10:
   [(PHInCallRootViewController *)self releaseIdleTimerAssertionWithComment:@"requestInCallDismissal"];
   [(PHInCallRootViewController *)self setStatusBarHidden:0 withDuration:0.0];
   v3 = +[ICSPreferences sharedPreferences];
-  v4 = [v3 hasAdoptedModernInCallAPI];
+  hasAdoptedModernInCallAPI = [v3 hasAdoptedModernInCallAPI];
 
   v5 = sub_100004F84();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (hasAdoptedModernInCallAPI)
   {
     if (v6)
     {
@@ -5631,12 +5631,12 @@ LABEL_10:
     }
 
     [(PHInCallRootViewController *)self dismissInCallPresentationWithDismissalBlock:&stru_100359670];
-    v7 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+    _remoteViewControllerProxy = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
 
-    if (v7)
+    if (_remoteViewControllerProxy)
     {
-      v8 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-      [v8 dismiss];
+      _remoteViewControllerProxy2 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+      [_remoteViewControllerProxy2 dismiss];
     }
   }
 
@@ -5648,9 +5648,9 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Requested InCall dismissal using remote view controller proxy", buf, 2u);
     }
 
-    v9 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+    _remoteViewControllerProxy3 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
 
-    if (v9)
+    if (_remoteViewControllerProxy3)
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
@@ -5667,9 +5667,9 @@ LABEL_10:
   }
 }
 
-- (void)dismissInCallPresentationWithDismissalBlock:(id)a3
+- (void)dismissInCallPresentationWithDismissalBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5677,32 +5677,32 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "requestInCallDismissal", buf, 2u);
   }
 
-  v6 = [(PHInCallRootViewController *)self multiwayViewController];
-  v7 = [v6 effectsEnabled];
+  multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+  effectsEnabled = [multiwayViewController effectsEnabled];
 
-  if (v7)
+  if (effectsEnabled)
   {
-    v8 = [(PHInCallRootViewController *)self callCenter];
-    v9 = [v8 videoDeviceController];
-    v10 = [v9 isPreviewRunning];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    videoDeviceController = [callCenter videoDeviceController];
+    isPreviewRunning = [videoDeviceController isPreviewRunning];
 
-    if (v10)
+    if (isPreviewRunning)
     {
-      v11 = [(PHInCallRootViewController *)self callCenter];
-      v12 = [v11 videoDeviceController];
-      [v12 stopPreview];
+      callCenter2 = [(PHInCallRootViewController *)self callCenter];
+      videoDeviceController2 = [callCenter2 videoDeviceController];
+      [videoDeviceController2 stopPreview];
     }
   }
 
   v13 = +[UIApplication sharedApplication];
-  v14 = [v13 delegate];
-  [v14 acquirePreventSuspensionAssertion];
+  delegate = [v13 delegate];
+  [delegate acquirePreventSuspensionAssertion];
 
   objc_initWeak(buf, self);
-  v15 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-  v16 = [v15 callDisplayStyle];
+  callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v16 == 3)
+  if (callDisplayStyle == 3)
   {
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
@@ -5711,11 +5711,11 @@ LABEL_10:
     v17 = &v33;
     objc_copyWeak(&v33, buf);
     v18 = +[UIApplication sharedApplication];
-    v19 = [v18 delegate];
-    v20 = [v19 sceneManager];
-    v21 = [v20 ambientScene];
-    v22 = [v21 delegate];
-    [v22 setSceneDidDisconnectBlock:v32];
+    delegate2 = [v18 delegate];
+    sceneManager = [delegate2 sceneManager];
+    ambientScene = [sceneManager ambientScene];
+    delegate3 = [ambientScene delegate];
+    [delegate3 setSceneDidDisconnectBlock:v32];
   }
 
   else
@@ -5727,10 +5727,10 @@ LABEL_10:
     v17 = &v31;
     objc_copyWeak(&v31, buf);
     v18 = +[UIApplication sharedApplication];
-    v19 = [v18 delegate];
-    v20 = [v19 currentInCallScene];
-    v21 = [v20 delegate];
-    [v21 setSceneDidDisconnectBlock:v30];
+    delegate2 = [v18 delegate];
+    sceneManager = [delegate2 currentInCallScene];
+    ambientScene = [sceneManager delegate];
+    [ambientScene setSceneDidDisconnectBlock:v30];
   }
 
   objc_destroyWeak(v17);
@@ -5744,10 +5744,10 @@ LABEL_10:
     }
 
     byte_1003B0EE0 = 0;
-    v24 = [(PHInCallRootViewController *)self currentAlertButtonAction];
+    currentAlertButtonAction = [(PHInCallRootViewController *)self currentAlertButtonAction];
     v25 = byte_1003B0EE1;
 
-    if (!v24 && (v25 & 1) == 0)
+    if (!currentAlertButtonAction && (v25 & 1) == 0)
     {
       v26 = sub_100004F84();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -5775,14 +5775,14 @@ LABEL_20:
 
 LABEL_21:
 
-      v4[2](v4);
+      blockCopy[2](blockCopy);
       byte_1003B0EE1 = 0;
     }
   }
 
   else
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
   v28 = +[PHPIPController defaultPIPController];
@@ -5800,10 +5800,10 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Preparing for dismissal by removing current view controllers", v25, 2u);
   }
 
-  v4 = [(PHInCallRootViewController *)self features];
-  v5 = [v4 callManagerEnabled];
+  features = [(PHInCallRootViewController *)self features];
+  callManagerEnabled = [features callManagerEnabled];
 
-  if (v5)
+  if (callManagerEnabled)
   {
     [(ICSCallManagerBridge *)self->_callManager cleanUp];
   }
@@ -5812,12 +5812,12 @@ LABEL_21:
   [v6 removeResponder:self];
 
   [(PHInCallRootViewController *)self removeViewController:self->_videoCallNavigationController];
-  v7 = [(PHInCallRootViewController *)self audioCallNavigationController];
-  [(PHInCallRootViewController *)self removeViewController:v7];
+  audioCallNavigationController = [(PHInCallRootViewController *)self audioCallNavigationController];
+  [(PHInCallRootViewController *)self removeViewController:audioCallNavigationController];
 
   [(PHInCallRootViewController *)self removeViewController:self->_multiwayViewController];
-  v8 = [(PHPhoneRemoteHostViewController *)self->_remoteHostViewController remoteViewController];
-  [v8 setDelegate:0];
+  remoteViewController = [(PHPhoneRemoteHostViewController *)self->_remoteHostViewController remoteViewController];
+  [remoteViewController setDelegate:0];
 
   remoteHostViewController = self->_remoteHostViewController;
   self->_remoteHostViewController = 0;
@@ -5846,60 +5846,60 @@ LABEL_21:
   [v16 removeObserver:self];
   [(PHInCallRootViewController *)self startObservingAcceptCallButtonTappedWithNotificationCenter:v16];
   v17 = +[UIApplication sharedApplication];
-  v18 = [v17 delegate];
-  [v18 hideCarPlayUI];
+  delegate = [v17 delegate];
+  [delegate hideCarPlayUI];
 
-  v19 = [(PHInCallRootViewController *)self callCenter];
-  v20 = [v19 routeController];
-  [v20 removeDelegate:self];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  [routeController removeDelegate:self];
 
-  v21 = [(PHInCallRootViewController *)self callCenter];
-  v22 = [v21 conversationManager];
-  [v22 removeDelegate:self];
+  callCenter2 = [(PHInCallRootViewController *)self callCenter];
+  conversationManager = [callCenter2 conversationManager];
+  [conversationManager removeDelegate:self];
 
-  v23 = [(PHInCallRootViewController *)self callCenter];
-  v24 = [v23 videoDeviceController];
-  [v24 stopPreview];
+  callCenter3 = [(PHInCallRootViewController *)self callCenter];
+  videoDeviceController = [callCenter3 videoDeviceController];
+  [videoDeviceController stopPreview];
 
   [objc_opt_class() releaseDismissalAssertionForReason:@"PHMessageComposeViewControllerAssertionReason"];
 }
 
-- (void)removeViewController:(id)a3
+- (void)removeViewController:(id)controller
 {
-  v5 = a3;
-  v3 = [v5 parentViewController];
+  controllerCopy = controller;
+  parentViewController = [controllerCopy parentViewController];
 
-  if (v3)
+  if (parentViewController)
   {
-    [v5 willMoveToParentViewController:0];
-    [v5 removeFromParentViewController];
-    if ([v5 isViewLoaded])
+    [controllerCopy willMoveToParentViewController:0];
+    [controllerCopy removeFromParentViewController];
+    if ([controllerCopy isViewLoaded])
     {
-      v4 = [v5 view];
-      [v4 removeFromSuperview];
+      view = [controllerCopy view];
+      [view removeFromSuperview];
     }
 
-    [v5 didMoveToParentViewController:0];
+    [controllerCopy didMoveToParentViewController:0];
   }
 }
 
-- (void)animateInWithCompletionBlock:(id)a3
+- (void)animateInWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PHInCallRootViewController *)self view];
-  [v5 setAlpha:0.0];
+  blockCopy = block;
+  view = [(PHInCallRootViewController *)self view];
+  [view setAlpha:0.0];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F5798;
   v6[3] = &unk_100356988;
   v6[4] = self;
-  [UIView animateWithDuration:0x20000 delay:v6 options:v4 animations:0.349999994 completion:0.0];
+  [UIView animateWithDuration:0x20000 delay:v6 options:blockCopy animations:0.349999994 completion:0.0];
 }
 
-- (void)presentContactsViewControllerForView:(id)a3
+- (void)presentContactsViewControllerForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(CNContactPickerViewController);
   [v5 setAllowsEditing:1];
   [v5 setMode:1];
@@ -5911,43 +5911,43 @@ LABEL_21:
   [(PHInCallRootViewController *)self setContactsViewController:v5];
   if ((+[PHUIConfiguration shouldUseFullScreenPeoplePicker]& 1) != 0)
   {
-    v7 = self;
-    v8 = [(PHInCallRootViewController *)v7 presentedViewController];
+    selfCopy = self;
+    presentedViewController = [(PHInCallRootViewController *)selfCopy presentedViewController];
 
-    v9 = v7;
-    if (v8)
+    presentedViewController2 = selfCopy;
+    if (presentedViewController)
     {
-      v9 = [(PHInCallRootViewController *)v7 presentedViewController];
+      presentedViewController2 = [(PHInCallRootViewController *)selfCopy presentedViewController];
     }
 
-    v10 = [(PHInCallRootViewController *)v7 contactsViewController];
+    contactsViewController = [(PHInCallRootViewController *)selfCopy contactsViewController];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000F59B8;
     v14[3] = &unk_100356988;
-    v14[4] = v7;
-    [v9 presentViewController:v10 animated:1 completion:v14];
+    v14[4] = selfCopy;
+    [presentedViewController2 presentViewController:contactsViewController animated:1 completion:v14];
 
-    v11 = [(PHInCallRootViewController *)v7 contactsViewController];
-    v12 = [v11 presentationController];
-    [v12 setDelegate:v7];
+    contactsViewController2 = [(PHInCallRootViewController *)selfCopy contactsViewController];
+    presentationController = [contactsViewController2 presentationController];
+    [presentationController setDelegate:selfCopy];
   }
 
   else
   {
-    v13 = [(PHInCallRootViewController *)self contactsViewController];
-    [(PHInCallRootViewController *)self presentAsPopover:v13 fromView:v4 completion:0];
+    contactsViewController3 = [(PHInCallRootViewController *)self contactsViewController];
+    [(PHInCallRootViewController *)self presentAsPopover:contactsViewController3 fromView:viewCopy completion:0];
   }
 
   [(PHInCallRootViewController *)self updateDesiredSpringboardBehavior];
 }
 
-- (void)forceUpdateCallControllerForFilteredRequest:(id)a3
+- (void)forceUpdateCallControllerForFilteredRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if ([qword_1003B0ED8 containsObject:@"PHScreenTimeAlertAssertionReason"])
   {
-    [(PHInCallRootViewController *)self setFilteredRequest:v4];
+    [(PHInCallRootViewController *)self setFilteredRequest:requestCopy];
     [(PHInCallRootViewController *)self updateCallControllerForCurrentState];
   }
 }
@@ -5957,19 +5957,19 @@ LABEL_21:
   v3 = sub_100004F84();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PHInCallRootViewController *)self filteredRequest];
+    filteredRequest = [(PHInCallRootViewController *)self filteredRequest];
     *buf = 138412290;
-    v21 = v4;
+    v21 = filteredRequest;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Loading screen time host view controller for request: %@", buf, 0xCu);
   }
 
   v5 = [PHScreenTimeHostViewController alloc];
-  v6 = [(PHInCallRootViewController *)self filteredRequest];
-  v7 = [(PHScreenTimeHostViewController *)v5 initWithRequest:v6 delegate:self];
+  filteredRequest2 = [(PHInCallRootViewController *)self filteredRequest];
+  v7 = [(PHScreenTimeHostViewController *)v5 initWithRequest:filteredRequest2 delegate:self];
 
-  v8 = [(PHInCallRootViewController *)self callCenter];
-  v9 = [v8 currentAudioAndVideoCalls];
-  v10 = [v9 count];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  currentAudioAndVideoCalls = [callCenter currentAudioAndVideoCalls];
+  v10 = [currentAudioAndVideoCalls count];
 
   if (v10)
   {
@@ -5985,13 +5985,13 @@ LABEL_21:
 
   else
   {
-    v12 = [(PHScreenTimeHostViewController *)v7 view];
-    [v12 setAlpha:0.0];
+    view = [(PHScreenTimeHostViewController *)v7 view];
+    [view setAlpha:0.0];
 
     [(PHScreenTimeHostViewController *)v7 willMoveToParentViewController:self];
-    v13 = [(PHInCallRootViewController *)self view];
-    v14 = [(PHScreenTimeHostViewController *)v7 view];
-    [v13 addSubview:v14];
+    view2 = [(PHInCallRootViewController *)self view];
+    view3 = [(PHScreenTimeHostViewController *)v7 view];
+    [view2 addSubview:view3];
 
     [(PHInCallRootViewController *)self addChildViewController:v7];
     [(PHScreenTimeHostViewController *)v7 didMoveToParentViewController:self];
@@ -6009,15 +6009,15 @@ LABEL_21:
 
 - (void)dismissSOSIfNeeded
 {
-  v7 = [(PHInCallRootViewController *)self callCenter];
-  if (![v7 hasCurrentCalls])
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  if (![callCenter hasCurrentCalls])
   {
-    v3 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-    if ([v3 callDisplayStyle] == 4 && +[PHSOSViewController isSOSDismissalAssertionActive](PHSOSViewController, "isSOSDismissalAssertionActive"))
+    callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 4 && +[PHSOSViewController isSOSDismissalAssertionActive](PHSOSViewController, "isSOSDismissalAssertionActive"))
     {
-      v4 = [(PHInCallRootViewController *)self sosViewController];
+      sosViewController = [(PHInCallRootViewController *)self sosViewController];
 
-      if (v4)
+      if (sosViewController)
       {
         v5 = sub_100004F84();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -6026,8 +6026,8 @@ LABEL_21:
         }
 
         [ICSCrashReporter simulateCrashReportWithFormat:@"The SOS UI was dismissed even though there were no active calls."];
-        v6 = [(PHInCallRootViewController *)self sosViewController];
-        [v6 deactivateSOSWithSOSDismissalType:0];
+        sosViewController2 = [(PHInCallRootViewController *)self sosViewController];
+        [sosViewController2 deactivateSOSWithSOSDismissalType:0];
       }
 
       return;
@@ -6035,56 +6035,56 @@ LABEL_21:
   }
 }
 
-- (void)presentAsPopover:(id)a3 fromView:(id)a4 completion:(id)a5
+- (void)presentAsPopover:(id)popover fromView:(id)view completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [v10 setModalPresentationStyle:7];
-  [(PHInCallRootViewController *)self presentViewController:v10 animated:1 completion:v8];
+  completionCopy = completion;
+  viewCopy = view;
+  popoverCopy = popover;
+  [popoverCopy setModalPresentationStyle:7];
+  [(PHInCallRootViewController *)self presentViewController:popoverCopy animated:1 completion:completionCopy];
 
-  v11 = [v10 popoverPresentationController];
-  [v11 setDelegate:self];
+  popoverPresentationController = [popoverCopy popoverPresentationController];
+  [popoverPresentationController setDelegate:self];
 
-  v12 = [(PHInCallRootViewController *)self view];
-  [v9 bounds];
-  [v12 convertRect:v9 fromView:?];
+  view = [(PHInCallRootViewController *)self view];
+  [viewCopy bounds];
+  [view convertRect:viewCopy fromView:?];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [v10 popoverPresentationController];
-  [v21 setPermittedArrowDirections:15];
+  popoverPresentationController2 = [popoverCopy popoverPresentationController];
+  [popoverPresentationController2 setPermittedArrowDirections:15];
 
-  v22 = [(PHInCallRootViewController *)self view];
-  v23 = [v10 popoverPresentationController];
-  [v23 setSourceView:v22];
+  view2 = [(PHInCallRootViewController *)self view];
+  popoverPresentationController3 = [popoverCopy popoverPresentationController];
+  [popoverPresentationController3 setSourceView:view2];
 
-  v24 = [v10 popoverPresentationController];
+  popoverPresentationController4 = [popoverCopy popoverPresentationController];
 
-  [v24 setSourceRect:{v14, v16, v18, v20}];
+  [popoverPresentationController4 setSourceRect:{v14, v16, v18, v20}];
 }
 
-- (void)willRotate:(id)a3
+- (void)willRotate:(id)rotate
 {
   if ((+[PHUIConfiguration shouldUseFullScreenPeoplePicker]& 1) == 0)
   {
-    v9 = [(PHInCallRootViewController *)self presentedViewController];
-    if ([v9 isBeingPresented])
+    presentedViewController = [(PHInCallRootViewController *)self presentedViewController];
+    if ([presentedViewController isBeingPresented])
     {
     }
 
     else
     {
-      v4 = [(PHInCallRootViewController *)self presentedViewController];
-      v5 = [v4 isBeingDismissed];
+      presentedViewController2 = [(PHInCallRootViewController *)self presentedViewController];
+      isBeingDismissed = [presentedViewController2 isBeingDismissed];
 
-      if ((v5 & 1) == 0)
+      if ((isBeingDismissed & 1) == 0)
       {
-        v6 = [(PHInCallRootViewController *)self presentedViewController];
-        v7 = [(PHInCallRootViewController *)self contactsViewController];
-        v8 = [v6 isEqual:v7];
+        presentedViewController3 = [(PHInCallRootViewController *)self presentedViewController];
+        contactsViewController = [(PHInCallRootViewController *)self contactsViewController];
+        v8 = [presentedViewController3 isEqual:contactsViewController];
 
         if (v8)
         {
@@ -6102,19 +6102,19 @@ LABEL_21:
   }
 }
 
-- (void)dismissContactsViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissContactsViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if ([(PHInCallRootViewController *)self isPresentingContactsViewController])
   {
     v7 = sub_100004F84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v16 = v4;
+      v16 = animatedCopy;
       v17 = 1024;
-      v18 = v6 != 0;
+      v18 = completionCopy != 0;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "dismissing contactsVC animated %d, hasCompletion: %d", buf, 0xEu);
     }
 
@@ -6122,12 +6122,12 @@ LABEL_21:
     v12[1] = 3221225472;
     v12[2] = sub_1000F64E8;
     v12[3] = &unk_100359698;
-    v14 = v4;
+    v14 = animatedCopy;
     v12[4] = self;
-    v13 = v6;
+    v13 = completionCopy;
     v8 = objc_retainBlock(v12);
     v9 = v8;
-    if (v4)
+    if (animatedCopy)
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
@@ -6145,22 +6145,22 @@ LABEL_21:
     }
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    dispatch_async(&_dispatch_main_q, v6);
+    dispatch_async(&_dispatch_main_q, completionCopy);
   }
 }
 
-- (void)dismissContactDetailsWithCompletion:(id)a3
+- (void)dismissContactDetailsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PHInCallRootViewController *)self isPresentingContactDetails])
   {
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v14 = v4 != 0;
+      v14 = completionCopy != 0;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "dismissing contact details hasCompletion: %d", buf, 8u);
     }
 
@@ -6168,25 +6168,25 @@ LABEL_21:
     v8 = 3221225472;
     v9 = sub_1000F67B4;
     v10 = &unk_100356FD8;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = completionCopy;
     v6 = objc_retainBlock(&v7);
-    [(PHInCallRootViewController *)self dismissViewControllerAnimated:0 completion:v6, v7, v8, v9, v10, v11];
+    [(PHInCallRootViewController *)self dismissViewControllerAnimated:0 completion:v6, v7, v8, v9, v10, selfCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    dispatch_async(&_dispatch_main_q, v4);
+    dispatch_async(&_dispatch_main_q, completionCopy);
   }
 }
 
-- (void)updateRemoteAlertSwipeDismissalStyleForCall:(id)a3
+- (void)updateRemoteAlertSwipeDismissalStyleForCall:(id)call
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  callCopy = call;
+  v7 = callCopy;
+  if (callCopy)
   {
-    v5 = [v4 status] != 4;
+    v5 = [callCopy status] != 4;
   }
 
   else
@@ -6194,50 +6194,50 @@ LABEL_21:
     v5 = 1;
   }
 
-  v6 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-  [v6 setSwipeDismissalStyle:v5];
+  _remoteViewControllerProxy = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:v5];
 }
 
 - (void)updateAlertActivationReason
 {
-  v3 = [(PHInCallRootViewController *)self callCenter];
-  v10 = [v3 incomingCall];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  incomingCall = [callCenter incomingCall];
 
-  if (v10 || (-[PHInCallRootViewController callCenter](self, "callCenter"), v4 = objc_claimAutoreleasedReturnValue(), [v4 incomingVideoCall], v10 = objc_claimAutoreleasedReturnValue(), v4, v10))
+  if (incomingCall || (-[PHInCallRootViewController callCenter](self, "callCenter"), v4 = objc_claimAutoreleasedReturnValue(), [v4 incomingVideoCall], incomingCall = objc_claimAutoreleasedReturnValue(), v4, incomingCall))
   {
-    v5 = [(PHInCallRootViewController *)self callCenter];
-    v6 = [v5 currentCallGroups];
-    v7 = [v6 count];
-    v8 = [(PHInCallRootViewController *)self callCenter];
-    v9 = &v7[[v8 currentVideoCallCount]] > 1;
+    callCenter2 = [(PHInCallRootViewController *)self callCenter];
+    currentCallGroups = [callCenter2 currentCallGroups];
+    v7 = [currentCallGroups count];
+    callCenter3 = [(PHInCallRootViewController *)self callCenter];
+    v9 = &v7[[callCenter3 currentVideoCallCount]] > 1;
   }
 
   else
   {
-    v10 = 0;
+    incomingCall = 0;
     v9 = 0;
   }
 
   [(PHInCallRootViewController *)self setAlertActivationReason:v9];
-  [(PHInCallRootViewController *)self setAlertActivationCall:v10];
+  [(PHInCallRootViewController *)self setAlertActivationCall:incomingCall];
 }
 
-- (void)updateAlertActivationReasonForCall:(id)a3
+- (void)updateAlertActivationReasonForCall:(id)call
 {
-  v13 = a3;
+  callCopy = call;
   if ([(PHInCallRootViewController *)self alertActivationReason]== 1)
   {
-    v4 = [(PHInCallRootViewController *)self alertActivationCall];
-    v5 = [v4 callUUID];
-    v6 = [v13 callUUID];
-    v7 = [v5 isEqualToString:v6];
+    alertActivationCall = [(PHInCallRootViewController *)self alertActivationCall];
+    callUUID = [alertActivationCall callUUID];
+    callUUID2 = [callCopy callUUID];
+    v7 = [callUUID isEqualToString:callUUID2];
 
     if (v7)
     {
-      v8 = [v13 status];
-      if (v8 - 5 >= 2)
+      status = [callCopy status];
+      if (status - 5 >= 2)
       {
-        if (v8 != 1)
+        if (status != 1)
         {
           goto LABEL_8;
         }
@@ -6245,10 +6245,10 @@ LABEL_21:
 
       else
       {
-        v9 = [(PHInCallRootViewController *)self callCenter];
-        v10 = [v9 hasCurrentCalls];
+        callCenter = [(PHInCallRootViewController *)self callCenter];
+        hasCurrentCalls = [callCenter hasCurrentCalls];
 
-        if ((v10 & 1) == 0)
+        if ((hasCurrentCalls & 1) == 0)
         {
           v11 = +[PHAudioCallViewController dismissalAssertionReason];
           [PHInCallRootViewController releaseDismissalAssertionForReason:v11];
@@ -6267,7 +6267,7 @@ LABEL_21:
 LABEL_8:
 }
 
-- (void)emergencyCallbackModeChangedNotification:(id)a3
+- (void)emergencyCallbackModeChangedNotification:(id)notification
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -6304,7 +6304,7 @@ LABEL_8:
   [(PHInCallRootViewController *)self updateCallControllerForCurrentState];
 }
 
-- (void)mostRecentlyDisconnectedAudioCallDidClearNotification:(id)a3
+- (void)mostRecentlyDisconnectedAudioCallDidClearNotification:(id)notification
 {
   if (+[TUCallCapabilities isEmergencyCallbackModeEnabled])
   {
@@ -6313,36 +6313,36 @@ LABEL_8:
   }
 }
 
-- (void)didChangeDeviceOrientationNotification:(id)a3
+- (void)didChangeDeviceOrientationNotification:(id)notification
 {
   if (self->_multiwayViewController)
   {
-    v4 = a3;
+    notificationCopy = notification;
     v5 = +[PHPIPController defaultPIPController];
-    v6 = [v5 isPipped];
+    isPipped = [v5 isPipped];
 
     v7 = &off_100359B70;
-    if (!v6)
+    if (!isPipped)
     {
       v7 = &off_100359B78;
     }
 
     v8 = *v7;
-    v9 = [v4 userInfo];
+    userInfo = [notificationCopy userInfo];
 
-    v10 = [v9 objectForKey:v8];
+    v10 = [userInfo objectForKey:v8];
 
-    v11 = [v10 intValue];
+    intValue = [v10 intValue];
 
-    [(PHInCallRootViewController *)self updateMultiwayDeviceOrientation:v11];
+    [(PHInCallRootViewController *)self updateMultiwayDeviceOrientation:intValue];
   }
 }
 
-- (void)updateMultiwayDeviceOrientation:(int64_t)a3
+- (void)updateMultiwayDeviceOrientation:(int64_t)orientation
 {
-  if ((a3 - 1) <= 3)
+  if ((orientation - 1) <= 3)
   {
-    v5 = [objc_opt_class() cnkDeviceOrientationForUIDeviceOrientation:a3];
+    v5 = [objc_opt_class() cnkDeviceOrientationForUIDeviceOrientation:orientation];
     multiwayViewController = self->_multiwayViewController;
 
     [(CNKMultiwayViewControllerProtocol *)multiwayViewController setDeviceOrientation:v5];
@@ -6351,12 +6351,12 @@ LABEL_8:
 
 - (CGSize)preferredPIPContentAspectRatio
 {
-  v3 = [(PHInCallRootViewController *)self multiwayViewController];
-  v4 = [v3 parentViewController];
-  if (v4)
+  multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+  parentViewController = [multiwayViewController parentViewController];
+  if (parentViewController)
   {
-    v5 = v4;
-    v6 = [(PHInCallRootViewController *)self multiwayViewController];
+    v5 = parentViewController;
+    multiwayViewController2 = [(PHInCallRootViewController *)self multiwayViewController];
     v7 = objc_opt_respondsToSelector();
 
     if ((v7 & 1) == 0)
@@ -6366,8 +6366,8 @@ LABEL_8:
       goto LABEL_7;
     }
 
-    v3 = [(PHInCallRootViewController *)self multiwayViewController];
-    [v3 preferredPIPContentAspectRatio];
+    multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+    [multiwayViewController preferredPIPContentAspectRatio];
     v9 = v8;
     v11 = v10;
   }
@@ -6386,9 +6386,9 @@ LABEL_7:
   return result;
 }
 
-- (void)prepareForDeviceLockWithCompletion:(id)a3
+- (void)prepareForDeviceLockWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -6396,8 +6396,8 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "prepareForDeviceLock started", buf, 2u);
   }
 
-  v6 = [(PHInCallRootViewController *)self currentViewController];
-  v7 = [PHInCallUIUtilities handleNavigationControllerIfNecessary:v6];
+  currentViewController = [(PHInCallRootViewController *)self currentViewController];
+  v7 = [PHInCallUIUtilities handleNavigationControllerIfNecessary:currentViewController];
 
   if ([(PHInCallRootViewController *)self viewControllerSupportsEffects:v7])
   {
@@ -6411,10 +6411,10 @@ LABEL_7:
     [v7 resetEffectsState];
   }
 
-  v9 = [(PHInCallRootViewController *)self isPresentingViewControllerWithSensitiveInformation];
+  isPresentingViewControllerWithSensitiveInformation = [(PHInCallRootViewController *)self isPresentingViewControllerWithSensitiveInformation];
   v10 = sub_100004F84();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (isPresentingViewControllerWithSensitiveInformation)
   {
     if (v11)
     {
@@ -6426,7 +6426,7 @@ LABEL_7:
     v12[1] = 3221225472;
     v12[2] = sub_1000F70EC;
     v12[3] = &unk_100356D38;
-    v13 = v4;
+    v13 = completionCopy;
     [(PHInCallRootViewController *)self dismissViewControllersWithSensitiveInformationWithCompletion:v12];
     v10 = v13;
   }
@@ -6438,9 +6438,9 @@ LABEL_7:
   }
 }
 
-- (void)dismissViewControllersWithSensitiveInformationWithCompletion:(id)a3
+- (void)dismissViewControllersWithSensitiveInformationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -6477,94 +6477,94 @@ LABEL_7:
   v11[1] = 3221225472;
   v11[2] = sub_1000F7500;
   v11[3] = &unk_100356D38;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_group_notify(v9, &_dispatch_main_q, v11);
 }
 
 - (void)showKeypadIfPossible
 {
-  v3 = [(PHInCallRootViewController *)self audioCallViewController];
+  audioCallViewController = [(PHInCallRootViewController *)self audioCallViewController];
 
-  if (v3)
+  if (audioCallViewController)
   {
-    v4 = [(PHInCallRootViewController *)self audioCallViewController];
-    [v4 audioCallControlsViewControllerRequestedKeypadPresentation:0];
+    audioCallViewController2 = [(PHInCallRootViewController *)self audioCallViewController];
+    [audioCallViewController2 audioCallControlsViewControllerRequestedKeypadPresentation:0];
   }
 }
 
 - (BOOL)isShowingHUD
 {
-  v2 = [(PHInCallRootViewController *)self multiwayViewController];
-  v3 = [v2 isShowingHUD];
+  multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+  isShowingHUD = [multiwayViewController isShowingHUD];
 
-  return v3;
+  return isShowingHUD;
 }
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   v5 = +[UIScreen mainScreen];
   [v5 bounds];
   v7 = v6;
 
-  v8 = [(PHInCallRootViewController *)self presentedViewController];
-  [v8 preferredContentSize];
+  presentedViewController = [(PHInCallRootViewController *)self presentedViewController];
+  [presentedViewController preferredContentSize];
   v10 = v9;
 
-  v11 = [(PHInCallRootViewController *)self presentedViewController];
-  [v11 setPreferredContentSize:{v10, v7 * 0.5}];
+  presentedViewController2 = [(PHInCallRootViewController *)self presentedViewController];
+  [presentedViewController2 setPreferredContentSize:{v10, v7 * 0.5}];
 
-  v12 = [(PHInCallRootViewController *)self presentedViewController];
-  v13 = [(PHInCallRootViewController *)self contactsViewController];
+  presentedViewController3 = [(PHInCallRootViewController *)self presentedViewController];
+  contactsViewController = [(PHInCallRootViewController *)self contactsViewController];
 
-  if (v12 == v13)
+  if (presentedViewController3 == contactsViewController)
   {
     v15 = +[UIColor whiteColor];
-    [v4 setBackgroundColor:?];
+    [presentationCopy setBackgroundColor:?];
   }
 
   else
   {
     v15 = +[UIColor _externalSystemDarkGrayColor];
     v14 = [v15 colorWithAlphaComponent:0.8];
-    [v4 setBackgroundColor:v14];
+    [presentationCopy setBackgroundColor:v14];
 
-    v4 = v14;
+    presentationCopy = v14;
   }
 }
 
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover
 {
-  v8 = a3;
-  v4 = [v8 presentedViewController];
-  v5 = [(PHInCallRootViewController *)self contactsViewController];
+  popoverCopy = popover;
+  presentedViewController = [popoverCopy presentedViewController];
+  contactsViewController = [(PHInCallRootViewController *)self contactsViewController];
 
-  if (v4 == v5)
+  if (presentedViewController == contactsViewController)
   {
-    [v8 setDelegate:0];
+    [popoverCopy setDelegate:0];
     [(PHInCallRootViewController *)self setContactsViewController:0];
   }
 
   else
   {
-    v6 = [v8 presentedViewController];
-    v7 = [(PHInCallRootViewController *)self remoteHostViewController];
+    presentedViewController2 = [popoverCopy presentedViewController];
+    remoteHostViewController = [(PHInCallRootViewController *)self remoteHostViewController];
 
-    if (v6 == v7)
+    if (presentedViewController2 == remoteHostViewController)
     {
-      [v8 setDelegate:0];
+      [popoverCopy setDelegate:0];
       [(PHInCallRootViewController *)self setRemoteHostViewController:0];
     }
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [a3 presentedViewController];
-  v5 = [(PHInCallRootViewController *)self contactsViewController];
+  presentedViewController = [dismiss presentedViewController];
+  contactsViewController = [(PHInCallRootViewController *)self contactsViewController];
 
-  if (v4 == v5)
+  if (presentedViewController == contactsViewController)
   {
     [(PHInCallRootViewController *)self setContactsViewController:0];
 
@@ -6572,32 +6572,32 @@ LABEL_7:
   }
 }
 
-- (void)transitionToVideoCallBasedViewController:(id)a3 shouldUpdatePipSize:(BOOL)a4
+- (void)transitionToVideoCallBasedViewController:(id)controller shouldUpdatePipSize:(BOOL)size
 {
-  v4 = a4;
-  v6 = a3;
+  sizeCopy = size;
+  controllerCopy = controller;
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v43 = v6;
+    v43 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Transitioning to video-call-based view controller: %@", buf, 0xCu);
   }
 
-  v8 = [(PHInCallRootViewController *)self currentViewController];
-  v9 = [(PHInCallRootViewController *)self videoCallNavigationController];
-  v10 = [v8 isEqual:v9];
+  currentViewController = [(PHInCallRootViewController *)self currentViewController];
+  videoCallNavigationController = [(PHInCallRootViewController *)self videoCallNavigationController];
+  v10 = [currentViewController isEqual:videoCallNavigationController];
 
   if ((v10 & 1) == 0)
   {
-    if (v4)
+    if (sizeCopy)
     {
       v11 = &v36;
       v36 = _NSConcreteStackBlock;
       v37 = 3221225472;
       v38 = sub_1000F7D18;
       v39 = &unk_100356988;
-      v40 = self;
+      selfCopy = self;
     }
 
     else
@@ -6613,44 +6613,44 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Not currently showing the video call nav controller, transitioning to it first", buf, 2u);
     }
 
-    v14 = [(PHInCallRootViewController *)self videoCallNavigationController];
-    v15 = [v14 view];
-    [v15 alpha];
+    videoCallNavigationController2 = [(PHInCallRootViewController *)self videoCallNavigationController];
+    view = [videoCallNavigationController2 view];
+    [view alpha];
     v17 = v16;
 
     if (v17 == 0.0)
     {
-      v18 = [(PHInCallRootViewController *)self videoCallNavigationController];
-      v19 = [v18 view];
-      [v19 setAlpha:1.0];
+      videoCallNavigationController3 = [(PHInCallRootViewController *)self videoCallNavigationController];
+      view2 = [videoCallNavigationController3 view];
+      [view2 setAlpha:1.0];
 
-      v20 = [(PHInCallRootViewController *)self videoCallNavigationController];
-      v21 = [v20 view];
-      [v21 layoutIfNeeded];
+      videoCallNavigationController4 = [(PHInCallRootViewController *)self videoCallNavigationController];
+      view3 = [videoCallNavigationController4 view];
+      [view3 layoutIfNeeded];
     }
 
     v22 = [(PHInCallRootViewController *)self currentViewController:v36];
-    v23 = [(PHInCallRootViewController *)self videoCallNavigationController];
-    [(PHInCallRootViewController *)self _transitionFromViewController:v22 toViewController:v23 completion:v12];
+    videoCallNavigationController5 = [(PHInCallRootViewController *)self videoCallNavigationController];
+    [(PHInCallRootViewController *)self _transitionFromViewController:v22 toViewController:videoCallNavigationController5 completion:v12];
 
-    v4 = 0;
+    sizeCopy = 0;
   }
 
-  v24 = [(PHInCallRootViewController *)self callForVideoCallBasedViewController:v6];
-  v25 = [(PHInCallRootViewController *)self videoCallNavigationController];
-  v26 = [v25 topViewController];
-  v27 = [v26 conformsToProtocol:&OBJC_PROTOCOL___CNKMultiwayViewControllerProtocol];
+  v24 = [(PHInCallRootViewController *)self callForVideoCallBasedViewController:controllerCopy];
+  videoCallNavigationController6 = [(PHInCallRootViewController *)self videoCallNavigationController];
+  topViewController = [videoCallNavigationController6 topViewController];
+  v27 = [topViewController conformsToProtocol:&OBJC_PROTOCOL___CNKMultiwayViewControllerProtocol];
 
   if (v27)
   {
-    v28 = [(PHInCallRootViewController *)self videoCallNavigationController];
-    v29 = [v28 topViewController];
-    v30 = [v29 call];
+    videoCallNavigationController7 = [(PHInCallRootViewController *)self videoCallNavigationController];
+    topViewController2 = [videoCallNavigationController7 topViewController];
+    call = [topViewController2 call];
   }
 
   else
   {
-    v30 = 0;
+    call = 0;
   }
 
   v31 = sub_100004F84();
@@ -6659,11 +6659,11 @@ LABEL_7:
     *buf = 138412546;
     v43 = v24;
     v44 = 2112;
-    v45 = v30;
+    v45 = call;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Transitioning to multiway view controller for %@, Current displayed active call: %@", buf, 0x16u);
   }
 
-  if ([v6 conformsToProtocol:&OBJC_PROTOCOL___CNKMultiwayViewControllerProtocol] && (objc_msgSend(v30, "isEqualToCall:", v24) & 1) == 0)
+  if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___CNKMultiwayViewControllerProtocol] && (objc_msgSend(call, "isEqualToCall:", v24) & 1) == 0)
   {
     v32 = sub_100004F84();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -6672,39 +6672,39 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Replacing existing view controllers with multiway view controller", buf, 2u);
     }
 
-    v33 = [(PHInCallRootViewController *)self videoCallNavigationController];
-    v41 = v6;
+    videoCallNavigationController8 = [(PHInCallRootViewController *)self videoCallNavigationController];
+    v41 = controllerCopy;
     v34 = [NSArray arrayWithObjects:&v41 count:1];
-    [v33 setViewControllers:v34 animated:1];
+    [videoCallNavigationController8 setViewControllers:v34 animated:1];
   }
 
-  if (v4)
+  if (sizeCopy)
   {
     v35 = +[PHPIPController defaultPIPController];
     [v35 updatePIPSize];
   }
 }
 
-- (id)callForVideoCallBasedViewController:(id)a3
+- (id)callForVideoCallBasedViewController:(id)controller
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&OBJC_PROTOCOL___CNKMultiwayViewControllerProtocol])
+  controllerCopy = controller;
+  if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___CNKMultiwayViewControllerProtocol])
   {
-    v4 = [v3 call];
+    call = [controllerCopy call];
   }
 
   else
   {
-    v4 = 0;
+    call = 0;
   }
 
-  return v4;
+  return call;
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v8 = a6;
-  v9 = a5;
+  toViewControllerCopy = toViewController;
+  viewControllerCopy = viewController;
   v15 = objc_opt_class();
   v10 = [NSArray arrayWithObjects:&v15 count:1];
   v11 = [NSSet setWithArray:v10];
@@ -6712,34 +6712,34 @@ LABEL_7:
   v12 = objc_opt_class();
   if ([v11 containsObject:v12] & 1) != 0 || (objc_msgSend(v11, "containsObject:", objc_opt_class()))
   {
-    v13 = 0;
+    makeAnimator = 0;
   }
 
   else
   {
-    v13 = [(CNKCrossFadeAnimatorFactory *)self->_animatorFactory makeAnimator];
+    makeAnimator = [(CNKCrossFadeAnimatorFactory *)self->_animatorFactory makeAnimator];
   }
 
-  return v13;
+  return makeAnimator;
 }
 
 - (void)showCallDetailsView
 {
   if ([(PHInCallRootViewController *)self isPresentingCallDetailsView])
   {
-    v3 = sub_100004F84();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    currentViewController = sub_100004F84();
+    if (os_log_type_enabled(currentViewController, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Requested details view controller presentation, but it's already presented", buf, 2u);
+      _os_log_impl(&_mh_execute_header, currentViewController, OS_LOG_TYPE_DEFAULT, "Requested details view controller presentation, but it's already presented", buf, 2u);
     }
   }
 
   else
   {
-    v4 = [(PHInCallRootViewController *)self callDetailsNavigationController];
+    callDetailsNavigationController = [(PHInCallRootViewController *)self callDetailsNavigationController];
 
-    if (!v4)
+    if (!callDetailsNavigationController)
     {
       v5 = sub_100004F84();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -6749,13 +6749,13 @@ LABEL_7:
       }
 
       v6 = +[UIApplication sharedApplication];
-      v7 = [v6 delegate];
-      v8 = [v7 bannerPresentationManager];
-      v9 = [(PHInCallRootViewController *)self makeConversationHUDDetailsNavigationControllerWithBannerPresentationManager:v8 delegate:self shouldSetControlsManagerInCallDetailsDelegate:1];
+      delegate = [v6 delegate];
+      bannerPresentationManager = [delegate bannerPresentationManager];
+      v9 = [(PHInCallRootViewController *)self makeConversationHUDDetailsNavigationControllerWithBannerPresentationManager:bannerPresentationManager delegate:self shouldSetControlsManagerInCallDetailsDelegate:1];
       [(PHInCallRootViewController *)self setCallDetailsNavigationController:v9];
 
-      v10 = [(PHInCallRootViewController *)self callDetailsNavigationController];
-      [v10 setOverrideUserInterfaceStyle:2];
+      callDetailsNavigationController2 = [(PHInCallRootViewController *)self callDetailsNavigationController];
+      [callDetailsNavigationController2 setOverrideUserInterfaceStyle:2];
     }
 
     v11 = sub_100004F84();
@@ -6765,24 +6765,24 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "PHInCallRootViewController transitioning to call details view", v13, 2u);
     }
 
-    v3 = [(PHInCallRootViewController *)self currentViewController];
-    v12 = [(PHInCallRootViewController *)self callDetailsNavigationController];
-    [(PHInCallRootViewController *)self _transitionFromViewController:v3 toViewController:v12];
+    currentViewController = [(PHInCallRootViewController *)self currentViewController];
+    callDetailsNavigationController3 = [(PHInCallRootViewController *)self callDetailsNavigationController];
+    [(PHInCallRootViewController *)self _transitionFromViewController:currentViewController toViewController:callDetailsNavigationController3];
   }
 }
 
-- (void)presentPhoneRemoteViewControllerForView:(id)a3
+- (void)presentPhoneRemoteViewControllerForView:(id)view
 {
-  v4 = a3;
-  v5 = [(PHInCallRootViewController *)self remoteHostViewController];
-  if (v5 && (v6 = v5, -[PHInCallRootViewController presentedViewController](self, "presentedViewController"), v7 = objc_claimAutoreleasedReturnValue(), -[PHInCallRootViewController remoteHostViewController](self, "remoteHostViewController"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqual:v8], v8, v7, v6, v9))
+  viewCopy = view;
+  remoteHostViewController = [(PHInCallRootViewController *)self remoteHostViewController];
+  if (remoteHostViewController && (v6 = remoteHostViewController, -[PHInCallRootViewController presentedViewController](self, "presentedViewController"), v7 = objc_claimAutoreleasedReturnValue(), -[PHInCallRootViewController remoteHostViewController](self, "remoteHostViewController"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqual:v8], v8, v7, v6, v9))
   {
     v10 = sub_100004F84();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(PHInCallRootViewController *)self remoteHostViewController];
+      remoteHostViewController2 = [(PHInCallRootViewController *)self remoteHostViewController];
       *buf = 138412290;
-      v16 = v11;
+      v16 = remoteHostViewController2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Requested Add Call presentation, but we already have a remote view controller: %@", buf, 0xCu);
     }
   }
@@ -6804,24 +6804,24 @@ LABEL_7:
     v13[2] = sub_1000F8358;
     v13[3] = &unk_1003596C0;
     v13[4] = self;
-    v14 = v4;
+    v14 = viewCopy;
     [PHPhoneRemoteHostViewController requestViewControllerWithCompletionHandler:v13];
   }
 }
 
-- (void)dismissPhoneRemoteViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPhoneRemoteViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if ([(PHInCallRootViewController *)self isPresentingRemoteHostViewController])
   {
     v7 = sub_100004F84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v16 = v4;
+      v16 = animatedCopy;
       v17 = 1024;
-      v18 = v6 != 0;
+      v18 = completionCopy != 0;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "dismissing phoneRemoteVC animated: %d, hasCompletion: %d", buf, 0xEu);
     }
 
@@ -6829,12 +6829,12 @@ LABEL_7:
     v12[1] = 3221225472;
     v12[2] = sub_1000F8858;
     v12[3] = &unk_100359698;
-    v14 = v4;
+    v14 = animatedCopy;
     v12[4] = self;
-    v13 = v6;
+    v13 = completionCopy;
     v8 = objc_retainBlock(v12);
     v9 = v8;
-    if (v4)
+    if (animatedCopy)
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
@@ -6852,25 +6852,25 @@ LABEL_7:
     }
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    dispatch_async(&_dispatch_main_q, v6);
+    dispatch_async(&_dispatch_main_q, completionCopy);
   }
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     v8 = 138412290;
-    v9 = v6;
+    v9 = localizedDescription;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHInCallRootViewController: Remote view service terminated with error: %@", &v8, 0xCu);
   }
 
-  if ([v4 code] != 1)
+  if ([errorCopy code] != 1)
   {
     v7 = sub_100004F84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -6883,19 +6883,19 @@ LABEL_7:
   }
 }
 
-- (void)setBackgroundStyle:(int64_t)a3 animatedWithDuration:(double)a4
+- (void)setBackgroundStyle:(int64_t)style animatedWithDuration:(double)duration
 {
-  v6 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-  [v6 setBackgroundStyle:a3 withDuration:a4];
+  _remoteViewControllerProxy = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setBackgroundStyle:style withDuration:duration];
 }
 
-- (void)setStatusBarHidden:(BOOL)a3 withDuration:(double)a4
+- (void)setStatusBarHidden:(BOOL)hidden withDuration:(double)duration
 {
-  v5 = a3;
+  hiddenCopy = hidden;
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    if (v5)
+    if (hiddenCopy)
     {
       v8 = @"YES";
     }
@@ -6905,18 +6905,18 @@ LABEL_7:
       v8 = @"NO";
     }
 
-    v9 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+    _remoteViewControllerProxy = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
     v11 = 138543618;
     v12 = v8;
     v13 = 2114;
-    v14 = v9;
+    v14 = _remoteViewControllerProxy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Request to set status bar hidden %{public}@ on %{public}@", &v11, 0x16u);
   }
 
-  v10 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-  [v10 setStatusBarHidden:v5 withDuration:a4];
+  _remoteViewControllerProxy2 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy2 setStatusBarHidden:hiddenCopy withDuration:duration];
 
-  [(PHInCallRootViewController *)self setShouldHideStatusBar:v5];
+  [(PHInCallRootViewController *)self setShouldHideStatusBar:hiddenCopy];
   [(PHInCallRootViewController *)self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -6928,10 +6928,10 @@ LABEL_7:
   [(PHInCallRootViewController *)self updateDesiredSpringboardBehavior];
 }
 
-+ (void)obtainDismissalAssertionForReason:(id)a3
++ (void)obtainDismissalAssertionForReason:(id)reason
 {
-  v3 = a3;
-  v4 = [qword_1003B0ED8 containsObject:v3];
+  reasonCopy = reason;
+  v4 = [qword_1003B0ED8 containsObject:reasonCopy];
   v5 = sub_100004F84();
   v6 = v5;
   if (v4)
@@ -6947,11 +6947,11 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = v3;
+      v9 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Obtaining Dismissal Assertion for reason: %{public}@", &v8, 0xCu);
     }
 
-    [qword_1003B0ED8 addObject:v3];
+    [qword_1003B0ED8 addObject:reasonCopy];
   }
 
   v7 = sub_100004F84();
@@ -6961,23 +6961,23 @@ LABEL_7:
   }
 }
 
-+ (void)releaseDismissalAssertionForReason:(id)a3
++ (void)releaseDismissalAssertionForReason:(id)reason
 {
-  v3 = a3;
-  if ([qword_1003B0ED8 containsObject:v3])
+  reasonCopy = reason;
+  if ([qword_1003B0ED8 containsObject:reasonCopy])
   {
-    [qword_1003B0ED8 removeObject:v3];
+    [qword_1003B0ED8 removeObject:reasonCopy];
     v4 = sub_100004F84();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v11 = v3;
+      v11 = reasonCopy;
       v12 = 2114;
       v13 = qword_1003B0ED8;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Releasing Dismissal Assertion %{public}@. Remaining assertions are: %{public}@", buf, 0x16u);
     }
 
-    v5 = [NSSet setWithObject:v3, @"PHReleasedAssertionKey"];
+    v5 = [NSSet setWithObject:reasonCopy, @"PHReleasedAssertionKey"];
     v9 = v5;
     v6 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
 
@@ -6986,27 +6986,27 @@ LABEL_7:
   }
 }
 
-+ (void)releaseDismissalAssertionReasons:(id)a3
++ (void)releaseDismissalAssertionReasons:(id)reasons
 {
-  v3 = a3;
+  reasonsCopy = reasons;
   v4 = [qword_1003B0ED8 copy];
-  v5 = [v4 intersectsSet:v3];
+  v5 = [v4 intersectsSet:reasonsCopy];
 
   if (v5)
   {
-    [qword_1003B0ED8 minusSet:v3];
+    [qword_1003B0ED8 minusSet:reasonsCopy];
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v12 = v3;
+      v12 = reasonsCopy;
       v13 = 2114;
       v14 = qword_1003B0ED8;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Releasing Dismissal Assertion Reasons %{public}@. Remaining assertions are: %{public}@", buf, 0x16u);
     }
 
     v9 = @"PHReleasedAssertionKey";
-    v10 = v3;
+    v10 = reasonsCopy;
     v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 postNotificationName:@"PHDismissalAssertionReleasedNotification" object:0 userInfo:v7];
@@ -7036,16 +7036,16 @@ LABEL_7:
   }
 }
 
-- (void)dismissalAssertionReleasedNotification:(id)a3
+- (void)dismissalAssertionReleasedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138412546;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
-    v25 = v4;
+    v25 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v22, 0x16u);
   }
 
@@ -7054,12 +7054,12 @@ LABEL_7:
   {
     v7 = +[PHInCallRootViewController dismissalAssertions];
     v22 = 138412290;
-    v23 = v7;
+    selfCopy = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "The remaining dismissal assertions are %@", &v22, 0xCu);
   }
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"PHReleasedAssertionKey"];
+  userInfo = [notificationCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"PHReleasedAssertionKey"];
 
   if (+[PHInCallRootViewController hasDismissalAssertions])
   {
@@ -7100,21 +7100,21 @@ LABEL_12:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v22 = 138412290;
-        v23 = qword_1003B0ED8;
+        selfCopy = qword_1003B0ED8;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Releasing the audio call view controller based on current dismissal assertions: %@", &v22, 0xCu);
       }
 
-      v14 = [(PHInCallRootViewController *)self features];
-      v15 = [v14 callManagerEnabled];
+      features = [(PHInCallRootViewController *)self features];
+      callManagerEnabled = [features callManagerEnabled];
 
-      if (v15)
+      if (callManagerEnabled)
       {
-        v16 = [(PHInCallRootViewController *)self callManager];
-        [v16 cleanUp];
+        callManager = [(PHInCallRootViewController *)self callManager];
+        [callManager cleanUp];
       }
 
-      v17 = [(PHInCallRootViewController *)self audioCallNavigationController];
-      [(PHInCallRootViewController *)self removeViewController:v17];
+      audioCallNavigationController = [(PHInCallRootViewController *)self audioCallNavigationController];
+      [(PHInCallRootViewController *)self removeViewController:audioCallNavigationController];
 
       audioCallNavigationController = self->_audioCallNavigationController;
       self->_audioCallNavigationController = 0;
@@ -7163,47 +7163,47 @@ LABEL_23:
 
   else
   {
-    v7 = [(PHInCallRootViewController *)self currentViewController];
-    v8 = [(PHInCallRootViewController *)self audioCallNavigationController];
-    if (v7 == v8)
+    currentViewController = [(PHInCallRootViewController *)self currentViewController];
+    audioCallNavigationController = [(PHInCallRootViewController *)self audioCallNavigationController];
+    if (currentViewController == audioCallNavigationController)
     {
       v5 = 0;
     }
 
     else
     {
-      v9 = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
-      v5 = v9 != 0;
+      audioCallViewControllerIfLoaded = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
+      v5 = audioCallViewControllerIfLoaded != 0;
     }
   }
 
   return v5;
 }
 
-- (void)obtainIdleTimerAssertionWithComment:(id)a3
+- (void)obtainIdleTimerAssertionWithComment:(id)comment
 {
-  v4 = a3;
+  commentCopy = comment;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = commentCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Obtaining Idle Timer Assertion: %@", &v13, 0xCu);
   }
 
-  v6 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-  [v6 setIdleTimerDisabled:1 forReason:@"PHIdleTimerDisabledReason"];
+  _remoteViewControllerProxy = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setIdleTimerDisabled:1 forReason:@"PHIdleTimerDisabledReason"];
 
-  v7 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-  v8 = [v7 callDisplayStyle];
+  callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v8 == 3)
+  if (callDisplayStyle == 3)
   {
     v9 = sub_100004F84();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = commentCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Obtaining Idle Timer Assertion on ambient scene: %@", &v13, 0xCu);
     }
 
@@ -7212,40 +7212,40 @@ LABEL_23:
 
   else
   {
-    v10 = [(PHInCallRootViewController *)self inCallWindowScene];
+    inCallWindowScene = [(PHInCallRootViewController *)self inCallWindowScene];
 
-    if (v10)
+    if (inCallWindowScene)
     {
       v11 = sub_100004F84();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412290;
-        v14 = v4;
+        v14 = commentCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Obtaining Idle Timer Assertion on window scene: %@", &v13, 0xCu);
       }
 
-      v12 = [(PHInCallRootViewController *)self inCallWindowScene];
-      [v12 setIdleTimerDisabled:1];
+      inCallWindowScene2 = [(PHInCallRootViewController *)self inCallWindowScene];
+      [inCallWindowScene2 setIdleTimerDisabled:1];
     }
   }
 }
 
-- (void)releaseIdleTimerAssertionWithComment:(id)a3
+- (void)releaseIdleTimerAssertionWithComment:(id)comment
 {
-  v4 = a3;
-  v5 = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
-  [v5 setIdleTimerDisabled:0 forReason:@"PHIdleTimerDisabledReason"];
+  commentCopy = comment;
+  _remoteViewControllerProxy = [(PHInCallRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setIdleTimerDisabled:0 forReason:@"PHIdleTimerDisabledReason"];
 
-  v6 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-  v7 = [v6 callDisplayStyle];
+  callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v7 == 3)
+  if (callDisplayStyle == 3)
   {
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = commentCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Released Idle Timer Assertion on ambient scene: %@", &v13, 0xCu);
     }
 
@@ -7254,18 +7254,18 @@ LABEL_23:
 
   else
   {
-    v9 = [(PHInCallRootViewController *)self inCallWindowScene];
+    inCallWindowScene = [(PHInCallRootViewController *)self inCallWindowScene];
 
-    if (v9)
+    if (inCallWindowScene)
     {
-      v10 = [(PHInCallRootViewController *)self inCallWindowScene];
-      [v10 setIdleTimerDisabled:0];
+      inCallWindowScene2 = [(PHInCallRootViewController *)self inCallWindowScene];
+      [inCallWindowScene2 setIdleTimerDisabled:0];
 
       v11 = sub_100004F84();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412290;
-        v14 = v4;
+        v14 = commentCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Released Idle Timer Assertion on window scene: %@", &v13, 0xCu);
       }
     }
@@ -7275,32 +7275,32 @@ LABEL_23:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = commentCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Released Idle Timer Assertion: %@", &v13, 0xCu);
   }
 }
 
 - (void)pullRelayingCallsIfNecessary
 {
-  v3 = [(PHInCallRootViewController *)self callCenter];
-  v4 = [v3 routeController];
-  v5 = [v4 pickedRoute];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  pickedRoute = [routeController pickedRoute];
 
-  v6 = [(PHInCallRootViewController *)self callCenter];
-  v7 = [v6 anyCallPassesTest:&stru_1003596E0];
+  callCenter2 = [(PHInCallRootViewController *)self callCenter];
+  v7 = [callCenter2 anyCallPassesTest:&stru_1003596E0];
 
-  v8 = [v5 deviceType];
-  v9 = sub_100004F84();
-  v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8 != 13 || (v7 & 1) != 0)
+  deviceType = [pickedRoute deviceType];
+  callCenter3 = sub_100004F84();
+  v10 = os_log_type_enabled(callCenter3, OS_LOG_TYPE_DEFAULT);
+  if (deviceType != 13 || (v7 & 1) != 0)
   {
     if (v10)
     {
       v11 = 67109376;
       LODWORD(v12[0]) = v7;
       WORD2(v12[0]) = 2048;
-      *(v12 + 6) = [v5 deviceType];
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Not pulling any relay calls (incomingCallExists: %d, pickedRouteDeviceType: %ld)", &v11, 0x12u);
+      *(v12 + 6) = [pickedRoute deviceType];
+      _os_log_impl(&_mh_execute_header, callCenter3, OS_LOG_TYPE_DEFAULT, "Not pulling any relay calls (incomingCallExists: %d, pickedRouteDeviceType: %ld)", &v11, 0x12u);
     }
   }
 
@@ -7309,12 +7309,12 @@ LABEL_23:
     if (v10)
     {
       v11 = 138412290;
-      v12[0] = v5;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Pulling all relaying calls from device: %@", &v11, 0xCu);
+      v12[0] = pickedRoute;
+      _os_log_impl(&_mh_execute_header, callCenter3, OS_LOG_TYPE_DEFAULT, "Pulling all relaying calls from device: %@", &v11, 0xCu);
     }
 
-    v9 = [(PHInCallRootViewController *)self callCenter];
-    [v9 pullRelayingCallsFromClient];
+    callCenter3 = [(PHInCallRootViewController *)self callCenter];
+    [callCenter3 pullRelayingCallsFromClient];
   }
 }
 
@@ -7327,21 +7327,21 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "HardwareEvent: handleActivationForEndAndLock", buf, 2u);
   }
 
-  v4 = [(PHInCallRootViewController *)self callCenter];
-  v5 = [v4 routeController];
-  v6 = [v5 pickedRoute];
-  v7 = [v6 isReceiver];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  pickedRoute = [routeController pickedRoute];
+  isReceiver = [pickedRoute isReceiver];
 
-  v8 = [(PHInCallRootViewController *)self callCenter];
-  v9 = v8;
-  if (v7)
+  callCenter2 = [(PHInCallRootViewController *)self callCenter];
+  v9 = callCenter2;
+  if (isReceiver)
   {
-    if ([v8 hasCurrentCalls])
+    if ([callCenter2 hasCurrentCalls])
     {
       v10 = +[PHInCallUtilities sharedInstance];
-      v11 = [v10 isLockToEndCallEnabled];
+      isLockToEndCallEnabled = [v10 isLockToEndCallEnabled];
 
-      if (v11)
+      if (isLockToEndCallEnabled)
       {
         v12 = sub_100004F84();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -7351,17 +7351,17 @@ LABEL_23:
         }
 
         byte_1003B0EE0 = 1;
-        v13 = [(PHInCallRootViewController *)self callCenter];
-        [v13 disconnectAllCalls];
+        callCenter3 = [(PHInCallRootViewController *)self callCenter];
+        [callCenter3 disconnectAllCalls];
 
         v31 = 0u;
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v14 = [(PHInCallRootViewController *)self callCenter];
-        v15 = [v14 currentVideoCalls];
+        callCenter4 = [(PHInCallRootViewController *)self callCenter];
+        currentVideoCalls = [callCenter4 currentVideoCalls];
 
-        v16 = [v15 countByEnumeratingWithState:&v29 objects:v35 count:16];
+        v16 = [currentVideoCalls countByEnumeratingWithState:&v29 objects:v35 count:16];
         if (v16)
         {
           v17 = v16;
@@ -7373,18 +7373,18 @@ LABEL_23:
             {
               if (*v30 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(currentVideoCalls);
               }
 
               v20 = *(*(&v29 + 1) + 8 * v19);
-              v21 = [(PHInCallRootViewController *)self callCenter];
-              [v21 disconnectCall:v20];
+              callCenter5 = [(PHInCallRootViewController *)self callCenter];
+              [callCenter5 disconnectCall:v20];
 
               v19 = v19 + 1;
             }
 
             while (v17 != v19);
-            v17 = [v15 countByEnumeratingWithState:&v29 objects:v35 count:16];
+            v17 = [currentVideoCalls countByEnumeratingWithState:&v29 objects:v35 count:16];
           }
 
           while (v17);
@@ -7402,9 +7402,9 @@ LABEL_23:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       v27 = +[PHInCallUtilities sharedInstance];
-      v28 = [v27 isLockToEndCallEnabled];
+      isLockToEndCallEnabled2 = [v27 isLockToEndCallEnabled];
       *buf = 67109120;
-      v34 = v28;
+      v34 = isLockToEndCallEnabled2;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "sendResponseIfNecessaryWithUnhandledEvents via handleActivationForEndAndLock - Receiver route is picked, but there are no active calls or AX setting to ignore is on: %d", buf, 8u);
     }
 
@@ -7414,11 +7414,11 @@ LABEL_24:
     return;
   }
 
-  v22 = [v8 hasCurrentVideoCalls];
+  hasCurrentVideoCalls = [callCenter2 hasCurrentVideoCalls];
 
   v23 = sub_100004F84();
   v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
-  if (v22)
+  if (hasCurrentVideoCalls)
   {
     if (v24)
     {
@@ -7426,8 +7426,8 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Disconnecting video calls due to lock button press", buf, 2u);
     }
 
-    v25 = [(PHInCallRootViewController *)self callCenter];
-    [v25 disconnectAllCalls];
+    callCenter6 = [(PHInCallRootViewController *)self callCenter];
+    [callCenter6 disconnectAllCalls];
 
     goto LABEL_24;
   }
@@ -7445,8 +7445,8 @@ LABEL_24:
 
 - (BOOL)shouldConsumeDeviceLockEvent
 {
-  v2 = [(PHInCallRootViewController *)self callCenter];
-  v3 = [v2 currentAudioAndVideoCallCount];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  currentAudioAndVideoCallCount = [callCenter currentAudioAndVideoCallCount];
   if (+[PHSOSViewController isSOSDismissalAssertionActive])
   {
     v4 = 1;
@@ -7454,21 +7454,21 @@ LABEL_24:
 
   else
   {
-    v5 = [v2 resolvedIncomingCall];
-    if (v5)
+    resolvedIncomingCall = [callCenter resolvedIncomingCall];
+    if (resolvedIncomingCall)
     {
     }
 
     else
     {
-      v7 = [v2 screeningCall];
-      if (v7)
+      screeningCall = [callCenter screeningCall];
+      if (screeningCall)
       {
-        v8 = v7;
-        v9 = [v2 screeningCall];
-        v10 = [v9 isWaitOnHoldActive];
+        v8 = screeningCall;
+        screeningCall2 = [callCenter screeningCall];
+        isWaitOnHoldActive = [screeningCall2 isWaitOnHoldActive];
 
-        if ((v10 & 1) == 0 && v3 == 1)
+        if ((isWaitOnHoldActive & 1) == 0 && currentAudioAndVideoCallCount == 1)
         {
           v4 = 0;
           goto LABEL_6;
@@ -7476,7 +7476,7 @@ LABEL_24:
       }
     }
 
-    v4 = (v3 > 0) & ~byte_1003B0EE0;
+    v4 = (currentAudioAndVideoCallCount > 0) & ~byte_1003B0EE0;
   }
 
 LABEL_6:
@@ -7484,15 +7484,15 @@ LABEL_6:
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PHInCallRootViewController;
-  [(PHInCallRootViewController *)&v8 traitCollectionDidChange:a3];
-  v4 = [(PHInCallRootViewController *)self traitCollection];
-  v5 = [v4 _backlightLuminance];
+  [(PHInCallRootViewController *)&v8 traitCollectionDidChange:change];
+  traitCollection = [(PHInCallRootViewController *)self traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
-  if (v5 == 1)
+  if (_backlightLuminance == 1)
   {
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -7505,34 +7505,34 @@ LABEL_6:
   }
 }
 
-- (void)handleDeviceLockEventWithSourceType:(int64_t)a3 resultHandler:(id)a4
+- (void)handleDeviceLockEventWithSourceType:(int64_t)type resultHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    *v52 = a3;
+    *v52 = type;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "PHInCallRootViewController handleDeviceLockEventWithSourceType %ld started", buf, 0xCu);
   }
 
-  if (a3)
+  if (type)
   {
-    v8 = [(PHInCallRootViewController *)self callCenter];
-    v9 = [v8 frontmostCall];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    frontmostCall = [callCenter frontmostCall];
 
-    if (v9)
+    if (frontmostCall)
     {
-      v10 = [v9 smartHoldingSession];
-      if (v10)
+      smartHoldingSession = [frontmostCall smartHoldingSession];
+      if (smartHoldingSession)
       {
-        v11 = [(PHInCallRootViewController *)self callCenter];
-        v12 = [v11 currentAudioAndVideoCallCount] == 1;
+        callCenter2 = [(PHInCallRootViewController *)self callCenter];
+        v12 = [callCenter2 currentAudioAndVideoCallCount] == 1;
 
         if (v12)
         {
-          v13 = [v9 smartHoldingSession];
-          v14 = [v13 state] == 0;
+          smartHoldingSession2 = [frontmostCall smartHoldingSession];
+          v14 = [smartHoldingSession2 state] == 0;
 
           if (v14)
           {
@@ -7544,12 +7544,12 @@ LABEL_6:
             }
 
             [(PHInCallRootViewController *)self prepareForDeviceLock];
-            v6[2](v6, 0);
+            handlerCopy[2](handlerCopy, 0);
             goto LABEL_46;
           }
 
-          v15 = [v9 smartHoldingSession];
-          v16 = [v15 state] == 3;
+          smartHoldingSession3 = [frontmostCall smartHoldingSession];
+          v16 = [smartHoldingSession3 state] == 3;
 
           if (v16)
           {
@@ -7560,8 +7560,8 @@ LABEL_6:
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Found call with SmartHolding session requiring user attention state, silencing ringtone", buf, 2u);
             }
 
-            [v9 suppressRingtone];
-            v6[2](v6, 1);
+            [frontmostCall suppressRingtone];
+            handlerCopy[2](handlerCopy, 1);
             goto LABEL_46;
           }
         }
@@ -7569,22 +7569,22 @@ LABEL_6:
     }
 
     [(PHInCallRootViewController *)self cancelAutoAnswer];
-    v18 = [(PHInCallRootViewController *)self audioCallNavigationController];
-    v19 = [v18 view];
-    v20 = [v19 superview];
-    if (v20)
+    audioCallNavigationController = [(PHInCallRootViewController *)self audioCallNavigationController];
+    view = [audioCallNavigationController view];
+    superview = [view superview];
+    if (superview)
     {
-      v21 = [(PHInCallRootViewController *)self audioCallNavigationController];
-      v22 = [v21 parentViewController];
-      v23 = v22 == 0;
+      audioCallNavigationController2 = [(PHInCallRootViewController *)self audioCallNavigationController];
+      parentViewController = [audioCallNavigationController2 parentViewController];
+      v23 = parentViewController == 0;
 
       if (v23)
       {
         goto LABEL_20;
       }
 
-      v18 = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
-      [v18 handleDeviceLockEventWithSourceType:a3];
+      audioCallNavigationController = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
+      [audioCallNavigationController handleDeviceLockEventWithSourceType:type];
     }
 
     else
@@ -7592,15 +7592,15 @@ LABEL_6:
     }
 
 LABEL_20:
-    v25 = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController view];
-    v26 = [v25 superview];
-    if (v26)
+    view2 = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController view];
+    superview2 = [view2 superview];
+    if (superview2)
     {
-      v27 = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController parentViewController];
-      if (v27)
+      parentViewController2 = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController parentViewController];
+      if (parentViewController2)
       {
-        v28 = [(PHInCallRootViewController *)self callCenter];
-        v29 = [v28 currentAudioAndVideoCallCount] == 0;
+        callCenter3 = [(PHInCallRootViewController *)self callCenter];
+        v29 = [callCenter3 currentAudioAndVideoCallCount] == 0;
 
         if (!v29)
         {
@@ -7618,7 +7618,7 @@ LABEL_20:
 
           else
           {
-            [(PHInCallRootViewController *)self handleDeviceLockEventOverUPlusOneVideoViewsWithSourceType:a3];
+            [(PHInCallRootViewController *)self handleDeviceLockEventOverUPlusOneVideoViewsWithSourceType:type];
           }
         }
       }
@@ -7640,11 +7640,11 @@ LABEL_20:
       v48[2] = sub_1000FA8D0;
       v48[3] = &unk_100356A48;
       objc_copyWeak(&v50, buf);
-      v49 = v6;
+      v49 = handlerCopy;
       v34 = objc_retainBlock(v48);
-      v35 = [(PHInCallRootViewController *)self transitionCoordinator];
+      transitionCoordinator = [(PHInCallRootViewController *)self transitionCoordinator];
 
-      if (v35)
+      if (transitionCoordinator)
       {
         v36 = sub_100004F84();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -7653,13 +7653,13 @@ LABEL_20:
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Device lock event received while transitioning a view controller with sensitive information. Delaying lock until transition is complete.", v47, 2u);
         }
 
-        v37 = [(PHInCallRootViewController *)self transitionCoordinator];
+        transitionCoordinator2 = [(PHInCallRootViewController *)self transitionCoordinator];
         v45[0] = _NSConcreteStackBlock;
         v45[1] = 3221225472;
         v45[2] = sub_1000FAA88;
         v45[3] = &unk_100359708;
         v46 = v34;
-        [v37 animateAlongsideTransition:0 completion:v45];
+        [transitionCoordinator2 animateAlongsideTransition:0 completion:v45];
 
         [(PHInCallRootViewController *)self dismissViewControllersWithSensitiveInformation];
 LABEL_39:
@@ -7688,30 +7688,30 @@ LABEL_46:
       objc_destroyWeak(buf);
     }
 
-    v39 = [(PHInCallRootViewController *)self shouldConsumeDeviceLockEvent];
+    shouldConsumeDeviceLockEvent = [(PHInCallRootViewController *)self shouldConsumeDeviceLockEvent];
     v40 = sub_100004F84();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       v41 = byte_1003B0EE0;
-      v42 = [(PHInCallRootViewController *)self callCenter];
-      v43 = [v42 currentAudioAndVideoCallCount];
+      callCenter4 = [(PHInCallRootViewController *)self callCenter];
+      currentAudioAndVideoCallCount = [callCenter4 currentAudioAndVideoCallCount];
       *buf = 67109890;
-      *v52 = v39;
+      *v52 = shouldConsumeDeviceLockEvent;
       *&v52[4] = 1024;
       *&v52[6] = v41;
       v53 = 2048;
-      v54 = v43;
+      v54 = currentAudioAndVideoCallCount;
       v55 = 2112;
       v56 = qword_1003B0ED8;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "PHInCallRootViewController handleDeviceLockEventWithSourceType shouldConsumeDeviceLockEvent %d shouldLockDeviceOnNextDismiss: %d callCount: %ld, dismissalAssertions: %@", buf, 0x22u);
     }
 
-    if (!v39)
+    if (!shouldConsumeDeviceLockEvent)
     {
       [(PHInCallRootViewController *)self prepareForDeviceLock];
     }
 
-    v6[2](v6, v39);
+    handlerCopy[2](handlerCopy, shouldConsumeDeviceLockEvent);
     goto LABEL_46;
   }
 
@@ -7723,7 +7723,7 @@ LABEL_46:
   }
 
   [(PHInCallRootViewController *)self prepareForDeviceLock];
-  v6[2](v6, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_47:
 }
 
@@ -7807,18 +7807,18 @@ LABEL_47:
   [v3 postNotificationName:@"PHHardwareButtonEventNotification" object:0 userInfo:v4];
 }
 
-- (unint64_t)desiredButtonEventsForCallContainer:(id)a3
+- (unint64_t)desiredButtonEventsForCallContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
+  containerCopy = container;
+  audioCallViewControllerIfLoaded = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
 
-  if (v5)
+  if (audioCallViewControllerIfLoaded)
   {
-    v6 = [(PHInCallRootViewController *)self desiresLockButtonEventsForCallContainer:v4];
-    v7 = [v4 resolvedIncomingCall];
+    v6 = [(PHInCallRootViewController *)self desiresLockButtonEventsForCallContainer:containerCopy];
+    resolvedIncomingCall = [containerCopy resolvedIncomingCall];
 
     v8 = v6 | 6;
-    if (!v7)
+    if (!resolvedIncomingCall)
     {
       v8 = v6;
     }
@@ -7842,7 +7842,7 @@ LABEL_47:
     goto LABEL_14;
   }
 
-  if ([(PHInCallRootViewController *)self desiresLockAndVolumeButtonEventsForCallContainer:v4])
+  if ([(PHInCallRootViewController *)self desiresLockAndVolumeButtonEventsForCallContainer:containerCopy])
   {
     v9 = 47;
   }
@@ -7868,16 +7868,16 @@ LABEL_14:
   return v9;
 }
 
-- (unint64_t)desiredSceneButtonEventsForCallContainer:(id)a3
+- (unint64_t)desiredSceneButtonEventsForCallContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
+  containerCopy = container;
+  audioCallViewControllerIfLoaded = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
 
-  if (v5)
+  if (audioCallViewControllerIfLoaded)
   {
-    v6 = [v4 resolvedIncomingCall];
+    resolvedIncomingCall = [containerCopy resolvedIncomingCall];
 
-    if (v6)
+    if (resolvedIncomingCall)
     {
       v7 = 30;
     }
@@ -7905,7 +7905,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([(PHInCallRootViewController *)self desiresLockAndVolumeButtonEventsForCallContainer:v4])
+  if ([(PHInCallRootViewController *)self desiresLockAndVolumeButtonEventsForCallContainer:containerCopy])
   {
     v7 = 30;
   }
@@ -7931,89 +7931,89 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)desiresLockAndVolumeButtonEventsForCallContainer:(id)a3
+- (BOOL)desiresLockAndVolumeButtonEventsForCallContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 delegate];
-  v6 = [v5 incomingVideoCallUsingCallContainer:v3];
+  delegate = [v4 delegate];
+  v6 = [delegate incomingVideoCallUsingCallContainer:containerCopy];
 
   return v6 != 0;
 }
 
-- (BOOL)desiresLockButtonEventsForCallContainer:(id)a3
+- (BOOL)desiresLockButtonEventsForCallContainer:(id)container
 {
-  v4 = a3;
-  v5 = [v4 resolvedIncomingCall];
-  if (v5)
+  containerCopy = container;
+  resolvedIncomingCall = [containerCopy resolvedIncomingCall];
+  if (resolvedIncomingCall)
   {
-    v6 = 1;
+    isPickedRouteReceiver = 1;
   }
 
-  else if ([v4 currentCallCount])
+  else if ([containerCopy currentCallCount])
   {
-    v6 = [(PHInCallRootViewController *)self isPickedRouteReceiver];
+    isPickedRouteReceiver = [(PHInCallRootViewController *)self isPickedRouteReceiver];
   }
 
   else
   {
-    v6 = 0;
+    isPickedRouteReceiver = 0;
   }
 
-  return v6;
+  return isPickedRouteReceiver;
 }
 
-- (void)hardwareButtonEventNotification:(id)a3
+- (void)hardwareButtonEventNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 userInfo];
+    userInfo = [notificationCopy userInfo];
     v17 = 138412290;
-    v18 = v6;
+    v18 = userInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHInCallRootViewController received a hardware button event (%@)", &v17, 0xCu);
   }
 
-  v7 = [(PHInCallRootViewController *)self featureFlags];
-  if (![(__CFString *)v7 conversationOneToOneModeEnabled]|| ![(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController isViewLoaded])
+  featureFlags = [(PHInCallRootViewController *)self featureFlags];
+  if (![(__CFString *)featureFlags conversationOneToOneModeEnabled]|| ![(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController isViewLoaded])
   {
     goto LABEL_15;
   }
 
-  v8 = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController view];
-  v9 = [v8 window];
+  view = [(CNKMultiwayViewControllerProtocol *)self->_multiwayViewController view];
+  window = [view window];
 
-  if (v9)
+  if (window)
   {
-    v10 = [v4 userInfo];
-    v7 = [v10 valueForKey:@"kPHHardwareButtonEventType"];
+    userInfo2 = [notificationCopy userInfo];
+    featureFlags = [userInfo2 valueForKey:@"kPHHardwareButtonEventType"];
 
     v11 = +[UIApplication sharedApplication];
-    v12 = [v11 delegate];
-    v13 = [(PHInCallRootViewController *)self callCenter];
-    v14 = [v12 incomingVideoCallUsingCallContainer:v13];
+    delegate = [v11 delegate];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    v14 = [delegate incomingVideoCallUsingCallContainer:callCenter];
 
-    if (v7 == @"kPHHardwareButtonEventTypeVolumeDownButton" || v7 == @"kPHHardwareButtonEventTypeVolumeUpButton")
+    if (featureFlags == @"kPHHardwareButtonEventTypeVolumeDownButton" || featureFlags == @"kPHHardwareButtonEventTypeVolumeUpButton")
     {
       [v14 suppressRingtone];
     }
 
     else
     {
-      if (v7 == @"kPHHardwareButtonEventTypeHeadsetButton")
+      if (featureFlags == @"kPHHardwareButtonEventTypeHeadsetButton")
       {
-        v15 = +[UIApplication sharedApplication];
-        v16 = [v15 delegate];
-        [v16 handleHeadsetButtonPressForCall:v14 sourceIdentifier:0];
+        callCenter2 = +[UIApplication sharedApplication];
+        delegate2 = [callCenter2 delegate];
+        [delegate2 handleHeadsetButtonPressForCall:v14 sourceIdentifier:0];
 
         goto LABEL_13;
       }
 
-      if (v7 == @"kPHHardwareButtonEventTypeHeadsetButtonLongPress")
+      if (featureFlags == @"kPHHardwareButtonEventTypeHeadsetButtonLongPress")
       {
-        v15 = [(PHInCallRootViewController *)self callCenter];
-        [v15 handleActionForWiredHeadsetMiddleButtonLongPress];
+        callCenter2 = [(PHInCallRootViewController *)self callCenter];
+        [callCenter2 handleActionForWiredHeadsetMiddleButtonLongPress];
 LABEL_13:
       }
     }
@@ -8022,13 +8022,13 @@ LABEL_15:
   }
 }
 
-- (id)getPreferredBackgroundActivitiesToSuppress:(id)a3 whenIsPipped:(BOOL)a4 whenTemporarilyAllowAllStatusBarPills:(BOOL)a5
+- (id)getPreferredBackgroundActivitiesToSuppress:(id)suppress whenIsPipped:(BOOL)pipped whenTemporarilyAllowAllStatusBarPills:(BOOL)pills
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v8 = v7;
-  if (v5)
+  pillsCopy = pills;
+  pippedCopy = pipped;
+  suppressCopy = suppress;
+  v8 = suppressCopy;
+  if (pillsCopy)
   {
     v9 = sub_100004F84();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -8044,7 +8044,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v6)
+  if (pippedCopy)
   {
     v9 = sub_100004F84();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -8061,7 +8061,7 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v12 = v7;
+  v12 = suppressCopy;
 LABEL_10:
   v13 = v12;
 
@@ -8070,8 +8070,8 @@ LABEL_10:
 
 - (id)backgroundActivities
 {
-  v2 = [(PHInCallRootViewController *)self inCallWindowScene];
-  v3 = sub_1000EDC00([v2 ics_sceneType]);
+  inCallWindowScene = [(PHInCallRootViewController *)self inCallWindowScene];
+  v3 = sub_1000EDC00([inCallWindowScene ics_sceneType]);
 
   return v3;
 }
@@ -8079,48 +8079,48 @@ LABEL_10:
 - (BOOL)isPipped
 {
   v2 = +[PHPIPController defaultPIPController];
-  v3 = [v2 isPipped];
+  isPipped = [v2 isPipped];
 
-  return v3;
+  return isPipped;
 }
 
-- (void)setTemporarilyAllowAllStatusBarPills:(BOOL)a3
+- (void)setTemporarilyAllowAllStatusBarPills:(BOOL)pills
 {
-  if (self->_temporarilyAllowAllStatusBarPills != a3)
+  if (self->_temporarilyAllowAllStatusBarPills != pills)
   {
-    self->_temporarilyAllowAllStatusBarPills = a3;
+    self->_temporarilyAllowAllStatusBarPills = pills;
     [(PHInCallRootViewController *)self setNeedsStatusBarPillSuppressionUpdate];
   }
 }
 
 - (void)setNeedsStatusBarPillSuppressionUpdate
 {
-  v3 = [(PHInCallRootViewController *)self backgroundActivities];
-  v5 = [(PHInCallRootViewController *)self getPreferredBackgroundActivitiesToSuppress:v3 whenIsPipped:[(PHInCallRootViewController *)self isPipped] whenTemporarilyAllowAllStatusBarPills:[(PHInCallRootViewController *)self temporarilyAllowAllStatusBarPills]];
+  backgroundActivities = [(PHInCallRootViewController *)self backgroundActivities];
+  v5 = [(PHInCallRootViewController *)self getPreferredBackgroundActivitiesToSuppress:backgroundActivities whenIsPipped:[(PHInCallRootViewController *)self isPipped] whenTemporarilyAllowAllStatusBarPills:[(PHInCallRootViewController *)self temporarilyAllowAllStatusBarPills]];
 
-  v4 = [(PHInCallRootViewController *)self inCallWindowScene];
-  [PHInCallRootViewController setStatusBarPillSuppressionForBackgroundActivities:v5 onWindowScene:v4];
+  inCallWindowScene = [(PHInCallRootViewController *)self inCallWindowScene];
+  [PHInCallRootViewController setStatusBarPillSuppressionForBackgroundActivities:v5 onWindowScene:inCallWindowScene];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v6 = [(PHInCallRootViewController *)self childViewControllers];
-  v7 = [v6 lastObject];
+  childViewControllers = [(PHInCallRootViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
   if (objc_opt_respondsToSelector())
   {
-    [v7 willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+    [lastObject willAnimateRotationToInterfaceOrientation:orientation duration:duration];
   }
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
-  v4 = [(PHInCallRootViewController *)self childViewControllers];
-  v5 = [v4 lastObject];
+  childViewControllers = [(PHInCallRootViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 shouldAutorotateToInterfaceOrientation:a3];
+    v6 = [lastObject shouldAutorotateToInterfaceOrientation:orientation];
   }
 
   else
@@ -8141,9 +8141,9 @@ LABEL_10:
   }
 
   v3 = +[PHPIPController defaultPIPController];
-  v4 = [v3 pipState];
+  pipState = [v3 pipState];
 
-  if (v4 == 2)
+  if (pipState == 2)
   {
     v9[0] = SBSUIRemoteAlertOptionViewControllerClass;
     v5 = TUInCallRemoteAlertViewControllerClassName();
@@ -8163,12 +8163,12 @@ LABEL_10:
   }
 }
 
-- (void)presentBlockAndReportAlertToBlockCall:(id)a3 forViewController:(id)a4 completion:(id)a5
+- (void)presentBlockAndReportAlertToBlockCall:(id)call forViewController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && v9)
+  callCopy = call;
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (callCopy && controllerCopy)
   {
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@"BLOCK_REPORT_ALERT_TITLE" value:&stru_100361FD0 table:@"InCallService"];
@@ -8182,9 +8182,9 @@ LABEL_10:
     v32[2] = sub_1000FBF4C;
     v32[3] = &unk_100359750;
     objc_copyWeak(&v35, location);
-    v16 = v8;
+    v16 = callCopy;
     v33 = v16;
-    v17 = v10;
+    v17 = completionCopy;
     v34 = v17;
     v18 = [UIAlertAction actionWithTitle:v15 style:2 handler:v32];
     [v13 addAction:v18];
@@ -8212,7 +8212,7 @@ LABEL_10:
     v25 = [UIAlertAction actionWithTitle:v24 style:1 handler:v26];
     [v13 addAction:v25];
 
-    [v9 presentModalViewController:v13 animated:1];
+    [controllerCopy presentModalViewController:v13 animated:1];
     objc_destroyWeak(&v31);
 
     objc_destroyWeak(&v35);
@@ -8220,31 +8220,31 @@ LABEL_10:
   }
 }
 
-- (void)routesChangedForRouteController:(id)a3
+- (void)routesChangedForRouteController:(id)controller
 {
   [(PHInCallRootViewController *)self updateDesiredSpringboardBehavior];
-  v4 = [(PHInCallRootViewController *)self routeListController];
-  [v4 reload];
+  routeListController = [(PHInCallRootViewController *)self routeListController];
+  [routeListController reload];
 }
 
-- (void)viewControllerDidRequestTemporaryPreventSuspension:(id)a3
+- (void)viewControllerDidRequestTemporaryPreventSuspension:(id)suspension
 {
   v4 = +[UIApplication sharedApplication];
-  v3 = [v4 delegate];
-  [v3 acquireLongPreventSuspensionAssertion];
+  delegate = [v4 delegate];
+  [delegate acquireLongPreventSuspensionAssertion];
 }
 
-- (void)viewController:(id)a3 fullScreenFocusedParticipantOrientationChanged:(int64_t)a4
+- (void)viewController:(id)controller fullScreenFocusedParticipantOrientationChanged:(int64_t)changed
 {
   v6 = +[PHPIPController defaultPIPController];
-  v7 = [v6 pipState];
+  pipState = [v6 pipState];
 
-  if (v7 == 2)
+  if (pipState == 2)
   {
     v8 = +[PHPIPController defaultPIPController];
-    v9 = [v8 pipContentViewController];
-    v10 = [v9 view];
-    [v10 frame];
+    pipContentViewController = [v8 pipContentViewController];
+    view = [pipContentViewController view];
+    [view frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -8274,37 +8274,37 @@ LABEL_10:
       v24[2] = sub_1000FC38C;
       v24[3] = &unk_100356988;
       v24[4] = self;
-      [v8 rotatePIPDeviceOrientationTo:objc_msgSend(objc_opt_class() withCompletion:{"uiDeviceOrientationForCNKDeviceOrientation:", a4), v24}];
+      [v8 rotatePIPDeviceOrientationTo:objc_msgSend(objc_opt_class() withCompletion:{"uiDeviceOrientationForCNKDeviceOrientation:", changed), v24}];
     }
   }
 }
 
-- (void)viewController:(id)a3 fullScreenFocusedParticipantAspectRatioChanged:(CGSize)a4 participantGridIsFullScreen:(BOOL)a5
+- (void)viewController:(id)controller fullScreenFocusedParticipantAspectRatioChanged:(CGSize)changed participantGridIsFullScreen:(BOOL)screen
 {
-  v5 = [PHPIPController defaultPIPController:a3];
+  v5 = [PHPIPController defaultPIPController:controller];
   [v5 updatePIPSize];
 
   v6 = +[PHPIPController defaultPIPController];
   [v6 updatePIPFrame];
 }
 
-- (void)viewController:(id)a3 localParticipantAspectRatioChanged:(CGSize)a4
+- (void)viewController:(id)controller localParticipantAspectRatioChanged:(CGSize)changed
 {
-  v4 = [PHPIPController defaultPIPController:a3];
+  v4 = [PHPIPController defaultPIPController:controller];
   [v4 updatePIPSize];
 
   v5 = +[PHPIPController defaultPIPController];
   [v5 updatePIPFrame];
 }
 
-- (void)viewController:(id)a3 pipSourceProviderNeedsUpdate:(id)a4
+- (void)viewController:(id)controller pipSourceProviderNeedsUpdate:(id)update
 {
-  v4 = a4;
+  updateCopy = update;
   v5 = +[PHPIPController defaultPIPController];
-  [v5 setSourceProvider:v4];
+  [v5 setSourceProvider:updateCopy];
 }
 
-- (void)participantsDidChangeLocation:(id)a3
+- (void)participantsDidChangeLocation:(id)location
 {
   v3 = +[PHPIPController defaultPIPController];
   [v3 updatePIPFrame];
@@ -8312,58 +8312,58 @@ LABEL_10:
 
 - (void)updateBackgroundStartPipAuthorizationState
 {
-  v3 = [(PHInCallRootViewController *)self featureFlags];
-  v4 = [v3 expanseEnabled];
+  featureFlags = [(PHInCallRootViewController *)self featureFlags];
+  expanseEnabled = [featureFlags expanseEnabled];
 
-  if (v4)
+  if (expanseEnabled)
   {
-    v5 = [(PHInCallRootViewController *)self multiwayViewController];
-    v6 = [v5 hasParticipantVideo];
-    v7 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-    v8 = [v7 callDisplayStyle];
+    multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+    hasParticipantVideo = [multiwayViewController hasParticipantVideo];
+    callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
     v9 = +[PHPIPController defaultPIPController];
     v10 = sub_100004F84();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 67109888;
-      v24 = v6;
+      v24 = hasParticipantVideo;
       v25 = 2048;
-      *v26 = v8;
+      *v26 = callDisplayStyle;
       *&v26[8] = 1024;
-      *v27 = [v5 isPipped];
+      *v27 = [multiwayViewController isPipped];
       *&v27[4] = 2048;
-      v28 = [v9 pipState];
+      pipState = [v9 pipState];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "hasParticipantVideo changed (hasParticipantVideo: %d, callDisplayStyle: %ld, isPipped: %d pipState: %lu)", &v23, 0x22u);
     }
 
-    [v9 setHasParticipantVideoForActiveConversation:v6];
+    [v9 setHasParticipantVideoForActiveConversation:hasParticipantVideo];
     [v9 updateShouldPIPWhenEnteringBackground];
-    v11 = [(PHInCallRootViewController *)self callCenter];
-    v12 = [v11 frontmostAudioOrVideoCall];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    frontmostAudioOrVideoCall = [callCenter frontmostAudioOrVideoCall];
 
-    if ([v12 isConnected])
+    if ([frontmostAudioOrVideoCall isConnected])
     {
       v13 = 0;
     }
 
     else
     {
-      if (([v5 isOneToOneModeEnabled] & 1) == 0)
+      if (([multiwayViewController isOneToOneModeEnabled] & 1) == 0)
       {
-        v14 = v5 == 0;
+        v14 = multiwayViewController == 0;
         goto LABEL_19;
       }
 
-      v13 = [v12 status] != 3;
+      v13 = [frontmostAudioOrVideoCall status] != 3;
     }
 
-    v14 = v5 == 0;
-    if (v5 && !v13)
+    v14 = multiwayViewController == 0;
+    if (multiwayViewController && !v13)
     {
-      if (v8 == 4)
+      if (callDisplayStyle == 4)
       {
-        v15 = v6;
+        v15 = hasParticipantVideo;
       }
 
       else
@@ -8374,19 +8374,19 @@ LABEL_10:
       if (v15 == 1 && ![v9 pipState])
       {
         v16 = +[UIApplication sharedApplication];
-        v17 = [v16 delegate];
-        v22 = [v5 call];
-        [v17 requestBackgroundPiPAuthorizationOfDismissedInCallSceneForCall:v22];
+        delegate = [v16 delegate];
+        call = [multiwayViewController call];
+        [delegate requestBackgroundPiPAuthorizationOfDismissedInCallSceneForCall:call];
       }
 
       else
       {
         v16 = +[UIApplication sharedApplication];
-        v17 = [v16 delegate];
-        [v17 revokeAndRemoveBackgroundPiPAuthorizationForSceneTypeIfNeeded:0];
+        delegate = [v16 delegate];
+        [delegate revokeAndRemoveBackgroundPiPAuthorizationForSceneTypeIfNeeded:0];
       }
 
-      if ((v6 & 1) == 0)
+      if ((hasParticipantVideo & 1) == 0)
       {
         [v9 cancelPIPIfNeeded];
       }
@@ -8400,15 +8400,15 @@ LABEL_19:
     v18 = sub_100004F84();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v12 isConnected];
-      v20 = [v12 status];
-      v21 = [v5 isOneToOneModeEnabled];
+      isConnected = [frontmostAudioOrVideoCall isConnected];
+      status = [frontmostAudioOrVideoCall status];
+      isOneToOneModeEnabled = [multiwayViewController isOneToOneModeEnabled];
       v23 = 67109888;
-      v24 = v19;
+      v24 = isConnected;
       v25 = 1024;
-      *v26 = v20;
+      *v26 = status;
       *&v26[4] = 1024;
-      *&v26[6] = v21;
+      *&v26[6] = isOneToOneModeEnabled;
       *v27 = 1024;
       *&v27[2] = v14;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "skipping updating background start pip authorization; call is connected %d or call status %d or call isOneToOneModeEnabled %d or multiway view controller is nil %d", &v23, 0x1Au);
@@ -8418,22 +8418,22 @@ LABEL_19:
   }
 }
 
-- (void)viewController:(id)a3 mediaPipSafeAreaFrameChanged:(CGRect)a4
+- (void)viewController:(id)controller mediaPipSafeAreaFrameChanged:(CGRect)changed
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(PHInCallRootViewController *)self multiwayViewController];
-  v11 = [(PHInCallRootViewController *)self featureFlags];
-  v12 = [v11 expanseEnabled];
+  height = changed.size.height;
+  width = changed.size.width;
+  y = changed.origin.y;
+  x = changed.origin.x;
+  controllerCopy = controller;
+  multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+  featureFlags = [(PHInCallRootViewController *)self featureFlags];
+  expanseEnabled = [featureFlags expanseEnabled];
 
-  if (v12 && v10 == v9)
+  if (expanseEnabled && multiwayViewController == controllerCopy)
   {
     v13 = +[UIApplication sharedApplication];
-    v14 = [v13 delegate];
-    v15 = [v14 currentInCallScene];
+    delegate = [v13 delegate];
+    currentInCallScene = [delegate currentInCallScene];
 
     v51.origin.x = x;
     v51.origin.y = y;
@@ -8449,16 +8449,16 @@ LABEL_19:
 
     else
     {
-      v20 = [v10 view];
-      v21 = [v15 coordinateSpace];
-      [v20 convertRect:v21 toCoordinateSpace:{x, y, width, height}];
+      view = [multiwayViewController view];
+      coordinateSpace = [currentInCallScene coordinateSpace];
+      [view convertRect:coordinateSpace toCoordinateSpace:{x, y, width, height}];
       v23 = v22;
       v25 = v24;
       v27 = v26;
       v29 = v28;
 
-      v30 = [v15 coordinateSpace];
-      [v30 bounds];
+      coordinateSpace2 = [currentInCallScene coordinateSpace];
+      [coordinateSpace2 bounds];
       v32 = v31;
       v34 = v33;
       v36 = v35;
@@ -8523,15 +8523,15 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "mediaPipSafeAreaInsetsInScene changed to %@", buf, 0xCu);
     }
 
-    [v15 setExpanseHUDDodgingInsets:{top, left, bottom, right}];
+    [currentInCallScene setExpanseHUDDodgingInsets:{top, left, bottom, right}];
   }
 }
 
-- (double)viewController:(id)a3 rubberBandConstrained:(double)a4 inRange:(double)a5
+- (double)viewController:(id)controller rubberBandConstrained:(double)constrained inRange:(double)range
 {
-  v5 = a3;
+  controllerCopy = controller;
   BSUIConstrainValueWithRubberBand();
-  v6 = [v5 viewIfLoaded];
+  viewIfLoaded = [controllerCopy viewIfLoaded];
 
   UIRoundToViewScale();
   v8 = v7;
@@ -8541,56 +8541,56 @@ LABEL_19:
 
 - (id)audioRouteMenu
 {
-  v3 = [(PHInCallRootViewController *)self routeListController];
+  routeListController = [(PHInCallRootViewController *)self routeListController];
 
-  if (!v3)
+  if (!routeListController)
   {
     v4 = [PHAudioRoutingMenuController menuControllerWithCallStyle:1 dataSource:self delegate:self];
     [(PHInCallRootViewController *)self setRouteListController:v4];
   }
 
-  v5 = [(PHInCallRootViewController *)self routeListController];
-  v6 = [v5 menu];
+  routeListController2 = [(PHInCallRootViewController *)self routeListController];
+  menu = [routeListController2 menu];
 
-  return v6;
+  return menu;
 }
 
-- (id)audioRouteGlyphFor:(id)a3 buttonStyle:(int64_t)a4
+- (id)audioRouteGlyphFor:(id)for buttonStyle:(int64_t)style
 {
-  if (a4 > 6)
+  if (style > 6)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_1002F9508[a4];
+    v5 = qword_1002F9508[style];
   }
 
-  return [a3 audioRouteGlyphForDisplayStyle:v5];
+  return [for audioRouteGlyphForDisplayStyle:v5];
 }
 
 - (UIImage)audioRouteGlyphForDevice
 {
   v2 = +[PHDevice currentDevice];
-  v3 = [v2 audioRouteGlyphImage];
+  audioRouteGlyphImage = [v2 audioRouteGlyphImage];
 
-  return v3;
+  return audioRouteGlyphImage;
 }
 
-- (id)callParticipantLabelsViewForViewController:(id)a3
+- (id)callParticipantLabelsViewForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PHInCallRootViewController *)self multiwayViewController];
+  controllerCopy = controller;
+  multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
 
-  if (v5 == v4)
+  if (multiwayViewController == controllerCopy)
   {
     callParticipantLabelsView = self->_callParticipantLabelsView;
     if (!callParticipantLabelsView)
     {
       v8 = [PHCallParticipantsView alloc];
-      v9 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-      v10 = [(PHCallParticipantsView *)v8 initWithCallDisplayStyleManager:v9];
+      callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+      v10 = [(PHCallParticipantsView *)v8 initWithCallDisplayStyleManager:callDisplayStyleManager];
       v11 = self->_callParticipantLabelsView;
       self->_callParticipantLabelsView = v10;
 
@@ -8599,7 +8599,7 @@ LABEL_19:
       {
         v13 = self->_callParticipantLabelsView;
         v15 = 138412546;
-        v16 = v4;
+        v16 = controllerCopy;
         v17 = 2112;
         v18 = v13;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "View controller %@ requested a call participant label view: %@", &v15, 0x16u);
@@ -8624,12 +8624,12 @@ LABEL_19:
   return v6;
 }
 
-- (void)updateCallParticipantLabelsViewForViewController:(id)a3
+- (void)updateCallParticipantLabelsViewForViewController:(id)controller
 {
-  v4 = a3;
-  v6 = [(PHInCallRootViewController *)self multiwayViewController];
+  controllerCopy = controller;
+  multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
 
-  if (v6 == v4)
+  if (multiwayViewController == controllerCopy)
   {
     callParticipantLabelsView = self->_callParticipantLabelsView;
 
@@ -8645,19 +8645,19 @@ LABEL_19:
   }
 }
 
-- (id)bottomControlsViewForViewController:(id)a3
+- (id)bottomControlsViewForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PHInCallRootViewController *)self multiwayViewController];
+  controllerCopy = controller;
+  multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
 
-  if (v5 == v4)
+  if (multiwayViewController == controllerCopy)
   {
     bottomControlsView = self->_bottomControlsView;
     if (!bottomControlsView)
     {
       v8 = [PHBottomBar alloc];
-      v9 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-      v10 = [(PHBottomBar *)v8 initWithCallDisplayStyleManager:v9];
+      callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+      v10 = [(PHBottomBar *)v8 initWithCallDisplayStyleManager:callDisplayStyleManager];
       v11 = self->_bottomControlsView;
       self->_bottomControlsView = v10;
 
@@ -8690,41 +8690,41 @@ LABEL_19:
   return v6;
 }
 
-+ (int64_t)uiDeviceOrientationForCNKDeviceOrientation:(int64_t)a3
++ (int64_t)uiDeviceOrientationForCNKDeviceOrientation:(int64_t)orientation
 {
-  if (a3 > 3)
+  if (orientation > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1002F9540[a3];
+    return qword_1002F9540[orientation];
   }
 }
 
-+ (int64_t)cnkDeviceOrientationForUIDeviceOrientation:(int64_t)a3
++ (int64_t)cnkDeviceOrientationForUIDeviceOrientation:(int64_t)orientation
 {
-  if ((a3 - 2) > 2)
+  if ((orientation - 2) > 2)
   {
     return 1;
   }
 
   else
   {
-    return qword_1002F9560[a3 - 2];
+    return qword_1002F9560[orientation - 2];
   }
 }
 
-+ (int64_t)cnkSupportedDeviceOrientationsFromUIInterfaceOrientationMask:(unint64_t)a3
++ (int64_t)cnkSupportedDeviceOrientationsFromUIInterfaceOrientationMask:(unint64_t)mask
 {
-  v3 = (~a3 & 0x18) == 0;
-  if ((a3 & 2) != 0)
+  v3 = (~mask & 0x18) == 0;
+  if ((mask & 2) != 0)
   {
     v3 = 0;
   }
 
-  if ((~a3 & 0x1E) != 0)
+  if ((~mask & 0x1E) != 0)
   {
     return v3;
   }
@@ -8737,17 +8737,17 @@ LABEL_19:
 
 - (BOOL)isShownAboveCoverSheet
 {
-  v2 = [(PHInCallRootViewController *)self inCallWindowScene];
-  v3 = [v2 isBeingShownAboveCoverSheet];
+  inCallWindowScene = [(PHInCallRootViewController *)self inCallWindowScene];
+  isBeingShownAboveCoverSheet = [inCallWindowScene isBeingShownAboveCoverSheet];
 
-  return v3;
+  return isBeingShownAboveCoverSheet;
 }
 
 - (void)unansweredCallUIDismissed
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
-  [v3 setMostRecentlyDisconnectedVideoCall:0];
+  delegate = [v2 delegate];
+  [delegate setMostRecentlyDisconnectedVideoCall:0];
 
   v4 = [NSSet setWithObjects:@"PHMulitwayCallAssertionReason", @"PHVideoMessageInProgressAssertionReason", 0];
   [PHInCallRootViewController releaseDismissalAssertionReasons:v4];
@@ -8756,50 +8756,50 @@ LABEL_19:
 - (BOOL)usesPaddingInsteadOfSafeArea
 {
   v2 = +[CNKFeatures sharedInstance];
-  v3 = [v2 isICUIRedesignEnabled];
+  isICUIRedesignEnabled = [v2 isICUIRedesignEnabled];
 
-  return v3;
+  return isICUIRedesignEnabled;
 }
 
-- (id)routesForAudioRoutingMenuController:(id)a3
+- (id)routesForAudioRoutingMenuController:(id)controller
 {
-  v3 = [(PHInCallRootViewController *)self callCenter];
-  v4 = [v3 routeController];
-  v5 = [v4 sortedRoutes];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  sortedRoutes = [routeController sortedRoutes];
 
-  return v5;
+  return sortedRoutes;
 }
 
-- (void)audioRoutingMenuController:(id)a3 didSelectRoute:(id)a4
+- (void)audioRoutingMenuController:(id)controller didSelectRoute:(id)route
 {
-  v5 = a4;
-  v7 = [(PHInCallRootViewController *)self callCenter];
-  v6 = [v7 routeController];
-  [v6 pickRoute:v5];
+  routeCopy = route;
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  [routeController pickRoute:routeCopy];
 }
 
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation
 {
-  v5 = a4;
+  conversationCopy = conversation;
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = conversationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Updating call controller because active remote participants changed for conversation %@", &v7, 0xCu);
   }
 
   [(PHInCallRootViewController *)self updateCallControllerForCurrentState];
 }
 
-- (void)handleActivationContextDidChangeNotification:(id)a3
+- (void)handleActivationContextDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "handleActivationContextDidChangeNotification: %@", &v6, 0xCu);
   }
 
@@ -8810,10 +8810,10 @@ LABEL_19:
 - (void)handleSOSActivationIfNecessary
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
-  v5 = [v4 shouldActivateSOS];
+  delegate = [v3 delegate];
+  shouldActivateSOS = [delegate shouldActivateSOS];
 
-  if (v5)
+  if (shouldActivateSOS)
   {
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -8830,43 +8830,43 @@ LABEL_19:
 - (void)handleScreenTimeActivationIfNecessary
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
-  v5 = [v4 activationContext];
-  v6 = [v5 pendingRestrictedScreenTimeRequest];
+  delegate = [v3 delegate];
+  activationContext = [delegate activationContext];
+  pendingRestrictedScreenTimeRequest = [activationContext pendingRestrictedScreenTimeRequest];
 
-  if (v6)
+  if (pendingRestrictedScreenTimeRequest)
   {
     v7 = sub_100004F84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = +[UIApplication sharedApplication];
-      v9 = [v8 delegate];
-      v10 = [v9 activationContext];
-      v11 = [v10 pendingRestrictedScreenTimeRequest];
+      delegate2 = [v8 delegate];
+      activationContext2 = [delegate2 activationContext];
+      pendingRestrictedScreenTimeRequest2 = [activationContext2 pendingRestrictedScreenTimeRequest];
       v18 = 138412290;
-      v19 = v11;
+      v19 = pendingRestrictedScreenTimeRequest2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Will request screen time alert for request %@", &v18, 0xCu);
     }
 
     v12 = +[UIApplication sharedApplication];
-    v13 = [v12 delegate];
-    v14 = [v13 activationContext];
-    v15 = [v14 pendingRestrictedScreenTimeRequest];
-    [(PHInCallRootViewController *)self forceUpdateCallControllerForFilteredRequest:v15];
+    delegate3 = [v12 delegate];
+    activationContext3 = [delegate3 activationContext];
+    pendingRestrictedScreenTimeRequest3 = [activationContext3 pendingRestrictedScreenTimeRequest];
+    [(PHInCallRootViewController *)self forceUpdateCallControllerForFilteredRequest:pendingRestrictedScreenTimeRequest3];
 
     v16 = +[UIApplication sharedApplication];
-    v17 = [v16 delegate];
-    [v17 setActivationContext:0];
+    delegate4 = [v16 delegate];
+    [delegate4 setActivationContext:0];
   }
 }
 
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle
 {
-  v7 = a4 == 4;
-  v8 = [(PHInCallRootViewController *)self callManager];
-  [v8 setIsInBackground:v7];
+  v7 = toStyle == 4;
+  callManager = [(PHInCallRootViewController *)self callManager];
+  [callManager setIsInBackground:v7];
 
-  if (a3 == 4 && a4 == 2)
+  if (style == 4 && toStyle == 2)
   {
     v9 = sub_100004F84();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -8878,52 +8878,52 @@ LABEL_19:
     v10 = +[PHPIPController defaultPIPController];
     [v10 updateShouldPIPWhenEnteringBackground];
 
-    v11 = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
-    [v11 updateIncomingBottomBarControlState];
+    audioCallViewControllerIfLoaded = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
+    [audioCallViewControllerIfLoaded updateIncomingBottomBarControlState];
   }
 
-  if (a3 == 1 || a4 == 1)
+  if (style == 1 || toStyle == 1)
   {
     [(PHInCallRootViewController *)self updateVideoState];
-    [(PHInCallRootViewController *)self showHideMiniWindowViewIfNeededAnimated:a3 != 4];
+    [(PHInCallRootViewController *)self showHideMiniWindowViewIfNeededAnimated:style != 4];
   }
 
-  v12 = [(PHInCallRootViewController *)self featureFlags];
-  if ([v12 conversationOneToOneModeEnabled])
+  featureFlags = [(PHInCallRootViewController *)self featureFlags];
+  if ([featureFlags conversationOneToOneModeEnabled])
   {
-    v13 = [(PHInCallRootViewController *)self currentViewControllerIsMultiway];
-    if (a3 == 2)
+    currentViewControllerIsMultiway = [(PHInCallRootViewController *)self currentViewControllerIsMultiway];
+    if (style == 2)
     {
-      if (v13)
+      if (currentViewControllerIsMultiway)
       {
-        v14 = [(PHInCallRootViewController *)self multiwayViewController];
-        v15 = [v14 shouldDisconnectOnDismissal];
+        multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+        shouldDisconnectOnDismissal = [multiwayViewController shouldDisconnectOnDismissal];
 
-        if (!v15)
+        if (!shouldDisconnectOnDismissal)
         {
           goto LABEL_15;
         }
 
-        v12 = [(PHInCallRootViewController *)self callCenter];
-        v16 = [(PHInCallRootViewController *)self multiwayViewController];
-        v17 = [v16 call];
-        [v12 disconnectCall:v17 withReason:2];
+        featureFlags = [(PHInCallRootViewController *)self callCenter];
+        multiwayViewController2 = [(PHInCallRootViewController *)self multiwayViewController];
+        call = [multiwayViewController2 call];
+        [featureFlags disconnectCall:call withReason:2];
       }
     }
   }
 
 LABEL_15:
-  v19 = a4 == 4 || a4 == 2;
-  v20 = [(PHInCallRootViewController *)self currentViewControllerIsMultiway];
-  if (!a3 && v19 && v20)
+  v19 = toStyle == 4 || toStyle == 2;
+  currentViewControllerIsMultiway2 = [(PHInCallRootViewController *)self currentViewControllerIsMultiway];
+  if (!style && v19 && currentViewControllerIsMultiway2)
   {
-    v21 = [(PHInCallRootViewController *)self multiwayViewController];
-    [v21 setDidExpandIncomingCallBanner:1];
+    multiwayViewController3 = [(PHInCallRootViewController *)self multiwayViewController];
+    [multiwayViewController3 setDidExpandIncomingCallBanner:1];
   }
 
   [(PHInCallRootViewController *)self updateMultiwayViewControllerUIState];
   [(PHInCallRootViewController *)self updateCallDetailsViewIsOnScreen];
-  if (a4 == 4)
+  if (toStyle == 4)
   {
     [(PHInCallRootViewController *)self cancelAutoAnswer];
     v22 = +[PHInCallUtilities sharedInstance];
@@ -8933,21 +8933,21 @@ LABEL_15:
     [(PHInCallRootViewController *)self dismissScreenTimeAlertHostIfNeeded];
     [(PHInCallRootViewController *)self dismissViewControllersWithSensitiveInformation];
     v23 = +[UIApplication sharedApplication];
-    v24 = [v23 delegate];
-    v25 = [v24 bannerPresentationManager];
-    [(PHInCallRootViewController *)self dissmissConfirmLeavePTTChannelAlertIfNeededWithBannerPresentationManager:v25];
+    delegate = [v23 delegate];
+    bannerPresentationManager = [delegate bannerPresentationManager];
+    [(PHInCallRootViewController *)self dissmissConfirmLeavePTTChannelAlertIfNeededWithBannerPresentationManager:bannerPresentationManager];
 
     v26 = +[UIApplication sharedApplication];
-    v27 = [v26 delegate];
-    if ([v27 didDeepLinkToPTTCallDetailsView])
+    delegate2 = [v26 delegate];
+    if ([delegate2 didDeepLinkToPTTCallDetailsView])
     {
       v28 = [qword_1003B0ED8 containsObject:@"PHPTTCallDetailsViewAssertionReason"];
 
       if (v28)
       {
         v29 = +[UIApplication sharedApplication];
-        v30 = [v29 delegate];
-        [v30 setDidDeepLinkToPTTCallDetailsView:0];
+        delegate3 = [v29 delegate];
+        [delegate3 setDidDeepLinkToPTTCallDetailsView:0];
 
         [PHInCallRootViewController releaseDismissalAssertionForReason:@"PHPTTCallDetailsViewAssertionReason"];
       }
@@ -8958,9 +8958,9 @@ LABEL_15:
     }
 
     v32 = +[UIApplication sharedApplication];
-    v33 = [v32 delegate];
-    v34 = [v33 allInCallScenes];
-    v35 = [v34 count];
+    delegate4 = [v32 delegate];
+    allInCallScenes = [delegate4 allInCallScenes];
+    v35 = [allInCallScenes count];
 
     if (v35 == 1)
     {
@@ -8969,19 +8969,19 @@ LABEL_15:
     }
 
     v37 = +[UIApplication sharedApplication];
-    v38 = [v37 delegate];
-    v39 = [(PHInCallRootViewController *)self callCenter];
-    v31 = [v38 currentVideoCallUsingCallContainer:v39];
+    delegate5 = [v37 delegate];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    v31 = [delegate5 currentVideoCallUsingCallContainer:callCenter];
 
-    v40 = [(PHInCallRootViewController *)self callCenter];
-    v41 = [v40 callPassingTest:&stru_100359770];
+    callCenter2 = [(PHInCallRootViewController *)self callCenter];
+    v41 = [callCenter2 callPassingTest:&stru_100359770];
 
     if (!(v31 | v41))
     {
-      v42 = [(PHInCallRootViewController *)self multiwayViewController];
-      v43 = [v42 isInVideoMessageFlow];
+      multiwayViewController4 = [(PHInCallRootViewController *)self multiwayViewController];
+      isInVideoMessageFlow = [multiwayViewController4 isInVideoMessageFlow];
 
-      if ((v43 & 1) == 0)
+      if ((isInVideoMessageFlow & 1) == 0)
       {
         [objc_opt_class() releaseDismissalAssertionForReason:@"PHMulitwayCallAssertionReason"];
         if ([qword_1003B0ED8 containsObject:@"PHCallEndedBlockAndReportInProgressAssertionReason"])
@@ -8993,22 +8993,22 @@ LABEL_15:
             _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Dismissing PHCallEndedBlockAndReportInProgressAssertionReason because display style is dismissed.", v54, 2u);
           }
 
-          v45 = [(PHInCallRootViewController *)self multiwayViewController];
-          [v45 setIsInCallEndedBlockAndReportFlow:0];
+          multiwayViewController5 = [(PHInCallRootViewController *)self multiwayViewController];
+          [multiwayViewController5 setIsInCallEndedBlockAndReportFlow:0];
 
           [objc_opt_class() releaseDismissalAssertionForReason:@"PHCallEndedBlockAndReportInProgressAssertionReason"];
         }
 
         v46 = +[UIApplication sharedApplication];
-        v47 = [v46 delegate];
-        [v47 setMostRecentlyDisconnectedVideoCall:0];
+        delegate6 = [v46 delegate];
+        [delegate6 setMostRecentlyDisconnectedVideoCall:0];
       }
     }
   }
 
   else
   {
-    if (a3 != 4)
+    if (style != 4)
     {
       goto LABEL_43;
     }
@@ -9021,73 +9021,73 @@ LABEL_43:
   v48 = sub_100004F84();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
-    v49 = [(PHInCallRootViewController *)self isCurrentViewControllerAudio];
-    v50 = [(PHInCallRootViewController *)self parentViewController];
-    v51 = [(PHInCallRootViewController *)self view];
-    v52 = [v51 window];
-    v53 = [(PHInCallRootViewController *)self childViewControllers];
+    isCurrentViewControllerAudio = [(PHInCallRootViewController *)self isCurrentViewControllerAudio];
+    parentViewController = [(PHInCallRootViewController *)self parentViewController];
+    view = [(PHInCallRootViewController *)self view];
+    window = [view window];
+    childViewControllers = [(PHInCallRootViewController *)self childViewControllers];
     v54[0] = 67109890;
-    v54[1] = v49;
+    v54[1] = isCurrentViewControllerAudio;
     v55 = 2112;
-    v56 = v50;
+    v56 = parentViewController;
     v57 = 2112;
-    v58 = v52;
+    v58 = window;
     v59 = 2112;
-    v60 = v53;
+    v60 = childViewControllers;
     _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "PHInCallRootViewController - isCurrentViewControllerAudio: %d, my parent: %@, window: %@, children: %@", v54, 0x26u);
   }
 
-  [(PHInCallRootViewController *)self updateBannerTapGestureRecognizerForCallDisplayStyle:a4];
-  [(PHInCallRootViewController *)self notifyAudioCallControllerIfNecessaryCallDisplayStyleDidChangeFromStyle:a3 toStyle:a4];
+  [(PHInCallRootViewController *)self updateBannerTapGestureRecognizerForCallDisplayStyle:toStyle];
+  [(PHInCallRootViewController *)self notifyAudioCallControllerIfNecessaryCallDisplayStyleDidChangeFromStyle:style toStyle:toStyle];
 }
 
 - (BOOL)currentViewControllerIsMultiway
 {
-  v3 = [(PHInCallRootViewController *)self multiwayViewController];
-  v4 = [v3 parentViewController];
-  if (v4)
+  multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+  parentViewController = [multiwayViewController parentViewController];
+  if (parentViewController)
   {
-    v5 = [(PHInCallRootViewController *)self currentViewController];
-    v6 = [(PHInCallRootViewController *)self videoCallNavigationController];
-    if (v5 == v6)
+    currentViewController = [(PHInCallRootViewController *)self currentViewController];
+    videoCallNavigationController = [(PHInCallRootViewController *)self videoCallNavigationController];
+    if (currentViewController == videoCallNavigationController)
     {
-      v8 = [(PHInCallRootViewController *)self videoCallNavigationController];
-      v9 = [v8 topViewController];
-      if ([v9 conformsToProtocol:&OBJC_PROTOCOL___CNKMultiwayViewControllerProtocol])
+      videoCallNavigationController2 = [(PHInCallRootViewController *)self videoCallNavigationController];
+      topViewController = [videoCallNavigationController2 topViewController];
+      if ([topViewController conformsToProtocol:&OBJC_PROTOCOL___CNKMultiwayViewControllerProtocol])
       {
-        v7 = 1;
+        isInVideoMessageFlow = 1;
       }
 
       else
       {
-        v10 = [(PHInCallRootViewController *)self multiwayViewController];
-        v7 = [v10 isInVideoMessageFlow];
+        multiwayViewController2 = [(PHInCallRootViewController *)self multiwayViewController];
+        isInVideoMessageFlow = [multiwayViewController2 isInVideoMessageFlow];
       }
     }
 
     else
     {
-      v7 = 0;
+      isInVideoMessageFlow = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    isInVideoMessageFlow = 0;
   }
 
-  return v7;
+  return isInVideoMessageFlow;
 }
 
 - (BOOL)isCurrentViewControllerAudio
 {
-  v3 = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
-  v4 = [v3 parentViewController];
-  if (v4)
+  audioCallViewControllerIfLoaded = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
+  parentViewController = [audioCallViewControllerIfLoaded parentViewController];
+  if (parentViewController)
   {
-    v5 = [(PHInCallRootViewController *)self currentViewController];
-    v6 = [(PHInCallRootViewController *)self audioCallNavigationController];
-    v7 = v5 == v6;
+    currentViewController = [(PHInCallRootViewController *)self currentViewController];
+    audioCallNavigationController = [(PHInCallRootViewController *)self audioCallNavigationController];
+    v7 = currentViewController == audioCallNavigationController;
   }
 
   else
@@ -9100,16 +9100,16 @@ LABEL_43:
 
 - (BOOL)isShowing6UP
 {
-  v3 = [(PHInCallRootViewController *)self isCurrentViewControllerAudio];
-  if (v3)
+  isCurrentViewControllerAudio = [(PHInCallRootViewController *)self isCurrentViewControllerAudio];
+  if (isCurrentViewControllerAudio)
   {
-    v4 = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
-    v5 = [v4 isShowing6UP];
+    audioCallViewControllerIfLoaded = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
+    isShowing6UP = [audioCallViewControllerIfLoaded isShowing6UP];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isCurrentViewControllerAudio) = isShowing6UP;
   }
 
-  return v3;
+  return isCurrentViewControllerAudio;
 }
 
 - (BOOL)isMicIndicatorVisible
@@ -9124,18 +9124,18 @@ LABEL_43:
 
 - (void)updateVideoState
 {
-  v3 = [(UINavigationController *)self->_videoCallNavigationController topViewController];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___CNKMultiwayViewControllerProtocol];
-  if (!v3 || (v4 & 1) != 0)
+  topViewController = [(UINavigationController *)self->_videoCallNavigationController topViewController];
+  v4 = [topViewController conformsToProtocol:&OBJC_PROTOCOL___CNKMultiwayViewControllerProtocol];
+  if (!topViewController || (v4 & 1) != 0)
   {
     if ([(PHInCallRootViewController *)self isDisplayStyleMiniWindow])
     {
-      [v3 muteVideo];
+      [topViewController muteVideo];
     }
 
     else
     {
-      [v3 updateVideoState];
+      [topViewController updateVideoState];
     }
   }
 
@@ -9144,20 +9144,20 @@ LABEL_43:
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      sub_1002568D0(v3, self, v5);
+      sub_1002568D0(topViewController, self, v5);
     }
   }
 }
 
-- (void)notifyAudioCallControllerIfNecessaryCallDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4
+- (void)notifyAudioCallControllerIfNecessaryCallDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle
 {
-  v7 = [(PHInCallRootViewController *)self audioCallNavigationController];
-  if (v7)
+  audioCallNavigationController = [(PHInCallRootViewController *)self audioCallNavigationController];
+  if (audioCallNavigationController)
   {
-    v8 = [(PHInCallRootViewController *)self audioCallNavigationController];
-    v9 = [v8 view];
-    v10 = [v9 superview];
-    v11 = v10 == 0;
+    audioCallNavigationController2 = [(PHInCallRootViewController *)self audioCallNavigationController];
+    view = [audioCallNavigationController2 view];
+    superview = [view superview];
+    v11 = superview == 0;
   }
 
   else
@@ -9173,31 +9173,31 @@ LABEL_43:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "PHInCallRootViewController - audioCallControllerExistsOutsideHierarchy: %d", v17, 8u);
   }
 
-  if (a3 == 0 && v11)
+  if (style == 0 && v11)
   {
-    v13 = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
-    [ICSCallDisplayStyleManager notifyAllRespondersForViewController:v13 callDisplayStyleDidChangeFromStyle:0 toStyle:a4];
+    audioCallViewControllerIfLoaded = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
+    [ICSCallDisplayStyleManager notifyAllRespondersForViewController:audioCallViewControllerIfLoaded callDisplayStyleDidChangeFromStyle:0 toStyle:toStyle];
 
-    v14 = [(PHInCallRootViewController *)self featureFlags];
-    LODWORD(v13) = [v14 audioCallUIModernizationEnabled];
+    featureFlags = [(PHInCallRootViewController *)self featureFlags];
+    LODWORD(audioCallViewControllerIfLoaded) = [featureFlags audioCallUIModernizationEnabled];
 
-    if (v13)
+    if (audioCallViewControllerIfLoaded)
     {
-      v15 = [(PHInCallRootViewController *)self audioCallViewControllerWrapper];
-      v16 = [v15 viewController];
-      [ICSCallDisplayStyleManager notifyAllRespondersForViewController:v16 callDisplayStyleDidChangeFromStyle:0 toStyle:a4];
+      audioCallViewControllerWrapper = [(PHInCallRootViewController *)self audioCallViewControllerWrapper];
+      viewController = [audioCallViewControllerWrapper viewController];
+      [ICSCallDisplayStyleManager notifyAllRespondersForViewController:viewController callDisplayStyleDidChangeFromStyle:0 toStyle:toStyle];
     }
   }
 }
 
-- (void)updateBannerTapGestureRecognizerForCallDisplayStyle:(int64_t)a3
+- (void)updateBannerTapGestureRecognizerForCallDisplayStyle:(int64_t)style
 {
-  v3 = a3 == 0;
-  v4 = [(PHInCallRootViewController *)self bannerTapGestureRecognizer];
-  [v4 setEnabled:v3];
+  v3 = style == 0;
+  bannerTapGestureRecognizer = [(PHInCallRootViewController *)self bannerTapGestureRecognizer];
+  [bannerTapGestureRecognizer setEnabled:v3];
 }
 
-- (void)bannerTapped:(id)a3
+- (void)bannerTapped:(id)tapped
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -9206,9 +9206,9 @@ LABEL_43:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Transitioning scene to full screen due to tap", buf, 2u);
   }
 
-  v5 = [(PHInCallRootViewController *)self inCallWindowScene];
+  inCallWindowScene = [(PHInCallRootViewController *)self inCallWindowScene];
 
-  if (v5)
+  if (inCallWindowScene)
   {
     TUDispatchMainIfNecessary();
   }
@@ -9216,25 +9216,25 @@ LABEL_43:
 
 - (void)updateUPlusOneVideoCallViews
 {
-  v3 = [(PHInCallRootViewController *)self inCallState];
+  inCallState = [(PHInCallRootViewController *)self inCallState];
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 delegate];
-  v6 = [(PHInCallRootViewController *)self callCenter];
-  v7 = [v5 currentVideoCallUsingCallContainer:v6];
+  delegate = [v4 delegate];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  v7 = [delegate currentVideoCallUsingCallContainer:callCenter];
 
-  v8 = [(PHInCallRootViewController *)self callCenter];
-  v9 = [v8 activeConversationForCall:v7];
+  callCenter2 = [(PHInCallRootViewController *)self callCenter];
+  v9 = [callCenter2 activeConversationForCall:v7];
 
-  if ((v3 & 0xFFFE) == 4)
+  if ((inCallState & 0xFFFE) == 4)
   {
     v10 = +[UIApplication sharedApplication];
-    v11 = [v10 delegate];
-    v12 = [v11 currentInCallScene];
-    if ([v12 presentationMode] == 1)
+    delegate2 = [v10 delegate];
+    currentInCallScene = [delegate2 currentInCallScene];
+    if ([currentInCallScene presentationMode] == 1)
     {
-      v13 = [v9 resolvedAudioVideoMode];
+      resolvedAudioVideoMode = [v9 resolvedAudioVideoMode];
 
-      if (v13 == 2)
+      if (resolvedAudioVideoMode == 2)
       {
         v14 = sub_100004F84();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -9252,19 +9252,19 @@ LABEL_43:
     }
   }
 
-  else if (!v3)
+  else if (!inCallState)
   {
-    v15 = [(PHInCallRootViewController *)self callDurationTimerForParticipantsView];
-    [v15 invalidate];
+    callDurationTimerForParticipantsView = [(PHInCallRootViewController *)self callDurationTimerForParticipantsView];
+    [callDurationTimerForParticipantsView invalidate];
 
     [(PHInCallRootViewController *)self setCallDurationTimerForParticipantsView:0];
   }
 
-  v16 = [(PHInCallRootViewController *)self traitCollection];
-  v17 = [v16 _backlightLuminance] != 1;
+  traitCollection = [(PHInCallRootViewController *)self traitCollection];
+  v17 = [traitCollection _backlightLuminance] != 1;
 
-  v18 = [(PHInCallRootViewController *)self updateContactInformationForParticipantViewWithInCallState:v3];
-  v19 = [(PHInCallRootViewController *)self updateSecondaryStringForParticipantViewWithInCallState:v3 allowsDuration:v17];
+  v18 = [(PHInCallRootViewController *)self updateContactInformationForParticipantViewWithInCallState:inCallState];
+  v19 = [(PHInCallRootViewController *)self updateSecondaryStringForParticipantViewWithInCallState:inCallState allowsDuration:v17];
   if (!v18)
   {
 LABEL_15:
@@ -9276,10 +9276,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v20 = [v9 link];
-  v21 = [v20 displayName];
+  link = [v9 link];
+  displayName = [link displayName];
 
-  if (!v21 || !v19)
+  if (!displayName || !v19)
   {
     [(PHInCallRootViewController *)self setContactNameForParticipantsView:v18];
     goto LABEL_15;
@@ -9287,10 +9287,10 @@ LABEL_15:
 
   [(PHInCallRootViewController *)self setSecondaryStringForParticipantsView:v19];
 LABEL_16:
-  v22 = [v9 link];
-  v23 = [v22 displayName];
+  link2 = [v9 link];
+  displayName2 = [link2 displayName];
 
-  if (v18 && v23)
+  if (v18 && displayName2)
   {
     [(PHInCallRootViewController *)self setContactNameForParticipantsView:v18];
   }
@@ -9301,120 +9301,120 @@ LABEL_16:
   }
 
 LABEL_20:
-  v24 = [(PHInCallRootViewController *)self callParticipantLabelsView];
-  [v24 updateParticipants];
+  callParticipantLabelsView = [(PHInCallRootViewController *)self callParticipantLabelsView];
+  [callParticipantLabelsView updateParticipants];
 
-  [(PHInCallRootViewController *)self updateBottomControlsViewWithInCallState:v3];
+  [(PHInCallRootViewController *)self updateBottomControlsViewWithInCallState:inCallState];
 }
 
 - (unsigned)inCallState
 {
-  v3 = [(PHInCallRootViewController *)self callCenter];
-  v4 = [v3 currentCallCount];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  currentCallCount = [callCenter currentCallCount];
 
-  v5 = [(PHInCallRootViewController *)self callCenter];
-  v6 = [v5 currentVideoCallCount];
+  callCenter2 = [(PHInCallRootViewController *)self callCenter];
+  currentVideoCallCount = [callCenter2 currentVideoCallCount];
 
-  v7 = [(PHInCallRootViewController *)self callCenter];
-  v8 = [v7 currentVideoCalls];
+  callCenter3 = [(PHInCallRootViewController *)self callCenter];
+  currentVideoCalls = [callCenter3 currentVideoCalls];
 
   v9 = sub_100004F84();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v41 = 138412290;
-    v42[0] = v8;
+    v42[0] = currentVideoCalls;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState for non final chats %@", &v41, 0xCu);
   }
 
-  if (v6)
+  if (currentVideoCallCount)
   {
-    if (!v4 && v6 == 1)
+    if (!currentCallCount && currentVideoCallCount == 1)
     {
-      v10 = [v8 lastObject];
-      if ([v10 status]== 4 || [v10 wantsHoldMusic])
+      lastObject = [currentVideoCalls lastObject];
+      if ([lastObject status]== 4 || [lastObject wantsHoldMusic])
       {
-        v11 = sub_100004F84();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+        displayedCalls = sub_100004F84();
+        if (os_log_type_enabled(displayedCalls, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [v10 status]== 4;
-          v13 = [v10 wantsHoldMusic];
+          v12 = [lastObject status]== 4;
+          wantsHoldMusic = [lastObject wantsHoldMusic];
           v41 = 67109376;
           LODWORD(v42[0]) = v12;
           WORD2(v42[0]) = 1024;
-          *(v42 + 6) = v13;
-          _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusRinging (%d) or call wants hold music (%d), setting state to PHInCallStateIncomingRinging", &v41, 0xEu);
+          *(v42 + 6) = wantsHoldMusic;
+          _os_log_impl(&_mh_execute_header, displayedCalls, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusRinging (%d) or call wants hold music (%d), setting state to PHInCallStateIncomingRinging", &v41, 0xEu);
         }
 
         v14 = 1;
         goto LABEL_38;
       }
 
-      if ([v10 status]== 3)
+      if ([lastObject status]== 3)
       {
-        v11 = sub_100004F84();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+        displayedCalls = sub_100004F84();
+        if (os_log_type_enabled(displayedCalls, OS_LOG_TYPE_DEFAULT))
         {
           LOWORD(v41) = 0;
           v25 = "UpdateCurrentState: Call status is TUCallStatusSending, setting state to PHInCallStateOutgoingRinging";
 LABEL_44:
           v14 = 2;
-          _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v25, &v41, 2u);
+          _os_log_impl(&_mh_execute_header, displayedCalls, OS_LOG_TYPE_DEFAULT, v25, &v41, 2u);
           goto LABEL_38;
         }
 
         goto LABEL_50;
       }
 
-      if ([v10 status]== 1 && [v10 isEndpointOnCurrentDevice])
+      if ([lastObject status]== 1 && [lastObject isEndpointOnCurrentDevice])
       {
-        v11 = sub_100004F84();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+        displayedCalls = sub_100004F84();
+        if (os_log_type_enabled(displayedCalls, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [v10 isHostedOnCurrentDevice];
-          v30 = [(PHInCallRootViewController *)self callCenter];
-          v31 = [v30 routeController];
-          v32 = [v31 pickedRoute];
-          v33 = [v32 deviceType];
+          isHostedOnCurrentDevice = [lastObject isHostedOnCurrentDevice];
+          callCenter4 = [(PHInCallRootViewController *)self callCenter];
+          routeController = [callCenter4 routeController];
+          pickedRoute = [routeController pickedRoute];
+          deviceType = [pickedRoute deviceType];
           v41 = 67109376;
-          LODWORD(v42[0]) = v29;
+          LODWORD(v42[0]) = isHostedOnCurrentDevice;
           WORD2(v42[0]) = 2048;
-          *(v42 + 6) = v33;
-          _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusActive, setting state to PHInCallStateSingleCallActive (hosted: %d, endpoint: 1, pickedRouteDeviceType: %ld)", &v41, 0x12u);
+          *(v42 + 6) = deviceType;
+          _os_log_impl(&_mh_execute_header, displayedCalls, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusActive, setting state to PHInCallStateSingleCallActive (hosted: %d, endpoint: 1, pickedRouteDeviceType: %ld)", &v41, 0x12u);
         }
 
         v14 = 4;
         goto LABEL_38;
       }
 
-      if ([v10 status]== 1)
+      if ([lastObject status]== 1)
       {
-        v11 = sub_100004F84();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+        displayedCalls = sub_100004F84();
+        if (os_log_type_enabled(displayedCalls, OS_LOG_TYPE_DEFAULT))
         {
-          v34 = [v10 isHostedOnCurrentDevice];
-          v35 = [(PHInCallRootViewController *)self callCenter];
-          v36 = [v35 routeController];
-          v37 = [v36 pickedRoute];
-          v38 = [v37 deviceType];
+          isHostedOnCurrentDevice2 = [lastObject isHostedOnCurrentDevice];
+          callCenter5 = [(PHInCallRootViewController *)self callCenter];
+          routeController2 = [callCenter5 routeController];
+          pickedRoute2 = [routeController2 pickedRoute];
+          deviceType2 = [pickedRoute2 deviceType];
           v41 = 67109376;
-          LODWORD(v42[0]) = v34;
+          LODWORD(v42[0]) = isHostedOnCurrentDevice2;
           WORD2(v42[0]) = 2048;
-          *(v42 + 6) = v38;
-          _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusActive, setting state to PHInCallStateIdle (hosted: %d, endpoint: 0, pickedRouteDeviceType: %ld)", &v41, 0x12u);
+          *(v42 + 6) = deviceType2;
+          _os_log_impl(&_mh_execute_header, displayedCalls, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusActive, setting state to PHInCallStateIdle (hosted: %d, endpoint: 0, pickedRouteDeviceType: %ld)", &v41, 0x12u);
         }
 
         v14 = 0;
         goto LABEL_38;
       }
 
-      if ([v10 status]!= 5)
+      if ([lastObject status]!= 5)
       {
         v14 = 0;
         goto LABEL_39;
       }
 
-      v11 = sub_100004F84();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      displayedCalls = sub_100004F84();
+      if (os_log_type_enabled(displayedCalls, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v41) = 0;
         goto LABEL_61;
@@ -9423,22 +9423,22 @@ LABEL_44:
       goto LABEL_62;
     }
 
-    v18 = [(PHInCallRootViewController *)self callCenter];
-    v19 = [v18 currentAudioAndVideoCallCount];
+    callCenter6 = [(PHInCallRootViewController *)self callCenter];
+    currentAudioAndVideoCallCount = [callCenter6 currentAudioAndVideoCallCount];
 
-    if (v19 >= 2)
+    if (currentAudioAndVideoCallCount >= 2)
     {
       v20 = +[UIApplication sharedApplication];
-      v21 = [v20 delegate];
-      v22 = [(PHInCallRootViewController *)self callCenter];
-      v10 = [v21 currentVideoCallUsingCallContainer:v22];
+      delegate = [v20 delegate];
+      callCenter7 = [(PHInCallRootViewController *)self callCenter];
+      lastObject = [delegate currentVideoCallUsingCallContainer:callCenter7];
 
-      if ([v10 status]!= 4 && ![v10 wantsHoldMusic])
+      if ([lastObject status]!= 4 && ![lastObject wantsHoldMusic])
       {
-        if ([v10 status]== 3)
+        if ([lastObject status]== 3)
         {
-          v11 = sub_100004F84();
-          if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+          displayedCalls = sub_100004F84();
+          if (os_log_type_enabled(displayedCalls, OS_LOG_TYPE_DEFAULT))
           {
             LOWORD(v41) = 0;
             v25 = "UpdateCurrentState: Current chat status is TUCallStatusSending, setting state to PHInCallStateOutgoingRinging";
@@ -9450,15 +9450,15 @@ LABEL_50:
           goto LABEL_38;
         }
 
-        v39 = [v10 status];
-        v11 = sub_100004F84();
-        v40 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-        if (v39 != 5)
+        status = [lastObject status];
+        displayedCalls = sub_100004F84();
+        v40 = os_log_type_enabled(displayedCalls, OS_LOG_TYPE_DEFAULT);
+        if (status != 5)
         {
           if (v40)
           {
             LOWORD(v41) = 0;
-            _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Multiple chats, setting state to PHInCallStateMultipleCallsActive", &v41, 2u);
+            _os_log_impl(&_mh_execute_header, displayedCalls, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Multiple chats, setting state to PHInCallStateMultipleCallsActive", &v41, 2u);
           }
 
           v14 = 5;
@@ -9469,7 +9469,7 @@ LABEL_50:
         {
           LOWORD(v41) = 0;
 LABEL_61:
-          _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusDisconnecting, setting state to PHInCallStateEnding", &v41, 2u);
+          _os_log_impl(&_mh_execute_header, displayedCalls, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusDisconnecting, setting state to PHInCallStateEnding", &v41, 2u);
         }
 
 LABEL_62:
@@ -9477,20 +9477,20 @@ LABEL_62:
         goto LABEL_38;
       }
 
-      v23 = [(PHInCallRootViewController *)self callCenter];
-      v11 = [v23 displayedCalls];
+      callCenter8 = [(PHInCallRootViewController *)self callCenter];
+      displayedCalls = [callCenter8 displayedCalls];
 
-      if ([v11 count])
+      if ([displayedCalls count])
       {
-        v24 = [v11 firstObject];
+        firstObject = [displayedCalls firstObject];
       }
 
       else
       {
-        v24 = 0;
+        firstObject = 0;
       }
 
-      if ([v10 wantsHoldMusic])
+      if ([lastObject wantsHoldMusic])
       {
         v26 = sub_100004F84();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -9504,7 +9504,7 @@ LABEL_28:
 
       else
       {
-        if (v4 != 1 || ![v10 isVideoUpgradeFromCall:v24])
+        if (currentCallCount != 1 || ![lastObject isVideoUpgradeFromCall:firstObject])
         {
           v26 = sub_100004F84();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -9539,16 +9539,16 @@ LABEL_39:
   else
   {
     v15 = +[UIApplication sharedApplication];
-    v16 = [v15 delegate];
-    v17 = [v16 mostRecentlyDisconnectedVideoCall];
+    delegate2 = [v15 delegate];
+    mostRecentlyDisconnectedVideoCall = [delegate2 mostRecentlyDisconnectedVideoCall];
 
-    if (v17)
+    if (mostRecentlyDisconnectedVideoCall)
     {
-      v10 = sub_100004F84();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      lastObject = sub_100004F84();
+      if (os_log_type_enabled(lastObject, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v41) = 0;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call has been disconnected, setting state to PHInCallStateEnded", &v41, 2u);
+        _os_log_impl(&_mh_execute_header, lastObject, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call has been disconnected, setting state to PHInCallStateEnded", &v41, 2u);
       }
 
       v14 = 7;
@@ -9562,32 +9562,32 @@ LABEL_40:
   return v14;
 }
 
-- (id)updateContactInformationForParticipantViewWithInCallState:(unsigned __int16)a3
+- (id)updateContactInformationForParticipantViewWithInCallState:(unsigned __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 delegate];
-  v7 = v6;
-  if (v3 == 7)
+  delegate = [v5 delegate];
+  v7 = delegate;
+  if (stateCopy == 7)
   {
-    v8 = [v6 mostRecentlyDisconnectedVideoCall];
+    mostRecentlyDisconnectedVideoCall = [delegate mostRecentlyDisconnectedVideoCall];
   }
 
   else
   {
-    v9 = [(PHInCallRootViewController *)self callCenter];
-    v8 = [v7 currentVideoCallUsingCallContainer:v9];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    mostRecentlyDisconnectedVideoCall = [v7 currentVideoCallUsingCallContainer:callCenter];
   }
 
-  if (!v8)
+  if (!mostRecentlyDisconnectedVideoCall)
   {
-    v20 = 0;
+    siriDisplayName2 = 0;
     goto LABEL_22;
   }
 
-  v10 = [[TUContactsDataProviderFetchRequest alloc] initWithCall:v8];
-  v11 = [v8 contactIdentifier];
-  [v10 setContactIdentifier:v11];
+  v10 = [[TUContactsDataProviderFetchRequest alloc] initWithCall:mostRecentlyDisconnectedVideoCall];
+  contactIdentifier = [mostRecentlyDisconnectedVideoCall contactIdentifier];
+  [v10 setContactIdentifier:contactIdentifier];
 
   v33 = [CNAvatarView descriptorForRequiredKeysWithThreeDTouchEnabled:1];
   v34[0] = v33;
@@ -9595,118 +9595,118 @@ LABEL_40:
   v12 = [NSArray arrayWithObjects:v34 count:2];
   [v10 setAuxiliaryKeysToFetch:v12];
 
-  v32 = [CNContactStoreConfiguration tu_contactStoreConfigurationForCall:v8];
+  v32 = [CNContactStoreConfiguration tu_contactStoreConfigurationForCall:mostRecentlyDisconnectedVideoCall];
   v13 = [[CNContactStore alloc] initWithConfiguration:v32];
   v14 = [[TUContactsDataProvider alloc] initWithContactsDataSource:v13];
   v15 = [v14 executeFetchRequest:v10];
-  v16 = [v8 handle];
-  v17 = [v16 siriDisplayName];
-  if (v17)
+  handle = [mostRecentlyDisconnectedVideoCall handle];
+  siriDisplayName = [handle siriDisplayName];
+  if (siriDisplayName)
   {
-    v18 = [v8 handle];
-    v19 = [v18 shouldHideContact];
+    handle2 = [mostRecentlyDisconnectedVideoCall handle];
+    shouldHideContact = [handle2 shouldHideContact];
   }
 
   else
   {
-    v19 = 0;
+    shouldHideContact = 0;
   }
 
-  v21 = [v15 contacts];
-  v22 = [v21 count];
+  contacts = [v15 contacts];
+  v22 = [contacts count];
 
-  if (v22 == 1 && (v19 & 1) == 0)
+  if (v22 == 1 && (shouldHideContact & 1) == 0)
   {
-    v23 = [v15 contacts];
-    v24 = [v23 firstObject];
+    contacts2 = [v15 contacts];
+    firstObject = [contacts2 firstObject];
 
-    [(PHInCallRootViewController *)self setContactForParticipantsView:v24];
+    [(PHInCallRootViewController *)self setContactForParticipantsView:firstObject];
   }
 
-  v25 = [(PHInCallRootViewController *)self callCenter];
-  v26 = [v25 activeConversationForCall:v8];
+  callCenter2 = [(PHInCallRootViewController *)self callCenter];
+  v26 = [callCenter2 activeConversationForCall:mostRecentlyDisconnectedVideoCall];
 
-  v27 = [v26 link];
-  v28 = [v27 displayName];
+  link = [v26 link];
+  displayName = [link displayName];
 
-  [(PHInCallRootViewController *)self setCallForParticipantsView:v8];
-  if ([v8 isConversation] && v26)
+  [(PHInCallRootViewController *)self setCallForParticipantsView:mostRecentlyDisconnectedVideoCall];
+  if ([mostRecentlyDisconnectedVideoCall isConversation] && v26)
   {
-    if (v28)
+    if (displayName)
     {
-      v29 = v28;
+      displayName2 = displayName;
     }
 
     else
     {
-      v29 = [v26 displayName];
+      displayName2 = [v26 displayName];
     }
 
     goto LABEL_20;
   }
 
-  if (!v19)
+  if (!shouldHideContact)
   {
-    v29 = [v15 localizedName];
+    displayName2 = [v15 localizedName];
 LABEL_20:
-    v20 = v29;
+    siriDisplayName2 = displayName2;
     goto LABEL_21;
   }
 
-  v30 = [v8 handle];
-  v20 = [v30 siriDisplayName];
+  handle3 = [mostRecentlyDisconnectedVideoCall handle];
+  siriDisplayName2 = [handle3 siriDisplayName];
 
 LABEL_21:
 LABEL_22:
 
-  return v20;
+  return siriDisplayName2;
 }
 
-- (id)updateSecondaryStringForParticipantViewWithInCallState:(unsigned __int16)a3 allowsDuration:(BOOL)a4
+- (id)updateSecondaryStringForParticipantViewWithInCallState:(unsigned __int16)state allowsDuration:(BOOL)duration
 {
-  v5 = a3;
+  stateCopy = state;
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 delegate];
-  v9 = [(PHInCallRootViewController *)self callCenter];
-  v10 = [v8 currentVideoCallUsingCallContainer:v9];
+  delegate = [v7 delegate];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  v10 = [delegate currentVideoCallUsingCallContainer:callCenter];
 
-  v11 = [(PHInCallRootViewController *)self callCenter];
-  v12 = [v11 activeConversationForCall:v10];
+  callCenter2 = [(PHInCallRootViewController *)self callCenter];
+  v12 = [callCenter2 activeConversationForCall:v10];
 
-  v13 = 0;
-  if (v5 > 3)
+  displayName2 = 0;
+  if (stateCopy > 3)
   {
-    if ((v5 - 4) < 2)
+    if ((stateCopy - 4) < 2)
     {
       v23 = +[NSBundle conversationKit];
-      v17 = v23;
+      mostRecentlyDisconnectedVideoCall = v23;
       v24 = @"STATUS_CONNECTING";
     }
 
     else
     {
-      if (v5 != 6)
+      if (stateCopy != 6)
       {
-        if (v5 != 7)
+        if (stateCopy != 7)
         {
           goto LABEL_49;
         }
 
         v18 = +[NSBundle conversationKit];
-        v13 = [v18 localizedStringForKey:@"STATUS_ENDED" value:&stru_100361FD0 table:@"CallStatus"];
+        displayName2 = [v18 localizedStringForKey:@"STATUS_ENDED" value:&stru_100361FD0 table:@"CallStatus"];
 
         v19 = +[UIApplication sharedApplication];
-        v20 = [v19 delegate];
-        v17 = [v20 mostRecentlyDisconnectedVideoCall];
+        delegate2 = [v19 delegate];
+        mostRecentlyDisconnectedVideoCall = [delegate2 mostRecentlyDisconnectedVideoCall];
 
-        if ([v17 disconnectedReason] == 14)
+        if ([mostRecentlyDisconnectedVideoCall disconnectedReason] == 14)
         {
           v21 = @"STATUS_FAILED";
         }
 
         else
         {
-          if ([v17 disconnectedReason] != 15 && objc_msgSend(v17, "disconnectedReason") != 5)
+          if ([mostRecentlyDisconnectedVideoCall disconnectedReason] != 15 && objc_msgSend(mostRecentlyDisconnectedVideoCall, "disconnectedReason") != 5)
           {
             goto LABEL_48;
           }
@@ -9717,23 +9717,23 @@ LABEL_22:
         v31 = +[NSBundle conversationKit];
         v32 = [v31 localizedStringForKey:v21 value:&stru_100361FD0 table:@"CallStatus"];
 
-        v13 = v32;
+        displayName2 = v32;
         goto LABEL_48;
       }
 
       v23 = +[NSBundle conversationKit];
-      v17 = v23;
+      mostRecentlyDisconnectedVideoCall = v23;
       v24 = @"STATUS_ENDING";
     }
 
     goto LABEL_46;
   }
 
-  if (v5 <= 1)
+  if (stateCopy <= 1)
   {
-    if (v5)
+    if (stateCopy)
     {
-      if (v5 != 1)
+      if (stateCopy != 1)
       {
         goto LABEL_49;
       }
@@ -9741,28 +9741,28 @@ LABEL_22:
       if ([v10 wantsHoldMusic])
       {
         v14 = +[NSBundle conversationKit];
-        if (a4)
+        if (duration)
         {
           v15 = [v14 localizedStringForKey:@"%@_HOLD_MUSIC" value:&stru_100361FD0 table:@"CallStatus"];
-          v16 = [v10 callDurationString];
-          v17 = [NSString stringWithFormat:v15, v16];
+          callDurationString = [v10 callDurationString];
+          mostRecentlyDisconnectedVideoCall = [NSString stringWithFormat:v15, callDurationString];
         }
 
         else
         {
-          v17 = [v14 localizedStringForKey:@"HOLD_MUSIC" value:&stru_100361FD0 table:@"CallStatus"];
+          mostRecentlyDisconnectedVideoCall = [v14 localizedStringForKey:@"HOLD_MUSIC" value:&stru_100361FD0 table:@"CallStatus"];
         }
 
         if ([v10 isConnected])
         {
-          v33 = v17;
+          v33 = mostRecentlyDisconnectedVideoCall;
 LABEL_47:
-          v13 = v33;
+          displayName2 = v33;
           goto LABEL_48;
         }
 
         v34 = +[NSBundle conversationKit];
-        v13 = [v34 localizedStringForKey:@"STATUS_CONNECTING" value:&stru_100361FD0 table:@"CallStatus"];
+        displayName2 = [v34 localizedStringForKey:@"STATUS_CONNECTING" value:&stru_100361FD0 table:@"CallStatus"];
 
 LABEL_48:
         goto LABEL_49;
@@ -9772,14 +9772,14 @@ LABEL_48:
     }
 
     v23 = +[NSBundle conversationKit];
-    v17 = v23;
+    mostRecentlyDisconnectedVideoCall = v23;
     v24 = @"STATUS_ENDED";
 LABEL_46:
     v33 = [v23 localizedStringForKey:v24 value:&stru_100361FD0 table:@"CallStatus"];
     goto LABEL_47;
   }
 
-  if (v5 != 2)
+  if (stateCopy != 2)
   {
 LABEL_14:
     if (v12)
@@ -9792,21 +9792,21 @@ LABEL_14:
       v22 = 0;
     }
 
-    v27 = [v12 link];
-    if (v27)
+    link = [v12 link];
+    if (link)
     {
-      v28 = v27;
-      v29 = [v12 link];
-      v30 = [v29 displayName];
+      v28 = link;
+      link2 = [v12 link];
+      displayName = [link2 displayName];
 
-      if (v30)
+      if (displayName)
       {
-        v13 = [v10 displayName];
+        displayName2 = [v10 displayName];
         goto LABEL_49;
       }
     }
 
-    v17 = +[NSBundle conversationKit];
+    mostRecentlyDisconnectedVideoCall = +[NSBundle conversationKit];
     if (v22)
     {
       v24 = @"FACETIME_AUDIO_INCOMING";
@@ -9830,27 +9830,27 @@ LABEL_14:
     goto LABEL_42;
   }
 
-  v25 = [v12 link];
-  if (!v25)
+  link3 = [v12 link];
+  if (!link3)
   {
     goto LABEL_42;
   }
 
-  v26 = v25;
+  v26 = link3;
   if ([v12 letMeInRequestState] == 1)
   {
 
     goto LABEL_40;
   }
 
-  v35 = [v12 letMeInRequestState];
+  letMeInRequestState = [v12 letMeInRequestState];
 
-  if (v35 != 2)
+  if (letMeInRequestState != 2)
   {
 LABEL_42:
-    v36 = [v10 isConnecting];
-    v17 = +[NSBundle conversationKit];
-    if (v36)
+    isConnecting = [v10 isConnecting];
+    mostRecentlyDisconnectedVideoCall = +[NSBundle conversationKit];
+    if (isConnecting)
     {
       v24 = @"STATUS_CONNECTING";
     }
@@ -9861,7 +9861,7 @@ LABEL_42:
     }
 
 LABEL_45:
-    v23 = v17;
+    v23 = mostRecentlyDisconnectedVideoCall;
     goto LABEL_46;
   }
 
@@ -9869,50 +9869,50 @@ LABEL_40:
   if ([v12 letMeInRequestState] == 2)
   {
     v23 = +[NSBundle conversationKit];
-    v17 = v23;
+    mostRecentlyDisconnectedVideoCall = v23;
     v24 = @"FACETIME_VIDEO_WAITING_FOR_LET_IN";
     goto LABEL_46;
   }
 
-  v13 = 0;
+  displayName2 = 0;
 LABEL_49:
 
-  return v13;
+  return displayName2;
 }
 
-- (void)updateBottomControlsViewWithInCallState:(unsigned __int16)a3
+- (void)updateBottomControlsViewWithInCallState:(unsigned __int16)state
 {
-  if (a3 != 7)
+  if (state != 7)
   {
-    if (a3 != 3)
+    if (state != 3)
     {
-      if (a3 != 1)
+      if (state != 1)
       {
         goto LABEL_39;
       }
 
       v4 = +[UIApplication sharedApplication];
-      v5 = [v4 delegate];
-      v6 = [(PHInCallRootViewController *)self callCenter];
-      v7 = [v5 incomingVideoCallUsingCallContainer:v6];
+      delegate = [v4 delegate];
+      callCenter = [(PHInCallRootViewController *)self callCenter];
+      mostRecentlyDisconnectedVideoCall = [delegate incomingVideoCallUsingCallContainer:callCenter];
 
-      v8 = [(PHInCallRootViewController *)self bottomControlsView];
-      v9 = [v8 currentState];
+      bottomControlsView = [(PHInCallRootViewController *)self bottomControlsView];
+      currentState = [bottomControlsView currentState];
 
-      if (v9 == 9 || +[PHSOSViewController isSOSDismissalAssertionActive])
+      if (currentState == 9 || +[PHSOSViewController isSOSDismissalAssertionActive])
       {
-        v60 = 0;
-        v10 = 0;
+        isReminderAllowed = 0;
+        isMessagingAllowed = 0;
       }
 
       else
       {
-        v10 = [v7 isMessagingAllowed];
-        v60 = [v7 isReminderAllowed];
+        isMessagingAllowed = [mostRecentlyDisconnectedVideoCall isMessagingAllowed];
+        isReminderAllowed = [mostRecentlyDisconnectedVideoCall isReminderAllowed];
       }
 
-      v32 = [(PHInCallRootViewController *)self callCenter];
-      v22 = [v32 activeConversationForCall:v7];
+      callCenter2 = [(PHInCallRootViewController *)self callCenter];
+      v22 = [callCenter2 activeConversationForCall:mostRecentlyDisconnectedVideoCall];
 
       if (v22 && [v22 resolvedAudioVideoMode] == 1)
       {
@@ -9932,14 +9932,14 @@ LABEL_49:
         v33 = 1;
       }
 
-      v34 = [(PHInCallRootViewController *)self bottomControlsView];
+      bottomControlsView2 = [(PHInCallRootViewController *)self bottomControlsView];
       v35 = +[UIApplication sharedApplication];
-      v36 = [v35 delegate];
-      v37 = [v36 currentInCallScene];
-      if ([v37 isBeingShownAboveCoverSheet])
+      delegate2 = [v35 delegate];
+      currentInCallScene = [delegate2 currentInCallScene];
+      if ([currentInCallScene isBeingShownAboveCoverSheet])
       {
-        v38 = [(PHInCallRootViewController *)self callCenter];
-        if ([v38 currentCallCount])
+        callCenter3 = [(PHInCallRootViewController *)self callCenter];
+        if ([callCenter3 currentCallCount])
         {
           v39 = v33;
         }
@@ -9949,72 +9949,72 @@ LABEL_49:
           v39 = 6;
         }
 
-        [v34 setCurrentState:v39];
+        [bottomControlsView2 setCurrentState:v39];
       }
 
       else
       {
-        [v34 setCurrentState:v33];
+        [bottomControlsView2 setCurrentState:v33];
       }
 
-      v40 = [(PHInCallRootViewController *)self bottomControlsView];
-      [v40 setDeclineAndMessageIsAvailable:v10];
+      bottomControlsView3 = [(PHInCallRootViewController *)self bottomControlsView];
+      [bottomControlsView3 setDeclineAndMessageIsAvailable:isMessagingAllowed];
 
-      v41 = [(PHInCallRootViewController *)self bottomControlsView];
-      [v41 setDeclineAndRemindIsAvailable:v60];
+      bottomControlsView4 = [(PHInCallRootViewController *)self bottomControlsView];
+      [bottomControlsView4 setDeclineAndRemindIsAvailable:isReminderAllowed];
 
-      v42 = [(PHInCallRootViewController *)self bottomControlsView];
-      [v42 setUsesLowerButtons:0];
+      bottomControlsView5 = [(PHInCallRootViewController *)self bottomControlsView];
+      [bottomControlsView5 setUsesLowerButtons:0];
 
       goto LABEL_37;
     }
 
     v11 = +[UIApplication sharedApplication];
-    v12 = [v11 delegate];
-    v13 = [(PHInCallRootViewController *)self callCenter];
-    v7 = [v12 incomingVideoCallUsingCallContainer:v13];
+    delegate3 = [v11 delegate];
+    callCenter4 = [(PHInCallRootViewController *)self callCenter];
+    mostRecentlyDisconnectedVideoCall = [delegate3 incomingVideoCallUsingCallContainer:callCenter4];
 
     v14 = +[UIApplication sharedApplication];
-    v15 = [v14 delegate];
-    LOBYTE(v13) = [v15 isPresentingAmbient];
+    delegate4 = [v14 delegate];
+    LOBYTE(callCenter4) = [delegate4 isPresentingAmbient];
 
-    if ((v13 & 1) == 0)
+    if ((callCenter4 & 1) == 0)
     {
       [(PHInCallRootViewController *)self requestInCallSceneTransitionToFullScreen];
     }
 
-    v16 = [v7 isMessagingAllowed];
-    v17 = [(PHInCallRootViewController *)self bottomControlsView];
-    [v17 setDeclineAndMessageIsAvailable:v16];
+    isMessagingAllowed2 = [mostRecentlyDisconnectedVideoCall isMessagingAllowed];
+    bottomControlsView6 = [(PHInCallRootViewController *)self bottomControlsView];
+    [bottomControlsView6 setDeclineAndMessageIsAvailable:isMessagingAllowed2];
 
-    v18 = [v7 isReminderAllowed];
-    v19 = [(PHInCallRootViewController *)self bottomControlsView];
-    [v19 setDeclineAndRemindIsAvailable:v18];
+    isReminderAllowed2 = [mostRecentlyDisconnectedVideoCall isReminderAllowed];
+    bottomControlsView7 = [(PHInCallRootViewController *)self bottomControlsView];
+    [bottomControlsView7 setDeclineAndRemindIsAvailable:isReminderAllowed2];
 
-    v20 = [(PHInCallRootViewController *)self bottomControlsView];
-    [v20 setUserInteractionEnabled:1];
+    bottomControlsView8 = [(PHInCallRootViewController *)self bottomControlsView];
+    [bottomControlsView8 setUserInteractionEnabled:1];
 
-    v21 = [(PHInCallRootViewController *)self bottomControlsView];
-    v22 = v21;
+    bottomControlsView9 = [(PHInCallRootViewController *)self bottomControlsView];
+    v22 = bottomControlsView9;
     v23 = 9;
 LABEL_14:
-    [v21 setCurrentState:v23 animated:1 animationCompletionBlock:0];
+    [bottomControlsView9 setCurrentState:v23 animated:1 animationCompletionBlock:0];
 LABEL_37:
 
     goto LABEL_38;
   }
 
   v24 = +[UIApplication sharedApplication];
-  v25 = [v24 delegate];
-  v7 = [v25 mostRecentlyDisconnectedVideoCall];
+  delegate5 = [v24 delegate];
+  mostRecentlyDisconnectedVideoCall = [delegate5 mostRecentlyDisconnectedVideoCall];
 
   v26 = sub_100004F84();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    v63 = [(PHInCallRootViewController *)self shouldShowVideoCallBlockAndReportScreen];
+    shouldShowVideoCallBlockAndReportScreen = [(PHInCallRootViewController *)self shouldShowVideoCallBlockAndReportScreen];
     v64 = 1024;
-    v65 = [v7 disconnectedReason];
+    disconnectedReason = [mostRecentlyDisconnectedVideoCall disconnectedReason];
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "[self shouldShowVideoCallBlockAndReportScreen]: %d, disconnectedCall.disconnectedReason: %d", buf, 0xEu);
   }
 
@@ -10022,42 +10022,42 @@ LABEL_37:
   {
     [PHInCallRootViewController obtainDismissalAssertionForReason:@"PHCallEndedBlockAndReportInProgressAssertionReason"];
     [(PHInCallRootViewController *)self requestInCallSceneTransitionToFullScreen];
-    v27 = [(PHInCallRootViewController *)self multiwayViewController];
-    [v27 setIsInCallEndedBlockAndReportFlow:1];
+    multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+    [multiwayViewController setIsInCallEndedBlockAndReportFlow:1];
 
-    v28 = [(PHInCallRootViewController *)self bottomControlsView];
-    [v28 setUserInteractionEnabled:1];
+    bottomControlsView10 = [(PHInCallRootViewController *)self bottomControlsView];
+    [bottomControlsView10 setUserInteractionEnabled:1];
 
-    v29 = [(PHInCallRootViewController *)self bottomControlsView];
-    [v29 setUsesLowerButtons:1];
+    bottomControlsView11 = [(PHInCallRootViewController *)self bottomControlsView];
+    [bottomControlsView11 setUsesLowerButtons:1];
 
-    v21 = [(PHInCallRootViewController *)self bottomControlsView];
-    v22 = v21;
+    bottomControlsView9 = [(PHInCallRootViewController *)self bottomControlsView];
+    v22 = bottomControlsView9;
     v23 = 27;
     goto LABEL_14;
   }
 
-  if ([v7 disconnectedReason] == 14 && (objc_msgSend(v7, "isOutgoing") & 1) != 0 || objc_msgSend(v7, "disconnectedReason") == 5 || objc_msgSend(v7, "disconnectedReason") == 15)
+  if ([mostRecentlyDisconnectedVideoCall disconnectedReason] == 14 && (objc_msgSend(mostRecentlyDisconnectedVideoCall, "isOutgoing") & 1) != 0 || objc_msgSend(mostRecentlyDisconnectedVideoCall, "disconnectedReason") == 5 || objc_msgSend(mostRecentlyDisconnectedVideoCall, "disconnectedReason") == 15)
   {
-    v30 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-    if ([v30 callDisplayStyle] == 4 || +[PHInCallUIUtilities isSpringBoardPasscodeLocked](PHInCallUIUtilities, "isSpringBoardPasscodeLocked"))
+    callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 4 || +[PHInCallUIUtilities isSpringBoardPasscodeLocked](PHInCallUIUtilities, "isSpringBoardPasscodeLocked"))
     {
     }
 
     else
     {
-      v55 = [v7 handle];
-      v56 = [v55 value];
-      v57 = [v56 length];
+      handle = [mostRecentlyDisconnectedVideoCall handle];
+      value = [handle value];
+      v57 = [value length];
 
       if (v57)
       {
-        if ([v7 isMessagingAllowed])
+        if ([mostRecentlyDisconnectedVideoCall isMessagingAllowed])
         {
           v58 = 17;
         }
 
-        else if ([v7 isCallbackAllowed])
+        else if ([mostRecentlyDisconnectedVideoCall isCallbackAllowed])
         {
           v58 = 13;
         }
@@ -10067,8 +10067,8 @@ LABEL_37:
           v58 = 18;
         }
 
-        v59 = [(PHInCallRootViewController *)self bottomControlsView];
-        [v59 setCurrentState:v58 animated:1 animationCompletionBlock:0];
+        bottomControlsView12 = [(PHInCallRootViewController *)self bottomControlsView];
+        [bottomControlsView12 setCurrentState:v58 animated:1 animationCompletionBlock:0];
 
         goto LABEL_38;
       }
@@ -10082,42 +10082,42 @@ LABEL_37:
   block[3] = &unk_100356988;
   block[4] = self;
   dispatch_after(v31, &_dispatch_main_q, block);
-  [(PHInCallRootViewController *)self showFailureOrFallbackAlertIfNecessaryForCall:v7];
+  [(PHInCallRootViewController *)self showFailureOrFallbackAlertIfNecessaryForCall:mostRecentlyDisconnectedVideoCall];
 LABEL_38:
 
 LABEL_39:
-  v43 = [(PHInCallRootViewController *)self callCenter];
-  v44 = [v43 incomingVideoCall];
+  callCenter5 = [(PHInCallRootViewController *)self callCenter];
+  incomingVideoCall = [callCenter5 incomingVideoCall];
 
-  if (v44)
+  if (incomingVideoCall)
   {
-    v45 = [(PHInCallRootViewController *)self bottomControlsView];
-    v46 = [v45 controlForActionType:13];
+    bottomControlsView13 = [(PHInCallRootViewController *)self bottomControlsView];
+    v46 = [bottomControlsView13 controlForActionType:13];
 
-    v47 = [(PHInCallRootViewController *)self bottomControlsView];
-    v48 = [v47 controlForActionType:9];
+    bottomControlsView14 = [(PHInCallRootViewController *)self bottomControlsView];
+    v48 = [bottomControlsView14 controlForActionType:9];
 
     if (!v48)
     {
-      v49 = [(PHInCallRootViewController *)self bottomControlsView];
-      v48 = [v49 controlForActionType:12];
+      bottomControlsView15 = [(PHInCallRootViewController *)self bottomControlsView];
+      v48 = [bottomControlsView15 controlForActionType:12];
     }
 
     if (v46)
     {
-      [PHDeclineWithReminderController configureButton:v46 forIncomingCall:v44 presenter:self];
+      [PHDeclineWithReminderController configureButton:v46 forIncomingCall:incomingVideoCall presenter:self];
     }
 
     if (v48)
     {
       v50 = [PHDeclineWithMessageController alloc];
-      v51 = [(PHInCallRootViewController *)self multiwayViewController];
-      v52 = [(PHInCallRootViewController *)self declineCallService];
-      v53 = [(PHDeclineWithMessageController *)v50 initWithIncomingCall:v44 customMessagePresentingViewController:v51 declineCallService:v52];
+      multiwayViewController2 = [(PHInCallRootViewController *)self multiwayViewController];
+      declineCallService = [(PHInCallRootViewController *)self declineCallService];
+      v53 = [(PHDeclineWithMessageController *)v50 initWithIncomingCall:incomingVideoCall customMessagePresentingViewController:multiwayViewController2 declineCallService:declineCallService];
       [(PHInCallRootViewController *)self setDeclineWithMessageController:v53];
 
-      v54 = [(PHInCallRootViewController *)self declineWithMessageController];
-      [v54 configureDeclineMessageForButton:v48];
+      declineWithMessageController = [(PHInCallRootViewController *)self declineWithMessageController];
+      [declineWithMessageController configureDeclineMessageForButton:v48];
     }
   }
 
@@ -10127,14 +10127,14 @@ LABEL_39:
 - (void)sceneDidConnect
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
-  v5 = [v4 currentInCallScene];
+  delegate = [v3 delegate];
+  currentInCallScene = [delegate currentInCallScene];
 
-  if (v5)
+  if (currentInCallScene)
   {
     [(PHInCallRootViewController *)self updateUPlusOneVideoCallViews];
-    v6 = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
-    [v6 updateIncomingBottomBarControlState];
+    audioCallViewControllerIfLoaded = [(PHInCallRootViewController *)self audioCallViewControllerIfLoaded];
+    [audioCallViewControllerIfLoaded updateIncomingBottomBarControlState];
 
     [(PHInCallRootViewController *)self updateBackgroundStartPipAuthorizationState];
 
@@ -10142,7 +10142,7 @@ LABEL_39:
   }
 }
 
-- (void)wantsHoldMusicChangedNotification:(id)a3
+- (void)wantsHoldMusicChangedNotification:(id)notification
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -10152,12 +10152,12 @@ LABEL_39:
   }
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 delegate];
-  v7 = [(PHInCallRootViewController *)self callCenter];
-  v8 = [v6 currentVideoCallUsingCallContainer:v7];
-  v9 = [v8 wantsHoldMusic];
+  delegate = [v5 delegate];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  v8 = [delegate currentVideoCallUsingCallContainer:callCenter];
+  wantsHoldMusic = [v8 wantsHoldMusic];
 
-  if (v9)
+  if (wantsHoldMusic)
   {
     v10 = sub_100004F84();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -10166,11 +10166,11 @@ LABEL_39:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "decline with reminder and decline with message unavailable due to call wanting hold music.", v15, 2u);
     }
 
-    v11 = [(PHInCallRootViewController *)self bottomControlsView];
-    [v11 setDeclineAndMessageIsAvailable:0];
+    bottomControlsView = [(PHInCallRootViewController *)self bottomControlsView];
+    [bottomControlsView setDeclineAndMessageIsAvailable:0];
 
-    v12 = [(PHInCallRootViewController *)self bottomControlsView];
-    [v12 setDeclineAndRemindIsAvailable:0];
+    bottomControlsView2 = [(PHInCallRootViewController *)self bottomControlsView];
+    [bottomControlsView2 setDeclineAndRemindIsAvailable:0];
 
     [(PHInCallRootViewController *)self updateUPlusOneVideoCallViews];
     v13 = [NSTimer scheduledTimerWithTimeInterval:self target:"updateUPlusOneVideoCallViews" selector:0 userInfo:1 repeats:1.0];
@@ -10179,8 +10179,8 @@ LABEL_39:
 
   else
   {
-    v14 = [(PHInCallRootViewController *)self callDurationTimerForParticipantsView];
-    [v14 invalidate];
+    callDurationTimerForParticipantsView = [(PHInCallRootViewController *)self callDurationTimerForParticipantsView];
+    [callDurationTimerForParticipantsView invalidate];
 
     [(PHInCallRootViewController *)self setCallDurationTimerForParticipantsView:0];
     [(PHInCallRootViewController *)self transitionFromBannerToDismissedIfNecessary];
@@ -10189,67 +10189,67 @@ LABEL_39:
 
 - (void)refreshBottomBarButtonLayout
 {
-  v3 = [(PHInCallRootViewController *)self bottomControlsView];
-  [v3 setUsesLowerButtons:1];
+  bottomControlsView = [(PHInCallRootViewController *)self bottomControlsView];
+  [bottomControlsView setUsesLowerButtons:1];
 
-  v4 = [(PHInCallRootViewController *)self bottomControlsView];
-  [v4 setUsesLowerButtons:0];
+  bottomControlsView2 = [(PHInCallRootViewController *)self bottomControlsView];
+  [bottomControlsView2 setUsesLowerButtons:0];
 }
 
-- (id)labelForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4 allowsDuration:(BOOL)a5
+- (id)labelForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view allowsDuration:(BOOL)duration
 {
-  v6 = [(PHInCallRootViewController *)self updateSecondaryStringForParticipantViewWithInCallState:[(PHInCallRootViewController *)self inCallState:a3] allowsDuration:a5];
+  v6 = [(PHInCallRootViewController *)self updateSecondaryStringForParticipantViewWithInCallState:[(PHInCallRootViewController *)self inCallState:index] allowsDuration:duration];
   [(PHInCallRootViewController *)self setSecondaryStringForParticipantsView:v6];
 
   labelDescriptorFactory = self->_labelDescriptorFactory;
-  v8 = [(PHInCallRootViewController *)self secondaryStringForParticipantsView];
-  v9 = [(CNKCallParticipantLabelDescriptorFactory *)labelDescriptorFactory makeLabelWithString:v8];
+  secondaryStringForParticipantsView = [(PHInCallRootViewController *)self secondaryStringForParticipantsView];
+  v9 = [(CNKCallParticipantLabelDescriptorFactory *)labelDescriptorFactory makeLabelWithString:secondaryStringForParticipantsView];
 
   return v9;
 }
 
-- (id)localizedSenderIdentityForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4
+- (id)localizedSenderIdentityForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view
 {
   if (PHDeviceSupportsDualSim())
   {
     v5 = +[UIApplication sharedApplication];
-    v6 = [v5 delegate];
-    v7 = [(PHInCallRootViewController *)self callCenter];
-    v8 = [v6 currentVideoCallUsingCallContainer:v7];
+    delegate = [v5 delegate];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    v8 = [delegate currentVideoCallUsingCallContainer:callCenter];
 
-    v9 = [v8 provider];
-    v10 = [v9 prioritizedSenderIdentities];
-    v11 = [v10 count];
+    provider = [v8 provider];
+    prioritizedSenderIdentities = [provider prioritizedSenderIdentities];
+    v11 = [prioritizedSenderIdentities count];
 
     if (v11 < 2)
     {
-      v13 = 0;
+      localizedShortName = 0;
     }
 
     else
     {
-      v12 = [v8 localSenderIdentity];
-      v13 = [v12 localizedShortName];
+      localSenderIdentity = [v8 localSenderIdentity];
+      localizedShortName = [localSenderIdentity localizedShortName];
     }
   }
 
   else
   {
-    v13 = 0;
+    localizedShortName = 0;
   }
 
-  return v13;
+  return localizedShortName;
 }
 
-- (void)participantsView:(id)a3 didPerformActionType:(int64_t)a4
+- (void)participantsView:(id)view didPerformActionType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(PHInCallRootViewController *)self callParticipantLabelsView];
+  viewCopy = view;
+  callParticipantLabelsView = [(PHInCallRootViewController *)self callParticipantLabelsView];
 
-  if (v7 == v6)
+  if (callParticipantLabelsView == viewCopy)
   {
 
-    [(PHInCallRootViewController *)self performBottomBarActionType:a4];
+    [(PHInCallRootViewController *)self performBottomBarActionType:type];
   }
 
   else
@@ -10257,62 +10257,62 @@ LABEL_39:
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PHInCallRootViewController *)self callParticipantLabelsView];
+      callParticipantLabelsView2 = [(PHInCallRootViewController *)self callParticipantLabelsView];
       v10 = 134218242;
-      v11 = a4;
+      typeCopy = type;
       v12 = 2112;
-      v13 = v9;
+      v13 = callParticipantLabelsView2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[WARN] Cannot perform bottom bar action %ld from unknown call participants view object %@", &v10, 0x16u);
     }
   }
 }
 
-- (id)linkNameForCall:(id)a3
+- (id)linkNameForCall:(id)call
 {
-  v4 = a3;
-  if ([v4 isConversation])
+  callCopy = call;
+  if ([callCopy isConversation])
   {
-    v5 = [(PHInCallRootViewController *)self callCenter];
-    v6 = [v5 activeConversationForCall:v4];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    v6 = [callCenter activeConversationForCall:callCopy];
 
-    v7 = [v6 link];
-    if (v7)
+    link = [v6 link];
+    if (link)
     {
-      v8 = v7;
-      if ([v7 isLocallyCreated] && (objc_msgSend(v6, "letMeInRequestState") == 1 || objc_msgSend(v6, "letMeInRequestState") == 2) && (objc_msgSend(v8, "linkName"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, !v10))
+      v8 = link;
+      if ([link isLocallyCreated] && (objc_msgSend(v6, "letMeInRequestState") == 1 || objc_msgSend(v6, "letMeInRequestState") == 2) && (objc_msgSend(v8, "linkName"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, !v10))
       {
         v13 = +[NSBundle mainBundle];
-        v11 = [v13 localizedStringForKey:@"FACETIME_LINK" value:&stru_100361FD0 table:@"InCallService"];
+        displayName = [v13 localizedStringForKey:@"FACETIME_LINK" value:&stru_100361FD0 table:@"InCallService"];
       }
 
       else
       {
-        v11 = [v6 displayName];
+        displayName = [v6 displayName];
       }
     }
 
     else
     {
-      v11 = 0;
+      displayName = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    displayName = 0;
   }
 
-  return v11;
+  return displayName;
 }
 
-- (void)bottomBarActionPerformed:(int64_t)a3 withCompletionState:(int64_t)a4 fromBar:(id)a5
+- (void)bottomBarActionPerformed:(int64_t)performed withCompletionState:(int64_t)state fromBar:(id)bar
 {
-  v7 = a5;
-  v8 = [(PHInCallRootViewController *)self bottomControlsView];
+  barCopy = bar;
+  bottomControlsView = [(PHInCallRootViewController *)self bottomControlsView];
 
-  if (v8 == v7)
+  if (bottomControlsView == barCopy)
   {
-    [(PHInCallRootViewController *)self performBottomBarActionType:a3];
+    [(PHInCallRootViewController *)self performBottomBarActionType:performed];
   }
 
   else
@@ -10321,56 +10321,56 @@ LABEL_39:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134218242;
-      v11 = a3;
+      performedCopy = performed;
       v12 = 2112;
-      v13 = v7;
+      v13 = barCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[WARN] Cannot perform bottom bar action %ld from unknown bottom bar %@", &v10, 0x16u);
     }
   }
 }
 
-- (void)performBottomBarActionType:(int64_t)a3
+- (void)performBottomBarActionType:(int64_t)type
 {
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PHInCallRootViewController *)self bottomControlsView];
-    v7 = [v6 nameForActionType:a3];
+    bottomControlsView = [(PHInCallRootViewController *)self bottomControlsView];
+    v7 = [bottomControlsView nameForActionType:type];
     *buf = 138412290;
     *v92 = v7;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BottomBarActionPerformed: %@", buf, 0xCu);
   }
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 delegate];
-  v10 = [(PHInCallRootViewController *)self callCenter];
-  v11 = [v9 currentVideoCallUsingCallContainer:v10];
+  delegate = [v8 delegate];
+  callCenter = [(PHInCallRootViewController *)self callCenter];
+  v11 = [delegate currentVideoCallUsingCallContainer:callCenter];
 
   v12 = +[UIApplication sharedApplication];
-  v13 = [v12 delegate];
-  v14 = [(PHInCallRootViewController *)self callCenter];
-  v15 = [v13 incomingVideoCallUsingCallContainer:v14];
+  delegate2 = [v12 delegate];
+  callCenter2 = [(PHInCallRootViewController *)self callCenter];
+  v15 = [delegate2 incomingVideoCallUsingCallContainer:callCenter2];
 
-  v16 = [(PHInCallRootViewController *)self callCenter];
-  v17 = [v16 activeConversationForCall:v15];
+  callCenter3 = [(PHInCallRootViewController *)self callCenter];
+  v17 = [callCenter3 activeConversationForCall:v15];
 
-  switch(a3)
+  switch(type)
   {
     case 1:
     case 3:
       v85 = v11;
-      v24 = [v17 resolvedAudioVideoMode];
+      resolvedAudioVideoMode = [v17 resolvedAudioVideoMode];
       v25 = +[UIApplication sharedApplication];
-      v26 = [v25 delegate];
-      v27 = [v26 currentInCallScene];
-      v28 = [v27 presentationMode];
+      delegate3 = [v25 delegate];
+      currentInCallScene = [delegate3 currentInCallScene];
+      presentationMode = [currentInCallScene presentationMode];
 
-      if (v28 == 1 && v24 == 2)
+      if (presentationMode == 1 && resolvedAudioVideoMode == 2)
       {
         v29 = +[UIApplication sharedApplication];
-        v30 = [v29 delegate];
-        v31 = [v30 currentInCallScene];
-        [v31 requestTransitionToPresentationMode:2 isUserInitiated:0 analyticsSource:@"SBSUIInCallTransitionAnalyticsSourceAnswerFaceTimeButtonPress"];
+        delegate4 = [v29 delegate];
+        currentInCallScene2 = [delegate4 currentInCallScene];
+        [currentInCallScene2 requestTransitionToPresentationMode:2 isUserInitiated:0 analyticsSource:@"SBSUIInCallTransitionAnalyticsSourceAnswerFaceTimeButtonPress"];
 
         v11 = v85;
       }
@@ -10380,40 +10380,40 @@ LABEL_39:
         v11 = v85;
         if (![v85 wantsHoldMusic])
         {
-          v73 = [(PHInCallRootViewController *)self callCenter];
-          v21 = [v73 activeConversationForCall:v85];
+          callCenter4 = [(PHInCallRootViewController *)self callCenter];
+          mostRecentlyDisconnectedVideoCall = [callCenter4 activeConversationForCall:v85];
 
-          if (![v85 isConversation] || objc_msgSend(v85, "status") != 4 || (objc_msgSend(v85, "isSendingVideo") & 1) != 0 || (objc_msgSend(v21, "isOneToOneModeEnabled") & 1) != 0)
+          if (![v85 isConversation] || objc_msgSend(v85, "status") != 4 || (objc_msgSend(v85, "isSendingVideo") & 1) != 0 || (objc_msgSend(mostRecentlyDisconnectedVideoCall, "isOneToOneModeEnabled") & 1) != 0)
           {
             v74 = sub_100004F84();
             if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
             {
-              v82 = v24 == 2;
-              v84 = v21;
+              v82 = resolvedAudioVideoMode == 2;
+              v84 = mostRecentlyDisconnectedVideoCall;
               v81 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v17 resolvedAudioVideoMode]);
-              v80 = [v17 activeRemoteParticipants];
+              activeRemoteParticipants = [v17 activeRemoteParticipants];
               v83 = +[UIApplication sharedApplication];
-              v75 = [v83 delegate];
-              v76 = [v75 currentInCallScene];
-              v77 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v76 presentationMode]);
+              delegate5 = [v83 delegate];
+              currentInCallScene3 = [delegate5 currentInCallScene];
+              v77 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [currentInCallScene3 presentationMode]);
               *buf = 67110146;
               *v92 = v82;
               *&v92[4] = 2112;
               *&v92[6] = v81;
               *&v92[14] = 2112;
-              *&v92[16] = v80;
+              *&v92[16] = activeRemoteParticipants;
               v93 = 2112;
               v94 = v77;
               v95 = 2112;
               v96 = v15;
               _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "Answering FaceTime Video call. hasPartWithVideoEnabled: %d, resolvedAudioVideoMode: %@, participants: %@, banner: %@, incomingCall: %@", buf, 0x30u);
 
-              v21 = v84;
+              mostRecentlyDisconnectedVideoCall = v84;
               v11 = v85;
             }
 
-            v41 = [(PHInCallRootViewController *)self callCenter];
-            [v41 answerCall:v15];
+            callCenter5 = [(PHInCallRootViewController *)self callCenter];
+            [callCenter5 answerCall:v15];
             goto LABEL_72;
           }
 
@@ -10424,11 +10424,11 @@ LABEL_39:
             _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "Answering a ringing conversation while video is disabled, updating answer behavior to downgrade to audio so we join conversation with video disabled as well.", buf, 2u);
           }
 
-          v41 = [[TUAnswerRequest alloc] initWithCall:v15];
-          [v41 setBehavior:4];
-          [v41 setDowngradeToAudio:1];
-          v42 = [(PHInCallRootViewController *)self callCenter];
-          [v42 answerWithRequest:v41];
+          callCenter5 = [[TUAnswerRequest alloc] initWithCall:v15];
+          [callCenter5 setBehavior:4];
+          [callCenter5 setDowngradeToAudio:1];
+          callCenter6 = [(PHInCallRootViewController *)self callCenter];
+          [callCenter6 answerWithRequest:callCenter5];
           goto LABEL_18;
         }
 
@@ -10461,51 +10461,51 @@ LABEL_39:
     case 34:
       goto LABEL_74;
     case 4:
-      v47 = [(PHInCallRootViewController *)self callCenter];
+      callCenter7 = [(PHInCallRootViewController *)self callCenter];
       v88[0] = _NSConcreteStackBlock;
       v88[1] = 3221225472;
       v88[2] = sub_10010148C;
       v88[3] = &unk_100357110;
       v89 = v15;
-      v90 = v47;
-      v35 = v47;
+      v90 = callCenter7;
+      callCenter8 = callCenter7;
       v48 = objc_retainBlock(v88);
       (v48[2])();
 
       goto LABEL_26;
     case 5:
-      v35 = [(PHInCallRootViewController *)self callCenter];
-      [v35 answerCall:v15];
+      callCenter8 = [(PHInCallRootViewController *)self callCenter];
+      [callCenter8 answerCall:v15];
       goto LABEL_26;
     case 7:
     case 8:
     case 15:
       v18 = +[UIApplication sharedApplication];
-      v19 = [v18 delegate];
-      v20 = [(PHInCallRootViewController *)self callCenter];
-      v21 = [v19 incomingVideoCallUsingCallContainer:v20];
+      delegate6 = [v18 delegate];
+      callCenter9 = [(PHInCallRootViewController *)self callCenter];
+      mostRecentlyDisconnectedVideoCall = [delegate6 incomingVideoCallUsingCallContainer:callCenter9];
 
-      if (v21)
+      if (mostRecentlyDisconnectedVideoCall)
       {
         v22 = sub_100004F84();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v92 = v21;
+          *v92 = mostRecentlyDisconnectedVideoCall;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Ending FaceTime %@", buf, 0xCu);
         }
 
-        v23 = [(PHInCallRootViewController *)self callCenter];
-        [v23 disconnectCall:v21 withReason:2];
+        callCenter10 = [(PHInCallRootViewController *)self callCenter];
+        [callCenter10 disconnectCall:mostRecentlyDisconnectedVideoCall withReason:2];
 LABEL_61:
 
         goto LABEL_73;
       }
 
-      v36 = [(PHInCallRootViewController *)self callCenter];
-      v37 = [v36 activeVideoCall];
+      callCenter11 = [(PHInCallRootViewController *)self callCenter];
+      activeVideoCall = [callCenter11 activeVideoCall];
 
-      if (!v37)
+      if (!activeVideoCall)
       {
         [(PHInCallRootViewController *)self updateUPlusOneVideoCallViews];
         goto LABEL_73;
@@ -10514,44 +10514,44 @@ LABEL_61:
       v38 = sub_100004F84();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [(PHInCallRootViewController *)self callCenter];
-        v40 = [v39 activeVideoCall];
+        callCenter12 = [(PHInCallRootViewController *)self callCenter];
+        activeVideoCall2 = [callCenter12 activeVideoCall];
         *buf = 138412290;
-        *v92 = v40;
+        *v92 = activeVideoCall2;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Ending FaceTime %@", buf, 0xCu);
       }
 
-      v41 = [(PHInCallRootViewController *)self callCenter];
-      v42 = [(PHInCallRootViewController *)self callCenter];
-      v43 = [v42 activeVideoCall];
-      [v41 disconnectCall:v43];
+      callCenter5 = [(PHInCallRootViewController *)self callCenter];
+      callCenter6 = [(PHInCallRootViewController *)self callCenter];
+      activeVideoCall3 = [callCenter6 activeVideoCall];
+      [callCenter5 disconnectCall:activeVideoCall3];
 
 LABEL_18:
       goto LABEL_72;
     case 14:
     case 19:
       v32 = +[UIApplication sharedApplication];
-      v33 = [v32 delegate];
-      [v33 setMostRecentlyDisconnectedVideoCall:0];
+      delegate7 = [v32 delegate];
+      [delegate7 setMostRecentlyDisconnectedVideoCall:0];
 
       v34 = @"PHMulitwayCallAssertionReason";
       goto LABEL_30;
     case 18:
       v44 = +[UIApplication sharedApplication];
-      v45 = [v44 delegate];
-      v21 = [v45 mostRecentlyDisconnectedVideoCall];
+      delegate8 = [v44 delegate];
+      mostRecentlyDisconnectedVideoCall = [delegate8 mostRecentlyDisconnectedVideoCall];
 
-      if (v21)
+      if (mostRecentlyDisconnectedVideoCall)
       {
-        v23 = [(PHInCallRootViewController *)self callCenter];
-        v46 = [v21 dialRequestForRedial];
-        [v23 launchAppForDialRequest:v46 completion:0];
+        callCenter10 = [(PHInCallRootViewController *)self callCenter];
+        dialRequestForRedial = [mostRecentlyDisconnectedVideoCall dialRequestForRedial];
+        [callCenter10 launchAppForDialRequest:dialRequestForRedial completion:0];
       }
 
       else
       {
-        v23 = sub_100004F84();
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+        callCenter10 = sub_100004F84();
+        if (os_log_type_enabled(callCenter10, OS_LOG_TYPE_ERROR))
         {
           sub_100256A04();
         }
@@ -10559,28 +10559,28 @@ LABEL_18:
 
       goto LABEL_61;
     case 24:
-      v35 = [(PHInCallRootViewController *)self callCenter];
-      [v35 disconnectCall:v15 withReason:2];
+      callCenter8 = [(PHInCallRootViewController *)self callCenter];
+      [callCenter8 disconnectCall:v15 withReason:2];
       goto LABEL_26;
     case 29:
       v53 = +[UIApplication sharedApplication];
-      v54 = [v53 delegate];
-      v21 = [v54 mostRecentlyDisconnectedVideoCall];
+      delegate9 = [v53 delegate];
+      mostRecentlyDisconnectedVideoCall = [delegate9 mostRecentlyDisconnectedVideoCall];
 
-      v55 = [v21 handle];
-      v41 = [v55 value];
+      handle = [mostRecentlyDisconnectedVideoCall handle];
+      callCenter5 = [handle value];
 
       v56 = sub_100004F84();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *v92 = v21;
+        *v92 = mostRecentlyDisconnectedVideoCall;
         *&v92[8] = 2112;
-        *&v92[10] = v41;
+        *&v92[10] = callCenter5;
         _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "Call %@; Destination ID %@", buf, 0x16u);
       }
 
-      if ([v41 destinationIdIsPhoneNumber])
+      if ([callCenter5 destinationIdIsPhoneNumber])
       {
         v57 = v11;
         v58 = CPPhoneNumberCopyCountryCodeForIncomingTextMessage();
@@ -10592,18 +10592,18 @@ LABEL_18:
         v59 = TUNetworkCountryCode();
         v60 = TUNumberToDial();
 
-        v41 = v60;
+        callCenter5 = v60;
         v11 = v57;
       }
 
-      v61 = objc_alloc_init(MFMessageComposeViewController);
-      [v61 setBody:&stru_100361FD0];
-      [v61 setMessageComposeDelegate:self];
-      [v61 _setCanEditRecipients:0];
-      if (v41 && [v41 length])
+      mostRecentlyDisconnectedVideoCall2 = objc_alloc_init(MFMessageComposeViewController);
+      [mostRecentlyDisconnectedVideoCall2 setBody:&stru_100361FD0];
+      [mostRecentlyDisconnectedVideoCall2 setMessageComposeDelegate:self];
+      [mostRecentlyDisconnectedVideoCall2 _setCanEditRecipients:0];
+      if (callCenter5 && [callCenter5 length])
       {
-        v62 = [NSArray arrayWithObject:v41];
-        [v61 setRecipients:v62];
+        v62 = [NSArray arrayWithObject:callCenter5];
+        [mostRecentlyDisconnectedVideoCall2 setRecipients:v62];
       }
 
       else
@@ -10615,7 +10615,7 @@ LABEL_18:
         }
       }
 
-      [(PHInCallRootViewController *)self presentViewController:v61 animated:1 completion:0];
+      [(PHInCallRootViewController *)self presentViewController:mostRecentlyDisconnectedVideoCall2 animated:1 completion:0];
       goto LABEL_71;
     case 35:
       v63 = v11;
@@ -10626,38 +10626,38 @@ LABEL_18:
         _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "SpamReport: did tap on block caller", buf, 2u);
       }
 
-      v21 = [(PHInCallRootViewController *)self callCenter];
-      v41 = [v21 currentVideoCall];
+      mostRecentlyDisconnectedVideoCall = [(PHInCallRootViewController *)self callCenter];
+      callCenter5 = [mostRecentlyDisconnectedVideoCall currentVideoCall];
       v65 = +[UIApplication sharedApplication];
-      v66 = [v65 delegate];
-      v61 = [v66 mostRecentlyDisconnectedVideoCall];
+      delegate10 = [v65 delegate];
+      mostRecentlyDisconnectedVideoCall2 = [delegate10 mostRecentlyDisconnectedVideoCall];
 
-      if (v41)
+      if (callCenter5)
       {
         v87[0] = _NSConcreteStackBlock;
         v87[1] = 3221225472;
         v87[2] = sub_10010153C;
         v87[3] = &unk_1003569B0;
         v87[4] = self;
-        [(PHInCallRootViewController *)self presentBlockAndReportAlertToBlockCall:v61 forViewController:self completion:v87];
+        [(PHInCallRootViewController *)self presentBlockAndReportAlertToBlockCall:mostRecentlyDisconnectedVideoCall2 forViewController:self completion:v87];
         v11 = v63;
         goto LABEL_71;
       }
 
       v11 = v63;
-      if (v61)
+      if (mostRecentlyDisconnectedVideoCall2)
       {
         v86[0] = _NSConcreteStackBlock;
         v86[1] = 3221225472;
         v86[2] = sub_1001015F0;
         v86[3] = &unk_1003569B0;
         v86[4] = self;
-        [(PHInCallRootViewController *)self presentBlockAndReportAlertToBlockCall:v61 forViewController:self completion:v86];
+        [(PHInCallRootViewController *)self presentBlockAndReportAlertToBlockCall:mostRecentlyDisconnectedVideoCall2 forViewController:self completion:v86];
         goto LABEL_71;
       }
 
-      v72 = sub_100004F84();
-      if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
+      multiwayViewController = sub_100004F84();
+      if (os_log_type_enabled(multiwayViewController, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_69;
       }
@@ -10672,38 +10672,38 @@ LABEL_18:
         _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, "SpamReport: did tap on create contact", buf, 2u);
       }
 
-      v21 = [(PHInCallRootViewController *)self callCenter];
-      v41 = [v21 currentVideoCall];
+      mostRecentlyDisconnectedVideoCall = [(PHInCallRootViewController *)self callCenter];
+      callCenter5 = [mostRecentlyDisconnectedVideoCall currentVideoCall];
       v69 = +[UIApplication sharedApplication];
-      v70 = [v69 delegate];
-      v61 = [v70 mostRecentlyDisconnectedVideoCall];
+      delegate11 = [v69 delegate];
+      mostRecentlyDisconnectedVideoCall2 = [delegate11 mostRecentlyDisconnectedVideoCall];
 
-      if (v41)
+      if (callCenter5)
       {
-        v71 = [v41 handle];
-        [(PHInCallRootViewController *)self presentCreateContactViewControllerWithHandle:v71 forViewController:self];
+        handle2 = [callCenter5 handle];
+        [(PHInCallRootViewController *)self presentCreateContactViewControllerWithHandle:handle2 forViewController:self];
 
-        v72 = [(PHInCallRootViewController *)self multiwayViewController];
-        [v72 setIsInCallEndedBlockAndReportFlow:0];
+        multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+        [multiwayViewController setIsInCallEndedBlockAndReportFlow:0];
         v11 = v67;
       }
 
       else
       {
         v11 = v67;
-        if (v61)
+        if (mostRecentlyDisconnectedVideoCall2)
         {
-          v78 = [v61 handle];
-          [(PHInCallRootViewController *)self presentCreateContactViewControllerWithHandle:v78 forViewController:self];
+          handle3 = [mostRecentlyDisconnectedVideoCall2 handle];
+          [(PHInCallRootViewController *)self presentCreateContactViewControllerWithHandle:handle3 forViewController:self];
 
-          v72 = [(PHInCallRootViewController *)self multiwayViewController];
-          [v72 setIsInCallEndedBlockAndReportFlow:0];
+          multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+          [multiwayViewController setIsInCallEndedBlockAndReportFlow:0];
         }
 
         else
         {
-          v72 = sub_100004F84();
-          if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
+          multiwayViewController = sub_100004F84();
+          if (os_log_type_enabled(multiwayViewController, OS_LOG_TYPE_ERROR))
           {
 LABEL_69:
             sub_1002569C8();
@@ -10722,8 +10722,8 @@ LABEL_74:
       return;
     case 37:
       v49 = +[UIApplication sharedApplication];
-      v50 = [v49 delegate];
-      [v50 setMostRecentlyDisconnectedVideoCall:0];
+      delegate12 = [v49 delegate];
+      [delegate12 setMostRecentlyDisconnectedVideoCall:0];
 
       v51 = sub_100004F84();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
@@ -10732,19 +10732,19 @@ LABEL_74:
         _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "SpamReport: did tap on close", buf, 2u);
       }
 
-      v52 = [(PHInCallRootViewController *)self multiwayViewController];
-      [v52 setIsInCallEndedBlockAndReportFlow:0];
+      multiwayViewController2 = [(PHInCallRootViewController *)self multiwayViewController];
+      [multiwayViewController2 setIsInCallEndedBlockAndReportFlow:0];
 
       v34 = @"PHCallEndedBlockAndReportInProgressAssertionReason";
 LABEL_30:
-      v21 = [NSSet setWithObject:v34];
-      [PHInCallRootViewController releaseDismissalAssertionReasons:v21];
+      mostRecentlyDisconnectedVideoCall = [NSSet setWithObject:v34];
+      [PHInCallRootViewController releaseDismissalAssertionReasons:mostRecentlyDisconnectedVideoCall];
       goto LABEL_73;
     default:
-      if (a3 == 41)
+      if (type == 41)
       {
-        v35 = +[CNKGameControllerManager shared];
-        [v35 focus];
+        callCenter8 = +[CNKGameControllerManager shared];
+        [callCenter8 focus];
 LABEL_26:
       }
 
@@ -10754,8 +10754,8 @@ LABEL_26:
 
 - (void)gameControllerDidChangeContext
 {
-  v3 = [(PHInCallRootViewController *)self callParticipantLabelsView];
-  [v3 gameControllerDidChangeContext];
+  callParticipantLabelsView = [(PHInCallRootViewController *)self callParticipantLabelsView];
+  [callParticipantLabelsView gameControllerDidChangeContext];
 
   [(PHAudioCallViewControllerProtocol *)self->_audioCallViewController gameControllerDidChangeContext];
   multiwayViewController = self->_multiwayViewController;
@@ -10766,26 +10766,26 @@ LABEL_26:
 - (BOOL)gameControllerDidRequestActivation
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
-  v4 = [v3 bannerPresentationManager];
+  delegate = [v2 delegate];
+  bannerPresentationManager = [delegate bannerPresentationManager];
 
-  if (v4)
+  if (bannerPresentationManager)
   {
     v5 = +[UIApplication sharedApplication];
-    v6 = [v5 delegate];
-    v7 = [v6 bannerPresentationManager];
-    [v7 gameControllerDidRequestActivation];
+    delegate2 = [v5 delegate];
+    bannerPresentationManager2 = [delegate2 bannerPresentationManager];
+    [bannerPresentationManager2 gameControllerDidRequestActivation];
   }
 
-  return v4 != 0;
+  return bannerPresentationManager != 0;
 }
 
 - (BOOL)gameControllerDidRequestDismissal
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
-  v5 = [v4 currentInCallScene];
-  [v5 requestTransitionToPresentationMode:0 shouldDismissCMASAlerts:0 analyticsSource:@"SBSUIInCallTransitionAnalyticsSourceGameControllerManager"];
+  delegate = [v3 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  [currentInCallScene requestTransitionToPresentationMode:0 shouldDismissCMASAlerts:0 analyticsSource:@"SBSUIInCallTransitionAnalyticsSourceGameControllerManager"];
 
   v6 = +[CNKGameControllerManager shared];
   v7 = v6;
@@ -10797,20 +10797,20 @@ LABEL_26:
   return 1;
 }
 
-- (BOOL)gameControllerDidRequestFocus:(BOOL)a3
+- (BOOL)gameControllerDidRequestFocus:(BOOL)focus
 {
-  v3 = a3;
+  focusCopy = focus;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 delegate];
-  v6 = [v5 bannerPresentationManager];
-  [v6 gameControllerDidRequestFocus:v3];
+  delegate = [v4 delegate];
+  bannerPresentationManager = [delegate bannerPresentationManager];
+  [bannerPresentationManager gameControllerDidRequestFocus:focusCopy];
 
   return 1;
 }
 
-- (void)handleDeviceLockEventOverUPlusOneVideoViewsWithSourceType:(int64_t)a3
+- (void)handleDeviceLockEventOverUPlusOneVideoViewsWithSourceType:(int64_t)type
 {
-  v5 = [(PHInCallRootViewController *)self presentedViewController];
+  presentedViewController = [(PHInCallRootViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -10819,56 +10819,56 @@ LABEL_26:
     [(PHInCallRootViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
 
-  v7 = [(PHInCallRootViewController *)self callDisplayStyleManager];
-  if ([v7 callDisplayStyle] == 1)
+  callDisplayStyleManager = [(PHInCallRootViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 1)
   {
-    v8 = [(PHInCallRootViewController *)self callCenter];
-    v9 = [v8 incomingVideoCall];
-    v10 = [v9 isConversation];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    incomingVideoCall = [callCenter incomingVideoCall];
+    isConversation = [incomingVideoCall isConversation];
   }
 
   else
   {
-    v10 = 0;
+    isConversation = 0;
   }
 
-  v11 = [(PHInCallRootViewController *)self callCenter];
-  if (([v11 hasCurrentVideoCalls] & 1) != 0 || v10)
+  callCenter2 = [(PHInCallRootViewController *)self callCenter];
+  if (([callCenter2 hasCurrentVideoCalls] & 1) != 0 || isConversation)
   {
   }
 
   else
   {
-    v12 = [(PHInCallRootViewController *)self multiwayViewController];
-    v13 = [v12 isInVideoMessageFlow];
+    multiwayViewController = [(PHInCallRootViewController *)self multiwayViewController];
+    isInVideoMessageFlow = [multiwayViewController isInVideoMessageFlow];
 
-    if ((v13 & 1) == 0)
+    if ((isInVideoMessageFlow & 1) == 0)
     {
       [PHInCallRootViewController releaseDismissalAssertionForReason:@"PHMulitwayCallAssertionReason"];
     }
   }
 
-  v14 = [(PHInCallRootViewController *)self callCenter];
+  callCenter3 = [(PHInCallRootViewController *)self callCenter];
   v15 = +[UIApplication sharedApplication];
-  v16 = [v15 delegate];
-  v17 = [v16 incomingVideoCallUsingCallContainer:v14];
+  delegate = [v15 delegate];
+  v17 = [delegate incomingVideoCallUsingCallContainer:callCenter3];
 
   v18 = +[UIApplication sharedApplication];
-  v19 = [v18 delegate];
-  v20 = [v19 currentVideoCallUsingCallContainer:v14];
+  delegate2 = [v18 delegate];
+  v20 = [delegate2 currentVideoCallUsingCallContainer:callCenter3];
 
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_100101C20;
   v34[3] = &unk_100357318;
-  v21 = v14;
+  v21 = callCenter3;
   v35 = v21;
   v22 = v17;
   v36 = v22;
   v23 = v20;
   v37 = v23;
   v24 = objc_retainBlock(v34);
-  if (a3 == 2)
+  if (type == 2)
   {
     goto LABEL_12;
   }
@@ -10897,40 +10897,40 @@ LABEL_16:
   }
 
   v33 = +[UIApplication sharedApplication];
-  v25 = [v33 delegate];
-  v26 = [v25 currentInCallScene];
-  v27 = [v26 delegate];
-  v28 = [v27 callAnalyticsLogger];
-  v29 = [v22 uniqueProxyIdentifierUUID];
-  [v28 ringerMutedForCallUUID:v29];
+  delegate3 = [v33 delegate];
+  currentInCallScene = [delegate3 currentInCallScene];
+  delegate4 = [currentInCallScene delegate];
+  callAnalyticsLogger = [delegate4 callAnalyticsLogger];
+  uniqueProxyIdentifierUUID = [v22 uniqueProxyIdentifierUUID];
+  [callAnalyticsLogger ringerMutedForCallUUID:uniqueProxyIdentifierUUID];
 
   [v22 suppressRingtone];
   if ([v22 status] == 4)
   {
     v30 = +[UIApplication sharedApplication];
-    v31 = [v30 delegate];
-    v32 = [v31 bannerPresentationManager];
-    [v32 invalidatePersistentSystemApertureAlertWithReason:@"Hardware lock button pressed"];
+    delegate5 = [v30 delegate];
+    bannerPresentationManager = [delegate5 bannerPresentationManager];
+    [bannerPresentationManager invalidatePersistentSystemApertureAlertWithReason:@"Hardware lock button pressed"];
   }
 
 LABEL_20:
 }
 
-- (void)sendUserRating:(int)a3 dontShowPromptAgain:(BOOL)a4
+- (void)sendUserRating:(int)rating dontShowPromptAgain:(BOOL)again
 {
-  v4 = a4;
-  v5 = *&a3;
+  againCopy = again;
+  v5 = *&rating;
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
     v13 = v5;
     v14 = 1024;
-    v15 = v4;
+    v15 = againCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "UserFeedbackScore : User has rating: %d and BOOL: %d", buf, 0xEu);
   }
 
-  if (v4)
+  if (againCopy)
   {
     v8 = +[ICSPreferences sharedPreferences];
     [v8 setHasUserScoreFeedbackViewHidden:1];
@@ -10938,9 +10938,9 @@ LABEL_20:
 
   if (v5 != -1)
   {
-    v9 = [(PHInCallRootViewController *)self callCenter];
-    v10 = [(PHInCallRootViewController *)self disconnectCallUUID];
-    [v9 sendUserScoreToRTCReporting:v10 withScore:v5];
+    callCenter = [(PHInCallRootViewController *)self callCenter];
+    disconnectCallUUID = [(PHInCallRootViewController *)self disconnectCallUUID];
+    [callCenter sendUserScoreToRTCReporting:disconnectCallUUID withScore:v5];
   }
 
   v11[0] = _NSConcreteStackBlock;
@@ -10954,34 +10954,34 @@ LABEL_20:
 - (void)wantsDismissal
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
-  [v4 setDidDeepLinkToCallDetailsView:0];
+  delegate = [v3 delegate];
+  [delegate setDidDeepLinkToCallDetailsView:0];
 
   [PHInCallRootViewController releaseDismissalAssertionForReason:@"PHAVLessConversationDetailsViewAssertionReason"];
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 delegate];
-  [v6 setDidDeepLinkToPTTCallDetailsView:0];
+  delegate2 = [v5 delegate];
+  [delegate2 setDidDeepLinkToPTTCallDetailsView:0];
 
   [PHInCallRootViewController releaseDismissalAssertionForReason:@"PHPTTCallDetailsViewAssertionReason"];
-  v7 = [(PHInCallRootViewController *)self inCallWindowScene];
-  [v7 requestTransitionToPresentationMode:0 shouldDismissCMASAlerts:0];
+  inCallWindowScene = [(PHInCallRootViewController *)self inCallWindowScene];
+  [inCallWindowScene requestTransitionToPresentationMode:0 shouldDismissCMASAlerts:0];
 
   [(PHInCallRootViewController *)self updateInCallWindowScenePrefersHiddenWhenDismissed];
 }
 
-- (void)presentDisconnectionAlert:(id)a3
+- (void)presentDisconnectionAlert:(id)alert
 {
-  v6 = a3;
+  alertCopy = alert;
   v4 = +[CNKFeatures sharedInstance];
-  v5 = [v4 isEnhancedEmergencyEnabled];
+  isEnhancedEmergencyEnabled = [v4 isEnhancedEmergencyEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((isEnhancedEmergencyEnabled & 1) == 0)
   {
-    [(PHInCallRootViewController *)self presentViewController:v6 animated:1 completion:0];
+    [(PHInCallRootViewController *)self presentViewController:alertCopy animated:1 completion:0];
   }
 }
 
-- (void)handleCallBufferNotification:(id)a3
+- (void)handleCallBufferNotification:(id)notification
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -10993,7 +10993,7 @@ LABEL_20:
   [(PHInCallRootViewController *)self updateCallControllerForCurrentState];
 }
 
-- (void)acceptCallButtonTapped:(id)a3
+- (void)acceptCallButtonTapped:(id)tapped
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -11008,33 +11008,33 @@ LABEL_20:
 - (BOOL)_shouldAutoAnswer
 {
   v2 = +[IMLockdownManager sharedInstance];
-  v3 = [v2 isInternalInstall];
+  isInternalInstall = [v2 isInternalInstall];
 
-  if (v3)
+  if (isInternalInstall)
   {
     v4 = PHPreferencesGetValueInDomain();
     if ([v4 BOOLValue])
     {
       v5 = +[TUCallCenter sharedInstance];
-      v6 = [v5 incomingCall];
+      incomingCall = [v5 incomingCall];
 
       v7 = +[TUCallCenter sharedInstance];
-      v8 = [v7 currentCallCount];
+      currentCallCount = [v7 currentCallCount];
 
       v9 = +[TUCallCenter sharedInstance];
-      v10 = [v9 incomingVideoCall];
+      incomingVideoCall = [v9 incomingVideoCall];
 
       v11 = +[TUCallCenter sharedInstance];
-      v12 = [v11 currentVideoCallCount];
+      currentVideoCallCount = [v11 currentVideoCallCount];
 
-      if (v8 == 1 && [v6 service] == 2)
+      if (currentCallCount == 1 && [incomingCall service] == 2)
       {
         v13 = 1;
       }
 
       else
       {
-        v13 = v12 == 1 && [v10 service] == 3;
+        v13 = currentVideoCallCount == 1 && [incomingVideoCall service] == 3;
       }
 
       v14 = sub_100004F84();
@@ -11049,13 +11049,13 @@ LABEL_20:
 
         v18 = v15;
         v19 = 2048;
-        v20 = v8;
+        v20 = currentCallCount;
         v21 = 2112;
-        v22 = v6;
+        v22 = incomingCall;
         v23 = 2048;
-        v24 = v12;
+        v24 = currentVideoCallCount;
         v25 = 2112;
-        v26 = v10;
+        v26 = incomingVideoCall;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Auto Answer is %@ - call count is %lu (incoming call: %@), video call count is %lu (incoming video call: %@)", &v17, 0x34u);
       }
     }
@@ -11117,21 +11117,21 @@ LABEL_20:
     }
 
     v4 = +[TUCallCenter sharedInstance];
-    v5 = [v4 incomingCall];
+    incomingCall = [v4 incomingCall];
 
-    if (v5)
+    if (incomingCall)
     {
       v6 = +[TUCallCenter sharedInstance];
-      [v6 answerCall:v5];
+      [v6 answerCall:incomingCall];
     }
 
     v7 = +[TUCallCenter sharedInstance];
-    v8 = [v7 incomingVideoCall];
+    incomingVideoCall = [v7 incomingVideoCall];
 
-    if (v8)
+    if (incomingVideoCall)
     {
       v9 = +[TUCallCenter sharedInstance];
-      [v9 answerCall:v8];
+      [v9 answerCall:incomingVideoCall];
     }
   }
 }
@@ -11152,58 +11152,58 @@ LABEL_20:
 
 - (void)observePrioritizedCall
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002395F8();
 }
 
-- (id)makeConversationHUDDetailsNavigationControllerWithBannerPresentationManager:(id)a3 delegate:(id)a4 shouldSetControlsManagerInCallDetailsDelegate:(BOOL)a5
+- (id)makeConversationHUDDetailsNavigationControllerWithBannerPresentationManager:(id)manager delegate:(id)delegate shouldSetControlsManagerInCallDetailsDelegate:(BOOL)detailsDelegate
 {
-  v6 = a3;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_1002404A4(v6);
+  selfCopy = self;
+  v8 = sub_1002404A4(managerCopy);
 
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (id)makeMultiwayConversationViewControllerWithCall:(id)a3 bannerPresentationManager:(id)a4
+- (id)makeMultiwayConversationViewControllerWithCall:(id)call bannerPresentationManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1002405B0(v6, v7);
+  callCopy = call;
+  managerCopy = manager;
+  selfCopy = self;
+  v9 = sub_1002405B0(callCopy, managerCopy);
 
   return v9;
 }
 
-- (void)dissmissConfirmLeavePTTChannelAlertIfNeededWithBannerPresentationManager:(id)a3
+- (void)dissmissConfirmLeavePTTChannelAlertIfNeededWithBannerPresentationManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  sub_100240694(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_100240694(managerCopy);
 }
 
-- (void)ambientSetIdleTimerDisabled:(BOOL)a3
+- (void)ambientSetIdleTimerDisabled:(BOOL)disabled
 {
-  v3 = self;
+  selfCopy = self;
   sub_100240764();
 }
 
-- (void)startObservingAcceptCallButtonTappedWithNotificationCenter:(id)a3
+- (void)startObservingAcceptCallButtonTappedWithNotificationCenter:(id)center
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002408F8(v4);
+  centerCopy = center;
+  selfCopy = self;
+  sub_1002408F8(centerCopy);
 }
 
-- (void)handleAcceptCallButtonTapped:(id)a3
+- (void)handleAcceptCallButtonTapped:(id)tapped
 {
   v5 = sub_10014EA98(&qword_1003B05B0);
   __chkstk_darwin(v5 - 8, v6);
   v8 = &v12 - v7;
-  if (a3)
+  if (tapped)
   {
     static Notification._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for Notification();
@@ -11217,7 +11217,7 @@ LABEL_20:
   }
 
   sub_100006848(v8, v10, 1, v9);
-  v11 = self;
+  selfCopy = self;
   sub_1002409D4();
 
   sub_100008360(v8, &qword_1003B05B0);
@@ -11225,41 +11225,41 @@ LABEL_20:
 
 - (void)_obtainThenReleaseTransitionAssertion
 {
-  v2 = self;
+  selfCopy = self;
   sub_100240CA4();
 }
 
-- (BOOL)isContactBlockedWithCall:(id)a3
+- (BOOL)isContactBlockedWithCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
+  callCopy = call;
+  selfCopy = self;
   v6 = sub_100241200();
 
   return v6;
 }
 
-- (void)blockWithHandle:(id)a3
+- (void)blockWithHandle:(id)handle
 {
-  v4 = a3;
-  v5 = self;
-  sub_100241278(v4);
+  handleCopy = handle;
+  selfCopy = self;
+  sub_100241278(handleCopy);
 }
 
-- (void)reportWithCall:(id)a3
+- (void)reportWithCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
+  callCopy = call;
+  selfCopy = self;
   sub_10024159C();
 }
 
-- (id)findMostRecentSilencedCallWithHandleValue:(id)a3 normalizedHandleValue:(id)a4 ignoredIdentifier:(id)a5
+- (id)findMostRecentSilencedCallWithHandleValue:(id)value normalizedHandleValue:(id)handleValue ignoredIdentifier:(id)identifier
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
-  if (a4)
+  if (handleValue)
   {
     v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a4 = v11;
+    handleValue = v11;
   }
 
   else
@@ -11269,20 +11269,20 @@ LABEL_20:
 
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
-  v15 = self;
-  v16 = sub_10024172C(v7, v9, v10, a4, v12, v14);
+  selfCopy = self;
+  v16 = sub_10024172C(v7, v9, v10, handleValue, v12, v14);
 
   return v16;
 }
 
-- (BOOL)isFirstTimeInCallHistoryWithHandleValue:(id)a3 normalizedHandleValue:(id)a4
+- (BOOL)isFirstTimeInCallHistoryWithHandleValue:(id)value normalizedHandleValue:(id)handleValue
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  if (a4)
+  if (handleValue)
   {
     v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a4 = v10;
+    handleValue = v10;
   }
 
   else
@@ -11290,18 +11290,18 @@ LABEL_20:
     v9 = 0;
   }
 
-  v11 = self;
-  v12 = sub_100242008(v6, v8, v9, a4);
+  selfCopy = self;
+  v12 = sub_100242008(v6, v8, v9, handleValue);
 
   return v12;
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  PHInCallRootViewController.contactViewController(_:didCompleteWith:)(v8, v10);
+  controllerCopy = controller;
+  contactCopy = contact;
+  selfCopy = self;
+  PHInCallRootViewController.contactViewController(_:didCompleteWith:)(selfCopy, v10);
 }
 
 @end

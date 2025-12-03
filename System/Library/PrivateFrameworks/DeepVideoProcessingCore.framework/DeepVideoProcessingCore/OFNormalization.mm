@@ -1,41 +1,41 @@
 @interface OFNormalization
-- ($18698D32E93F98CA3BC0140E41567ABB)calcDeNormParamsFromNormaParams:(id *)a3 timeScale:(float)a4;
-- ($94F468A8D4C62B317260615823C2B210)calcAnchorParamsFromNormParams:(id *)a3 anchor:(int)a4;
-- ($94F468A8D4C62B317260615823C2B210)calcFrameStatistics:(__CVBuffer *)a3;
-- ($94F468A8D4C62B317260615823C2B210)calcTextureStatistics:(id)a3;
-- ($94F468A8D4C62B317260615823C2B210)calcTextureStatisticsFromStatsBuffer:(id)a3;
+- ($18698D32E93F98CA3BC0140E41567ABB)calcDeNormParamsFromNormaParams:(id *)params timeScale:(float)scale;
+- ($94F468A8D4C62B317260615823C2B210)calcAnchorParamsFromNormParams:(id *)params anchor:(int)anchor;
+- ($94F468A8D4C62B317260615823C2B210)calcFrameStatistics:(__CVBuffer *)statistics;
+- ($94F468A8D4C62B317260615823C2B210)calcTextureStatistics:(id)statistics;
+- ($94F468A8D4C62B317260615823C2B210)calcTextureStatisticsFromStatsBuffer:(id)buffer;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)threadsPerGroupForStats;
-- (BOOL)convertBuffer:(__CVBuffer *)a3 toFP16IOSurface:(__IOSurface *)a4;
-- (BOOL)convertBuffer:(__CVBuffer *)a3 toFP16ShuffledIOSurface:(__IOSurface *)a4;
-- (BOOL)convertFP16IOSurface:(__IOSurface *)a3 toBuffer:(__CVBuffer *)a4;
-- (BOOL)denormalizeRGB:(__CVBuffer *)a3 to:(__CVBuffer *)a4;
-- (BOOL)normalizeLumaFromFrame:(__CVBuffer *)a3 toTexture:(id)a4;
-- (BOOL)normalizeRGB:(__CVBuffer *)a3 to:(__CVBuffer *)a4;
-- (BOOL)padRGB:(__CVBuffer *)a3 to:(__CVBuffer *)a4;
-- (BOOL)postprocessSRFrame:(__CVBuffer *)a3 bicubicYUV:(__CVBuffer *)a4 laplacianMask:(__CVBuffer *)a5 outputYUV:(__CVBuffer *)a6;
-- (OFNormalization)initWithMode:(int64_t)a3;
-- (id)createFP16TextureFromIOSurface:(__IOSurface *)a3 width:(int64_t)a4 height:(int64_t)a5 arrayLength:(int64_t)a6;
-- (id)statsBufferForTexture:(id)a3;
-- (void)denormalizeFrame:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 params:(id *)a5 timeScale:(float)a6 callback:(id)a7;
-- (void)encodeDenormalizationRenderToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 params:(id)a6;
-- (void)encodeDenormalizationToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 params:(id)a6;
-- (void)encodeDenormalizeRGBToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5;
-- (void)encodeNormalizationRGBToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5;
-- (void)encodeNormalizationToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 configBuffer:(id)a6;
-- (void)encodeNormalizationToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 normParamBuffer:(id)a6;
-- (void)encodeNormalizationToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 params:(id)a6;
-- (void)encodeNormalizeLumaToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5;
-- (void)encodePadRGBToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5;
-- (void)encodePostprocessSRFrameToCommandBuffer:(id)a3 srFrameY:(id)a4 bicubicY:(id)a5 bicubicUV:(id)a6 laplacianMask:(id)a7 outputY:(id)a8 outputUV:(id)a9;
-- (void)encodeStatisticsToCommandBuffer:(id)a3 texture:(id)a4 stats:(id)a5;
-- (void)normalizeFramesFirstInput:(__CVBuffer *)a3 secondInput:(__CVBuffer *)a4 firstOutput:(__CVBuffer *)a5 secondOutput:(__CVBuffer *)a6 callback:(id)a7;
-- (void)normalizeWithParmas:(id *)a3 firstInput:(__CVBuffer *)a4 secondInput:(__CVBuffer *)a5 firstOutput:(__CVBuffer *)a6 secondOutput:(__CVBuffer *)a7;
+- (BOOL)convertBuffer:(__CVBuffer *)buffer toFP16IOSurface:(__IOSurface *)surface;
+- (BOOL)convertBuffer:(__CVBuffer *)buffer toFP16ShuffledIOSurface:(__IOSurface *)surface;
+- (BOOL)convertFP16IOSurface:(__IOSurface *)surface toBuffer:(__CVBuffer *)buffer;
+- (BOOL)denormalizeRGB:(__CVBuffer *)b to:(__CVBuffer *)to;
+- (BOOL)normalizeLumaFromFrame:(__CVBuffer *)frame toTexture:(id)texture;
+- (BOOL)normalizeRGB:(__CVBuffer *)b to:(__CVBuffer *)to;
+- (BOOL)padRGB:(__CVBuffer *)b to:(__CVBuffer *)to;
+- (BOOL)postprocessSRFrame:(__CVBuffer *)frame bicubicYUV:(__CVBuffer *)v laplacianMask:(__CVBuffer *)mask outputYUV:(__CVBuffer *)uV;
+- (OFNormalization)initWithMode:(int64_t)mode;
+- (id)createFP16TextureFromIOSurface:(__IOSurface *)surface width:(int64_t)width height:(int64_t)height arrayLength:(int64_t)length;
+- (id)statsBufferForTexture:(id)texture;
+- (void)denormalizeFrame:(__CVBuffer *)frame destination:(__CVBuffer *)destination params:(id *)params timeScale:(float)scale callback:(id)callback;
+- (void)encodeDenormalizationRenderToCommandBuffer:(id)buffer source:(id)source destination:(id)destination params:(id)params;
+- (void)encodeDenormalizationToCommandBuffer:(id)buffer source:(id)source destination:(id)destination params:(id)params;
+- (void)encodeDenormalizeRGBToCommandBuffer:(id)buffer source:(id)source destination:(id)destination;
+- (void)encodeNormalizationRGBToCommandBuffer:(id)buffer source:(id)source destination:(id)destination;
+- (void)encodeNormalizationToCommandBuffer:(id)buffer source:(id)source destination:(id)destination configBuffer:(id)configBuffer;
+- (void)encodeNormalizationToCommandBuffer:(id)buffer source:(id)source destination:(id)destination normParamBuffer:(id)paramBuffer;
+- (void)encodeNormalizationToCommandBuffer:(id)buffer source:(id)source destination:(id)destination params:(id)params;
+- (void)encodeNormalizeLumaToCommandBuffer:(id)buffer source:(id)source destination:(id)destination;
+- (void)encodePadRGBToCommandBuffer:(id)buffer source:(id)source destination:(id)destination;
+- (void)encodePostprocessSRFrameToCommandBuffer:(id)buffer srFrameY:(id)y bicubicY:(id)bicubicY bicubicUV:(id)v laplacianMask:(id)mask outputY:(id)outputY outputUV:(id)uV;
+- (void)encodeStatisticsToCommandBuffer:(id)buffer texture:(id)texture stats:(id)stats;
+- (void)normalizeFramesFirstInput:(__CVBuffer *)input secondInput:(__CVBuffer *)secondInput firstOutput:(__CVBuffer *)output secondOutput:(__CVBuffer *)secondOutput callback:(id)callback;
+- (void)normalizeWithParmas:(id *)parmas firstInput:(__CVBuffer *)input secondInput:(__CVBuffer *)secondInput firstOutput:(__CVBuffer *)output secondOutput:(__CVBuffer *)secondOutput;
 - (void)setupMetal;
 @end
 
 @implementation OFNormalization
 
-- (OFNormalization)initWithMode:(int64_t)a3
+- (OFNormalization)initWithMode:(int64_t)mode
 {
   v11.receiver = self;
   v11.super_class = OFNormalization;
@@ -50,7 +50,7 @@
     v4->super._mtlLibrary = v8;
 
     v4->_selfNormalization = 1;
-    if (a3 == 1)
+    if (mode == 1)
     {
       v4->_disableSIMDSum = 1;
     }
@@ -205,9 +205,9 @@
   postprocessSRFrameYUV420Kernel = self->_postprocessSRFrameYUV420Kernel;
   self->_postprocessSRFrameYUV420Kernel = v48;
 
-  v50 = [(VEMetalBase *)self newVertexBuffer];
+  newVertexBuffer = [(VEMetalBase *)self newVertexBuffer];
   vertsBuffer = self->_vertsBuffer;
-  self->_vertsBuffer = v50;
+  self->_vertsBuffer = newVertexBuffer;
 
   v52 = [(MTLDevice *)self->super._device newBufferWithLength:8 options:0];
   firstParamBuffer = self->_firstParamBuffer;
@@ -217,9 +217,9 @@
   secondParamBuffer = self->_secondParamBuffer;
   self->_secondParamBuffer = v54;
 
-  v56 = [(MTLDevice *)self->super._device newSharedEvent];
+  newSharedEvent = [(MTLDevice *)self->super._device newSharedEvent];
   sharedEvent = self->_sharedEvent;
-  self->_sharedEvent = v56;
+  self->_sharedEvent = newSharedEvent;
 
   v58 = dispatch_queue_create("com.FRC.Normalization", 0);
   synchronizationQueue = self->_synchronizationQueue;
@@ -232,31 +232,31 @@
   self->_signalValue = 1;
 }
 
-- ($18698D32E93F98CA3BC0140E41567ABB)calcDeNormParamsFromNormaParams:(id *)a3 timeScale:(float)a4
+- ($18698D32E93F98CA3BC0140E41567ABB)calcDeNormParamsFromNormaParams:(id *)params timeScale:(float)scale
 {
-  var4 = a3->var4;
+  var4 = params->var4;
   if (self->_selfNormalization)
   {
-    var0 = (a3->var2[1] * a4) + ((1.0 - a4) * a3->var2[0]);
+    var0 = (params->var2[1] * scale) + ((1.0 - scale) * params->var2[0]);
   }
 
   else
   {
-    var0 = a3->var0;
+    var0 = params->var0;
   }
 
-  v6 = LODWORD(var0) | (COERCE_UNSIGNED_INT(1.0 / a3->var1) << 32);
+  v6 = LODWORD(var0) | (COERCE_UNSIGNED_INT(1.0 / params->var1) << 32);
   result.var0 = *&v6;
   result.var1 = *(&v6 + 1);
   result.var2 = var4;
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)calcAnchorParamsFromNormParams:(id *)a3 anchor:(int)a4
+- ($94F468A8D4C62B317260615823C2B210)calcAnchorParamsFromNormParams:(id *)params anchor:(int)anchor
 {
-  v4 = a4;
+  anchorCopy = anchor;
   v12 = *MEMORY[0x277D85DE8];
-  if (a4 >= 2)
+  if (anchor >= 2)
   {
     if ((global_logLevel & 4) != 0)
     {
@@ -264,35 +264,35 @@
       if (os_log_type_enabled(global_logger, OS_LOG_TYPE_INFO))
       {
         v11[0] = 67109120;
-        v11[1] = v4;
+        v11[1] = anchorCopy;
         _os_log_impl(&dword_24874B000, v7, OS_LOG_TYPE_INFO, "anchor frame can only be 0 or 1 %d !!!", v11, 8u);
       }
     }
 
-    v4 = v4 > 0;
+    anchorCopy = anchorCopy > 0;
   }
 
   if (self->_selfNormalization)
   {
-    v8 = (&a3->var0 + v4);
-    a3 = (v8 + 8);
+    v8 = (&params->var0 + anchorCopy);
+    params = (v8 + 8);
     var1 = 1.0 / *(v8 + 4);
   }
 
   else
   {
-    var1 = a3->var1;
+    var1 = params->var1;
   }
 
-  var0 = a3->var0;
+  var0 = params->var0;
   result.var1 = var1;
   result.var0 = var0;
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)calcFrameStatistics:(__CVBuffer *)a3
+- ($94F468A8D4C62B317260615823C2B210)calcFrameStatistics:(__CVBuffer *)statistics
 {
-  v4 = createTexturesFromCVPixelBuffer(a3, self->super._device, 1, 1uLL);
+  v4 = createTexturesFromCVPixelBuffer(statistics, self->super._device, 1, 1uLL);
   [(OFNormalization *)self calcTextureStatistics:v4];
   v6 = v5;
   v8 = v7;
@@ -318,11 +318,11 @@
   return self;
 }
 
-- (id)statsBufferForTexture:(id)a3
+- (id)statsBufferForTexture:(id)texture
 {
-  v4 = a3;
-  v5 = [v4 width];
-  v6 = [v4 height];
+  textureCopy = texture;
+  width = [textureCopy width];
+  height = [textureCopy height];
 
   [(OFNormalization *)self threadsPerGroupForStats];
   if (self->_useFloatAtomic)
@@ -332,7 +332,7 @@
 
   else
   {
-    v7 = 8 * (v5 - 1) / 0uLL * ((v6 - 1) / 0uLL);
+    v7 = 8 * (width - 1) / 0uLL * ((height - 1) / 0uLL);
   }
 
   v8 = [(MTLDevice *)self->super._device newBufferWithLength:v7 options:0];
@@ -340,16 +340,16 @@
   return v8;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)calcTextureStatistics:(id)a3
+- ($94F468A8D4C62B317260615823C2B210)calcTextureStatistics:(id)statistics
 {
-  v4 = a3;
-  v5 = [(OFNormalization *)self statsBufferForTexture:v4];
-  v6 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  [(OFNormalization *)self encodeStatisticsToCommandBuffer:v6 texture:v4 stats:v5];
+  statisticsCopy = statistics;
+  v5 = [(OFNormalization *)self statsBufferForTexture:statisticsCopy];
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  [(OFNormalization *)self encodeStatisticsToCommandBuffer:commandBuffer texture:statisticsCopy stats:v5];
 
   kdebug_trace();
-  [v6 commit];
-  [v6 waitUntilCompleted];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
   kdebug_trace();
   [(OFNormalization *)self calcTextureStatisticsFromStatsBuffer:v5];
   v8 = v7;
@@ -362,21 +362,21 @@
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)calcTextureStatisticsFromStatsBuffer:(id)a3
+- ($94F468A8D4C62B317260615823C2B210)calcTextureStatisticsFromStatsBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   useFloatAtomic = self->_useFloatAtomic;
-  v6 = [v4 contents];
-  v7 = v6;
+  contents = [bufferCopy contents];
+  v7 = contents;
   if (useFloatAtomic)
   {
-    v8 = *(v6 + 4);
-    v16 = *v6;
+    v8 = *(contents + 4);
+    v16 = *contents;
   }
 
   else
   {
-    v9 = [v4 length];
+    v9 = [bufferCopy length];
     if (v9 >= 8)
     {
       v10 = 0;
@@ -406,20 +406,20 @@
   return result;
 }
 
-- (void)encodeStatisticsToCommandBuffer:(id)a3 texture:(id)a4 stats:(id)a5
+- (void)encodeStatisticsToCommandBuffer:(id)buffer texture:(id)texture stats:(id)stats
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 width];
-  v12 = [v8 height];
+  textureCopy = texture;
+  statsCopy = stats;
+  bufferCopy = buffer;
+  width = [textureCopy width];
+  height = [textureCopy height];
   v21 = 0uLL;
   v22 = 0;
   [(OFNormalization *)self threadsPerGroupForStats];
   v13 = v21;
-  v14 = [v10 computeCommandEncoder];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  v15 = [v8 pixelFormat] - 500;
+  v15 = [textureCopy pixelFormat] - 500;
   if (v15 <= 8 && ((1 << v15) & 0x121) != 0)
   {
     v16 = &OBJC_IVAR___OFNormalization__statisticsYUV420Kernel;
@@ -427,38 +427,38 @@
 
   else
   {
-    v17 = [v8 pixelFormat];
+    pixelFormat = [textureCopy pixelFormat];
     v16 = &OBJC_IVAR___OFNormalization__statisticsPackedKernel;
-    if (v17 == 25)
+    if (pixelFormat == 25)
     {
       v16 = &OBJC_IVAR___OFNormalization__statisticsPlanarKernel;
     }
   }
 
-  [v14 setComputePipelineState:*(&self->super.super.isa + *v16)];
-  [v14 setTexture:v8 atIndex:0];
-  [v14 setBuffer:v9 offset:0 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v16)];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setBuffer:statsCopy offset:0 atIndex:0];
 
-  v20[0] = (v11 + v13 - 1) / v13;
-  v20[1] = (v12 + *(&v13 + 1) - 1) / *(&v13 + 1);
+  v20[0] = (width + v13 - 1) / v13;
+  v20[1] = (height + *(&v13 + 1) - 1) / *(&v13 + 1);
   v20[2] = 1;
   v18 = v21;
   v19 = v22;
-  [v14 dispatchThreadgroups:v20 threadsPerThreadgroup:&v18];
-  [v14 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v20 threadsPerThreadgroup:&v18];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeNormalizationToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 normParamBuffer:(id)a6
+- (void)encodeNormalizationToCommandBuffer:(id)buffer source:(id)source destination:(id)destination normParamBuffer:(id)paramBuffer
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [v11 width];
-  v15 = [v11 height];
-  v16 = [v13 computeCommandEncoder];
+  sourceCopy = source;
+  destinationCopy = destination;
+  paramBufferCopy = paramBuffer;
+  bufferCopy = buffer;
+  width = [destinationCopy width];
+  height = [destinationCopy height];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  v17 = [v10 pixelFormat] - 500;
+  v17 = [sourceCopy pixelFormat] - 500;
   if (v17 <= 8 && ((1 << v17) & 0x121) != 0)
   {
     v18 = &OBJC_IVAR___OFNormalization__normalizeYUV420ToPlanarKernel;
@@ -466,55 +466,55 @@
 
   else
   {
-    v19 = [v10 arrayLength];
+    arrayLength = [sourceCopy arrayLength];
     v18 = &OBJC_IVAR___OFNormalization__normalizePlanarToPlanarKernel;
-    if (v19 == 1)
+    if (arrayLength == 1)
     {
       v18 = &OBJC_IVAR___OFNormalization__normalizePackedToPlanarKernel;
     }
   }
 
-  [v16 setComputePipelineState:*(&self->super.super.isa + *v18)];
-  [v16 setTexture:v10 atIndex:0];
-  [v16 setTexture:v11 atIndex:1];
-  [v16 setBuffer:v12 offset:0 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v18)];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:1];
+  [computeCommandEncoder setBuffer:paramBufferCopy offset:0 atIndex:0];
 
-  v22[0] = (v14 + 15) >> 4;
-  v22[1] = (v15 + 15) >> 4;
+  v22[0] = (width + 15) >> 4;
+  v22[1] = (height + 15) >> 4;
   v22[2] = 1;
   v20 = vdupq_n_s64(0x10uLL);
   v21 = 1;
-  [v16 dispatchThreadgroups:v22 threadsPerThreadgroup:&v20];
-  [v16 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v22 threadsPerThreadgroup:&v20];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeNormalizationToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 params:(id)a6
+- (void)encodeNormalizationToCommandBuffer:(id)buffer source:(id)source destination:(id)destination params:(id)params
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
+  var1 = params.var1;
+  var0 = params.var0;
   device = self->super._device;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  destinationCopy = destination;
+  sourceCopy = source;
+  bufferCopy = buffer;
   v17 = [(MTLDevice *)device newBufferWithLength:8 options:0];
   v15 = v17;
-  v16 = [v17 contents];
-  *v16 = var0;
-  v16[1] = var1;
-  [(OFNormalization *)self encodeNormalizationToCommandBuffer:v14 source:v13 destination:v12 configBuffer:v17];
+  contents = [v17 contents];
+  *contents = var0;
+  contents[1] = var1;
+  [(OFNormalization *)self encodeNormalizationToCommandBuffer:bufferCopy source:sourceCopy destination:destinationCopy configBuffer:v17];
 }
 
-- (void)encodeNormalizationToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 configBuffer:(id)a6
+- (void)encodeNormalizationToCommandBuffer:(id)buffer source:(id)source destination:(id)destination configBuffer:(id)configBuffer
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [v11 width];
-  v15 = [v11 height];
-  v16 = [v13 computeCommandEncoder];
+  sourceCopy = source;
+  destinationCopy = destination;
+  configBufferCopy = configBuffer;
+  bufferCopy = buffer;
+  width = [destinationCopy width];
+  height = [destinationCopy height];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  v17 = [v10 pixelFormat] - 500;
+  v17 = [sourceCopy pixelFormat] - 500;
   if (v17 <= 8 && ((1 << v17) & 0x121) != 0)
   {
     v18 = &OBJC_IVAR___OFNormalization__normalizeYUV420ToPlanarKernel;
@@ -522,47 +522,47 @@
 
   else
   {
-    v19 = [v10 arrayLength];
+    arrayLength = [sourceCopy arrayLength];
     v18 = &OBJC_IVAR___OFNormalization__normalizePlanarToPlanarKernel;
-    if (v19 == 1)
+    if (arrayLength == 1)
     {
       v18 = &OBJC_IVAR___OFNormalization__normalizePackedToPlanarKernel;
     }
   }
 
-  [v16 setComputePipelineState:*(&self->super.super.isa + *v18)];
-  [v16 setTexture:v10 atIndex:0];
-  [v16 setTexture:v11 atIndex:1];
-  [v16 setBuffer:v12 offset:0 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v18)];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:1];
+  [computeCommandEncoder setBuffer:configBufferCopy offset:0 atIndex:0];
 
-  v22[0] = (v14 + 15) >> 4;
-  v22[1] = (v15 + 15) >> 4;
+  v22[0] = (width + 15) >> 4;
+  v22[1] = (height + 15) >> 4;
   v22[2] = 1;
   v20 = vdupq_n_s64(0x10uLL);
   v21 = 1;
-  [v16 dispatchThreadgroups:v22 threadsPerThreadgroup:&v20];
-  [v16 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v22 threadsPerThreadgroup:&v20];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)normalizeFramesFirstInput:(__CVBuffer *)a3 secondInput:(__CVBuffer *)a4 firstOutput:(__CVBuffer *)a5 secondOutput:(__CVBuffer *)a6 callback:(id)a7
+- (void)normalizeFramesFirstInput:(__CVBuffer *)input secondInput:(__CVBuffer *)secondInput firstOutput:(__CVBuffer *)output secondOutput:(__CVBuffer *)secondOutput callback:(id)callback
 {
-  v12 = a7;
+  callbackCopy = callback;
   v51[0] = 0;
   v51[1] = v51;
   v51[2] = 0x4010000000;
   v51[3] = &unk_2487CE78E;
   memset(&v51[4], 0, 24);
   v52 = 0;
-  if (a3 || !a5)
+  if (input || !output)
   {
-    Width = CVPixelBufferGetWidth(a4);
-    v37 = v12;
-    Height = CVPixelBufferGetHeight(a4);
-    if (isYUV420(a4))
+    Width = CVPixelBufferGetWidth(secondInput);
+    v37 = callbackCopy;
+    Height = CVPixelBufferGetHeight(secondInput);
+    if (isYUV420(secondInput))
     {
-      if (a3)
+      if (input)
       {
-        v16 = createYUV420TextureFromCVPixelBuffer(a3, self->super._device);
+        v16 = createYUV420TextureFromCVPixelBuffer(input, self->super._device);
       }
 
       else
@@ -570,15 +570,15 @@
         v16 = 0;
       }
 
-      v17 = createYUV420TextureFromCVPixelBuffer(a4, self->super._device);
+      v17 = createYUV420TextureFromCVPixelBuffer(secondInput, self->super._device);
       v18 = 3 * Width * Height;
     }
 
-    else if (isPackedRGBA(a4))
+    else if (isPackedRGBA(secondInput))
     {
-      if (a3)
+      if (input)
       {
-        v16 = createRGBATextureFromCVPixelBuffer(a3, self->super._device);
+        v16 = createRGBATextureFromCVPixelBuffer(input, self->super._device);
       }
 
       else
@@ -586,15 +586,15 @@
         v16 = 0;
       }
 
-      v17 = createRGBATextureFromCVPixelBuffer(a4, self->super._device);
+      v17 = createRGBATextureFromCVPixelBuffer(secondInput, self->super._device);
       v18 = 3 * Width * Height;
     }
 
     else
     {
-      if (a3)
+      if (input)
       {
-        v16 = createTexturesFromCVPixelBuffer(a3, self->super._device, 1, 3uLL);
+        v16 = createTexturesFromCVPixelBuffer(input, self->super._device, 1, 3uLL);
       }
 
       else
@@ -602,14 +602,14 @@
         v16 = 0;
       }
 
-      v17 = createTexturesFromCVPixelBuffer(a4, self->super._device, 1, 3uLL);
+      v17 = createTexturesFromCVPixelBuffer(secondInput, self->super._device, 1, 3uLL);
       v18 = Height * Width;
     }
 
-    v19 = a6;
-    if (a5)
+    secondOutputCopy = secondOutput;
+    if (output)
     {
-      v20 = createTexturesFromCVPixelBuffer(a5, self->super._device, 1, 3uLL);
+      v20 = createTexturesFromCVPixelBuffer(output, self->super._device, 1, 3uLL);
     }
 
     else
@@ -617,8 +617,8 @@
       v20 = 0;
     }
 
-    v21 = createTexturesFromCVPixelBuffer(v19, self->super._device, 1, 3uLL);
-    v22 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+    v21 = createTexturesFromCVPixelBuffer(secondOutputCopy, self->super._device, 1, 3uLL);
+    commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
     v40 = v16;
     if (v16)
     {
@@ -643,7 +643,7 @@
     v44[3] = &unk_278F53680;
     v39 = v40;
     v45 = v39;
-    v46 = self;
+    selfCopy = self;
     v28 = v23;
     v47 = v28;
     v48 = obj;
@@ -652,25 +652,25 @@
     v29 = sharedEvent;
     v30 = v35;
     v31 = sharedEventListener;
-    v12 = v37;
+    callbackCopy = v37;
     v32 = signalValue;
     v33 = v26;
     v34 = v48;
     [(MTLSharedEvent *)v29 notifyListener:v31 atValue:v32 block:v44];
     if (v40)
     {
-      [(OFNormalization *)self encodeStatisticsToCommandBuffer:v22 texture:v39 stats:v28];
+      [(OFNormalization *)self encodeStatisticsToCommandBuffer:commandBuffer texture:v39 stats:v28];
     }
 
-    [(OFNormalization *)self encodeStatisticsToCommandBuffer:v22 texture:v33 stats:v34, v35];
-    [v22 encodeSignalEvent:self->_sharedEvent value:self->_signalValue];
-    [v22 encodeWaitForEvent:self->_sharedEvent value:self->_signalValue + 1];
+    [(OFNormalization *)self encodeStatisticsToCommandBuffer:commandBuffer texture:v33 stats:v34, v35];
+    [commandBuffer encodeSignalEvent:self->_sharedEvent value:self->_signalValue];
+    [commandBuffer encodeWaitForEvent:self->_sharedEvent value:self->_signalValue + 1];
     if (v40)
     {
-      [(OFNormalization *)self encodeNormalizationToCommandBuffer:v22 source:v39 destination:v20 normParamBuffer:self->_firstParamBuffer];
+      [(OFNormalization *)self encodeNormalizationToCommandBuffer:commandBuffer source:v39 destination:v20 normParamBuffer:self->_firstParamBuffer];
     }
 
-    [(OFNormalization *)self encodeNormalizationToCommandBuffer:v22 source:v33 destination:v30 normParamBuffer:self->_secondParamBuffer];
+    [(OFNormalization *)self encodeNormalizationToCommandBuffer:commandBuffer source:v33 destination:v30 normParamBuffer:self->_secondParamBuffer];
     objc_storeStrong(&self->_prevStatsBuffer, obj);
     kdebug_trace();
     if (v37)
@@ -682,18 +682,18 @@
       v42 = v37;
       v43 = v51;
       v41[4] = self;
-      [v22 addCompletedHandler:v41];
+      [commandBuffer addCompletedHandler:v41];
     }
 
-    [v22 commit];
+    [commandBuffer commit];
     if (v37)
     {
-      [v22 waitUntilScheduled];
+      [commandBuffer waitUntilScheduled];
     }
 
     else
     {
-      [v22 waitUntilCompleted];
+      [commandBuffer waitUntilCompleted];
     }
 
     kdebug_trace();
@@ -762,135 +762,135 @@ uint64_t __91__OFNormalization_normalizeFramesFirstInput_secondInput_firstOutput
   return result;
 }
 
-- (void)normalizeWithParmas:(id *)a3 firstInput:(__CVBuffer *)a4 secondInput:(__CVBuffer *)a5 firstOutput:(__CVBuffer *)a6 secondOutput:(__CVBuffer *)a7
+- (void)normalizeWithParmas:(id *)parmas firstInput:(__CVBuffer *)input secondInput:(__CVBuffer *)secondInput firstOutput:(__CVBuffer *)output secondOutput:(__CVBuffer *)secondOutput
 {
-  v13 = isPackedRGBA(a4);
+  v13 = isPackedRGBA(input);
   device = self->super._device;
   if (v13)
   {
-    v15 = createRGBATextureFromCVPixelBuffer(a4, device);
-    createRGBATextureFromCVPixelBuffer(a5, self->super._device);
+    v15 = createRGBATextureFromCVPixelBuffer(input, device);
+    createRGBATextureFromCVPixelBuffer(secondInput, self->super._device);
   }
 
   else
   {
-    v15 = createTexturesFromCVPixelBuffer(a4, device, 1, 3uLL);
-    createTexturesFromCVPixelBuffer(a5, self->super._device, 1, 3uLL);
+    v15 = createTexturesFromCVPixelBuffer(input, device, 1, 3uLL);
+    createTexturesFromCVPixelBuffer(secondInput, self->super._device, 1, 3uLL);
   }
   v16 = ;
-  v17 = createTexturesFromCVPixelBuffer(a6, self->super._device, 1, 3uLL);
-  v18 = createTexturesFromCVPixelBuffer(a7, self->super._device, 1, 3uLL);
-  *v32 = *&a3->var0;
-  *&v32[12] = *&a3->var2[1];
+  v17 = createTexturesFromCVPixelBuffer(output, self->super._device, 1, 3uLL);
+  v18 = createTexturesFromCVPixelBuffer(secondOutput, self->super._device, 1, 3uLL);
+  *v32 = *&parmas->var0;
+  *&v32[12] = *&parmas->var2[1];
   [(OFNormalization *)self calcAnchorParamsFromNormParams:v32 anchor:0];
   v20 = v19;
   v22 = v21;
-  *v32 = *&a3->var0;
-  *&v32[12] = *&a3->var2[1];
+  *v32 = *&parmas->var0;
+  *&v32[12] = *&parmas->var2[1];
   [(OFNormalization *)self calcAnchorParamsFromNormParams:v32 anchor:1];
   v24 = v23;
   v26 = v25;
-  v27 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
   LODWORD(v28) = v20;
   LODWORD(v29) = v22;
-  [(OFNormalization *)self encodeNormalizationToCommandBuffer:v27 source:v15 destination:v17 params:v28, v29];
+  [(OFNormalization *)self encodeNormalizationToCommandBuffer:commandBuffer source:v15 destination:v17 params:v28, v29];
   LODWORD(v30) = v24;
   LODWORD(v31) = v26;
-  [(OFNormalization *)self encodeNormalizationToCommandBuffer:v27 source:v16 destination:v18 params:v30, v31];
+  [(OFNormalization *)self encodeNormalizationToCommandBuffer:commandBuffer source:v16 destination:v18 params:v30, v31];
   kdebug_trace();
-  [v27 commit];
-  [v27 waitUntilCompleted];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
   kdebug_trace();
 }
 
-- (void)encodeNormalizeLumaToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5
+- (void)encodeNormalizeLumaToCommandBuffer:(id)buffer source:(id)source destination:(id)destination
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v9 width];
-  v12 = [v9 height];
-  v13 = [v10 computeCommandEncoder];
+  sourceCopy = source;
+  destinationCopy = destination;
+  bufferCopy = buffer;
+  width = [destinationCopy width];
+  height = [destinationCopy height];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  v14 = [v8 pixelFormat];
+  pixelFormat = [sourceCopy pixelFormat];
   v15 = &OBJC_IVAR___OFNormalization__normalizeLumaKernel;
-  if (v14 == 546)
+  if (pixelFormat == 546)
   {
     v15 = &OBJC_IVAR___OFNormalization__normalizeLumaPacked420Kernel;
   }
 
-  [v13 setComputePipelineState:*(&self->super.super.isa + *v15)];
-  [v13 setTexture:v8 atIndex:0];
-  [v13 setTexture:v9 atIndex:1];
-  v18[0] = (v11 + 15) >> 4;
-  v18[1] = (v12 + 15) >> 4;
+  [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v15)];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:1];
+  v18[0] = (width + 15) >> 4;
+  v18[1] = (height + 15) >> 4;
   v18[2] = 1;
   v16 = vdupq_n_s64(0x10uLL);
   v17 = 1;
-  [v13 dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeNormalizationRGBToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5
+- (void)encodeNormalizationRGBToCommandBuffer:(id)buffer source:(id)source destination:(id)destination
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = ([v8 width] + 15) >> 4;
-  v12 = ([v8 height] + 15) >> 4;
-  v13 = [v10 computeCommandEncoder];
+  destinationCopy = destination;
+  sourceCopy = source;
+  bufferCopy = buffer;
+  v11 = ([destinationCopy width] + 15) >> 4;
+  v12 = ([destinationCopy height] + 15) >> 4;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  [v13 setComputePipelineState:self->_normalizeRGBKernel];
-  [v13 setTexture:v9 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_normalizeRGBKernel];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
 
-  [v13 setTexture:v8 atIndex:1];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:1];
   v16[0] = v11;
   v16[1] = v12;
   v16[2] = 1;
   v14 = vdupq_n_s64(0x10uLL);
   v15 = 1;
-  [v13 dispatchThreadgroups:v16 threadsPerThreadgroup:&v14];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v16 threadsPerThreadgroup:&v14];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodePadRGBToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5
+- (void)encodePadRGBToCommandBuffer:(id)buffer source:(id)source destination:(id)destination
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = ([v8 width] + 15) >> 4;
-  v12 = ([v8 height] + 15) >> 4;
-  v13 = [v10 computeCommandEncoder];
+  destinationCopy = destination;
+  sourceCopy = source;
+  bufferCopy = buffer;
+  v11 = ([destinationCopy width] + 15) >> 4;
+  v12 = ([destinationCopy height] + 15) >> 4;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  [v13 setComputePipelineState:self->_padRGBKernel];
-  [v13 setTexture:v9 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_padRGBKernel];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
 
-  [v13 setTexture:v8 atIndex:1];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:1];
   v16[0] = v11;
   v16[1] = v12;
   v16[2] = 1;
   v14 = vdupq_n_s64(0x10uLL);
   v15 = 1;
-  [v13 dispatchThreadgroups:v16 threadsPerThreadgroup:&v14];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v16 threadsPerThreadgroup:&v14];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeDenormalizationToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 params:(id)a6
+- (void)encodeDenormalizationToCommandBuffer:(id)buffer source:(id)source destination:(id)destination params:(id)params
 {
-  var2 = a6.var2;
-  v7 = *&a6.var0;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v11 width];
-  v15 = [v11 height];
+  var2 = params.var2;
+  v7 = *&params.var0;
+  destinationCopy = destination;
+  sourceCopy = source;
+  bufferCopy = buffer;
+  width = [destinationCopy width];
+  height = [destinationCopy height];
   v16 = [(MTLDevice *)self->super._device newBufferWithLength:12 options:0];
-  v17 = [v16 contents];
-  *v17 = v7;
-  *(v17 + 8) = var2;
-  v18 = [v13 computeCommandEncoder];
+  contents = [v16 contents];
+  *contents = v7;
+  *(contents + 8) = var2;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  if ([v11 pixelFormat] == 70)
+  if ([destinationCopy pixelFormat] == 70)
   {
     v19 = &OBJC_IVAR___OFNormalization__denormalizeKernel;
   }
@@ -898,76 +898,76 @@ uint64_t __91__OFNormalization_normalizeFramesFirstInput_secondInput_firstOutput
   else
   {
     v19 = &OBJC_IVAR___OFNormalization__denormalizeKernel;
-    if ([v11 pixelFormat] != 90 && objc_msgSend(v11, "pixelFormat") != 115)
+    if ([destinationCopy pixelFormat] != 90 && objc_msgSend(destinationCopy, "pixelFormat") != 115)
     {
       v19 = &OBJC_IVAR___OFNormalization__denormalizeToPlanarKernel;
     }
   }
 
-  [v18 setComputePipelineState:*(&self->super.super.isa + *v19)];
-  [v18 setTexture:v12 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v19)];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
 
-  [v18 setTexture:v11 atIndex:1];
-  [v18 setBuffer:v16 offset:0 atIndex:0];
-  v22[0] = (v14 + 15) >> 4;
-  v22[1] = (v15 + 15) >> 4;
+  [computeCommandEncoder setTexture:destinationCopy atIndex:1];
+  [computeCommandEncoder setBuffer:v16 offset:0 atIndex:0];
+  v22[0] = (width + 15) >> 4;
+  v22[1] = (height + 15) >> 4;
   v22[2] = 1;
   v20 = vdupq_n_s64(0x10uLL);
   v21 = 1;
-  [v18 dispatchThreadgroups:v22 threadsPerThreadgroup:&v20];
-  [v18 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v22 threadsPerThreadgroup:&v20];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeDenormalizationRenderToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 params:(id)a6
+- (void)encodeDenormalizationRenderToCommandBuffer:(id)buffer source:(id)source destination:(id)destination params:(id)params
 {
-  var2 = a6.var2;
-  v7 = *&a6.var0;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v11 width];
-  v15 = [v11 height];
+  var2 = params.var2;
+  v7 = *&params.var0;
+  destinationCopy = destination;
+  sourceCopy = source;
+  bufferCopy = buffer;
+  width = [destinationCopy width];
+  height = [destinationCopy height];
   v16 = [(MTLDevice *)self->super._device newBufferWithLength:12 options:0];
-  v17 = [v16 contents];
-  *v17 = v7;
-  *(v17 + 8) = var2;
-  v18 = [(VEMetalBase *)self newTextureCoordinateBufferWithWidth:v14 height:v15];
-  v19 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-  v20 = [v19 colorAttachments];
-  v21 = [v20 objectAtIndexedSubscript:0];
-  [v21 setTexture:v11];
+  contents = [v16 contents];
+  *contents = v7;
+  *(contents + 8) = var2;
+  v18 = [(VEMetalBase *)self newTextureCoordinateBufferWithWidth:width height:height];
+  renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
+  colorAttachments = [renderPassDescriptor colorAttachments];
+  v21 = [colorAttachments objectAtIndexedSubscript:0];
+  [v21 setTexture:destinationCopy];
 
-  v22 = [v19 colorAttachments];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  colorAttachments2 = [renderPassDescriptor colorAttachments];
+  v23 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v23 setLoadAction:0];
 
-  v24 = [v19 colorAttachments];
-  v25 = [v24 objectAtIndexedSubscript:0];
+  colorAttachments3 = [renderPassDescriptor colorAttachments];
+  v25 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v25 setStoreAction:1];
 
-  v26 = [v13 renderCommandEncoderWithDescriptor:v19];
+  v26 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
 
   v29[0] = 0;
-  *&v29[1] = v15;
-  *&v29[2] = v14;
-  *&v29[3] = -v15;
+  *&v29[1] = height;
+  *&v29[2] = width;
+  *&v29[3] = -height;
   v30 = xmmword_2487C3780;
   [v26 setViewport:v29];
-  v27 = [v11 pixelFormat];
+  pixelFormat = [destinationCopy pixelFormat];
 
   v28 = &OBJC_IVAR___OFNormalization__denormalizeYCbCr10RenderKernel;
-  if (v27 == 505)
+  if (pixelFormat == 505)
   {
     v28 = &OBJC_IVAR___OFNormalization__denormalizeYCbCr10UnpackedRenderKernel;
   }
 
-  if (v27 == 500)
+  if (pixelFormat == 500)
   {
     v28 = &OBJC_IVAR___OFNormalization__denormalizeYCbCr8RenderKernel;
   }
 
   [v26 setRenderPipelineState:*(&self->super.super.isa + *v28)];
-  [v26 setFragmentTexture:v12 atIndex:0];
+  [v26 setFragmentTexture:sourceCopy atIndex:0];
 
   [v26 setFragmentBuffer:v16 offset:0 atIndex:0];
   [v26 setVertexBuffer:self->_vertsBuffer offset:0 atIndex:0];
@@ -976,38 +976,38 @@ uint64_t __91__OFNormalization_normalizeFramesFirstInput_secondInput_firstOutput
   [v26 endEncoding];
 }
 
-- (void)denormalizeFrame:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 params:(id *)a5 timeScale:(float)a6 callback:(id)a7
+- (void)denormalizeFrame:(__CVBuffer *)frame destination:(__CVBuffer *)destination params:(id *)params timeScale:(float)scale callback:(id)callback
 {
-  v12 = a7;
+  callbackCopy = callback;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy_;
   v39 = __Block_byref_object_dispose_;
-  v40 = createTexturesFromCVPixelBuffer(a3, self->super._device, 1, 3uLL);
+  v40 = createTexturesFromCVPixelBuffer(frame, self->super._device, 1, 3uLL);
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy_;
   v33 = __Block_byref_object_dispose_;
   v34 = 0;
-  if (isYUV420(a4))
+  if (isYUV420(destination))
   {
-    v13 = createRenderTargetTextureFromCVPixelBuffer(a4, self->super._device);
+    v13 = createRenderTargetTextureFromCVPixelBuffer(destination, self->super._device);
   }
 
   else
   {
-    v14 = isPackedRGBA(a4);
+    v14 = isPackedRGBA(destination);
     device = self->super._device;
     if (v14)
     {
-      createRGBATextureFromCVPixelBuffer(a4, device);
+      createRGBATextureFromCVPixelBuffer(destination, device);
     }
 
     else
     {
-      createTexturesFromCVPixelBuffer(a4, device, 1, 3uLL);
+      createTexturesFromCVPixelBuffer(destination, device, 1, 3uLL);
     }
     v13 = ;
   }
@@ -1015,24 +1015,24 @@ uint64_t __91__OFNormalization_normalizeFramesFirstInput_secondInput_firstOutput
   v16 = v30[5];
   v30[5] = v13;
 
-  v17 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v28[0] = *&a5->var0;
-  *(v28 + 12) = *&a5->var2[1];
-  v18 = [(OFNormalization *)self calcDeNormParamsFromNormaParams:v28 timeScale:COERCE_DOUBLE(__PAIR64__(v28[1], LODWORD(a6)))];
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  v28[0] = *&params->var0;
+  *(v28 + 12) = *&params->var2[1];
+  v18 = [(OFNormalization *)self calcDeNormParamsFromNormaParams:v28 timeScale:COERCE_DOUBLE(__PAIR64__(v28[1], LODWORD(scale)))];
   v20 = v19;
-  v21 = [v30[5] pixelFormat];
-  if ((v21 - 500) <= 8 && ((1 << (v21 + 12)) & 0x121) != 0)
+  pixelFormat = [v30[5] pixelFormat];
+  if ((pixelFormat - 500) <= 8 && ((1 << (pixelFormat + 12)) & 0x121) != 0)
   {
-    [(OFNormalization *)self encodeDenormalizationRenderToCommandBuffer:v17 source:v36[5] destination:v30[5] params:v18, v20];
+    [(OFNormalization *)self encodeDenormalizationRenderToCommandBuffer:commandBuffer source:v36[5] destination:v30[5] params:v18, v20];
   }
 
   else
   {
-    [(OFNormalization *)self encodeDenormalizationToCommandBuffer:v17 source:v36[5] destination:v30[5] params:v18, v20];
+    [(OFNormalization *)self encodeDenormalizationToCommandBuffer:commandBuffer source:v36[5] destination:v30[5] params:v18, v20];
   }
 
   kdebug_trace();
-  if (v12)
+  if (callbackCopy)
   {
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -1040,15 +1040,15 @@ uint64_t __91__OFNormalization_normalizeFramesFirstInput_secondInput_firstOutput
     v24[3] = &unk_278F536D0;
     v26 = &v35;
     v27 = &v29;
-    v25 = v12;
-    [v17 addCompletedHandler:v24];
+    v25 = callbackCopy;
+    [commandBuffer addCompletedHandler:v24];
   }
 
-  [v17 commit];
-  [v17 waitUntilScheduled];
-  if (!v12)
+  [commandBuffer commit];
+  [commandBuffer waitUntilScheduled];
+  if (!callbackCopy)
   {
-    [v17 waitUntilCompleted];
+    [commandBuffer waitUntilCompleted];
     kdebug_trace();
     v22 = v36[5];
     v36[5] = 0;
@@ -1077,52 +1077,52 @@ uint64_t __74__OFNormalization_denormalizeFrame_destination_params_timeScale_cal
   return v6();
 }
 
-- (void)encodeDenormalizeRGBToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5
+- (void)encodeDenormalizeRGBToCommandBuffer:(id)buffer source:(id)source destination:(id)destination
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = ([v8 width] + 15) >> 4;
-  v12 = ([v8 height] + 15) >> 4;
-  v13 = [v10 computeCommandEncoder];
+  destinationCopy = destination;
+  sourceCopy = source;
+  bufferCopy = buffer;
+  v11 = ([destinationCopy width] + 15) >> 4;
+  v12 = ([destinationCopy height] + 15) >> 4;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  [v13 setComputePipelineState:self->_denormalizeRGBKernel];
-  [v13 setTexture:v9 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_denormalizeRGBKernel];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
 
-  [v13 setTexture:v8 atIndex:1];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:1];
   v16[0] = v11;
   v16[1] = v12;
   v16[2] = 1;
   v14 = vdupq_n_s64(0x10uLL);
   v15 = 1;
-  [v13 dispatchThreadgroups:v16 threadsPerThreadgroup:&v14];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v16 threadsPerThreadgroup:&v14];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodePostprocessSRFrameToCommandBuffer:(id)a3 srFrameY:(id)a4 bicubicY:(id)a5 bicubicUV:(id)a6 laplacianMask:(id)a7 outputY:(id)a8 outputUV:(id)a9
+- (void)encodePostprocessSRFrameToCommandBuffer:(id)buffer srFrameY:(id)y bicubicY:(id)bicubicY bicubicUV:(id)v laplacianMask:(id)mask outputY:(id)outputY outputUV:(id)uV
 {
-  v28 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  yCopy = y;
+  bicubicYCopy = bicubicY;
+  vCopy = v;
+  maskCopy = mask;
+  outputYCopy = outputY;
   v32 = 0x40000000;
-  v19 = a9;
-  v20 = a3;
-  v21 = [v18 width];
-  v22 = [v18 height];
-  v23 = [v20 computeCommandEncoder];
+  uVCopy = uV;
+  bufferCopy = buffer;
+  width = [outputYCopy width];
+  height = [outputYCopy height];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  v24 = [v15 pixelFormat];
-  if (v16)
+  pixelFormat = [bicubicYCopy pixelFormat];
+  if (vCopy)
   {
     v25 = 192;
 LABEL_6:
-    [v23 setComputePipelineState:*(&self->super.super.isa + v25)];
+    [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + v25)];
     goto LABEL_7;
   }
 
-  if ((v24 - 540) <= 6 && ((1 << (v24 - 28)) & 0x49) != 0)
+  if ((pixelFormat - 540) <= 6 && ((1 << (pixelFormat - 28)) & 0x49) != 0)
   {
     v25 = 200;
     goto LABEL_6;
@@ -1138,11 +1138,11 @@ LABEL_6:
   }
 
 LABEL_7:
-  [v23 setTexture:v28 atIndex:0];
-  [v23 setTexture:v15 atIndex:1];
-  if (v16)
+  [computeCommandEncoder setTexture:yCopy atIndex:0];
+  [computeCommandEncoder setTexture:bicubicYCopy atIndex:1];
+  if (vCopy)
   {
-    [v23 setTexture:v16 atIndex:2];
+    [computeCommandEncoder setTexture:vCopy atIndex:2];
     v26 = 3;
   }
 
@@ -1151,31 +1151,31 @@ LABEL_7:
     v26 = 2;
   }
 
-  [v23 setTexture:v17 atIndex:v26];
-  [v23 setTexture:v18 atIndex:v26 + 1];
-  [v23 setTexture:v19 atIndex:v26 + 2];
+  [computeCommandEncoder setTexture:maskCopy atIndex:v26];
+  [computeCommandEncoder setTexture:outputYCopy atIndex:v26 + 1];
+  [computeCommandEncoder setTexture:uVCopy atIndex:v26 + 2];
 
-  [v23 setBytes:&v32 length:4 atIndex:0];
-  v31[0] = (v21 + 15) >> 4;
-  v31[1] = (v22 + 15) >> 4;
+  [computeCommandEncoder setBytes:&v32 length:4 atIndex:0];
+  v31[0] = (width + 15) >> 4;
+  v31[1] = (height + 15) >> 4;
   v31[2] = 1;
   v29 = vdupq_n_s64(0x10uLL);
   v30 = 1;
-  [v23 dispatchThreadgroups:v31 threadsPerThreadgroup:&v29];
-  [v23 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v31 threadsPerThreadgroup:&v29];
+  [computeCommandEncoder endEncoding];
 }
 
-- (BOOL)normalizeLumaFromFrame:(__CVBuffer *)a3 toTexture:(id)a4
+- (BOOL)normalizeLumaFromFrame:(__CVBuffer *)frame toTexture:(id)texture
 {
-  v6 = a4;
-  v7 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  textureCopy = texture;
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
   device = self->super._device;
   v14 = 0;
   v15 = 0;
-  createYUVTextureFromCVPixelBuffer(a3, device, &v15, &v14);
+  createYUVTextureFromCVPixelBuffer(frame, device, &v15, &v14);
   v9 = v15;
   v10 = v14;
-  if (v7)
+  if (commandBuffer)
   {
     v11 = v9 == 0;
   }
@@ -1188,21 +1188,21 @@ LABEL_7:
   v12 = !v11;
   if (!v11)
   {
-    [(OFNormalization *)self encodeNormalizeLumaToCommandBuffer:v7 source:v9 destination:v6];
-    [v7 commit];
-    [v7 waitUntilCompleted];
+    [(OFNormalization *)self encodeNormalizeLumaToCommandBuffer:commandBuffer source:v9 destination:textureCopy];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
   }
 
   return v12;
 }
 
-- (BOOL)normalizeRGB:(__CVBuffer *)a3 to:(__CVBuffer *)a4
+- (BOOL)normalizeRGB:(__CVBuffer *)b to:(__CVBuffer *)to
 {
-  v7 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v8 = createRGBATextureFromCVPixelBuffer(a3, self->super._device);
-  v9 = createTexturesFromCVPixelBuffer(a4, self->super._device, 1, 3uLL);
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  v8 = createRGBATextureFromCVPixelBuffer(b, self->super._device);
+  v9 = createTexturesFromCVPixelBuffer(to, self->super._device, 1, 3uLL);
   v10 = v9;
-  if (v7)
+  if (commandBuffer)
   {
     v11 = v8 == 0;
   }
@@ -1217,20 +1217,20 @@ LABEL_7:
   if (!v12)
   {
     [OUTLINED_FUNCTION_1_7() encodeNormalizationRGBToCommandBuffer:? source:? destination:?];
-    [v7 commit];
-    [v7 waitUntilCompleted];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
   }
 
   return v13;
 }
 
-- (BOOL)padRGB:(__CVBuffer *)a3 to:(__CVBuffer *)a4
+- (BOOL)padRGB:(__CVBuffer *)b to:(__CVBuffer *)to
 {
-  v7 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v8 = createRGBATextureFromCVPixelBuffer(a3, self->super._device);
-  v9 = createRGBATextureFromCVPixelBuffer(a4, self->super._device);
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  v8 = createRGBATextureFromCVPixelBuffer(b, self->super._device);
+  v9 = createRGBATextureFromCVPixelBuffer(to, self->super._device);
   v10 = v9;
-  if (v7)
+  if (commandBuffer)
   {
     v11 = v8 == 0;
   }
@@ -1245,25 +1245,25 @@ LABEL_7:
   if (!v12)
   {
     [OUTLINED_FUNCTION_1_7() encodePadRGBToCommandBuffer:? source:? destination:?];
-    [v7 commit];
-    [v7 waitUntilCompleted];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
   }
 
   return v13;
 }
 
-- (id)createFP16TextureFromIOSurface:(__IOSurface *)a3 width:(int64_t)a4 height:(int64_t)a5 arrayLength:(int64_t)a6
+- (id)createFP16TextureFromIOSurface:(__IOSurface *)surface width:(int64_t)width height:(int64_t)height arrayLength:(int64_t)length
 {
-  v9 = [(MTLDevice *)self->super._device newBufferWithIOSurface:a3];
+  v9 = [(MTLDevice *)self->super._device newBufferWithIOSurface:surface];
   if (v9)
   {
-    v10 = 2 * a4 * a5;
-    v11 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:25 width:a4 height:a5 mipmapped:0];
+    v10 = 2 * width * height;
+    v11 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:25 width:width height:height mipmapped:0];
     [v11 setTextureType:3];
-    [v11 setArrayLength:a6];
+    [v11 setArrayLength:length];
     [v11 setUsage:3];
     [v11 setStorageMode:0];
-    v12 = [v9 newLinearTextureWithDescriptor:v11 offset:0 bytesPerRow:2 * a4 bytesPerImage:v10];
+    v12 = [v9 newLinearTextureWithDescriptor:v11 offset:0 bytesPerRow:2 * width bytesPerImage:v10];
   }
 
   else
@@ -1277,9 +1277,9 @@ LABEL_7:
   return v12;
 }
 
-- (BOOL)convertBuffer:(__CVBuffer *)a3 toFP16IOSurface:(__IOSurface *)a4
+- (BOOL)convertBuffer:(__CVBuffer *)buffer toFP16IOSurface:(__IOSurface *)surface
 {
-  if (OUTLINED_FUNCTION_2_3(self, a2, a3) != 1111970369)
+  if (OUTLINED_FUNCTION_2_3(self, a2, buffer) != 1111970369)
   {
     v7 = 0;
 LABEL_7:
@@ -1308,23 +1308,23 @@ LABEL_7:
   }
 
   v12 = v11;
-  v13 = [*(v5 + 24) commandBuffer];
-  v14 = [v13 computeCommandEncoder];
-  [v14 setComputePipelineState:*(v5 + 120)];
-  [v14 setTexture:v7 atIndex:0];
+  commandBuffer = [*(v5 + 24) commandBuffer];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:*(v5 + 120)];
+  [computeCommandEncoder setTexture:v7 atIndex:0];
   v15 = OUTLINED_FUNCTION_3_3();
   OUTLINED_FUNCTION_0_6(v15, v16, v17, v18, v19, v20, v21, v22, v23, v25, v26, v27, v28);
-  [v14 endEncoding];
-  [v13 commit];
-  [v13 waitUntilCompleted];
+  [computeCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 
 LABEL_8:
   return v5;
 }
 
-- (BOOL)convertBuffer:(__CVBuffer *)a3 toFP16ShuffledIOSurface:(__IOSurface *)a4
+- (BOOL)convertBuffer:(__CVBuffer *)buffer toFP16ShuffledIOSurface:(__IOSurface *)surface
 {
-  if (OUTLINED_FUNCTION_2_3(self, a2, a3) != 1111970369)
+  if (OUTLINED_FUNCTION_2_3(self, a2, buffer) != 1111970369)
   {
     v7 = 0;
 LABEL_7:
@@ -1353,48 +1353,48 @@ LABEL_7:
   }
 
   v12 = v11;
-  v13 = [*(v5 + 24) commandBuffer];
-  v14 = [v13 computeCommandEncoder];
-  [v14 setComputePipelineState:*(v5 + 128)];
-  [v14 setTexture:v7 atIndex:0];
+  commandBuffer = [*(v5 + 24) commandBuffer];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:*(v5 + 128)];
+  [computeCommandEncoder setTexture:v7 atIndex:0];
   v15 = OUTLINED_FUNCTION_3_3();
   OUTLINED_FUNCTION_0_6(v15, v16, v17, v18, v19, v20, v21, v22, v23, v25, v26, v27, v28);
-  [v14 endEncoding];
-  [v13 commit];
-  [v13 waitUntilCompleted];
+  [computeCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 
 LABEL_8:
   return v5;
 }
 
-- (BOOL)convertFP16IOSurface:(__IOSurface *)a3 toBuffer:(__CVBuffer *)a4
+- (BOOL)convertFP16IOSurface:(__IOSurface *)surface toBuffer:(__CVBuffer *)buffer
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  v10 = [(OFNormalization *)self createFP16TextureFromIOSurface:a3 width:Width height:Height arrayLength:3];
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  v10 = [(OFNormalization *)self createFP16TextureFromIOSurface:surface width:Width height:Height arrayLength:3];
   v11 = 0;
   if (v10 && PixelFormatType == 1111970369)
   {
-    v12 = createRGBATextureFromCVPixelBuffer(a4, self->super._device);
+    v12 = createRGBATextureFromCVPixelBuffer(buffer, self->super._device);
     if (v12)
     {
       v13 = v12;
-      v14 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-      v15 = [v14 computeCommandEncoder];
-      [v15 setComputePipelineState:self->_copyTextureArrayToRgb];
-      [v15 setTexture:v10 atIndex:0];
+      commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+      computeCommandEncoder = [commandBuffer computeCommandEncoder];
+      [computeCommandEncoder setComputePipelineState:self->_copyTextureArrayToRgb];
+      [computeCommandEncoder setTexture:v10 atIndex:0];
       v11 = 1;
-      [v15 setTexture:v13 atIndex:1];
+      [computeCommandEncoder setTexture:v13 atIndex:1];
       v19[0] = (Width + 15) >> 4;
       v19[1] = (Height + 15) >> 4;
       v19[2] = 1;
       v17 = vdupq_n_s64(0x10uLL);
       v18 = 1;
-      [v15 dispatchThreadgroups:v19 threadsPerThreadgroup:&v17];
-      [v15 endEncoding];
-      [v14 commit];
-      [v14 waitUntilCompleted];
+      [computeCommandEncoder dispatchThreadgroups:v19 threadsPerThreadgroup:&v17];
+      [computeCommandEncoder endEncoding];
+      [commandBuffer commit];
+      [commandBuffer waitUntilCompleted];
     }
 
     else
@@ -1406,13 +1406,13 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)denormalizeRGB:(__CVBuffer *)a3 to:(__CVBuffer *)a4
+- (BOOL)denormalizeRGB:(__CVBuffer *)b to:(__CVBuffer *)to
 {
-  v7 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v8 = createTexturesFromCVPixelBuffer(a3, self->super._device, 1, 3uLL);
-  v9 = createRGBATextureFromCVPixelBuffer(a4, self->super._device);
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  v8 = createTexturesFromCVPixelBuffer(b, self->super._device, 1, 3uLL);
+  v9 = createRGBATextureFromCVPixelBuffer(to, self->super._device);
   v10 = v9;
-  if (v7)
+  if (commandBuffer)
   {
     v11 = v8 == 0;
   }
@@ -1426,48 +1426,48 @@ LABEL_8:
   v13 = !v12;
   if (!v12)
   {
-    [(OFNormalization *)self encodeDenormalizeRGBToCommandBuffer:v7 source:v8 destination:v9];
-    [v7 commit];
-    [v7 waitUntilCompleted];
+    [(OFNormalization *)self encodeDenormalizeRGBToCommandBuffer:commandBuffer source:v8 destination:v9];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
   }
 
   return v13;
 }
 
-- (BOOL)postprocessSRFrame:(__CVBuffer *)a3 bicubicYUV:(__CVBuffer *)a4 laplacianMask:(__CVBuffer *)a5 outputYUV:(__CVBuffer *)a6
+- (BOOL)postprocessSRFrame:(__CVBuffer *)frame bicubicYUV:(__CVBuffer *)v laplacianMask:(__CVBuffer *)mask outputYUV:(__CVBuffer *)uV
 {
-  v11 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  PixelFormatType = CVPixelBufferGetPixelFormatType(frame);
   device = self->super._device;
   if (PixelFormatType == 1278226536)
   {
-    createTexturesFromCVPixelBuffer(a3, device, 1, 1uLL);
+    createTexturesFromCVPixelBuffer(frame, device, 1, 1uLL);
   }
 
   else
   {
-    getYTextureFromCVPixelBuffer(a3, device);
+    getYTextureFromCVPixelBuffer(frame, device);
   }
   v14 = ;
-  v15 = CVPixelBufferGetPixelFormatType(a4);
+  v15 = CVPixelBufferGetPixelFormatType(v);
   v16 = self->super._device;
   if (v15 == 1278226536)
   {
-    v17 = createTexturesFromCVPixelBuffer(a4, v16, 1, 1uLL);
+    v17 = createTexturesFromCVPixelBuffer(v, v16, 1, 1uLL);
     v18 = 0;
   }
 
   else
   {
-    v17 = getYTextureFromCVPixelBuffer(a4, v16);
-    v18 = getUVTextureFromCVPixelBuffer(a4, self->super._device);
+    v17 = getYTextureFromCVPixelBuffer(v, v16);
+    v18 = getUVTextureFromCVPixelBuffer(v, self->super._device);
   }
 
-  v19 = createTexturesFromCVPixelBuffer(a5, self->super._device, 1, 1uLL);
-  v20 = createTextureFromCVPixelBufferOfPlane(a6, self->super._device, 0);
-  v21 = createTextureFromCVPixelBufferOfPlane(a6, self->super._device, 1uLL);
+  v19 = createTexturesFromCVPixelBuffer(mask, self->super._device, 1, 1uLL);
+  v20 = createTextureFromCVPixelBufferOfPlane(uV, self->super._device, 0);
+  v21 = createTextureFromCVPixelBufferOfPlane(uV, self->super._device, 1uLL);
   v22 = v21;
-  if (v11)
+  if (commandBuffer)
   {
     v23 = v14 == 0;
   }
@@ -1482,8 +1482,8 @@ LABEL_8:
   if (!v28)
   {
     [OUTLINED_FUNCTION_1_7() encodePostprocessSRFrameToCommandBuffer:v21 srFrameY:? bicubicY:? bicubicUV:? laplacianMask:? outputY:? outputUV:?];
-    [v11 commit];
-    [v11 waitUntilCompleted];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
   }
 
   return v29;

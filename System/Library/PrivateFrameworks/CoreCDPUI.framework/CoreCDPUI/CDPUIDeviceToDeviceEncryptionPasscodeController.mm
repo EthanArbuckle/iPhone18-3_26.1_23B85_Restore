@@ -1,28 +1,28 @@
 @interface CDPUIDeviceToDeviceEncryptionPasscodeController
-+ (id)passcodeControllerWithPresenter:(id)a3 vm:(id)a4;
++ (id)passcodeControllerWithPresenter:(id)presenter vm:(id)vm;
 - (CDPUIDeviceToDeviceEncryptionPasscodeValidationDelegate)delegate;
 - (id)passcodeValidationCompletion;
-- (void)_userTappedCancel:(id)a3;
-- (void)createPasscodeStateWithCompletion:(id)a3;
+- (void)_userTappedCancel:(id)cancel;
+- (void)createPasscodeStateWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)dismissFlowWithLocalSecret:(id)a3 error:(id)a4;
-- (void)passcodeViewController:(id)a3 didFinishWithPasscodeCreation:(id)a4;
-- (void)setPasscodeValidationCompletion:(id)a3;
+- (void)dismissFlowWithLocalSecret:(id)secret error:(id)error;
+- (void)passcodeViewController:(id)controller didFinishWithPasscodeCreation:(id)creation;
+- (void)setPasscodeValidationCompletion:(id)completion;
 @end
 
 @implementation CDPUIDeviceToDeviceEncryptionPasscodeController
 
-+ (id)passcodeControllerWithPresenter:(id)a3 vm:(id)a4
++ (id)passcodeControllerWithPresenter:(id)presenter vm:(id)vm
 {
-  v5 = a3;
-  v6 = a4;
+  presenterCopy = presenter;
+  vmCopy = vm;
   v7 = objc_alloc_init(objc_opt_class());
   v8 = v7[1];
-  v7[1] = v5;
-  v9 = v5;
+  v7[1] = presenterCopy;
+  v9 = presenterCopy;
 
   v10 = v7[5];
-  v7[5] = v6;
+  v7[5] = vmCopy;
 
   return v7;
 }
@@ -31,7 +31,7 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 134217984;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_2451DB000, a2, OS_LOG_TYPE_DEBUG, "CDPUIDeviceToDeviceEncryptionPasscodeController %p deallocated", &v2, 0xCu);
 }
 
@@ -47,7 +47,7 @@
   v6[1] = 3221225472;
   v7 = __79__CDPUIDeviceToDeviceEncryptionPasscodeController_passcodeValidationCompletion__block_invoke;
   v8 = &unk_278E2BF80;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_completionLock);
@@ -67,16 +67,16 @@ uint64_t __79__CDPUIDeviceToDeviceEncryptionPasscodeController_passcodeValidatio
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setPasscodeValidationCompletion:(id)a3
+- (void)setPasscodeValidationCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __83__CDPUIDeviceToDeviceEncryptionPasscodeController_setPasscodeValidationCompletion___block_invoke;
   v6[3] = &unk_278E2B230;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   os_unfair_lock_lock(&self->_completionLock);
   __83__CDPUIDeviceToDeviceEncryptionPasscodeController_setPasscodeValidationCompletion___block_invoke(v6);
   os_unfair_lock_unlock(&self->_completionLock);
@@ -89,10 +89,10 @@ uint64_t __83__CDPUIDeviceToDeviceEncryptionPasscodeController_setPasscodeValida
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)createPasscodeStateWithCompletion:(id)a3
+- (void)createPasscodeStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  [(CDPUIDeviceToDeviceEncryptionPasscodeController *)self setPasscodeValidationCompletion:v4];
+  completionCopy = completion;
+  [(CDPUIDeviceToDeviceEncryptionPasscodeController *)self setPasscodeValidationCompletion:completionCopy];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -116,13 +116,13 @@ uint64_t __83__CDPUIDeviceToDeviceEncryptionPasscodeController_setPasscodeValida
   self->_passcodeViewController = v7;
 
   [(BFFPasscodeViewController *)self->_passcodeViewController setPasscodeCreationDelegate:self];
-  v9 = [(BFFPasscodeViewController *)self->_passcodeViewController view];
-  v10 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModelProtocol *)self->_vm title];
-  [v9 setTitle:v10];
+  view = [(BFFPasscodeViewController *)self->_passcodeViewController view];
+  title = [(CDPUIDeviceToDeviceEncryptionMessagingViewModelProtocol *)self->_vm title];
+  [view setTitle:title];
 
   v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__userTappedCancel_];
-  v12 = [(BFFPasscodeViewController *)self->_passcodeViewController navigationItem];
-  [v12 setLeftBarButtonItem:v11 animated:0];
+  navigationItem = [(BFFPasscodeViewController *)self->_passcodeViewController navigationItem];
+  [navigationItem setLeftBarButtonItem:v11 animated:0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -143,15 +143,15 @@ uint64_t __83__CDPUIDeviceToDeviceEncryptionPasscodeController_setPasscodeValida
   }
 }
 
-- (void)dismissFlowWithLocalSecret:(id)a3 error:(id)a4
+- (void)dismissFlowWithLocalSecret:(id)secret error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CDPUIDeviceToDeviceEncryptionPasscodeController *)self passcodeValidationCompletion];
-  v8[2](v8, v7, v6);
+  errorCopy = error;
+  secretCopy = secret;
+  passcodeValidationCompletion = [(CDPUIDeviceToDeviceEncryptionPasscodeController *)self passcodeValidationCompletion];
+  passcodeValidationCompletion[2](passcodeValidationCompletion, secretCopy, errorCopy);
 }
 
-- (void)_userTappedCancel:(id)a3
+- (void)_userTappedCancel:(id)cancel
 {
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -160,25 +160,25 @@ uint64_t __83__CDPUIDeviceToDeviceEncryptionPasscodeController_setPasscodeValida
     _os_log_impl(&dword_2451DB000, v4, OS_LOG_TYPE_DEFAULT, "Cancel was tapped", buf, 2u);
   }
 
-  v5 = [(CDPUIDeviceToDeviceEncryptionPasscodeController *)self delegate];
+  delegate = [(CDPUIDeviceToDeviceEncryptionPasscodeController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CDPUIDeviceToDeviceEncryptionPasscodeController *)self delegate];
-    v8 = [(BFFPasscodeViewController *)self->_passcodeViewController navigationController];
+    delegate2 = [(CDPUIDeviceToDeviceEncryptionPasscodeController *)self delegate];
+    navigationController = [(BFFPasscodeViewController *)self->_passcodeViewController navigationController];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __69__CDPUIDeviceToDeviceEncryptionPasscodeController__userTappedCancel___block_invoke;
     v9[3] = &unk_278E2BFA8;
     v9[4] = self;
-    [v7 localSecretValidationCanCancelWithViewController:v8 completion:v9];
+    [delegate2 localSecretValidationCanCancelWithViewController:navigationController completion:v9];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5307];
-    [(CDPUIDeviceToDeviceEncryptionPasscodeController *)self dismissFlowWithLocalSecret:0 error:v7];
+    delegate2 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5307];
+    [(CDPUIDeviceToDeviceEncryptionPasscodeController *)self dismissFlowWithLocalSecret:0 error:delegate2];
   }
 }
 
@@ -192,13 +192,13 @@ void __69__CDPUIDeviceToDeviceEncryptionPasscodeController__userTappedCancel___b
   }
 }
 
-- (void)passcodeViewController:(id)a3 didFinishWithPasscodeCreation:(id)a4
+- (void)passcodeViewController:(id)controller didFinishWithPasscodeCreation:(id)creation
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  controllerCopy = controller;
+  creationCopy = creation;
+  if (creationCopy)
   {
-    v8 = [v6 passcodeInputView];
+    passcodeInputView = [controllerCopy passcodeInputView];
     v17 = 0;
     v18 = &v17;
     v19 = 0x2050000000;
@@ -228,8 +228,8 @@ void __69__CDPUIDeviceToDeviceEncryptionPasscodeController__userTappedCancel___b
       v11 = 3;
     }
 
-    v12 = [objc_alloc(MEMORY[0x277CFD500]) initWithValidatedSecret:v7 secretType:v11];
-    v13 = self;
+    v12 = [objc_alloc(MEMORY[0x277CFD500]) initWithValidatedSecret:creationCopy secretType:v11];
+    selfCopy2 = self;
     v14 = v12;
     v15 = 0;
   }
@@ -237,12 +237,12 @@ void __69__CDPUIDeviceToDeviceEncryptionPasscodeController__userTappedCancel___b
   else
   {
     v12 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5307];
-    v13 = self;
+    selfCopy2 = self;
     v14 = 0;
     v15 = v12;
   }
 
-  [(CDPUIDeviceToDeviceEncryptionPasscodeController *)v13 dismissFlowWithLocalSecret:v14 error:v15];
+  [(CDPUIDeviceToDeviceEncryptionPasscodeController *)selfCopy2 dismissFlowWithLocalSecret:v14 error:v15];
 }
 
 - (CDPUIDeviceToDeviceEncryptionPasscodeValidationDelegate)delegate

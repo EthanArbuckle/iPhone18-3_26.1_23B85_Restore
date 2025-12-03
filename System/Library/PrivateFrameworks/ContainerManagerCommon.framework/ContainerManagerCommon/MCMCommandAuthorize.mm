@@ -4,15 +4,15 @@
 - (BOOL)onBehalfOfSelf;
 - (BOOL)preflightClientAllowed;
 - (MCMCommandAuthorize)init;
-- (MCMCommandAuthorize)initWithContext:(id)a3 resultPromise:(id)a4;
-- (MCMCommandAuthorize)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandAuthorize)initWithContext:(id)context resultPromise:(id)promise;
+- (MCMCommandAuthorize)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMContainerConfiguration)containerConfig;
 - (MCMUserIdentity)userIdentity;
 - (void)execute;
-- (void)setAuditToken:(id *)a3;
-- (void)setContainerConfig:(id)a3;
-- (void)setOnBehalfOfSelf:(BOOL)a3;
-- (void)setUserIdentity:(id)a3;
+- (void)setAuditToken:(id *)token;
+- (void)setContainerConfig:(id)config;
+- (void)setOnBehalfOfSelf:(BOOL)self;
+- (void)setUserIdentity:(id)identity;
 @end
 
 @implementation MCMCommandAuthorize
@@ -27,12 +27,12 @@
   return v5;
 }
 
-- (void)setContainerConfig:(id)a3
+- (void)setContainerConfig:(id)config
 {
   v5 = OBJC_IVAR___MCMCommandAuthorize_containerConfig;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = config;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -47,11 +47,11 @@
   return result;
 }
 
-- (void)setAuditToken:(id *)a3
+- (void)setAuditToken:(id *)token
 {
   v3 = (self + OBJC_IVAR___MCMCommandAuthorize_auditToken);
-  v4 = *&a3->var0[4];
-  v5 = *a3->var0;
+  v4 = *&token->var0[4];
+  v5 = *token->var0;
   swift_beginAccess();
   *v3 = v5;
   v3[1] = v4;
@@ -64,11 +64,11 @@
   return *(self + v3);
 }
 
-- (void)setOnBehalfOfSelf:(BOOL)a3
+- (void)setOnBehalfOfSelf:(BOOL)self
 {
   v5 = OBJC_IVAR___MCMCommandAuthorize_onBehalfOfSelf;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = self;
 }
 
 - (MCMUserIdentity)userIdentity
@@ -78,28 +78,28 @@
   return *(self + v3);
 }
 
-- (void)setUserIdentity:(id)a3
+- (void)setUserIdentity:(id)identity
 {
   v5 = OBJC_IVAR___MCMCommandAuthorize_userIdentity;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = identity;
+  identityCopy = identity;
 }
 
-- (MCMCommandAuthorize)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandAuthorize)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return sub_1DF2D8910(a3, a4, a5);
+  return sub_1DF2D8910(message, context, reply);
 }
 
-- (MCMCommandAuthorize)initWithContext:(id)a3 resultPromise:(id)a4
+- (MCMCommandAuthorize)initWithContext:(id)context resultPromise:(id)promise
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = sub_1DF2DA904(a3, a4);
+  v6 = sub_1DF2DA904(context, promise);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
   return v6;
@@ -114,26 +114,26 @@
 
 - (BOOL)preflightClientAllowed
 {
-  v2 = self;
-  if ([(MCMCommandAuthorize *)v2 onBehalfOfSelf])
+  selfCopy = self;
+  if ([(MCMCommandAuthorize *)selfCopy onBehalfOfSelf])
   {
-    v3 = 1;
+    isAllowedToCheckAuthorization = 1;
   }
 
   else
   {
-    v4 = [(MCMCommand *)v2 context];
-    v5 = [(MCMCommandContext *)v4 clientIdentity];
+    context = [(MCMCommand *)selfCopy context];
+    clientIdentity = [(MCMCommandContext *)context clientIdentity];
 
-    v3 = [(MCMClientIdentity *)v5 isAllowedToCheckAuthorization];
+    isAllowedToCheckAuthorization = [(MCMClientIdentity *)clientIdentity isAllowedToCheckAuthorization];
   }
 
-  return v3;
+  return isAllowedToCheckAuthorization;
 }
 
 - (void)execute
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DF2D915C();
 }
 

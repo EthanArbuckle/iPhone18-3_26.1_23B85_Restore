@@ -3,31 +3,31 @@
 + (id)serviceInterface;
 - (BOOL)devicePresenceDetected;
 - (MRAVDistantEndpoint)distantLocalEndpoint;
-- (MRAVDistantRoutingDiscoverySession)initWithConfiguration:(id)a3;
+- (MRAVDistantRoutingDiscoverySession)initWithConfiguration:(id)configuration;
 - (MRAVLocalEndpoint)localEndpoint;
 - (NSArray)distantEndpoints;
 - (NSArray)distantOutputDevices;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)_hostedRoutingConnection;
-- (id)_resolveDistantEndpoints:(id)a3;
-- (id)_resolveEndpoints:(id)a3;
+- (id)_resolveDistantEndpoints:(id)endpoints;
+- (id)_resolveEndpoints:(id)endpoints;
 - (id)availableEndpoints;
 - (id)routingContextUID;
 - (unsigned)discoveryMode;
-- (void)_initializeHostedRoutingConnectionWithCompletion:(id)a3;
+- (void)_initializeHostedRoutingConnectionWithCompletion:(id)completion;
 - (void)_notifyEndpointsChanged;
 - (void)_registerForPerRoutingContextNotifications;
 - (void)_reloadAvailableDistantEndpoints;
-- (void)_reloadAvailableDistantEndpointsWithEndpoints:(id)a3;
+- (void)_reloadAvailableDistantEndpointsWithEndpoints:(id)endpoints;
 - (void)_reloadAvailableDistantOutputDevices;
-- (void)_reloadAvailableDistantOutputDevicesWithOutputDevices:(id)a3;
+- (void)_reloadAvailableDistantOutputDevicesWithOutputDevices:(id)devices;
 - (void)_reloadHostedRoutingServiceDiscoveryMode;
-- (void)configurationWithCompletion:(id)a3;
+- (void)configurationWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)setDiscoveryMode:(unsigned int)a3;
-- (void)setHostedRoutingSessionConnection:(id)a3;
-- (void)setRoutingContextUID:(id)a3;
+- (void)setDiscoveryMode:(unsigned int)mode;
+- (void)setHostedRoutingSessionConnection:(id)connection;
+- (void)setRoutingContextUID:(id)d;
 @end
 
 @implementation MRAVDistantRoutingDiscoverySession
@@ -55,8 +55,8 @@
         }
 
         v7 = *(*(&v38 + 1) + 8 * i);
-        v8 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v8 removeObserver:v7];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter removeObserver:v7];
       }
 
       v4 = [(NSArray *)v3 countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -82,7 +82,7 @@
   v35[3] = &unk_1E769B178;
   objc_copyWeak(&v36, &location);
   v13 = MEMORY[0x1A58E3570](v35);
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v15 = self->_localEndpoint;
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
@@ -90,9 +90,9 @@
   v33[3] = &unk_1E769E710;
   v16 = v13;
   v34 = v16;
-  v17 = [v14 addObserverForName:@"MRAVEndpointDidAddOutputDeviceNotification" object:v15 queue:0 usingBlock:v33];
+  v17 = [defaultCenter2 addObserverForName:@"MRAVEndpointDidAddOutputDeviceNotification" object:v15 queue:0 usingBlock:v33];
 
-  v18 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
   v19 = self->_localEndpoint;
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
@@ -100,9 +100,9 @@
   v31[3] = &unk_1E769E710;
   v20 = v16;
   v32 = v20;
-  v21 = [v18 addObserverForName:@"MRAVEndpointDidRemoveOutputDeviceNotification" object:v19 queue:0 usingBlock:v31];
+  v21 = [defaultCenter3 addObserverForName:@"MRAVEndpointDidRemoveOutputDeviceNotification" object:v19 queue:0 usingBlock:v31];
 
-  v22 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
   v23 = self->_localEndpoint;
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
@@ -110,7 +110,7 @@
   v29[3] = &unk_1E769E710;
   v24 = v20;
   v30 = v24;
-  v25 = [v22 addObserverForName:@"MRAVEndpointDidChangeOutputDeviceNotification" object:v23 queue:0 usingBlock:v29];
+  v25 = [defaultCenter4 addObserverForName:@"MRAVEndpointDidChangeOutputDeviceNotification" object:v23 queue:0 usingBlock:v29];
 
   v26 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v17, v21, v25, 0}];
   v27 = self->_notificationTokens;
@@ -153,8 +153,8 @@ void __49__MRAVDistantRoutingDiscoverySession_description__block_invoke(uint64_t
 
 - (id)availableEndpoints
 {
-  v3 = [(MRAVDistantRoutingDiscoverySession *)self distantEndpoints];
-  v4 = [(MRAVDistantRoutingDiscoverySession *)self _resolveEndpoints:v3];
+  distantEndpoints = [(MRAVDistantRoutingDiscoverySession *)self distantEndpoints];
+  v4 = [(MRAVDistantRoutingDiscoverySession *)self _resolveEndpoints:distantEndpoints];
 
   return v4;
 }
@@ -216,9 +216,9 @@ void __58__MRAVDistantRoutingDiscoverySession_distantOutputDevices__block_invoke
 
 - (void)_reloadHostedRoutingServiceDiscoveryMode
 {
-  v4 = [(MRAVDistantRoutingDiscoverySession *)self _hostedRoutingConnection];
-  v3 = [v4 remoteObjectProxy];
-  [v3 setDiscoveryMode:-[MRAVDistantRoutingDiscoverySession discoveryMode](self withCompletion:{"discoveryMode"), &__block_literal_global_121}];
+  _hostedRoutingConnection = [(MRAVDistantRoutingDiscoverySession *)self _hostedRoutingConnection];
+  remoteObjectProxy = [_hostedRoutingConnection remoteObjectProxy];
+  [remoteObjectProxy setDiscoveryMode:-[MRAVDistantRoutingDiscoverySession discoveryMode](self withCompletion:{"discoveryMode"), &__block_literal_global_121}];
 }
 
 - (id)_hostedRoutingConnection
@@ -278,14 +278,14 @@ void __58__MRAVDistantRoutingDiscoverySession_distantOutputDevices__block_invoke
 - (void)_reloadAvailableDistantEndpoints
 {
   objc_initWeak(&location, self);
-  v3 = [(MRAVDistantRoutingDiscoverySession *)self _hostedRoutingConnection];
-  v4 = [v3 remoteObjectProxy];
+  _hostedRoutingConnection = [(MRAVDistantRoutingDiscoverySession *)self _hostedRoutingConnection];
+  remoteObjectProxy = [_hostedRoutingConnection remoteObjectProxy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __70__MRAVDistantRoutingDiscoverySession__reloadAvailableDistantEndpoints__block_invoke;
   v5[3] = &unk_1E769E828;
   objc_copyWeak(&v6, &location);
-  [v4 getAvailableEndpointsWithCompletion:v5];
+  [remoteObjectProxy getAvailableEndpointsWithCompletion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -294,14 +294,14 @@ void __58__MRAVDistantRoutingDiscoverySession_distantOutputDevices__block_invoke
 - (void)_reloadAvailableDistantOutputDevices
 {
   objc_initWeak(&location, self);
-  v3 = [(MRAVDistantRoutingDiscoverySession *)self _hostedRoutingConnection];
-  v4 = [v3 remoteObjectProxy];
+  _hostedRoutingConnection = [(MRAVDistantRoutingDiscoverySession *)self _hostedRoutingConnection];
+  remoteObjectProxy = [_hostedRoutingConnection remoteObjectProxy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __74__MRAVDistantRoutingDiscoverySession__reloadAvailableDistantOutputDevices__block_invoke;
   v5[3] = &unk_1E769E828;
   objc_copyWeak(&v6, &location);
-  [v4 getAvailableOutputDevicesWithCompletion:v5];
+  [remoteObjectProxy getAvailableOutputDevicesWithCompletion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -318,16 +318,16 @@ void __62__MRAVDistantRoutingDiscoverySession__hostedRoutingConnection__block_in
 
 - (unsigned)discoveryMode
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 0;
   v5[1] = v5;
   v5[2] = 0x2020000000;
   v6 = 0;
   serialQueue = self->_serialQueue;
   msv_dispatch_sync_on_queue();
-  LODWORD(v2) = v2->_discoveryMode;
+  LODWORD(selfCopy) = selfCopy->_discoveryMode;
   _Block_object_dispose(v5, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (MRAVDistantEndpoint)distantLocalEndpoint
@@ -485,12 +485,12 @@ void __61__MRAVDistantRoutingDiscoverySession__notifyEndpointsChanged__block_inv
   *(v6 + 40) = v5;
 }
 
-- (MRAVDistantRoutingDiscoverySession)initWithConfiguration:(id)a3
+- (MRAVDistantRoutingDiscoverySession)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v33.receiver = self;
   v33.super_class = MRAVDistantRoutingDiscoverySession;
-  v5 = [(MRAVRoutingDiscoverySession *)&v33 initWithConfiguration:v4];
+  v5 = [(MRAVRoutingDiscoverySession *)&v33 initWithConfiguration:configurationCopy];
   if (v5)
   {
     v6 = objc_opt_class();
@@ -501,13 +501,13 @@ void __61__MRAVDistantRoutingDiscoverySession__notifyEndpointsChanged__block_inv
     v5->_serialQueue = v9;
 
     v5->_discoveryMode = 0;
-    v11 = [v4 routingContextUID];
+    routingContextUID = [configurationCopy routingContextUID];
     routingContextUID = v5->_routingContextUID;
-    v5->_routingContextUID = v11;
+    v5->_routingContextUID = routingContextUID;
 
-    v5->_endpointFeatures = [v4 features];
+    v5->_endpointFeatures = [configurationCopy features];
     v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v14 = MRMediaRemoteEndpointFeaturesDescription([v4 features]);
+    v14 = MRMediaRemoteEndpointFeaturesDescription([configurationCopy features]);
     v15 = [v13 initWithFormat:@"Distant.%@", v14];
 
     v16 = [MRRollingWindowActivityTracker alloc];
@@ -584,7 +584,7 @@ void __80__MRAVDistantRoutingDiscoverySession__registerForPerRoutingContextNotif
   [(MRAVDistantRoutingDiscoverySession *)&v3 dealloc];
 }
 
-- (void)setDiscoveryMode:(unsigned int)a3
+- (void)setDiscoveryMode:(unsigned int)mode
 {
   v16 = 0;
   v17 = &v16;
@@ -599,7 +599,7 @@ void __80__MRAVDistantRoutingDiscoverySession__registerForPerRoutingContextNotif
   block[1] = 3221225472;
   block[2] = __55__MRAVDistantRoutingDiscoverySession_setDiscoveryMode___block_invoke;
   block[3] = &unk_1E769E738;
-  v11 = a3;
+  modeCopy = mode;
   block[4] = self;
   block[5] = &v12;
   block[6] = &v16;
@@ -611,7 +611,7 @@ void __80__MRAVDistantRoutingDiscoverySession__registerForPerRoutingContextNotif
     v8[2] = __55__MRAVDistantRoutingDiscoverySession_setDiscoveryMode___block_invoke_91;
     v8[3] = &unk_1E769E760;
     v8[4] = self;
-    v9 = a3;
+    modeCopy2 = mode;
     v6 = MEMORY[0x1A58E3570](v8);
     v7 = v6;
     if (*(v13 + 24) == 1)
@@ -719,8 +719,8 @@ uint64_t __55__MRAVDistantRoutingDiscoverySession_setDiscoveryMode___block_invok
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(MRAVDistantRoutingDiscoverySession *)self _hostedRoutingConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_42];
+  _hostedRoutingConnection = [(MRAVDistantRoutingDiscoverySession *)self _hostedRoutingConnection];
+  v3 = [_hostedRoutingConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_42];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __60__MRAVDistantRoutingDiscoverySession_devicePresenceDetected__block_invoke_93;
@@ -728,9 +728,9 @@ uint64_t __55__MRAVDistantRoutingDiscoverySession_setDiscoveryMode___block_invok
   v5[4] = &v6;
   [v3 getDevicePresenceDetectedWithCompletion:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(_hostedRoutingConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return _hostedRoutingConnection;
 }
 
 void __60__MRAVDistantRoutingDiscoverySession_devicePresenceDetected__block_invoke(uint64_t a1, void *a2)
@@ -791,17 +791,17 @@ void __55__MRAVDistantRoutingDiscoverySession_routingContextUID__block_invoke(ui
   *(v3 + 40) = v2;
 }
 
-- (void)setRoutingContextUID:(id)a3
+- (void)setRoutingContextUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   serialQueue = self->_serialQueue;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __59__MRAVDistantRoutingDiscoverySession_setRoutingContextUID___block_invoke;
   v10 = &unk_1E769A4A0;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = dCopy;
+  v6 = dCopy;
   dispatch_sync(serialQueue, &v7);
   [(MRAVDistantRoutingDiscoverySession *)self _reloadAvailableDistantEndpoints:v7];
 }
@@ -822,17 +822,17 @@ uint64_t __59__MRAVDistantRoutingDiscoverySession_setRoutingContextUID___block_i
   return [v2 _registerForPerRoutingContextNotifications];
 }
 
-- (void)setHostedRoutingSessionConnection:(id)a3
+- (void)setHostedRoutingSessionConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   serialQueue = self->_serialQueue;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __72__MRAVDistantRoutingDiscoverySession_setHostedRoutingSessionConnection___block_invoke;
   v10 = &unk_1E769A4A0;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_sync(serialQueue, &v7);
   [(MRAVDistantRoutingDiscoverySession *)self _reloadHostedRoutingServiceDiscoveryMode:v7];
   [(MRAVDistantRoutingDiscoverySession *)self _reloadAvailableDistantEndpoints];
@@ -1119,16 +1119,16 @@ id __54__MRAVDistantRoutingDiscoverySession_debugDescription__block_invoke_2(uin
   return v6;
 }
 
-- (void)configurationWithCompletion:(id)a3
+- (void)configurationWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [(MRAVRoutingDiscoverySession *)self configuration];
-  (*(a3 + 2))(v5, v6);
+  completionCopy = completion;
+  configuration = [(MRAVRoutingDiscoverySession *)self configuration];
+  (*(completion + 2))(completionCopy, configuration);
 }
 
-- (void)_initializeHostedRoutingConnectionWithCompletion:(id)a3
+- (void)_initializeHostedRoutingConnectionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = MRGetSharedService();
   endpointFeatures = self->_endpointFeatures;
@@ -1139,7 +1139,7 @@ id __54__MRAVDistantRoutingDiscoverySession_debugDescription__block_invoke_2(uin
   v10[2] = __87__MRAVDistantRoutingDiscoverySession__initializeHostedRoutingConnectionWithCompletion___block_invoke;
   v10[3] = &unk_1E769E7D8;
   objc_copyWeak(&v12, &location);
-  v9 = v4;
+  v9 = completionCopy;
   v10[4] = self;
   v11 = v9;
   MRMediaRemoteServiceGetHostedRoutingXPCEndpoint(v5, endpointFeatures, v8, v10);
@@ -1210,34 +1210,34 @@ LABEL_16:
 LABEL_18:
 }
 
-- (void)_reloadAvailableDistantEndpointsWithEndpoints:(id)a3
+- (void)_reloadAvailableDistantEndpointsWithEndpoints:(id)endpoints
 {
-  v4 = a3;
+  endpointsCopy = endpoints;
   serialQueue = self->_serialQueue;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __84__MRAVDistantRoutingDiscoverySession__reloadAvailableDistantEndpointsWithEndpoints___block_invoke;
   v10 = &unk_1E769A4A0;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = endpointsCopy;
+  v6 = endpointsCopy;
   dispatch_sync(serialQueue, &v7);
   [(MRAVDistantRoutingDiscoverySession *)self _notifyEndpointsChanged:v7];
 }
 
-- (void)_reloadAvailableDistantOutputDevicesWithOutputDevices:(id)a3
+- (void)_reloadAvailableDistantOutputDevicesWithOutputDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   serialQueue = self->_serialQueue;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __92__MRAVDistantRoutingDiscoverySession__reloadAvailableDistantOutputDevicesWithOutputDevices___block_invoke;
   v10 = &unk_1E769A4A0;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = devicesCopy;
+  v6 = devicesCopy;
   dispatch_async(serialQueue, &v7);
-  [(MRAVRoutingDiscoverySession *)self notifyOutputDevicesChanged:v6, v7, v8, v9, v10, v11];
+  [(MRAVRoutingDiscoverySession *)self notifyOutputDevicesChanged:v6, v7, v8, v9, v10, selfCopy];
 }
 
 void __92__MRAVDistantRoutingDiscoverySession__reloadAvailableDistantOutputDevicesWithOutputDevices___block_invoke(uint64_t a1)
@@ -1248,14 +1248,14 @@ void __92__MRAVDistantRoutingDiscoverySession__reloadAvailableDistantOutputDevic
   *(v3 + 168) = v2;
 }
 
-- (id)_resolveDistantEndpoints:(id)a3
+- (id)_resolveDistantEndpoints:(id)endpoints
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __63__MRAVDistantRoutingDiscoverySession__resolveDistantEndpoints___block_invoke;
   v5[3] = &unk_1E769E850;
   v5[4] = self;
-  v3 = [a3 msv_compactMap:v5];
+  v3 = [endpoints msv_compactMap:v5];
 
   return v3;
 }
@@ -1278,14 +1278,14 @@ id __63__MRAVDistantRoutingDiscoverySession__resolveDistantEndpoints___block_inv
   return v5;
 }
 
-- (id)_resolveEndpoints:(id)a3
+- (id)_resolveEndpoints:(id)endpoints
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __56__MRAVDistantRoutingDiscoverySession__resolveEndpoints___block_invoke;
   v5[3] = &unk_1E769E850;
   v5[4] = self;
-  v3 = [a3 msv_compactMap:v5];
+  v3 = [endpoints msv_compactMap:v5];
 
   return v3;
 }

@@ -1,28 +1,28 @@
 @interface PKPaymentTransactionFees
-+ (id)_feesSetFromJsonString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFees:(id)a3;
-- (PKPaymentTransactionFees)initWithCloudStoreCoder:(id)a3;
-- (PKPaymentTransactionFees)initWithCoder:(id)a3;
-- (PKPaymentTransactionFees)initWithFeeItems:(id)a3;
-- (PKPaymentTransactionFees)initWithJsonString:(id)a3;
-- (id)_feeItemsFromRecord:(id)a3;
++ (id)_feesSetFromJsonString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFees:(id)fees;
+- (PKPaymentTransactionFees)initWithCloudStoreCoder:(id)coder;
+- (PKPaymentTransactionFees)initWithCoder:(id)coder;
+- (PKPaymentTransactionFees)initWithFeeItems:(id)items;
+- (PKPaymentTransactionFees)initWithJsonString:(id)string;
+- (id)_feeItemsFromRecord:(id)record;
 - (id)description;
 - (id)jsonArrayRepresentation;
 - (id)jsonString;
 - (unint64_t)hash;
-- (void)_encodeServerDataWithCloudStoreCoder:(id)a3;
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3;
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4;
+- (void)_encodeServerDataWithCloudStoreCoder:(id)coder;
+- (void)applyPropertiesFromCloudStoreRecord:(id)record;
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type;
 @end
 
 @implementation PKPaymentTransactionFees
 
-- (PKPaymentTransactionFees)initWithFeeItems:(id)a3
+- (PKPaymentTransactionFees)initWithFeeItems:(id)items
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  itemsCopy = items;
+  v6 = itemsCopy;
+  if (itemsCopy && [itemsCopy count])
   {
     v11.receiver = self;
     v11.super_class = PKPaymentTransactionFees;
@@ -30,25 +30,25 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_fees, a3);
+      objc_storeStrong(&v7->_fees, items);
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (PKPaymentTransactionFees)initWithJsonString:(id)a3
+- (PKPaymentTransactionFees)initWithJsonString:(id)string
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _feesSetFromJsonString:v4];
+  stringCopy = string;
+  v5 = [objc_opt_class() _feesSetFromJsonString:stringCopy];
 
   if (v5 && [v5 count])
   {
@@ -62,21 +62,21 @@
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)jsonArrayRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -96,8 +96,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionaryRepresentation];
-        [v3 safelyAddObject:v9];
+        jsonDictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) jsonDictionaryRepresentation];
+        [array safelyAddObject:jsonDictionaryRepresentation];
       }
 
       v6 = [(NSSet *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -106,7 +106,7 @@
     while (v6);
   }
 
-  v10 = [v3 copy];
+  v10 = [array copy];
 
   return v10;
 }
@@ -114,11 +114,11 @@
 - (id)jsonString
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [(PKPaymentTransactionFees *)self jsonArrayRepresentation];
-  if ([v2 count])
+  jsonArrayRepresentation = [(PKPaymentTransactionFees *)self jsonArrayRepresentation];
+  if ([jsonArrayRepresentation count])
   {
     v8 = 0;
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:2 error:&v8];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:jsonArrayRepresentation options:2 error:&v8];
     v4 = v8;
     if (v4)
     {
@@ -147,62 +147,62 @@
   return v6;
 }
 
-- (PKPaymentTransactionFees)initWithCloudStoreCoder:(id)a3
+- (PKPaymentTransactionFees)initWithCloudStoreCoder:(id)coder
 {
-  v4 = [a3 recordsWithRecordType:@"Transaction"];
-  v5 = [v4 firstObject];
+  v4 = [coder recordsWithRecordType:@"Transaction"];
+  firstObject = [v4 firstObject];
 
-  v6 = [(PKPaymentTransactionFees *)self _feeItemsFromRecord:v5];
+  v6 = [(PKPaymentTransactionFees *)self _feeItemsFromRecord:firstObject];
   v7 = [(PKPaymentTransactionFees *)self initWithFeeItems:v6];
 
   return v7;
 }
 
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3
+- (void)applyPropertiesFromCloudStoreRecord:(id)record
 {
-  v4 = [a3 recordsWithRecordType:@"Transaction"];
-  v8 = [v4 firstObject];
+  v4 = [record recordsWithRecordType:@"Transaction"];
+  firstObject = [v4 firstObject];
 
-  v5 = v8;
-  if (v8)
+  v5 = firstObject;
+  if (firstObject)
   {
-    v6 = [(PKPaymentTransactionFees *)self _feeItemsFromRecord:v8];
+    v6 = [(PKPaymentTransactionFees *)self _feeItemsFromRecord:firstObject];
     fees = self->_fees;
     self->_fees = v6;
 
-    v5 = v8;
+    v5 = firstObject;
   }
 }
 
-- (id)_feeItemsFromRecord:(id)a3
+- (id)_feeItemsFromRecord:(id)record
 {
-  v3 = [a3 pk_encryptedStringForKey:@"fees"];
+  v3 = [record pk_encryptedStringForKey:@"fees"];
   v4 = [objc_opt_class() _feesSetFromJsonString:v3];
 
   return v4;
 }
 
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type
 {
-  if (a4 - 1 <= 1)
+  if (type - 1 <= 1)
   {
-    [(PKPaymentTransactionFees *)self _encodeServerDataWithCloudStoreCoder:a3];
+    [(PKPaymentTransactionFees *)self _encodeServerDataWithCloudStoreCoder:coder];
   }
 }
 
-- (void)_encodeServerDataWithCloudStoreCoder:(id)a3
+- (void)_encodeServerDataWithCloudStoreCoder:(id)coder
 {
-  v4 = [a3 recordsWithRecordType:@"Transaction"];
-  v7 = [v4 firstObject];
+  v4 = [coder recordsWithRecordType:@"Transaction"];
+  firstObject = [v4 firstObject];
 
-  v5 = [v7 encryptedValues];
-  v6 = [(PKPaymentTransactionFees *)self jsonString];
-  [v5 setObject:v6 forKey:@"fees"];
+  encryptedValues = [firstObject encryptedValues];
+  jsonString = [(PKPaymentTransactionFees *)self jsonString];
+  [encryptedValues setObject:jsonString forKey:@"fees"];
 }
 
-- (PKPaymentTransactionFees)initWithCoder:(id)a3
+- (PKPaymentTransactionFees)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPaymentTransactionFees;
   v5 = [(PKPaymentTransactionFees *)&v12 init];
@@ -211,7 +211,7 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"fees"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"fees"];
     fees = v5->_fees;
     v5->_fees = v9;
   }
@@ -221,34 +221,34 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_fees];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_fees];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionFees *)self isEqualToFees:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionFees *)self isEqualToFees:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToFees:(id)a3
+- (BOOL)isEqualToFees:(id)fees
 {
   fees = self->_fees;
-  v4 = *(a3 + 1);
+  v4 = *(fees + 1);
   if (fees)
   {
     v5 = v4 == 0;
@@ -311,10 +311,10 @@
   return v3;
 }
 
-+ (id)_feesSetFromJsonString:(id)a3
++ (id)_feesSetFromJsonString:(id)string
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [string dataUsingEncoding:4];
   if (!v3)
   {
     v8 = 0;

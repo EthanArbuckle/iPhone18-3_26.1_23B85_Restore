@@ -1,7 +1,7 @@
 @interface EKAllDayRow
 - (EKAllDayRow)init;
 - (id)description;
-- (unint64_t)spaceGapFor:(id)a3;
+- (unint64_t)spaceGapFor:(id)for;
 @end
 
 @implementation EKAllDayRow
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (unint64_t)spaceGapFor:(id)a3
+- (unint64_t)spaceGapFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -44,7 +44,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) gapBetweenBlock:{v4, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * i) gapBetweenBlock:{forCopy, v13}];
         if (v11 == -1)
         {
           v8 = -1;
@@ -84,8 +84,8 @@ LABEL_14:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(EKAllDayRow *)self occurrenceBlocks];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  occurrenceBlocks = [(EKAllDayRow *)self occurrenceBlocks];
+  v5 = [occurrenceBlocks countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -96,7 +96,7 @@ LABEL_14:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(occurrenceBlocks);
         }
 
         v9 = [*(*(&v11 + 1) + 8 * i) description];
@@ -105,7 +105,7 @@ LABEL_14:
         [v3 appendString:@"\n"];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [occurrenceBlocks countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

@@ -1,7 +1,7 @@
 @interface NIServerFindableDeviceProxySessionManager
 + (id)sharedInstance;
 + (int)_queryNumPairedFinderWatches_r121951698;
-- (BOOL)_isTokenFindable:(id)a3;
+- (BOOL)_isTokenFindable:(id)findable;
 - (BOOL)_shouldApplyBTScanMitigation_r121951698;
 - (BOOL)_shouldHoldOSTransactionWhileFindable;
 - (id).cxx_construct;
@@ -9,67 +9,67 @@
 - (id)_initInternal;
 - (id)_internalPrepareTokenCache;
 - (id)_internalPrintableState;
-- (id)_internalSetFindableDiscoveryTokens:(id)a3 tokenGroup:(id)a4 logInEventBuffer:(BOOL)a5;
-- (id)_setTokenCacheForGroup:(id)a3;
+- (id)_internalSetFindableDiscoveryTokens:(id)tokens tokenGroup:(id)group logInEventBuffer:(BOOL)buffer;
+- (id)_setTokenCacheForGroup:(id)group;
 - (id)_tokensFromAllGroups;
-- (id)findableDiscoveryTokensForGroup:(id)a3;
-- (id)interactingFinderDiscoveryTokensForGroup:(id)a3;
+- (id)findableDiscoveryTokensForGroup:(id)group;
+- (id)interactingFinderDiscoveryTokensForGroup:(id)group;
 - (id)printableState;
-- (id)setFindableDiscoveryTokens:(id)a3 tokenGroup:(id)a4;
-- (id)setLocalDeviceDebugParameters:(id)a3;
-- (id)startBeingFindableWithDiscoveryTokens:(id)a3 tokenGroup:(id)a4;
-- (id)stopBeingFindableWithDiscoveryTokens:(id)a3 tokenGroup:(id)a4;
+- (id)setFindableDiscoveryTokens:(id)tokens tokenGroup:(id)group;
+- (id)setLocalDeviceDebugParameters:(id)parameters;
+- (id)startBeingFindableWithDiscoveryTokens:(id)tokens tokenGroup:(id)group;
+- (id)stopBeingFindableWithDiscoveryTokens:(id)tokens tokenGroup:(id)group;
 - (int)_selectedTechnology;
-- (void)DataCallback:(id)a3;
+- (void)DataCallback:(id)callback;
 - (void)_activateAssertionsWhileFindable;
 - (void)_activateAssertionsWhileInteracting;
 - (void)_activateProvidersLazy;
 - (void)_activateSensors;
-- (void)_advertiseAndRangeWithPeer:(id)a3 peerAdvertisement:(id)a4;
+- (void)_advertiseAndRangeWithPeer:(id)peer peerAdvertisement:(id)advertisement;
 - (void)_deactivateAssertionsWhileFindable;
 - (void)_deactivateAssertionsWhileInteracting;
 - (void)_deactivateSensors;
 - (void)_disableInteractionAndKeepPersistedTokens;
-- (void)_handleRangingTerminatedCallbackForPeer:(id)a3;
-- (void)_kickKeepAliveForPeer:(id)a3;
-- (void)_logDeviceFindingUsageAnalyticsForToken:(id)a3;
-- (void)_nanoRegistryDevicePairingChanged_r121951698:(id)a3;
-- (void)_nearbydLogRange:(double)a3 token:(id)a4;
-- (void)_setUpAlgorithmsContainerForToken:(id)a3;
+- (void)_handleRangingTerminatedCallbackForPeer:(id)peer;
+- (void)_kickKeepAliveForPeer:(id)peer;
+- (void)_logDeviceFindingUsageAnalyticsForToken:(id)token;
+- (void)_nanoRegistryDevicePairingChanged_r121951698:(id)changed_r121951698;
+- (void)_nearbydLogRange:(double)range token:(id)token;
+- (void)_setUpAlgorithmsContainerForToken:(id)token;
 - (void)_startAltitudeUpdates;
 - (void)_startDeviceMotionUpdates;
 - (void)_startDevicePDRUpdates;
 - (void)_startMotionActivityUpdates;
 - (void)_startPedometerDataUpdates;
 - (void)_startPedometerEventUpdates;
-- (void)_tearDownAlgorithmsContainerForToken:(id)a3;
-- (void)_updatePeerTrackingForToken:(id)a3 newKeepAliveTimeout:(id)a4;
-- (void)_updatePeerTrackingForToken:(id)a3 newNbUwbAcquisitionChannelIdx:(id)a4;
-- (void)_updatePeerTrackingForToken:(id)a3 newNbUwbAcquisitionUseLowPriorityDutyCycle:(id)a4;
-- (void)_updatePeerTrackingForToken:(id)a3 newOOBRefreshPeriod:(id)a4;
-- (void)_updatePeerTrackingForToken:(id)a3 newTrackingState:(id)a4;
-- (void)addObserver:(id)a3;
+- (void)_tearDownAlgorithmsContainerForToken:(id)token;
+- (void)_updatePeerTrackingForToken:(id)token newKeepAliveTimeout:(id)timeout;
+- (void)_updatePeerTrackingForToken:(id)token newNbUwbAcquisitionChannelIdx:(id)idx;
+- (void)_updatePeerTrackingForToken:(id)token newNbUwbAcquisitionUseLowPriorityDutyCycle:(id)cycle;
+- (void)_updatePeerTrackingForToken:(id)token newOOBRefreshPeriod:(id)period;
+- (void)_updatePeerTrackingForToken:(id)token newTrackingState:(id)state;
+- (void)addObserver:(id)observer;
 - (void)bluetoothDiscoveryBecameAvailable;
 - (void)bluetoothDiscoveryBecameUnavailable;
 - (void)bluetoothDiscoveryFinishedActivating;
-- (void)didAttemptRangingWithPeer:(id)a3 unsuccessfulSolution:(const void *)a4;
-- (void)didLosePeer:(id)a3;
-- (void)didRangeWithPeer:(id)a3 newSolution:(const void *)a4;
-- (void)didRangingAuthorizationFailForPeer:(id)a3;
-- (void)didReceiveRangingDataForPeer:(id)a3 algorithmAidingData:(const void *)a4 signallingData:(const void *)a5;
-- (void)didStopAdvertisingToPeer:(id)a3;
-- (void)didStopRangingWithPeer:(id)a3;
-- (void)didUpdateAdvertisement:(id)a3 toSendOOBToPeer:(id)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)didAttemptRangingWithPeer:(id)peer unsuccessfulSolution:(const void *)solution;
+- (void)didLosePeer:(id)peer;
+- (void)didRangeWithPeer:(id)peer newSolution:(const void *)solution;
+- (void)didRangingAuthorizationFailForPeer:(id)peer;
+- (void)didReceiveRangingDataForPeer:(id)peer algorithmAidingData:(const void *)data signallingData:(const void *)signallingData;
+- (void)didStopAdvertisingToPeer:(id)peer;
+- (void)didStopRangingWithPeer:(id)peer;
+- (void)didUpdateAdvertisement:(id)advertisement toSendOOBToPeer:(id)peer;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 - (void)notifyDeviceUnlockedSinceBoot;
-- (void)processClientDiscoveryEventForToken:(id)a3 sharedConfigurationData:(id)a4;
-- (void)processClientRemovePeerEventForToken:(id)a3;
-- (void)processVisionInput:(id)a3;
+- (void)processClientDiscoveryEventForToken:(id)token sharedConfigurationData:(id)data;
+- (void)processClientRemovePeerEventForToken:(id)token;
+- (void)processVisionInput:(id)input;
 - (void)rangingBecameAvailable;
 - (void)rangingBecameUnavailable;
-- (void)removeObserver:(id)a3;
-- (void)updatesEngine:(id)a3 didUpdateFindeeData:(const void *)a4 forToken:(id)a5;
+- (void)removeObserver:(id)observer;
+- (void)updatesEngine:(id)engine didUpdateFindeeData:(const void *)data forToken:(id)token;
 @end
 
 @implementation NIServerFindableDeviceProxySessionManager
@@ -277,12 +277,12 @@ LABEL_34:
   return v3;
 }
 
-- (id)_internalSetFindableDiscoveryTokens:(id)a3 tokenGroup:(id)a4 logInEventBuffer:(BOOL)a5
+- (id)_internalSetFindableDiscoveryTokens:(id)tokens tokenGroup:(id)group logInEventBuffer:(BOOL)buffer
 {
-  v5 = a5;
-  v8 = a3;
-  v44 = a4;
-  v42 = v8;
+  bufferCopy = buffer;
+  tokensCopy = tokens;
+  groupCopy = group;
+  v42 = tokensCopy;
   dispatch_assert_queue_V2(self->_queue);
   v52 = 0;
   v53 = &v52;
@@ -291,11 +291,11 @@ LABEL_34:
   v56 = sub_1002148D0;
   v57 = 0;
   [(NIServerFindableDeviceProxySessionManager *)self _activateProvidersLazy];
-  v41 = [NSSet setWithArray:v8];
-  v40 = [(NSMutableDictionary *)self->_groupedFindableTokens objectForKey:v44];
+  v41 = [NSSet setWithArray:tokensCopy];
+  v40 = [(NSMutableDictionary *)self->_groupedFindableTokens objectForKey:groupCopy];
   v39 = objc_opt_new();
   v9 = objc_opt_new();
-  v43 = v5;
+  v43 = bufferCopy;
   v49[0] = _NSConcreteStackBlock;
   v49[1] = 3221225472;
   v49[2] = sub_100215204;
@@ -317,10 +317,10 @@ LABEL_34:
   v14 = qword_1009F9820;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 allObjects];
-    v16 = sub_100346A18(v15, 10, 0);
+    allObjects = [v10 allObjects];
+    v16 = sub_100346A18(allObjects, 10, 0);
     *buf = 138478083;
-    v59 = v44;
+    v59 = groupCopy;
     v60 = 2113;
     v61 = v16;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#find-proxy,_internalSetFindableDiscoveryTokens. Group: %{private}@. New tokens: %{private}@", buf, 0x16u);
@@ -329,8 +329,8 @@ LABEL_34:
   v17 = qword_1009F9820;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v12 allObjects];
-    v19 = sub_100346A18(v18, 10, 0);
+    allObjects2 = [v12 allObjects];
+    v19 = sub_100346A18(allObjects2, 10, 0);
     *buf = 138477827;
     v59 = v19;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "#find-proxy,Old tokens: %{private}@.", buf, 0xCu);
@@ -339,8 +339,8 @@ LABEL_34:
   v20 = qword_1009F9820;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v13 allObjects];
-    v22 = sub_100346A18(v21, 10, 0);
+    allObjects3 = [v13 allObjects];
+    v22 = sub_100346A18(allObjects3, 10, 0);
     *buf = 138477827;
     v59 = v22;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "#find-proxy,Tokens added: %{private}@.", buf, 0xCu);
@@ -349,8 +349,8 @@ LABEL_34:
   v23 = qword_1009F9820;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v11 allObjects];
-    v25 = sub_100346A18(v24, 10, 0);
+    allObjects4 = [v11 allObjects];
+    v25 = sub_100346A18(allObjects4, 10, 0);
     *buf = 138477827;
     v59 = v25;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "#find-proxy,Tokens removed: %{private}@.", buf, 0xCu);
@@ -368,15 +368,15 @@ LABEL_34:
   if (v26)
   {
     v28 = [v10 mutableCopy];
-    [(NSMutableDictionary *)groupedFindableTokens setObject:v28 forKey:v44];
+    [(NSMutableDictionary *)groupedFindableTokens setObject:v28 forKey:groupCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_groupedFindableTokens removeObjectForKey:v44];
+    [(NSMutableDictionary *)self->_groupedFindableTokens removeObjectForKey:groupCopy];
   }
 
-  v29 = [(NIServerFindableDeviceProxySessionManager *)self _setTokenCacheForGroup:v44];
+  v29 = [(NIServerFindableDeviceProxySessionManager *)self _setTokenCacheForGroup:groupCopy];
   if (v29)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -389,15 +389,15 @@ LABEL_34:
 
   if ([(NIServerFindableDeviceProxySessionManager *)self _shouldInteract])
   {
-    v30 = [(NIServerFindableDeviceProxySessionManager *)self _enableInteractionWithPersistedTokens];
-    if (v30)
+    _enableInteractionWithPersistedTokens = [(NIServerFindableDeviceProxySessionManager *)self _enableInteractionWithPersistedTokens];
+    if (_enableInteractionWithPersistedTokens)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
         sub_1004AC468();
       }
 
-      objc_storeStrong(v53 + 5, v30);
+      objc_storeStrong(v53 + 5, _enableInteractionWithPersistedTokens);
     }
   }
 
@@ -423,7 +423,7 @@ LABEL_34:
       v33 = [v12 count];
       v34 = [v13 count];
       v35 = [v11 count];
-      v36 = [NSString stringWithFormat:@"Set tokens. Group: %@. New: %d. Old: %d. Added: %d. Removed: %d. Error: %@", v44, v32, v33, v34, v35, v53[5]];
+      v36 = [NSString stringWithFormat:@"Set tokens. Group: %@. New: %d. Old: %d. Added: %d. Removed: %d. Error: %@", groupCopy, v32, v33, v34, v35, v53[5]];
       sub_1003466C0(v36, &self->_tokenEventLogBuffer.__map_.__first_);
     }
   }
@@ -435,17 +435,17 @@ LABEL_34:
   return v37;
 }
 
-- (id)setFindableDiscoveryTokens:(id)a3 tokenGroup:(id)a4
+- (id)setFindableDiscoveryTokens:(id)tokens tokenGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  tokensCopy = tokens;
+  groupCopy = group;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109379;
-    *&buf[4] = [v6 count];
+    *&buf[4] = [tokensCopy count];
     LOWORD(v19) = 2113;
-    *(&v19 + 2) = v7;
+    *(&v19 + 2) = groupCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#find-proxy,setFindableDiscoveryTokens (%d tokens). Group: %{private}@", buf, 0x12u);
   }
 
@@ -461,11 +461,11 @@ LABEL_34:
   v14[2] = sub_100215640;
   v14[3] = &unk_10099ECE0;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = tokensCopy;
+  v16 = groupCopy;
   v17 = buf;
-  v10 = v7;
-  v11 = v6;
+  v10 = groupCopy;
+  v11 = tokensCopy;
   dispatch_sync(queue, v14);
   v12 = *(v19 + 40);
 
@@ -474,17 +474,17 @@ LABEL_34:
   return v12;
 }
 
-- (id)startBeingFindableWithDiscoveryTokens:(id)a3 tokenGroup:(id)a4
+- (id)startBeingFindableWithDiscoveryTokens:(id)tokens tokenGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  tokensCopy = tokens;
+  groupCopy = group;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109379;
-    *&buf[4] = [v6 count];
+    *&buf[4] = [tokensCopy count];
     LOWORD(v19) = 2113;
-    *(&v19 + 2) = v7;
+    *(&v19 + 2) = groupCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#find-proxy,startBeingFindableWithDiscoveryTokens (%d tokens to add). Group: %{private}@", buf, 0x12u);
   }
 
@@ -500,11 +500,11 @@ LABEL_34:
   v14[2] = sub_1002158D8;
   v14[3] = &unk_10099ECE0;
   v14[4] = self;
-  v15 = v7;
-  v16 = v6;
+  v15 = groupCopy;
+  v16 = tokensCopy;
   v17 = buf;
-  v10 = v6;
-  v11 = v7;
+  v10 = tokensCopy;
+  v11 = groupCopy;
   dispatch_sync(queue, v14);
   v12 = *(v19 + 40);
 
@@ -513,17 +513,17 @@ LABEL_34:
   return v12;
 }
 
-- (id)stopBeingFindableWithDiscoveryTokens:(id)a3 tokenGroup:(id)a4
+- (id)stopBeingFindableWithDiscoveryTokens:(id)tokens tokenGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  tokensCopy = tokens;
+  groupCopy = group;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109379;
-    *&buf[4] = [v6 count];
+    *&buf[4] = [tokensCopy count];
     LOWORD(v19) = 2113;
-    *(&v19 + 2) = v7;
+    *(&v19 + 2) = groupCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#find-proxy,stopBeingFindableWithDiscoveryTokens (%d tokens to remove). Group: %{private}@", buf, 0x12u);
   }
 
@@ -539,11 +539,11 @@ LABEL_34:
   v14[2] = sub_100215C10;
   v14[3] = &unk_10099ECE0;
   v14[4] = self;
-  v15 = v7;
-  v16 = v6;
+  v15 = groupCopy;
+  v16 = tokensCopy;
   v17 = buf;
-  v10 = v6;
-  v11 = v7;
+  v10 = tokensCopy;
+  v11 = groupCopy;
   dispatch_sync(queue, v14);
   v12 = *(v19 + 40);
 
@@ -552,9 +552,9 @@ LABEL_34:
   return v12;
 }
 
-- (id)setLocalDeviceDebugParameters:(id)a3
+- (id)setLocalDeviceDebugParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -568,52 +568,52 @@ LABEL_34:
   v9[2] = sub_100215E80;
   v9[3] = &unk_10098A2E8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = parametersCopy;
+  v7 = parametersCopy;
   dispatch_sync(queue, v9);
 
   return 0;
 }
 
-- (void)processClientDiscoveryEventForToken:(id)a3 sharedConfigurationData:(id)a4
+- (void)processClientDiscoveryEventForToken:(id)token sharedConfigurationData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  dataCopy = data;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100215F88;
   block[3] = &unk_10099BB28;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = dataCopy;
+  v13 = tokenCopy;
+  v9 = tokenCopy;
+  v10 = dataCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)processClientRemovePeerEventForToken:(id)a3
+- (void)processClientRemovePeerEventForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002163A0;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   dispatch_sync(queue, v7);
 }
 
-- (id)findableDiscoveryTokensForGroup:(id)a3
+- (id)findableDiscoveryTokensForGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138477827;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = groupCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-proxy,findableDiscoveryTokensForGroup: %{private}@", &buf, 0xCu);
   }
 
@@ -628,10 +628,10 @@ LABEL_34:
   block[1] = 3221225472;
   block[2] = sub_10021668C;
   block[3] = &unk_10099CF68;
-  v11 = v4;
+  v11 = groupCopy;
   p_buf = &buf;
   block[4] = self;
-  v7 = v4;
+  v7 = groupCopy;
   dispatch_sync(queue, block);
   v8 = *(*(&buf + 1) + 40);
 
@@ -640,14 +640,14 @@ LABEL_34:
   return v8;
 }
 
-- (id)interactingFinderDiscoveryTokensForGroup:(id)a3
+- (id)interactingFinderDiscoveryTokensForGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138477827;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = groupCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-proxy,interactingFinderDiscoveryTokensForGroup: %{private}@", &buf, 0xCu);
   }
 
@@ -663,9 +663,9 @@ LABEL_34:
   block[2] = sub_1002168CC;
   block[3] = &unk_10099ED58;
   block[4] = self;
-  v11 = v4;
+  v11 = groupCopy;
   p_buf = &buf;
-  v7 = v4;
+  v7 = groupCopy;
   dispatch_sync(queue, block);
   v8 = *(*(&buf + 1) + 40);
 
@@ -674,31 +674,31 @@ LABEL_34:
   return v8;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100216AD4;
   v7[3] = &unk_10098A2E8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100216DFC;
   v7[3] = &unk_10098A2E8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -766,12 +766,12 @@ LABEL_34:
   v86[4] = &v87;
   [(NSMutableDictionary *)groupedFindableTokens enumerateKeysAndObjectsUsingBlock:v86];
   v19 = v88[5];
-  v20 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider printableState];
-  [v19 addObjectsFromArray:v20];
+  printableState = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider printableState];
+  [v19 addObjectsFromArray:printableState];
 
   v21 = v88[5];
-  v22 = [(NIServerFindingRangingProvider *)self->_rangingProvider printableState];
-  [v21 addObjectsFromArray:v22];
+  printableState2 = [(NIServerFindingRangingProvider *)self->_rangingProvider printableState];
+  [v21 addObjectsFromArray:printableState2];
 
   v23 = v88[5];
   v24 = [NSString stringWithFormat:@"Tracking state for %d peers", [(NSMutableDictionary *)self->_peerTracking count]];
@@ -789,8 +789,8 @@ LABEL_34:
   [v26 addObject:v27];
 
   v28 = v88[5];
-  v29 = [(NSMutableDictionary *)self->_peerAlgorithmContainers allKeys];
-  v30 = sub_100346A18(v29, 10, 1);
+  allKeys = [(NSMutableDictionary *)self->_peerAlgorithmContainers allKeys];
+  v30 = sub_100346A18(allKeys, 10, 1);
   [v28 addObjectsFromArray:v30];
 
   v31 = v88[5];
@@ -798,8 +798,8 @@ LABEL_34:
   [v31 addObject:v32];
 
   v33 = v88[5];
-  v34 = [(NSMutableDictionary *)self->_keepAliveTimeoutTimers allKeys];
-  v35 = sub_100346A18(v34, 10, 1);
+  allKeys2 = [(NSMutableDictionary *)self->_keepAliveTimeoutTimers allKeys];
+  v35 = sub_100346A18(allKeys2, 10, 1);
   [v33 addObjectsFromArray:v35];
 
   v36 = v88[5];
@@ -1390,15 +1390,15 @@ LABEL_46:
   [(NIServerFindingRangingProvider *)rangingProvider activate];
 }
 
-- (void)_updatePeerTrackingForToken:(id)a3 newNbUwbAcquisitionChannelIdx:(id)a4
+- (void)_updatePeerTrackingForToken:(id)token newNbUwbAcquisitionChannelIdx:(id)idx
 {
-  v10 = a3;
-  v6 = a4;
+  tokenCopy = token;
+  idxCopy = idx;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(NSMutableDictionary *)self->_peerTracking objectForKey:v10];
+  v7 = [(NSMutableDictionary *)self->_peerTracking objectForKey:tokenCopy];
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_peerTracking objectForKey:v10];
+    v8 = [(NSMutableDictionary *)self->_peerTracking objectForKey:tokenCopy];
     v9 = [v8 copy];
   }
 
@@ -1407,19 +1407,19 @@ LABEL_46:
     v9 = +[NIServerFindingPeerTracking peerTrackingInitialState];
   }
 
-  [v9 setNbUwbAcquisitionChannelIdx:v6];
-  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v10 newTrackingState:v9];
+  [v9 setNbUwbAcquisitionChannelIdx:idxCopy];
+  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:tokenCopy newTrackingState:v9];
 }
 
-- (void)_updatePeerTrackingForToken:(id)a3 newNbUwbAcquisitionUseLowPriorityDutyCycle:(id)a4
+- (void)_updatePeerTrackingForToken:(id)token newNbUwbAcquisitionUseLowPriorityDutyCycle:(id)cycle
 {
-  v10 = a3;
-  v6 = a4;
+  tokenCopy = token;
+  cycleCopy = cycle;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(NSMutableDictionary *)self->_peerTracking objectForKey:v10];
+  v7 = [(NSMutableDictionary *)self->_peerTracking objectForKey:tokenCopy];
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_peerTracking objectForKey:v10];
+    v8 = [(NSMutableDictionary *)self->_peerTracking objectForKey:tokenCopy];
     v9 = [v8 copy];
   }
 
@@ -1428,19 +1428,19 @@ LABEL_46:
     v9 = +[NIServerFindingPeerTracking peerTrackingInitialState];
   }
 
-  [v9 setNbUwbAcquisitionUseLowPriorityDutyCycle:v6];
-  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v10 newTrackingState:v9];
+  [v9 setNbUwbAcquisitionUseLowPriorityDutyCycle:cycleCopy];
+  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:tokenCopy newTrackingState:v9];
 }
 
-- (void)_updatePeerTrackingForToken:(id)a3 newOOBRefreshPeriod:(id)a4
+- (void)_updatePeerTrackingForToken:(id)token newOOBRefreshPeriod:(id)period
 {
-  v10 = a3;
-  v6 = a4;
+  tokenCopy = token;
+  periodCopy = period;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(NSMutableDictionary *)self->_peerTracking objectForKey:v10];
+  v7 = [(NSMutableDictionary *)self->_peerTracking objectForKey:tokenCopy];
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_peerTracking objectForKey:v10];
+    v8 = [(NSMutableDictionary *)self->_peerTracking objectForKey:tokenCopy];
     v9 = [v8 copy];
   }
 
@@ -1449,19 +1449,19 @@ LABEL_46:
     v9 = +[NIServerFindingPeerTracking peerTrackingInitialState];
   }
 
-  [v9 setOobRefreshPeriodSeconds:v6];
-  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v10 newTrackingState:v9];
+  [v9 setOobRefreshPeriodSeconds:periodCopy];
+  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:tokenCopy newTrackingState:v9];
 }
 
-- (void)_updatePeerTrackingForToken:(id)a3 newKeepAliveTimeout:(id)a4
+- (void)_updatePeerTrackingForToken:(id)token newKeepAliveTimeout:(id)timeout
 {
-  v10 = a3;
-  v6 = a4;
+  tokenCopy = token;
+  timeoutCopy = timeout;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(NSMutableDictionary *)self->_peerTracking objectForKey:v10];
+  v7 = [(NSMutableDictionary *)self->_peerTracking objectForKey:tokenCopy];
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_peerTracking objectForKey:v10];
+    v8 = [(NSMutableDictionary *)self->_peerTracking objectForKey:tokenCopy];
     v9 = [v8 copy];
   }
 
@@ -1470,20 +1470,20 @@ LABEL_46:
     v9 = +[NIServerFindingPeerTracking peerTrackingInitialState];
   }
 
-  [v9 setKeepAliveTimeoutSeconds:v6];
-  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v10 newTrackingState:v9];
+  [v9 setKeepAliveTimeoutSeconds:timeoutCopy];
+  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:tokenCopy newTrackingState:v9];
 }
 
-- (void)_updatePeerTrackingForToken:(id)a3 newTrackingState:(id)a4
+- (void)_updatePeerTrackingForToken:(id)token newTrackingState:(id)state
 {
-  v6 = a3;
-  v116 = a4;
+  tokenCopy = token;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [v116 copy];
-  v8 = [(NSMutableDictionary *)self->_peerTracking objectForKey:v6];
+  v7 = [stateCopy copy];
+  v8 = [(NSMutableDictionary *)self->_peerTracking objectForKey:tokenCopy];
   if (v8)
   {
-    v9 = [(NSMutableDictionary *)self->_peerTracking objectForKey:v6];
+    v9 = [(NSMutableDictionary *)self->_peerTracking objectForKey:tokenCopy];
     v10 = [v9 copy];
   }
 
@@ -1532,16 +1532,16 @@ LABEL_46:
 
   if (([v10 isEqual:v7] & 1) == 0)
   {
-    v12 = [v7 isDoingAnything];
+    isDoingAnything = [v7 isDoingAnything];
     peerTracking = self->_peerTracking;
-    if (v12)
+    if (isDoingAnything)
     {
-      [(NSMutableDictionary *)peerTracking setObject:v7 forKey:v6];
+      [(NSMutableDictionary *)peerTracking setObject:v7 forKey:tokenCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)peerTracking removeObjectForKey:v6];
+      [(NSMutableDictionary *)peerTracking removeObjectForKey:tokenCopy];
     }
 
     if (([v10 isDoingAnything] & 1) == 0 && objc_msgSend(v7, "isDoingAnything"))
@@ -1549,14 +1549,14 @@ LABEL_46:
       v14 = qword_1009F9820;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = sub_1003464D4("SessionStarted", 0, v6, 0);
+        v15 = sub_1003464D4("SessionStarted", 0, tokenCopy, 0);
         LODWORD(buf) = 138412290;
         *(&buf + 4) = v15;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", &buf, 0xCu);
       }
 
-      v16 = [v6 descriptionInternal];
-      v17 = [NSString stringWithFormat:@"%@: SessionStarted", v16];
+      descriptionInternal = [tokenCopy descriptionInternal];
+      v17 = [NSString stringWithFormat:@"%@: SessionStarted", descriptionInternal];
       sub_1003466C0(v17, &self->_sessionEventLogBuffer.__map_.__first_);
     }
 
@@ -1564,14 +1564,14 @@ LABEL_46:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v19 = [NSString stringWithFormat:@"Change: %@ -> %@", v10, v7];
-      v20 = sub_1003464D4("StateChange", 0, v6, v19);
+      v20 = sub_1003464D4("StateChange", 0, tokenCopy, v19);
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v20;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", &buf, 0xCu);
     }
 
-    v21 = [v6 descriptionInternal];
-    v22 = [NSString stringWithFormat:@"%@: %@", v21, v7];
+    descriptionInternal2 = [tokenCopy descriptionInternal];
+    v22 = [NSString stringWithFormat:@"%@: %@", descriptionInternal2, v7];
     sub_1003466C0(v22, &self->_sessionEventLogBuffer.__map_.__first_);
 
     *&buf = 0;
@@ -1618,62 +1618,62 @@ LABEL_46:
       block[2] = sub_10021AA3C;
       block[3] = &unk_10098A2E8;
       block[4] = self;
-      v118 = v6;
+      v118 = tokenCopy;
       dispatch_async(queue, block);
     }
 
     if (([v10 isDoingAnything] & 1) == 0 && objc_msgSend(v7, "isDoingAnything"))
     {
-      [(NIServerFindableDeviceProxySessionManager *)self _setUpAlgorithmsContainerForToken:v6];
+      [(NIServerFindableDeviceProxySessionManager *)self _setUpAlgorithmsContainerForToken:tokenCopy];
     }
 
     if ([v10 isDoingAnything] && (objc_msgSend(v7, "isDoingAnything") & 1) == 0)
     {
-      [(NIServerFindableDeviceProxySessionManager *)self _tearDownAlgorithmsContainerForToken:v6];
+      [(NIServerFindableDeviceProxySessionManager *)self _tearDownAlgorithmsContainerForToken:tokenCopy];
     }
 
     if (([v10 hasReceivedRangingData] & 1) == 0 && objc_msgSend(v7, "hasReceivedRangingData"))
     {
-      v25 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:v6];
-      v26 = [v25 updatesEngine];
-      [v26 acceptDiscoveryEventForPeer:v6];
+      v25 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:tokenCopy];
+      updatesEngine = [v25 updatesEngine];
+      [updatesEngine acceptDiscoveryEventForPeer:tokenCopy];
 
-      v27 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:v6];
-      v28 = [v27 analyticsManager];
-      v29 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:v6];
-      v30 = [v29 configuration];
-      [v28 sessionSuccessfullyRanWithConfig:v30 withTimestamp:sub_100005288()];
+      v27 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:tokenCopy];
+      analyticsManager = [v27 analyticsManager];
+      v29 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:tokenCopy];
+      configuration = [v29 configuration];
+      [analyticsManager sessionSuccessfullyRanWithConfig:configuration withTimestamp:sub_100005288()];
     }
 
     if ([v10 isAttemptingToRange] && (objc_msgSend(v7, "isAttemptingToRange") & 1) == 0)
     {
-      [(NIServerFindableDeviceProxySessionManager *)self _tearDownAlgorithmsContainerForToken:v6];
-      [(NIServerFindableDeviceProxySessionManager *)self _setUpAlgorithmsContainerForToken:v6];
+      [(NIServerFindableDeviceProxySessionManager *)self _tearDownAlgorithmsContainerForToken:tokenCopy];
+      [(NIServerFindableDeviceProxySessionManager *)self _setUpAlgorithmsContainerForToken:tokenCopy];
     }
 
-    v31 = [v7 nbUwbAcquisitionUseLowPriorityDutyCycle];
-    v32 = v31 == 0;
+    nbUwbAcquisitionUseLowPriorityDutyCycle = [v7 nbUwbAcquisitionUseLowPriorityDutyCycle];
+    v32 = nbUwbAcquisitionUseLowPriorityDutyCycle == 0;
 
     if (!v32)
     {
-      v33 = [v10 nbUwbAcquisitionUseLowPriorityDutyCycle];
-      v34 = v33 == 0;
+      nbUwbAcquisitionUseLowPriorityDutyCycle2 = [v10 nbUwbAcquisitionUseLowPriorityDutyCycle];
+      v34 = nbUwbAcquisitionUseLowPriorityDutyCycle2 == 0;
 
       if (v34)
       {
         v39 = qword_1009F9820;
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
-          v45 = [v7 nbUwbAcquisitionUseLowPriorityDutyCycle];
-          v46 = [v45 BOOLValue];
+          nbUwbAcquisitionUseLowPriorityDutyCycle3 = [v7 nbUwbAcquisitionUseLowPriorityDutyCycle];
+          bOOLValue = [nbUwbAcquisitionUseLowPriorityDutyCycle3 BOOLValue];
           v47 = "High";
-          if (v46)
+          if (bOOLValue)
           {
             v47 = "Low";
           }
 
           v48 = [NSString stringWithFormat:@"Configure. Priority: [Default] -> %s", v47];
-          v49 = sub_1003464D4("AcqDutyCycle", 0, v6, v48);
+          v49 = sub_1003464D4("AcqDutyCycle", 0, tokenCopy, v48);
           *v124 = 138412290;
           v125 = v49;
           _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", v124, 0xCu);
@@ -1682,12 +1682,12 @@ LABEL_46:
 
       else
       {
-        v35 = [v7 nbUwbAcquisitionUseLowPriorityDutyCycle];
-        v36 = [v35 BOOLValue];
-        v37 = [v10 nbUwbAcquisitionUseLowPriorityDutyCycle];
-        v38 = [v37 BOOLValue];
+        nbUwbAcquisitionUseLowPriorityDutyCycle4 = [v7 nbUwbAcquisitionUseLowPriorityDutyCycle];
+        bOOLValue2 = [nbUwbAcquisitionUseLowPriorityDutyCycle4 BOOLValue];
+        nbUwbAcquisitionUseLowPriorityDutyCycle5 = [v10 nbUwbAcquisitionUseLowPriorityDutyCycle];
+        bOOLValue3 = [nbUwbAcquisitionUseLowPriorityDutyCycle5 BOOLValue];
 
-        if (v36 == v38)
+        if (bOOLValue2 == bOOLValue3)
         {
           goto LABEL_78;
         }
@@ -1695,8 +1695,8 @@ LABEL_46:
         v39 = qword_1009F9820;
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
-          v115 = [v10 nbUwbAcquisitionUseLowPriorityDutyCycle];
-          if ([v115 BOOLValue])
+          nbUwbAcquisitionUseLowPriorityDutyCycle6 = [v10 nbUwbAcquisitionUseLowPriorityDutyCycle];
+          if ([nbUwbAcquisitionUseLowPriorityDutyCycle6 BOOLValue])
           {
             v40 = "Low";
           }
@@ -1706,8 +1706,8 @@ LABEL_46:
             v40 = "High";
           }
 
-          v41 = [v7 nbUwbAcquisitionUseLowPriorityDutyCycle];
-          if ([v41 BOOLValue])
+          nbUwbAcquisitionUseLowPriorityDutyCycle7 = [v7 nbUwbAcquisitionUseLowPriorityDutyCycle];
+          if ([nbUwbAcquisitionUseLowPriorityDutyCycle7 BOOLValue])
           {
             v42 = "Low";
           }
@@ -1718,7 +1718,7 @@ LABEL_46:
           }
 
           v43 = [NSString stringWithFormat:@"Reconfigure. Priority: %s -> %s", v40, v42];
-          v44 = sub_1003464D4("AcqDutyCycle", 0, v6, v43);
+          v44 = sub_1003464D4("AcqDutyCycle", 0, tokenCopy, v43);
           *v124 = 138412290;
           v125 = v44;
           _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", v124, 0xCu);
@@ -1727,26 +1727,26 @@ LABEL_46:
     }
 
 LABEL_78:
-    v50 = [v7 oobRefreshPeriodSeconds];
-    v51 = v50 == 0;
+    oobRefreshPeriodSeconds = [v7 oobRefreshPeriodSeconds];
+    v51 = oobRefreshPeriodSeconds == 0;
 
     if (v51)
     {
       goto LABEL_86;
     }
 
-    v52 = [v10 oobRefreshPeriodSeconds];
-    v53 = v52 == 0;
+    oobRefreshPeriodSeconds2 = [v10 oobRefreshPeriodSeconds];
+    v53 = oobRefreshPeriodSeconds2 == 0;
 
     if (v53)
     {
       v60 = qword_1009F9820;
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
-        v68 = [v7 oobRefreshPeriodSeconds];
-        [v68 doubleValue];
+        oobRefreshPeriodSeconds3 = [v7 oobRefreshPeriodSeconds];
+        [oobRefreshPeriodSeconds3 doubleValue];
         v70 = [NSString stringWithFormat:@"Configure. Period: [Default] -> %0.1f s", v69];
-        v71 = sub_1003464D4("OOBRefresh", 0, v6, v70);
+        v71 = sub_1003464D4("OOBRefresh", 0, tokenCopy, v70);
         *v124 = 138412290;
         v125 = v71;
         _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", v124, 0xCu);
@@ -1755,11 +1755,11 @@ LABEL_78:
 
     else
     {
-      v54 = [v7 oobRefreshPeriodSeconds];
-      [v54 doubleValue];
+      oobRefreshPeriodSeconds4 = [v7 oobRefreshPeriodSeconds];
+      [oobRefreshPeriodSeconds4 doubleValue];
       v56 = v55;
-      v57 = [v10 oobRefreshPeriodSeconds];
-      [v57 doubleValue];
+      oobRefreshPeriodSeconds5 = [v10 oobRefreshPeriodSeconds];
+      [oobRefreshPeriodSeconds5 doubleValue];
       v59 = v56 != v58;
 
       if (!v59)
@@ -1770,13 +1770,13 @@ LABEL_78:
       v60 = qword_1009F9820;
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
-        v61 = [v10 oobRefreshPeriodSeconds];
-        [v61 doubleValue];
+        oobRefreshPeriodSeconds6 = [v10 oobRefreshPeriodSeconds];
+        [oobRefreshPeriodSeconds6 doubleValue];
         v63 = v62;
-        v64 = [v7 oobRefreshPeriodSeconds];
-        [v64 doubleValue];
+        oobRefreshPeriodSeconds7 = [v7 oobRefreshPeriodSeconds];
+        [oobRefreshPeriodSeconds7 doubleValue];
         v66 = [NSString stringWithFormat:@"Reconfigure. Period: %0.1f s -> %0.1f s", v63, v65];
-        v67 = sub_1003464D4("OOBRefresh", 0, v6, v66);
+        v67 = sub_1003464D4("OOBRefresh", 0, tokenCopy, v66);
         *v124 = 138412290;
         v125 = v67;
         _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", v124, 0xCu);
@@ -1784,23 +1784,23 @@ LABEL_78:
     }
 
 LABEL_86:
-    v72 = [v7 keepAliveTimeoutSeconds];
-    v73 = v72 == 0;
+    keepAliveTimeoutSeconds = [v7 keepAliveTimeoutSeconds];
+    v73 = keepAliveTimeoutSeconds == 0;
 
     if (!v73)
     {
-      v74 = [v10 keepAliveTimeoutSeconds];
-      v75 = v74 == 0;
+      keepAliveTimeoutSeconds2 = [v10 keepAliveTimeoutSeconds];
+      v75 = keepAliveTimeoutSeconds2 == 0;
 
       if (v75)
       {
         v82 = qword_1009F9820;
         if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
         {
-          v90 = [v7 keepAliveTimeoutSeconds];
-          [v90 doubleValue];
+          keepAliveTimeoutSeconds3 = [v7 keepAliveTimeoutSeconds];
+          [keepAliveTimeoutSeconds3 doubleValue];
           v92 = [NSString stringWithFormat:@"Configure. Timeout: [None] -> %0.1f s", v91];
-          v93 = sub_1003464D4("KeepAlive", 0, v6, v92);
+          v93 = sub_1003464D4("KeepAlive", 0, tokenCopy, v92);
           *v124 = 138412290;
           v125 = v93;
           _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", v124, 0xCu);
@@ -1809,11 +1809,11 @@ LABEL_86:
         goto LABEL_93;
       }
 
-      v76 = [v7 keepAliveTimeoutSeconds];
-      [v76 doubleValue];
+      keepAliveTimeoutSeconds4 = [v7 keepAliveTimeoutSeconds];
+      [keepAliveTimeoutSeconds4 doubleValue];
       v78 = v77;
-      v79 = [v10 keepAliveTimeoutSeconds];
-      [v79 doubleValue];
+      keepAliveTimeoutSeconds5 = [v10 keepAliveTimeoutSeconds];
+      [keepAliveTimeoutSeconds5 doubleValue];
       v81 = v78 != v80;
 
       if (v81)
@@ -1821,13 +1821,13 @@ LABEL_86:
         v82 = qword_1009F9820;
         if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
         {
-          v83 = [v10 keepAliveTimeoutSeconds];
-          [v83 doubleValue];
+          keepAliveTimeoutSeconds6 = [v10 keepAliveTimeoutSeconds];
+          [keepAliveTimeoutSeconds6 doubleValue];
           v85 = v84;
-          v86 = [v7 keepAliveTimeoutSeconds];
-          [v86 doubleValue];
+          keepAliveTimeoutSeconds7 = [v7 keepAliveTimeoutSeconds];
+          [keepAliveTimeoutSeconds7 doubleValue];
           v88 = [NSString stringWithFormat:@"Reconfigure. Timeout: %0.1f s -> %0.1f s", v85, v87];
-          v89 = sub_1003464D4("KeepAlive", 0, v6, v88);
+          v89 = sub_1003464D4("KeepAlive", 0, tokenCopy, v88);
           *v124 = 138412290;
           v125 = v89;
           _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", v124, 0xCu);
@@ -1846,7 +1846,7 @@ LABEL_95:
         if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
         {
           v95 = [NSString stringWithFormat:@"Sent: %@", @"NILocalDeviceStartedInteractingWithTokenNotification"];
-          v96 = sub_1003464D4("NotifiedClient", 0, v6, v95);
+          v96 = sub_1003464D4("NotifiedClient", 0, tokenCopy, v95);
           *v124 = 138412290;
           v125 = v96;
           _os_log_impl(&_mh_execute_header, v94, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", v124, 0xCu);
@@ -1862,7 +1862,7 @@ LABEL_95:
         if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
         {
           v99 = [NSString stringWithFormat:@"Sent: %@", @"NILocalDeviceStoppedInteractingWithTokenNotification"];
-          v100 = sub_1003464D4("NotifiedClient", 0, v6, v99);
+          v100 = sub_1003464D4("NotifiedClient", 0, tokenCopy, v99);
           *v124 = 138412290;
           v125 = v100;
           _os_log_impl(&_mh_execute_header, v98, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", v124, 0xCu);
@@ -1877,17 +1877,17 @@ LABEL_95:
         v102 = qword_1009F9820;
         if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
         {
-          v103 = sub_1003464D4("SessionStopped", 0, v6, 0);
+          v103 = sub_1003464D4("SessionStopped", 0, tokenCopy, 0);
           *v124 = 138412290;
           v125 = v103;
           _os_log_impl(&_mh_execute_header, v102, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", v124, 0xCu);
         }
 
-        v104 = [v6 descriptionInternal];
-        v105 = [NSString stringWithFormat:@"%@: SessionStopped", v104];
-        sub_1003466C0(v105, &self->_sessionEventLogBuffer.__map_.__first_);
+        descriptionInternal3 = [tokenCopy descriptionInternal];
+        v104 = [NSString stringWithFormat:@"%@: SessionStopped", descriptionInternal3];
+        sub_1003466C0(v104, &self->_sessionEventLogBuffer.__map_.__first_);
 
-        [(NIServerFindableDeviceProxySessionManager *)self _logDeviceFindingUsageAnalyticsForToken:v6];
+        [(NIServerFindableDeviceProxySessionManager *)self _logDeviceFindingUsageAnalyticsForToken:tokenCopy];
       }
 
       _Block_object_dispose(&v120, 8);
@@ -1897,9 +1897,9 @@ LABEL_95:
 
     if ([v7 discoveryState] == 2)
     {
-      v106 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:v6];
-      v107 = [v106 analyticsManager];
-      [v107 updateWithAcquisitionReason:1];
+      v106 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:tokenCopy];
+      analyticsManager2 = [v106 analyticsManager];
+      [analyticsManager2 updateWithAcquisitionReason:1];
     }
 
     else
@@ -1909,24 +1909,24 @@ LABEL_95:
         goto LABEL_118;
       }
 
-      v106 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:v6];
-      v107 = [v106 analyticsManager];
-      [v107 updateWithAcquisitionReason:3];
+      v106 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:tokenCopy];
+      analyticsManager2 = [v106 analyticsManager];
+      [analyticsManager2 updateWithAcquisitionReason:3];
     }
 
 LABEL_118:
-    v108 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider discoveredPeers];
-    v109 = [v108 objectForKeyedSubscript:v6];
+    discoveredPeers = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider discoveredPeers];
+    v109 = [discoveredPeers objectForKeyedSubscript:tokenCopy];
     v110 = [v109 useCase] == 1;
 
     if (v110)
     {
       deviceFindingUsageAnalyticsInfo = self->_deviceFindingUsageAnalyticsInfo;
       v112 = objc_opt_new();
-      [(NSMutableDictionary *)deviceFindingUsageAnalyticsInfo setObject:v112 forKey:v6];
+      [(NSMutableDictionary *)deviceFindingUsageAnalyticsInfo setObject:v112 forKey:tokenCopy];
 
       v113 = +[NSDate now];
-      v114 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:v6];
+      v114 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:tokenCopy];
       [v114 setSessionStartTimestamp:v113];
     }
 
@@ -1936,16 +1936,16 @@ LABEL_118:
 LABEL_111:
 }
 
-- (void)_advertiseAndRangeWithPeer:(id)a3 peerAdvertisement:(id)a4
+- (void)_advertiseAndRangeWithPeer:(id)peer peerAdvertisement:(id)advertisement
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NIServerFindableDeviceProxySessionManager *)self _selectedTechnology];
-  v9 = [(NIServerFindingRangingProvider *)self->_rangingProvider canRangeWithPeer:v6 technology:v8];
-  v52 = [v7 canRange];
-  if (v7)
+  peerCopy = peer;
+  advertisementCopy = advertisement;
+  _selectedTechnology = [(NIServerFindableDeviceProxySessionManager *)self _selectedTechnology];
+  v9 = [(NIServerFindingRangingProvider *)self->_rangingProvider canRangeWithPeer:peerCopy technology:_selectedTechnology];
+  canRange = [advertisementCopy canRange];
+  if (advertisementCopy)
   {
-    [v7 supportedTechnologies];
+    [advertisementCopy supportedTechnologies];
   }
 
   else
@@ -1953,8 +1953,8 @@ LABEL_111:
     memset(__p, 0, sizeof(__p));
   }
 
-  LODWORD(v49) = sub_100346F20(__p, v8);
-  v54 = v8;
+  LODWORD(v49) = sub_100346F20(__p, _selectedTechnology);
+  v54 = _selectedTechnology;
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -1962,12 +1962,12 @@ LABEL_111:
   }
 
   v10 = [NIServerFindingAdvertisement alloc];
-  v11 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider advertisingAddress];
-  LODWORD(__p[0]) = v11;
-  WORD2(__p[0]) = WORD2(v11);
+  advertisingAddress = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider advertisingAddress];
+  LODWORD(__p[0]) = advertisingAddress;
+  WORD2(__p[0]) = WORD2(advertisingAddress);
   v12 = [(NIServerFindingAdvertisement *)v10 initForFinder:0 address:__p];
   [v12 setCanRange:v9];
-  [v12 setUseCase:{objc_msgSend(v7, "useCase")}];
+  [v12 setUseCase:{objc_msgSend(advertisementCopy, "useCase")}];
   LODWORD(__p[0]) = v54;
   v60 = 0;
   v61 = 0;
@@ -2002,9 +2002,9 @@ LABEL_111:
     sub_10000AD84(v15);
   }
 
-  if ([v7 narrowBandMask])
+  if ([advertisementCopy narrowBandMask])
   {
-    v17 = [v7 narrowBandMask];
+    narrowBandMask = [advertisementCopy narrowBandMask];
   }
 
   else
@@ -2014,7 +2014,7 @@ LABEL_111:
     v57 = 0;
     v55 = 0;
     sub_10019ECC8(&v55, __p, __p + 1, 1);
-    v17 = sub_100428064(&v55);
+    narrowBandMask = sub_100428064(&v55);
     if (v55)
     {
       v56 = v55;
@@ -2022,8 +2022,8 @@ LABEL_111:
     }
   }
 
-  v18 = v17 & v16;
-  [v12 setNarrowBandMask:v17 & v16];
+  v18 = narrowBandMask & v16;
+  [v12 setNarrowBandMask:narrowBandMask & v16];
   v19 = sub_10035D02C();
   v20 = *(v19 + 406);
   v21 = *(v19 + 407);
@@ -2039,14 +2039,14 @@ LABEL_111:
     sub_10000AD84(v21);
   }
 
-  v24 = sub_1004285C8(v23, [v7 mmsNumFragmentsOOB]);
+  v24 = sub_1004285C8(v23, [advertisementCopy mmsNumFragmentsOOB]);
   [v12 setMmsNumFragmentsOOB:v24];
   v25 = qword_1009F9820;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [v7 mmsNumFragmentsOOB];
+    mmsNumFragmentsOOB = [advertisementCopy mmsNumFragmentsOOB];
     LODWORD(__p[0]) = 67109632;
-    HIDWORD(__p[0]) = v26;
+    HIDWORD(__p[0]) = mmsNumFragmentsOOB;
     LOWORD(__p[1]) = 1024;
     *(&__p[1] + 2) = v23;
     HIWORD(__p[1]) = 1024;
@@ -2054,36 +2054,36 @@ LABEL_111:
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "#find-proxy,Finder advertisement.mmsNumFragmentsOOB %hu, localMmsNumFragmentsOOB %hu, sharedMmsNumFragmentsOOB %hu", __p, 0x14u);
   }
 
-  v27 = [(NSMutableDictionary *)self->_peerTracking objectForKey:v6];
-  v28 = [v27 nbUwbAcquisitionChannelIdx];
-  v29 = v28 == 0;
+  v27 = [(NSMutableDictionary *)self->_peerTracking objectForKey:peerCopy];
+  nbUwbAcquisitionChannelIdx = [v27 nbUwbAcquisitionChannelIdx];
+  v29 = nbUwbAcquisitionChannelIdx == 0;
 
   if (v29)
   {
-    v30 = [v6 getIRK];
-    v31 = [NSNumber numberWithInt:sub_100347044(5u, 0xBu, v30)];
+    getIRK = [peerCopy getIRK];
+    v31 = [NSNumber numberWithInt:sub_100347044(5u, 0xBu, getIRK)];
 
-    [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v6 newNbUwbAcquisitionChannelIdx:v31];
+    [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:peerCopy newNbUwbAcquisitionChannelIdx:v31];
   }
 
-  v32 = [(NSMutableDictionary *)self->_peerTracking objectForKey:v6];
-  v33 = [v32 nbUwbAcquisitionChannelIdx];
-  if (!v33)
+  v32 = [(NSMutableDictionary *)self->_peerTracking objectForKey:peerCopy];
+  nbUwbAcquisitionChannelIdx2 = [v32 nbUwbAcquisitionChannelIdx];
+  if (!nbUwbAcquisitionChannelIdx2)
   {
     __assert_rtn("[NIServerFindableDeviceProxySessionManager _advertiseAndRangeWithPeer:peerAdvertisement:]", "NIServerFindableDeviceProxySessionManager.mm", 1548, "[_peerTracking objectForKey:token].nbUwbAcquisitionChannelIdx != nil");
   }
 
-  v34 = [(NSMutableDictionary *)self->_peerTracking objectForKeyedSubscript:v6];
-  v35 = [v34 nbUwbAcquisitionChannelIdx];
-  [v12 setNbUwbAcquisitionChannelIdx:v35];
+  v34 = [(NSMutableDictionary *)self->_peerTracking objectForKeyedSubscript:peerCopy];
+  nbUwbAcquisitionChannelIdx3 = [v34 nbUwbAcquisitionChannelIdx];
+  [v12 setNbUwbAcquisitionChannelIdx:nbUwbAcquisitionChannelIdx3];
 
-  v36 = [(NSMutableDictionary *)self->_peerTracking objectForKeyedSubscript:v6];
-  v37 = [v36 oobRefreshPeriodSeconds];
-  [v12 setOobRefreshPeriodSeconds:v37];
+  v36 = [(NSMutableDictionary *)self->_peerTracking objectForKeyedSubscript:peerCopy];
+  oobRefreshPeriodSeconds = [v36 oobRefreshPeriodSeconds];
+  [v12 setOobRefreshPeriodSeconds:oobRefreshPeriodSeconds];
 
   v38 = sub_100346034(@"FindingBTAdvertisingTimeoutSecondsOverride", 120.0);
-  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v6 newAdvertisingState:1];
-  v39 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider startAdvertisingToPeer:v6 advertisement:v12 timeout:v38];
+  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:peerCopy newAdvertisingState:1];
+  v39 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider startAdvertisingToPeer:peerCopy advertisement:v12 timeout:v38];
   if (v39 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
   {
     sub_1004AC880();
@@ -2099,15 +2099,15 @@ LABEL_111:
     v40 = 0;
   }
 
-  if (v9 & v52 && (v40 & 1) != 0)
+  if (v9 & canRange && (v40 & 1) != 0)
   {
-    [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v6 newRangingState:1];
-    v53 = [(NSMutableDictionary *)self->_peerTracking objectForKey:v6];
-    v41 = [v53 nbUwbAcquisitionChannelIdx];
-    LOBYTE(__p[0]) = [v41 intValue];
+    [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:peerCopy newRangingState:1];
+    v53 = [(NSMutableDictionary *)self->_peerTracking objectForKey:peerCopy];
+    nbUwbAcquisitionChannelIdx4 = [v53 nbUwbAcquisitionChannelIdx];
+    LOBYTE(__p[0]) = [nbUwbAcquisitionChannelIdx4 intValue];
     BYTE1(__p[0]) = v18;
     BYTE2(__p[0]) = v24;
-    v42 = [(NSMutableDictionary *)self->_peerTracking objectForKeyedSubscript:v6];
+    v42 = [(NSMutableDictionary *)self->_peerTracking objectForKeyedSubscript:peerCopy];
     if ([v42 hasReceivedRangingData])
     {
       BYTE3(__p[0]) = 0;
@@ -2115,13 +2115,13 @@ LABEL_111:
 
     else
     {
-      v51 = [(NSMutableDictionary *)self->_peerTracking objectForKeyedSubscript:v6];
-      v45 = [v51 nbUwbAcquisitionUseLowPriorityDutyCycle];
-      if (v45)
+      v51 = [(NSMutableDictionary *)self->_peerTracking objectForKeyedSubscript:peerCopy];
+      nbUwbAcquisitionUseLowPriorityDutyCycle = [v51 nbUwbAcquisitionUseLowPriorityDutyCycle];
+      if (nbUwbAcquisitionUseLowPriorityDutyCycle)
       {
-        v46 = [(NSMutableDictionary *)self->_peerTracking objectForKeyedSubscript:v6];
-        v47 = [v46 nbUwbAcquisitionUseLowPriorityDutyCycle];
-        BYTE3(__p[0]) = [v47 BOOLValue];
+        v46 = [(NSMutableDictionary *)self->_peerTracking objectForKeyedSubscript:peerCopy];
+        nbUwbAcquisitionUseLowPriorityDutyCycle2 = [v46 nbUwbAcquisitionUseLowPriorityDutyCycle];
+        BYTE3(__p[0]) = [nbUwbAcquisitionUseLowPriorityDutyCycle2 BOOLValue];
       }
 
       else
@@ -2130,7 +2130,7 @@ LABEL_111:
       }
     }
 
-    v48 = [(NIServerFindingRangingProvider *)self->_rangingProvider startRangingWithPeer:v6 technology:v54 peerAdvertisement:v7 OOBRangingParameters:__p];
+    v48 = [(NIServerFindingRangingProvider *)self->_rangingProvider startRangingWithPeer:peerCopy technology:v54 peerAdvertisement:advertisementCopy OOBRangingParameters:__p];
     if (v48)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -2138,7 +2138,7 @@ LABEL_111:
         sub_1004AC8F0();
       }
 
-      [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v6 newRangingState:4];
+      [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:peerCopy newRangingState:4];
     }
   }
 
@@ -2153,7 +2153,7 @@ LABEL_111:
       WORD2(__p[1]) = 1024;
       *(&__p[1] + 6) = v9;
       WORD1(__p[2]) = 1024;
-      HIDWORD(__p[2]) = v52;
+      HIDWORD(__p[2]) = canRange;
       v63 = 1024;
       v64 = v50;
       v65 = 1024;
@@ -2202,18 +2202,18 @@ LABEL_111:
   return v3;
 }
 
-- (id)_setTokenCacheForGroup:(id)a3
+- (id)_setTokenCacheForGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_groupedFindableTokens objectForKey:v4];
+  groupCopy = group;
+  v5 = [(NSMutableDictionary *)self->_groupedFindableTokens objectForKey:groupCopy];
   v6 = [v5 count];
 
   if (v6)
   {
     v7 = [NIServerKeychainItem alloc];
-    v8 = [(NSMutableDictionary *)self->_groupedFindableTokens objectForKey:v4];
+    v8 = [(NSMutableDictionary *)self->_groupedFindableTokens objectForKey:groupCopy];
     v9 = [NIDiscoveryToken serialize:v8];
-    v10 = [(NIServerKeychainItem *)v7 initWithService:@"FindingTokens" account:v4 data:v9];
+    v10 = [(NIServerKeychainItem *)v7 initWithService:@"FindingTokens" account:groupCopy data:v9];
 
     v11 = +[NIServerKeychainManager sharedInstance];
     LOBYTE(v7) = [v11 writeItem:v10 synchronizable:0 systemKeychain:0];
@@ -2235,7 +2235,7 @@ LABEL_111:
   else
   {
     v13 = +[NIServerKeychainManager sharedInstance];
-    v14 = [v13 deleteItemWithService:@"FindingTokens" account:v4 synchronizable:0 systemKeychain:0];
+    v14 = [v13 deleteItemWithService:@"FindingTokens" account:groupCopy synchronizable:0 systemKeychain:0];
 
     if (v14)
     {
@@ -2269,9 +2269,9 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)_isTokenFindable:(id)a3
+- (BOOL)_isTokenFindable:(id)findable
 {
-  v4 = a3;
+  findableCopy = findable;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -2281,9 +2281,9 @@ LABEL_9:
   v8[1] = 3221225472;
   v8[2] = sub_10021B914;
   v8[3] = &unk_10099EE48;
-  v9 = v4;
+  v9 = findableCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = findableCopy;
   [(NSMutableDictionary *)groupedFindableTokens enumerateKeysAndObjectsUsingBlock:v8];
   LOBYTE(groupedFindableTokens) = *(v12 + 24);
 
@@ -2309,95 +2309,95 @@ LABEL_9:
   return v2;
 }
 
-- (void)_setUpAlgorithmsContainerForToken:(id)a3
+- (void)_setUpAlgorithmsContainerForToken:(id)token
 {
-  v7 = a3;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:v7];
+  v4 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:tokenCopy];
 
   if (!v4)
   {
     peerAlgorithmContainers = self->_peerAlgorithmContainers;
-    v6 = [[_FindableDeviceAlgorithmsContainer alloc] initWithToken:v7 queue:self->_queue delegate:self];
-    [(NSMutableDictionary *)peerAlgorithmContainers setObject:v6 forKey:v7];
+    v6 = [[_FindableDeviceAlgorithmsContainer alloc] initWithToken:tokenCopy queue:self->_queue delegate:self];
+    [(NSMutableDictionary *)peerAlgorithmContainers setObject:v6 forKey:tokenCopy];
   }
 }
 
-- (void)_tearDownAlgorithmsContainerForToken:(id)a3
+- (void)_tearDownAlgorithmsContainerForToken:(id)token
 {
-  v7 = a3;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:v7];
+  v4 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:tokenCopy];
 
   if (v4)
   {
-    v5 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:v7];
-    v6 = [v5 updatesEngine];
-    [v6 invalidate];
+    v5 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:tokenCopy];
+    updatesEngine = [v5 updatesEngine];
+    [updatesEngine invalidate];
 
-    [(NSMutableDictionary *)self->_peerAlgorithmContainers removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_peerAlgorithmContainers removeObjectForKey:tokenCopy];
   }
 }
 
-- (void)_logDeviceFindingUsageAnalyticsForToken:(id)a3
+- (void)_logDeviceFindingUsageAnalyticsForToken:(id)token
 {
-  v26 = a3;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:v26];
+  v4 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:tokenCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 firstDistance];
-    if (v6)
+    firstDistance = [v4 firstDistance];
+    if (firstDistance)
     {
-      v7 = [v5 sessionStartTimestamp];
-      if (!v7)
+      sessionStartTimestamp = [v5 sessionStartTimestamp];
+      if (!sessionStartTimestamp)
       {
 LABEL_11:
 
         goto LABEL_12;
       }
 
-      v8 = [v5 firstDistanceTimestamp];
-      if (!v8)
+      firstDistanceTimestamp = [v5 firstDistanceTimestamp];
+      if (!firstDistanceTimestamp)
       {
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      v9 = [v5 mostRecentDistanceTimestamp];
+      mostRecentDistanceTimestamp = [v5 mostRecentDistanceTimestamp];
 
-      if (v9)
+      if (mostRecentDistanceTimestamp)
       {
-        v10 = [v5 firstDistance];
-        [v10 doubleValue];
+        firstDistance2 = [v5 firstDistance];
+        [firstDistance2 doubleValue];
         v12 = v11;
-        v13 = [v5 mostRecentDistanceTimestamp];
-        v14 = [v5 firstDistanceTimestamp];
-        [v13 timeIntervalSinceDate:v14];
+        mostRecentDistanceTimestamp2 = [v5 mostRecentDistanceTimestamp];
+        firstDistanceTimestamp2 = [v5 firstDistanceTimestamp];
+        [mostRecentDistanceTimestamp2 timeIntervalSinceDate:firstDistanceTimestamp2];
         v16 = sub_1003463A0(0, v12, v15);
 
         if (v16)
         {
           v17 = +[NIServerUsageAnalyticsAggregator sharedInstance];
-          v18 = [v5 sessionStartTimestamp];
-          [v17 recordUWBUsage:5 date:v18];
+          sessionStartTimestamp2 = [v5 sessionStartTimestamp];
+          [v17 recordUWBUsage:5 date:sessionStartTimestamp2];
         }
 
-        v19 = [v5 firstDistance];
-        [v19 doubleValue];
+        firstDistance3 = [v5 firstDistance];
+        [firstDistance3 doubleValue];
         v21 = v20;
-        v22 = [v5 mostRecentDistanceTimestamp];
-        v23 = [v5 firstDistanceTimestamp];
-        [v22 timeIntervalSinceDate:v23];
+        mostRecentDistanceTimestamp3 = [v5 mostRecentDistanceTimestamp];
+        firstDistanceTimestamp3 = [v5 firstDistanceTimestamp];
+        [mostRecentDistanceTimestamp3 timeIntervalSinceDate:firstDistanceTimestamp3];
         v25 = sub_1003463A0(1u, v21, v24);
 
         if (v25)
         {
-          v6 = +[NIServerUsageAnalyticsAggregator sharedInstance];
-          v7 = [v5 sessionStartTimestamp];
-          [v6 recordUWBUsage:6 date:v7];
+          firstDistance = +[NIServerUsageAnalyticsAggregator sharedInstance];
+          sessionStartTimestamp = [v5 sessionStartTimestamp];
+          [firstDistance recordUWBUsage:6 date:sessionStartTimestamp];
           goto LABEL_10;
         }
       }
@@ -2405,20 +2405,20 @@ LABEL_10:
   }
 
 LABEL_12:
-  [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo removeObjectForKey:v26];
+  [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo removeObjectForKey:tokenCopy];
 }
 
-- (void)_nanoRegistryDevicePairingChanged_r121951698:(id)a3
+- (void)_nanoRegistryDevicePairingChanged_r121951698:(id)changed_r121951698
 {
-  v4 = a3;
+  changed_r121951698Copy = changed_r121951698;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10021BE7C;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changed_r121951698Copy;
+  v6 = changed_r121951698Copy;
   dispatch_async(queue, v7);
 }
 
@@ -2478,8 +2478,8 @@ LABEL_12:
       v9 = @"com.apple.findmy.findmylocated";
     }
 
-    v11 = [(NIServerFindableDeviceProxySessionManager *)self _tokensFromAllGroups];
-    v12 = [v11 count];
+    _tokensFromAllGroups = [(NIServerFindableDeviceProxySessionManager *)self _tokensFromAllGroups];
+    v12 = [_tokensFromAllGroups count];
 
     v13 = [(NSMutableDictionary *)self->_groupedFindableTokens objectForKey:v9];
     v14 = [v13 count];
@@ -2509,21 +2509,21 @@ LABEL_12:
   return v6;
 }
 
-- (void)_kickKeepAliveForPeer:(id)a3
+- (void)_kickKeepAliveForPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_peerTracking objectForKeyedSubscript:v4];
-  v6 = [v5 keepAliveTimeoutSeconds];
+  v5 = [(NSMutableDictionary *)self->_peerTracking objectForKeyedSubscript:peerCopy];
+  keepAliveTimeoutSeconds = [v5 keepAliveTimeoutSeconds];
 
-  if (v6)
+  if (keepAliveTimeoutSeconds)
   {
-    v7 = [(NSMutableDictionary *)self->_keepAliveTimeoutTimers objectForKey:v4];
+    v7 = [(NSMutableDictionary *)self->_keepAliveTimeoutTimers objectForKey:peerCopy];
     v8 = v7;
     if (v7)
     {
       dispatch_source_cancel(v7);
-      [(NSMutableDictionary *)self->_keepAliveTimeoutTimers removeObjectForKey:v4];
+      [(NSMutableDictionary *)self->_keepAliveTimeoutTimers removeObjectForKey:peerCopy];
     }
 
     else
@@ -2531,7 +2531,7 @@ LABEL_12:
       v9 = qword_1009F9820;
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = sub_1003464D4("KeepAlive", 0, v4, @"Started");
+        v10 = sub_1003464D4("KeepAlive", 0, peerCopy, @"Started");
         *buf = 138412290;
         v22 = v10;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", buf, 0xCu);
@@ -2540,7 +2540,7 @@ LABEL_12:
 
     v11 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_queue);
 
-    [v6 doubleValue];
+    [keepAliveTimeoutSeconds doubleValue];
     v13 = dispatch_time(0, (v12 * 1000000000.0));
     dispatch_source_set_timer(v11, v13, 0xFFFFFFFFFFFFFFFFLL, 0x989680uLL);
     objc_initWeak(buf, self);
@@ -2549,7 +2549,7 @@ LABEL_12:
     v17 = sub_10021C710;
     v18 = &unk_10098B940;
     objc_copyWeak(&v20, buf);
-    v14 = v4;
+    v14 = peerCopy;
     v19 = v14;
     dispatch_source_set_event_handler(v11, &v15);
     dispatch_resume(v11);
@@ -2572,8 +2572,8 @@ LABEL_12:
 
   if ([(NIServerFindableDeviceProxySessionManager *)self _shouldInteract])
   {
-    v4 = [(NIServerFindableDeviceProxySessionManager *)self _tokensFromAllGroups];
-    v5 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider setPeersEligibleForDiscovery:v4 requestScan:[(NIServerFindableDeviceProxySessionManager *)self _shouldApplyBTScanMitigation_r121951698]^ 1];
+    _tokensFromAllGroups = [(NIServerFindableDeviceProxySessionManager *)self _tokensFromAllGroups];
+    v5 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider setPeersEligibleForDiscovery:_tokensFromAllGroups requestScan:[(NIServerFindableDeviceProxySessionManager *)self _shouldApplyBTScanMitigation_r121951698]^ 1];
     if (v5)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -2584,11 +2584,11 @@ LABEL_12:
       v6 = v5;
     }
 
-    v7 = [(NIServerFindingRangingProvider *)self->_rangingProvider rangingTriggerType];
+    rangingTriggerType = [(NIServerFindingRangingProvider *)self->_rangingProvider rangingTriggerType];
     v8 = qword_1009F9820;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = v7 ? "TriggerRequired" : "NoTriggerRequired";
+      v9 = rangingTriggerType ? "TriggerRequired" : "NoTriggerRequired";
       sub_100004A08(buf, v9);
       v10 = v14 >= 0 ? buf : *buf;
       *v15 = 136315138;
@@ -2600,14 +2600,14 @@ LABEL_12:
       }
     }
 
-    if (!v7)
+    if (!rangingTriggerType)
     {
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10021CBCC;
       v12[3] = &unk_10099EEB0;
       v12[4] = self;
-      [v4 enumerateObjectsUsingBlock:v12];
+      [_tokensFromAllGroups enumerateObjectsUsingBlock:v12];
     }
   }
 
@@ -2655,74 +2655,74 @@ LABEL_12:
       sub_1004ACB18(v7);
     }
 
-    v4 = [(NIServerFindableDeviceProxySessionManager *)self _tokensFromAllGroups];
+    _tokensFromAllGroups = [(NIServerFindableDeviceProxySessionManager *)self _tokensFromAllGroups];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_10021CFE4;
     v5[3] = &unk_10099EED8;
     v5[4] = self;
     v5[5] = buf;
-    [v4 enumerateObjectsUsingBlock:v5];
+    [_tokensFromAllGroups enumerateObjectsUsingBlock:v5];
 
     _Block_object_dispose(buf, 8);
   }
 }
 
-- (void)didLosePeer:(id)a3
+- (void)didLosePeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = sub_1003464D4("LostPeer", 0, v4, 0);
+    v6 = sub_1003464D4("LostPeer", 0, peerCopy, 0);
     v8 = 138412290;
     v9 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", &v8, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider stopAdvertisingToPeer:v4];
+  v7 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider stopAdvertisingToPeer:peerCopy];
   if (v7 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
   {
     sub_1004AC98C();
   }
 
-  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v4 newAdvertisingState:2];
-  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v4 newDiscoveryState:4];
+  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:peerCopy newAdvertisingState:2];
+  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:peerCopy newDiscoveryState:4];
 }
 
-- (void)didStopAdvertisingToPeer:(id)a3
+- (void)didStopAdvertisingToPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = sub_1003464D4("NotifyStopAdv", 0, v4, 0);
+    v6 = sub_1003464D4("NotifyStopAdv", 0, peerCopy, 0);
     v7 = 138412290;
     v8 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", &v7, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v4 newAdvertisingState:2];
+  [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:peerCopy newAdvertisingState:2];
 }
 
-- (void)didUpdateAdvertisement:(id)a3 toSendOOBToPeer:(id)a4
+- (void)didUpdateAdvertisement:(id)advertisement toSendOOBToPeer:(id)peer
 {
-  v16 = a3;
-  v17 = a4;
+  advertisementCopy = advertisement;
+  peerCopy = peer;
   v6 = qword_1009F9820;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [NSString stringWithFormat:@"SelfAdv: %@", v16];
-    v8 = sub_1003464D4("UpdatedAdv", 0, v17, v7);
+    advertisementCopy = [NSString stringWithFormat:@"SelfAdv: %@", advertisementCopy];
+    v8 = sub_1003464D4("UpdatedAdv", 0, peerCopy, advertisementCopy);
     *buf = 138412290;
     v27 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", buf, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  v9 = [v16 byteRepresentation];
+  byteRepresentation = [advertisementCopy byteRepresentation];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
@@ -2745,15 +2745,15 @@ LABEL_12:
         v14 = *(*(&v21 + 1) + 8 * v13);
         if (v14)
         {
-          v15 = [*(*(&v21 + 1) + 8 * v13) getQueueForInputingData];
+          getQueueForInputingData = [*(*(&v21 + 1) + 8 * v13) getQueueForInputingData];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_10021DAB0;
           block[3] = &unk_10099BB28;
           block[4] = v14;
-          v19 = v9;
-          v20 = v17;
-          dispatch_async(v15, block);
+          v19 = byteRepresentation;
+          v20 = peerCopy;
+          dispatch_async(getQueueForInputingData, block);
         }
 
         v13 = v13 + 1;
@@ -2828,22 +2828,22 @@ LABEL_12:
 
     if ([(NIServerFindableDeviceProxySessionManager *)self _shouldInteract])
     {
-      v7 = [(NIServerFindableDeviceProxySessionManager *)self _enableInteractionWithPersistedTokens];
+      _enableInteractionWithPersistedTokens = [(NIServerFindableDeviceProxySessionManager *)self _enableInteractionWithPersistedTokens];
     }
   }
 }
 
-- (void)didRangeWithPeer:(id)a3 newSolution:(const void *)a4
+- (void)didRangeWithPeer:(id)peer newSolution:(const void *)solution
 {
-  v6 = a3;
-  if (*(a4 + 8) != 1)
+  peerCopy = peer;
+  if (*(solution + 8) != 1)
   {
     v25 = "solution.type == rose::RoseSolutionType::RoseRawOnly";
     v26 = 2158;
     goto LABEL_15;
   }
 
-  if ((*(a4 + 600) & 1) == 0)
+  if ((*(solution + 600) & 1) == 0)
   {
     v25 = "solution.raw_rose_measurement.has_value()";
     v26 = 2159;
@@ -2852,54 +2852,54 @@ LABEL_15:
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  if (v6)
+  if (peerCopy)
   {
-    if ((*(a4 + 600) & 1) == 0)
+    if ((*(solution + 600) & 1) == 0)
     {
       sub_1000195BC();
     }
 
-    v7 = *(a4 + 44);
+    v7 = *(solution + 44);
     v8 = +[NSDate now];
     v9 = sub_1003465F0(v8);
-    v10 = [v6 descriptionInternal];
-    v11 = [NSString stringWithFormat:@"%@: Peer: %@. Range: %0.2f m", v9, v10, *&v7];
+    descriptionInternal = [peerCopy descriptionInternal];
+    v11 = [NSString stringWithFormat:@"%@: Peer: %@. Range: %0.2f m", v9, descriptionInternal, *&v7];
     lastRangingMeasurement = self->_lastRangingMeasurement;
     self->_lastRangingMeasurement = v11;
 
-    [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v6 newRangingState:3];
-    [(NIServerFindableDeviceProxySessionManager *)self _nearbydLogRange:v6 token:v7];
-    v13 = *(a4 + 5);
-    v14 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:v6];
+    [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:peerCopy newRangingState:3];
+    [(NIServerFindableDeviceProxySessionManager *)self _nearbydLogRange:peerCopy token:v7];
+    v13 = *(solution + 5);
+    v14 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:peerCopy];
     [v14 setCurrentSolutionMacAddress:v13];
 
-    v15 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:v6];
-    v16 = [v15 updatesEngine];
-    [v16 acceptRoseSolution:a4];
+    v15 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:peerCopy];
+    updatesEngine = [v15 updatesEngine];
+    [updatesEngine acceptRoseSolution:solution];
 
-    v17 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:v6];
+    v17 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:peerCopy];
 
     if (v17)
     {
       v18 = +[NSDate now];
-      v19 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:v6];
-      v20 = [v19 firstDistance];
+      v19 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:peerCopy];
+      firstDistance = [v19 firstDistance];
 
-      if (!v20)
+      if (!firstDistance)
       {
         v21 = [NSNumber numberWithDouble:v7];
-        v22 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:v6];
+        v22 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:peerCopy];
         [v22 setFirstDistance:v21];
 
-        v23 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:v6];
+        v23 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:peerCopy];
         [v23 setFirstDistanceTimestamp:v18];
       }
 
-      v24 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:v6];
+      v24 = [(NSMutableDictionary *)self->_deviceFindingUsageAnalyticsInfo objectForKeyedSubscript:peerCopy];
       [v24 setMostRecentDistanceTimestamp:v18];
     }
 
-    [(NIServerFindableDeviceProxySessionManager *)self _kickKeepAliveForPeer:v6];
+    [(NIServerFindableDeviceProxySessionManager *)self _kickKeepAliveForPeer:peerCopy];
   }
 
   else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -2908,44 +2908,44 @@ LABEL_15:
   }
 }
 
-- (void)didAttemptRangingWithPeer:(id)a3 unsuccessfulSolution:(const void *)a4
+- (void)didAttemptRangingWithPeer:(id)peer unsuccessfulSolution:(const void *)solution
 {
-  v6 = a3;
-  if ((*(a4 + 600) & 1) == 0)
+  peerCopy = peer;
+  if ((*(solution + 600) & 1) == 0)
   {
     __assert_rtn("[NIServerFindableDeviceProxySessionManager didAttemptRangingWithPeer:unsuccessfulSolution:]", "NIServerFindableDeviceProxySessionManager.mm", 2198, "solution.raw_rose_measurement.has_value()");
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  if (v6)
+  if (peerCopy)
   {
     v7 = qword_1009F9820;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = sub_1003464D4("RangeFailure", 0, v6, 0);
+      v8 = sub_1003464D4("RangeFailure", 0, peerCopy, 0);
       sub_1004ACCF4(v8, buf, v7);
     }
 
-    if (*(a4 + 600) == 1 && *(a4 + 72) == 96)
+    if (*(solution + 600) == 1 && *(solution + 72) == 96)
     {
       v9 = +[NSDate now];
       v10 = sub_1003465F0(v9);
-      v11 = [v6 descriptionInternal];
-      v12 = [NSString stringWithFormat:@"%@: Peer: %@", v10, v11];
+      descriptionInternal = [peerCopy descriptionInternal];
+      v12 = [NSString stringWithFormat:@"%@: Peer: %@", v10, descriptionInternal];
       lastRangingPoll = self->_lastRangingPoll;
       self->_lastRangingPoll = v12;
 
-      [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v6 newRangingState:2];
-      [(NIServerFindableDeviceProxySessionManager *)self _kickKeepAliveForPeer:v6];
+      [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:peerCopy newRangingState:2];
+      [(NIServerFindableDeviceProxySessionManager *)self _kickKeepAliveForPeer:peerCopy];
     }
 
-    v14 = *(a4 + 5);
-    v15 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:v6];
+    v14 = *(solution + 5);
+    v15 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:peerCopy];
     [v15 setCurrentSolutionMacAddress:v14];
 
-    v16 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:v6];
-    v17 = [v16 updatesEngine];
-    [v17 acceptUnsuccessfulRoseSolution:a4];
+    v16 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:peerCopy];
+    updatesEngine = [v16 updatesEngine];
+    [updatesEngine acceptUnsuccessfulRoseSolution:solution];
   }
 
   else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -2954,12 +2954,12 @@ LABEL_15:
   }
 }
 
-- (void)_nearbydLogRange:(double)a3 token:(id)a4
+- (void)_nearbydLogRange:(double)range token:(id)token
 {
-  v6 = a4;
+  tokenCopy = token;
   v7 = sub_100005288();
-  v8 = [NSString stringWithFormat:@"Range: %0.2f m", *&a3];
-  v9 = sub_1003464D4("RangeSuccess", 0, v6, v8);
+  v8 = [NSString stringWithFormat:@"Range: %0.2f m", *&range];
+  v9 = sub_1003464D4("RangeSuccess", 0, tokenCopy, v8);
 
   v10 = qword_1009F9820;
   if (v7 - self->_lastLogMachContTime <= 5.0)
@@ -2983,57 +2983,57 @@ LABEL_15:
   }
 }
 
-- (void)didStopRangingWithPeer:(id)a3
+- (void)didStopRangingWithPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = sub_1003464D4("NotifyStopRange", 0, v4, 0);
+    v6 = sub_1003464D4("NotifyStopRange", 0, peerCopy, 0);
     v7 = 138412290;
     v8 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", &v7, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  [(NIServerFindableDeviceProxySessionManager *)self _handleRangingTerminatedCallbackForPeer:v4];
+  [(NIServerFindableDeviceProxySessionManager *)self _handleRangingTerminatedCallbackForPeer:peerCopy];
 }
 
-- (void)didRangingAuthorizationFailForPeer:(id)a3
+- (void)didRangingAuthorizationFailForPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = sub_1003464D4("NotifyAuthFail", 0, v4, 0);
+    v6 = sub_1003464D4("NotifyAuthFail", 0, peerCopy, 0);
     v7 = 138412290;
     v8 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-proxy,%@", &v7, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  [(NIServerFindableDeviceProxySessionManager *)self _handleRangingTerminatedCallbackForPeer:v4];
+  [(NIServerFindableDeviceProxySessionManager *)self _handleRangingTerminatedCallbackForPeer:peerCopy];
 }
 
-- (void)_handleRangingTerminatedCallbackForPeer:(id)a3
+- (void)_handleRangingTerminatedCallbackForPeer:(id)peer
 {
-  v4 = a3;
-  if (v4)
+  peerCopy = peer;
+  if (peerCopy)
   {
-    v5 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider stopAdvertisingToPeer:v4];
+    v5 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider stopAdvertisingToPeer:peerCopy];
     if (v5 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
     {
       sub_1004AC98C();
     }
 
-    [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v4 newAdvertisingState:2];
-    v6 = [(NIServerFindingRangingProvider *)self->_rangingProvider stopRangingWithPeer:v4];
+    [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:peerCopy newAdvertisingState:2];
+    v6 = [(NIServerFindingRangingProvider *)self->_rangingProvider stopRangingWithPeer:peerCopy];
     if (v6 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
     {
       sub_1004AC9FC();
     }
 
-    [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:v4 newRangingState:4];
+    [(NIServerFindableDeviceProxySessionManager *)self _updatePeerTrackingForToken:peerCopy newRangingState:4];
   }
 
   else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -3042,18 +3042,18 @@ LABEL_15:
   }
 }
 
-- (void)didReceiveRangingDataForPeer:(id)a3 algorithmAidingData:(const void *)a4 signallingData:(const void *)a5
+- (void)didReceiveRangingDataForPeer:(id)peer algorithmAidingData:(const void *)data signallingData:(const void *)signallingData
 {
-  v10 = a3;
-  if (*(a5 + 7) == 1)
+  peerCopy = peer;
+  if (*(signallingData + 7) == 1)
   {
-    [(NIServerFindableDeviceProxySessionManager *)self _updateReceivedSignalFlags:*(a5 + 6) toPeerTrackingForToken:v10];
+    [(NIServerFindableDeviceProxySessionManager *)self _updateReceivedSignalFlags:*(signallingData + 6) toPeerTrackingForToken:peerCopy];
   }
 
-  v7 = *(a5 + 8);
-  v8 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:v10];
-  v9 = [v8 updatesEngine];
-  [v9 acceptPeerDeviceType:v7];
+  v7 = *(signallingData + 8);
+  v8 = [(NSMutableDictionary *)self->_peerAlgorithmContainers objectForKeyedSubscript:peerCopy];
+  updatesEngine = [v8 updatesEngine];
+  [updatesEngine acceptPeerDeviceType:v7];
 }
 
 - (void)rangingBecameUnavailable
@@ -3103,7 +3103,7 @@ LABEL_15:
 
     if ([(NIServerFindableDeviceProxySessionManager *)self _shouldInteract])
     {
-      v7 = [(NIServerFindableDeviceProxySessionManager *)self _enableInteractionWithPersistedTokens];
+      _enableInteractionWithPersistedTokens = [(NIServerFindableDeviceProxySessionManager *)self _enableInteractionWithPersistedTokens];
     }
   }
 }
@@ -3202,33 +3202,33 @@ LABEL_15:
   objc_destroyWeak(&location);
 }
 
-- (void)updatesEngine:(id)a3 didUpdateFindeeData:(const void *)a4 forToken:(id)a5
+- (void)updatesEngine:(id)engine didUpdateFindeeData:(const void *)data forToken:(id)token
 {
-  v7 = a5;
+  tokenCopy = token;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
     sub_1004AD278();
   }
 
-  [(NIServerFindingRangingProvider *)self->_rangingProvider setAlgorithmAidingData:a4 forPeer:v7];
+  [(NIServerFindingRangingProvider *)self->_rangingProvider setAlgorithmAidingData:data forPeer:tokenCopy];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
+  locationsCopy = locations;
   dispatch_assert_queue_V2(self->_queue);
-  if (v5)
+  if (locationsCopy)
   {
-    v6 = [v5 lastObject];
-    v7 = v6;
-    if (v6)
+    lastObject = [locationsCopy lastObject];
+    v7 = lastObject;
+    if (lastObject)
     {
-      [v6 coordinate];
+      [lastObject coordinate];
       v35 = v8;
       [v7 coordinate];
       v34 = v9;
-      v10 = [v7 timestamp];
-      [v10 timeIntervalSinceReferenceDate];
+      timestamp = [v7 timestamp];
+      [timestamp timeIntervalSinceReferenceDate];
       v33 = v11;
       [v7 course];
       v13 = v12;
@@ -3246,10 +3246,10 @@ LABEL_15:
       v25 = v24;
       [v7 ellipsoidalAltitude];
       v27 = v26;
-      v28 = [v7 floor];
-      v29 = [v28 level];
-      v30 = [v7 type];
-      v31 = [v7 signalEnvironmentType];
+      floor = [v7 floor];
+      level = [floor level];
+      type = [v7 type];
+      signalEnvironmentType = [v7 signalEnvironmentType];
 
       peerAlgorithmContainers = self->_peerAlgorithmContainers;
       v36[0] = _NSConcreteStackBlock;
@@ -3267,9 +3267,9 @@ LABEL_15:
       v36[12] = v23;
       v36[13] = v25;
       v36[14] = v27;
-      v37 = v29;
-      v38 = v30;
-      v39 = v31;
+      v37 = level;
+      v38 = type;
+      v39 = signalEnvironmentType;
       [(NSMutableDictionary *)peerAlgorithmContainers enumerateKeysAndObjectsUsingBlock:v36];
     }
 
@@ -3285,27 +3285,27 @@ LABEL_15:
   }
 }
 
-- (void)DataCallback:(id)a3
+- (void)DataCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   peerAlgorithmContainers = self->_peerAlgorithmContainers;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100220AE4;
   v7[3] = &unk_10099F0D0;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   [(NSMutableDictionary *)peerAlgorithmContainers enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
-  v6 = [v5 code];
+  errorCopy = error;
+  code = [errorCopy code];
   v7 = qword_1009F9820;
-  if (v6)
+  if (code)
   {
-    if (v6 == 1)
+    if (code == 1)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
       {
@@ -3334,16 +3334,16 @@ LABEL_15:
   }
 }
 
-- (void)processVisionInput:(id)a3
+- (void)processVisionInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   dispatch_assert_queue_V2(self->_queue);
   peerAlgorithmContainers = self->_peerAlgorithmContainers;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100220D4C;
   v7[3] = &unk_10099F0D0;
-  v6 = v4;
+  v6 = inputCopy;
   v8 = v6;
   [(NSMutableDictionary *)peerAlgorithmContainers enumerateKeysAndObjectsUsingBlock:v7];
 }

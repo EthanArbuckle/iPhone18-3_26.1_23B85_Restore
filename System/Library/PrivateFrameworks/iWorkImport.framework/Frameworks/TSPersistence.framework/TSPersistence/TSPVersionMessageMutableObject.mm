@@ -1,17 +1,17 @@
 @interface TSPVersionMessageMutableObject
-- (TSPVersionMessageMutableObject)initWithVersionMessage:(void *)a3;
+- (TSPVersionMessageMutableObject)initWithVersionMessage:(void *)message;
 @end
 
 @implementation TSPVersionMessageMutableObject
 
-- (TSPVersionMessageMutableObject)initWithVersionMessage:(void *)a3
+- (TSPVersionMessageMutableObject)initWithVersionMessage:(void *)message
 {
   v5.receiver = self;
   v5.super_class = TSPVersionMessageMutableObject;
   result = [(TSPVersionMessageMutableObject *)&v5 init];
   if (result)
   {
-    result->_versionMessage = a3;
+    result->_versionMessage = message;
   }
 
   return result;

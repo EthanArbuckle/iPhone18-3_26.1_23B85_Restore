@@ -3,12 +3,12 @@
 - (BOOL)deviceSupportsAlwaysOn;
 - (BOOL)isAlwaysOnEnabled;
 - (BOOL)isTransitioning;
-- (id)performChangeRequest:(id)a3;
+- (id)performChangeRequest:(id)request;
 - (int64_t)backlightState;
 - (int64_t)flipbookState;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)replaceWithBacklightProxy:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)replaceWithBacklightProxy:(id)proxy;
 @end
 
 @implementation BLSPendingBacklightProxy
@@ -19,16 +19,16 @@
   replacementBacklightProxy = self->_replacementBacklightProxy;
   if (replacementBacklightProxy)
   {
-    v4 = [(BLSBacklightProxy *)replacementBacklightProxy isAlwaysOnEnabled];
+    isAlwaysOnEnabled = [(BLSBacklightProxy *)replacementBacklightProxy isAlwaysOnEnabled];
   }
 
   else
   {
-    v4 = 0;
+    isAlwaysOnEnabled = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v4;
+  return isAlwaysOnEnabled;
 }
 
 - (int64_t)backlightState
@@ -37,16 +37,16 @@
   replacementBacklightProxy = self->_replacementBacklightProxy;
   if (replacementBacklightProxy)
   {
-    v4 = [(BLSBacklightProxy *)replacementBacklightProxy backlightState];
+    backlightState = [(BLSBacklightProxy *)replacementBacklightProxy backlightState];
   }
 
   else
   {
-    v4 = 0;
+    backlightState = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v4;
+  return backlightState;
 }
 
 - (BLSPendingBacklightProxy)init
@@ -58,9 +58,9 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     requests = v3->_requests;
-    v3->_requests = v4;
+    v3->_requests = array;
 
     v6 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:517 capacity:2];
     observers = v3->_observers;
@@ -76,16 +76,16 @@
   replacementBacklightProxy = self->_replacementBacklightProxy;
   if (replacementBacklightProxy)
   {
-    v4 = [(BLSBacklightProxy *)replacementBacklightProxy flipbookState];
+    flipbookState = [(BLSBacklightProxy *)replacementBacklightProxy flipbookState];
   }
 
   else
   {
-    v4 = 0;
+    flipbookState = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v4;
+  return flipbookState;
 }
 
 - (BOOL)isTransitioning
@@ -94,16 +94,16 @@
   replacementBacklightProxy = self->_replacementBacklightProxy;
   if (replacementBacklightProxy)
   {
-    v4 = [(BLSBacklightProxy *)replacementBacklightProxy isTransitioning];
+    isTransitioning = [(BLSBacklightProxy *)replacementBacklightProxy isTransitioning];
   }
 
   else
   {
-    v4 = 1;
+    isTransitioning = 1;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v4;
+  return isTransitioning;
 }
 
 - (BOOL)deviceSupportsAlwaysOn
@@ -112,71 +112,71 @@
   replacementBacklightProxy = self->_replacementBacklightProxy;
   if (replacementBacklightProxy)
   {
-    v4 = [(BLSBacklightProxy *)replacementBacklightProxy deviceSupportsAlwaysOn];
+    deviceSupportsAlwaysOn = [(BLSBacklightProxy *)replacementBacklightProxy deviceSupportsAlwaysOn];
   }
 
   else
   {
-    v4 = 0;
+    deviceSupportsAlwaysOn = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v4;
+  return deviceSupportsAlwaysOn;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   replacementBacklightProxy = self->_replacementBacklightProxy;
   if (replacementBacklightProxy)
   {
-    [(BLSBacklightProxy *)replacementBacklightProxy addObserver:v4];
+    [(BLSBacklightProxy *)replacementBacklightProxy addObserver:observerCopy];
   }
 
   else
   {
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   replacementBacklightProxy = self->_replacementBacklightProxy;
   if (replacementBacklightProxy)
   {
-    [(BLSBacklightProxy *)replacementBacklightProxy removeObserver:v4];
+    [(BLSBacklightProxy *)replacementBacklightProxy removeObserver:observerCopy];
   }
 
   else
   {
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)performChangeRequest:(id)a3
+- (id)performChangeRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   os_unfair_lock_lock(&self->_lock);
   replacementBacklightProxy = self->_replacementBacklightProxy;
   if (replacementBacklightProxy)
   {
     v6 = replacementBacklightProxy;
     os_unfair_lock_unlock(&self->_lock);
-    v7 = [(BLSBacklightProxy *)v6 performChangeRequest:v4];
+    v7 = [(BLSBacklightProxy *)v6 performChangeRequest:requestCopy];
   }
 
   else
   {
     requests = self->_requests;
     v9 = 0;
-    [(NSMutableArray *)requests addObject:v4];
+    [(NSMutableArray *)requests addObject:requestCopy];
 
     os_unfair_lock_unlock(&self->_lock);
     v7 = 0;
@@ -185,13 +185,13 @@
   return v7;
 }
 
-- (void)replaceWithBacklightProxy:(id)a3
+- (void)replaceWithBacklightProxy:(id)proxy
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  proxyCopy = proxy;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_replacementBacklightProxy, a3);
-  v6 = [(NSHashTable *)self->_observers allObjects];
+  objc_storeStrong(&self->_replacementBacklightProxy, proxy);
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   observers = self->_observers;
   self->_observers = 0;
 
@@ -204,9 +204,9 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218496;
-    v34 = self;
+    selfCopy = self;
     v35 = 1024;
-    v36 = [v6 count];
+    v36 = [allObjects count];
     v37 = 1024;
     v38 = [(NSMutableArray *)v8 count];
     _os_log_debug_impl(&dword_21FE25000, v10, OS_LOG_TYPE_DEBUG, "%p backlight proxy setup, will set %u observers, perform %u requests", buf, 0x18u);
@@ -216,7 +216,7 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = v6;
+  v11 = allObjects;
   v12 = [v11 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v12)
   {
@@ -232,7 +232,7 @@
           objc_enumerationMutation(v11);
         }
 
-        [v5 addObserver:*(*(&v27 + 1) + 8 * v15++)];
+        [proxyCopy addObserver:*(*(&v27 + 1) + 8 * v15++)];
       }
 
       while (v13 != v15);
@@ -262,7 +262,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [v5 performChangeRequest:{*(*(&v23 + 1) + 8 * v20++), v23}];
+        v21 = [proxyCopy performChangeRequest:{*(*(&v23 + 1) + 8 * v20++), v23}];
       }
 
       while (v18 != v20);

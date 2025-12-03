@@ -1,22 +1,22 @@
 @interface EMFocusController
-+ (id)predicateForFocus:(id)a3 usingAccountRepository:(id)a4;
-+ (id)updatedPredicateForFocus:(id)a3 currentPredicate:(id)a4 usingAccountRepository:(id)a5;
++ (id)predicateForFocus:(id)focus usingAccountRepository:(id)repository;
++ (id)updatedPredicateForFocus:(id)focus currentPredicate:(id)predicate usingAccountRepository:(id)repository;
 - (EMFocusController)init;
 - (id)_currentFocusedAccountIdentifiers;
 - (id)_stateCaptureInformation;
-- (id)addObserver:(id)a3 currentFocus:(id *)a4;
+- (id)addObserver:(id)observer currentFocus:(id *)focus;
 - (void)_focusModeChanged;
 - (void)_registerStateCapture;
 - (void)dealloc;
-- (void)getCurrentFocus:(id)a3;
+- (void)getCurrentFocus:(id)focus;
 @end
 
 @implementation EMFocusController
 
 - (id)_currentFocusedAccountIdentifiers
 {
-  v2 = [MEMORY[0x1E695E000] em_userDefaults];
-  v3 = [v2 stringArrayForKey:@"FocusedAccountIdentifiers"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v3 = [em_userDefaults stringArrayForKey:@"FocusedAccountIdentifiers"];
 
   if (v3)
   {
@@ -38,9 +38,9 @@
   v2 = [(EMFocusController *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = [MEMORY[0x1E699B978] serialDispatchQueueSchedulerWithName:@"com.apple.mail.CurrentFocusObservation"];
     observationScheduler = v2->_observationScheduler;
@@ -48,13 +48,13 @@
 
     v2->_lock._os_unfair_lock_opaque = 0;
     objc_initWeak(&location, v2);
-    v7 = [MEMORY[0x1E695E000] em_userDefaults];
+    em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __25__EMFocusController_init__block_invoke;
     v13[3] = &unk_1E826CF58;
     objc_copyWeak(&v14, &location);
-    v8 = [v7 ef_observeKeyPath:@"FocusedAccountIdentifiers" options:1 autoCancelToken:1 usingBlock:v13];
+    v8 = [em_userDefaults ef_observeKeyPath:@"FocusedAccountIdentifiers" options:1 autoCancelToken:1 usingBlock:v13];
     observationToken = v2->_observationToken;
     v2->_observationToken = v8;
 
@@ -126,19 +126,19 @@ void __25__EMFocusController_init__block_invoke(uint64_t a1)
   [(EMFocusController *)&v4 dealloc];
 }
 
-- (void)getCurrentFocus:(id)a3
+- (void)getCurrentFocus:(id)focus
 {
-  v8 = a3;
-  if (!v8)
+  focusCopy = focus;
+  if (!focusCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"EMFocusController.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMFocusController.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
-  v5 = [(EMFocusController *)self _currentFocusedAccountIdentifiers];
-  if (v5)
+  _currentFocusedAccountIdentifiers = [(EMFocusController *)self _currentFocusedAccountIdentifiers];
+  if (_currentFocusedAccountIdentifiers)
   {
-    v6 = [[EMFocus alloc] initWithFocusedAccountIdentifiers:v5];
+    v6 = [[EMFocus alloc] initWithFocusedAccountIdentifiers:_currentFocusedAccountIdentifiers];
   }
 
   else
@@ -146,7 +146,7 @@ void __25__EMFocusController_init__block_invoke(uint64_t a1)
     v6 = 0;
   }
 
-  v8[2](v8, v6);
+  focusCopy[2](focusCopy, v6);
 }
 
 - (void)_focusModeChanged
@@ -237,9 +237,9 @@ void __38__EMFocusController__focusModeChanged__block_invoke_2(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)addObserver:(id)a3 currentFocus:(id *)a4
+- (id)addObserver:(id)observer currentFocus:(id *)focus
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, observer);
   v6 = objc_alloc_init(MEMORY[0x1E699B798]);
   objc_initWeak(&from, self);
   v10 = MEMORY[0x1E69E9820];
@@ -255,9 +255,9 @@ void __38__EMFocusController__focusModeChanged__block_invoke_2(uint64_t a1)
   [(NSHashTable *)observers addObject:v8, v10, v11, v12, v13];
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a4)
+  if (focus)
   {
-    objc_storeStrong(a4, self->_currentFocus);
+    objc_storeStrong(focus, self->_currentFocus);
   }
 
   objc_destroyWeak(&v15);
@@ -284,47 +284,47 @@ void __46__EMFocusController_addObserver_currentFocus___block_invoke(uint64_t a1
   }
 }
 
-+ (id)updatedPredicateForFocus:(id)a3 currentPredicate:(id)a4 usingAccountRepository:(id)a5
++ (id)updatedPredicateForFocus:(id)focus currentPredicate:(id)predicate usingAccountRepository:(id)repository
 {
-  v8 = a4;
-  v9 = [a1 predicateForFocus:a3 usingAccountRepository:a5];
-  v10 = [MEMORY[0x1E696AE18] ef_andCompoundPredicateForOptionalPredicate:v9 second:v8];
+  predicateCopy = predicate;
+  v9 = [self predicateForFocus:focus usingAccountRepository:repository];
+  v10 = [MEMORY[0x1E696AE18] ef_andCompoundPredicateForOptionalPredicate:v9 second:predicateCopy];
 
   return v10;
 }
 
-+ (id)predicateForFocus:(id)a3 usingAccountRepository:(id)a4
++ (id)predicateForFocus:(id)focus usingAccountRepository:(id)repository
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  focusCopy = focus;
+  repositoryCopy = repository;
+  if (focusCopy)
   {
-    v7 = [v5 focusedAccountIdentifiers];
-    if ([v7 count])
+    focusedAccountIdentifiers = [focusCopy focusedAccountIdentifiers];
+    if ([focusedAccountIdentifiers count])
     {
-      v8 = [v6 receivingAccounts];
+      receivingAccounts = [repositoryCopy receivingAccounts];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __62__EMFocusController_predicateForFocus_usingAccountRepository___block_invoke;
       v12[3] = &unk_1E826CFD0;
-      v13 = v7;
-      v9 = [v8 ef_compactMap:v12];
+      v13 = focusedAccountIdentifiers;
+      v9 = [receivingAccounts ef_compactMap:v12];
 
-      v10 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v9];
+      ef_matchNothingPredicate = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AE18] ef_matchNothingPredicate];
+      ef_matchNothingPredicate = [MEMORY[0x1E696AE18] ef_matchNothingPredicate];
     }
   }
 
   else
   {
-    v10 = 0;
+    ef_matchNothingPredicate = 0;
   }
 
-  return v10;
+  return ef_matchNothingPredicate;
 }
 
 id __62__EMFocusController_predicateForFocus_usingAccountRepository___block_invoke(uint64_t a1, void *a2)
@@ -353,13 +353,13 @@ id __62__EMFocusController_predicateForFocus_usingAccountRepository___block_invo
   v11[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
   v10 = @"Focused Account Identifiers";
-  v3 = [(EMFocusController *)self _currentFocusedAccountIdentifiers];
-  v4 = [v3 allObjects];
-  v5 = v4;
+  _currentFocusedAccountIdentifiers = [(EMFocusController *)self _currentFocusedAccountIdentifiers];
+  allObjects = [_currentFocusedAccountIdentifiers allObjects];
+  v5 = allObjects;
   v6 = MEMORY[0x1E695E0F0];
-  if (v4)
+  if (allObjects)
   {
-    v6 = v4;
+    v6 = allObjects;
   }
 
   v11[0] = v6;

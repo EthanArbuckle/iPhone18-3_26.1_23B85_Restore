@@ -2,12 +2,12 @@
 + (id)sharedRegistry;
 - (SWActiveSystemActivityRegistry)init;
 - (id)description;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)notifyObserversWithBlock:(uint64_t)a1;
-- (void)registerActiveSystemActivity:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)unregisterInactiveSystemActivity:(id)a3;
+- (void)notifyObserversWithBlock:(uint64_t)block;
+- (void)registerActiveSystemActivity:(id)activity;
+- (void)removeObserver:(id)observer;
+- (void)unregisterInactiveSystemActivity:(id)activity;
 @end
 
 @implementation SWActiveSystemActivityRegistry
@@ -90,7 +90,7 @@ id __38__SWActiveSystemActivityRegistry_init__block_invoke(uint64_t a1)
   v10[3] = &unk_279D43148;
   v4 = v3;
   v11 = v4;
-  v12 = self;
+  selfCopy = self;
   [v4 appendProem:self block:v10];
   if ([(NSHashTable *)self->_lock_activeSystemActivities count])
   {
@@ -109,13 +109,13 @@ id __38__SWActiveSystemActivityRegistry_init__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)registerActiveSystemActivity:(id)a3
+- (void)registerActiveSystemActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   os_unfair_lock_lock(&self->_lock);
   lock_activeSystemActivitiesCount = self->_lock_activeSystemActivitiesCount;
   self->_lock_activeSystemActivitiesCount = lock_activeSystemActivitiesCount + 1;
-  [(NSHashTable *)self->_lock_activeSystemActivities addObject:v4];
+  [(NSHashTable *)self->_lock_activeSystemActivities addObject:activityCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   if (!lock_activeSystemActivitiesCount)
@@ -129,20 +129,20 @@ id __38__SWActiveSystemActivityRegistry_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)notifyObserversWithBlock:(uint64_t)a1
+- (void)notifyObserversWithBlock:(uint64_t)block
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (block)
   {
-    os_unfair_lock_lock((a1 + 40));
-    v4 = [*(a1 + 24) allObjects];
-    os_unfair_lock_unlock((a1 + 40));
+    os_unfair_lock_lock((block + 40));
+    allObjects = [*(block + 24) allObjects];
+    os_unfair_lock_unlock((block + 40));
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = v4;
+    v5 = allObjects;
     v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
@@ -171,13 +171,13 @@ id __38__SWActiveSystemActivityRegistry_init__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterInactiveSystemActivity:(id)a3
+- (void)unregisterInactiveSystemActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_lock_activeSystemActivitiesCount - 1;
   self->_lock_activeSystemActivitiesCount = v5;
-  [(NSHashTable *)self->_lock_activeSystemActivities removeObject:v4];
+  [(NSHashTable *)self->_lock_activeSystemActivities removeObject:activityCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
@@ -191,11 +191,11 @@ id __38__SWActiveSystemActivityRegistry_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  if (!v11)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"observer != nil"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -208,7 +208,7 @@ id __38__SWActiveSystemActivityRegistry_init__block_invoke(uint64_t a1)
       v14 = 2114;
       v15 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"SWSystemSleepMonitor.m";
       v20 = 1024;
@@ -226,16 +226,16 @@ id __38__SWActiveSystemActivityRegistry_init__block_invoke(uint64_t a1)
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers addObject:v11];
+  [(NSHashTable *)self->_lock_observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  if (!v11)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"observer != nil"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -248,7 +248,7 @@ id __38__SWActiveSystemActivityRegistry_init__block_invoke(uint64_t a1)
       v14 = 2114;
       v15 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"SWSystemSleepMonitor.m";
       v20 = 1024;
@@ -266,7 +266,7 @@ id __38__SWActiveSystemActivityRegistry_init__block_invoke(uint64_t a1)
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v11];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
   v5 = *MEMORY[0x277D85DE8];
 }

@@ -2,10 +2,10 @@
 + (id)serviceInterface;
 + (id)sharedInstance;
 - (UIKeyboardUIClient)init;
-- (id)snapshotViewForOptions:(unint64_t)a3;
+- (id)snapshotViewForOptions:(unint64_t)options;
 - (void)_initConnectionIfNeeded;
 - (void)dealloc;
-- (void)setKeyboardAlpha:(double)a3 force:(BOOL)a4;
+- (void)setKeyboardAlpha:(double)alpha force:(BOOL)force;
 @end
 
 @implementation UIKeyboardUIClient
@@ -89,7 +89,7 @@ void __36__UIKeyboardUIClient_sharedInstance__block_invoke()
     v3 = [MEMORY[0x1E698F498] endpointForMachName:0x1EFBA0590 service:0x1EFBA0590 instance:0];
     if (v3)
     {
-      v4 = [objc_opt_class() serviceInterface];
+      serviceInterface = [objc_opt_class() serviceInterface];
       objc_initWeak(location, self);
       v5 = KeyboardUIClientLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -107,9 +107,9 @@ void __36__UIKeyboardUIClient_sharedInstance__block_invoke()
       v15[1] = 3221225472;
       v15[2] = __45__UIKeyboardUIClient__initConnectionIfNeeded__block_invoke;
       v15[3] = &unk_1E7118EB8;
-      v9 = v4;
+      v9 = serviceInterface;
       v16 = v9;
-      v17 = self;
+      selfCopy = self;
       objc_copyWeak(&v18, location);
       [(BSServiceConnectionClient *)v8 configureConnection:v15];
       [(BSServiceConnectionClient *)self->_connection activate];
@@ -227,11 +227,11 @@ void __45__UIKeyboardUIClient__initConnectionIfNeeded__block_invoke_24(uint64_t 
   }
 }
 
-- (id)snapshotViewForOptions:(unint64_t)a3
+- (id)snapshotViewForOptions:(unint64_t)options
 {
   [(UIKeyboardUIClient *)self _initConnectionIfNeeded];
   remoteTarget = self->_remoteTarget;
-  if (remoteTarget && ([MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3], v6 = objc_claimAutoreleasedReturnValue(), -[UIKeyboardUIServiceProtocol snapshotForOptions:](remoteTarget, "snapshotForOptions:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
+  if (remoteTarget && ([MEMORY[0x1E696AD98] numberWithUnsignedInteger:options], v6 = objc_claimAutoreleasedReturnValue(), -[UIKeyboardUIServiceProtocol snapshotForOptions:](remoteTarget, "snapshotForOptions:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
   {
     v8 = [UIKeyboardUISnapshotView alloc];
     v9 = *MEMORY[0x1E695EFF8];
@@ -263,23 +263,23 @@ void __45__UIKeyboardUIClient__initConnectionIfNeeded__block_invoke_24(uint64_t 
   return v13;
 }
 
-- (void)setKeyboardAlpha:(double)a3 force:(BOOL)a4
+- (void)setKeyboardAlpha:(double)alpha force:(BOOL)force
 {
-  v4 = a4;
+  forceCopy = force;
   v16 = *MEMORY[0x1E69E9840];
   v7 = KeyboardUIClientLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134218240;
-    v13 = a3;
+    alphaCopy = alpha;
     v14 = 1024;
-    v15 = v4;
+    v15 = forceCopy;
     _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "Setting keyboard alpha: %f, force=%d", &v12, 0x12u);
   }
 
   remoteTarget = self->_remoteTarget;
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:alpha];
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:forceCopy];
   v11 = [MEMORY[0x1E696AD98] numberWithInt:getpid()];
   [(UIKeyboardUIServiceProtocol *)remoteTarget setKeyboardAlpha:v9 force:v10 processId:v11];
 }

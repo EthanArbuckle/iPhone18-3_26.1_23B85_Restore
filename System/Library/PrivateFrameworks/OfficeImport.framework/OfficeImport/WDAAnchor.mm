@@ -1,5 +1,5 @@
 @interface WDAAnchor
-+ (id)stringForTextWrappingModeType:(int)a3;
++ (id)stringForTextWrappingModeType:(int)type;
 - (CGRect)bounds;
 - (WDAAnchor)init;
 - (id)description;
@@ -42,16 +42,16 @@
   return result;
 }
 
-+ (id)stringForTextWrappingModeType:(int)a3
++ (id)stringForTextWrappingModeType:(int)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799CD950[a3];
+    return off_2799CD950[type];
   }
 }
 

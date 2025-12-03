@@ -1,6 +1,6 @@
 @interface SRUIFDictionarySchema
 - (SRUIFDictionarySchema)init;
-- (id)coerceObject:(id)a3 error:(id *)a4;
+- (id)coerceObject:(id)object error:(id *)error;
 @end
 
 @implementation SRUIFDictionarySchema
@@ -12,17 +12,17 @@
   v2 = [(SRUIFDictionarySchema *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     coercions = v2->_coercions;
-    v2->_coercions = v3;
+    v2->_coercions = dictionary;
   }
 
   return v2;
 }
 
-- (id)coerceObject:(id)a3 error:(id *)a4
+- (id)coerceObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -32,23 +32,23 @@
   v7 = [SRUIFCoercion typeAssertionWithClass:objc_opt_class()];
   v8 = (v20 + 5);
   obj = v20[5];
-  v9 = [v7 coerceObject:v6 error:&obj];
+  v9 = [v7 coerceObject:objectCopy error:&obj];
   objc_storeStrong(v8, obj);
 
   if (v9)
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __44__SRUIFDictionarySchema_coerceObject_error___block_invoke;
     v15[3] = &unk_279C629D0;
     v15[4] = self;
-    v11 = v10;
+    v11 = dictionary;
     v16 = v11;
     v17 = &v19;
     [v9 enumerateKeysAndObjectsUsingBlock:v15];
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -57,10 +57,10 @@
   }
 
   v11 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_3:
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
 LABEL_4:

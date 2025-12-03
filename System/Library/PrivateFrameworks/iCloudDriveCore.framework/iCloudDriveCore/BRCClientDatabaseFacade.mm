@@ -1,55 +1,55 @@
 @interface BRCClientDatabaseFacade
-- (BOOL)clientStateData:(id *)a3 clientStateDictionary:(id *)a4 silent:(BOOL)a5;
-- (BOOL)containsNonRejectedChildWithParentID:(id)a3 zoneRowID:(id)a4;
-- (BOOL)existsByParentID:(id)a3 andLogicalName:(id)a4 excludingItemGlobalID:(id)a5 zoneRowID:(id)a6;
-- (BOOL)hasDownloadJobWithTransferStageID:(id)a3;
-- (BOOL)item:(id)a3 hasSyncUpJobState:(id)a4;
-- (BOOL)zoneHasItemsWithInflightDiffsInZoneRowID:(id)a3;
-- (BRCClientDatabaseFacade)initWithDB:(id)a3 workloop:(id)a4;
-- (char)itemTypeByItemID:(id)a3 zoneRowID:(id)a4;
-- (id)_localItemByFileID:(unint64_t)a3 zoneInjectionCondition:(id)a4 itemBuilder:(id)a5;
-- (id)allItemsSortedByDepthDescendingInZoneRowID:(id)a3 descending:(BOOL)a4 isSharedZone:(BOOL)a5 parentItemID:(id)a6 itemBuilder:(id)a7;
-- (id)clientChildCountWithParentID:(id)a3 zoneRowID:(id)a4;
-- (id)enumerateUserVisibleChildrenDirectoriesOfItemGlobalID:(id)a3 itemBuilder:(id)a4;
-- (id)fetchAppLibraryPlist:(id)a3;
-- (id)getAssetRanksForFileItemsInPackage:(id)a3;
-- (id)itemByParentID:(id)a3 andLogicalName:(id)a4 excludingItemID:(id)a5 zoneRowID:(id)a6 itemBuilder:(id)a7;
-- (id)itemIDByRowID:(unint64_t)a3;
-- (id)itemsEnumeratorWithParentID:(id)a3 andLogicalName:(id)a4 zoneRowID:(id)a5 itemBuilder:(id)a6;
-- (id)itemsParentedToPassedZoneButLivingInAnOtherZone:(id)a3 itemBuilder:(id)a4;
-- (id)itemsWithInFlightDiffsEnumeratorInZone:(id)a3 itemBuilder:(id)a4;
-- (id)itemsWithSideCarInflightDiffsWithItemBuilder:(id)a3;
-- (id)localAliasForItemWithBookmarkData:(id)a3 inZone:(id)a4 itemBuilder:(id)a5;
-- (id)localItemByFileID:(unint64_t)a3 itemBuilder:(id)a4;
-- (id)localItemByFileID:(unint64_t)a3 zoneRowID:(id)a4 itemBuilder:(id)a5;
-- (id)localItemByItemGlobalID:(id)a3 itemBuilder:(id)a4;
-- (id)localItemByRowID:(unint64_t)a3 zoneRowID:(id)a4 itemBuilder:(id)a5;
-- (id)serverHiddenChildCountWithParentID:(id)a3 zoneRowID:(id)a4;
-- (unint64_t)getSyncState:(unint64_t)a3 ignoredZones:(id)a4 error:(id *)a5;
-- (unint64_t)inFlightSyncUpDiffsForItem:(id)a3 zoneRowID:(id)a4;
-- (void)enumerateItemsWithShareIDUnderParent:(id)a3 block:(id)a4;
+- (BOOL)clientStateData:(id *)data clientStateDictionary:(id *)dictionary silent:(BOOL)silent;
+- (BOOL)containsNonRejectedChildWithParentID:(id)d zoneRowID:(id)iD;
+- (BOOL)existsByParentID:(id)d andLogicalName:(id)name excludingItemGlobalID:(id)iD zoneRowID:(id)rowID;
+- (BOOL)hasDownloadJobWithTransferStageID:(id)d;
+- (BOOL)item:(id)item hasSyncUpJobState:(id)state;
+- (BOOL)zoneHasItemsWithInflightDiffsInZoneRowID:(id)d;
+- (BRCClientDatabaseFacade)initWithDB:(id)b workloop:(id)workloop;
+- (char)itemTypeByItemID:(id)d zoneRowID:(id)iD;
+- (id)_localItemByFileID:(unint64_t)d zoneInjectionCondition:(id)condition itemBuilder:(id)builder;
+- (id)allItemsSortedByDepthDescendingInZoneRowID:(id)d descending:(BOOL)descending isSharedZone:(BOOL)zone parentItemID:(id)iD itemBuilder:(id)builder;
+- (id)clientChildCountWithParentID:(id)d zoneRowID:(id)iD;
+- (id)enumerateUserVisibleChildrenDirectoriesOfItemGlobalID:(id)d itemBuilder:(id)builder;
+- (id)fetchAppLibraryPlist:(id)plist;
+- (id)getAssetRanksForFileItemsInPackage:(id)package;
+- (id)itemByParentID:(id)d andLogicalName:(id)name excludingItemID:(id)iD zoneRowID:(id)rowID itemBuilder:(id)builder;
+- (id)itemIDByRowID:(unint64_t)d;
+- (id)itemsEnumeratorWithParentID:(id)d andLogicalName:(id)name zoneRowID:(id)iD itemBuilder:(id)builder;
+- (id)itemsParentedToPassedZoneButLivingInAnOtherZone:(id)zone itemBuilder:(id)builder;
+- (id)itemsWithInFlightDiffsEnumeratorInZone:(id)zone itemBuilder:(id)builder;
+- (id)itemsWithSideCarInflightDiffsWithItemBuilder:(id)builder;
+- (id)localAliasForItemWithBookmarkData:(id)data inZone:(id)zone itemBuilder:(id)builder;
+- (id)localItemByFileID:(unint64_t)d itemBuilder:(id)builder;
+- (id)localItemByFileID:(unint64_t)d zoneRowID:(id)iD itemBuilder:(id)builder;
+- (id)localItemByItemGlobalID:(id)d itemBuilder:(id)builder;
+- (id)localItemByRowID:(unint64_t)d zoneRowID:(id)iD itemBuilder:(id)builder;
+- (id)serverHiddenChildCountWithParentID:(id)d zoneRowID:(id)iD;
+- (unint64_t)getSyncState:(unint64_t)state ignoredZones:(id)zones error:(id *)error;
+- (unint64_t)inFlightSyncUpDiffsForItem:(id)item zoneRowID:(id)d;
+- (void)enumerateItemsWithShareIDUnderParent:(id)parent block:(id)block;
 @end
 
 @implementation BRCClientDatabaseFacade
 
-- (BRCClientDatabaseFacade)initWithDB:(id)a3 workloop:(id)a4
+- (BRCClientDatabaseFacade)initWithDB:(id)b workloop:(id)workloop
 {
   v5.receiver = self;
   v5.super_class = BRCClientDatabaseFacade;
-  return [(BRCDatabaseFacade *)&v5 _initWithDB:a3 workloop:a4];
+  return [(BRCDatabaseFacade *)&v5 _initWithDB:b workloop:workloop];
 }
 
-- (BOOL)clientStateData:(id *)a3 clientStateDictionary:(id *)a4 silent:(BOOL)a5
+- (BOOL)clientStateData:(id *)data clientStateDictionary:(id *)dictionary silent:(BOOL)silent
 {
   v9 = [(BRCPQLConnection *)self->super._db fetch:@"SELECT * FROM client_state"];
   if (![v9 next])
   {
-    if (!a5)
+    if (!silent)
     {
       abc_report_panic_with_signature();
       v19 = MEMORY[0x277CCACA8];
-      v20 = [(BRCPQLConnection *)self->super._db lastError];
-      [v19 stringWithFormat:@"there should always be one row in client_state {%@}", v20];
+      lastError = [(BRCPQLConnection *)self->super._db lastError];
+      [v19 stringWithFormat:@"there should always be one row in client_state {%@}", lastError];
       objc_claimAutoreleasedReturnValue();
 
       v21 = brc_bread_crumbs();
@@ -60,8 +60,8 @@
       }
 
       brc_append_system_info_to_message();
-      v23 = [objc_claimAutoreleasedReturnValue() UTF8String];
-      __assert_rtn("[BRCClientDatabaseFacade clientStateData:clientStateDictionary:silent:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/database/BRCClientDatabaseFacade.m", 259, v23);
+      uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+      __assert_rtn("[BRCClientDatabaseFacade clientStateData:clientStateDictionary:silent:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/database/BRCClientDatabaseFacade.m", 259, uTF8String);
     }
 
     goto LABEL_8;
@@ -70,15 +70,15 @@
   if ([v9 isNullAtIndex:0])
   {
     [v9 close];
-    if (a3)
+    if (data)
     {
-      *a3 = objc_opt_new();
+      *data = objc_opt_new();
     }
 
-    if (a4)
+    if (dictionary)
     {
       v10 = 0;
-      *a4 = objc_opt_new();
+      *dictionary = objc_opt_new();
       goto LABEL_9;
     }
 
@@ -89,13 +89,13 @@ LABEL_8:
 
   v12 = [v9 dataAtIndex:0];
   v10 = v12;
-  if (a3)
+  if (data)
   {
     v13 = v12;
-    *a3 = v10;
+    *data = v10;
   }
 
-  if (a4)
+  if (dictionary)
   {
     v14 = MEMORY[0x277CCAAC8];
     v15 = +[BRCClientState allowedClasses];
@@ -103,7 +103,7 @@ LABEL_8:
     v16 = [v14 unarchivedObjectOfClasses:v15 fromData:v10 error:&v27];
     v17 = v27;
     v18 = v16;
-    *a4 = v16;
+    *dictionary = v16;
 
     if (v17)
     {
@@ -118,13 +118,13 @@ LABEL_8:
       }
 
       brc_append_system_info_to_message();
-      v26 = [objc_claimAutoreleasedReturnValue() UTF8String];
-      __assert_rtn("[BRCClientDatabaseFacade clientStateData:clientStateDictionary:silent:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/database/BRCClientDatabaseFacade.m", 250, v26);
+      uTF8String2 = [objc_claimAutoreleasedReturnValue() UTF8String];
+      __assert_rtn("[BRCClientDatabaseFacade clientStateData:clientStateDictionary:silent:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/database/BRCClientDatabaseFacade.m", 250, uTF8String2);
     }
   }
 
   [v9 close];
-  if (!a5 && !v10)
+  if (!silent && !v10)
   {
     [BRCClientDatabaseFacade clientStateData:clientStateDictionary:silent:];
   }
@@ -141,19 +141,19 @@ id __64__BRCClientDatabaseFacade_documentItemByDocumentID_itemBuilder___block_in
   return v3;
 }
 
-- (id)_localItemByFileID:(unint64_t)a3 zoneInjectionCondition:(id)a4 itemBuilder:(id)a5
+- (id)_localItemByFileID:(unint64_t)d zoneInjectionCondition:(id)condition itemBuilder:(id)builder
 {
-  v8 = a5;
+  builderCopy = builder;
   db = self->super._db;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __81__BRCClientDatabaseFacade__localItemByFileID_zoneInjectionCondition_itemBuilder___block_invoke;
   v13[3] = &unk_2784FF910;
-  v14 = v8;
-  v10 = v8;
-  v11 = [(BRCPQLConnection *)db fetchObject:v13 sql:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items  WHERE item_file_id = %lld    AND item_state IN (0)    %@ ", a3, a4];
+  v14 = builderCopy;
+  v10 = builderCopy;
+  condition = [(BRCPQLConnection *)db fetchObject:v13 sql:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items  WHERE item_file_id = %lld    AND item_state IN (0)    %@ ", d, condition];
 
-  return v11;
+  return condition;
 }
 
 id __81__BRCClientDatabaseFacade__localItemByFileID_zoneInjectionCondition_itemBuilder___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -163,31 +163,31 @@ id __81__BRCClientDatabaseFacade__localItemByFileID_zoneInjectionCondition_itemB
   return v3;
 }
 
-- (id)localItemByFileID:(unint64_t)a3 itemBuilder:(id)a4
+- (id)localItemByFileID:(unint64_t)d itemBuilder:(id)builder
 {
   v6 = MEMORY[0x277D82C18];
-  v7 = a4;
+  builderCopy = builder;
   v8 = [v6 rawInjection:"" length:0];
-  v9 = [(BRCClientDatabaseFacade *)self _localItemByFileID:a3 zoneInjectionCondition:v8 itemBuilder:v7];
+  v9 = [(BRCClientDatabaseFacade *)self _localItemByFileID:d zoneInjectionCondition:v8 itemBuilder:builderCopy];
 
   return v9;
 }
 
-- (id)localItemByFileID:(unint64_t)a3 zoneRowID:(id)a4 itemBuilder:(id)a5
+- (id)localItemByFileID:(unint64_t)d zoneRowID:(id)iD itemBuilder:(id)builder
 {
   v8 = MEMORY[0x277D82C08];
-  v9 = a5;
-  v10 = [v8 formatInjection:{@" AND (item_parent_zone_rowid = %@ OR zone_rowid = %@) ", a4, a4}];
-  v11 = [(BRCClientDatabaseFacade *)self _localItemByFileID:a3 zoneInjectionCondition:v10 itemBuilder:v9];
+  builderCopy = builder;
+  v10 = [v8 formatInjection:{@" AND (item_parent_zone_rowid = %@ OR zone_rowid = %@) ", iD, iD}];
+  v11 = [(BRCClientDatabaseFacade *)self _localItemByFileID:d zoneInjectionCondition:v10 itemBuilder:builderCopy];
 
   return v11;
 }
 
-- (id)fetchAppLibraryPlist:(id)a3
+- (id)fetchAppLibraryPlist:(id)plist
 {
-  v3 = [(BRCPQLConnection *)self->super._db fetch:@"SELECT app_library_plist FROM app_libraries WHERE app_library_name = %@", a3];
-  v4 = [v3 error];
-  if (v4 || ![v3 next])
+  plist = [(BRCPQLConnection *)self->super._db fetch:@"SELECT app_library_plist FROM app_libraries WHERE app_library_name = %@", plist];
+  error = [plist error];
+  if (error || ![plist next])
   {
     v6 = 0;
   }
@@ -195,46 +195,46 @@ id __81__BRCClientDatabaseFacade__localItemByFileID_zoneInjectionCondition_itemB
   else
   {
     v5 = _BRCClassesForContainerState();
-    v6 = [v3 unarchivedObjectOfClasses:v5 atIndex:0];
+    v6 = [plist unarchivedObjectOfClasses:v5 atIndex:0];
 
-    [v3 close];
+    [plist close];
   }
 
   return v6;
 }
 
-- (char)itemTypeByItemID:(id)a3 zoneRowID:(id)a4
+- (char)itemTypeByItemID:(id)d zoneRowID:(id)iD
 {
-  v4 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT item_type FROM client_items WHERE item_id = %@ AND zone_rowid = %@ LIMIT 1", a3, a4];
+  v4 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT item_type FROM client_items WHERE item_id = %@ AND zone_rowid = %@ LIMIT 1", d, iD];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v6 = -1;
+    intValue = -1;
   }
 
-  return v6;
+  return intValue;
 }
 
-- (unint64_t)inFlightSyncUpDiffsForItem:(id)a3 zoneRowID:(id)a4
+- (unint64_t)inFlightSyncUpDiffsForItem:(id)item zoneRowID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  itemCopy = item;
+  dCopy = d;
+  v7 = itemCopy;
   v8 = v7;
-  if (v6)
+  if (dCopy)
   {
-    v8 = [[BRCItemDBRowIDAndZoneJobIdentifier alloc] initWithItemDBRowID:[(BRCItemDBRowIDAndZoneJobIdentifier *)v7 dbRowID] zoneRowID:v6];
+    v8 = [[BRCItemDBRowIDAndZoneJobIdentifier alloc] initWithItemDBRowID:[(BRCItemDBRowIDAndZoneJobIdentifier *)v7 dbRowID] zoneRowID:dCopy];
   }
 
   v9 = [(BRCItemDBRowIDAndZoneJobIdentifier *)v7 db];
-  v10 = [(BRCIntAndZoneJobIdentifier *)v8 matchingJobsWhereSQLClause];
-  v11 = [v9 fetch:{@"SELECT in_flight_diffs FROM client_sync_up WHERE %@ AND throttle_state != 0", v10}];
+  matchingJobsWhereSQLClause = [(BRCIntAndZoneJobIdentifier *)v8 matchingJobsWhereSQLClause];
+  v11 = [v9 fetch:{@"SELECT in_flight_diffs FROM client_sync_up WHERE %@ AND throttle_state != 0", matchingJobsWhereSQLClause}];
   v12 = [v11 enumerateObjectsOfClass:objc_opt_class()];
 
   v23 = 0u;
@@ -275,12 +275,12 @@ id __81__BRCClientDatabaseFacade__localItemByFileID_zoneInjectionCondition_itemB
   return v16;
 }
 
-- (id)localItemByRowID:(unint64_t)a3 zoneRowID:(id)a4 itemBuilder:(id)a5
+- (id)localItemByRowID:(unint64_t)d zoneRowID:(id)iD itemBuilder:(id)builder
 {
-  v8 = a5;
-  if (a4)
+  builderCopy = builder;
+  if (iD)
   {
-    [MEMORY[0x277D82C08] formatInjection:{@" AND zone_rowid = %@", a4}];
+    [MEMORY[0x277D82C08] formatInjection:{@" AND zone_rowid = %@", iD}];
   }
 
   else
@@ -293,9 +293,9 @@ id __81__BRCClientDatabaseFacade__localItemByFileID_zoneInjectionCondition_itemB
   v14[1] = 3221225472;
   v14[2] = __66__BRCClientDatabaseFacade_localItemByRowID_zoneRowID_itemBuilder___block_invoke;
   v14[3] = &unk_2784FF910;
-  v15 = v8;
-  v11 = v8;
-  v12 = [(BRCPQLConnection *)db fetchObject:v14 sql:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE rowid = %lld %@", a3, v9];
+  v15 = builderCopy;
+  v11 = builderCopy;
+  v12 = [(BRCPQLConnection *)db fetchObject:v14 sql:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE rowid = %lld %@", d, v9];
 
   return v12;
 }
@@ -307,26 +307,26 @@ id __66__BRCClientDatabaseFacade_localItemByRowID_zoneRowID_itemBuilder___block_
   return v3;
 }
 
-- (id)itemIDByRowID:(unint64_t)a3
+- (id)itemIDByRowID:(unint64_t)d
 {
-  v3 = [(PQLConnection *)self->super._db itemIDWithSQL:@"SELECT item_id FROM client_items   WHERE rowid = %lld", a3];
+  v3 = [(PQLConnection *)self->super._db itemIDWithSQL:@"SELECT item_id FROM client_items   WHERE rowid = %lld", d];
 
   return v3;
 }
 
-- (id)localAliasForItemWithBookmarkData:(id)a3 inZone:(id)a4 itemBuilder:(id)a5
+- (id)localAliasForItemWithBookmarkData:(id)data inZone:(id)zone itemBuilder:(id)builder
 {
-  v8 = a5;
+  builderCopy = builder;
   db = self->super._db;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__BRCClientDatabaseFacade_localAliasForItemWithBookmarkData_inZone_itemBuilder___block_invoke;
   v15[3] = &unk_2784FF910;
-  v16 = v8;
-  v10 = v8;
-  v11 = a3;
-  v12 = [a4 dbRowID];
-  v13 = [(BRCPQLConnection *)db fetchObject:v15 sql:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_alias_target = %@ AND item_type = 3 AND +zone_rowid = %@ ORDER BY item_id", v11, v12];
+  v16 = builderCopy;
+  v10 = builderCopy;
+  dataCopy = data;
+  dbRowID = [zone dbRowID];
+  v13 = [(BRCPQLConnection *)db fetchObject:v15 sql:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_alias_target = %@ AND item_type = 3 AND +zone_rowid = %@ ORDER BY item_id", dataCopy, dbRowID];
 
   return v13;
 }
@@ -338,21 +338,21 @@ id __80__BRCClientDatabaseFacade_localAliasForItemWithBookmarkData_inZone_itemBu
   return v3;
 }
 
-- (id)localItemByItemGlobalID:(id)a3 itemBuilder:(id)a4
+- (id)localItemByItemGlobalID:(id)d itemBuilder:(id)builder
 {
-  v6 = a4;
+  builderCopy = builder;
   db = self->super._db;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __63__BRCClientDatabaseFacade_localItemByItemGlobalID_itemBuilder___block_invoke;
   v14[3] = &unk_2784FF910;
-  v15 = v6;
-  v8 = v6;
-  v9 = a3;
-  v10 = [v9 itemID];
-  v11 = [v9 zoneRowID];
+  v15 = builderCopy;
+  v8 = builderCopy;
+  dCopy = d;
+  itemID = [dCopy itemID];
+  zoneRowID = [dCopy zoneRowID];
 
-  v12 = [(BRCPQLConnection *)db fetchObject:v14 sql:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_id = %@ AND zone_rowid = %@", v10, v11];
+  v12 = [(BRCPQLConnection *)db fetchObject:v14 sql:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_id = %@ AND zone_rowid = %@", itemID, zoneRowID];
 
   return v12;
 }
@@ -364,26 +364,26 @@ id __63__BRCClientDatabaseFacade_localItemByItemGlobalID_itemBuilder___block_inv
   return v3;
 }
 
-- (BOOL)hasDownloadJobWithTransferStageID:(id)a3
+- (BOOL)hasDownloadJobWithTransferStageID:(id)d
 {
-  v3 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT 1 FROM client_downloads WHERE transfer_stage = %@", a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT 1 FROM client_downloads WHERE transfer_stage = %@", d];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)itemByParentID:(id)a3 andLogicalName:(id)a4 excludingItemID:(id)a5 zoneRowID:(id)a6 itemBuilder:(id)a7
+- (id)itemByParentID:(id)d andLogicalName:(id)name excludingItemID:(id)iD zoneRowID:(id)rowID itemBuilder:(id)builder
 {
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  nameCopy = name;
+  iDCopy = iD;
+  rowIDCopy = rowID;
+  builderCopy = builder;
   v17 = self->super._db;
-  if (v14)
+  if (iDCopy)
   {
-    [MEMORY[0x277D82C08] formatInjection:{@"AND item_id != %@", v14}];
+    [MEMORY[0x277D82C08] formatInjection:{@"AND item_id != %@", iDCopy}];
   }
 
   else
@@ -391,14 +391,14 @@ id __63__BRCClientDatabaseFacade_localItemByItemGlobalID_itemBuilder___block_inv
     [MEMORY[0x277D82C18] rawInjection:"" length:0];
   }
   v18 = ;
-  v19 = [(BRCPQLConnection *)v17 fetchWithExpectedIndex:@"client_items/item_filename_path;client_items/item_parent_id__item_bouncedname" sql:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE ((item_parent_id = %@ AND item_parent_zone_rowid = %@ AND item_filename = %@ AND item_bouncedname IS NULL) OR (item_parent_id = %@ AND item_parent_zone_rowid = %@ AND item_bouncedname = %@)) %@", v12, v15, v13, v12, v15, v13, v18];
+  v19 = [(BRCPQLConnection *)v17 fetchWithExpectedIndex:@"client_items/item_filename_path;client_items/item_parent_id__item_bouncedname" sql:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE ((item_parent_id = %@ AND item_parent_zone_rowid = %@ AND item_filename = %@ AND item_bouncedname IS NULL) OR (item_parent_id = %@ AND item_parent_zone_rowid = %@ AND item_bouncedname = %@)) %@", dCopy, rowIDCopy, nameCopy, dCopy, rowIDCopy, nameCopy, v18];
   if ([v19 next])
   {
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __95__BRCClientDatabaseFacade_itemByParentID_andLogicalName_excludingItemID_zoneRowID_itemBuilder___block_invoke;
     v27[3] = &unk_2784FF910;
-    v28 = v16;
+    v28 = builderCopy;
     v20 = [v19 object:v27];
     if ([v19 next])
     {
@@ -407,11 +407,11 @@ id __63__BRCClientDatabaseFacade_localItemByItemGlobalID_itemBuilder___block_inv
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
         *buf = 138413058;
-        v30 = v12;
+        v30 = dCopy;
         v31 = 2112;
-        v32 = v13;
+        v32 = nameCopy;
         v33 = 2112;
-        v34 = v15;
+        v34 = rowIDCopy;
         v35 = 2112;
         v36 = v26;
         _os_log_fault_impl(&dword_223E7A000, v21, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: there should never be more than one match for that query (parentID: %@, name: %@, parentZoneID: %@)%@", buf, 0x2Au);
@@ -442,85 +442,85 @@ id __95__BRCClientDatabaseFacade_itemByParentID_andLogicalName_excludingItemID_z
   return v3;
 }
 
-- (id)clientChildCountWithParentID:(id)a3 zoneRowID:(id)a4
+- (id)clientChildCountWithParentID:(id)d zoneRowID:(id)iD
 {
-  v4 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT visible_child_count FROM client_items WHERE item_id = %@ AND zone_rowid = %@", a3, a4];
+  v4 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT visible_child_count FROM client_items WHERE item_id = %@ AND zone_rowid = %@", d, iD];
 
   return v4;
 }
 
-- (id)serverHiddenChildCountWithParentID:(id)a3 zoneRowID:(id)a4
+- (id)serverHiddenChildCountWithParentID:(id)d zoneRowID:(id)iD
 {
-  v4 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT COUNT(si.item_id) FROM server_items AS si LEFT JOIN client_unapplied_table AS cu ON si.item_rank = cu.throttle_id WHERE si.item_parent_id = %@ AND si.zone_rowid = %@ AND ((si.item_filename LIKE '.%%') OR (si.item_type = 3 AND cu.throttle_state = 24))", a3, a4];
+  v4 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT COUNT(si.item_id) FROM server_items AS si LEFT JOIN client_unapplied_table AS cu ON si.item_rank = cu.throttle_id WHERE si.item_parent_id = %@ AND si.zone_rowid = %@ AND ((si.item_filename LIKE '.%%') OR (si.item_type = 3 AND cu.throttle_state = 24))", d, iD];
 
   return v4;
 }
 
-- (BOOL)containsNonRejectedChildWithParentID:(id)a3 zoneRowID:(id)a4
+- (BOOL)containsNonRejectedChildWithParentID:(id)d zoneRowID:(id)iD
 {
-  v4 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT 1 FROM client_items WHERE item_parent_id = %@ AND item_parent_zone_rowid = %@ AND item_user_visible = 1 AND item_localsyncupstate != 1 LIMIT 1", a3, a4];
-  v5 = [v4 BOOLValue];
+  v4 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT 1 FROM client_items WHERE item_parent_id = %@ AND item_parent_zone_rowid = %@ AND item_user_visible = 1 AND item_localsyncupstate != 1 LIMIT 1", d, iD];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)existsByParentID:(id)a3 andLogicalName:(id)a4 excludingItemGlobalID:(id)a5 zoneRowID:(id)a6
+- (BOOL)existsByParentID:(id)d andLogicalName:(id)name excludingItemGlobalID:(id)iD zoneRowID:(id)rowID
 {
-  v10 = a5;
-  if (v10)
+  iDCopy = iD;
+  if (iDCopy)
   {
     v11 = MEMORY[0x277D82C08];
-    v12 = a6;
-    v13 = a4;
-    v14 = a3;
-    v15 = [v10 itemID];
-    v16 = [v10 zoneRowID];
-    v17 = [v11 formatInjection:{@"AND NOT (item_id = %@ AND zone_rowid = %@)", v15, v16}];
+    rowIDCopy = rowID;
+    nameCopy = name;
+    dCopy = d;
+    itemID = [iDCopy itemID];
+    zoneRowID = [iDCopy zoneRowID];
+    v17 = [v11 formatInjection:{@"AND NOT (item_id = %@ AND zone_rowid = %@)", itemID, zoneRowID}];
   }
 
   else
   {
     v18 = MEMORY[0x277D82C18];
-    v19 = a6;
-    v20 = a4;
-    v21 = a3;
+    rowIDCopy2 = rowID;
+    nameCopy2 = name;
+    dCopy2 = d;
     v17 = [v18 rawInjection:"" length:0];
   }
 
-  v22 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT 1 FROM client_items WHERE ((item_parent_id = %@ AND item_filename = %@ AND item_parent_zone_rowid = %@ AND item_bouncedname IS NULL) OR (item_parent_id = %@ AND item_bouncedname = %@ AND item_parent_zone_rowid = %@)) AND item_state != 1 %@ LIMIT 1", a3, a4, a6, a3, a4, a6, v17];
+  v22 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT 1 FROM client_items WHERE ((item_parent_id = %@ AND item_filename = %@ AND item_parent_zone_rowid = %@ AND item_bouncedname IS NULL) OR (item_parent_id = %@ AND item_bouncedname = %@ AND item_parent_zone_rowid = %@)) AND item_state != 1 %@ LIMIT 1", d, name, rowID, d, name, rowID, v17];
 
-  v23 = [v22 BOOLValue];
-  return v23;
+  bOOLValue = [v22 BOOLValue];
+  return bOOLValue;
 }
 
-- (BOOL)zoneHasItemsWithInflightDiffsInZoneRowID:(id)a3
+- (BOOL)zoneHasItemsWithInflightDiffsInZoneRowID:(id)d
 {
-  v3 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT 1 FROM client_items AS li INNER JOIN client_sync_up AS su ON su.throttle_id = li.rowid WHERE su.zone_rowid = %@   AND (su.in_flight_diffs BETWEEN -9223372036854775808 AND 9223372036854775807)   AND su.throttle_state != 0 LIMIT 1", a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(PQLConnection *)self->super._db numberWithSQL:@"SELECT 1 FROM client_items AS li INNER JOIN client_sync_up AS su ON su.throttle_id = li.rowid WHERE su.zone_rowid = %@   AND (su.in_flight_diffs BETWEEN -9223372036854775808 AND 9223372036854775807)   AND su.throttle_state != 0 LIMIT 1", d];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)item:(id)a3 hasSyncUpJobState:(id)a4
+- (BOOL)item:(id)item hasSyncUpJobState:(id)state
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BRCPQLInjectionJobStates alloc] initWithJobStates:v6];
+  stateCopy = state;
+  itemCopy = item;
+  v8 = [[BRCPQLInjectionJobStates alloc] initWithJobStates:stateCopy];
 
   db = self->super._db;
-  v10 = [v7 dbRowID];
+  dbRowID = [itemCopy dbRowID];
 
-  v11 = [(PQLConnection *)db numberWithSQL:@"SELECT 1 FROM client_sync_up WHERE throttle_id = %llu %@", v10, v8];
+  v11 = [(PQLConnection *)db numberWithSQL:@"SELECT 1 FROM client_sync_up WHERE throttle_id = %llu %@", dbRowID, v8];
   LOBYTE(db) = [v11 BOOLValue];
 
   return db;
 }
 
-- (id)getAssetRanksForFileItemsInPackage:(id)a3
+- (id)getAssetRanksForFileItemsInPackage:(id)package
 {
-  v4 = a3;
+  packageCopy = package;
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  v6 = -[BRCPQLConnection fetch:](self->super._db, "fetch:", @"SELECT asset_rank  FROM client_pkg_upload_items  WHERE item_rowid = %llu AND item_type = %d", [v4 dbRowID], 2);
+  v6 = -[BRCPQLConnection fetch:](self->super._db, "fetch:", @"SELECT asset_rank  FROM client_pkg_upload_items  WHERE item_rowid = %llu AND item_type = %d", [packageCopy dbRowID], 2);
   if ([v6 next])
   {
     do
@@ -535,22 +535,22 @@ id __95__BRCClientDatabaseFacade_itemByParentID_andLogicalName_excludingItemID_z
   return v5;
 }
 
-- (void)enumerateItemsWithShareIDUnderParent:(id)a3 block:(id)a4
+- (void)enumerateItemsWithShareIDUnderParent:(id)parent block:(id)block
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  parentCopy = parent;
+  blockCopy = block;
   v8 = [BRCUserDefaults defaultsForMangledID:0];
-  v9 = [v8 maxFolderEnumerationCount];
+  maxFolderEnumerationCount = [v8 maxFolderEnumerationCount];
 
   v10 = [BRCPQLInjectionEnumerationUnderParentWhereClause alloc];
-  v11 = [v6 itemGlobalID];
-  v31 = v6;
-  v12 = -[BRCPQLInjectionEnumerationUnderParentWhereClause initWithParentGlobalID:isZoneRoot:](v10, "initWithParentGlobalID:isZoneRoot:", v11, [v6 isZoneRoot]);
+  itemGlobalID = [parentCopy itemGlobalID];
+  v31 = parentCopy;
+  v12 = -[BRCPQLInjectionEnumerationUnderParentWhereClause initWithParentGlobalID:isZoneRoot:](v10, "initWithParentGlobalID:isZoneRoot:", itemGlobalID, [parentCopy isZoneRoot]);
 
   v36 = 0;
   v30 = v12;
-  v13 = [(BRCPQLConnection *)self->super._db fetch:@"WITH RECURSIVE item_children_with_shared_items (item_id, zone_rowid, shared_items_count) AS(    SELECT item_id, zone_rowid, (shared_by_me_count | shared_to_me_count) FROM item_recursive_properties      WHERE %@ AND (shared_by_me_count | shared_to_me_count) != 0  UNION ALL     SELECT ip.item_id, ip.zone_rowid, (ip.shared_by_me_count | ip.shared_to_me_count) FROM item_recursive_properties AS ip INNER JOIN item_children_with_shared_items AS p WHERE ip.item_parent_id = p.item_id AND ip.item_parent_zone_rowid = p.zone_rowid AND (ip.shared_by_me_count | ip.shared_to_me_count) != 0      LIMIT %llu) SELECT ic.item_id, ic.zone_rowid, li.item_sharing_options FROM item_children_with_shared_items AS ic INNER JOIN client_items AS li WHERE ic.shared_items_count = 1 AND li.item_id = ic.item_id AND li.zone_rowid = ic.zone_rowid AND (li.item_sharing_options & 4) != 0", v12, v9];
+  v13 = [(BRCPQLConnection *)self->super._db fetch:@"WITH RECURSIVE item_children_with_shared_items (item_id, zone_rowid, shared_items_count) AS(    SELECT item_id, zone_rowid, (shared_by_me_count | shared_to_me_count) FROM item_recursive_properties      WHERE %@ AND (shared_by_me_count | shared_to_me_count) != 0  UNION ALL     SELECT ip.item_id, ip.zone_rowid, (ip.shared_by_me_count | ip.shared_to_me_count) FROM item_recursive_properties AS ip INNER JOIN item_children_with_shared_items AS p WHERE ip.item_parent_id = p.item_id AND ip.item_parent_zone_rowid = p.zone_rowid AND (ip.shared_by_me_count | ip.shared_to_me_count) != 0      LIMIT %llu) SELECT ic.item_id, ic.zone_rowid, li.item_sharing_options FROM item_children_with_shared_items AS ic INNER JOIN client_items AS li WHERE ic.shared_items_count = 1 AND li.item_id = ic.item_id AND li.zone_rowid = ic.zone_rowid AND (li.item_sharing_options & 4) != 0", v12, maxFolderEnumerationCount];
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([v13 next])
   {
@@ -597,7 +597,7 @@ LABEL_5:
       v26 = *(*(&v32 + 1) + 8 * v25);
       v27 = [v26 objectAtIndex:0];
       v28 = [v26 objectAtIndex:1];
-      v7[2](v7, v27, [v28 unsignedLongValue], &v36);
+      blockCopy[2](blockCopy, v27, [v28 unsignedLongValue], &v36);
 
       if (v23 == ++v25)
       {
@@ -622,22 +622,22 @@ id __94__BRCClientDatabaseFacade_enumerateChildrenOfItemGlobalID_itemBuilder_sor
   return v3;
 }
 
-- (id)enumerateUserVisibleChildrenDirectoriesOfItemGlobalID:(id)a3 itemBuilder:(id)a4
+- (id)enumerateUserVisibleChildrenDirectoriesOfItemGlobalID:(id)d itemBuilder:(id)builder
 {
-  v6 = a4;
+  builderCopy = builder;
   db = self->super._db;
-  v8 = a3;
-  v9 = [v8 itemID];
-  v10 = [v8 zoneRowID];
+  dCopy = d;
+  itemID = [dCopy itemID];
+  zoneRowID = [dCopy zoneRowID];
 
-  v11 = [(BRCPQLConnection *)db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation     FROM client_items    WHERE item_parent_id = %@       AND item_state IN (0)      AND item_type = 0      AND item_parent_zone_rowid = %@       AND item_user_visible = 1  ORDER BY item_filename    LIMIT %lld", v9, v10, 1000];
+  1000 = [(BRCPQLConnection *)db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation     FROM client_items    WHERE item_parent_id = %@       AND item_state IN (0)      AND item_type = 0      AND item_parent_zone_rowid = %@       AND item_user_visible = 1  ORDER BY item_filename    LIMIT %lld", itemID, zoneRowID, 1000];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __93__BRCClientDatabaseFacade_enumerateUserVisibleChildrenDirectoriesOfItemGlobalID_itemBuilder___block_invoke;
   v15[3] = &unk_2784FF910;
-  v16 = v6;
-  v12 = v6;
-  v13 = [v11 enumerateObjects:v15];
+  v16 = builderCopy;
+  v12 = builderCopy;
+  v13 = [1000 enumerateObjects:v15];
 
   return v13;
 }
@@ -649,16 +649,16 @@ id __93__BRCClientDatabaseFacade_enumerateUserVisibleChildrenDirectoriesOfItemGl
   return v3;
 }
 
-- (id)itemsWithSideCarInflightDiffsWithItemBuilder:(id)a3
+- (id)itemsWithSideCarInflightDiffsWithItemBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v5 = [(BRCPQLConnection *)self->super._db fetch:@"SELECT li.rowid, li.zone_rowid, li.item_id, li.item_creator_id, li.item_sharing_options, li.item_side_car_ckinfo, li.item_parent_zone_rowid, li.item_localsyncupstate, li.item_local_diffs, li.item_notifs_rank, li.app_library_rowid, li.item_min_supported_os_rowid, li.item_user_visible, li.item_stat_ckinfo, li.item_state, li.item_type, li.item_mode, li.item_birthtime, li.item_lastusedtime, li.item_favoriterank, li.item_parent_id, li.item_filename, li.item_hidden_ext, li.item_finder_tags, li.item_xattr_signature, li.item_trash_put_back_path, li.item_trash_put_back_parent_id, li.item_alias_target, li.item_creator, li.item_processing_stamp, li.item_bouncedname, li.item_scope, li.item_local_change_count, li.item_old_version_identifier, li.fp_creation_item_identifier, li.version_name, li.version_ckinfo, li.version_mtime, li.version_size, li.version_thumb_size, li.version_thumb_signature, li.version_content_signature, li.version_xattr_signature, li.version_edited_since_shared, li.version_device, li.version_conflict_loser_etags, li.version_quarantine_info, li.version_uploaded_assets, li.version_upload_error, li.version_old_zone_item_id, li.version_old_zone_rowid, li.version_local_change_count, li.version_old_version_identifier, li.item_live_conflict_loser_etags, li.item_file_id, li.item_generation FROM client_items AS li INNER JOIN client_sync_up AS su ON su.throttle_id = li.rowid WHERE su.zone_rowid = %@   AND (su.in_flight_diffs BETWEEN -9223372036854775808 AND 9223372036854775807)   AND su.throttle_state != 0", &unk_2837B0430];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__BRCClientDatabaseFacade_itemsWithSideCarInflightDiffsWithItemBuilder___block_invoke;
   v9[3] = &unk_2784FF910;
-  v10 = v4;
-  v6 = v4;
+  v10 = builderCopy;
+  v6 = builderCopy;
   v7 = [v5 enumerateObjects:v9];
 
   return v7;
@@ -671,12 +671,12 @@ id __72__BRCClientDatabaseFacade_itemsWithSideCarInflightDiffsWithItemBuilder___
   return v3;
 }
 
-- (id)allItemsSortedByDepthDescendingInZoneRowID:(id)a3 descending:(BOOL)a4 isSharedZone:(BOOL)a5 parentItemID:(id)a6 itemBuilder:(id)a7
+- (id)allItemsSortedByDepthDescendingInZoneRowID:(id)d descending:(BOOL)descending isSharedZone:(BOOL)zone parentItemID:(id)iD itemBuilder:(id)builder
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if (a4)
+  dCopy = d;
+  iDCopy = iD;
+  builderCopy = builder;
+  if (descending)
   {
     v15 = "item_level DESC";
     v16 = 15;
@@ -689,7 +689,7 @@ id __72__BRCClientDatabaseFacade_itemsWithSideCarInflightDiffsWithItemBuilder___
   }
 
   v17 = [MEMORY[0x277D82C18] rawInjection:v15 length:v16];
-  if (a5)
+  if (zone)
   {
     v18 = "(item_sharing_options & 4) != 0";
     v19 = 31;
@@ -702,13 +702,13 @@ id __72__BRCClientDatabaseFacade_itemsWithSideCarInflightDiffsWithItemBuilder___
   }
 
   v20 = [MEMORY[0x277D82C18] rawInjection:v18 length:v19];
-  v21 = [(BRCPQLConnection *)self->super._db fetch:&cfstr_WithRecursiveI_11, v12, v20, v17];
+  v21 = [(BRCPQLConnection *)self->super._db fetch:&cfstr_WithRecursiveI_11, dCopy, v20, v17];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __119__BRCClientDatabaseFacade_allItemsSortedByDepthDescendingInZoneRowID_descending_isSharedZone_parentItemID_itemBuilder___block_invoke;
   v25[3] = &unk_2784FF910;
-  v26 = v14;
-  v22 = v14;
+  v26 = builderCopy;
+  v22 = builderCopy;
   v23 = [v21 enumerateObjects:v25];
 
   return v23;
@@ -721,16 +721,16 @@ id __119__BRCClientDatabaseFacade_allItemsSortedByDepthDescendingInZoneRowID_des
   return v3;
 }
 
-- (id)itemsParentedToPassedZoneButLivingInAnOtherZone:(id)a3 itemBuilder:(id)a4
+- (id)itemsParentedToPassedZoneButLivingInAnOtherZone:(id)zone itemBuilder:(id)builder
 {
-  v6 = a4;
-  v7 = [(BRCPQLConnection *)self->super._db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_parent_zone_rowid = %@ AND item_parent_zone_rowid != zone_rowid", a3];
+  builderCopy = builder;
+  v7 = [(BRCPQLConnection *)self->super._db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_parent_zone_rowid = %@ AND item_parent_zone_rowid != zone_rowid", zone];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __87__BRCClientDatabaseFacade_itemsParentedToPassedZoneButLivingInAnOtherZone_itemBuilder___block_invoke;
   v11[3] = &unk_2784FF910;
-  v12 = v6;
-  v8 = v6;
+  v12 = builderCopy;
+  v8 = builderCopy;
   v9 = [v7 enumerateObjects:v11];
 
   return v9;
@@ -743,17 +743,17 @@ id __87__BRCClientDatabaseFacade_itemsParentedToPassedZoneButLivingInAnOtherZone
   return v3;
 }
 
-- (id)itemsEnumeratorWithParentID:(id)a3 andLogicalName:(id)a4 zoneRowID:(id)a5 itemBuilder:(id)a6
+- (id)itemsEnumeratorWithParentID:(id)d andLogicalName:(id)name zoneRowID:(id)iD itemBuilder:(id)builder
 {
-  v10 = a6;
-  v11 = [(BRCPQLConnection *)self->super._db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_parent_id = %@ AND item_parent_zone_rowid = %@ AND  ((item_filename = %@ AND item_bouncedname IS NULL) OR (item_bouncedname = %@))", a3, a5, a4, a4];
+  builderCopy = builder;
+  name = [(BRCPQLConnection *)self->super._db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_parent_id = %@ AND item_parent_zone_rowid = %@ AND  ((item_filename = %@ AND item_bouncedname IS NULL) OR (item_bouncedname = %@))", d, iD, name, name];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __92__BRCClientDatabaseFacade_itemsEnumeratorWithParentID_andLogicalName_zoneRowID_itemBuilder___block_invoke;
   v15[3] = &unk_2784FF910;
-  v16 = v10;
-  v12 = v10;
-  v13 = [v11 enumerateObjects:v15];
+  v16 = builderCopy;
+  v12 = builderCopy;
+  v13 = [name enumerateObjects:v15];
 
   return v13;
 }
@@ -765,16 +765,16 @@ id __92__BRCClientDatabaseFacade_itemsEnumeratorWithParentID_andLogicalName_zone
   return v3;
 }
 
-- (id)itemsWithInFlightDiffsEnumeratorInZone:(id)a3 itemBuilder:(id)a4
+- (id)itemsWithInFlightDiffsEnumeratorInZone:(id)zone itemBuilder:(id)builder
 {
-  v6 = a4;
-  v7 = [(BRCPQLConnection *)self->super._db fetch:@"SELECT li.rowid, li.zone_rowid, li.item_id, li.item_creator_id, li.item_sharing_options, li.item_side_car_ckinfo, li.item_parent_zone_rowid, li.item_localsyncupstate, li.item_local_diffs, li.item_notifs_rank, li.app_library_rowid, li.item_min_supported_os_rowid, li.item_user_visible, li.item_stat_ckinfo, li.item_state, li.item_type, li.item_mode, li.item_birthtime, li.item_lastusedtime, li.item_favoriterank, li.item_parent_id, li.item_filename, li.item_hidden_ext, li.item_finder_tags, li.item_xattr_signature, li.item_trash_put_back_path, li.item_trash_put_back_parent_id, li.item_alias_target, li.item_creator, li.item_processing_stamp, li.item_bouncedname, li.item_scope, li.item_local_change_count, li.item_old_version_identifier, li.fp_creation_item_identifier, li.version_name, li.version_ckinfo, li.version_mtime, li.version_size, li.version_thumb_size, li.version_thumb_signature, li.version_content_signature, li.version_xattr_signature, li.version_edited_since_shared, li.version_device, li.version_conflict_loser_etags, li.version_quarantine_info, li.version_uploaded_assets, li.version_upload_error, li.version_old_zone_item_id, li.version_old_zone_rowid, li.version_local_change_count, li.version_old_version_identifier, li.item_live_conflict_loser_etags, li.item_file_id, li.item_generation FROM client_items AS li INNER JOIN client_sync_up AS su ON su.throttle_id = li.rowid WHERE su.zone_rowid = %@   AND (su.in_flight_diffs BETWEEN -9223372036854775808 AND 9223372036854775807)   AND su.throttle_state != 0", a3];
+  builderCopy = builder;
+  v7 = [(BRCPQLConnection *)self->super._db fetch:@"SELECT li.rowid, li.zone_rowid, li.item_id, li.item_creator_id, li.item_sharing_options, li.item_side_car_ckinfo, li.item_parent_zone_rowid, li.item_localsyncupstate, li.item_local_diffs, li.item_notifs_rank, li.app_library_rowid, li.item_min_supported_os_rowid, li.item_user_visible, li.item_stat_ckinfo, li.item_state, li.item_type, li.item_mode, li.item_birthtime, li.item_lastusedtime, li.item_favoriterank, li.item_parent_id, li.item_filename, li.item_hidden_ext, li.item_finder_tags, li.item_xattr_signature, li.item_trash_put_back_path, li.item_trash_put_back_parent_id, li.item_alias_target, li.item_creator, li.item_processing_stamp, li.item_bouncedname, li.item_scope, li.item_local_change_count, li.item_old_version_identifier, li.fp_creation_item_identifier, li.version_name, li.version_ckinfo, li.version_mtime, li.version_size, li.version_thumb_size, li.version_thumb_signature, li.version_content_signature, li.version_xattr_signature, li.version_edited_since_shared, li.version_device, li.version_conflict_loser_etags, li.version_quarantine_info, li.version_uploaded_assets, li.version_upload_error, li.version_old_zone_item_id, li.version_old_zone_rowid, li.version_local_change_count, li.version_old_version_identifier, li.item_live_conflict_loser_etags, li.item_file_id, li.item_generation FROM client_items AS li INNER JOIN client_sync_up AS su ON su.throttle_id = li.rowid WHERE su.zone_rowid = %@   AND (su.in_flight_diffs BETWEEN -9223372036854775808 AND 9223372036854775807)   AND su.throttle_state != 0", zone];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__BRCClientDatabaseFacade_itemsWithInFlightDiffsEnumeratorInZone_itemBuilder___block_invoke;
   v11[3] = &unk_2784FF910;
-  v12 = v6;
-  v8 = v6;
+  v12 = builderCopy;
+  v8 = builderCopy;
   v9 = [v7 enumerateObjects:v11];
 
   return v9;
@@ -787,22 +787,22 @@ id __78__BRCClientDatabaseFacade_itemsWithInFlightDiffsEnumeratorInZone_itemBuil
   return v3;
 }
 
-- (unint64_t)getSyncState:(unint64_t)a3 ignoredZones:(id)a4 error:(id *)a5
+- (unint64_t)getSyncState:(unint64_t)state ignoredZones:(id)zones error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if ((a3 & 0xA) != 0)
+  zonesCopy = zones;
+  if ((state & 0xA) != 0)
   {
     db = self->super._db;
-    v10 = [[BRCPQLInjectionDomainSyncState alloc] initWithDesiredSyncStates:a3];
-    v11 = [(BRCPQLConnection *)db fetch:@"SELECT DISTINCT item_localsyncupstate, HEX(version_content_signature) IN ('013F', '1B3F') FROM client_items as ci WHERE item_localsyncupstate != 0       AND item_scope = 2       AND NOT item_id_is_documents(item_id)       AND NOT indexset_contains(%p, zone_rowid)       AND %@", v8, v10];
+    v10 = [[BRCPQLInjectionDomainSyncState alloc] initWithDesiredSyncStates:state];
+    v11 = [(BRCPQLConnection *)db fetch:@"SELECT DISTINCT item_localsyncupstate, HEX(version_content_signature) IN ('013F', '1B3F') FROM client_items as ci WHERE item_localsyncupstate != 0       AND item_scope = 2       AND NOT item_id_is_documents(item_id)       AND NOT indexset_contains(%p, zone_rowid)       AND %@", zonesCopy, v10];
 
-    v12 = [(BRCPQLConnection *)self->super._db lastError];
+    lastError = [(BRCPQLConnection *)self->super._db lastError];
 
-    if (v12)
+    if (lastError)
     {
-      v13 = [(BRCPQLConnection *)self->super._db lastError];
-      if (v13)
+      lastError2 = [(BRCPQLConnection *)self->super._db lastError];
+      if (lastError2)
       {
         v14 = brc_bread_crumbs();
         v15 = brc_default_log();
@@ -812,24 +812,24 @@ id __78__BRCClientDatabaseFacade_itemsWithInFlightDiffsEnumeratorInZone_itemBuil
           *buf = 136315906;
           v26 = "[BRCClientDatabaseFacade getSyncState:ignoredZones:error:]";
           v27 = 2080;
-          if (!a5)
+          if (!error)
           {
             v24 = "(ignored by caller)";
           }
 
           v28 = v24;
           v29 = 2112;
-          v30 = v13;
+          v30 = lastError2;
           v31 = 2112;
           v32 = v14;
           _os_log_error_impl(&dword_223E7A000, v15, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
         }
       }
 
-      if (a5)
+      if (error)
       {
-        v16 = v13;
-        *a5 = v13;
+        v16 = lastError2;
+        *error = lastError2;
       }
 
       v17 = 1;
@@ -863,7 +863,7 @@ id __78__BRCClientDatabaseFacade_itemsWithInFlightDiffsEnumeratorInZone_itemBuil
           v17 |= v20;
         }
 
-        while ([v11 next] && v17 != a3);
+        while ([v11 next] && v17 != state);
       }
     }
   }

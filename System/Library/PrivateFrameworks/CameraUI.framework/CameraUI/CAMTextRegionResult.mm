@@ -1,5 +1,5 @@
 @interface CAMTextRegionResult
-- (CAMTextRegionResult)initWithTextRegionObject:(id)a3;
+- (CAMTextRegionResult)initWithTextRegionObject:(id)object;
 - (CGRect)bounds;
 - (NSString)description;
 - (float)confidence;
@@ -7,26 +7,26 @@
 
 @implementation CAMTextRegionResult
 
-- (CAMTextRegionResult)initWithTextRegionObject:(id)a3
+- (CAMTextRegionResult)initWithTextRegionObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v19.receiver = self;
   v19.super_class = CAMTextRegionResult;
   v6 = [(CAMTextRegionResult *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__metadataTextRegionObject, a3);
-    [v5 angularOffsetBounds];
+    objc_storeStrong(&v6->__metadataTextRegionObject, object);
+    [objectCopy angularOffsetBounds];
     v7->_bounds.origin.x = v8;
     v7->_bounds.origin.y = v9;
     v7->_bounds.size.width = v10;
     v7->_bounds.size.height = v11;
-    [v5 angularOffset];
+    [objectCopy angularOffset];
     v7->_baselineAngle = v12 * 3.14159265 / 180.0;
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [(CAMTextRegionResult *)v7 metadataType];
-    v15 = [v13 stringWithFormat:@"%@ %ld", v14, objc_msgSend(v5, "regionID")];
+    metadataType = [(CAMTextRegionResult *)v7 metadataType];
+    v15 = [v13 stringWithFormat:@"%@ %ld", metadataType, objc_msgSend(objectCopy, "regionID")];
     uniqueIdentifier = v7->_uniqueIdentifier;
     v7->_uniqueIdentifier = v15;
 
@@ -41,16 +41,16 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CAMTextRegionResult *)self _metadataTextRegionObject];
-  v7 = [v3 stringWithFormat:@"<%@: %p identifier: %ld>", v5, self, objc_msgSend(v6, "regionID")];
+  _metadataTextRegionObject = [(CAMTextRegionResult *)self _metadataTextRegionObject];
+  v7 = [v3 stringWithFormat:@"<%@: %p identifier: %ld>", v5, self, objc_msgSend(_metadataTextRegionObject, "regionID")];
 
   return v7;
 }
 
 - (float)confidence
 {
-  v2 = [(CAMTextRegionResult *)self _metadataTextRegionObject];
-  [v2 confidence];
+  _metadataTextRegionObject = [(CAMTextRegionResult *)self _metadataTextRegionObject];
+  [_metadataTextRegionObject confidence];
   v4 = v3;
 
   return v4;

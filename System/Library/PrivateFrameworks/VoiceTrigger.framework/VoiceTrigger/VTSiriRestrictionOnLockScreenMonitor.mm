@@ -2,62 +2,62 @@
 + (id)sharedInstance;
 - (BOOL)_checkSiriRestrictedOnLockScreen;
 - (VTSiriRestrictionOnLockScreenMonitor)init;
-- (void)_didReceiveRestrictionChanged:(BOOL)a3;
-- (void)_didReceiveRestrictionChangedInQueue:(BOOL)a3;
-- (void)_notifyObserver:(id)a3 withRestricted:(BOOL)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveRestrictionChanged:(BOOL)changed;
+- (void)_didReceiveRestrictionChangedInQueue:(BOOL)queue;
+- (void)_notifyObserver:(id)observer withRestricted:(BOOL)restricted;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation VTSiriRestrictionOnLockScreenMonitor
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [(VTSiriRestrictionOnLockScreenMonitor *)self _checkSiriRestrictedOnLockScreen:a3];
+  v5 = [(VTSiriRestrictionOnLockScreenMonitor *)self _checkSiriRestrictedOnLockScreen:notification];
   self->_isRestricted = v5;
 
   [(VTSiriRestrictionOnLockScreenMonitor *)self _didReceiveRestrictionChanged:v5];
 }
 
-- (void)_notifyObserver:(id)a3 withRestricted:(BOOL)a4
+- (void)_notifyObserver:(id)observer withRestricted:(BOOL)restricted
 {
-  v4 = a4;
-  v6 = a3;
-  [(VTEventMonitor *)self notifyObserver:v6];
+  restrictedCopy = restricted;
+  observerCopy = observer;
+  [(VTEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 VTSiriRestrictionOnLockScreenMonitor:self didReceiveRestrictionChanged:v4];
+    [observerCopy VTSiriRestrictionOnLockScreenMonitor:self didReceiveRestrictionChanged:restrictedCopy];
   }
 }
 
-- (void)_didReceiveRestrictionChanged:(BOOL)a3
+- (void)_didReceiveRestrictionChanged:(BOOL)changed
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __70__VTSiriRestrictionOnLockScreenMonitor__didReceiveRestrictionChanged___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(VTEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
-- (void)_didReceiveRestrictionChangedInQueue:(BOOL)a3
+- (void)_didReceiveRestrictionChangedInQueue:(BOOL)queue
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __77__VTSiriRestrictionOnLockScreenMonitor__didReceiveRestrictionChangedInQueue___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  queueCopy = queue;
   [(VTEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
 - (BOOL)_checkSiriRestrictedOnLockScreen
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D26298] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25D50]];
+  mEMORY[0x277D26298] = [MEMORY[0x277D26298] sharedConnection];
+  v3 = [mEMORY[0x277D26298] effectiveBoolValueForSetting:*MEMORY[0x277D25D50]];
 
   v4 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -78,8 +78,8 @@
 
 - (void)_stopMonitoring
 {
-  v3 = [MEMORY[0x277D26298] sharedConnection];
-  [v3 removeObserver:self];
+  mEMORY[0x277D26298] = [MEMORY[0x277D26298] sharedConnection];
+  [mEMORY[0x277D26298] removeObserver:self];
 
   v4 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -89,10 +89,10 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = [MEMORY[0x277D26298] sharedConnection];
-  [v4 addObserver:self];
+  mEMORY[0x277D26298] = [MEMORY[0x277D26298] sharedConnection];
+  [mEMORY[0x277D26298] addObserver:self];
 
   v5 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))

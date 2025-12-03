@@ -1,24 +1,24 @@
 @interface SharedMailboxController
 + (id)allSharedInstances;
-+ (id)sharedInstanceForSourceType:(unint64_t)a3;
++ (id)sharedInstanceForSourceType:(unint64_t)type;
 + (id)sharedInstanceMapping;
-+ (id)sharedSmartMailboxForSourceType:(unint64_t)a3;
++ (id)sharedSmartMailboxForSourceType:(unint64_t)type;
 - (CGPoint)iconOffset;
-- (SharedMailboxController)initWithType:(unint64_t)a3;
+- (SharedMailboxController)initWithType:(unint64_t)type;
 - (id)icon;
 - (id)iconImage;
 - (id)lastInitialBadgeCountDefaultKey;
 - (id)startCountQuery;
 - (int64_t)badgeCount;
-- (void)_startCountQueryIfNeededWithToken:(id)a3;
-- (void)_startCountQueryWithToken:(id)a3;
+- (void)_startCountQueryIfNeededWithToken:(id)token;
+- (void)_startCountQueryWithToken:(id)token;
 - (void)_updateMailboxes;
 - (void)dealloc;
 - (void)invalidateIcon;
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5;
-- (void)presentFromSelectionTarget:(id)a3 item:(id)a4 accessoryTapped:(BOOL)a5 animated:(BOOL)a6;
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change;
+- (void)presentFromSelectionTarget:(id)target item:(id)item accessoryTapped:(BOOL)tapped animated:(BOOL)animated;
 - (void)resume;
-- (void)setBadgeCount:(int64_t)a3 notifyChange:(BOOL)a4;
+- (void)setBadgeCount:(int64_t)count notifyChange:(BOOL)change;
 @end
 
 @implementation SharedMailboxController
@@ -30,7 +30,7 @@
   v4[2] = sub_10000BD6C;
   v4[3] = &unk_100656840;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   if (qword_1006DD818 != -1)
   {
     dispatch_once(&qword_1006DD818, v4);
@@ -52,10 +52,10 @@
 
 + (id)allSharedInstances
 {
-  v2 = [a1 sharedInstanceMapping];
-  v3 = [v2 allValues];
+  sharedInstanceMapping = [self sharedInstanceMapping];
+  allValues = [sharedInstanceMapping allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (void)resume
@@ -77,15 +77,15 @@
 {
   [(EFSuspendableScheduler *)self->_scheduler assertIsExecuting:1];
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 accountsProvider];
-  v5 = [v4 displayedAccounts];
+  accountsProvider = [v3 accountsProvider];
+  displayedAccounts = [accountsProvider displayedAccounts];
 
-  v6 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(displayedAccounts, "count")}];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v5;
+  v7 = displayedAccounts;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -100,8 +100,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) primaryMailboxUid];
-        [v6 addObject:v11];
+        primaryMailboxUid = [*(*(&v14 + 1) + 8 * v10) primaryMailboxUid];
+        [v6 addObject:primaryMailboxUid];
 
         v10 = v10 + 1;
       }
@@ -118,7 +118,7 @@
   self->_mailboxes = v12;
 }
 
-+ (id)sharedSmartMailboxForSourceType:(unint64_t)a3
++ (id)sharedSmartMailboxForSourceType:(unint64_t)type
 {
   if (qword_1006DD828 != -1)
   {
@@ -126,19 +126,19 @@
   }
 
   v4 = qword_1006DD820;
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:type];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-+ (id)sharedInstanceForSourceType:(unint64_t)a3
++ (id)sharedInstanceForSourceType:(unint64_t)type
 {
-  if (a3 && _MSSourceTypeIsValid())
+  if (type && _MSSourceTypeIsValid())
   {
-    v6 = [a1 sharedInstanceMapping];
-    v7 = [NSNumber numberWithUnsignedInteger:a3];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    sharedInstanceMapping = [self sharedInstanceMapping];
+    v7 = [NSNumber numberWithUnsignedInteger:type];
+    v8 = [sharedInstanceMapping objectForKeyedSubscript:v7];
 
     IsValid = _MSSourceTypeIsValid();
     if (v8)
@@ -154,7 +154,7 @@
     if (v10 == 1)
     {
       v11 = +[NSAssertionHandler currentHandler];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"SharedMailboxController.m" lineNumber:147 description:@"Unsupported source type"];
+      [v11 handleFailureInMethod:a2 object:self file:@"SharedMailboxController.m" lineNumber:147 description:@"Unsupported source type"];
     }
   }
 
@@ -166,7 +166,7 @@
   return v8;
 }
 
-- (SharedMailboxController)initWithType:(unint64_t)a3
+- (SharedMailboxController)initWithType:(unint64_t)type
 {
   v23.receiver = self;
   v23.super_class = SharedMailboxController;
@@ -175,8 +175,8 @@
   if (v4)
   {
     v4->_lock._os_unfair_lock_opaque = 0;
-    v4->_sourceType = a3;
-    v6 = [objc_opt_class() sharedSmartMailboxForSourceType:a3];
+    v4->_sourceType = type;
+    v6 = [objc_opt_class() sharedSmartMailboxForSourceType:type];
     mailbox = v5->_mailbox;
     v5->_mailbox = v6;
 
@@ -187,12 +187,12 @@
 
     [(EFSuspendableScheduler *)v5->_scheduler suspend];
     v11 = +[NSUserDefaults standardUserDefaults];
-    v12 = [(SharedMailboxController *)v5 lastInitialBadgeCountDefaultKey];
-    v5->_badgeCount = [v11 integerForKey:v12];
+    lastInitialBadgeCountDefaultKey = [(SharedMailboxController *)v5 lastInitialBadgeCountDefaultKey];
+    v5->_badgeCount = [v11 integerForKey:lastInitialBadgeCountDefaultKey];
 
-    v13 = [(SharedMailboxController *)v5 unreadCriterion];
+    unreadCriterion = [(SharedMailboxController *)v5 unreadCriterion];
     criterion = v5->_criterion;
-    v5->_criterion = v13;
+    v5->_criterion = unreadCriterion;
 
     v15 = [EFDebouncer alloc];
     v16 = +[EFScheduler mainThreadScheduler];
@@ -230,10 +230,10 @@
   return badgeCount;
 }
 
-- (void)setBadgeCount:(int64_t)a3 notifyChange:(BOOL)a4
+- (void)setBadgeCount:(int64_t)count notifyChange:(BOOL)change
 {
   os_unfair_lock_lock(&self->_lock);
-  if (self->_badgeCount == a3)
+  if (self->_badgeCount == count)
   {
 
     os_unfair_lock_unlock(&self->_lock);
@@ -241,17 +241,17 @@
 
   else
   {
-    self->_badgeCount = a3;
+    self->_badgeCount = count;
     v7 = +[NSUserDefaults standardUserDefaults];
     badgeCount = self->_badgeCount;
-    v9 = [(SharedMailboxController *)self lastInitialBadgeCountDefaultKey];
-    [v7 setInteger:badgeCount forKey:v9];
+    lastInitialBadgeCountDefaultKey = [(SharedMailboxController *)self lastInitialBadgeCountDefaultKey];
+    [v7 setInteger:badgeCount forKey:lastInitialBadgeCountDefaultKey];
 
     os_unfair_lock_unlock(&self->_lock);
-    if (a4)
+    if (change)
     {
       v13 = SharedNetworkControllerBadgeCountKey;
-      v10 = [NSNumber numberWithInteger:a3];
+      v10 = [NSNumber numberWithInteger:count];
       v14 = v10;
       v11 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
 
@@ -272,8 +272,8 @@
 
 - (id)iconImage
 {
-  v2 = [(SharedMailboxController *)self iconImageName];
-  v3 = [UIImage mf_systemImageNamed:v2 forView:7];
+  iconImageName = [(SharedMailboxController *)self iconImageName];
+  v3 = [UIImage mf_systemImageNamed:iconImageName forView:7];
 
   return v3;
 }
@@ -283,9 +283,9 @@
   os_unfair_lock_lock(&self->_lock);
   if (!self->_icon)
   {
-    v3 = [(SharedMailboxController *)self iconImage];
+    iconImage = [(SharedMailboxController *)self iconImage];
     icon = self->_icon;
-    self->_icon = v3;
+    self->_icon = iconImage;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -300,12 +300,12 @@
   self->_icon = 0;
 }
 
-- (void)presentFromSelectionTarget:(id)a3 item:(id)a4 accessoryTapped:(BOOL)a5 animated:(BOOL)a6
+- (void)presentFromSelectionTarget:(id)target item:(id)item accessoryTapped:(BOOL)tapped animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v9 = a4;
-  [v10 selectCombinedInboxWithSourceType:-[SharedMailboxController sourceType](self item:"sourceType") animated:{v9, v6}];
+  animatedCopy = animated;
+  targetCopy = target;
+  itemCopy = item;
+  [targetCopy selectCombinedInboxWithSourceType:-[SharedMailboxController sourceType](self item:"sourceType") animated:{itemCopy, animatedCopy}];
 }
 
 - (id)startCountQuery
@@ -329,52 +329,52 @@
   return v5;
 }
 
-- (void)_startCountQueryIfNeededWithToken:(id)a3
+- (void)_startCountQueryIfNeededWithToken:(id)token
 {
-  v4 = a3;
-  v5 = [(SharedMailboxController *)self unreadCountToken];
-  v6 = v5;
-  if (v5)
+  tokenCopy = token;
+  unreadCountToken = [(SharedMailboxController *)self unreadCountToken];
+  v6 = unreadCountToken;
+  if (unreadCountToken)
   {
-    v7 = [v5 isCanceled];
+    isCanceled = [unreadCountToken isCanceled];
   }
 
   else
   {
-    v7 = 1;
+    isCanceled = 1;
   }
 
   v8 = sub_1000203A0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109378;
-    v9[1] = v7;
+    v9[1] = isCanceled;
     v10 = 2114;
     v11 = v6;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Starting count query %{BOOL}d token: %{public}@", v9, 0x12u);
   }
 
-  if (v7)
+  if (isCanceled)
   {
     [(SharedMailboxController *)self _updateMailboxes];
-    [(SharedMailboxController *)self _startCountQueryWithToken:v4];
+    [(SharedMailboxController *)self _startCountQueryWithToken:tokenCopy];
   }
 }
 
-- (void)_startCountQueryWithToken:(id)a3
+- (void)_startCountQueryWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   [(EFSuspendableScheduler *)self->_scheduler assertIsExecuting:1];
-  v5 = [(SharedMailboxController *)self unreadCountToken];
-  [v5 cancel];
+  unreadCountToken = [(SharedMailboxController *)self unreadCountToken];
+  [unreadCountToken cancel];
 
   [(SharedMailboxController *)self setUnreadCountToken:0];
-  v6 = [(SharedMailboxController *)self unscopedCountPredicate];
-  v7 = [v6 copy];
+  unscopedCountPredicate = [(SharedMailboxController *)self unscopedCountPredicate];
+  v7 = [unscopedCountPredicate copy];
 
-  v8 = [(SharedMailboxController *)self mailbox];
-  v9 = [v8 mailboxScope];
-  v10 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v9];
+  mailbox = [(SharedMailboxController *)self mailbox];
+  mailboxScope = [mailbox mailboxScope];
+  v10 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:mailboxScope];
 
   if (v10)
   {
@@ -389,15 +389,15 @@
   if (v7 && [(NSArray *)self->_mailboxes count])
   {
     v13 = +[UIApplication sharedApplication];
-    v14 = [v13 focusController];
+    focusController = [v13 focusController];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10024B4C0;
     v18[3] = &unk_100656888;
     v18[4] = self;
     v19 = v7;
-    v20 = v4;
-    [v14 getCurrentFocus:v18];
+    v20 = tokenCopy;
+    [focusController getCurrentFocus:v18];
   }
 
   else
@@ -420,10 +420,10 @@
   }
 }
 
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change
 {
-  v7 = [(SharedMailboxController *)self badgeCountDebouncer:a3];
-  v6 = [NSNumber numberWithInteger:a5];
+  v7 = [(SharedMailboxController *)self badgeCountDebouncer:repository];
+  v6 = [NSNumber numberWithInteger:change];
   [v7 debounceResult:v6];
 }
 

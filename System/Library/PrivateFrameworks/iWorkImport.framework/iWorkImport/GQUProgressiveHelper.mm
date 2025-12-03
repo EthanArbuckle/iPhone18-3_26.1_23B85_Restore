@@ -1,14 +1,14 @@
 @interface GQUProgressiveHelper
-- (GQUProgressiveHelper)initWithClient:(const void *)a3 andCallbacks:(id *)a4;
-- (void)appendDataToAttachment:(__CFURL *)a3 chunk:(__CFData *)a4;
+- (GQUProgressiveHelper)initWithClient:(const void *)client andCallbacks:(id *)callbacks;
+- (void)appendDataToAttachment:(__CFURL *)attachment chunk:(__CFData *)chunk;
 - (void)dealloc;
-- (void)setNumbersSheetUri:(__CFString *)a3;
-- (void)startDataWithOptions:(__CFDictionary *)a3;
+- (void)setNumbersSheetUri:(__CFString *)uri;
+- (void)startDataWithOptions:(__CFDictionary *)options;
 @end
 
 @implementation GQUProgressiveHelper
 
-- (GQUProgressiveHelper)initWithClient:(const void *)a3 andCallbacks:(id *)a4
+- (GQUProgressiveHelper)initWithClient:(const void *)client andCallbacks:(id *)callbacks
 {
   v9.receiver = self;
   v9.super_class = GQUProgressiveHelper;
@@ -16,10 +16,10 @@
   v7 = v6;
   if (v6)
   {
-    if (a3 && a4)
+    if (client && callbacks)
     {
-      v6->mClient = a3;
-      v6->mCallBacks = a4;
+      v6->mClient = client;
+      v6->mCallBacks = callbacks;
       v6->mStartedMainHTML = 0;
     }
 
@@ -44,16 +44,16 @@
   [(GQUProgressiveHelper *)&v4 dealloc];
 }
 
-- (void)startDataWithOptions:(__CFDictionary *)a3
+- (void)startDataWithOptions:(__CFDictionary *)options
 {
   if (!self->started)
   {
-    (self->mCallBacks->var0)(self->mClient, kUTTypeHTML, a3);
+    (self->mCallBacks->var0)(self->mClient, kUTTypeHTML, options);
     self->started = 1;
   }
 }
 
-- (void)appendDataToAttachment:(__CFURL *)a3 chunk:(__CFData *)a4
+- (void)appendDataToAttachment:(__CFURL *)attachment chunk:(__CFData *)chunk
 {
   self->mStartedMainHTML = 1;
   if ((self->mCallBacks->var3)(self->mClient, a2))
@@ -61,7 +61,7 @@
     mClient = self->mClient;
     var2 = self->mCallBacks->var2;
 
-    var2(mClient, a3, a4, 0);
+    var2(mClient, attachment, chunk, 0);
   }
 
   else
@@ -71,7 +71,7 @@
   }
 }
 
-- (void)setNumbersSheetUri:(__CFString *)a3
+- (void)setNumbersSheetUri:(__CFString *)uri
 {
   mNumbersSheetUri = self->mNumbersSheetUri;
   if (mNumbersSheetUri)
@@ -80,9 +80,9 @@
     self->mNumbersSheetUri = 0;
   }
 
-  if (a3)
+  if (uri)
   {
-    self->mNumbersSheetUri = CFRetain(a3);
+    self->mNumbersSheetUri = CFRetain(uri);
   }
 }
 

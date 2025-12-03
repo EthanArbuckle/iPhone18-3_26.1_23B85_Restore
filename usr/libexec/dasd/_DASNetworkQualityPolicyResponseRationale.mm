@@ -1,16 +1,16 @@
 @interface _DASNetworkQualityPolicyResponseRationale
-- (_DASNetworkQualityPolicyResponseRationale)initWithPolicyName:(id)a3;
+- (_DASNetworkQualityPolicyResponseRationale)initWithPolicyName:(id)name;
 - (id)description;
 - (id)detailsAsDictionary;
 @end
 
 @implementation _DASNetworkQualityPolicyResponseRationale
 
-- (_DASNetworkQualityPolicyResponseRationale)initWithPolicyName:(id)a3
+- (_DASNetworkQualityPolicyResponseRationale)initWithPolicyName:(id)name
 {
   v4.receiver = self;
   v4.super_class = _DASNetworkQualityPolicyResponseRationale;
-  return [(_DASPolicyResponseRationale *)&v4 initWithPolicyName:a3];
+  return [(_DASPolicyResponseRationale *)&v4 initWithPolicyName:name];
 }
 
 - (id)description
@@ -52,8 +52,8 @@
   interfaceType = self->_interfaceType;
   if (interfaceType)
   {
-    v11 = [(NSString *)interfaceType uppercaseString];
-    [v3 setObject:v11 forKeyedSubscript:@"InterfaceType"];
+    uppercaseString = [(NSString *)interfaceType uppercaseString];
+    [v3 setObject:uppercaseString forKeyedSubscript:@"InterfaceType"];
   }
 
   else

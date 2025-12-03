@@ -1,25 +1,25 @@
 @interface CPAnalyticsCoreAnalyticsHelper
-+ (BOOL)isValidCoreAnalyticsValueType:(id)a3;
-+ (id)buildCACompatiblePayload:(id)a3;
-+ (id)caCompatiblePayloadKey:(id)a3;
-+ (void)sendCoreAnalyticsEvent:(id)a3 withPayload:(id)a4 shouldSanitize:(BOOL)a5;
++ (BOOL)isValidCoreAnalyticsValueType:(id)type;
++ (id)buildCACompatiblePayload:(id)payload;
++ (id)caCompatiblePayloadKey:(id)key;
++ (void)sendCoreAnalyticsEvent:(id)event withPayload:(id)payload shouldSanitize:(BOOL)sanitize;
 @end
 
 @implementation CPAnalyticsCoreAnalyticsHelper
 
-+ (id)buildCACompatiblePayload:(id)a3
++ (id)buildCACompatiblePayload:(id)payload
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  payloadCopy = payload;
   v6 = objc_alloc_init(v4);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__CPAnalyticsCoreAnalyticsHelper_buildCACompatiblePayload___block_invoke;
   v9[3] = &unk_278D61870;
-  v11 = a1;
+  selfCopy = self;
   v7 = v6;
   v10 = v7;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [payloadCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -51,9 +51,9 @@ void __59__CPAnalyticsCoreAnalyticsHelper_buildCACompatiblePayload___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)isValidCoreAnalyticsValueType:(id)a3
++ (BOOL)isValidCoreAnalyticsValueType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -69,32 +69,32 @@ void __59__CPAnalyticsCoreAnalyticsHelper_buildCACompatiblePayload___block_invok
   return isKindOfClass & 1;
 }
 
-+ (id)caCompatiblePayloadKey:(id)a3
++ (id)caCompatiblePayloadKey:(id)key
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 alphanumericCharacterSet];
-  v6 = [v5 invertedSet];
+  keyCopy = key;
+  alphanumericCharacterSet = [v3 alphanumericCharacterSet];
+  invertedSet = [alphanumericCharacterSet invertedSet];
 
-  v7 = [v4 componentsSeparatedByCharactersInSet:v6];
+  v7 = [keyCopy componentsSeparatedByCharactersInSet:invertedSet];
 
   v8 = [v7 componentsJoinedByString:@"_"];
 
   return v8;
 }
 
-+ (void)sendCoreAnalyticsEvent:(id)a3 withPayload:(id)a4 shouldSanitize:(BOOL)a5
++ (void)sendCoreAnalyticsEvent:(id)event withPayload:(id)payload shouldSanitize:(BOOL)sanitize
 {
-  v8 = a4;
+  payloadCopy = payload;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84__CPAnalyticsCoreAnalyticsHelper_sendCoreAnalyticsEvent_withPayload_shouldSanitize___block_invoke;
   v10[3] = &unk_278D61848;
-  v13 = a5;
-  v11 = v8;
-  v12 = a1;
-  v9 = v8;
-  [a1 analyticsSendEventLazy:a3 payload:v10];
+  sanitizeCopy = sanitize;
+  v11 = payloadCopy;
+  selfCopy = self;
+  v9 = payloadCopy;
+  [self analyticsSendEventLazy:event payload:v10];
 }
 
 id __84__CPAnalyticsCoreAnalyticsHelper_sendCoreAnalyticsEvent_withPayload_shouldSanitize___block_invoke(uint64_t a1)

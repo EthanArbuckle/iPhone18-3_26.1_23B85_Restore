@@ -1,32 +1,32 @@
 @interface _ASAgentCredentialExchangeListenerProxy
 - (id)_reconnectIfNecessary;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)initForMode:(unint64_t)a3 endpoint:(id)a4;
-- (void)_setUpConnection:(id)a3;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)initForMode:(unint64_t)mode endpoint:(id)endpoint;
+- (void)_setUpConnection:(id)connection;
 - (void)cancelCurrentOperation;
-- (void)continueExportWithCredentials:(id)a3 completionHandler:(id)a4;
-- (void)getExportedCredentialData:(id)a3;
-- (void)importCredentialsWithToken:(id)a3 completionHandler:(id)a4;
-- (void)requestExportForCredentialProvider:(id)a3 windowSceneIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)setTokenForImport:(id)a3;
+- (void)continueExportWithCredentials:(id)credentials completionHandler:(id)handler;
+- (void)getExportedCredentialData:(id)data;
+- (void)importCredentialsWithToken:(id)token completionHandler:(id)handler;
+- (void)requestExportForCredentialProvider:(id)provider windowSceneIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)setTokenForImport:(id)import;
 @end
 
 @implementation _ASAgentCredentialExchangeListenerProxy
 
-- (id)initForMode:(unint64_t)a3 endpoint:(id)a4
+- (id)initForMode:(unint64_t)mode endpoint:(id)endpoint
 {
-  v6 = a4;
+  endpointCopy = endpoint;
   v16.receiver = self;
   v16.super_class = _ASAgentCredentialExchangeListenerProxy;
   v7 = [(_ASAgentCredentialExchangeListenerProxy *)&v16 init];
   v8 = v7;
   if (v7)
   {
-    v7->_mode = a3;
+    v7->_mode = mode;
     v9 = objc_alloc(MEMORY[0x1E696B0B8]);
-    if (v6)
+    if (endpointCopy)
     {
-      v10 = [v9 initWithListenerEndpoint:v6];
+      v10 = [v9 initWithListenerEndpoint:endpointCopy];
     }
 
     else
@@ -48,22 +48,22 @@
   return v8;
 }
 
-- (void)_setUpConnection:(id)a3
+- (void)_setUpConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   mode = self->_mode;
   if (mode == 1)
   {
     v6 = ASAgentCredentialExchangeImporterInterface();
-    [v4 setRemoteObjectInterface:v6];
+    [connectionCopy setRemoteObjectInterface:v6];
     goto LABEL_5;
   }
 
   if (!mode)
   {
     v6 = ASAgentCredentialExchangeExporterInterface();
-    [v4 setRemoteObjectInterface:v6];
+    [connectionCopy setRemoteObjectInterface:v6];
 LABEL_5:
   }
 
@@ -73,9 +73,9 @@ LABEL_5:
   v11 = &unk_1E7AF75E0;
   objc_copyWeak(&v12, &location);
   v7 = _Block_copy(&v8);
-  [v4 setInvalidationHandler:{v7, v8, v9, v10, v11}];
-  [v4 setInterruptionHandler:v7];
-  [v4 resume];
+  [connectionCopy setInvalidationHandler:{v7, v8, v9, v10, v11}];
+  [connectionCopy setInterruptionHandler:v7];
+  [connectionCopy resume];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -99,17 +99,17 @@ LABEL_5:
   return v6;
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(_ASAgentCredentialExchangeListenerProxy *)self _reconnectIfNecessary];
+  handlerCopy = handler;
+  _reconnectIfNecessary = [(_ASAgentCredentialExchangeListenerProxy *)self _reconnectIfNecessary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78___ASAgentCredentialExchangeListenerProxy__remoteObjectProxyWithErrorHandler___block_invoke;
   v13[3] = &unk_1E7AF85E8;
-  v6 = v4;
+  v6 = handlerCopy;
   v14 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v13];
+  v7 = [_reconnectIfNecessary remoteObjectProxyWithErrorHandler:v13];
   v8 = v7;
   if (v7)
   {
@@ -131,70 +131,70 @@ LABEL_5:
   return v8;
 }
 
-- (void)requestExportForCredentialProvider:(id)a3 windowSceneIdentifier:(id)a4 completionHandler:(id)a5
+- (void)requestExportForCredentialProvider:(id)provider windowSceneIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __118___ASAgentCredentialExchangeListenerProxy_requestExportForCredentialProvider_windowSceneIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_1E7AF8638;
   v15[4] = self;
   v17 = a2;
-  v12 = v11;
+  v12 = handlerCopy;
   v16 = v12;
   v13 = [(_ASAgentCredentialExchangeListenerProxy *)self _remoteObjectProxyWithErrorHandler:v15];
   v14 = v13;
   if (v13)
   {
-    [v13 requestExportForCredentialProvider:v9 windowSceneIdentifier:v10 completionHandler:v12];
+    [v13 requestExportForCredentialProvider:providerCopy windowSceneIdentifier:identifierCopy completionHandler:v12];
   }
 }
 
-- (void)continueExportWithCredentials:(id)a3 completionHandler:(id)a4
+- (void)continueExportWithCredentials:(id)credentials completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  credentialsCopy = credentials;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __91___ASAgentCredentialExchangeListenerProxy_continueExportWithCredentials_completionHandler___block_invoke;
   v12[3] = &unk_1E7AF8638;
   v12[4] = self;
   v14 = a2;
-  v9 = v8;
+  v9 = handlerCopy;
   v13 = v9;
   v10 = [(_ASAgentCredentialExchangeListenerProxy *)self _remoteObjectProxyWithErrorHandler:v12];
   v11 = v10;
   if (v10)
   {
-    [v10 continueExportWithCredentials:v7 completionHandler:v9];
+    [v10 continueExportWithCredentials:credentialsCopy completionHandler:v9];
   }
 }
 
-- (void)importCredentialsWithToken:(id)a3 completionHandler:(id)a4
+- (void)importCredentialsWithToken:(id)token completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  tokenCopy = token;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __88___ASAgentCredentialExchangeListenerProxy_importCredentialsWithToken_completionHandler___block_invoke;
   v12[3] = &unk_1E7AF8638;
   v12[4] = self;
   v14 = a2;
-  v9 = v8;
+  v9 = handlerCopy;
   v13 = v9;
   v10 = [(_ASAgentCredentialExchangeListenerProxy *)self _remoteObjectProxyWithErrorHandler:v12];
   v11 = v10;
   if (v10)
   {
-    [v10 importCredentialsWithToken:v7 completionHandler:v9];
+    [v10 importCredentialsWithToken:tokenCopy completionHandler:v9];
   }
 }
 
-- (void)setTokenForImport:(id)a3
+- (void)setTokenForImport:(id)import
 {
-  v5 = a3;
+  importCopy = import;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61___ASAgentCredentialExchangeListenerProxy_setTokenForImport___block_invoke;
@@ -205,20 +205,20 @@ LABEL_5:
   v7 = v6;
   if (v6)
   {
-    [v6 setTokenForImport:v5];
+    [v6 setTokenForImport:importCopy];
   }
 }
 
-- (void)getExportedCredentialData:(id)a3
+- (void)getExportedCredentialData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69___ASAgentCredentialExchangeListenerProxy_getExportedCredentialData___block_invoke;
   v9[3] = &unk_1E7AF8638;
   v9[4] = self;
   v11 = a2;
-  v6 = v5;
+  v6 = dataCopy;
   v10 = v6;
   v7 = [(_ASAgentCredentialExchangeListenerProxy *)self _remoteObjectProxyWithErrorHandler:v9];
   v8 = v7;

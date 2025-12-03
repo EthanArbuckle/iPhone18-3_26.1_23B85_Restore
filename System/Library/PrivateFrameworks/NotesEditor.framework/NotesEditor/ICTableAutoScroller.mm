@@ -1,47 +1,47 @@
 @interface ICTableAutoScroller
 - (CGRect)targetFrame;
 - (ICTableAttachmentViewController)tableAttachmentViewController;
-- (ICTableAutoScroller)initWithTableAttachmentViewController:(id)a3 scrollDirectionMode:(unint64_t)a4;
+- (ICTableAutoScroller)initWithTableAttachmentViewController:(id)controller scrollDirectionMode:(unint64_t)mode;
 - (ICTableAutoScrollerDelegate)delegate;
 - (ICTableScrollView)horizontalScrollView;
 - (UIScrollView)targetScrollView;
 - (UIScrollView)verticalScrollView;
-- (double)scrollFactorForScrollDirectionMode:(unint64_t)a3;
-- (void)autoScrollWithScrollFactor:(double)a3 scrollDirectionMode:(unint64_t)a4;
-- (void)setTargetFrame:(CGRect)a3;
+- (double)scrollFactorForScrollDirectionMode:(unint64_t)mode;
+- (void)autoScrollWithScrollFactor:(double)factor scrollDirectionMode:(unint64_t)mode;
+- (void)setTargetFrame:(CGRect)frame;
 - (void)stopAutoscrollTimer;
-- (void)updateAutoscrollTimer:(id)a3;
+- (void)updateAutoscrollTimer:(id)timer;
 @end
 
 @implementation ICTableAutoScroller
 
-- (ICTableAutoScroller)initWithTableAttachmentViewController:(id)a3 scrollDirectionMode:(unint64_t)a4
+- (ICTableAutoScroller)initWithTableAttachmentViewController:(id)controller scrollDirectionMode:(unint64_t)mode
 {
-  v6 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = ICTableAutoScroller;
   v7 = [(ICTableAutoScroller *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_tableAttachmentViewController, v6);
-    v8->_scrollDirectionMode = a4;
-    v9 = [v6 noteScrollView];
-    objc_storeWeak(&v8->_verticalScrollView, v9);
+    objc_storeWeak(&v7->_tableAttachmentViewController, controllerCopy);
+    v8->_scrollDirectionMode = mode;
+    noteScrollView = [controllerCopy noteScrollView];
+    objc_storeWeak(&v8->_verticalScrollView, noteScrollView);
 
-    v10 = [v6 scrollView];
-    objc_storeWeak(&v8->_horizontalScrollView, v10);
+    scrollView = [controllerCopy scrollView];
+    objc_storeWeak(&v8->_horizontalScrollView, scrollView);
   }
 
   return v8;
 }
 
-- (void)setTargetFrame:(CGRect)a3
+- (void)setTargetFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(ICTableAutoScroller *)self targetFrame];
   v46.origin.x = v8;
   v46.origin.y = v9;
@@ -60,8 +60,8 @@
   self->_targetFrame.origin.y = y;
   self->_targetFrame.size.width = width;
   self->_targetFrame.size.height = height;
-  v12 = [(ICTableAutoScroller *)self tableAttachmentViewController];
-  [v12 viewport];
+  tableAttachmentViewController = [(ICTableAutoScroller *)self tableAttachmentViewController];
+  [tableAttachmentViewController viewport];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -91,8 +91,8 @@
   v41.size.width = v18;
   v41.size.height = v20;
   MaxX = CGRectGetMaxX(v41);
-  v24 = [(ICTableAutoScroller *)self scrollDirectionMode];
-  if (v24 == 1)
+  scrollDirectionMode = [(ICTableAutoScroller *)self scrollDirectionMode];
+  if (scrollDirectionMode == 1)
   {
     v44.origin.x = x;
     v44.origin.y = y;
@@ -107,9 +107,9 @@
       if (MaxX >= CGRectGetMaxX(v45))
       {
 LABEL_15:
-        v29 = [(ICTableAutoScroller *)self autoscrollTimer];
+        autoscrollTimer = [(ICTableAutoScroller *)self autoscrollTimer];
 
-        if (v29)
+        if (autoscrollTimer)
         {
 
           [(ICTableAutoScroller *)self stopAutoscrollTimer];
@@ -122,7 +122,7 @@ LABEL_15:
 
   else
   {
-    if (v24)
+    if (scrollDirectionMode)
     {
       goto LABEL_15;
     }
@@ -144,17 +144,17 @@ LABEL_15:
     }
   }
 
-  v25 = [(ICTableAutoScroller *)self autoscrollTimer];
+  autoscrollTimer2 = [(ICTableAutoScroller *)self autoscrollTimer];
 
-  if (!v25)
+  if (!autoscrollTimer2)
   {
-    v26 = [(ICTableAutoScroller *)self delegate];
+    delegate = [(ICTableAutoScroller *)self delegate];
     v27 = objc_opt_respondsToSelector();
 
     if (v27)
     {
-      v28 = [(ICTableAutoScroller *)self delegate];
-      [v28 tableAutoScrollerWillStartScrolling:self];
+      delegate2 = [(ICTableAutoScroller *)self delegate];
+      [delegate2 tableAutoScrollerWillStartScrolling:self];
     }
 
     [(ICTableAutoScroller *)self setIsScrolling:1];
@@ -163,10 +163,10 @@ LABEL_15:
   }
 }
 
-- (void)updateAutoscrollTimer:(id)a3
+- (void)updateAutoscrollTimer:(id)timer
 {
-  v4 = [(ICTableAutoScroller *)self scrollDirectionMode];
-  [(ICTableAutoScroller *)self scrollFactorForScrollDirectionMode:v4];
+  scrollDirectionMode = [(ICTableAutoScroller *)self scrollDirectionMode];
+  [(ICTableAutoScroller *)self scrollFactorForScrollDirectionMode:scrollDirectionMode];
   v6 = v5;
   if (v6 == 0.0)
   {
@@ -178,14 +178,14 @@ LABEL_15:
   {
     v7 = v6;
 
-    [(ICTableAutoScroller *)self autoScrollWithScrollFactor:v4 scrollDirectionMode:v7];
+    [(ICTableAutoScroller *)self autoScrollWithScrollFactor:scrollDirectionMode scrollDirectionMode:v7];
   }
 }
 
-- (double)scrollFactorForScrollDirectionMode:(unint64_t)a3
+- (double)scrollFactorForScrollDirectionMode:(unint64_t)mode
 {
-  v5 = [(ICTableAutoScroller *)self tableAttachmentViewController];
-  [v5 viewport];
+  tableAttachmentViewController = [(ICTableAutoScroller *)self tableAttachmentViewController];
+  [tableAttachmentViewController viewport];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -195,9 +195,9 @@ LABEL_15:
   v18 = v15;
   v19 = v17;
   v20 = 0.0;
-  if (a3 != 1)
+  if (mode != 1)
   {
-    if (a3)
+    if (mode)
     {
       return v20;
     }
@@ -219,8 +219,8 @@ LABEL_15:
       v64.size.width = v11;
       v64.size.height = v13;
       v24 = CGRectGetMaxY(v64);
-      v25 = [(ICTableAutoScroller *)self verticalScrollView];
-      [v25 contentSize];
+      verticalScrollView = [(ICTableAutoScroller *)self verticalScrollView];
+      [verticalScrollView contentSize];
       v27 = v26;
 
       if (v24 < v27)
@@ -378,22 +378,22 @@ LABEL_18:
   return v20;
 }
 
-- (void)autoScrollWithScrollFactor:(double)a3 scrollDirectionMode:(unint64_t)a4
+- (void)autoScrollWithScrollFactor:(double)factor scrollDirectionMode:(unint64_t)mode
 {
-  v6 = *(MEMORY[0x277CBF348] + 8);
-  if (a4 == 1)
+  factorCopy2 = *(MEMORY[0x277CBF348] + 8);
+  if (mode == 1)
   {
-    v27 = [(ICTableAutoScroller *)self horizontalScrollView];
-    [v27 contentOffset];
+    horizontalScrollView = [(ICTableAutoScroller *)self horizontalScrollView];
+    [horizontalScrollView contentOffset];
     v29 = v28;
     v13 = v30;
 
-    v31 = v29 + a3;
-    v32 = [(ICTableAutoScroller *)self horizontalScrollView];
-    [v32 contentSize];
+    v31 = v29 + factor;
+    horizontalScrollView2 = [(ICTableAutoScroller *)self horizontalScrollView];
+    [horizontalScrollView2 contentSize];
     v34 = v33;
-    v35 = [(ICTableAutoScroller *)self horizontalScrollView];
-    [v35 bounds];
+    horizontalScrollView3 = [(ICTableAutoScroller *)self horizontalScrollView];
+    [horizontalScrollView3 bounds];
     v37 = v36;
 
     v10 = 0.0;
@@ -406,35 +406,35 @@ LABEL_18:
       }
     }
 
-    v38 = [(ICTableAutoScroller *)self horizontalScrollView];
-    v7 = a3;
+    horizontalScrollView4 = [(ICTableAutoScroller *)self horizontalScrollView];
+    factorCopy = factor;
     goto LABEL_16;
   }
 
-  v7 = *MEMORY[0x277CBF348];
-  if (a4)
+  factorCopy = *MEMORY[0x277CBF348];
+  if (mode)
   {
     goto LABEL_17;
   }
 
-  v8 = [(ICTableAutoScroller *)self verticalScrollView];
-  [v8 contentOffset];
+  verticalScrollView = [(ICTableAutoScroller *)self verticalScrollView];
+  [verticalScrollView contentOffset];
   v10 = v9;
   v12 = v11;
 
-  v13 = v12 + a3;
-  v14 = [(ICTableAutoScroller *)self verticalScrollView];
-  [v14 contentInset];
+  v13 = v12 + factor;
+  verticalScrollView2 = [(ICTableAutoScroller *)self verticalScrollView];
+  [verticalScrollView2 contentInset];
   v16 = -v15;
 
-  v17 = [(ICTableAutoScroller *)self verticalScrollView];
-  [v17 contentSize];
+  verticalScrollView3 = [(ICTableAutoScroller *)self verticalScrollView];
+  [verticalScrollView3 contentSize];
   v19 = v18;
-  v20 = [(ICTableAutoScroller *)self verticalScrollView];
-  [v20 bounds];
+  verticalScrollView4 = [(ICTableAutoScroller *)self verticalScrollView];
+  [verticalScrollView4 bounds];
   v22 = v19 - v21;
-  v23 = [(ICTableAutoScroller *)self verticalScrollView];
-  [v23 contentInset];
+  verticalScrollView5 = [(ICTableAutoScroller *)self verticalScrollView];
+  [verticalScrollView5 contentInset];
   v25 = v22 + v24;
 
   if (v25 <= v16)
@@ -451,7 +451,7 @@ LABEL_18:
   {
     v13 = v16;
 LABEL_14:
-    a3 = v6;
+    factor = factorCopy2;
     goto LABEL_15;
   }
 
@@ -462,35 +462,35 @@ LABEL_14:
   }
 
 LABEL_15:
-  v38 = [(ICTableAutoScroller *)self verticalScrollView];
-  v6 = a3;
+  horizontalScrollView4 = [(ICTableAutoScroller *)self verticalScrollView];
+  factorCopy2 = factor;
 LABEL_16:
-  [v38 setContentOffset:{v10, v13}];
+  [horizontalScrollView4 setContentOffset:{v10, v13}];
 
 LABEL_17:
-  v39 = [(ICTableAutoScroller *)self delegate];
+  delegate = [(ICTableAutoScroller *)self delegate];
   v40 = objc_opt_respondsToSelector();
 
   if (v40)
   {
-    v41 = [(ICTableAutoScroller *)self delegate];
-    [v41 tableAutoScroller:self scrollOffsetDelta:{v7, v6}];
+    delegate2 = [(ICTableAutoScroller *)self delegate];
+    [delegate2 tableAutoScroller:self scrollOffsetDelta:{factorCopy, factorCopy2}];
   }
 }
 
 - (void)stopAutoscrollTimer
 {
-  v3 = [(ICTableAutoScroller *)self delegate];
+  delegate = [(ICTableAutoScroller *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ICTableAutoScroller *)self delegate];
-    [v5 tableAutoScrollerWillStopScrolling:self];
+    delegate2 = [(ICTableAutoScroller *)self delegate];
+    [delegate2 tableAutoScrollerWillStopScrolling:self];
   }
 
-  v6 = [(ICTableAutoScroller *)self autoscrollTimer];
-  [v6 invalidate];
+  autoscrollTimer = [(ICTableAutoScroller *)self autoscrollTimer];
+  [autoscrollTimer invalidate];
 
   [(ICTableAutoScroller *)self setAutoscrollTimer:0];
 

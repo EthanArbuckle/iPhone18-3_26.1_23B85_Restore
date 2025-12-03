@@ -2,53 +2,53 @@
 - (CGPoint)finalFingerPosition;
 - (CGPoint)initialFingerPosition;
 - (CGRect)scrollingBounds;
-- (CRNOscillationScrollTestParameters)initWithTestName:(id)a3 iterations:(unint64_t)a4 scrollingBounds:(CGRect)a5 useFlicks:(BOOL)a6 preventDismissalGestures:(BOOL)a7 initialAmplitude:(double)a8 amplitudeVariationPerIteration:(double)a9 initialDirection:(int64_t)a10 iterationDuration:(double)a11 finishWithHalfIteration:(BOOL)a12 completionHandler:(id)a13;
+- (CRNOscillationScrollTestParameters)initWithTestName:(id)name iterations:(unint64_t)iterations scrollingBounds:(CGRect)bounds useFlicks:(BOOL)flicks preventDismissalGestures:(BOOL)gestures initialAmplitude:(double)amplitude amplitudeVariationPerIteration:(double)iteration initialDirection:(int64_t)self0 iterationDuration:(double)self1 finishWithHalfIteration:(BOOL)self2 completionHandler:(id)self3;
 - (RCPSyntheticEventStream)eventStream;
 - (id)composerBlock;
-- (void)scrollWithComposer:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5 duration:(double)a6;
+- (void)scrollWithComposer:(id)composer fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint duration:(double)duration;
 @end
 
 @implementation CRNOscillationScrollTestParameters
 
-- (CRNOscillationScrollTestParameters)initWithTestName:(id)a3 iterations:(unint64_t)a4 scrollingBounds:(CGRect)a5 useFlicks:(BOOL)a6 preventDismissalGestures:(BOOL)a7 initialAmplitude:(double)a8 amplitudeVariationPerIteration:(double)a9 initialDirection:(int64_t)a10 iterationDuration:(double)a11 finishWithHalfIteration:(BOOL)a12 completionHandler:(id)a13
+- (CRNOscillationScrollTestParameters)initWithTestName:(id)name iterations:(unint64_t)iterations scrollingBounds:(CGRect)bounds useFlicks:(BOOL)flicks preventDismissalGestures:(BOOL)gestures initialAmplitude:(double)amplitude amplitudeVariationPerIteration:(double)iteration initialDirection:(int64_t)self0 iterationDuration:(double)self1 finishWithHalfIteration:(BOOL)self2 completionHandler:(id)self3
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v26 = a3;
-  v27 = a13;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  nameCopy = name;
+  handlerCopy = handler;
   v37.receiver = self;
   v37.super_class = CRNOscillationScrollTestParameters;
   v28 = [(CRNOscillationScrollTestParameters *)&v37 init];
   if (v28)
   {
-    v29 = [v26 copy];
+    v29 = [nameCopy copy];
     testName = v28->_testName;
     v28->_testName = v29;
 
-    v28->_iterations = a4;
+    v28->_iterations = iterations;
     v28->_scrollingBounds.origin.x = x;
     v28->_scrollingBounds.origin.y = y;
     v28->_scrollingBounds.size.width = width;
     v28->_scrollingBounds.size.height = height;
-    v28->_shouldFlick = a6;
-    v28->_preventDismissalGestures = a7;
-    v28->_amplitudeVariationPerIteration = a9;
-    v28->_initialAmplitude = a8;
-    v28->_initialDirection = a10;
-    v28->_iterationDuration = a11;
-    v28->_finishWithHalfIteration = a12;
-    v31 = MEMORY[0x24C1B6890](v27);
+    v28->_shouldFlick = flicks;
+    v28->_preventDismissalGestures = gestures;
+    v28->_amplitudeVariationPerIteration = iteration;
+    v28->_initialAmplitude = amplitude;
+    v28->_initialDirection = direction;
+    v28->_iterationDuration = duration;
+    v28->_finishWithHalfIteration = halfIteration;
+    v31 = MEMORY[0x24C1B6890](handlerCopy);
     completionHandler = v28->_completionHandler;
     v28->_completionHandler = v31;
 
-    if (a10 == 6 || a10 == 5)
+    if (direction == 6 || direction == 5)
     {
-      v33 = [MEMORY[0x277D75128] sharedApplication];
-      v34 = [v33 userInterfaceLayoutDirection];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
       v35 = 1;
-      if (v34)
+      if (userInterfaceLayoutDirection)
       {
         v35 = 2;
       }
@@ -58,7 +58,7 @@
 
     else
     {
-      v28->_realInitialDirection = a10;
+      v28->_realInitialDirection = direction;
     }
   }
 
@@ -185,8 +185,8 @@ uint64_t __51__CRNOscillationScrollTestParameters_composerBlock__block_invoke_2(
 
     v4 = v3;
     _Block_object_dispose(&v9, 8);
-    v5 = [(CRNOscillationScrollTestParameters *)self composerBlock];
-    v6 = [v3 eventStreamWithEventActions:v5];
+    composerBlock = [(CRNOscillationScrollTestParameters *)self composerBlock];
+    v6 = [v3 eventStreamWithEventActions:composerBlock];
   }
 
   else
@@ -197,27 +197,27 @@ uint64_t __51__CRNOscillationScrollTestParameters_composerBlock__block_invoke_2(
   return v6;
 }
 
-- (void)scrollWithComposer:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5 duration:(double)a6
+- (void)scrollWithComposer:(id)composer fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint duration:(double)duration
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v15 = a3;
+  y = toPoint.y;
+  x = toPoint.x;
+  v9 = point.y;
+  v10 = point.x;
+  composerCopy = composer;
   if ([(CRNOscillationScrollTestParameters *)self shouldFlick])
   {
-    v12 = a6 + -0.5;
-    [v15 sendFlickWithStartPoint:v10 endPoint:v9 duration:{x, y, 0.5}];
+    v12 = duration + -0.5;
+    [composerCopy sendFlickWithStartPoint:v10 endPoint:v9 duration:{x, y, 0.5}];
     if (v12 >= 0.0)
     {
-      v14 = v15;
+      v14 = composerCopy;
       v13 = v12;
     }
 
     else
     {
       v13 = 0.3;
-      v14 = v15;
+      v14 = composerCopy;
     }
 
     [v14 advanceTime:v13];
@@ -225,7 +225,7 @@ uint64_t __51__CRNOscillationScrollTestParameters_composerBlock__block_invoke_2(
 
   else
   {
-    [v15 moveToPoint:x duration:{y, a6}];
+    [composerCopy moveToPoint:x duration:{y, duration}];
   }
 }
 
@@ -251,9 +251,9 @@ uint64_t __51__CRNOscillationScrollTestParameters_composerBlock__block_invoke_2(
   v9 = v8;
   [(CRNOscillationScrollTestParameters *)self initialAmplitude];
   v11 = v10 * 0.5;
-  v12 = [(CRNOscillationScrollTestParameters *)self realInitialDirection];
+  realInitialDirection = [(CRNOscillationScrollTestParameters *)self realInitialDirection];
 
-  v13 = CRNCGPointAdvanceInDirectionByAmount(v12, Midpoint, v9, v11);
+  v13 = CRNCGPointAdvanceInDirectionByAmount(realInitialDirection, Midpoint, v9, v11);
   result.y = v14;
   result.x = v13;
   return result;

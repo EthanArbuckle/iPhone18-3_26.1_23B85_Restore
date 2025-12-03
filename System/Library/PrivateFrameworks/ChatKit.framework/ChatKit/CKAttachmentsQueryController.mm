@@ -1,12 +1,12 @@
 @interface CKAttachmentsQueryController
 - (BOOL)shouldGroupCollaborationsWithDocuments;
-- (id)chatGUIDForSearchableItem:(id)a3;
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3;
-- (id)detailsResultsValidationQueriesForChatGUIDs:(id)a3;
+- (id)chatGUIDForSearchableItem:(id)item;
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds;
+- (id)detailsResultsValidationQueriesForChatGUIDs:(id)ds;
 - (id)fetchAttributes;
 - (id)filterQueries;
-- (id)queryAttributesForText:(id)a3;
-- (unint64_t)maxResultsForMode:(unint64_t)a3;
+- (id)queryAttributesForText:(id)text;
+- (unint64_t)maxResultsForMode:(unint64_t)mode;
 @end
 
 @implementation CKAttachmentsQueryController
@@ -14,9 +14,9 @@
 - (id)fetchAttributes
 {
   v19[14] = *MEMORY[0x1E69E9840];
-  v2 = [(CKAttachmentsQueryController *)self shouldGroupCollaborationsWithDocuments];
+  shouldGroupCollaborationsWithDocuments = [(CKAttachmentsQueryController *)self shouldGroupCollaborationsWithDocuments];
   v3 = *MEMORY[0x1E69649E0];
-  if (v2)
+  if (shouldGroupCollaborationsWithDocuments)
   {
     v19[0] = *MEMORY[0x1E69649F8];
     v19[1] = v3;
@@ -68,14 +68,14 @@
   return v16;
 }
 
-- (id)queryAttributesForText:(id)a3
+- (id)queryAttributesForText:(id)text
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKAttachmentsQueryController *)self shouldGroupCollaborationsWithDocuments];
-  v6 = [v4 length];
+  textCopy = text;
+  shouldGroupCollaborationsWithDocuments = [(CKAttachmentsQueryController *)self shouldGroupCollaborationsWithDocuments];
+  v6 = [textCopy length];
 
-  if (v5)
+  if (shouldGroupCollaborationsWithDocuments)
   {
     if (v6)
     {
@@ -163,17 +163,17 @@
   return v9;
 }
 
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKAttachmentsQueryController *)self shouldGroupCollaborationsWithDocuments];
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count") << v5}];
+  dsCopy = ds;
+  shouldGroupCollaborationsWithDocuments = [(CKAttachmentsQueryController *)self shouldGroupCollaborationsWithDocuments];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count") << shouldGroupCollaborationsWithDocuments}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = dsCopy;
   v7 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
@@ -210,7 +210,7 @@
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__11;
   v23 = __Block_byref_object_dispose__11;
-  v24 = [MEMORY[0x1E696AEC0] string];
+  string = [MEMORY[0x1E696AEC0] string];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __65__CKAttachmentsQueryController_detailsFilterQueriesForChatGUIDs___block_invoke;
@@ -248,16 +248,16 @@ void __65__CKAttachmentsQueryController_detailsFilterQueriesForChatGUIDs___block
   }
 }
 
-- (id)detailsResultsValidationQueriesForChatGUIDs:(id)a3
+- (id)detailsResultsValidationQueriesForChatGUIDs:(id)ds
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v3;
+  obj = dsCopy;
   v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -289,26 +289,26 @@ void __65__CKAttachmentsQueryController_detailsFilterQueriesForChatGUIDs___block
   return v4;
 }
 
-- (unint64_t)maxResultsForMode:(unint64_t)a3
+- (unint64_t)maxResultsForMode:(unint64_t)mode
 {
-  v5 = [(CKQueryController *)self delegate];
-  v6 = [v5 layoutWidthForQueryController:self];
+  delegate = [(CKQueryController *)self delegate];
+  v6 = [delegate layoutWidthForQueryController:self];
 
-  v7 = [(CKQueryController *)self mode];
+  mode = [(CKQueryController *)self mode];
   result = 0;
-  if (v7 > 1)
+  if (mode > 1)
   {
-    if (v7 == 2)
+    if (mode == 2)
     {
 LABEL_5:
       v9.receiver = self;
       v9.super_class = CKAttachmentsQueryController;
-      return [(CKMessageTypeQueryController *)&v9 maxResultsForMode:a3];
+      return [(CKMessageTypeQueryController *)&v9 maxResultsForMode:mode];
     }
 
-    if (v7 != 3)
+    if (mode != 3)
     {
-      if (v7 != 4)
+      if (mode != 4)
       {
         return result;
       }
@@ -335,9 +335,9 @@ LABEL_8:
     return 8;
   }
 
-  if (v7)
+  if (mode)
   {
-    if (v7 != 1)
+    if (mode != 1)
     {
       return result;
     }
@@ -356,20 +356,20 @@ LABEL_8:
   }
 }
 
-- (id)chatGUIDForSearchableItem:(id)a3
+- (id)chatGUIDForSearchableItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CKAttachmentsQueryController *)self shouldGroupCollaborationsWithDocuments];
-  v6 = [v4 attributeSet];
+  itemCopy = item;
+  shouldGroupCollaborationsWithDocuments = [(CKAttachmentsQueryController *)self shouldGroupCollaborationsWithDocuments];
+  attributeSet = [itemCopy attributeSet];
 
-  if (v5)
+  if (shouldGroupCollaborationsWithDocuments)
   {
-    [v6 domainIdentifier];
+    [attributeSet domainIdentifier];
   }
 
   else
   {
-    [v6 accountIdentifier];
+    [attributeSet accountIdentifier];
   }
   v7 = ;
 
@@ -383,10 +383,10 @@ LABEL_8:
     return 0;
   }
 
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isRedesignedDetailsViewEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRedesignedDetailsViewEnabled = [mEMORY[0x1E69A8070] isRedesignedDetailsViewEnabled];
 
-  return v4;
+  return isRedesignedDetailsViewEnabled;
 }
 
 @end

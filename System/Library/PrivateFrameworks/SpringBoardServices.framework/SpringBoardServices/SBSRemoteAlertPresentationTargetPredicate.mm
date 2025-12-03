@@ -1,14 +1,14 @@
 @interface SBSRemoteAlertPresentationTargetPredicate
-+ (id)predicateForLaunchingApplicationIdentity:(id)a3;
-+ (id)predicateForProcess:(id)a3;
-- (SBSRemoteAlertPresentationTargetPredicate)initWithCoder:(id)a3;
-- (SBSRemoteAlertPresentationTargetPredicate)initWithXPCDictionary:(id)a3;
++ (id)predicateForLaunchingApplicationIdentity:(id)identity;
++ (id)predicateForProcess:(id)process;
+- (SBSRemoteAlertPresentationTargetPredicate)initWithCoder:(id)coder;
+- (SBSRemoteAlertPresentationTargetPredicate)initWithXPCDictionary:(id)dictionary;
 - (id)_init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SBSRemoteAlertPresentationTargetPredicate
@@ -20,27 +20,27 @@
   return [(SBSRemoteAlertPresentationTargetPredicate *)&v3 init];
 }
 
-+ (id)predicateForProcess:(id)a3
++ (id)predicateForProcess:(id)process
 {
-  v3 = a3;
-  v4 = [[SBSRemoteAlertPresentationTargetPredicate alloc] _init];
-  [v4 setProcess:v3];
+  processCopy = process;
+  _init = [[SBSRemoteAlertPresentationTargetPredicate alloc] _init];
+  [_init setProcess:processCopy];
 
-  return v4;
+  return _init;
 }
 
-+ (id)predicateForLaunchingApplicationIdentity:(id)a3
++ (id)predicateForLaunchingApplicationIdentity:(id)identity
 {
-  v3 = a3;
-  v4 = [[SBSRemoteAlertPresentationTargetPredicate alloc] _init];
-  [v4 setLaunchingApplicationIdentity:v3];
+  identityCopy = identity;
+  _init = [[SBSRemoteAlertPresentationTargetPredicate alloc] _init];
+  [_init setLaunchingApplicationIdentity:identityCopy];
 
-  return v4;
+  return _init;
 }
 
-- (SBSRemoteAlertPresentationTargetPredicate)initWithXPCDictionary:(id)a3
+- (SBSRemoteAlertPresentationTargetPredicate)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = BSCreateDeserializedBSXPCEncodableObjectFromXPCDictionaryWithKey();
   objc_opt_class();
   v6 = BSCreateDeserializedNSSecureEncodableObjectOfClassFromXPCDictionaryWithKey();
@@ -73,9 +73,9 @@ LABEL_8:
   return v9;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (self->_process)
   {
     BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
@@ -89,9 +89,9 @@ LABEL_8:
   BSSerializeStringToXPCDictionaryWithKey();
 }
 
-- (SBSRemoteAlertPresentationTargetPredicate)initWithCoder:(id)a3
+- (SBSRemoteAlertPresentationTargetPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -108,7 +108,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v5 = v4;
+  v5 = coderCopy;
   if ([v5 containsValueForKey:@"process"])
   {
     v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"process"];
@@ -141,13 +141,13 @@ LABEL_10:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v12;
+    v4 = coderCopy;
     v5 = v4;
     if (self->_process || self->_launchingApplicationIdentity)
     {
@@ -175,30 +175,30 @@ LABEL_10:
 
 - (id)succinctDescription
 {
-  v2 = [(SBSRemoteAlertPresentationTargetPredicate *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSRemoteAlertPresentationTargetPredicate *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSRemoteAlertPresentationTargetPredicate *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSRemoteAlertPresentationTargetPredicate *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBSRemoteAlertPresentationTargetPredicate *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBSRemoteAlertPresentationTargetPredicate *)self succinctDescriptionBuilder];
   v5 = [(BSProcessHandle *)self->_process description];
-  v6 = [v4 appendObject:v5 withName:@"process" skipIfNil:1];
+  v6 = [succinctDescriptionBuilder appendObject:v5 withName:@"process" skipIfNil:1];
 
-  v7 = [v4 appendObject:self->_launchingApplicationIdentity withName:@"launchingApplicationIdentity" skipIfNil:1];
-  v8 = [v4 appendObject:self->_scenePersistentIdentifier withName:@"scenePersistentIdentifier" skipIfNil:1];
+  v7 = [succinctDescriptionBuilder appendObject:self->_launchingApplicationIdentity withName:@"launchingApplicationIdentity" skipIfNil:1];
+  v8 = [succinctDescriptionBuilder appendObject:self->_scenePersistentIdentifier withName:@"scenePersistentIdentifier" skipIfNil:1];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface WMBordersProperty
 - (WMBordersProperty)init;
-- (void)setBorder:(id)a3 location:(int)a4;
+- (void)setBorder:(id)border location:(int)location;
 @end
 
 @implementation WMBordersProperty
@@ -12,19 +12,19 @@
   return [(CMBordersProperty *)&v3 init];
 }
 
-- (void)setBorder:(id)a3 location:(int)a4
+- (void)setBorder:(id)border location:(int)location
 {
-  v19 = a3;
-  v6 = [v19 style];
-  if (v6 > 6)
+  borderCopy = border;
+  style = [borderCopy style];
+  if (style > 6)
   {
-    if (v6 == 7 || v6 == 22)
+    if (style == 7 || style == 22)
     {
       v7 = 3;
       goto LABEL_13;
     }
 
-    if (v6 != 255)
+    if (style != 255)
     {
 LABEL_11:
       v7 = 1;
@@ -32,36 +32,36 @@ LABEL_11:
     }
 
 LABEL_9:
-    self->super.mBorderStyle[a4] = 0;
+    self->super.mBorderStyle[location] = 0;
     goto LABEL_37;
   }
 
-  if (!v6)
+  if (!style)
   {
     goto LABEL_9;
   }
 
-  if (v6 == 3)
+  if (style == 3)
   {
     v7 = 2;
     goto LABEL_13;
   }
 
-  if (v6 != 6)
+  if (style != 6)
   {
     goto LABEL_11;
   }
 
   v7 = 4;
 LABEL_13:
-  self->super.mBorderStyle[a4] = v7;
-  v8 = [v19 width];
-  if (self->super.mBorderStyle[a4] == 2)
+  self->super.mBorderStyle[location] = v7;
+  width = [borderCopy width];
+  if (self->super.mBorderStyle[location] == 2)
   {
     goto LABEL_14;
   }
 
-  v11 = v8 / 20.0;
+  v11 = width / 20.0;
   if (v11 < 1.5)
   {
     mBorderWidth = self->super.mBorderWidth;
@@ -75,7 +75,7 @@ LABEL_14:
     mBorderWidth = self->super.mBorderWidth;
     v10 = 2;
 LABEL_17:
-    mBorderWidth[a4] = v10;
+    mBorderWidth[location] = v10;
     goto LABEL_18;
   }
 
@@ -86,65 +86,65 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  mBorderWidth[a4] = 4;
-  self->super.mBorderWidth[a4 + 6] = v11;
+  mBorderWidth[location] = 4;
+  self->super.mBorderWidth[location + 6] = v11;
 LABEL_18:
   if (self->super.mBorderColor)
   {
     goto LABEL_37;
   }
 
-  v12 = [v19 color];
-  v13 = [v12 isBlack];
+  color = [borderCopy color];
+  isBlack = [color isBlack];
 
-  if (v13)
+  if (isBlack)
   {
-    v14 = +[OITSUColor blackColor];
+    color3 = +[OITSUColor blackColor];
 LABEL_21:
     mBorderColor = self->super.mBorderColor;
-    self->super.mBorderColor = v14;
+    self->super.mBorderColor = color3;
 
     goto LABEL_37;
   }
 
-  if (a4 > 2)
+  if (location > 2)
   {
-    if (a4 == 3)
+    if (location == 3)
     {
-      v16 = [v19 color];
+      color2 = [borderCopy color];
       v17 = 40;
       goto LABEL_36;
     }
 
-    if (a4 == 4)
+    if (location == 4)
     {
-      v16 = [v19 color];
+      color2 = [borderCopy color];
       v17 = 48;
       goto LABEL_36;
     }
 
 LABEL_33:
-    v14 = [v19 color];
+    color3 = [borderCopy color];
     goto LABEL_21;
   }
 
-  if (a4 == 1)
+  if (location == 1)
   {
-    v16 = [v19 color];
+    color2 = [borderCopy color];
     v17 = 24;
     goto LABEL_36;
   }
 
-  if (a4 != 2)
+  if (location != 2)
   {
     goto LABEL_33;
   }
 
-  v16 = [v19 color];
+  color2 = [borderCopy color];
   v17 = 32;
 LABEL_36:
   v18 = *(&self->super.super.super.isa + v17);
-  *(&self->super.super.super.isa + v17) = v16;
+  *(&self->super.super.super.isa + v17) = color2;
 
 LABEL_37:
 }

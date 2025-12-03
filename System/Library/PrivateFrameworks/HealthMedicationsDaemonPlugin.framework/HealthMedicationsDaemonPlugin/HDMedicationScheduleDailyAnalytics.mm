@@ -1,29 +1,29 @@
 @interface HDMedicationScheduleDailyAnalytics
-+ (id)_allActiveMedicationSchedulesWithProfile:(id)a3 error:(id *)a4;
-+ (id)_medicationCountForSchedulesWithProfile:(id)a3 error:(id *)a4;
-+ (id)_medicationCountForUnavailableSchedulesWithProfile:(id)a3 error:(id *)a4;
-- (HDMedicationScheduleDailyAnalytics)initWithProfile:(id)a3;
++ (id)_allActiveMedicationSchedulesWithProfile:(id)profile error:(id *)error;
++ (id)_medicationCountForSchedulesWithProfile:(id)profile error:(id *)error;
++ (id)_medicationCountForUnavailableSchedulesWithProfile:(id)profile error:(id *)error;
+- (HDMedicationScheduleDailyAnalytics)initWithProfile:(id)profile;
 - (NSString)eventName;
-- (id)_makeHasUnavailableSchedulesPayloadForSchedulesWithProfile:(id)a3;
-- (id)_makeMedicationCountPayloadForSchedulesWithProfile:(id)a3;
-- (id)_makeMedicationPayloadForNewScheduleTypesWithProfile:(id)a3;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (int)_countOfSchedulesInList:(id)a3 matchingScheduleType:(int64_t)a4;
+- (id)_makeHasUnavailableSchedulesPayloadForSchedulesWithProfile:(id)profile;
+- (id)_makeMedicationCountPayloadForSchedulesWithProfile:(id)profile;
+- (id)_makeMedicationPayloadForNewScheduleTypesWithProfile:(id)profile;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (int)_countOfSchedulesInList:(id)list matchingScheduleType:(int64_t)type;
 @end
 
 @implementation HDMedicationScheduleDailyAnalytics
 
-- (HDMedicationScheduleDailyAnalytics)initWithProfile:(id)a3
+- (HDMedicationScheduleDailyAnalytics)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDMedicationScheduleDailyAnalytics;
   v5 = [(HDMedicationScheduleDailyAnalytics *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
@@ -39,7 +39,7 @@
   return 0;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -49,7 +49,7 @@
   return v5;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -63,13 +63,13 @@
   return v5;
 }
 
-- (id)_makeHasUnavailableSchedulesPayloadForSchedulesWithProfile:(id)a3
+- (id)_makeHasUnavailableSchedulesPayloadForSchedulesWithProfile:(id)profile
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  profileCopy = profile;
   v5 = objc_alloc_init(v3);
   v13 = 0;
-  v6 = [objc_opt_class() _medicationCountForUnavailableSchedulesWithProfile:v4 error:&v13];
+  v6 = [objc_opt_class() _medicationCountForUnavailableSchedulesWithProfile:profileCopy error:&v13];
 
   v7 = v13;
   if (v6)
@@ -88,8 +88,8 @@
     }
   }
 
-  v9 = [v5 allKeys];
-  if ([v9 count])
+  allKeys = [v5 allKeys];
+  if ([allKeys count])
   {
     v10 = v5;
   }
@@ -104,12 +104,12 @@
   return v10;
 }
 
-- (id)_makeMedicationCountPayloadForSchedulesWithProfile:(id)a3
+- (id)_makeMedicationCountPayloadForSchedulesWithProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v17 = 0;
-  v5 = [objc_opt_class() _medicationCountForSchedulesWithProfile:v3 error:&v17];
+  v5 = [objc_opt_class() _medicationCountForSchedulesWithProfile:profileCopy error:&v17];
   v6 = v17;
   if (v5)
   {
@@ -131,7 +131,7 @@
   }
 
   v16 = v6;
-  v9 = [objc_opt_class() _medicationCountForUnavailableSchedulesWithProfile:v3 error:&v16];
+  v9 = [objc_opt_class() _medicationCountForUnavailableSchedulesWithProfile:profileCopy error:&v16];
   v10 = v16;
 
   if (v9)
@@ -150,8 +150,8 @@
     }
   }
 
-  v12 = [v4 allKeys];
-  if ([v12 count])
+  allKeys = [v4 allKeys];
+  if ([allKeys count])
   {
     v13 = v4;
   }
@@ -166,13 +166,13 @@
   return v13;
 }
 
-- (id)_makeMedicationPayloadForNewScheduleTypesWithProfile:(id)a3
+- (id)_makeMedicationPayloadForNewScheduleTypesWithProfile:(id)profile
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  profileCopy = profile;
   v6 = objc_alloc_init(v4);
   v47 = 0;
-  v7 = [HDMedicationScheduleDailyAnalytics _allActiveMedicationSchedulesWithProfile:v5 error:&v47];
+  v7 = [HDMedicationScheduleDailyAnalytics _allActiveMedicationSchedulesWithProfile:profileCopy error:&v47];
 
   v8 = v47;
   if (v7)
@@ -289,14 +289,14 @@ double __91__HDMedicationScheduleDailyAnalytics__makeMedicationPayloadForNewSche
   return v6;
 }
 
-- (int)_countOfSchedulesInList:(id)a3 matchingScheduleType:(int64_t)a4
+- (int)_countOfSchedulesInList:(id)list matchingScheduleType:(int64_t)type
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __83__HDMedicationScheduleDailyAnalytics__countOfSchedulesInList_matchingScheduleType___block_invoke;
   v6[3] = &__block_descriptor_40_e30_d16__0__HKMedicationSchedule_8l;
-  v6[4] = a4;
-  [a3 hk_sumUsingEvaluationBlock:v6];
+  v6[4] = type;
+  [list hk_sumUsingEvaluationBlock:v6];
   return v4;
 }
 
@@ -312,9 +312,9 @@ double __83__HDMedicationScheduleDailyAnalytics__countOfSchedulesInList_matching
   return result;
 }
 
-+ (id)_medicationCountForSchedulesWithProfile:(id)a3 error:(id *)a4
++ (id)_medicationCountForSchedulesWithProfile:(id)profile error:(id *)error
 {
-  v5 = a3;
+  profileCopy = profile;
   v6 = objc_opt_class();
   v12 = 0;
   v13 = &v12;
@@ -322,16 +322,16 @@ double __83__HDMedicationScheduleDailyAnalytics__countOfSchedulesInList_matching
   v15 = __Block_byref_object_copy__12;
   v16 = __Block_byref_object_dispose__12;
   v17 = 0;
-  v7 = [v5 database];
+  database = [profileCopy database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __84__HDMedicationScheduleDailyAnalytics__medicationCountForSchedulesWithProfile_error___block_invoke;
   v11[3] = &unk_2796CE7D8;
   v11[4] = &v12;
   v11[5] = v6;
-  LODWORD(a4) = [v6 performReadTransactionWithHealthDatabase:v7 error:a4 block:v11];
+  LODWORD(error) = [v6 performReadTransactionWithHealthDatabase:database error:error block:v11];
 
-  if (a4)
+  if (error)
   {
     v8 = v13[5];
   }
@@ -364,9 +364,9 @@ BOOL __84__HDMedicationScheduleDailyAnalytics__medicationCountForSchedulesWithPr
   return v13;
 }
 
-+ (id)_medicationCountForUnavailableSchedulesWithProfile:(id)a3 error:(id *)a4
++ (id)_medicationCountForUnavailableSchedulesWithProfile:(id)profile error:(id *)error
 {
-  v5 = a3;
+  profileCopy = profile;
   v6 = objc_opt_class();
   v12 = 0;
   v13 = &v12;
@@ -374,16 +374,16 @@ BOOL __84__HDMedicationScheduleDailyAnalytics__medicationCountForSchedulesWithPr
   v15 = __Block_byref_object_copy__12;
   v16 = __Block_byref_object_dispose__12;
   v17 = 0;
-  v7 = [v5 database];
+  database = [profileCopy database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __95__HDMedicationScheduleDailyAnalytics__medicationCountForUnavailableSchedulesWithProfile_error___block_invoke;
   v11[3] = &unk_2796CE7D8;
   v11[4] = &v12;
   v11[5] = v6;
-  LODWORD(a4) = [v6 performReadTransactionWithHealthDatabase:v7 error:a4 block:v11];
+  LODWORD(error) = [v6 performReadTransactionWithHealthDatabase:database error:error block:v11];
 
-  if (a4)
+  if (error)
   {
     v8 = v13[5];
   }
@@ -420,24 +420,24 @@ BOOL __95__HDMedicationScheduleDailyAnalytics__medicationCountForUnavailableSche
   return v16;
 }
 
-+ (id)_allActiveMedicationSchedulesWithProfile:(id)a3 error:(id *)a4
++ (id)_allActiveMedicationSchedulesWithProfile:(id)profile error:(id *)error
 {
-  v5 = a3;
+  profileCopy = profile;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__12;
   v15 = __Block_byref_object_dispose__12;
   v16 = 0;
-  v6 = [v5 database];
+  database = [profileCopy database];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __85__HDMedicationScheduleDailyAnalytics__allActiveMedicationSchedulesWithProfile_error___block_invoke;
   v10[3] = &unk_2796CE800;
   v10[4] = &v11;
-  LODWORD(a4) = [(HDHealthEntity *)HDMedicationScheduleEntity performReadTransactionWithHealthDatabase:v6 error:a4 block:v10];
+  LODWORD(error) = [(HDHealthEntity *)HDMedicationScheduleEntity performReadTransactionWithHealthDatabase:database error:error block:v10];
 
-  if (a4)
+  if (error)
   {
     v7 = v12[5];
   }

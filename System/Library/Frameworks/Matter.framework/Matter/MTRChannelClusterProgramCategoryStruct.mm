@@ -1,6 +1,6 @@
 @interface MTRChannelClusterProgramCategoryStruct
 - (MTRChannelClusterProgramCategoryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRChannelClusterProgramCategoryStruct);
-  v5 = [(MTRChannelClusterProgramCategoryStruct *)self category];
-  [(MTRChannelClusterProgramCategoryStruct *)v4 setCategory:v5];
+  category = [(MTRChannelClusterProgramCategoryStruct *)self category];
+  [(MTRChannelClusterProgramCategoryStruct *)v4 setCategory:category];
 
-  v6 = [(MTRChannelClusterProgramCategoryStruct *)self subCategory];
-  [(MTRChannelClusterProgramCategoryStruct *)v4 setSubCategory:v6];
+  subCategory = [(MTRChannelClusterProgramCategoryStruct *)self subCategory];
+  [(MTRChannelClusterProgramCategoryStruct *)v4 setSubCategory:subCategory];
 
   return v4;
 }

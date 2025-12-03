@@ -1,30 +1,30 @@
 @interface ESDBlipContext
-- (BOOL)loadDelayedNode:(id)a3;
-- (ESDBlipContext)initWithOffset:(unsigned int)a3 byteCount:(unsigned int)a4 stream:(SsrwOOStream *)a5 streamID:(unsigned int)a6;
+- (BOOL)loadDelayedNode:(id)node;
+- (ESDBlipContext)initWithOffset:(unsigned int)offset byteCount:(unsigned int)count stream:(SsrwOOStream *)stream streamID:(unsigned int)d;
 - (NSString)description;
 @end
 
 @implementation ESDBlipContext
 
-- (ESDBlipContext)initWithOffset:(unsigned int)a3 byteCount:(unsigned int)a4 stream:(SsrwOOStream *)a5 streamID:(unsigned int)a6
+- (ESDBlipContext)initWithOffset:(unsigned int)offset byteCount:(unsigned int)count stream:(SsrwOOStream *)stream streamID:(unsigned int)d
 {
   v11.receiver = self;
   v11.super_class = ESDBlipContext;
   result = [(ESDBlipContext *)&v11 init];
   if (result)
   {
-    result->mStartOffset = a3;
-    result->mByteCount = a4;
-    result->mStream = a5;
-    result->mStreamID = a6;
+    result->mStartOffset = offset;
+    result->mByteCount = count;
+    result->mStream = stream;
+    result->mStreamID = d;
   }
 
   return result;
 }
 
-- (BOOL)loadDelayedNode:(id)a3
+- (BOOL)loadDelayedNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   mStream = self->mStream;
   if (mStream)
   {
@@ -35,7 +35,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      [v4 setData:v6];
+      [nodeCopy setData:v6];
     }
 
     else
@@ -43,7 +43,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v4 setSoundData:v6];
+        [nodeCopy setSoundData:v6];
       }
     }
 

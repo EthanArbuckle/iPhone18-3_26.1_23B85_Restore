@@ -1,28 +1,28 @@
 @interface ICAddFolderActivity
-- (ICAddFolderActivity)initWithPresentingViewController:(id)a3 presentingBarButtonItem:(id)a4 parentFolder:(id)a5 eventReporter:(id)a6;
+- (ICAddFolderActivity)initWithPresentingViewController:(id)controller presentingBarButtonItem:(id)item parentFolder:(id)folder eventReporter:(id)reporter;
 - (UIViewController)presentingViewController;
 - (id)activityTitle;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICAddFolderActivity
 
-- (ICAddFolderActivity)initWithPresentingViewController:(id)a3 presentingBarButtonItem:(id)a4 parentFolder:(id)a5 eventReporter:(id)a6
+- (ICAddFolderActivity)initWithPresentingViewController:(id)controller presentingBarButtonItem:(id)item parentFolder:(id)folder eventReporter:(id)reporter
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  itemCopy = item;
+  folderCopy = folder;
+  reporterCopy = reporter;
   v17.receiver = self;
   v17.super_class = ICAddFolderActivity;
   v14 = [(ICAddFolderActivity *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_presentingViewController, v10);
-    objc_storeStrong(&v15->_presentingBarButtonItem, a4);
-    objc_storeStrong(&v15->_eventReporter, a6);
-    objc_storeStrong(&v15->_parentFolder, a5);
+    objc_storeWeak(&v14->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v15->_presentingBarButtonItem, item);
+    objc_storeStrong(&v15->_eventReporter, reporter);
+    objc_storeStrong(&v15->_parentFolder, folder);
   }
 
   return v15;
@@ -36,36 +36,36 @@
   return v3;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICAddFolderActivity *)self presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(ICAddFolderActivity *)self presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
     v6 = [ICFolderCreationController alloc];
-    v7 = [(ICAddFolderActivity *)self presentingViewController];
-    v8 = [(ICAddFolderActivity *)self parentFolder];
-    v9 = [(ICFolderCreationController *)v6 initWithViewController:v7 noteContainer:v8 creationApproach:1];
+    presentingViewController2 = [(ICAddFolderActivity *)self presentingViewController];
+    parentFolder = [(ICAddFolderActivity *)self parentFolder];
+    v9 = [(ICFolderCreationController *)v6 initWithViewController:presentingViewController2 noteContainer:parentFolder creationApproach:1];
     [(ICAddFolderActivity *)self setFolderCreationController:v9];
 
-    v10 = [(ICAddFolderActivity *)self folderCreationController];
+    folderCreationController = [(ICAddFolderActivity *)self folderCreationController];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000F9B30;
     v12[3] = &unk_100649E90;
     v12[4] = self;
-    v13 = v4;
-    [v10 promptToAddFolderAllowingSmartFolder:1 withCompletionHandler:v12];
+    v13 = completionCopy;
+    [folderCreationController promptToAddFolderAllowingSmartFolder:1 withCompletionHandler:v12];
   }
 
   else
   {
     [(ICAddFolderActivity *)self activityDidFinish:0];
-    if (v4)
+    if (completionCopy)
     {
-      v11 = [(ICAddFolderActivity *)self activityType];
-      (*(v4 + 2))(v4, 0, v11);
+      activityType = [(ICAddFolderActivity *)self activityType];
+      (*(completionCopy + 2))(completionCopy, 0, activityType);
     }
   }
 }

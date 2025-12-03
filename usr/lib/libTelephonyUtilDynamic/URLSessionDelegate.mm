@@ -1,20 +1,20 @@
 @interface URLSessionDelegate
 - (id).cxx_construct;
-- (shared_ptr<SessionTaskContext>)getContext:(int64_t)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)addCallbackHandler:(shared_ptr<ctu:(int64_t)a4 :Http::HttpRequestCallbackHandler>)a3 for:;
+- (shared_ptr<SessionTaskContext>)getContext:(int64_t)context;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)addCallbackHandler:(shared_ptr<ctu:(int64_t)handler :Http::HttpRequestCallbackHandler>)a3 for:;
 - (void)dealloc;
-- (void)removeCallbackFor:(int64_t)a3;
+- (void)removeCallbackFor:(int64_t)for;
 @end
 
 @implementation URLSessionDelegate
 
-- (void)addCallbackHandler:(shared_ptr<ctu:(int64_t)a4 :Http::HttpRequestCallbackHandler>)a3 for:
+- (void)addCallbackHandler:(shared_ptr<ctu:(int64_t)handler :Http::HttpRequestCallbackHandler>)a3 for:
 {
   var1 = a3.var1;
   var0 = a3.var0;
@@ -116,7 +116,7 @@ LABEL_14:
   std::__shared_weak_count::__release_shared[abi:ne200100](v11);
 }
 
-- (void)removeCallbackFor:(int64_t)a3
+- (void)removeCallbackFor:(int64_t)for
 {
   left = self->fTaskHandlers.__tree_.__end_node_.__left_;
   if (!left)
@@ -129,8 +129,8 @@ LABEL_14:
   do
   {
     v6 = *(v5 + 4);
-    v7 = v6 >= a3;
-    v8 = v6 < a3;
+    v7 = v6 >= for;
+    v8 = v6 < for;
     if (v7)
     {
       p_end_node = v5;
@@ -140,7 +140,7 @@ LABEL_14:
   }
 
   while (v5);
-  if (p_end_node == &self->fTaskHandlers.__tree_.__end_node_ || p_end_node[4].__left_ > a3)
+  if (p_end_node == &self->fTaskHandlers.__tree_.__end_node_ || p_end_node[4].__left_ > for)
   {
     return;
   }
@@ -474,7 +474,7 @@ LABEL_88:
   [(URLSessionDelegate *)&v4 dealloc];
 }
 
-- (shared_ptr<SessionTaskContext>)getContext:(int64_t)a3
+- (shared_ptr<SessionTaskContext>)getContext:(int64_t)context
 {
   left = self->fTaskHandlers.__tree_.__end_node_.__left_;
   p_end_node = &self->fTaskHandlers.__tree_.__end_node_;
@@ -488,8 +488,8 @@ LABEL_88:
   do
   {
     v8 = v5[4].__left_;
-    v9 = v8 >= a3;
-    v10 = v8 < a3;
+    v9 = v8 >= context;
+    v10 = v8 < context;
     if (v9)
     {
       v7 = v5;
@@ -499,7 +499,7 @@ LABEL_88:
   }
 
   while (v5);
-  if (v7 != p_end_node && v7[4].__left_ <= a3)
+  if (v7 != p_end_node && v7[4].__left_ <= context)
   {
     v12 = v7[5].__left_;
     v11 = v7[6].__left_;
@@ -523,19 +523,19 @@ LABEL_9:
   return result;
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
   v12 = 0xAAAAAAAAAAAAAAAALL;
-  v10 = [a4 taskIdentifier];
+  taskIdentifier = [task taskIdentifier];
   if (self)
   {
-    [(URLSessionDelegate *)self getContext:v10];
+    [(URLSessionDelegate *)self getContext:taskIdentifier];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v11 = operator new(0x68uLL);
-      ctu::Http::HttpResponseConcrete::HttpResponseConcrete(v11, a5);
-      *(v11 + 48) = [a4 _TLSNegotiatedCipherSuite];
+      ctu::Http::HttpResponseConcrete::HttpResponseConcrete(v11, response);
+      *(v11 + 48) = [task _TLSNegotiatedCipherSuite];
       std::shared_ptr<ctu::Http::HttpResponse>::reset[abi:ne200100]<ctu::Http::HttpResponseConcrete,0>(0xAAAAAAAAAAAAAACALL, v11);
     }
   }
@@ -545,21 +545,21 @@ LABEL_9:
     v12 = 0;
   }
 
-  (*(a6 + 2))(a6, 1);
+  (*(handler + 2))(handler, 1);
   if (v12)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v12);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v25 = 0xAAAAAAAAAAAAAAAALL;
   v26 = 0xAAAAAAAAAAAAAAAALL;
-  v7 = [a4 taskIdentifier];
+  taskIdentifier = [task taskIdentifier];
   if (self)
   {
-    [(URLSessionDelegate *)self getContext:v7];
+    [(URLSessionDelegate *)self getContext:taskIdentifier];
     v8 = v25[1];
     if (v8)
     {
@@ -580,10 +580,10 @@ LABEL_9:
               atomic_fetch_add_explicit(&v18->__shared_owners_, 1uLL, memory_order_relaxed);
             }
 
-            if (a5)
+            if (error)
             {
-              v19 = [a5 domain];
-              if ([v19 isEqualToString:*MEMORY[0x1E696A978]] && (v20 = objc_msgSend(a5, "code"), (v20 + 1009) <= 9))
+              domain = [error domain];
+              if ([domain isEqualToString:*MEMORY[0x1E696A978]] && (v20 = objc_msgSend(error, "code"), (v20 + 1009) <= 9))
               {
                 v21 = *(&unk_1A9164B44 + v20 + 1009);
               }
@@ -594,15 +594,15 @@ LABEL_9:
               }
 
               *(v17 + 2) = v21;
-              v17[6] = [a5 code];
-              v27 = a5;
-              ctu::cf::CFSharedRef<__CFError>::operator=(v17 + 11, &v27);
+              v17[6] = [error code];
+              errorCopy = error;
+              ctu::cf::CFSharedRef<__CFError>::operator=(v17 + 11, &errorCopy);
             }
 
             else
             {
-              v27 = v12[2];
-              ctu::cf::CFSharedRef<__CFData const>::operator=(v16 + 10, &v27);
+              errorCopy = v12[2];
+              ctu::cf::CFSharedRef<__CFData const>::operator=(v16 + 10, &errorCopy);
               *(v17 + 2) = 1;
             }
           }
@@ -649,16 +649,16 @@ LABEL_9:
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
   v10 = 0xAAAAAAAAAAAAAAAALL;
-  v7 = [a4 taskIdentifier];
+  taskIdentifier = [task taskIdentifier];
   if (self)
   {
-    [(URLSessionDelegate *)self getContext:v7];
-    if (a5)
+    [(URLSessionDelegate *)self getContext:taskIdentifier];
+    if (data)
     {
-      [MEMORY[0xAAAAAAAAAAAAAABA] appendData:a5];
+      [MEMORY[0xAAAAAAAAAAAAAABA] appendData:data];
       if (MEMORY[0xAAAAAAAAAAAAAAB2])
       {
         v8 = std::__shared_weak_count::lock(MEMORY[0xAAAAAAAAAAAAAAB2]);
@@ -667,7 +667,7 @@ LABEL_9:
           v9 = v8;
           if (MEMORY[0xAAAAAAAAAAAAAAAA])
           {
-            (*(*MEMORY[0xAAAAAAAAAAAAAAAA] + 32))(MEMORY[0xAAAAAAAAAAAAAAAA], [a5 length], objc_msgSend(MEMORY[0xAAAAAAAAAAAAAABA], "length"));
+            (*(*MEMORY[0xAAAAAAAAAAAAAAAA] + 32))(MEMORY[0xAAAAAAAAAAAAAAAA], [data length], objc_msgSend(MEMORY[0xAAAAAAAAAAAAAABA], "length"));
           }
 
           std::__shared_weak_count::__release_shared[abi:ne200100](v9);
@@ -687,13 +687,13 @@ LABEL_9:
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
   v14 = 0xAAAAAAAAAAAAAAAALL;
-  v11 = [a4 taskIdentifier];
+  taskIdentifier = [task taskIdentifier];
   if (self)
   {
-    [(URLSessionDelegate *)self getContext:v11];
+    [(URLSessionDelegate *)self getContext:taskIdentifier];
     if (MEMORY[0xAAAAAAAAAAAAAAB2])
     {
       v12 = std::__shared_weak_count::lock(MEMORY[0xAAAAAAAAAAAAAAB2]);
@@ -702,7 +702,7 @@ LABEL_9:
         v13 = v12;
         if (MEMORY[0xAAAAAAAAAAAAAAAA])
         {
-          (*(*MEMORY[0xAAAAAAAAAAAAAAAA] + 40))(MEMORY[0xAAAAAAAAAAAAAAAA], a5, a6, a7);
+          (*(*MEMORY[0xAAAAAAAAAAAAAAAA] + 40))(MEMORY[0xAAAAAAAAAAAAAAAA], data, sent, send);
         }
 
         std::__shared_weak_count::__release_shared[abi:ne200100](v13);
@@ -721,12 +721,12 @@ LABEL_9:
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   theDict[1] = *MEMORY[0x1E69E9840];
   v31 = 0xAAAAAAAAAAAAAAAALL;
   v32 = 0xAAAAAAAAAAAAAAAALL;
-  v9 = [a4 taskIdentifier];
+  taskIdentifier = [task taskIdentifier];
   if (!self)
   {
     Value = 0;
@@ -737,8 +737,8 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  [(URLSessionDelegate *)self getContext:v9];
-  v10 = [objc_msgSend(a5 "protectionSpace")];
+  [(URLSessionDelegate *)self getContext:taskIdentifier];
+  v10 = [objc_msgSend(challenge "protectionSpace")];
   if ([v10 isEqualToString:*MEMORY[0x1E696A940]])
   {
     v11 = v31[1];
@@ -818,7 +818,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v22 = [objc_msgSend(a5 "protectionSpace")];
+  v22 = [objc_msgSend(challenge "protectionSpace")];
   if (((*(*v20 + 64))(v20, v22) & 1) == 0)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -860,7 +860,7 @@ LABEL_40:
       v29 = theArray;
       if (theArray == 4 || theArray == 1)
       {
-        Value = [MEMORY[0x1E696AF30] credentialForTrust:{objc_msgSend(objc_msgSend(a5, "protectionSpace"), "serverTrust")}];
+        Value = [MEMORY[0x1E696AF30] credentialForTrust:{objc_msgSend(objc_msgSend(challenge, "protectionSpace"), "serverTrust")}];
         v17 = 0;
         goto LABEL_31;
       }
@@ -885,7 +885,7 @@ LABEL_40:
 LABEL_31:
   std::__shared_weak_count::__release_shared[abi:ne200100](v13);
 LABEL_22:
-  (*(a6 + 2))(a6, v17, Value);
+  (*(handler + 2))(handler, v17, Value);
   if (v32)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v32);
@@ -894,19 +894,19 @@ LABEL_22:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   v15 = 0xAAAAAAAAAAAAAAAALL;
-  v11 = [a4 taskIdentifier];
+  taskIdentifier = [task taskIdentifier];
   if (self)
   {
-    [(URLSessionDelegate *)self getContext:v11];
+    [(URLSessionDelegate *)self getContext:taskIdentifier];
     if (MEMORY[0xAAAAAAAAAAAAAAB2] && (v12 = std::__shared_weak_count::lock(MEMORY[0xAAAAAAAAAAAAAAB2])) != 0)
     {
       v13 = v12;
       if (MEMORY[0xAAAAAAAAAAAAAAAA])
       {
-        v14 = (*(*MEMORY[0xAAAAAAAAAAAAAAAA] + 24))(MEMORY[0xAAAAAAAAAAAAAAAA], a6, a5);
+        v14 = (*(*MEMORY[0xAAAAAAAAAAAAAAAA] + 24))(MEMORY[0xAAAAAAAAAAAAAAAA], request, redirection);
       }
 
       else
@@ -929,7 +929,7 @@ LABEL_22:
     v15 = 0;
   }
 
-  (*(a7 + 2))(a7, v14);
+  (*(handler + 2))(handler, v14);
   if (v15)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v15);

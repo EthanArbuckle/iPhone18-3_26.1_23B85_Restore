@@ -1,48 +1,48 @@
 @interface PKPassDetailsIdentityBioBindingSectionController
-- (PKPassDetailsIdentityBioBindingSectionController)initWithPass:(id)a3 webService:(id)a4 delegate:(id)a5;
+- (PKPassDetailsIdentityBioBindingSectionController)initWithPass:(id)pass webService:(id)service delegate:(id)delegate;
 - (PKPassDetailsIdentityBioBindingSectionControllerDelegate)delegate;
 - (id)allSectionIdentifiers;
 - (id)sectionIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (int64_t)tableView:(id)a3 numberOfRowsInSectionIdentifier:(id)a4;
-- (void)_updateSectionIdentifiersNotify:(BOOL)a3 animated:(BOOL)a4;
-- (void)loadBioBindingStateWithAnimated:(BOOL)a3 completion:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (int64_t)tableView:(id)view numberOfRowsInSectionIdentifier:(id)identifier;
+- (void)_updateSectionIdentifiersNotify:(BOOL)notify animated:(BOOL)animated;
+- (void)loadBioBindingStateWithAnimated:(BOOL)animated completion:(id)completion;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPassDetailsIdentityBioBindingSectionController
 
-- (PKPassDetailsIdentityBioBindingSectionController)initWithPass:(id)a3 webService:(id)a4 delegate:(id)a5
+- (PKPassDetailsIdentityBioBindingSectionController)initWithPass:(id)pass webService:(id)service delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a5;
+  passCopy = pass;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = PKPassDetailsIdentityBioBindingSectionController;
   v10 = [(PKPaymentPassDetailSectionController *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_pass, a3);
-    objc_storeWeak(&v11->_delegate, v9);
+    objc_storeStrong(&v10->_pass, pass);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
   }
 
   return v11;
 }
 
-- (void)_updateSectionIdentifiersNotify:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateSectionIdentifiersNotify:(BOOL)notify animated:(BOOL)animated
 {
   mapped = self->_mapped;
   hasInvalidBioBinding = self->_hasInvalidBioBinding;
   self->_mapped = hasInvalidBioBinding;
-  if (mapped != hasInvalidBioBinding && a3)
+  if (mapped != hasInvalidBioBinding && notify)
   {
-    v8 = a4;
+    animatedCopy = animated;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = WeakRetained;
-    if (v8)
+    if (animatedCopy)
     {
-      v11 = [(PKPassDetailsIdentityBioBindingSectionController *)self sectionIdentifiers];
-      [v12 reloadSections:v11];
+      sectionIdentifiers = [(PKPassDetailsIdentityBioBindingSectionController *)self sectionIdentifiers];
+      [v12 reloadSections:sectionIdentifiers];
     }
 
     else
@@ -52,16 +52,16 @@
   }
 }
 
-- (void)loadBioBindingStateWithAnimated:(BOOL)a3 completion:(id)a4
+- (void)loadBioBindingStateWithAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __95__PKPassDetailsIdentityBioBindingSectionController_loadBioBindingStateWithAnimated_completion___block_invoke;
   aBlock[3] = &unk_1E8013FD0;
   aBlock[4] = self;
-  v14 = a3;
-  v7 = v6;
+  animatedCopy = animated;
+  v7 = completionCopy;
   v13 = v7;
   v8 = _Block_copy(aBlock);
   if ([(PKSecureElementPass *)self->_pass passActivationState])
@@ -184,44 +184,44 @@ void __95__PKPassDetailsIdentityBioBindingSectionController_loadBioBindingStateW
 {
   if ([(PKPaymentPassDetailSectionController *)self detailViewStyle]== 2 && ![(PKPaymentPassDetailSectionController *)self currentSegment]&& self->_mapped)
   {
-    v3 = [(PKPassDetailsIdentityBioBindingSectionController *)self allSectionIdentifiers];
+    allSectionIdentifiers = [(PKPassDetailsIdentityBioBindingSectionController *)self allSectionIdentifiers];
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allSectionIdentifiers = MEMORY[0x1E695E0F0];
   }
 
-  return v3;
+  return allSectionIdentifiers;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (PKEqualObjects())
   {
-    if ([v8 row])
+    if ([pathCopy row])
     {
       v9 = PKLocalizedIdentityString(&cfstr_IdentityWatchB_2.isa);
-      v10 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:v9 forTableView:v7];
+      v10 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:v9 forTableView:viewCopy];
     }
 
     else
     {
-      v11 = [(PKSecureElementPass *)self->_pass identityType];
-      if (v11 > 5)
+      identityType = [(PKSecureElementPass *)self->_pass identityType];
+      if (identityType > 5)
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = PKLocalizedIdentityString(&off_1E8014040[v11]->isa);
+        v9 = PKLocalizedIdentityString(&off_1E8014040[identityType]->isa);
       }
 
       v12 = PKLocalizedIdentityString(&cfstr_IdentityWatchB_1.isa);
-      v10 = [(PKPaymentPassDetailSectionController *)self stackedInfoCellWithPrimaryText:v12 detailText:v9 cellStyle:1 forTableView:v7];
+      v10 = [(PKPaymentPassDetailSectionController *)self stackedInfoCellWithPrimaryText:v12 detailText:v9 cellStyle:1 forTableView:viewCopy];
     }
   }
 
@@ -233,7 +233,7 @@ void __95__PKPassDetailsIdentityBioBindingSectionController_loadBioBindingStateW
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSectionIdentifier:(id)a4
+- (int64_t)tableView:(id)view numberOfRowsInSectionIdentifier:(id)identifier
 {
   if (!PKEqualObjects())
   {
@@ -248,17 +248,17 @@ void __95__PKPassDetailsIdentityBioBindingSectionController_loadBioBindingStateW
   return 0;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 deselectRowAtIndexPath:v9 animated:1];
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   v11 = PKEqualObjects();
 
-  if (v11 && [v9 row] == 1)
+  if (v11 && [pathCopy row] == 1)
   {
-    v12 = [v8 cellForRowAtIndexPath:v9];
+    v12 = [viewCopy cellForRowAtIndexPath:pathCopy];
     [(PKPaymentPassDetailSectionController *)self showSpinner:1 inCell:v12 overrideTextColor:0];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v15[0] = MEMORY[0x1E69E9820];

@@ -1,38 +1,38 @@
 @interface MTL4ToolsCommandBuffer
-- (MTL4ToolsCommandBuffer)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTL4ToolsCommandBuffer)initWithBaseObject:(id)object parent:(id)parent;
 - (NSString)label;
 - (id)computeCommandEncoder;
 - (id)machineLearningCommandEncoder;
-- (id)renderCommandEncoderWithDescriptor:(id)a3;
-- (id)renderCommandEncoderWithDescriptor:(id)a3 options:(unint64_t)a4;
-- (id)sampledComputeCommandEncoder:(id *)a3 capacity:(unint64_t)a4;
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)unwrappedMTL4RenderPassDescriptor:(id)a3;
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor;
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor options:(unint64_t)options;
+- (id)sampledComputeCommandEncoder:(id *)encoder capacity:(unint64_t)capacity;
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)unwrappedMTL4RenderPassDescriptor:(id)descriptor;
 - (unint64_t)currentGeneration;
 - (unint64_t)privateDataOffset;
-- (void)beginCommandBufferWithAllocator:(id)a3;
-- (void)beginCommandBufferWithAllocator:(id)a3 options:(id)a4;
+- (void)beginCommandBufferWithAllocator:(id)allocator;
+- (void)beginCommandBufferWithAllocator:(id)allocator options:(id)options;
 - (void)dealloc;
 - (void)endCommandBuffer;
 - (void)popDebugGroup;
-- (void)pushDebugGroup:(id)a3;
-- (void)resolveCounterHeap:(id)a3 withRange:(_NSRange)a4 intoBuffer:(MTL4BufferRange)a5 waitFence:(id)a6 updateFence:(id)a7;
-- (void)resolveCounterHeap:(id)a3 withRange:(_NSRange)a4 intoBuffer:(id)a5 atOffset:(unint64_t)a6 waitFence:(id)a7 updateFence:(id)a8;
-- (void)setLabel:(id)a3;
-- (void)setPrivateData:(id)a3;
-- (void)setPrivateDataOffset:(unint64_t)a3;
-- (void)useResidencySet:(id)a3;
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4;
-- (void)writeTimestampIntoHeap:(id)a3 atIndex:(unint64_t)a4;
+- (void)pushDebugGroup:(id)group;
+- (void)resolveCounterHeap:(id)heap withRange:(_NSRange)range intoBuffer:(MTL4BufferRange)buffer waitFence:(id)fence updateFence:(id)updateFence;
+- (void)resolveCounterHeap:(id)heap withRange:(_NSRange)range intoBuffer:(id)buffer atOffset:(unint64_t)offset waitFence:(id)fence updateFence:(id)updateFence;
+- (void)setLabel:(id)label;
+- (void)setPrivateData:(id)data;
+- (void)setPrivateDataOffset:(unint64_t)offset;
+- (void)useResidencySet:(id)set;
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count;
+- (void)writeTimestampIntoHeap:(id)heap atIndex:(unint64_t)index;
 @end
 
 @implementation MTL4ToolsCommandBuffer
 
-- (MTL4ToolsCommandBuffer)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTL4ToolsCommandBuffer)initWithBaseObject:(id)object parent:(id)parent
 {
   v6.receiver = self;
   v6.super_class = MTL4ToolsCommandBuffer;
-  v4 = [(MTLToolsObject *)&v6 initWithBaseObject:a3 parent:a4];
+  v4 = [(MTLToolsObject *)&v6 initWithBaseObject:object parent:parent];
   if (v4)
   {
     v4->_usedResidencySets = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -51,24 +51,24 @@
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
-- (void)beginCommandBufferWithAllocator:(id)a3
+- (void)beginCommandBufferWithAllocator:(id)allocator
 {
   [(NSMutableArray *)self->_usedResidencySets removeAllObjects];
-  v5 = a3;
-  self->_commandAllocator = v5;
-  [(MTL4CommandAllocator *)v5 attachCommandBuffer:self];
+  allocatorCopy = allocator;
+  self->_commandAllocator = allocatorCopy;
+  [(MTL4CommandAllocator *)allocatorCopy attachCommandBuffer:self];
   [-[MTLToolsObject baseObject](self "baseObject")];
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v6)
@@ -78,12 +78,12 @@
   }
 }
 
-- (void)beginCommandBufferWithAllocator:(id)a3 options:(id)a4
+- (void)beginCommandBufferWithAllocator:(id)allocator options:(id)options
 {
   [(NSMutableArray *)self->_usedResidencySets removeAllObjects];
-  v7 = a3;
-  self->_commandAllocator = v7;
-  [(MTL4CommandAllocator *)v7 attachCommandBuffer:self];
+  allocatorCopy = allocator;
+  self->_commandAllocator = allocatorCopy;
+  [(MTL4CommandAllocator *)allocatorCopy attachCommandBuffer:self];
   [-[MTLToolsObject baseObject](self "baseObject")];
   v8 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v8)
@@ -98,12 +98,12 @@
   [(MTL4CommandAllocator *)self->_commandAllocator detachCommandBuffer];
 
   self->_commandAllocator = 0;
-  v3 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v3 endCommandBuffer];
+  [baseObject endCommandBuffer];
 }
 
-- (id)renderCommandEncoderWithDescriptor:(id)a3
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -122,7 +122,7 @@
   return v7;
 }
 
-- (id)renderCommandEncoderWithDescriptor:(id)a3 options:(unint64_t)a4
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor options:(unint64_t)options
 {
   v7 = objc_autoreleasePoolPush();
   v8 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -160,33 +160,33 @@
   return v5;
 }
 
-- (void)useResidencySet:(id)a3
+- (void)useResidencySet:(id)set
 {
   [(NSMutableArray *)self->_usedResidencySets addObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [set baseObject];
 
-  [v5 useResidencySet:v6];
+  [baseObject useResidencySet:baseObject2];
 }
 
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count
 {
-  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      v8 = [a3[v7] baseObject];
-      *(__p[0] + v7) = v8;
-      [(NSMutableArray *)self->_usedResidencySets addObject:a3[v7++]];
+      baseObject = [sets[v7] baseObject];
+      *(__p[0] + v7) = baseObject;
+      [(NSMutableArray *)self->_usedResidencySets addObject:sets[v7++]];
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  [v9 useResidencySets:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 useResidencySets:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -194,28 +194,28 @@
   }
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 pushDebugGroup:a3];
+  [baseObject pushDebugGroup:group];
 }
 
 - (void)popDebugGroup
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 popDebugGroup];
+  [baseObject popDebugGroup];
 }
 
 - (unint64_t)currentGeneration
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 currentGeneration];
+  return [baseObject currentGeneration];
 }
 
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   v9 = objc_autoreleasePoolPush();
   v10 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -234,7 +234,7 @@
   return v11;
 }
 
-- (id)sampledComputeCommandEncoder:(id *)a3 capacity:(unint64_t)a4
+- (id)sampledComputeCommandEncoder:(id *)encoder capacity:(unint64_t)capacity
 {
   v7 = objc_autoreleasePoolPush();
   v8 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -255,35 +255,35 @@
 
 - (unint64_t)privateDataOffset
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 privateDataOffset];
+  return [baseObject privateDataOffset];
 }
 
-- (void)setPrivateDataOffset:(unint64_t)a3
+- (void)setPrivateDataOffset:(unint64_t)offset
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setPrivateDataOffset:a3];
+  [baseObject setPrivateDataOffset:offset];
 }
 
-- (void)setPrivateData:(id)a3
+- (void)setPrivateData:(id)data
 {
-  self->_privateData = a3;
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  self->_privateData = data;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [data baseObject];
 
-  [v5 setPrivateData:v6];
+  [baseObject setPrivateData:baseObject2];
 }
 
-- (id)unwrappedMTL4RenderPassDescriptor:(id)a3
+- (id)unwrappedMTL4RenderPassDescriptor:(id)descriptor
 {
-  v4 = [a3 copy];
-  v5 = [a3 _descriptorPrivate];
-  [v4 setRasterizationRateMap:{objc_msgSend(*(v5 + 168), "baseObject")}];
-  [v4 setVisibilityResultBuffer:{objc_msgSend(*(v5 + 8), "baseObject")}];
+  v4 = [descriptor copy];
+  _descriptorPrivate = [descriptor _descriptorPrivate];
+  [v4 setRasterizationRateMap:{objc_msgSend(*(_descriptorPrivate + 168), "baseObject")}];
+  [v4 setVisibilityResultBuffer:{objc_msgSend(*(_descriptorPrivate + 8), "baseObject")}];
   v6 = 0;
-  v7 = *v5;
+  v7 = *_descriptorPrivate;
   do
   {
     v8 = [v7 _descriptorAtIndex:v6];
@@ -336,39 +336,39 @@
   return v5;
 }
 
-- (void)writeTimestampIntoHeap:(id)a3 atIndex:(unint64_t)a4
+- (void)writeTimestampIntoHeap:(id)heap atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [heap baseObject];
 
-  [v6 writeTimestampIntoHeap:v7 atIndex:a4];
+  [baseObject writeTimestampIntoHeap:baseObject2 atIndex:index];
 }
 
-- (void)resolveCounterHeap:(id)a3 withRange:(_NSRange)a4 intoBuffer:(id)a5 atOffset:(unint64_t)a6 waitFence:(id)a7 updateFence:(id)a8
+- (void)resolveCounterHeap:(id)heap withRange:(_NSRange)range intoBuffer:(id)buffer atOffset:(unint64_t)offset waitFence:(id)fence updateFence:(id)updateFence
 {
-  length = a4.length;
-  location = a4.location;
-  v14 = [(MTLToolsObject *)self baseObject];
-  v15 = [a3 baseObject];
-  v16 = [a5 baseObject];
-  v17 = [a7 baseObject];
-  [a8 baseObject];
+  length = range.length;
+  location = range.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [heap baseObject];
+  baseObject3 = [buffer baseObject];
+  baseObject4 = [fence baseObject];
+  [updateFence baseObject];
 
-  [v14 resolveCounterHeap:v15 withRange:location intoBuffer:length atOffset:v16 waitFence:a6 updateFence:v17];
+  [baseObject resolveCounterHeap:baseObject2 withRange:location intoBuffer:length atOffset:baseObject3 waitFence:offset updateFence:baseObject4];
 }
 
-- (void)resolveCounterHeap:(id)a3 withRange:(_NSRange)a4 intoBuffer:(MTL4BufferRange)a5 waitFence:(id)a6 updateFence:(id)a7
+- (void)resolveCounterHeap:(id)heap withRange:(_NSRange)range intoBuffer:(MTL4BufferRange)buffer waitFence:(id)fence updateFence:(id)updateFence
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  length = a4.length;
-  location = a4.location;
-  v13 = [(MTLToolsObject *)self baseObject];
-  v14 = [a3 baseObject];
-  v15 = [a6 baseObject];
-  [a7 baseObject];
+  var1 = buffer.var1;
+  var0 = buffer.var0;
+  length = range.length;
+  location = range.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [heap baseObject];
+  baseObject3 = [fence baseObject];
+  [updateFence baseObject];
 
-  [v13 resolveCounterHeap:v14 withRange:location intoBuffer:length waitFence:var0 updateFence:{var1, v15}];
+  [baseObject resolveCounterHeap:baseObject2 withRange:location intoBuffer:length waitFence:var0 updateFence:{var1, baseObject3}];
 }
 
 @end

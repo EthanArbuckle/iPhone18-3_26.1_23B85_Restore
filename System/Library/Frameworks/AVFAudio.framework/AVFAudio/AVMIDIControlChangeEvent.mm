@@ -1,15 +1,15 @@
 @interface AVMIDIControlChangeEvent
 - (AVMIDIControlChangeEvent)initWithChannel:(UInt32)channel messageType:(AVMIDIControlChangeMessageType)messageType value:(UInt32)value;
-- (AVMIDIControlChangeEvent)initWithMessage:(MIDIChannelMessage *)a3;
+- (AVMIDIControlChangeEvent)initWithMessage:(MIDIChannelMessage *)message;
 @end
 
 @implementation AVMIDIControlChangeEvent
 
-- (AVMIDIControlChangeEvent)initWithMessage:(MIDIChannelMessage *)a3
+- (AVMIDIControlChangeEvent)initWithMessage:(MIDIChannelMessage *)message
 {
   v4.receiver = self;
   v4.super_class = AVMIDIControlChangeEvent;
-  return [(AVMIDIChannelEvent *)&v4 initWithMessage:a3];
+  return [(AVMIDIChannelEvent *)&v4 initWithMessage:message];
 }
 
 - (AVMIDIControlChangeEvent)initWithChannel:(UInt32)channel messageType:(AVMIDIControlChangeMessageType)messageType value:(UInt32)value

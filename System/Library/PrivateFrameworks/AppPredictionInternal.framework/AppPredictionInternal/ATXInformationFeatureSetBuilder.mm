@@ -1,18 +1,18 @@
 @interface ATXInformationFeatureSetBuilder
-+ (id)stringForInfoSuggestionFeature:(unint64_t)a3;
++ (id)stringForInfoSuggestionFeature:(unint64_t)feature;
 - (id)build;
-- (void)appendFeature:(unint64_t)a3 value:(double)a4;
-- (void)setFeatureWithName:(id)a3 toValue:(id)a4;
+- (void)appendFeature:(unint64_t)feature value:(double)value;
+- (void)setFeatureWithName:(id)name toValue:(id)value;
 @end
 
 @implementation ATXInformationFeatureSetBuilder
 
-- (void)appendFeature:(unint64_t)a3 value:(double)a4
+- (void)appendFeature:(unint64_t)feature value:(double)value
 {
-  if (a3 - 10 > 0xFFFFFFFFFFFFFFF6)
+  if (feature - 10 > 0xFFFFFFFFFFFFFFF6)
   {
-    v9 = [ATXInformationFeatureSetBuilder stringForInfoSuggestionFeature:a3];
-    v8 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v9 = [ATXInformationFeatureSetBuilder stringForInfoSuggestionFeature:feature];
+    v8 = [MEMORY[0x277CCABB0] numberWithDouble:value];
     [(ATXInformationFeatureSetBuilder *)self setFeatureWithName:v9 toValue:v8];
   }
 
@@ -21,15 +21,15 @@
     v5 = __atxlog_handle_gi();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [ATXInformationFeatureSetBuilder appendFeature:a3 value:v5];
+      [ATXInformationFeatureSetBuilder appendFeature:feature value:v5];
     }
   }
 }
 
-- (void)setFeatureWithName:(id)a3 toValue:(id)a4
+- (void)setFeatureWithName:(id)name toValue:(id)value
 {
-  v10 = a3;
-  v6 = a4;
+  nameCopy = name;
+  valueCopy = value;
   features = self->_features;
   if (!features)
   {
@@ -40,7 +40,7 @@
     features = self->_features;
   }
 
-  [(NSMutableDictionary *)features setObject:v6 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)features setObject:valueCopy forKeyedSubscript:nameCopy];
 }
 
 - (id)build
@@ -50,15 +50,15 @@
   return v2;
 }
 
-+ (id)stringForInfoSuggestionFeature:(unint64_t)a3
++ (id)stringForInfoSuggestionFeature:(unint64_t)feature
 {
-  if (a3 < 0xB)
+  if (feature < 0xB)
   {
-    return off_27859CF10[a3];
+    return off_27859CF10[feature];
   }
 
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:a1 file:@"ATXInformationFeatureSetBuilder.m" lineNumber:67 description:@"Unknown value for ATXInfoSuggestionFeatureName"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXInformationFeatureSetBuilder.m" lineNumber:67 description:@"Unknown value for ATXInfoSuggestionFeatureName"];
 
   return result;
 }

@@ -6,8 +6,8 @@
 
 - (id)mtl_dictionaryByRemovingEntriesWithKeys:()MTLManipulationAdditions_Deprecated
 {
-  v4 = [a3 allObjects];
-  v5 = [a1 mtl_dictionaryByRemovingValuesForKeys:v4];
+  allObjects = [a3 allObjects];
+  v5 = [self mtl_dictionaryByRemovingValuesForKeys:allObjects];
 
   return v5;
 }

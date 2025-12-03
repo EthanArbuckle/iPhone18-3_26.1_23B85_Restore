@@ -1,38 +1,38 @@
 @interface CKDServerConfiguration
-- (BOOL)allowCloudMediaProcessingOffloadForGM:(id)a3;
-- (BOOL)allowCloudMediaProcessingOffloadForSeed:(id)a3;
-- (BOOL)allowExpiredDNSBehavior:(id)a3;
-- (BOOL)allowsDeviceCapabilitiesCheckingForContainerID:(id)a3;
-- (BOOL)allowsDeviceCapabilitiesReportingForContainerID:(id)a3;
-- (BOOL)applicationWithBundleID:(id)a3 canSyncUsingVersion:(id)a4 forContainerID:(id)a5;
+- (BOOL)allowCloudMediaProcessingOffloadForGM:(id)m;
+- (BOOL)allowCloudMediaProcessingOffloadForSeed:(id)seed;
+- (BOOL)allowExpiredDNSBehavior:(id)behavior;
+- (BOOL)allowsDeviceCapabilitiesCheckingForContainerID:(id)d;
+- (BOOL)allowsDeviceCapabilitiesReportingForContainerID:(id)d;
+- (BOOL)applicationWithBundleID:(id)d canSyncUsingVersion:(id)version forContainerID:(id)iD;
 - (BOOL)isExpired;
-- (CKDServerConfiguration)initWithPropertyDictionary:(id)a3;
-- (CKDServerConfiguration)initWithValues:(id)a3;
+- (CKDServerConfiguration)initWithPropertyDictionary:(id)dictionary;
+- (CKDServerConfiguration)initWithValues:(id)values;
 - (NSDictionary)shouldCheckDeviceCapabilitiesContainerOverrides;
 - (NSDictionary)shouldReportDeviceCapabilitiesContainerOverrides;
 - (NSString)description;
-- (double)publicIdentitiesExpirationTimeout:(id)a3;
-- (id)_getValueForKey:(id)a3 ofType:(Class)a4 fromDictionary:(id)a5;
-- (id)chunkProfileConfigurationFileExtensionToProfileMap:(id)a3;
+- (double)publicIdentitiesExpirationTimeout:(id)timeout;
+- (id)_getValueForKey:(id)key ofType:(Class)type fromDictionary:(id)dictionary;
+- (id)chunkProfileConfigurationFileExtensionToProfileMap:(id)map;
 - (id)dictionaryPropertyEncoding;
 - (id)iCloudAppSiteAssociationData;
-- (id)valueForKeyPath:(id)a3 forContainerID:(id)a4;
-- (id)valuesForContainerID:(id)a3;
+- (id)valueForKeyPath:(id)path forContainerID:(id)d;
+- (id)valuesForContainerID:(id)d;
 - (int64_t)defaultShouldCheckDeviceCapabilities;
 - (int64_t)defaultShouldReportDeviceCapabilities;
-- (int64_t)tokenRegisterDays:(id)a3;
-- (unint64_t)c2AllOperationGroupMetricsReportFrequency:(id)a3;
-- (unint64_t)c2AllOperationGroupMetricsReportFrequencyBase:(id)a3;
-- (unint64_t)c2AllOperationMetricsReportFrequency:(id)a3;
-- (unint64_t)c2AllOperationMetricsReportFrequencyBase:(id)a3;
-- (unint64_t)c2ClientApplicationMetricsReportFrequency:(id)a3;
-- (unint64_t)c2ClientApplicationMetricsReportFrequencyBase:(id)a3;
-- (unint64_t)c2ClientOperationMetricsReportFrequency:(id)a3;
-- (unint64_t)c2ClientOperationMetricsReportFrequencyBase:(id)a3;
-- (unint64_t)c2NetworkMetricsReportFrequency:(id)a3;
-- (unint64_t)c2NetworkMetricsReportFrequencyBase:(id)a3;
-- (unint64_t)maxBatchSize:(id)a3;
-- (unint64_t)maxInlineMergeableDeltaSize:(id)a3;
+- (int64_t)tokenRegisterDays:(id)days;
+- (unint64_t)c2AllOperationGroupMetricsReportFrequency:(id)frequency;
+- (unint64_t)c2AllOperationGroupMetricsReportFrequencyBase:(id)base;
+- (unint64_t)c2AllOperationMetricsReportFrequency:(id)frequency;
+- (unint64_t)c2AllOperationMetricsReportFrequencyBase:(id)base;
+- (unint64_t)c2ClientApplicationMetricsReportFrequency:(id)frequency;
+- (unint64_t)c2ClientApplicationMetricsReportFrequencyBase:(id)base;
+- (unint64_t)c2ClientOperationMetricsReportFrequency:(id)frequency;
+- (unint64_t)c2ClientOperationMetricsReportFrequencyBase:(id)base;
+- (unint64_t)c2NetworkMetricsReportFrequency:(id)frequency;
+- (unint64_t)c2NetworkMetricsReportFrequencyBase:(id)base;
+- (unint64_t)maxBatchSize:(id)size;
+- (unint64_t)maxInlineMergeableDeltaSize:(id)size;
 - (void)_parseDeviceCapabilitiesIfNecessary;
 @end
 
@@ -47,19 +47,19 @@
   return v8;
 }
 
-- (CKDServerConfiguration)initWithValues:(id)a3
+- (CKDServerConfiguration)initWithValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v21.receiver = self;
   v21.super_class = CKDServerConfiguration;
   v7 = [(CKDServerConfiguration *)&v21 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(valuesCopy, v5, v6);
     values = v7->_values;
     v7->_values = v8;
 
-    v11 = objc_msgSend_objectForKeyedSubscript_(v4, v10, @"expiresAfterSeconds");
+    v11 = objc_msgSend_objectForKeyedSubscript_(valuesCopy, v10, @"expiresAfterSeconds");
     v14 = v11;
     if (v11)
     {
@@ -89,14 +89,14 @@
   return v13;
 }
 
-- (id)valuesForContainerID:(id)a3
+- (id)valuesForContainerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v4)
+  if (dCopy)
   {
     v8 = objc_msgSend_objectForKeyedSubscript_(self->_values, v5, @"containerOverrides");
-    v11 = objc_msgSend_containerIdentifier(v4, v9, v10);
+    v11 = objc_msgSend_containerIdentifier(dCopy, v9, v10);
     v13 = objc_msgSend_objectForKeyedSubscript_(v8, v12, v11);
 
     if (v13)
@@ -109,7 +109,7 @@
     }
   }
 
-  if (objc_msgSend_isAppleInternal(v4, v5, v6))
+  if (objc_msgSend_isAppleInternal(dCopy, v5, v6))
   {
     v16 = objc_msgSend_objectForKeyedSubscript_(self->_values, v15, @"appleOverrides");
     if (v16)
@@ -131,11 +131,11 @@
   return v7;
 }
 
-- (id)valueForKeyPath:(id)a3 forContainerID:(id)a4
+- (id)valueForKeyPath:(id)path forContainerID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  objc_msgSend_valuesForContainerID_(self, v7, a4);
+  pathCopy = path;
+  objc_msgSend_valuesForContainerID_(self, v7, d);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -154,7 +154,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v15 = objc_msgSend_valueForKeyPath_(*(*(&v19 + 1) + 8 * i), v11, v6, v19);
+        v15 = objc_msgSend_valueForKeyPath_(*(*(&v19 + 1) + 8 * i), v11, pathCopy, v19);
         if (v15)
         {
           v16 = v15;
@@ -180,34 +180,34 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)applicationWithBundleID:(id)a3 canSyncUsingVersion:(id)a4 forContainerID:(id)a5
+- (BOOL)applicationWithBundleID:(id)d canSyncUsingVersion:(id)version forContainerID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (objc_msgSend_length(v9, v11, v12))
+  dCopy = d;
+  versionCopy = version;
+  iDCopy = iD;
+  if (objc_msgSend_length(versionCopy, v11, v12))
   {
-    v14 = objc_msgSend_stringByAppendingString_(v8, v13, v9);
-    v15 = self;
-    objc_sync_enter(v15);
-    v18 = objc_msgSend_allowedAppVersionsCache(v15, v16, v17);
+    v14 = objc_msgSend_stringByAppendingString_(dCopy, v13, versionCopy);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v18 = objc_msgSend_allowedAppVersionsCache(selfCopy, v16, v17);
 
     if (!v18)
     {
       v21 = objc_opt_new();
-      objc_msgSend_setAllowedAppVersionsCache_(v15, v22, v21);
+      objc_msgSend_setAllowedAppVersionsCache_(selfCopy, v22, v21);
     }
 
-    v23 = objc_msgSend_allowedAppVersionsCache(v15, v19, v20);
+    v23 = objc_msgSend_allowedAppVersionsCache(selfCopy, v19, v20);
     v25 = objc_msgSend_objectForKeyedSubscript_(v23, v24, v14);
 
     if (!v25)
     {
-      v28 = objc_msgSend_values(v15, v26, v27);
+      v28 = objc_msgSend_values(selfCopy, v26, v27);
       v30 = objc_msgSend_objectForKeyedSubscript_(v28, v29, @"bundleIds");
 
-      v32 = objc_msgSend_objectForKeyedSubscript_(v30, v31, v8);
-      if ((compareVersionStrings(v32, v9) + 1) < 2 || v32 == 0)
+      v32 = objc_msgSend_objectForKeyedSubscript_(v30, v31, dCopy);
+      if ((compareVersionStrings(v32, versionCopy) + 1) < 2 || v32 == 0)
       {
         v25 = MEMORY[0x277CBEC38];
       }
@@ -217,11 +217,11 @@ LABEL_11:
         v25 = MEMORY[0x277CBEC28];
       }
 
-      v36 = objc_msgSend_allowedAppVersionsCache(v15, v33, v34);
+      v36 = objc_msgSend_allowedAppVersionsCache(selfCopy, v33, v34);
       objc_msgSend_setObject_forKeyedSubscript_(v36, v37, v25, v14);
     }
 
-    objc_sync_exit(v15);
+    objc_sync_exit(selfCopy);
 
     v40 = objc_msgSend_BOOLValue(v25, v38, v39);
   }
@@ -234,9 +234,9 @@ LABEL_11:
   return v40;
 }
 
-- (int64_t)tokenRegisterDays:(id)a3
+- (int64_t)tokenRegisterDays:(id)days
 {
-  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"pushTokenRegisterDays", a3);
+  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"pushTokenRegisterDays", days);
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = objc_msgSend_integerValue(v3, v4, v5);
@@ -250,9 +250,9 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)allowCloudMediaProcessingOffloadForSeed:(id)a3
+- (BOOL)allowCloudMediaProcessingOffloadForSeed:(id)seed
 {
-  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"allowCmpOffloadForSeed", a3);
+  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"allowCmpOffloadForSeed", seed);
   v6 = v3;
   if (v3)
   {
@@ -267,9 +267,9 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)allowCloudMediaProcessingOffloadForGM:(id)a3
+- (BOOL)allowCloudMediaProcessingOffloadForGM:(id)m
 {
-  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"allowCmpOffloadForGM", a3);
+  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"allowCmpOffloadForGM", m);
   v6 = v3;
   if (v3)
   {
@@ -284,14 +284,14 @@ LABEL_11:
   return v7;
 }
 
-- (unint64_t)maxBatchSize:(id)a3
+- (unint64_t)maxBatchSize:(id)size
 {
   v4 = MEMORY[0x277CBC1D8];
-  v5 = a3;
+  sizeCopy = size;
   v8 = objc_msgSend_sharedOptions(v4, v6, v7);
   v11 = objc_msgSend_maxBatchSize(v8, v9, v10);
 
-  v13 = objc_msgSend_valueForKeyPath_forContainerID_(self, v12, @"maxBatchSize", v5);
+  v13 = objc_msgSend_valueForKeyPath_forContainerID_(self, v12, @"maxBatchSize", sizeCopy);
 
   if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -301,15 +301,15 @@ LABEL_11:
   return v11;
 }
 
-- (double)publicIdentitiesExpirationTimeout:(id)a3
+- (double)publicIdentitiesExpirationTimeout:(id)timeout
 {
   v4 = MEMORY[0x277CBC1D8];
-  v5 = a3;
+  timeoutCopy = timeout;
   v8 = objc_msgSend_sharedOptions(v4, v6, v7);
   objc_msgSend_publicIdentitiesExpirationTimeout(v8, v9, v10);
   v12 = v11;
 
-  v14 = objc_msgSend_valueForKeyPath_forContainerID_(self, v13, @"expirationTimeout", v5);
+  v14 = objc_msgSend_valueForKeyPath_forContainerID_(self, v13, @"expirationTimeout", timeoutCopy);
 
   if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -320,14 +320,14 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)allowExpiredDNSBehavior:(id)a3
+- (BOOL)allowExpiredDNSBehavior:(id)behavior
 {
   v4 = MEMORY[0x277CBC1D8];
-  v5 = a3;
+  behaviorCopy = behavior;
   v8 = objc_msgSend_sharedOptions(v4, v6, v7);
   v11 = objc_msgSend_allowExpiredDNSBehavior(v8, v9, v10);
 
-  v13 = objc_msgSend_valueForKeyPath_forContainerID_(self, v12, @"allowExpiredDNSBehavior", v5);
+  v13 = objc_msgSend_valueForKeyPath_forContainerID_(self, v12, @"allowExpiredDNSBehavior", behaviorCopy);
 
   if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -337,92 +337,92 @@ LABEL_11:
   return v11;
 }
 
-- (unint64_t)c2NetworkMetricsReportFrequency:(id)a3
+- (unint64_t)c2NetworkMetricsReportFrequency:(id)frequency
 {
-  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.reportFrequency", a3);
+  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.reportFrequency", frequency);
   v6 = objc_msgSend_unsignedIntegerValue(v3, v4, v5);
 
   return v6;
 }
 
-- (unint64_t)c2NetworkMetricsReportFrequencyBase:(id)a3
+- (unint64_t)c2NetworkMetricsReportFrequencyBase:(id)base
 {
-  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.reportFrequencyBase", a3);
+  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.reportFrequencyBase", base);
   v6 = objc_msgSend_unsignedIntegerValue(v3, v4, v5);
 
   return v6;
 }
 
-- (unint64_t)c2ClientOperationMetricsReportFrequency:(id)a3
+- (unint64_t)c2ClientOperationMetricsReportFrequency:(id)frequency
 {
-  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.clientOperationMetrics.reportFrequency", a3);
+  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.clientOperationMetrics.reportFrequency", frequency);
   v6 = objc_msgSend_unsignedIntegerValue(v3, v4, v5);
 
   return v6;
 }
 
-- (unint64_t)c2ClientOperationMetricsReportFrequencyBase:(id)a3
+- (unint64_t)c2ClientOperationMetricsReportFrequencyBase:(id)base
 {
-  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.clientOperationMetrics.reportFrequencyBase", a3);
+  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.clientOperationMetrics.reportFrequencyBase", base);
   v6 = objc_msgSend_unsignedIntegerValue(v3, v4, v5);
 
   return v6;
 }
 
-- (unint64_t)c2ClientApplicationMetricsReportFrequency:(id)a3
+- (unint64_t)c2ClientApplicationMetricsReportFrequency:(id)frequency
 {
-  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.applicationMetrics.reportFrequency", a3);
+  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.applicationMetrics.reportFrequency", frequency);
   v6 = objc_msgSend_unsignedIntegerValue(v3, v4, v5);
 
   return v6;
 }
 
-- (unint64_t)c2ClientApplicationMetricsReportFrequencyBase:(id)a3
+- (unint64_t)c2ClientApplicationMetricsReportFrequencyBase:(id)base
 {
-  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.applicationMetrics.reportFrequencyBase", a3);
+  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.applicationMetrics.reportFrequencyBase", base);
   v6 = objc_msgSend_unsignedIntegerValue(v3, v4, v5);
 
   return v6;
 }
 
-- (unint64_t)c2AllOperationMetricsReportFrequency:(id)a3
+- (unint64_t)c2AllOperationMetricsReportFrequency:(id)frequency
 {
-  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.allOperationMetrics.reportFrequency", a3);
+  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.allOperationMetrics.reportFrequency", frequency);
   v6 = objc_msgSend_unsignedIntegerValue(v3, v4, v5);
 
   return v6;
 }
 
-- (unint64_t)c2AllOperationMetricsReportFrequencyBase:(id)a3
+- (unint64_t)c2AllOperationMetricsReportFrequencyBase:(id)base
 {
-  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.allOperationMetrics.reportFrequencyBase", a3);
+  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.allOperationMetrics.reportFrequencyBase", base);
   v6 = objc_msgSend_unsignedIntegerValue(v3, v4, v5);
 
   return v6;
 }
 
-- (unint64_t)c2AllOperationGroupMetricsReportFrequency:(id)a3
+- (unint64_t)c2AllOperationGroupMetricsReportFrequency:(id)frequency
 {
-  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.allOperationGroupMetrics.reportFrequency", a3);
+  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.allOperationGroupMetrics.reportFrequency", frequency);
   v6 = objc_msgSend_unsignedIntegerValue(v3, v4, v5);
 
   return v6;
 }
 
-- (unint64_t)c2AllOperationGroupMetricsReportFrequencyBase:(id)a3
+- (unint64_t)c2AllOperationGroupMetricsReportFrequencyBase:(id)base
 {
-  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.allOperationGroupMetrics.reportFrequencyBase", a3);
+  v3 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"c2MetricsLegacy.allOperationGroupMetrics.reportFrequencyBase", base);
   v6 = objc_msgSend_unsignedIntegerValue(v3, v4, v5);
 
   return v6;
 }
 
-- (id)chunkProfileConfigurationFileExtensionToProfileMap:(id)a3
+- (id)chunkProfileConfigurationFileExtensionToProfileMap:(id)map
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mapCopy = map;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = objc_msgSend_valuesForContainerID_(self, v6, v4);
+  v7 = objc_msgSend_valuesForContainerID_(self, v6, mapCopy);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -487,10 +487,10 @@ LABEL_11:
 - (NSDictionary)shouldReportDeviceCapabilitiesContainerOverrides
 {
   objc_msgSend__parseDeviceCapabilitiesIfNecessary(self, a2, v2);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v4->_shouldReportDeviceCapabilitiesContainerOverrides;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = selfCopy->_shouldReportDeviceCapabilitiesContainerOverrides;
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -498,10 +498,10 @@ LABEL_11:
 - (NSDictionary)shouldCheckDeviceCapabilitiesContainerOverrides
 {
   objc_msgSend__parseDeviceCapabilitiesIfNecessary(self, a2, v2);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v4->_shouldCheckDeviceCapabilitiesContainerOverrides;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = selfCopy->_shouldCheckDeviceCapabilitiesContainerOverrides;
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -509,10 +509,10 @@ LABEL_11:
 - (int64_t)defaultShouldReportDeviceCapabilities
 {
   objc_msgSend__parseDeviceCapabilitiesIfNecessary(self, a2, v2);
-  v4 = self;
-  objc_sync_enter(v4);
-  defaultShouldReportDeviceCapabilities = v4->_defaultShouldReportDeviceCapabilities;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaultShouldReportDeviceCapabilities = selfCopy->_defaultShouldReportDeviceCapabilities;
+  objc_sync_exit(selfCopy);
 
   return defaultShouldReportDeviceCapabilities;
 }
@@ -520,10 +520,10 @@ LABEL_11:
 - (int64_t)defaultShouldCheckDeviceCapabilities
 {
   objc_msgSend__parseDeviceCapabilitiesIfNecessary(self, a2, v2);
-  v4 = self;
-  objc_sync_enter(v4);
-  defaultShouldCheckDeviceCapabilities = v4->_defaultShouldCheckDeviceCapabilities;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaultShouldCheckDeviceCapabilities = selfCopy->_defaultShouldCheckDeviceCapabilities;
+  objc_sync_exit(selfCopy);
 
   return defaultShouldCheckDeviceCapabilities;
 }
@@ -531,35 +531,35 @@ LABEL_11:
 - (void)_parseDeviceCapabilitiesIfNecessary
 {
   v73 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_shouldReportDeviceCapabilitiesContainerOverrides || !v2->_shouldCheckDeviceCapabilitiesContainerOverrides)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_shouldReportDeviceCapabilitiesContainerOverrides || !selfCopy->_shouldCheckDeviceCapabilitiesContainerOverrides)
   {
     v56 = objc_opt_new();
     v55 = objc_opt_new();
     v3 = objc_opt_class();
-    v5 = objc_msgSend__getValueForKey_ofType_fromDictionary_(v2, v4, @"adopterCapabilitiesAndCryptoAgility", v3, v2->_values);
+    v5 = objc_msgSend__getValueForKey_ofType_fromDictionary_(selfCopy, v4, @"adopterCapabilitiesAndCryptoAgility", v3, selfCopy->_values);
     v6 = MEMORY[0x277CBC880];
     if (v5)
     {
       v7 = objc_opt_class();
-      v9 = objc_msgSend__getValueForKey_ofType_fromDictionary_(v2, v8, @"default", v7, v5);
+      v9 = objc_msgSend__getValueForKey_ofType_fromDictionary_(selfCopy, v8, @"default", v7, v5);
       if (v9)
       {
-        v2->_defaultShouldReportDeviceCapabilities = 0;
-        v2->_defaultShouldCheckDeviceCapabilities = 0;
+        selfCopy->_defaultShouldReportDeviceCapabilities = 0;
+        selfCopy->_defaultShouldCheckDeviceCapabilities = 0;
         v10 = objc_opt_class();
-        v12 = objc_msgSend__getValueForKey_ofType_fromDictionary_(v2, v11, @"enableAdopterCapabilityReport", v10, v9);
+        v12 = objc_msgSend__getValueForKey_ofType_fromDictionary_(selfCopy, v11, @"enableAdopterCapabilityReport", v10, v9);
         if (objc_opt_respondsToSelector())
         {
-          v2->_defaultShouldReportDeviceCapabilities = objc_msgSend_BOOLValue(v12, v13, v14);
+          selfCopy->_defaultShouldReportDeviceCapabilities = objc_msgSend_BOOLValue(v12, v13, v14);
         }
 
         v15 = objc_opt_class();
-        v17 = objc_msgSend__getValueForKey_ofType_fromDictionary_(v2, v16, @"enableCheckingAdopterCapability", v15, v9);
+        v17 = objc_msgSend__getValueForKey_ofType_fromDictionary_(selfCopy, v16, @"enableCheckingAdopterCapability", v15, v9);
         if (objc_opt_respondsToSelector())
         {
-          v2->_defaultShouldCheckDeviceCapabilities = objc_msgSend_BOOLValue(v17, v18, v19);
+          selfCopy->_defaultShouldCheckDeviceCapabilities = objc_msgSend_BOOLValue(v17, v18, v19);
         }
       }
 
@@ -579,7 +579,7 @@ LABEL_11:
       }
 
       v22 = objc_opt_class();
-      v24 = objc_msgSend__getValueForKey_ofType_fromDictionary_(v2, v23, @"container", v22, v5);
+      v24 = objc_msgSend__getValueForKey_ofType_fromDictionary_(selfCopy, v23, @"container", v22, v5);
       if (v24)
       {
         v62 = 0u;
@@ -605,9 +605,9 @@ LABEL_11:
 
               v31 = *(*(&v60 + 1) + 8 * i);
               v32 = objc_opt_class();
-              v34 = objc_msgSend__getValueForKey_ofType_fromDictionary_(v2, v33, v31, v32, v58);
+              v34 = objc_msgSend__getValueForKey_ofType_fromDictionary_(selfCopy, v33, v31, v32, v58);
               v35 = objc_opt_class();
-              v38 = objc_msgSend__getValueForKey_ofType_fromDictionary_(v2, v36, @"enableAdopterCapabilityReport", v35, v34);
+              v38 = objc_msgSend__getValueForKey_ofType_fromDictionary_(selfCopy, v36, @"enableAdopterCapabilityReport", v35, v34);
               if (v38)
               {
                 objc_msgSend_setObject_forKeyedSubscript_(v56, v37, v38, v31);
@@ -630,7 +630,7 @@ LABEL_11:
               }
 
               v40 = objc_opt_class();
-              v43 = objc_msgSend__getValueForKey_ofType_fromDictionary_(v2, v41, @"enableCheckingAdopterCapability", v40, v34);
+              v43 = objc_msgSend__getValueForKey_ofType_fromDictionary_(selfCopy, v41, @"enableCheckingAdopterCapability", v40, v34);
               if (v43)
               {
                 objc_msgSend_setObject_forKeyedSubscript_(v55, v42, v43, v31);
@@ -679,8 +679,8 @@ LABEL_11:
       }
     }
 
-    objc_storeStrong(&v2->_shouldReportDeviceCapabilitiesContainerOverrides, v56);
-    objc_storeStrong(&v2->_shouldCheckDeviceCapabilitiesContainerOverrides, v55);
+    objc_storeStrong(&selfCopy->_shouldReportDeviceCapabilitiesContainerOverrides, v56);
+    objc_storeStrong(&selfCopy->_shouldCheckDeviceCapabilitiesContainerOverrides, v55);
     if (*v6 != -1)
     {
       dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -689,11 +689,11 @@ LABEL_11:
     v45 = *MEMORY[0x277CBC830];
     if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
     {
-      shouldReportDeviceCapabilitiesContainerOverrides = v2->_shouldReportDeviceCapabilitiesContainerOverrides;
-      shouldCheckDeviceCapabilitiesContainerOverrides = v2->_shouldCheckDeviceCapabilitiesContainerOverrides;
-      defaultShouldReportDeviceCapabilities = v2->_defaultShouldReportDeviceCapabilities;
+      shouldReportDeviceCapabilitiesContainerOverrides = selfCopy->_shouldReportDeviceCapabilitiesContainerOverrides;
+      shouldCheckDeviceCapabilitiesContainerOverrides = selfCopy->_shouldCheckDeviceCapabilitiesContainerOverrides;
+      defaultShouldReportDeviceCapabilities = selfCopy->_defaultShouldReportDeviceCapabilities;
       v49 = CKTernaryDescription();
-      defaultShouldCheckDeviceCapabilities = v2->_defaultShouldCheckDeviceCapabilities;
+      defaultShouldCheckDeviceCapabilities = selfCopy->_defaultShouldCheckDeviceCapabilities;
       v51 = CKTernaryDescription();
       *buf = 138413058;
       v65 = shouldReportDeviceCapabilitiesContainerOverrides;
@@ -707,14 +707,14 @@ LABEL_11:
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)allowsDeviceCapabilitiesReportingForContainerID:(id)a3
+- (BOOL)allowsDeviceCapabilitiesReportingForContainerID:(id)d
 {
-  v4 = objc_msgSend_containerIdentifier(a3, a2, a3);
+  v4 = objc_msgSend_containerIdentifier(d, a2, d);
   v7 = v4;
   if (!v4 || !objc_msgSend_length(v4, v5, v6))
   {
@@ -757,9 +757,9 @@ LABEL_10:
   return v20;
 }
 
-- (BOOL)allowsDeviceCapabilitiesCheckingForContainerID:(id)a3
+- (BOOL)allowsDeviceCapabilitiesCheckingForContainerID:(id)d
 {
-  v4 = objc_msgSend_containerIdentifier(a3, a2, a3);
+  v4 = objc_msgSend_containerIdentifier(d, a2, d);
   v7 = v4;
   if (!v4 || !objc_msgSend_length(v4, v5, v6))
   {
@@ -802,10 +802,10 @@ LABEL_10:
   return v20;
 }
 
-- (unint64_t)maxInlineMergeableDeltaSize:(id)a3
+- (unint64_t)maxInlineMergeableDeltaSize:(id)size
 {
   v3 = 92160;
-  v4 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"maxInlineMergeableDeltaSize", a3);
+  v4 = objc_msgSend_valueForKeyPath_forContainerID_(self, a2, @"maxInlineMergeableDeltaSize", size);
   if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v3 = objc_msgSend_unsignedIntegerValue(v4, v5, v6);
@@ -814,13 +814,13 @@ LABEL_10:
   return v3;
 }
 
-- (CKDServerConfiguration)initWithPropertyDictionary:(id)a3
+- (CKDServerConfiguration)initWithPropertyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8 = objc_msgSend_init(self, v5, v6);
   if (v8)
   {
-    v10 = objc_msgSend_objectForKeyedSubscript_(v4, v7, @"valuesData");
+    v10 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v7, @"valuesData");
     if (v10)
     {
       v11 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -837,7 +837,7 @@ LABEL_10:
       v8->_values = v24;
     }
 
-    v26 = objc_msgSend_objectForKeyedSubscript_(v4, v9, @"expiry");
+    v26 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v9, @"expiry");
     expiry = v8->_expiry;
     v8->_expiry = v26;
   }
@@ -882,11 +882,11 @@ LABEL_10:
   return v12;
 }
 
-- (id)_getValueForKey:(id)a3 ofType:(Class)a4 fromDictionary:(id)a5
+- (id)_getValueForKey:(id)key ofType:(Class)type fromDictionary:(id)dictionary
 {
-  if (a5)
+  if (dictionary)
   {
-    v5 = objc_msgSend_objectForKeyedSubscript_(a5, a2, a3);
+    v5 = objc_msgSend_objectForKeyedSubscript_(dictionary, a2, key);
     if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v6 = v5;

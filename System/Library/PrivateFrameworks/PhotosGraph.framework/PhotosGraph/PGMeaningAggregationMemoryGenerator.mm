@@ -1,42 +1,42 @@
 @interface PGMeaningAggregationMemoryGenerator
 + (id)allMeaningAggregationMemoryGeneratorClasses;
-+ (id)featureRelationWithMeaningLabel:(id)a3;
-+ (id)mostSpecificLabelForMeaning:(unint64_t)a3;
++ (id)featureRelationWithMeaningLabel:(id)label;
++ (id)mostSpecificLabelForMeaning:(unint64_t)meaning;
 + (id)supportedMeaningLabels;
-+ (unint64_t)_extendedMeaningForActivityEvent:(id)a3;
-+ (unint64_t)_extendedMeaningForActivityMeaningLabel:(id)a3;
-+ (unint64_t)_extendedMeaningForMeaning:(unint64_t)a3 meaningfulEvent:(id)a4;
-+ (unint64_t)_extendedMeaningForRestaurantEvent:(id)a3;
-+ (unint64_t)_extendedMeaningForRestaurantMeaningLabel:(id)a3;
-- (PGMeaningAggregationMemoryGenerator)initWithMemoryGenerationContext:(id)a3;
-- (id)curationOptionsWithRequiredAssetUUIDs:(id)a3 eligibleAssetUUIDs:(id)a4 triggeredMemory:(id)a5;
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4;
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8;
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3;
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4;
++ (unint64_t)_extendedMeaningForActivityEvent:(id)event;
++ (unint64_t)_extendedMeaningForActivityMeaningLabel:(id)label;
++ (unint64_t)_extendedMeaningForMeaning:(unint64_t)meaning meaningfulEvent:(id)event;
++ (unint64_t)_extendedMeaningForRestaurantEvent:(id)event;
++ (unint64_t)_extendedMeaningForRestaurantMeaningLabel:(id)label;
+- (PGMeaningAggregationMemoryGenerator)initWithMemoryGenerationContext:(id)context;
+- (id)curationOptionsWithRequiredAssetUUIDs:(id)ds eligibleAssetUUIDs:(id)iDs triggeredMemory:(id)memory;
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph;
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type;
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation PGMeaningAggregationMemoryGenerator
 
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
-  v10 = a3;
-  v11 = a7;
-  v12 = [v10 memoryFeatureNodes];
-  v13 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:v12];
-  v14 = [v13 meaningLabels];
-  v15 = [v14 anyObject];
+  memoryCopy = memory;
+  contextCopy = context;
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  v13 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:memoryFeatureNodes];
+  meaningLabels = [v13 meaningLabels];
+  anyObject = [meaningLabels anyObject];
 
-  v16 = [PGGraph meaningForMeaningLabel:v15];
+  v16 = [PGGraph meaningForMeaningLabel:anyObject];
   v17 = v16;
   if (v16 > 12)
   {
     if (v16 == 13)
     {
       v26 = [PGCelebrationOverTimeMemoryTitleGenerator alloc];
-      v20 = [v10 memoryMomentNodes];
-      v22 = [v20 set];
-      v23 = [(PGCelebrationOverTimeMemoryTitleGenerator *)v26 initWithMomentNodes:v22 titleGenerationContext:v11];
+      memoryMomentNodes = [memoryCopy memoryMomentNodes];
+      v22 = [memoryMomentNodes set];
+      v23 = [(PGCelebrationOverTimeMemoryTitleGenerator *)v26 initWithMomentNodes:v22 titleGenerationContext:contextCopy];
 LABEL_19:
 
       goto LABEL_20;
@@ -44,7 +44,7 @@ LABEL_19:
 
     if (v16 == 15)
     {
-      v19 = [PGMeaningAggregationMemoryGenerator _extendedMeaningForRestaurantMeaningLabel:v15];
+      v19 = [PGMeaningAggregationMemoryGenerator _extendedMeaningForRestaurantMeaningLabel:anyObject];
       if (v19)
       {
         v17 = v19;
@@ -57,13 +57,13 @@ LABEL_19:
     }
 
 LABEL_12:
-    v20 = [v12 allFeatures];
-    v21 = [v10 memoryMomentNodes];
-    v22 = [v21 set];
+    memoryMomentNodes = [memoryFeatureNodes allFeatures];
+    memoryMomentNodes2 = [memoryCopy memoryMomentNodes];
+    v22 = [memoryMomentNodes2 set];
 
-    v23 = [[PGMeaningfulEventAggregationMemoryTitleGenerator alloc] initWithMeaning:v17 features:v20 meaningfulEvents:v22 titleGenerationContext:v11];
+    v23 = [[PGMeaningfulEventAggregationMemoryTitleGenerator alloc] initWithMeaning:v17 features:memoryMomentNodes meaningfulEvents:v22 titleGenerationContext:contextCopy];
     [(PGMeaningfulEventAggregationMemoryTitleGenerator *)v23 setUnreliableMeaningRatioThresholdForSpecificTitle:0.8];
-    v24 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection subsetInCollection:v12];
+    v24 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection subsetInCollection:memoryFeatureNodes];
     if ([v24 count] == 1)
     {
       [(PGTitleGenerator *)v23 setFeaturedYearNodes:v24];
@@ -76,7 +76,7 @@ LABEL_12:
   {
     if (v16 == 1)
     {
-      v18 = [PGMeaningAggregationMemoryGenerator _extendedMeaningForActivityMeaningLabel:v15];
+      v18 = [PGMeaningAggregationMemoryGenerator _extendedMeaningForActivityMeaningLabel:anyObject];
       if (v18 <= 1)
       {
         v17 = 1;
@@ -91,11 +91,11 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v25 = [(PGMemoryGenerator *)self loggingConnection];
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+  loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *v28 = 0;
-    _os_log_error_impl(&dword_22F0FC000, v25, OS_LOG_TYPE_ERROR, "[PGMeaningAggregationMemoryGenerator] memory should have a meaning", v28, 2u);
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGMeaningAggregationMemoryGenerator] memory should have a meaning", v28, 2u);
   }
 
   v23 = 0;
@@ -104,53 +104,53 @@ LABEL_20:
   return v23;
 }
 
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 memoryFeatureNodes];
-  v9 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:v8];
-  v10 = [v9 meaningLabels];
-  v11 = [v10 anyObject];
+  graphCopy = graph;
+  memoryCopy = memory;
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  v9 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:memoryFeatureNodes];
+  meaningLabels = [v9 meaningLabels];
+  anyObject = [meaningLabels anyObject];
 
-  v12 = [(PGMemoryGenerator *)self memoryCurationSession];
-  v13 = [v12 curationManager];
-  v14 = [v13 curationCriteriaFactory];
-  v15 = [v14 curationCriteriaWithMeaningLabel:v11 featureNodes:v8 inGraph:v6 client:1];
+  memoryCurationSession = [(PGMemoryGenerator *)self memoryCurationSession];
+  curationManager = [memoryCurationSession curationManager];
+  curationCriteriaFactory = [curationManager curationCriteriaFactory];
+  v15 = [curationCriteriaFactory curationCriteriaWithMeaningLabel:anyObject featureNodes:memoryFeatureNodes inGraph:graphCopy client:1];
 
   v18.receiver = self;
   v18.super_class = PGMeaningAggregationMemoryGenerator;
-  v16 = [(PGMemoryGenerator *)&v18 keyAssetCurationOptionsWithTriggeredMemory:v7 inGraph:v6];
+  v16 = [(PGMemoryGenerator *)&v18 keyAssetCurationOptionsWithTriggeredMemory:memoryCopy inGraph:graphCopy];
 
   [v16 setCurationCriteria:v15];
 
   return v16;
 }
 
-- (id)curationOptionsWithRequiredAssetUUIDs:(id)a3 eligibleAssetUUIDs:(id)a4 triggeredMemory:(id)a5
+- (id)curationOptionsWithRequiredAssetUUIDs:(id)ds eligibleAssetUUIDs:(id)iDs triggeredMemory:(id)memory
 {
   v7.receiver = self;
   v7.super_class = PGMeaningAggregationMemoryGenerator;
-  v5 = [(PGMemoryGenerator *)&v7 curationOptionsWithRequiredAssetUUIDs:a3 eligibleAssetUUIDs:a4 triggeredMemory:a5];
+  v5 = [(PGMemoryGenerator *)&v7 curationOptionsWithRequiredAssetUUIDs:ds eligibleAssetUUIDs:iDs triggeredMemory:memory];
   [v5 setMinimumNumberOfItems:15];
   [v5 setFailIfMinimumDurationNotReached:1];
 
   return v5;
 }
 
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() supportedMeaningLabels];
-  v9 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v8 inGraph:v7];
+  blockCopy = block;
+  graphCopy = graph;
+  supportedMeaningLabels = [objc_opt_class() supportedMeaningLabels];
+  v9 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:supportedMeaningLabels inGraph:graphCopy];
 
   v27[0] = @"Lunch";
   v27[1] = @"Dinner";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
-  v11 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v10 inGraph:v7];
-  v12 = [PGGraphBusinessNodeCollection restaurantBusinessNodesInGraph:v7];
+  v11 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v10 inGraph:graphCopy];
+  v12 = [PGGraphBusinessNodeCollection restaurantBusinessNodesInGraph:graphCopy];
 
   v13 = +[PGGraphBusinessNode momentOfBusiness];
   v14 = [(MANodeCollection *)PGGraphMomentNodeCollection nodesRelatedToNodes:v12 withRelation:v13];
@@ -165,9 +165,9 @@ LABEL_20:
   v22[3] = &unk_27887FDF8;
   v23 = v11;
   v24 = v14;
-  v25 = self;
-  v26 = v6;
-  v18 = v6;
+  selfCopy = self;
+  v26 = blockCopy;
+  v18 = blockCopy;
   v19 = v14;
   v20 = v11;
   [v17 enumerateTargetsBySourceWithBlock:v22];
@@ -217,34 +217,34 @@ void __93__PGMeaningAggregationMemoryGenerator_enumerateMomentNodesAndFeatureNod
   *a4 = *a1[6];
 }
 
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (type == 1)
   {
     result = 11002;
   }
 
   else
   {
-    v3 = a3;
-    if (a3 == 3)
+    typeCopy = type;
+    if (type == 3)
     {
       result = 11003;
     }
 
     else
     {
-      v5 = [(PGMemoryGenerator *)self loggingConnection];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
         v9 = 138412546;
         v10 = v8;
         v11 = 1024;
-        v12 = v3;
-        _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
+        v12 = typeCopy;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
       }
 
       result = 0;
@@ -255,11 +255,11 @@ void __93__PGMeaningAggregationMemoryGenerator_enumerateMomentNodesAndFeatureNod
   return result;
 }
 
-- (PGMeaningAggregationMemoryGenerator)initWithMemoryGenerationContext:(id)a3
+- (PGMeaningAggregationMemoryGenerator)initWithMemoryGenerationContext:(id)context
 {
   v12.receiver = self;
   v12.super_class = PGMeaningAggregationMemoryGenerator;
-  v3 = [(PGMemoryGenerator *)&v12 initWithMemoryGenerationContext:a3];
+  v3 = [(PGMemoryGenerator *)&v12 initWithMemoryGenerationContext:context];
   v4 = v3;
   if (v3)
   {
@@ -288,23 +288,23 @@ void __93__PGMeaningAggregationMemoryGenerator_enumerateMomentNodesAndFeatureNod
   return v4;
 }
 
-+ (id)mostSpecificLabelForMeaning:(unint64_t)a3
++ (id)mostSpecificLabelForMeaning:(unint64_t)meaning
 {
   v4 = @"Unknown";
-  if (a3 > 999)
+  if (meaning > 999)
   {
-    if (a3 > 2000)
+    if (meaning > 2000)
     {
-      if (a3 > 2002)
+      if (meaning > 2002)
       {
-        if (a3 == 2003)
+        if (meaning == 2003)
         {
           v5 = kPGGraphNodeMeaningWinterSport;
         }
 
         else
         {
-          if (a3 != 2004)
+          if (meaning != 2004)
           {
             goto LABEL_36;
           }
@@ -313,7 +313,7 @@ void __93__PGMeaningAggregationMemoryGenerator_enumerateMomentNodesAndFeatureNod
         }
       }
 
-      else if (a3 == 2001)
+      else if (meaning == 2001)
       {
         v5 = kPGGraphNodeMeaningBeaching;
       }
@@ -324,16 +324,16 @@ void __93__PGMeaningAggregationMemoryGenerator_enumerateMomentNodesAndFeatureNod
       }
     }
 
-    else if (a3 > 1001)
+    else if (meaning > 1001)
     {
-      if (a3 == 1002)
+      if (meaning == 1002)
       {
         v5 = kPGGraphNodeMeaningDinner;
       }
 
       else
       {
-        if (a3 != 2000)
+        if (meaning != 2000)
         {
           goto LABEL_36;
         }
@@ -342,7 +342,7 @@ void __93__PGMeaningAggregationMemoryGenerator_enumerateMomentNodesAndFeatureNod
       }
     }
 
-    else if (a3 == 1000)
+    else if (meaning == 1000)
     {
       v5 = &kPGGraphNodeMeaningBreakfast;
     }
@@ -359,7 +359,7 @@ LABEL_35:
   else
   {
     v5 = kPGGraphNodeMeaningActivity;
-    switch(a3)
+    switch(meaning)
     {
       case 1uLL:
         goto LABEL_35;
@@ -418,30 +418,30 @@ LABEL_36:
   return v4;
 }
 
-+ (unint64_t)_extendedMeaningForActivityMeaningLabel:(id)a3
++ (unint64_t)_extendedMeaningForActivityMeaningLabel:(id)label
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Hiking"])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:@"Hiking"])
   {
     v4 = 2000;
   }
 
-  else if ([v3 isEqualToString:@"Beaching"])
+  else if ([labelCopy isEqualToString:@"Beaching"])
   {
     v4 = 2001;
   }
 
-  else if ([v3 isEqualToString:@"Diving"])
+  else if ([labelCopy isEqualToString:@"Diving"])
   {
     v4 = 2002;
   }
 
-  else if ([v3 isEqualToString:@"WinterSport"])
+  else if ([labelCopy isEqualToString:@"WinterSport"])
   {
     v4 = 2003;
   }
 
-  else if ([v3 isEqualToString:@"Climbing"])
+  else if ([labelCopy isEqualToString:@"Climbing"])
   {
     v4 = 2004;
   }
@@ -454,9 +454,9 @@ LABEL_36:
   return v4;
 }
 
-+ (unint64_t)_extendedMeaningForActivityEvent:(id)a3
++ (unint64_t)_extendedMeaningForActivityEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -466,8 +466,8 @@ LABEL_36:
   v7[2] = __72__PGMeaningAggregationMemoryGenerator__extendedMeaningForActivityEvent___block_invoke;
   v7[3] = &unk_27887FE20;
   v7[4] = &v8;
-  v7[5] = a1;
-  [v4 enumerateMeaningNodesUsingBlock:v7];
+  v7[5] = self;
+  [eventCopy enumerateMeaningNodesUsingBlock:v7];
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
 
@@ -494,20 +494,20 @@ void __72__PGMeaningAggregationMemoryGenerator__extendedMeaningForActivityEvent_
   }
 }
 
-+ (unint64_t)_extendedMeaningForRestaurantMeaningLabel:(id)a3
++ (unint64_t)_extendedMeaningForRestaurantMeaningLabel:(id)label
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Breakfast"])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:@"Breakfast"])
   {
     v4 = 1000;
   }
 
-  else if ([v3 isEqualToString:@"Lunch"])
+  else if ([labelCopy isEqualToString:@"Lunch"])
   {
     v4 = 1001;
   }
 
-  else if ([v3 isEqualToString:@"Dinner"])
+  else if ([labelCopy isEqualToString:@"Dinner"])
   {
     v4 = 1002;
   }
@@ -520,9 +520,9 @@ void __72__PGMeaningAggregationMemoryGenerator__extendedMeaningForActivityEvent_
   return v4;
 }
 
-+ (unint64_t)_extendedMeaningForRestaurantEvent:(id)a3
++ (unint64_t)_extendedMeaningForRestaurantEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -532,8 +532,8 @@ void __72__PGMeaningAggregationMemoryGenerator__extendedMeaningForActivityEvent_
   v7[2] = __74__PGMeaningAggregationMemoryGenerator__extendedMeaningForRestaurantEvent___block_invoke;
   v7[3] = &unk_27887FE20;
   v7[4] = &v8;
-  v7[5] = a1;
-  [v4 enumerateMeaningNodesUsingBlock:v7];
+  v7[5] = self;
+  [eventCopy enumerateMeaningNodesUsingBlock:v7];
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
 
@@ -560,23 +560,23 @@ void __74__PGMeaningAggregationMemoryGenerator__extendedMeaningForRestaurantEven
   }
 }
 
-+ (unint64_t)_extendedMeaningForMeaning:(unint64_t)a3 meaningfulEvent:(id)a4
++ (unint64_t)_extendedMeaningForMeaning:(unint64_t)meaning meaningfulEvent:(id)event
 {
-  v6 = a4;
-  if (a3 == 1)
+  eventCopy = event;
+  if (meaning == 1)
   {
-    v7 = [a1 _extendedMeaningForActivityEvent:v6];
+    v7 = [self _extendedMeaningForActivityEvent:eventCopy];
   }
 
   else
   {
-    if (a3 != 15)
+    if (meaning != 15)
     {
       v8 = 0;
       goto LABEL_7;
     }
 
-    v7 = [a1 _extendedMeaningForRestaurantEvent:v6];
+    v7 = [self _extendedMeaningForRestaurantEvent:eventCopy];
   }
 
   v8 = v7;
@@ -585,17 +585,17 @@ LABEL_7:
   return v8;
 }
 
-+ (id)featureRelationWithMeaningLabel:(id)a3
++ (id)featureRelationWithMeaningLabel:(id)label
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 allMeaningAggregationMemoryGeneratorClasses];
+  labelCopy = label;
+  allMeaningAggregationMemoryGeneratorClasses = [self allMeaningAggregationMemoryGeneratorClasses];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = allMeaningAggregationMemoryGeneratorClasses;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -611,15 +611,15 @@ LABEL_7:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 supportedMeaningLabels];
-        v14 = [v13 containsObject:v4];
+        supportedMeaningLabels = [v12 supportedMeaningLabels];
+        v14 = [supportedMeaningLabels containsObject:labelCopy];
 
         if (v14)
         {
-          v15 = [v12 requiredFeatureRelation];
-          if (v15)
+          requiredFeatureRelation = [v12 requiredFeatureRelation];
+          if (requiredFeatureRelation)
           {
-            [v6 addObject:v15];
+            [v6 addObject:requiredFeatureRelation];
           }
         }
       }

@@ -171,9 +171,9 @@ LABEL_29:
 
 - (vector<int,)splitSystemVersion
 {
-  v4 = [(DarwinDeviceInfo *)self systemVersion];
-  v5 = [v4 UTF8String];
-  v6 = strlen(v5);
+  systemVersion = [(DarwinDeviceInfo *)self systemVersion];
+  uTF8String = [systemVersion UTF8String];
+  v6 = strlen(uTF8String);
   if (v6 > 0x7FFFFFFFFFFFFFF7)
   {
     sub_10000D39C();
@@ -188,7 +188,7 @@ LABEL_29:
   v34 = v6;
   if (v6)
   {
-    memmove(&__dst, v5, v6);
+    memmove(&__dst, uTF8String, v6);
   }
 
   *(&__dst + v7) = 0;
@@ -423,9 +423,9 @@ LABEL_62:
 - (Info)ws_info
 {
   v2 = v1;
-  v19 = [v1 manufacturer];
-  v4 = [v19 UTF8String];
-  v5 = strlen(v4);
+  manufacturer = [v1 manufacturer];
+  uTF8String = [manufacturer UTF8String];
+  v5 = strlen(uTF8String);
   if (v5 > 0x7FFFFFFFFFFFFFF7)
   {
     sub_10000D39C();
@@ -440,15 +440,15 @@ LABEL_62:
   *(&retstr->var0.__rep_.__l + 23) = v5;
   if (v5)
   {
-    memmove(retstr, v4, v5);
+    memmove(retstr, uTF8String, v5);
   }
 
   retstr->var0.__rep_.__s.__data_[v6] = 0;
-  v7 = [v2 family];
-  *retstr[1].var0.__rep_.__s.__data_ = [v7 integerValue];
-  v8 = [v2 hwModel];
-  v9 = [v8 UTF8String];
-  v10 = strlen(v9);
+  family = [v2 family];
+  *retstr[1].var0.__rep_.__s.__data_ = [family integerValue];
+  hwModel = [v2 hwModel];
+  uTF8String2 = [hwModel UTF8String];
+  v10 = strlen(uTF8String2);
   if (v10 > 0x7FFFFFFFFFFFFFF7)
   {
     sub_10000D39C();
@@ -464,13 +464,13 @@ LABEL_62:
   v12 = &retstr[1].var0.__rep_.__s.__data_[8];
   if (v10)
   {
-    memmove(v12, v9, v10);
+    memmove(v12, uTF8String2, v10);
   }
 
   v12[v11] = 0;
-  v13 = [v2 osVersion];
-  v14 = [v13 UTF8String];
-  v15 = strlen(v14);
+  osVersion = [v2 osVersion];
+  uTF8String3 = [osVersion UTF8String];
+  v15 = strlen(uTF8String3);
   if (v15 > 0x7FFFFFFFFFFFFFF7)
   {
     sub_10000D39C();
@@ -486,7 +486,7 @@ LABEL_62:
   retstr[3].var0.__rep_.__s.__data_[7] = v15;
   if (v15)
   {
-    memmove(v17, v14, v15);
+    memmove(v17, uTF8String3, v15);
   }
 
   v17[v16] = 0;

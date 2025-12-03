@@ -1,16 +1,16 @@
 @interface SiriConversationPublisher.SiriConversationSubscriber
 - (_TtCC26AIMLInstrumentationStreams25SiriConversationPublisher26SiriConversationSubscriber)init;
-- (int64_t)receiveInput:(id)a3;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
-- (void)receiveCompletion:(id)a3;
+- (void)receiveCompletion:(id)completion;
 @end
 
 @implementation SiriConversationPublisher.SiriConversationSubscriber
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_23C871BA4();
   swift_unknownObjectRelease();
   sub_23C588DC0(v9, v8);
@@ -21,7 +21,7 @@
     sub_23C633E80();
     v5 = BPSDemandMax();
 
-    v4 = v7;
+    selfCopy = v7;
   }
 
   else
@@ -33,16 +33,16 @@
   return v5;
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  sub_23C633450(v4);
+  completionCopy = completion;
+  selfCopy = self;
+  sub_23C633450(completionCopy);
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_23C6336CC();
 }
 

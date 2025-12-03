@@ -1,31 +1,31 @@
 @interface TSDGroupLayout
 - (BOOL)allowsConnections;
 - (BOOL)canAspectRatioLockBeChangedByUser;
-- (BOOL)descendentWrappablesContainsWrappable:(id)a3;
-- (BOOL)protected_isNonGroupedDescendant:(id)a3;
+- (BOOL)descendentWrappablesContainsWrappable:(id)wrappable;
+- (BOOL)protected_isNonGroupedDescendant:(id)descendant;
 - (BOOL)resizeMayChangeAspectRatio;
 - (BOOL)shouldBeIncludedInParentFrameForCulling;
 - (BOOL)supportsFlipping;
 - (BOOL)supportsParentFlipping;
 - (BOOL)supportsRotation;
-- (CGAffineTransform)transformForFindHighlightsOfChild:(SEL)a3;
+- (CGAffineTransform)transformForFindHighlightsOfChild:(SEL)child;
 - (CGRect)alignmentFrame;
 - (CGRect)alignmentFrameForCaptionEdgeInsetsCalculation;
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3;
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform;
 - (CGRect)boundsForStandardKnobs;
 - (CGRect)clipRect;
 - (CGRect)computeBoundsForStandardKnobs;
 - (CGRect)frameForCaptionPositioning;
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4;
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform;
 - (CGRect)i_boundsForChildren;
 - (CGRect)rectInRootForCalculatingActivityLineEndpoint;
-- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)a3;
-- (CGRect)rectInRootForSelectionPath:(id)a3;
+- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)path;
+- (CGRect)rectInRootForSelectionPath:(id)path;
 - (CGSize)minimumSize;
 - (NSOrderedSet)i_groupedChildren;
-- (TSDGroupLayout)initWithInfo:(id)a3;
+- (TSDGroupLayout)initWithInfo:(id)info;
 - (double)i_clampingScaleForChildLayouts;
-- (id)additionalDependenciesForChildLayout:(id)a3;
+- (id)additionalDependenciesForChildLayout:(id)layout;
 - (id)childInfosForChildLayouts;
 - (id)computeInfoGeometryDuringResize;
 - (id)computeLayoutGeometry;
@@ -36,13 +36,13 @@
 - (id)i_wrapPathIncludingTitleAndCaption;
 - (id)layoutGeometryFromInfo;
 - (id)layoutsForProvidingGuidesForChildLayouts;
-- (id)p_childWrapPathsFrom:(id)a3 inDescendents:(id)a4 includingTitleAndCaption:(BOOL)a5;
+- (id)p_childWrapPathsFrom:(id)from inDescendents:(id)descendents includingTitleAndCaption:(BOOL)caption;
 - (id)p_groupInfo;
 - (id)pathForClippingConnectionLines;
 - (id)reliedOnLayouts;
 - (id)visibleGeometries;
 - (void)beginDynamicOperation;
-- (void)dragBy:(CGPoint)a3;
+- (void)dragBy:(CGPoint)by;
 - (void)endDynamicOperation;
 - (void)i_clearInvalidationCache;
 - (void)invalidate;
@@ -50,20 +50,20 @@
 - (void)p_createDynamicCopies;
 - (void)p_destroyDynamicCopies;
 - (void)p_invalidateParentForWrap;
-- (void)processChangedProperty:(int)a3;
-- (void)setDynamicGeometry:(id)a3;
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5;
+- (void)processChangedProperty:(int)property;
+- (void)setDynamicGeometry:(id)geometry;
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document;
 - (void)updateChildrenFromInfo;
 - (void)updateLayoutGeometryInPreparationForPartitioning;
 @end
 
 @implementation TSDGroupLayout
 
-- (TSDGroupLayout)initWithInfo:(id)a3
+- (TSDGroupLayout)initWithInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = TSDGroupLayout;
-  result = [(TSDContainerLayout *)&v4 initWithInfo:a3];
+  result = [(TSDContainerLayout *)&v4 initWithInfo:info];
   if (result)
   {
     result->mClampingScaleForChildLayouts = 1.0;
@@ -169,18 +169,18 @@
   v114 = *MEMORY[0x277D85DE8];
   v111.receiver = self;
   v111.super_class = TSDGroupLayout;
-  v3 = [(TSDContainerLayout *)&v111 childInfosForChildLayouts];
+  childInfosForChildLayouts = [(TSDContainerLayout *)&v111 childInfosForChildLayouts];
   objc_opt_class();
   v6 = objc_msgSend_info(self, v4, v5);
   v7 = TSUDynamicCast();
 
-  v12 = v3;
+  v12 = childInfosForChildLayouts;
   if ((objc_msgSend_isFreehandDrawing(v7, v8, v9) & 1) == 0)
   {
     v109 = 0u;
     v110 = 0u;
     v108 = 0u;
-    v87 = v3;
+    v87 = childInfosForChildLayouts;
     v88 = v7;
     if (v7)
     {
@@ -208,7 +208,7 @@
     v99 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v17 = v3;
+    v17 = childInfosForChildLayouts;
     v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v98, v113, 16);
     if (v19)
     {
@@ -408,7 +408,7 @@ LABEL_31:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v84, v85);
     }
 
-    v3 = v87;
+    childInfosForChildLayouts = v87;
     v7 = v88;
   }
 
@@ -461,15 +461,15 @@ LABEL_31:
   return v6;
 }
 
-- (id)additionalDependenciesForChildLayout:(id)a3
+- (id)additionalDependenciesForChildLayout:(id)layout
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutCopy = layout;
   v7 = objc_msgSend_p_groupInfo(self, v5, v6);
-  v10 = objc_msgSend_info(v4, v8, v9);
+  v10 = objc_msgSend_info(layoutCopy, v8, v9);
 
-  LOBYTE(v4) = objc_msgSend_isNonGroupedChild_(v7, v11, v10);
-  if (v4)
+  LOBYTE(layoutCopy) = objc_msgSend_isNonGroupedChild_(v7, v11, v10);
+  if (layoutCopy)
   {
     v13 = MEMORY[0x277CBEBF8];
   }
@@ -729,11 +729,11 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)protected_isNonGroupedDescendant:(id)a3
+- (BOOL)protected_isNonGroupedDescendant:(id)descendant
 {
-  v4 = a3;
+  descendantCopy = descendant;
   v5 = 0;
-  v6 = v4;
+  v6 = descendantCopy;
   do
   {
     v7 = v5;
@@ -818,16 +818,16 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform
 {
-  if (objc_msgSend_i_isClampedToParentByScaling(self, a2, a3))
+  if (objc_msgSend_i_isClampedToParentByScaling(self, a2, transform))
   {
     v7 = objc_msgSend_geometry(self, v5, v6);
     objc_msgSend_frame(v7, v8, v9);
-    v10 = *&a3->c;
-    *&v25.a = *&a3->a;
+    v10 = *&transform->c;
+    *&v25.a = *&transform->a;
     *&v25.c = v10;
-    *&v25.tx = *&a3->tx;
+    *&v25.tx = *&transform->tx;
     v27 = CGRectApplyAffineTransform(v26, &v25);
     x = v27.origin.x;
     y = v27.origin.y;
@@ -839,10 +839,10 @@ LABEL_18:
   {
     v24.receiver = self;
     v24.super_class = TSDGroupLayout;
-    v15 = *&a3->c;
-    *&v25.a = *&a3->a;
+    v15 = *&transform->c;
+    *&v25.a = *&transform->a;
     *&v25.c = v15;
-    *&v25.tx = *&a3->tx;
+    *&v25.tx = *&transform->tx;
     [(TSDContainerLayout *)&v24 baseFrameForFrameForCullingWithAdditionalTransform:&v25];
     x = v16;
     y = v17;
@@ -861,14 +861,14 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v54 = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_i_isClampedToParentByScaling(self, a2, a4))
+  if (objc_msgSend_i_isClampedToParentByScaling(self, a2, transform))
   {
     memset(&v52, 0, sizeof(v52));
     v12 = objc_msgSend_geometry(self, v10, v11);
@@ -885,10 +885,10 @@ LABEL_18:
 
     t1 = v52;
     memset(&v51, 0, sizeof(v51));
-    v21 = *&a4->c;
-    *&t2.a = *&a4->a;
+    v21 = *&transform->c;
+    *&t2.a = *&transform->a;
     *&t2.c = v21;
-    *&t2.tx = *&a4->tx;
+    *&t2.tx = *&transform->tx;
     CGAffineTransformConcat(&v51, &t1, &t2);
     v24 = objc_msgSend_p_groupInfo(self, v22, v23);
     v27 = objc_msgSend_children(self, v25, v26);
@@ -946,10 +946,10 @@ LABEL_18:
   {
     v43.receiver = self;
     v43.super_class = TSDGroupLayout;
-    v16 = *&a4->c;
-    *&v52.a = *&a4->a;
+    v16 = *&transform->c;
+    *&v52.a = *&transform->a;
     *&v52.c = v16;
-    *&v52.tx = *&a4->tx;
+    *&v52.tx = *&transform->tx;
     [(TSDLayout *)&v43 frameForCullingWithBaseFrame:&v52 additionalTransform:x, y, width, height];
     x = v17;
     y = v18;
@@ -968,9 +968,9 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)rectInRootForSelectionPath:(id)a3
+- (CGRect)rectInRootForSelectionPath:(id)path
 {
-  v3 = objc_msgSend_pureGeometryInRoot(self, a2, a3);
+  v3 = objc_msgSend_pureGeometryInRoot(self, a2, path);
   objc_msgSend_frame(v3, v4, v5);
   v7 = v6;
   v9 = v8;
@@ -988,12 +988,12 @@ LABEL_18:
   return result;
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
-  v3 = *&a3;
-  if (a3 == 512)
+  v3 = *&property;
+  if (property == 512)
   {
-    v5 = objc_msgSend_info(self, a2, *&a3);
+    v5 = objc_msgSend_info(self, a2, *&property);
     isFreehandDrawing = objc_msgSend_isFreehandDrawing(v5, v6, v7);
 
     if (isFreehandDrawing)
@@ -1050,10 +1050,10 @@ LABEL_18:
     goto LABEL_3;
   }
 
-  if (a3 == 514)
+  if (property == 514)
   {
 LABEL_3:
-    objc_msgSend_invalidateChildren(self, a2, *&a3);
+    objc_msgSend_invalidateChildren(self, a2, *&property);
   }
 
 LABEL_14:
@@ -1355,7 +1355,7 @@ LABEL_14:
   }
 }
 
-- (CGAffineTransform)transformForFindHighlightsOfChild:(SEL)a3
+- (CGAffineTransform)transformForFindHighlightsOfChild:(SEL)child
 {
   v6 = a4;
   *&retstr->a = 0u;
@@ -1403,9 +1403,9 @@ LABEL_14:
   return v5 ^ 1;
 }
 
-- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)a3
+- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)path
 {
-  objc_msgSend_boundsForStandardKnobs(self, a2, a3);
+  objc_msgSend_boundsForStandardKnobs(self, a2, path);
 
   objc_msgSend_rectInRoot_(self, v4, v5);
   result.size.height = v9;
@@ -1717,11 +1717,11 @@ LABEL_30:
   self->mCachedPathForClippingConnectionLines = 0;
 }
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
   v6.receiver = self;
   v6.super_class = TSDGroupLayout;
-  [(TSDLayout *)&v6 dragBy:a3.x, a3.y];
+  [(TSDLayout *)&v6 dragBy:by.x, by.y];
   objc_msgSend_p_invalidateParentForWrap(self, v4, v5);
 }
 
@@ -1910,27 +1910,27 @@ LABEL_15:
   return v11;
 }
 
-- (id)p_childWrapPathsFrom:(id)a3 inDescendents:(id)a4 includingTitleAndCaption:(BOOL)a5
+- (id)p_childWrapPathsFrom:(id)from inDescendents:(id)descendents includingTitleAndCaption:(BOOL)caption
 {
-  v5 = a5;
+  captionCopy = caption;
   v63 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  fromCopy = from;
+  descendentsCopy = descendents;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v10 = v7;
+  v10 = fromCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v57, v62, 16);
   if (v12)
   {
     v13 = v12;
     v14 = *v58;
     v51 = *v58;
-    v49 = v5;
+    v49 = captionCopy;
     v47 = v10;
-    v48 = v8;
+    v48 = descendentsCopy;
     do
     {
       for (i = 0; i != v13; ++i)
@@ -1945,12 +1945,12 @@ LABEL_15:
         v18 = TSUDynamicCast();
         if (v18)
         {
-          if (!objc_msgSend_containsObject_(v8, v17, v18))
+          if (!objc_msgSend_containsObject_(descendentsCopy, v17, v18))
           {
             goto LABEL_25;
           }
 
-          if (v5)
+          if (captionCopy)
           {
             objc_msgSend_i_wrapPathIncludingTitleAndCaption(v18, v19, v20);
           }
@@ -1975,7 +1975,7 @@ LABEL_15:
           }
 
           v23 = objc_msgSend_children(v16, v21, v22);
-          v25 = objc_msgSend_p_childWrapPathsFrom_inDescendents_includingTitleAndCaption_(self, v24, v23, v8, v5);
+          v25 = objc_msgSend_p_childWrapPathsFrom_inDescendents_includingTitleAndCaption_(self, v24, v23, descendentsCopy, captionCopy);
 
           v54 = 0u;
           v55 = 0u;
@@ -2017,9 +2017,9 @@ LABEL_15:
             while (v31);
           }
 
-          v5 = v49;
+          captionCopy = v49;
           v10 = v47;
-          v8 = v48;
+          descendentsCopy = v48;
         }
 
         v14 = v51;
@@ -2279,17 +2279,17 @@ LABEL_15:
   return result;
 }
 
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document
 {
-  v5 = a5;
-  v8 = a3;
+  documentCopy = document;
+  infoCopy = info;
   v44.receiver = self;
   v44.super_class = TSDGroupLayout;
-  v9 = *&a4->c;
-  *&v43.a = *&a4->a;
+  v9 = *&transform->c;
+  *&v43.a = *&transform->a;
   *&v43.c = v9;
-  *&v43.tx = *&a4->tx;
-  [(TSDLayout *)&v44 transferLayoutGeometryToInfo:v8 withAdditionalTransform:&v43 assertIfInDocument:v5];
+  *&v43.tx = *&transform->tx;
+  [(TSDLayout *)&v44 transferLayoutGeometryToInfo:infoCopy withAdditionalTransform:&v43 assertIfInDocument:documentCopy];
   v12 = objc_msgSend_info(self, v10, v11);
   v15 = objc_msgSend_childInfos(v12, v13, v14);
 
@@ -2313,7 +2313,7 @@ LABEL_15:
       v38 = objc_msgSend_childInfos(v16, v36, v37);
       v40 = objc_msgSend_objectAtIndexedSubscript_(v38, v39, i);
       v42 = v43;
-      objc_msgSend_transferLayoutGeometryToInfo_withAdditionalTransform_assertIfInDocument_(v35, v41, v40, &v42, v5);
+      objc_msgSend_transferLayoutGeometryToInfo_withAdditionalTransform_assertIfInDocument_(v35, v41, v40, &v42, documentCopy);
     }
   }
 }
@@ -2447,10 +2447,10 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)descendentWrappablesContainsWrappable:(id)a3
+- (BOOL)descendentWrappablesContainsWrappable:(id)wrappable
 {
-  v4 = a3;
-  v7 = objc_msgSend_parent(v4, v5, v6);
+  wrappableCopy = wrappable;
+  v7 = objc_msgSend_parent(wrappableCopy, v5, v6);
 
   if (v7 == self)
   {
@@ -2466,7 +2466,7 @@ LABEL_15:
 
     if (v11)
     {
-      v13 = objc_msgSend_descendentWrappablesContainsWrappable_(v11, v12, v4, &unk_2885A2AF0);
+      v13 = objc_msgSend_descendentWrappablesContainsWrappable_(v11, v12, wrappableCopy, &unk_2885A2AF0);
     }
 
     else
@@ -2496,13 +2496,13 @@ LABEL_15:
   self->mDynamicLayoutGeometry = v13;
 }
 
-- (void)setDynamicGeometry:(id)a3
+- (void)setDynamicGeometry:(id)geometry
 {
   v9.receiver = self;
   v9.super_class = TSDGroupLayout;
-  v4 = a3;
-  [(TSDLayout *)&v9 setDynamicGeometry:v4];
-  v7 = objc_msgSend_copy(v4, v5, v6, v9.receiver, v9.super_class);
+  geometryCopy = geometry;
+  [(TSDLayout *)&v9 setDynamicGeometry:geometryCopy];
+  v7 = objc_msgSend_copy(geometryCopy, v5, v6, v9.receiver, v9.super_class);
 
   mDynamicLayoutGeometry = self->mDynamicLayoutGeometry;
   self->mDynamicLayoutGeometry = v7;

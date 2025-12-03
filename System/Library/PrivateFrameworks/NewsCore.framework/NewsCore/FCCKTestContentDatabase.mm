@@ -1,94 +1,94 @@
 @interface FCCKTestContentDatabase
 + (id)testingDatabase;
-- (id)addArticlesToTopOfFeed:(id)a3 count:(unint64_t)a4;
+- (id)addArticlesToTopOfFeed:(id)feed count:(unint64_t)count;
 - (id)insertTestArticle;
-- (id)insertTestArticleListReferencingArticleIDs:(id)a3;
-- (id)insertTestArticleWithProperties:(id)a3;
-- (id)insertTestForYouConfigWithProperties:(id)a3;
-- (id)insertTestIssueListReferencingIssueIDs:(id)a3;
-- (id)insertTestIssueWithProperties:(id)a3;
-- (id)insertTestTagWithType:(id)a3 feedID:(id)a4 properties:(id)a5;
-- (id)insertTestTagWithType:(id)a3 properties:(id)a4;
-- (id)records:(id)a3 withDesiredKeys:(id)a4;
-- (unint64_t)orderForArticleID:(id)a3 feedID:(id)a4;
-- (void)addOperation:(id)a3;
-- (void)deleteArticleWithID:(id)a3;
-- (void)deleteFeedID:(id)a3;
-- (void)insertArticleID:(id)a3 atBottomOfFeedID:(id)a4;
-- (void)insertArticleID:(id)a3 atTopOfFeedID:(id)a4;
-- (void)insertArticleID:(id)a3 inFeedID:(id)a4 withOrder:(unint64_t)a5;
-- (void)insertArticleID:(id)a3 inFeedID:(id)a4 withOrder:(unint64_t)a5 subOrder:(unint64_t)a6;
-- (void)insertCanaryArticleWithID:(id)a3;
-- (void)insertRecord:(id)a3;
-- (void)insertTestArticleWithID:(id)a3 properties:(id)a4;
-- (void)insertTestIssueWithID:(id)a3 properties:(id)a4;
-- (void)insertTestTagWithID:(id)a3 type:(id)a4 properties:(id)a5;
+- (id)insertTestArticleListReferencingArticleIDs:(id)ds;
+- (id)insertTestArticleWithProperties:(id)properties;
+- (id)insertTestForYouConfigWithProperties:(id)properties;
+- (id)insertTestIssueListReferencingIssueIDs:(id)ds;
+- (id)insertTestIssueWithProperties:(id)properties;
+- (id)insertTestTagWithType:(id)type feedID:(id)d properties:(id)properties;
+- (id)insertTestTagWithType:(id)type properties:(id)properties;
+- (id)records:(id)records withDesiredKeys:(id)keys;
+- (unint64_t)orderForArticleID:(id)d feedID:(id)iD;
+- (void)addOperation:(id)operation;
+- (void)deleteArticleWithID:(id)d;
+- (void)deleteFeedID:(id)d;
+- (void)insertArticleID:(id)d atBottomOfFeedID:(id)iD;
+- (void)insertArticleID:(id)d atTopOfFeedID:(id)iD;
+- (void)insertArticleID:(id)d inFeedID:(id)iD withOrder:(unint64_t)order;
+- (void)insertArticleID:(id)d inFeedID:(id)iD withOrder:(unint64_t)order subOrder:(unint64_t)subOrder;
+- (void)insertCanaryArticleWithID:(id)d;
+- (void)insertRecord:(id)record;
+- (void)insertTestArticleWithID:(id)d properties:(id)properties;
+- (void)insertTestIssueWithID:(id)d properties:(id)properties;
+- (void)insertTestTagWithID:(id)d type:(id)type properties:(id)properties;
 - (void)populateWithBasicTestFeeds;
 - (void)populateWithLargeTestFeeds;
-- (void)simulateDroppedFeedForFeedID:(id)a3;
-- (void)updateArticleID:(id)a3 inFeedID:(id)a4 withProperties:(id)a5;
-- (void)updateArticleWithID:(id)a3 modDate:(id)a4 properties:(id)a5;
-- (void)updateArticleWithID:(id)a3 properties:(id)a4;
-- (void)updateTagWithID:(id)a3 properties:(id)a4;
+- (void)simulateDroppedFeedForFeedID:(id)d;
+- (void)updateArticleID:(id)d inFeedID:(id)iD withProperties:(id)properties;
+- (void)updateArticleWithID:(id)d modDate:(id)date properties:(id)properties;
+- (void)updateArticleWithID:(id)d properties:(id)properties;
+- (void)updateTagWithID:(id)d properties:(id)properties;
 @end
 
 @implementation FCCKTestContentDatabase
 
 + (id)testingDatabase
 {
-  v2 = [[FCNetworkBehaviorMonitor alloc] initForLoggingOnly];
-  v3 = [[FCConfigurationManager alloc] initForTesting];
-  v4 = [objc_alloc(objc_opt_class()) initWithContainerIdentifier:@"bogus" productionEnvironment:0 networkBehaviorMonitor:v2 configurationManager:v3];
+  initForLoggingOnly = [[FCNetworkBehaviorMonitor alloc] initForLoggingOnly];
+  initForTesting = [[FCConfigurationManager alloc] initForTesting];
+  v4 = [objc_alloc(objc_opt_class()) initWithContainerIdentifier:@"bogus" productionEnvironment:0 networkBehaviorMonitor:initForLoggingOnly configurationManager:initForTesting];
 
   return v4;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
   v99 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  operationCopy = operation;
   ++self->_countOfOperationsHandled;
   objc_opt_class();
-  if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
+  if (operationCopy && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v4;
+    v5 = operationCopy;
     if ([(FCCKTestContentDatabase *)self simulateNetworkError])
     {
-      v6 = [v5 queryCompletionBlock];
+      queryCompletionBlock = [v5 queryCompletionBlock];
 
-      if (v6)
+      if (queryCompletionBlock)
       {
-        v7 = [v5 queryCompletionBlock];
+        queryCompletionBlock2 = [v5 queryCompletionBlock];
         v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E695B740] code:4 userInfo:MEMORY[0x1E695E0F8]];
-        (v7)[2](v7, 0, v8);
+        (queryCompletionBlock2)[2](queryCompletionBlock2, 0, v8);
       }
 
       goto LABEL_18;
     }
 
-    v10 = [v5 query];
-    v11 = [v10 recordType];
-    v12 = [v11 isEqualToString:@"MultiFeed"];
+    query = [v5 query];
+    recordType = [query recordType];
+    v12 = [recordType isEqualToString:@"MultiFeed"];
 
     if (v12)
     {
-      v13 = [(FCCKTestContentDatabase *)self feedQueryEndpoint];
+      feedQueryEndpoint = [(FCCKTestContentDatabase *)self feedQueryEndpoint];
     }
 
     else
     {
-      v14 = [v10 recordType];
-      v15 = [v14 isEqualToString:@"OrderFeed"];
+      recordType2 = [query recordType];
+      v15 = [recordType2 isEqualToString:@"OrderFeed"];
 
       if (v15)
       {
-        v13 = [(FCCKTestContentDatabase *)self orderFeedQueryEndpoint];
+        feedQueryEndpoint = [(FCCKTestContentDatabase *)self orderFeedQueryEndpoint];
       }
 
       else
       {
-        v16 = [v10 recordType];
-        v17 = [v16 isEqualToString:@"MultiFetch"];
+        recordType3 = [query recordType];
+        v17 = [recordType3 isEqualToString:@"MultiFetch"];
 
         if (!v17)
         {
@@ -116,20 +116,20 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v13 = [(FCCKTestContentDatabase *)self multiFetchQueryEndpoint];
+        feedQueryEndpoint = [(FCCKTestContentDatabase *)self multiFetchQueryEndpoint];
       }
     }
 
-    v18 = v13;
-    v19 = [(FCCKTestContentDatabase *)self records];
-    v20 = [(FCCKTestContentDatabase *)self droppedFeeds];
-    [v18 handleQueryOperation:v5 withRecords:v19 droppedFeeds:v20];
+    v18 = feedQueryEndpoint;
+    records = [(FCCKTestContentDatabase *)self records];
+    droppedFeeds = [(FCCKTestContentDatabase *)self droppedFeeds];
+    [v18 handleQueryOperation:v5 withRecords:records droppedFeeds:droppedFeeds];
 
     goto LABEL_16;
   }
 
   objc_opt_class();
-  if (!v4)
+  if (!operationCopy)
   {
     v5 = 0;
     goto LABEL_23;
@@ -168,49 +168,49 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  v21 = v4;
-  v22 = [(FCCKTestContentDatabase *)self fetchedKeys];
-  if (v22)
+  v21 = operationCopy;
+  fetchedKeys = [(FCCKTestContentDatabase *)self fetchedKeys];
+  if (fetchedKeys)
   {
-    v23 = [(FCCKTestContentDatabase *)self fetchedKeys];
-    v24 = [v21 desiredKeys];
-    v25 = [v23 setByAddingObjectsFromArray:v24];
+    fetchedKeys2 = [(FCCKTestContentDatabase *)self fetchedKeys];
+    desiredKeys = [v21 desiredKeys];
+    v25 = [fetchedKeys2 setByAddingObjectsFromArray:desiredKeys];
     [(FCCKTestContentDatabase *)self setFetchedKeys:v25];
   }
 
   else
   {
     v26 = MEMORY[0x1E695DFD8];
-    v23 = [v21 desiredKeys];
-    v24 = [v26 setWithArray:v23];
-    [(FCCKTestContentDatabase *)self setFetchedKeys:v24];
+    fetchedKeys2 = [v21 desiredKeys];
+    desiredKeys = [v26 setWithArray:fetchedKeys2];
+    [(FCCKTestContentDatabase *)self setFetchedKeys:desiredKeys];
   }
 
   if ([(FCCKTestContentDatabase *)self simulateNetworkError])
   {
-    v27 = [v21 fetchRecordsCompletionBlock];
+    fetchRecordsCompletionBlock = [v21 fetchRecordsCompletionBlock];
 
-    if (v27)
+    if (fetchRecordsCompletionBlock)
     {
-      v28 = [v21 fetchRecordsCompletionBlock];
+      fetchRecordsCompletionBlock2 = [v21 fetchRecordsCompletionBlock];
       v29 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E695B740] code:4 userInfo:MEMORY[0x1E695E0F8]];
-      (v28)[2](v28, 0, v29);
+      (fetchRecordsCompletionBlock2)[2](fetchRecordsCompletionBlock2, 0, v29);
     }
   }
 
   else
   {
     v75 = v5;
-    v76 = v4;
-    v30 = [v21 recordIDs];
-    v31 = [(FCCKTestContentDatabase *)self records];
-    v32 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", v30, @"recordID"];
-    v33 = [v31 filteredArrayUsingPredicate:v32];
+    v76 = operationCopy;
+    recordIDs = [v21 recordIDs];
+    records2 = [(FCCKTestContentDatabase *)self records];
+    v32 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", recordIDs, @"recordID"];
+    v33 = [records2 filteredArrayUsingPredicate:v32];
 
-    v34 = [v21 desiredKeys];
-    v35 = [(FCCKTestContentDatabase *)self records:v33 withDesiredKeys:v34];
+    desiredKeys2 = [v21 desiredKeys];
+    v35 = [(FCCKTestContentDatabase *)self records:v33 withDesiredKeys:desiredKeys2];
 
-    v36 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
@@ -231,34 +231,34 @@ LABEL_23:
           }
 
           v41 = *(*(&v83 + 1) + 8 * i);
-          v42 = [v21 perRecordProgressBlock];
+          perRecordProgressBlock = [v21 perRecordProgressBlock];
 
-          if (v42)
+          if (perRecordProgressBlock)
           {
-            v43 = [v21 perRecordProgressBlock];
-            v44 = [v41 recordID];
-            (v43)[2](v43, v44, 0.5);
+            perRecordProgressBlock2 = [v21 perRecordProgressBlock];
+            recordID = [v41 recordID];
+            (perRecordProgressBlock2)[2](perRecordProgressBlock2, recordID, 0.5);
           }
 
-          v45 = [v21 perRecordCompletionBlock];
+          perRecordCompletionBlock = [v21 perRecordCompletionBlock];
 
-          if (v45)
+          if (perRecordCompletionBlock)
           {
-            v46 = [v21 perRecordCompletionBlock];
-            v47 = [v41 recordID];
-            (v46)[2](v46, v41, v47, 0);
+            perRecordCompletionBlock2 = [v21 perRecordCompletionBlock];
+            recordID2 = [v41 recordID];
+            (perRecordCompletionBlock2)[2](perRecordCompletionBlock2, v41, recordID2, 0);
           }
 
-          v48 = [v41 recordID];
-          [v36 setObject:v41 forKey:v48];
+          recordID3 = [v41 recordID];
+          [dictionary setObject:v41 forKey:recordID3];
 
-          v49 = [v21 perRecordCompletionBlock];
+          perRecordCompletionBlock3 = [v21 perRecordCompletionBlock];
 
-          if (v49)
+          if (perRecordCompletionBlock3)
           {
-            v50 = [v21 perRecordCompletionBlock];
-            v51 = [v41 recordID];
-            (v50)[2](v50, v41, v51, 0);
+            perRecordCompletionBlock4 = [v21 perRecordCompletionBlock];
+            recordID4 = [v41 recordID];
+            (perRecordCompletionBlock4)[2](perRecordCompletionBlock4, v41, recordID4, 0);
           }
         }
 
@@ -268,14 +268,14 @@ LABEL_23:
       while (v38);
     }
 
-    v52 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v53 = v30;
+    v53 = recordIDs;
     v54 = [v53 countByEnumeratingWithState:&v79 objects:v89 count:16];
-    v77 = v52;
+    v77 = dictionary2;
     if (v54)
     {
       v55 = v54;
@@ -291,21 +291,21 @@ LABEL_23:
           }
 
           v59 = *(*(&v79 + 1) + 8 * j);
-          v60 = [v36 objectForKeyedSubscript:v59];
+          v60 = [dictionary objectForKeyedSubscript:v59];
 
           if (!v60)
           {
             v61 = [MEMORY[0x1E696ABC0] errorWithDomain:v57 code:11 userInfo:MEMORY[0x1E695E0F8]];
-            [v52 setObject:v61 forKeyedSubscript:v59];
-            v62 = [v21 perRecordCompletionBlock];
+            [dictionary2 setObject:v61 forKeyedSubscript:v59];
+            perRecordCompletionBlock5 = [v21 perRecordCompletionBlock];
 
-            if (v62)
+            if (perRecordCompletionBlock5)
             {
-              v63 = [v21 perRecordCompletionBlock];
-              (v63)[2](v63, 0, v59, v61);
+              perRecordCompletionBlock6 = [v21 perRecordCompletionBlock];
+              (perRecordCompletionBlock6)[2](perRecordCompletionBlock6, 0, v59, v61);
             }
 
-            v52 = v77;
+            dictionary2 = v77;
           }
         }
 
@@ -315,12 +315,12 @@ LABEL_23:
       while (v55);
     }
 
-    if ([v52 count])
+    if ([dictionary2 count])
     {
       v64 = MEMORY[0x1E696ABC0];
       v65 = *MEMORY[0x1E695B740];
       v87 = *MEMORY[0x1E695B798];
-      v88 = v52;
+      v88 = dictionary2;
       v66 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v88 forKeys:&v87 count:1];
       v67 = [v64 errorWithDomain:v65 code:2 userInfo:v66];
     }
@@ -331,13 +331,13 @@ LABEL_23:
     }
 
     v5 = v75;
-    v4 = v76;
-    v68 = [v21 fetchRecordsCompletionBlock];
+    operationCopy = v76;
+    fetchRecordsCompletionBlock3 = [v21 fetchRecordsCompletionBlock];
 
-    if (v68)
+    if (fetchRecordsCompletionBlock3)
     {
-      v69 = [v21 fetchRecordsCompletionBlock];
-      (v69)[2](v69, v36, v67);
+      fetchRecordsCompletionBlock4 = [v21 fetchRecordsCompletionBlock];
+      (fetchRecordsCompletionBlock4)[2](fetchRecordsCompletionBlock4, dictionary, v67);
     }
   }
 
@@ -346,11 +346,11 @@ LABEL_60:
   v70 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertRecord:(id)a3
+- (void)insertRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(FCCKTestContentDatabase *)self records];
-  [v5 addObject:v4];
+  recordCopy = record;
+  records = [(FCCKTestContentDatabase *)self records];
+  [records addObject:recordCopy];
 }
 
 - (id)insertTestArticle
@@ -361,48 +361,48 @@ LABEL_60:
   return v3;
 }
 
-- (id)insertTestArticleWithProperties:(id)a3
+- (id)insertTestArticleWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = FCRandomArticleCloudKitID();
-  [(FCCKTestContentDatabase *)self insertTestArticleWithID:v5 properties:v4];
+  [(FCCKTestContentDatabase *)self insertTestArticleWithID:v5 properties:propertiesCopy];
 
   return v5;
 }
 
-- (void)insertCanaryArticleWithID:(id)a3
+- (void)insertCanaryArticleWithID:(id)d
 {
   v4 = MEMORY[0x1E695BA60];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 alloc];
-  v7 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v5];
+  v7 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:dCopy];
 
   v9 = [v6 initWithRecordType:@"Article" recordID:v7];
-  v8 = [(FCCKTestContentDatabase *)self records];
-  [v8 addObject:v9];
+  records = [(FCCKTestContentDatabase *)self records];
+  [records addObject:v9];
 }
 
-- (void)insertTestArticleWithID:(id)a3 properties:(id)a4
+- (void)insertTestArticleWithID:(id)d properties:(id)properties
 {
-  v15 = a3;
-  v6 = a4;
+  dCopy = d;
+  propertiesCopy = properties;
   v7 = [(FCCKTestContentDatabase *)self insertTestTagWithType:@"channel" properties:0];
   v8 = objc_alloc(MEMORY[0x1E695BA60]);
-  v9 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v15];
+  v9 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:dCopy];
   v10 = [v8 initWithRecordType:@"Article" recordID:v9];
 
   [v10 setEtag:@"1"];
   [v10 setObject:v7 forKeyedSubscript:@"sourceChannelTagID"];
-  v11 = [(FCCKTestContentDatabase *)self records];
-  [v11 addObject:v10];
+  records = [(FCCKTestContentDatabase *)self records];
+  [records addObject:v10];
 
-  v12 = [v6 objectForKeyedSubscript:@"publishDate"];
+  v12 = [propertiesCopy objectForKeyedSubscript:@"publishDate"];
 
   if (!v12)
   {
-    if (v6)
+    if (propertiesCopy)
     {
-      [MEMORY[0x1E695DF90] dictionaryWithDictionary:v6];
+      [MEMORY[0x1E695DF90] dictionaryWithDictionary:propertiesCopy];
     }
 
     else
@@ -410,33 +410,33 @@ LABEL_60:
       [MEMORY[0x1E695DF90] dictionary];
     }
     v13 = ;
-    v14 = [MEMORY[0x1E695DF00] date];
-    [v13 setObject:v14 forKeyedSubscript:@"publishDate"];
+    date = [MEMORY[0x1E695DF00] date];
+    [v13 setObject:date forKeyedSubscript:@"publishDate"];
 
-    v6 = v13;
+    propertiesCopy = v13;
   }
 
-  [(FCCKTestContentDatabase *)self updateArticleWithID:v15 properties:v6];
+  [(FCCKTestContentDatabase *)self updateArticleWithID:dCopy properties:propertiesCopy];
 }
 
-- (id)insertTestForYouConfigWithProperties:(id)a3
+- (id)insertTestForYouConfigWithProperties:(id)properties
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = FCRandomForYouConfigCloudKitID();
   v6 = objc_alloc(MEMORY[0x1E695BA60]);
   v7 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v5];
   v8 = [v6 initWithRecordType:@"ForYouConfig" recordID:v7];
 
   [v8 setEtag:@"1"];
-  v9 = [(FCCKTestContentDatabase *)self records];
-  [v9 addObject:v8];
+  records = [(FCCKTestContentDatabase *)self records];
+  [records addObject:v8];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v4;
+  v10 = propertiesCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -467,63 +467,63 @@ LABEL_60:
   return v5;
 }
 
-- (id)insertTestArticleListReferencingArticleIDs:(id)a3
+- (id)insertTestArticleListReferencingArticleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = FCRandomArticleListCloudKitID();
   v6 = objc_alloc(MEMORY[0x1E695BA60]);
   v7 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v5];
   v8 = [v6 initWithRecordType:@"ArticleList" recordID:v7];
 
   [v8 setEtag:@"1"];
-  v9 = [(FCCKTestContentDatabase *)self records];
-  [v9 addObject:v8];
+  records = [(FCCKTestContentDatabase *)self records];
+  [records addObject:v8];
 
-  [v8 setObject:v4 forKeyedSubscript:@"articleIDs"];
+  [v8 setObject:dsCopy forKeyedSubscript:@"articleIDs"];
 
   return v5;
 }
 
-- (id)insertTestIssueListReferencingIssueIDs:(id)a3
+- (id)insertTestIssueListReferencingIssueIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = FCRandomIssueListCloudKitID();
   v6 = objc_alloc(MEMORY[0x1E695BA60]);
   v7 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v5];
   v8 = [v6 initWithRecordType:@"IssueList" recordID:v7];
 
   [v8 setEtag:@"1"];
-  v9 = [(FCCKTestContentDatabase *)self records];
-  [v9 addObject:v8];
+  records = [(FCCKTestContentDatabase *)self records];
+  [records addObject:v8];
 
-  [v8 setObject:v4 forKeyedSubscript:@"issueIDs"];
+  [v8 setObject:dsCopy forKeyedSubscript:@"issueIDs"];
 
   return v5;
 }
 
-- (void)updateArticleWithID:(id)a3 properties:(id)a4
+- (void)updateArticleWithID:(id)d properties:(id)properties
 {
   v6 = MEMORY[0x1E695DF00];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 date];
-  [(FCCKTestContentDatabase *)self updateArticleWithID:v8 modDate:v9 properties:v7];
+  propertiesCopy = properties;
+  dCopy = d;
+  date = [v6 date];
+  [(FCCKTestContentDatabase *)self updateArticleWithID:dCopy modDate:date properties:propertiesCopy];
 }
 
-- (void)updateArticleWithID:(id)a3 modDate:(id)a4 properties:(id)a5
+- (void)updateArticleWithID:(id)d modDate:(id)date properties:(id)properties
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FCCKTestContentDatabase *)self records];
-  v12 = FCLookupRecordByName(v11, v8);
+  dCopy = d;
+  dateCopy = date;
+  propertiesCopy = properties;
+  records = [(FCCKTestContentDatabase *)self records];
+  v12 = FCLookupRecordByName(records, dCopy);
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v13 = v10;
+  v13 = propertiesCopy;
   v14 = [v13 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v14)
   {
@@ -549,18 +549,18 @@ LABEL_60:
     while (v15);
   }
 
-  [v12 setModificationDate:v9];
+  [v12 setModificationDate:dateCopy];
   v20 = [v13 objectForKeyedSubscript:@"publishDate"];
   if (v20)
   {
-    v30 = v9;
+    v30 = dateCopy;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v21 = [(FCCKTestContentDatabase *)self records];
-    v31 = v8;
-    v22 = FCFeedItemRecordsForArticle(v21, v8);
+    records2 = [(FCCKTestContentDatabase *)self records];
+    v31 = dCopy;
+    v22 = FCFeedItemRecordsForArticle(records2, dCopy);
 
     v23 = [v22 countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v23)
@@ -587,29 +587,29 @@ LABEL_60:
       while (v24);
     }
 
-    v9 = v30;
-    v8 = v31;
+    dateCopy = v30;
+    dCopy = v31;
   }
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteArticleWithID:(id)a3
+- (void)deleteArticleWithID:(id)d
 {
-  v4 = a3;
-  v7 = [(FCCKTestContentDatabase *)self records];
-  v5 = [(FCCKTestContentDatabase *)self records];
-  v6 = FCLookupRecordByName(v5, v4);
+  dCopy = d;
+  records = [(FCCKTestContentDatabase *)self records];
+  records2 = [(FCCKTestContentDatabase *)self records];
+  v6 = FCLookupRecordByName(records2, dCopy);
 
-  [v7 removeObject:v6];
+  [records removeObject:v6];
 }
 
-- (id)insertTestTagWithType:(id)a3 feedID:(id)a4 properties:(id)a5
+- (id)insertTestTagWithType:(id)type feedID:(id)d properties:(id)properties
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  dCopy = d;
+  propertiesCopy = properties;
   v10 = objc_alloc(MEMORY[0x1E695BA60]);
   v11 = objc_alloc(MEMORY[0x1E695BA70]);
   v12 = FCRandomTagCloudKitID();
@@ -617,15 +617,15 @@ LABEL_60:
   v14 = [v10 initWithRecordType:@"Tag" recordID:v13];
 
   [v14 setEtag:@"1"];
-  [v14 setObject:v7 forKeyedSubscript:@"type"];
+  [v14 setObject:typeCopy forKeyedSubscript:@"type"];
   v15 = +[FCAppleAccount sharedAccount];
-  v16 = [v15 contentStoreFrontID];
-  v17 = FCCKLocalizedRecordKey(@"feedConfiguration", v16);
+  contentStoreFrontID = [v15 contentStoreFrontID];
+  v17 = FCCKLocalizedRecordKey(@"feedConfiguration", contentStoreFrontID);
 
   v18 = objc_alloc(MEMORY[0x1E696AEC0]);
   v19 = MEMORY[0x1E696ACB0];
   v41 = @"everythingFeedID";
-  v42[0] = v8;
+  v42[0] = dCopy;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1];
   v21 = [v19 dataWithJSONObject:v20 options:0 error:0];
   v22 = [v18 initWithData:v21 encoding:4];
@@ -635,7 +635,7 @@ LABEL_60:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v23 = v9;
+  v23 = propertiesCopy;
   v24 = [v23 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v24)
   {
@@ -661,38 +661,38 @@ LABEL_60:
     while (v25);
   }
 
-  v30 = [(FCCKTestContentDatabase *)self records];
-  [v30 addObject:v14];
+  records = [(FCCKTestContentDatabase *)self records];
+  [records addObject:v14];
 
-  v31 = [v14 recordID];
-  v32 = [v31 recordName];
+  recordID = [v14 recordID];
+  recordName = [recordID recordName];
 
   v33 = *MEMORY[0x1E69E9840];
 
-  return v32;
+  return recordName;
 }
 
-- (id)insertTestTagWithType:(id)a3 properties:(id)a4
+- (id)insertTestTagWithType:(id)type properties:(id)properties
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  propertiesCopy = properties;
   v8 = objc_alloc(MEMORY[0x1E695BA60]);
   v9 = objc_alloc(MEMORY[0x1E695BA70]);
   v10 = FCRandomTagCloudKitID();
   v11 = [v9 initWithRecordName:v10];
   v12 = [v8 initWithRecordType:@"Tag" recordID:v11];
 
-  [v12 setObject:v6 forKeyedSubscript:@"type"];
+  [v12 setObject:typeCopy forKeyedSubscript:@"type"];
   [v12 setEtag:@"1"];
-  v13 = [MEMORY[0x1E695DF00] date];
-  [v12 setModificationDate:v13];
+  date = [MEMORY[0x1E695DF00] date];
+  [v12 setModificationDate:date];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = v7;
+  v14 = propertiesCopy;
   v15 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v15)
   {
@@ -718,37 +718,37 @@ LABEL_60:
     while (v16);
   }
 
-  v21 = [(FCCKTestContentDatabase *)self records];
-  [v21 addObject:v12];
+  records = [(FCCKTestContentDatabase *)self records];
+  [records addObject:v12];
 
-  v22 = [v12 recordID];
-  v23 = [v22 recordName];
+  recordID = [v12 recordID];
+  recordName = [recordID recordName];
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v23;
+  return recordName;
 }
 
-- (void)insertTestTagWithID:(id)a3 type:(id)a4 properties:(id)a5
+- (void)insertTestTagWithID:(id)d type:(id)type properties:(id)properties
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  typeCopy = type;
+  propertiesCopy = properties;
   v11 = objc_alloc(MEMORY[0x1E695BA60]);
-  v12 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v8];
+  v12 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:dCopy];
   v13 = [v11 initWithRecordType:@"Tag" recordID:v12];
 
-  [v13 setObject:v9 forKeyedSubscript:@"type"];
+  [v13 setObject:typeCopy forKeyedSubscript:@"type"];
   [v13 setEtag:@"1"];
-  v14 = [MEMORY[0x1E695DF00] date];
-  [v13 setModificationDate:v14];
+  date = [MEMORY[0x1E695DF00] date];
+  [v13 setModificationDate:date];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v15 = v10;
+  v15 = propertiesCopy;
   v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v16)
   {
@@ -774,39 +774,39 @@ LABEL_60:
     while (v17);
   }
 
-  v22 = [(FCCKTestContentDatabase *)self records];
-  [v22 addObject:v13];
+  records = [(FCCKTestContentDatabase *)self records];
+  [records addObject:v13];
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)insertTestIssueWithProperties:(id)a3
+- (id)insertTestIssueWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = FCRandomIssueCloudKitID();
-  [(FCCKTestContentDatabase *)self insertTestIssueWithID:v5 properties:v4];
+  [(FCCKTestContentDatabase *)self insertTestIssueWithID:v5 properties:propertiesCopy];
 
   return v5;
 }
 
-- (void)insertTestIssueWithID:(id)a3 properties:(id)a4
+- (void)insertTestIssueWithID:(id)d properties:(id)properties
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  propertiesCopy = properties;
   v8 = objc_alloc(MEMORY[0x1E695BA60]);
-  v9 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v6];
+  v9 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:dCopy];
   v10 = [v8 initWithRecordType:@"Issue" recordID:v9];
 
   [v10 setEtag:@"1"];
-  v11 = [(FCCKTestContentDatabase *)self records];
-  [v11 addObject:v10];
+  records = [(FCCKTestContentDatabase *)self records];
+  [records addObject:v10];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = v7;
+  v12 = propertiesCopy;
   v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
@@ -835,19 +835,19 @@ LABEL_60:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateTagWithID:(id)a3 properties:(id)a4
+- (void)updateTagWithID:(id)d properties:(id)properties
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FCCKTestContentDatabase *)self records];
-  v9 = FCLookupRecordByName(v8, v6);
+  dCopy = d;
+  propertiesCopy = properties;
+  records = [(FCCKTestContentDatabase *)self records];
+  v9 = FCLookupRecordByName(records, dCopy);
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v7;
+  v10 = propertiesCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -873,26 +873,26 @@ LABEL_60:
     while (v12);
   }
 
-  v17 = [MEMORY[0x1E695DF00] date];
-  [v9 setModificationDate:v17];
+  date = [MEMORY[0x1E695DF00] date];
+  [v9 setModificationDate:date];
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertArticleID:(id)a3 atTopOfFeedID:(id)a4
+- (void)insertArticleID:(id)d atTopOfFeedID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FCCKTestContentDatabase *)self records];
-  v14 = FCSortedFeedItemRecordsForFeedID(v8, v6);
+  iDCopy = iD;
+  dCopy = d;
+  records = [(FCCKTestContentDatabase *)self records];
+  v14 = FCSortedFeedItemRecordsForFeedID(records, iDCopy);
 
-  v9 = [v14 firstObject];
-  v10 = [v9 objectForKeyedSubscript:@"order"];
+  firstObject = [v14 firstObject];
+  v10 = [firstObject objectForKeyedSubscript:@"order"];
 
   v11 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"FeedItem"];
-  [v11 setObject:v6 forKeyedSubscript:@"tagID"];
+  [v11 setObject:iDCopy forKeyedSubscript:@"tagID"];
 
-  [v11 setObject:v7 forKeyedSubscript:@"articleID"];
+  [v11 setObject:dCopy forKeyedSubscript:@"articleID"];
   if (v10)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v10, "unsignedLongLongValue") + 1}];
@@ -904,24 +904,24 @@ LABEL_60:
     [v11 setObject:&unk_1F2E70728 forKeyedSubscript:@"order"];
   }
 
-  v13 = [(FCCKTestContentDatabase *)self records];
-  [v13 addObject:v11];
+  records2 = [(FCCKTestContentDatabase *)self records];
+  [records2 addObject:v11];
 }
 
-- (void)insertArticleID:(id)a3 atBottomOfFeedID:(id)a4
+- (void)insertArticleID:(id)d atBottomOfFeedID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FCCKTestContentDatabase *)self records];
-  v14 = FCSortedFeedItemRecordsForFeedID(v8, v6);
+  iDCopy = iD;
+  dCopy = d;
+  records = [(FCCKTestContentDatabase *)self records];
+  v14 = FCSortedFeedItemRecordsForFeedID(records, iDCopy);
 
-  v9 = [v14 lastObject];
-  v10 = [v9 objectForKeyedSubscript:@"order"];
+  lastObject = [v14 lastObject];
+  v10 = [lastObject objectForKeyedSubscript:@"order"];
 
   v11 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"FeedItem"];
-  [v11 setObject:v6 forKeyedSubscript:@"tagID"];
+  [v11 setObject:iDCopy forKeyedSubscript:@"tagID"];
 
-  [v11 setObject:v7 forKeyedSubscript:@"articleID"];
+  [v11 setObject:dCopy forKeyedSubscript:@"articleID"];
   if (v10)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v10, "unsignedLongLongValue") - 1}];
@@ -933,59 +933,59 @@ LABEL_60:
     [v11 setObject:&unk_1F2E70728 forKeyedSubscript:@"order"];
   }
 
-  v13 = [(FCCKTestContentDatabase *)self records];
-  [v13 addObject:v11];
+  records2 = [(FCCKTestContentDatabase *)self records];
+  [records2 addObject:v11];
 }
 
-- (void)insertArticleID:(id)a3 inFeedID:(id)a4 withOrder:(unint64_t)a5
+- (void)insertArticleID:(id)d inFeedID:(id)iD withOrder:(unint64_t)order
 {
   v8 = MEMORY[0x1E695BA60];
-  v9 = a4;
-  v10 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v13 = [[v8 alloc] initWithRecordType:@"FeedItem"];
-  [v13 setObject:v9 forKeyedSubscript:@"tagID"];
+  [v13 setObject:iDCopy forKeyedSubscript:@"tagID"];
 
-  [v13 setObject:v10 forKeyedSubscript:@"articleID"];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a5];
+  [v13 setObject:dCopy forKeyedSubscript:@"articleID"];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:order];
   [v13 setObject:v11 forKeyedSubscript:@"order"];
 
-  v12 = [(FCCKTestContentDatabase *)self records];
-  [v12 addObject:v13];
+  records = [(FCCKTestContentDatabase *)self records];
+  [records addObject:v13];
 }
 
-- (void)insertArticleID:(id)a3 inFeedID:(id)a4 withOrder:(unint64_t)a5 subOrder:(unint64_t)a6
+- (void)insertArticleID:(id)d inFeedID:(id)iD withOrder:(unint64_t)order subOrder:(unint64_t)subOrder
 {
   v10 = MEMORY[0x1E695BA60];
-  v11 = a4;
-  v12 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v16 = [[v10 alloc] initWithRecordType:@"FeedItem"];
-  [v16 setObject:v11 forKeyedSubscript:@"tagID"];
+  [v16 setObject:iDCopy forKeyedSubscript:@"tagID"];
 
-  [v16 setObject:v12 forKeyedSubscript:@"articleID"];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a5];
+  [v16 setObject:dCopy forKeyedSubscript:@"articleID"];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:order];
   [v16 setObject:v13 forKeyedSubscript:@"order"];
 
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a6];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:subOrder];
   [v16 setObject:v14 forKeyedSubscript:@"subOrder"];
 
-  v15 = [(FCCKTestContentDatabase *)self records];
-  [v15 addObject:v16];
+  records = [(FCCKTestContentDatabase *)self records];
+  [records addObject:v16];
 }
 
-- (void)updateArticleID:(id)a3 inFeedID:(id)a4 withProperties:(id)a5
+- (void)updateArticleID:(id)d inFeedID:(id)iD withProperties:(id)properties
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FCCKTestContentDatabase *)self records];
-  v12 = FCLookupFeedItemRecordByFeedAndArticle(v11, v9, v8);
+  dCopy = d;
+  iDCopy = iD;
+  propertiesCopy = properties;
+  records = [(FCCKTestContentDatabase *)self records];
+  v12 = FCLookupFeedItemRecordByFeedAndArticle(records, iDCopy, dCopy);
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = v10;
+  v13 = propertiesCopy;
   v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v14)
   {
@@ -1017,8 +1017,8 @@ LABEL_60:
 - (void)populateWithBasicTestFeeds
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v3 fc_millisecondTimeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  fc_millisecondTimeIntervalSince1970 = [date fc_millisecondTimeIntervalSince1970];
 
   [(FCCKTestContentDatabase *)self insertTestTagWithID:@"Ichannel" type:@"channel" properties:MEMORY[0x1E695E0F8]];
   v44 = @"channelTagID";
@@ -1035,22 +1035,22 @@ LABEL_60:
 
   [(FCCKTestContentDatabase *)self insertTestArticleWithID:@"Atest_feed1_article2" properties:0];
   [(FCCKTestContentDatabase *)self insertTestArticleWithID:@"Atest_feed1_article3" properties:0];
-  [(FCCKTestContentDatabase *)self insertArticleID:@"Atest_feed1_article1" inFeedID:@"test_feed1" withOrder:v4];
-  [(FCCKTestContentDatabase *)self insertArticleID:@"Atest_feed1_article2" inFeedID:@"test_feed1" withOrder:v4 - 1];
-  [(FCCKTestContentDatabase *)self insertArticleID:@"Atest_feed1_article3" inFeedID:@"test_feed1" withOrder:v4 - 2];
+  [(FCCKTestContentDatabase *)self insertArticleID:@"Atest_feed1_article1" inFeedID:@"test_feed1" withOrder:fc_millisecondTimeIntervalSince1970];
+  [(FCCKTestContentDatabase *)self insertArticleID:@"Atest_feed1_article2" inFeedID:@"test_feed1" withOrder:fc_millisecondTimeIntervalSince1970 - 1];
+  [(FCCKTestContentDatabase *)self insertArticleID:@"Atest_feed1_article3" inFeedID:@"test_feed1" withOrder:fc_millisecondTimeIntervalSince1970 - 2];
   [(FCCKTestContentDatabase *)self insertTestArticleWithID:@"Atest_feed2_article1" properties:0];
   [(FCCKTestContentDatabase *)self insertTestArticleWithID:@"Atest_feed2_article2" properties:0];
   [(FCCKTestContentDatabase *)self insertTestArticleWithID:@"Atest_feed2_article3" properties:0];
-  [(FCCKTestContentDatabase *)self insertArticleID:@"Atest_feed2_article1" inFeedID:@"test_feed2" withOrder:v4 - 1];
-  [(FCCKTestContentDatabase *)self insertArticleID:@"Atest_feed2_article2" inFeedID:@"test_feed2" withOrder:v4 - 2];
-  [(FCCKTestContentDatabase *)self insertArticleID:@"Atest_feed2_article3" inFeedID:@"test_feed2" withOrder:v4 - 3];
-  v7 = [MEMORY[0x1E695DF00] date];
+  [(FCCKTestContentDatabase *)self insertArticleID:@"Atest_feed2_article1" inFeedID:@"test_feed2" withOrder:fc_millisecondTimeIntervalSince1970 - 1];
+  [(FCCKTestContentDatabase *)self insertArticleID:@"Atest_feed2_article2" inFeedID:@"test_feed2" withOrder:fc_millisecondTimeIntervalSince1970 - 2];
+  [(FCCKTestContentDatabase *)self insertArticleID:@"Atest_feed2_article3" inFeedID:@"test_feed2" withOrder:fc_millisecondTimeIntervalSince1970 - 3];
+  date2 = [MEMORY[0x1E695DF00] date];
   v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-21600.0];
   v29 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-43200.0];
-  v41[0] = v7;
+  v41[0] = date2;
   v40[0] = @"publishDate";
   v40[1] = @"publishDateMillis";
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v7, "fc_millisecondTimeIntervalSince1970")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(date2, "fc_millisecondTimeIntervalSince1970")}];
   v41[1] = v9;
   v40[2] = @"tagHalfLifeMillis";
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:86400000];
@@ -1081,10 +1081,10 @@ LABEL_60:
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:3];
   [(FCCKTestContentDatabase *)self updateArticleID:@"Atest_feed1_article3" inFeedID:@"test_feed1" withProperties:v17];
 
-  v35[0] = v7;
+  v35[0] = date2;
   v34[0] = @"publishDate";
   v34[1] = @"publishDateMillis";
-  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v7, "fc_millisecondTimeIntervalSince1970")}];
+  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(date2, "fc_millisecondTimeIntervalSince1970")}];
   v35[1] = v18;
   v34[2] = @"tagHalfLifeMillis";
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:86400000];
@@ -1121,8 +1121,8 @@ LABEL_60:
 - (void)populateWithLargeTestFeeds
 {
   v29[4] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [v2 fc_millisecondTimeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  fc_millisecondTimeIntervalSince1970 = [date fc_millisecondTimeIntervalSince1970];
 
   v4 = @"publishDate";
   v5 = 1;
@@ -1131,10 +1131,10 @@ LABEL_60:
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Atest_feed1_article%lu", v5];
     v28[0] = v4;
-    v8 = [MEMORY[0x1E695DF00] fc_dateWithMillisecondTimeIntervalSince1970:v3];
+    v8 = [MEMORY[0x1E695DF00] fc_dateWithMillisecondTimeIntervalSince1970:fc_millisecondTimeIntervalSince1970];
     v29[0] = v8;
     v28[1] = @"publishDateMillis";
-    [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v3];
+    [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:fc_millisecondTimeIntervalSince1970];
     v10 = v9 = v4;
     v29[1] = v10;
     v29[2] = @"Iissue";
@@ -1149,14 +1149,14 @@ LABEL_60:
     v4 = v9;
 
     v13 = 0x1E695D000uLL;
-    [(FCCKTestContentDatabase *)self insertArticleID:v7 inFeedID:@"test_feed1" withOrder:v3--];
+    [(FCCKTestContentDatabase *)self insertArticleID:v7 inFeedID:@"test_feed1" withOrder:fc_millisecondTimeIntervalSince1970--];
 
     v14 = 0x1E696A000uLL;
     ++v5;
   }
 
   while (v5 != 51);
-  v15 = v3 + 25;
+  v15 = fc_millisecondTimeIntervalSince1970 + 25;
   for (i = 1; i != 51; ++i)
   {
     v17 = [*(v14 + 3776) stringWithFormat:@"Atest_feed2_article%lu", i];
@@ -1188,61 +1188,61 @@ LABEL_60:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteFeedID:(id)a3
+- (void)deleteFeedID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCCKTestContentDatabase *)self records];
-  v7 = FCSortedFeedItemRecordsForFeedID(v5, v4);
+  dCopy = d;
+  records = [(FCCKTestContentDatabase *)self records];
+  v7 = FCSortedFeedItemRecordsForFeedID(records, dCopy);
 
-  v6 = [(FCCKTestContentDatabase *)self records];
-  [v6 removeObjectsInArray:v7];
+  records2 = [(FCCKTestContentDatabase *)self records];
+  [records2 removeObjectsInArray:v7];
 }
 
-- (void)simulateDroppedFeedForFeedID:(id)a3
+- (void)simulateDroppedFeedForFeedID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCCKTestContentDatabase *)self droppedFeeds];
-  [v5 addObject:v4];
+  dCopy = d;
+  droppedFeeds = [(FCCKTestContentDatabase *)self droppedFeeds];
+  [droppedFeeds addObject:dCopy];
 }
 
-- (id)addArticlesToTopOfFeed:(id)a3 count:(unint64_t)a4
+- (id)addArticlesToTopOfFeed:(id)feed count:(unint64_t)count
 {
-  v6 = a3;
+  feedCopy = feed;
   for (i = [MEMORY[0x1E695DF70] array];
   {
-    v8 = [(FCCKTestContentDatabase *)self insertTestArticle];
-    [(FCCKTestContentDatabase *)self insertArticleID:v8 atTopOfFeedID:v6];
-    [i insertObject:v8 atIndex:0];
+    insertTestArticle = [(FCCKTestContentDatabase *)self insertTestArticle];
+    [(FCCKTestContentDatabase *)self insertArticleID:insertTestArticle atTopOfFeedID:feedCopy];
+    [i insertObject:insertTestArticle atIndex:0];
   }
 
   return i;
 }
 
-- (unint64_t)orderForArticleID:(id)a3 feedID:(id)a4
+- (unint64_t)orderForArticleID:(id)d feedID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FCCKTestContentDatabase *)self records];
-  v9 = FCLookupFeedItemRecordByFeedAndArticle(v8, v6, v7);
+  iDCopy = iD;
+  dCopy = d;
+  records = [(FCCKTestContentDatabase *)self records];
+  v9 = FCLookupFeedItemRecordByFeedAndArticle(records, iDCopy, dCopy);
 
   v10 = [v9 objectForKeyedSubscript:@"order"];
-  v11 = [v10 unsignedLongLongValue];
+  unsignedLongLongValue = [v10 unsignedLongLongValue];
 
-  return v11;
+  return unsignedLongLongValue;
 }
 
-- (id)records:(id)a3 withDesiredKeys:(id)a4
+- (id)records:(id)records withDesiredKeys:(id)keys
 {
   v5 = MEMORY[0x1E695DFD8];
-  v6 = a3;
-  v7 = [v5 setWithArray:a4];
+  recordsCopy = records;
+  v7 = [v5 setWithArray:keys];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__FCCKTestContentDatabase_records_withDesiredKeys___block_invoke;
   v11[3] = &unk_1E7C3B338;
   v12 = v7;
   v8 = v7;
-  v9 = [v6 fc_arrayByTransformingWithBlock:v11];
+  v9 = [recordsCopy fc_arrayByTransformingWithBlock:v11];
 
   return v9;
 }

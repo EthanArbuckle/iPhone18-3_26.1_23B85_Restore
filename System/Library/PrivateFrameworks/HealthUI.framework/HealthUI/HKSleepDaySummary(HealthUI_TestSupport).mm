@@ -14,11 +14,11 @@
     switch(a3)
     {
       case 3:
-        return [a1 coreSleepDuration];
+        return [self coreSleepDuration];
       case 4:
-        return [a1 deepSleepDuration];
+        return [self deepSleepDuration];
       case 5:
-        return [a1 remSleepDuration];
+        return [self remSleepDuration];
     }
   }
 
@@ -26,57 +26,57 @@
   {
     if (a3 == 1)
     {
-      return [a1 unspecifiedSleepDuration];
+      return [self unspecifiedSleepDuration];
     }
 
     else if (a3 == 2)
     {
-      return [a1 awakeDuration];
+      return [self awakeDuration];
     }
   }
 
   else
   {
-    return [a1 inBedDuration];
+    return [self inBedDuration];
   }
 
-  return a1;
+  return self;
 }
 
 - (id)hkui_somnogramChartDateInterval
 {
-  [a1 sleepDuration];
-  if (v2 == 0.0 && ([a1 inBedDuration], v3 == 0.0))
+  [self sleepDuration];
+  if (v2 == 0.0 && ([self inBedDuration], v3 == 0.0))
   {
-    v4 = [a1 dateInterval];
+    dateInterval = [self dateInterval];
   }
 
   else
   {
     v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:&unk_1F43813F0];
-    if (([a1 hasSleepStageData] & 1) == 0)
+    if (([self hasSleepStageData] & 1) == 0)
     {
       [v5 addObject:&unk_1F4383D48];
     }
 
-    v6 = [a1 firstStartDateMatchingSleepValues:v5];
+    v6 = [self firstStartDateMatchingSleepValues:v5];
     v7 = [v6 dateByAddingTimeInterval:-300.0];
 
-    v8 = [a1 lastEndDateMatchingSleepValues:v5];
+    v8 = [self lastEndDateMatchingSleepValues:v5];
     v9 = [v8 dateByAddingTimeInterval:300.0];
 
-    v10 = [a1 calendar];
-    v11 = [v10 hk_startOfHourForDate:v7 addingHours:0];
+    calendar = [self calendar];
+    v11 = [calendar hk_startOfHourForDate:v7 addingHours:0];
 
     v12 = v9;
-    v13 = [a1 calendar];
-    v14 = [v13 component:64 fromDate:v12];
+    calendar2 = [self calendar];
+    v14 = [calendar2 component:64 fromDate:v12];
 
     v15 = v12;
     if (v14 >= 1)
     {
-      v16 = [a1 calendar];
-      v15 = [v16 hk_startOfHourForDate:v12 addingHours:1];
+      calendar3 = [self calendar];
+      v15 = [calendar3 hk_startOfHourForDate:v12 addingHours:1];
     }
 
     if (v11 && v15)
@@ -106,18 +106,18 @@
         v11 = v23;
       }
 
-      v25 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v11 endDate:v15];
+      dateInterval2 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v11 endDate:v15];
     }
 
     else
     {
-      v25 = [a1 dateInterval];
+      dateInterval2 = [self dateInterval];
     }
 
-    v4 = v25;
+    dateInterval = dateInterval2;
   }
 
-  return v4;
+  return dateInterval;
 }
 
 - (id)firstStartDateMatchingSleepValues:()HealthUI_TestSupport
@@ -128,12 +128,12 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [a1 periods];
-  v21 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  periods = [self periods];
+  v21 = [periods countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v21)
   {
     v6 = *v28;
-    v22 = v5;
+    v22 = periods;
     v20 = *v28;
     do
     {
@@ -141,7 +141,7 @@
       {
         if (*v28 != v6)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(periods);
         }
 
         v8 = *(*(&v27 + 1) + 8 * i);
@@ -149,8 +149,8 @@
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v9 = [v8 segments];
-        v10 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        segments = [v8 segments];
+        v10 = [segments countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v10)
         {
           v11 = v10;
@@ -161,7 +161,7 @@
             {
               if (*v24 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(segments);
               }
 
               v14 = *(*(&v23 + 1) + 8 * j);
@@ -170,15 +170,15 @@
 
               if (v16)
               {
-                v18 = [v14 dateInterval];
-                v17 = [v18 startDate];
+                dateInterval = [v14 dateInterval];
+                startDate = [dateInterval startDate];
 
-                v5 = v22;
+                periods = v22;
                 goto LABEL_19;
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v11 = [segments countByEnumeratingWithState:&v23 objects:v31 count:16];
             if (v11)
             {
               continue;
@@ -188,11 +188,11 @@
           }
         }
 
-        v5 = v22;
+        periods = v22;
         v6 = v20;
       }
 
-      v17 = 0;
+      startDate = 0;
       v21 = [v22 countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
@@ -201,12 +201,12 @@
 
   else
   {
-    v17 = 0;
+    startDate = 0;
   }
 
 LABEL_19:
 
-  return v17;
+  return startDate;
 }
 
 - (id)lastEndDateMatchingSleepValues:()HealthUI_TestSupport
@@ -217,7 +217,7 @@ LABEL_19:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = [a1 periods];
+  obj = [self periods];
   v27 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   v5 = 0;
   if (v27)
@@ -241,8 +241,8 @@ LABEL_19:
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v30 = [v8 segments];
-        v9 = [v30 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        segments = [v8 segments];
+        v9 = [segments countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v9)
         {
           v10 = v9;
@@ -253,7 +253,7 @@ LABEL_19:
             {
               if (*v33 != v11)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(segments);
               }
 
               v13 = *(*(&v32 + 1) + 8 * i);
@@ -274,13 +274,13 @@ LABEL_17:
                 continue;
               }
 
-              v15 = [v13 dateInterval];
-              v16 = [v15 endDate];
+              dateInterval = [v13 dateInterval];
+              endDate = [dateInterval endDate];
               [v5 dateInterval];
               v18 = v17 = v5;
               [v18 endDate];
               v20 = v19 = v11;
-              v31 = [v16 hk_isAfterDate:v20];
+              v31 = [endDate hk_isAfterDate:v20];
 
               v11 = v19;
               v5 = v17;
@@ -294,7 +294,7 @@ LABEL_17:
               }
             }
 
-            v10 = [v30 countByEnumeratingWithState:&v32 objects:v40 count:16];
+            v10 = [segments countByEnumeratingWithState:&v32 objects:v40 count:16];
           }
 
           while (v10);
@@ -310,8 +310,8 @@ LABEL_17:
     while (v27);
   }
 
-  v21 = [v5 dateInterval];
-  [v21 endDate];
+  dateInterval2 = [v5 dateInterval];
+  [dateInterval2 endDate];
   v23 = v22 = v5;
 
   return v23;

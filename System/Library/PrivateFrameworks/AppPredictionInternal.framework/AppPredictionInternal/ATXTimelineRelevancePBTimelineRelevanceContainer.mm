@@ -1,48 +1,48 @@
 @interface ATXTimelineRelevancePBTimelineRelevanceContainer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)abGroup;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsWidgetFamily:(id)a3;
+- (int)StringAsWidgetFamily:(id)family;
 - (unint64_t)hash;
-- (void)addRotation:(id)a3;
-- (void)addStackConfigSummary:(id)a3;
-- (void)addTimelineRelevanceScore:(id)a3;
-- (void)addTimelineRelevanceSuggestion:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAtLeastOnePositiveTimelineRelevanceScore:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRotation:(id)rotation;
+- (void)addStackConfigSummary:(id)summary;
+- (void)addTimelineRelevanceScore:(id)score;
+- (void)addTimelineRelevanceSuggestion:(id)suggestion;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAtLeastOnePositiveTimelineRelevanceScore:(BOOL)score;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXTimelineRelevancePBTimelineRelevanceContainer
 
-- (int)StringAsWidgetFamily:(id)a3
+- (int)StringAsWidgetFamily:(id)family
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WIDGET_FAMILY_UNKNOWN"])
+  familyCopy = family;
+  if ([familyCopy isEqualToString:@"WIDGET_FAMILY_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"WIDGET_FAMILY_SMALL"])
+  else if ([familyCopy isEqualToString:@"WIDGET_FAMILY_SMALL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"WIDGET_FAMILY_MEDIUM"])
+  else if ([familyCopy isEqualToString:@"WIDGET_FAMILY_MEDIUM"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WIDGET_FAMILY_LARGE"])
+  else if ([familyCopy isEqualToString:@"WIDGET_FAMILY_LARGE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"WIDGET_FAMILY_EXTRA_LARGE"])
+  else if ([familyCopy isEqualToString:@"WIDGET_FAMILY_EXTRA_LARGE"])
   {
     v4 = 4;
   }
@@ -55,9 +55,9 @@
   return v4;
 }
 
-- (void)setHasAtLeastOnePositiveTimelineRelevanceScore:(BOOL)a3
+- (void)setHasAtLeastOnePositiveTimelineRelevanceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4;
   }
@@ -70,63 +70,63 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addTimelineRelevanceScore:(id)a3
+- (void)addTimelineRelevanceScore:(id)score
 {
-  v4 = a3;
+  scoreCopy = score;
   timelineRelevanceScores = self->_timelineRelevanceScores;
-  v8 = v4;
+  v8 = scoreCopy;
   if (!timelineRelevanceScores)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_timelineRelevanceScores;
     self->_timelineRelevanceScores = v6;
 
-    v4 = v8;
+    scoreCopy = v8;
     timelineRelevanceScores = self->_timelineRelevanceScores;
   }
 
-  [(NSMutableArray *)timelineRelevanceScores addObject:v4];
+  [(NSMutableArray *)timelineRelevanceScores addObject:scoreCopy];
 }
 
-- (void)addTimelineRelevanceSuggestion:(id)a3
+- (void)addTimelineRelevanceSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   timelineRelevanceSuggestions = self->_timelineRelevanceSuggestions;
-  v8 = v4;
+  v8 = suggestionCopy;
   if (!timelineRelevanceSuggestions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_timelineRelevanceSuggestions;
     self->_timelineRelevanceSuggestions = v6;
 
-    v4 = v8;
+    suggestionCopy = v8;
     timelineRelevanceSuggestions = self->_timelineRelevanceSuggestions;
   }
 
-  [(NSMutableArray *)timelineRelevanceSuggestions addObject:v4];
+  [(NSMutableArray *)timelineRelevanceSuggestions addObject:suggestionCopy];
 }
 
-- (void)addRotation:(id)a3
+- (void)addRotation:(id)rotation
 {
-  v4 = a3;
+  rotationCopy = rotation;
   rotations = self->_rotations;
-  v8 = v4;
+  v8 = rotationCopy;
   if (!rotations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_rotations;
     self->_rotations = v6;
 
-    v4 = v8;
+    rotationCopy = v8;
     rotations = self->_rotations;
   }
 
-  [(NSMutableArray *)rotations addObject:v4];
+  [(NSMutableArray *)rotations addObject:rotationCopy];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -139,22 +139,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addStackConfigSummary:(id)a3
+- (void)addStackConfigSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   stackConfigSummarys = self->_stackConfigSummarys;
-  v8 = v4;
+  v8 = summaryCopy;
   if (!stackConfigSummarys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_stackConfigSummarys;
     self->_stackConfigSummarys = v6;
 
-    v4 = v8;
+    summaryCopy = v8;
     stackConfigSummarys = self->_stackConfigSummarys;
   }
 
-  [(NSMutableArray *)stackConfigSummarys addObject:v4];
+  [(NSMutableArray *)stackConfigSummarys addObject:summaryCopy];
 }
 
 - (NSString)abGroup
@@ -176,8 +176,8 @@
   v8.receiver = self;
   v8.super_class = ATXTimelineRelevancePBTimelineRelevanceContainer;
   v4 = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)&v8 description];
-  v5 = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -185,12 +185,12 @@
 - (id)dictionaryRepresentation
 {
   v67 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   widgetBundleId = self->_widgetBundleId;
   if (widgetBundleId)
   {
-    [v3 setObject:widgetBundleId forKey:@"widgetBundleId"];
+    [dictionary setObject:widgetBundleId forKey:@"widgetBundleId"];
   }
 
   widgetKind = self->_widgetKind;
@@ -255,8 +255,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v59 + 1) + 8 * i) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation = [*(*(&v59 + 1) + 8 * i) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v59 objects:v66 count:16];
@@ -290,8 +290,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v55 + 1) + 8 * j) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation2 = [*(*(&v55 + 1) + 8 * j) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation2];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v55 objects:v65 count:16];
@@ -325,8 +325,8 @@
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v51 + 1) + 8 * k) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation3 = [*(*(&v51 + 1) + 8 * k) dictionaryRepresentation];
+          [v27 addObject:dictionaryRepresentation3];
         }
 
         v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v51 objects:v64 count:16];
@@ -366,8 +366,8 @@
             objc_enumerationMutation(v36);
           }
 
-          v41 = [*(*(&v47 + 1) + 8 * m) dictionaryRepresentation];
-          [v35 addObject:v41];
+          dictionaryRepresentation4 = [*(*(&v47 + 1) + 8 * m) dictionaryRepresentation];
+          [v35 addObject:dictionaryRepresentation4];
         }
 
         v38 = [(NSMutableArray *)v36 countByEnumeratingWithState:&v47 objects:v63 count:16];
@@ -388,8 +388,8 @@
   featureVector = self->_featureVector;
   if (featureVector)
   {
-    v44 = [(ATXTimelineRelevancePBFeatureVector *)featureVector dictionaryRepresentation];
-    [v4 setObject:v44 forKey:@"featureVector"];
+    dictionaryRepresentation5 = [(ATXTimelineRelevancePBFeatureVector *)featureVector dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"featureVector"];
   }
 
   v45 = *MEMORY[0x277D85DE8];
@@ -397,16 +397,16 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (!self->_widgetBundleId)
   {
     [ATXTimelineRelevancePBTimelineRelevanceContainer writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   if (!self->_widgetKind)
   {
@@ -570,123 +570,123 @@
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v22 = a3;
-  [v22 setWidgetBundleId:self->_widgetBundleId];
-  [v22 setWidgetKind:self->_widgetKind];
+  toCopy = to;
+  [toCopy setWidgetBundleId:self->_widgetBundleId];
+  [toCopy setWidgetKind:self->_widgetKind];
   if (self->_containerBundleIdentifier)
   {
-    [v22 setContainerBundleIdentifier:?];
+    [toCopy setContainerBundleIdentifier:?];
   }
 
-  *(v22 + 22) = self->_widgetFamily;
+  *(toCopy + 22) = self->_widgetFamily;
   has = self->_has;
   if (has)
   {
-    *(v22 + 1) = self->_timelineDonationNilCount;
-    *(v22 + 108) |= 1u;
+    *(toCopy + 1) = self->_timelineDonationNilCount;
+    *(toCopy + 108) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v22 + 104) = self->_atLeastOnePositiveTimelineRelevanceScore;
-    *(v22 + 108) |= 4u;
+    *(toCopy + 104) = self->_atLeastOnePositiveTimelineRelevanceScore;
+    *(toCopy + 108) |= 4u;
   }
 
   if ([(ATXTimelineRelevancePBTimelineRelevanceContainer *)self timelineRelevanceScoresCount])
   {
-    [v22 clearTimelineRelevanceScores];
-    v5 = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self timelineRelevanceScoresCount];
-    if (v5)
+    [toCopy clearTimelineRelevanceScores];
+    timelineRelevanceScoresCount = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self timelineRelevanceScoresCount];
+    if (timelineRelevanceScoresCount)
     {
-      v6 = v5;
+      v6 = timelineRelevanceScoresCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self timelineRelevanceScoreAtIndex:i];
-        [v22 addTimelineRelevanceScore:v8];
+        [toCopy addTimelineRelevanceScore:v8];
       }
     }
   }
 
   if ([(ATXTimelineRelevancePBTimelineRelevanceContainer *)self timelineRelevanceSuggestionsCount])
   {
-    [v22 clearTimelineRelevanceSuggestions];
-    v9 = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self timelineRelevanceSuggestionsCount];
-    if (v9)
+    [toCopy clearTimelineRelevanceSuggestions];
+    timelineRelevanceSuggestionsCount = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self timelineRelevanceSuggestionsCount];
+    if (timelineRelevanceSuggestionsCount)
     {
-      v10 = v9;
+      v10 = timelineRelevanceSuggestionsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self timelineRelevanceSuggestionAtIndex:j];
-        [v22 addTimelineRelevanceSuggestion:v12];
+        [toCopy addTimelineRelevanceSuggestion:v12];
       }
     }
   }
 
   if ([(ATXTimelineRelevancePBTimelineRelevanceContainer *)self rotationsCount])
   {
-    [v22 clearRotations];
-    v13 = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self rotationsCount];
-    if (v13)
+    [toCopy clearRotations];
+    rotationsCount = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self rotationsCount];
+    if (rotationsCount)
     {
-      v14 = v13;
+      v14 = rotationsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self rotationAtIndex:k];
-        [v22 addRotation:v16];
+        [toCopy addRotation:v16];
       }
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v22 + 2) = self->_timestamp;
-    *(v22 + 108) |= 2u;
+    *(toCopy + 2) = self->_timestamp;
+    *(toCopy + 108) |= 2u;
   }
 
   if ([(ATXTimelineRelevancePBTimelineRelevanceContainer *)self stackConfigSummarysCount])
   {
-    [v22 clearStackConfigSummarys];
-    v17 = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self stackConfigSummarysCount];
-    if (v17)
+    [toCopy clearStackConfigSummarys];
+    stackConfigSummarysCount = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self stackConfigSummarysCount];
+    if (stackConfigSummarysCount)
     {
-      v18 = v17;
+      v18 = stackConfigSummarysCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self stackConfigSummaryAtIndex:m];
-        [v22 addStackConfigSummary:v20];
+        [toCopy addStackConfigSummary:v20];
       }
     }
   }
 
   if (self->_abGroup)
   {
-    [v22 setAbGroup:?];
+    [toCopy setAbGroup:?];
   }
 
-  v21 = v22;
+  v21 = toCopy;
   if (self->_featureVector)
   {
-    [v22 setFeatureVector:?];
-    v21 = v22;
+    [toCopy setFeatureVector:?];
+    v21 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v63 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_widgetBundleId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_widgetBundleId copyWithZone:zone];
   v7 = *(v5 + 80);
   *(v5 + 80) = v6;
 
-  v8 = [(NSString *)self->_widgetKind copyWithZone:a3];
+  v8 = [(NSString *)self->_widgetKind copyWithZone:zone];
   v9 = *(v5 + 96);
   *(v5 + 96) = v8;
 
-  v10 = [(NSString *)self->_containerBundleIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_containerBundleIdentifier copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
@@ -724,7 +724,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v55 + 1) + 8 * i) copyWithZone:a3];
+        v18 = [*(*(&v55 + 1) + 8 * i) copyWithZone:zone];
         [v5 addTimelineRelevanceScore:v18];
       }
 
@@ -753,7 +753,7 @@
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v51 + 1) + 8 * j) copyWithZone:a3];
+        v24 = [*(*(&v51 + 1) + 8 * j) copyWithZone:zone];
         [v5 addTimelineRelevanceSuggestion:v24];
       }
 
@@ -782,7 +782,7 @@
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v47 + 1) + 8 * k) copyWithZone:a3];
+        v30 = [*(*(&v47 + 1) + 8 * k) copyWithZone:zone];
         [v5 addRotation:v30];
       }
 
@@ -817,7 +817,7 @@
           objc_enumerationMutation(v31);
         }
 
-        v36 = [*(*(&v43 + 1) + 8 * m) copyWithZone:{a3, v43}];
+        v36 = [*(*(&v43 + 1) + 8 * m) copyWithZone:{zone, v43}];
         [v5 addStackConfigSummary:v36];
       }
 
@@ -827,11 +827,11 @@
     while (v33);
   }
 
-  v37 = [(NSString *)self->_abGroup copyWithZone:a3];
+  v37 = [(NSString *)self->_abGroup copyWithZone:zone];
   v38 = *(v5 + 24);
   *(v5 + 24) = v37;
 
-  v39 = [(ATXTimelineRelevancePBFeatureVector *)self->_featureVector copyWithZone:a3];
+  v39 = [(ATXTimelineRelevancePBFeatureVector *)self->_featureVector copyWithZone:zone];
   v40 = *(v5 + 40);
   *(v5 + 40) = v39;
 
@@ -839,16 +839,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   widgetBundleId = self->_widgetBundleId;
-  if (widgetBundleId | *(v4 + 10))
+  if (widgetBundleId | *(equalCopy + 10))
   {
     if (![(NSString *)widgetBundleId isEqual:?])
     {
@@ -857,7 +857,7 @@
   }
 
   widgetKind = self->_widgetKind;
-  if (widgetKind | *(v4 + 12))
+  if (widgetKind | *(equalCopy + 12))
   {
     if (![(NSString *)widgetKind isEqual:?])
     {
@@ -866,7 +866,7 @@
   }
 
   containerBundleIdentifier = self->_containerBundleIdentifier;
-  if (containerBundleIdentifier | *(v4 + 4))
+  if (containerBundleIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)containerBundleIdentifier isEqual:?])
     {
@@ -874,60 +874,60 @@
     }
   }
 
-  if (self->_widgetFamily != *(v4 + 22))
+  if (self->_widgetFamily != *(equalCopy + 22))
   {
     goto LABEL_26;
   }
 
-  v8 = *(v4 + 108);
+  v8 = *(equalCopy + 108);
   if (*&self->_has)
   {
-    if ((*(v4 + 108) & 1) == 0 || self->_timelineDonationNilCount != *(v4 + 1))
+    if ((*(equalCopy + 108) & 1) == 0 || self->_timelineDonationNilCount != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 108))
+  else if (*(equalCopy + 108))
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 108) & 4) == 0)
+    if ((*(equalCopy + 108) & 4) == 0)
     {
       goto LABEL_26;
     }
 
-    v15 = *(v4 + 104);
+    v15 = *(equalCopy + 104);
     if (self->_atLeastOnePositiveTimelineRelevanceScore)
     {
-      if ((*(v4 + 104) & 1) == 0)
+      if ((*(equalCopy + 104) & 1) == 0)
       {
         goto LABEL_26;
       }
     }
 
-    else if (*(v4 + 104))
+    else if (*(equalCopy + 104))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 108) & 4) != 0)
+  else if ((*(equalCopy + 108) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   timelineRelevanceScores = self->_timelineRelevanceScores;
-  if (timelineRelevanceScores | *(v4 + 8) && ![(NSMutableArray *)timelineRelevanceScores isEqual:?])
+  if (timelineRelevanceScores | *(equalCopy + 8) && ![(NSMutableArray *)timelineRelevanceScores isEqual:?])
   {
     goto LABEL_26;
   }
 
   timelineRelevanceSuggestions = self->_timelineRelevanceSuggestions;
-  if (timelineRelevanceSuggestions | *(v4 + 9))
+  if (timelineRelevanceSuggestions | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)timelineRelevanceSuggestions isEqual:?])
     {
@@ -936,7 +936,7 @@
   }
 
   rotations = self->_rotations;
-  if (rotations | *(v4 + 6))
+  if (rotations | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)rotations isEqual:?])
     {
@@ -944,10 +944,10 @@
     }
   }
 
-  v12 = *(v4 + 108);
+  v12 = *(equalCopy + 108);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 108) & 2) == 0)
+    if ((*(equalCopy + 108) & 2) == 0)
     {
       goto LABEL_35;
     }
@@ -957,20 +957,20 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ((*(v4 + 108) & 2) == 0 || self->_timestamp != *(v4 + 2))
+  if ((*(equalCopy + 108) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
   {
     goto LABEL_26;
   }
 
 LABEL_35:
   stackConfigSummarys = self->_stackConfigSummarys;
-  if (stackConfigSummarys | *(v4 + 7) && ![(NSMutableArray *)stackConfigSummarys isEqual:?])
+  if (stackConfigSummarys | *(equalCopy + 7) && ![(NSMutableArray *)stackConfigSummarys isEqual:?])
   {
     goto LABEL_26;
   }
 
   abGroup = self->_abGroup;
-  if (abGroup | *(v4 + 3))
+  if (abGroup | *(equalCopy + 3))
   {
     if (![(NSString *)abGroup isEqual:?])
     {
@@ -979,7 +979,7 @@ LABEL_35:
   }
 
   featureVector = self->_featureVector;
-  if (featureVector | *(v4 + 5))
+  if (featureVector | *(equalCopy + 5))
   {
     v13 = [(ATXTimelineRelevancePBFeatureVector *)featureVector isEqual:?];
   }
@@ -1039,37 +1039,37 @@ LABEL_27:
   return v15 ^ [(ATXTimelineRelevancePBFeatureVector *)self->_featureVector hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 10))
+  fromCopy = from;
+  if (*(fromCopy + 10))
   {
     [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self setWidgetBundleId:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self setWidgetKind:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self setContainerBundleIdentifier:?];
   }
 
-  self->_widgetFamily = *(v4 + 22);
-  v5 = *(v4 + 108);
+  self->_widgetFamily = *(fromCopy + 22);
+  v5 = *(fromCopy + 108);
   if (v5)
   {
-    self->_timelineDonationNilCount = *(v4 + 1);
+    self->_timelineDonationNilCount = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 108);
+    v5 = *(fromCopy + 108);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_atLeastOnePositiveTimelineRelevanceScore = *(v4 + 104);
+    self->_atLeastOnePositiveTimelineRelevanceScore = *(fromCopy + 104);
     *&self->_has |= 4u;
   }
 
@@ -1077,7 +1077,7 @@ LABEL_27:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v6 = *(v4 + 8);
+  v6 = *(fromCopy + 8);
   v7 = [v6 countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (v7)
   {
@@ -1105,7 +1105,7 @@ LABEL_27:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v11 = *(v4 + 9);
+  v11 = *(fromCopy + 9);
   v12 = [v11 countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (v12)
   {
@@ -1133,7 +1133,7 @@ LABEL_27:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v16 = *(v4 + 6);
+  v16 = *(fromCopy + 6);
   v17 = [v16 countByEnumeratingWithState:&v33 objects:v46 count:16];
   if (v17)
   {
@@ -1157,9 +1157,9 @@ LABEL_27:
     while (v18);
   }
 
-  if ((*(v4 + 108) & 2) != 0)
+  if ((*(fromCopy + 108) & 2) != 0)
   {
-    self->_timestamp = *(v4 + 2);
+    self->_timestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
@@ -1167,7 +1167,7 @@ LABEL_27:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v21 = *(v4 + 7);
+  v21 = *(fromCopy + 7);
   v22 = [v21 countByEnumeratingWithState:&v29 objects:v45 count:16];
   if (v22)
   {
@@ -1191,13 +1191,13 @@ LABEL_27:
     while (v23);
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ATXTimelineRelevancePBTimelineRelevanceContainer *)self setAbGroup:?];
   }
 
   featureVector = self->_featureVector;
-  v27 = *(v4 + 5);
+  v27 = *(fromCopy + 5);
   if (featureVector)
   {
     if (v27)

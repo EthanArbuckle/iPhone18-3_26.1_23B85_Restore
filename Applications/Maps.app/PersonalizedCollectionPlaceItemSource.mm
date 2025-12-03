@@ -1,12 +1,12 @@
 @interface PersonalizedCollectionPlaceItemSource
-+ (id)personalizedItemFromPlaceItem:(id)a3 mapItem:(id)a4 title:(id)a5;
-+ (unint64_t)_libraryBadgeTypeFromPlaceItem:(id)a3;
-- (PersonalizedCollectionPlaceItemSource)initWithMapView:(id)a3;
++ (id)personalizedItemFromPlaceItem:(id)item mapItem:(id)mapItem title:(id)title;
++ (unint64_t)_libraryBadgeTypeFromPlaceItem:(id)item;
+- (PersonalizedCollectionPlaceItemSource)initWithMapView:(id)view;
 - (id)allItems;
-- (void)_reloadCollectionPlaceItemsWithContents:(id)a3 dataChanged:(BOOL)a4;
-- (void)handleMapViewRegionChange:(id)a3;
-- (void)refreshItems:(BOOL)a3;
-- (void)userDefaultsDidChange:(id)a3;
+- (void)_reloadCollectionPlaceItemsWithContents:(id)contents dataChanged:(BOOL)changed;
+- (void)handleMapViewRegionChange:(id)change;
+- (void)refreshItems:(BOOL)items;
+- (void)userDefaultsDidChange:(id)change;
 @end
 
 @implementation PersonalizedCollectionPlaceItemSource
@@ -33,28 +33,28 @@
   return v3;
 }
 
-- (void)handleMapViewRegionChange:(id)a3
+- (void)handleMapViewRegionChange:(id)change
 {
-  v4 = a3;
-  [v4 region];
+  changeCopy = change;
+  [changeCopy region];
   v6 = v5 * self->_viewPortBuffer;
-  [v4 region];
+  [changeCopy region];
   v8 = v7 * self->_viewPortBuffer;
-  [v4 region];
+  [changeCopy region];
   v10 = v9;
-  [v4 region];
+  [changeCopy region];
   v12 = v10 + v6 + v11 * 0.5;
-  [v4 region];
+  [changeCopy region];
   v14 = v13;
-  [v4 region];
+  [changeCopy region];
   self->_northeast = CLLocationCoordinate2DMake(v12, v14 + v8 + v15 * 0.5);
-  [v4 region];
+  [changeCopy region];
   v17 = v16;
-  [v4 region];
+  [changeCopy region];
   v19 = v17 - v6 + v18 * -0.5;
-  [v4 region];
+  [changeCopy region];
   v21 = v20;
-  [v4 region];
+  [changeCopy region];
   v23 = v22;
 
   self->_southwest = CLLocationCoordinate2DMake(v19, v21 - v8 + v23 * -0.5);
@@ -62,7 +62,7 @@
   [(PersonalizedCollectionPlaceItemSource *)self refreshItems:0];
 }
 
-- (void)refreshItems:(BOOL)a3
+- (void)refreshItems:(BOOL)items
 {
   objc_initWeak(&location, self);
   placesQueryQueue = self->_placesQueryQueue;
@@ -71,20 +71,20 @@
   block[2] = sub_1005BA280;
   block[3] = &unk_101661368;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  itemsCopy = items;
   dispatch_async(placesQueryQueue, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
 
-- (void)_reloadCollectionPlaceItemsWithContents:(id)a3 dataChanged:(BOOL)a4
+- (void)_reloadCollectionPlaceItemsWithContents:(id)contents dataChanged:(BOOL)changed
 {
-  v6 = a3;
-  v29 = v6;
+  contentsCopy = contents;
+  v29 = contentsCopy;
   if (byte_10195CB50)
   {
-    v7 = v6;
-    v31 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+    v7 = contentsCopy;
+    v31 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(contentsCopy, "count")}];
     v41 = 0;
     v42 = &v41;
     v43 = 0x3032000000;
@@ -99,7 +99,7 @@
     block[3] = &unk_101661600;
     block[4] = self;
     block[5] = &v41;
-    v30 = self;
+    selfCopy = self;
     dispatch_sync(lockQueue, block);
     v38 = 0u;
     v39 = 0u;
@@ -120,40 +120,40 @@
           }
 
           v12 = *(*(&v36 + 1) + 8 * i);
-          v13 = [v12 updatedMapItemStorage];
-          v14 = [[MKMapItem alloc] initWithGeoMapItem:v13 isPlaceHolderPlace:0];
+          updatedMapItemStorage = [v12 updatedMapItemStorage];
+          v14 = [[MKMapItem alloc] initWithGeoMapItem:updatedMapItemStorage isPlaceHolderPlace:0];
           v15 = v14;
           if (v14)
           {
-            v16 = [v14 _styleAttributes];
-            v17 = [v16 isLabelPOI];
+            _styleAttributes = [v14 _styleAttributes];
+            isLabelPOI = [_styleAttributes isLabelPOI];
 
-            if ((v17 & 1) == 0)
+            if ((isLabelPOI & 1) == 0)
             {
-              v18 = [v12 customName];
-              v19 = v18 == 0;
+              customName = [v12 customName];
+              v19 = customName == 0;
 
               if (v19)
               {
-                v20 = [v15 name];
+                name = [v15 name];
               }
 
               else
               {
-                v20 = [v12 customName];
-                [v15 setName:v20];
+                name = [v12 customName];
+                [v15 setName:name];
               }
 
               v21 = v42[5];
-              v22 = [v12 identifier];
-              v23 = [v21 objectForKeyedSubscript:v22];
+              identifier = [v12 identifier];
+              v23 = [v21 objectForKeyedSubscript:identifier];
               LOBYTE(v21) = v23 == 0;
 
-              v24 = -[PersonalizedCollectionPlaceItem initWithMapItem:title:libraryBadgeType:]([PersonalizedCollectionPlaceItem alloc], "initWithMapItem:title:libraryBadgeType:", v15, v20, [objc_opt_class() _libraryBadgeTypeFromPlaceItem:v12]);
-              v25 = [v12 identifier];
-              [v31 setObject:v24 forKeyedSubscript:v25];
+              v24 = -[PersonalizedCollectionPlaceItem initWithMapItem:title:libraryBadgeType:]([PersonalizedCollectionPlaceItem alloc], "initWithMapItem:title:libraryBadgeType:", v15, name, [objc_opt_class() _libraryBadgeTypeFromPlaceItem:v12]);
+              identifier2 = [v12 identifier];
+              [v31 setObject:v24 forKeyedSubscript:identifier2];
 
-              a4 |= v21;
+              changed |= v21;
             }
           }
         }
@@ -164,21 +164,21 @@
       while (v9);
     }
 
-    if (a4)
+    if (changed)
     {
-      v26 = *(&v30->super.super.isa + v28);
+      v26 = *(&selfCopy->super.super.isa + v28);
       v34[0] = _NSConcreteStackBlock;
       v34[1] = 3221225472;
       v34[2] = sub_1005BABC4;
       v34[3] = &unk_101661A90;
-      v34[4] = v30;
+      v34[4] = selfCopy;
       v35 = v31;
       dispatch_sync(v26, v34);
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
       v33[2] = sub_1005BAC10;
       v33[3] = &unk_101661B18;
-      v33[4] = v30;
+      v33[4] = selfCopy;
       dispatch_async(&_dispatch_main_q, v33);
     }
 
@@ -203,7 +203,7 @@
   }
 }
 
-- (void)userDefaultsDidChange:(id)a3
+- (void)userDefaultsDidChange:(id)change
 {
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 BOOLForKey:@"__personalizedMapsShowFavorites"];
@@ -221,9 +221,9 @@
   }
 }
 
-- (PersonalizedCollectionPlaceItemSource)initWithMapView:(id)a3
+- (PersonalizedCollectionPlaceItemSource)initWithMapView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v24.receiver = self;
   v24.super_class = PersonalizedCollectionPlaceItemSource;
   v5 = [(PersonalizedCollectionPlaceItemSource *)&v24 init];
@@ -251,7 +251,7 @@
     block[2] = sub_1005BAF38;
     block[3] = &unk_101661340;
     objc_copyWeak(&v22, &location);
-    v21 = v4;
+    v21 = viewCopy;
     dispatch_async(v15, block);
     v16 = +[NSUserDefaults standardUserDefaults];
     [v16 registerDefaults:&off_1016EE290];
@@ -269,31 +269,31 @@
   return v5;
 }
 
-+ (id)personalizedItemFromPlaceItem:(id)a3 mapItem:(id)a4 title:(id)a5
++ (id)personalizedItemFromPlaceItem:(id)item mapItem:(id)mapItem title:(id)title
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  titleCopy = title;
+  mapItemCopy = mapItem;
+  itemCopy = item;
   v10 = [PersonalizedCollectionPlaceItem alloc];
-  v11 = [objc_opt_class() _libraryBadgeTypeFromPlaceItem:v9];
+  v11 = [objc_opt_class() _libraryBadgeTypeFromPlaceItem:itemCopy];
 
-  v12 = [(PersonalizedCollectionPlaceItem *)v10 initWithMapItem:v8 title:v7 libraryBadgeType:v11];
+  v12 = [(PersonalizedCollectionPlaceItem *)v10 initWithMapItem:mapItemCopy title:titleCopy libraryBadgeType:v11];
 
   return v12;
 }
 
-+ (unint64_t)_libraryBadgeTypeFromPlaceItem:(id)a3
++ (unint64_t)_libraryBadgeTypeFromPlaceItem:(id)item
 {
-  v3 = a3;
-  if ([v3 type])
+  itemCopy = item;
+  if ([itemCopy type])
   {
     v6 = 4;
   }
 
   else
   {
-    v4 = [v3 fetchCollections];
-    v5 = [v4 count];
+    fetchCollections = [itemCopy fetchCollections];
+    v5 = [fetchCollections count];
 
     if (v5)
     {

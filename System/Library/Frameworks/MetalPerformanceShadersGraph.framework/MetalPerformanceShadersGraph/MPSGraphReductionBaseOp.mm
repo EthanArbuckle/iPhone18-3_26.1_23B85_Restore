@@ -1,17 +1,17 @@
 @interface MPSGraphReductionBaseOp
-- (MPSGraphReductionBaseOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 axes:(id)a6 name:(id)a7;
+- (MPSGraphReductionBaseOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies axes:(id)axes name:(id)name;
 @end
 
 @implementation MPSGraphReductionBaseOp
 
-- (MPSGraphReductionBaseOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 axes:(id)a6 name:(id)a7
+- (MPSGraphReductionBaseOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies axes:(id)axes name:(id)name
 {
-  objc_storeStrong(&self->_axes, a6);
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(MPSGraphOperation *)self initWithGraph:v15 inputTensors:v14 controlDependencies:v13 name:v12];
+  objc_storeStrong(&self->_axes, axes);
+  nameCopy = name;
+  dependenciesCopy = dependencies;
+  tensorsCopy = tensors;
+  graphCopy = graph;
+  v16 = [(MPSGraphOperation *)self initWithGraph:graphCopy inputTensors:tensorsCopy controlDependencies:dependenciesCopy name:nameCopy];
 
   return v16;
 }

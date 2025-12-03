@@ -1,36 +1,36 @@
 @interface BLTPreviouslySentMessageStore
-- (BLTPreviouslySentMessageStore)initWithMessageStorePath:(id)a3;
+- (BLTPreviouslySentMessageStore)initWithMessageStorePath:(id)path;
 - (BOOL)isEmpty;
-- (id)messageDigestForUnsentMessage:(id)a3 messageKey:(id)a4;
+- (id)messageDigestForUnsentMessage:(id)message messageKey:(id)key;
 - (void)_cancelSave;
 - (void)_enqueueSave;
 - (void)_save;
 - (void)clear;
 - (void)dealloc;
 - (void)invalidate;
-- (void)recordMessageDigestAsPreviouslySent:(id)a3 messageKey:(id)a4;
-- (void)removeDigestForKey:(id)a3;
-- (void)setDirty:(BOOL)a3;
+- (void)recordMessageDigestAsPreviouslySent:(id)sent messageKey:(id)key;
+- (void)removeDigestForKey:(id)key;
+- (void)setDirty:(BOOL)dirty;
 @end
 
 @implementation BLTPreviouslySentMessageStore
 
-- (BLTPreviouslySentMessageStore)initWithMessageStorePath:(id)a3
+- (BLTPreviouslySentMessageStore)initWithMessageStorePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v26.receiver = self;
   v26.super_class = BLTPreviouslySentMessageStore;
   v6 = [(BLTPreviouslySentMessageStore *)&v26 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, path);
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v12 contentsAtPath:v5];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v13 = [defaultManager contentsAtPath:pathCopy];
 
     v25 = 0;
     v14 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v13 error:&v25];
@@ -64,10 +64,10 @@
   return v7;
 }
 
-- (id)messageDigestForUnsentMessage:(id)a3 messageKey:(id)a4
+- (id)messageDigestForUnsentMessage:(id)message messageKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  keyCopy = key;
   dispatch_assert_queue_not_V2(self->_queue);
   v17 = 0;
   v18 = &v17;
@@ -81,11 +81,11 @@
   v13[2] = __74__BLTPreviouslySentMessageStore_messageDigestForUnsentMessage_messageKey___block_invoke;
   v13[3] = &unk_278D31E38;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
+  v14 = keyCopy;
+  v15 = messageCopy;
   v16 = &v17;
-  v9 = v6;
-  v10 = v7;
+  v9 = messageCopy;
+  v10 = keyCopy;
   dispatch_sync(queue, v13);
   v11 = v18[5];
 
@@ -125,10 +125,10 @@ void __74__BLTPreviouslySentMessageStore_messageDigestForUnsentMessage_messageKe
 LABEL_6:
 }
 
-- (void)recordMessageDigestAsPreviouslySent:(id)a3 messageKey:(id)a4
+- (void)recordMessageDigestAsPreviouslySent:(id)sent messageKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  sentCopy = sent;
+  keyCopy = key;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -136,10 +136,10 @@ LABEL_6:
   block[2] = __80__BLTPreviouslySentMessageStore_recordMessageDigestAsPreviouslySent_messageKey___block_invoke;
   block[3] = &unk_278D316C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sentCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = sentCopy;
   dispatch_sync(queue, block);
 }
 
@@ -151,9 +151,9 @@ uint64_t __80__BLTPreviouslySentMessageStore_recordMessageDigestAsPreviouslySent
   return [v2 setDirty:1];
 }
 
-- (void)removeDigestForKey:(id)a3
+- (void)removeDigestForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -161,8 +161,8 @@ uint64_t __80__BLTPreviouslySentMessageStore_recordMessageDigestAsPreviouslySent
   v7[2] = __52__BLTPreviouslySentMessageStore_removeDigestForKey___block_invoke;
   v7[3] = &unk_278D31400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -216,23 +216,23 @@ uint64_t __38__BLTPreviouslySentMessageStore_clear__block_invoke(uint64_t a1)
 
 - (BOOL)isEmpty
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_queue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  queue = v2->_queue;
+  queue = selfCopy->_queue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__BLTPreviouslySentMessageStore_isEmpty__block_invoke;
   v5[3] = &unk_278D31650;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(queue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __40__BLTPreviouslySentMessageStore_isEmpty__block_invoke(uint64_t a1)
@@ -288,9 +288,9 @@ void __45__BLTPreviouslySentMessageStore__enqueueSave__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDirty:(BOOL)a3
+- (void)setDirty:(BOOL)dirty
 {
-  if (self->_dirty != a3 && a3)
+  if (self->_dirty != dirty && dirty)
   {
     [(BLTPreviouslySentMessageStore *)self _enqueueSave];
   }

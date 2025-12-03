@@ -1,9 +1,9 @@
 @interface DMCProfileTableViewController
 - (DMCProfileTableViewController)init;
-- (DMCProfileTableViewController)initWithStyle:(int64_t)a3;
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3;
+- (DMCProfileTableViewController)initWithStyle:(int64_t)style;
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)hideProgressInNavBarShowBackButton:(BOOL)a3;
+- (void)hideProgressInNavBarShowBackButton:(BOOL)button;
 - (void)reloadTableOnContentSizeCategoryChange;
 - (void)showProgressInNavBar;
 - (void)updateExtendedLayoutIncludesOpaqueBars;
@@ -19,23 +19,23 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(DMCProfileTableViewController *)v2 tableView];
-    [v4 setCellLayoutMarginsFollowReadableWidth:1];
+    tableView = [(DMCProfileTableViewController *)v2 tableView];
+    [tableView setCellLayoutMarginsFollowReadableWidth:1];
   }
 
   return v3;
 }
 
-- (DMCProfileTableViewController)initWithStyle:(int64_t)a3
+- (DMCProfileTableViewController)initWithStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = DMCProfileTableViewController;
-  v3 = [(DMCProfileTableViewController *)&v7 initWithStyle:a3];
+  v3 = [(DMCProfileTableViewController *)&v7 initWithStyle:style];
   v4 = v3;
   if (v3)
   {
-    v5 = [(DMCProfileTableViewController *)v3 tableView];
-    [v5 setCellLayoutMarginsFollowReadableWidth:1];
+    tableView = [(DMCProfileTableViewController *)v3 tableView];
+    [tableView setCellLayoutMarginsFollowReadableWidth:1];
   }
 
   return v4;
@@ -43,8 +43,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = DMCProfileTableViewController;
@@ -53,43 +53,43 @@
 
 - (void)updateExtendedLayoutIncludesOpaqueBars
 {
-  v3 = [MEMORY[0x277D3FA48] appearance];
-  -[DMCProfileTableViewController setExtendedLayoutIncludesOpaqueBars:](self, "setExtendedLayoutIncludesOpaqueBars:", [v3 extendedLayoutIncludesOpaqueBars]);
+  appearance = [MEMORY[0x277D3FA48] appearance];
+  -[DMCProfileTableViewController setExtendedLayoutIncludesOpaqueBars:](self, "setExtendedLayoutIncludesOpaqueBars:", [appearance extendedLayoutIncludesOpaqueBars]);
 }
 
 - (void)reloadTableOnContentSizeCategoryChange
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
 }
 
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification
 {
-  v3 = [(DMCProfileTableViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(DMCProfileTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)showProgressInNavBar
 {
-  v9 = [MEMORY[0x277CCACA8] DMCMakeUUID];
+  dMCMakeUUID = [MEMORY[0x277CCACA8] DMCMakeUUID];
   v3 = [MEMORY[0x277CCAE60] valueWithPointer:self];
   v4 = viewControllerPointerToIdentifierMap();
-  [v4 setObject:v9 forKeyedSubscript:v3];
+  [v4 setObject:dMCMakeUUID forKeyedSubscript:v3];
 
-  v5 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  v6 = [(DMCProfileTableViewController *)self navigationItem];
-  [v5 startAnimatingInNavItem:v6 forIdentifier:v9 hideBackButton:1];
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  navigationItem = [(DMCProfileTableViewController *)self navigationItem];
+  [mEMORY[0x277D3FA90] startAnimatingInNavItem:navigationItem forIdentifier:dMCMakeUUID hideBackButton:1];
 
-  v7 = [(DMCProfileTableViewController *)self view];
-  [v7 setUserInteractionEnabled:0];
+  view = [(DMCProfileTableViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
-  v8 = [(DMCProfileTableViewController *)self navigationItem];
-  DMCSendNavUIUpdatedNotification(v8);
+  navigationItem2 = [(DMCProfileTableViewController *)self navigationItem];
+  DMCSendNavUIUpdatedNotification(navigationItem2);
 }
 
-- (void)hideProgressInNavBarShowBackButton:(BOOL)a3
+- (void)hideProgressInNavBarShowBackButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v12 = [MEMORY[0x277CCAE60] valueWithPointer:self];
   v5 = viewControllerPointerToIdentifierMap();
   v6 = [v5 objectForKeyedSubscript:v12];
@@ -99,21 +99,21 @@
     v7 = viewControllerPointerToIdentifierMap();
     [v7 removeObjectForKey:v12];
 
-    v8 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-    [v8 stopAnimatingForIdentifier:v6];
+    mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+    [mEMORY[0x277D3FA90] stopAnimatingForIdentifier:v6];
 
-    if (v3)
+    if (buttonCopy)
     {
-      v9 = [(DMCProfileTableViewController *)self navigationItem];
-      [v9 setHidesBackButton:0 animated:1];
+      navigationItem = [(DMCProfileTableViewController *)self navigationItem];
+      [navigationItem setHidesBackButton:0 animated:1];
     }
   }
 
-  v10 = [(DMCProfileTableViewController *)self view];
-  [v10 setUserInteractionEnabled:1];
+  view = [(DMCProfileTableViewController *)self view];
+  [view setUserInteractionEnabled:1];
 
-  v11 = [(DMCProfileTableViewController *)self navigationItem];
-  DMCSendNavUIUpdatedNotification(v11);
+  navigationItem2 = [(DMCProfileTableViewController *)self navigationItem];
+  DMCSendNavUIUpdatedNotification(navigationItem2);
 }
 
 @end

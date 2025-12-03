@@ -1,35 +1,35 @@
 @interface PHACurareShadowEvaluationFacade
-- (PHACurareShadowEvaluationFacade)initWithPhotosLibrary:(id)a3 graphManagerProgress:(id)a4;
-- (void)runPFLRecipeUserInfo:(id)a3 models:(id)a4 trialDeploymentID:(id)a5 trialExperimentID:(id)a6 trialTreatmentID:(id)a7 resultBlock:(id)a8;
+- (PHACurareShadowEvaluationFacade)initWithPhotosLibrary:(id)library graphManagerProgress:(id)progress;
+- (void)runPFLRecipeUserInfo:(id)info models:(id)models trialDeploymentID:(id)d trialExperimentID:(id)iD trialTreatmentID:(id)treatmentID resultBlock:(id)block;
 @end
 
 @implementation PHACurareShadowEvaluationFacade
 
-- (void)runPFLRecipeUserInfo:(id)a3 models:(id)a4 trialDeploymentID:(id)a5 trialExperimentID:(id)a6 trialTreatmentID:(id)a7 resultBlock:(id)a8
+- (void)runPFLRecipeUserInfo:(id)info models:(id)models trialDeploymentID:(id)d trialExperimentID:(id)iD trialTreatmentID:(id)treatmentID resultBlock:(id)block
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [(PHACurareShadowEvaluationFacade *)self systemPhotoLibrary];
-  v21 = [(PHACurareShadowEvaluationFacade *)self graphManager];
+  blockCopy = block;
+  treatmentIDCopy = treatmentID;
+  iDCopy = iD;
+  dCopy = d;
+  modelsCopy = models;
+  infoCopy = info;
+  systemPhotoLibrary = [(PHACurareShadowEvaluationFacade *)self systemPhotoLibrary];
+  graphManager = [(PHACurareShadowEvaluationFacade *)self graphManager];
   v26 = 0;
-  v22 = [PHACurareShadowEvaluationRecipeDecoder decodeRecipeUserInfo:v19 models:v18 photoLibrary:v20 graphManager:v21 trialDeploymentID:v17 trialExperimentID:v16 trialTreatmentID:v15 decodingError:&v26];
+  v22 = [PHACurareShadowEvaluationRecipeDecoder decodeRecipeUserInfo:infoCopy models:modelsCopy photoLibrary:systemPhotoLibrary graphManager:graphManager trialDeploymentID:dCopy trialExperimentID:iDCopy trialTreatmentID:treatmentIDCopy decodingError:&v26];
 
   v23 = v26;
   v25 = v23;
   [v22 runWithError:&v25];
   v24 = v25;
 
-  v14[2](v14, v24);
+  blockCopy[2](blockCopy, v24);
 }
 
-- (PHACurareShadowEvaluationFacade)initWithPhotosLibrary:(id)a3 graphManagerProgress:(id)a4
+- (PHACurareShadowEvaluationFacade)initWithPhotosLibrary:(id)library graphManagerProgress:(id)progress
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  progressCopy = progress;
   v16.receiver = self;
   v16.super_class = PHACurareShadowEvaluationFacade;
   v8 = [(PHACurareShadowEvaluationFacade *)&v16 init];
@@ -39,19 +39,19 @@
     [(PHACurareShadowEvaluationFacade *)v8 setAnalytics:v9];
 
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v11 = [(PHACurareShadowEvaluationFacade *)v8 analytics];
-    [v11 setupWithConfigurationFilename:@"CPAnalyticsConfig-photoanalysisd" inBundle:v10];
+    analytics = [(PHACurareShadowEvaluationFacade *)v8 analytics];
+    [analytics setupWithConfigurationFilename:@"CPAnalyticsConfig-photoanalysisd" inBundle:v10];
 
-    v12 = [(PHACurareShadowEvaluationFacade *)v8 analytics];
-    [v12 setupSystemPropertyProvidersForLibrary:v6];
+    analytics2 = [(PHACurareShadowEvaluationFacade *)v8 analytics];
+    [analytics2 setupSystemPropertyProvidersForLibrary:libraryCopy];
 
-    v13 = [(PHACurareShadowEvaluationFacade *)v8 analytics];
-    [v13 activateEventQueue];
+    analytics3 = [(PHACurareShadowEvaluationFacade *)v8 analytics];
+    [analytics3 activateEventQueue];
 
-    v14 = [objc_alloc(MEMORY[0x277D3BA40]) initWithPhotoLibrary:v6 analytics:v8->_analytics progressBlock:v7];
+    v14 = [objc_alloc(MEMORY[0x277D3BA40]) initWithPhotoLibrary:libraryCopy analytics:v8->_analytics progressBlock:progressCopy];
     [(PHACurareShadowEvaluationFacade *)v8 setGraphManager:v14];
 
-    [(PHACurareShadowEvaluationFacade *)v8 setSystemPhotoLibrary:v6];
+    [(PHACurareShadowEvaluationFacade *)v8 setSystemPhotoLibrary:libraryCopy];
   }
 
   return v8;

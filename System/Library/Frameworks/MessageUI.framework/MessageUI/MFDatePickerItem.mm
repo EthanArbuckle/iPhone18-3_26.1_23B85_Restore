@@ -1,38 +1,38 @@
 @interface MFDatePickerItem
-- (BOOL)isEqual:(id)a3;
-- (MFDatePickerItem)initWithIdentifier:(id)a3 selectedDate:(id)a4 selectedTime:(id)a5 selectedCity:(id)a6 datePickerComponentType:(int64_t)a7 timeSwitchEnabled:(BOOL)a8;
+- (BOOL)isEqual:(id)equal;
+- (MFDatePickerItem)initWithIdentifier:(id)identifier selectedDate:(id)date selectedTime:(id)time selectedCity:(id)city datePickerComponentType:(int64_t)type timeSwitchEnabled:(BOOL)enabled;
 - (unint64_t)hash;
 @end
 
 @implementation MFDatePickerItem
 
-- (MFDatePickerItem)initWithIdentifier:(id)a3 selectedDate:(id)a4 selectedTime:(id)a5 selectedCity:(id)a6 datePickerComponentType:(int64_t)a7 timeSwitchEnabled:(BOOL)a8
+- (MFDatePickerItem)initWithIdentifier:(id)identifier selectedDate:(id)date selectedTime:(id)time selectedCity:(id)city datePickerComponentType:(int64_t)type timeSwitchEnabled:(BOOL)enabled
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  identifierCopy = identifier;
+  dateCopy = date;
+  timeCopy = time;
+  cityCopy = city;
   v22.receiver = self;
   v22.super_class = MFDatePickerItem;
   v18 = [(MFDatePickerItem *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_identifier, a3);
-    objc_storeStrong(&v19->_selectedDate, a4);
-    objc_storeStrong(&v19->_selectedTime, a5);
-    objc_storeStrong(&v19->_selectedCity, a6);
-    v19->_datePickerComponentType = a7;
-    v19->_timeSwitchEnabled = a8;
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v19->_selectedDate, date);
+    objc_storeStrong(&v19->_selectedTime, time);
+    objc_storeStrong(&v19->_selectedCity, city);
+    v19->_datePickerComponentType = type;
+    v19->_timeSwitchEnabled = enabled;
   }
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v14) = 1;
   }
@@ -42,25 +42,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MFDatePickerItem *)self identifier];
-      v7 = [(MFDatePickerItem *)v5 identifier];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      identifier = [(MFDatePickerItem *)self identifier];
+      identifier2 = [(MFDatePickerItem *)v5 identifier];
+      if ([identifier isEqual:identifier2])
       {
-        v8 = [(MFDatePickerItem *)self selectedTime];
-        v9 = [(MFDatePickerItem *)v5 selectedTime];
-        if ([v8 isEqualToDate:v9])
+        selectedTime = [(MFDatePickerItem *)self selectedTime];
+        selectedTime2 = [(MFDatePickerItem *)v5 selectedTime];
+        if ([selectedTime isEqualToDate:selectedTime2])
         {
-          v10 = [(MFDatePickerItem *)self selectedDate];
-          v11 = [(MFDatePickerItem *)self selectedDate];
-          if ([v10 isEqualToDate:v11])
+          selectedDate = [(MFDatePickerItem *)self selectedDate];
+          selectedDate2 = [(MFDatePickerItem *)self selectedDate];
+          if ([selectedDate isEqualToDate:selectedDate2])
           {
-            v17 = [(MFDatePickerItem *)self selectedCity];
-            v12 = [(MFDatePickerItem *)v5 selectedCity];
-            if ([v17 isEqual:v12] && (v16 = -[MFDatePickerItem datePickerComponentType](self, "datePickerComponentType"), v16 == -[MFDatePickerItem datePickerComponentType](v5, "datePickerComponentType")))
+            selectedCity = [(MFDatePickerItem *)self selectedCity];
+            selectedCity2 = [(MFDatePickerItem *)v5 selectedCity];
+            if ([selectedCity isEqual:selectedCity2] && (v16 = -[MFDatePickerItem datePickerComponentType](self, "datePickerComponentType"), v16 == -[MFDatePickerItem datePickerComponentType](v5, "datePickerComponentType")))
             {
-              v13 = [(MFDatePickerItem *)self timeSwitchEnabled];
-              v14 = v13 ^ [(MFDatePickerItem *)v5 timeSwitchEnabled]^ 1;
+              timeSwitchEnabled = [(MFDatePickerItem *)self timeSwitchEnabled];
+              v14 = timeSwitchEnabled ^ [(MFDatePickerItem *)v5 timeSwitchEnabled]^ 1;
             }
 
             else
@@ -98,17 +98,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MFDatePickerItem *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(MFDatePickerItem *)self identifier];
+  v4 = [identifier hash];
 
-  v5 = [(MFDatePickerItem *)self selectedDate];
-  v6 = [v5 hash];
+  selectedDate = [(MFDatePickerItem *)self selectedDate];
+  v6 = [selectedDate hash];
 
-  v7 = [(MFDatePickerItem *)self selectedTime];
-  v8 = [v7 hash];
+  selectedTime = [(MFDatePickerItem *)self selectedTime];
+  v8 = [selectedTime hash];
 
-  v9 = [(MFDatePickerItem *)self selectedCity];
-  v10 = 33 * (33 * (33 * (33 * v4 + v6) + v8) + [v9 hash]);
+  selectedCity = [(MFDatePickerItem *)self selectedCity];
+  v10 = 33 * (33 * (33 * (33 * v4 + v6) + v8) + [selectedCity hash]);
 
   v11 = 33 * (v10 + [(MFDatePickerItem *)self datePickerComponentType]);
   return v11 + [(MFDatePickerItem *)self timeSwitchEnabled]+ 0x65207DF04C5;

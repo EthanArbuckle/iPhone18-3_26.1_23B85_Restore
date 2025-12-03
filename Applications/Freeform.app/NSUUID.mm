@@ -1,21 +1,21 @@
 @interface NSUUID
-+ (id)crl_uuidByCryptographicHashOfString:(id)a3;
-- (id)combineUUIDWithUUID:(id)a3 mixValue:(unsigned int)a4;
-- (id)crl_combineCryptographicallyWithString:(id)a3;
-- (int64_t)crl_compare:(id)a3;
++ (id)crl_uuidByCryptographicHashOfString:(id)string;
+- (id)combineUUIDWithUUID:(id)d mixValue:(unsigned int)value;
+- (id)crl_combineCryptographicallyWithString:(id)string;
+- (int64_t)crl_compare:(id)crl_compare;
 @end
 
 @implementation NSUUID
 
-- (int64_t)crl_compare:(id)a3
+- (int64_t)crl_compare:(id)crl_compare
 {
   v14 = 0;
   v15 = 0;
   v12 = 0;
   v13 = 0;
-  v4 = a3;
+  crl_compareCopy = crl_compare;
   [(NSUUID *)self getUUIDBytes:&v14];
-  [v4 getUUIDBytes:&v12];
+  [crl_compareCopy getUUIDBytes:&v12];
 
   v5 = bswap64(v14);
   v6 = bswap64(v12);
@@ -53,19 +53,19 @@
   }
 }
 
-- (id)combineUUIDWithUUID:(id)a3 mixValue:(unsigned int)a4
+- (id)combineUUIDWithUUID:(id)d mixValue:(unsigned int)value
 {
-  v6 = a3;
+  dCopy = d;
   [(NSUUID *)self getUUIDBytes:&v15];
-  [v6 getUUIDBytes:&v14];
+  [dCopy getUUIDBytes:&v14];
   v7.i32[1] = v14.i32[1];
   v8 = veorq_s8(v14, v15);
   v13 = v8;
-  if (a4 != -1)
+  if (value != -1)
   {
     v8.i32[0] = v13.i32[0];
     v9 = vmovl_u8(*v8.i8).u64[0];
-    v7.i32[0] = a4;
+    v7.i32[0] = value;
     v10 = veor_s8(v9, vzip1_s8(v7, v9));
     v13.i32[0] = vuzp1_s8(v10, v10).u32[0];
   }
@@ -75,11 +75,11 @@
   return v11;
 }
 
-+ (id)crl_uuidByCryptographicHashOfString:(id)a3
++ (id)crl_uuidByCryptographicHashOfString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (!stringCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -114,9 +114,9 @@
   v9 = [v8 dataUsingEncoding:4];
   v10 = [NSMutableData dataWithLength:32];
   CC_SHA256([v9 bytes], objc_msgSend(v9, "length"), objc_msgSend(v10, "mutableBytes"));
-  v11 = [v10 mutableBytes];
-  v11[6] = v11[6] & 0xF | 0x50;
-  v11[8] = v11[8] & 0x3F | 0x80;
+  mutableBytes = [v10 mutableBytes];
+  mutableBytes[6] = mutableBytes[6] & 0xF | 0x50;
+  mutableBytes[8] = mutableBytes[8] & 0x3F | 0x80;
   if ([v10 length] <= 0xF)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -151,23 +151,23 @@
   return v15;
 }
 
-- (id)crl_combineCryptographicallyWithString:(id)a3
+- (id)crl_combineCryptographicallyWithString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v5 = [(NSUUID *)self UUIDString];
-    v6 = [NSString stringWithFormat:@"%@-%@", v5, v4];
+    uUIDString = [(NSUUID *)self UUIDString];
+    stringCopy = [NSString stringWithFormat:@"%@-%@", uUIDString, stringCopy];
 
-    v7 = [objc_opt_class() crl_uuidByCryptographicHashOfString:v6];
+    selfCopy = [objc_opt_class() crl_uuidByCryptographicHashOfString:stringCopy];
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

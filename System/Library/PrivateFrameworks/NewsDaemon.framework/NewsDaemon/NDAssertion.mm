@@ -1,6 +1,6 @@
 @interface NDAssertion
 - (NDAssertion)init;
-- (NDAssertion)initWithName:(id)a3 options:(int64_t)a4;
+- (NDAssertion)initWithName:(id)name options:(int64_t)options;
 - (void)dealloc;
 @end
 
@@ -32,32 +32,32 @@
   objc_exception_throw(v6);
 }
 
-- (NDAssertion)initWithName:(id)a3 options:(int64_t)a4
+- (NDAssertion)initWithName:(id)name options:(int64_t)options
 {
-  v4 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = NDAssertion;
   v7 = [(NDAssertion *)&v14 init];
   if (v7)
   {
-    if (v4)
+    if (optionsCopy)
     {
-      [(__CFString *)v6 UTF8String];
+      [(__CFString *)nameCopy UTF8String];
       v8 = os_transaction_create();
       transaction = v7->_transaction;
       v7->_transaction = v8;
     }
 
-    if ((v4 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       AssertionID = 0;
-      if (IOPMAssertionCreateWithDescription(@"PreventUserIdleSystemSleep", v6, 0, 0, 0, 60.0, @"TimeoutActionTurnOff", &AssertionID))
+      if (IOPMAssertionCreateWithDescription(@"PreventUserIdleSystemSleep", nameCopy, 0, 0, 0, 60.0, @"TimeoutActionTurnOff", &AssertionID))
       {
         v10 = *MEMORY[0x277D30988];
         if (os_log_type_enabled(*MEMORY[0x277D30988], OS_LOG_TYPE_ERROR))
         {
-          [NDAssertion initWithName:v6 options:v10];
+          [NDAssertion initWithName:nameCopy options:v10];
         }
 
         v11 = 0;

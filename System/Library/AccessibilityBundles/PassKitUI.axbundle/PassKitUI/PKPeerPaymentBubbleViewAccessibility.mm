@@ -1,5 +1,5 @@
 @interface PKPeerPaymentBubbleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsActionButtonVisible;
 - (id)_axBubbleLabel;
 - (id)_axBubbleValue;
@@ -10,42 +10,42 @@
 - (id)_axRecurringInformationValue;
 - (id)_axTransferLabel;
 - (id)accessibilityElements;
-- (void)_actionButtonTapped:(id)a3;
+- (void)_actionButtonTapped:(id)tapped;
 @end
 
 @implementation PKPeerPaymentBubbleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPeerPaymentBubbleView" hasInstanceVariable:@"_messageLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPeerPaymentBubbleView" hasInstanceVariable:@"_groupLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPeerPaymentBubbleView" hasInstanceVariable:@"_statusLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPeerPaymentBubbleView" hasInstanceVariable:@"_recurringPaymentFrequency" withType:"NSUInteger"];
-  [v3 validateClass:@"PKPeerPaymentBubbleView" hasInstanceVariable:@"_recurringPaymentMemo" withType:"PKPeerPaymentRecurringPaymentMemo"];
-  [v3 validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"amount" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"currency" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"recipientAddress" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPeerPaymentRecurringPaymentMemo" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"_actionButtonTapped:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView" hasInstanceVariable:@"_messageLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView" hasInstanceVariable:@"_groupLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView" hasInstanceVariable:@"_statusLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView" hasInstanceVariable:@"_recurringPaymentFrequency" withType:"NSUInteger"];
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView" hasInstanceVariable:@"_recurringPaymentMemo" withType:"PKPeerPaymentRecurringPaymentMemo"];
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"amount" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"currency" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"recipientAddress" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPeerPaymentRecurringPaymentMemo" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"_actionButtonTapped:" withFullSignature:{"v", "@", 0}];
 }
 
 - (id)accessibilityElements
 {
-  v3 = [(PKPeerPaymentBubbleViewAccessibility *)self _axBubbleViewElement];
-  v4 = [(PKPeerPaymentBubbleViewAccessibility *)self _axIsActionButtonVisible];
+  _axBubbleViewElement = [(PKPeerPaymentBubbleViewAccessibility *)self _axBubbleViewElement];
+  _axIsActionButtonVisible = [(PKPeerPaymentBubbleViewAccessibility *)self _axIsActionButtonVisible];
   v5 = MEMORY[0x29EDB8D80];
-  if (v4)
+  if (_axIsActionButtonVisible)
   {
-    v6 = [(PKPeerPaymentBubbleViewAccessibility *)self _axActionButton];
-    v7 = [v5 axArrayByIgnoringNilElementsWithCount:{2, v3, v6}];
+    _axActionButton = [(PKPeerPaymentBubbleViewAccessibility *)self _axActionButton];
+    v7 = [v5 axArrayByIgnoringNilElementsWithCount:{2, _axBubbleViewElement, _axActionButton}];
   }
 
   else
   {
-    v7 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v3}];
+    v7 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, _axBubbleViewElement}];
   }
 
   return v7;
@@ -155,7 +155,7 @@ id __60__PKPeerPaymentBubbleViewAccessibility__axBubbleViewElement__block_invoke
   v3 = [(PKPeerPaymentBubbleViewAccessibility *)self safeIntegerForKey:@"state"];
   if (v3 == 11)
   {
-    v4 = [(PKPeerPaymentBubbleViewAccessibility *)self _axRecurringInformationLabel];
+    _axRecurringInformationLabel = [(PKPeerPaymentBubbleViewAccessibility *)self _axRecurringInformationLabel];
   }
 
   else
@@ -169,25 +169,25 @@ id __60__PKPeerPaymentBubbleViewAccessibility__axBubbleViewElement__block_invoke
     {
       [(PKPeerPaymentBubbleViewAccessibility *)self _axTransferLabel];
     }
-    v4 = ;
+    _axRecurringInformationLabel = ;
   }
 
-  return v4;
+  return _axRecurringInformationLabel;
 }
 
 - (id)_axBubbleValue
 {
   if ([(PKPeerPaymentBubbleViewAccessibility *)self safeIntegerForKey:@"state"]== 11)
   {
-    v3 = [(PKPeerPaymentBubbleViewAccessibility *)self _axRecurringInformationValue];
+    _axRecurringInformationValue = [(PKPeerPaymentBubbleViewAccessibility *)self _axRecurringInformationValue];
   }
 
   else
   {
-    v3 = 0;
+    _axRecurringInformationValue = 0;
   }
 
-  return v3;
+  return _axRecurringInformationValue;
 }
 
 - (id)_axTransferLabel
@@ -219,14 +219,14 @@ id __60__PKPeerPaymentBubbleViewAccessibility__axBubbleViewElement__block_invoke
 
     v12 = MEMORY[0x29EDBA0F8];
     v13 = accessibilityLocalizedString(v10);
-    v14 = [v5 text];
-    v11 = [v12 stringWithFormat:v13, v14];
+    text = [v5 text];
+    v11 = [v12 stringWithFormat:v13, text];
 
     if (v3 == 1)
     {
-      v15 = [v5 text];
+      text2 = [v5 text];
 
-      v11 = v15;
+      v11 = text2;
     }
   }
 
@@ -253,10 +253,10 @@ id __60__PKPeerPaymentBubbleViewAccessibility__axBubbleViewElement__block_invoke
     v4 = off_29F2E1F18[v3];
   }
 
-  v5 = [(PKPeerPaymentBubbleViewAccessibility *)self _axCurrencyAmountLabel];
+  _axCurrencyAmountLabel = [(PKPeerPaymentBubbleViewAccessibility *)self _axCurrencyAmountLabel];
   v6 = MEMORY[0x29EDBA0F8];
   v7 = accessibilityLocalizedString(v4);
-  v8 = [v6 stringWithFormat:v7, v5];
+  v8 = [v6 stringWithFormat:v7, _axCurrencyAmountLabel];
 
   objc_opt_class();
   v9 = [(PKPeerPaymentBubbleViewAccessibility *)self safeValueForKey:@"_statusLabel"];
@@ -277,11 +277,11 @@ id __60__PKPeerPaymentBubbleViewAccessibility__axBubbleViewElement__block_invoke
 
 - (id)_axObserverInformationLabel
 {
-  v3 = [(PKPeerPaymentBubbleViewAccessibility *)self _axCurrencyAmountLabel];
+  _axCurrencyAmountLabel = [(PKPeerPaymentBubbleViewAccessibility *)self _axCurrencyAmountLabel];
   v4 = [(PKPeerPaymentBubbleViewAccessibility *)self safeStringForKey:@"_recipientAddress"];
   v5 = MEMORY[0x29EDBA0F8];
   v6 = accessibilityLocalizedString(@"observer.transfer.format");
-  v7 = [v5 stringWithFormat:v6, v3, v4];
+  v7 = [v5 stringWithFormat:v6, _axCurrencyAmountLabel, v4];
 
   return v7;
 }
@@ -298,20 +298,20 @@ id __60__PKPeerPaymentBubbleViewAccessibility__axBubbleViewElement__block_invoke
 
 - (BOOL)_axIsActionButtonVisible
 {
-  v2 = [(PKPeerPaymentBubbleViewAccessibility *)self _axActionButton];
-  v3 = [v2 _accessibilityViewIsVisible];
+  _axActionButton = [(PKPeerPaymentBubbleViewAccessibility *)self _axActionButton];
+  _accessibilityViewIsVisible = [_axActionButton _accessibilityViewIsVisible];
 
-  return v3;
+  return _accessibilityViewIsVisible;
 }
 
-- (void)_actionButtonTapped:(id)a3
+- (void)_actionButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v10.receiver = self;
   v10.super_class = PKPeerPaymentBubbleViewAccessibility;
-  [(PKPeerPaymentBubbleViewAccessibility *)&v10 _actionButtonTapped:v4];
-  v5 = [(PKPeerPaymentBubbleViewAccessibility *)self accessibilityElements];
-  v6 = [v5 firstObject];
+  [(PKPeerPaymentBubbleViewAccessibility *)&v10 _actionButtonTapped:tappedCopy];
+  accessibilityElements = [(PKPeerPaymentBubbleViewAccessibility *)self accessibilityElements];
+  firstObject = [accessibilityElements firstObject];
 
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x29EDCA5F8];
@@ -319,8 +319,8 @@ id __60__PKPeerPaymentBubbleViewAccessibility__axBubbleViewElement__block_invoke
   v7[2] = __60__PKPeerPaymentBubbleViewAccessibility__actionButtonTapped___block_invoke;
   v7[3] = &unk_29F2E1ED8;
   objc_copyWeak(&v8, &location);
-  [v6 _setAccessibilityFrameBlock:v7];
-  UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v6);
+  [firstObject _setAccessibilityFrameBlock:v7];
+  UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], firstObject);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }

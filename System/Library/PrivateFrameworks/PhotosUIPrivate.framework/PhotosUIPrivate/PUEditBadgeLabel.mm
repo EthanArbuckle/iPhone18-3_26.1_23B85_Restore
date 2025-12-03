@@ -1,11 +1,11 @@
 @interface PUEditBadgeLabel
 - (NSString)text;
-- (PUEditBadgeLabel)initWithText:(id)a3 style:(unint64_t)a4 interfaceTheme:(id)a5;
+- (PUEditBadgeLabel)initWithText:(id)text style:(unint64_t)style interfaceTheme:(id)theme;
 - (PUInterfaceTheme)interfaceTheme;
 - (unint64_t)style;
-- (void)setInterfaceTheme:(id)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setText:(id)a3;
+- (void)setInterfaceTheme:(id)theme;
+- (void)setStyle:(unint64_t)style;
+- (void)setText:(id)text;
 - (void)setupViews;
 @end
 
@@ -13,7 +13,7 @@
 
 - (NSString)text
 {
-  v2 = self;
+  selfCopy = self;
   PUEditBadgeLabel.text.getter();
   v4 = v3;
 
@@ -30,9 +30,9 @@
   return v5;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_1B3C9C5E8();
     v6 = v5;
@@ -44,42 +44,42 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   PUEditBadgeLabel.text.setter(v4, v6);
 }
 
 - (unint64_t)style
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PUEditBadgeLabel.style.getter();
 
   return v3;
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  v4 = self;
-  PUEditBadgeLabel.style.setter(a3);
+  selfCopy = self;
+  PUEditBadgeLabel.style.setter(style);
 }
 
 - (PUInterfaceTheme)interfaceTheme
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PUEditBadgeLabel.interfaceTheme.getter();
 
   return v3;
 }
 
-- (void)setInterfaceTheme:(id)a3
+- (void)setInterfaceTheme:(id)theme
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  PUEditBadgeLabel.interfaceTheme.setter(a3);
+  selfCopy = self;
+  PUEditBadgeLabel.interfaceTheme.setter(theme);
 }
 
-- (PUEditBadgeLabel)initWithText:(id)a3 style:(unint64_t)a4 interfaceTheme:(id)a5
+- (PUEditBadgeLabel)initWithText:(id)text style:(unint64_t)style interfaceTheme:(id)theme
 {
-  if (a3)
+  if (text)
   {
     v7 = sub_1B3C9C5E8();
     v9 = v8;
@@ -92,12 +92,12 @@
   }
 
   swift_unknownObjectRetain();
-  return PUEditBadgeLabel.init(text:style:interfaceTheme:)(v7, v9, a4, a5);
+  return PUEditBadgeLabel.init(text:style:interfaceTheme:)(v7, v9, style, theme);
 }
 
 - (void)setupViews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3799474();
 }
 

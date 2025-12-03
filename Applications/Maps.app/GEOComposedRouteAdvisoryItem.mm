@@ -1,19 +1,19 @@
 @interface GEOComposedRouteAdvisoryItem
-- (void)updateModel:(id)a3;
+- (void)updateModel:(id)model;
 @end
 
 @implementation GEOComposedRouteAdvisoryItem
 
-- (void)updateModel:(id)a3
+- (void)updateModel:(id)model
 {
-  v4 = a3;
-  v5 = [(GEOComposedRouteAdvisoryItem *)self titleString];
-  v6 = [v5 stringWithDefaultOptions];
-  [v4 setFirstLine:v6];
+  modelCopy = model;
+  titleString = [(GEOComposedRouteAdvisoryItem *)self titleString];
+  stringWithDefaultOptions = [titleString stringWithDefaultOptions];
+  [modelCopy setFirstLine:stringWithDefaultOptions];
 
-  v8 = [(GEOComposedRouteAdvisoryItem *)self subtitleString];
-  v7 = [v8 stringWithDefaultOptions];
-  [v4 setSecondLine:v7];
+  subtitleString = [(GEOComposedRouteAdvisoryItem *)self subtitleString];
+  stringWithDefaultOptions2 = [subtitleString stringWithDefaultOptions];
+  [modelCopy setSecondLine:stringWithDefaultOptions2];
 }
 
 @end

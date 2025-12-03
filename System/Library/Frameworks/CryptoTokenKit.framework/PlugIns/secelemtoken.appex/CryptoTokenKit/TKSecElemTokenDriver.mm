@@ -1,16 +1,16 @@
 @interface TKSecElemTokenDriver
-- (id)tokenDriver:(id)a3 tokenForConfiguration:(id)a4 error:(id *)a5;
+- (id)tokenDriver:(id)driver tokenForConfiguration:(id)configuration error:(id *)error;
 @end
 
 @implementation TKSecElemTokenDriver
 
-- (id)tokenDriver:(id)a3 tokenForConfiguration:(id)a4 error:(id *)a5
+- (id)tokenDriver:(id)driver tokenForConfiguration:(id)configuration error:(id *)error
 {
-  v7 = a4;
+  configurationCopy = configuration;
   v8 = [TKSecElemToken alloc];
-  v9 = [v7 instanceID];
+  instanceID = [configurationCopy instanceID];
 
-  v10 = [(TKSecElemToken *)v8 initWithTokenDriver:self instanceID:v9 error:a5];
+  v10 = [(TKSecElemToken *)v8 initWithTokenDriver:self instanceID:instanceID error:error];
 
   return v10;
 }

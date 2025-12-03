@@ -1,11 +1,11 @@
 @interface RAPSubmissionStatusSyncHandler
 - (RAPSubmissionStatusSyncHandler)init;
-- (void)_fetchUnresolvedRAPRecordsWithLimit:(unint64_t)a3 offset:(int64_t)a4 oldestDate:(id)a5 completion:(id)a6;
-- (void)_updateMapsSyncRAPRecordWithIdentifiers:(id)a3 toStatus:(signed __int16)a4 forceUpdate:(BOOL)a5 editBlock:(id)a6 completion:(id)a7;
-- (void)fetchUnresolvedRAPIdentifiersWithBatchSize:(unint64_t)a3 offset:(int64_t)a4 oldestDate:(id)a5 completion:(id)a6;
-- (void)saveIdentifier:(id)a3 completion:(id)a4;
-- (void)setFixedProblemAsReviewed:(id)a3;
-- (void)updateRAPsStatusWithRapInfos:(id)a3 completion:(id)a4;
+- (void)_fetchUnresolvedRAPRecordsWithLimit:(unint64_t)limit offset:(int64_t)offset oldestDate:(id)date completion:(id)completion;
+- (void)_updateMapsSyncRAPRecordWithIdentifiers:(id)identifiers toStatus:(signed __int16)status forceUpdate:(BOOL)update editBlock:(id)block completion:(id)completion;
+- (void)fetchUnresolvedRAPIdentifiersWithBatchSize:(unint64_t)size offset:(int64_t)offset oldestDate:(id)date completion:(id)completion;
+- (void)saveIdentifier:(id)identifier completion:(id)completion;
+- (void)setFixedProblemAsReviewed:(id)reviewed;
+- (void)updateRAPsStatusWithRapInfos:(id)infos completion:(id)completion;
 @end
 
 @implementation RAPSubmissionStatusSyncHandler
@@ -28,24 +28,24 @@
   return v2;
 }
 
-- (void)fetchUnresolvedRAPIdentifiersWithBatchSize:(unint64_t)a3 offset:(int64_t)a4 oldestDate:(id)a5 completion:(id)a6
+- (void)fetchUnresolvedRAPIdentifiersWithBatchSize:(unint64_t)size offset:(int64_t)offset oldestDate:(id)date completion:(id)completion
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000FE7C;
   v11[3] = &unk_10003CF70;
-  v12 = a6;
-  v13 = a4;
-  v10 = v12;
-  [(RAPSubmissionStatusSyncHandler *)self _fetchUnresolvedRAPRecordsWithLimit:a3 offset:a4 oldestDate:a5 completion:v11];
+  completionCopy = completion;
+  offsetCopy = offset;
+  v10 = completionCopy;
+  [(RAPSubmissionStatusSyncHandler *)self _fetchUnresolvedRAPRecordsWithLimit:size offset:offset oldestDate:date completion:v11];
 }
 
-- (void)_fetchUnresolvedRAPRecordsWithLimit:(unint64_t)a3 offset:(int64_t)a4 oldestDate:(id)a5 completion:(id)a6
+- (void)_fetchUnresolvedRAPRecordsWithLimit:(unint64_t)limit offset:(int64_t)offset oldestDate:(id)date completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  dateCopy = date;
+  completionCopy = completion;
   v12 = [_TtC8MapsSync22MapsSyncQueryPredicate queryPredicateWithFormat:@"((status == 0) || (status == 2)) && reportId != ''" argumentArray:0];
-  v27 = v10;
+  v27 = dateCopy;
   v13 = [NSArray arrayWithObjects:&v27 count:1];
   v14 = [_TtC8MapsSync22MapsSyncQueryPredicate queryPredicateWithFormat:@"createTime > %@" argumentArray:v13];
 
@@ -55,7 +55,7 @@
   v16 = [NSArray arrayWithObjects:v26 count:2];
   v17 = [v15 initWithAnd:v16];
 
-  v18 = [[_TtC8MapsSync13MapsSyncRange alloc] initWithOffset:a4 limit:a3];
+  v18 = [[_TtC8MapsSync13MapsSyncRange alloc] initWithOffset:offset limit:limit];
   v19 = [[_TtC8MapsSync20MapsSyncQueryOptions alloc] initWithPredicate:v17 sortDescriptors:0 range:v18];
   objc_initWeak(&location, self);
   v20 = objc_alloc_init(MSRAPRecordRequest);
@@ -64,7 +64,7 @@
   v22[2] = sub_10001046C;
   v22[3] = &unk_10003CDB0;
   objc_copyWeak(&v24, &location);
-  v21 = v11;
+  v21 = completionCopy;
   v23 = v21;
   [v20 fetchWithOptions:v19 completionHandler:v22];
 
@@ -72,33 +72,33 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setFixedProblemAsReviewed:(id)a3
+- (void)setFixedProblemAsReviewed:(id)reviewed
 {
-  v4 = [a3 problemStatus];
-  v5 = [v4 firstObject];
+  problemStatus = [reviewed problemStatus];
+  firstObject = [problemStatus firstObject];
 
-  v6 = [v5 problemId];
+  problemId = [firstObject problemId];
 
   v7 = sub_10000FD7C();
   v8 = v7;
-  if (v6)
+  if (problemId)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v9 = [v5 problemId];
+      problemId2 = [firstObject problemId];
       *buf = 138412290;
-      v16 = v9;
+      v16 = problemId2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Received notification for fixed RAP: %@", buf, 0xCu);
     }
 
-    v10 = [v5 problemId];
-    v14 = v10;
+    problemId3 = [firstObject problemId];
+    v14 = problemId3;
     v11 = [NSArray arrayWithObjects:&v14 count:1];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100010764;
     v12[3] = &unk_10003CF98;
-    v13 = v5;
+    v13 = firstObject;
     [(RAPSubmissionStatusSyncHandler *)self setIdentifiersAsReviewed:v11 completion:v12];
 
     v8 = v13;
@@ -107,20 +107,20 @@
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = firstObject;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Received notification for fixed RAP with nil GEORPProblemStatus problemID. Problem status: %@", buf, 0xCu);
   }
 }
 
-- (void)updateRAPsStatusWithRapInfos:(id)a3 completion:(id)a4
+- (void)updateRAPsStatusWithRapInfos:(id)infos completion:(id)completion
 {
-  v5 = a3;
-  v29 = a4;
+  infosCopy = infos;
+  completionCopy = completion;
   v6 = sub_10000FD7C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = infosCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Updating RAP submissions with RapInfos:%@", &buf, 0xCu);
   }
 
@@ -132,7 +132,7 @@
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v10 = v5;
+  v10 = infosCopy;
   v11 = [v10 countByEnumeratingWithState:&v50 objects:v61 count:16];
   if (v11)
   {
@@ -147,38 +147,38 @@
         }
 
         v14 = *(*(&v50 + 1) + 8 * i);
-        v15 = [v14 rapDisplayMenu];
-        if (v15 == 1)
+        rapDisplayMenu = [v14 rapDisplayMenu];
+        if (rapDisplayMenu == 1)
         {
           v16 = v31;
 LABEL_13:
-          v17 = [v14 rapId];
-          [v16 addObject:v17];
+          rapId = [v14 rapId];
+          [v16 addObject:rapId];
 
           goto LABEL_14;
         }
 
         v16 = v7;
-        if (v15 == 2)
+        if (rapDisplayMenu == 2)
         {
           goto LABEL_13;
         }
 
         v16 = v8;
-        if (v15 == 3)
+        if (rapDisplayMenu == 3)
         {
           goto LABEL_13;
         }
 
 LABEL_14:
-        v18 = [v14 rapResponse];
-        v19 = v18 == 0;
+        rapResponse = [v14 rapResponse];
+        v19 = rapResponse == 0;
 
         if (!v19)
         {
-          v20 = [v14 rapResponse];
-          v21 = [v14 rapId];
-          [v9 setObject:v20 forKeyedSubscript:v21];
+          rapResponse2 = [v14 rapResponse];
+          rapId2 = [v14 rapId];
+          [v9 setObject:rapResponse2 forKeyedSubscript:rapId2];
         }
       }
 
@@ -272,36 +272,36 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = sub_100011228;
   block[3] = &unk_10003D010;
-  v33 = v29;
+  v33 = completionCopy;
   v34 = &buf;
-  v28 = v29;
+  v28 = completionCopy;
   dispatch_group_notify(v25, &_dispatch_main_q, block);
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)_updateMapsSyncRAPRecordWithIdentifiers:(id)a3 toStatus:(signed __int16)a4 forceUpdate:(BOOL)a5 editBlock:(id)a6 completion:(id)a7
+- (void)_updateMapsSyncRAPRecordWithIdentifiers:(id)identifiers toStatus:(signed __int16)status forceUpdate:(BOOL)update editBlock:(id)block completion:(id)completion
 {
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if ([v12 count])
+  updateCopy = update;
+  statusCopy = status;
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  completionCopy = completion;
+  if ([identifiersCopy count])
   {
-    if (v9)
+    if (updateCopy)
     {
-      v28 = v12;
+      v28 = identifiersCopy;
       v15 = [NSArray arrayWithObjects:&v28 count:1];
       v16 = [_TtC8MapsSync22MapsSyncQueryPredicate queryPredicateWithFormat:@"reportId IN %@" argumentArray:v15];
     }
 
     else
     {
-      v17 = [NSString stringWithFormat:@"status != %d", v10];
-      v15 = [v17 stringByAppendingString:@" AND reportId IN %@"];
+      statusCopy = [NSString stringWithFormat:@"status != %d", statusCopy];
+      v15 = [statusCopy stringByAppendingString:@" AND reportId IN %@"];
 
-      v27 = v12;
+      v27 = identifiersCopy;
       v18 = [NSArray arrayWithObjects:&v27 count:1];
       v16 = [_TtC8MapsSync22MapsSyncQueryPredicate queryPredicateWithFormat:v15 argumentArray:v18];
     }
@@ -313,9 +313,9 @@ LABEL_14:
     v21[1] = 3221225472;
     v21[2] = sub_100011610;
     v21[3] = &unk_10003D060;
-    v22 = v14;
-    v23 = v13;
-    v25 = v10;
+    v22 = completionCopy;
+    v23 = blockCopy;
+    v25 = statusCopy;
     objc_copyWeak(&v24, &location);
     [v20 fetchWithOptions:v19 completionHandler:v21];
 
@@ -325,16 +325,16 @@ LABEL_14:
 
   else
   {
-    (*(v14 + 2))(v14, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)saveIdentifier:(id)a3 completion:(id)a4
+- (void)saveIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(MSRAPRecord);
-  [v7 setReportId:v6];
+  [v7 setReportId:identifierCopy];
 
   v8 = +[_TtC8MapsSync13MapsSyncStore sharedStore];
   v13 = v7;
@@ -343,8 +343,8 @@ LABEL_14:
   v11[1] = 3221225472;
   v11[2] = sub_100011A8C;
   v11[3] = &unk_10003CD38;
-  v12 = v5;
-  v10 = v5;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [v8 saveWithObjects:v9 completionHandler:v11];
 }
 

@@ -1,9 +1,9 @@
 @interface HKFHIRRequestTaskEndStates
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKFHIRRequestTaskEndStates)init;
-- (HKFHIRRequestTaskEndStates)initWithCoder:(id)a3;
-- (HKFHIRRequestTaskEndStates)initWithEndState:(id)a3;
-- (HKFHIRRequestTaskEndStates)initWithEndStates:(id)a3;
+- (HKFHIRRequestTaskEndStates)initWithCoder:(id)coder;
+- (HKFHIRRequestTaskEndStates)initWithEndState:(id)state;
+- (HKFHIRRequestTaskEndStates)initWithEndStates:(id)states;
 @end
 
 @implementation HKFHIRRequestTaskEndStates
@@ -18,15 +18,15 @@
   return 0;
 }
 
-- (HKFHIRRequestTaskEndStates)initWithEndStates:(id)a3
+- (HKFHIRRequestTaskEndStates)initWithEndStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   v9.receiver = self;
   v9.super_class = HKFHIRRequestTaskEndStates;
   v5 = [(HKFHIRRequestTaskEndStates *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [statesCopy copy];
     objects = v5->_objects;
     v5->_objects = v6;
   }
@@ -34,16 +34,16 @@
   return v5;
 }
 
-- (HKFHIRRequestTaskEndStates)initWithEndState:(id)a3
+- (HKFHIRRequestTaskEndStates)initWithEndState:(id)state
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  stateCopy = state;
+  if (!stateCopy)
   {
     [(HKFHIRRequestTaskEndStates *)a2 initWithEndState:?];
   }
 
-  v10[0] = v5;
+  v10[0] = stateCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   v7 = [(HKFHIRRequestTaskEndStates *)self initWithEndStates:v6];
 
@@ -51,36 +51,36 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objects = self->_objects;
-      v8 = [(HKFHIRRequestTaskEndStates *)v6 objects];
-      if (objects == v8)
+      objects = [(HKFHIRRequestTaskEndStates *)v6 objects];
+      if (objects == objects)
       {
         v12 = 1;
       }
 
       else
       {
-        v9 = [(HKFHIRRequestTaskEndStates *)v6 objects];
-        if (v9)
+        objects2 = [(HKFHIRRequestTaskEndStates *)v6 objects];
+        if (objects2)
         {
           v10 = self->_objects;
-          v11 = [(HKFHIRRequestTaskEndStates *)v6 objects];
-          v12 = [(NSArray *)v10 isEqualToArray:v11];
+          objects3 = [(HKFHIRRequestTaskEndStates *)v6 objects];
+          v12 = [(NSArray *)v10 isEqualToArray:objects3];
         }
 
         else
@@ -99,24 +99,24 @@
   return v12;
 }
 
-- (HKFHIRRequestTaskEndStates)initWithCoder:(id)a3
+- (HKFHIRRequestTaskEndStates)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"objects"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"objects"];
   if (v6)
   {
     self = [(HKFHIRRequestTaskEndStates *)self initWithEndStates:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v7 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)initWithEndState:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

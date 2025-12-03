@@ -1,11 +1,11 @@
 @interface AXUIAvatarUtilities
 + (BOOL)avatarFrameworksArePresent;
-+ (id)_axStringForPresetCategory:(int64_t)a3;
-+ (id)customContentForAvatarWithRecord:(id)a3;
-+ (id)customContentForMemoji:(id)a3;
-+ (id)descriptionForAnimoji:(id)a3;
-+ (id)descriptionForAvatarWithRecord:(id)a3 includeVideoPrefix:(BOOL)a4;
-+ (id)descriptionForMemoji:(id)a3;
++ (id)_axStringForPresetCategory:(int64_t)category;
++ (id)customContentForAvatarWithRecord:(id)record;
++ (id)customContentForMemoji:(id)memoji;
++ (id)descriptionForAnimoji:(id)animoji;
++ (id)descriptionForAvatarWithRecord:(id)record includeVideoPrefix:(BOOL)prefix;
++ (id)descriptionForMemoji:(id)memoji;
 + (void)performValidations;
 @end
 
@@ -13,9 +13,9 @@
 
 + (BOOL)avatarFrameworksArePresent
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 hasPrefix:*MEMORY[0x1E6988740]];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier hasPrefix:*MEMORY[0x1E6988740]];
 
   if (v4)
   {
@@ -36,7 +36,7 @@
 
 + (void)performValidations
 {
-  if (AXPerformValidationChecks() && [a1 avatarFrameworksArePresent])
+  if (AXPerformValidationChecks() && [self avatarFrameworksArePresent])
   {
     getAVTAnimojiClass();
     objc_opt_class();
@@ -65,13 +65,13 @@
     objc_opt_class();
   }
 
-  v5 = [MEMORY[0x1E6988808] sharedInstance];
+  mEMORY[0x1E6988808] = [MEMORY[0x1E6988808] sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__AXUIAvatarUtilities_performValidations__block_invoke;
   v6[3] = &__block_descriptor_40_e29_B16__0__AXValidationManager_8l;
-  v6[4] = a1;
-  [v5 performValidations:v6 withPreValidationHandler:&__block_literal_global_6 postValidationHandler:0];
+  v6[4] = self;
+  [mEMORY[0x1E6988808] performValidations:v6 withPreValidationHandler:&__block_literal_global_6 postValidationHandler:0];
 }
 
 uint64_t __41__AXUIAvatarUtilities_performValidations__block_invoke(uint64_t a1, void *a2)
@@ -103,19 +103,19 @@ uint64_t __41__AXUIAvatarUtilities_performValidations__block_invoke_2(uint64_t a
   return AXPerformValidationChecks();
 }
 
-+ (id)descriptionForAvatarWithRecord:(id)a3 includeVideoPrefix:(BOOL)a4
++ (id)descriptionForAvatarWithRecord:(id)record includeVideoPrefix:(BOOL)prefix
 {
-  v4 = a4;
-  v6 = a3;
-  if (![a1 avatarFrameworksArePresent])
+  prefixCopy = prefix;
+  recordCopy = record;
+  if (![self avatarFrameworksArePresent])
   {
     v10 = 0;
     goto LABEL_18;
   }
 
-  if ([v6 safeBoolForKey:@"isEditable"])
+  if ([recordCopy safeBoolForKey:@"isEditable"])
   {
-    v7 = [v6 safeValueForKey:@"avatarData"];
+    v7 = [recordCopy safeValueForKey:@"avatarData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -133,8 +133,8 @@ uint64_t __41__AXUIAvatarUtilities_performValidations__block_invoke_2(uint64_t a
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [a1 descriptionForMemoji:v8];
-          if (v4)
+          v14 = [self descriptionForMemoji:v8];
+          if (prefixCopy)
           {
             v15 = @"memoji.video.description";
           }
@@ -160,12 +160,12 @@ LABEL_16:
 
   else
   {
-    v7 = [v6 safeStringForKey:@"puppetName"];
+    v7 = [recordCopy safeStringForKey:@"puppetName"];
     if (v7)
     {
       v11 = [getAVTAnimojiClass() animojiNamed:v7];
-      v10 = [a1 descriptionForAnimoji:v11];
-      if (v4)
+      v10 = [self descriptionForAnimoji:v11];
+      if (prefixCopy)
       {
         v12 = AXUILocalizedStringForKey(@"animoji.video.description");
         v13 = __AXStringForVariables();
@@ -185,14 +185,14 @@ LABEL_18:
   return v10;
 }
 
-+ (id)descriptionForAnimoji:(id)a3
++ (id)descriptionForAnimoji:(id)animoji
 {
-  v3 = a3;
+  animojiCopy = animoji;
   if (getAVTAnimojiClass())
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [v3 name];
-    v6 = [v4 stringWithFormat:@"animoji.name.%@", v5];
+    name = [animojiCopy name];
+    v6 = [v4 stringWithFormat:@"animoji.name.%@", name];
     v7 = AXUILocalizedStringForKey(v6);
   }
 
@@ -205,56 +205,56 @@ LABEL_18:
   return v7;
 }
 
-+ (id)descriptionForMemoji:(id)a3
++ (id)descriptionForMemoji:(id)memoji
 {
-  v3 = a3;
+  memojiCopy = memoji;
   if (getAVTColorPresetClass() && getAVTPresetClass() && getAVTMemojiClass() && getAVTAnimojiClass())
   {
-    v40 = [v3 colorPresetForCategory:0];
-    v4 = [v40 localizedName];
-    v39 = [v3 colorPresetForCategory:1];
-    v5 = [v39 localizedName];
-    v6 = [v3 presetForCategory:1];
-    v7 = [v6 localizedName];
+    v40 = [memojiCopy colorPresetForCategory:0];
+    localizedName = [v40 localizedName];
+    v39 = [memojiCopy colorPresetForCategory:1];
+    localizedName2 = [v39 localizedName];
+    v6 = [memojiCopy presetForCategory:1];
+    localizedName3 = [v6 localizedName];
     v37 = v6;
-    v8 = [v6 identifier];
-    v9 = [v8 isEqualToString:@"none"];
+    identifier = [v6 identifier];
+    v9 = [identifier isEqualToString:@"none"];
 
-    v36 = [v3 colorPresetForCategory:7];
-    v10 = [v36 localizedName];
-    v35 = [v3 colorPresetForCategory:2];
-    v47 = [v35 localizedName];
-    v46 = [v3 presetForCategory:2];
-    v44 = [v46 localizedName];
-    v34 = [v3 colorPresetForCategory:4];
-    v43 = [v34 localizedName];
-    v45 = [v3 presetForCategory:4];
-    v42 = [v45 localizedName];
-    v11 = [v3 presetForCategory:32];
-    v41 = [v11 localizedName];
-    v33 = [v3 colorPresetForCategory:32];
-    v12 = [v33 localizedName];
+    v36 = [memojiCopy colorPresetForCategory:7];
+    localizedName4 = [v36 localizedName];
+    v35 = [memojiCopy colorPresetForCategory:2];
+    localizedName5 = [v35 localizedName];
+    v46 = [memojiCopy presetForCategory:2];
+    localizedName6 = [v46 localizedName];
+    v34 = [memojiCopy colorPresetForCategory:4];
+    localizedName7 = [v34 localizedName];
+    v45 = [memojiCopy presetForCategory:4];
+    localizedName8 = [v45 localizedName];
+    v11 = [memojiCopy presetForCategory:32];
+    localizedName9 = [v11 localizedName];
+    v33 = [memojiCopy colorPresetForCategory:32];
+    localizedName10 = [v33 localizedName];
     v13 = MEMORY[0x1E696AEC0];
     if (v9)
     {
       v14 = AXUILocalizedStringForKey(@"memoji.description.no.hair");
-      [v13 stringWithFormat:v14, v4, v7, v5, v10];
+      [v13 stringWithFormat:v14, localizedName, localizedName3, localizedName2, localizedName4];
     }
 
     else
     {
       v14 = AXUILocalizedStringForKey(@"memoji.description.basic");
-      [v13 stringWithFormat:v14, v4, v5, v7, v10];
+      [v13 stringWithFormat:v14, localizedName, localizedName2, localizedName3, localizedName4];
     }
     v15 = ;
-    v38 = v5;
+    v38 = localizedName2;
 
-    v17 = v4;
+    v17 = localizedName;
     if ([v46 hasComponent])
     {
       v18 = MEMORY[0x1E696AEC0];
       v19 = AXUILocalizedStringForKey(@"memoji.description.facialhair");
-      v28 = [v18 stringWithFormat:v19, v47, v44];
+      v28 = [v18 stringWithFormat:v19, localizedName5, localizedName6];
       v31 = @"__AXStringForVariablesSentinel";
       v20 = __AXStringForVariables();
 
@@ -265,23 +265,23 @@ LABEL_18:
     {
       v21 = MEMORY[0x1E696AEC0];
       v22 = AXUILocalizedStringForKey(@"memoji.description.headwear");
-      v29 = [v21 stringWithFormat:v22, v43, v42];
+      v29 = [v21 stringWithFormat:v22, localizedName7, localizedName8];
       v32 = @"__AXStringForVariablesSentinel";
       v23 = __AXStringForVariables();
 
       v15 = v23;
     }
 
-    v24 = v41;
+    v24 = localizedName9;
     if ([v11 hasComponent])
     {
       v25 = MEMORY[0x1E696AEC0];
       v26 = AXUILocalizedStringForKey(@"memoji.description.facewear");
-      v30 = [v25 stringWithFormat:v26, v12, v41];
+      v30 = [v25 stringWithFormat:v26, localizedName10, localizedName9];
       v27 = __AXStringForVariables();
 
       v15 = v27;
-      v24 = v41;
+      v24 = localizedName9;
     }
   }
 
@@ -294,16 +294,16 @@ LABEL_18:
   return v15;
 }
 
-+ (id)customContentForAvatarWithRecord:(id)a3
++ (id)customContentForAvatarWithRecord:(id)record
 {
-  v4 = a3;
-  if (![a1 avatarFrameworksArePresent] || !objc_msgSend(v4, "safeBoolForKey:", @"isEditable"))
+  recordCopy = record;
+  if (![self avatarFrameworksArePresent] || !objc_msgSend(recordCopy, "safeBoolForKey:", @"isEditable"))
   {
     v8 = 0;
     goto LABEL_13;
   }
 
-  v5 = [v4 safeValueForKey:@"avatarData"];
+  v5 = [recordCopy safeValueForKey:@"avatarData"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -321,7 +321,7 @@ LABEL_18:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [a1 customContentForMemoji:v6];
+        v8 = [self customContentForMemoji:v6];
 LABEL_11:
 
         goto LABEL_12;
@@ -340,38 +340,38 @@ LABEL_13:
   return v8;
 }
 
-+ (id)customContentForMemoji:(id)a3
++ (id)customContentForMemoji:(id)memoji
 {
-  v4 = a3;
+  memojiCopy = memoji;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (getAVTColorPresetClass() && getAVTPresetClass() && getAVTMemojiClass() && getAVTAnimojiClass())
   {
     for (i = 0; i != 40; ++i)
     {
-      if (([a1 _shouldSkipPresetCategory:{i, v17, v18}] & 1) == 0)
+      if (([self _shouldSkipPresetCategory:{i, v17, v18}] & 1) == 0)
       {
-        v7 = [v4 presetForCategory:i];
+        v7 = [memojiCopy presetForCategory:i];
         if ([v7 hasComponent])
         {
-          v8 = [a1 _axStringForPresetCategory:i];
-          v9 = [v7 localizedName];
-          v10 = [v4 colorPresetForCategory:i];
-          v11 = [v10 localizedName];
+          v8 = [self _axStringForPresetCategory:i];
+          localizedName = [v7 localizedName];
+          v10 = [memojiCopy colorPresetForCategory:i];
+          localizedName2 = [v10 localizedName];
 
-          if (v11)
+          if (localizedName2)
           {
-            v17 = v11;
+            v17 = localizedName2;
             v18 = @"__AXStringForVariablesSentinel";
             v12 = __AXStringForVariables();
 
-            v9 = v12;
+            localizedName = v12;
           }
 
-          if (v8 && v9)
+          if (v8 && localizedName)
           {
             v13 = MEMORY[0x1E6959560];
             v14 = AXUILocalizedStringForKey(v8);
-            v15 = [v13 customContentWithLabel:v14 value:v9];
+            v15 = [v13 customContentWithLabel:v14 value:localizedName];
 
             [v5 addObject:v15];
           }
@@ -388,13 +388,13 @@ LABEL_13:
   return v5;
 }
 
-+ (id)_axStringForPresetCategory:(int64_t)a3
++ (id)_axStringForPresetCategory:(int64_t)category
 {
-  v4 = [a1 _shouldSkipPresetCategory:?];
+  v4 = [self _shouldSkipPresetCategory:?];
   result = 0;
-  if (a3 <= 0x23 && (v4 & 1) == 0)
+  if (category <= 0x23 && (v4 & 1) == 0)
   {
-    return off_1E812E280[a3];
+    return off_1E812E280[category];
   }
 
   return result;

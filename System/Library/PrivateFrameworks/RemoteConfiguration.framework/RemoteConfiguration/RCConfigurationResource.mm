@@ -1,12 +1,12 @@
 @interface RCConfigurationResource
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isExpiredWithMaxTTL:(double)a3 allowedToReachEndpoint:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isExpiredWithMaxTTL:(double)l allowedToReachEndpoint:(BOOL)endpoint;
 - (NSData)configurationData;
-- (RCConfigurationResource)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RCConfigurationResource)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RCConfigurationResource
@@ -15,32 +15,32 @@
 {
   v15 = MEMORY[0x277CCACA8];
   v14 = objc_opt_class();
-  v16 = [(RCConfigurationResource *)self requestKey];
-  v3 = [(RCConfigurationResource *)self configurationID];
-  v4 = [(RCConfigurationResource *)self lastModifiedString];
-  v5 = [(RCConfigurationResource *)self lastModifiedFallbackString];
-  v6 = [(RCConfigurationResource *)self lastFetchedDate];
-  v7 = [(RCConfigurationResource *)self fallbackMaxAge];
-  v8 = [(RCConfigurationResource *)self endpointMaxAge];
+  requestKey = [(RCConfigurationResource *)self requestKey];
+  configurationID = [(RCConfigurationResource *)self configurationID];
+  lastModifiedString = [(RCConfigurationResource *)self lastModifiedString];
+  lastModifiedFallbackString = [(RCConfigurationResource *)self lastModifiedFallbackString];
+  lastFetchedDate = [(RCConfigurationResource *)self lastFetchedDate];
+  fallbackMaxAge = [(RCConfigurationResource *)self fallbackMaxAge];
+  endpointMaxAge = [(RCConfigurationResource *)self endpointMaxAge];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RCConfigurationResource environment](self, "environment")}];
-  v10 = [(RCConfigurationResource *)self etag];
-  v11 = [(RCConfigurationResource *)self userSegmentationConfiguration];
-  v12 = [v15 stringWithFormat:@"<%@: %p requestKey:%@ configurationID:%@ lastModified:%@ lastModifiedFallback:%@ lastFetched:%@ fallbackMaxAge:%@ endpointMaxAge:%@ environment:%@ etag:%@ userSegmentationConfig:%@>", v14, self, v16, v3, v4, v5, v6, v7, v8, v9, v10, v11];;
+  etag = [(RCConfigurationResource *)self etag];
+  userSegmentationConfiguration = [(RCConfigurationResource *)self userSegmentationConfiguration];
+  v12 = [v15 stringWithFormat:@"<%@: %p requestKey:%@ configurationID:%@ lastModified:%@ lastModifiedFallback:%@ lastFetched:%@ fallbackMaxAge:%@ endpointMaxAge:%@ environment:%@ etag:%@ userSegmentationConfig:%@>", v14, self, requestKey, configurationID, lastModifiedString, lastModifiedFallbackString, lastFetchedDate, fallbackMaxAge, endpointMaxAge, v9, etag, userSegmentationConfiguration];;
 
   return v12;
 }
 
 - (NSData)configurationData
 {
-  v2 = [(RCConfigurationResource *)self gzippedConfigurationData];
-  v3 = [v2 rc_gzipInflate];
+  gzippedConfigurationData = [(RCConfigurationResource *)self gzippedConfigurationData];
+  rc_gzipInflate = [gzippedConfigurationData rc_gzipInflate];
 
-  return v3;
+  return rc_gzipInflate;
 }
 
-- (BOOL)isExpiredWithMaxTTL:(double)a3 allowedToReachEndpoint:(BOOL)a4
+- (BOOL)isExpiredWithMaxTTL:(double)l allowedToReachEndpoint:(BOOL)endpoint
 {
-  if (a4)
+  if (endpoint)
   {
     [(RCConfigurationResource *)self endpointMaxAge];
   }
@@ -54,112 +54,112 @@
   if (v7 != 0.0)
   {
     [v6 doubleValue];
-    a3 = fmax(a3, v8);
+    l = fmax(l, v8);
   }
 
-  v9 = [(RCConfigurationResource *)self lastFetchedDate];
-  [v9 rc_timeIntervalUntilNow];
+  lastFetchedDate = [(RCConfigurationResource *)self lastFetchedDate];
+  [lastFetchedDate rc_timeIntervalUntilNow];
   v11 = v10;
 
-  v12 = v11 < 0.0 || v11 >= a3;
+  v12 = v11 < 0.0 || v11 >= l;
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(RCConfigurationResource *)self gzippedConfigurationData];
-    v7 = [v5 gzippedConfigurationData];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    gzippedConfigurationData = [(RCConfigurationResource *)self gzippedConfigurationData];
+    gzippedConfigurationData2 = [v5 gzippedConfigurationData];
+    if ([gzippedConfigurationData isEqual:gzippedConfigurationData2])
     {
-      v8 = [(RCConfigurationResource *)self requestKey];
-      v9 = [v5 requestKey];
-      if ([v8 isEqualToString:v9])
+      requestKey = [(RCConfigurationResource *)self requestKey];
+      requestKey2 = [v5 requestKey];
+      if ([requestKey isEqualToString:requestKey2])
       {
-        v10 = [(RCConfigurationResource *)self userSegmentationConfiguration];
-        v11 = [v5 userSegmentationConfiguration];
-        if ([v10 isEqual:v11])
+        userSegmentationConfiguration = [(RCConfigurationResource *)self userSegmentationConfiguration];
+        userSegmentationConfiguration2 = [v5 userSegmentationConfiguration];
+        if ([userSegmentationConfiguration isEqual:userSegmentationConfiguration2])
         {
-          v60 = v11;
-          v62 = v10;
+          v60 = userSegmentationConfiguration2;
+          v62 = userSegmentationConfiguration;
           v12 = MEMORY[0x277D82BB8];
-          v13 = [(RCConfigurationResource *)self treatmentIDs];
+          treatmentIDs = [(RCConfigurationResource *)self treatmentIDs];
           [v5 treatmentIDs];
-          v59 = v61 = v13;
-          if ([v12 rc_object:v13 isEqualToObject:?])
+          v59 = v61 = treatmentIDs;
+          if ([v12 rc_object:treatmentIDs isEqualToObject:?])
           {
             v14 = MEMORY[0x277D82BB8];
-            v15 = [(RCConfigurationResource *)self segmentSetIDs];
-            v16 = [v5 segmentSetIDs];
+            segmentSetIDs = [(RCConfigurationResource *)self segmentSetIDs];
+            segmentSetIDs2 = [v5 segmentSetIDs];
             v17 = v14;
-            v18 = v15;
-            v58 = v16;
-            if ([v17 rc_object:v15 isEqualToObject:?])
+            v18 = segmentSetIDs;
+            v58 = segmentSetIDs2;
+            if ([v17 rc_object:segmentSetIDs isEqualToObject:?])
             {
-              v19 = [(RCConfigurationResource *)self userID];
+              userID = [(RCConfigurationResource *)self userID];
               [v5 userID];
-              v56 = v57 = v19;
-              if ([v19 isEqualToString:?])
+              v56 = v57 = userID;
+              if ([userID isEqualToString:?])
               {
-                v20 = [(RCConfigurationResource *)self storefrontID];
-                v54 = [v5 storefrontID];
-                v55 = v20;
-                if ([v20 isEqualToString:?])
+                storefrontID = [(RCConfigurationResource *)self storefrontID];
+                storefrontID2 = [v5 storefrontID];
+                v55 = storefrontID;
+                if ([storefrontID isEqualToString:?])
                 {
                   v53 = v18;
                   v21 = MEMORY[0x277D82BB8];
-                  v22 = [(RCConfigurationResource *)self preferredLanguages];
-                  v51 = [v5 preferredLanguages];
-                  v52 = v22;
-                  if ([v21 rc_object:v22 isEqualToObject:?])
+                  preferredLanguages = [(RCConfigurationResource *)self preferredLanguages];
+                  preferredLanguages2 = [v5 preferredLanguages];
+                  v52 = preferredLanguages;
+                  if ([v21 rc_object:preferredLanguages isEqualToObject:?])
                   {
-                    v23 = [(RCConfigurationResource *)self configurationID];
-                    v49 = [v5 configurationID];
-                    v50 = v23;
-                    if ([v23 isEqualToString:?])
+                    configurationID = [(RCConfigurationResource *)self configurationID];
+                    configurationID2 = [v5 configurationID];
+                    v50 = configurationID;
+                    if ([configurationID isEqualToString:?])
                     {
-                      v24 = [(RCConfigurationResource *)self contentHash];
-                      v47 = [v5 contentHash];
-                      v48 = v24;
-                      if ([v24 isEqualToString:?])
+                      contentHash = [(RCConfigurationResource *)self contentHash];
+                      contentHash2 = [v5 contentHash];
+                      v48 = contentHash;
+                      if ([contentHash isEqualToString:?])
                       {
-                        v25 = [(RCConfigurationResource *)self lastModifiedString];
-                        v45 = [v5 lastModifiedString];
-                        v46 = v25;
-                        if ([v25 isEqualToString:?])
+                        lastModifiedString = [(RCConfigurationResource *)self lastModifiedString];
+                        lastModifiedString2 = [v5 lastModifiedString];
+                        v46 = lastModifiedString;
+                        if ([lastModifiedString isEqualToString:?])
                         {
-                          v26 = [(RCConfigurationResource *)self etag];
-                          v43 = [v5 etag];
-                          v44 = v26;
-                          if ([v26 isEqualToString:?])
+                          etag = [(RCConfigurationResource *)self etag];
+                          etag2 = [v5 etag];
+                          v44 = etag;
+                          if ([etag isEqualToString:?])
                           {
-                            v27 = [(RCConfigurationResource *)self lastModifiedFallbackString];
-                            v41 = [v5 lastModifiedFallbackString];
-                            v42 = v27;
-                            if ([v27 isEqualToString:?])
+                            lastModifiedFallbackString = [(RCConfigurationResource *)self lastModifiedFallbackString];
+                            lastModifiedFallbackString2 = [v5 lastModifiedFallbackString];
+                            v42 = lastModifiedFallbackString;
+                            if ([lastModifiedFallbackString isEqualToString:?])
                             {
-                              v28 = [(RCConfigurationResource *)self lastFetchedDate];
-                              v29 = [v5 lastFetchedDate];
-                              if ([v28 isEqual:v29])
+                              lastFetchedDate = [(RCConfigurationResource *)self lastFetchedDate];
+                              lastFetchedDate2 = [v5 lastFetchedDate];
+                              if ([lastFetchedDate isEqual:lastFetchedDate2])
                               {
-                                v30 = [(RCConfigurationResource *)self fallbackMaxAge];
+                                fallbackMaxAge = [(RCConfigurationResource *)self fallbackMaxAge];
                                 [v5 fallbackMaxAge];
-                                v40 = v39 = v30;
-                                if ([v30 isEqual:?])
+                                v40 = v39 = fallbackMaxAge;
+                                if ([fallbackMaxAge isEqual:?])
                                 {
-                                  v31 = [(RCConfigurationResource *)self endpointMaxAge];
-                                  v32 = [v5 endpointMaxAge];
-                                  v38 = v31;
-                                  v33 = v31;
-                                  v34 = v32;
+                                  endpointMaxAge = [(RCConfigurationResource *)self endpointMaxAge];
+                                  endpointMaxAge2 = [v5 endpointMaxAge];
+                                  v38 = endpointMaxAge;
+                                  v33 = endpointMaxAge;
+                                  v34 = endpointMaxAge2;
                                   if ([v33 isEqual:?])
                                   {
-                                    v35 = [(RCConfigurationResource *)self environment];
-                                    v36 = v35 == [v5 environment];
+                                    environment = [(RCConfigurationResource *)self environment];
+                                    v36 = environment == [v5 environment];
                                   }
 
                                   else
@@ -185,16 +185,16 @@
                               v36 = 0;
                             }
 
-                            v10 = v62;
-                            v11 = v60;
+                            userSegmentationConfiguration = v62;
+                            userSegmentationConfiguration2 = v60;
                             v18 = v53;
                           }
 
                           else
                           {
                             v36 = 0;
-                            v10 = v62;
-                            v11 = v60;
+                            userSegmentationConfiguration = v62;
+                            userSegmentationConfiguration2 = v60;
                             v18 = v53;
                           }
                         }
@@ -202,8 +202,8 @@
                         else
                         {
                           v36 = 0;
-                          v10 = v62;
-                          v11 = v60;
+                          userSegmentationConfiguration = v62;
+                          userSegmentationConfiguration2 = v60;
                           v18 = v53;
                         }
                       }
@@ -211,8 +211,8 @@
                       else
                       {
                         v36 = 0;
-                        v10 = v62;
-                        v11 = v60;
+                        userSegmentationConfiguration = v62;
+                        userSegmentationConfiguration2 = v60;
                         v18 = v53;
                       }
                     }
@@ -220,8 +220,8 @@
                     else
                     {
                       v36 = 0;
-                      v10 = v62;
-                      v11 = v60;
+                      userSegmentationConfiguration = v62;
+                      userSegmentationConfiguration2 = v60;
                       v18 = v53;
                     }
                   }
@@ -229,8 +229,8 @@
                   else
                   {
                     v36 = 0;
-                    v10 = v62;
-                    v11 = v60;
+                    userSegmentationConfiguration = v62;
+                    userSegmentationConfiguration2 = v60;
                     v18 = v53;
                   }
                 }
@@ -238,28 +238,28 @@
                 else
                 {
                   v36 = 0;
-                  v11 = v60;
+                  userSegmentationConfiguration2 = v60;
                 }
               }
 
               else
               {
                 v36 = 0;
-                v11 = v60;
+                userSegmentationConfiguration2 = v60;
               }
             }
 
             else
             {
               v36 = 0;
-              v11 = v60;
+              userSegmentationConfiguration2 = v60;
             }
           }
 
           else
           {
             v36 = 0;
-            v11 = v60;
+            userSegmentationConfiguration2 = v60;
           }
         }
 
@@ -291,102 +291,102 @@
 
 - (unint64_t)hash
 {
-  v37 = [(RCConfigurationResource *)self gzippedConfigurationData];
-  v3 = [v37 hash];
-  v36 = [(RCConfigurationResource *)self requestKey];
-  v4 = [v36 hash] ^ v3;
-  v35 = [(RCConfigurationResource *)self userSegmentationConfiguration];
-  v5 = [v35 hash];
-  v34 = [(RCConfigurationResource *)self treatmentIDs];
-  v6 = v4 ^ v5 ^ [v34 hash];
-  v33 = [(RCConfigurationResource *)self segmentSetIDs];
-  v7 = [v33 hash];
-  v32 = [(RCConfigurationResource *)self userID];
-  v8 = v7 ^ [v32 hash];
-  v31 = [(RCConfigurationResource *)self storefrontID];
-  v9 = v6 ^ v8 ^ [v31 hash];
-  v30 = [(RCConfigurationResource *)self preferredLanguages];
-  v10 = [v30 hash];
-  v29 = [(RCConfigurationResource *)self configurationID];
-  v11 = v10 ^ [v29 hash];
-  v12 = [(RCConfigurationResource *)self contentHash];
-  v13 = v11 ^ [v12 hash];
-  v14 = [(RCConfigurationResource *)self lastModifiedString];
-  v15 = v9 ^ v13 ^ [v14 hash];
-  v16 = [(RCConfigurationResource *)self etag];
-  v17 = [v16 hash];
-  v18 = [(RCConfigurationResource *)self lastModifiedFallbackString];
-  v19 = v17 ^ [v18 hash];
-  v20 = [(RCConfigurationResource *)self lastFetchedDate];
-  v21 = v19 ^ [v20 hash];
-  v22 = [(RCConfigurationResource *)self fallbackMaxAge];
-  v23 = v21 ^ [v22 hash];
-  v24 = [(RCConfigurationResource *)self endpointMaxAge];
-  v25 = v15 ^ v23 ^ [v24 hash];
+  gzippedConfigurationData = [(RCConfigurationResource *)self gzippedConfigurationData];
+  v3 = [gzippedConfigurationData hash];
+  requestKey = [(RCConfigurationResource *)self requestKey];
+  v4 = [requestKey hash] ^ v3;
+  userSegmentationConfiguration = [(RCConfigurationResource *)self userSegmentationConfiguration];
+  v5 = [userSegmentationConfiguration hash];
+  treatmentIDs = [(RCConfigurationResource *)self treatmentIDs];
+  v6 = v4 ^ v5 ^ [treatmentIDs hash];
+  segmentSetIDs = [(RCConfigurationResource *)self segmentSetIDs];
+  v7 = [segmentSetIDs hash];
+  userID = [(RCConfigurationResource *)self userID];
+  v8 = v7 ^ [userID hash];
+  storefrontID = [(RCConfigurationResource *)self storefrontID];
+  v9 = v6 ^ v8 ^ [storefrontID hash];
+  preferredLanguages = [(RCConfigurationResource *)self preferredLanguages];
+  v10 = [preferredLanguages hash];
+  configurationID = [(RCConfigurationResource *)self configurationID];
+  v11 = v10 ^ [configurationID hash];
+  contentHash = [(RCConfigurationResource *)self contentHash];
+  v13 = v11 ^ [contentHash hash];
+  lastModifiedString = [(RCConfigurationResource *)self lastModifiedString];
+  v15 = v9 ^ v13 ^ [lastModifiedString hash];
+  etag = [(RCConfigurationResource *)self etag];
+  v17 = [etag hash];
+  lastModifiedFallbackString = [(RCConfigurationResource *)self lastModifiedFallbackString];
+  v19 = v17 ^ [lastModifiedFallbackString hash];
+  lastFetchedDate = [(RCConfigurationResource *)self lastFetchedDate];
+  v21 = v19 ^ [lastFetchedDate hash];
+  fallbackMaxAge = [(RCConfigurationResource *)self fallbackMaxAge];
+  v23 = v21 ^ [fallbackMaxAge hash];
+  endpointMaxAge = [(RCConfigurationResource *)self endpointMaxAge];
+  v25 = v15 ^ v23 ^ [endpointMaxAge hash];
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RCConfigurationResource environment](self, "environment")}];
   v27 = [v26 hash];
 
   return v25 ^ v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RCConfigurationResource);
-  v5 = [(RCConfigurationResource *)self requestKey];
-  [(RCConfigurationResource *)v4 setRequestKey:v5];
+  requestKey = [(RCConfigurationResource *)self requestKey];
+  [(RCConfigurationResource *)v4 setRequestKey:requestKey];
 
-  v6 = [(RCConfigurationResource *)self gzippedConfigurationData];
-  [(RCConfigurationResource *)v4 setGzippedConfigurationData:v6];
+  gzippedConfigurationData = [(RCConfigurationResource *)self gzippedConfigurationData];
+  [(RCConfigurationResource *)v4 setGzippedConfigurationData:gzippedConfigurationData];
 
-  v7 = [(RCConfigurationResource *)self userSegmentationConfiguration];
-  [(RCConfigurationResource *)v4 setUserSegmentationConfiguration:v7];
+  userSegmentationConfiguration = [(RCConfigurationResource *)self userSegmentationConfiguration];
+  [(RCConfigurationResource *)v4 setUserSegmentationConfiguration:userSegmentationConfiguration];
 
-  v8 = [(RCConfigurationResource *)self treatmentIDs];
-  [(RCConfigurationResource *)v4 setTreatmentIDs:v8];
+  treatmentIDs = [(RCConfigurationResource *)self treatmentIDs];
+  [(RCConfigurationResource *)v4 setTreatmentIDs:treatmentIDs];
 
-  v9 = [(RCConfigurationResource *)self segmentSetIDs];
-  [(RCConfigurationResource *)v4 setSegmentSetIDs:v9];
+  segmentSetIDs = [(RCConfigurationResource *)self segmentSetIDs];
+  [(RCConfigurationResource *)v4 setSegmentSetIDs:segmentSetIDs];
 
-  v10 = [(RCConfigurationResource *)self userID];
-  [(RCConfigurationResource *)v4 setUserID:v10];
+  userID = [(RCConfigurationResource *)self userID];
+  [(RCConfigurationResource *)v4 setUserID:userID];
 
-  v11 = [(RCConfigurationResource *)self storefrontID];
-  [(RCConfigurationResource *)v4 setStorefrontID:v11];
+  storefrontID = [(RCConfigurationResource *)self storefrontID];
+  [(RCConfigurationResource *)v4 setStorefrontID:storefrontID];
 
-  v12 = [(RCConfigurationResource *)self preferredLanguages];
-  [(RCConfigurationResource *)v4 setPreferredLanguages:v12];
+  preferredLanguages = [(RCConfigurationResource *)self preferredLanguages];
+  [(RCConfigurationResource *)v4 setPreferredLanguages:preferredLanguages];
 
-  v13 = [(RCConfigurationResource *)self configurationID];
-  [(RCConfigurationResource *)v4 setConfigurationID:v13];
+  configurationID = [(RCConfigurationResource *)self configurationID];
+  [(RCConfigurationResource *)v4 setConfigurationID:configurationID];
 
-  v14 = [(RCConfigurationResource *)self contentHash];
-  [(RCConfigurationResource *)v4 setContentHash:v14];
+  contentHash = [(RCConfigurationResource *)self contentHash];
+  [(RCConfigurationResource *)v4 setContentHash:contentHash];
 
-  v15 = [(RCConfigurationResource *)self lastModifiedString];
-  [(RCConfigurationResource *)v4 setLastModifiedString:v15];
+  lastModifiedString = [(RCConfigurationResource *)self lastModifiedString];
+  [(RCConfigurationResource *)v4 setLastModifiedString:lastModifiedString];
 
-  v16 = [(RCConfigurationResource *)self etag];
-  [(RCConfigurationResource *)v4 setEtag:v16];
+  etag = [(RCConfigurationResource *)self etag];
+  [(RCConfigurationResource *)v4 setEtag:etag];
 
-  v17 = [(RCConfigurationResource *)self lastModifiedFallbackString];
-  [(RCConfigurationResource *)v4 setLastModifiedFallbackString:v17];
+  lastModifiedFallbackString = [(RCConfigurationResource *)self lastModifiedFallbackString];
+  [(RCConfigurationResource *)v4 setLastModifiedFallbackString:lastModifiedFallbackString];
 
-  v18 = [(RCConfigurationResource *)self lastFetchedDate];
-  [(RCConfigurationResource *)v4 setLastFetchedDate:v18];
+  lastFetchedDate = [(RCConfigurationResource *)self lastFetchedDate];
+  [(RCConfigurationResource *)v4 setLastFetchedDate:lastFetchedDate];
 
-  v19 = [(RCConfigurationResource *)self fallbackMaxAge];
-  [(RCConfigurationResource *)v4 setFallbackMaxAge:v19];
+  fallbackMaxAge = [(RCConfigurationResource *)self fallbackMaxAge];
+  [(RCConfigurationResource *)v4 setFallbackMaxAge:fallbackMaxAge];
 
-  v20 = [(RCConfigurationResource *)self endpointMaxAge];
-  [(RCConfigurationResource *)v4 setEndpointMaxAge:v20];
+  endpointMaxAge = [(RCConfigurationResource *)self endpointMaxAge];
+  [(RCConfigurationResource *)v4 setEndpointMaxAge:endpointMaxAge];
 
   [(RCConfigurationResource *)v4 setEnvironment:[(RCConfigurationResource *)self environment]];
   return v4;
 }
 
-- (RCConfigurationResource)initWithCoder:(id)a3
+- (RCConfigurationResource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = RCConfigurationResource;
   v5 = [(RCConfigurationResource *)&v43 init];
@@ -395,130 +395,130 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestKey"];
     requestKey = v5->_requestKey;
     v5->_requestKey = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gzippedConfigurationData"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gzippedConfigurationData"];
     gzippedConfigurationData = v5->_gzippedConfigurationData;
     v5->_gzippedConfigurationData = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userSegmentationConfiguration"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userSegmentationConfiguration"];
     userSegmentationConfiguration = v5->_userSegmentationConfiguration;
     v5->_userSegmentationConfiguration = v13;
 
-    v15 = [v4 decodeObjectOfClasses:v8 forKey:@"treatmentIDs"];
+    v15 = [coderCopy decodeObjectOfClasses:v8 forKey:@"treatmentIDs"];
     treatmentIDs = v5->_treatmentIDs;
     v5->_treatmentIDs = v15;
 
-    v17 = [v4 decodeObjectOfClasses:v8 forKey:@"segmentSetIDs"];
+    v17 = [coderCopy decodeObjectOfClasses:v8 forKey:@"segmentSetIDs"];
     segmentSetIDs = v5->_segmentSetIDs;
     v5->_segmentSetIDs = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
     userID = v5->_userID;
     v5->_userID = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storefrontID"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storefrontID"];
     storefrontID = v5->_storefrontID;
     v5->_storefrontID = v21;
 
-    v23 = [v4 decodeObjectOfClasses:v8 forKey:@"preferredLanguages"];
+    v23 = [coderCopy decodeObjectOfClasses:v8 forKey:@"preferredLanguages"];
     preferredLanguages = v5->_preferredLanguages;
     v5->_preferredLanguages = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configurationID"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configurationID"];
     configurationID = v5->_configurationID;
     v5->_configurationID = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentHash"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentHash"];
     contentHash = v5->_contentHash;
     v5->_contentHash = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastModifiedString"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastModifiedString"];
     lastModifiedString = v5->_lastModifiedString;
     v5->_lastModifiedString = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"etag"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"etag"];
     etag = v5->_etag;
     v5->_etag = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastModifiedFallbackString"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastModifiedFallbackString"];
     lastModifiedFallbackString = v5->_lastModifiedFallbackString;
     v5->_lastModifiedFallbackString = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastFetchedDate"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastFetchedDate"];
     lastFetchedDate = v5->_lastFetchedDate;
     v5->_lastFetchedDate = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fallbackMaxAge"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fallbackMaxAge"];
     fallbackMaxAge = v5->_fallbackMaxAge;
     v5->_fallbackMaxAge = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endpointMaxAge"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endpointMaxAge"];
     endpointMaxAge = v5->_endpointMaxAge;
     v5->_endpointMaxAge = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
     v5->_environment = [v41 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RCConfigurationResource *)self requestKey];
-  [v4 encodeObject:v5 forKey:@"requestKey"];
+  coderCopy = coder;
+  requestKey = [(RCConfigurationResource *)self requestKey];
+  [coderCopy encodeObject:requestKey forKey:@"requestKey"];
 
-  v6 = [(RCConfigurationResource *)self gzippedConfigurationData];
-  [v4 encodeObject:v6 forKey:@"gzippedConfigurationData"];
+  gzippedConfigurationData = [(RCConfigurationResource *)self gzippedConfigurationData];
+  [coderCopy encodeObject:gzippedConfigurationData forKey:@"gzippedConfigurationData"];
 
-  v7 = [(RCConfigurationResource *)self userSegmentationConfiguration];
-  [v4 encodeObject:v7 forKey:@"userSegmentationConfiguration"];
+  userSegmentationConfiguration = [(RCConfigurationResource *)self userSegmentationConfiguration];
+  [coderCopy encodeObject:userSegmentationConfiguration forKey:@"userSegmentationConfiguration"];
 
-  v8 = [(RCConfigurationResource *)self treatmentIDs];
-  [v4 encodeObject:v8 forKey:@"treatmentIDs"];
+  treatmentIDs = [(RCConfigurationResource *)self treatmentIDs];
+  [coderCopy encodeObject:treatmentIDs forKey:@"treatmentIDs"];
 
-  v9 = [(RCConfigurationResource *)self segmentSetIDs];
-  [v4 encodeObject:v9 forKey:@"segmentSetIDs"];
+  segmentSetIDs = [(RCConfigurationResource *)self segmentSetIDs];
+  [coderCopy encodeObject:segmentSetIDs forKey:@"segmentSetIDs"];
 
-  v10 = [(RCConfigurationResource *)self userID];
-  [v4 encodeObject:v10 forKey:@"userID"];
+  userID = [(RCConfigurationResource *)self userID];
+  [coderCopy encodeObject:userID forKey:@"userID"];
 
-  v11 = [(RCConfigurationResource *)self storefrontID];
-  [v4 encodeObject:v11 forKey:@"storefrontID"];
+  storefrontID = [(RCConfigurationResource *)self storefrontID];
+  [coderCopy encodeObject:storefrontID forKey:@"storefrontID"];
 
-  v12 = [(RCConfigurationResource *)self preferredLanguages];
-  [v4 encodeObject:v12 forKey:@"preferredLanguages"];
+  preferredLanguages = [(RCConfigurationResource *)self preferredLanguages];
+  [coderCopy encodeObject:preferredLanguages forKey:@"preferredLanguages"];
 
-  v13 = [(RCConfigurationResource *)self configurationID];
-  [v4 encodeObject:v13 forKey:@"configurationID"];
+  configurationID = [(RCConfigurationResource *)self configurationID];
+  [coderCopy encodeObject:configurationID forKey:@"configurationID"];
 
-  v14 = [(RCConfigurationResource *)self contentHash];
-  [v4 encodeObject:v14 forKey:@"contentHash"];
+  contentHash = [(RCConfigurationResource *)self contentHash];
+  [coderCopy encodeObject:contentHash forKey:@"contentHash"];
 
-  v15 = [(RCConfigurationResource *)self lastModifiedString];
-  [v4 encodeObject:v15 forKey:@"lastModifiedString"];
+  lastModifiedString = [(RCConfigurationResource *)self lastModifiedString];
+  [coderCopy encodeObject:lastModifiedString forKey:@"lastModifiedString"];
 
-  v16 = [(RCConfigurationResource *)self etag];
-  [v4 encodeObject:v16 forKey:@"etag"];
+  etag = [(RCConfigurationResource *)self etag];
+  [coderCopy encodeObject:etag forKey:@"etag"];
 
-  v17 = [(RCConfigurationResource *)self lastModifiedFallbackString];
-  [v4 encodeObject:v17 forKey:@"lastModifiedFallbackString"];
+  lastModifiedFallbackString = [(RCConfigurationResource *)self lastModifiedFallbackString];
+  [coderCopy encodeObject:lastModifiedFallbackString forKey:@"lastModifiedFallbackString"];
 
-  v18 = [(RCConfigurationResource *)self lastFetchedDate];
-  [v4 encodeObject:v18 forKey:@"lastFetchedDate"];
+  lastFetchedDate = [(RCConfigurationResource *)self lastFetchedDate];
+  [coderCopy encodeObject:lastFetchedDate forKey:@"lastFetchedDate"];
 
-  v19 = [(RCConfigurationResource *)self fallbackMaxAge];
-  [v4 encodeObject:v19 forKey:@"fallbackMaxAge"];
+  fallbackMaxAge = [(RCConfigurationResource *)self fallbackMaxAge];
+  [coderCopy encodeObject:fallbackMaxAge forKey:@"fallbackMaxAge"];
 
-  v20 = [(RCConfigurationResource *)self endpointMaxAge];
-  [v4 encodeObject:v20 forKey:@"endpointMaxAge"];
+  endpointMaxAge = [(RCConfigurationResource *)self endpointMaxAge];
+  [coderCopy encodeObject:endpointMaxAge forKey:@"endpointMaxAge"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RCConfigurationResource environment](self, "environment")}];
-  [v4 encodeObject:v21 forKey:@"environment"];
+  [coderCopy encodeObject:v21 forKey:@"environment"];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface HDSPAssertionManager
-+ (Class)assertionClassForType:(unint64_t)a3;
++ (Class)assertionClassForType:(unint64_t)type;
 - (HDSPAssertionManager)init;
-- (id)_assertionsOfType:(unint64_t)a3;
-- (id)activeAssertionIdentifiersOfType:(unint64_t)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_assertionsOfType:(unint64_t)type;
+- (id)activeAssertionIdentifiersOfType:(unint64_t)type;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)diagnosticDescription;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_withLock:(id)a3;
-- (void)releaseAssertionWithIdentifier:(id)a3;
-- (void)takeAssertion:(id)a3;
-- (void)takeAssertionWithIdentifier:(id)a3 type:(unint64_t)a4;
-- (void)takeAssertionWithIdentifier:(id)a3 type:(unint64_t)a4 timeout:(double)a5;
-- (void)takeIndefiniteAssertionWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (void)_withLock:(id)lock;
+- (void)releaseAssertionWithIdentifier:(id)identifier;
+- (void)takeAssertion:(id)assertion;
+- (void)takeAssertionWithIdentifier:(id)identifier type:(unint64_t)type;
+- (void)takeAssertionWithIdentifier:(id)identifier type:(unint64_t)type timeout:(double)timeout;
+- (void)takeIndefiniteAssertionWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation HDSPAssertionManager
@@ -49,58 +49,58 @@
   return v2;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_assertionsLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_assertionsLock);
 }
 
-- (void)takeAssertionWithIdentifier:(id)a3 type:(unint64_t)a4
+- (void)takeAssertionWithIdentifier:(id)identifier type:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [objc_msgSend(objc_opt_class() assertionClassForType:{a4), "assertionWithIdentifier:", v6}];
+  identifierCopy = identifier;
+  v7 = [objc_msgSend(objc_opt_class() assertionClassForType:{type), "assertionWithIdentifier:", identifierCopy}];
 
   [(HDSPAssertionManager *)self takeAssertion:v7];
 }
 
-- (void)takeAssertionWithIdentifier:(id)a3 type:(unint64_t)a4 timeout:(double)a5
+- (void)takeAssertionWithIdentifier:(id)identifier type:(unint64_t)type timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = [objc_msgSend(objc_opt_class() assertionClassForType:{a4), "assertionWithIdentifier:timeout:", v8, a5}];
+  identifierCopy = identifier;
+  v9 = [objc_msgSend(objc_opt_class() assertionClassForType:{type), "assertionWithIdentifier:timeout:", identifierCopy, timeout}];
 
   [(HDSPAssertionManager *)self takeAssertion:v9];
 }
 
-- (void)takeIndefiniteAssertionWithIdentifier:(id)a3 type:(unint64_t)a4
+- (void)takeIndefiniteAssertionWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
-  v8 = [v6 distantFuture];
-  [v8 timeIntervalSinceNow];
+  identifierCopy = identifier;
+  distantFuture = [v6 distantFuture];
+  [distantFuture timeIntervalSinceNow];
   v10 = v9;
 
-  v11 = [objc_msgSend(objc_opt_class() assertionClassForType:{a4), "assertionWithIdentifier:timeout:", v7, v10}];
+  v11 = [objc_msgSend(objc_opt_class() assertionClassForType:{type), "assertionWithIdentifier:timeout:", identifierCopy, v10}];
 
   [(HDSPAssertionManager *)self takeAssertion:v11];
 }
 
-- (void)takeAssertion:(id)a3
+- (void)takeAssertion:(id)assertion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 identifier];
+    identifier = [assertionCopy identifier];
     *buf = 138543618;
     v14 = v6;
     v15 = 2114;
-    v16 = v8;
+    v16 = identifier;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Taking assertion with identifier %{public}@", buf, 0x16u);
   }
 
@@ -109,8 +109,8 @@
   v11[2] = __38__HDSPAssertionManager_takeAssertion___block_invoke;
   v11[3] = &unk_279C7B2D0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = assertionCopy;
+  v9 = assertionCopy;
   [(HDSPAssertionManager *)self _withLock:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -124,16 +124,16 @@ void __38__HDSPAssertionManager_takeAssertion___block_invoke(uint64_t a1)
   [v2 setObject:v1 forKeyedSubscript:v3];
 }
 
-+ (Class)assertionClassForType:(unint64_t)a3
++ (Class)assertionClassForType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = off_279C7A868;
   }
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_6;
     }
@@ -142,23 +142,23 @@ void __38__HDSPAssertionManager_takeAssertion___block_invoke(uint64_t a1)
   }
 
   v5 = *v4;
-  a1 = objc_opt_class();
+  self = objc_opt_class();
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
-- (void)releaseAssertionWithIdentifier:(id)a3
+- (void)releaseAssertionWithIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v12 = objc_opt_class();
     v13 = 2114;
-    v14 = v4;
+    v14 = identifierCopy;
     v6 = v12;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Releasing assertion with identifier %{public}@", buf, 0x16u);
   }
@@ -168,8 +168,8 @@ LABEL_6:
   v9[2] = __55__HDSPAssertionManager_releaseAssertionWithIdentifier___block_invoke;
   v9[3] = &unk_279C7B2D0;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = identifierCopy;
+  v7 = identifierCopy;
   [(HDSPAssertionManager *)self _withLock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -186,15 +186,15 @@ void __55__HDSPAssertionManager_releaseAssertionWithIdentifier___block_invoke(ui
   [*(*(a1 + 32) + 16) removeObjectForKey:*(a1 + 40)];
 }
 
-- (id)activeAssertionIdentifiersOfType:(unint64_t)a3
+- (id)activeAssertionIdentifiersOfType:(unint64_t)type
 {
-  v3 = [(HDSPAssertionManager *)self _assertionsOfType:a3];
+  v3 = [(HDSPAssertionManager *)self _assertionsOfType:type];
   v4 = [v3 na_map:&__block_literal_global_19];
 
   return v4;
 }
 
-- (id)_assertionsOfType:(unint64_t)a3
+- (id)_assertionsOfType:(unint64_t)type
 {
   v6 = 0;
   v7 = &v6;
@@ -208,7 +208,7 @@ void __55__HDSPAssertionManager_releaseAssertionWithIdentifier___block_invoke(ui
   v5[3] = &unk_279C7C260;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = type;
   [(HDSPAssertionManager *)self _withLock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -245,10 +245,10 @@ uint64_t __42__HDSPAssertionManager__assertionsOfType___block_invoke_2(uint64_t 
 
 - (id)succinctDescription
 {
-  v2 = [(HDSPAssertionManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HDSPAssertionManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -263,12 +263,12 @@ uint64_t __42__HDSPAssertionManager__assertionsOfType___block_invoke_2(uint64_t 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HDSPAssertionManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HDSPAssertionManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)diagnosticDescription

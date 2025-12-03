@@ -1,67 +1,67 @@
 @interface BYXPCActivity
-+ (id)activityWithXPCActivity:(id)a3;
-- (BOOL)setCompletionStatus:(int64_t)a3;
-- (BOOL)setState:(int64_t)a3;
++ (id)activityWithXPCActivity:(id)activity;
+- (BOOL)setCompletionStatus:(int64_t)status;
+- (BOOL)setState:(int64_t)state;
 - (BOOL)shouldDefer;
 - (OS_xpc_object)criteria;
 - (int64_t)state;
-- (void)setCriteria:(id)a3;
+- (void)setCriteria:(id)criteria;
 @end
 
 @implementation BYXPCActivity
 
-+ (id)activityWithXPCActivity:(id)a3
++ (id)activityWithXPCActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = objc_alloc_init(BYXPCActivity);
-  [(BYXPCActivity *)v4 setUnderlyingActivity:v3];
+  [(BYXPCActivity *)v4 setUnderlyingActivity:activityCopy];
 
   return v4;
 }
 
-- (BOOL)setState:(int64_t)a3
+- (BOOL)setState:(int64_t)state
 {
-  v4 = [(BYXPCActivity *)self underlyingActivity];
-  LOBYTE(a3) = xpc_activity_set_state(v4, a3);
+  underlyingActivity = [(BYXPCActivity *)self underlyingActivity];
+  LOBYTE(state) = xpc_activity_set_state(underlyingActivity, state);
 
-  return a3;
+  return state;
 }
 
 - (int64_t)state
 {
-  v2 = [(BYXPCActivity *)self underlyingActivity];
-  state = xpc_activity_get_state(v2);
+  underlyingActivity = [(BYXPCActivity *)self underlyingActivity];
+  state = xpc_activity_get_state(underlyingActivity);
 
   return state;
 }
 
 - (BOOL)shouldDefer
 {
-  v2 = [(BYXPCActivity *)self underlyingActivity];
-  should_defer = xpc_activity_should_defer(v2);
+  underlyingActivity = [(BYXPCActivity *)self underlyingActivity];
+  should_defer = xpc_activity_should_defer(underlyingActivity);
 
   return should_defer;
 }
 
-- (BOOL)setCompletionStatus:(int64_t)a3
+- (BOOL)setCompletionStatus:(int64_t)status
 {
-  v3 = [(BYXPCActivity *)self underlyingActivity];
+  underlyingActivity = [(BYXPCActivity *)self underlyingActivity];
   v4 = xpc_activity_set_completion_status();
 
   return v4;
 }
 
-- (void)setCriteria:(id)a3
+- (void)setCriteria:(id)criteria
 {
-  v4 = a3;
-  v5 = [(BYXPCActivity *)self underlyingActivity];
-  xpc_activity_set_criteria(v5, v4);
+  criteriaCopy = criteria;
+  underlyingActivity = [(BYXPCActivity *)self underlyingActivity];
+  xpc_activity_set_criteria(underlyingActivity, criteriaCopy);
 }
 
 - (OS_xpc_object)criteria
 {
-  v2 = [(BYXPCActivity *)self underlyingActivity];
-  v3 = xpc_activity_copy_criteria(v2);
+  underlyingActivity = [(BYXPCActivity *)self underlyingActivity];
+  v3 = xpc_activity_copy_criteria(underlyingActivity);
 
   return v3;
 }

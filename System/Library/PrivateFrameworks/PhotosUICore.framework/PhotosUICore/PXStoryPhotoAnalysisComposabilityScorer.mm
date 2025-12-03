@@ -1,17 +1,17 @@
 @interface PXStoryPhotoAnalysisComposabilityScorer
-- (id)computeComposabilityScoresForDisplayAssets:(id)a3 error:(id *)a4;
+- (id)computeComposabilityScoresForDisplayAssets:(id)assets error:(id *)error;
 @end
 
 @implementation PXStoryPhotoAnalysisComposabilityScorer
 
-- (id)computeComposabilityScoresForDisplayAssets:(id)a3 error:(id *)a4
+- (id)computeComposabilityScoresForDisplayAssets:(id)assets error:(id *)error
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
-  for (i = 0; i < [v6 count]; ++i)
+  assetsCopy = assets;
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
+  for (i = 0; i < [assetsCopy count]; ++i)
   {
-    v9 = [v6 objectAtIndexedSubscript:i];
+    v9 = [assetsCopy objectAtIndexedSubscript:i];
     [v7 addObject:v9];
   }
 
@@ -21,7 +21,7 @@
   v29[0] = MEMORY[0x1E695E118];
   v29[1] = MEMORY[0x1E695E118];
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
-  v11 = [objc_opt_class() composabilityScoresOfAssets:v7 options:v27 error:a4];
+  v11 = [objc_opt_class() composabilityScoresOfAssets:v7 options:v27 error:error];
   v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E6978B58]];
   v13 = [v11 objectForKeyedSubscript:*MEMORY[0x1E6978B60]];
   v14 = v13;

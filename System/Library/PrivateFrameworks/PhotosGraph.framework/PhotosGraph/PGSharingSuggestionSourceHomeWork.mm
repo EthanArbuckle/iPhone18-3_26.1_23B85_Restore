@@ -1,23 +1,23 @@
 @interface PGSharingSuggestionSourceHomeWork
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4;
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options;
 @end
 
 @implementation PGSharingSuggestionSourceHomeWork
 
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 momentNodes];
-  v22 = v4;
-  v6 = [v4 graph];
-  [v6 _checkCanRead];
+  inputCopy = input;
+  momentNodes = [inputCopy momentNodes];
+  v22 = inputCopy;
+  graph = [inputCopy graph];
+  [graph _checkCanRead];
   v7 = objc_alloc_init(MEMORY[0x277D22BD0]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v5;
+  v8 = momentNodes;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -47,11 +47,11 @@
     while (v10);
   }
 
-  if ([v7 count] && (objc_msgSend(v6, "meNodeCollection"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "elementIdentifiers"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "subtractIdentifierSet:", v15), v15, v14, objc_msgSend(v7, "count")))
+  if ([v7 count] && (objc_msgSend(graph, "meNodeCollection"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "elementIdentifiers"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "subtractIdentifierSet:", v15), v15, v14, objc_msgSend(v7, "count")))
   {
-    v16 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithGraph:v6 elementIdentifiers:v7];
-    v17 = [(MAElementCollection *)v16 temporarySet];
-    v18 = [(PGSharingSuggestionSource *)self suggestionResultsWithPersons:v17];
+    v16 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithGraph:graph elementIdentifiers:v7];
+    temporarySet = [(MAElementCollection *)v16 temporarySet];
+    v18 = [(PGSharingSuggestionSource *)self suggestionResultsWithPersons:temporarySet];
   }
 
   else

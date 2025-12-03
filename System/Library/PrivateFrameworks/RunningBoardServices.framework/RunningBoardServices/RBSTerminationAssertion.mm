@@ -1,44 +1,44 @@
 @interface RBSTerminationAssertion
-- (BOOL)acquireWithError:(id *)a3;
-- (BOOL)invalidateWithError:(id *)a3;
+- (BOOL)acquireWithError:(id *)error;
+- (BOOL)invalidateWithError:(id *)error;
 - (BOOL)isValid;
 - (BOOL)processExists;
-- (RBSTerminationAssertion)initWithPredicate:(id)a3 context:(id)a4;
-- (RBSTerminationAssertion)initWithPredicate:(id)a3 context:(id)a4 allowLaunch:(id)a5;
-- (RBSTerminationAssertion)initWithPredicate:(id)a3 context:(id)a4 allowLaunch:(id)a5 service:(id)a6;
-- (RBSTerminationAssertion)initWithTarget:(id)a3 context:(id)a4;
+- (RBSTerminationAssertion)initWithPredicate:(id)predicate context:(id)context;
+- (RBSTerminationAssertion)initWithPredicate:(id)predicate context:(id)context allowLaunch:(id)launch;
+- (RBSTerminationAssertion)initWithPredicate:(id)predicate context:(id)context allowLaunch:(id)launch service:(id)service;
+- (RBSTerminationAssertion)initWithTarget:(id)target context:(id)context;
 - (uint64_t)setupMonitor;
 - (void)_notifyObserversOfProcessExit;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation RBSTerminationAssertion
 
-- (RBSTerminationAssertion)initWithTarget:(id)a3 context:(id)a4
+- (RBSTerminationAssertion)initWithTarget:(id)target context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 processIdentity];
-  v9 = [v8 isEmbeddedApplication];
+  contextCopy = context;
+  targetCopy = target;
+  processIdentity = [targetCopy processIdentity];
+  isEmbeddedApplication = [processIdentity isEmbeddedApplication];
 
-  if (v9)
+  if (isEmbeddedApplication)
   {
-    v10 = [v7 processIdentity];
+    processIdentity2 = [targetCopy processIdentity];
 
-    v11 = [v10 embeddedApplicationIdentifier];
-    v12 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v11];
-    v13 = [(RBSTerminationAssertion *)self initWithPredicate:v12 context:v6];
+    embeddedApplicationIdentifier = [processIdentity2 embeddedApplicationIdentifier];
+    v12 = [RBSProcessPredicate predicateMatchingBundleIdentifier:embeddedApplicationIdentifier];
+    v13 = [(RBSTerminationAssertion *)self initWithPredicate:v12 context:contextCopy];
 
     v14 = v13;
   }
 
   else
   {
-    v10 = [RBSProcessPredicate predicateMatchingTarget:v7];
+    processIdentity2 = [RBSProcessPredicate predicateMatchingTarget:targetCopy];
 
-    v15 = [(RBSTerminationAssertion *)self initWithPredicate:v10 context:v6];
+    v15 = [(RBSTerminationAssertion *)self initWithPredicate:processIdentity2 context:contextCopy];
     v14 = v15;
   }
 
@@ -107,33 +107,33 @@ void __39__RBSTerminationAssertion_setupMonitor__block_invoke_2(uint64_t a1, uin
   }
 }
 
-- (RBSTerminationAssertion)initWithPredicate:(id)a3 context:(id)a4
+- (RBSTerminationAssertion)initWithPredicate:(id)predicate context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  predicateCopy = predicate;
   v8 = +[RBSConnection sharedInstance];
-  v9 = [(RBSTerminationAssertion *)self initWithPredicate:v7 context:v6 allowLaunch:0 service:v8];
+  v9 = [(RBSTerminationAssertion *)self initWithPredicate:predicateCopy context:contextCopy allowLaunch:0 service:v8];
 
   return v9;
 }
 
-- (RBSTerminationAssertion)initWithPredicate:(id)a3 context:(id)a4 allowLaunch:(id)a5
+- (RBSTerminationAssertion)initWithPredicate:(id)predicate context:(id)context allowLaunch:(id)launch
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  launchCopy = launch;
+  contextCopy = context;
+  predicateCopy = predicate;
   v11 = +[RBSConnection sharedInstance];
-  v12 = [(RBSTerminationAssertion *)self initWithPredicate:v10 context:v9 allowLaunch:v8 service:v11];
+  v12 = [(RBSTerminationAssertion *)self initWithPredicate:predicateCopy context:contextCopy allowLaunch:launchCopy service:v11];
 
   return v12;
 }
 
-- (RBSTerminationAssertion)initWithPredicate:(id)a3 context:(id)a4 allowLaunch:(id)a5 service:(id)a6
+- (RBSTerminationAssertion)initWithPredicate:(id)predicate context:(id)context allowLaunch:(id)launch service:(id)service
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  predicateCopy = predicate;
+  contextCopy = context;
+  launchCopy = launch;
+  serviceCopy = service;
   v20.receiver = self;
   v20.super_class = RBSTerminationAssertion;
   v15 = [(RBSTerminationAssertion *)&v20 init];
@@ -141,16 +141,16 @@ void __39__RBSTerminationAssertion_setupMonitor__block_invoke_2(uint64_t a1, uin
   if (v15)
   {
     v15->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v15->_predicate, a3);
-    objc_storeStrong(&v16->_allow, a5);
+    objc_storeStrong(&v15->_predicate, predicate);
+    objc_storeStrong(&v16->_allow, launch);
     v16->_processExists = 1;
     v16->_state = 0;
-    v17 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v16->_observers;
-    v16->_observers = v17;
+    v16->_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v16->_terminateContext, a4);
-    objc_storeStrong(&v16->_service, a6);
+    objc_storeStrong(&v16->_terminateContext, context);
+    objc_storeStrong(&v16->_service, service);
   }
 
   return v16;
@@ -159,9 +159,9 @@ void __39__RBSTerminationAssertion_setupMonitor__block_invoke_2(uint64_t a1, uin
 - (BOOL)isValid
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(RBSAssertion *)self->_assertion isValid];
+  isValid = [(RBSAssertion *)self->_assertion isValid];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return isValid;
 }
 
 - (BOOL)processExists
@@ -172,7 +172,7 @@ void __39__RBSTerminationAssertion_setupMonitor__block_invoke_2(uint64_t a1, uin
   return processExists;
 }
 
-- (BOOL)acquireWithError:(id *)a3
+- (BOOL)acquireWithError:(id *)error
 {
   v55[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -346,7 +346,7 @@ LABEL_27:
   v38 = 3221225472;
   v39 = __44__RBSTerminationAssertion_acquireWithError___block_invoke;
   v40 = &unk_1E7276AF0;
-  v41 = self;
+  selfCopy = self;
   objc_copyWeak(&v42, &location);
   [v18 enumerateObjectsUsingBlock:&v37];
   self->_deathMonitorsSetUp = 1;
@@ -371,10 +371,10 @@ LABEL_24:
   }
 
 LABEL_28:
-  if (a3)
+  if (error)
   {
     v25 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -447,24 +447,24 @@ void __44__RBSTerminationAssertion_acquireWithError___block_invoke_16(uint64_t a
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)invalidateWithError:(id *)a3
+- (BOOL)invalidateWithError:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
   if (self->_state == 1)
   {
-    v5 = [(RBSAssertion *)self->_assertion invalidateWithError:a3];
+    v5 = [(RBSAssertion *)self->_assertion invalidateWithError:error];
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
       v6 = MEMORY[0x1E696ABC0];
       v12 = *MEMORY[0x1E696A588];
       v13[0] = @"Assertion is in wrong state to be invalidated";
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-      *a3 = [v6 errorWithDomain:@"RBSAssertionErrorDomain" code:2 userInfo:v7];
+      *error = [v6 errorWithDomain:@"RBSAssertionErrorDomain" code:2 userInfo:v7];
     }
 
     v8 = rbs_assertion_log();
@@ -496,26 +496,26 @@ void __44__RBSTerminationAssertion_acquireWithError___block_invoke_16(uint64_t a
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers addObject:v5];
-  [(RBSAssertion *)self->_assertion addObserver:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
+  [(RBSAssertion *)self->_assertion addObserver:observerCopy];
   processExists = self->_processExists;
   os_unfair_lock_unlock(&self->_lock);
   if (!processExists)
   {
-    [v5 assertionTargetProcessDidExit:self];
+    [observerCopy assertionTargetProcessDidExit:self];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers removeObject:v4];
-  [(RBSAssertion *)self->_assertion removeObserver:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
+  [(RBSAssertion *)self->_assertion removeObserver:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -579,13 +579,13 @@ void __56__RBSTerminationAssertion__notifyObserversOfProcessExit__block_invoke(u
 
 - (void)_notifyObserversOfProcessExit
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v2 = [*(a1 + 96) copy];
-    v3 = *(a1 + 89);
-    *(a1 + 89) = 1;
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_lock((self + 8));
+    v2 = [*(self + 96) copy];
+    v3 = *(self + 89);
+    *(self + 89) = 1;
+    os_unfair_lock_unlock((self + 8));
     if ((v3 & 1) == 0)
     {
       v4 = rbs_assertion_log();
@@ -600,7 +600,7 @@ void __56__RBSTerminationAssertion__notifyObserversOfProcessExit__block_invoke(u
       v5[2] = __56__RBSTerminationAssertion__notifyObserversOfProcessExit__block_invoke;
       v5[3] = &unk_1E7276418;
       v6 = v2;
-      v7 = a1;
+      selfCopy = self;
       [RBSWorkloop performCallout:v5];
     }
   }

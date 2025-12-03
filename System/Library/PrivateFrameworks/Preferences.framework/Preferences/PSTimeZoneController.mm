@@ -1,23 +1,23 @@
 @interface PSTimeZoneController
-+ (void)setTimeZone:(id)a3;
++ (void)setTimeZone:(id)zone;
 - (PSListController)parentController;
 - (id)currentTimeZoneCityName;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation PSTimeZoneController
 
-+ (void)setTimeZone:(id)a3
++ (void)setTimeZone:(id)zone
 {
-  v3 = a3;
-  [v3 UTF8String];
+  zoneCopy = zone;
+  [zoneCopy UTF8String];
   if (tzlink())
   {
-    NSLog(&cfstr_FailedToSetThe.isa, v3);
+    NSLog(&cfstr_FailedToSetThe.isa, zoneCopy);
   }
 }
 
@@ -29,50 +29,50 @@
   v3 = PS_LocalizedString(@"TIME_ZONE");
   [(PSTimeZoneController *)self setTitle:v3];
 
-  v4 = [(PSTimeZoneController *)self tableView];
-  [v4 _setDisplaysCellContentStringsOnTapAndHold:1];
+  tableView = [(PSTimeZoneController *)self tableView];
+  [tableView _setDisplaysCellContentStringsOnTapAndHold:1];
 
-  v5 = [(PSTimeZoneController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"TIMEZONE_CELL"];
+  tableView2 = [(PSTimeZoneController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"TIMEZONE_CELL"];
 
   v6 = [objc_alloc(MEMORY[0x1E69DCF10]) initWithSearchResultsController:0];
   [(PSTimeZoneController *)self setSearchController:v6];
 
-  v7 = [(PSTimeZoneController *)self searchController];
-  [v7 setSearchResultsUpdater:self];
+  searchController = [(PSTimeZoneController *)self searchController];
+  [searchController setSearchResultsUpdater:self];
 
-  v8 = [(PSTimeZoneController *)self searchController];
-  [v8 setDimsBackgroundDuringPresentation:0];
+  searchController2 = [(PSTimeZoneController *)self searchController];
+  [searchController2 setDimsBackgroundDuringPresentation:0];
 
-  v9 = [(PSTimeZoneController *)self searchController];
-  v10 = [v9 searchBar];
-  [v10 setAutocapitalizationType:0];
+  searchController3 = [(PSTimeZoneController *)self searchController];
+  searchBar = [searchController3 searchBar];
+  [searchBar setAutocapitalizationType:0];
 
-  v11 = [(PSTimeZoneController *)self searchController];
-  v12 = [v11 searchBar];
-  [v12 setKeyboardType:0];
+  searchController4 = [(PSTimeZoneController *)self searchController];
+  searchBar2 = [searchController4 searchBar];
+  [searchBar2 setKeyboardType:0];
 
-  v13 = [(PSTimeZoneController *)self searchController];
-  v14 = [v13 searchBar];
-  [v14 setAutocorrectionType:1];
+  searchController5 = [(PSTimeZoneController *)self searchController];
+  searchBar3 = [searchController5 searchBar];
+  [searchBar3 setAutocorrectionType:1];
 
-  v15 = [(PSTimeZoneController *)self searchController];
-  v16 = [(PSTimeZoneController *)self navigationItem];
-  [v16 setSearchController:v15];
+  searchController6 = [(PSTimeZoneController *)self searchController];
+  navigationItem = [(PSTimeZoneController *)self navigationItem];
+  [navigationItem setSearchController:searchController6];
 
-  v17 = [(PSTimeZoneController *)self navigationItem];
-  [v17 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(PSTimeZoneController *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
   [(PSTimeZoneController *)self setDefinesPresentationContext:1];
-  v18 = [(PSTimeZoneController *)self currentTimeZoneCityName];
-  if ([v18 length])
+  currentTimeZoneCityName = [(PSTimeZoneController *)self currentTimeZoneCityName];
+  if ([currentTimeZoneCityName length])
   {
-    v19 = [(PSTimeZoneController *)self searchController];
-    v20 = [v19 searchBar];
-    [v20 setPlaceholder:v18];
+    searchController7 = [(PSTimeZoneController *)self searchController];
+    searchBar4 = [searchController7 searchBar];
+    [searchBar4 setPlaceholder:currentTimeZoneCityName];
 
-    v21 = [MEMORY[0x1E698B670] sharedManager];
-    v22 = [v21 citiesMatchingName:v18];
+    mEMORY[0x1E698B670] = [MEMORY[0x1E698B670] sharedManager];
+    v22 = [mEMORY[0x1E698B670] citiesMatchingName:currentTimeZoneCityName];
     cities = self->_cities;
     self->_cities = v22;
   }
@@ -80,19 +80,19 @@
 
 - (id)currentTimeZoneCityName
 {
-  v2 = [(PSTimeZoneController *)self specifier];
-  v3 = PSCityForSpecifier(v2, 1);
+  specifier = [(PSTimeZoneController *)self specifier];
+  v3 = PSCityForSpecifier(specifier, 1);
 
   v4 = [v3 displayNameIncludingCountry:0];
 
   return v4;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PSTimeZoneController;
-  [(PSTimeZoneController *)&v5 viewDidAppear:a3];
+  [(PSTimeZoneController *)&v5 viewDidAppear:appear];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__PSTimeZoneController_viewDidAppear___block_invoke;
@@ -108,12 +108,12 @@ void __38__PSTimeZoneController_viewDidAppear___block_invoke(uint64_t a1)
   [v1 becomeFirstResponder];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"TIMEZONE_CELL" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"TIMEZONE_CELL" forIndexPath:pathCopy];
   cities = self->_cities;
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   v10 = [(NSArray *)cities objectAtIndex:v9];
   [v7 setCity:v10];
@@ -121,43 +121,43 @@ void __38__PSTimeZoneController_viewDidAppear___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = -[NSArray objectAtIndex:](self->_cities, "objectAtIndex:", [a4 row]);
-  v5 = [v9 properties];
-  [PSRootController setPreferenceValue:v5 specifier:self->_specifier];
+  v9 = -[NSArray objectAtIndex:](self->_cities, "objectAtIndex:", [path row]);
+  properties = [v9 properties];
+  [PSRootController setPreferenceValue:properties specifier:self->_specifier];
 
   [(PSSpecifier *)self->_specifier performSetterWithValue:v9];
-  v6 = [(PSTimeZoneController *)self parentController];
-  [v6 reloadSpecifier:self->_specifier];
+  parentController = [(PSTimeZoneController *)self parentController];
+  [parentController reloadSpecifier:self->_specifier];
 
-  v7 = [(PSTimeZoneController *)self navigationController];
-  v8 = [v7 popViewControllerAnimated:1];
+  navigationController = [(PSTimeZoneController *)self navigationController];
+  v8 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v11 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
-  if ([v11 length])
+  if ([text length])
   {
-    v5 = v11;
+    currentTimeZoneCityName = text;
   }
 
   else
   {
-    v5 = [(PSTimeZoneController *)self currentTimeZoneCityName];
+    currentTimeZoneCityName = [(PSTimeZoneController *)self currentTimeZoneCityName];
   }
 
-  v6 = v5;
-  v7 = [MEMORY[0x1E698B670] sharedManager];
-  v8 = [v7 citiesMatchingName:v6];
+  v6 = currentTimeZoneCityName;
+  mEMORY[0x1E698B670] = [MEMORY[0x1E698B670] sharedManager];
+  v8 = [mEMORY[0x1E698B670] citiesMatchingName:v6];
   cities = self->_cities;
   self->_cities = v8;
 
-  v10 = [(PSTimeZoneController *)self tableView];
-  [v10 reloadData];
+  tableView = [(PSTimeZoneController *)self tableView];
+  [tableView reloadData];
 }
 
 - (PSListController)parentController

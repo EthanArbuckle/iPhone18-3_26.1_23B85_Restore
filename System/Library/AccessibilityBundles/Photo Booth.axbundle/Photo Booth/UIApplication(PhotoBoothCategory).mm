@@ -6,7 +6,7 @@
 
 - (uint64_t)accessibilityStartStopToggle
 {
-  v1 = [a1 safeValueForKey:@"_photoBoothController"];
+  v1 = [self safeValueForKey:@"_photoBoothController"];
   v2 = [v1 safeValueForKey:@"_effectsController"];
 
   if (objc_opt_respondsToSelector())

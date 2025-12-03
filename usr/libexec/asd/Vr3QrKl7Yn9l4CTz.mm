@@ -1,11 +1,11 @@
 @interface Vr3QrKl7Yn9l4CTz
 - (Vr3QrKl7Yn9l4CTz)init;
-- (Vr3QrKl7Yn9l4CTz)initWithfOZWnqN9bY6jwOMf:(id)a3;
+- (Vr3QrKl7Yn9l4CTz)initWithfOZWnqN9bY6jwOMf:(id)mf;
 - (void)dYBT28sn68SB69rn;
-- (void)gCEWuNTdkAWg8Jj5WithStMYeuN4F4F4tdlz:(id)a3 workflows:(id)a4;
+- (void)gCEWuNTdkAWg8Jj5WithStMYeuN4F4F4tdlz:(id)f4tdlz workflows:(id)workflows;
 - (void)hiMi2bftgysHNCmu;
 - (void)jzyh7hNN2V5AZJR1;
-- (void)m2fzkz0hfx3YgwiD:(BOOL)a3;
+- (void)m2fzkz0hfx3YgwiD:(BOOL)d;
 - (void)p3IhAuuUciVQl4AK;
 - (void)ppirDXSrO0poQaQJ;
 - (void)qvdJFx0260C4oDQI;
@@ -40,16 +40,16 @@
   return v2;
 }
 
-- (Vr3QrKl7Yn9l4CTz)initWithfOZWnqN9bY6jwOMf:(id)a3
+- (Vr3QrKl7Yn9l4CTz)initWithfOZWnqN9bY6jwOMf:(id)mf
 {
-  v5 = a3;
+  mfCopy = mf;
   v9.receiver = self;
   v9.super_class = Vr3QrKl7Yn9l4CTz;
   v6 = [(Vr3QrKl7Yn9l4CTz *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cacheManager, a3);
+    objc_storeStrong(&v6->_cacheManager, mf);
   }
 
   return v7;
@@ -85,25 +85,25 @@
 
 - (void)qvdJFx0260C4oDQI
 {
-  v2 = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
-  [v2 vWMDLV5jN1a2h2p2:&__NSDictionary0__struct completionHandler:&stru_100690960];
+  cacheManager = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
+  [cacheManager vWMDLV5jN1a2h2p2:&__NSDictionary0__struct completionHandler:&stru_100690960];
 }
 
-- (void)gCEWuNTdkAWg8Jj5WithStMYeuN4F4F4tdlz:(id)a3 workflows:(id)a4
+- (void)gCEWuNTdkAWg8Jj5WithStMYeuN4F4F4tdlz:(id)f4tdlz workflows:(id)workflows
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  f4tdlzCopy = f4tdlz;
+  workflowsCopy = workflows;
+  if ([f4tdlzCopy count])
   {
-    if ([v6 containsObject:&off_1006BA910])
+    if ([f4tdlzCopy containsObject:&off_1006BA910])
     {
-      v16 = v7;
-      v17 = v6;
+      v16 = workflowsCopy;
+      v17 = f4tdlzCopy;
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v8 = v7;
+      v8 = workflowsCopy;
       v9 = [v8 countByEnumeratingWithState:&v18 objects:v24 count:16];
       if (v9)
       {
@@ -136,8 +136,8 @@
         while (v10);
       }
 
-      v7 = v16;
-      v6 = v17;
+      workflowsCopy = v16;
+      f4tdlzCopy = v17;
     }
   }
 
@@ -151,9 +151,9 @@
 
 - (void)jzyh7hNN2V5AZJR1
 {
-  v2 = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
+  cacheManager = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
   v5 = 0;
-  [v2 ax7Szgk7yfiKNgSDError:&v5];
+  [cacheManager ax7Szgk7yfiKNgSDError:&v5];
   v3 = v5;
 
   if (v3)
@@ -175,13 +175,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "purgeBindings", v5, 2u);
   }
 
-  v4 = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
-  [v4 removeAllBindings];
+  cacheManager = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
+  [cacheManager removeAllBindings];
 }
 
-- (void)m2fzkz0hfx3YgwiD:(BOOL)a3
+- (void)m2fzkz0hfx3YgwiD:(BOOL)d
 {
-  v3 = a3;
+  dCopy = d;
   v5 = qword_1006DF770;
   if (os_log_type_enabled(qword_1006DF770, OS_LOG_TYPE_INFO))
   {
@@ -190,15 +190,15 @@
   }
 
   v6 = &__NSDictionary0__struct;
-  if (v3)
+  if (dCopy)
   {
     v6 = &off_1006BAC80;
   }
 
   v7 = v6;
-  v8 = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
+  cacheManager = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
   v11 = 0;
-  [v8 nYOW3DfIUVSEf2Hm:v7 rTZQrPNUbDSIifrh:&v11];
+  [cacheManager nYOW3DfIUVSEf2Hm:v7 rTZQrPNUbDSIifrh:&v11];
 
   v9 = v11;
   if (v9)
@@ -210,7 +210,7 @@
     }
   }
 
-  if (v3)
+  if (dCopy)
   {
     [(PrecomputationManager *)self->_precomputationManager notifyCachesWereRemovedWithCompletionHandler:&stru_1006909A0];
     [(Vr3QrKl7Yn9l4CTz *)self uNvANT3HHuMUUYmG];
@@ -224,17 +224,17 @@
 
 - (void)ppirDXSrO0poQaQJ
 {
-  v4 = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
+  cacheManager = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
   v2 = +[_TtC3asd23ASDConfigurationManager shared];
-  v3 = [v2 payloadWorkflowTTLs];
-  [v4 vWMDLV5jN1a2h2p2:v3 completionHandler:&stru_1006909C0];
+  payloadWorkflowTTLs = [v2 payloadWorkflowTTLs];
+  [cacheManager vWMDLV5jN1a2h2p2:payloadWorkflowTTLs completionHandler:&stru_1006909C0];
 }
 
 - (void)zs3Lq7W446m0cZJL
 {
-  v2 = [(Vr3QrKl7Yn9l4CTz *)self coreDataManager];
+  coreDataManager = [(Vr3QrKl7Yn9l4CTz *)self coreDataManager];
   v6 = 0;
-  [v2 mILKmibfRWMwFVWD:@"DB_R115061196" iZGmRj7VI4MJ9lO1:0 AndError:&v6];
+  [coreDataManager mILKmibfRWMwFVWD:@"DB_R115061196" iZGmRj7VI4MJ9lO1:0 AndError:&v6];
   v3 = v6;
 
   v4 = qword_1006DF770;
@@ -262,8 +262,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "purgeG", v6, 2u);
   }
 
-  v4 = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
-  v5 = [v4 removeAllGeocodings];
+  cacheManager = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
+  removeAllGeocodings = [cacheManager removeAllGeocodings];
 }
 
 - (void)hiMi2bftgysHNCmu
@@ -275,8 +275,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "purgeR", v6, 2u);
   }
 
-  v4 = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
-  v5 = [v4 removeRavioli];
+  cacheManager = [(Vr3QrKl7Yn9l4CTz *)self cacheManager];
+  removeRavioli = [cacheManager removeRavioli];
 }
 
 @end

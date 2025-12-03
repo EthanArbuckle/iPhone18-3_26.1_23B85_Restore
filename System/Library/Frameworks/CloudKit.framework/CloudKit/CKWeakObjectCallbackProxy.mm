@@ -1,8 +1,8 @@
 @interface CKWeakObjectCallbackProxy
-- (CKWeakObjectCallbackProxy)initWithWeakObject:(id)a3 callbackProtocol:(id)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (CKWeakObjectCallbackProxy)initWithWeakObject:(id)object callbackProtocol:(id)protocol;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)weakObject;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation CKWeakObjectCallbackProxy
@@ -14,26 +14,26 @@
   return WeakRetained;
 }
 
-- (CKWeakObjectCallbackProxy)initWithWeakObject:(id)a3 callbackProtocol:(id)a4
+- (CKWeakObjectCallbackProxy)initWithWeakObject:(id)object callbackProtocol:(id)protocol
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  protocolCopy = protocol;
   v10 = objc_msgSend_init(self, v8, v9);
   v11 = v10;
   if (v10)
   {
-    *(v10 + 8) = v6 != 0;
-    objc_storeWeak((v10 + 16), v6);
-    objc_storeStrong(&v11->_callbackProtocol, a4);
+    *(v10 + 8) = objectCopy != 0;
+    objc_storeWeak((v10 + 16), objectCopy);
+    objc_storeStrong(&v11->_callbackProtocol, protocol);
   }
 
   return v11;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = objc_msgSend_callbackProtocol(self, a2, a3);
-  MethodDescription = protocol_getMethodDescription(v4, a3, 1, 1);
+  v4 = objc_msgSend_callbackProtocol(self, a2, selector);
+  MethodDescription = protocol_getMethodDescription(v4, selector, 1, 1);
 
   if (MethodDescription.name)
   {
@@ -48,12 +48,12 @@
   return v7;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  objc_msgSend_retainArguments(v4, v5, v6);
+  invocationCopy = invocation;
+  objc_msgSend_retainArguments(invocationCopy, v5, v6);
   v9 = objc_msgSend_callbackProtocol(self, v7, v8);
-  v12 = objc_msgSend_selector(v4, v10, v11);
+  v12 = objc_msgSend_selector(invocationCopy, v10, v11);
   name = protocol_getMethodDescription(v9, v12, 1, 1).name;
 
   if (name)
@@ -61,14 +61,14 @@
     v18 = objc_msgSend_weakObject(self, v14, v15);
     if (v18)
     {
-      objc_msgSend_setTarget_(v4, v16, v18);
-      objc_msgSend_invoke(v4, v19, v20);
+      objc_msgSend_setTarget_(invocationCopy, v16, v18);
+      objc_msgSend_invoke(invocationCopy, v19, v20);
     }
 
     else
     {
       v21 = objc_msgSend_hadObject(self, v16, v17);
-      v24 = objc_msgSend_selector(v4, v22, v23);
+      v24 = objc_msgSend_selector(invocationCopy, v22, v23);
       v25 = NSStringFromSelector(v24);
       v27 = v25;
       if (v21)
@@ -83,7 +83,7 @@
       v28 = ;
 
       v31 = objc_msgSend_callbackProtocol(self, v29, v30);
-      objc_msgSend_CKInvokeAndNilOutReplyBlockWithError_forProtocol_(v4, v32, v28, v31);
+      objc_msgSend_CKInvokeAndNilOutReplyBlockWithError_forProtocol_(invocationCopy, v32, v28, v31);
     }
   }
 
@@ -91,7 +91,7 @@
   {
     v33.receiver = self;
     v33.super_class = CKWeakObjectCallbackProxy;
-    [(CKWeakObjectCallbackProxy *)&v33 forwardInvocation:v4];
+    [(CKWeakObjectCallbackProxy *)&v33 forwardInvocation:invocationCopy];
   }
 }
 

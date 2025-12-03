@@ -1,6 +1,6 @@
 @interface FMDAccessoryTypeValidator
 + (id)sharedInstance;
-- (BOOL)isAllowedAccessoryWithType:(id)a3;
+- (BOOL)isAllowedAccessoryWithType:(id)type;
 - (FMDAccessoryTypeValidator)init;
 @end
 
@@ -33,15 +33,15 @@
   return v3;
 }
 
-- (BOOL)isAllowedAccessoryWithType:(id)a3
+- (BOOL)isAllowedAccessoryWithType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(FMDAccessoryTypeValidator *)self allowedAccessoryTypes];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allowedAccessoryTypes = [(FMDAccessoryTypeValidator *)self allowedAccessoryTypes];
+  v6 = [allowedAccessoryTypes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -51,17 +51,17 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allowedAccessoryTypes);
         }
 
-        if ([v4 isEqualToString:*(*(&v10 + 1) + 8 * i)])
+        if ([typeCopy isEqualToString:*(*(&v10 + 1) + 8 * i)])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allowedAccessoryTypes countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;

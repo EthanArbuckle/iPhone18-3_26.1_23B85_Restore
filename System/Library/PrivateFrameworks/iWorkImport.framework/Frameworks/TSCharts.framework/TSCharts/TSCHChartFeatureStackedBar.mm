@@ -1,5 +1,5 @@
 @interface TSCHChartFeatureStackedBar
-- (Class)valueAxisClassForID:(id)a3 scale:(int64_t)a4;
+- (Class)valueAxisClassForID:(id)d scale:(int64_t)scale;
 - (id)defaultDataFileName;
 - (id)genericToSpecificPropertyMap;
 - (id)userInterfaceName;
@@ -7,14 +7,14 @@
 
 @implementation TSCHChartFeatureStackedBar
 
-- (Class)valueAxisClassForID:(id)a3 scale:(int64_t)a4
+- (Class)valueAxisClassForID:(id)d scale:(int64_t)scale
 {
-  v9 = objc_msgSend_type(a3, a2, v4, v5, v6);
+  v9 = objc_msgSend_type(d, a2, v4, v5, v6);
   if (v9 == 1)
   {
     v11 = objc_opt_class();
     v12 = objc_opt_class();
-    v10 = objc_msgSend_p_selectAxisClassForScale_linearClass_logClass_percentClass_(self, v13, v14, v15, v16, a4, v11, 0, v12);
+    v10 = objc_msgSend_p_selectAxisClassForScale_linearClass_logClass_percentClass_(self, v13, v14, v15, v16, scale, v11, 0, v12);
   }
 
   else if (v9 == 2)

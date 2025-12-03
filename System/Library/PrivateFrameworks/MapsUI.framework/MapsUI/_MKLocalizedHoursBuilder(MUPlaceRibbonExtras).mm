@@ -6,23 +6,23 @@
 
 - (__CFString)ribbonSummaryForOpeningState
 {
-  v2 = [a1 state];
-  if (v2 < 5 || v2 == 6)
+  state = [self state];
+  if (state < 5 || state == 6)
   {
-    v3 = [a1 localizedOperatingHours];
+    localizedOperatingHours = [self localizedOperatingHours];
   }
 
-  else if (v2 == 5)
+  else if (state == 5)
   {
-    v3 = _MULocalizedStringFromThisBundle(@"Open [Ribbon]");
+    localizedOperatingHours = _MULocalizedStringFromThisBundle(@"Open [Ribbon]");
   }
 
   else
   {
-    v3 = &stru_1F44CA030;
+    localizedOperatingHours = &stru_1F44CA030;
   }
 
-  return v3;
+  return localizedOperatingHours;
 }
 
 @end

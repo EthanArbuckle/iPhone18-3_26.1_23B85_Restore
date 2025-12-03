@@ -1,14 +1,14 @@
 @interface GDVUChangeBookmark
-+ (id)decodeFromData:(id)a3 error:(id *)a4;
-- (id)encodeToDataAndReturnError:(id *)a3;
++ (id)decodeFromData:(id)data error:(id *)error;
+- (id)encodeToDataAndReturnError:(id *)error;
 - (int64_t)hash;
 @end
 
 @implementation GDVUChangeBookmark
 
-- (id)encodeToDataAndReturnError:(id *)a3
+- (id)encodeToDataAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = GDVUChangeBookmark.encodeToData()();
   v6 = v5;
 
@@ -18,9 +18,9 @@
   return v7;
 }
 
-+ (id)decodeFromData:(id)a3 error:(id *)a4
++ (id)decodeFromData:(id)data error:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_1ABF21DD4();
   v7 = v6;
 
@@ -32,7 +32,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GDVUChangeBookmark.hash.getter();
 
   return v3;

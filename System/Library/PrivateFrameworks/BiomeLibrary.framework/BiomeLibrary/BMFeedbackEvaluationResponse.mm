@@ -1,16 +1,16 @@
 @interface BMFeedbackEvaluationResponse
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMFeedbackEvaluationResponse)initWithEvaluationUuid:(id)a3 userResponse:(int)a4;
-- (BMFeedbackEvaluationResponse)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMFeedbackEvaluationResponse)initWithEvaluationUuid:(id)uuid userResponse:(int)response;
+- (BMFeedbackEvaluationResponse)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSUUID)evaluationUuid;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMFeedbackEvaluationResponse
@@ -29,25 +29,25 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMFeedbackEvaluationResponse *)self evaluationUuid];
-    v7 = [v5 evaluationUuid];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    evaluationUuid = [(BMFeedbackEvaluationResponse *)self evaluationUuid];
+    evaluationUuid2 = [v5 evaluationUuid];
+    v8 = evaluationUuid2;
+    if (evaluationUuid == evaluationUuid2)
     {
     }
 
     else
     {
-      v9 = [(BMFeedbackEvaluationResponse *)self evaluationUuid];
-      v10 = [v5 evaluationUuid];
-      v11 = [v9 isEqual:v10];
+      evaluationUuid3 = [(BMFeedbackEvaluationResponse *)self evaluationUuid];
+      evaluationUuid4 = [v5 evaluationUuid];
+      v11 = [evaluationUuid3 isEqual:evaluationUuid4];
 
       if (!v11)
       {
@@ -58,8 +58,8 @@ LABEL_8:
       }
     }
 
-    v13 = [(BMFeedbackEvaluationResponse *)self userResponse];
-    v12 = v13 == [v5 userResponse];
+    userResponse = [(BMFeedbackEvaluationResponse *)self userResponse];
+    v12 = userResponse == [v5 userResponse];
     goto LABEL_8;
   }
 
@@ -88,30 +88,30 @@ LABEL_9:
 - (id)jsonDictionary
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [(BMFeedbackEvaluationResponse *)self evaluationUuid];
-  v4 = [v3 UUIDString];
+  evaluationUuid = [(BMFeedbackEvaluationResponse *)self evaluationUuid];
+  uUIDString = [evaluationUuid UUIDString];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMFeedbackEvaluationResponse userResponse](self, "userResponse")}];
   v11[0] = @"evaluationUuid";
-  v6 = v4;
-  if (!v4)
+  null = uUIDString;
+  if (!uUIDString)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v11[1] = @"userResponse";
-  v12[0] = v6;
-  v7 = v5;
+  v12[0] = null;
+  null2 = v5;
   if (!v5)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[1] = v7;
+  v12[1] = null2;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   if (v5)
   {
-    if (v4)
+    if (uUIDString)
     {
       goto LABEL_7;
     }
@@ -120,7 +120,7 @@ LABEL_9:
   else
   {
 
-    if (v4)
+    if (uUIDString)
     {
       goto LABEL_7;
     }
@@ -132,16 +132,16 @@ LABEL_7:
   return v8;
 }
 
-- (BMFeedbackEvaluationResponse)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMFeedbackEvaluationResponse)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"evaluationUuid"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"evaluationUuid"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"userResponse"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"userResponse"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -155,7 +155,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v20 = objc_alloc(MEMORY[0x1E696ABC0]);
             v21 = *MEMORY[0x1E698F240];
@@ -163,11 +163,11 @@ LABEL_4:
             v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"userResponse"];
             v28 = v22;
             v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-            *a4 = [v20 initWithDomain:v21 code:2 userInfo:v23];
+            *error = [v20 initWithDomain:v21 code:2 userInfo:v23];
           }
 
           v10 = 0;
-          v17 = 0;
+          selfCopy = 0;
           goto LABEL_18;
         }
 
@@ -183,7 +183,7 @@ LABEL_4:
     }
 
     self = -[BMFeedbackEvaluationResponse initWithEvaluationUuid:userResponse:](self, "initWithEvaluationUuid:userResponse:", v8, [v10 intValue]);
-    v17 = self;
+    selfCopy = self;
 LABEL_18:
 
     goto LABEL_19;
@@ -192,9 +192,9 @@ LABEL_18:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
-      v17 = 0;
+      selfCopy = 0;
       goto LABEL_21;
     }
 
@@ -205,8 +205,8 @@ LABEL_18:
     v30 = v8;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     v16 = [v14 initWithDomain:v15 code:2 userInfo:v10];
-    v17 = 0;
-    *a4 = v16;
+    selfCopy = 0;
+    *error = v16;
     goto LABEL_19;
   }
 
@@ -220,9 +220,9 @@ LABEL_18:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
@@ -232,30 +232,30 @@ LABEL_18:
   v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"-initWithUUIDString: for %@ returned nil", @"evaluationUuid"];
   v32[0] = v10;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-  *a4 = [v24 initWithDomain:v25 code:2 userInfo:v26];
+  *error = [v24 initWithDomain:v25 code:2 userInfo:v26];
 
-  v17 = 0;
+  selfCopy = 0;
 LABEL_19:
 
 LABEL_20:
 LABEL_21:
 
   v18 = *MEMORY[0x1E69E9840];
-  return v17;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMFeedbackEvaluationResponse *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (self->_raw_evaluationUuid)
   {
     PBDataWriterWriteDataField();
@@ -265,9 +265,9 @@ LABEL_21:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v27.receiver = self;
   v27.super_class = BMFeedbackEvaluationResponse;
   v5 = [(BMEventBase *)&v27 init];
@@ -276,12 +276,12 @@ LABEL_21:
     goto LABEL_40;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -292,18 +292,18 @@ LABEL_21:
       while (1)
       {
         v28 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v28 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v28 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v28 & 0x7F) << v7;
@@ -320,9 +320,9 @@ LABEL_21:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -348,18 +348,18 @@ LABEL_16:
         while (1)
         {
           v28 = 0;
-          v18 = [v4 position] + 1;
-          if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 1, v19 <= objc_msgSend(v4, "length")))
+          v18 = [fromCopy position] + 1;
+          if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 1, v19 <= objc_msgSend(fromCopy, "length")))
           {
-            v20 = [v4 data];
-            [v20 getBytes:&v28 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v28 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v17 |= (v28 & 0x7F) << v15;
@@ -375,7 +375,7 @@ LABEL_16:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v17 > 7)
+        if (([fromCopy hasError] & 1) != 0 || v17 > 7)
         {
 LABEL_35:
           LODWORD(v17) = 0;
@@ -389,13 +389,13 @@ LABEL_35:
         goto LABEL_39;
       }
 
-      v24 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v24 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_39:
     v25 = 0;
@@ -413,28 +413,28 @@ LABEL_40:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMFeedbackEvaluationResponse *)self evaluationUuid];
+  evaluationUuid = [(BMFeedbackEvaluationResponse *)self evaluationUuid];
   v5 = BMFeedbackEvaluationResponseUserResponseAsString([(BMFeedbackEvaluationResponse *)self userResponse]);
-  v6 = [v3 initWithFormat:@"BMFeedbackEvaluationResponse with evaluationUuid: %@, userResponse: %@", v4, v5];
+  v6 = [v3 initWithFormat:@"BMFeedbackEvaluationResponse with evaluationUuid: %@, userResponse: %@", evaluationUuid, v5];
 
   return v6;
 }
 
-- (BMFeedbackEvaluationResponse)initWithEvaluationUuid:(id)a3 userResponse:(int)a4
+- (BMFeedbackEvaluationResponse)initWithEvaluationUuid:(id)uuid userResponse:(int)response
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  uuidCopy = uuid;
   v12.receiver = self;
   v12.super_class = BMFeedbackEvaluationResponse;
   v7 = [(BMEventBase *)&v12 init];
   if (v7)
   {
     v7->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v6)
+    if (uuidCopy)
     {
       v13[0] = 0;
       v13[1] = 0;
-      [v6 getUUIDBytes:v13];
+      [uuidCopy getUUIDBytes:v13];
       v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v13 length:16];
       raw_evaluationUuid = v7->_raw_evaluationUuid;
       v7->_raw_evaluationUuid = v8;
@@ -446,7 +446,7 @@ LABEL_40:
       v7->_raw_evaluationUuid = 0;
     }
 
-    v7->_userResponse = a4;
+    v7->_userResponse = response;
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -467,9 +467,9 @@ LABEL_40:
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -477,8 +477,8 @@ LABEL_40:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMFeedbackEvaluationResponse alloc] initByReadFrom:v7];
     v4 = v8;

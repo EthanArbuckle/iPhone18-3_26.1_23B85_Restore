@@ -1,7 +1,7 @@
 @interface TUIElementStructStruct
 + (id)attributesToIgnoreWhenResolving;
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5;
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context;
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context;
 @end
 
 @implementation TUIElementStructStruct
@@ -18,25 +18,25 @@
   return v3;
 }
 
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context
 {
-  v8 = a5;
-  v9 = a6;
-  var0 = a3.var0;
-  LOWORD(a3.var0) = [v8 propertyNameForAttribute:137 node:a3.var0];
-  v11 = [v8 closureForNode:var0];
-  v12 = [v8 structForAttribute:32 node:var0];
-  v13 = [[_TUIElementStructStructBuilder alloc] initWithName:LOWORD(a3.var0) closure:v11 basedOn:v12 context:v9];
+  attributesCopy = attributes;
+  contextCopy = context;
+  var0 = node.var0;
+  LOWORD(node.var0) = [attributesCopy propertyNameForAttribute:137 node:node.var0];
+  v11 = [attributesCopy closureForNode:var0];
+  v12 = [attributesCopy structForAttribute:32 node:var0];
+  v13 = [[_TUIElementStructStructBuilder alloc] initWithName:LOWORD(node.var0) closure:v11 basedOn:v12 context:contextCopy];
 
   return v13;
 }
 
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [v8 finalizeStruct];
-  [v6 setStructValue:v7 forKey:{objc_msgSend(v8, "name")}];
+  objectCopy = object;
+  builderCopy = builder;
+  finalizeStruct = [objectCopy finalizeStruct];
+  [builderCopy setStructValue:finalizeStruct forKey:{objc_msgSend(objectCopy, "name")}];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface PKAccountWebServiceScheduleTransferRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 - (id)endpointComponents;
-- (id)manifestHashWithReferenceIdentifier:(id)a3;
+- (id)manifestHashWithReferenceIdentifier:(id)identifier;
 @end
 
 @implementation PKAccountWebServiceScheduleTransferRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKAccountWebServiceScheduleTransferRequest *)self baseURL];
-  if (!v5)
+  informationCopy = information;
+  baseURL = [(PKAccountWebServiceScheduleTransferRequest *)self baseURL];
+  if (!baseURL)
   {
     v16 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -31,7 +31,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v16 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -102,34 +102,34 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v6 = [(PKAccountWebServiceScheduleTransferRequest *)self endpointComponents];
-  v7 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:v5 endpointComponents:v6 queryParameters:0 appleAccountInformation:v4];
+  endpointComponents = [(PKAccountWebServiceScheduleTransferRequest *)self endpointComponents];
+  v7 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:endpointComponents queryParameters:0 appleAccountInformation:informationCopy];
 
   [v7 setHTTPMethod:@"POST"];
   [v7 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [(PKAccountScheduledTransferList *)self->_scheduledTransfers jsonArrayRepresentation];
-  [v8 setObject:v9 forKeyedSubscript:@"scheduledTransfers"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  jsonArrayRepresentation = [(PKAccountScheduledTransferList *)self->_scheduledTransfers jsonArrayRepresentation];
+  [dictionary setObject:jsonArrayRepresentation forKeyedSubscript:@"scheduledTransfers"];
 
-  v10 = [(PKAccountTransferScheduleDetails *)self->_scheduleDetails jsonDictionaryRepresentation];
-  [v8 setObject:v10 forKeyedSubscript:@"scheduleDetails"];
+  jsonDictionaryRepresentation = [(PKAccountTransferScheduleDetails *)self->_scheduleDetails jsonDictionaryRepresentation];
+  [dictionary setObject:jsonDictionaryRepresentation forKeyedSubscript:@"scheduleDetails"];
 
-  v11 = [(NSData *)self->_publicKeyHash hexEncoding];
-  [v8 setObject:v11 forKeyedSubscript:@"publicKeyHash"];
+  hexEncoding = [(NSData *)self->_publicKeyHash hexEncoding];
+  [dictionary setObject:hexEncoding forKeyedSubscript:@"publicKeyHash"];
 
-  v12 = [(PKPaymentDeviceMetadata *)self->_deviceMetadata dictionaryRepresentation];
-  if (v12)
+  dictionaryRepresentation = [(PKPaymentDeviceMetadata *)self->_deviceMetadata dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    [v8 setObject:v12 forKey:@"deviceMetadata"];
+    [dictionary setObject:dictionaryRepresentation forKey:@"deviceMetadata"];
   }
 
   odiAssessment = self->_odiAssessment;
   if (odiAssessment)
   {
-    [v8 setObject:odiAssessment forKey:@"odiAssessment"];
+    [dictionary setObject:odiAssessment forKey:@"odiAssessment"];
   }
 
-  v14 = [objc_opt_class() _HTTPBodyWithDictionary:v8];
+  v14 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v7 setHTTPBody:v14];
 
   v15 = [v7 copy];
@@ -158,35 +158,35 @@ LABEL_23:
   return v3;
 }
 
-- (id)manifestHashWithReferenceIdentifier:(id)a3
+- (id)manifestHashWithReferenceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(PKAccountScheduledTransferList *)self->_scheduledTransfers scheduledTransferOfFundingSourceType:1];
   v6 = [(PKAccountScheduledTransferList *)self->_scheduledTransfers scheduledTransferOfFundingSourceType:2];
-  v7 = [v5 hashComponent];
-  v8 = [v6 hashComponent];
-  v9 = [(PKAccountTransferScheduleDetails *)self->_scheduleDetails hashString];
-  v10 = [MEMORY[0x1E696AD60] string];
-  if ([v7 length])
+  hashComponent = [v5 hashComponent];
+  hashComponent2 = [v6 hashComponent];
+  hashString = [(PKAccountTransferScheduleDetails *)self->_scheduleDetails hashString];
+  string = [MEMORY[0x1E696AD60] string];
+  if ([hashComponent length])
   {
-    [v10 appendString:v7];
+    [string appendString:hashComponent];
   }
 
-  if ([v8 length])
+  if ([hashComponent2 length])
   {
-    [v10 appendString:v8];
+    [string appendString:hashComponent2];
   }
 
-  if (v9)
+  if (hashString)
   {
-    [v10 appendString:v9];
+    [string appendString:hashString];
   }
 
-  [v10 appendString:v4];
-  v11 = [v10 dataUsingEncoding:4];
-  v12 = [v11 SHA256Hash];
+  [string appendString:identifierCopy];
+  v11 = [string dataUsingEncoding:4];
+  sHA256Hash = [v11 SHA256Hash];
 
-  return v12;
+  return sHA256Hash;
 }
 
 @end

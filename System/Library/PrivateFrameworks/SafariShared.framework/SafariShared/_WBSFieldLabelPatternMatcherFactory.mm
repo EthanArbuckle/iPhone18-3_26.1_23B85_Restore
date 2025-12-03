@@ -1,7 +1,7 @@
 @interface _WBSFieldLabelPatternMatcherFactory
-+ (__WBSFieldLabelPatternMatcherArray)createFieldLabelPatternMatcherArrayFromWordArrays:(id)a3 allowingEndOfWordMatches:(BOOL)a4;
++ (__WBSFieldLabelPatternMatcherArray)createFieldLabelPatternMatcherArrayFromWordArrays:(id)arrays allowingEndOfWordMatches:(BOOL)matches;
 - (_WBSFieldLabelPatternMatcherFactory)init;
-- (void)_addWord:(id)a3 allowingEndOfWordMatch:(BOOL)a4;
+- (void)_addWord:(id)word allowingEndOfWordMatch:(BOOL)match;
 @end
 
 @implementation _WBSFieldLabelPatternMatcherFactory
@@ -23,18 +23,18 @@
   return v2;
 }
 
-- (void)_addWord:(id)a3 allowingEndOfWordMatch:(BOOL)a4
+- (void)_addWord:(id)word allowingEndOfWordMatch:(BOOL)match
 {
-  v19 = a3;
-  v6 = [v19 length];
+  wordCopy = word;
+  v6 = [wordCopy length];
   v7 = self->_trie;
-  if (a4 || !SafariShared::FieldLabelPatternMatcher::isWordCharacter([v19 characterAtIndex:0]))
+  if (match || !SafariShared::FieldLabelPatternMatcher::isWordCharacter([wordCopy characterAtIndex:0]))
   {
-    v10 = v7;
+    dictionary = v7;
     if (!v6)
     {
 LABEL_13:
-      v14 = v10;
+      dictionary2 = dictionary;
       goto LABEL_14;
     }
   }
@@ -46,14 +46,14 @@ LABEL_13:
 
     if (v9)
     {
-      v10 = [(NSMutableDictionary *)v7 objectForKey:v8];
+      dictionary = [(NSMutableDictionary *)v7 objectForKey:v8];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v15 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:0xFFFFLL];
-      [(NSMutableDictionary *)v7 setObject:v10 forKey:v15];
+      [(NSMutableDictionary *)v7 setObject:dictionary forKey:v15];
     }
 
     if (!v6)
@@ -64,28 +64,28 @@ LABEL_13:
 
   for (i = 0; i != v6; ++i)
   {
-    v12 = [v19 characterAtIndex:i];
+    v12 = [wordCopy characterAtIndex:i];
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v12];
-    v14 = [v10 objectForKey:v13];
-    if (!v14)
+    dictionary2 = [dictionary objectForKey:v13];
+    if (!dictionary2)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
-      [v10 setObject:v14 forKey:v13];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:dictionary2 forKey:v13];
     }
 
-    v10 = v14;
+    dictionary = dictionary2;
   }
 
 LABEL_14:
-  isWordCharacter = SafariShared::FieldLabelPatternMatcher::isWordCharacter([v19 characterAtIndex:v6 - 1]);
-  v17 = [MEMORY[0x1E695DF90] dictionary];
+  isWordCharacter = SafariShared::FieldLabelPatternMatcher::isWordCharacter([wordCopy characterAtIndex:v6 - 1]);
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:((isWordCharacter << 15) >> 15)];
-  [v14 setObject:v17 forKey:v18];
+  [dictionary2 setObject:dictionary3 forKey:v18];
 }
 
-+ (__WBSFieldLabelPatternMatcherArray)createFieldLabelPatternMatcherArrayFromWordArrays:(id)a3 allowingEndOfWordMatches:(BOOL)a4
++ (__WBSFieldLabelPatternMatcherArray)createFieldLabelPatternMatcherArrayFromWordArrays:(id)arrays allowingEndOfWordMatches:(BOOL)matches
 {
-  v4 = a4;
+  matchesCopy = matches;
   v38 = *MEMORY[0x1E69E9840];
   v35[0] = 0;
   v35[1] = 0;
@@ -97,7 +97,7 @@ LABEL_14:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = a3;
+  obj = arrays;
   v5 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v5)
   {
@@ -131,8 +131,8 @@ LABEL_14:
                 objc_enumerationMutation(v10);
               }
 
-              v14 = [*(*(&v25 + 1) + 8 * j) lowercaseString];
-              [(_WBSFieldLabelPatternMatcherFactory *)v9 _addWord:v14 allowingEndOfWordMatch:v4];
+              lowercaseString = [*(*(&v25 + 1) + 8 * j) lowercaseString];
+              [(_WBSFieldLabelPatternMatcherFactory *)v9 _addWord:lowercaseString allowingEndOfWordMatch:matchesCopy];
             }
 
             v11 = [v10 countByEnumeratingWithState:&v25 objects:v36 count:16];

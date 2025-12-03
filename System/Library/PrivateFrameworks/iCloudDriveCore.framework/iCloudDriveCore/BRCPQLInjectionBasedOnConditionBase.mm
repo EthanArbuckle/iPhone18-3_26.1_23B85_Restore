@@ -1,10 +1,10 @@
 @interface BRCPQLInjectionBasedOnConditionBase
-+ (id)_createInjectionWithCondition:(BOOL)a3;
++ (id)_createInjectionWithCondition:(BOOL)condition;
 @end
 
 @implementation BRCPQLInjectionBasedOnConditionBase
 
-+ (id)_createInjectionWithCondition:(BOOL)a3
++ (id)_createInjectionWithCondition:(BOOL)condition
 {
   v3 = brc_bread_crumbs();
   v4 = brc_default_log();

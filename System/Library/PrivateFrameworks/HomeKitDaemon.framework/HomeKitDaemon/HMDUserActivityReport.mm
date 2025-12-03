@@ -1,13 +1,13 @@
 @interface HMDUserActivityReport
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isExpiredWithCurrentDate:(id)a3 validInterval:(double)a4;
-- (HMDUserActivityReport)initWithUser:(id)a3 withReason:(unint64_t)a4 changedTimestamp:(id)a5 lastUpdateTimestamp:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isExpiredWithCurrentDate:(id)date validInterval:(double)interval;
+- (HMDUserActivityReport)initWithUser:(id)user withReason:(unint64_t)reason changedTimestamp:(id)timestamp lastUpdateTimestamp:(id)updateTimestamp;
 - (id)attributeDescriptions;
-- (id)changedTimestampFromReason:(unint64_t)a3 lastUpdateTimestamp:(id)a4;
-- (id)copyReportWithChangedTimestamp:(id)a3;
-- (id)copyReportWithLastUpdateTimestamp:(id)a3 reason:(unint64_t)a4;
-- (id)initFromMessagePayload:(id)a3 withUser:(id)a4;
+- (id)changedTimestampFromReason:(unint64_t)reason lastUpdateTimestamp:(id)timestamp;
+- (id)copyReportWithChangedTimestamp:(id)timestamp;
+- (id)copyReportWithLastUpdateTimestamp:(id)timestamp reason:(unint64_t)reason;
+- (id)initFromMessagePayload:(id)payload withUser:(id)user;
 - (id)serializedRemoteMessagePayload;
 - (unint64_t)contributorType;
 @end
@@ -18,23 +18,23 @@
 {
   v21[4] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v20 = [(HMDUserActivityReport *)self user];
-  v19 = [v20 uuid];
-  v4 = [v3 initWithName:@"user" value:v19];
+  user = [(HMDUserActivityReport *)self user];
+  uuid = [user uuid];
+  v4 = [v3 initWithName:@"user" value:uuid];
   v21[0] = v4;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
   v6 = HMDUserActivityStateDetectorUpdateReasonAsString([(HMDUserActivityReport *)self reason]);
   v7 = [v5 initWithName:@"reason" value:v6];
   v21[1] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v9 = [(HMDUserActivityReport *)self changedTimestamp];
-  v10 = [v9 hmf_localTimeDescription];
-  v11 = [v8 initWithName:@"changedTimestamp" value:v10];
+  changedTimestamp = [(HMDUserActivityReport *)self changedTimestamp];
+  hmf_localTimeDescription = [changedTimestamp hmf_localTimeDescription];
+  v11 = [v8 initWithName:@"changedTimestamp" value:hmf_localTimeDescription];
   v21[2] = v11;
   v12 = objc_alloc(MEMORY[0x277D0F778]);
-  v13 = [(HMDUserActivityReport *)self lastUpdateTimestamp];
-  v14 = [v13 hmf_localTimeDescription];
-  v15 = [v12 initWithName:@"lastUpdateTimestamp" value:v14];
+  lastUpdateTimestamp = [(HMDUserActivityReport *)self lastUpdateTimestamp];
+  hmf_localTimeDescription2 = [lastUpdateTimestamp hmf_localTimeDescription];
+  v15 = [v12 initWithName:@"lastUpdateTimestamp" value:hmf_localTimeDescription2];
   v21[3] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
 
@@ -43,9 +43,9 @@
   return v16;
 }
 
-- (id)copyReportWithLastUpdateTimestamp:(id)a3 reason:(unint64_t)a4
+- (id)copyReportWithLastUpdateTimestamp:(id)timestamp reason:(unint64_t)reason
 {
-  v5 = a3;
+  timestampCopy = timestamp;
   v6 = MEMORY[0x277CBEAD8];
   v7 = *MEMORY[0x277CBE658];
   v8 = MEMORY[0x277CCACA8];
@@ -57,9 +57,9 @@
   objc_exception_throw(v11);
 }
 
-- (id)copyReportWithChangedTimestamp:(id)a3
+- (id)copyReportWithChangedTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -84,20 +84,20 @@
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
   v7 = [v3 dictionaryWithDictionary:v6];
 
-  v8 = [(HMDUserActivityReport *)self changedTimestamp];
+  changedTimestamp = [(HMDUserActivityReport *)self changedTimestamp];
 
-  if (v8)
+  if (changedTimestamp)
   {
-    v9 = [(HMDUserActivityReport *)self changedTimestamp];
-    [v7 setObject:v9 forKeyedSubscript:@"HAS.changedTimestamp"];
+    changedTimestamp2 = [(HMDUserActivityReport *)self changedTimestamp];
+    [v7 setObject:changedTimestamp2 forKeyedSubscript:@"HAS.changedTimestamp"];
   }
 
-  v10 = [(HMDUserActivityReport *)self lastUpdateTimestamp];
+  lastUpdateTimestamp = [(HMDUserActivityReport *)self lastUpdateTimestamp];
 
-  if (v10)
+  if (lastUpdateTimestamp)
   {
-    v11 = [(HMDUserActivityReport *)self lastUpdateTimestamp];
-    [v7 setObject:v11 forKeyedSubscript:@"HAS.lastUpdatedTimestamp"];
+    lastUpdateTimestamp2 = [(HMDUserActivityReport *)self lastUpdateTimestamp];
+    [v7 setObject:lastUpdateTimestamp2 forKeyedSubscript:@"HAS.lastUpdatedTimestamp"];
   }
 
   v12 = [v7 copy];
@@ -107,13 +107,13 @@
   return v12;
 }
 
-- (BOOL)isExpiredWithCurrentDate:(id)a3 validInterval:(double)a4
+- (BOOL)isExpiredWithCurrentDate:(id)date validInterval:(double)interval
 {
-  v6 = a3;
-  v7 = [(HMDUserActivityReport *)self lastUpdateTimestamp];
-  v8 = [v7 dateByAddingTimeInterval:a4];
+  dateCopy = date;
+  lastUpdateTimestamp = [(HMDUserActivityReport *)self lastUpdateTimestamp];
+  v8 = [lastUpdateTimestamp dateByAddingTimeInterval:interval];
 
-  v9 = [v8 compare:v6];
+  v9 = [v8 compare:dateCopy];
   return v9 == -1;
 }
 
@@ -130,13 +130,13 @@
   objc_exception_throw(v7);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -150,14 +150,14 @@
     goto LABEL_10;
   }
 
-  v7 = [(HMDUserActivityReport *)self contributorType];
-  if (v7 != [v6 contributorType])
+  contributorType = [(HMDUserActivityReport *)self contributorType];
+  if (contributorType != [v6 contributorType])
   {
     goto LABEL_10;
   }
 
-  v8 = [(HMDUserActivityReport *)self user];
-  v9 = [v6 user];
+  user = [(HMDUserActivityReport *)self user];
+  user2 = [v6 user];
   v10 = HMFEqualObjects();
 
   if (!v10)
@@ -165,20 +165,20 @@
     goto LABEL_10;
   }
 
-  v11 = [(HMDUserActivityReport *)self reason];
-  if (v11 != [v6 reason])
+  reason = [(HMDUserActivityReport *)self reason];
+  if (reason != [v6 reason])
   {
     goto LABEL_10;
   }
 
-  v12 = [(HMDUserActivityReport *)self changedTimestamp];
-  v13 = [v6 changedTimestamp];
+  changedTimestamp = [(HMDUserActivityReport *)self changedTimestamp];
+  changedTimestamp2 = [v6 changedTimestamp];
   v14 = HMFEqualObjects();
 
   if (v14)
   {
-    v15 = [(HMDUserActivityReport *)self lastUpdateTimestamp];
-    v16 = [v6 lastUpdateTimestamp];
+    lastUpdateTimestamp = [(HMDUserActivityReport *)self lastUpdateTimestamp];
+    lastUpdateTimestamp2 = [v6 lastUpdateTimestamp];
     v17 = HMFEqualObjects();
   }
 
@@ -191,17 +191,17 @@ LABEL_10:
   return v17;
 }
 
-- (id)initFromMessagePayload:(id)a3 withUser:(id)a4
+- (id)initFromMessagePayload:(id)payload withUser:(id)user
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hmf_numberForKey:@"HAS.reason"];
+  payloadCopy = payload;
+  userCopy = user;
+  v8 = [payloadCopy hmf_numberForKey:@"HAS.reason"];
   v9 = v8;
   if (!v8)
   {
     v22 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -209,7 +209,7 @@ LABEL_10:
       *buf = 138543618;
       v30 = v24;
       v31 = 2112;
-      v32 = v6;
+      v32 = payloadCopy;
       v25 = "%{public}@Cannot initialize report because reason is not set in payload: %@";
 LABEL_16:
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, v25, buf, 0x16u);
@@ -222,11 +222,11 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v10 = [v8 unsignedIntegerValue];
-  if (!v10)
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
+  if (!unsignedIntegerValue)
   {
     v22 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -234,7 +234,7 @@ LABEL_17:
       *buf = 138543618;
       v30 = v24;
       v31 = 2112;
-      v32 = v6;
+      v32 = payloadCopy;
       v25 = "%{public}@Cannot initialize report because reason is set to unspecified in payload: %@";
       goto LABEL_16;
     }
@@ -242,13 +242,13 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v11 = v10;
-  v12 = [v6 hmf_dateForKey:@"HAS.changedTimestamp"];
+  v11 = unsignedIntegerValue;
+  v12 = [payloadCopy hmf_dateForKey:@"HAS.changedTimestamp"];
   v13 = [MEMORY[0x277CBEAA8] now];
   if (v12 && [v12 compare:v13] != -1)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy3 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -279,22 +279,22 @@ LABEL_17:
     v19 = v13;
   }
 
-  v20 = [(HMDUserActivityReport *)self initWithUser:v7 withReason:v11 changedTimestamp:v19 lastUpdateTimestamp:v13];
+  selfCopy2 = [(HMDUserActivityReport *)self initWithUser:userCopy withReason:v11 changedTimestamp:v19 lastUpdateTimestamp:v13];
 
-  v21 = v20;
+  v21 = selfCopy2;
 LABEL_18:
 
   v26 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-- (id)changedTimestampFromReason:(unint64_t)a3 lastUpdateTimestamp:(id)a4
+- (id)changedTimestampFromReason:(unint64_t)reason lastUpdateTimestamp:(id)timestamp
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 11 || a3 == 4)
+  timestampCopy = timestamp;
+  v6 = timestampCopy;
+  if (reason == 11 || reason == 4)
   {
-    v7 = v5;
+    v7 = timestampCopy;
   }
 
   else
@@ -305,32 +305,32 @@ LABEL_18:
   return v7;
 }
 
-- (HMDUserActivityReport)initWithUser:(id)a3 withReason:(unint64_t)a4 changedTimestamp:(id)a5 lastUpdateTimestamp:(id)a6
+- (HMDUserActivityReport)initWithUser:(id)user withReason:(unint64_t)reason changedTimestamp:(id)timestamp lastUpdateTimestamp:(id)updateTimestamp
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  userCopy = user;
+  timestampCopy = timestamp;
+  updateTimestampCopy = updateTimestamp;
   v21.receiver = self;
   v21.super_class = HMDUserActivityReport;
   v14 = [(HMDUserActivityReport *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_user, a3);
-    v15->_reason = a4;
-    v16 = v13;
-    if (!v13)
+    objc_storeStrong(&v14->_user, user);
+    v15->_reason = reason;
+    v16 = updateTimestampCopy;
+    if (!updateTimestampCopy)
     {
       v16 = [MEMORY[0x277CBEAA8] now];
     }
 
     objc_storeStrong(&v15->_lastUpdateTimestamp, v16);
-    if (v13)
+    if (updateTimestampCopy)
     {
-      if (v12)
+      if (timestampCopy)
       {
 LABEL_6:
-        v17 = v12;
+        v17 = timestampCopy;
         changedTimestamp = v15->_changedTimestamp;
         v15->_changedTimestamp = v17;
 LABEL_9:
@@ -342,13 +342,13 @@ LABEL_9:
     else
     {
 
-      if (v12)
+      if (timestampCopy)
       {
         goto LABEL_6;
       }
     }
 
-    v19 = [(HMDUserActivityReport *)v15 changedTimestampFromReason:a4 lastUpdateTimestamp:v15->_lastUpdateTimestamp];
+    v19 = [(HMDUserActivityReport *)v15 changedTimestampFromReason:reason lastUpdateTimestamp:v15->_lastUpdateTimestamp];
     changedTimestamp = v15->_changedTimestamp;
     v15->_changedTimestamp = v19;
     goto LABEL_9;

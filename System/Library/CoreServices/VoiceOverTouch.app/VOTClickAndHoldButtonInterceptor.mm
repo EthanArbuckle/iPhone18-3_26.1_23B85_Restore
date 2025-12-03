@@ -1,20 +1,20 @@
 @interface VOTClickAndHoldButtonInterceptor
-- (VOTClickAndHoldButtonInterceptor)initWithThreadKey:(id)a3;
-- (void)_drainQueueAndSendEventsToSystem:(BOOL)a3;
+- (VOTClickAndHoldButtonInterceptor)initWithThreadKey:(id)key;
+- (void)_drainQueueAndSendEventsToSystem:(BOOL)system;
 - (void)_holdTimerFired;
-- (void)_processStateChangeWithEvent:(int64_t)a3 axEvent:(id)a4;
+- (void)_processStateChangeWithEvent:(int64_t)event axEvent:(id)axEvent;
 - (void)_releaseTimerFired;
-- (void)_resetStateAndSendPendingEventsToSystem:(BOOL)a3;
-- (void)buttonDownOccurred:(id)a3;
-- (void)buttonUpOccurred:(id)a3;
+- (void)_resetStateAndSendPendingEventsToSystem:(BOOL)system;
+- (void)buttonDownOccurred:(id)occurred;
+- (void)buttonUpOccurred:(id)occurred;
 - (void)dealloc;
 @end
 
 @implementation VOTClickAndHoldButtonInterceptor
 
-- (VOTClickAndHoldButtonInterceptor)initWithThreadKey:(id)a3
+- (VOTClickAndHoldButtonInterceptor)initWithThreadKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v16.receiver = self;
   v16.super_class = VOTClickAndHoldButtonInterceptor;
   v5 = [(VOTClickAndHoldButtonInterceptor *)&v16 init];
@@ -28,11 +28,11 @@
     v5->_state = 0;
     v5->_holdDuration = 1.0;
     v5->_releaseDuration = 0.5;
-    v9 = [objc_allocWithZone(SCRCTargetSelectorTimer) initWithTarget:v5 selector:"_holdTimerFired" threadKey:v4];
+    v9 = [objc_allocWithZone(SCRCTargetSelectorTimer) initWithTarget:v5 selector:"_holdTimerFired" threadKey:keyCopy];
     holdTimer = v5->_holdTimer;
     v5->_holdTimer = v9;
 
-    v11 = [objc_allocWithZone(SCRCTargetSelectorTimer) initWithTarget:v5 selector:"_releaseTimerFired" threadKey:v4];
+    v11 = [objc_allocWithZone(SCRCTargetSelectorTimer) initWithTarget:v5 selector:"_releaseTimerFired" threadKey:keyCopy];
     releaseTimer = v5->_releaseTimer;
     v5->_releaseTimer = v11;
 
@@ -67,61 +67,61 @@
   [(VOTClickAndHoldButtonInterceptor *)&v7 dealloc];
 }
 
-- (void)buttonDownOccurred:(id)a3
+- (void)buttonDownOccurred:(id)occurred
 {
-  v4 = a3;
+  occurredCopy = occurred;
   v9.receiver = self;
   v9.super_class = VOTClickAndHoldButtonInterceptor;
-  [(VOTButtonInterceptor *)&v9 buttonDownOccurred:v4];
+  [(VOTButtonInterceptor *)&v9 buttonDownOccurred:occurredCopy];
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100114CAC;
   v7[3] = &unk_1001C7778;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = occurredCopy;
+  v6 = occurredCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)buttonUpOccurred:(id)a3
+- (void)buttonUpOccurred:(id)occurred
 {
-  v4 = a3;
+  occurredCopy = occurred;
   v9.receiver = self;
   v9.super_class = VOTClickAndHoldButtonInterceptor;
-  [(VOTButtonInterceptor *)&v9 buttonUpOccurred:v4];
+  [(VOTButtonInterceptor *)&v9 buttonUpOccurred:occurredCopy];
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100114D88;
   v7[3] = &unk_1001C7778;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = occurredCopy;
+  v6 = occurredCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_processStateChangeWithEvent:(int64_t)a3 axEvent:(id)a4
+- (void)_processStateChangeWithEvent:(int64_t)event axEvent:(id)axEvent
 {
-  v6 = a4;
+  axEventCopy = axEvent;
   state = self->_state;
   if (state > 2)
   {
     if (state == 3)
     {
-      if (a3 != 1)
+      if (event != 1)
       {
-        if (a3 != 2)
+        if (event != 2)
         {
           goto LABEL_37;
         }
 
-        v15 = [(VOTClickAndHoldButtonInterceptor *)self clickAndHoldHandler];
+        clickAndHoldHandler = [(VOTClickAndHoldButtonInterceptor *)self clickAndHoldHandler];
 
-        if (v15)
+        if (clickAndHoldHandler)
         {
-          v16 = [(VOTClickAndHoldButtonInterceptor *)self clickAndHoldHandler];
-          v16[2]();
+          clickAndHoldHandler2 = [(VOTClickAndHoldButtonInterceptor *)self clickAndHoldHandler];
+          clickAndHoldHandler2[2]();
         }
 
         if ([(NSMutableArray *)self->_eventQueue count]!= 3)
@@ -140,10 +140,10 @@
     {
       if (state == 4)
       {
-        if (a3 == 1)
+        if (event == 1)
         {
 LABEL_40:
-          v14 = self;
+          selfCopy3 = self;
           v11 = 0;
           goto LABEL_41;
         }
@@ -151,28 +151,28 @@ LABEL_40:
         goto LABEL_37;
       }
 
-      if (state != 5 || a3 != 1)
+      if (state != 5 || event != 1)
       {
         goto LABEL_37;
       }
     }
 
-    [(NSMutableArray *)self->_eventQueue addObject:v6];
-    v14 = self;
+    [(NSMutableArray *)self->_eventQueue addObject:axEventCopy];
+    selfCopy3 = self;
     v11 = 1;
 LABEL_41:
-    [(VOTClickAndHoldButtonInterceptor *)v14 _resetStateAndSendPendingEventsToSystem:v11];
+    [(VOTClickAndHoldButtonInterceptor *)selfCopy3 _resetStateAndSendPendingEventsToSystem:v11];
     goto LABEL_42;
   }
 
   if (!state)
   {
-    if (a3)
+    if (event)
     {
       goto LABEL_37;
     }
 
-    [(NSMutableArray *)self->_eventQueue addObject:v6];
+    [(NSMutableArray *)self->_eventQueue addObject:axEventCopy];
     [(SCRCTargetSelectorTimer *)self->_holdTimer dispatchAfterDelay:self->_holdDuration];
     v13 = 1;
 LABEL_36:
@@ -184,16 +184,16 @@ LABEL_36:
   {
     if (state == 2)
     {
-      if (a3)
+      if (event)
       {
-        if (a3 == 3)
+        if (event == 3)
         {
-          v8 = [(VOTClickAndHoldButtonInterceptor *)self clickHandler];
+          clickHandler = [(VOTClickAndHoldButtonInterceptor *)self clickHandler];
 
-          if (v8)
+          if (clickHandler)
           {
-            v9 = [(VOTClickAndHoldButtonInterceptor *)self clickHandler];
-            v10 = v9[2]();
+            clickHandler2 = [(VOTClickAndHoldButtonInterceptor *)self clickHandler];
+            v10 = clickHandler2[2]();
 
             v11 = v10 ^ 1u;
           }
@@ -203,14 +203,14 @@ LABEL_36:
             v11 = 1;
           }
 
-          v14 = self;
+          selfCopy3 = self;
           goto LABEL_41;
         }
 
         goto LABEL_37;
       }
 
-      [(NSMutableArray *)self->_eventQueue addObject:v6];
+      [(NSMutableArray *)self->_eventQueue addObject:axEventCopy];
       [(SCRCTargetSelectorTimer *)self->_releaseTimer cancel];
       [(SCRCTargetSelectorTimer *)self->_holdTimer dispatchAfterDelay:self->_holdDuration];
       v13 = 3;
@@ -221,17 +221,17 @@ LABEL_37:
     v19 = VOTLogEvent();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      sub_1001315B8(&self->_state, a3, v19);
+      sub_1001315B8(&self->_state, event, v19);
     }
 
     goto LABEL_40;
   }
 
-  if (a3)
+  if (event)
   {
-    if (a3 == 1)
+    if (event == 1)
     {
-      [(NSMutableArray *)self->_eventQueue addObject:v6];
+      [(NSMutableArray *)self->_eventQueue addObject:axEventCopy];
       [(SCRCTargetSelectorTimer *)self->_holdTimer cancel];
       [(SCRCTargetSelectorTimer *)self->_releaseTimer dispatchAfterDelay:self->_releaseDuration];
       v13 = 2;
@@ -239,17 +239,17 @@ LABEL_37:
 
     else
     {
-      if (a3 != 2)
+      if (event != 2)
       {
         goto LABEL_37;
       }
 
-      v17 = [(VOTClickAndHoldButtonInterceptor *)self holdHandler];
+      holdHandler = [(VOTClickAndHoldButtonInterceptor *)self holdHandler];
 
-      if (v17)
+      if (holdHandler)
       {
-        v18 = [(VOTClickAndHoldButtonInterceptor *)self holdHandler];
-        v18[2]();
+        holdHandler2 = [(VOTClickAndHoldButtonInterceptor *)self holdHandler];
+        holdHandler2[2]();
       }
 
       v13 = 4;
@@ -261,14 +261,14 @@ LABEL_37:
 LABEL_42:
 }
 
-- (void)_resetStateAndSendPendingEventsToSystem:(BOOL)a3
+- (void)_resetStateAndSendPendingEventsToSystem:(BOOL)system
 {
-  v3 = a3;
+  systemCopy = system;
   self->_state = 0;
   [(SCRCTargetSelectorTimer *)self->_holdTimer cancel];
   [(SCRCTargetSelectorTimer *)self->_releaseTimer cancel];
 
-  [(VOTClickAndHoldButtonInterceptor *)self _drainQueueAndSendEventsToSystem:v3];
+  [(VOTClickAndHoldButtonInterceptor *)self _drainQueueAndSendEventsToSystem:systemCopy];
 }
 
 - (void)_holdTimerFired
@@ -293,9 +293,9 @@ LABEL_42:
   dispatch_async(queue, block);
 }
 
-- (void)_drainQueueAndSendEventsToSystem:(BOOL)a3
+- (void)_drainQueueAndSendEventsToSystem:(BOOL)system
 {
-  if (a3)
+  if (system)
   {
     v4 = +[AXEventTapManager sharedManager];
     v10 = 0u;

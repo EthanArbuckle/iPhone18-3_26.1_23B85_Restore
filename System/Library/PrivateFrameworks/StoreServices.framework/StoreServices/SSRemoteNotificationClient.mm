@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = __42__SSRemoteNotificationClient_sharedClient__block_invoke;
   block[3] = &unk_1E84AC408;
-  block[4] = a1;
+  block[4] = self;
   if (sharedClient_sOnce != -1)
   {
     dispatch_once(&sharedClient_sOnce, block);
@@ -64,15 +64,15 @@ id __42__SSRemoteNotificationClient_sharedClient__block_invoke()
       v2 = +[SSLogConfig sharedConfig];
     }
 
-    v3 = [v2 shouldLog];
+    shouldLog = [v2 shouldLog];
     if ([v2 shouldLogToDisk])
     {
-      v4 = v3 | 2;
+      v4 = shouldLog | 2;
     }
 
     else
     {
-      v4 = v3;
+      v4 = shouldLog;
     }
 
     if (os_log_type_enabled([v2 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -151,15 +151,15 @@ void *__52__SSRemoteNotificationClient_popQueuedNotifications__block_invoke(void
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -242,15 +242,15 @@ void __60__SSRemoteNotificationClient_registerForRemoteNotifications__block_invo
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_FAULT))

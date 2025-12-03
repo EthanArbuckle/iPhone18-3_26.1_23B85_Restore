@@ -1,33 +1,33 @@
 @interface AMPMusicCatalogContent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsContentType:(id)a3;
+- (int)StringAsContentType:(id)type;
 - (int)contentType;
 - (unint64_t)hash;
-- (void)addContentFeatures:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCanonicalId:(BOOL)a3;
-- (void)setHasContentType:(BOOL)a3;
-- (void)setHasIsExplicit:(BOOL)a3;
-- (void)setHasReleaseDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addContentFeatures:(id)features;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCanonicalId:(BOOL)id;
+- (void)setHasContentType:(BOOL)type;
+- (void)setHasIsExplicit:(BOOL)explicit;
+- (void)setHasReleaseDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AMPMusicCatalogContent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 48);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 48);
   if ((v6 & 8) != 0)
   {
-    self->_contentType = *(v4 + 10);
+    self->_contentType = *(fromCopy + 10);
     *&self->_has |= 8u;
-    v6 = *(v4 + 48);
+    v6 = *(fromCopy + 48);
     if ((v6 & 1) == 0)
     {
 LABEL_3:
@@ -40,14 +40,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 48) & 1) == 0)
+  else if ((*(fromCopy + 48) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_adamId = *(v4 + 1);
+  self->_adamId = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v6 = *(v4 + 48);
+  v6 = *(fromCopy + 48);
   if ((v6 & 2) == 0)
   {
 LABEL_4:
@@ -60,9 +60,9 @@ LABEL_4:
   }
 
 LABEL_17:
-  self->_canonicalId = *(v4 + 2);
+  self->_canonicalId = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v6 = *(v4 + 48);
+  v6 = *(fromCopy + 48);
   if ((v6 & 4) == 0)
   {
 LABEL_5:
@@ -75,12 +75,12 @@ LABEL_5:
   }
 
 LABEL_18:
-  self->_releaseDate = *(v4 + 3);
+  self->_releaseDate = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 48) & 0x10) != 0)
+  if ((*(fromCopy + 48) & 0x10) != 0)
   {
 LABEL_6:
-    self->_isExplicit = *(v4 + 44);
+    self->_isExplicit = *(fromCopy + 44);
     *&self->_has |= 0x10u;
   }
 
@@ -89,7 +89,7 @@ LABEL_7:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -182,70 +182,70 @@ LABEL_6:
   return v7 ^ v6 ^ v8 ^ v9 ^ v10 ^ [(NSMutableArray *)self->_contentFeatures hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_contentType != *(v4 + 10))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_contentType != *(equalCopy + 10))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 48) & 8) != 0)
+  else if ((*(equalCopy + 48) & 8) != 0)
   {
     goto LABEL_27;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_adamId != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_adamId != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_canonicalId != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_canonicalId != *(equalCopy + 2))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_releaseDate != *(v4 + 3))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_releaseDate != *(equalCopy + 3))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 0x10) == 0)
   {
-    if ((*(v4 + 48) & 0x10) == 0)
+    if ((*(equalCopy + 48) & 0x10) == 0)
     {
       goto LABEL_24;
     }
@@ -255,28 +255,28 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ((*(v4 + 48) & 0x10) == 0)
+  if ((*(equalCopy + 48) & 0x10) == 0)
   {
     goto LABEL_27;
   }
 
-  v9 = *(v4 + 44);
+  v9 = *(equalCopy + 44);
   if (self->_isExplicit)
   {
-    if ((*(v4 + 44) & 1) == 0)
+    if ((*(equalCopy + 44) & 1) == 0)
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_27;
   }
 
 LABEL_24:
   contentFeatures = self->_contentFeatures;
-  if (contentFeatures | *(v4 + 4))
+  if (contentFeatures | *(equalCopy + 4))
   {
     v7 = [(NSMutableArray *)contentFeatures isEqual:?];
   }
@@ -291,9 +291,9 @@ LABEL_28:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -377,7 +377,7 @@ LABEL_7:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{zone, v15}];
         [v6 addContentFeatures:v13];
       }
 
@@ -390,14 +390,14 @@ LABEL_7:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[10] = self->_contentType;
-    *(v4 + 48) |= 8u;
+    toCopy[10] = self->_contentType;
+    *(toCopy + 48) |= 8u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -416,8 +416,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 1) = self->_adamId;
-  *(v4 + 48) |= 1u;
+  *(toCopy + 1) = self->_adamId;
+  *(toCopy + 48) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -428,8 +428,8 @@ LABEL_4:
     }
 
 LABEL_17:
-    *(v4 + 3) = self->_releaseDate;
-    *(v4 + 48) |= 4u;
+    *(toCopy + 3) = self->_releaseDate;
+    *(toCopy + 48) |= 4u;
     if ((*&self->_has & 0x10) == 0)
     {
       goto LABEL_7;
@@ -439,8 +439,8 @@ LABEL_17:
   }
 
 LABEL_16:
-  *(v4 + 2) = self->_canonicalId;
-  *(v4 + 48) |= 2u;
+  *(toCopy + 2) = self->_canonicalId;
+  *(toCopy + 48) |= 2u;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -451,19 +451,19 @@ LABEL_5:
   if ((has & 0x10) != 0)
   {
 LABEL_6:
-    *(v4 + 44) = self->_isExplicit;
-    *(v4 + 48) |= 0x10u;
+    *(toCopy + 44) = self->_isExplicit;
+    *(toCopy + 48) |= 0x10u;
   }
 
 LABEL_7:
-  v10 = v4;
+  v10 = toCopy;
   if ([(AMPMusicCatalogContent *)self contentFeaturesCount])
   {
     [v10 clearContentFeatures];
-    v6 = [(AMPMusicCatalogContent *)self contentFeaturesCount];
-    if (v6)
+    contentFeaturesCount = [(AMPMusicCatalogContent *)self contentFeaturesCount];
+    if (contentFeaturesCount)
     {
-      v7 = v6;
+      v7 = contentFeaturesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(AMPMusicCatalogContent *)self contentFeaturesAtIndex:i];
@@ -473,9 +473,9 @@ LABEL_7:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -663,8 +663,8 @@ LABEL_11:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -684,33 +684,33 @@ LABEL_11:
   v7.receiver = self;
   v7.super_class = AMPMusicCatalogContent;
   v3 = [(AMPMusicCatalogContent *)&v7 description];
-  v4 = [(AMPMusicCatalogContent *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AMPMusicCatalogContent *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)addContentFeatures:(id)a3
+- (void)addContentFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   contentFeatures = self->_contentFeatures;
-  v8 = v4;
+  v8 = featuresCopy;
   if (!contentFeatures)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_contentFeatures;
     self->_contentFeatures = v6;
 
-    v4 = v8;
+    featuresCopy = v8;
     contentFeatures = self->_contentFeatures;
   }
 
-  [(NSMutableArray *)contentFeatures addObject:v4];
+  [(NSMutableArray *)contentFeatures addObject:featuresCopy];
 }
 
-- (void)setHasIsExplicit:(BOOL)a3
+- (void)setHasIsExplicit:(BOOL)explicit
 {
-  if (a3)
+  if (explicit)
   {
     v3 = 16;
   }
@@ -723,9 +723,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasReleaseDate:(BOOL)a3
+- (void)setHasReleaseDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -738,9 +738,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCanonicalId:(BOOL)a3
+- (void)setHasCanonicalId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -753,30 +753,30 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsContentType:(id)a3
+- (int)StringAsContentType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Album"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Album"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Song"])
+  else if ([typeCopy isEqualToString:@"Song"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Playlist"])
+  else if ([typeCopy isEqualToString:@"Playlist"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MusicVideo"])
+  else if ([typeCopy isEqualToString:@"MusicVideo"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ArtistUploadedContent"])
+  else if ([typeCopy isEqualToString:@"ArtistUploadedContent"])
   {
     v4 = 4;
   }
@@ -789,9 +789,9 @@ LABEL_11:
   return v4;
 }
 
-- (void)setHasContentType:(BOOL)a3
+- (void)setHasContentType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }

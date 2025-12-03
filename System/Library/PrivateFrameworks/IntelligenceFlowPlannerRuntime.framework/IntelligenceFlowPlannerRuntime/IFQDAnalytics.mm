@@ -1,19 +1,19 @@
 @interface IFQDAnalytics
-+ (void)sendEventForProductionLazyWithEventName:(id)a3 eventPayloadBuilder:(id)a4;
-+ (void)sendEventForProductionWithEventName:(id)a3 prefix:(id)a4 eventPayload:(id)a5;
++ (void)sendEventForProductionLazyWithEventName:(id)name eventPayloadBuilder:(id)builder;
++ (void)sendEventForProductionWithEventName:(id)name prefix:(id)prefix eventPayload:(id)payload;
 @end
 
 @implementation IFQDAnalytics
 
-+ (void)sendEventForProductionWithEventName:(id)a3 prefix:(id)a4 eventPayload:(id)a5
++ (void)sendEventForProductionWithEventName:(id)name prefix:(id)prefix eventPayload:(id)payload
 {
   v7 = sub_22C90A11C();
   v9 = v8;
-  if (a4)
+  if (prefix)
   {
     v10 = sub_22C90A11C();
-    a4 = v11;
-    if (!a5)
+    prefix = v11;
+    if (!payload)
     {
       goto LABEL_4;
     }
@@ -22,20 +22,20 @@
   }
 
   v10 = 0;
-  if (a5)
+  if (payload)
   {
 LABEL_3:
     sub_22C389D24();
-    a5 = sub_22C909ECC();
+    payload = sub_22C909ECC();
   }
 
 LABEL_4:
-  static QueryDecorationAnalytics.sendEventForProduction(eventName:prefix:eventPayload:)(v7, v9, v10, a4, a5);
+  static QueryDecorationAnalytics.sendEventForProduction(eventName:prefix:eventPayload:)(v7, v9, v10, prefix, payload);
 }
 
-+ (void)sendEventForProductionLazyWithEventName:(id)a3 eventPayloadBuilder:(id)a4
++ (void)sendEventForProductionLazyWithEventName:(id)name eventPayloadBuilder:(id)builder
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(builder);
   v5 = sub_22C90A11C();
   v7 = v6;
   v8 = swift_allocObject();

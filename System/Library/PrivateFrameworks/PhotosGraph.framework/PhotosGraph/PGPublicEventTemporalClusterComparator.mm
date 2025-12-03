@@ -1,16 +1,16 @@
 @interface PGPublicEventTemporalClusterComparator
-- (double)_distanceFromString:(id)a3 toString:(id)a4;
-- (double)distanceFromPublicEvent:(id)a3 toTemporalEvents:(id)a4;
-- (id)_removeDateFromString:(id)a3;
+- (double)_distanceFromString:(id)string toString:(id)toString;
+- (double)distanceFromPublicEvent:(id)event toTemporalEvents:(id)events;
+- (id)_removeDateFromString:(id)string;
 @end
 
 @implementation PGPublicEventTemporalClusterComparator
 
-- (id)_removeDateFromString:(id)a3
+- (id)_removeDateFromString:(id)string
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v37 = 0;
     v4 = [MEMORY[0x277CCA948] dataDetectorWithTypes:8 error:&v37];
@@ -19,9 +19,9 @@
     if (v4)
     {
       v27 = v5;
-      v7 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v28 = v4;
-      v8 = [v4 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+      v8 = [v4 matchesInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
@@ -43,7 +43,7 @@
             v13 = *(*(&v33 + 1) + 8 * i);
             if ([v13 resultType] == 8)
             {
-              [v7 addObject:v13];
+              [array addObject:v13];
             }
           }
 
@@ -53,15 +53,15 @@
         while (v10);
       }
 
-      v14 = [v7 sortedArrayUsingComparator:&__block_literal_global_33583];
-      v15 = v3;
+      v14 = [array sortedArrayUsingComparator:&__block_literal_global_33583];
+      v15 = stringCopy;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
       v26 = v14;
-      v16 = [v14 reverseObjectEnumerator];
-      v17 = [v16 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      reverseObjectEnumerator = [v14 reverseObjectEnumerator];
+      v17 = [reverseObjectEnumerator countByEnumeratingWithState:&v29 objects:v38 count:16];
       if (v17)
       {
         v18 = v17;
@@ -74,18 +74,18 @@
           {
             if (*v30 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
-            v22 = [*(*(&v29 + 1) + 8 * v20) range];
-            v15 = [v21 stringByReplacingCharactersInRange:v22 withString:{v23, &stru_2843F5C58}];
+            range = [*(*(&v29 + 1) + 8 * v20) range];
+            v15 = [v21 stringByReplacingCharactersInRange:range withString:{v23, &stru_2843F5C58}];
 
             ++v20;
             v21 = v15;
           }
 
           while (v18 != v20);
-          v18 = [v16 countByEnumeratingWithState:&v29 objects:v38 count:16];
+          v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v29 objects:v38 count:16];
         }
 
         while (v18);
@@ -104,13 +104,13 @@
         _os_log_error_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Failed to initialize DataDetector, error: %@", buf, 0xCu);
       }
 
-      v15 = v3;
+      v15 = stringCopy;
     }
   }
 
   else
   {
-    v15 = v3;
+    v15 = stringCopy;
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -135,36 +135,36 @@ uint64_t __64__PGPublicEventTemporalClusterComparator__removeDateFromString___bl
   }
 }
 
-- (double)_distanceFromString:(id)a3 toString:(id)a4
+- (double)_distanceFromString:(id)string toString:(id)toString
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
-  v9 = [v7 length];
+  stringCopy = string;
+  toStringCopy = toString;
+  v8 = [stringCopy length];
+  v9 = [toStringCopy length];
   v10 = 1.0;
   if (v8)
   {
     v11 = v9;
     if (v9)
     {
-      v12 = [v6 lowercaseString];
+      lowercaseString = [stringCopy lowercaseString];
 
-      v13 = [v7 lowercaseString];
+      lowercaseString2 = [toStringCopy lowercaseString];
 
-      if ([v12 isEqualToString:v13])
+      if ([lowercaseString isEqualToString:lowercaseString2])
       {
-        v7 = v13;
-        v6 = v12;
+        toStringCopy = lowercaseString2;
+        stringCopy = lowercaseString;
 LABEL_6:
         v10 = 0.0;
         goto LABEL_7;
       }
 
-      v6 = [(PGPublicEventTemporalClusterComparator *)self _removeDateFromString:v12];
+      stringCopy = [(PGPublicEventTemporalClusterComparator *)self _removeDateFromString:lowercaseString];
 
-      v7 = [(PGPublicEventTemporalClusterComparator *)self _removeDateFromString:v13];
+      toStringCopy = [(PGPublicEventTemporalClusterComparator *)self _removeDateFromString:lowercaseString2];
 
-      if ([v6 isEqualToString:v7])
+      if ([stringCopy isEqualToString:toStringCopy])
       {
         goto LABEL_6;
       }
@@ -173,22 +173,22 @@ LABEL_6:
       {
         if (v8 >= v11)
         {
-          v15 = v7;
+          v15 = toStringCopy;
         }
 
         else
         {
-          v15 = v6;
+          v15 = stringCopy;
         }
 
         if (v8 >= v11)
         {
-          v16 = v6;
+          v16 = stringCopy;
         }
 
         else
         {
-          v16 = v7;
+          v16 = toStringCopy;
         }
 
         if ([v16 containsString:v15])
@@ -209,24 +209,24 @@ LABEL_7:
   return v10;
 }
 
-- (double)distanceFromPublicEvent:(id)a3 toTemporalEvents:(id)a4
+- (double)distanceFromPublicEvent:(id)event toTemporalEvents:(id)events
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 name];
-  if ([v8 length])
+  eventCopy = event;
+  eventsCopy = events;
+  name = [eventCopy name];
+  if ([name length])
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v9 = v7;
+    v9 = eventsCopy;
     v10 = [v9 countByEnumeratingWithState:&v24 objects:v34 count:16];
     if (v10)
     {
       v11 = v10;
-      v23 = v7;
+      v23 = eventsCopy;
       v12 = 0;
       v13 = *v25;
       v14 = 1.0;
@@ -242,10 +242,10 @@ LABEL_7:
           v16 = *(*(&v24 + 1) + 8 * i);
           if ([v16 category])
           {
-            v17 = [v16 name];
-            if ([v17 length])
+            name2 = [v16 name];
+            if ([name2 length])
             {
-              [(PGPublicEventTemporalClusterComparator *)self _distanceFromString:v8 toString:v17];
+              [(PGPublicEventTemporalClusterComparator *)self _distanceFromString:name toString:name2];
               if (v18 < v14)
               {
                 v19 = v18;
@@ -265,17 +265,17 @@ LABEL_7:
 
       if (!v12)
       {
-        v7 = v23;
+        eventsCopy = v23;
         goto LABEL_22;
       }
 
-      v7 = v23;
+      eventsCopy = v23;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138478339;
         v29 = v12;
         v30 = 2113;
-        v31 = v6;
+        v31 = eventCopy;
         v32 = 2048;
         v33 = v14;
         _os_log_debug_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Found matching temporal cluster %{private}@ for public event: %{private}@, distance: %.3lf", buf, 0x20u);

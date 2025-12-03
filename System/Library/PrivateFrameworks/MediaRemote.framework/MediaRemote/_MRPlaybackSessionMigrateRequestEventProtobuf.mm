@@ -1,35 +1,35 @@
 @interface _MRPlaybackSessionMigrateRequestEventProtobuf
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSError)mr_error;
 - (double)calculatedDuration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)reportName;
-- (int)StringAsRole:(id)a3;
+- (int)StringAsRole:(id)role;
 - (int)role;
 - (unint64_t)hash;
-- (void)addEvents:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasIdentifier:(BOOL)a3;
-- (void)setHasRole:(BOOL)a3;
-- (void)setHasStartTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEvents:(id)events;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasIdentifier:(BOOL)identifier;
+- (void)setHasRole:(BOOL)role;
+- (void)setHasStartTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRPlaybackSessionMigrateRequestEventProtobuf
 
 - (NSError)mr_error
 {
-  v3 = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self error];
+  error = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self error];
 
-  if (v3)
+  if (error)
   {
-    v4 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v5 = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self error];
-    ErrorWithDescription = [v4 mr_initWithProtobuf:v5];
+    errorDescription = objc_alloc(MEMORY[0x1E696ABC0]);
+    error2 = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self error];
+    ErrorWithDescription = [errorDescription mr_initWithProtobuf:error2];
 
 LABEL_5:
     goto LABEL_6;
@@ -37,9 +37,9 @@ LABEL_5:
 
   if ([(_MRPlaybackSessionMigrateRequestEventProtobuf *)self errorCode])
   {
-    v7 = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self errorCode];
-    v4 = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self errorDescription];
-    ErrorWithDescription = MRMediaRemoteCreateErrorWithDescription(v7, v4);
+    errorCode = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self errorCode];
+    errorDescription = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self errorDescription];
+    ErrorWithDescription = MRMediaRemoteCreateErrorWithDescription(errorCode, errorDescription);
     goto LABEL_5;
   }
 
@@ -59,21 +59,21 @@ LABEL_6:
 
 - (id)reportName
 {
-  v4 = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self role];
-  if (v4 <= 6)
+  role = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self role];
+  if (role <= 6)
   {
-    v5 = off_1E769DDF8[v4];
+    v5 = off_1E769DDF8[role];
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v7 = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self name];
-    v2 = [v6 initWithFormat:v5, v7];
+    name = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self name];
+    v2 = [v6 initWithFormat:v5, name];
   }
 
   return v2;
 }
 
-- (void)setHasStartTimestamp:(BOOL)a3
+- (void)setHasStartTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -86,9 +86,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -101,9 +101,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIdentifier:(BOOL)a3
+- (void)setHasIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 8;
   }
@@ -129,9 +129,9 @@ LABEL_6:
   }
 }
 
-- (void)setHasRole:(BOOL)a3
+- (void)setHasRole:(BOOL)role
 {
-  if (a3)
+  if (role)
   {
     v3 = 16;
   }
@@ -144,40 +144,40 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsRole:(id)a3
+- (int)StringAsRole:(id)role
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  roleCopy = role;
+  if ([roleCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Receptionist"])
+  else if ([roleCopy isEqualToString:@"Receptionist"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Source"])
+  else if ([roleCopy isEqualToString:@"Source"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Destination"])
+  else if ([roleCopy isEqualToString:@"Destination"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"InApp"])
+  else if ([roleCopy isEqualToString:@"InApp"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Hijacked"])
+  else if ([roleCopy isEqualToString:@"Hijacked"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Group"])
+  else if ([roleCopy isEqualToString:@"Group"])
   {
     v4 = 6;
   }
@@ -190,22 +190,22 @@ LABEL_6:
   return v4;
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   events = self->_events;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!events)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_events;
     self->_events = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     events = self->_events;
   }
 
-  [(NSMutableArray *)events addObject:v4];
+  [(NSMutableArray *)events addObject:eventsCopy];
 }
 
 - (id)description
@@ -214,8 +214,8 @@ LABEL_6:
   v8.receiver = self;
   v8.super_class = _MRPlaybackSessionMigrateRequestEventProtobuf;
   v4 = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)&v8 description];
-  v5 = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -223,12 +223,12 @@ LABEL_6:
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   has = self->_has;
@@ -275,8 +275,8 @@ LABEL_7:
   error = self->_error;
   if (error)
   {
-    v10 = [(_MRErrorProtobuf *)error dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"error"];
+    dictionaryRepresentation = [(_MRErrorProtobuf *)error dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"error"];
   }
 
   v11 = self->_has;
@@ -307,15 +307,15 @@ LABEL_7:
   input = self->_input;
   if (input)
   {
-    v18 = [(_MRDictionaryProtobuf *)input dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"input"];
+    dictionaryRepresentation2 = [(_MRDictionaryProtobuf *)input dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"input"];
   }
 
   output = self->_output;
   if (output)
   {
-    v20 = [(_MRDictionaryProtobuf *)output dictionaryRepresentation];
-    [v4 setObject:v20 forKey:@"output"];
+    dictionaryRepresentation3 = [(_MRDictionaryProtobuf *)output dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"output"];
   }
 
   if ([(NSMutableArray *)self->_events count])
@@ -340,8 +340,8 @@ LABEL_7:
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation4 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation4];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -358,10 +358,10 @@ LABEL_7:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -464,21 +464,21 @@ LABEL_7:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v10;
+    [toCopy setName:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = *&self->_startTimestamp;
-    *(v4 + 92) |= 4u;
+    *(toCopy + 3) = *&self->_startTimestamp;
+    *(toCopy + 92) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -497,32 +497,32 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = *&self->_endTimestamp;
-  *(v4 + 92) |= 1u;
+  *(toCopy + 1) = *&self->_endTimestamp;
+  *(toCopy + 92) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    *(v4 + 2) = self->_errorCode;
-    *(v4 + 92) |= 2u;
+    *(toCopy + 2) = self->_errorCode;
+    *(toCopy + 92) |= 2u;
   }
 
 LABEL_7:
   if (self->_errorDescription)
   {
     [v10 setErrorDescription:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_error)
   {
     [v10 setError:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(v4 + 22) = self->_role;
-    *(v4 + 92) |= 0x10u;
+    *(toCopy + 22) = self->_role;
+    *(toCopy + 92) |= 0x10u;
   }
 
   if (self->_input)
@@ -538,10 +538,10 @@ LABEL_7:
   if ([(_MRPlaybackSessionMigrateRequestEventProtobuf *)self eventsCount])
   {
     [v10 clearEvents];
-    v6 = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self eventsCount];
-    if (v6)
+    eventsCount = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self eventsCount];
+    if (eventsCount)
     {
-      v7 = v6;
+      v7 = eventsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self eventsAtIndex:i];
@@ -557,11 +557,11 @@ LABEL_7:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = *(v5 + 72);
   *(v5 + 72) = v6;
 
@@ -598,11 +598,11 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(NSString *)self->_errorDescription copyWithZone:a3];
+  v9 = [(NSString *)self->_errorDescription copyWithZone:zone];
   v10 = *(v5 + 40);
   *(v5 + 40) = v9;
 
-  v11 = [(_MRErrorProtobuf *)self->_error copyWithZone:a3];
+  v11 = [(_MRErrorProtobuf *)self->_error copyWithZone:zone];
   v12 = *(v5 + 32);
   *(v5 + 32) = v11;
 
@@ -612,11 +612,11 @@ LABEL_5:
     *(v5 + 92) |= 0x10u;
   }
 
-  v13 = [(_MRDictionaryProtobuf *)self->_input copyWithZone:a3];
+  v13 = [(_MRDictionaryProtobuf *)self->_input copyWithZone:zone];
   v14 = *(v5 + 64);
   *(v5 + 64) = v13;
 
-  v15 = [(_MRDictionaryProtobuf *)self->_output copyWithZone:a3];
+  v15 = [(_MRDictionaryProtobuf *)self->_output copyWithZone:zone];
   v16 = *(v5 + 80);
   *(v5 + 80) = v15;
 
@@ -639,7 +639,7 @@ LABEL_5:
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v25 + 1) + 8 * i) copyWithZone:{a3, v25}];
+        v22 = [*(*(&v25 + 1) + 8 * i) copyWithZone:{zone, v25}];
         [v5 addEvents:v22];
       }
 
@@ -659,16 +659,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   name = self->_name;
-  if (name | *(v4 + 9))
+  if (name | *(equalCopy + 9))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -676,16 +676,16 @@ LABEL_5:
     }
   }
 
-  v6 = *(v4 + 92);
+  v6 = *(equalCopy + 92);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 92) & 4) == 0 || self->_startTimestamp != *(v4 + 3))
+    if ((*(equalCopy + 92) & 4) == 0 || self->_startTimestamp != *(equalCopy + 3))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 92) & 4) != 0)
+  else if ((*(equalCopy + 92) & 4) != 0)
   {
 LABEL_38:
     v13 = 0;
@@ -694,38 +694,38 @@ LABEL_38:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 92) & 1) == 0 || self->_endTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 92) & 1) == 0 || self->_endTimestamp != *(equalCopy + 1))
     {
       goto LABEL_38;
     }
   }
 
-  else if (*(v4 + 92))
+  else if (*(equalCopy + 92))
   {
     goto LABEL_38;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 92) & 2) == 0 || self->_errorCode != *(v4 + 2))
+    if ((*(equalCopy + 92) & 2) == 0 || self->_errorCode != *(equalCopy + 2))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 92) & 2) != 0)
+  else if ((*(equalCopy + 92) & 2) != 0)
   {
     goto LABEL_38;
   }
 
   errorDescription = self->_errorDescription;
-  if (errorDescription | *(v4 + 5) && ![(NSString *)errorDescription isEqual:?])
+  if (errorDescription | *(equalCopy + 5) && ![(NSString *)errorDescription isEqual:?])
   {
     goto LABEL_38;
   }
 
   error = self->_error;
-  if (error | *(v4 + 4))
+  if (error | *(equalCopy + 4))
   {
     if (![(_MRErrorProtobuf *)error isEqual:?])
     {
@@ -733,28 +733,28 @@ LABEL_38:
     }
   }
 
-  v9 = *(v4 + 92);
+  v9 = *(equalCopy + 92);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 92) & 0x10) == 0 || self->_role != *(v4 + 22))
+    if ((*(equalCopy + 92) & 0x10) == 0 || self->_role != *(equalCopy + 22))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 92) & 0x10) != 0)
+  else if ((*(equalCopy + 92) & 0x10) != 0)
   {
     goto LABEL_38;
   }
 
   input = self->_input;
-  if (input | *(v4 + 8) && ![(_MRDictionaryProtobuf *)input isEqual:?])
+  if (input | *(equalCopy + 8) && ![(_MRDictionaryProtobuf *)input isEqual:?])
   {
     goto LABEL_38;
   }
 
   output = self->_output;
-  if (output | *(v4 + 10))
+  if (output | *(equalCopy + 10))
   {
     if (![(_MRDictionaryProtobuf *)output isEqual:?])
     {
@@ -763,7 +763,7 @@ LABEL_38:
   }
 
   events = self->_events;
-  if (events | *(v4 + 6))
+  if (events | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)events isEqual:?])
     {
@@ -771,10 +771,10 @@ LABEL_38:
     }
   }
 
-  v13 = (*(v4 + 92) & 8) == 0;
+  v13 = (*(equalCopy + 92) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 92) & 8) == 0 || self->_identifier != *(v4 + 14))
+    if ((*(equalCopy + 92) & 8) == 0 || self->_identifier != *(equalCopy + 14))
     {
       goto LABEL_38;
     }
@@ -895,21 +895,21 @@ LABEL_39:
   return v22 ^ v23 ^ v9 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 9))
+  fromCopy = from;
+  if (*(fromCopy + 9))
   {
     [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self setName:?];
   }
 
-  v5 = *(v4 + 92);
+  v5 = *(fromCopy + 92);
   if ((v5 & 4) != 0)
   {
-    self->_startTimestamp = *(v4 + 3);
+    self->_startTimestamp = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 92);
+    v5 = *(fromCopy + 92);
     if ((v5 & 1) == 0)
     {
 LABEL_5:
@@ -922,28 +922,28 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 92) & 1) == 0)
+  else if ((*(fromCopy + 92) & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_endTimestamp = *(v4 + 1);
+  self->_endTimestamp = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 92) & 2) != 0)
+  if ((*(fromCopy + 92) & 2) != 0)
   {
 LABEL_6:
-    self->_errorCode = *(v4 + 2);
+    self->_errorCode = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_7:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self setErrorDescription:?];
   }
 
   error = self->_error;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   if (error)
   {
     if (v7)
@@ -957,14 +957,14 @@ LABEL_7:
     [(_MRPlaybackSessionMigrateRequestEventProtobuf *)self setError:?];
   }
 
-  if ((*(v4 + 92) & 0x10) != 0)
+  if ((*(fromCopy + 92) & 0x10) != 0)
   {
-    self->_role = *(v4 + 22);
+    self->_role = *(fromCopy + 22);
     *&self->_has |= 0x10u;
   }
 
   input = self->_input;
-  v9 = *(v4 + 8);
+  v9 = *(fromCopy + 8);
   if (input)
   {
     if (v9)
@@ -979,7 +979,7 @@ LABEL_7:
   }
 
   output = self->_output;
-  v11 = *(v4 + 10);
+  v11 = *(fromCopy + 10);
   if (output)
   {
     if (v11)
@@ -997,7 +997,7 @@ LABEL_7:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = *(v4 + 6);
+  v12 = *(fromCopy + 6);
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
@@ -1021,9 +1021,9 @@ LABEL_7:
     while (v14);
   }
 
-  if ((*(v4 + 92) & 8) != 0)
+  if ((*(fromCopy + 92) & 8) != 0)
   {
-    self->_identifier = *(v4 + 14);
+    self->_identifier = *(fromCopy + 14);
     *&self->_has |= 8u;
   }
 

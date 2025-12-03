@@ -1,33 +1,33 @@
 @interface GKPeerInternal
-+ (void)freeLookupList:(_DNSServiceRef_t *)a3 andAddrList:(id *)a4 andInterfaceList:(unsigned int *)a5 count:(int)a6;
-- (BOOL)containsLookupService:(_DNSServiceRef_t *)a3;
-- (BOOL)tryDetruncateDisplayName:(id)a3;
-- (GKPeerInternal)initWithPID:(unsigned int)a3 displayName:(id)a4 serviceName:(id)a5;
++ (void)freeLookupList:(_DNSServiceRef_t *)list andAddrList:(id *)addrList andInterfaceList:(unsigned int *)interfaceList count:(int)count;
+- (BOOL)containsLookupService:(_DNSServiceRef_t *)service;
+- (BOOL)tryDetruncateDisplayName:(id)name;
+- (GKPeerInternal)initWithPID:(unsigned int)d displayName:(id)name serviceName:(id)serviceName;
 - (int)usableAddrs;
-- (void)addLookup:(_DNSServiceRef_t *)a3;
-- (void)cleanupForGKTable:(id)a3;
+- (void)addLookup:(_DNSServiceRef_t *)lookup;
+- (void)cleanupForGKTable:(id)table;
 - (void)clearResolving;
-- (void)copyLookupList:(_DNSServiceRef_t *)a3 count:(int *)a4;
+- (void)copyLookupList:(_DNSServiceRef_t *)list count:(int *)count;
 - (void)dealloc;
-- (void)removeAndReturnLookupList:(_DNSServiceRef_t *)a3 andAddrList:(id *)a4 andInterfaceList:(unsigned int *)a5 count:(int *)a6;
-- (void)setAddr:(const sockaddr_in *)a3 interface:(unsigned int)a4 forLookupService:(_DNSServiceRef_t *)a5;
-- (void)setServiceCount:(int)a3;
+- (void)removeAndReturnLookupList:(_DNSServiceRef_t *)list andAddrList:(id *)addrList andInterfaceList:(unsigned int *)interfaceList count:(int *)count;
+- (void)setAddr:(const sockaddr_in *)addr interface:(unsigned int)interface forLookupService:(_DNSServiceRef_t *)service;
+- (void)setServiceCount:(int)count;
 - (void)stopResolving;
 - (void)stopTXTRecordMonitoring;
 @end
 
 @implementation GKPeerInternal
 
-- (GKPeerInternal)initWithPID:(unsigned int)a3 displayName:(id)a4 serviceName:(id)a5
+- (GKPeerInternal)initWithPID:(unsigned int)d displayName:(id)name serviceName:(id)serviceName
 {
   v10.receiver = self;
   v10.super_class = GKPeerInternal;
   v8 = [(GKPeerInternal *)&v10 init];
   if (v8)
   {
-    v8->_serviceName = a5;
-    v8->_displayName = a4;
-    v8->_pid = a3;
+    v8->_serviceName = serviceName;
+    v8->_displayName = name;
+    v8->_pid = d;
     v8->_isBusy = 0;
     v8->_resolveService = 0;
     v8->_serviceCount = 1;
@@ -53,7 +53,7 @@
       v12 = 1024;
       v13 = 4530;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 1024;
       v17 = pid;
       _os_log_impl(&dword_24E50C000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d * GKPeer[%p] %d dealloc", buf, 0x2Cu);
@@ -69,7 +69,7 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setServiceCount:(int)a3
+- (void)setServiceCount:(int)count
 {
   v24 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -87,24 +87,24 @@
       v14 = 1024;
       v15 = 4540;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 1024;
       v19 = pid;
       v20 = 1024;
       v21 = serviceCount;
       v22 = 1024;
-      v23 = a3;
+      countCopy = count;
       _os_log_impl(&dword_24E50C000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKPeer[%p] %d service count old=%d new=%d", &v10, 0x38u);
     }
   }
 
-  self->_serviceCount = a3;
+  self->_serviceCount = count;
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)tryDetruncateDisplayName:(id)a3
+- (BOOL)tryDetruncateDisplayName:(id)name
 {
-  v5 = [a3 length];
+  v5 = [name length];
   if (v5 <= [(NSString *)self->_displayName length])
   {
     LOBYTE(v6) = 0;
@@ -112,11 +112,11 @@
 
   else
   {
-    v6 = -[NSString isEqualToString:](self->_displayName, "isEqualToString:", [a3 substringToIndex:{-[NSString length](self->_displayName, "length")}]);
+    v6 = -[NSString isEqualToString:](self->_displayName, "isEqualToString:", [name substringToIndex:{-[NSString length](self->_displayName, "length")}]);
     if (v6)
     {
 
-      self->_displayName = a3;
+      self->_displayName = name;
       LOBYTE(v6) = 1;
     }
   }
@@ -124,7 +124,7 @@
   return v6;
 }
 
-- (void)addLookup:(_DNSServiceRef_t *)a3
+- (void)addLookup:(_DNSServiceRef_t *)lookup
 {
   lookupServiceList = self->_lookupServiceList;
   if (lookupServiceList)
@@ -136,7 +136,7 @@
     {
 LABEL_11:
       *p_lookupServiceCount = lookupServiceCount + 1;
-      lookupServiceList[lookupServiceCount] = a3;
+      lookupServiceList[lookupServiceCount] = lookup;
       return;
     }
 
@@ -214,37 +214,37 @@ LABEL_14:
   self->_addrList = 0;
 }
 
-+ (void)freeLookupList:(_DNSServiceRef_t *)a3 andAddrList:(id *)a4 andInterfaceList:(unsigned int *)a5 count:(int)a6
++ (void)freeLookupList:(_DNSServiceRef_t *)list andAddrList:(id *)addrList andInterfaceList:(unsigned int *)interfaceList count:(int)count
 {
-  if (a3 && a4 && a6 >= 1)
+  if (list && addrList && count >= 1)
   {
-    v9 = a6;
-    v10 = a4;
+    countCopy = count;
+    addrListCopy = addrList;
     do
     {
-      v11 = *v10++;
+      v11 = *addrListCopy++;
 
-      --v9;
+      --countCopy;
     }
 
-    while (v9);
+    while (countCopy);
   }
 
-  free(a3);
-  free(a4);
+  free(list);
+  free(addrList);
 
-  free(a5);
+  free(interfaceList);
 }
 
-- (void)removeAndReturnLookupList:(_DNSServiceRef_t *)a3 andAddrList:(id *)a4 andInterfaceList:(unsigned int *)a5 count:(int *)a6
+- (void)removeAndReturnLookupList:(_DNSServiceRef_t *)list andAddrList:(id *)addrList andInterfaceList:(unsigned int *)interfaceList count:(int *)count
 {
   lookupServiceList = self->_lookupServiceList;
   if (lookupServiceList)
   {
-    *a6 = self->_lookupServiceCount;
-    *a3 = lookupServiceList;
-    *a4 = self->_addrList;
-    *a5 = self->_interfaceList;
+    *count = self->_lookupServiceCount;
+    *list = lookupServiceList;
+    *addrList = self->_addrList;
+    *interfaceList = self->_interfaceList;
     self->_addrList = 0;
     self->_interfaceList = 0;
     self->_lookupServiceList = 0;
@@ -253,14 +253,14 @@ LABEL_14:
 
   else
   {
-    *a6 = 0;
-    *a3 = 0;
-    *a4 = 0;
-    *a5 = 0;
+    *count = 0;
+    *list = 0;
+    *addrList = 0;
+    *interfaceList = 0;
   }
 }
 
-- (BOOL)containsLookupService:(_DNSServiceRef_t *)a3
+- (BOOL)containsLookupService:(_DNSServiceRef_t *)service
 {
   v29 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -300,10 +300,10 @@ LABEL_14:
     do
     {
       v13 = *lookupServiceList++;
-      result = v13 == a3;
+      result = v13 == service;
     }
 
-    while (v13 != a3 && v12-- != 0);
+    while (v13 != service && v12-- != 0);
   }
 
   else
@@ -315,7 +315,7 @@ LABEL_14:
   return result;
 }
 
-- (void)setAddr:(const sockaddr_in *)a3 interface:(unsigned int)a4 forLookupService:(_DNSServiceRef_t *)a5
+- (void)setAddr:(const sockaddr_in *)addr interface:(unsigned int)interface forLookupService:(_DNSServiceRef_t *)service
 {
   v67 = *MEMORY[0x277D85DE8];
   if (!self->_lookupServiceList)
@@ -330,7 +330,7 @@ LABEL_14:
   }
 
   v7 = 0;
-  while (self->_lookupServiceList[v7] != a5)
+  while (self->_lookupServiceList[v7] != service)
   {
 LABEL_26:
     if (++v7 >= lookupServiceCount)
@@ -339,7 +339,7 @@ LABEL_26:
     }
   }
 
-  v66 = *a3;
+  v66 = *addr;
   v66.sin_port = bswap32(LOWORD(self->_servicePort)) >> 16;
   if (lookupServiceCount < 1)
   {
@@ -350,7 +350,7 @@ LABEL_23:
     }
 
     self->_addrList[v7] = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&v66 length:16];
-    self->_interfaceList[v7] = a4;
+    self->_interfaceList[v7] = interface;
     lookupServiceCount = self->_lookupServiceCount;
     goto LABEL_26;
   }
@@ -369,17 +369,17 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v10 = [v9 bytes];
-    v11 = v10;
+    bytes = [v9 bytes];
+    v11 = bytes;
     v12 = bswap32(v66.sin_addr.s_addr);
-    if (!v10)
+    if (!bytes)
     {
       v14 = 0;
       goto LABEL_12;
     }
 
     v13 = 0;
-    v14 = bswap32(*(v10 + 4));
+    v14 = bswap32(*(bytes + 4));
 LABEL_13:
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -418,7 +418,7 @@ LABEL_13:
         v50 = 1024;
         v51 = bswap32(v66.sin_port) >> 16;
         v52 = 1024;
-        v53 = a5;
+        serviceCopy = service;
         v54 = 1024;
         v55 = HIBYTE(v14);
         v56 = 1024;
@@ -496,23 +496,23 @@ LABEL_36:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyLookupList:(_DNSServiceRef_t *)a3 count:(int *)a4
+- (void)copyLookupList:(_DNSServiceRef_t *)list count:(int *)count
 {
   lookupServiceList = self->_lookupServiceList;
   if (lookupServiceList)
   {
     v8 = malloc_type_malloc(8 * self->_lookupServiceCount, 0x2004093837F09uLL);
-    *a3 = v8;
+    *list = v8;
     memcpy(v8, self->_lookupServiceList, 8 * self->_lookupServiceCount);
     LODWORD(lookupServiceList) = self->_lookupServiceCount;
   }
 
   else
   {
-    *a3 = 0;
+    *list = 0;
   }
 
-  *a4 = lookupServiceList;
+  *count = lookupServiceList;
 }
 
 - (int)usableAddrs
@@ -781,7 +781,7 @@ LABEL_32:
         v12 = 1024;
         v13 = 4783;
         v14 = 2048;
-        v15 = self;
+        selfCopy = self;
         v16 = 1024;
         v17 = pid;
         v18 = 1024;
@@ -798,7 +798,7 @@ LABEL_32:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cleanupForGKTable:(id)a3
+- (void)cleanupForGKTable:(id)table
 {
   v24 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -815,11 +815,11 @@ LABEL_32:
       v16 = 1024;
       v17 = 4791;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 1024;
       v21 = pid;
       v22 = 2048;
-      v23 = a3;
+      tableCopy = table;
       _os_log_impl(&dword_24E50C000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKPeer[%p] %d cleanup for table[%p]", &v12, 0x36u);
     }
   }
@@ -842,7 +842,7 @@ LABEL_32:
         v16 = 1024;
         v17 = 4795;
         v18 = 1024;
-        LODWORD(v19) = txtRecordService;
+        LODWORD(selfCopy) = txtRecordService;
         _os_log_impl(&dword_24E50C000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d => calling DNSServiceRefDeallocate(_txtRecordService) (%08X)", &v12, 0x22u);
       }
     }

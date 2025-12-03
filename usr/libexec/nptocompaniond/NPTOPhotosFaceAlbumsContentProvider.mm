@@ -1,26 +1,26 @@
 @interface NPTOPhotosFaceAlbumsContentProvider
-- (NPTOPhotosFaceAlbumsContentProvider)initWithDevice:(id)a3;
+- (NPTOPhotosFaceAlbumsContentProvider)initWithDevice:(id)device;
 - (NPTOSyncContentProviderDelegate)delegate;
 - (id)_defaultAssetFetchOptions;
-- (id)assetsForAssetCollection:(id)a3;
-- (id)keyAssetsForAssetCollection:(id)a3;
+- (id)assetsForAssetCollection:(id)collection;
+- (id)keyAssetsForAssetCollection:(id)collection;
 - (void)_invalidateContent;
 @end
 
 @implementation NPTOPhotosFaceAlbumsContentProvider
 
-- (NPTOPhotosFaceAlbumsContentProvider)initWithDevice:(id)a3
+- (NPTOPhotosFaceAlbumsContentProvider)initWithDevice:(id)device
 {
-  v4 = a3;
-  if (([v4 relationship] & 2) != 0)
+  deviceCopy = device;
+  if (([deviceCopy relationship] & 2) != 0)
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v5 = +[NRPairedDeviceRegistry sharedInstance];
-    v6 = [v5 deviceForIDSDevice:v4];
+    v6 = [v5 deviceForIDSDevice:deviceCopy];
 
     v7 = [[NSUUID alloc] initWithUUIDString:@"41714B27-B839-4AB5-8A36-6191015AA8FE"];
     v8 = [v6 supportsCapability:v7];
@@ -65,50 +65,50 @@
       }
 
       self = v9;
-      v20 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v20 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (id)assetsForAssetCollection:(id)a3
+- (id)assetsForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(NPTOPreferencesAccessor *)self->_preferencesAccessor npto_fetchCountForAssetCollection:v4];
+  collectionCopy = collection;
+  v5 = [(NPTOPreferencesAccessor *)self->_preferencesAccessor npto_fetchCountForAssetCollection:collectionCopy];
   if (v5)
   {
-    v6 = [(NPTOPhotosFaceAlbumsContentProvider *)self _defaultAssetFetchOptions];
+    _defaultAssetFetchOptions = [(NPTOPhotosFaceAlbumsContentProvider *)self _defaultAssetFetchOptions];
     v7 = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:0];
     v10 = v7;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
-    [v6 setSortDescriptors:v8];
+    [_defaultAssetFetchOptions setSortDescriptors:v8];
 
-    [v6 setFetchLimit:v5];
-    v5 = [PHAsset fetchAssetsInAssetCollection:v4 options:v6];
+    [_defaultAssetFetchOptions setFetchLimit:v5];
+    v5 = [PHAsset fetchAssetsInAssetCollection:collectionCopy options:_defaultAssetFetchOptions];
   }
 
   return v5;
 }
 
-- (id)keyAssetsForAssetCollection:(id)a3
+- (id)keyAssetsForAssetCollection:(id)collection
 {
-  v4 = a3;
-  if ([(NPTOPreferencesAccessor *)self->_preferencesAccessor npto_fetchCountForAssetCollection:v4])
+  collectionCopy = collection;
+  if ([(NPTOPreferencesAccessor *)self->_preferencesAccessor npto_fetchCountForAssetCollection:collectionCopy])
   {
-    v5 = [(NPTOPhotosFaceAlbumsContentProvider *)self _defaultAssetFetchOptions];
+    _defaultAssetFetchOptions = [(NPTOPhotosFaceAlbumsContentProvider *)self _defaultAssetFetchOptions];
     v6 = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:0];
     v10 = v6;
     v7 = [NSArray arrayWithObjects:&v10 count:1];
-    [v5 setSortDescriptors:v7];
+    [_defaultAssetFetchOptions setSortDescriptors:v7];
 
-    [v5 setFetchLimit:1];
-    v8 = [PHAsset fetchKeyAssetsInAssetCollection:v4 options:v5];
+    [_defaultAssetFetchOptions setFetchLimit:1];
+    v8 = [PHAsset fetchKeyAssetsInAssetCollection:collectionCopy options:_defaultAssetFetchOptions];
   }
 
   else
@@ -146,8 +146,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", &v5, 0x1Cu);
   }
 
-  v4 = [(NPTOPhotosFaceAlbumsContentProvider *)self delegate];
-  [v4 contentProviderDidInvalidateContent:self];
+  delegate = [(NPTOPhotosFaceAlbumsContentProvider *)self delegate];
+  [delegate contentProviderDidInvalidateContent:self];
 }
 
 - (NPTOSyncContentProviderDelegate)delegate

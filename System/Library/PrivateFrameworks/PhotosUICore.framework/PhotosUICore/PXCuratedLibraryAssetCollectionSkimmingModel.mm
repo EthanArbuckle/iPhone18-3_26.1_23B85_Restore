@@ -1,13 +1,13 @@
 @interface PXCuratedLibraryAssetCollectionSkimmingModel
-- (PXCuratedLibraryAssetCollectionSkimmingModel)initWithViewModel:(id)a3;
+- (PXCuratedLibraryAssetCollectionSkimmingModel)initWithViewModel:(id)model;
 - (PXSimpleIndexPath)initialIndexPath;
 - (PXSimpleIndexPath)skimmedIndexPath;
-- (id)validatedAssetCollectionReference:(id)a3;
-- (void)_prepareIndexesForAssetCollectionReference:(id)a3 willStartSkimming:(BOOL)a4 willStartSlideshow:(BOOL)a5;
+- (id)validatedAssetCollectionReference:(id)reference;
+- (void)_prepareIndexesForAssetCollectionReference:(id)reference willStartSkimming:(BOOL)skimming willStartSlideshow:(BOOL)slideshow;
 - (void)_updateViewModel;
 - (void)persistSkimmingState;
-- (void)setSkimmedIndexPath:(PXSimpleIndexPath *)a3;
-- (void)tearDownAfterSkimmingShowHints:(BOOL)a3 persistState:(BOOL)a4;
+- (void)setSkimmedIndexPath:(PXSimpleIndexPath *)path;
+- (void)tearDownAfterSkimmingShowHints:(BOOL)hints persistState:(BOOL)state;
 - (void)transitionToSkimming;
 - (void)transitionToSlideshow;
 @end
@@ -37,25 +37,25 @@
     dataSourceIdentifier = self->_skimmedIndexPath.dataSourceIdentifier;
     v14 = *&self->_skimmedIndexPath.section;
     subitem = self->_skimmedIndexPath.subitem;
-    v4 = [(PXCuratedLibraryViewModel *)self->_viewModel assetsDataSourceManager];
-    v5 = [v4 dataSourceForZoomLevel:self->_skimmingZoomLevel];
+    assetsDataSourceManager = [(PXCuratedLibraryViewModel *)self->_viewModel assetsDataSourceManager];
+    v5 = [assetsDataSourceManager dataSourceForZoomLevel:self->_skimmingZoomLevel];
     if ([v5 identifier] == dataSourceIdentifier)
     {
       v11 = dataSourceIdentifier;
       v12 = v14;
       v13 = subitem;
       v6 = [v5 keyAssetsInSectionIndexPath:&v11];
-      v7 = [v6 firstObject];
+      firstObject = [v6 firstObject];
 
-      if (v7)
+      if (firstObject)
       {
         v8[0] = MEMORY[0x1E69E9820];
         v8[1] = 3221225472;
         v8[2] = __68__PXCuratedLibraryAssetCollectionSkimmingModel_persistSkimmingState__block_invoke;
         v8[3] = &unk_1E77410D0;
-        v9 = v7;
-        v10 = self;
-        [v4 performChanges:v8];
+        v9 = firstObject;
+        selfCopy = self;
+        [assetsDataSourceManager performChanges:v8];
       }
     }
   }
@@ -124,42 +124,42 @@ void __64__PXCuratedLibraryAssetCollectionSkimmingModel__updateViewModel__block_
   [v3 setSkimmingInfo:v9];
 }
 
-- (void)setSkimmedIndexPath:(PXSimpleIndexPath *)a3
+- (void)setSkimmedIndexPath:(PXSimpleIndexPath *)path
 {
-  if (a3->section != self->_skimmedIndexPath.section)
+  if (path->section != self->_skimmedIndexPath.section)
   {
-    v3 = *&a3->item;
-    *&self->_skimmedIndexPath.dataSourceIdentifier = *&a3->dataSourceIdentifier;
+    v3 = *&path->item;
+    *&self->_skimmedIndexPath.dataSourceIdentifier = *&path->dataSourceIdentifier;
     *&self->_skimmedIndexPath.item = v3;
     [(PXCuratedLibraryAssetCollectionSkimmingModel *)self _updateViewModel];
   }
 }
 
-- (void)tearDownAfterSkimmingShowHints:(BOOL)a3 persistState:(BOOL)a4
+- (void)tearDownAfterSkimmingShowHints:(BOOL)hints persistState:(BOOL)state
 {
   if (self->_skimmingZoomLevel)
   {
-    if (a4)
+    if (state)
     {
       [(PXCuratedLibraryAssetCollectionSkimmingModel *)self persistSkimmingState];
     }
 
     if (self->_dataSourcePauseToken)
     {
-      v6 = [(PXCuratedLibraryViewModel *)self->_viewModel assetsDataSourceManager];
+      assetsDataSourceManager = [(PXCuratedLibraryViewModel *)self->_viewModel assetsDataSourceManager];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __92__PXCuratedLibraryAssetCollectionSkimmingModel_tearDownAfterSkimmingShowHints_persistState___block_invoke;
       v12[3] = &unk_1E77410A8;
       v12[4] = self;
-      [v6 performChanges:v12];
+      [assetsDataSourceManager performChanges:v12];
 
       dataSourcePauseToken = self->_dataSourcePauseToken;
       self->_dataSourcePauseToken = 0;
     }
 
     *&self->_isPlayingSlideshow = 0;
-    if (!a3)
+    if (!hints)
     {
       containingAssetCollectionReference = self->_containingAssetCollectionReference;
       self->_containingAssetCollectionReference = 0;
@@ -180,41 +180,41 @@ void __64__PXCuratedLibraryAssetCollectionSkimmingModel__updateViewModel__block_
   }
 }
 
-- (void)_prepareIndexesForAssetCollectionReference:(id)a3 willStartSkimming:(BOOL)a4 willStartSlideshow:(BOOL)a5
+- (void)_prepareIndexesForAssetCollectionReference:(id)reference willStartSkimming:(BOOL)skimming willStartSlideshow:(BOOL)slideshow
 {
-  v50 = a5;
+  slideshowCopy = slideshow;
   v71 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(PXCuratedLibraryViewModel *)self->_viewModel zoomLevel];
-  self->_zoomLevel = v9;
-  if (v9 == 1)
+  referenceCopy = reference;
+  zoomLevel = [(PXCuratedLibraryViewModel *)self->_viewModel zoomLevel];
+  self->_zoomLevel = zoomLevel;
+  if (zoomLevel == 1)
   {
-    v12 = [v8 assetCollection];
-    v13 = [v12 px_highlightKind];
+    assetCollection = [referenceCopy assetCollection];
+    px_highlightKind = [assetCollection px_highlightKind];
 
-    if (v13 != 2)
+    if (px_highlightKind != 2)
     {
-      v43 = [MEMORY[0x1E696AAA8] currentHandler];
-      v44 = [v8 assetCollection];
-      [v43 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySkimmingController.m" lineNumber:546 description:{@"Expected Year highlight, received %@", v44}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      assetCollection2 = [referenceCopy assetCollection];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySkimmingController.m" lineNumber:546 description:{@"Expected Year highlight, received %@", assetCollection2}];
     }
 
     self->_skimmingZoomLevel = 2;
   }
 
-  else if ((v9 - 2) < 3 || v9 == 0)
+  else if ((zoomLevel - 2) < 3 || zoomLevel == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySkimmingController.m" lineNumber:554 description:@"Code which should be unreachable has been reached"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySkimmingController.m" lineNumber:554 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  objc_storeStrong(&self->_containingAssetCollectionReference, a3);
-  v14 = [(PXCuratedLibraryViewModel *)self->_viewModel assetsDataSourceManager];
+  objc_storeStrong(&self->_containingAssetCollectionReference, reference);
+  assetsDataSourceManager = [(PXCuratedLibraryViewModel *)self->_viewModel assetsDataSourceManager];
   skimmingZoomLevel = self->_skimmingZoomLevel;
   v69 = 0;
-  v16 = [v14 assetCollectionReferencesInDataSourceForZoomLevel:skimmingZoomLevel withParentAssetCollectionReference:v8 assetCollectionReferenceWithSameKeyAssetAsParent:&v69];
+  v16 = [assetsDataSourceManager assetCollectionReferencesInDataSourceForZoomLevel:skimmingZoomLevel withParentAssetCollectionReference:referenceCopy assetCollectionReferenceWithSameKeyAssetAsParent:&v69];
   v17 = v69;
   v18 = objc_alloc_init(off_1E77217C8);
   v67 = 0u;
@@ -260,7 +260,7 @@ void __64__PXCuratedLibraryAssetCollectionSkimmingModel__updateViewModel__block_
   indexPathSetForSkimming = self->_indexPathSetForSkimming;
   self->_indexPathSetForSkimming = v24;
 
-  if (a4 || v50)
+  if (skimming || slideshowCopy)
   {
     v26 = self->_indexPathSetForSkimming;
     *&v63 = 0;
@@ -290,8 +290,8 @@ void __64__PXCuratedLibraryAssetCollectionSkimmingModel__updateViewModel__block_
       v60 = &v63;
       v29 = v28;
       v58 = v29;
-      v59 = self;
-      [v14 performChanges:v57];
+      selfCopy = self;
+      [assetsDataSourceManager performChanges:v57];
     }
 
     v56[0] = MEMORY[0x1E69E9820];
@@ -299,7 +299,7 @@ void __64__PXCuratedLibraryAssetCollectionSkimmingModel__updateViewModel__block_
     v56[2] = __128__PXCuratedLibraryAssetCollectionSkimmingModel__prepareIndexesForAssetCollectionReference_willStartSkimming_willStartSlideshow___block_invoke_2;
     v56[3] = &unk_1E77410A8;
     v56[4] = self;
-    [v14 performChanges:v56];
+    [assetsDataSourceManager performChanges:v56];
     _Block_object_dispose(&v63, 8);
   }
 
@@ -319,18 +319,18 @@ void __64__PXCuratedLibraryAssetCollectionSkimmingModel__updateViewModel__block_
 
   if (v63 == *off_1E7721F68)
   {
-    v31 = [v14 dataSourceForZoomLevel:self->_skimmingZoomLevel];
-    v32 = [v31 objectReferenceNearestToObjectReference:v8];
+    v31 = [assetsDataSourceManager dataSourceForZoomLevel:self->_skimmingZoomLevel];
+    v32 = [v31 objectReferenceNearestToObjectReference:referenceCopy];
     if (v32)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v48 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
         v45 = objc_opt_class();
         v47 = NSStringFromClass(v45);
-        v46 = [v32 px_descriptionForAssertionMessage];
-        [v48 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySkimmingController.m" lineNumber:594 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[dataSource objectReferenceNearestToObjectReference:assetCollectionReference]", v47, v46}];
+        px_descriptionForAssertionMessage = [v32 px_descriptionForAssertionMessage];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySkimmingController.m" lineNumber:594 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[dataSource objectReferenceNearestToObjectReference:assetCollectionReference]", v47, px_descriptionForAssertionMessage}];
       }
     }
 
@@ -420,8 +420,8 @@ void __64__PXCuratedLibraryAssetCollectionSkimmingModel__updateViewModel__block_
   v42 = v64;
   *&self->_initialIndexPath.dataSourceIdentifier = v63;
   *&self->_initialIndexPath.item = v42;
-  self->_isPlayingSlideshow = v50;
-  self->_isInteractionInProgress = a4;
+  self->_isPlayingSlideshow = slideshowCopy;
+  self->_isInteractionInProgress = skimming;
   *&self->_skimmedIndexPath.dataSourceIdentifier = v41;
   *&self->_skimmedIndexPath.item = v42;
   [(PXCuratedLibraryAssetCollectionSkimmingModel *)self _updateViewModel];
@@ -460,29 +460,29 @@ void __128__PXCuratedLibraryAssetCollectionSkimmingModel__prepareIndexesForAsset
   }
 }
 
-- (id)validatedAssetCollectionReference:(id)a3
+- (id)validatedAssetCollectionReference:(id)reference
 {
-  v4 = a3;
-  v5 = [v4 assetCollection];
-  if ([v5 px_highlightKind] == 2)
+  referenceCopy = reference;
+  assetCollection = [referenceCopy assetCollection];
+  if ([assetCollection px_highlightKind] == 2)
   {
-    v6 = v4;
+    v6 = referenceCopy;
   }
 
   else
   {
-    v7 = [(PXCuratedLibraryViewModel *)self->_viewModel zoomLevel];
+    zoomLevel = [(PXCuratedLibraryViewModel *)self->_viewModel zoomLevel];
 
-    v6 = v4;
-    if (v7 != 1)
+    v6 = referenceCopy;
+    if (zoomLevel != 1)
     {
       goto LABEL_6;
     }
 
-    v8 = [(PXCuratedLibraryViewModel *)self->_viewModel assetsDataSourceManager];
-    v5 = [v8 dataSourceForZoomLevel:{-[PXCuratedLibraryViewModel zoomLevel](self->_viewModel, "zoomLevel")}];
+    assetsDataSourceManager = [(PXCuratedLibraryViewModel *)self->_viewModel assetsDataSourceManager];
+    assetCollection = [assetsDataSourceManager dataSourceForZoomLevel:{-[PXCuratedLibraryViewModel zoomLevel](self->_viewModel, "zoomLevel")}];
 
-    v6 = [v5 assetCollectionReferenceNearestToObjectReference:v4];
+    v6 = [assetCollection assetCollectionReferenceNearestToObjectReference:referenceCopy];
   }
 
 LABEL_6:
@@ -490,16 +490,16 @@ LABEL_6:
   return v6;
 }
 
-- (PXCuratedLibraryAssetCollectionSkimmingModel)initWithViewModel:(id)a3
+- (PXCuratedLibraryAssetCollectionSkimmingModel)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = PXCuratedLibraryAssetCollectionSkimmingModel;
   v6 = [(PXCuratedLibraryAssetCollectionSkimmingModel *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     v7->_zoomLevel = 0;
     v8 = *off_1E7722228;
     v9 = *(off_1E7722228 + 1);

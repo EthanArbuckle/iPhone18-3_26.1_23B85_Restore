@@ -7,31 +7,31 @@
 + (NSPredicate)predicateForImmersiveAudio:(BOOL)isImmersiveAudio mediaSelectionOption:(AVMediaSelectionOption *)mediaSelectionOption;
 + (NSPredicate)predicateForPresentationHeight:(CGFloat)height operatorType:(NSPredicateOperatorType)operatorType;
 + (NSPredicate)predicateForPresentationWidth:(CGFloat)width operatorType:(NSPredicateOperatorType)operatorType;
-+ (id)assetVariantQualifierForMaximumValueInKeyPath:(id)a3;
-+ (id)assetVariantQualifierForMinimumValueInKeyPath:(id)a3;
-+ (id)predicateForAudioSampleRate:(double)a3 mediaSelectionOption:(id)a4 operatorType:(unint64_t)a5;
-+ (id)predicateForAudioSampleRate:(double)a3 operatorType:(unint64_t)a4;
-+ (id)predicateForBinauralAudio:(BOOL)a3;
-+ (id)predicateForChannelCount:(int64_t)a3 operatorType:(unint64_t)a4;
-+ (id)predicateForDownmixAudio:(BOOL)a3;
-+ (id)predicateForImmersiveAudio:(BOOL)a3;
-- (AVAssetVariantQualifier)initWithCoder:(id)a3;
-- (AVAssetVariantQualifier)initWithVariant:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)assetVariantQualifierForMaximumValueInKeyPath:(id)path;
++ (id)assetVariantQualifierForMinimumValueInKeyPath:(id)path;
++ (id)predicateForAudioSampleRate:(double)rate mediaSelectionOption:(id)option operatorType:(unint64_t)type;
++ (id)predicateForAudioSampleRate:(double)rate operatorType:(unint64_t)type;
++ (id)predicateForBinauralAudio:(BOOL)audio;
++ (id)predicateForChannelCount:(int64_t)count operatorType:(unint64_t)type;
++ (id)predicateForDownmixAudio:(BOOL)audio;
++ (id)predicateForImmersiveAudio:(BOOL)audio;
+- (AVAssetVariantQualifier)initWithCoder:(id)coder;
+- (AVAssetVariantQualifier)initWithVariant:(id)variant;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVAssetVariantQualifier
 
-- (AVAssetVariantQualifier)initWithVariant:(id)a3
+- (AVAssetVariantQualifier)initWithVariant:(id)variant
 {
   v6.receiver = self;
   v6.super_class = AVAssetVariantQualifier;
   v4 = [(AVAssetVariantQualifier *)&v6 init];
   if (v4)
   {
-    v4->_variant = a3;
+    v4->_variant = variant;
   }
 
   return v4;
@@ -41,7 +41,7 @@
 {
   if (!predicate)
   {
-    v8 = a1;
+    selfCopy = self;
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
     v16 = @"predicate cannot be nil";
@@ -51,12 +51,12 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = a1;
+    selfCopy2 = self;
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
     v16 = @"supports only NSPredicate objects";
 LABEL_8:
-    v18 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithObjectAndSelector(a1 userInfo:{a2, v16, v9, v10, v11, v12, v13, v19), 0}];
+    v18 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, v16, v9, v10, v11, v12, v13, v19), 0}];
     objc_exception_throw(v18);
   }
 
@@ -69,7 +69,7 @@ LABEL_8:
 {
   if (!variant)
   {
-    v8 = a1;
+    selfCopy = self;
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
     v16 = @"variant cannot be nil";
@@ -79,25 +79,25 @@ LABEL_8:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = a1;
+    selfCopy2 = self;
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
     v16 = @"supports only AVAssetVariant objects";
 LABEL_8:
-    v18 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithObjectAndSelector(a1 userInfo:{a2, v16, v9, v10, v11, v12, v13, v19), 0}];
+    v18 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, v16, v9, v10, v11, v12, v13, v19), 0}];
     objc_exception_throw(v18);
   }
 
-  v6 = [[a1 alloc] initWithVariant:variant];
+  v6 = [[self alloc] initWithVariant:variant];
 
   return v6;
 }
 
-+ (id)assetVariantQualifierForMinimumValueInKeyPath:(id)a3
++ (id)assetVariantQualifierForMinimumValueInKeyPath:(id)path
 {
-  if (!a3)
+  if (!path)
   {
-    v8 = a1;
+    selfCopy = self;
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
     v16 = @"keyPath cannot be nil";
@@ -107,25 +107,25 @@ LABEL_8:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = a1;
+    selfCopy2 = self;
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
     v16 = @"supports only NSString objects";
 LABEL_8:
-    v18 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithObjectAndSelector(a1 userInfo:{a2, v16, v9, v10, v11, v12, v13, v19), 0}];
+    v18 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, v16, v9, v10, v11, v12, v13, v19), 0}];
     objc_exception_throw(v18);
   }
 
-  v6 = -[AVAssetVariantQualifierForMinimumInKeyPath initWithFigAssetVariantQualifierForMinimumInKeyPath:]([AVAssetVariantQualifierForMinimumInKeyPath alloc], "initWithFigAssetVariantQualifierForMinimumInKeyPath:", [objc_alloc(MEMORY[0x1E6970AA8]) initWithKeyPath:a3]);
+  v6 = -[AVAssetVariantQualifierForMinimumInKeyPath initWithFigAssetVariantQualifierForMinimumInKeyPath:]([AVAssetVariantQualifierForMinimumInKeyPath alloc], "initWithFigAssetVariantQualifierForMinimumInKeyPath:", [objc_alloc(MEMORY[0x1E6970AA8]) initWithKeyPath:path]);
 
   return v6;
 }
 
-+ (id)assetVariantQualifierForMaximumValueInKeyPath:(id)a3
++ (id)assetVariantQualifierForMaximumValueInKeyPath:(id)path
 {
-  if (!a3)
+  if (!path)
   {
-    v8 = a1;
+    selfCopy = self;
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
     v16 = @"keyPath cannot be nil";
@@ -135,16 +135,16 @@ LABEL_8:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = a1;
+    selfCopy2 = self;
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
     v16 = @"supports only NSString objects";
 LABEL_8:
-    v18 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithObjectAndSelector(a1 userInfo:{a2, v16, v9, v10, v11, v12, v13, v19), 0}];
+    v18 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, v16, v9, v10, v11, v12, v13, v19), 0}];
     objc_exception_throw(v18);
   }
 
-  v6 = -[AVAssetVariantQualifierForMaximumInKeyPath initWithFigAssetVariantQualifierForMaximumInKeyPath:]([AVAssetVariantQualifierForMaximumInKeyPath alloc], "initWithFigAssetVariantQualifierForMaximumInKeyPath:", [objc_alloc(MEMORY[0x1E6970AA0]) initWithKeyPath:a3]);
+  v6 = -[AVAssetVariantQualifierForMaximumInKeyPath initWithFigAssetVariantQualifierForMaximumInKeyPath:]([AVAssetVariantQualifierForMaximumInKeyPath alloc], "initWithFigAssetVariantQualifierForMaximumInKeyPath:", [objc_alloc(MEMORY[0x1E6970AA0]) initWithKeyPath:path]);
 
   return v6;
 }
@@ -156,9 +156,9 @@ LABEL_8:
   return v5;
 }
 
-+ (id)predicateForChannelCount:(int64_t)a3 operatorType:(unint64_t)a4
++ (id)predicateForChannelCount:(int64_t)count operatorType:(unint64_t)type
 {
-  v4 = [[AVAssetVariantChannelCountPredicate alloc] initWithChannelCount:a3 mediaSelectionOption:0 operatorType:a4];
+  v4 = [[AVAssetVariantChannelCountPredicate alloc] initWithChannelCount:count mediaSelectionOption:0 operatorType:type];
 
   return v4;
 }
@@ -170,9 +170,9 @@ LABEL_8:
   return v4;
 }
 
-+ (id)predicateForBinauralAudio:(BOOL)a3
++ (id)predicateForBinauralAudio:(BOOL)audio
 {
-  v3 = [[AVAssetVariantBinauralAudioPredicate alloc] initWithBinauralAudio:a3 mediaSelectionOption:0];
+  v3 = [[AVAssetVariantBinauralAudioPredicate alloc] initWithBinauralAudio:audio mediaSelectionOption:0];
 
   return v3;
 }
@@ -184,9 +184,9 @@ LABEL_8:
   return v4;
 }
 
-+ (id)predicateForImmersiveAudio:(BOOL)a3
++ (id)predicateForImmersiveAudio:(BOOL)audio
 {
-  v3 = [[AVAssetVariantImmersiveAudioPredicate alloc] initWithImmersiveAudio:a3 mediaSelectionOption:0];
+  v3 = [[AVAssetVariantImmersiveAudioPredicate alloc] initWithImmersiveAudio:audio mediaSelectionOption:0];
 
   return v3;
 }
@@ -198,23 +198,23 @@ LABEL_8:
   return v4;
 }
 
-+ (id)predicateForDownmixAudio:(BOOL)a3
++ (id)predicateForDownmixAudio:(BOOL)audio
 {
-  v3 = [[AVAssetVariantDownmixAudioPredicate alloc] initWithDownmixAudio:a3 mediaSelectionOption:0];
+  v3 = [[AVAssetVariantDownmixAudioPredicate alloc] initWithDownmixAudio:audio mediaSelectionOption:0];
 
   return v3;
 }
 
-+ (id)predicateForAudioSampleRate:(double)a3 mediaSelectionOption:(id)a4 operatorType:(unint64_t)a5
++ (id)predicateForAudioSampleRate:(double)rate mediaSelectionOption:(id)option operatorType:(unint64_t)type
 {
-  v5 = [[AVAssetVariantAudioSampleRatePredicate alloc] initWithSampleRate:a4 mediaSelectionOption:a5 operatorType:a3];
+  v5 = [[AVAssetVariantAudioSampleRatePredicate alloc] initWithSampleRate:option mediaSelectionOption:type operatorType:rate];
 
   return v5;
 }
 
-+ (id)predicateForAudioSampleRate:(double)a3 operatorType:(unint64_t)a4
++ (id)predicateForAudioSampleRate:(double)rate operatorType:(unint64_t)type
 {
-  v4 = [[AVAssetVariantAudioSampleRatePredicate alloc] initWithSampleRate:0 mediaSelectionOption:a4 operatorType:a3];
+  v4 = [[AVAssetVariantAudioSampleRatePredicate alloc] initWithSampleRate:0 mediaSelectionOption:type operatorType:rate];
 
   return v4;
 }
@@ -240,7 +240,7 @@ LABEL_8:
   [(AVAssetVariantQualifier *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AVAssetVariantQualifier alloc];
   variant = self->_variant;
@@ -248,9 +248,9 @@ LABEL_8:
   return [(AVAssetVariantQualifier *)v4 initWithVariant:variant];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"supports only keyed archivers", v6, v7, v8, v9, v10, v13), 0}];
     objc_exception_throw(v12);
@@ -258,14 +258,14 @@ LABEL_8:
 
   variant = self->_variant;
 
-  [a3 encodeObject:variant forKey:@"variant"];
+  [coder encodeObject:variant forKey:@"variant"];
 }
 
-- (AVAssetVariantQualifier)initWithCoder:(id)a3
+- (AVAssetVariantQualifier)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
-    v8 = self;
+    selfCopy = self;
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"supports only keyed archivers", v9, v10, v11, v12, v13, v15.receiver), 0}];
     objc_exception_throw(v14);
   }
@@ -275,7 +275,7 @@ LABEL_8:
   v6 = [(AVAssetVariantQualifier *)&v15 init];
   if (v6)
   {
-    v6->_variant = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"variant"];
+    v6->_variant = [coder decodeObjectOfClass:objc_opt_class() forKey:@"variant"];
   }
 
   return v6;

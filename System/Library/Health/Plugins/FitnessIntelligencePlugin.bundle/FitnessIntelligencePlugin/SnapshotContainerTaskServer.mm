@@ -1,36 +1,36 @@
 @interface SnapshotContainerTaskServer
 + (id)taskIdentifier;
-- (_TtC25FitnessIntelligencePlugin27SnapshotContainerTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (_TtC25FitnessIntelligencePlugin27SnapshotContainerTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)exportedInterface;
 - (id)remoteInterface;
 - (void)dealloc;
-- (void)invalidateAfter:(int64_t)a3 completion:(id)a4;
-- (void)invalidateDatabaseAssertionWithCompletion:(id)a3;
-- (void)listIntermediateCheckpointsWithStep:(id)a3 completion:(id)a4;
-- (void)mostRecentCheckpointsWithType:(id)a3 completion:(id)a4;
-- (void)requestDatabaseAssertionWithCompletion:(id)a3;
-- (void)workoutManager:(id)a3 didUpdateCurrentWorkout:(id)a4;
+- (void)invalidateAfter:(int64_t)after completion:(id)completion;
+- (void)invalidateDatabaseAssertionWithCompletion:(id)completion;
+- (void)listIntermediateCheckpointsWithStep:(id)step completion:(id)completion;
+- (void)mostRecentCheckpointsWithType:(id)type completion:(id)completion;
+- (void)requestDatabaseAssertionWithCompletion:(id)completion;
+- (void)workoutManager:(id)manager didUpdateCurrentWorkout:(id)workout;
 @end
 
 @implementation SnapshotContainerTaskServer
 
-- (void)mostRecentCheckpointsWithType:(id)a3 completion:(id)a4
+- (void)mostRecentCheckpointsWithType:(id)type completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_755A8();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  sub_2DEF0(v6, v8, v9, v5);
+  selfCopy = self;
+  sub_2DEF0(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-- (void)listIntermediateCheckpointsWithStep:(id)a3 completion:(id)a4
+- (void)listIntermediateCheckpointsWithStep:(id)step completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v12 = self;
+  v6 = _Block_copy(completion);
+  stepCopy = step;
+  selfCopy = self;
   v8 = sub_748C8();
   v10 = v9;
 
@@ -41,30 +41,30 @@
   sub_FB28(v8, v10);
 }
 
-- (void)invalidateAfter:(int64_t)a3 completion:(id)a4
+- (void)invalidateAfter:(int64_t)after completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = self;
-  SnapshotContainerTaskServer.invalidate(after:completion:)(a3, sub_303D4, v7);
+  selfCopy = self;
+  SnapshotContainerTaskServer.invalidate(after:completion:)(after, sub_303D4, v7);
 }
 
-- (void)requestDatabaseAssertionWithCompletion:(id)a3
+- (void)requestDatabaseAssertionWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_2F7C4(v5, v4);
+  selfCopy = self;
+  sub_2F7C4(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)invalidateDatabaseAssertionWithCompletion:(id)a3
+- (void)invalidateDatabaseAssertionWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = *(*&self->HDStandardTaskServer_opaque[OBJC_IVAR____TtC25FitnessIntelligencePlugin27SnapshotContainerTaskServer_snapshotProcessingAssertion] + 40);
-  v6 = self;
+  selfCopy = self;
 
   sub_74CC8();
 
@@ -73,32 +73,32 @@
   _Block_release(v4);
 }
 
-- (_TtC25FitnessIntelligencePlugin27SnapshotContainerTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (_TtC25FitnessIntelligencePlugin27SnapshotContainerTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v9 = sub_749B8();
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_74998();
-  v13 = a4;
-  v14 = a5;
+  configurationCopy = configuration;
+  clientCopy = client;
   swift_unknownObjectRetain();
-  return SnapshotContainerTaskServer.init(uuid:configuration:client:delegate:)(v12, a4, v14, a6);
+  return SnapshotContainerTaskServer.init(uuid:configuration:client:delegate:)(v12, configuration, clientCopy, delegate);
 }
 
 - (void)dealloc
 {
-  v2 = self;
-  v3 = [(SnapshotContainerTaskServer *)v2 client];
-  v4 = [v3 profile];
+  selfCopy = self;
+  client = [(SnapshotContainerTaskServer *)selfCopy client];
+  profile = [client profile];
 
-  v5 = [v4 workoutManager];
-  if (v5)
+  workoutManager = [profile workoutManager];
+  if (workoutManager)
   {
-    [v5 unregisterCurrentWorkoutObserver:v2];
+    [workoutManager unregisterCurrentWorkoutObserver:selfCopy];
   }
 
-  v6.receiver = v2;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for SnapshotContainerTaskServer();
   [(SnapshotContainerTaskServer *)&v6 dealloc];
 }
@@ -125,12 +125,12 @@
   return v2;
 }
 
-- (void)workoutManager:(id)a3 didUpdateCurrentWorkout:(id)a4
+- (void)workoutManager:(id)manager didUpdateCurrentWorkout:(id)workout
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_446DC(a4);
+  managerCopy = manager;
+  workoutCopy = workout;
+  selfCopy = self;
+  sub_446DC(workout);
 }
 
 @end

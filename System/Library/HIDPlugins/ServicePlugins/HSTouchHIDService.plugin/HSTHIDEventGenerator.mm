@@ -1,27 +1,27 @@
 @interface HSTHIDEventGenerator
-- (BOOL)handleHSDecode:(void *)a3;
-- (BOOL)handleHSEncode:(void *)a3;
-- (HSTHIDEventGenerator)initWithConfig:(const HSTHIDEventGeneratorConfig *)a3;
+- (BOOL)handleHSDecode:(void *)decode;
+- (BOOL)handleHSEncode:(void *)encode;
+- (HSTHIDEventGenerator)initWithConfig:(const HSTHIDEventGeneratorConfig *)config;
 - (id).cxx_construct;
-- (void)_cancelActiveContacts:(int64_t)a3;
-- (void)_handleContactFrame:(id)a3;
-- (void)_handleCopyEvent:(id)a3;
-- (void)_handleDebugStateEvent:(id)a3;
-- (void)_handleGetPropertyEvent:(id)a3;
-- (void)_handleHIDEvents:(id)a3;
-- (void)_handleResetEvent:(id)a3;
-- (void)_handleSetPropertyEvent:(id)a3;
-- (void)_handleTouchModeEvent:(id)a3;
-- (void)_handleVendorEvent:(id)a3;
-- (void)_handleWakeSystemEvent:(id)a3;
-- (void)_logContact:(Contact *)a3 ofType:(int)a4 withFrame:(id)a5;
-- (void)_saveLastTouchSystemReady:(id)a3;
-- (void)handleConsume:(id)a3;
+- (void)_cancelActiveContacts:(int64_t)contacts;
+- (void)_handleContactFrame:(id)frame;
+- (void)_handleCopyEvent:(id)event;
+- (void)_handleDebugStateEvent:(id)event;
+- (void)_handleGetPropertyEvent:(id)event;
+- (void)_handleHIDEvents:(id)events;
+- (void)_handleResetEvent:(id)event;
+- (void)_handleSetPropertyEvent:(id)event;
+- (void)_handleTouchModeEvent:(id)event;
+- (void)_handleVendorEvent:(id)event;
+- (void)_handleWakeSystemEvent:(id)event;
+- (void)_logContact:(Contact *)contact ofType:(int)type withFrame:(id)frame;
+- (void)_saveLastTouchSystemReady:(id)ready;
+- (void)handleConsume:(id)consume;
 @end
 
 @implementation HSTHIDEventGenerator
 
-- (HSTHIDEventGenerator)initWithConfig:(const HSTHIDEventGeneratorConfig *)a3
+- (HSTHIDEventGenerator)initWithConfig:(const HSTHIDEventGeneratorConfig *)config
 {
   v10.receiver = self;
   v10.super_class = HSTHIDEventGenerator;
@@ -29,7 +29,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_config = *a3;
+    v4->_config = *config;
     v4->_touchMode = 1;
     v6 = objc_opt_new();
     hidStats = v5->_hidStats;
@@ -41,11 +41,11 @@
   return v5;
 }
 
-- (void)_saveLastTouchSystemReady:(id)a3
+- (void)_saveLastTouchSystemReady:(id)ready
 {
-  v4 = a3;
-  v5 = v4[1];
-  for (i = v4[2]; v5 != i; ++v5)
+  readyCopy = ready;
+  v5 = readyCopy[1];
+  for (i = readyCopy[2]; v5 != i; ++v5)
   {
     v7 = *v5;
     v8 = *v5;
@@ -70,26 +70,26 @@
   }
 }
 
-- (void)_handleHIDEvents:(id)a3
+- (void)_handleHIDEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   if (!self->_disableEvents)
   {
-    [(HSTHIDEventGenerator *)self _saveLastTouchSystemReady:v4];
-    [(HSTHIDEventStatistics *)self->_hidStats handleHIDEvents:v4];
+    [(HSTHIDEventGenerator *)self _saveLastTouchSystemReady:eventsCopy];
+    [(HSTHIDEventStatistics *)self->_hidStats handleHIDEvents:eventsCopy];
     v5.receiver = self;
     v5.super_class = HSTHIDEventGenerator;
-    [(HSStage *)&v5 handleConsume:v4];
+    [(HSStage *)&v5 handleConsume:eventsCopy];
   }
 }
 
-- (void)_logContact:(Contact *)a3 ofType:(int)a4 withFrame:(id)a5
+- (void)_logContact:(Contact *)contact ofType:(int)type withFrame:(id)frame
 {
-  v8 = a5;
-  contactID = a3->contactID;
+  frameCopy = frame;
+  contactID = contact->contactID;
   v10 = &self->_prevUnmodifiedContacts[contactID];
   contactStateCounts = self->_contactStateCounts;
-  if (__PAIR64__(v10->stage, v10->contactID) == __PAIR64__(a3->stage, contactID) && v10->finger == a3->finger && v10->flags == a3->flags)
+  if (__PAIR64__(v10->stage, v10->contactID) == __PAIR64__(contact->stage, contactID) && v10->finger == contact->finger && v10->flags == contact->flags)
   {
     v12 = contactStateCounts[contactID] + 1;
     contactStateCounts[contactID] = v12;
@@ -100,20 +100,20 @@
       v14 = MTLoggingPlugin();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v8 frameNumber];
-        v16 = [v8 firmwareTimestamp];
+        frameNumber = [frameCopy frameNumber];
+        firmwareTimestamp = [frameCopy firmwareTimestamp];
         v17 = contactStateCounts[contactID];
-        v18 = [NSString stringWithFormat:@"HSTContact{ID:%u, Stage:%u, Finger:%u, Flags:0x%08llX}", a3->contactID, a3->stage, a3->finger, a3->flags];
+        v18 = [NSString stringWithFormat:@"HSTContact{ID:%u, Stage:%u, Finger:%u, Flags:0x%08llX}", contact->contactID, contact->stage, contact->finger, contact->flags];
         *buf = 134219010;
-        v28 = v15;
+        v28 = frameNumber;
         v29 = 2048;
-        v30 = (v16 / 1000000.0);
+        v30 = (firmwareTimestamp / 1000000.0);
         v31 = 1024;
         *v32 = v17;
         *&v32[4] = 2114;
         *&v32[6] = v18;
         v33 = 1024;
-        v34 = a4;
+        typeCopy = type;
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "[F%llu @%f] Contact seen for %d frames: state %{public}@, type %u", buf, 0x2Cu);
       }
     }
@@ -124,45 +124,45 @@
     v19 = MTLoggingPlugin();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v8 frameNumber];
-      v21 = [v8 firmwareTimestamp];
-      v22 = [NSString stringWithFormat:@"HSTContact{ID:%u, Stage:%u, Finger:%u, Flags:0x%08llX}", a3->contactID, a3->stage, a3->finger, a3->flags];
+      frameNumber2 = [frameCopy frameNumber];
+      firmwareTimestamp2 = [frameCopy firmwareTimestamp];
+      v22 = [NSString stringWithFormat:@"HSTContact{ID:%u, Stage:%u, Finger:%u, Flags:0x%08llX}", contact->contactID, contact->stage, contact->finger, contact->flags];
       *buf = 134219010;
       v23 = contactStateCounts[contactID];
-      v28 = v20;
+      v28 = frameNumber2;
       v29 = 2048;
-      v30 = (v21 / 1000000.0);
+      v30 = (firmwareTimestamp2 / 1000000.0);
       v31 = 2114;
       *v32 = v22;
       *&v32[8] = 1024;
-      *&v32[10] = a4;
+      *&v32[10] = type;
       v33 = 1024;
-      v34 = v23;
+      typeCopy = v23;
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "[F%llu @%f] Contact state changed: %{public}@, type %u, previous state count %d", buf, 0x2Cu);
     }
 
     contactStateCounts[contactID] = 1;
   }
 
-  v24 = *&a3->contactID;
-  v25 = *&a3->position.x;
-  v26 = *&a3->azimuth;
-  *&v10->velocity.y = *&a3->velocity.y;
+  v24 = *&contact->contactID;
+  v25 = *&contact->position.x;
+  v26 = *&contact->azimuth;
+  *&v10->velocity.y = *&contact->velocity.y;
   *&v10->azimuth = v26;
   *&v10->contactID = v24;
   *&v10->position.x = v25;
 }
 
-- (void)_handleContactFrame:(id)a3
+- (void)_handleContactFrame:(id)frame
 {
-  v94 = a3;
-  HSUtil::MachTimeFromNanoseconds([v94 hsTimestamp]);
-  if (v94[120] != 1)
+  frameCopy = frame;
+  HSUtil::MachTimeFromNanoseconds([frameCopy hsTimestamp]);
+  if (frameCopy[120] != 1)
   {
     goto LABEL_19;
   }
 
-  v3 = v94[113];
+  v3 = frameCopy[113];
   if (v3 == 10)
   {
     if ((self->_touchMode & 0x200) == 0)
@@ -198,7 +198,7 @@ LABEL_11:
   v6 = MTLoggingPlugin();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = *(v94 + 29);
+    v7 = *(frameCopy + 29);
     buf[0] = 67109376;
     buf[1] = v3;
     LOWORD(buf[2]) = 1024;
@@ -206,8 +206,8 @@ LABEL_11:
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Tritium3 frame received: wake reason 0x%02X, gesture recognition time %d ms", buf, 0xEu);
   }
 
-  v8 = *(v94 + 6);
-  for (i = *(v94 + 7); v8 != i; v8 += 64)
+  v8 = *(frameCopy + 6);
+  for (i = *(frameCopy + 7); v8 != i; v8 += 64)
   {
     if (v8[1] - 1 <= 3)
     {
@@ -234,8 +234,8 @@ LABEL_19:
   v102 = 0u;
   v103 = 0u;
   memset(buf, 0, sizeof(buf));
-  v12 = *(v94 + 7);
-  if (*(v94 + 6) >= v12)
+  v12 = *(frameCopy + 7);
+  if (*(frameCopy + 6) >= v12)
   {
     v66 = 0;
     v67 = 0;
@@ -250,7 +250,7 @@ LABEL_19:
     v91 = 0;
     v92 = 0;
     v14 = -v12;
-    v15 = self;
+    selfCopy5 = self;
     do
     {
       v17 = (v12 + v13 - 64);
@@ -260,10 +260,10 @@ LABEL_19:
         __assert_rtn("[HSTHIDEventGenerator _handleContactFrame:]", "HSTHIDEventGenerator.mm", 332, "c.contactID < Contact::MaxContactCount");
       }
 
-      contactTypes = v15->_contactTypes;
-      [(HSTHIDEventGenerator *)v15 _logContact:v12 + v13 - 64 ofType:v15->_contactTypes[v16] withFrame:v94];
-      v19 = &v15->_contacts[v16];
-      if ((v15->_touchMode & 1) == 0 && contactTypes[v16] != 1)
+      contactTypes = selfCopy5->_contactTypes;
+      [(HSTHIDEventGenerator *)selfCopy5 _logContact:v12 + v13 - 64 ofType:selfCopy5->_contactTypes[v16] withFrame:frameCopy];
+      v19 = &selfCopy5->_contacts[v16];
+      if ((selfCopy5->_touchMode & 1) == 0 && contactTypes[v16] != 1)
       {
         if (v19->contactID || v19->stage || v19->finger || v19->flags)
         {
@@ -276,7 +276,7 @@ LABEL_19:
             _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Contact %u is not tritium3 enabled and the screen is off, setting stage to NotTracking", v98, 8u);
           }
 
-          v15 = self;
+          selfCopy5 = self;
         }
 
         *(v12 + v13 - 63) = 0;
@@ -299,7 +299,7 @@ LABEL_19:
             _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "Contact %u has an invalid finger id (%d), setting stage to NotTracking", v98, 0xEu);
           }
 
-          v15 = self;
+          selfCopy5 = self;
         }
 
         *(v12 + v13 - 63) = 0;
@@ -332,7 +332,7 @@ LABEL_19:
             _os_log_impl(&dword_0, v28, OS_LOG_TYPE_DEFAULT, "Erasing contact %u, reason: %{public}s", v98, 0x12u);
           }
 
-          v15 = self;
+          selfCopy5 = self;
         }
 
         v31 = 0;
@@ -351,14 +351,14 @@ LABEL_19:
 
         contactTypes[v16] = v31;
         v33 = v32 - 64;
-        v34 = *(v94 + 7);
+        v34 = *(frameCopy + 7);
         v35 = &v34[v14];
         if (v32 != v34)
         {
           memmove(v32 - 64, v32, &v34[v14]);
         }
 
-        *(v94 + 7) = &v35[v33];
+        *(frameCopy + 7) = &v35[v33];
       }
 
       else
@@ -502,10 +502,10 @@ LABEL_19:
         v90 |= v37;
         v92 += v37 >> 7;
         contactTypes[v16] = v63;
-        v15 = self;
+        selfCopy5 = self;
       }
 
-      v64 = *(v94 + 6);
+      v64 = *(frameCopy + 6);
       v13 -= 64;
       v14 += 64;
     }
@@ -516,18 +516,18 @@ LABEL_19:
     v67 = v91 != 0;
     if (v92)
     {
-      v65 |= (v92 == (*(v94 + 7) - v64) >> 6) << 7;
+      v65 |= (v92 == (*(frameCopy + 7) - v64) >> 6) << 7;
     }
   }
 
   initialToCurrentFrameDeltaMs_low = LOBYTE(self->_frameMetadata.tritium.var0.__val_.initialToCurrentFrameDeltaMs);
   if ((initialToCurrentFrameDeltaMs_low & 1) == 0)
   {
-    v69 = v94[120];
+    v69 = frameCopy[120];
     goto LABEL_108;
   }
 
-  v69 = v94[120];
+  v69 = frameCopy[120];
   if (v69 != 1)
   {
 LABEL_108:
@@ -535,7 +535,7 @@ LABEL_108:
     goto LABEL_109;
   }
 
-  if (initialToCurrentFrameDeltaMs_low == 1 && self->_frameMetadata.tritium.var0.__val_.version == v94[112] && *(&self->_frameMetadata.tritium.var0.__null_state_ + 1) == v94[113] && self->_frameMetadata.tritium.var0.__val_.gestureType == *(v94 + 29))
+  if (initialToCurrentFrameDeltaMs_low == 1 && self->_frameMetadata.tritium.var0.__val_.version == frameCopy[112] && *(&self->_frameMetadata.tritium.var0.__null_state_ + 1) == frameCopy[113] && self->_frameMetadata.tritium.var0.__val_.gestureType == *(frameCopy + 29))
   {
     v70 = 0;
   }
@@ -547,15 +547,15 @@ LABEL_108:
 
 LABEL_109:
   v71 = v70 | v65;
-  v72 = *(v94 + 72);
-  v73 = *(v94 + 88);
-  v74 = *(v94 + 104);
-  *(&self->_frameMetadata.tritium + 4) = *(v94 + 116);
+  v72 = *(frameCopy + 72);
+  v73 = *(frameCopy + 88);
+  v74 = *(frameCopy + 104);
+  *(&self->_frameMetadata.tritium + 4) = *(frameCopy + 116);
   self->_frameMetadata.image.var0 = v73;
   *&self->_frameMetadata.image.__engaged_ = v74;
   *&self->_frameMetadata.surfaceSize.var0.__null_state_ = v72;
-  contacts = *(v94 + 6);
-  v76 = *(v94 + 7);
+  contacts = *(frameCopy + 6);
+  v76 = *(frameCopy + 7);
   if (contacts == v76 || v71 == 0)
   {
     v78 = 0;
@@ -577,8 +577,8 @@ LABEL_109:
     getAveragePositionFromContacts(contacts, v79);
     v85 = v67 | 0x300000000;
     *v98 = IOHIDEventCreateDigitizerEvent();
-    v81 = *(v94 + 6);
-    for (j = *(v94 + 7); v81 != j; ++v81)
+    v81 = *(frameCopy + 6);
+    for (j = *(frameCopy + 7); v81 != j; ++v81)
     {
       eventFlagsFromContact(v81);
       v86 = 0;
@@ -589,9 +589,9 @@ LABEL_109:
     }
 
     IOHIDEventSetIntegerValue();
-    if (v94[120] == 1)
+    if (frameCopy[120] == 1)
     {
-      v97 = v94[113];
+      v97 = frameCopy[113];
       VendorDefinedEvent = IOHIDEventCreateVendorDefinedEvent();
       IOHIDEventSetPhase();
       IOHIDEventAppendEvent();
@@ -601,10 +601,10 @@ LABEL_109:
     std::vector<HIDEvent * {__strong}>::push_back[abi:ne200100](v78 + 1, v98);
   }
 
-  v84 = self;
-  if ((*(v94 + 10) & 1) != self->_largeBodyActive)
+  selfCopy7 = self;
+  if ((*(frameCopy + 10) & 1) != self->_largeBodyActive)
   {
-    self->_largeBodyActive = *(v94 + 10) & 1;
+    self->_largeBodyActive = *(frameCopy + 10) & 1;
     if (!v78)
     {
       v78 = objc_opt_new();
@@ -613,22 +613,22 @@ LABEL_109:
     ProximtyEvent = IOHIDEventCreateProximtyEvent();
     std::vector<HIDEvent * {__strong}>::push_back[abi:ne200100](v78 + 1, &ProximtyEvent);
 
-    v84 = self;
+    selfCopy7 = self;
   }
 
-  v95.receiver = v84;
+  v95.receiver = selfCopy7;
   v95.super_class = HSTHIDEventGenerator;
-  [(HSStage *)&v95 handleConsume:v94, v85, v86];
+  [(HSStage *)&v95 handleConsume:frameCopy, v85, v86];
   if (v78)
   {
-    [(HSTHIDEventGenerator *)v84 _handleHIDEvents:v78];
+    [(HSTHIDEventGenerator *)selfCopy7 _handleHIDEvents:v78];
   }
 }
 
-- (void)_handleWakeSystemEvent:(id)a3
+- (void)_handleWakeSystemEvent:(id)event
 {
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v15 = +[NSAssertionHandler currentHandler];
     v16 = [NSString stringWithUTF8String:"[HSTHIDEventGenerator _handleWakeSystemEvent:]"];
@@ -637,14 +637,14 @@ LABEL_109:
 
   v22.receiver = self;
   v22.super_class = HSTHIDEventGenerator;
-  [(HSStage *)&v22 handleConsume:v4];
-  HSUtil::MachTimeFromNanoseconds([v4 hsTimestamp]);
+  [(HSStage *)&v22 handleConsume:eventCopy];
+  HSUtil::MachTimeFromNanoseconds([eventCopy hsTimestamp]);
   v5 = objc_opt_new();
-  if ((v4[24] & 1) == 0)
+  if ((eventCopy[24] & 1) == 0)
   {
-    if ((v4[29] & 1) == 0)
+    if ((eventCopy[29] & 1) == 0)
     {
-      if ((v4[40] & 1) == 0 && (v4[52] & 1) == 0)
+      if ((eventCopy[40] & 1) == 0 && (eventCopy[52] & 1) == 0)
       {
         if ((self->_touchMode & 0x10) == 0)
         {
@@ -668,7 +668,7 @@ LABEL_8:
   }
 
   v6 = (self->_touchMode >> 4) & 1;
-  if (v4[29])
+  if (eventCopy[29])
   {
     goto LABEL_8;
   }
@@ -676,7 +676,7 @@ LABEL_8:
 LABEL_12:
   v7 = 0;
 LABEL_13:
-  if (v4[40] == 1)
+  if (eventCopy[40] == 1)
   {
     v8 = (self->_touchMode >> 6) & 1;
   }
@@ -686,7 +686,7 @@ LABEL_13:
     v8 = 0;
   }
 
-  if (v4[52] == 1)
+  if (eventCopy[52] == 1)
   {
     v9 = (self->_touchMode >> 11) & 1;
     if (!v7)
@@ -742,32 +742,32 @@ LABEL_26:
   [(HSTHIDEventGenerator *)self _handleHIDEvents:v5, v17];
 }
 
-- (void)_handleDebugStateEvent:(id)a3
+- (void)_handleDebugStateEvent:(id)event
 {
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v7 = +[NSAssertionHandler currentHandler];
     v8 = [NSString stringWithUTF8String:"[HSTHIDEventGenerator _handleDebugStateEvent:]"];
     [v7 handleFailureInFunction:v8 file:@"HSTHIDEventGenerator.mm" lineNumber:608 description:{@"Invalid parameter not satisfying: %@", @"event"}];
   }
 
-  *(v4 + 16) = 1;
+  *(eventCopy + 16) = 1;
   v9[0] = @"Stage";
   v9[1] = @"Generation Stats";
   v10[0] = @"HIDEventGenerator";
-  v5 = [(HSTHIDEventStatistics *)self->_hidStats stats];
-  v10[1] = v5;
+  stats = [(HSTHIDEventStatistics *)self->_hidStats stats];
+  v10[1] = stats;
   v6 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
 
-  [*(v4 + 3) addObject:v6];
+  [*(eventCopy + 3) addObject:v6];
 }
 
-- (void)_cancelActiveContacts:(int64_t)a3
+- (void)_cancelActiveContacts:(int64_t)contacts
 {
   v4 = objc_opt_new();
   v32 = v4;
-  [v4 hsSetTimestamp:a3];
+  [v4 hsSetTimestamp:contacts];
   v5 = 200;
   v6 = 2048;
   do
@@ -923,12 +923,12 @@ LABEL_26:
   }
 }
 
-- (void)_handleResetEvent:(id)a3
+- (void)_handleResetEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v7.receiver = self;
   v7.super_class = HSTHIDEventGenerator;
-  [(HSStage *)&v7 handleConsume:v4];
+  [(HSStage *)&v7 handleConsume:eventCopy];
   v5 = MTLoggingPlugin();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -936,27 +936,27 @@ LABEL_26:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Reset event received, canceling active contacts", v6, 2u);
   }
 
-  -[HSTHIDEventGenerator _cancelActiveContacts:](self, "_cancelActiveContacts:", [v4 hsTimestamp]);
+  -[HSTHIDEventGenerator _cancelActiveContacts:](self, "_cancelActiveContacts:", [eventCopy hsTimestamp]);
 }
 
-- (void)_handleTouchModeEvent:(id)a3
+- (void)_handleTouchModeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v6.receiver = self;
   v6.super_class = HSTHIDEventGenerator;
-  [(HSStage *)&v6 handleConsume:v4];
-  v5 = [v4 touchMode];
-  self->_touchMode = v5;
-  if ((v5 & 1) == 0)
+  [(HSStage *)&v6 handleConsume:eventCopy];
+  touchMode = [eventCopy touchMode];
+  self->_touchMode = touchMode;
+  if ((touchMode & 1) == 0)
   {
-    -[HSTHIDEventGenerator _cancelActiveContacts:](self, "_cancelActiveContacts:", [v4 hsTimestamp]);
+    -[HSTHIDEventGenerator _cancelActiveContacts:](self, "_cancelActiveContacts:", [eventCopy hsTimestamp]);
   }
 }
 
-- (void)_handleVendorEvent:(id)a3
+- (void)_handleVendorEvent:(id)event
 {
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v8 = +[NSAssertionHandler currentHandler];
     v9 = [NSString stringWithUTF8String:"[HSTHIDEventGenerator _handleVendorEvent:]"];
@@ -965,24 +965,24 @@ LABEL_26:
 
   v11.receiver = self;
   v11.super_class = HSTHIDEventGenerator;
-  [(HSStage *)&v11 handleConsume:v4];
-  HSUtil::MachTimeFromNanoseconds([v4 hsTimestamp]);
+  [(HSStage *)&v11 handleConsume:eventCopy];
+  HSUtil::MachTimeFromNanoseconds([eventCopy hsTimestamp]);
   v5 = objc_opt_new();
-  [v4 type];
-  v6 = [v4 data];
-  [v6 bytes];
-  v7 = [v4 data];
-  [v7 length];
+  [eventCopy type];
+  data = [eventCopy data];
+  [data bytes];
+  data2 = [eventCopy data];
+  [data2 length];
   VendorDefinedEvent = IOHIDEventCreateVendorDefinedEvent();
   std::vector<HIDEvent * {__strong}>::push_back[abi:ne200100](v5 + 1, &VendorDefinedEvent);
 
   [(HSTHIDEventGenerator *)self _handleHIDEvents:v5];
 }
 
-- (void)_handleCopyEvent:(id)a3
+- (void)_handleCopyEvent:(id)event
 {
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v11 = +[NSAssertionHandler currentHandler];
     v12 = [NSString stringWithUTF8String:"[HSTHIDEventGenerator _handleCopyEvent:]"];
@@ -991,16 +991,16 @@ LABEL_26:
 
   v13.receiver = self;
   v13.super_class = HSTHIDEventGenerator;
-  [(HSStage *)&v13 handleConsume:v4];
-  v5 = [v4 matching];
+  [(HSStage *)&v13 handleConsume:eventCopy];
+  matching = [eventCopy matching];
   IntegerValue = IOHIDEventGetIntegerValue();
 
-  v7 = [v4 matching];
+  matching2 = [eventCopy matching];
   v8 = IOHIDEventGetIntegerValue();
 
-  if ([v4 type] == 1 && IntegerValue == 65376 && v8 == 9)
+  if ([eventCopy type] == 1 && IntegerValue == 65376 && v8 == 9)
   {
-    [v4 setResult:self->_lastTouchSystemReadyEvent];
+    [eventCopy setResult:self->_lastTouchSystemReadyEvent];
   }
 
   else
@@ -1008,9 +1008,9 @@ LABEL_26:
     v9 = MTLoggingPlugin();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v4 type];
+      type = [eventCopy type];
       *buf = 67109632;
-      v15 = v10;
+      v15 = type;
       v16 = 1024;
       v17 = IntegerValue;
       v18 = 1024;
@@ -1020,14 +1020,14 @@ LABEL_26:
   }
 }
 
-- (void)_handleSetPropertyEvent:(id)a3
+- (void)_handleSetPropertyEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4 + 16;
-  v6 = v4[39];
+  eventCopy = event;
+  v5 = eventCopy + 16;
+  v6 = eventCopy[39];
   if (v6 < 0)
   {
-    if (*(v4 + 3) != 13)
+    if (*(eventCopy + 3) != 13)
     {
       goto LABEL_15;
     }
@@ -1044,8 +1044,8 @@ LABEL_26:
   v8 = *(v5 + 5);
   if (v7 == 0x45656C6261736944 && v8 == 0x73746E657645656CLL)
   {
-    v12 = v4;
-    v10 = *(v4 + 5);
+    v12 = eventCopy;
+    v10 = *(eventCopy + 5);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1058,20 +1058,20 @@ LABEL_26:
     }
 
     self->_disableEvents = [v11 BOOLValue];
-    v4 = v12;
+    eventCopy = v12;
   }
 
 LABEL_15:
 }
 
-- (void)_handleGetPropertyEvent:(id)a3
+- (void)_handleGetPropertyEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4 + 2;
-  v6 = *(v4 + 39);
+  eventCopy = event;
+  v5 = eventCopy + 2;
+  v6 = *(eventCopy + 39);
   if (v6 < 0)
   {
-    if (v4[3] != 13)
+    if (eventCopy[3] != 13)
     {
       goto LABEL_12;
     }
@@ -1088,24 +1088,24 @@ LABEL_15:
   v8 = *(v5 + 5);
   if (v7 == 0x45656C6261736944 && v8 == 0x73746E657645656CLL)
   {
-    v12 = v4;
+    v12 = eventCopy;
     v10 = [NSNumber numberWithBool:self->_disableEvents];
     v11 = v12[5];
     v12[5] = v10;
 
-    v4 = v12;
+    eventCopy = v12;
   }
 
 LABEL_12:
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = consumeCopy;
   }
 
   else
@@ -1115,12 +1115,12 @@ LABEL_12:
 
   if (v5)
   {
-    [(HSTHIDEventGenerator *)self _handleContactFrame:v4];
+    [(HSTHIDEventGenerator *)self _handleContactFrame:consumeCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = consumeCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1246,38 +1246,38 @@ LABEL_12:
   }
 }
 
-- (BOOL)handleHSEncode:(void *)a3
+- (BOOL)handleHSEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v12 = *(a3 + 17);
+    *&v12 = *(encode + 17);
     DWORD2(v12) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v12);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xEBu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v12);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xEBu, 0);
   }
 
-  HSUtil::Encoder::encodeCodable<HSTHIDEventGeneratorConfig>(a3, HSUtil::CoderKey::Literal<(char)99,(char)111,(char)110,(char)102,(char)105,(char)103>::Key, &self->_config);
-  HSUtil::Encoder::encodeCodable<HSTContactFrameMetadata>(a3, HSUtil::CoderKey::Literal<(char)102,(char)114,(char)97,(char)109,(char)101,(char)77,(char)101,(char)116,(char)97,(char)100,(char)97,(char)116,(char)97>::Key, &self->_frameMetadata);
-  HSUtil::Encoder::encodeBool(a3, HSUtil::CoderKey::Literal<(char)108,(char)97,(char)114,(char)103,(char)101,(char)66,(char)111,(char)100,(char)121,(char)65,(char)99,(char)116,(char)105,(char)118,(char)101>::Key, self->_largeBodyActive);
-  HSUtil::Encoder::encodeBool(a3, HSUtil::CoderKey::Literal<(char)100,(char)105,(char)115,(char)97,(char)98,(char)108,(char)101,(char)69,(char)118,(char)101,(char)110,(char)116,(char)115>::Key, self->_disableEvents);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)116,(char)111,(char)117,(char)99,(char)104,(char)77,(char)111,(char)100,(char)101>::Key, self->_touchMode);
-  HSUtil::Encoder::encodeArrayStart(a3, HSUtil::CoderKey::Literal<(char)99,(char)111,(char)110,(char)116,(char)97,(char)99,(char)116,(char)115>::Key, 4);
+  HSUtil::Encoder::encodeCodable<HSTHIDEventGeneratorConfig>(encode, HSUtil::CoderKey::Literal<(char)99,(char)111,(char)110,(char)102,(char)105,(char)103>::Key, &self->_config);
+  HSUtil::Encoder::encodeCodable<HSTContactFrameMetadata>(encode, HSUtil::CoderKey::Literal<(char)102,(char)114,(char)97,(char)109,(char)101,(char)77,(char)101,(char)116,(char)97,(char)100,(char)97,(char)116,(char)97>::Key, &self->_frameMetadata);
+  HSUtil::Encoder::encodeBool(encode, HSUtil::CoderKey::Literal<(char)108,(char)97,(char)114,(char)103,(char)101,(char)66,(char)111,(char)100,(char)121,(char)65,(char)99,(char)116,(char)105,(char)118,(char)101>::Key, self->_largeBodyActive);
+  HSUtil::Encoder::encodeBool(encode, HSUtil::CoderKey::Literal<(char)100,(char)105,(char)115,(char)97,(char)98,(char)108,(char)101,(char)69,(char)118,(char)101,(char)110,(char)116,(char)115>::Key, self->_disableEvents);
+  HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)116,(char)111,(char)117,(char)99,(char)104,(char)77,(char)111,(char)100,(char)101>::Key, self->_touchMode);
+  HSUtil::Encoder::encodeArrayStart(encode, HSUtil::CoderKey::Literal<(char)99,(char)111,(char)110,(char)116,(char)97,(char)99,(char)116,(char)115>::Key, 4);
   v5 = 0;
   contacts = self->_contacts;
-  v7 = *a3;
+  v7 = *encode;
   do
   {
     while (contacts[v5].stage && v7 == 0)
     {
-      v9 = HSTPipeline::Contact::encode(&contacts[v5], a3);
-      v7 = *a3;
-      if (*a3 || v9 != 0)
+      v9 = HSTPipeline::Contact::encode(&contacts[v5], encode);
+      v7 = *encode;
+      if (*encode || v9 != 0)
       {
         break;
       }
 
       v7 = 10;
-      *a3 = 10;
+      *encode = 10;
       if (++v5 == 32)
       {
         return 1;
@@ -1290,17 +1290,17 @@ LABEL_12:
   while (v5 != 32);
   if (!v7)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
-    if (!*a3)
+    HSUtil::Encoder::_encodeContainerStop(encode);
+    if (!*encode)
     {
-      HSUtil::Encoder::_encodeContainerStop(a3);
+      HSUtil::Encoder::_encodeContainerStop(encode);
     }
   }
 
   return 1;
 }
 
-- (BOOL)handleHSDecode:(void *)a3
+- (BOOL)handleHSDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -1309,8 +1309,8 @@ LABEL_12:
   v22 = v5;
   v23 = v5;
   v21 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v21);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v21);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTHIDEventGenerator.mm", __b);

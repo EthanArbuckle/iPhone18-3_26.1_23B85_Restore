@@ -1,51 +1,51 @@
 @interface ACUIIdentityPickerCell
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation ACUIIdentityPickerCell
 
 - (void)prepareForReuse
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = ACUIIdentityPickerCell;
   [(PSTableCell *)&v2 prepareForReuse];
-  [(ACUIIdentityPickerCell *)v4 setContentConfiguration:0];
+  [(ACUIIdentityPickerCell *)selfCopy setContentConfiguration:0];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v28.receiver = v30;
+  objc_storeStrong(location, specifier);
+  v28.receiver = selfCopy;
   v28.super_class = ACUIIdentityPickerCell;
   [(PSTableCell *)&v28 refreshCellContentsWithSpecifier:location[0]];
-  v10 = [location[0] userInfo];
-  v9 = [v10 objectForKeyedSubscript:@"allowSelection"];
-  v11 = [v9 BOOLValue];
+  userInfo = [location[0] userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"allowSelection"];
+  bOOLValue = [v9 BOOLValue];
   MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  v27 = v11;
-  v13 = [location[0] userInfo];
-  v12 = [v13 objectForKeyedSubscript:@"identitySelected"];
-  v14 = [v12 BOOLValue];
+  MEMORY[0x277D82BD8](userInfo);
+  v27 = bOOLValue;
+  userInfo2 = [location[0] userInfo];
+  v12 = [userInfo2 objectForKeyedSubscript:@"identitySelected"];
+  bOOLValue2 = [v12 BOOLValue];
   MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
-  v26 = v14;
-  v25 = [(ACUIIdentityPickerCell *)v30 defaultContentConfiguration];
+  MEMORY[0x277D82BD8](userInfo2);
+  v26 = bOOLValue2;
+  defaultContentConfiguration = [(ACUIIdentityPickerCell *)selfCopy defaultContentConfiguration];
   v24 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark"];
   [v24 size];
   v22 = v3;
   v23 = v4;
-  v15 = [v25 imageProperties];
-  [v15 setReservedLayoutSize:{v22, v23}];
-  MEMORY[0x277D82BD8](v15);
+  imageProperties = [defaultContentConfiguration imageProperties];
+  [imageProperties setReservedLayoutSize:{v22, v23}];
+  MEMORY[0x277D82BD8](imageProperties);
   v20 = 0;
-  if (v11 & 1) != 0 && (v26)
+  if (bOOLValue & 1) != 0 && (v26)
   {
     v8 = v24;
   }
@@ -57,49 +57,49 @@
     v8 = v21;
   }
 
-  [v25 setImage:v8];
+  [defaultContentConfiguration setImage:v8];
   if (v20)
   {
     MEMORY[0x277D82BD8](v21);
   }
 
-  v7 = [location[0] name];
-  [v25 setText:?];
-  MEMORY[0x277D82BD8](v7);
+  name = [location[0] name];
+  [defaultContentConfiguration setText:?];
+  MEMORY[0x277D82BD8](name);
   v18 = 0;
   v16 = 0;
   if (v27)
   {
-    v19 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     v18 = 1;
-    v6 = v19;
+    v6 = labelColor;
   }
 
   else
   {
-    v17 = [MEMORY[0x277D75348] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
     v16 = 1;
-    v6 = v17;
+    v6 = secondaryLabelColor;
   }
 
-  v5 = [v25 textProperties];
-  [v5 setColor:v6];
-  MEMORY[0x277D82BD8](v5);
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setColor:v6];
+  MEMORY[0x277D82BD8](textProperties);
   if (v16)
   {
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](secondaryLabelColor);
   }
 
   if (v18)
   {
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](labelColor);
   }
 
-  [(ACUIIdentityPickerCell *)v30 setSelectionStyle:(v27 & 1) != 0];
-  [(ACUIIdentityPickerCell *)v30 setAccessoryType:2];
-  [(ACUIIdentityPickerCell *)v30 setContentConfiguration:v25];
+  [(ACUIIdentityPickerCell *)selfCopy setSelectionStyle:(v27 & 1) != 0];
+  [(ACUIIdentityPickerCell *)selfCopy setAccessoryType:2];
+  [(ACUIIdentityPickerCell *)selfCopy setContentConfiguration:defaultContentConfiguration];
   objc_storeStrong(&v24, 0);
-  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&defaultContentConfiguration, 0);
   objc_storeStrong(location, 0);
 }
 

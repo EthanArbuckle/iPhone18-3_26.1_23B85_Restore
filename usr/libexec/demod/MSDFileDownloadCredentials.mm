@@ -1,15 +1,15 @@
 @interface MSDFileDownloadCredentials
 + (MSDFileDownloadCredentials)sharedInstance;
 - (BOOL)isCachingHubAvailable;
-- (BOOL)isExpired:(id)a3;
-- (BOOL)isValidForOriginServer:(id)a3;
+- (BOOL)isExpired:(id)expired;
+- (BOOL)isValidForOriginServer:(id)server;
 - (BOOL)loadFromFile;
-- (BOOL)saveInfoToFile:(id)a3;
-- (BOOL)updateWithResponseFromGetFileDownloadCredentials:(id)a3;
-- (BOOL)updateWithResponseFromGetManifestInfo:(id)a3;
+- (BOOL)saveInfoToFile:(id)file;
+- (BOOL)updateWithResponseFromGetFileDownloadCredentials:(id)credentials;
+- (BOOL)updateWithResponseFromGetManifestInfo:(id)info;
 - (NSDictionary)manifestInfo;
-- (id)localCredentialForOriginServer:(id)a3;
-- (id)remoteCredentialForOriginServer:(id)a3;
+- (id)localCredentialForOriginServer:(id)server;
+- (id)remoteCredentialForOriginServer:(id)server;
 @end
 
 @implementation MSDFileDownloadCredentials
@@ -26,18 +26,18 @@
   return v3;
 }
 
-- (BOOL)updateWithResponseFromGetManifestInfo:(id)a3
+- (BOOL)updateWithResponseFromGetManifestInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
-    v6 = [v4 objectForKey:@"FileDownloadCredentials"];
+    v6 = [infoCopy objectForKey:@"FileDownloadCredentials"];
     [(MSDFileDownloadCredentials *)self setCredentials:v6];
 
-    v7 = [(MSDFileDownloadCredentials *)self credentials];
+    credentials = [(MSDFileDownloadCredentials *)self credentials];
 
-    if (!v7)
+    if (!credentials)
     {
       v8 = +[NSDictionary dictionary];
       [(MSDFileDownloadCredentials *)self setCredentials:v8];
@@ -48,8 +48,8 @@
     v10 = [v9 mutableCopy];
     [(MSDFileDownloadCredentials *)self setManifestInfo:v10];
 
-    v11 = [(MSDFileDownloadCredentials *)self credentials];
-    [v9 setObject:v11 forKey:@"FileDownloadCredentials"];
+    credentials2 = [(MSDFileDownloadCredentials *)self credentials];
+    [v9 setObject:credentials2 forKey:@"FileDownloadCredentials"];
 
     v12 = [(MSDFileDownloadCredentials *)self saveInfoToFile:v9];
   }
@@ -62,34 +62,34 @@
   return v12;
 }
 
-- (BOOL)updateWithResponseFromGetFileDownloadCredentials:(id)a3
+- (BOOL)updateWithResponseFromGetFileDownloadCredentials:(id)credentials
 {
-  v4 = a3;
-  v5 = [(MSDFileDownloadCredentials *)self manifestInfo];
-  v6 = [v5 mutableCopy];
+  credentialsCopy = credentials;
+  manifestInfo = [(MSDFileDownloadCredentials *)self manifestInfo];
+  v6 = [manifestInfo mutableCopy];
 
-  [(MSDFileDownloadCredentials *)self setCredentials:v4];
-  v7 = [(MSDFileDownloadCredentials *)self credentials];
+  [(MSDFileDownloadCredentials *)self setCredentials:credentialsCopy];
+  credentials = [(MSDFileDownloadCredentials *)self credentials];
 
-  if (!v7)
+  if (!credentials)
   {
     v8 = +[NSDictionary dictionary];
     [(MSDFileDownloadCredentials *)self setCredentials:v8];
   }
 
-  v9 = [(MSDFileDownloadCredentials *)self credentials];
-  [v6 setObject:v9 forKey:@"FileDownloadCredentials"];
+  credentials2 = [(MSDFileDownloadCredentials *)self credentials];
+  [v6 setObject:credentials2 forKey:@"FileDownloadCredentials"];
 
   v10 = [(MSDFileDownloadCredentials *)self saveInfoToFile:v6];
   return v10;
 }
 
-- (id)localCredentialForOriginServer:(id)a3
+- (id)localCredentialForOriginServer:(id)server
 {
-  v4 = a3;
-  if (v4)
+  serverCopy = server;
+  if (serverCopy)
   {
-    v5 = v4;
+    v5 = serverCopy;
   }
 
   else
@@ -97,8 +97,8 @@
     v5 = @"default";
   }
 
-  v6 = [(MSDFileDownloadCredentials *)self credentials];
-  v7 = [v6 objectForKey:@"local"];
+  credentials = [(MSDFileDownloadCredentials *)self credentials];
+  v7 = [credentials objectForKey:@"local"];
 
   if (v7)
   {
@@ -113,12 +113,12 @@
   return v8;
 }
 
-- (id)remoteCredentialForOriginServer:(id)a3
+- (id)remoteCredentialForOriginServer:(id)server
 {
-  v4 = a3;
-  if (v4)
+  serverCopy = server;
+  if (serverCopy)
   {
-    v5 = v4;
+    v5 = serverCopy;
   }
 
   else
@@ -126,8 +126,8 @@
     v5 = @"default";
   }
 
-  v6 = [(MSDFileDownloadCredentials *)self credentials];
-  v7 = [v6 objectForKey:@"remote"];
+  credentials = [(MSDFileDownloadCredentials *)self credentials];
+  v7 = [credentials objectForKey:@"remote"];
 
   if (v7)
   {
@@ -142,11 +142,11 @@
   return v8;
 }
 
-- (BOOL)isValidForOriginServer:(id)a3
+- (BOOL)isValidForOriginServer:(id)server
 {
-  v4 = a3;
-  v5 = [(MSDFileDownloadCredentials *)self localCredentialForOriginServer:v4];
-  v6 = [(MSDFileDownloadCredentials *)self remoteCredentialForOriginServer:v4];
+  serverCopy = server;
+  v5 = [(MSDFileDownloadCredentials *)self localCredentialForOriginServer:serverCopy];
+  v6 = [(MSDFileDownloadCredentials *)self remoteCredentialForOriginServer:serverCopy];
 
   if (v5 | v6 && ![(MSDFileDownloadCredentials *)self isExpired:v5])
   {
@@ -163,23 +163,23 @@
 
 - (BOOL)isCachingHubAvailable
 {
-  v2 = [(MSDFileDownloadCredentials *)self credentials];
-  v3 = [v2 objectForKey:@"local"];
+  credentials = [(MSDFileDownloadCredentials *)self credentials];
+  v3 = [credentials objectForKey:@"local"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)isExpired:(id)a3
+- (BOOL)isExpired:(id)expired
 {
-  v3 = a3;
+  expiredCopy = expired;
   v4 = +[NSDate date];
   [v4 timeIntervalSince1970];
   v6 = v5;
 
-  if (v3)
+  if (expiredCopy)
   {
-    v7 = [v3 objectForKey:@"Expires"];
+    v7 = [expiredCopy objectForKey:@"Expires"];
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v8 = [v7 longLongValue] < v6 + 30;
@@ -203,8 +203,8 @@
 - (BOOL)loadFromFile
 {
   v3 = +[MSDTargetDevice sharedInstance];
-  v4 = [v3 manifestAndFileDownloadInfoPath];
-  v5 = [NSURL fileURLWithPath:v4];
+  manifestAndFileDownloadInfoPath = [v3 manifestAndFileDownloadInfoPath];
+  v5 = [NSURL fileURLWithPath:manifestAndFileDownloadInfoPath];
 
   v11 = 0;
   v6 = [NSDictionary dictionaryWithContentsOfURL:v5 error:&v11];
@@ -231,15 +231,15 @@
   return v6 != 0;
 }
 
-- (BOOL)saveInfoToFile:(id)a3
+- (BOOL)saveInfoToFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = +[NSFileManager defaultManager];
   v5 = +[MSDTargetDevice sharedInstance];
-  v6 = [v5 manifestAndFileDownloadInfoPath];
+  manifestAndFileDownloadInfoPath = [v5 manifestAndFileDownloadInfoPath];
 
-  v7 = [v6 stringByDeletingLastPathComponent];
-  if ([v4 fileExistsAtPath:v7])
+  stringByDeletingLastPathComponent = [manifestAndFileDownloadInfoPath stringByDeletingLastPathComponent];
+  if ([v4 fileExistsAtPath:stringByDeletingLastPathComponent])
   {
     v8 = 0;
   }
@@ -247,14 +247,14 @@
   else
   {
     v17 = 0;
-    v9 = [v4 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v17];
+    v9 = [v4 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v17];
     v8 = v17;
     if ((v9 & 1) == 0)
     {
       v15 = sub_100063A54();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        sub_1000E5BD4(v7, v8);
+        sub_1000E5BD4(stringByDeletingLastPathComponent, v8);
       }
 
       v11 = 0;
@@ -263,9 +263,9 @@
   }
 
   v10 = v8;
-  v11 = [NSURL fileURLWithPath:v6];
+  v11 = [NSURL fileURLWithPath:manifestAndFileDownloadInfoPath];
   v16 = v8;
-  v12 = [v3 writeToURL:v11 error:&v16];
+  v12 = [fileCopy writeToURL:v11 error:&v16];
   v8 = v16;
 
   if ((v12 & 1) == 0)

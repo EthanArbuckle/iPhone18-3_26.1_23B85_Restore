@@ -1,63 +1,63 @@
 @interface UNCNotificationRecordMapper
-+ (id)notificationCommunicationContextForNotificationRecord:(id)a3;
-- (UNCNotificationRecordMapper)initWithBundle:(id)a3 categoryRepository:(id)a4;
-- (id)_notificationContentForNotificationRecord:(id)a3;
-- (id)_notificationIconForNotificationRecord:(id)a3;
-- (id)_notificationSoundForNotificationRecord:(id)a3;
-- (id)notificationForNotificationRecord:(id)a3;
-- (id)notificationRequestForNotificationRecord:(id)a3;
++ (id)notificationCommunicationContextForNotificationRecord:(id)record;
+- (UNCNotificationRecordMapper)initWithBundle:(id)bundle categoryRepository:(id)repository;
+- (id)_notificationContentForNotificationRecord:(id)record;
+- (id)_notificationIconForNotificationRecord:(id)record;
+- (id)_notificationSoundForNotificationRecord:(id)record;
+- (id)notificationForNotificationRecord:(id)record;
+- (id)notificationRequestForNotificationRecord:(id)record;
 @end
 
 @implementation UNCNotificationRecordMapper
 
-- (UNCNotificationRecordMapper)initWithBundle:(id)a3 categoryRepository:(id)a4
+- (UNCNotificationRecordMapper)initWithBundle:(id)bundle categoryRepository:(id)repository
 {
-  v7 = a3;
-  v8 = a4;
+  bundleCopy = bundle;
+  repositoryCopy = repository;
   v12.receiver = self;
   v12.super_class = UNCNotificationRecordMapper;
   v9 = [(UNCNotificationRecordMapper *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundle, a3);
-    objc_storeStrong(&v10->_categoryRepository, a4);
+    objc_storeStrong(&v9->_bundle, bundle);
+    objc_storeStrong(&v10->_categoryRepository, repository);
   }
 
   return v10;
 }
 
-- (id)notificationForNotificationRecord:(id)a3
+- (id)notificationForNotificationRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(UNCNotificationRecordMapper *)self notificationRequestForNotificationRecord:v4];
-  v6 = [v4 date];
-  v7 = [(UNCNotificationBundle *)self->_bundle bundleIdentifier];
+  recordCopy = record;
+  v5 = [(UNCNotificationRecordMapper *)self notificationRequestForNotificationRecord:recordCopy];
+  date = [recordCopy date];
+  bundleIdentifier = [(UNCNotificationBundle *)self->_bundle bundleIdentifier];
   categoryRepository = self->_categoryRepository;
-  v9 = [v4 categoryIdentifier];
+  categoryIdentifier = [recordCopy categoryIdentifier];
 
-  v10 = [(UNSNotificationCategoryRepository *)categoryRepository categoryWithIdentifier:v9 bundleIdentifier:v7];
+  v10 = [(UNSNotificationCategoryRepository *)categoryRepository categoryWithIdentifier:categoryIdentifier bundleIdentifier:bundleIdentifier];
 
-  v11 = [v10 intentIdentifiers];
-  v12 = [MEMORY[0x1E6983240] notificationWithRequest:v5 date:v6 sourceIdentifier:v7 intentIdentifiers:v11];
+  intentIdentifiers = [v10 intentIdentifiers];
+  v12 = [MEMORY[0x1E6983240] notificationWithRequest:v5 date:date sourceIdentifier:bundleIdentifier intentIdentifiers:intentIdentifiers];
 
   return v12;
 }
 
-- (id)notificationRequestForNotificationRecord:(id)a3
+- (id)notificationRequestForNotificationRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(UNCNotificationRecordMapper *)self _notificationContentForNotificationRecord:v4];
-  v7 = [(UNCNotificationRecordMapper *)self _notificationTriggerForNotificationRecord:v4];
-  if ([v4 allowsDefaultDestinations])
+  recordCopy = record;
+  identifier = [recordCopy identifier];
+  v6 = [(UNCNotificationRecordMapper *)self _notificationContentForNotificationRecord:recordCopy];
+  v7 = [(UNCNotificationRecordMapper *)self _notificationTriggerForNotificationRecord:recordCopy];
+  if ([recordCopy allowsDefaultDestinations])
   {
     v8 = 15;
   }
 
   else
   {
-    if ([v4 allowsLockScreenDestination])
+    if ([recordCopy allowsLockScreenDestination])
     {
       v9 = 2;
     }
@@ -67,13 +67,13 @@
       v9 = 0;
     }
 
-    if ([v4 allowsNotificationCenterDestination])
+    if ([recordCopy allowsNotificationCenterDestination])
     {
       v9 |= 4uLL;
     }
 
-    v10 = v9 | [v4 allowsAlertDestination];
-    if ([v4 allowsCarPlayDestination])
+    v10 = v9 | [recordCopy allowsAlertDestination];
+    if ([recordCopy allowsCarPlayDestination])
     {
       v8 = v10 | 8;
     }
@@ -84,159 +84,159 @@
     }
   }
 
-  v11 = [MEMORY[0x1E6983298] requestWithIdentifier:v5 content:v6 trigger:v7 destinations:v8];
+  v11 = [MEMORY[0x1E6983298] requestWithIdentifier:identifier content:v6 trigger:v7 destinations:v8];
 
   return v11;
 }
 
-- (id)_notificationContentForNotificationRecord:(id)a3
+- (id)_notificationContentForNotificationRecord:(id)record
 {
-  v4 = a3;
-  v63 = [(UNCNotificationRecordMapper *)self _notificationSoundForNotificationRecord:v4];
-  v5 = [(UNCNotificationRecordMapper *)self _notificationIconForNotificationRecord:v4];
-  v62 = [UNCNotificationRecordMapper notificationCommunicationContextForNotificationRecord:v4];
+  recordCopy = record;
+  v63 = [(UNCNotificationRecordMapper *)self _notificationSoundForNotificationRecord:recordCopy];
+  v5 = [(UNCNotificationRecordMapper *)self _notificationIconForNotificationRecord:recordCopy];
+  v62 = [UNCNotificationRecordMapper notificationCommunicationContextForNotificationRecord:recordCopy];
   v6 = objc_alloc_init(MEMORY[0x1E6983220]);
-  v7 = [v4 contentType];
-  [v6 setContentType:v7];
+  contentType = [recordCopy contentType];
+  [v6 setContentType:contentType];
 
   [v6 setCommunicationContext:v62];
-  v8 = [v4 accessoryImageName];
-  [v6 setAccessoryImageName:v8];
+  accessoryImageName = [recordCopy accessoryImageName];
+  [v6 setAccessoryImageName:accessoryImageName];
 
-  v9 = [v4 attachments];
-  v10 = [v9 bs_map:UNCAttachmentRecordToUNNotificationAttachment];
+  attachments = [recordCopy attachments];
+  v10 = [attachments bs_map:UNCAttachmentRecordToUNNotificationAttachment];
   [v6 setAttachments:v10];
 
-  v11 = [v4 badge];
-  [v6 setBadge:v11];
+  badge = [recordCopy badge];
+  [v6 setBadge:badge];
 
   v12 = MEMORY[0x1E6983200];
-  v13 = [v4 bodyLocalizationKey];
-  v14 = [v4 bodyLocalizationArguments];
-  v15 = [(UNCNotificationBundle *)self->_bundle cfBundle];
-  v16 = [v4 body];
-  v17 = [v12 localizedUserNotificationStringForKey:v13 arguments:v14 cfBundle:v15 defaultValue:v16];
+  bodyLocalizationKey = [recordCopy bodyLocalizationKey];
+  bodyLocalizationArguments = [recordCopy bodyLocalizationArguments];
+  cfBundle = [(UNCNotificationBundle *)self->_bundle cfBundle];
+  body = [recordCopy body];
+  v17 = [v12 localizedUserNotificationStringForKey:bodyLocalizationKey arguments:bodyLocalizationArguments cfBundle:cfBundle defaultValue:body];
   [v6 setBody:v17];
 
-  v18 = [v4 attributedBody];
-  [v6 setAttributedBody:v18];
+  attributedBody = [recordCopy attributedBody];
+  [v6 setAttributedBody:attributedBody];
 
-  v19 = [v4 categoryIdentifier];
-  [v6 setCategoryIdentifier:v19];
+  categoryIdentifier = [recordCopy categoryIdentifier];
+  [v6 setCategoryIdentifier:categoryIdentifier];
 
-  v20 = [v4 contentDate];
-  [v6 setDate:v20];
+  contentDate = [recordCopy contentDate];
+  [v6 setDate:contentDate];
 
   v21 = MEMORY[0x1E6983200];
-  v22 = [v4 defaultActionTitleLocalizationKey];
-  v23 = [(UNCNotificationBundle *)self->_bundle cfBundle];
-  v24 = [v4 defaultActionTitle];
-  v25 = [v21 localizedUserNotificationStringForKey:v22 arguments:MEMORY[0x1E695E0F0] cfBundle:v23 defaultValue:v24];
+  defaultActionTitleLocalizationKey = [recordCopy defaultActionTitleLocalizationKey];
+  cfBundle2 = [(UNCNotificationBundle *)self->_bundle cfBundle];
+  defaultActionTitle = [recordCopy defaultActionTitle];
+  v25 = [v21 localizedUserNotificationStringForKey:defaultActionTitleLocalizationKey arguments:MEMORY[0x1E695E0F0] cfBundle:cfBundle2 defaultValue:defaultActionTitle];
   [v6 setDefaultActionTitle:v25];
 
-  [v6 setHasDefaultAction:{objc_msgSend(v4, "hasDefaultAction")}];
-  v26 = [v4 defaultActionURL];
-  [v6 setDefaultActionURL:v26];
+  [v6 setHasDefaultAction:{objc_msgSend(recordCopy, "hasDefaultAction")}];
+  defaultActionURL = [recordCopy defaultActionURL];
+  [v6 setDefaultActionURL:defaultActionURL];
 
-  v27 = [v4 defaultActionBundleIdentifier];
-  [v6 setDefaultActionBundleIdentifier:v27];
+  defaultActionBundleIdentifier = [recordCopy defaultActionBundleIdentifier];
+  [v6 setDefaultActionBundleIdentifier:defaultActionBundleIdentifier];
 
-  v28 = [v4 expirationDate];
-  [v6 setExpirationDate:v28];
+  expirationDate = [recordCopy expirationDate];
+  [v6 setExpirationDate:expirationDate];
 
-  v29 = [v4 launchImageName];
-  [v6 setLaunchImageName:v29];
+  launchImageName = [recordCopy launchImageName];
+  [v6 setLaunchImageName:launchImageName];
 
   v30 = MEMORY[0x1E6983200];
-  v31 = [v4 headerLocalizationKey];
-  v32 = [v4 headerLocalizationArguments];
-  v33 = [(UNCNotificationBundle *)self->_bundle cfBundle];
-  v34 = [v4 header];
-  v35 = [v30 localizedUserNotificationStringForKey:v31 arguments:v32 cfBundle:v33 defaultValue:v34];
+  headerLocalizationKey = [recordCopy headerLocalizationKey];
+  headerLocalizationArguments = [recordCopy headerLocalizationArguments];
+  cfBundle3 = [(UNCNotificationBundle *)self->_bundle cfBundle];
+  header = [recordCopy header];
+  v35 = [v30 localizedUserNotificationStringForKey:headerLocalizationKey arguments:headerLocalizationArguments cfBundle:cfBundle3 defaultValue:header];
   [v6 setHeader:v35];
 
   v36 = MEMORY[0x1E6983200];
-  v37 = [v4 footerLocalizationKey];
-  v38 = [v4 footerLocalizationArguments];
-  v39 = [(UNCNotificationBundle *)self->_bundle cfBundle];
-  v40 = [v4 footer];
-  v41 = [v36 localizedUserNotificationStringForKey:v37 arguments:v38 cfBundle:v39 defaultValue:v40];
+  footerLocalizationKey = [recordCopy footerLocalizationKey];
+  footerLocalizationArguments = [recordCopy footerLocalizationArguments];
+  cfBundle4 = [(UNCNotificationBundle *)self->_bundle cfBundle];
+  footer = [recordCopy footer];
+  v41 = [v36 localizedUserNotificationStringForKey:footerLocalizationKey arguments:footerLocalizationArguments cfBundle:cfBundle4 defaultValue:footer];
   [v6 setFooter:v41];
 
   [v6 setIcon:v5];
   [v6 setSound:v63];
-  [v6 setShouldHideDate:{objc_msgSend(v4, "shouldHideDate")}];
-  [v6 setShouldHideTime:{objc_msgSend(v4, "shouldHideTime")}];
-  [v6 setShouldIgnoreDoNotDisturb:{objc_msgSend(v4, "shouldIgnoreDoNotDisturb")}];
-  [v6 setShouldIgnoreDowntime:{objc_msgSend(v4, "shouldIgnoreDowntime")}];
-  [v6 setShouldSuppressScreenLightUp:{objc_msgSend(v4, "shouldSuppressScreenLightUp")}];
-  [v6 setShouldAuthenticateDefaultAction:{objc_msgSend(v4, "shouldAuthenticateDefaultAction")}];
-  [v6 setShouldBackgroundDefaultAction:{objc_msgSend(v4, "shouldBackgroundDefaultAction")}];
-  [v6 setShouldPreventNotificationDismissalAfterDefaultAction:{objc_msgSend(v4, "shouldPreventNotificationDismissalAfterDefaultAction")}];
-  [v6 setShouldShowSubordinateIcon:{objc_msgSend(v4, "shouldShowSubordinateIcon")}];
-  [v6 setShouldSuppressSyncDismissalWhenRemoved:{objc_msgSend(v4, "shouldSuppressSyncDismissalWhenRemoved")}];
-  [v6 setShouldUseRequestIdentifierForDismissalSync:{objc_msgSend(v4, "shouldUseRequestIdentifierForDismissalSync")}];
-  [v6 setShouldPreemptPresentedNotification:{objc_msgSend(v4, "shouldPreemptPresentedNotification")}];
-  [v6 setShouldDisplayActionsInline:{objc_msgSend(v4, "shouldDisplayActionsInline")}];
+  [v6 setShouldHideDate:{objc_msgSend(recordCopy, "shouldHideDate")}];
+  [v6 setShouldHideTime:{objc_msgSend(recordCopy, "shouldHideTime")}];
+  [v6 setShouldIgnoreDoNotDisturb:{objc_msgSend(recordCopy, "shouldIgnoreDoNotDisturb")}];
+  [v6 setShouldIgnoreDowntime:{objc_msgSend(recordCopy, "shouldIgnoreDowntime")}];
+  [v6 setShouldSuppressScreenLightUp:{objc_msgSend(recordCopy, "shouldSuppressScreenLightUp")}];
+  [v6 setShouldAuthenticateDefaultAction:{objc_msgSend(recordCopy, "shouldAuthenticateDefaultAction")}];
+  [v6 setShouldBackgroundDefaultAction:{objc_msgSend(recordCopy, "shouldBackgroundDefaultAction")}];
+  [v6 setShouldPreventNotificationDismissalAfterDefaultAction:{objc_msgSend(recordCopy, "shouldPreventNotificationDismissalAfterDefaultAction")}];
+  [v6 setShouldShowSubordinateIcon:{objc_msgSend(recordCopy, "shouldShowSubordinateIcon")}];
+  [v6 setShouldSuppressSyncDismissalWhenRemoved:{objc_msgSend(recordCopy, "shouldSuppressSyncDismissalWhenRemoved")}];
+  [v6 setShouldUseRequestIdentifierForDismissalSync:{objc_msgSend(recordCopy, "shouldUseRequestIdentifierForDismissalSync")}];
+  [v6 setShouldPreemptPresentedNotification:{objc_msgSend(recordCopy, "shouldPreemptPresentedNotification")}];
+  [v6 setShouldDisplayActionsInline:{objc_msgSend(recordCopy, "shouldDisplayActionsInline")}];
   v42 = MEMORY[0x1E6983200];
-  v43 = [v4 subtitleLocalizationKey];
-  v44 = [v4 subtitleLocalizationArguments];
-  v45 = [(UNCNotificationBundle *)self->_bundle cfBundle];
-  v46 = [v4 subtitle];
-  v47 = [v42 localizedUserNotificationStringForKey:v43 arguments:v44 cfBundle:v45 defaultValue:v46];
+  subtitleLocalizationKey = [recordCopy subtitleLocalizationKey];
+  subtitleLocalizationArguments = [recordCopy subtitleLocalizationArguments];
+  cfBundle5 = [(UNCNotificationBundle *)self->_bundle cfBundle];
+  subtitle = [recordCopy subtitle];
+  v47 = [v42 localizedUserNotificationStringForKey:subtitleLocalizationKey arguments:subtitleLocalizationArguments cfBundle:cfBundle5 defaultValue:subtitle];
   [v6 setSubtitle:v47];
 
-  v48 = [v4 threadIdentifier];
-  [v6 setThreadIdentifier:v48];
+  threadIdentifier = [recordCopy threadIdentifier];
+  [v6 setThreadIdentifier:threadIdentifier];
 
   v49 = MEMORY[0x1E6983200];
-  v50 = [v4 titleLocalizationKey];
-  v51 = [v4 titleLocalizationArguments];
-  v52 = [(UNCNotificationBundle *)self->_bundle cfBundle];
-  v53 = [v4 title];
-  v54 = [v49 localizedUserNotificationStringForKey:v50 arguments:v51 cfBundle:v52 defaultValue:v53];
+  titleLocalizationKey = [recordCopy titleLocalizationKey];
+  titleLocalizationArguments = [recordCopy titleLocalizationArguments];
+  cfBundle6 = [(UNCNotificationBundle *)self->_bundle cfBundle];
+  title = [recordCopy title];
+  v54 = [v49 localizedUserNotificationStringForKey:titleLocalizationKey arguments:titleLocalizationArguments cfBundle:cfBundle6 defaultValue:title];
   [v6 setTitle:v54];
 
-  v55 = [v4 topicIdentifiers];
-  [v6 setTopicIdentifiers:v55];
+  topicIdentifiers = [recordCopy topicIdentifiers];
+  [v6 setTopicIdentifiers:topicIdentifiers];
 
-  [v6 setRealertCount:{objc_msgSend(v4, "realertCount")}];
-  v56 = [v4 userInfo];
-  [v6 setUserInfo:v56];
+  [v6 setRealertCount:{objc_msgSend(recordCopy, "realertCount")}];
+  userInfo = [recordCopy userInfo];
+  [v6 setUserInfo:userInfo];
 
-  v57 = [v4 summaryArgument];
-  [v6 setSummaryArgument:v57];
+  summaryArgument = [recordCopy summaryArgument];
+  [v6 setSummaryArgument:summaryArgument];
 
-  [v6 setSummaryArgumentCount:{objc_msgSend(v4, "summaryArgumentCount")}];
-  v58 = [v4 targetContentIdentifier];
-  [v6 setTargetContentIdentifier:v58];
+  [v6 setSummaryArgumentCount:{objc_msgSend(recordCopy, "summaryArgumentCount")}];
+  targetContentIdentifier = [recordCopy targetContentIdentifier];
+  [v6 setTargetContentIdentifier:targetContentIdentifier];
 
-  [v6 setInterruptionLevel:{-[UNCNotificationRecordMapper _notificationInterruptionLevelForNotificationRecord:](self, "_notificationInterruptionLevelForNotificationRecord:", v4)}];
-  [v4 relevanceScore];
+  [v6 setInterruptionLevel:{-[UNCNotificationRecordMapper _notificationInterruptionLevelForNotificationRecord:](self, "_notificationInterruptionLevelForNotificationRecord:", recordCopy)}];
+  [recordCopy relevanceScore];
   [v6 setRelevanceScore:?];
-  v59 = [v4 filterCriteria];
-  [v6 setFilterCriteria:v59];
+  filterCriteria = [recordCopy filterCriteria];
+  [v6 setFilterCriteria:filterCriteria];
 
-  [v6 setScreenCaptureProhibited:{objc_msgSend(v4, "screenCaptureProhibited")}];
-  v60 = [v4 speechLanguage];
+  [v6 setScreenCaptureProhibited:{objc_msgSend(recordCopy, "screenCaptureProhibited")}];
+  speechLanguage = [recordCopy speechLanguage];
 
-  [v6 setSpeechLanguage:v60];
+  [v6 setSpeechLanguage:speechLanguage];
 
   return v6;
 }
 
-- (id)_notificationIconForNotificationRecord:(id)a3
+- (id)_notificationIconForNotificationRecord:(id)record
 {
-  v3 = a3;
-  v4 = [v3 iconShouldSuppressMask];
-  v5 = [v3 iconApplicationIdentifier];
-  v6 = [v5 length];
+  recordCopy = record;
+  iconShouldSuppressMask = [recordCopy iconShouldSuppressMask];
+  iconApplicationIdentifier = [recordCopy iconApplicationIdentifier];
+  v6 = [iconApplicationIdentifier length];
 
   if (v6)
   {
     v7 = MEMORY[0x1E6983290];
-    v8 = [v3 iconApplicationIdentifier];
-    v9 = [v7 iconForApplicationIdentifier:v8];
+    iconApplicationIdentifier2 = [recordCopy iconApplicationIdentifier];
+    v9 = [v7 iconForApplicationIdentifier:iconApplicationIdentifier2];
 LABEL_11:
     v22 = v9;
 LABEL_12:
@@ -244,62 +244,62 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v10 = [v3 iconPath];
-  v11 = [v10 length];
+  iconPath = [recordCopy iconPath];
+  v11 = [iconPath length];
 
   if (v11)
   {
     v12 = MEMORY[0x1E6983290];
-    v8 = [v3 iconPath];
-    v9 = [v12 iconAtPath:v8 shouldSuppressMask:v4];
+    iconApplicationIdentifier2 = [recordCopy iconPath];
+    v9 = [v12 iconAtPath:iconApplicationIdentifier2 shouldSuppressMask:iconShouldSuppressMask];
     goto LABEL_11;
   }
 
-  v13 = [v3 iconName];
-  v14 = [v13 length];
+  iconName = [recordCopy iconName];
+  v14 = [iconName length];
 
   if (v14)
   {
     v15 = MEMORY[0x1E6983290];
-    v8 = [v3 iconName];
-    v9 = [v15 iconNamed:v8 shouldSuppressMask:v4];
+    iconApplicationIdentifier2 = [recordCopy iconName];
+    v9 = [v15 iconNamed:iconApplicationIdentifier2 shouldSuppressMask:iconShouldSuppressMask];
     goto LABEL_11;
   }
 
-  v16 = [v3 iconSystemImageName];
-  v17 = [v16 length];
+  iconSystemImageName = [recordCopy iconSystemImageName];
+  v17 = [iconSystemImageName length];
 
   if (v17)
   {
     v18 = MEMORY[0x1E6983290];
-    v8 = [v3 iconSystemImageName];
-    v9 = [v18 iconForSystemImageNamed:v8];
+    iconApplicationIdentifier2 = [recordCopy iconSystemImageName];
+    v9 = [v18 iconForSystemImageNamed:iconApplicationIdentifier2];
     goto LABEL_11;
   }
 
-  v19 = [v3 iconUTI];
-  v20 = [v19 length];
+  iconUTI = [recordCopy iconUTI];
+  v20 = [iconUTI length];
 
   if (v20)
   {
     v21 = MEMORY[0x1E6983290];
-    v8 = [v3 iconUTI];
-    v9 = [v21 iconWithUTI:v8];
+    iconApplicationIdentifier2 = [recordCopy iconUTI];
+    v9 = [v21 iconWithUTI:iconApplicationIdentifier2];
     goto LABEL_11;
   }
 
-  v24 = [v3 iconDateComponents];
-  v22 = [v24 count];
+  iconDateComponents = [recordCopy iconDateComponents];
+  v22 = [iconDateComponents count];
 
   if (v22)
   {
-    v8 = [v3 iconDateComponents];
-    v25 = [v8 objectForKey:*MEMORY[0x1E6983408]];
-    v26 = [v8 objectForKey:*MEMORY[0x1E6983400]];
-    v27 = [v8 objectForKey:*MEMORY[0x1E6983410]];
-    v28 = [v27 integerValue];
+    iconApplicationIdentifier2 = [recordCopy iconDateComponents];
+    v25 = [iconApplicationIdentifier2 objectForKey:*MEMORY[0x1E6983408]];
+    v26 = [iconApplicationIdentifier2 objectForKey:*MEMORY[0x1E6983400]];
+    v27 = [iconApplicationIdentifier2 objectForKey:*MEMORY[0x1E6983410]];
+    integerValue = [v27 integerValue];
 
-    v22 = [MEMORY[0x1E6983290] iconWithDateComponents:v25 calendarIdentifier:v26 format:v28];
+    v22 = [MEMORY[0x1E6983290] iconWithDateComponents:v25 calendarIdentifier:v26 format:integerValue];
 
     goto LABEL_12;
   }
@@ -309,51 +309,51 @@ LABEL_13:
   return v22;
 }
 
-+ (id)notificationCommunicationContextForNotificationRecord:(id)a3
++ (id)notificationCommunicationContextForNotificationRecord:(id)record
 {
-  v3 = a3;
-  if ([v3 hasCommunicationContext])
+  recordCopy = record;
+  if ([recordCopy hasCommunicationContext])
   {
     v4 = objc_alloc_init(MEMORY[0x1E6983320]);
-    v5 = [v3 communicationContextIdentifier];
-    [v4 setIdentifier:v5];
+    communicationContextIdentifier = [recordCopy communicationContextIdentifier];
+    [v4 setIdentifier:communicationContextIdentifier];
 
-    v6 = [v3 communicationContextAssociatedObjectUri];
-    [v4 setAssociatedObjectUri:v6];
+    communicationContextAssociatedObjectUri = [recordCopy communicationContextAssociatedObjectUri];
+    [v4 setAssociatedObjectUri:communicationContextAssociatedObjectUri];
 
-    v7 = [v3 communicationContextBundleIdentifier];
-    [v4 setBundleIdentifier:v7];
+    communicationContextBundleIdentifier = [recordCopy communicationContextBundleIdentifier];
+    [v4 setBundleIdentifier:communicationContextBundleIdentifier];
 
-    v8 = [v3 communicationContextDisplayName];
-    [v4 setDisplayName:v8];
+    communicationContextDisplayName = [recordCopy communicationContextDisplayName];
+    [v4 setDisplayName:communicationContextDisplayName];
 
-    v9 = [v3 communicationContextRecipients];
-    v10 = [v9 bs_map:UNCContactRecordToUNNotificationContact];
+    communicationContextRecipients = [recordCopy communicationContextRecipients];
+    v10 = [communicationContextRecipients bs_map:UNCContactRecordToUNNotificationContact];
     [v4 setRecipients:v10];
 
-    v11 = [v3 communicationContextSender];
+    communicationContextSender = [recordCopy communicationContextSender];
 
-    if (v11)
+    if (communicationContextSender)
     {
       v12 = UNCContactRecordToUNNotificationContact;
-      v13 = [v3 communicationContextSender];
-      v14 = v12[2](v12, v13);
+      communicationContextSender2 = [recordCopy communicationContextSender];
+      v14 = v12[2](v12, communicationContextSender2);
       [v4 setSender:v14];
     }
 
-    v15 = [v3 communicationContextContentURL];
-    [v4 setContentURL:v15];
+    communicationContextContentURL = [recordCopy communicationContextContentURL];
+    [v4 setContentURL:communicationContextContentURL];
 
-    v16 = [v3 communicationContextImageName];
-    [v4 setImageName:v16];
+    communicationContextImageName = [recordCopy communicationContextImageName];
+    [v4 setImageName:communicationContextImageName];
 
-    [v4 setSystemImage:{objc_msgSend(v3, "communicationContextSystemImage")}];
-    [v4 setMentionsCurrentUser:{objc_msgSend(v3, "communicationContextMentionsCurrentUser")}];
-    [v4 setNotifyRecipientAnyway:{objc_msgSend(v3, "communicationContextNotifyRecipientAnyway")}];
-    [v4 setReplyToCurrentUser:{objc_msgSend(v3, "communicationContextReplyToCurrentUser")}];
-    [v4 setRecipientCount:{objc_msgSend(v3, "communicationContextRecipientCount")}];
-    [v4 setCapabilities:{objc_msgSend(v3, "communicationContextCapabilities")}];
-    [v4 setBusinessCorrespondence:{objc_msgSend(v3, "communicationContextBusinessCorrespondence")}];
+    [v4 setSystemImage:{objc_msgSend(recordCopy, "communicationContextSystemImage")}];
+    [v4 setMentionsCurrentUser:{objc_msgSend(recordCopy, "communicationContextMentionsCurrentUser")}];
+    [v4 setNotifyRecipientAnyway:{objc_msgSend(recordCopy, "communicationContextNotifyRecipientAnyway")}];
+    [v4 setReplyToCurrentUser:{objc_msgSend(recordCopy, "communicationContextReplyToCurrentUser")}];
+    [v4 setRecipientCount:{objc_msgSend(recordCopy, "communicationContextRecipientCount")}];
+    [v4 setCapabilities:{objc_msgSend(recordCopy, "communicationContextCapabilities")}];
+    [v4 setBusinessCorrespondence:{objc_msgSend(recordCopy, "communicationContextBusinessCorrespondence")}];
   }
 
   else
@@ -364,42 +364,42 @@ LABEL_13:
   return v4;
 }
 
-- (id)_notificationSoundForNotificationRecord:(id)a3
+- (id)_notificationSoundForNotificationRecord:(id)record
 {
-  v3 = a3;
-  if ([v3 hasSound])
+  recordCopy = record;
+  if ([recordCopy hasSound])
   {
-    v4 = [MEMORY[0x1E6983238] soundWithAlertType:{objc_msgSend(v3, "toneAlertType")}];
-    v5 = [v3 toneAlertTopic];
-    [v4 setAlertTopic:v5];
+    v4 = [MEMORY[0x1E6983238] soundWithAlertType:{objc_msgSend(recordCopy, "toneAlertType")}];
+    toneAlertTopic = [recordCopy toneAlertTopic];
+    [v4 setAlertTopic:toneAlertTopic];
 
-    v6 = [v3 audioCategory];
-    [v4 setAudioCategory:v6];
+    audioCategory = [recordCopy audioCategory];
+    [v4 setAudioCategory:audioCategory];
 
-    v7 = [v3 audioVolume];
-    [v4 setAudioVolume:v7];
+    audioVolume = [recordCopy audioVolume];
+    [v4 setAudioVolume:audioVolume];
 
-    [v4 setCritical:{objc_msgSend(v3, "hasCriticalAlertSound")}];
-    [v3 soundMaximumDuration];
+    [v4 setCritical:{objc_msgSend(recordCopy, "hasCriticalAlertSound")}];
+    [recordCopy soundMaximumDuration];
     [v4 setMaximumDuration:?];
-    [v4 setShouldIgnoreAccessibilityDisabledVibrationSetting:{objc_msgSend(v3, "shouldIgnoreAccessibilityDisabledVibrationSetting")}];
-    [v4 setShouldIgnoreRingerSwitch:{objc_msgSend(v3, "shouldIgnoreRingerSwitch")}];
-    [v4 setShouldRepeat:{objc_msgSend(v3, "shouldSoundRepeat")}];
-    v8 = [v3 toneFileName];
-    [v4 setToneFileName:v8];
+    [v4 setShouldIgnoreAccessibilityDisabledVibrationSetting:{objc_msgSend(recordCopy, "shouldIgnoreAccessibilityDisabledVibrationSetting")}];
+    [v4 setShouldIgnoreRingerSwitch:{objc_msgSend(recordCopy, "shouldIgnoreRingerSwitch")}];
+    [v4 setShouldRepeat:{objc_msgSend(recordCopy, "shouldSoundRepeat")}];
+    toneFileName = [recordCopy toneFileName];
+    [v4 setToneFileName:toneFileName];
 
-    v9 = [v3 toneFileURL];
-    [v4 setToneFileURL:v9];
+    toneFileURL = [recordCopy toneFileURL];
+    [v4 setToneFileURL:toneFileURL];
 
-    v10 = [v3 toneIdentifier];
-    [v4 setToneIdentifier:v10];
+    toneIdentifier = [recordCopy toneIdentifier];
+    [v4 setToneIdentifier:toneIdentifier];
 
-    [v4 setToneMediaLibraryItemIdentifier:{objc_msgSend(v3, "toneMediaLibraryItemIdentifier")}];
-    v11 = [v3 vibrationIdentifier];
-    [v4 setVibrationIdentifier:v11];
+    [v4 setToneMediaLibraryItemIdentifier:{objc_msgSend(recordCopy, "toneMediaLibraryItemIdentifier")}];
+    vibrationIdentifier = [recordCopy vibrationIdentifier];
+    [v4 setVibrationIdentifier:vibrationIdentifier];
 
-    v12 = [v3 vibrationPatternFileURL];
-    [v4 setVibrationPatternFileURL:v12];
+    vibrationPatternFileURL = [recordCopy vibrationPatternFileURL];
+    [v4 setVibrationPatternFileURL:vibrationPatternFileURL];
   }
 
   else

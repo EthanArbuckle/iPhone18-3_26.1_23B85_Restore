@@ -1,16 +1,16 @@
 @interface MKTransitArtwork
-+ (id)_shieldWithType:(int64_t)a3 hexColorString:(id)a4 accessibilityText:(id)a5;
++ (id)_shieldWithType:(int64_t)type hexColorString:(id)string accessibilityText:(id)text;
 @end
 
 @implementation MKTransitArtwork
 
-+ (id)_shieldWithType:(int64_t)a3 hexColorString:(id)a4 accessibilityText:(id)a5
++ (id)_shieldWithType:(int64_t)type hexColorString:(id)string accessibilityText:(id)text
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[MKTransitShield alloc] initWithShieldType:a3 text:0 color:v8];
+  textCopy = text;
+  stringCopy = string;
+  v9 = [[MKTransitShield alloc] initWithShieldType:type text:0 color:stringCopy];
 
-  v10 = [MKTransitArtwork artworkWithShield:v9 accessibilityText:v7];
+  v10 = [MKTransitArtwork artworkWithShield:v9 accessibilityText:textCopy];
 
   return v10;
 }

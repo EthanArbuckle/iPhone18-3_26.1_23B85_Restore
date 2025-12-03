@@ -1,99 +1,99 @@
 @interface WBOfficeArt
-+ (void)readFrom:(id)a3 at:(int)a4 textRun:(WrdCharacterTextRun *)a5 paragraph:(id)a6 to:(id)a7;
-+ (void)setShapeAddress:(const WrdFileShapeAddress *)a3 toDrawable:(id)a4;
++ (void)readFrom:(id)from at:(int)at textRun:(WrdCharacterTextRun *)run paragraph:(id)paragraph to:(id)to;
++ (void)setShapeAddress:(const WrdFileShapeAddress *)address toDrawable:(id)drawable;
 @end
 
 @implementation WBOfficeArt
 
-+ (void)readFrom:(id)a3 at:(int)a4 textRun:(WrdCharacterTextRun *)a5 paragraph:(id)a6 to:(id)a7
++ (void)readFrom:(id)from at:(int)at textRun:(WrdCharacterTextRun *)run paragraph:(id)paragraph to:(id)to
 {
-  v35 = a3;
-  v12 = a6;
-  v13 = a7;
-  if (v13)
+  fromCopy = from;
+  paragraphCopy = paragraph;
+  toCopy = to;
+  if (toCopy)
   {
-    var4 = a5->var4;
-    var5 = a5->var5;
+    var4 = run->var4;
+    var5 = run->var5;
     v16 = [WDCharacterProperties alloc];
-    v17 = [v12 document];
-    v18 = [(WDCharacterProperties *)v16 initWithDocument:v17];
+    document = [paragraphCopy document];
+    v18 = [(WDCharacterProperties *)v16 initWithDocument:document];
 
-    v19 = [v12 document];
-    [WBCharacterProperties readFrom:v35 wrdProperties:var4 tracked:var5 document:v19 properties:v18];
+    document2 = [paragraphCopy document];
+    [WBCharacterProperties readFrom:fromCopy wrdProperties:var4 tracked:var5 document:document2 properties:v18];
 
-    [v13 setProperties:v18];
-    [v13 checkForFloating:v12];
-    if (a5->var1 == 2)
+    [toCopy setProperties:v18];
+    [toCopy checkForFloating:paragraphCopy];
+    if (run->var1 == 2)
     {
-      v20 = [v35 fileShapeAddressHeaderTable];
+      fileShapeAddressHeaderTable = [fromCopy fileShapeAddressHeaderTable];
     }
 
     else
     {
-      v20 = [v35 fileShapeAddressTable];
+      fileShapeAddressHeaderTable = [fromCopy fileShapeAddressTable];
     }
 
-    FileShapeAddressByCp = WrdFileShapeAddressTable::getFileShapeAddressByCp(v20, a4);
+    FileShapeAddressByCp = WrdFileShapeAddressTable::getFileShapeAddressByCp(fileShapeAddressHeaderTable, at);
     WrdFileShapeAddress::WrdFileShapeAddress(&v36, FileShapeAddressByCp);
-    v22 = [v35 drawableForShapeId:v36.var2];
+    v22 = [fromCopy drawableForShapeId:v36.var2];
     if (v22)
     {
-      [v13 setDrawable:v22];
+      [toCopy setDrawable:v22];
       objc_opt_class();
-      v23 = [v22 clientData];
-      v24 = [v23 anchor];
-      [a1 setShapeAddress:&v36 toDrawable:v22];
-      if (([v13 isFloating] & 1) == 0)
+      clientData = [v22 clientData];
+      anchor = [clientData anchor];
+      [self setShapeAddress:&v36 toDrawable:v22];
+      if (([toCopy isFloating] & 1) == 0)
       {
-        [v24 bounds];
+        [anchor bounds];
         v26 = v25;
         v28 = v27;
         v30 = v29;
         v32 = v31;
-        v33 = [v22 drawableProperties];
-        v34 = [v33 orientedBounds];
-        [v34 setBounds:{v26, v28, v30, v32}];
+        drawableProperties = [v22 drawableProperties];
+        orientedBounds = [drawableProperties orientedBounds];
+        [orientedBounds setBounds:{v26, v28, v30, v32}];
 
-        [v23 clearAnchor];
+        [clientData clearAnchor];
       }
     }
   }
 }
 
-+ (void)setShapeAddress:(const WrdFileShapeAddress *)a3 toDrawable:(id)a4
++ (void)setShapeAddress:(const WrdFileShapeAddress *)address toDrawable:(id)drawable
 {
-  v22 = a4;
+  drawableCopy = drawable;
   objc_opt_class();
-  v5 = [v22 clientData];
-  v6 = [v5 anchor];
-  v7 = v6;
-  if (a3->var7 < 4u)
+  clientData = [drawableCopy clientData];
+  anchor = [clientData anchor];
+  v7 = anchor;
+  if (address->var7 < 4u)
   {
-    [v6 setRelativeHorizontalPosition:?];
+    [anchor setRelativeHorizontalPosition:?];
   }
 
-  if (a3->var8 <= 3u)
+  if (address->var8 <= 3u)
   {
     [v7 setRelativeVerticalPosition:?];
   }
 
-  if (a3->var9 <= 5u)
+  if (address->var9 <= 5u)
   {
     [v7 setTextWrappingMode:?];
   }
 
-  if (a3->var10 <= 3u)
+  if (address->var10 <= 3u)
   {
     [v7 setTextWrappingModeType:?];
   }
 
-  var3 = a3->var3;
-  var4 = a3->var4;
-  var5 = a3->var5;
-  var6 = a3->var6;
-  v12 = [v22 drawableProperties];
-  v13 = [v12 orientedBounds];
-  [v13 rotation];
+  var3 = address->var3;
+  var4 = address->var4;
+  var5 = address->var5;
+  var6 = address->var6;
+  drawableProperties = [drawableCopy drawableProperties];
+  orientedBounds = [drawableProperties orientedBounds];
+  [orientedBounds rotation];
   v14 = [OADOrientedBounds directionCloserToVerticalThanToHorizontal:?];
   v15 = var3 / 20.0;
   v16 = var4 / 20.0;

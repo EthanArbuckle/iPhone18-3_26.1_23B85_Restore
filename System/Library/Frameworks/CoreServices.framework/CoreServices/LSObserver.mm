@@ -7,8 +7,8 @@
 - (void)_configureCallbacks;
 - (void)_tearDownCallbacks;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
-- (void)setQueue:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setQueue:(id)queue;
 - (void)startObserving;
 - (void)stopObserving;
 @end
@@ -17,7 +17,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.launchservices", "observer");
     v3 = _LSObserverLog;
@@ -30,8 +30,8 @@
   os_unfair_recursive_lock_lock_with_options();
   if (*(self + 32))
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"LSObserver.mm" lineNumber:95 description:@"Already invoked -startObserving on this observer."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSObserver.mm" lineNumber:95 description:@"Already invoked -startObserving on this observer."];
   }
 
   [(LSObserver *)self _configureCallbacks];
@@ -44,7 +44,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_18162D000, a2, OS_LOG_TYPE_DEBUG, "Delegate %@ does not respond to -observerDidObserveDatabaseChange:, will not notify it of anything.", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -75,32 +75,32 @@
   [(LSObserver *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   os_unfair_recursive_lock_lock_with_options();
   if (*(self + 32))
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"LSObserver.mm" lineNumber:68 description:@"Attempting to set an observer's delegate while it is already observing."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSObserver.mm" lineNumber:68 description:@"Attempting to set an observer's delegate while it is already observing."];
   }
 
   objc_storeWeak(&self->_delegate, obj);
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   os_unfair_recursive_lock_lock_with_options();
   if (*(self + 32))
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"LSObserver.mm" lineNumber:87 description:@"Attempting to set an observer's queue while it is already observing."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSObserver.mm" lineNumber:87 description:@"Attempting to set an observer's queue while it is already observing."];
   }
 
   queue = self->_queue;
-  self->_queue = v5;
+  self->_queue = queueCopy;
 
   os_unfair_recursive_lock_unlock();
 }
@@ -110,8 +110,8 @@
   os_unfair_recursive_lock_lock_with_options();
   if ((*(self + 32) & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"LSObserver.mm" lineNumber:106 description:@"Invoked -stopObserving on this observer without first invoking -startObserving."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSObserver.mm" lineNumber:106 description:@"Invoked -stopObserving on this observer without first invoking -startObserving."];
   }
 
   [(LSObserver *)self _tearDownCallbacks];
@@ -197,10 +197,10 @@ void __33__LSObserver__configureCallbacks__block_invoke_2(uint64_t a1, LaunchSer
 
 - (id)debugDescription
 {
-  v3 = [(LSObserver *)self name];
-  if (v3)
+  name = [(LSObserver *)self name];
+  if (name)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<%@ %p> %@", objc_opt_class(), self, v3];
+    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<%@ %p> %@", objc_opt_class(), self, name];
   }
 
   else

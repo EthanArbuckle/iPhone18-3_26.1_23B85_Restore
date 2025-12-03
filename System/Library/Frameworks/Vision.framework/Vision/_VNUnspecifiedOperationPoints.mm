@@ -1,24 +1,24 @@
 @interface _VNUnspecifiedOperationPoints
-- (BOOL)getConfidence:(float *)a3 forClassificationIdentifier:(id)a4 withPrecision:(float)a5 error:(id *)a6;
-- (BOOL)getConfidence:(float *)a3 forClassificationIdentifier:(id)a4 withRecall:(float)a5 error:(id *)a6;
-- (BOOL)getDefaultConfidence:(float *)a3 forClassificationIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)getPrecision:(float *)a3 forClassificationIdentifier:(id)a4 confidence:(float)a5 error:(id *)a6;
-- (BOOL)getRecall:(float *)a3 forClassificationIdentifier:(id)a4 confidence:(float)a5 error:(id *)a6;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)getConfidence:(float *)confidence forClassificationIdentifier:(id)identifier withPrecision:(float)precision error:(id *)error;
+- (BOOL)getConfidence:(float *)confidence forClassificationIdentifier:(id)identifier withRecall:(float)recall error:(id *)error;
+- (BOOL)getDefaultConfidence:(float *)confidence forClassificationIdentifier:(id)identifier error:(id *)error;
+- (BOOL)getPrecision:(float *)precision forClassificationIdentifier:(id)identifier confidence:(float)confidence error:(id *)error;
+- (BOOL)getRecall:(float *)recall forClassificationIdentifier:(id)identifier confidence:(float)confidence error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation _VNUnspecifiedOperationPoints
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -26,55 +26,55 @@
   return isKindOfClass & 1;
 }
 
-- (BOOL)getRecall:(float *)a3 forClassificationIdentifier:(id)a4 confidence:(float)a5 error:(id *)a6
+- (BOOL)getRecall:(float *)recall forClassificationIdentifier:(id)identifier confidence:(float)confidence error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    v7 = a4;
-    v8 = [objc_opt_class() errorForUnknownClassificationIdentifier:v7];
+    identifierCopy = identifier;
+    v8 = [objc_opt_class() errorForUnknownClassificationIdentifier:identifierCopy];
 
     v9 = v8;
-    *a6 = v8;
+    *error = v8;
   }
 
   return 0;
 }
 
-- (BOOL)getConfidence:(float *)a3 forClassificationIdentifier:(id)a4 withRecall:(float)a5 error:(id *)a6
+- (BOOL)getConfidence:(float *)confidence forClassificationIdentifier:(id)identifier withRecall:(float)recall error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = _dataUnvailableError(a4);
+    *error = _dataUnvailableError(identifier);
   }
 
   return 0;
 }
 
-- (BOOL)getPrecision:(float *)a3 forClassificationIdentifier:(id)a4 confidence:(float)a5 error:(id *)a6
+- (BOOL)getPrecision:(float *)precision forClassificationIdentifier:(id)identifier confidence:(float)confidence error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = _dataUnvailableError(a4);
+    *error = _dataUnvailableError(identifier);
   }
 
   return 0;
 }
 
-- (BOOL)getConfidence:(float *)a3 forClassificationIdentifier:(id)a4 withPrecision:(float)a5 error:(id *)a6
+- (BOOL)getConfidence:(float *)confidence forClassificationIdentifier:(id)identifier withPrecision:(float)precision error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = _dataUnvailableError(a4);
+    *error = _dataUnvailableError(identifier);
   }
 
   return 0;
 }
 
-- (BOOL)getDefaultConfidence:(float *)a3 forClassificationIdentifier:(id)a4 error:(id *)a5
+- (BOOL)getDefaultConfidence:(float *)confidence forClassificationIdentifier:(id)identifier error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = _dataUnvailableError(a4);
+    *error = _dataUnvailableError(identifier);
   }
 
   return 0;

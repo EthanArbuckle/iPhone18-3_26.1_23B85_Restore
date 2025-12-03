@@ -1,63 +1,63 @@
 @interface MADProgressManager
-+ (BOOL)_correctAnachronisticTimestampsForTask:(unint64_t)a3 completionDates:(id)a4 photoLibrary:(id)a5;
-+ (BOOL)_reportBGSTCompletionCheckpoint:(unint64_t)a3 ForTask:(unint64_t)a4 photoLibrary:(id)a5 currentDate:(id)a6;
-+ (BOOL)_reportBGSTCustomCheckpoint:(unint64_t)a3 timestampKey:(id)a4 taskID:(unint64_t)a5 photoLibrary:(id)a6 currentDate:(id)a7;
-+ (BOOL)_reportBGSTFeatureCheckpointForTask:(unint64_t)a3;
-+ (BOOL)_reportFullAnalysisPerTypeWorkloadProgress:(id)a3;
-+ (BOOL)_reportWorkloadProgressForTask:(unint64_t)a3 progressDetail:(id)a4;
-+ (BOOL)_storeProgress:(id)a3 forTask:(unint64_t)a4 photoLibrary:(id)a5;
-+ (BOOL)_storeProgress:(id)a3 forTask:(unint64_t)a4 subtype:(unint64_t)a5 photoLibrary:(id)a6;
-+ (BOOL)taskHasReachedSteadyState:(unint64_t)a3;
-+ (id)_computeCompletionDatesWithProgress:(id)a3 photoLibrary:(id)a4 taskID:(unint64_t)a5 currentDate:(id)a6;
-+ (id)_featureCodeWithTaskID:(unint64_t)a3;
-+ (id)_getOrSetCompletionDateForTask:(unint64_t)a3 completeThreshold:(unint64_t)a4 includeFailures:(BOOL)a5 photoLibrary:(id)a6 currentDate:(id)a7;
-+ (id)_getOrSetDateWithKey:(id)a3 photoLibrary:(id)a4 currentDate:(id)a5;
-+ (id)_getOrSetStartDateForTask:(unint64_t)a3 photoLibrary:(id)a4 currentDate:(id)a5;
-+ (id)_queryAndReportProgressForAnalysis:(unint64_t)a3 photoLibrary:(id)a4 cancelOrExtendTimeoutBlock:(id)a5;
-+ (id)_queryProgressForTask:(unint64_t)a3 photoLibrary:(id)a4 cancelOrExtendTimeoutBlock:(id)a5;
-+ (int)cacheCurrentFaceProgressForPhotoLibrary:(id)a3;
-+ (int)cacheProcessedAssetCountAfterPromoter:(unint64_t)a3 photoLibrary:(id)a4;
-+ (void)_queryAndReportProgressForMediaAnalysisImageForPhotoLibrary:(id)a3 reuseCachedValue:(BOOL)a4;
-+ (void)_reportCompletionDates:(id)a3 progressDetail:(id)a4 photoLibrary:(id)a5 taskID:(unint64_t)a6 currentDate:(id)a7;
-+ (void)_reportFaceP1ProgressDetail:(id)a3 photoLibrary:(id)a4 currentDate:(id)a5;
-+ (void)_reportMediaAnalysisSubcategoryWorkloadProgress:(id)a3 totalAssetCount:(id)a4 subCategory:(id)a5;
-+ (void)_reportProgressDetail:(id)a3 taskID:(unint64_t)a4 photoLibrary:(id)a5;
-+ (void)_reportProgressMetricForIdentifier:(id)a3 itemsCompleted:(id)a4 totalCount:(id)a5;
-+ (void)clearLastProgressReportTimestampForTasks:(id)a3;
-+ (void)clearProgressUpdateRequestForTask:(unint64_t)a3;
-+ (void)requestProgressUpdateForTasks:(id)a3;
-+ (void)resetProcessingCheckpointForTask:(unint64_t)a3;
-+ (void)updateProgressForTask:(unint64_t)a3 photoLibrary:(id)a4 reuseCachedValue:(BOOL)a5 cancelOrExtendTimeoutBlock:(id)a6;
-+ (void)updateProgressIfRequestedForTasks:(id)a3 photoLibrary:(id)a4 reuseCachedValue:(BOOL)a5 cancelOrExtendTimeoutBlock:(id)a6;
-- (MADProgressManager)initWithPhotoLibrary:(id)a3;
++ (BOOL)_correctAnachronisticTimestampsForTask:(unint64_t)task completionDates:(id)dates photoLibrary:(id)library;
++ (BOOL)_reportBGSTCompletionCheckpoint:(unint64_t)checkpoint ForTask:(unint64_t)task photoLibrary:(id)library currentDate:(id)date;
++ (BOOL)_reportBGSTCustomCheckpoint:(unint64_t)checkpoint timestampKey:(id)key taskID:(unint64_t)d photoLibrary:(id)library currentDate:(id)date;
++ (BOOL)_reportBGSTFeatureCheckpointForTask:(unint64_t)task;
++ (BOOL)_reportFullAnalysisPerTypeWorkloadProgress:(id)progress;
++ (BOOL)_reportWorkloadProgressForTask:(unint64_t)task progressDetail:(id)detail;
++ (BOOL)_storeProgress:(id)progress forTask:(unint64_t)task photoLibrary:(id)library;
++ (BOOL)_storeProgress:(id)progress forTask:(unint64_t)task subtype:(unint64_t)subtype photoLibrary:(id)library;
++ (BOOL)taskHasReachedSteadyState:(unint64_t)state;
++ (id)_computeCompletionDatesWithProgress:(id)progress photoLibrary:(id)library taskID:(unint64_t)d currentDate:(id)date;
++ (id)_featureCodeWithTaskID:(unint64_t)d;
++ (id)_getOrSetCompletionDateForTask:(unint64_t)task completeThreshold:(unint64_t)threshold includeFailures:(BOOL)failures photoLibrary:(id)library currentDate:(id)date;
++ (id)_getOrSetDateWithKey:(id)key photoLibrary:(id)library currentDate:(id)date;
++ (id)_getOrSetStartDateForTask:(unint64_t)task photoLibrary:(id)library currentDate:(id)date;
++ (id)_queryAndReportProgressForAnalysis:(unint64_t)analysis photoLibrary:(id)library cancelOrExtendTimeoutBlock:(id)block;
++ (id)_queryProgressForTask:(unint64_t)task photoLibrary:(id)library cancelOrExtendTimeoutBlock:(id)block;
++ (int)cacheCurrentFaceProgressForPhotoLibrary:(id)library;
++ (int)cacheProcessedAssetCountAfterPromoter:(unint64_t)promoter photoLibrary:(id)library;
++ (void)_queryAndReportProgressForMediaAnalysisImageForPhotoLibrary:(id)library reuseCachedValue:(BOOL)value;
++ (void)_reportCompletionDates:(id)dates progressDetail:(id)detail photoLibrary:(id)library taskID:(unint64_t)d currentDate:(id)date;
++ (void)_reportFaceP1ProgressDetail:(id)detail photoLibrary:(id)library currentDate:(id)date;
++ (void)_reportMediaAnalysisSubcategoryWorkloadProgress:(id)progress totalAssetCount:(id)count subCategory:(id)category;
++ (void)_reportProgressDetail:(id)detail taskID:(unint64_t)d photoLibrary:(id)library;
++ (void)_reportProgressMetricForIdentifier:(id)identifier itemsCompleted:(id)completed totalCount:(id)count;
++ (void)clearLastProgressReportTimestampForTasks:(id)tasks;
++ (void)clearProgressUpdateRequestForTask:(unint64_t)task;
++ (void)requestProgressUpdateForTasks:(id)tasks;
++ (void)resetProcessingCheckpointForTask:(unint64_t)task;
++ (void)updateProgressForTask:(unint64_t)task photoLibrary:(id)library reuseCachedValue:(BOOL)value cancelOrExtendTimeoutBlock:(id)block;
++ (void)updateProgressIfRequestedForTasks:(id)tasks photoLibrary:(id)library reuseCachedValue:(BOOL)value cancelOrExtendTimeoutBlock:(id)block;
+- (MADProgressManager)initWithPhotoLibrary:(id)library;
 @end
 
 @implementation MADProgressManager
 
-- (MADProgressManager)initWithPhotoLibrary:(id)a3
+- (MADProgressManager)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = MADProgressManager;
   v6 = [(MADProgressManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
   }
 
   return v7;
 }
 
-+ (id)_getOrSetDateWithKey:(id)a3 photoLibrary:(id)a4 currentDate:(id)a5
++ (id)_getOrSetDateWithKey:(id)key photoLibrary:(id)library currentDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  libraryCopy = library;
+  dateCopy = date;
   if (+[MADManagedKeyValueStore isMACDReadEnabled])
   {
-    v10 = [v8 mad_fetchRequest];
-    v11 = [v10 fetchDataStoreValueIfKeyExists:v7];
+    mad_fetchRequest = [libraryCopy mad_fetchRequest];
+    v11 = [mad_fetchRequest fetchDataStoreValueIfKeyExists:keyCopy];
 
     if (v11)
     {
@@ -83,13 +83,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v11 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v8];
-  if (![v11 keyExistsInKeyValueStore:v7])
+  v11 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
+  if (![v11 keyExistsInKeyValueStore:keyCopy])
   {
     goto LABEL_10;
   }
 
-  v14 = [v11 valueForKey:v7];
+  v14 = [v11 valueForKey:keyCopy];
   v12 = [NSDate dateWithTimeIntervalSinceReferenceDate:v14];
   if (MediaAnalysisLogLevel() >= 7)
   {
@@ -109,7 +109,7 @@ LABEL_11:
 
   if (!v12)
   {
-    [v9 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v18 = v17;
     if (+[MADManagedKeyValueStore isMACDPersistEnabled])
     {
@@ -118,26 +118,26 @@ LABEL_11:
       v22[2] = sub_100164FC0;
       v22[3] = &unk_100285478;
       v24 = v18;
-      v23 = v7;
-      [v8 mad_performAnalysisDataStoreChanges:v22 error:0];
+      v23 = keyCopy;
+      [libraryCopy mad_performAnalysisDataStoreChanges:v22 error:0];
       v19 = v23;
     }
 
     else
     {
-      v19 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v8];
-      [v19 setValue:v18 forKey:v7];
+      v19 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
+      [v19 setValue:v18 forKey:keyCopy];
       [v19 commit];
     }
 
-    v12 = v9;
+    v12 = dateCopy;
     if (MediaAnalysisLogLevel() >= 7)
     {
       v20 = VCPLogToOSLogType[7];
       if (os_log_type_enabled(&_os_log_default, v20))
       {
         *buf = 138412802;
-        v26 = v7;
+        v26 = keyCopy;
         v27 = 2112;
         v28 = v12;
         v29 = 2048;
@@ -150,14 +150,14 @@ LABEL_11:
   return v12;
 }
 
-+ (id)_getOrSetStartDateForTask:(unint64_t)a3 photoLibrary:(id)a4 currentDate:(id)a5
++ (id)_getOrSetStartDateForTask:(unint64_t)task photoLibrary:(id)library currentDate:(id)date
 {
-  v7 = a4;
-  v8 = a5;
+  libraryCopy = library;
+  dateCopy = date;
   v9 = VCPStartTimestampKeyForTask();
   if (v9)
   {
-    v10 = [a1 _getOrSetDateWithKey:v9 photoLibrary:v7 currentDate:v8];
+    v10 = [self _getOrSetDateWithKey:v9 photoLibrary:libraryCopy currentDate:dateCopy];
   }
 
   else
@@ -168,44 +168,44 @@ LABEL_11:
   return v10;
 }
 
-+ (id)_getOrSetCompletionDateForTask:(unint64_t)a3 completeThreshold:(unint64_t)a4 includeFailures:(BOOL)a5 photoLibrary:(id)a6 currentDate:(id)a7
++ (id)_getOrSetCompletionDateForTask:(unint64_t)task completeThreshold:(unint64_t)threshold includeFailures:(BOOL)failures photoLibrary:(id)library currentDate:(id)date
 {
-  v9 = a6;
-  v10 = a7;
+  libraryCopy = library;
+  dateCopy = date;
   v11 = VCPPercentCompleteTimestampKeyForTask();
-  v12 = [a1 _getOrSetDateWithKey:v11 photoLibrary:v9 currentDate:v10];
+  v12 = [self _getOrSetDateWithKey:v11 photoLibrary:libraryCopy currentDate:dateCopy];
 
   return v12;
 }
 
-+ (id)_featureCodeWithTaskID:(unint64_t)a3
++ (id)_featureCodeWithTaskID:(unint64_t)d
 {
-  if (a3 == 2)
+  if (d == 2)
   {
     v5 = off_100280FD0;
 LABEL_5:
-    v6 = [(__objc2_class *)*v5 featureCodes];
+    featureCodes = [(__objc2_class *)*v5 featureCodes];
 
-    return v6;
+    return featureCodes;
   }
 
-  if (a3 == 3)
+  if (d == 3)
   {
     v5 = off_100280FC0;
     goto LABEL_5;
   }
 
-  v6 = 0;
+  featureCodes = 0;
 
-  return v6;
+  return featureCodes;
 }
 
-+ (BOOL)_reportBGSTCustomCheckpoint:(unint64_t)a3 timestampKey:(id)a4 taskID:(unint64_t)a5 photoLibrary:(id)a6 currentDate:(id)a7
++ (BOOL)_reportBGSTCustomCheckpoint:(unint64_t)checkpoint timestampKey:(id)key taskID:(unint64_t)d photoLibrary:(id)library currentDate:(id)date
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  if (([v12 isSystemPhotoLibrary] & 1) == 0)
+  keyCopy = key;
+  libraryCopy = library;
+  dateCopy = date;
+  if (([libraryCopy isSystemPhotoLibrary] & 1) == 0)
   {
     if (MediaAnalysisLogLevel() < 5)
     {
@@ -227,9 +227,9 @@ LABEL_5:
 
   v14 = BGSystemTaskCustomCheckpointMax;
   v15 = BGSystemTaskCustomCheckpointMin;
-  if (BGSystemTaskCustomCheckpointMax >= a3 && BGSystemTaskCustomCheckpointMin <= a3)
+  if (BGSystemTaskCustomCheckpointMax >= checkpoint && BGSystemTaskCustomCheckpointMin <= checkpoint)
   {
-    v23 = MADTaskIdentifierForBackgroundTask(a5);
+    v23 = MADTaskIdentifierForBackgroundTask(d);
     v24 = v23;
     if (!v23)
     {
@@ -239,7 +239,7 @@ LABEL_5:
         if (os_log_type_enabled(&_os_log_default, v30))
         {
           *buf = 67109120;
-          *v41 = a5;
+          *v41 = d;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v30, "[MADProgressManager] taskIdentifier not found for task %u", buf, 8u);
         }
       }
@@ -248,11 +248,11 @@ LABEL_5:
       goto LABEL_34;
     }
 
-    v25 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v12];
+    v25 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
     if (+[MADManagedKeyValueStore isMACDReadEnabled])
     {
-      v26 = [v12 mad_fetchRequest];
-      v27 = [v26 dataStoreValueForKey:v11];
+      mad_fetchRequest = [libraryCopy mad_fetchRequest];
+      v27 = [mad_fetchRequest dataStoreValueForKey:keyCopy];
 
       if (!v27)
       {
@@ -262,12 +262,12 @@ LABEL_5:
 
     else
     {
-      v27 = [v25 valueForKey:v11];
+      v27 = [v25 valueForKey:keyCopy];
       if (!v27)
       {
 LABEL_18:
         v39 = 0;
-        v22 = [BGSystemTaskCheckpoints reportCustomCheckpoint:a3 forTask:v24 error:&v39];
+        v22 = [BGSystemTaskCheckpoints reportCustomCheckpoint:checkpoint forTask:v24 error:&v39];
         v28 = v39;
         if (v22)
         {
@@ -277,7 +277,7 @@ LABEL_18:
             if (os_log_type_enabled(&_os_log_default, v29))
             {
               *buf = 67109378;
-              *v41 = a3;
+              *v41 = checkpoint;
               *&v41[4] = 2112;
               *&v41[6] = v24;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v29, "[MADProgressManager] Reported BGST Custom Checkpoint %d for task taskIdentifier %@", buf, 0x12u);
@@ -290,15 +290,15 @@ LABEL_18:
             v36[1] = 3221225472;
             v36[2] = sub_10016572C;
             v36[3] = &unk_100282938;
-            v37 = v13;
-            v38 = v11;
-            [v12 mad_performAnalysisDataStoreChanges:v36 error:0];
+            v37 = dateCopy;
+            v38 = keyCopy;
+            [libraryCopy mad_performAnalysisDataStoreChanges:v36 error:0];
           }
 
           else
           {
-            [v13 timeIntervalSinceReferenceDate];
-            [v25 setValue:v35 forKey:v11];
+            [dateCopy timeIntervalSinceReferenceDate];
+            [v25 setValue:v35 forKey:keyCopy];
           }
         }
 
@@ -308,7 +308,7 @@ LABEL_18:
           if (os_log_type_enabled(&_os_log_default, v34))
           {
             *buf = 67109634;
-            *v41 = a3;
+            *v41 = checkpoint;
             *&v41[4] = 2112;
             *&v41[6] = v24;
             *&v41[14] = 2112;
@@ -349,7 +349,7 @@ LABEL_34:
     if (os_log_type_enabled(&_os_log_default, v17))
     {
       *buf = 67109632;
-      *v41 = a3;
+      *v41 = checkpoint;
       *&v41[4] = 1024;
       *&v41[6] = v15;
       *&v41[10] = 1024;
@@ -369,14 +369,14 @@ LABEL_35:
   return v22;
 }
 
-+ (BOOL)_reportBGSTCompletionCheckpoint:(unint64_t)a3 ForTask:(unint64_t)a4 photoLibrary:(id)a5 currentDate:(id)a6
++ (BOOL)_reportBGSTCompletionCheckpoint:(unint64_t)checkpoint ForTask:(unint64_t)task photoLibrary:(id)library currentDate:(id)date
 {
-  v10 = a5;
-  v11 = a6;
+  libraryCopy = library;
+  dateCopy = date;
   v12 = VCPBGSTCheckpointTimestampKeyForTask();
   if (v12)
   {
-    v13 = [a1 _reportBGSTCustomCheckpoint:a3 timestampKey:v12 taskID:a4 photoLibrary:v10 currentDate:v11];
+    v13 = [self _reportBGSTCustomCheckpoint:checkpoint timestampKey:v12 taskID:task photoLibrary:libraryCopy currentDate:dateCopy];
   }
 
   else
@@ -387,7 +387,7 @@ LABEL_35:
       if (os_log_type_enabled(&_os_log_default, v14))
       {
         v16[0] = 67109120;
-        v16[1] = a4;
+        v16[1] = task;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "[MADProgessManager] Unable to report completion checkpoint for unknown task %u", v16, 8u);
       }
     }
@@ -398,14 +398,14 @@ LABEL_35:
   return v13;
 }
 
-+ (BOOL)_reportBGSTFeatureCheckpointForTask:(unint64_t)a3
++ (BOOL)_reportBGSTFeatureCheckpointForTask:(unint64_t)task
 {
-  v20 = MADTaskIdentifierForBackgroundTask(a3);
+  v20 = MADTaskIdentifierForBackgroundTask(task);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [a1 _featureCodeWithTaskID:a3];
+  v5 = [self _featureCodeWithTaskID:task];
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v6)
   {
@@ -426,9 +426,9 @@ LABEL_35:
         v10 = objc_autoreleasePoolPush();
         if ([v9 unsignedIntegerValue])
         {
-          v11 = [v9 unsignedIntegerValue];
+          unsignedIntegerValue = [v9 unsignedIntegerValue];
           v22 = 0;
-          v12 = [BGSystemTaskCheckpoints reportFeatureCheckpoint:50 forFeature:v11 error:&v22];
+          v12 = [BGSystemTaskCheckpoints reportFeatureCheckpoint:50 forFeature:unsignedIntegerValue error:&v22];
           v13 = v22;
           if (v12)
           {
@@ -487,12 +487,12 @@ LABEL_19:
   return 1;
 }
 
-+ (void)_reportProgressMetricForIdentifier:(id)a3 itemsCompleted:(id)a4 totalCount:(id)a5
++ (void)_reportProgressMetricForIdentifier:(id)identifier itemsCompleted:(id)completed totalCount:(id)count
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[BGSystemTaskProgressMetrics alloc] initWithIdentifier:v7 qos:0 workloadCategory:10 expectedMetricValue:0 itemsCompleted:v8 totalItemCount:v9];
+  identifierCopy = identifier;
+  completedCopy = completed;
+  countCopy = count;
+  v10 = [[BGSystemTaskProgressMetrics alloc] initWithIdentifier:identifierCopy qos:0 workloadCategory:10 expectedMetricValue:0 itemsCompleted:completedCopy totalItemCount:countCopy];
   v11 = +[BGSystemTaskScheduler sharedScheduler];
   v23 = 0;
   v12 = [v11 reportProgressMetrics:v10 error:&v23];
@@ -505,14 +505,14 @@ LABEL_19:
       v14 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v14))
       {
-        v15 = [v8 intValue];
-        v16 = [v9 intValue];
+        intValue = [completedCopy intValue];
+        intValue2 = [countCopy intValue];
         *buf = 67109634;
-        v25 = v15;
+        v25 = intValue;
         v26 = 1024;
-        v27 = v16;
+        v27 = intValue2;
         v28 = 2112;
-        v29 = v7;
+        v29 = identifierCopy;
         v17 = "[MADProgressManager] Reported progress (%d/%d) for %@";
         v18 = v14;
         v19 = 24;
@@ -527,14 +527,14 @@ LABEL_8:
     v20 = VCPLogToOSLogType[4];
     if (os_log_type_enabled(&_os_log_default, v20))
     {
-      v21 = [v8 intValue];
-      v22 = [v9 intValue];
+      intValue3 = [completedCopy intValue];
+      intValue4 = [countCopy intValue];
       *buf = 67109890;
-      v25 = v21;
+      v25 = intValue3;
       v26 = 1024;
-      v27 = v22;
+      v27 = intValue4;
       v28 = 2112;
-      v29 = v7;
+      v29 = identifierCopy;
       v30 = 2112;
       v31 = v13;
       v17 = "[MADProgressManager] Failed to report progress (%d/%d) for %@ - %@";
@@ -545,39 +545,39 @@ LABEL_8:
   }
 }
 
-+ (BOOL)_reportWorkloadProgressForTask:(unint64_t)a3 progressDetail:(id)a4
++ (BOOL)_reportWorkloadProgressForTask:(unint64_t)task progressDetail:(id)detail
 {
-  v6 = a4;
+  detailCopy = detail;
   v7 = VCPTaskIDDescription();
-  v8 = MADTaskIdentifierForBackgroundTask(a3);
+  v8 = MADTaskIdentifierForBackgroundTask(task);
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:VCPAnalysisCountProcessedKey];
-    v10 = [v6 objectForKeyedSubscript:VCPAnalysisCountTotalAllowedKey];
-    v11 = [v6 objectForKeyedSubscript:VCPAnalysisCountFailedKey];
-    v12 = [v11 integerValue];
+    v9 = [detailCopy objectForKeyedSubscript:VCPAnalysisCountProcessedKey];
+    v10 = [detailCopy objectForKeyedSubscript:VCPAnalysisCountTotalAllowedKey];
+    v11 = [detailCopy objectForKeyedSubscript:VCPAnalysisCountFailedKey];
+    integerValue = [v11 integerValue];
 
-    v13 = [v10 integerValue];
-    v14 = [v9 integerValue];
-    if (v12 >= v13 - v14)
+    integerValue2 = [v10 integerValue];
+    integerValue3 = [v9 integerValue];
+    if (integerValue >= integerValue2 - integerValue3)
     {
-      v15 = (v13 - v14);
+      v15 = (integerValue2 - integerValue3);
     }
 
     else
     {
-      v15 = v12;
+      v15 = integerValue;
     }
 
     v16 = [NSNumber numberWithInteger:v15];
-    v17 = [v10 BOOLValue];
-    if (v17)
+    bOOLValue = [v10 BOOLValue];
+    if (bOOLValue)
     {
       v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s.processed", [v8 UTF8String]);
-      [a1 _reportProgressMetricForIdentifier:v18 itemsCompleted:v9 totalCount:v10];
+      [self _reportProgressMetricForIdentifier:v18 itemsCompleted:v9 totalCount:v10];
 
       v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s.failed", [v8 UTF8String]);
-      [a1 _reportProgressMetricForIdentifier:v19 itemsCompleted:v16 totalCount:v10];
+      [self _reportProgressMetricForIdentifier:v19 itemsCompleted:v16 totalCount:v10];
     }
 
     else if (MediaAnalysisLogLevel() >= 4)
@@ -590,7 +590,7 @@ LABEL_8:
         *&v24[8] = 1024;
         *&v24[10] = [v9 unsignedIntegerValue];
         v25 = 1024;
-        v26 = [v10 unsignedIntValue];
+        unsignedIntValue = [v10 unsignedIntValue];
         _os_log_impl(&_mh_execute_header, &_os_log_default, v21, "[MADProgressManagers] totalCount for %@ equal to zero, skipping reporting (%d/%d)", buf, 0x18u);
       }
     }
@@ -604,31 +604,31 @@ LABEL_8:
       if (os_log_type_enabled(&_os_log_default, v20))
       {
         *buf = 67109378;
-        *v24 = a3;
+        *v24 = task;
         *&v24[4] = 2112;
         *&v24[6] = v7;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v20, "[MADProgressManager] unable to determine BGST identifier for task %d (%@)", buf, 0x12u);
       }
     }
 
-    v17 = 0;
+    bOOLValue = 0;
   }
 
-  return v17;
+  return bOOLValue;
 }
 
-+ (void)_reportMediaAnalysisSubcategoryWorkloadProgress:(id)a3 totalAssetCount:(id)a4 subCategory:(id)a5
++ (void)_reportMediaAnalysisSubcategoryWorkloadProgress:(id)progress totalAssetCount:(id)count subCategory:(id)category
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  progressCopy = progress;
+  countCopy = count;
+  categoryCopy = category;
   v11 = VCPTaskIDDescription();
   v12 = MADTaskIdentifierForBackgroundTask(1);
   v13 = v12;
-  if (v9)
+  if (countCopy)
   {
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s.%s", [v12 UTF8String], objc_msgSend(v10, "UTF8String"));
-    [a1 _reportProgressMetricForIdentifier:v14 itemsCompleted:v8 totalCount:v9];
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s.%s", [v12 UTF8String], objc_msgSend(categoryCopy, "UTF8String"));
+    [self _reportProgressMetricForIdentifier:v14 itemsCompleted:progressCopy totalCount:countCopy];
   }
 
   else if (MediaAnalysisLogLevel() >= 4)
@@ -639,20 +639,20 @@ LABEL_8:
       *buf = 138412546;
       v17 = v13;
       v18 = 2112;
-      v19 = v10;
+      v19 = categoryCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v15, "[MADProgressManager] Total assets for %@ (%@) equal to zero, skipping reporting", buf, 0x16u);
     }
   }
 }
 
-+ (BOOL)_reportFullAnalysisPerTypeWorkloadProgress:(id)a3
++ (BOOL)_reportFullAnalysisPerTypeWorkloadProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisStillImageCountKey];
-  v6 = [v4 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisStillImageProcessedKey];
+  progressCopy = progress;
+  v5 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisStillImageCountKey];
+  v6 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisStillImageProcessedKey];
   if ([v5 unsignedIntegerValue])
   {
-    [a1 _reportMediaAnalysisSubcategoryWorkloadProgress:v6 totalAssetCount:v5 subCategory:@"stillImages-processed"];
+    [self _reportMediaAnalysisSubcategoryWorkloadProgress:v6 totalAssetCount:v5 subCategory:@"stillImages-processed"];
   }
 
   else if (MediaAnalysisLogLevel() >= 5)
@@ -665,13 +665,13 @@ LABEL_8:
     }
   }
 
-  v8 = [v4 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLivePhotoCountKey];
+  v8 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLivePhotoCountKey];
 
-  v9 = [v4 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLivePhotoProcessedKey];
+  v9 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLivePhotoProcessedKey];
 
   if ([v8 unsignedIntegerValue])
   {
-    [a1 _reportMediaAnalysisSubcategoryWorkloadProgress:v9 totalAssetCount:v8 subCategory:@"livePhotos-processed"];
+    [self _reportMediaAnalysisSubcategoryWorkloadProgress:v9 totalAssetCount:v8 subCategory:@"livePhotos-processed"];
   }
 
   else if (MediaAnalysisLogLevel() >= 5)
@@ -684,13 +684,13 @@ LABEL_8:
     }
   }
 
-  v11 = [v4 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisVideoCountKey];
+  v11 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisVideoCountKey];
 
-  v12 = [v4 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisVideoProcessedKey];
+  v12 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisVideoProcessedKey];
 
   if ([v11 unsignedIntegerValue])
   {
-    [a1 _reportMediaAnalysisSubcategoryWorkloadProgress:v12 totalAssetCount:v11 subCategory:@"videos-processed"];
+    [self _reportMediaAnalysisSubcategoryWorkloadProgress:v12 totalAssetCount:v11 subCategory:@"videos-processed"];
   }
 
   else if (MediaAnalysisLogLevel() >= 5)
@@ -703,13 +703,13 @@ LABEL_8:
     }
   }
 
-  v14 = [v4 objectForKeyedSubscript:VCPAnalysisFullAnalysisVideoDurationKey];
-  v15 = [v4 objectForKeyedSubscript:VCPAnalysisFullAnalysisProcessedVideoDurationKey];
-  v16 = [v4 objectForKeyedSubscript:VCPAnalysisFullAnalysisFailedVideoDurationKey];
+  v14 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisVideoDurationKey];
+  v15 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisProcessedVideoDurationKey];
+  v16 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisFailedVideoDurationKey];
   if (v14)
   {
-    [a1 _reportMediaAnalysisSubcategoryWorkloadProgress:v15 totalAssetCount:v14 subCategory:@"videoDuration-processed"];
-    [a1 _reportMediaAnalysisSubcategoryWorkloadProgress:v16 totalAssetCount:v14 subCategory:@"videoDuration-failed"];
+    [self _reportMediaAnalysisSubcategoryWorkloadProgress:v15 totalAssetCount:v14 subCategory:@"videoDuration-processed"];
+    [self _reportMediaAnalysisSubcategoryWorkloadProgress:v16 totalAssetCount:v14 subCategory:@"videoDuration-failed"];
   }
 
   else if (MediaAnalysisLogLevel() >= 5)
@@ -725,12 +725,12 @@ LABEL_8:
   return 1;
 }
 
-+ (id)_queryProgressForTask:(unint64_t)a3 photoLibrary:(id)a4 cancelOrExtendTimeoutBlock:(id)a5
++ (id)_queryProgressForTask:(unint64_t)task photoLibrary:(id)library cancelOrExtendTimeoutBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
+  libraryCopy = library;
+  blockCopy = block;
   v32 = 0;
-  v9 = [VCPAnalysisProgressQuery queryProgressDetail:&v32 photoLibrary:v7 taskID:a3 cancelOrExtendTimeoutBlock:v8];
+  v9 = [VCPAnalysisProgressQuery queryProgressDetail:&v32 photoLibrary:libraryCopy taskID:task cancelOrExtendTimeoutBlock:blockCopy];
   v10 = v32;
   v11 = v10;
   if (v9)
@@ -741,7 +741,7 @@ LABEL_8:
       if (os_log_type_enabled(&_os_log_default, v12))
       {
         *buf = 67109120;
-        v34 = a3;
+        taskCopy = task;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v12, "[MADProgressManager] Failed to query progress in default photo library for task %u", buf, 8u);
       }
     }
@@ -752,44 +752,44 @@ LABEL_8:
   else
   {
     v14 = [v10 objectForKeyedSubscript:VCPAnalysisCountProcessedKey];
-    v15 = [v14 unsignedIntegerValue];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
 
     v16 = [v11 objectForKeyedSubscript:VCPAnalysisCountStickyFailedKey];
-    v17 = [v16 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
     v18 = [v11 objectForKeyedSubscript:VCPAnalysisCountTotalAllowedKey];
-    v19 = [v18 unsignedIntegerValue];
+    unsignedIntegerValue3 = [v18 unsignedIntegerValue];
 
-    if (v19)
+    if (unsignedIntegerValue3)
     {
-      *&v20 = (v15 / v19) * 100.0;
+      *&v20 = (unsignedIntegerValue / unsignedIntegerValue3) * 100.0;
       v21 = [NSNumber numberWithFloat:v20];
       [v11 setObject:v21 forKeyedSubscript:@"progressPercentageQueryKey"];
 
-      *&v22 = ((v15 + v17) / v19) * 100.0;
+      *&v22 = ((unsignedIntegerValue + unsignedIntegerValue2) / unsignedIntegerValue3) * 100.0;
       v23 = [NSNumber numberWithFloat:v22];
       [v11 setObject:v23 forKeyedSubscript:@"progressOrFailedPercentageQueryKey"];
     }
 
-    if (a3 == 3)
+    if (task == 3)
     {
       v25 = [v11 objectForKeyedSubscript:VCPAnalysisCountPrioritizedProcessedKey];
-      v26 = [v25 unsignedIntegerValue];
+      unsignedIntegerValue4 = [v25 unsignedIntegerValue];
 
       v27 = [v11 objectForKeyedSubscript:VCPAnalysisCountPrioritizedTotalAllowedKey];
-      v28 = [v27 unsignedIntegerValue];
+      unsignedIntegerValue5 = [v27 unsignedIntegerValue];
 
-      if (v28)
+      if (unsignedIntegerValue5)
       {
-        *&v29 = (v26 / v28) * 100.0;
+        *&v29 = (unsignedIntegerValue4 / unsignedIntegerValue5) * 100.0;
         v30 = [NSNumber numberWithFloat:v29];
         [v11 setObject:v30 forKeyedSubscript:VCPKeyValuePrioritizedFaceAnalysisProgressPercentage];
       }
     }
 
-    else if (a3 == 1)
+    else if (task == 1)
     {
-      if ([VCPAnalysisProgressQuery queryVideoCountAndDurationBreakdown:v11 photoLibrary:v7 taskID:1 cancelOrExtendTimeoutBlock:v8])
+      if ([VCPAnalysisProgressQuery queryVideoCountAndDurationBreakdown:v11 photoLibrary:libraryCopy taskID:1 cancelOrExtendTimeoutBlock:blockCopy])
       {
         if (MediaAnalysisLogLevel() >= 5)
         {
@@ -809,36 +809,36 @@ LABEL_8:
   return v13;
 }
 
-+ (BOOL)_storeProgress:(id)a3 forTask:(unint64_t)a4 subtype:(unint64_t)a5 photoLibrary:(id)a6
++ (BOOL)_storeProgress:(id)progress forTask:(unint64_t)task subtype:(unint64_t)subtype photoLibrary:(id)library
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 objectForKeyedSubscript:VCPAnalysisCountProcessedKey];
-  v12 = [v11 unsignedIntegerValue];
+  progressCopy = progress;
+  libraryCopy = library;
+  v11 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountProcessedKey];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-  v13 = [v9 objectForKeyedSubscript:VCPAnalysisCountTotalAllowedKey];
-  v14 = [v13 unsignedIntegerValue];
+  v13 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountTotalAllowedKey];
+  unsignedIntegerValue2 = [v13 unsignedIntegerValue];
 
-  if (a5 == 1)
+  if (subtype == 1)
   {
-    v15 = [v9 objectForKeyedSubscript:VCPAnalysisCountPrioritizedProcessedKey];
-    v12 = [v15 unsignedIntegerValue];
+    v15 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountPrioritizedProcessedKey];
+    unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-    v16 = [v9 objectForKeyedSubscript:VCPAnalysisCountPrioritizedTotalAllowedKey];
-    v14 = [v16 unsignedIntegerValue];
+    v16 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountPrioritizedTotalAllowedKey];
+    unsignedIntegerValue2 = [v16 unsignedIntegerValue];
   }
 
-  if (a4 > 9)
+  if (task > 9)
   {
-    if (a4 <= 15)
+    if (task <= 15)
     {
-      if (a4 != 10)
+      if (task != 10)
       {
-        if (a4 == 12)
+        if (task == 12)
         {
-          v17 = VCPPhotosVisualSearchAlgorithmVersion();
+          mad_faceProcessingInternalVersion = VCPPhotosVisualSearchAlgorithmVersion();
 LABEL_23:
-          v21 = v17;
+          v21 = mad_faceProcessingInternalVersion;
 LABEL_24:
           v22 = +[NSDate now];
           if (+[MADManagedBackgroundAnalysisProgressHistory isMACDPersistEnabled])
@@ -847,19 +847,19 @@ LABEL_24:
             v102[1] = 3221225472;
             v102[2] = sub_1001678E4;
             v102[3] = &unk_1002876E0;
-            v104 = a4;
-            v105 = a5;
+            taskCopy = task;
+            subtypeCopy = subtype;
             v106 = v21;
-            v107 = v12;
-            v108 = v14;
+            v107 = unsignedIntegerValue;
+            v108 = unsignedIntegerValue2;
             v103 = v22;
-            [v10 mad_performAnalysisDataStoreChanges:v102 error:0];
+            [libraryCopy mad_performAnalysisDataStoreChanges:v102 error:0];
           }
 
           else
           {
-            v23 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v10];
-            v24 = [v23 storeProgressForActivityID:a4 withAnalysisSubtype:a5 version:v21 processedAssetCount:v12 totalAssetCount:v14 storeDate:v22];
+            v23 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
+            v24 = [v23 storeProgressForActivityID:task withAnalysisSubtype:subtype version:v21 processedAssetCount:unsignedIntegerValue totalAssetCount:unsignedIntegerValue2 storeDate:v22];
 
             if (v24)
             {
@@ -875,18 +875,18 @@ LABEL_24:
               }
 
               *buf = 67109632;
-              v110 = v24;
+              taskCopy3 = v24;
               v111 = 1024;
-              v112 = a4;
+              taskCopy2 = task;
               v113 = 1024;
-              v114 = a5;
+              subtypeCopy3 = subtype;
               v26 = "[MADProgressManager] Error %d in storing progress for task:subtask %u:%u";
               v27 = v25;
               goto LABEL_37;
             }
           }
 
-          if (a4 != 1)
+          if (task != 1)
           {
 LABEL_39:
             v20 = 1;
@@ -899,139 +899,139 @@ LABEL_39:
             v100[1] = 3221225472;
             v100[2] = sub_1001678F8;
             v100[3] = &unk_100283AD0;
-            v101 = v9;
-            [v10 mad_performAnalysisDataStoreChanges:v100 error:0];
+            v101 = progressCopy;
+            [libraryCopy mad_performAnalysisDataStoreChanges:v100 error:0];
 
             goto LABEL_39;
           }
 
-          v28 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v10];
+          v28 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
           v29 = VCPAnalysisCountFullAnalysisStillImageCountKey;
-          v30 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisStillImageCountKey];
+          v30 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisStillImageCountKey];
           [v28 setValue:objc_msgSend(v30 forKey:{"longLongValue"), v29}];
 
           v31 = VCPAnalysisCountFullAnalysisStillImageProcessedKey;
-          v32 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisStillImageProcessedKey];
+          v32 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisStillImageProcessedKey];
           [v28 setValue:objc_msgSend(v32 forKey:{"longLongValue"), v31}];
 
           v33 = VCPAnalysisCountFullAnalysisLivePhotoCountKey;
-          v34 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLivePhotoCountKey];
+          v34 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLivePhotoCountKey];
           [v28 setValue:objc_msgSend(v34 forKey:{"longLongValue"), v33}];
 
           v35 = VCPAnalysisCountFullAnalysisLivePhotoProcessedKey;
-          v36 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLivePhotoProcessedKey];
+          v36 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLivePhotoProcessedKey];
           [v28 setValue:objc_msgSend(v36 forKey:{"longLongValue"), v35}];
 
           v37 = VCPAnalysisCountFullAnalysisVideoCountKey;
-          v38 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisVideoCountKey];
+          v38 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisVideoCountKey];
           [v28 setValue:objc_msgSend(v38 forKey:{"longLongValue"), v37}];
 
           v39 = VCPAnalysisCountFullAnalysisSlowmoVideoCountKey;
-          v40 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisSlowmoVideoCountKey];
+          v40 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisSlowmoVideoCountKey];
           [v28 setValue:objc_msgSend(v40 forKey:{"longLongValue"), v39}];
 
           v41 = VCPAnalysisCountFullAnalysisLongVideoCountKey;
-          v42 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLongVideoCountKey];
+          v42 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLongVideoCountKey];
           [v28 setValue:objc_msgSend(v42 forKey:{"longLongValue"), v41}];
 
           v43 = VCPAnalysisCountFullAnalysisVideoProcessedKey;
-          v44 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisVideoProcessedKey];
+          v44 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisVideoProcessedKey];
           [v28 setValue:objc_msgSend(v44 forKey:{"longLongValue"), v43}];
 
           v45 = VCPAnalysisCountFullAnalysisSlowmoVideoProcessedKey;
-          v46 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisSlowmoVideoProcessedKey];
+          v46 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisSlowmoVideoProcessedKey];
           [v28 setValue:objc_msgSend(v46 forKey:{"longLongValue"), v45}];
 
           v47 = VCPAnalysisCountFullAnalysisLongVideoProcessedKey;
-          v48 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLongVideoProcessedKey];
+          v48 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLongVideoProcessedKey];
           [v28 setValue:objc_msgSend(v48 forKey:{"longLongValue"), v47}];
 
           v49 = VCPAnalysisCountFullAnalysisVideoFailedKey;
-          v50 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisVideoFailedKey];
+          v50 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisVideoFailedKey];
           [v28 setValue:objc_msgSend(v50 forKey:{"longLongValue"), v49}];
 
           v51 = VCPAnalysisCountFullAnalysisSlowmoVideoFailedKey;
-          v52 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisSlowmoVideoFailedKey];
+          v52 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisSlowmoVideoFailedKey];
           [v28 setValue:objc_msgSend(v52 forKey:{"longLongValue"), v51}];
 
           v53 = VCPAnalysisCountFullAnalysisLongVideoFailedKey;
-          v54 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLongVideoFailedKey];
+          v54 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLongVideoFailedKey];
           [v28 setValue:objc_msgSend(v54 forKey:{"longLongValue"), v53}];
 
           v55 = VCPAnalysisCountFullAnalysisVideoGatedKey;
-          v56 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisVideoGatedKey];
+          v56 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisVideoGatedKey];
           [v28 setValue:objc_msgSend(v56 forKey:{"longLongValue"), v55}];
 
           v57 = VCPAnalysisCountFullAnalysisSlowmoVideoGatedKey;
-          v58 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisSlowmoVideoGatedKey];
+          v58 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisSlowmoVideoGatedKey];
           [v28 setValue:objc_msgSend(v58 forKey:{"longLongValue"), v57}];
 
           v59 = VCPAnalysisCountFullAnalysisLongVideoGatedKey;
-          v60 = [v9 objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLongVideoGatedKey];
+          v60 = [progressCopy objectForKeyedSubscript:VCPAnalysisCountFullAnalysisLongVideoGatedKey];
           [v28 setValue:objc_msgSend(v60 forKey:{"longLongValue"), v59}];
 
           v61 = VCPAnalysisFullAnalysisVideoDurationKey;
-          v62 = [v9 objectForKeyedSubscript:VCPAnalysisFullAnalysisVideoDurationKey];
+          v62 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisVideoDurationKey];
           [v62 doubleValue];
           [v28 setValue:v63 forKey:v61];
 
           v64 = VCPAnalysisFullAnalysisSlowmoVideoDurationKey;
-          v65 = [v9 objectForKeyedSubscript:VCPAnalysisFullAnalysisSlowmoVideoDurationKey];
+          v65 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisSlowmoVideoDurationKey];
           [v65 doubleValue];
           [v28 setValue:v66 forKey:v64];
 
           v67 = VCPAnalysisFullAnalysisLongVideoDurationKey;
-          v68 = [v9 objectForKeyedSubscript:VCPAnalysisFullAnalysisLongVideoDurationKey];
+          v68 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisLongVideoDurationKey];
           [v68 doubleValue];
           [v28 setValue:v69 forKey:v67];
 
           v70 = VCPAnalysisFullAnalysisProcessedVideoDurationKey;
-          v71 = [v9 objectForKeyedSubscript:VCPAnalysisFullAnalysisProcessedVideoDurationKey];
+          v71 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisProcessedVideoDurationKey];
           [v71 doubleValue];
           [v28 setValue:v72 forKey:v70];
 
           v73 = VCPAnalysisFullAnalysisProcessedSlowmoVideoDurationKey;
-          v74 = [v9 objectForKeyedSubscript:VCPAnalysisFullAnalysisProcessedSlowmoVideoDurationKey];
+          v74 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisProcessedSlowmoVideoDurationKey];
           [v74 doubleValue];
           [v28 setValue:v75 forKey:v73];
 
           v76 = VCPAnalysisFullAnalysisProcessedLongVideoDurationKey;
-          v77 = [v9 objectForKeyedSubscript:VCPAnalysisFullAnalysisProcessedLongVideoDurationKey];
+          v77 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisProcessedLongVideoDurationKey];
           [v77 doubleValue];
           [v28 setValue:v78 forKey:v76];
 
           v79 = VCPAnalysisFullAnalysisFailedVideoDurationKey;
-          v80 = [v9 objectForKeyedSubscript:VCPAnalysisFullAnalysisFailedVideoDurationKey];
+          v80 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisFailedVideoDurationKey];
           [v80 doubleValue];
           [v28 setValue:v81 forKey:v79];
 
           v82 = VCPAnalysisFullAnalysisFailedSlowmoVideoDurationKey;
-          v83 = [v9 objectForKeyedSubscript:VCPAnalysisFullAnalysisFailedSlowmoVideoDurationKey];
+          v83 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisFailedSlowmoVideoDurationKey];
           [v83 doubleValue];
           [v28 setValue:v84 forKey:v82];
 
           v85 = VCPAnalysisFullAnalysisFailedLongVideoDurationKey;
-          v86 = [v9 objectForKeyedSubscript:VCPAnalysisFullAnalysisFailedLongVideoDurationKey];
+          v86 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisFailedLongVideoDurationKey];
           [v86 doubleValue];
           [v28 setValue:v87 forKey:v85];
 
           v88 = VCPAnalysisFullAnalysisGatedVideoDurationKey;
-          v89 = [v9 objectForKeyedSubscript:VCPAnalysisFullAnalysisGatedVideoDurationKey];
+          v89 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisGatedVideoDurationKey];
           [v89 doubleValue];
           [v28 setValue:v90 forKey:v88];
 
           v91 = VCPAnalysisFullAnalysisGatedSlowmoVideoDurationKey;
-          v92 = [v9 objectForKeyedSubscript:VCPAnalysisFullAnalysisGatedSlowmoVideoDurationKey];
+          v92 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisGatedSlowmoVideoDurationKey];
           [v92 doubleValue];
           [v28 setValue:v93 forKey:v91];
 
           v94 = VCPAnalysisFullAnalysisGatedLongVideoDurationKey;
-          v95 = [v9 objectForKeyedSubscript:VCPAnalysisFullAnalysisGatedLongVideoDurationKey];
+          v95 = [progressCopy objectForKeyedSubscript:VCPAnalysisFullAnalysisGatedLongVideoDurationKey];
           [v95 doubleValue];
           [v28 setValue:v96 forKey:v94];
 
-          v97 = [v28 commit];
-          if (!v97)
+          commit = [v28 commit];
+          if (!commit)
           {
             goto LABEL_39;
           }
@@ -1046,11 +1046,11 @@ LABEL_40:
           }
 
           *buf = 67109632;
-          v110 = v97;
+          taskCopy3 = commit;
           v111 = 1024;
-          v112 = 1;
+          taskCopy2 = 1;
           v113 = 1024;
-          v114 = a5;
+          subtypeCopy3 = subtype;
           v26 = "[MADProgressManager] Error %d in storing additional progress for task:subtask %u:%u";
           v27 = v98;
 LABEL_37:
@@ -1067,13 +1067,13 @@ LABEL_21:
       goto LABEL_24;
     }
 
-    if (a4 == 16)
+    if (task == 16)
     {
       v18 = &VCPPhotosPECProcessingVersion;
       goto LABEL_21;
     }
 
-    if (a4 != 255)
+    if (task != 255)
     {
       goto LABEL_15;
     }
@@ -1083,15 +1083,15 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  switch(a4)
+  switch(task)
   {
     case 1uLL:
       goto LABEL_14;
     case 2uLL:
-      v17 = VCPPhotosSceneProcessingVersionInternal();
+      mad_faceProcessingInternalVersion = VCPPhotosSceneProcessingVersionInternal();
       goto LABEL_23;
     case 3uLL:
-      v17 = [v10 mad_faceProcessingInternalVersion];
+      mad_faceProcessingInternalVersion = [libraryCopy mad_faceProcessingInternalVersion];
       goto LABEL_23;
   }
 
@@ -1102,7 +1102,7 @@ LABEL_15:
     if (os_log_type_enabled(&_os_log_default, v19))
     {
       *buf = 67109120;
-      v110 = a4;
+      taskCopy3 = task;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v19, "[MADProgressManager] Unsupported analysis type %d", buf, 8u);
     }
   }
@@ -1113,31 +1113,31 @@ LABEL_41:
   return v20;
 }
 
-+ (BOOL)_storeProgress:(id)a3 forTask:(unint64_t)a4 photoLibrary:(id)a5
++ (BOOL)_storeProgress:(id)progress forTask:(unint64_t)task photoLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _storeProgress:v8 forTask:a4 subtype:0 photoLibrary:v9];
+  progressCopy = progress;
+  libraryCopy = library;
+  v10 = [self _storeProgress:progressCopy forTask:task subtype:0 photoLibrary:libraryCopy];
   v11 = v10 ^ 1;
-  if (a4 != 3)
+  if (task != 3)
   {
     v11 = 1;
   }
 
   if ((v11 & 1) == 0)
   {
-    v10 = [a1 _storeProgress:v8 forTask:3 subtype:1 photoLibrary:v9];
+    v10 = [self _storeProgress:progressCopy forTask:3 subtype:1 photoLibrary:libraryCopy];
   }
 
   return v10;
 }
 
-+ (BOOL)_correctAnachronisticTimestampsForTask:(unint64_t)a3 completionDates:(id)a4 photoLibrary:(id)a5
++ (BOOL)_correctAnachronisticTimestampsForTask:(unint64_t)task completionDates:(id)dates photoLibrary:(id)library
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = [v6 objectForKeyedSubscript:@"Date50ProcessedOrFailed"];
-  v9 = [v6 objectForKeyedSubscript:@"Date90ProcessedOrFailed"];
+  datesCopy = dates;
+  libraryCopy = library;
+  v8 = [datesCopy objectForKeyedSubscript:@"Date50ProcessedOrFailed"];
+  v9 = [datesCopy objectForKeyedSubscript:@"Date90ProcessedOrFailed"];
   [v9 timeIntervalSinceDate:v8];
   if (v10 < 0.0)
   {
@@ -1152,20 +1152,20 @@ LABEL_41:
       v26[3] = &unk_100285478;
       v28 = v13;
       v27 = v11;
-      [v7 mad_performAnalysisDataStoreChanges:v26 error:0];
+      [libraryCopy mad_performAnalysisDataStoreChanges:v26 error:0];
     }
 
     else
     {
-      v14 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v7];
+      v14 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
       [v14 setValue:v13 forKey:v11];
       [v14 commit];
     }
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"Date50Processed"];
+  v15 = [datesCopy objectForKeyedSubscript:@"Date50Processed"];
 
-  v16 = [v6 objectForKeyedSubscript:@"Date90Processed"];
+  v16 = [datesCopy objectForKeyedSubscript:@"Date90Processed"];
 
   [v16 timeIntervalSinceDate:v15];
   if (v17 < 0.0)
@@ -1181,13 +1181,13 @@ LABEL_41:
       v23[3] = &unk_100285478;
       v25 = v20;
       v24 = v18;
-      [v7 mad_performAnalysisDataStoreChanges:v23 error:0];
+      [libraryCopy mad_performAnalysisDataStoreChanges:v23 error:0];
       v21 = v24;
     }
 
     else
     {
-      v21 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v7];
+      v21 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
       [v21 setValue:v20 forKey:v18];
       [v21 commit];
     }
@@ -1196,101 +1196,101 @@ LABEL_41:
   return 0;
 }
 
-+ (id)_computeCompletionDatesWithProgress:(id)a3 photoLibrary:(id)a4 taskID:(unint64_t)a5 currentDate:(id)a6
++ (id)_computeCompletionDatesWithProgress:(id)progress photoLibrary:(id)library taskID:(unint64_t)d currentDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  progressCopy = progress;
+  libraryCopy = library;
+  dateCopy = date;
   v13 = +[NSMutableDictionary dictionary];
-  v28 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v11];
-  v14 = [v10 objectForKeyedSubscript:@"progressPercentageQueryKey"];
-  v15 = [v14 unsignedIntegerValue];
+  v28 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
+  v14 = [progressCopy objectForKeyedSubscript:@"progressPercentageQueryKey"];
+  unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-  v16 = [v10 objectForKeyedSubscript:@"progressOrFailedPercentageQueryKey"];
-  v17 = [v16 unsignedIntegerValue];
+  v16 = [progressCopy objectForKeyedSubscript:@"progressOrFailedPercentageQueryKey"];
+  unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
   v18 = VCPAnalysisComplete50Percentage;
-  if (v17 >= VCPAnalysisComplete50Percentage)
+  if (unsignedIntegerValue2 >= VCPAnalysisComplete50Percentage)
   {
-    v19 = [a1 _getOrSetCompletionDateForTask:a5 completeThreshold:VCPAnalysisComplete50Percentage includeFailures:1 photoLibrary:v11 currentDate:v12];
+    v19 = [self _getOrSetCompletionDateForTask:d completeThreshold:VCPAnalysisComplete50Percentage includeFailures:1 photoLibrary:libraryCopy currentDate:dateCopy];
     [v13 setObject:v19 forKeyedSubscript:@"Date50ProcessedOrFailed"];
 
-    if (v15 >= v18)
+    if (unsignedIntegerValue >= v18)
     {
-      v20 = [a1 _getOrSetCompletionDateForTask:a5 completeThreshold:v18 includeFailures:0 photoLibrary:v11 currentDate:v12];
+      v20 = [self _getOrSetCompletionDateForTask:d completeThreshold:v18 includeFailures:0 photoLibrary:libraryCopy currentDate:dateCopy];
       [v13 setObject:v20 forKeyedSubscript:@"Date50Processed"];
     }
   }
 
   v21 = VCPAnalysisComplete90Percentage;
-  if (v17 >= VCPAnalysisComplete90Percentage)
+  if (unsignedIntegerValue2 >= VCPAnalysisComplete90Percentage)
   {
-    v22 = [a1 _getOrSetCompletionDateForTask:a5 completeThreshold:VCPAnalysisComplete90Percentage includeFailures:1 photoLibrary:v11 currentDate:v12];
+    v22 = [self _getOrSetCompletionDateForTask:d completeThreshold:VCPAnalysisComplete90Percentage includeFailures:1 photoLibrary:libraryCopy currentDate:dateCopy];
     [v13 setObject:v22 forKeyedSubscript:@"Date90ProcessedOrFailed"];
 
-    if (v15 >= v21)
+    if (unsignedIntegerValue >= v21)
     {
-      v23 = [a1 _getOrSetCompletionDateForTask:a5 completeThreshold:v21 includeFailures:0 photoLibrary:v11 currentDate:v12];
+      v23 = [self _getOrSetCompletionDateForTask:d completeThreshold:v21 includeFailures:0 photoLibrary:libraryCopy currentDate:dateCopy];
       [v13 setObject:v23 forKeyedSubscript:@"Date90Processed"];
     }
   }
 
   v24 = VCPAnalysisComplete99Percentage;
-  if (v17 >= VCPAnalysisComplete99Percentage)
+  if (unsignedIntegerValue2 >= VCPAnalysisComplete99Percentage)
   {
-    v25 = [a1 _getOrSetCompletionDateForTask:a5 completeThreshold:VCPAnalysisComplete99Percentage includeFailures:1 photoLibrary:v11 currentDate:v12];
+    v25 = [self _getOrSetCompletionDateForTask:d completeThreshold:VCPAnalysisComplete99Percentage includeFailures:1 photoLibrary:libraryCopy currentDate:dateCopy];
     [v13 setObject:v25 forKeyedSubscript:@"Date99ProcessedOrFailed"];
 
-    if (v15 >= v24)
+    if (unsignedIntegerValue >= v24)
     {
-      v26 = [a1 _getOrSetCompletionDateForTask:a5 completeThreshold:v24 includeFailures:0 photoLibrary:v11 currentDate:v12];
+      v26 = [self _getOrSetCompletionDateForTask:d completeThreshold:v24 includeFailures:0 photoLibrary:libraryCopy currentDate:dateCopy];
       [v13 setObject:v26 forKeyedSubscript:@"Date99Processed"];
     }
   }
 
-  [a1 _correctAnachronisticTimestampsForTask:a5 completionDates:v13 photoLibrary:v11];
+  [self _correctAnachronisticTimestampsForTask:d completionDates:v13 photoLibrary:libraryCopy];
 
   return v13;
 }
 
-+ (void)_reportCompletionDates:(id)a3 progressDetail:(id)a4 photoLibrary:(id)a5 taskID:(unint64_t)a6 currentDate:(id)a7
++ (void)_reportCompletionDates:(id)dates progressDetail:(id)detail photoLibrary:(id)library taskID:(unint64_t)d currentDate:(id)date
 {
-  v12 = a3;
-  v35 = a4;
-  v34 = a5;
-  v13 = a7;
-  v32 = [v12 objectForKeyedSubscript:@"Date90ProcessedOrFailed"];
-  v14 = [v12 objectForKeyedSubscript:@"Date90ProcessedOrFailed"];
+  datesCopy = dates;
+  detailCopy = detail;
+  libraryCopy = library;
+  dateCopy = date;
+  v32 = [datesCopy objectForKeyedSubscript:@"Date90ProcessedOrFailed"];
+  v14 = [datesCopy objectForKeyedSubscript:@"Date90ProcessedOrFailed"];
 
   if (v14)
   {
-    [a1 _reportBGSTCompletionCheckpoint:505 ForTask:a6 photoLibrary:v34 currentDate:v13];
+    [self _reportBGSTCompletionCheckpoint:505 ForTask:d photoLibrary:libraryCopy currentDate:dateCopy];
   }
 
-  v15 = [v12 objectForKeyedSubscript:@"Date90Processed"];
+  v15 = [datesCopy objectForKeyedSubscript:@"Date90Processed"];
 
-  if (v15 && [a1 _reportBGSTCompletionCheckpoint:509 ForTask:a6 photoLibrary:v34 currentDate:v13])
+  if (v15 && [self _reportBGSTCompletionCheckpoint:509 ForTask:d photoLibrary:libraryCopy currentDate:dateCopy])
   {
-    [a1 _reportBGSTFeatureCheckpointForTask:a6];
+    [self _reportBGSTFeatureCheckpointForTask:d];
   }
 
   v33 = VCPTaskIDDescription();
-  v16 = [v35 objectForKeyedSubscript:@"progressPercentageQueryKey"];
-  v17 = [v16 unsignedIntegerValue];
+  v16 = [detailCopy objectForKeyedSubscript:@"progressPercentageQueryKey"];
+  unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-  v18 = [v35 objectForKeyedSubscript:VCPAnalysisCountProcessedKey];
-  v19 = [v18 unsignedIntegerValue];
+  v18 = [detailCopy objectForKeyedSubscript:VCPAnalysisCountProcessedKey];
+  unsignedIntegerValue2 = [v18 unsignedIntegerValue];
 
-  v20 = [v35 objectForKeyedSubscript:VCPAnalysisCountTotalAllowedKey];
-  v21 = [v20 unsignedIntegerValue];
-  v31 = v19;
+  v20 = [detailCopy objectForKeyedSubscript:VCPAnalysisCountTotalAllowedKey];
+  unsignedIntegerValue3 = [v20 unsignedIntegerValue];
+  v31 = unsignedIntegerValue2;
 
-  v22 = [a1 _getOrSetStartDateForTask:a6 photoLibrary:v34 currentDate:v13];
+  v22 = [self _getOrSetStartDateForTask:d photoLibrary:libraryCopy currentDate:dateCopy];
   v23 = +[NSCalendar currentCalendar];
-  v24 = [v23 components:16 fromDate:v22 toDate:v13 options:0];
+  v24 = [v23 components:16 fromDate:v22 toDate:dateCopy options:0];
   v25 = [v24 day];
 
-  v26 = [v12 objectForKeyedSubscript:@"Date99ProcessedOrFailed"];
+  v26 = [datesCopy objectForKeyedSubscript:@"Date99ProcessedOrFailed"];
   if (v26)
   {
     v27 = +[NSCalendar currentCalendar];
@@ -1311,11 +1311,11 @@ LABEL_41:
       *buf = 138413570;
       v37 = v33;
       v38 = 1024;
-      v39 = v17;
+      v39 = unsignedIntegerValue;
       v40 = 1024;
       v41 = v31;
       v42 = 1024;
-      v43 = v21;
+      v43 = unsignedIntegerValue3;
       v44 = 1024;
       v45 = v25;
       v46 = 1024;
@@ -1324,43 +1324,43 @@ LABEL_41:
     }
   }
 
-  VCPCoreAnalyticsReportEventAnalysisProgress(v33, v25, v29, v17, v21);
+  VCPCoreAnalyticsReportEventAnalysisProgress(v33, v25, v29, unsignedIntegerValue, unsignedIntegerValue3);
 }
 
-+ (void)_reportProgressDetail:(id)a3 taskID:(unint64_t)a4 photoLibrary:(id)a5
++ (void)_reportProgressDetail:(id)detail taskID:(unint64_t)d photoLibrary:(id)library
 {
-  v11 = a3;
-  v8 = a5;
+  detailCopy = detail;
+  libraryCopy = library;
   v9 = +[NSDate now];
-  v10 = [a1 _computeCompletionDatesWithProgress:v11 photoLibrary:v8 taskID:a4 currentDate:v9];
-  [a1 _reportCompletionDates:v10 progressDetail:v11 photoLibrary:v8 taskID:a4 currentDate:v9];
-  if (a4 == 3)
+  v10 = [self _computeCompletionDatesWithProgress:detailCopy photoLibrary:libraryCopy taskID:d currentDate:v9];
+  [self _reportCompletionDates:v10 progressDetail:detailCopy photoLibrary:libraryCopy taskID:d currentDate:v9];
+  if (d == 3)
   {
-    [a1 _reportFaceP1ProgressDetail:v11 photoLibrary:v8 currentDate:v9];
+    [self _reportFaceP1ProgressDetail:detailCopy photoLibrary:libraryCopy currentDate:v9];
   }
 
-  if ([a1 _reportWorkloadProgressForTask:a4 progressDetail:v11])
+  if ([self _reportWorkloadProgressForTask:d progressDetail:detailCopy])
   {
-    if (a4 == 1)
+    if (d == 1)
     {
-      [a1 _reportFullAnalysisPerTypeWorkloadProgress:v11];
+      [self _reportFullAnalysisPerTypeWorkloadProgress:detailCopy];
     }
 
-    [a1 clearProgressUpdateRequestForTask:a4];
+    [self clearProgressUpdateRequestForTask:d];
   }
 }
 
-+ (void)_reportFaceP1ProgressDetail:(id)a3 photoLibrary:(id)a4 currentDate:(id)a5
++ (void)_reportFaceP1ProgressDetail:(id)detail photoLibrary:(id)library currentDate:(id)date
 {
-  v25 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v25 objectForKeyedSubscript:VCPKeyValuePrioritizedFaceAnalysisProgressPercentage];
+  detailCopy = detail;
+  libraryCopy = library;
+  dateCopy = date;
+  v10 = [detailCopy objectForKeyedSubscript:VCPKeyValuePrioritizedFaceAnalysisProgressPercentage];
   [v10 doubleValue];
   v12 = v11;
 
-  v13 = [v25 objectForKeyedSubscript:VCPAnalysisCountPrioritizedTotalAllowedKey];
-  v14 = [v13 unsignedIntegerValue];
+  v13 = [detailCopy objectForKeyedSubscript:VCPAnalysisCountPrioritizedTotalAllowedKey];
+  unsignedIntegerValue = [v13 unsignedIntegerValue];
 
   if (v12 <= VCPAnalysisComplete90Percentage)
   {
@@ -1370,17 +1370,17 @@ LABEL_41:
   else
   {
     v15 = VCPKeyValuePrioritizedFaceCheckpointReportedTimestamp;
-    v16 = [a1 _getOrSetDateWithKey:VCPKeyValuePrioritizedFaceCheckpointReportedTimestamp photoLibrary:v8 currentDate:v9];
-    [v9 timeIntervalSinceDate:v16];
+    v16 = [self _getOrSetDateWithKey:VCPKeyValuePrioritizedFaceCheckpointReportedTimestamp photoLibrary:libraryCopy currentDate:dateCopy];
+    [dateCopy timeIntervalSinceDate:v16];
     if (fabs(v17) < 1.0)
     {
-      [a1 _reportBGSTCustomCheckpoint:501 timestampKey:v15 taskID:3 photoLibrary:v8 currentDate:v9];
+      [self _reportBGSTCustomCheckpoint:501 timestampKey:v15 taskID:3 photoLibrary:libraryCopy currentDate:dateCopy];
     }
   }
 
-  v18 = [a1 _getOrSetStartDateForTask:3 photoLibrary:v8 currentDate:v9];
+  v18 = [self _getOrSetStartDateForTask:3 photoLibrary:libraryCopy currentDate:dateCopy];
   v19 = +[NSCalendar currentCalendar];
-  v20 = [v19 components:16 fromDate:v18 toDate:v9 options:0];
+  v20 = [v19 components:16 fromDate:v18 toDate:dateCopy options:0];
   v21 = [v20 day];
 
   if (v16)
@@ -1395,17 +1395,17 @@ LABEL_41:
     v24 = -1;
   }
 
-  VCPCoreAnalyticsReportEventAnalysisProgress(@"PrioritizedFaceAnalysis", v21, v24, v12, v14);
+  VCPCoreAnalyticsReportEventAnalysisProgress(@"PrioritizedFaceAnalysis", v21, v24, v12, unsignedIntegerValue);
 }
 
-+ (id)_queryAndReportProgressForAnalysis:(unint64_t)a3 photoLibrary:(id)a4 cancelOrExtendTimeoutBlock:(id)a5
++ (id)_queryAndReportProgressForAnalysis:(unint64_t)analysis photoLibrary:(id)library cancelOrExtendTimeoutBlock:(id)block
 {
-  v8 = a4;
-  v9 = [a1 _queryProgressForTask:a3 photoLibrary:v8 cancelOrExtendTimeoutBlock:a5];
-  [a1 _storeProgress:v9 forTask:a3 photoLibrary:v8];
-  if ([v8 isSystemPhotoLibrary])
+  libraryCopy = library;
+  v9 = [self _queryProgressForTask:analysis photoLibrary:libraryCopy cancelOrExtendTimeoutBlock:block];
+  [self _storeProgress:v9 forTask:analysis photoLibrary:libraryCopy];
+  if ([libraryCopy isSystemPhotoLibrary])
   {
-    [a1 _reportProgressDetail:v9 taskID:a3 photoLibrary:v8];
+    [self _reportProgressDetail:v9 taskID:analysis photoLibrary:libraryCopy];
   }
 
   else if (MediaAnalysisLogLevel() >= 5)
@@ -1421,26 +1421,26 @@ LABEL_41:
   return v9;
 }
 
-+ (void)_queryAndReportProgressForMediaAnalysisImageForPhotoLibrary:(id)a3 reuseCachedValue:(BOOL)a4
++ (void)_queryAndReportProgressForMediaAnalysisImageForPhotoLibrary:(id)library reuseCachedValue:(BOOL)value
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v6];
+  valueCopy = value;
+  libraryCopy = library;
+  v7 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
   v8 = +[NSDate now];
   v36 = 0;
-  v37 = 0;
-  if (v4)
+  longLongValue = 0;
+  if (valueCopy)
   {
     if (+[MADManagedKeyValueStore isMACDReadEnabled])
     {
-      v9 = [v6 mad_fetchRequest];
-      v10 = [v9 fetchDataStoreValueIfKeyExists:VCPKeyValueMediaAnalysisImagePriority1ProgressPercentage];
+      mad_fetchRequest = [libraryCopy mad_fetchRequest];
+      v10 = [mad_fetchRequest fetchDataStoreValueIfKeyExists:VCPKeyValueMediaAnalysisImagePriority1ProgressPercentage];
 
       if (v10)
       {
-        v37 = [v10 longLongValue];
-        v11 = [v6 mad_fetchRequest];
-        v36 = [v11 dataStoreValueForKey:VCPKeyValueMediaAnalysisImagePriority1TotalAssetCount];
+        longLongValue = [v10 longLongValue];
+        mad_fetchRequest2 = [libraryCopy mad_fetchRequest];
+        v36 = [mad_fetchRequest2 dataStoreValueForKey:VCPKeyValueMediaAnalysisImagePriority1TotalAssetCount];
       }
     }
 
@@ -1449,7 +1449,7 @@ LABEL_41:
       v15 = VCPKeyValueMediaAnalysisImagePriority1ProgressPercentage;
       if ([v7 keyExistsInKeyValueStore:VCPKeyValueMediaAnalysisImagePriority1ProgressPercentage])
       {
-        v37 = [v7 valueForKey:v15];
+        longLongValue = [v7 valueForKey:v15];
         v13 = 0;
         v36 = [v7 valueForKey:VCPKeyValueMediaAnalysisImagePriority1TotalAssetCount];
         goto LABEL_13;
@@ -1462,7 +1462,7 @@ LABEL_41:
   else
   {
     v35 = 0;
-    v12 = [v6 mad_calculateProgressPercentage:&v37 totalAssetCount:&v36 progressPercentageWithFailure:0 taskID:1 phTaskID:17 priority:1 failedAssetCount:0 error:&v35];
+    v12 = [libraryCopy mad_calculateProgressPercentage:&longLongValue totalAssetCount:&v36 progressPercentageWithFailure:0 taskID:1 phTaskID:17 priority:1 failedAssetCount:0 error:&v35];
     v13 = v35;
     if ((v12 & 1) == 0)
     {
@@ -1491,16 +1491,16 @@ LABEL_30:
 
 LABEL_13:
   v16 = VCPAnalysisComplete90Percentage;
-  if (v37 >= VCPAnalysisComplete90Percentage)
+  if (longLongValue >= VCPAnalysisComplete90Percentage)
   {
-    [a1 _reportBGSTCustomCheckpoint:507 timestampKey:VCPKeyValueMediaAnalysisImagePriority1CheckpointReportedTimestamp taskID:1 photoLibrary:v6 currentDate:v8];
+    [self _reportBGSTCustomCheckpoint:507 timestampKey:VCPKeyValueMediaAnalysisImagePriority1CheckpointReportedTimestamp taskID:1 photoLibrary:libraryCopy currentDate:v8];
   }
 
   else
   {
     if (+[MADManagedKeyValueStore isMACDPersistEnabled])
     {
-      [v6 mad_performAnalysisDataStoreChanges:&stru_100287700 error:0];
+      [libraryCopy mad_performAnalysisDataStoreChanges:&stru_100287700 error:0];
     }
 
     else
@@ -1520,17 +1520,17 @@ LABEL_13:
     }
   }
 
-  v18 = [NSNumber numberWithUnsignedInt:((v37 * v36) / 100.0)];
+  v18 = [NSNumber numberWithUnsignedInt:((longLongValue * v36) / 100.0)];
   v19 = [NSNumber numberWithUnsignedInteger:v36];
-  [a1 _reportMediaAnalysisSubcategoryWorkloadProgress:v18 totalAssetCount:v19 subCategory:@"prioritized"];
+  [self _reportMediaAnalysisSubcategoryWorkloadProgress:v18 totalAssetCount:v19 subCategory:@"prioritized"];
 
   v33 = 0;
   v34 = 0;
   v32 = 0;
   if (+[MADManagedProcessingStatus isMACDReadEnabled])
   {
-    v20 = [v6 mad_fetchRequest];
-    v21 = [v20 fetchAssetCountForTaskID:255];
+    mad_fetchRequest3 = [libraryCopy mad_fetchRequest];
+    v21 = [mad_fetchRequest3 fetchAssetCountForTaskID:255];
   }
 
   else
@@ -1540,7 +1540,7 @@ LABEL_13:
 
   v22 = v21;
   v31 = v13;
-  v23 = [v6 mad_calculateProgressPercentage:&v34 totalAssetCount:&v33 progressPercentageWithFailure:&v32 taskID:1 phTaskID:17 priority:0 failedAssetCount:v21 error:&v31];
+  v23 = [libraryCopy mad_calculateProgressPercentage:&v34 totalAssetCount:&v33 progressPercentageWithFailure:&v32 taskID:1 phTaskID:17 priority:0 failedAssetCount:v21 error:&v31];
   v24 = v31;
 
   v13 = v24;
@@ -1570,7 +1570,7 @@ LABEL_13:
   {
     if (+[MADManagedKeyValueStore isMACDPersistEnabled])
     {
-      [v6 mad_performAnalysisDataStoreChanges:&stru_100287720 error:0];
+      [libraryCopy mad_performAnalysisDataStoreChanges:&stru_100287720 error:0];
     }
 
     else
@@ -1592,14 +1592,14 @@ LABEL_13:
 
   else
   {
-    [a1 _reportBGSTCustomCheckpoint:508 timestampKey:VCPKeyValueMediaAnalysisImageCheckpointReportedTimestamp taskID:1 photoLibrary:v6 currentDate:v8];
+    [self _reportBGSTCustomCheckpoint:508 timestampKey:VCPKeyValueMediaAnalysisImageCheckpointReportedTimestamp taskID:1 photoLibrary:libraryCopy currentDate:v8];
   }
 
   if (v32 <= v16)
   {
     if (+[MADManagedKeyValueStore isMACDPersistEnabled])
     {
-      [v6 mad_performAnalysisDataStoreChanges:&stru_100287740 error:0];
+      [libraryCopy mad_performAnalysisDataStoreChanges:&stru_100287740 error:0];
     }
 
     else
@@ -1621,7 +1621,7 @@ LABEL_13:
 
   else
   {
-    [a1 _reportBGSTCustomCheckpoint:504 timestampKey:VCPKeyValueMediaAnalysisImageCheckpointWithFailureReportedTimestamp taskID:1 photoLibrary:v6 currentDate:v8];
+    [self _reportBGSTCustomCheckpoint:504 timestampKey:VCPKeyValueMediaAnalysisImageCheckpointWithFailureReportedTimestamp taskID:1 photoLibrary:libraryCopy currentDate:v8];
   }
 
   if ((+[MADManagedKeyValueStore isMACDPersistEnabled]& 1) == 0)
@@ -1629,44 +1629,44 @@ LABEL_13:
     [v7 commit];
   }
 
-  v27 = [NSNumber numberWithUnsignedInteger:v33 * v34 / 0x64];
+  0x64 = [NSNumber numberWithUnsignedInteger:v33 * v34 / 0x64];
   v28 = [NSNumber numberWithUnsignedInteger:v33];
-  [a1 _reportMediaAnalysisSubcategoryWorkloadProgress:v27 totalAssetCount:v28 subCategory:@"image"];
+  [self _reportMediaAnalysisSubcategoryWorkloadProgress:0x64 totalAssetCount:v28 subCategory:@"image"];
 
   v29 = [NSNumber numberWithUnsignedInteger:v22];
   v30 = [NSNumber numberWithUnsignedInteger:v33];
-  [a1 _reportMediaAnalysisSubcategoryWorkloadProgress:v29 totalAssetCount:v30 subCategory:@"failedImage"];
+  [self _reportMediaAnalysisSubcategoryWorkloadProgress:v29 totalAssetCount:v30 subCategory:@"failedImage"];
 
 LABEL_48:
 }
 
-+ (int)cacheCurrentFaceProgressForPhotoLibrary:(id)a3
++ (int)cacheCurrentFaceProgressForPhotoLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v33 = 0;
-  v4 = [VCPAnalysisProgressQuery queryProgressDetail:&v33 photoLibrary:v3 taskID:3 cancelOrExtendTimeoutBlock:&stru_100287760];
+  commit = [VCPAnalysisProgressQuery queryProgressDetail:&v33 photoLibrary:libraryCopy taskID:3 cancelOrExtendTimeoutBlock:&stru_100287760];
   v5 = v33;
-  if (v4)
+  if (commit)
   {
     goto LABEL_18;
   }
 
   if (!+[MADManagedKeyValueStore isMACDPersistEnabled])
   {
-    v13 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v3];
+    v13 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
     v14 = [v5 objectForKeyedSubscript:VCPAnalysisCountTotalAllowedKey];
-    v15 = [v14 longLongValue];
-    v4 = [v13 setValue:v15 forKey:VCPKeyValueNumberOfAssetsAllowedForPhotosFaceProcessing];
+    longLongValue = [v14 longLongValue];
+    commit = [v13 setValue:longLongValue forKey:VCPKeyValueNumberOfAssetsAllowedForPhotosFaceProcessing];
 
-    if (v4 || ([v5 objectForKeyedSubscript:VCPAnalysisCountProcessedKey], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "longLongValue"), v4 = objc_msgSend(v13, "setValue:forKey:", v17, VCPKeyValueNumberOfAssetsAnalyzedForPhotosFaceProcessing), v16, v4) || (objc_msgSend(v5, "objectForKeyedSubscript:", VCPAnalysisCountPrioritizedProcessedKey), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "longLongValue"), v4 = objc_msgSend(v13, "setValue:forKey:", v19, VCPKeyValuePrioritizedProcessedForPhotosFaceProcessing), v18, v4) || (objc_msgSend(v5, "objectForKeyedSubscript:", VCPAnalysisCountPrioritizedTotalAllowedKey), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "longLongValue"), v4 = objc_msgSend(v13, "setValue:forKey:", v21, VCPKeyValuePrioritizedTotalAllowedForPhotosFaceProcessing), v20, v4))
+    if (commit || ([v5 objectForKeyedSubscript:VCPAnalysisCountProcessedKey], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "longLongValue"), commit = objc_msgSend(v13, "setValue:forKey:", v17, VCPKeyValueNumberOfAssetsAnalyzedForPhotosFaceProcessing), v16, commit) || (objc_msgSend(v5, "objectForKeyedSubscript:", VCPAnalysisCountPrioritizedProcessedKey), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "longLongValue"), commit = objc_msgSend(v13, "setValue:forKey:", v19, VCPKeyValuePrioritizedProcessedForPhotosFaceProcessing), v18, commit) || (objc_msgSend(v5, "objectForKeyedSubscript:", VCPAnalysisCountPrioritizedTotalAllowedKey), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "longLongValue"), commit = objc_msgSend(v13, "setValue:forKey:", v21, VCPKeyValuePrioritizedTotalAllowedForPhotosFaceProcessing), v20, commit))
     {
 
       goto LABEL_18;
     }
 
-    v4 = [v13 commit];
+    commit = [v13 commit];
 
-    if (v4)
+    if (commit)
     {
       goto LABEL_18;
     }
@@ -1680,7 +1680,7 @@ LABEL_48:
   v31 = &unk_100283AD0;
   v6 = v5;
   v32 = v6;
-  v7 = [v3 mad_performAnalysisDataStoreChanges:&v28 error:0];
+  v7 = [libraryCopy mad_performAnalysisDataStoreChanges:&v28 error:0];
   if (v7)
   {
 
@@ -1706,7 +1706,7 @@ LABEL_5:
       }
     }
 
-    v4 = 0;
+    commit = 0;
     goto LABEL_18;
   }
 
@@ -1731,29 +1731,29 @@ LABEL_5:
     }
   }
 
-  v4 = v7 ^ 1;
+  commit = v7 ^ 1;
 LABEL_18:
 
-  return v4;
+  return commit;
 }
 
-+ (int)cacheProcessedAssetCountAfterPromoter:(unint64_t)a3 photoLibrary:(id)a4
++ (int)cacheProcessedAssetCountAfterPromoter:(unint64_t)promoter photoLibrary:(id)library
 {
-  v5 = a4;
+  libraryCopy = library;
   v6 = +[NSDate now];
   if (!+[MADManagedKeyValueStore isMACDPersistEnabled])
   {
-    v13 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v5];
-    v12 = [v13 setValue:a3 forKey:VCPKeyValueNumberOfProcessedAssetsAfterPromoterForPhotosFaceProcessing];
-    if (v12 || ([v6 timeIntervalSinceReferenceDate], (v12 = objc_msgSend(v13, "setValue:forKey:", v14, VCPKeyValueLastPromoterTimestamp)) != 0))
+    v13 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
+    commit = [v13 setValue:promoter forKey:VCPKeyValueNumberOfProcessedAssetsAfterPromoterForPhotosFaceProcessing];
+    if (commit || ([v6 timeIntervalSinceReferenceDate], (commit = objc_msgSend(v13, "setValue:forKey:", v14, VCPKeyValueLastPromoterTimestamp)) != 0))
     {
 
       goto LABEL_15;
     }
 
-    v12 = [v13 commit];
+    commit = [v13 commit];
 
-    if (v12)
+    if (commit)
     {
       goto LABEL_15;
     }
@@ -1765,11 +1765,11 @@ LABEL_18:
   v18[1] = 3221225472;
   v18[2] = sub_10016A304;
   v18[3] = &unk_100285478;
-  v20 = a3;
+  promoterCopy = promoter;
   v7 = v6;
   v19 = v7;
   v17 = 0;
-  v8 = [v5 mad_performAnalysisDataStoreChanges:v18 error:&v17];
+  v8 = [libraryCopy mad_performAnalysisDataStoreChanges:v18 error:&v17];
   v9 = v17;
   v10 = v9;
   if (v8)
@@ -1782,25 +1782,25 @@ LABEL_4:
       if (os_log_type_enabled(&_os_log_default, v11))
       {
         *buf = 134218242;
-        v22 = a3;
+        promoterCopy3 = promoter;
         v23 = 2112;
         v24 = v6;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v11, "Cache processed asset count after promoter: %lu (promoter date: %@)", buf, 0x16u);
       }
     }
 
-    v12 = 0;
+    commit = 0;
     goto LABEL_15;
   }
 
-  v12 = [v9 code];
+  commit = [v9 code];
   if (MediaAnalysisLogLevel() >= 3)
   {
     v15 = VCPLogToOSLogType[3];
     if (os_log_type_enabled(&_os_log_default, v15))
     {
       *buf = 134218498;
-      v22 = a3;
+      promoterCopy3 = promoter;
       v23 = 2112;
       v24 = v7;
       v25 = 2112;
@@ -1810,17 +1810,17 @@ LABEL_4:
   }
 
 LABEL_15:
-  return v12;
+  return commit;
 }
 
-+ (void)updateProgressForTask:(unint64_t)a3 photoLibrary:(id)a4 reuseCachedValue:(BOOL)a5 cancelOrExtendTimeoutBlock:(id)a6
++ (void)updateProgressForTask:(unint64_t)task photoLibrary:(id)library reuseCachedValue:(BOOL)value cancelOrExtendTimeoutBlock:(id)block
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
-  v46 = MADTaskIdentifierForBackgroundTask(a3);
-  v12 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v10];
-  if (a3 == 1)
+  valueCopy = value;
+  libraryCopy = library;
+  blockCopy = block;
+  v46 = MADTaskIdentifierForBackgroundTask(task);
+  v12 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
+  if (task == 1)
   {
     v21 = mach_absolute_time();
     v22 = VCPSignPostLog();
@@ -1834,7 +1834,7 @@ LABEL_15:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v25, OS_SIGNPOST_INTERVAL_BEGIN, v23, "VCPMADCollectAndReportAnalysisProgress_MediaAnalysisImage", "", buf, 2u);
     }
 
-    [a1 _queryAndReportProgressForMediaAnalysisImageForPhotoLibrary:v10 reuseCachedValue:v7];
+    [self _queryAndReportProgressForMediaAnalysisImageForPhotoLibrary:libraryCopy reuseCachedValue:valueCopy];
     v26 = VCPSignPostLog();
     v27 = v26;
     if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v26))
@@ -1851,9 +1851,9 @@ LABEL_15:
     goto LABEL_31;
   }
 
-  if (a3 != 16)
+  if (task != 16)
   {
-    if (a3 != 3)
+    if (task != 3)
     {
       goto LABEL_31;
     }
@@ -1872,8 +1872,8 @@ LABEL_15:
 
     if (+[MADManagedKeyValueStore isMACDReadEnabled])
     {
-      v18 = [v10 mad_fetchRequest];
-      v19 = [v18 dataStoreValueForKey:VCPKeyValueNumberOfAssetsAllowedForPhotosFaceProcessing];
+      mad_fetchRequest = [libraryCopy mad_fetchRequest];
+      v19 = [mad_fetchRequest dataStoreValueForKey:VCPKeyValueNumberOfAssetsAllowedForPhotosFaceProcessing];
 
       if (!v19)
       {
@@ -1884,7 +1884,7 @@ LABEL_15:
     else if (![v12 valueForKey:VCPKeyValueNumberOfAssetsAllowedForPhotosFaceProcessing])
     {
 LABEL_25:
-      [objc_opt_class() cacheCurrentFaceProgressForPhotoLibrary:v10];
+      [objc_opt_class() cacheCurrentFaceProgressForPhotoLibrary:libraryCopy];
     }
 
     v32 = VCPSignPostLog();
@@ -1903,7 +1903,7 @@ LABEL_30:
     }
 
 LABEL_31:
-    if (v11 && v11[2](v11))
+    if (blockCopy && blockCopy[2](blockCopy))
     {
       if (MediaAnalysisLogLevel() >= 5)
       {
@@ -1936,7 +1936,7 @@ LABEL_31:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v39, OS_SIGNPOST_INTERVAL_BEGIN, v37, "VCPMADCollectAndReportAnalysisProgress", "_%@", buf, 0xCu);
       }
 
-      v41 = [a1 _queryAndReportProgressForAnalysis:a3 photoLibrary:v10 cancelOrExtendTimeoutBlock:v11];
+      v41 = [self _queryAndReportProgressForAnalysis:task photoLibrary:libraryCopy cancelOrExtendTimeoutBlock:blockCopy];
       v42 = VCPSignPostLog();
       v43 = v42;
       if (v37 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v42))
@@ -1955,7 +1955,7 @@ LABEL_31:
 
       if (+[MADManagedBackgroundAnalysisProgressHistory isMACDPersistEnabled])
       {
-        [v10 mad_performAnalysisDataStoreChanges:&stru_100287780 error:0];
+        [libraryCopy mad_performAnalysisDataStoreChanges:&stru_100287780 error:0];
       }
 
       else
@@ -2007,13 +2007,13 @@ LABEL_36:
 LABEL_48:
 }
 
-+ (void)updateProgressIfRequestedForTasks:(id)a3 photoLibrary:(id)a4 reuseCachedValue:(BOOL)a5 cancelOrExtendTimeoutBlock:(id)a6
++ (void)updateProgressIfRequestedForTasks:(id)tasks photoLibrary:(id)library reuseCachedValue:(BOOL)value cancelOrExtendTimeoutBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v33 = a6;
-  v37 = v9;
-  v39 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v9];
+  tasksCopy = tasks;
+  libraryCopy = library;
+  blockCopy = block;
+  v37 = libraryCopy;
+  v39 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
   v10 = +[NSDate now];
   [v10 timeIntervalSinceReferenceDate];
   v12 = v11;
@@ -2022,7 +2022,7 @@ LABEL_48:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v8;
+  obj = tasksCopy;
   v13 = [obj countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v13)
   {
@@ -2043,7 +2043,7 @@ LABEL_48:
 
         v16 = *(*(&v44 + 1) + 8 * v15);
         v17 = objc_autoreleasePoolPush();
-        v18 = [v16 unsignedIntegerValue];
+        unsignedIntegerValue = [v16 unsignedIntegerValue];
         v19 = VCPRequestBGSTProgressReportKeyForTask();
         v20 = VCPLastBGSTProgressReportAttemptKeyForTask();
         v21 = v20;
@@ -2062,7 +2062,7 @@ LABEL_48:
           if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, type))
           {
             *buf = 67109120;
-            v49 = v18;
+            v49 = unsignedIntegerValue;
             v23 = type;
             v24 = "[MADProgressManager] Unable to report progress for unknown task %d";
             v25 = 8;
@@ -2073,7 +2073,7 @@ LABEL_14:
 
         else
         {
-          if (v18 != 16)
+          if (unsignedIntegerValue != 16)
           {
             goto LABEL_19;
           }
@@ -2095,8 +2095,8 @@ LABEL_14:
 LABEL_19:
             if (+[MADManagedProcessingStatus isMACDReadEnabled])
             {
-              v27 = [v37 mad_fetchRequest];
-              v26 = [v27 fetchDataStoreValueIfKeyExists:v21];
+              mad_fetchRequest = [v37 mad_fetchRequest];
+              v26 = [mad_fetchRequest fetchDataStoreValueIfKeyExists:v21];
             }
 
             else if ([v39 keyExistsInKeyValueStore:v21])
@@ -2115,7 +2115,7 @@ LABEL_19:
               if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v34))
               {
                 *buf = 67109376;
-                v49 = v18;
+                v49 = unsignedIntegerValue;
                 v50 = 2048;
                 v51 = v28;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v34, "[MADProgressManager][MACD] Skipping progress report request for task %d, last report was %lld seconds ago", buf, 0x12u);
@@ -2143,8 +2143,8 @@ LABEL_19:
 
             if (+[MADManagedProcessingStatus isMACDReadEnabled])
             {
-              v29 = [v37 mad_fetchRequest];
-              v30 = [v29 dataStoreValueForKey:v19] == 0;
+              mad_fetchRequest2 = [v37 mad_fetchRequest];
+              v30 = [mad_fetchRequest2 dataStoreValueForKey:v19] == 0;
 
               if (v30)
               {
@@ -2152,7 +2152,7 @@ LABEL_19:
               }
 
 LABEL_38:
-              [a1 updateProgressForTask:v18 photoLibrary:v37 reuseCachedValue:0 cancelOrExtendTimeoutBlock:v33];
+              [self updateProgressForTask:unsignedIntegerValue photoLibrary:v37 reuseCachedValue:0 cancelOrExtendTimeoutBlock:blockCopy];
             }
 
             else if ([v39 valueForKey:v19])
@@ -2190,9 +2190,9 @@ LABEL_40:
   }
 }
 
-+ (void)requestProgressUpdateForTasks:(id)a3
++ (void)requestProgressUpdateForTasks:(id)tasks
 {
-  v13 = a3;
+  tasksCopy = tasks;
   v14 = +[PHPhotoLibrary vcp_defaultPhotoLibrary];
   if (+[MADManagedKeyValueStore isMACDPersistEnabled])
   {
@@ -2200,7 +2200,7 @@ LABEL_40:
     v19[1] = 3221225472;
     v19[2] = sub_10016B374;
     v19[3] = &unk_100283AD0;
-    v20 = v13;
+    v20 = tasksCopy;
     [v14 mad_performAnalysisDataStoreChanges:v19 error:0];
     v3 = v20;
   }
@@ -2212,7 +2212,7 @@ LABEL_40:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = v13;
+    v4 = tasksCopy;
     v5 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
     if (v5)
     {
@@ -2229,7 +2229,7 @@ LABEL_40:
 
           v9 = *(*(&v15 + 1) + 8 * i);
           v10 = objc_autoreleasePoolPush();
-          v11 = [v9 unsignedIntegerValue];
+          unsignedIntegerValue = [v9 unsignedIntegerValue];
           v12 = VCPRequestBGSTProgressReportKeyForTask();
           if (v12)
           {
@@ -2239,7 +2239,7 @@ LABEL_40:
           else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v7))
           {
             *buf = 67109120;
-            v22 = v11;
+            v22 = unsignedIntegerValue;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "[MADProgressManager] Unable to request progress report for unknown task %d", buf, 8u);
           }
 
@@ -2256,7 +2256,7 @@ LABEL_40:
   }
 }
 
-+ (void)clearProgressUpdateRequestForTask:(unint64_t)a3
++ (void)clearProgressUpdateRequestForTask:(unint64_t)task
 {
   v3 = +[PHPhotoLibrary vcp_defaultPhotoLibrary];
   v4 = VCPRequestBGSTProgressReportKeyForTask();
@@ -2281,9 +2281,9 @@ LABEL_40:
   }
 }
 
-+ (void)clearLastProgressReportTimestampForTasks:(id)a3
++ (void)clearLastProgressReportTimestampForTasks:(id)tasks
 {
-  v3 = a3;
+  tasksCopy = tasks;
   v4 = +[PHPhotoLibrary vcp_defaultPhotoLibrary];
   if (+[MADManagedKeyValueStore isMACDPersistEnabled])
   {
@@ -2291,7 +2291,7 @@ LABEL_40:
     v17[1] = 3221225472;
     v17[2] = sub_10016B910;
     v17[3] = &unk_100283AD0;
-    v18 = v3;
+    v18 = tasksCopy;
     [v4 mad_performAnalysisDataStoreChanges:v17 error:0];
     v5 = v18;
   }
@@ -2303,7 +2303,7 @@ LABEL_40:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v3;
+    v6 = tasksCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v19 count:16];
     if (v7)
     {
@@ -2342,14 +2342,14 @@ LABEL_40:
   }
 }
 
-+ (void)resetProcessingCheckpointForTask:(unint64_t)a3
++ (void)resetProcessingCheckpointForTask:(unint64_t)task
 {
-  v26 = MADTaskIdentifierForBackgroundTask(a3);
+  v26 = MADTaskIdentifierForBackgroundTask(task);
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [a1 _featureCodeWithTaskID:a3];
+  v4 = [self _featureCodeWithTaskID:task];
   v5 = [v4 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v5)
   {
@@ -2370,9 +2370,9 @@ LABEL_40:
         v9 = objc_autoreleasePoolPush();
         if ([v8 unsignedIntegerValue])
         {
-          v10 = [v8 unsignedIntegerValue];
+          unsignedIntegerValue = [v8 unsignedIntegerValue];
           v29 = 0;
-          v11 = [BGSystemTaskCheckpoints reportFeatureCheckpoint:3 forFeature:v10 error:&v29];
+          v11 = [BGSystemTaskCheckpoints reportFeatureCheckpoint:3 forFeature:unsignedIntegerValue error:&v29];
           v12 = v29;
           if (v11)
           {
@@ -2424,7 +2424,7 @@ LABEL_19:
     while (v5);
   }
 
-  if (a3 == 3)
+  if (task == 3)
   {
     v28 = 0;
     v16 = [BGSystemTaskCheckpoints reportFeatureCheckpoint:3 forFeature:802 error:&v28];
@@ -2480,9 +2480,9 @@ LABEL_30:
   }
 }
 
-+ (BOOL)taskHasReachedSteadyState:(unint64_t)a3
++ (BOOL)taskHasReachedSteadyState:(unint64_t)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = VCPProgressPercentageKeyForTask();
   if (v4)
   {
@@ -2490,9 +2490,9 @@ LABEL_30:
     v6 = [v5 persistentDomainForName:MediaAnalysisDaemonDomain];
     v7 = VCPProgressPercentageKeyForTask();
     v8 = [v6 objectForKey:v7];
-    v9 = [v8 unsignedIntValue];
+    unsignedIntValue = [v8 unsignedIntValue];
 
-    v10 = v9 > 0x62;
+    v10 = unsignedIntValue > 0x62;
   }
 
   else
@@ -2503,7 +2503,7 @@ LABEL_30:
       if (os_log_type_enabled(&_os_log_default, v11))
       {
         v13[0] = 67109120;
-        v13[1] = v3;
+        v13[1] = stateCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v11, "[MADProgressManager] Unable to determine steady-state for unknown task %u", v13, 8u);
       }
     }

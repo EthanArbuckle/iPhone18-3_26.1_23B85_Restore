@@ -5,17 +5,17 @@
 - (DBSArrangementViewController)init;
 - (DBSArrangementViewControllerDelegate)delegate;
 - (id)externalDisplayName;
-- (id)nativeDisplayImageWithWidth:(double)a3;
+- (id)nativeDisplayImageWithWidth:(double)width;
 - (void)cancelPressed;
 - (void)dealloc;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)displayLayoutMonitorDidUpdateLayout:(id)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)displayLayoutMonitorDidUpdateLayout:(id)layout;
 - (void)loadView;
-- (void)mirroredToggled:(id)a3;
-- (void)setDisplayService:(id)a3;
-- (void)setExternalDisplayInfo:(id)a3;
+- (void)mirroredToggled:(id)toggled;
+- (void)setDisplayService:(id)service;
+- (void)setExternalDisplayInfo:(id)info;
 - (void)setPressed;
-- (void)updateComponentsWithConnectedDispalyInfo:(id)a3;
+- (void)updateComponentsWithConnectedDispalyInfo:(id)info;
 - (void)updateSetButtonEnablement;
 @end
 
@@ -28,8 +28,8 @@
   v2 = [(DBSArrangementViewController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_displayLayoutMonitorDidUpdateLayout_ name:DBSExternalDisplayManagerDisplayLayoutMonitorDidChange object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_displayLayoutMonitorDidUpdateLayout_ name:DBSExternalDisplayManagerDisplayLayoutMonitorDidChange object:0];
   }
 
   return v2;
@@ -49,10 +49,10 @@
   return result;
 }
 
-- (id)nativeDisplayImageWithWidth:(double)a3
+- (id)nativeDisplayImageWithWidth:(double)width
 {
   v4 = +[DBSExternalDisplayManager defaultManager];
-  v5 = [v4 mainDisplayImageWithWidth:a3];
+  v5 = [v4 mainDisplayImageWithWidth:width];
 
   return v5;
 }
@@ -60,9 +60,9 @@
 - (id)externalDisplayName
 {
   v2 = +[DBSExternalDisplayManager defaultManager];
-  v3 = [v2 externalDisplayName];
+  externalDisplayName = [v2 externalDisplayName];
 
-  return v3;
+  return externalDisplayName;
 }
 
 - (CGSize)externalDisplaySize
@@ -95,54 +95,54 @@
   return result;
 }
 
-- (void)setExternalDisplayInfo:(id)a3
+- (void)setExternalDisplayInfo:(id)info
 {
-  v5 = a3;
-  if (self->_externalDisplayInfo != v5)
+  infoCopy = info;
+  if (self->_externalDisplayInfo != infoCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_externalDisplayInfo, a3);
+    v7 = infoCopy;
+    objc_storeStrong(&self->_externalDisplayInfo, info);
     [(DBSArrangementViewController *)self updateComponentsWithConnectedDispalyInfo:v7];
-    v6 = [(DBSArrangementViewController *)self view];
-    [v6 setNeedsLayout];
+    view = [(DBSArrangementViewController *)self view];
+    [view setNeedsLayout];
 
-    v5 = v7;
+    infoCopy = v7;
   }
 }
 
-- (void)setDisplayService:(id)a3
+- (void)setDisplayService:(id)service
 {
-  v5 = a3;
-  if (self->_displayService != v5)
+  serviceCopy = service;
+  if (self->_displayService != serviceCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_displayService, a3);
-    v6 = [(DBSArrangementViewController *)self view];
-    [v6 setNeedsLayout];
+    v7 = serviceCopy;
+    objc_storeStrong(&self->_displayService, service);
+    view = [(DBSArrangementViewController *)self view];
+    [view setNeedsLayout];
 
-    v5 = v7;
+    serviceCopy = v7;
   }
 }
 
-- (void)updateComponentsWithConnectedDispalyInfo:(id)a3
+- (void)updateComponentsWithConnectedDispalyInfo:(id)info
 {
-  v4 = a3;
-  v10 = [v4 arrangement];
-  v5 = [v4 isMirrored];
+  infoCopy = info;
+  arrangement = [infoCopy arrangement];
+  isMirrored = [infoCopy isMirrored];
 
-  [(DBSArrangementViewController *)self setWasMirrored:v5];
-  v6 = [v10 edge];
-  if (v6 <= 3)
+  [(DBSArrangementViewController *)self setWasMirrored:isMirrored];
+  edge = [arrangement edge];
+  if (edge <= 3)
   {
-    [(DBSArrangementViewController *)self setCurrentDisplayLocation:qword_22105F468[v6]];
+    [(DBSArrangementViewController *)self setCurrentDisplayLocation:qword_22105F468[edge]];
   }
 
-  v7 = [(DBSArrangementViewController *)self layoutController];
-  [v7 updateCurrentDisplayLocation:{-[DBSArrangementViewController currentDisplayLocation](self, "currentDisplayLocation")}];
+  layoutController = [(DBSArrangementViewController *)self layoutController];
+  [layoutController updateCurrentDisplayLocation:{-[DBSArrangementViewController currentDisplayLocation](self, "currentDisplayLocation")}];
 
-  v8 = [(DBSArrangementViewController *)self wasMirrored];
-  v9 = [(DBSArrangementViewController *)self mirroredSwitch];
-  [v9 setOn:v8];
+  wasMirrored = [(DBSArrangementViewController *)self wasMirrored];
+  mirroredSwitch = [(DBSArrangementViewController *)self mirroredSwitch];
+  [mirroredSwitch setOn:wasMirrored];
 }
 
 - (void)loadView
@@ -151,9 +151,9 @@
   v3 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, 500.0, 500.0}];
   [(DBSArrangementViewController *)self setView:v3];
 
-  v4 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  v5 = [(DBSArrangementViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  view = [(DBSArrangementViewController *)self view];
+  [view setBackgroundColor:systemGroupedBackgroundColor];
 
   v69 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelPressed];
   v6 = objc_alloc(MEMORY[0x277D751E0]);
@@ -162,49 +162,49 @@
 
   v68 = v8;
   [v8 setEnabled:0];
-  v9 = [(DBSArrangementViewController *)self navigationItem];
-  [v9 setLeftBarButtonItem:v69];
+  navigationItem = [(DBSArrangementViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v69];
 
-  v10 = [(DBSArrangementViewController *)self navigationItem];
+  navigationItem2 = [(DBSArrangementViewController *)self navigationItem];
   v11 = DBS_LocalizedStringForConnectedDisplays(@"DISPLAY_ARRANGEMENT");
-  [v10 setTitle:v11];
+  [navigationItem2 setTitle:v11];
 
-  v12 = [(DBSArrangementViewController *)self navigationItem];
-  [v12 setRightBarButtonItem:v8];
+  navigationItem3 = [(DBSArrangementViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:v8];
 
   v13 = [DBSArrangementLayoutViewController alloc];
   [(DBSArrangementViewController *)self nativeDisplaySize];
   v15 = v14;
   v17 = v16;
-  v18 = [(DBSArrangementViewController *)self nativeDisplayName];
+  nativeDisplayName = [(DBSArrangementViewController *)self nativeDisplayName];
   [(DBSArrangementViewController *)self externalDisplaySize];
   v20 = v19;
   v22 = v21;
-  v23 = [(DBSArrangementViewController *)self externalDisplayName];
-  v24 = [(DBSArrangementLayoutViewController *)v13 initWithNativeDisplaySize:v18 nativeDisplayName:v23 externalDisplaySize:[(DBSArrangementViewController *)self currentDisplayLocation] externalDisplayName:v15 currentNativeDisplayLocation:v17, v20, v22];
+  externalDisplayName = [(DBSArrangementViewController *)self externalDisplayName];
+  v24 = [(DBSArrangementLayoutViewController *)v13 initWithNativeDisplaySize:nativeDisplayName nativeDisplayName:externalDisplayName externalDisplaySize:[(DBSArrangementViewController *)self currentDisplayLocation] externalDisplayName:v15 currentNativeDisplayLocation:v17, v20, v22];
   [(DBSArrangementViewController *)self setLayoutController:v24];
 
-  v25 = [(DBSArrangementViewController *)self layoutController];
-  [v25 setDelegate:self];
+  layoutController = [(DBSArrangementViewController *)self layoutController];
+  [layoutController setDelegate:self];
 
-  v26 = [(DBSArrangementViewController *)self layoutController];
-  v27 = [v26 view];
+  layoutController2 = [(DBSArrangementViewController *)self layoutController];
+  view2 = [layoutController2 view];
 
-  v28 = [(DBSArrangementViewController *)self view];
-  [v28 bounds];
-  [v27 setFrame:?];
+  view3 = [(DBSArrangementViewController *)self view];
+  [view3 bounds];
+  [view2 setFrame:?];
 
-  [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
   v29 = objc_opt_new();
   [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v29 addSubview:v27];
+  [v29 addSubview:view2];
   [v29 setClipsToBounds:1];
-  v30 = [v29 layer];
-  [v30 setCornerRadius:7.0];
+  layer = [v29 layer];
+  [layer setCornerRadius:7.0];
 
   [(DBSArrangementViewController *)self setContainerView:v29];
-  v31 = [(DBSArrangementViewController *)self view];
-  [v31 addSubview:v29];
+  view4 = [(DBSArrangementViewController *)self view];
+  [view4 addSubview:v29];
 
   v32 = objc_opt_new();
   v33 = DBS_LocalizedStringForConnectedDisplays(@"MIRROR_DISPLAYS");
@@ -218,9 +218,9 @@
   v36 = objc_opt_new();
   [v36 addTarget:self action:sel_mirroredToggled_ forControlEvents:4096];
   [(DBSArrangementViewController *)self setMirroredSwitch:v36];
-  v37 = [(DBSArrangementViewController *)self wasMirrored];
-  v38 = [(DBSArrangementViewController *)self mirroredSwitch];
-  [v38 setOn:v37];
+  wasMirrored = [(DBSArrangementViewController *)self wasMirrored];
+  mirroredSwitch = [(DBSArrangementViewController *)self mirroredSwitch];
+  [mirroredSwitch setOn:wasMirrored];
 
   v39 = objc_alloc(MEMORY[0x277D75A68]);
   v70[0] = v32;
@@ -231,8 +231,8 @@
   [v41 setAlignment:3];
   [v41 setAxis:0];
   [v41 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v42 = [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
-  [v41 setBackgroundColor:v42];
+  tableCellGroupedBackgroundColor = [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
+  [v41 setBackgroundColor:tableCellGroupedBackgroundColor];
 
   [v41 setLayoutMargins:{2.0, 20.0, 2.0, 20.0}];
   [v41 setLayoutMarginsRelativeArrangement:1];
@@ -246,13 +246,13 @@
   v46 = [v45 systemFontOfSize:?];
   [v43 setFont:v46];
 
-  v47 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v43 setTextColor:v47];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v43 setTextColor:secondaryLabelColor];
 
   [v43 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v43 setTextAlignment:1];
-  v48 = [(DBSArrangementViewController *)self view];
-  [v48 addSubview:v43];
+  view5 = [(DBSArrangementViewController *)self view];
+  [view5 addSubview:v43];
 
   v49 = MEMORY[0x277CCAAD0];
   v50 = _NSDictionaryOfVariableBindings(&cfstr_Containerview.isa, v29, 0);
@@ -265,7 +265,7 @@
   [v52 activateConstraints:v54];
 
   v55 = MEMORY[0x277CCAAD0];
-  v56 = _NSDictionaryOfVariableBindings(&cfstr_Layoutcontroll.isa, v27, 0);
+  v56 = _NSDictionaryOfVariableBindings(&cfstr_Layoutcontroll.isa, view2, 0);
   v57 = [v55 constraintsWithVisualFormat:@"H:|[layoutControllerView]|" options:0 metrics:0 views:v56];
   [v55 activateConstraints:v57];
 
@@ -280,35 +280,35 @@
   [v61 activateConstraints:v63];
 
   v64 = MEMORY[0x277CCAAD0];
-  v65 = _NSDictionaryOfVariableBindings(&cfstr_Layoutcontroll_0.isa, v27, v41, 0);
+  v65 = _NSDictionaryOfVariableBindings(&cfstr_Layoutcontroll_0.isa, view2, v41, 0);
   v66 = [v64 constraintsWithVisualFormat:@"V:|[layoutControllerView]-2-[mirrorControls(44)]|" options:0 metrics:0 views:v65];
   [v64 activateConstraints:v66];
 
-  v67 = [(DBSArrangementViewController *)self externalDisplayInfo];
-  [(DBSArrangementViewController *)self updateComponentsWithConnectedDispalyInfo:v67];
+  externalDisplayInfo = [(DBSArrangementViewController *)self externalDisplayInfo];
+  [(DBSArrangementViewController *)self updateComponentsWithConnectedDispalyInfo:externalDisplayInfo];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:DBSExternalDisplayManagerDisplayLayoutMonitorDidChange object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:DBSExternalDisplayManagerDisplayLayoutMonitorDidChange object:0];
 
   v4.receiver = self;
   v4.super_class = DBSArrangementViewController;
   [(DBSArrangementViewController *)&v4 dealloc];
 }
 
-- (void)displayLayoutMonitorDidUpdateLayout:(id)a3
+- (void)displayLayoutMonitorDidUpdateLayout:(id)layout
 {
-  v18 = a3;
-  v4 = [v18 object];
+  layoutCopy = layout;
+  object = [layoutCopy object];
 
-  v5 = v18;
-  if (v4)
+  v5 = layoutCopy;
+  if (object)
   {
-    v6 = [v18 object];
+    object2 = [layoutCopy object];
     v7 = objc_opt_class();
-    v8 = v6;
+    v8 = object2;
     if (v7)
     {
       if (objc_opt_isKindOfClass())
@@ -329,17 +329,17 @@
 
     v10 = v9;
 
-    v11 = [(DBSArrangementViewController *)self layoutController];
-    v12 = [v10 interfaceOrientation];
+    layoutController = [(DBSArrangementViewController *)self layoutController];
+    interfaceOrientation = [v10 interfaceOrientation];
     [v10 bounds];
     v14 = v13;
     v16 = v15;
 
-    [v11 updateOrientationTo:v12 withNativeDisplaySize:{v14, v16}];
-    v17 = [(DBSArrangementViewController *)self view];
-    [v17 setNeedsLayout];
+    [layoutController updateOrientationTo:interfaceOrientation withNativeDisplaySize:{v14, v16}];
+    view = [(DBSArrangementViewController *)self view];
+    [view setNeedsLayout];
 
-    v5 = v18;
+    v5 = layoutCopy;
   }
 }
 
@@ -352,22 +352,22 @@
   return result;
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
   v6.receiver = self;
   v6.super_class = DBSArrangementViewController;
-  [(DBSArrangementViewController *)&v6 dismissViewControllerAnimated:a3 completion:a4];
-  v5 = [(DBSArrangementViewController *)self delegate];
-  [v5 arrangementViewControllerDidDismiss:self];
+  [(DBSArrangementViewController *)&v6 dismissViewControllerAnimated:animated completion:completion];
+  delegate = [(DBSArrangementViewController *)self delegate];
+  [delegate arrangementViewControllerDidDismiss:self];
 }
 
 - (void)cancelPressed
 {
-  v3 = [(DBSArrangementViewController *)self wasMirrored];
-  v4 = [(DBSArrangementViewController *)self mirroredSwitch];
-  v5 = [v4 isOn];
+  wasMirrored = [(DBSArrangementViewController *)self wasMirrored];
+  mirroredSwitch = [(DBSArrangementViewController *)self mirroredSwitch];
+  isOn = [mirroredSwitch isOn];
 
-  if (v3 != v5)
+  if (wasMirrored != isOn)
   {
     v6 = +[DBSExternalDisplayManager defaultManager];
     [v6 setMirroringEnabled:{-[DBSArrangementViewController wasMirrored](self, "wasMirrored")}];
@@ -378,58 +378,58 @@
 
 - (void)updateSetButtonEnablement
 {
-  v7 = [(DBSArrangementViewController *)self navigationItem];
-  v3 = [v7 rightBarButtonItem];
-  v4 = [(DBSArrangementViewController *)self mirroredSwitch];
-  v5 = [v4 isOn];
-  if (v5 == [(DBSArrangementViewController *)self wasMirrored])
+  navigationItem = [(DBSArrangementViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  mirroredSwitch = [(DBSArrangementViewController *)self mirroredSwitch];
+  isOn = [mirroredSwitch isOn];
+  if (isOn == [(DBSArrangementViewController *)self wasMirrored])
   {
-    v6 = [(DBSArrangementViewController *)self layoutController];
-    [v3 setEnabled:{objc_msgSend(v6, "nativeDisplayLocation") != -[DBSArrangementViewController currentDisplayLocation](self, "currentDisplayLocation")}];
+    layoutController = [(DBSArrangementViewController *)self layoutController];
+    [rightBarButtonItem setEnabled:{objc_msgSend(layoutController, "nativeDisplayLocation") != -[DBSArrangementViewController currentDisplayLocation](self, "currentDisplayLocation")}];
   }
 
   else
   {
-    [v3 setEnabled:1];
+    [rightBarButtonItem setEnabled:1];
   }
 }
 
 - (void)setPressed
 {
-  v3 = [(DBSArrangementViewController *)self layoutController];
-  v4 = [v3 nativeDisplayLocation];
+  layoutController = [(DBSArrangementViewController *)self layoutController];
+  nativeDisplayLocation = [layoutController nativeDisplayLocation];
 
-  if ((v4 - 1) >= 3)
+  if ((nativeDisplayLocation - 1) >= 3)
   {
     v5 = 3;
   }
 
   else
   {
-    v5 = v4 - 1;
+    v5 = nativeDisplayLocation - 1;
   }
 
   v6 = objc_alloc(MEMORY[0x277D66BB0]);
-  v7 = [(DBSArrangementViewController *)self externalDisplayInfo];
-  v8 = [v7 identifier];
-  v9 = [(DBSArrangementViewController *)self externalDisplayInfo];
-  v10 = [v9 arrangement];
-  [v10 offset];
-  v14 = [v6 initWithDisplayIdentifier:v8 edge:v5 offset:?];
+  externalDisplayInfo = [(DBSArrangementViewController *)self externalDisplayInfo];
+  identifier = [externalDisplayInfo identifier];
+  externalDisplayInfo2 = [(DBSArrangementViewController *)self externalDisplayInfo];
+  arrangement = [externalDisplayInfo2 arrangement];
+  [arrangement offset];
+  v14 = [v6 initWithDisplayIdentifier:identifier edge:v5 offset:?];
 
-  v11 = [(DBSArrangementViewController *)self displayService];
-  v12 = [(DBSArrangementViewController *)self externalDisplayInfo];
-  v13 = [v12 identifier];
-  [v11 setDisplayArrangement:v14 forDisplay:v13];
+  displayService = [(DBSArrangementViewController *)self displayService];
+  externalDisplayInfo3 = [(DBSArrangementViewController *)self externalDisplayInfo];
+  identifier2 = [externalDisplayInfo3 identifier];
+  [displayService setDisplayArrangement:v14 forDisplay:identifier2];
 
   [(DBSArrangementViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)mirroredToggled:(id)a3
+- (void)mirroredToggled:(id)toggled
 {
   v4 = +[DBSExternalDisplayManager defaultManager];
-  v5 = [(DBSArrangementViewController *)self mirroredSwitch];
-  [v4 setMirroringEnabled:{objc_msgSend(v5, "isOn")}];
+  mirroredSwitch = [(DBSArrangementViewController *)self mirroredSwitch];
+  [v4 setMirroringEnabled:{objc_msgSend(mirroredSwitch, "isOn")}];
 
   [(DBSArrangementViewController *)self updateSetButtonEnablement];
 }

@@ -1,22 +1,22 @@
 @interface CLHealthAssessmentNotifierAdapter
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLHealthAssessmentNotifierAdapter)init;
 - (void)adaptee;
-- (void)addMonitoringPeriodFrom:(double)a3 until:(double)a4;
+- (void)addMonitoringPeriodFrom:(double)from until:(double)until;
 - (void)aggregateRecords;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
 - (void)endService;
-- (void)processDataWithMaxDuration:(double)a3 endTime:(double)a4;
-- (void)processNextIntervalWithRemainingDurationToProcess:(double *)a3 endTime:(double)a4 updateCanContinue:(BOOL *)a5;
-- (void)setLastProcessedTime:(double)a3;
+- (void)processDataWithMaxDuration:(double)duration endTime:(double)time;
+- (void)processNextIntervalWithRemainingDurationToProcess:(double *)process endTime:(double)time updateCanContinue:(BOOL *)continue;
+- (void)setLastProcessedTime:(double)time;
 - (void)setupService;
-- (void)startUpdatesforAnalyzer:(int)a3;
+- (void)startUpdatesforAnalyzer:(int)analyzer;
 - (void)stopMonitoring;
-- (void)syncgetResultReady:(id)a3 ForAnalyzer:(int)a4;
+- (void)syncgetResultReady:(id)ready ForAnalyzer:(int)analyzer;
 - (void)teardownService;
 - (void)updateSensorRecorderQuery;
 - (void)updateSensorRecorderSubscription;
@@ -24,12 +24,12 @@
 
 @implementation CLHealthAssessmentNotifierAdapter
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -158,10 +158,10 @@
 
 - (void)endService
 {
-  v3 = [(CLNotifierServiceAdapter *)self notifier];
-  (*(v3->var0 + 2))(v3);
+  notifier = [(CLNotifierServiceAdapter *)self notifier];
+  (*(notifier->var0 + 2))(notifier);
 
-  v4 = [(CLHealthAssessmentNotifierAdapter *)self tremorDetectionService];
+  tremorDetectionService = [(CLHealthAssessmentNotifierAdapter *)self tremorDetectionService];
 }
 
 - (void)adaptee
@@ -174,20 +174,20 @@
   return result;
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLHealthAssessmentNotifierAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLHealthAssessmentNotifierAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLHealthAssessmentNotifierAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLHealthAssessmentNotifierAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
 - (void)setupService
@@ -216,8 +216,8 @@
       sub_100008080(*(&buf + 1));
     }
 
-    v4 = [(CLHealthAssessmentNotifierAdapter *)self fSensorRecorderQueryTimer];
-    [(CLTimer *)v4 setNextFireDelay:v8];
+    fSensorRecorderQueryTimer = [(CLHealthAssessmentNotifierAdapter *)self fSensorRecorderQueryTimer];
+    [(CLTimer *)fSensorRecorderQueryTimer setNextFireDelay:v8];
     if (qword_1025D4590 != -1)
     {
       sub_10188BF5C();
@@ -349,19 +349,19 @@
   [objc_msgSend(-[CLHealthAssessmentNotifierAdapter universe](self "universe")];
 }
 
-- (void)processDataWithMaxDuration:(double)a3 endTime:(double)a4
+- (void)processDataWithMaxDuration:(double)duration endTime:(double)time
 {
-  if (a3 > 0.0)
+  if (duration > 0.0)
   {
     Current = CFAbsoluteTimeGetCurrent();
-    if (Current >= a4)
+    if (Current >= time)
     {
-      v8 = a4;
+      timeCopy = time;
     }
 
     else
     {
-      v8 = Current;
+      timeCopy = Current;
       if (qword_1025D4590 != -1)
       {
         sub_10188BE6C();
@@ -371,27 +371,27 @@
       if (os_log_type_enabled(qword_1025D4598, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349312;
-        v37 = v8;
+        durationCopy2 = timeCopy;
         v38 = 2050;
-        v39 = a4;
+        timeCopy2 = time;
         _os_log_impl(dword_100000000, v9, OS_LOG_TYPE_DEFAULT, "Limiting processing up to timestamp %{public}lf (asked %{public}lf)", buf, 0x16u);
       }
 
       v10 = sub_10000A100(121, 2);
       if (v10)
       {
-        sub_10188C98C(v10, v11, v12, v13, v14, v15, v16, v17, v8, a4);
+        sub_10188C98C(v10, v11, v12, v13, v14, v15, v16, v17, timeCopy, time);
       }
     }
 
-    v25 = a3;
+    durationCopy = duration;
     v24 = 1;
     v18 = 0;
-    if (a3 > 0.0)
+    if (duration > 0.0)
     {
       while (v18 <= 0x1D)
       {
-        [(CLHealthAssessmentNotifierAdapter *)self processNextIntervalWithRemainingDurationToProcess:&v25 endTime:&v24 updateCanContinue:v8];
+        [(CLHealthAssessmentNotifierAdapter *)self processNextIntervalWithRemainingDurationToProcess:&durationCopy endTime:&v24 updateCanContinue:timeCopy];
         if (qword_1025D4590 != -1)
         {
           sub_10188BF5C();
@@ -401,9 +401,9 @@
         if (os_log_type_enabled(qword_1025D4598, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134349312;
-          v37 = v25;
+          durationCopy2 = durationCopy;
           v38 = 1026;
-          LODWORD(v39) = v18;
+          LODWORD(timeCopy2) = v18;
           _os_log_impl(dword_100000000, v19, OS_LOG_TYPE_DEFAULT, "Remaining duration to process = %{public}lf, current iteration = %{public}i", buf, 0x12u);
         }
 
@@ -416,7 +416,7 @@
           }
 
           v26 = 134349312;
-          v27 = v25;
+          durationCopy3 = durationCopy;
           v28 = 1026;
           LODWORD(v29) = v18;
           v20 = _os_log_send_and_compose_impl();
@@ -428,7 +428,7 @@
         }
 
         ++v18;
-        if (v25 <= 0.0 || (v24 & 1) == 0)
+        if (durationCopy <= 0.0 || (v24 & 1) == 0)
         {
           goto LABEL_31;
         }
@@ -443,7 +443,7 @@
       if (os_log_type_enabled(qword_1025D4598, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67240192;
-        LODWORD(v37) = v18;
+        LODWORD(durationCopy2) = v18;
         _os_log_impl(dword_100000000, v21, OS_LOG_TYPE_DEFAULT, "Exceeding maximum number of iterations when processing data = %{public}i - interrupting the processing", buf, 8u);
       }
 
@@ -465,11 +465,11 @@ LABEL_31:
     if (os_log_type_enabled(qword_1025D4598, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349824;
-      v37 = a3;
+      durationCopy2 = duration;
       v38 = 2050;
-      v39 = v8;
+      timeCopy2 = timeCopy;
       v40 = 2050;
-      v41 = a3 - v25;
+      v41 = duration - durationCopy;
       v42 = 1026;
       v43 = v18;
       _os_log_impl(dword_100000000, v22, OS_LOG_TYPE_DEFAULT, "Processed data up to max duration = %{public}lf, endTime = %{public}lf, total duration processed = %{public}lf, number of iterations %{public}i", buf, 0x26u);
@@ -484,11 +484,11 @@ LABEL_31:
       }
 
       v26 = 134349824;
-      v27 = a3;
+      durationCopy3 = duration;
       v28 = 2050;
-      v29 = v8;
+      v29 = timeCopy;
       v30 = 2050;
-      v31 = a3 - v25;
+      v31 = duration - durationCopy;
       v32 = 1026;
       v33 = v18;
       v23 = _os_log_send_and_compose_impl();
@@ -501,7 +501,7 @@ LABEL_31:
   }
 }
 
-- (void)processNextIntervalWithRemainingDurationToProcess:(double *)a3 endTime:(double)a4 updateCanContinue:(BOOL *)a5
+- (void)processNextIntervalWithRemainingDurationToProcess:(double *)process endTime:(double)time updateCanContinue:(BOOL *)continue
 {
   v5 = __chkstk_darwin(self);
   v7 = v6;
@@ -724,11 +724,11 @@ LABEL_18:
           v62 = v61;
           [v37 rotationRate];
           v64 = v63;
-          v65 = [v12 tremorDetectionService];
+          tremorDetectionService = [v12 tremorDetectionService];
           *&v66 = v60;
           *&v67 = v62;
           *&v68 = v64;
-          [v65 feedGyroSample:v66 time:{v67, v68, v41}];
+          [tremorDetectionService feedGyroSample:v66 time:{v67, v68, v41}];
           [v12 setUpdateStartTime:v41];
           ++v93;
         }
@@ -746,16 +746,16 @@ LABEL_18:
           v47 = v46;
           [v36 acceleration];
           v49 = v48;
-          v50 = [v12 tremorDetectionService];
+          tremorDetectionService2 = [v12 tremorDetectionService];
           *&v51 = v45;
           *&v52 = v47;
           *&v53 = v49;
-          [v50 feedAccelSample:v51 time:{v52, v53, v39}];
-          v54 = [v12 choreaDetectionService];
+          [tremorDetectionService2 feedAccelSample:v51 time:{v52, v53, v39}];
+          choreaDetectionService = [v12 choreaDetectionService];
           *&v55 = v45;
           *&v56 = v47;
           *&v57 = v49;
-          [v54 feedAccelSample:v55 time:{v56, v57, v39}];
+          [choreaDetectionService feedAccelSample:v55 time:{v56, v57, v39}];
           [v12 setUpdateStartTime:v39];
           ++v29;
         }
@@ -934,12 +934,12 @@ LABEL_88:
   sub_100477F10();
 }
 
-- (void)addMonitoringPeriodFrom:(double)a3 until:(double)a4
+- (void)addMonitoringPeriodFrom:(double)from until:(double)until
 {
   [(CLHealthAssessmentNotifierAdapter *)self monitorKinesiasStart];
-  if (v7 == 0.0 || ([(CLHealthAssessmentNotifierAdapter *)self monitorKinesiasExpiration], v8 < a3))
+  if (v7 == 0.0 || ([(CLHealthAssessmentNotifierAdapter *)self monitorKinesiasExpiration], v8 < from))
   {
-    self->_monitorKinesiasStart = a3;
+    self->_monitorKinesiasStart = from;
     v9 = sub_1000206B4();
     sub_100116DD4(v9, @"kMonitorKinesiasStart", &self->_monitorKinesiasStart);
     v10 = sub_1000206B4();
@@ -947,7 +947,7 @@ LABEL_88:
     sub_1000434C8(v10, @"kMonitorKinesiasHasData", &v16);
   }
 
-  self->_monitorKinesiasExpiration = a4;
+  self->_monitorKinesiasExpiration = until;
   v11 = sub_1000206B4();
   sub_100116DD4(v11, @"kMonitorKinesiasExpiration", &self->_monitorKinesiasExpiration);
   v12 = *sub_1000206B4();
@@ -975,13 +975,13 @@ LABEL_88:
   }
 }
 
-- (void)startUpdatesforAnalyzer:(int)a3
+- (void)startUpdatesforAnalyzer:(int)analyzer
 {
-  v5 = [(CLHealthAssessmentNotifierAdapter *)self anySubscribedToSensorRecorder];
-  if (!a3)
+  anySubscribedToSensorRecorder = [(CLHealthAssessmentNotifierAdapter *)self anySubscribedToSensorRecorder];
+  if (!analyzer)
   {
     v6 = &OBJC_IVAR___CLHealthAssessmentNotifierAdapter_fTremorSubscribed;
-    if (v5)
+    if (anySubscribedToSensorRecorder)
     {
       goto LABEL_5;
     }
@@ -989,13 +989,13 @@ LABEL_88:
     goto LABEL_4;
   }
 
-  if (a3 != 1)
+  if (analyzer != 1)
   {
     return;
   }
 
   v6 = &OBJC_IVAR___CLHealthAssessmentNotifierAdapter_fDyskinesiaSubscribed;
-  if ((v5 & 1) == 0)
+  if ((anySubscribedToSensorRecorder & 1) == 0)
   {
 LABEL_4:
     [(CLHealthAssessmentNotifierAdapter *)self updateSensorRecorderSubscription];
@@ -1045,11 +1045,11 @@ LABEL_5:
   }
 }
 
-- (void)syncgetResultReady:(id)a3 ForAnalyzer:(int)a4
+- (void)syncgetResultReady:(id)ready ForAnalyzer:(int)analyzer
 {
-  v6 = [(CLHealthAssessmentNotifierAdapter *)self adaptee];
+  adaptee = [(CLHealthAssessmentNotifierAdapter *)self adaptee];
 
-  sub_100478A38(v6, a3, a4);
+  sub_100478A38(adaptee, ready, analyzer);
 }
 
 - (void)aggregateRecords
@@ -1100,11 +1100,11 @@ LABEL_5:
   }
 }
 
-- (void)setLastProcessedTime:(double)a3
+- (void)setLastProcessedTime:(double)time
 {
-  if (self->_lastProcessedTime < a3)
+  if (self->_lastProcessedTime < time)
   {
-    self->_lastProcessedTime = a3;
+    self->_lastProcessedTime = time;
     v5 = sub_1000206B4();
     sub_100116DD4(v5, @"kMonitorKinesiasLastProcessed", &self->_lastProcessedTime);
     v6 = *sub_1000206B4();
@@ -1112,12 +1112,12 @@ LABEL_5:
   }
 
   [(CLHealthAssessmentNotifierAdapter *)self updateStartTime];
-  if (v7 < a3)
+  if (timeCopy < time)
   {
-    v7 = a3;
+    timeCopy = time;
   }
 
-  [(CLHealthAssessmentNotifierAdapter *)self setUpdateStartTime:v7];
+  [(CLHealthAssessmentNotifierAdapter *)self setUpdateStartTime:timeCopy];
 }
 
 + (BOOL)isSupported

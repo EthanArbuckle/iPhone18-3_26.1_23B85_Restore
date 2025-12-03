@@ -1,43 +1,43 @@
 @interface USKData
 - (BOOL)BOOLValue;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)dataNoCopy;
-- (USKData)initWithBool:(BOOL)a3;
+- (USKData)initWithBool:(BOOL)bool;
 - (USKData)initWithDouble2:(USKData *)self;
-- (USKData)initWithDouble2Array:(USKData *)self count:(SEL)a2;
+- (USKData)initWithDouble2Array:(USKData *)self count:(SEL)count;
 - (USKData)initWithDouble3:(USKData *)self;
-- (USKData)initWithDouble3Array:(USKData *)self count:(SEL)a2;
+- (USKData)initWithDouble3Array:(USKData *)self count:(SEL)count;
 - (USKData)initWithDouble4:(USKData *)self;
-- (USKData)initWithDouble4Array:(USKData *)self count:(SEL)a2;
-- (USKData)initWithDouble4x4Array:(id *)a3 count:(unint64_t)a4;
-- (USKData)initWithDouble:(double)a3;
-- (USKData)initWithDoubleArray:(double *)a3 count:(unint64_t)a4;
+- (USKData)initWithDouble4Array:(USKData *)self count:(SEL)count;
+- (USKData)initWithDouble4x4Array:(id *)array count:(unint64_t)count;
+- (USKData)initWithDouble:(double)double;
+- (USKData)initWithDoubleArray:(double *)array count:(unint64_t)count;
 - (USKData)initWithFloat2:(USKData *)self;
-- (USKData)initWithFloat2Array:(USKData *)self count:(SEL)a2;
+- (USKData)initWithFloat2Array:(USKData *)self count:(SEL)count;
 - (USKData)initWithFloat3:(USKData *)self;
-- (USKData)initWithFloat3Array:(USKData *)self count:(SEL)a2;
+- (USKData)initWithFloat3Array:(USKData *)self count:(SEL)count;
 - (USKData)initWithFloat4:(USKData *)self;
-- (USKData)initWithFloat4Array:(USKData *)self count:(SEL)a2;
-- (USKData)initWithFloat:(float)a3;
-- (USKData)initWithFloatArray:(float *)a3 count:(unint64_t)a4;
-- (USKData)initWithInt:(int)a3;
-- (USKData)initWithIntArray:(int *)a3 count:(unint64_t)a4;
-- (USKData)initWithObjectPath:(id)a3;
-- (USKData)initWithQuatfArray:(id *)a3 count:(unint64_t)a4;
-- (USKData)initWithResourcePath:(id)a3;
-- (USKData)initWithResourcePathArray:(id)a3;
-- (USKData)initWithString:(id)a3;
-- (USKData)initWithStringArray:(id)a3;
-- (USKData)initWithTimeCode:(id)a3;
-- (USKData)initWithToken:(id)a3;
-- (USKData)initWithTokenArray:(id)a3;
-- (USKData)initWithUInt:(unsigned int)a3;
-- (USKData)initWithUIntArray:(unsigned int *)a3 count:(unint64_t)a4;
-- (USKData)initWithURL:(id)a3;
-- (USKData)initWithVtValue:(VtValue)a3 typeName:(TfToken)a4;
-- (USKData)initWithVtValue:(VtValue)a3 typeName:(TfToken)a4 withNodeOwner:(id)a5;
-- (USKData)initWithVtValue:(VtValue)a3 typeName:(TfToken)a4 withPropertyOwner:(id)a5;
-- (USKData)initWithVtValue:(VtValue)a3 typeName:(TfToken)a4 withSceneOwner:(id)a5;
+- (USKData)initWithFloat4Array:(USKData *)self count:(SEL)count;
+- (USKData)initWithFloat:(float)float;
+- (USKData)initWithFloatArray:(float *)array count:(unint64_t)count;
+- (USKData)initWithInt:(int)int;
+- (USKData)initWithIntArray:(int *)array count:(unint64_t)count;
+- (USKData)initWithObjectPath:(id)path;
+- (USKData)initWithQuatfArray:(id *)array count:(unint64_t)count;
+- (USKData)initWithResourcePath:(id)path;
+- (USKData)initWithResourcePathArray:(id)array;
+- (USKData)initWithString:(id)string;
+- (USKData)initWithStringArray:(id)array;
+- (USKData)initWithTimeCode:(id)code;
+- (USKData)initWithToken:(id)token;
+- (USKData)initWithTokenArray:(id)array;
+- (USKData)initWithUInt:(unsigned int)int;
+- (USKData)initWithUIntArray:(unsigned int *)array count:(unint64_t)count;
+- (USKData)initWithURL:(id)l;
+- (USKData)initWithVtValue:(VtValue)value typeName:(TfToken)name;
+- (USKData)initWithVtValue:(VtValue)value typeName:(TfToken)name withNodeOwner:(id)owner;
+- (USKData)initWithVtValue:(VtValue)value typeName:(TfToken)name withPropertyOwner:(id)owner;
+- (USKData)initWithVtValue:(VtValue)value typeName:(TfToken)name withSceneOwner:(id)owner;
 - (VtValue)value;
 - (double)double2Value;
 - (double)doubleValue;
@@ -61,53 +61,53 @@
 - (uint64_t)double4Value;
 - (uint64_t)double4x4Value;
 - (uint64_t)float4x4Value;
-- (uint64_t)initWithDouble4x4:(__int128 *)a3;
-- (uint64_t)initWithQuatf:(void *)a1;
-- (unint64_t)double2Array:(USKData *)self maxCount:(SEL)a2;
-- (unint64_t)double3Array:(USKData *)self maxCount:(SEL)a2;
-- (unint64_t)double4Array:(USKData *)self maxCount:(SEL)a2;
-- (unint64_t)double4x4Array:(id *)a3 maxCount:(unint64_t)a4;
-- (unint64_t)doubleArray:(double *)a3 maxCount:(unint64_t)a4;
-- (unint64_t)float2Array:(USKData *)self maxCount:(SEL)a2;
-- (unint64_t)float3Array:(USKData *)self maxCount:(SEL)a2;
-- (unint64_t)float4Array:(USKData *)self maxCount:(SEL)a2;
-- (unint64_t)float4x4Array:(id *)a3 maxCount:(unint64_t)a4;
-- (unint64_t)floatArray:(float *)a3 maxCount:(unint64_t)a4;
-- (unint64_t)intArray:(int *)a3 maxCount:(unint64_t)a4;
-- (unint64_t)quatfArray:(id *)a3 maxCount:(unint64_t)a4;
-- (unint64_t)uintArray:(unsigned int *)a3 maxCount:(unint64_t)a4;
+- (uint64_t)initWithDouble4x4:(__int128 *)double4x4;
+- (uint64_t)initWithQuatf:(void *)quatf;
+- (unint64_t)double2Array:(USKData *)self maxCount:(SEL)count;
+- (unint64_t)double3Array:(USKData *)self maxCount:(SEL)count;
+- (unint64_t)double4Array:(USKData *)self maxCount:(SEL)count;
+- (unint64_t)double4x4Array:(id *)array maxCount:(unint64_t)count;
+- (unint64_t)doubleArray:(double *)array maxCount:(unint64_t)count;
+- (unint64_t)float2Array:(USKData *)self maxCount:(SEL)count;
+- (unint64_t)float3Array:(USKData *)self maxCount:(SEL)count;
+- (unint64_t)float4Array:(USKData *)self maxCount:(SEL)count;
+- (unint64_t)float4x4Array:(id *)array maxCount:(unint64_t)count;
+- (unint64_t)floatArray:(float *)array maxCount:(unint64_t)count;
+- (unint64_t)intArray:(int *)array maxCount:(unint64_t)count;
+- (unint64_t)quatfArray:(id *)array maxCount:(unint64_t)count;
+- (unint64_t)uintArray:(unsigned int *)array maxCount:(unint64_t)count;
 - (unsigned)uintValue;
-- (void)setBoolValue:(BOOL)a3;
-- (void)setDouble2Array:(USKData *)self count:(SEL)a2;
-- (void)setDouble3Array:(USKData *)self count:(SEL)a2;
+- (void)setBoolValue:(BOOL)value;
+- (void)setDouble2Array:(USKData *)self count:(SEL)count;
+- (void)setDouble3Array:(USKData *)self count:(SEL)count;
 - (void)setDouble3Value:(USKData *)self;
-- (void)setDouble4Array:(USKData *)self count:(SEL)a2;
+- (void)setDouble4Array:(USKData *)self count:(SEL)count;
 - (void)setDouble4Value:(USKData *)self;
-- (void)setDouble4x4Array:(id *)a3 count:(unint64_t)a4;
-- (void)setDouble4x4Value:(__int128 *)a3;
-- (void)setDoubleArray:(double *)a3 count:(unint64_t)a4;
-- (void)setDoubleValue:(double)a3;
-- (void)setFloat2Array:(USKData *)self count:(SEL)a2;
+- (void)setDouble4x4Array:(id *)array count:(unint64_t)count;
+- (void)setDouble4x4Value:(__int128 *)value;
+- (void)setDoubleArray:(double *)array count:(unint64_t)count;
+- (void)setDoubleValue:(double)value;
+- (void)setFloat2Array:(USKData *)self count:(SEL)count;
 - (void)setFloat2Value:(USKData *)self;
-- (void)setFloat3Array:(USKData *)self count:(SEL)a2;
-- (void)setFloat4Array:(USKData *)self count:(SEL)a2;
-- (void)setFloatArray:(float *)a3 count:(unint64_t)a4;
-- (void)setFloatValue:(float)a3;
-- (void)setIntArray:(int *)a3 count:(unint64_t)a4;
-- (void)setIntValue:(int)a3;
-- (void)setObjectPathValue:(id)a3;
-- (void)setQuatfArray:(id *)a3 count:(unint64_t)a4;
-- (void)setResourcePath:(id)a3;
-- (void)setResourcePathArray:(id)a3;
-- (void)setStringArray:(id)a3;
-- (void)setStringValue:(id)a3;
-- (void)setTimeCodeValue:(id)a3;
-- (void)setTokenArray:(id)a3;
-- (void)setTokenValue:(id)a3;
-- (void)setUIntArray:(unsigned int *)a3 count:(unint64_t)a4;
-- (void)setUIntValue:(unsigned int)a3;
-- (void)setURLValue:(id)a3;
-- (void)setValue:(VtValue)a3;
+- (void)setFloat3Array:(USKData *)self count:(SEL)count;
+- (void)setFloat4Array:(USKData *)self count:(SEL)count;
+- (void)setFloatArray:(float *)array count:(unint64_t)count;
+- (void)setFloatValue:(float)value;
+- (void)setIntArray:(int *)array count:(unint64_t)count;
+- (void)setIntValue:(int)value;
+- (void)setObjectPathValue:(id)value;
+- (void)setQuatfArray:(id *)array count:(unint64_t)count;
+- (void)setResourcePath:(id)path;
+- (void)setResourcePathArray:(id)array;
+- (void)setStringArray:(id)array;
+- (void)setStringValue:(id)value;
+- (void)setTimeCodeValue:(id)value;
+- (void)setTokenArray:(id)array;
+- (void)setTokenValue:(id)value;
+- (void)setUIntArray:(unsigned int *)array count:(unint64_t)count;
+- (void)setUIntValue:(unsigned int)value;
+- (void)setURLValue:(id)value;
+- (void)setValue:(VtValue)value;
 @end
 
 @implementation USKData
@@ -120,10 +120,10 @@
   return result;
 }
 
-- (USKData)initWithVtValue:(VtValue)a3 typeName:(TfToken)a4
+- (USKData)initWithVtValue:(VtValue)value typeName:(TfToken)name
 {
-  ptrAndBits = a3._info._ptrAndBits;
-  storage = a3._storage;
+  ptrAndBits = value._info._ptrAndBits;
+  storage = value._storage;
   sub_27035CAC4();
   v17.receiver = self;
   v17.super_class = USKData;
@@ -158,11 +158,11 @@
   return v9;
 }
 
-- (USKData)initWithVtValue:(VtValue)a3 typeName:(TfToken)a4 withNodeOwner:(id)a5
+- (USKData)initWithVtValue:(VtValue)value typeName:(TfToken)name withNodeOwner:(id)owner
 {
-  ptrAndBits = a3._info._ptrAndBits;
-  storage = a3._storage;
-  v9 = a4._rep._ptrAndBits;
+  ptrAndBits = value._info._ptrAndBits;
+  storage = value._storage;
+  v9 = name._rep._ptrAndBits;
   sub_27035CAC4();
   v20.receiver = self;
   v20.super_class = USKData;
@@ -191,18 +191,18 @@
 
     sub_27031A1C0(&v12->_value._storage, storage);
     v12->_arraySize = pxrInternal__aapl__pxrReserved__::VtValue::_GetNumElements(storage);
-    objc_storeStrong(&v12->_nodeOwner, a4._rep._ptrAndBits);
+    objc_storeStrong(&v12->_nodeOwner, name._rep._ptrAndBits);
     v17 = v12;
   }
 
   return v12;
 }
 
-- (USKData)initWithVtValue:(VtValue)a3 typeName:(TfToken)a4 withSceneOwner:(id)a5
+- (USKData)initWithVtValue:(VtValue)value typeName:(TfToken)name withSceneOwner:(id)owner
 {
-  ptrAndBits = a3._info._ptrAndBits;
-  storage = a3._storage;
-  v9 = a4._rep._ptrAndBits;
+  ptrAndBits = value._info._ptrAndBits;
+  storage = value._storage;
+  v9 = name._rep._ptrAndBits;
   sub_27035CAC4();
   v20.receiver = self;
   v20.super_class = USKData;
@@ -231,18 +231,18 @@
 
     sub_27031A1C0(&v12->_value._storage, storage);
     v12->_arraySize = pxrInternal__aapl__pxrReserved__::VtValue::_GetNumElements(storage);
-    objc_storeStrong(&v12->_sceneOwner, a4._rep._ptrAndBits);
+    objc_storeStrong(&v12->_sceneOwner, name._rep._ptrAndBits);
     v17 = v12;
   }
 
   return v12;
 }
 
-- (USKData)initWithVtValue:(VtValue)a3 typeName:(TfToken)a4 withPropertyOwner:(id)a5
+- (USKData)initWithVtValue:(VtValue)value typeName:(TfToken)name withPropertyOwner:(id)owner
 {
-  ptrAndBits = a3._info._ptrAndBits;
-  storage = a3._storage;
-  v9 = a4._rep._ptrAndBits;
+  ptrAndBits = value._info._ptrAndBits;
+  storage = value._storage;
+  v9 = name._rep._ptrAndBits;
   sub_27035CAC4();
   v20.receiver = self;
   v20.super_class = USKData;
@@ -271,7 +271,7 @@
 
     sub_27031A1C0(&v12->_value._storage, storage);
     v12->_arraySize = pxrInternal__aapl__pxrReserved__::VtValue::_GetNumElements(storage);
-    objc_storeStrong(&v12->_propertyOwner, a4._rep._ptrAndBits);
+    objc_storeStrong(&v12->_propertyOwner, name._rep._ptrAndBits);
     v17 = v12;
   }
 
@@ -586,7 +586,7 @@
 {
   v6[2] = *MEMORY[0x277D85DE8];
   v5 = 0;
-  sub_270313C14(v6, (a1 + 8));
+  sub_270313C14(v6, (self + 8));
   v1 = sub_27031BA28(v6, &v5);
   sub_270311D34(v6);
   if (v1)
@@ -608,7 +608,7 @@
   v6[2] = *MEMORY[0x277D85DE8];
   v5.i32[2] = 0;
   v5.i64[0] = 0;
-  sub_270313C14(v6, (a1 + 8));
+  sub_270313C14(v6, (self + 8));
   v1 = sub_270313B0C(v6, &v5);
   sub_270311D34(v6);
   if (v1)
@@ -630,7 +630,7 @@
 {
   v6[2] = *MEMORY[0x277D85DE8];
   v5 = 0uLL;
-  sub_270313C14(v6, (a1 + 8));
+  sub_270313C14(v6, (self + 8));
   v1 = sub_27031BC80(v6, &v5);
   sub_270311D34(v6);
   if (v1)
@@ -652,7 +652,7 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   memset(v11, 0, sizeof(v11));
-  v1 = sub_270313C14(v13, (a1 + 8));
+  v1 = sub_270313C14(v13, (self + 8));
   v2 = sub_27031BE90(v1, v11);
   result = sub_270311D34(v13);
   if (v2)
@@ -706,7 +706,7 @@
 {
   v6[2] = *MEMORY[0x277D85DE8];
   v5 = 0uLL;
-  sub_270313C14(v6, (a1 + 8));
+  sub_270313C14(v6, (self + 8));
   v1 = sub_27031C204(v6, &v5);
   sub_270311D34(v6);
   if (v1)
@@ -729,7 +729,7 @@
   v10[2] = *MEMORY[0x277D85DE8];
   v8 = 0uLL;
   v9 = 0;
-  sub_270313C14(v10, (a1 + 8));
+  sub_270313C14(v10, (self + 8));
   v3 = sub_27031C3C0(v10, &v8);
   result = sub_270311D34(v10);
   v5 = 0uLL;
@@ -751,7 +751,7 @@
   v10[2] = *MEMORY[0x277D85DE8];
   v8 = 0u;
   v9 = 0u;
-  sub_270313C14(v10, (a1 + 8));
+  sub_270313C14(v10, (self + 8));
   v3 = sub_27031C58C(v10, &v8);
   result = sub_270311D34(v10);
   v5 = 0uLL;
@@ -779,7 +779,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = sub_270313C14(v19, (a1 + 8));
+  v3 = sub_270313C14(v19, (self + 8));
   v4 = sub_27031BE90(v3, &v11);
   result = sub_270311D34(v19);
   if (v4)
@@ -818,7 +818,7 @@
 {
   v6[2] = *MEMORY[0x277D85DE8];
   v5 = 0uLL;
-  sub_270313C14(v6, (a1 + 8));
+  sub_270313C14(v6, (self + 8));
   v1 = sub_27031C848(v6, &v5);
   sub_270311D34(v6);
   if (v1)
@@ -981,7 +981,7 @@
   return v7;
 }
 
-- (unint64_t)intArray:(int *)a3 maxCount:(unint64_t)a4
+- (unint64_t)intArray:(int *)array maxCount:(unint64_t)count
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v17 = 0;
@@ -1008,26 +1008,26 @@
 
     v9 = v12;
     sub_270310DE0(&v12);
-    if (v9 < a4)
+    if (v9 < count)
     {
-      a4 = v9;
+      count = v9;
     }
 
-    memcpy(a3, __src, 4 * a4);
+    memcpy(array, __src, 4 * count);
     sub_270310E24(&v12);
   }
 
   else
   {
-    a4 = 0;
+    count = 0;
   }
 
   sub_270310E24(&v15);
   v10 = *MEMORY[0x277D85DE8];
-  return a4;
+  return count;
 }
 
-- (unint64_t)uintArray:(unsigned int *)a3 maxCount:(unint64_t)a4
+- (unint64_t)uintArray:(unsigned int *)array maxCount:(unint64_t)count
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v17 = 0;
@@ -1054,26 +1054,26 @@
 
     v9 = v12;
     sub_27032C7E0(&v12);
-    if (v9 < a4)
+    if (v9 < count)
     {
-      a4 = v9;
+      count = v9;
     }
 
-    memcpy(a3, __src, 4 * a4);
+    memcpy(array, __src, 4 * count);
     sub_270310E24(&v12);
   }
 
   else
   {
-    a4 = 0;
+    count = 0;
   }
 
   sub_270310E24(&v15);
   v10 = *MEMORY[0x277D85DE8];
-  return a4;
+  return count;
 }
 
-- (unint64_t)quatfArray:(id *)a3 maxCount:(unint64_t)a4
+- (unint64_t)quatfArray:(id *)array maxCount:(unint64_t)count
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11 = 0;
@@ -1083,33 +1083,33 @@
   sub_270311D34(v12);
   if (v6)
   {
-    if (*&v10[0] < a4)
+    if (*&v10[0] < count)
     {
-      a4 = *&v10[0];
+      count = *&v10[0];
     }
 
-    if (a4)
+    if (count)
     {
       v7 = 0;
       do
       {
         sub_270328150(v10);
-        *(a3 + v7) = *(v11 + 16 * v7);
+        *(array + v7) = *(v11 + 16 * v7);
         ++v7;
       }
 
-      while (a4 != v7);
+      while (count != v7);
     }
   }
 
   else
   {
-    a4 = 0;
+    count = 0;
   }
 
   sub_270310E24(v10);
   v8 = *MEMORY[0x277D85DE8];
-  return a4;
+  return count;
 }
 
 - (id)stringArray
@@ -1289,7 +1289,7 @@
   return v3;
 }
 
-- (unint64_t)floatArray:(float *)a3 maxCount:(unint64_t)a4
+- (unint64_t)floatArray:(float *)array maxCount:(unint64_t)count
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v17 = 0;
@@ -1316,26 +1316,26 @@
 
     v9 = v12;
     sub_27032F7DC(&v12);
-    if (v9 < a4)
+    if (v9 < count)
     {
-      a4 = v9;
+      count = v9;
     }
 
-    memcpy(a3, __src, 4 * a4);
+    memcpy(array, __src, 4 * count);
     sub_270310E24(&v12);
   }
 
   else
   {
-    a4 = 0;
+    count = 0;
   }
 
   sub_270310E24(&v15);
   v10 = *MEMORY[0x277D85DE8];
-  return a4;
+  return count;
 }
 
-- (unint64_t)float2Array:(USKData *)self maxCount:(SEL)a2
+- (unint64_t)float2Array:(USKData *)self maxCount:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -1372,7 +1372,7 @@
   return v4;
 }
 
-- (unint64_t)float3Array:(USKData *)self maxCount:(SEL)a2
+- (unint64_t)float3Array:(USKData *)self maxCount:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -1417,7 +1417,7 @@
   return v4;
 }
 
-- (unint64_t)float4Array:(USKData *)self maxCount:(SEL)a2
+- (unint64_t)float4Array:(USKData *)self maxCount:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -1454,7 +1454,7 @@
   return v4;
 }
 
-- (unint64_t)float4x4Array:(id *)a3 maxCount:(unint64_t)a4
+- (unint64_t)float4x4Array:(id *)array maxCount:(unint64_t)count
 {
   v20[2] = *MEMORY[0x277D85DE8];
   v19 = 0;
@@ -1464,12 +1464,12 @@
   sub_270311D34(v20);
   if (v6)
   {
-    if (*&v18[0] < a4)
+    if (*&v18[0] < count)
     {
-      a4 = *&v18[0];
+      count = *&v18[0];
     }
 
-    if (a4)
+    if (count)
     {
       v7 = 0;
       v8 = 0;
@@ -1477,7 +1477,7 @@
       {
         sub_270328FBC(v18);
         v9 = 0;
-        v10 = a3 + 64 * v8;
+        v10 = array + 64 * v8;
         v11 = v19 + v7;
         do
         {
@@ -1503,21 +1503,21 @@
         v7 += 128;
       }
 
-      while (v8 != a4);
+      while (v8 != count);
     }
   }
 
   else
   {
-    a4 = 0;
+    count = 0;
   }
 
   sub_270310E24(v18);
   v15 = *MEMORY[0x277D85DE8];
-  return a4;
+  return count;
 }
 
-- (unint64_t)doubleArray:(double *)a3 maxCount:(unint64_t)a4
+- (unint64_t)doubleArray:(double *)array maxCount:(unint64_t)count
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v17 = 0;
@@ -1544,26 +1544,26 @@
 
     v9 = v12;
     sub_270330518(&v12);
-    if (v9 < a4)
+    if (v9 < count)
     {
-      a4 = v9;
+      count = v9;
     }
 
-    memcpy(a3, __src, 8 * a4);
+    memcpy(array, __src, 8 * count);
     sub_270310E24(&v12);
   }
 
   else
   {
-    a4 = 0;
+    count = 0;
   }
 
   sub_270310E24(&v15);
   v10 = *MEMORY[0x277D85DE8];
-  return a4;
+  return count;
 }
 
-- (unint64_t)double2Array:(USKData *)self maxCount:(SEL)a2
+- (unint64_t)double2Array:(USKData *)self maxCount:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -1600,7 +1600,7 @@
   return v4;
 }
 
-- (unint64_t)double3Array:(USKData *)self maxCount:(SEL)a2
+- (unint64_t)double3Array:(USKData *)self maxCount:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -1646,7 +1646,7 @@
   return v4;
 }
 
-- (unint64_t)double4Array:(USKData *)self maxCount:(SEL)a2
+- (unint64_t)double4Array:(USKData *)self maxCount:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -1692,7 +1692,7 @@
   return v4;
 }
 
-- (unint64_t)double4x4Array:(id *)a3 maxCount:(unint64_t)a4
+- (unint64_t)double4x4Array:(id *)array maxCount:(unint64_t)count
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v20 = 0;
@@ -1702,15 +1702,15 @@
   sub_270311D34(v21);
   if (v6)
   {
-    if (*&v19[0] < a4)
+    if (*&v19[0] < count)
     {
-      a4 = *&v19[0];
+      count = *&v19[0];
     }
 
-    if (a4)
+    if (count)
     {
       v7 = 112;
-      v8 = a4;
+      countCopy = count;
       do
       {
         sub_270328FBC(v19);
@@ -1721,7 +1721,7 @@
         v13 = *(v20 + v7 - 32);
         v14 = *(v20 + v7 - 16);
         v15 = *(v20 + v7);
-        v16 = (a3 + v7);
+        v16 = (array + v7);
         *(v16 - 7) = *(v20 + v7 - 112);
         *(v16 - 6) = v9;
         *(v16 - 5) = v10;
@@ -1731,28 +1731,28 @@
         *(v16 - 1) = v14;
         *v16 = v15;
         v7 += 128;
-        --v8;
+        --countCopy;
       }
 
-      while (v8);
+      while (countCopy);
     }
   }
 
   else
   {
-    a4 = 0;
+    count = 0;
   }
 
   sub_270310E24(v19);
   v17 = *MEMORY[0x277D85DE8];
-  return a4;
+  return count;
 }
 
-- (void)setValue:(VtValue)a3
+- (void)setValue:(VtValue)value
 {
-  storage = a3._storage;
+  storage = value._storage;
   v15 = *MEMORY[0x277D85DE8];
-  if (pxrInternal__aapl__pxrReserved__::VtValue::IsArrayValued(*&a3._storage))
+  if (pxrInternal__aapl__pxrReserved__::VtValue::IsArrayValued(*&value._storage))
   {
     NumElements = pxrInternal__aapl__pxrReserved__::VtValue::_GetNumElements(storage);
   }
@@ -1794,14 +1794,14 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTokenValue:(id)a3
+- (void)setTokenValue:(id)value
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  valueCopy = value;
+  v8 = valueCopy;
+  if (valueCopy)
   {
-    objc_msgSend_token(v4, v5, v6, v7);
+    objc_msgSend_token(valueCopy, v5, v6, v7);
     v12 = v10;
     v13 = &off_288040298 + 1;
     if ((v10 & 7) != 0 && (atomic_fetch_add_explicit((v10 & 0xFFFFFFFFFFFFFFF8), 2u, memory_order_relaxed) & 1) == 0)
@@ -1827,15 +1827,15 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  valueCopy = value;
+  v5 = valueCopy;
   type = self->_type;
   if (type == @"string" || type == @"token")
   {
-    v8 = v4;
+    v8 = valueCopy;
     v26[0] = objc_msgSend_UTF8String(v8, v9, v10, v11);
     v33 = 0;
     sub_270329FE8(v32, v26);
@@ -1843,7 +1843,7 @@
 
   if (type == @"rel")
   {
-    v17 = v4;
+    v17 = valueCopy;
     v21 = objc_msgSend_UTF8String(v17, v18, v19, v20);
     sub_2703122D4(v26, v21);
     MEMORY[0x27439E5E0](v25, v26);
@@ -1862,7 +1862,7 @@
 
   else if (type == @"asset")
   {
-    v12 = v4;
+    v12 = valueCopy;
     v16 = objc_msgSend_UTF8String(v12, v13, v14, v15);
     sub_2703122D4(v25, v16);
     MEMORY[0x27439E030](v26, v25);
@@ -1873,10 +1873,10 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTimeCodeValue:(id)a3
+- (void)setTimeCodeValue:(id)value
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  objc_msgSend_sdfTimeCode(a3, a2, a3, v3);
+  objc_msgSend_sdfTimeCode(value, a2, value, v3);
   v9[1] = &off_288040588 + 1;
   v9[0] = v5;
   objc_msgSend_setValue_(self, v6, v9, v7);
@@ -1884,44 +1884,44 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setBoolValue:(BOOL)a3
+- (void)setBoolValue:(BOOL)value
 {
   v7 = *MEMORY[0x277D85DE8];
   v6 = &unk_288040643;
-  v5[0] = a3;
+  v5[0] = value;
   objc_msgSend_setValue_(self, a2, v5, v3);
   sub_270311D34(v5);
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setIntValue:(int)a3
+- (void)setIntValue:(int)value
 {
   v7 = *MEMORY[0x277D85DE8];
   v6 = &unk_2880406FB;
-  v5 = a3;
-  objc_msgSend_setValue_(self, a2, &v5, v3);
-  sub_270311D34(&v5);
+  valueCopy = value;
+  objc_msgSend_setValue_(self, a2, &valueCopy, v3);
+  sub_270311D34(&valueCopy);
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUIntValue:(unsigned int)a3
+- (void)setUIntValue:(unsigned int)value
 {
   v7 = *MEMORY[0x277D85DE8];
   v6 = &unk_2880407B3;
-  v5 = a3;
-  objc_msgSend_setValue_(self, a2, &v5, v3);
-  sub_270311D34(&v5);
+  valueCopy = value;
+  objc_msgSend_setValue_(self, a2, &valueCopy, v3);
+  sub_270311D34(&valueCopy);
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setObjectPathValue:(id)a3
+- (void)setObjectPathValue:(id)value
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  valueCopy = value;
+  v8 = valueCopy;
+  if (valueCopy)
   {
-    objc_msgSend_path(v4, v5, v6, v7);
+    objc_msgSend_path(valueCopy, v5, v6, v7);
   }
 
   else
@@ -1940,10 +1940,10 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setURLValue:(id)a3
+- (void)setURLValue:(id)value
 {
   v10[8] = *MEMORY[0x277D85DE8];
-  v4 = objc_msgSend_path(a3, a2, a3, v3);
+  v4 = objc_msgSend_path(value, a2, value, v3);
   v8 = objc_msgSend_UTF8String(v4, v5, v6, v7);
   sub_2703122D4(v9, v8);
   MEMORY[0x27439E030](v10, v9);
@@ -1951,14 +1951,14 @@
   sub_27032ABA0();
 }
 
-- (void)setResourcePath:(id)a3
+- (void)setResourcePath:(id)path
 {
   v14 = *MEMORY[0x277D85DE8];
   *v11 = 0u;
   v12 = 0u;
   *v10 = 0u;
-  v3 = a3;
-  v7 = objc_msgSend_UTF8String(v3, v4, v5, v6);
+  pathCopy = path;
+  v7 = objc_msgSend_UTF8String(pathCopy, v4, v5, v6);
   sub_2703122D4(__p, v7);
   MEMORY[0x27439E030](v10, __p);
   if (v9 < 0)
@@ -1970,13 +1970,13 @@
   sub_27032ABA0();
 }
 
-- (void)setFloatValue:(float)a3
+- (void)setFloatValue:(float)value
 {
   v7 = *MEMORY[0x277D85DE8];
   v6 = &unk_28803FCC3;
-  v5 = a3;
-  objc_msgSend_setValue_(self, a2, &v5, v3);
-  sub_270311D34(&v5);
+  valueCopy = value;
+  objc_msgSend_setValue_(self, a2, &valueCopy, v3);
+  sub_270311D34(&valueCopy);
   v4 = *MEMORY[0x277D85DE8];
 }
 
@@ -1990,11 +1990,11 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDoubleValue:(double)a3
+- (void)setDoubleValue:(double)value
 {
   v5[2] = *MEMORY[0x277D85DE8];
   v5[1] = &unk_2880409DB;
-  *v5 = a3;
+  *v5 = value;
   objc_msgSend_setValue_(self, a2, v5, v3);
   sub_270311D34(v5);
   v4 = *MEMORY[0x277D85DE8];
@@ -2018,68 +2018,68 @@
   operator new();
 }
 
-- (void)setDouble4x4Value:(__int128 *)a3
+- (void)setDouble4x4Value:(__int128 *)value
 {
   v12 = *MEMORY[0x277D85DE8];
-  v10 = a3[1];
-  v6 = *a3;
-  v9 = a3[3];
-  v4 = a3[4];
-  v5 = a3[2];
-  v7 = a3[7];
-  v8 = a3[5];
-  v3 = a3[6];
+  v10 = value[1];
+  v6 = *value;
+  v9 = value[3];
+  v4 = value[4];
+  v5 = value[2];
+  v7 = value[7];
+  v8 = value[5];
+  v3 = value[6];
   v11 = &off_28803FE40 + 2;
   operator new();
 }
 
-- (void)setIntArray:(int *)a3 count:(unint64_t)a4
+- (void)setIntArray:(int *)array count:(unint64_t)count
 {
   v9 = *MEMORY[0x277D85DE8];
   __dst = 0;
   memset(v6, 0, sizeof(v6));
-  sub_27030E054(v6, a4);
+  sub_27030E054(v6, count);
   sub_270310DE0(v6);
-  memcpy(__dst, a3, 4 * a4);
+  memcpy(__dst, array, 4 * count);
   v8 = &off_288040CB8;
   sub_27032C360();
 }
 
-- (void)setUIntArray:(unsigned int *)a3 count:(unint64_t)a4
+- (void)setUIntArray:(unsigned int *)array count:(unint64_t)count
 {
   v9 = *MEMORY[0x277D85DE8];
   __dst = 0;
   memset(v6, 0, sizeof(v6));
-  sub_2703208AC(v6, a4);
+  sub_2703208AC(v6, count);
   sub_27032C7E0(v6);
-  memcpy(__dst, a3, 4 * a4);
+  memcpy(__dst, array, 4 * count);
   v8 = &off_288040D70;
   sub_27032C360();
 }
 
-- (void)setQuatfArray:(id *)a3 count:(unint64_t)a4
+- (void)setQuatfArray:(id *)array count:(unint64_t)count
 {
   v9 = *MEMORY[0x277D85DE8];
   __dst = 0;
   memset(v6, 0, sizeof(v6));
-  sub_270320A2C(v6, a4);
+  sub_270320A2C(v6, count);
   sub_270328150(v6);
-  memcpy(__dst, a3, 16 * a4);
+  memcpy(__dst, array, 16 * count);
   v8 = off_288040E28;
   sub_270318A3C();
 }
 
-- (void)setStringArray:(id)a3
+- (void)setStringArray:(id)array
 {
   v80 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v8 = v4;
+  arrayCopy = array;
+  v8 = arrayCopy;
   type = self->_type;
   if (type == @"string[]")
   {
     *__p = 0u;
     memset(v75, 0, sizeof(v75));
-    v27 = objc_msgSend_count(v4, v5, v6, v7);
+    v27 = objc_msgSend_count(arrayCopy, v5, v6, v7);
     sub_270321124(__p, v27);
     v31 = 0;
     for (i = 0; i < objc_msgSend_count(v8, v28, v29, v30); ++i)
@@ -2102,7 +2102,7 @@
   {
     *__p = 0u;
     memset(v75, 0, sizeof(v75));
-    v41 = objc_msgSend_count(v4, v5, v6, v7);
+    v41 = objc_msgSend_count(arrayCopy, v5, v6, v7);
     sub_2703211BC(__p, v41);
     v45 = 0;
     for (j = 0; j < objc_msgSend_count(v8, v42, v43, v44); ++j)
@@ -2144,7 +2144,7 @@
   {
     *__p = 0u;
     memset(v75, 0, sizeof(v75));
-    v56 = objc_msgSend_count(v4, v5, v6, v7);
+    v56 = objc_msgSend_count(arrayCopy, v5, v6, v7);
     sub_270321260(__p, v56);
     v60 = 0;
     v61 = 4;
@@ -2180,7 +2180,7 @@
     v79 = 0;
     *v77 = 0u;
     v78 = 0u;
-    v10 = objc_msgSend_count(v4, v5, v6, v7);
+    v10 = objc_msgSend_count(arrayCopy, v5, v6, v7);
     sub_270321314(v77, v10);
     v14 = 0;
     for (k = 0; k < objc_msgSend_count(v8, v11, v12, v13); ++k)
@@ -2233,18 +2233,18 @@
   v71 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTokenArray:(id)a3
+- (void)setTokenArray:(id)array
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v23 = 0;
   memset(v22, 0, sizeof(v22));
-  v7 = objc_msgSend_count(v3, v4, v5, v6);
+  v7 = objc_msgSend_count(arrayCopy, v4, v5, v6);
   sub_2703211BC(v22, v7);
   v11 = 0;
-  for (i = 0; i < objc_msgSend_count(v3, v8, v9, v10); ++i)
+  for (i = 0; i < objc_msgSend_count(arrayCopy, v8, v9, v10); ++i)
   {
-    v15 = objc_msgSend_objectAtIndexedSubscript_(v3, v13, i, v14);
+    v15 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v13, i, v14);
     v19 = v15;
     if (v15)
     {
@@ -2284,18 +2284,18 @@
   sub_270318A3C();
 }
 
-- (void)setResourcePathArray:(id)a3
+- (void)setResourcePathArray:(id)array
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v31 = 0;
   memset(v30, 0, sizeof(v30));
-  v7 = objc_msgSend_count(v3, v4, v5, v6);
+  v7 = objc_msgSend_count(arrayCopy, v4, v5, v6);
   sub_270321314(v30, v7);
   v11 = 0;
-  for (i = 0; i < objc_msgSend_count(v3, v8, v9, v10); ++i)
+  for (i = 0; i < objc_msgSend_count(arrayCopy, v8, v9, v10); ++i)
   {
-    v15 = objc_msgSend_objectAtIndexedSubscript_(v3, v13, i, v14);
+    v15 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v13, i, v14);
     v16 = v15;
     v20 = objc_msgSend_UTF8String(v15, v17, v18, v19);
     sub_2703122D4(v24, v20);
@@ -2339,19 +2339,19 @@
   sub_270318A3C();
 }
 
-- (void)setFloatArray:(float *)a3 count:(unint64_t)a4
+- (void)setFloatArray:(float *)array count:(unint64_t)count
 {
   v9 = *MEMORY[0x277D85DE8];
   __dst = 0;
   memset(v6, 0, sizeof(v6));
-  sub_2703218F4(v6, a4);
+  sub_2703218F4(v6, count);
   sub_27032F7DC(v6);
-  memcpy(__dst, a3, 4 * a4);
+  memcpy(__dst, array, 4 * count);
   v8 = &off_2880411D8;
   sub_27032FBF4();
 }
 
-- (void)setFloat2Array:(USKData *)self count:(SEL)a2
+- (void)setFloat2Array:(USKData *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -2373,7 +2373,7 @@
   sub_270318A3C();
 }
 
-- (void)setFloat3Array:(USKData *)self count:(SEL)a2
+- (void)setFloat3Array:(USKData *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -2403,7 +2403,7 @@
   sub_270318A3C();
 }
 
-- (void)setFloat4Array:(USKData *)self count:(SEL)a2
+- (void)setFloat4Array:(USKData *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -2425,19 +2425,19 @@
   sub_270318A3C();
 }
 
-- (void)setDoubleArray:(double *)a3 count:(unint64_t)a4
+- (void)setDoubleArray:(double *)array count:(unint64_t)count
 {
   v9 = *MEMORY[0x277D85DE8];
   __dst = 0;
   memset(v6, 0, sizeof(v6));
-  sub_270321E6C(v6, a4);
+  sub_270321E6C(v6, count);
   sub_270330518(v6);
-  memcpy(__dst, a3, 8 * a4);
+  memcpy(__dst, array, 8 * count);
   v8 = &off_288041348;
   sub_27032FBF4();
 }
 
-- (void)setDouble2Array:(USKData *)self count:(SEL)a2
+- (void)setDouble2Array:(USKData *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -2459,7 +2459,7 @@
   sub_270318A3C();
 }
 
-- (void)setDouble3Array:(USKData *)self count:(SEL)a2
+- (void)setDouble3Array:(USKData *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -2490,7 +2490,7 @@
   sub_270318A3C();
 }
 
-- (void)setDouble4Array:(USKData *)self count:(SEL)a2
+- (void)setDouble4Array:(USKData *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -2520,26 +2520,26 @@
   sub_270318A3C();
 }
 
-- (void)setDouble4x4Array:(id *)a3 count:(unint64_t)a4
+- (void)setDouble4x4Array:(id *)array count:(unint64_t)count
 {
-  v4 = a4;
+  countCopy = count;
   v19 = *MEMORY[0x277D85DE8];
   v17 = 0;
   memset(v16, 0, sizeof(v16));
-  sub_27032253C(v16, a4);
-  if (v4)
+  sub_27032253C(v16, count);
+  if (countCopy)
   {
     v6 = 0;
     do
     {
-      v14 = *(a3 + v6 + 48);
-      v15 = *(a3 + v6 + 16);
-      v10 = *(a3 + v6 + 32);
-      v11 = *(a3 + v6);
-      v12 = *(a3 + v6 + 112);
-      v13 = *(a3 + v6 + 80);
-      v8 = *(a3 + v6 + 96);
-      v9 = *(a3 + v6 + 64);
+      v14 = *(array + v6 + 48);
+      v15 = *(array + v6 + 16);
+      v10 = *(array + v6 + 32);
+      v11 = *(array + v6);
+      v12 = *(array + v6 + 112);
+      v13 = *(array + v6 + 80);
+      v8 = *(array + v6 + 96);
+      v9 = *(array + v6 + 64);
       sub_270328FBC(v16);
       v7 = (v17 + v6);
       *v7 = v11;
@@ -2551,29 +2551,29 @@
       v7[6] = v8;
       v7[7] = v12;
       v6 += 128;
-      --v4;
+      --countCopy;
     }
 
-    while (v4);
+    while (countCopy);
   }
 
   v18 = off_288041628;
   sub_270318A3C();
 }
 
-- (USKData)initWithToken:(id)a3
+- (USKData)initWithToken:(id)token
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokenCopy = token;
   sub_27035CAC4();
   v12.receiver = self;
   v12.super_class = USKData;
   v8 = [(USKData *)&v12 init];
   if (v8)
   {
-    if (v4)
+    if (tokenCopy)
     {
-      objc_msgSend_token(v4, v5, v6, v7);
+      objc_msgSend_token(tokenCopy, v5, v6, v7);
       v13 = v11;
       v14 = &off_288040298 + 1;
       if ((v11 & 7) != 0 && (atomic_fetch_add_explicit((v11 & 0xFFFFFFFFFFFFFFF8), 2u, memory_order_relaxed) & 1) == 0)
@@ -2604,17 +2604,17 @@
   return v8;
 }
 
-- (USKData)initWithString:(id)a3
+- (USKData)initWithString:(id)string
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   sub_27035CAC4();
   v12.receiver = self;
   v12.super_class = USKData;
   if ([(USKData *)&v12 init])
   {
-    v5 = v4;
-    v11 = objc_msgSend_UTF8String(v4, v6, v7, v8);
+    v5 = stringCopy;
+    v11 = objc_msgSend_UTF8String(stringCopy, v6, v7, v8);
     v14 = 0;
     sub_270329FE8(v13, &v11);
   }
@@ -2623,17 +2623,17 @@
   return 0;
 }
 
-- (USKData)initWithTimeCode:(id)a3
+- (USKData)initWithTimeCode:(id)code
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codeCopy = code;
   sub_27035CAC4();
   v12.receiver = self;
   v12.super_class = USKData;
   v8 = [(USKData *)&v12 init];
   if (v8)
   {
-    objc_msgSend_sdfTimeCode(v4, v5, v6, v7);
+    objc_msgSend_sdfTimeCode(codeCopy, v5, v6, v7);
     v13[1] = &off_288040588 + 1;
     v13[0] = v9;
     sub_270312D2C(&v8->_value._storage, v13);
@@ -2646,7 +2646,7 @@
   return v8;
 }
 
-- (USKData)initWithBool:(BOOL)a3
+- (USKData)initWithBool:(BOOL)bool
 {
   v10[2] = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -2657,7 +2657,7 @@
   if (v5)
   {
     v10[1] = &unk_288040643;
-    LOBYTE(v10[0]) = a3;
+    LOBYTE(v10[0]) = bool;
     sub_270312D2C(&v5->_value._storage, v10);
     sub_270311D34(v10);
     objc_storeStrong(&v6->_type, @"BOOL");
@@ -2668,7 +2668,7 @@
   return v6;
 }
 
-- (USKData)initWithInt:(int)a3
+- (USKData)initWithInt:(int)int
 {
   v10[2] = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -2679,7 +2679,7 @@
   if (v5)
   {
     v10[1] = &unk_2880406FB;
-    LODWORD(v10[0]) = a3;
+    LODWORD(v10[0]) = int;
     sub_270312D2C(&v5->_value._storage, v10);
     sub_270311D34(v10);
     objc_storeStrong(&v6->_type, @"int");
@@ -2690,7 +2690,7 @@
   return v6;
 }
 
-- (USKData)initWithUInt:(unsigned int)a3
+- (USKData)initWithUInt:(unsigned int)int
 {
   v10[2] = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -2701,7 +2701,7 @@
   if (v5)
   {
     v10[1] = &unk_2880407B3;
-    LODWORD(v10[0]) = a3;
+    LODWORD(v10[0]) = int;
     sub_270312D2C(&v5->_value._storage, v10);
     sub_270311D34(v10);
     objc_storeStrong(&v6->_type, @"uint");
@@ -2712,19 +2712,19 @@
   return v6;
 }
 
-- (USKData)initWithObjectPath:(id)a3
+- (USKData)initWithObjectPath:(id)path
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   sub_27035CAC4();
   v12.receiver = self;
   v12.super_class = USKData;
   v8 = [(USKData *)&v12 init];
   if (v8)
   {
-    if (v4)
+    if (pathCopy)
     {
-      objc_msgSend_path(v4, v5, v6, v7);
+      objc_msgSend_path(pathCopy, v5, v6, v7);
     }
 
     else
@@ -2747,16 +2747,16 @@
   return v8;
 }
 
-- (USKData)initWithURL:(id)a3
+- (USKData)initWithURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   sub_27035CAC4();
   v18.receiver = self;
   v18.super_class = USKData;
   if ([(USKData *)&v18 init])
   {
-    v8 = objc_msgSend_relativeString(v4, v5, v6, v7);
+    v8 = objc_msgSend_relativeString(lCopy, v5, v6, v7);
     v9 = v8;
     v13 = objc_msgSend_UTF8String(v8, v10, v11, v12);
     sub_2703122D4(v16, v13);
@@ -2769,17 +2769,17 @@
   return 0;
 }
 
-- (USKData)initWithResourcePath:(id)a3
+- (USKData)initWithResourcePath:(id)path
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   sub_27035CAC4();
   v13.receiver = self;
   v13.super_class = USKData;
   if ([(USKData *)&v13 init])
   {
-    v5 = v4;
-    v9 = objc_msgSend_UTF8String(v4, v6, v7, v8, 0, 0, 0, 0, 0);
+    v5 = pathCopy;
+    v9 = objc_msgSend_UTF8String(pathCopy, v6, v7, v8, 0, 0, 0, 0, 0);
     sub_2703122D4(__p, v9);
     MEMORY[0x27439E030](v12, __p);
     if (v15 < 0)
@@ -2795,7 +2795,7 @@
   return 0;
 }
 
-- (USKData)initWithFloat:(float)a3
+- (USKData)initWithFloat:(float)float
 {
   v10[2] = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -2806,7 +2806,7 @@
   if (v5)
   {
     v10[1] = &unk_28803FCC3;
-    *v10 = a3;
+    *v10 = float;
     sub_270312D2C(&v5->_value._storage, v10);
     sub_270311D34(v10);
     objc_storeStrong(&v6->_type, @"float");
@@ -2874,7 +2874,7 @@
   return 0;
 }
 
-- (USKData)initWithDouble:(double)a3
+- (USKData)initWithDouble:(double)double
 {
   v10[2] = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -2885,7 +2885,7 @@
   if (v5)
   {
     v10[1] = &unk_2880409DB;
-    *v10 = a3;
+    *v10 = double;
     sub_270312D2C(&v5->_value._storage, v10);
     sub_270311D34(v10);
     objc_storeStrong(&v6->_type, @"double");
@@ -2949,22 +2949,22 @@
   return 0;
 }
 
-- (uint64_t)initWithDouble4x4:(__int128 *)a3
+- (uint64_t)initWithDouble4x4:(__int128 *)double4x4
 {
   v17 = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
-  v15.receiver = a1;
+  v15.receiver = self;
   v15.super_class = USKData;
   if ([(USKData *)&v15 init])
   {
-    v14 = a3[1];
-    v9 = a3[2];
-    v10 = *a3;
-    v12 = a3[5];
-    v13 = a3[3];
-    v11 = a3[7];
-    v7 = a3[6];
-    v8 = a3[4];
+    v14 = double4x4[1];
+    v9 = double4x4[2];
+    v10 = *double4x4;
+    v12 = double4x4[5];
+    v13 = double4x4[3];
+    v11 = double4x4[7];
+    v7 = double4x4[6];
+    v8 = double4x4[4];
     v16 = &off_28803FE40 + 2;
     operator new();
   }
@@ -2973,11 +2973,11 @@
   return 0;
 }
 
-- (uint64_t)initWithQuatf:(void *)a1
+- (uint64_t)initWithQuatf:(void *)quatf
 {
   v8 = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
-  v6.receiver = a1;
+  v6.receiver = quatf;
   v6.super_class = USKData;
   if ([(USKData *)&v6 init])
   {
@@ -2989,7 +2989,7 @@
   return 0;
 }
 
-- (USKData)initWithIntArray:(int *)a3 count:(unint64_t)a4
+- (USKData)initWithIntArray:(int *)array count:(unint64_t)count
 {
   v13 = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -2999,9 +2999,9 @@
   {
     __dst = 0;
     memset(v9, 0, sizeof(v9));
-    sub_27030E054(v9, a4);
+    sub_27030E054(v9, count);
     sub_270310DE0(v9);
-    memcpy(__dst, a3, 4 * a4);
+    memcpy(__dst, array, 4 * count);
     v12 = &off_288040CB8;
     sub_27032C360();
   }
@@ -3010,7 +3010,7 @@
   return 0;
 }
 
-- (USKData)initWithUIntArray:(unsigned int *)a3 count:(unint64_t)a4
+- (USKData)initWithUIntArray:(unsigned int *)array count:(unint64_t)count
 {
   v13 = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -3020,9 +3020,9 @@
   {
     __dst = 0;
     memset(v9, 0, sizeof(v9));
-    sub_2703208AC(v9, a4);
+    sub_2703208AC(v9, count);
     sub_27032C7E0(v9);
-    memcpy(__dst, a3, 4 * a4);
+    memcpy(__dst, array, 4 * count);
     v12 = &off_288040D70;
     sub_27032C360();
   }
@@ -3031,7 +3031,7 @@
   return 0;
 }
 
-- (USKData)initWithQuatfArray:(id *)a3 count:(unint64_t)a4
+- (USKData)initWithQuatfArray:(id *)array count:(unint64_t)count
 {
   v15 = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -3041,18 +3041,18 @@
   {
     v12 = 0;
     memset(v11, 0, sizeof(v11));
-    sub_270320A2C(v11, a4);
-    if (a4)
+    sub_270320A2C(v11, count);
+    if (count)
     {
       v7 = 0;
       do
       {
-        v10 = *(a3 + v7);
+        v10 = *(array + v7);
         sub_270328150(v11);
         *(v12 + 16 * v7++) = v10;
       }
 
-      while (a4 != v7);
+      while (count != v7);
     }
 
     v14 = off_288040E28;
@@ -3063,22 +3063,22 @@
   return 0;
 }
 
-- (USKData)initWithStringArray:(id)a3
+- (USKData)initWithStringArray:(id)array
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   sub_27035CAC4();
   v26.receiver = self;
   v26.super_class = USKData;
   if ([(USKData *)&v26 init])
   {
     v25 = 0;
-    v8 = objc_msgSend_count(v4, v5, v6, v7, 0, 0, 0, 0);
+    v8 = objc_msgSend_count(arrayCopy, v5, v6, v7, 0, 0, 0, 0);
     sub_270321124(&v24, v8);
     v12 = 0;
-    for (i = 0; i < objc_msgSend_count(v4, v9, v10, v11); ++i)
+    for (i = 0; i < objc_msgSend_count(arrayCopy, v9, v10, v11); ++i)
     {
-      v16 = objc_msgSend_objectAtIndexedSubscript_(v4, v14, i, v15);
+      v16 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v14, i, v15);
       v17 = v16;
       v21 = objc_msgSend_UTF8String(v16, v18, v19, v20);
       sub_27032D564(&v24);
@@ -3095,22 +3095,22 @@
   return 0;
 }
 
-- (USKData)initWithTokenArray:(id)a3
+- (USKData)initWithTokenArray:(id)array
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   sub_27035CAC4();
   v26.receiver = self;
   v26.super_class = USKData;
   if ([(USKData *)&v26 init])
   {
     v25 = 0;
-    v8 = objc_msgSend_count(v4, v5, v6, v7, 0, 0, 0, 0);
+    v8 = objc_msgSend_count(arrayCopy, v5, v6, v7, 0, 0, 0, 0);
     sub_2703211BC(&v24, v8);
     v12 = 0;
-    for (i = 0; i < objc_msgSend_count(v4, v9, v10, v11); ++i)
+    for (i = 0; i < objc_msgSend_count(arrayCopy, v9, v10, v11); ++i)
     {
-      v16 = objc_msgSend_objectAtIndexedSubscript_(v4, v14, i, v15);
+      v16 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v14, i, v15);
       v20 = v16;
       if (v16)
       {
@@ -3154,10 +3154,10 @@
   return 0;
 }
 
-- (USKData)initWithResourcePathArray:(id)a3
+- (USKData)initWithResourcePathArray:(id)array
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   sub_27035CAC4();
   v31.receiver = self;
   v31.super_class = USKData;
@@ -3165,12 +3165,12 @@
   {
     v30 = 0;
     memset(v29, 0, sizeof(v29));
-    v8 = objc_msgSend_count(v4, v5, v6, v7);
+    v8 = objc_msgSend_count(arrayCopy, v5, v6, v7);
     sub_270321314(v29, v8);
     v12 = 0;
-    for (i = 0; i < objc_msgSend_count(v4, v9, v10, v11); ++i)
+    for (i = 0; i < objc_msgSend_count(arrayCopy, v9, v10, v11); ++i)
     {
-      v16 = objc_msgSend_objectAtIndexedSubscript_(v4, v14, i, v15);
+      v16 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v14, i, v15);
       v17 = v16;
       v21 = objc_msgSend_UTF8String(v16, v18, v19, v20);
       sub_2703122D4(v27, v21);
@@ -3218,7 +3218,7 @@
   return 0;
 }
 
-- (USKData)initWithFloatArray:(float *)a3 count:(unint64_t)a4
+- (USKData)initWithFloatArray:(float *)array count:(unint64_t)count
 {
   v13 = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -3228,9 +3228,9 @@
   {
     __dst = 0;
     memset(v9, 0, sizeof(v9));
-    sub_2703218F4(v9, a4);
+    sub_2703218F4(v9, count);
     sub_27032F7DC(v9);
-    memcpy(__dst, a3, 4 * a4);
+    memcpy(__dst, array, 4 * count);
     v12 = &off_2880411D8;
     sub_27032FBF4();
   }
@@ -3239,7 +3239,7 @@
   return 0;
 }
 
-- (USKData)initWithFloat2Array:(USKData *)self count:(SEL)a2
+- (USKData)initWithFloat2Array:(USKData *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -3270,7 +3270,7 @@
   return 0;
 }
 
-- (USKData)initWithFloat3Array:(USKData *)self count:(SEL)a2
+- (USKData)initWithFloat3Array:(USKData *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -3310,7 +3310,7 @@
   return 0;
 }
 
-- (USKData)initWithFloat4Array:(USKData *)self count:(SEL)a2
+- (USKData)initWithFloat4Array:(USKData *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -3341,7 +3341,7 @@
   return 0;
 }
 
-- (USKData)initWithDoubleArray:(double *)a3 count:(unint64_t)a4
+- (USKData)initWithDoubleArray:(double *)array count:(unint64_t)count
 {
   v13 = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -3351,9 +3351,9 @@
   {
     __dst = 0;
     memset(v9, 0, sizeof(v9));
-    sub_270321E6C(v9, a4);
+    sub_270321E6C(v9, count);
     sub_270330518(v9);
-    memcpy(__dst, a3, 8 * a4);
+    memcpy(__dst, array, 8 * count);
     v12 = &off_288041348;
     sub_27032FBF4();
   }
@@ -3362,7 +3362,7 @@
   return 0;
 }
 
-- (USKData)initWithDouble2Array:(USKData *)self count:(SEL)a2
+- (USKData)initWithDouble2Array:(USKData *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -3393,7 +3393,7 @@
   return 0;
 }
 
-- (USKData)initWithDouble3Array:(USKData *)self count:(SEL)a2
+- (USKData)initWithDouble3Array:(USKData *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -3434,7 +3434,7 @@
   return 0;
 }
 
-- (USKData)initWithDouble4Array:(USKData *)self count:(SEL)a2
+- (USKData)initWithDouble4Array:(USKData *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -3474,7 +3474,7 @@
   return 0;
 }
 
-- (USKData)initWithDouble4x4Array:(id *)a3 count:(unint64_t)a4
+- (USKData)initWithDouble4x4Array:(id *)array count:(unint64_t)count
 {
   v31 = *MEMORY[0x277D85DE8];
   sub_27035CAC4();
@@ -3484,21 +3484,21 @@
   {
     v28 = 0;
     memset(v27, 0, sizeof(v27));
-    sub_27032253C(v27, a4);
-    if (a4)
+    sub_27032253C(v27, count);
+    if (count)
     {
       v7 = 0;
-      v8 = a4;
+      countCopy = count;
       do
       {
-        v25 = *(a3 + v7 + 48);
-        v26 = *(a3 + v7 + 16);
-        v21 = *(a3 + v7 + 32);
-        v22 = *(a3 + v7);
-        v23 = *(a3 + v7 + 112);
-        v24 = *(a3 + v7 + 80);
-        v19 = *(a3 + v7 + 96);
-        v20 = *(a3 + v7 + 64);
+        v25 = *(array + v7 + 48);
+        v26 = *(array + v7 + 16);
+        v21 = *(array + v7 + 32);
+        v22 = *(array + v7);
+        v23 = *(array + v7 + 112);
+        v24 = *(array + v7 + 80);
+        v19 = *(array + v7 + 96);
+        v20 = *(array + v7 + 64);
         sub_270328FBC(v27);
         v9 = (v28 + v7);
         *v9 = v22;
@@ -3526,10 +3526,10 @@
         *v10 = v11;
         v10[1] = v12;
         v7 += 128;
-        --v8;
+        --countCopy;
       }
 
-      while (v8);
+      while (countCopy);
     }
 
     v30 = off_288041628;
@@ -3540,17 +3540,17 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     objc_msgSend_value(v5, v6, v7, v8);
     v9 = sub_2703254C0(&self->_value, v12);

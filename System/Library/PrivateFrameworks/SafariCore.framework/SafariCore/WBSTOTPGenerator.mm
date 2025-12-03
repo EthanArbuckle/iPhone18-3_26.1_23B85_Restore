@@ -1,46 +1,46 @@
 @interface WBSTOTPGenerator
-+ (BOOL)_urlWithComponentsHasValidOtpauthURLScheme:(id)a3;
-+ (id)_base32EncodedStringForKeyData:(id)a3;
-+ (id)_keyDataForBase32EncodedString:(id)a3;
-+ (id)countdownStringForMultipleCodesWithSecondsRemaining:(int64_t)a3;
-+ (id)countdownStringForSecondsRemaining:(int64_t)a3;
-+ (id)shortCountdownStringForSecondsRemaining:(int64_t)a3;
-- (BOOL)generatesIdenticalCodesToGenerator:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)_urlWithComponentsHasValidOtpauthURLScheme:(id)scheme;
++ (id)_base32EncodedStringForKeyData:(id)data;
++ (id)_keyDataForBase32EncodedString:(id)string;
++ (id)countdownStringForMultipleCodesWithSecondsRemaining:(int64_t)remaining;
++ (id)countdownStringForSecondsRemaining:(int64_t)remaining;
++ (id)shortCountdownStringForSecondsRemaining:(int64_t)remaining;
+- (BOOL)generatesIdenticalCodesToGenerator:(id)generator;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)heuristicallyDeterminedServiceNameHints;
 - (NSDictionary)dictionaryRepresentation;
 - (NSURL)exportableURL;
-- (WBSTOTPGenerator)initWithASCIIEncodedKey:(id)a3 initialDate:(id)a4 codeGenerationPeriod:(unint64_t)a5 numberOfDigits:(unint64_t)a6 algorithm:(unint64_t)a7;
-- (WBSTOTPGenerator)initWithBase32EncodedKey:(id)a3;
-- (WBSTOTPGenerator)initWithBase32EncodedKey:(id)a3 initialDate:(id)a4 codeGenerationPeriod:(unint64_t)a5 numberOfDigits:(unint64_t)a6 algorithm:(unint64_t)a7;
-- (WBSTOTPGenerator)initWithCoder:(id)a3;
-- (WBSTOTPGenerator)initWithDictionaryRepresentation:(id)a3;
-- (WBSTOTPGenerator)initWithKeyData:(id)a3 initialDate:(id)a4 codeGenerationPeriod:(unint64_t)a5 numberOfDigits:(unint64_t)a6 algorithm:(unint64_t)a7 issuer:(id)a8 accountName:(id)a9 originalURL:(id)a10;
-- (WBSTOTPGenerator)initWithOTPAuthURL:(id)a3;
-- (WBSTOTPGenerator)initWithUserProvidedString:(id)a3;
-- (id)_stringForAlgorithm:(unint64_t)a3;
-- (id)codeForDate:(id)a3;
+- (WBSTOTPGenerator)initWithASCIIEncodedKey:(id)key initialDate:(id)date codeGenerationPeriod:(unint64_t)period numberOfDigits:(unint64_t)digits algorithm:(unint64_t)algorithm;
+- (WBSTOTPGenerator)initWithBase32EncodedKey:(id)key;
+- (WBSTOTPGenerator)initWithBase32EncodedKey:(id)key initialDate:(id)date codeGenerationPeriod:(unint64_t)period numberOfDigits:(unint64_t)digits algorithm:(unint64_t)algorithm;
+- (WBSTOTPGenerator)initWithCoder:(id)coder;
+- (WBSTOTPGenerator)initWithDictionaryRepresentation:(id)representation;
+- (WBSTOTPGenerator)initWithKeyData:(id)data initialDate:(id)date codeGenerationPeriod:(unint64_t)period numberOfDigits:(unint64_t)digits algorithm:(unint64_t)algorithm issuer:(id)issuer accountName:(id)name originalURL:(id)self0;
+- (WBSTOTPGenerator)initWithOTPAuthURL:(id)l;
+- (WBSTOTPGenerator)initWithUserProvidedString:(id)string;
+- (id)_stringForAlgorithm:(unint64_t)algorithm;
+- (id)codeForDate:(id)date;
 - (id)description;
-- (id)startDateOfIntervalContainingDate:(id)a3;
-- (unint64_t)_HMACLengthForAlgorithm:(unint64_t)a3;
-- (unint64_t)_algorithmForQueryItemValue:(id)a3;
+- (id)startDateOfIntervalContainingDate:(id)date;
+- (unint64_t)_HMACLengthForAlgorithm:(unint64_t)algorithm;
+- (unint64_t)_algorithmForQueryItemValue:(id)value;
 - (unint64_t)hash;
-- (unsigned)_commonCryptoAlgorithmForTOTPAlgorithm:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unsigned)_commonCryptoAlgorithmForTOTPAlgorithm:(unint64_t)algorithm;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSTOTPGenerator
 
-+ (id)_keyDataForBase32EncodedString:(id)a3
++ (id)_keyDataForBase32EncodedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (_keyDataForBase32EncodedString__onceToken[0] != -1)
   {
     +[WBSTOTPGenerator _keyDataForBase32EncodedString:];
   }
 
-  v4 = [v3 UTF8String];
-  v5 = strlen(v4);
+  uTF8String = [stringCopy UTF8String];
+  v5 = strlen(uTF8String);
   if (v5)
   {
     v6 = v5;
@@ -49,7 +49,7 @@
     v9 = 0;
     do
     {
-      v11 = *v4++;
+      v11 = *uTF8String++;
       v10 = v11;
       if (v11 != 61 && memchr("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567", v10, 0x21uLL))
       {
@@ -136,11 +136,11 @@ void __51__WBSTOTPGenerator__keyDataForBase32EncodedString___block_invoke()
   while (v0 != 32);
 }
 
-+ (id)_base32EncodedStringForKeyData:(id)a3
++ (id)_base32EncodedStringForKeyData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v5 = [dataCopy length];
   v6 = (2 * (((v5 + 4) * 0xCCCCCCCCCCCCCCCDLL) >> 64)) & 0xFFFFFFFFFFFFFFF8;
   if (v6)
   {
@@ -155,14 +155,14 @@ void __51__WBSTOTPGenerator__keyDataForBase32EncodedString___block_invoke()
         v11 = v10 / 5;
         v12 = v10 % 5;
         v13 = v10 % 5 + 3;
-        v8[v10 / 5] |= *v4 >> v13;
+        v8[v10 / 5] |= *bytes >> v13;
         if (v10 % 5 >= 3)
         {
           v13 = v12 - 2;
-          v8[++v11] |= (*v4 >> (v12 - 2)) & 0x1F;
+          v8[++v11] |= (*bytes >> (v12 - 2)) & 0x1F;
         }
 
-        v14 = *v4++;
+        v14 = *bytes++;
         v8[v11 + 1] |= (v14 << (5 - v13)) & 0x1F;
         v10 += 8;
         --v7;
@@ -203,14 +203,14 @@ void __51__WBSTOTPGenerator__keyDataForBase32EncodedString___block_invoke()
   return v15;
 }
 
-+ (BOOL)_urlWithComponentsHasValidOtpauthURLScheme:(id)a3
++ (BOOL)_urlWithComponentsHasValidOtpauthURLScheme:(id)scheme
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  if ([v4 caseInsensitiveCompare:@"otpauth"])
+  schemeCopy = scheme;
+  scheme = [schemeCopy scheme];
+  if ([scheme caseInsensitiveCompare:@"otpauth"])
   {
-    v5 = [v3 scheme];
-    v6 = [v5 caseInsensitiveCompare:@"apple-otpauth"] == 0;
+    scheme2 = [schemeCopy scheme];
+    v6 = [scheme2 caseInsensitiveCompare:@"apple-otpauth"] == 0;
   }
 
   else
@@ -221,32 +221,32 @@ void __51__WBSTOTPGenerator__keyDataForBase32EncodedString___block_invoke()
   return v6;
 }
 
-- (WBSTOTPGenerator)initWithOTPAuthURL:(id)a3
+- (WBSTOTPGenerator)initWithOTPAuthURL:(id)l
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v4 resolvingAgainstBaseURL:1];
-  v51 = self;
+  lCopy = l;
+  v5 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:lCopy resolvingAgainstBaseURL:1];
+  selfCopy = self;
   if (([objc_opt_class() _urlWithComponentsHasValidOtpauthURLScheme:v5] & 1) == 0)
   {
     v9 = WBS_LOG_CHANNEL_PREFIXPasswords();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(WBSTOTPGenerator *)v9 initWithOTPAuthURL:v4];
+      [(WBSTOTPGenerator *)v9 initWithOTPAuthURL:lCopy];
     }
 
     goto LABEL_7;
   }
 
-  v6 = [v5 host];
-  v7 = [v6 caseInsensitiveCompare:@"totp"];
+  host = [v5 host];
+  v7 = [host caseInsensitiveCompare:@"totp"];
 
   if (v7)
   {
     v8 = WBS_LOG_CHANNEL_PREFIXPasswords();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(WBSTOTPGenerator *)v8 initWithOTPAuthURL:v4];
+      [(WBSTOTPGenerator *)v8 initWithOTPAuthURL:lCopy];
     }
 
 LABEL_7:
@@ -255,56 +255,56 @@ LABEL_7:
   }
 
   v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:0.0];
-  v14 = [v5 path];
-  v44 = v14;
-  if (v14)
+  path = [v5 path];
+  v44 = path;
+  if (path)
   {
-    v15 = [v14 componentsSeparatedByString:@":"];
+    v15 = [path componentsSeparatedByString:@":"];
     if ([v15 count] == 2)
     {
-      v16 = [v15 firstObject];
-      v17 = [v15 lastObject];
+      firstObject = [v15 firstObject];
+      lastObject = [v15 lastObject];
     }
 
     else
     {
-      v17 = 0;
-      v16 = 0;
+      lastObject = 0;
+      firstObject = 0;
     }
 
-    v48 = v16;
+    v48 = firstObject;
   }
 
   else
   {
-    v17 = 0;
+    lastObject = 0;
     v48 = 0;
   }
 
-  v43 = v17;
+  v43 = lastObject;
   v45 = v13;
   v46 = v5;
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v18 = [v5 queryItems];
-  v19 = [v18 countByEnumeratingWithState:&v52 objects:v58 count:16];
+  queryItems = [v5 queryItems];
+  v19 = [queryItems countByEnumeratingWithState:&v52 objects:v58 count:16];
   if (!v19)
   {
     v21 = 0;
-    v49 = 6;
+    integerValue = 6;
     v50 = 0;
-    v47 = 30;
+    integerValue2 = 30;
     goto LABEL_38;
   }
 
   v20 = v19;
   v21 = 0;
   v22 = *v53;
-  v49 = 6;
+  integerValue = 6;
   v50 = 0;
-  v47 = 30;
+  integerValue2 = 30;
   do
   {
     v23 = 0;
@@ -312,61 +312,61 @@ LABEL_7:
     {
       if (*v53 != v22)
       {
-        objc_enumerationMutation(v18);
+        objc_enumerationMutation(queryItems);
       }
 
       v24 = *(*(&v52 + 1) + 8 * v23);
-      v25 = [v24 name];
-      if (![v25 caseInsensitiveCompare:@"secret"])
+      name = [v24 name];
+      if (![name caseInsensitiveCompare:@"secret"])
       {
-        v29 = [v24 value];
-        v30 = [v29 uppercaseString];
+        value = [v24 value];
+        uppercaseString = [value uppercaseString];
 
-        v21 = v30;
+        v21 = uppercaseString;
         goto LABEL_32;
       }
 
-      if (![v25 caseInsensitiveCompare:@"algorithm"])
+      if (![name caseInsensitiveCompare:@"algorithm"])
       {
-        v31 = [v24 value];
-        v50 = [(WBSTOTPGenerator *)v51 _algorithmForQueryItemValue:v31];
+        value2 = [v24 value];
+        v50 = [(WBSTOTPGenerator *)selfCopy _algorithmForQueryItemValue:value2];
 LABEL_31:
 
         goto LABEL_32;
       }
 
-      if (![v25 caseInsensitiveCompare:@"digits"])
+      if (![name caseInsensitiveCompare:@"digits"])
       {
-        v31 = [v24 value];
-        v49 = [v31 integerValue];
+        value2 = [v24 value];
+        integerValue = [value2 integerValue];
         goto LABEL_31;
       }
 
-      if (![v25 caseInsensitiveCompare:@"period"])
+      if (![name caseInsensitiveCompare:@"period"])
       {
-        v31 = [v24 value];
-        v47 = [v31 integerValue];
+        value2 = [v24 value];
+        integerValue2 = [value2 integerValue];
         goto LABEL_31;
       }
 
-      if ([v25 caseInsensitiveCompare:@"issuer"])
+      if ([name caseInsensitiveCompare:@"issuer"])
       {
         v26 = WBS_LOG_CHANNEL_PREFIXPasswords();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
           v27 = v26;
-          v28 = [v4 absoluteString];
+          absoluteString = [lCopy absoluteString];
           *buf = 138739971;
-          v57 = v28;
+          v57 = absoluteString;
           _os_log_impl(&dword_1B8447000, v27, OS_LOG_TYPE_INFO, "Found invalid parameter in otpauth URL. url=%{sensitive}@", buf, 0xCu);
         }
       }
 
       else
       {
-        v32 = [v24 value];
+        value3 = [v24 value];
 
-        v48 = v32;
+        v48 = value3;
       }
 
 LABEL_32:
@@ -375,7 +375,7 @@ LABEL_32:
     }
 
     while (v20 != v23);
-    v33 = [v18 countByEnumeratingWithState:&v52 objects:v58 count:16];
+    v33 = [queryItems countByEnumeratingWithState:&v52 objects:v58 count:16];
     v20 = v33;
   }
 
@@ -385,8 +385,8 @@ LABEL_38:
   if ([v21 length])
   {
     v5 = v46;
-    v34 = [v46 scheme];
-    v35 = [v34 isEqualToString:@"apple-otpauth"];
+    scheme = [v46 scheme];
+    v35 = [scheme isEqualToString:@"apple-otpauth"];
 
     v36 = v45;
     v37 = v48;
@@ -403,21 +403,21 @@ LABEL_38:
       [v46 setScheme:@"otpauth"];
       v40 = [v46 URL];
 
-      v4 = v40;
+      lCopy = v40;
     }
 
     v41 = [objc_opt_class() _keyDataForBase32EncodedString:v21];
-    v10 = [(WBSTOTPGenerator *)v51 initWithKeyData:v41 initialDate:v45 codeGenerationPeriod:v47 numberOfDigits:v49 algorithm:v50 issuer:v48 accountName:v43 originalURL:v4];
+    v10 = [(WBSTOTPGenerator *)selfCopy initWithKeyData:v41 initialDate:v45 codeGenerationPeriod:integerValue2 numberOfDigits:integerValue algorithm:v50 issuer:v48 accountName:v43 originalURL:lCopy];
 
     if (v10)
     {
       v10 = v10;
-      v51 = v10;
+      selfCopy = v10;
     }
 
     else
     {
-      v51 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -430,7 +430,7 @@ LABEL_38:
     v38 = v43;
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
-      [(WBSTOTPGenerator *)v42 initWithOTPAuthURL:v4];
+      [(WBSTOTPGenerator *)v42 initWithOTPAuthURL:lCopy];
     }
 
     v10 = 0;
@@ -441,82 +441,82 @@ LABEL_8:
   return v10;
 }
 
-- (WBSTOTPGenerator)initWithASCIIEncodedKey:(id)a3 initialDate:(id)a4 codeGenerationPeriod:(unint64_t)a5 numberOfDigits:(unint64_t)a6 algorithm:(unint64_t)a7
+- (WBSTOTPGenerator)initWithASCIIEncodedKey:(id)key initialDate:(id)date codeGenerationPeriod:(unint64_t)period numberOfDigits:(unint64_t)digits algorithm:(unint64_t)algorithm
 {
-  v12 = a4;
-  v13 = [a3 dataUsingEncoding:1];
-  v14 = [(WBSTOTPGenerator *)self initWithKeyData:v13 initialDate:v12 codeGenerationPeriod:a5 numberOfDigits:a6 algorithm:a7 issuer:0 accountName:0 originalURL:0];
+  dateCopy = date;
+  v13 = [key dataUsingEncoding:1];
+  v14 = [(WBSTOTPGenerator *)self initWithKeyData:v13 initialDate:dateCopy codeGenerationPeriod:period numberOfDigits:digits algorithm:algorithm issuer:0 accountName:0 originalURL:0];
 
   return v14;
 }
 
-- (WBSTOTPGenerator)initWithBase32EncodedKey:(id)a3 initialDate:(id)a4 codeGenerationPeriod:(unint64_t)a5 numberOfDigits:(unint64_t)a6 algorithm:(unint64_t)a7
+- (WBSTOTPGenerator)initWithBase32EncodedKey:(id)key initialDate:(id)date codeGenerationPeriod:(unint64_t)period numberOfDigits:(unint64_t)digits algorithm:(unint64_t)algorithm
 {
-  v12 = a4;
-  v13 = a3;
+  dateCopy = date;
+  keyCopy = key;
   v14 = objc_opt_class();
-  v15 = [v13 uppercaseString];
+  uppercaseString = [keyCopy uppercaseString];
 
-  v16 = [v14 _keyDataForBase32EncodedString:v15];
-  v17 = [(WBSTOTPGenerator *)self initWithKeyData:v16 initialDate:v12 codeGenerationPeriod:a5 numberOfDigits:a6 algorithm:a7 issuer:0 accountName:0 originalURL:0];
+  v16 = [v14 _keyDataForBase32EncodedString:uppercaseString];
+  v17 = [(WBSTOTPGenerator *)self initWithKeyData:v16 initialDate:dateCopy codeGenerationPeriod:period numberOfDigits:digits algorithm:algorithm issuer:0 accountName:0 originalURL:0];
 
   return v17;
 }
 
-- (WBSTOTPGenerator)initWithBase32EncodedKey:(id)a3
+- (WBSTOTPGenerator)initWithBase32EncodedKey:(id)key
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  keyCopy = key;
   v6 = [v4 dateWithTimeIntervalSince1970:0.0];
-  v7 = [(WBSTOTPGenerator *)self initWithBase32EncodedKey:v5 initialDate:v6 codeGenerationPeriod:30 numberOfDigits:6 algorithm:0];
+  v7 = [(WBSTOTPGenerator *)self initWithBase32EncodedKey:keyCopy initialDate:v6 codeGenerationPeriod:30 numberOfDigits:6 algorithm:0];
 
   return v7;
 }
 
-- (WBSTOTPGenerator)initWithUserProvidedString:(id)a3
+- (WBSTOTPGenerator)initWithUserProvidedString:(id)string
 {
-  v4 = [a3 safari_stringByTrimmingWhitespace];
-  if ([v4 length])
+  safari_stringByTrimmingWhitespace = [string safari_stringByTrimmingWhitespace];
+  if ([safari_stringByTrimmingWhitespace length])
   {
-    if (([v4 safari_hasCaseInsensitivePrefix:@"otpauth:"] & 1) != 0 || objc_msgSend(v4, "safari_hasCaseInsensitivePrefix:", @"apple-otpauth:"))
+    if (([safari_stringByTrimmingWhitespace safari_hasCaseInsensitivePrefix:@"otpauth:"] & 1) != 0 || objc_msgSend(safari_stringByTrimmingWhitespace, "safari_hasCaseInsensitivePrefix:", @"apple-otpauth:"))
     {
-      v5 = [MEMORY[0x1E695DFF8] URLWithString:v4];
+      v5 = [MEMORY[0x1E695DFF8] URLWithString:safari_stringByTrimmingWhitespace];
       self = [(WBSTOTPGenerator *)self initWithOTPAuthURL:v5];
 
-      v6 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      self = [(WBSTOTPGenerator *)self initWithBase32EncodedKey:v4];
-      v6 = self;
+      self = [(WBSTOTPGenerator *)self initWithBase32EncodedKey:safari_stringByTrimmingWhitespace];
+      selfCopy2 = self;
     }
   }
 
   else
   {
-    v6 = 0;
+    selfCopy2 = 0;
   }
 
-  return v6;
+  return selfCopy2;
 }
 
-- (WBSTOTPGenerator)initWithKeyData:(id)a3 initialDate:(id)a4 codeGenerationPeriod:(unint64_t)a5 numberOfDigits:(unint64_t)a6 algorithm:(unint64_t)a7 issuer:(id)a8 accountName:(id)a9 originalURL:(id)a10
+- (WBSTOTPGenerator)initWithKeyData:(id)data initialDate:(id)date codeGenerationPeriod:(unint64_t)period numberOfDigits:(unint64_t)digits algorithm:(unint64_t)algorithm issuer:(id)issuer accountName:(id)name originalURL:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  if ([v16 length] && (v35.receiver = self, v35.super_class = WBSTOTPGenerator, (self = -[WBSTOTPGenerator init](&v35, sel_init)) != 0))
+  dataCopy = data;
+  dateCopy = date;
+  issuerCopy = issuer;
+  nameCopy = name;
+  lCopy = l;
+  if ([dataCopy length] && (v35.receiver = self, v35.super_class = WBSTOTPGenerator, (self = -[WBSTOTPGenerator init](&v35, sel_init)) != 0))
   {
-    v21 = [v16 copy];
+    v21 = [dataCopy copy];
     key = self->_key;
     self->_key = v21;
 
-    if (v17)
+    if (dateCopy)
     {
-      v23 = v17;
+      v23 = dateCopy;
     }
 
     else
@@ -527,43 +527,43 @@ LABEL_8:
     initialDate = self->_initialDate;
     self->_initialDate = v23;
 
-    v26 = 30;
-    if (a5 - 5 < 0x128)
+    periodCopy = 30;
+    if (period - 5 < 0x128)
     {
-      v26 = a5;
+      periodCopy = period;
     }
 
-    self->_codeGenerationPeriod = v26;
-    self->_algorithm = a7;
-    v27 = 6;
-    if (a6 - 5 < 0xB)
+    self->_codeGenerationPeriod = periodCopy;
+    self->_algorithm = algorithm;
+    digitsCopy = 6;
+    if (digits - 5 < 0xB)
     {
-      v27 = a6;
+      digitsCopy = digits;
     }
 
-    self->_numberOfDigitsInCode = v27;
-    v28 = [v18 copy];
+    self->_numberOfDigitsInCode = digitsCopy;
+    v28 = [issuerCopy copy];
     issuer = self->_issuer;
     self->_issuer = v28;
 
-    v30 = [v19 copy];
+    v30 = [nameCopy copy];
     accountName = self->_accountName;
     self->_accountName = v30;
 
-    v32 = [v20 copy];
+    v32 = [lCopy copy];
     originalURL = self->_originalURL;
     self->_originalURL = v32;
 
     self = self;
-    v24 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
 - (NSURL)exportableURL
@@ -591,13 +591,13 @@ LABEL_8:
     v24[1] = v9;
     v10 = MEMORY[0x1E696AF60];
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_numberOfDigitsInCode];
-    v12 = [v11 stringValue];
-    v13 = [v10 queryItemWithName:@"digits" value:v12];
+    stringValue = [v11 stringValue];
+    v13 = [v10 queryItemWithName:@"digits" value:stringValue];
     v24[2] = v13;
     v14 = MEMORY[0x1E696AF60];
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_codeGenerationPeriod];
-    v16 = [v15 stringValue];
-    v17 = [v14 queryItemWithName:@"period" value:v16];
+    stringValue2 = [v15 stringValue];
+    v17 = [v14 queryItemWithName:@"period" value:stringValue2];
     v24[3] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
     [v5 setQueryItems:v18];
@@ -610,10 +610,10 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -623,7 +623,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSData *)self->_key isEqualToData:v5->_key]&& [(NSDate *)self->_initialDate isEqualToDate:v5->_initialDate]&& self->_codeGenerationPeriod == v5->_codeGenerationPeriod && self->_algorithm == v5->_algorithm && self->_numberOfDigitsInCode == v5->_numberOfDigitsInCode && WBSIsEqual(self->_issuer, v5->_issuer) && WBSIsEqual(self->_accountName, v5->_accountName))
       {
         v6 = WBSIsEqual(self->_originalURL, v5->_originalURL);
@@ -691,40 +691,40 @@ LABEL_5:
   return issuer;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   issuer = self->_issuer;
-  v5 = a3;
-  [v5 encodeObject:issuer forKey:@"issuer"];
-  [v5 encodeObject:self->_accountName forKey:@"accountName"];
-  [v5 encodeObject:self->_initialDate forKey:@"_initialDate"];
-  [v5 encodeInteger:self->_codeGenerationPeriod forKey:@"period"];
-  [v5 encodeInteger:self->_algorithm forKey:@"algorithm"];
-  [v5 encodeInteger:self->_numberOfDigitsInCode forKey:@"digits"];
-  [v5 encodeObject:self->_originalURL forKey:@"originalURL"];
-  [v5 encodeObject:self->_key forKey:@"secret"];
+  coderCopy = coder;
+  [coderCopy encodeObject:issuer forKey:@"issuer"];
+  [coderCopy encodeObject:self->_accountName forKey:@"accountName"];
+  [coderCopy encodeObject:self->_initialDate forKey:@"_initialDate"];
+  [coderCopy encodeInteger:self->_codeGenerationPeriod forKey:@"period"];
+  [coderCopy encodeInteger:self->_algorithm forKey:@"algorithm"];
+  [coderCopy encodeInteger:self->_numberOfDigitsInCode forKey:@"digits"];
+  [coderCopy encodeObject:self->_originalURL forKey:@"originalURL"];
+  [coderCopy encodeObject:self->_key forKey:@"secret"];
 }
 
-- (WBSTOTPGenerator)initWithCoder:(id)a3
+- (WBSTOTPGenerator)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"issuer"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_initialDate"];
-  v8 = [v4 decodeIntegerForKey:@"period"];
-  v9 = [v4 decodeIntegerForKey:@"algorithm"];
-  v10 = [v4 decodeIntegerForKey:@"digits"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalURL"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secret"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"issuer"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_initialDate"];
+  v8 = [coderCopy decodeIntegerForKey:@"period"];
+  v9 = [coderCopy decodeIntegerForKey:@"algorithm"];
+  v10 = [coderCopy decodeIntegerForKey:@"digits"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalURL"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secret"];
 
   v13 = [(WBSTOTPGenerator *)self initWithKeyData:v12 initialDate:v7 codeGenerationPeriod:v8 numberOfDigits:v10 algorithm:v9 issuer:v5 accountName:v6 originalURL:v11];
   return v13;
 }
 
-+ (id)countdownStringForSecondsRemaining:(int64_t)a3
++ (id)countdownStringForSecondsRemaining:(int64_t)remaining
 {
   v4 = MEMORY[0x1E696AEC0];
-  if (a3 == 1)
+  if (remaining == 1)
   {
     v5 = @"This code is valid for the next %zu second.";
   }
@@ -735,39 +735,39 @@ LABEL_5:
   }
 
   v6 = _WBSLocalizedString(v5, &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-  v7 = [v4 localizedStringWithFormat:v6, a3];
+  remaining = [v4 localizedStringWithFormat:v6, remaining];
 
   v8 = _WBSLocalizedString(@"A new code will be generated when it expires.", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-  v9 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%@\n%@", v7, v8];
+  v9 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%@\n%@", remaining, v8];
 
   return v9;
 }
 
-+ (id)countdownStringForMultipleCodesWithSecondsRemaining:(int64_t)a3
++ (id)countdownStringForMultipleCodesWithSecondsRemaining:(int64_t)remaining
 {
-  v3 = [a1 shortCountdownStringForSecondsRemaining:a3];
+  v3 = [self shortCountdownStringForSecondsRemaining:remaining];
   v4 = _WBSLocalizedString(@"Verification codes are valid for a short window. New codes will be generated when they expire.", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
   v5 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%@\n%@", v4, v3];
 
   return v5;
 }
 
-+ (id)shortCountdownStringForSecondsRemaining:(int64_t)a3
++ (id)shortCountdownStringForSecondsRemaining:(int64_t)remaining
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = _WBSLocalizedString(@"%zu seconds left.", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-  v6 = [v4 localizedStringWithFormat:v5, a3];
+  remaining = [v4 localizedStringWithFormat:v5, remaining];
 
-  return v6;
+  return remaining;
 }
 
-- (WBSTOTPGenerator)initWithDictionaryRepresentation:(id)a3
+- (WBSTOTPGenerator)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 objectForKeyedSubscript:@"originalURL"];
+    v5 = [representationCopy objectForKeyedSubscript:@"originalURL"];
     v20 = v5;
     if (v5)
     {
@@ -779,32 +779,32 @@ LABEL_5:
       v6 = 0;
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"secret"];
-    v18 = [v4 objectForKeyedSubscript:@"_initialDate"];
-    v19 = [v4 objectForKeyedSubscript:@"period"];
-    v17 = [v19 unsignedIntegerValue];
-    v9 = [v4 objectForKeyedSubscript:@"digits"];
-    v10 = [v9 unsignedIntegerValue];
-    v11 = [v4 objectForKeyedSubscript:@"algorithm"];
-    v12 = [v11 unsignedIntegerValue];
-    v13 = [v4 objectForKeyedSubscript:@"issuer"];
-    v14 = [v4 objectForKeyedSubscript:@"accountName"];
-    self = [(WBSTOTPGenerator *)self initWithKeyData:v8 initialDate:v18 codeGenerationPeriod:v17 numberOfDigits:v10 algorithm:v12 issuer:v13 accountName:v14 originalURL:v6];
+    v8 = [representationCopy objectForKeyedSubscript:@"secret"];
+    v18 = [representationCopy objectForKeyedSubscript:@"_initialDate"];
+    v19 = [representationCopy objectForKeyedSubscript:@"period"];
+    unsignedIntegerValue = [v19 unsignedIntegerValue];
+    v9 = [representationCopy objectForKeyedSubscript:@"digits"];
+    unsignedIntegerValue2 = [v9 unsignedIntegerValue];
+    v11 = [representationCopy objectForKeyedSubscript:@"algorithm"];
+    unsignedIntegerValue3 = [v11 unsignedIntegerValue];
+    v13 = [representationCopy objectForKeyedSubscript:@"issuer"];
+    v14 = [representationCopy objectForKeyedSubscript:@"accountName"];
+    self = [(WBSTOTPGenerator *)self initWithKeyData:v8 initialDate:v18 codeGenerationPeriod:unsignedIntegerValue numberOfDigits:unsignedIntegerValue2 algorithm:unsignedIntegerValue3 issuer:v13 accountName:v14 originalURL:v6];
 
     if (self)
     {
-      v15 = self;
+      selfCopy = self;
     }
 
-    v7 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy2 = 0;
   }
 
-  return v7;
+  return selfCopy2;
 }
 
 - (NSDictionary)dictionaryRepresentation
@@ -844,8 +844,8 @@ LABEL_5:
   originalURL = self->_originalURL;
   if (originalURL)
   {
-    v14 = [(NSURL *)originalURL absoluteString];
-    [v10 setObject:v14 forKeyedSubscript:@"originalURL"];
+    absoluteString = [(NSURL *)originalURL absoluteString];
+    [v10 setObject:absoluteString forKeyedSubscript:@"originalURL"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -853,17 +853,17 @@ LABEL_5:
   return v10;
 }
 
-- (id)codeForDate:(id)a3
+- (id)codeForDate:(id)date
 {
   v18 = *MEMORY[0x1E69E9840];
   algorithm = self->_algorithm;
-  v5 = a3;
+  dateCopy = date;
   v6 = [(WBSTOTPGenerator *)self _HMACLengthForAlgorithm:algorithm];
   v7 = [(WBSTOTPGenerator *)self _commonCryptoAlgorithmForTOTPAlgorithm:self->_algorithm];
   v8 = v7;
   MEMORY[0x1EEE9AC00](v7);
   v10 = &data - v9;
-  v11 = [(WBSTOTPGenerator *)self _numberOfIntervalsSinceInitialDateForDate:v5];
+  v11 = [(WBSTOTPGenerator *)self _numberOfIntervalsSinceInitialDateForDate:dateCopy];
 
   data = bswap64(v11);
   CCHmac(v8, [(NSData *)self->_key bytes:data], [(NSData *)self->_key length], &data, 8uLL, v10);
@@ -876,9 +876,9 @@ LABEL_5:
   return v13;
 }
 
-- (id)startDateOfIntervalContainingDate:(id)a3
+- (id)startDateOfIntervalContainingDate:(id)date
 {
-  v4 = [(WBSTOTPGenerator *)self _numberOfIntervalsSinceInitialDateForDate:a3];
+  v4 = [(WBSTOTPGenerator *)self _numberOfIntervalsSinceInitialDateForDate:date];
   initialDate = self->_initialDate;
   v6 = (self->_codeGenerationPeriod * v4);
   v7 = MEMORY[0x1E695DF00];
@@ -886,21 +886,21 @@ LABEL_5:
   return [v7 dateWithTimeInterval:initialDate sinceDate:v6];
 }
 
-- (BOOL)generatesIdenticalCodesToGenerator:(id)a3
+- (BOOL)generatesIdenticalCodesToGenerator:(id)generator
 {
-  v4 = a3;
-  v5 = v4 && [(NSData *)self->_key isEqualToData:v4[1]]&& [(NSDate *)self->_initialDate isEqualToDate:v4[5]]&& self->_codeGenerationPeriod == v4[6] && self->_algorithm == v4[7] && self->_numberOfDigitsInCode == v4[8];
+  generatorCopy = generator;
+  v5 = generatorCopy && [(NSData *)self->_key isEqualToData:generatorCopy[1]]&& [(NSDate *)self->_initialDate isEqualToDate:generatorCopy[5]]&& self->_codeGenerationPeriod == generatorCopy[6] && self->_algorithm == generatorCopy[7] && self->_numberOfDigitsInCode == generatorCopy[8];
 
   return v5;
 }
 
-- (unint64_t)_algorithmForQueryItemValue:(id)a3
+- (unint64_t)_algorithmForQueryItemValue:(id)value
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  valueCopy = value;
+  v4 = valueCopy;
+  if (valueCopy)
   {
-    if (![v3 caseInsensitiveCompare:@"sha256"])
+    if (![valueCopy caseInsensitiveCompare:@"sha256"])
     {
       v5 = 1;
       goto LABEL_7;
@@ -919,28 +919,28 @@ LABEL_7:
   return v5;
 }
 
-- (unsigned)_commonCryptoAlgorithmForTOTPAlgorithm:(unint64_t)a3
+- (unsigned)_commonCryptoAlgorithmForTOTPAlgorithm:(unint64_t)algorithm
 {
-  if (a3 == 2)
+  if (algorithm == 2)
   {
     return 4;
   }
 
   else
   {
-    return 2 * (a3 == 1);
+    return 2 * (algorithm == 1);
   }
 }
 
-- (unint64_t)_HMACLengthForAlgorithm:(unint64_t)a3
+- (unint64_t)_HMACLengthForAlgorithm:(unint64_t)algorithm
 {
   v3 = 20;
-  if (a3 == 1)
+  if (algorithm == 1)
   {
     v3 = 32;
   }
 
-  if (a3 == 2)
+  if (algorithm == 2)
   {
     return 64;
   }
@@ -951,15 +951,15 @@ LABEL_7:
   }
 }
 
-- (id)_stringForAlgorithm:(unint64_t)a3
+- (id)_stringForAlgorithm:(unint64_t)algorithm
 {
   v3 = @"SHA1";
-  if (a3 == 1)
+  if (algorithm == 1)
   {
     v3 = @"SHA256";
   }
 
-  if (a3 == 2)
+  if (algorithm == 2)
   {
     return @"SHA512";
   }

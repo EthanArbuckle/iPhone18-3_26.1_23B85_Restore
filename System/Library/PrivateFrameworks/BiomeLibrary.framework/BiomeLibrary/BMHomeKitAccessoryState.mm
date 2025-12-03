@@ -1,38 +1,38 @@
 @interface BMHomeKitAccessoryState
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMHomeKitAccessoryState)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMHomeKitAccessoryState)initWithMediaPropertyType:(id)a3 valueType:(int)a4 dataValue:(id)a5 stringValue:(id)a6 numValue:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMHomeKitAccessoryState)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMHomeKitAccessoryState)initWithMediaPropertyType:(id)type valueType:(int)valueType dataValue:(id)value stringValue:(id)stringValue numValue:(id)numValue;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMHomeKitAccessoryState
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMHomeKitAccessoryState *)self mediaPropertyType];
-    v7 = [v5 mediaPropertyType];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    mediaPropertyType = [(BMHomeKitAccessoryState *)self mediaPropertyType];
+    mediaPropertyType2 = [v5 mediaPropertyType];
+    v8 = mediaPropertyType2;
+    if (mediaPropertyType == mediaPropertyType2)
     {
     }
 
     else
     {
-      v9 = [(BMHomeKitAccessoryState *)self mediaPropertyType];
-      v10 = [v5 mediaPropertyType];
-      v11 = [v9 isEqual:v10];
+      mediaPropertyType3 = [(BMHomeKitAccessoryState *)self mediaPropertyType];
+      mediaPropertyType4 = [v5 mediaPropertyType];
+      v11 = [mediaPropertyType3 isEqual:mediaPropertyType4];
 
       if (!v11)
       {
@@ -40,21 +40,21 @@
       }
     }
 
-    v13 = [(BMHomeKitAccessoryState *)self valueType];
-    if (v13 == [v5 valueType])
+    valueType = [(BMHomeKitAccessoryState *)self valueType];
+    if (valueType == [v5 valueType])
     {
-      v14 = [(BMHomeKitAccessoryState *)self dataValue];
-      v15 = [v5 dataValue];
-      v16 = v15;
-      if (v14 == v15)
+      dataValue = [(BMHomeKitAccessoryState *)self dataValue];
+      dataValue2 = [v5 dataValue];
+      v16 = dataValue2;
+      if (dataValue == dataValue2)
       {
       }
 
       else
       {
-        v17 = [(BMHomeKitAccessoryState *)self dataValue];
-        v18 = [v5 dataValue];
-        v19 = [v17 isEqual:v18];
+        dataValue3 = [(BMHomeKitAccessoryState *)self dataValue];
+        dataValue4 = [v5 dataValue];
+        v19 = [dataValue3 isEqual:dataValue4];
 
         if (!v19)
         {
@@ -62,18 +62,18 @@
         }
       }
 
-      v20 = [(BMHomeKitAccessoryState *)self stringValue];
-      v21 = [v5 stringValue];
-      v22 = v21;
-      if (v20 == v21)
+      stringValue = [(BMHomeKitAccessoryState *)self stringValue];
+      stringValue2 = [v5 stringValue];
+      v22 = stringValue2;
+      if (stringValue == stringValue2)
       {
       }
 
       else
       {
-        v23 = [(BMHomeKitAccessoryState *)self stringValue];
-        v24 = [v5 stringValue];
-        v25 = [v23 isEqual:v24];
+        stringValue3 = [(BMHomeKitAccessoryState *)self stringValue];
+        stringValue4 = [v5 stringValue];
+        v25 = [stringValue3 isEqual:stringValue4];
 
         if (!v25)
         {
@@ -113,12 +113,12 @@ LABEL_23:
 - (id)jsonDictionary
 {
   v26[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMHomeKitAccessoryState *)self mediaPropertyType];
+  mediaPropertyType = [(BMHomeKitAccessoryState *)self mediaPropertyType];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMHomeKitAccessoryState valueType](self, "valueType")}];
-  v5 = [(BMHomeKitAccessoryState *)self dataValue];
-  v6 = [v5 base64EncodedStringWithOptions:0];
+  dataValue = [(BMHomeKitAccessoryState *)self dataValue];
+  v6 = [dataValue base64EncodedStringWithOptions:0];
 
-  v7 = [(BMHomeKitAccessoryState *)self stringValue];
+  stringValue = [(BMHomeKitAccessoryState *)self stringValue];
   if (![(BMHomeKitAccessoryState *)self hasNumValue]|| ([(BMHomeKitAccessoryState *)self numValue], fabs(v8) == INFINITY))
   {
     v10 = 0;
@@ -133,50 +133,50 @@ LABEL_23:
   }
 
   v21 = @"mediaPropertyType";
-  v11 = v3;
-  if (!v3)
+  null = mediaPropertyType;
+  if (!mediaPropertyType)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v11;
-  v26[0] = v11;
+  v19 = null;
+  v26[0] = null;
   v22 = @"valueType";
-  v12 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[1] = v12;
+  v26[1] = null2;
   v23 = @"dataValue";
-  v13 = v6;
+  null3 = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[2] = v13;
+  v26[2] = null3;
   v24 = @"stringValue";
-  v14 = v7;
-  if (!v7)
+  null4 = stringValue;
+  if (!stringValue)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[3] = v14;
+  v26[3] = null4;
   v25 = @"numValue";
-  v15 = v10;
+  null5 = v10;
   if (!v10)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v15;
+  v26[4] = null5;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v21 count:{5, v19}];
   if (v10)
   {
-    if (v7)
+    if (stringValue)
     {
       goto LABEL_17;
     }
@@ -185,7 +185,7 @@ LABEL_23:
   else
   {
 
-    if (v7)
+    if (stringValue)
     {
 LABEL_17:
       if (v6)
@@ -207,7 +207,7 @@ LABEL_18:
 
 LABEL_26:
 
-    if (v3)
+    if (mediaPropertyType)
     {
       goto LABEL_20;
     }
@@ -223,7 +223,7 @@ LABEL_25:
   }
 
 LABEL_19:
-  if (v3)
+  if (mediaPropertyType)
   {
     goto LABEL_20;
   }
@@ -236,16 +236,16 @@ LABEL_20:
   return v16;
 }
 
-- (BMHomeKitAccessoryState)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMHomeKitAccessoryState)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"mediaPropertyType"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"mediaPropertyType"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v40 = 0;
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"valueType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"valueType"];
     v39 = v8;
     if (v8 && (v9 = v8, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -260,7 +260,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v14 = 0;
             goto LABEL_45;
@@ -273,8 +273,8 @@ LABEL_4:
           v50 = v16;
           v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
           v14 = 0;
-          *a4 = [v32 initWithDomain:v33 code:2 userInfo:v15];
-          a4 = 0;
+          *error = [v32 initWithDomain:v33 code:2 userInfo:v15];
+          error = 0;
           goto LABEL_44;
         }
 
@@ -289,7 +289,7 @@ LABEL_4:
       v37 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"dataValue"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"dataValue"];
     v38 = v7;
     if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -311,7 +311,7 @@ LABEL_4:
       if (v16)
       {
 LABEL_19:
-        v17 = [v6 objectForKeyedSubscript:@"stringValue"];
+        v17 = [dictionaryCopy objectForKeyedSubscript:@"stringValue"];
         if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v18 = 0;
@@ -323,12 +323,12 @@ LABEL_19:
         {
           v18 = v17;
 LABEL_22:
-          v19 = [v6 objectForKeyedSubscript:@"numValue"];
+          v19 = [dictionaryCopy objectForKeyedSubscript:@"numValue"];
           if (!v19 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v20 = 0;
 LABEL_25:
-            a4 = v37;
+            error = v37;
             v14 = -[BMHomeKitAccessoryState initWithMediaPropertyType:valueType:dataValue:stringValue:numValue:](self, "initWithMediaPropertyType:valueType:dataValue:stringValue:numValue:", v40, [v37 intValue], v16, v18, v20);
             self = v14;
 LABEL_42:
@@ -348,7 +348,7 @@ LABEL_44:
             goto LABEL_25;
           }
 
-          if (a4)
+          if (error)
           {
             v36 = objc_alloc(MEMORY[0x1E696ABC0]);
             v34 = *MEMORY[0x1E698F240];
@@ -356,17 +356,17 @@ LABEL_44:
             v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"numValue"];
             v42 = v28;
             v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-            *a4 = [v36 initWithDomain:v34 code:2 userInfo:v29];
+            *error = [v36 initWithDomain:v34 code:2 userInfo:v29];
           }
 
           v20 = 0;
           v14 = 0;
 LABEL_41:
-          a4 = v37;
+          error = v37;
           goto LABEL_42;
         }
 
-        if (a4)
+        if (error)
         {
           v35 = objc_alloc(MEMORY[0x1E696ABC0]);
           v26 = *MEMORY[0x1E698F240];
@@ -377,18 +377,18 @@ LABEL_41:
           v27 = [v35 initWithDomain:v26 code:2 userInfo:v19];
           v18 = 0;
           v14 = 0;
-          *a4 = v27;
+          *error = v27;
           goto LABEL_41;
         }
 
         v18 = 0;
         v14 = 0;
 LABEL_54:
-        a4 = v37;
+        error = v37;
         goto LABEL_43;
       }
 
-      if (a4)
+      if (error)
       {
         v21 = objc_alloc(MEMORY[0x1E696ABC0]);
         v22 = *MEMORY[0x1E698F240];
@@ -402,12 +402,12 @@ LABEL_51:
         v17 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:1];
         v16 = 0;
         v14 = 0;
-        *a4 = [v21 initWithDomain:v22 code:2 userInfo:v17];
+        *error = [v21 initWithDomain:v22 code:2 userInfo:v17];
         goto LABEL_54;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v21 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E698F240];
@@ -422,7 +422,7 @@ LABEL_51:
 
     v16 = 0;
     v14 = 0;
-    a4 = v37;
+    error = v37;
     goto LABEL_44;
   }
 
@@ -433,7 +433,7 @@ LABEL_51:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v40 = 0;
     v14 = 0;
@@ -448,8 +448,8 @@ LABEL_51:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:&v51 count:1];
   v40 = 0;
   v14 = 0;
-  *a4 = [v11 initWithDomain:v12 code:2 userInfo:v9];
-  a4 = v13;
+  *error = [v11 initWithDomain:v12 code:2 userInfo:v9];
+  error = v13;
 LABEL_45:
 
 LABEL_46:
@@ -461,14 +461,14 @@ LABEL_46:
 {
   v3 = objc_opt_new();
   [(BMHomeKitAccessoryState *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (self->_mediaPropertyType)
   {
     PBDataWriterWriteStringField();
@@ -486,18 +486,18 @@ LABEL_46:
     PBDataWriterWriteStringField();
   }
 
-  v5 = v7;
+  v5 = toCopy;
   if (self->_hasNumValue)
   {
     numValue = self->_numValue;
     PBDataWriterWriteDoubleField();
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v32.receiver = self;
   v32.super_class = BMHomeKitAccessoryState;
   v5 = [(BMEventBase *)&v32 init];
@@ -506,12 +506,12 @@ LABEL_46:
     goto LABEL_51;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -522,18 +522,18 @@ LABEL_46:
       while (1)
       {
         LOBYTE(v33) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v33) & 0x7F) << v7;
@@ -550,9 +550,9 @@ LABEL_46:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -584,18 +584,18 @@ LABEL_40:
         while (1)
         {
           LOBYTE(v33) = 0;
-          v21 = [v4 position] + 1;
-          if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+          v21 = [fromCopy position] + 1;
+          if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
           {
-            v23 = [v4 data];
-            [v23 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v20 |= (LOBYTE(v33) & 0x7F) << v18;
@@ -611,7 +611,7 @@ LABEL_40:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v20 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v20 > 3)
         {
 LABEL_44:
           LODWORD(v20) = 0;
@@ -647,31 +647,31 @@ LABEL_39:
 
         v5->_hasNumValue = 1;
         v33 = 0.0;
-        v16 = [v4 position] + 8;
-        if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+        v16 = [fromCopy position] + 8;
+        if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
         {
-          v28 = [v4 data];
-          [v28 getBytes:&v33 range:{objc_msgSend(v4, "position"), 8}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_numValue = v33;
       }
 
 LABEL_48:
-      v29 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v29 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_50:
     v30 = 0;
@@ -689,38 +689,38 @@ LABEL_51:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMHomeKitAccessoryState *)self mediaPropertyType];
+  mediaPropertyType = [(BMHomeKitAccessoryState *)self mediaPropertyType];
   v5 = BMHomeKitAccessoryStateValueTypeAsString([(BMHomeKitAccessoryState *)self valueType]);
-  v6 = [(BMHomeKitAccessoryState *)self dataValue];
-  v7 = [(BMHomeKitAccessoryState *)self stringValue];
+  dataValue = [(BMHomeKitAccessoryState *)self dataValue];
+  stringValue = [(BMHomeKitAccessoryState *)self stringValue];
   v8 = MEMORY[0x1E696AD98];
   [(BMHomeKitAccessoryState *)self numValue];
   v9 = [v8 numberWithDouble:?];
-  v10 = [v3 initWithFormat:@"BMHomeKitAccessoryState with mediaPropertyType: %@, valueType: %@, dataValue: %@, stringValue: %@, numValue: %@", v4, v5, v6, v7, v9];
+  v10 = [v3 initWithFormat:@"BMHomeKitAccessoryState with mediaPropertyType: %@, valueType: %@, dataValue: %@, stringValue: %@, numValue: %@", mediaPropertyType, v5, dataValue, stringValue, v9];
 
   return v10;
 }
 
-- (BMHomeKitAccessoryState)initWithMediaPropertyType:(id)a3 valueType:(int)a4 dataValue:(id)a5 stringValue:(id)a6 numValue:(id)a7
+- (BMHomeKitAccessoryState)initWithMediaPropertyType:(id)type valueType:(int)valueType dataValue:(id)value stringValue:(id)stringValue numValue:(id)numValue
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  valueCopy = value;
+  stringValueCopy = stringValue;
+  numValueCopy = numValue;
   v20.receiver = self;
   v20.super_class = BMHomeKitAccessoryState;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_mediaPropertyType, a3);
-    v17->_valueType = a4;
-    objc_storeStrong(&v17->_dataValue, a5);
-    objc_storeStrong(&v17->_stringValue, a6);
-    if (v16)
+    objc_storeStrong(&v17->_mediaPropertyType, type);
+    v17->_valueType = valueType;
+    objc_storeStrong(&v17->_dataValue, value);
+    objc_storeStrong(&v17->_stringValue, stringValue);
+    if (numValueCopy)
     {
       v17->_hasNumValue = 1;
-      [v16 doubleValue];
+      [numValueCopy doubleValue];
     }
 
     else
@@ -774,24 +774,24 @@ LABEL_51:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  if (a4)
+  dataCopy = data;
+  if (version)
   {
-    if (a4 != 1)
+    if (version != 1)
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMHomeKitAccessoryState;
   }
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMHomeKitAccessoryState_v0;
   }
 
@@ -799,7 +799,7 @@ LABEL_51:
   v9 = v8;
   if (v8)
   {
-    *(v8 + 20) = a4;
+    *(v8 + 20) = version;
   }
 
 LABEL_9:

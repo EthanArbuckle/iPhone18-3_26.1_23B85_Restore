@@ -1,21 +1,21 @@
 @interface EKCredentials
-+ (id)credentialsWithUsername:(id)a3 password:(id)a4;
++ (id)credentialsWithUsername:(id)username password:(id)password;
 - (id)description;
 @end
 
 @implementation EKCredentials
 
-+ (id)credentialsWithUsername:(id)a3 password:(id)a4
++ (id)credentialsWithUsername:(id)username password:(id)password
 {
-  v5 = a3;
-  v6 = a4;
+  usernameCopy = username;
+  passwordCopy = password;
   v7 = objc_opt_new();
   v8 = v7[1];
-  v7[1] = v5;
-  v9 = v5;
+  v7[1] = usernameCopy;
+  v9 = usernameCopy;
 
   v10 = v7[2];
-  v7[2] = v6;
+  v7[2] = passwordCopy;
 
   return v7;
 }

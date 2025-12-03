@@ -1,35 +1,35 @@
 @interface JRSchemaJRInferenceContext
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaJRInferenceContext)initWithDictionary:(id)a3;
-- (JRSchemaJRInferenceContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaJRInferenceContext)initWithDictionary:(id)dictionary;
+- (JRSchemaJRInferenceContext)initWithJSON:(id)n;
 - (JRSchemaJRInferenceEnded)ended;
 - (JRSchemaJRInferenceFailed)failed;
 - (JRSchemaJRInferenceStarted)started;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteEnded;
 - (void)deleteFailed;
 - (void)deleteStarted;
-- (void)setEnded:(id)a3;
-- (void)setFailed:(id)a3;
-- (void)setStarted:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEnded:(id)ended;
+- (void)setFailed:(id)failed;
+- (void)setStarted:(id)started;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaJRInferenceContext
 
-- (JRSchemaJRInferenceContext)initWithDictionary:(id)a3
+- (JRSchemaJRInferenceContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = JRSchemaJRInferenceContext;
   v5 = [(JRSchemaJRInferenceContext *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"started"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"started"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(JRSchemaJRInferenceContext *)v5 setStarted:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"failed"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"failed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(JRSchemaJRInferenceContext *)v5 setFailed:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"ended"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,30 +59,30 @@
   return v5;
 }
 
-- (JRSchemaJRInferenceContext)initWithJSON:(id)a3
+- (JRSchemaJRInferenceContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaJRInferenceContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaJRInferenceContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaJRInferenceContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -95,58 +95,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ended)
   {
-    v4 = [(JRSchemaJRInferenceContext *)self ended];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ended = [(JRSchemaJRInferenceContext *)self ended];
+    dictionaryRepresentation = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ended"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ended"];
     }
   }
 
   if (self->_failed)
   {
-    v7 = [(JRSchemaJRInferenceContext *)self failed];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    failed = [(JRSchemaJRInferenceContext *)self failed];
+    dictionaryRepresentation2 = [failed dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"failed"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"failed"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"failed"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"failed"];
     }
   }
 
   if (self->_started)
   {
-    v10 = [(JRSchemaJRInferenceContext *)self started];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    started = [(JRSchemaJRInferenceContext *)self started];
+    dictionaryRepresentation3 = [started dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"started"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"started"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"started"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"started"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -156,34 +156,34 @@
   return v4 ^ [(JRSchemaJRInferenceEnded *)self->_ended hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_18;
   }
 
-  v6 = [(JRSchemaJRInferenceContext *)self started];
-  v7 = [v4 started];
-  if ((v6 != 0) == (v7 == 0))
+  started = [(JRSchemaJRInferenceContext *)self started];
+  started2 = [equalCopy started];
+  if ((started != 0) == (started2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(JRSchemaJRInferenceContext *)self started];
-  if (v8)
+  started3 = [(JRSchemaJRInferenceContext *)self started];
+  if (started3)
   {
-    v9 = v8;
-    v10 = [(JRSchemaJRInferenceContext *)self started];
-    v11 = [v4 started];
-    v12 = [v10 isEqual:v11];
+    v9 = started3;
+    started4 = [(JRSchemaJRInferenceContext *)self started];
+    started5 = [equalCopy started];
+    v12 = [started4 isEqual:started5];
 
     if (!v12)
     {
@@ -195,20 +195,20 @@
   {
   }
 
-  v6 = [(JRSchemaJRInferenceContext *)self failed];
-  v7 = [v4 failed];
-  if ((v6 != 0) == (v7 == 0))
+  started = [(JRSchemaJRInferenceContext *)self failed];
+  started2 = [equalCopy failed];
+  if ((started != 0) == (started2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(JRSchemaJRInferenceContext *)self failed];
-  if (v13)
+  failed = [(JRSchemaJRInferenceContext *)self failed];
+  if (failed)
   {
-    v14 = v13;
-    v15 = [(JRSchemaJRInferenceContext *)self failed];
-    v16 = [v4 failed];
-    v17 = [v15 isEqual:v16];
+    v14 = failed;
+    failed2 = [(JRSchemaJRInferenceContext *)self failed];
+    failed3 = [equalCopy failed];
+    v17 = [failed2 isEqual:failed3];
 
     if (!v17)
     {
@@ -220,12 +220,12 @@
   {
   }
 
-  v6 = [(JRSchemaJRInferenceContext *)self ended];
-  v7 = [v4 ended];
-  if ((v6 != 0) != (v7 == 0))
+  started = [(JRSchemaJRInferenceContext *)self ended];
+  started2 = [equalCopy ended];
+  if ((started != 0) != (started2 == 0))
   {
-    v18 = [(JRSchemaJRInferenceContext *)self ended];
-    if (!v18)
+    ended = [(JRSchemaJRInferenceContext *)self ended];
+    if (!ended)
     {
 
 LABEL_21:
@@ -233,10 +233,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(JRSchemaJRInferenceContext *)self ended];
-    v21 = [v4 ended];
-    v22 = [v20 isEqual:v21];
+    v19 = ended;
+    ended2 = [(JRSchemaJRInferenceContext *)self ended];
+    ended3 = [equalCopy ended];
+    v22 = [ended2 isEqual:ended3];
 
     if (v22)
     {
@@ -256,34 +256,34 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(JRSchemaJRInferenceContext *)self started];
+  toCopy = to;
+  started = [(JRSchemaJRInferenceContext *)self started];
 
-  if (v4)
+  if (started)
   {
-    v5 = [(JRSchemaJRInferenceContext *)self started];
+    started2 = [(JRSchemaJRInferenceContext *)self started];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(JRSchemaJRInferenceContext *)self failed];
+  failed = [(JRSchemaJRInferenceContext *)self failed];
 
-  if (v6)
+  if (failed)
   {
-    v7 = [(JRSchemaJRInferenceContext *)self failed];
+    failed2 = [(JRSchemaJRInferenceContext *)self failed];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(JRSchemaJRInferenceContext *)self ended];
+  ended = [(JRSchemaJRInferenceContext *)self ended];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (ended)
   {
-    v10 = [(JRSchemaJRInferenceContext *)self ended];
+    ended2 = [(JRSchemaJRInferenceContext *)self ended];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -312,9 +312,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)setEnded:(id)a3
+- (void)setEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   started = self->_started;
   self->_started = 0;
 
@@ -322,14 +322,14 @@ LABEL_19:
   self->_failed = 0;
 
   v7 = 103;
-  if (!v4)
+  if (!endedCopy)
   {
     v7 = 0;
   }
 
   self->_whichContextevent = v7;
   ended = self->_ended;
-  self->_ended = v4;
+  self->_ended = endedCopy;
 }
 
 - (void)deleteFailed
@@ -357,9 +357,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)setFailed:(id)a3
+- (void)setFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   started = self->_started;
   self->_started = 0;
 
@@ -367,14 +367,14 @@ LABEL_19:
   self->_ended = 0;
 
   v7 = 102;
-  if (!v4)
+  if (!failedCopy)
   {
     v7 = 0;
   }
 
   self->_whichContextevent = v7;
   failed = self->_failed;
-  self->_failed = v4;
+  self->_failed = failedCopy;
 }
 
 - (void)deleteStarted
@@ -402,9 +402,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)setStarted:(id)a3
+- (void)setStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   failed = self->_failed;
   self->_failed = 0;
 
@@ -412,45 +412,45 @@ LABEL_19:
   self->_ended = 0;
 
   v7 = 101;
-  if (!v4)
+  if (!startedCopy)
   {
     v7 = 0;
   }
 
   self->_whichContextevent = v7;
   started = self->_started;
-  self->_started = v4;
+  self->_started = startedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = JRSchemaJRInferenceContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(JRSchemaJRInferenceContext *)self started];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  started = [(JRSchemaJRInferenceContext *)self started];
+  v7 = [started applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(JRSchemaJRInferenceContext *)self deleteStarted];
   }
 
-  v9 = [(JRSchemaJRInferenceContext *)self failed];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  failed = [(JRSchemaJRInferenceContext *)self failed];
+  v10 = [failed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(JRSchemaJRInferenceContext *)self deleteFailed];
   }
 
-  v12 = [(JRSchemaJRInferenceContext *)self ended];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  ended = [(JRSchemaJRInferenceContext *)self ended];
+  v13 = [ended applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(JRSchemaJRInferenceContext *)self deleteEnded];
   }

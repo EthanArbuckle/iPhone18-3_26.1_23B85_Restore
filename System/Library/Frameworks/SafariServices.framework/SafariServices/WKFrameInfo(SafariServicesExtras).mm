@@ -6,19 +6,19 @@
 
 - (id)_sf_titleForJavaScriptDialog
 {
-  v1 = [a1 securityOrigin];
-  v2 = [v1 host];
-  if ([v2 length])
+  securityOrigin = [self securityOrigin];
+  host = [securityOrigin host];
+  if ([host length])
   {
     v3 = MEMORY[0x1E696AD60];
-    v4 = [v1 protocol];
-    v5 = [v1 host];
-    v6 = [v5 _webkit_decodeHostName];
-    v7 = [v3 stringWithFormat:@"%@://%@", v4, v6];
+    protocol = [securityOrigin protocol];
+    host2 = [securityOrigin host];
+    _webkit_decodeHostName = [host2 _webkit_decodeHostName];
+    v7 = [v3 stringWithFormat:@"%@://%@", protocol, _webkit_decodeHostName];
 
-    if ([v1 port])
+    if ([securityOrigin port])
     {
-      [v7 appendFormat:@":%ld", objc_msgSend(v1, "port")];
+      [v7 appendFormat:@":%ld", objc_msgSend(securityOrigin, "port")];
     }
   }
 

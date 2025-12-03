@@ -4,50 +4,50 @@
 - (double)delay;
 - (double)duration;
 - (double)initialVelocity;
-- (double)interpolatedProgressForProgress:(double)a3;
+- (double)interpolatedProgressForProgress:(double)progress;
 - (double)mass;
 - (double)speed;
 - (double)stiffness;
 - (float)repeatCount;
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4;
-- (id)_initWithSpringAnimation:(id)a3 completionEpsilon:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path;
+- (id)_initWithSpringAnimation:(id)animation completionEpsilon:(double)epsilon;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)timingFunction;
 - (void)_updateDuration;
-- (void)setDamping:(double)a3;
-- (void)setDelay:(double)a3;
-- (void)setInitialVelocity:(double)a3;
-- (void)setMass:(double)a3;
-- (void)setRepeatCount:(float)a3;
-- (void)setSpeed:(double)a3;
-- (void)setStiffness:(double)a3;
-- (void)setTimingFunction:(id)a3;
+- (void)setDamping:(double)damping;
+- (void)setDelay:(double)delay;
+- (void)setInitialVelocity:(double)velocity;
+- (void)setMass:(double)mass;
+- (void)setRepeatCount:(float)count;
+- (void)setSpeed:(double)speed;
+- (void)setStiffness:(double)stiffness;
+- (void)setTimingFunction:(id)function;
 @end
 
 @implementation HUSpringAnimationSettings
 
-- (id)_initWithSpringAnimation:(id)a3 completionEpsilon:(double)a4
+- (id)_initWithSpringAnimation:(id)animation completionEpsilon:(double)epsilon
 {
-  v6 = a3;
+  animationCopy = animation;
   v11.receiver = self;
   v11.super_class = HUSpringAnimationSettings;
   v7 = [(HUAnimationSettings *)&v11 init];
   if (v7)
   {
-    if (v6)
+    if (animationCopy)
     {
-      v8 = [v6 copy];
+      animation = [animationCopy copy];
     }
 
     else
     {
-      v8 = [MEMORY[0x277CD9FA0] animation];
+      animation = [MEMORY[0x277CD9FA0] animation];
     }
 
-    v9 = v8;
-    objc_storeStrong(&v7->_springAnimation, v8);
+    v9 = animation;
+    objc_storeStrong(&v7->_springAnimation, animation);
 
-    [(HUSpringAnimationSettings *)v7 setCompletionEpsilon:a4];
+    [(HUSpringAnimationSettings *)v7 setCompletionEpsilon:epsilon];
   }
 
   return v7;
@@ -55,7 +55,7 @@
 
 + (id)criticallyDampedSpringSettings
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setMass:3.0];
   [v2 setStiffness:1000.0];
   [v2 setDamping:500.0];
@@ -63,103 +63,103 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HUSpringAnimationSettings allocWithZone:a3];
-  v5 = [(HUSpringAnimationSettings *)self springAnimation];
+  v4 = [HUSpringAnimationSettings allocWithZone:zone];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
   [(HUSpringAnimationSettings *)self completionEpsilon];
-  v6 = [(HUSpringAnimationSettings *)v4 _initWithSpringAnimation:v5 completionEpsilon:?];
+  v6 = [(HUSpringAnimationSettings *)v4 _initWithSpringAnimation:springAnimation completionEpsilon:?];
 
   return v6;
 }
 
 - (id)timingFunction
 {
-  v2 = [(HUSpringAnimationSettings *)self springAnimation];
-  v3 = [v2 timingFunction];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  timingFunction = [springAnimation timingFunction];
 
-  return v3;
+  return timingFunction;
 }
 
-- (void)setTimingFunction:(id)a3
+- (void)setTimingFunction:(id)function
 {
-  v4 = a3;
-  v5 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v5 setTimingFunction:v4];
+  functionCopy = function;
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation setTimingFunction:functionCopy];
 }
 
 - (double)mass
 {
-  v2 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v2 mass];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation mass];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMass:(double)a3
+- (void)setMass:(double)mass
 {
-  v5 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v5 setMass:a3];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation setMass:mass];
 
   [(HUSpringAnimationSettings *)self _updateDuration];
 }
 
 - (double)stiffness
 {
-  v2 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v2 stiffness];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation stiffness];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setStiffness:(double)a3
+- (void)setStiffness:(double)stiffness
 {
-  v5 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v5 setStiffness:a3];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation setStiffness:stiffness];
 
   [(HUSpringAnimationSettings *)self _updateDuration];
 }
 
 - (double)damping
 {
-  v2 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v2 damping];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation damping];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDamping:(double)a3
+- (void)setDamping:(double)damping
 {
-  v5 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v5 setDamping:a3];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation setDamping:damping];
 
   [(HUSpringAnimationSettings *)self _updateDuration];
 }
 
 - (double)initialVelocity
 {
-  v2 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v2 velocity];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation velocity];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setInitialVelocity:(double)a3
+- (void)setInitialVelocity:(double)velocity
 {
-  v5 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v5 setVelocity:a3];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation setVelocity:velocity];
 
   [(HUSpringAnimationSettings *)self _updateDuration];
 }
 
 - (double)duration
 {
-  v2 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v2 duration];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation duration];
   v4 = v3;
 
   return v4;
@@ -167,65 +167,65 @@
 
 - (double)delay
 {
-  v2 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v2 beginTime];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation beginTime];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDelay:(double)a3
+- (void)setDelay:(double)delay
 {
-  v4 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v4 setBeginTime:a3];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation setBeginTime:delay];
 }
 
 - (double)speed
 {
-  v2 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v2 speed];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation speed];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSpeed:(double)a3
+- (void)setSpeed:(double)speed
 {
-  if (a3 <= 0.00000011920929)
+  if (speed <= 0.00000011920929)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HUAnimationSettings.m" lineNumber:230 description:@"Speed must be non-zero"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAnimationSettings.m" lineNumber:230 description:@"Speed must be non-zero"];
   }
 
-  v6 = [(HUSpringAnimationSettings *)self springAnimation];
-  v5 = a3;
-  *&v7 = v5;
-  [v6 setSpeed:v7];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  speedCopy = speed;
+  *&v7 = speedCopy;
+  [springAnimation setSpeed:v7];
 
   [(HUSpringAnimationSettings *)self _updateDuration];
 }
 
 - (float)repeatCount
 {
-  v2 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v2 repeatCount];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation repeatCount];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setRepeatCount:(float)a3
+- (void)setRepeatCount:(float)count
 {
-  v5 = [(HUSpringAnimationSettings *)self springAnimation];
-  *&v4 = a3;
-  [v5 setRepeatCount:v4];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  *&v4 = count;
+  [springAnimation setRepeatCount:v4];
 }
 
-- (double)interpolatedProgressForProgress:(double)a3
+- (double)interpolatedProgressForProgress:(double)progress
 {
-  v4 = [(HUSpringAnimationSettings *)self springAnimation];
-  *&v5 = a3;
-  [v4 _solveForInput:v5];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  *&v5 = progress;
+  [springAnimation _solveForInput:v5];
   v7 = v6;
 
   return v7;
@@ -233,21 +233,21 @@
 
 - (void)_updateDuration
 {
-  v3 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v3 durationForEpsilon:self->_completionEpsilon];
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation durationForEpsilon:self->_completionEpsilon];
   v5 = v4;
 
-  v6 = [(HUSpringAnimationSettings *)self springAnimation];
-  [v6 setDuration:v5];
+  springAnimation2 = [(HUSpringAnimationSettings *)self springAnimation];
+  [springAnimation2 setDuration:v5];
 }
 
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HUSpringAnimationSettings *)self springAnimation];
-  v7 = [v6 copy];
+  pathCopy = path;
+  springAnimation = [(HUSpringAnimationSettings *)self springAnimation];
+  v7 = [springAnimation copy];
 
-  [v7 setKeyPath:v5];
+  [v7 setKeyPath:pathCopy];
 
   return v7;
 }

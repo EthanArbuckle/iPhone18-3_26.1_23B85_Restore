@@ -13,7 +13,7 @@
   v6[3] = &unk_1E8485670;
   v7 = v2;
   v3 = v2;
-  [a1 enumerateRangesUsingBlock:v6];
+  [self enumerateRangesUsingBlock:v6];
   v4 = [v3 copy];
 
   return v4;

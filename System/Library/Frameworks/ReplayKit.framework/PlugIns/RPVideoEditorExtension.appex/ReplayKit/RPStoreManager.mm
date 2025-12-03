@@ -1,6 +1,6 @@
 @interface RPStoreManager
 + (id)sharedManager;
-- (void)loadItemDetailsForBundleIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)loadItemDetailsForBundleIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation RPStoreManager
@@ -17,10 +17,10 @@
   return v3;
 }
 
-- (void)loadItemDetailsForBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)loadItemDetailsForBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v39 = 0;
   v7 = objc_alloc_init(RPStoreInfo);
   v8 = +[AMSLookup bagSubProfile];
@@ -34,7 +34,7 @@
 
   v14 = [AMSLookup alloc];
   v15 = [v14 initWithBag:v10 caller:@"com.apple.replayd" keyProfile:AMSLookupKeyProfileProduct];
-  v40 = v5;
+  v40 = identifierCopy;
   v16 = [NSArray arrayWithObjects:&v40 count:1];
   v17 = [v15 performLookupWithBundleIdentifiers:v16 itemIdentifiers:0];
 
@@ -50,15 +50,15 @@
 
   else
   {
-    v35 = v5;
-    v20 = [v18 allItems];
-    v21 = [v20 firstObject];
+    v35 = identifierCopy;
+    allItems = [v18 allItems];
+    firstObject = [allItems firstObject];
 
-    v22 = [v21 bundleIdentifier];
-    if (v22)
+    bundleIdentifier = [firstObject bundleIdentifier];
+    if (bundleIdentifier)
     {
-      v23 = [v21 bundleIdentifier];
-      [(RPStoreInfo *)v7 setBundleID:v23];
+      bundleIdentifier2 = [firstObject bundleIdentifier];
+      [(RPStoreInfo *)v7 setBundleID:bundleIdentifier2];
     }
 
     else
@@ -66,10 +66,10 @@
       [(RPStoreInfo *)v7 setBundleID:&stru_1000189F8];
     }
 
-    v24 = [v21 displayName];
-    if (v24)
+    displayName = [firstObject displayName];
+    if (displayName)
     {
-      [v21 displayName];
+      [firstObject displayName];
     }
 
     else
@@ -79,11 +79,11 @@
     v25 = ;
     [(RPStoreInfo *)v7 setAppName:v25];
 
-    v26 = [v21 artistName];
-    if (v26)
+    artistName = [firstObject artistName];
+    if (artistName)
     {
-      v27 = [v21 artistName];
-      [(RPStoreInfo *)v7 setAuthor:v27];
+      artistName2 = [firstObject artistName];
+      [(RPStoreInfo *)v7 setAuthor:artistName2];
     }
 
     else
@@ -91,22 +91,22 @@
       [(RPStoreInfo *)v7 setAuthor:&stru_1000189F8];
     }
 
-    v28 = [v21 productPageURL];
-    [(RPStoreInfo *)v7 setItemURL:v28];
+    productPageURL = [firstObject productPageURL];
+    [(RPStoreInfo *)v7 setItemURL:productPageURL];
 
-    v29 = [v21 artwork];
-    v30 = [v29 firstObject];
-    v31 = [v30 URLWithHeight:128 width:128 cropStyle:AMSLookupItemArtworkCropStyleBoundedBox format:AMSLookupItemArtworkFormatJPG];
+    artwork = [firstObject artwork];
+    firstObject2 = [artwork firstObject];
+    v31 = [firstObject2 URLWithHeight:128 width:128 cropStyle:AMSLookupItemArtworkCropStyleBoundedBox format:AMSLookupItemArtworkFormatJPG];
     [(RPStoreInfo *)v7 setAppArtworkURL:v31];
 
-    v32 = [(RPStoreInfo *)v7 appArtworkURL];
+    appArtworkURL = [(RPStoreInfo *)v7 appArtworkURL];
 
-    if (!v32 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+    if (!appArtworkURL && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_10000B898();
     }
 
-    v5 = v35;
+    identifierCopy = v35;
   }
 
   block[0] = _NSConcreteStackBlock;
@@ -114,9 +114,9 @@
   block[2] = sub_10000B300;
   block[3] = &unk_100018888;
   v37 = v7;
-  v38 = v6;
+  v38 = handlerCopy;
   v33 = v7;
-  v34 = v6;
+  v34 = handlerCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 

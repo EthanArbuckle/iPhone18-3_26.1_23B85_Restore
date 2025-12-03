@@ -1,10 +1,10 @@
 @interface PPFeedbackStorage
-+ (void)logFeedback:(id)a3 domain:(unsigned __int8)a4 domainStatus:(unsigned __int8)a5 inBackground:(BOOL)a6;
-- (BOOL)deleteExpiredFeedbackWithShouldContinueBlock:(id)a3;
-- (BOOL)processPendingFeedbackWithShouldContinueBlock:(id)a3 error:(id *)a4;
++ (void)logFeedback:(id)feedback domain:(unsigned __int8)domain domainStatus:(unsigned __int8)status inBackground:(BOOL)background;
+- (BOOL)deleteExpiredFeedbackWithShouldContinueBlock:(id)block;
+- (BOOL)processPendingFeedbackWithShouldContinueBlock:(id)block error:(id *)error;
 - (PPFeedbackStorage)init;
 - (id)locationStore;
-- (id)mappedTopicsPendingFeedbackWithShouldContinueBlock:(id)a3;
+- (id)mappedTopicsPendingFeedbackWithShouldContinueBlock:(id)block;
 - (id)namedEntityStore;
 - (id)pendingTopicFeedback;
 - (id)topicStore;
@@ -60,9 +60,9 @@ BOOL __41__PPFeedbackStorage_pendingTopicFeedback__block_invoke_2(uint64_t a1, v
   return v3;
 }
 
-- (BOOL)processPendingFeedbackWithShouldContinueBlock:(id)a3 error:(id *)a4
+- (BOOL)processPendingFeedbackWithShouldContinueBlock:(id)block error:(id *)error
 {
-  v5 = a3;
+  blockCopy = block;
   if (self)
   {
     v32 = 0;
@@ -101,7 +101,7 @@ BOOL __41__PPFeedbackStorage_pendingTopicFeedback__block_invoke_2(uint64_t a1, v
   v26 = &v32;
   v9 = v7;
   v25 = v9;
-  if ([(_PASLock *)lock runWithLockAcquired:v24 shouldContinueBlock:v5]== 1)
+  if ([(_PASLock *)lock runWithLockAcquired:v24 shouldContinueBlock:blockCopy]== 1)
   {
     v10 = 0;
   }
@@ -138,7 +138,7 @@ BOOL __41__PPFeedbackStorage_pendingTopicFeedback__block_invoke_2(uint64_t a1, v
     v18[2] = __73__PPFeedbackStorage_processPendingFeedbackWithShouldContinueBlock_error___block_invoke_144;
     v18[3] = &unk_278977170;
     v18[4] = self;
-    v15 = v5;
+    v15 = blockCopy;
     v19 = v15;
     v16 = [v14 sinkWithCompletion:v20 shouldContinue:v18];
 
@@ -915,7 +915,7 @@ LABEL_101:
 
 - (id)namedEntityStore
 {
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   if (v1)
   {
     v2 = v1;
@@ -931,7 +931,7 @@ LABEL_101:
 
 - (id)topicStore
 {
-  v1 = *(a1 + 24);
+  v1 = *(self + 24);
   if (v1)
   {
     v2 = v1;
@@ -947,7 +947,7 @@ LABEL_101:
 
 - (id)locationStore
 {
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
   if (v1)
   {
     v2 = v1;
@@ -1010,9 +1010,9 @@ uint64_t __44__PPFeedbackStorage__lastProcessedTimestamp__block_invoke(uint64_t 
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)mappedTopicsPendingFeedbackWithShouldContinueBlock:(id)a3
+- (id)mappedTopicsPendingFeedbackWithShouldContinueBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1031,7 +1031,7 @@ uint64_t __44__PPFeedbackStorage__lastProcessedTimestamp__block_invoke(uint64_t 
   v13[2] = __72__PPFeedbackStorage_mappedTopicsPendingFeedbackWithShouldContinueBlock___block_invoke;
   v13[3] = &unk_278977088;
   v13[4] = &v14;
-  if ([(_PASLock *)lock runWithLockAcquired:v13 shouldContinueBlock:v4]== 1)
+  if ([(_PASLock *)lock runWithLockAcquired:v13 shouldContinueBlock:blockCopy]== 1)
   {
     v6 = 0;
   }
@@ -1040,13 +1040,13 @@ uint64_t __44__PPFeedbackStorage__lastProcessedTimestamp__block_invoke(uint64_t 
   {
     v7 = [v15[5] filterWithIsIncluded:&__block_literal_global_124_20222];
     v8 = [v7 mapWithTransform:&__block_literal_global_127_20223];
-    v9 = [v8 collect];
+    collect = [v8 collect];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __72__PPFeedbackStorage_mappedTopicsPendingFeedbackWithShouldContinueBlock___block_invoke_5;
     v12[3] = &unk_278978270;
     v12[4] = &v20;
-    v10 = [v9 sinkWithCompletion:&__block_literal_global_129_20224 receiveInput:v12];
+    v10 = [collect sinkWithCompletion:&__block_literal_global_129_20224 receiveInput:v12];
 
     v6 = v21[5];
   }
@@ -1086,9 +1086,9 @@ BOOL __72__PPFeedbackStorage_mappedTopicsPendingFeedbackWithShouldContinueBlock_
   return v5;
 }
 
-- (BOOL)deleteExpiredFeedbackWithShouldContinueBlock:(id)a3
+- (BOOL)deleteExpiredFeedbackWithShouldContinueBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1098,7 +1098,7 @@ BOOL __72__PPFeedbackStorage_mappedTopicsPendingFeedbackWithShouldContinueBlock_
   v8[1] = 3221225472;
   v8[2] = __66__PPFeedbackStorage_deleteExpiredFeedbackWithShouldContinueBlock___block_invoke;
   v8[3] = &unk_278977060;
-  v6 = v4;
+  v6 = blockCopy;
   v9 = v6;
   v10 = &v11;
   [(_PASLock *)lock runWithLockAcquired:v8 shouldContinueBlock:v6];
@@ -1313,7 +1313,7 @@ void __64__PPFeedbackStorage__existingSessionMatchingFeedback_storeType___block_
     }
 
     self = self;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -1325,21 +1325,21 @@ void __64__PPFeedbackStorage__existingSessionMatchingFeedback_storeType___block_
       _os_log_fault_impl(&dword_23224A000, v14, OS_LOG_TYPE_FAULT, "Failed to get db instance", &v16, 2u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-+ (void)logFeedback:(id)a3 domain:(unsigned __int8)a4 domainStatus:(unsigned __int8)a5 inBackground:(BOOL)a6
++ (void)logFeedback:(id)feedback domain:(unsigned __int8)domain domainStatus:(unsigned __int8)status inBackground:(BOOL)background
 {
-  v36 = a4;
-  v37 = a6;
-  v35 = a5;
+  domainCopy = domain;
+  backgroundCopy = background;
+  statusCopy = status;
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 clientIdentifier];
-  v8 = [v7 isEqualToString:@"ICLex"];
+  feedbackCopy = feedback;
+  clientIdentifier = [feedbackCopy clientIdentifier];
+  v8 = [clientIdentifier isEqualToString:@"ICLex"];
 
   if (v8)
   {
@@ -1347,13 +1347,13 @@ void __64__PPFeedbackStorage__existingSessionMatchingFeedback_storeType___block_
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v9 = [v6 feedbackItems];
-    context = [v9 countByEnumeratingWithState:&v40 objects:v48 count:16];
+    feedbackItems = [feedbackCopy feedbackItems];
+    context = [feedbackItems countByEnumeratingWithState:&v40 objects:v48 count:16];
     if (context)
     {
       v33 = *v41;
-      v34 = v6;
-      obj = v9;
+      v34 = feedbackCopy;
+      obj = feedbackItems;
       do
       {
         for (i = 0; i != context; i = i + 1)
@@ -1367,13 +1367,13 @@ void __64__PPFeedbackStorage__existingSessionMatchingFeedback_storeType___block_
           v12 = objc_autoreleasePoolPush();
           v13 = objc_autoreleasePoolPush();
           v46[0] = @"clientId";
-          v14 = [v34 clientIdentifier];
-          v15 = [v14 _pas_stringBackedByUTF8CString];
-          v47[0] = v15;
+          clientIdentifier2 = [v34 clientIdentifier];
+          _pas_stringBackedByUTF8CString = [clientIdentifier2 _pas_stringBackedByUTF8CString];
+          v47[0] = _pas_stringBackedByUTF8CString;
           v46[1] = @"mappingId";
-          v16 = [v34 mappingId];
-          v17 = v16;
-          if (!v16)
+          mappingId = [v34 mappingId];
+          v17 = mappingId;
+          if (!mappingId)
           {
             v32 = objc_opt_new();
             v17 = v32;
@@ -1384,29 +1384,29 @@ void __64__PPFeedbackStorage__existingSessionMatchingFeedback_storeType___block_
           v18 = +[PPMetricsUtils stringifyFeedbackType:](PPMetricsUtils, "stringifyFeedbackType:", [v11 itemFeedbackType]);
           v47[2] = v18;
           v46[3] = @"feedbackDomainStatus";
-          v19 = [PPMetricsUtils stringifyFeedbackDomainStatus:v35];
+          v19 = [PPMetricsUtils stringifyFeedbackDomainStatus:statusCopy];
           v47[3] = v19;
           v46[4] = @"domain";
-          v20 = [PPMetricsUtils stringifyDomain:v36];
+          v20 = [PPMetricsUtils stringifyDomain:domainCopy];
           v47[4] = v20;
           v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:5];
 
-          if (!v16)
+          if (!mappingId)
           {
           }
 
           objc_autoreleasePoolPop(v13);
-          [PPMetricsDispatcher logPayloadForEvent:@"com.apple.proactive.PersonalizationPortrait.FeedbackReceived" payload:v21 inBackground:v37];
+          [PPMetricsDispatcher logPayloadForEvent:@"com.apple.proactive.PersonalizationPortrait.FeedbackReceived" payload:v21 inBackground:backgroundCopy];
 
           objc_autoreleasePoolPop(v12);
         }
 
-        v9 = obj;
+        feedbackItems = obj;
         context = [obj countByEnumeratingWithState:&v40 objects:v48 count:16];
       }
 
       while (context);
-      v6 = v34;
+      feedbackCopy = v34;
     }
   }
 
@@ -1414,36 +1414,36 @@ void __64__PPFeedbackStorage__existingSessionMatchingFeedback_storeType___block_
   {
     contexta = objc_autoreleasePoolPush();
     v44[0] = @"clientId";
-    v22 = [v6 clientIdentifier];
-    v45[0] = v22;
+    clientIdentifier3 = [feedbackCopy clientIdentifier];
+    v45[0] = clientIdentifier3;
     v44[1] = @"mappingId";
-    v23 = [v6 mappingId];
-    v24 = v23;
-    if (!v23)
+    mappingId2 = [feedbackCopy mappingId];
+    v24 = mappingId2;
+    if (!mappingId2)
     {
       v24 = objc_opt_new();
     }
 
     v45[1] = v24;
     v44[2] = @"type";
-    v25 = [v6 feedbackItems];
-    v26 = [v25 firstObject];
-    v27 = +[PPMetricsUtils stringifyFeedbackType:](PPMetricsUtils, "stringifyFeedbackType:", [v26 itemFeedbackType]);
+    feedbackItems2 = [feedbackCopy feedbackItems];
+    firstObject = [feedbackItems2 firstObject];
+    v27 = +[PPMetricsUtils stringifyFeedbackType:](PPMetricsUtils, "stringifyFeedbackType:", [firstObject itemFeedbackType]);
     v45[2] = v27;
     v44[3] = @"feedbackDomainStatus";
-    v28 = [PPMetricsUtils stringifyFeedbackDomainStatus:v35];
+    v28 = [PPMetricsUtils stringifyFeedbackDomainStatus:statusCopy];
     v45[3] = v28;
     v44[4] = @"domain";
-    v29 = [PPMetricsUtils stringifyDomain:v36];
+    v29 = [PPMetricsUtils stringifyDomain:domainCopy];
     v45[4] = v29;
-    v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:5];
+    feedbackItems = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:5];
 
-    if (!v23)
+    if (!mappingId2)
     {
     }
 
     objc_autoreleasePoolPop(contexta);
-    [PPMetricsDispatcher logPayloadForEvent:@"com.apple.proactive.PersonalizationPortrait.FeedbackReceived" payload:v9 inBackground:v37];
+    [PPMetricsDispatcher logPayloadForEvent:@"com.apple.proactive.PersonalizationPortrait.FeedbackReceived" payload:feedbackItems inBackground:backgroundCopy];
   }
 
   v30 = *MEMORY[0x277D85DE8];

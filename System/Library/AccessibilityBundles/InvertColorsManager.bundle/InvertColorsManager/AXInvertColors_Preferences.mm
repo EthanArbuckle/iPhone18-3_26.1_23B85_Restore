@@ -1,22 +1,22 @@
 @interface AXInvertColors_Preferences
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_Preferences
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PSTableCell" hasInstanceMethod:@"setIcon:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SUIKSearchResultCollectionViewSectionHeader" hasInstanceMethod:@"_commonInit" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PSTableCell" hasInstanceMethod:@"setIcon:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SUIKSearchResultCollectionViewSectionHeader" hasInstanceMethod:@"_commonInit" withFullSignature:{"v", 0}];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"PSTableCellInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SUIKSearchResultCollectionViewSectionHeaderInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"PSTableCellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SUIKSearchResultCollectionViewSectionHeaderInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

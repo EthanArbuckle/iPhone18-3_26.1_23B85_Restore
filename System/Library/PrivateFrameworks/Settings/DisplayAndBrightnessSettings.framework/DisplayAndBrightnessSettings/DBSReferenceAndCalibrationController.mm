@@ -2,10 +2,10 @@
 - (id)getProModeEnabled;
 - (id)specifiers;
 - (void)presentModalFineTuneController;
-- (void)setProModeEnabled:(BOOL)a3;
-- (void)setProModeEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)setProModeEnabled:(BOOL)enabled;
+- (void)setProModeEnabled:(id)enabled forSpecifier:(id)specifier;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DBSReferenceAndCalibrationController
@@ -19,11 +19,11 @@
   [(DBSReferenceAndCalibrationController *)self setTitle:v3];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = DBSReferenceAndCalibrationController;
-  [(DBSReferenceAndCalibrationController *)&v3 viewWillAppear:a3];
+  [(DBSReferenceAndCalibrationController *)&v3 viewWillAppear:appear];
 }
 
 - (id)specifiers
@@ -32,12 +32,12 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"ADVANCED_DETAIL_GROUP_ID"];
     v7 = DBS_LocalizedStringForDisplays(@"PRO_MODE_FOOTER");
     [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
-    [v5 addObject:v6];
+    [array addObject:v6];
     v8 = MEMORY[0x277D3FAD8];
     v9 = DBS_LocalizedStringForDisplays(@"PRO_MODE");
     v10 = [v8 preferenceSpecifierNamed:v9 target:self set:sel_setProModeEnabled_forSpecifier_ get:sel_getProModeEnabled_ detail:0 cell:6 edit:0];
@@ -46,7 +46,7 @@
 
     v12 = *MEMORY[0x277D3FFB8];
     [(PSSpecifier *)self->_proModeSwitchSpecifier setObject:@"PRO_MODE_SWITCH" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
-    [v5 addObject:self->_proModeSwitchSpecifier];
+    [array addObject:self->_proModeSwitchSpecifier];
     v13 = MEMORY[0x277D3FAD8];
     v14 = DBS_LocalizedStringForDisplays(@"FINE_TUNE");
     v15 = [v13 preferenceSpecifierNamed:v14 target:self set:0 get:0 detail:0 cell:2 edit:0];
@@ -56,16 +56,16 @@
     [(PSSpecifier *)self->_fineTuneSpecifier setButtonAction:sel_presentModalFineTuneController];
     [(PSSpecifier *)self->_fineTuneSpecifier setObject:@"FINE_TUNE" forKeyedSubscript:v12];
     [(PSSpecifier *)self->_fineTuneSpecifier setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FF38]];
-    v17 = [(DBSReferenceAndCalibrationController *)self getProModeEnabled];
-    LODWORD(v13) = [v17 BOOLValue];
+    getProModeEnabled = [(DBSReferenceAndCalibrationController *)self getProModeEnabled];
+    LODWORD(v13) = [getProModeEnabled BOOLValue];
 
     if (v13)
     {
-      [v5 addObject:self->_fineTuneSpecifier];
+      [array addObject:self->_fineTuneSpecifier];
     }
 
     v18 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.isa + v3) = array;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -92,36 +92,36 @@
 - (id)getProModeEnabled
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277CD9E40] mainDisplay];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "isReference")}];
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  v4 = [v2 numberWithBool:{objc_msgSend(mainDisplay, "isReference")}];
 
   return v4;
 }
 
-- (void)setProModeEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setProModeEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  [(DBSReferenceAndCalibrationController *)self setProModeEnabled:v5];
+  [(DBSReferenceAndCalibrationController *)self setProModeEnabled:bOOLValue];
 }
 
-- (void)setProModeEnabled:(BOOL)a3
+- (void)setProModeEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CD9E40] mainDisplay];
-  v6 = [v5 isReference];
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  isReference = [mainDisplay isReference];
 
-  if (v6 != v3)
+  if (isReference != enabledCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [MEMORY[0x277CD9E40] mainDisplay];
-    v8 = [v7 availablePresets];
+    mainDisplay2 = [MEMORY[0x277CD9E40] mainDisplay];
+    availablePresets = [mainDisplay2 availablePresets];
 
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v9 = [availablePresets countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -132,25 +132,25 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(availablePresets);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          if ([v13 isReference] == v3)
+          if ([v13 isReference] == enabledCopy)
           {
-            v14 = [MEMORY[0x277CD9E40] mainDisplay];
-            [v14 setCurrentPreset:v13];
+            mainDisplay3 = [MEMORY[0x277CD9E40] mainDisplay];
+            [mainDisplay3 setCurrentPreset:v13];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [availablePresets countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
     }
 
     fineTuneSpecifier = self->_fineTuneSpecifier;
-    if (v3)
+    if (enabledCopy)
     {
       [(DBSReferenceAndCalibrationController *)self insertSpecifier:fineTuneSpecifier afterSpecifier:self->_proModeSwitchSpecifier animated:1];
     }

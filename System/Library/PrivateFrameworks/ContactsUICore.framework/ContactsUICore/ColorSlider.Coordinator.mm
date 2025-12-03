@@ -1,14 +1,14 @@
 @interface ColorSlider.Coordinator
-- (void)sliderValueChanged:(id)a3;
+- (void)sliderValueChanged:(id)changed;
 @end
 
 @implementation ColorSlider.Coordinator
 
-- (void)sliderValueChanged:(id)a3
+- (void)sliderValueChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   sub_1A34C9010();
-  sub_1A348268C(v3);
+  sub_1A348268C(changedCopy);
 }
 
 @end

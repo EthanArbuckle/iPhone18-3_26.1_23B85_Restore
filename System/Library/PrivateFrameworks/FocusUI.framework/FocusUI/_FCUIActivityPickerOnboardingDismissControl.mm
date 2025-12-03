@@ -1,30 +1,30 @@
 @interface _FCUIActivityPickerOnboardingDismissControl
 - (BOOL)adjustForContentSizeCategoryChange;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGRect)_imageViewFrameWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (UIEdgeInsets)contentInsetsWithBounds:(CGRect)a3;
-- (_FCUIActivityPickerOnboardingDismissControl)initWithAction:(id)a3;
-- (double)_scaledValueForValue:(double)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGRect)_imageViewFrameWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (UIEdgeInsets)contentInsetsWithBounds:(CGRect)bounds;
+- (_FCUIActivityPickerOnboardingDismissControl)initWithAction:(id)action;
+- (double)_scaledValueForValue:(double)value;
 - (void)_setNeedsTextAttributesUpdate;
 - (void)_updateTextAttributes;
 - (void)_updateTextAttributesIfNecessary;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
 @end
 
 @implementation _FCUIActivityPickerOnboardingDismissControl
 
-- (_FCUIActivityPickerOnboardingDismissControl)initWithAction:(id)a3
+- (_FCUIActivityPickerOnboardingDismissControl)initWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v14.receiver = self;
   v14.super_class = _FCUIActivityPickerOnboardingDismissControl;
   v5 = [(_FCUIActivityPickerOnboardingDismissControl *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    [(_FCUIActivityPickerOnboardingDismissControl *)v5 addAction:v4 forControlEvents:64];
+    [(_FCUIActivityPickerOnboardingDismissControl *)v5 addAction:actionCopy forControlEvents:64];
     v7 = objc_alloc(MEMORY[0x277D755E8]);
     v8 = [MEMORY[0x277D755B8] _systemImageNamed:@"xmark"];
     v9 = [v7 initWithImage:v8];
@@ -33,8 +33,8 @@
 
     [(UIImageView *)v6->_imageView setContentMode:4];
     v11 = v6->_imageView;
-    v12 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UIImageView *)v11 setTintColor:v12];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UIImageView *)v11 setTintColor:secondaryLabelColor];
 
     [(_FCUIActivityPickerOnboardingDismissControl *)v6 addSubview:v6->_imageView];
   }
@@ -54,13 +54,13 @@
   [(UIImageView *)imageView setFrame:?];
 }
 
-- (UIEdgeInsets)contentInsetsWithBounds:(CGRect)a3
+- (UIEdgeInsets)contentInsetsWithBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  height = a3.size.height;
-  rect = a3.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  height = bounds.size.height;
+  rect = bounds.size.height;
   [(_FCUIActivityPickerOnboardingDismissControl *)self _imageViewFrameWithBounds:?];
   v7 = v21.origin.x;
   v8 = v21.origin.y;
@@ -102,11 +102,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(_FCUIActivityPickerOnboardingDismissControl *)self _updateTextAttributesIfNecessary:a3.width];
-  v4 = [(UIImageView *)self->_imageView image];
-  [v4 size];
+  [(_FCUIActivityPickerOnboardingDismissControl *)self _updateTextAttributesIfNecessary:fits.width];
+  image = [(UIImageView *)self->_imageView image];
+  [image size];
   v6 = v5;
   v8 = v7;
 
@@ -117,30 +117,30 @@
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = v5 == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v4 numberOfTouchesRequired] != 1 || objc_msgSend(v4, "numberOfTapsRequired") != 1;
+  beginCopy = begin;
+  view = [beginCopy view];
+  v6 = view == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [beginCopy numberOfTouchesRequired] != 1 || objc_msgSend(beginCopy, "numberOfTapsRequired") != 1;
 
   return v6;
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(_FCUIActivityPickerOnboardingDismissControl *)self _setNeedsTextAttributesUpdate];
   }
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(_FCUIActivityPickerOnboardingDismissControl *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(_FCUIActivityPickerOnboardingDismissControl *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v5 = UIContentSizeCategoryCompareToCategory(v4, self->_preferredContentSizeCategory);
+  v5 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, self->_preferredContentSizeCategory);
   if (v5)
   {
     [(_FCUIActivityPickerOnboardingDismissControl *)self _setNeedsTextAttributesUpdate];
@@ -149,7 +149,7 @@
   return v5 != NSOrderedSame;
 }
 
-- (double)_scaledValueForValue:(double)a3
+- (double)_scaledValueForValue:(double)value
 {
   referenceFont = self->_referenceFont;
   if (!referenceFont)
@@ -164,7 +164,7 @@
     referenceFont = self->_referenceFont;
   }
 
-  [(UIFont *)referenceFont _scaledValueForValue:a3];
+  [(UIFont *)referenceFont _scaledValueForValue:value];
   return result;
 }
 
@@ -178,10 +178,10 @@
 
 - (void)_updateTextAttributes
 {
-  v3 = [(_FCUIActivityPickerOnboardingDismissControl *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(_FCUIActivityPickerOnboardingDismissControl *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   preferredContentSizeCategory = self->_preferredContentSizeCategory;
-  self->_preferredContentSizeCategory = v4;
+  self->_preferredContentSizeCategory = preferredContentSizeCategory;
 
   imageView = self->_imageView;
   v7 = MEMORY[0x277D755D0];
@@ -204,10 +204,10 @@
   }
 }
 
-- (CGRect)_imageViewFrameWithBounds:(CGRect)a3
+- (CGRect)_imageViewFrameWithBounds:(CGRect)bounds
 {
-  v3 = [(UIImageView *)self->_imageView image];
-  [v3 size];
+  image = [(UIImageView *)self->_imageView image];
+  [image size];
 
   v4 = BSRectWithSize();
 

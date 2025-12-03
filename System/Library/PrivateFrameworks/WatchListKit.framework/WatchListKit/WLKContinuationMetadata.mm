@@ -1,43 +1,43 @@
 @interface WLKContinuationMetadata
-- (WLKContinuationMetadata)initWithDictionary:(id)a3 context:(id)a4;
+- (WLKContinuationMetadata)initWithDictionary:(id)dictionary context:(id)context;
 @end
 
 @implementation WLKContinuationMetadata
 
-- (WLKContinuationMetadata)initWithDictionary:(id)a3 context:(id)a4
+- (WLKContinuationMetadata)initWithDictionary:(id)dictionary context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = WLKContinuationMetadata;
-  v8 = [(WLKContinuationMetadataBase *)&v22 initWithDictionary:v6 context:v7];
+  v8 = [(WLKContinuationMetadataBase *)&v22 initWithDictionary:dictionaryCopy context:contextCopy];
   if (v8)
   {
-    v9 = [v6 wlk_dictionaryForKey:@"playable"];
-    v10 = [v6 wlk_arrayForKey:@"playables"];
+    v9 = [dictionaryCopy wlk_dictionaryForKey:@"playable"];
+    v10 = [dictionaryCopy wlk_arrayForKey:@"playables"];
     if ([v10 count])
     {
-      v11 = [v10 firstObject];
+      firstObject = [v10 firstObject];
 
-      v9 = v11;
+      v9 = firstObject;
     }
 
     if (v9)
     {
-      v12 = [[WLKPlayable alloc] initWithDictionary:v9 context:v7];
+      v12 = [[WLKPlayable alloc] initWithDictionary:v9 context:contextCopy];
       playable = v8->_playable;
       v8->_playable = v12;
     }
 
-    v14 = [v6 wlk_stringForKey:@"deleteId"];
+    v14 = [dictionaryCopy wlk_stringForKey:@"deleteId"];
     deleteID = v8->_deleteID;
     v8->_deleteID = v14;
 
-    v16 = [v6 wlk_numberForKey:@"siriActionsExpirationEpochMillis"];
+    v16 = [dictionaryCopy wlk_numberForKey:@"siriActionsExpirationEpochMillis"];
     siriActionsExpirationEpochMillis = v8->_siriActionsExpirationEpochMillis;
     v8->_siriActionsExpirationEpochMillis = v16;
 
-    v18 = [v6 wlk_arrayForKey:@"siriActionsCategories"];
+    v18 = [dictionaryCopy wlk_arrayForKey:@"siriActionsCategories"];
     v19 = [v18 copy];
     siriActionsCategories = v8->_siriActionsCategories;
     v8->_siriActionsCategories = v19;

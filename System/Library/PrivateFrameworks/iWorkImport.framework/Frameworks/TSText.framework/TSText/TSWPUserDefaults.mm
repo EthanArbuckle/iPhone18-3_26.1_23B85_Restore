@@ -1,44 +1,44 @@
 @interface TSWPUserDefaults
 + (BOOL)automaticDashSubstitution;
 + (BOOL)automaticQuoteSubstitution;
-+ (BOOL)p_UserDefaultSet:(id)a3 force:(BOOL)a4;
-+ (BOOL)p_cachedBoolForKey:(id)a3;
++ (BOOL)p_UserDefaultSet:(id)set force:(BOOL)force;
++ (BOOL)p_cachedBoolForKey:(id)key;
 + (BOOL)spellCheckingEnabled;
 + (id)appReplacementsDictionary;
-+ (id)p_caseInsensitiveDictionary:(id)a3 mergedWithDictionary:(id)a4;
-+ (id)replacementsDictionaryAllowingFractions:(BOOL)a3;
++ (id)p_caseInsensitiveDictionary:(id)dictionary mergedWithDictionary:(id)withDictionary;
++ (id)replacementsDictionaryAllowingFractions:(BOOL)fractions;
 + (unint64_t)maximumFontSize;
 + (void)initialize;
-+ (void)p_defaultsChanged:(id)a3;
-+ (void)registerUserDefaults:(BOOL)a3;
-+ (void)setAutomaticDashSubstitution:(BOOL)a3;
-+ (void)setAutomaticQuoteSubstitution:(BOOL)a3;
-+ (void)setAutomaticTextReplacement:(BOOL)a3;
-+ (void)setAutomaticallyDetectLinks:(BOOL)a3;
-+ (void)setAutomaticallyDetectLists:(BOOL)a3;
-+ (void)setAutomaticallyDetectPhoneLinks:(BOOL)a3;
-+ (void)setAutomaticallyFormatFractions:(BOOL)a3;
-+ (void)setInvisiblesColor:(id)a3;
-+ (void)setReplacementsDictionary:(id)a3;
-+ (void)setShowsQuickFormatBar:(BOOL)a3;
-+ (void)setSpellCheckingEnabled:(BOOL)a3;
-+ (void)setSuperscriptNumericalSuffixes:(BOOL)a3;
-+ (void)setUnderlineLinks:(BOOL)a3;
++ (void)p_defaultsChanged:(id)changed;
++ (void)registerUserDefaults:(BOOL)defaults;
++ (void)setAutomaticDashSubstitution:(BOOL)substitution;
++ (void)setAutomaticQuoteSubstitution:(BOOL)substitution;
++ (void)setAutomaticTextReplacement:(BOOL)replacement;
++ (void)setAutomaticallyDetectLinks:(BOOL)links;
++ (void)setAutomaticallyDetectLists:(BOOL)lists;
++ (void)setAutomaticallyDetectPhoneLinks:(BOOL)links;
++ (void)setAutomaticallyFormatFractions:(BOOL)fractions;
++ (void)setInvisiblesColor:(id)color;
++ (void)setReplacementsDictionary:(id)dictionary;
++ (void)setShowsQuickFormatBar:(BOOL)bar;
++ (void)setSpellCheckingEnabled:(BOOL)enabled;
++ (void)setSuperscriptNumericalSuffixes:(BOOL)suffixes;
++ (void)setUnderlineLinks:(BOOL)links;
 @end
 
 @implementation TSWPUserDefaults
 
-+ (BOOL)p_UserDefaultSet:(id)a3 force:(BOOL)a4
++ (BOOL)p_UserDefaultSet:(id)set force:(BOOL)force
 {
-  if (a4)
+  if (force)
   {
     return 0;
   }
 
   v5 = MEMORY[0x277CBEBD0];
-  v6 = a3;
+  setCopy = set;
   v9 = objc_msgSend_standardUserDefaults(v5, v7, v8);
-  v11 = objc_msgSend_objectForKey_(v9, v10, v6);
+  v11 = objc_msgSend_objectForKey_(v9, v10, setCopy);
 
   v4 = v11 != 0;
   return v4;
@@ -48,7 +48,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v5 = qword_280A58488;
@@ -56,21 +56,21 @@
   }
 }
 
-+ (void)p_defaultsChanged:(id)a3
++ (void)p_defaultsChanged:(id)changed
 {
-  v6 = a3;
+  changedCopy = changed;
   v3 = qword_280A58488;
   objc_sync_enter(v3);
   objc_msgSend_removeAllObjects(qword_280A58488, v4, v5);
   objc_sync_exit(v3);
 }
 
-+ (BOOL)p_cachedBoolForKey:(id)a3
++ (BOOL)p_cachedBoolForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = qword_280A58488;
   objc_sync_enter(v4);
-  v6 = objc_msgSend_objectForKey_(qword_280A58488, v5, v3);
+  v6 = objc_msgSend_objectForKey_(qword_280A58488, v5, keyCopy);
   v9 = v6;
   if (v6)
   {
@@ -80,16 +80,16 @@
   else
   {
     v11 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], v7, v8);
-    v10 = objc_msgSend_BOOLForKey_(v11, v12, v3);
+    v10 = objc_msgSend_BOOLForKey_(v11, v12, keyCopy);
 
     if (v10)
     {
-      objc_msgSend_setObject_forKey_(qword_280A58488, v13, MEMORY[0x277CBEC38], v3);
+      objc_msgSend_setObject_forKey_(qword_280A58488, v13, MEMORY[0x277CBEC38], keyCopy);
     }
 
     else
     {
-      objc_msgSend_setObject_forKey_(qword_280A58488, v13, MEMORY[0x277CBEC28], v3);
+      objc_msgSend_setObject_forKey_(qword_280A58488, v13, MEMORY[0x277CBEC28], keyCopy);
     }
   }
 
@@ -99,7 +99,7 @@
 
 + (BOOL)spellCheckingEnabled
 {
-  v2 = objc_msgSend_p_cachedBoolForKey_(a1, a2, *MEMORY[0x277D80820]);
+  v2 = objc_msgSend_p_cachedBoolForKey_(self, a2, *MEMORY[0x277D80820]);
   if (v2)
   {
 
@@ -111,40 +111,40 @@
 
 + (BOOL)automaticDashSubstitution
 {
-  if (!objc_msgSend_p_UserDefaultSet_force_(a1, a2, @"TSWPAutomaticDashSubstitution", 0))
+  if (!objc_msgSend_p_UserDefaultSet_force_(self, a2, @"TSWPAutomaticDashSubstitution", 0))
   {
     return 1;
   }
 
-  return objc_msgSend_p_cachedBoolForKey_(a1, v3, @"TSWPAutomaticDashSubstitution");
+  return objc_msgSend_p_cachedBoolForKey_(self, v3, @"TSWPAutomaticDashSubstitution");
 }
 
 + (BOOL)automaticQuoteSubstitution
 {
-  if (!objc_msgSend_p_UserDefaultSet_force_(a1, a2, @"TSWPAutomaticQuoteSubstitution", 0))
+  if (!objc_msgSend_p_UserDefaultSet_force_(self, a2, @"TSWPAutomaticQuoteSubstitution", 0))
   {
     return 1;
   }
 
-  return objc_msgSend_p_cachedBoolForKey_(a1, v3, @"TSWPAutomaticQuoteSubstitution");
+  return objc_msgSend_p_cachedBoolForKey_(self, v3, @"TSWPAutomaticQuoteSubstitution");
 }
 
-+ (void)setShowsQuickFormatBar:(BOOL)a3
++ (void)setShowsQuickFormatBar:(BOOL)bar
 {
-  v3 = a3;
-  v4 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
-  objc_msgSend_setBool_forKey_(v4, v5, v3, @"TSWPShowsQuickFormatBar");
+  barCopy = bar;
+  v4 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, bar);
+  objc_msgSend_setBool_forKey_(v4, v5, barCopy, @"TSWPShowsQuickFormatBar");
 
   v7 = qword_280A58488;
 
   objc_msgSend_removeObjectForKey_(v7, v6, @"TSWPShowsQuickFormatBar");
 }
 
-+ (id)p_caseInsensitiveDictionary:(id)a3 mergedWithDictionary:(id)a4
++ (id)p_caseInsensitiveDictionary:(id)dictionary mergedWithDictionary:(id)withDictionary
 {
-  v5 = a4;
-  v8 = objc_msgSend_count(a3, v6, v7);
-  v11 = objc_msgSend_count(v5, v9, v10);
+  withDictionaryCopy = withDictionary;
+  v8 = objc_msgSend_count(dictionary, v6, v7);
+  v11 = objc_msgSend_count(withDictionaryCopy, v9, v10);
 
   v13 = objc_msgSend_dictionaryWithCapacity_(MEMORY[0x277CBEB38], v12, v11 + v8);
   v16 = objc_msgSend_copy(v13, v14, v15);
@@ -152,16 +152,16 @@
   return v16;
 }
 
-+ (id)replacementsDictionaryAllowingFractions:(BOOL)a3
++ (id)replacementsDictionaryAllowingFractions:(BOOL)fractions
 {
-  v3 = a3;
-  v7 = objc_msgSend_appReplacementsDictionary(a1, a2, a3);
+  fractionsCopy = fractions;
+  v7 = objc_msgSend_appReplacementsDictionary(self, a2, fractions);
   if (!v7)
   {
     v7 = objc_msgSend_dictionary(MEMORY[0x277CBEAC0], v5, v6);
   }
 
-  if (objc_msgSend_automaticTextReplacement(a1, v5, v6))
+  if (objc_msgSend_automaticTextReplacement(self, v5, v6))
   {
     v10 = v7;
   }
@@ -172,14 +172,14 @@
   }
 
   v13 = v10;
-  if (v3 && objc_msgSend_automaticallyFormatFractions(a1, v11, v12))
+  if (fractionsCopy && objc_msgSend_automaticallyFormatFractions(self, v11, v12))
   {
     if (qword_280A58498 != -1)
     {
       sub_276F4F800();
     }
 
-    v15 = objc_msgSend_p_caseInsensitiveDictionary_mergedWithDictionary_(a1, v14, v13, qword_280A58490);
+    v15 = objc_msgSend_p_caseInsensitiveDictionary_mergedWithDictionary_(self, v14, v13, qword_280A58490);
 
     v13 = v15;
   }
@@ -195,15 +195,15 @@
   return v5;
 }
 
-+ (void)setReplacementsDictionary:(id)a3
++ (void)setReplacementsDictionary:(id)dictionary
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8 = objc_msgSend_standardUserDefaults(v3, v5, v6);
-  objc_msgSend_setObject_forKey_(v8, v7, v4, @"TSWPTextReplacementsDictionary");
+  objc_msgSend_setObject_forKey_(v8, v7, dictionaryCopy, @"TSWPTextReplacementsDictionary");
 }
 
-+ (void)setInvisiblesColor:(id)a3
++ (void)setInvisiblesColor:(id)color
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSWPUserDefaults setInvisiblesColor:]");
@@ -215,74 +215,74 @@
   objc_msgSend_logBacktraceThrottled(v10, v8, v9);
 }
 
-+ (void)setAutomaticallyDetectLinks:(BOOL)a3
++ (void)setAutomaticallyDetectLinks:(BOOL)links
 {
-  v3 = a3;
-  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
-  objc_msgSend_setBool_forKey_(v5, v4, v3, @"TSWPAutomaticallyDetectLinks");
+  linksCopy = links;
+  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, links);
+  objc_msgSend_setBool_forKey_(v5, v4, linksCopy, @"TSWPAutomaticallyDetectLinks");
 }
 
-+ (void)setAutomaticallyDetectPhoneLinks:(BOOL)a3
++ (void)setAutomaticallyDetectPhoneLinks:(BOOL)links
 {
-  v3 = a3;
-  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
-  objc_msgSend_setBool_forKey_(v5, v4, v3, @"TSWPAutomaticallyDetectPhoneLinks");
+  linksCopy = links;
+  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, links);
+  objc_msgSend_setBool_forKey_(v5, v4, linksCopy, @"TSWPAutomaticallyDetectPhoneLinks");
 }
 
-+ (void)setUnderlineLinks:(BOOL)a3
++ (void)setUnderlineLinks:(BOOL)links
 {
-  v3 = a3;
-  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
-  objc_msgSend_setBool_forKey_(v5, v4, v3, @"TSWPUnderlineLinks");
+  linksCopy = links;
+  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, links);
+  objc_msgSend_setBool_forKey_(v5, v4, linksCopy, @"TSWPUnderlineLinks");
 }
 
-+ (void)setAutomaticallyDetectLists:(BOOL)a3
++ (void)setAutomaticallyDetectLists:(BOOL)lists
 {
-  v3 = a3;
-  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
-  objc_msgSend_setBool_forKey_(v5, v4, v3, @"TSWPAutomaticallyDetectLists");
+  listsCopy = lists;
+  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, lists);
+  objc_msgSend_setBool_forKey_(v5, v4, listsCopy, @"TSWPAutomaticallyDetectLists");
 }
 
-+ (void)setSuperscriptNumericalSuffixes:(BOOL)a3
++ (void)setSuperscriptNumericalSuffixes:(BOOL)suffixes
 {
-  v3 = a3;
-  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
-  objc_msgSend_setBool_forKey_(v5, v4, v3, @"TSWPSuperscriptNumericalSuffixes");
+  suffixesCopy = suffixes;
+  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, suffixes);
+  objc_msgSend_setBool_forKey_(v5, v4, suffixesCopy, @"TSWPSuperscriptNumericalSuffixes");
 }
 
-+ (void)setAutomaticallyFormatFractions:(BOOL)a3
++ (void)setAutomaticallyFormatFractions:(BOOL)fractions
 {
-  v3 = a3;
-  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
-  objc_msgSend_setBool_forKey_(v5, v4, v3, @"TSWPAutomaticallyFormatFractions");
+  fractionsCopy = fractions;
+  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, fractions);
+  objc_msgSend_setBool_forKey_(v5, v4, fractionsCopy, @"TSWPAutomaticallyFormatFractions");
 }
 
-+ (void)setSpellCheckingEnabled:(BOOL)a3
++ (void)setSpellCheckingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
-  objc_msgSend_setBool_forKey_(v5, v4, v3, *MEMORY[0x277D80820]);
+  enabledCopy = enabled;
+  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, enabled);
+  objc_msgSend_setBool_forKey_(v5, v4, enabledCopy, *MEMORY[0x277D80820]);
 }
 
-+ (void)setAutomaticDashSubstitution:(BOOL)a3
++ (void)setAutomaticDashSubstitution:(BOOL)substitution
 {
-  v3 = a3;
-  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
-  objc_msgSend_setBool_forKey_(v5, v4, v3, @"TSWPAutomaticDashSubstitution");
+  substitutionCopy = substitution;
+  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, substitution);
+  objc_msgSend_setBool_forKey_(v5, v4, substitutionCopy, @"TSWPAutomaticDashSubstitution");
 }
 
-+ (void)setAutomaticQuoteSubstitution:(BOOL)a3
++ (void)setAutomaticQuoteSubstitution:(BOOL)substitution
 {
-  v3 = a3;
-  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
-  objc_msgSend_setBool_forKey_(v5, v4, v3, @"TSWPAutomaticQuoteSubstitution");
+  substitutionCopy = substitution;
+  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, substitution);
+  objc_msgSend_setBool_forKey_(v5, v4, substitutionCopy, @"TSWPAutomaticQuoteSubstitution");
 }
 
-+ (void)setAutomaticTextReplacement:(BOOL)a3
++ (void)setAutomaticTextReplacement:(BOOL)replacement
 {
-  v3 = a3;
-  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
-  objc_msgSend_setBool_forKey_(v5, v4, v3, @"TSWPAutomaticTextReplacement");
+  replacementCopy = replacement;
+  v5 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, replacement);
+  objc_msgSend_setBool_forKey_(v5, v4, replacementCopy, @"TSWPAutomaticTextReplacement");
 }
 
 + (unint64_t)maximumFontSize
@@ -295,10 +295,10 @@
   return qword_280A584A0;
 }
 
-+ (void)registerUserDefaults:(BOOL)a3
++ (void)registerUserDefaults:(BOOL)defaults
 {
   v13[5] = *MEMORY[0x277D85DE8];
-  v3 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
+  v3 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, defaults);
   v12[0] = @"TSWPAutomaticallyDetectLinks";
   v12[1] = @"TSWPAutomaticallyDetectPhoneLinks";
   v13[0] = MEMORY[0x277CBEC28];

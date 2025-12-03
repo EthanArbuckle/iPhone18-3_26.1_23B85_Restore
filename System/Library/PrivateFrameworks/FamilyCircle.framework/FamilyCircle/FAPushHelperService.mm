@@ -1,10 +1,10 @@
 @interface FAPushHelperService
 + (id)sharedInstance;
 - (FAPushHelperService)init;
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connectionDidReconnect:(id)a3;
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connectionDidReconnect:(id)reconnect;
 - (void)dealloc;
 - (void)start;
 - (void)startNewConnection;
@@ -117,35 +117,35 @@
   dispatch_async(connectionQueue, block);
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v4 = a4;
+  tokenCopy = token;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 base64EncodedStringWithOptions:0];
+    v6 = [tokenCopy base64EncodedStringWithOptions:0];
     v7 = 138412290;
     v8 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "APS public token received: %@", &v7, 0xCu);
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   v6 = _FALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 topic];
-    v8 = [v5 userInfo];
+    topic = [messageCopy topic];
+    userInfo = [messageCopy userInfo];
     *buf = 138412546;
-    v23 = v7;
+    v23 = topic;
     v24 = 2112;
-    v25 = v8;
+    v25 = userInfo;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received new incoming message from APS. %@ - %@", buf, 0x16u);
   }
 
-  v9 = [[FAPushMessage alloc] initWithMessage:v5];
+  v9 = [[FAPushMessage alloc] initWithMessage:messageCopy];
   if ([(FAPushMessage *)v9 isValid])
   {
     v19 = 0u;
@@ -198,14 +198,14 @@
   }
 }
 
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v4)
+    if (statusCopy)
     {
       v6 = @"YES";
     }
@@ -216,7 +216,7 @@
   }
 }
 
-- (void)connectionDidReconnect:(id)a3
+- (void)connectionDidReconnect:(id)reconnect
 {
   v3 = _FALogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

@@ -13,8 +13,8 @@
 - (BOOL)showDotsSevenAndEight;
 - (BOOL)showEightDotBraille;
 - (BOOL)wordWrapEnabled;
-- (SCROBrailleClient)initWithDelegate:(id)a3;
-- (_NSRange)rangeOfCellRepresentingCharacterAtIndex:(int64_t)a3;
+- (SCROBrailleClient)initWithDelegate:(id)delegate;
+- (_NSRange)rangeOfCellRepresentingCharacterAtIndex:(int64_t)index;
 - (double)autoAdvanceDuration;
 - (id)_getWorkingString;
 - (id)_lazyConnection;
@@ -22,7 +22,7 @@
 - (id)delegate;
 - (id)driverConfiguration;
 - (id)mainAttributedString;
-- (id)mainCellsForVirtualDisplay:(unint64_t)a3;
+- (id)mainCellsForVirtualDisplay:(unint64_t)display;
 - (id)pendingAggregatedStatus;
 - (id)pendingMainAttributedString;
 - (id)tokenArray;
@@ -31,8 +31,8 @@
 - (int)inputContractionMode;
 - (int)virtualStatusAlignment;
 - (int64_t)masterStatusCellIndex;
-- (int64_t)tokenForRouterIndex:(int64_t)a3 location:(int64_t *)a4 appToken:(id *)a5 forDisplayWithToken:(int)a6;
-- (unint64_t)loadVirtualDisplayWithMainSize:(int64_t)a3;
+- (int64_t)tokenForRouterIndex:(int64_t)index location:(int64_t *)location appToken:(id *)token forDisplayWithToken:(int)withToken;
+- (unint64_t)loadVirtualDisplayWithMainSize:(int64_t)size;
 - (unint64_t)numberOfTextLinesInPlanarBraille;
 - (unsigned)persistentKeyModifiers;
 - (void)_deathTimerHandler;
@@ -43,62 +43,62 @@
 - (void)dealloc;
 - (void)display;
 - (void)displayIfNeeded;
-- (void)endBrailleUIWithOptions:(id)a3;
+- (void)endBrailleUIWithOptions:(id)options;
 - (void)exitCurrentDisplayMode;
-- (void)handleBrailleUIResponse:(id)a3 forRequest:(id)a4;
-- (void)handleCallback:(id)a3;
-- (void)loadDisplayWithBluetoothDeviceAddress:(id)a3;
-- (void)loadTactileGraphicsDisplayWithBLEIdentifier:(id)a3;
-- (void)panDisplayBeginning:(int)a3;
-- (void)panDisplayEnd:(int)a3;
-- (void)panDisplayLeft:(int)a3;
-- (void)panDisplayRight:(int)a3;
-- (void)planarPanDisplayLeft:(int)a3;
-- (void)planarPanDisplayRight:(int)a3;
-- (void)processBrailleUICommand:(id)a3;
-- (void)removeDisplayWithBluetoothDeviceAddress:(id)a3;
+- (void)handleBrailleUIResponse:(id)response forRequest:(id)request;
+- (void)handleCallback:(id)callback;
+- (void)loadDisplayWithBluetoothDeviceAddress:(id)address;
+- (void)loadTactileGraphicsDisplayWithBLEIdentifier:(id)identifier;
+- (void)panDisplayBeginning:(int)beginning;
+- (void)panDisplayEnd:(int)end;
+- (void)panDisplayLeft:(int)left;
+- (void)panDisplayRight:(int)right;
+- (void)planarPanDisplayLeft:(int)left;
+- (void)planarPanDisplayRight:(int)right;
+- (void)processBrailleUICommand:(id)command;
+- (void)removeDisplayWithBluetoothDeviceAddress:(id)address;
 - (void)resetEditingManager;
-- (void)selectAllForToken:(int64_t)a3;
-- (void)setAggregatedStatus:(id)a3;
-- (void)setAnnouncementString:(id)a3;
+- (void)selectAllForToken:(int64_t)token;
+- (void)setAggregatedStatus:(id)status;
+- (void)setAnnouncementString:(id)string;
 - (void)setAnnouncementsDisplayMode;
-- (void)setAttributedAnnouncementString:(id)a3;
-- (void)setAutoAdvanceDuration:(double)a3;
-- (void)setBrailleChordDebounceTimeout:(double)a3;
-- (void)setBrailleMap:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setExpandedStatusDisplayModeWithStatus:(id)a3;
-- (void)setFocused:(BOOL)a3 forToken:(int64_t)a4;
-- (void)setInputTableIdentifier:(id)a3;
-- (void)setKeepConnectionAlive:(BOOL)a3;
-- (void)setLastUserInteractionTime:(double)a3;
-- (void)setMainAttributedString:(id)a3;
-- (void)setMasterStatusCellIndex:(int64_t)a3;
-- (void)setPlanarData:(id)a3;
-- (void)setPrimaryBrailleDisplay:(int)a3;
-- (void)setTableIdentifier:(id)a3;
-- (void)setTactileGraphicsImageData:(id)a3;
+- (void)setAttributedAnnouncementString:(id)string;
+- (void)setAutoAdvanceDuration:(double)duration;
+- (void)setBrailleChordDebounceTimeout:(double)timeout;
+- (void)setBrailleMap:(id)map;
+- (void)setDelegate:(id)delegate;
+- (void)setExpandedStatusDisplayModeWithStatus:(id)status;
+- (void)setFocused:(BOOL)focused forToken:(int64_t)token;
+- (void)setInputTableIdentifier:(id)identifier;
+- (void)setKeepConnectionAlive:(BOOL)alive;
+- (void)setLastUserInteractionTime:(double)time;
+- (void)setMainAttributedString:(id)string;
+- (void)setMasterStatusCellIndex:(int64_t)index;
+- (void)setPlanarData:(id)data;
+- (void)setPrimaryBrailleDisplay:(int)display;
+- (void)setTableIdentifier:(id)identifier;
+- (void)setTactileGraphicsImageData:(id)data;
 - (void)showNextAnnouncement;
 - (void)showNextCandidate;
 - (void)showNextWordDescription;
 - (void)showPreviousAnnouncement;
 - (void)showPreviousCandidate;
 - (void)showPreviousWordDescription;
-- (void)simulateKeypress:(id)a3;
-- (void)startBrailleUIWithOptions:(id)a3;
-- (void)systemVirtualDisplayPressKeyChord:(unint64_t)a3;
+- (void)simulateKeypress:(id)keypress;
+- (void)startBrailleUIWithOptions:(id)options;
+- (void)systemVirtualDisplayPressKeyChord:(unint64_t)chord;
 - (void)translateBrailleToClipboard;
-- (void)unloadVirtualDisplay:(unint64_t)a3;
-- (void)unselectAllForToken:(int64_t)a3;
-- (void)virtualDisplay:(unint64_t)a3 pressButton:(unint64_t)a4;
-- (void)virtualDisplay:(unint64_t)a3 pressKeyChord:(unint64_t)a4;
+- (void)unloadVirtualDisplay:(unint64_t)display;
+- (void)unselectAllForToken:(int64_t)token;
+- (void)virtualDisplay:(unint64_t)display pressButton:(unint64_t)button;
+- (void)virtualDisplay:(unint64_t)display pressKeyChord:(unint64_t)chord;
 @end
 
 @implementation SCROBrailleClient
 
-- (SCROBrailleClient)initWithDelegate:(id)a3
+- (SCROBrailleClient)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = SCROBrailleClient;
   v5 = [(SCROBrailleClient *)&v16 init];
@@ -119,7 +119,7 @@
     deathTimer = v5->_deathTimer;
     v5->_deathTimer = v13;
 
-    [(SCROBrailleClient *)v5 setDelegate:v4];
+    [(SCROBrailleClient *)v5 setDelegate:delegateCopy];
   }
 
   return v5;
@@ -137,26 +137,26 @@
   [(SCROBrailleClient *)&v3 dealloc];
 }
 
-- (void)setKeepConnectionAlive:(BOOL)a3
+- (void)setKeepConnectionAlive:(BOOL)alive
 {
-  v3 = a3;
+  aliveCopy = alive;
   [(NSLock *)self->_lock lock];
-  if (self->_keepConnectionAlive == v3)
+  if (self->_keepConnectionAlive == aliveCopy)
   {
     [(NSLock *)self->_lock unlock];
-    if (!v3)
+    if (!aliveCopy)
     {
       return;
     }
 
 LABEL_6:
-    v6 = [(SCROBrailleClient *)self _lazyConnection];
+    _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
     return;
   }
 
-  self->_keepConnectionAlive = v3;
+  self->_keepConnectionAlive = aliveCopy;
   deathTimer = self->_deathTimer;
-  if (v3)
+  if (aliveCopy)
   {
     [(SCRCTargetSelectorTimer *)deathTimer cancel];
     [(NSLock *)self->_lock unlock];
@@ -498,22 +498,22 @@ LABEL_6:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = _SCROD_LOG();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = delegateCopy;
     _os_log_impl(&dword_26490B000, v5, OS_LOG_TYPE_DEFAULT, "[SCROBrailleClient setDelegate:%@]", &v8, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_delegate, v4);
+    objc_storeWeak(&self->_delegate, delegateCopy);
     [(SCROBrailleClient *)self _registerDelegate];
   }
 
@@ -527,89 +527,89 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)loadDisplayWithBluetoothDeviceAddress:(id)a3
+- (void)loadDisplayWithBluetoothDeviceAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  [v5 setHandlerValue:v4 forKey:25];
+  addressCopy = address;
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:addressCopy forKey:25];
 }
 
-- (void)loadTactileGraphicsDisplayWithBLEIdentifier:(id)a3
+- (void)loadTactileGraphicsDisplayWithBLEIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  [v5 setHandlerValue:v4 forKey:27];
+  identifierCopy = identifier;
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:identifierCopy forKey:27];
 }
 
-- (void)removeDisplayWithBluetoothDeviceAddress:(id)a3
+- (void)removeDisplayWithBluetoothDeviceAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  [v5 setHandlerValue:v4 forKey:26];
+  addressCopy = address;
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:addressCopy forKey:26];
 }
 
-- (void)setTableIdentifier:(id)a3
+- (void)setTableIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  [v5 setHandlerValue:v4 forKey:28];
+  identifierCopy = identifier;
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:identifierCopy forKey:28];
 }
 
-- (void)setInputTableIdentifier:(id)a3
+- (void)setInputTableIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  [v5 setHandlerValue:v4 forKey:29];
+  identifierCopy = identifier;
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:identifierCopy forKey:29];
 }
 
 - (BOOL)alwaysUsesNemethCodeForTechnicalText
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:30];
-  v4 = [v3 BOOLValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:30];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isConfigured
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:65];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:65];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)driverConfiguration
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerArrayValueForKey:67];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerArrayValueForKey:67];
 
   return v3;
 }
 
-- (void)setMainAttributedString:(id)a3
+- (void)setMainAttributedString:(id)string
 {
-  v7 = a3;
-  if ([v7 length] > 0x1000)
+  stringCopy = string;
+  if ([stringCopy length] > 0x1000)
   {
-    v4 = [v7 attributedSubstringFromRange:{0, 4096}];
+    v4 = [stringCopy attributedSubstringFromRange:{0, 4096}];
 
-    v7 = v4;
+    stringCopy = v4;
   }
 
   [(NSLock *)self->_lock lock];
-  self->_needsDisplay = [(NSMutableAttributedString *)self->_mainStringPending isEqual:v7]^ 1;
-  v5 = [v7 mutableCopy];
+  self->_needsDisplay = [(NSMutableAttributedString *)self->_mainStringPending isEqual:stringCopy]^ 1;
+  v5 = [stringCopy mutableCopy];
   mainStringPending = self->_mainStringPending;
   self->_mainStringPending = v5;
 
@@ -627,8 +627,8 @@ LABEL_6:
 
 - (id)mainAttributedString
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:31];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:31];
 
   if (v3)
   {
@@ -643,39 +643,39 @@ LABEL_6:
   return v4;
 }
 
-- (void)setAnnouncementString:(id)a3
+- (void)setAnnouncementString:(id)string
 {
-  v5 = a3;
-  if ([v5 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v5];
+    v4 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:stringCopy];
     [(SCROBrailleClient *)self setAttributedAnnouncementString:v4];
   }
 }
 
-- (void)setAttributedAnnouncementString:(id)a3
+- (void)setAttributedAnnouncementString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    [(SCROBrailleClient *)self setMainAttributedString:v4];
+    [(SCROBrailleClient *)self setMainAttributedString:stringCopy];
   }
 }
 
 - (void)clearTimeoutAlert
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  [v2 performHandlerActionForKey:12];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection performHandlerActionForKey:12];
 }
 
-- (void)setAggregatedStatus:(id)a3
+- (void)setAggregatedStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   [(NSLock *)self->_lock lock];
-  self->_needsDisplay = [(NSData *)self->_aggregatedStatusPending isEqual:v4]^ 1;
+  self->_needsDisplay = [(NSData *)self->_aggregatedStatusPending isEqual:statusCopy]^ 1;
   aggregatedStatusPending = self->_aggregatedStatusPending;
-  self->_aggregatedStatusPending = v4;
-  v6 = v4;
+  self->_aggregatedStatusPending = statusCopy;
+  v6 = statusCopy;
 
   [(NSLock *)self->_lock unlock];
 }
@@ -691,120 +691,120 @@ LABEL_6:
 
 - (id)aggregatedStatus
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:40];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:40];
 
   return v3;
 }
 
 - (int)virtualStatusAlignment
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:41];
-  v4 = [v3 intValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:41];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)setMasterStatusCellIndex:(int64_t)a3
+- (void)setMasterStatusCellIndex:(int64_t)index
 {
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v5 setHandlerValue:v4 forKey:42];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+  [_lazyConnection setHandlerValue:v4 forKey:42];
 }
 
 - (int64_t)masterStatusCellIndex
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:42];
-  v4 = [v3 integerValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:42];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)showDotsSevenAndEight
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:33];
-  v4 = [v3 BOOLValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:33];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int)contractionMode
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:37];
-  v4 = [v3 intValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:37];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)inputEightDotBraille
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:35];
-  v4 = [v3 BOOLValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:35];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)showEightDotBraille
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:34];
-  v4 = [v3 BOOLValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:34];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int)inputContractionMode
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:38];
-  v4 = [v3 intValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:38];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)automaticBrailleTranslationEnabled
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:36];
-  v4 = [v3 BOOLValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:36];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)wordWrapEnabled
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:44];
-  v4 = [v3 BOOLValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:44];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)autoAdvanceEnabled
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:45];
-  v4 = [v3 BOOLValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:45];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setAutoAdvanceDuration:(double)a3
+- (void)setAutoAdvanceDuration:(double)duration
 {
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setHandlerValue:v4 forKey:46];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
+  [_lazyConnection setHandlerValue:v4 forKey:46];
 }
 
 - (double)autoAdvanceDuration
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:46];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:46];
   [v3 doubleValue];
   v5 = v4;
 
@@ -813,44 +813,44 @@ LABEL_6:
 
 - (BOOL)blinkEnabled
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:47];
-  v4 = [v3 BOOLValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:47];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setTactileGraphicsImageData:(id)a3
+- (void)setTactileGraphicsImageData:(id)data
 {
-  v4 = a3;
-  v5 = [[SCRO2DBrailleData alloc] initWithImageData:v4];
+  dataCopy = data;
+  v5 = [[SCRO2DBrailleData alloc] initWithImageData:dataCopy];
 
   [(SCROBrailleClient *)self setPlanarData:v5];
 }
 
-- (void)setBrailleMap:(id)a3
+- (void)setBrailleMap:(id)map
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB28] data];
-  [v4 dimensions];
+  mapCopy = map;
+  data = [MEMORY[0x277CBEB28] data];
+  [mapCopy dimensions];
   if (v6 > 0.0)
   {
     v7 = 0;
     v8 = 0.0;
     do
     {
-      [v4 dimensions];
+      [mapCopy dimensions];
       if (v9 > 0.0)
       {
         v10 = 0.0;
         v11 = 1;
         do
         {
-          [v4 heightAtPoint:{v10, v8}];
+          [mapCopy heightAtPoint:{v10, v8}];
           v15 = v12;
-          [v5 appendBytes:&v15 length:1];
+          [data appendBytes:&v15 length:1];
           v10 = v11;
-          [v4 dimensions];
+          [mapCopy dimensions];
           ++v11;
         }
 
@@ -858,20 +858,20 @@ LABEL_6:
       }
 
       v8 = ++v7;
-      [v4 dimensions];
+      [mapCopy dimensions];
     }
 
     while (v14 > v7);
   }
 
-  [(SCROBrailleClient *)self setTactileGraphicsImageData:v5];
+  [(SCROBrailleClient *)self setTactileGraphicsImageData:data];
 }
 
-- (void)setPlanarData:(id)a3
+- (void)setPlanarData:(id)data
 {
-  v4 = a3;
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  [v5 setHandlerValue:v4 forKey:50];
+  dataCopy = data;
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:dataCopy forKey:50];
 
   v6 = _SCROD_LOG();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -883,46 +883,46 @@ LABEL_6:
 
 - (unint64_t)numberOfTextLinesInPlanarBraille
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:72];
-  v4 = [v3 unsignedIntegerValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:72];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (int)displayMode
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:68];
-  v4 = [v3 intValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:68];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (unsigned)persistentKeyModifiers
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:43];
-  v4 = [v3 intValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:43];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)setLastUserInteractionTime:(double)a3
+- (void)setLastUserInteractionTime:(double)time
 {
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setHandlerValue:v4 forKey:48];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:time];
+  [_lazyConnection setHandlerValue:v4 forKey:48];
 }
 
-- (void)setExpandedStatusDisplayModeWithStatus:(id)a3
+- (void)setExpandedStatusDisplayModeWithStatus:(id)status
 {
-  if (a3)
+  if (status)
   {
     v4 = MEMORY[0x277CCAB48];
-    v5 = a3;
+    statusCopy = status;
     v6 = [[v4 alloc] initWithString:@" "];
-    [v6 addAttribute:kSCROStatusAttribute[0] value:v5 range:{0, 1}];
+    [v6 addAttribute:kSCROStatusAttribute[0] value:statusCopy range:{0, 1}];
 
     [(SCROBrailleClient *)self setMainAttributedString:v6];
   }
@@ -930,14 +930,14 @@ LABEL_6:
 
 - (void)setAnnouncementsDisplayMode
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  [v2 performHandlerActionForKey:6];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection performHandlerActionForKey:6];
 }
 
 - (void)exitCurrentDisplayMode
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  [v2 performHandlerActionForKey:9];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection performHandlerActionForKey:9];
 }
 
 - (BOOL)displayDescriptorCallbackEnabled
@@ -953,24 +953,24 @@ LABEL_6:
   return v5;
 }
 
-- (int64_t)tokenForRouterIndex:(int64_t)a3 location:(int64_t *)a4 appToken:(id *)a5 forDisplayWithToken:(int)a6
+- (int64_t)tokenForRouterIndex:(int64_t)index location:(int64_t *)location appToken:(id *)token forDisplayWithToken:(int)withToken
 {
   v11 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:withToken];
   v14 = [v11 initWithObjectsAndKeys:{v12, @"index", v13, @"displayToken", 0}];
 
-  v15 = [(SCROBrailleClient *)self _lazyConnection];
-  v16 = [v15 handlerValueForKey:66 withObject:v14];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v16 = [_lazyConnection handlerValueForKey:66 withObject:v14];
 
   v17 = [v16 objectForKey:kSCROBrailleRouterKeyLocation];
-  *a4 = [v17 integerValue];
+  *location = [v17 integerValue];
 
-  *a5 = [v16 objectForKey:kSCROBrailleRouterKeyAppToken[0]];
+  *token = [v16 objectForKey:kSCROBrailleRouterKeyAppToken[0]];
   v18 = [v16 objectForKey:kSCROBrailleRouterKeyToken[0]];
-  v19 = [v18 integerValue];
+  integerValue = [v18 integerValue];
 
-  return v19;
+  return integerValue;
 }
 
 - (id)_getWorkingString
@@ -979,28 +979,28 @@ LABEL_6:
   mainStringPending = self->_mainStringPending;
   if (mainStringPending || (mainStringPending = self->_mainStringCache) != 0)
   {
-    v4 = [(NSMutableAttributedString *)mainStringPending copy];
+    mainAttributedString = [(NSMutableAttributedString *)mainStringPending copy];
   }
 
   else
   {
-    v4 = 0;
+    mainAttributedString = 0;
   }
 
   [(NSLock *)self->_lock unlock];
-  if (!v4)
+  if (!mainAttributedString)
   {
-    v4 = [(SCROBrailleClient *)self mainAttributedString];
+    mainAttributedString = [(SCROBrailleClient *)self mainAttributedString];
   }
 
-  return v4;
+  return mainAttributedString;
 }
 
 - (id)tokenArray
 {
-  v2 = [(SCROBrailleClient *)self _getWorkingString];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [v2 length];
+  _getWorkingString = [(SCROBrailleClient *)self _getWorkingString];
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = [_getWorkingString length];
   v10 = 0;
   v11 = 0;
   if (v4)
@@ -1009,10 +1009,10 @@ LABEL_6:
     v6 = 0;
     do
     {
-      v7 = [v2 attribute:kSCROTokenAttribute[0] atIndex:v6 longestEffectiveRange:&v10 inRange:{v6, v5}];
+      v7 = [_getWorkingString attribute:kSCROTokenAttribute[0] atIndex:v6 longestEffectiveRange:&v10 inRange:{v6, v5}];
       if (v7)
       {
-        [v3 addObject:v7];
+        [array addObject:v7];
       }
 
       v8 = v11 + v10;
@@ -1024,34 +1024,34 @@ LABEL_6:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
-- (_NSRange)rangeOfCellRepresentingCharacterAtIndex:(int64_t)a3
+- (_NSRange)rangeOfCellRepresentingCharacterAtIndex:(int64_t)index
 {
-  v4 = [(SCROBrailleClient *)self _lazyConnection];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v6 = [v4 handlerValueForKey:69 withObject:v5];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+  v6 = [_lazyConnection handlerValueForKey:69 withObject:v5];
 
-  v7 = [v6 rangeValue];
+  rangeValue = [v6 rangeValue];
   v9 = v8;
 
-  v10 = v7;
+  v10 = rangeValue;
   v11 = v9;
   result.length = v11;
   result.location = v10;
   return result;
 }
 
-- (void)selectAllForToken:(int64_t)a3
+- (void)selectAllForToken:(int64_t)token
 {
   v9 = 0;
   v10 = 0;
-  v5 = [(SCROBrailleClient *)self _getWorkingString];
-  v6 = [v5 mutableCopy];
+  _getWorkingString = [(SCROBrailleClient *)self _getWorkingString];
+  v6 = [_getWorkingString mutableCopy];
 
   v7 = kSCROTokenAttribute[0];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:token];
   LODWORD(v7) = [v6 getRange:&v9 ofAttribute:v7 withValue:v8];
 
   if (v7)
@@ -1061,15 +1061,15 @@ LABEL_6:
   }
 }
 
-- (void)unselectAllForToken:(int64_t)a3
+- (void)unselectAllForToken:(int64_t)token
 {
   v9 = 0;
   v10 = 0;
-  v5 = [(SCROBrailleClient *)self _getWorkingString];
-  v6 = [v5 mutableCopy];
+  _getWorkingString = [(SCROBrailleClient *)self _getWorkingString];
+  v6 = [_getWorkingString mutableCopy];
 
   v7 = kSCROTokenAttribute[0];
-  v8 = [MEMORY[0x277CCABB0] numberWithInt:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInt:token];
   LODWORD(v7) = [v6 getRange:&v9 ofAttribute:v7 withValue:v8];
 
   if (v7)
@@ -1080,21 +1080,21 @@ LABEL_6:
   }
 }
 
-- (void)setFocused:(BOOL)a3 forToken:(int64_t)a4
+- (void)setFocused:(BOOL)focused forToken:(int64_t)token
 {
-  v5 = a3;
+  focusedCopy = focused;
   v11 = 0;
   v12 = 0;
-  v7 = [(SCROBrailleClient *)self _getWorkingString];
-  v8 = [v7 mutableCopy];
+  _getWorkingString = [(SCROBrailleClient *)self _getWorkingString];
+  v8 = [_getWorkingString mutableCopy];
 
   v9 = kSCROTokenAttribute[0];
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:token];
   LODWORD(v9) = [v8 getRange:&v11 ofAttribute:v9 withValue:v10];
 
   if (v9)
   {
-    if (v5)
+    if (focusedCopy)
     {
       [v8 addAttribute:kSCROFocusedAttribute[0] value:MEMORY[0x277CBEC38] range:{v11, v12}];
     }
@@ -1150,262 +1150,262 @@ LABEL_6:
     }
   }
 
-  v7 = [(SCROBrailleClient *)self _lazyConnection];
-  [v7 sendEvent:v8];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection sendEvent:v8];
 
 LABEL_7:
 }
 
-- (void)simulateKeypress:(id)a3
+- (void)simulateKeypress:(id)keypress
 {
-  v4 = a3;
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  [v5 setHandlerValue:v4 forKey:56];
+  keypressCopy = keypress;
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:keypressCopy forKey:56];
 }
 
-- (void)panDisplayLeft:(int)a3
+- (void)panDisplayLeft:(int)left
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v4 = [(SCROBrailleClient *)self _lazyConnection];
-  [v4 setHandlerValue:v5 forKey:52];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:left];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:v5 forKey:52];
 }
 
-- (void)panDisplayRight:(int)a3
+- (void)panDisplayRight:(int)right
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v4 = [(SCROBrailleClient *)self _lazyConnection];
-  [v4 setHandlerValue:v5 forKey:53];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:right];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:v5 forKey:53];
 }
 
-- (void)panDisplayBeginning:(int)a3
+- (void)panDisplayBeginning:(int)beginning
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v4 = [(SCROBrailleClient *)self _lazyConnection];
-  [v4 setHandlerValue:v5 forKey:54];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:beginning];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:v5 forKey:54];
 }
 
-- (void)panDisplayEnd:(int)a3
+- (void)panDisplayEnd:(int)end
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v4 = [(SCROBrailleClient *)self _lazyConnection];
-  [v4 setHandlerValue:v5 forKey:55];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:end];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:v5 forKey:55];
 }
 
-- (void)planarPanDisplayLeft:(int)a3
+- (void)planarPanDisplayLeft:(int)left
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v4 = [(SCROBrailleClient *)self _lazyConnection];
-  [v4 setHandlerValue:v5 forKey:63];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:left];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:v5 forKey:63];
 }
 
-- (void)planarPanDisplayRight:(int)a3
+- (void)planarPanDisplayRight:(int)right
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v4 = [(SCROBrailleClient *)self _lazyConnection];
-  [v4 setHandlerValue:v5 forKey:64];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:right];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:v5 forKey:64];
 }
 
 - (void)showPreviousAnnouncement
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  [v2 performHandlerActionForKey:8];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection performHandlerActionForKey:8];
 }
 
 - (void)showNextAnnouncement
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  [v2 performHandlerActionForKey:7];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection performHandlerActionForKey:7];
 }
 
 - (BOOL)isCandidateSelectionOn
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:70];
-  v4 = [v3 BOOLValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:70];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)cancelCandidateSelection
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  [v2 performHandlerActionForKey:13];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection performHandlerActionForKey:13];
 }
 
 - (void)showPreviousCandidate
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  [v2 performHandlerActionForKey:14];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection performHandlerActionForKey:14];
 }
 
 - (void)showNextCandidate
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  [v2 performHandlerActionForKey:15];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection performHandlerActionForKey:15];
 }
 
 - (BOOL)isWordDescriptionOn
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:71];
-  v4 = [v3 BOOLValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:71];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)showPreviousWordDescription
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  [v2 performHandlerActionForKey:16];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection performHandlerActionForKey:16];
 }
 
 - (void)showNextWordDescription
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  [v2 performHandlerActionForKey:17];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection performHandlerActionForKey:17];
 }
 
-- (void)startBrailleUIWithOptions:(id)a3
+- (void)startBrailleUIWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  [v5 setHandlerValue:v4 forKey:73];
+  optionsCopy = options;
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:optionsCopy forKey:73];
 }
 
-- (void)endBrailleUIWithOptions:(id)a3
+- (void)endBrailleUIWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  [v5 setHandlerValue:v4 forKey:74];
+  optionsCopy = options;
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:optionsCopy forKey:74];
 }
 
-- (void)handleBrailleUIResponse:(id)a3 forRequest:(id)a4
+- (void)handleBrailleUIResponse:(id)response forRequest:(id)request
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"response";
   v12[1] = @"request";
-  v13[0] = a3;
-  v13[1] = a4;
+  v13[0] = response;
+  v13[1] = request;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = a3;
+  requestCopy = request;
+  responseCopy = response;
   v9 = [v6 dictionaryWithObjects:v13 forKeys:v12 count:2];
 
-  v10 = [(SCROBrailleClient *)self _lazyConnection];
-  [v10 setHandlerValue:v9 forKey:75];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:v9 forKey:75];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processBrailleUICommand:(id)a3
+- (void)processBrailleUICommand:(id)command
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"command";
-  v10[0] = a3;
+  v10[0] = command;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  commandCopy = command;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  v7 = [(SCROBrailleClient *)self _lazyConnection];
-  [v7 setHandlerValue:v6 forKey:76];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:v6 forKey:76];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)isBrailleUIActive
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  v3 = [v2 handlerValueForKey:77];
-  v4 = [v3 BOOLValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v3 = [_lazyConnection handlerValueForKey:77];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (unint64_t)loadVirtualDisplayWithMainSize:(int64_t)a3
+- (unint64_t)loadVirtualDisplayWithMainSize:(int64_t)size
 {
-  v4 = [(SCROBrailleClient *)self _lazyConnection];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v6 = [v4 handlerValueForKey:19 withObject:v5];
-  v7 = [v6 unsignedIntegerValue];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:size];
+  v6 = [_lazyConnection handlerValueForKey:19 withObject:v5];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (void)unloadVirtualDisplay:(unint64_t)a3
+- (void)unloadVirtualDisplay:(unint64_t)display
 {
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setHandlerValue:v4 forKey:18];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:display];
+  [_lazyConnection setHandlerValue:v4 forKey:18];
 }
 
-- (id)mainCellsForVirtualDisplay:(unint64_t)a3
+- (id)mainCellsForVirtualDisplay:(unint64_t)display
 {
-  v4 = [(SCROBrailleClient *)self _lazyConnection];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v6 = [v4 handlerValueForKey:20 withObject:v5];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:display];
+  v6 = [_lazyConnection handlerValueForKey:20 withObject:v5];
 
   return v6;
 }
 
-- (void)virtualDisplay:(unint64_t)a3 pressButton:(unint64_t)a4
+- (void)virtualDisplay:(unint64_t)display pressButton:(unint64_t)button
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11[0] = @"displayToken";
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:display];
   v11[1] = @"button";
   v12[0] = v6;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:button];
   v12[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
-  v9 = [(SCROBrailleClient *)self _lazyConnection];
-  [v9 setHandlerValue:v8 forKey:21];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:v8 forKey:21];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)virtualDisplay:(unint64_t)a3 pressKeyChord:(unint64_t)a4
+- (void)virtualDisplay:(unint64_t)display pressKeyChord:(unint64_t)chord
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11[0] = @"displayToken";
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:display];
   v11[1] = @"keyChord";
   v12[0] = v6;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:chord];
   v12[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
-  v9 = [(SCROBrailleClient *)self _lazyConnection];
-  [v9 setHandlerValue:v8 forKey:22];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:v8 forKey:22];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)systemVirtualDisplayPressKeyChord:(unint64_t)a3
+- (void)systemVirtualDisplayPressKeyChord:(unint64_t)chord
 {
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setHandlerValue:v4 forKey:24];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:chord];
+  [_lazyConnection setHandlerValue:v4 forKey:24];
 }
 
-- (void)setPrimaryBrailleDisplay:(int)a3
+- (void)setPrimaryBrailleDisplay:(int)display
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v4 = [(SCROBrailleClient *)self _lazyConnection];
-  [v4 setHandlerValue:v5 forKey:58];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:display];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection setHandlerValue:v5 forKey:58];
 }
 
 - (void)resetEditingManager
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  [v2 performHandlerActionForKey:11];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection performHandlerActionForKey:11];
 }
 
-- (void)handleCallback:(id)a3
+- (void)handleCallback:(id)callback
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 key];
+  callbackCopy = callback;
+  v5 = [callbackCopy key];
   switch(v5)
   {
     case 'N':
@@ -1420,27 +1420,27 @@ LABEL_7:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         wantsDisplayConfigurationChanged = self->_wantsDisplayConfigurationChanged;
-        v8 = [v4 object];
+        object = [callbackCopy object];
         v37[0] = 67109378;
         v37[1] = wantsDisplayConfigurationChanged;
         v38 = 2112;
-        v39 = v8;
+        v39 = object;
         _os_log_impl(&dword_26490B000, v6, OS_LOG_TYPE_DEFAULT, "[SCROBrailleClient handleCallback:] Call delegate's config change handler; Delegate wants == %d, isConfigured == %@", v37, 0x12u);
       }
 
       if (self->_wantsDisplayConfigurationChanged)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        v10 = [v4 object];
-        [WeakRetained handleBrailleConfigurationChanged:v10];
+        object2 = [callbackCopy object];
+        [WeakRetained handleBrailleConfigurationChanged:object2];
         goto LABEL_50;
       }
 
       goto LABEL_52;
     case 'O':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v4 object];
-      [WeakRetained handleBrailleTableFailedToLoad:v10];
+      object2 = [callbackCopy object];
+      [WeakRetained handleBrailleTableFailedToLoad:object2];
       goto LABEL_50;
     case 'P':
       if (!self->_delegateWantsKeypresses)
@@ -1449,8 +1449,8 @@ LABEL_7:
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v4 object];
-      [WeakRetained handleBrailleKeypress:v10];
+      object2 = [callbackCopy object];
+      [WeakRetained handleBrailleKeypress:object2];
       goto LABEL_50;
     case 'Q':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1462,104 +1462,104 @@ LABEL_7:
         goto LABEL_52;
       }
 
-      v11 = [v4 object];
-      v12 = [v11 objectForKeyedSubscript:kSCROBrailleCallbackReplaceTextRange_RangeKey];
-      v13 = [v12 rangeValue];
+      object3 = [callbackCopy object];
+      v12 = [object3 objectForKeyedSubscript:kSCROBrailleCallbackReplaceTextRange_RangeKey];
+      rangeValue = [v12 rangeValue];
       v15 = v14;
 
-      v16 = [v11 objectForKeyedSubscript:kSCROBrailleCallbackReplaceTextRange_StringKey];
-      v17 = [v11 objectForKeyedSubscript:kSCROBrailleCallbackReplaceTextRange_CursorKey];
-      v18 = [v17 unsignedIntegerValue];
+      v16 = [object3 objectForKeyedSubscript:kSCROBrailleCallbackReplaceTextRange_StringKey];
+      v17 = [object3 objectForKeyedSubscript:kSCROBrailleCallbackReplaceTextRange_CursorKey];
+      unsignedIntegerValue = [v17 unsignedIntegerValue];
 
       v19 = objc_loadWeakRetained(&self->_delegate);
-      [v19 handleBrailleReplaceTextRange:v13 withString:v15 cursor:{v16, v18}];
+      [v19 handleBrailleReplaceTextRange:rangeValue withString:v15 cursor:{v16, unsignedIntegerValue}];
       goto LABEL_41;
     case 'S':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained handleBrailleStartEditing];
       goto LABEL_51;
     case 'T':
-      v11 = [v4 object];
-      v16 = [v11 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_SpokenTextKey];
-      v30 = [v11 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_SpeakLiterallyKey];
-      v31 = [v30 BOOLValue];
+      object3 = [callbackCopy object];
+      v16 = [object3 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_SpokenTextKey];
+      v30 = [object3 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_SpeakLiterallyKey];
+      bOOLValue = [v30 BOOLValue];
 
       v19 = objc_loadWeakRetained(&self->_delegate);
-      [v19 handleBrailleInsertedUntranslatedText:v16 speakLiterally:v31];
+      [v19 handleBrailleInsertedUntranslatedText:v16 speakLiterally:bOOLValue];
       goto LABEL_41;
     case 'U':
-      v11 = [v4 object];
+      object3 = [callbackCopy object];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         goto LABEL_46;
       }
 
-      v16 = [v11 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_SpokenTextKey];
-      v28 = [v11 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_SpeakLiterallyKey];
-      v29 = [v28 BOOLValue];
+      v16 = [object3 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_SpokenTextKey];
+      v28 = [object3 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_SpeakLiterallyKey];
+      bOOLValue2 = [v28 BOOLValue];
 
       v19 = objc_loadWeakRetained(&self->_delegate);
-      [v19 handleBrailleDeletedUntranslatedText:v16 speakLiterally:v29];
+      [v19 handleBrailleDeletedUntranslatedText:v16 speakLiterally:bOOLValue2];
 LABEL_41:
 
 LABEL_45:
       goto LABEL_46;
     case 'V':
-      v11 = [v4 object];
-      v16 = [v11 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_SpokenTextKey];
-      v32 = [v11 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_LanguageKey];
-      v33 = [v11 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_ShouldQueueKey];
-      v34 = [v33 BOOLValue];
+      object3 = [callbackCopy object];
+      v16 = [object3 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_SpokenTextKey];
+      v32 = [object3 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_LanguageKey];
+      v33 = [object3 objectForKeyedSubscript:kSCROBrailleCallbackSpeechFeedback_ShouldQueueKey];
+      bOOLValue3 = [v33 BOOLValue];
 
       v35 = objc_loadWeakRetained(&self->_delegate);
-      [v35 handleBrailleSpeechRequest:v16 language:v32 shouldQueue:v34];
+      [v35 handleBrailleSpeechRequest:v16 language:v32 shouldQueue:bOOLValue3];
 
       goto LABEL_45;
     case 'W':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v4 object];
-      [WeakRetained handleBrailleKeyWillMemorize:v10];
+      object2 = [callbackCopy object];
+      [WeakRetained handleBrailleKeyWillMemorize:object2];
       goto LABEL_50;
     case 'X':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v4 object];
-      [WeakRetained handleBrailleKeyMemorize:v10];
+      object2 = [callbackCopy object];
+      [WeakRetained handleBrailleKeyMemorize:object2];
       goto LABEL_50;
     case 'Y':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v4 object];
-      [WeakRetained handleBrailleDidDisplay:v10];
+      object2 = [callbackCopy object];
+      [WeakRetained handleBrailleDidDisplay:object2];
       goto LABEL_50;
     case 'Z':
-      v11 = [v4 object];
+      object3 = [callbackCopy object];
       v23 = objc_loadWeakRetained(&self->_delegate);
-      v24 = [v11 objectForKey:@"success"];
-      v25 = [v11 objectForKey:@"token"];
-      v26 = [v11 objectForKey:@"appToken"];
-      v27 = [v11 objectForKeyedSubscript:@"lineOffset"];
+      v24 = [object3 objectForKey:@"success"];
+      v25 = [object3 objectForKey:@"token"];
+      v26 = [object3 objectForKey:@"appToken"];
+      v27 = [object3 objectForKeyedSubscript:@"lineOffset"];
       [v23 handleBrailleDidPanLeft:v24 elementToken:v25 appToken:v26 lineOffset:v27];
       goto LABEL_38;
     case '[':
-      v11 = [v4 object];
+      object3 = [callbackCopy object];
       v23 = objc_loadWeakRetained(&self->_delegate);
-      v24 = [v11 objectForKey:@"success"];
-      v25 = [v11 objectForKey:@"token"];
-      v26 = [v11 objectForKey:@"appToken"];
-      v27 = [v11 objectForKeyedSubscript:@"lineOffset"];
+      v24 = [object3 objectForKey:@"success"];
+      v25 = [object3 objectForKey:@"token"];
+      v26 = [object3 objectForKey:@"appToken"];
+      v27 = [object3 objectForKeyedSubscript:@"lineOffset"];
       [v23 handleBrailleDidPanRight:v24 elementToken:v25 appToken:v26 lineOffset:v27];
 LABEL_38:
 
       goto LABEL_39;
     case '\\':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v4 object];
-      [WeakRetained handleBrailleDidShowPreviousAnnouncement:v10];
+      object2 = [callbackCopy object];
+      [WeakRetained handleBrailleDidShowPreviousAnnouncement:object2];
       goto LABEL_50;
     case ']':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v4 object];
-      [WeakRetained handleBrailleDidShowNextAnnouncement:v10];
+      object2 = [callbackCopy object];
+      [WeakRetained handleBrailleDidShowNextAnnouncement:object2];
       goto LABEL_50;
     case '^':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1570,33 +1570,33 @@ LABEL_38:
       [WeakRetained handleBraillePlayCommandNotSupportedSound];
       goto LABEL_51;
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v4 object];
-      [WeakRetained handleBraillePlayDisplayConnectionSound:v10];
+      object2 = [callbackCopy object];
+      [WeakRetained handleBraillePlayDisplayConnectionSound:object2];
       goto LABEL_50;
     case 'a':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v4 object];
-      [WeakRetained handleFailedToLoadBluetoothDevice:v10];
+      object2 = [callbackCopy object];
+      [WeakRetained handleFailedToLoadBluetoothDevice:object2];
       goto LABEL_50;
     case 'b':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v4 object];
-      [WeakRetained handleDisplayModeChanged:v10];
+      object2 = [callbackCopy object];
+      [WeakRetained handleDisplayModeChanged:object2];
       goto LABEL_50;
     case 'c':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v4 object];
-      [WeakRetained handleBrailleDisplayCopyStringToClipboard:v10];
+      object2 = [callbackCopy object];
+      [WeakRetained handleBrailleDisplayCopyStringToClipboard:object2];
       goto LABEL_50;
     case 'd':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v4 object];
-      [WeakRetained handleTactileGraphicsCanvasDidChange:v10];
+      object2 = [callbackCopy object];
+      [WeakRetained handleTactileGraphicsCanvasDidChange:object2];
       goto LABEL_50;
     case 'e':
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v4 object];
-      [WeakRetained handlePlanarPanFailedIsLeft:{objc_msgSend(v10, "BOOLValue")}];
+      object2 = [callbackCopy object];
+      [WeakRetained handlePlanarPanFailedIsLeft:{objc_msgSend(object2, "BOOLValue")}];
 LABEL_50:
 
       goto LABEL_51;
@@ -1605,9 +1605,9 @@ LABEL_50:
       [WeakRetained handleDidBrailleUIStart];
       goto LABEL_51;
     case 'g':
-      v11 = [v4 object];
+      object3 = [callbackCopy object];
       v23 = objc_loadWeakRetained(&self->_delegate);
-      [v23 handleBrailleUIRequest:v11];
+      [v23 handleBrailleUIRequest:object3];
 LABEL_39:
 
       goto LABEL_46;
@@ -1628,19 +1628,19 @@ LABEL_51:
         }
 
         [(NSLock *)self->_lock lock];
-        v21 = [v4 object];
+        object4 = [callbackCopy object];
         connection = self->_connection;
 
         [(NSLock *)self->_lock unlock];
-        if (v21 == connection)
+        if (object4 == connection)
         {
           self->_isReady = 1;
           [(SCROBrailleClient *)self _registerDelegate];
           [(SCROBrailleClient *)self _refreshAfterReconnect];
           if (self->_wantsReconnectMessage)
           {
-            v11 = objc_loadWeakRetained(&self->_delegate);
-            [v11 handleBrailleDidReconnect:self];
+            object3 = objc_loadWeakRetained(&self->_delegate);
+            [object3 handleBrailleDidReconnect:self];
             goto LABEL_46;
           }
         }
@@ -1651,8 +1651,8 @@ LABEL_51:
         self->_isReady = 0;
         if (self->_wantsDisconnectMessage)
         {
-          v11 = objc_loadWeakRetained(&self->_delegate);
-          [v11 handleBrailleDidDisconnect:self];
+          object3 = objc_loadWeakRetained(&self->_delegate);
+          [object3 handleBrailleDidDisconnect:self];
 LABEL_46:
         }
       }
@@ -1687,11 +1687,11 @@ LABEL_52:
   }
 }
 
-- (void)setBrailleChordDebounceTimeout:(double)a3
+- (void)setBrailleChordDebounceTimeout:(double)timeout
 {
-  v5 = [(SCROBrailleClient *)self _lazyConnection];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setHandlerValue:v4 forKey:62];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
+  [_lazyConnection setHandlerValue:v4 forKey:62];
 }
 
 + (id)statusAttributeDotText
@@ -1707,8 +1707,8 @@ LABEL_52:
 
 - (void)translateBrailleToClipboard
 {
-  v2 = [(SCROBrailleClient *)self _lazyConnection];
-  [v2 performHandlerActionForKey:10];
+  _lazyConnection = [(SCROBrailleClient *)self _lazyConnection];
+  [_lazyConnection performHandlerActionForKey:10];
 }
 
 @end

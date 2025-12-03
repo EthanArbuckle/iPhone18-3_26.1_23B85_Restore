@@ -1,30 +1,30 @@
 @interface PLAssetsdNotificationService
-- (void)noteGoingToExpireCMMsAlertWithCMMUUIDs:(id)a3 thumbnailImageData:(id)a4 notificationTitle:(id)a5 notificationSubtitle:(id)a6;
-- (void)noteInterestingMemoryAlertViewedWithUUID:(id)a3;
-- (void)noteInterestingMemoryAlertWithMemoryUUID:(id)a3 notificationDeliveryDate:(id)a4;
-- (void)notePhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)a3;
-- (void)notePhotosChallengeSubmissionWithNotificationDeliveryDate:(id)a3;
-- (void)noteReadyToViewMomentShareWithUUID:(id)a3;
-- (void)noteSharedLibrarySuggestionsWithNotificationDeliveryDate:(id)a3;
+- (void)noteGoingToExpireCMMsAlertWithCMMUUIDs:(id)ds thumbnailImageData:(id)data notificationTitle:(id)title notificationSubtitle:(id)subtitle;
+- (void)noteInterestingMemoryAlertViewedWithUUID:(id)d;
+- (void)noteInterestingMemoryAlertWithMemoryUUID:(id)d notificationDeliveryDate:(id)date;
+- (void)notePhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)date;
+- (void)notePhotosChallengeSubmissionWithNotificationDeliveryDate:(id)date;
+- (void)noteReadyToViewMomentShareWithUUID:(id)d;
+- (void)noteSharedLibrarySuggestionsWithNotificationDeliveryDate:(id)date;
 - (void)notifyEndOfInterestForUnrenderedCinematicVideoItems;
 - (void)notifyStartOfInterestForUnrenderedCinematicVideoItems;
-- (void)reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:(id)a3;
-- (void)respondToPhotoStreamInvitationWithAlbumCloudGUID:(id)a3 acceptInvitation:(BOOL)a4;
-- (void)userViewedNotificationWithAlbumCloudGUID:(id)a3;
+- (void)reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:(id)d;
+- (void)respondToPhotoStreamInvitationWithAlbumCloudGUID:(id)d acceptInvitation:(BOOL)invitation;
+- (void)userViewedNotificationWithAlbumCloudGUID:(id)d;
 @end
 
 @implementation PLAssetsdNotificationService
 
-- (void)noteSharedLibrarySuggestionsWithNotificationDeliveryDate:(id)a3
+- (void)noteSharedLibrarySuggestionsWithNotificationDeliveryDate:(id)date
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dateCopy = date;
   v11 = 0u;
   *sel = 0u;
   v9 = 0u;
-  v4 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v9) = v4;
-  if (v4)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v9) = enabled;
+  if (enabled)
   {
     *(&v9 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: noteSharedLibrarySuggestionsWithNotificationDeliveryDate:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -32,7 +32,7 @@
   }
 
   v5 = +[PLNotificationManager sharedManager];
-  [v5 postNotificationForSharedLibrarySuggestionsWithNotificationDeliveryDate:v3];
+  [v5 postNotificationForSharedLibrarySuggestionsWithNotificationDeliveryDate:dateCopy];
 
   if (v10 == 1)
   {
@@ -59,9 +59,9 @@
   v9 = 0u;
   *sel = 0u;
   v7 = 0u;
-  v2 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v7) = v2;
-  if (v2)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v7) = enabled;
+  if (enabled)
   {
     *(&v7 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: notifyEndOfInterestForUnrenderedCinematicVideoItems", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -96,9 +96,9 @@
   v9 = 0u;
   *sel = 0u;
   v7 = 0u;
-  v2 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v7) = v2;
-  if (v2)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v7) = enabled;
+  if (enabled)
   {
     *(&v7 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: notifyStartOfInterestForUnrenderedCinematicVideoItems", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -127,30 +127,30 @@
   }
 }
 
-- (void)notePhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)a3
+- (void)notePhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[PLNotificationManager sharedManager];
-  [v4 postNotificationForPhotosChallengeNewQuestionsWithNotificationDeliveryDate:v3];
+  [v4 postNotificationForPhotosChallengeNewQuestionsWithNotificationDeliveryDate:dateCopy];
 }
 
-- (void)notePhotosChallengeSubmissionWithNotificationDeliveryDate:(id)a3
+- (void)notePhotosChallengeSubmissionWithNotificationDeliveryDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[PLNotificationManager sharedManager];
-  [v4 postNotificationForPhotosChallengeSubmissionWithNotificationDeliveryDate:v3];
+  [v4 postNotificationForPhotosChallengeSubmissionWithNotificationDeliveryDate:dateCopy];
 }
 
-- (void)noteReadyToViewMomentShareWithUUID:(id)a3
+- (void)noteReadyToViewMomentShareWithUUID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   *sel = 0u;
   v11 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v11) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v11) = enabled;
+  if (enabled)
   {
     *(&v11 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: noteReadyToViewMomentShareWithUUID:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -159,7 +159,7 @@
 
   v6 = [(PLAbstractLibraryServicesManagerService *)self newShortLivedLibraryWithName:"[PLAssetsdNotificationService noteReadyToViewMomentShareWithUUID:]", v11];
   v7 = +[PLNotificationManager sharedManager];
-  [v7 postNotificationForReadyToViewMomentShareWithUUID:v4 photoLibrary:v6];
+  [v7 postNotificationForReadyToViewMomentShareWithUUID:dCopy photoLibrary:v6];
 
   if (v12 == 1)
   {
@@ -180,19 +180,19 @@
   }
 }
 
-- (void)noteGoingToExpireCMMsAlertWithCMMUUIDs:(id)a3 thumbnailImageData:(id)a4 notificationTitle:(id)a5 notificationSubtitle:(id)a6
+- (void)noteGoingToExpireCMMsAlertWithCMMUUIDs:(id)ds thumbnailImageData:(id)data notificationTitle:(id)title notificationSubtitle:(id)subtitle
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dsCopy = ds;
+  dataCopy = data;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v20 = 0u;
   *sel = 0u;
   v18 = 0u;
-  v13 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v18) = v13;
-  if (v13)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v18) = enabled;
+  if (enabled)
   {
     *(&v18 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: noteGoingToExpireCMMsAlertWithCMMUUIDs:thumbnailImageData:notificationTitle:notificationSubtitle:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -200,7 +200,7 @@
   }
 
   v14 = +[PLNotificationManager sharedManager];
-  [v14 postNotificationForExpiringCMMsWithUUIDs:v9 thumbnailImageData:v10 notificationTitle:v11 notificationSubtitle:v12];
+  [v14 postNotificationForExpiringCMMsWithUUIDs:dsCopy thumbnailImageData:dataCopy notificationTitle:titleCopy notificationSubtitle:subtitleCopy];
 
   if (v19 == 1)
   {
@@ -221,16 +221,16 @@
   }
 }
 
-- (void)reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:(id)a3
+- (void)reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   v11 = 0u;
   *sel = 0u;
   v9 = 0u;
-  v4 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v9) = v4;
-  if (v4)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v9) = enabled;
+  if (enabled)
   {
     *(&v9 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -238,7 +238,7 @@
   }
 
   v5 = +[PLNotificationManager sharedManager];
-  [v5 reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:v3];
+  [v5 reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:dCopy];
 
   if (v10 == 1)
   {
@@ -259,17 +259,17 @@
   }
 }
 
-- (void)respondToPhotoStreamInvitationWithAlbumCloudGUID:(id)a3 acceptInvitation:(BOOL)a4
+- (void)respondToPhotoStreamInvitationWithAlbumCloudGUID:(id)d acceptInvitation:(BOOL)invitation
 {
-  v4 = a4;
+  invitationCopy = invitation;
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v13 = 0u;
   *sel = 0u;
   v11 = 0u;
-  v6 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v11) = v6;
-  if (v6)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v11) = enabled;
+  if (enabled)
   {
     *(&v11 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: respondToPhotoStreamInvitationWithAlbumCloudGUID:acceptInvitation:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -277,7 +277,7 @@
   }
 
   v7 = +[PLNotificationManager sharedManager];
-  [v7 sendResponse:v4 toPhotoStreamInvitationForAlbumWithCloudGUID:v5];
+  [v7 sendResponse:invitationCopy toPhotoStreamInvitationForAlbumWithCloudGUID:dCopy];
 
   if (v12 == 1)
   {
@@ -298,16 +298,16 @@
   }
 }
 
-- (void)noteInterestingMemoryAlertViewedWithUUID:(id)a3
+- (void)noteInterestingMemoryAlertViewedWithUUID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   v11 = 0u;
   *sel = 0u;
   v9 = 0u;
-  v4 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v9) = v4;
-  if (v4)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v9) = enabled;
+  if (enabled)
   {
     *(&v9 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: noteInterestingMemoryAlertViewedWithUUID:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -315,7 +315,7 @@
   }
 
   v5 = +[PLNotificationManager sharedManager];
-  [v5 removeNotificationForInterestingMemoryWithUUID:v3];
+  [v5 removeNotificationForInterestingMemoryWithUUID:dCopy];
 
   if (v10 == 1)
   {
@@ -336,17 +336,17 @@
   }
 }
 
-- (void)noteInterestingMemoryAlertWithMemoryUUID:(id)a3 notificationDeliveryDate:(id)a4
+- (void)noteInterestingMemoryAlertWithMemoryUUID:(id)d notificationDeliveryDate:(id)date
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dateCopy = date;
   v16 = 0u;
   *sel = 0u;
   v14 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v14) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v14) = enabled;
+  if (enabled)
   {
     *(&v14 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: noteInterestingMemoryAlertWithMemoryUUID:notificationDeliveryDate:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -355,7 +355,7 @@
 
   v9 = [(PLAbstractLibraryServicesManagerService *)self newShortLivedLibraryWithName:"[PLAssetsdNotificationService noteInterestingMemoryAlertWithMemoryUUID:notificationDeliveryDate:]", v14];
   v10 = +[PLNotificationManager sharedManager];
-  [v10 postNotificationForInterestingMemoryWithMemoryUUID:v6 library:v9 notificationDeliveryDate:v7];
+  [v10 postNotificationForInterestingMemoryWithMemoryUUID:dCopy library:v9 notificationDeliveryDate:dateCopy];
 
   if (v15 == 1)
   {
@@ -376,16 +376,16 @@
   }
 }
 
-- (void)userViewedNotificationWithAlbumCloudGUID:(id)a3
+- (void)userViewedNotificationWithAlbumCloudGUID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   v11 = 0u;
   *sel = 0u;
   v9 = 0u;
-  v4 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v9) = v4;
-  if (v4)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v9) = enabled;
+  if (enabled)
   {
     *(&v9 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: userViewedNotificationWithAlbumCloudGUID:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -393,7 +393,7 @@
   }
 
   v5 = +[PLNotificationManager sharedManager];
-  [v5 userViewedNotificationWithAlbumCloudGUID:v3];
+  [v5 userViewedNotificationWithAlbumCloudGUID:dCopy];
 
   if (v10 == 1)
   {

@@ -1,26 +1,26 @@
 @interface PKPaletteUndoRedoView
 - (CGSize)_buttonSize;
 - (CGSize)intrinsicContentSize;
-- (PKPaletteUndoRedoView)initWithFrame:(CGRect)a3;
+- (PKPaletteUndoRedoView)initWithFrame:(CGRect)frame;
 - (PKPaletteUndoRedoViewDelegate)delegate;
 - (void)_installRedoButton;
 - (void)_installStackView;
 - (void)_installUndoButton;
 - (void)_updateUI;
-- (void)handleRedo:(id)a3;
-- (void)handleUndo:(id)a3;
-- (void)setEdgeLocation:(unint64_t)a3;
-- (void)setInterItemSpacing:(double)a3;
-- (void)setScalingFactor:(double)a3;
+- (void)handleRedo:(id)redo;
+- (void)handleUndo:(id)undo;
+- (void)setEdgeLocation:(unint64_t)location;
+- (void)setInterItemSpacing:(double)spacing;
+- (void)setScalingFactor:(double)factor;
 @end
 
 @implementation PKPaletteUndoRedoView
 
-- (PKPaletteUndoRedoView)initWithFrame:(CGRect)a3
+- (PKPaletteUndoRedoView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKPaletteUndoRedoView;
-  v3 = [(PKPaletteUndoRedoView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaletteUndoRedoView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -51,38 +51,38 @@
   v3 = objc_alloc_init(MEMORY[0x1E69DCF90]);
   [(PKPaletteUndoRedoView *)self setStackView:v3];
 
-  v4 = [(PKPaletteUndoRedoView *)self stackView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackView = [(PKPaletteUndoRedoView *)self stackView];
+  [stackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(PKPaletteUndoRedoView *)self stackView];
-  [v5 setAlignment:3];
+  stackView2 = [(PKPaletteUndoRedoView *)self stackView];
+  [stackView2 setAlignment:3];
 
-  v6 = [(PKPaletteUndoRedoView *)self stackView];
-  [v6 setSemanticContentAttribute:2];
+  stackView3 = [(PKPaletteUndoRedoView *)self stackView];
+  [stackView3 setSemanticContentAttribute:2];
 
-  v7 = [(PKPaletteUndoRedoView *)self stackView];
-  [(PKPaletteUndoRedoView *)self addSubview:v7];
+  stackView4 = [(PKPaletteUndoRedoView *)self stackView];
+  [(PKPaletteUndoRedoView *)self addSubview:stackView4];
 
   v18 = MEMORY[0x1E696ACD8];
-  v25 = [(PKPaletteUndoRedoView *)self stackView];
-  v24 = [v25 topAnchor];
-  v23 = [(PKPaletteUndoRedoView *)self topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  stackView5 = [(PKPaletteUndoRedoView *)self stackView];
+  topAnchor = [stackView5 topAnchor];
+  topAnchor2 = [(PKPaletteUndoRedoView *)self topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[0] = v22;
-  v21 = [(PKPaletteUndoRedoView *)self stackView];
-  v20 = [v21 bottomAnchor];
-  v19 = [(PKPaletteUndoRedoView *)self bottomAnchor];
-  v8 = [v20 constraintEqualToAnchor:v19];
+  stackView6 = [(PKPaletteUndoRedoView *)self stackView];
+  bottomAnchor = [stackView6 bottomAnchor];
+  bottomAnchor2 = [(PKPaletteUndoRedoView *)self bottomAnchor];
+  v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[1] = v8;
-  v9 = [(PKPaletteUndoRedoView *)self stackView];
-  v10 = [v9 leadingAnchor];
-  v11 = [(PKPaletteUndoRedoView *)self leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  stackView7 = [(PKPaletteUndoRedoView *)self stackView];
+  leadingAnchor = [stackView7 leadingAnchor];
+  leadingAnchor2 = [(PKPaletteUndoRedoView *)self leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[2] = v12;
-  v13 = [(PKPaletteUndoRedoView *)self stackView];
-  v14 = [v13 trailingAnchor];
-  v15 = [(PKPaletteUndoRedoView *)self trailingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  stackView8 = [(PKPaletteUndoRedoView *)self stackView];
+  trailingAnchor = [stackView8 trailingAnchor];
+  trailingAnchor2 = [(PKPaletteUndoRedoView *)self trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[3] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
   [v18 activateConstraints:v17];
@@ -94,25 +94,25 @@
   v3 = +[PKPaletteButton undoButton];
   [(PKPaletteUndoRedoView *)self setUndoButton:v3];
 
-  v4 = [(PKPaletteUndoRedoView *)self undoButton];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  undoButton = [(PKPaletteUndoRedoView *)self undoButton];
+  [undoButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(PKPaletteUndoRedoView *)self undoButton];
-  [v5 addTarget:self action:sel_handleUndo_ forControlEvents:64];
+  undoButton2 = [(PKPaletteUndoRedoView *)self undoButton];
+  [undoButton2 addTarget:self action:sel_handleUndo_ forControlEvents:64];
 
-  v6 = [(PKPaletteUndoRedoView *)self stackView];
-  v7 = [(PKPaletteUndoRedoView *)self undoButton];
-  [v6 addArrangedSubview:v7];
+  stackView = [(PKPaletteUndoRedoView *)self stackView];
+  undoButton3 = [(PKPaletteUndoRedoView *)self undoButton];
+  [stackView addArrangedSubview:undoButton3];
 
-  v8 = [(PKPaletteUndoRedoView *)self undoButton];
-  v9 = [v8 widthAnchor];
-  v10 = [v9 constraintEqualToConstant:0.0];
+  undoButton4 = [(PKPaletteUndoRedoView *)self undoButton];
+  widthAnchor = [undoButton4 widthAnchor];
+  v10 = [widthAnchor constraintEqualToConstant:0.0];
   undoButtonWidthConstraint = self->_undoButtonWidthConstraint;
   self->_undoButtonWidthConstraint = v10;
 
-  v12 = [(PKPaletteUndoRedoView *)self undoButton];
-  v13 = [v12 heightAnchor];
-  v14 = [v13 constraintEqualToConstant:0.0];
+  undoButton5 = [(PKPaletteUndoRedoView *)self undoButton];
+  heightAnchor = [undoButton5 heightAnchor];
+  v14 = [heightAnchor constraintEqualToConstant:0.0];
   undoButtonHeightConstraint = self->_undoButtonHeightConstraint;
   self->_undoButtonHeightConstraint = v14;
 
@@ -130,25 +130,25 @@
   v3 = +[PKPaletteButton redoButton];
   [(PKPaletteUndoRedoView *)self setRedoButton:v3];
 
-  v4 = [(PKPaletteUndoRedoView *)self redoButton];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  redoButton = [(PKPaletteUndoRedoView *)self redoButton];
+  [redoButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(PKPaletteUndoRedoView *)self redoButton];
-  [v5 addTarget:self action:sel_handleRedo_ forControlEvents:64];
+  redoButton2 = [(PKPaletteUndoRedoView *)self redoButton];
+  [redoButton2 addTarget:self action:sel_handleRedo_ forControlEvents:64];
 
-  v6 = [(PKPaletteUndoRedoView *)self stackView];
-  v7 = [(PKPaletteUndoRedoView *)self redoButton];
-  [v6 addArrangedSubview:v7];
+  stackView = [(PKPaletteUndoRedoView *)self stackView];
+  redoButton3 = [(PKPaletteUndoRedoView *)self redoButton];
+  [stackView addArrangedSubview:redoButton3];
 
-  v8 = [(PKPaletteUndoRedoView *)self redoButton];
-  v9 = [v8 widthAnchor];
-  v10 = [v9 constraintEqualToConstant:0.0];
+  redoButton4 = [(PKPaletteUndoRedoView *)self redoButton];
+  widthAnchor = [redoButton4 widthAnchor];
+  v10 = [widthAnchor constraintEqualToConstant:0.0];
   redoButtonWidthConstraint = self->_redoButtonWidthConstraint;
   self->_redoButtonWidthConstraint = v10;
 
-  v12 = [(PKPaletteUndoRedoView *)self redoButton];
-  v13 = [v12 heightAnchor];
-  v14 = [v13 constraintEqualToConstant:0.0];
+  redoButton5 = [(PKPaletteUndoRedoView *)self redoButton];
+  heightAnchor = [redoButton5 heightAnchor];
+  v14 = [heightAnchor constraintEqualToConstant:0.0];
   redoButtonHeightConstraint = self->_redoButtonHeightConstraint;
   self->_redoButtonHeightConstraint = v14;
 
@@ -162,10 +162,10 @@
 
 - (CGSize)_buttonSize
 {
-  v3 = [(PKPaletteUndoRedoView *)self traitCollection];
-  v4 = [(PKPaletteUndoRedoView *)self window];
-  v5 = [v4 windowScene];
-  v6 = PKUseCompactSize(v3, v5);
+  traitCollection = [(PKPaletteUndoRedoView *)self traitCollection];
+  window = [(PKPaletteUndoRedoView *)self window];
+  windowScene = [window windowScene];
+  v6 = PKUseCompactSize(traitCollection, windowScene);
 
   if (v6)
   {
@@ -185,12 +185,12 @@
   return result;
 }
 
-- (void)setInterItemSpacing:(double)a3
+- (void)setInterItemSpacing:(double)spacing
 {
   interItemSpacing = self->_interItemSpacing;
-  if (interItemSpacing != a3 && vabdd_f64(interItemSpacing, a3) >= fabs(a3 * 0.000000999999997))
+  if (interItemSpacing != spacing && vabdd_f64(interItemSpacing, spacing) >= fabs(spacing * 0.000000999999997))
   {
-    self->_interItemSpacing = a3;
+    self->_interItemSpacing = spacing;
     [(PKPaletteUndoRedoView *)self _updateUI];
 
     [(PKPaletteUndoRedoView *)self invalidateIntrinsicContentSize];
@@ -203,62 +203,62 @@
   v4 = v3;
   [(PKPaletteUndoRedoView *)self scalingFactor];
   v6 = v4 * v5;
-  v7 = [(PKPaletteUndoRedoView *)self stackView];
-  [v7 setSpacing:v6];
+  stackView = [(PKPaletteUndoRedoView *)self stackView];
+  [stackView setSpacing:v6];
 
   [(PKPaletteUndoRedoView *)self _buttonSize];
   v9 = v8;
   v11 = v10;
-  v12 = [(PKPaletteUndoRedoView *)self undoButtonWidthConstraint];
-  [v12 setConstant:v9];
+  undoButtonWidthConstraint = [(PKPaletteUndoRedoView *)self undoButtonWidthConstraint];
+  [undoButtonWidthConstraint setConstant:v9];
 
-  v13 = [(PKPaletteUndoRedoView *)self undoButtonHeightConstraint];
-  [v13 setConstant:v11];
+  undoButtonHeightConstraint = [(PKPaletteUndoRedoView *)self undoButtonHeightConstraint];
+  [undoButtonHeightConstraint setConstant:v11];
 
-  v14 = [(PKPaletteUndoRedoView *)self redoButtonWidthConstraint];
-  [v14 setConstant:v9];
+  redoButtonWidthConstraint = [(PKPaletteUndoRedoView *)self redoButtonWidthConstraint];
+  [redoButtonWidthConstraint setConstant:v9];
 
-  v15 = [(PKPaletteUndoRedoView *)self redoButtonHeightConstraint];
-  [v15 setConstant:v11];
+  redoButtonHeightConstraint = [(PKPaletteUndoRedoView *)self redoButtonHeightConstraint];
+  [redoButtonHeightConstraint setConstant:v11];
 
-  v16 = [(PKPaletteUndoRedoView *)self isUndoEnabled];
-  v17 = [(PKPaletteUndoRedoView *)self undoButton];
-  [v17 setEnabled:v16];
+  isUndoEnabled = [(PKPaletteUndoRedoView *)self isUndoEnabled];
+  undoButton = [(PKPaletteUndoRedoView *)self undoButton];
+  [undoButton setEnabled:isUndoEnabled];
 
-  v18 = [(PKPaletteUndoRedoView *)self isRedoEnabled];
-  v19 = [(PKPaletteUndoRedoView *)self redoButton];
-  [v19 setEnabled:v18];
+  isRedoEnabled = [(PKPaletteUndoRedoView *)self isRedoEnabled];
+  redoButton = [(PKPaletteUndoRedoView *)self redoButton];
+  [redoButton setEnabled:isRedoEnabled];
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
   scalingFactor = self->_scalingFactor;
-  if (scalingFactor != a3 && vabdd_f64(scalingFactor, a3) >= fabs(a3 * 0.000000999999997))
+  if (scalingFactor != factor && vabdd_f64(scalingFactor, factor) >= fabs(factor * 0.000000999999997))
   {
-    self->_scalingFactor = a3;
+    self->_scalingFactor = factor;
     [(PKPaletteUndoRedoView *)self _updateUI];
 
     [(PKPaletteUndoRedoView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)handleUndo:(id)a3
+- (void)handleUndo:(id)undo
 {
-  v4 = [(PKPaletteUndoRedoView *)self delegate];
-  [v4 undoRedoViewDidTapUndo:self];
+  delegate = [(PKPaletteUndoRedoView *)self delegate];
+  [delegate undoRedoViewDidTapUndo:self];
 }
 
-- (void)handleRedo:(id)a3
+- (void)handleRedo:(id)redo
 {
-  v4 = [(PKPaletteUndoRedoView *)self delegate];
-  [v4 undoRedoViewDidTapRedo:self];
+  delegate = [(PKPaletteUndoRedoView *)self delegate];
+  [delegate undoRedoViewDidTapRedo:self];
 }
 
-- (void)setEdgeLocation:(unint64_t)a3
+- (void)setEdgeLocation:(unint64_t)location
 {
-  if (self->_edgeLocation != a3)
+  if (self->_edgeLocation != location)
   {
-    self->_edgeLocation = a3;
+    self->_edgeLocation = location;
     [(PKPaletteUndoRedoView *)self invalidateIntrinsicContentSize];
   }
 }

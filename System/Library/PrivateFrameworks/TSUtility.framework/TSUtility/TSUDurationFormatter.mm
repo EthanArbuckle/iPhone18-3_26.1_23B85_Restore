@@ -1,8 +1,8 @@
 @interface TSUDurationFormatter
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
 - (TSUDurationFormatter)init;
-- (TSUDurationFormatter)initWithCoder:(id)a3;
-- (id)stringForObjectValue:(id)a3;
+- (TSUDurationFormatter)initWithCoder:(id)coder;
+- (id)stringForObjectValue:(id)value;
 - (void)dealloc;
 @end
 
@@ -22,11 +22,11 @@
   return v3;
 }
 
-- (TSUDurationFormatter)initWithCoder:(id)a3
+- (TSUDurationFormatter)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TSUDurationFormatter;
-  v3 = [(TSUDurationFormatter *)&v6 initWithCoder:a3];
+  v3 = [(TSUDurationFormatter *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -43,32 +43,32 @@
   [(TSUDurationFormatter *)&v3 dealloc];
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  if (!a3 || (objc_opt_respondsToSelector() & 1) == 0)
+  if (!value || (objc_opt_respondsToSelector() & 1) == 0)
   {
     return &stru_287DDF830;
   }
 
-  [a3 doubleValue];
+  [value doubleValue];
   v6 = v5;
-  v7 = [(TSUDurationFormatter *)self format];
+  format = [(TSUDurationFormatter *)self format];
 
-  return TSUDurationFormatterStringFromTimeIntervalWithFormatAndRoundingAndSingularOption(v7, 0, 0, v6);
+  return TSUDurationFormatterStringFromTimeIntervalWithFormatAndRoundingAndSingularOption(format, 0, 0, v6);
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
   v9 = NAN;
-  started = TSUDurationFormatterTimeIntervalFromStringWithCompactStyleStartUnit(a4, &v9, 0, 0, [(TSUDurationFormatter *)self compactStyleStartUnit]);
+  started = TSUDurationFormatterTimeIntervalFromStringWithCompactStyleStartUnit(string, &v9, 0, 0, [(TSUDurationFormatter *)self compactStyleStartUnit]);
   if (started)
   {
-    *a3 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
+    *value = [MEMORY[0x277CCABB0] numberWithDouble:v9];
   }
 
-  else if (a5)
+  else if (description)
   {
-    *a5 = [SFUBundle() localizedStringForKey:@"The time is invalid." value:&stru_287DDF830 table:@"TSUtility"];
+    *description = [SFUBundle() localizedStringForKey:@"The time is invalid." value:&stru_287DDF830 table:@"TSUtility"];
   }
 
   return started;

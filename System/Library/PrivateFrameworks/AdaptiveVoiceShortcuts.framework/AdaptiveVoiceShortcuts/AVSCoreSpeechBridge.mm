@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (AVSCoreSpeechBridge)init;
 - (const)recordingASBD;
-- (void)commandControlListener:(id)a3 hasLPCMBufferAvailable:(id)a4;
-- (void)commandControlListener:(id)a3 hasLPCMBufferAvailable:(id)a4 hostTime:(unint64_t)a5;
-- (void)startListening:(id)a3;
-- (void)stopListening:(id)a3;
+- (void)commandControlListener:(id)listener hasLPCMBufferAvailable:(id)available;
+- (void)commandControlListener:(id)listener hasLPCMBufferAvailable:(id)available hostTime:(unint64_t)time;
+- (void)startListening:(id)listening;
+- (void)stopListening:(id)listening;
 @end
 
 @implementation AVSCoreSpeechBridge
@@ -49,15 +49,15 @@ uint64_t __37__AVSCoreSpeechBridge_sharedInstance__block_invoke()
 - (const)recordingASBD
 {
   v2 = [objc_alloc(MEMORY[0x277CB83A8]) initWithCommonFormat:3 sampleRate:1 channels:0 interleaved:16000.0];
-  v3 = [v2 streamDescription];
+  streamDescription = [v2 streamDescription];
 
-  return v3;
+  return streamDescription;
 }
 
-- (void)startListening:(id)a3
+- (void)startListening:(id)listening
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listeningCopy = listening;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -93,9 +93,9 @@ uint64_t __37__AVSCoreSpeechBridge_sharedInstance__block_invoke()
     v23[5] = v12;
   }
 
-  if (v4)
+  if (listeningCopy)
   {
-    v4[2](v4, *(v29 + 24), v23[5]);
+    listeningCopy[2](listeningCopy, *(v29 + 24), v23[5]);
   }
 
   _Block_object_dispose(&v22, 8);
@@ -112,31 +112,31 @@ void __38__AVSCoreSpeechBridge_startListening___block_invoke(uint64_t a1, char a
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)stopListening:(id)a3
+- (void)stopListening:(id)listening
 {
-  v5 = a3;
+  listeningCopy = listening;
   [(CSCommandControlListener *)self->_commandControlListener stopListenWithCompletion:&__block_literal_global_294];
-  v4 = v5;
-  if (v5)
+  v4 = listeningCopy;
+  if (listeningCopy)
   {
-    (*(v5 + 2))(v5, 1, 0);
-    v4 = v5;
+    (*(listeningCopy + 2))(listeningCopy, 1, 0);
+    v4 = listeningCopy;
   }
 }
 
-- (void)commandControlListener:(id)a3 hasLPCMBufferAvailable:(id)a4
+- (void)commandControlListener:(id)listener hasLPCMBufferAvailable:(id)available
 {
-  v6 = a4;
-  v7 = a3;
-  [(AVSCoreSpeechBridge *)self commandControlListener:v7 hasLPCMBufferAvailable:v6 hostTime:mach_absolute_time()];
+  availableCopy = available;
+  listenerCopy = listener;
+  [(AVSCoreSpeechBridge *)self commandControlListener:listenerCopy hasLPCMBufferAvailable:availableCopy hostTime:mach_absolute_time()];
 }
 
-- (void)commandControlListener:(id)a3 hasLPCMBufferAvailable:(id)a4 hostTime:(unint64_t)a5
+- (void)commandControlListener:(id)listener hasLPCMBufferAvailable:(id)available hostTime:(unint64_t)time
 {
-  v6 = a4;
-  if (v6 && self->_onBufferReceived)
+  availableCopy = available;
+  if (availableCopy && self->_onBufferReceived)
   {
-    v12 = v6;
+    v12 = availableCopy;
     v7 = [objc_alloc(MEMORY[0x277CB83A8]) initWithCommonFormat:3 sampleRate:1 channels:0 interleaved:16000.0];
     v8 = [v12 length] >> 1;
     v9 = [objc_alloc(MEMORY[0x277CB83C8]) initWithPCMFormat:v7 frameCapacity:v8];
@@ -146,7 +146,7 @@ void __38__AVSCoreSpeechBridge_startListening___block_invoke(uint64_t a1, char a
     memcpy(v10, [v12 bytes], objc_msgSend(v12, "length"));
 
     (*(self->_onBufferReceived + 2))();
-    v6 = v12;
+    availableCopy = v12;
   }
 }
 

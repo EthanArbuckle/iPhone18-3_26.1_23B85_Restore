@@ -1,11 +1,11 @@
 @interface ICSEPresentationController
 - (BOOL)isLandscape;
-- (CGRect)adjustFrame:(CGRect)a3 forKeyboardFrame:(CGRect)a4 topLayoutGuideHeight:(double)a5;
+- (CGRect)adjustFrame:(CGRect)frame forKeyboardFrame:(CGRect)keyboardFrame topLayoutGuideHeight:(double)height;
 - (CGRect)frameOfPresentedViewInContainerView;
-- (CGRect)frameOfPresentedViewInContainerView:(id)a3 withKeyboardFrame:(CGRect)a4 topLayoutGuideLength:(double)a5;
-- (CGRect)idealFrameForMainViewControllerWithoutKeyboardForContainerView:(id)a3 topLayoutGuideHeight:(double)a4;
+- (CGRect)frameOfPresentedViewInContainerView:(id)view withKeyboardFrame:(CGRect)frame topLayoutGuideLength:(double)length;
+- (CGRect)idealFrameForMainViewControllerWithoutKeyboardForContainerView:(id)view topLayoutGuideHeight:(double)height;
 - (CGSize)maxSize;
-- (ICSEPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (ICSEPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (ICSERootViewController)rootViewController;
 - (double)horizontalMargin;
 - (double)keyboardMargin;
@@ -17,10 +17,10 @@
 
 @implementation ICSEPresentationController
 
-- (CGRect)frameOfPresentedViewInContainerView:(id)a3 withKeyboardFrame:(CGRect)a4 topLayoutGuideLength:(double)a5
+- (CGRect)frameOfPresentedViewInContainerView:(id)view withKeyboardFrame:(CGRect)frame topLayoutGuideLength:(double)length
 {
-  [(ICSEPresentationController *)self idealFrameForMainViewControllerWithoutKeyboardForContainerView:a3 topLayoutGuideHeight:a5];
-  [ICSEPresentationController adjustFrame:"adjustFrame:forKeyboardFrame:topLayoutGuideHeight:" forKeyboardFrame:*&a5 topLayoutGuideHeight:?];
+  [(ICSEPresentationController *)self idealFrameForMainViewControllerWithoutKeyboardForContainerView:view topLayoutGuideHeight:length];
+  [ICSEPresentationController adjustFrame:"adjustFrame:forKeyboardFrame:topLayoutGuideHeight:" forKeyboardFrame:*&length topLayoutGuideHeight:?];
   result.size.height = v10;
   result.size.width = v9;
   result.origin.y = v8;
@@ -28,16 +28,16 @@
   return result;
 }
 
-- (CGRect)adjustFrame:(CGRect)a3 forKeyboardFrame:(CGRect)a4 topLayoutGuideHeight:(double)a5
+- (CGRect)adjustFrame:(CGRect)frame forKeyboardFrame:(CGRect)keyboardFrame topLayoutGuideHeight:(double)height
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
+  height = keyboardFrame.size.height;
+  width = keyboardFrame.size.width;
+  y = keyboardFrame.origin.y;
+  x = keyboardFrame.origin.x;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  v11 = frame.origin.y;
+  v12 = frame.origin.x;
   if (![(ICSEPresentationController *)self isShowingSearchResults])
   {
     v25.origin.x = x;
@@ -86,9 +86,9 @@
   return result;
 }
 
-- (CGRect)idealFrameForMainViewControllerWithoutKeyboardForContainerView:(id)a3 topLayoutGuideHeight:(double)a4
+- (CGRect)idealFrameForMainViewControllerWithoutKeyboardForContainerView:(id)view topLayoutGuideHeight:(double)height
 {
-  [a3 bounds];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -107,9 +107,9 @@
   TSDSizeWithMaxSize();
   if (![(ICSEPresentationController *)self isShowingSearchResults]&& ICAccessibilityAccessibilityLargerTextSizesEnabled() && (([(ICSEPresentationController *)self isPortrait]| v17) & 1) != 0)
   {
-    v18 = [(ICSEPresentationController *)self rootViewController];
-    v19 = [v18 traitCollection];
-    v20 = [v19 preferredContentSizeCategory];
+    rootViewController = [(ICSEPresentationController *)self rootViewController];
+    traitCollection = [rootViewController traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
     ICAccessibilityLinearInterpolatedValueForAccessibilityContentSizeCategory();
   }
 
@@ -150,10 +150,10 @@
 
 - (double)horizontalMargin
 {
-  v2 = [(ICSEPresentationController *)self isPortrait];
+  isPortrait = [(ICSEPresentationController *)self isPortrait];
   v3 = +[UIDevice ic_isiPad];
   result = 65.0;
-  if ((v3 | v2))
+  if ((v3 | isPortrait))
   {
     return 8.0;
   }
@@ -163,10 +163,10 @@
 
 - (double)verticalMargin
 {
-  v2 = [(ICSEPresentationController *)self isPortrait];
+  isPortrait = [(ICSEPresentationController *)self isPortrait];
   v3 = +[UIDevice ic_isiPad];
   result = 28.0;
-  if ((v3 | v2))
+  if ((v3 | isPortrait))
   {
     return 8.0;
   }
@@ -176,9 +176,9 @@
 
 - (double)keyboardMargin
 {
-  v2 = [(ICSEPresentationController *)self isPortrait];
+  isPortrait = [(ICSEPresentationController *)self isPortrait];
   result = 8.0;
-  if (v2)
+  if (isPortrait)
   {
     return 28.0;
   }
@@ -188,19 +188,19 @@
 
 - (BOOL)isLandscape
 {
-  v2 = [(ICSEPresentationController *)self containerView];
-  [v2 bounds];
+  containerView = [(ICSEPresentationController *)self containerView];
+  [containerView bounds];
   v4 = v3;
   v6 = v5;
 
   return v6 < v4;
 }
 
-- (ICSEPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (ICSEPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v10.receiver = self;
   v10.super_class = ICSEPresentationController;
-  v4 = [(ICSEPresentationController *)&v10 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(ICSEPresentationController *)&v10 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v4)
   {
     v5 = objc_alloc_init(UIView);
@@ -208,8 +208,8 @@
 
     v6 = +[UIColor blackColor];
     v7 = [v6 colorWithAlphaComponent:0.4];
-    v8 = [(ICSEPresentationController *)v4 dimmingView];
-    [v8 setBackgroundColor:v7];
+    dimmingView = [(ICSEPresentationController *)v4 dimmingView];
+    [dimmingView setBackgroundColor:v7];
   }
 
   return v4;
@@ -217,17 +217,17 @@
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(ICSEPresentationController *)self rootViewController];
-  v4 = [v3 ic_safeAreaLayoutGuide];
-  [v4 layoutFrame];
+  rootViewController = [(ICSEPresentationController *)self rootViewController];
+  ic_safeAreaLayoutGuide = [rootViewController ic_safeAreaLayoutGuide];
+  [ic_safeAreaLayoutGuide layoutFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(ICSEPresentationController *)self containerView];
-  v14 = [(ICSEPresentationController *)self rootViewController];
-  [v14 keyboardFrame];
+  containerView = [(ICSEPresentationController *)self containerView];
+  rootViewController2 = [(ICSEPresentationController *)self rootViewController];
+  [rootViewController2 keyboardFrame];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -236,7 +236,7 @@
   v35.origin.y = v8;
   v35.size.width = v10;
   v35.size.height = v12;
-  [(ICSEPresentationController *)self frameOfPresentedViewInContainerView:v13 withKeyboardFrame:v16 topLayoutGuideLength:v18, v20, v22, CGRectGetMinY(v35)];
+  [(ICSEPresentationController *)self frameOfPresentedViewInContainerView:containerView withKeyboardFrame:v16 topLayoutGuideLength:v18, v20, v22, CGRectGetMinY(v35)];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -258,33 +258,33 @@
   v9.receiver = self;
   v9.super_class = ICSEPresentationController;
   [(ICSEPresentationController *)&v9 presentationTransitionWillBegin];
-  v3 = [(ICSEPresentationController *)self containerView];
-  v4 = [(ICSEPresentationController *)self dimmingView];
-  [v3 addSubview:v4];
+  containerView = [(ICSEPresentationController *)self containerView];
+  dimmingView = [(ICSEPresentationController *)self dimmingView];
+  [containerView addSubview:dimmingView];
 
-  v5 = [(ICSEPresentationController *)self dimmingView];
-  [v5 setAlpha:0.0];
+  dimmingView2 = [(ICSEPresentationController *)self dimmingView];
+  [dimmingView2 setAlpha:0.0];
 
-  v6 = [(ICSEPresentationController *)self presentedViewController];
-  v7 = [v6 transitionCoordinator];
+  presentedViewController = [(ICSEPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10002E914;
   v8[3] = &unk_1000F3048;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v8 completion:0];
 }
 
 - (void)containerViewWillLayoutSubviews
 {
-  v3 = [(ICSEPresentationController *)self containerView];
-  [v3 bounds];
+  containerView = [(ICSEPresentationController *)self containerView];
+  [containerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(ICSEPresentationController *)self dimmingView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  dimmingView = [(ICSEPresentationController *)self dimmingView];
+  [dimmingView setFrame:{v5, v7, v9, v11}];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -299,14 +299,14 @@
   v6.receiver = self;
   v6.super_class = ICSEPresentationController;
   [(ICSEPresentationController *)&v6 dismissalTransitionWillBegin];
-  v3 = [(ICSEPresentationController *)self presentedViewController];
-  v4 = [v3 transitionCoordinator];
+  presentedViewController = [(ICSEPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10002EB90;
   v5[3] = &unk_1000F3048;
   v5[4] = self;
-  [v4 animateAlongsideTransition:v5 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v5 completion:0];
 }
 
 - (ICSERootViewController)rootViewController

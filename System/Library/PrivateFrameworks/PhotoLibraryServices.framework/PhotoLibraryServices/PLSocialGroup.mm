@@ -1,96 +1,96 @@
 @interface PLSocialGroup
-+ (BOOL)_verifiedTypeChangeFromRejectedToUserWithSourceNode:(id)a3;
-+ (BOOL)deleteDuplicateGraphAndUnverifiedGroupsInContext:(id)a3 error:(id *)a4;
-+ (BOOL)deleteDuplicateGroupsAfterInsertionOfGroup:(id)a3 error:(id *)a4;
-+ (BOOL)deleteSocialGroupsHavingMember:(id)a3;
-+ (BOOL)needsConstraintConflictResolutionForNode:(id)a3;
-+ (BOOL)rejectSocialGroupsHavingMember:(id)a3;
-+ (BOOL)resetAllInContext:(id)a3 error:(id *)a4;
-+ (BOOL)runAssetContainmentOnAllSocialGroupsInContext:(id)a3 error:(id *)a4;
-+ (id)_fetchDuplicateSocialGroupNodes:(id)a3 error:(id *)a4;
-+ (id)_memberIDsByNodeIDFromEdgeDictionaries:(id)a3;
-+ (id)_personsFromEdges:(id)a3;
-+ (id)_primaryLabelPredicateWithContext:(id)a3;
-+ (id)_socialGroupsNodesContainingMember:(id)a3;
++ (BOOL)_verifiedTypeChangeFromRejectedToUserWithSourceNode:(id)node;
++ (BOOL)deleteDuplicateGraphAndUnverifiedGroupsInContext:(id)context error:(id *)error;
++ (BOOL)deleteDuplicateGroupsAfterInsertionOfGroup:(id)group error:(id *)error;
++ (BOOL)deleteSocialGroupsHavingMember:(id)member;
++ (BOOL)needsConstraintConflictResolutionForNode:(id)node;
++ (BOOL)rejectSocialGroupsHavingMember:(id)member;
++ (BOOL)resetAllInContext:(id)context error:(id *)error;
++ (BOOL)runAssetContainmentOnAllSocialGroupsInContext:(id)context error:(id *)error;
++ (id)_fetchDuplicateSocialGroupNodes:(id)nodes error:(id *)error;
++ (id)_memberIDsByNodeIDFromEdgeDictionaries:(id)dictionaries;
++ (id)_personsFromEdges:(id)edges;
++ (id)_primaryLabelPredicateWithContext:(id)context;
++ (id)_socialGroupsNodesContainingMember:(id)member;
 + (id)_sortableKeyPaths;
 + (id)changeFlagsKeysByNodeContainerKey;
-+ (id)defaultValueForRequiredNodeValueCode:(int)a3 forNode:(id)a4;
-+ (id)fetchAssetIDsHavingAssetPersonEdgesToPersonID:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5;
-+ (id)fetchDuplicateSocialGroupIDsWithMemberIDs:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)fetchPersonIDsHavingAssetPersonEdgesToAssetID:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5;
-+ (id)keyAssetUUIDOfSocialGroupWithPersonUUIDs:(id)a3 candidateAssetUUIDs:(id)a4 inLibrary:(id)a5 error:(id *)a6;
-+ (id)newNodeContainerWithManagedObjectContext:(id)a3;
-+ (id)predicateForAllVerifiedSocialGroupsInContext:(id)a3;
-+ (id)predicateForUserVerifiedSocialGroupsInContext:(id)a3;
++ (id)defaultValueForRequiredNodeValueCode:(int)code forNode:(id)node;
++ (id)fetchAssetIDsHavingAssetPersonEdgesToPersonID:(id)d inManagedObjectContext:(id)context error:(id *)error;
++ (id)fetchDuplicateSocialGroupIDsWithMemberIDs:(id)ds inContext:(id)context error:(id *)error;
++ (id)fetchPersonIDsHavingAssetPersonEdgesToAssetID:(id)d inManagedObjectContext:(id)context error:(id *)error;
++ (id)keyAssetUUIDOfSocialGroupWithPersonUUIDs:(id)ds candidateAssetUUIDs:(id)iDs inLibrary:(id)library error:(id *)error;
++ (id)newNodeContainerWithManagedObjectContext:(id)context;
++ (id)predicateForAllVerifiedSocialGroupsInContext:(id)context;
++ (id)predicateForUserVerifiedSocialGroupsInContext:(id)context;
 + (id)requiredNodeValueCodes;
-+ (id)resetAllInLibrary:(id)a3 completion:(id)a4;
-+ (id)socialGroupsToUploadInManagedObjectContext:(id)a3 limit:(int64_t)a4;
++ (id)resetAllInLibrary:(id)library completion:(id)completion;
++ (id)socialGroupsToUploadInManagedObjectContext:(id)context limit:(int64_t)limit;
 + (id)sortableKeys;
-+ (void)_deleteEmptyGraphOrUnverifiedSocialGroupNode:(id)a3;
-+ (void)_deleteUserAndGraphGroupsFromDuplicateGroupNodes:(id)a3 inContext:(id)a4;
-+ (void)didSaveWithNode:(id)a3;
-+ (void)prepareForDeletingOutgoingEdge:(id)a3;
-+ (void)prepareForDeletionWithNode:(id)a3;
-+ (void)rebuildWithLibrary:(id)a3;
-+ (void)updateKeyAssetOfSocialGroupsWithUUIDs:(id)a3 inLibrary:(id)a4;
-+ (void)willSaveWithNode:(id)a3;
++ (void)_deleteEmptyGraphOrUnverifiedSocialGroupNode:(id)node;
++ (void)_deleteUserAndGraphGroupsFromDuplicateGroupNodes:(id)nodes inContext:(id)context;
++ (void)didSaveWithNode:(id)node;
++ (void)prepareForDeletingOutgoingEdge:(id)edge;
++ (void)prepareForDeletionWithNode:(id)node;
++ (void)rebuildWithLibrary:(id)library;
++ (void)updateKeyAssetOfSocialGroupsWithUUIDs:(id)ds inLibrary:(id)library;
++ (void)willSaveWithNode:(id)node;
 - (BOOL)_existingExclusiveAssetEdgeOut;
-- (BOOL)_updateAssetEdgesWithAssetContainmentResult:(id)a3 assetIDsToUpdate:(id)a4 error:(id *)a5;
-- (BOOL)addMember:(id)a3 error:(id *)a4;
+- (BOOL)_updateAssetEdgesWithAssetContainmentResult:(id)result assetIDsToUpdate:(id)update error:(id *)error;
+- (BOOL)addMember:(id)member error:(id *)error;
 - (BOOL)isSyncableChange;
 - (BOOL)keyAssetIsNeeded;
-- (BOOL)removeMember:(id)a3 error:(id *)a4;
-- (BOOL)resetCustomDataWithError:(id *)a3;
-- (BOOL)runAssetContainmentWithError:(id *)a3 assetIDsToUpdate:(id)a4;
-- (BOOL)setKeyAsset:(id)a3 error:(id *)a4;
-- (BOOL)setKeyAssetPickSource:(int64_t)a3 error:(id *)a4;
-- (BOOL)setMembers:(id)a3 error:(id *)a4;
-- (BOOL)setSocialGroupVerifiedType:(signed __int16)a3 error:(id *)a4;
+- (BOOL)removeMember:(id)member error:(id *)error;
+- (BOOL)resetCustomDataWithError:(id *)error;
+- (BOOL)runAssetContainmentWithError:(id *)error assetIDsToUpdate:(id)update;
+- (BOOL)setKeyAsset:(id)asset error:(id *)error;
+- (BOOL)setKeyAssetPickSource:(int64_t)source error:(id *)error;
+- (BOOL)setMembers:(id)members error:(id *)error;
+- (BOOL)setSocialGroupVerifiedType:(signed __int16)type error:(id *)error;
 - (BOOL)supportsCloudUpload;
 - (NSNumber)automaticOrder;
 - (NSNumber)manualOrder;
 - (NSSet)members;
 - (NSString)customTitle;
 - (PLManagedAsset)keyAsset;
-- (PLSocialGroup)initWithNode:(id)a3;
+- (PLSocialGroup)initWithNode:(id)node;
 - (id)_exclusiveAssetEdgesOut;
 - (id)_exclusiveAssetEdgesOutFetch;
-- (id)_existingMemberEdgeForPerson:(id)a3 success:(BOOL *)a4 error:(id *)a5;
-- (id)_inclusiveAssetEdgesOutForSpecificAssetIDs:(id)a3 prefetchEdgeLabels:(BOOL)a4;
-- (id)_insertGraphEdgeForAsset:(id)a3 exclusiveLabel:(id)a4;
-- (id)_insertMemberEdgeForPerson:(id)a3;
-- (id)_personEdgesOutWithError:(id *)a3;
+- (id)_existingMemberEdgeForPerson:(id)person success:(BOOL *)success error:(id *)error;
+- (id)_inclusiveAssetEdgesOutForSpecificAssetIDs:(id)ds prefetchEdgeLabels:(BOOL)labels;
+- (id)_insertGraphEdgeForAsset:(id)asset exclusiveLabel:(id)label;
+- (id)_insertMemberEdgeForPerson:(id)person;
+- (id)_personEdgesOutWithError:(id *)error;
 - (id)cplSocialGroupChange;
 - (id)exclusiveAssetIDs;
 - (id)inclusiveAssetIDs;
-- (id)keyAssetEdgeWithError:(id *)a3;
+- (id)keyAssetEdgeWithError:(id *)error;
 - (id)localID;
-- (id)runAssetContainmentWithCompletion:(id)a3;
+- (id)runAssetContainmentWithCompletion:(id)completion;
 - (id)scopeIdentifier;
 - (id)scopedIdentifier;
 - (int64_t)keyAssetPickSource;
 - (signed)socialGroupVerifiedType;
-- (void)_resetExistingKeyAssetEdge:(id)a3 keyAssetLabel:(id)a4;
-- (void)setAutomaticOrder:(id)a3;
-- (void)setCustomTitle:(id)a3;
-- (void)setManualOrder:(id)a3;
-- (void)updateSocialGroupwithCPLSocialGroupChange:(id)a3 inPhotoLibrary:(id)a4;
+- (void)_resetExistingKeyAssetEdge:(id)edge keyAssetLabel:(id)label;
+- (void)setAutomaticOrder:(id)order;
+- (void)setCustomTitle:(id)title;
+- (void)setManualOrder:(id)order;
+- (void)updateSocialGroupwithCPLSocialGroupChange:(id)change inPhotoLibrary:(id)library;
 @end
 
 @implementation PLSocialGroup
 
 - (BOOL)keyAssetIsNeeded
 {
-  v3 = [(PLSocialGroup *)self socialGroupVerifiedType];
-  v4 = [(PLSocialGroup *)self keyAsset];
+  socialGroupVerifiedType = [(PLSocialGroup *)self socialGroupVerifiedType];
+  keyAsset = [(PLSocialGroup *)self keyAsset];
   if ([(PLSocialGroup *)self keyAssetPickSource]== -1)
   {
     v5 = 0;
   }
 
-  else if (v4)
+  else if (keyAsset)
   {
-    v5 = [v4 isVisibleForSocialGroupKeyAssetFetch] ^ 1;
+    v5 = [keyAsset isVisibleForSocialGroupKeyAssetFetch] ^ 1;
   }
 
   else
@@ -98,31 +98,31 @@
     v5 = 1;
   }
 
-  v6 = 0;
-  if (v3 && v3 != 0xFFFF)
+  _existingExclusiveAssetEdgeOut = 0;
+  if (socialGroupVerifiedType && socialGroupVerifiedType != 0xFFFF)
   {
     if (v5)
     {
-      v6 = [(PLSocialGroup *)self _existingExclusiveAssetEdgeOut];
+      _existingExclusiveAssetEdgeOut = [(PLSocialGroup *)self _existingExclusiveAssetEdgeOut];
     }
 
     else
     {
-      v6 = 0;
+      _existingExclusiveAssetEdgeOut = 0;
     }
   }
 
-  return v6;
+  return _existingExclusiveAssetEdgeOut;
 }
 
-- (BOOL)_updateAssetEdgesWithAssetContainmentResult:(id)a3 assetIDsToUpdate:(id)a4 error:(id *)a5
+- (BOOL)_updateAssetEdgesWithAssetContainmentResult:(id)result assetIDsToUpdate:(id)update error:(id *)error
 {
   v90 = *MEMORY[0x1E69E9840];
-  v63 = a3;
-  v64 = self;
-  v62 = a4;
+  resultCopy = result;
+  selfCopy = self;
+  updateCopy = update;
   v8 = [PLSocialGroup _inclusiveAssetEdgesOutForSpecificAssetIDs:"_inclusiveAssetEdgesOutForSpecificAssetIDs:prefetchEdgeLabels:" prefetchEdgeLabels:?];
-  v9 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
@@ -144,10 +144,10 @@
 
         v15 = *(*(&v80 + 1) + 8 * i);
         v16 = objc_autoreleasePoolPush();
-        v17 = [v15 targetAsset];
-        v18 = [v17 objectID];
+        targetAsset = [v15 targetAsset];
+        objectID = [targetAsset objectID];
 
-        [v9 setObject:v15 forKeyedSubscript:v18];
+        [dictionary setObject:v15 forKeyedSubscript:objectID];
         objc_autoreleasePoolPop(v16);
       }
 
@@ -157,36 +157,36 @@
     while (v12);
   }
 
-  v19 = [(PLGraphNodeContainer *)v64 sourceNode];
-  v20 = [v19 managedObjectContext];
+  sourceNode = [(PLGraphNodeContainer *)selfCopy sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
-  v21 = [v63 inclusiveAssetIDs];
+  inclusiveAssetIDs = [resultCopy inclusiveAssetIDs];
   v22 = +[PLManagedAsset fetchRequest];
-  v23 = v21;
-  v24 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v21];
+  v23 = inclusiveAssetIDs;
+  v24 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", inclusiveAssetIDs];
   [v22 setPredicate:v24];
 
-  v25 = [v63 exclusiveAssetIDs];
-  v26 = [v20 pl_graphCache];
-  v27 = [v26 labelWithCode:1004 inContext:v20];
+  exclusiveAssetIDs = [resultCopy exclusiveAssetIDs];
+  pl_graphCache = [managedObjectContext pl_graphCache];
+  v27 = [pl_graphCache labelWithCode:1004 inContext:managedObjectContext];
   v66 = [PLEnumerateAndSaveController alloc];
   v28 = NSStringFromSelector(a2);
   v78[0] = MEMORY[0x1E69E9820];
   v78[1] = 3221225472;
   v78[2] = __84__PLSocialGroup__updateAssetEdgesWithAssetContainmentResult_assetIDsToUpdate_error___block_invoke;
   v78[3] = &unk_1E7575B30;
-  v79 = v20;
+  v79 = managedObjectContext;
   v73[0] = MEMORY[0x1E69E9820];
   v73[1] = 3221225472;
   v73[2] = __84__PLSocialGroup__updateAssetEdgesWithAssetContainmentResult_assetIDsToUpdate_error___block_invoke_2;
   v73[3] = &unk_1E7567518;
-  v58 = v9;
+  v58 = dictionary;
   v74 = v58;
-  v57 = v25;
+  v57 = exclusiveAssetIDs;
   v75 = v57;
   v55 = v27;
   v76 = v55;
-  v77 = v64;
+  v77 = selfCopy;
   v29 = v66;
   v60 = v22;
   v67 = v79;
@@ -209,8 +209,8 @@
   }
 
   v52 = v31;
-  v59 = v26;
-  v65 = [v26 labelWithCode:1003 inContext:v67];
+  v59 = pl_graphCache;
+  v65 = [pl_graphCache labelWithCode:1003 inContext:v67];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
@@ -231,21 +231,21 @@
         }
 
         v40 = *(*(&v68 + 1) + 8 * j);
-        v41 = [v40 targetAsset];
-        v42 = [v41 objectID];
-        if (v42 && ([v23 containsObject:v42] & 1) == 0)
+        targetAsset2 = [v40 targetAsset];
+        objectID2 = [targetAsset2 objectID];
+        if (objectID2 && ([v23 containsObject:objectID2] & 1) == 0)
         {
-          v43 = [v40 additionalLabels];
-          v44 = [v43 containsObject:v65];
+          additionalLabels = [v40 additionalLabels];
+          v44 = [additionalLabels containsObject:v65];
 
           if (v44)
           {
             v45 = PLBackendGetLog();
             if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
             {
-              v46 = [v41 uuid];
+              uuid = [targetAsset2 uuid];
               *buf = 138412290;
-              v85 = v46;
+              v85 = uuid;
               _os_log_impl(&dword_19BF1F000, v45, OS_LOG_TYPE_ERROR, "[PLSocialGroup] Deleting user picked key asset edge for key asset with uuid %@", buf, 0xCu);
             }
           }
@@ -260,11 +260,11 @@
     while (v37);
   }
 
-  [(PLGraphNodeContainer *)v64 updateChangeFlagsForNodeContainerKey:@"inclusiveAssetIDs"];
-  [(PLGraphNodeContainer *)v64 updateChangeFlagsForNodeContainerKey:@"exclusiveAssetIDs"];
+  [(PLGraphNodeContainer *)selfCopy updateChangeFlagsForNodeContainerKey:@"inclusiveAssetIDs"];
+  [(PLGraphNodeContainer *)selfCopy updateChangeFlagsForNodeContainerKey:@"exclusiveAssetIDs"];
   v47 = v52;
   v48 = v47;
-  if (a5)
+  if (error)
   {
     v49 = v56;
   }
@@ -277,7 +277,7 @@
   if ((v49 & 1) == 0)
   {
     v50 = v47;
-    *a5 = v48;
+    *error = v48;
   }
 
   return v56;
@@ -332,20 +332,20 @@ void __84__PLSocialGroup__updateAssetEdgesWithAssetContainmentResult_assetIDsToU
   }
 }
 
-- (BOOL)runAssetContainmentWithError:(id *)a3 assetIDsToUpdate:(id)a4
+- (BOOL)runAssetContainmentWithError:(id *)error assetIDsToUpdate:(id)update
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  updateCopy = update;
   if ([(PLSocialGroup *)self socialGroupVerifiedType]== -1 || ![(PLSocialGroup *)self socialGroupVerifiedType])
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:945 description:{@"Invalid parameter not satisfying: %@", @"self.socialGroupVerifiedType != PLSocialGroupVerifiedTypeRejected && self.socialGroupVerifiedType != PLSocialGroupVerifiedTypeNone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:945 description:{@"Invalid parameter not satisfying: %@", @"self.socialGroupVerifiedType != PLSocialGroupVerifiedTypeRejected && self.socialGroupVerifiedType != PLSocialGroupVerifiedTypeNone"}];
   }
 
-  v8 = [(PLGraphNodeContainer *)self sourceNode];
-  v9 = [v8 managedObjectContext];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
-  if (v9)
+  if (managedObjectContext)
   {
     v32 = 0;
     v33 = &v32;
@@ -364,17 +364,17 @@ void __84__PLSocialGroup__updateAssetEdgesWithAssetContainmentResult_assetIDsToU
     v20[3] = &unk_1E75787D0;
     v11 = v10;
     v21 = v11;
-    v22 = self;
-    v23 = v7;
+    selfCopy = self;
+    v23 = updateCopy;
     v24 = &v26;
     v25 = &v32;
-    [v9 performBlockAndWait:v20];
+    [managedObjectContext performBlockAndWait:v20];
     v12 = *(v33 + 24);
     v13 = v27[5];
-    if (a3 && (v12 & 1) == 0)
+    if (error && (v12 & 1) == 0)
     {
       v13 = v13;
-      *a3 = v13;
+      *error = v13;
     }
 
     v14 = *(v33 + 24);
@@ -390,10 +390,10 @@ void __84__PLSocialGroup__updateAssetEdgesWithAssetContainmentResult_assetIDsToU
     v37[0] = @"asset containment failed: no managed object context";
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
     v17 = [v15 errorWithDomain:*MEMORY[0x1E69BFF48] code:46502 userInfo:v16];
-    if (a3)
+    if (error)
     {
       v17 = v17;
-      *a3 = v17;
+      *error = v17;
     }
 
     v14 = 0;
@@ -443,18 +443,18 @@ void __63__PLSocialGroup_runAssetContainmentWithError_assetIDsToUpdate___block_i
   [*(a1 + 32) resignCurrent];
 }
 
-- (id)runAssetContainmentWithCompletion:(id)a3
+- (id)runAssetContainmentWithCompletion:(id)completion
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x1E696AE38];
-  v6 = [(PLSocialGroup *)self members];
-  v7 = [v5 progressWithTotalUnitCount:{objc_msgSend(v6, "count")}];
+  members = [(PLSocialGroup *)self members];
+  v7 = [v5 progressWithTotalUnitCount:{objc_msgSend(members, "count")}];
 
-  v8 = [(PLGraphNodeContainer *)self sourceNode];
-  v9 = [v8 photoLibrary];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  photoLibrary = [sourceNode photoLibrary];
 
-  if (!v9)
+  if (!photoLibrary)
   {
     v10 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E69BFF48];
@@ -462,7 +462,7 @@ void __63__PLSocialGroup_runAssetContainmentWithError_assetIDsToUpdate___block_i
     v24[0] = @"asset containment failed: no library";
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v13 = [v10 errorWithDomain:v11 code:46502 userInfo:v12];
-    v4[2](v4, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 
   v19[0] = MEMORY[0x1E69E9820];
@@ -471,10 +471,10 @@ void __63__PLSocialGroup_runAssetContainmentWithError_assetIDsToUpdate___block_i
   v19[3] = &unk_1E7576F38;
   v14 = v7;
   v20 = v14;
-  v21 = self;
-  v22 = v4;
-  v15 = v4;
-  [v9 performTransaction:v19];
+  selfCopy = self;
+  v22 = completionCopy;
+  v15 = completionCopy;
+  [photoLibrary performTransaction:v19];
   v16 = v22;
   v17 = v14;
 
@@ -496,12 +496,12 @@ void __51__PLSocialGroup_runAssetContainmentWithCompletion___block_invoke(uint64
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(PLSocialGroup *)self _exclusiveAssetEdgesOut];
+  _exclusiveAssetEdgesOut = [(PLSocialGroup *)self _exclusiveAssetEdgesOut];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [_exclusiveAssetEdgesOut countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -512,14 +512,14 @@ void __51__PLSocialGroup_runAssetContainmentWithCompletion___block_invoke(uint64
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_exclusiveAssetEdgesOut);
         }
 
         v9 = [*(*(&v12 + 1) + 8 * i) objectIDsForRelationshipNamed:@"targetAsset"];
         [v3 addObjectsFromArray:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_exclusiveAssetEdgesOut countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -568,75 +568,75 @@ void __51__PLSocialGroup_runAssetContainmentWithCompletion___block_invoke(uint64
   return v10;
 }
 
-- (BOOL)removeMember:(id)a3 error:(id *)a4
+- (BOOL)removeMember:(id)member error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  memberCopy = member;
+  if (!memberCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:884 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:884 description:{@"Invalid parameter not satisfying: %@", @"person"}];
   }
 
-  v8 = [(PLGraphNodeContainer *)self sourceNode];
-  v9 = [v8 managedObjectContext];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
   v20 = 1;
   v19 = 0;
-  v10 = [(PLSocialGroup *)self _existingMemberEdgeForPerson:v7 success:&v20 error:&v19];
+  v10 = [(PLSocialGroup *)self _existingMemberEdgeForPerson:memberCopy success:&v20 error:&v19];
   v11 = v19;
   if (v10)
   {
-    [v9 deleteObject:v10];
+    [managedObjectContext deleteObject:v10];
     [(PLGraphNodeContainer *)self updateChangeFlagsForNodeContainerKey:@"members"];
   }
 
   v12 = v20;
   v13 = v11;
   v14 = v13;
-  if (a4 && (v12 & 1) == 0)
+  if (error && (v12 & 1) == 0)
   {
     v15 = v13;
-    *a4 = v14;
+    *error = v14;
   }
 
   v16 = v20;
   return v16;
 }
 
-- (BOOL)addMember:(id)a3 error:(id *)a4
+- (BOOL)addMember:(id)member error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  memberCopy = member;
+  if (!memberCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:868 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:868 description:{@"Invalid parameter not satisfying: %@", @"person"}];
   }
 
   v21 = 1;
   v20 = 0;
-  v8 = [(PLSocialGroup *)self _existingMemberEdgeForPerson:v7 success:&v21 error:&v20];
+  v8 = [(PLSocialGroup *)self _existingMemberEdgeForPerson:memberCopy success:&v21 error:&v20];
   v9 = v20;
   v10 = v9;
   v11 = v21;
   if (!v8 && (v21 & 1) != 0)
   {
-    v12 = [(PLSocialGroup *)self _insertMemberEdgeForPerson:v7];
+    v12 = [(PLSocialGroup *)self _insertMemberEdgeForPerson:memberCopy];
     [(PLGraphNodeContainer *)self updateChangeFlagsForNodeContainerKey:@"members"];
     v13 = v21;
     v14 = v10;
-    if (!a4 || (v13 & 1) != 0)
+    if (!error || (v13 & 1) != 0)
     {
       goto LABEL_11;
     }
 
 LABEL_10:
     v16 = v10;
-    *a4 = v10;
+    *error = v10;
     goto LABEL_11;
   }
 
   v15 = v9;
-  if (a4 && (v11 & 1) == 0)
+  if (error && (v11 & 1) == 0)
   {
     goto LABEL_10;
   }
@@ -647,20 +647,20 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)setMembers:(id)a3 error:(id *)a4
+- (BOOL)setMembers:(id)members error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  membersCopy = members;
+  if (!membersCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:844 description:{@"Invalid parameter not satisfying: %@", @"members"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:844 description:{@"Invalid parameter not satisfying: %@", @"members"}];
   }
 
-  v8 = [(PLGraphNodeContainer *)self sourceNode];
-  v9 = [v8 managedObjectContext];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
-  v10 = [(PLSocialGroup *)self _personEdgesOutWithError:a4];
+  v10 = [(PLSocialGroup *)self _personEdgesOutWithError:error];
   v11 = v10;
   if (v10)
   {
@@ -682,7 +682,7 @@ LABEL_11:
             objc_enumerationMutation(v11);
           }
 
-          [v9 deleteObject:*(*(&v28 + 1) + 8 * i)];
+          [managedObjectContext deleteObject:*(*(&v28 + 1) + 8 * i)];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -695,7 +695,7 @@ LABEL_11:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v16 = v7;
+    v16 = membersCopy;
     v17 = [v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v17)
     {
@@ -752,14 +752,14 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)setKeyAssetPickSource:(int64_t)a3 error:(id *)a4
+- (BOOL)setKeyAssetPickSource:(int64_t)source error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = [(PLGraphNodeContainer *)self sourceNode];
-  v8 = [v7 managedObjectContext];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
-  v9 = [v8 pl_graphCache];
-  v10 = [v9 labelWithCode:1003 inContext:v8];
+  pl_graphCache = [managedObjectContext pl_graphCache];
+  v10 = [pl_graphCache labelWithCode:1003 inContext:managedObjectContext];
   v24 = 0;
   v11 = [(PLSocialGroup *)self keyAssetEdgeWithError:&v24];
   v12 = v24;
@@ -783,17 +783,17 @@ LABEL_17:
 LABEL_14:
     v21 = [v17 dictionaryWithObjects:v18 forKeys:v19 count:1];
     v22 = [v15 errorWithDomain:v16 code:46502 userInfo:v21];
-    if (a4)
+    if (error)
     {
       v22 = v22;
-      *a4 = v22;
+      *error = v22;
     }
 
     goto LABEL_17;
   }
 
   v14 = [v11 hasLabel:v10];
-  if (a3 == -1)
+  if (source == -1)
   {
     v15 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E69BFF48];
@@ -805,7 +805,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a3 == 1)
+  if (source == 1)
   {
     if ((v14 & 1) == 0)
     {
@@ -813,7 +813,7 @@ LABEL_14:
     }
   }
 
-  else if (!a3 && v14)
+  else if (!source && v14)
   {
     [v11 removeLabel:v10];
   }
@@ -853,14 +853,14 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)setKeyAsset:(id)a3 error:(id *)a4
+- (BOOL)setKeyAsset:(id)asset error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:729 description:{@"Invalid parameter not satisfying: %@", @"keyAsset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:729 description:{@"Invalid parameter not satisfying: %@", @"keyAsset"}];
   }
 
   v47 = 0;
@@ -881,7 +881,7 @@ LABEL_18:
   v12 = v11;
   if (v11)
   {
-    if (v7 && ([v7 targetAsset], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqual:", v6), v13, (v14 & 1) != 0))
+    if (v7 && ([v7 targetAsset], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqual:", assetCopy), v13, (v14 & 1) != 0))
     {
       v10 = v7;
     }
@@ -889,13 +889,13 @@ LABEL_18:
     else
     {
       v41 = v12;
-      v15 = [(PLGraphNodeContainer *)self sourceNode];
-      v16 = [v15 managedObjectContext];
+      sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+      managedObjectContext = [sourceNode managedObjectContext];
 
-      v17 = [v16 pl_graphCache];
-      v18 = [v17 labelWithCode:1001 inContext:v16];
-      v40 = v17;
-      v42 = [v17 labelWithCode:1004 inContext:v16];
+      pl_graphCache = [managedObjectContext pl_graphCache];
+      v18 = [pl_graphCache labelWithCode:1001 inContext:managedObjectContext];
+      v40 = pl_graphCache;
+      v42 = [pl_graphCache labelWithCode:1004 inContext:managedObjectContext];
       if (v7)
       {
         [(PLSocialGroup *)self _resetExistingKeyAssetEdge:v7 keyAssetLabel:v18];
@@ -922,8 +922,8 @@ LABEL_18:
           }
 
           v24 = *(*(&v43 + 1) + 8 * v23);
-          v25 = [v24 targetAsset];
-          if ([v25 isEqual:v6])
+          targetAsset = [v24 targetAsset];
+          if ([targetAsset isEqual:assetCopy])
           {
             break;
           }
@@ -940,8 +940,8 @@ LABEL_18:
           }
         }
 
-        v27 = [v24 additionalLabels];
-        v28 = [v27 containsObject:v42];
+        additionalLabels = [v24 additionalLabels];
+        v28 = [additionalLabels containsObject:v42];
 
         v12 = v41;
         if ((v28 & 1) == 0)
@@ -950,9 +950,9 @@ LABEL_18:
           v29 = PLBackendGetLog();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
-            v30 = [v6 uuid];
+            uuid = [assetCopy uuid];
             *buf = 138412290;
-            v49 = v30;
+            v49 = uuid;
             _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_ERROR, "[PLSocialGroup] Missing exclusive label from social group key asset edge found for key asset with uuid %@", buf, 0xCu);
           }
         }
@@ -977,20 +977,20 @@ LABEL_24:
       v31 = PLBackendGetLog();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        v32 = [v6 uuid];
+        uuid2 = [assetCopy uuid];
         *buf = 138412290;
-        v49 = v32;
+        v49 = uuid2;
         _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_ERROR, "[PLSocialGroup] No existing social group key asset edge found for key asset with uuid %@", buf, 0xCu);
       }
 
       v33 = +[PLGraphEdge entityName];
-      v10 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v33, v16, 0);
+      v10 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v33, managedObjectContext, 0);
 
-      v34 = [(PLGraphNodeContainer *)self sourceNode];
-      [v10 setSourceNode:v34];
+      sourceNode2 = [(PLGraphNodeContainer *)self sourceNode];
+      [v10 setSourceNode:sourceNode2];
 
-      [v10 setTargetAsset:v6];
-      v35 = [v26 labelWithCode:1004 inContext:v16];
+      [v10 setTargetAsset:assetCopy];
+      v35 = [v26 labelWithCode:1004 inContext:managedObjectContext];
       v36 = [MEMORY[0x1E695DFD8] setWithObject:v35];
       [v10 setAdditionalLabels:v36];
 
@@ -1003,18 +1003,18 @@ LABEL_33:
   return v12;
 }
 
-- (void)_resetExistingKeyAssetEdge:(id)a3 keyAssetLabel:(id)a4
+- (void)_resetExistingKeyAssetEdge:(id)edge keyAssetLabel:(id)label
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLGraphNodeContainer *)self sourceNode];
-  v11 = [v8 managedObjectContext];
+  labelCopy = label;
+  edgeCopy = edge;
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
-  v9 = [v11 pl_graphCache];
-  [v7 removeLabel:v6];
+  pl_graphCache = [managedObjectContext pl_graphCache];
+  [edgeCopy removeLabel:labelCopy];
 
-  v10 = [v9 labelWithCode:1003 inContext:v11];
-  [v7 removeLabel:v10];
+  v10 = [pl_graphCache labelWithCode:1003 inContext:managedObjectContext];
+  [edgeCopy removeLabel:v10];
 }
 
 - (PLManagedAsset)keyAsset
@@ -1035,31 +1035,31 @@ LABEL_33:
     }
   }
 
-  v6 = [v2 targetAsset];
+  targetAsset = [v2 targetAsset];
 
-  return v6;
+  return targetAsset;
 }
 
-- (BOOL)setSocialGroupVerifiedType:(signed __int16)a3 error:(id *)a4
+- (BOOL)setSocialGroupVerifiedType:(signed __int16)type error:(id *)error
 {
-  v5 = a3;
-  v7 = [(PLGraphNodeContainer *)self sourceNode];
+  typeCopy = type;
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
   v8 = 1;
-  v9 = [v7 valueWithCode:2000 createIfMissing:1];
+  v9 = [sourceNode valueWithCode:2000 createIfMissing:1];
 
-  if ([v9 integerValue] != v5)
+  if ([v9 integerValue] != typeCopy)
   {
-    v10 = v5;
-    if (v5 == -1 && [v9 integerValue] == 1)
+    v10 = typeCopy;
+    if (typeCopy == -1 && [v9 integerValue] == 1)
     {
       v15 = 0;
       v8 = [(PLSocialGroup *)self resetCustomDataWithError:&v15];
       v11 = v15;
       v12 = v11;
-      if (!v8 && a4)
+      if (!v8 && error)
       {
         v13 = v11;
-        *a4 = v12;
+        *error = v12;
       }
     }
 
@@ -1070,7 +1070,7 @@ LABEL_33:
   return v8;
 }
 
-- (BOOL)resetCustomDataWithError:(id *)a3
+- (BOOL)resetCustomDataWithError:(id *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
   [(PLSocialGroup *)self setCustomTitle:0];
@@ -1089,17 +1089,17 @@ LABEL_33:
         v8 = [(PLSocialGroup *)self setKeyAssetPickSource:0 error:&v24];
         v9 = v24;
 
-        if (!v8 && a3)
+        if (!v8 && error)
         {
           v10 = v9;
-          *a3 = v9;
+          *error = v9;
         }
 
-        v11 = [(PLGraphNodeContainer *)self sourceNode];
-        v12 = [v11 managedObjectContext];
+        sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+        managedObjectContext = [sourceNode managedObjectContext];
 
-        v13 = [v12 pl_graphCache];
-        v14 = [v13 labelWithCode:1001 inContext:v12];
+        pl_graphCache = [managedObjectContext pl_graphCache];
+        v14 = [pl_graphCache labelWithCode:1001 inContext:managedObjectContext];
         [v5 removeLabel:v14];
         [(PLGraphNodeContainer *)self updateChangeFlagsForNodeContainerKey:@"keyAsset"];
       }
@@ -1110,14 +1110,14 @@ LABEL_33:
         v20 = *MEMORY[0x1E69BFF48];
         v28 = *MEMORY[0x1E696A278];
         v29[0] = @"no key asset edge";
-        v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-        v21 = [v19 errorWithDomain:v20 code:46502 userInfo:v12];
-        v13 = v21;
-        if (a3)
+        managedObjectContext = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
+        v21 = [v19 errorWithDomain:v20 code:46502 userInfo:managedObjectContext];
+        pl_graphCache = v21;
+        if (error)
         {
           v22 = v21;
           v8 = 0;
-          *a3 = v13;
+          *error = pl_graphCache;
         }
 
         else
@@ -1145,11 +1145,11 @@ LABEL_33:
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v17 = [v15 errorWithDomain:v16 code:46502 userInfo:v7];
     v5 = v17;
-    if (a3)
+    if (error)
     {
       v18 = v17;
       v8 = 0;
-      *a3 = v5;
+      *error = v5;
 LABEL_20:
 
       return v8;
@@ -1165,97 +1165,97 @@ LABEL_14:
 
 - (signed)socialGroupVerifiedType
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 valueWithCode:2000];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v3 = [sourceNode valueWithCode:2000];
 
-  LOWORD(v2) = [v3 integerValue];
-  return v2;
+  LOWORD(sourceNode) = [v3 integerValue];
+  return sourceNode;
 }
 
-- (void)setAutomaticOrder:(id)a3
+- (void)setAutomaticOrder:(id)order
 {
-  v8 = a3;
-  if (!v8)
+  orderCopy = order;
+  if (!orderCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:642 description:{@"Invalid parameter not satisfying: %@", @"automaticOrder"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:642 description:{@"Invalid parameter not satisfying: %@", @"automaticOrder"}];
   }
 
-  v5 = [(PLGraphNodeContainer *)self sourceNode];
-  v6 = [v5 valueWithCode:2003 createIfMissing:1];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v6 = [sourceNode valueWithCode:2003 createIfMissing:1];
 
-  [v6 setIntegerValue:{objc_msgSend(v8, "integerValue")}];
+  [v6 setIntegerValue:{objc_msgSend(orderCopy, "integerValue")}];
   [(PLGraphNodeContainer *)self updateChangeFlagsForNodeContainerKey:@"automaticOrder"];
 }
 
 - (NSNumber)automaticOrder
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 valueWithCode:2003];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v3 = [sourceNode valueWithCode:2003];
 
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "integerValue")}];
 
   return v4;
 }
 
-- (void)setManualOrder:(id)a3
+- (void)setManualOrder:(id)order
 {
-  v8 = a3;
-  if (!v8)
+  orderCopy = order;
+  if (!orderCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:629 description:{@"Invalid parameter not satisfying: %@", @"manualOrder"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:629 description:{@"Invalid parameter not satisfying: %@", @"manualOrder"}];
   }
 
-  v5 = [(PLGraphNodeContainer *)self sourceNode];
-  v6 = [v5 valueWithCode:2002 createIfMissing:1];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v6 = [sourceNode valueWithCode:2002 createIfMissing:1];
 
-  [v6 setIntegerValue:{objc_msgSend(v8, "integerValue")}];
+  [v6 setIntegerValue:{objc_msgSend(orderCopy, "integerValue")}];
   [(PLGraphNodeContainer *)self updateChangeFlagsForNodeContainerKey:@"manualOrder"];
 }
 
 - (NSNumber)manualOrder
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 valueWithCode:2002];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v3 = [sourceNode valueWithCode:2002];
 
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "integerValue")}];
 
   return v4;
 }
 
-- (void)setCustomTitle:(id)a3
+- (void)setCustomTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(PLGraphNodeContainer *)self sourceNode];
-  v6 = [v5 valueWithCode:2001 createIfMissing:1];
+  titleCopy = title;
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v6 = [sourceNode valueWithCode:2001 createIfMissing:1];
 
-  [v6 setStringValue:v4];
+  [v6 setStringValue:titleCopy];
   [(PLGraphNodeContainer *)self updateChangeFlagsForNodeContainerKey:@"customTitle"];
 }
 
 - (NSString)customTitle
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 valueWithCode:2001];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v3 = [sourceNode valueWithCode:2001];
 
-  v4 = [v3 stringValue];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
-- (PLSocialGroup)initWithNode:(id)a3
+- (PLSocialGroup)initWithNode:(id)node
 {
-  v5 = a3;
-  if (!v5)
+  nodeCopy = node;
+  if (!nodeCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:526 description:{@"Invalid parameter not satisfying: %@", @"node"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:526 description:{@"Invalid parameter not satisfying: %@", @"node"}];
   }
 
   v9.receiver = self;
   v9.super_class = PLSocialGroup;
-  v6 = [(PLGraphNodeContainer *)&v9 initWithNode:v5];
+  v6 = [(PLGraphNodeContainer *)&v9 initWithNode:nodeCopy];
 
   return v6;
 }
@@ -1263,13 +1263,13 @@ LABEL_14:
 - (BOOL)_existingExclusiveAssetEdgeOut
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(PLGraphNodeContainer *)self sourceNode];
-  v4 = [v3 managedObjectContext];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
-  v5 = [(PLSocialGroup *)self _exclusiveAssetEdgesOutFetch];
-  [v5 setFetchLimit:1];
+  _exclusiveAssetEdgesOutFetch = [(PLSocialGroup *)self _exclusiveAssetEdgesOutFetch];
+  [_exclusiveAssetEdgesOutFetch setFetchLimit:1];
   v10 = 0;
-  v6 = [v4 countForFetchRequest:v5 error:&v10];
+  v6 = [managedObjectContext countForFetchRequest:_exclusiveAssetEdgesOutFetch error:&v10];
   v7 = v10;
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1290,12 +1290,12 @@ LABEL_14:
 - (id)_exclusiveAssetEdgesOut
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(PLGraphNodeContainer *)self sourceNode];
-  v4 = [v3 managedObjectContext];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
-  v5 = [(PLSocialGroup *)self _exclusiveAssetEdgesOutFetch];
+  _exclusiveAssetEdgesOutFetch = [(PLSocialGroup *)self _exclusiveAssetEdgesOutFetch];
   v12 = 0;
-  v6 = [v4 executeFetchRequest:v5 error:&v12];
+  v6 = [managedObjectContext executeFetchRequest:_exclusiveAssetEdgesOutFetch error:&v12];
   v7 = v12;
   if (v6)
   {
@@ -1323,11 +1323,11 @@ LABEL_14:
 - (id)_exclusiveAssetEdgesOutFetch
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PLGraphNodeContainer *)self sourceNode];
-  v4 = [v3 managedObjectContext];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
-  v5 = [v4 pl_graphCache];
-  v6 = [v5 labelWithCode:1004 inContext:v4];
+  pl_graphCache = [managedObjectContext pl_graphCache];
+  v6 = [pl_graphCache labelWithCode:1004 inContext:managedObjectContext];
   v7 = +[PLGraphEdge fetchRequest];
   v19[0] = @"sourceNode";
   v19[1] = @"targetNode";
@@ -1336,8 +1336,8 @@ LABEL_14:
 
   v9 = MEMORY[0x1E696AB28];
   v10 = MEMORY[0x1E696AE18];
-  v11 = [(PLGraphNodeContainer *)self sourceNode];
-  v12 = [v10 predicateWithFormat:@"%K = %@", @"sourceNode", v11];
+  sourceNode2 = [(PLGraphNodeContainer *)self sourceNode];
+  v12 = [v10 predicateWithFormat:@"%K = %@", @"sourceNode", sourceNode2];
   v18[0] = v12;
   v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != nil", @"targetAsset"];
   v18[1] = v13;
@@ -1350,33 +1350,33 @@ LABEL_14:
   return v7;
 }
 
-- (id)_inclusiveAssetEdgesOutForSpecificAssetIDs:(id)a3 prefetchEdgeLabels:(BOOL)a4
+- (id)_inclusiveAssetEdgesOutForSpecificAssetIDs:(id)ds prefetchEdgeLabels:(BOOL)labels
 {
-  v4 = a4;
+  labelsCopy = labels;
   v31[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLGraphNodeContainer *)self sourceNode];
-  v8 = [v7 managedObjectContext];
+  dsCopy = ds;
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
   v9 = +[PLGraphEdge fetchRequest];
   v10 = MEMORY[0x1E696AB28];
   v11 = MEMORY[0x1E696AE18];
-  v12 = [(PLGraphNodeContainer *)self sourceNode];
-  v13 = [v11 predicateWithFormat:@"%K = %@", @"sourceNode", v12];
+  sourceNode2 = [(PLGraphNodeContainer *)self sourceNode];
+  v13 = [v11 predicateWithFormat:@"%K = %@", @"sourceNode", sourceNode2];
   v14 = v13;
-  if (v6)
+  if (dsCopy)
   {
     v30[0] = v13;
-    v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"targetAsset", v6];
-    v30[1] = v15;
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"targetAsset", dsCopy];
+    v30[1] = dsCopy;
     v16 = v30;
   }
 
   else
   {
     v31[0] = v13;
-    v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != nil", @"targetAsset"];
-    v31[1] = v15;
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != nil", @"targetAsset"];
+    v31[1] = dsCopy;
     v16 = v31;
   }
 
@@ -1384,7 +1384,7 @@ LABEL_14:
   v18 = [v10 andPredicateWithSubpredicates:v17];
   [v9 setPredicate:v18];
 
-  if (v4)
+  if (labelsCopy)
   {
     v29 = @"additionalLabelAssignments";
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
@@ -1392,7 +1392,7 @@ LABEL_14:
   }
 
   v26 = 0;
-  v20 = [v8 executeFetchRequest:v9 error:&v26];
+  v20 = [managedObjectContext executeFetchRequest:v9 error:&v26];
   v21 = v26;
   if (v20)
   {
@@ -1417,48 +1417,48 @@ LABEL_14:
   return v24;
 }
 
-- (id)_insertGraphEdgeForAsset:(id)a3 exclusiveLabel:(id)a4
+- (id)_insertGraphEdgeForAsset:(id)asset exclusiveLabel:(id)label
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  assetCopy = asset;
+  labelCopy = label;
+  if (!assetCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:399 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:399 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v9 = [(PLGraphNodeContainer *)self sourceNode];
-  v10 = [v9 managedObjectContext];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
   v11 = +[PLGraphEdge entityName];
-  v12 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v11, v10, 0);
+  v12 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v11, managedObjectContext, 0);
 
-  v13 = [(PLGraphNodeContainer *)self sourceNode];
-  [v12 setSourceNode:v13];
+  sourceNode2 = [(PLGraphNodeContainer *)self sourceNode];
+  [v12 setSourceNode:sourceNode2];
 
-  [v12 setTargetAsset:v7];
-  if (v8)
+  [v12 setTargetAsset:assetCopy];
+  if (labelCopy)
   {
-    v14 = [MEMORY[0x1E695DFD8] setWithObject:v8];
+    v14 = [MEMORY[0x1E695DFD8] setWithObject:labelCopy];
     [v12 setAdditionalLabels:v14];
   }
 
   return v12;
 }
 
-- (id)_personEdgesOutWithError:(id *)a3
+- (id)_personEdgesOutWithError:(id *)error
 {
-  v5 = [(PLGraphNodeContainer *)self sourceNode];
-  v6 = [v5 managedObjectContext];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
   v7 = +[PLGraphEdge fetchRequest];
   v8 = MEMORY[0x1E696AE18];
-  v9 = [(PLGraphNodeContainer *)self sourceNode];
-  v10 = [v8 predicateWithFormat:@"%K = %@ AND %K != nil", @"sourceNode", v9, @"targetPerson"];
+  sourceNode2 = [(PLGraphNodeContainer *)self sourceNode];
+  v10 = [v8 predicateWithFormat:@"%K = %@ AND %K != nil", @"sourceNode", sourceNode2, @"targetPerson"];
   [v7 setPredicate:v10];
 
   v17 = 0;
-  v11 = [v6 executeFetchRequest:v7 error:&v17];
+  v11 = [managedObjectContext executeFetchRequest:v7 error:&v17];
   v12 = v17;
   v13 = v12;
   if (v11)
@@ -1466,11 +1466,11 @@ LABEL_14:
     v14 = [MEMORY[0x1E695DFD8] setWithArray:v11];
   }
 
-  else if (a3)
+  else if (error)
   {
     v15 = v12;
     v14 = 0;
-    *a3 = v13;
+    *error = v13;
   }
 
   else
@@ -1481,37 +1481,37 @@ LABEL_14:
   return v14;
 }
 
-- (id)keyAssetEdgeWithError:(id *)a3
+- (id)keyAssetEdgeWithError:(id *)error
 {
   v41[3] = *MEMORY[0x1E69E9840];
-  v5 = [(PLGraphNodeContainer *)self sourceNode];
-  v6 = [v5 managedObjectContext];
-  v7 = [v6 pl_graphCache];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
+  pl_graphCache = [managedObjectContext pl_graphCache];
 
-  v8 = [(PLGraphNodeContainer *)self sourceNode];
-  v9 = [v8 managedObjectContext];
-  v10 = [v7 labelWithCode:1001 inContext:v9];
+  sourceNode2 = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext2 = [sourceNode2 managedObjectContext];
+  v10 = [pl_graphCache labelWithCode:1001 inContext:managedObjectContext2];
 
-  v11 = [v10 edgeExternalIdentifiersHavingLabel];
-  v12 = [v11 indexesWithBitsSet];
+  edgeExternalIdentifiersHavingLabel = [v10 edgeExternalIdentifiersHavingLabel];
+  indexesWithBitsSet = [edgeExternalIdentifiersHavingLabel indexesWithBitsSet];
 
-  if (![v12 count])
+  if (![indexesWithBitsSet count])
   {
-    v27 = 0;
+    firstObject = 0;
     goto LABEL_13;
   }
 
-  v33 = a3;
-  v34 = v7;
+  errorCopy = error;
+  v34 = pl_graphCache;
   v13 = +[PLGraphEdge fetchRequest];
   v14 = MEMORY[0x1E696AB28];
   v15 = MEMORY[0x1E696AE18];
-  v16 = [(PLGraphNodeContainer *)self sourceNode];
-  v17 = [v15 predicateWithFormat:@"%K = %@", @"sourceNode", v16];
+  sourceNode3 = [(PLGraphNodeContainer *)self sourceNode];
+  v17 = [v15 predicateWithFormat:@"%K = %@", @"sourceNode", sourceNode3];
   v41[0] = v17;
   v18 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K) != nil", @"targetAsset"];
   v41[1] = v18;
-  v19 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"externalIdentifier", v12];
+  v19 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"externalIdentifier", indexesWithBitsSet];
   v41[2] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:3];
   v21 = [v14 andPredicateWithSubpredicates:v20];
@@ -1521,143 +1521,143 @@ LABEL_14:
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
   [v13 setRelationshipKeyPathsForPrefetching:v22];
 
-  v23 = [(PLGraphNodeContainer *)self sourceNode];
-  v24 = [v23 managedObjectContext];
+  sourceNode4 = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext3 = [sourceNode4 managedObjectContext];
   v35 = 0;
-  v25 = [v24 executeFetchRequest:v13 error:&v35];
+  v25 = [managedObjectContext3 executeFetchRequest:v13 error:&v35];
   v26 = v35;
 
   if (v25)
   {
-    v27 = [v25 firstObject];
+    firstObject = [v25 firstObject];
     if ([v25 count] >= 2)
     {
       v28 = PLBackendGetLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v29 = [(PLGraphNodeContainer *)self uuid];
+        uuid = [(PLGraphNodeContainer *)self uuid];
         v30 = [v25 count];
         *buf = 138543618;
-        v37 = v29;
+        v37 = uuid;
         v38 = 2048;
         v39 = v30;
         _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_ERROR, "Social group: %{public}@ unexpectedly has %tu key assets", buf, 0x16u);
       }
 
-      v7 = v34;
+      pl_graphCache = v34;
       goto LABEL_12;
     }
   }
 
-  else if (v33)
+  else if (errorCopy)
   {
     v31 = v26;
-    v27 = 0;
-    *v33 = v26;
+    firstObject = 0;
+    *errorCopy = v26;
   }
 
   else
   {
-    v27 = 0;
+    firstObject = 0;
   }
 
-  v7 = v34;
+  pl_graphCache = v34;
 LABEL_12:
 
 LABEL_13:
 
-  return v27;
+  return firstObject;
 }
 
-- (id)_existingMemberEdgeForPerson:(id)a3 success:(BOOL *)a4 error:(id *)a5
+- (id)_existingMemberEdgeForPerson:(id)person success:(BOOL *)success error:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  personCopy = person;
+  if (!personCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:328 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:328 description:{@"Invalid parameter not satisfying: %@", @"person"}];
   }
 
   v10 = +[PLGraphEdge fetchRequest];
   v11 = MEMORY[0x1E696AE18];
-  v12 = [(PLGraphNodeContainer *)self sourceNode];
-  v13 = [v11 predicateWithFormat:@"%K = %@ AND %K = %@", @"sourceNode", v12, @"targetPerson", v9];
-  [v10 setPredicate:v13];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  personCopy = [v11 predicateWithFormat:@"%K = %@ AND %K = %@", @"sourceNode", sourceNode, @"targetPerson", personCopy];
+  [v10 setPredicate:personCopy];
 
-  v14 = [v9 managedObjectContext];
+  managedObjectContext = [personCopy managedObjectContext];
   v22 = 0;
-  v15 = [v14 executeFetchRequest:v10 error:&v22];
+  v15 = [managedObjectContext executeFetchRequest:v10 error:&v22];
   v16 = v22;
 
   if (v15)
   {
-    v17 = [v15 firstObject];
+    firstObject = [v15 firstObject];
     v18 = 1;
   }
 
-  else if (a5)
+  else if (error)
   {
     v19 = v16;
     v18 = 0;
-    v17 = 0;
-    *a5 = v16;
+    firstObject = 0;
+    *error = v16;
   }
 
   else
   {
     v18 = 0;
-    v17 = 0;
+    firstObject = 0;
   }
 
-  *a4 = v18;
+  *success = v18;
 
-  return v17;
+  return firstObject;
 }
 
-- (id)_insertMemberEdgeForPerson:(id)a3
+- (id)_insertMemberEdgeForPerson:(id)person
 {
-  v5 = a3;
-  if (!v5)
+  personCopy = person;
+  if (!personCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:316 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:316 description:{@"Invalid parameter not satisfying: %@", @"person"}];
   }
 
-  v6 = [(PLGraphNodeContainer *)self sourceNode];
-  v7 = [v6 managedObjectContext];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
   v8 = +[PLGraphEdge entityName];
-  v9 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v8, v7, 0);
+  v9 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v8, managedObjectContext, 0);
 
-  v10 = [(PLGraphNodeContainer *)self sourceNode];
-  [v9 setSourceNode:v10];
+  sourceNode2 = [(PLGraphNodeContainer *)self sourceNode];
+  [v9 setSourceNode:sourceNode2];
 
-  [v9 setTargetPerson:v5];
+  [v9 setTargetPerson:personCopy];
 
   return v9;
 }
 
-+ (id)fetchPersonIDsHavingAssetPersonEdgesToAssetID:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5
++ (id)fetchPersonIDsHavingAssetPersonEdgesToAssetID:(id)d inManagedObjectContext:(id)context error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  contextCopy = context;
   v9 = +[PLGraphEdge fetchRequest];
   [v9 setResultType:2];
   v31[0] = @"targetPerson";
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
   [v9 setPropertiesToFetch:v10];
 
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != nil AND %K = %@", @"targetPerson", @"sourceAsset", v7];
-  [v9 setPredicate:v11];
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != nil AND %K = %@", @"targetPerson", @"sourceAsset", dCopy];
+  [v9 setPredicate:dCopy];
 
   v29 = 0;
-  v12 = [v8 executeFetchRequest:v9 error:&v29];
+  v12 = [contextCopy executeFetchRequest:v9 error:&v29];
   v13 = v29;
   v14 = v13;
   if (v12)
   {
-    v24 = v8;
+    v24 = contextCopy;
     v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v12, "count")}];
     v25 = 0u;
     v26 = 0u;
@@ -1688,14 +1688,14 @@ LABEL_13:
       while (v18);
     }
 
-    v8 = v24;
+    contextCopy = v24;
   }
 
-  else if (a5)
+  else if (error)
   {
     v22 = v13;
     v15 = 0;
-    *a5 = v14;
+    *error = v14;
   }
 
   else
@@ -1706,27 +1706,27 @@ LABEL_13:
   return v15;
 }
 
-+ (id)fetchAssetIDsHavingAssetPersonEdgesToPersonID:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5
++ (id)fetchAssetIDsHavingAssetPersonEdgesToPersonID:(id)d inManagedObjectContext:(id)context error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  contextCopy = context;
   v9 = +[PLGraphEdge fetchRequest];
   [v9 setResultType:2];
   v31[0] = @"sourceAsset";
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
   [v9 setPropertiesToFetch:v10];
 
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != nil AND %K = %@", @"sourceAsset", @"targetPerson", v7];
-  [v9 setPredicate:v11];
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != nil AND %K = %@", @"sourceAsset", @"targetPerson", dCopy];
+  [v9 setPredicate:dCopy];
 
   v29 = 0;
-  v12 = [v8 executeFetchRequest:v9 error:&v29];
+  v12 = [contextCopy executeFetchRequest:v9 error:&v29];
   v13 = v29;
   v14 = v13;
   if (v12)
   {
-    v24 = v8;
+    v24 = contextCopy;
     v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v12, "count")}];
     v25 = 0u;
     v26 = 0u;
@@ -1757,14 +1757,14 @@ LABEL_13:
       while (v18);
     }
 
-    v8 = v24;
+    contextCopy = v24;
   }
 
-  else if (a5)
+  else if (error)
   {
     v22 = v13;
     v15 = 0;
-    *a5 = v14;
+    *error = v14;
   }
 
   else
@@ -1775,11 +1775,11 @@ LABEL_13:
   return v15;
 }
 
-+ (id)predicateForUserVerifiedSocialGroupsInContext:(id)a3
++ (id)predicateForUserVerifiedSocialGroupsInContext:(id)context
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AB28];
-  v4 = [a1 _primaryLabelPredicateWithContext:a3];
+  v4 = [self _primaryLabelPredicateWithContext:context];
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(%K, $v, $v.%K == %d AND $v.%K == %d).@count > 0", @"values", @"nameCode", 2000, @"integerValue", 1, v4];
   v9[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
@@ -1788,11 +1788,11 @@ LABEL_13:
   return v7;
 }
 
-+ (id)predicateForAllVerifiedSocialGroupsInContext:(id)a3
++ (id)predicateForAllVerifiedSocialGroupsInContext:(id)context
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AB28];
-  v4 = [a1 _primaryLabelPredicateWithContext:a3];
+  v4 = [self _primaryLabelPredicateWithContext:context];
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(%K, $v, $v.%K == %d AND $v.%K > %d).@count > 0", @"values", @"nameCode", 2000, @"integerValue", 0, v4];
   v9[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
@@ -1801,12 +1801,12 @@ LABEL_13:
   return v7;
 }
 
-+ (id)_primaryLabelPredicateWithContext:(id)a3
++ (id)_primaryLabelPredicateWithContext:(id)context
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 pl_graphCache];
-  v5 = [v4 objectIDForLabelWithCode:1000 inContext:v3];
+  contextCopy = context;
+  pl_graphCache = [contextCopy pl_graphCache];
+  v5 = [pl_graphCache objectIDForLabelWithCode:1000 inContext:contextCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"primaryLabel", v5];
@@ -1818,7 +1818,7 @@ LABEL_13:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v3;
+      v11 = contextCopy;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "No social group label found in context %@", buf, 0xCu);
     }
 
@@ -1830,14 +1830,14 @@ LABEL_13:
   return v8;
 }
 
-+ (void)rebuildWithLibrary:(id)a3
++ (void)rebuildWithLibrary:(id)library
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 libraryBundle];
-  v5 = [v4 indicatorFileCoordinator];
+  libraryCopy = library;
+  libraryBundle = [libraryCopy libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-  if ([v5 isRebuildingSocialGroups])
+  if ([indicatorFileCoordinator isRebuildingSocialGroups])
   {
     v6 = PLMigrationGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1853,13 +1853,13 @@ LABEL_13:
     v8 = +[PLGraphNode entityName];
     v6 = [v7 fetchRequestWithEntityName:v8];
 
-    v9 = [v3 managedObjectContext];
-    v10 = [PLSocialGroup predicateForAllVerifiedSocialGroupsInContext:v9];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v10 = [PLSocialGroup predicateForAllVerifiedSocialGroupsInContext:managedObjectContext];
     [v6 setPredicate:v10];
 
-    v11 = [v3 managedObjectContext];
+    managedObjectContext2 = [libraryCopy managedObjectContext];
     v25 = 0;
-    v12 = [v11 countForFetchRequest:v6 error:&v25];
+    v12 = [managedObjectContext2 countForFetchRequest:v6 error:&v25];
     v13 = v25;
 
     if (v12)
@@ -1886,18 +1886,18 @@ LABEL_13:
     }
   }
 
-  if (![v3 isCloudPhotoLibraryEnabled] || (objc_msgSend(v3, "cplStatus"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "initialSyncDate"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, !v16))
+  if (![libraryCopy isCloudPhotoLibraryEnabled] || (objc_msgSend(libraryCopy, "cplStatus"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "initialSyncDate"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, !v16))
   {
-    [v5 setIsRebuildingSocialGroups:1];
+    [indicatorFileCoordinator setIsRebuildingSocialGroups:1];
     v17 = [PLDirectoryJournal alloc];
-    v18 = [v3 pathManager];
-    v6 = [(PLDirectoryJournal *)v17 initWithPathManager:v18 payloadClass:objc_opt_class()];
+    pathManager = [libraryCopy pathManager];
+    v6 = [(PLDirectoryJournal *)v17 initWithPathManager:pathManager payloadClass:objc_opt_class()];
 
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __36__PLSocialGroup_rebuildWithLibrary___block_invoke;
     v23[3] = &unk_1E7567590;
-    v24 = v3;
+    v24 = libraryCopy;
     v22 = 0;
     v19 = [v6 enumeratePayloadsUsingBlock:v23 error:&v22];
     v13 = v22;
@@ -1912,7 +1912,7 @@ LABEL_13:
       }
     }
 
-    [v5 setIsRebuildingSocialGroups:0];
+    [indicatorFileCoordinator setIsRebuildingSocialGroups:0];
 
 LABEL_22:
     goto LABEL_23;
@@ -1943,24 +1943,24 @@ void __36__PLSocialGroup_rebuildWithLibrary___block_invoke(uint64_t a1, void *a2
   }
 }
 
-+ (void)prepareForDeletionWithNode:(id)a3
++ (void)prepareForDeletionWithNode:(id)node
 {
-  v11 = a3;
-  if ([v11 shouldUpdatePersistence])
+  nodeCopy = node;
+  if ([nodeCopy shouldUpdatePersistence])
   {
     v3 = [PLDirectoryJournal alloc];
-    v4 = [v11 managedObjectContext];
-    v5 = [v4 pathManager];
-    v6 = [(PLDirectoryJournal *)v3 initWithPathManager:v5 payloadClass:objc_opt_class()];
+    managedObjectContext = [nodeCopy managedObjectContext];
+    pathManager = [managedObjectContext pathManager];
+    v6 = [(PLDirectoryJournal *)v3 initWithPathManager:pathManager payloadClass:objc_opt_class()];
 
-    [(PLDirectoryJournal *)v6 removePersistenceForManagedObject:v11 error:0];
+    [(PLDirectoryJournal *)v6 removePersistenceForManagedObject:nodeCopy error:0];
   }
 
   objc_opt_class();
-  v7 = [v11 managedObjectContext];
+  managedObjectContext2 = [nodeCopy managedObjectContext];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = managedObjectContext2;
   }
 
   else
@@ -1970,7 +1970,7 @@ void __36__PLSocialGroup_rebuildWithLibrary___block_invoke(uint64_t a1, void *a2
 
   v9 = v8;
 
-  v10 = [PLGraphNodeContainer newNodeContainerWithNode:v11];
+  v10 = [PLGraphNodeContainer newNodeContainerWithNode:nodeCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1978,43 +1978,43 @@ void __36__PLSocialGroup_rebuildWithLibrary___block_invoke(uint64_t a1, void *a2
   }
 }
 
-+ (void)didSaveWithNode:(id)a3
++ (void)didSaveWithNode:(id)node
 {
-  v7 = a3;
-  if ([v7 needsPersistenceUpdate])
+  nodeCopy = node;
+  if ([nodeCopy needsPersistenceUpdate])
   {
     v3 = [PLDirectoryJournal alloc];
-    v4 = [v7 managedObjectContext];
-    v5 = [v4 pathManager];
-    v6 = [(PLDirectoryJournal *)v3 initWithPathManager:v5 payloadClass:objc_opt_class()];
+    managedObjectContext = [nodeCopy managedObjectContext];
+    pathManager = [managedObjectContext pathManager];
+    v6 = [(PLDirectoryJournal *)v3 initWithPathManager:pathManager payloadClass:objc_opt_class()];
 
-    [(PLDirectoryJournal *)v6 persistManagedObject:v7 error:0];
+    [(PLDirectoryJournal *)v6 persistManagedObject:nodeCopy error:0];
   }
 }
 
-+ (void)willSaveWithNode:(id)a3
++ (void)willSaveWithNode:(id)node
 {
-  v4 = a3;
-  v20.receiver = a1;
+  nodeCopy = node;
+  v20.receiver = self;
   v20.super_class = &OBJC_METACLASS___PLSocialGroup;
-  objc_msgSendSuper2(&v20, sel_willSaveWithNode_, v4);
-  if ([v4 shouldUpdatePersistence])
+  objc_msgSendSuper2(&v20, sel_willSaveWithNode_, nodeCopy);
+  if ([nodeCopy shouldUpdatePersistence])
   {
     v5 = [PLDirectoryJournal alloc];
-    v6 = [v4 managedObjectContext];
-    v7 = [v6 pathManager];
-    v8 = [(PLDirectoryJournal *)v5 initWithPathManager:v7 payloadClass:objc_opt_class()];
+    managedObjectContext = [nodeCopy managedObjectContext];
+    pathManager = [managedObjectContext pathManager];
+    v8 = [(PLDirectoryJournal *)v5 initWithPathManager:pathManager payloadClass:objc_opt_class()];
 
-    [v4 setNeedsPersistenceUpdate:{-[PLDirectoryJournal shouldPersistManagedObject:](v8, "shouldPersistManagedObject:", v4)}];
+    [nodeCopy setNeedsPersistenceUpdate:{-[PLDirectoryJournal shouldPersistManagedObject:](v8, "shouldPersistManagedObject:", nodeCopy)}];
   }
 
-  if (([v4 isDeleted] & 1) == 0)
+  if (([nodeCopy isDeleted] & 1) == 0)
   {
     objc_opt_class();
-    v9 = [v4 managedObjectContext];
+    managedObjectContext2 = [nodeCopy managedObjectContext];
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = managedObjectContext2;
     }
 
     else
@@ -2024,7 +2024,7 @@ void __36__PLSocialGroup_rebuildWithLibrary___block_invoke(uint64_t a1, void *a2
 
     v11 = v10;
 
-    v12 = [PLGraphNodeContainer newNodeContainerWithNode:v4];
+    v12 = [PLGraphNodeContainer newNodeContainerWithNode:nodeCopy];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 isSyncableChange])
     {
@@ -2032,40 +2032,40 @@ void __36__PLSocialGroup_rebuildWithLibrary___block_invoke(uint64_t a1, void *a2
     }
 
     objc_opt_class();
-    if (((objc_opt_isKindOfClass() & 1) != 0 || MEMORY[0x19EAEE520]()) && (([v4 isInserted] & 1) != 0 || objc_msgSend(a1, "_verifiedTypeChangeFromRejectedToUserWithSourceNode:", v4)))
+    if (((objc_opt_isKindOfClass() & 1) != 0 || MEMORY[0x19EAEE520]()) && (([nodeCopy isInserted] & 1) != 0 || objc_msgSend(self, "_verifiedTypeChangeFromRejectedToUserWithSourceNode:", nodeCopy)))
     {
-      if ([v4 isInserted])
+      if ([nodeCopy isInserted])
       {
-        v13 = [v11 delayedSaveActions];
-        [v13 recordDeduplicationNeededForNewGroupNode:v4];
+        delayedSaveActions = [v11 delayedSaveActions];
+        [delayedSaveActions recordDeduplicationNeededForNewGroupNode:nodeCopy];
       }
 
-      v14 = [v12 members];
-      v15 = [v14 count];
+      members = [v12 members];
+      v15 = [members count];
 
       if (v15)
       {
-        v16 = [v4 managedObjectContext];
-        v17 = [v16 delayedSaveActions];
-        v18 = [v12 members];
-        v19 = [v18 anyObject];
-        [v17 recordSocialGroupContainmentUpdateNeededForPerson:v19];
+        managedObjectContext3 = [nodeCopy managedObjectContext];
+        delayedSaveActions2 = [managedObjectContext3 delayedSaveActions];
+        members2 = [v12 members];
+        anyObject = [members2 anyObject];
+        [delayedSaveActions2 recordSocialGroupContainmentUpdateNeededForPerson:anyObject];
       }
     }
   }
 }
 
-+ (BOOL)resetAllInContext:(id)a3 error:(id *)a4
++ (BOOL)resetAllInContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"PLSocialGroup.m" lineNumber:1162 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:1162 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
   }
 
-  v8 = [v7 pl_graphCache];
-  v9 = [v8 objectIDForLabelWithCode:1000 inContext:v7];
+  pl_graphCache = [contextCopy pl_graphCache];
+  v9 = [pl_graphCache objectIDForLabelWithCode:1000 inContext:contextCopy];
   if (v9)
   {
     v10 = MEMORY[0x1E695D5E0];
@@ -2087,7 +2087,7 @@ void __36__PLSocialGroup_rebuildWithLibrary___block_invoke(uint64_t a1, void *a2
     v31[1] = 3221225472;
     v31[2] = __41__PLSocialGroup_resetAllInContext_error___block_invoke;
     v31[3] = &unk_1E7575B30;
-    v32 = v7;
+    v32 = contextCopy;
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __41__PLSocialGroup_resetAllInContext_error___block_invoke_2;
@@ -2105,11 +2105,11 @@ void __36__PLSocialGroup_rebuildWithLibrary___block_invoke(uint64_t a1, void *a2
     v26 = 0;
     v17 = [(PLEnumerateAndSaveController *)v16 processObjectsWithError:&v26];
     v18 = v26;
-    v19 = [v34[5] totalUnitCount];
-    [v34[5] setCompletedUnitCount:v19];
+    totalUnitCount = [v34[5] totalUnitCount];
+    [v34[5] setCompletedUnitCount:totalUnitCount];
     v20 = v18;
     v21 = v20;
-    if (a4)
+    if (error)
     {
       v22 = v17;
     }
@@ -2122,7 +2122,7 @@ void __36__PLSocialGroup_rebuildWithLibrary___block_invoke(uint64_t a1, void *a2
     if ((v22 & 1) == 0)
     {
       v23 = v20;
-      *a4 = v21;
+      *error = v21;
     }
 
     _Block_object_dispose(&v33, 8);
@@ -2153,17 +2153,17 @@ uint64_t __41__PLSocialGroup_resetAllInContext_error___block_invoke_3(uint64_t a
   return [v2 setCompletedUnitCount:v3];
 }
 
-+ (id)resetAllInLibrary:(id)a3 completion:(id)a4
++ (id)resetAllInLibrary:(id)library completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  libraryCopy = library;
+  completionCopy = completion;
+  if (!libraryCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PLSocialGroup.m" lineNumber:1146 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:1146 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v9 = [v7 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -2175,12 +2175,12 @@ uint64_t __41__PLSocialGroup_resetAllInContext_error___block_invoke_3(uint64_t a
   v15[2] = __46__PLSocialGroup_resetAllInLibrary_completion___block_invoke;
   v15[3] = &unk_1E7567540;
   v18 = &v20;
-  v19 = a1;
-  v10 = v9;
+  selfCopy = self;
+  v10 = managedObjectContext;
   v16 = v10;
-  v11 = v8;
+  v11 = completionCopy;
   v17 = v11;
-  [v7 performTransaction:v15];
+  [libraryCopy performTransaction:v15];
   v12 = v21[5];
 
   _Block_object_dispose(&v20, 8);
@@ -2200,16 +2200,16 @@ void __46__PLSocialGroup_resetAllInLibrary_completion___block_invoke(void *a1)
   (*(a1[5] + 16))();
 }
 
-+ (id)keyAssetUUIDOfSocialGroupWithPersonUUIDs:(id)a3 candidateAssetUUIDs:(id)a4 inLibrary:(id)a5 error:(id *)a6
++ (id)keyAssetUUIDOfSocialGroupWithPersonUUIDs:(id)ds candidateAssetUUIDs:(id)iDs inLibrary:(id)library error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 count] >= 2)
+  dsCopy = ds;
+  iDsCopy = iDs;
+  libraryCopy = library;
+  if ([dsCopy count] >= 2)
   {
-    v13 = [v11 photoAnalysisClient];
-    v14 = [[PLPhotoAnalysisPhotoLibraryService alloc] initWithServiceProvider:v13];
-    v12 = [(PLPhotoAnalysisPhotoLibraryService *)v14 keyAssetUUIDOfSocialGroupWithPersonUUIDs:v9 candidateAssetUUIDs:v10 operationID:&stru_1F0F06D80 error:a6];
+    photoAnalysisClient = [libraryCopy photoAnalysisClient];
+    v14 = [[PLPhotoAnalysisPhotoLibraryService alloc] initWithServiceProvider:photoAnalysisClient];
+    v12 = [(PLPhotoAnalysisPhotoLibraryService *)v14 keyAssetUUIDOfSocialGroupWithPersonUUIDs:dsCopy candidateAssetUUIDs:iDsCopy operationID:&stru_1F0F06D80 error:error];
   }
 
   else
@@ -2220,19 +2220,19 @@ void __46__PLSocialGroup_resetAllInLibrary_completion___block_invoke(void *a1)
   return v12;
 }
 
-+ (void)updateKeyAssetOfSocialGroupsWithUUIDs:(id)a3 inLibrary:(id)a4
++ (void)updateKeyAssetOfSocialGroupsWithUUIDs:(id)ds inLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  dsCopy = ds;
+  libraryCopy = library;
+  if ([dsCopy count])
   {
     v7 = +[PLConcurrencyLimiter sharedLimiter];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __65__PLSocialGroup_updateKeyAssetOfSocialGroupsWithUUIDs_inLibrary___block_invoke;
     v8[3] = &unk_1E7578848;
-    v9 = v6;
-    v10 = v5;
+    v9 = libraryCopy;
+    v10 = dsCopy;
     [v7 async:v8 identifyingBlock:0 library:v9];
   }
 }
@@ -2287,12 +2287,12 @@ LABEL_6:
   }
 }
 
-+ (BOOL)runAssetContainmentOnAllSocialGroupsInContext:(id)a3 error:(id *)a4
++ (BOOL)runAssetContainmentOnAllSocialGroupsInContext:(id)context error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 pl_graphCache];
-  v6 = [v5 labelWithCode:1000 inContext:v4];
+  contextCopy = context;
+  pl_graphCache = [contextCopy pl_graphCache];
+  v6 = [pl_graphCache labelWithCode:1000 inContext:contextCopy];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLGraphNode entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -2301,7 +2301,7 @@ LABEL_6:
   [v9 setPredicate:v10];
 
   v49 = 0;
-  v11 = [v4 executeFetchRequest:v9 error:&v49];
+  v11 = [contextCopy executeFetchRequest:v9 error:&v49];
   v12 = v49;
   v42 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v13 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(v11, "count")}];
@@ -2317,8 +2317,8 @@ LABEL_6:
     v16 = v15;
     v37 = v12;
     v38 = v6;
-    v39 = v5;
-    v40 = v4;
+    v39 = pl_graphCache;
+    v40 = contextCopy;
     v17 = 0;
     v18 = *v46;
     while (2)
@@ -2344,9 +2344,9 @@ LABEL_6:
           v31 = v43;
           objc_autoreleasePoolPop(v21);
           v26 = 0;
-          v32 = v43;
-          v5 = v39;
-          v4 = v40;
+          photoLibrary = v43;
+          pl_graphCache = v39;
+          contextCopy = v40;
           v6 = v38;
           v12 = v37;
           goto LABEL_27;
@@ -2371,8 +2371,8 @@ LABEL_6:
 
           if ([v22 keyAssetIsNeeded])
           {
-            v25 = [v22 uuid];
-            [v42 addObject:v25];
+            uuid = [v22 uuid];
+            [v42 addObject:uuid];
           }
 
           v17 = v24;
@@ -2396,8 +2396,8 @@ LABEL_6:
     v26 = 1;
     v24 = v17;
 LABEL_18:
-    v5 = v39;
-    v4 = v40;
+    pl_graphCache = v39;
+    contextCopy = v40;
     v6 = v38;
     v12 = v37;
   }
@@ -2408,15 +2408,15 @@ LABEL_18:
     v26 = 1;
   }
 
-  v32 = [v4 photoLibrary];
-  if (v32)
+  photoLibrary = [contextCopy photoLibrary];
+  if (photoLibrary)
   {
-    [PLSocialGroup updateKeyAssetOfSocialGroupsWithUUIDs:v42 inLibrary:v32];
+    [PLSocialGroup updateKeyAssetOfSocialGroupsWithUUIDs:v42 inLibrary:photoLibrary];
   }
 
   v33 = v24;
   v30 = v33;
-  if (a4)
+  if (error)
   {
     v34 = v26;
   }
@@ -2429,7 +2429,7 @@ LABEL_18:
   if ((v34 & 1) == 0)
   {
     v35 = v33;
-    *a4 = v30;
+    *error = v30;
   }
 
   v31 = v43;
@@ -2438,13 +2438,13 @@ LABEL_27:
   return v26;
 }
 
-+ (id)defaultValueForRequiredNodeValueCode:(int)a3 forNode:(id)a4
++ (id)defaultValueForRequiredNodeValueCode:(int)code forNode:(id)node
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___PLSocialGroup;
-  v5 = objc_msgSendSuper2(&v8, sel_defaultValueForRequiredNodeValueCode_forNode_, *&a3, a4);
+  v5 = objc_msgSendSuper2(&v8, sel_defaultValueForRequiredNodeValueCode_forNode_, *&code, node);
   v6 = v5;
-  if ((a3 - 2000) <= 3 && a3 != 2001)
+  if ((code - 2000) <= 3 && code != 2001)
   {
     [v5 setIntegerValue:0];
   }
@@ -2466,92 +2466,92 @@ LABEL_27:
 
 + (id)sortableKeys
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___PLSocialGroup;
   v3 = objc_msgSendSuper2(&v7, sel_sortableKeys);
-  v4 = [a1 _sortableKeyPaths];
-  v5 = [v3 setByAddingObjectsFromArray:v4];
+  _sortableKeyPaths = [self _sortableKeyPaths];
+  v5 = [v3 setByAddingObjectsFromArray:_sortableKeyPaths];
 
   return v5;
 }
 
 + (id)requiredNodeValueCodes
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___PLSocialGroup;
   v3 = objc_msgSendSuper2(&v7, sel_requiredNodeValueCodes);
-  v4 = [a1 _supportedNodeValueCodes];
-  v5 = [v3 setByAddingObjectsFromArray:v4];
+  _supportedNodeValueCodes = [self _supportedNodeValueCodes];
+  v5 = [v3 setByAddingObjectsFromArray:_supportedNodeValueCodes];
 
   return v5;
 }
 
-+ (id)newNodeContainerWithManagedObjectContext:(id)a3
++ (id)newNodeContainerWithManagedObjectContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PLSocialGroup.m" lineNumber:562 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:562 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  v6 = [v5 pl_graphCache];
-  v7 = [v6 labelWithCode:1000 inContext:v5];
-  v8 = [PLGraphNode insertGraphNodeInContext:v5 withPrimaryLabel:v7];
-  v9 = [[a1 alloc] initWithNode:v8];
+  pl_graphCache = [contextCopy pl_graphCache];
+  v7 = [pl_graphCache labelWithCode:1000 inContext:contextCopy];
+  v8 = [PLGraphNode insertGraphNodeInContext:contextCopy withPrimaryLabel:v7];
+  v9 = [[self alloc] initWithNode:v8];
 
   return v9;
 }
 
-+ (void)prepareForDeletingOutgoingEdge:(id)a3
++ (void)prepareForDeletingOutgoingEdge:(id)edge
 {
-  v8 = a3;
-  v3 = [v8 managedObjectContext];
-  v4 = [v3 pl_graphCache];
+  edgeCopy = edge;
+  managedObjectContext = [edgeCopy managedObjectContext];
+  pl_graphCache = [managedObjectContext pl_graphCache];
 
-  v5 = [v8 managedObjectContext];
-  v6 = [v4 labelWithCode:1004 inContext:v5];
+  managedObjectContext2 = [edgeCopy managedObjectContext];
+  v6 = [pl_graphCache labelWithCode:1004 inContext:managedObjectContext2];
 
-  if ([v8 hasLabel:v6])
+  if ([edgeCopy hasLabel:v6])
   {
-    v7 = [v8 sourceNode];
-    [v7 incrementEdgeDeletionCounter];
+    sourceNode = [edgeCopy sourceNode];
+    [sourceNode incrementEdgeDeletionCounter];
   }
 }
 
-+ (BOOL)needsConstraintConflictResolutionForNode:(id)a3
++ (BOOL)needsConstraintConflictResolutionForNode:(id)node
 {
-  v3 = [a3 changedValues];
-  v4 = [v3 objectForKey:@"edgeDeletionCounter"];
+  changedValues = [node changedValues];
+  v4 = [changedValues objectForKey:@"edgeDeletionCounter"];
   v5 = v4 != 0;
 
   return v5;
 }
 
-+ (void)_deleteEmptyGraphOrUnverifiedSocialGroupNode:(id)a3
++ (void)_deleteEmptyGraphOrUnverifiedSocialGroupNode:(id)node
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [(PLGraphNodeContainer *)PLSocialGroup newNodeContainerWithNode:v3];
-  if (([v4 socialGroupVerifiedType] | 2) == 2 && (objc_msgSend(v3, "isDeleted") & 1) == 0 && (objc_msgSend(v4, "_existingExclusiveAssetEdgeOut") & 1) == 0)
+  nodeCopy = node;
+  v4 = [(PLGraphNodeContainer *)PLSocialGroup newNodeContainerWithNode:nodeCopy];
+  if (([v4 socialGroupVerifiedType] | 2) == 2 && (objc_msgSend(nodeCopy, "isDeleted") & 1) == 0 && (objc_msgSend(v4, "_existingExclusiveAssetEdgeOut") & 1) == 0)
   {
     v5 = PLBackendGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [v4 uuid];
+      uuid = [v4 uuid];
       v8 = 138412290;
-      v9 = v6;
+      v9 = uuid;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "Deleting empty social group with uuid: %@", &v8, 0xCu);
     }
 
-    v7 = [v3 managedObjectContext];
-    [v7 deleteObject:v3];
+    managedObjectContext = [nodeCopy managedObjectContext];
+    [managedObjectContext deleteObject:nodeCopy];
   }
 }
 
-+ (BOOL)_verifiedTypeChangeFromRejectedToUserWithSourceNode:(id)a3
++ (BOOL)_verifiedTypeChangeFromRejectedToUserWithSourceNode:(id)node
 {
-  v3 = [a3 valueWithCode:2000];
+  v3 = [node valueWithCode:2000];
   v6 = 0;
   if ([v3 valueDidChange])
   {
@@ -2570,22 +2570,22 @@ LABEL_27:
   return v6;
 }
 
-+ (id)_personsFromEdges:(id)a3
++ (id)_personsFromEdges:(id)edges
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  edgesCopy = edges;
+  if (!edgesCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PLSocialGroup.m" lineNumber:302 description:{@"Invalid parameter not satisfying: %@", @"edges"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSocialGroup.m" lineNumber:302 description:{@"Invalid parameter not satisfying: %@", @"edges"}];
   }
 
-  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(edgesCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = edgesCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -2603,17 +2603,17 @@ LABEL_27:
         v12 = *(*(&v20 + 1) + 8 * i);
         if (([v12 isDeleted] & 1) == 0)
         {
-          v13 = [v12 targetPerson];
-          if (v13)
+          targetPerson = [v12 targetPerson];
+          if (targetPerson)
           {
-            v14 = v13;
-            v15 = [v12 targetPerson];
-            v16 = [v15 isDeleted];
+            v14 = targetPerson;
+            targetPerson2 = [v12 targetPerson];
+            isDeleted = [targetPerson2 isDeleted];
 
-            if ((v16 & 1) == 0)
+            if ((isDeleted & 1) == 0)
             {
-              v17 = [v12 targetPerson];
-              [v6 addObject:v17];
+              targetPerson3 = [v12 targetPerson];
+              [v6 addObject:targetPerson3];
             }
           }
         }
@@ -2628,11 +2628,11 @@ LABEL_27:
   return v6;
 }
 
-+ (BOOL)rejectSocialGroupsHavingMember:(id)a3
++ (BOOL)rejectSocialGroupsHavingMember:(id)member
 {
   v25 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  [a1 _socialGroupsNodesContainingMember:?];
+  memberCopy = member;
+  [self _socialGroupsNodesContainingMember:?];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -2680,11 +2680,11 @@ LABEL_27:
   return v4 != 0;
 }
 
-+ (BOOL)deleteSocialGroupsHavingMember:(id)a3
++ (BOOL)deleteSocialGroupsHavingMember:(id)member
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 _socialGroupsNodesContainingMember:v4];
+  memberCopy = member;
+  v5 = [self _socialGroupsNodesContainingMember:memberCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -2705,8 +2705,8 @@ LABEL_27:
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [v4 managedObjectContext];
-        [v11 deleteObject:v10];
+        managedObjectContext = [memberCopy managedObjectContext];
+        [managedObjectContext deleteObject:v10];
 
         ++v9;
       }
@@ -2721,15 +2721,15 @@ LABEL_27:
   return v5 != 0;
 }
 
-+ (id)_socialGroupsNodesContainingMember:(id)a3
++ (id)_socialGroupsNodesContainingMember:(id)member
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
-  v5 = [v4 pl_graphCache];
+  memberCopy = member;
+  managedObjectContext = [memberCopy managedObjectContext];
+  pl_graphCache = [managedObjectContext pl_graphCache];
 
-  v6 = [v3 managedObjectContext];
-  v7 = [v5 labelWithCode:1000 inContext:v6];
+  managedObjectContext2 = [memberCopy managedObjectContext];
+  v7 = [pl_graphCache labelWithCode:1000 inContext:managedObjectContext2];
 
   if (v7)
   {
@@ -2739,17 +2739,17 @@ LABEL_27:
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
     [v9 setRelationshipKeyPathsForPrefetching:v10];
 
-    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K = %@) AND (%K = %@)", @"sourceNode.primaryLabel", v7, @"targetPerson", v3];
-    [v9 setPredicate:v11];
+    memberCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K = %@) AND (%K = %@)", @"sourceNode.primaryLabel", v7, @"targetPerson", memberCopy];
+    [v9 setPredicate:memberCopy];
 
-    v12 = [v3 managedObjectContext];
+    managedObjectContext3 = [memberCopy managedObjectContext];
     v36 = 0;
     v29 = v9;
-    v13 = [v12 executeFetchRequest:v9 error:&v36];
+    v13 = [managedObjectContext3 executeFetchRequest:v9 error:&v36];
     v14 = v36;
 
     v30 = v7;
-    v31 = v5;
+    v31 = pl_graphCache;
     v28 = v14;
     if (!v13)
     {
@@ -2784,17 +2784,17 @@ LABEL_27:
           }
 
           v21 = *(*(&v32 + 1) + 8 * i);
-          v22 = [v21 sourceNode];
-          if (v22)
+          sourceNode = [v21 sourceNode];
+          if (sourceNode)
           {
-            v23 = v22;
-            v24 = [v21 sourceNode];
-            v25 = [v24 isDeleted];
+            v23 = sourceNode;
+            sourceNode2 = [v21 sourceNode];
+            isDeleted = [sourceNode2 isDeleted];
 
-            if ((v25 & 1) == 0)
+            if ((isDeleted & 1) == 0)
             {
-              v26 = [v21 sourceNode];
-              [v8 addObject:v26];
+              sourceNode3 = [v21 sourceNode];
+              [v8 addObject:sourceNode3];
             }
           }
         }
@@ -2806,7 +2806,7 @@ LABEL_27:
     }
 
     v7 = v30;
-    v5 = v31;
+    pl_graphCache = v31;
   }
 
   else
@@ -2858,19 +2858,19 @@ LABEL_27:
   return v11;
 }
 
-+ (BOOL)deleteDuplicateGraphAndUnverifiedGroupsInContext:(id)a3 error:(id *)a4
++ (BOOL)deleteDuplicateGraphAndUnverifiedGroupsInContext:(id)context error:(id *)error
 {
   v52[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v42 = [v4 pl_graphCache];
-  v5 = [v42 labelWithCode:1000 inContext:v4];
+  contextCopy = context;
+  pl_graphCache = [contextCopy pl_graphCache];
+  v5 = [pl_graphCache labelWithCode:1000 inContext:contextCopy];
   v6 = +[PLGraphNodeValue fetchRequest];
   v7 = MEMORY[0x1E696AB28];
   v41 = v5;
   v39 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"node.primaryLabel", v5];
   v52[0] = v39;
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"nameCode", 2000];
-  v52[1] = v8;
+  2000 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"nameCode", 2000];
+  v52[1] = 2000;
   v9 = MEMORY[0x1E696AB28];
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"integerValue", 2];
   v51[0] = v10;
@@ -2885,7 +2885,7 @@ LABEL_27:
 
   v16 = v6;
   v49 = 0;
-  v17 = [v4 executeFetchRequest:v6 error:&v49];
+  v17 = [contextCopy executeFetchRequest:v6 error:&v49];
   v18 = v49;
   v19 = v18;
   if (v17)
@@ -2900,7 +2900,7 @@ LABEL_27:
     {
       v22 = v21;
       v37 = v16;
-      v40 = v4;
+      v40 = contextCopy;
       v23 = *v46;
       v24 = 1;
       do
@@ -2918,7 +2918,7 @@ LABEL_27:
           if (v24)
           {
             v44 = v19;
-            v24 = [a1 deleteDuplicateGroupsAfterInsertionOfGroup:v28 error:&v44];
+            v24 = [self deleteDuplicateGroupsAfterInsertionOfGroup:v28 error:&v44];
             v29 = v44;
 
             v19 = v29;
@@ -2940,23 +2940,23 @@ LABEL_27:
       v30 = v19;
       v19 = v30;
       v32 = v41;
-      v31 = v42;
+      v31 = pl_graphCache;
       if (v24)
       {
         v33 = 1;
-        v4 = v40;
+        contextCopy = v40;
         v16 = v37;
       }
 
       else
       {
-        v4 = v40;
+        contextCopy = v40;
         v16 = v37;
-        if (a4)
+        if (error)
         {
           v35 = v30;
           v33 = 0;
-          *a4 = v19;
+          *error = v19;
         }
 
         else
@@ -2972,17 +2972,17 @@ LABEL_27:
       v19 = v19;
       v33 = 1;
       v32 = v41;
-      v31 = v42;
+      v31 = pl_graphCache;
     }
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v34 = v18;
       v33 = 0;
-      *a4 = v19;
+      *error = v19;
     }
 
     else
@@ -2991,47 +2991,47 @@ LABEL_27:
     }
 
     v32 = v41;
-    v31 = v42;
+    v31 = pl_graphCache;
   }
 
   return v33;
 }
 
-+ (BOOL)deleteDuplicateGroupsAfterInsertionOfGroup:(id)a3 error:(id *)a4
++ (BOOL)deleteDuplicateGroupsAfterInsertionOfGroup:(id)group error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 _fetchDuplicateSocialGroupNodes:v6 error:a4];
+  groupCopy = group;
+  v7 = [self _fetchDuplicateSocialGroupNodes:groupCopy error:error];
   v8 = v7;
   if (v7 && [v7 count])
   {
-    v9 = [v6 socialGroupVerifiedType];
-    if (v9 <= 1)
+    socialGroupVerifiedType = [groupCopy socialGroupVerifiedType];
+    if (socialGroupVerifiedType <= 1)
     {
-      if (v9)
+      if (socialGroupVerifiedType)
       {
         goto LABEL_8;
       }
 
 LABEL_9:
-      v10 = [v6 sourceNode];
-      v11 = [v10 managedObjectContext];
-      v12 = [v6 sourceNode];
-      [v11 deleteObject:v12];
+      sourceNode = [groupCopy sourceNode];
+      managedObjectContext = [sourceNode managedObjectContext];
+      sourceNode2 = [groupCopy sourceNode];
+      [managedObjectContext deleteObject:sourceNode2];
 
       goto LABEL_10;
     }
 
-    if (v9 == 2)
+    if (socialGroupVerifiedType == 2)
     {
       goto LABEL_9;
     }
 
-    if (v9 == 0xFFFF)
+    if (socialGroupVerifiedType == 0xFFFF)
     {
 LABEL_8:
-      v10 = [v6 sourceNode];
-      v11 = [v10 managedObjectContext];
-      [a1 _deleteUserAndGraphGroupsFromDuplicateGroupNodes:v8 inContext:v11];
+      sourceNode = [groupCopy sourceNode];
+      managedObjectContext = [sourceNode managedObjectContext];
+      [self _deleteUserAndGraphGroupsFromDuplicateGroupNodes:v8 inContext:managedObjectContext];
 LABEL_10:
     }
   }
@@ -3039,16 +3039,16 @@ LABEL_10:
   return v8 != 0;
 }
 
-+ (void)_deleteUserAndGraphGroupsFromDuplicateGroupNodes:(id)a3 inContext:(id)a4
++ (void)_deleteUserAndGraphGroupsFromDuplicateGroupNodes:(id)nodes inContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  nodesCopy = nodes;
+  contextCopy = context;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = nodesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -3069,7 +3069,7 @@ LABEL_10:
         v14 = [(PLGraphNodeContainer *)PLSocialGroup newNodeContainerWithNode:v12, v15];
         if (([v14 socialGroupVerifiedType] | 2) == 2)
         {
-          [v6 deleteObject:v12];
+          [contextCopy deleteObject:v12];
         }
 
         objc_autoreleasePoolPop(v13);
@@ -3084,32 +3084,32 @@ LABEL_10:
   }
 }
 
-+ (id)_fetchDuplicateSocialGroupNodes:(id)a3 error:(id *)a4
++ (id)_fetchDuplicateSocialGroupNodes:(id)nodes error:(id *)error
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 sourceNode];
-  v8 = [v6 members];
-  v9 = [v8 valueForKey:@"objectID"];
+  nodesCopy = nodes;
+  sourceNode = [nodesCopy sourceNode];
+  members = [nodesCopy members];
+  v9 = [members valueForKey:@"objectID"];
 
   if (v9)
   {
-    v10 = [v7 managedObjectContext];
+    managedObjectContext = [sourceNode managedObjectContext];
     v32 = 0;
-    v11 = [a1 fetchDuplicateSocialGroupIDsWithMemberIDs:v9 inContext:v10 error:&v32];
+    v11 = [self fetchDuplicateSocialGroupIDsWithMemberIDs:v9 inContext:managedObjectContext error:&v32];
     v12 = v32;
 
     if (v11)
     {
-      v29 = a4;
+      errorCopy = error;
       v13 = +[PLGraphNode fetchRequest];
       v14 = MEMORY[0x1E696AB28];
       v30 = v11;
       v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", v11];
       v34[0] = v15;
       v16 = MEMORY[0x1E696AE18];
-      v17 = [v6 sourceNode];
-      v18 = [v16 predicateWithFormat:@"NOT (self = %@)", v17];
+      sourceNode2 = [nodesCopy sourceNode];
+      v18 = [v16 predicateWithFormat:@"NOT (self = %@)", sourceNode2];
       v34[1] = v18;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
       v20 = [v14 andPredicateWithSubpredicates:v19];
@@ -3119,9 +3119,9 @@ LABEL_10:
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
       [v13 setRelationshipKeyPathsForPrefetching:v21];
 
-      v22 = [v7 managedObjectContext];
+      managedObjectContext2 = [sourceNode managedObjectContext];
       v31 = v12;
-      v23 = [v22 executeFetchRequest:v13 error:&v31];
+      v23 = [managedObjectContext2 executeFetchRequest:v13 error:&v31];
       v24 = v31;
 
       if (v23)
@@ -3129,10 +3129,10 @@ LABEL_10:
         v25 = v23;
       }
 
-      else if (v29)
+      else if (errorCopy)
       {
         v27 = v24;
-        *v29 = v24;
+        *errorCopy = v24;
       }
 
       v11 = v30;
@@ -3140,11 +3140,11 @@ LABEL_10:
 
     else
     {
-      if (a4)
+      if (error)
       {
         v26 = v12;
         v23 = 0;
-        *a4 = v12;
+        *error = v12;
       }
 
       else
@@ -3164,16 +3164,16 @@ LABEL_10:
   return v23;
 }
 
-+ (id)_memberIDsByNodeIDFromEdgeDictionaries:(id)a3
++ (id)_memberIDsByNodeIDFromEdgeDictionaries:(id)dictionaries
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionariesCopy = dictionaries;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = dictionariesCopy;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -3205,11 +3205,11 @@ LABEL_10:
 
         if (!v14)
         {
-          v15 = [v4 objectForKeyedSubscript:v11];
+          v15 = [dictionary objectForKeyedSubscript:v11];
           if (!v15)
           {
             v15 = [MEMORY[0x1E695DFA8] set];
-            [v4 setObject:v15 forKeyedSubscript:v11];
+            [dictionary setObject:v15 forKeyedSubscript:v11];
           }
 
           [v15 addObject:v13];
@@ -3224,36 +3224,36 @@ LABEL_10:
     while (v6);
   }
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)fetchDuplicateSocialGroupIDsWithMemberIDs:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)fetchDuplicateSocialGroupIDsWithMemberIDs:(id)ds inContext:(id)context error:(id *)error
 {
   v50[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 pl_graphCache];
-  v11 = [v10 objectIDForLabelWithCode:1000 inContext:v9];
+  dsCopy = ds;
+  contextCopy = context;
+  pl_graphCache = [contextCopy pl_graphCache];
+  v11 = [pl_graphCache objectIDForLabelWithCode:1000 inContext:contextCopy];
   if (!v11)
   {
-    v22 = v8;
+    v22 = dsCopy;
     v32 = MEMORY[0x1E696ABC0];
     v33 = *MEMORY[0x1E69BFF48];
     v47 = *MEMORY[0x1E696A278];
     v48 = @"Couldn't retrieve social group labelID";
     v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     v35 = [v32 errorWithDomain:v33 code:46502 userInfo:v34];
-    if (a5)
+    if (error)
     {
       v35 = v35;
-      *a5 = v35;
+      *error = v35;
     }
 
     v28 = 0;
     goto LABEL_16;
   }
 
-  v41 = v10;
+  v41 = pl_graphCache;
   v12 = [MEMORY[0x1E695DFA8] set];
   v13 = MEMORY[0x1E695D5E0];
   v14 = +[PLGraphEdge entityName];
@@ -3269,18 +3269,18 @@ LABEL_10:
   [v15 setPropertiesToFetch:v17];
 
   v46 = 0;
-  v18 = [v9 executeFetchRequest:v15 error:&v46];
+  v18 = [contextCopy executeFetchRequest:v15 error:&v46];
   v19 = v46;
   v20 = v19;
   if (v18)
   {
-    v21 = [a1 _memberIDsByNodeIDFromEdgeDictionaries:v18];
+    v21 = [self _memberIDsByNodeIDFromEdgeDictionaries:v18];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __75__PLSocialGroup_fetchDuplicateSocialGroupIDsWithMemberIDs_inContext_error___block_invoke;
     v43[3] = &unk_1E756EA00;
-    v22 = v8;
-    v44 = v8;
+    v22 = dsCopy;
+    v44 = dsCopy;
     v40 = v12;
     v23 = v12;
     v45 = v23;
@@ -3297,13 +3297,13 @@ LABEL_10:
     [v24 setSortDescriptors:v27];
 
     v42 = v20;
-    v28 = [v9 executeFetchRequest:v24 error:&v42];
+    v28 = [contextCopy executeFetchRequest:v24 error:&v42];
     v29 = v42;
 
-    if (!v28 && a5)
+    if (!v28 && error)
     {
       v30 = v29;
-      *a5 = v29;
+      *error = v29;
     }
 
     v31 = v40;
@@ -3312,12 +3312,12 @@ LABEL_10:
   else
   {
     v31 = v12;
-    v22 = v8;
-    if (a5)
+    v22 = dsCopy;
+    if (error)
     {
       v36 = v19;
       v28 = 0;
-      *a5 = v20;
+      *error = v20;
     }
 
     else
@@ -3330,7 +3330,7 @@ LABEL_10:
 
   if (v18)
   {
-    v10 = v41;
+    pl_graphCache = v41;
 LABEL_16:
     v28 = v28;
     v37 = v28;
@@ -3338,7 +3338,7 @@ LABEL_16:
   }
 
   v37 = 0;
-  v10 = v41;
+  pl_graphCache = v41;
 LABEL_18:
 
   return v37;
@@ -3353,13 +3353,13 @@ void __75__PLSocialGroup_fetchDuplicateSocialGroupIDsWithMemberIDs_inContext_err
   }
 }
 
-- (void)updateSocialGroupwithCPLSocialGroupChange:(id)a3 inPhotoLibrary:(id)a4
+- (void)updateSocialGroupwithCPLSocialGroupChange:(id)change inPhotoLibrary:(id)library
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  libraryCopy = library;
   v48 = 0;
-  v8 = -[PLSocialGroup setSocialGroupVerifiedType:error:](self, "setSocialGroupVerifiedType:error:", [v6 verifiedType], &v48);
+  v8 = -[PLSocialGroup setSocialGroupVerifiedType:error:](self, "setSocialGroupVerifiedType:error:", [changeCopy verifiedType], &v48);
   v9 = v48;
   if (!v8)
   {
@@ -3372,27 +3372,27 @@ void __75__PLSocialGroup_fetchDuplicateSocialGroupIDsWithMemberIDs_inContext_err
     }
   }
 
-  v11 = [v6 customTitle];
-  [(PLSocialGroup *)self setCustomTitle:v11];
+  customTitle = [changeCopy customTitle];
+  [(PLSocialGroup *)self setCustomTitle:customTitle];
 
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "position")}];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(changeCopy, "position")}];
   [(PLSocialGroup *)self setManualOrder:v12];
 
-  v13 = [v6 keyAssetIdentifier];
-  v14 = v13;
-  if (!v13)
+  keyAssetIdentifier = [changeCopy keyAssetIdentifier];
+  v14 = keyAssetIdentifier;
+  if (!keyAssetIdentifier)
   {
     v38 = v9;
     goto LABEL_20;
   }
 
-  v50 = v13;
+  v50 = keyAssetIdentifier;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
-  v16 = [PLManagedAsset assetsByCloudAssetUUID:v15 inLibrary:v7];
-  v17 = [v16 allValues];
-  v18 = [v17 firstObject];
+  v16 = [PLManagedAsset assetsByCloudAssetUUID:v15 inLibrary:libraryCopy];
+  allValues = [v16 allValues];
+  firstObject = [allValues firstObject];
 
-  if (!v18)
+  if (!firstObject)
   {
     v23 = PLBackendGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -3407,7 +3407,7 @@ void __75__PLSocialGroup_fetchDuplicateSocialGroupIDsWithMemberIDs_inContext_err
   }
 
   v47 = v9;
-  v19 = [(PLSocialGroup *)self setKeyAsset:v18 error:&v47];
+  v19 = [(PLSocialGroup *)self setKeyAsset:firstObject error:&v47];
   v20 = v47;
 
   if (!v19)
@@ -3447,16 +3447,16 @@ LABEL_18:
 
 LABEL_20:
   v39 = v14;
-  v40 = v6;
-  v24 = [v6 persons];
+  v40 = changeCopy;
+  persons = [changeCopy persons];
   v25 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v37 = v24;
-  v26 = [v24 persons];
-  v27 = [v26 countByEnumeratingWithState:&v42 objects:v49 count:16];
+  v37 = persons;
+  v24Persons = [persons persons];
+  v27 = [v24Persons countByEnumeratingWithState:&v42 objects:v49 count:16];
   if (v27)
   {
     v28 = v27;
@@ -3467,12 +3467,12 @@ LABEL_20:
       {
         if (*v43 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(v24Persons);
         }
 
-        v31 = [*(*(&v42 + 1) + 8 * i) personIdentifier];
-        v32 = [v7 managedObjectContext];
-        v33 = [PLPerson personWithUUID:v31 inManagedObjectContext:v32];
+        personIdentifier = [*(*(&v42 + 1) + 8 * i) personIdentifier];
+        managedObjectContext = [libraryCopy managedObjectContext];
+        v33 = [PLPerson personWithUUID:personIdentifier inManagedObjectContext:managedObjectContext];
 
         if (v33)
         {
@@ -3480,7 +3480,7 @@ LABEL_20:
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v42 objects:v49 count:16];
+      v28 = [v24Persons countByEnumeratingWithState:&v42 objects:v49 count:16];
     }
 
     while (v28);
@@ -3505,40 +3505,40 @@ LABEL_20:
 - (id)cplSocialGroupChange
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(PLSocialGroup *)self scopedIdentifier];
-  v4 = [MEMORY[0x1E6994BD0] newChangeWithScopedIdentifier:v3 changeType:0];
+  scopedIdentifier = [(PLSocialGroup *)self scopedIdentifier];
+  v4 = [MEMORY[0x1E6994BD0] newChangeWithScopedIdentifier:scopedIdentifier changeType:0];
   [v4 setVerifiedType:{-[PLSocialGroup socialGroupVerifiedType](self, "socialGroupVerifiedType")}];
-  v5 = [(PLSocialGroup *)self customTitle];
-  [v4 setCustomTitle:v5];
+  customTitle = [(PLSocialGroup *)self customTitle];
+  [v4 setCustomTitle:customTitle];
 
-  v6 = [(PLSocialGroup *)self manualOrder];
-  [v4 setPosition:{objc_msgSend(v6, "unsignedIntegerValue")}];
+  manualOrder = [(PLSocialGroup *)self manualOrder];
+  [v4 setPosition:{objc_msgSend(manualOrder, "unsignedIntegerValue")}];
 
   if ([(PLSocialGroup *)self keyAssetPickSource]== 1)
   {
-    v7 = [(PLSocialGroup *)self keyAsset];
+    keyAsset = [(PLSocialGroup *)self keyAsset];
 
-    if (v7)
+    if (keyAsset)
     {
-      v8 = [(PLSocialGroup *)self keyAsset];
-      v9 = [v8 cloudAssetGUID];
-      [v4 setKeyAssetIdentifier:v9];
+      keyAsset2 = [(PLSocialGroup *)self keyAsset];
+      cloudAssetGUID = [keyAsset2 cloudAssetGUID];
+      [v4 setKeyAssetIdentifier:cloudAssetGUID];
     }
 
     else
     {
-      v8 = PLBackendGetLog();
-      if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      keyAsset2 = PLBackendGetLog();
+      if (!os_log_type_enabled(keyAsset2, OS_LOG_TYPE_ERROR))
       {
 LABEL_7:
 
         goto LABEL_8;
       }
 
-      v9 = [(PLGraphNodeContainer *)self uuid];
+      cloudAssetGUID = [(PLGraphNodeContainer *)self uuid];
       *buf = 138412290;
-      v26 = v9;
-      _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "cplSocialGroupChange: social group with UUID %@ has user pick source but no key asset", buf, 0xCu);
+      v26 = cloudAssetGUID;
+      _os_log_impl(&dword_19BF1F000, keyAsset2, OS_LOG_TYPE_ERROR, "cplSocialGroupChange: social group with UUID %@ has user pick source but no key asset", buf, 0xCu);
     }
 
     goto LABEL_7;
@@ -3550,8 +3550,8 @@ LABEL_8:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = [(PLSocialGroup *)self members];
-  v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  members = [(PLSocialGroup *)self members];
+  v12 = [members countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
     v13 = v12;
@@ -3562,18 +3562,18 @@ LABEL_8:
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(members);
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
         v17 = objc_alloc_init(MEMORY[0x1E6994BD8]);
-        v18 = [v16 personUUID];
-        [v17 setPersonIdentifier:v18];
+        personUUID = [v16 personUUID];
+        [v17 setPersonIdentifier:personUUID];
 
         [v10 addPerson:v17];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v13 = [members countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v13);
@@ -3587,55 +3587,55 @@ LABEL_8:
 - (id)scopedIdentifier
 {
   v3 = objc_alloc(MEMORY[0x1E6994BB8]);
-  v4 = [(PLSocialGroup *)self scopeIdentifier];
-  v5 = [(PLGraphNodeContainer *)self uuid];
-  v6 = [v3 initWithScopeIdentifier:v4 identifier:v5];
+  scopeIdentifier = [(PLSocialGroup *)self scopeIdentifier];
+  uuid = [(PLGraphNodeContainer *)self uuid];
+  v6 = [v3 initWithScopeIdentifier:scopeIdentifier identifier:uuid];
 
   return v6;
 }
 
 - (id)scopeIdentifier
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 photoLibrary];
-  v4 = [v3 mainScopeIdentifier];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  photoLibrary = [sourceNode photoLibrary];
+  mainScopeIdentifier = [photoLibrary mainScopeIdentifier];
 
-  return v4;
+  return mainScopeIdentifier;
 }
 
 - (BOOL)supportsCloudUpload
 {
-  v3 = [objc_opt_class() _syncablePredicate];
-  LOBYTE(self) = [v3 evaluateWithObject:self];
+  _syncablePredicate = [objc_opt_class() _syncablePredicate];
+  LOBYTE(self) = [_syncablePredicate evaluateWithObject:self];
 
   return self;
 }
 
 - (BOOL)isSyncableChange
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 changedValues];
-  v4 = [v3 allKeys];
-  v5 = [v4 containsObject:@"cplChangeFlag"];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  changedValues = [sourceNode changedValues];
+  allKeys = [changedValues allKeys];
+  v5 = [allKeys containsObject:@"cplChangeFlag"];
 
   return v5;
 }
 
 - (id)localID
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 objectID];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  objectID = [sourceNode objectID];
 
-  return v3;
+  return objectID;
 }
 
-+ (id)socialGroupsToUploadInManagedObjectContext:(id)a3 limit:(int64_t)a4
++ (id)socialGroupsToUploadInManagedObjectContext:(id)context limit:(int64_t)limit
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v19 = [v4 pl_graphCache];
-  v6 = [v19 labelWithCode:1000 inContext:v4];
+  pl_graphCache = [contextCopy pl_graphCache];
+  v6 = [pl_graphCache labelWithCode:1000 inContext:contextCopy];
   v7 = +[PLGraphEdge fetchRequest];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"sourceNode.primaryLabel", v6];
   [v7 setPredicate:v8];
@@ -3644,7 +3644,7 @@ LABEL_8:
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
   [v7 setRelationshipKeyPathsForPrefetching:v9];
 
-  v10 = [v4 executeFetchRequest:v7 error:0];
+  v10 = [contextCopy executeFetchRequest:v7 error:0];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -3663,9 +3663,9 @@ LABEL_8:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v20 + 1) + 8 * i) sourceNode];
-        v16 = v15;
-        if (v15 && ([v15 isDeleted] & 1) == 0)
+        sourceNode = [*(*(&v20 + 1) + 8 * i) sourceNode];
+        v16 = sourceNode;
+        if (sourceNode && ([sourceNode isDeleted] & 1) == 0)
         {
           v17 = [PLGraphNodeContainer newNodeContainerWithNode:v16];
           if ([v17 supportsCloudUpload] && !objc_msgSend(v17, "cloudLocalState"))

@@ -1,40 +1,40 @@
 @interface SGEntityTag
 + (id)allExtractedEventTags;
 + (id)allTags;
-+ (id)appleMailMessageId:(id)a3 fromSource:(id)a4;
-+ (id)author:(id)a3;
-+ (id)calendarAppUsageLevel:(float)a3;
-+ (id)cascadeEntitySetVersion:(unint64_t)a3;
-+ (id)categoryTagWithCategoryType:(int)a3;
-+ (id)confidenceScore:(float)a3;
-+ (id)containsEntityExtraction:(int64_t)a3;
++ (id)appleMailMessageId:(id)id fromSource:(id)source;
++ (id)author:(id)author;
++ (id)calendarAppUsageLevel:(float)level;
++ (id)cascadeEntitySetVersion:(unint64_t)version;
++ (id)categoryTagWithCategoryType:(int)type;
++ (id)confidenceScore:(float)score;
++ (id)containsEntityExtraction:(int64_t)extraction;
 + (id)entityTagToEventCategoryMapping;
 + (id)eventCategoryToEntityTagMapping;
-+ (id)eventCompleteness:(BOOL)a3;
-+ (id)icsAttachmentData:(id)a3;
-+ (id)interactionContactIdentifier:(id)a3;
-+ (id)isForwardedMail:(BOOL)a3;
-+ (id)messageWithMailMessageKey:(id)a3;
-+ (id)messageWithMessageId:(id)a3 fromSource:(id)a4;
-+ (id)naturalLanguageEventAttributes:(unint64_t)a3;
-+ (id)remember:(id)a3;
-+ (id)reminderMetadata:(id)a3;
-+ (id)reservationContainerReference:(id)a3;
-+ (id)reservationContainerReferenceWithData:(id)a3;
-+ (id)reservationItemReferences:(id)a3;
-+ (id)reservationItemReferencesWithData:(id)a3;
-+ (id)resolveName:(id)a3;
-+ (id)schemaOrg:(id)a3;
-+ (id)tagForLabel:(id)a3 value:(id)a4;
-+ (id)url:(id)a3;
-+ (id)walletOrderData:(id)a3;
-+ (id)walletOrderDictionary:(id)a3;
-+ (id)walletPassData:(id)a3;
-+ (id)walletPassDictionary:(id)a3;
++ (id)eventCompleteness:(BOOL)completeness;
++ (id)icsAttachmentData:(id)data;
++ (id)interactionContactIdentifier:(id)identifier;
++ (id)isForwardedMail:(BOOL)mail;
++ (id)messageWithMailMessageKey:(id)key;
++ (id)messageWithMessageId:(id)id fromSource:(id)source;
++ (id)naturalLanguageEventAttributes:(unint64_t)attributes;
++ (id)remember:(id)remember;
++ (id)reminderMetadata:(id)metadata;
++ (id)reservationContainerReference:(id)reference;
++ (id)reservationContainerReferenceWithData:(id)data;
++ (id)reservationItemReferences:(id)references;
++ (id)reservationItemReferencesWithData:(id)data;
++ (id)resolveName:(id)name;
++ (id)schemaOrg:(id)org;
++ (id)tagForLabel:(id)label value:(id)value;
++ (id)url:(id)url;
++ (id)walletOrderData:(id)data;
++ (id)walletOrderDictionary:(id)dictionary;
++ (id)walletPassData:(id)data;
++ (id)walletPassDictionary:(id)dictionary;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEntityTag:(id)a3;
-- (SGEntityTag)initWithLabel:(id)a3 value:(id)a4 stored:(BOOL)a5 indexed:(BOOL)a6 tracked:(BOOL)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEntityTag:(id)tag;
+- (SGEntityTag)initWithLabel:(id)label value:(id)value stored:(BOOL)stored indexed:(BOOL)indexed tracked:(BOOL)tracked;
 - (id)description;
 - (id)eventMetadata;
 - (id)eventSourceMetadata;
@@ -77,8 +77,8 @@
   {
     v3 = objc_autoreleasePoolPush();
     v4 = MEMORY[0x1E696ACB0];
-    v5 = [(SGEntityTag *)self value];
-    v6 = [v5 dataUsingEncoding:4];
+    value = [(SGEntityTag *)self value];
+    v6 = [value dataUsingEncoding:4];
     v14 = 0;
     v7 = [v4 JSONObjectWithData:v6 options:0 error:&v14];
     v8 = v14;
@@ -119,8 +119,8 @@
   {
     v3 = objc_autoreleasePoolPush();
     v4 = objc_alloc(MEMORY[0x1E695DEF0]);
-    v5 = [(SGEntityTag *)self value];
-    v6 = [v4 initWithBase64EncodedString:v5 options:0];
+    value = [(SGEntityTag *)self value];
+    v6 = [v4 initWithBase64EncodedString:value options:0];
 
     objc_autoreleasePoolPop(v3);
   }
@@ -140,8 +140,8 @@
   {
     v3 = objc_autoreleasePoolPush();
     v4 = MEMORY[0x1E696ACB0];
-    v5 = [(SGEntityTag *)self value];
-    v6 = [v5 dataUsingEncoding:4];
+    value = [(SGEntityTag *)self value];
+    v6 = [value dataUsingEncoding:4];
     v14 = 0;
     v7 = [v4 JSONObjectWithData:v6 options:0 error:&v14];
     v8 = v14;
@@ -182,8 +182,8 @@
   {
     v3 = objc_autoreleasePoolPush();
     v4 = objc_alloc(MEMORY[0x1E695DEF0]);
-    v5 = [(SGEntityTag *)self value];
-    v6 = [v4 initWithBase64EncodedString:v5 options:0];
+    value = [(SGEntityTag *)self value];
+    v6 = [v4 initWithBase64EncodedString:value options:0];
 
     objc_autoreleasePoolPop(v3);
   }
@@ -202,8 +202,8 @@
   {
     v3 = objc_autoreleasePoolPush();
     v4 = objc_alloc(MEMORY[0x1E695DEF0]);
-    v5 = [(SGEntityTag *)self value];
-    v6 = [v4 initWithBase64EncodedString:v5 options:0];
+    value = [(SGEntityTag *)self value];
+    v6 = [v4 initWithBase64EncodedString:value options:0];
 
     objc_autoreleasePoolPop(v3);
   }
@@ -226,10 +226,10 @@
   }
 
   v3 = objc_autoreleasePoolPush();
-  v4 = [(SGEntityTag *)self value];
-  if (v4)
+  value = [(SGEntityTag *)self value];
+  if (value)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v4 options:0];
+    v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:value options:0];
     if (v5)
     {
       v13 = 0;
@@ -300,10 +300,10 @@ LABEL_20:
   }
 
   v3 = objc_autoreleasePoolPush();
-  v4 = [(SGEntityTag *)self value];
-  if (v4)
+  value = [(SGEntityTag *)self value];
+  if (value)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v4 options:0];
+    v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:value options:0];
     v6 = objc_autoreleasePoolPush();
     v7 = objc_alloc(MEMORY[0x1E695DFD8]);
     v8 = objc_opt_class();
@@ -375,8 +375,8 @@ LABEL_20:
   {
     v3 = objc_autoreleasePoolPush();
     v4 = MEMORY[0x1E696ACB0];
-    v5 = [(SGEntityTag *)self value];
-    v6 = [v5 dataUsingEncoding:4];
+    value = [(SGEntityTag *)self value];
+    v6 = [value dataUsingEncoding:4];
     v10 = 0;
     v7 = [v4 JSONObjectWithData:v6 options:0 error:&v10];
     v8 = v10;
@@ -426,8 +426,8 @@ LABEL_20:
   {
     v3 = objc_autoreleasePoolPush();
     v4 = MEMORY[0x1E696ACB0];
-    v5 = [(SGEntityTag *)self value];
-    v6 = [v5 dataUsingEncoding:4];
+    value = [(SGEntityTag *)self value];
+    v6 = [value dataUsingEncoding:4];
     v10 = 0;
     v7 = [v4 JSONObjectWithData:v6 options:0 error:&v10];
     v8 = v10;
@@ -455,8 +455,8 @@ LABEL_20:
   {
     v3 = objc_autoreleasePoolPush();
     v4 = MEMORY[0x1E696ACB0];
-    v5 = [(SGEntityTag *)self value];
-    v6 = [v5 dataUsingEncoding:4];
+    value = [(SGEntityTag *)self value];
+    v6 = [value dataUsingEncoding:4];
     v10 = 0;
     v7 = [v4 JSONObjectWithData:v6 options:0 error:&v10];
     v8 = v10;
@@ -482,20 +482,20 @@ LABEL_20:
 {
   v3 = objc_autoreleasePoolPush();
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v5 = [(SGEntityTag *)self name];
-  v6 = [v4 initWithFormat:@"SGEntityTag<%@>", v5];
+  name = [(SGEntityTag *)self name];
+  v6 = [v4 initWithFormat:@"SGEntityTag<%@>", name];
 
   objc_autoreleasePoolPop(v3);
 
   return v6;
 }
 
-- (BOOL)isEqualToEntityTag:(id)a3
+- (BOOL)isEqualToEntityTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v5 = self->_label;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == tagCopy[2])
   {
   }
 
@@ -512,7 +512,7 @@ LABEL_20:
 
   v9 = self->_value;
   v10 = v9;
-  if (v9 == v4[3])
+  if (v9 == tagCopy[3])
   {
     v8 = 1;
   }
@@ -526,37 +526,37 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGEntityTag *)self isEqualToEntityTag:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGEntityTag *)self isEqualToEntityTag:v5];
   }
 
   return v6;
 }
 
-- (SGEntityTag)initWithLabel:(id)a3 value:(id)a4 stored:(BOOL)a5 indexed:(BOOL)a6 tracked:(BOOL)a7
+- (SGEntityTag)initWithLabel:(id)label value:(id)value stored:(BOOL)stored indexed:(BOOL)indexed tracked:(BOOL)tracked
 {
-  v13 = a3;
-  v14 = a4;
-  if (!v13)
+  labelCopy = label;
+  valueCopy = value;
+  if (!labelCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"SGEntityTag.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"label"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGEntityTag.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"label"}];
   }
 
-  if ([v13 containsString:@":"])
+  if ([labelCopy containsString:@":"])
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"SGEntityTag.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"![label containsString:@:]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGEntityTag.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"![label containsString:@:]"}];
   }
 
   v23.receiver = self;
@@ -564,28 +564,28 @@ LABEL_9:
   v15 = [(SGEntityTag *)&v23 init];
   if (v15)
   {
-    v16 = [v13 copy];
+    v16 = [labelCopy copy];
     label = v15->_label;
     v15->_label = v16;
 
-    v18 = [v14 copy];
+    v18 = [valueCopy copy];
     value = v15->_value;
     v15->_value = v18;
 
-    v15->_stored = a5;
-    v15->_indexed = a6;
-    v15->_tracked = a7;
+    v15->_stored = stored;
+    v15->_indexed = indexed;
+    v15->_tracked = tracked;
   }
 
   return v15;
 }
 
-+ (id)walletPassDictionary:(id)a3
++ (id)walletPassDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ![v3 count])
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (!dictionaryCopy || ![dictionaryCopy count])
   {
     goto LABEL_9;
   }
@@ -657,15 +657,15 @@ LABEL_16:
   return v11;
 }
 
-+ (id)walletPassData:(id)a3
++ (id)walletPassData:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_autoreleasePoolPush();
     v5 = objc_autoreleasePoolPush();
-    v6 = [v3 base64EncodedStringWithOptions:0];
+    v6 = [dataCopy base64EncodedStringWithOptions:0];
     objc_autoreleasePoolPop(v5);
     if (v6)
     {
@@ -696,12 +696,12 @@ LABEL_8:
   return v7;
 }
 
-+ (id)walletOrderDictionary:(id)a3
++ (id)walletOrderDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy && [dictionaryCopy count])
   {
     v5 = objc_autoreleasePoolPush();
     v14 = 0;
@@ -743,15 +743,15 @@ LABEL_8:
   return v9;
 }
 
-+ (id)walletOrderData:(id)a3
++ (id)walletOrderData:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_autoreleasePoolPush();
     v5 = objc_autoreleasePoolPush();
-    v6 = [v3 base64EncodedStringWithOptions:0];
+    v6 = [dataCopy base64EncodedStringWithOptions:0];
     objc_autoreleasePoolPop(v5);
     if (v6)
     {
@@ -782,15 +782,15 @@ LABEL_8:
   return v7;
 }
 
-+ (id)icsAttachmentData:(id)a3
++ (id)icsAttachmentData:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_autoreleasePoolPush();
     v5 = objc_autoreleasePoolPush();
-    v6 = [v3 base64EncodedStringWithOptions:0];
+    v6 = [dataCopy base64EncodedStringWithOptions:0];
     objc_autoreleasePoolPop(v5);
     if (v6)
     {
@@ -821,11 +821,11 @@ LABEL_8:
   return v7;
 }
 
-+ (id)reminderMetadata:(id)a3
++ (id)reminderMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  metadataCopy = metadata;
+  v4 = metadataCopy;
+  if (metadataCopy && [metadataCopy count])
   {
     v5 = objc_autoreleasePoolPush();
     v11 = 0;
@@ -853,10 +853,10 @@ LABEL_8:
   return v9;
 }
 
-+ (id)author:(id)a3
++ (id)author:(id)author
 {
   v7 = 0;
-  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:1 error:&v7];
+  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:author options:1 error:&v7];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];
@@ -871,9 +871,9 @@ LABEL_8:
   return v5;
 }
 
-+ (id)eventCompleteness:(BOOL)a3
++ (id)eventCompleteness:(BOOL)completeness
 {
-  if (a3)
+  if (completeness)
   {
     v3 = @"1";
   }
@@ -888,9 +888,9 @@ LABEL_8:
   return v4;
 }
 
-+ (id)isForwardedMail:(BOOL)a3
++ (id)isForwardedMail:(BOOL)mail
 {
-  if (a3)
+  if (mail)
   {
     v3 = @"1";
   }
@@ -912,71 +912,71 @@ LABEL_8:
   return v2;
 }
 
-+ (id)messageWithMailMessageKey:(id)a3
++ (id)messageWithMailMessageKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 messageId];
-  v6 = [v4 source];
+  keyCopy = key;
+  messageId = [keyCopy messageId];
+  source = [keyCopy source];
 
-  v7 = [a1 messageWithMessageId:v5 fromSource:v6];
+  v7 = [self messageWithMessageId:messageId fromSource:source];
 
   return v7;
 }
 
-+ (id)appleMailMessageId:(id)a3 fromSource:(id)a4
++ (id)appleMailMessageId:(id)id fromSource:(id)source
 {
-  v8 = SGDelimitedStringsSerialize(a4, a2, a3, a4, v4, v5, v6, v7, a3);
+  v8 = SGDelimitedStringsSerialize(source, a2, id, source, v4, v5, v6, v7, id);
   v9 = [SGEntityTag tagForLabel:@"AMSG" value:v8];
 
   return v9;
 }
 
-+ (id)messageWithMessageId:(id)a3 fromSource:(id)a4
++ (id)messageWithMessageId:(id)id fromSource:(id)source
 {
-  v8 = SGDelimitedStringsSerialize(a4, a2, a3, a4, v4, v5, v6, v7, a3);
+  v8 = SGDelimitedStringsSerialize(source, a2, id, source, v4, v5, v6, v7, id);
   v9 = [SGEntityTag tagForLabel:@"MSG" value:v8];
 
   return v9;
 }
 
-+ (id)containsEntityExtraction:(int64_t)a3
++ (id)containsEntityExtraction:(int64_t)extraction
 {
-  v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lld", a3];
-  v4 = [SGEntityTag tagForLabel:@"ET" value:v3];
+  extraction = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lld", extraction];
+  v4 = [SGEntityTag tagForLabel:@"ET" value:extraction];
 
   return v4;
 }
 
-+ (id)interactionContactIdentifier:(id)a3
++ (id)interactionContactIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"SGEntityTag.m" lineNumber:776 description:{@"Invalid parameter not satisfying: %@", @"contactIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGEntityTag.m" lineNumber:776 description:{@"Invalid parameter not satisfying: %@", @"contactIdentifier"}];
   }
 
-  v6 = [SGEntityTag tagForLabel:@"ICN" value:v5];
+  v6 = [SGEntityTag tagForLabel:@"ICN" value:identifierCopy];
 
   return v6;
 }
 
-+ (id)url:(id)a3
++ (id)url:(id)url
 {
-  v3 = [a3 absoluteString];
-  v4 = [SGEntityTag tagForLabel:@"U" value:v3];
+  absoluteString = [url absoluteString];
+  v4 = [SGEntityTag tagForLabel:@"U" value:absoluteString];
 
   return v4;
 }
 
-+ (id)tagForLabel:(id)a3 value:(id)a4
++ (id)tagForLabel:(id)label value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  labelCopy = label;
+  valueCopy = value;
+  v9 = valueCopy;
+  if (labelCopy)
   {
-    if (v8)
+    if (valueCopy)
     {
       goto LABEL_3;
     }
@@ -984,8 +984,8 @@ LABEL_8:
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"SGEntityTag.m" lineNumber:736 description:{@"Invalid parameter not satisfying: %@", @"label"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGEntityTag.m" lineNumber:736 description:{@"Invalid parameter not satisfying: %@", @"label"}];
 
     if (v9)
     {
@@ -993,28 +993,28 @@ LABEL_8:
     }
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:a1 file:@"SGEntityTag.m" lineNumber:737 description:{@"Invalid parameter not satisfying: %@", @"value"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGEntityTag.m" lineNumber:737 description:{@"Invalid parameter not satisfying: %@", @"value"}];
 
 LABEL_3:
-  v10 = [optionsByLabel objectForKeyedSubscript:v7];
+  v10 = [optionsByLabel objectForKeyedSubscript:labelCopy];
   if (!v10)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"SGEntityTag.m" lineNumber:739 description:{@"Invalid parameter not satisfying: %@", @"opts"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"SGEntityTag.m" lineNumber:739 description:{@"Invalid parameter not satisfying: %@", @"opts"}];
   }
 
-  v11 = [[SGEntityTag alloc] initWithLabel:v7 value:v9 stored:v10[8] indexed:v10[9] tracked:v10[10]];
+  v11 = [[SGEntityTag alloc] initWithLabel:labelCopy value:v9 stored:v10[8] indexed:v10[9] tracked:v10[10]];
 
   return v11;
 }
 
-+ (id)reservationItemReferences:(id)a3
++ (id)reservationItemReferences:(id)references
 {
-  v3 = a3;
+  referencesCopy = references;
   v4 = objc_autoreleasePoolPush();
   v9 = 0;
-  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v9];
+  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:referencesCopy requiringSecureCoding:1 error:&v9];
   v6 = v9;
   objc_autoreleasePoolPop(v4);
   if (v5)
@@ -1030,23 +1030,23 @@ LABEL_3:
   return v7;
 }
 
-+ (id)reservationItemReferencesWithData:(id)a3
++ (id)reservationItemReferencesWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 base64EncodedStringWithOptions:0];
+  v5 = [dataCopy base64EncodedStringWithOptions:0];
   objc_autoreleasePoolPop(v4);
   v6 = [SGEntityTag tagForLabel:@"IRIR" value:v5];
 
   return v6;
 }
 
-+ (id)reservationContainerReference:(id)a3
++ (id)reservationContainerReference:(id)reference
 {
-  v3 = a3;
+  referenceCopy = reference;
   v4 = objc_autoreleasePoolPush();
   v9 = 0;
-  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v9];
+  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:referenceCopy requiringSecureCoding:1 error:&v9];
   v6 = v9;
   objc_autoreleasePoolPop(v4);
   if (v5)
@@ -1062,22 +1062,22 @@ LABEL_3:
   return v7;
 }
 
-+ (id)reservationContainerReferenceWithData:(id)a3
++ (id)reservationContainerReferenceWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 base64EncodedStringWithOptions:0];
+  v5 = [dataCopy base64EncodedStringWithOptions:0];
   objc_autoreleasePoolPop(v4);
   v6 = [SGEntityTag tagForLabel:@"IRCR" value:v5];
 
   return v6;
 }
 
-+ (id)schemaOrg:(id)a3
++ (id)schemaOrg:(id)org
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  orgCopy = org;
+  v4 = orgCopy;
+  if (orgCopy && [orgCopy count])
   {
     v5 = objc_autoreleasePoolPush();
     v11 = 0;
@@ -1105,34 +1105,34 @@ LABEL_3:
   return v9;
 }
 
-+ (id)cascadeEntitySetVersion:(unint64_t)a3
++ (id)cascadeEntitySetVersion:(unint64_t)version
 {
-  v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%iu", a3];
-  v4 = [SGEntityTag tagForLabel:@"CESV" value:v3];
+  version = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%iu", version];
+  v4 = [SGEntityTag tagForLabel:@"CESV" value:version];
 
   return v4;
 }
 
-+ (id)calendarAppUsageLevel:(float)a3
++ (id)calendarAppUsageLevel:(float)level
 {
-  v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%f", a3];
-  v4 = [SGEntityTag tagForLabel:@"CAUL" value:v3];
+  level = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%f", level];
+  v4 = [SGEntityTag tagForLabel:@"CAUL" value:level];
 
   return v4;
 }
 
-+ (id)confidenceScore:(float)a3
++ (id)confidenceScore:(float)score
 {
-  v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%f", a3];
-  v4 = [SGEntityTag tagForLabel:@"NLCS" value:v3];
+  score = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%f", score];
+  v4 = [SGEntityTag tagForLabel:@"NLCS" value:score];
 
   return v4;
 }
 
-+ (id)naturalLanguageEventAttributes:(unint64_t)a3
++ (id)naturalLanguageEventAttributes:(unint64_t)attributes
 {
-  v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lu", a3];
-  v4 = [SGEntityTag tagForLabel:@"NLEA" value:v3];
+  attributes = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lu", attributes];
+  v4 = [SGEntityTag tagForLabel:@"NLEA" value:attributes];
 
   return v4;
 }
@@ -1140,28 +1140,28 @@ LABEL_3:
 + (id)allExtractedEventTags
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [a1 eventCategoryToEntityTagMapping];
-  v5 = [v4 allValues];
+  eventCategoryToEntityTagMapping = [self eventCategoryToEntityTagMapping];
+  allValues = [eventCategoryToEntityTagMapping allValues];
 
   objc_autoreleasePoolPop(v3);
 
-  return v5;
+  return allValues;
 }
 
 + (id)entityTagToEventCategoryMapping
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [a1 eventCategoryToEntityTagMapping];
-  v5 = [v4 allKeys];
+  eventCategoryToEntityTagMapping = [self eventCategoryToEntityTagMapping];
+  allKeys = [eventCategoryToEntityTagMapping allKeys];
   v6 = objc_alloc(MEMORY[0x1E695DF20]);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __46__SGEntityTag_entityTagToEventCategoryMapping__block_invoke;
   v11[3] = &unk_1E7EFAC30;
-  v12 = v4;
-  v7 = v4;
-  v8 = [v5 _pas_mappedArrayWithTransform:v11];
-  v9 = [v6 initWithObjects:v5 forKeys:v8];
+  v12 = eventCategoryToEntityTagMapping;
+  v7 = eventCategoryToEntityTagMapping;
+  v8 = [allKeys _pas_mappedArrayWithTransform:v11];
+  v9 = [v6 initWithObjects:allKeys forKeys:v8];
 
   objc_autoreleasePoolPop(v3);
 
@@ -1175,19 +1175,19 @@ LABEL_3:
   do
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [a1 categoryTagWithCategoryType:v4];
+    v6 = [self categoryTagWithCategoryType:v4];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 label];
-      if ([v8 rangeOfString:@"^ex[A-Z][a-zA-Z]*$" options:1026] == 0x7FFFFFFFFFFFFFFFLL)
+      label = [v6 label];
+      if ([label rangeOfString:@"^ex[A-Z][a-zA-Z]*$" options:1026] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v11 handleFailureInMethod:a2 object:a1 file:@"SGEntityTag.m" lineNumber:398 description:{@"expected exSomething, got %@ for tag %@", v8, v7}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SGEntityTag.m" lineNumber:398 description:{@"expected exSomething, got %@ for tag %@", label, v7}];
       }
 
-      v9 = [v7 label];
-      v10 = [v9 substringFromIndex:{objc_msgSend(@"ex", "length")}];
+      label2 = [v7 label];
+      v10 = [label2 substringFromIndex:{objc_msgSend(@"ex", "length")}];
 
       [v3 setObject:v7 forKeyedSubscript:v10];
     }
@@ -1201,19 +1201,19 @@ LABEL_3:
   return v3;
 }
 
-+ (id)categoryTagWithCategoryType:(int)a3
++ (id)categoryTagWithCategoryType:(int)type
 {
   v3 = 0;
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 <= 2)
+    if (type <= 2)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v3 = +[SGEntityTag extractedFlight];
       }
 
-      else if (a3 == 2)
+      else if (type == 2)
       {
         v3 = +[SGEntityTag extractedBus];
       }
@@ -1221,9 +1221,9 @@ LABEL_3:
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
-        if (a3 == 4)
+        if (type == 4)
         {
           +[SGEntityTag extractedHotel];
         }
@@ -1240,9 +1240,9 @@ LABEL_3:
     }
   }
 
-  else if (a3 > 8)
+  else if (type > 8)
   {
-    switch(a3)
+    switch(type)
     {
       case 9:
         v3 = +[SGEntityTag extractedSocial];
@@ -1258,9 +1258,9 @@ LABEL_3:
 
   else
   {
-    if (a3 != 6)
+    if (type != 6)
     {
-      if (a3 == 7)
+      if (type == 7)
       {
         +[SGEntityTag extractedMovie];
       }
@@ -1282,15 +1282,15 @@ LABEL_25:
   return v3;
 }
 
-+ (id)resolveName:(id)a3
++ (id)resolveName:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CStringPtr = CFStringGetCStringPtr(v3, 0x600u);
+  nameCopy = name;
+  CStringPtr = CFStringGetCStringPtr(nameCopy, 0x600u);
   if (CStringPtr)
   {
     v5 = CStringPtr;
-    v6 = memchr(CStringPtr, 58, [(__CFString *)v3 length]);
+    v6 = memchr(CStringPtr, 58, [(__CFString *)nameCopy length]);
     if (!v6)
     {
 
@@ -1303,7 +1303,7 @@ LABEL_25:
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [(__CFString *)v3 rangeOfString:@":" options:2];
+    v9 = [(__CFString *)nameCopy rangeOfString:@":" options:2];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = 0;
@@ -1311,7 +1311,7 @@ LABEL_25:
 
     else
     {
-      v7 = [(__CFString *)v3 substringToIndex:v9];
+      v7 = [(__CFString *)nameCopy substringToIndex:v9];
     }
 
     objc_autoreleasePoolPop(v8);
@@ -1320,7 +1320,7 @@ LABEL_25:
   if (!v7)
   {
 LABEL_12:
-    v13 = [byLabel objectForKeyedSubscript:v3];
+    v13 = [byLabel objectForKeyedSubscript:nameCopy];
     if (v13)
     {
       goto LABEL_27;
@@ -1335,7 +1335,7 @@ LABEL_12:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
       v20 = 138412290;
-      v21 = v3;
+      v21 = nameCopy;
       _os_log_fault_impl(&dword_1BA729000, v14, OS_LOG_TYPE_FAULT, "Unable to resolve tag name: %@", &v20, 0xCu);
     }
 
@@ -1353,19 +1353,19 @@ LABEL_17:
   if (v10)
   {
     v11 = [SGEntityTag alloc];
-    v12 = [v10 label];
+    label = [v10 label];
     goto LABEL_20;
   }
 
   if ([tombstonedLabels containsObject:v7])
   {
     v11 = [SGEntityTag alloc];
-    v12 = v7;
+    label = v7;
 LABEL_20:
     v15 = objc_autoreleasePoolPush();
-    v16 = [(__CFString *)v3 substringFromIndex:[(__CFString *)v7 length]+ 1];
+    v16 = [(__CFString *)nameCopy substringFromIndex:[(__CFString *)v7 length]+ 1];
     objc_autoreleasePoolPop(v15);
-    v13 = -[SGEntityTag initWithLabel:value:stored:indexed:tracked:](v11, "initWithLabel:value:stored:indexed:tracked:", v12, v16, [v10 stored], objc_msgSend(v10, "indexed"), objc_msgSend(v10, "tracked"));
+    v13 = -[SGEntityTag initWithLabel:value:stored:indexed:tracked:](v11, "initWithLabel:value:stored:indexed:tracked:", label, v16, [v10 stored], objc_msgSend(v10, "indexed"), objc_msgSend(v10, "tracked"));
 
     if (v10)
     {
@@ -1399,7 +1399,7 @@ LABEL_27:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = objc_opt_new();
     v4 = yyyymmdd;
@@ -1411,117 +1411,117 @@ LABEL_27:
     byLabel = v5;
 
     v7 = [[SGEntityTag alloc] initWithLabel:@"ex" stored:1 indexed:0 tracked:0];
-    v8 = [a1 remember:v7];
+    v8 = [self remember:v7];
     v9 = extracted;
     extracted = v8;
 
     v10 = [[SGEntityTag alloc] initWithLabel:@"cancel" stored:1 indexed:0 tracked:0];
-    v11 = [a1 remember:v10];
+    v11 = [self remember:v10];
     v12 = cancelled;
     cancelled = v11;
 
     v13 = [[SGEntityTag alloc] initWithLabel:@"fromEx" stored:1 indexed:0 tracked:0];
-    v14 = [a1 remember:v13];
+    v14 = [self remember:v13];
     v15 = fromExtractedDomain;
     fromExtractedDomain = v14;
 
     v16 = [[SGEntityTag alloc] initWithLabel:@"allDay" stored:1 indexed:0 tracked:0];
-    v17 = [a1 remember:v16];
+    v17 = [self remember:v16];
     v18 = allDay;
     allDay = v17;
 
     v19 = [[SGEntityTag alloc] initWithLabel:@"inhuman" stored:1 indexed:1 tracked:0];
-    v20 = [a1 remember:v19];
+    v20 = [self remember:v19];
     v21 = inhuman;
     inhuman = v20;
 
     v22 = [[SGEntityTag alloc] initWithLabel:@"human" stored:1 indexed:0 tracked:0];
-    v23 = [a1 remember:v22];
+    v23 = [self remember:v22];
     v24 = human;
     human = v23;
 
     v25 = [[SGEntityTag alloc] initWithLabel:@"defaultDuration" stored:1 indexed:0 tracked:0];
-    v26 = [a1 remember:v25];
+    v26 = [self remember:v25];
     v27 = defaultDuration;
     defaultDuration = v26;
 
     v28 = [[SGEntityTag alloc] initWithLabel:@"fwd" stored:1 indexed:0 tracked:0];
-    v29 = [a1 remember:v28];
+    v29 = [self remember:v28];
     v30 = fromForwardedMessage;
     fromForwardedMessage = v29;
 
     v31 = [[SGEntityTag alloc] initWithLabel:@"re" stored:1 indexed:0 tracked:0];
-    v32 = [a1 remember:v31];
+    v32 = [self remember:v31];
     v33 = fromReply;
     fromReply = v32;
 
     v34 = [[SGEntityTag alloc] initWithLabel:@"nl" stored:1 indexed:0 tracked:1];
-    v35 = [a1 remember:v34];
+    v35 = [self remember:v34];
     v36 = naturalLanguageEvent;
     naturalLanguageEvent = v35;
 
     v37 = [[SGEntityTag alloc] initWithLabel:@"ics" stored:1 indexed:0 tracked:1];
-    v38 = [a1 remember:v37];
+    v38 = [self remember:v37];
     v39 = fromCalendarAttachment;
     fromCalendarAttachment = v38;
 
     v40 = [[SGEntityTag alloc] initWithLabel:@"partial" stored:1 indexed:0 tracked:0];
-    v41 = [a1 remember:v40];
+    v41 = [self remember:v40];
     v42 = isPartiallyDownloaded;
     isPartiallyDownloaded = v41;
 
     v43 = [[SGEntityTag alloc] initWithLabel:@"exFlight" stored:1 indexed:0 tracked:1];
-    v44 = [a1 remember:v43];
+    v44 = [self remember:v43];
     v45 = extractedFlight;
     extractedFlight = v44;
 
     v46 = [[SGEntityTag alloc] initWithLabel:@"exBus" stored:1 indexed:0 tracked:1];
-    v47 = [a1 remember:v46];
+    v47 = [self remember:v46];
     v48 = extractedBus;
     extractedBus = v47;
 
     v49 = [[SGEntityTag alloc] initWithLabel:@"exTrain" stored:1 indexed:0 tracked:1];
-    v50 = [a1 remember:v49];
+    v50 = [self remember:v49];
     v51 = extractedTrain;
     extractedTrain = v50;
 
     v52 = [[SGEntityTag alloc] initWithLabel:@"exBoat" stored:1 indexed:0 tracked:1];
-    v53 = [a1 remember:v52];
+    v53 = [self remember:v52];
     v54 = extractedBoat;
     extractedBoat = v53;
 
     v55 = [[SGEntityTag alloc] initWithLabel:@"exHotel" stored:1 indexed:0 tracked:1];
-    v56 = [a1 remember:v55];
+    v56 = [self remember:v55];
     v57 = extractedHotel;
     extractedHotel = v56;
 
     v58 = [[SGEntityTag alloc] initWithLabel:@"exCarRental" stored:1 indexed:0 tracked:1];
-    v59 = [a1 remember:v58];
+    v59 = [self remember:v58];
     v60 = extractedCarRental;
     extractedCarRental = v59;
 
     v61 = [[SGEntityTag alloc] initWithLabel:@"exTicket" stored:1 indexed:0 tracked:1];
-    v62 = [a1 remember:v61];
+    v62 = [self remember:v61];
     v63 = extractedTicket;
     extractedTicket = v62;
 
     v64 = [[SGEntityTag alloc] initWithLabel:@"exMovie" stored:1 indexed:0 tracked:1];
-    v65 = [a1 remember:v64];
+    v65 = [self remember:v64];
     v66 = extractedMovie;
     extractedMovie = v65;
 
     v67 = [[SGEntityTag alloc] initWithLabel:@"exFood" stored:1 indexed:0 tracked:1];
-    v68 = [a1 remember:v67];
+    v68 = [self remember:v67];
     v69 = extractedFood;
     extractedFood = v68;
 
     v70 = [[SGEntityTag alloc] initWithLabel:@"exSocial" stored:1 indexed:0 tracked:1];
-    v71 = [a1 remember:v70];
+    v71 = [self remember:v70];
     v72 = extractedSocial;
     extractedSocial = v71;
 
     v73 = [[SGEntityTag alloc] initWithLabel:@"exAppointment" stored:1 indexed:0 tracked:1];
-    v74 = [a1 remember:v73];
+    v74 = [self remember:v73];
     v75 = extractedAppointment;
     extractedAppointment = v74;
 
@@ -1533,72 +1533,72 @@ LABEL_27:
     extractedEventCategoryTags = v78;
 
     v80 = [[SGEntityTag alloc] initWithLabel:@"hardName" stored:1 indexed:0 tracked:0];
-    v81 = [a1 remember:v80];
+    v81 = [self remember:v80];
     v82 = hardName;
     hardName = v81;
 
     v83 = [[SGEntityTag alloc] initWithLabel:@"fullyDissected" stored:1 indexed:0 tracked:0];
-    v84 = [a1 remember:v83];
+    v84 = [self remember:v83];
     v85 = fullyDissected;
     fullyDissected = v84;
 
     v86 = [[SGEntityTag alloc] initWithLabel:@"fromInteraction" stored:1 indexed:0 tracked:0];
-    v87 = [a1 remember:v86];
+    v87 = [self remember:v86];
     v88 = fromInteraction;
     fromInteraction = v87;
 
     v89 = [[SGEntityTag alloc] initWithLabel:@"fromTextMessage" stored:1 indexed:0 tracked:0];
-    v90 = [a1 remember:v89];
+    v90 = [self remember:v89];
     v91 = fromTextMessage;
     fromTextMessage = v90;
 
     v92 = [[SGEntityTag alloc] initWithLabel:@"fromSync" stored:1 indexed:1 tracked:0];
-    v93 = [a1 remember:v92];
+    v93 = [self remember:v92];
     v94 = fromSync;
     fromSync = v93;
 
     v95 = [[SGEntityTag alloc] initWithLabel:@"isSent" stored:1 indexed:0 tracked:0];
-    v96 = [a1 remember:v95];
+    v96 = [self remember:v95];
     v97 = isSent;
     isSent = v96;
 
     v98 = [[SGEntityTag alloc] initWithLabel:@"significantSender" stored:1 indexed:0 tracked:0];
-    v99 = [a1 remember:v98];
+    v99 = [self remember:v98];
     v100 = significantSender;
     significantSender = v99;
 
     v101 = [[SGEntityTag alloc] initWithLabel:@"titleGeneratedFromTemplate" stored:1 indexed:0 tracked:0];
-    v102 = [a1 remember:v101];
+    v102 = [self remember:v101];
     v103 = titleGeneratedFromTemplate;
     titleGeneratedFromTemplate = v102;
 
     v104 = [[SGEntityTag alloc] initWithLabel:@"titleGeneratedFromSubject" stored:1 indexed:0 tracked:0];
-    v105 = [a1 remember:v104];
+    v105 = [self remember:v104];
     v106 = titleGeneratedFromSubject;
     titleGeneratedFromSubject = v105;
 
     v107 = [[SGEntityTag alloc] initWithLabel:@"templateException" stored:1 indexed:0 tracked:0];
-    v108 = [a1 remember:v107];
+    v108 = [self remember:v107];
     v109 = templateException;
     templateException = v108;
 
     v110 = [[SGEntityTag alloc] initWithLabel:@"geocodingModeAddressOnly" stored:1 indexed:0 tracked:0];
-    v111 = [a1 remember:v110];
+    v111 = [self remember:v110];
     v112 = geocodingModeAddressOnly;
     geocodingModeAddressOnly = v111;
 
     v113 = [[SGEntityTag alloc] initWithLabel:@"geocodingModePOIOnly" stored:1 indexed:0 tracked:0];
-    v114 = [a1 remember:v113];
+    v114 = [self remember:v113];
     v115 = geocodingModePOIOnly;
     geocodingModePOIOnly = v114;
 
     v116 = [[SGEntityTag alloc] initWithLabel:@"geocodingModeAddressThenPOI" stored:1 indexed:0 tracked:0];
-    v117 = [a1 remember:v116];
+    v117 = [self remember:v116];
     v118 = geocodingModeAddressThenPOI;
     geocodingModeAddressThenPOI = v117;
 
     v119 = [[SGEntityTag alloc] initWithLabel:@"geocodingModeAddressWithCanonicalSearch" stored:1 indexed:0 tracked:0];
-    v120 = [a1 remember:v119];
+    v120 = [self remember:v119];
     v121 = geocodingModeAddressWithCanonicalSearch;
     geocodingModeAddressWithCanonicalSearch = v120;
 
@@ -1610,22 +1610,22 @@ LABEL_27:
     geocodingModeTags = v124;
 
     v126 = [[SGEntityTag alloc] initWithLabel:@"requiresDeferredDissection" stored:1 indexed:0 tracked:0];
-    v127 = [a1 remember:v126];
+    v127 = [self remember:v126];
     v128 = requiresDeferredDissection;
     requiresDeferredDissection = v127;
 
     v129 = [[SGEntityTag alloc] initWithLabel:@"eventExtractedFromOldDocument" stored:1 indexed:0 tracked:0];
-    v130 = [a1 remember:v129];
+    v130 = [self remember:v129];
     v131 = eventExtractedFromOldDocument;
     eventExtractedFromOldDocument = v130;
 
     v132 = [[SGEntityTag alloc] initWithLabel:@"eventExtractedFromLLM" stored:1 indexed:0 tracked:0];
-    v133 = [a1 remember:v132];
+    v133 = [self remember:v132];
     v134 = eventExtractedFromLLM;
     eventExtractedFromLLM = v133;
 
     v135 = [[SGEntityTag alloc] initWithLabel:@"eventWithOnlyNonAccountPrimaryRecipients" stored:1 indexed:0 tracked:0];
-    v136 = [a1 remember:v135];
+    v136 = [self remember:v135];
     v137 = eventWithOnlyNonAccountPrimaryRecipients;
     eventWithOnlyNonAccountPrimaryRecipients = v136;
 
@@ -1633,76 +1633,76 @@ LABEL_27:
     v139 = optionsByLabel;
     optionsByLabel = v138;
 
-    [a1 rememberLabel:@"U" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"CD" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"ID" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"EX" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"MSG" stored:0 indexed:1 tracked:0];
-    [a1 rememberLabel:@"AMSG" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"MBOX" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"ICST" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"TZID" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"ET" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"TMPL" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"TMPN" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"RMF" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"EHSH" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"L" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"ICN" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"IUID" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"IGID" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"IBID" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"ITID" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"NLET" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"NLLI" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"NLEA" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"NLCS" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"NLPC" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"NLBC" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"SO" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"EM" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"DOM" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"CAUL" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"MAUL" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"MEUL" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"CESV" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"REM" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"RHSH" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"IRCR" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"IRIR" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"POIF" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"IRUA" stored:1 indexed:0 tracked:0];
-    [a1 rememberLabel:@"EKEA" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"ICSM" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"ICSD" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"WOD" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"WODD" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"WPD" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"WPDD" stored:1 indexed:1 tracked:0];
-    [a1 rememberLabel:@"ESM" stored:0 indexed:0 tracked:0];
-    [a1 rememberLabel:@"FWDM" stored:0 indexed:0 tracked:0];
-    [a1 rememberLabel:@"EVNTC" stored:1 indexed:1 tracked:1];
-    [a1 rememberLabel:@"ATHR" stored:0 indexed:0 tracked:0];
+    [self rememberLabel:@"U" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"CD" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"ID" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"EX" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"MSG" stored:0 indexed:1 tracked:0];
+    [self rememberLabel:@"AMSG" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"MBOX" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"ICST" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"TZID" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"ET" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"TMPL" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"TMPN" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"RMF" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"EHSH" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"L" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"ICN" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"IUID" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"IGID" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"IBID" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"ITID" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"NLET" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"NLLI" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"NLEA" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"NLCS" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"NLPC" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"NLBC" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"SO" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"EM" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"DOM" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"CAUL" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"MAUL" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"MEUL" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"CESV" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"REM" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"RHSH" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"IRCR" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"IRIR" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"POIF" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"IRUA" stored:1 indexed:0 tracked:0];
+    [self rememberLabel:@"EKEA" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"ICSM" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"ICSD" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"WOD" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"WODD" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"WPD" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"WPDD" stored:1 indexed:1 tracked:0];
+    [self rememberLabel:@"ESM" stored:0 indexed:0 tracked:0];
+    [self rememberLabel:@"FWDM" stored:0 indexed:0 tracked:0];
+    [self rememberLabel:@"EVNTC" stored:1 indexed:1 tracked:1];
+    [self rememberLabel:@"ATHR" stored:0 indexed:0 tracked:0];
     v140 = objc_opt_new();
     v141 = tombstonedLabels;
     tombstonedLabels = v140;
 
-    [a1 tombstoneLabel:@"HHSH"];
-    [a1 tombstoneLabel:@"INTE"];
-    [a1 tombstoneLabel:@"nonUserFacingUpdate"];
+    [self tombstoneLabel:@"HHSH"];
+    [self tombstoneLabel:@"INTE"];
+    [self tombstoneLabel:@"nonUserFacingUpdate"];
 
-    [a1 tombstoneLabel:@"FBU"];
+    [self tombstoneLabel:@"FBU"];
   }
 }
 
-+ (id)remember:(id)a3
++ (id)remember:(id)remember
 {
-  v3 = a3;
+  rememberCopy = remember;
   v4 = byLabel;
-  v5 = [v3 label];
-  [v4 setObject:v3 forKeyedSubscript:v5];
+  label = [rememberCopy label];
+  [v4 setObject:rememberCopy forKeyedSubscript:label];
 
-  return v3;
+  return rememberCopy;
 }
 
 @end

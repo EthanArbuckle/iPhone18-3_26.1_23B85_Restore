@@ -1,21 +1,21 @@
 @interface AVExternalPlaybackIndicatorView
-- (id)_labelWithFontSize:(double)a1;
+- (id)_labelWithFontSize:(double)size;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setTitleString:(id)a3 subtitleString:(id)a4;
+- (void)setTitleString:(id)string subtitleString:(id)subtitleString;
 @end
 
 @implementation AVExternalPlaybackIndicatorView
 
-- (void)setTitleString:(id)a3 subtitleString:(id)a4
+- (void)setTitleString:(id)string subtitleString:(id)subtitleString
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_titleString, a3);
-  objc_storeStrong(&self->_subtitleString, a4);
-  if (v7)
+  stringCopy = string;
+  subtitleStringCopy = subtitleString;
+  objc_storeStrong(&self->_titleString, string);
+  objc_storeStrong(&self->_subtitleString, subtitleString);
+  if (stringCopy)
   {
-    v9 = v8 == 0;
+    v9 = subtitleStringCopy == 0;
   }
 
   else
@@ -32,8 +32,8 @@
     {
       if (self->_subtitleLabel)
       {
-        [(UILabel *)titleLabel setText:v7];
-        [(UILabel *)self->_subtitleLabel setText:v8];
+        [(UILabel *)titleLabel setText:stringCopy];
+        [(UILabel *)self->_subtitleLabel setText:subtitleStringCopy];
       }
     }
   }
@@ -80,12 +80,12 @@ void __65__AVExternalPlaybackIndicatorView_setTitleString_subtitleString___block
   v14.receiver = self;
   v14.super_class = AVExternalPlaybackIndicatorView;
   [(AVExternalPlaybackIndicatorView *)&v14 layoutSubviews];
-  v3 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
-  [v3 layoutFrame];
+  layoutMarginsGuide = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
+  [layoutMarginsGuide layoutFrame];
   Height = CGRectGetHeight(v15);
 
-  v5 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
-  [v5 layoutFrame];
+  layoutMarginsGuide2 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
+  [layoutMarginsGuide2 layoutFrame];
   Width = CGRectGetWidth(v16);
 
   [(UILabel *)self->_titleLabel frame];
@@ -122,8 +122,8 @@ void __65__AVExternalPlaybackIndicatorView_setTitleString_subtitleString___block
   [(AVExternalPlaybackIndicatorView *)&v87 didMoveToWindow];
   if (self && !self->_containerView)
   {
-    v3 = [MEMORY[0x1E69DC888] AV_indicatorBackgroundColor];
-    [(AVExternalPlaybackIndicatorView *)self setBackgroundColor:v3];
+    aV_indicatorBackgroundColor = [MEMORY[0x1E69DC888] AV_indicatorBackgroundColor];
+    [(AVExternalPlaybackIndicatorView *)self setBackgroundColor:aV_indicatorBackgroundColor];
 
     v4 = MEMORY[0x1E69DCAB8];
     v5 = MEMORY[0x1E69DCAD8];
@@ -141,8 +141,8 @@ void __65__AVExternalPlaybackIndicatorView_setTitleString_subtitleString___block
     [(UIImageView *)self->_imageView setContentHuggingPriority:1 forAxis:v11];
     [(UIImageView *)self->_imageView setContentMode:1];
     v12 = self->_imageView;
-    v13 = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
-    [(UIImageView *)v12 setTintColor:v13];
+    aV_indicatorForegroundColor = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
+    [(UIImageView *)v12 setTintColor:aV_indicatorForegroundColor];
 
     [(UIImageView *)self->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     v14 = [AVExternalPlaybackIndicatorView _labelWithFontSize:?];
@@ -174,86 +174,86 @@ void __65__AVExternalPlaybackIndicatorView_setTitleString_subtitleString___block
     [(UIView *)self->_containerView addSubview:self->_titleLabel];
     [(UIView *)self->_containerView addSubview:self->_subtitleLabel];
     [(AVExternalPlaybackIndicatorView *)self addSubview:self->_containerView];
-    v85 = [(UIImageView *)self->_imageView topAnchor];
-    v84 = [(UIView *)self->_containerView topAnchor];
+    topAnchor = [(UIImageView *)self->_imageView topAnchor];
+    topAnchor2 = [(UIView *)self->_containerView topAnchor];
     LODWORD(v21) = 1148829696;
-    v83 = [v85 avkit_constraintEqualToAnchor:v84 priority:v21];
+    v83 = [topAnchor avkit_constraintEqualToAnchor:topAnchor2 priority:v21];
     v88[0] = v83;
-    v82 = [(UILabel *)self->_titleLabel topAnchor];
-    v81 = [(UIImageView *)self->_imageView bottomAnchor];
+    topAnchor3 = [(UILabel *)self->_titleLabel topAnchor];
+    bottomAnchor = [(UIImageView *)self->_imageView bottomAnchor];
     LODWORD(v22) = 1148829696;
-    v80 = [v82 avkit_constraintEqualToAnchor:v81 priority:v22];
+    v80 = [topAnchor3 avkit_constraintEqualToAnchor:bottomAnchor priority:v22];
     v88[1] = v80;
-    v79 = [(UILabel *)self->_subtitleLabel topAnchor];
-    v78 = [(UILabel *)self->_titleLabel bottomAnchor];
-    v77 = [v79 constraintEqualToAnchor:v78 constant:3.0];
+    topAnchor4 = [(UILabel *)self->_subtitleLabel topAnchor];
+    bottomAnchor2 = [(UILabel *)self->_titleLabel bottomAnchor];
+    v77 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:3.0];
     v88[2] = v77;
-    v76 = [(UILabel *)self->_subtitleLabel bottomAnchor];
-    v75 = [(UIView *)self->_containerView bottomAnchor];
-    v74 = [v76 constraintEqualToAnchor:v75];
+    bottomAnchor3 = [(UILabel *)self->_subtitleLabel bottomAnchor];
+    bottomAnchor4 = [(UIView *)self->_containerView bottomAnchor];
+    v74 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v88[3] = v74;
-    v73 = [(UIImageView *)self->_imageView widthAnchor];
-    v72 = [(UIView *)self->_containerView widthAnchor];
-    v71 = [v73 constraintLessThanOrEqualToAnchor:v72];
+    widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+    widthAnchor2 = [(UIView *)self->_containerView widthAnchor];
+    v71 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
     v88[4] = v71;
-    v70 = [(UILabel *)self->_titleLabel widthAnchor];
-    v69 = [(UIView *)self->_containerView widthAnchor];
-    v68 = [v70 constraintLessThanOrEqualToAnchor:v69];
+    widthAnchor3 = [(UILabel *)self->_titleLabel widthAnchor];
+    widthAnchor4 = [(UIView *)self->_containerView widthAnchor];
+    v68 = [widthAnchor3 constraintLessThanOrEqualToAnchor:widthAnchor4];
     v88[5] = v68;
-    v67 = [(UILabel *)self->_subtitleLabel widthAnchor];
-    v66 = [(UIView *)self->_containerView widthAnchor];
-    v65 = [v67 constraintLessThanOrEqualToAnchor:v66];
+    widthAnchor5 = [(UILabel *)self->_subtitleLabel widthAnchor];
+    widthAnchor6 = [(UIView *)self->_containerView widthAnchor];
+    v65 = [widthAnchor5 constraintLessThanOrEqualToAnchor:widthAnchor6];
     v88[6] = v65;
-    v64 = [(UIImageView *)self->_imageView centerXAnchor];
-    v63 = [(UIView *)self->_containerView centerXAnchor];
-    v62 = [v64 constraintEqualToAnchor:v63];
+    centerXAnchor = [(UIImageView *)self->_imageView centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_containerView centerXAnchor];
+    v62 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v88[7] = v62;
-    v61 = [(UILabel *)self->_titleLabel centerXAnchor];
-    v60 = [(UIView *)self->_containerView centerXAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    centerXAnchor3 = [(UILabel *)self->_titleLabel centerXAnchor];
+    centerXAnchor4 = [(UIView *)self->_containerView centerXAnchor];
+    v59 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v88[8] = v59;
-    v58 = [(UILabel *)self->_subtitleLabel centerXAnchor];
-    v57 = [(UIView *)self->_containerView centerXAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    centerXAnchor5 = [(UILabel *)self->_subtitleLabel centerXAnchor];
+    centerXAnchor6 = [(UIView *)self->_containerView centerXAnchor];
+    v56 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v88[9] = v56;
-    v54 = [(UIImageView *)self->_imageView widthAnchor];
-    v53 = [(UIImageView *)self->_imageView heightAnchor];
-    v55 = [(UIImageView *)self->_imageView image];
-    [v55 size];
+    widthAnchor7 = [(UIImageView *)self->_imageView widthAnchor];
+    heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+    image = [(UIImageView *)self->_imageView image];
+    [image size];
     v24 = v23;
-    v52 = [(UIImageView *)self->_imageView image];
-    [v52 size];
-    v51 = [v54 constraintEqualToAnchor:v53 multiplier:v24 / v25];
+    image2 = [(UIImageView *)self->_imageView image];
+    [image2 size];
+    v51 = [widthAnchor7 constraintEqualToAnchor:heightAnchor multiplier:v24 / v25];
     v88[10] = v51;
-    v49 = [(UIView *)self->_containerView widthAnchor];
-    v50 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
-    v47 = [v50 widthAnchor];
-    v46 = [v49 constraintLessThanOrEqualToAnchor:v47 constant:-16.0];
+    widthAnchor8 = [(UIView *)self->_containerView widthAnchor];
+    layoutMarginsGuide = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
+    widthAnchor9 = [layoutMarginsGuide widthAnchor];
+    v46 = [widthAnchor8 constraintLessThanOrEqualToAnchor:widthAnchor9 constant:-16.0];
     v88[11] = v46;
-    v44 = [(UIView *)self->_containerView heightAnchor];
-    v45 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
-    v43 = [v45 heightAnchor];
-    v42 = [v44 constraintLessThanOrEqualToAnchor:v43 constant:-16.0];
+    heightAnchor2 = [(UIView *)self->_containerView heightAnchor];
+    layoutMarginsGuide2 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
+    heightAnchor3 = [layoutMarginsGuide2 heightAnchor];
+    v42 = [heightAnchor2 constraintLessThanOrEqualToAnchor:heightAnchor3 constant:-16.0];
     v88[12] = v42;
-    v40 = [(UIView *)self->_containerView leadingAnchor];
-    v41 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
-    v39 = [v41 leadingAnchor];
-    v38 = [v40 constraintLessThanOrEqualToAnchor:v39 constant:-16.0];
+    leadingAnchor = [(UIView *)self->_containerView leadingAnchor];
+    layoutMarginsGuide3 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide3 leadingAnchor];
+    v38 = [leadingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor2 constant:-16.0];
     v88[13] = v38;
-    v36 = [(UIView *)self->_containerView trailingAnchor];
-    v37 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
-    v26 = [v37 trailingAnchor];
-    v27 = [v36 constraintLessThanOrEqualToAnchor:v26 constant:-16.0];
+    trailingAnchor = [(UIView *)self->_containerView trailingAnchor];
+    layoutMarginsGuide4 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide4 trailingAnchor];
+    v27 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-16.0];
     v88[14] = v27;
-    v28 = [(UIView *)self->_containerView centerXAnchor];
-    v29 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
-    v30 = [v29 centerXAnchor];
-    v31 = [v28 constraintEqualToAnchor:v30];
+    centerXAnchor7 = [(UIView *)self->_containerView centerXAnchor];
+    layoutMarginsGuide5 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
+    centerXAnchor8 = [layoutMarginsGuide5 centerXAnchor];
+    v31 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     v88[15] = v31;
-    v32 = [(UIView *)self->_containerView centerYAnchor];
-    v33 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
-    v34 = [v33 centerYAnchor];
-    v35 = [v32 constraintEqualToAnchor:v34];
+    centerYAnchor = [(UIView *)self->_containerView centerYAnchor];
+    layoutMarginsGuide6 = [(AVExternalPlaybackIndicatorView *)self layoutMarginsGuide];
+    centerYAnchor2 = [layoutMarginsGuide6 centerYAnchor];
+    v35 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v88[16] = v35;
     v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:17];
 
@@ -261,18 +261,18 @@ void __65__AVExternalPlaybackIndicatorView_setTitleString_subtitleString___block
   }
 }
 
-- (id)_labelWithFontSize:(double)a1
+- (id)_labelWithFontSize:(double)size
 {
   v2 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   LODWORD(v3) = 1148846080;
   [v2 setContentCompressionResistancePriority:1 forAxis:v3];
-  v4 = [MEMORY[0x1E69DB878] systemFontOfSize:a1];
+  v4 = [MEMORY[0x1E69DB878] systemFontOfSize:size];
   [v2 setFont:v4];
 
   [v2 setLineBreakMode:5];
   [v2 setTextAlignment:1];
-  v5 = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
-  [v2 setTextColor:v5];
+  aV_indicatorForegroundColor = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
+  [v2 setTextColor:aV_indicatorForegroundColor];
 
   return v2;
 }

@@ -6,10 +6,10 @@
 
 - (id)identifier
 {
-  v2 = [(ATXCandidate *)self biomeStoreData];
-  v3 = [v2 bundleID];
+  biomeStoreData = [(ATXCandidate *)self biomeStoreData];
+  bundleID = [biomeStoreData bundleID];
 
-  return v3;
+  return bundleID;
 }
 
 @end

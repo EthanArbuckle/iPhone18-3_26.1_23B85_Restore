@@ -35,21 +35,21 @@
     v2->_dumpTensors = v5 != 0;
     if (v5)
     {
-      v7 = [MEMORY[0x277CCAC38] processInfo];
-      v8 = [v7 processName];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      processName = [processInfo processName];
 
-      v9 = [MEMORY[0x277CCAC38] processInfo];
-      v10 = [v9 processIdentifier];
+      processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+      processIdentifier = [processInfo2 processIdentifier];
 
       v11 = objc_alloc_init(MEMORY[0x277CCA968]);
       [v11 setDateFormat:@"yyyy_MM_dd_HH_mm_ss_SSS"];
-      v12 = [MEMORY[0x277CBEAA8] date];
-      v13 = [v11 stringFromDate:v12];
+      date = [MEMORY[0x277CBEAA8] date];
+      v13 = [v11 stringFromDate:date];
 
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%d_%@", v8, v10, v13];
+      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%d_%@", processName, processIdentifier, v13];
       v15 = [@"/tmp/metalfx/dump" stringByAppendingPathComponent:v14];
-      v16 = [MEMORY[0x277CCAA00] defaultManager];
-      if ([v16 fileExistsAtPath:v15])
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      if ([defaultManager fileExistsAtPath:v15])
       {
         NSLog(&cfstr_DirectoryForDu.isa, v15);
       }
@@ -58,13 +58,13 @@
       {
         NSLog(&cfstr_CreatingDirect.isa, v15);
         v22 = 0;
-        v17 = [v16 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v22];
+        v17 = [defaultManager createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v22];
         v18 = v22;
         if ((v17 & 1) == 0)
         {
           v19 = v18;
-          v20 = [v18 localizedDescription];
-          NSLog(&cfstr_ErrorCreatingD.isa, v15, v20);
+          localizedDescription = [v18 localizedDescription];
+          NSLog(&cfstr_ErrorCreatingD.isa, v15, localizedDescription);
 
           v2->_dumpTensors = 0;
           v18 = v19;

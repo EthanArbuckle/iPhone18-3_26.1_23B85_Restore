@@ -1,6 +1,6 @@
 @interface MTRCommodityTariffClusterPeakPeriodStruct
 - (MTRCommodityTariffClusterPeakPeriodStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityTariffClusterPeakPeriodStruct);
-  v5 = [(MTRCommodityTariffClusterPeakPeriodStruct *)self severity];
-  [(MTRCommodityTariffClusterPeakPeriodStruct *)v4 setSeverity:v5];
+  severity = [(MTRCommodityTariffClusterPeakPeriodStruct *)self severity];
+  [(MTRCommodityTariffClusterPeakPeriodStruct *)v4 setSeverity:severity];
 
-  v6 = [(MTRCommodityTariffClusterPeakPeriodStruct *)self peakPeriod];
-  [(MTRCommodityTariffClusterPeakPeriodStruct *)v4 setPeakPeriod:v6];
+  peakPeriod = [(MTRCommodityTariffClusterPeakPeriodStruct *)self peakPeriod];
+  [(MTRCommodityTariffClusterPeakPeriodStruct *)v4 setPeakPeriod:peakPeriod];
 
   return v4;
 }

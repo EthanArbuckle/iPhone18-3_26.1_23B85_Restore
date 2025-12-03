@@ -1,52 +1,52 @@
 @interface CCUIWiFiModuleViewController
 - (CCUIConnectivityManager)connectivityManager;
 - (CCUIContentModuleContext)contentModuleContext;
-- (CCUIWiFiModuleViewController)initWithContentModuleContext:(id)a3;
+- (CCUIWiFiModuleViewController)initWithContentModuleContext:(id)context;
 - (OS_dispatch_queue)queue;
 - (UIMenu)contextMenu;
 - (WFControlCenterStateMonitor)stateMonitor;
 - (WFNetworkListDelegate)listDelegate;
-- (id)_actionFromNetworkRecord:(id)a3;
-- (id)_debugDescriptionForState:(int64_t)a3;
+- (id)_actionFromNetworkRecord:(id)record;
+- (id)_debugDescriptionForState:(int64_t)state;
 - (id)_displayName;
-- (id)_glyphImageForState:(int64_t)a3 currentSignalBars:(id)a4 forceSignalBars:(BOOL)a5 network:(id)a6 applyConfiguration:(BOOL)a7;
-- (id)_subtitleTextWithState:(int64_t)a3;
-- (id)contextMenuPreviewForControlTemplateView:(id)a3;
-- (id)credentialsViewControllerWithContext:(id)a3;
-- (id)networkErrorViewControllerWithContext:(id)a3;
+- (id)_glyphImageForState:(int64_t)state currentSignalBars:(id)bars forceSignalBars:(BOOL)signalBars network:(id)network applyConfiguration:(BOOL)configuration;
+- (id)_subtitleTextWithState:(int64_t)state;
+- (id)contextMenuPreviewForControlTemplateView:(id)view;
+- (id)credentialsViewControllerWithContext:(id)context;
+- (id)networkErrorViewControllerWithContext:(id)context;
 - (int64_t)_currentState;
-- (int64_t)_stateWithOverridesApplied:(int64_t)a3;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 completion:(id)a5;
-- (void)_serializeNetworkRecord:(id)a3;
+- (int64_t)_stateWithOverridesApplied:(int64_t)applied;
+- (void)_presentAlertWithTitle:(id)title message:(id)message completion:(id)completion;
+- (void)_serializeNetworkRecord:(id)record;
 - (void)_startScanning;
 - (void)_stopScanning;
 - (void)_toggleState;
-- (void)_updateGlyphImagesWithState:(int64_t)a3;
+- (void)_updateGlyphImagesWithState:(int64_t)state;
 - (void)_updateState;
 - (void)_updateWiFiMenuItems;
-- (void)_updateWithState:(int64_t)a3;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
-- (void)contextMenuShouldPresentForControlTemplateView:(id)a3 withCompletion:(id)a4;
+- (void)_updateWithState:(int64_t)state;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
+- (void)contextMenuShouldPresentForControlTemplateView:(id)view withCompletion:(id)completion;
 - (void)dealloc;
-- (void)didBeginContextMenuPresentationForControlTemplateView:(id)a3;
-- (void)didEndContextMenuPresentationForControlTemplateView:(id)a3;
-- (void)didReceiveSBWifiSignalStrengthChanged:(id)a3;
-- (void)setCurrentNetwork:(id)a3;
-- (void)setNetworks:(id)a3;
+- (void)didBeginContextMenuPresentationForControlTemplateView:(id)view;
+- (void)didEndContextMenuPresentationForControlTemplateView:(id)view;
+- (void)didReceiveSBWifiSignalStrengthChanged:(id)changed;
+- (void)setCurrentNetwork:(id)network;
+- (void)setNetworks:(id)networks;
 - (void)startObservingStateChanges;
 - (void)startObservingStateChangesIfNecessary;
 - (void)stopObservingStateChanges;
 - (void)stopObservingStateChangesIfNecessary;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation CCUIWiFiModuleViewController
 
-- (CCUIWiFiModuleViewController)initWithContentModuleContext:(id)a3
+- (CCUIWiFiModuleViewController)initWithContentModuleContext:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = CCUIWiFiModuleViewController;
   v5 = [(CCUIWiFiModuleViewController *)&v14 init];
@@ -60,21 +60,21 @@
       _os_log_impl(&dword_21E9F5000, v6, OS_LOG_TYPE_DEFAULT, "[WiFi Module] (%{public}p) Initialization", buf, 0xCu);
     }
 
-    objc_storeWeak(&v5->_contentModuleContext, v4);
+    objc_storeWeak(&v5->_contentModuleContext, contextCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     contentMenuActions = v5->_contentMenuActions;
     v5->_contentMenuActions = v7;
 
     v9 = +[CCUIConnectivityManager sharedInstance];
     objc_storeWeak(&v5->_connectivityManager, v9);
-    v10 = [v9 wifiStateMonitor];
-    objc_storeWeak(&v5->_stateMonitor, v10);
+    wifiStateMonitor = [v9 wifiStateMonitor];
+    objc_storeWeak(&v5->_stateMonitor, wifiStateMonitor);
 
     connectedNetworkSignalStrengthBars = v5->_connectedNetworkSignalStrengthBars;
     v5->_connectedNetworkSignalStrengthBars = &unk_28302E430;
 
-    v12 = [v9 wifiQueue];
-    objc_storeWeak(&v5->_queue, v12);
+    wifiQueue = [v9 wifiQueue];
+    objc_storeWeak(&v5->_queue, wifiQueue);
   }
 
   return v5;
@@ -87,7 +87,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21E9F5000, v3, OS_LOG_TYPE_DEFAULT, "[WiFi Module] (%{public}p) Dealloc", buf, 0xCu);
   }
 
@@ -103,8 +103,8 @@
   v18.super_class = CCUIWiFiModuleViewController;
   [(CCUIButtonModuleViewController *)&v18 viewDidLoad];
   v3 = [(CCUIWiFiModuleViewController *)self _glyphImageForState:4 currentSignalBars:self->_connectedNetworkSignalStrengthBars forceSignalBars:0 network:0 applyConfiguration:1];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  v5 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v3 highlightColor:v4 useLightStyle:1];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v5 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v3 highlightColor:systemBlueColor useLightStyle:1];
   [v5 setUseAutomaticSymbolColors:1];
   v6 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__glyphViewForExpandedConnectivityModuleTapped];
   [v5 addGestureRecognizer:v6];
@@ -119,10 +119,10 @@
   self->_templateViewForExpandedConnectivityModule = v9;
   v11 = v9;
 
-  v12 = [(CCUIWiFiModuleViewController *)self _displayName];
-  [(CCUIButtonModuleViewController *)self setTitle:v12];
-  [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setTitle:v12];
-  v13 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v3 highlightColor:v4 useLightStyle:1];
+  _displayName = [(CCUIWiFiModuleViewController *)self _displayName];
+  [(CCUIButtonModuleViewController *)self setTitle:_displayName];
+  [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setTitle:_displayName];
+  v13 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v3 highlightColor:systemBlueColor useLightStyle:1];
   [v13 setUseIndependentAlpha:1];
   [v13 setDynamicLayoutEnabled:1];
   [v13 setUseAutomaticSymbolColors:1];
@@ -131,20 +131,20 @@
   self->_buttonViewForCollapsedConnectivityModule = v13;
   v15 = v13;
 
-  v16 = [MEMORY[0x277D75348] systemBlueColor];
+  systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
 
-  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:v16];
-  v17 = [(CCUIButtonModuleViewController *)self _templateView];
-  [v17 setContextMenuDelegate:self];
-  [v17 setShowsMenuAsPrimaryAction:0];
+  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:systemBlueColor2];
+  _templateView = [(CCUIButtonModuleViewController *)self _templateView];
+  [_templateView setContextMenuDelegate:self];
+  [_templateView setShowsMenuAsPrimaryAction:0];
   [(CCUIWiFiModuleViewController *)self startObservingStateChangesIfNecessary];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = CCUIWiFiModuleViewController;
-  [(CCUIWiFiModuleViewController *)&v4 viewIsAppearing:a3];
+  [(CCUIWiFiModuleViewController *)&v4 viewIsAppearing:appearing];
   [(CCUIWiFiModuleViewController *)self _updateState];
 }
 
@@ -167,25 +167,25 @@
 - (void)startObservingStateChanges
 {
   self->_observingStateChanges = 1;
-  v4 = [(CCUIWiFiModuleViewController *)self connectivityManager];
-  [v4 addWiFiViewControllerObservingStateChanges:self];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_didReceiveSBWifiSignalStrengthChanged_ name:@"SBWifiSignalStrengthChangedNotification" object:0];
+  connectivityManager = [(CCUIWiFiModuleViewController *)self connectivityManager];
+  [connectivityManager addWiFiViewControllerObservingStateChanges:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_didReceiveSBWifiSignalStrengthChanged_ name:@"SBWifiSignalStrengthChangedNotification" object:0];
 }
 
 - (void)stopObservingStateChanges
 {
   self->_observingStateChanges = 0;
-  v4 = [(CCUIWiFiModuleViewController *)self connectivityManager];
-  [v4 removeWiFiViewControllerObservingStateChanges:self];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SBWifiSignalStrengthChangedNotification" object:0];
+  connectivityManager = [(CCUIWiFiModuleViewController *)self connectivityManager];
+  [connectivityManager removeWiFiViewControllerObservingStateChanges:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBWifiSignalStrengthChangedNotification" object:0];
 }
 
-- (void)didReceiveSBWifiSignalStrengthChanged:(id)a3
+- (void)didReceiveSBWifiSignalStrengthChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  obj = [v4 objectForKeyedSubscript:@"SBWifiSignalStrengthChangedKey"];
+  userInfo = [changed userInfo];
+  obj = [userInfo objectForKeyedSubscript:@"SBWifiSignalStrengthChangedKey"];
 
   v5 = obj;
   if (obj && self->_connectedNetworkSignalStrengthBars != obj)
@@ -196,14 +196,14 @@
   }
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  tappedCopy = tapped;
   [(CCUIWiFiModuleViewController *)self _toggleState];
   v8.receiver = self;
   v8.super_class = CCUIWiFiModuleViewController;
-  [(CCUIButtonModuleViewController *)&v8 buttonTapped:v7 forEvent:v6];
+  [(CCUIButtonModuleViewController *)&v8 buttonTapped:tappedCopy forEvent:eventCopy];
 }
 
 - (UIMenu)contextMenu
@@ -244,38 +244,38 @@ void __43__CCUIWiFiModuleViewController_contextMenu__block_invoke(uint64_t a1)
   [v3 openURL:v4 completionHandler:0];
 }
 
-- (void)contextMenuShouldPresentForControlTemplateView:(id)a3 withCompletion:(id)a4
+- (void)contextMenuShouldPresentForControlTemplateView:(id)view withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(CCUIWiFiModuleViewController *)self contentModuleContext];
+  completionCopy = completion;
+  contentModuleContext = [(CCUIWiFiModuleViewController *)self contentModuleContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __94__CCUIWiFiModuleViewController_contextMenuShouldPresentForControlTemplateView_withCompletion___block_invoke;
   v8[3] = &unk_278381DA0;
-  v9 = v5;
-  v7 = v5;
-  [v6 requestAuthenticationWithCompletionHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [contentModuleContext requestAuthenticationWithCompletionHandler:v8];
 }
 
-- (id)contextMenuPreviewForControlTemplateView:(id)a3
+- (id)contextMenuPreviewForControlTemplateView:(id)view
 {
-  if (self->_templateViewForExpandedConnectivityModule == a3)
+  if (self->_templateViewForExpandedConnectivityModule == view)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = [(CCUIWiFiModuleViewController *)self view];
-    v4 = [v3 superview];
+    view = [(CCUIWiFiModuleViewController *)self view];
+    superview = [view superview];
 
-    v5 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v4];
+    v5 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:superview];
   }
 
   return v5;
 }
 
-- (void)didBeginContextMenuPresentationForControlTemplateView:(id)a3
+- (void)didBeginContextMenuPresentationForControlTemplateView:(id)view
 {
   [(CCUIWiFiModuleViewController *)self _startScanning];
   if (![(CCUIWiFiModuleViewController *)self _enabledForState:[(CCUIWiFiModuleViewController *)self _stateWithOverridesApplied:[(CCUIWiFiModuleViewController *)self _currentState]]])
@@ -286,7 +286,7 @@ void __43__CCUIWiFiModuleViewController_contextMenu__block_invoke(uint64_t a1)
   [(CCUIWiFiModuleViewController *)self _updateState];
 }
 
-- (void)didEndContextMenuPresentationForControlTemplateView:(id)a3
+- (void)didEndContextMenuPresentationForControlTemplateView:(id)view
 {
   [(CCUIWiFiModuleViewController *)self _stopScanning];
 
@@ -364,7 +364,7 @@ void __43__CCUIWiFiModuleViewController_contextMenu__block_invoke(uint64_t a1)
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21E9F5000, v3, OS_LOG_TYPE_DEFAULT, "[WiFi Module] (%{public}p) Stop scanning for networks", &v7, 0xCu);
   }
 
@@ -389,15 +389,15 @@ void __43__CCUIWiFiModuleViewController_contextMenu__block_invoke(uint64_t a1)
     v5 = v4;
     v6 = [(CCUIWiFiModuleViewController *)self _debugDescriptionForState:v3];
     *buf = 134349314;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = v6;
     _os_log_impl(&dword_21E9F5000, v5, OS_LOG_TYPE_DEFAULT, "[WiFi Module] (%{public}p) Toggle WiFi state from %{public}@", buf, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_stateMonitor);
-  v8 = [WeakRetained linkQuality];
-  v9 = [v8 ssid];
+  linkQuality = [WeakRetained linkQuality];
+  ssid = [linkQuality ssid];
 
   objc_initWeak(buf, self);
   v10 = objc_loadWeakRetained(&self->_stateMonitor);
@@ -407,7 +407,7 @@ void __43__CCUIWiFiModuleViewController_contextMenu__block_invoke(uint64_t a1)
   v12[3] = &unk_2783824F8;
   v12[4] = self;
   v14[1] = v3;
-  v11 = v9;
+  v11 = ssid;
   v13 = v11;
   objc_copyWeak(v14, buf);
   [v10 performAction:v12];
@@ -531,27 +531,27 @@ LABEL_22:
   [v26 _updateWithState:*(a1 + 56)];
 }
 
-- (void)_updateGlyphImagesWithState:(int64_t)a3
+- (void)_updateGlyphImagesWithState:(int64_t)state
 {
-  v6 = [(CCUIWiFiModuleViewController *)self _glyphImageForState:a3 currentSignalBars:self->_connectedNetworkSignalStrengthBars forceSignalBars:0 network:0 applyConfiguration:1];
+  v6 = [(CCUIWiFiModuleViewController *)self _glyphImageForState:state currentSignalBars:self->_connectedNetworkSignalStrengthBars forceSignalBars:0 network:0 applyConfiguration:1];
   [(CCUIButtonModuleViewController *)self setGlyphImage:v6];
-  v4 = [(CCUIWiFiModuleViewController *)self buttonViewForCollapsedConnectivityModule];
-  [v4 setGlyphImage:v6];
-  v5 = [(CCUIWiFiModuleViewController *)self glyphViewForExpandedConnectivityModule];
-  [v5 setGlyphImage:v6];
+  buttonViewForCollapsedConnectivityModule = [(CCUIWiFiModuleViewController *)self buttonViewForCollapsedConnectivityModule];
+  [buttonViewForCollapsedConnectivityModule setGlyphImage:v6];
+  glyphViewForExpandedConnectivityModule = [(CCUIWiFiModuleViewController *)self glyphViewForExpandedConnectivityModule];
+  [glyphViewForExpandedConnectivityModule setGlyphImage:v6];
 }
 
 - (void)_updateState
 {
-  v3 = [(CCUIWiFiModuleViewController *)self _currentState];
+  _currentState = [(CCUIWiFiModuleViewController *)self _currentState];
 
-  [(CCUIWiFiModuleViewController *)self _updateWithState:v3];
+  [(CCUIWiFiModuleViewController *)self _updateWithState:_currentState];
 }
 
-- (void)_updateWithState:(int64_t)a3
+- (void)_updateWithState:(int64_t)state
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [(CCUIWiFiModuleViewController *)self _stateWithOverridesApplied:a3];
+  v4 = [(CCUIWiFiModuleViewController *)self _stateWithOverridesApplied:state];
   v5 = [(CCUIWiFiModuleViewController *)self _subtitleTextWithState:v4];
   [(CCUIButtonModuleViewController *)self setValueText:v5];
   [(CCUIButtonModuleViewController *)self setSelectedValueText:v5];
@@ -574,7 +574,7 @@ LABEL_22:
     v10 = v9;
     v11 = [(CCUIWiFiModuleViewController *)self _debugDescriptionForState:v4];
     v12 = 134350083;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = v11;
     v16 = 1024;
@@ -590,24 +590,24 @@ LABEL_22:
 - (int64_t)_currentState
 {
   WeakRetained = objc_loadWeakRetained(&self->_stateMonitor);
-  v3 = [WeakRetained state];
+  state = [WeakRetained state];
 
-  return v3;
+  return state;
 }
 
-- (int64_t)_stateWithOverridesApplied:(int64_t)a3
+- (int64_t)_stateWithOverridesApplied:(int64_t)applied
 {
   if (CCSIsInternalInstall())
   {
     v4 = +[CCUIControlCenterDefaults standardDefaults];
-    v5 = [v4 shouldExcludeControlCenterFromStatusBarOverrides];
+    shouldExcludeControlCenterFromStatusBarOverrides = [v4 shouldExcludeControlCenterFromStatusBarOverrides];
 
-    if ((v5 & 1) == 0)
+    if ((shouldExcludeControlCenterFromStatusBarOverrides & 1) == 0)
     {
-      v6 = [MEMORY[0x277D75A98] getStatusBarOverrideData];
-      if (*(v6 + 9) == 1)
+      getStatusBarOverrideData = [MEMORY[0x277D75A98] getStatusBarOverrideData];
+      if (*(getStatusBarOverrideData + 9) == 1)
       {
-        if ((*(v6 + 2160) - 5) >= 2)
+        if ((*(getStatusBarOverrideData + 2160) - 5) >= 2)
         {
           return 2;
         }
@@ -620,31 +620,31 @@ LABEL_22:
     }
   }
 
-  return a3;
+  return applied;
 }
 
-- (id)credentialsViewControllerWithContext:(id)a3
+- (id)credentialsViewControllerWithContext:(id)context
 {
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=WIFI&path=Credentials"];
-  v5 = [(CCUIWiFiModuleViewController *)self contentModuleContext];
-  [v5 openURL:v4 completionHandler:0];
+  contentModuleContext = [(CCUIWiFiModuleViewController *)self contentModuleContext];
+  [contentModuleContext openURL:v4 completionHandler:0];
 
   return 0;
 }
 
-- (id)networkErrorViewControllerWithContext:(id)a3
+- (id)networkErrorViewControllerWithContext:(id)context
 {
-  v4 = [a3 error];
-  v5 = [v4 localizedDescription];
-  v6 = [v4 localizedRecoverySuggestion];
-  [(CCUIWiFiModuleViewController *)self _presentAlertWithTitle:v5 message:v6 completion:0];
+  error = [context error];
+  localizedDescription = [error localizedDescription];
+  localizedRecoverySuggestion = [error localizedRecoverySuggestion];
+  [(CCUIWiFiModuleViewController *)self _presentAlertWithTitle:localizedDescription message:localizedRecoverySuggestion completion:0];
 
   return 0;
 }
 
-- (void)setCurrentNetwork:(id)a3
+- (void)setCurrentNetwork:(id)network
 {
-  v6 = a3;
+  networkCopy = network;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [(CCUIWiFiModuleViewController *)a2 setCurrentNetwork:?];
@@ -652,21 +652,21 @@ LABEL_22:
 
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_currentNetwork, a3);
+    objc_storeStrong(&self->_currentNetwork, network);
     [(CCUIWiFiModuleViewController *)self _updateWiFiMenuItems];
   }
 }
 
-- (void)setNetworks:(id)a3
+- (void)setNetworks:(id)networks
 {
-  v5 = a3;
+  networksCopy = networks;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [(CCUIWiFiModuleViewController *)a2 setNetworks:?];
   }
 
-  v6 = [v5 allObjects];
-  v7 = [v6 bs_filter:&__block_literal_global_5];
+  allObjects = [networksCopy allObjects];
+  v7 = [allObjects bs_filter:&__block_literal_global_5];
 
   if (self->_currentNetwork)
   {
@@ -712,17 +712,17 @@ LABEL_22:
 
 - (void)_updateWiFiMenuItems
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"CCUIWiFiModuleViewController.m" lineNumber:560 description:@"This must be called on the main thread"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CCUIWiFiModuleViewController.m" lineNumber:560 description:@"This must be called on the main thread"];
 }
 
-- (id)_actionFromNetworkRecord:(id)a3
+- (id)_actionFromNetworkRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 ssid];
-  v6 = [v4 signalBars];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
-  v8 = [(CCUIWiFiModuleViewController *)self _glyphImageForState:3 currentSignalBars:v7 forceSignalBars:1 network:v4 applyConfiguration:0];
+  recordCopy = record;
+  ssid = [recordCopy ssid];
+  signalBars = [recordCopy signalBars];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:signalBars];
+  v8 = [(CCUIWiFiModuleViewController *)self _glyphImageForState:3 currentSignalBars:v7 forceSignalBars:1 network:recordCopy applyConfiguration:0];
   objc_initWeak(&location, self);
   v9 = MEMORY[0x277D750C8];
   v13[0] = MEMORY[0x277D85DD0];
@@ -730,9 +730,9 @@ LABEL_22:
   v13[2] = __57__CCUIWiFiModuleViewController__actionFromNetworkRecord___block_invoke;
   v13[3] = &unk_278381E40;
   objc_copyWeak(&v15, &location);
-  v10 = v4;
+  v10 = recordCopy;
   v14 = v10;
-  v11 = [v9 actionWithTitle:v5 image:v8 identifier:0 handler:v13];
+  v11 = [v9 actionWithTitle:ssid image:v8 identifier:0 handler:v13];
   [v11 setState:{-[WFNetworkListRecord isEqual:](self->_currentNetwork, "isEqual:", v10)}];
 
   objc_destroyWeak(&v15);
@@ -754,33 +754,33 @@ void __57__CCUIWiFiModuleViewController__actionFromNetworkRecord___block_invoke(
   }
 }
 
-- (void)_serializeNetworkRecord:(id)a3
+- (void)_serializeNetworkRecord:(id)record
 {
-  v3 = [a3 attributes];
-  v4 = [@"~/Library/Caches/com.apple.wifi" stringByExpandingTildeInPath];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  attributes = [record attributes];
+  stringByExpandingTildeInPath = [@"~/Library/Caches/com.apple.wifi" stringByExpandingTildeInPath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:stringByExpandingTildeInPath];
 
-  if ((v6 & 1) != 0 || ([MEMORY[0x277CCAA00] defaultManager], v7 = objc_claimAutoreleasedReturnValue(), v10 = 0, v8 = objc_msgSend(v7, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v4, 0, 0, &v10), v7, v8))
+  if ((v6 & 1) != 0 || ([MEMORY[0x277CCAA00] defaultManager], v7 = objc_claimAutoreleasedReturnValue(), v10 = 0, v8 = objc_msgSend(v7, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", stringByExpandingTildeInPath, 0, 0, &v10), v7, v8))
   {
-    v9 = [v4 stringByAppendingPathComponent:@"LastEnterpriseNetwork.plist"];
-    [v3 writeToFile:v9 atomically:0];
+    v9 = [stringByExpandingTildeInPath stringByAppendingPathComponent:@"LastEnterpriseNetwork.plist"];
+    [attributes writeToFile:v9 atomically:0];
   }
 }
 
-- (id)_subtitleTextWithState:(int64_t)a3
+- (id)_subtitleTextWithState:(int64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
-    if (a3 != 5)
+    if (state != 5)
     {
-      if (a3 == 4)
+      if (state == 4)
       {
         WeakRetained = objc_loadWeakRetained(&self->_stateMonitor);
-        v7 = [WeakRetained linkQuality];
-        v8 = [v7 ssid];
+        linkQuality = [WeakRetained linkQuality];
+        ssid = [linkQuality ssid];
 
-        if ([v8 length])
+        if ([ssid length])
         {
           goto LABEL_20;
         }
@@ -788,7 +788,7 @@ void __57__CCUIWiFiModuleViewController__actionFromNetworkRecord___block_invoke(
         v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v9 = [v4 localizedStringForKey:@"CONTROL_CENTER_STATUS_WIFI_ON" value:&stru_28301B138 table:@"ControlCenterUI+SystemModules"];
 
-        v8 = v9;
+        ssid = v9;
         goto LABEL_19;
       }
 
@@ -811,17 +811,17 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     goto LABEL_10;
   }
 
-  if (a3 != 3)
+  if (state != 3)
   {
 LABEL_12:
-    if (a3 > 1)
+    if (state > 1)
     {
-      v8 = 0;
+      ssid = 0;
       goto LABEL_20;
     }
 
@@ -846,34 +846,34 @@ LABEL_12:
 LABEL_17:
   v11 = v4;
 LABEL_18:
-  v8 = [v11 localizedStringForKey:v5 value:&stru_28301B138 table:@"ControlCenterUI+SystemModules"];
+  ssid = [v11 localizedStringForKey:v5 value:&stru_28301B138 table:@"ControlCenterUI+SystemModules"];
 LABEL_19:
 
 LABEL_20:
 
-  return v8;
+  return ssid;
 }
 
-- (id)_glyphImageForState:(int64_t)a3 currentSignalBars:(id)a4 forceSignalBars:(BOOL)a5 network:(id)a6 applyConfiguration:(BOOL)a7
+- (id)_glyphImageForState:(int64_t)state currentSignalBars:(id)bars forceSignalBars:(BOOL)signalBars network:(id)network applyConfiguration:(BOOL)configuration
 {
-  v7 = a7;
-  v9 = a5;
-  v12 = a4;
-  v13 = a6;
-  v14 = v13;
-  if (a3 > 5)
+  configurationCopy = configuration;
+  signalBarsCopy = signalBars;
+  barsCopy = bars;
+  networkCopy = network;
+  v14 = networkCopy;
+  if (state > 5)
   {
     v15 = 0;
   }
 
-  else if (((1 << a3) & 0x1C) != 0)
+  else if (((1 << state) & 0x1C) != 0)
   {
     v15 = @"wifi";
-    if (v13)
+    if (networkCopy)
     {
-      v16 = [v13 isSecure];
+      isSecure = [networkCopy isSecure];
       v17 = @"wifi.badge.lock";
-      if (!v16)
+      if (!isSecure)
       {
         v17 = @"wifi";
       }
@@ -887,21 +887,21 @@ LABEL_20:
     v15 = @"wifi.slash";
   }
 
-  if (a3 == 4 || (v18 = 3.0, v9))
+  if (state == 4 || (v18 = 3.0, signalBarsCopy))
   {
-    [v12 floatValue];
+    [barsCopy floatValue];
     v18 = v24 / 3.0;
-    if (v7)
+    if (configurationCopy)
     {
       goto LABEL_12;
     }
   }
 
-  else if (v7)
+  else if (configurationCopy)
   {
 LABEL_12:
-    v19 = [(CCUIButtonModuleViewController *)self contentMetrics];
-    v20 = [v19 symbolConfiguration];
+    contentMetrics = [(CCUIButtonModuleViewController *)self contentMetrics];
+    symbolConfiguration = [contentMetrics symbolConfiguration];
     if ([(CCUIButtonModuleViewController *)self contentRenderingMode]== 1)
     {
       v21 = 2;
@@ -913,7 +913,7 @@ LABEL_12:
     }
 
     v22 = [MEMORY[0x277D755D0] configurationWithScale:v21];
-    v23 = [v20 configurationByApplyingConfiguration:v22];
+    v23 = [symbolConfiguration configurationByApplyingConfiguration:v22];
 
     goto LABEL_18;
   }
@@ -921,36 +921,36 @@ LABEL_12:
   v23 = 0;
 LABEL_18:
   v25 = [MEMORY[0x277D755B8] systemImageNamed:v15 variableValue:v23 withConfiguration:v18];
-  v26 = [v25 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v25 imageFlippedForRightToLeftLayoutDirection];
 
-  return v26;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
-- (id)_debugDescriptionForState:(int64_t)a3
+- (id)_debugDescriptionForState:(int64_t)state
 {
-  if ((a3 - 1) > 4)
+  if ((state - 1) > 4)
   {
     return @"unavailable";
   }
 
   else
   {
-    return off_278382588[a3 - 1];
+    return off_278382588[state - 1];
   }
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 completion:(id)a5
+- (void)_presentAlertWithTitle:(id)title message:(id)message completion:(id)completion
 {
   v8 = MEMORY[0x277D75110];
-  v9 = a5;
-  v13 = [v8 alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  completionCopy = completion;
+  v13 = [v8 alertControllerWithTitle:title message:message preferredStyle:1];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"CONTROL_CENTER_ALERT_OK" value:&stru_28301B138 table:@"ControlCenterUI+SystemModules"];
 
   v12 = [MEMORY[0x277D750F8] actionWithTitle:v11 style:0 handler:0];
   [v13 addAction:v12];
 
-  [(CCUIWiFiModuleViewController *)self presentViewController:v13 animated:1 completion:v9];
+  [(CCUIWiFiModuleViewController *)self presentViewController:v13 animated:1 completion:completionCopy];
 }
 
 - (WFNetworkListDelegate)listDelegate

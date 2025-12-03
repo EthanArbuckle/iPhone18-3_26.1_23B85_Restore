@@ -1,11 +1,11 @@
 @interface THWControlContainerLayout
 - (id)additionalLayouts;
 - (id)childInfosForLayout;
-- (id)wpLayoutParentForLayout:(id)a3;
+- (id)wpLayoutParentForLayout:(id)layout;
 - (unint64_t)index;
 - (unint64_t)tag;
-- (void)setIndex:(unint64_t)a3;
-- (void)setTag:(unint64_t)a3;
+- (void)setIndex:(unint64_t)index;
+- (void)setTag:(unint64_t)tag;
 - (void)validate;
 @end
 
@@ -21,30 +21,30 @@
 
 - (unint64_t)tag
 {
-  v2 = [(THWControlContainerLayout *)self info];
+  info = [(THWControlContainerLayout *)self info];
 
-  return [v2 tag];
+  return [info tag];
 }
 
-- (void)setTag:(unint64_t)a3
+- (void)setTag:(unint64_t)tag
 {
-  v4 = [(THWControlContainerLayout *)self info];
+  info = [(THWControlContainerLayout *)self info];
 
-  [v4 setTag:a3];
+  [info setTag:tag];
 }
 
 - (unint64_t)index
 {
-  v2 = [(THWControlContainerLayout *)self info];
+  info = [(THWControlContainerLayout *)self info];
 
-  return [v2 index];
+  return [info index];
 }
 
-- (void)setIndex:(unint64_t)a3
+- (void)setIndex:(unint64_t)index
 {
-  v4 = [(THWControlContainerLayout *)self info];
+  info = [(THWControlContainerLayout *)self info];
 
-  [v4 setIndex:a3];
+  [info setIndex:index];
 }
 
 - (id)childInfosForLayout
@@ -103,7 +103,7 @@
   return [v3 controlContainerChildInfosForLayout:self];
 }
 
-- (id)wpLayoutParentForLayout:(id)a3
+- (id)wpLayoutParentForLayout:(id)layout
 {
   v5 = [-[THWControlContainerLayout info](self "info")];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -111,7 +111,7 @@
     return 0;
   }
 
-  return [v5 controlContainer:self wpLayoutParentForLayout:a3];
+  return [v5 controlContainer:self wpLayoutParentForLayout:layout];
 }
 
 - (id)additionalLayouts

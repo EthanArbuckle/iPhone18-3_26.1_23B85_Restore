@@ -1,5 +1,5 @@
 @interface CheckPreorderQueueOperation
-- (CheckPreorderQueueOperation)initWithAccountIdentifier:(id)a3;
+- (CheckPreorderQueueOperation)initWithAccountIdentifier:(id)identifier;
 - (NSNumber)accountIdentifier;
 - (id)_newURLOperation;
 - (int64_t)numberOfPreordersInQueue;
@@ -9,14 +9,14 @@
 
 @implementation CheckPreorderQueueOperation
 
-- (CheckPreorderQueueOperation)initWithAccountIdentifier:(id)a3
+- (CheckPreorderQueueOperation)initWithAccountIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = CheckPreorderQueueOperation;
   v4 = [(CheckPreorderQueueOperation *)&v6 init];
   if (v4)
   {
-    v4->_accountID = a3;
+    v4->_accountID = identifier;
   }
 
   return v4;
@@ -46,22 +46,22 @@
 
 - (void)run
 {
-  v3 = [(CheckPreorderQueueOperation *)self _newURLOperation];
+  _newURLOperation = [(CheckPreorderQueueOperation *)self _newURLOperation];
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
   {
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
   if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_INFO))
@@ -87,10 +87,10 @@
   }
 
   v30 = 0;
-  v10 = [(CheckPreorderQueueOperation *)self runSubOperation:v3 returningError:&v30, v27];
+  v10 = [(CheckPreorderQueueOperation *)self runSubOperation:_newURLOperation returningError:&v30, v27];
   if (v10)
   {
-    v11 = [objc_msgSend(v3 "dataProvider")];
+    v11 = [objc_msgSend(_newURLOperation "dataProvider")];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,15 +103,15 @@
           v13 = +[SSLogConfig sharedConfig];
         }
 
-        v14 = [v13 shouldLog];
+        shouldLog2 = [v13 shouldLog];
         if ([v13 shouldLogToDisk])
         {
-          v15 = v14 | 2;
+          v15 = shouldLog2 | 2;
         }
 
         else
         {
-          v15 = v14;
+          v15 = shouldLog2;
         }
 
         if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_INFO))
@@ -154,15 +154,15 @@
       v20 = +[SSLogConfig sharedConfig];
     }
 
-    v21 = [v20 shouldLog];
+    shouldLog3 = [v20 shouldLog];
     if ([v20 shouldLogToDisk])
     {
-      v22 = v21 | 2;
+      v22 = shouldLog3 | 2;
     }
 
     else
     {
-      v22 = v21;
+      v22 = shouldLog3;
     }
 
     if (!os_log_type_enabled([v20 OSLogObject], OS_LOG_TYPE_DEFAULT))

@@ -1,36 +1,36 @@
 @interface SBFluidSwitcherSpaceOverlayAccessoryView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGPoint)contentViewOffset;
-- (SBFluidSwitcherSpaceOverlayAccessoryView)initWithDelegate:(id)a3;
+- (SBFluidSwitcherSpaceOverlayAccessoryView)initWithDelegate:(id)delegate;
 - (SBFluidSwitcherSpaceOverlayAccessoryViewDelegate)delegate;
 - (double)_inverseContentScale;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_configureDebugBorder;
 - (void)_updateContentViewLayout;
 - (void)_updateFocusIndicator;
-- (void)_updateFooterAnimated:(BOOL)a3;
+- (void)_updateFooterAnimated:(BOOL)animated;
 - (void)_updateFooterVisibility;
-- (void)configureOverlayForAppLayout:(id)a3 iconZoomWithView:(id)a4 crossfadeViews:(id)a5;
+- (void)configureOverlayForAppLayout:(id)layout iconZoomWithView:(id)view crossfadeViews:(id)views;
 - (void)dealloc;
-- (void)genieEffectViewDidInvalidate:(id)a3;
-- (void)itemContainerFooterView:(id)a3 didSelectTitleItem:(id)a4;
+- (void)genieEffectViewDidInvalidate:(id)invalidate;
+- (void)itemContainerFooterView:(id)view didSelectTitleItem:(id)item;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)removeIconOverlay;
-- (void)setContentScale:(double)a3;
-- (void)setContentViewOffset:(CGPoint)a3;
-- (void)setContentViewScale:(double)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setDrawsFocusIndicator:(BOOL)a3;
-- (void)setDrawsFooter:(BOOL)a3;
-- (void)setFooterStyle:(unint64_t)a3;
-- (void)setGenieAttributes:(id)a3 mode:(int64_t)a4 completion:(id)a5;
-- (void)setHomeGrabberView:(id)a3;
-- (void)setIconOpacity:(double)a3;
-- (void)setShelfViewController:(id)a3;
-- (void)setTitleAndIconOpacity:(double)a3;
-- (void)setTitleItems:(id)a3 animated:(BOOL)a4;
-- (void)setTitleOpacity:(double)a3;
+- (void)setContentScale:(double)scale;
+- (void)setContentViewOffset:(CGPoint)offset;
+- (void)setContentViewScale:(double)scale;
+- (void)setCornerRadius:(double)radius;
+- (void)setDrawsFocusIndicator:(BOOL)indicator;
+- (void)setDrawsFooter:(BOOL)footer;
+- (void)setFooterStyle:(unint64_t)style;
+- (void)setGenieAttributes:(id)attributes mode:(int64_t)mode completion:(id)completion;
+- (void)setHomeGrabberView:(id)view;
+- (void)setIconOpacity:(double)opacity;
+- (void)setShelfViewController:(id)controller;
+- (void)setTitleAndIconOpacity:(double)opacity;
+- (void)setTitleItems:(id)items animated:(BOOL)animated;
+- (void)setTitleOpacity:(double)opacity;
 @end
 
 @implementation SBFluidSwitcherSpaceOverlayAccessoryView
@@ -45,8 +45,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBFluidSwitcherSpaceOverlayAccessoryView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(SBFluidSwitcherSpaceOverlayAccessoryView *)self traitCollection];
+  [traitCollection displayScale];
 
   [(SBFluidSwitcherSpaceOverlayAccessoryView *)self _updateContentViewLayout];
   genieEffectView = self->_genieEffectView;
@@ -128,8 +128,8 @@
   if (shelfViewController)
   {
     contentView = self->_contentView;
-    v26 = [(SBSwitcherShelfViewController *)shelfViewController view];
-    [(SBFTouchPassThroughView *)contentView bringSubviewToFront:v26];
+    view = [(SBSwitcherShelfViewController *)shelfViewController view];
+    [(SBFTouchPassThroughView *)contentView bringSubviewToFront:view];
   }
 
   if (self->_homeGrabberView)
@@ -184,9 +184,9 @@
   }
 }
 
-- (SBFluidSwitcherSpaceOverlayAccessoryView)initWithDelegate:(id)a3
+- (SBFluidSwitcherSpaceOverlayAccessoryView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = SBFluidSwitcherSpaceOverlayAccessoryView;
   v5 = *MEMORY[0x277CBF3A0];
@@ -197,7 +197,7 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v4);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v11 = +[SBAppSwitcherDomain rootSettings];
     settings = v10->_settings;
     v10->_settings = v11;
@@ -212,8 +212,8 @@
     v10->_contentView = v13;
 
     v15 = v10->_contentView;
-    v16 = [MEMORY[0x277D75348] clearColor];
-    [(SBFTouchPassThroughView *)v15 setBackgroundColor:v16];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SBFTouchPassThroughView *)v15 setBackgroundColor:clearColor];
 
     [(SBFTouchPassThroughClippingView *)v10 addSubview:v10->_contentView];
   }
@@ -229,110 +229,110 @@
   [(SBFluidSwitcherSpaceOverlayAccessoryView *)&v3 dealloc];
 }
 
-- (void)setDrawsFocusIndicator:(BOOL)a3
+- (void)setDrawsFocusIndicator:(BOOL)indicator
 {
-  if (self->_drawsFocusIndicator != a3)
+  if (self->_drawsFocusIndicator != indicator)
   {
-    self->_drawsFocusIndicator = a3;
+    self->_drawsFocusIndicator = indicator;
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self _updateFocusIndicator];
   }
 }
 
-- (void)setDrawsFooter:(BOOL)a3
+- (void)setDrawsFooter:(BOOL)footer
 {
-  if (self->_drawsFooter != a3)
+  if (self->_drawsFooter != footer)
   {
-    self->_drawsFooter = a3;
+    self->_drawsFooter = footer;
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self _updateFooterVisibility];
   }
 }
 
-- (void)setTitleItems:(id)a3 animated:(BOOL)a4
+- (void)setTitleItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  itemsCopy = items;
   titleItems = self->_titleItems;
-  if (titleItems != v6)
+  if (titleItems != itemsCopy)
   {
-    v11 = v6;
-    v8 = [(NSArray *)titleItems isEqual:v6];
-    v6 = v11;
+    v11 = itemsCopy;
+    v8 = [(NSArray *)titleItems isEqual:itemsCopy];
+    itemsCopy = v11;
     if ((v8 & 1) == 0)
     {
       v9 = [(NSArray *)v11 copy];
       v10 = self->_titleItems;
       self->_titleItems = v9;
 
-      [(SBFluidSwitcherSpaceOverlayAccessoryView *)self _updateFooterAnimated:v4];
-      v6 = v11;
+      [(SBFluidSwitcherSpaceOverlayAccessoryView *)self _updateFooterAnimated:animatedCopy];
+      itemsCopy = v11;
     }
   }
 }
 
-- (void)setTitleAndIconOpacity:(double)a3
+- (void)setTitleAndIconOpacity:(double)opacity
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_titleAndIconOpacity = a3;
+    self->_titleAndIconOpacity = opacity;
 
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self _updateFooterAnimated:1];
   }
 }
 
-- (void)setTitleOpacity:(double)a3
+- (void)setTitleOpacity:(double)opacity
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_titleOpacity = a3;
+    self->_titleOpacity = opacity;
 
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self _updateFooterAnimated:1];
   }
 }
 
-- (void)setIconOpacity:(double)a3
+- (void)setIconOpacity:(double)opacity
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_iconOpacity = a3;
+    self->_iconOpacity = opacity;
 
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self _updateFooterAnimated:1];
   }
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_contentScale = a3;
+    self->_contentScale = scale;
 
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self setNeedsLayout];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = SBFluidSwitcherSpaceOverlayAccessoryView;
   [(SBFTouchPassThroughClippingView *)&v5 _setContinuousCornerRadius:?];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self setNeedsLayout];
   }
 }
 
-- (void)setHomeGrabberView:(id)a3
+- (void)setHomeGrabberView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   homeGrabberView = self->_homeGrabberView;
-  if (homeGrabberView != v5)
+  if (homeGrabberView != viewCopy)
   {
     if (homeGrabberView)
     {
       [(SBHomeGrabberRotationView *)homeGrabberView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_homeGrabberView, a3);
+    objc_storeStrong(&self->_homeGrabberView, view);
     if (self->_homeGrabberView)
     {
       [(SBFTouchPassThroughView *)self->_contentView addSubview:?];
@@ -356,22 +356,22 @@
   }
 }
 
-- (void)configureOverlayForAppLayout:(id)a3 iconZoomWithView:(id)a4 crossfadeViews:(id)a5
+- (void)configureOverlayForAppLayout:(id)layout iconZoomWithView:(id)view crossfadeViews:(id)views
 {
-  v32 = a3;
-  v8 = a4;
-  v31 = a5;
-  v9 = [(SBFluidSwitcherSpaceOverlayAccessoryView *)self delegate];
+  layoutCopy = layout;
+  viewCopy = view;
+  viewsCopy = views;
+  delegate = [(SBFluidSwitcherSpaceOverlayAccessoryView *)self delegate];
   v10 = 1;
-  [v9 overlayAccessoryViewFrameForIconOverlayView:self fullPresented:1];
+  [delegate overlayAccessoryViewFrameForIconOverlayView:self fullPresented:1];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v9 overlayAccessoryViewHomeScreenInterfaceOrientation:self];
-  v20 = [v9 overlayAccessoryViewSwitcherInterfaceOrientation:self];
-  v21 = [(SBFluidSwitcherIconOverlayView *)self->_iconOverlayView iconView];
-  v22 = [v21 hasSameOriginatingIconAsForIconZoomingView:v8];
+  v19 = [delegate overlayAccessoryViewHomeScreenInterfaceOrientation:self];
+  v20 = [delegate overlayAccessoryViewSwitcherInterfaceOrientation:self];
+  iconView = [(SBFluidSwitcherIconOverlayView *)self->_iconOverlayView iconView];
+  v22 = [iconView hasSameOriginatingIconAsForIconZoomingView:viewCopy];
 
   iconOverlayView = self->_iconOverlayView;
   v24 = iconOverlayView != 0;
@@ -386,18 +386,18 @@
     v10 = [(BSUIOrientationTransformWrapperView *)self->_iconOverlayView containerOrientation]!= v20;
   }
 
-  if (v8 && (v10 || (v24 & v22 & v25 & 1) == 0))
+  if (viewCopy && (v10 || (v24 & v22 & v25 & 1) == 0))
   {
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self removeIconOverlay];
-    v26 = v31;
-    v27 = [[SBFluidSwitcherIconOverlayView alloc] initWithIconView:v8 crossfadeViews:v31 crossfadeViewFrame:v19 contentOrientation:v20 containerOrientation:v12, v14, v16, v18];
+    v26 = viewsCopy;
+    v27 = [[SBFluidSwitcherIconOverlayView alloc] initWithIconView:viewCopy crossfadeViews:viewsCopy crossfadeViewFrame:v19 contentOrientation:v20 containerOrientation:v12, v14, v16, v18];
     v28 = self->_iconOverlayView;
     self->_iconOverlayView = v27;
 
     [(SBFTouchPassThroughView *)self->_contentView addSubview:self->_iconOverlayView];
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self setNeedsLayout];
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self layoutIfNeeded];
-    objc_storeStrong(&self->_appLayoutForIconOverlay, a3);
+    objc_storeStrong(&self->_appLayoutForIconOverlay, layout);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained overlayAccessoryView:self didUpdateShowingIconOverlay:1];
   }
@@ -406,51 +406,51 @@
   {
     WeakRetained = self->_appLayoutForIconOverlay;
     self->_appLayoutForIconOverlay = 0;
-    v26 = v31;
+    v26 = viewsCopy;
   }
 }
 
-- (void)setShelfViewController:(id)a3
+- (void)setShelfViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   shelfViewController = self->_shelfViewController;
-  if (shelfViewController != v5)
+  if (shelfViewController != controllerCopy)
   {
-    v12 = v5;
+    v12 = controllerCopy;
     v7 = shelfViewController;
     v8 = v7;
     if (v7)
     {
-      v9 = [(SBSwitcherShelfViewController *)v7 view];
-      [v9 removeFromSuperview];
+      view = [(SBSwitcherShelfViewController *)v7 view];
+      [view removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_shelfViewController, a3);
+    objc_storeStrong(&self->_shelfViewController, controller);
     contentView = self->_contentView;
-    v11 = [(SBSwitcherShelfViewController *)self->_shelfViewController view];
-    [(SBFTouchPassThroughView *)contentView addSubview:v11];
+    view2 = [(SBSwitcherShelfViewController *)self->_shelfViewController view];
+    [(SBFTouchPassThroughView *)contentView addSubview:view2];
 
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self setNeedsLayout];
-    v5 = v12;
+    controllerCopy = v12;
   }
 }
 
-- (void)setContentViewScale:(double)a3
+- (void)setContentViewScale:(double)scale
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_contentViewScale = a3;
+    self->_contentViewScale = scale;
     contentView = self->_contentView;
-    CGAffineTransformMakeScale(&v6, a3, a3);
+    CGAffineTransformMakeScale(&v6, scale, scale);
     [(SBFTouchPassThroughView *)contentView setTransform:&v6];
   }
 }
 
-- (void)setContentViewOffset:(CGPoint)a3
+- (void)setContentViewOffset:(CGPoint)offset
 {
-  if (a3.x != self->_contentViewOffset.x || a3.y != self->_contentViewOffset.y)
+  if (offset.x != self->_contentViewOffset.x || offset.y != self->_contentViewOffset.y)
   {
-    self->_contentViewOffset = a3;
+    self->_contentViewOffset = offset;
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self _updateContentViewLayout];
   }
 }
@@ -468,8 +468,8 @@
   shelfViewController = self->_shelfViewController;
   if (shelfViewController)
   {
-    v6 = [(SBSwitcherShelfViewController *)shelfViewController view];
-    [v6 removeFromSuperview];
+    view = [(SBSwitcherShelfViewController *)shelfViewController view];
+    [view removeFromSuperview];
 
     v7 = self->_shelfViewController;
     self->_shelfViewController = 0;
@@ -498,23 +498,23 @@
   [(SBSwitcherGenieEffectView *)genieEffectView invalidate];
 }
 
-- (void)setFooterStyle:(unint64_t)a3
+- (void)setFooterStyle:(unint64_t)style
 {
-  if (self->_footerStyle != a3)
+  if (self->_footerStyle != style)
   {
-    self->_footerStyle = a3;
+    self->_footerStyle = style;
     [(SBFluidSwitcherItemContainerFooterView *)self->_footerView setFooterStyle:?];
 
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self setNeedsLayout];
   }
 }
 
-- (void)setGenieAttributes:(id)a3 mode:(int64_t)a4 completion:(id)a5
+- (void)setGenieAttributes:(id)attributes mode:(int64_t)mode completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  attributesCopy = attributes;
+  completionCopy = completion;
   genieEffectView = self->_genieEffectView;
-  if (v8 && !genieEffectView)
+  if (attributesCopy && !genieEffectView)
   {
     v11 = [SBSwitcherGenieEffectView alloc];
     [(SBFluidSwitcherSpaceOverlayAccessoryView *)self bounds];
@@ -526,8 +526,8 @@
     v14 = objc_opt_new();
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v16 = [WeakRetained overlayAccessoryViewAdditionalGenieContentViews:self];
-    v17 = [v16 bs_reverse];
-    [v14 addObjectsFromArray:v17];
+    bs_reverse = [v16 bs_reverse];
+    [v14 addObjectsFromArray:bs_reverse];
 
     [v14 addObject:self->_contentView];
     [(SBSwitcherGenieEffectView *)self->_genieEffectView setPortaledContentViews:v14];
@@ -544,12 +544,12 @@
 
   if (genieEffectView)
   {
-    [(SBSwitcherGenieEffectView *)genieEffectView setAttributes:v8 mode:a4 completion:v9];
+    [(SBSwitcherGenieEffectView *)genieEffectView setAttributes:attributesCopy mode:mode completion:completionCopy];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
@@ -561,9 +561,9 @@ uint64_t __79__SBFluidSwitcherSpaceOverlayAccessoryView_setGenieAttributes_mode_
   return [v2 layoutIfNeeded];
 }
 
-- (void)itemContainerFooterView:(id)a3 didSelectTitleItem:(id)a4
+- (void)itemContainerFooterView:(id)view didSelectTitleItem:(id)item
 {
-  v5 = [(NSArray *)self->_titleItems indexOfObject:a4];
+  v5 = [(NSArray *)self->_titleItems indexOfObject:item];
   switch(v5)
   {
     case 0uLL:
@@ -585,23 +585,23 @@ LABEL_8:
   [WeakRetained overlayAccessoryView:self didSelectHeaderForRole:v7];
 }
 
-- (void)genieEffectViewDidInvalidate:(id)a3
+- (void)genieEffectViewDidInvalidate:(id)invalidate
 {
   genieEffectView = self->_genieEffectView;
   self->_genieEffectView = 0;
-  v4 = a3;
+  invalidateCopy = invalidate;
 
-  [v4 removeFromSuperview];
+  [invalidateCopy removeFromSuperview];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = SBFluidSwitcherSpaceOverlayAccessoryView;
-  if ([(SBFluidSwitcherSpaceOverlayAccessoryView *)&v12 pointInside:v7 withEvent:x, y])
+  if ([(SBFluidSwitcherSpaceOverlayAccessoryView *)&v12 pointInside:eventCopy withEvent:x, y])
   {
     v8 = 1;
   }
@@ -613,7 +613,7 @@ LABEL_8:
     {
       v10 = self->_footerView;
       [(SBFluidSwitcherSpaceOverlayAccessoryView *)self convertPoint:v10 toView:x, y];
-      v8 = [(SBFluidSwitcherItemContainerFooterView *)v10 pointInside:v7 withEvent:?];
+      v8 = [(SBFluidSwitcherItemContainerFooterView *)v10 pointInside:eventCopy withEvent:?];
     }
 
     else
@@ -625,15 +625,15 @@ LABEL_8:
   return v8;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = SBFluidSwitcherSpaceOverlayAccessoryView;
-  v8 = [(SBFTouchPassThroughView *)&v13 hitTest:v7 withEvent:x, y];
-  if (v8 || (footerView = self->_footerView) != 0 && ([(SBFluidSwitcherItemContainerFooterView *)footerView alpha], BSFloatGreaterThanFloat()) && (v11 = self->_footerView, [(SBFluidSwitcherSpaceOverlayAccessoryView *)self convertPoint:v11 toView:x, y], [(SBFTouchPassThroughView *)v11 hitTest:v7 withEvent:?], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  v8 = [(SBFTouchPassThroughView *)&v13 hitTest:eventCopy withEvent:x, y];
+  if (v8 || (footerView = self->_footerView) != 0 && ([(SBFluidSwitcherItemContainerFooterView *)footerView alpha], BSFloatGreaterThanFloat()) && (v11 = self->_footerView, [(SBFluidSwitcherSpaceOverlayAccessoryView *)self convertPoint:v11 toView:x, y], [(SBFTouchPassThroughView *)v11 hitTest:eventCopy withEvent:?], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
   }
@@ -665,8 +665,8 @@ LABEL_8:
     v10 = v8;
   }
 
-  v11 = [MEMORY[0x277D75348] clearColor];
-  v12 = [v11 CGColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  cGColor = [clearColor CGColor];
 
   if (drawsFocusIndicator)
   {
@@ -681,7 +681,7 @@ LABEL_8:
       v22 = self->_focusIndicatorLayer;
       self->_focusIndicatorLayer = v21;
 
-      [(CAShapeLayer *)self->_focusIndicatorLayer setFillColor:v12];
+      [(CAShapeLayer *)self->_focusIndicatorLayer setFillColor:cGColor];
       [(CAShapeLayer *)self->_focusIndicatorLayer setFrame:v14, v16, v18, v20];
       [(CAShapeLayer *)self->_focusIndicatorLayer setLineWidth:0.0];
       v23 = self->_focusIndicatorLayer;
@@ -689,11 +689,11 @@ LABEL_8:
       -[CAShapeLayer setPath:](v23, "setPath:", [v24 CGPath]);
 
       v25 = self->_focusIndicatorLayer;
-      v26 = [MEMORY[0x277D75348] systemWhiteColor];
-      -[CAShapeLayer setStrokeColor:](v25, "setStrokeColor:", [v26 CGColor]);
+      systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+      -[CAShapeLayer setStrokeColor:](v25, "setStrokeColor:", [systemWhiteColor CGColor]);
 
-      v27 = [(SBFTouchPassThroughView *)self->_contentView layer];
-      [v27 addSublayer:self->_focusIndicatorLayer];
+      layer = [(SBFTouchPassThroughView *)self->_contentView layer];
+      [layer addSublayer:self->_focusIndicatorLayer];
 
       [(SBFluidSwitcherSpaceOverlayAccessoryView *)self setNeedsLayout];
     }
@@ -763,16 +763,16 @@ uint64_t __67__SBFluidSwitcherSpaceOverlayAccessoryView__updateFooterVisibility_
   return [v7 layoutIfNeeded];
 }
 
-- (void)_updateFooterAnimated:(BOOL)a3
+- (void)_updateFooterAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(SBFluidSwitcherItemContainerFooterView *)self->_footerView setAlpha:self->_titleAndIconOpacity];
   [(SBFluidSwitcherItemContainerFooterView *)self->_footerView setIconAlpha:self->_iconOpacity];
   [(SBFluidSwitcherItemContainerFooterView *)self->_footerView setTextAlpha:self->_titleOpacity];
   footerView = self->_footerView;
   titleItems = self->_titleItems;
 
-  [(SBFluidSwitcherItemContainerFooterView *)footerView setTitleItems:titleItems animated:v3];
+  [(SBFluidSwitcherItemContainerFooterView *)footerView setTitleItems:titleItems animated:animatedCopy];
 }
 
 - (double)_inverseContentScale
@@ -790,27 +790,27 @@ uint64_t __67__SBFluidSwitcherSpaceOverlayAccessoryView__updateFooterVisibility_
 - (void)_configureDebugBorder
 {
   v14[7] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75348] systemRedColor];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  v14[1] = v4;
-  v5 = [MEMORY[0x277D75348] systemYellowColor];
-  v14[2] = v5;
-  v6 = [MEMORY[0x277D75348] systemMintColor];
-  v14[3] = v6;
-  v7 = [MEMORY[0x277D75348] systemPurpleColor];
-  v14[4] = v7;
-  v8 = [MEMORY[0x277D75348] systemOrangeColor];
-  v14[5] = v8;
-  v9 = [MEMORY[0x277D75348] systemIndigoColor];
-  v14[6] = v9;
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v14[1] = systemBlueColor;
+  systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+  v14[2] = systemYellowColor;
+  systemMintColor = [MEMORY[0x277D75348] systemMintColor];
+  v14[3] = systemMintColor;
+  systemPurpleColor = [MEMORY[0x277D75348] systemPurpleColor];
+  v14[4] = systemPurpleColor;
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  v14[5] = systemOrangeColor;
+  systemIndigoColor = [MEMORY[0x277D75348] systemIndigoColor];
+  v14[6] = systemIndigoColor;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:7];
 
   v11 = [v10 objectAtIndex:{arc4random() % objc_msgSend(v10, "count")}];
-  v12 = [(SBFluidSwitcherSpaceOverlayAccessoryView *)self layer];
-  [v12 setBorderColor:{objc_msgSend(v11, "cgColor")}];
+  layer = [(SBFluidSwitcherSpaceOverlayAccessoryView *)self layer];
+  [layer setBorderColor:{objc_msgSend(v11, "cgColor")}];
 
-  v13 = [(SBFluidSwitcherSpaceOverlayAccessoryView *)self layer];
-  [v13 setBorderWidth:8.0];
+  layer2 = [(SBFluidSwitcherSpaceOverlayAccessoryView *)self layer];
+  [layer2 setBorderWidth:8.0];
 }
 
 - (CGPoint)contentViewOffset

@@ -1,7 +1,7 @@
 @interface PHASESpatialPipelineEntry
 - (PHASESpatialPipelineEntry)init;
 - (void)setSendLevel:(double)sendLevel;
-- (void)setTweakParameterWithValue:(double)a3 identifier:(id)a4;
+- (void)setTweakParameterWithValue:(double)value identifier:(id)identifier;
 @end
 
 @implementation PHASESpatialPipelineEntry
@@ -34,11 +34,11 @@
   self->_sendLevel = PHASEGetPropertyBounded<double>(v8, v7, sendLevel, 0.0, 1.0);
 }
 
-- (void)setTweakParameterWithValue:(double)a3 identifier:(id)a4
+- (void)setTweakParameterWithValue:(double)value identifier:(id)identifier
 {
-  v7 = a4;
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [(NSMutableDictionary *)self->_tweakParams setObject:v6 forKeyedSubscript:v7];
+  identifierCopy = identifier;
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:value];
+  [(NSMutableDictionary *)self->_tweakParams setObject:v6 forKeyedSubscript:identifierCopy];
 }
 
 @end

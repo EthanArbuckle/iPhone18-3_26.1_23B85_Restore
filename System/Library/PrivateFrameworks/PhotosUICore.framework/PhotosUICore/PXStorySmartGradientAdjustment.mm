@@ -1,9 +1,9 @@
 @interface PXStorySmartGradientAdjustment
-- (BOOL)isEqualToDisplayAssetAdjustment:(id)a3;
+- (BOOL)isEqualToDisplayAssetAdjustment:(id)adjustment;
 - (CGRect)normalizedSourceRect;
-- (CGSize)requestSizeForProposedTargetSize:(CGSize)a3;
+- (CGSize)requestSizeForProposedTargetSize:(CGSize)size;
 - (CGSize)targetSize;
-- (id)applyToImage:(id)a3 targetSize:(CGSize)a4;
+- (id)applyToImage:(id)image targetSize:(CGSize)size;
 - (unint64_t)hash;
 @end
 
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (CGSize)requestSizeForProposedTargetSize:(CGSize)a3
+- (CGSize)requestSizeForProposedTargetSize:(CGSize)size
 {
   v3 = 30.0;
   v4 = 30.0;
@@ -40,15 +40,15 @@
   return result;
 }
 
-- (BOOL)isEqualToDisplayAssetAdjustment:(id)a3
+- (BOOL)isEqualToDisplayAssetAdjustment:(id)adjustment
 {
-  v4 = a3;
+  adjustmentCopy = adjustment;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 useSmartColor];
-    if (v6 == -[PXStorySmartGradientAdjustment useSmartColor](self, "useSmartColor") && (v7 = [v5 useSimpleBlur], v7 == -[PXStorySmartGradientAdjustment useSimpleBlur](self, "useSimpleBlur")) && (objc_msgSend(v5, "simpleBlurRadius"), v9 = v8, -[PXStorySmartGradientAdjustment simpleBlurRadius](self, "simpleBlurRadius"), v9 == v10) && (objc_msgSend(v5, "simpleBlurExposure"), v12 = v11, -[PXStorySmartGradientAdjustment simpleBlurExposure](self, "simpleBlurExposure"), v12 == v13) && (v14 = objc_msgSend(v5, "simpleBlurRepeatEdges"), v14 == -[PXStorySmartGradientAdjustment simpleBlurRepeatEdges](self, "simpleBlurRepeatEdges")) && (objc_msgSend(v5, "simpleBlurEdgeStretch"), v16 = v15, -[PXStorySmartGradientAdjustment simpleBlurEdgeStretch](self, "simpleBlurEdgeStretch"), v16 == v17) && (objc_msgSend(v5, "normalizedSourceRect"), v19 = v18, v21 = v20, v23 = v22, v25 = v24, -[PXStorySmartGradientAdjustment normalizedSourceRect](self, "normalizedSourceRect"), v39.origin.x = v26, v39.origin.y = v27, v39.size.width = v28, v39.size.height = v29, v38.origin.x = v19, v38.origin.y = v21, v38.size.width = v23, v38.size.height = v25, CGRectEqualToRect(v38, v39)))
+    v5 = adjustmentCopy;
+    useSmartColor = [v5 useSmartColor];
+    if (useSmartColor == -[PXStorySmartGradientAdjustment useSmartColor](self, "useSmartColor") && (v7 = [v5 useSimpleBlur], v7 == -[PXStorySmartGradientAdjustment useSimpleBlur](self, "useSimpleBlur")) && (objc_msgSend(v5, "simpleBlurRadius"), v9 = v8, -[PXStorySmartGradientAdjustment simpleBlurRadius](self, "simpleBlurRadius"), v9 == v10) && (objc_msgSend(v5, "simpleBlurExposure"), v12 = v11, -[PXStorySmartGradientAdjustment simpleBlurExposure](self, "simpleBlurExposure"), v12 == v13) && (v14 = objc_msgSend(v5, "simpleBlurRepeatEdges"), v14 == -[PXStorySmartGradientAdjustment simpleBlurRepeatEdges](self, "simpleBlurRepeatEdges")) && (objc_msgSend(v5, "simpleBlurEdgeStretch"), v16 = v15, -[PXStorySmartGradientAdjustment simpleBlurEdgeStretch](self, "simpleBlurEdgeStretch"), v16 == v17) && (objc_msgSend(v5, "normalizedSourceRect"), v19 = v18, v21 = v20, v23 = v22, v25 = v24, -[PXStorySmartGradientAdjustment normalizedSourceRect](self, "normalizedSourceRect"), v39.origin.x = v26, v39.origin.y = v27, v39.size.width = v28, v39.size.height = v29, v38.origin.x = v19, v38.origin.y = v21, v38.size.width = v23, v38.size.height = v25, CGRectEqualToRect(v38, v39)))
     {
       [v5 targetSize];
       v31 = v30;
@@ -78,24 +78,24 @@
   return [v2 hash];
 }
 
-- (id)applyToImage:(id)a3 targetSize:(CGSize)a4
+- (id)applyToImage:(id)image targetSize:(CGSize)size
 {
   v108[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  imageCopy = image;
+  if (!imageCopy)
   {
-    v76 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v76 handleFailureInMethod:a2 object:self file:@"PXStorySmartGradientAdjustment.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"image != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStorySmartGradientAdjustment.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"image != nil"}];
   }
 
-  [v6 extent];
+  [imageCopy extent];
   if (CGRectIsEmpty(v110))
   {
-    v77 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v77 handleFailureInMethod:a2 object:self file:@"PXStorySmartGradientAdjustment.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"!CGRectIsEmpty(image.extent)"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStorySmartGradientAdjustment.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"!CGRectIsEmpty(image.extent)"}];
   }
 
-  v7 = v6;
+  v7 = imageCopy;
   if ([(PXStorySmartGradientAdjustment *)self useSimpleBlur])
   {
     [v7 extent];

@@ -1,100 +1,100 @@
 @interface CKBrowserItemPayload
-+ (id)browserItemFromSticker:(id)a3;
-+ (id)browserItemPayloadForCollaborationWithURL:(id)a3 collaborationType:(int64_t)a4;
-+ (id)browserItemPayloadFromIMPluginPayload:(id)a3;
-+ (id)createBrowserItemPayloadWithRichLinkMetadata:(id)a3;
-+ (id)createBrowserItemPayloadWithURL:(id)a3 data:(id)a4;
-- (BOOL)isEqualToPluginPayload:(id)a3;
++ (id)browserItemFromSticker:(id)sticker;
++ (id)browserItemPayloadForCollaborationWithURL:(id)l collaborationType:(int64_t)type;
++ (id)browserItemPayloadFromIMPluginPayload:(id)payload;
++ (id)createBrowserItemPayloadWithRichLinkMetadata:(id)metadata;
++ (id)createBrowserItemPayloadWithURL:(id)l data:(id)data;
+- (BOOL)isEqualToPluginPayload:(id)payload;
 - (BOOL)shouldSendAsMediaObject;
 - (BOOL)shouldSendAsRichLink;
 - (BOOL)shouldSendAsText;
 - (BOOL)shouldStageAsEmbeddedTextAttachment;
 - (BOOL)supportsSendLater;
-- (CKBrowserItemPayload)initWithCoder:(id)a3;
+- (CKBrowserItemPayload)initWithCoder:(id)coder;
 - (id)__ck_urlFromTextBodyForRichLink;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mediaObjectFromPayloadWithKeyToTrasferGUIDMap:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mediaObjectFromPayloadWithKeyToTrasferGUIDMap:(id)map;
 - (id)transcoderUserInfo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKBrowserItemPayload
 
-+ (id)browserItemPayloadFromIMPluginPayload:(id)a3
++ (id)browserItemPayloadFromIMPluginPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = objc_alloc_init(CKBrowserItemPayload);
   if (v4)
   {
-    v5 = [v3 text];
-    [(CKBrowserItemPayload *)v4 setText:v5];
+    text = [payloadCopy text];
+    [(CKBrowserItemPayload *)v4 setText:text];
 
-    v6 = [v3 data];
-    [(CKBrowserItemPayload *)v4 setData:v6];
+    data = [payloadCopy data];
+    [(CKBrowserItemPayload *)v4 setData:data];
 
-    v7 = [v3 url];
+    v7 = [payloadCopy url];
     [(CKBrowserItemPayload *)v4 setUrl:v7];
 
-    v8 = [v3 breadcrumbText];
-    [(CKBrowserItemPayload *)v4 setBreadcrumbText:v8];
+    breadcrumbText = [payloadCopy breadcrumbText];
+    [(CKBrowserItemPayload *)v4 setBreadcrumbText:breadcrumbText];
 
-    v9 = [v3 statusText];
-    [(CKBrowserItemPayload *)v4 setStatusText:v9];
+    statusText = [payloadCopy statusText];
+    [(CKBrowserItemPayload *)v4 setStatusText:statusText];
 
-    -[CKBrowserItemPayload setUpdate:](v4, "setUpdate:", [v3 isUpdate]);
-    -[CKBrowserItemPayload setSticker:](v4, "setSticker:", [v3 isSticker]);
-    -[CKBrowserItemPayload setCustomAcknowledgement:](v4, "setCustomAcknowledgement:", [v3 isCustomAcknowledgement]);
-    -[CKBrowserItemPayload setShouldExpire:](v4, "setShouldExpire:", [v3 shouldExpire]);
-    v10 = [v3 consumedSessionPayloads];
-    [(CKBrowserItemPayload *)v4 setConsumedSessionPayloads:v10];
+    -[CKBrowserItemPayload setUpdate:](v4, "setUpdate:", [payloadCopy isUpdate]);
+    -[CKBrowserItemPayload setSticker:](v4, "setSticker:", [payloadCopy isSticker]);
+    -[CKBrowserItemPayload setCustomAcknowledgement:](v4, "setCustomAcknowledgement:", [payloadCopy isCustomAcknowledgement]);
+    -[CKBrowserItemPayload setShouldExpire:](v4, "setShouldExpire:", [payloadCopy shouldExpire]);
+    consumedSessionPayloads = [payloadCopy consumedSessionPayloads];
+    [(CKBrowserItemPayload *)v4 setConsumedSessionPayloads:consumedSessionPayloads];
 
-    v11 = [v3 messageGUID];
-    [(CKBrowserItemPayload *)v4 setMessageGUID:v11];
+    messageGUID = [payloadCopy messageGUID];
+    [(CKBrowserItemPayload *)v4 setMessageGUID:messageGUID];
 
-    v12 = [v3 associatedMessageGUID];
-    [(CKBrowserItemPayload *)v4 setAssociatedMessageGUID:v12];
+    associatedMessageGUID = [payloadCopy associatedMessageGUID];
+    [(CKBrowserItemPayload *)v4 setAssociatedMessageGUID:associatedMessageGUID];
 
-    v13 = [v3 pluginSessionGUID];
-    [(CKBrowserItemPayload *)v4 setPluginSessionGUID:v13];
+    pluginSessionGUID = [payloadCopy pluginSessionGUID];
+    [(CKBrowserItemPayload *)v4 setPluginSessionGUID:pluginSessionGUID];
 
-    v14 = [v3 pluginBundleID];
-    [(CKBrowserItemPayload *)v4 setPluginBundleID:v14];
+    pluginBundleID = [payloadCopy pluginBundleID];
+    [(CKBrowserItemPayload *)v4 setPluginBundleID:pluginBundleID];
 
-    v15 = [v3 dataDetectedResult];
-    [(CKBrowserItemPayload *)v4 setDataDetectedResult:v15];
+    dataDetectedResult = [payloadCopy dataDetectedResult];
+    [(CKBrowserItemPayload *)v4 setDataDetectedResult:dataDetectedResult];
 
-    v16 = [v3 attachments];
-    [(CKBrowserItemPayload *)v4 setAttachments:v16];
+    attachments = [payloadCopy attachments];
+    [(CKBrowserItemPayload *)v4 setAttachments:attachments];
 
-    v17 = [v3 datasource];
-    [(CKBrowserItemPayload *)v4 setDatasource:v17];
+    datasource = [payloadCopy datasource];
+    [(CKBrowserItemPayload *)v4 setDatasource:datasource];
 
-    -[CKBrowserItemPayload setIsFromMe:](v4, "setIsFromMe:", [v3 isFromMe]);
-    -[CKBrowserItemPayload setIsPlayed:](v4, "setIsPlayed:", [v3 isPlayed]);
-    v18 = [v3 sender];
-    [(CKBrowserItemPayload *)v4 setSender:v18];
+    -[CKBrowserItemPayload setIsFromMe:](v4, "setIsFromMe:", [payloadCopy isFromMe]);
+    -[CKBrowserItemPayload setIsPlayed:](v4, "setIsPlayed:", [payloadCopy isPlayed]);
+    sender = [payloadCopy sender];
+    [(CKBrowserItemPayload *)v4 setSender:sender];
 
-    -[CKBrowserItemPayload setSendAsCopy:](v4, "setSendAsCopy:", [v3 sendAsCopy]);
-    -[CKBrowserItemPayload setLiveEditableInEntryView:](v4, "setLiveEditableInEntryView:", [v3 liveEditableInEntryView]);
+    -[CKBrowserItemPayload setSendAsCopy:](v4, "setSendAsCopy:", [payloadCopy sendAsCopy]);
+    -[CKBrowserItemPayload setLiveEditableInEntryView:](v4, "setLiveEditableInEntryView:", [payloadCopy liveEditableInEntryView]);
   }
 
   return v4;
 }
 
-+ (id)createBrowserItemPayloadWithURL:(id)a3 data:(id)a4
++ (id)createBrowserItemPayloadWithURL:(id)l data:(id)data
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  dataCopy = data;
   v7 = objc_alloc_init(CKBrowserItemPayload);
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x1E696ECA0]);
-    [v8 setURL:v5];
+    [v8 setURL:lCopy];
     v9 = objc_alloc_init(MEMORY[0x1E696ECD8]);
     [v9 setMetadata:v8];
-    if (v6)
+    if (dataCopy)
     {
-      [(CKBrowserItemPayload *)v7 setData:v6];
+      [(CKBrowserItemPayload *)v7 setData:dataCopy];
     }
 
     else
@@ -103,25 +103,25 @@
       [(CKBrowserItemPayload *)v7 setData:v10];
     }
 
-    [(CKBrowserItemPayload *)v7 setUrl:v5];
+    [(CKBrowserItemPayload *)v7 setUrl:lCopy];
     [(CKBrowserItemPayload *)v7 setPluginBundleID:*MEMORY[0x1E69A6A18]];
   }
 
   return v7;
 }
 
-+ (id)createBrowserItemPayloadWithRichLinkMetadata:(id)a3
++ (id)createBrowserItemPayloadWithRichLinkMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   v4 = objc_alloc_init(CKBrowserItemPayload);
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E696ECD8]);
-    [v5 setMetadata:v3];
+    [v5 setMetadata:metadataCopy];
     v6 = [v5 dataRepresentationWithOutOfLineAttachments:0];
     [(CKBrowserItemPayload *)v4 setData:v6];
 
-    v7 = [v3 URL];
+    v7 = [metadataCopy URL];
     [(CKBrowserItemPayload *)v4 setUrl:v7];
 
     [(CKBrowserItemPayload *)v4 setPluginBundleID:*MEMORY[0x1E69A6A18]];
@@ -130,26 +130,26 @@
   return v4;
 }
 
-+ (id)browserItemPayloadForCollaborationWithURL:(id)a3 collaborationType:(int64_t)a4
++ (id)browserItemPayloadForCollaborationWithURL:(id)l collaborationType:(int64_t)type
 {
-  v5 = a3;
+  lCopy = l;
   v6 = objc_alloc_init(CKBrowserItemPayload);
-  v7 = [MEMORY[0x1E696AEC0] stringGUID];
-  [(CKBrowserItemPayload *)v6 setMessageGUID:v7];
+  stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+  [(CKBrowserItemPayload *)v6 setMessageGUID:stringGUID];
 
   [(CKBrowserItemPayload *)v6 setPluginBundleID:*MEMORY[0x1E69A6A18]];
-  [(CKBrowserItemPayload *)v6 setPayloadCollaborationType:a4];
-  [(CKBrowserItemPayload *)v6 setUrl:v5];
+  [(CKBrowserItemPayload *)v6 setPayloadCollaborationType:type];
+  [(CKBrowserItemPayload *)v6 setUrl:lCopy];
 
   return v6;
 }
 
-- (BOOL)isEqualToPluginPayload:(id)a3
+- (BOOL)isEqualToPluginPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v22.receiver = self;
   v22.super_class = CKBrowserItemPayload;
-  if (![(CKBrowserItemPayload *)&v22 isEqualToPluginPayload:v4])
+  if (![(CKBrowserItemPayload *)&v22 isEqualToPluginPayload:payloadCopy])
   {
     goto LABEL_9;
   }
@@ -157,16 +157,16 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CKBrowserItemPayload *)self videoComplementFileURL];
-    v7 = [v5 videoComplementFileURL];
-    v8 = CKIsEqual(v6, v7);
+    v5 = payloadCopy;
+    videoComplementFileURL = [(CKBrowserItemPayload *)self videoComplementFileURL];
+    videoComplementFileURL2 = [v5 videoComplementFileURL];
+    v8 = CKIsEqual(videoComplementFileURL, videoComplementFileURL2);
 
     if (v8 && (-[CKBrowserItemPayload fileURL](self, "fileURL"), v9 = objc_claimAutoreleasedReturnValue(), [v5 fileURL], v10 = objc_claimAutoreleasedReturnValue(), v11 = CKIsEqual(v9, v10), v10, v9, v11) && (-[CKBrowserItemPayload mediaObject](self, "mediaObject"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "transferGUID"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "mediaObject"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "transferGUID"), v15 = objc_claimAutoreleasedReturnValue(), v16 = CKIsEqual(v13, v15), v15, v14, v13, v12, v16))
     {
-      v17 = [(CKBrowserItemPayload *)self photoShelfViewController];
-      v18 = [v5 photoShelfViewController];
-      v19 = CKIsEqual(v17, v18);
+      photoShelfViewController = [(CKBrowserItemPayload *)self photoShelfViewController];
+      photoShelfViewController2 = [v5 photoShelfViewController];
+      v19 = CKIsEqual(photoShelfViewController, photoShelfViewController2);
 
       if (v19)
       {
@@ -190,96 +190,96 @@ LABEL_10:
   return v20;
 }
 
-- (CKBrowserItemPayload)initWithCoder:(id)a3
+- (CKBrowserItemPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
   v19.receiver = self;
   v19.super_class = CKBrowserItemPayload;
-  v8 = [(CKBrowserItemPayload *)&v19 initWithCoder:v4 additionalAllowedClasses:v7];
+  v8 = [(CKBrowserItemPayload *)&v19 initWithCoder:coderCopy additionalAllowedClasses:v7];
 
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CKBROWSERITEM_VIDEOCOMPLEMENFILETURL_KEY"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CKBROWSERITEM_VIDEOCOMPLEMENFILETURL_KEY"];
     [(CKBrowserItemPayload *)v8 setVideoComplementFileURL:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CKBROWSERITEM_FILEURL_KEY"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CKBROWSERITEM_FILEURL_KEY"];
     [(CKBrowserItemPayload *)v8 setFileURL:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CKBROWSERITEM_FILENAME_KEY"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CKBROWSERITEM_FILENAME_KEY"];
     [(CKBrowserItemPayload *)v8 setFilename:v11];
 
     v12 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeDictionaryWithKeysOfClasses:v12 objectsOfClasses:v15 forKey:@"CKPLUGIN_ATTRIBUTIONINFO"];
+    v16 = [coderCopy decodeDictionaryWithKeysOfClasses:v12 objectsOfClasses:v15 forKey:@"CKPLUGIN_ATTRIBUTIONINFO"];
     [(CKBrowserItemPayload *)v8 setAttributionInfo:v16];
 
-    -[CKBrowserItemPayload setRequiresValidation:](v8, "setRequiresValidation:", [v4 decodeBoolForKey:@"CKBROWSERITEM_REQUIRESVALIDATION_KEY"]);
-    -[CKBrowserItemPayload setUseDirectSend:](v8, "setUseDirectSend:", [v4 decodeBoolForKey:@"CKBROWSERITEM_USEDIRECTSEND_KEY"]);
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CKBROWSERITEM_MEDIAOBJECT_KEY"];
+    -[CKBrowserItemPayload setRequiresValidation:](v8, "setRequiresValidation:", [coderCopy decodeBoolForKey:@"CKBROWSERITEM_REQUIRESVALIDATION_KEY"]);
+    -[CKBrowserItemPayload setUseDirectSend:](v8, "setUseDirectSend:", [coderCopy decodeBoolForKey:@"CKBROWSERITEM_USEDIRECTSEND_KEY"]);
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CKBROWSERITEM_MEDIAOBJECT_KEY"];
     [(CKBrowserItemPayload *)v8 setMediaObject:v17];
 
-    -[CKBrowserItemPayload setLiveEditableInEntryView:](v8, "setLiveEditableInEntryView:", [v4 decodeBoolForKey:@"CKBROWSERITEM_LIVEEDITABLE_KEY"]);
+    -[CKBrowserItemPayload setLiveEditableInEntryView:](v8, "setLiveEditableInEntryView:", [coderCopy decodeBoolForKey:@"CKBROWSERITEM_LIVEEDITABLE_KEY"]);
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CKBrowserItemPayload;
-  [(CKBrowserItemPayload *)&v10 encodeWithCoder:v4];
-  v5 = [(CKBrowserItemPayload *)self videoComplementFileURL];
-  [v4 encodeObject:v5 forKey:@"CKBROWSERITEM_VIDEOCOMPLEMENFILETURL_KEY"];
+  [(CKBrowserItemPayload *)&v10 encodeWithCoder:coderCopy];
+  videoComplementFileURL = [(CKBrowserItemPayload *)self videoComplementFileURL];
+  [coderCopy encodeObject:videoComplementFileURL forKey:@"CKBROWSERITEM_VIDEOCOMPLEMENFILETURL_KEY"];
 
-  v6 = [(CKBrowserItemPayload *)self fileURL];
-  [v4 encodeObject:v6 forKey:@"CKBROWSERITEM_FILEURL_KEY"];
+  fileURL = [(CKBrowserItemPayload *)self fileURL];
+  [coderCopy encodeObject:fileURL forKey:@"CKBROWSERITEM_FILEURL_KEY"];
 
-  v7 = [(CKBrowserItemPayload *)self filename];
-  [v4 encodeObject:v7 forKey:@"CKBROWSERITEM_FILENAME_KEY"];
+  filename = [(CKBrowserItemPayload *)self filename];
+  [coderCopy encodeObject:filename forKey:@"CKBROWSERITEM_FILENAME_KEY"];
 
-  v8 = [(CKBrowserItemPayload *)self attributionInfo];
-  [v4 encodeObject:v8 forKey:@"CKPLUGIN_ATTRIBUTIONINFO"];
+  attributionInfo = [(CKBrowserItemPayload *)self attributionInfo];
+  [coderCopy encodeObject:attributionInfo forKey:@"CKPLUGIN_ATTRIBUTIONINFO"];
 
-  [v4 encodeBool:-[CKBrowserItemPayload requiresValidation](self forKey:{"requiresValidation"), @"CKBROWSERITEM_REQUIRESVALIDATION_KEY"}];
-  [v4 encodeBool:-[CKBrowserItemPayload useDirectSend](self forKey:{"useDirectSend"), @"CKBROWSERITEM_USEDIRECTSEND_KEY"}];
-  v9 = [(CKBrowserItemPayload *)self mediaObject];
-  [v4 encodeObject:v9 forKey:@"CKBROWSERITEM_MEDIAOBJECT_KEY"];
+  [coderCopy encodeBool:-[CKBrowserItemPayload requiresValidation](self forKey:{"requiresValidation"), @"CKBROWSERITEM_REQUIRESVALIDATION_KEY"}];
+  [coderCopy encodeBool:-[CKBrowserItemPayload useDirectSend](self forKey:{"useDirectSend"), @"CKBROWSERITEM_USEDIRECTSEND_KEY"}];
+  mediaObject = [(CKBrowserItemPayload *)self mediaObject];
+  [coderCopy encodeObject:mediaObject forKey:@"CKBROWSERITEM_MEDIAOBJECT_KEY"];
 
-  [v4 encodeBool:-[CKBrowserItemPayload liveEditableInEntryView](self forKey:{"liveEditableInEntryView"), @"CKBROWSERITEM_LIVEEDITABLE_KEY"}];
+  [coderCopy encodeBool:-[CKBrowserItemPayload liveEditableInEntryView](self forKey:{"liveEditableInEntryView"), @"CKBROWSERITEM_LIVEEDITABLE_KEY"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = CKBrowserItemPayload;
-  v4 = [(CKBrowserItemPayload *)&v12 copyWithZone:a3];
+  v4 = [(CKBrowserItemPayload *)&v12 copyWithZone:zone];
   if (v4)
   {
-    v5 = [(CKBrowserItemPayload *)self videoComplementFileURL];
-    [v4 setVideoComplementFileURL:v5];
+    videoComplementFileURL = [(CKBrowserItemPayload *)self videoComplementFileURL];
+    [v4 setVideoComplementFileURL:videoComplementFileURL];
 
-    v6 = [(CKBrowserItemPayload *)self fileURL];
-    [v4 setFileURL:v6];
+    fileURL = [(CKBrowserItemPayload *)self fileURL];
+    [v4 setFileURL:fileURL];
 
-    v7 = [(CKBrowserItemPayload *)self filename];
-    [v4 setFilename:v7];
+    filename = [(CKBrowserItemPayload *)self filename];
+    [v4 setFilename:filename];
 
-    v8 = [(CKBrowserItemPayload *)self attributionInfo];
-    [v4 setAttributionInfo:v8];
+    attributionInfo = [(CKBrowserItemPayload *)self attributionInfo];
+    [v4 setAttributionInfo:attributionInfo];
 
-    v9 = [(CKBrowserItemPayload *)self mediaObject];
-    [v4 setMediaObject:v9];
+    mediaObject = [(CKBrowserItemPayload *)self mediaObject];
+    [v4 setMediaObject:mediaObject];
 
-    v10 = [(CKBrowserItemPayload *)self photoShelfViewController];
-    [v4 setPhotoShelfViewController:v10];
+    photoShelfViewController = [(CKBrowserItemPayload *)self photoShelfViewController];
+    [v4 setPhotoShelfViewController:photoShelfViewController];
 
     [v4 setRequiresValidation:{-[CKBrowserItemPayload requiresValidation](self, "requiresValidation")}];
     [v4 setUseDirectSend:{-[CKBrowserItemPayload useDirectSend](self, "useDirectSend")}];
@@ -293,8 +293,8 @@ LABEL_10:
 {
   if (![(CKBrowserItemPayload *)self supportsCollaboration]|| (v3 = [(CKBrowserItemPayload *)self sendAsCopy]) != 0)
   {
-    v4 = [(CKBrowserItemPayload *)self photoShelfViewController];
-    if (v4 || [(CKBrowserItemPayload *)self shouldSendAsMediaObject]|| [(CKBrowserItemPayload *)self shouldSendAsText]|| [(CKBrowserItemPayload *)self shouldSendAsRichLink])
+    photoShelfViewController = [(CKBrowserItemPayload *)self photoShelfViewController];
+    if (photoShelfViewController || [(CKBrowserItemPayload *)self shouldSendAsMediaObject]|| [(CKBrowserItemPayload *)self shouldSendAsText]|| [(CKBrowserItemPayload *)self shouldSendAsRichLink])
     {
 
 LABEL_8:
@@ -302,9 +302,9 @@ LABEL_8:
       return v3;
     }
 
-    v5 = [(CKBrowserItemPayload *)self __ck_urlFromTextBodyForRichLink];
+    __ck_urlFromTextBodyForRichLink = [(CKBrowserItemPayload *)self __ck_urlFromTextBodyForRichLink];
 
-    if (v5)
+    if (__ck_urlFromTextBodyForRichLink)
     {
       goto LABEL_8;
     }
@@ -326,8 +326,8 @@ LABEL_8:
       return 1;
     }
 
-    v6 = [(CKBrowserItemPayload *)self attachments];
-    v7 = [v6 count];
+    attachments = [(CKBrowserItemPayload *)self attachments];
+    v7 = [attachments count];
     if (v7)
     {
       v8 = 0;
@@ -335,8 +335,8 @@ LABEL_8:
 
     else
     {
-      v2 = [(CKBrowserItemPayload *)self fileURL];
-      if (v2)
+      fileURL = [(CKBrowserItemPayload *)self fileURL];
+      if (fileURL)
       {
         v8 = 0;
       }
@@ -355,8 +355,8 @@ LABEL_8:
       }
     }
 
-    v9 = [(CKBrowserItemPayload *)self text];
-    if (v9)
+    text = [(CKBrowserItemPayload *)self text];
+    if (text)
     {
 
       v5 = 0;
@@ -368,8 +368,8 @@ LABEL_8:
 
     else
     {
-      v11 = [(CKBrowserItemPayload *)self data];
-      v5 = v11 == 0;
+      data = [(CKBrowserItemPayload *)self data];
+      v5 = data == 0;
 
       if ((v8 & 1) == 0)
       {
@@ -395,19 +395,19 @@ LABEL_13:
 
 - (BOOL)shouldSendAsText
 {
-  v3 = [(CKBrowserItemPayload *)self text];
-  if (v3)
+  text = [(CKBrowserItemPayload *)self text];
+  if (text)
   {
-    v4 = [(CKBrowserItemPayload *)self fileURL];
-    if (v4)
+    fileURL = [(CKBrowserItemPayload *)self fileURL];
+    if (fileURL)
     {
       v5 = 0;
     }
 
     else
     {
-      v6 = [(CKBrowserItemPayload *)self data];
-      if (v6)
+      data = [(CKBrowserItemPayload *)self data];
+      if (data)
       {
         v5 = 0;
       }
@@ -422,24 +422,24 @@ LABEL_13:
 
         else
         {
-          v8 = [(CKBrowserItemPayload *)self breadcrumbText];
-          if (v8)
+          breadcrumbText = [(CKBrowserItemPayload *)self breadcrumbText];
+          if (breadcrumbText)
           {
             v5 = 0;
           }
 
           else
           {
-            v9 = [(CKBrowserItemPayload *)self statusText];
-            if (v9)
+            statusText = [(CKBrowserItemPayload *)self statusText];
+            if (statusText)
             {
               v5 = 0;
             }
 
             else
             {
-              v10 = [(CKBrowserItemPayload *)self attachments];
-              v5 = [v10 count] == 0;
+              attachments = [(CKBrowserItemPayload *)self attachments];
+              v5 = [attachments count] == 0;
             }
           }
         }
@@ -457,8 +457,8 @@ LABEL_13:
 
 - (BOOL)shouldSendAsRichLink
 {
-  v3 = [(CKBrowserItemPayload *)self pluginBundleID];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69A6A18]];
+  pluginBundleID = [(CKBrowserItemPayload *)self pluginBundleID];
+  v4 = [pluginBundleID isEqualToString:*MEMORY[0x1E69A6A18]];
 
   v5 = [(CKBrowserItemPayload *)self url];
   v6 = v5;
@@ -469,8 +469,8 @@ LABEL_13:
 
   else if (v5)
   {
-    v8 = [(CKBrowserItemPayload *)self data];
-    v7 = [v8 length] == 0;
+    data = [(CKBrowserItemPayload *)self data];
+    v7 = [data length] == 0;
   }
 
   else
@@ -484,13 +484,13 @@ LABEL_13:
 - (BOOL)shouldStageAsEmbeddedTextAttachment
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isRichLinkImprovementsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRichLinkImprovementsEnabled = [mEMORY[0x1E69A8070] isRichLinkImprovementsEnabled];
 
-  if (v4)
+  if (isRichLinkImprovementsEnabled)
   {
-    v5 = [(CKBrowserItemPayload *)self pluginBundleID];
-    v6 = [v5 isEqualToString:*MEMORY[0x1E69A6A18]];
+    pluginBundleID = [(CKBrowserItemPayload *)self pluginBundleID];
+    v6 = [pluginBundleID isEqualToString:*MEMORY[0x1E69A6A18]];
 
     if (v6)
     {
@@ -535,9 +535,9 @@ LABEL_16:
           goto LABEL_15;
         }
 
-        v10 = [(CKBrowserItemPayload *)self collaborationMetadata];
+        collaborationMetadata = [(CKBrowserItemPayload *)self collaborationMetadata];
 
-        if (v10)
+        if (collaborationMetadata)
         {
           v7 = IMOSLoggingEnabled();
           if (!v7)
@@ -567,16 +567,16 @@ LABEL_16:
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
           {
             v14 = 134217984;
-            v15 = [(CKBrowserItemPayload *)self payloadCollaborationType];
+            payloadCollaborationType = [(CKBrowserItemPayload *)self payloadCollaborationType];
             _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Payload payloadCollaborationType (%ld) is indicative of collaboration. Do not stage plugin as text attachment.", &v14, 0xCu);
           }
 
           goto LABEL_16;
         }
 
-        v12 = [(CKBrowserItemPayload *)self cloudKitShare];
+        cloudKitShare = [(CKBrowserItemPayload *)self cloudKitShare];
 
-        if (v12)
+        if (cloudKitShare)
         {
           v7 = IMOSLoggingEnabled();
           if (!v7)
@@ -637,14 +637,14 @@ LABEL_16:
 - (id)transcoderUserInfo
 {
   v38 = *MEMORY[0x1E69E9840];
-  v2 = [(CKBrowserItemPayload *)self userInfo];
-  v29 = [MEMORY[0x1E695DF90] dictionary];
+  userInfo = [(CKBrowserItemPayload *)self userInfo];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [v2 allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  allKeys = [userInfo allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v4)
   {
     v5 = *v34;
@@ -658,7 +658,7 @@ LABEL_16:
       {
         if (*v34 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v33 + 1) + 8 * i);
@@ -680,31 +680,31 @@ LABEL_16:
           }
         }
 
-        v11 = [v2 objectForKey:v9];
-        [v29 setObject:v11 forKey:v10];
+        v11 = [userInfo objectForKey:v9];
+        [dictionary setObject:v11 forKey:v10];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v4);
   }
 
-  v12 = [(CKBrowserItemPayload *)self fileURL];
+  fileURL = [(CKBrowserItemPayload *)self fileURL];
 
-  if (v12)
+  if (fileURL)
   {
-    v13 = [(CKBrowserItemPayload *)self fileURL];
-    v14 = [v13 lastPathComponent];
+    fileURL2 = [(CKBrowserItemPayload *)self fileURL];
+    lastPathComponent = [fileURL2 lastPathComponent];
     v15 = IMUTITypeForFilename();
 
     v16 = +[CKMediaObjectManager sharedInstance];
-    LODWORD(v14) = [objc_msgSend(v16 classForUTIType:{v15), "isSubclassOfClass:", objc_opt_class()}];
+    LODWORD(lastPathComponent) = [objc_msgSend(v16 classForUTIType:{v15), "isSubclassOfClass:", objc_opt_class()}];
 
-    if (v14)
+    if (lastPathComponent)
     {
-      v17 = [(CKBrowserItemPayload *)self fileURL];
-      v18 = CKAVURLAssetForURL(v17);
+      fileURL3 = [(CKBrowserItemPayload *)self fileURL];
+      v18 = CKAVURLAssetForURL(fileURL3);
 
       v31 = 0;
       v32 = 0;
@@ -723,12 +723,12 @@ LABEL_16:
 
       if (v22 == 1 && (v23 = [v20 intValue]) != 0 && v23 != 3)
       {
-        [v29 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69A6F78]];
+        [dictionary setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69A6F78]];
       }
 
       else if (IMIsHEVCWithAlphaVideo())
       {
-        [v29 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69A6F70]];
+        [dictionary setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69A6F70]];
       }
 
       else if (IMOSLoggingEnabled())
@@ -743,13 +743,13 @@ LABEL_16:
     }
   }
 
-  return v29;
+  return dictionary;
 }
 
-- (id)mediaObjectFromPayloadWithKeyToTrasferGUIDMap:(id)a3
+- (id)mediaObjectFromPayloadWithKeyToTrasferGUIDMap:(id)map
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mapCopy = map;
   mediaObject = self->_mediaObject;
   if (mediaObject)
   {
@@ -758,29 +758,29 @@ LABEL_16:
 
   else
   {
-    v7 = [(CKBrowserItemPayload *)self transcoderUserInfo];
-    v8 = [(CKBrowserItemPayload *)self fileURL];
+    transcoderUserInfo = [(CKBrowserItemPayload *)self transcoderUserInfo];
+    fileURL = [(CKBrowserItemPayload *)self fileURL];
     if (IMIsScreenshotURL())
     {
-      v9 = [MEMORY[0x1E69A80C0] isCroppingAvoidanceEnabled];
+      isCroppingAvoidanceEnabled = [MEMORY[0x1E69A80C0] isCroppingAvoidanceEnabled];
     }
 
     else
     {
-      v9 = 0;
+      isCroppingAvoidanceEnabled = 0;
     }
 
     v10 = +[CKMediaObjectManager sharedInstance];
-    v11 = [(CKBrowserItemPayload *)self fileURL];
-    v12 = [(CKBrowserItemPayload *)self filename];
-    v13 = [(CKBrowserItemPayload *)self attributionInfo];
-    BYTE1(v32) = v9;
+    fileURL2 = [(CKBrowserItemPayload *)self fileURL];
+    filename = [(CKBrowserItemPayload *)self filename];
+    attributionInfo = [(CKBrowserItemPayload *)self attributionInfo];
+    BYTE1(v32) = isCroppingAvoidanceEnabled;
     LOBYTE(v32) = [(CKBrowserItemPayload *)self shouldHideAttachments];
-    v6 = [v10 mediaObjectWithFileURL:v11 filename:v12 fileIsResolved:0 transcoderUserInfo:v7 attributionInfo:v13 adaptiveImageGlyphContentIdentifier:0 adaptiveImageGlyphContentDescription:0 hideAttachment:v32 isScreenshot:?];
+    v6 = [v10 mediaObjectWithFileURL:fileURL2 filename:filename fileIsResolved:0 transcoderUserInfo:transcoderUserInfo attributionInfo:attributionInfo adaptiveImageGlyphContentIdentifier:0 adaptiveImageGlyphContentDescription:0 hideAttachment:v32 isScreenshot:?];
 
     v14 = [(CKMediaObject *)v6 previewCacheKeyWithOrientation:1];
-    v15 = [(CKBrowserItemPayload *)self fileURL];
-    v16 = [v4 objectForKey:v15];
+    fileURL3 = [(CKBrowserItemPayload *)self fileURL];
+    v16 = [mapCopy objectForKey:fileURL3];
 
     v17 = 0;
     if (([v16 isEqualToString:v14] & 1) == 0 && v16)
@@ -796,26 +796,26 @@ LABEL_16:
 
     if (v6)
     {
-      v19 = [(CKBrowserItemPayload *)self videoComplementFileURL];
+      videoComplementFileURL = [(CKBrowserItemPayload *)self videoComplementFileURL];
 
-      if (v19)
+      if (videoComplementFileURL)
       {
-        v20 = [(CKBrowserItemPayload *)self videoComplementFileURL];
-        v21 = [(CKMediaObject *)v6 fileURL];
-        v22 = CKGetTmpPathForAppendedVideoURL(v20, v21);
+        videoComplementFileURL2 = [(CKBrowserItemPayload *)self videoComplementFileURL];
+        fileURL4 = [(CKMediaObject *)v6 fileURL];
+        v22 = CKGetTmpPathForAppendedVideoURL(videoComplementFileURL2, fileURL4);
 
-        v23 = [v22 URLByResolvingSymlinksInPath];
+        uRLByResolvingSymlinksInPath = [v22 URLByResolvingSymlinksInPath];
 
-        v24 = [(CKMediaObject *)v6 transferGUID];
-        CKLinkAndCreateAppendedVideoTransfer(v23, v20, v24);
+        transferGUID = [(CKMediaObject *)v6 transferGUID];
+        CKLinkAndCreateAppendedVideoTransfer(uRLByResolvingSymlinksInPath, videoComplementFileURL2, transferGUID);
       }
 
-      v25 = [(CKBrowserItemPayload *)self generativePlaygroundRecipeData];
+      generativePlaygroundRecipeData = [(CKBrowserItemPayload *)self generativePlaygroundRecipeData];
 
-      if (v25)
+      if (generativePlaygroundRecipeData)
       {
-        v26 = [(CKBrowserItemPayload *)self generativePlaygroundRecipeData];
-        [(CKMediaObject *)v6 setGenerativePlaygroundRecipeData:v26];
+        generativePlaygroundRecipeData2 = [(CKBrowserItemPayload *)self generativePlaygroundRecipeData];
+        [(CKMediaObject *)v6 setGenerativePlaygroundRecipeData:generativePlaygroundRecipeData2];
       }
 
       [(CKBrowserItemPayload *)self setMediaObject:v6];
@@ -826,15 +826,15 @@ LABEL_16:
       v27 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
-        v28 = [(CKBrowserItemPayload *)self fileURL];
+        fileURL5 = [(CKBrowserItemPayload *)self fileURL];
         *buf = 138412290;
-        v34 = v28;
+        v34 = fileURL5;
         _os_log_impl(&dword_19020E000, v27, OS_LOG_TYPE_INFO, "CKChatInputController. Could not create media object from file: %@", buf, 0xCu);
       }
     }
 
-    v29 = [(CKMediaObject *)v6 previewFilenameExtension];
-    v30 = [(CKMediaObject *)v6 previewCachesFileURLWithOrientation:1 extension:v29 generateIntermediaries:0 transferGUID:v14];
+    previewFilenameExtension = [(CKMediaObject *)v6 previewFilenameExtension];
+    v30 = [(CKMediaObject *)v6 previewCachesFileURLWithOrientation:1 extension:previewFilenameExtension generateIntermediaries:0 transferGUID:v14];
 
     [(CKMediaObject *)v6 savePreview:v17 toURL:v30 forOrientation:1];
   }
@@ -852,8 +852,8 @@ LABEL_16:
   v22 = 0;
   if ([(CKBrowserItemPayload *)self shouldSendAsText])
   {
-    v3 = [(CKBrowserItemPayload *)self text];
-    v4 = [v3 mutableCopy];
+    text = [(CKBrowserItemPayload *)self text];
+    v4 = [text mutableCopy];
 
     if ([MEMORY[0x1E69A8020] supportsDataDetectors] && (-[CKBrowserItemPayload text](self, "text"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "string"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AEC0], "stringGUID"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E695DF00], "date"), v8 = objc_claimAutoreleasedReturnValue(), v9 = IMDDScanAttributedStringWithContext(), v8, v7, v6, v5, (v9 & 1) != 0))
     {
@@ -905,17 +905,17 @@ void __79__CKBrowserItemPayload_CKCompositionAdditions____ck_urlFromTextBodyForR
   *a5 = 1;
 }
 
-+ (id)browserItemFromSticker:(id)a3
++ (id)browserItemFromSticker:(id)sticker
 {
-  v3 = a3;
+  stickerCopy = sticker;
   v4 = +[CKMediaObjectManager sharedInstance];
-  v5 = [v4 mediaObjectWithSticker:v3 stickerUserInfo:0];
+  v5 = [v4 mediaObjectWithSticker:stickerCopy stickerUserInfo:0];
 
   if (v5)
   {
     v6 = objc_alloc_init(CKBrowserItemPayload);
-    v7 = [v3 stickerPackGUID];
-    [(CKBrowserItemPayload *)v6 setPluginBundleID:v7];
+    stickerPackGUID = [stickerCopy stickerPackGUID];
+    [(CKBrowserItemPayload *)v6 setPluginBundleID:stickerPackGUID];
 
     [(CKBrowserItemPayload *)v6 setMediaObject:v5];
     [(CKBrowserItemPayload *)v6 setSticker:1];

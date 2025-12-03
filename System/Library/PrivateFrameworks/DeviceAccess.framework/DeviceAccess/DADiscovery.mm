@@ -1,45 +1,45 @@
 @interface DADiscovery
 - (BOOL)runningExtension;
 - (DADiscovery)init;
-- (DADiscovery)initWithConfiguration:(id)a3 error:(id *)a4;
-- (DADiscovery)initWithConfigurations:(id)a3 error:(id *)a4;
-- (DADiscovery)initWithXPCObject:(id)a3 error:(id *)a4;
+- (DADiscovery)initWithConfiguration:(id)configuration error:(id *)error;
+- (DADiscovery)initWithConfigurations:(id)configurations error:(id *)error;
+- (DADiscovery)initWithXPCObject:(id)object error:(id *)error;
 - (NSArray)discoveredDevices;
 - (id)_ensureXPCStarted;
-- (id)_uuidFromExtension:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (id)_uuidFromExtension:(id)extension;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activateDirect;
-- (void)_activateExtension:(id)a3;
-- (void)_activateXPCCompleted:(id)a3;
-- (void)_activateXPCStart:(BOOL)a3;
-- (void)_findExtensionPoint:(id)a3 bundleID:(id)a4 entitlement:(id)a5 completion:(id)a6;
-- (void)_getAuthorizedDevicesCompleted:(id)a3 completionHandler:(id)a4;
+- (void)_activateExtension:(id)extension;
+- (void)_activateXPCCompleted:(id)completed;
+- (void)_activateXPCStart:(BOOL)start;
+- (void)_findExtensionPoint:(id)point bundleID:(id)d entitlement:(id)entitlement completion:(id)completion;
+- (void)_getAuthorizedDevicesCompleted:(id)completed completionHandler:(id)handler;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_reportASKEvent:(id)a3;
-- (void)_reportEvent:(id)a3;
-- (void)_reportEventType:(int64_t)a3;
-- (void)_startExtensions:(id)a3 bundleID:(id)a4 entitlement:(id)a5 completion:(id)a6;
+- (void)_reportASKEvent:(id)event;
+- (void)_reportEvent:(id)event;
+- (void)_reportEventType:(int64_t)type;
+- (void)_startExtensions:(id)extensions bundleID:(id)d entitlement:(id)entitlement completion:(id)completion;
 - (void)_stopExtensons;
-- (void)_updateNEPolicy:(id)a3 remove:(BOOL)a4;
-- (void)_xpcReceivedDAEvent:(id)a3;
-- (void)_xpcReceivedDeviceEvent:(id)a3;
-- (void)_xpcReceivedMessage:(id)a3;
+- (void)_updateNEPolicy:(id)policy remove:(BOOL)remove;
+- (void)_xpcReceivedDAEvent:(id)event;
+- (void)_xpcReceivedDeviceEvent:(id)event;
+- (void)_xpcReceivedMessage:(id)message;
 - (void)activate;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 - (void)finishMigration;
-- (void)getAuthorizedDevices:(id)a3;
+- (void)getAuthorizedDevices:(id)devices;
 - (void)invalidate;
-- (void)invalidateWithReason:(unint64_t)a3;
+- (void)invalidateWithReason:(unint64_t)reason;
 - (void)migrateDevices;
-- (void)modifyDeviceWithIdentifier:(id)a3 settings:(id)a4 completionHandler:(id)a5;
-- (void)reportDeviceChanged:(id)a3 appID:(id)a4;
-- (void)respondToBluetoothPairingRequest:(id)a3 completionHandler:(id)a4;
-- (void)respondToWiFiAwarePairingRequest:(id)a3 completionHandler:(id)a4;
+- (void)modifyDeviceWithIdentifier:(id)identifier settings:(id)settings completionHandler:(id)handler;
+- (void)reportDeviceChanged:(id)changed appID:(id)d;
+- (void)respondToBluetoothPairingRequest:(id)request completionHandler:(id)handler;
+- (void)respondToWiFiAwarePairingRequest:(id)request completionHandler:(id)handler;
 - (void)runOtherDiscovery;
-- (void)setDeviceAppAccessInfo:(id)a3 device:(id)a4 completionHandler:(id)a5;
-- (void)setState:(int64_t)a3 device:(id)a4 simulateApp:(BOOL)a5 completionHandler:(id)a6;
-- (void)xpcReceivedMessage:(id)a3;
+- (void)setDeviceAppAccessInfo:(id)info device:(id)device completionHandler:(id)handler;
+- (void)setState:(int64_t)state device:(id)device simulateApp:(BOOL)app completionHandler:(id)handler;
+- (void)xpcReceivedMessage:(id)message;
 @end
 
 @implementation DADiscovery
@@ -60,13 +60,13 @@
   return v2;
 }
 
-- (DADiscovery)initWithConfiguration:(id)a3 error:(id *)a4
+- (DADiscovery)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v14 = [(DADiscovery *)self init];
   if (v14)
   {
-    v15 = [v6 copy];
+    v15 = [configurationCopy copy];
     configuration = v14->_configuration;
     v14->_configuration = v15;
 
@@ -75,19 +75,19 @@
 
   else
   {
-    [(DADiscovery *)a4 initWithConfiguration:v7 error:v8, v9, v10, v11, v12, v13];
+    [(DADiscovery *)error initWithConfiguration:v7 error:v8, v9, v10, v11, v12, v13];
   }
 
   return v14;
 }
 
-- (DADiscovery)initWithConfigurations:(id)a3 error:(id *)a4
+- (DADiscovery)initWithConfigurations:(id)configurations error:(id *)error
 {
-  v6 = a3;
+  configurationsCopy = configurations;
   v14 = [(DADiscovery *)self init];
   if (v14)
   {
-    v15 = [v6 copy];
+    v15 = [configurationsCopy copy];
     configurations = v14->_configurations;
     v14->_configurations = v15;
 
@@ -96,27 +96,27 @@
 
   else
   {
-    [(DADiscovery *)a4 initWithConfiguration:v7 error:v8, v9, v10, v11, v12, v13];
+    [(DADiscovery *)error initWithConfiguration:v7 error:v8, v9, v10, v11, v12, v13];
   }
 
   return v14;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = [(NSString *)self->_bundleID UTF8String];
-  if (v5)
+  objectCopy = object;
+  uTF8String = [(NSString *)self->_bundleID UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v4, "bndI", v5);
+    xpc_dictionary_set_string(objectCopy, "bndI", uTF8String);
   }
 
   deviceOTANameToBroadcast = self->_deviceOTANameToBroadcast;
-  xdict = v4;
-  v7 = [(NSString *)deviceOTANameToBroadcast UTF8String];
-  if (v7)
+  xdict = objectCopy;
+  uTF8String2 = [(NSString *)deviceOTANameToBroadcast UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(xdict, "ldNm", v7);
+    xpc_dictionary_set_string(xdict, "ldNm", uTF8String2);
   }
 
   clientID = self->_clientID;
@@ -132,7 +132,7 @@
   xpc_dictionary_set_uint64(xdict, "dsFs", self->_flags);
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v35 = *MEMORY[0x277D85DE8];
   v33 = 0;
@@ -218,17 +218,17 @@
   deviceMap = self->_deviceMap;
   if (deviceMap)
   {
-    v4 = [(NSMutableDictionary *)deviceMap allValues];
+    allValues = [(NSMutableDictionary *)deviceMap allValues];
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEBF8];
+    allValues = MEMORY[0x277CBEBF8];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return allValues;
 }
 
 - (BOOL)runningExtension
@@ -291,9 +291,9 @@ uint64_t __23__DADiscovery_activate__block_invoke(uint64_t result)
     [DADiscovery _activateDirect];
   }
 
-  v3 = [(DADiscoveryConfiguration *)self->_configuration bundleID];
-  bundleID = v3;
-  if (!v3)
+  bundleID = [(DADiscoveryConfiguration *)self->_configuration bundleID];
+  bundleID = bundleID;
+  if (!bundleID)
   {
     bundleID = self->_bundleID;
   }
@@ -446,9 +446,9 @@ LABEL_10:
 
 - (void)runOtherDiscovery
 {
-  v3 = [(DADiscoveryConfiguration *)self->_configuration bundleID];
-  bundleID = v3;
-  if (!v3)
+  bundleID = [(DADiscoveryConfiguration *)self->_configuration bundleID];
+  bundleID = bundleID;
+  if (!bundleID)
   {
     bundleID = self->_bundleID;
   }
@@ -507,8 +507,8 @@ uint64_t __29__DADiscovery_migrateDevices__block_invoke(uint64_t a1)
   xdict = xpc_dictionary_create(0, 0, 0);
   [(DADiscovery *)self encodeWithXPCObject:xdict];
   xpc_dictionary_set_string(xdict, "mTyp", "DscM");
-  v3 = [(DADiscovery *)self _ensureXPCStarted];
-  xpc_connection_send_message_with_reply(v3, xdict, self->_dispatchQueue, &__block_literal_global);
+  _ensureXPCStarted = [(DADiscovery *)self _ensureXPCStarted];
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, xdict, self->_dispatchQueue, &__block_literal_global);
 }
 
 uint64_t __30__DADiscovery_finishMigration__block_invoke(uint64_t a1, void *a2)
@@ -528,12 +528,12 @@ uint64_t __30__DADiscovery_finishMigration__block_invoke(uint64_t a1, void *a2)
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-- (void)_activateExtension:(id)a3
+- (void)_activateExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = objc_alloc_init(DADiscoveryExtension);
   [(DADiscoveryExtension *)v5 setDispatchQueue:self->_dispatchQueue];
-  [(DADiscoveryExtension *)v5 setEkExtension:v4];
+  [(DADiscoveryExtension *)v5 setEkExtension:extensionCopy];
 
   [(DADiscoveryExtension *)v5 setParent:self];
   v10[0] = MEMORY[0x277D85DD0];
@@ -571,9 +571,9 @@ uint64_t __34__DADiscovery__activateExtension___block_invoke(uint64_t a1)
   return [v2 _invalidated];
 }
 
-- (void)_activateXPCStart:(BOOL)a3
+- (void)_activateXPCStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     if (gLogCategory_DADiscovery <= 30 && (gLogCategory_DADiscovery != -1 || _LogCategory_Initialize()))
     {
@@ -590,20 +590,20 @@ LABEL_10:
   v4 = xpc_dictionary_create(0, 0, 0);
   [(DADiscovery *)self encodeWithXPCObject:v4];
   xpc_dictionary_set_string(v4, "mTyp", "DscA");
-  v5 = [(DADiscovery *)self _ensureXPCStarted];
+  _ensureXPCStarted = [(DADiscovery *)self _ensureXPCStarted];
   dispatchQueue = self->_dispatchQueue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __33__DADiscovery__activateXPCStart___block_invoke;
   handler[3] = &unk_278F57E90;
   handler[4] = self;
-  xpc_connection_send_message_with_reply(v5, v4, dispatchQueue, handler);
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, v4, dispatchQueue, handler);
 }
 
-- (void)_activateXPCCompleted:(id)a3
+- (void)_activateXPCCompleted:(id)completed
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completedCopy = completed;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -625,7 +625,7 @@ LABEL_10:
   {
     if (gLogCategory_DADiscovery <= 30 && (gLogCategory_DADiscovery != -1 || _LogCategory_Initialize()))
     {
-      v23 = self;
+      selfCopy = self;
       LogPrintF();
     }
 
@@ -665,10 +665,10 @@ LABEL_10:
             }
 
             v14 = *(*(&v28 + 1) + 8 * i);
-            v15 = [v14 identifier];
-            if (v15)
+            identifier = [v14 identifier];
+            if (identifier)
             {
-              [(NSMutableDictionary *)self->_deviceMap setObject:v14 forKeyedSubscript:v15];
+              [(NSMutableDictionary *)self->_deviceMap setObject:v14 forKeyedSubscript:identifier];
             }
           }
 
@@ -710,7 +710,7 @@ LABEL_10:
       while (v17);
     }
 
-    if (xpc_dictionary_get_BOOL(v4, "dvPr"))
+    if (xpc_dictionary_get_BOOL(completedCopy, "dvPr"))
     {
       v21 = [[DAEventDevicesPresent alloc] initWithPresent:1 devicesMigrated:0];
       [(DADiscovery *)self _reportEvent:v21];
@@ -846,7 +846,7 @@ uint64_t __25__DADiscovery_invalidate__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)invalidateWithReason:(unint64_t)a3
+- (void)invalidateWithReason:(unint64_t)reason
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -854,7 +854,7 @@ uint64_t __25__DADiscovery_invalidate__block_invoke(uint64_t result)
   v4[2] = __36__DADiscovery_invalidateWithReason___block_invoke;
   v4[3] = &unk_278F57EE0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -914,9 +914,9 @@ void __36__DADiscovery_invalidateWithReason___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_reportEvent:(id)a3
+- (void)_reportEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_DADiscovery <= 30 && (gLogCategory_DADiscovery != -1 || _LogCategory_Initialize()))
   {
@@ -927,27 +927,27 @@ void __36__DADiscovery_invalidateWithReason___block_invoke_2(uint64_t a1)
   v5 = v4;
   if (v4)
   {
-    (*(v4 + 2))(v4, v6);
+    (*(v4 + 2))(v4, eventCopy);
   }
 }
 
-- (void)_reportEventType:(int64_t)a3
+- (void)_reportEventType:(int64_t)type
 {
-  v4 = [[DAEvent alloc] initWithEventType:a3];
+  v4 = [[DAEvent alloc] initWithEventType:type];
   [(DADiscovery *)self _reportEvent:v4];
 }
 
-- (void)getAuthorizedDevices:(id)a3
+- (void)getAuthorizedDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__DADiscovery_getAuthorizedDevices___block_invoke;
   v7[3] = &unk_278F57DA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = devicesCopy;
+  v6 = devicesCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -980,10 +980,10 @@ void __36__DADiscovery_getAuthorizedDevices___block_invoke(uint64_t a1)
   xpc_connection_send_message_with_reply(v6, v2, v9, v10);
 }
 
-- (void)_getAuthorizedDevicesCompleted:(id)a3 completionHandler:(id)a4
+- (void)_getAuthorizedDevicesCompleted:(id)completed completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  completedCopy = completed;
+  handlerCopy = handler;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -995,7 +995,7 @@ void __36__DADiscovery_getAuthorizedDevices___block_invoke(uint64_t a1)
   aBlock[2] = __64__DADiscovery__getAuthorizedDevicesCompleted_completionHandler___block_invoke;
   aBlock[3] = &unk_278F57F30;
   v14 = &v15;
-  v7 = v6;
+  v7 = handlerCopy;
   v13 = v7;
   v8 = _Block_copy(aBlock);
   v9 = CUXPCDecodeNSErrorIfNeeded();
@@ -1056,20 +1056,20 @@ LABEL_7:
   return v6();
 }
 
-- (void)respondToBluetoothPairingRequest:(id)a3 completionHandler:(id)a4
+- (void)respondToBluetoothPairingRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__DADiscovery_respondToBluetoothPairingRequest_completionHandler___block_invoke;
   block[3] = &unk_278F57F80;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1118,20 +1118,20 @@ uint64_t __66__DADiscovery_respondToBluetoothPairingRequest_completionHandler___
   return MEMORY[0x2821F96F8](v4, v2);
 }
 
-- (void)respondToWiFiAwarePairingRequest:(id)a3 completionHandler:(id)a4
+- (void)respondToWiFiAwarePairingRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__DADiscovery_respondToWiFiAwarePairingRequest_completionHandler___block_invoke;
   block[3] = &unk_278F57F80;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1179,21 +1179,21 @@ uint64_t __66__DADiscovery_respondToWiFiAwarePairingRequest_completionHandler___
   return MEMORY[0x2821F96F8](v4, v2);
 }
 
-- (void)setState:(int64_t)a3 device:(id)a4 simulateApp:(BOOL)a5 completionHandler:(id)a6
+- (void)setState:(int64_t)state device:(id)device simulateApp:(BOOL)app completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a6;
+  deviceCopy = device;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__DADiscovery_setState_device_simulateApp_completionHandler___block_invoke;
   v14[3] = &unk_278F57FD0;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
-  v18 = a3;
-  v12 = v10;
-  v13 = v9;
+  v15 = deviceCopy;
+  selfCopy = self;
+  v17 = handlerCopy;
+  stateCopy = state;
+  v12 = handlerCopy;
+  v13 = deviceCopy;
   dispatch_async(dispatchQueue, v14);
 }
 
@@ -1247,23 +1247,23 @@ void __61__DADiscovery_setState_device_simulateApp_completionHandler___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setDeviceAppAccessInfo:(id)a3 device:(id)a4 completionHandler:(id)a5
+- (void)setDeviceAppAccessInfo:(id)info device:(id)device completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  deviceCopy = device;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__DADiscovery_setDeviceAppAccessInfo_device_completionHandler___block_invoke;
   v15[3] = &unk_278F57FF8;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = deviceCopy;
+  selfCopy = self;
+  v18 = infoCopy;
+  v19 = handlerCopy;
+  v12 = infoCopy;
+  v13 = handlerCopy;
+  v14 = deviceCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -1317,23 +1317,23 @@ void __63__DADiscovery_setDeviceAppAccessInfo_device_completionHandler___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)modifyDeviceWithIdentifier:(id)a3 settings:(id)a4 completionHandler:(id)a5
+- (void)modifyDeviceWithIdentifier:(id)identifier settings:(id)settings completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  settingsCopy = settings;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__DADiscovery_modifyDeviceWithIdentifier_settings_completionHandler___block_invoke;
   v15[3] = &unk_278F58020;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = settingsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = settingsCopy;
+  v14 = identifierCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -1380,11 +1380,11 @@ void __69__DADiscovery_modifyDeviceWithIdentifier_settings_completionHandler___b
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)reportDeviceChanged:(id)a3 appID:(id)a4
+- (void)reportDeviceChanged:(id)changed appID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(DAEventDevice *)[DADeviceEvent alloc] initWithEventType:42 device:v5];
+  changedCopy = changed;
+  v6 = [(DAEventDevice *)[DADeviceEvent alloc] initWithEventType:42 device:changedCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1418,20 +1418,20 @@ void __69__DADiscovery_modifyDeviceWithIdentifier_settings_completionHandler___b
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)xpcReceivedMessage:(id)a3
+- (void)xpcReceivedMessage:(id)message
 {
-  v4 = a3;
-  v15 = v4;
+  messageCopy = message;
+  v15 = messageCopy;
   if (gLogCategory_DADiscovery <= 9)
   {
-    if (gLogCategory_DADiscovery != -1 || (v5 = _LogCategory_Initialize(), v4 = v15, v5))
+    if (gLogCategory_DADiscovery != -1 || (v5 = _LogCategory_Initialize(), messageCopy = v15, v5))
     {
       [DADiscovery xpcReceivedMessage:];
-      v4 = v15;
+      messageCopy = v15;
     }
   }
 
-  if (MEMORY[0x24C1DC9E0](v4) == MEMORY[0x277D86468])
+  if (MEMORY[0x24C1DC9E0](messageCopy) == MEMORY[0x277D86468])
   {
     [(DADiscovery *)self _xpcReceivedMessage:v15];
   }
@@ -1464,15 +1464,15 @@ void __69__DADiscovery_modifyDeviceWithIdentifier_settings_completionHandler___b
   }
 }
 
-- (void)_xpcReceivedMessage:(id)a3
+- (void)_xpcReceivedMessage:(id)message
 {
-  v5 = a3;
-  string = xpc_dictionary_get_string(v5, "mTyp");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "mTyp");
   if (string)
   {
     if (!strcmp(string, "Evnt"))
     {
-      [(DADiscovery *)self _xpcReceivedDAEvent:v5];
+      [(DADiscovery *)self _xpcReceivedDAEvent:messageCopy];
     }
 
     else if (gLogCategory_DADiscovery <= 90 && (gLogCategory_DADiscovery != -1 || _LogCategory_Initialize()))
@@ -1487,9 +1487,9 @@ void __69__DADiscovery_modifyDeviceWithIdentifier_settings_completionHandler___b
   }
 }
 
-- (void)_xpcReceivedDAEvent:(id)a3
+- (void)_xpcReceivedDAEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (MEMORY[0x24C1DC9E0]() != MEMORY[0x277D86468])
   {
     [DADiscovery _xpcReceivedDAEvent:];
@@ -1497,7 +1497,7 @@ void __69__DADiscovery_modifyDeviceWithIdentifier_settings_completionHandler___b
   }
 
   v9 = 0;
-  v5 = [DAEvent allocInitWithXPCObject:v4 error:&v9];
+  v5 = [DAEvent allocInitWithXPCObject:eventCopy error:&v9];
   v6 = v9;
   if (v5)
   {
@@ -1539,12 +1539,12 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_xpcReceivedDeviceEvent:(id)a3
+- (void)_xpcReceivedDeviceEvent:(id)event
 {
-  v9 = a3;
-  v4 = [v9 device];
-  v5 = [v4 identifier];
-  if (v5)
+  eventCopy = event;
+  device = [eventCopy device];
+  identifier = [device identifier];
+  if (identifier)
   {
     os_unfair_lock_lock(&self->_lock);
     if (!self->_deviceMap)
@@ -1554,17 +1554,17 @@ LABEL_14:
       self->_deviceMap = v6;
     }
 
-    if ([v9 eventType] == 41)
+    if ([eventCopy eventType] == 41)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = v4;
+      v8 = device;
     }
 
-    [(NSMutableDictionary *)self->_deviceMap setObject:v8 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)self->_deviceMap setObject:v8 forKeyedSubscript:identifier];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -1574,27 +1574,27 @@ LABEL_14:
   }
 }
 
-- (void)_findExtensionPoint:(id)a3 bundleID:(id)a4 entitlement:(id)a5 completion:(id)a6
+- (void)_findExtensionPoint:(id)point bundleID:(id)d entitlement:(id)entitlement completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [objc_alloc(MEMORY[0x277CC5DF8]) initWithExtensionPointIdentifier:v10];
+  pointCopy = point;
+  dCopy = d;
+  entitlementCopy = entitlement;
+  completionCopy = completion;
+  v14 = [objc_alloc(MEMORY[0x277CC5DF8]) initWithExtensionPointIdentifier:pointCopy];
   v15 = MEMORY[0x277CC5E00];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion___block_invoke;
   v20[3] = &unk_278F58070;
   v20[4] = self;
-  v21 = v10;
-  v23 = v12;
-  v24 = v13;
-  v22 = v11;
-  v16 = v12;
-  v17 = v11;
-  v18 = v13;
-  v19 = v10;
+  v21 = pointCopy;
+  v23 = entitlementCopy;
+  v24 = completionCopy;
+  v22 = dCopy;
+  v16 = entitlementCopy;
+  v17 = dCopy;
+  v18 = completionCopy;
+  v19 = pointCopy;
   [v15 executeQuery:v14 completionHandler:v20];
 }
 
@@ -1642,20 +1642,20 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
   }
 }
 
-- (void)_startExtensions:(id)a3 bundleID:(id)a4 entitlement:(id)a5 completion:(id)a6
+- (void)_startExtensions:(id)extensions bundleID:(id)d entitlement:(id)entitlement completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v26 = a6;
-  v27 = [MEMORY[0x277CBEB18] array];
-  v12 = v10;
+  extensionsCopy = extensions;
+  dCopy = d;
+  entitlementCopy = entitlement;
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
+  v12 = dCopy;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = v9;
+  v13 = extensionsCopy;
   v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v14)
   {
@@ -1671,27 +1671,27 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
         }
 
         v18 = *(*(&v28 + 1) + 8 * i);
-        v19 = [v18 bundleIdentifier];
-        v20 = [v19 stringByDeletingPathExtension];
+        bundleIdentifier = [v18 bundleIdentifier];
+        stringByDeletingPathExtension = [bundleIdentifier stringByDeletingPathExtension];
 
-        if (v12 && ([v20 isEqual:v12] & 1) == 0)
+        if (v12 && ([stringByDeletingPathExtension isEqual:v12] & 1) == 0)
         {
           if (gLogCategory_DADiscovery <= 30 && (gLogCategory_DADiscovery != -1 || _LogCategory_Initialize()))
           {
             v24 = v12;
-            v25 = v20;
+            v25 = stringByDeletingPathExtension;
             LogPrintF();
           }
         }
 
         else
         {
-          v21 = [v18 entitlementNamed:v11 ofClass:objc_opt_class()];
-          v22 = [v21 BOOLValue];
+          v21 = [v18 entitlementNamed:entitlementCopy ofClass:objc_opt_class()];
+          bOOLValue = [v21 BOOLValue];
 
-          if (v22)
+          if (bOOLValue)
           {
-            [v27 addObject:v18];
+            [array addObject:v18];
           }
 
           else if (gLogCategory_DADiscovery <= 30 && (gLogCategory_DADiscovery != -1 || _LogCategory_Initialize()))
@@ -1707,9 +1707,9 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
     while (v15);
   }
 
-  if (v26)
+  if (completionCopy)
   {
-    v26[2](v26, v27);
+    completionCopy[2](completionCopy, array);
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -1756,24 +1756,24 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateNEPolicy:(id)a3 remove:(BOOL)a4
+- (void)_updateNEPolicy:(id)policy remove:(BOOL)remove
 {
-  v4 = a4;
+  removeCopy = remove;
   v121[3] = *MEMORY[0x277D85DE8];
-  v107 = a3;
+  policyCopy = policy;
   if (gLogCategory_DADiscovery <= 30 && (gLogCategory_DADiscovery != -1 || _LogCategory_Initialize()))
   {
     [DADiscovery _updateNEPolicy:remove:];
   }
 
-  if (v107)
+  if (policyCopy)
   {
-    if (v4)
+    if (removeCopy)
     {
       policySessions = self->_policySessions;
       p_policySessions = &self->_policySessions;
-      v8 = [v107 UUIDString];
-      v9 = [(NSMutableDictionary *)policySessions objectForKeyedSubscript:v8];
+      uUIDString = [policyCopy UUIDString];
+      v9 = [(NSMutableDictionary *)policySessions objectForKeyedSubscript:uUIDString];
 
       if (v9)
       {
@@ -1788,8 +1788,8 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
         }
 
         v10 = *p_policySessions;
-        v11 = [v107 UUIDString];
-        [v10 setObject:0 forKeyedSubscript:v11];
+        uUIDString2 = [policyCopy UUIDString];
+        [v10 setObject:0 forKeyedSubscript:uUIDString2];
 
         if (gLogCategory_DADiscovery <= 30 && (gLogCategory_DADiscovery != -1 || _LogCategory_Initialize()))
         {
@@ -1810,11 +1810,11 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
       {
         v12 = objc_alloc(MEMORY[0x277CD92D8]);
         v13 = [MEMORY[0x277CD92E8] skipWithOrder:20];
-        v14 = [MEMORY[0x277CD92E0] allInterfaces];
-        v121[0] = v14;
+        allInterfaces = [MEMORY[0x277CD92E0] allInterfaces];
+        v121[0] = allInterfaces;
         v15 = [MEMORY[0x277CD92E0] customEntitlement:@"com.apple.developer.media-device-discovery-extension"];
         v121[1] = v15;
-        v16 = [MEMORY[0x277CD92E0] effectiveApplication:v107];
+        v16 = [MEMORY[0x277CD92E0] effectiveApplication:policyCopy];
         v121[2] = v16;
         v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v121 count:3];
         v18 = [v12 initWithOrder:0 result:v13 conditions:v17];
@@ -1827,9 +1827,9 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
 
         v19 = objc_alloc(MEMORY[0x277CD92D8]);
         v20 = [MEMORY[0x277CD92E8] skipWithOrder:100];
-        v21 = [MEMORY[0x277CD92E0] allInterfaces];
-        v120[0] = v21;
-        v22 = [MEMORY[0x277CD92E0] effectiveApplication:v107];
+        allInterfaces2 = [MEMORY[0x277CD92E0] allInterfaces];
+        v120[0] = allInterfaces2;
+        v22 = [MEMORY[0x277CD92E0] effectiveApplication:policyCopy];
         v120[1] = v22;
         v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v120 count:2];
         v24 = [v19 initWithOrder:10 result:v20 conditions:v23];
@@ -1840,11 +1840,11 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
           [DADiscovery _updateNEPolicy:remove:];
         }
 
-        v104 = self;
+        selfCopy = self;
         v25 = objc_alloc(MEMORY[0x277CD92D8]);
         v26 = [MEMORY[0x277CD92E8] skipWithOrder:65];
-        v27 = [MEMORY[0x277CD92E0] allInterfaces];
-        v119[0] = v27;
+        allInterfaces3 = [MEMORY[0x277CD92E0] allInterfaces];
+        v119[0] = allInterfaces3;
         v28 = [MEMORY[0x277CD92E0] schemeUsingPort:53];
         v119[1] = v28;
         v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v119 count:2];
@@ -1914,9 +1914,9 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
               v52 = *(*(&v108 + 1) + 8 * v51);
               v53 = objc_alloc(MEMORY[0x277CD92D8]);
               v54 = [MEMORY[0x277CD92E8] skipWithOrder:50];
-              v55 = [MEMORY[0x277CD92E0] allInterfaces];
-              v116[0] = v55;
-              v56 = [MEMORY[0x277CD92E0] effectiveApplication:v107];
+              allInterfaces4 = [MEMORY[0x277CD92E0] allInterfaces];
+              v116[0] = allInterfaces4;
+              v56 = [MEMORY[0x277CD92E0] effectiveApplication:policyCopy];
               v116[1] = v56;
               v116[2] = v52;
               v57 = [MEMORY[0x277CBEA60] arrayWithObjects:v116 count:3];
@@ -1940,11 +1940,11 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
 
         v60 = objc_alloc(MEMORY[0x277CD92D8]);
         v61 = [MEMORY[0x277CD92E8] skipWithOrder:100];
-        v62 = [MEMORY[0x277CD92E0] allInterfaces];
-        v115[0] = v62;
-        v63 = [MEMORY[0x277CD92E0] localNetworks];
-        v115[1] = v63;
-        v64 = [MEMORY[0x277CD92E0] effectiveApplication:v107];
+        allInterfaces5 = [MEMORY[0x277CD92E0] allInterfaces];
+        v115[0] = allInterfaces5;
+        localNetworks = [MEMORY[0x277CD92E0] localNetworks];
+        v115[1] = localNetworks;
+        v64 = [MEMORY[0x277CD92E0] effectiveApplication:policyCopy];
         v115[2] = v64;
         v65 = [MEMORY[0x277CBEA60] arrayWithObjects:v115 count:3];
         v66 = [v60 initWithOrder:35 result:v61 conditions:v65];
@@ -1955,13 +1955,13 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
         }
 
         v67 = objc_alloc(MEMORY[0x277CD92D8]);
-        v68 = [MEMORY[0x277CD92E8] drop];
-        v69 = [MEMORY[0x277CD92E0] allInterfaces];
-        v114[0] = v69;
-        v70 = [MEMORY[0x277CD92E0] effectiveApplication:v107];
+        drop = [MEMORY[0x277CD92E8] drop];
+        allInterfaces6 = [MEMORY[0x277CD92E0] allInterfaces];
+        v114[0] = allInterfaces6;
+        v70 = [MEMORY[0x277CD92E0] effectiveApplication:policyCopy];
         v114[1] = v70;
         v71 = [MEMORY[0x277CBEA60] arrayWithObjects:v114 count:2];
-        v72 = [v67 initWithOrder:40 result:v68 conditions:v71];
+        v72 = [v67 initWithOrder:40 result:drop conditions:v71];
 
         v95 = v72;
         if (![v9 addPolicy:v72] && gLogCategory_DADiscovery <= 90 && (gLogCategory_DADiscovery != -1 || _LogCategory_Initialize()))
@@ -1971,11 +1971,11 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
 
         v73 = objc_alloc(MEMORY[0x277CD92D8]);
         v74 = [MEMORY[0x277CD92E8] skipWithOrder:100];
-        v75 = [MEMORY[0x277CD92E0] allInterfaces];
-        v113[0] = v75;
+        allInterfaces7 = [MEMORY[0x277CD92E0] allInterfaces];
+        v113[0] = allInterfaces7;
         v76 = [MEMORY[0x277CD92E0] customEntitlement:@"com.apple.developer.networking.multicast"];
         v113[1] = v76;
-        v77 = [MEMORY[0x277CD92E0] effectiveApplication:v107];
+        v77 = [MEMORY[0x277CD92E0] effectiveApplication:policyCopy];
         v113[2] = v77;
         v78 = [MEMORY[0x277CBEA60] arrayWithObjects:v113 count:3];
         v79 = [v73 initWithOrder:60 result:v74 conditions:v78];
@@ -1987,13 +1987,13 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
         }
 
         v81 = objc_alloc(MEMORY[0x277CD92D8]);
-        v82 = [MEMORY[0x277CD92E8] drop];
-        v83 = [MEMORY[0x277CD92E0] allInterfaces];
-        v112[0] = v83;
-        v84 = [MEMORY[0x277CD92E0] effectiveApplication:v107];
+        drop2 = [MEMORY[0x277CD92E8] drop];
+        allInterfaces8 = [MEMORY[0x277CD92E0] allInterfaces];
+        v112[0] = allInterfaces8;
+        v84 = [MEMORY[0x277CD92E0] effectiveApplication:policyCopy];
         v112[1] = v84;
         v85 = [MEMORY[0x277CBEA60] arrayWithObjects:v112 count:2];
-        v86 = [v81 initWithOrder:70 result:v82 conditions:v85];
+        v86 = [v81 initWithOrder:70 result:drop2 conditions:v85];
 
         if (![v9 addPolicy:v86] && gLogCategory_DADiscovery <= 90 && (gLogCategory_DADiscovery != -1 || _LogCategory_Initialize()))
         {
@@ -2002,8 +2002,8 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
 
         if ([v9 apply])
         {
-          v87 = &v104->_policySessions;
-          v88 = v104->_policySessions;
+          v87 = &selfCopy->_policySessions;
+          v88 = selfCopy->_policySessions;
           if (!v88)
           {
             v89 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -2013,8 +2013,8 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
             v88 = *v87;
           }
 
-          v91 = [v107 UUIDString];
-          [v88 setObject:v9 forKeyedSubscript:v91];
+          uUIDString3 = [policyCopy UUIDString];
+          [v88 setObject:v9 forKeyedSubscript:uUIDString3];
 
           v93 = v101;
           v92 = v102;
@@ -2050,21 +2050,21 @@ uint64_t __67__DADiscovery__findExtensionPoint_bundleID_entitlement_completion__
   v94 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_uuidFromExtension:(id)a3
+- (id)_uuidFromExtension:(id)extension
 {
-  v3 = a3;
+  extensionCopy = extension;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__3;
   v15 = __Block_byref_object_dispose__3;
   v16 = 0;
-  v4 = [v3 ekExtension];
-  v5 = [v4 bundleIdentifier];
+  ekExtension = [extensionCopy ekExtension];
+  bundleIdentifier = [ekExtension bundleIdentifier];
 
-  if (v5)
+  if (bundleIdentifier)
   {
-    [v5 UTF8String];
+    [bundleIdentifier UTF8String];
     v6 = NEHelperCacheCopyAppUUIDMapping();
     v7 = v6;
     if (v6 && MEMORY[0x24C1DC9E0](v6) == MEMORY[0x277D86440])
@@ -2102,13 +2102,13 @@ uint64_t __34__DADiscovery__uuidFromExtension___block_invoke(uint64_t a1, uint64
   return 1;
 }
 
-- (DADiscovery)initWithXPCObject:(id)a3 error:(id *)a4
+- (DADiscovery)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(DADiscovery *)self init];
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -2117,13 +2117,13 @@ uint64_t __34__DADiscovery__uuidFromExtension___block_invoke(uint64_t a1, uint64
     v17 = OUTLINED_FUNCTION_8();
 LABEL_18:
     DAErrorF(v17, v18, v8, v9, v10, v11, v12, v13, v19);
-    *a4 = v15 = 0;
+    *error = v15 = 0;
     goto LABEL_13;
   }
 
-  if (MEMORY[0x24C1DC9E0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x24C1DC9E0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -2179,16 +2179,16 @@ LABEL_13:
   return v15;
 }
 
-- (void)_reportASKEvent:(id)a3
+- (void)_reportASKEvent:(id)event
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 device];
-  if (v5)
+  eventCopy = event;
+  device = [eventCopy device];
+  if (device)
   {
-    v6 = [(DADiscoveryConfiguration *)self->_configuration bundleID];
-    bundleID = v6;
-    if (!v6)
+    bundleID = [(DADiscoveryConfiguration *)self->_configuration bundleID];
+    bundleID = bundleID;
+    if (!bundleID)
     {
       bundleID = self->_bundleID;
     }
@@ -2210,12 +2210,12 @@ LABEL_13:
     v11 = [v10 countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (v11)
     {
-      v12 = v11;
+      identifier = v11;
       v13 = *v48;
       v44 = v8;
-      v45 = v4;
+      v45 = eventCopy;
       obj = v10;
-      v43 = self;
+      selfCopy = self;
 LABEL_10:
       v10 = 0;
       while (1)
@@ -2226,9 +2226,9 @@ LABEL_10:
         }
 
         v14 = *(*(&v47 + 1) + 8 * v10);
-        v4 = [v14 bluetoothIdentifier];
-        v15 = [v5 bluetoothIdentifier];
-        v16 = [v4 isEqual:v15];
+        eventCopy = [v14 bluetoothIdentifier];
+        bluetoothIdentifier = [device bluetoothIdentifier];
+        v16 = [eventCopy isEqual:bluetoothIdentifier];
 
         if (v16)
         {
@@ -2241,7 +2241,7 @@ LABEL_10:
               goto LABEL_36;
             }
 
-            v12 = v10;
+            identifier = v10;
             if (_LogCategory_Initialize())
             {
               goto LABEL_36;
@@ -2251,9 +2251,9 @@ LABEL_10:
           goto LABEL_41;
         }
 
-        v4 = [v14 SSID];
-        v17 = [v5 SSID];
-        v18 = [v4 isEqual:v17];
+        eventCopy = [v14 SSID];
+        sSID = [device SSID];
+        v18 = [eventCopy isEqual:sSID];
 
         if (v18)
         {
@@ -2266,7 +2266,7 @@ LABEL_10:
               goto LABEL_36;
             }
 
-            v12 = v10;
+            identifier = v10;
             if (_LogCategory_Initialize())
             {
               goto LABEL_36;
@@ -2276,15 +2276,15 @@ LABEL_10:
           goto LABEL_41;
         }
 
-        v19 = [v14 wifiAwareDevicePairingID];
-        if (v19)
+        wifiAwareDevicePairingID = [v14 wifiAwareDevicePairingID];
+        if (wifiAwareDevicePairingID)
         {
-          v4 = v19;
-          v20 = [v14 discoveryConfiguration];
-          v21 = [v20 wifiAwareServiceName];
-          v22 = [v5 discoveryConfiguration];
-          v23 = [v22 wifiAwareServiceName];
-          v24 = [v21 isEqual:v23];
+          eventCopy = wifiAwareDevicePairingID;
+          discoveryConfiguration = [v14 discoveryConfiguration];
+          wifiAwareServiceName = [discoveryConfiguration wifiAwareServiceName];
+          discoveryConfiguration2 = [device discoveryConfiguration];
+          wifiAwareServiceName2 = [discoveryConfiguration2 wifiAwareServiceName];
+          v24 = [wifiAwareServiceName isEqual:wifiAwareServiceName2];
 
           if (v24)
           {
@@ -2293,14 +2293,14 @@ LABEL_10:
         }
 
         v10 = v10 + 1;
-        if (v12 == v10)
+        if (identifier == v10)
         {
           v10 = obj;
-          v12 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
+          identifier = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
           v8 = v44;
-          v4 = v45;
-          self = v43;
-          if (v12)
+          eventCopy = v45;
+          self = selfCopy;
+          if (identifier)
           {
             goto LABEL_10;
           }
@@ -2313,11 +2313,11 @@ LABEL_10:
       v8 = v44;
       if (v35 ^ v36 | v34)
       {
-        if (v38 != -1 || (v12 = v10, _LogCategory_Initialize()))
+        if (v38 != -1 || (identifier = v10, _LogCategory_Initialize()))
         {
 LABEL_36:
           LogPrintF();
-          v12 = v10;
+          identifier = v10;
         }
       }
     }
@@ -2326,55 +2326,55 @@ LABEL_36:
     {
 LABEL_19:
 
-      v12 = [v5 identifier];
-      if (v12)
+      identifier = [device identifier];
+      if (identifier)
       {
-        [v5 setFlags:8];
-        v25 = [v5 discoveryConfiguration];
+        [device setFlags:8];
+        discoveryConfiguration3 = [device discoveryConfiguration];
 
-        if (!v25)
+        if (!discoveryConfiguration3)
         {
           v26 = objc_alloc_init(DADiscoveryConfiguration);
           [(DADiscoveryConfiguration *)v26 setBundleID:v8];
-          [v5 identifier];
+          [device identifier];
           objc_claimAutoreleasedReturnValue();
           [OUTLINED_FUNCTION_4() setAssociationIdentifier:?];
 
-          [v5 name];
+          [device name];
           objc_claimAutoreleasedReturnValue();
           [OUTLINED_FUNCTION_4() setDisplayName:?];
 
-          -[DADiscoveryConfiguration setAllowsBluetoothPairing:](v26, "setAllowsBluetoothPairing:", [v5 allowPairing]);
-          [v5 bluetoothIdentifier];
+          -[DADiscoveryConfiguration setAllowsBluetoothPairing:](v26, "setAllowsBluetoothPairing:", [device allowPairing]);
+          [device bluetoothIdentifier];
           objc_claimAutoreleasedReturnValue();
           [OUTLINED_FUNCTION_4() setBluetoothIdentifier:?];
 
-          v27 = [v5 discoveryConfiguration];
-          v28 = [v27 flags];
-          [(DADiscoveryConfiguration *)v26 setFlags:[(DADiscoveryConfiguration *)v26 flags]| v28];
+          discoveryConfiguration4 = [device discoveryConfiguration];
+          flags = [discoveryConfiguration4 flags];
+          [(DADiscoveryConfiguration *)v26 setFlags:[(DADiscoveryConfiguration *)v26 flags]| flags];
 
-          v29 = [v5 discoveryConfiguration];
-          [v29 wifiAwareServiceName];
+          discoveryConfiguration5 = [device discoveryConfiguration];
+          [discoveryConfiguration5 wifiAwareServiceName];
           objc_claimAutoreleasedReturnValue();
           [OUTLINED_FUNCTION_3() setWifiAwareServiceName:?];
 
-          v30 = [v5 discoveryConfiguration];
-          -[DADiscoveryConfiguration setWifiAwareServiceType:](v26, "setWifiAwareServiceType:", [v30 wifiAwareServiceType]);
+          discoveryConfiguration6 = [device discoveryConfiguration];
+          -[DADiscoveryConfiguration setWifiAwareServiceType:](v26, "setWifiAwareServiceType:", [discoveryConfiguration6 wifiAwareServiceType]);
 
-          v31 = [v5 discoveryConfiguration];
-          [v31 wifiAwareModelNameMatch];
+          discoveryConfiguration7 = [device discoveryConfiguration];
+          [discoveryConfiguration7 wifiAwareModelNameMatch];
           objc_claimAutoreleasedReturnValue();
           [OUTLINED_FUNCTION_3() setWifiAwareModelNameMatch:?];
 
-          v32 = [v5 discoveryConfiguration];
-          [v32 wifiAwareVendorNameMatch];
+          discoveryConfiguration8 = [device discoveryConfiguration];
+          [discoveryConfiguration8 wifiAwareVendorNameMatch];
           objc_claimAutoreleasedReturnValue();
           [OUTLINED_FUNCTION_3() setWifiAwareVendorNameMatch:?];
 
-          [v5 setDiscoveryConfiguration:v26];
+          [device setDiscoveryConfiguration:v26];
         }
 
-        [v5 setDiscoveredInExtension:{1, v42}];
+        [device setDiscoveredInExtension:{1, v42}];
         if (gLogCategory_DADiscovery <= 30 && (gLogCategory_DADiscovery != -1 || _LogCategory_Initialize()))
         {
           LogPrintF();
@@ -2384,7 +2384,7 @@ LABEL_19:
         v40 = v39;
         if (v39)
         {
-          (*(v39 + 2))(v39, v4);
+          (*(v39 + 2))(v39, eventCopy);
         }
       }
     }

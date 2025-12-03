@@ -1,14 +1,14 @@
 @interface MenuProvidedButton
 - (CGSize)intrinsicContentSize;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MenuProvidedButton
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_27453C3B8();
   v5 = v4;
 
@@ -19,20 +19,20 @@
   return result;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   v7 = sub_27453E50C();
 
   return v7;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_27453E68C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_27453E68C(change);
 }
 
 @end

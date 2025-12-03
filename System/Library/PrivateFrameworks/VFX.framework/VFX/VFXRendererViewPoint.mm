@@ -1,11 +1,11 @@
 @interface VFXRendererViewPoint
 - ($54B668FA3CFF7C50914A1C899F2834C0)viewport;
-- (BOOL)isEqual:(id)a3;
-- (__n128)setProjectionMatrix:(__n128)a3;
-- (__n128)setViewMatrix:(__n128)a3;
+- (BOOL)isEqual:(id)equal;
+- (__n128)setProjectionMatrix:(__n128)matrix;
+- (__n128)setViewMatrix:(__n128)matrix;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setViewport:(id *)a3;
+- (void)setViewport:(id *)viewport;
 @end
 
 @implementation VFXRendererViewPoint
@@ -19,11 +19,11 @@
   return self;
 }
 
-- (void)setViewport:(id *)a3
+- (void)setViewport:(id *)viewport
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var4;
-  *&self->_viewport.width = *&a3->var2;
+  v3 = *&viewport->var0;
+  v4 = *&viewport->var4;
+  *&self->_viewport.width = *&viewport->var2;
   *&self->_viewport.znear = v4;
   *&self->_viewport.originX = v3;
 }
@@ -35,16 +35,16 @@
   [(VFXRendererViewPoint *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v28 = *&self->_anon_40[16], v31 = *self->_anon_40, v37 = *&self->_anon_40[32], v34 = *&self->_anon_40[48], objc_msgSend_viewMatrix(a3, v5, v6, v7), (vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(v31, v11), vceqq_f32(v28, v12)), vandq_s8(vceqq_f32(v37, v13), vceqq_f32(v34, v14)))) & 0x80000000) != 0) && (v29 = *&self[1]._viewport.originX, v32 = *&self[1].super.isa, v38 = *&self[1]._viewport.width, v35 = *&self[1]._viewport.znear, objc_msgSend_projectionMatrix(a3, v8, v9, v10), (vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(v32, v18), vceqq_f32(v29, v19)), vandq_s8(vceqq_f32(v38, v20), vceqq_f32(v35, v21)))) & 0x80000000) != 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v28 = *&self->_anon_40[16], v31 = *self->_anon_40, v37 = *&self->_anon_40[32], v34 = *&self->_anon_40[48], objc_msgSend_viewMatrix(equal, v5, v6, v7), (vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(v31, v11), vceqq_f32(v28, v12)), vandq_s8(vceqq_f32(v37, v13), vceqq_f32(v34, v14)))) & 0x80000000) != 0) && (v29 = *&self[1]._viewport.originX, v32 = *&self[1].super.isa, v38 = *&self[1]._viewport.width, v35 = *&self[1]._viewport.znear, objc_msgSend_projectionMatrix(equal, v8, v9, v10), (vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(v32, v18), vceqq_f32(v29, v19)), vandq_s8(vceqq_f32(v38, v20), vceqq_f32(v35, v21)))) & 0x80000000) != 0))
   {
     v30 = *&self->_anon_40[16];
     v33 = *self->_anon_40;
     v39 = *&self->_anon_40[32];
     v36 = *&self->_anon_40[48];
-    objc_msgSend_viewMatrix(a3, v15, v16, v17);
+    objc_msgSend_viewMatrix(equal, v15, v16, v17);
     return vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(v33, v23), vceqq_f32(v30, v24)), vandq_s8(vceqq_f32(v39, v25), vceqq_f32(v36, v26)))) >> 31;
   }
 
@@ -101,19 +101,19 @@
   return v4 ^ v3 ^ ((0x93EA75A780000000 * v16) | ((0xC2B2AE3D27D4EB4FLL * v16) >> 33));
 }
 
-- (__n128)setViewMatrix:(__n128)a3
+- (__n128)setViewMatrix:(__n128)matrix
 {
   result[4] = a2;
-  result[5] = a3;
+  result[5] = matrix;
   result[6] = a4;
   result[7] = a5;
   return result;
 }
 
-- (__n128)setProjectionMatrix:(__n128)a3
+- (__n128)setProjectionMatrix:(__n128)matrix
 {
   result[8] = a2;
-  result[9] = a3;
+  result[9] = matrix;
   result[10] = a4;
   result[11] = a5;
   return result;

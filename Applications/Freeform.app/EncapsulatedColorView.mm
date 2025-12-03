@@ -1,13 +1,13 @@
 @interface EncapsulatedColorView
 - (CGRect)frame;
-- (_TtC8FreeformP33_22C834EA6031CC5FD96573982091823D21EncapsulatedColorView)initWithCoder:(id)a3;
-- (_TtC8FreeformP33_22C834EA6031CC5FD96573982091823D21EncapsulatedColorView)initWithFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (_TtC8FreeformP33_22C834EA6031CC5FD96573982091823D21EncapsulatedColorView)initWithCoder:(id)coder;
+- (_TtC8FreeformP33_22C834EA6031CC5FD96573982091823D21EncapsulatedColorView)initWithFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation EncapsulatedColorView
 
-- (_TtC8FreeformP33_22C834EA6031CC5FD96573982091823D21EncapsulatedColorView)initWithCoder:(id)a3
+- (_TtC8FreeformP33_22C834EA6031CC5FD96573982091823D21EncapsulatedColorView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -26,12 +26,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for EncapsulatedColorView();
   v7 = v9.receiver;
@@ -41,7 +41,7 @@
   [v8 setFrame:{0.0, 0.0}];
 }
 
-- (_TtC8FreeformP33_22C834EA6031CC5FD96573982091823D21EncapsulatedColorView)initWithFrame:(CGRect)a3
+- (_TtC8FreeformP33_22C834EA6031CC5FD96573982091823D21EncapsulatedColorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,101 +1,101 @@
 @interface HKInteractiveChartViewController
-+ (BOOL)_timeScope:(int64_t)a3 inTimeScopeRanges:(id)a4;
-+ (id)_encodeCurrentProfileIdentifierForHealthStore:(id)a3;
-+ (id)_timeScopesWithOptions:(unint64_t)a3 timeScopeRanges:(id)a4;
-+ (id)baseRestorationUserActivity:(id)a3 activityType:(id)a4 title:(id)a5;
-+ (id)mergeRestorationDictionary:(id)a3 otherDictionary:(id)a4;
-+ (id)standardChartRestorationActivity:(id)a3 primaryDisplayType:(id)a4;
-+ (id)standardChartRestorationDictionary:(id)a3 healthStore:(id)a4;
-+ (int64_t)_timeScopeForTimeScope:(int64_t)a3 availableTimeScopes:(id)a4;
-+ (void)_validateStackedHeights:(id)a3;
-+ (void)saveRestorationUserActivity:(id)a3 viewController:(id)a4;
-- (BOOL)_acceptSubclassRange:(id)a3 proposedRange:(id)a4 axisRange:(id)a5;
++ (BOOL)_timeScope:(int64_t)scope inTimeScopeRanges:(id)ranges;
++ (id)_encodeCurrentProfileIdentifierForHealthStore:(id)store;
++ (id)_timeScopesWithOptions:(unint64_t)options timeScopeRanges:(id)ranges;
++ (id)baseRestorationUserActivity:(id)activity activityType:(id)type title:(id)title;
++ (id)mergeRestorationDictionary:(id)dictionary otherDictionary:(id)otherDictionary;
++ (id)standardChartRestorationActivity:(id)activity primaryDisplayType:(id)type;
++ (id)standardChartRestorationDictionary:(id)dictionary healthStore:(id)store;
++ (int64_t)_timeScopeForTimeScope:(int64_t)scope availableTimeScopes:(id)scopes;
++ (void)_validateStackedHeights:(id)heights;
++ (void)saveRestorationUserActivity:(id)activity viewController:(id)controller;
+- (BOOL)_acceptSubclassRange:(id)range proposedRange:(id)proposedRange axisRange:(id)axisRange;
 - (BOOL)_applyHorizontalMarginsToEntireView;
-- (BOOL)_date:(id)a3 closeToDate:(id)a4 epsilonDateComponents:(id)a5 calendar:(id)a6;
-- (BOOL)_displayTypeIsHorizontalForTimeScope:(int64_t)a3 displayType:(id)a4;
+- (BOOL)_date:(id)_date closeToDate:(id)date epsilonDateComponents:(id)components calendar:(id)calendar;
+- (BOOL)_displayTypeIsHorizontalForTimeScope:(int64_t)scope displayType:(id)type;
 - (BOOL)_primaryDisplayTypeHasNoData;
 - (BOOL)_selectedSeriesWantsLastRecordedDate;
-- (BOOL)_shouldHandleInitialLollipopTouchDate:(id)a3 mostRecentDataDate:(id)a4 forGraphView:(id)a5;
-- (BOOL)_shouldHandleVisibleRangeChangeWithChangeContext:(int64_t)a3;
+- (BOOL)_shouldHandleInitialLollipopTouchDate:(id)date mostRecentDataDate:(id)dataDate forGraphView:(id)view;
+- (BOOL)_shouldHandleVisibleRangeChangeWithChangeContext:(int64_t)context;
 - (BOOL)_showInfoButtonInCurrentValueView;
-- (BOOL)_valueRange:(id)a3 fitsInsideValueRange:(id)a4;
-- (BOOL)_viewHierarchyIsHidden:(id)a3;
-- (BOOL)_visibleRangeIsNowForTimeScope:(int64_t)a3;
+- (BOOL)_valueRange:(id)range fitsInsideValueRange:(id)valueRange;
+- (BOOL)_viewHierarchyIsHidden:(id)hidden;
+- (BOOL)_visibleRangeIsNowForTimeScope:(int64_t)scope;
 - (BOOL)chartDataIsAvailable;
-- (BOOL)infographicSupportedForDisplayType:(id)a3 healthStore:(id)a4;
-- (BOOL)removeDisplayTypeStackAtIndex:(int64_t)a3;
+- (BOOL)infographicSupportedForDisplayType:(id)type healthStore:(id)store;
+- (BOOL)removeDisplayTypeStackAtIndex:(int64_t)index;
 - (HKCurrentOverlayLocationProviding)currentOverlayLocationProvider;
 - (HKCurrentValueViewDataSourceDelegate)currentValueViewDataSourceDelegate;
 - (HKDisplayType)calendarQueryDisplayType;
 - (HKInteractiveChartCurrentValueViewCallbacks)standardCurrentValueViewCallbacks;
 - (HKInteractiveChartCurrentValueViewHandler)currentValueViewHandler;
-- (HKInteractiveChartViewController)initWithDisplayTypes:(id)a3 healthStore:(id)a4 unitPreferenceController:(id)a5 dateCache:(id)a6 chartDataCacheController:(id)a7 selectedTimeScopeController:(id)a8 sampleTypeDateRangeController:(id)a9 initialXValue:(id)a10 currentCalendarOverride:(id)a11 options:(unint64_t)a12;
-- (HKInteractiveChartViewController)initWithStackedDisplayTypes:(id)a3 primaryDisplayTypeStackIndex:(id)a4 stackedDisplayTypeHeights:(id)a5 healthStore:(id)a6 unitPreferenceController:(id)a7 dateCache:(id)a8 chartDataCacheController:(id)a9 selectedTimeScopeController:(id)a10 sampleTypeDateRangeController:(id)a11 initialXValue:(id)a12 currentCalendarOverride:(id)a13 options:(unint64_t)a14 timeScopeRanges:(id)a15;
+- (HKInteractiveChartViewController)initWithDisplayTypes:(id)types healthStore:(id)store unitPreferenceController:(id)controller dateCache:(id)cache chartDataCacheController:(id)cacheController selectedTimeScopeController:(id)scopeController sampleTypeDateRangeController:(id)rangeController initialXValue:(id)self0 currentCalendarOverride:(id)self1 options:(unint64_t)self2;
+- (HKInteractiveChartViewController)initWithStackedDisplayTypes:(id)types primaryDisplayTypeStackIndex:(id)index stackedDisplayTypeHeights:(id)heights healthStore:(id)store unitPreferenceController:(id)controller dateCache:(id)cache chartDataCacheController:(id)cacheController selectedTimeScopeController:(id)self0 sampleTypeDateRangeController:(id)self1 initialXValue:(id)self2 currentCalendarOverride:(id)self3 options:(unint64_t)self4 timeScopeRanges:(id)self5;
 - (HKSampleType)calendarQuerySampleType;
 - (HKTrendAccessibilityDelegate)trendAccessibilityDelegate;
 - (UIColor)calendarDaySamplePresentColor;
 - (double)_annotationViewCenterY;
 - (double)_effectiveHorizontalMargin;
 - (id)_allDisplayTypes;
-- (id)_assembleValueViewString:(id)a3;
-- (id)_chartDataForPoint:(id)a3;
-- (id)_colorForDisplayType:(id)a3;
-- (id)_configurationForDisplayType:(id)a3;
-- (id)_configurationForSeries:(id)a3;
-- (id)_createGraphSeriesConfigurationFromDisplayType:(id)a3 timeScope:(int64_t)a4;
-- (id)_customGraphSeriesForDisplayType:(id)a3;
-- (id)_dateForBlockPoint:(id)a3;
+- (id)_assembleValueViewString:(id)string;
+- (id)_chartDataForPoint:(id)point;
+- (id)_colorForDisplayType:(id)type;
+- (id)_configurationForDisplayType:(id)type;
+- (id)_configurationForSeries:(id)series;
+- (id)_createGraphSeriesConfigurationFromDisplayType:(id)type timeScope:(int64_t)scope;
+- (id)_customGraphSeriesForDisplayType:(id)type;
+- (id)_dateForBlockPoint:(id)point;
 - (id)_dateForMostRecentData;
-- (id)_debugDateStringForPoint:(id)a3;
-- (id)_defaultAxisRangeIncludeToday:(BOOL)a3;
-- (id)_displayNameForDisplayType:(id)a3;
-- (id)_displayTypeForSeries:(id)a3;
-- (id)_displayUnitForDisplayType:(id)a3;
-- (id)_formatterForSeries:(id)a3;
-- (id)_graphViewAxisAndVisibleDateRangeForTimeScope:(int64_t)a3 fixedRange:(id)a4;
+- (id)_debugDateStringForPoint:(id)point;
+- (id)_defaultAxisRangeIncludeToday:(BOOL)today;
+- (id)_displayNameForDisplayType:(id)type;
+- (id)_displayTypeForSeries:(id)series;
+- (id)_displayUnitForDisplayType:(id)type;
+- (id)_formatterForSeries:(id)series;
+- (id)_graphViewAxisAndVisibleDateRangeForTimeScope:(int64_t)scope fixedRange:(id)range;
 - (id)_midPointDateFromVisibleRange;
-- (id)_numberForXCoordinate:(double)a3 graphView:(id)a4;
-- (id)_pointSelectionInfo:(id)a3;
+- (id)_numberForXCoordinate:(double)coordinate graphView:(id)view;
+- (id)_pointSelectionInfo:(id)info;
 - (id)_primaryDisplayType;
-- (id)_rangeValueAsNumber:(id)a3;
+- (id)_rangeValueAsNumber:(id)number;
 - (id)_singleFixedRange;
-- (id)_trendCoordinateDescriptionForStartX:(double)a3 endX:(double)a4 timeScope:(int64_t)a5 graphView:(id)a6;
-- (id)_valueViewToString:(id)a3;
+- (id)_trendCoordinateDescriptionForStartX:(double)x endX:(double)endX timeScope:(int64_t)scope graphView:(id)view;
+- (id)_valueViewToString:(id)string;
 - (id)accessibilityDataForChart;
-- (id)addNoDataEntries:(id)a3 timeScope:(int64_t)a4 targetSeries:(id)a5;
-- (id)currentDisplayTypesForStackOffset:(int64_t)a3;
+- (id)addNoDataEntries:(id)entries timeScope:(int64_t)scope targetSeries:(id)series;
+- (id)currentDisplayTypesForStackOffset:(int64_t)offset;
 - (id)currentValueViewAsString;
-- (id)dateForXCoordinate:(double)a3 graphView:(id)a4;
-- (id)descriptionForChartData:(id)a3 timeScope:(int64_t)a4;
-- (id)descriptionForStartX:(double)a3 endX:(double)a4 chartData:(id)a5 timeScope:(int64_t)a6 resolution:(int64_t)a7 graphView:(id)a8;
-- (id)descriptionSpansForGraphView:(id)a3 timeScope:(int64_t)a4;
-- (id)fixedRangeForTimeScope:(int64_t)a3;
-- (id)graphSeriesForDisplayType:(id)a3 timeScope:(int64_t)a4 stackOffset:(int64_t)a5;
-- (id)graphView:(id)a3 graphSeriesForZoom:(int64_t)a4 stackOffset:(int64_t)a5;
-- (id)infographicViewControllerForDisplayType:(id)a3 healthStore:(id)a4;
+- (id)dateForXCoordinate:(double)coordinate graphView:(id)view;
+- (id)descriptionForChartData:(id)data timeScope:(int64_t)scope;
+- (id)descriptionForStartX:(double)x endX:(double)endX chartData:(id)data timeScope:(int64_t)scope resolution:(int64_t)resolution graphView:(id)view;
+- (id)descriptionSpansForGraphView:(id)view timeScope:(int64_t)scope;
+- (id)fixedRangeForTimeScope:(int64_t)scope;
+- (id)graphSeriesForDisplayType:(id)type timeScope:(int64_t)scope stackOffset:(int64_t)offset;
+- (id)graphView:(id)view graphSeriesForZoom:(int64_t)zoom stackOffset:(int64_t)offset;
+- (id)infographicViewControllerForDisplayType:(id)type healthStore:(id)store;
 - (id)lollipopAnnotationColor;
 - (id)lollipopExtensionColor;
-- (id)makeAnchorDateFromPreviousAnchorDate:(id)a3 previousEffectiveVisibleRange:(id)a4 previousTimeScope:(int64_t)a5 currentTimeScope:(int64_t)a6;
+- (id)makeAnchorDateFromPreviousAnchorDate:(id)date previousEffectiveVisibleRange:(id)range previousTimeScope:(int64_t)scope currentTimeScope:(int64_t)timeScope;
 - (id)makeAnnotationDataSource;
 - (id)makeCurrentValueView;
-- (id)makePrimaryGraphViewControllerWithDateZoom:(int64_t)a3 previousDateZoom:(int64_t)a4 previousXAxisSpace:(double)a5 currentCalendar:(id)a6;
+- (id)makePrimaryGraphViewControllerWithDateZoom:(int64_t)zoom previousDateZoom:(int64_t)dateZoom previousXAxisSpace:(double)space currentCalendar:(id)calendar;
 - (id)makeStandardCurrentValueViewDataSource;
-- (id)primaryGraphSeriesForTimeScope:(int64_t)a3;
-- (id)replaceRangeClause:(id)a3;
+- (id)primaryGraphSeriesForTimeScope:(int64_t)scope;
+- (id)replaceRangeClause:(id)clause;
 - (id)restorationStateDictionary;
-- (id)stringForValueRange:(id)a3 timeScope:(int64_t)a4;
+- (id)stringForValueRange:(id)range timeScope:(int64_t)scope;
 - (id)supportedTimeScopes;
-- (int64_t)_countOfHorizontalSectionsForConfigurationManager:(id)a3 timeScope:(int64_t)a4;
-- (int64_t)_defaultTimeScopeWithAvailableTimeScopes:(id)a3;
-- (int64_t)_numHorizontalDisplayTypesForTimeScope:(int64_t)a3 displayTypes:(id)a4;
-- (int64_t)_userInfoSelectionCount:(id)a3;
-- (int64_t)addNewDisplayTypeStackWithDisplayTypes:(id)a3;
+- (int64_t)_countOfHorizontalSectionsForConfigurationManager:(id)manager timeScope:(int64_t)scope;
+- (int64_t)_defaultTimeScopeWithAvailableTimeScopes:(id)scopes;
+- (int64_t)_numHorizontalDisplayTypesForTimeScope:(int64_t)scope displayTypes:(id)types;
+- (int64_t)_userInfoSelectionCount:(id)count;
+- (int64_t)addNewDisplayTypeStackWithDisplayTypes:(id)types;
 - (int64_t)annotationDataSourceFirstWeekday;
-- (int64_t)defaultAlignmentForTimeScope:(int64_t)a3;
-- (void)_addDisplayTypeToConfiguration:(id)a3 allDisplayTypes:(id)a4 configurationManager:(id)a5;
-- (void)_addSeriesForDisplayType:(id)a3 updatingTimeScopeProperties:(id)a4 configurationManager:(id)a5;
+- (int64_t)defaultAlignmentForTimeScope:(int64_t)scope;
+- (void)_addDisplayTypeToConfiguration:(id)configuration allDisplayTypes:(id)types configurationManager:(id)manager;
+- (void)_addSeriesForDisplayType:(id)type updatingTimeScopeProperties:(id)properties configurationManager:(id)manager;
 - (void)_automaticAutoScale;
-- (void)_configureCustomDisplayType:(id)a3 graphSeries:(id)a4 configurationManager:(id)a5 timeScope:(int64_t)a6;
+- (void)_configureCustomDisplayType:(id)type graphSeries:(id)series configurationManager:(id)manager timeScope:(int64_t)scope;
 - (void)_configureInitialLollipopSelection;
 - (void)_configureSelectedRangeFormatterWithChartRangeProvider;
 - (void)_createAndPrepareFeedbackGenerator;
@@ -106,117 +106,117 @@
 - (void)_layoutDashboardEmptyLabelsIfNecessary;
 - (void)_layoutDividerViews;
 - (void)_layoutHeader;
-- (void)_moveSelectedDateInDirection:(int64_t)a3;
-- (void)_notifyObserversDidUpdateVisibleValueRange:(id)a3 changeContext:(int64_t)a4;
+- (void)_moveSelectedDateInDirection:(int64_t)direction;
+- (void)_notifyObserversDidUpdateVisibleValueRange:(id)range changeContext:(int64_t)context;
 - (void)_omitLayoutHeader;
 - (void)_primaryDisplayType;
-- (void)_radioButtonsDidUpdate:(id)a3;
+- (void)_radioButtonsDidUpdate:(id)update;
 - (void)_replacePrimaryGraphViewControllerWithScalarController;
-- (void)_replacePrimaryGraphViewControllerWithTimeScope:(int64_t)a3 anchorDate:(id)a4 animated:(BOOL)a5;
+- (void)_replacePrimaryGraphViewControllerWithTimeScope:(int64_t)scope anchorDate:(id)date animated:(BOOL)animated;
 - (void)_scheduleDelayedAutoscale;
-- (void)_scrollToAnchorDate:(id)a3 graphView:(id)a4 alignment:(int64_t)a5;
-- (void)_scrollToMostRecentDataWithAlignment:(int64_t)a3;
+- (void)_scrollToAnchorDate:(id)date graphView:(id)view alignment:(int64_t)alignment;
+- (void)_scrollToMostRecentDataWithAlignment:(int64_t)alignment;
 - (void)_setDateSelectorToVisibleRange;
-- (void)_setGraphViewAxisAndVisibleDateRangeForTimeScope:(int64_t)a3 anchorDate:(id)a4 preserveScrollPosition:(BOOL)a5;
-- (void)_setSelectedGraphSeries:(id)a3 animated:(BOOL)a4;
-- (void)_setVisibleDisplayTypes:(id)a3;
-- (void)_setVisibleRangeUsingDateFromDateSelector:(id)a3;
+- (void)_setGraphViewAxisAndVisibleDateRangeForTimeScope:(int64_t)scope anchorDate:(id)date preserveScrollPosition:(BOOL)position;
+- (void)_setSelectedGraphSeries:(id)series animated:(BOOL)animated;
+- (void)_setVisibleDisplayTypes:(id)types;
+- (void)_setVisibleRangeUsingDateFromDateSelector:(id)selector;
 - (void)_showHideNoGraphSeriesLabels;
-- (void)_unitPreferencesDidUpdate:(id)a3;
-- (void)_updateAfterConfigurationChangeIncludeDateAxis:(BOOL)a3;
-- (void)_updateAxisScalingRulesForUnitPreferenceChangesOfTypes:(id)a3;
+- (void)_unitPreferencesDidUpdate:(id)update;
+- (void)_updateAfterConfigurationChangeIncludeDateAxis:(BOOL)axis;
+- (void)_updateAxisScalingRulesForUnitPreferenceChangesOfTypes:(id)types;
 - (void)_updateGraphViewAxisDateRange;
-- (void)_updateSelectedSeriesLabel:(id)a3;
-- (void)addChartViewObserver:(id)a3;
-- (void)addOverlayDisplayType:(id)a3 stackOffset:(int64_t)a4;
-- (void)currentTimeViewDidTapOnDateSelector:(id)a3;
+- (void)_updateSelectedSeriesLabel:(id)label;
+- (void)addChartViewObserver:(id)observer;
+- (void)addOverlayDisplayType:(id)type stackOffset:(int64_t)offset;
+- (void)currentTimeViewDidTapOnDateSelector:(id)selector;
 - (void)dealloc;
-- (void)didTapOnInfoButtonFromCurrentValueView:(id)a3;
-- (void)graphView:(id)a3 didFinishUserScrollingToValueRange:(id)a4;
-- (void)graphView:(id)a3 didUpdateFromDateZoom:(int64_t)a4 toDateZoom:(int64_t)a5 newVisibleRange:(id)a6;
-- (void)graphView:(id)a3 didUpdateLegendViewsWithTopLegendFrame:(CGRect)a4;
-- (void)graphView:(id)a3 didUpdateSelectedPoint:(id)a4;
-- (void)graphView:(id)a3 didUpdateSeries:(id)a4 newDataArrived:(BOOL)a5 changeContext:(int64_t)a6;
-- (void)graphView:(id)a3 didUpdateVisibleValueRange:(id)a4 changeContext:(int64_t)a5;
-- (void)graphView:(id)a3 startupTime:(int64_t)a4;
-- (void)graphViewDidEndSelection:(id)a3;
-- (void)graphViewDidTapYAxis:(id)a3;
-- (void)graphViewExternalSelectionEnd:(id)a3;
-- (void)graphViewRenderedView:(id)a3;
+- (void)didTapOnInfoButtonFromCurrentValueView:(id)view;
+- (void)graphView:(id)view didFinishUserScrollingToValueRange:(id)range;
+- (void)graphView:(id)view didUpdateFromDateZoom:(int64_t)zoom toDateZoom:(int64_t)dateZoom newVisibleRange:(id)range;
+- (void)graphView:(id)view didUpdateLegendViewsWithTopLegendFrame:(CGRect)frame;
+- (void)graphView:(id)view didUpdateSelectedPoint:(id)point;
+- (void)graphView:(id)view didUpdateSeries:(id)series newDataArrived:(BOOL)arrived changeContext:(int64_t)context;
+- (void)graphView:(id)view didUpdateVisibleValueRange:(id)range changeContext:(int64_t)context;
+- (void)graphView:(id)view startupTime:(int64_t)time;
+- (void)graphViewDidEndSelection:(id)selection;
+- (void)graphViewDidTapYAxis:(id)axis;
+- (void)graphViewExternalSelectionEnd:(id)end;
+- (void)graphViewRenderedView:(id)view;
 - (void)installGraphViewSnapshot;
-- (void)interactiveChartHasData:(id)a3;
+- (void)interactiveChartHasData:(id)data;
 - (void)loadView;
-- (void)monthViewController:(id)a3 didSelectDate:(id)a4;
-- (void)removeChartViewObserver:(id)a3;
-- (void)removeGraphViewSnapshotAnimated:(BOOL)a3;
-- (void)removeOverlayDisplayType:(id)a3 stackOffset:(int64_t)a4 automaticAutoscale:(BOOL)a5;
-- (void)removeStackedDisplayType:(id)a3;
-- (void)replaceCurrentDisplayTypesWithTypes:(id)a3 stackOffset:(int64_t)a4 resetDateRange:(BOOL)a5 automaticAutoScale:(BOOL)a6;
-- (void)sampleTypeDateRangeController:(id)a3 didUpdateDateRanges:(id)a4;
+- (void)monthViewController:(id)controller didSelectDate:(id)date;
+- (void)removeChartViewObserver:(id)observer;
+- (void)removeGraphViewSnapshotAnimated:(BOOL)animated;
+- (void)removeOverlayDisplayType:(id)type stackOffset:(int64_t)offset automaticAutoscale:(BOOL)autoscale;
+- (void)removeStackedDisplayType:(id)type;
+- (void)replaceCurrentDisplayTypesWithTypes:(id)types stackOffset:(int64_t)offset resetDateRange:(BOOL)range automaticAutoScale:(BOOL)scale;
+- (void)sampleTypeDateRangeController:(id)controller didUpdateDateRanges:(id)ranges;
 - (void)saveRestorationState;
-- (void)scrollToDate:(id)a3 withVisibleAlignment:(int64_t)a4;
+- (void)scrollToDate:(id)date withVisibleAlignment:(int64_t)alignment;
 - (void)scrollToMostRecentData;
-- (void)scrollToRange:(id)a3 withVisibleAlignment:(int64_t)a4;
-- (void)selectTimeScope:(int64_t)a3;
-- (void)setCurrentValueViewDataSourceDelegate:(id)a3;
-- (void)setDetailView:(id)a3;
-- (void)setStackedDisplayTypeHeights:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateAnnotationDataSource:(id)a3 pointContexts:(id)a4;
-- (void)updateCurrentValueView:(id)a3 graphView:(id)a4 timeScope:(int64_t)a5 showInfoButton:(BOOL)a6;
+- (void)scrollToRange:(id)range withVisibleAlignment:(int64_t)alignment;
+- (void)selectTimeScope:(int64_t)scope;
+- (void)setCurrentValueViewDataSourceDelegate:(id)delegate;
+- (void)setDetailView:(id)view;
+- (void)setStackedDisplayTypeHeights:(id)heights;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateAnnotationDataSource:(id)source pointContexts:(id)contexts;
+- (void)updateCurrentValueView:(id)view graphView:(id)graphView timeScope:(int64_t)scope showInfoButton:(BOOL)button;
 - (void)updateCurrentValueViewWithVisibleRange;
 - (void)updatePrimaryGraphViewController;
-- (void)updateSelectionAnnotationDataSourceForContext:(id)a3 displayType:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateSelectionAnnotationDataSourceForContext:(id)context displayType:(id)type timeScope:(int64_t)scope resolution:(int64_t)resolution;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation HKInteractiveChartViewController
 
-- (HKInteractiveChartViewController)initWithStackedDisplayTypes:(id)a3 primaryDisplayTypeStackIndex:(id)a4 stackedDisplayTypeHeights:(id)a5 healthStore:(id)a6 unitPreferenceController:(id)a7 dateCache:(id)a8 chartDataCacheController:(id)a9 selectedTimeScopeController:(id)a10 sampleTypeDateRangeController:(id)a11 initialXValue:(id)a12 currentCalendarOverride:(id)a13 options:(unint64_t)a14 timeScopeRanges:(id)a15
+- (HKInteractiveChartViewController)initWithStackedDisplayTypes:(id)types primaryDisplayTypeStackIndex:(id)index stackedDisplayTypeHeights:(id)heights healthStore:(id)store unitPreferenceController:(id)controller dateCache:(id)cache chartDataCacheController:(id)cacheController selectedTimeScopeController:(id)self0 sampleTypeDateRangeController:(id)self1 initialXValue:(id)self2 currentCalendarOverride:(id)self3 options:(unint64_t)self4 timeScopeRanges:(id)self5
 {
   v66[1] = *MEMORY[0x1E69E9840];
-  v54 = a3;
-  v64 = a4;
-  v20 = a8;
-  v63 = a5;
-  v21 = a6;
-  v53 = a7;
-  v22 = a7;
-  v23 = v21;
-  v62 = v22;
-  v61 = a8;
-  v60 = a9;
-  v59 = a10;
-  v58 = a11;
-  v57 = a12;
-  v24 = a13;
-  v25 = a15;
+  typesCopy = types;
+  indexCopy = index;
+  cacheCopy = cache;
+  heightsCopy = heights;
+  storeCopy = store;
+  controllerCopy = controller;
+  controllerCopy2 = controller;
+  v23 = storeCopy;
+  v62 = controllerCopy2;
+  cacheCopy2 = cache;
+  cacheControllerCopy = cacheController;
+  scopeControllerCopy = scopeController;
+  rangeControllerCopy = rangeController;
+  valueCopy = value;
+  overrideCopy = override;
+  rangesCopy = ranges;
   v65.receiver = self;
   v65.super_class = HKInteractiveChartViewController;
   v26 = [(HKInteractiveChartViewController *)&v65 init];
   v27 = v26;
   if (v26)
   {
-    v56 = v25;
+    v56 = rangesCopy;
     v26->_displayState = 0;
-    v28 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v27->_creationDate;
-    v27->_creationDate = v28;
+    v27->_creationDate = date;
 
-    v27->_options = a14;
-    objc_storeStrong(&v27->_healthStore, a6);
-    objc_storeStrong(&v27->_unitPreferenceController, v53);
-    objc_storeStrong(&v27->_dateCache, v20);
-    objc_storeStrong(&v27->_chartDataCacheController, a9);
-    objc_storeStrong(&v27->_selectedTimeScopeController, a10);
+    v27->_options = options;
+    objc_storeStrong(&v27->_healthStore, store);
+    objc_storeStrong(&v27->_unitPreferenceController, controllerCopy);
+    objc_storeStrong(&v27->_dateCache, cacheCopy);
+    objc_storeStrong(&v27->_chartDataCacheController, cacheController);
+    objc_storeStrong(&v27->_selectedTimeScopeController, scopeController);
     objc_storeWeak(&v27->_currentValueViewHandler, v27);
     v30 = [HKDisplayTypeController sharedInstanceForHealthStore:v23];
     displayTypeController = v27->_displayTypeController;
     v27->_displayTypeController = v30;
 
-    objc_storeStrong(&v27->_sampleTypeDateRangeController, a11);
+    objc_storeStrong(&v27->_sampleTypeDateRangeController, rangeController);
     v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
     observers = v27->_observers;
     v27->_observers = v32;
@@ -242,102 +242,102 @@
     v27->_chartHasDataCompletion = 0;
 
     v27->_lastDateValueRangeUpdate = 0.0;
-    objc_storeStrong(&v27->_initialXValue, a12);
+    objc_storeStrong(&v27->_initialXValue, value);
     v27->_firstSampleDateRangeUpdate = 1;
     v27->_delayedAutoscaleRequestCount = 0;
     v27->_delayedAutoscaleActualCount = 0;
-    v43 = v24;
-    if (!v24)
+    currentCalendar = overrideCopy;
+    if (!overrideCopy)
     {
-      v43 = [MEMORY[0x1E695DEE8] currentCalendar];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     }
 
-    objc_storeStrong(&v27->_currentCalendar, v43);
-    if (!v24)
+    objc_storeStrong(&v27->_currentCalendar, currentCalendar);
+    if (!overrideCopy)
     {
     }
 
-    if (v64)
+    if (indexCopy)
     {
-      v44 = [v64 intValue];
+      intValue = [indexCopy intValue];
     }
 
     else
     {
-      v44 = 0;
+      intValue = 0;
     }
 
-    v27->_primaryDisplayTypeStackIndex = v44;
-    [HKInteractiveChartViewController _validateStackedHeights:v63, a6];
-    objc_storeStrong(&v27->_stackedDisplayTypeHeights, a5);
-    [(HKInteractiveChartViewController *)v27 setDisplayTypeStack:v54];
+    v27->_primaryDisplayTypeStackIndex = intValue;
+    [HKInteractiveChartViewController _validateStackedHeights:heightsCopy, store];
+    objc_storeStrong(&v27->_stackedDisplayTypeHeights, heights);
+    [(HKInteractiveChartViewController *)v27 setDisplayTypeStack:typesCopy];
     if ([(HKInteractiveChartViewController *)v27 _chartHasDateAxis])
     {
-      v45 = [(HKInteractiveChartViewController *)v27 sampleTypeDateRangeController];
-      [v45 addObserver:v27];
+      sampleTypeDateRangeController = [(HKInteractiveChartViewController *)v27 sampleTypeDateRangeController];
+      [sampleTypeDateRangeController addObserver:v27];
     }
 
-    v46 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v46 addObserver:v27 selector:sel__unitPreferencesDidUpdate_ name:*MEMORY[0x1E696BE70] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v27 selector:sel__unitPreferencesDidUpdate_ name:*MEMORY[0x1E696BE70] object:0];
 
-    [(HKInteractiveChartViewController *)v27 _setVisibleDisplayTypes:v54];
+    [(HKInteractiveChartViewController *)v27 _setVisibleDisplayTypes:typesCopy];
     [(HKInteractiveChartViewController *)v27 _createAndPrepareFeedbackGenerator];
     v47 = [HKSelectedRangeFormatter alloc];
-    v48 = [(HKInteractiveChartViewController *)v27 unitPreferenceController];
-    v49 = [(HKSelectedRangeFormatter *)v47 initWithUnitPreferenceController:v48];
+    unitPreferenceController = [(HKInteractiveChartViewController *)v27 unitPreferenceController];
+    v49 = [(HKSelectedRangeFormatter *)v47 initWithUnitPreferenceController:unitPreferenceController];
     [(HKInteractiveChartViewController *)v27 setSelectedRangeFormatter:v49];
 
     v27->_disableCurrentValueViewForInitialLollipop = 0;
     v27->_hasInitialDateRangeAndTimeScope = 1;
-    objc_storeStrong(&v27->_timeScopeRanges, a15);
+    objc_storeStrong(&v27->_timeScopeRanges, ranges);
     v27->_annotationDataSourceFirstWeekday = -1;
     v50 = [[_TtC8HealthUI45HKInteractiveChartInteractionAnalyticsManager alloc] initWithHealthStore:v23];
     analyticsManager = v27->_analyticsManager;
     v27->_analyticsManager = v50;
 
-    v25 = v56;
+    rangesCopy = v56;
   }
 
   return v27;
 }
 
-- (HKInteractiveChartViewController)initWithDisplayTypes:(id)a3 healthStore:(id)a4 unitPreferenceController:(id)a5 dateCache:(id)a6 chartDataCacheController:(id)a7 selectedTimeScopeController:(id)a8 sampleTypeDateRangeController:(id)a9 initialXValue:(id)a10 currentCalendarOverride:(id)a11 options:(unint64_t)a12
+- (HKInteractiveChartViewController)initWithDisplayTypes:(id)types healthStore:(id)store unitPreferenceController:(id)controller dateCache:(id)cache chartDataCacheController:(id)cacheController selectedTimeScopeController:(id)scopeController sampleTypeDateRangeController:(id)rangeController initialXValue:(id)self0 currentCalendarOverride:(id)self1 options:(unint64_t)self2
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v32[0] = a3;
+  v32[0] = types;
   v30 = MEMORY[0x1E695DEC8];
-  v18 = a11;
-  v19 = a10;
-  v20 = a9;
-  v21 = a8;
-  v22 = a7;
-  v23 = a6;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
+  overrideCopy = override;
+  valueCopy = value;
+  rangeControllerCopy = rangeController;
+  scopeControllerCopy = scopeController;
+  cacheControllerCopy = cacheController;
+  cacheCopy = cache;
+  controllerCopy = controller;
+  storeCopy = store;
+  typesCopy = types;
   v27 = [v30 arrayWithObjects:v32 count:1];
 
-  v28 = [(HKInteractiveChartViewController *)self initWithStackedDisplayTypes:v27 primaryDisplayTypeStackIndex:0 stackedDisplayTypeHeights:0 healthStore:v25 unitPreferenceController:v24 dateCache:v23 chartDataCacheController:v22 selectedTimeScopeController:v21 sampleTypeDateRangeController:v20 initialXValue:v19 currentCalendarOverride:v18 options:a12 timeScopeRanges:0];
+  v28 = [(HKInteractiveChartViewController *)self initWithStackedDisplayTypes:v27 primaryDisplayTypeStackIndex:0 stackedDisplayTypeHeights:0 healthStore:storeCopy unitPreferenceController:controllerCopy dateCache:cacheCopy chartDataCacheController:cacheControllerCopy selectedTimeScopeController:scopeControllerCopy sampleTypeDateRangeController:rangeControllerCopy initialXValue:valueCopy currentCalendarOverride:overrideCopy options:options timeScopeRanges:0];
   return v28;
 }
 
-- (void)setStackedDisplayTypeHeights:(id)a3
+- (void)setStackedDisplayTypeHeights:(id)heights
 {
-  v4 = a3;
-  [HKInteractiveChartViewController _validateStackedHeights:v4];
+  heightsCopy = heights;
+  [HKInteractiveChartViewController _validateStackedHeights:heightsCopy];
   stackedDisplayTypeHeights = self->_stackedDisplayTypeHeights;
-  self->_stackedDisplayTypeHeights = v4;
+  self->_stackedDisplayTypeHeights = heightsCopy;
 }
 
-+ (void)_validateStackedHeights:(id)a3
++ (void)_validateStackedHeights:(id)heights
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  heightsCopy = heights;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [heightsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -350,7 +350,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(heightsCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -362,7 +362,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [heightsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -378,16 +378,16 @@
   }
 }
 
-- (void)interactiveChartHasData:(id)a3
+- (void)interactiveChartHasData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (![(HKInteractiveChartViewController *)self chartDataIsAvailable])
   {
-    v5 = [(HKInteractiveChartViewController *)self chartHasDataCompletion];
+    chartHasDataCompletion = [(HKInteractiveChartViewController *)self chartHasDataCompletion];
 
-    if (!v5)
+    if (!chartHasDataCompletion)
     {
-      [(HKInteractiveChartViewController *)self setChartHasDataCompletion:v4];
+      [(HKInteractiveChartViewController *)self setChartHasDataCompletion:dataCopy];
       goto LABEL_7;
     }
 
@@ -399,33 +399,33 @@
     }
   }
 
-  v4[2](v4);
+  dataCopy[2](dataCopy);
 LABEL_7:
 }
 
 - (BOOL)chartDataIsAvailable
 {
-  v2 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  v3 = [v2 graphView];
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
 
-  if (v3)
+  if (graphView)
   {
-    v4 = [v3 allSeriesHaveDataAvailable];
+    allSeriesHaveDataAvailable = [graphView allSeriesHaveDataAvailable];
   }
 
   else
   {
-    v4 = 0;
+    allSeriesHaveDataAvailable = 0;
   }
 
-  return v4;
+  return allSeriesHaveDataAvailable;
 }
 
 - (id)supportedTimeScopes
 {
   options = self->_options;
-  v3 = [(HKInteractiveChartViewController *)self timeScopeRanges];
-  v4 = [HKInteractiveChartViewController _timeScopesWithOptions:options timeScopeRanges:v3];
+  timeScopeRanges = [(HKInteractiveChartViewController *)self timeScopeRanges];
+  v4 = [HKInteractiveChartViewController _timeScopesWithOptions:options timeScopeRanges:timeScopeRanges];
 
   return v4;
 }
@@ -434,11 +434,11 @@ LABEL_7:
 {
   [(HKInteractiveChartViewController *)self updateCurrentValueViewWithVisibleRange];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(HKInteractiveChartViewController *)self dataSourceForCurrentValueViewString];
-  v5 = v4;
+  dataSourceForCurrentValueViewString = [(HKInteractiveChartViewController *)self dataSourceForCurrentValueViewString];
+  v5 = dataSourceForCurrentValueViewString;
   if (self->_currentValueView)
   {
-    v6 = v4 == 0;
+    v6 = dataSourceForCurrentValueViewString == 0;
   }
 
   else
@@ -453,7 +453,7 @@ LABEL_7:
 
   else
   {
-    v7 = [v4 dateViewWithOrientation:0];
+    v7 = [dataSourceForCurrentValueViewString dateViewWithOrientation:0];
     v8 = [(HKInteractiveChartViewController *)self _valueViewToString:v7];
     [v3 addObject:v8];
 
@@ -480,18 +480,18 @@ LABEL_7:
   return v14;
 }
 
-- (id)_valueViewToString:(id)a3
+- (id)_valueViewToString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 text];
-    v6 = v5;
+    text = [stringCopy text];
+    subviews = text;
     v7 = @"NilLabelText";
-    if (v5)
+    if (text)
     {
-      v7 = v5;
+      v7 = text;
     }
 
     v8 = v7;
@@ -499,26 +499,26 @@ LABEL_7:
 
   else
   {
-    v6 = [v4 subviews];
+    subviews = [stringCopy subviews];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __55__HKInteractiveChartViewController__valueViewToString___block_invoke;
     v11[3] = &unk_1E81B98F0;
     v11[4] = self;
-    v9 = [v6 hk_map:v11];
+    v9 = [subviews hk_map:v11];
     v8 = [(HKInteractiveChartViewController *)self _assembleValueViewString:v9];
   }
 
   return v8;
 }
 
-- (id)_assembleValueViewString:(id)a3
+- (id)_assembleValueViewString:(id)string
 {
-  v3 = a3;
-  if ([v3 count])
+  stringCopy = string;
+  if ([stringCopy count])
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [v3 componentsJoinedByString:@"|"];
+    v5 = [stringCopy componentsJoinedByString:@"|"];
     v6 = [v4 stringWithFormat:@"(%@)", v5];
   }
 
@@ -533,53 +533,53 @@ LABEL_7:
 - (id)accessibilityDataForChart
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(HKTimeScopeControl *)self->_radioButtons selectedTimeScope];
-  v5 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  v6 = [v5 graphView];
-  v7 = [(HKInteractiveChartViewController *)self trendAccessibilityDelegate];
-  v8 = [v7 trendAccessibilitySeries];
+  selectedTimeScope = [(HKTimeScopeControl *)self->_radioButtons selectedTimeScope];
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
+  trendAccessibilityDelegate = [(HKInteractiveChartViewController *)self trendAccessibilityDelegate];
+  trendAccessibilitySeries = [trendAccessibilityDelegate trendAccessibilitySeries];
 
-  if (v8)
+  if (trendAccessibilitySeries)
   {
-    v9 = v8;
+    v9 = trendAccessibilitySeries;
   }
 
   else
   {
-    v9 = [(HKInteractiveChartViewController *)self descriptionSeriesForGraphView:v6];
+    v9 = [(HKInteractiveChartViewController *)self descriptionSeriesForGraphView:graphView];
   }
 
   v10 = v9;
-  v11 = [v9 resolutionForTimeScope:v4 traitResolution:{objc_msgSend(v6, "resolutionFromTraitCollectionAttributes")}];
+  v11 = [v9 resolutionForTimeScope:selectedTimeScope traitResolution:{objc_msgSend(graphView, "resolutionFromTraitCollectionAttributes")}];
   v12 = MEMORY[0x1E695E0F8];
-  if (v5 && v10)
+  if (primaryGraphViewController && v10)
   {
     v13 = v11;
-    [v6 hardLeftMarginWidth];
+    [graphView hardLeftMarginWidth];
     v15 = v14;
-    v12 = [(HKInteractiveChartViewController *)self descriptionSpansForGraphView:v6 timeScope:v4];
+    v12 = [(HKInteractiveChartViewController *)self descriptionSpansForGraphView:graphView timeScope:selectedTimeScope];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __61__HKInteractiveChartViewController_accessibilityDataForChart__block_invoke;
     v19[3] = &unk_1E81B9918;
     v19[4] = self;
-    v23 = v4;
+    v23 = selectedTimeScope;
     v24 = v13;
-    v20 = v6;
-    v21 = v8;
+    v20 = graphView;
+    v21 = trendAccessibilitySeries;
     v25 = v15;
     v22 = v3;
     [v20 enumerateVisibleCoordinatesForSeries:v10 block:v19];
   }
 
-  if (v8)
+  if (trendAccessibilitySeries)
   {
     v16 = [[HKAccessibilityData alloc] initWithPointData:v3 accessibilitySpans:v12];
   }
 
   else
   {
-    v17 = [(HKInteractiveChartViewController *)self addNoDataEntries:v3 timeScope:v4 targetSeries:v10];
+    v17 = [(HKInteractiveChartViewController *)self addNoDataEntries:v3 timeScope:selectedTimeScope targetSeries:v10];
     v16 = [[HKAccessibilityData alloc] initWithPointData:v17 accessibilitySpans:v12];
   }
 
@@ -624,72 +624,72 @@ void __61__HKInteractiveChartViewController_accessibilityDataForChart__block_inv
   }
 }
 
-- (id)_trendCoordinateDescriptionForStartX:(double)a3 endX:(double)a4 timeScope:(int64_t)a5 graphView:(id)a6
+- (id)_trendCoordinateDescriptionForStartX:(double)x endX:(double)endX timeScope:(int64_t)scope graphView:(id)view
 {
-  v10 = a6;
-  v11 = [(HKInteractiveChartViewController *)self dateForXCoordinate:v10 graphView:a3];
-  v12 = [(HKInteractiveChartViewController *)self dateForXCoordinate:v10 graphView:a4];
+  viewCopy = view;
+  v11 = [(HKInteractiveChartViewController *)self dateForXCoordinate:viewCopy graphView:x];
+  v12 = [(HKInteractiveChartViewController *)self dateForXCoordinate:viewCopy graphView:endX];
 
   v13 = [HKValueRange valueRangeWithMinValue:v11 maxValue:v12];
-  if (a5 == 3)
+  if (scope == 3)
   {
-    v14 = [(HKInteractiveChartViewController *)self currentCalendar];
-    v15 = [v14 firstWeekday];
+    currentCalendar = [(HKInteractiveChartViewController *)self currentCalendar];
+    firstWeekday = [currentCalendar firstWeekday];
 
-    v16 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
+    hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
     v17 = [MEMORY[0x1E696AB80] hk_dateIntervalWithValueRange:v13];
-    v18 = [v16 hk_weeksContainingInterval:v17 firstWeekday:v15];
+    v18 = [hk_gregorianCalendarWithLocalTimeZone hk_weeksContainingInterval:v17 firstWeekday:firstWeekday];
 
-    v19 = [v18 startDate];
-    v20 = [v18 endDate];
-    v21 = [HKValueRange valueRangeWithMinValue:v19 maxValue:v20];
+    startDate = [v18 startDate];
+    endDate = [v18 endDate];
+    v21 = [HKValueRange valueRangeWithMinValue:startDate maxValue:endDate];
 
     v13 = v21;
   }
 
-  v22 = [(HKInteractiveChartViewController *)self stringForValueRange:v13 timeScope:a5];
+  v22 = [(HKInteractiveChartViewController *)self stringForValueRange:v13 timeScope:scope];
   v23 = [(HKInteractiveChartViewController *)self replaceRangeClause:v22];
 
   return v23;
 }
 
-- (id)addNoDataEntries:(id)a3 timeScope:(int64_t)a4 targetSeries:(id)a5
+- (id)addNoDataEntries:(id)entries timeScope:(int64_t)scope targetSeries:(id)series
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  v10 = v9;
-  if (v8 && v9)
+  entriesCopy = entries;
+  seriesCopy = series;
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  v10 = primaryGraphViewController;
+  if (seriesCopy && primaryGraphViewController)
   {
     v52 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v49 = v10;
-    v11 = [v10 graphView];
-    v12 = [v11 xAxis];
-    v51 = v7;
-    v55 = [v7 count];
-    v13 = [v11 effectiveVisibleRangeActive];
-    v14 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:a4];
-    v15 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
-    v16 = [v13 startDate];
-    v17 = [v12 transform];
-    [v17 coordinateForValue:v16];
+    graphView = [v10 graphView];
+    xAxis = [graphView xAxis];
+    v51 = entriesCopy;
+    v55 = [entriesCopy count];
+    effectiveVisibleRangeActive = [graphView effectiveVisibleRangeActive];
+    v14 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:scope];
+    hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
+    startDate = [effectiveVisibleRangeActive startDate];
+    transform = [xAxis transform];
+    [transform coordinateForValue:startDate];
     v19 = v18;
 
-    v48 = v12;
-    [v12 pointTransform];
+    v48 = xAxis;
+    [xAxis pointTransform];
     v22 = HKLinearTransformValue(v20, v21, v19);
-    v50 = v8;
+    v50 = seriesCopy;
     v47 = v14;
-    v53 = [v8 resolutionForTimeScope:a4 traitResolution:{objc_msgSend(v11, "resolutionFromTraitCollectionAttributes")}];
+    v53 = [seriesCopy resolutionForTimeScope:scope traitResolution:{objc_msgSend(graphView, "resolutionFromTraitCollectionAttributes")}];
     v23 = [v14 seriesPointIntervalComponentsAtResolution:?];
-    v45 = [v15 dateByAddingComponents:v23 toDate:v16 options:0];
-    v46 = v16;
-    v24 = HKDateMidpoint(v16, v45);
-    v25 = v13;
-    v26 = [v13 endDate];
-    LODWORD(v13) = [v24 hk_isBeforeOrEqualToDate:v26];
+    v45 = [hk_gregorianCalendarWithLocalTimeZone dateByAddingComponents:v23 toDate:startDate options:0];
+    v46 = startDate;
+    v24 = HKDateMidpoint(startDate, v45);
+    v25 = effectiveVisibleRangeActive;
+    endDate = [effectiveVisibleRangeActive endDate];
+    LODWORD(effectiveVisibleRangeActive) = [v24 hk_isBeforeOrEqualToDate:endDate];
 
-    if (v13)
+    if (effectiveVisibleRangeActive)
     {
       v27 = 0;
       while (1)
@@ -697,8 +697,8 @@ void __61__HKInteractiveChartViewController_accessibilityDataForChart__block_inv
         if (v27 < v55)
         {
           v28 = [v51 objectAtIndexedSubscript:v27];
-          v29 = [(HKAccessibilityPointData *)v28 horizontalDate];
-          if ([(HKInteractiveChartViewController *)self _date:v24 closeToDate:v29 epsilonDateComponents:v23 calendar:v15])
+          horizontalDate = [(HKAccessibilityPointData *)v28 horizontalDate];
+          if ([(HKInteractiveChartViewController *)self _date:v24 closeToDate:horizontalDate epsilonDateComponents:v23 calendar:hk_gregorianCalendarWithLocalTimeZone])
           {
             ++v27;
 
@@ -713,16 +713,16 @@ void __61__HKInteractiveChartViewController_accessibilityDataForChart__block_inv
           }
         }
 
-        v30 = [v11 xAxis];
-        v31 = [v30 transform];
-        [v31 coordinateForValue:v24];
+        xAxis2 = [graphView xAxis];
+        transform2 = [xAxis2 transform];
+        [transform2 coordinateForValue:v24];
         v33 = v32;
 
-        [v30 pointTransform];
+        [xAxis2 pointTransform];
         v36 = HKLinearTransformValue(v34, v35, v33) - v22;
-        [v11 hardLeftMarginWidth];
+        [graphView hardLeftMarginWidth];
         v38 = v36 + v37;
-        v39 = [(HKInteractiveChartViewController *)self descriptionForStartX:0 endX:a4 chartData:v53 timeScope:v11 resolution:v33 graphView:v33];
+        v39 = [(HKInteractiveChartViewController *)self descriptionForStartX:0 endX:scope chartData:v53 timeScope:graphView resolution:v33 graphView:v33];
         v28 = [[HKAccessibilityPointData alloc] initWithHorizontalScreenCoordinate:v39 horizontalTimeCoordinate:v24 horizontalDate:0 values:v38];
 
         if (v28)
@@ -731,10 +731,10 @@ LABEL_11:
           [v52 addObject:v28];
         }
 
-        v40 = [v15 dateByAddingComponents:v23 toDate:v24 options:0];
+        v40 = [hk_gregorianCalendarWithLocalTimeZone dateByAddingComponents:v23 toDate:v24 options:0];
 
-        v41 = [v25 endDate];
-        v42 = [v40 hk_isBeforeOrEqualToDate:v41];
+        endDate2 = [v25 endDate];
+        v42 = [v40 hk_isBeforeOrEqualToDate:endDate2];
 
         v24 = v40;
         if ((v42 & 1) == 0)
@@ -747,43 +747,43 @@ LABEL_11:
     v40 = v24;
 LABEL_16:
 
-    v8 = v50;
-    v7 = v51;
+    seriesCopy = v50;
+    entriesCopy = v51;
     v10 = v49;
     v43 = v52;
   }
 
   else
   {
-    v43 = v7;
+    v43 = entriesCopy;
   }
 
   return v43;
 }
 
-- (BOOL)_date:(id)a3 closeToDate:(id)a4 epsilonDateComponents:(id)a5 calendar:(id)a6
+- (BOOL)_date:(id)_date closeToDate:(id)date epsilonDateComponents:(id)components calendar:(id)calendar
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [a6 dateByAddingComponents:a5 toDate:v10 options:0];
-  [v11 timeIntervalSinceDate:v10];
+  dateCopy = date;
+  _dateCopy = _date;
+  v11 = [calendar dateByAddingComponents:components toDate:_dateCopy options:0];
+  [v11 timeIntervalSinceDate:_dateCopy];
   v13 = v12 * 0.5;
-  [v9 timeIntervalSinceDate:v10];
+  [dateCopy timeIntervalSinceDate:_dateCopy];
   v15 = v14;
 
   return fabs(v15) < v13;
 }
 
-- (id)descriptionSpansForGraphView:(id)a3 timeScope:(int64_t)a4
+- (id)descriptionSpansForGraphView:(id)view timeScope:(int64_t)scope
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = [(HKInteractiveChartViewController *)self descriptionSeriesForGraphView:a3, a4];
-  v6 = [v5 visibleValueRange];
-  v7 = [v6 minValue];
-  v8 = [(HKInteractiveChartViewController *)self _rangeValueAsNumber:v7];
+  scope = [(HKInteractiveChartViewController *)self descriptionSeriesForGraphView:view, scope];
+  visibleValueRange = [scope visibleValueRange];
+  minValue = [visibleValueRange minValue];
+  v8 = [(HKInteractiveChartViewController *)self _rangeValueAsNumber:minValue];
 
-  v9 = [v6 maxValue];
-  v10 = [(HKInteractiveChartViewController *)self _rangeValueAsNumber:v9];
+  maxValue = [visibleValueRange maxValue];
+  v10 = [(HKInteractiveChartViewController *)self _rangeValueAsNumber:maxValue];
 
   NSClassFromString(&cfstr_Hkbarseries.isa);
   if (objc_opt_isKindOfClass())
@@ -796,10 +796,10 @@ LABEL_16:
     v11 = 1;
   }
 
-  v12 = [(HKInteractiveChartViewController *)self _displayTypeForSeries:v5];
+  v12 = [(HKInteractiveChartViewController *)self _displayTypeForSeries:scope];
   v13 = [(HKInteractiveChartViewController *)self _displayNameForDisplayType:v12];
-  v14 = [(HKInteractiveChartViewController *)self unitPreferenceController];
-  v15 = [v14 localizedDisplayNameForDisplayType:v12];
+  unitPreferenceController = [(HKInteractiveChartViewController *)self unitPreferenceController];
+  v15 = [unitPreferenceController localizedDisplayNameForDisplayType:v12];
 
   v16 = [[HKAccessibilitySpan alloc] initWithTitle:v13 seriesType:v11 dataComprehensionMinYValue:v8 dataComprehensionMaxYValue:v10 dataComprehensionUnitForChart:v15];
   v19 = v13;
@@ -809,13 +809,13 @@ LABEL_16:
   return v17;
 }
 
-- (id)_rangeValueAsNumber:(id)a3
+- (id)_rangeValueAsNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = numberCopy;
   }
 
   else
@@ -828,23 +828,23 @@ LABEL_16:
   return v4;
 }
 
-- (id)descriptionForStartX:(double)a3 endX:(double)a4 chartData:(id)a5 timeScope:(int64_t)a6 resolution:(int64_t)a7 graphView:(id)a8
+- (id)descriptionForStartX:(double)x endX:(double)endX chartData:(id)data timeScope:(int64_t)scope resolution:(int64_t)resolution graphView:(id)view
 {
-  v11 = a8;
-  v12 = [(HKInteractiveChartViewController *)self dateForXCoordinate:v11 graphView:a3];
+  viewCopy = view;
+  v12 = [(HKInteractiveChartViewController *)self dateForXCoordinate:viewCopy graphView:x];
   if (v12)
   {
-    v13 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
-    v14 = [v13 components:126 fromDate:v12];
+    hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
+    v14 = [hk_gregorianCalendarWithLocalTimeZone components:126 fromDate:v12];
 
-    v15 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
-    v16 = HKCombinedStringForAnnotationDateWithTimeScope(v14, v15, [(HKTimeScopeControl *)self->_radioButtons selectedTimeScope], a7);
+    hk_gregorianCalendarWithLocalTimeZone2 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
+    v16 = HKCombinedStringForAnnotationDateWithTimeScope(v14, hk_gregorianCalendarWithLocalTimeZone2, [(HKTimeScopeControl *)self->_radioButtons selectedTimeScope], resolution);
     v17 = [(HKInteractiveChartViewController *)self replaceRangeClause:v16];
   }
 
   else
   {
-    v18 = [(HKInteractiveChartViewController *)self _numberForXCoordinate:v11 graphView:a3];
+    v18 = [(HKInteractiveChartViewController *)self _numberForXCoordinate:viewCopy graphView:x];
     v14 = v18;
     v19 = &stru_1F42FFBE0;
     if (v18)
@@ -858,11 +858,11 @@ LABEL_16:
   return v17;
 }
 
-- (id)dateForXCoordinate:(double)a3 graphView:(id)a4
+- (id)dateForXCoordinate:(double)coordinate graphView:(id)view
 {
-  v5 = [a4 xAxis];
-  v6 = [v5 transform];
-  v7 = [v6 valueForCoordinate:a3];
+  xAxis = [view xAxis];
+  transform = [xAxis transform];
+  v7 = [transform valueForCoordinate:coordinate];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -878,11 +878,11 @@ LABEL_16:
   return v8;
 }
 
-- (id)_numberForXCoordinate:(double)a3 graphView:(id)a4
+- (id)_numberForXCoordinate:(double)coordinate graphView:(id)view
 {
-  v5 = [a4 xAxis];
-  v6 = [v5 transform];
-  v7 = [v6 valueForCoordinate:a3];
+  xAxis = [view xAxis];
+  transform = [xAxis transform];
+  v7 = [transform valueForCoordinate:coordinate];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -901,21 +901,21 @@ LABEL_16:
   return v9;
 }
 
-- (id)replaceRangeClause:(id)a3
+- (id)replaceRangeClause:(id)clause
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"–"];
+  clauseCopy = clause;
+  v4 = [clauseCopy rangeOfString:@"–"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = v3;
+    v6 = clauseCopy;
   }
 
   else
   {
     v7 = v4;
     v8 = v5;
-    v9 = [v3 substringWithRange:{0, v4}];
-    v10 = [v3 substringWithRange:{v7 + v8, objc_msgSend(v3, "length") - (v7 + v8)}];
+    v9 = [clauseCopy substringWithRange:{0, v4}];
+    v10 = [clauseCopy substringWithRange:{v7 + v8, objc_msgSend(clauseCopy, "length") - (v7 + v8)}];
     v11 = MEMORY[0x1E696AEC0];
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v13 = [v12 localizedStringForKey:@"RANGE_CLAUSE_%@_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -925,47 +925,47 @@ LABEL_16:
   return v6;
 }
 
-- (id)descriptionForChartData:(id)a3 timeScope:(int64_t)a4
+- (id)descriptionForChartData:(id)data timeScope:(int64_t)scope
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   v44 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  if (v7)
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  if (primaryGraphViewController)
   {
-    v39 = v7;
-    v8 = [v7 graphView];
-    v37 = [(HKInteractiveChartViewController *)self descriptionSeriesForGraphView:v8];
+    v39 = primaryGraphViewController;
+    graphView = [primaryGraphViewController graphView];
+    v37 = [(HKInteractiveChartViewController *)self descriptionSeriesForGraphView:graphView];
     v9 = [(HKInteractiveChartViewController *)self _displayTypeForSeries:?];
     v10 = [v9 hk_interactiveChartsFormatterForTimeScope:{-[HKTimeScopeControl selectedTimeScope](self->_radioButtons, "selectedTimeScope")}];
-    v11 = [MEMORY[0x1E69DB878] hk_chartLollipopValueFont];
-    [v10 setMajorFont:v11];
+    hk_chartLollipopValueFont = [MEMORY[0x1E69DB878] hk_chartLollipopValueFont];
+    [v10 setMajorFont:hk_chartLollipopValueFont];
 
-    v12 = [MEMORY[0x1E69DB878] hk_chartLollipopKeyFont];
-    [v10 setMinorFont:v12];
+    hk_chartLollipopKeyFont = [MEMORY[0x1E69DB878] hk_chartLollipopKeyFont];
+    [v10 setMinorFont:hk_chartLollipopKeyFont];
 
     [v10 setDisplayType:v9];
-    v13 = [(HKInteractiveChartViewController *)self unitPreferenceController];
-    [v10 setUnitController:v13];
+    unitPreferenceController = [(HKInteractiveChartViewController *)self unitPreferenceController];
+    [v10 setUnitController:unitPreferenceController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v9 objectType];
+      objectType = [v9 objectType];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
         v16 = v10;
-        v17 = [v9 objectType];
-        [v16 configureFormatterForDisplayType:v9 quantityType:v17 chartRangeProvider:v8 timeScope:a4 context:0];
+        objectType2 = [v9 objectType];
+        [v16 configureFormatterForDisplayType:v9 quantityType:objectType2 chartRangeProvider:graphView timeScope:scope context:0];
       }
     }
 
-    v38 = v8;
-    v40 = v6;
-    v53[0] = v6;
+    v38 = graphView;
+    v40 = dataCopy;
+    v53[0] = dataCopy;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:1];
     v36 = v10;
     v19 = [v10 formattedSelectedRangeLabelDataWithChartData:v18 context:0];
@@ -990,31 +990,31 @@ LABEL_16:
           }
 
           v21 = *(*(&v48 + 1) + 8 * i);
-          v22 = [MEMORY[0x1E69DC888] labelColor];
-          v23 = [HKSelectedRangeLabel standardPrefixColorForSelectedRangeData:v21 defaultColor:v22];
+          labelColor = [MEMORY[0x1E69DC888] labelColor];
+          v23 = [HKSelectedRangeLabel standardPrefixColorForSelectedRangeData:v21 defaultColor:labelColor];
           v24 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
           v46 = v23;
-          v47 = v22;
-          v25 = [HKSelectedRangeLabel attributedStringForSelectedRangeData:v21 font:v24 foregroundColor:v22 prefixColor:v23 prefersImageAffixes:0 embedded:0];
+          v47 = labelColor;
+          v25 = [HKSelectedRangeLabel attributedStringForSelectedRangeData:v21 font:v24 foregroundColor:labelColor prefixColor:v23 prefersImageAffixes:0 embedded:0];
 
           v26 = [(HKInteractiveChartViewController *)self _displayNameForDisplayType:v9];
           if (v25)
           {
-            v27 = [v25 string];
+            string = [v25 string];
           }
 
           else
           {
-            v27 = &stru_1F42FFBE0;
+            string = &stru_1F42FFBE0;
           }
 
           v28 = [HKAccessibilityValue alloc];
-          v29 = [v21 attributedString];
-          v30 = [v29 string];
-          [(HKInteractiveChartViewController *)self replaceRangeClause:v30];
+          attributedString = [v21 attributedString];
+          string2 = [attributedString string];
+          [(HKInteractiveChartViewController *)self replaceRangeClause:string2];
           v32 = v31 = self;
-          v33 = [v21 valueAsNumber];
-          v34 = [(HKAccessibilityValue *)v28 initWithValueTitle:v26 valueType:v27 valueDescription:v32 valueAsNumber:v33];
+          valueAsNumber = [v21 valueAsNumber];
+          v34 = [(HKAccessibilityValue *)v28 initWithValueTitle:v26 valueType:string valueDescription:v32 valueAsNumber:valueAsNumber];
 
           self = v31;
           [v44 addObject:v34];
@@ -1028,17 +1028,17 @@ LABEL_16:
       while (v45);
     }
 
-    v7 = v39;
-    v6 = v40;
+    primaryGraphViewController = v39;
+    dataCopy = v40;
   }
 
   return v44;
 }
 
-- (void)addChartViewObserver:(id)a3
+- (void)addChartViewObserver:(id)observer
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v5 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_62];
   [(NSMutableArray *)self->_observers filterUsingPredicate:v5];
   v14 = 0u;
@@ -1060,9 +1060,9 @@ LABEL_3:
         objc_enumerationMutation(v6);
       }
 
-      v11 = [*(*(&v12 + 1) + 8 * v10) observer];
+      observer = [*(*(&v12 + 1) + 8 * v10) observer];
 
-      if (v11 == v4)
+      if (observer == observerCopy)
       {
         break;
       }
@@ -1084,7 +1084,7 @@ LABEL_3:
   {
 LABEL_9:
 
-    v6 = [[_HKInteractiveChartWeakObserverWrapper alloc] initWithObserver:v4];
+    v6 = [[_HKInteractiveChartWeakObserverWrapper alloc] initWithObserver:observerCopy];
     [(NSMutableArray *)self->_observers addObject:v6];
   }
 }
@@ -1097,18 +1097,18 @@ BOOL __57__HKInteractiveChartViewController_addChartViewObserver___block_invoke(
   return v3;
 }
 
-- (void)removeChartViewObserver:(id)a3
+- (void)removeChartViewObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   if ([(NSMutableArray *)self->_observers count])
   {
     v4 = 0;
     while (1)
     {
       v5 = [(NSMutableArray *)self->_observers objectAtIndexedSubscript:v4];
-      v6 = [v5 observer];
+      observer = [v5 observer];
 
-      if (v6 == v7)
+      if (observer == observerCopy)
       {
         break;
       }
@@ -1125,21 +1125,21 @@ BOOL __57__HKInteractiveChartViewController_addChartViewObserver___block_invoke(
 LABEL_7:
 }
 
-- (void)replaceCurrentDisplayTypesWithTypes:(id)a3 stackOffset:(int64_t)a4 resetDateRange:(BOOL)a5 automaticAutoScale:(BOOL)a6
+- (void)replaceCurrentDisplayTypesWithTypes:(id)types stackOffset:(int64_t)offset resetDateRange:(BOOL)range automaticAutoScale:(BOOL)scale
 {
-  v26 = a5;
-  v27 = a6;
+  rangeCopy = range;
+  scaleCopy = scale;
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(NSArray *)self->_allGraphSeriesConfigurationManagers objectAtIndexedSubscript:a4];
+  typesCopy = types;
+  v9 = [(NSArray *)self->_allGraphSeriesConfigurationManagers objectAtIndexedSubscript:offset];
   v10 = [(HKInteractiveChartViewController *)self primaryGraphSeriesForTimeScope:[(HKInteractiveChartViewController *)self _dateZoom]];
-  v28 = [v10 visibleValueRange];
+  visibleValueRange = [v10 visibleValueRange];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v11 = [v9 allDisplayTypes];
-  v12 = [v11 countByEnumeratingWithState:&v36 objects:v42 count:16];
+  allDisplayTypes = [v9 allDisplayTypes];
+  v12 = [allDisplayTypes countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1150,13 +1150,13 @@ LABEL_7:
       {
         if (*v37 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allDisplayTypes);
         }
 
         [v9 removeConfigurationsForDisplayType:*(*(&v36 + 1) + 8 * i)];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v36 objects:v42 count:16];
+      v13 = [allDisplayTypes countByEnumeratingWithState:&v36 objects:v42 count:16];
     }
 
     while (v13);
@@ -1166,7 +1166,7 @@ LABEL_7:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v16 = v8;
+  v16 = typesCopy;
   v17 = [v16 countByEnumeratingWithState:&v32 objects:v41 count:16];
   if (v17)
   {
@@ -1193,23 +1193,23 @@ LABEL_7:
     while (v18);
   }
 
-  [(HKInteractiveChartViewController *)self _updateAfterConfigurationChangeIncludeDateAxis:v26];
-  if (v27)
+  [(HKInteractiveChartViewController *)self _updateAfterConfigurationChangeIncludeDateAxis:rangeCopy];
+  if (scaleCopy)
   {
-    v23 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+    graphView = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __118__HKInteractiveChartViewController_replaceCurrentDisplayTypesWithTypes_stackOffset_resetDateRange_automaticAutoScale___block_invoke;
     v29[3] = &unk_1E81B5A10;
     v29[4] = self;
-    v30 = v23;
-    v31 = v28;
-    v24 = v23;
+    v30 = graphView;
+    v31 = visibleValueRange;
+    v24 = graphView;
     [v24 autoscaleYAxesAnimated:1 specificRange:0 onlyIfNeeded:0 completion:v29];
   }
 
-  v25 = [(HKInteractiveChartViewController *)self lollipopController];
-  [v25 setInvisibleAnimated:1];
+  lollipopController = [(HKInteractiveChartViewController *)self lollipopController];
+  [lollipopController setInvisibleAnimated:1];
 
   [(HKInteractiveChartViewController *)self _setSelectedGraphSeries:0 animated:1];
 }
@@ -1226,79 +1226,79 @@ void __118__HKInteractiveChartViewController_replaceCurrentDisplayTypesWithTypes
   }
 }
 
-- (void)addOverlayDisplayType:(id)a3 stackOffset:(int64_t)a4
+- (void)addOverlayDisplayType:(id)type stackOffset:(int64_t)offset
 {
   v10[1] = *MEMORY[0x1E69E9840];
   allGraphSeriesConfigurationManagers = self->_allGraphSeriesConfigurationManagers;
-  v7 = a3;
-  v8 = [(NSArray *)allGraphSeriesConfigurationManagers objectAtIndexedSubscript:a4];
-  v10[0] = v7;
+  typeCopy = type;
+  v8 = [(NSArray *)allGraphSeriesConfigurationManagers objectAtIndexedSubscript:offset];
+  v10[0] = typeCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  [(HKInteractiveChartViewController *)self _addDisplayTypeToConfiguration:v7 allDisplayTypes:v9 configurationManager:v8];
+  [(HKInteractiveChartViewController *)self _addDisplayTypeToConfiguration:typeCopy allDisplayTypes:v9 configurationManager:v8];
 
   [(HKInteractiveChartViewController *)self _updateAfterConfigurationChangeIncludeDateAxis:0];
   [(HKInteractiveChartViewController *)self updateCurrentValueViewWithVisibleRange];
   [(HKInteractiveChartViewController *)self _automaticAutoScale];
 }
 
-- (void)removeOverlayDisplayType:(id)a3 stackOffset:(int64_t)a4 automaticAutoscale:(BOOL)a5
+- (void)removeOverlayDisplayType:(id)type stackOffset:(int64_t)offset automaticAutoscale:(BOOL)autoscale
 {
-  v5 = a5;
+  autoscaleCopy = autoscale;
   allGraphSeriesConfigurationManagers = self->_allGraphSeriesConfigurationManagers;
-  v9 = a3;
-  v10 = [(NSArray *)allGraphSeriesConfigurationManagers objectAtIndexedSubscript:a4];
-  [v10 removeConfigurationsForDisplayType:v9];
+  typeCopy = type;
+  v10 = [(NSArray *)allGraphSeriesConfigurationManagers objectAtIndexedSubscript:offset];
+  [v10 removeConfigurationsForDisplayType:typeCopy];
 
   [(HKInteractiveChartViewController *)self _updateAfterConfigurationChangeIncludeDateAxis:0];
   [(HKInteractiveChartViewController *)self updateCurrentValueViewWithVisibleRange];
-  if (v5)
+  if (autoscaleCopy)
   {
     [(HKInteractiveChartViewController *)self _automaticAutoScale];
   }
 }
 
-- (id)currentDisplayTypesForStackOffset:(int64_t)a3
+- (id)currentDisplayTypesForStackOffset:(int64_t)offset
 {
-  v3 = [(NSArray *)self->_allGraphSeriesConfigurationManagers objectAtIndexedSubscript:a3];
-  v4 = [v3 allDisplayTypes];
+  v3 = [(NSArray *)self->_allGraphSeriesConfigurationManagers objectAtIndexedSubscript:offset];
+  allDisplayTypes = [v3 allDisplayTypes];
 
-  return v4;
+  return allDisplayTypes;
 }
 
-- (id)graphSeriesForDisplayType:(id)a3 timeScope:(int64_t)a4 stackOffset:(int64_t)a5
+- (id)graphSeriesForDisplayType:(id)type timeScope:(int64_t)scope stackOffset:(int64_t)offset
 {
   allGraphSeriesConfigurationManagers = self->_allGraphSeriesConfigurationManagers;
-  v8 = a3;
-  v9 = [(NSArray *)allGraphSeriesConfigurationManagers objectAtIndexedSubscript:a5];
-  v10 = [v9 configurationForDisplayType:v8 zoom:a4];
+  typeCopy = type;
+  v9 = [(NSArray *)allGraphSeriesConfigurationManagers objectAtIndexedSubscript:offset];
+  v10 = [v9 configurationForDisplayType:typeCopy zoom:scope];
 
-  v11 = [v10 graphSeries];
+  graphSeries = [v10 graphSeries];
 
-  return v11;
+  return graphSeries;
 }
 
-- (id)primaryGraphSeriesForTimeScope:(int64_t)a3
+- (id)primaryGraphSeriesForTimeScope:(int64_t)scope
 {
-  v5 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
-  v6 = [(HKInteractiveChartViewController *)self graphSeriesForDisplayType:v5 timeScope:a3 stackOffset:[(HKInteractiveChartViewController *)self primaryDisplayTypeStackIndex]];
+  _primaryDisplayType = [(HKInteractiveChartViewController *)self _primaryDisplayType];
+  v6 = [(HKInteractiveChartViewController *)self graphSeriesForDisplayType:_primaryDisplayType timeScope:scope stackOffset:[(HKInteractiveChartViewController *)self primaryDisplayTypeStackIndex]];
 
   return v6;
 }
 
-- (void)setDetailView:(id)a3
+- (void)setDetailView:(id)view
 {
-  v4 = a3;
-  v5 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  [v5 setDetailView:v4];
+  viewCopy = view;
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  [primaryGraphViewController setDetailView:viewCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [(HKInteractiveChartViewController *)self sampleTypeDateRangeController];
-  [v3 removeObserver:self];
+  sampleTypeDateRangeController = [(HKInteractiveChartViewController *)self sampleTypeDateRangeController];
+  [sampleTypeDateRangeController removeObserver:self];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E696BE70] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696BE70] object:0];
 
   v5.receiver = self;
   v5.super_class = HKInteractiveChartViewController;
@@ -1314,16 +1314,16 @@ void __118__HKInteractiveChartViewController_replaceCurrentDisplayTypesWithTypes
   [(HKMinimumSizeView *)v5 setAccessibilityIdentifier:v3];
 
   [(HKInteractiveChartViewController *)self setView:v5];
-  v4 = [(HKInteractiveChartViewController *)self view];
-  [v4 setPreservesSuperviewLayoutMargins:1];
+  view = [(HKInteractiveChartViewController *)self view];
+  [view setPreservesSuperviewLayoutMargins:1];
 }
 
 - (double)_effectiveHorizontalMargin
 {
   if ([(HKInteractiveChartViewController *)self _applyHorizontalMarginsToEntireView])
   {
-    v3 = [(HKInteractiveChartViewController *)self view];
-    [v3 frame];
+    view = [(HKInteractiveChartViewController *)self view];
+    [view frame];
     [HKWidthDesignationProvider widthDesignationFromViewWidth:v4];
 
     HKCollectionViewLayoutDefaultLayoutMarginsForWidthDesignation();
@@ -1332,8 +1332,8 @@ void __118__HKInteractiveChartViewController_replaceCurrentDisplayTypesWithTypes
 
   else
   {
-    v7 = [(HKInteractiveChartViewController *)self view];
-    [v7 layoutMargins];
+    view2 = [(HKInteractiveChartViewController *)self view];
+    [view2 layoutMargins];
     v9 = v8;
 
     return fmax(v9, 16.0) + -4.0;
@@ -1342,10 +1342,10 @@ void __118__HKInteractiveChartViewController_replaceCurrentDisplayTypesWithTypes
 
 - (BOOL)_applyHorizontalMarginsToEntireView
 {
-  v2 = [MEMORY[0x1E696C608] sharedBehavior];
-  v3 = [v2 isiPad];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  isiPad = [mEMORY[0x1E696C608] isiPad];
 
-  return v3;
+  return isiPad;
 }
 
 - (void)viewWillLayoutSubviews
@@ -1355,12 +1355,12 @@ void __118__HKInteractiveChartViewController_replaceCurrentDisplayTypesWithTypes
   [(HKInteractiveChartViewController *)&v45 viewWillLayoutSubviews];
   [(HKInteractiveChartViewController *)self _effectiveHorizontalMargin];
   v4 = v3;
-  v5 = [(HKInteractiveChartViewController *)self view];
-  [v5 bounds];
+  view = [(HKInteractiveChartViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v46);
 
-  v7 = [(HKInteractiveChartViewController *)self view];
-  [v7 bounds];
+  view2 = [(HKInteractiveChartViewController *)self view];
+  [view2 bounds];
   Height = CGRectGetHeight(v47);
 
   if ([(HKInteractiveChartViewController *)self _headerLineEnabled])
@@ -1373,10 +1373,10 @@ void __118__HKInteractiveChartViewController_replaceCurrentDisplayTypesWithTypes
     [(HKInteractiveChartViewController *)self _omitLayoutHeader];
   }
 
-  v9 = [(HKInteractiveChartViewController *)self _timeScopeEnabled];
-  v10 = [(HKInteractiveChartViewController *)self _applyHorizontalMarginsToEntireView];
+  _timeScopeEnabled = [(HKInteractiveChartViewController *)self _timeScopeEnabled];
+  _applyHorizontalMarginsToEntireView = [(HKInteractiveChartViewController *)self _applyHorizontalMarginsToEntireView];
   v11 = 0.0;
-  if (v9)
+  if (_timeScopeEnabled)
   {
     v12 = 42.0;
   }
@@ -1386,7 +1386,7 @@ void __118__HKInteractiveChartViewController_replaceCurrentDisplayTypesWithTypes
     v12 = 0.0;
   }
 
-  v13 = [(HKInteractiveChartViewController *)self _currentValueEnabled];
+  _currentValueEnabled = [(HKInteractiveChartViewController *)self _currentValueEnabled];
   if ([MEMORY[0x1E69DCEB0] hk_currentDeviceHas4InchScreen])
   {
     *&v14 = 76.0;
@@ -1401,23 +1401,23 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v15 = [MEMORY[0x1E69DCEB0] hk_currentDeviceHasDisplayZoomedEnabled];
+  hk_currentDeviceHasDisplayZoomedEnabled = [MEMORY[0x1E69DCEB0] hk_currentDeviceHasDisplayZoomedEnabled];
   v16 = 80.0;
-  if (v15)
+  if (hk_currentDeviceHasDisplayZoomedEnabled)
   {
     v16 = 76.0;
   }
 
 LABEL_15:
   v43 = v16;
-  if (!v13)
+  if (!_currentValueEnabled)
   {
     v16 = 0.0;
   }
 
   v17 = v16 + v12 + self->_bannerBottom;
   v18 = v17;
-  if (!v13)
+  if (!_currentValueEnabled)
   {
     [(HKInteractiveChartViewController *)self dateSelectorHeight];
     v11 = v19;
@@ -1426,13 +1426,13 @@ LABEL_15:
 
   v44 = v18;
   v20 = Height - (v17 + v11);
-  v21 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  v22 = [v21 graphView];
-  [v22 leftMarginViewRect];
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
+  [graphView leftMarginViewRect];
   v24 = v23;
 
   v25 = v4 - v24;
-  if (v10)
+  if (_applyHorizontalMarginsToEntireView)
   {
     v26 = Width + v24 + v4 * -2.0;
   }
@@ -1442,18 +1442,18 @@ LABEL_15:
     v26 = Width;
   }
 
-  if (!v10)
+  if (!_applyHorizontalMarginsToEntireView)
   {
     v25 = 0.0;
   }
 
   v42 = v25;
   [(UIView *)self->_primaryGraphViewWrapper setFrame:?];
-  v27 = [(HKGraphViewController *)self->_primaryGraphViewController view];
-  [v27 setFrame:{0.0, 0.0, v26, v20}];
+  view3 = [(HKGraphViewController *)self->_primaryGraphViewController view];
+  [view3 setFrame:{0.0, 0.0, v26, v20}];
 
   radioButtons = self->_radioButtons;
-  if (v9)
+  if (_timeScopeEnabled)
   {
     v41 = v12;
     [(HKTimeScopeControl *)radioButtons minimumWidth];
@@ -1506,11 +1506,11 @@ LABEL_15:
 
   [(HKInteractiveChartViewController *)self dateSelectorHeight];
   [(HKCurrentTimeView *)self->_currentTimeView setFrame:v4, v44, v31, v39];
-  if (v13)
+  if (_currentValueEnabled)
   {
     [(HKCurrentTimeView *)self->_currentTimeView removeFromSuperview];
     [(UIView *)self->_currentValueView setHidden:0];
-    if (v10)
+    if (_applyHorizontalMarginsToEntireView)
     {
       v40 = v31 + v24;
     }
@@ -1534,28 +1534,28 @@ LABEL_15:
 
 - (void)_dynamicUserInterfaceTraitDidChange
 {
-  v3 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  v4 = [v3 graphView];
-  [v4 resetAndRedraw];
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
+  [graphView resetAndRedraw];
 
   [(HKInteractiveChartViewController *)self updateCurrentValueViewWithVisibleRange];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = HKInteractiveChartViewController;
-  v4 = a3;
-  [(HKInteractiveChartViewController *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(HKInteractiveChartViewController *)&v10 traitCollectionDidChange:changeCopy];
   v5 = [(HKInteractiveChartViewController *)self traitCollection:v10.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-    v9 = [v8 graphView];
-    [v9 resetAndRedraw];
+    primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+    graphView = [primaryGraphViewController graphView];
+    [graphView resetAndRedraw];
 
     [(HKInteractiveChartViewController *)self updateCurrentValueViewWithVisibleRange];
   }
@@ -1563,9 +1563,9 @@ LABEL_15:
 
 - (double)_annotationViewCenterY
 {
-  v3 = [(HKInteractiveChartViewController *)self _timeScopeEnabled];
+  _timeScopeEnabled = [(HKInteractiveChartViewController *)self _timeScopeEnabled];
   v4 = 42.0;
-  if (!v3)
+  if (!_timeScopeEnabled)
   {
     v4 = 0.0;
   }
@@ -1578,12 +1578,12 @@ LABEL_15:
   v57[2] = *MEMORY[0x1E69E9840];
   [(HKInteractiveChartViewController *)self _effectiveHorizontalMargin];
   v4 = v3;
-  v5 = [(HKInteractiveChartViewController *)self view];
-  [v5 bounds];
+  view = [(HKInteractiveChartViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v58);
 
-  v7 = [(HKInteractiveChartViewController *)self view];
-  [v7 bounds];
+  view2 = [(HKInteractiveChartViewController *)self view];
+  [view2 bounds];
   v8 = CGRectGetWidth(v59);
 
   if ([MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:0] == 1)
@@ -1755,8 +1755,8 @@ LABEL_10:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(HKInteractiveChartViewController *)self view];
-  [v11 bounds];
+  view = [(HKInteractiveChartViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v17);
 
   v13 = HKUIOnePixel();
@@ -1775,11 +1775,11 @@ LABEL_10:
   v20.size.width = v8;
   v20.size.height = v10;
   [(UIView *)self->_graphBottomDividerView setFrame:0.0, CGRectGetMaxY(v20) + -25.0, Width, v13];
-  v14 = [(HKInteractiveChartViewController *)self view];
-  [v14 bringSubviewToFront:self->_graphTopDividerView];
+  view2 = [(HKInteractiveChartViewController *)self view];
+  [view2 bringSubviewToFront:self->_graphTopDividerView];
 
-  v15 = [(HKInteractiveChartViewController *)self view];
-  [v15 bringSubviewToFront:self->_graphBottomDividerView];
+  view3 = [(HKInteractiveChartViewController *)self view];
+  [view3 bringSubviewToFront:self->_graphBottomDividerView];
 }
 
 - (void)_layoutDashboardEmptyLabelsIfNecessary
@@ -1787,8 +1787,8 @@ LABEL_10:
   if ([(HKInteractiveChartViewController *)self _dashboardEmptyLabelsExist])
   {
     [(UILabel *)self->_dashboardEmptyHeader sizeToFit];
-    v3 = [(HKInteractiveChartViewController *)self view];
-    [v3 bounds];
+    view = [(HKInteractiveChartViewController *)self view];
+    [view bounds];
     Width = CGRectGetWidth(v17);
     [(HKInteractiveChartViewController *)self _effectiveHorizontalMargin];
     v6 = Width + v5 * -2.0;
@@ -1804,8 +1804,8 @@ LABEL_10:
     MinY = CGRectGetMinY(v20);
     [(UIView *)self->_graphBottomDividerView frame];
     v11 = (MinY + CGRectGetMaxY(v21)) * 0.5;
-    v12 = [(HKInteractiveChartViewController *)self view];
-    [v12 bounds];
+    view2 = [(HKInteractiveChartViewController *)self view];
+    [view2 bounds];
     MidX = CGRectGetMidX(v22);
 
     [(UILabel *)self->_dashboardEmptyHeader setCenter:MidX, Height * 0.5 + v11 - v9 * 0.5];
@@ -1822,18 +1822,18 @@ LABEL_10:
   }
 }
 
-+ (id)_timeScopesWithOptions:(unint64_t)a3 timeScopeRanges:(id)a4
++ (id)_timeScopesWithOptions:(unint64_t)options timeScopeRanges:(id)ranges
 {
-  v4 = a3;
-  v6 = a4;
-  if ((v4 & 0x80) != 0)
+  optionsCopy = options;
+  rangesCopy = ranges;
+  if ((optionsCopy & 0x80) != 0)
   {
-    v7 = [a1 _timeScope:7 inTimeScopeRanges:v6];
-    if ((v4 & 0x400) != 0)
+    v7 = [self _timeScope:7 inTimeScopeRanges:rangesCopy];
+    if ((optionsCopy & 0x400) != 0)
     {
 LABEL_3:
       v8 = 0;
-      if ((v4 & 0x8000) != 0)
+      if ((optionsCopy & 0x8000) != 0)
       {
         goto LABEL_4;
       }
@@ -1845,18 +1845,18 @@ LABEL_3:
   else
   {
     v7 = 0;
-    if ((v4 & 0x400) != 0)
+    if ((optionsCopy & 0x400) != 0)
     {
       goto LABEL_3;
     }
   }
 
-  v8 = [a1 _timeScope:6 inTimeScopeRanges:v6];
-  if ((v4 & 0x8000) != 0)
+  v8 = [self _timeScope:6 inTimeScopeRanges:rangesCopy];
+  if ((optionsCopy & 0x8000) != 0)
   {
 LABEL_4:
     v9 = 0;
-    if ((v4 & 0x4000) != 0)
+    if ((optionsCopy & 0x4000) != 0)
     {
       goto LABEL_5;
     }
@@ -1865,12 +1865,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  v9 = [a1 _timeScope:5 inTimeScopeRanges:v6];
-  if ((v4 & 0x4000) != 0)
+  v9 = [self _timeScope:5 inTimeScopeRanges:rangesCopy];
+  if ((optionsCopy & 0x4000) != 0)
   {
 LABEL_5:
     v10 = 0;
-    if ((v4 & 0x200) != 0)
+    if ((optionsCopy & 0x200) != 0)
     {
       goto LABEL_6;
     }
@@ -1879,19 +1879,19 @@ LABEL_5:
   }
 
 LABEL_12:
-  v10 = [a1 _timeScope:3 inTimeScopeRanges:v6];
-  if ((v4 & 0x200) != 0)
+  v10 = [self _timeScope:3 inTimeScopeRanges:rangesCopy];
+  if ((optionsCopy & 0x200) != 0)
   {
 LABEL_6:
     v11 = 0;
-    if ((v4 & 0x100) != 0)
+    if ((optionsCopy & 0x100) != 0)
     {
       goto LABEL_7;
     }
 
 LABEL_14:
     v12 = 0;
-    if ((v4 & 0x200000) != 0)
+    if ((optionsCopy & 0x200000) != 0)
     {
       goto LABEL_8;
     }
@@ -1900,18 +1900,18 @@ LABEL_14:
   }
 
 LABEL_13:
-  v11 = [a1 _timeScope:2 inTimeScopeRanges:v6];
-  if ((v4 & 0x100) == 0)
+  v11 = [self _timeScope:2 inTimeScopeRanges:rangesCopy];
+  if ((optionsCopy & 0x100) == 0)
   {
     goto LABEL_14;
   }
 
 LABEL_7:
-  v12 = [a1 _timeScope:1 inTimeScopeRanges:v6];
-  if ((v4 & 0x200000) != 0)
+  v12 = [self _timeScope:1 inTimeScopeRanges:rangesCopy];
+  if ((optionsCopy & 0x200000) != 0)
   {
 LABEL_8:
-    v13 = [a1 _timeScope:0 inTimeScopeRanges:v6];
+    v13 = [self _timeScope:0 inTimeScopeRanges:rangesCopy];
     goto LABEL_16;
   }
 
@@ -1995,52 +1995,52 @@ LABEL_25:
   return v16;
 }
 
-+ (BOOL)_timeScope:(int64_t)a3 inTimeScopeRanges:(id)a4
++ (BOOL)_timeScope:(int64_t)scope inTimeScopeRanges:(id)ranges
 {
-  if (!a4)
+  if (!ranges)
   {
     return 1;
   }
 
   v5 = MEMORY[0x1E696AD98];
-  v6 = a4;
-  v7 = [v5 numberWithInteger:a3];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  rangesCopy = ranges;
+  v7 = [v5 numberWithInteger:scope];
+  v8 = [rangesCopy objectForKeyedSubscript:v7];
 
   v9 = v8 != 0;
   return v9;
 }
 
-+ (int64_t)_timeScopeForTimeScope:(int64_t)a3 availableTimeScopes:(id)a4
++ (int64_t)_timeScopeForTimeScope:(int64_t)scope availableTimeScopes:(id)scopes
 {
-  v7 = a4;
-  if (![v7 count])
+  scopesCopy = scopes;
+  if (![scopesCopy count])
   {
-    [HKInteractiveChartViewController _timeScopeForTimeScope:a2 availableTimeScopes:a1];
+    [HKInteractiveChartViewController _timeScopeForTimeScope:a2 availableTimeScopes:self];
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v9 = [v7 containsObject:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:scope];
+  v9 = [scopesCopy containsObject:v8];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v7 lastObject];
-    v11 = [v10 integerValue];
+    lastObject = [scopesCopy lastObject];
+    integerValue = [lastObject integerValue];
 
-    if ([v7 count] != 1)
+    if ([scopesCopy count] != 1)
     {
-      v12 = [v7 lastObject];
-      v13 = [v12 integerValue];
+      lastObject2 = [scopesCopy lastObject];
+      integerValue2 = [lastObject2 integerValue];
 
-      if (v13 <= a3)
+      if (integerValue2 <= scope)
       {
-        v14 = [v7 firstObject];
-        v15 = [v14 integerValue];
+        firstObject = [scopesCopy firstObject];
+        integerValue3 = [firstObject integerValue];
 
-        if (v15 < a3)
+        if (integerValue3 < scope)
         {
-          v16 = [v7 firstObject];
-          a3 = [v16 integerValue];
+          firstObject2 = [scopesCopy firstObject];
+          scope = [firstObject2 integerValue];
 
           goto LABEL_12;
         }
@@ -2049,48 +2049,48 @@ LABEL_25:
         v20[1] = 3221225472;
         v20[2] = __79__HKInteractiveChartViewController__timeScopeForTimeScope_availableTimeScopes___block_invoke;
         v20[3] = &__block_descriptor_40_e18_B16__0__NSNumber_8l;
-        v20[4] = a3;
-        v17 = [v7 hk_firstObjectPassingTest:v20];
+        v20[4] = scope;
+        v17 = [scopesCopy hk_firstObjectPassingTest:v20];
         v18 = v17;
         if (v17)
         {
-          v11 = [v17 integerValue];
+          integerValue = [v17 integerValue];
         }
       }
     }
 
-    a3 = v11;
+    scope = integerValue;
   }
 
 LABEL_12:
 
-  return a3;
+  return scope;
 }
 
-- (int64_t)_defaultTimeScopeWithAvailableTimeScopes:(id)a3
+- (int64_t)_defaultTimeScopeWithAvailableTimeScopes:(id)scopes
 {
-  v4 = a3;
-  v5 = [(HKInteractiveChartViewController *)self _singleFixedRange];
-  if (v5)
+  scopesCopy = scopes;
+  _singleFixedRange = [(HKInteractiveChartViewController *)self _singleFixedRange];
+  if (_singleFixedRange)
   {
-    v6 = [HKGraphZoomLevelConfiguration timeScopeForDateRange:v5];
+    selectedTimeScope = [HKGraphZoomLevelConfiguration timeScopeForDateRange:_singleFixedRange];
   }
 
   else
   {
-    v7 = [(HKInteractiveChartViewController *)self selectedTimeScopeController];
-    v6 = [v7 selectedTimeScope];
+    selectedTimeScopeController = [(HKInteractiveChartViewController *)self selectedTimeScopeController];
+    selectedTimeScope = [selectedTimeScopeController selectedTimeScope];
   }
 
-  v8 = [HKInteractiveChartViewController _timeScopeForTimeScope:v6 availableTimeScopes:v4];
+  v8 = [HKInteractiveChartViewController _timeScopeForTimeScope:selectedTimeScope availableTimeScopes:scopesCopy];
 
   return v8;
 }
 
 - (BOOL)_selectedSeriesWantsLastRecordedDate
 {
-  v2 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
-  v3 = [v2 displayTypeIdentifier] == 95;
+  _primaryDisplayType = [(HKInteractiveChartViewController *)self _primaryDisplayType];
+  v3 = [_primaryDisplayType displayTypeIdentifier] == 95;
 
   return v3;
 }
@@ -2100,35 +2100,35 @@ LABEL_12:
   v64.receiver = self;
   v64.super_class = HKInteractiveChartViewController;
   [(HKInteractiveChartViewController *)&v64 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
-  v4 = [(HKInteractiveChartViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  hk_chartBackgroundColor = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
+  view = [(HKInteractiveChartViewController *)self view];
+  [view setBackgroundColor:hk_chartBackgroundColor];
 
   v5 = [[HKCurrentTimeView alloc] initWithWideHorizontalMargin:0];
   currentTimeView = self->_currentTimeView;
   self->_currentTimeView = v5;
 
   [(HKCurrentTimeView *)self->_currentTimeView setDelegate:self];
-  v7 = [(HKInteractiveChartViewController *)self _singleFixedRange];
-  [(HKCurrentTimeView *)self->_currentTimeView setDisableControls:v7 != 0];
+  _singleFixedRange = [(HKInteractiveChartViewController *)self _singleFixedRange];
+  [(HKCurrentTimeView *)self->_currentTimeView setDisableControls:_singleFixedRange != 0];
 
   [(HKCurrentTimeView *)self->_currentTimeView setOmitPrevNextButtons:1];
-  v8 = [(HKInteractiveChartViewController *)self view];
-  [v8 addSubview:self->_currentTimeView];
+  view2 = [(HKInteractiveChartViewController *)self view];
+  [view2 addSubview:self->_currentTimeView];
 
-  v9 = [(HKInteractiveChartViewController *)self currentValueViewHandler];
-  v10 = [v9 makeCurrentValueView];
+  currentValueViewHandler = [(HKInteractiveChartViewController *)self currentValueViewHandler];
+  makeCurrentValueView = [currentValueViewHandler makeCurrentValueView];
   currentValueView = self->_currentValueView;
-  self->_currentValueView = v10;
+  self->_currentValueView = makeCurrentValueView;
 
   v12 = [MEMORY[0x1E696AEC0] hk_chartAccessibilityIdentifier:@"ValueView"];
   [(UIView *)self->_currentValueView setAccessibilityIdentifier:v12];
 
-  v13 = [(HKInteractiveChartViewController *)self currentValueViewHandler];
-  [v13 setCurrentValueViewCallbacks:self];
+  currentValueViewHandler2 = [(HKInteractiveChartViewController *)self currentValueViewHandler];
+  [currentValueViewHandler2 setCurrentValueViewCallbacks:self];
 
-  v14 = [(HKInteractiveChartViewController *)self view];
-  [v14 addSubview:self->_currentValueView];
+  view3 = [(HKInteractiveChartViewController *)self view];
+  [view3 addSubview:self->_currentValueView];
 
   v15 = objc_alloc_init(MEMORY[0x1E69DD250]);
   primaryGraphViewWrapper = self->_primaryGraphViewWrapper;
@@ -2136,22 +2136,22 @@ LABEL_12:
 
   [(UIView *)self->_primaryGraphViewWrapper setClipsToBounds:1];
   v17 = self->_primaryGraphViewWrapper;
-  v18 = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
-  [(UIView *)v17 setBackgroundColor:v18];
+  hk_chartBackgroundColor2 = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
+  [(UIView *)v17 setBackgroundColor:hk_chartBackgroundColor2];
 
-  v19 = [(HKInteractiveChartViewController *)self view];
-  [v19 addSubview:self->_primaryGraphViewWrapper];
+  view4 = [(HKInteractiveChartViewController *)self view];
+  [view4 addSubview:self->_primaryGraphViewWrapper];
 
   [(HKInteractiveChartViewController *)self _configureInitialLollipopSelection];
   options = self->_options;
-  v21 = [(HKInteractiveChartViewController *)self timeScopeRanges];
-  v22 = [HKInteractiveChartViewController _timeScopesWithOptions:options timeScopeRanges:v21];
+  timeScopeRanges = [(HKInteractiveChartViewController *)self timeScopeRanges];
+  v22 = [HKInteractiveChartViewController _timeScopesWithOptions:options timeScopeRanges:timeScopeRanges];
 
   if ([(HKInteractiveChartViewController *)self _chartHasDateAxis])
   {
     v23 = [(HKInteractiveChartViewController *)self _defaultTimeScopeWithAvailableTimeScopes:v22];
-    v24 = [(HKInteractiveChartViewController *)self initialXValue];
-    [(HKInteractiveChartViewController *)self _replacePrimaryGraphViewControllerWithTimeScope:v23 anchorDate:v24 animated:0];
+    initialXValue = [(HKInteractiveChartViewController *)self initialXValue];
+    [(HKInteractiveChartViewController *)self _replacePrimaryGraphViewControllerWithTimeScope:v23 anchorDate:initialXValue animated:0];
   }
 
   else
@@ -2168,8 +2168,8 @@ LABEL_12:
   [(HKTimeScopeControl *)self->_radioButtons setAccessibilityIdentifier:v27];
 
   [(HKTimeScopeControl *)self->_radioButtons addTarget:self action:sel__radioButtonsDidUpdate_ forControlEvents:4096];
-  v28 = [(HKInteractiveChartViewController *)self view];
-  [v28 addSubview:self->_radioButtons];
+  view5 = [(HKInteractiveChartViewController *)self view];
+  [view5 addSubview:self->_radioButtons];
 
   [(HKTimeScopeControl *)self->_radioButtons setSelectedTimeScope:[(HKInteractiveChartViewController *)self _dateZoom]];
   if (![(HKInteractiveChartViewController *)self _chartHasDateAxis])
@@ -2177,44 +2177,44 @@ LABEL_12:
     [(HKInteractiveChartViewController *)self _hideTimeDateControls];
   }
 
-  v29 = [MEMORY[0x1E69DC888] tableSeparatorColor];
+  tableSeparatorColor = [MEMORY[0x1E69DC888] tableSeparatorColor];
   v30 = objc_alloc_init(MEMORY[0x1E69DD250]);
   graphTopDividerView = self->_graphTopDividerView;
   self->_graphTopDividerView = v30;
 
-  [(UIView *)self->_graphTopDividerView setBackgroundColor:v29];
-  v32 = [(HKInteractiveChartViewController *)self view];
-  [v32 addSubview:self->_graphTopDividerView];
+  [(UIView *)self->_graphTopDividerView setBackgroundColor:tableSeparatorColor];
+  view6 = [(HKInteractiveChartViewController *)self view];
+  [view6 addSubview:self->_graphTopDividerView];
 
   v33 = objc_alloc_init(MEMORY[0x1E69DD250]);
   graphBottomDividerView = self->_graphBottomDividerView;
   self->_graphBottomDividerView = v33;
 
-  [(UIView *)self->_graphBottomDividerView setBackgroundColor:v29];
-  v35 = [(HKInteractiveChartViewController *)self view];
-  [v35 addSubview:self->_graphBottomDividerView];
+  [(UIView *)self->_graphBottomDividerView setBackgroundColor:tableSeparatorColor];
+  view7 = [(HKInteractiveChartViewController *)self view];
+  [view7 addSubview:self->_graphBottomDividerView];
 
-  v36 = [(HKInteractiveChartViewController *)self makeAnnotationDataSource];
-  [(HKInteractiveChartViewController *)self setAnnotationDataSource:v36];
+  makeAnnotationDataSource = [(HKInteractiveChartViewController *)self makeAnnotationDataSource];
+  [(HKInteractiveChartViewController *)self setAnnotationDataSource:makeAnnotationDataSource];
 
   [(HKInteractiveChartViewController *)self setLegendBottomLocation:0.0];
   v37 = [HKLollipopController alloc];
-  v38 = [(HKInteractiveChartViewController *)self annotationDataSource];
-  v39 = [(HKInteractiveChartViewController *)self view];
-  v40 = [(HKLollipopController *)v37 initWithAnnotationDataSource:v38 parentView:v39 delegate:self];
+  annotationDataSource = [(HKInteractiveChartViewController *)self annotationDataSource];
+  view8 = [(HKInteractiveChartViewController *)self view];
+  v40 = [(HKLollipopController *)v37 initWithAnnotationDataSource:annotationDataSource parentView:view8 delegate:self];
   [(HKInteractiveChartViewController *)self setLollipopController:v40];
 
   v41 = (self->_options >> 12) & 1;
-  v42 = [(HKInteractiveChartViewController *)self lollipopController];
-  [v42 setCenterLollipopVertically:v41];
+  lollipopController = [(HKInteractiveChartViewController *)self lollipopController];
+  [lollipopController setCenterLollipopVertically:v41];
 
   v43 = objc_alloc_init(HKUIDateLabel);
   selectedPointDateLabel = self->_selectedPointDateLabel;
   self->_selectedPointDateLabel = v43;
 
   v45 = self->_selectedPointDateLabel;
-  v46 = [MEMORY[0x1E69DC888] labelColor];
-  [(HKUIDateLabel *)v45 setTextColor:v46];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(HKUIDateLabel *)v45 setTextColor:labelColor];
 
   v47 = self->_selectedPointDateLabel;
   v48 = [MEMORY[0x1E69DB878] systemFontOfSize:20.0];
@@ -2224,16 +2224,16 @@ LABEL_12:
   [(HKUIDateLabel *)self->_selectedPointDateLabel setAdjustsFontSizeToFitWidth:1];
   [(HKUIDateLabel *)self->_selectedPointDateLabel setTextAlignment:2];
   [(HKUIDateLabel *)self->_selectedPointDateLabel setAlpha:0.0];
-  v49 = [(HKInteractiveChartViewController *)self view];
-  [v49 addSubview:self->_selectedPointDateLabel];
+  view9 = [(HKInteractiveChartViewController *)self view];
+  [view9 addSubview:self->_selectedPointDateLabel];
 
   v50 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   selectedSeriesLabel = self->_selectedSeriesLabel;
   self->_selectedSeriesLabel = v50;
 
   v52 = self->_selectedSeriesLabel;
-  v53 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)v52 setTextColor:v53];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)v52 setTextColor:labelColor2];
 
   v54 = self->_selectedSeriesLabel;
   v55 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:20.0];
@@ -2241,41 +2241,41 @@ LABEL_12:
 
   [(UILabel *)self->_selectedSeriesLabel setNumberOfLines:0];
   [(UILabel *)self->_selectedSeriesLabel setTextAlignment:0];
-  v56 = [(HKInteractiveChartViewController *)self view];
-  [v56 addSubview:self->_selectedSeriesLabel];
+  view10 = [(HKInteractiveChartViewController *)self view];
+  [view10 addSubview:self->_selectedSeriesLabel];
 
   v57 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   selectedSeriesUnitLabel = self->_selectedSeriesUnitLabel;
   self->_selectedSeriesUnitLabel = v57;
 
   v59 = self->_selectedSeriesUnitLabel;
-  v60 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)v59 setTextColor:v60];
+  labelColor3 = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)v59 setTextColor:labelColor3];
 
   v61 = self->_selectedSeriesUnitLabel;
   v62 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:20.0];
   [(UILabel *)v61 setFont:v62];
 
   [(UILabel *)self->_selectedSeriesUnitLabel setAdjustsFontSizeToFitWidth:1];
-  v63 = [(HKInteractiveChartViewController *)self view];
-  [v63 addSubview:self->_selectedSeriesUnitLabel];
+  view11 = [(HKInteractiveChartViewController *)self view];
+  [view11 addSubview:self->_selectedSeriesUnitLabel];
 
   [(HKInteractiveChartViewController *)self _updateSelectedSeriesLabel:0];
   self->_bannerBottom = 32.0;
   [(HKInteractiveChartViewController *)self _showHideNoGraphSeriesLabels];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = HKInteractiveChartViewController;
-  [(HKInteractiveChartViewController *)&v7 viewDidAppear:a3];
-  v4 = [(UIViewController *)self hk_viewIsHidden];
-  v5 = [(HKInteractiveChartViewController *)self restorationUserActivity];
+  [(HKInteractiveChartViewController *)&v7 viewDidAppear:appear];
+  hk_viewIsHidden = [(UIViewController *)self hk_viewIsHidden];
+  restorationUserActivity = [(HKInteractiveChartViewController *)self restorationUserActivity];
 
-  if (v5)
+  if (restorationUserActivity)
   {
-    if (!v4)
+    if (!hk_viewIsHidden)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -2297,16 +2297,16 @@ void __50__HKInteractiveChartViewController_viewDidAppear___block_invoke(uint64_
 - (id)_singleFixedRange
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(HKInteractiveChartViewController *)self timeScopeRanges];
-  if (v3 && (v4 = v3, -[HKInteractiveChartViewController timeScopeRanges](self, "timeScopeRanges"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6 == 1))
+  timeScopeRanges = [(HKInteractiveChartViewController *)self timeScopeRanges];
+  if (timeScopeRanges && (v4 = timeScopeRanges, -[HKInteractiveChartViewController timeScopeRanges](self, "timeScopeRanges"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6 == 1))
   {
     memset(v12, 0, sizeof(v12));
-    v7 = [(HKInteractiveChartViewController *)self timeScopeRanges];
-    if ([v7 countByEnumeratingWithState:v12 objects:v13 count:16])
+    timeScopeRanges2 = [(HKInteractiveChartViewController *)self timeScopeRanges];
+    if ([timeScopeRanges2 countByEnumeratingWithState:v12 objects:v13 count:16])
     {
       v8 = **(&v12[0] + 1);
-      v9 = [(HKInteractiveChartViewController *)self timeScopeRanges];
-      v10 = [v9 objectForKeyedSubscript:v8];
+      timeScopeRanges3 = [(HKInteractiveChartViewController *)self timeScopeRanges];
+      v10 = [timeScopeRanges3 objectForKeyedSubscript:v8];
     }
 
     else
@@ -2323,14 +2323,14 @@ void __50__HKInteractiveChartViewController_viewDidAppear___block_invoke(uint64_
   return v10;
 }
 
-- (id)fixedRangeForTimeScope:(int64_t)a3
+- (id)fixedRangeForTimeScope:(int64_t)scope
 {
-  v5 = [(HKInteractiveChartViewController *)self timeScopeRanges];
-  if (v5)
+  timeScopeRanges = [(HKInteractiveChartViewController *)self timeScopeRanges];
+  if (timeScopeRanges)
   {
-    v6 = [(HKInteractiveChartViewController *)self timeScopeRanges];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    timeScopeRanges2 = [(HKInteractiveChartViewController *)self timeScopeRanges];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:scope];
+    v8 = [timeScopeRanges2 objectForKeyedSubscript:v7];
   }
 
   else
@@ -2341,65 +2341,65 @@ void __50__HKInteractiveChartViewController_viewDidAppear___block_invoke(uint64_
   return v8;
 }
 
-- (BOOL)_valueRange:(id)a3 fitsInsideValueRange:(id)a4
+- (BOOL)_valueRange:(id)range fitsInsideValueRange:(id)valueRange
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 minValue];
-  v8 = [v6 minValue];
-  v9 = [v7 compare:v8];
+  valueRangeCopy = valueRange;
+  rangeCopy = range;
+  minValue = [valueRangeCopy minValue];
+  minValue2 = [rangeCopy minValue];
+  v9 = [minValue compare:minValue2];
 
-  v10 = [v6 maxValue];
+  maxValue = [rangeCopy maxValue];
 
-  v11 = [v5 maxValue];
+  maxValue2 = [valueRangeCopy maxValue];
 
-  v12 = [v10 compare:v11];
+  v12 = [maxValue compare:maxValue2];
   return v9 != 1 && v12 != 1;
 }
 
-- (void)_setGraphViewAxisAndVisibleDateRangeForTimeScope:(int64_t)a3 anchorDate:(id)a4 preserveScrollPosition:(BOOL)a5
+- (void)_setGraphViewAxisAndVisibleDateRangeForTimeScope:(int64_t)scope anchorDate:(id)date preserveScrollPosition:(BOOL)position
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
-  v10 = [(HKInteractiveChartViewController *)self fixedRangeForTimeScope:a3];
+  positionCopy = position;
+  dateCopy = date;
+  graphView = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+  v10 = [(HKInteractiveChartViewController *)self fixedRangeForTimeScope:scope];
   if (!v10)
   {
-    v37 = v8;
-    v14 = [(HKInteractiveChartViewController *)self currentCalendar];
-    v15 = [v14 firstWeekday];
+    v37 = dateCopy;
+    currentCalendar = [(HKInteractiveChartViewController *)self currentCalendar];
+    firstWeekday = [currentCalendar firstWeekday];
 
     v16 = [(HKInteractiveChartViewController *)self _defaultAxisRangeIncludeToday:1];
-    v17 = [(HKInteractiveChartViewController *)self defaultAlignmentForTimeScope:a3];
-    v18 = [(HKInteractiveChartViewController *)self currentCalendar];
-    v13 = [HKGraphZoomLevelConfiguration chartDataRangeForTimeScope:a3 dataRange:v16 firstWeekday:v15 calendar:v18 cadence:0 alignment:v17];
+    v17 = [(HKInteractiveChartViewController *)self defaultAlignmentForTimeScope:scope];
+    currentCalendar2 = [(HKInteractiveChartViewController *)self currentCalendar];
+    v13 = [HKGraphZoomLevelConfiguration chartDataRangeForTimeScope:scope dataRange:v16 firstWeekday:firstWeekday calendar:currentCalendar2 cadence:0 alignment:v17];
 
-    if (v5)
+    if (positionCopy)
     {
-      v12 = [v9 effectiveVisibleRangeCadence];
-      v11 = [v9 effectiveVisibleRangeActive];
-      v19 = [v12 minValue];
-      v20 = [v13 minValue];
-      v21 = [v19 compare:v20];
+      effectiveVisibleRangeCadence = [graphView effectiveVisibleRangeCadence];
+      effectiveVisibleRangeActive = [graphView effectiveVisibleRangeActive];
+      minValue = [effectiveVisibleRangeCadence minValue];
+      minValue2 = [v13 minValue];
+      v21 = [minValue compare:minValue2];
 
       if (v21 == -1)
       {
-        v22 = [v12 minValue];
-        v23 = [v13 maxValue];
-        v24 = [HKValueRange valueRangeWithMinValue:v22 maxValue:v23];
+        minValue3 = [effectiveVisibleRangeCadence minValue];
+        maxValue = [v13 maxValue];
+        v24 = [HKValueRange valueRangeWithMinValue:minValue3 maxValue:maxValue];
 
         v13 = v24;
       }
 
-      v25 = [v12 maxValue];
-      v26 = [v13 maxValue];
-      v27 = [v25 compare:v26];
+      maxValue2 = [effectiveVisibleRangeCadence maxValue];
+      maxValue3 = [v13 maxValue];
+      v27 = [maxValue2 compare:maxValue3];
 
       if (v27 != 1)
       {
 LABEL_17:
 
-        v8 = v37;
+        dateCopy = v37;
         if (!v13)
         {
           goto LABEL_25;
@@ -2408,9 +2408,9 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v28 = [v13 minValue];
-      v29 = [v12 maxValue];
-      v30 = [HKValueRange valueRangeWithMinValue:v28 maxValue:v29];
+      minValue4 = [v13 minValue];
+      maxValue4 = [effectiveVisibleRangeCadence maxValue];
+      v30 = [HKValueRange valueRangeWithMinValue:minValue4 maxValue:maxValue4];
 
       v13 = v30;
     }
@@ -2423,24 +2423,24 @@ LABEL_17:
         v17 = 3;
       }
 
-      v31 = [(HKInteractiveChartViewController *)self currentCalendar];
-      v28 = [HKGraphZoomLevelConfiguration chartVisibleRangeForTimeScope:a3 anchorDate:v37 alignment:v17 dataRange:v13 calendar:v31 firstWeekday:v15 cadence:0 level:0];
+      currentCalendar3 = [(HKInteractiveChartViewController *)self currentCalendar];
+      minValue4 = [HKGraphZoomLevelConfiguration chartVisibleRangeForTimeScope:scope anchorDate:v37 alignment:v17 dataRange:v13 calendar:currentCalendar3 firstWeekday:firstWeekday cadence:0 level:0];
 
-      v29 = [(HKInteractiveChartViewController *)self visibleRangeForTimeScope:a3 proposedRange:v28];
-      if ([(HKInteractiveChartViewController *)self _acceptSubclassRange:v29 proposedRange:v28 axisRange:v13])
+      maxValue4 = [(HKInteractiveChartViewController *)self visibleRangeForTimeScope:scope proposedRange:minValue4];
+      if ([(HKInteractiveChartViewController *)self _acceptSubclassRange:maxValue4 proposedRange:minValue4 axisRange:v13])
       {
-        v29 = v29;
-        v11 = v29;
-        v12 = v29;
+        maxValue4 = maxValue4;
+        effectiveVisibleRangeActive = maxValue4;
+        effectiveVisibleRangeCadence = maxValue4;
       }
 
       else
       {
-        v28 = v28;
-        v32 = [(HKInteractiveChartViewController *)self currentCalendar];
-        v11 = [HKGraphZoomLevelConfiguration chartVisibleRangeForTimeScope:a3 anchorDate:v37 alignment:v17 dataRange:v13 calendar:v32 firstWeekday:v15 cadence:1 level:0];
+        minValue4 = minValue4;
+        currentCalendar4 = [(HKInteractiveChartViewController *)self currentCalendar];
+        effectiveVisibleRangeActive = [HKGraphZoomLevelConfiguration chartVisibleRangeForTimeScope:scope anchorDate:v37 alignment:v17 dataRange:v13 calendar:currentCalendar4 firstWeekday:firstWeekday cadence:1 level:0];
 
-        v12 = v28;
+        effectiveVisibleRangeCadence = minValue4;
       }
 
       v16 = v36;
@@ -2449,16 +2449,16 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v11 = [(HKInteractiveChartViewController *)self _graphViewAxisAndVisibleDateRangeForTimeScope:a3 fixedRange:v10];
-  v12 = v11;
-  v13 = v11;
-  if (!v11)
+  effectiveVisibleRangeActive = [(HKInteractiveChartViewController *)self _graphViewAxisAndVisibleDateRangeForTimeScope:scope fixedRange:v10];
+  effectiveVisibleRangeCadence = effectiveVisibleRangeActive;
+  v13 = effectiveVisibleRangeActive;
+  if (!effectiveVisibleRangeActive)
   {
     goto LABEL_25;
   }
 
 LABEL_18:
-  if (v12 && v11)
+  if (effectiveVisibleRangeCadence && effectiveVisibleRangeActive)
   {
     _HKInitializeLogging();
     v33 = HKLogWellnessDashboard();
@@ -2473,29 +2473,29 @@ LABEL_18:
       }
     }
 
-    [v9 setContentWidthFromTimeScope:v10 == 0];
-    [v9 setEffectiveAxisRange:v13 effectiveVisibleRangeCadence:v12 effectiveVisibleRangeActive:v11];
+    [graphView setContentWidthFromTimeScope:v10 == 0];
+    [graphView setEffectiveAxisRange:v13 effectiveVisibleRangeCadence:effectiveVisibleRangeCadence effectiveVisibleRangeActive:effectiveVisibleRangeActive];
   }
 
 LABEL_25:
 }
 
-- (BOOL)_acceptSubclassRange:(id)a3 proposedRange:(id)a4 axisRange:(id)a5
+- (BOOL)_acceptSubclassRange:(id)range proposedRange:(id)proposedRange axisRange:(id)axisRange
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 startDate];
-  v11 = [v9 endDate];
+  proposedRangeCopy = proposedRange;
+  axisRangeCopy = axisRange;
+  rangeCopy = range;
+  startDate = [rangeCopy startDate];
+  endDate = [rangeCopy endDate];
 
-  v12 = [v8 startDate];
-  v13 = [v8 endDate];
+  startDate2 = [axisRangeCopy startDate];
+  endDate2 = [axisRangeCopy endDate];
 
-  if ([v10 hk_isAfterOrEqualToDate:v12] && objc_msgSend(v11, "hk_isBeforeOrEqualToDate:", v13))
+  if ([startDate hk_isAfterOrEqualToDate:startDate2] && objc_msgSend(endDate, "hk_isBeforeOrEqualToDate:", endDate2))
   {
-    v14 = [v7 startDate];
-    v15 = [v7 endDate];
-    v16 = ![v10 isEqualToDate:v14] || (objc_msgSend(v11, "isEqualToDate:", v15) & 1) == 0;
+    startDate3 = [proposedRangeCopy startDate];
+    endDate3 = [proposedRangeCopy endDate];
+    v16 = ![startDate isEqualToDate:startDate3] || (objc_msgSend(endDate, "isEqualToDate:", endDate3) & 1) == 0;
   }
 
   else
@@ -2506,17 +2506,17 @@ LABEL_25:
   return v16;
 }
 
-- (id)_graphViewAxisAndVisibleDateRangeForTimeScope:(int64_t)a3 fixedRange:(id)a4
+- (id)_graphViewAxisAndVisibleDateRangeForTimeScope:(int64_t)scope fixedRange:(id)range
 {
-  v5 = a4;
-  v6 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:a3];
+  rangeCopy = range;
+  v6 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:scope];
   [v6 canonicalSize];
   v8 = v7;
-  if (a3 != 4 || ((v9 = v7 - (3 * *MEMORY[0x1E696B510]), [v5 endDate], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "timeIntervalSinceReferenceDate"), v12 = v11, objc_msgSend(v5, "startDate"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "timeIntervalSinceReferenceDate"), v15 = v12 - v14, v13, v10, v15 >= v9) ? (v16 = v15 > v8) : (v16 = 1), v16))
+  if (scope != 4 || ((v9 = v7 - (3 * *MEMORY[0x1E696B510]), [rangeCopy endDate], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "timeIntervalSinceReferenceDate"), v12 = v11, objc_msgSend(rangeCopy, "startDate"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "timeIntervalSinceReferenceDate"), v15 = v12 - v14, v13, v10, v15 >= v9) ? (v16 = v15 > v8) : (v16 = 1), v16))
   {
-    v17 = [v5 startDate];
-    v18 = [v5 endDate];
-    v19 = HKUIMidDate(v17, v18);
+    startDate = [rangeCopy startDate];
+    endDate = [rangeCopy endDate];
+    v19 = HKUIMidDate(startDate, endDate);
     v20 = [v19 dateByAddingTimeInterval:-(v8 * 0.5)];
     v21 = [v19 dateByAddingTimeInterval:v8 * 0.5];
     v22 = [HKValueRange valueRangeWithMinValue:v20 maxValue:v21];
@@ -2524,28 +2524,28 @@ LABEL_25:
 
   else
   {
-    v22 = v5;
+    v22 = rangeCopy;
   }
 
   return v22;
 }
 
-- (BOOL)_visibleRangeIsNowForTimeScope:(int64_t)a3
+- (BOOL)_visibleRangeIsNowForTimeScope:(int64_t)scope
 {
-  v5 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
-  v6 = [v5 effectiveVisibleRangeCadence];
-  if (v6)
+  graphView = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+  effectiveVisibleRangeCadence = [graphView effectiveVisibleRangeCadence];
+  if (effectiveVisibleRangeCadence)
   {
-    v7 = [(HKInteractiveChartViewController *)self currentCalendar];
-    v8 = [v7 firstWeekday];
+    currentCalendar = [(HKInteractiveChartViewController *)self currentCalendar];
+    firstWeekday = [currentCalendar firstWeekday];
 
-    v9 = [MEMORY[0x1E695DF00] date];
-    v10 = [v5 effectiveAxisRange];
-    v11 = [(HKInteractiveChartViewController *)self currentCalendar];
-    v12 = [HKGraphZoomLevelConfiguration chartVisibleRangeForTimeScope:a3 anchorDate:v9 alignment:3 dataRange:v10 calendar:v11 firstWeekday:v8 cadence:0 level:0];
+    date = [MEMORY[0x1E695DF00] date];
+    effectiveAxisRange = [graphView effectiveAxisRange];
+    currentCalendar2 = [(HKInteractiveChartViewController *)self currentCalendar];
+    v12 = [HKGraphZoomLevelConfiguration chartVisibleRangeForTimeScope:scope anchorDate:date alignment:3 dataRange:effectiveAxisRange calendar:currentCalendar2 firstWeekday:firstWeekday cadence:0 level:0];
 
-    v13 = [v5 effectiveVisibleRangeCadence];
-    v14 = [v12 isEqual:v13];
+    effectiveVisibleRangeCadence2 = [graphView effectiveVisibleRangeCadence];
+    v14 = [v12 isEqual:effectiveVisibleRangeCadence2];
   }
 
   else
@@ -2556,22 +2556,22 @@ LABEL_25:
   return v14;
 }
 
-- (id)makeAnchorDateFromPreviousAnchorDate:(id)a3 previousEffectiveVisibleRange:(id)a4 previousTimeScope:(int64_t)a5 currentTimeScope:(int64_t)a6
+- (id)makeAnchorDateFromPreviousAnchorDate:(id)date previousEffectiveVisibleRange:(id)range previousTimeScope:(int64_t)scope currentTimeScope:(int64_t)timeScope
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = v11;
-  v14 = [(HKInteractiveChartViewController *)self lollipopController];
-  v15 = [v14 firstLollipopDateSinceDelta:0.25];
+  dateCopy = date;
+  rangeCopy = range;
+  v13 = dateCopy;
+  lollipopController = [(HKInteractiveChartViewController *)self lollipopController];
+  v15 = [lollipopController firstLollipopDateSinceDelta:0.25];
 
-  v16 = [(HKInteractiveChartViewController *)self _dateForMostRecentData];
-  v17 = [(HKInteractiveChartViewController *)self _singleFixedRange];
-  v18 = v17;
-  if (v17)
+  _dateForMostRecentData = [(HKInteractiveChartViewController *)self _dateForMostRecentData];
+  _singleFixedRange = [(HKInteractiveChartViewController *)self _singleFixedRange];
+  v18 = _singleFixedRange;
+  if (_singleFixedRange)
   {
-    v19 = [v17 startDate];
-    v20 = [v18 endDate];
-    v21 = HKUIMidDate(v19, v20);
+    startDate = [_singleFixedRange startDate];
+    endDate = [v18 endDate];
+    endDate2 = HKUIMidDate(startDate, endDate);
 
 LABEL_6:
     goto LABEL_7;
@@ -2579,60 +2579,60 @@ LABEL_6:
 
   if (v15)
   {
-    v21 = v15;
+    endDate2 = v15;
 
-    if (a6 >= 6)
+    if (timeScope >= 6)
     {
-      if (a6 != 8)
+      if (timeScope != 8)
       {
         goto LABEL_7;
       }
 
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"HKInteractiveChartViewController.m" lineNumber:1558 description:{@"Invalid zoom specified (%ld)", 8}];
+      startDate = [MEMORY[0x1E696AAA8] currentHandler];
+      [startDate handleFailureInMethod:a2 object:self file:@"HKInteractiveChartViewController.m" lineNumber:1558 description:{@"Invalid zoom specified (%ld)", 8}];
     }
 
     else
     {
-      __138__HKInteractiveChartViewController_makeAnchorDateFromPreviousAnchorDate_previousEffectiveVisibleRange_previousTimeScope_currentTimeScope___block_invoke(v22, v21, a6);
-      v21 = v19 = v21;
+      __138__HKInteractiveChartViewController_makeAnchorDateFromPreviousAnchorDate_previousEffectiveVisibleRange_previousTimeScope_currentTimeScope___block_invoke(v22, endDate2, timeScope);
+      endDate2 = startDate = endDate2;
     }
 
     goto LABEL_6;
   }
 
-  v21 = v13;
-  if (![(HKInteractiveChartViewController *)self _visibleRangeIsNowForTimeScope:a5])
+  endDate2 = v13;
+  if (![(HKInteractiveChartViewController *)self _visibleRangeIsNowForTimeScope:scope])
   {
-    v21 = [v12 endDate];
+    endDate2 = [rangeCopy endDate];
 
-    if (a5 <= a6 && (a6 & 0xFFFFFFFFFFFFFFFELL) == 6)
+    if (scope <= timeScope && (timeScope & 0xFFFFFFFFFFFFFFFELL) == 6)
     {
-      v26 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v27 = [v26 startOfDayForDate:v21];
-      v28 = [v27 isEqualToDate:v21];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      v27 = [currentCalendar startOfDayForDate:endDate2];
+      v28 = [v27 isEqualToDate:endDate2];
 
       if (v28)
       {
-        v29 = [MEMORY[0x1E695DEE8] currentCalendar];
-        v30 = [v29 dateByAddingUnit:16 value:-1 toDate:v21 options:0];
+        currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+        v30 = [currentCalendar2 dateByAddingUnit:16 value:-1 toDate:endDate2 options:0];
 
-        v21 = v30;
+        endDate2 = v30;
       }
     }
 
-    if (a6 == 7)
+    if (timeScope == 7)
     {
-      v31 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v19 = [v31 startOfDayForDate:v21];
+      currentCalendar3 = [MEMORY[0x1E695DEE8] currentCalendar];
+      startDate = [currentCalendar3 startOfDayForDate:endDate2];
 
-      v32 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v33 = [v32 dateByAddingUnit:16 value:1 toDate:v19 options:0];
+      currentCalendar4 = [MEMORY[0x1E695DEE8] currentCalendar];
+      v33 = [currentCalendar4 dateByAddingUnit:16 value:1 toDate:startDate options:0];
 
-      v34 = HKUIMidDate(v19, v33);
-      if (HKUIObjectIsLargerOrEqual(v16, v19) && HKUIObjectIsSmaller(v16, v33))
+      v34 = HKUIMidDate(startDate, v33);
+      if (HKUIObjectIsLargerOrEqual(_dateForMostRecentData, startDate) && HKUIObjectIsSmaller(_dateForMostRecentData, v33))
       {
-        v35 = [v34 laterDate:v16];
+        v35 = [v34 laterDate:_dateForMostRecentData];
       }
 
       else
@@ -2642,22 +2642,22 @@ LABEL_6:
 
       v36 = v35;
 
-      v21 = v36;
+      endDate2 = v36;
       goto LABEL_6;
     }
   }
 
 LABEL_7:
-  if (([v21 hk_isAfterDate:v16] & 1) != 0 || !v21)
+  if (([endDate2 hk_isAfterDate:_dateForMostRecentData] & 1) != 0 || !endDate2)
   {
-    v23 = v16;
+    v23 = _dateForMostRecentData;
 
-    v21 = v23;
+    endDate2 = v23;
   }
 
-  v24 = v21;
+  v24 = endDate2;
 
-  return v21;
+  return endDate2;
 }
 
 id __138__HKInteractiveChartViewController_makeAnchorDateFromPreviousAnchorDate_previousEffectiveVisibleRange_previousTimeScope_currentTimeScope___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -2676,9 +2676,9 @@ id __138__HKInteractiveChartViewController_makeAnchorDateFromPreviousAnchorDate_
 {
   if ([(HKInteractiveChartViewController *)self _chartHasDateAxis])
   {
-    v3 = [(HKTimeScopeControl *)self->_radioButtons selectedTimeScope];
+    selectedTimeScope = [(HKTimeScopeControl *)self->_radioButtons selectedTimeScope];
 
-    [(HKInteractiveChartViewController *)self _replacePrimaryGraphViewControllerWithTimeScope:v3 anchorDate:0 animated:0];
+    [(HKInteractiveChartViewController *)self _replacePrimaryGraphViewControllerWithTimeScope:selectedTimeScope anchorDate:0 animated:0];
   }
 
   else
@@ -2688,14 +2688,14 @@ id __138__HKInteractiveChartViewController_makeAnchorDateFromPreviousAnchorDate_
   }
 }
 
-- (void)_replacePrimaryGraphViewControllerWithTimeScope:(int64_t)a3 anchorDate:(id)a4 animated:(BOOL)a5
+- (void)_replacePrimaryGraphViewControllerWithTimeScope:(int64_t)scope anchorDate:(id)date animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   primaryGraphViewController = self->_primaryGraphViewController;
-  v9 = a4;
-  v10 = [(HKGraphViewController *)primaryGraphViewController dateZoom];
+  dateCopy = date;
+  dateZoom = [(HKGraphViewController *)primaryGraphViewController dateZoom];
   memset(&v65, 0, sizeof(v65));
-  if (v10 >= a3)
+  if (dateZoom >= scope)
   {
     CGAffineTransformMakeScale(&v65, 0.899999999, 1.0);
     v11 = 1.1;
@@ -2710,68 +2710,68 @@ id __138__HKInteractiveChartViewController_makeAnchorDateFromPreviousAnchorDate_
   memset(&v64, 0, sizeof(v64));
   CGAffineTransformMakeScale(&v64, v11, 1.0);
   v12 = self->_primaryGraphViewController;
-  v13 = [(HKGraphViewController *)v12 graphView];
-  v14 = [v13 effectiveVisibleRangeActive];
+  graphView = [(HKGraphViewController *)v12 graphView];
+  effectiveVisibleRangeActive = [graphView effectiveVisibleRangeActive];
 
-  v15 = [(HKInteractiveChartViewController *)self makeAnchorDateFromPreviousAnchorDate:v9 previousEffectiveVisibleRange:v14 previousTimeScope:v10 currentTimeScope:a3];
+  v15 = [(HKInteractiveChartViewController *)self makeAnchorDateFromPreviousAnchorDate:dateCopy previousEffectiveVisibleRange:effectiveVisibleRangeActive previousTimeScope:dateZoom currentTimeScope:scope];
 
-  v16 = [(HKGraphViewController *)v12 graphView];
-  [v16 removeSeries];
+  graphView2 = [(HKGraphViewController *)v12 graphView];
+  [graphView2 removeSeries];
 
-  v17 = [(HKGraphViewController *)v12 view];
-  [v17 frame];
+  view = [(HKGraphViewController *)v12 view];
+  [view frame];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [(HKGraphViewController *)v12 graphView];
-  [v26 xAxisSpace];
+  graphView3 = [(HKGraphViewController *)v12 graphView];
+  [graphView3 xAxisSpace];
   v28 = v27;
 
-  v29 = [(HKInteractiveChartViewController *)self currentCalendar];
-  v30 = [(HKInteractiveChartViewController *)self makePrimaryGraphViewControllerWithDateZoom:a3 previousDateZoom:v10 previousXAxisSpace:v29 currentCalendar:v28];
+  currentCalendar = [(HKInteractiveChartViewController *)self currentCalendar];
+  v30 = [(HKInteractiveChartViewController *)self makePrimaryGraphViewControllerWithDateZoom:scope previousDateZoom:dateZoom previousXAxisSpace:currentCalendar currentCalendar:v28];
   v31 = self->_primaryGraphViewController;
   self->_primaryGraphViewController = v30;
 
   [(HKInteractiveChartViewController *)self primaryGraphViewControllerDidInitialize:self->_primaryGraphViewController];
   [(HKGraphViewController *)self->_primaryGraphViewController setGraphViewDelegateProxy:self];
-  v32 = [(HKGraphViewController *)self->_primaryGraphViewController view];
-  [v32 setFrame:{v19, v21, v23, v25}];
+  view2 = [(HKGraphViewController *)self->_primaryGraphViewController view];
+  [view2 setFrame:{v19, v21, v23, v25}];
 
   [(HKInteractiveChartViewController *)self addChildViewController:self->_primaryGraphViewController];
   primaryGraphViewWrapper = self->_primaryGraphViewWrapper;
-  v34 = [(HKGraphViewController *)self->_primaryGraphViewController view];
-  [(UIView *)primaryGraphViewWrapper addSubview:v34];
+  view3 = [(HKGraphViewController *)self->_primaryGraphViewController view];
+  [(UIView *)primaryGraphViewWrapper addSubview:view3];
 
   [(HKGraphViewController *)self->_primaryGraphViewController didMoveToParentViewController:self];
-  v35 = [(HKGraphViewController *)self->_primaryGraphViewController view];
-  [v35 setAlpha:0.0];
+  view4 = [(HKGraphViewController *)self->_primaryGraphViewController view];
+  [view4 setAlpha:0.0];
 
-  v36 = [(HKGraphViewController *)self->_primaryGraphViewController view];
+  view5 = [(HKGraphViewController *)self->_primaryGraphViewController view];
   v63 = v64;
-  [v36 setTransform:&v63];
+  [view5 setTransform:&v63];
 
-  v37 = [(HKGraphViewController *)self->_primaryGraphViewController view];
-  v38 = [(HKInteractiveChartViewController *)self view];
-  v39 = [v38 backgroundColor];
-  [v37 setBackgroundColor:v39];
+  view6 = [(HKGraphViewController *)self->_primaryGraphViewController view];
+  view7 = [(HKInteractiveChartViewController *)self view];
+  backgroundColor = [view7 backgroundColor];
+  [view6 setBackgroundColor:backgroundColor];
 
   [(HKInteractiveChartViewController *)self _configureSelectedRangeFormatterWithChartRangeProvider];
-  v40 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
-  v41 = [(HKInteractiveChartViewController *)self view];
-  v42 = [v41 backgroundColor];
-  [v40 setTopMarginColor:v42];
+  graphView4 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+  view8 = [(HKInteractiveChartViewController *)self view];
+  backgroundColor2 = [view8 backgroundColor];
+  [graphView4 setTopMarginColor:backgroundColor2];
 
-  [v40 setTilingDisabled:{-[HKInteractiveChartViewController _tilingDisabled](self, "_tilingDisabled")}];
-  [v40 setPrefersOpaqueLegends:{-[HKInteractiveChartViewController _prefersOpaqueLegends](self, "_prefersOpaqueLegends")}];
-  [v40 setDrawsGridlinesPerSeriesGroup:{-[HKInteractiveChartViewController _drawsGridlinesPerSeriesGroup](self, "_drawsGridlinesPerSeriesGroup")}];
-  [(HKInteractiveChartViewController *)self _setGraphViewAxisAndVisibleDateRangeForTimeScope:a3 anchorDate:v15 preserveScrollPosition:0];
-  v43 = [(HKInteractiveChartViewController *)self view];
-  [v43 setNeedsLayout];
+  [graphView4 setTilingDisabled:{-[HKInteractiveChartViewController _tilingDisabled](self, "_tilingDisabled")}];
+  [graphView4 setPrefersOpaqueLegends:{-[HKInteractiveChartViewController _prefersOpaqueLegends](self, "_prefersOpaqueLegends")}];
+  [graphView4 setDrawsGridlinesPerSeriesGroup:{-[HKInteractiveChartViewController _drawsGridlinesPerSeriesGroup](self, "_drawsGridlinesPerSeriesGroup")}];
+  [(HKInteractiveChartViewController *)self _setGraphViewAxisAndVisibleDateRangeForTimeScope:scope anchorDate:v15 preserveScrollPosition:0];
+  view9 = [(HKInteractiveChartViewController *)self view];
+  [view9 setNeedsLayout];
 
-  v44 = [(HKInteractiveChartViewController *)self view];
-  [v44 layoutSubviews];
+  view10 = [(HKInteractiveChartViewController *)self view];
+  [view10 layoutSubviews];
 
   aBlock = MEMORY[0x1E69E9820];
   v58 = 3221225472;
@@ -2779,21 +2779,21 @@ id __138__HKInteractiveChartViewController_makeAnchorDateFromPreviousAnchorDate_
   v60 = &unk_1E81B9980;
   v45 = v12;
   v61 = v45;
-  v62 = self;
+  selfCopy = self;
   v46 = _Block_copy(&aBlock);
   v50 = MEMORY[0x1E69E9820];
   v51 = 3221225472;
   v52 = __104__HKInteractiveChartViewController__replacePrimaryGraphViewControllerWithTimeScope_anchorDate_animated___block_invoke_2;
   v53 = &unk_1E81B99A8;
-  v54 = self;
+  selfCopy2 = self;
   v55 = v45;
   v56 = v65;
   v47 = v45;
   v48 = _Block_copy(&v50);
   v49 = v48;
-  if (v5)
+  if (animatedCopy)
   {
-    [MEMORY[0x1E69DD250] animateWithDuration:v48 animations:v46 completion:{0.25, v50, v51, v52, v53, v54, v55, *&v56.a, *&v56.c, *&v56.tx, aBlock, v58, v59, v60}];
+    [MEMORY[0x1E69DD250] animateWithDuration:v48 animations:v46 completion:{0.25, v50, v51, v52, v53, selfCopy2, v55, *&v56.a, *&v56.c, *&v56.tx, aBlock, v58, v59, v60}];
   }
 
   else
@@ -2856,8 +2856,8 @@ void __104__HKInteractiveChartViewController__replacePrimaryGraphViewControllerW
 
   [(HKGraphViewController *)self->_primaryGraphViewController setGraphViewDelegateProxy:self];
   primaryGraphViewWrapper = self->_primaryGraphViewWrapper;
-  v6 = [(HKGraphViewController *)self->_primaryGraphViewController view];
-  [(UIView *)primaryGraphViewWrapper addSubview:v6];
+  view = [(HKGraphViewController *)self->_primaryGraphViewController view];
+  [(UIView *)primaryGraphViewWrapper addSubview:view];
 
   [(HKInteractiveChartViewController *)self addChildViewController:self->_primaryGraphViewController];
   [(HKGraphViewController *)self->_primaryGraphViewController didMoveToParentViewController:self];
@@ -2867,10 +2867,10 @@ void __104__HKInteractiveChartViewController__replacePrimaryGraphViewControllerW
 
 - (void)_configureSelectedRangeFormatterWithChartRangeProvider
 {
-  v5 = [(HKInteractiveChartViewController *)self selectedRangeFormatter];
-  v3 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  v4 = [v3 graphView];
-  [v5 configureWithChartRangeProvider:v4];
+  selectedRangeFormatter = [(HKInteractiveChartViewController *)self selectedRangeFormatter];
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
+  [selectedRangeFormatter configureWithChartRangeProvider:graphView];
 }
 
 - (void)_handleVisibleRangeChange
@@ -2882,15 +2882,15 @@ void __104__HKInteractiveChartViewController__replacePrimaryGraphViewControllerW
 
 - (void)_configureInitialLollipopSelection
 {
-  v6 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
-  v3 = [v6 chartingRules];
+  _primaryDisplayType = [(HKInteractiveChartViewController *)self _primaryDisplayType];
+  chartingRules = [_primaryDisplayType chartingRules];
   options = self->_options;
-  if ([v3 shouldShowInitialLollipop] && (options & 0x2000) == 0)
+  if ([chartingRules shouldShowInitialLollipop] && (options & 0x2000) == 0)
   {
-    v5 = [(HKInteractiveChartViewController *)self _dateForMostRecentData];
+    _dateForMostRecentData = [(HKInteractiveChartViewController *)self _dateForMostRecentData];
     [(HKInteractiveChartViewController *)self initialXValue];
 
-    if (v5)
+    if (_dateForMostRecentData)
     {
       [(HKInteractiveChartViewController *)self setDisableCurrentValueViewForInitialLollipop:1];
     }
@@ -2899,31 +2899,31 @@ void __104__HKInteractiveChartViewController__replacePrimaryGraphViewControllerW
 
 - (void)_handleInitialLollipopSelection
 {
-  v3 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
-  v4 = v3;
-  if (v3)
+  graphView = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+  v4 = graphView;
+  if (graphView)
   {
-    v10 = v3;
-    v3 = [(HKInteractiveChartViewController *)self disableCurrentValueViewForInitialLollipop];
+    v10 = graphView;
+    graphView = [(HKInteractiveChartViewController *)self disableCurrentValueViewForInitialLollipop];
     v4 = v10;
-    if (v3)
+    if (graphView)
     {
-      v5 = [(HKInteractiveChartViewController *)self _dateForMostRecentData];
-      v6 = [(HKInteractiveChartViewController *)self initialXValue];
-      v7 = v6;
-      if (v6)
+      _dateForMostRecentData = [(HKInteractiveChartViewController *)self _dateForMostRecentData];
+      initialXValue = [(HKInteractiveChartViewController *)self initialXValue];
+      v7 = initialXValue;
+      if (initialXValue)
       {
-        v8 = v6;
+        v8 = initialXValue;
       }
 
       else
       {
-        v8 = v5;
+        v8 = _dateForMostRecentData;
       }
 
       v9 = v8;
 
-      if ([(HKInteractiveChartViewController *)self _shouldHandleInitialLollipopTouchDate:v9 mostRecentDataDate:v5 forGraphView:v10])
+      if ([(HKInteractiveChartViewController *)self _shouldHandleInitialLollipopTouchDate:v9 mostRecentDataDate:_dateForMostRecentData forGraphView:v10])
       {
         [v10 touchSelectionAtModelX:v9];
       }
@@ -2937,34 +2937,34 @@ void __104__HKInteractiveChartViewController__replacePrimaryGraphViewControllerW
     }
   }
 
-  MEMORY[0x1EEE66BB8](v3, v4);
+  MEMORY[0x1EEE66BB8](graphView, v4);
 }
 
-- (BOOL)_shouldHandleInitialLollipopTouchDate:(id)a3 mostRecentDataDate:(id)a4 forGraphView:(id)a5
+- (BOOL)_shouldHandleInitialLollipopTouchDate:(id)date mostRecentDataDate:(id)dataDate forGraphView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7)
+  dateCopy = date;
+  dataDateCopy = dataDate;
+  viewCopy = view;
+  v10 = viewCopy;
+  if (dateCopy)
   {
-    v11 = [v9 xAxisDateZoom];
-    if (v11 == 8)
+    xAxisDateZoom = [viewCopy xAxisDateZoom];
+    if (xAxisDateZoom == 8)
     {
       v12 = 1;
     }
 
     else
     {
-      v13 = v11;
-      v14 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:v11];
-      v15 = [v10 resolutionFromTraitCollectionAttributes];
-      v16 = [v10 primarySeries];
-      v17 = [v16 resolutionForTimeScope:v13 traitResolution:v15];
+      v13 = xAxisDateZoom;
+      v14 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:xAxisDateZoom];
+      resolutionFromTraitCollectionAttributes = [v10 resolutionFromTraitCollectionAttributes];
+      primarySeries = [v10 primarySeries];
+      v17 = [primarySeries resolutionForTimeScope:v13 traitResolution:resolutionFromTraitCollectionAttributes];
 
       [v14 approximateSeriesPointIntervalAtResolution:v17];
-      v18 = [v8 dateByAddingTimeInterval:?];
-      v12 = [v7 hk_isBeforeOrEqualToDate:v18];
+      v18 = [dataDateCopy dateByAddingTimeInterval:?];
+      v12 = [dateCopy hk_isBeforeOrEqualToDate:v18];
     }
   }
 
@@ -2992,16 +2992,16 @@ void __104__HKInteractiveChartViewController__replacePrimaryGraphViewControllerW
 
   [(UIView *)self->_primaryGraphViewWrapper frame];
   [(UIView *)self->_primaryGraphViewSnapshot setFrame:?];
-  v7 = [(HKInteractiveChartViewController *)self view];
-  [v7 insertSubview:self->_primaryGraphViewSnapshot aboveSubview:self->_primaryGraphViewWrapper];
+  view = [(HKInteractiveChartViewController *)self view];
+  [view insertSubview:self->_primaryGraphViewSnapshot aboveSubview:self->_primaryGraphViewWrapper];
 }
 
-- (void)removeGraphViewSnapshotAnimated:(BOOL)a3
+- (void)removeGraphViewSnapshotAnimated:(BOOL)animated
 {
   primaryGraphViewSnapshot = self->_primaryGraphViewSnapshot;
   if (primaryGraphViewSnapshot)
   {
-    if (a3)
+    if (animated)
     {
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
@@ -3033,16 +3033,16 @@ void __68__HKInteractiveChartViewController_removeGraphViewSnapshotAnimated___bl
   *(v2 + 1144) = 0;
 }
 
-- (void)_unitPreferencesDidUpdate:(id)a3
+- (void)_unitPreferencesDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__HKInteractiveChartViewController__unitPreferencesDidUpdate___block_invoke;
   v6[3] = &unk_1E81B5AD0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = updateCopy;
+  selfCopy = self;
+  v5 = updateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -3059,10 +3059,10 @@ void __62__HKInteractiveChartViewController__unitPreferencesDidUpdate___block_in
   [*(a1 + 40) _handleVisibleRangeChange];
 }
 
-- (void)_updateAxisScalingRulesForUnitPreferenceChangesOfTypes:(id)a3
+- (void)_updateAxisScalingRulesForUnitPreferenceChangesOfTypes:(id)types
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typesCopy = types;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -3072,8 +3072,8 @@ void __62__HKInteractiveChartViewController__unitPreferencesDidUpdate___block_in
   if (v31)
   {
     v30 = *v50;
-    v33 = self;
-    v34 = v4;
+    selfCopy = self;
+    v34 = typesCopy;
     do
     {
       v5 = 0;
@@ -3090,14 +3090,14 @@ void __62__HKInteractiveChartViewController__unitPreferencesDidUpdate___block_in
         v46 = 0u;
         v47 = 0u;
         v48 = 0u;
-        v7 = [v6 allDisplayTypes];
-        v8 = [v7 countByEnumeratingWithState:&v45 objects:v54 count:16];
+        allDisplayTypes = [v6 allDisplayTypes];
+        v8 = [allDisplayTypes countByEnumeratingWithState:&v45 objects:v54 count:16];
         if (v8)
         {
           v9 = v8;
           v10 = *v46;
           v35 = *v46;
-          v36 = v7;
+          v36 = allDisplayTypes;
           do
           {
             v11 = 0;
@@ -3106,18 +3106,18 @@ void __62__HKInteractiveChartViewController__unitPreferencesDidUpdate___block_in
             {
               if (*v46 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allDisplayTypes);
               }
 
               v12 = *(*(&v45 + 1) + 8 * v11);
-              v13 = [v12 objectType];
+              objectType = [v12 objectType];
               objc_opt_class();
-              if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 containsObject:v13])
+              if ((objc_opt_isKindOfClass() & 1) != 0 && [typesCopy containsObject:objectType])
               {
-                v14 = v4;
-                v39 = v13;
-                v15 = [(HKInteractiveChartViewController *)self unitPreferenceController];
-                v16 = [v15 unitForChartingDisplayType:v12];
+                v14 = typesCopy;
+                v39 = objectType;
+                unitPreferenceController = [(HKInteractiveChartViewController *)self unitPreferenceController];
+                v16 = [unitPreferenceController unitForChartingDisplayType:v12];
 
                 v40 = v16;
                 if (v16)
@@ -3128,8 +3128,8 @@ void __62__HKInteractiveChartViewController__unitPreferencesDidUpdate___block_in
                   v41 = 0u;
                   v42 = 0u;
                   options = self->_options;
-                  v18 = [(HKInteractiveChartViewController *)self timeScopeRanges];
-                  v19 = [HKInteractiveChartViewController _timeScopesWithOptions:options timeScopeRanges:v18];
+                  timeScopeRanges = [(HKInteractiveChartViewController *)self timeScopeRanges];
+                  v19 = [HKInteractiveChartViewController _timeScopesWithOptions:options timeScopeRanges:timeScopeRanges];
 
                   v20 = [v19 countByEnumeratingWithState:&v41 objects:v53 count:16];
                   if (v20)
@@ -3146,16 +3146,16 @@ void __62__HKInteractiveChartViewController__unitPreferencesDidUpdate___block_in
                         }
 
                         v24 = [v6 configurationForDisplayType:v12 zoom:{objc_msgSend(*(*(&v41 + 1) + 8 * i), "integerValue")}];
-                        v25 = [v24 graphSeries];
-                        v26 = [v25 yAxis];
-                        [v26 invalidateAxisLabelCache];
+                        graphSeries = [v24 graphSeries];
+                        yAxis = [graphSeries yAxis];
+                        [yAxis invalidateAxisLabelCache];
 
-                        v27 = [v24 graphSeries];
-                        v28 = [v27 axisScalingRule];
+                        graphSeries2 = [v24 graphSeries];
+                        axisScalingRule = [graphSeries2 axisScalingRule];
 
-                        if ([v28 conformsToProtocol:&unk_1F4433D88] && (objc_opt_respondsToSelector() & 1) != 0)
+                        if ([axisScalingRule conformsToProtocol:&unk_1F4433D88] && (objc_opt_respondsToSelector() & 1) != 0)
                         {
-                          [v28 setUnit:v40];
+                          [axisScalingRule setUnit:v40];
                         }
                       }
 
@@ -3165,23 +3165,23 @@ void __62__HKInteractiveChartViewController__unitPreferencesDidUpdate___block_in
                     while (v21);
                   }
 
-                  self = v33;
+                  self = selfCopy;
                   v14 = v34;
                   v10 = v35;
-                  v7 = v36;
+                  allDisplayTypes = v36;
                   v9 = v37;
                   v11 = v38;
                 }
 
-                v13 = v39;
-                v4 = v14;
+                objectType = v39;
+                typesCopy = v14;
               }
 
               ++v11;
             }
 
             while (v11 != v9);
-            v9 = [v7 countByEnumeratingWithState:&v45 objects:v54 count:16];
+            v9 = [allDisplayTypes countByEnumeratingWithState:&v45 objects:v54 count:16];
           }
 
           while (v9);
@@ -3198,34 +3198,34 @@ void __62__HKInteractiveChartViewController__unitPreferencesDidUpdate___block_in
   }
 }
 
-- (id)makePrimaryGraphViewControllerWithDateZoom:(int64_t)a3 previousDateZoom:(int64_t)a4 previousXAxisSpace:(double)a5 currentCalendar:(id)a6
+- (id)makePrimaryGraphViewControllerWithDateZoom:(int64_t)zoom previousDateZoom:(int64_t)dateZoom previousXAxisSpace:(double)space currentCalendar:(id)calendar
 {
-  v9 = a6;
-  v10 = [[HKDateGraphViewController alloc] initWithDateZoom:a3 previousDateZoom:a4 previousXAxisSpace:v9 currentCalendar:a5];
+  calendarCopy = calendar;
+  v10 = [[HKDateGraphViewController alloc] initWithDateZoom:zoom previousDateZoom:dateZoom previousXAxisSpace:calendarCopy currentCalendar:space];
 
   return v10;
 }
 
-- (id)_displayNameForDisplayType:(id)a3
+- (id)_displayNameForDisplayType:(id)type
 {
-  v4 = a3;
-  v5 = v4;
+  typeCopy = type;
+  v5 = typeCopy;
   if (self->_options)
   {
 LABEL_7:
-    v7 = &stru_1F42FFBE0;
+    displayName = &stru_1F42FFBE0;
     goto LABEL_8;
   }
 
-  v6 = [v4 localization];
-  v7 = [v6 displayName];
+  localization = [typeCopy localization];
+  displayName = [localization displayName];
 
-  if (!v7)
+  if (!displayName)
   {
-    v8 = [v5 localization];
-    v7 = [v8 displayNameKey];
+    localization2 = [v5 localization];
+    displayName = [localization2 displayNameKey];
 
-    if (!v7)
+    if (!displayName)
     {
       _HKInitializeLogging();
       v9 = HKLogWellnessDashboard();
@@ -3240,14 +3240,14 @@ LABEL_7:
 
 LABEL_8:
 
-  return v7;
+  return displayName;
 }
 
-- (id)_displayUnitForDisplayType:(id)a3
+- (id)_displayUnitForDisplayType:(id)type
 {
-  v4 = a3;
-  v5 = [(HKInteractiveChartViewController *)self unitPreferenceController];
-  v6 = [v4 unitNameForValue:0 unitPreferenceController:v5];
+  typeCopy = type;
+  unitPreferenceController = [(HKInteractiveChartViewController *)self unitPreferenceController];
+  v6 = [typeCopy unitNameForValue:0 unitPreferenceController:unitPreferenceController];
 
   return v6;
 }
@@ -3275,8 +3275,8 @@ LABEL_8:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) allDisplayTypes];
-        [v3 addObjectsFromArray:v9];
+        allDisplayTypes = [*(*(&v11 + 1) + 8 * i) allDisplayTypes];
+        [v3 addObjectsFromArray:allDisplayTypes];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -3288,20 +3288,20 @@ LABEL_8:
   return v3;
 }
 
-- (void)_updateSelectedSeriesLabel:(id)a3
+- (void)_updateSelectedSeriesLabel:(id)label
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  labelCopy = label;
+  if (labelCopy)
   {
-    v5 = [(HKInteractiveChartViewController *)self _displayNameForDisplayType:v4];
-    v6 = [(HKInteractiveChartViewController *)self _colorForDisplayType:v4];
-    v7 = [(HKInteractiveChartViewController *)self _displayUnitForDisplayType:v4];
+    anyObject = [(HKInteractiveChartViewController *)self _displayNameForDisplayType:labelCopy];
+    anyObject3 = [(HKInteractiveChartViewController *)self _colorForDisplayType:labelCopy];
+    anyObject2 = [(HKInteractiveChartViewController *)self _displayUnitForDisplayType:labelCopy];
   }
 
   else
   {
-    v8 = [(HKInteractiveChartViewController *)self _allDisplayTypes];
+    _allDisplayTypes = [(HKInteractiveChartViewController *)self _allDisplayTypes];
     v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -3309,7 +3309,7 @@ LABEL_8:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = v8;
+    obj = _allDisplayTypes;
     v12 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
@@ -3352,63 +3352,63 @@ LABEL_8:
 
     if ([v9 count] == 1 && objc_msgSend(v10, "count") == 1)
     {
-      v5 = [v9 anyObject];
-      v7 = [v10 anyObject];
-      v6 = [v11 anyObject];
+      anyObject = [v9 anyObject];
+      anyObject2 = [v10 anyObject];
+      anyObject3 = [v11 anyObject];
     }
 
     else
     {
-      v7 = 0;
-      v6 = 0;
-      v5 = 0;
+      anyObject2 = 0;
+      anyObject3 = 0;
+      anyObject = 0;
     }
 
-    v4 = 0;
+    labelCopy = 0;
   }
 
   selectedSeriesLabel = self->_selectedSeriesLabel;
   if (selectedSeriesLabel)
   {
-    if (v5)
+    if (anyObject)
     {
-      [(UILabel *)selectedSeriesLabel setText:v5];
-      v21 = [(HKInteractiveChartViewController *)self view];
-      [v21 setNeedsLayout];
+      [(UILabel *)selectedSeriesLabel setText:anyObject];
+      view = [(HKInteractiveChartViewController *)self view];
+      [view setNeedsLayout];
     }
 
-    if (v6)
+    if (anyObject3)
     {
-      [(UILabel *)self->_selectedSeriesLabel setTextColor:v6];
+      [(UILabel *)self->_selectedSeriesLabel setTextColor:anyObject3];
     }
   }
 
   selectedSeriesUnitLabel = self->_selectedSeriesUnitLabel;
   if (selectedSeriesUnitLabel)
   {
-    if (v7)
+    if (anyObject2)
     {
-      [(UILabel *)selectedSeriesUnitLabel setText:v7];
+      [(UILabel *)selectedSeriesUnitLabel setText:anyObject2];
     }
 
-    if (v6)
+    if (anyObject3)
     {
-      [(UILabel *)self->_selectedSeriesUnitLabel setTextColor:v6];
+      [(UILabel *)self->_selectedSeriesUnitLabel setTextColor:anyObject3];
     }
   }
 }
 
-- (void)_addDisplayTypeToConfiguration:(id)a3 allDisplayTypes:(id)a4 configurationManager:(id)a5
+- (void)_addDisplayTypeToConfiguration:(id)configuration allDisplayTypes:(id)types configurationManager:(id)manager
 {
-  v37 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HKInteractiveChartViewController *)self _customGraphSeriesForDisplayType:v37];
+  configurationCopy = configuration;
+  typesCopy = types;
+  managerCopy = manager;
+  v10 = [(HKInteractiveChartViewController *)self _customGraphSeriesForDisplayType:configurationCopy];
   if (v10)
   {
     for (i = 0; i != 8; ++i)
     {
-      [(HKInteractiveChartViewController *)self _configureCustomDisplayType:v37 graphSeries:v10 configurationManager:v9 timeScope:i];
+      [(HKInteractiveChartViewController *)self _configureCustomDisplayType:configurationCopy graphSeries:v10 configurationManager:managerCopy timeScope:i];
     }
   }
 
@@ -3417,7 +3417,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v37;
+      v12 = configurationCopy;
       for (j = 0; j != 8; ++j)
       {
         v14 = [v12 graphSeriesForTimeScope:j];
@@ -3442,17 +3442,17 @@ LABEL_8:
 
         v15 = v14;
 LABEL_9:
-        [(HKInteractiveChartViewController *)self _configureCustomDisplayType:v12 graphSeries:v15 configurationManager:v9 timeScope:j];
+        [(HKInteractiveChartViewController *)self _configureCustomDisplayType:v12 graphSeries:v15 configurationManager:managerCopy timeScope:j];
       }
     }
 
     else
     {
       options = self->_options;
-      v18 = [(HKInteractiveChartViewController *)self _numHorizontalDisplayTypesForTimeScope:6 displayTypes:v8];
-      v19 = [(HKInteractiveChartViewController *)self _numHorizontalDisplayTypesForTimeScope:5 displayTypes:v8];
-      v32 = [(HKInteractiveChartViewController *)self _numHorizontalDisplayTypesForTimeScope:4 displayTypes:v8];
-      v33 = [(HKInteractiveChartViewController *)self _numHorizontalDisplayTypesForTimeScope:3 displayTypes:v8];
+      v18 = [(HKInteractiveChartViewController *)self _numHorizontalDisplayTypesForTimeScope:6 displayTypes:typesCopy];
+      v19 = [(HKInteractiveChartViewController *)self _numHorizontalDisplayTypesForTimeScope:5 displayTypes:typesCopy];
+      v32 = [(HKInteractiveChartViewController *)self _numHorizontalDisplayTypesForTimeScope:4 displayTypes:typesCopy];
+      v33 = [(HKInteractiveChartViewController *)self _numHorizontalDisplayTypesForTimeScope:3 displayTypes:typesCopy];
       v12 = objc_opt_new();
       v20 = objc_opt_new();
       v21 = v20;
@@ -3460,7 +3460,7 @@ LABEL_9:
       if ((options & 0x80) != 0)
       {
         [v20 setTimeScope:7];
-        [v21 setNumberOfHorizontalDisplayTypes:{-[HKInteractiveChartViewController _numHorizontalDisplayTypesForTimeScope:displayTypes:](self, "_numHorizontalDisplayTypesForTimeScope:displayTypes:", 7, v8)}];
+        [v21 setNumberOfHorizontalDisplayTypes:{-[HKInteractiveChartViewController _numHorizontalDisplayTypesForTimeScope:displayTypes:](self, "_numHorizontalDisplayTypesForTimeScope:displayTypes:", 7, typesCopy)}];
         [v21 setHorizontalIndex:0];
         [v12 addObject:v21];
       }
@@ -3496,7 +3496,7 @@ LABEL_9:
       if ((v36 & 0x200) == 0)
       {
         [v26 setTimeScope:2];
-        [v27 setNumberOfHorizontalDisplayTypes:{-[HKInteractiveChartViewController _numHorizontalDisplayTypesForTimeScope:displayTypes:](self, "_numHorizontalDisplayTypesForTimeScope:displayTypes:", 2, v8)}];
+        [v27 setNumberOfHorizontalDisplayTypes:{-[HKInteractiveChartViewController _numHorizontalDisplayTypesForTimeScope:displayTypes:](self, "_numHorizontalDisplayTypesForTimeScope:displayTypes:", 2, typesCopy)}];
         [v27 setHorizontalIndex:0];
         [v12 addObject:v27];
       }
@@ -3506,7 +3506,7 @@ LABEL_9:
       if ((v36 & 0x100) != 0)
       {
         [v28 setTimeScope:1];
-        [v29 setNumberOfHorizontalDisplayTypes:{-[HKInteractiveChartViewController _numHorizontalDisplayTypesForTimeScope:displayTypes:](self, "_numHorizontalDisplayTypesForTimeScope:displayTypes:", 1, v8)}];
+        [v29 setNumberOfHorizontalDisplayTypes:{-[HKInteractiveChartViewController _numHorizontalDisplayTypesForTimeScope:displayTypes:](self, "_numHorizontalDisplayTypesForTimeScope:displayTypes:", 1, typesCopy)}];
         [v29 setHorizontalIndex:0];
         [v12 addObject:v29];
       }
@@ -3516,41 +3516,41 @@ LABEL_9:
       if ((v36 & 0x200000) != 0)
       {
         [v30 setTimeScope:0];
-        [v31 setNumberOfHorizontalDisplayTypes:{-[HKInteractiveChartViewController _numHorizontalDisplayTypesForTimeScope:displayTypes:](self, "_numHorizontalDisplayTypesForTimeScope:displayTypes:", 0, v8)}];
+        [v31 setNumberOfHorizontalDisplayTypes:{-[HKInteractiveChartViewController _numHorizontalDisplayTypesForTimeScope:displayTypes:](self, "_numHorizontalDisplayTypesForTimeScope:displayTypes:", 0, typesCopy)}];
         [v31 setHorizontalIndex:0];
         [v12 addObject:v31];
       }
 
-      [(HKInteractiveChartViewController *)self _addSeriesForDisplayType:v37 updatingTimeScopeProperties:v12 configurationManager:v9];
+      [(HKInteractiveChartViewController *)self _addSeriesForDisplayType:configurationCopy updatingTimeScopeProperties:v12 configurationManager:managerCopy];
     }
   }
 }
 
-- (void)_updateAfterConfigurationChangeIncludeDateAxis:(BOOL)a3
+- (void)_updateAfterConfigurationChangeIncludeDateAxis:(BOOL)axis
 {
-  if (a3 && [(HKInteractiveChartViewController *)self _chartHasDateAxis])
+  if (axis && [(HKInteractiveChartViewController *)self _chartHasDateAxis])
   {
     [(HKInteractiveChartViewController *)self _updateGraphViewAxisDateRange];
   }
 
-  v4 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
-  [v4 setNeedsReloadSeries];
+  graphView = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+  [graphView setNeedsReloadSeries];
 
   [(HKInteractiveChartViewController *)self _showHideNoGraphSeriesLabels];
 
   [(HKInteractiveChartViewController *)self _updateSelectedSeriesLabel:0];
 }
 
-- (void)_setVisibleDisplayTypes:(id)a3
+- (void)_setVisibleDisplayTypes:(id)types
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typesCopy = types;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v4;
+  obj = typesCopy;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
@@ -3617,12 +3617,12 @@ LABEL_9:
   [(HKInteractiveChartViewController *)self _updateAfterConfigurationChangeIncludeDateAxis:1];
 }
 
-- (int64_t)addNewDisplayTypeStackWithDisplayTypes:(id)a3
+- (int64_t)addNewDisplayTypeStackWithDisplayTypes:(id)types
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  typesCopy = types;
+  v5 = typesCopy;
+  if (typesCopy && [typesCopy count])
   {
     v6 = [MEMORY[0x1E695DF70] arrayWithArray:self->_allGraphSeriesConfigurationManagers];
     v7 = objc_alloc_init(HKGraphSeriesConfigurationManager);
@@ -3677,10 +3677,10 @@ LABEL_9:
   return v15;
 }
 
-- (void)removeStackedDisplayType:(id)a3
+- (void)removeStackedDisplayType:(id)type
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -3704,7 +3704,7 @@ LABEL_9:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v12 + 1) + 8 * v10) configurationContainsDisplayType:{v4, v12}])
+        if ([*(*(&v12 + 1) + 8 * v10) configurationContainsDisplayType:{typeCopy, v12}])
         {
           v8 = v11;
           goto LABEL_12;
@@ -3738,24 +3738,24 @@ LABEL_12:
   }
 }
 
-- (BOOL)removeDisplayTypeStackAtIndex:(int64_t)a3
+- (BOOL)removeDisplayTypeStackAtIndex:(int64_t)index
 {
   v5 = [MEMORY[0x1E695DF70] arrayWithArray:self->_allGraphSeriesConfigurationManagers];
   v6 = [v5 count];
   v7 = v6;
-  if (a3 <= 1)
+  if (index <= 1)
   {
-    v8 = 1;
+    indexCopy = 1;
   }
 
   else
   {
-    v8 = a3;
+    indexCopy = index;
   }
 
-  if (v6 > v8)
+  if (v6 > indexCopy)
   {
-    [v5 removeObjectAtIndex:a3];
+    [v5 removeObjectAtIndex:index];
     v9 = [v5 copy];
     allGraphSeriesConfigurationManagers = self->_allGraphSeriesConfigurationManagers;
     self->_allGraphSeriesConfigurationManagers = v9;
@@ -3765,15 +3765,15 @@ LABEL_12:
     [(HKInteractiveChartViewController *)self _scheduleDelayedAutoscale];
   }
 
-  return v7 > v8;
+  return v7 > indexCopy;
 }
 
-- (id)_customGraphSeriesForDisplayType:(id)a3
+- (id)_customGraphSeriesForDisplayType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 performSelector:sel_graphSeries];
+    v4 = [typeCopy performSelector:sel_graphSeries];
   }
 
   else
@@ -3784,20 +3784,20 @@ LABEL_12:
   return v4;
 }
 
-- (void)_configureCustomDisplayType:(id)a3 graphSeries:(id)a4 configurationManager:(id)a5 timeScope:(int64_t)a6
+- (void)_configureCustomDisplayType:(id)type graphSeries:(id)series configurationManager:(id)manager timeScope:(int64_t)scope
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  managerCopy = manager;
+  seriesCopy = series;
+  typeCopy = type;
   v13 = objc_alloc_init(HKGraphSeriesConfiguration);
-  [(HKGraphSeriesConfiguration *)v13 setGraphSeries:v11];
+  [(HKGraphSeriesConfiguration *)v13 setGraphSeries:seriesCopy];
 
-  [(HKGraphSeriesConfiguration *)v13 setDisplayType:v12];
-  if (a6 <= 3)
+  [(HKGraphSeriesConfiguration *)v13 setDisplayType:typeCopy];
+  if (scope <= 3)
   {
-    if (a6 > 1)
+    if (scope > 1)
     {
-      if (a6 == 2)
+      if (scope == 2)
       {
         if ((self->_options & 0x200) != 0)
         {
@@ -3813,7 +3813,7 @@ LABEL_12:
       goto LABEL_27;
     }
 
-    if (!a6)
+    if (!scope)
     {
       if ((self->_options & 0x200000) == 0)
       {
@@ -3823,16 +3823,16 @@ LABEL_12:
       goto LABEL_27;
     }
 
-    if (a6 == 1 && (self->_options & 0x100) != 0)
+    if (scope == 1 && (self->_options & 0x100) != 0)
     {
 LABEL_27:
-      [v10 addConfiguration:v13 zoom:a6];
+      [managerCopy addConfiguration:v13 zoom:scope];
     }
   }
 
-  else if (a6 <= 5)
+  else if (scope <= 5)
   {
-    if (a6 == 4 || (self->_options & 0x8000) == 0)
+    if (scope == 4 || (self->_options & 0x8000) == 0)
     {
       goto LABEL_27;
     }
@@ -3840,9 +3840,9 @@ LABEL_27:
 
   else
   {
-    if (a6 != 8)
+    if (scope != 8)
     {
-      if (a6 == 7)
+      if (scope == 7)
       {
         if ((self->_options & 0x80) == 0)
         {
@@ -3850,7 +3850,7 @@ LABEL_27:
         }
       }
 
-      else if (a6 != 6 || (self->_options & 0x400) != 0)
+      else if (scope != 6 || (self->_options & 0x400) != 0)
       {
         goto LABEL_28;
       }
@@ -3869,15 +3869,15 @@ LABEL_27:
 LABEL_28:
 }
 
-- (int64_t)_numHorizontalDisplayTypesForTimeScope:(int64_t)a3 displayTypes:(id)a4
+- (int64_t)_numHorizontalDisplayTypesForTimeScope:(int64_t)scope displayTypes:(id)types
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  typesCopy = types;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [typesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3889,17 +3889,17 @@ LABEL_28:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(typesCopy);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if ([(HKInteractiveChartViewController *)self _displayTypeIsHorizontalForTimeScope:a3 displayType:v12])
+        if ([(HKInteractiveChartViewController *)self _displayTypeIsHorizontalForTimeScope:scope displayType:v12])
         {
-          v9 += [v12 hk_stackedChartSectionsCountForTimeScope:a3];
+          v9 += [v12 hk_stackedChartSectionsCountForTimeScope:scope];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [typesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -3913,28 +3913,28 @@ LABEL_28:
   return v9;
 }
 
-- (BOOL)_displayTypeIsHorizontalForTimeScope:(int64_t)a3 displayType:(id)a4
+- (BOOL)_displayTypeIsHorizontalForTimeScope:(int64_t)scope displayType:(id)type
 {
-  v5 = [a4 chartingRules];
-  v6 = [v5 chartStyleForTimeScope:a3];
+  chartingRules = [type chartingRules];
+  v6 = [chartingRules chartStyleForTimeScope:scope];
 
   return (v6 - 5) < 4;
 }
 
-- (void)_addSeriesForDisplayType:(id)a3 updatingTimeScopeProperties:(id)a4 configurationManager:(id)a5
+- (void)_addSeriesForDisplayType:(id)type updatingTimeScopeProperties:(id)properties configurationManager:(id)manager
 {
-  v8 = a3;
-  v9 = a5;
+  typeCopy = type;
+  managerCopy = manager;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __110__HKInteractiveChartViewController__addSeriesForDisplayType_updatingTimeScopeProperties_configurationManager___block_invoke;
   v12[3] = &unk_1E81B99D0;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [a4 enumerateObjectsUsingBlock:v12];
+  v13 = typeCopy;
+  v14 = managerCopy;
+  v10 = managerCopy;
+  v11 = typeCopy;
+  [properties enumerateObjectsUsingBlock:v12];
 }
 
 uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updatingTimeScopeProperties_configurationManager___block_invoke(uint64_t a1, void *a2)
@@ -3952,10 +3952,10 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
   return MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (int64_t)_countOfHorizontalSectionsForConfigurationManager:(id)a3 timeScope:(int64_t)a4
+- (int64_t)_countOfHorizontalSectionsForConfigurationManager:(id)manager timeScope:(int64_t)scope
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = [a3 allDisplayTypesForZoom:a4];
+  v6 = [manager allDisplayTypesForZoom:scope];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -3976,9 +3976,9 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if ([(HKInteractiveChartViewController *)self _displayTypeIsHorizontalForTimeScope:a4 displayType:v12])
+        if ([(HKInteractiveChartViewController *)self _displayTypeIsHorizontalForTimeScope:scope displayType:v12])
         {
-          v9 += [v12 hk_stackedChartSectionsCountForTimeScope:a4];
+          v9 += [v12 hk_stackedChartSectionsCountForTimeScope:scope];
         }
       }
 
@@ -3996,20 +3996,20 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
   return v9;
 }
 
-- (id)_createGraphSeriesConfigurationFromDisplayType:(id)a3 timeScope:(int64_t)a4
+- (id)_createGraphSeriesConfigurationFromDisplayType:(id)type timeScope:(int64_t)scope
 {
-  v6 = a3;
-  v7 = +[HKDisplayCategory categoryWithID:](HKDisplayCategory, "categoryWithID:", [v6 categoryIdentifier]);
-  v8 = [(HKInteractiveChartViewController *)self unitPreferenceController];
-  v9 = [(HKInteractiveChartViewController *)self chartDataCacheController];
-  v10 = [v6 hk_standardSeriesForTimeScope:a4 displayCategory:v7 unitController:v8 dataCacheController:v9];
+  typeCopy = type;
+  v7 = +[HKDisplayCategory categoryWithID:](HKDisplayCategory, "categoryWithID:", [typeCopy categoryIdentifier]);
+  unitPreferenceController = [(HKInteractiveChartViewController *)self unitPreferenceController];
+  chartDataCacheController = [(HKInteractiveChartViewController *)self chartDataCacheController];
+  v10 = [typeCopy hk_standardSeriesForTimeScope:scope displayCategory:v7 unitController:unitPreferenceController dataCacheController:chartDataCacheController];
 
   if (v10)
   {
     v11 = objc_opt_new();
-    [v11 setDisplayType:v6];
-    v12 = [v7 color];
-    [v11 setTintColor:v12];
+    [v11 setDisplayType:typeCopy];
+    color = [v7 color];
+    [v11 setTintColor:color];
 
     [v11 setGraphSeries:v10];
   }
@@ -4024,41 +4024,41 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
 
 - (id)_primaryDisplayType
 {
-  v4 = [(HKInteractiveChartViewController *)self primaryDisplayTypeStackIndex];
-  if (v4 >= [(NSArray *)self->_allGraphSeriesConfigurationManagers count])
+  primaryDisplayTypeStackIndex = [(HKInteractiveChartViewController *)self primaryDisplayTypeStackIndex];
+  if (primaryDisplayTypeStackIndex >= [(NSArray *)self->_allGraphSeriesConfigurationManagers count])
   {
     [(HKInteractiveChartViewController *)self _primaryDisplayType];
   }
 
   v5 = [(NSArray *)self->_allGraphSeriesConfigurationManagers objectAtIndexedSubscript:[(HKInteractiveChartViewController *)self primaryDisplayTypeStackIndex]];
-  v6 = [v5 allDisplayTypes];
-  v7 = [v6 firstObject];
+  allDisplayTypes = [v5 allDisplayTypes];
+  firstObject = [allDisplayTypes firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (id)_colorForDisplayType:(id)a3
+- (id)_colorForDisplayType:(id)type
 {
-  v3 = +[HKDisplayCategory categoryWithID:](HKDisplayCategory, "categoryWithID:", [a3 categoryIdentifier]);
-  v4 = [v3 color];
+  v3 = +[HKDisplayCategory categoryWithID:](HKDisplayCategory, "categoryWithID:", [type categoryIdentifier]);
+  color = [v3 color];
 
-  return v4;
+  return color;
 }
 
 - (id)makeStandardCurrentValueViewDataSource
 {
   v3 = [HKCurrentValueViewDataSource alloc];
-  v4 = [(HKInteractiveChartViewController *)self dateCache];
-  v5 = [(HKInteractiveChartViewController *)self healthStore];
-  v6 = [(HKInteractiveChartViewController *)self selectedRangeFormatter];
-  v7 = [(HKCurrentValueViewDataSource *)v3 initWithDateCache:v4 healthStore:v5 selectedRangeFormatter:v6];
+  dateCache = [(HKInteractiveChartViewController *)self dateCache];
+  healthStore = [(HKInteractiveChartViewController *)self healthStore];
+  selectedRangeFormatter = [(HKInteractiveChartViewController *)self selectedRangeFormatter];
+  v7 = [(HKCurrentValueViewDataSource *)v3 initWithDateCache:dateCache healthStore:healthStore selectedRangeFormatter:selectedRangeFormatter];
 
-  v8 = [(HKInteractiveChartViewController *)self currentValueViewDataSourceDelegate];
+  currentValueViewDataSourceDelegate = [(HKInteractiveChartViewController *)self currentValueViewDataSourceDelegate];
 
-  if (v8)
+  if (currentValueViewDataSourceDelegate)
   {
-    v9 = [(HKInteractiveChartViewController *)self currentValueViewDataSourceDelegate];
-    [(HKCurrentValueViewDataSource *)v7 setDelegate:v9];
+    currentValueViewDataSourceDelegate2 = [(HKInteractiveChartViewController *)self currentValueViewDataSourceDelegate];
+    [(HKCurrentValueViewDataSource *)v7 setDelegate:currentValueViewDataSourceDelegate2];
   }
 
   else
@@ -4069,16 +4069,16 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
   return v7;
 }
 
-- (void)setCurrentValueViewDataSourceDelegate:(id)a3
+- (void)setCurrentValueViewDataSourceDelegate:(id)delegate
 {
-  v6 = a3;
-  objc_storeWeak(&self->_currentValueViewDataSourceDelegate, v6);
-  v4 = [(HKInteractiveChartViewController *)self currentValueViewDataSource];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_currentValueViewDataSourceDelegate, delegateCopy);
+  currentValueViewDataSource = [(HKInteractiveChartViewController *)self currentValueViewDataSource];
 
-  if (v4)
+  if (currentValueViewDataSource)
   {
-    v5 = [(HKInteractiveChartViewController *)self currentValueViewDataSource];
-    [v5 setDelegate:v6];
+    currentValueViewDataSource2 = [(HKInteractiveChartViewController *)self currentValueViewDataSource];
+    [currentValueViewDataSource2 setDelegate:delegateCopy];
   }
 }
 
@@ -4096,12 +4096,12 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
 
     [(UILabel *)self->_dashboardEmptyDescription setNumberOfLines:0];
     [(UILabel *)self->_dashboardEmptyDescription setTextAlignment:1];
-    v21 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v7 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(UILabel *)self->_dashboardEmptyHeader setTextColor:v21];
-    [(UILabel *)self->_dashboardEmptyDescription setTextColor:v21];
-    [(UILabel *)self->_dashboardEmptyHeader setBackgroundColor:v7];
-    [(UILabel *)self->_dashboardEmptyDescription setBackgroundColor:v7];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(UILabel *)self->_dashboardEmptyHeader setTextColor:secondaryLabelColor];
+    [(UILabel *)self->_dashboardEmptyDescription setTextColor:secondaryLabelColor];
+    [(UILabel *)self->_dashboardEmptyHeader setBackgroundColor:secondarySystemBackgroundColor];
+    [(UILabel *)self->_dashboardEmptyDescription setBackgroundColor:secondarySystemBackgroundColor];
     v8 = self->_dashboardEmptyHeader;
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:27.0];
     [(UILabel *)v8 setFont:v9];
@@ -4110,11 +4110,11 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
     v11 = [MEMORY[0x1E69DB878] systemFontOfSize:17.0];
     [(UILabel *)v10 setFont:v11];
 
-    v12 = [(HKInteractiveChartViewController *)self view];
-    [v12 addSubview:self->_dashboardEmptyHeader];
+    view = [(HKInteractiveChartViewController *)self view];
+    [view addSubview:self->_dashboardEmptyHeader];
 
-    v13 = [(HKInteractiveChartViewController *)self view];
-    [v13 addSubview:self->_dashboardEmptyDescription];
+    view2 = [(HKInteractiveChartViewController *)self view];
+    [view2 addSubview:self->_dashboardEmptyDescription];
 
     v14 = self->_dashboardEmptyHeader;
     v15 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -4126,15 +4126,15 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
     v19 = [v18 localizedStringForKey:@"NO_SERIES_DESCRIPTION" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     [(UILabel *)v17 setText:v19];
 
-    v20 = [(HKInteractiveChartViewController *)self view];
-    [v20 setNeedsLayout];
+    view3 = [(HKInteractiveChartViewController *)self view];
+    [view3 setNeedsLayout];
   }
 }
 
 - (void)_showHideNoGraphSeriesLabels
 {
-  v3 = [(HKInteractiveChartViewController *)self _allDisplayTypes];
-  v4 = [v3 count];
+  _allDisplayTypes = [(HKInteractiveChartViewController *)self _allDisplayTypes];
+  v4 = [_allDisplayTypes count];
 
   if (!v4)
   {
@@ -4144,8 +4144,8 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
   v5 = v4 == 0;
   v6 = v4 != 0;
   v7 = v5;
-  v8 = [(HKGraphViewController *)self->_primaryGraphViewController view];
-  [v8 setHidden:v7];
+  view = [(HKGraphViewController *)self->_primaryGraphViewController view];
+  [view setHidden:v7];
 
   [(UIView *)self->_graphBottomDividerView setHidden:v6];
   [(UIView *)self->_graphTopDividerView setHidden:v6];
@@ -4156,40 +4156,40 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
   [(HKTimeScopeControl *)radioButtons setUserInteractionEnabled:v6];
 }
 
-- (void)_radioButtonsDidUpdate:(id)a3
+- (void)_radioButtonsDidUpdate:(id)update
 {
-  v4 = [a3 selectedTimeScope];
-  v5 = [(HKInteractiveChartViewController *)self selectedTimeScopeController];
-  [v5 setSelectedTimeScope:v4];
+  selectedTimeScope = [update selectedTimeScope];
+  selectedTimeScopeController = [(HKInteractiveChartViewController *)self selectedTimeScopeController];
+  [selectedTimeScopeController setSelectedTimeScope:selectedTimeScope];
 
-  if ([(HKGraphViewController *)self->_primaryGraphViewController dateZoom]!= v4)
+  if ([(HKGraphViewController *)self->_primaryGraphViewController dateZoom]!= selectedTimeScope)
   {
     [(HKInteractiveChartViewController *)self setHasInitialDateRangeAndTimeScope:0];
-    [(HKInteractiveChartViewController *)self _replacePrimaryGraphViewControllerWithTimeScope:v4 anchorDate:0 animated:1];
+    [(HKInteractiveChartViewController *)self _replacePrimaryGraphViewControllerWithTimeScope:selectedTimeScope anchorDate:0 animated:1];
     v6 = [_TtC8HealthUI43HKInteractiveChartInteractionAnalyticsEvent alloc];
-    v7 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
-    v8 = [(HKInteractiveChartInteractionAnalyticsEvent *)v6 initFor:v7 timeScopeSelected:v4];
+    _primaryDisplayType = [(HKInteractiveChartViewController *)self _primaryDisplayType];
+    v8 = [(HKInteractiveChartInteractionAnalyticsEvent *)v6 initFor:_primaryDisplayType timeScopeSelected:selectedTimeScope];
 
     [(HKInteractiveChartInteractionAnalyticsManager *)self->_analyticsManager submitWithEvent:v8];
   }
 }
 
-- (void)updateAnnotationDataSource:(id)a3 pointContexts:(id)a4
+- (void)updateAnnotationDataSource:(id)source pointContexts:(id)contexts
 {
-  v10 = [a4 firstObject];
-  v5 = [v10 selectedSeries];
-  v6 = [(HKInteractiveChartViewController *)self _displayTypeForSeries:v5];
-  v7 = [(HKInteractiveChartViewController *)self _dateZoom];
-  v8 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  v9 = [v8 graphView];
+  firstObject = [contexts firstObject];
+  selectedSeries = [firstObject selectedSeries];
+  v6 = [(HKInteractiveChartViewController *)self _displayTypeForSeries:selectedSeries];
+  _dateZoom = [(HKInteractiveChartViewController *)self _dateZoom];
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
 
-  -[HKInteractiveChartViewController updateSelectionAnnotationDataSourceForContext:displayType:timeScope:resolution:](self, "updateSelectionAnnotationDataSourceForContext:displayType:timeScope:resolution:", v10, v6, v7, [v5 resolutionForTimeScope:v7 traitResolution:{objc_msgSend(v9, "resolutionFromTraitCollectionAttributes")}]);
+  -[HKInteractiveChartViewController updateSelectionAnnotationDataSourceForContext:displayType:timeScope:resolution:](self, "updateSelectionAnnotationDataSourceForContext:displayType:timeScope:resolution:", firstObject, v6, _dateZoom, [selectedSeries resolutionForTimeScope:_dateZoom traitResolution:{objc_msgSend(graphView, "resolutionFromTraitCollectionAttributes")}]);
 }
 
 - (id)lollipopAnnotationColor
 {
-  v2 = [(HKInteractiveChartViewController *)self _allDisplayTypes];
-  if ([v2 count])
+  _allDisplayTypes = [(HKInteractiveChartViewController *)self _allDisplayTypes];
+  if ([_allDisplayTypes count])
   {
     [MEMORY[0x1E69DC888] hk_chartLollipopBackgroundColor];
   }
@@ -4205,8 +4205,8 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
 
 - (id)lollipopExtensionColor
 {
-  v2 = [(HKInteractiveChartViewController *)self _allDisplayTypes];
-  if ([v2 count])
+  _allDisplayTypes = [(HKInteractiveChartViewController *)self _allDisplayTypes];
+  if ([_allDisplayTypes count])
   {
     [MEMORY[0x1E69DC888] hk_chartLollipopStickColor];
   }
@@ -4222,38 +4222,38 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
 
 - (id)makeAnnotationDataSource
 {
-  v3 = [(HKInteractiveChartViewController *)self currentValueViewDataSourceDelegate];
-  v4 = v3;
-  if (v3)
+  currentValueViewDataSourceDelegate = [(HKInteractiveChartViewController *)self currentValueViewDataSourceDelegate];
+  v4 = currentValueViewDataSourceDelegate;
+  if (currentValueViewDataSourceDelegate)
   {
-    v5 = v3;
+    selfCopy = currentValueViewDataSourceDelegate;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   v7 = [HKInteractiveChartAnnotationViewDataSource alloc];
-  v8 = [(HKInteractiveChartViewController *)self selectedRangeFormatter];
-  v9 = [(HKInteractiveChartAnnotationViewDataSource *)v7 initWithSelectedRangeFormatter:v8 firstWeekday:[(HKInteractiveChartViewController *)self annotationDataSourceFirstWeekday] currentValueViewDataSourceDelegate:v6];
+  selectedRangeFormatter = [(HKInteractiveChartViewController *)self selectedRangeFormatter];
+  v9 = [(HKInteractiveChartAnnotationViewDataSource *)v7 initWithSelectedRangeFormatter:selectedRangeFormatter firstWeekday:[(HKInteractiveChartViewController *)self annotationDataSourceFirstWeekday] currentValueViewDataSourceDelegate:v6];
 
   return v9;
 }
 
-- (void)_setSelectedGraphSeries:(id)a3 animated:(BOOL)a4
+- (void)_setSelectedGraphSeries:(id)series animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(HKInteractiveChartViewController *)self _configurationForSeries:a3];
+  animatedCopy = animated;
+  v6 = [(HKInteractiveChartViewController *)self _configurationForSeries:series];
   v7 = v6;
   v8 = v6 != 0;
   if (v6)
   {
     self->_displayState = 1;
-    v9 = [v6 displayType];
-    [(HKInteractiveChartViewController *)self _updateSelectedSeriesLabel:v9];
+    displayType = [v6 displayType];
+    [(HKInteractiveChartViewController *)self _updateSelectedSeriesLabel:displayType];
   }
 
   else
@@ -4261,11 +4261,11 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
     self->_displayState = 0;
   }
 
-  v10 = [(HKInteractiveChartViewController *)self view];
-  [v10 setNeedsLayout];
+  view = [(HKInteractiveChartViewController *)self view];
+  [view setNeedsLayout];
 
-  v11 = [(HKInteractiveChartViewController *)self view];
-  [v11 layoutIfNeeded];
+  view2 = [(HKInteractiveChartViewController *)self view];
+  [view2 layoutIfNeeded];
 
   if ([(HKInteractiveChartViewController *)self _selectedDateRangeLabelEnabled]&& [(HKInteractiveChartViewController *)self _chartHasDateAxis])
   {
@@ -4277,7 +4277,7 @@ uint64_t __110__HKInteractiveChartViewController__addSeriesForDisplayType_updati
     v14[4] = self;
     v12 = _Block_copy(v14);
     v13 = v12;
-    if (v4)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] animateWithDuration:v12 animations:0.25];
     }
@@ -4318,11 +4318,11 @@ uint64_t __69__HKInteractiveChartViewController__setSelectedGraphSeries_animated
   return [v5 setAlpha:v4];
 }
 
-- (id)_configurationForSeries:(id)a3
+- (id)_configurationForSeries:(id)series
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HKInteractiveChartViewController *)self _dateZoom];
+  seriesCopy = series;
+  _dateZoom = [(HKInteractiveChartViewController *)self _dateZoom];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -4342,7 +4342,7 @@ uint64_t __69__HKInteractiveChartViewController__setSelectedGraphSeries_animated
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) configurationForGraphSeries:v4 zoom:{v5, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * i) configurationForGraphSeries:seriesCopy zoom:{_dateZoom, v14}];
         if (v11)
         {
           v12 = v11;
@@ -4366,11 +4366,11 @@ LABEL_11:
   return v12;
 }
 
-- (id)_configurationForDisplayType:(id)a3
+- (id)_configurationForDisplayType:(id)type
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HKInteractiveChartViewController *)self _dateZoom];
+  typeCopy = type;
+  _dateZoom = [(HKInteractiveChartViewController *)self _dateZoom];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -4390,7 +4390,7 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) configurationForDisplayType:v4 zoom:{v5, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * i) configurationForDisplayType:typeCopy zoom:{_dateZoom, v14}];
         if (v11)
         {
           v12 = v11;
@@ -4425,10 +4425,10 @@ LABEL_11:
   [(UIImpactFeedbackGenerator *)v5 prepare];
 }
 
-- (id)_pointSelectionInfo:(id)a3
+- (id)_pointSelectionInfo:(id)info
 {
   v15 = *MEMORY[0x1E69E9840];
-  [a3 userInfo];
+  [info userInfo];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -4471,40 +4471,40 @@ LABEL_11:
   return v8;
 }
 
-- (id)_displayTypeForSeries:(id)a3
+- (id)_displayTypeForSeries:(id)series
 {
-  v3 = [(HKInteractiveChartViewController *)self _configurationForSeries:a3];
-  v4 = [v3 displayType];
+  v3 = [(HKInteractiveChartViewController *)self _configurationForSeries:series];
+  displayType = [v3 displayType];
 
-  return v4;
+  return displayType;
 }
 
-- (void)updateSelectionAnnotationDataSourceForContext:(id)a3 displayType:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6
+- (void)updateSelectionAnnotationDataSourceForContext:(id)context displayType:(id)type timeScope:(int64_t)scope resolution:(int64_t)resolution
 {
-  v15 = a3;
-  v9 = a4;
-  v10 = [(HKInteractiveChartViewController *)self annotationDataSource];
+  contextCopy = context;
+  typeCopy = type;
+  annotationDataSource = [(HKInteractiveChartViewController *)self annotationDataSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v12 = [(HKInteractiveChartViewController *)self annotationDataSource];
-    v13 = [(HKInteractiveChartViewController *)self _dateZoom];
-    v14 = [(HKInteractiveChartViewController *)self healthStore];
-    [v12 updateWithSelectionContext:v15 displayType:v9 timeScope:v13 resolution:a6 healthStore:v14 viewController:self];
+    annotationDataSource2 = [(HKInteractiveChartViewController *)self annotationDataSource];
+    _dateZoom = [(HKInteractiveChartViewController *)self _dateZoom];
+    healthStore = [(HKInteractiveChartViewController *)self healthStore];
+    [annotationDataSource2 updateWithSelectionContext:contextCopy displayType:typeCopy timeScope:_dateZoom resolution:resolution healthStore:healthStore viewController:self];
   }
 }
 
-- (int64_t)_userInfoSelectionCount:(id)a3
+- (int64_t)_userInfoSelectionCount:(id)count
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  countCopy = count;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [countCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4516,14 +4516,14 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(countCopy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) userInfo];
-        v6 += [v9 count];
+        userInfo = [*(*(&v11 + 1) + 8 * i) userInfo];
+        v6 += [userInfo count];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [countCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -4537,25 +4537,25 @@ LABEL_11:
   return v6;
 }
 
-- (void)graphView:(id)a3 didUpdateSelectedPoint:(id)a4
+- (void)graphView:(id)view didUpdateSelectedPoint:(id)point
 {
-  v23 = a4;
+  pointCopy = point;
   if ([HKLollipopController pointSelectionContextsHaveUserInfo:?])
   {
-    v5 = [(HKInteractiveChartViewController *)self lollipopController];
-    v6 = [v5 isVisible];
+    lollipopController = [(HKInteractiveChartViewController *)self lollipopController];
+    isVisible = [lollipopController isVisible];
 
-    if (v6)
+    if (isVisible)
     {
-      v7 = [(HKInteractiveChartViewController *)self lollipopController];
-      [v7 updateWithPointContexts:v23];
+      lollipopController2 = [(HKInteractiveChartViewController *)self lollipopController];
+      [lollipopController2 updateWithPointContexts:pointCopy];
     }
 
     else
     {
-      v8 = [(HKInteractiveChartViewController *)self _currentValueEnabled];
+      _currentValueEnabled = [(HKInteractiveChartViewController *)self _currentValueEnabled];
       v9 = &OBJC_IVAR___HKInteractiveChartViewController__currentTimeView;
-      if (v8)
+      if (_currentValueEnabled)
       {
         v9 = &OBJC_IVAR___HKInteractiveChartViewController__currentValueView;
       }
@@ -4576,24 +4576,24 @@ LABEL_11:
       y = v27.origin.y;
       width = v27.size.width;
       height = v27.size.height;
-      v7 = [(HKInteractiveChartViewController *)self lollipopController];
-      [v7 setVisibleWithRect:v23 pointContexts:1 animated:{x, y, width, height}];
+      lollipopController2 = [(HKInteractiveChartViewController *)self lollipopController];
+      [lollipopController2 setVisibleWithRect:pointCopy pointContexts:1 animated:{x, y, width, height}];
     }
   }
 }
 
-- (void)graphViewDidEndSelection:(id)a3
+- (void)graphViewDidEndSelection:(id)selection
 {
-  v3 = [(HKInteractiveChartViewController *)self lollipopController];
-  [v3 setInvisibleAnimated:1];
+  lollipopController = [(HKInteractiveChartViewController *)self lollipopController];
+  [lollipopController setInvisibleAnimated:1];
 }
 
-- (void)graphView:(id)a3 didUpdateFromDateZoom:(int64_t)a4 toDateZoom:(int64_t)a5 newVisibleRange:(id)a6
+- (void)graphView:(id)view didUpdateFromDateZoom:(int64_t)zoom toDateZoom:(int64_t)dateZoom newVisibleRange:(id)range
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = [(HKGraphViewController *)self->_primaryGraphViewController dateZoom];
-  if (v10 == a5)
+  rangeCopy = range;
+  dateZoom = [(HKGraphViewController *)self->_primaryGraphViewController dateZoom];
+  if (dateZoom == dateZoom)
   {
     v21 = 0u;
     v22 = 0u;
@@ -4615,10 +4615,10 @@ LABEL_11:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * v15) observer];
-          if (v16 && (objc_opt_respondsToSelector() & 1) != 0)
+          observer = [*(*(&v19 + 1) + 8 * v15) observer];
+          if (observer && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v16 didUpdateFromDateZoom:a4 toDateZoom:a5 newVisibleRange:v9];
+            [observer didUpdateFromDateZoom:zoom toDateZoom:dateZoom newVisibleRange:rangeCopy];
           }
 
           ++v15;
@@ -4634,8 +4634,8 @@ LABEL_11:
 
   else
   {
-    v17 = v10;
-    [(HKInteractiveChartViewController *)self selectTimeScope:a5];
+    v17 = dateZoom;
+    [(HKInteractiveChartViewController *)self selectTimeScope:dateZoom];
     v18 = dispatch_time(0, 100000000);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -4647,11 +4647,11 @@ LABEL_11:
   }
 }
 
-- (id)graphView:(id)a3 graphSeriesForZoom:(int64_t)a4 stackOffset:(int64_t)a5
+- (id)graphView:(id)view graphSeriesForZoom:(int64_t)zoom stackOffset:(int64_t)offset
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = [(NSArray *)self->_allGraphSeriesConfigurationManagers objectAtIndexedSubscript:a5];
-  v17 = [v8 allGraphSeriesForZoom:a4];
+  v8 = [(NSArray *)self->_allGraphSeriesConfigurationManagers objectAtIndexedSubscript:offset];
+  v17 = [v8 allGraphSeriesForZoom:zoom];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -4671,11 +4671,11 @@ LABEL_11:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * i) observer];
-        if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+        observer = [*(*(&v18 + 1) + 8 * i) observer];
+        if (observer && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v15 = [v8 allDisplayTypesForZoom:a4];
-          [v14 configureDisplayTypes:v15 timeScope:a4 stackOffset:a5];
+          v15 = [v8 allDisplayTypesForZoom:zoom];
+          [observer configureDisplayTypes:v15 timeScope:zoom stackOffset:offset];
         }
       }
 
@@ -4688,10 +4688,10 @@ LABEL_11:
   return v17;
 }
 
-- (void)_notifyObserversDidUpdateVisibleValueRange:(id)a3 changeContext:(int64_t)a4
+- (void)_notifyObserversDidUpdateVisibleValueRange:(id)range changeContext:(int64_t)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  rangeCopy = range;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -4712,10 +4712,10 @@ LABEL_11:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v13 + 1) + 8 * v11) observer];
-        if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
+        observer = [*(*(&v13 + 1) + 8 * v11) observer];
+        if (observer && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v12 didUpdateVisibleValueRange:v6 changeContext:a4];
+          [observer didUpdateVisibleValueRange:rangeCopy changeContext:context];
         }
 
         ++v11;
@@ -4729,9 +4729,9 @@ LABEL_11:
   }
 }
 
-- (BOOL)_shouldHandleVisibleRangeChangeWithChangeContext:(int64_t)a3
+- (BOOL)_shouldHandleVisibleRangeChangeWithChangeContext:(int64_t)context
 {
-  if (a3 != 1)
+  if (context != 1)
   {
     return 1;
   }
@@ -4746,14 +4746,14 @@ LABEL_11:
   return 1;
 }
 
-- (void)graphView:(id)a3 didUpdateVisibleValueRange:(id)a4 changeContext:(int64_t)a5
+- (void)graphView:(id)view didUpdateVisibleValueRange:(id)range changeContext:(int64_t)context
 {
-  v9 = a3;
-  v8 = a4;
-  if (a5)
+  viewCopy = view;
+  rangeCopy = range;
+  if (context)
   {
-    [(HKInteractiveChartViewController *)self _notifyObserversDidUpdateVisibleValueRange:v8 changeContext:a5];
-    if ([(HKInteractiveChartViewController *)self _shouldHandleVisibleRangeChangeWithChangeContext:a5])
+    [(HKInteractiveChartViewController *)self _notifyObserversDidUpdateVisibleValueRange:rangeCopy changeContext:context];
+    if ([(HKInteractiveChartViewController *)self _shouldHandleVisibleRangeChangeWithChangeContext:context])
     {
       [(HKInteractiveChartViewController *)self _handleVisibleRangeChange];
     }
@@ -4788,25 +4788,25 @@ uint64_t __61__HKInteractiveChartViewController__scheduleDelayedAutoscale__block
   return result;
 }
 
-- (void)graphView:(id)a3 didFinishUserScrollingToValueRange:(id)a4
+- (void)graphView:(id)view didFinishUserScrollingToValueRange:(id)range
 {
-  v5 = a4;
+  rangeCopy = range;
   [(HKInteractiveChartViewController *)self setHasInitialDateRangeAndTimeScope:0];
-  [(HKInteractiveChartViewController *)self _notifyObserversDidUpdateVisibleValueRange:v5 changeContext:2];
+  [(HKInteractiveChartViewController *)self _notifyObserversDidUpdateVisibleValueRange:rangeCopy changeContext:2];
 
   [(HKInteractiveChartViewController *)self _handleVisibleRangeChange];
 
   [(HKInteractiveChartViewController *)self _scheduleDelayedAutoscale];
 }
 
-- (void)graphView:(id)a3 didUpdateSeries:(id)a4 newDataArrived:(BOOL)a5 changeContext:(int64_t)a6
+- (void)graphView:(id)view didUpdateSeries:(id)series newDataArrived:(BOOL)arrived changeContext:(int64_t)context
 {
-  v7 = a5;
+  arrivedCopy = arrived;
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v22 = a4;
-  v23 = v10;
-  if (v7 && [(HKInteractiveChartViewController *)self _shouldHandleVisibleRangeChangeWithChangeContext:a6, v22, v10])
+  viewCopy = view;
+  seriesCopy = series;
+  v23 = viewCopy;
+  if (arrivedCopy && [(HKInteractiveChartViewController *)self _shouldHandleVisibleRangeChangeWithChangeContext:context, seriesCopy, viewCopy])
   {
     _HKInitializeLogging();
     v11 = HKLogWellnessDashboard();
@@ -4822,14 +4822,14 @@ uint64_t __61__HKInteractiveChartViewController__scheduleDelayedAutoscale__block
     }
 
     [(HKInteractiveChartViewController *)self _automaticAutoScale];
-    v14 = [v10 effectiveVisibleRangeActive];
+    effectiveVisibleRangeActive = [viewCopy effectiveVisibleRangeActive];
     v15 = 1;
   }
 
   else
   {
     v15 = 0;
-    v14 = 0;
+    effectiveVisibleRangeActive = 0;
   }
 
   v26 = 0u;
@@ -4851,10 +4851,10 @@ uint64_t __61__HKInteractiveChartViewController__scheduleDelayedAutoscale__block
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v24 + 1) + 8 * i) observer];
-        if (v21 && (objc_opt_respondsToSelector() & 1) != 0)
+        observer = [*(*(&v24 + 1) + 8 * i) observer];
+        if (observer && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v21 didUpdateSeriesWithNewValueRange:v14];
+          [observer didUpdateSeriesWithNewValueRange:effectiveVisibleRangeActive];
         }
       }
 
@@ -4870,14 +4870,14 @@ uint64_t __61__HKInteractiveChartViewController__scheduleDelayedAutoscale__block
   }
 }
 
-- (void)graphView:(id)a3 didUpdateLegendViewsWithTopLegendFrame:(CGRect)a4
+- (void)graphView:(id)view didUpdateLegendViewsWithTopLegendFrame:(CGRect)frame
 {
-  MinY = CGRectGetMinY(a4);
+  MinY = CGRectGetMinY(frame);
 
   [(HKInteractiveChartViewController *)self setLegendBottomLocation:MinY];
 }
 
-- (void)graphViewDidTapYAxis:(id)a3
+- (void)graphViewDidTapYAxis:(id)axis
 {
   if ((self->_options & 0x80000) == 0)
   {
@@ -4892,26 +4892,26 @@ uint64_t __61__HKInteractiveChartViewController__scheduleDelayedAutoscale__block
   [(HKInteractiveChartViewController *)self _scrollToMostRecentDataWithAlignment:v3];
 }
 
-- (void)scrollToDate:(id)a3 withVisibleAlignment:(int64_t)a4
+- (void)scrollToDate:(id)date withVisibleAlignment:(int64_t)alignment
 {
-  v6 = a3;
-  v8 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  v7 = [v8 graphView];
-  [(HKInteractiveChartViewController *)self _scrollToAnchorDate:v6 graphView:v7 alignment:a4];
+  dateCopy = date;
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
+  [(HKInteractiveChartViewController *)self _scrollToAnchorDate:dateCopy graphView:graphView alignment:alignment];
 }
 
-- (void)scrollToRange:(id)a3 withVisibleAlignment:(int64_t)a4
+- (void)scrollToRange:(id)range withVisibleAlignment:(int64_t)alignment
 {
-  v25 = a3;
-  v6 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  v7 = [v6 graphView];
+  rangeCopy = range;
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
 
-  v8 = [v7 effectiveAxisRange];
-  v9 = [v25 minValue];
-  v10 = [v8 containsValue:v9 exclusiveStart:0 exclusiveEnd:0];
+  effectiveAxisRange = [graphView effectiveAxisRange];
+  minValue = [rangeCopy minValue];
+  v10 = [effectiveAxisRange containsValue:minValue exclusiveStart:0 exclusiveEnd:0];
 
-  v11 = [v25 maxValue];
-  v12 = [v8 containsValue:v11 exclusiveStart:0 exclusiveEnd:0];
+  maxValue = [rangeCopy maxValue];
+  v12 = [effectiveAxisRange containsValue:maxValue exclusiveStart:0 exclusiveEnd:0];
 
   if (v10)
   {
@@ -4920,35 +4920,35 @@ uint64_t __61__HKInteractiveChartViewController__scheduleDelayedAutoscale__block
       goto LABEL_9;
     }
 
-    v13 = [v8 minValue];
+    minValue2 = [effectiveAxisRange minValue];
   }
 
   else
   {
-    v13 = [v25 minValue];
+    minValue2 = [rangeCopy minValue];
     if (v12)
     {
-      v14 = v8;
+      v14 = effectiveAxisRange;
       goto LABEL_7;
     }
   }
 
-  v14 = v25;
+  v14 = rangeCopy;
 LABEL_7:
-  v15 = [v14 maxValue];
-  v16 = [HKValueRange valueRangeWithMinValue:v13 maxValue:v15];
+  maxValue2 = [v14 maxValue];
+  v16 = [HKValueRange valueRangeWithMinValue:minValue2 maxValue:maxValue2];
 
   if (v16)
   {
-    v17 = [v7 effectiveVisibleRangeCadence];
-    v18 = [v7 effectiveVisibleRangeActive];
-    [v7 setEffectiveAxisRange:v16 effectiveVisibleRangeCadence:v17 effectiveVisibleRangeActive:v18];
+    effectiveVisibleRangeCadence = [graphView effectiveVisibleRangeCadence];
+    effectiveVisibleRangeActive = [graphView effectiveVisibleRangeActive];
+    [graphView setEffectiveAxisRange:v16 effectiveVisibleRangeCadence:effectiveVisibleRangeCadence effectiveVisibleRangeActive:effectiveVisibleRangeActive];
   }
 
 LABEL_9:
-  if (a4 > 2)
+  if (alignment > 2)
   {
-    if ((a4 - 3) >= 2)
+    if ((alignment - 3) >= 2)
     {
       goto LABEL_18;
     }
@@ -4956,81 +4956,81 @@ LABEL_9:
 
   else
   {
-    if (!a4)
+    if (!alignment)
     {
-      v19 = [v25 startDate];
-      v20 = self;
-      v21 = v19;
+      startDate = [rangeCopy startDate];
+      selfCopy3 = self;
+      v21 = startDate;
       v22 = 0;
       goto LABEL_17;
     }
 
-    if (a4 != 1)
+    if (alignment != 1)
     {
-      if (a4 != 2)
+      if (alignment != 2)
       {
         goto LABEL_18;
       }
 
-      v19 = [v25 endDate];
-      v20 = self;
-      v21 = v19;
+      startDate = [rangeCopy endDate];
+      selfCopy3 = self;
+      v21 = startDate;
       v22 = 2;
       goto LABEL_17;
     }
   }
 
-  v23 = [v25 startDate];
-  v24 = [v25 endDate];
-  v19 = HKUIMidDate(v23, v24);
+  startDate2 = [rangeCopy startDate];
+  endDate = [rangeCopy endDate];
+  startDate = HKUIMidDate(startDate2, endDate);
 
-  v20 = self;
-  v21 = v19;
+  selfCopy3 = self;
+  v21 = startDate;
   v22 = 1;
 LABEL_17:
-  [(HKInteractiveChartViewController *)v20 scrollToDate:v21 withVisibleAlignment:v22];
+  [(HKInteractiveChartViewController *)selfCopy3 scrollToDate:v21 withVisibleAlignment:v22];
 
 LABEL_18:
 }
 
-- (void)_scrollToMostRecentDataWithAlignment:(int64_t)a3
+- (void)_scrollToMostRecentDataWithAlignment:(int64_t)alignment
 {
-  v7 = [(HKInteractiveChartViewController *)self _dateForMostRecentData];
-  v5 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  v6 = [v5 graphView];
-  [(HKInteractiveChartViewController *)self _scrollToAnchorDate:v7 graphView:v6 alignment:a3];
+  _dateForMostRecentData = [(HKInteractiveChartViewController *)self _dateForMostRecentData];
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
+  [(HKInteractiveChartViewController *)self _scrollToAnchorDate:_dateForMostRecentData graphView:graphView alignment:alignment];
 }
 
-- (int64_t)defaultAlignmentForTimeScope:(int64_t)a3
+- (int64_t)defaultAlignmentForTimeScope:(int64_t)scope
 {
-  if (a3 < 6)
+  if (scope < 6)
   {
     return 2;
   }
 
-  if (a3 == 8)
+  if (scope == 8)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HKInteractiveChartViewController.m" lineNumber:2857 description:{@"Invalid timescope (%ld)", 8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKInteractiveChartViewController.m" lineNumber:2857 description:{@"Invalid timescope (%ld)", 8}];
   }
 
   return 3;
 }
 
-- (BOOL)_viewHierarchyIsHidden:(id)a3
+- (BOOL)_viewHierarchyIsHidden:(id)hidden
 {
-  v4 = a3;
-  if ([v4 isHidden])
+  hiddenCopy = hidden;
+  if ([hiddenCopy isHidden])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 superview];
-    if (v6)
+    superview = [hiddenCopy superview];
+    if (superview)
     {
-      v5 = [(HKInteractiveChartViewController *)self _viewHierarchyIsHidden:v6];
+      v5 = [(HKInteractiveChartViewController *)self _viewHierarchyIsHidden:superview];
     }
 
     else
@@ -5042,26 +5042,26 @@ LABEL_18:
   return v5;
 }
 
-- (void)graphView:(id)a3 startupTime:(int64_t)a4
+- (void)graphView:(id)view startupTime:(int64_t)time
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = [(HKInteractiveChartViewController *)self view];
-  v7 = [(HKInteractiveChartViewController *)self _viewHierarchyIsHidden:v6];
+  view = [(HKInteractiveChartViewController *)self view];
+  v7 = [(HKInteractiveChartViewController *)self _viewHierarchyIsHidden:view];
 
   if (!v7)
   {
-    v8 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
-    v9 = [v8 localization];
-    v10 = [v9 displayName];
+    _primaryDisplayType = [(HKInteractiveChartViewController *)self _primaryDisplayType];
+    localization = [_primaryDisplayType localization];
+    displayName = [localization displayName];
 
-    if (!v10 || ![(__CFString *)v10 length])
+    if (!displayName || ![(__CFString *)displayName length])
     {
 
-      v10 = @"**UNKNOWN**";
+      displayName = @"**UNKNOWN**";
     }
 
     v11 = HKNumberFormatterFromTemplate(1);
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:time];
     v13 = [v11 stringFromNumber:v12];
 
     _HKInitializeLogging();
@@ -5074,24 +5074,24 @@ LABEL_18:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         v19 = 138412546;
-        v20 = v10;
+        v20 = displayName;
         v21 = 2112;
         v22 = v13;
         _os_log_impl(&dword_1C3942000, v16, OS_LOG_TYPE_INFO, "Interactive chart startup time for %@: %@ us", &v19, 0x16u);
       }
     }
 
-    v17 = [(HKInteractiveChartViewController *)self startupReportingBlock];
+    startupReportingBlock = [(HKInteractiveChartViewController *)self startupReportingBlock];
 
-    if (v17)
+    if (startupReportingBlock)
     {
-      v18 = [(HKInteractiveChartViewController *)self startupReportingBlock];
-      (v18)[2](v18, v10, a4);
+      startupReportingBlock2 = [(HKInteractiveChartViewController *)self startupReportingBlock];
+      (startupReportingBlock2)[2](startupReportingBlock2, displayName, time);
     }
   }
 }
 
-- (void)graphViewExternalSelectionEnd:(id)a3
+- (void)graphViewExternalSelectionEnd:(id)end
 {
   if ([(HKInteractiveChartViewController *)self disableCurrentValueViewForInitialLollipop])
   {
@@ -5101,14 +5101,14 @@ LABEL_18:
   }
 }
 
-- (void)graphViewRenderedView:(id)a3
+- (void)graphViewRenderedView:(id)view
 {
-  v4 = [(HKInteractiveChartViewController *)self chartHasDataCompletion];
+  chartHasDataCompletion = [(HKInteractiveChartViewController *)self chartHasDataCompletion];
 
-  if (v4 && [(HKInteractiveChartViewController *)self chartDataIsAvailable])
+  if (chartHasDataCompletion && [(HKInteractiveChartViewController *)self chartDataIsAvailable])
   {
-    v5 = [(HKInteractiveChartViewController *)self chartHasDataCompletion];
-    v5[2]();
+    chartHasDataCompletion2 = [(HKInteractiveChartViewController *)self chartHasDataCompletion];
+    chartHasDataCompletion2[2]();
 
     [(HKInteractiveChartViewController *)self setChartHasDataCompletion:0];
   }
@@ -5116,52 +5116,52 @@ LABEL_18:
 
 - (HKDisplayType)calendarQueryDisplayType
 {
-  v2 = [(HKInteractiveChartViewController *)self displayTypeStack];
-  v3 = [v2 firstObject];
-  v4 = [v3 firstObject];
+  displayTypeStack = [(HKInteractiveChartViewController *)self displayTypeStack];
+  firstObject = [displayTypeStack firstObject];
+  v3FirstObject = [firstObject firstObject];
 
-  return v4;
+  return v3FirstObject;
 }
 
 - (HKSampleType)calendarQuerySampleType
 {
-  v2 = [(HKInteractiveChartViewController *)self calendarQueryDisplayType];
-  v3 = [v2 sampleType];
+  calendarQueryDisplayType = [(HKInteractiveChartViewController *)self calendarQueryDisplayType];
+  sampleType = [calendarQueryDisplayType sampleType];
 
-  return v3;
+  return sampleType;
 }
 
 - (UIColor)calendarDaySamplePresentColor
 {
-  v3 = [(HKInteractiveChartViewController *)self displayTypeController];
-  v4 = [(HKInteractiveChartViewController *)self calendarQuerySampleType];
-  v5 = [v3 displayTypeForObjectType:v4];
+  displayTypeController = [(HKInteractiveChartViewController *)self displayTypeController];
+  calendarQuerySampleType = [(HKInteractiveChartViewController *)self calendarQuerySampleType];
+  v5 = [displayTypeController displayTypeForObjectType:calendarQuerySampleType];
 
   v6 = +[HKDisplayCategory categoryWithID:](HKDisplayCategory, "categoryWithID:", [v5 categoryIdentifier]);
-  v7 = [v6 color];
+  color = [v6 color];
 
-  return v7;
+  return color;
 }
 
-- (void)currentTimeViewDidTapOnDateSelector:(id)a3
+- (void)currentTimeViewDidTapOnDateSelector:(id)selector
 {
   if ((self->_options & 0x20000) == 0)
   {
-    v4 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-    v5 = [v4 graphView];
-    v14 = [v5 effectiveVisibleRangeCadence];
+    primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+    graphView = [primaryGraphViewController graphView];
+    effectiveVisibleRangeCadence = [graphView effectiveVisibleRangeCadence];
 
     v6 = [HKInteractiveChartsMonthViewController alloc];
-    v7 = [(HKInteractiveChartViewController *)self healthStore];
-    v8 = [(HKInteractiveChartViewController *)self dateCache];
-    v9 = [v14 minValue];
-    v10 = [(HKInteractiveChartsMonthViewController *)v6 initWithHealthStore:v7 dateCache:v8 date:v9];
+    healthStore = [(HKInteractiveChartViewController *)self healthStore];
+    dateCache = [(HKInteractiveChartViewController *)self dateCache];
+    minValue = [effectiveVisibleRangeCadence minValue];
+    v10 = [(HKInteractiveChartsMonthViewController *)v6 initWithHealthStore:healthStore dateCache:dateCache date:minValue];
 
-    v11 = [(HKInteractiveChartViewController *)self calendarQuerySampleType];
-    [(HKInteractiveChartsMonthViewController *)v10 setSampleType:v11];
+    calendarQuerySampleType = [(HKInteractiveChartViewController *)self calendarQuerySampleType];
+    [(HKInteractiveChartsMonthViewController *)v10 setSampleType:calendarQuerySampleType];
 
-    v12 = [(HKInteractiveChartViewController *)self calendarDaySamplePresentColor];
-    [(HKInteractiveChartsMonthViewController *)v10 setSampleColor:v12];
+    calendarDaySamplePresentColor = [(HKInteractiveChartViewController *)self calendarDaySamplePresentColor];
+    [(HKInteractiveChartsMonthViewController *)v10 setSampleColor:calendarDaySamplePresentColor];
 
     [(HKMonthViewController *)v10 setDelegate:self];
     v13 = [[HKNavigationController alloc] initWithRootViewController:v10];
@@ -5169,36 +5169,36 @@ LABEL_18:
   }
 }
 
-- (void)_scrollToAnchorDate:(id)a3 graphView:(id)a4 alignment:(int64_t)a5
+- (void)_scrollToAnchorDate:(id)date graphView:(id)view alignment:(int64_t)alignment
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HKInteractiveChartViewController *)self currentCalendar];
-  v11 = [v10 firstWeekday];
+  viewCopy = view;
+  dateCopy = date;
+  currentCalendar = [(HKInteractiveChartViewController *)self currentCalendar];
+  firstWeekday = [currentCalendar firstWeekday];
 
-  v12 = [v8 xAxisDateZoom];
-  v16 = [v8 effectiveAxisRange];
-  v13 = [(HKInteractiveChartViewController *)self currentCalendar];
-  v14 = [HKGraphZoomLevelConfiguration chartVisibleRangeForTimeScope:v12 anchorDate:v9 alignment:a5 dataRange:v16 calendar:v13 firstWeekday:v11 cadence:1 level:0];
+  xAxisDateZoom = [viewCopy xAxisDateZoom];
+  effectiveAxisRange = [viewCopy effectiveAxisRange];
+  currentCalendar2 = [(HKInteractiveChartViewController *)self currentCalendar];
+  v14 = [HKGraphZoomLevelConfiguration chartVisibleRangeForTimeScope:xAxisDateZoom anchorDate:dateCopy alignment:alignment dataRange:effectiveAxisRange calendar:currentCalendar2 firstWeekday:firstWeekday cadence:1 level:0];
 
-  v15 = -[HKInteractiveChartViewController visibleRangeForTimeScope:proposedRange:](self, "visibleRangeForTimeScope:proposedRange:", [v8 xAxisDateZoom], v14);
-  [v8 setEffectiveVisibleRangeActive:v15 animated:1];
+  v15 = -[HKInteractiveChartViewController visibleRangeForTimeScope:proposedRange:](self, "visibleRangeForTimeScope:proposedRange:", [viewCopy xAxisDateZoom], v14);
+  [viewCopy setEffectiveVisibleRangeActive:v15 animated:1];
 
   [(HKInteractiveChartViewController *)self _handleVisibleRangeChange];
 }
 
-- (void)_moveSelectedDateInDirection:(int64_t)a3
+- (void)_moveSelectedDateInDirection:(int64_t)direction
 {
-  v5 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
-  v16 = [v5 effectiveVisibleRangeCadence];
+  graphView = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+  effectiveVisibleRangeCadence = [graphView effectiveVisibleRangeCadence];
 
-  v6 = [v16 startDate];
-  v7 = [v16 endDate];
-  v8 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
-  v9 = v8;
-  if (v6)
+  startDate = [effectiveVisibleRangeCadence startDate];
+  endDate = [effectiveVisibleRangeCadence endDate];
+  graphView2 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+  v9 = graphView2;
+  if (startDate)
   {
-    v10 = v7 == 0;
+    v10 = endDate == 0;
   }
 
   else
@@ -5206,19 +5206,19 @@ LABEL_18:
     v10 = 1;
   }
 
-  if (!v10 && v8 != 0)
+  if (!v10 && graphView2 != 0)
   {
-    [v6 timeIntervalSinceReferenceDate];
+    [startDate timeIntervalSinceReferenceDate];
     v13 = v12;
-    [v7 timeIntervalSinceReferenceDate];
-    v15 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v13 + (v14 - v13) * a3 + (v14 - v13) * 0.5];
+    [endDate timeIntervalSinceReferenceDate];
+    v15 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v13 + (v14 - v13) * direction + (v14 - v13) * 0.5];
     [(HKInteractiveChartViewController *)self _scrollToAnchorDate:v15 graphView:v9 alignment:3];
   }
 }
 
-- (void)monthViewController:(id)a3 didSelectDate:(id)a4
+- (void)monthViewController:(id)controller didSelectDate:(id)date
 {
-  [(HKInteractiveChartViewController *)self _setVisibleRangeUsingDateFromDateSelector:a4];
+  [(HKInteractiveChartViewController *)self _setVisibleRangeUsingDateFromDateSelector:date];
 
   [(HKInteractiveChartViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
@@ -5227,11 +5227,11 @@ LABEL_18:
 {
   v3 = [[HKInteractiveChartAnnotationView alloc] initWithContext:0];
   [(HKInteractiveChartAnnotationView *)v3 setDelegate:self];
-  v4 = [(HKInteractiveChartViewController *)self view];
-  [v4 addSubview:v3];
+  view = [(HKInteractiveChartViewController *)self view];
+  [view addSubview:v3];
 
-  v5 = [(HKInteractiveChartViewController *)self makeStandardCurrentValueViewDataSource];
-  [(HKInteractiveChartViewController *)self setCurrentValueViewDataSource:v5];
+  makeStandardCurrentValueViewDataSource = [(HKInteractiveChartViewController *)self makeStandardCurrentValueViewDataSource];
+  [(HKInteractiveChartViewController *)self setCurrentValueViewDataSource:makeStandardCurrentValueViewDataSource];
 
   [(HKInteractiveChartAnnotationView *)v3 setDataSource:self->_currentValueViewDataSource];
   [(HKInteractiveChartAnnotationView *)v3 setShowsInfoButton:[(HKInteractiveChartViewController *)self _showInfoButtonInCurrentValueView]];
@@ -5239,21 +5239,21 @@ LABEL_18:
   return v3;
 }
 
-- (void)updateCurrentValueView:(id)a3 graphView:(id)a4 timeScope:(int64_t)a5 showInfoButton:(BOOL)a6
+- (void)updateCurrentValueView:(id)view graphView:(id)graphView timeScope:(int64_t)scope showInfoButton:(BOOL)button
 {
-  v6 = a6;
+  buttonCopy = button;
   v15 = self->_currentValueView;
   currentValueViewDataSource = self->_currentValueViewDataSource;
-  v11 = a4;
-  v12 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
-  [(HKCurrentValueViewDataSource *)currentValueViewDataSource updateDataSourceWithGraphView:v11 displayType:v12 timeScope:a5];
+  graphViewCopy = graphView;
+  _primaryDisplayType = [(HKInteractiveChartViewController *)self _primaryDisplayType];
+  [(HKCurrentValueViewDataSource *)currentValueViewDataSource updateDataSourceWithGraphView:graphViewCopy displayType:_primaryDisplayType timeScope:scope];
 
-  v13 = [(HKCurrentValueViewDataSource *)self->_currentValueViewDataSource selectedRangeData];
-  v14 = [v13 count];
+  selectedRangeData = [(HKCurrentValueViewDataSource *)self->_currentValueViewDataSource selectedRangeData];
+  v14 = [selectedRangeData count];
 
   if (v14)
   {
-    [(UIView *)v15 setShowsInfoButton:v6];
+    [(UIView *)v15 setShowsInfoButton:buttonCopy];
     [(UIView *)v15 reloadData];
   }
 
@@ -5268,22 +5268,22 @@ LABEL_18:
   }
 }
 
-- (void)didTapOnInfoButtonFromCurrentValueView:(id)a3
+- (void)didTapOnInfoButtonFromCurrentValueView:(id)view
 {
-  v4 = [(HKCurrentValueViewDataSource *)self->_currentValueViewDataSource delegate];
+  delegate = [(HKCurrentValueViewDataSource *)self->_currentValueViewDataSource delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(HKCurrentValueViewDataSource *)self->_currentValueViewDataSource delegate];
-    v7 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
-    v9 = [v6 infographicViewControllerForDisplayType:v7 healthStore:self->_healthStore];
+    delegate2 = [(HKCurrentValueViewDataSource *)self->_currentValueViewDataSource delegate];
+    _primaryDisplayType = [(HKInteractiveChartViewController *)self _primaryDisplayType];
+    v9 = [delegate2 infographicViewControllerForDisplayType:_primaryDisplayType healthStore:self->_healthStore];
   }
 
   else
   {
-    v6 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
-    v9 = [(HKInteractiveChartViewController *)self infographicViewControllerForDisplayType:v6 healthStore:self->_healthStore];
+    delegate2 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
+    v9 = [(HKInteractiveChartViewController *)self infographicViewControllerForDisplayType:delegate2 healthStore:self->_healthStore];
   }
 
   v8 = v9;
@@ -5294,27 +5294,27 @@ LABEL_18:
   }
 }
 
-- (id)stringForValueRange:(id)a3 timeScope:(int64_t)a4
+- (id)stringForValueRange:(id)range timeScope:(int64_t)scope
 {
-  v6 = [MEMORY[0x1E696AB80] hk_dateIntervalWithValueRange:a3];
-  v7 = [(HKInteractiveChartViewController *)self dateCache];
-  v8 = HKLastUpdatedIntervalText(v6, a4, v7, 1);
+  v6 = [MEMORY[0x1E696AB80] hk_dateIntervalWithValueRange:range];
+  dateCache = [(HKInteractiveChartViewController *)self dateCache];
+  v8 = HKLastUpdatedIntervalText(v6, scope, dateCache, 1);
 
   return v8;
 }
 
-- (BOOL)infographicSupportedForDisplayType:(id)a3 healthStore:(id)a4
+- (BOOL)infographicSupportedForDisplayType:(id)type healthStore:(id)store
 {
-  v4 = self;
-  v5 = [(HKInteractiveChartViewController *)self _primaryDisplayType:a3];
-  LOBYTE(v4) = [HKInteractiveChartInfographicFactory infographicSupportedForDisplayType:v5 factorDisplayType:0 healthStore:v4->_healthStore];
+  selfCopy = self;
+  v5 = [(HKInteractiveChartViewController *)self _primaryDisplayType:type];
+  LOBYTE(selfCopy) = [HKInteractiveChartInfographicFactory infographicSupportedForDisplayType:v5 factorDisplayType:0 healthStore:selfCopy->_healthStore];
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)infographicViewControllerForDisplayType:(id)a3 healthStore:(id)a4
+- (id)infographicViewControllerForDisplayType:(id)type healthStore:(id)store
 {
-  v5 = [(HKInteractiveChartViewController *)self _primaryDisplayType:a3];
+  v5 = [(HKInteractiveChartViewController *)self _primaryDisplayType:type];
   v6 = [HKInteractiveChartInfographicFactory infographicViewControllerForDisplayType:v5 factorDisplayType:0 healthStore:self->_healthStore];
 
   return v6;
@@ -5322,41 +5322,41 @@ LABEL_18:
 
 - (id)_midPointDateFromVisibleRange
 {
-  v2 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
-  v3 = [v2 effectiveVisibleRangeCadence];
+  graphView = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+  effectiveVisibleRangeCadence = [graphView effectiveVisibleRangeCadence];
 
-  v4 = [v3 startDate];
-  if (v4)
+  startDate = [effectiveVisibleRangeCadence startDate];
+  if (startDate)
   {
-    v5 = [v3 endDate];
+    endDate = [effectiveVisibleRangeCadence endDate];
 
-    if (v5)
+    if (endDate)
     {
-      v6 = [v3 startDate];
-      v7 = [v3 endDate];
-      v4 = HKUIMidDate(v6, v7);
+      startDate2 = [effectiveVisibleRangeCadence startDate];
+      endDate2 = [effectiveVisibleRangeCadence endDate];
+      startDate = HKUIMidDate(startDate2, endDate2);
     }
 
     else
     {
-      v4 = 0;
+      startDate = 0;
     }
   }
 
-  return v4;
+  return startDate;
 }
 
 - (void)_setDateSelectorToVisibleRange
 {
-  v3 = [(HKCurrentTimeView *)self->_currentTimeView superview];
+  superview = [(HKCurrentTimeView *)self->_currentTimeView superview];
 
-  if (v3)
+  if (superview)
   {
-    v4 = [(HKInteractiveChartViewController *)self _singleFixedRange];
-    v19 = v4;
-    if (v4)
+    _singleFixedRange = [(HKInteractiveChartViewController *)self _singleFixedRange];
+    v19 = _singleFixedRange;
+    if (_singleFixedRange)
     {
-      [HKGraphZoomLevelConfiguration timeScopeForDateRange:v4];
+      [HKGraphZoomLevelConfiguration timeScopeForDateRange:_singleFixedRange];
     }
 
     else
@@ -5364,22 +5364,22 @@ LABEL_18:
       [(HKTimeScopeControl *)self->_radioButtons selectedTimeScope];
     }
 
-    v5 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
-    v18 = [v5 effectiveVisibleRangeActive];
+    graphView = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+    effectiveVisibleRangeActive = [graphView effectiveVisibleRangeActive];
     v6 = [HKInteractiveChartViewController stringForValueRange:"stringForValueRange:timeScope:" timeScope:?];
     [(HKCurrentTimeView *)self->_currentTimeView setCurrentTimeString:v6];
-    v7 = [v5 effectiveVisibleRangeCadence];
-    v8 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-    v9 = [v8 graphView];
-    v10 = [v9 effectiveAxisRange];
+    effectiveVisibleRangeCadence = [graphView effectiveVisibleRangeCadence];
+    primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+    graphView2 = [primaryGraphViewController graphView];
+    effectiveAxisRange = [graphView2 effectiveAxisRange];
 
-    v11 = [v7 endDate];
-    v12 = [v10 endDate];
-    v13 = [v11 hk_isBeforeDate:v12];
+    endDate = [effectiveVisibleRangeCadence endDate];
+    endDate2 = [effectiveAxisRange endDate];
+    v13 = [endDate hk_isBeforeDate:endDate2];
 
-    v14 = [v7 startDate];
-    v15 = [v10 startDate];
-    v16 = [v14 hk_isAfterDate:v15];
+    startDate = [effectiveVisibleRangeCadence startDate];
+    startDate2 = [effectiveAxisRange startDate];
+    v16 = [startDate hk_isAfterDate:startDate2];
 
     currentTimeView = self->_currentTimeView;
     if ((v13 & 1) != 0 || v16)
@@ -5398,59 +5398,59 @@ LABEL_18:
   }
 }
 
-- (void)_setVisibleRangeUsingDateFromDateSelector:(id)a3
+- (void)_setVisibleRangeUsingDateFromDateSelector:(id)selector
 {
-  v8 = a3;
-  v4 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
-  v5 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
-  v6 = [v5 effectiveVisibleRangeCadence];
+  selectorCopy = selector;
+  graphView = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+  graphView2 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+  effectiveVisibleRangeCadence = [graphView2 effectiveVisibleRangeCadence];
 
-  if (v8)
+  if (selectorCopy)
   {
-    if (v4 && v6 != 0)
+    if (graphView && effectiveVisibleRangeCadence != 0)
     {
-      [(HKInteractiveChartViewController *)self _scrollToAnchorDate:v8 graphView:v4 alignment:3];
+      [(HKInteractiveChartViewController *)self _scrollToAnchorDate:selectorCopy graphView:graphView alignment:3];
     }
   }
 }
 
 - (BOOL)_showInfoButtonInCurrentValueView
 {
-  v3 = [(HKCurrentValueViewDataSource *)self->_currentValueViewDataSource delegate];
+  delegate = [(HKCurrentValueViewDataSource *)self->_currentValueViewDataSource delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(HKCurrentValueViewDataSource *)self->_currentValueViewDataSource delegate];
-    v6 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
-    v7 = [v5 infographicSupportedForDisplayType:v6 healthStore:self->_healthStore];
+    delegate2 = [(HKCurrentValueViewDataSource *)self->_currentValueViewDataSource delegate];
+    _primaryDisplayType = [(HKInteractiveChartViewController *)self _primaryDisplayType];
+    v7 = [delegate2 infographicSupportedForDisplayType:_primaryDisplayType healthStore:self->_healthStore];
   }
 
   else
   {
-    v5 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
-    v7 = [(HKInteractiveChartViewController *)self infographicSupportedForDisplayType:v5 healthStore:self->_healthStore];
+    delegate2 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
+    v7 = [(HKInteractiveChartViewController *)self infographicSupportedForDisplayType:delegate2 healthStore:self->_healthStore];
   }
 
   return v7;
 }
 
-- (id)_debugDateStringForPoint:(id)a3
+- (id)_debugDateStringForPoint:(id)point
 {
   v3 = MEMORY[0x1E695DF00];
-  [a3 startXValue];
+  [point startXValue];
   v4 = [v3 dateWithTimeIntervalSinceReferenceDate:?];
   v5 = [MEMORY[0x1E696AB78] localizedStringFromDate:v4 dateStyle:2 timeStyle:1];
 
   return v5;
 }
 
-- (id)_dateForBlockPoint:(id)a3
+- (id)_dateForBlockPoint:(id)point
 {
-  if (a3)
+  if (point)
   {
     v4 = MEMORY[0x1E695DF00];
-    [a3 startXValue];
+    [point startXValue];
     v5 = [v4 dateWithTimeIntervalSinceReferenceDate:?];
   }
 
@@ -5462,12 +5462,12 @@ LABEL_18:
   return v5;
 }
 
-- (id)_chartDataForPoint:(id)a3
+- (id)_chartDataForPoint:(id)point
 {
-  v3 = [a3 userInfo];
-  if ([v3 conformsToProtocol:&unk_1F43A09B0])
+  userInfo = [point userInfo];
+  if ([userInfo conformsToProtocol:&unk_1F43A09B0])
   {
-    v4 = v3;
+    v4 = userInfo;
   }
 
   else
@@ -5478,42 +5478,42 @@ LABEL_18:
   return v4;
 }
 
-- (id)_formatterForSeries:(id)a3
+- (id)_formatterForSeries:(id)series
 {
-  v4 = [(HKInteractiveChartViewController *)self _configurationForSeries:a3];
-  v5 = [v4 displayType];
-  v6 = [v5 hk_interactiveChartsFormatterForTimeScope:{-[HKInteractiveChartViewController _dateZoom](self, "_dateZoom")}];
+  v4 = [(HKInteractiveChartViewController *)self _configurationForSeries:series];
+  displayType = [v4 displayType];
+  v6 = [displayType hk_interactiveChartsFormatterForTimeScope:{-[HKInteractiveChartViewController _dateZoom](self, "_dateZoom")}];
   [v6 setMajorFont:self->_majorSelectedPointFont];
   [v6 setMinorFont:self->_minorSelectedPointFont];
-  v7 = [(HKInteractiveChartViewController *)self unitPreferenceController];
-  [v6 setUnitController:v7];
+  unitPreferenceController = [(HKInteractiveChartViewController *)self unitPreferenceController];
+  [v6 setUnitController:unitPreferenceController];
 
-  v8 = [v4 displayType];
-  [v6 setDisplayType:v8];
+  displayType2 = [v4 displayType];
+  [v6 setDisplayType:displayType2];
 
   return v6;
 }
 
 - (BOOL)_primaryDisplayTypeHasNoData
 {
-  v3 = [(HKInteractiveChartViewController *)self sampleTypeDateRangeController];
-  v4 = [v3 dateRangesBySampleType];
+  sampleTypeDateRangeController = [(HKInteractiveChartViewController *)self sampleTypeDateRangeController];
+  dateRangesBySampleType = [sampleTypeDateRangeController dateRangesBySampleType];
 
-  if (v4)
+  if (dateRangesBySampleType)
   {
-    v5 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
-    v6 = [v5 sampleType];
-    v7 = [v3 dateRangeForSampleType:v6];
-    v8 = [v7 minValue];
-    if (v8)
+    _primaryDisplayType = [(HKInteractiveChartViewController *)self _primaryDisplayType];
+    sampleType = [_primaryDisplayType sampleType];
+    v7 = [sampleTypeDateRangeController dateRangeForSampleType:sampleType];
+    minValue = [v7 minValue];
+    if (minValue)
     {
     }
 
     else
     {
-      v9 = [v7 maxValue];
+      maxValue = [v7 maxValue];
 
-      if (!v9)
+      if (!maxValue)
       {
         v10 = 1;
         goto LABEL_6;
@@ -5531,11 +5531,11 @@ LABEL_6:
 {
   if ([(HKInteractiveChartViewController *)self _currentValueEnabled]&& ![(HKInteractiveChartViewController *)self disableCurrentValueViewForInitialLollipop])
   {
-    v6 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
-    v3 = [(HKInteractiveChartViewController *)self _dateZoom];
-    v4 = [(HKInteractiveChartViewController *)self _showInfoButtonInCurrentValueView];
-    v5 = [(HKInteractiveChartViewController *)self currentValueViewHandler];
-    [v5 updateCurrentValueView:self->_currentValueView graphView:v6 timeScope:v3 showInfoButton:v4];
+    graphView = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+    _dateZoom = [(HKInteractiveChartViewController *)self _dateZoom];
+    _showInfoButtonInCurrentValueView = [(HKInteractiveChartViewController *)self _showInfoButtonInCurrentValueView];
+    currentValueViewHandler = [(HKInteractiveChartViewController *)self currentValueViewHandler];
+    [currentValueViewHandler updateCurrentValueView:self->_currentValueView graphView:graphView timeScope:_dateZoom showInfoButton:_showInfoButtonInCurrentValueView];
   }
 }
 
@@ -5543,32 +5543,32 @@ LABEL_6:
 {
   if ((self->_options & 4) == 0)
   {
-    v3 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
-    if (([v3 isScrollViewDecelerating] & 1) == 0)
+    graphView = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+    if (([graphView isScrollViewDecelerating] & 1) == 0)
     {
-      v4 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
+      graphView2 = [(HKGraphViewController *)self->_primaryGraphViewController graphView];
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __55__HKInteractiveChartViewController__automaticAutoScale__block_invoke;
       v5[3] = &unk_1E81B55A8;
       v5[4] = self;
-      [v4 autoscaleYAxesAnimated:1 specificRange:0 onlyIfNeeded:0 completion:v5];
+      [graphView2 autoscaleYAxesAnimated:1 specificRange:0 onlyIfNeeded:0 completion:v5];
     }
   }
 }
 
-- (id)_defaultAxisRangeIncludeToday:(BOOL)a3
+- (id)_defaultAxisRangeIncludeToday:(BOOL)today
 {
-  v3 = a3;
+  todayCopy = today;
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [(HKInteractiveChartViewController *)self sampleTypeDateRangeController];
+  date = [MEMORY[0x1E695DF00] date];
+  sampleTypeDateRangeController = [(HKInteractiveChartViewController *)self sampleTypeDateRangeController];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [(HKInteractiveChartViewController *)self _allDisplayTypes];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  _allDisplayTypes = [(HKInteractiveChartViewController *)self _allDisplayTypes];
+  v8 = [_allDisplayTypes countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v8)
   {
     v10 = 0;
@@ -5584,12 +5584,12 @@ LABEL_6:
     {
       if (*v22 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(_allDisplayTypes);
       }
 
       v13 = *(*(&v21 + 1) + 8 * i);
-      v14 = [v13 defaultDataRange];
-      if (v14)
+      defaultDataRange = [v13 defaultDataRange];
+      if (defaultDataRange)
       {
         if (v10)
         {
@@ -5599,30 +5599,30 @@ LABEL_6:
 
       else
       {
-        v15 = [v13 sampleType];
-        v14 = [v6 dateRangeForSampleType:v15];
+        sampleType = [v13 sampleType];
+        defaultDataRange = [sampleTypeDateRangeController dateRangeForSampleType:sampleType];
 
         if (v10)
         {
 LABEL_8:
-          [v10 unionRange:v14];
+          [v10 unionRange:defaultDataRange];
           goto LABEL_11;
         }
       }
 
-      v10 = [v14 copy];
+      v10 = [defaultDataRange copy];
 LABEL_11:
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v9 = [_allDisplayTypes countByEnumeratingWithState:&v21 objects:v25 count:16];
   }
 
   while (v9);
 LABEL_15:
 
-  if (v3)
+  if (todayCopy)
   {
-    v16 = [HKValueRange valueRangeWithMinValue:v5 maxValue:v5];
+    v16 = [HKValueRange valueRangeWithMinValue:date maxValue:date];
     v17 = v16;
     if (v10)
     {
@@ -5635,12 +5635,12 @@ LABEL_15:
     }
   }
 
-  v18 = [v10 endDate];
-  v19 = [v18 hk_isAfterDate:v5];
+  endDate = [v10 endDate];
+  v19 = [endDate hk_isAfterDate:date];
 
   if (v19)
   {
-    [v10 setMaxValue:v5];
+    [v10 setMaxValue:date];
   }
 
   return v10;
@@ -5649,18 +5649,18 @@ LABEL_15:
 - (id)_dateForMostRecentData
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [(HKInteractiveChartViewController *)self currentCalendar];
-  v23 = v3;
-  v5 = [v4 hk_startOfTomorrowForDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  currentCalendar = [(HKInteractiveChartViewController *)self currentCalendar];
+  v23 = date;
+  v5 = [currentCalendar hk_startOfTomorrowForDate:date];
 
-  v22 = [(HKInteractiveChartViewController *)self sampleTypeDateRangeController];
+  sampleTypeDateRangeController = [(HKInteractiveChartViewController *)self sampleTypeDateRangeController];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = [(HKInteractiveChartViewController *)self _allDisplayTypes];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  _allDisplayTypes = [(HKInteractiveChartViewController *)self _allDisplayTypes];
+  v7 = [_allDisplayTypes countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -5672,37 +5672,37 @@ LABEL_15:
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_allDisplayTypes);
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v12 defaultDataRange];
-        if (!v13)
+        defaultDataRange = [v12 defaultDataRange];
+        if (!defaultDataRange)
         {
-          v14 = [v12 sampleType];
-          v13 = [v22 dateRangeForSampleType:v14];
+          sampleType = [v12 sampleType];
+          defaultDataRange = [sampleTypeDateRangeController dateRangeForSampleType:sampleType];
         }
 
-        v15 = [v13 endDate];
-        v16 = [MEMORY[0x1E695DF00] distantFuture];
-        v17 = [v15 isEqualToDate:v16];
+        endDate = [defaultDataRange endDate];
+        distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+        v17 = [endDate isEqualToDate:distantFuture];
 
         if (v17)
         {
           v18 = v23;
 
-          v15 = v18;
+          endDate = v18;
         }
 
-        if (v15 && [v15 hk_isBeforeOrEqualToDate:v5] && (!v9 || objc_msgSend(v15, "hk_isAfterDate:", v9)))
+        if (endDate && [endDate hk_isBeforeOrEqualToDate:v5] && (!v9 || objc_msgSend(endDate, "hk_isAfterDate:", v9)))
         {
-          v19 = v15;
+          v19 = endDate;
 
           v9 = v19;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v8 = [_allDisplayTypes countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v8);
@@ -5725,77 +5725,77 @@ LABEL_15:
     return;
   }
 
-  v4 = [(HKGraphViewController *)primaryGraphViewController dateZoom];
+  dateZoom = [(HKGraphViewController *)primaryGraphViewController dateZoom];
   if ([(HKInteractiveChartViewController *)self firstSampleDateRangeUpdate])
   {
-    v5 = [(HKInteractiveChartViewController *)self trendAccessibilityDelegate];
-    v6 = [v5 trendAccessibilitySeries];
+    trendAccessibilityDelegate = [(HKInteractiveChartViewController *)self trendAccessibilityDelegate];
+    trendAccessibilitySeries = [trendAccessibilityDelegate trendAccessibilitySeries];
 
-    if (!v6)
+    if (!trendAccessibilitySeries)
     {
-      v17 = [(HKInteractiveChartViewController *)self initialXValue];
-      if (v17 && (v18 = v17, [(HKInteractiveChartViewController *)self initialXValue], v19 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v19, v18, (isKindOfClass & 1) != 0))
+      initialXValue = [(HKInteractiveChartViewController *)self initialXValue];
+      if (initialXValue && (v18 = initialXValue, [(HKInteractiveChartViewController *)self initialXValue], v19 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v19, v18, (isKindOfClass & 1) != 0))
       {
-        v21 = [(HKInteractiveChartViewController *)self initialXValue];
+        initialXValue2 = [(HKInteractiveChartViewController *)self initialXValue];
       }
 
       else
       {
-        v21 = [(HKInteractiveChartViewController *)self _dateForMostRecentData];
+        initialXValue2 = [(HKInteractiveChartViewController *)self _dateForMostRecentData];
       }
 
-      v22 = v21;
-      [(HKInteractiveChartViewController *)self _setGraphViewAxisAndVisibleDateRangeForTimeScope:v4 anchorDate:v21 preserveScrollPosition:0];
+      _dateForMostRecentData = initialXValue2;
+      [(HKInteractiveChartViewController *)self _setGraphViewAxisAndVisibleDateRangeForTimeScope:dateZoom anchorDate:initialXValue2 preserveScrollPosition:0];
       goto LABEL_12;
     }
   }
 
   v7 = [(HKInteractiveChartViewController *)self _defaultAxisRangeIncludeToday:[(HKInteractiveChartViewController *)self firstSampleDateRangeUpdate]^ 1];
-  v8 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-  v9 = [v8 graphView];
-  v10 = [v9 actualVisibleRange];
+  primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
+  actualVisibleRange = [graphView actualVisibleRange];
 
-  if (v7 && v10)
+  if (v7 && actualVisibleRange)
   {
-    v11 = [v10 startDate];
-    v12 = [v10 endDate];
-    v13 = [v7 startDate];
-    v14 = [v7 endDate];
-    if ([v14 hk_isBeforeDate:v11])
+    startDate = [actualVisibleRange startDate];
+    endDate = [actualVisibleRange endDate];
+    startDate2 = [v7 startDate];
+    endDate2 = [v7 endDate];
+    if ([endDate2 hk_isBeforeDate:startDate])
     {
     }
 
     else
     {
-      v15 = [v13 hk_isAfterDate:v12];
+      v15 = [startDate2 hk_isAfterDate:endDate];
 
       if ((v15 & 1) == 0)
       {
-        v22 = 0;
+        _dateForMostRecentData = 0;
         v16 = 1;
         goto LABEL_11;
       }
     }
   }
 
-  v22 = [(HKInteractiveChartViewController *)self _dateForMostRecentData];
+  _dateForMostRecentData = [(HKInteractiveChartViewController *)self _dateForMostRecentData];
   v16 = 0;
 LABEL_11:
 
-  [(HKInteractiveChartViewController *)self _setGraphViewAxisAndVisibleDateRangeForTimeScope:v4 anchorDate:v22 preserveScrollPosition:v16];
+  [(HKInteractiveChartViewController *)self _setGraphViewAxisAndVisibleDateRangeForTimeScope:dateZoom anchorDate:_dateForMostRecentData preserveScrollPosition:v16];
 LABEL_12:
 }
 
-- (void)sampleTypeDateRangeController:(id)a3 didUpdateDateRanges:(id)a4
+- (void)sampleTypeDateRangeController:(id)controller didUpdateDateRanges:(id)ranges
 {
-  [(HKInteractiveChartViewController *)self _updateGraphViewAxisDateRange:a3];
+  [(HKInteractiveChartViewController *)self _updateGraphViewAxisDateRange:controller];
 
   [(HKInteractiveChartViewController *)self setFirstSampleDateRangeUpdate:0];
 }
 
-- (void)selectTimeScope:(int64_t)a3
+- (void)selectTimeScope:(int64_t)scope
 {
-  [(HKTimeScopeControl *)self->_radioButtons setSelectedTimeScope:a3];
+  [(HKTimeScopeControl *)self->_radioButtons setSelectedTimeScope:scope];
   radioButtons = self->_radioButtons;
 
   [(HKInteractiveChartViewController *)self _radioButtonsDidUpdate:radioButtons];
@@ -5804,67 +5804,67 @@ LABEL_12:
 - (id)restorationStateDictionary
 {
   v3 = objc_opt_class();
-  v4 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
-  v5 = [(HKInteractiveChartViewController *)self healthStore];
-  v6 = [v3 standardChartRestorationDictionary:v4 healthStore:v5];
+  _primaryDisplayType = [(HKInteractiveChartViewController *)self _primaryDisplayType];
+  healthStore = [(HKInteractiveChartViewController *)self healthStore];
+  v6 = [v3 standardChartRestorationDictionary:_primaryDisplayType healthStore:healthStore];
 
   return v6;
 }
 
 - (void)saveRestorationState
 {
-  v6 = [(HKInteractiveChartViewController *)self restorationStateDictionary];
+  restorationStateDictionary = [(HKInteractiveChartViewController *)self restorationStateDictionary];
   v3 = objc_opt_class();
-  v4 = [(HKInteractiveChartViewController *)self _primaryDisplayType];
-  v5 = [v3 standardChartRestorationActivity:v6 primaryDisplayType:v4];
+  _primaryDisplayType = [(HKInteractiveChartViewController *)self _primaryDisplayType];
+  v5 = [v3 standardChartRestorationActivity:restorationStateDictionary primaryDisplayType:_primaryDisplayType];
 
   [objc_opt_class() saveRestorationUserActivity:v5 viewController:self];
 }
 
-+ (id)standardChartRestorationDictionary:(id)a3 healthStore:(id)a4
++ (id)standardChartRestorationDictionary:(id)dictionary healthStore:(id)store
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = MEMORY[0x1E695DF90];
-  v8 = a4;
+  storeCopy = store;
   v9 = objc_alloc_init(v7);
-  v10 = [a1 _encodeCurrentProfileIdentifierForHealthStore:v8];
+  v10 = [self _encodeCurrentProfileIdentifierForHealthStore:storeCopy];
 
   [v9 setObject:v10 forKeyedSubscript:@"profileIdentifier"];
-  v11 = [v6 objectType];
-  v12 = [v11 code];
+  objectType = [dictionaryCopy objectType];
+  code = [objectType code];
 
-  v13 = [v6 categoryIdentifier];
+  categoryIdentifier = [dictionaryCopy categoryIdentifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v6;
-    v15 = [v14 baseDisplayType];
+    v14 = dictionaryCopy;
+    baseDisplayType = [v14 baseDisplayType];
 
-    if (v15)
+    if (baseDisplayType)
     {
-      v16 = [v14 baseDisplayType];
-      v17 = [v16 objectType];
-      v12 = [v17 code];
+      baseDisplayType2 = [v14 baseDisplayType];
+      objectType2 = [baseDisplayType2 objectType];
+      code = [objectType2 code];
 
-      v18 = [v14 baseDisplayType];
-      v13 = [v18 categoryIdentifier];
+      baseDisplayType3 = [v14 baseDisplayType];
+      categoryIdentifier = [baseDisplayType3 categoryIdentifier];
     }
   }
 
-  v19 = [MEMORY[0x1E696AD98] numberWithInteger:v12];
+  v19 = [MEMORY[0x1E696AD98] numberWithInteger:code];
   [v9 setObject:v19 forKeyedSubscript:@"dataTypeCode"];
 
-  v20 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
+  v20 = [MEMORY[0x1E696AD98] numberWithInteger:categoryIdentifier];
   [v9 setObject:v20 forKeyedSubscript:@"displayCategoryID"];
 
   return v9;
 }
 
-+ (id)_encodeCurrentProfileIdentifierForHealthStore:(id)a3
++ (id)_encodeCurrentProfileIdentifierForHealthStore:(id)store
 {
-  v3 = [a3 profileIdentifier];
+  profileIdentifier = [store profileIdentifier];
   v9 = 0;
-  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v9];
+  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:profileIdentifier requiringSecureCoding:1 error:&v9];
   v5 = v9;
   if (v4)
   {
@@ -5884,17 +5884,17 @@ LABEL_12:
   return v4;
 }
 
-+ (id)mergeRestorationDictionary:(id)a3 otherDictionary:(id)a4
++ (id)mergeRestorationDictionary:(id)dictionary otherDictionary:(id)otherDictionary
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  otherDictionaryCopy = otherDictionary;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v5;
+  v8 = dictionaryCopy;
   v9 = [v8 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v9)
   {
@@ -5924,7 +5924,7 @@ LABEL_12:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = v6;
+  v15 = otherDictionaryCopy;
   v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v16)
   {
@@ -5953,34 +5953,34 @@ LABEL_12:
   return v7;
 }
 
-+ (id)standardChartRestorationActivity:(id)a3 primaryDisplayType:(id)a4
++ (id)standardChartRestorationActivity:(id)activity primaryDisplayType:(id)type
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
-  v8 = [a4 localization];
-  v9 = [v8 displayName];
-  v10 = [v6 stringWithFormat:@"Chart(%@)", v9];
+  activityCopy = activity;
+  localization = [type localization];
+  displayName = [localization displayName];
+  v10 = [v6 stringWithFormat:@"Chart(%@)", displayName];
 
-  v11 = [a1 baseRestorationUserActivity:v7 activityType:@"com.apple.health.view.data" title:v10];
+  v11 = [self baseRestorationUserActivity:activityCopy activityType:@"com.apple.health.view.data" title:v10];
 
   return v11;
 }
 
-+ (id)baseRestorationUserActivity:(id)a3 activityType:(id)a4 title:(id)a5
++ (id)baseRestorationUserActivity:(id)activity activityType:(id)type title:(id)title
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69636A8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithActivityType:v9];
+  titleCopy = title;
+  typeCopy = type;
+  activityCopy = activity;
+  v11 = [[v7 alloc] initWithActivityType:typeCopy];
 
   [v11 setEligibleForSearch:0];
   [v11 setEligibleForHandoff:1];
   [v11 setEligibleForPrediction:0];
-  [v11 setTitle:v8];
+  [v11 setTitle:titleCopy];
 
-  [v11 setUserInfo:v10];
+  [v11 setUserInfo:activityCopy];
   v15[0] = @"versionKey";
   v15[1] = @"DateSavedAppState";
   v16[0] = &unk_1F4383F88;
@@ -5993,23 +5993,23 @@ LABEL_12:
   return v11;
 }
 
-+ (void)saveRestorationUserActivity:(id)a3 viewController:(id)a4
++ (void)saveRestorationUserActivity:(id)activity viewController:(id)controller
 {
-  v5 = a3;
-  v6 = [a4 view];
-  v7 = [v6 window];
+  activityCopy = activity;
+  view = [controller view];
+  window = [view window];
 
-  if (v7 && ([v7 windowScene], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  if (window && ([window windowScene], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [v7 windowScene];
-    [v9 setUserActivity:v5];
+    windowScene = [window windowScene];
+    [windowScene setUserActivity:activityCopy];
   }
 
   else
   {
     _HKInitializeLogging();
-    v9 = HKLogWellnessDashboard();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    windowScene = HKLogWellnessDashboard();
+    if (os_log_type_enabled(windowScene, OS_LOG_TYPE_ERROR))
     {
       +[HKInteractiveChartViewController saveRestorationUserActivity:viewController:];
     }
@@ -6023,10 +6023,10 @@ LABEL_12:
     return self->_annotationDataSourceFirstWeekday;
   }
 
-  v3 = [(HKInteractiveChartViewController *)self currentCalendar];
-  v4 = [v3 firstWeekday];
+  currentCalendar = [(HKInteractiveChartViewController *)self currentCalendar];
+  firstWeekday = [currentCalendar firstWeekday];
 
-  return v4;
+  return firstWeekday;
 }
 
 - (HKInteractiveChartCurrentValueViewHandler)currentValueViewHandler
@@ -6089,8 +6089,8 @@ LABEL_12:
 
 - (void)_primaryDisplayType
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HKInteractiveChartViewController.m" lineNumber:2304 description:{@"Primary display type index out of bounds: %ld", objc_msgSend(a1, "primaryDisplayTypeStackIndex")}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKInteractiveChartViewController.m" lineNumber:2304 description:{@"Primary display type index out of bounds: %ld", objc_msgSend(self, "primaryDisplayTypeStackIndex")}];
 }
 
 - (void)graphView:(uint64_t)a1 didUpdateSeries:(NSObject *)a2 newDataArrived:changeContext:.cold.1(uint64_t a1, NSObject *a2)

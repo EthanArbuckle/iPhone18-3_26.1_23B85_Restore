@@ -1,9 +1,9 @@
 @interface FinHealthIncomeClassifier
-+ (id)generateFeatures:(id)a3 withDescriptions:(id)a4;
-+ (id)loadIncomeClassifierWithURL:(id)a3;
++ (id)generateFeatures:(id)features withDescriptions:(id)descriptions;
++ (id)loadIncomeClassifierWithURL:(id)l;
 - (FinHealthIncomeClassifier)init;
-- (id)incomeProbabilityWithDict:(id)a3;
-- (id)incomeProbabilityWithMultiArray:(id)a3;
+- (id)incomeProbabilityWithDict:(id)dict;
+- (id)incomeProbabilityWithMultiArray:(id)array;
 @end
 
 @implementation FinHealthIncomeClassifier
@@ -22,11 +22,11 @@
   return v7;
 }
 
-- (id)incomeProbabilityWithDict:(id)a3
+- (id)incomeProbabilityWithDict:(id)dict
 {
   v7.receiver = self;
   v7.super_class = FinHealthIncomeClassifier;
-  v3 = [(FHModel *)&v7 predictClassProbabilitiesWithDict:a3];
+  v3 = [(FHModel *)&v7 predictClassProbabilitiesWithDict:dict];
   v4 = v3;
   if (v3)
   {
@@ -41,25 +41,25 @@
   return v5;
 }
 
-- (id)incomeProbabilityWithMultiArray:(id)a3
+- (id)incomeProbabilityWithMultiArray:(id)array
 {
   v5.receiver = self;
   v5.super_class = FinHealthIncomeClassifier;
-  v3 = [(FHModel *)&v5 predictClassProbabilitiesWithMultiArray:a3];
+  v3 = [(FHModel *)&v5 predictClassProbabilitiesWithMultiArray:array];
 
   return v3;
 }
 
-+ (id)loadIncomeClassifierWithURL:(id)a3
++ (id)loadIncomeClassifierWithURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = a3;
-    v4 = [(FHModel *)[FinHealthIncomeClassifier alloc] initWithModelURL:v3 modelName:@"GhentClassificationModel"];
+    lCopy = l;
+    v4 = [(FHModel *)[FinHealthIncomeClassifier alloc] initWithModelURL:lCopy modelName:@"GhentClassificationModel"];
 
-    v5 = [(FHTrialModel *)v4 trialId];
+    trialId = [(FHTrialModel *)v4 trialId];
 
-    if (!v5)
+    if (!trialId)
     {
       [(FHTrialModel *)v4 setTrialId:&stru_283A7B918];
     }
@@ -73,21 +73,21 @@
   return v4;
 }
 
-+ (id)generateFeatures:(id)a3 withDescriptions:(id)a4
++ (id)generateFeatures:(id)features withDescriptions:(id)descriptions
 {
   v210 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v167 = a4;
+  featuresCopy = features;
+  descriptionsCopy = descriptions;
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:25];
-  v180 = [MEMORY[0x277CBEB18] array];
-  v181 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v7 = 0x277CCA000uLL;
-  v8 = [MEMORY[0x277CCA980] zero];
+  zero = [MEMORY[0x277CCA980] zero];
   v196 = 0u;
   v197 = 0u;
   v198 = 0u;
   v199 = 0u;
-  obj = v5;
+  obj = featuresCopy;
   v182 = [obj countByEnumeratingWithState:&v196 objects:v209 count:16];
   v166 = v6;
   if (v182)
@@ -103,7 +103,7 @@
     do
     {
       v14 = 0;
-      v15 = v8;
+      v15 = zero;
       do
       {
         if (*v197 != v179)
@@ -116,8 +116,8 @@
         v17 = [v16 decimalNumberAtIndex:1];
         v18 = [v17 decimalNumberByMultiplyingBy:v184];
 
-        [v181 addObject:v18];
-        v8 = [v15 decimalNumberByAdding:v18];
+        [array2 addObject:v18];
+        zero = [v15 decimalNumberByAdding:v18];
 
         [v18 doubleValue];
         v185 = *v19.i64;
@@ -148,10 +148,10 @@
         v23 = [v21 dateWithTimeIntervalSinceReferenceDate:?];
 
         v7 = 0x277CCA000;
-        [v180 addObject:v23];
+        [array addObject:v23];
 
         ++v14;
-        v15 = v8;
+        v15 = zero;
       }
 
       while (v182 != v14);
@@ -174,12 +174,12 @@
     v24 = 0.0;
   }
 
-  v28 = [v181 count];
+  v28 = [array2 count];
   if (v28 >= 3)
   {
     v30 = v28;
     v31 = [objc_alloc(*(v7 + 2432)) initWithUnsignedLong:v28];
-    v32 = [v8 decimalNumberByDividingBy:v31];
+    v32 = [zero decimalNumberByDividingBy:v31];
 
     v33 = [objc_alloc(*(v7 + 2432)) initWithUnsignedInteger:300];
     if ([v32 compare:v33] == -1)
@@ -191,7 +191,7 @@
     {
       v157 = v33;
       v164 = v32;
-      v34 = [v181 sortedArrayUsingSelector:?];
+      v34 = [array2 sortedArrayUsingSelector:?];
       v35 = MEMORY[0x277CCA9C0];
       v36 = [&unk_283A881B8 objectAtIndexedSubscript:0];
       v165 = v34;
@@ -269,11 +269,11 @@
 
       v159 = [v55 initWithDecimal:&v193];
 
-      v58 = [v165 firstObject];
-      v176 = [v165 lastObject];
+      firstObject = [v165 firstObject];
+      lastObject = [v165 lastObject];
       v59 = MEMORY[0x277CCA9C0];
       v60 = [&unk_283A881B8 objectAtIndexedSubscript:2];
-      v205 = v181;
+      v205 = array2;
       v61 = [MEMORY[0x277CBEA60] arrayWithObjects:&v205 count:1];
       v62 = [v59 expressionWithFormat:v60 argumentArray:v61];
 
@@ -296,9 +296,9 @@
 
       v163 = [v63 initWithDecimal:&v193];
 
-      v66 = [v180 sortedArrayUsingSelector:sel_compare_];
-      v170 = [MEMORY[0x277CBEB18] array];
-      v168 = [MEMORY[0x277CBEA80] currentCalendar];
+      v66 = [array sortedArrayUsingSelector:sel_compare_];
+      array3 = [MEMORY[0x277CBEB18] array];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
       v169 = v66;
       if ([v66 count] >= 2)
       {
@@ -307,7 +307,7 @@
         {
           v68 = [v66 objectAtIndexedSubscript:v67 - 1];
           v69 = [v66 objectAtIndexedSubscript:v67];
-          v70 = [v168 components:16 fromDate:v68 toDate:v69 options:0];
+          v70 = [currentCalendar components:16 fromDate:v68 toDate:v69 options:0];
           v71 = *(v7 + 2432);
           v72 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v70, "day")}];
           v73 = v72;
@@ -325,7 +325,7 @@
 
           v74 = [v71 decimalNumberWithDecimal:&v193];
 
-          [v170 addObject:v74];
+          [array3 addObject:v74];
           ++v67;
           v66 = v169;
           v7 = 0x277CCA000uLL;
@@ -336,7 +336,7 @@
 
       v75 = MEMORY[0x277CCA9C0];
       v76 = [&unk_283A881B8 objectAtIndexedSubscript:1];
-      v204 = v170;
+      v204 = array3;
       v77 = [MEMORY[0x277CBEA60] arrayWithObjects:&v204 count:1];
       v78 = [v75 expressionWithFormat:v76 argumentArray:v77];
 
@@ -360,7 +360,7 @@
 
       v82 = MEMORY[0x277CCA9C0];
       v83 = [&unk_283A881B8 objectAtIndexedSubscript:2];
-      v203 = v170;
+      v203 = array3;
       v84 = [MEMORY[0x277CBEA60] arrayWithObjects:&v203 count:1];
       v85 = [v82 expressionWithFormat:v83 argumentArray:v84];
 
@@ -380,19 +380,19 @@
         v195 = 0;
       }
 
-      v89 = v176;
+      v89 = lastObject;
       v90 = [v86 initWithDecimal:&v193];
 
       v147 = [v163 decimalNumberByDividingBy:v164];
-      v91 = [*(v7 + 2432) zero];
-      v92 = [*(v7 + 2432) zero];
-      v93 = [*(v7 + 2432) zero];
-      v94 = [v162 isEqualToNumber:v93];
+      zero2 = [*(v7 + 2432) zero];
+      zero3 = [*(v7 + 2432) zero];
+      zero4 = [*(v7 + 2432) zero];
+      v94 = [v162 isEqualToNumber:zero4];
 
       if (v94)
       {
-        v144 = v92;
-        v146 = v91;
+        v144 = zero3;
+        v146 = zero2;
       }
 
       else
@@ -424,7 +424,7 @@
       v192 = 0u;
       v189 = 0u;
       v190 = 0u;
-      v171 = v167;
+      v171 = descriptionsCopy;
       v158 = v90;
       v178 = [v171 countByEnumeratingWithState:&v189 objects:v200 count:16];
       if (v178)
@@ -434,7 +434,7 @@
         {
           for (i = 0; i != v178; ++i)
           {
-            v103 = v58;
+            v103 = firstObject;
             if (*v190 != v172)
             {
               objc_enumerationMutation(v171);
@@ -463,8 +463,8 @@
               [v97 setOrAddToDoubleValue:@"disburse" forKey:1.0];
             }
 
-            v58 = v103;
-            v89 = v176;
+            firstObject = v103;
+            v89 = lastObject;
             if (([v107 containsObject:@"wage"] & 1) != 0 || objc_msgSend(v107, "containsObject:", @"wages"))
             {
               [v97 setOrAddToDoubleValue:@"wage" forKey:1.0];
@@ -519,45 +519,45 @@
         [v166 setObject:v160 atIndexedSubscript:3];
         [v166 setObject:v159 atIndexedSubscript:4];
         [v166 setObject:v89 atIndexedSubscript:5];
-        [v166 setObject:v58 atIndexedSubscript:6];
+        [v166 setObject:firstObject atIndexedSubscript:6];
         [v166 setObject:v163 atIndexedSubscript:7];
         [v166 setObject:v162 atIndexedSubscript:8];
         [v166 setObject:v90 atIndexedSubscript:9];
-        v113 = [MEMORY[0x277CCABB0] numberWithDouble:v24 / v109];
-        [v166 setObject:v113 atIndexedSubscript:10];
+        v109 = [MEMORY[0x277CCABB0] numberWithDouble:v24 / v109];
+        [v166 setObject:v109 atIndexedSubscript:10];
 
-        v114 = [MEMORY[0x277CCABB0] numberWithDouble:v25 / v109];
-        [v166 setObject:v114 atIndexedSubscript:11];
+        v1092 = [MEMORY[0x277CCABB0] numberWithDouble:v25 / v109];
+        [v166 setObject:v1092 atIndexedSubscript:11];
 
-        v115 = [MEMORY[0x277CCABB0] numberWithDouble:v26 / v109];
-        [v166 setObject:v115 atIndexedSubscript:12];
+        v1093 = [MEMORY[0x277CCABB0] numberWithDouble:v26 / v109];
+        [v166 setObject:v1093 atIndexedSubscript:12];
 
-        v116 = [MEMORY[0x277CCABB0] numberWithDouble:v27 / v109];
-        [v166 setObject:v116 atIndexedSubscript:13];
+        v1094 = [MEMORY[0x277CCABB0] numberWithDouble:v27 / v109];
+        [v166 setObject:v1094 atIndexedSubscript:13];
 
         v117 = MEMORY[0x277CCABB0];
         v118 = [v97 objectForKey:@"ltd"];
         [v118 doubleValue];
-        v120 = [v117 numberWithDouble:v119 / v109];
-        [v166 setObject:v120 atIndexedSubscript:14];
+        v1095 = [v117 numberWithDouble:v119 / v109];
+        [v166 setObject:v1095 atIndexedSubscript:14];
 
         v121 = MEMORY[0x277CCABB0];
         v122 = [v97 objectForKey:@"disburse"];
         [v122 doubleValue];
-        v124 = [v121 numberWithDouble:v123 / v109];
-        [v166 setObject:v124 atIndexedSubscript:15];
+        v1096 = [v121 numberWithDouble:v123 / v109];
+        [v166 setObject:v1096 atIndexedSubscript:15];
 
         v125 = MEMORY[0x277CCABB0];
         v126 = [v97 objectForKey:@"wage"];
         [v126 doubleValue];
-        v128 = [v125 numberWithDouble:v127 / v109];
-        [v166 setObject:v128 atIndexedSubscript:16];
+        v1097 = [v125 numberWithDouble:v127 / v109];
+        [v166 setObject:v1097 atIndexedSubscript:16];
 
         v129 = MEMORY[0x277CCABB0];
         v130 = [v97 objectForKey:@"salary"];
         [v130 doubleValue];
-        v132 = [v129 numberWithDouble:v131 / v109];
-        [v166 setObject:v132 atIndexedSubscript:17];
+        v1098 = [v129 numberWithDouble:v131 / v109];
+        [v166 setObject:v1098 atIndexedSubscript:17];
 
         *&v133 = v111;
         v134 = [MEMORY[0x277CCA980] numberWithFloat:v133];

@@ -1,6 +1,6 @@
 @interface HMDCameraSnapshotIDSStream
 + (id)logCategory;
-- (HMDCameraSnapshotIDSStream)initWithSessionID:(id)a3 workQueue:(id)a4 proxyService:(id)a5;
+- (HMDCameraSnapshotIDSStream)initWithSessionID:(id)d workQueue:(id)queue proxyService:(id)service;
 - (id)logIdentifier;
 - (void)dealloc;
 @end
@@ -9,8 +9,8 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraSnapshotIDSStream *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraSnapshotIDSStream *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
@@ -19,7 +19,7 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -30,35 +30,35 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCameraSnapshotIDSStream *)v4 idsProxyService];
-  [v7 removeDelegate:v4];
+  idsProxyService = [(HMDCameraSnapshotIDSStream *)selfCopy idsProxyService];
+  [idsProxyService removeDelegate:selfCopy];
 
-  v9.receiver = v4;
+  v9.receiver = selfCopy;
   v9.super_class = HMDCameraSnapshotIDSStream;
   [(HMDCameraSnapshotIDSStream *)&v9 dealloc];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraSnapshotIDSStream)initWithSessionID:(id)a3 workQueue:(id)a4 proxyService:(id)a5
+- (HMDCameraSnapshotIDSStream)initWithSessionID:(id)d workQueue:(id)queue proxyService:(id)service
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dCopy = d;
+  queueCopy = queue;
+  serviceCopy = service;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!queueCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = serviceCopy;
+  if (!serviceCopy)
   {
 LABEL_9:
     v21 = _HMFPreconditionFailure();
@@ -71,16 +71,16 @@ LABEL_9:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_workQueue, a4);
-    objc_storeStrong(&v14->_sessionID, a3);
-    objc_storeStrong(&v14->_idsProxyService, a5);
+    objc_storeStrong(&v13->_workQueue, queue);
+    objc_storeStrong(&v14->_sessionID, d);
+    objc_storeStrong(&v14->_idsProxyService, service);
     v15 = [objc_alloc(MEMORY[0x277D0F880]) initWithName:@"com.apple.homed.snapshot-stream"];
     snapshotStreamTransaction = v14->_snapshotStreamTransaction;
     v14->_snapshotStreamTransaction = v15;
 
     idsProxyService = v14->_idsProxyService;
-    v18 = [(HMDCameraSnapshotIDSStream *)v14 workQueue];
-    [(HMDIDSService *)idsProxyService addDelegate:v14 queue:v18];
+    workQueue = [(HMDCameraSnapshotIDSStream *)v14 workQueue];
+    [(HMDIDSService *)idsProxyService addDelegate:v14 queue:workQueue];
 
     v19 = +[HMDIDSServiceManager sharedManager];
     [v19 addProxyServiceLinkPreferencesAssertionHolder:v14];

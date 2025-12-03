@@ -1,24 +1,24 @@
 @interface GHSService
 - (BOOL)getDebugLoggingEnabled;
-- (GHSService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5;
+- (GHSService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service;
 - (id)ghsDeviceProperties;
 - (void)abortRACPRequest;
 - (void)connectionIdleTimeout;
-- (void)consentDidFail:(id)a3;
-- (void)consentDidSucceed:(id)a3;
+- (void)consentDidFail:(id)fail;
+- (void)consentDidSucceed:(id)succeed;
 - (void)createGHSDeviceIfReady;
 - (void)deleteAllStoredObservation;
 - (void)extractGHSControlPointResponse;
-- (void)extractHealthObservationBodySegmentFromData:(id)a3 isLive:(BOOL)a4;
+- (void)extractHealthObservationBodySegmentFromData:(id)data isLive:(BOOL)live;
 - (void)extractHealthSensorFeatures;
 - (void)extractLiveHealthObservation;
 - (void)extractObservationScheduleChanged;
 - (void)extractRACPResponse;
 - (void)extractStoredHealthObservation;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)retrieveLastStoredObservation;
 - (void)start;
 - (void)startLiveHealthObservation;
@@ -28,11 +28,11 @@
 
 @implementation GHSService
 
-- (GHSService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5
+- (GHSService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service
 {
   v10.receiver = self;
   v10.super_class = GHSService;
-  v5 = [(ClientService *)&v10 initWithManager:a3 peripheral:a4 service:a5];
+  v5 = [(ClientService *)&v10 initWithManager:manager peripheral:peripheral service:service];
   v6 = v5;
   if (v5)
   {
@@ -67,9 +67,9 @@
   self->_storedObservationData = v5;
 
   self->_lastSyncedRecordNum = 0;
-  v7 = [(ClientService *)self manager];
+  manager = [(ClientService *)self manager];
   v8 = [CBUUID UUIDWithString:CBUUIDUserDataServiceString];
-  v9 = [v7 clientServiceForUUID:v8];
+  v9 = [manager clientServiceForUUID:v8];
 
   self->_isUDSConsentGranted = v9 == 0;
   v10 = [CBUUID UUIDWithString:CBUUIDHealthSensorFeaturesCharacteristicString];
@@ -86,9 +86,9 @@
   v21[5] = v15;
   v16 = [NSArray arrayWithObjects:v21 count:6];
 
-  v17 = [(ClientService *)self peripheral];
-  v18 = [(ClientService *)self service];
-  [v17 discoverCharacteristics:v16 forService:v18];
+  peripheral = [(ClientService *)self peripheral];
+  service = [(ClientService *)self service];
+  [peripheral discoverCharacteristics:v16 forService:service];
 
   v19 = [NSTimer scheduledTimerWithTimeInterval:self target:"connectionIdleTimeout" selector:0 userInfo:0 repeats:30.0];
   [(GHSService *)self setConnectionIdleTimer:v19];
@@ -105,8 +105,8 @@
   storedObservationData = self->_storedObservationData;
   self->_storedObservationData = 0;
 
-  v5 = [(GHSService *)self connectionIdleTimer];
-  [v5 invalidate];
+  connectionIdleTimer = [(GHSService *)self connectionIdleTimer];
+  [connectionIdleTimer invalidate];
 
   [(GHSService *)self setConnectionIdleTimer:0];
   v6.receiver = self;
@@ -114,18 +114,18 @@
   [(ClientService *)&v6 stop];
 }
 
-- (void)consentDidSucceed:(id)a3
+- (void)consentDidSucceed:(id)succeed
 {
-  v4 = [a3 object];
+  object = [succeed object];
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 name];
+    name = [object name];
     v8 = 141558275;
     v9 = 1752392040;
     v10 = 2113;
-    v11 = v7;
+    v11 = name;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "UDS consent succeeded for peripheral %{private, mask.hash}@", &v8, 0x16u);
   }
 
@@ -133,9 +133,9 @@
   [(GHSService *)self createGHSDeviceIfReady];
 }
 
-- (void)consentDidFail:(id)a3
+- (void)consentDidFail:(id)fail
 {
-  v3 = [a3 object];
+  object = [fail object];
   v4 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
   {
@@ -146,44 +146,44 @@
 - (id)ghsDeviceProperties
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(ClientService *)self manager];
+  manager = [(ClientService *)self manager];
   v5 = [CBUUID UUIDWithString:CBUUIDDeviceInformationServiceString];
-  v6 = [v4 clientServiceForUUID:v5];
+  v6 = [manager clientServiceForUUID:v5];
 
-  v7 = [v6 manufacturerName];
-  [v3 setObject:v7 forKeyedSubscript:@"ManufacturerName"];
+  manufacturerName = [v6 manufacturerName];
+  [v3 setObject:manufacturerName forKeyedSubscript:@"ManufacturerName"];
 
-  v8 = [v6 modelNumber];
-  [v3 setObject:v8 forKeyedSubscript:@"ModelNumber"];
+  modelNumber = [v6 modelNumber];
+  [v3 setObject:modelNumber forKeyedSubscript:@"ModelNumber"];
 
-  v9 = [v6 serialNumber];
-  [v3 setObject:v9 forKeyedSubscript:@"SerialNumber"];
+  serialNumber = [v6 serialNumber];
+  [v3 setObject:serialNumber forKeyedSubscript:@"SerialNumber"];
 
-  v10 = [v6 hardwareRevision];
-  [v3 setObject:v10 forKeyedSubscript:@"HardwareRevision"];
+  hardwareRevision = [v6 hardwareRevision];
+  [v3 setObject:hardwareRevision forKeyedSubscript:@"HardwareRevision"];
 
-  v11 = [v6 softwareRevision];
-  [v3 setObject:v11 forKeyedSubscript:@"SoftwareRevision"];
+  softwareRevision = [v6 softwareRevision];
+  [v3 setObject:softwareRevision forKeyedSubscript:@"SoftwareRevision"];
 
-  v12 = [v6 firmwareRevision];
-  [v3 setObject:v12 forKeyedSubscript:@"FirmwareRevision"];
+  firmwareRevision = [v6 firmwareRevision];
+  [v3 setObject:firmwareRevision forKeyedSubscript:@"FirmwareRevision"];
 
-  v13 = [v6 udiForMedicalDevices];
-  [v3 setObject:v13 forKeyedSubscript:@"UDIForMedicalDevices"];
+  udiForMedicalDevices = [v6 udiForMedicalDevices];
+  [v3 setObject:udiForMedicalDevices forKeyedSubscript:@"UDIForMedicalDevices"];
 
-  v14 = [(ClientService *)self peripheral];
-  v15 = [v14 identifier];
-  v16 = [v15 UUIDString];
-  [v3 setObject:v16 forKeyedSubscript:@"UUID"];
+  peripheral = [(ClientService *)self peripheral];
+  identifier = [peripheral identifier];
+  uUIDString = [identifier UUIDString];
+  [v3 setObject:uUIDString forKeyedSubscript:@"UUID"];
 
-  v17 = [(ClientService *)self peripheral];
-  v18 = [v17 name];
+  peripheral2 = [(ClientService *)self peripheral];
+  name = [peripheral2 name];
 
-  if (v18)
+  if (name)
   {
-    v19 = [(ClientService *)self peripheral];
-    v20 = [v19 name];
-    [v3 setObject:v20 forKeyedSubscript:@"kGHSDeviceNameKey"];
+    peripheral3 = [(ClientService *)self peripheral];
+    name2 = [peripheral3 name];
+    [v3 setObject:name2 forKeyedSubscript:@"kGHSDeviceNameKey"];
   }
 
   if (self->_deviceType)
@@ -194,9 +194,9 @@
 
   else
   {
-    v22 = [(GHSService *)self featuresCharacteristic];
-    v23 = [v22 value];
-    v21 = [DataInputStream inputStreamWithData:v23 byteOrder:1];
+    featuresCharacteristic = [(GHSService *)self featuresCharacteristic];
+    value = [featuresCharacteristic value];
+    v21 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
     v44 = 0;
     [v21 readUint8:&v44 + 1];
@@ -213,12 +213,12 @@
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v27 = v26;
-          v28 = [(ClientService *)self peripheral];
-          v29 = [v28 name];
+          peripheral4 = [(ClientService *)self peripheral];
+          name3 = [peripheral4 name];
           *buf = v40;
           v46 = 1752392040;
           v47 = 2113;
-          v48 = v29;
+          v48 = name3;
           v49 = 1024;
           v50 = v43;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Health Sensor Features for peripheral %{private, mask.hash}@: observationType %u", buf, 0x1Cu);
@@ -248,12 +248,12 @@
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v34 = v33;
-          v35 = [(ClientService *)self peripheral];
-          v36 = [v35 name];
+          peripheral5 = [(ClientService *)self peripheral];
+          name4 = [peripheral5 name];
           *buf = v41;
           v46 = 1752392040;
           v47 = 2113;
-          v48 = v36;
+          v48 = name4;
           v49 = 1024;
           v50 = v43;
           v51 = 1024;
@@ -282,34 +282,34 @@
   deviceType = self->_deviceType;
   if (!self->_deviceType)
   {
-    v8 = [(GHSService *)self featuresCharacteristic];
-    if (!v8)
+    featuresCharacteristic = [(GHSService *)self featuresCharacteristic];
+    if (!featuresCharacteristic)
     {
       return;
     }
 
-    v39 = v8;
-    v2 = [(GHSService *)self featuresCharacteristic];
-    v9 = [v2 value];
-    if (!v9)
+    v39 = featuresCharacteristic;
+    featuresCharacteristic2 = [(GHSService *)self featuresCharacteristic];
+    value = [featuresCharacteristic2 value];
+    if (!value)
     {
 
       return;
     }
 
-    v3 = v9;
+    v3 = value;
   }
 
-  v6 = [(GHSService *)self liveObservationCharacteristic];
-  if (v6)
+  liveObservationCharacteristic = [(GHSService *)self liveObservationCharacteristic];
+  if (liveObservationCharacteristic)
   {
     isUDSConsentGranted = self->_isUDSConsentGranted;
   }
 
   else
   {
-    v10 = [(GHSService *)self storedObservationCharacteristic];
-    if (v10)
+    storedObservationCharacteristic = [(GHSService *)self storedObservationCharacteristic];
+    if (storedObservationCharacteristic)
     {
       isUDSConsentGranted = self->_isUDSConsentGranted;
     }
@@ -337,29 +337,29 @@
     }
   }
 
-  v11 = [(GHSService *)self ghsDeviceProperties];
-  v12 = [(GHSService *)self ghsDevice];
+  ghsDeviceProperties = [(GHSService *)self ghsDeviceProperties];
+  ghsDevice = [(GHSService *)self ghsDevice];
 
-  if (!v12)
+  if (!ghsDevice)
   {
-    v13 = [GHSBluetoothDevice ghsDeviceWithProperties:v11];
+    v13 = [GHSBluetoothDevice ghsDeviceWithProperties:ghsDeviceProperties];
     [(GHSService *)self setGhsDevice:v13];
 
-    v14 = [(GHSService *)self ghsDevice];
+    ghsDevice2 = [(GHSService *)self ghsDevice];
 
-    if (v14)
+    if (ghsDevice2)
     {
-      v15 = [(ClientService *)self peripheral];
-      v16 = [(GHSService *)self ghsDevice];
-      [v16 setPeripheral:v15];
+      peripheral = [(ClientService *)self peripheral];
+      ghsDevice3 = [(GHSService *)self ghsDevice];
+      [ghsDevice3 setPeripheral:peripheral];
 
-      v17 = [(ClientService *)self peripheral];
-      v18 = [v17 customProperty:@"UserSelectedHealthDataSyncConfig"];
+      peripheral2 = [(ClientService *)self peripheral];
+      v18 = [peripheral2 customProperty:@"UserSelectedHealthDataSyncConfig"];
 
       if (!self->_lastSyncedRecordNum)
       {
-        v19 = [(ClientService *)self peripheral];
-        v20 = [v19 customProperty:@"HealthDataSyncLastStoredRecordNumber"];
+        peripheral3 = [(ClientService *)self peripheral];
+        v20 = [peripheral3 customProperty:@"HealthDataSyncLastStoredRecordNumber"];
 
         if (v20)
         {
@@ -379,10 +379,10 @@
         }
       }
 
-      v32 = [(GHSService *)self liveObservationCharacteristic];
+      liveObservationCharacteristic2 = [(GHSService *)self liveObservationCharacteristic];
 
       v33 = [v18 isEqualToString:@"HealthDataSyncAlways"];
-      if (v32)
+      if (liveObservationCharacteristic2)
       {
         if ((v33 & 1) != 0 || [v18 isEqualToString:@"HealthDataSyncWithUserConfirm"])
         {
@@ -401,14 +401,14 @@
       }
 
       v34 = +[NSNotificationCenter defaultCenter];
-      v35 = [(ClientService *)self peripheral];
-      [v34 postNotificationName:@"PeerIsUsingBuiltinServiceNotification" object:v35];
+      peripheral4 = [(ClientService *)self peripheral];
+      [v34 postNotificationName:@"PeerIsUsingBuiltinServiceNotification" object:peripheral4];
 
-      v36 = [(GHSService *)self connectionIdleTimer];
-      [v36 invalidate];
+      connectionIdleTimer = [(GHSService *)self connectionIdleTimer];
+      [connectionIdleTimer invalidate];
 
-      v37 = [(GHSService *)self ghsDevice];
-      v38 = +[NSTimer scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:](NSTimer, "scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:", self, "connectionIdleTimeout", 0, 0, [v37 linkIdleTimeout]);
+      ghsDevice4 = [(GHSService *)self ghsDevice];
+      v38 = +[NSTimer scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:](NSTimer, "scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:", self, "connectionIdleTimeout", 0, 0, [ghsDevice4 linkIdleTimeout]);
       [(GHSService *)self setConnectionIdleTimer:v38];
 
       [(ClientService *)self notifyDidStart];
@@ -427,58 +427,58 @@
 
 - (void)startLiveHealthObservation
 {
-  v3 = [(GHSService *)self liveObservationCharacteristic];
-  if (v3)
+  liveObservationCharacteristic = [(GHSService *)self liveObservationCharacteristic];
+  if (liveObservationCharacteristic)
   {
-    v4 = v3;
-    v5 = [(GHSService *)self ghsControlPointCharacteristic];
+    v4 = liveObservationCharacteristic;
+    ghsControlPointCharacteristic = [(GHSService *)self ghsControlPointCharacteristic];
 
-    if (v5)
+    if (ghsControlPointCharacteristic)
     {
       v9 = 1;
       v6 = [NSData dataWithBytesNoCopy:&v9 length:1 freeWhenDone:0];
-      v7 = [(ClientService *)self peripheral];
-      v8 = [(GHSService *)self ghsControlPointCharacteristic];
-      [v7 writeValue:v6 forCharacteristic:v8 type:0];
+      peripheral = [(ClientService *)self peripheral];
+      ghsControlPointCharacteristic2 = [(GHSService *)self ghsControlPointCharacteristic];
+      [peripheral writeValue:v6 forCharacteristic:ghsControlPointCharacteristic2 type:0];
     }
   }
 }
 
 - (void)stopLiveHealthObservation
 {
-  v3 = [(GHSService *)self liveObservationCharacteristic];
-  if (v3)
+  liveObservationCharacteristic = [(GHSService *)self liveObservationCharacteristic];
+  if (liveObservationCharacteristic)
   {
-    v4 = v3;
-    v5 = [(GHSService *)self ghsControlPointCharacteristic];
+    v4 = liveObservationCharacteristic;
+    ghsControlPointCharacteristic = [(GHSService *)self ghsControlPointCharacteristic];
 
-    if (v5)
+    if (ghsControlPointCharacteristic)
     {
       v9 = 2;
       v6 = [NSData dataWithBytesNoCopy:&v9 length:1 freeWhenDone:0];
-      v7 = [(ClientService *)self peripheral];
-      v8 = [(GHSService *)self ghsControlPointCharacteristic];
-      [v7 writeValue:v6 forCharacteristic:v8 type:0];
+      peripheral = [(ClientService *)self peripheral];
+      ghsControlPointCharacteristic2 = [(GHSService *)self ghsControlPointCharacteristic];
+      [peripheral writeValue:v6 forCharacteristic:ghsControlPointCharacteristic2 type:0];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = v8;
-  if (a5)
+  peripheralCopy = peripheral;
+  v9 = peripheralCopy;
+  if (error)
   {
     goto LABEL_50;
   }
 
-  v66 = v8;
+  v66 = peripheralCopy;
   v69 = 0u;
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v10 = [a4 characteristics];
-  v11 = [v10 countByEnumeratingWithState:&v67 objects:v79 count:16];
+  characteristics = [service characteristics];
+  v11 = [characteristics countByEnumeratingWithState:&v67 objects:v79 count:16];
   if (!v11)
   {
     goto LABEL_37;
@@ -498,20 +498,20 @@
     {
       if (*v68 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(characteristics);
       }
 
       v15 = *(*(&v67 + 1) + 8 * i);
-      v16 = [(GHSService *)self featuresCharacteristic];
-      if (v16)
+      featuresCharacteristic = [(GHSService *)self featuresCharacteristic];
+      if (featuresCharacteristic)
       {
       }
 
       else
       {
-        v17 = [v15 UUID];
+        uUID = [v15 UUID];
         v18 = [CBUUID UUIDWithString:v65];
-        v19 = [v17 isEqual:v18];
+        v19 = [uUID isEqual:v18];
 
         if (v19)
         {
@@ -521,16 +521,16 @@
         }
       }
 
-      v20 = [(GHSService *)self liveObservationCharacteristic];
-      if (v20)
+      liveObservationCharacteristic = [(GHSService *)self liveObservationCharacteristic];
+      if (liveObservationCharacteristic)
       {
       }
 
       else
       {
-        v21 = [v15 UUID];
+        uUID2 = [v15 UUID];
         v22 = [CBUUID UUIDWithString:v64];
-        v23 = [v21 isEqual:v22];
+        v23 = [uUID2 isEqual:v22];
 
         if (v23)
         {
@@ -539,16 +539,16 @@
         }
       }
 
-      v24 = [(GHSService *)self storedObservationCharacteristic];
-      if (v24)
+      storedObservationCharacteristic = [(GHSService *)self storedObservationCharacteristic];
+      if (storedObservationCharacteristic)
       {
 
         goto LABEL_21;
       }
 
-      v25 = [v15 UUID];
+      uUID3 = [v15 UUID];
       v26 = [CBUUID UUIDWithString:v63];
-      v27 = [v25 isEqual:v26];
+      v27 = [uUID3 isEqual:v26];
 
       if (v27)
       {
@@ -568,16 +568,16 @@ LABEL_33:
       }
 
 LABEL_21:
-      v28 = [(GHSService *)self racpCharacteristic];
-      if (v28)
+      racpCharacteristic = [(GHSService *)self racpCharacteristic];
+      if (racpCharacteristic)
       {
 
         goto LABEL_25;
       }
 
-      v29 = [v15 UUID];
+      uUID4 = [v15 UUID];
       v30 = [CBUUID UUIDWithString:v62];
-      v31 = [v29 isEqual:v30];
+      v31 = [uUID4 isEqual:v30];
 
       if (v31)
       {
@@ -586,16 +586,16 @@ LABEL_21:
       }
 
 LABEL_25:
-      v32 = [(GHSService *)self ghsControlPointCharacteristic];
-      if (v32)
+      ghsControlPointCharacteristic = [(GHSService *)self ghsControlPointCharacteristic];
+      if (ghsControlPointCharacteristic)
       {
 
         goto LABEL_29;
       }
 
-      v33 = [v15 UUID];
+      uUID5 = [v15 UUID];
       v34 = [CBUUID UUIDWithString:v61];
-      v35 = [v33 isEqual:v34];
+      v35 = [uUID5 isEqual:v34];
 
       if (v35)
       {
@@ -604,16 +604,16 @@ LABEL_25:
       }
 
 LABEL_29:
-      v36 = [(GHSService *)self observationScheduleChangedCharacteristic];
-      if (v36)
+      observationScheduleChangedCharacteristic = [(GHSService *)self observationScheduleChangedCharacteristic];
+      if (observationScheduleChangedCharacteristic)
       {
 
         continue;
       }
 
-      v37 = [v15 UUID];
+      uUID6 = [v15 UUID];
       v38 = [CBUUID UUIDWithString:v60];
-      v39 = [v37 isEqual:v38];
+      v39 = [uUID6 isEqual:v38];
 
       if (v39)
       {
@@ -622,7 +622,7 @@ LABEL_29:
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v67 objects:v79 count:16];
+    v12 = [characteristics countByEnumeratingWithState:&v67 objects:v79 count:16];
   }
 
   while (v12);
@@ -630,8 +630,8 @@ LABEL_37:
 
   if (!self->_deviceType)
   {
-    v40 = [(ClientService *)self peripheral];
-    v41 = [v40 customProperty:@"GHSDeviceType"];
+    peripheral = [(ClientService *)self peripheral];
+    v41 = [peripheral customProperty:@"GHSDeviceType"];
 
     if (v41)
     {
@@ -646,15 +646,15 @@ LABEL_37:
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v46 = v45;
-          v47 = [(ClientService *)self peripheral];
-          v48 = [v47 name];
+          peripheral2 = [(ClientService *)self peripheral];
+          name = [peripheral2 name];
           deviceType = self->_deviceType;
           *buf = 138544131;
           v72 = @"GHSDeviceType";
           v73 = 2160;
           v74 = 1752392040;
           v75 = 2113;
-          v76 = v48;
+          v76 = name;
           v77 = 1024;
           v78 = deviceType;
           _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "Read property %{public}@ from %{private, mask.hash}@ = “%d”", buf, 0x26u);
@@ -668,18 +668,18 @@ LABEL_37:
     }
   }
 
-  v50 = [(GHSService *)self liveObservationCharacteristic];
-  if (v50)
+  liveObservationCharacteristic2 = [(GHSService *)self liveObservationCharacteristic];
+  if (liveObservationCharacteristic2)
   {
 
     v9 = v66;
     goto LABEL_49;
   }
 
-  v51 = [(GHSService *)self storedObservationCharacteristic];
+  storedObservationCharacteristic2 = [(GHSService *)self storedObservationCharacteristic];
 
   v9 = v66;
-  if (v51)
+  if (storedObservationCharacteristic2)
   {
 LABEL_49:
     [(GHSService *)self createGHSDeviceIfReady];
@@ -697,15 +697,15 @@ LABEL_49:
 LABEL_50:
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a4;
-  if (!a5)
+  characteristicCopy = characteristic;
+  if (!error)
   {
-    v17 = v7;
-    v8 = [(GHSService *)self featuresCharacteristic];
+    v17 = characteristicCopy;
+    featuresCharacteristic = [(GHSService *)self featuresCharacteristic];
 
-    if (v8 == v17)
+    if (featuresCharacteristic == v17)
     {
       [(GHSService *)self extractHealthSensorFeatures];
       [(GHSService *)self createGHSDeviceIfReady];
@@ -713,45 +713,45 @@ LABEL_50:
 
     else
     {
-      v9 = [(GHSService *)self liveObservationCharacteristic];
+      liveObservationCharacteristic = [(GHSService *)self liveObservationCharacteristic];
 
-      if (v9 == v17)
+      if (liveObservationCharacteristic == v17)
       {
         [(GHSService *)self extractLiveHealthObservation];
       }
 
       else
       {
-        v10 = [(GHSService *)self storedObservationCharacteristic];
+        storedObservationCharacteristic = [(GHSService *)self storedObservationCharacteristic];
 
-        if (v10 == v17)
+        if (storedObservationCharacteristic == v17)
         {
           [(GHSService *)self extractStoredHealthObservation];
         }
 
         else
         {
-          v11 = [(GHSService *)self racpCharacteristic];
+          racpCharacteristic = [(GHSService *)self racpCharacteristic];
 
-          if (v11 == v17)
+          if (racpCharacteristic == v17)
           {
             [(GHSService *)self extractRACPResponse];
           }
 
           else
           {
-            v12 = [(GHSService *)self observationScheduleChangedCharacteristic];
+            observationScheduleChangedCharacteristic = [(GHSService *)self observationScheduleChangedCharacteristic];
 
-            if (v12 == v17)
+            if (observationScheduleChangedCharacteristic == v17)
             {
               [(GHSService *)self extractObservationScheduleChanged];
             }
 
             else
             {
-              v13 = [(GHSService *)self ghsControlPointCharacteristic];
+              ghsControlPointCharacteristic = [(GHSService *)self ghsControlPointCharacteristic];
 
-              if (v13 == v17)
+              if (ghsControlPointCharacteristic == v17)
               {
                 [(GHSService *)self extractGHSControlPointResponse];
               }
@@ -761,43 +761,43 @@ LABEL_50:
       }
     }
 
-    v14 = [(GHSService *)self connectionIdleTimer];
-    [v14 invalidate];
+    connectionIdleTimer = [(GHSService *)self connectionIdleTimer];
+    [connectionIdleTimer invalidate];
 
-    v15 = [(GHSService *)self ghsDevice];
-    v16 = +[NSTimer scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:](NSTimer, "scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:", self, "connectionIdleTimeout", 0, 0, [v15 linkIdleTimeout]);
+    ghsDevice = [(GHSService *)self ghsDevice];
+    v16 = +[NSTimer scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:](NSTimer, "scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:", self, "connectionIdleTimeout", 0, 0, [ghsDevice linkIdleTimeout]);
     [(GHSService *)self setConnectionIdleTimer:v16];
 
-    v7 = v17;
+    characteristicCopy = v17;
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (errorCopy && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
   {
     sub_100073AF0();
   }
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       sub_100073BAC();
     }
 
-    v11 = [(GHSService *)self racpCharacteristic];
+    racpCharacteristic = [(GHSService *)self racpCharacteristic];
 
-    if (v11 == v9)
+    if (racpCharacteristic == characteristicCopy)
     {
       self->_currentRACPOpCode = -1;
       self->_isRACPInProgress = 0;
@@ -815,28 +815,28 @@ LABEL_50:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 BOOLValue];
+      bOOLValue = [v3 BOOLValue];
     }
 
     else
     {
-      v4 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)extractGHSControlPointResponse
 {
-  v2 = [(GHSService *)self ghsControlPointCharacteristic];
-  v3 = [v2 value];
-  v4 = [DataInputStream inputStreamWithData:v3];
+  ghsControlPointCharacteristic = [(GHSService *)self ghsControlPointCharacteristic];
+  value = [ghsControlPointCharacteristic value];
+  v4 = [DataInputStream inputStreamWithData:value];
 
   v14 = 0;
   if ([v4 readUint8:&v14])
@@ -860,9 +860,9 @@ LABEL_50:
 
 - (void)extractHealthSensorFeatures
 {
-  v3 = [(GHSService *)self liveObservationCharacteristic];
-  v4 = [v3 value];
-  v5 = [DataInputStream inputStreamWithData:v4];
+  liveObservationCharacteristic = [(GHSService *)self liveObservationCharacteristic];
+  value = [liveObservationCharacteristic value];
+  v5 = [DataInputStream inputStreamWithData:value];
 
   v23 = 0;
   [v5 readUint8:&v23 + 1];
@@ -889,12 +889,12 @@ LABEL_50:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v10 = v9;
-        v11 = [(ClientService *)self peripheral];
-        v12 = [v11 name];
+        peripheral = [(ClientService *)self peripheral];
+        name = [peripheral name];
         *buf = v19;
         v25 = 1752392040;
         v26 = 2113;
-        v27 = v12;
+        v27 = name;
         v28 = 1024;
         v29 = v22;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Health Sensor Features for peripheral %{private, mask.hash}@: observationType %u", buf, 0x1Cu);
@@ -921,12 +921,12 @@ LABEL_50:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v16 = v15;
-        v17 = [(ClientService *)self peripheral];
-        v18 = [v17 name];
+        peripheral2 = [(ClientService *)self peripheral];
+        name2 = [peripheral2 name];
         *buf = v20;
         v25 = 1752392040;
         v26 = 2113;
-        v27 = v18;
+        v27 = name2;
         v28 = 1024;
         v29 = v22;
         v30 = 1024;
@@ -941,10 +941,10 @@ LABEL_50:
   }
 }
 
-- (void)extractHealthObservationBodySegmentFromData:(id)a3 isLive:(BOOL)a4
+- (void)extractHealthObservationBodySegmentFromData:(id)data isLive:(BOOL)live
 {
-  v124 = a4;
-  v122 = a3;
+  liveCopy = live;
+  dataCopy = data;
   v4 = [DataInputStream inputStreamWithData:"inputStreamWithData:byteOrder:" byteOrder:?];
   v138 = 0;
   v137 = 0;
@@ -958,7 +958,7 @@ LABEL_50:
     v6 = qword_1000DDBC8;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      if (v124)
+      if (liveCopy)
       {
         v7 = "Live";
       }
@@ -968,14 +968,14 @@ LABEL_50:
         v7 = "Stored";
       }
 
-      v8 = [(ClientService *)self peripheral];
-      v9 = [v8 name];
+      peripheral = [(ClientService *)self peripheral];
+      name = [peripheral name];
       *buf = 136315907;
       v140 = v7;
       v141 = 2160;
       *v142 = 1752392040;
       *&v142[8] = 2113;
-      v143 = v9;
+      v143 = name;
       v144 = 1024;
       *v145 = v138;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: classType %u", buf, 0x26u);
@@ -987,7 +987,7 @@ LABEL_50:
     v10 = qword_1000DDBC8;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      if (v124)
+      if (liveCopy)
       {
         v11 = "Live";
       }
@@ -997,14 +997,14 @@ LABEL_50:
         v11 = "Stored";
       }
 
-      v12 = [(ClientService *)self peripheral];
-      v13 = [v12 name];
+      peripheral2 = [(ClientService *)self peripheral];
+      name2 = [peripheral2 name];
       *buf = 136315907;
       v140 = v11;
       v141 = 2160;
       *v142 = 1752392040;
       *&v142[8] = 2113;
-      v143 = v13;
+      v143 = name2;
       v144 = 1024;
       *v145 = v137;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: len %u", buf, 0x26u);
@@ -1016,7 +1016,7 @@ LABEL_50:
     v14 = qword_1000DDBC8;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      if (v124)
+      if (liveCopy)
       {
         v15 = "Live";
       }
@@ -1026,14 +1026,14 @@ LABEL_50:
         v15 = "Stored";
       }
 
-      v16 = [(ClientService *)self peripheral];
-      v17 = [v16 name];
+      peripheral3 = [(ClientService *)self peripheral];
+      name3 = [peripheral3 name];
       *buf = 136315907;
       v140 = v15;
       v141 = 2160;
       *v142 = 1752392040;
       *&v142[8] = 2113;
-      v143 = v17;
+      v143 = name3;
       v144 = 1024;
       *v145 = v136;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: flags %u", buf, 0x26u);
@@ -1050,7 +1050,7 @@ LABEL_50:
     v18 = qword_1000DDBC8;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      if (v124)
+      if (liveCopy)
       {
         v19 = "Live";
       }
@@ -1060,14 +1060,14 @@ LABEL_50:
         v19 = "Stored";
       }
 
-      v20 = [(ClientService *)self peripheral];
-      v21 = [v20 name];
+      peripheral4 = [(ClientService *)self peripheral];
+      name4 = [peripheral4 name];
       *buf = 136315907;
       v140 = v19;
       v141 = 2160;
       *v142 = 1752392040;
       *&v142[8] = 2113;
-      v143 = v21;
+      v143 = name4;
       v144 = 1024;
       *v145 = v135;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: observationType %d", buf, 0x26u);
@@ -1079,7 +1079,7 @@ LABEL_50:
     v18 = qword_1000DDBC8;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      sub_100073CA0(v124, &v136, v18);
+      sub_100073CA0(liveCopy, &v136, v18);
     }
   }
 
@@ -1089,9 +1089,9 @@ LABEL_32:
   {
     v23 = objc_alloc_init(NSMutableData);
     [v4 readNumBytes:9 toData:v23];
-    v24 = [(ClientService *)self manager];
+    manager = [(ClientService *)self manager];
     v25 = [CBUUID UUIDWithString:CBUUIDElapsedTimeServiceString];
-    v26 = [v24 clientServiceForUUID:v25];
+    v26 = [manager clientServiceForUUID:v25];
 
     if (v26)
     {
@@ -1100,7 +1100,7 @@ LABEL_32:
       v28 = qword_1000DDBC8;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        if (v124)
+        if (liveCopy)
         {
           v29 = "Live";
         }
@@ -1110,14 +1110,14 @@ LABEL_32:
           v29 = "Stored";
         }
 
-        v30 = [(ClientService *)self peripheral];
-        v31 = [v30 name];
+        peripheral5 = [(ClientService *)self peripheral];
+        name5 = [peripheral5 name];
         *buf = 136315907;
         v140 = v29;
         v141 = 2160;
         *v142 = 1752392040;
         *&v142[8] = 2113;
-        v143 = v31;
+        v143 = name5;
         v144 = 2112;
         *v145 = v23;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: timeData %@", buf, 0x2Au);
@@ -1129,7 +1129,7 @@ LABEL_32:
       v28 = qword_1000DDBC8;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        if (v124)
+        if (liveCopy)
         {
           v117 = "Live";
         }
@@ -1139,14 +1139,14 @@ LABEL_32:
           v117 = "Stored";
         }
 
-        v118 = [(ClientService *)self peripheral];
-        v119 = [v118 name];
+        peripheral6 = [(ClientService *)self peripheral];
+        name6 = [peripheral6 name];
         *buf = 136315907;
         v140 = v117;
         v141 = 2160;
         *v142 = 1752392040;
         *&v142[8] = 2113;
-        v143 = v119;
+        v143 = name6;
         v144 = 2112;
         *v145 = v23;
         _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%s Health Observation for peripheral %{private, mask.hash}@: timeData %@ without ETS", buf, 0x2Au);
@@ -1180,7 +1180,7 @@ LABEL_34:
     v32 = qword_1000DDBC8;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      if (v124)
+      if (liveCopy)
       {
         v33 = "Live";
       }
@@ -1190,14 +1190,14 @@ LABEL_34:
         v33 = "Stored";
       }
 
-      v34 = [(ClientService *)self peripheral];
-      v35 = [v34 name];
+      peripheral7 = [(ClientService *)self peripheral];
+      name7 = [peripheral7 name];
       *buf = 136315907;
       v140 = v33;
       v141 = 2160;
       *v142 = 1752392040;
       *&v142[8] = 2113;
-      v143 = v35;
+      v143 = name7;
       v144 = 1024;
       *v145 = v132;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: measurementDuration %u", buf, 0x26u);
@@ -1223,7 +1223,7 @@ LABEL_54:
     v36 = qword_1000DDBC8;
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
-      if (v124)
+      if (liveCopy)
       {
         v37 = "Live";
       }
@@ -1233,14 +1233,14 @@ LABEL_54:
         v37 = "Stored";
       }
 
-      v38 = [(ClientService *)self peripheral];
-      v39 = [v38 name];
+      peripheral8 = [(ClientService *)self peripheral];
+      name8 = [peripheral8 name];
       *buf = 136315907;
       v140 = v37;
       v141 = 2160;
       *v142 = 1752392040;
       *&v142[8] = 2113;
-      v143 = v39;
+      v143 = name8;
       v144 = 1024;
       *v145 = v132;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: measurementStatus %u", buf, 0x26u);
@@ -1255,7 +1255,7 @@ LABEL_62:
       v40 = qword_1000DDBC8;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
-        if (v124)
+        if (liveCopy)
         {
           v41 = "Live";
         }
@@ -1265,14 +1265,14 @@ LABEL_62:
           v41 = "Stored";
         }
 
-        v42 = [(ClientService *)self peripheral];
-        v43 = [v42 name];
+        peripheral9 = [(ClientService *)self peripheral];
+        name9 = [peripheral9 name];
         *buf = 136315907;
         v140 = v41;
         v141 = 2160;
         *v142 = 1752392040;
         *&v142[8] = 2113;
-        v143 = v43;
+        v143 = name9;
         v144 = 1024;
         *v145 = v134;
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: observationId %u", buf, 0x26u);
@@ -1286,7 +1286,7 @@ LABEL_69:
     v44 = qword_1000DDBC8;
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
-      if (v124)
+      if (liveCopy)
       {
         v45 = "Live";
       }
@@ -1296,14 +1296,14 @@ LABEL_69:
         v45 = "Stored";
       }
 
-      v46 = [(ClientService *)self peripheral];
-      v47 = [v46 name];
+      peripheral10 = [(ClientService *)self peripheral];
+      name10 = [peripheral10 name];
       *buf = 136315907;
       v140 = v45;
       v141 = 2160;
       *v142 = 1752392040;
       *&v142[8] = 2113;
-      v143 = v47;
+      v143 = name10;
       v144 = 1024;
       *v145 = v133;
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: userId %u", buf, 0x26u);
@@ -1321,7 +1321,7 @@ LABEL_69:
       v49 = qword_1000DDBC8;
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
-        if (v124)
+        if (liveCopy)
         {
           v50 = "Live";
         }
@@ -1331,14 +1331,14 @@ LABEL_69:
           v50 = "Stored";
         }
 
-        v51 = [(ClientService *)self peripheral];
-        v52 = [v51 name];
+        peripheral11 = [(ClientService *)self peripheral];
+        name11 = [peripheral11 name];
         *buf = 136315907;
         v140 = v50;
         v141 = 2160;
         *v142 = 1752392040;
         *&v142[8] = 2113;
-        v143 = v52;
+        v143 = name11;
         v144 = 1024;
         *v145 = v126;
         _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: numOfItems %u", buf, 0x26u);
@@ -1348,7 +1348,7 @@ LABEL_69:
     if (v126)
     {
       v53 = 0;
-      if (v124)
+      if (liveCopy)
       {
         v54 = "Live";
       }
@@ -1365,14 +1365,14 @@ LABEL_69:
           v55 = qword_1000DDBC8;
           if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
           {
-            v56 = [(ClientService *)self peripheral];
-            v57 = [v56 name];
+            peripheral12 = [(ClientService *)self peripheral];
+            name12 = [peripheral12 name];
             *buf = 136315907;
             v140 = v54;
             v141 = 2160;
             *v142 = 1752392040;
             *&v142[8] = 2113;
-            v143 = v57;
+            v143 = name12;
             v144 = 1024;
             *v145 = v132;
             _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: derivedObservationId %u", buf, 0x26u);
@@ -1411,7 +1411,7 @@ LABEL_79:
     v58 = qword_1000DDBC8;
     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
     {
-      if (v124)
+      if (liveCopy)
       {
         v59 = "Live";
       }
@@ -1421,14 +1421,14 @@ LABEL_79:
         v59 = "Stored";
       }
 
-      v60 = [(ClientService *)self peripheral];
-      v61 = [v60 name];
+      peripheral13 = [(ClientService *)self peripheral];
+      name13 = [peripheral13 name];
       *buf = 136315907;
       v140 = v59;
       v141 = 2160;
       *v142 = 1752392040;
       *&v142[8] = 2113;
-      v143 = v61;
+      v143 = name13;
       v144 = 1024;
       *v145 = v126;
       _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: numOfItems %u", buf, 0x26u);
@@ -1438,7 +1438,7 @@ LABEL_79:
   if (v126)
   {
     v62 = 0;
-    if (v124)
+    if (liveCopy)
     {
       v63 = "Live";
     }
@@ -1455,14 +1455,14 @@ LABEL_79:
         v64 = qword_1000DDBC8;
         if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
         {
-          v65 = [(ClientService *)self peripheral];
-          v66 = [v65 name];
+          peripheral14 = [(ClientService *)self peripheral];
+          name14 = [peripheral14 name];
           *buf = 136315907;
           v140 = v63;
           v141 = 2160;
           *v142 = 1752392040;
           *&v142[8] = 2113;
-          v143 = v66;
+          v143 = name14;
           v144 = 1024;
           *v145 = v132;
           _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: derivedObservationId %u", buf, 0x26u);
@@ -1487,7 +1487,7 @@ LABEL_115:
       v67 = qword_1000DDBC8;
       if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
       {
-        if (v124)
+        if (liveCopy)
         {
           v68 = "Live";
         }
@@ -1497,14 +1497,14 @@ LABEL_115:
           v68 = "Stored";
         }
 
-        v69 = [(ClientService *)self peripheral];
-        v70 = [v69 name];
+        peripheral15 = [(ClientService *)self peripheral];
+        name15 = [peripheral15 name];
         *buf = 136315907;
         v140 = v68;
         v141 = 2160;
         *v142 = 1752392040;
         *&v142[8] = 2113;
-        v143 = v70;
+        v143 = name15;
         v144 = 1024;
         *v145 = v126;
         _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: numOfItems %u", buf, 0x26u);
@@ -1514,7 +1514,7 @@ LABEL_115:
     if (v126)
     {
       v71 = 0;
-      if (v124)
+      if (liveCopy)
       {
         v72 = "Live";
       }
@@ -1531,14 +1531,14 @@ LABEL_115:
           v73 = qword_1000DDBC8;
           if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
           {
-            v74 = [(ClientService *)self peripheral];
-            v75 = [v74 name];
+            peripheral16 = [(ClientService *)self peripheral];
+            name16 = [peripheral16 name];
             *buf = 136315907;
             v140 = v72;
             v141 = 2160;
             *v142 = 1752392040;
             *&v142[8] = 2113;
-            v143 = v75;
+            v143 = name16;
             v144 = 1024;
             *v145 = v132;
             _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEFAULT, "%s Health Observation for peripheral %{private, mask.hash}@: IsMemberOfObservationId %u", buf, 0x26u);
@@ -1568,7 +1568,7 @@ LABEL_132:
       v77 = qword_1000DDBC8;
       if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
       {
-        if (v124)
+        if (liveCopy)
         {
           v78 = "Live";
         }
@@ -1578,14 +1578,14 @@ LABEL_132:
           v78 = "Stored";
         }
 
-        v79 = [(ClientService *)self peripheral];
-        v80 = [v79 name];
+        peripheral17 = [(ClientService *)self peripheral];
+        name17 = [peripheral17 name];
         *buf = 136315907;
         v140 = v78;
         v141 = 2160;
         *v142 = 1752392040;
         *&v142[8] = 2113;
-        v143 = v80;
+        v143 = name17;
         v144 = 1024;
         *v145 = v129;
         _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, "%s Health Observation TLVs for peripheral %{private, mask.hash}@: numOfItems %u", buf, 0x26u);
@@ -1595,7 +1595,7 @@ LABEL_132:
     if (v129)
     {
       v81 = 0;
-      if (v124)
+      if (liveCopy)
       {
         v82 = "Live";
       }
@@ -1614,14 +1614,14 @@ LABEL_132:
         v83 = qword_1000DDBC8;
         if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
         {
-          v84 = [(ClientService *)self peripheral];
-          v85 = [v84 name];
+          peripheral18 = [(ClientService *)self peripheral];
+          name18 = [peripheral18 name];
           *buf = 136316419;
           v140 = v82;
           v141 = 2160;
           *v142 = 1752392040;
           *&v142[8] = 2113;
-          v143 = v85;
+          v143 = name18;
           v144 = 1024;
           *v145 = v81;
           *&v145[4] = 1024;
@@ -1642,16 +1642,16 @@ LABEL_132:
 
   if (v138 != 255)
   {
-    v86 = [(GHSService *)self ghsDevice];
-    v87 = v86;
-    if (v124)
+    ghsDevice = [(GHSService *)self ghsDevice];
+    v87 = ghsDevice;
+    if (liveCopy)
     {
-      [v86 handleLiveHealthObservationsData:v4 observationClassType:v138 observationType:v135 userID:v133 observationID:v134 timestamp:v5];
+      [ghsDevice handleLiveHealthObservationsData:v4 observationClassType:v138 observationType:v135 userID:v133 observationID:v134 timestamp:v5];
     }
 
     else
     {
-      [v86 handleStoredHealthObservationsData:v4 observationClassType:v138 observationType:v135 userID:v133 observationID:v134 timestamp:v5];
+      [ghsDevice handleStoredHealthObservationsData:v4 observationClassType:v138 observationType:v135 userID:v133 observationID:v134 timestamp:v5];
     }
 
     goto LABEL_204;
@@ -1663,7 +1663,7 @@ LABEL_132:
     v89 = qword_1000DDBC8;
     if (os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
     {
-      if (v124)
+      if (liveCopy)
       {
         v90 = "Live";
       }
@@ -1673,14 +1673,14 @@ LABEL_132:
         v90 = "Stored";
       }
 
-      v91 = [(ClientService *)self peripheral];
-      v92 = [v91 name];
+      peripheral19 = [(ClientService *)self peripheral];
+      name19 = [peripheral19 name];
       *buf = 136315907;
       v140 = v90;
       v141 = 2160;
       *v142 = 1752392040;
       *&v142[8] = 2113;
-      v143 = v92;
+      v143 = name19;
       v144 = 1024;
       *v145 = v131;
       _os_log_impl(&_mh_execute_header, v89, OS_LOG_TYPE_DEFAULT, "%s Health Observation TLVs for peripheral %{private, mask.hash}@: numOfObservations %u", buf, 0x26u);
@@ -1690,7 +1690,7 @@ LABEL_132:
   if (v131)
   {
     v93 = 0;
-    if (v124)
+    if (liveCopy)
     {
       v94 = "Live";
     }
@@ -1701,7 +1701,7 @@ LABEL_132:
     }
 
     v95 = "live";
-    if (!v124)
+    if (!liveCopy)
     {
       v95 = "stored";
     }
@@ -1720,14 +1720,14 @@ LABEL_132:
         v96 = qword_1000DDBC8;
         if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
         {
-          v97 = [(ClientService *)self peripheral];
-          v98 = [v97 name];
+          peripheral20 = [(ClientService *)self peripheral];
+          name20 = [peripheral20 name];
           *buf = 136316163;
           v140 = v94;
           v141 = 2160;
           *v142 = 1752392040;
           *&v142[8] = 2113;
-          v143 = v98;
+          v143 = name20;
           v144 = 1024;
           *v145 = v93;
           *&v145[4] = 1024;
@@ -1741,14 +1741,14 @@ LABEL_132:
         v99 = qword_1000DDBC8;
         if (os_log_type_enabled(v99, OS_LOG_TYPE_DEFAULT))
         {
-          v100 = [(ClientService *)self peripheral];
-          v101 = [v100 name];
+          peripheral21 = [(ClientService *)self peripheral];
+          name21 = [peripheral21 name];
           *buf = 136316163;
           v140 = v94;
           v141 = 2160;
           *v142 = 1752392040;
           *&v142[8] = 2113;
-          v143 = v101;
+          v143 = name21;
           v144 = 1024;
           *v145 = v93;
           *&v145[4] = 1024;
@@ -1762,14 +1762,14 @@ LABEL_132:
         v102 = qword_1000DDBC8;
         if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
         {
-          v103 = [(ClientService *)self peripheral];
-          v104 = [v103 name];
+          peripheral22 = [(ClientService *)self peripheral];
+          name22 = [peripheral22 name];
           *buf = 136316163;
           v140 = v94;
           v141 = 2160;
           *v142 = 1752392040;
           *&v142[8] = 2113;
-          v143 = v104;
+          v143 = name22;
           v144 = 1024;
           *v145 = v93;
           *&v145[4] = 1024;
@@ -1788,14 +1788,14 @@ LABEL_132:
         v105 = qword_1000DDBC8;
         if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
         {
-          v106 = [(ClientService *)self peripheral];
-          v107 = [v106 name];
+          peripheral23 = [(ClientService *)self peripheral];
+          name23 = [peripheral23 name];
           *buf = 136316163;
           v140 = v94;
           v141 = 2160;
           *v142 = 1752392040;
           *&v142[8] = 2113;
-          v143 = v107;
+          v143 = name23;
           v144 = 1024;
           *v145 = v93;
           *&v145[4] = 1024;
@@ -1816,14 +1816,14 @@ LABEL_184:
           v108 = qword_1000DDBC8;
           if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
           {
-            v109 = [(ClientService *)self peripheral];
-            v110 = [v109 name];
+            peripheral24 = [(ClientService *)self peripheral];
+            name24 = [peripheral24 name];
             *buf = 136316163;
             v140 = v94;
             v141 = 2160;
             *v142 = 1752392040;
             *&v142[8] = 2113;
-            v143 = v110;
+            v143 = name24;
             v144 = 1024;
             *v145 = v93;
             *&v145[4] = 1024;
@@ -1841,14 +1841,14 @@ LABEL_184:
               v112 = qword_1000DDBC8;
               if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
               {
-                v113 = [(ClientService *)self peripheral];
-                v114 = [v113 name];
+                peripheral25 = [(ClientService *)self peripheral];
+                name25 = [peripheral25 name];
                 *buf = 136316163;
                 v140 = v94;
                 v141 = 2160;
                 *v142 = 1752392040;
                 *&v142[8] = 2113;
-                v143 = v114;
+                v143 = name25;
                 v144 = 1024;
                 *v145 = v93;
                 *&v145[4] = 1024;
@@ -1862,16 +1862,16 @@ LABEL_184:
         v5 = v123;
       }
 
-      v115 = [(GHSService *)self ghsDevice];
-      v116 = v115;
-      if (v124)
+      ghsDevice2 = [(GHSService *)self ghsDevice];
+      v116 = ghsDevice2;
+      if (liveCopy)
       {
-        [v115 handleLiveHealthObservationsData:v4 observationClassType:v130 observationType:v132 userID:v133 observationID:v134 timestamp:v5];
+        [ghsDevice2 handleLiveHealthObservationsData:v4 observationClassType:v130 observationType:v132 userID:v133 observationID:v134 timestamp:v5];
       }
 
       else
       {
-        [v115 handleStoredHealthObservationsData:v4 observationClassType:v130 observationType:v132 userID:v133 observationID:v134 timestamp:v5];
+        [ghsDevice2 handleStoredHealthObservationsData:v4 observationClassType:v130 observationType:v132 userID:v133 observationID:v134 timestamp:v5];
       }
 
       if (++v93 >= v131)
@@ -1902,28 +1902,28 @@ LABEL_204:
 
 - (void)extractLiveHealthObservation
 {
-  v3 = [(GHSService *)self liveObservationCharacteristic];
-  v4 = [v3 value];
-  v5 = [DataInputStream inputStreamWithData:v4 byteOrder:1];
+  liveObservationCharacteristic = [(GHSService *)self liveObservationCharacteristic];
+  value = [liveObservationCharacteristic value];
+  v5 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v6 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(ClientService *)self peripheral];
-    v9 = [v8 name];
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
     *buf = 141558531;
     v24 = 1752392040;
     v25 = 2113;
-    v26 = v9;
+    v26 = name;
     v27 = 2112;
     *v28 = v5;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Live Health Observation for peripheral %{private, mask.hash}@: rawDataBytes %@", buf, 0x20u);
   }
 
-  v10 = [(GHSService *)self liveObservationCharacteristic];
-  v11 = [v10 value];
-  v12 = [v11 length];
+  liveObservationCharacteristic2 = [(GHSService *)self liveObservationCharacteristic];
+  value2 = [liveObservationCharacteristic2 value];
+  v12 = [value2 length];
 
   v22 = 0;
   if ([v5 readUint8:&v22])
@@ -1934,9 +1934,9 @@ LABEL_204:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [(ClientService *)self peripheral];
-      v18 = [v17 name];
-      v19 = v18;
+      peripheral2 = [(ClientService *)self peripheral];
+      name2 = [peripheral2 name];
+      v19 = name2;
       v20 = "Y";
       *buf = 141559555;
       v24 = 1752392040;
@@ -1951,7 +1951,7 @@ LABEL_204:
         v21 = "N";
       }
 
-      v26 = v18;
+      v26 = name2;
       if ((v13 & 2) == 0)
       {
         v20 = "N";
@@ -1985,9 +1985,9 @@ LABEL_204:
 
 - (void)extractStoredHealthObservation
 {
-  v3 = [(GHSService *)self storedObservationCharacteristic];
-  v4 = [v3 value];
-  v5 = [DataInputStream inputStreamWithData:v4 byteOrder:1];
+  storedObservationCharacteristic = [(GHSService *)self storedObservationCharacteristic];
+  value = [storedObservationCharacteristic value];
+  v5 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   if (self->_isExtraLoggingEnabled)
   {
@@ -1995,12 +1995,12 @@ LABEL_204:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(ClientService *)self peripheral];
-      v9 = [v8 name];
+      peripheral = [(ClientService *)self peripheral];
+      name = [peripheral name];
       *buf = 141558531;
       v29 = 1752392040;
       v30 = 2113;
-      v31 = v9;
+      v31 = name;
       v32 = 2112;
       *v33 = v5;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Stored Health Observation for peripheral %{private, mask.hash}@: rawDataBytes %@", buf, 0x20u);
@@ -2009,9 +2009,9 @@ LABEL_204:
 
   v27 = 0;
   v26 = 0;
-  v10 = [(GHSService *)self storedObservationCharacteristic];
-  v11 = [v10 value];
-  v12 = [v11 length];
+  storedObservationCharacteristic2 = [(GHSService *)self storedObservationCharacteristic];
+  value2 = [storedObservationCharacteristic2 value];
+  v12 = [value2 length];
 
   if ([v5 readUint8:&v27])
   {
@@ -2020,9 +2020,9 @@ LABEL_204:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(ClientService *)self peripheral];
-      v17 = [v16 name];
-      v18 = v17;
+      peripheral2 = [(ClientService *)self peripheral];
+      name2 = [peripheral2 name];
+      v18 = name2;
       v19 = "Y";
       *buf = 141559299;
       v29 = 1752392040;
@@ -2037,7 +2037,7 @@ LABEL_204:
         v20 = "N";
       }
 
-      v31 = v17;
+      v31 = name2;
       if ((v13 & 2) == 0)
       {
         v19 = "N";
@@ -2062,12 +2062,12 @@ LABEL_204:
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v23 = v22;
-          v24 = [(ClientService *)self peripheral];
-          v25 = [v24 name];
+          peripheral3 = [(ClientService *)self peripheral];
+          name3 = [peripheral3 name];
           *buf = 141558531;
           v29 = 1752392040;
           v30 = 2113;
-          v31 = v25;
+          v31 = name3;
           v32 = 1024;
           *v33 = v26;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Stored Health Observation for peripheral %{private, mask.hash}@: recordNum %u", buf, 0x1Cu);
@@ -2096,9 +2096,9 @@ LABEL_204:
 - (void)extractRACPResponse
 {
   v32 = 0;
-  v3 = [(GHSService *)self racpCharacteristic];
-  v4 = [v3 value];
-  v5 = [DataInputStream inputStreamWithData:v4 byteOrder:1];
+  racpCharacteristic = [(GHSService *)self racpCharacteristic];
+  value = [racpCharacteristic value];
+  v5 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   if (([v5 readUint8:&v32 + 1] & 1) == 0)
   {
@@ -2125,12 +2125,12 @@ LABEL_204:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       v25 = v8;
-      v26 = [(ClientService *)self peripheral];
-      v27 = [v26 name];
+      peripheral = [(ClientService *)self peripheral];
+      name = [peripheral name];
       *buf = 141558787;
       v34 = 1752392040;
       v35 = 2113;
-      v36 = v27;
+      v36 = name;
       v37 = 1024;
       v38 = HIBYTE(v32);
       v39 = 1024;
@@ -2162,12 +2162,12 @@ LABEL_28:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v20 = v19;
-        v21 = [(ClientService *)self peripheral];
-        v22 = [v21 name];
+        peripheral2 = [(ClientService *)self peripheral];
+        name2 = [peripheral2 name];
         *buf = 141558531;
         v34 = 1752392040;
         v35 = 2113;
-        v36 = v22;
+        v36 = name2;
         v37 = 1024;
         v38 = *v31;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "RACP response for peripheral %{private, mask.hash}@: numOfRecord %d", buf, 0x1Cu);
@@ -2190,21 +2190,21 @@ LABEL_28:
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
           {
             v10 = v9;
-            v11 = [(ClientService *)self peripheral];
-            v12 = [v11 name];
+            peripheral3 = [(ClientService *)self peripheral];
+            name3 = [peripheral3 name];
             *buf = 141558531;
             v34 = 1752392040;
             v35 = 2113;
-            v36 = v12;
+            v36 = name3;
             v37 = 1024;
             v38 = *v31;
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "RACP response for peripheral %{private, mask.hash}@: retrieved numOfRecord %d", buf, 0x1Cu);
           }
         }
 
-        v13 = [(ClientService *)self peripheral];
+        peripheral4 = [(ClientService *)self peripheral];
         v14 = [NSString stringWithFormat:@"%d", self->_lastSyncedRecordNum];
-        [v13 setCustomProperty:@"HealthDataSyncLastStoredRecordNumber" value:v14];
+        [peripheral4 setCustomProperty:@"HealthDataSyncLastStoredRecordNumber" value:v14];
 
         goto LABEL_32;
       }
@@ -2224,12 +2224,12 @@ LABEL_28:
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
           {
             v16 = v15;
-            v17 = [(ClientService *)self peripheral];
-            v18 = [v17 name];
+            peripheral5 = [(ClientService *)self peripheral];
+            name4 = [peripheral5 name];
             *buf = 141558787;
             v34 = 1752392040;
             v35 = 2113;
-            v36 = v18;
+            v36 = name4;
             v37 = 1024;
             v38 = v31[0];
             v39 = 1024;
@@ -2240,9 +2240,9 @@ LABEL_28:
 
         else if (self->_currentRACPOpCode == 1)
         {
-          v28 = [(ClientService *)self peripheral];
+          peripheral6 = [(ClientService *)self peripheral];
           v29 = [NSString stringWithFormat:@"%d", self->_lastSyncedRecordNum];
-          [v28 setCustomProperty:@"HealthDataSyncLastStoredRecordNumber" value:v29];
+          [peripheral6 setCustomProperty:@"HealthDataSyncLastStoredRecordNumber" value:v29];
         }
 
         self->_currentRACPOpCode = -1;
@@ -2279,12 +2279,12 @@ LABEL_32:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(ClientService *)self peripheral];
-      v6 = [v5 name];
+      peripheral = [(ClientService *)self peripheral];
+      name = [peripheral name];
       v17 = 141558275;
       v18 = 1752392040;
       v19 = 2113;
-      v20 = v6;
+      v20 = name;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Request last stored observation for peripheral %{private, mask.hash}@", &v17, 0x16u);
     }
 
@@ -2297,14 +2297,14 @@ LABEL_32:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(ClientService *)self peripheral];
-      v11 = [v10 name];
-      v12 = [v7 data];
-      v13 = [v12 length];
+      peripheral2 = [(ClientService *)self peripheral];
+      name2 = [peripheral2 name];
+      data = [v7 data];
+      v13 = [data length];
       v17 = 141558787;
       v18 = 1752392040;
       v19 = 2113;
-      v20 = v11;
+      v20 = name2;
       v21 = 1024;
       v22 = 6;
       v23 = 2048;
@@ -2312,10 +2312,10 @@ LABEL_32:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "RACP Retrieve for peripheral %{private, mask.hash}@ operator: %d | total len: %lu", &v17, 0x26u);
     }
 
-    v14 = [(ClientService *)self peripheral];
-    v15 = [v7 data];
-    v16 = [(GHSService *)self racpCharacteristic];
-    [v14 writeValue:v15 forCharacteristic:v16 type:0];
+    peripheral3 = [(ClientService *)self peripheral];
+    data2 = [v7 data];
+    racpCharacteristic = [(GHSService *)self racpCharacteristic];
+    [peripheral3 writeValue:data2 forCharacteristic:racpCharacteristic type:0];
   }
 }
 
@@ -2341,24 +2341,24 @@ LABEL_32:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(ClientService *)self peripheral];
-      v8 = [v7 name];
-      v9 = [v4 data];
+      peripheral = [(ClientService *)self peripheral];
+      name = [peripheral name];
+      data = [v4 data];
       v13 = 141558787;
       v14 = 1752392040;
       v15 = 2113;
-      v16 = v8;
+      v16 = name;
       v17 = 1024;
       v18 = 1;
       v19 = 2048;
-      v20 = [v9 length];
+      v20 = [data length];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "RACP Delelte for peripheral %{private, mask.hash}@ operator: %d | total len: %lu", &v13, 0x26u);
     }
 
-    v10 = [(ClientService *)self peripheral];
-    v11 = [v4 data];
-    v12 = [(GHSService *)self racpCharacteristic];
-    [v10 writeValue:v11 forCharacteristic:v12 type:0];
+    peripheral2 = [(ClientService *)self peripheral];
+    data2 = [v4 data];
+    racpCharacteristic = [(GHSService *)self racpCharacteristic];
+    [peripheral2 writeValue:data2 forCharacteristic:racpCharacteristic type:0];
   }
 }
 
@@ -2373,33 +2373,33 @@ LABEL_32:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [(ClientService *)self peripheral];
-    v7 = [v6 name];
-    v8 = [v3 data];
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
+    data = [v3 data];
     v12 = 141558787;
     v13 = 1752392040;
     v14 = 2113;
-    v15 = v7;
+    v15 = name;
     v16 = 1024;
     v17 = 0;
     v18 = 2048;
-    v19 = [v8 length];
+    v19 = [data length];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "RACP Abort for peripheral %{private, mask.hash}@ operator: %d | total len: %lu", &v12, 0x26u);
   }
 
-  v9 = [(ClientService *)self peripheral];
-  v10 = [v3 data];
-  v11 = [(GHSService *)self racpCharacteristic];
-  [v9 writeValue:v10 forCharacteristic:v11 type:0];
+  peripheral2 = [(ClientService *)self peripheral];
+  data2 = [v3 data];
+  racpCharacteristic = [(GHSService *)self racpCharacteristic];
+  [peripheral2 writeValue:data2 forCharacteristic:racpCharacteristic type:0];
 }
 
 - (void)extractObservationScheduleChanged
 {
   v11 = 0;
   v10 = 0.0;
-  v3 = [(GHSService *)self observationScheduleChangedCharacteristic];
-  v4 = [v3 value];
-  v5 = [DataInputStream inputStreamWithData:v4 byteOrder:1];
+  observationScheduleChangedCharacteristic = [(GHSService *)self observationScheduleChangedCharacteristic];
+  value = [observationScheduleChangedCharacteristic value];
+  v5 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   [v5 readUint32:&v11 + 4];
   [v5 readIEEEFloat:&v11];
@@ -2408,12 +2408,12 @@ LABEL_32:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(ClientService *)self peripheral];
-    v9 = [v8 name];
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
     *buf = 141559043;
     v13 = 1752392040;
     v14 = 2113;
-    v15 = v9;
+    v15 = name;
     v16 = 1024;
     v17 = HIDWORD(v11);
     v18 = 2048;
@@ -2434,8 +2434,8 @@ LABEL_32:
 
   [(GHSService *)self stop];
   v4 = +[NSNotificationCenter defaultCenter];
-  v5 = [(ClientService *)self peripheral];
-  [v4 postNotificationName:@"PeerDidIdleTimeoutNotification" object:v5];
+  peripheral = [(ClientService *)self peripheral];
+  [v4 postNotificationName:@"PeerDidIdleTimeoutNotification" object:peripheral];
 }
 
 @end

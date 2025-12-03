@@ -1,33 +1,33 @@
 @interface SSAccount
-+ (BOOL)isManagedAppleIDFromAuthenticationResponseDictionary:(id)a3;
-+ (BOOL)isNewCustomerFromAuthenticationResponseDictionary:(id)a3;
-+ (id)DSIDFromAuthenticationResponseDictionary:(id)a3;
-+ (id)_countryCodeFromStorefrontIdentifier:(id)a3;
-+ (id)_valueForFirstAvailableKeyPath:(id)a3 inDictionary:(id)a4;
-+ (id)accountNameFromAuthenticationResponseDictionary:(id)a3;
-+ (id)altDSIDFromAuthenticationResponseDictionary:(id)a3;
-+ (id)creditsStringFromAuthenticationResponseDictionary:(id)a3;
-+ (id)firstNameFromAuthenticationResponseDictionary:(id)a3;
-+ (id)lastNameFromAuthenticationResponseDictionary:(id)a3;
-+ (id)secureTokenForIdentifier:(id)a3;
-+ (id)serverValueForAccountPasswordSettingValue:(int64_t)a3;
-+ (id)storeFrontIdentifierFromURLResponse:(id)a3;
-+ (int64_t)accountKindFromAuthenticationResponseDictionary:(id)a3;
++ (BOOL)isManagedAppleIDFromAuthenticationResponseDictionary:(id)dictionary;
++ (BOOL)isNewCustomerFromAuthenticationResponseDictionary:(id)dictionary;
++ (id)DSIDFromAuthenticationResponseDictionary:(id)dictionary;
++ (id)_countryCodeFromStorefrontIdentifier:(id)identifier;
++ (id)_valueForFirstAvailableKeyPath:(id)path inDictionary:(id)dictionary;
++ (id)accountNameFromAuthenticationResponseDictionary:(id)dictionary;
++ (id)altDSIDFromAuthenticationResponseDictionary:(id)dictionary;
++ (id)creditsStringFromAuthenticationResponseDictionary:(id)dictionary;
++ (id)firstNameFromAuthenticationResponseDictionary:(id)dictionary;
++ (id)lastNameFromAuthenticationResponseDictionary:(id)dictionary;
++ (id)secureTokenForIdentifier:(id)identifier;
++ (id)serverValueForAccountPasswordSettingValue:(int64_t)value;
++ (id)storeFrontIdentifierFromURLResponse:(id)response;
++ (int64_t)accountKindFromAuthenticationResponseDictionary:(id)dictionary;
 - (ACAccount)backingAccount;
 - (BOOL)didFallbackToPassword;
-- (BOOL)displayedServerPromptWithIdentifier:(id)a3;
+- (BOOL)displayedServerPromptWithIdentifier:(id)identifier;
 - (BOOL)hasBrokenDSID;
 - (BOOL)isActive;
 - (BOOL)isActiveLockerAccount;
 - (BOOL)isAuthenticated;
 - (BOOL)isDemoAccount;
 - (BOOL)isDirty;
-- (BOOL)isDuplicate:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isDuplicate:(id)duplicate;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLocalAccount;
 - (BOOL)isManagedAppleID;
 - (BOOL)isNewCustomer;
-- (BOOL)mergeValuesFromAccount:(id)a3;
+- (BOOL)mergeValuesFromAccount:(id)account;
 - (NSArray)automaticDownloadKinds;
 - (NSNumber)uniqueIdentifier;
 - (NSString)accountName;
@@ -37,16 +37,16 @@
 - (NSString)rawPassword;
 - (NSString)secureToken;
 - (SSAccount)init;
-- (SSAccount)initWithBackingAccount:(id)a3;
-- (SSAccount)initWithXPCEncoding:(id)a3;
+- (SSAccount)initWithBackingAccount:(id)account;
+- (SSAccount)initWithXPCEncoding:(id)encoding;
 - (id)_backingAccount;
-- (id)accountPropertyForKey:(id)a3;
+- (id)accountPropertyForKey:(id)key;
 - (id)copyLockdownRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (id)eligibilityForService:(int64_t)a3;
+- (id)eligibilityForService:(int64_t)service;
 - (id)hashedDescription;
-- (id)lastAttemptDateForServerPromptWithIdentifier:(id)a3;
+- (id)lastAttemptDateForServerPromptWithIdentifier:(id)identifier;
 - (id)popBiometricToken;
 - (int64_t)accountKind;
 - (int64_t)accountScope;
@@ -56,45 +56,45 @@
 - (int64_t)freeDownloadsPasswordSetting;
 - (int64_t)paidPurchasesPasswordSetting;
 - (unint64_t)hash;
-- (void)_addAccountPropertyBitmask:(int64_t)a3 forKey:(id)a4;
-- (void)_removeAccountPropertyBitmask:(int64_t)a3 forKey:(id)a4;
-- (void)_sendMessage:(id)a3 withReply:(id)a4;
-- (void)_setAccountProperty:(id)a3 forKey:(id)a4;
-- (void)_setBackingAccount:(id)a3;
-- (void)acceptTermsAndConditions:(id)a3 withCompletionBlock:(id)a4;
-- (void)getDownloadKindsEligibleForContentRestoreWithBlock:(id)a3;
-- (void)getEligibilityForService:(int64_t)a3 completionBlock:(id)a4;
-- (void)getITunesMatchStatusWithCompletionBlock:(id)a3;
-- (void)getKeybagSyncDataWithType:(int64_t)a3 completionHandler:(id)a4;
-- (void)getPurchasedItemsForItems:(id)a3 completionBlock:(id)a4;
-- (void)getTermsAndConditionsWithBlock:(id)a3;
+- (void)_addAccountPropertyBitmask:(int64_t)bitmask forKey:(id)key;
+- (void)_removeAccountPropertyBitmask:(int64_t)bitmask forKey:(id)key;
+- (void)_sendMessage:(id)message withReply:(id)reply;
+- (void)_setAccountProperty:(id)property forKey:(id)key;
+- (void)_setBackingAccount:(id)account;
+- (void)acceptTermsAndConditions:(id)conditions withCompletionBlock:(id)block;
+- (void)getDownloadKindsEligibleForContentRestoreWithBlock:(id)block;
+- (void)getEligibilityForService:(int64_t)service completionBlock:(id)block;
+- (void)getITunesMatchStatusWithCompletionBlock:(id)block;
+- (void)getKeybagSyncDataWithType:(int64_t)type completionHandler:(id)handler;
+- (void)getPurchasedItemsForItems:(id)items completionBlock:(id)block;
+- (void)getTermsAndConditionsWithBlock:(id)block;
 - (void)resetTransientData;
-- (void)setAccountKind:(int64_t)a3;
-- (void)setAccountName:(id)a3;
-- (void)setAccountScope:(int64_t)a3;
-- (void)setAccountSource:(int64_t)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setActiveLockerAccount:(BOOL)a3;
-- (void)setAuthenticated:(BOOL)a3;
-- (void)setAutomaticDownloadKinds:(id)a3;
-- (void)setAvailableServiceTypes:(int64_t)a3;
-- (void)setBiometricToken:(id)a3;
-- (void)setDidFallbackToPassword:(BOOL)a3;
-- (void)setDisplayedServerPrompt:(BOOL)a3 withIdentifier:(id)a4;
-- (void)setEligibility:(id)a3 forServiceType:(int64_t)a4;
-- (void)setEnabledServiceTypes:(int64_t)a3;
-- (void)setFreeDownloadsPasswordSetting:(int64_t)a3;
-- (void)setLastAttemptDate:(id)a3 forServerPromptWithIdentifier:(id)a4;
-- (void)setLockdownDictionary:(id)a3;
-- (void)setManagedAppleID:(BOOL)a3;
-- (void)setNewCustomer:(BOOL)a3;
-- (void)setPaidPurchasesPasswordSetting:(int64_t)a3;
-- (void)setPasswordEquivalentToken:(id)a3;
-- (void)setRawPassword:(id)a3;
-- (void)setSecureToken:(id)a3;
-- (void)setSocialEnabled:(BOOL)a3;
-- (void)setStoreFrontIdentifier:(id)a3 forRequest:(id)a4 response:(id)a5;
-- (void)updateAccountPasswordSettingsWithRequestProperties:(id)a3 completionBlock:(id)a4;
+- (void)setAccountKind:(int64_t)kind;
+- (void)setAccountName:(id)name;
+- (void)setAccountScope:(int64_t)scope;
+- (void)setAccountSource:(int64_t)source;
+- (void)setActive:(BOOL)active;
+- (void)setActiveLockerAccount:(BOOL)account;
+- (void)setAuthenticated:(BOOL)authenticated;
+- (void)setAutomaticDownloadKinds:(id)kinds;
+- (void)setAvailableServiceTypes:(int64_t)types;
+- (void)setBiometricToken:(id)token;
+- (void)setDidFallbackToPassword:(BOOL)password;
+- (void)setDisplayedServerPrompt:(BOOL)prompt withIdentifier:(id)identifier;
+- (void)setEligibility:(id)eligibility forServiceType:(int64_t)type;
+- (void)setEnabledServiceTypes:(int64_t)types;
+- (void)setFreeDownloadsPasswordSetting:(int64_t)setting;
+- (void)setLastAttemptDate:(id)date forServerPromptWithIdentifier:(id)identifier;
+- (void)setLockdownDictionary:(id)dictionary;
+- (void)setManagedAppleID:(BOOL)d;
+- (void)setNewCustomer:(BOOL)customer;
+- (void)setPaidPurchasesPasswordSetting:(int64_t)setting;
+- (void)setPasswordEquivalentToken:(id)token;
+- (void)setRawPassword:(id)password;
+- (void)setSecureToken:(id)token;
+- (void)setSocialEnabled:(BOOL)enabled;
+- (void)setStoreFrontIdentifier:(id)identifier forRequest:(id)request response:(id)response;
+- (void)updateAccountPasswordSettingsWithRequestProperties:(id)properties completionBlock:(id)block;
 @end
 
 @implementation SSAccount
@@ -108,11 +108,11 @@ void __27__SSAccount_isLocalAccount__block_invoke(uint64_t a1)
 
 - (BOOL)hasBrokenDSID
 {
-  v3 = [(SSAccount *)self uniqueIdentifier];
-  if (v3)
+  uniqueIdentifier = [(SSAccount *)self uniqueIdentifier];
+  if (uniqueIdentifier)
   {
-    v4 = [(SSAccount *)self uniqueIdentifier];
-    v5 = [v4 isEqualToNumber:&unk_1F507A120];
+    uniqueIdentifier2 = [(SSAccount *)self uniqueIdentifier];
+    v5 = [uniqueIdentifier2 isEqualToNumber:&unk_1F507A120];
   }
 
   else
@@ -132,8 +132,8 @@ void __27__SSAccount_isLocalAccount__block_invoke(uint64_t a1)
 
   else
   {
-    v4 = [(SSAccount *)self backingAccountAccessQueue];
-    dispatch_assert_queue_not_V2(v4);
+    backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
+    dispatch_assert_queue_not_V2(backingAccountAccessQueue);
 
     v8 = 0;
     v9 = &v8;
@@ -141,14 +141,14 @@ void __27__SSAccount_isLocalAccount__block_invoke(uint64_t a1)
     v11 = __Block_byref_object_copy__15;
     v12 = __Block_byref_object_dispose__15;
     v13 = 0;
-    v5 = [(SSAccount *)self backingAccountAccessQueue];
+    backingAccountAccessQueue2 = [(SSAccount *)self backingAccountAccessQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __29__SSAccount_uniqueIdentifier__block_invoke;
     v7[3] = &unk_1E84ABF40;
     v7[4] = self;
     v7[5] = &v8;
-    dispatch_sync(v5, v7);
+    dispatch_sync(backingAccountAccessQueue2, v7);
 
     v3 = SSAccountGetUniqueIdentifierFromValue(v9[5]);
     _Block_object_dispose(&v8, 8);
@@ -159,44 +159,44 @@ void __27__SSAccount_isLocalAccount__block_invoke(uint64_t a1)
 
 - (BOOL)isLocalAccount
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __27__SSAccount_isLocalAccount__block_invoke;
   v5[3] = &unk_1E84ABF40;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(backingAccountAccessQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isActive
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __21__SSAccount_isActive__block_invoke;
   v5[3] = &unk_1E84ABF40;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(backingAccountAccessQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __21__SSAccount_isActive__block_invoke(uint64_t a1)
@@ -207,8 +207,8 @@ void __21__SSAccount_isActive__block_invoke(uint64_t a1)
 
 - (id)_backingAccount
 {
-  v3 = [(SSAccount *)self backingAccountAccessQueue];
-  dispatch_assert_queue_V2(v3);
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
+  dispatch_assert_queue_V2(backingAccountAccessQueue);
 
   backingAccount = self->_backingAccount;
 
@@ -219,8 +219,8 @@ void __21__SSAccount_isActive__block_invoke(uint64_t a1)
 {
   v3 = objc_alloc(MEMORY[0x1E6959A28]);
   v4 = +[SSAccountStore defaultStore];
-  v5 = [v4 iTunesStoreAccountType];
-  v6 = [v3 initWithAccountType:v5];
+  iTunesStoreAccountType = [v4 iTunesStoreAccountType];
+  v6 = [v3 initWithAccountType:iTunesStoreAccountType];
   v7 = [(SSAccount *)self initWithBackingAccount:v6];
 
   if (v7)
@@ -231,16 +231,16 @@ void __21__SSAccount_isActive__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (SSAccount)initWithBackingAccount:(id)a3
+- (SSAccount)initWithBackingAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v11.receiver = self;
   v11.super_class = SSAccount;
   v6 = [(SSAccount *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingAccount, a3);
+    objc_storeStrong(&v6->_backingAccount, account);
     v8 = dispatch_queue_create("com.apple.StoreServices.SSAccount.backingAccountAccessQueue", MEMORY[0x1E69E96A8]);
     backingAccountAccessQueue = v7->_backingAccountAccessQueue;
     v7->_backingAccountAccessQueue = v8;
@@ -252,9 +252,9 @@ void __21__SSAccount_isActive__block_invoke(uint64_t a1)
 - (int64_t)accountKind
 {
   v2 = [(SSAccount *)self accountPropertyForKey:@"kind"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (NSString)accountName
@@ -265,14 +265,14 @@ void __21__SSAccount_isActive__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __24__SSAccount_accountName__block_invoke;
   v6[3] = &unk_1E84ABF40;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(backingAccountAccessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -298,14 +298,14 @@ void __24__SSAccount_accountName__block_invoke(uint64_t a1)
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 0;
-    v4 = [(SSAccount *)self backingAccountAccessQueue];
+    backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __25__SSAccount_accountScope__block_invoke;
     v8[3] = &unk_1E84ABF40;
     v8[4] = self;
     v8[5] = &v9;
-    dispatch_sync(v4, v8);
+    dispatch_sync(backingAccountAccessQueue, v8);
 
     if (*(v10 + 24))
     {
@@ -321,9 +321,9 @@ void __24__SSAccount_accountName__block_invoke(uint64_t a1)
     _Block_object_dispose(&v9, 8);
   }
 
-  v6 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
 void __25__SSAccount_accountScope__block_invoke(uint64_t a1)
@@ -345,9 +345,9 @@ void __25__SSAccount_accountScope__block_invoke(uint64_t a1)
 - (int64_t)availableServiceTypes
 {
   v2 = [(SSAccount *)self accountPropertyForKey:@"availableServiceTypes"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (ACAccount)backingAccount
@@ -358,14 +358,14 @@ void __25__SSAccount_accountScope__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__SSAccount_backingAccount__block_invoke;
   v6[3] = &unk_1E84ABF40;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(backingAccountAccessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -383,62 +383,62 @@ void __27__SSAccount_backingAccount__block_invoke(uint64_t a1)
 
 - (BOOL)didFallbackToPassword
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __34__SSAccount_didFallbackToPassword__block_invoke;
   v5[3] = &unk_1E84ABF40;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(backingAccountAccessQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)displayedServerPromptWithIdentifier:(id)a3
+- (BOOL)displayedServerPromptWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (SSDebugShouldDisableServerPrompts())
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v6 = [objc_opt_class() _displayedServerPromptKeyWithIdentifier:v4];
+    v6 = [objc_opt_class() _displayedServerPromptKeyWithIdentifier:identifierCopy];
     v7 = [(SSAccount *)self accountPropertyForKey:v6];
-    v5 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)isDirty
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __20__SSAccount_isDirty__block_invoke;
   v5[3] = &unk_1E84ABFD8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(backingAccountAccessQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __20__SSAccount_isDirty__block_invoke(uint64_t a1)
@@ -468,30 +468,30 @@ void __20__SSAccount_isDirty__block_invoke(uint64_t a1)
 - (int64_t)enabledServiceTypes
 {
   v2 = [(SSAccount *)self accountPropertyForKey:@"enabledServiceTypes"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)isAuthenticated
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __28__SSAccount_isAuthenticated__block_invoke;
   v5[3] = &unk_1E84ABF40;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(backingAccountAccessQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __28__SSAccount_isAuthenticated__block_invoke(uint64_t a1)
@@ -500,10 +500,10 @@ void __28__SSAccount_isAuthenticated__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 isAuthenticated];
 }
 
-- (id)lastAttemptDateForServerPromptWithIdentifier:(id)a3
+- (id)lastAttemptDateForServerPromptWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _lastAttemptForServerPromptKeyWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [objc_opt_class() _lastAttemptForServerPromptKeyWithIdentifier:identifierCopy];
 
   v6 = [(SSAccount *)self accountPropertyForKey:v5];
   objc_opt_class();
@@ -524,17 +524,17 @@ void __28__SSAccount_isAuthenticated__block_invoke(uint64_t a1)
 
 - (NSString)localizedName
 {
-  v3 = [(SSAccount *)self firstName];
-  if (v3)
+  firstName = [(SSAccount *)self firstName];
+  if (firstName)
   {
 
 LABEL_4:
     v5 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    v6 = [(SSAccount *)self lastName];
-    [v5 setFamilyName:v6];
+    lastName = [(SSAccount *)self lastName];
+    [v5 setFamilyName:lastName];
 
-    v7 = [(SSAccount *)self firstName];
-    [v5 setGivenName:v7];
+    firstName2 = [(SSAccount *)self firstName];
+    [v5 setGivenName:firstName2];
 
     v8 = objc_alloc_init(MEMORY[0x1E696ADF8]);
     v9 = [v8 stringFromPersonNameComponents:v5];
@@ -542,9 +542,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v4 = [(SSAccount *)self lastName];
+  lastName2 = [(SSAccount *)self lastName];
 
-  if (v4)
+  if (lastName2)
   {
     goto LABEL_4;
   }
@@ -567,67 +567,67 @@ void __29__SSAccount_uniqueIdentifier__block_invoke(uint64_t a1)
 - (int64_t)accountSource
 {
   v2 = [(SSAccount *)self accountPropertyForKey:@"accountSource"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)freeDownloadsPasswordSetting
 {
   v2 = [(SSAccount *)self accountPropertyForKey:@"freeDownloadsPasswordSetting"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)isActiveLockerAccount
 {
   v2 = [(SSAccount *)self accountPropertyForKey:@"isActiveLockerAccount"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isDemoAccount
 {
-  v2 = [(SSAccount *)self backingAccount];
-  v3 = [v2 ams_isDemoAccount];
+  backingAccount = [(SSAccount *)self backingAccount];
+  ams_isDemoAccount = [backingAccount ams_isDemoAccount];
 
-  return v3;
+  return ams_isDemoAccount;
 }
 
-- (BOOL)isDuplicate:(id)a3
+- (BOOL)isDuplicate:(id)duplicate
 {
-  v4 = a3;
-  v5 = [(SSAccount *)self backingAccount];
-  v6 = [v4 backingAccount];
+  duplicateCopy = duplicate;
+  backingAccount = [(SSAccount *)self backingAccount];
+  backingAccount2 = [duplicateCopy backingAccount];
 
-  LOBYTE(v4) = [v5 _ss_isDuplicate:v6];
-  return v4;
+  LOBYTE(duplicateCopy) = [backingAccount _ss_isDuplicate:backingAccount2];
+  return duplicateCopy;
 }
 
 - (BOOL)isManagedAppleID
 {
   v2 = [(SSAccount *)self accountPropertyForKey:@"isManagedAppleID"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isNewCustomer
 {
   v2 = [(SSAccount *)self accountPropertyForKey:@"isNewCustomer"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)paidPurchasesPasswordSetting
 {
   v2 = [(SSAccount *)self accountPropertyForKey:@"paidPurchasesPasswordSetting"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (NSString)passwordEquivalentToken
@@ -638,14 +638,14 @@ void __29__SSAccount_uniqueIdentifier__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__SSAccount_passwordEquivalentToken__block_invoke;
   v6[3] = &unk_1E84ABFD8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(backingAccountAccessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -671,14 +671,14 @@ void __36__SSAccount_passwordEquivalentToken__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __24__SSAccount_rawPassword__block_invoke;
   v6[3] = &unk_1E84ABFD8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(backingAccountAccessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -698,19 +698,19 @@ void __24__SSAccount_rawPassword__block_invoke(uint64_t a1)
 - (NSString)secureToken
 {
   v3 = objc_opt_class();
-  v4 = [(SSAccount *)self backingAccount];
-  v5 = [v4 identifier];
-  v6 = [v3 secureTokenForIdentifier:v5];
+  backingAccount = [(SSAccount *)self backingAccount];
+  identifier = [backingAccount identifier];
+  v6 = [v3 secureTokenForIdentifier:identifier];
 
   return v6;
 }
 
-- (void)setPasswordEquivalentToken:(id)a3
+- (void)setPasswordEquivalentToken:(id)token
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   v5 = SSIsInternalBuild();
-  if (v4 && v5 && ([v4 hasSuffix:@"PET"] & 1) == 0)
+  if (tokenCopy && v5 && ([tokenCopy hasSuffix:@"PET"] & 1) == 0)
   {
     v6 = +[SSLogConfig sharedAccountsAuthenticationConfig];
     if (!v6)
@@ -718,19 +718,19 @@ void __24__SSAccount_rawPassword__block_invoke(uint64_t a1)
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 &= 2u;
     }
@@ -756,15 +756,15 @@ void __24__SSAccount_rawPassword__block_invoke(uint64_t a1)
   }
 
   objc_initWeak(location, self);
-  v18 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__SSAccount_setPasswordEquivalentToken___block_invoke;
   block[3] = &unk_1E84AD870;
   objc_copyWeak(&v23, location);
-  v22 = v4;
-  v19 = v4;
-  dispatch_barrier_async(v18, block);
+  v22 = tokenCopy;
+  v19 = tokenCopy;
+  dispatch_barrier_async(backingAccountAccessQueue, block);
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(location);
@@ -791,12 +791,12 @@ void __40__SSAccount_setPasswordEquivalentToken___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setRawPassword:(id)a3
+- (void)setRawPassword:(id)password
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passwordCopy = password;
   v5 = SSIsInternalBuild();
-  if (v4 && v5 && [v4 hasSuffix:@"PET"])
+  if (passwordCopy && v5 && [passwordCopy hasSuffix:@"PET"])
   {
     v6 = +[SSLogConfig sharedAccountsAuthenticationConfig];
     if (!v6)
@@ -804,19 +804,19 @@ void __40__SSAccount_setPasswordEquivalentToken___block_invoke(uint64_t a1)
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 &= 2u;
     }
@@ -842,15 +842,15 @@ void __40__SSAccount_setPasswordEquivalentToken___block_invoke(uint64_t a1)
   }
 
   objc_initWeak(location, self);
-  v18 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __28__SSAccount_setRawPassword___block_invoke;
   block[3] = &unk_1E84AD870;
   objc_copyWeak(&v23, location);
-  v22 = v4;
-  v19 = v4;
-  dispatch_barrier_async(v18, block);
+  v22 = passwordCopy;
+  v19 = passwordCopy;
+  dispatch_barrier_async(backingAccountAccessQueue, block);
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(location);
@@ -877,25 +877,25 @@ void __28__SSAccount_setRawPassword___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAccountKind:(int64_t)a3
+- (void)setAccountKind:(int64_t)kind
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:kind];
   [(SSAccount *)self _setAccountProperty:v4 forKey:@"kind"];
 }
 
-- (void)setAccountName:(id)a3
+- (void)setAccountName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   objc_initWeak(&location, self);
-  v5 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __28__SSAccount_setAccountName___block_invoke;
   block[3] = &unk_1E84AD870;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, block);
+  v8 = nameCopy;
+  v6 = nameCopy;
+  dispatch_barrier_async(backingAccountAccessQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -915,20 +915,20 @@ void __28__SSAccount_setAccountName___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAccountScope:(int64_t)a3
+- (void)setAccountScope:(int64_t)scope
 {
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   [(SSAccount *)self _setAccountProperty:v5 forKey:@"scope"];
 
-  if (a3 == 1)
+  if (scope == 1)
   {
-    v6 = [(SSAccount *)self backingAccountAccessQueue];
+    backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __29__SSAccount_setAccountScope___block_invoke;
     block[3] = &unk_1E84AC050;
     block[4] = self;
-    dispatch_barrier_sync(v6, block);
+    dispatch_barrier_sync(backingAccountAccessQueue, block);
   }
 }
 
@@ -941,23 +941,23 @@ void __29__SSAccount_setAccountScope___block_invoke(uint64_t a1)
   [v3 setAccountType:v4];
 }
 
-- (void)setAccountSource:(int64_t)a3
+- (void)setAccountSource:(int64_t)source
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:source];
   [(SSAccount *)self _setAccountProperty:v4 forKey:@"accountSource"];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   objc_initWeak(&location, self);
-  v5 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __23__SSAccount_setActive___block_invoke;
   block[3] = &unk_1E84AE238;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
-  dispatch_barrier_async(v5, block);
+  activeCopy = active;
+  dispatch_barrier_async(backingAccountAccessQueue, block);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -977,23 +977,23 @@ void __23__SSAccount_setActive___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setActiveLockerAccount:(BOOL)a3
+- (void)setActiveLockerAccount:(BOOL)account
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:account];
   [(SSAccount *)self _setAccountProperty:v4 forKey:@"isActiveLockerAccount"];
 }
 
-- (void)setAuthenticated:(BOOL)a3
+- (void)setAuthenticated:(BOOL)authenticated
 {
   objc_initWeak(&location, self);
-  v5 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __30__SSAccount_setAuthenticated___block_invoke;
   block[3] = &unk_1E84AE238;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
-  dispatch_barrier_async(v5, block);
+  authenticatedCopy = authenticated;
+  dispatch_barrier_async(backingAccountAccessQueue, block);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -1013,87 +1013,87 @@ void __30__SSAccount_setAuthenticated___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAutomaticDownloadKinds:(id)a3
+- (void)setAutomaticDownloadKinds:(id)kinds
 {
-  v4 = [a3 copy];
+  v4 = [kinds copy];
   [(SSAccount *)self _setAccountProperty:v4 forKey:@"automaticDownloadKinds"];
 }
 
-- (void)setAvailableServiceTypes:(int64_t)a3
+- (void)setAvailableServiceTypes:(int64_t)types
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:types];
   [(SSAccount *)self _setAccountProperty:v4 forKey:@"availableServiceTypes"];
 }
 
-- (void)setDidFallbackToPassword:(BOOL)a3
+- (void)setDidFallbackToPassword:(BOOL)password
 {
-  v5 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__SSAccount_setDidFallbackToPassword___block_invoke;
   v6[3] = &unk_1E84AD070;
   v6[4] = self;
-  v7 = a3;
-  dispatch_barrier_async(v5, v6);
+  passwordCopy = password;
+  dispatch_barrier_async(backingAccountAccessQueue, v6);
 }
 
-- (void)setDisplayedServerPrompt:(BOOL)a3 withIdentifier:(id)a4
+- (void)setDisplayedServerPrompt:(BOOL)prompt withIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = a4;
-  v8 = [objc_opt_class() _displayedServerPromptKeyWithIdentifier:v6];
+  promptCopy = prompt;
+  identifierCopy = identifier;
+  v8 = [objc_opt_class() _displayedServerPromptKeyWithIdentifier:identifierCopy];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:promptCopy];
   [(SSAccount *)self _setAccountProperty:v7 forKey:v8];
 }
 
-- (void)setEnabledServiceTypes:(int64_t)a3
+- (void)setEnabledServiceTypes:(int64_t)types
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:types];
   [(SSAccount *)self _setAccountProperty:v4 forKey:@"enabledServiceTypes"];
 }
 
-- (void)setFreeDownloadsPasswordSetting:(int64_t)a3
+- (void)setFreeDownloadsPasswordSetting:(int64_t)setting
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:setting];
   [(SSAccount *)self _setAccountProperty:v4 forKey:@"freeDownloadsPasswordSetting"];
 }
 
-- (void)setLastAttemptDate:(id)a3 forServerPromptWithIdentifier:(id)a4
+- (void)setLastAttemptDate:(id)date forServerPromptWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _lastAttemptForServerPromptKeyWithIdentifier:v6];
+  identifierCopy = identifier;
+  dateCopy = date;
+  v8 = [objc_opt_class() _lastAttemptForServerPromptKeyWithIdentifier:identifierCopy];
 
-  [(SSAccount *)self _setAccountProperty:v7 forKey:v8];
+  [(SSAccount *)self _setAccountProperty:dateCopy forKey:v8];
 }
 
-- (void)setManagedAppleID:(BOOL)a3
+- (void)setManagedAppleID:(BOOL)d
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:d];
   [(SSAccount *)self _setAccountProperty:v4 forKey:@"isManagedAppleID"];
 }
 
-- (void)setNewCustomer:(BOOL)a3
+- (void)setNewCustomer:(BOOL)customer
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:customer];
   [(SSAccount *)self _setAccountProperty:v4 forKey:@"isNewCustomer"];
 }
 
-- (void)setPaidPurchasesPasswordSetting:(int64_t)a3
+- (void)setPaidPurchasesPasswordSetting:(int64_t)setting
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:setting];
   [(SSAccount *)self _setAccountProperty:v4 forKey:@"paidPurchasesPasswordSetting"];
 }
 
-- (void)setSecureToken:(id)a3
+- (void)setSecureToken:(id)token
 {
   v73 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SSAccount *)self backingAccount];
-  v6 = [v5 identifier];
+  tokenCopy = token;
+  backingAccount = [(SSAccount *)self backingAccount];
+  identifier = [backingAccount identifier];
 
-  v7 = [v6 length];
+  v7 = [identifier length];
   v8 = +[SSLogConfig sharedAccountsAuthenticationConfig];
   v9 = v8;
   if (v7)
@@ -1103,19 +1103,19 @@ void __30__SSAccount_setAuthenticated___block_invoke(uint64_t a1)
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 &= 2u;
     }
@@ -1125,7 +1125,7 @@ void __30__SSAccount_setAuthenticated___block_invoke(uint64_t a1)
       *result = 138543618;
       *&result[4] = objc_opt_class();
       v71 = 2112;
-      v72 = v6;
+      v72 = identifier;
       v13 = *&result[4];
       LODWORD(v68) = 22;
       v67 = result;
@@ -1136,44 +1136,44 @@ void __30__SSAccount_setAuthenticated___block_invoke(uint64_t a1)
         goto LABEL_13;
       }
 
-      v12 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, result, v68}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, result, v68}];
       free(v14);
-      SSFileLog(v9, @"%@", v15, v16, v17, v18, v19, v20, v12);
+      SSFileLog(v9, @"%@", v15, v16, v17, v18, v19, v20, oSLogObject);
     }
 
 LABEL_13:
     v21 = *MEMORY[0x1E695E480];
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, 0);
-    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], v6);
+    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], identifier);
     CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AE88], @"com.apple.itunesstored.token");
     CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AFF8], *MEMORY[0x1E697B008]);
-    v9 = [v4 dataUsingEncoding:4];
-    v23 = [(SSAccount *)self secureToken];
-    v24 = v23;
-    if (v23)
+    v9 = [tokenCopy dataUsingEncoding:4];
+    secureToken = [(SSAccount *)self secureToken];
+    v24 = secureToken;
+    if (secureToken)
     {
-      if (([v23 isEqualToString:v4] & 1) == 0)
+      if (([secureToken isEqualToString:tokenCopy] & 1) == 0)
       {
-        v69 = v4;
+        v69 = tokenCopy;
         v25 = +[SSLogConfig sharedAccountsAuthenticationConfig];
         if (!v25)
         {
           v25 = +[SSLogConfig sharedConfig];
         }
 
-        v26 = [v25 shouldLog];
+        shouldLog2 = [v25 shouldLog];
         if ([v25 shouldLogToDisk])
         {
-          v27 = v26 | 2;
+          v27 = shouldLog2 | 2;
         }
 
         else
         {
-          v27 = v26;
+          v27 = shouldLog2;
         }
 
-        v28 = [v25 OSLogObject];
-        if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+        oSLogObject2 = [v25 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
         {
           v29 = v27;
         }
@@ -1192,7 +1192,7 @@ LABEL_13:
           LODWORD(v68) = 12;
           v32 = _os_log_send_and_compose_impl();
 
-          v4 = v69;
+          tokenCopy = v69;
           if (!v32)
           {
 LABEL_52:
@@ -1205,14 +1205,14 @@ LABEL_52:
             goto LABEL_53;
           }
 
-          v28 = [MEMORY[0x1E696AEC0] stringWithCString:v32 encoding:{4, result, v68}];
+          oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v32 encoding:{4, result, v68}];
           free(v32);
-          SSFileLog(v25, @"%@", v33, v34, v35, v36, v37, v38, v28);
+          SSFileLog(v25, @"%@", v33, v34, v35, v36, v37, v38, oSLogObject2);
         }
 
         else
         {
-          v4 = v69;
+          tokenCopy = v69;
         }
 
         goto LABEL_52;
@@ -1230,19 +1230,19 @@ LABEL_53:
       v51 = +[SSLogConfig sharedConfig];
     }
 
-    v52 = [v51 shouldLog];
+    shouldLog3 = [v51 shouldLog];
     if ([v51 shouldLogToDisk])
     {
-      v53 = v52 | 2;
+      v53 = shouldLog3 | 2;
     }
 
     else
     {
-      v53 = v52;
+      v53 = shouldLog3;
     }
 
-    v54 = [v51 OSLogObject];
-    if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v51 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v55 = v53;
     }
@@ -1257,12 +1257,12 @@ LABEL_53:
       v56 = objc_opt_class();
       *result = 138543362;
       *&result[4] = v56;
-      v57 = v4;
+      v57 = tokenCopy;
       v58 = v56;
       LODWORD(v68) = 12;
       v59 = _os_log_send_and_compose_impl();
 
-      v4 = v57;
+      tokenCopy = v57;
       if (!v59)
       {
 LABEL_48:
@@ -1274,9 +1274,9 @@ LABEL_48:
         goto LABEL_53;
       }
 
-      v54 = [MEMORY[0x1E696AEC0] stringWithCString:v59 encoding:{4, result, v68}];
+      oSLogObject3 = [MEMORY[0x1E696AEC0] stringWithCString:v59 encoding:{4, result, v68}];
       free(v59);
-      SSFileLog(v51, @"%@", v60, v61, v62, v63, v64, v65, v54);
+      SSFileLog(v51, @"%@", v60, v61, v62, v63, v64, v65, oSLogObject3);
     }
 
     goto LABEL_48;
@@ -1287,21 +1287,21 @@ LABEL_48:
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v39 = [v9 shouldLog];
+  shouldLog4 = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v39 |= 2u;
+    shouldLog4 |= 2u;
   }
 
-  v40 = [v9 OSLogObject];
-  if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
+  oSLogObject4 = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
   {
-    v41 = v39;
+    v41 = shouldLog4;
   }
 
   else
   {
-    v41 = v39 & 2;
+    v41 = shouldLog4 & 2;
   }
 
   if (v41)
@@ -1327,9 +1327,9 @@ LABEL_48:
 LABEL_54:
 }
 
-- (void)setSocialEnabled:(BOOL)a3
+- (void)setSocialEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     [(SSAccount *)self _addAccountPropertyBitmask:1 forKey:@"enabledServiceTypes"];
   }
@@ -1340,18 +1340,18 @@ LABEL_54:
   }
 }
 
-- (void)setStoreFrontIdentifier:(id)a3 forRequest:(id)a4 response:(id)a5
+- (void)setStoreFrontIdentifier:(id)identifier forRequest:(id)request response:(id)response
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [(SSAccount *)self accountPropertyForKey:@"storefrontID"];
   if (v7 && +[SSDevice deviceIsInternalBuild]&& ![(SSAccount *)self isLocalAccount])
   {
-    if (v6)
+    if (identifierCopy)
     {
       v8 = [objc_opt_class() _countryCodeFromStorefrontIdentifier:v7];
-      v9 = [objc_opt_class() _countryCodeFromStorefrontIdentifier:v6];
-      if (([v8 isEqualToString:v9] & 1) == 0)
+      oSLogObject2 = [objc_opt_class() _countryCodeFromStorefrontIdentifier:identifierCopy];
+      if (([v8 isEqualToString:oSLogObject2] & 1) == 0)
       {
         v10 = +[SSLogConfig sharedAccountsStorefrontConfig];
         if (!v10)
@@ -1359,19 +1359,19 @@ LABEL_54:
           v10 = +[SSLogConfig sharedConfig];
         }
 
-        v11 = [v10 shouldLog];
+        shouldLog = [v10 shouldLog];
         if ([v10 shouldLogToDisk])
         {
-          v12 = v11 | 2;
+          v12 = shouldLog | 2;
         }
 
         else
         {
-          v12 = v11;
+          v12 = shouldLog;
         }
 
-        v13 = [v10 OSLogObject];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v10 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v14 = v12;
         }
@@ -1386,10 +1386,10 @@ LABEL_54:
           v15 = objc_opt_class();
           v45 = v15;
           [(SSAccount *)self hashedDescription];
-          v42 = v44 = v9;
+          v42 = v44 = oSLogObject2;
           SSHashIfNeeded(v7);
-          v16 = v43 = v13;
-          v17 = SSHashIfNeeded(v6);
+          v16 = v43 = oSLogObject;
+          v17 = SSHashIfNeeded(identifierCopy);
           +[SSStackShot generateSymbolicatedStackShot];
           v46 = 138544386;
           v47 = v15;
@@ -1405,7 +1405,7 @@ LABEL_54:
           v40 = &v46;
           v19 = _os_log_send_and_compose_impl();
 
-          v9 = v44;
+          oSLogObject2 = v44;
           if (!v19)
           {
 LABEL_18:
@@ -1413,9 +1413,9 @@ LABEL_18:
             goto LABEL_30;
           }
 
-          v13 = [MEMORY[0x1E696AEC0] stringWithCString:v19 encoding:{4, &v46, v41}];
+          oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v19 encoding:{4, &v46, v41}];
           free(v19);
-          SSFileLog(v10, @"%@", v20, v21, v22, v23, v24, v25, v13);
+          SSFileLog(v10, @"%@", v20, v21, v22, v23, v24, v25, oSLogObject);
         }
 
         goto LABEL_18;
@@ -1430,19 +1430,19 @@ LABEL_18:
         v8 = +[SSLogConfig sharedConfig];
       }
 
-      v26 = [v8 shouldLog];
+      shouldLog2 = [v8 shouldLog];
       if ([v8 shouldLogToDisk])
       {
-        v27 = v26 | 2;
+        v27 = shouldLog2 | 2;
       }
 
       else
       {
-        v27 = v26;
+        v27 = shouldLog2;
       }
 
-      v9 = [v8 OSLogObject];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v8 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v28 = v27;
       }
@@ -1456,12 +1456,12 @@ LABEL_18:
       {
         v29 = objc_opt_class();
         v30 = v29;
-        v31 = [(SSAccount *)self hashedDescription];
+        hashedDescription = [(SSAccount *)self hashedDescription];
         v32 = +[SSStackShot generateSymbolicatedStackShot];
         v46 = 138543874;
         v47 = v29;
         v48 = 2114;
-        v49 = v31;
+        v49 = hashedDescription;
         v50 = 2114;
         v51 = v32;
         LODWORD(v41) = 32;
@@ -1475,9 +1475,9 @@ LABEL_31:
           goto LABEL_32;
         }
 
-        v9 = [MEMORY[0x1E696AEC0] stringWithCString:v33 encoding:{4, &v46, v41}];
+        oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v33 encoding:{4, &v46, v41}];
         free(v33);
-        SSFileLog(v8, @"%@", v34, v35, v36, v37, v38, v39, v9);
+        SSFileLog(v8, @"%@", v34, v35, v36, v37, v38, v39, oSLogObject2);
       }
     }
 
@@ -1487,21 +1487,21 @@ LABEL_30:
   }
 
 LABEL_32:
-  [(SSAccount *)self _setAccountProperty:v6 forKey:@"storefrontID", v40];
+  [(SSAccount *)self _setAccountProperty:identifierCopy forKey:@"storefrontID", v40];
 }
 
 - (id)copyXPCEncoding
 {
   v3 = xpc_dictionary_create(0, 0, 0);
-  v4 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __28__SSAccount_copyXPCEncoding__block_invoke;
   v8[3] = &unk_1E84AC028;
   v5 = v3;
   v9 = v5;
-  v10 = self;
-  dispatch_sync(v4, v8);
+  selfCopy = self;
+  dispatch_sync(backingAccountAccessQueue, v8);
 
   v6 = v5;
   return v6;
@@ -1514,11 +1514,11 @@ void __28__SSAccount_copyXPCEncoding__block_invoke(uint64_t a1)
   SSXPCDictionarySetObject(v1, "0", v2);
 }
 
-- (SSAccount)initWithXPCEncoding:(id)a3
+- (SSAccount)initWithXPCEncoding:(id)encoding
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5 || MEMORY[0x1DA6E0380](v5) != MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v6 = encodingCopy;
+  if (!encodingCopy || MEMORY[0x1DA6E0380](encodingCopy) != MEMORY[0x1E69E9E80])
   {
     [(SSAccount *)a2 initWithXPCEncoding:?];
   }
@@ -1535,19 +1535,19 @@ void __28__SSAccount_copyXPCEncoding__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SSAccount *)self backingAccountAccessQueue];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __26__SSAccount_copyWithZone___block_invoke;
   block[3] = &unk_1E84AD6E0;
   block[4] = self;
-  v13 = a3;
+  zoneCopy = zone;
   v7 = v5;
   v12 = v7;
-  dispatch_sync(v6, block);
+  dispatch_sync(backingAccountAccessQueue, block);
 
   v8 = v12;
   v9 = v7;
@@ -1586,12 +1586,12 @@ void __26__SSAccount_copyWithZone___block_invoke(uint64_t a1)
 
   else
   {
-    v15 = [(SSAccount *)self altDSID];
-    v6 = [(SSAccount *)self uniqueIdentifier];
-    v7 = [(SSAccount *)self accountName];
-    v8 = [(SSAccount *)self backingAccount];
-    v9 = [v8 identifier];
-    v10 = [(SSAccount *)self accountScope];
+    altDSID = [(SSAccount *)self altDSID];
+    uniqueIdentifier = [(SSAccount *)self uniqueIdentifier];
+    accountName = [(SSAccount *)self accountName];
+    backingAccount = [(SSAccount *)self backingAccount];
+    identifier = [backingAccount identifier];
+    accountScope = [(SSAccount *)self accountScope];
     if ([(SSAccount *)self isActive])
     {
       v11 = @"YES";
@@ -1612,100 +1612,100 @@ void __26__SSAccount_copyWithZone___block_invoke(uint64_t a1)
       v12 = @"NO";
     }
 
-    [v5 appendFormat:@" altDSID = %@ | DSID = %@ | username = %@ | backingIdentifier = %@ | scope = %ld | active = %@ | authenticated = %@", v15, v6, v7, v9, v10, v11, v12];
+    [v5 appendFormat:@" altDSID = %@ | DSID = %@ | username = %@ | backingIdentifier = %@ | scope = %ld | active = %@ | authenticated = %@", altDSID, uniqueIdentifier, accountName, identifier, accountScope, v11, v12];
   }
 
-  v13 = [(SSAccount *)self storeFrontIdentifier];
-  [v5 appendFormat:@" | storefront = %@>", v13];
+  storeFrontIdentifier = [(SSAccount *)self storeFrontIdentifier];
+  [v5 appendFormat:@" | storefront = %@>", storeFrontIdentifier];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(SSAccount *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(SSAccount *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
   {
     goto LABEL_2;
   }
 
-  if (-[SSAccount isLocalAccount](self, "isLocalAccount") && ([v4 isLocalAccount] & 1) != 0)
+  if (-[SSAccount isLocalAccount](self, "isLocalAccount") && ([equalCopy isLocalAccount] & 1) != 0)
   {
     v6 = 1;
     goto LABEL_3;
   }
 
-  v8 = [(SSAccount *)self altDSID];
-  if (v8)
+  altDSID = [(SSAccount *)self altDSID];
+  if (altDSID)
   {
     v9 = 1;
   }
 
   else
   {
-    v10 = [v4 altDSID];
-    v9 = v10 != 0;
+    altDSID2 = [equalCopy altDSID];
+    v9 = altDSID2 != 0;
   }
 
-  v11 = [(SSAccount *)self uniqueIdentifier];
-  if (v11)
+  uniqueIdentifier = [(SSAccount *)self uniqueIdentifier];
+  if (uniqueIdentifier)
   {
-    v12 = 1;
-  }
-
-  else
-  {
-    v13 = [v4 uniqueIdentifier];
-    v14 = v13 != 0;
-
-    v12 = v14 | v9;
-  }
-
-  v15 = [(SSAccount *)self accountName];
-  if (v15)
-  {
+    identifier = 1;
   }
 
   else
   {
-    v16 = [v4 accountName];
-    v17 = (v16 != 0) | v12;
+    uniqueIdentifier2 = [equalCopy uniqueIdentifier];
+    v14 = uniqueIdentifier2 != 0;
+
+    identifier = v14 | v9;
+  }
+
+  accountName = [(SSAccount *)self accountName];
+  if (accountName)
+  {
+  }
+
+  else
+  {
+    accountName2 = [equalCopy accountName];
+    v17 = (accountName2 != 0) | identifier;
 
     if ((v17 & 1) == 0)
     {
-      v23 = [(SSAccount *)self backingAccount];
-      v12 = [v23 identifier];
-      v24 = [v4 backingAccount];
-      v25 = [v24 identifier];
-      v6 = [v12 isEqualToString:v25];
+      backingAccount = [(SSAccount *)self backingAccount];
+      identifier = [backingAccount identifier];
+      backingAccount2 = [equalCopy backingAccount];
+      identifier2 = [backingAccount2 identifier];
+      v6 = [identifier isEqualToString:identifier2];
 
       goto LABEL_23;
     }
   }
 
-  v18 = [(SSAccount *)self accountScope];
-  if (v18 != [v4 accountScope])
+  accountScope = [(SSAccount *)self accountScope];
+  if (accountScope != [equalCopy accountScope])
   {
     goto LABEL_2;
   }
 
-  v19 = [(SSAccount *)self altDSID];
-  if (v19 || ([v4 altDSID], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  altDSID3 = [(SSAccount *)self altDSID];
+  if (altDSID3 || ([equalCopy altDSID], (identifier = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v20 = [(SSAccount *)self altDSID];
-    v21 = [v4 altDSID];
-    v22 = [v20 isEqual:v21];
+    altDSID4 = [(SSAccount *)self altDSID];
+    altDSID5 = [equalCopy altDSID];
+    v22 = [altDSID4 isEqual:altDSID5];
 
-    if (v19)
+    if (altDSID3)
     {
 
       if (!v22)
@@ -1724,21 +1724,21 @@ void __26__SSAccount_copyWithZone___block_invoke(uint64_t a1)
     }
   }
 
-  v26 = [(SSAccount *)self uniqueIdentifier];
-  if (!v26)
+  uniqueIdentifier3 = [(SSAccount *)self uniqueIdentifier];
+  if (!uniqueIdentifier3)
   {
-    v12 = [v4 uniqueIdentifier];
-    if (!v12)
+    identifier = [equalCopy uniqueIdentifier];
+    if (!identifier)
     {
 LABEL_31:
-      v23 = [(SSAccount *)self accountName];
-      if (v23 || ([v4 accountName], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+      backingAccount = [(SSAccount *)self accountName];
+      if (backingAccount || ([equalCopy accountName], (identifier = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v30 = [(SSAccount *)self accountName];
-        v31 = [v4 accountName];
-        v6 = [v30 isEqual:v31];
+        accountName3 = [(SSAccount *)self accountName];
+        accountName4 = [equalCopy accountName];
+        v6 = [accountName3 isEqual:accountName4];
 
-        if (v23)
+        if (backingAccount)
         {
           goto LABEL_34;
         }
@@ -1756,11 +1756,11 @@ LABEL_34:
     }
   }
 
-  v27 = [(SSAccount *)self uniqueIdentifier];
-  v28 = [v4 uniqueIdentifier];
-  v29 = [v27 isEqual:v28];
+  uniqueIdentifier4 = [(SSAccount *)self uniqueIdentifier];
+  uniqueIdentifier5 = [equalCopy uniqueIdentifier];
+  v29 = [uniqueIdentifier4 isEqual:uniqueIdentifier5];
 
-  if (!v26)
+  if (!uniqueIdentifier3)
   {
 
     if ((v29 & 1) == 0)
@@ -1783,18 +1783,18 @@ LABEL_3:
   return v6;
 }
 
-- (void)acceptTermsAndConditions:(id)a3 withCompletionBlock:(id)a4
+- (void)acceptTermsAndConditions:(id)conditions withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  conditionsCopy = conditions;
   v8 = objc_alloc_init(SSMutableURLRequestProperties);
   [(SSMutableURLRequestProperties *)v8 setITunesStoreRequest:1];
   [(SSMutableURLRequestProperties *)v8 setURLBagKey:@"terms-check"];
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v10 = MEMORY[0x1E696AD98];
-  v11 = [v7 currentVersionIdentifier];
+  currentVersionIdentifier = [conditionsCopy currentVersionIdentifier];
 
-  v12 = [v10 numberWithLongLong:v11];
+  v12 = [v10 numberWithLongLong:currentVersionIdentifier];
   [v9 setObject:v12 forKey:@"accepted"];
 
   v13 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v9 options:0 error:0];
@@ -1808,8 +1808,8 @@ LABEL_3:
   v17[1] = 3221225472;
   v17[2] = __58__SSAccount_acceptTermsAndConditions_withCompletionBlock___block_invoke;
   v17[3] = &unk_1E84AE260;
-  v18 = v6;
-  v16 = v6;
+  v18 = blockCopy;
+  v16 = blockCopy;
   [(SSURLConnectionRequest *)v14 startWithConnectionResponseBlock:v17];
 }
 
@@ -1841,35 +1841,35 @@ void __58__SSAccount_acceptTermsAndConditions_withCompletionBlock___block_invoke
   }
 }
 
-- (id)eligibilityForService:(int64_t)a3
+- (id)eligibilityForService:(int64_t)service
 {
   v4 = [(SSAccount *)self accountPropertyForKey:@"eligibleServices"];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  service = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", service];
+  v6 = [v4 objectForKeyedSubscript:service];
 
   return v6;
 }
 
-- (void)getDownloadKindsEligibleForContentRestoreWithBlock:(id)a3
+- (void)getDownloadKindsEligibleForContentRestoreWithBlock:(id)block
 {
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil completionBlock"];
   }
 
   v5 = objc_alloc_init(SSURLBagContext);
   [(SSURLBagContext *)v5 setBagType:SSURLBagTypeForAccountScope([(SSAccount *)self accountScope])];
-  v6 = [(SSAccount *)self uniqueIdentifier];
-  [(SSURLBagContext *)v5 setUserIdentifier:v6];
+  uniqueIdentifier = [(SSAccount *)self uniqueIdentifier];
+  [(SSURLBagContext *)v5 setUserIdentifier:uniqueIdentifier];
 
   v7 = [[SSURLBag alloc] initWithURLBagContext:v5];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__SSAccount_getDownloadKindsEligibleForContentRestoreWithBlock___block_invoke;
   v9[3] = &unk_1E84AE288;
-  v10 = v4;
-  v8 = v4;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [(SSURLBag *)v7 loadValueForKey:@"p2-content-restore" completionBlock:v9];
 }
 
@@ -1893,9 +1893,9 @@ LABEL_5:
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getEligibilityForService:(int64_t)a3 completionBlock:(id)a4
+- (void)getEligibilityForService:(int64_t)service completionBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = objc_alloc_init(SSVSubscriptionStatusRequest);
   [(SSVSubscriptionStatusRequest *)v6 setCarrierBundleProvisioningStyle:0];
   v7 = [[SSAuthenticationContext alloc] initWithAccount:self];
@@ -1908,7 +1908,7 @@ LABEL_5:
   v9[1] = 3221225472;
   v9[2] = __54__SSAccount_getEligibilityForService_completionBlock___block_invoke;
   v9[3] = &unk_1E84AE2B0;
-  v8 = v5;
+  v8 = blockCopy;
   v10 = v8;
   v11 = v12;
   [(SSVSubscriptionStatusRequest *)v6 startWithStatusResponseBlock:v9];
@@ -1947,11 +1947,11 @@ LABEL_10:
   }
 }
 
-- (void)getPurchasedItemsForItems:(id)a3 completionBlock:(id)a4
+- (void)getPurchasedItemsForItems:(id)items completionBlock:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  itemsCopy = items;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -1960,19 +1960,19 @@ LABEL_10:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v12 = v10;
     }
@@ -1996,23 +1996,23 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v27, v24}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v27, v24}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
   }
 
 LABEL_16:
-  if (!v6)
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil completionBlock"];
   }
 
   v20 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v20, "0", 67);
-  SSXPCDictionarySetObject(v20, "2", v7);
+  SSXPCDictionarySetObject(v20, "2", itemsCopy);
 
   v21 = [[SSAuthenticationContext alloc] initWithAccount:self];
   SSXPCDictionarySetObject(v20, "1", v21);
@@ -2021,8 +2021,8 @@ LABEL_16:
   v25[1] = 3221225472;
   v25[2] = __55__SSAccount_getPurchasedItemsForItems_completionBlock___block_invoke;
   v25[3] = &unk_1E84AE2D8;
-  v26 = v6;
-  v23 = v6;
+  v26 = blockCopy;
+  v23 = blockCopy;
   [(SSXPCConnection *)v22 sendMessage:v20 withReply:v25];
 }
 
@@ -2073,9 +2073,9 @@ LABEL_7:
   dispatch_async(v8, block);
 }
 
-- (void)getTermsAndConditionsWithBlock:(id)a3
+- (void)getTermsAndConditionsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(SSMutableURLRequestProperties);
   [(SSMutableURLRequestProperties *)v5 setITunesStoreRequest:1];
   [(SSMutableURLRequestProperties *)v5 setURLBagKey:@"terms-check"];
@@ -2086,8 +2086,8 @@ LABEL_7:
   v9[1] = 3221225472;
   v9[2] = __44__SSAccount_getTermsAndConditionsWithBlock___block_invoke;
   v9[3] = &unk_1E84AE260;
-  v10 = v4;
-  v8 = v4;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [(SSURLConnectionRequest *)v6 startWithConnectionResponseBlock:v9];
 }
 
@@ -2119,17 +2119,17 @@ void __44__SSAccount_getTermsAndConditionsWithBlock___block_invoke(uint64_t a1, 
   }
 }
 
-+ (int64_t)accountKindFromAuthenticationResponseDictionary:(id)a3
++ (int64_t)accountKindFromAuthenticationResponseDictionary:(id)dictionary
 {
-  v3 = [a3 valueForKeyPath:@"accountInfo.accountKind"];
+  v3 = [dictionary valueForKeyPath:@"accountInfo.accountKind"];
   v4 = (objc_opt_respondsToSelector() & 1) != 0 && [v3 intValue] == 1;
 
   return v4;
 }
 
-+ (id)accountNameFromAuthenticationResponseDictionary:(id)a3
++ (id)accountNameFromAuthenticationResponseDictionary:(id)dictionary
 {
-  v3 = [a1 _valueForFirstAvailableKeyPath:&unk_1F507A2D0 inDictionary:a3];
+  v3 = [self _valueForFirstAvailableKeyPath:&unk_1F507A2D0 inDictionary:dictionary];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2146,11 +2146,11 @@ void __44__SSAccount_getTermsAndConditionsWithBlock___block_invoke(uint64_t a1, 
   return v4;
 }
 
-- (id)accountPropertyForKey:(id)a3
+- (id)accountPropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SSAccount *)self backingAccountAccessQueue];
-  dispatch_assert_queue_not_V2(v5);
+  keyCopy = key;
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
+  dispatch_assert_queue_not_V2(backingAccountAccessQueue);
 
   v13 = 0;
   v14 = &v13;
@@ -2158,16 +2158,16 @@ void __44__SSAccount_getTermsAndConditionsWithBlock___block_invoke(uint64_t a1, 
   v16 = __Block_byref_object_copy__15;
   v17 = __Block_byref_object_dispose__15;
   v18 = 0;
-  v6 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue2 = [(SSAccount *)self backingAccountAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__SSAccount_accountPropertyForKey___block_invoke;
   block[3] = &unk_1E84ABF90;
-  v11 = v4;
+  v11 = keyCopy;
   v12 = &v13;
   block[4] = self;
-  v7 = v4;
-  dispatch_sync(v6, block);
+  v7 = keyCopy;
+  dispatch_sync(backingAccountAccessQueue2, block);
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -2184,9 +2184,9 @@ void __35__SSAccount_accountPropertyForKey___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-+ (id)altDSIDFromAuthenticationResponseDictionary:(id)a3
++ (id)altDSIDFromAuthenticationResponseDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"altDsPersonId"];
+  v3 = [dictionary objectForKeyedSubscript:@"altDsPersonId"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2203,9 +2203,9 @@ void __35__SSAccount_accountPropertyForKey___block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)creditsStringFromAuthenticationResponseDictionary:(id)a3
++ (id)creditsStringFromAuthenticationResponseDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"creditDisplay"];
+  v3 = [dictionary objectForKeyedSubscript:@"creditDisplay"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2222,9 +2222,9 @@ void __35__SSAccount_accountPropertyForKey___block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)DSIDFromAuthenticationResponseDictionary:(id)a3
++ (id)DSIDFromAuthenticationResponseDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"dsPersonId"];
+  v3 = [dictionary objectForKeyedSubscript:@"dsPersonId"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2239,9 +2239,9 @@ void __35__SSAccount_accountPropertyForKey___block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)firstNameFromAuthenticationResponseDictionary:(id)a3
++ (id)firstNameFromAuthenticationResponseDictionary:(id)dictionary
 {
-  v3 = [a3 valueForKeyPath:@"accountInfo.address.firstName"];
+  v3 = [dictionary valueForKeyPath:@"accountInfo.address.firstName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2258,10 +2258,10 @@ void __35__SSAccount_accountPropertyForKey___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)getITunesMatchStatusWithCompletionBlock:(id)a3
+- (void)getITunesMatchStatusWithCompletionBlock:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -2270,19 +2270,19 @@ void __35__SSAccount_accountPropertyForKey___block_invoke(uint64_t a1)
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v9 = v7;
     }
@@ -2306,9 +2306,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v24, v21}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v24, v21}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -2317,15 +2317,15 @@ LABEL_15:
 LABEL_16:
   v17 = [[SSXPCConnection alloc] initWithServiceName:@"com.apple.itunesstored.xpc"];
   v18 = SSXPCCreateMessageDictionary(130);
-  v19 = [(SSAccount *)self uniqueIdentifier];
-  SSXPCDictionarySetObject(v18, "1", v19);
+  uniqueIdentifier = [(SSAccount *)self uniqueIdentifier];
+  SSXPCDictionarySetObject(v18, "1", uniqueIdentifier);
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __53__SSAccount_getITunesMatchStatusWithCompletionBlock___block_invoke;
   v22[3] = &unk_1E84AE2D8;
-  v23 = v4;
-  v20 = v4;
+  v23 = blockCopy;
+  v20 = blockCopy;
   [(SSXPCConnection *)v17 sendMessage:v18 withReply:v22];
 }
 
@@ -2361,10 +2361,10 @@ LABEL_7:
   }
 }
 
-- (void)getKeybagSyncDataWithType:(int64_t)a3 completionHandler:(id)a4
+- (void)getKeybagSyncDataWithType:(int64_t)type completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v7 = +[SSLogConfig sharedStoreServicesConfig];
@@ -2373,19 +2373,19 @@ LABEL_7:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v11 = v9;
     }
@@ -2409,9 +2409,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v10 = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v26, v23}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v26, v23}];
       free(v12);
-      SSFileLog(v7, @"%@", v13, v14, v15, v16, v17, v18, v10);
+      SSFileLog(v7, @"%@", v13, v14, v15, v16, v17, v18, oSLogObject);
     }
 
     goto LABEL_15;
@@ -2419,17 +2419,17 @@ LABEL_15:
 
 LABEL_16:
   v19 = SSXPCCreateMessageDictionary(139);
-  xpc_dictionary_set_int64(v19, "1", a3);
-  v20 = [(SSAccount *)self uniqueIdentifier];
-  SSXPCDictionarySetObject(v19, "2", v20);
+  xpc_dictionary_set_int64(v19, "1", type);
+  uniqueIdentifier = [(SSAccount *)self uniqueIdentifier];
+  SSXPCDictionarySetObject(v19, "2", uniqueIdentifier);
 
   v21 = [[SSXPCConnection alloc] initWithServiceName:@"com.apple.itunesstored.xpc"];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __57__SSAccount_getKeybagSyncDataWithType_completionHandler___block_invoke;
   v24[3] = &unk_1E84AE2D8;
-  v25 = v6;
-  v22 = v6;
+  v25 = handlerCopy;
+  v22 = handlerCopy;
   [(SSXPCConnection *)v21 sendMessage:v19 withReply:v24];
 }
 
@@ -2481,16 +2481,16 @@ void __57__SSAccount_getKeybagSyncDataWithType_completionHandler___block_invoke(
 
   else
   {
-    v20 = [(SSAccount *)self altDSID];
-    v17 = SSHashIfNeeded(v20);
-    v19 = [(SSAccount *)self uniqueIdentifier];
-    v18 = [v19 stringValue];
-    v16 = SSHashIfNeeded(v18);
-    v6 = [(SSAccount *)self accountName];
-    v7 = SSHashIfNeeded(v6);
-    v8 = [(SSAccount *)self backingAccount];
-    v9 = [v8 identifier];
-    v10 = [(SSAccount *)self accountScope];
+    altDSID = [(SSAccount *)self altDSID];
+    v17 = SSHashIfNeeded(altDSID);
+    uniqueIdentifier = [(SSAccount *)self uniqueIdentifier];
+    stringValue = [uniqueIdentifier stringValue];
+    v16 = SSHashIfNeeded(stringValue);
+    accountName = [(SSAccount *)self accountName];
+    v7 = SSHashIfNeeded(accountName);
+    backingAccount = [(SSAccount *)self backingAccount];
+    identifier = [backingAccount identifier];
+    accountScope = [(SSAccount *)self accountScope];
     if ([(SSAccount *)self isActive])
     {
       v11 = @"YES";
@@ -2511,51 +2511,51 @@ void __57__SSAccount_getKeybagSyncDataWithType_completionHandler___block_invoke(
       v12 = @"NO";
     }
 
-    [v5 appendFormat:@" altDSID = %@ | DSID = %@ | username = %@ | backingIdentifier = %@ | scope = %ld | active = %@ | authenticated = %@", v17, v16, v7, v9, v10, v11, v12];
+    [v5 appendFormat:@" altDSID = %@ | DSID = %@ | username = %@ | backingIdentifier = %@ | scope = %ld | active = %@ | authenticated = %@", v17, v16, v7, identifier, accountScope, v11, v12];
   }
 
-  v13 = [(SSAccount *)self storeFrontIdentifier];
-  v14 = SSHashIfNeeded(v13);
+  storeFrontIdentifier = [(SSAccount *)self storeFrontIdentifier];
+  v14 = SSHashIfNeeded(storeFrontIdentifier);
   [v5 appendFormat:@" | storefront = %@>", v14];
 
   return v5;
 }
 
-+ (BOOL)isManagedAppleIDFromAuthenticationResponseDictionary:(id)a3
++ (BOOL)isManagedAppleIDFromAuthenticationResponseDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"isManagedStudent"];
+  v3 = [dictionary objectForKeyedSubscript:@"isManagedStudent"];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (BOOL)isNewCustomerFromAuthenticationResponseDictionary:(id)a3
++ (BOOL)isNewCustomerFromAuthenticationResponseDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"newCustomer"];
+  v3 = [dictionary objectForKeyedSubscript:@"newCustomer"];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)lastNameFromAuthenticationResponseDictionary:(id)a3
++ (id)lastNameFromAuthenticationResponseDictionary:(id)dictionary
 {
-  v3 = [a3 valueForKeyPath:@"accountInfo.address.lastName"];
+  v3 = [dictionary valueForKeyPath:@"accountInfo.address.lastName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2592,19 +2592,19 @@ void __57__SSAccount_getKeybagSyncDataWithType_completionHandler___block_invoke(
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 &= 2u;
     }
@@ -2613,11 +2613,11 @@ void __57__SSAccount_getKeybagSyncDataWithType_completionHandler___block_invoke(
     {
       v10 = objc_opt_class();
       v11 = v10;
-      v12 = [(SSAccount *)self hashedDescription];
+      hashedDescription = [(SSAccount *)self hashedDescription];
       v22 = 138543874;
       v23 = v10;
       v24 = 2114;
-      v25 = v12;
+      v25 = hashedDescription;
       v26 = 2114;
       v27 = v5;
       LODWORD(v20) = 32;
@@ -2630,9 +2630,9 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v9 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v22, v20}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v22, v20}];
       free(v13);
-      SSFileLog(v6, @"%@", v14, v15, v16, v17, v18, v19, v9);
+      SSFileLog(v6, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_13;
@@ -2641,11 +2641,11 @@ LABEL_13:
 LABEL_14:
 }
 
-+ (id)secureTokenForIdentifier:(id)a3
++ (id)secureTokenForIdentifier:(id)identifier
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     v17 = +[SSLogConfig sharedAccountsAuthenticationConfig];
     if (!v17)
@@ -2653,19 +2653,19 @@ LABEL_14:
       v17 = +[SSLogConfig sharedConfig];
     }
 
-    v18 = [v17 shouldLog];
+    shouldLog = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v19 = v18 | 2;
+      v19 = shouldLog | 2;
     }
 
     else
     {
-      v19 = v18;
+      v19 = shouldLog;
     }
 
-    v20 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v19 &= 2u;
     }
@@ -2686,16 +2686,16 @@ LABEL_24:
         goto LABEL_39;
       }
 
-      v20 = [MEMORY[0x1E696AEC0] stringWithCString:v22 encoding:{4, &v42, v40}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v22 encoding:{4, &v42, v40}];
       free(v22);
-      SSFileLog(v17, @"%@", v23, v24, v25, v26, v27, v28, v20);
+      SSFileLog(v17, @"%@", v23, v24, v25, v26, v27, v28, oSLogObject);
     }
 
     goto LABEL_24;
   }
 
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, 0);
-  CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], v3);
+  CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], identifierCopy);
   CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AE88], @"com.apple.itunesstored.token");
   CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AFF8], *MEMORY[0x1E697B008]);
   CFDictionaryAddValue(Mutable, *MEMORY[0x1E697B318], *MEMORY[0x1E695E4D0]);
@@ -2710,19 +2710,19 @@ LABEL_24:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog2 = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog2 | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog2;
     }
 
-    v10 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v7 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v9 &= 2u;
     }
@@ -2751,9 +2751,9 @@ LABEL_24:
     }
 
 LABEL_35:
-    v10 = [MEMORY[0x1E696AEC0] stringWithCString:v15 encoding:{4, &v42, v40}];
+    oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v15 encoding:{4, &v42, v40}];
     free(v15);
-    SSFileLog(v7, @"%@", v33, v34, v35, v36, v37, v38, v10);
+    SSFileLog(v7, @"%@", v33, v34, v35, v36, v37, v38, oSLogObject2);
 LABEL_37:
 
     goto LABEL_38;
@@ -2766,19 +2766,19 @@ LABEL_37:
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v29 = [v7 shouldLog];
+  shouldLog3 = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v30 = v29 | 2;
+    v30 = shouldLog3 | 2;
   }
 
   else
   {
-    v30 = v29;
+    v30 = shouldLog3;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v7 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v30 &= 2u;
   }
@@ -2808,20 +2808,20 @@ LABEL_39:
   return v16;
 }
 
-- (void)setEligibility:(id)a3 forServiceType:(int64_t)a4
+- (void)setEligibility:(id)eligibility forServiceType:(int64_t)type
 {
-  v6 = a3;
+  eligibilityCopy = eligibility;
   objc_initWeak(&location, self);
-  v7 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__SSAccount_setEligibility_forServiceType___block_invoke;
   v9[3] = &unk_1E84AE300;
   objc_copyWeak(v11, &location);
-  v11[1] = a4;
-  v10 = v6;
-  v8 = v6;
-  dispatch_barrier_async(v7, v9);
+  v11[1] = type;
+  v10 = eligibilityCopy;
+  v8 = eligibilityCopy;
+  dispatch_barrier_async(backingAccountAccessQueue, v9);
 
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
@@ -2866,19 +2866,19 @@ void __43__SSAccount_setEligibility_forServiceType___block_invoke(uint64_t a1)
   [v8 setAccountProperty:v5 forKey:@"eligibleServices"];
 }
 
-+ (id)storeFrontIdentifierFromURLResponse:(id)a3
++ (id)storeFrontIdentifierFromURLResponse:(id)response
 {
   v12[4] = *MEMORY[0x1E69E9840];
   v12[0] = @"X-Set-Apple-Store-Front";
-  v4 = a3;
-  v5 = [@"X-Set-Apple-Store-Front" lowercaseString];
-  v12[1] = v5;
+  responseCopy = response;
+  lowercaseString = [@"X-Set-Apple-Store-Front" lowercaseString];
+  v12[1] = lowercaseString;
   v12[2] = @"X-Apple-Request-Store-Front";
   v12[3] = @"x-apple-request-store-front";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:4];
-  v7 = [v4 allHeaderFields];
+  allHeaderFields = [responseCopy allHeaderFields];
 
-  v8 = [a1 _valueForFirstAvailableKeyPath:v6 inDictionary:v7];
+  v8 = [self _valueForFirstAvailableKeyPath:v6 inDictionary:allHeaderFields];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2899,59 +2899,59 @@ void __43__SSAccount_setEligibility_forServiceType___block_invoke(uint64_t a1)
 - (id)copyLockdownRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(SSAccount *)self altDSID];
-  if (v4)
+  altDSID = [(SSAccount *)self altDSID];
+  if (altDSID)
   {
-    [v3 setObject:v4 forKey:@"AltDSID"];
+    [v3 setObject:altDSID forKey:@"AltDSID"];
   }
 
-  v5 = [(SSAccount *)self creditsString];
+  creditsString = [(SSAccount *)self creditsString];
 
-  if (v5)
+  if (creditsString)
   {
-    [v3 setObject:v5 forKey:@"CreditDisplayString"];
+    [v3 setObject:creditsString forKey:@"CreditDisplayString"];
   }
 
-  v6 = [(SSAccount *)self uniqueIdentifier];
+  uniqueIdentifier = [(SSAccount *)self uniqueIdentifier];
 
-  if (v6)
+  if (uniqueIdentifier)
   {
-    [v3 setObject:v6 forKey:@"DSPersonID"];
+    [v3 setObject:uniqueIdentifier forKey:@"DSPersonID"];
   }
 
-  v7 = [(SSAccount *)self accountName];
+  accountName = [(SSAccount *)self accountName];
 
-  if (v7)
+  if (accountName)
   {
-    [v3 setObject:v7 forKey:@"AppleID"];
+    [v3 setObject:accountName forKey:@"AppleID"];
   }
 
-  v8 = [(SSAccount *)self ITunesPassSerialNumber];
+  iTunesPassSerialNumber = [(SSAccount *)self ITunesPassSerialNumber];
 
-  if (v8)
+  if (iTunesPassSerialNumber)
   {
-    [v3 setObject:v8 forKey:@"AccountITunesPassSerial"];
+    [v3 setObject:iTunesPassSerialNumber forKey:@"AccountITunesPassSerial"];
   }
 
-  v9 = [(SSAccount *)self storeFrontIdentifier];
+  storeFrontIdentifier = [(SSAccount *)self storeFrontIdentifier];
 
-  if (v9)
+  if (storeFrontIdentifier)
   {
-    [v3 setObject:v9 forKey:@"AccountStoreFront"];
+    [v3 setObject:storeFrontIdentifier forKey:@"AccountStoreFront"];
   }
 
-  v10 = [(SSAccount *)self firstName];
+  firstName = [(SSAccount *)self firstName];
 
-  if (v10)
+  if (firstName)
   {
-    [v3 setObject:v10 forKey:@"FirstName"];
+    [v3 setObject:firstName forKey:@"FirstName"];
   }
 
-  v11 = [(SSAccount *)self lastName];
+  lastName = [(SSAccount *)self lastName];
 
-  if (v11)
+  if (lastName)
   {
-    [v3 setObject:v11 forKey:@"LastName"];
+    [v3 setObject:lastName forKey:@"LastName"];
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:{-[SSAccount accountKind](self, "accountKind")}];
@@ -3003,7 +3003,7 @@ void __43__SSAccount_setEligibility_forServiceType___block_invoke(uint64_t a1)
   v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[SSAccount isManagedAppleID](self, "isManagedAppleID")}];
   [v3 setObject:v22 forKey:@"AccountIsManagedAppleID"];
 
-  v23 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __39__SSAccount_copyLockdownRepresentation__block_invoke;
@@ -3011,7 +3011,7 @@ void __43__SSAccount_setEligibility_forServiceType___block_invoke(uint64_t a1)
   v28[4] = self;
   v24 = v3;
   v29 = v24;
-  dispatch_sync(v23, v28);
+  dispatch_sync(backingAccountAccessQueue, v28);
 
   v25 = v29;
   v26 = v24;
@@ -3043,24 +3043,24 @@ void __39__SSAccount_copyLockdownRepresentation__block_invoke_2(uint64_t a1, voi
   }
 }
 
-- (BOOL)mergeValuesFromAccount:(id)a3
+- (BOOL)mergeValuesFromAccount:(id)account
 {
   v449 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 creditsString];
-  v442 = v4;
-  if (v5)
+  accountCopy = account;
+  creditsString = [accountCopy creditsString];
+  v442 = accountCopy;
+  if (creditsString)
   {
-    v6 = [(SSAccount *)self creditsString];
-    v7 = v6;
-    if (v5 == v6)
+    creditsString2 = [(SSAccount *)self creditsString];
+    v7 = creditsString2;
+    if (creditsString == creditsString2)
     {
     }
 
     else
     {
-      v8 = [(SSAccount *)self creditsString];
-      v9 = [v5 isEqual:v8];
+      creditsString3 = [(SSAccount *)self creditsString];
+      v9 = [creditsString isEqual:creditsString3];
 
       if ((v9 & 1) == 0)
       {
@@ -3070,19 +3070,19 @@ void __39__SSAccount_copyLockdownRepresentation__block_invoke_2(uint64_t a1, voi
           v10 = +[SSLogConfig sharedConfig];
         }
 
-        v11 = [v10 shouldLog];
+        shouldLog = [v10 shouldLog];
         if ([v10 shouldLogToDisk])
         {
-          v12 = v11 | 2;
+          v12 = shouldLog | 2;
         }
 
         else
         {
-          v12 = v11;
+          v12 = shouldLog;
         }
 
-        v13 = [v10 OSLogObject];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        oSLogObject = [v10 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
         {
           v14 = v12;
         }
@@ -3095,10 +3095,10 @@ void __39__SSAccount_copyLockdownRepresentation__block_invoke_2(uint64_t a1, voi
         if (v14)
         {
           v15 = objc_opt_class();
-          v16 = [(SSAccount *)self accountName];
-          v17 = SSHashIfNeeded(v16);
-          v18 = [v4 accountName];
-          v19 = SSHashIfNeeded(v18);
+          accountName = [(SSAccount *)self accountName];
+          v17 = SSHashIfNeeded(accountName);
+          accountName2 = [accountCopy accountName];
+          v19 = SSHashIfNeeded(accountName2);
           v443 = 138543874;
           v444 = v15;
           v445 = 2114;
@@ -3109,19 +3109,19 @@ void __39__SSAccount_copyLockdownRepresentation__block_invoke_2(uint64_t a1, voi
           v421 = &v443;
           v20 = _os_log_send_and_compose_impl();
 
-          v4 = v442;
+          accountCopy = v442;
           if (!v20)
           {
 LABEL_16:
 
-            [(SSAccount *)self setCreditsString:v5];
+            [(SSAccount *)self setCreditsString:creditsString];
             v27 = 1;
             goto LABEL_19;
           }
 
-          v13 = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v443, v440}];
+          oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v443, v440}];
           free(v20);
-          SSFileLog(v10, @"%@", v21, v22, v23, v24, v25, v26, v13);
+          SSFileLog(v10, @"%@", v21, v22, v23, v24, v25, v26, oSLogObject);
         }
 
         goto LABEL_16;
@@ -3131,19 +3131,19 @@ LABEL_16:
 
   v27 = 0;
 LABEL_19:
-  v28 = [v4 uniqueIdentifier];
+  uniqueIdentifier = [accountCopy uniqueIdentifier];
 
-  if (!v28)
+  if (!uniqueIdentifier)
   {
     goto LABEL_36;
   }
 
-  v29 = [(SSAccount *)self uniqueIdentifier];
-  v30 = v29;
-  if (v28 != v29)
+  uniqueIdentifier2 = [(SSAccount *)self uniqueIdentifier];
+  v30 = uniqueIdentifier2;
+  if (uniqueIdentifier != uniqueIdentifier2)
   {
-    v31 = [(SSAccount *)self uniqueIdentifier];
-    v32 = [v28 isEqual:v31];
+    uniqueIdentifier3 = [(SSAccount *)self uniqueIdentifier];
+    v32 = [uniqueIdentifier isEqual:uniqueIdentifier3];
 
     if (v32)
     {
@@ -3156,19 +3156,19 @@ LABEL_19:
       v33 = +[SSLogConfig sharedConfig];
     }
 
-    v34 = [v33 shouldLog];
+    shouldLog2 = [v33 shouldLog];
     if ([v33 shouldLogToDisk])
     {
-      v35 = v34 | 2;
+      v35 = shouldLog2 | 2;
     }
 
     else
     {
-      v35 = v34;
+      v35 = shouldLog2;
     }
 
-    v36 = [v33 OSLogObject];
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v33 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v37 = v35;
     }
@@ -3181,10 +3181,10 @@ LABEL_19:
     if (v37)
     {
       v38 = objc_opt_class();
-      v39 = [(SSAccount *)self accountName];
-      v40 = SSHashIfNeeded(v39);
-      v41 = [v4 accountName];
-      v42 = SSHashIfNeeded(v41);
+      accountName3 = [(SSAccount *)self accountName];
+      v40 = SSHashIfNeeded(accountName3);
+      accountName4 = [accountCopy accountName];
+      v42 = SSHashIfNeeded(accountName4);
       v443 = 138543874;
       v444 = v38;
       v445 = 2114;
@@ -3195,38 +3195,38 @@ LABEL_19:
       v422 = &v443;
       v43 = _os_log_send_and_compose_impl();
 
-      v4 = v442;
+      accountCopy = v442;
       if (!v43)
       {
 LABEL_34:
 
-        [(SSAccount *)self setUniqueIdentifier:v28];
+        [(SSAccount *)self setUniqueIdentifier:uniqueIdentifier];
         v27 = 1;
         goto LABEL_36;
       }
 
-      v36 = [MEMORY[0x1E696AEC0] stringWithCString:v43 encoding:{4, &v443, v440}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v43 encoding:{4, &v443, v440}];
       free(v43);
-      SSFileLog(v33, @"%@", v44, v45, v46, v47, v48, v49, v36);
+      SSFileLog(v33, @"%@", v44, v45, v46, v47, v48, v49, oSLogObject2);
     }
 
     goto LABEL_34;
   }
 
 LABEL_36:
-  v50 = [v4 accountName];
+  accountName5 = [accountCopy accountName];
 
-  if (!v50)
+  if (!accountName5)
   {
     goto LABEL_53;
   }
 
-  v51 = [(SSAccount *)self accountName];
-  v52 = v51;
-  if (v50 != v51)
+  accountName6 = [(SSAccount *)self accountName];
+  v52 = accountName6;
+  if (accountName5 != accountName6)
   {
-    v53 = [(SSAccount *)self accountName];
-    v54 = [v50 isEqual:v53];
+    accountName7 = [(SSAccount *)self accountName];
+    v54 = [accountName5 isEqual:accountName7];
 
     if (v54)
     {
@@ -3239,19 +3239,19 @@ LABEL_36:
       v55 = +[SSLogConfig sharedConfig];
     }
 
-    v56 = [v55 shouldLog];
+    shouldLog3 = [v55 shouldLog];
     if ([v55 shouldLogToDisk])
     {
-      v57 = v56 | 2;
+      v57 = shouldLog3 | 2;
     }
 
     else
     {
-      v57 = v56;
+      v57 = shouldLog3;
     }
 
-    v58 = [v55 OSLogObject];
-    if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v55 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v59 = v57;
     }
@@ -3264,10 +3264,10 @@ LABEL_36:
     if (v59)
     {
       v60 = objc_opt_class();
-      v61 = [(SSAccount *)self accountName];
-      v62 = SSHashIfNeeded(v61);
-      v63 = [v4 accountName];
-      v64 = SSHashIfNeeded(v63);
+      accountName8 = [(SSAccount *)self accountName];
+      v62 = SSHashIfNeeded(accountName8);
+      accountName9 = [accountCopy accountName];
+      v64 = SSHashIfNeeded(accountName9);
       v443 = 138543874;
       v444 = v60;
       v445 = 2114;
@@ -3278,38 +3278,38 @@ LABEL_36:
       v423 = &v443;
       v65 = _os_log_send_and_compose_impl();
 
-      v4 = v442;
+      accountCopy = v442;
       if (!v65)
       {
 LABEL_51:
 
-        [(SSAccount *)self setAccountName:v50];
+        [(SSAccount *)self setAccountName:accountName5];
         v27 = 1;
         goto LABEL_53;
       }
 
-      v58 = [MEMORY[0x1E696AEC0] stringWithCString:v65 encoding:{4, &v443, v440}];
+      oSLogObject3 = [MEMORY[0x1E696AEC0] stringWithCString:v65 encoding:{4, &v443, v440}];
       free(v65);
-      SSFileLog(v55, @"%@", v66, v67, v68, v69, v70, v71, v58);
+      SSFileLog(v55, @"%@", v66, v67, v68, v69, v70, v71, oSLogObject3);
     }
 
     goto LABEL_51;
   }
 
 LABEL_53:
-  v72 = [v4 altDSID];
+  altDSID = [accountCopy altDSID];
 
-  if (!v72)
+  if (!altDSID)
   {
     goto LABEL_70;
   }
 
-  v73 = [(SSAccount *)self altDSID];
-  v74 = v73;
-  if (v72 != v73)
+  altDSID2 = [(SSAccount *)self altDSID];
+  v74 = altDSID2;
+  if (altDSID != altDSID2)
   {
-    v75 = [(SSAccount *)self altDSID];
-    v76 = [v72 isEqual:v75];
+    altDSID3 = [(SSAccount *)self altDSID];
+    v76 = [altDSID isEqual:altDSID3];
 
     if (v76)
     {
@@ -3322,19 +3322,19 @@ LABEL_53:
       v77 = +[SSLogConfig sharedConfig];
     }
 
-    v78 = [v77 shouldLog];
+    shouldLog4 = [v77 shouldLog];
     if ([v77 shouldLogToDisk])
     {
-      v79 = v78 | 2;
+      v79 = shouldLog4 | 2;
     }
 
     else
     {
-      v79 = v78;
+      v79 = shouldLog4;
     }
 
-    v80 = [v77 OSLogObject];
-    if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
+    oSLogObject4 = [v77 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
       v81 = v79;
     }
@@ -3347,10 +3347,10 @@ LABEL_53:
     if (v81)
     {
       v82 = objc_opt_class();
-      v83 = [(SSAccount *)self accountName];
-      v84 = SSHashIfNeeded(v83);
-      v85 = [v4 accountName];
-      v86 = SSHashIfNeeded(v85);
+      accountName10 = [(SSAccount *)self accountName];
+      v84 = SSHashIfNeeded(accountName10);
+      accountName11 = [accountCopy accountName];
+      v86 = SSHashIfNeeded(accountName11);
       v443 = 138543874;
       v444 = v82;
       v445 = 2114;
@@ -3361,38 +3361,38 @@ LABEL_53:
       v424 = &v443;
       v87 = _os_log_send_and_compose_impl();
 
-      v4 = v442;
+      accountCopy = v442;
       if (!v87)
       {
 LABEL_68:
 
-        [(SSAccount *)self setAltDSID:v72];
+        [(SSAccount *)self setAltDSID:altDSID];
         v27 = 1;
         goto LABEL_70;
       }
 
-      v80 = [MEMORY[0x1E696AEC0] stringWithCString:v87 encoding:{4, &v443, v440}];
+      oSLogObject4 = [MEMORY[0x1E696AEC0] stringWithCString:v87 encoding:{4, &v443, v440}];
       free(v87);
-      SSFileLog(v77, @"%@", v88, v89, v90, v91, v92, v93, v80);
+      SSFileLog(v77, @"%@", v88, v89, v90, v91, v92, v93, oSLogObject4);
     }
 
     goto LABEL_68;
   }
 
 LABEL_70:
-  v94 = [v4 ITunesPassSerialNumber];
+  iTunesPassSerialNumber = [accountCopy ITunesPassSerialNumber];
 
-  if (!v94)
+  if (!iTunesPassSerialNumber)
   {
     goto LABEL_87;
   }
 
-  v95 = [(SSAccount *)self ITunesPassSerialNumber];
-  v96 = v95;
-  if (v94 != v95)
+  iTunesPassSerialNumber2 = [(SSAccount *)self ITunesPassSerialNumber];
+  v96 = iTunesPassSerialNumber2;
+  if (iTunesPassSerialNumber != iTunesPassSerialNumber2)
   {
-    v97 = [(SSAccount *)self ITunesPassSerialNumber];
-    v98 = [v94 isEqual:v97];
+    iTunesPassSerialNumber3 = [(SSAccount *)self ITunesPassSerialNumber];
+    v98 = [iTunesPassSerialNumber isEqual:iTunesPassSerialNumber3];
 
     if (v98)
     {
@@ -3405,19 +3405,19 @@ LABEL_70:
       v99 = +[SSLogConfig sharedConfig];
     }
 
-    v100 = [v99 shouldLog];
+    shouldLog5 = [v99 shouldLog];
     if ([v99 shouldLogToDisk])
     {
-      v101 = v100 | 2;
+      v101 = shouldLog5 | 2;
     }
 
     else
     {
-      v101 = v100;
+      v101 = shouldLog5;
     }
 
-    v102 = [v99 OSLogObject];
-    if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
+    oSLogObject5 = [v99 OSLogObject];
+    if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
     {
       v103 = v101;
     }
@@ -3430,10 +3430,10 @@ LABEL_70:
     if (v103)
     {
       v104 = objc_opt_class();
-      v105 = [(SSAccount *)self accountName];
-      v106 = SSHashIfNeeded(v105);
-      v107 = [v4 accountName];
-      v108 = SSHashIfNeeded(v107);
+      accountName12 = [(SSAccount *)self accountName];
+      v106 = SSHashIfNeeded(accountName12);
+      accountName13 = [accountCopy accountName];
+      v108 = SSHashIfNeeded(accountName13);
       v443 = 138543874;
       v444 = v104;
       v445 = 2114;
@@ -3444,38 +3444,38 @@ LABEL_70:
       v425 = &v443;
       v109 = _os_log_send_and_compose_impl();
 
-      v4 = v442;
+      accountCopy = v442;
       if (!v109)
       {
 LABEL_85:
 
-        [(SSAccount *)self setITunesPassSerialNumber:v94];
+        [(SSAccount *)self setITunesPassSerialNumber:iTunesPassSerialNumber];
         v27 = 1;
         goto LABEL_87;
       }
 
-      v102 = [MEMORY[0x1E696AEC0] stringWithCString:v109 encoding:{4, &v443, v440}];
+      oSLogObject5 = [MEMORY[0x1E696AEC0] stringWithCString:v109 encoding:{4, &v443, v440}];
       free(v109);
-      SSFileLog(v99, @"%@", v110, v111, v112, v113, v114, v115, v102);
+      SSFileLog(v99, @"%@", v110, v111, v112, v113, v114, v115, oSLogObject5);
     }
 
     goto LABEL_85;
   }
 
 LABEL_87:
-  v116 = [v4 secureToken];
+  secureToken = [accountCopy secureToken];
 
-  if (!v116)
+  if (!secureToken)
   {
     goto LABEL_104;
   }
 
-  v117 = [(SSAccount *)self secureToken];
-  v118 = v117;
-  if (v116 != v117)
+  secureToken2 = [(SSAccount *)self secureToken];
+  v118 = secureToken2;
+  if (secureToken != secureToken2)
   {
-    v119 = [(SSAccount *)self secureToken];
-    v120 = [v116 isEqual:v119];
+    secureToken3 = [(SSAccount *)self secureToken];
+    v120 = [secureToken isEqual:secureToken3];
 
     if (v120)
     {
@@ -3488,19 +3488,19 @@ LABEL_87:
       v121 = +[SSLogConfig sharedConfig];
     }
 
-    v122 = [v121 shouldLog];
+    shouldLog6 = [v121 shouldLog];
     if ([v121 shouldLogToDisk])
     {
-      v123 = v122 | 2;
+      v123 = shouldLog6 | 2;
     }
 
     else
     {
-      v123 = v122;
+      v123 = shouldLog6;
     }
 
-    v124 = [v121 OSLogObject];
-    if (os_log_type_enabled(v124, OS_LOG_TYPE_DEFAULT))
+    oSLogObject6 = [v121 OSLogObject];
+    if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
     {
       v125 = v123;
     }
@@ -3513,10 +3513,10 @@ LABEL_87:
     if (v125)
     {
       v126 = objc_opt_class();
-      v127 = [(SSAccount *)self accountName];
-      v128 = SSHashIfNeeded(v127);
-      v129 = [v4 accountName];
-      v130 = SSHashIfNeeded(v129);
+      accountName14 = [(SSAccount *)self accountName];
+      v128 = SSHashIfNeeded(accountName14);
+      accountName15 = [accountCopy accountName];
+      v130 = SSHashIfNeeded(accountName15);
       v443 = 138543874;
       v444 = v126;
       v445 = 2114;
@@ -3527,38 +3527,38 @@ LABEL_87:
       v426 = &v443;
       v131 = _os_log_send_and_compose_impl();
 
-      v4 = v442;
+      accountCopy = v442;
       if (!v131)
       {
 LABEL_102:
 
-        [(SSAccount *)self setSecureToken:v116];
+        [(SSAccount *)self setSecureToken:secureToken];
         v27 = 1;
         goto LABEL_104;
       }
 
-      v124 = [MEMORY[0x1E696AEC0] stringWithCString:v131 encoding:{4, &v443, v440}];
+      oSLogObject6 = [MEMORY[0x1E696AEC0] stringWithCString:v131 encoding:{4, &v443, v440}];
       free(v131);
-      SSFileLog(v121, @"%@", v132, v133, v134, v135, v136, v137, v124);
+      SSFileLog(v121, @"%@", v132, v133, v134, v135, v136, v137, oSLogObject6);
     }
 
     goto LABEL_102;
   }
 
 LABEL_104:
-  v138 = [v4 storeFrontIdentifier];
+  storeFrontIdentifier = [accountCopy storeFrontIdentifier];
 
-  if (!v138)
+  if (!storeFrontIdentifier)
   {
     goto LABEL_121;
   }
 
-  v139 = [(SSAccount *)self storeFrontIdentifier];
-  v140 = v139;
-  if (v138 != v139)
+  storeFrontIdentifier2 = [(SSAccount *)self storeFrontIdentifier];
+  v140 = storeFrontIdentifier2;
+  if (storeFrontIdentifier != storeFrontIdentifier2)
   {
-    v141 = [(SSAccount *)self storeFrontIdentifier];
-    v142 = [v138 isEqual:v141];
+    storeFrontIdentifier3 = [(SSAccount *)self storeFrontIdentifier];
+    v142 = [storeFrontIdentifier isEqual:storeFrontIdentifier3];
 
     if (v142)
     {
@@ -3571,19 +3571,19 @@ LABEL_104:
       v143 = +[SSLogConfig sharedConfig];
     }
 
-    v144 = [v143 shouldLog];
+    shouldLog7 = [v143 shouldLog];
     if ([v143 shouldLogToDisk])
     {
-      v145 = v144 | 2;
+      v145 = shouldLog7 | 2;
     }
 
     else
     {
-      v145 = v144;
+      v145 = shouldLog7;
     }
 
-    v146 = [v143 OSLogObject];
-    if (os_log_type_enabled(v146, OS_LOG_TYPE_DEFAULT))
+    oSLogObject7 = [v143 OSLogObject];
+    if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_DEFAULT))
     {
       v147 = v145;
     }
@@ -3596,10 +3596,10 @@ LABEL_104:
     if (v147)
     {
       v148 = objc_opt_class();
-      v149 = [(SSAccount *)self accountName];
-      v150 = SSHashIfNeeded(v149);
-      v151 = [v4 accountName];
-      v152 = SSHashIfNeeded(v151);
+      accountName16 = [(SSAccount *)self accountName];
+      v150 = SSHashIfNeeded(accountName16);
+      accountName17 = [accountCopy accountName];
+      v152 = SSHashIfNeeded(accountName17);
       v443 = 138543874;
       v444 = v148;
       v445 = 2114;
@@ -3610,38 +3610,38 @@ LABEL_104:
       v427 = &v443;
       v153 = _os_log_send_and_compose_impl();
 
-      v4 = v442;
+      accountCopy = v442;
       if (!v153)
       {
 LABEL_119:
 
-        [(SSAccount *)self setStoreFrontIdentifier:v138];
+        [(SSAccount *)self setStoreFrontIdentifier:storeFrontIdentifier];
         v27 = 1;
         goto LABEL_121;
       }
 
-      v146 = [MEMORY[0x1E696AEC0] stringWithCString:v153 encoding:{4, &v443, v440}];
+      oSLogObject7 = [MEMORY[0x1E696AEC0] stringWithCString:v153 encoding:{4, &v443, v440}];
       free(v153);
-      SSFileLog(v143, @"%@", v154, v155, v156, v157, v158, v159, v146);
+      SSFileLog(v143, @"%@", v154, v155, v156, v157, v158, v159, oSLogObject7);
     }
 
     goto LABEL_119;
   }
 
 LABEL_121:
-  v160 = [v4 firstName];
+  firstName = [accountCopy firstName];
 
-  if (!v160)
+  if (!firstName)
   {
     goto LABEL_138;
   }
 
-  v161 = [(SSAccount *)self firstName];
-  v162 = v161;
-  if (v160 != v161)
+  firstName2 = [(SSAccount *)self firstName];
+  v162 = firstName2;
+  if (firstName != firstName2)
   {
-    v163 = [(SSAccount *)self firstName];
-    v164 = [v160 isEqual:v163];
+    firstName3 = [(SSAccount *)self firstName];
+    v164 = [firstName isEqual:firstName3];
 
     if (v164)
     {
@@ -3654,19 +3654,19 @@ LABEL_121:
       v165 = +[SSLogConfig sharedConfig];
     }
 
-    v166 = [v165 shouldLog];
+    shouldLog8 = [v165 shouldLog];
     if ([v165 shouldLogToDisk])
     {
-      v167 = v166 | 2;
+      v167 = shouldLog8 | 2;
     }
 
     else
     {
-      v167 = v166;
+      v167 = shouldLog8;
     }
 
-    v168 = [v165 OSLogObject];
-    if (os_log_type_enabled(v168, OS_LOG_TYPE_DEFAULT))
+    oSLogObject8 = [v165 OSLogObject];
+    if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_DEFAULT))
     {
       v169 = v167;
     }
@@ -3679,10 +3679,10 @@ LABEL_121:
     if (v169)
     {
       v170 = objc_opt_class();
-      v171 = [(SSAccount *)self accountName];
-      v172 = SSHashIfNeeded(v171);
-      v173 = [v4 accountName];
-      v174 = SSHashIfNeeded(v173);
+      accountName18 = [(SSAccount *)self accountName];
+      v172 = SSHashIfNeeded(accountName18);
+      accountName19 = [accountCopy accountName];
+      v174 = SSHashIfNeeded(accountName19);
       v443 = 138543874;
       v444 = v170;
       v445 = 2114;
@@ -3693,43 +3693,43 @@ LABEL_121:
       v428 = &v443;
       v175 = _os_log_send_and_compose_impl();
 
-      v4 = v442;
+      accountCopy = v442;
       if (!v175)
       {
 LABEL_136:
 
-        [(SSAccount *)self setFirstName:v160];
+        [(SSAccount *)self setFirstName:firstName];
         v27 = 1;
         goto LABEL_138;
       }
 
-      v168 = [MEMORY[0x1E696AEC0] stringWithCString:v175 encoding:{4, &v443, v440}];
+      oSLogObject8 = [MEMORY[0x1E696AEC0] stringWithCString:v175 encoding:{4, &v443, v440}];
       free(v175);
-      SSFileLog(v165, @"%@", v176, v177, v178, v179, v180, v181, v168);
+      SSFileLog(v165, @"%@", v176, v177, v178, v179, v180, v181, oSLogObject8);
     }
 
     goto LABEL_136;
   }
 
 LABEL_138:
-  v182 = [v4 lastName];
+  lastName = [accountCopy lastName];
 
-  v441 = v182;
-  if (!v182)
+  v441 = lastName;
+  if (!lastName)
   {
     goto LABEL_155;
   }
 
-  v183 = [(SSAccount *)self lastName];
-  v184 = v183;
-  if (v182 == v183)
+  lastName2 = [(SSAccount *)self lastName];
+  v184 = lastName2;
+  if (lastName == lastName2)
   {
 
     goto LABEL_155;
   }
 
-  v185 = [(SSAccount *)self lastName];
-  v186 = [v182 isEqual:v185];
+  lastName3 = [(SSAccount *)self lastName];
+  v186 = [lastName isEqual:lastName3];
 
   if (v186)
   {
@@ -3742,19 +3742,19 @@ LABEL_138:
     v187 = +[SSLogConfig sharedConfig];
   }
 
-  v188 = [v187 shouldLog];
+  shouldLog9 = [v187 shouldLog];
   if ([v187 shouldLogToDisk])
   {
-    v189 = v188 | 2;
+    v189 = shouldLog9 | 2;
   }
 
   else
   {
-    v189 = v188;
+    v189 = shouldLog9;
   }
 
-  v190 = [v187 OSLogObject];
-  if (os_log_type_enabled(v190, OS_LOG_TYPE_DEFAULT))
+  oSLogObject9 = [v187 OSLogObject];
+  if (os_log_type_enabled(oSLogObject9, OS_LOG_TYPE_DEFAULT))
   {
     v191 = v189;
   }
@@ -3770,10 +3770,10 @@ LABEL_138:
   }
 
   v192 = objc_opt_class();
-  v193 = [(SSAccount *)self accountName];
-  v194 = SSHashIfNeeded(v193);
-  v195 = [v4 accountName];
-  v196 = SSHashIfNeeded(v195);
+  accountName20 = [(SSAccount *)self accountName];
+  v194 = SSHashIfNeeded(accountName20);
+  accountName21 = [accountCopy accountName];
+  v196 = SSHashIfNeeded(accountName21);
   v443 = 138543874;
   v444 = v192;
   v445 = 2114;
@@ -3784,20 +3784,20 @@ LABEL_138:
   v429 = &v443;
   v197 = _os_log_send_and_compose_impl();
 
-  v4 = v442;
-  v182 = v441;
+  accountCopy = v442;
+  lastName = v441;
   if (v197)
   {
-    v190 = [MEMORY[0x1E696AEC0] stringWithCString:v197 encoding:{4, &v443, v440}];
+    oSLogObject9 = [MEMORY[0x1E696AEC0] stringWithCString:v197 encoding:{4, &v443, v440}];
     free(v197);
-    SSFileLog(v187, @"%@", v198, v199, v200, v201, v202, v203, v190);
+    SSFileLog(v187, @"%@", v198, v199, v200, v201, v202, v203, oSLogObject9);
 LABEL_153:
   }
 
-  [(SSAccount *)self setLastName:v182];
+  [(SSAccount *)self setLastName:lastName];
   v27 = 1;
 LABEL_155:
-  if (![v4 isActiveLockerAccount])
+  if (![accountCopy isActiveLockerAccount])
   {
     goto LABEL_170;
   }
@@ -3808,19 +3808,19 @@ LABEL_155:
     v204 = +[SSLogConfig sharedConfig];
   }
 
-  v205 = [v204 shouldLog];
+  shouldLog10 = [v204 shouldLog];
   if ([v204 shouldLogToDisk])
   {
-    v206 = v205 | 2;
+    v206 = shouldLog10 | 2;
   }
 
   else
   {
-    v206 = v205;
+    v206 = shouldLog10;
   }
 
-  v207 = [v204 OSLogObject];
-  if (os_log_type_enabled(v207, OS_LOG_TYPE_DEFAULT))
+  oSLogObject10 = [v204 OSLogObject];
+  if (os_log_type_enabled(oSLogObject10, OS_LOG_TYPE_DEFAULT))
   {
     v208 = v206;
   }
@@ -3832,15 +3832,15 @@ LABEL_155:
 
   if (!v208)
   {
-    v182 = v441;
+    lastName = v441;
     goto LABEL_168;
   }
 
   v209 = objc_opt_class();
-  v210 = [(SSAccount *)self accountName];
-  v211 = SSHashIfNeeded(v210);
-  v212 = [v4 accountName];
-  v213 = SSHashIfNeeded(v212);
+  accountName22 = [(SSAccount *)self accountName];
+  v211 = SSHashIfNeeded(accountName22);
+  accountName23 = [accountCopy accountName];
+  v213 = SSHashIfNeeded(accountName23);
   v443 = 138543874;
   v444 = v209;
   v445 = 2114;
@@ -3851,23 +3851,23 @@ LABEL_155:
   v430 = &v443;
   v214 = _os_log_send_and_compose_impl();
 
-  v4 = v442;
-  v182 = v441;
+  accountCopy = v442;
+  lastName = v441;
   if (v214)
   {
-    v207 = [MEMORY[0x1E696AEC0] stringWithCString:v214 encoding:{4, &v443, v440}];
+    oSLogObject10 = [MEMORY[0x1E696AEC0] stringWithCString:v214 encoding:{4, &v443, v440}];
     free(v214);
-    SSFileLog(v204, @"%@", v215, v216, v217, v218, v219, v220, v207);
+    SSFileLog(v204, @"%@", v215, v216, v217, v218, v219, v220, oSLogObject10);
 LABEL_168:
   }
 
   v27 = 1;
   [(SSAccount *)self setActiveLockerAccount:1];
 LABEL_170:
-  if (v4)
+  if (accountCopy)
   {
-    v221 = [(SSAccount *)self accountKind];
-    if (v221 == [v4 accountKind])
+    accountKind = [(SSAccount *)self accountKind];
+    if (accountKind == [accountCopy accountKind])
     {
       goto LABEL_185;
     }
@@ -3878,19 +3878,19 @@ LABEL_170:
       v222 = +[SSLogConfig sharedConfig];
     }
 
-    v223 = [v222 shouldLog];
+    shouldLog11 = [v222 shouldLog];
     if ([v222 shouldLogToDisk])
     {
-      v224 = v223 | 2;
+      v224 = shouldLog11 | 2;
     }
 
     else
     {
-      v224 = v223;
+      v224 = shouldLog11;
     }
 
-    v225 = [v222 OSLogObject];
-    if (os_log_type_enabled(v225, OS_LOG_TYPE_DEFAULT))
+    oSLogObject11 = [v222 OSLogObject];
+    if (os_log_type_enabled(oSLogObject11, OS_LOG_TYPE_DEFAULT))
     {
       v226 = v224;
     }
@@ -3903,10 +3903,10 @@ LABEL_170:
     if (v226)
     {
       v227 = objc_opt_class();
-      v228 = [(SSAccount *)self accountName];
-      v229 = SSHashIfNeeded(v228);
-      v230 = [v4 accountName];
-      v231 = SSHashIfNeeded(v230);
+      accountName24 = [(SSAccount *)self accountName];
+      v229 = SSHashIfNeeded(accountName24);
+      accountName25 = [accountCopy accountName];
+      v231 = SSHashIfNeeded(accountName25);
       v443 = 138543874;
       v444 = v227;
       v445 = 2114;
@@ -3917,16 +3917,16 @@ LABEL_170:
       v430 = &v443;
       v232 = _os_log_send_and_compose_impl();
 
-      v4 = v442;
+      accountCopy = v442;
       if (!v232)
       {
 LABEL_184:
 
-        -[SSAccount setAccountKind:](self, "setAccountKind:", [v4 accountKind]);
+        -[SSAccount setAccountKind:](self, "setAccountKind:", [accountCopy accountKind]);
         v27 = 1;
 LABEL_185:
-        v239 = [(SSAccount *)self accountScope];
-        if (v239 == [v4 accountScope])
+        accountScope = [(SSAccount *)self accountScope];
+        if (accountScope == [accountCopy accountScope])
         {
           goto LABEL_199;
         }
@@ -3937,19 +3937,19 @@ LABEL_185:
           v240 = +[SSLogConfig sharedConfig];
         }
 
-        v241 = [v240 shouldLog];
+        shouldLog12 = [v240 shouldLog];
         if ([v240 shouldLogToDisk])
         {
-          v242 = v241 | 2;
+          v242 = shouldLog12 | 2;
         }
 
         else
         {
-          v242 = v241;
+          v242 = shouldLog12;
         }
 
-        v243 = [v240 OSLogObject];
-        if (os_log_type_enabled(v243, OS_LOG_TYPE_DEFAULT))
+        oSLogObject12 = [v240 OSLogObject];
+        if (os_log_type_enabled(oSLogObject12, OS_LOG_TYPE_DEFAULT))
         {
           v244 = v242;
         }
@@ -3962,10 +3962,10 @@ LABEL_185:
         if (v244)
         {
           v245 = objc_opt_class();
-          v246 = [(SSAccount *)self accountName];
-          v247 = SSHashIfNeeded(v246);
-          v248 = [v4 accountName];
-          v249 = SSHashIfNeeded(v248);
+          accountName26 = [(SSAccount *)self accountName];
+          v247 = SSHashIfNeeded(accountName26);
+          accountName27 = [accountCopy accountName];
+          v249 = SSHashIfNeeded(accountName27);
           v443 = 138543874;
           v444 = v245;
           v445 = 2114;
@@ -3976,16 +3976,16 @@ LABEL_185:
           v431 = &v443;
           v250 = _os_log_send_and_compose_impl();
 
-          v4 = v442;
+          accountCopy = v442;
           if (!v250)
           {
 LABEL_198:
 
-            -[SSAccount setAccountScope:](self, "setAccountScope:", [v4 accountScope]);
+            -[SSAccount setAccountScope:](self, "setAccountScope:", [accountCopy accountScope]);
             v27 = 1;
 LABEL_199:
-            v257 = [(SSAccount *)self accountSource];
-            if (v257 == [v4 accountSource])
+            accountSource = [(SSAccount *)self accountSource];
+            if (accountSource == [accountCopy accountSource])
             {
               goto LABEL_213;
             }
@@ -3996,19 +3996,19 @@ LABEL_199:
               v258 = +[SSLogConfig sharedConfig];
             }
 
-            v259 = [v258 shouldLog];
+            shouldLog13 = [v258 shouldLog];
             if ([v258 shouldLogToDisk])
             {
-              v260 = v259 | 2;
+              v260 = shouldLog13 | 2;
             }
 
             else
             {
-              v260 = v259;
+              v260 = shouldLog13;
             }
 
-            v261 = [v258 OSLogObject];
-            if (os_log_type_enabled(v261, OS_LOG_TYPE_DEFAULT))
+            oSLogObject13 = [v258 OSLogObject];
+            if (os_log_type_enabled(oSLogObject13, OS_LOG_TYPE_DEFAULT))
             {
               v262 = v260;
             }
@@ -4021,10 +4021,10 @@ LABEL_199:
             if (v262)
             {
               v263 = objc_opt_class();
-              v264 = [(SSAccount *)self accountName];
-              v265 = SSHashIfNeeded(v264);
-              v266 = [v4 accountName];
-              v267 = SSHashIfNeeded(v266);
+              accountName28 = [(SSAccount *)self accountName];
+              v265 = SSHashIfNeeded(accountName28);
+              accountName29 = [accountCopy accountName];
+              v267 = SSHashIfNeeded(accountName29);
               v443 = 138543874;
               v444 = v263;
               v445 = 2114;
@@ -4035,16 +4035,16 @@ LABEL_199:
               v432 = &v443;
               v268 = _os_log_send_and_compose_impl();
 
-              v4 = v442;
+              accountCopy = v442;
               if (!v268)
               {
 LABEL_212:
 
-                -[SSAccount setAccountSource:](self, "setAccountSource:", [v4 accountSource]);
+                -[SSAccount setAccountSource:](self, "setAccountSource:", [accountCopy accountSource]);
                 v27 = 1;
 LABEL_213:
-                v275 = [(SSAccount *)self didFallbackToPassword];
-                if (v275 == [v4 didFallbackToPassword])
+                didFallbackToPassword = [(SSAccount *)self didFallbackToPassword];
+                if (didFallbackToPassword == [accountCopy didFallbackToPassword])
                 {
                   goto LABEL_227;
                 }
@@ -4055,19 +4055,19 @@ LABEL_213:
                   v276 = +[SSLogConfig sharedConfig];
                 }
 
-                v277 = [v276 shouldLog];
+                shouldLog14 = [v276 shouldLog];
                 if ([v276 shouldLogToDisk])
                 {
-                  v278 = v277 | 2;
+                  v278 = shouldLog14 | 2;
                 }
 
                 else
                 {
-                  v278 = v277;
+                  v278 = shouldLog14;
                 }
 
-                v279 = [v276 OSLogObject];
-                if (os_log_type_enabled(v279, OS_LOG_TYPE_DEFAULT))
+                oSLogObject14 = [v276 OSLogObject];
+                if (os_log_type_enabled(oSLogObject14, OS_LOG_TYPE_DEFAULT))
                 {
                   v280 = v278;
                 }
@@ -4080,10 +4080,10 @@ LABEL_213:
                 if (v280)
                 {
                   v281 = objc_opt_class();
-                  v282 = [(SSAccount *)self accountName];
-                  v283 = SSHashIfNeeded(v282);
-                  v284 = [v4 accountName];
-                  v285 = SSHashIfNeeded(v284);
+                  accountName30 = [(SSAccount *)self accountName];
+                  v283 = SSHashIfNeeded(accountName30);
+                  accountName31 = [accountCopy accountName];
+                  v285 = SSHashIfNeeded(accountName31);
                   v443 = 138543874;
                   v444 = v281;
                   v445 = 2114;
@@ -4094,16 +4094,16 @@ LABEL_213:
                   v433 = &v443;
                   v286 = _os_log_send_and_compose_impl();
 
-                  v4 = v442;
+                  accountCopy = v442;
                   if (!v286)
                   {
 LABEL_226:
 
-                    -[SSAccount setDidFallbackToPassword:](self, "setDidFallbackToPassword:", [v4 didFallbackToPassword]);
+                    -[SSAccount setDidFallbackToPassword:](self, "setDidFallbackToPassword:", [accountCopy didFallbackToPassword]);
                     v27 = 1;
 LABEL_227:
-                    v293 = [(SSAccount *)self freeDownloadsPasswordSetting];
-                    if (v293 == [v4 freeDownloadsPasswordSetting])
+                    freeDownloadsPasswordSetting = [(SSAccount *)self freeDownloadsPasswordSetting];
+                    if (freeDownloadsPasswordSetting == [accountCopy freeDownloadsPasswordSetting])
                     {
                       goto LABEL_241;
                     }
@@ -4114,19 +4114,19 @@ LABEL_227:
                       v294 = +[SSLogConfig sharedConfig];
                     }
 
-                    v295 = [v294 shouldLog];
+                    shouldLog15 = [v294 shouldLog];
                     if ([v294 shouldLogToDisk])
                     {
-                      v296 = v295 | 2;
+                      v296 = shouldLog15 | 2;
                     }
 
                     else
                     {
-                      v296 = v295;
+                      v296 = shouldLog15;
                     }
 
-                    v297 = [v294 OSLogObject];
-                    if (os_log_type_enabled(v297, OS_LOG_TYPE_DEFAULT))
+                    oSLogObject15 = [v294 OSLogObject];
+                    if (os_log_type_enabled(oSLogObject15, OS_LOG_TYPE_DEFAULT))
                     {
                       v298 = v296;
                     }
@@ -4139,10 +4139,10 @@ LABEL_227:
                     if (v298)
                     {
                       v299 = objc_opt_class();
-                      v300 = [(SSAccount *)self accountName];
-                      v301 = SSHashIfNeeded(v300);
-                      v302 = [v4 accountName];
-                      v303 = SSHashIfNeeded(v302);
+                      accountName32 = [(SSAccount *)self accountName];
+                      v301 = SSHashIfNeeded(accountName32);
+                      accountName33 = [accountCopy accountName];
+                      v303 = SSHashIfNeeded(accountName33);
                       v443 = 138543874;
                       v444 = v299;
                       v445 = 2114;
@@ -4153,16 +4153,16 @@ LABEL_227:
                       v434 = &v443;
                       v304 = _os_log_send_and_compose_impl();
 
-                      v4 = v442;
+                      accountCopy = v442;
                       if (!v304)
                       {
 LABEL_240:
 
-                        -[SSAccount setFreeDownloadsPasswordSetting:](self, "setFreeDownloadsPasswordSetting:", [v4 freeDownloadsPasswordSetting]);
+                        -[SSAccount setFreeDownloadsPasswordSetting:](self, "setFreeDownloadsPasswordSetting:", [accountCopy freeDownloadsPasswordSetting]);
                         v27 = 1;
 LABEL_241:
-                        v311 = [(SSAccount *)self isManagedAppleID];
-                        if (v311 == [v4 isManagedAppleID])
+                        isManagedAppleID = [(SSAccount *)self isManagedAppleID];
+                        if (isManagedAppleID == [accountCopy isManagedAppleID])
                         {
                           goto LABEL_255;
                         }
@@ -4173,19 +4173,19 @@ LABEL_241:
                           v312 = +[SSLogConfig sharedConfig];
                         }
 
-                        v313 = [v312 shouldLog];
+                        shouldLog16 = [v312 shouldLog];
                         if ([v312 shouldLogToDisk])
                         {
-                          v314 = v313 | 2;
+                          v314 = shouldLog16 | 2;
                         }
 
                         else
                         {
-                          v314 = v313;
+                          v314 = shouldLog16;
                         }
 
-                        v315 = [v312 OSLogObject];
-                        if (os_log_type_enabled(v315, OS_LOG_TYPE_DEFAULT))
+                        oSLogObject16 = [v312 OSLogObject];
+                        if (os_log_type_enabled(oSLogObject16, OS_LOG_TYPE_DEFAULT))
                         {
                           v316 = v314;
                         }
@@ -4198,10 +4198,10 @@ LABEL_241:
                         if (v316)
                         {
                           v317 = objc_opt_class();
-                          v318 = [(SSAccount *)self accountName];
-                          v319 = SSHashIfNeeded(v318);
-                          v320 = [v4 accountName];
-                          v321 = SSHashIfNeeded(v320);
+                          accountName34 = [(SSAccount *)self accountName];
+                          v319 = SSHashIfNeeded(accountName34);
+                          accountName35 = [accountCopy accountName];
+                          v321 = SSHashIfNeeded(accountName35);
                           v443 = 138543874;
                           v444 = v317;
                           v445 = 2114;
@@ -4212,16 +4212,16 @@ LABEL_241:
                           v435 = &v443;
                           v322 = _os_log_send_and_compose_impl();
 
-                          v4 = v442;
+                          accountCopy = v442;
                           if (!v322)
                           {
 LABEL_254:
 
-                            -[SSAccount setManagedAppleID:](self, "setManagedAppleID:", [v4 isManagedAppleID]);
+                            -[SSAccount setManagedAppleID:](self, "setManagedAppleID:", [accountCopy isManagedAppleID]);
                             v27 = 1;
 LABEL_255:
-                            v329 = [(SSAccount *)self isNewCustomer];
-                            if (v329 == [v4 isNewCustomer])
+                            isNewCustomer = [(SSAccount *)self isNewCustomer];
+                            if (isNewCustomer == [accountCopy isNewCustomer])
                             {
                               goto LABEL_269;
                             }
@@ -4232,19 +4232,19 @@ LABEL_255:
                               v330 = +[SSLogConfig sharedConfig];
                             }
 
-                            v331 = [v330 shouldLog];
+                            shouldLog17 = [v330 shouldLog];
                             if ([v330 shouldLogToDisk])
                             {
-                              v332 = v331 | 2;
+                              v332 = shouldLog17 | 2;
                             }
 
                             else
                             {
-                              v332 = v331;
+                              v332 = shouldLog17;
                             }
 
-                            v333 = [v330 OSLogObject];
-                            if (os_log_type_enabled(v333, OS_LOG_TYPE_DEFAULT))
+                            oSLogObject17 = [v330 OSLogObject];
+                            if (os_log_type_enabled(oSLogObject17, OS_LOG_TYPE_DEFAULT))
                             {
                               v334 = v332;
                             }
@@ -4257,10 +4257,10 @@ LABEL_255:
                             if (v334)
                             {
                               v335 = objc_opt_class();
-                              v336 = [(SSAccount *)self accountName];
-                              v337 = SSHashIfNeeded(v336);
-                              v338 = [v4 accountName];
-                              v339 = SSHashIfNeeded(v338);
+                              accountName36 = [(SSAccount *)self accountName];
+                              v337 = SSHashIfNeeded(accountName36);
+                              accountName37 = [accountCopy accountName];
+                              v339 = SSHashIfNeeded(accountName37);
                               v443 = 138543874;
                               v444 = v335;
                               v445 = 2114;
@@ -4271,16 +4271,16 @@ LABEL_255:
                               v436 = &v443;
                               v340 = _os_log_send_and_compose_impl();
 
-                              v4 = v442;
+                              accountCopy = v442;
                               if (!v340)
                               {
 LABEL_268:
 
-                                -[SSAccount setNewCustomer:](self, "setNewCustomer:", [v4 isNewCustomer]);
+                                -[SSAccount setNewCustomer:](self, "setNewCustomer:", [accountCopy isNewCustomer]);
                                 v27 = 1;
 LABEL_269:
-                                v347 = [(SSAccount *)self paidPurchasesPasswordSetting];
-                                if (v347 == [v4 paidPurchasesPasswordSetting])
+                                paidPurchasesPasswordSetting = [(SSAccount *)self paidPurchasesPasswordSetting];
+                                if (paidPurchasesPasswordSetting == [accountCopy paidPurchasesPasswordSetting])
                                 {
                                   goto LABEL_283;
                                 }
@@ -4291,19 +4291,19 @@ LABEL_269:
                                   v348 = +[SSLogConfig sharedConfig];
                                 }
 
-                                v349 = [v348 shouldLog];
+                                shouldLog18 = [v348 shouldLog];
                                 if ([v348 shouldLogToDisk])
                                 {
-                                  v350 = v349 | 2;
+                                  v350 = shouldLog18 | 2;
                                 }
 
                                 else
                                 {
-                                  v350 = v349;
+                                  v350 = shouldLog18;
                                 }
 
-                                v351 = [v348 OSLogObject];
-                                if (os_log_type_enabled(v351, OS_LOG_TYPE_DEFAULT))
+                                oSLogObject18 = [v348 OSLogObject];
+                                if (os_log_type_enabled(oSLogObject18, OS_LOG_TYPE_DEFAULT))
                                 {
                                   v352 = v350;
                                 }
@@ -4316,10 +4316,10 @@ LABEL_269:
                                 if (v352)
                                 {
                                   v353 = objc_opt_class();
-                                  v354 = [(SSAccount *)self accountName];
-                                  v355 = SSHashIfNeeded(v354);
-                                  v356 = [v4 accountName];
-                                  v357 = SSHashIfNeeded(v356);
+                                  accountName38 = [(SSAccount *)self accountName];
+                                  v355 = SSHashIfNeeded(accountName38);
+                                  accountName39 = [accountCopy accountName];
+                                  v357 = SSHashIfNeeded(accountName39);
                                   v443 = 138543874;
                                   v444 = v353;
                                   v445 = 2114;
@@ -4330,16 +4330,16 @@ LABEL_269:
                                   v437 = &v443;
                                   v358 = _os_log_send_and_compose_impl();
 
-                                  v4 = v442;
+                                  accountCopy = v442;
                                   if (!v358)
                                   {
 LABEL_282:
 
-                                    -[SSAccount setPaidPurchasesPasswordSetting:](self, "setPaidPurchasesPasswordSetting:", [v4 paidPurchasesPasswordSetting]);
+                                    -[SSAccount setPaidPurchasesPasswordSetting:](self, "setPaidPurchasesPasswordSetting:", [accountCopy paidPurchasesPasswordSetting]);
                                     v27 = 1;
 LABEL_283:
-                                    v365 = [v4 availableServiceTypes];
-                                    if (v365 == [(SSAccount *)self availableServiceTypes])
+                                    availableServiceTypes = [accountCopy availableServiceTypes];
+                                    if (availableServiceTypes == [(SSAccount *)self availableServiceTypes])
                                     {
                                       goto LABEL_297;
                                     }
@@ -4350,19 +4350,19 @@ LABEL_283:
                                       v366 = +[SSLogConfig sharedConfig];
                                     }
 
-                                    v367 = [v366 shouldLog];
+                                    shouldLog19 = [v366 shouldLog];
                                     if ([v366 shouldLogToDisk])
                                     {
-                                      v368 = v367 | 2;
+                                      v368 = shouldLog19 | 2;
                                     }
 
                                     else
                                     {
-                                      v368 = v367;
+                                      v368 = shouldLog19;
                                     }
 
-                                    v369 = [v366 OSLogObject];
-                                    if (os_log_type_enabled(v369, OS_LOG_TYPE_DEFAULT))
+                                    oSLogObject19 = [v366 OSLogObject];
+                                    if (os_log_type_enabled(oSLogObject19, OS_LOG_TYPE_DEFAULT))
                                     {
                                       v370 = v368;
                                     }
@@ -4375,10 +4375,10 @@ LABEL_283:
                                     if (v370)
                                     {
                                       v371 = objc_opt_class();
-                                      v372 = [(SSAccount *)self accountName];
-                                      v373 = SSHashIfNeeded(v372);
-                                      v374 = [v442 accountName];
-                                      v375 = SSHashIfNeeded(v374);
+                                      accountName40 = [(SSAccount *)self accountName];
+                                      v373 = SSHashIfNeeded(accountName40);
+                                      accountName41 = [v442 accountName];
+                                      v375 = SSHashIfNeeded(accountName41);
                                       v443 = 138543874;
                                       v444 = v371;
                                       v445 = 2114;
@@ -4393,12 +4393,12 @@ LABEL_283:
                                       {
 LABEL_296:
 
-                                        [(SSAccount *)self setAvailableServiceTypes:v365];
+                                        [(SSAccount *)self setAvailableServiceTypes:availableServiceTypes];
                                         v27 = 1;
-                                        v4 = v442;
+                                        accountCopy = v442;
 LABEL_297:
-                                        v383 = [v4 enabledServiceTypes];
-                                        if (v383 == [(SSAccount *)self enabledServiceTypes])
+                                        enabledServiceTypes = [accountCopy enabledServiceTypes];
+                                        if (enabledServiceTypes == [(SSAccount *)self enabledServiceTypes])
                                         {
                                           goto LABEL_310;
                                         }
@@ -4409,30 +4409,30 @@ LABEL_297:
                                           v384 = +[SSLogConfig sharedConfig];
                                         }
 
-                                        v385 = [v384 shouldLog];
+                                        shouldLog20 = [v384 shouldLog];
                                         if ([v384 shouldLogToDisk])
                                         {
-                                          v385 |= 2u;
+                                          shouldLog20 |= 2u;
                                         }
 
-                                        v386 = [v384 OSLogObject];
-                                        if (os_log_type_enabled(v386, OS_LOG_TYPE_DEFAULT))
+                                        oSLogObject20 = [v384 OSLogObject];
+                                        if (os_log_type_enabled(oSLogObject20, OS_LOG_TYPE_DEFAULT))
                                         {
-                                          v387 = v385;
+                                          v387 = shouldLog20;
                                         }
 
                                         else
                                         {
-                                          v387 = v385 & 2;
+                                          v387 = shouldLog20 & 2;
                                         }
 
                                         if (v387)
                                         {
                                           v388 = objc_opt_class();
-                                          v389 = [(SSAccount *)self accountName];
-                                          v390 = SSHashIfNeeded(v389);
-                                          v391 = [v442 accountName];
-                                          v392 = SSHashIfNeeded(v391);
+                                          accountName42 = [(SSAccount *)self accountName];
+                                          v390 = SSHashIfNeeded(accountName42);
+                                          accountName43 = [v442 accountName];
+                                          v392 = SSHashIfNeeded(accountName43);
                                           v443 = 138543874;
                                           v444 = v388;
                                           v445 = 2114;
@@ -4447,17 +4447,17 @@ LABEL_297:
                                           {
 LABEL_309:
 
-                                            [(SSAccount *)self setEnabledServiceTypes:v383];
+                                            [(SSAccount *)self setEnabledServiceTypes:enabledServiceTypes];
                                             v27 = 1;
-                                            v4 = v442;
+                                            accountCopy = v442;
 LABEL_310:
-                                            v400 = [v4 eligibilityForService:{0, v439}];
-                                            v401 = [v400 BOOLValue];
+                                            v400 = [accountCopy eligibilityForService:{0, v439}];
+                                            bOOLValue = [v400 BOOLValue];
                                             v402 = [(SSAccount *)self eligibilityForService:0];
-                                            v403 = [v402 BOOLValue];
+                                            bOOLValue2 = [v402 BOOLValue];
 
-                                            v182 = v441;
-                                            if (v401 == v403)
+                                            lastName = v441;
+                                            if (bOOLValue == bOOLValue2)
                                             {
 LABEL_323:
 
@@ -4470,30 +4470,30 @@ LABEL_323:
                                               v404 = +[SSLogConfig sharedConfig];
                                             }
 
-                                            v405 = [v404 shouldLog];
+                                            shouldLog21 = [v404 shouldLog];
                                             if ([v404 shouldLogToDisk])
                                             {
-                                              v405 |= 2u;
+                                              shouldLog21 |= 2u;
                                             }
 
-                                            v406 = [v404 OSLogObject];
-                                            if (os_log_type_enabled(v406, OS_LOG_TYPE_DEFAULT))
+                                            oSLogObject21 = [v404 OSLogObject];
+                                            if (os_log_type_enabled(oSLogObject21, OS_LOG_TYPE_DEFAULT))
                                             {
-                                              v407 = v405;
+                                              v407 = shouldLog21;
                                             }
 
                                             else
                                             {
-                                              v407 = v405 & 2;
+                                              v407 = shouldLog21 & 2;
                                             }
 
                                             if (v407)
                                             {
                                               v408 = objc_opt_class();
-                                              v409 = [(SSAccount *)self accountName];
-                                              v410 = SSHashIfNeeded(v409);
-                                              v411 = [v442 accountName];
-                                              v412 = SSHashIfNeeded(v411);
+                                              accountName44 = [(SSAccount *)self accountName];
+                                              v410 = SSHashIfNeeded(accountName44);
+                                              accountName45 = [v442 accountName];
+                                              v412 = SSHashIfNeeded(accountName45);
                                               v443 = 138543874;
                                               v444 = v408;
                                               v445 = 2114;
@@ -4503,100 +4503,100 @@ LABEL_323:
                                               LODWORD(v440) = 32;
                                               v413 = _os_log_send_and_compose_impl();
 
-                                              v182 = v441;
+                                              lastName = v441;
                                               if (!v413)
                                               {
 LABEL_322:
 
                                                 [(SSAccount *)self setEligibility:v400 forServiceType:0];
                                                 v27 = 1;
-                                                v4 = v442;
+                                                accountCopy = v442;
                                                 goto LABEL_323;
                                               }
 
-                                              v406 = [MEMORY[0x1E696AEC0] stringWithCString:v413 encoding:{4, &v443, v440}];
+                                              oSLogObject21 = [MEMORY[0x1E696AEC0] stringWithCString:v413 encoding:{4, &v443, v440}];
                                               free(v413);
-                                              SSFileLog(v404, @"%@", v414, v415, v416, v417, v418, v419, v406);
+                                              SSFileLog(v404, @"%@", v414, v415, v416, v417, v418, v419, oSLogObject21);
                                             }
 
                                             goto LABEL_322;
                                           }
 
-                                          v386 = [MEMORY[0x1E696AEC0] stringWithCString:v393 encoding:{4, &v443, v440}];
+                                          oSLogObject20 = [MEMORY[0x1E696AEC0] stringWithCString:v393 encoding:{4, &v443, v440}];
                                           free(v393);
-                                          SSFileLog(v384, @"%@", v394, v395, v396, v397, v398, v399, v386);
+                                          SSFileLog(v384, @"%@", v394, v395, v396, v397, v398, v399, oSLogObject20);
                                         }
 
                                         goto LABEL_309;
                                       }
 
-                                      v369 = [MEMORY[0x1E696AEC0] stringWithCString:v376 encoding:{4, &v443, v440}];
+                                      oSLogObject19 = [MEMORY[0x1E696AEC0] stringWithCString:v376 encoding:{4, &v443, v440}];
                                       free(v376);
-                                      SSFileLog(v366, @"%@", v377, v378, v379, v380, v381, v382, v369);
+                                      SSFileLog(v366, @"%@", v377, v378, v379, v380, v381, v382, oSLogObject19);
                                     }
 
                                     goto LABEL_296;
                                   }
 
-                                  v351 = [MEMORY[0x1E696AEC0] stringWithCString:v358 encoding:{4, &v443, v440}];
+                                  oSLogObject18 = [MEMORY[0x1E696AEC0] stringWithCString:v358 encoding:{4, &v443, v440}];
                                   free(v358);
-                                  SSFileLog(v348, @"%@", v359, v360, v361, v362, v363, v364, v351);
+                                  SSFileLog(v348, @"%@", v359, v360, v361, v362, v363, v364, oSLogObject18);
                                 }
 
                                 goto LABEL_282;
                               }
 
-                              v333 = [MEMORY[0x1E696AEC0] stringWithCString:v340 encoding:{4, &v443, v440}];
+                              oSLogObject17 = [MEMORY[0x1E696AEC0] stringWithCString:v340 encoding:{4, &v443, v440}];
                               free(v340);
-                              SSFileLog(v330, @"%@", v341, v342, v343, v344, v345, v346, v333);
+                              SSFileLog(v330, @"%@", v341, v342, v343, v344, v345, v346, oSLogObject17);
                             }
 
                             goto LABEL_268;
                           }
 
-                          v315 = [MEMORY[0x1E696AEC0] stringWithCString:v322 encoding:{4, &v443, v440}];
+                          oSLogObject16 = [MEMORY[0x1E696AEC0] stringWithCString:v322 encoding:{4, &v443, v440}];
                           free(v322);
-                          SSFileLog(v312, @"%@", v323, v324, v325, v326, v327, v328, v315);
+                          SSFileLog(v312, @"%@", v323, v324, v325, v326, v327, v328, oSLogObject16);
                         }
 
                         goto LABEL_254;
                       }
 
-                      v297 = [MEMORY[0x1E696AEC0] stringWithCString:v304 encoding:{4, &v443, v440}];
+                      oSLogObject15 = [MEMORY[0x1E696AEC0] stringWithCString:v304 encoding:{4, &v443, v440}];
                       free(v304);
-                      SSFileLog(v294, @"%@", v305, v306, v307, v308, v309, v310, v297);
+                      SSFileLog(v294, @"%@", v305, v306, v307, v308, v309, v310, oSLogObject15);
                     }
 
                     goto LABEL_240;
                   }
 
-                  v279 = [MEMORY[0x1E696AEC0] stringWithCString:v286 encoding:{4, &v443, v440}];
+                  oSLogObject14 = [MEMORY[0x1E696AEC0] stringWithCString:v286 encoding:{4, &v443, v440}];
                   free(v286);
-                  SSFileLog(v276, @"%@", v287, v288, v289, v290, v291, v292, v279);
+                  SSFileLog(v276, @"%@", v287, v288, v289, v290, v291, v292, oSLogObject14);
                 }
 
                 goto LABEL_226;
               }
 
-              v261 = [MEMORY[0x1E696AEC0] stringWithCString:v268 encoding:{4, &v443, v440}];
+              oSLogObject13 = [MEMORY[0x1E696AEC0] stringWithCString:v268 encoding:{4, &v443, v440}];
               free(v268);
-              SSFileLog(v258, @"%@", v269, v270, v271, v272, v273, v274, v261);
+              SSFileLog(v258, @"%@", v269, v270, v271, v272, v273, v274, oSLogObject13);
             }
 
             goto LABEL_212;
           }
 
-          v243 = [MEMORY[0x1E696AEC0] stringWithCString:v250 encoding:{4, &v443, v440}];
+          oSLogObject12 = [MEMORY[0x1E696AEC0] stringWithCString:v250 encoding:{4, &v443, v440}];
           free(v250);
-          SSFileLog(v240, @"%@", v251, v252, v253, v254, v255, v256, v243);
+          SSFileLog(v240, @"%@", v251, v252, v253, v254, v255, v256, oSLogObject12);
         }
 
         goto LABEL_198;
       }
 
-      v225 = [MEMORY[0x1E696AEC0] stringWithCString:v232 encoding:{4, &v443, v440}];
+      oSLogObject11 = [MEMORY[0x1E696AEC0] stringWithCString:v232 encoding:{4, &v443, v440}];
       free(v232);
-      SSFileLog(v222, @"%@", v233, v234, v235, v236, v237, v238, v225);
+      SSFileLog(v222, @"%@", v233, v234, v235, v236, v237, v238, oSLogObject11);
     }
 
     goto LABEL_184;
@@ -4615,14 +4615,14 @@ LABEL_324:
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __30__SSAccount_popBiometricToken__block_invoke;
   v6[3] = &unk_1E84ABF40;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(backingAccountAccessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -4638,18 +4638,18 @@ void __30__SSAccount_popBiometricToken__block_invoke(uint64_t a1)
   *(v2 + 16) = 0;
 }
 
-- (void)setBiometricToken:(id)a3
+- (void)setBiometricToken:(id)token
 {
-  v4 = a3;
-  v5 = [(SSAccount *)self backingAccountAccessQueue];
+  tokenCopy = token;
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__SSAccount_setBiometricToken___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = tokenCopy;
+  v6 = tokenCopy;
+  dispatch_barrier_async(backingAccountAccessQueue, v7);
 }
 
 void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
@@ -4664,17 +4664,17 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLockdownDictionary:(id)a3
+- (void)setLockdownDictionary:(id)dictionary
 {
-  v25 = a3;
-  v4 = [v25 objectForKey:@"AltDSID"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"AltDSID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SSAccount *)self setAltDSID:v4];
   }
 
-  v5 = [v25 objectForKey:@"DSPersonID"];
+  v5 = [dictionaryCopy objectForKey:@"DSPersonID"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4682,7 +4682,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     [(SSAccount *)self setUniqueIdentifier:v5];
   }
 
-  v6 = [v25 objectForKey:@"AppleID"];
+  v6 = [dictionaryCopy objectForKey:@"AppleID"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4690,7 +4690,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     [(SSAccount *)self setAccountName:v6];
   }
 
-  v7 = [v25 objectForKey:@"AccountKind"];
+  v7 = [dictionaryCopy objectForKey:@"AccountKind"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4698,7 +4698,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     -[SSAccount setAccountKind:](self, "setAccountKind:", [v7 integerValue]);
   }
 
-  v8 = [v25 objectForKey:@"CreditDisplayString"];
+  v8 = [dictionaryCopy objectForKey:@"CreditDisplayString"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4706,7 +4706,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     [(SSAccount *)self setCreditsString:v8];
   }
 
-  v9 = [v25 objectForKey:@"AccountURLBagType"];
+  v9 = [dictionaryCopy objectForKey:@"AccountURLBagType"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4714,7 +4714,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     -[SSAccount setAccountScope:](self, "setAccountScope:", [v9 isEqualToString:@"sandbox"]);
   }
 
-  v10 = [v25 objectForKey:@"AccountAvailableServiceTypes"];
+  v10 = [dictionaryCopy objectForKey:@"AccountAvailableServiceTypes"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4722,7 +4722,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     -[SSAccount setAvailableServiceTypes:](self, "setAvailableServiceTypes:", [v10 integerValue]);
   }
 
-  v11 = [v25 objectForKey:@"AccountServiceTypes"];
+  v11 = [dictionaryCopy objectForKey:@"AccountServiceTypes"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4732,7 +4732,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
 
   else
   {
-    v12 = [v25 objectForKey:@"AccountSocialEnabled"];
+    v12 = [dictionaryCopy objectForKey:@"AccountSocialEnabled"];
 
     if (objc_opt_respondsToSelector())
     {
@@ -4742,21 +4742,21 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     v11 = v12;
   }
 
-  v13 = [v25 objectForKey:@"DidFallbackToPassword"];
+  v13 = [dictionaryCopy objectForKey:@"DidFallbackToPassword"];
 
   if (objc_opt_respondsToSelector())
   {
     -[SSAccount setDidFallbackToPassword:](self, "setDidFallbackToPassword:", [v13 BOOLValue]);
   }
 
-  v14 = [v25 objectForKey:@"AccountIsNewCustomer"];
+  v14 = [dictionaryCopy objectForKey:@"AccountIsNewCustomer"];
 
   if (objc_opt_respondsToSelector())
   {
     -[SSAccount setNewCustomer:](self, "setNewCustomer:", [v14 BOOLValue]);
   }
 
-  v15 = [v25 objectForKey:@"AccountSource"];
+  v15 = [dictionaryCopy objectForKey:@"AccountSource"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4764,7 +4764,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     -[SSAccount setAccountSource:](self, "setAccountSource:", [v15 isEqualToString:@"iTunes"]);
   }
 
-  v16 = [v25 objectForKey:@"AccountStoreFront"];
+  v16 = [dictionaryCopy objectForKey:@"AccountStoreFront"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4772,7 +4772,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     [(SSAccount *)self setStoreFrontIdentifier:v16];
   }
 
-  v17 = [v25 objectForKey:@"AccountITunesPassSerial"];
+  v17 = [dictionaryCopy objectForKey:@"AccountITunesPassSerial"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4780,7 +4780,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     [(SSAccount *)self setITunesPassSerialNumber:v17];
   }
 
-  v18 = [v25 objectForKey:@"FirstName"];
+  v18 = [dictionaryCopy objectForKey:@"FirstName"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4788,7 +4788,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     [(SSAccount *)self setFirstName:v18];
   }
 
-  v19 = [v25 objectForKey:@"LastName"];
+  v19 = [dictionaryCopy objectForKey:@"LastName"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4797,7 +4797,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
   }
 
   v20 = SSVLockdownAccountServiceEligibilityKey();
-  v21 = [v25 objectForKey:v20];
+  v21 = [dictionaryCopy objectForKey:v20];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4805,7 +4805,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     [(SSAccount *)self setEligibility:v21 forServiceType:0];
   }
 
-  v22 = [v25 objectForKey:@"AccountFreeDownloadsPasswordSetting"];
+  v22 = [dictionaryCopy objectForKey:@"AccountFreeDownloadsPasswordSetting"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4813,7 +4813,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     -[SSAccount setFreeDownloadsPasswordSetting:](self, "setFreeDownloadsPasswordSetting:", [v22 integerValue]);
   }
 
-  v23 = [v25 objectForKey:@"AccountPaidPurchasesPasswordSetting"];
+  v23 = [dictionaryCopy objectForKey:@"AccountPaidPurchasesPasswordSetting"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -4821,7 +4821,7 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
     -[SSAccount setPaidPurchasesPasswordSetting:](self, "setPaidPurchasesPasswordSetting:", [v23 integerValue]);
   }
 
-  v24 = [v25 objectForKey:@"AccountIsManagedAppleID"];
+  v24 = [dictionaryCopy objectForKey:@"AccountIsManagedAppleID"];
 
   if (objc_opt_respondsToSelector())
   {
@@ -4829,15 +4829,15 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)serverValueForAccountPasswordSettingValue:(int64_t)a3
++ (id)serverValueForAccountPasswordSettingValue:(int64_t)value
 {
   v3 = @"always";
-  if (a3 == 2)
+  if (value == 2)
   {
     v3 = @"sometimes";
   }
 
-  if (a3 == 3)
+  if (value == 3)
   {
     return @"never";
   }
@@ -4848,11 +4848,11 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
   }
 }
 
-- (void)updateAccountPasswordSettingsWithRequestProperties:(id)a3 completionBlock:(id)a4
+- (void)updateAccountPasswordSettingsWithRequestProperties:(id)properties completionBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -4861,19 +4861,19 @@ void __31__SSAccount_setBiometricToken___block_invoke(uint64_t a1)
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v12 = v10;
     }
@@ -4897,9 +4897,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v29, v26}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v29, v26}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
@@ -4910,8 +4910,8 @@ LABEL_16:
   {
     v20 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v20, "0", 151);
-    v21 = [(SSAccount *)self uniqueIdentifier];
-    SSXPCDictionarySetObject(v20, "1", v21);
+    uniqueIdentifier = [(SSAccount *)self uniqueIdentifier];
+    SSXPCDictionarySetObject(v20, "1", uniqueIdentifier);
 
     v22 = [MEMORY[0x1E696AD98] numberWithInt:{-[SSAccount freeDownloadsPasswordSetting](self, "freeDownloadsPasswordSetting")}];
     SSXPCDictionarySetObject(v20, "2", v22);
@@ -4919,12 +4919,12 @@ LABEL_16:
     v23 = [MEMORY[0x1E696AD98] numberWithInt:{-[SSAccount paidPurchasesPasswordSetting](self, "paidPurchasesPasswordSetting")}];
     SSXPCDictionarySetObject(v20, "3", v23);
 
-    if (v6)
+    if (propertiesCopy)
     {
-      v24 = [v6 copyXPCEncoding];
-      if (v24)
+      copyXPCEncoding = [propertiesCopy copyXPCEncoding];
+      if (copyXPCEncoding)
       {
-        xpc_dictionary_set_value(v20, "4", v24);
+        xpc_dictionary_set_value(v20, "4", copyXPCEncoding);
       }
     }
 
@@ -4933,7 +4933,7 @@ LABEL_16:
     v27[1] = 3221225472;
     v27[2] = __80__SSAccount_updateAccountPasswordSettingsWithRequestProperties_completionBlock___block_invoke;
     v27[3] = &unk_1E84AE2D8;
-    v28 = v7;
+    v28 = blockCopy;
     [(SSXPCConnection *)v25 sendMessage:v20 withReply:v27];
   }
 }
@@ -4975,20 +4975,20 @@ LABEL_7:
   dispatch_async(v7, v12);
 }
 
-- (void)_addAccountPropertyBitmask:(int64_t)a3 forKey:(id)a4
+- (void)_addAccountPropertyBitmask:(int64_t)bitmask forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   objc_initWeak(&location, self);
-  v7 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__SSAccount__addAccountPropertyBitmask_forKey___block_invoke;
   v9[3] = &unk_1E84AE300;
   objc_copyWeak(v11, &location);
-  v10 = v6;
-  v11[1] = a3;
-  v8 = v6;
-  dispatch_barrier_async(v7, v9);
+  v10 = keyCopy;
+  v11[1] = bitmask;
+  v8 = keyCopy;
+  dispatch_barrier_async(backingAccountAccessQueue, v9);
 
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
@@ -5008,31 +5008,31 @@ void __47__SSAccount__addAccountPropertyBitmask_forKey___block_invoke(uint64_t a
   }
 }
 
-+ (id)_countryCodeFromStorefrontIdentifier:(id)a3
++ (id)_countryCodeFromStorefrontIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:{@", "}];
-  v4 = [v3 firstObject];
+  v3 = [identifier componentsSeparatedByString:{@", "}];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 componentsSeparatedByString:@"-"];
-  v6 = [v5 firstObject];
+  v5 = [firstObject componentsSeparatedByString:@"-"];
+  firstObject2 = [v5 firstObject];
 
-  return v6;
+  return firstObject2;
 }
 
-- (void)_removeAccountPropertyBitmask:(int64_t)a3 forKey:(id)a4
+- (void)_removeAccountPropertyBitmask:(int64_t)bitmask forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   objc_initWeak(&location, self);
-  v7 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__SSAccount__removeAccountPropertyBitmask_forKey___block_invoke;
   v9[3] = &unk_1E84AE300;
   objc_copyWeak(v11, &location);
-  v10 = v6;
-  v11[1] = a3;
-  v8 = v6;
-  dispatch_barrier_async(v7, v9);
+  v10 = keyCopy;
+  v11[1] = bitmask;
+  v8 = keyCopy;
+  dispatch_barrier_async(backingAccountAccessQueue, v9);
 
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
@@ -5052,18 +5052,18 @@ void __50__SSAccount__removeAccountPropertyBitmask_forKey___block_invoke(uint64_
   }
 }
 
-- (void)_sendMessage:(id)a3 withReply:(id)a4
+- (void)_sendMessage:(id)message withReply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  messageCopy = message;
   v7 = [[SSXPCConnection alloc] initWithServiceName:@"com.apple.itunesstored.xpc"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __36__SSAccount__sendMessage_withReply___block_invoke;
   v9[3] = &unk_1E84AE2D8;
-  v10 = v5;
-  v8 = v5;
-  [(SSXPCConnection *)v7 sendMessage:v6 withReply:v9];
+  v10 = replyCopy;
+  v8 = replyCopy;
+  [(SSXPCConnection *)v7 sendMessage:messageCopy withReply:v9];
 }
 
 void __36__SSAccount__sendMessage_withReply___block_invoke(uint64_t a1, void *a2)
@@ -5091,22 +5091,22 @@ LABEL_7:
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_setAccountProperty:(id)a3 forKey:(id)a4
+- (void)_setAccountProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   objc_initWeak(&location, self);
-  v8 = [(SSAccount *)self backingAccountAccessQueue];
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40__SSAccount__setAccountProperty_forKey___block_invoke;
   v11[3] = &unk_1E84AE328;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_barrier_async(v8, v11);
+  v12 = keyCopy;
+  v13 = propertyCopy;
+  v9 = propertyCopy;
+  v10 = keyCopy;
+  dispatch_barrier_async(backingAccountAccessQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -5126,26 +5126,26 @@ void __40__SSAccount__setAccountProperty_forKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setBackingAccount:(id)a3
+- (void)_setBackingAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(SSAccount *)self backingAccountAccessQueue];
-  dispatch_assert_queue_V2(v5);
+  accountCopy = account;
+  backingAccountAccessQueue = [(SSAccount *)self backingAccountAccessQueue];
+  dispatch_assert_queue_V2(backingAccountAccessQueue);
 
   backingAccount = self->_backingAccount;
-  self->_backingAccount = v4;
+  self->_backingAccount = accountCopy;
 }
 
-+ (id)_valueForFirstAvailableKeyPath:(id)a3 inDictionary:(id)a4
++ (id)_valueForFirstAvailableKeyPath:(id)path inDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  dictionaryCopy = dictionary;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = pathCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -5160,7 +5160,7 @@ void __40__SSAccount__setAccountProperty_forKey___block_invoke(uint64_t a1)
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v6 valueForKeyPath:{*(*(&v15 + 1) + 8 * i), v15}];
+        v12 = [dictionaryCopy valueForKeyPath:{*(*(&v15 + 1) + 8 * i), v15}];
         if (v12)
         {
           v13 = v12;

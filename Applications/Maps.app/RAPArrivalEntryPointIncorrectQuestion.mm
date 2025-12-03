@@ -7,10 +7,10 @@
 - (CLLocationCoordinate2D)selectedCoordinate;
 - (NSString)localizedCoordinatePickingPrompt;
 - (NSString)localizedTitle;
-- (RAPArrivalEntryPointIncorrectQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 arrivalPoint:(CLLocationCoordinate2D)a5;
+- (RAPArrivalEntryPointIncorrectQuestion)initWithReport:(id)report parentQuestion:(id)question arrivalPoint:(CLLocationCoordinate2D)point;
 - (RAPCommentQuestion)commentQuestion;
-- (void)_fillSubmissionParameters:(id)a3;
-- (void)setSelectedCoordinate:(CLLocationCoordinate2D)a3;
+- (void)_fillSubmissionParameters:(id)parameters;
+- (void)setSelectedCoordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation RAPArrivalEntryPointIncorrectQuestion
@@ -33,23 +33,23 @@
   return result;
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v23 = a3;
-  [v23 setType:8];
-  v4 = [v23 commonContext];
+  parametersCopy = parameters;
+  [parametersCopy setType:8];
+  commonContext = [parametersCopy commonContext];
 
-  if (!v4)
+  if (!commonContext)
   {
     v5 = objc_alloc_init(GEORPFeedbackCommonContext);
-    [v23 setCommonContext:v5];
+    [parametersCopy setCommonContext:v5];
   }
 
-  v6 = [v23 commonContext];
-  [v6 addUserPath:46];
+  commonContext2 = [parametersCopy commonContext];
+  [commonContext2 addUserPath:46];
 
-  v7 = [(RAPArrivalEntryPointIncorrectQuestion *)self commentQuestion];
-  [v7 _fillSubmissionParameters:v23];
+  commentQuestion = [(RAPArrivalEntryPointIncorrectQuestion *)self commentQuestion];
+  [commentQuestion _fillSubmissionParameters:parametersCopy];
 
   p_selectedCoordinate = &self->_selectedCoordinate;
   if (CLLocationCoordinate2DIsValid(self->_selectedCoordinate))
@@ -57,35 +57,35 @@
     p_originalCoordinate = &self->_originalCoordinate;
     if (vabdd_f64(self->_originalCoordinate.latitude, p_selectedCoordinate->latitude) >= 0.00000000999999994 || vabdd_f64(self->_originalCoordinate.longitude, self->_selectedCoordinate.longitude) >= 0.00000000999999994)
     {
-      v10 = [v23 details];
+      details = [parametersCopy details];
 
-      if (!v10)
+      if (!details)
       {
         v11 = objc_alloc_init(GEORPFeedbackDetails);
-        [v23 setDetails:v11];
+        [parametersCopy setDetails:v11];
       }
 
-      v12 = [v23 details];
-      v13 = [v12 directionsFeedback];
+      details2 = [parametersCopy details];
+      directionsFeedback = [details2 directionsFeedback];
 
-      if (!v13)
+      if (!directionsFeedback)
       {
-        v13 = objc_alloc_init(GEORPDirectionsFeedback);
-        v14 = [v23 details];
-        [v14 setDirectionsFeedback:v13];
+        directionsFeedback = objc_alloc_init(GEORPDirectionsFeedback);
+        details3 = [parametersCopy details];
+        [details3 setDirectionsFeedback:directionsFeedback];
       }
 
-      [v13 setCorrectionType:2];
-      v15 = [v23 details];
-      v16 = [v15 directionsFeedback];
-      v17 = [v16 directionsCorrections];
+      [directionsFeedback setCorrectionType:2];
+      details4 = [parametersCopy details];
+      directionsFeedback2 = [details4 directionsFeedback];
+      directionsCorrections = [directionsFeedback2 directionsCorrections];
 
-      if (!v17)
+      if (!directionsCorrections)
       {
-        v17 = objc_alloc_init(GEORPDirectionsCorrections);
-        v18 = [v23 details];
-        v19 = [v18 directionsFeedback];
-        [v19 setDirectionsCorrections:v17];
+        directionsCorrections = objc_alloc_init(GEORPDirectionsCorrections);
+        details5 = [parametersCopy details];
+        directionsFeedback3 = [details5 directionsFeedback];
+        [directionsFeedback3 setDirectionsCorrections:directionsCorrections];
       }
 
       v20 = objc_alloc_init(GEORPCorrectedCoordinate);
@@ -95,22 +95,22 @@
       v22 = [[GEOLatLng alloc] initWithLatitude:p_originalCoordinate->latitude longitude:p_originalCoordinate->longitude];
       [v20 setOriginalCoordinate:v22];
 
-      [v17 setArrivalCoordinate:v20];
+      [directionsCorrections setArrivalCoordinate:v20];
     }
   }
 }
 
 - (BOOL)_isRecursivelyComplete
 {
-  v3 = [(RAPQuestion *)self->_commentQuestion _isRecursivelyComplete];
-  if (v3)
+  _isRecursivelyComplete = [(RAPQuestion *)self->_commentQuestion _isRecursivelyComplete];
+  if (_isRecursivelyComplete)
   {
     v5.receiver = self;
     v5.super_class = RAPArrivalEntryPointIncorrectQuestion;
-    LOBYTE(v3) = [(RAPQuestion *)&v5 _isRecursivelyComplete];
+    LOBYTE(_isRecursivelyComplete) = [(RAPQuestion *)&v5 _isRecursivelyComplete];
   }
 
-  return v3;
+  return _isRecursivelyComplete;
 }
 
 - (RAPCommentQuestion)commentQuestion
@@ -119,11 +119,11 @@
   if (!commentQuestion)
   {
     v4 = [RAPCommentQuestion alloc];
-    v5 = [(RAPQuestion *)self report];
+    report = [(RAPQuestion *)self report];
     v6 = +[RAPCommentQuestion _localizedMoreInformationTitle];
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"Add more details about the incorrect arrival entrance" value:@"localized string not found" table:0];
-    v9 = [(RAPCommentQuestion *)v4 initWithReport:v5 parentQuestion:self title:v6 placeholderText:v8 emphasis:2];
+    v9 = [(RAPCommentQuestion *)v4 initWithReport:report parentQuestion:self title:v6 placeholderText:v8 emphasis:2];
     v10 = self->_commentQuestion;
     self->_commentQuestion = v9;
 
@@ -156,11 +156,11 @@
   return CLLocationCoordinate2DIsValid(selectedCoordinate) & v2;
 }
 
-- (void)setSelectedCoordinate:(CLLocationCoordinate2D)a3
+- (void)setSelectedCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  if (vabdd_f64(a3.latitude, self->_selectedCoordinate.latitude) >= 0.00000000999999994 || vabdd_f64(a3.longitude, self->_selectedCoordinate.longitude) >= 0.00000000999999994)
+  if (vabdd_f64(coordinate.latitude, self->_selectedCoordinate.latitude) >= 0.00000000999999994 || vabdd_f64(coordinate.longitude, self->_selectedCoordinate.longitude) >= 0.00000000999999994)
   {
-    self->_selectedCoordinate = a3;
+    self->_selectedCoordinate = coordinate;
     [(RAPQuestion *)self _didChange];
   }
 }
@@ -186,13 +186,13 @@
   return result;
 }
 
-- (RAPArrivalEntryPointIncorrectQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 arrivalPoint:(CLLocationCoordinate2D)a5
+- (RAPArrivalEntryPointIncorrectQuestion)initWithReport:(id)report parentQuestion:(id)question arrivalPoint:(CLLocationCoordinate2D)point
 {
-  longitude = a5.longitude;
-  latitude = a5.latitude;
+  longitude = point.longitude;
+  latitude = point.latitude;
   v8.receiver = self;
   v8.super_class = RAPArrivalEntryPointIncorrectQuestion;
-  result = [(RAPQuestion *)&v8 initWithReport:a3 parentQuestion:a4];
+  result = [(RAPQuestion *)&v8 initWithReport:report parentQuestion:question];
   if (result)
   {
     result->_originalCoordinate.latitude = latitude;

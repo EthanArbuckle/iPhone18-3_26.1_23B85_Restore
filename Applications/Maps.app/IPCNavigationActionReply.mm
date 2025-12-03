@@ -1,5 +1,5 @@
 @interface IPCNavigationActionReply
-- (IPCNavigationActionReply)initWithDictionary:(id)a3;
+- (IPCNavigationActionReply)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionaryValue;
 @end
@@ -11,8 +11,8 @@
   v7.receiver = self;
   v7.super_class = IPCNavigationActionReply;
   v3 = [(IPCNavigationActionReply *)&v7 description];
-  v4 = [(IPCNavigationActionReply *)self dictionaryValue];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryValue = [(IPCNavigationActionReply *)self dictionaryValue];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryValue];
 
   return v5;
 }
@@ -21,8 +21,8 @@
 {
   v9.receiver = self;
   v9.super_class = IPCNavigationActionReply;
-  v3 = [(IPCMessageObject *)&v9 dictionaryValue];
-  v4 = [v3 mutableCopy];
+  dictionaryValue = [(IPCMessageObject *)&v9 dictionaryValue];
+  v4 = [dictionaryValue mutableCopy];
 
   v5 = [NSNumber numberWithBool:[(IPCNavigationActionReply *)self success]];
   [v4 setObject:v5 forKeyedSubscript:@"kIPCNavigationActionReplySuccessKey"];
@@ -35,18 +35,18 @@
   return v7;
 }
 
-- (IPCNavigationActionReply)initWithDictionary:(id)a3
+- (IPCNavigationActionReply)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = IPCNavigationActionReply;
-  v5 = [(IPCMessageObject *)&v9 initWithDictionary:v4];
+  v5 = [(IPCMessageObject *)&v9 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"kIPCNavigationActionReplySuccessKey"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"kIPCNavigationActionReplySuccessKey"];
     -[IPCNavigationActionReply setSuccess:](v5, "setSuccess:", [v6 BOOLValue]);
 
-    v7 = [v4 objectForKeyedSubscript:@"kIPCNavigationActionReplyNavigationActionErrorKey"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"kIPCNavigationActionReplyNavigationActionErrorKey"];
     -[IPCNavigationActionReply setNavigationActionError:](v5, "setNavigationActionError:", [v7 unsignedIntegerValue]);
   }
 

@@ -6,7 +6,7 @@
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
 - (id)description;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
 @end
 
 @implementation ASChangedFolderStore
@@ -20,7 +20,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_22 = v2;
     acceptsTopLevelLeaves___haveChecked_22 = 1;
   }
@@ -37,7 +37,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_22 = v2;
     parsingLeafNode___haveChecked_22 = 1;
   }
@@ -54,7 +54,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_22 = v2;
     parsingWithSubItems___haveChecked_22 = 1;
   }
@@ -71,7 +71,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_22 = v2;
     frontingBasicTypes___haveChecked_22 = 1;
   }
@@ -88,7 +88,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_22 = v2;
     notifyOfUnknownTokens___haveChecked_22 = 1;
   }
@@ -102,8 +102,8 @@
   v8.receiver = self;
   v8.super_class = ASChangedFolderStore;
   v4 = [(ASChangedFolderStore *)&v8 description];
-  v5 = [(ASChangedFolderStore *)self updatedFolders];
-  v6 = [v3 stringWithFormat:@"%@: Updated Folders %@", v4, v5];
+  updatedFolders = [(ASChangedFolderStore *)self updatedFolders];
+  v6 = [v3 stringWithFormat:@"%@: Updated Folders %@", v4, updatedFolders];
 
   return v6;
 }
@@ -111,12 +111,12 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
   {
-    v28 = a1;
+    selfCopy = self;
     v27 = MEMORY[0x277CBEAC0];
     v26 = [ASParseRule alloc];
     v25 = objc_opt_class();
@@ -139,19 +139,19 @@
     v5 = [v27 dictionaryWithObjectsAndKeys:{v9, v10, v11, v12, v13, v14, 0}];
 
     v15 = +[ASItem parseRuleCache];
-    v16 = NSStringFromClass(v28);
+    v16 = NSStringFromClass(selfCopy);
     [v15 setObject:v5 forKey:v16];
   }
 
   return v5;
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v22 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = ASChangedFolderStore;
-  [(ASItem *)&v17 parseASParseContext:a3 root:a4 parent:a5 callbackDict:a6 streamCallbackDict:a7 account:a8];
+  [(ASItem *)&v17 parseASParseContext:context root:root parent:parent callbackDict:dict streamCallbackDict:callbackDict account:account];
   parsingState = self->super._parsingState;
   if (parsingState >= 2)
   {
@@ -162,25 +162,25 @@
 
     else
     {
-      v11 = [(ASChangedFolderStore *)self status];
-      v12 = [v11 intValue];
+      status = [(ASChangedFolderStore *)self status];
+      intValue = [status intValue];
 
-      if (v12 == 1)
+      if (intValue == 1)
       {
-        v13 = [(ASChangedFolderStore *)self syncKey];
+        syncKey = [(ASChangedFolderStore *)self syncKey];
 
-        if (!v13)
+        if (!syncKey)
         {
           [(ASItem *)self setParsingState:3];
           v14 = DALoggingwithCategory();
           v15 = *(MEMORY[0x277D03988] + 3);
           if (os_log_type_enabled(v14, v15))
           {
-            v16 = [(ASChangedFolderStore *)self syncKey];
+            syncKey2 = [(ASChangedFolderStore *)self syncKey];
             *buf = 67109378;
             v19 = 1;
             v20 = 2112;
-            v21 = v16;
+            v21 = syncKey2;
             _os_log_impl(&dword_24A0AC000, v14, v15, "We received a happy value for status (%d), but syncKey %@ is missing", buf, 0x12u);
           }
         }

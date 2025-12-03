@@ -3,9 +3,9 @@
 - (CGSize)preferredContentSize;
 - (MRUArtworkController)init;
 - (MRUArtworkControllerDelegate)delegate;
-- (void)setArtworkFittingSize:(CGSize)a3;
-- (void)setCatalog:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)setArtworkFittingSize:(CGSize)size;
+- (void)setCatalog:(id)catalog;
+- (void)setPreferredContentSize:(CGSize)size;
 - (void)updateArtworkFittingSize;
 @end
 
@@ -27,15 +27,15 @@
   return result;
 }
 
-- (void)setCatalog:(id)a3
+- (void)setCatalog:(id)catalog
 {
-  v5 = a3;
-  objc_storeStrong(&self->_catalog, a3);
-  v6 = [(MRUArtworkController *)self imageLoader];
+  catalogCopy = catalog;
+  objc_storeStrong(&self->_catalog, catalog);
+  imageLoader = [(MRUArtworkController *)self imageLoader];
 
-  if (v6)
+  if (imageLoader)
   {
-    if (!v5)
+    if (!catalogCopy)
     {
       goto LABEL_9;
     }
@@ -45,25 +45,25 @@
   {
     objc_initWeak(&location, self);
     v7 = [MRUImageLoader alloc];
-    v8 = [(MRUArtworkController *)self delegate];
+    delegate = [(MRUArtworkController *)self delegate];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __35__MRUArtworkController_setCatalog___block_invoke;
     v28[3] = &unk_1E7663958;
     objc_copyWeak(&v29, &location);
-    v9 = [(MRUImageLoader *)v7 initWithDestination:v8 imageHandler:v28];
+    v9 = [(MRUImageLoader *)v7 initWithDestination:delegate imageHandler:v28];
     [(MRUArtworkController *)self setImageLoader:v9];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&location);
-    if (!v5)
+    if (!catalogCopy)
     {
       goto LABEL_9;
     }
   }
 
-  v10 = [(MRUArtworkController *)self imageLoader];
-  v11 = [v10 wouldLoadNewImageForCatalog:v5];
+  imageLoader2 = [(MRUArtworkController *)self imageLoader];
+  v11 = [imageLoader2 wouldLoadNewImageForCatalog:catalogCopy];
 
   if (v11)
   {
@@ -76,7 +76,7 @@
     v24 = __35__MRUArtworkController_setCatalog___block_invoke_2;
     v25 = &unk_1E7663980;
     objc_copyWeak(&v27, &location);
-    v15 = v5;
+    v15 = catalogCopy;
     v26 = v15;
     v16 = [v12 timerWithInterval:0 repeats:&v22 block:v14];
     artworkTimer = self->_artworkTimer;
@@ -87,8 +87,8 @@
 
     if (v19)
     {
-      v20 = [(MRUArtworkController *)self delegate];
-      [v20 controller:self didStartLoadingImageForCatalog:v15];
+      delegate2 = [(MRUArtworkController *)self delegate];
+      [delegate2 controller:self didStartLoadingImageForCatalog:v15];
     }
 
     objc_destroyWeak(&v27);
@@ -97,8 +97,8 @@
 
 LABEL_9:
   [(MRUArtworkController *)self updateArtworkFittingSize];
-  v21 = [(MRUArtworkController *)self imageLoader];
-  [v21 updateCatalog:v5];
+  imageLoader3 = [(MRUArtworkController *)self imageLoader];
+  [imageLoader3 updateCatalog:catalogCopy];
 }
 
 void __35__MRUArtworkController_setCatalog___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -154,44 +154,44 @@ void __35__MRUArtworkController_setCatalog___block_invoke_2(uint64_t a1)
   [v3 artworkLoadingDidTimeoutInController:WeakRetained];
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  if (self->_preferredContentSize.width != a3.width || self->_preferredContentSize.height != a3.height)
+  if (self->_preferredContentSize.width != size.width || self->_preferredContentSize.height != size.height)
   {
-    self->_preferredContentSize = a3;
+    self->_preferredContentSize = size;
     [(MRUArtworkController *)self updateArtworkFittingSize];
   }
 }
 
-- (void)setArtworkFittingSize:(CGSize)a3
+- (void)setArtworkFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (self->_artworkFittingSize.width != a3.width || self->_artworkFittingSize.height != a3.height)
+  height = size.height;
+  width = size.width;
+  if (self->_artworkFittingSize.width != size.width || self->_artworkFittingSize.height != size.height)
   {
-    self->_artworkFittingSize = a3;
-    v10 = [(MRUArtworkController *)self imageLoader];
-    v7 = [(MRUArtworkController *)self delegate];
-    v8 = [v7 traitCollection];
-    [v8 displayScale];
-    [v10 updateFittingSize:width scale:{height, v9}];
+    self->_artworkFittingSize = size;
+    imageLoader = [(MRUArtworkController *)self imageLoader];
+    delegate = [(MRUArtworkController *)self delegate];
+    traitCollection = [delegate traitCollection];
+    [traitCollection displayScale];
+    [imageLoader updateFittingSize:width scale:{height, v9}];
   }
 }
 
 - (void)updateArtworkFittingSize
 {
-  v3 = [(MRUArtworkController *)self delegate];
-  if (v3)
+  delegate = [(MRUArtworkController *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    v5 = [(MRUArtworkController *)self imageLoader];
+    v4 = delegate;
+    imageLoader = [(MRUArtworkController *)self imageLoader];
 
-    if (v5)
+    if (imageLoader)
     {
       if (self->_preferredContentSize.width == *MEMORY[0x1E695F060] && self->_preferredContentSize.height == *(MEMORY[0x1E695F060] + 8))
       {
-        v9 = [(MRUArtworkController *)self delegate];
-        [v9 bounds];
+        delegate2 = [(MRUArtworkController *)self delegate];
+        [delegate2 bounds];
         [(MRUArtworkController *)self setArtworkFittingSize:v7, v8];
       }
 

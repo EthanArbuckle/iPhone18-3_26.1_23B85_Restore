@@ -7,17 +7,17 @@
 
 - (id)faceprintData
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 faceClusteringProperties];
-  v3 = [v2 faceprint];
-  v4 = [v3 faceprintData];
+  [self fetchPropertySetsIfNeeded];
+  faceClusteringProperties = [self faceClusteringProperties];
+  faceprint = [faceClusteringProperties faceprint];
+  faceprintData = [faceprint faceprintData];
 
-  return v4;
+  return faceprintData;
 }
 
 - (void)setQualityMeasure:()PNFaceProtocol
 {
-  v4 = [MEMORY[0x1E69787E0] changeRequestForFace:a1];
+  v4 = [MEMORY[0x1E69787E0] changeRequestForFace:self];
   [v4 setQualityMeasure:a3];
 }
 

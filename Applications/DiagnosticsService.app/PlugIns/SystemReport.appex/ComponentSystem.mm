@@ -7,7 +7,7 @@
 - (id)carrierBundleVersion;
 - (id)carrierName;
 - (id)carrierName2;
-- (id)carrierNameForSimCard:(int64_t)a3;
+- (id)carrierNameForSimCard:(int64_t)card;
 - (id)currentStandbyTime;
 - (id)currentUsageTime;
 - (id)languageCode;
@@ -15,69 +15,69 @@
 - (id)productVersionExtra;
 - (id)supplementalBuildVersion;
 - (void)_setupTelephonyClient;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentSystem
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v22.receiver = self;
   v22.super_class = ComponentSystem;
-  [(ComponentSystemBase *)&v22 populateAttributes:v4];
+  [(ComponentSystemBase *)&v22 populateAttributes:attributesCopy];
   [(ComponentSystem *)self _setupTelephonyClient];
-  v5 = [(ComponentSystem *)self carrierName];
-  [v4 setObject:v5 forKeyedSubscript:@"carrierName"];
+  carrierName = [(ComponentSystem *)self carrierName];
+  [attributesCopy setObject:carrierName forKeyedSubscript:@"carrierName"];
 
-  v6 = [(ComponentSystem *)self carrierName2];
-  [v4 setObject:v6 forKeyedSubscript:@"carrierName2"];
+  carrierName2 = [(ComponentSystem *)self carrierName2];
+  [attributesCopy setObject:carrierName2 forKeyedSubscript:@"carrierName2"];
 
-  v7 = [(ComponentSystem *)self carrierBundleVersion];
-  [v4 setObject:v7 forKeyedSubscript:@"carrierBundleVersion"];
+  carrierBundleVersion = [(ComponentSystem *)self carrierBundleVersion];
+  [attributesCopy setObject:carrierBundleVersion forKeyedSubscript:@"carrierBundleVersion"];
 
   v8 = [NSNumber numberWithBool:_AXSVoiceOverTouchEnabled() != 0];
-  [v4 setObject:v8 forKeyedSubscript:@"voiceOverEnabled"];
+  [attributesCopy setObject:v8 forKeyedSubscript:@"voiceOverEnabled"];
 
   v9 = [NSNumber numberWithBool:[(ComponentSystem *)self isServicePart]];
-  [v4 setObject:v9 forKeyedSubscript:@"isServicePart"];
+  [attributesCopy setObject:v9 forKeyedSubscript:@"isServicePart"];
 
-  v10 = [(ComponentSystem *)self localeCode];
-  [v4 setObject:v10 forKeyedSubscript:@"regionCode"];
+  localeCode = [(ComponentSystem *)self localeCode];
+  [attributesCopy setObject:localeCode forKeyedSubscript:@"regionCode"];
 
-  v11 = [(ComponentSystem *)self languageCode];
-  [v4 setObject:v11 forKeyedSubscript:@"languageCode"];
+  languageCode = [(ComponentSystem *)self languageCode];
+  [attributesCopy setObject:languageCode forKeyedSubscript:@"languageCode"];
 
   v12 = [NSNumber numberWithBool:[(ComponentSystem *)self supportsInductiveCharging]];
-  [v4 setObject:v12 forKeyedSubscript:@"supportsInductiveCharging"];
+  [attributesCopy setObject:v12 forKeyedSubscript:@"supportsInductiveCharging"];
 
-  v13 = [(ComponentSystem *)self supplementalBuildVersion];
-  [v4 setObject:v13 forKeyedSubscript:@"supplementalBuildVersion"];
+  supplementalBuildVersion = [(ComponentSystem *)self supplementalBuildVersion];
+  [attributesCopy setObject:supplementalBuildVersion forKeyedSubscript:@"supplementalBuildVersion"];
 
-  v14 = [(ComponentSystem *)self productVersionExtra];
-  [v4 setObject:v14 forKeyedSubscript:@"productVersionExtra"];
+  productVersionExtra = [(ComponentSystem *)self productVersionExtra];
+  [attributesCopy setObject:productVersionExtra forKeyedSubscript:@"productVersionExtra"];
 
   v15 = [NSNumber numberWithBool:[(ComponentSystem *)self isInBoxUpdateEligibleMode]];
-  [v4 setObject:v15 forKeyedSubscript:@"isInBoxUpdateEligibleMode"];
+  [attributesCopy setObject:v15 forKeyedSubscript:@"isInBoxUpdateEligibleMode"];
 
   if (![(ComponentSystemBase *)self isInDiagnosticsMode])
   {
-    v16 = [(ComponentSystem *)self currentStandbyTime];
-    v17 = [v16 stringValue];
-    [v4 setObject:v17 forKeyedSubscript:@"currentStandbyTime"];
+    currentStandbyTime = [(ComponentSystem *)self currentStandbyTime];
+    stringValue = [currentStandbyTime stringValue];
+    [attributesCopy setObject:stringValue forKeyedSubscript:@"currentStandbyTime"];
 
-    v18 = [(ComponentSystem *)self currentUsageTime];
-    v19 = [v18 stringValue];
-    [v4 setObject:v19 forKeyedSubscript:@"currentUsageTime"];
+    currentUsageTime = [(ComponentSystem *)self currentUsageTime];
+    stringValue2 = [currentUsageTime stringValue];
+    [attributesCopy setObject:stringValue2 forKeyedSubscript:@"currentUsageTime"];
 
     v20 = [NSNumber numberWithBool:[(ComponentSystem *)self isPasscodeLocked]];
-    [v4 setObject:v20 forKeyedSubscript:@"isPasscodeLocked"];
+    [attributesCopy setObject:v20 forKeyedSubscript:@"isPasscodeLocked"];
 
     v21 = [NSNumber numberWithBool:[(ComponentSystem *)self isPasscodeSet]];
-    [v4 setObject:v21 forKeyedSubscript:@"isPasscodeSet"];
+    [attributesCopy setObject:v21 forKeyedSubscript:@"isPasscodeSet"];
   }
 
-  removeNullFromDictionary(v4);
+  removeNullFromDictionary(attributesCopy);
 }
 
 - (id)carrierName
@@ -106,18 +106,18 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v4 = [(ComponentSystem *)self telephonyClient];
-  if (v4 && (v5 = v4, [(ComponentSystem *)self subscriptionInfo], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  telephonyClient = [(ComponentSystem *)self telephonyClient];
+  if (telephonyClient && (v5 = telephonyClient, [(ComponentSystem *)self subscriptionInfo], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
     v7 = objc_alloc_init(NSMutableDictionary);
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v8 = [(ComponentSystem *)self subscriptionInfo];
-    v9 = [v8 subscriptions];
+    subscriptionInfo = [(ComponentSystem *)self subscriptionInfo];
+    subscriptions = [subscriptionInfo subscriptions];
 
-    v10 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+    v10 = [subscriptions countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v10)
     {
       v12 = v10;
@@ -130,13 +130,13 @@
         {
           if (*v28 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subscriptions);
           }
 
           v15 = *(*(&v27 + 1) + 8 * i);
-          v16 = [(ComponentSystem *)self telephonyClient];
+          telephonyClient2 = [(ComponentSystem *)self telephonyClient];
           v26 = 0;
-          v17 = [v16 copyCarrierBundleVersion:v15 error:&v26];
+          v17 = [telephonyClient2 copyCarrierBundleVersion:v15 error:&v26];
           v18 = v26;
 
           if (v18)
@@ -144,11 +144,11 @@
             v19 = DiagnosticLogHandleForCategory();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
-              v20 = [v15 slotID];
+              slotID = [v15 slotID];
               *buf = v25;
               v32 = v18;
               v33 = 2048;
-              v34 = v20;
+              v34 = slotID;
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "copyCarrierBundleVersion failed: error: %@ on slot: %ld", buf, 0x16u);
             }
           }
@@ -160,14 +160,14 @@
           }
         }
 
-        v12 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v12 = [subscriptions countByEnumeratingWithState:&v27 objects:v35 count:16];
       }
 
       while (v12);
     }
 
-    v21 = [v7 allValues];
-    v22 = [v21 componentsJoinedByString:@" "];;
+    allValues = [v7 allValues];
+    v22 = [allValues componentsJoinedByString:@" "];;
 
     v23 = stringOrNull(v22);
   }
@@ -220,18 +220,18 @@
   return v5;
 }
 
-- (id)carrierNameForSimCard:(int64_t)a3
+- (id)carrierNameForSimCard:(int64_t)card
 {
   v4 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
-    v37 = "[ComponentSystem carrierNameForSimCard:]";
+    cardCopy2 = "[ComponentSystem carrierNameForSimCard:]";
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v5 = [(ComponentSystem *)self telephonyClient];
-  if (!v5 || (v6 = v5, [(ComponentSystem *)self subscriptionInfo], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  telephonyClient = [(ComponentSystem *)self telephonyClient];
+  if (!telephonyClient || (v6 = telephonyClient, [(ComponentSystem *)self subscriptionInfo], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
     v23 = +[NSNull null];
     goto LABEL_35;
@@ -239,15 +239,15 @@
 
   v8 = 1;
   v29 = [[CTBundle alloc] initWithBundleType:1];
-  if (a3)
+  if (card)
   {
-    if (a3 != 1)
+    if (card != 1)
     {
       v24 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v37 = a3;
+        cardCopy2 = card;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Requested sim card slot %ld is not present in CoreTelephony subscriptions", buf, 0xCu);
       }
 
@@ -260,21 +260,21 @@
     v8 = 2;
   }
 
-  v9 = [(ComponentSystem *)self subscriptionInfo];
-  v10 = [v9 subscriptionsInUse];
+  subscriptionInfo = [(ComponentSystem *)self subscriptionInfo];
+  subscriptionsInUse = [subscriptionInfo subscriptionsInUse];
 
-  if (v10)
+  if (subscriptionsInUse)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = v10;
+    v11 = subscriptionsInUse;
     v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v12)
     {
       v13 = v12;
-      v26 = v10;
+      v26 = subscriptionsInUse;
       v14 = 0;
       v28 = 0;
       v15 = *v32;
@@ -290,9 +290,9 @@
           v17 = *(*(&v31 + 1) + 8 * i);
           if ([v17 slotID] == v8)
           {
-            v18 = [(ComponentSystem *)self telephonyClient];
+            telephonyClient2 = [(ComponentSystem *)self telephonyClient];
             v30 = v14;
-            v19 = [v18 copyCarrierBundleValue:v17 key:@"CarrierName" bundleType:v29 error:&v30];
+            v19 = [telephonyClient2 copyCarrierBundleValue:v17 key:@"CarrierName" bundleType:v29 error:&v30];
             v20 = v30;
 
             if (v19)
@@ -310,7 +310,7 @@
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412290;
-                  v37 = v19;
+                  cardCopy2 = v19;
                   _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Carrier name %@ is not a string!", buf, 0xCu);
                 }
               }
@@ -322,7 +322,7 @@
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134217984;
-                v37 = a3;
+                cardCopy2 = card;
                 _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "No carrier name for card slot %ld", buf, 0xCu);
               }
             }
@@ -335,7 +335,7 @@
       }
 
       while (v13);
-      v10 = v26;
+      subscriptionsInUse = v26;
       v22 = v28;
       goto LABEL_33;
     }
@@ -409,9 +409,9 @@ LABEL_35:
       v5 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        v8 = [v4 localizedDescription];
+        localizedDescription = [v4 localizedDescription];
         *buf = 138412290;
-        v11 = v8;
+        v11 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Error getting Service Part Status. Error: %@", buf, 0xCu);
       }
     }
@@ -448,15 +448,15 @@ LABEL_35:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 localeIdentifier];
+    localeIdentifier = [v2 localeIdentifier];
   }
 
   else
   {
-    v4 = 0;
+    localeIdentifier = 0;
   }
 
-  v5 = stringOrNull(v4);
+  v5 = stringOrNull(localeIdentifier);
 
   return v5;
 }
@@ -467,15 +467,15 @@ LABEL_35:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 languageCode];
+    languageCode = [v2 languageCode];
   }
 
   else
   {
-    v4 = 0;
+    languageCode = 0;
   }
 
-  v5 = stringOrNull(v4);
+  v5 = stringOrNull(languageCode);
 
   return v5;
 }
@@ -498,13 +498,13 @@ LABEL_35:
   v3 = [[CoreTelephonyClient alloc] initWithQueue:0];
   [(ComponentSystem *)self setTelephonyClient:v3];
 
-  v4 = [(ComponentSystem *)self telephonyClient];
+  telephonyClient = [(ComponentSystem *)self telephonyClient];
 
-  if (v4)
+  if (telephonyClient)
   {
-    v5 = [(ComponentSystem *)self telephonyClient];
+    telephonyClient2 = [(ComponentSystem *)self telephonyClient];
     v9 = 0;
-    v6 = [v5 getSubscriptionInfoWithError:&v9];
+    v6 = [telephonyClient2 getSubscriptionInfoWithError:&v9];
     v7 = v9;
     [(ComponentSystem *)self setSubscriptionInfo:v6];
 

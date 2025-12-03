@@ -1,12 +1,12 @@
 @interface IMBrandManager
 + (id)sharedInstance;
 - (id)_init;
-- (id)brandInfoFromBSBrand:(id)a3;
-- (id)brandManagerForType:(unint64_t)a3;
-- (void)_setBrand:(id)a3 forBrand:(id)a4 forType:(unint64_t)a5 error:(id)a6 completion:(id)a7;
-- (void)brandWithURI:(id)a3 completion:(id)a4;
-- (void)brandWithURI:(id)a3 usingSim:(id)a4 forType:(unint64_t)a5 completion:(id)a6;
-- (void)configChatBotBrandManagerWithCacheClient:(id)a3;
+- (id)brandInfoFromBSBrand:(id)brand;
+- (id)brandManagerForType:(unint64_t)type;
+- (void)_setBrand:(id)brand forBrand:(id)forBrand forType:(unint64_t)type error:(id)error completion:(id)completion;
+- (void)brandWithURI:(id)i completion:(id)completion;
+- (void)brandWithURI:(id)i usingSim:(id)sim forType:(unint64_t)type completion:(id)completion;
+- (void)configChatBotBrandManagerWithCacheClient:(id)client;
 @end
 
 @implementation IMBrandManager
@@ -40,8 +40,8 @@
     v11 = IMIsRunningInMessages();
     v12 = IMCachesDirectoryURL();
     v13 = [[IMBrandRBMBrandDataSourceObjcShim alloc] initWithCacheClient:0];
-    v14 = [(IMBrandRBMBrandDataSourceObjcShim *)v13 opaqueWrapper];
-    v15 = [v10 initWithCachingEnabled:v11 cacheURL:v12 brandDataSourceOpaqueWrapper:v14];
+    opaqueWrapper = [(IMBrandRBMBrandDataSourceObjcShim *)v13 opaqueWrapper];
+    v15 = [v10 initWithCachingEnabled:v11 cacheURL:v12 brandDataSourceOpaqueWrapper:opaqueWrapper];
     chatBotBrandManager = v2->_chatBotBrandManager;
     v2->_chatBotBrandManager = v15;
 
@@ -70,82 +70,82 @@
   return v3;
 }
 
-- (void)configChatBotBrandManagerWithCacheClient:(id)a3
+- (void)configChatBotBrandManagerWithCacheClient:(id)client
 {
   v4 = qword_1EB30B6D8;
-  v5 = a3;
+  clientCopy = client;
   v6 = [v4 alloc];
   v7 = IMIsRunningInMessages();
   v12 = IMCachesDirectoryURL();
-  v8 = [[IMBrandRBMBrandDataSourceObjcShim alloc] initWithCacheClient:v5];
+  v8 = [[IMBrandRBMBrandDataSourceObjcShim alloc] initWithCacheClient:clientCopy];
 
-  v9 = [(IMBrandRBMBrandDataSourceObjcShim *)v8 opaqueWrapper];
-  v10 = [v6 initWithCachingEnabled:v7 cacheURL:v12 brandDataSourceOpaqueWrapper:v9];
+  opaqueWrapper = [(IMBrandRBMBrandDataSourceObjcShim *)v8 opaqueWrapper];
+  v10 = [v6 initWithCachingEnabled:v7 cacheURL:v12 brandDataSourceOpaqueWrapper:opaqueWrapper];
   chatBotBrandManager = self->_chatBotBrandManager;
   self->_chatBotBrandManager = v10;
 }
 
-- (void)_setBrand:(id)a3 forBrand:(id)a4 forType:(unint64_t)a5 error:(id)a6 completion:(id)a7
+- (void)_setBrand:(id)brand forBrand:(id)forBrand forType:(unint64_t)type error:(id)error completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  brandCopy = brand;
+  forBrandCopy = forBrand;
+  errorCopy = error;
+  completionCopy = completion;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = sub_1A86E0960;
   v20[3] = &unk_1E782A0F8;
-  v21 = v12;
-  v22 = v14;
-  v25 = v15;
-  v26 = a5;
-  v23 = v13;
-  v24 = self;
-  v16 = v15;
-  v17 = v13;
-  v18 = v14;
-  v19 = v12;
+  v21 = brandCopy;
+  v22 = errorCopy;
+  v25 = completionCopy;
+  typeCopy = type;
+  v23 = forBrandCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  v17 = forBrandCopy;
+  v18 = errorCopy;
+  v19 = brandCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v20);
 }
 
-- (id)brandInfoFromBSBrand:(id)a3
+- (id)brandInfoFromBSBrand:(id)brand
 {
-  v3 = a3;
+  brandCopy = brand;
   v20 = [IMBrandInfo alloc];
-  v24 = [v3 brandURI];
-  v19 = [v3 name];
-  v18 = [v3 categories];
-  v17 = [v3 primaryPhoneNumber];
-  v16 = [v3 isVerified];
-  v23 = [v3 localizedDescription];
-  v15 = [v3 verifiedBy];
-  v22 = [v3 website];
-  v13 = [v22 absoluteString];
-  v14 = [v3 messageNumber];
-  v12 = [v3 emailAddress];
-  v4 = [v3 address];
-  v5 = [v3 termsAndConditionsURL];
-  v6 = [v5 absoluteString];
-  v7 = [v3 localizedResponseTime];
-  v8 = [v3 genericCSSTemplateURL];
+  brandURI = [brandCopy brandURI];
+  name = [brandCopy name];
+  categories = [brandCopy categories];
+  primaryPhoneNumber = [brandCopy primaryPhoneNumber];
+  isVerified = [brandCopy isVerified];
+  localizedDescription = [brandCopy localizedDescription];
+  verifiedBy = [brandCopy verifiedBy];
+  website = [brandCopy website];
+  absoluteString = [website absoluteString];
+  messageNumber = [brandCopy messageNumber];
+  emailAddress = [brandCopy emailAddress];
+  address = [brandCopy address];
+  termsAndConditionsURL = [brandCopy termsAndConditionsURL];
+  absoluteString2 = [termsAndConditionsURL absoluteString];
+  localizedResponseTime = [brandCopy localizedResponseTime];
+  genericCSSTemplateURL = [brandCopy genericCSSTemplateURL];
 
-  v9 = [v8 absoluteString];
-  LOBYTE(v11) = v16;
-  v21 = [(IMBrandInfo *)v20 initWithBrandURI:v24 name:v19 categories:v18 primaryPhoneNumber:v17 primaryBrandColorHexString:0 secondaryBrandColorHexString:0 isVerified:v11 localizedDescription:v23 verifiedBy:v15 website:v13 messageNumber:v14 emailAddress:v12 address:v4 termsAndConditionsURL:v6 localizedResponseTime:v7 genericCSSTemplateURL:v9 brandLogoGuid:0];
+  absoluteString3 = [genericCSSTemplateURL absoluteString];
+  LOBYTE(v11) = isVerified;
+  v21 = [(IMBrandInfo *)v20 initWithBrandURI:brandURI name:name categories:categories primaryPhoneNumber:primaryPhoneNumber primaryBrandColorHexString:0 secondaryBrandColorHexString:0 isVerified:v11 localizedDescription:localizedDescription verifiedBy:verifiedBy website:absoluteString messageNumber:messageNumber emailAddress:emailAddress address:address termsAndConditionsURL:absoluteString2 localizedResponseTime:localizedResponseTime genericCSSTemplateURL:absoluteString3 brandLogoGuid:0];
 
   return v21;
 }
 
-- (id)brandManagerForType:(unint64_t)a3
+- (id)brandManagerForType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = 8;
   }
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_6;
     }
@@ -159,10 +159,10 @@ LABEL_6:
   return a2;
 }
 
-- (void)brandWithURI:(id)a3 completion:(id)a4
+- (void)brandWithURI:(id)i completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  iCopy = i;
   if (MEMORY[0x1AC570A30]())
   {
     v7 = 1;
@@ -173,14 +173,14 @@ LABEL_6:
     v7 = 2;
   }
 
-  [(IMBrandManager *)self brandWithURI:v8 forType:v7 completion:v6];
+  [(IMBrandManager *)self brandWithURI:iCopy forType:v7 completion:completionCopy];
 }
 
-- (void)brandWithURI:(id)a3 usingSim:(id)a4 forType:(unint64_t)a5 completion:(id)a6
+- (void)brandWithURI:(id)i usingSim:(id)sim forType:(unint64_t)type completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  iCopy = i;
+  simCopy = sim;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   brandFetchQueue = self->_brandFetchQueue;
   v17[0] = MEMORY[0x1E69E9820];
@@ -188,12 +188,12 @@ LABEL_6:
   v17[2] = sub_1A86E11A4;
   v17[3] = &unk_1E782A148;
   objc_copyWeak(v21, &location);
-  v21[1] = a5;
-  v14 = v10;
+  v21[1] = type;
+  v14 = iCopy;
   v18 = v14;
-  v15 = v11;
+  v15 = simCopy;
   v19 = v15;
-  v16 = v12;
+  v16 = completionCopy;
   v20 = v16;
   [(NSOperationQueue *)brandFetchQueue addOperationWithBlock:v17];
 

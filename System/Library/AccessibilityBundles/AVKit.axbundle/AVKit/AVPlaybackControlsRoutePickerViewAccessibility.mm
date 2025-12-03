@@ -1,16 +1,16 @@
 @interface AVPlaybackControlsRoutePickerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)customButton;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation AVPlaybackControlsRoutePickerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVPlaybackControlsRoutePickerView" hasInstanceMethod:@"customButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVPlaybackControlsRoutePickerView" hasInstanceVariable:@"_customButton" withType:"AVButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVPlaybackControlsRoutePickerView" hasInstanceMethod:@"customButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVPlaybackControlsRoutePickerView" hasInstanceVariable:@"_customButton" withType:"AVButton"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -27,10 +27,10 @@
 {
   v5.receiver = self;
   v5.super_class = AVPlaybackControlsRoutePickerViewAccessibility;
-  v3 = [(AVPlaybackControlsRoutePickerViewAccessibility *)&v5 customButton];
+  customButton = [(AVPlaybackControlsRoutePickerViewAccessibility *)&v5 customButton];
   [(AVPlaybackControlsRoutePickerViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 
-  return v3;
+  return customButton;
 }
 
 @end

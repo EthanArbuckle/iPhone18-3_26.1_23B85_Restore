@@ -6,14 +6,14 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(MapsUILabelAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"calloutViewSubtitle"];
+  accessibilityIdentification = [(MapsUILabelAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"calloutViewSubtitle"];
 
   if (v4)
   {
-    v5 = [(MapsUILabelAccessibility *)self accessibilityLabel];
-    v6 = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
-    v7 = [v5 stringByTrimmingCharactersInSet:v6];
+    accessibilityLabel = [(MapsUILabelAccessibility *)self accessibilityLabel];
+    whitespaceCharacterSet = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
+    v7 = [accessibilityLabel stringByTrimmingCharactersInSet:whitespaceCharacterSet];
     v8 = [v7 length];
 
     if (!v8)

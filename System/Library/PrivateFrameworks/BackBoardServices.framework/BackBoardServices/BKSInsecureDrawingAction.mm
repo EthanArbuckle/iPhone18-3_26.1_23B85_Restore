@@ -1,18 +1,18 @@
 @interface BKSInsecureDrawingAction
-- (BKSInsecureDrawingAction)initWithPidToContextIdsDictionary:(id)a3;
-- (BKSInsecureDrawingAction)initWithSecureModeViolations:(id)a3;
+- (BKSInsecureDrawingAction)initWithPidToContextIdsDictionary:(id)dictionary;
+- (BKSInsecureDrawingAction)initWithSecureModeViolations:(id)violations;
 - (NSArray)processIds;
 - (NSArray)secureModeViolations;
 - (NSDictionary)pidToContextInfoDictionary;
-- (id)_initWithPidToContextInfoDictionary:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (id)_initWithPidToContextInfoDictionary:(id)dictionary;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation BKSInsecureDrawingAction
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     v5 = @"pidToContextInfoDictionary";
   }
@@ -31,16 +31,16 @@
 
 - (NSArray)processIds
 {
-  v2 = [(BKSInsecureDrawingAction *)self pidToContextInfoDictionary];
-  v3 = [v2 allKeys];
+  pidToContextInfoDictionary = [(BKSInsecureDrawingAction *)self pidToContextInfoDictionary];
+  allKeys = [pidToContextInfoDictionary allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (NSDictionary)pidToContextInfoDictionary
 {
-  v2 = [(BKSInsecureDrawingAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(BKSInsecureDrawingAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
@@ -48,14 +48,14 @@
 - (NSArray)secureModeViolations
 {
   v3 = objc_opt_new();
-  v4 = [(BKSInsecureDrawingAction *)self pidToContextInfoDictionary];
+  pidToContextInfoDictionary = [(BKSInsecureDrawingAction *)self pidToContextInfoDictionary];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__BKSInsecureDrawingAction_secureModeViolations__block_invoke;
   v7[3] = &unk_1E6F47488;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [pidToContextInfoDictionary enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -99,17 +99,17 @@ uint64_t __48__BKSInsecureDrawingAction_secureModeViolations__block_invoke_2(uin
   return result;
 }
 
-- (id)_initWithPidToContextInfoDictionary:(id)a3
+- (id)_initWithPidToContextInfoDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"BKSInsecureDrawingAction.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"pidToContextInfoDictionary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSInsecureDrawingAction.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"pidToContextInfoDictionary"}];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E698E700]);
-  [v6 setObject:v5 forSetting:1];
+  [v6 setObject:dictionaryCopy forSetting:1];
   v10.receiver = self;
   v10.super_class = BKSInsecureDrawingAction;
   v7 = [(BKSInsecureDrawingAction *)&v10 initWithInfo:v6 responder:0];
@@ -117,23 +117,23 @@ uint64_t __48__BKSInsecureDrawingAction_secureModeViolations__block_invoke_2(uin
   return v7;
 }
 
-- (BKSInsecureDrawingAction)initWithSecureModeViolations:(id)a3
+- (BKSInsecureDrawingAction)initWithSecureModeViolations:(id)violations
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  violationsCopy = violations;
+  if (!violationsCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"BKSInsecureDrawingAction.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"secureModeViolations"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSInsecureDrawingAction.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"secureModeViolations"}];
   }
 
-  v22 = self;
+  selfCopy = self;
   v25 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v5;
+  obj = violationsCopy;
   v26 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v26)
   {
@@ -150,15 +150,15 @@ uint64_t __48__BKSInsecureDrawingAction_secureModeViolations__block_invoke_2(uin
 
         v28 = v6;
         v7 = *(*(&v33 + 1) + 8 * v6);
-        v27 = [v7 processId];
+        processId = [v7 processId];
         v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v9 = [v7 layerNamesByContext];
+        layerNamesByContext = [v7 layerNamesByContext];
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v10 = [v7 contextIds];
-        v11 = [v10 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        contextIds = [v7 contextIds];
+        v11 = [contextIds countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v11)
         {
           v12 = v11;
@@ -169,11 +169,11 @@ uint64_t __48__BKSInsecureDrawingAction_secureModeViolations__block_invoke_2(uin
             {
               if (*v30 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(contextIds);
               }
 
               v15 = *(*(&v29 + 1) + 8 * i);
-              v16 = [v9 objectForKeyedSubscript:v15];
+              v16 = [layerNamesByContext objectForKeyedSubscript:v15];
               if (v16)
               {
                 [v8 setObject:v16 forKeyedSubscript:v15];
@@ -186,13 +186,13 @@ uint64_t __48__BKSInsecureDrawingAction_secureModeViolations__block_invoke_2(uin
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            v12 = [contextIds countByEnumeratingWithState:&v29 objects:v37 count:16];
           }
 
           while (v12);
         }
 
-        [v25 setObject:v8 forKeyedSubscript:v27];
+        [v25 setObject:v8 forKeyedSubscript:processId];
         v6 = v28 + 1;
       }
 
@@ -203,29 +203,29 @@ uint64_t __48__BKSInsecureDrawingAction_secureModeViolations__block_invoke_2(uin
     while (v26);
   }
 
-  v18 = [(BKSInsecureDrawingAction *)v22 _initWithPidToContextInfoDictionary:v25];
+  v18 = [(BKSInsecureDrawingAction *)selfCopy _initWithPidToContextInfoDictionary:v25];
   v19 = *MEMORY[0x1E69E9840];
   return v18;
 }
 
-- (BKSInsecureDrawingAction)initWithPidToContextIdsDictionary:(id)a3
+- (BKSInsecureDrawingAction)initWithPidToContextIdsDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"BKSInsecureDrawingAction.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"pidToContextIdsDictionary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSInsecureDrawingAction.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"pidToContextIdsDictionary"}];
   }
 
-  v22 = self;
-  v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  selfCopy = self;
+  v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   v6 = [MEMORY[0x1E695DFD8] set];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = v5;
+  v7 = dictionaryCopy;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v8)
   {
@@ -279,7 +279,7 @@ uint64_t __48__BKSInsecureDrawingAction_secureModeViolations__block_invoke_2(uin
     while (v9);
   }
 
-  v18 = [(BKSInsecureDrawingAction *)v22 _initWithPidToContextInfoDictionary:v24];
+  v18 = [(BKSInsecureDrawingAction *)selfCopy _initWithPidToContextInfoDictionary:v24];
   v19 = *MEMORY[0x1E69E9840];
   return v18;
 }

@@ -1,7 +1,7 @@
 @interface MSDDownloadManifestRequest
 - (BOOL)isValid;
 - (id)getQueryItems;
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4;
+- (id)parseResponseForError:(id)error andPayload:(id)payload;
 @end
 
 @implementation MSDDownloadManifestRequest
@@ -15,8 +15,8 @@
     return 0;
   }
 
-  v3 = [(MSDDownloadManifestRequest *)self manifestInfo];
-  v4 = v3 != 0;
+  manifestInfo = [(MSDDownloadManifestRequest *)self manifestInfo];
+  v4 = manifestInfo != 0;
 
   return v4;
 }
@@ -46,15 +46,15 @@
           }
 
           v8 = *(*(&v15 + 1) + 8 * i);
-          v9 = [(MSDDownloadManifestRequest *)self manifestInfo];
-          v10 = [v9 objectForKey:v8];
+          manifestInfo = [(MSDDownloadManifestRequest *)self manifestInfo];
+          v10 = [manifestInfo objectForKey:v8];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v11 = [v10 stringValue];
+            stringValue = [v10 stringValue];
 
-            v10 = v11;
+            v10 = stringValue;
           }
 
           v12 = [NSURLQueryItem queryItemWithName:v8 value:v10];
@@ -76,24 +76,24 @@
   return v3;
 }
 
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4
+- (id)parseResponseForError:(id)error andPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  payloadCopy = payload;
   v21.receiver = self;
   v21.super_class = MSDDownloadManifestRequest;
-  v8 = [(MSDServerRequest *)&v21 parseResponseForError:v6 andPayload:v7];
-  v9 = [v8 error];
+  v8 = [(MSDServerRequest *)&v21 parseResponseForError:errorCopy andPayload:payloadCopy];
+  error = [v8 error];
 
-  if (v9)
+  if (error)
   {
     v10 = 0;
   }
 
   else
   {
-    v20 = v6;
-    v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:v7 error:&v20];
+    v20 = errorCopy;
+    v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:payloadCopy error:&v20];
     v11 = v20;
 
     if (v10)
@@ -101,9 +101,9 @@
       v12 = sub_100063A54();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(MSDServerRequest *)self getName];
+        getName = [(MSDServerRequest *)self getName];
         *buf = 138543618;
-        v23 = v13;
+        v23 = getName;
         v24 = 2114;
         v25 = v10;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Details to download files are: %{public}@", buf, 0x16u);
@@ -127,14 +127,14 @@
       }
     }
 
-    v6 = v11;
+    errorCopy = v11;
   }
 
-  v17 = [v8 error];
+  error2 = [v8 error];
 
-  if (!v17)
+  if (!error2)
   {
-    [v8 setError:v6];
+    [v8 setError:errorCopy];
   }
 
   return v8;

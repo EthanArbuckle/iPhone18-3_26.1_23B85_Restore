@@ -1,24 +1,24 @@
 @interface IMRecentItemsList
 + (id)sharedInstance;
 - (IMRecentItemsList)init;
-- (id)_buildLRUCacheUsingArray:(id)a3 forDomain:(id)a4;
-- (id)_recentsCacheForDomain:(id)a3;
-- (int64_t)cacheSizeForDomain:(id)a3;
-- (void)_addRecentDataPayloadEntry:(id)a3 toDomain:(id)a4;
-- (void)_removeRecentDataPayloadEntry:(id)a3 forDomain:(id)a4;
-- (void)_removeRecentDataPayloadEntryFromDisk:(id)a3 forDomain:(id)a4;
-- (void)_saveRecentDataPayloadEntryToDisk:(id)a3 forDomain:(id)a4;
-- (void)_updateRecentsCache:(id)a3 forDomain:(id)a4;
-- (void)addRecentItemAtFileURL:(id)a3 GUID:(id)a4 infoDictionary:(id)a5 forDomain:(id)a6;
-- (void)addRecentItemWithData:(id)a3 GUID:(id)a4 infoDictionary:(id)a5 forDomain:(id)a6;
+- (id)_buildLRUCacheUsingArray:(id)array forDomain:(id)domain;
+- (id)_recentsCacheForDomain:(id)domain;
+- (int64_t)cacheSizeForDomain:(id)domain;
+- (void)_addRecentDataPayloadEntry:(id)entry toDomain:(id)domain;
+- (void)_removeRecentDataPayloadEntry:(id)entry forDomain:(id)domain;
+- (void)_removeRecentDataPayloadEntryFromDisk:(id)disk forDomain:(id)domain;
+- (void)_saveRecentDataPayloadEntryToDisk:(id)disk forDomain:(id)domain;
+- (void)_updateRecentsCache:(id)cache forDomain:(id)domain;
+- (void)addRecentItemAtFileURL:(id)l GUID:(id)d infoDictionary:(id)dictionary forDomain:(id)domain;
+- (void)addRecentItemWithData:(id)data GUID:(id)d infoDictionary:(id)dictionary forDomain:(id)domain;
 - (void)dealloc;
-- (void)deleteAllRecentItemsForDomain:(id)a3;
-- (void)deleteRecentItemWithData:(id)a3 GUID:(id)a4 forDomain:(id)a5;
-- (void)deleteRecentItemWithFileURL:(id)a3 GUID:(id)a4 forDomain:(id)a5;
+- (void)deleteAllRecentItemsForDomain:(id)domain;
+- (void)deleteRecentItemWithData:(id)data GUID:(id)d forDomain:(id)domain;
+- (void)deleteRecentItemWithFileURL:(id)l GUID:(id)d forDomain:(id)domain;
 - (void)deleteRecentsInFirstLaunch;
-- (void)dispatchCacheUpdateWithBlock:(id)a3;
-- (void)fetchRecentItemsForDomain:(id)a3 completion:(id)a4;
-- (void)fetchRecentStickersWithCompletion:(id)a3;
+- (void)dispatchCacheUpdateWithBlock:(id)block;
+- (void)fetchRecentItemsForDomain:(id)domain completion:(id)completion;
+- (void)fetchRecentStickersWithCompletion:(id)completion;
 @end
 
 @implementation IMRecentItemsList
@@ -55,65 +55,65 @@
   [(IMRecentItemsList *)&v3 dealloc];
 }
 
-- (int64_t)cacheSizeForDomain:(id)a3
+- (int64_t)cacheSizeForDomain:(id)domain
 {
   if (qword_1EB30AED0 != -1)
   {
     sub_1A88C20FC();
   }
 
-  v4 = [qword_1EB30AEC8 objectForKey:a3];
+  v4 = [qword_1EB30AEC8 objectForKey:domain];
 
   return [v4 integerValue];
 }
 
-- (void)dispatchCacheUpdateWithBlock:(id)a3
+- (void)dispatchCacheUpdateWithBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     diskWritingQueue = self->_diskWritingQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1A8671160;
     block[3] = &unk_1E78283E8;
-    block[4] = a3;
+    block[4] = block;
     dispatch_async(diskWritingQueue, block);
   }
 }
 
-- (void)deleteRecentItemWithFileURL:(id)a3 GUID:(id)a4 forDomain:(id)a5
+- (void)deleteRecentItemWithFileURL:(id)l GUID:(id)d forDomain:(id)domain
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_1A86712E4;
   v5[3] = &unk_1E7828410;
-  v5[4] = a4;
+  v5[4] = d;
   v5[5] = self;
-  v5[6] = a3;
-  v5[7] = a5;
+  v5[6] = l;
+  v5[7] = domain;
   [(IMRecentItemsList *)self dispatchCacheUpdateWithBlock:v5];
 }
 
-- (void)deleteRecentItemWithData:(id)a3 GUID:(id)a4 forDomain:(id)a5
+- (void)deleteRecentItemWithData:(id)data GUID:(id)d forDomain:(id)domain
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_1A86713D4;
   v5[3] = &unk_1E7828410;
-  v5[4] = a4;
-  v5[5] = a3;
+  v5[4] = d;
+  v5[5] = data;
   v5[6] = self;
-  v5[7] = a5;
+  v5[7] = domain;
   [(IMRecentItemsList *)self dispatchCacheUpdateWithBlock:v5];
 }
 
-- (void)deleteAllRecentItemsForDomain:(id)a3
+- (void)deleteAllRecentItemsForDomain:(id)domain
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1A86714A4;
   v3[3] = &unk_1E7826DA8;
-  v3[4] = a3;
+  v3[4] = domain;
   [(IMRecentItemsList *)self dispatchCacheUpdateWithBlock:v3];
 }
 
@@ -122,28 +122,28 @@
   if ((IMGetCachedDomainBoolForKey() & 1) == 0)
   {
     IMSetDomainBoolForKey();
-    v2 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v3 = [IMSystemRootDirectory() stringByAppendingString:@"/var/mobile/Library/SMS/Recents/"];
 
-    [v2 removeItemAtPath:v3 error:0];
+    [defaultManager removeItemAtPath:v3 error:0];
   }
 }
 
-- (void)addRecentItemWithData:(id)a3 GUID:(id)a4 infoDictionary:(id)a5 forDomain:(id)a6
+- (void)addRecentItemWithData:(id)data GUID:(id)d infoDictionary:(id)dictionary forDomain:(id)domain
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_1A8671724;
   v6[3] = &unk_1E7828438;
-  v6[4] = a4;
-  v6[5] = a3;
-  v6[6] = a5;
+  v6[4] = d;
+  v6[5] = data;
+  v6[6] = dictionary;
   v6[7] = self;
-  v6[8] = a6;
+  v6[8] = domain;
   [(IMRecentItemsList *)self dispatchCacheUpdateWithBlock:v6];
 }
 
-- (void)fetchRecentStickersWithCompletion:(id)a3
+- (void)fetchRecentStickersWithCompletion:(id)completion
 {
   v10[0] = 0;
   v10[1] = v10;
@@ -173,14 +173,14 @@
   block[6] = v8;
   block[7] = v9;
   block[8] = v5;
-  block[4] = a3;
+  block[4] = completion;
   dispatch_async(diskWritingQueue, block);
   _Block_object_dispose(v8, 8);
   _Block_object_dispose(v9, 8);
   _Block_object_dispose(v10, 8);
 }
 
-- (void)fetchRecentItemsForDomain:(id)a3 completion:(id)a4
+- (void)fetchRecentItemsForDomain:(id)domain completion:(id)completion
 {
   v13[0] = 0;
   v13[1] = v13;
@@ -218,12 +218,12 @@
   v8[2] = sub_1A867201C;
   v8[3] = &unk_1E78284B0;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = domain;
   v8[8] = v11;
   v8[9] = v9;
   v8[10] = v10;
   v8[11] = v12;
-  v8[6] = a4;
+  v8[6] = completion;
   v8[7] = v13;
   dispatch_async(diskWritingQueue, v8);
   _Block_object_dispose(v9, 8);
@@ -233,26 +233,26 @@
   _Block_object_dispose(v13, 8);
 }
 
-- (void)_addRecentDataPayloadEntry:(id)a3 toDomain:(id)a4
+- (void)_addRecentDataPayloadEntry:(id)entry toDomain:(id)domain
 {
   v54 = *MEMORY[0x1E69E9840];
-  v32 = [a3 GUID];
+  gUID = [entry GUID];
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v49 = a4;
+      domainCopy3 = domain;
       v50 = 2112;
-      v51 = v32;
+      v51 = gUID;
       v52 = 2112;
-      v53 = [a3 timestamp];
+      timestamp = [entry timestamp];
       _os_log_impl(&dword_1A85E5000, v4, OS_LOG_TYPE_INFO, "Adding new recents entry in domain: %@ with GUID: %@ and timestamp: %@", buf, 0x20u);
     }
   }
 
-  obj = [-[IMRecentItemsList _recentsCacheForDomain:](self _recentsCacheForDomain:{a4), "mutableCopy"}];
+  obj = [-[IMRecentItemsList _recentsCacheForDomain:](self _recentsCacheForDomain:{domain), "mutableCopy"}];
   v5 = IMOSLoggingEnabled();
   if (obj)
   {
@@ -262,7 +262,7 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v49 = a4;
+        domainCopy3 = domain;
         _os_log_impl(&dword_1A85E5000, v6, OS_LOG_TYPE_INFO, "Updating existing Recents cache for domain: %@", buf, 0xCu);
       }
     }
@@ -276,7 +276,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v49 = a4;
+        domainCopy3 = domain;
         _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "Creating new Recents cache for domain: %@", buf, 0xCu);
       }
     }
@@ -284,8 +284,8 @@
     obj = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  [obj addObject:{objc_msgSend(a3, "asJSONObject")}];
-  v8 = [(IMRecentItemsList *)self _buildLRUCacheUsingArray:obj forDomain:a4];
+  [obj addObject:{objc_msgSend(entry, "asJSONObject")}];
+  v8 = [(IMRecentItemsList *)self _buildLRUCacheUsingArray:obj forDomain:domain];
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
@@ -293,7 +293,7 @@
     {
       v10 = [v8 count];
       *buf = 134217984;
-      v49 = v10;
+      domainCopy3 = v10;
       _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "Cache Size: %tu", buf, 0xCu);
     }
   }
@@ -304,7 +304,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v49 = v8;
+      domainCopy3 = v8;
       _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Cache contents: %@", buf, 0xCu);
     }
   }
@@ -380,12 +380,12 @@ LABEL_33:
                 {
                   v22 = [v17 valueForKey:@"guid"];
                   *buf = v27;
-                  v49 = v22;
+                  domainCopy3 = v22;
                   _os_log_impl(&dword_1A85E5000, v21, OS_LOG_TYPE_INFO, "Removing deprecated recents item: %@", buf, 0xCu);
                 }
               }
 
-              -[IMRecentItemsList _removeRecentDataPayloadEntryFromDisk:forDomain:](self, "_removeRecentDataPayloadEntryFromDisk:forDomain:", [v17 valueForKey:@"guid"], a4);
+              -[IMRecentItemsList _removeRecentDataPayloadEntryFromDisk:forDomain:](self, "_removeRecentDataPayloadEntryFromDisk:forDomain:", [v17 valueForKey:@"guid"], domain);
             }
 
             ++v16;
@@ -417,7 +417,7 @@ LABEL_33:
             objc_enumerationMutation(v8);
           }
 
-          if ([v32 isEqualToString:{objc_msgSend(*(*(&v33 + 1) + 8 * v25), "valueForKey:", @"guid"}])
+          if ([gUID isEqualToString:{objc_msgSend(*(*(&v33 + 1) + 8 * v25), "valueForKey:", @"guid"}])
           {
             if (IMOSLoggingEnabled())
             {
@@ -429,7 +429,7 @@ LABEL_33:
               }
             }
 
-            [(IMRecentItemsList *)self _saveRecentDataPayloadEntryToDisk:a3 forDomain:a4];
+            [(IMRecentItemsList *)self _saveRecentDataPayloadEntryToDisk:entry forDomain:domain];
           }
 
           ++v25;
@@ -442,11 +442,11 @@ LABEL_33:
       while (v23);
     }
 
-    [(IMRecentItemsList *)self _updateRecentsCache:v8 forDomain:a4];
+    [(IMRecentItemsList *)self _updateRecentsCache:v8 forDomain:domain];
   }
 }
 
-- (void)addRecentItemAtFileURL:(id)a3 GUID:(id)a4 infoDictionary:(id)a5 forDomain:(id)a6
+- (void)addRecentItemAtFileURL:(id)l GUID:(id)d infoDictionary:(id)dictionary forDomain:(id)domain
 {
   v9[0] = 0;
   v9[1] = v9;
@@ -454,17 +454,17 @@ LABEL_33:
   v9[3] = sub_1A8601ED8;
   v9[4] = sub_1A8602164;
   v9[5] = 0;
-  if (a3)
+  if (l)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = sub_1A8672D40;
     v7[3] = &unk_1E78284D8;
-    v7[4] = a4;
-    v7[5] = a6;
-    v7[6] = a3;
+    v7[4] = d;
+    v7[5] = domain;
+    v7[6] = l;
     v7[7] = self;
-    v7[8] = a5;
+    v7[8] = dictionary;
     v7[9] = v9;
     [(IMRecentItemsList *)self dispatchCacheUpdateWithBlock:v7];
   }
@@ -482,7 +482,7 @@ LABEL_33:
   _Block_object_dispose(v9, 8);
 }
 
-- (void)_removeRecentDataPayloadEntry:(id)a3 forDomain:(id)a4
+- (void)_removeRecentDataPayloadEntry:(id)entry forDomain:(id)domain
 {
   v24 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
@@ -491,16 +491,16 @@ LABEL_33:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v19 = a4;
+      domainCopy = domain;
       v20 = 2112;
-      v21 = [a3 GUID];
+      gUID = [entry GUID];
       v22 = 2112;
-      v23 = [a3 timestamp];
+      timestamp = [entry timestamp];
       _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "Updating cache with Data Payload entry for Domain: %@ with GUID: %@ and timestamp: %@", buf, 0x20u);
     }
   }
 
-  v8 = [-[IMRecentItemsList _recentsCacheForDomain:](self _recentsCacheForDomain:{a4), "mutableCopy"}];
+  v8 = [-[IMRecentItemsList _recentsCacheForDomain:](self _recentsCacheForDomain:{domain), "mutableCopy"}];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -519,11 +519,11 @@ LABEL_33:
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
-        if ([objc_msgSend(v12 valueForKey:{@"guid", "isEqualToString:", objc_msgSend(a3, "GUID")}])
+        if ([objc_msgSend(v12 valueForKey:{@"guid", "isEqualToString:", objc_msgSend(entry, "GUID")}])
         {
           [v8 removeObject:v12];
-          -[IMRecentItemsList _removeRecentDataPayloadEntryFromDisk:forDomain:](self, "_removeRecentDataPayloadEntryFromDisk:forDomain:", [a3 GUID], a4);
-          [(IMRecentItemsList *)self _updateRecentsCache:v8 forDomain:a4];
+          -[IMRecentItemsList _removeRecentDataPayloadEntryFromDisk:forDomain:](self, "_removeRecentDataPayloadEntryFromDisk:forDomain:", [entry GUID], domain);
+          [(IMRecentItemsList *)self _updateRecentsCache:v8 forDomain:domain];
           goto LABEL_14;
         }
       }
@@ -541,16 +541,16 @@ LABEL_33:
 LABEL_14:
 }
 
-- (void)_saveRecentDataPayloadEntryToDisk:(id)a3 forDomain:(id)a4
+- (void)_saveRecentDataPayloadEntryToDisk:(id)disk forDomain:(id)domain
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = FormattedDataFilePath(a4, [a3 GUID]);
+  v5 = FormattedDataFilePath(domain, [disk GUID]);
   v14 = 0;
   IMSharedHelperEnsureDirectoryExistsAtPath([v5 stringByDeletingLastPathComponent]);
-  if ([a3 messageItemInfo])
+  if ([disk messageItemInfo])
   {
     v6 = [v5 stringByAppendingPathExtension:@"json"];
-    v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:objc_msgSend(a3 options:"messageItemInfo") error:{0, &v14}];
+    v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:objc_msgSend(disk options:"messageItemInfo") error:{0, &v14}];
     if (!v7)
     {
       if (IMOSLoggingEnabled())
@@ -579,9 +579,9 @@ LABEL_14:
     }
   }
 
-  if ([a3 payloadData])
+  if ([disk payloadData])
   {
-    v10 = [objc_msgSend(a3 "payloadData")];
+    v10 = [objc_msgSend(disk "payloadData")];
     v11 = IMOSLoggingEnabled();
     if (v10)
     {
@@ -610,10 +610,10 @@ LABEL_14:
   }
 }
 
-- (void)_removeRecentDataPayloadEntryFromDisk:(id)a3 forDomain:(id)a4
+- (void)_removeRecentDataPayloadEntryFromDisk:(id)disk forDomain:(id)domain
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = FormattedDataFilePath(a4, a3);
+  v5 = FormattedDataFilePath(domain, disk);
   v6 = [v5 stringByAppendingPathExtension:@"json"];
   v15 = 0;
   if (![objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")])
@@ -631,7 +631,7 @@ LABEL_14:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v17 = v5;
+        diskCopy = v5;
         v10 = "Successfully removed data payload: %@";
         v11 = v9;
         v12 = 12;
@@ -647,7 +647,7 @@ LABEL_9:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v17 = v5;
+      diskCopy = v5;
       v18 = 2112;
       v19 = v15;
       v10 = "Failed to delete payload data from file %@. Error: %@";
@@ -668,7 +668,7 @@ LABEL_9:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v17 = a3;
+          diskCopy = disk;
           v18 = 2112;
           v19 = v15;
           _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Failed to delete dictionary info for GUID %@. Error: %@", buf, 0x16u);
@@ -678,10 +678,10 @@ LABEL_9:
   }
 }
 
-- (id)_buildLRUCacheUsingArray:(id)a3 forDomain:(id)a4
+- (id)_buildLRUCacheUsingArray:(id)array forDomain:(id)domain
 {
-  v18 = a4;
-  v16 = self;
+  domainCopy = domain;
+  selfCopy = self;
   v28 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
   {
@@ -693,13 +693,13 @@ LABEL_9:
     }
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:{objc_msgSend(a3, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:{objc_msgSend(array, "count")}];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v7 = [array countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v7)
   {
     v21 = *v23;
@@ -709,11 +709,11 @@ LABEL_9:
       {
         if (*v23 != v21)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
-        if ([v5 containsObject:{objc_msgSend(v9, "objectForKey:", @"guid", v16, v18)}])
+        if ([v5 containsObject:{objc_msgSend(v9, "objectForKey:", @"guid", selfCopy, domainCopy)}])
         {
           if ([v6 count])
           {
@@ -744,13 +744,13 @@ LABEL_9:
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v7 = [array countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v7);
   }
 
-  [v6 sortUsingComparator:{&unk_1F1BA61E8, v16, v18}];
+  [v6 sortUsingComparator:{&unk_1F1BA61E8, selfCopy, domainCopy}];
   v13 = [v17 cacheSizeForDomain:v19];
   if ([v6 count] <= v13)
   {
@@ -762,11 +762,11 @@ LABEL_9:
   return v14;
 }
 
-- (id)_recentsCacheForDomain:(id)a3
+- (id)_recentsCacheForDomain:(id)domain
 {
   v13 = *MEMORY[0x1E69E9840];
   v10 = 0;
-  v3 = FormattedRecentsCacheFilePath(a3);
+  v3 = FormattedRecentsCacheFilePath(domain);
   if (![objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")])
   {
     goto LABEL_17;
@@ -821,11 +821,11 @@ LABEL_17:
   return v6;
 }
 
-- (void)_updateRecentsCache:(id)a3 forDomain:(id)a4
+- (void)_updateRecentsCache:(id)cache forDomain:(id)domain
 {
   v18 = *MEMORY[0x1E69E9840];
   v15 = 0;
-  v5 = FormattedRecentsCacheFilePath(a4);
+  v5 = FormattedRecentsCacheFilePath(domain);
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -838,7 +838,7 @@ LABEL_17:
   }
 
   IMSharedHelperEnsureDirectoryExistsAtPath([v5 stringByDeletingLastPathComponent]);
-  v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:0 error:&v15];
+  v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:cache options:0 error:&v15];
   if (!v15)
   {
     v12 = [v7 writeToFile:v5 atomically:1];

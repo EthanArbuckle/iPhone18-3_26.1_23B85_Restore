@@ -1,22 +1,22 @@
 @interface CEMFontDeclaration
-- (id)dmf_installAssetOperationWithReferenceResolver:(id)a3 error:(id *)a4;
-- (id)dmf_removeAssetOperationWithInstallMetadata:(id)a3 error:(id *)a4;
+- (id)dmf_installAssetOperationWithReferenceResolver:(id)resolver error:(id *)error;
+- (id)dmf_removeAssetOperationWithInstallMetadata:(id)metadata error:(id *)error;
 @end
 
 @implementation CEMFontDeclaration
 
-- (id)dmf_installAssetOperationWithReferenceResolver:(id)a3 error:(id *)a4
+- (id)dmf_installAssetOperationWithReferenceResolver:(id)resolver error:(id *)error
 {
-  v5 = a3;
-  v6 = [[CEMFontInstallOperation alloc] initWithFontDeclaration:self resolver:v5];
+  resolverCopy = resolver;
+  v6 = [[CEMFontInstallOperation alloc] initWithFontDeclaration:self resolver:resolverCopy];
 
   return v6;
 }
 
-- (id)dmf_removeAssetOperationWithInstallMetadata:(id)a3 error:(id *)a4
+- (id)dmf_removeAssetOperationWithInstallMetadata:(id)metadata error:(id *)error
 {
-  v5 = a3;
-  v6 = [[CEMFontRemoveOperation alloc] initWithFontDeclaration:self installMetadata:v5];
+  metadataCopy = metadata;
+  v6 = [[CEMFontRemoveOperation alloc] initWithFontDeclaration:self installMetadata:metadataCopy];
 
   return v6;
 }

@@ -1,22 +1,22 @@
 @interface CKDSessionAcquirer
-- (_TtC14CloudKitDaemon18CKDSessionAcquirer)initWithSessionAcquisitionSetupInfo:(id)a3 sessionAcquisitionClientProxy:(id)a4 clientConnection:(id)a5 error:(id *)a6;
-- (void)acquireSessionWithCompletionHandler:(id)a3;
+- (_TtC14CloudKitDaemon18CKDSessionAcquirer)initWithSessionAcquisitionSetupInfo:(id)info sessionAcquisitionClientProxy:(id)proxy clientConnection:(id)connection error:(id *)error;
+- (void)acquireSessionWithCompletionHandler:(id)handler;
 @end
 
 @implementation CKDSessionAcquirer
 
-- (_TtC14CloudKitDaemon18CKDSessionAcquirer)initWithSessionAcquisitionSetupInfo:(id)a3 sessionAcquisitionClientProxy:(id)a4 clientConnection:(id)a5 error:(id *)a6
+- (_TtC14CloudKitDaemon18CKDSessionAcquirer)initWithSessionAcquisitionSetupInfo:(id)info sessionAcquisitionClientProxy:(id)proxy clientConnection:(id)connection error:(id *)error
 {
-  v8 = a3;
+  infoCopy = info;
   swift_unknownObjectRetain();
-  return sub_2250B41D8(v8, a4, a5);
+  return sub_2250B41D8(infoCopy, proxy, connection);
 }
 
-- (void)acquireSessionWithCompletionHandler:(id)a3
+- (void)acquireSessionWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   *(swift_allocObject() + 16) = v4;
-  v5 = self;
+  selfCopy = self;
   sub_2250B4C44();
 }
 

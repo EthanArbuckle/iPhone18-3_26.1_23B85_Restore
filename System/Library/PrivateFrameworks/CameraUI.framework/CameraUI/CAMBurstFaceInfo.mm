@@ -6,8 +6,8 @@
 - (CGRect)swFaceRect;
 - (CGSize)hwSize;
 - (CGSize)swSize;
-- (float)overlapWithHwRect:(CGRect)a3;
-- (float)overlapWithSwRect:(CGRect)a3;
+- (float)overlapWithHwRect:(CGRect)rect;
+- (float)overlapWithSwRect:(CGRect)rect;
 @end
 
 @implementation CAMBurstFaceInfo
@@ -85,12 +85,12 @@
   return result;
 }
 
-- (float)overlapWithHwRect:(CGRect)a3
+- (float)overlapWithHwRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(CAMBurstFaceInfo *)self hwFaceId]== -1)
   {
     return 0.0;
@@ -114,12 +114,12 @@
   return result;
 }
 
-- (float)overlapWithSwRect:(CGRect)a3
+- (float)overlapWithSwRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(CAMBurstFaceInfo *)self swFaceId]== -1)
   {
     return 0.0;

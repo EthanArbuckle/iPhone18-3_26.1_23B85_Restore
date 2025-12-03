@@ -1,14 +1,14 @@
 @interface CKVTokenChain
-+ (id)tokenChainBuilderForString:(id)a3 locale:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTokenChain:(id)a3;
++ (id)tokenChainBuilderForString:(id)string locale:(id)locale;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTokenChain:(id)chain;
 - (CKVTokenChain)init;
-- (CKVTokenChain)initWithCoder:(id)a3;
-- (CKVTokenChain)initWithString:(id)a3 locale:(id)a4 tokens:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CKVTokenChain)initWithCoder:(id)coder;
+- (CKVTokenChain)initWithString:(id)string locale:(id)locale tokens:(id)tokens;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKVTokenChain
@@ -20,18 +20,18 @@
   return v4 ^ [(NSArray *)self->_tokens hash];
 }
 
-- (BOOL)isEqualToTokenChain:(id)a3
+- (BOOL)isEqualToTokenChain:(id)chain
 {
-  v4 = a3;
+  chainCopy = chain;
   normalizedString = self->_normalizedString;
-  v6 = [v4 normalizedString];
-  LODWORD(normalizedString) = [(NSString *)normalizedString isEqualToString:v6];
+  normalizedString = [chainCopy normalizedString];
+  LODWORD(normalizedString) = [(NSString *)normalizedString isEqualToString:normalizedString];
 
-  if (normalizedString && (locale = self->_locale, [v4 locale], v8 = objc_claimAutoreleasedReturnValue(), LODWORD(locale) = -[NSLocale isEqual:](locale, "isEqual:", v8), v8, locale))
+  if (normalizedString && (locale = self->_locale, [chainCopy locale], v8 = objc_claimAutoreleasedReturnValue(), LODWORD(locale) = -[NSLocale isEqual:](locale, "isEqual:", v8), v8, locale))
   {
     tokens = self->_tokens;
-    v10 = [v4 tokens];
-    v11 = [(NSArray *)tokens isEqualToArray:v10];
+    tokens = [chainCopy tokens];
+    v11 = [(NSArray *)tokens isEqualToArray:tokens];
   }
 
   else
@@ -42,61 +42,61 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVTokenChain *)self isEqualToTokenChain:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVTokenChain *)self isEqualToTokenChain:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_normalizedString copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_normalizedString copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSLocale *)self->_locale copyWithZone:a3];
+  v8 = [(NSLocale *)self->_locale copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSArray *)self->_tokens copyWithZone:a3];
+  v10 = [(NSArray *)self->_tokens copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (CKVTokenChain)initWithCoder:(id)a3
+- (CKVTokenChain)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CKVTokenChain;
   v5 = [(CKVTokenChain *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"normalizedStr"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"normalizedStr"];
     normalizedString = v5->_normalizedString;
     v5->_normalizedString = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
     locale = v5->_locale;
     v5->_locale = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"tokens"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"tokens"];
     tokens = v5->_tokens;
     v5->_tokens = v13;
   }
@@ -104,13 +104,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   normalizedString = self->_normalizedString;
-  v5 = a3;
-  [v5 encodeObject:normalizedString forKey:@"normalizedStr"];
-  [v5 encodeObject:self->_locale forKey:@"locale"];
-  [v5 encodeObject:self->_tokens forKey:@"tokens"];
+  coderCopy = coder;
+  [coderCopy encodeObject:normalizedString forKey:@"normalizedStr"];
+  [coderCopy encodeObject:self->_locale forKey:@"locale"];
+  [coderCopy encodeObject:self->_tokens forKey:@"tokens"];
 }
 
 - (id)description
@@ -129,12 +129,12 @@
   objc_exception_throw(v2);
 }
 
-- (CKVTokenChain)initWithString:(id)a3 locale:(id)a4 tokens:(id)a5
+- (CKVTokenChain)initWithString:(id)string locale:(id)locale tokens:(id)tokens
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  localeCopy = locale;
+  tokensCopy = tokens;
   v23.receiver = self;
   v23.super_class = CKVTokenChain;
   v11 = [(CKVTokenChain *)&v23 init];
@@ -143,7 +143,7 @@
     goto LABEL_6;
   }
 
-  v12 = [v8 copy];
+  v12 = [stringCopy copy];
   normalizedString = v11->_normalizedString;
   v11->_normalizedString = v12;
 
@@ -162,7 +162,7 @@
     goto LABEL_8;
   }
 
-  v15 = [v9 copy];
+  v15 = [localeCopy copy];
   locale = v11->_locale;
   v11->_locale = v15;
 
@@ -183,7 +183,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v17 = [v10 copy];
+  v17 = [tokensCopy copy];
   tokens = v11->_tokens;
   v11->_tokens = v17;
 
@@ -208,11 +208,11 @@ LABEL_9:
   return v19;
 }
 
-+ (id)tokenChainBuilderForString:(id)a3 locale:(id)a4
++ (id)tokenChainBuilderForString:(id)string locale:(id)locale
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CKVTokenChainBuilder alloc] initWithString:v6 locale:v5];
+  localeCopy = locale;
+  stringCopy = string;
+  v7 = [[CKVTokenChainBuilder alloc] initWithString:stringCopy locale:localeCopy];
 
   return v7;
 }

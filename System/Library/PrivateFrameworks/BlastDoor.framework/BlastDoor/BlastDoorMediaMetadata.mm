@@ -1015,7 +1015,7 @@
 
 - (int64_t)cameraUsedForCapture
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_214566DF0();
 
   return v3;

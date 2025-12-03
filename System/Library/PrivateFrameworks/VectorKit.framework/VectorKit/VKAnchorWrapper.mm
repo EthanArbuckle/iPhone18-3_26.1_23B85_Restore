@@ -1,15 +1,15 @@
 @interface VKAnchorWrapper
 - ($1AB5FA073B851C12C2339EC22442E995)coordinate3D;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
-- (CGPoint)pointInLayer:(id)a3 bound:(CGRect)a4;
+- (CGPoint)pointInLayer:(id)layer bound:(CGRect)bound;
 - (id).cxx_construct;
-- (shared_ptr<md::Anchor>)_anchorWithContext:(void *)a3;
+- (shared_ptr<md::Anchor>)_anchorWithContext:(void *)context;
 - (void)_updateCachedPoint;
-- (void)anchorWorldPointDidChange:(void *)a3;
+- (void)anchorWorldPointDidChange:(void *)change;
 - (void)dealloc;
 - (void)destroyAnchor;
-- (void)layoutWithContext:(const void *)a3;
-- (void)prepare:(CGSize)a3 cameraContext:(const void *)a4 anchorContext:(const void *)a5;
+- (void)layoutWithContext:(const void *)context;
+- (void)prepare:(CGSize)prepare cameraContext:(const void *)context anchorContext:(const void *)anchorContext;
 - (void)updateIfNeeded;
 @end
 
@@ -183,7 +183,7 @@
   }
 }
 
-- (void)anchorWorldPointDidChange:(void *)a3
+- (void)anchorWorldPointDidChange:(void *)change
 {
   if (self->_cameraContext)
   {
@@ -194,30 +194,30 @@
   }
 }
 
-- (void)layoutWithContext:(const void *)a3
+- (void)layoutWithContext:(const void *)context
 {
-  v11 = *a3;
+  v11 = *context;
   [v11 size];
   v6 = v5;
   v8 = v7;
-  v9 = *(a3 + 1);
+  v9 = *(context + 1);
   v10 = md::LayoutContext::get<md::CameraContext>(v9);
   [(VKAnchorWrapper *)self prepare:v10 cameraContext:gdc::Context::context<md::AnchorContext>(v9) anchorContext:v6, v8];
 }
 
-- (void)prepare:(CGSize)a3 cameraContext:(const void *)a4 anchorContext:(const void *)a5
+- (void)prepare:(CGSize)prepare cameraContext:(const void *)context anchorContext:(const void *)anchorContext
 {
-  self->_canvasSize = a3;
-  self->_cameraContext = a4;
-  if (a5)
+  self->_canvasSize = prepare;
+  self->_cameraContext = context;
+  if (anchorContext)
   {
-    self->_anchorManager = *a5;
+    self->_anchorManager = *anchorContext;
   }
 
   [(VKAnchorWrapper *)self _updateCachedPoint];
 }
 
-- (shared_ptr<md::Anchor>)_anchorWithContext:(void *)a3
+- (shared_ptr<md::Anchor>)_anchorWithContext:(void *)context
 {
   v6 = v3;
   ptr = self->_anchor.__ptr_;
@@ -231,11 +231,11 @@ LABEL_10:
     md::AnchorManager::newAnchorAtCoordinate(&v21);
   }
 
-  if (*(ptr + 1) == a3)
+  if (*(ptr + 1) == context)
   {
     v8 = (*(*ptr + 16))(ptr, a2);
     ptr = self->_anchor.__ptr_;
-    if (v8 == *(a3 + 8))
+    if (v8 == *(context + 8))
     {
       if (((*(*ptr + 24))(ptr) & 1) != 0 || self->_followsTerrain == (*(*self->_anchor.__ptr_ + 32))(self->_anchor.__ptr_))
       {
@@ -282,12 +282,12 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)pointInLayer:(id)a3 bound:(CGRect)a4
+- (CGPoint)pointInLayer:(id)layer bound:(CGRect)bound
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v7 = a3;
-  v8 = v7;
+  height = bound.size.height;
+  width = bound.size.width;
+  layerCopy = layer;
+  v8 = layerCopy;
   x = self->_screenPointInCanvas.x;
   if (x == 9.22337204e18 || (y = self->_screenPointInCanvas.y, y == 9.22337204e18))
   {
@@ -297,7 +297,7 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if (v7)
+  if (layerCopy)
   {
     if (objc_opt_respondsToSelector())
     {

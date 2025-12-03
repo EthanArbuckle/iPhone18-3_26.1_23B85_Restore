@@ -1,10 +1,10 @@
 @interface DataProtectionInformationManager
-- (void)handleNSUbiquitousKeyValueStoreExternallyNotification:(id)a3;
+- (void)handleNSUbiquitousKeyValueStoreExternallyNotification:(id)notification;
 @end
 
 @implementation DataProtectionInformationManager
 
-- (void)handleNSUbiquitousKeyValueStoreExternallyNotification:(id)a3
+- (void)handleNSUbiquitousKeyValueStoreExternallyNotification:(id)notification
 {
   v3 = sub_1C96A42E4();
   v4 = *(v3 - 8);

@@ -1,19 +1,19 @@
 @interface DVTDataBlockStream
 - (id).cxx_construct;
-- (id)createNextStream:(id *)a3;
-- (id)read:(unint64_t)a3 error:(id *)a4;
+- (id)createNextStream:(id *)stream;
+- (id)read:(unint64_t)read error:(id *)error;
 @end
 
 @implementation DVTDataBlockStream
 
-- (id)createNextStream:(id *)a3
+- (id)createNextStream:(id *)stream
 {
   v3 = objc_alloc_init(DVTDataBlockStream);
 
   return v3;
 }
 
-- (id)read:(unint64_t)a3 error:(id *)a4
+- (id)read:(unint64_t)read error:(id *)error
 {
   v5 = *(self->_records.__end_.__next_ + 2);
   sub_247FD0F40(&self->_records);

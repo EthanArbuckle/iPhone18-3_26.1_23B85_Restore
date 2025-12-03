@@ -1,12 +1,12 @@
 @interface _SFDownloadCurrentPageActivity
-- (_SFDownloadCurrentPageActivity)initWithWebView:(id)a3;
+- (_SFDownloadCurrentPageActivity)initWithWebView:(id)view;
 @end
 
 @implementation _SFDownloadCurrentPageActivity
 
-- (_SFDownloadCurrentPageActivity)initWithWebView:(id)a3
+- (_SFDownloadCurrentPageActivity)initWithWebView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = *MEMORY[0x1E69CDB00];
   v16 = 0;
   v7 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:v6 error:&v16];
@@ -22,25 +22,25 @@
     goto LABEL_6;
   }
 
-  v9 = [v7 _plugIn];
-  v10 = [v9 userElection];
+  _plugIn = [v7 _plugIn];
+  userElection = [_plugIn userElection];
 
-  if (v10 == 2)
+  if (userElection == 2)
   {
 LABEL_6:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
   v15.receiver = self;
   v15.super_class = _SFDownloadCurrentPageActivity;
   v11 = [(UIApplicationExtensionActivity *)&v15 initWithApplicationExtension:v7];
-  objc_storeStrong(&v11->_webView, a3);
+  objc_storeStrong(&v11->_webView, view);
   self = v11;
-  v12 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)initWithWebView:(void *)a1 .cold.1(void *a1, void *a2)

@@ -1,7 +1,7 @@
 @interface IFTSchemaASTPickType
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaASTPickType)initWithDictionary:(id)a3;
-- (IFTSchemaASTPickType)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaASTPickType)initWithDictionary:(id)dictionary;
+- (IFTSchemaASTPickType)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
@@ -9,29 +9,29 @@
 - (unint64_t)hash;
 - (void)deleteIndex;
 - (void)deleteNone;
-- (void)setIndex:(int64_t)a3;
-- (void)setNone:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setIndex:(int64_t)index;
+- (void)setNone:(BOOL)none;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaASTPickType
 
-- (IFTSchemaASTPickType)initWithDictionary:(id)a3
+- (IFTSchemaASTPickType)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = IFTSchemaASTPickType;
   v5 = [(IFTSchemaASTPickType *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"index"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"index"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaASTPickType setIndex:](v5, "setIndex:", [v6 longLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"none"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"none"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,30 +44,30 @@
   return v5;
 }
 
-- (IFTSchemaASTPickType)initWithJSON:(id)a3
+- (IFTSchemaASTPickType)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaASTPickType *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaASTPickType *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaASTPickType *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -80,12 +80,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   whichOneof_Astpicktype = self->_whichOneof_Astpicktype;
   if (whichOneof_Astpicktype == 1)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[IFTSchemaASTPickType index](self, "index")}];
-    [v3 setObject:v5 forKeyedSubscript:@"index"];
+    [dictionary setObject:v5 forKeyedSubscript:@"index"];
 
     whichOneof_Astpicktype = self->_whichOneof_Astpicktype;
   }
@@ -93,12 +93,12 @@
   if (whichOneof_Astpicktype == 3)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaASTPickType none](self, "none")}];
-    [v3 setObject:v6 forKeyedSubscript:@"none"];
+    [dictionary setObject:v6 forKeyedSubscript:@"none"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -117,13 +117,13 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (whichOneof_Astpicktype = self->_whichOneof_Astpicktype, whichOneof_Astpicktype == objc_msgSend(v4, "whichOneof_Astpicktype")) && (index = self->_index, index == objc_msgSend(v4, "index")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (whichOneof_Astpicktype = self->_whichOneof_Astpicktype, whichOneof_Astpicktype == objc_msgSend(equalCopy, "whichOneof_Astpicktype")) && (index = self->_index, index == objc_msgSend(equalCopy, "index")))
   {
     none = self->_none;
-    v8 = none == [v4 none];
+    v8 = none == [equalCopy none];
   }
 
   else
@@ -134,22 +134,22 @@
   return v8;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   whichOneof_Astpicktype = self->_whichOneof_Astpicktype;
-  v6 = v4;
+  v6 = toCopy;
   if (whichOneof_Astpicktype == 1)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
     whichOneof_Astpicktype = self->_whichOneof_Astpicktype;
   }
 
   if (whichOneof_Astpicktype == 3)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
@@ -162,11 +162,11 @@
   }
 }
 
-- (void)setNone:(BOOL)a3
+- (void)setNone:(BOOL)none
 {
   self->_index = 0;
   self->_whichOneof_Astpicktype = 3;
-  self->_none = a3;
+  self->_none = none;
 }
 
 - (void)deleteIndex
@@ -191,11 +191,11 @@
   }
 }
 
-- (void)setIndex:(int64_t)a3
+- (void)setIndex:(int64_t)index
 {
   self->_none = 0;
   self->_whichOneof_Astpicktype = 1;
-  self->_index = a3;
+  self->_index = index;
 }
 
 - (id)suppressMessageUnderConditions

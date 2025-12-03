@@ -1,35 +1,35 @@
 @interface PKPassVerificationFieldsMethod
-- (PKPassVerificationFieldsMethod)initWithCoder:(id)a3;
-- (PKPassVerificationFieldsMethod)initWithDictionary:(id)a3;
-- (PKPassVerificationFieldsMethod)initWithFieldIdentifiers:(id)a3 fieldConfiguration:(id)a4;
-- (void)_appendDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKPassVerificationFieldsMethod)initWithCoder:(id)coder;
+- (PKPassVerificationFieldsMethod)initWithDictionary:(id)dictionary;
+- (PKPassVerificationFieldsMethod)initWithFieldIdentifiers:(id)identifiers fieldConfiguration:(id)configuration;
+- (void)_appendDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassVerificationFieldsMethod
 
-- (PKPassVerificationFieldsMethod)initWithDictionary:(id)a3
+- (PKPassVerificationFieldsMethod)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKArrayContaining:objc_opt_class() forKey:@"fields"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"fields"];
   v6 = objc_opt_class();
-  v7 = [v4 PKDictionaryOfKeyClass:v6 valueClass:objc_opt_class() ForKey:@"fieldOptions"];
+  v7 = [dictionaryCopy PKDictionaryOfKeyClass:v6 valueClass:objc_opt_class() ForKey:@"fieldOptions"];
 
   v8 = [(PKPassVerificationFieldsMethod *)self initWithFieldIdentifiers:v5 fieldConfiguration:v7];
   return v8;
 }
 
-- (PKPassVerificationFieldsMethod)initWithFieldIdentifiers:(id)a3 fieldConfiguration:(id)a4
+- (PKPassVerificationFieldsMethod)initWithFieldIdentifiers:(id)identifiers fieldConfiguration:(id)configuration
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  configurationCopy = configuration;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = v6;
+  v9 = identifiersCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -45,7 +45,7 @@
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        v15 = [v7 objectForKeyedSubscript:v14];
+        v15 = [configurationCopy objectForKeyedSubscript:v14];
         v16 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:v14 configuration:v15];
         [v8 safelyAddObject:v16];
       }
@@ -71,8 +71,8 @@
     v19 = *(v17 + 7);
     *(v17 + 7) = v18;
 
-    objc_storeStrong(v17 + 5, a3);
-    v20 = v7;
+    objc_storeStrong(v17 + 5, identifiers);
+    v20 = configurationCopy;
     self = *(v17 + 6);
     *(v17 + 6) = v20;
 LABEL_12:
@@ -81,23 +81,23 @@ LABEL_12:
   return v17;
 }
 
-- (PKPassVerificationFieldsMethod)initWithCoder:(id)a3
+- (PKPassVerificationFieldsMethod)initWithCoder:(id)coder
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = PKPassVerificationFieldsMethod;
-  v5 = [(PKPassVerificationMethod *)&v32 initWithCoder:v4];
+  v5 = [(PKPassVerificationMethod *)&v32 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"fieldIdentifiers"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"fieldIdentifiers"];
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v7 setWithObjects:{v8, v9, v10, objc_opt_class(), 0}];
-    v27 = v4;
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"fieldConfiguration"];
+    v27 = coderCopy;
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"fieldConfiguration"];
 
     fieldConfiguration = objc_alloc_init(MEMORY[0x1E695DF70]);
     v28 = 0u;
@@ -153,29 +153,29 @@ LABEL_12:
       v5 = 0;
     }
 
-    v4 = v27;
+    coderCopy = v27;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassVerificationFieldsMethod;
-  v4 = a3;
-  [(PKPassVerificationMethod *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_fieldIdentifiers forKey:{@"fieldIdentifiers", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_fieldConfiguration forKey:@"fieldConfiguration"];
+  coderCopy = coder;
+  [(PKPassVerificationMethod *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_fieldIdentifiers forKey:{@"fieldIdentifiers", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_fieldConfiguration forKey:@"fieldConfiguration"];
 }
 
-- (void)_appendDescription:(id)a3
+- (void)_appendDescription:(id)description
 {
   v5.receiver = self;
   v5.super_class = PKPassVerificationFieldsMethod;
-  v4 = a3;
-  [(PKPassVerificationMethod *)&v5 _appendDescription:v4];
-  [v4 appendFormat:@"fields: '%@'; ", self->_fields];
+  descriptionCopy = description;
+  [(PKPassVerificationMethod *)&v5 _appendDescription:descriptionCopy];
+  [descriptionCopy appendFormat:@"fields: '%@'; ", self->_fields];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface PIApertureRedEyeAutoCalculator
-- (id)apertureRedEyeResultFromFaceObservations:(id)a3 imageSize:(id)a4;
+- (id)apertureRedEyeResultFromFaceObservations:(id)observations imageSize:(id)size;
 - (void)cancel;
-- (void)submit:(id)a3;
+- (void)submit:(id)submit;
 @end
 
 @implementation PIApertureRedEyeAutoCalculator
 
-- (id)apertureRedEyeResultFromFaceObservations:(id)a3 imageSize:(id)a4
+- (id)apertureRedEyeResultFromFaceObservations:(id)observations imageSize:(id)size
 {
   v82 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  observationsCopy = observations;
   v63 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(NURenderRequest *)self composition];
-  v7 = [v6 objectForKeyedSubscript:@"orientation"];
+  composition = [(NURenderRequest *)self composition];
+  v7 = [composition objectForKeyedSubscript:@"orientation"];
 
   v60 = v7;
   v8 = [v7 objectForKeyedSubscript:@"value"];
@@ -23,7 +23,7 @@
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v5;
+  obj = observationsCopy;
   v9 = [obj countByEnumeratingWithState:&v67 objects:v81 count:16];
   if (v9)
   {
@@ -47,18 +47,18 @@
         v17 = v16;
         v19 = v18;
         v21 = v20;
-        v22 = [v13 landmarks];
-        v23 = [v22 leftEye];
+        landmarks = [v13 landmarks];
+        leftEye = [landmarks leftEye];
 
-        v24 = [v13 landmarks];
-        v25 = [v24 rightEye];
+        landmarks2 = [v13 landmarks];
+        rightEye = [landmarks2 rightEye];
 
-        if ([v23 pointCount] && objc_msgSend(v25, "pointCount"))
+        if ([leftEye pointCount] && objc_msgSend(rightEye, "pointCount"))
         {
-          +[PIAutoCalculatorUtils averageCGPoints:pointCount:](PIAutoCalculatorUtils, "averageCGPoints:pointCount:", [v23 normalizedPoints], objc_msgSend(v23, "pointCount"));
+          +[PIAutoCalculatorUtils averageCGPoints:pointCount:](PIAutoCalculatorUtils, "averageCGPoints:pointCount:", [leftEye normalizedPoints], objc_msgSend(leftEye, "pointCount"));
           v27 = v26;
           v29 = v28;
-          +[PIAutoCalculatorUtils averageCGPoints:pointCount:](PIAutoCalculatorUtils, "averageCGPoints:pointCount:", [v25 normalizedPoints], objc_msgSend(v25, "pointCount"));
+          +[PIAutoCalculatorUtils averageCGPoints:pointCount:](PIAutoCalculatorUtils, "averageCGPoints:pointCount:", [rightEye normalizedPoints], objc_msgSend(rightEye, "pointCount"));
           v31 = v30;
           v33 = v32;
           [PIAutoCalculatorUtils convertFacePoint:v62 toImagePointWithFaceRect:v27 orientation:v29, v15, v17, v19, v21];
@@ -128,11 +128,11 @@
   return v58;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v13 = NUAssertLogger_19851();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -154,8 +154,8 @@
         v21 = dispatch_get_specific(*v15);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v21;
         v31 = 2114;
@@ -166,8 +166,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v20;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -176,7 +176,7 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = submitCopy;
   v6 = [objc_alloc(MEMORY[0x1E69B3A50]) initWithRequest:self];
   faceRequest = self->_faceRequest;
   self->_faceRequest = v6;
@@ -230,8 +230,8 @@ void __41__PIApertureRedEyeAutoCalculator_submit___block_invoke(uint64_t a1, voi
 
 - (void)cancel
 {
-  v2 = [(NUFaceDetectionRequest *)self->_faceRequest renderContext];
-  [v2 cancelAllRequests];
+  renderContext = [(NUFaceDetectionRequest *)self->_faceRequest renderContext];
+  [renderContext cancelAllRequests];
 }
 
 @end

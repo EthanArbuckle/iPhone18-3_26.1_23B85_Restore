@@ -1,16 +1,16 @@
 @interface CKDPRecordResolveTokenResponse
-- (BOOL)isEqual:(id)a3;
-- (id)containerEnvironmentAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)containerEnvironmentAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsContainerEnvironment:(id)a3;
+- (int)StringAsContainerEnvironment:(id)environment;
 - (int)containerEnvironment;
 - (unint64_t)hash;
-- (void)addRecord:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRecord:(id)record;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordResolveTokenResponse
@@ -28,33 +28,33 @@
   }
 }
 
-- (id)containerEnvironmentAsString:(int)a3
+- (id)containerEnvironmentAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"production";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"sandbox";
   }
 
   else
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   return v4;
 }
 
-- (int)StringAsContainerEnvironment:(id)a3
+- (int)StringAsContainerEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   v6 = 1;
-  if ((objc_msgSend_isEqualToString_(v3, v4, @"production") & 1) == 0)
+  if ((objc_msgSend_isEqualToString_(environmentCopy, v4, @"production") & 1) == 0)
   {
-    if (objc_msgSend_isEqualToString_(v3, v5, @"sandbox"))
+    if (objc_msgSend_isEqualToString_(environmentCopy, v5, @"sandbox"))
     {
       v6 = 2;
     }
@@ -68,22 +68,22 @@
   return v6;
 }
 
-- (void)addRecord:(id)a3
+- (void)addRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   records = self->_records;
-  v8 = v4;
+  v8 = recordCopy;
   if (!records)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_records;
     self->_records = v6;
 
-    v4 = v8;
+    recordCopy = v8;
     records = self->_records;
   }
 
-  objc_msgSend_addObject_(records, v4, v4);
+  objc_msgSend_addObject_(records, recordCopy, recordCopy);
 }
 
 - (id)description
@@ -194,10 +194,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_container)
   {
     PBDataWriterWriteStringField();
@@ -259,21 +259,21 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   container = self->_container;
-  v20 = v4;
+  v20 = toCopy;
   if (container)
   {
-    objc_msgSend_setContainer_(v4, v5, container);
-    v4 = v20;
+    objc_msgSend_setContainer_(toCopy, v5, container);
+    toCopy = v20;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_containerEnvironment;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 4) = self->_containerEnvironment;
+    *(toCopy + 56) |= 1u;
   }
 
   if (objc_msgSend_recordsCount(self, v5, container))
@@ -313,13 +313,13 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v39 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_container, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_container, v11, zone);
   v13 = *(v10 + 8);
   *(v10 + 8) = v12;
 
@@ -348,7 +348,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v21 = objc_msgSend_copyWithZone_(*(*(&v34 + 1) + 8 * i), v17, a3, v34);
+        v21 = objc_msgSend_copyWithZone_(*(*(&v34 + 1) + 8 * i), v17, zone, v34);
         objc_msgSend_addRecord_(v10, v22, v21);
       }
 
@@ -358,15 +358,15 @@
     while (v18);
   }
 
-  v24 = objc_msgSend_copyWithZone_(self->_shareRecord, v23, a3);
+  v24 = objc_msgSend_copyWithZone_(self->_shareRecord, v23, zone);
   v25 = *(v10 + 48);
   *(v10 + 48) = v24;
 
-  v27 = objc_msgSend_copyWithZone_(self->_shareMetadata, v26, a3);
+  v27 = objc_msgSend_copyWithZone_(self->_shareMetadata, v26, zone);
   v28 = *(v10 + 40);
   *(v10 + 40) = v27;
 
-  v30 = objc_msgSend_copyWithZone_(self->_recordZone, v29, a3);
+  v30 = objc_msgSend_copyWithZone_(self->_recordZone, v29, zone);
   v31 = *(v10 + 24);
   *(v10 + 24) = v30;
 
@@ -374,17 +374,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_17;
   }
 
   container = self->_container;
-  v9 = v4[1];
+  v9 = equalCopy[1];
   if (container | v9)
   {
     if (!objc_msgSend_isEqual_(container, v7, v9))
@@ -393,16 +393,16 @@
     }
   }
 
-  v10 = *(v4 + 56);
+  v10 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((v4[7] & 1) == 0 || self->_containerEnvironment != *(v4 + 4))
+    if ((equalCopy[7] & 1) == 0 || self->_containerEnvironment != *(equalCopy + 4))
     {
       goto LABEL_17;
     }
   }
 
-  else if (v4[7])
+  else if (equalCopy[7])
   {
 LABEL_17:
     isEqual = 0;
@@ -410,14 +410,14 @@ LABEL_17:
   }
 
   records = self->_records;
-  v12 = v4[4];
+  v12 = equalCopy[4];
   if (records | v12 && !objc_msgSend_isEqual_(records, v7, v12))
   {
     goto LABEL_17;
   }
 
   shareRecord = self->_shareRecord;
-  v14 = v4[6];
+  v14 = equalCopy[6];
   if (shareRecord | v14)
   {
     if (!objc_msgSend_isEqual_(shareRecord, v7, v14))
@@ -427,7 +427,7 @@ LABEL_17:
   }
 
   shareMetadata = self->_shareMetadata;
-  v16 = v4[5];
+  v16 = equalCopy[5];
   if (shareMetadata | v16)
   {
     if (!objc_msgSend_isEqual_(shareMetadata, v7, v16))
@@ -437,7 +437,7 @@ LABEL_17:
   }
 
   recordZone = self->_recordZone;
-  v18 = v4[3];
+  v18 = equalCopy[3];
   if (recordZone | v18)
   {
     isEqual = objc_msgSend_isEqual_(recordZone, v7, v18);
@@ -473,19 +473,19 @@ LABEL_18:
   return v12 ^ v15 ^ objc_msgSend_hash(self->_recordZone, v16, v17);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = *(v5 + 1);
+  fromCopy = from;
+  v6 = *(fromCopy + 1);
   if (v6)
   {
     objc_msgSend_setContainer_(self, v4, v6);
   }
 
-  if (*(v5 + 56))
+  if (*(fromCopy + 56))
   {
-    self->_containerEnvironment = *(v5 + 4);
+    self->_containerEnvironment = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -493,7 +493,7 @@ LABEL_18:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = *(v5 + 4);
+  v7 = *(fromCopy + 4);
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v22, v26, 16);
   if (v9)
   {
@@ -518,7 +518,7 @@ LABEL_18:
   }
 
   shareRecord = self->_shareRecord;
-  v16 = *(v5 + 6);
+  v16 = *(fromCopy + 6);
   if (shareRecord)
   {
     if (v16)
@@ -533,7 +533,7 @@ LABEL_18:
   }
 
   shareMetadata = self->_shareMetadata;
-  v18 = *(v5 + 5);
+  v18 = *(fromCopy + 5);
   if (shareMetadata)
   {
     if (v18)
@@ -548,7 +548,7 @@ LABEL_18:
   }
 
   recordZone = self->_recordZone;
-  v20 = *(v5 + 3);
+  v20 = *(fromCopy + 3);
   if (recordZone)
   {
     if (v20)

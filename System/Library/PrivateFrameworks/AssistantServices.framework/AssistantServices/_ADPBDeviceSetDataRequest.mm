@@ -1,55 +1,55 @@
 @interface _ADPBDeviceSetDataRequest
 - (ADSharedData)_ad_data;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)_ad_performWithCloudService:(id)a3 fromPeer:(id)a4 completion:(id)a5;
-- (void)_ad_performWithSharedDataRemote:(id)a3 completion:(id)a4;
-- (void)_ad_setData:(id)a3;
-- (void)addNotificationPreviewRestrictedApps:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCloudSyncEnabled:(BOOL)a3;
-- (void)setHasDictationEnabled:(BOOL)a3;
-- (void)setHasFullUodEnabled:(BOOL)a3;
-- (void)setHasIsLocationSharingDevice:(BOOL)a3;
-- (void)setHasIsRemotePlaybackDevice:(BOOL)a3;
-- (void)setHasShouldCensorSpeech:(BOOL)a3;
-- (void)setHasSiriEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)_ad_performWithCloudService:(id)service fromPeer:(id)peer completion:(id)completion;
+- (void)_ad_performWithSharedDataRemote:(id)remote completion:(id)completion;
+- (void)_ad_setData:(id)data;
+- (void)addNotificationPreviewRestrictedApps:(id)apps;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCloudSyncEnabled:(BOOL)enabled;
+- (void)setHasDictationEnabled:(BOOL)enabled;
+- (void)setHasFullUodEnabled:(BOOL)enabled;
+- (void)setHasIsLocationSharingDevice:(BOOL)device;
+- (void)setHasIsRemotePlaybackDevice:(BOOL)device;
+- (void)setHasShouldCensorSpeech:(BOOL)speech;
+- (void)setHasSiriEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ADPBDeviceSetDataRequest
 
-- (void)_ad_performWithSharedDataRemote:(id)a3 completion:(id)a4
+- (void)_ad_performWithSharedDataRemote:(id)remote completion:(id)completion
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(_ADPBDeviceSetDataRequest *)self _ad_data];
-  [v6 _dataDidUpdate:v7];
+  completionCopy = completion;
+  remoteCopy = remote;
+  _ad_data = [(_ADPBDeviceSetDataRequest *)self _ad_data];
+  [remoteCopy _dataDidUpdate:_ad_data];
 
-  v8 = v9;
-  if (v9)
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9, 0, 0);
-    v8 = v9;
+    (*(completionCopy + 2))(completionCopy, 0, 0);
+    v8 = completionCopy;
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[176] < 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[176] < 0)
   {
-    self->_siriEnabled = v4[175];
+    self->_siriEnabled = fromCopy[175];
     *&self->_has |= 0x80u;
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(_ADPBDeviceSetDataRequest *)self setSpeechId:?];
   }
@@ -358,15 +358,15 @@ LABEL_14:
   return v30 ^ v31 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v14 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_60;
   }
 
-  v5 = v4[176];
+  v5 = equalCopy[176];
   if ((*&self->_has & 0x80000000) != 0)
   {
     if ((v5 & 0x80000000) == 0)
@@ -376,13 +376,13 @@ LABEL_14:
 
     if (self->_siriEnabled)
     {
-      if ((v4[175] & 1) == 0)
+      if ((equalCopy[175] & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (v4[175])
+    else if (equalCopy[175])
     {
       goto LABEL_60;
     }
@@ -394,13 +394,13 @@ LABEL_14:
   }
 
   speechId = self->_speechId;
-  if (speechId | *(v4 + 14) && ![(NSString *)speechId isEqual:?])
+  if (speechId | *(equalCopy + 14) && ![(NSString *)speechId isEqual:?])
   {
     goto LABEL_60;
   }
 
   languageCode = self->_languageCode;
-  if (languageCode | *(v4 + 6))
+  if (languageCode | *(equalCopy + 6))
   {
     if (![(NSString *)languageCode isEqual:?])
     {
@@ -409,7 +409,7 @@ LABEL_14:
   }
 
   assistantId = self->_assistantId;
-  if (assistantId | *(v4 + 2))
+  if (assistantId | *(equalCopy + 2))
   {
     if (![(NSString *)assistantId isEqual:?])
     {
@@ -418,7 +418,7 @@ LABEL_14:
   }
 
   hostname = self->_hostname;
-  if (hostname | *(v4 + 5))
+  if (hostname | *(equalCopy + 5))
   {
     if (![(NSString *)hostname isEqual:?])
     {
@@ -428,64 +428,64 @@ LABEL_14:
 
   if (*&self->_has)
   {
-    if ((v4[176] & 1) == 0)
+    if ((equalCopy[176] & 1) == 0)
     {
       goto LABEL_60;
     }
 
     if (self->_activityContinuationAllowed)
     {
-      if ((v4[168] & 1) == 0)
+      if ((equalCopy[168] & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (v4[168])
+    else if (equalCopy[168])
     {
       goto LABEL_60;
     }
   }
 
-  else if (v4[176])
+  else if (equalCopy[176])
   {
     goto LABEL_60;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[176] & 4) == 0)
+    if ((equalCopy[176] & 4) == 0)
     {
       goto LABEL_60;
     }
 
     if (self->_dictationEnabled)
     {
-      if ((v4[170] & 1) == 0)
+      if ((equalCopy[170] & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (v4[170])
+    else if (equalCopy[170])
     {
       goto LABEL_60;
     }
   }
 
-  else if ((v4[176] & 4) != 0)
+  else if ((equalCopy[176] & 4) != 0)
   {
     goto LABEL_60;
   }
 
   sharedId = self->_sharedId;
-  if (sharedId | *(v4 + 13) && ![(NSString *)sharedId isEqual:?])
+  if (sharedId | *(equalCopy + 13) && ![(NSString *)sharedId isEqual:?])
   {
     goto LABEL_60;
   }
 
   previousLangaugeCode = self->_previousLangaugeCode;
-  if (previousLangaugeCode | *(v4 + 11))
+  if (previousLangaugeCode | *(equalCopy + 11))
   {
     if (![(NSString *)previousLangaugeCode isEqual:?])
     {
@@ -494,7 +494,7 @@ LABEL_14:
   }
 
   previousOutputVoice = self->_previousOutputVoice;
-  if (previousOutputVoice | *(v4 + 12))
+  if (previousOutputVoice | *(equalCopy + 12))
   {
     if (![(_ADPBDeviceOutputVoiceInfo *)previousOutputVoice isEqual:?])
     {
@@ -503,7 +503,7 @@ LABEL_14:
   }
 
   outputVoice = self->_outputVoice;
-  if (outputVoice | *(v4 + 10))
+  if (outputVoice | *(equalCopy + 10))
   {
     if (![(_ADPBDeviceOutputVoiceInfo *)outputVoice isEqual:?])
     {
@@ -512,61 +512,61 @@ LABEL_14:
   }
 
   has = self->_has;
-  v15 = v4[176];
+  v15 = equalCopy[176];
   if ((has & 2) != 0)
   {
-    if ((v4[176] & 2) == 0)
+    if ((equalCopy[176] & 2) == 0)
     {
       goto LABEL_60;
     }
 
     if (self->_cloudSyncEnabled)
     {
-      if ((v4[169] & 1) == 0)
+      if ((equalCopy[169] & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (v4[169])
+    else if (equalCopy[169])
     {
       goto LABEL_60;
     }
   }
 
-  else if ((v4[176] & 2) != 0)
+  else if ((equalCopy[176] & 2) != 0)
   {
     goto LABEL_60;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((v4[176] & 0x40) == 0)
+    if ((equalCopy[176] & 0x40) == 0)
     {
       goto LABEL_60;
     }
 
     if (self->_shouldCensorSpeech)
     {
-      if ((v4[174] & 1) == 0)
+      if ((equalCopy[174] & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (v4[174])
+    else if (equalCopy[174])
     {
       goto LABEL_60;
     }
   }
 
-  else if ((v4[176] & 0x40) != 0)
+  else if ((equalCopy[176] & 0x40) != 0)
   {
     goto LABEL_60;
   }
 
   userAgent = self->_userAgent;
-  if (userAgent | *(v4 + 17))
+  if (userAgent | *(equalCopy + 17))
   {
     if (![(NSString *)userAgent isEqual:?])
     {
@@ -574,7 +574,7 @@ LABEL_14:
     }
 
     has = self->_has;
-    v15 = v4[176];
+    v15 = equalCopy[176];
   }
 
   if ((has & 0x10) != 0)
@@ -586,13 +586,13 @@ LABEL_14:
 
     if (self->_isLocationSharingDevice)
     {
-      if ((v4[172] & 1) == 0)
+      if ((equalCopy[172] & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (v4[172])
+    else if (equalCopy[172])
     {
       goto LABEL_60;
     }
@@ -604,13 +604,13 @@ LABEL_14:
   }
 
   notificationPreviewRestrictedApps = self->_notificationPreviewRestrictedApps;
-  if (notificationPreviewRestrictedApps | *(v4 + 9) && ![(NSMutableArray *)notificationPreviewRestrictedApps isEqual:?])
+  if (notificationPreviewRestrictedApps | *(equalCopy + 9) && ![(NSMutableArray *)notificationPreviewRestrictedApps isEqual:?])
   {
     goto LABEL_60;
   }
 
   temperatureUnit = self->_temperatureUnit;
-  if (temperatureUnit | *(v4 + 16))
+  if (temperatureUnit | *(equalCopy + 16))
   {
     if (![(NSString *)temperatureUnit isEqual:?])
     {
@@ -619,7 +619,7 @@ LABEL_14:
   }
 
   loggingAssistantId = self->_loggingAssistantId;
-  if (loggingAssistantId | *(v4 + 7))
+  if (loggingAssistantId | *(equalCopy + 7))
   {
     if (![(NSString *)loggingAssistantId isEqual:?])
     {
@@ -628,7 +628,7 @@ LABEL_14:
   }
 
   loggingSharedId = self->_loggingSharedId;
-  if (loggingSharedId | *(v4 + 8))
+  if (loggingSharedId | *(equalCopy + 8))
   {
     if (![(NSString *)loggingSharedId isEqual:?])
     {
@@ -637,7 +637,7 @@ LABEL_14:
   }
 
   storeFrontId = self->_storeFrontId;
-  if (storeFrontId | *(v4 + 15))
+  if (storeFrontId | *(equalCopy + 15))
   {
     if (![(NSString *)storeFrontId isEqual:?])
     {
@@ -646,7 +646,7 @@ LABEL_14:
   }
 
   airplayRouteId = self->_airplayRouteId;
-  if (airplayRouteId | *(v4 + 1))
+  if (airplayRouteId | *(equalCopy + 1))
   {
     if (![(NSString *)airplayRouteId isEqual:?])
     {
@@ -655,7 +655,7 @@ LABEL_14:
   }
 
   ekToken = self->_ekToken;
-  if (ekToken | *(v4 + 4))
+  if (ekToken | *(equalCopy + 4))
   {
     if (![(NSString *)ekToken isEqual:?])
     {
@@ -664,7 +664,7 @@ LABEL_14:
   }
 
   userToken = self->_userToken;
-  if (userToken | *(v4 + 19))
+  if (userToken | *(equalCopy + 19))
   {
     if (![(NSString *)userToken isEqual:?])
     {
@@ -674,38 +674,38 @@ LABEL_14:
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((v4[176] & 0x20) == 0)
+    if ((equalCopy[176] & 0x20) == 0)
     {
       goto LABEL_60;
     }
 
     if (self->_isRemotePlaybackDevice)
     {
-      if ((v4[173] & 1) == 0)
+      if ((equalCopy[173] & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (v4[173])
+    else if (equalCopy[173])
     {
       goto LABEL_60;
     }
   }
 
-  else if ((v4[176] & 0x20) != 0)
+  else if ((equalCopy[176] & 0x20) != 0)
   {
     goto LABEL_60;
   }
 
   userAssignedName = self->_userAssignedName;
-  if (userAssignedName | *(v4 + 18) && ![(NSString *)userAssignedName isEqual:?])
+  if (userAssignedName | *(equalCopy + 18) && ![(NSString *)userAssignedName isEqual:?])
   {
     goto LABEL_60;
   }
 
   utsRequiredRequestData = self->_utsRequiredRequestData;
-  if (utsRequiredRequestData | *(v4 + 20))
+  if (utsRequiredRequestData | *(equalCopy + 20))
   {
     if (![(_ADPBDeviceStringKeyValueDictionary *)utsRequiredRequestData isEqual:?])
     {
@@ -714,7 +714,7 @@ LABEL_14:
   }
 
   dataSharingOptInStatus = self->_dataSharingOptInStatus;
-  if (dataSharingOptInStatus | *(v4 + 3))
+  if (dataSharingOptInStatus | *(equalCopy + 3))
   {
     if (![(NSString *)dataSharingOptInStatus isEqual:?])
     {
@@ -724,17 +724,17 @@ LABEL_14:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((v4[176] & 8) != 0)
+    if ((equalCopy[176] & 8) != 0)
     {
       if (self->_fullUodEnabled)
       {
-        if (v4[171])
+        if (equalCopy[171])
         {
           goto LABEL_108;
         }
       }
 
-      else if (!v4[171])
+      else if (!equalCopy[171])
       {
 LABEL_108:
         v28 = 1;
@@ -747,15 +747,15 @@ LABEL_60:
     goto LABEL_61;
   }
 
-  v28 = (v4[176] & 8) == 0;
+  v28 = (equalCopy[176] & 8) == 0;
 LABEL_61:
 
   return v28;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x80000000) != 0)
   {
@@ -763,19 +763,19 @@ LABEL_61:
     v5[176] |= 0x80u;
   }
 
-  v7 = [(NSString *)self->_speechId copyWithZone:a3];
+  v7 = [(NSString *)self->_speechId copyWithZone:zone];
   v8 = v6[14];
   v6[14] = v7;
 
-  v9 = [(NSString *)self->_languageCode copyWithZone:a3];
+  v9 = [(NSString *)self->_languageCode copyWithZone:zone];
   v10 = v6[6];
   v6[6] = v9;
 
-  v11 = [(NSString *)self->_assistantId copyWithZone:a3];
+  v11 = [(NSString *)self->_assistantId copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
-  v13 = [(NSString *)self->_hostname copyWithZone:a3];
+  v13 = [(NSString *)self->_hostname copyWithZone:zone];
   v14 = v6[5];
   v6[5] = v13;
 
@@ -793,19 +793,19 @@ LABEL_61:
     *(v6 + 176) |= 4u;
   }
 
-  v16 = [(NSString *)self->_sharedId copyWithZone:a3];
+  v16 = [(NSString *)self->_sharedId copyWithZone:zone];
   v17 = v6[13];
   v6[13] = v16;
 
-  v18 = [(NSString *)self->_previousLangaugeCode copyWithZone:a3];
+  v18 = [(NSString *)self->_previousLangaugeCode copyWithZone:zone];
   v19 = v6[11];
   v6[11] = v18;
 
-  v20 = [(_ADPBDeviceOutputVoiceInfo *)self->_previousOutputVoice copyWithZone:a3];
+  v20 = [(_ADPBDeviceOutputVoiceInfo *)self->_previousOutputVoice copyWithZone:zone];
   v21 = v6[12];
   v6[12] = v20;
 
-  v22 = [(_ADPBDeviceOutputVoiceInfo *)self->_outputVoice copyWithZone:a3];
+  v22 = [(_ADPBDeviceOutputVoiceInfo *)self->_outputVoice copyWithZone:zone];
   v23 = v6[10];
   v6[10] = v22;
 
@@ -823,7 +823,7 @@ LABEL_61:
     *(v6 + 176) |= 0x40u;
   }
 
-  v25 = [(NSString *)self->_userAgent copyWithZone:a3];
+  v25 = [(NSString *)self->_userAgent copyWithZone:zone];
   v26 = v6[17];
   v6[17] = v25;
 
@@ -852,7 +852,7 @@ LABEL_61:
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v54 + 1) + 8 * i) copyWithZone:{a3, v54}];
+        v32 = [*(*(&v54 + 1) + 8 * i) copyWithZone:{zone, v54}];
         [v6 addNotificationPreviewRestrictedApps:v32];
       }
 
@@ -862,31 +862,31 @@ LABEL_61:
     while (v29);
   }
 
-  v33 = [(NSString *)self->_temperatureUnit copyWithZone:a3];
+  v33 = [(NSString *)self->_temperatureUnit copyWithZone:zone];
   v34 = v6[16];
   v6[16] = v33;
 
-  v35 = [(NSString *)self->_loggingAssistantId copyWithZone:a3];
+  v35 = [(NSString *)self->_loggingAssistantId copyWithZone:zone];
   v36 = v6[7];
   v6[7] = v35;
 
-  v37 = [(NSString *)self->_loggingSharedId copyWithZone:a3];
+  v37 = [(NSString *)self->_loggingSharedId copyWithZone:zone];
   v38 = v6[8];
   v6[8] = v37;
 
-  v39 = [(NSString *)self->_storeFrontId copyWithZone:a3];
+  v39 = [(NSString *)self->_storeFrontId copyWithZone:zone];
   v40 = v6[15];
   v6[15] = v39;
 
-  v41 = [(NSString *)self->_airplayRouteId copyWithZone:a3];
+  v41 = [(NSString *)self->_airplayRouteId copyWithZone:zone];
   v42 = v6[1];
   v6[1] = v41;
 
-  v43 = [(NSString *)self->_ekToken copyWithZone:a3];
+  v43 = [(NSString *)self->_ekToken copyWithZone:zone];
   v44 = v6[4];
   v6[4] = v43;
 
-  v45 = [(NSString *)self->_userToken copyWithZone:a3];
+  v45 = [(NSString *)self->_userToken copyWithZone:zone];
   v46 = v6[19];
   v6[19] = v45;
 
@@ -896,15 +896,15 @@ LABEL_61:
     *(v6 + 176) |= 0x20u;
   }
 
-  v47 = [(NSString *)self->_userAssignedName copyWithZone:a3, v54];
+  v47 = [(NSString *)self->_userAssignedName copyWithZone:zone, v54];
   v48 = v6[18];
   v6[18] = v47;
 
-  v49 = [(_ADPBDeviceStringKeyValueDictionary *)self->_utsRequiredRequestData copyWithZone:a3];
+  v49 = [(_ADPBDeviceStringKeyValueDictionary *)self->_utsRequiredRequestData copyWithZone:zone];
   v50 = v6[20];
   v6[20] = v49;
 
-  v51 = [(NSString *)self->_dataSharingOptInStatus copyWithZone:a3];
+  v51 = [(NSString *)self->_dataSharingOptInStatus copyWithZone:zone];
   v52 = v6[3];
   v6[3] = v51;
 
@@ -917,111 +917,111 @@ LABEL_61:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x80000000) != 0)
   {
-    v4[175] = self->_siriEnabled;
-    v4[176] |= 0x80u;
+    toCopy[175] = self->_siriEnabled;
+    toCopy[176] |= 0x80u;
   }
 
-  v12 = v4;
+  v12 = toCopy;
   if (self->_speechId)
   {
-    [v4 setSpeechId:?];
-    v4 = v12;
+    [toCopy setSpeechId:?];
+    toCopy = v12;
   }
 
   if (self->_languageCode)
   {
     [v12 setLanguageCode:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_assistantId)
   {
     [v12 setAssistantId:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_hostname)
   {
     [v12 setHostname:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
   if (has)
   {
-    v4[168] = self->_activityContinuationAllowed;
-    v4[176] |= 1u;
+    toCopy[168] = self->_activityContinuationAllowed;
+    toCopy[176] |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[170] = self->_dictationEnabled;
-    v4[176] |= 4u;
+    toCopy[170] = self->_dictationEnabled;
+    toCopy[176] |= 4u;
   }
 
   if (self->_sharedId)
   {
     [v12 setSharedId:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_previousLangaugeCode)
   {
     [v12 setPreviousLangaugeCode:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_previousOutputVoice)
   {
     [v12 setPreviousOutputVoice:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_outputVoice)
   {
     [v12 setOutputVoice:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   v6 = self->_has;
   if ((v6 & 2) != 0)
   {
-    v4[169] = self->_cloudSyncEnabled;
-    v4[176] |= 2u;
+    toCopy[169] = self->_cloudSyncEnabled;
+    toCopy[176] |= 2u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x40) != 0)
   {
-    v4[174] = self->_shouldCensorSpeech;
-    v4[176] |= 0x40u;
+    toCopy[174] = self->_shouldCensorSpeech;
+    toCopy[176] |= 0x40u;
   }
 
   if (self->_userAgent)
   {
     [v12 setUserAgent:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    v4[172] = self->_isLocationSharingDevice;
-    v4[176] |= 0x10u;
+    toCopy[172] = self->_isLocationSharingDevice;
+    toCopy[176] |= 0x10u;
   }
 
   if ([(_ADPBDeviceSetDataRequest *)self notificationPreviewRestrictedAppsCount])
   {
     [v12 clearNotificationPreviewRestrictedApps];
-    v7 = [(_ADPBDeviceSetDataRequest *)self notificationPreviewRestrictedAppsCount];
-    if (v7)
+    notificationPreviewRestrictedAppsCount = [(_ADPBDeviceSetDataRequest *)self notificationPreviewRestrictedAppsCount];
+    if (notificationPreviewRestrictedAppsCount)
     {
-      v8 = v7;
+      v8 = notificationPreviewRestrictedAppsCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(_ADPBDeviceSetDataRequest *)self notificationPreviewRestrictedAppsAtIndex:i];
@@ -1103,9 +1103,9 @@ LABEL_61:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x80000000) != 0)
   {
     PBDataWriterWriteBOOLField();
@@ -1274,15 +1274,15 @@ LABEL_61:
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = a3;
+  fromCopy2 = from;
   while (2)
   {
-    v6 = [v5 position];
-    if (v6 >= [a3 length] || (objc_msgSend(a3, "hasError") & 1) != 0)
+    position = [fromCopy2 position];
+    if (position >= [from length] || (objc_msgSend(from, "hasError") & 1) != 0)
     {
-      return [a3 hasError] ^ 1;
+      return [from hasError] ^ 1;
     }
 
     v7 = 0;
@@ -1291,18 +1291,18 @@ LABEL_61:
     while (1)
     {
       LOBYTE(v71) = 0;
-      v10 = [a3 position] + 1;
-      if (v10 >= [a3 position] && (v11 = objc_msgSend(a3, "position") + 1, v11 <= objc_msgSend(a3, "length")))
+      v10 = [from position] + 1;
+      if (v10 >= [from position] && (v11 = objc_msgSend(from, "position") + 1, v11 <= objc_msgSend(from, "length")))
       {
-        v12 = [a3 data];
-        [v12 getBytes:&v71 range:{objc_msgSend(a3, "position"), 1}];
+        data = [from data];
+        [data getBytes:&v71 range:{objc_msgSend(from, "position"), 1}];
 
-        [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+        [from setPosition:{objc_msgSend(from, "position") + 1}];
       }
 
       else
       {
-        [a3 _setError];
+        [from _setError];
       }
 
       v9 |= (v71 & 0x7F) << v7;
@@ -1320,11 +1320,11 @@ LABEL_61:
       }
     }
 
-    v14 = [a3 hasError] ? 0 : v9;
+    v14 = [from hasError] ? 0 : v9;
 LABEL_16:
-    if (([a3 hasError] & 1) != 0 || (v14 & 7) == 4)
+    if (([from hasError] & 1) != 0 || (v14 & 7) == 4)
     {
-      return [a3 hasError] ^ 1;
+      return [from hasError] ^ 1;
     }
 
     switch((v14 >> 3))
@@ -1337,18 +1337,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v71) = 0;
-          v18 = [a3 position] + 1;
-          if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+          v18 = [from position] + 1;
+          if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
           {
-            v20 = [a3 data];
-            [v20 getBytes:&v71 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:&v71 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v17 |= (v71 & 0x7F) << v15;
@@ -1368,7 +1368,7 @@ LABEL_130:
           }
         }
 
-        v21 = (v17 != 0) & ~[a3 hasError];
+        v21 = (v17 != 0) & ~[from hasError];
         goto LABEL_130;
       case 4u:
         v22 = PBReaderReadString();
@@ -1394,18 +1394,18 @@ LABEL_130:
         while (1)
         {
           LOBYTE(v71) = 0;
-          v59 = [a3 position] + 1;
-          if (v59 >= [a3 position] && (v60 = objc_msgSend(a3, "position") + 1, v60 <= objc_msgSend(a3, "length")))
+          v59 = [from position] + 1;
+          if (v59 >= [from position] && (v60 = objc_msgSend(from, "position") + 1, v60 <= objc_msgSend(from, "length")))
           {
-            v61 = [a3 data];
-            [v61 getBytes:&v71 range:{objc_msgSend(a3, "position"), 1}];
+            data3 = [from data];
+            [data3 getBytes:&v71 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v58 |= (v71 & 0x7F) << v56;
@@ -1423,7 +1423,7 @@ LABEL_130:
           }
         }
 
-        v21 = (v58 != 0) & ~[a3 hasError];
+        v21 = (v58 != 0) & ~[from hasError];
 LABEL_134:
         v69 = 168;
         goto LABEL_137;
@@ -1435,18 +1435,18 @@ LABEL_134:
         while (1)
         {
           LOBYTE(v71) = 0;
-          v46 = [a3 position] + 1;
-          if (v46 >= [a3 position] && (v47 = objc_msgSend(a3, "position") + 1, v47 <= objc_msgSend(a3, "length")))
+          v46 = [from position] + 1;
+          if (v46 >= [from position] && (v47 = objc_msgSend(from, "position") + 1, v47 <= objc_msgSend(from, "length")))
           {
-            v48 = [a3 data];
-            [v48 getBytes:&v71 range:{objc_msgSend(a3, "position"), 1}];
+            data4 = [from data];
+            [data4 getBytes:&v71 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v45 |= (v71 & 0x7F) << v43;
@@ -1464,7 +1464,7 @@ LABEL_134:
           }
         }
 
-        v21 = (v45 != 0) & ~[a3 hasError];
+        v21 = (v45 != 0) & ~[from hasError];
 LABEL_128:
         v69 = 170;
         goto LABEL_137;
@@ -1487,7 +1487,7 @@ LABEL_103:
         objc_storeStrong(&self->PBRequest_opaque[v49], v24);
         v71 = 0;
         v72 = 0;
-        if (PBReaderPlaceMark() && sub_100143A78(v24, a3))
+        if (PBReaderPlaceMark() && sub_100143A78(v24, from))
         {
           goto LABEL_105;
         }
@@ -1501,18 +1501,18 @@ LABEL_103:
         while (1)
         {
           LOBYTE(v71) = 0;
-          v40 = [a3 position] + 1;
-          if (v40 >= [a3 position] && (v41 = objc_msgSend(a3, "position") + 1, v41 <= objc_msgSend(a3, "length")))
+          v40 = [from position] + 1;
+          if (v40 >= [from position] && (v41 = objc_msgSend(from, "position") + 1, v41 <= objc_msgSend(from, "length")))
           {
-            v42 = [a3 data];
-            [v42 getBytes:&v71 range:{objc_msgSend(a3, "position"), 1}];
+            data5 = [from data];
+            [data5 getBytes:&v71 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v39 |= (v71 & 0x7F) << v37;
@@ -1530,7 +1530,7 @@ LABEL_103:
           }
         }
 
-        v21 = (v39 != 0) & ~[a3 hasError];
+        v21 = (v39 != 0) & ~[from hasError];
 LABEL_126:
         v69 = 169;
         goto LABEL_137;
@@ -1542,18 +1542,18 @@ LABEL_126:
         while (1)
         {
           LOBYTE(v71) = 0;
-          v34 = [a3 position] + 1;
-          if (v34 >= [a3 position] && (v35 = objc_msgSend(a3, "position") + 1, v35 <= objc_msgSend(a3, "length")))
+          v34 = [from position] + 1;
+          if (v34 >= [from position] && (v35 = objc_msgSend(from, "position") + 1, v35 <= objc_msgSend(from, "length")))
           {
-            v36 = [a3 data];
-            [v36 getBytes:&v71 range:{objc_msgSend(a3, "position"), 1}];
+            data6 = [from data];
+            [data6 getBytes:&v71 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v33 |= (v71 & 0x7F) << v31;
@@ -1571,7 +1571,7 @@ LABEL_126:
           }
         }
 
-        v21 = (v33 != 0) & ~[a3 hasError];
+        v21 = (v33 != 0) & ~[from hasError];
 LABEL_124:
         v69 = 174;
         goto LABEL_137;
@@ -1587,18 +1587,18 @@ LABEL_124:
         while (1)
         {
           LOBYTE(v71) = 0;
-          v53 = [a3 position] + 1;
-          if (v53 >= [a3 position] && (v54 = objc_msgSend(a3, "position") + 1, v54 <= objc_msgSend(a3, "length")))
+          v53 = [from position] + 1;
+          if (v53 >= [from position] && (v54 = objc_msgSend(from, "position") + 1, v54 <= objc_msgSend(from, "length")))
           {
-            v55 = [a3 data];
-            [v55 getBytes:&v71 range:{objc_msgSend(a3, "position"), 1}];
+            data7 = [from data];
+            [data7 getBytes:&v71 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v52 |= (v71 & 0x7F) << v50;
@@ -1616,7 +1616,7 @@ LABEL_124:
           }
         }
 
-        v21 = (v52 != 0) & ~[a3 hasError];
+        v21 = (v52 != 0) & ~[from hasError];
 LABEL_132:
         v69 = 172;
         goto LABEL_137;
@@ -1664,18 +1664,18 @@ LABEL_132:
         while (1)
         {
           LOBYTE(v71) = 0;
-          v28 = [a3 position] + 1;
-          if (v28 >= [a3 position] && (v29 = objc_msgSend(a3, "position") + 1, v29 <= objc_msgSend(a3, "length")))
+          v28 = [from position] + 1;
+          if (v28 >= [from position] && (v29 = objc_msgSend(from, "position") + 1, v29 <= objc_msgSend(from, "length")))
           {
-            v30 = [a3 data];
-            [v30 getBytes:&v71 range:{objc_msgSend(a3, "position"), 1}];
+            data8 = [from data];
+            [data8 getBytes:&v71 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v27 |= (v71 & 0x7F) << v25;
@@ -1693,7 +1693,7 @@ LABEL_132:
           }
         }
 
-        v21 = (v27 != 0) & ~[a3 hasError];
+        v21 = (v27 != 0) & ~[from hasError];
 LABEL_122:
         v69 = 173;
         goto LABEL_137;
@@ -1706,14 +1706,14 @@ LABEL_122:
         objc_storeStrong(&self->_utsRequiredRequestData, v24);
         v71 = 0;
         v72 = 0;
-        if (PBReaderPlaceMark() && sub_100358760(v24, a3))
+        if (PBReaderPlaceMark() && sub_100358760(v24, from))
         {
 LABEL_105:
           PBReaderRecallMark();
 LABEL_106:
 
 LABEL_138:
-          v5 = a3;
+          fromCopy2 = from;
           continue;
         }
 
@@ -1736,18 +1736,18 @@ LABEL_120:
         while (1)
         {
           LOBYTE(v71) = 0;
-          v65 = [a3 position] + 1;
-          if (v65 >= [a3 position] && (v66 = objc_msgSend(a3, "position") + 1, v66 <= objc_msgSend(a3, "length")))
+          v65 = [from position] + 1;
+          if (v65 >= [from position] && (v66 = objc_msgSend(from, "position") + 1, v66 <= objc_msgSend(from, "length")))
           {
-            v67 = [a3 data];
-            [v67 getBytes:&v71 range:{objc_msgSend(a3, "position"), 1}];
+            data9 = [from data];
+            [data9 getBytes:&v71 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v64 |= (v71 & 0x7F) << v62;
@@ -1765,7 +1765,7 @@ LABEL_120:
           }
         }
 
-        v21 = (v64 != 0) & ~[a3 hasError];
+        v21 = (v64 != 0) & ~[from hasError];
 LABEL_136:
         v69 = 171;
 LABEL_137:
@@ -1845,15 +1845,15 @@ LABEL_137:
   previousOutputVoice = self->_previousOutputVoice;
   if (previousOutputVoice)
   {
-    v15 = [(_ADPBDeviceOutputVoiceInfo *)previousOutputVoice dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"previous_output_voice"];
+    dictionaryRepresentation = [(_ADPBDeviceOutputVoiceInfo *)previousOutputVoice dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"previous_output_voice"];
   }
 
   outputVoice = self->_outputVoice;
   if (outputVoice)
   {
-    v17 = [(_ADPBDeviceOutputVoiceInfo *)outputVoice dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"output_voice"];
+    dictionaryRepresentation2 = [(_ADPBDeviceOutputVoiceInfo *)outputVoice dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"output_voice"];
   }
 
   v18 = self->_has;
@@ -1946,8 +1946,8 @@ LABEL_137:
   utsRequiredRequestData = self->_utsRequiredRequestData;
   if (utsRequiredRequestData)
   {
-    v34 = [(_ADPBDeviceStringKeyValueDictionary *)utsRequiredRequestData dictionaryRepresentation];
-    [v3 setObject:v34 forKey:@"uts_required_request_data"];
+    dictionaryRepresentation3 = [(_ADPBDeviceStringKeyValueDictionary *)utsRequiredRequestData dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"uts_required_request_data"];
   }
 
   dataSharingOptInStatus = self->_dataSharingOptInStatus;
@@ -1970,15 +1970,15 @@ LABEL_137:
   v7.receiver = self;
   v7.super_class = _ADPBDeviceSetDataRequest;
   v3 = [(_ADPBDeviceSetDataRequest *)&v7 description];
-  v4 = [(_ADPBDeviceSetDataRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_ADPBDeviceSetDataRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasFullUodEnabled:(BOOL)a3
+- (void)setHasFullUodEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -1991,9 +1991,9 @@ LABEL_137:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsRemotePlaybackDevice:(BOOL)a3
+- (void)setHasIsRemotePlaybackDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 32;
   }
@@ -2006,27 +2006,27 @@ LABEL_137:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)addNotificationPreviewRestrictedApps:(id)a3
+- (void)addNotificationPreviewRestrictedApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   notificationPreviewRestrictedApps = self->_notificationPreviewRestrictedApps;
-  v8 = v4;
+  v8 = appsCopy;
   if (!notificationPreviewRestrictedApps)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_notificationPreviewRestrictedApps;
     self->_notificationPreviewRestrictedApps = v6;
 
-    v4 = v8;
+    appsCopy = v8;
     notificationPreviewRestrictedApps = self->_notificationPreviewRestrictedApps;
   }
 
-  [(NSMutableArray *)notificationPreviewRestrictedApps addObject:v4];
+  [(NSMutableArray *)notificationPreviewRestrictedApps addObject:appsCopy];
 }
 
-- (void)setHasIsLocationSharingDevice:(BOOL)a3
+- (void)setHasIsLocationSharingDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 16;
   }
@@ -2039,9 +2039,9 @@ LABEL_137:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasShouldCensorSpeech:(BOOL)a3
+- (void)setHasShouldCensorSpeech:(BOOL)speech
 {
-  if (a3)
+  if (speech)
   {
     v3 = 64;
   }
@@ -2054,9 +2054,9 @@ LABEL_137:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasCloudSyncEnabled:(BOOL)a3
+- (void)setHasCloudSyncEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -2069,9 +2069,9 @@ LABEL_137:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDictationEnabled:(BOOL)a3
+- (void)setHasDictationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -2084,9 +2084,9 @@ LABEL_137:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSiriEnabled:(BOOL)a3
+- (void)setHasSiriEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x80;
   }
@@ -2099,11 +2099,11 @@ LABEL_137:
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)_ad_performWithCloudService:(id)a3 fromPeer:(id)a4 completion:(id)a5
+- (void)_ad_performWithCloudService:(id)service fromPeer:(id)peer completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  peerCopy = peer;
+  completionCopy = completion;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -2112,63 +2112,63 @@ LABEL_137:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s ", &v13, 0xCu);
   }
 
-  v12 = [(_ADPBDeviceSetDataRequest *)self _ad_data];
-  [v8 _notifyObserversOfSharedData:v12 fromPeer:v9];
+  _ad_data = [(_ADPBDeviceSetDataRequest *)self _ad_data];
+  [serviceCopy _notifyObserversOfSharedData:_ad_data fromPeer:peerCopy];
 
-  (*(v10 + 2))(v10, 0, 0xFFFFLL, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0xFFFFLL, 0);
 }
 
-- (void)_ad_setData:(id)a3
+- (void)_ad_setData:(id)data
 {
-  v4 = a3;
-  -[_ADPBDeviceSetDataRequest setSiriEnabled:](self, "setSiriEnabled:", [v4 siriEnabled]);
-  -[_ADPBDeviceSetDataRequest setDictationEnabled:](self, "setDictationEnabled:", [v4 dictationEnabled]);
-  v5 = [v4 assistantId];
-  [(_ADPBDeviceSetDataRequest *)self setAssistantId:v5];
+  dataCopy = data;
+  -[_ADPBDeviceSetDataRequest setSiriEnabled:](self, "setSiriEnabled:", [dataCopy siriEnabled]);
+  -[_ADPBDeviceSetDataRequest setDictationEnabled:](self, "setDictationEnabled:", [dataCopy dictationEnabled]);
+  assistantId = [dataCopy assistantId];
+  [(_ADPBDeviceSetDataRequest *)self setAssistantId:assistantId];
 
-  v6 = [v4 loggingAssistantId];
-  [(_ADPBDeviceSetDataRequest *)self setLoggingAssistantId:v6];
+  loggingAssistantId = [dataCopy loggingAssistantId];
+  [(_ADPBDeviceSetDataRequest *)self setLoggingAssistantId:loggingAssistantId];
 
-  v7 = [v4 speechId];
-  [(_ADPBDeviceSetDataRequest *)self setSpeechId:v7];
+  speechId = [dataCopy speechId];
+  [(_ADPBDeviceSetDataRequest *)self setSpeechId:speechId];
 
-  v8 = [v4 sharedUserId];
-  [(_ADPBDeviceSetDataRequest *)self setSharedId:v8];
+  sharedUserId = [dataCopy sharedUserId];
+  [(_ADPBDeviceSetDataRequest *)self setSharedId:sharedUserId];
 
-  v9 = [v4 loggingSharedUserId];
-  [(_ADPBDeviceSetDataRequest *)self setLoggingSharedId:v9];
+  loggingSharedUserId = [dataCopy loggingSharedUserId];
+  [(_ADPBDeviceSetDataRequest *)self setLoggingSharedId:loggingSharedUserId];
 
-  v10 = [v4 languageCode];
-  [(_ADPBDeviceSetDataRequest *)self setLanguageCode:v10];
+  languageCode = [dataCopy languageCode];
+  [(_ADPBDeviceSetDataRequest *)self setLanguageCode:languageCode];
 
-  v11 = [v4 previousLanguageCode];
-  [(_ADPBDeviceSetDataRequest *)self setPreviousLangaugeCode:v11];
+  previousLanguageCode = [dataCopy previousLanguageCode];
+  [(_ADPBDeviceSetDataRequest *)self setPreviousLangaugeCode:previousLanguageCode];
 
   v12 = objc_alloc_init(_ADPBDeviceOutputVoiceInfo);
-  v13 = [v4 outputVoice];
-  [(_ADPBDeviceOutputVoiceInfo *)v12 _ad_setVoiceInfo:v13];
+  outputVoice = [dataCopy outputVoice];
+  [(_ADPBDeviceOutputVoiceInfo *)v12 _ad_setVoiceInfo:outputVoice];
 
   [(_ADPBDeviceSetDataRequest *)self setOutputVoice:v12];
   v14 = objc_alloc_init(_ADPBDeviceOutputVoiceInfo);
-  v15 = [v4 previousOutputVoice];
-  [(_ADPBDeviceOutputVoiceInfo *)v14 _ad_setVoiceInfo:v15];
+  previousOutputVoice = [dataCopy previousOutputVoice];
+  [(_ADPBDeviceOutputVoiceInfo *)v14 _ad_setVoiceInfo:previousOutputVoice];
 
   [(_ADPBDeviceSetDataRequest *)self setPreviousOutputVoice:v14];
-  v16 = [v4 hostname];
-  [(_ADPBDeviceSetDataRequest *)self setHostname:v16];
+  hostname = [dataCopy hostname];
+  [(_ADPBDeviceSetDataRequest *)self setHostname:hostname];
 
-  -[_ADPBDeviceSetDataRequest setCloudSyncEnabled:](self, "setCloudSyncEnabled:", [v4 cloudSyncEnabled]);
-  -[_ADPBDeviceSetDataRequest setShouldCensorSpeech:](self, "setShouldCensorSpeech:", [v4 shouldCensorSpeech]);
-  v17 = [v4 userAgent];
-  [(_ADPBDeviceSetDataRequest *)self setUserAgent:v17];
+  -[_ADPBDeviceSetDataRequest setCloudSyncEnabled:](self, "setCloudSyncEnabled:", [dataCopy cloudSyncEnabled]);
+  -[_ADPBDeviceSetDataRequest setShouldCensorSpeech:](self, "setShouldCensorSpeech:", [dataCopy shouldCensorSpeech]);
+  userAgent = [dataCopy userAgent];
+  [(_ADPBDeviceSetDataRequest *)self setUserAgent:userAgent];
 
-  -[_ADPBDeviceSetDataRequest setIsLocationSharingDevice:](self, "setIsLocationSharingDevice:", [v4 isLocationSharingDevice]);
+  -[_ADPBDeviceSetDataRequest setIsLocationSharingDevice:](self, "setIsLocationSharingDevice:", [dataCopy isLocationSharingDevice]);
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v18 = [v4 notificationPreviewRestrictedApps];
-  v19 = [v18 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  notificationPreviewRestrictedApps = [dataCopy notificationPreviewRestrictedApps];
+  v19 = [notificationPreviewRestrictedApps countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v19)
   {
     v20 = v19;
@@ -2180,7 +2180,7 @@ LABEL_137:
       {
         if (*v33 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(notificationPreviewRestrictedApps);
         }
 
         [(_ADPBDeviceSetDataRequest *)self addNotificationPreviewRestrictedApps:*(*(&v32 + 1) + 8 * v22)];
@@ -2188,39 +2188,39 @@ LABEL_137:
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v20 = [notificationPreviewRestrictedApps countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v20);
   }
 
-  v23 = [v4 temperatureUnit];
-  [(_ADPBDeviceSetDataRequest *)self setTemperatureUnit:v23];
+  temperatureUnit = [dataCopy temperatureUnit];
+  [(_ADPBDeviceSetDataRequest *)self setTemperatureUnit:temperatureUnit];
 
-  v24 = [v4 airplayRouteId];
-  [(_ADPBDeviceSetDataRequest *)self setAirplayRouteId:v24];
+  airplayRouteId = [dataCopy airplayRouteId];
+  [(_ADPBDeviceSetDataRequest *)self setAirplayRouteId:airplayRouteId];
 
-  v25 = [v4 storeFrontId];
-  [(_ADPBDeviceSetDataRequest *)self setStoreFrontId:v25];
+  storeFrontId = [dataCopy storeFrontId];
+  [(_ADPBDeviceSetDataRequest *)self setStoreFrontId:storeFrontId];
 
-  v26 = [v4 ekToken];
-  [(_ADPBDeviceSetDataRequest *)self setEkToken:v26];
+  ekToken = [dataCopy ekToken];
+  [(_ADPBDeviceSetDataRequest *)self setEkToken:ekToken];
 
-  v27 = [v4 userToken];
-  [(_ADPBDeviceSetDataRequest *)self setUserToken:v27];
+  userToken = [dataCopy userToken];
+  [(_ADPBDeviceSetDataRequest *)self setUserToken:userToken];
 
-  -[_ADPBDeviceSetDataRequest setIsRemotePlaybackDevice:](self, "setIsRemotePlaybackDevice:", [v4 isRemotePlaybackDevice]);
-  v28 = [v4 userAssignedName];
-  [(_ADPBDeviceSetDataRequest *)self setUserAssignedName:v28];
+  -[_ADPBDeviceSetDataRequest setIsRemotePlaybackDevice:](self, "setIsRemotePlaybackDevice:", [dataCopy isRemotePlaybackDevice]);
+  userAssignedName = [dataCopy userAssignedName];
+  [(_ADPBDeviceSetDataRequest *)self setUserAssignedName:userAssignedName];
 
-  v29 = [v4 utsRequiredRequestKeyValuePairs];
-  v30 = [_ADPBDeviceStringKeyValueDictionary _ad_keyValueDictionaryWithDictionary:v29];
+  utsRequiredRequestKeyValuePairs = [dataCopy utsRequiredRequestKeyValuePairs];
+  v30 = [_ADPBDeviceStringKeyValueDictionary _ad_keyValueDictionaryWithDictionary:utsRequiredRequestKeyValuePairs];
   [(_ADPBDeviceSetDataRequest *)self setUtsRequiredRequestData:v30];
 
-  v31 = [v4 dataSharingOptInStatus];
-  [(_ADPBDeviceSetDataRequest *)self setDataSharingOptInStatus:v31];
+  dataSharingOptInStatus = [dataCopy dataSharingOptInStatus];
+  [(_ADPBDeviceSetDataRequest *)self setDataSharingOptInStatus:dataSharingOptInStatus];
 
-  -[_ADPBDeviceSetDataRequest setFullUodEnabled:](self, "setFullUodEnabled:", [v4 isFullUodEnabled]);
+  -[_ADPBDeviceSetDataRequest setFullUodEnabled:](self, "setFullUodEnabled:", [dataCopy isFullUodEnabled]);
 }
 
 - (ADSharedData)_ad_data
@@ -2228,72 +2228,72 @@ LABEL_137:
   v3 = objc_alloc_init(ADSharedData);
   [(ADSharedData *)v3 setSiriEnabled:[(_ADPBDeviceSetDataRequest *)self siriEnabled]];
   [(ADSharedData *)v3 setDictationEnabled:[(_ADPBDeviceSetDataRequest *)self dictationEnabled]];
-  v4 = [(_ADPBDeviceSetDataRequest *)self assistantId];
-  [(ADSharedData *)v3 setAssistantId:v4];
+  assistantId = [(_ADPBDeviceSetDataRequest *)self assistantId];
+  [(ADSharedData *)v3 setAssistantId:assistantId];
 
-  v5 = [(_ADPBDeviceSetDataRequest *)self loggingAssistantId];
-  [(ADSharedData *)v3 setLoggingAssistantId:v5];
+  loggingAssistantId = [(_ADPBDeviceSetDataRequest *)self loggingAssistantId];
+  [(ADSharedData *)v3 setLoggingAssistantId:loggingAssistantId];
 
-  v6 = [(_ADPBDeviceSetDataRequest *)self speechId];
-  [(ADSharedData *)v3 setSpeechId:v6];
+  speechId = [(_ADPBDeviceSetDataRequest *)self speechId];
+  [(ADSharedData *)v3 setSpeechId:speechId];
 
-  v7 = [(_ADPBDeviceSetDataRequest *)self sharedId];
-  [(ADSharedData *)v3 setSharedUserId:v7];
+  sharedId = [(_ADPBDeviceSetDataRequest *)self sharedId];
+  [(ADSharedData *)v3 setSharedUserId:sharedId];
 
-  v8 = [(_ADPBDeviceSetDataRequest *)self loggingSharedId];
-  [(ADSharedData *)v3 setLoggingSharedUserId:v8];
+  loggingSharedId = [(_ADPBDeviceSetDataRequest *)self loggingSharedId];
+  [(ADSharedData *)v3 setLoggingSharedUserId:loggingSharedId];
 
-  v9 = [(_ADPBDeviceSetDataRequest *)self languageCode];
-  [(ADSharedData *)v3 setLanguageCode:v9];
+  languageCode = [(_ADPBDeviceSetDataRequest *)self languageCode];
+  [(ADSharedData *)v3 setLanguageCode:languageCode];
 
-  v10 = [(_ADPBDeviceSetDataRequest *)self previousLangaugeCode];
-  [(ADSharedData *)v3 setPreviousLanguageCode:v10];
+  previousLangaugeCode = [(_ADPBDeviceSetDataRequest *)self previousLangaugeCode];
+  [(ADSharedData *)v3 setPreviousLanguageCode:previousLangaugeCode];
 
-  v11 = [(_ADPBDeviceSetDataRequest *)self outputVoice];
-  v12 = [v11 _ad_voiceInfo];
-  [(ADSharedData *)v3 setOutputVoice:v12];
+  outputVoice = [(_ADPBDeviceSetDataRequest *)self outputVoice];
+  _ad_voiceInfo = [outputVoice _ad_voiceInfo];
+  [(ADSharedData *)v3 setOutputVoice:_ad_voiceInfo];
 
-  v13 = [(_ADPBDeviceSetDataRequest *)self previousOutputVoice];
-  v14 = [v13 _ad_voiceInfo];
-  [(ADSharedData *)v3 setPreviousOutputVoice:v14];
+  previousOutputVoice = [(_ADPBDeviceSetDataRequest *)self previousOutputVoice];
+  _ad_voiceInfo2 = [previousOutputVoice _ad_voiceInfo];
+  [(ADSharedData *)v3 setPreviousOutputVoice:_ad_voiceInfo2];
 
-  v15 = [(_ADPBDeviceSetDataRequest *)self hostname];
-  [(ADSharedData *)v3 setHostname:v15];
+  hostname = [(_ADPBDeviceSetDataRequest *)self hostname];
+  [(ADSharedData *)v3 setHostname:hostname];
 
   [(ADSharedData *)v3 setCloudSyncEnabled:[(_ADPBDeviceSetDataRequest *)self cloudSyncEnabled]];
   [(ADSharedData *)v3 setShouldCensorSpeech:[(_ADPBDeviceSetDataRequest *)self shouldCensorSpeech]];
-  v16 = [(_ADPBDeviceSetDataRequest *)self userAgent];
-  [(ADSharedData *)v3 setUserAgent:v16];
+  userAgent = [(_ADPBDeviceSetDataRequest *)self userAgent];
+  [(ADSharedData *)v3 setUserAgent:userAgent];
 
   [(ADSharedData *)v3 setIsLocationSharingDevice:[(_ADPBDeviceSetDataRequest *)self isLocationSharingDevice]];
-  v17 = [(_ADPBDeviceSetDataRequest *)self notificationPreviewRestrictedApps];
-  [(ADSharedData *)v3 setNotificationPreviewRestrictedApps:v17];
+  notificationPreviewRestrictedApps = [(_ADPBDeviceSetDataRequest *)self notificationPreviewRestrictedApps];
+  [(ADSharedData *)v3 setNotificationPreviewRestrictedApps:notificationPreviewRestrictedApps];
 
-  v18 = [(_ADPBDeviceSetDataRequest *)self temperatureUnit];
-  [(ADSharedData *)v3 setTemperatureUnit:v18];
+  temperatureUnit = [(_ADPBDeviceSetDataRequest *)self temperatureUnit];
+  [(ADSharedData *)v3 setTemperatureUnit:temperatureUnit];
 
-  v19 = [(_ADPBDeviceSetDataRequest *)self airplayRouteId];
-  [(ADSharedData *)v3 setAirplayRouteId:v19];
+  airplayRouteId = [(_ADPBDeviceSetDataRequest *)self airplayRouteId];
+  [(ADSharedData *)v3 setAirplayRouteId:airplayRouteId];
 
-  v20 = [(_ADPBDeviceSetDataRequest *)self storeFrontId];
-  [(ADSharedData *)v3 setStoreFrontId:v20];
+  storeFrontId = [(_ADPBDeviceSetDataRequest *)self storeFrontId];
+  [(ADSharedData *)v3 setStoreFrontId:storeFrontId];
 
-  v21 = [(_ADPBDeviceSetDataRequest *)self ekToken];
-  [(ADSharedData *)v3 setEkToken:v21];
+  ekToken = [(_ADPBDeviceSetDataRequest *)self ekToken];
+  [(ADSharedData *)v3 setEkToken:ekToken];
 
-  v22 = [(_ADPBDeviceSetDataRequest *)self userToken];
-  [(ADSharedData *)v3 setUserToken:v22];
+  userToken = [(_ADPBDeviceSetDataRequest *)self userToken];
+  [(ADSharedData *)v3 setUserToken:userToken];
 
   [(ADSharedData *)v3 setIsRemotePlaybackDevice:[(_ADPBDeviceSetDataRequest *)self isRemotePlaybackDevice]];
-  v23 = [(_ADPBDeviceSetDataRequest *)self userAssignedName];
-  [(ADSharedData *)v3 setUserAssignedName:v23];
+  userAssignedName = [(_ADPBDeviceSetDataRequest *)self userAssignedName];
+  [(ADSharedData *)v3 setUserAssignedName:userAssignedName];
 
-  v24 = [(_ADPBDeviceSetDataRequest *)self utsRequiredRequestData];
-  v25 = [v24 _ad_dictionaryRepresentation];
-  [(ADSharedData *)v3 setUtsRequiredRequestKeyValuePairs:v25];
+  utsRequiredRequestData = [(_ADPBDeviceSetDataRequest *)self utsRequiredRequestData];
+  _ad_dictionaryRepresentation = [utsRequiredRequestData _ad_dictionaryRepresentation];
+  [(ADSharedData *)v3 setUtsRequiredRequestKeyValuePairs:_ad_dictionaryRepresentation];
 
-  v26 = [(_ADPBDeviceSetDataRequest *)self dataSharingOptInStatus];
-  [(ADSharedData *)v3 setDataSharingOptInStatus:v26];
+  dataSharingOptInStatus = [(_ADPBDeviceSetDataRequest *)self dataSharingOptInStatus];
+  [(ADSharedData *)v3 setDataSharingOptInStatus:dataSharingOptInStatus];
 
   [(ADSharedData *)v3 setIsFullUodEnabled:[(_ADPBDeviceSetDataRequest *)self fullUodEnabled]];
 

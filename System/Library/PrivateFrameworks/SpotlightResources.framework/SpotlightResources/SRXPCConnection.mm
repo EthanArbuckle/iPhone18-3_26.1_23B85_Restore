@@ -1,8 +1,8 @@
 @interface SRXPCConnection
 + (id)sharedConnection;
 - (SRXPCConnection)init;
-- (void)handleReply:(id)a3 completion:(id)a4;
-- (void)sendCommand:(unint64_t)a3 info:(id)a4 sync:(BOOL)a5 completion:(id)a6;
+- (void)handleReply:(id)reply completion:(id)completion;
+- (void)sendCommand:(unint64_t)command info:(id)info sync:(BOOL)sync completion:(id)completion;
 @end
 
 @implementation SRXPCConnection
@@ -56,10 +56,10 @@ uint64_t __35__SRXPCConnection_sharedConnection__block_invoke()
   return v2;
 }
 
-- (void)handleReply:(id)a3 completion:(id)a4
+- (void)handleReply:(id)reply completion:(id)completion
 {
-  xdict = a3;
-  v5 = a4;
+  xdict = reply;
+  completionCopy = completion;
   if (xdict == MEMORY[0x1E69E9E18])
   {
     v6 = -6;
@@ -92,26 +92,26 @@ LABEL_6:
   v8 = v10;
   v7 = 0;
 LABEL_7:
-  v5[2](v5, v8, v7);
+  completionCopy[2](completionCopy, v8, v7);
 }
 
-- (void)sendCommand:(unint64_t)a3 info:(id)a4 sync:(BOOL)a5 completion:(id)a6
+- (void)sendCommand:(unint64_t)command info:(id)info sync:(BOOL)sync completion:(id)completion
 {
-  v7 = a5;
+  syncCopy = sync;
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
+  infoCopy = info;
+  completionCopy = completion;
   spid = self->_spid;
   self->_spid = spid + 1;
   empty = xpc_dictionary_create_empty();
   xpc_dictionary_set_string(empty, "command", "assets");
-  xpc_dictionary_set_uint64(empty, "c", a3);
+  xpc_dictionary_set_uint64(empty, "c", command);
   xpc_dictionary_set_uint64(empty, "rid", spid + 1);
   v14 = getpid();
   xpc_dictionary_set_uint64(empty, "pid", v14);
-  if (v10)
+  if (infoCopy)
   {
-    xpc_dictionary_set_value(empty, "i", v10);
+    xpc_dictionary_set_value(empty, "i", infoCopy);
   }
 
   v15 = SRLogCategorySafety();
@@ -119,19 +119,19 @@ LABEL_7:
   if (spid <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
     *buf = 134218496;
-    v29 = a3;
+    commandCopy = command;
     v30 = 1024;
-    v31 = v7;
+    v31 = syncCopy;
     v32 = 2048;
     v33 = qos_class_self();
     _os_signpost_emit_with_name_impl(&dword_1AE58E000, v16, OS_SIGNPOST_INTERVAL_BEGIN, spid + 1, "SendRequest", "c:%llu, sync:%d, qos:%llu", buf, 0x1Cu);
   }
 
-  v17 = [(CSXPCConnection *)self connection];
-  v18 = v17;
-  if (v7)
+  connection = [(CSXPCConnection *)self connection];
+  v18 = connection;
+  if (syncCopy)
   {
-    v19 = xpc_connection_send_message_with_reply_sync(v17, empty);
+    v19 = xpc_connection_send_message_with_reply_sync(connection, empty);
 
     v20 = SRLogCategorySafety();
     v21 = v20;
@@ -139,11 +139,11 @@ LABEL_7:
     {
       v22 = qos_class_self();
       *buf = 134217984;
-      v29 = v22;
+      commandCopy = v22;
       _os_signpost_emit_with_name_impl(&dword_1AE58E000, v21, OS_SIGNPOST_INTERVAL_END, spid + 1, "SendRequest", "qos:%llu", buf, 0xCu);
     }
 
-    [(SRXPCConnection *)self handleReply:v19 completion:v11];
+    [(SRXPCConnection *)self handleReply:v19 completion:completionCopy];
   }
 
   else
@@ -155,7 +155,7 @@ LABEL_7:
     handler[3] = &unk_1E7A2B168;
     v27 = spid + 1;
     handler[4] = self;
-    v26 = v11;
+    v26 = completionCopy;
     xpc_connection_send_message_with_reply(v18, empty, queue, handler);
   }
 

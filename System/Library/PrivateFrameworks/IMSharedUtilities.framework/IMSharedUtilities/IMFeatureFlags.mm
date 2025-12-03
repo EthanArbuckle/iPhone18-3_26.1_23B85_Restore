@@ -1,7 +1,7 @@
 @interface IMFeatureFlags
-+ (BOOL)testWithFeature:(SEL)a3 enabled:(BOOL)a4 block:(id)a5 error:(id *)a6;
++ (BOOL)testWithFeature:(SEL)feature enabled:(BOOL)enabled block:(id)block error:(id *)error;
 + (IMFeatureFlags)sharedFeatureFlags;
-+ (void)testWithFeature:(SEL)a3 enabled:(BOOL)a4 block:(id)a5;
++ (void)testWithFeature:(SEL)feature enabled:(BOOL)enabled block:(id)block;
 - (BOOL)__isRunningOnPhone;
 - (BOOL)_isAutomaticIncomingTranslationEnabled_ios;
 - (BOOL)_isAutomaticIncomingTranslationEnabled_mac;
@@ -43,7 +43,7 @@
 - (BOOL)isBackgroundMessagingAPIEnabled;
 - (BOOL)isBizChatBlastDoorEnabled;
 - (BOOL)isCAShapeLayerBalloonsEnabled;
-- (BOOL)isCKScreenshotTestFeatureFlagMember:(id)a3 withDomain:(id)a4;
+- (BOOL)isCKScreenshotTestFeatureFlagMember:(id)member withDomain:(id)domain;
 - (BOOL)isCarPlaySummaryEnabled;
 - (BOOL)isCatchUpEnabled;
 - (BOOL)isCategorizationEnabled_Mac;
@@ -63,7 +63,7 @@
 - (BOOL)isEnhancedReadReceiptProcessingEnabled;
 - (BOOL)isEntryViewInTranscriptEnabled;
 - (BOOL)isEntryViewUsesKeyboardLayoutGuideEnabled;
-- (BOOL)isFeatureFlagEnabledWithName:(id)a3;
+- (BOOL)isFeatureFlagEnabledWithName:(id)name;
 - (BOOL)isFluidTransitioningEnabled;
 - (BOOL)isFromPickerEnabledForAll;
 - (BOOL)isGFTOnWatchEnabled;
@@ -182,8 +182,8 @@
 - (BOOL)stewieEnabled;
 - (BOOL)threeAttachmentStackEnabled;
 - (void)_reloadOneChatForceDisabled;
-- (void)_setOneChatForceDisabled:(BOOL)a3 persist:(BOOL)a4;
-- (void)checkForUnitTestingWithFeatureName:(id)a3;
+- (void)_setOneChatForceDisabled:(BOOL)disabled persist:(BOOL)persist;
+- (void)checkForUnitTestingWithFeatureName:(id)name;
 @end
 
 @implementation IMFeatureFlags
@@ -361,14 +361,14 @@
 
 - (BOOL)isRedesignedDetailsViewEnabled
 {
-  v3 = [(IMFeatureFlags *)self redesignedDetails_iOS];
-  if (v3)
+  redesignedDetails_iOS = [(IMFeatureFlags *)self redesignedDetails_iOS];
+  if (redesignedDetails_iOS)
   {
 
-    LOBYTE(v3) = [(IMFeatureFlags *)self isMessagesRefreshEnabled];
+    LOBYTE(redesignedDetails_iOS) = [(IMFeatureFlags *)self isMessagesRefreshEnabled];
   }
 
-  return v3;
+  return redesignedDetails_iOS;
 }
 
 - (BOOL)redesignedDetails_iOS
@@ -585,26 +585,26 @@
 
 - (BOOL)isTranscriptBackgroundsEnabled
 {
-  v3 = [(IMFeatureFlags *)self _isTranscriptBackgroundsEnabled_iOS];
-  if (v3)
+  _isTranscriptBackgroundsEnabled_iOS = [(IMFeatureFlags *)self _isTranscriptBackgroundsEnabled_iOS];
+  if (_isTranscriptBackgroundsEnabled_iOS)
   {
 
-    LOBYTE(v3) = [(IMFeatureFlags *)self isMessagesRefreshEnabled];
+    LOBYTE(_isTranscriptBackgroundsEnabled_iOS) = [(IMFeatureFlags *)self isMessagesRefreshEnabled];
   }
 
-  return v3;
+  return _isTranscriptBackgroundsEnabled_iOS;
 }
 
 - (BOOL)isModernMentionsAndEmojiAnimationsEnabled
 {
-  v2 = [(IMFeatureFlags *)self isExpressiveTextEnabled];
-  if (v2)
+  isExpressiveTextEnabled = [(IMFeatureFlags *)self isExpressiveTextEnabled];
+  if (isExpressiveTextEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(isExpressiveTextEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return isExpressiveTextEnabled;
 }
 
 - (BOOL)isMissingMessagesEnabled
@@ -639,29 +639,29 @@
   return byte_1EB30B2C8;
 }
 
-+ (void)testWithFeature:(SEL)a3 enabled:(BOOL)a4 block:(id)a5
++ (void)testWithFeature:(SEL)feature enabled:(BOOL)enabled block:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  v7 = [[IMFeatureFlagsTestSwizzler alloc] initWithFeature:a3 enabled:v5];
+  enabledCopy = enabled;
+  blockCopy = block;
+  v7 = [[IMFeatureFlagsTestSwizzler alloc] initWithFeature:feature enabled:enabledCopy];
   [(IMFeatureFlagsTestSwizzler *)v7 swizzle];
-  v8[2]();
+  blockCopy[2]();
   [(IMFeatureFlagsTestSwizzler *)v7 unswizzle];
 }
 
-+ (BOOL)testWithFeature:(SEL)a3 enabled:(BOOL)a4 block:(id)a5 error:(id *)a6
++ (BOOL)testWithFeature:(SEL)feature enabled:(BOOL)enabled block:(id)block error:(id *)error
 {
-  v7 = a4;
-  v9 = a5;
-  v10 = [[IMFeatureFlagsTestSwizzler alloc] initWithFeature:a3 enabled:v7];
+  enabledCopy = enabled;
+  blockCopy = block;
+  v10 = [[IMFeatureFlagsTestSwizzler alloc] initWithFeature:feature enabled:enabledCopy];
   [(IMFeatureFlagsTestSwizzler *)v10 swizzle];
   v13 = 0;
-  LOBYTE(a3) = v9[2](v9, &v13);
+  LOBYTE(feature) = blockCopy[2](blockCopy, &v13);
   v11 = v13;
-  *a6 = v11;
+  *error = v11;
 
   [(IMFeatureFlagsTestSwizzler *)v10 unswizzle];
-  return a3 & 1;
+  return feature & 1;
 }
 
 - (BOOL)showAllInstalledMessageApps
@@ -669,10 +669,10 @@
   v2 = IMGetCachedDomainBoolForKeyWithDefaultValue();
   if (v2)
   {
-    v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-    v4 = [v3 isInternalInstall];
+    mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+    isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = isInternalInstall;
   }
 
   return v2;
@@ -680,10 +680,10 @@
 
 - (BOOL)showTapToRadarMessagesApp
 {
-  v2 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v3 = [v2 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v3)
+  if (!isInternalInstall)
   {
     return 0;
   }
@@ -733,21 +733,21 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v3 = [v2 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  return v3;
+  return isInternalInstall;
 }
 
-- (BOOL)isCKScreenshotTestFeatureFlagMember:(id)a3 withDomain:(id)a4
+- (BOOL)isCKScreenshotTestFeatureFlagMember:(id)member withDomain:(id)domain
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IMFeatureFlags *)self CKScreenshotTestFeatureFlagMembers];
-  v9 = [v8 objectForKey:v6];
+  domainCopy = domain;
+  memberCopy = member;
+  cKScreenshotTestFeatureFlagMembers = [(IMFeatureFlags *)self CKScreenshotTestFeatureFlagMembers];
+  v9 = [cKScreenshotTestFeatureFlagMembers objectForKey:domainCopy];
 
-  LOBYTE(v6) = [v9 containsObject:v7];
-  return v6;
+  LOBYTE(domainCopy) = [v9 containsObject:memberCopy];
+  return domainCopy;
 }
 
 - (BOOL)isWatchMultiReplyEnabled
@@ -1071,14 +1071,14 @@
 
 - (BOOL)isSharedPhotoCollectionsEnabled
 {
-  v2 = [(IMFeatureFlags *)self _isSharedPhotoCollectionsEnabled];
-  if (v2)
+  _isSharedPhotoCollectionsEnabled = [(IMFeatureFlags *)self _isSharedPhotoCollectionsEnabled];
+  if (_isSharedPhotoCollectionsEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(_isSharedPhotoCollectionsEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return _isSharedPhotoCollectionsEnabled;
 }
 
 - (BOOL)isGelatoAsyncSendingEnabled
@@ -1110,10 +1110,10 @@
   byte_1EB30A9C0 = v2 > 5;
 }
 
-- (void)_setOneChatForceDisabled:(BOOL)a3 persist:(BOOL)a4
+- (void)_setOneChatForceDisabled:(BOOL)disabled persist:(BOOL)persist
 {
-  v4 = a4;
-  v5 = a3;
+  persistCopy = persist;
+  disabledCopy = disabled;
   v14 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
   {
@@ -1122,7 +1122,7 @@
     {
       v7 = @"NO";
       v9[1] = 6;
-      if (v5)
+      if (disabledCopy)
       {
         v8 = @"YES";
       }
@@ -1135,7 +1135,7 @@
       v9[0] = 67109634;
       v11 = v8;
       v10 = 2112;
-      if (v4)
+      if (persistCopy)
       {
         v7 = @"YES";
       }
@@ -1146,8 +1146,8 @@
     }
   }
 
-  byte_1EB30A9C0 = v5;
-  if (v4)
+  byte_1EB30A9C0 = disabledCopy;
+  if (persistCopy)
   {
     IMSetDomainIntForKey();
     notify_post("com.apple.imdpersistence.OneChatOverrideChanged");
@@ -1484,14 +1484,14 @@
 
 - (BOOL)isSpotlightInternalIndexingUIEnabled
 {
-  v3 = [(IMFeatureFlags *)self isSpotlightReindexRefactorEnabled];
-  if (v3)
+  isSpotlightReindexRefactorEnabled = [(IMFeatureFlags *)self isSpotlightReindexRefactorEnabled];
+  if (isSpotlightReindexRefactorEnabled)
   {
 
-    LOBYTE(v3) = MEMORY[0x1EEE66B58](self, sel__isSpotlightInternalIndexingUIEnabled);
+    LOBYTE(isSpotlightReindexRefactorEnabled) = MEMORY[0x1EEE66B58](self, sel__isSpotlightInternalIndexingUIEnabled);
   }
 
-  return v3;
+  return isSpotlightReindexRefactorEnabled;
 }
 
 - (BOOL)_isTranscriptPortalEnabled
@@ -1518,14 +1518,14 @@
 
 - (BOOL)isSendAnimationRefreshEnabled
 {
-  v3 = [(IMFeatureFlags *)self isMessagesRefreshEnabled];
-  if (v3)
+  isMessagesRefreshEnabled = [(IMFeatureFlags *)self isMessagesRefreshEnabled];
+  if (isMessagesRefreshEnabled)
   {
 
-    LOBYTE(v3) = MEMORY[0x1EEE66B58](self, sel_isSystemRefreshEnabled);
+    LOBYTE(isMessagesRefreshEnabled) = MEMORY[0x1EEE66B58](self, sel_isSystemRefreshEnabled);
   }
 
-  return v3;
+  return isMessagesRefreshEnabled;
 }
 
 - (BOOL)_isMissingMessagesEnabled
@@ -1681,13 +1681,13 @@
   return byte_1EB30B360;
 }
 
-- (void)checkForUnitTestingWithFeatureName:(id)a3
+- (void)checkForUnitTestingWithFeatureName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   if (qword_1ED8CA4B0 != -1)
   {
-    v6 = v3;
+    v6 = nameCopy;
     sub_1A88C5408();
     v4 = v6;
   }
@@ -1699,7 +1699,7 @@
     objc_exception_throw(v5);
   }
 
-  MEMORY[0x1EEE66BB8](v3);
+  MEMORY[0x1EEE66BB8](nameCopy);
 }
 
 - (BOOL)_isEntryViewInTranscriptEnabled
@@ -2285,9 +2285,9 @@
   return byte_1EB30B6D0;
 }
 
-- (BOOL)isFeatureFlagEnabledWithName:(id)a3
+- (BOOL)isFeatureFlagEnabledWithName:(id)name
 {
-  [a3 cStringUsingEncoding:4];
+  [name cStringUsingEncoding:4];
 
   return _os_feature_enabled_impl();
 }

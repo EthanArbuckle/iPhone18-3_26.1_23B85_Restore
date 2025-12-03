@@ -8,7 +8,7 @@
 {
   v3 = OBJC_IVAR____TtC9SeymourUI21SummaryQueueCountView_countLabel;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI21SummaryQueueCountView_countLabel);
-  v5 = self;
+  selfCopy = self;
   [v4 frame];
   Width = CGRectGetWidth(v14);
   if (qword_27C7607C8 != -1)

@@ -1,7 +1,7 @@
 @interface SLInternalComposeServiceHostContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)shouldShowNetworkActivityIndicator:(id)a3;
+- (void)shouldShowNetworkActivityIndicator:(id)indicator;
 @end
 
 @implementation SLInternalComposeServiceHostContext
@@ -44,15 +44,15 @@ uint64_t __70__SLInternalComposeServiceHostContext__extensionAuxiliaryHostProtoc
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)shouldShowNetworkActivityIndicator:(id)a3
+- (void)shouldShowNetworkActivityIndicator:(id)indicator
 {
-  v3 = a3;
+  indicatorCopy = indicator;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__SLInternalComposeServiceHostContext_shouldShowNetworkActivityIndicator___block_invoke;
   block[3] = &unk_1E81757C8;
-  v6 = v3;
-  v4 = v3;
+  v6 = indicatorCopy;
+  v4 = indicatorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 

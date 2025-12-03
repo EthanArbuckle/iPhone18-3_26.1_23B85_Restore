@@ -1,16 +1,16 @@
 @interface VideosRentalCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation VideosRentalCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VideosArtworkView" hasInstanceMethod:@"placeholderTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VideosRentalCollectionViewCell" hasProperty:@"titleLabel" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosPosterCollectionViewCell" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VideosArtworkView" hasInstanceMethod:@"placeholderTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VideosRentalCollectionViewCell" hasProperty:@"titleLabel" withType:"@"];
 }
 
 - (id)accessibilityLabel
@@ -21,7 +21,7 @@
 
   v5 = [(VideosRentalCollectionViewCellAccessibility *)self safeValueForKey:@"artworkView"];
   v6 = [v5 safeValueForKey:@"placeholderTitle"];
-  v9 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
   v7 = __UIAXStringForVariables();
 
   return v7;

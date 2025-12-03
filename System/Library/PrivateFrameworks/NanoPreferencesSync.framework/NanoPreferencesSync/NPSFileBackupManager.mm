@@ -1,38 +1,38 @@
 @interface NPSFileBackupManager
 - (BOOL)activeDeviceChanged;
-- (NPSFileBackupManager)initWithDeviceRegistry:(id)a3;
-- (id)fileURLWithUUID:(id)a3;
-- (id)localFileURLForOriginalFileURL:(id)a3;
+- (NPSFileBackupManager)initWithDeviceRegistry:(id)registry;
+- (id)fileURLWithUUID:(id)d;
+- (id)localFileURLForOriginalFileURL:(id)l;
 - (id)metadataIndexReadFromDiskIfNeeded;
 - (id)newFileUUID;
-- (id)pathToFileWithUUID:(id)a3;
-- (void)backupFileAtURL:(id)a3 originalFileURL:(id)a4;
-- (void)enumerateFileBackupsUsingBlock:(id)a3;
+- (id)pathToFileWithUUID:(id)d;
+- (void)backupFileAtURL:(id)l originalFileURL:(id)rL;
+- (void)enumerateFileBackupsUsingBlock:(id)block;
 - (void)persistMetadataIndex;
 @end
 
 @implementation NPSFileBackupManager
 
-- (NPSFileBackupManager)initWithDeviceRegistry:(id)a3
+- (NPSFileBackupManager)initWithDeviceRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v12.receiver = self;
   v12.super_class = NPSFileBackupManager;
   v6 = [(NPSFileBackupManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_deviceRegistry, a3);
-    v8 = [v5 activeDeviceID];
-    v7->_activeDeviceID = v8;
+    objc_storeStrong(&v6->_deviceRegistry, registry);
+    activeDeviceID = [registryCopy activeDeviceID];
+    v7->_activeDeviceID = activeDeviceID;
   }
 
   else
   {
-    v8 = MEMORY[0x10];
+    activeDeviceID = MEMORY[0x10];
   }
 
-  if (v8)
+  if (activeDeviceID)
   {
     v9 = v7;
   }
@@ -50,25 +50,25 @@
 - (BOOL)activeDeviceChanged
 {
   activeDeviceID = self->_activeDeviceID;
-  v3 = [(NPSDeviceRegistry *)self->_deviceRegistry activeDeviceID];
-  LOBYTE(activeDeviceID) = [(NSUUID *)activeDeviceID isEqual:v3];
+  activeDeviceID = [(NPSDeviceRegistry *)self->_deviceRegistry activeDeviceID];
+  LOBYTE(activeDeviceID) = [(NSUUID *)activeDeviceID isEqual:activeDeviceID];
 
   return activeDeviceID ^ 1;
 }
 
-- (void)backupFileAtURL:(id)a3 originalFileURL:(id)a4
+- (void)backupFileAtURL:(id)l originalFileURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v8 = nps_daemon_log;
   if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v48 = "[NPSFileBackupManager backupFileAtURL:originalFileURL:]";
     v49 = 2112;
-    v50 = v6;
+    v50 = lCopy;
     v51 = 2112;
-    v52 = v7;
+    v52 = rLCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: fileURL: (%@); originalURL: (%@)", buf, 0x20u);
   }
 
@@ -88,12 +88,12 @@ LABEL_18:
     goto LABEL_49;
   }
 
-  if (v7)
+  if (rLCopy)
   {
-    v11 = [(NPSFileBackupManager *)self metadataIndexReadFromDiskIfNeeded];
-    v12 = [v11 objectForKeyedSubscript:v7];
+    metadataIndexReadFromDiskIfNeeded = [(NPSFileBackupManager *)self metadataIndexReadFromDiskIfNeeded];
+    v12 = [metadataIndexReadFromDiskIfNeeded objectForKeyedSubscript:rLCopy];
     v13 = v12;
-    if (!v6)
+    if (!lCopy)
     {
       if (!v12)
       {
@@ -106,32 +106,32 @@ LABEL_48:
       if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v48 = v7;
+        v48 = rLCopy;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Removing file (%@) from backup", buf, 0xCu);
       }
 
-      v26 = [v13 uuid];
-      v16 = [(NPSFileBackupManager *)self pathToFileWithUUID:v26];
+      uuid = [v13 uuid];
+      path = [(NPSFileBackupManager *)self pathToFileWithUUID:uuid];
 
       v27 = +[NSFileManager defaultManager];
       v44 = 0;
-      [v27 removeItemAtPath:v16 error:&v44];
-      v20 = v44;
+      [v27 removeItemAtPath:path error:&v44];
+      activeDevice = v44;
 
-      if (v20)
+      if (activeDevice)
       {
         v28 = nps_daemon_log;
         if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v48 = v16;
+          v48 = path;
           v49 = 2112;
-          v50 = v20;
+          v50 = activeDevice;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Failed to remove file (%@) with error: (%@)", buf, 0x16u);
         }
       }
 
-      [v11 removeObjectForKey:v7];
+      [metadataIndexReadFromDiskIfNeeded removeObjectForKey:rLCopy];
       [(NPSFileBackupManager *)self persistMetadataIndex];
       v14 = v13;
 LABEL_47:
@@ -143,42 +143,42 @@ LABEL_47:
     if (!v12)
     {
       v14 = objc_opt_new();
-      v15 = [(NPSFileBackupManager *)self newFileUUID];
-      [v14 setUuid:v15];
+      newFileUUID = [(NPSFileBackupManager *)self newFileUUID];
+      [v14 setUuid:newFileUUID];
 
-      [v14 setUrl:v7];
-      [v11 setObject:v14 forKeyedSubscript:v7];
+      [v14 setUrl:rLCopy];
+      [metadataIndexReadFromDiskIfNeeded setObject:v14 forKeyedSubscript:rLCopy];
       [(NPSFileBackupManager *)self persistMetadataIndex];
     }
 
-    v16 = [v6 path];
-    v17 = [v14 uuid];
-    v18 = [(NPSFileBackupManager *)self pathToFileWithUUID:v17];
+    path = [lCopy path];
+    uuid2 = [v14 uuid];
+    v18 = [(NPSFileBackupManager *)self pathToFileWithUUID:uuid2];
 
     if (v18)
     {
-      v43 = v11;
+      v43 = metadataIndexReadFromDiskIfNeeded;
       if (v13)
       {
         v19 = +[NSFileManager defaultManager];
         v46 = 0;
         [v19 removeItemAtPath:v18 error:&v46];
-        v20 = v46;
+        activeDevice = v46;
 
-        if (v20)
+        if (activeDevice)
         {
-          v21 = [v20 domain];
-          if (([v21 isEqualToString:NSCocoaErrorDomain] & 1) == 0)
+          domain = [activeDevice domain];
+          if (([domain isEqualToString:NSCocoaErrorDomain] & 1) == 0)
           {
 
             goto LABEL_40;
           }
 
-          v22 = v16;
-          v23 = [v20 code];
+          v22 = path;
+          code = [activeDevice code];
 
-          v24 = v23 == 4;
-          v16 = v22;
+          v24 = code == 4;
+          path = v22;
           if (!v24)
           {
 LABEL_40:
@@ -188,12 +188,12 @@ LABEL_40:
               *buf = 138412546;
               v48 = v18;
               v49 = 2112;
-              v50 = v20;
+              v50 = activeDevice;
               _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Failed to delete old file backup (%@) with error: (%@)", buf, 0x16u);
             }
 
 LABEL_42:
-            v11 = v43;
+            metadataIndexReadFromDiskIfNeeded = v43;
 LABEL_46:
 
             goto LABEL_47;
@@ -202,26 +202,26 @@ LABEL_46:
 
         else
         {
-          v22 = v16;
+          v22 = path;
         }
       }
 
       else
       {
-        v22 = v16;
-        v20 = 0;
+        v22 = path;
+        activeDevice = 0;
       }
 
-      v34 = v20;
+      v34 = activeDevice;
       v35 = +[NSFileManager defaultManager];
-      v45 = v20;
+      v45 = activeDevice;
       [v35 moveItemAtPath:v22 toPath:v18 error:&v45];
-      v20 = v45;
+      activeDevice = v45;
 
-      if (v20)
+      if (activeDevice)
       {
         v36 = nps_daemon_log;
-        v16 = v22;
+        path = v22;
         if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
@@ -229,17 +229,17 @@ LABEL_46:
           v49 = 2112;
           v50 = v18;
           v51 = 2112;
-          v52 = v20;
+          v52 = activeDevice;
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Failed to move file (%@) to (%@) with error: (%@)", buf, 0x20u);
         }
 
-        v11 = v43;
-        [v43 removeObjectForKey:v7];
+        metadataIndexReadFromDiskIfNeeded = v43;
+        [v43 removeObjectForKey:rLCopy];
         [(NPSFileBackupManager *)self persistMetadataIndex];
         goto LABEL_46;
       }
 
-      v16 = v22;
+      path = v22;
       goto LABEL_42;
     }
 
@@ -253,29 +253,29 @@ LABEL_46:
     if (!MGGetBoolAnswer())
     {
 LABEL_45:
-      v20 = 0;
+      activeDevice = 0;
       goto LABEL_46;
     }
 
     deviceRegistry = self->_deviceRegistry;
     if (deviceRegistry)
     {
-      v31 = [(NPSDeviceRegistry *)deviceRegistry filesBackupDirectoryPath];
+      filesBackupDirectoryPath = [(NPSDeviceRegistry *)deviceRegistry filesBackupDirectoryPath];
 
-      if (!v31)
+      if (!filesBackupDirectoryPath)
       {
-        v20 = [(NPSDeviceRegistry *)self->_deviceRegistry activeDevice];
+        activeDevice = [(NPSDeviceRegistry *)self->_deviceRegistry activeDevice];
 
-        if (v20)
+        if (activeDevice)
         {
-          v20 = [(NPSDeviceRegistry *)self->_deviceRegistry activeDeviceID];
+          activeDevice = [(NPSDeviceRegistry *)self->_deviceRegistry activeDeviceID];
 
-          if (v20)
+          if (activeDevice)
           {
-            v39 = [(NPSDeviceRegistry *)self->_deviceRegistry pairingDataStore];
+            pairingDataStore = [(NPSDeviceRegistry *)self->_deviceRegistry pairingDataStore];
 
             v32 = NSInvalidArgumentException;
-            if (v39)
+            if (pairingDataStore)
             {
               v33 = @"other1";
             }
@@ -321,7 +321,7 @@ LABEL_44:
   if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v48 = v6;
+    v48 = lCopy;
     v10 = "Error backuping file (%@), originalFileURL is nil";
     goto LABEL_18;
   }
@@ -329,9 +329,9 @@ LABEL_44:
 LABEL_49:
 }
 
-- (void)enumerateFileBackupsUsingBlock:(id)a3
+- (void)enumerateFileBackupsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(NPSFileBackupManager *)self activeDeviceChanged])
   {
     v5 = nps_daemon_log;
@@ -345,22 +345,22 @@ LABEL_49:
 
   else
   {
-    v6 = [(NPSDeviceRegistry *)self->_deviceRegistry filesBackupDirectoryPath];
-    v7 = [(NPSFileBackupManager *)self metadataIndexReadFromDiskIfNeeded];
+    filesBackupDirectoryPath = [(NPSDeviceRegistry *)self->_deviceRegistry filesBackupDirectoryPath];
+    metadataIndexReadFromDiskIfNeeded = [(NPSFileBackupManager *)self metadataIndexReadFromDiskIfNeeded];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100025D04;
     v9[3] = &unk_10003D478;
-    v10 = v6;
-    v11 = v4;
-    v8 = v6;
-    [v7 enumerateKeysAndObjectsUsingBlock:v9];
+    v10 = filesBackupDirectoryPath;
+    v11 = blockCopy;
+    v8 = filesBackupDirectoryPath;
+    [metadataIndexReadFromDiskIfNeeded enumerateKeysAndObjectsUsingBlock:v9];
   }
 }
 
-- (id)localFileURLForOriginalFileURL:(id)a3
+- (id)localFileURLForOriginalFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if ([(NPSFileBackupManager *)self activeDeviceChanged])
   {
     v5 = nps_daemon_log;
@@ -376,15 +376,15 @@ LABEL_49:
 
   else
   {
-    v7 = [(NPSDeviceRegistry *)self->_deviceRegistry filesBackupDirectoryPath];
-    v8 = [(NPSFileBackupManager *)self metadataIndexReadFromDiskIfNeeded];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    filesBackupDirectoryPath = [(NPSDeviceRegistry *)self->_deviceRegistry filesBackupDirectoryPath];
+    metadataIndexReadFromDiskIfNeeded = [(NPSFileBackupManager *)self metadataIndexReadFromDiskIfNeeded];
+    v9 = [metadataIndexReadFromDiskIfNeeded objectForKeyedSubscript:lCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 uuid];
-      v12 = [v11 UUIDString];
-      v13 = [v7 stringByAppendingPathComponent:v12];
+      uuid = [v9 uuid];
+      uUIDString = [uuid UUIDString];
+      v13 = [filesBackupDirectoryPath stringByAppendingPathComponent:uUIDString];
 
       v6 = [NSURL fileURLWithPath:v13 isDirectory:0];
     }
@@ -398,21 +398,21 @@ LABEL_49:
   return v6;
 }
 
-- (id)pathToFileWithUUID:(id)a3
+- (id)pathToFileWithUUID:(id)d
 {
   deviceRegistry = self->_deviceRegistry;
-  v4 = a3;
-  v5 = [(NPSDeviceRegistry *)deviceRegistry filesBackupDirectoryPath];
-  v6 = [v4 UUIDString];
+  dCopy = d;
+  filesBackupDirectoryPath = [(NPSDeviceRegistry *)deviceRegistry filesBackupDirectoryPath];
+  uUIDString = [dCopy UUIDString];
 
-  v7 = [v5 stringByAppendingString:v6];
+  v7 = [filesBackupDirectoryPath stringByAppendingString:uUIDString];
 
   return v7;
 }
 
-- (id)fileURLWithUUID:(id)a3
+- (id)fileURLWithUUID:(id)d
 {
-  v3 = [(NPSFileBackupManager *)self pathToFileWithUUID:a3];
+  v3 = [(NPSFileBackupManager *)self pathToFileWithUUID:d];
   v4 = [NSURL URLWithString:v3];
 
   return v4;
@@ -423,8 +423,8 @@ LABEL_49:
   metadataIndex = self->_metadataIndex;
   if (!metadataIndex)
   {
-    v4 = [(NPSDeviceRegistry *)self->_deviceRegistry filesBackupMetadataIndexPath];
-    if (v4)
+    filesBackupMetadataIndexPath = [(NPSDeviceRegistry *)self->_deviceRegistry filesBackupMetadataIndexPath];
+    if (filesBackupMetadataIndexPath)
     {
       v12 = objc_opt_class();
       v13 = objc_opt_class();
@@ -432,7 +432,7 @@ LABEL_49:
       v5 = [NSArray arrayWithObjects:&v12 count:3];
       v6 = [NSSet setWithArray:v5, v12, v13];
 
-      v7 = [NPSKeyedArchiverUtil unarchiveObjectOfClasses:v6 withFile:v4];
+      v7 = [NPSKeyedArchiverUtil unarchiveObjectOfClasses:v6 withFile:filesBackupMetadataIndexPath];
       v8 = self->_metadataIndex;
       self->_metadataIndex = v7;
     }
@@ -452,15 +452,15 @@ LABEL_49:
 
 - (void)persistMetadataIndex
 {
-  v3 = [(NPSDeviceRegistry *)self->_deviceRegistry filesBackupMetadataIndexPath];
-  if (v3)
+  filesBackupMetadataIndexPath = [(NPSDeviceRegistry *)self->_deviceRegistry filesBackupMetadataIndexPath];
+  if (filesBackupMetadataIndexPath)
   {
     metadataIndex = self->_metadataIndex;
     if (metadataIndex && [(NSMutableDictionary *)metadataIndex count])
     {
       v5 = [NPSKeyedArchiverUtil archiveObject:self->_metadataIndex];
       v13 = 0;
-      [v5 writeToFile:v3 options:268435457 error:&v13];
+      [v5 writeToFile:filesBackupMetadataIndexPath options:268435457 error:&v13];
       v6 = v13;
       if (v6)
       {
@@ -468,7 +468,7 @@ LABEL_49:
         if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v15 = v3;
+          v15 = filesBackupMetadataIndexPath;
           v16 = 2112;
           v17 = v6;
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Failed to write index file (%@) with error: (%@)", buf, 0x16u);
@@ -480,17 +480,17 @@ LABEL_49:
 
     v8 = +[NSFileManager defaultManager];
     v12 = 0;
-    [v8 removeItemAtPath:v3 error:&v12];
+    [v8 removeItemAtPath:filesBackupMetadataIndexPath error:&v12];
     v6 = v12;
 
     if (v6)
     {
-      v9 = [v6 domain];
-      if ([v9 isEqualToString:NSCocoaErrorDomain])
+      domain = [v6 domain];
+      if ([domain isEqualToString:NSCocoaErrorDomain])
       {
-        v10 = [v6 code];
+        code = [v6 code];
 
-        if (v10 == 4)
+        if (code == 4)
         {
           goto LABEL_15;
         }
@@ -504,7 +504,7 @@ LABEL_49:
       if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v15 = v3;
+        v15 = filesBackupMetadataIndexPath;
         v16 = 2112;
         v17 = v6;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Failed to delete to-be-empty index file (%@) with error: (%@)", buf, 0x16u);
@@ -517,7 +517,7 @@ LABEL_15:
 
 - (id)newFileUUID
 {
-  v2 = [(NPSFileBackupManager *)self metadataIndexReadFromDiskIfNeeded];
+  metadataIndexReadFromDiskIfNeeded = [(NPSFileBackupManager *)self metadataIndexReadFromDiskIfNeeded];
   v3 = 0;
   do
   {
@@ -536,7 +536,7 @@ LABEL_15:
       v3 = v4;
       v11 = v3;
       v12 = &v13;
-      [v2 enumerateKeysAndObjectsUsingBlock:v10];
+      [metadataIndexReadFromDiskIfNeeded enumerateKeysAndObjectsUsingBlock:v10];
       if ((v14[3] & 1) == 0)
       {
         break;

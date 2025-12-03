@@ -1,25 +1,25 @@
 @interface ATXSuggestedPagesHomeScreenModificationsMetricsLogger
 - (ATXSuggestedPagesHomeScreenModificationsMetricsLogger)init;
-- (ATXSuggestedPagesHomeScreenModificationsMetricsLogger)initWithStream:(id)a3 bookmarkURLPath:(id)a4;
+- (ATXSuggestedPagesHomeScreenModificationsMetricsLogger)initWithStream:(id)stream bookmarkURLPath:(id)path;
 - (ATXUniversalBiomeUIStream)stream;
 - (id)generateBookmark;
 - (id)generateBookmarkURLPath;
 - (int64_t)logMetrics;
-- (void)writeBookmarkToFile:(id)a3;
+- (void)writeBookmarkToFile:(id)file;
 @end
 
 @implementation ATXSuggestedPagesHomeScreenModificationsMetricsLogger
 
-- (ATXSuggestedPagesHomeScreenModificationsMetricsLogger)initWithStream:(id)a3 bookmarkURLPath:(id)a4
+- (ATXSuggestedPagesHomeScreenModificationsMetricsLogger)initWithStream:(id)stream bookmarkURLPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  streamCopy = stream;
+  pathCopy = path;
   v9 = [(ATXSuggestedPagesHomeScreenModificationsMetricsLogger *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_stream, a3);
-    objc_storeStrong(&v10->_bookmarkURLPath, a4);
+    objc_storeStrong(&v9->_stream, stream);
+    objc_storeStrong(&v10->_bookmarkURLPath, path);
   }
 
   return v10;
@@ -43,9 +43,9 @@
     acceptedEventTypes = v2->_acceptedEventTypes;
     v2->_acceptedEventTypes = v3;
 
-    v5 = [(ATXSuggestedPagesHomeScreenModificationsMetricsLogger *)v2 generateBookmark];
+    generateBookmark = [(ATXSuggestedPagesHomeScreenModificationsMetricsLogger *)v2 generateBookmark];
     atxBookmark = v2->_atxBookmark;
-    v2->_atxBookmark = v5;
+    v2->_atxBookmark = generateBookmark;
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -79,9 +79,9 @@
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [MEMORY[0x277CEBCB0] metricsRootDirectory];
+    metricsRootDirectory = [MEMORY[0x277CEBCB0] metricsRootDirectory];
     v7 = objc_alloc(MEMORY[0x277CBEBC0]);
-    v8 = [v6 stringByAppendingPathComponent:v5];
+    v8 = [metricsRootDirectory stringByAppendingPathComponent:v5];
     v3 = [v7 initFileURLWithPath:v8];
   }
 
@@ -91,23 +91,23 @@
 - (id)generateBookmark
 {
   v3 = MEMORY[0x277CEBBF8];
-  v4 = [(ATXSuggestedPagesHomeScreenModificationsMetricsLogger *)self generateBookmarkURLPath];
-  v5 = [v3 bookmarkFromURLPath:v4 maxFileSize:3000000 versionNumber:&unk_283A558E0];
+  generateBookmarkURLPath = [(ATXSuggestedPagesHomeScreenModificationsMetricsLogger *)self generateBookmarkURLPath];
+  v5 = [v3 bookmarkFromURLPath:generateBookmarkURLPath maxFileSize:3000000 versionNumber:&unk_283A558E0];
 
   if (!v5)
   {
     v6 = objc_alloc(MEMORY[0x277CEBBF8]);
-    v7 = [(ATXSuggestedPagesHomeScreenModificationsMetricsLogger *)self generateBookmarkURLPath];
-    v5 = [v6 initWithURLPath:v7 versionNumber:&unk_283A558E0 bookmark:0 metadata:0];
+    generateBookmarkURLPath2 = [(ATXSuggestedPagesHomeScreenModificationsMetricsLogger *)self generateBookmarkURLPath];
+    v5 = [v6 initWithURLPath:generateBookmarkURLPath2 versionNumber:&unk_283A558E0 bookmark:0 metadata:0];
   }
 
   return v5;
 }
 
-- (void)writeBookmarkToFile:(id)a3
+- (void)writeBookmarkToFile:(id)file
 {
   v5 = 0;
-  [a3 saveBookmarkWithError:&v5];
+  [file saveBookmarkWithError:&v5];
   v3 = v5;
   if (v3)
   {
@@ -125,16 +125,16 @@
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v3 = [(ATXSuggestedPagesHomeScreenModificationsMetricsLogger *)self stream];
-  v4 = [v3 genericEventPublisherFromStartTime:0.0];
+  stream = [(ATXSuggestedPagesHomeScreenModificationsMetricsLogger *)self stream];
+  v4 = [stream genericEventPublisherFromStartTime:0.0];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__ATXSuggestedPagesHomeScreenModificationsMetricsLogger_logMetrics__block_invoke;
   v13[3] = &unk_27859A798;
   v13[4] = self;
   v5 = [v4 filterWithIsIncluded:v13];
-  v6 = [(ATXSuggestedPagesHomeScreenModificationsMetricsLogger *)self atxBookmark];
-  v7 = [v6 bookmark];
+  atxBookmark = [(ATXSuggestedPagesHomeScreenModificationsMetricsLogger *)self atxBookmark];
+  bookmark = [atxBookmark bookmark];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__ATXSuggestedPagesHomeScreenModificationsMetricsLogger_logMetrics__block_invoke_2;
@@ -145,7 +145,7 @@
   v11[2] = __67__ATXSuggestedPagesHomeScreenModificationsMetricsLogger_logMetrics__block_invoke_24;
   v11[3] = &unk_278597E00;
   v11[4] = &v14;
-  v8 = [v5 drivableSinkWithBookmark:v7 completion:v12 shouldContinue:v11];
+  v8 = [v5 drivableSinkWithBookmark:bookmark completion:v12 shouldContinue:v11];
 
   v9 = v15[3];
   _Block_object_dispose(&v14, 8);

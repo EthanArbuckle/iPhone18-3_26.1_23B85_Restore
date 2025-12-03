@@ -1,16 +1,16 @@
 @interface _NMRSendCommandMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCommand:(id)a3;
+- (int)StringAsCommand:(id)command;
 - (int)command;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCommand:(BOOL)a3;
-- (void)setHasOriginIdentifier:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCommand:(BOOL)command;
+- (void)setHasOriginIdentifier:(BOOL)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _NMRSendCommandMessageProtobuf
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasCommand:(BOOL)a3
+- (void)setHasCommand:(BOOL)command
 {
-  if (a3)
+  if (command)
   {
     v3 = 2;
   }
@@ -43,235 +43,235 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsCommand:(id)a3
+- (int)StringAsCommand:(id)command
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  commandCopy = command;
+  if ([commandCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Play"])
+  else if ([commandCopy isEqualToString:@"Play"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Pause"])
+  else if ([commandCopy isEqualToString:@"Pause"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TogglePlayPause"])
+  else if ([commandCopy isEqualToString:@"TogglePlayPause"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Stop"])
+  else if ([commandCopy isEqualToString:@"Stop"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NextTrack"])
+  else if ([commandCopy isEqualToString:@"NextTrack"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PreviousTrack"])
+  else if ([commandCopy isEqualToString:@"PreviousTrack"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"AdvanceShuffleMode"])
+  else if ([commandCopy isEqualToString:@"AdvanceShuffleMode"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AdvanceRepeatMode"])
+  else if ([commandCopy isEqualToString:@"AdvanceRepeatMode"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"BeginFastForward"])
+  else if ([commandCopy isEqualToString:@"BeginFastForward"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"EndFastForward"])
+  else if ([commandCopy isEqualToString:@"EndFastForward"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"BeginRewind"])
+  else if ([commandCopy isEqualToString:@"BeginRewind"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"EndRewind"])
+  else if ([commandCopy isEqualToString:@"EndRewind"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"Rewind15Seconds"])
+  else if ([commandCopy isEqualToString:@"Rewind15Seconds"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"FastForward15Seconds"])
+  else if ([commandCopy isEqualToString:@"FastForward15Seconds"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"Rewind30Seconds"])
+  else if ([commandCopy isEqualToString:@"Rewind30Seconds"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"FastForward30Seconds"])
+  else if ([commandCopy isEqualToString:@"FastForward30Seconds"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"SkipForward"])
+  else if ([commandCopy isEqualToString:@"SkipForward"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"SkipBackward"])
+  else if ([commandCopy isEqualToString:@"SkipBackward"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"ChangePlaybackRate"])
+  else if ([commandCopy isEqualToString:@"ChangePlaybackRate"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"RateTrack"])
+  else if ([commandCopy isEqualToString:@"RateTrack"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"LikeTrack"])
+  else if ([commandCopy isEqualToString:@"LikeTrack"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"DislikeTrack"])
+  else if ([commandCopy isEqualToString:@"DislikeTrack"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"BookmarkTrack"])
+  else if ([commandCopy isEqualToString:@"BookmarkTrack"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"SeekToPlaybackPosition"])
+  else if ([commandCopy isEqualToString:@"SeekToPlaybackPosition"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"ChangeRepeatMode"])
+  else if ([commandCopy isEqualToString:@"ChangeRepeatMode"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"ChangeShuffleMode"])
+  else if ([commandCopy isEqualToString:@"ChangeShuffleMode"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"NextChapter"])
+  else if ([commandCopy isEqualToString:@"NextChapter"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"PreviousChapter"])
+  else if ([commandCopy isEqualToString:@"PreviousChapter"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"NextAlbum"])
+  else if ([commandCopy isEqualToString:@"NextAlbum"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"PreviousAlbum"])
+  else if ([commandCopy isEqualToString:@"PreviousAlbum"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"NextPlaylist"])
+  else if ([commandCopy isEqualToString:@"NextPlaylist"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"PreviousPlaylist"])
+  else if ([commandCopy isEqualToString:@"PreviousPlaylist"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"BanTrack"])
+  else if ([commandCopy isEqualToString:@"BanTrack"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"AddTrackToWishList"])
+  else if ([commandCopy isEqualToString:@"AddTrackToWishList"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"RemoveTrackFromWishList"])
+  else if ([commandCopy isEqualToString:@"RemoveTrackFromWishList"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"NextInContext"])
+  else if ([commandCopy isEqualToString:@"NextInContext"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"PreviousInContext"])
+  else if ([commandCopy isEqualToString:@"PreviousInContext"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"ResetPlaybackTimeout"])
+  else if ([commandCopy isEqualToString:@"ResetPlaybackTimeout"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"SetPlaybackQueue"])
+  else if ([commandCopy isEqualToString:@"SetPlaybackQueue"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"AddNowPlayingItemToLibrary"])
+  else if ([commandCopy isEqualToString:@"AddNowPlayingItemToLibrary"])
   {
     v4 = 49;
   }
 
-  else if ([v3 isEqualToString:@"CreateRadioStation"])
+  else if ([commandCopy isEqualToString:@"CreateRadioStation"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"AddItemToLibrary"])
+  else if ([commandCopy isEqualToString:@"AddItemToLibrary"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"InsertIntoPlaybackQueue"])
+  else if ([commandCopy isEqualToString:@"InsertIntoPlaybackQueue"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"PlayItemInPlaybackQueue"])
+  else if ([commandCopy isEqualToString:@"PlayItemInPlaybackQueue"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"ChangeQueueEndAction"])
+  else if ([commandCopy isEqualToString:@"ChangeQueueEndAction"])
   {
     v4 = 135;
   }
@@ -284,9 +284,9 @@
   return v4;
 }
 
-- (void)setHasOriginIdentifier:(BOOL)a3
+- (void)setHasOriginIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 4;
   }
@@ -304,8 +304,8 @@
   v7.receiver = self;
   v7.super_class = _NMRSendCommandMessageProtobuf;
   v3 = [(_NMRSendCommandMessageProtobuf *)&v7 description];
-  v4 = [(_NMRSendCommandMessageProtobuf *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_NMRSendCommandMessageProtobuf *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -484,8 +484,8 @@ LABEL_6:
   options = self->_options;
   if (options)
   {
-    v7 = [(_NMRCommandOptionsProtobuf *)options dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"options"];
+    dictionaryRepresentation = [(_NMRCommandOptionsProtobuf *)options dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"options"];
   }
 
   has = self->_has;
@@ -512,21 +512,21 @@ LABEL_6:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     command = self->_command;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_options)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -534,7 +534,7 @@ LABEL_6:
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -542,56 +542,56 @@ LABEL_6:
   {
     originIdentifier = self->_originIdentifier;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[6] = self->_command;
-    *(v4 + 44) |= 2u;
+    toCopy[6] = self->_command;
+    *(toCopy + 44) |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_options)
   {
-    [v4 setOptions:?];
-    v4 = v6;
+    [toCopy setOptions:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_timestamp;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 1) = *&self->_timestamp;
+    *(toCopy + 44) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[10] = self->_originIdentifier;
-    *(v4 + 44) |= 4u;
+    toCopy[10] = self->_originIdentifier;
+    *(toCopy + 44) |= 4u;
   }
 
   if (self->_bundleID)
   {
     [v6 setBundleID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -599,7 +599,7 @@ LABEL_6:
     *(v5 + 44) |= 2u;
   }
 
-  v7 = [(_NMRCommandOptionsProtobuf *)self->_options copyWithZone:a3];
+  v7 = [(_NMRCommandOptionsProtobuf *)self->_options copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
@@ -617,38 +617,38 @@ LABEL_6:
     *(v6 + 44) |= 4u;
   }
 
-  v10 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v10 = [(NSString *)self->_bundleID copyWithZone:zone];
   v11 = v6[2];
   v6[2] = v10;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_command != *(v4 + 6))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_command != *(equalCopy + 6))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_22;
   }
 
   options = self->_options;
-  if (options | *(v4 + 4))
+  if (options | *(equalCopy + 4))
   {
     if (![(_NMRCommandOptionsProtobuf *)options isEqual:?])
     {
@@ -660,35 +660,35 @@ LABEL_22:
     has = self->_has;
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if (has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_22;
   }
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_originIdentifier != *(v4 + 10))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_originIdentifier != *(equalCopy + 10))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_22;
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 2))
+  if (bundleID | *(equalCopy + 2))
   {
     v10 = [(NSString *)bundleID isEqual:?];
   }
@@ -762,13 +762,13 @@ LABEL_23:
   return v4 ^ v3 ^ v7 ^ v11 ^ [(NSString *)self->_bundleID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[11] & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[11] & 2) != 0)
   {
-    self->_command = v4[6];
+    self->_command = fromCopy[6];
     *&self->_has |= 2u;
   }
 

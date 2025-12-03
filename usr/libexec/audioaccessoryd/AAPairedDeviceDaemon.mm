@@ -1,48 +1,48 @@
 @interface AAPairedDeviceDaemon
 + (id)sharedAAPairedDeviceDaemon;
 - (AAPairedDeviceDaemon)init;
-- (BOOL)_loadDeviceRecordForDevice:(id)a3;
-- (BOOL)isDevicePairedWithBluetoothAddress:(id)a3;
-- (BOOL)shouldBackoffSavingToCloudForDevice:(id)a3;
-- (id)_deviceWithBluetoothAddress:(id)a3;
-- (id)_deviceWithIdentifier:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (id)deviceWithBluetoothAddress:(id)a3;
-- (id)deviceWithIdentifier:(id)a3;
+- (BOOL)_loadDeviceRecordForDevice:(id)device;
+- (BOOL)isDevicePairedWithBluetoothAddress:(id)address;
+- (BOOL)shouldBackoffSavingToCloudForDevice:(id)device;
+- (id)_deviceWithBluetoothAddress:(id)address;
+- (id)_deviceWithIdentifier:(id)identifier;
+- (id)descriptionWithLevel:(int)level;
+- (id)deviceWithBluetoothAddress:(id)address;
+- (id)deviceWithIdentifier:(id)identifier;
 - (id)pairedDevices;
 - (void)_aaControllerEnsureStarted;
 - (void)_aaControllerEnsureStopped;
-- (void)_aaDeviceRecordsRemovedWithRecords:(id)a3;
-- (void)_aaDeviceRecordsUpdatedWithRecords:(id)a3;
-- (void)_accessoryDeviceInfoChanged:(id)a3;
+- (void)_aaDeviceRecordsRemovedWithRecords:(id)records;
+- (void)_aaDeviceRecordsUpdatedWithRecords:(id)records;
+- (void)_accessoryDeviceInfoChanged:(id)changed;
 - (void)_activate;
-- (void)_addDeviceToMap:(id)a3;
+- (void)_addDeviceToMap:(id)map;
 - (void)_cbControllerEnsureStarted;
 - (void)_cbControllerEnsureStopped;
 - (void)_cbDiscoveryEnsureStarted;
 - (void)_cbDiscoveryEnsureStopped;
 - (void)_cloudSyncEnsureStarted;
 - (void)_cloudSyncEnsureStopped;
-- (void)_coreBluetoothDeviceFound:(id)a3;
-- (void)_coreBluetoothDeviceLost:(id)a3;
+- (void)_coreBluetoothDeviceFound:(id)found;
+- (void)_coreBluetoothDeviceLost:(id)lost;
 - (void)_invalidate;
-- (void)_notifySubscribersDeviceLost:(id)a3;
-- (void)_notifySubscribersDeviceUpdated:(id)a3;
+- (void)_notifySubscribersDeviceLost:(id)lost;
+- (void)_notifySubscribersDeviceUpdated:(id)updated;
 - (void)_notifySubscribersInvalidated;
-- (void)_pairedDeviceLost:(id)a3;
-- (void)_pairedDeviceUpdated:(id)a3;
-- (void)_removeDeviceFromMapWithIdentifier:(id)a3;
-- (void)_saveDeviceRecordForDevice:(id)a3;
-- (void)_unpairDeviceWithIdentifier:(id)a3;
-- (void)_updateCloudRecordIfNeeded:(id)a3;
-- (void)aaDeviceRecordsRemovedWithRecords:(id)a3;
-- (void)aaDeviceRecordsUpdatedWithRecords:(id)a3;
+- (void)_pairedDeviceLost:(id)lost;
+- (void)_pairedDeviceUpdated:(id)updated;
+- (void)_removeDeviceFromMapWithIdentifier:(id)identifier;
+- (void)_saveDeviceRecordForDevice:(id)device;
+- (void)_unpairDeviceWithIdentifier:(id)identifier;
+- (void)_updateCloudRecordIfNeeded:(id)needed;
+- (void)aaDeviceRecordsRemovedWithRecords:(id)records;
+- (void)aaDeviceRecordsUpdatedWithRecords:(id)records;
 - (void)activate;
 - (void)invalidate;
-- (void)subscribeToPairedDiscovery:(id)a3;
-- (void)unpairDeviceWithIdentifier:(id)a3;
-- (void)unsubscribeFromPairedDiscovery:(id)a3;
-- (void)updatePairedDeviceWithIdentifier:(id)a3 withConfig:(id)a4;
+- (void)subscribeToPairedDiscovery:(id)discovery;
+- (void)unpairDeviceWithIdentifier:(id)identifier;
+- (void)unsubscribeFromPairedDiscovery:(id)discovery;
+- (void)updatePairedDeviceWithIdentifier:(id)identifier withConfig:(id)config;
 @end
 
 @implementation AAPairedDeviceDaemon
@@ -77,7 +77,7 @@
   return v2;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v18 = 0;
   v19 = &v18;
@@ -97,10 +97,10 @@
     objc_storeStrong(v5 + 5, v16);
   }
 
-  v6 = [(AAPairedDeviceDaemon *)self pairedDevices];
+  pairedDevices = [(AAPairedDeviceDaemon *)self pairedDevices];
   v7 = v19;
   v15 = v19[5];
-  v11 = [v6 count];
+  v11 = [pairedDevices count];
   bluetoothDeviceDiscovery = self->_bluetoothDeviceDiscovery;
   NSAppendPrintF();
   objc_storeStrong(v7 + 5, v15);
@@ -109,7 +109,7 @@
   v14[2] = sub_100011CB0;
   v14[3] = &unk_1002B6CC8;
   v14[4] = &v18;
-  [v6 enumerateKeysAndObjectsUsingBlock:{v14, v11, bluetoothDeviceDiscovery}];
+  [pairedDevices enumerateKeysAndObjectsUsingBlock:{v14, v11, bluetoothDeviceDiscovery}];
   v8 = v19;
   v13 = v19[5];
   NSAppendPrintF();
@@ -174,10 +174,10 @@
   self->_activateCalled = 0;
 }
 
-- (BOOL)isDevicePairedWithBluetoothAddress:(id)a3
+- (BOOL)isDevicePairedWithBluetoothAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(AAPairedDeviceDaemon *)self _deviceWithBluetoothAddress:v4];
+  addressCopy = address;
+  v5 = [(AAPairedDeviceDaemon *)self _deviceWithBluetoothAddress:addressCopy];
 
   if (v5)
   {
@@ -186,7 +186,7 @@
 
   else
   {
-    v7 = [self->_cloudSyncDeviceManager fetchMagicSettingsRecordSyncWithAddress:v4];
+    v7 = [self->_cloudSyncDeviceManager fetchMagicSettingsRecordSyncWithAddress:addressCopy];
 
     v6 = v7 != 0;
   }
@@ -194,49 +194,49 @@
   return v6;
 }
 
-- (void)_pairedDeviceLost:(id)a3
+- (void)_pairedDeviceLost:(id)lost
 {
-  v4 = a3;
-  v7 = v4;
+  lostCopy = lost;
+  v7 = lostCopy;
   if (dword_1002F6070 <= 30)
   {
-    if (dword_1002F6070 != -1 || (v5 = _LogCategory_Initialize(), v4 = v7, v5))
+    if (dword_1002F6070 != -1 || (v5 = _LogCategory_Initialize(), lostCopy = v7, v5))
     {
       sub_1001D3010();
-      v4 = v7;
+      lostCopy = v7;
     }
   }
 
-  [v4 setPaired:0];
-  v6 = [v7 identifier];
-  [(AAPairedDeviceDaemon *)self _removeDeviceFromMapWithIdentifier:v6];
+  [lostCopy setPaired:0];
+  identifier = [v7 identifier];
+  [(AAPairedDeviceDaemon *)self _removeDeviceFromMapWithIdentifier:identifier];
 
   [(AAPairedDeviceDaemon *)self _notifySubscribersDeviceLost:v7];
 }
 
-- (void)_updateCloudRecordIfNeeded:(id)a3
+- (void)_updateCloudRecordIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (([v4 pairedInfoComplete] & 1) == 0)
+  neededCopy = needed;
+  if (([neededCopy pairedInfoComplete] & 1) == 0)
   {
     sub_1001D3050();
     goto LABEL_19;
   }
 
-  if ([v4 setDefaultConfigurationsForCloudSyncedPropertiesIfNeeded])
+  if ([neededCopy setDefaultConfigurationsForCloudSyncedPropertiesIfNeeded])
   {
     if (dword_1002F6070 <= 30 && (dword_1002F6070 != -1 || _LogCategory_Initialize()))
     {
       sub_1001D30B0();
     }
 
-    if (([v4 heartRateMonitorCapabilityChanged] & 1) == 0)
+    if (([neededCopy heartRateMonitorCapabilityChanged] & 1) == 0)
     {
       goto LABEL_13;
     }
   }
 
-  else if (![v4 heartRateMonitorCapabilityChanged])
+  else if (![neededCopy heartRateMonitorCapabilityChanged])
   {
     goto LABEL_19;
   }
@@ -246,9 +246,9 @@
     sub_1001D30F0();
   }
 
-  [v4 setHeartRateMonitorCapabilityChanged:0];
+  [neededCopy setHeartRateMonitorCapabilityChanged:0];
 LABEL_13:
-  if ([(AAPairedDeviceDaemon *)self shouldBackoffSavingToCloudForDevice:v4])
+  if ([(AAPairedDeviceDaemon *)self shouldBackoffSavingToCloudForDevice:neededCopy])
   {
     if (dword_1002F6070 <= 30 && (dword_1002F6070 != -1 || _LogCategory_Initialize()))
     {
@@ -258,33 +258,33 @@ LABEL_13:
 
   else
   {
-    [(AAPairedDeviceDaemon *)self _saveDeviceRecordForDevice:v4];
+    [(AAPairedDeviceDaemon *)self _saveDeviceRecordForDevice:neededCopy];
   }
 
 LABEL_19:
 }
 
-- (void)_pairedDeviceUpdated:(id)a3
+- (void)_pairedDeviceUpdated:(id)updated
 {
-  v4 = a3;
-  v6 = v4;
+  updatedCopy = updated;
+  v6 = updatedCopy;
   if (dword_1002F6070 <= 30)
   {
-    if (dword_1002F6070 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
+    if (dword_1002F6070 != -1 || (v5 = _LogCategory_Initialize(), updatedCopy = v6, v5))
     {
       sub_1001D314C();
-      v4 = v6;
+      updatedCopy = v6;
     }
   }
 
-  [(AAPairedDeviceDaemon *)self _notifySubscribersDeviceUpdated:v4];
+  [(AAPairedDeviceDaemon *)self _notifySubscribersDeviceUpdated:updatedCopy];
 }
 
-- (void)_accessoryDeviceInfoChanged:(id)a3
+- (void)_accessoryDeviceInfoChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v16 = 0;
-  v5 = [[AudioAccessoryDeviceInfo alloc] initWithXPCObject:v4 error:&v16];
+  v5 = [[AudioAccessoryDeviceInfo alloc] initWithXPCObject:changedCopy error:&v16];
 
   v6 = v16;
   v7 = v6;
@@ -298,20 +298,20 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v8 = [(AudioAccessoryDeviceInfo *)v5 identifier];
-  if (!v8)
+  identifier = [(AudioAccessoryDeviceInfo *)v5 identifier];
+  if (!identifier)
   {
     sub_1001D3230(0, &v17);
 LABEL_20:
-    v8 = v17;
+    identifier = v17;
     goto LABEL_15;
   }
 
-  v9 = [(AAPairedDeviceDaemon *)self _deviceWithIdentifier:v8];
+  v9 = [(AAPairedDeviceDaemon *)self _deviceWithIdentifier:identifier];
   v10 = v9;
   if (!v9)
   {
-    v11 = [[AudioAccessoryDevice alloc] initWithIdentifier:v8];
+    v11 = [[AudioAccessoryDevice alloc] initWithIdentifier:identifier];
     [v11 setPaired:1];
     [(AAPairedDeviceDaemon *)self _addDeviceToMap:v11];
     [v11 updateWithPairedAADeviceInfo:v5];
@@ -346,49 +346,49 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)updatePairedDeviceWithIdentifier:(id)a3 withConfig:(id)a4
+- (void)updatePairedDeviceWithIdentifier:(id)identifier withConfig:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  configCopy = config;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100012484;
   block[3] = &unk_1002B6CF0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = configCopy;
+  v9 = configCopy;
+  v10 = identifierCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)unpairDeviceWithIdentifier:(id)a3
+- (void)unpairDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100012618;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_unpairDeviceWithIdentifier:(id)a3
+- (void)_unpairDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(CBDevice);
-  [v5 setIdentifier:v4];
+  [v5 setIdentifier:identifierCopy];
   bluetoothController = self->_bluetoothController;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000126E8;
   v8[3] = &unk_1002B6A38;
-  v9 = v4;
-  v7 = v4;
+  v9 = identifierCopy;
+  v7 = identifierCopy;
   [(CBController *)bluetoothController deleteDevice:v5 completion:v8];
 }
 
@@ -414,7 +414,7 @@ LABEL_16:
     v6[3] = &unk_1002B68A8;
     v4 = v5;
     v7 = v4;
-    v8 = self;
+    selfCopy = self;
     [(AAController *)v4 activateWithCompletion:v6];
   }
 }
@@ -430,31 +430,31 @@ LABEL_16:
   }
 }
 
-- (void)aaDeviceRecordsRemovedWithRecords:(id)a3
+- (void)aaDeviceRecordsRemovedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100012B1C;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = recordsCopy;
+  selfCopy = self;
+  v6 = recordsCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)aaDeviceRecordsUpdatedWithRecords:(id)a3
+- (void)aaDeviceRecordsUpdatedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100012C20;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recordsCopy;
+  v6 = recordsCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -473,11 +473,11 @@ LABEL_16:
   }
 }
 
-- (BOOL)shouldBackoffSavingToCloudForDevice:(id)a3
+- (BOOL)shouldBackoffSavingToCloudForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 cloudRecordInfoLoaded];
-  if (v5)
+  deviceCopy = device;
+  cloudRecordInfoLoaded = [deviceCopy cloudRecordInfoLoaded];
+  if (cloudRecordInfoLoaded)
   {
     if (dword_1002F6070 > 10 || dword_1002F6070 == -1 && !_LogCategory_Initialize())
     {
@@ -488,8 +488,8 @@ LABEL_16:
   else
   {
     cloudSyncDeviceManager = self->_cloudSyncDeviceManager;
-    v7 = [v4 bluetoothAddress];
-    LODWORD(cloudSyncDeviceManager) = [cloudSyncDeviceManager isDeviceRecordsIncomingWithAddress:v7];
+    bluetoothAddress = [deviceCopy bluetoothAddress];
+    LODWORD(cloudSyncDeviceManager) = [cloudSyncDeviceManager isDeviceRecordsIncomingWithAddress:bluetoothAddress];
 
     if (!cloudSyncDeviceManager)
     {
@@ -505,23 +505,23 @@ LABEL_10:
     }
   }
 
-  v8 = [v4 bluetoothAddress];
+  bluetoothAddress2 = [deviceCopy bluetoothAddress];
   LogPrintF();
-  v9 = v5 ^ 1;
+  v9 = cloudRecordInfoLoaded ^ 1;
 
 LABEL_13:
   return v9;
 }
 
-- (void)_saveDeviceRecordForDevice:(id)a3
+- (void)_saveDeviceRecordForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 bluetoothAddress];
+  deviceCopy = device;
+  bluetoothAddress = [deviceCopy bluetoothAddress];
 
-  if (v5)
+  if (bluetoothAddress)
   {
     v12 = 0;
-    v6 = [[_TtC15audioaccessoryd14AADeviceRecord alloc] initWithDevice:v4 error:&v12];
+    v6 = [[_TtC15audioaccessoryd14AADeviceRecord alloc] initWithDevice:deviceCopy error:&v12];
     v7 = v12;
     if (v6)
     {
@@ -537,7 +537,7 @@ LABEL_13:
       v9[3] = &unk_1002B6D60;
       v9[4] = self;
       v10 = v6;
-      v11 = v4;
+      v11 = deviceCopy;
       [cloudSyncDeviceManager updateAADeviceRecordWithRecord:v10 completion:v9];
     }
 
@@ -569,7 +569,7 @@ LABEL_13:
     v6[3] = &unk_1002B68A8;
     v4 = v5;
     v7 = v4;
-    v8 = self;
+    selfCopy = self;
     [(CBController *)v4 activateWithCompletion:v6];
   }
 }
@@ -600,7 +600,7 @@ LABEL_13:
     v19[3] = &unk_1002B6DA8;
     v6 = v5;
     v20 = v6;
-    v21 = self;
+    selfCopy = self;
     [v6 setDeviceFoundHandler:v19];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -608,7 +608,7 @@ LABEL_13:
     v16[3] = &unk_1002B6DA8;
     v7 = v6;
     v17 = v7;
-    v18 = self;
+    selfCopy2 = self;
     [v7 setDeviceLostHandler:v16];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -616,7 +616,7 @@ LABEL_13:
     v13[3] = &unk_1002B6D18;
     v8 = v7;
     v14 = v8;
-    v15 = self;
+    selfCopy3 = self;
     [v8 setInterruptionHandler:v13];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
@@ -632,7 +632,7 @@ LABEL_13:
     v9[3] = &unk_1002B68A8;
     v4 = v8;
     v10 = v4;
-    v11 = self;
+    selfCopy4 = self;
     [(CBDiscovery *)v4 activateWithCompletion:v9];
   }
 }
@@ -648,23 +648,23 @@ LABEL_13:
   }
 }
 
-- (void)_coreBluetoothDeviceFound:(id)a3
+- (void)_coreBluetoothDeviceFound:(id)found
 {
-  v13 = a3;
+  foundCopy = found;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v13 identifier];
-  if (v4)
+  identifier = [foundCopy identifier];
+  if (identifier)
   {
-    if ([v13 vendorID] == 76 && (v5 = objc_msgSend(v13, "productID") - 8194, v5 <= 0x2D) && ((1 << v5) & 0x207C7BB7FF9BLL) != 0)
+    if ([foundCopy vendorID] == 76 && (v5 = objc_msgSend(foundCopy, "productID") - 8194, v5 <= 0x2D) && ((1 << v5) & 0x207C7BB7FF9BLL) != 0)
     {
-      if (([v13 discoveryFlags] & 0x800000) != 0)
+      if (([foundCopy discoveryFlags] & 0x800000) != 0)
       {
-        v6 = [(AAPairedDeviceDaemon *)self _deviceWithIdentifier:v4];
+        v6 = [(AAPairedDeviceDaemon *)self _deviceWithIdentifier:identifier];
         v7 = v6;
         if (v6)
         {
           v8 = v6;
-          if (![v6 updateWithPairedCBDevice:v13])
+          if (![v6 updateWithPairedCBDevice:foundCopy])
           {
 LABEL_21:
 
@@ -674,10 +674,10 @@ LABEL_21:
 
         else
         {
-          v8 = [[AudioAccessoryDevice alloc] initWithIdentifier:v4];
+          v8 = [[AudioAccessoryDevice alloc] initWithIdentifier:identifier];
           [v8 setPaired:1];
           [(AAPairedDeviceDaemon *)self _addDeviceToMap:v8];
-          [v8 updateWithPairedCBDevice:v13];
+          [v8 updateWithPairedCBDevice:foundCopy];
         }
 
         if ([(AAPairedDeviceDaemon *)self _loadDeviceRecordForDevice:v8]&& dword_1002F6070 <= 30 && (dword_1002F6070 != -1 || _LogCategory_Initialize()))
@@ -696,7 +696,7 @@ LABEL_21:
 
           v11 = v9;
           LogPrintF();
-          [(AAPairedDeviceDaemon *)self _pairedDeviceUpdated:v8, v11, v13];
+          [(AAPairedDeviceDaemon *)self _pairedDeviceUpdated:v8, v11, foundCopy];
         }
 
         else
@@ -724,14 +724,14 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)_coreBluetoothDeviceLost:(id)a3
+- (void)_coreBluetoothDeviceLost:(id)lost
 {
-  v8 = a3;
+  lostCopy = lost;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v8 identifier];
-  if (v4)
+  identifier = [lostCopy identifier];
+  if (identifier)
   {
-    v5 = [(AAPairedDeviceDaemon *)self _deviceWithIdentifier:v4];
+    v5 = [(AAPairedDeviceDaemon *)self _deviceWithIdentifier:identifier];
     if (v5)
     {
       if (dword_1002F6070 <= 10 && (dword_1002F6070 != -1 || _LogCategory_Initialize()))
@@ -739,16 +739,16 @@ LABEL_22:
         sub_1001D3894();
       }
 
-      v6 = [v8 changeFlags];
-      v7 = [v8 discoveryFlags];
-      if ((v6 & 0x800000) != 0 && (v7 & 0x800000) == 0)
+      changeFlags = [lostCopy changeFlags];
+      discoveryFlags = [lostCopy discoveryFlags];
+      if ((changeFlags & 0x800000) != 0 && (discoveryFlags & 0x800000) == 0)
       {
         if (dword_1002F6070 <= 30 && (dword_1002F6070 != -1 || _LogCategory_Initialize()))
         {
           sub_1001D38D4();
         }
 
-        [(AAPairedDeviceDaemon *)self _removeDeviceFromMapWithIdentifier:v4];
+        [(AAPairedDeviceDaemon *)self _removeDeviceFromMapWithIdentifier:identifier];
         [(AAPairedDeviceDaemon *)self _pairedDeviceLost:v5];
       }
     }
@@ -760,49 +760,49 @@ LABEL_22:
   }
 }
 
-- (void)_addDeviceToMap:(id)a3
+- (void)_addDeviceToMap:(id)map
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  devicesMap = v4->_devicesMap;
+  mapCopy = map;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  devicesMap = selfCopy->_devicesMap;
   if (!devicesMap)
   {
     v6 = objc_alloc_init(NSMutableDictionary);
-    v7 = v4->_devicesMap;
-    v4->_devicesMap = v6;
+    v7 = selfCopy->_devicesMap;
+    selfCopy->_devicesMap = v6;
 
-    devicesMap = v4->_devicesMap;
+    devicesMap = selfCopy->_devicesMap;
   }
 
-  v8 = [v9 identifier];
-  [(NSMutableDictionary *)devicesMap setObject:v9 forKeyedSubscript:v8];
+  identifier = [mapCopy identifier];
+  [(NSMutableDictionary *)devicesMap setObject:mapCopy forKeyedSubscript:identifier];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)deviceWithIdentifier:(id)a3
+- (id)deviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(AAPairedDeviceDaemon *)v5 _deviceWithIdentifier:v4];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(AAPairedDeviceDaemon *)selfCopy _deviceWithIdentifier:identifierCopy];
   v7 = [v6 copy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)_deviceWithIdentifier:(id)a3
+- (id)_deviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  devicesMap = v5->_devicesMap;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  devicesMap = selfCopy->_devicesMap;
   if (devicesMap)
   {
-    v7 = [(NSMutableDictionary *)devicesMap objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)devicesMap objectForKeyedSubscript:identifierCopy];
   }
 
   else
@@ -810,39 +810,39 @@ LABEL_22:
     v7 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)deviceWithBluetoothAddress:(id)a3
+- (id)deviceWithBluetoothAddress:(id)address
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(AAPairedDeviceDaemon *)v5 _deviceWithBluetoothAddress:v4];
+  addressCopy = address;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(AAPairedDeviceDaemon *)selfCopy _deviceWithBluetoothAddress:addressCopy];
   v7 = [v6 copy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)_deviceWithBluetoothAddress:(id)a3
+- (id)_deviceWithBluetoothAddress:(id)address
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  obj = v5;
-  devicesMap = v5->_devicesMap;
+  addressCopy = address;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = selfCopy;
+  devicesMap = selfCopy->_devicesMap;
   if (devicesMap)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [(NSMutableDictionary *)devicesMap allValues];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    allValues = [(NSMutableDictionary *)devicesMap allValues];
+    v8 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
       v9 = *v22;
@@ -852,15 +852,15 @@ LABEL_22:
         {
           if (*v22 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          v12 = [v11 bluetoothAddress];
-          v13 = [v12 lowercaseString];
-          v14 = [v4 lowercaseString];
-          v15 = v13;
-          v16 = v14;
+          bluetoothAddress = [v11 bluetoothAddress];
+          lowercaseString = [bluetoothAddress lowercaseString];
+          lowercaseString2 = [addressCopy lowercaseString];
+          v15 = lowercaseString;
+          v16 = lowercaseString2;
           v17 = v16;
           if (v15 == v16)
           {
@@ -885,7 +885,7 @@ LABEL_16:
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v8)
         {
           continue;
@@ -910,44 +910,44 @@ LABEL_17:
 
 - (id)pairedDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (dword_1002F6070 <= 5 && (dword_1002F6070 != -1 || _LogCategory_Initialize()))
   {
-    [(NSMutableDictionary *)v2->_devicesMap count];
+    [(NSMutableDictionary *)selfCopy->_devicesMap count];
     LogPrintF();
   }
 
-  v3 = [[NSMutableDictionary alloc] initWithDictionary:v2->_devicesMap copyItems:1];
-  objc_sync_exit(v2);
+  v3 = [[NSMutableDictionary alloc] initWithDictionary:selfCopy->_devicesMap copyItems:1];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_removeDeviceFromMapWithIdentifier:(id)a3
+- (void)_removeDeviceFromMapWithIdentifier:(id)identifier
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  devicesMap = v4->_devicesMap;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  devicesMap = selfCopy->_devicesMap;
   if (!devicesMap)
   {
     v6 = objc_alloc_init(NSMutableDictionary);
-    v7 = v4->_devicesMap;
-    v4->_devicesMap = v6;
+    v7 = selfCopy->_devicesMap;
+    selfCopy->_devicesMap = v6;
 
-    devicesMap = v4->_devicesMap;
+    devicesMap = selfCopy->_devicesMap;
   }
 
-  [(NSMutableDictionary *)devicesMap setObject:0 forKeyedSubscript:v8];
-  objc_sync_exit(v4);
+  [(NSMutableDictionary *)devicesMap setObject:0 forKeyedSubscript:identifierCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_notifySubscribersDeviceUpdated:(id)a3
+- (void)_notifySubscribersDeviceUpdated:(id)updated
 {
   if (self->_subscribers)
   {
-    v4 = [a3 copy];
+    v4 = [updated copy];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -981,11 +981,11 @@ LABEL_17:
   }
 }
 
-- (void)_notifySubscribersDeviceLost:(id)a3
+- (void)_notifySubscribersDeviceLost:(id)lost
 {
   if (self->_subscribers)
   {
-    v4 = [a3 copy];
+    v4 = [lost copy];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -1069,45 +1069,45 @@ LABEL_17:
   }
 }
 
-- (void)subscribeToPairedDiscovery:(id)a3
+- (void)subscribeToPairedDiscovery:(id)discovery
 {
-  v4 = a3;
+  discoveryCopy = discovery;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000145AC;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = discoveryCopy;
+  v6 = discoveryCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)unsubscribeFromPairedDiscovery:(id)a3
+- (void)unsubscribeFromPairedDiscovery:(id)discovery
 {
-  v4 = a3;
+  discoveryCopy = discovery;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000147D4;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = discoveryCopy;
+  v6 = discoveryCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_aaDeviceRecordsRemovedWithRecords:(id)a3
+- (void)_aaDeviceRecordsRemovedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   if (_os_feature_enabled_impl())
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v15 = v4;
-    v5 = v4;
+    v15 = recordsCopy;
+    v5 = recordsCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -1123,8 +1123,8 @@ LABEL_17:
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 bluetoothAddress];
-          v12 = [(AAPairedDeviceDaemon *)self _deviceWithBluetoothAddress:v11];
+          bluetoothAddress = [v10 bluetoothAddress];
+          v12 = [(AAPairedDeviceDaemon *)self _deviceWithBluetoothAddress:bluetoothAddress];
 
           if (v12 && dword_1002F6070 <= 30 && (dword_1002F6070 != -1 || sub_1000148F4()))
           {
@@ -1140,21 +1140,21 @@ LABEL_17:
       while (v7);
     }
 
-    v4 = v15;
+    recordsCopy = v15;
   }
 }
 
-- (void)_aaDeviceRecordsUpdatedWithRecords:(id)a3
+- (void)_aaDeviceRecordsUpdatedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   if (_os_feature_enabled_impl())
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v14 = v4;
-    v5 = v4;
+    v14 = recordsCopy;
+    v5 = recordsCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -1170,8 +1170,8 @@ LABEL_17:
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 bluetoothAddress];
-          v12 = [(AAPairedDeviceDaemon *)self _deviceWithBluetoothAddress:v11];
+          bluetoothAddress = [v10 bluetoothAddress];
+          v12 = [(AAPairedDeviceDaemon *)self _deviceWithBluetoothAddress:bluetoothAddress];
 
           if (v12)
           {
@@ -1215,7 +1215,7 @@ LABEL_21:
       while (v7);
     }
 
-    v4 = v14;
+    recordsCopy = v14;
   }
 }
 
@@ -1238,36 +1238,36 @@ LABEL_21:
   }
 }
 
-- (BOOL)_loadDeviceRecordForDevice:(id)a3
+- (BOOL)_loadDeviceRecordForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 cloudRecordInfoLoaded])
+  deviceCopy = device;
+  if ([deviceCopy cloudRecordInfoLoaded])
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(bluetoothAddress) = 0;
   }
 
   else
   {
-    v5 = [v4 bluetoothAddress];
+    bluetoothAddress = [deviceCopy bluetoothAddress];
 
-    if (v5)
+    if (bluetoothAddress)
     {
       cloudSyncDeviceManager = self->_cloudSyncDeviceManager;
-      v7 = [v4 bluetoothAddress];
-      v8 = [cloudSyncDeviceManager fetchAADeviceRecordSyncWithAddress:v7];
+      bluetoothAddress2 = [deviceCopy bluetoothAddress];
+      v8 = [cloudSyncDeviceManager fetchAADeviceRecordSyncWithAddress:bluetoothAddress2];
 
       if (v8)
       {
-        LODWORD(v5) = [v4 updateWithAADeviceRecord:v8];
-        if (v5 && dword_1002F6070 <= 30 && (dword_1002F6070 != -1 || _LogCategory_Initialize()))
+        LODWORD(bluetoothAddress) = [deviceCopy updateWithAADeviceRecord:v8];
+        if (bluetoothAddress && dword_1002F6070 <= 30 && (dword_1002F6070 != -1 || _LogCategory_Initialize()))
         {
           LogPrintF();
-          [v4 setCloudRecordInfoLoaded:{1, v8}];
+          [deviceCopy setCloudRecordInfoLoaded:{1, v8}];
         }
 
         else
         {
-          [v4 setCloudRecordInfoLoaded:{1, v10}];
+          [deviceCopy setCloudRecordInfoLoaded:{1, v10}];
         }
       }
 
@@ -1275,16 +1275,16 @@ LABEL_21:
       {
         if (dword_1002F6070 <= 30 && (dword_1002F6070 != -1 || _LogCategory_Initialize()))
         {
-          v11 = [v4 bluetoothAddress];
+          bluetoothAddress3 = [deviceCopy bluetoothAddress];
           LogPrintF();
         }
 
-        LOBYTE(v5) = 0;
+        LOBYTE(bluetoothAddress) = 0;
       }
     }
   }
 
-  return v5;
+  return bluetoothAddress;
 }
 
 @end

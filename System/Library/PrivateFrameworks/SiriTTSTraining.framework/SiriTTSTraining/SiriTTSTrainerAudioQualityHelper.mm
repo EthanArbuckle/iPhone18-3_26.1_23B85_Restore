@@ -1,28 +1,28 @@
 @interface SiriTTSTrainerAudioQualityHelper
-+ (id)assessAudioQualityWithBuffers:(id)a3;
-+ (id)assessAudioQualityWithPath:(id)a3;
-+ (id)assessAudioQualityWithRate:(double)a3 samples:(const float *)a4 count:(unsigned int)a5;
++ (id)assessAudioQualityWithBuffers:(id)buffers;
++ (id)assessAudioQualityWithPath:(id)path;
++ (id)assessAudioQualityWithRate:(double)rate samples:(const float *)samples count:(unsigned int)count;
 @end
 
 @implementation SiriTTSTrainerAudioQualityHelper
 
-+ (id)assessAudioQualityWithRate:(double)a3 samples:(const float *)a4 count:(unsigned int)a5
++ (id)assessAudioQualityWithRate:(double)rate samples:(const float *)samples count:(unsigned int)count
 {
   LODWORD(v8) = 1061997773;
   BYTE4(v8) = 1;
-  *v7 = a3;
+  *v7 = rate;
   v7[1] = 0xC20C0000C1E00000;
-  __p[6] = *&a3;
+  __p[6] = *&rate;
   __p[8] = v8;
   __p[7] = vneg_f32(0x3F0000003FLL);
-  v9[0] = a5;
-  v9[1] = a4;
+  v9[0] = count;
+  v9[1] = samples;
   memset(__p, 0, 24);
   std::vector<std::tuple<unsigned long,float const*>>::__init_with_size[abi:ne200100]<std::tuple<unsigned long,float const*> const*,std::tuple<unsigned long,float const*> const*>(__p, v9, &v10, 1uLL);
   assess_audio_quality(__p, v7);
 }
 
-+ (id)assessAudioQualityWithBuffers:(id)a3
++ (id)assessAudioQualityWithBuffers:(id)buffers
 {
   __src = 0;
   v33 = 0;
@@ -31,8 +31,8 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  buffersCopy = buffers;
+  v4 = [buffersCopy countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v4)
   {
     v5 = *v29;
@@ -42,16 +42,16 @@
       {
         if (*v29 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(buffersCopy);
         }
 
         v7 = *(*(&v28 + 1) + 8 * i);
-        v8 = [v7 format];
-        [v8 sampleRate];
+        format = [v7 format];
+        [format sampleRate];
         v10 = v9;
 
-        v11 = [v7 frameCapacity];
-        v12 = [v7 floatChannelData];
+        frameCapacity = [v7 frameCapacity];
+        floatChannelData = [v7 floatChannelData];
         v13 = v33;
         if (v33 >= v34)
         {
@@ -81,8 +81,8 @@
           }
 
           v21 = (16 * v18);
-          v22 = *v12;
-          *v21 = v11;
+          v22 = *floatChannelData;
+          *v21 = frameCapacity;
           v21[1] = v22;
           v15 = 16 * v18 + 16;
           memcpy(0, v16, v17);
@@ -98,8 +98,8 @@
 
         else
         {
-          v14 = *v12;
-          *v33 = v11;
+          v14 = *floatChannelData;
+          *v33 = frameCapacity;
           *(v13 + 1) = v14;
           v15 = (v13 + 16);
         }
@@ -107,7 +107,7 @@
         v33 = v15;
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      v4 = [buffersCopy countByEnumeratingWithState:&v28 objects:v35 count:16];
     }
 
     while (v4);
@@ -125,9 +125,9 @@
   assess_audio_quality(&__src, v25);
 }
 
-+ (id)assessAudioQualityWithPath:(id)a3
++ (id)assessAudioQualityWithPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   *&v13 = 0x40D7700000000000;
   *(&v13 + 1) = 0xC20C0000C1E00000;
   LODWORD(v14) = 1061997773;
@@ -135,14 +135,14 @@
   *&v11 = 0x40D7700000000000;
   v12 = v14;
   *(&v11 + 1) = vneg_f32(0x3F0000003FLL);
-  boost::filesystem::path::path(__p, [v3 UTF8String]);
+  boost::filesystem::path::path(__p, [pathCopy UTF8String]);
   assess_audio_quality(__p, &v13, v10);
   if (v9 < 0)
   {
     operator delete(__p[0]);
   }
 
-  boost::filesystem::path::path(v6, [v3 UTF8String]);
+  boost::filesystem::path::path(v6, [pathCopy UTF8String]);
   assess_audio_quality(v6, &v11, __p);
   if (v7 < 0)
   {

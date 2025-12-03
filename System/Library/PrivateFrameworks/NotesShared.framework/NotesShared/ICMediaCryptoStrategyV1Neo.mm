@@ -1,16 +1,16 @@
 @interface ICMediaCryptoStrategyV1Neo
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4;
-- (BOOL)rewrapWithMainKey:(id)a3;
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL;
+- (BOOL)rewrapWithMainKey:(id)key;
 - (id)decryptedData;
 - (void)decryptedData;
 @end
 
 @implementation ICMediaCryptoStrategyV1Neo
 
-- (BOOL)rewrapWithMainKey:(id)a3
+- (BOOL)rewrapWithMainKey:(id)key
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -26,18 +26,18 @@
   v13[2] = __48__ICMediaCryptoStrategyV1Neo_rewrapWithMainKey___block_invoke;
   v13[3] = &unk_278196168;
   v13[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   v14 = v6;
   v15 = &v16;
   [(ICCryptoStrategyBase *)self performBlockIfMediaExists:v13];
   v7 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(ICCryptoStrategyBase *)self object];
-    v11 = [v10 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v12 = [MEMORY[0x277CCABB0] numberWithBool:*(v17 + 24)];
     *buf = 138413058;
-    v21 = v11;
+    v21 = shortLoggingDescription;
     v22 = 2112;
     v24 = 2080;
     v23 = v12;
@@ -118,11 +118,11 @@ void __48__ICMediaCryptoStrategyV1Neo_rewrapWithMainKey___block_invoke(uint64_t 
 LABEL_18:
 }
 
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL
 {
   v7.receiver = self;
   v7.super_class = ICMediaCryptoStrategyV1Neo;
-  v5 = [(ICCryptoStrategyBase *)&v7 encryptFileFromURL:a3 toURL:a4];
+  v5 = [(ICCryptoStrategyBase *)&v7 encryptFileFromURL:l toURL:rL];
   [(ICCryptoStrategyBase *)self performBlockIfMediaExists:&__block_literal_global_17];
   return v5;
 }
@@ -152,11 +152,11 @@ LABEL_18:
   v4 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(ICCryptoStrategyBase *)self object];
-    v8 = [v7 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v9 = [MEMORY[0x277CCABB0] numberWithInt:v12[5] != 0];
     *buf = 138413058;
-    v18 = v8;
+    v18 = shortLoggingDescription;
     v19 = 2112;
     v21 = 2080;
     v20 = v9;
@@ -252,8 +252,8 @@ void __48__ICMediaCryptoStrategyV1Neo_rewrapWithMainKey___block_invoke_cold_3(vo
 
 - (void)decryptedData
 {
-  v1 = [a1 object];
-  v2 = [v1 shortLoggingDescription];
+  object = [self object];
+  shortLoggingDescription = [object shortLoggingDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0_1();
   OUTLINED_FUNCTION_3_6(&dword_214D51000, v3, v4, "Decrypting data… {media: %@}%s:%d", v5, v6, v7, v8, v9);

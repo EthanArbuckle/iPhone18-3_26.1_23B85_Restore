@@ -1,17 +1,17 @@
 @interface CUIVectorGlyphPath
-+ (CUIVectorGlyphPathElementLength)realloc_length_array:(CUIVectorGlyphPathElementLength *)a3 withNewCount:(unint64_t)a4;
++ (CUIVectorGlyphPathElementLength)realloc_length_array:(CUIVectorGlyphPathElementLength *)realloc_length_array withNewCount:(unint64_t)count;
 + (CUIVectorGlyphPathLengthData)emptyData;
-+ (float)realloc_float_array:(float *)a3 withNewCount:(unint64_t)a4;
-+ (id)_createAdoptingPath:(CGPath *)a3 clipStrokeKeyframes:(id)a4;
-+ (id)_createConcatenatingPaths:(id)a3 indices:(id)a4;
-+ (id)createFromSubpaths:(id)a3 indices:(id)a4 clipStrokeIndices:(id)a5;
-+ (id)createWithPath:(CGPath *)a3 clipStrokeKeyframeProvider:(id)a4;
-+ (id)createWithPath:(CGPath *)a3 clipStrokeKeyframes:(id)a4;
-+ (unint64_t)realloc_long_array:(unint64_t *)a3 withNewCount:(unint64_t)a4;
++ (float)realloc_float_array:(float *)realloc_float_array withNewCount:(unint64_t)count;
++ (id)_createAdoptingPath:(CGPath *)path clipStrokeKeyframes:(id)keyframes;
++ (id)_createConcatenatingPaths:(id)paths indices:(id)indices;
++ (id)createFromSubpaths:(id)subpaths indices:(id)indices clipStrokeIndices:(id)strokeIndices;
++ (id)createWithPath:(CGPath *)path clipStrokeKeyframeProvider:(id)provider;
++ (id)createWithPath:(CGPath *)path clipStrokeKeyframes:(id)keyframes;
++ (unint64_t)realloc_long_array:(unint64_t *)realloc_long_array withNewCount:(unint64_t)count;
 - (CUIVectorGlyphPathLengthData)computeLengthData;
 - (CUIVectorGlyphPathLengthData)lengthData;
 - (NSData)clipStrokeKeyframes;
-- (id)createCopyApplyingTransform:(CGAffineTransform *)a3;
+- (id)createCopyApplyingTransform:(CGAffineTransform *)transform;
 - (id)createSubpaths;
 - (int64_t)subpathCount;
 - (void)dealloc;
@@ -361,61 +361,61 @@ LABEL_23:
   return self;
 }
 
-+ (float)realloc_float_array:(float *)a3 withNewCount:(unint64_t)a4
++ (float)realloc_float_array:(float *)realloc_float_array withNewCount:(unint64_t)count
 {
-  result = malloc_type_realloc(a3, 4 * a4, 0x100004052888210uLL);
+  result = malloc_type_realloc(realloc_float_array, 4 * count, 0x100004052888210uLL);
   if (!result)
   {
-    free(a3);
+    free(realloc_float_array);
     [NSException raise:@"FailedRealloc" format:@"Requested size was not available"];
-    return a3;
+    return realloc_float_array;
   }
 
   return result;
 }
 
-+ (CUIVectorGlyphPathElementLength)realloc_length_array:(CUIVectorGlyphPathElementLength *)a3 withNewCount:(unint64_t)a4
++ (CUIVectorGlyphPathElementLength)realloc_length_array:(CUIVectorGlyphPathElementLength *)realloc_length_array withNewCount:(unint64_t)count
 {
-  result = malloc_type_realloc(a3, 8 * a4, 0x100004000313F17uLL);
+  result = malloc_type_realloc(realloc_length_array, 8 * count, 0x100004000313F17uLL);
   if (!result)
   {
-    free(a3);
+    free(realloc_length_array);
     [NSException raise:@"FailedRealloc" format:@"Requested size was not available"];
-    return a3;
+    return realloc_length_array;
   }
 
   return result;
 }
 
-+ (unint64_t)realloc_long_array:(unint64_t *)a3 withNewCount:(unint64_t)a4
++ (unint64_t)realloc_long_array:(unint64_t *)realloc_long_array withNewCount:(unint64_t)count
 {
-  result = malloc_type_realloc(a3, 8 * a4, 0x100004000313F17uLL);
+  result = malloc_type_realloc(realloc_long_array, 8 * count, 0x100004000313F17uLL);
   if (!result)
   {
-    free(a3);
+    free(realloc_long_array);
     [NSException raise:@"FailedRealloc" format:@"Requested size was not available"];
-    return a3;
+    return realloc_long_array;
   }
 
   return result;
 }
 
-+ (id)createWithPath:(CGPath *)a3 clipStrokeKeyframes:(id)a4
++ (id)createWithPath:(CGPath *)path clipStrokeKeyframes:(id)keyframes
 {
   v7 = objc_opt_new();
-  *(v7 + 56) = MEMORY[0x193AC5C10](a3);
+  *(v7 + 56) = MEMORY[0x193AC5C10](path);
   v14 = 0;
-  v8 = [a4 validate:&v14];
+  v8 = [keyframes validate:&v14];
   v9 = 0;
   if (v8)
   {
-    v9 = [a4 copy];
+    v9 = [keyframes copy];
   }
 
   *(v7 + 64) = v9;
-  if (a1)
+  if (self)
   {
-    [a1 emptyData];
+    [self emptyData];
   }
 
   else
@@ -431,10 +431,10 @@ LABEL_23:
   return v7;
 }
 
-+ (id)createWithPath:(CGPath *)a3 clipStrokeKeyframeProvider:(id)a4
++ (id)createWithPath:(CGPath *)path clipStrokeKeyframeProvider:(id)provider
 {
   v6 = objc_opt_new();
-  *(v6 + 56) = MEMORY[0x193AC5C10](a3);
+  *(v6 + 56) = MEMORY[0x193AC5C10](path);
   *(v6 + 64) = 0;
   [v6 computeLengthData];
   v7 = v13[0];
@@ -442,7 +442,7 @@ LABEL_23:
   *(v6 + 40) = v13[2];
   *(v6 + 24) = v8;
   *(v6 + 8) = v7;
-  v9 = (*(a4 + 2))(a4, v6);
+  v9 = (*(provider + 2))(provider, v6);
   *&v13[0] = 0;
   v10 = [v9 validate:v13];
   v11 = 0;
@@ -455,22 +455,22 @@ LABEL_23:
   return v6;
 }
 
-+ (id)_createAdoptingPath:(CGPath *)a3 clipStrokeKeyframes:(id)a4
++ (id)_createAdoptingPath:(CGPath *)path clipStrokeKeyframes:(id)keyframes
 {
   v7 = objc_opt_new();
-  *(v7 + 56) = CGPathRetain(a3);
+  *(v7 + 56) = CGPathRetain(path);
   v14 = 0;
-  v8 = [a4 validate:&v14];
-  v9 = 0;
+  v8 = [keyframes validate:&v14];
+  keyframesCopy = 0;
   if (v8)
   {
-    v9 = a4;
+    keyframesCopy = keyframes;
   }
 
-  *(v7 + 64) = v9;
-  if (a1)
+  *(v7 + 64) = keyframesCopy;
+  if (self)
   {
-    [a1 emptyData];
+    [self emptyData];
   }
 
   else
@@ -486,22 +486,22 @@ LABEL_23:
   return v7;
 }
 
-+ (id)createFromSubpaths:(id)a3 indices:(id)a4 clipStrokeIndices:(id)a5
++ (id)createFromSubpaths:(id)subpaths indices:(id)indices clipStrokeIndices:(id)strokeIndices
 {
-  if (a5)
+  if (strokeIndices)
   {
     Mutable = CGPathCreateMutable();
-    v9 = [a3 count];
-    v10 = [a5 count];
+    v9 = [subpaths count];
+    v10 = [strokeIndices count];
     v11 = 0;
-    if ([a4 count])
+    if ([indices count])
     {
       v12 = 0;
       v14 = v10 != v9 || v10 == 0;
       v15 = 0.0;
       while (1)
       {
-        v16 = [a3 objectAtIndex:{objc_msgSend(objc_msgSend(a4, "objectAtIndexedSubscript:", v12), "integerValue")}];
+        v16 = [subpaths objectAtIndex:{objc_msgSend(objc_msgSend(indices, "objectAtIndexedSubscript:", v12), "integerValue")}];
         CGPathAddPath(Mutable, 0, [v16 path]);
         if ([v16 encodedClipStrokeKeyframes])
         {
@@ -510,7 +510,7 @@ LABEL_23:
 
 LABEL_17:
         v15 = v15 + 1.0;
-        if (++v12 >= [a4 count])
+        if (++v12 >= [indices count])
         {
           goto LABEL_18;
         }
@@ -523,9 +523,9 @@ LABEL_17:
 LABEL_13:
           v17 = 0;
 LABEL_16:
-          v18 = [v16 encodedClipStrokeKeyframes];
+          encodedClipStrokeKeyframes = [v16 encodedClipStrokeKeyframes];
           *&v19 = v15;
-          [v11 appendEncodedClipStrokeKeyframes:v18 subpathOffset:v17 keyframeSetIndex:v19];
+          [v11 appendEncodedClipStrokeKeyframes:encodedClipStrokeKeyframes subpathOffset:v17 keyframeSetIndex:v19];
           goto LABEL_17;
         }
       }
@@ -539,12 +539,12 @@ LABEL_16:
         }
       }
 
-      v17 = [objc_msgSend(a5 objectAtIndexedSubscript:{v12), "integerValue"}];
+      v17 = [objc_msgSend(strokeIndices objectAtIndexedSubscript:{v12), "integerValue"}];
       goto LABEL_16;
     }
 
 LABEL_18:
-    v20 = [a1 _createAdoptingPath:Mutable clipStrokeKeyframes:v11];
+    v20 = [self _createAdoptingPath:Mutable clipStrokeKeyframes:v11];
 
     CGPathRelease(Mutable);
     return v20;
@@ -553,26 +553,26 @@ LABEL_18:
   else
   {
 
-    return [a1 _createConcatenatingPaths:? indices:?];
+    return [self _createConcatenatingPaths:? indices:?];
   }
 }
 
-+ (id)_createConcatenatingPaths:(id)a3 indices:(id)a4
++ (id)_createConcatenatingPaths:(id)paths indices:(id)indices
 {
   path1 = CGPathCreateMutable();
   v6 = objc_alloc_init(NSMutableArray);
-  v24 = [a3 count];
-  if (a4)
+  v24 = [paths count];
+  if (indices)
   {
-    v7 = a4;
+    pathsCopy = indices;
   }
 
   else
   {
-    v7 = a3;
+    pathsCopy = paths;
   }
 
-  v8 = [v7 count];
+  v8 = [pathsCopy count];
   if (v8)
   {
     v9 = 0;
@@ -580,24 +580,24 @@ LABEL_18:
     do
     {
       v11 = v9;
-      if (!a4 || (v11 = [objc_msgSend(a4 objectAtIndexedSubscript:{v9), "integerValue"}], v11 < v24))
+      if (!indices || (v11 = [objc_msgSend(indices objectAtIndexedSubscript:{v9), "integerValue"}], v11 < v24))
       {
-        v12 = [a3 objectAtIndexedSubscript:v11];
+        v12 = [paths objectAtIndexedSubscript:v11];
         CGPathAddPath(path1, 0, [v12 path]);
-        v13 = [v12 encodedClipStrokeKeyframes];
-        if (v13)
+        encodedClipStrokeKeyframes = [v12 encodedClipStrokeKeyframes];
+        if (encodedClipStrokeKeyframes)
         {
-          v14 = v13;
+          v14 = encodedClipStrokeKeyframes;
           v26 = 0;
-          if ([v13 validate:&v26])
+          if ([encodedClipStrokeKeyframes validate:&v26])
           {
-            v15 = [v14 indexedRawKeyframes];
-            if ([v15 count])
+            indexedRawKeyframes = [v14 indexedRawKeyframes];
+            if ([indexedRawKeyframes count])
             {
               v16 = 0;
               do
               {
-                v17 = [v15 objectAtIndex:v16];
+                v17 = [indexedRawKeyframes objectAtIndex:v16];
                 if (v16 >= [v6 count])
                 {
                   v18 = objc_alloc_init(NSMutableData);
@@ -614,7 +614,7 @@ LABEL_18:
                 ++v16;
               }
 
-              while (v16 < [v15 count]);
+              while (v16 < [indexedRawKeyframes count]);
             }
           }
         }
@@ -634,9 +634,9 @@ LABEL_18:
   return v20;
 }
 
-- (id)createCopyApplyingTransform:(CGAffineTransform *)a3
+- (id)createCopyApplyingTransform:(CGAffineTransform *)transform
 {
-  v4 = MEMORY[0x193AC5C50](self->_path, a3);
+  v4 = MEMORY[0x193AC5C50](self->_path, transform);
   v5 = [CUIVectorGlyphPath _createAdoptingPath:v4 clipStrokeKeyframes:self->_clipStrokeKeyframes];
   CGPathRelease(v4);
   return v5;
@@ -648,15 +648,15 @@ LABEL_18:
   clipStrokeKeyframes = self->_clipStrokeKeyframes;
   if (clipStrokeKeyframes)
   {
-    v4 = [(NSData *)clipStrokeKeyframes encodedSubpathKeyframes];
+    encodedSubpathKeyframes = [(NSData *)clipStrokeKeyframes encodedSubpathKeyframes];
   }
 
   else
   {
-    v4 = +[NSDictionary dictionary];
+    encodedSubpathKeyframes = +[NSDictionary dictionary];
   }
 
-  v5 = v4;
+  v5 = encodedSubpathKeyframes;
   if (!path)
   {
     return 0;

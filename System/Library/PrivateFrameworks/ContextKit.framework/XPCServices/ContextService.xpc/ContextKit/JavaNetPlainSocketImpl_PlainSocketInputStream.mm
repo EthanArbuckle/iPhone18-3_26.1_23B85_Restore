@@ -1,5 +1,5 @@
 @interface JavaNetPlainSocketImpl_PlainSocketInputStream
-- (JavaNetPlainSocketImpl_PlainSocketInputStream)initWithJavaNetPlainSocketImpl:(id)a3;
+- (JavaNetPlainSocketImpl_PlainSocketInputStream)initWithJavaNetPlainSocketImpl:(id)impl;
 - (int)available;
 - (void)close;
 - (void)dealloc;
@@ -7,10 +7,10 @@
 
 @implementation JavaNetPlainSocketImpl_PlainSocketInputStream
 
-- (JavaNetPlainSocketImpl_PlainSocketInputStream)initWithJavaNetPlainSocketImpl:(id)a3
+- (JavaNetPlainSocketImpl_PlainSocketInputStream)initWithJavaNetPlainSocketImpl:(id)impl
 {
   JavaIoInputStream_init(self, a2);
-  JreStrongAssign(&self->socketImpl_, a3);
+  JreStrongAssign(&self->socketImpl_, impl);
   return self;
 }
 

@@ -15,36 +15,36 @@
 {
   v2 = objc_opt_class();
 
-  return [a1 wf_valueTypeOfClass:v2];
+  return [self wf_valueTypeOfClass:v2];
 }
 
 - (uint64_t)wf_entityValueType
 {
   v2 = objc_opt_class();
 
-  return [a1 wf_valueTypeOfClass:v2];
+  return [self wf_valueTypeOfClass:v2];
 }
 
 - (uint64_t)wf_unionValueType
 {
   v2 = objc_opt_class();
 
-  return [a1 wf_valueTypeOfClass:v2];
+  return [self wf_valueTypeOfClass:v2];
 }
 
 - (id)wf_valueTypeOfClass:()Workflow
 {
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  v3 = v2;
+  v3 = selfCopy;
   if (v3)
   {
     v4 = v3;
@@ -52,30 +52,30 @@
 
   else
   {
-    v5 = a1;
-    if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    selfCopy2 = self;
+    if (selfCopy2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v6 = [v5 memberValueType];
+      memberValueType = [selfCopy2 memberValueType];
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v5 memberValueType];
+        memberValueType2 = [selfCopy2 memberValueType];
       }
 
       else
       {
-        v7 = 0;
+        memberValueType2 = 0;
       }
 
-      a1 = v7;
+      self = memberValueType2;
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (WFLinkActionArrayParameterDefinition)wf_parameterDefinitionWithParameterMetadata:()Workflow dynamicOptionsSupport:actionIdentifier:
@@ -86,9 +86,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v8 name];
-    v11 = v10;
-    if (v10 == @"shortcut" || v10 && (v12 = [(__CFString *)v10 isEqualToString:@"shortcut"], v11, v12))
+    name = [v8 name];
+    v11 = name;
+    if (name == @"shortcut" || name && (v12 = [(__CFString *)name isEqualToString:@"shortcut"], v11, v12))
     {
       v13 = v9;
       v14 = v13;
@@ -139,7 +139,7 @@
 LABEL_30:
                 v33 = WFLinkActionSystemShortcutParameterDefinition;
 LABEL_31:
-                v29 = [[v33 alloc] initWithValueType:a1 parameterMetadata:v8];
+                v29 = [[v33 alloc] initWithValueType:self parameterMetadata:v8];
                 goto LABEL_32;
               }
 
@@ -164,13 +164,13 @@ LABEL_16:
   if (objc_opt_isKindOfClass())
   {
     v25 = [WFLinkActionArrayParameterDefinition alloc];
-    v26 = a1;
-    if (v26)
+    selfCopy = self;
+    if (selfCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v27 = v26;
+        v27 = selfCopy;
       }
 
       else
@@ -186,9 +186,9 @@ LABEL_16:
 
     v30 = v27;
 
-    v31 = [v30 memberValueType];
+    memberValueType = [v30 memberValueType];
 
-    v32 = [(WFLinkActionArrayParameterDefinition *)v25 initWithMemberValueType:v31 parameterMetadata:v8 actionIdentifier:v9];
+    v32 = [(WFLinkActionArrayParameterDefinition *)v25 initWithMemberValueType:memberValueType parameterMetadata:v8 actionIdentifier:v9];
     goto LABEL_33;
   }
 
@@ -243,60 +243,60 @@ LABEL_32:
     goto LABEL_25;
   }
 
-  v53 = [MEMORY[0x1E69AC938] stringValueType];
-  v54[0] = v53;
+  stringValueType = [MEMORY[0x1E69AC938] stringValueType];
+  v54[0] = stringValueType;
   v55[0] = objc_opt_class();
-  v52 = [MEMORY[0x1E69AC938] attributedStringValueType];
-  v54[1] = v52;
+  attributedStringValueType = [MEMORY[0x1E69AC938] attributedStringValueType];
+  v54[1] = attributedStringValueType;
   v55[1] = objc_opt_class();
-  v51 = [MEMORY[0x1E69AC938] intValueType];
-  v54[2] = v51;
+  intValueType = [MEMORY[0x1E69AC938] intValueType];
+  v54[2] = intValueType;
   v55[2] = objc_opt_class();
-  v50 = [MEMORY[0x1E69AC938] doubleValueType];
-  v54[3] = v50;
+  doubleValueType = [MEMORY[0x1E69AC938] doubleValueType];
+  v54[3] = doubleValueType;
   v55[3] = objc_opt_class();
-  v49 = [MEMORY[0x1E69AC938] BOOLValueType];
-  v54[4] = v49;
+  bOOLValueType = [MEMORY[0x1E69AC938] BOOLValueType];
+  v54[4] = bOOLValueType;
   v55[4] = objc_opt_class();
-  v48 = [MEMORY[0x1E69AC938] dateValueType];
-  v54[5] = v48;
+  dateValueType = [MEMORY[0x1E69AC938] dateValueType];
+  v54[5] = dateValueType;
   v55[5] = objc_opt_class();
-  v47 = [MEMORY[0x1E69AC938] dateComponentsValueType];
-  v54[6] = v47;
+  dateComponentsValueType = [MEMORY[0x1E69AC938] dateComponentsValueType];
+  v54[6] = dateComponentsValueType;
   v55[6] = objc_opt_class();
-  v46 = [MEMORY[0x1E69AC938] placemarkValueType];
-  v54[7] = v46;
+  placemarkValueType = [MEMORY[0x1E69AC938] placemarkValueType];
+  v54[7] = placemarkValueType;
   v55[7] = objc_opt_class();
-  v45 = [MEMORY[0x1E69AC938] URLValueType];
-  v54[8] = v45;
+  uRLValueType = [MEMORY[0x1E69AC938] URLValueType];
+  v54[8] = uRLValueType;
   v55[8] = objc_opt_class();
-  v44 = [MEMORY[0x1E69AC888] fileValueType];
-  v54[9] = v44;
+  fileValueType = [MEMORY[0x1E69AC888] fileValueType];
+  v54[9] = fileValueType;
   v55[9] = objc_opt_class();
-  v43 = [MEMORY[0x1E69AC888] personValueType];
-  v54[10] = v43;
+  personValueType = [MEMORY[0x1E69AC888] personValueType];
+  v54[10] = personValueType;
   v55[10] = objc_opt_class();
-  v36 = [MEMORY[0x1E69AC888] currencyAmountValueType];
-  v54[11] = v36;
+  currencyAmountValueType = [MEMORY[0x1E69AC888] currencyAmountValueType];
+  v54[11] = currencyAmountValueType;
   v55[11] = objc_opt_class();
-  v37 = [MEMORY[0x1E69AC888] paymentMethodValueType];
-  v54[12] = v37;
+  paymentMethodValueType = [MEMORY[0x1E69AC888] paymentMethodValueType];
+  v54[12] = paymentMethodValueType;
   v55[12] = objc_opt_class();
-  v38 = [MEMORY[0x1E69AC9B8] stringValueType];
-  v54[13] = v38;
+  stringValueType2 = [MEMORY[0x1E69AC9B8] stringValueType];
+  v54[13] = stringValueType2;
   v55[13] = objc_opt_class();
-  v39 = [MEMORY[0x1E69AC720] photoItemCollectionValueType];
-  v54[14] = v39;
+  photoItemCollectionValueType = [MEMORY[0x1E69AC720] photoItemCollectionValueType];
+  v54[14] = photoItemCollectionValueType;
   v55[14] = objc_opt_class();
-  v40 = [MEMORY[0x1E69AC888] applicationValueType];
-  v54[15] = v40;
+  applicationValueType = [MEMORY[0x1E69AC888] applicationValueType];
+  v54[15] = applicationValueType;
   v55[15] = objc_opt_class();
-  v41 = [MEMORY[0x1E69AC850] recurrenceRuleType];
-  v54[16] = v41;
+  recurrenceRuleType = [MEMORY[0x1E69AC850] recurrenceRuleType];
+  v54[16] = recurrenceRuleType;
   v55[16] = objc_opt_class();
   v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:17];
 
-  v32 = [objc_alloc(objc_msgSend(v42 objectForKey:{a1)), "initWithParameterMetadata:", v8}];
+  v32 = [objc_alloc(objc_msgSend(v42 objectForKey:{self)), "initWithParameterMetadata:", v8}];
 LABEL_33:
 
   v34 = *MEMORY[0x1E69E9840];
@@ -314,7 +314,7 @@ LABEL_33:
     v8 = [v6 dynamicOptionsSupport] == 2;
   }
 
-  v9 = [a1 wf_parameterDefinitionWithParameterMetadata:v6 dynamicOptionsSupport:v8 actionIdentifier:v7];
+  v9 = [self wf_parameterDefinitionWithParameterMetadata:v6 dynamicOptionsSupport:v8 actionIdentifier:v7];
 
   return v9;
 }
@@ -328,26 +328,26 @@ LABEL_33:
     v5 = [v4 dynamicOptionsSupport] == 2;
   }
 
-  v6 = [a1 wf_parameterDefinitionWithParameterMetadata:v4 dynamicOptionsSupport:v5];
+  v6 = [self wf_parameterDefinitionWithParameterMetadata:v4 dynamicOptionsSupport:v5];
 
   return v6;
 }
 
 - (id)wf_objectValueType
 {
-  v1 = a1;
-  if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  selfCopy = self;
+  if (selfCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v2 = [v1 memberValueType];
+    memberValueType = [selfCopy memberValueType];
   }
 
   else
   {
 
-    v2 = v1;
+    memberValueType = selfCopy;
   }
 
-  return v2;
+  return memberValueType;
 }
 
 @end

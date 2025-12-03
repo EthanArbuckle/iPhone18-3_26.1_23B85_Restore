@@ -1,71 +1,71 @@
 @interface MTRDeviceControllerDataStore
-- (BOOL)_bulkStoreAttributeCacheValues:(id)a3;
-- (BOOL)_deleteClusterDataForNodeID:(id)a3 endpointID:(id)a4 clusterID:(id)a5;
-- (BOOL)_deleteClusterIndexForNodeID:(id)a3 endpointID:(id)a4;
-- (BOOL)_deleteEndpointIndexForNodeID:(id)a3;
+- (BOOL)_bulkStoreAttributeCacheValues:(id)values;
+- (BOOL)_deleteClusterDataForNodeID:(id)d endpointID:(id)iD clusterID:(id)clusterID;
+- (BOOL)_deleteClusterIndexForNodeID:(id)d endpointID:(id)iD;
+- (BOOL)_deleteEndpointIndexForNodeID:(id)d;
 - (BOOL)_deleteNodeIndex;
-- (BOOL)_removeAttributeCacheValueForKey:(id)a3;
-- (BOOL)_removeEndpointFromEndpointIndex:(id)a3 forNodeID:(id)a4;
-- (BOOL)_storeAttributeCacheValue:(id)a3 forKey:(id)a4;
-- (BOOL)_storeClusterData:(id)a3 forNodeID:(id)a4 endpointID:(id)a5 clusterID:(id)a6;
-- (BOOL)_storeClusterIndex:(id)a3 forNodeID:(id)a4 endpointID:(id)a5;
-- (BOOL)_storeEndpointIndex:(id)a3 forNodeID:(id)a4;
-- (BOOL)_storeNodeIndex:(id)a3;
-- (ChipError)storeLastLocallyUsedNOC:(id)a3;
-- (MTRDeviceControllerDataStore)initWithController:(id)a3 storageDelegate:(id)a4 storageDelegateQueue:(id)a5;
+- (BOOL)_removeAttributeCacheValueForKey:(id)key;
+- (BOOL)_removeEndpointFromEndpointIndex:(id)index forNodeID:(id)d;
+- (BOOL)_storeAttributeCacheValue:(id)value forKey:(id)key;
+- (BOOL)_storeClusterData:(id)data forNodeID:(id)d endpointID:(id)iD clusterID:(id)clusterID;
+- (BOOL)_storeClusterIndex:(id)index forNodeID:(id)d endpointID:(id)iD;
+- (BOOL)_storeEndpointIndex:(id)index forNodeID:(id)d;
+- (BOOL)_storeNodeIndex:(id)index;
+- (ChipError)storeLastLocallyUsedNOC:(id)c;
+- (MTRDeviceControllerDataStore)initWithController:(id)controller storageDelegate:(id)delegate storageDelegateQueue:(id)queue;
 - (NSArray)nodesWithStoredData;
-- (id)_clusterDataKeyForNodeID:(id)a3 endpointID:(id)a4 clusterID:(id)a5;
-- (id)_clusterIndexKeyForNodeID:(id)a3 endpointID:(id)a4;
-- (id)_deviceDataKeyForNodeID:(id)a3;
-- (id)_endpointIndexKeyForNodeID:(id)a3;
-- (id)_fetchAttributeCacheValueForKey:(id)a3 expectedClass:(Class)a4;
-- (id)_fetchClusterDataForNodeID:(id)a3 endpointID:(id)a4 clusterID:(id)a5;
-- (id)_fetchClusterIndexForNodeID:(id)a3 endpointID:(id)a4;
-- (id)_fetchEndpointIndexForNodeID:(id)a3;
+- (id)_clusterDataKeyForNodeID:(id)d endpointID:(id)iD clusterID:(id)clusterID;
+- (id)_clusterIndexKeyForNodeID:(id)d endpointID:(id)iD;
+- (id)_deviceDataKeyForNodeID:(id)d;
+- (id)_endpointIndexKeyForNodeID:(id)d;
+- (id)_fetchAttributeCacheValueForKey:(id)key expectedClass:(Class)class;
+- (id)_fetchClusterDataForNodeID:(id)d endpointID:(id)iD clusterID:(id)clusterID;
+- (id)_fetchClusterIndexForNodeID:(id)d endpointID:(id)iD;
+- (id)_fetchEndpointIndexForNodeID:(id)d;
 - (id)_fetchNodeIndex;
-- (id)_findResumptionInfoWithKey:(id)a3;
-- (id)_getClusterDataFromSecureLocalValues:(id)a3;
+- (id)_findResumptionInfoWithKey:(id)key;
+- (id)_getClusterDataFromSecureLocalValues:(id)values;
 - (id)fetchLastLocallyUsedNOC;
-- (id)findResumptionInfoByNodeID:(id)a3;
-- (id)findResumptionInfoByResumptionID:(id)a3;
-- (id)getStoredClusterDataForNodeID:(id)a3;
-- (id)getStoredClusterDataForNodeID:(id)a3 endpointID:(id)a4 clusterID:(id)a5;
-- (id)getStoredDeviceDataForNodeID:(id)a3;
-- (void)_clearResumptionInfoForNodeID:(id)a3 controller:(id)a4;
-- (void)_clearStoredClusterDataForNodeID:(id)a3;
+- (id)findResumptionInfoByNodeID:(id)d;
+- (id)findResumptionInfoByResumptionID:(id)d;
+- (id)getStoredClusterDataForNodeID:(id)d;
+- (id)getStoredClusterDataForNodeID:(id)d endpointID:(id)iD clusterID:(id)clusterID;
+- (id)getStoredDeviceDataForNodeID:(id)d;
+- (void)_clearResumptionInfoForNodeID:(id)d controller:(id)controller;
+- (void)_clearStoredClusterDataForNodeID:(id)d;
 - (void)_pruneEmptyStoredClusterDataBranches;
 - (void)clearAllResumptionInfo;
 - (void)clearAllStoredClusterData;
-- (void)clearDeviceDataForNodeID:(id)a3;
-- (void)clearResumptionInfoForNodeID:(id)a3;
-- (void)clearStoredClusterDataForNodeID:(id)a3;
-- (void)clearStoredClusterDataForNodeID:(id)a3 endpointID:(id)a4;
-- (void)clearStoredClusterDataForNodeID:(id)a3 endpointID:(id)a4 clusterID:(id)a5;
-- (void)fetchAttributeDataForAllDevices:(id)a3;
-- (void)removeAttributes:(id)a3 fromCluster:(id)a4 forNodeID:(id)a5;
-- (void)storeClusterData:(id)a3 forNodeID:(id)a4;
-- (void)storeDeviceData:(id)a3 forNodeID:(id)a4;
-- (void)storeResumptionInfo:(id)a3;
-- (void)synchronouslyPerformBlock:(id)a3;
+- (void)clearDeviceDataForNodeID:(id)d;
+- (void)clearResumptionInfoForNodeID:(id)d;
+- (void)clearStoredClusterDataForNodeID:(id)d;
+- (void)clearStoredClusterDataForNodeID:(id)d endpointID:(id)iD;
+- (void)clearStoredClusterDataForNodeID:(id)d endpointID:(id)iD clusterID:(id)clusterID;
+- (void)fetchAttributeDataForAllDevices:(id)devices;
+- (void)removeAttributes:(id)attributes fromCluster:(id)cluster forNodeID:(id)d;
+- (void)storeClusterData:(id)data forNodeID:(id)d;
+- (void)storeDeviceData:(id)data forNodeID:(id)d;
+- (void)storeResumptionInfo:(id)info;
+- (void)synchronouslyPerformBlock:(id)block;
 @end
 
 @implementation MTRDeviceControllerDataStore
 
-- (MTRDeviceControllerDataStore)initWithController:(id)a3 storageDelegate:(id)a4 storageDelegateQueue:(id)a5
+- (MTRDeviceControllerDataStore)initWithController:(id)controller storageDelegate:(id)delegate storageDelegateQueue:(id)queue
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v56.receiver = self;
   v56.super_class = MTRDeviceControllerDataStore;
   v11 = [(MTRDeviceControllerDataStore *)&v56 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_controller, v8);
-    objc_storeStrong(&v12->_storageDelegate, a4);
-    objc_storeStrong(&v12->_storageDelegateQueue, a5);
+    objc_storeWeak(&v11->_controller, controllerCopy);
+    objc_storeStrong(&v12->_storageDelegate, delegate);
+    objc_storeStrong(&v12->_storageDelegateQueue, queue);
     v12->_nodeArrayLock._os_unfair_lock_opaque = 0;
     v50 = 0;
     v51 = &v50;
@@ -88,7 +88,7 @@
     v42 = &v50;
     v15 = v12;
     v40 = v15;
-    v41 = v8;
+    v41 = controllerCopy;
     v43 = &v44;
     dispatch_sync(storageDelegateQueue, block);
     [v13 timeIntervalSinceNow];
@@ -131,7 +131,7 @@ LABEL_31:
         goto LABEL_34;
       }
 
-      v34 = v9;
+      v34 = delegateCopy;
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
@@ -166,7 +166,7 @@ LABEL_31:
                 sub_2393D5320(0, 1);
               }
 
-              v9 = v34;
+              delegateCopy = v34;
               goto LABEL_31;
             }
           }
@@ -181,7 +181,7 @@ LABEL_31:
         }
       }
 
-      v9 = v34;
+      delegateCopy = v34;
       v24 = [v51[5] mutableCopy];
     }
 
@@ -223,10 +223,10 @@ LABEL_35:
   return v25;
 }
 
-- (void)fetchAttributeDataForAllDevices:(id)a3
+- (void)fetchAttributeDataForAllDevices:(id)devices
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -242,7 +242,7 @@ LABEL_35:
     v15 = 3221225472;
     v16 = sub_23920B56C;
     v17 = &unk_278A722F8;
-    v18 = self;
+    selfCopy = self;
     v20 = &v21;
     v19 = WeakRetained;
     dispatch_sync(storageDelegateQueue, &block);
@@ -268,7 +268,7 @@ LABEL_35:
     if ([v22[5] count])
     {
       v11 = [(MTRDeviceControllerDataStore *)self _getClusterDataFromSecureLocalValues:v22[5]];
-      v4[2](v4, v11);
+      devicesCopy[2](devicesCopy, v11);
     }
   }
 
@@ -276,31 +276,31 @@ LABEL_35:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findResumptionInfoByNodeID:(id)a3
+- (id)findResumptionInfoByNodeID:(id)d
 {
-  v4 = sub_23920B654(a3);
+  v4 = sub_23920B654(d);
   v5 = [(MTRDeviceControllerDataStore *)self _findResumptionInfoWithKey:v4];
 
   return v5;
 }
 
-- (id)findResumptionInfoByResumptionID:(id)a3
+- (id)findResumptionInfoByResumptionID:(id)d
 {
-  v4 = sub_23920B73C(a3);
+  v4 = sub_23920B73C(d);
   v5 = [(MTRDeviceControllerDataStore *)self _findResumptionInfoWithKey:v4];
 
   return v5;
 }
 
-- (void)storeResumptionInfo:(id)a3
+- (void)storeResumptionInfo:(id)info
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   if (WeakRetained)
   {
-    v6 = [v4 nodeID];
-    v7 = [(MTRDeviceControllerDataStore *)self findResumptionInfoByNodeID:v6];
+    nodeID = [infoCopy nodeID];
+    v7 = [(MTRDeviceControllerDataStore *)self findResumptionInfoByNodeID:nodeID];
 
     v8 = [MEMORY[0x277CBEAA8] now];
     storageDelegateQueue = self->_storageDelegateQueue;
@@ -310,9 +310,9 @@ LABEL_35:
     block[3] = &unk_278A73AC8;
     v10 = v7;
     v16 = v10;
-    v17 = self;
+    selfCopy = self;
     v18 = WeakRetained;
-    v19 = v4;
+    v19 = infoCopy;
     dispatch_sync(storageDelegateQueue, block);
     [v8 timeIntervalSinceNow];
     if (v11 < -2.0)
@@ -379,25 +379,25 @@ LABEL_35:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearResumptionInfoForNodeID:(id)a3
+- (void)clearResumptionInfoForNodeID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   if (WeakRetained)
   {
-    [(MTRDeviceControllerDataStore *)self _clearResumptionInfoForNodeID:v5 controller:WeakRetained];
+    [(MTRDeviceControllerDataStore *)self _clearResumptionInfoForNodeID:dCopy controller:WeakRetained];
     os_unfair_lock_lock(&self->_nodeArrayLock);
-    [(NSMutableArray *)self->_nodesWithResumptionInfo removeObject:v5];
+    [(NSMutableArray *)self->_nodesWithResumptionInfo removeObject:dCopy];
     os_unfair_lock_unlock(&self->_nodeArrayLock);
   }
 }
 
-- (void)_clearResumptionInfoForNodeID:(id)a3 controller:(id)a4
+- (void)_clearResumptionInfoForNodeID:(id)d controller:(id)controller
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRDeviceControllerDataStore *)self findResumptionInfoByNodeID:v6];
+  dCopy = d;
+  controllerCopy = controller;
+  v8 = [(MTRDeviceControllerDataStore *)self findResumptionInfoByNodeID:dCopy];
   if (v8)
   {
     v9 = [MEMORY[0x277CBEAA8] now];
@@ -407,7 +407,7 @@ LABEL_35:
     block[2] = sub_23920C04C;
     block[3] = &unk_278A71650;
     block[4] = self;
-    v16 = v7;
+    v16 = controllerCopy;
     v17 = v8;
     dispatch_sync(storageDelegateQueue, block);
     [v9 timeIntervalSinceNow];
@@ -432,10 +432,10 @@ LABEL_35:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (ChipError)storeLastLocallyUsedNOC:(id)a3
+- (ChipError)storeLastLocallyUsedNOC:(id)c
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cCopy = c;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   v6 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDeviceControllerDataStore.mm";
   if (WeakRetained)
@@ -453,7 +453,7 @@ LABEL_35:
     v21 = &v22;
     block[4] = self;
     v19 = WeakRetained;
-    v20 = v4;
+    v20 = cCopy;
     dispatch_sync(storageDelegateQueue, block);
     [v7 timeIntervalSinceNow];
     if (v9 < -2.0)
@@ -584,14 +584,14 @@ LABEL_35:
   return v9;
 }
 
-- (id)_findResumptionInfoWithKey:(id)a3
+- (id)_findResumptionInfoWithKey:(id)key
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   v6 = WeakRetained;
   v7 = 0;
-  if (v4 && WeakRetained)
+  if (keyCopy && WeakRetained)
   {
     v19 = 0;
     v20 = &v19;
@@ -608,7 +608,7 @@ LABEL_35:
     v18 = &v19;
     block[4] = self;
     v16 = v6;
-    v17 = v4;
+    v17 = keyCopy;
     dispatch_sync(storageDelegateQueue, block);
     [v8 timeIntervalSinceNow];
     if (v10 < -2.0)
@@ -651,14 +651,14 @@ LABEL_35:
   return v7;
 }
 
-- (id)_fetchAttributeCacheValueForKey:(id)a3 expectedClass:(Class)a4
+- (id)_fetchAttributeCacheValueForKey:(id)key expectedClass:(Class)class
 {
-  v5 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   if (WeakRetained)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [(MTRDeviceControllerStorageDelegate *)self->_storageDelegate controller:WeakRetained valueForKey:v5 securityLevel:0 sharingType:0];
+    v8 = [(MTRDeviceControllerStorageDelegate *)self->_storageDelegate controller:WeakRetained valueForKey:keyCopy securityLevel:0 sharingType:0];
     objc_autoreleasePoolPop(v7);
     if (v8 && (objc_opt_isKindOfClass() & 1) != 0)
     {
@@ -679,14 +679,14 @@ LABEL_35:
   return v9;
 }
 
-- (BOOL)_storeAttributeCacheValue:(id)a3 forKey:(id)a4
+- (BOOL)_storeAttributeCacheValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   if (WeakRetained)
   {
-    v9 = [(MTRDeviceControllerStorageDelegate *)self->_storageDelegate controller:WeakRetained storeValue:v6 forKey:v7 securityLevel:0 sharingType:0];
+    v9 = [(MTRDeviceControllerStorageDelegate *)self->_storageDelegate controller:WeakRetained storeValue:valueCopy forKey:keyCopy securityLevel:0 sharingType:0];
   }
 
   else
@@ -697,13 +697,13 @@ LABEL_35:
   return v9;
 }
 
-- (BOOL)_bulkStoreAttributeCacheValues:(id)a3
+- (BOOL)_bulkStoreAttributeCacheValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   if (WeakRetained)
   {
-    v6 = [(MTRDeviceControllerStorageDelegate *)self->_storageDelegate controller:WeakRetained storeValues:v4 securityLevel:0 sharingType:0];
+    v6 = [(MTRDeviceControllerStorageDelegate *)self->_storageDelegate controller:WeakRetained storeValues:valuesCopy securityLevel:0 sharingType:0];
   }
 
   else
@@ -714,13 +714,13 @@ LABEL_35:
   return v6;
 }
 
-- (BOOL)_removeAttributeCacheValueForKey:(id)a3
+- (BOOL)_removeAttributeCacheValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   if (WeakRetained)
   {
-    v6 = [(MTRDeviceControllerStorageDelegate *)self->_storageDelegate controller:WeakRetained removeValueForKey:v4 securityLevel:0 sharingType:0];
+    v6 = [(MTRDeviceControllerStorageDelegate *)self->_storageDelegate controller:WeakRetained removeValueForKey:keyCopy securityLevel:0 sharingType:0];
   }
 
   else
@@ -739,11 +739,11 @@ LABEL_35:
   return [(MTRDeviceControllerDataStore *)self _fetchAttributeCacheValueForKey:@"attrCacheNodeIndex" expectedClass:v3];
 }
 
-- (BOOL)_storeNodeIndex:(id)a3
+- (BOOL)_storeNodeIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   dispatch_assert_queue_V2(self->_storageDelegateQueue);
-  LOBYTE(self) = [(MTRDeviceControllerDataStore *)self _storeAttributeCacheValue:v4 forKey:@"attrCacheNodeIndex"];
+  LOBYTE(self) = [(MTRDeviceControllerDataStore *)self _storeAttributeCacheValue:indexCopy forKey:@"attrCacheNodeIndex"];
 
   return self;
 }
@@ -755,22 +755,22 @@ LABEL_35:
   return [(MTRDeviceControllerDataStore *)self _removeAttributeCacheValueForKey:@"attrCacheNodeIndex"];
 }
 
-- (id)_endpointIndexKeyForNodeID:(id)a3
+- (id)_endpointIndexKeyForNodeID:(id)d
 {
-  v3 = a3;
-  v4 = [@"attrCacheEndpointIndex" stringByAppendingFormat:@":0x%016llX", objc_msgSend(v3, "unsignedLongLongValue")];
+  dCopy = d;
+  v4 = [@"attrCacheEndpointIndex" stringByAppendingFormat:@":0x%016llX", objc_msgSend(dCopy, "unsignedLongLongValue")];
 
   return v4;
 }
 
-- (id)_fetchEndpointIndexForNodeID:(id)a3
+- (id)_fetchEndpointIndexForNodeID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_storageDelegateQueue);
-  if (v4)
+  if (dCopy)
   {
-    v5 = [(MTRDeviceControllerDataStore *)self _endpointIndexKeyForNodeID:v4];
+    v5 = [(MTRDeviceControllerDataStore *)self _endpointIndexKeyForNodeID:dCopy];
     v6 = [(MTRDeviceControllerDataStore *)self _fetchAttributeCacheValueForKey:v5 expectedClass:objc_opt_class()];
   }
 
@@ -797,16 +797,16 @@ LABEL_35:
   return v6;
 }
 
-- (BOOL)_storeEndpointIndex:(id)a3 forNodeID:(id)a4
+- (BOOL)_storeEndpointIndex:(id)index forNodeID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  indexCopy = index;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_storageDelegateQueue);
-  if (v7)
+  if (dCopy)
   {
-    v8 = [(MTRDeviceControllerDataStore *)self _endpointIndexKeyForNodeID:v7];
-    v9 = [(MTRDeviceControllerDataStore *)self _storeAttributeCacheValue:v6 forKey:v8];
+    v8 = [(MTRDeviceControllerDataStore *)self _endpointIndexKeyForNodeID:dCopy];
+    v9 = [(MTRDeviceControllerDataStore *)self _storeAttributeCacheValue:indexCopy forKey:v8];
   }
 
   else
@@ -831,21 +831,21 @@ LABEL_35:
   return v9;
 }
 
-- (BOOL)_removeEndpointFromEndpointIndex:(id)a3 forNodeID:(id)a4
+- (BOOL)_removeEndpointFromEndpointIndex:(id)index forNodeID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  indexCopy = index;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_storageDelegateQueue);
-  if (v6 && v7)
+  if (indexCopy && dCopy)
   {
-    v8 = [(MTRDeviceControllerDataStore *)self _fetchEndpointIndexForNodeID:v7];
+    v8 = [(MTRDeviceControllerDataStore *)self _fetchEndpointIndexForNodeID:dCopy];
     v9 = [v8 mutableCopy];
 
     if (v9)
     {
-      [v9 removeObject:v6];
-      v10 = [(MTRDeviceControllerDataStore *)self _storeEndpointIndex:v9 forNodeID:v7];
+      [v9 removeObject:indexCopy];
+      v10 = [(MTRDeviceControllerDataStore *)self _storeEndpointIndex:v9 forNodeID:dCopy];
     }
 
     else
@@ -876,14 +876,14 @@ LABEL_35:
   return v10;
 }
 
-- (BOOL)_deleteEndpointIndexForNodeID:(id)a3
+- (BOOL)_deleteEndpointIndexForNodeID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_storageDelegateQueue);
-  if (v4)
+  if (dCopy)
   {
-    v5 = [(MTRDeviceControllerDataStore *)self _endpointIndexKeyForNodeID:v4];
+    v5 = [(MTRDeviceControllerDataStore *)self _endpointIndexKeyForNodeID:dCopy];
     v6 = [(MTRDeviceControllerDataStore *)self _removeAttributeCacheValueForKey:v5];
   }
 
@@ -909,24 +909,24 @@ LABEL_35:
   return v6;
 }
 
-- (id)_clusterIndexKeyForNodeID:(id)a3 endpointID:(id)a4
+- (id)_clusterIndexKeyForNodeID:(id)d endpointID:(id)iD
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [@"attrCacheClusterIndex" stringByAppendingFormat:@":0x%016llX:0x%04X", objc_msgSend(v5, "unsignedLongLongValue"), objc_msgSend(v6, "unsignedShortValue")];
+  dCopy = d;
+  iDCopy = iD;
+  v7 = [@"attrCacheClusterIndex" stringByAppendingFormat:@":0x%016llX:0x%04X", objc_msgSend(dCopy, "unsignedLongLongValue"), objc_msgSend(iDCopy, "unsignedShortValue")];
 
   return v7;
 }
 
-- (id)_fetchClusterIndexForNodeID:(id)a3 endpointID:(id)a4
+- (id)_fetchClusterIndexForNodeID:(id)d endpointID:(id)iD
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   dispatch_assert_queue_V2(self->_storageDelegateQueue);
-  if (v6 && v7)
+  if (dCopy && iDCopy)
   {
-    v8 = [(MTRDeviceControllerDataStore *)self _clusterIndexKeyForNodeID:v6 endpointID:v7];
+    v8 = [(MTRDeviceControllerDataStore *)self _clusterIndexKeyForNodeID:dCopy endpointID:iDCopy];
     v9 = [(MTRDeviceControllerDataStore *)self _fetchAttributeCacheValueForKey:v8 expectedClass:objc_opt_class()];
   }
 
@@ -953,17 +953,17 @@ LABEL_35:
   return v9;
 }
 
-- (BOOL)_storeClusterIndex:(id)a3 forNodeID:(id)a4 endpointID:(id)a5
+- (BOOL)_storeClusterIndex:(id)index forNodeID:(id)d endpointID:(id)iD
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  indexCopy = index;
+  dCopy = d;
+  iDCopy = iD;
   dispatch_assert_queue_V2(self->_storageDelegateQueue);
-  if (v9 && v10)
+  if (dCopy && iDCopy)
   {
-    v11 = [(MTRDeviceControllerDataStore *)self _clusterIndexKeyForNodeID:v9 endpointID:v10];
-    v12 = [(MTRDeviceControllerDataStore *)self _storeAttributeCacheValue:v8 forKey:v11];
+    v11 = [(MTRDeviceControllerDataStore *)self _clusterIndexKeyForNodeID:dCopy endpointID:iDCopy];
+    v12 = [(MTRDeviceControllerDataStore *)self _storeAttributeCacheValue:indexCopy forKey:v11];
   }
 
   else
@@ -988,15 +988,15 @@ LABEL_35:
   return v12;
 }
 
-- (BOOL)_deleteClusterIndexForNodeID:(id)a3 endpointID:(id)a4
+- (BOOL)_deleteClusterIndexForNodeID:(id)d endpointID:(id)iD
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   dispatch_assert_queue_V2(self->_storageDelegateQueue);
-  if (v6 && v7)
+  if (dCopy && iDCopy)
   {
-    v8 = [(MTRDeviceControllerDataStore *)self _clusterIndexKeyForNodeID:v6 endpointID:v7];
+    v8 = [(MTRDeviceControllerDataStore *)self _clusterIndexKeyForNodeID:dCopy endpointID:iDCopy];
     v9 = [(MTRDeviceControllerDataStore *)self _removeAttributeCacheValueForKey:v8];
   }
 
@@ -1022,26 +1022,26 @@ LABEL_35:
   return v9;
 }
 
-- (id)_clusterDataKeyForNodeID:(id)a3 endpointID:(id)a4 clusterID:(id)a5
+- (id)_clusterDataKeyForNodeID:(id)d endpointID:(id)iD clusterID:(id)clusterID
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [@"attrCacheClusterData" stringByAppendingFormat:@":0x%016llX:0x%04X:0x%08lX", objc_msgSend(v7, "unsignedLongLongValue"), objc_msgSend(v8, "unsignedShortValue"), objc_msgSend(v9, "unsignedLongValue")];
+  dCopy = d;
+  iDCopy = iD;
+  clusterIDCopy = clusterID;
+  v10 = [@"attrCacheClusterData" stringByAppendingFormat:@":0x%016llX:0x%04X:0x%08lX", objc_msgSend(dCopy, "unsignedLongLongValue"), objc_msgSend(iDCopy, "unsignedShortValue"), objc_msgSend(clusterIDCopy, "unsignedLongValue")];
 
   return v10;
 }
 
-- (id)_fetchClusterDataForNodeID:(id)a3 endpointID:(id)a4 clusterID:(id)a5
+- (id)_fetchClusterDataForNodeID:(id)d endpointID:(id)iD clusterID:(id)clusterID
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  clusterIDCopy = clusterID;
   dispatch_assert_queue_V2(self->_storageDelegateQueue);
-  if (v8 && v9 && v10)
+  if (dCopy && iDCopy && clusterIDCopy)
   {
-    v11 = [(MTRDeviceControllerDataStore *)self _clusterDataKeyForNodeID:v8 endpointID:v9 clusterID:v10];
+    v11 = [(MTRDeviceControllerDataStore *)self _clusterDataKeyForNodeID:dCopy endpointID:iDCopy clusterID:clusterIDCopy];
     v12 = [(MTRDeviceControllerDataStore *)self _fetchAttributeCacheValueForKey:v11 expectedClass:objc_opt_class()];
   }
 
@@ -1068,18 +1068,18 @@ LABEL_35:
   return v12;
 }
 
-- (BOOL)_storeClusterData:(id)a3 forNodeID:(id)a4 endpointID:(id)a5 clusterID:(id)a6
+- (BOOL)_storeClusterData:(id)data forNodeID:(id)d endpointID:(id)iD clusterID:(id)clusterID
 {
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  dCopy = d;
+  iDCopy = iD;
+  clusterIDCopy = clusterID;
   dispatch_assert_queue_V2(self->_storageDelegateQueue);
-  if (v10 && v11 && v12 && v13)
+  if (dataCopy && dCopy && iDCopy && clusterIDCopy)
   {
-    v14 = [(MTRDeviceControllerDataStore *)self _clusterDataKeyForNodeID:v11 endpointID:v12 clusterID:v13];
-    v15 = [(MTRDeviceControllerDataStore *)self _storeAttributeCacheValue:v10 forKey:v14];
+    v14 = [(MTRDeviceControllerDataStore *)self _clusterDataKeyForNodeID:dCopy endpointID:iDCopy clusterID:clusterIDCopy];
+    v15 = [(MTRDeviceControllerDataStore *)self _storeAttributeCacheValue:dataCopy forKey:v14];
   }
 
   else
@@ -1104,16 +1104,16 @@ LABEL_35:
   return v15;
 }
 
-- (BOOL)_deleteClusterDataForNodeID:(id)a3 endpointID:(id)a4 clusterID:(id)a5
+- (BOOL)_deleteClusterDataForNodeID:(id)d endpointID:(id)iD clusterID:(id)clusterID
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  clusterIDCopy = clusterID;
   dispatch_assert_queue_V2(self->_storageDelegateQueue);
-  if (v8 && v9 && v10)
+  if (dCopy && iDCopy && clusterIDCopy)
   {
-    v11 = [(MTRDeviceControllerDataStore *)self _clusterDataKeyForNodeID:v8 endpointID:v9 clusterID:v10];
+    v11 = [(MTRDeviceControllerDataStore *)self _clusterDataKeyForNodeID:dCopy endpointID:iDCopy clusterID:clusterIDCopy];
     v12 = [(MTRDeviceControllerDataStore *)self _removeAttributeCacheValueForKey:v11];
   }
 
@@ -1186,7 +1186,7 @@ LABEL_35:
               }
 
               v5 = *(*(&v50 + 1) + 8 * j);
-              v42 = [(MTRDeviceControllerDataStore *)self _fetchClusterIndexForNodeID:v4 endpointID:v5, v31, v32, v33];
+              v42 = [(MTRDeviceControllerDataStore *)self _fetchClusterIndexForNodeID:v4 endpointID:v5, v31, unsignedLongLongValue2, unsignedShortValue2];
               v6 = [v42 mutableCopy];
               v48 = 0u;
               v49 = 0u;
@@ -1240,14 +1240,14 @@ LABEL_35:
                   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
                   {
                     v16 = [v6 count];
-                    v17 = [v4 unsignedLongLongValue];
-                    v18 = [v5 unsignedShortValue];
+                    unsignedLongLongValue = [v4 unsignedLongLongValue];
+                    unsignedShortValue = [v5 unsignedShortValue];
                     *buf = 134218496;
                     v59 = v16;
                     v60 = 2048;
-                    v61 = v17;
+                    v61 = unsignedLongLongValue;
                     v62 = 1024;
-                    v63 = v18;
+                    v63 = unsignedShortValue;
                     _os_log_impl(&dword_238DAE000, v15, OS_LOG_TYPE_ERROR, "Store failed in _pruneEmptyStoredClusterDataBranches for clusterIndex (%lu) @ node 0x%016llX endpoint %u", buf, 0x1Cu);
                   }
 
@@ -1255,8 +1255,8 @@ LABEL_35:
                   if (sub_2393D5398(1u))
                   {
                     v19 = [v6 count];
-                    v32 = [v4 unsignedLongLongValue];
-                    v33 = [v5 unsignedShortValue];
+                    unsignedLongLongValue2 = [v4 unsignedLongLongValue];
+                    unsignedShortValue2 = [v5 unsignedShortValue];
                     v31 = v19;
                     sub_2393D5320(0, 1);
                   }
@@ -1290,11 +1290,11 @@ LABEL_35:
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
               v23 = [v39 count];
-              v24 = [v4 unsignedLongLongValue];
+              unsignedLongLongValue3 = [v4 unsignedLongLongValue];
               *buf = 134218240;
               v59 = v23;
               v60 = 2048;
-              v61 = v24;
+              v61 = unsignedLongLongValue3;
               _os_log_impl(&dword_238DAE000, v22, OS_LOG_TYPE_ERROR, "Store failed in _pruneEmptyStoredClusterDataBranches for endpointIndex (%lu) @ node 0x%016llX", buf, 0x16u);
             }
 
@@ -1302,7 +1302,7 @@ LABEL_35:
             if (sub_2393D5398(1u))
             {
               v31 = [v39 count];
-              v32 = [v4 unsignedLongLongValue];
+              unsignedLongLongValue2 = [v4 unsignedLongLongValue];
               sub_2393D5320(0, 1);
             }
           }
@@ -1360,12 +1360,12 @@ LABEL_35:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clearStoredClusterDataForNodeID:(id)a3
+- (void)_clearStoredClusterDataForNodeID:(id)d
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_storageDelegateQueue);
-  v33 = [(MTRDeviceControllerDataStore *)self _fetchEndpointIndexForNodeID:v4];
+  v33 = [(MTRDeviceControllerDataStore *)self _fetchEndpointIndexForNodeID:dCopy];
   v34 = [v33 count];
   v51 = 0u;
   v52 = 0u;
@@ -1391,7 +1391,7 @@ LABEL_35:
         }
 
         v44 = *(*(&v49 + 1) + 8 * v8);
-        v36 = [(MTRDeviceControllerDataStore *)self _fetchClusterIndexForNodeID:v4 endpointID:v30, v31, v32];
+        v36 = [(MTRDeviceControllerDataStore *)self _fetchClusterIndexForNodeID:dCopy endpointID:unsignedLongLongValue4, unsignedShortValue2, unsignedLongValue2];
         v40 = [v36 count];
         v47 = 0u;
         v48 = 0u;
@@ -1401,7 +1401,7 @@ LABEL_35:
         v9 = [v43 countByEnumeratingWithState:&v45 objects:v59 count:16];
         v41 = v8;
         v42 = v7;
-        v10 = self;
+        selfCopy = self;
         if (v9)
         {
           v11 = *v46;
@@ -1415,7 +1415,7 @@ LABEL_35:
               }
 
               v13 = *(*(&v45 + 1) + 8 * i);
-              if ([(MTRDeviceControllerDataStore *)v10 _deleteClusterDataForNodeID:v4 endpointID:v44 clusterID:v13, v30])
+              if ([(MTRDeviceControllerDataStore *)selfCopy _deleteClusterDataForNodeID:dCopy endpointID:v44 clusterID:v13, unsignedLongLongValue4])
               {
                 ++v5;
               }
@@ -1425,29 +1425,29 @@ LABEL_35:
                 v14 = sub_2393D9044(0);
                 if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
                 {
-                  v15 = v4;
+                  v15 = dCopy;
                   v16 = v5;
                   v17 = v15;
-                  v18 = [v15 unsignedLongLongValue];
-                  v19 = [v44 unsignedShortValue];
-                  v20 = [v13 unsignedLongValue];
+                  unsignedLongLongValue = [v15 unsignedLongLongValue];
+                  unsignedShortValue = [v44 unsignedShortValue];
+                  unsignedLongValue = [v13 unsignedLongValue];
                   *buf = 134218496;
-                  v54 = v18;
+                  v54 = unsignedLongLongValue;
                   v55 = 1024;
-                  *v56 = v19;
+                  *v56 = unsignedShortValue;
                   *&v56[4] = 2048;
-                  *&v56[6] = v20;
+                  *&v56[6] = unsignedLongValue;
                   _os_log_impl(&dword_238DAE000, v14, OS_LOG_TYPE_ERROR, "Delete failed for clusterData @ node 0x%016llX endpoint %u cluster 0x%08lX", buf, 0x1Cu);
                   v5 = v16;
-                  v4 = v17;
+                  dCopy = v17;
                 }
 
                 if (sub_2393D5398(1u))
                 {
-                  v21 = [v4 unsignedLongLongValue];
-                  v31 = [v44 unsignedShortValue];
-                  v32 = [v13 unsignedLongValue];
-                  v30 = v21;
+                  unsignedLongLongValue2 = [dCopy unsignedLongLongValue];
+                  unsignedShortValue2 = [v44 unsignedShortValue];
+                  unsignedLongValue2 = [v13 unsignedLongValue];
+                  unsignedLongLongValue4 = unsignedLongLongValue2;
                   sub_2393D5320(0, 1);
                 }
               }
@@ -1459,8 +1459,8 @@ LABEL_35:
           while (v9);
         }
 
-        self = v10;
-        if ([(MTRDeviceControllerDataStore *)v10 _deleteClusterIndexForNodeID:v4 endpointID:v44])
+        self = selfCopy;
+        if ([(MTRDeviceControllerDataStore *)selfCopy _deleteClusterIndexForNodeID:dCopy endpointID:v44])
         {
           ++v38;
         }
@@ -1470,19 +1470,19 @@ LABEL_35:
           v22 = sub_2393D9044(0);
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v23 = [v4 unsignedLongLongValue];
-            v24 = [v44 unsignedShortValue];
+            unsignedLongLongValue3 = [dCopy unsignedLongLongValue];
+            unsignedShortValue3 = [v44 unsignedShortValue];
             *buf = 134218240;
-            v54 = v23;
+            v54 = unsignedLongLongValue3;
             v55 = 1024;
-            *v56 = v24;
+            *v56 = unsignedShortValue3;
             _os_log_impl(&dword_238DAE000, v22, OS_LOG_TYPE_ERROR, "Delete failed for clusterIndex @ node 0x%016llX endpoint %u", buf, 0x12u);
           }
 
           if (sub_2393D5398(1u))
           {
-            v30 = [v4 unsignedLongLongValue];
-            v31 = [v44 unsignedShortValue];
+            unsignedLongLongValue4 = [dCopy unsignedLongLongValue];
+            unsignedShortValue2 = [v44 unsignedShortValue];
             sub_2393D5320(0, 1);
           }
         }
@@ -1504,22 +1504,22 @@ LABEL_35:
     v7 = 0;
   }
 
-  v25 = [(MTRDeviceControllerDataStore *)self _deleteEndpointIndexForNodeID:v4];
+  v25 = [(MTRDeviceControllerDataStore *)self _deleteEndpointIndexForNodeID:dCopy];
   v26 = sub_2393D9044(0);
   v27 = v26;
   if (!v25)
   {
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v28 = [v4 unsignedLongLongValue];
+      unsignedLongLongValue5 = [dCopy unsignedLongLongValue];
       *buf = 134217984;
-      v54 = v28;
+      v54 = unsignedLongLongValue5;
       _os_log_impl(&dword_238DAE000, v27, OS_LOG_TYPE_ERROR, "Delete failed for endpointIndex @ node 0x%016llX", buf, 0xCu);
     }
 
     if (sub_2393D5398(1u))
     {
-      [v4 unsignedLongLongValue];
+      [dCopy unsignedLongLongValue];
       sub_2393D5320(0, 1);
     }
   }
@@ -1545,66 +1545,66 @@ LABEL_35:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearStoredClusterDataForNodeID:(id)a3
+- (void)clearStoredClusterDataForNodeID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   storageDelegateQueue = self->_storageDelegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_23920EC4C;
   v7[3] = &unk_278A72298;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(storageDelegateQueue, v7);
 }
 
-- (void)clearStoredClusterDataForNodeID:(id)a3 endpointID:(id)a4 clusterID:(id)a5
+- (void)clearStoredClusterDataForNodeID:(id)d endpointID:(id)iD clusterID:(id)clusterID
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  clusterIDCopy = clusterID;
   storageDelegateQueue = self->_storageDelegateQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23920EEAC;
   v15[3] = &unk_278A73AC8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = iDCopy;
+  v18 = clusterIDCopy;
+  v12 = clusterIDCopy;
+  v13 = iDCopy;
+  v14 = dCopy;
   dispatch_async(storageDelegateQueue, v15);
 }
 
-- (void)clearStoredClusterDataForNodeID:(id)a3 endpointID:(id)a4
+- (void)clearStoredClusterDataForNodeID:(id)d endpointID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   storageDelegateQueue = self->_storageDelegateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23920F2AC;
   block[3] = &unk_278A71650;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = iDCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = iDCopy;
   dispatch_async(storageDelegateQueue, block);
 }
 
-- (void)removeAttributes:(id)a3 fromCluster:(id)a4 forNodeID:(id)a5
+- (void)removeAttributes:(id)attributes fromCluster:(id)cluster forNodeID:(id)d
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 endpoint];
-  v12 = [v9 cluster];
-  v13 = [(MTRDeviceControllerDataStore *)self getStoredClusterDataForNodeID:v10 endpointID:v11 clusterID:v12];
+  attributesCopy = attributes;
+  clusterCopy = cluster;
+  dCopy = d;
+  endpoint = [clusterCopy endpoint];
+  cluster = [clusterCopy cluster];
+  v13 = [(MTRDeviceControllerDataStore *)self getStoredClusterDataForNodeID:dCopy endpointID:endpoint clusterID:cluster];
 
   if (v13)
   {
@@ -1612,7 +1612,7 @@ LABEL_35:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v14 = v8;
+    v14 = attributesCopy;
     v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v15)
     {
@@ -1644,8 +1644,8 @@ LABEL_35:
     block[3] = &unk_278A723D0;
     block[4] = self;
     v21 = v13;
-    v22 = v10;
-    v23 = v9;
+    v22 = dCopy;
+    v23 = clusterCopy;
     v24 = v14;
     dispatch_async(storageDelegateQueue, block);
   }
@@ -1664,11 +1664,11 @@ LABEL_35:
   dispatch_async(storageDelegateQueue, block);
 }
 
-- (id)getStoredClusterDataForNodeID:(id)a3
+- (id)getStoredClusterDataForNodeID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     *&v19 = 0;
     *(&v19 + 1) = &v19;
@@ -1683,7 +1683,7 @@ LABEL_35:
     block[2] = sub_239210140;
     block[3] = &unk_278A73B40;
     block[4] = self;
-    v15 = v4;
+    v15 = dCopy;
     v16 = &v19;
     dispatch_sync(storageDelegateQueue, block);
     [v5 timeIntervalSinceNow];
@@ -1732,12 +1732,12 @@ LABEL_35:
   return v10;
 }
 
-- (id)getStoredClusterDataForNodeID:(id)a3 endpointID:(id)a4 clusterID:(id)a5
+- (id)getStoredClusterDataForNodeID:(id)d endpointID:(id)iD clusterID:(id)clusterID
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  clusterIDCopy = clusterID;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -1752,11 +1752,11 @@ LABEL_35:
   block[3] = &unk_278A73B68;
   v26 = &v27;
   block[4] = self;
-  v13 = v8;
+  v13 = dCopy;
   v23 = v13;
-  v14 = v9;
+  v14 = iDCopy;
   v24 = v14;
-  v15 = v10;
+  v15 = clusterIDCopy;
   v25 = v15;
   dispatch_sync(storageDelegateQueue, block);
   [v11 timeIntervalSinceNow];
@@ -1785,14 +1785,14 @@ LABEL_35:
   return v19;
 }
 
-- (id)_getClusterDataFromSecureLocalValues:(id)a3
+- (id)_getClusterDataFromSecureLocalValues:(id)values
 {
   v50 = *MEMORY[0x277D85DE8];
-  v34 = a3;
+  valuesCopy = values;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = [v34 objectForKeyedSubscript:@"attrCacheNodeIndex"];
+    v23 = [valuesCopy objectForKeyedSubscript:@"attrCacheNodeIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1820,7 +1820,7 @@ LABEL_35:
             if (objc_opt_isKindOfClass())
             {
               v4 = [(MTRDeviceControllerDataStore *)self _endpointIndexKeyForNodeID:v3];
-              v26 = [v34 objectForKeyedSubscript:v4];
+              v26 = [valuesCopy objectForKeyedSubscript:v4];
 
               objc_opt_class();
               if (objc_opt_isKindOfClass())
@@ -1833,7 +1833,7 @@ LABEL_35:
                 v5 = [v28 countByEnumeratingWithState:&v39 objects:v48 count:16];
                 if (v5)
                 {
-                  v6 = 0;
+                  dictionary = 0;
                   v29 = *v40;
                   v30 = v5;
                   do
@@ -1850,7 +1850,7 @@ LABEL_35:
                       if (objc_opt_isKindOfClass())
                       {
                         v8 = [(MTRDeviceControllerDataStore *)self _clusterIndexKeyForNodeID:v3 endpointID:v7];
-                        v31 = [v34 objectForKeyedSubscript:v8];
+                        v31 = [valuesCopy objectForKeyedSubscript:v8];
 
                         objc_opt_class();
                         if (objc_opt_isKindOfClass())
@@ -1878,7 +1878,7 @@ LABEL_35:
                                 if (objc_opt_isKindOfClass())
                                 {
                                   v14 = [(MTRDeviceControllerDataStore *)self _clusterDataKeyForNodeID:v3 endpointID:v7 clusterID:v13];
-                                  v15 = [v34 objectForKeyedSubscript:v14];
+                                  v15 = [valuesCopy objectForKeyedSubscript:v14];
 
                                   if (v15)
                                   {
@@ -1886,12 +1886,12 @@ LABEL_35:
                                     if (objc_opt_isKindOfClass())
                                     {
                                       v16 = [MTRClusterPath clusterPathWithEndpointID:v7 clusterID:v13];
-                                      if (!v6)
+                                      if (!dictionary)
                                       {
-                                        v6 = [MEMORY[0x277CBEB38] dictionary];
+                                        dictionary = [MEMORY[0x277CBEB38] dictionary];
                                       }
 
-                                      [v6 setObject:v15 forKeyedSubscript:{v16, v21}];
+                                      [dictionary setObject:v15 forKeyedSubscript:{v16, v21}];
                                     }
                                   }
                                 }
@@ -1914,24 +1914,24 @@ LABEL_35:
 
                 else
                 {
-                  v6 = 0;
+                  dictionary = 0;
                 }
 
-                if ([v6 count])
+                if ([dictionary count])
                 {
-                  v17 = v21;
+                  dictionary2 = v21;
                   if (!v21)
                   {
-                    v17 = [MEMORY[0x277CBEB38] dictionary];
+                    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
                   }
 
-                  [v17 setObject:v6 forKeyedSubscript:{v3, v17}];
+                  [dictionary2 setObject:dictionary forKeyedSubscript:{v3, dictionary2}];
                 }
               }
 
               else
               {
-                v6 = 0;
+                dictionary = 0;
               }
             }
           }
@@ -1966,14 +1966,14 @@ LABEL_35:
   return v18;
 }
 
-- (void)storeClusterData:(id)a3 forNodeID:(id)a4
+- (void)storeClusterData:(id)data forNodeID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dataCopy = data;
+  dCopy = d;
+  if (dCopy)
   {
-    if ([v6 count])
+    if ([dataCopy count])
     {
       storageDelegateQueue = self->_storageDelegateQueue;
       block[0] = MEMORY[0x277D85DD0];
@@ -1981,8 +1981,8 @@ LABEL_35:
       block[2] = sub_239211164;
       block[3] = &unk_278A71650;
       block[4] = self;
-      v13 = v6;
-      v14 = v7;
+      v13 = dataCopy;
+      v14 = dCopy;
       dispatch_async(storageDelegateQueue, block);
 
       goto LABEL_12;
@@ -2024,18 +2024,18 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_deviceDataKeyForNodeID:(id)a3
+- (id)_deviceDataKeyForNodeID:(id)d
 {
-  v3 = a3;
-  v4 = [@"deviceData" stringByAppendingFormat:@":0x%016llX", objc_msgSend(v3, "unsignedLongLongValue")];
+  dCopy = d;
+  v4 = [@"deviceData" stringByAppendingFormat:@":0x%016llX", objc_msgSend(dCopy, "unsignedLongLongValue")];
 
   return v4;
 }
 
-- (id)getStoredDeviceDataForNodeID:(id)a3
+- (id)getStoredDeviceDataForNodeID:(id)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -2049,7 +2049,7 @@ LABEL_12:
   block[2] = sub_2392121CC;
   block[3] = &unk_278A73B40;
   block[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v15 = v7;
   v16 = &v17;
   dispatch_sync(storageDelegateQueue, block);
@@ -2079,47 +2079,47 @@ LABEL_12:
   return v11;
 }
 
-- (void)storeDeviceData:(id)a3 forNodeID:(id)a4
+- (void)storeDeviceData:(id)data forNodeID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   storageDelegateQueue = self->_storageDelegateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239212494;
   block[3] = &unk_278A71650;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = dataCopy;
   dispatch_async(storageDelegateQueue, block);
 }
 
-- (void)clearDeviceDataForNodeID:(id)a3
+- (void)clearDeviceDataForNodeID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   storageDelegateQueue = self->_storageDelegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2392125DC;
   v7[3] = &unk_278A72298;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(storageDelegateQueue, v7);
 }
 
-- (void)synchronouslyPerformBlock:(id)a3
+- (void)synchronouslyPerformBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   storageDelegateQueue = self->_storageDelegateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239212714;
   block[3] = &unk_278A72B88;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(storageDelegateQueue, block);
 }
 
@@ -2129,10 +2129,10 @@ LABEL_12:
   os_unfair_lock_lock(&self->_nodeArrayLock);
   [v3 addObjectsFromArray:self->_nodesWithResumptionInfo];
   [v3 addObjectsFromArray:self->_nodesWithAttributeInfo];
-  v4 = [v3 allObjects];
+  allObjects = [v3 allObjects];
   os_unfair_lock_unlock(&self->_nodeArrayLock);
 
-  return v4;
+  return allObjects;
 }
 
 @end

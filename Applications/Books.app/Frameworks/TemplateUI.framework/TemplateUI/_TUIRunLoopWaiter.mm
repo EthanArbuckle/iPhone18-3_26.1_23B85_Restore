@@ -1,9 +1,9 @@
 @interface _TUIRunLoopWaiter
 + (id)sharedInstance;
 - (_TUIRunLoopWaiter)init;
-- (id)notReadyAssertionWithTimeout:(double)a3 queue:(id)a4;
+- (id)notReadyAssertionWithTimeout:(double)timeout queue:(id)queue;
 - (void)_schedule;
-- (void)addPreCommitBlock:(id)a3;
+- (void)addPreCommitBlock:(id)block;
 @end
 
 @implementation _TUIRunLoopWaiter
@@ -41,12 +41,12 @@
   return v3;
 }
 
-- (void)addPreCommitBlock:(id)a3
+- (void)addPreCommitBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   preCommitBlocks = self->_preCommitBlocks;
-  v6 = [v4 copy];
+  v6 = [blockCopy copy];
 
   v7 = objc_retainBlock(v6);
   [(NSMutableArray *)preCommitBlocks addObject:v7];
@@ -82,9 +82,9 @@
   }
 }
 
-- (id)notReadyAssertionWithTimeout:(double)a3 queue:(id)a4
+- (id)notReadyAssertionWithTimeout:(double)timeout queue:(id)queue
 {
-  v6 = a4;
+  queueCopy = queue;
   os_unfair_lock_lock(&self->_lock);
   ++self->_notReadyCount;
   [(_TUIRunLoopWaiter *)self _schedule];
@@ -96,14 +96,14 @@
   v13[3] = &unk_25DE30;
   v13[4] = self;
   v7 = [[_TUIRunLoopAssertion alloc] initWithCompletion:v13];
-  v8 = dispatch_time(0, (a3 * 1000000000.0));
+  v8 = dispatch_time(0, (timeout * 1000000000.0));
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1164F4;
   v11[3] = &unk_25DE30;
   v9 = v7;
   v12 = v9;
-  dispatch_after(v8, v6, v11);
+  dispatch_after(v8, queueCopy, v11);
 
   return v9;
 }

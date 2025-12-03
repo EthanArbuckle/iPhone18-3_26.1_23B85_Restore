@@ -1,14 +1,14 @@
 @interface ToolkitSpotlightCoordinator
-- (void)handleToolKitDatabaseChangedNotificationWithNotification:(id)a3;
+- (void)handleToolKitDatabaseChangedNotificationWithNotification:(id)notification;
 @end
 
 @implementation ToolkitSpotlightCoordinator
 
-- (void)handleToolKitDatabaseChangedNotificationWithNotification:(id)a3
+- (void)handleToolKitDatabaseChangedNotificationWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
-  sub_23106A3C8(v3);
+  sub_23106A3C8(notificationCopy);
 }
 
 @end

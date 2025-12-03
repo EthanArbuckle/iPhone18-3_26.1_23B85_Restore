@@ -1,29 +1,29 @@
 @interface ViewController
-- (_TtC14WorkflowEditorP33_4F6B3E8D8EDFB1AA2880F20B202F8EFE14ViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC14WorkflowEditorP33_4F6B3E8D8EDFB1AA2880F20B202F8EFE14ViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)overrideUserInterfaceStyle;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)setOverrideUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation ViewController
 
 - (int64_t)overrideUserInterfaceStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_27455B184();
 
   return v3;
 }
 
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3
+- (void)setOverrideUserInterfaceStyle:(int64_t)style
 {
-  v4 = self;
-  sub_27455B210(a3);
+  selfCopy = self;
+  sub_27455B210(style);
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -36,15 +36,15 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  sub_27455B2DC(v10, a4, v8, v9);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_27455B2DC(controllerCopy, animated, v8, v9);
   sub_274406A94(v8);
 }
 
-- (_TtC14WorkflowEditorP33_4F6B3E8D8EDFB1AA2880F20B202F8EFE14ViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14WorkflowEditorP33_4F6B3E8D8EDFB1AA2880F20B202F8EFE14ViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_27463B6AC();
     v7 = v6;
@@ -56,8 +56,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_27455B4CC(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_27455B4CC(v5, v7, bundle);
 }
 
 @end

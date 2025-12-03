@@ -1,30 +1,30 @@
 @interface PXFlexMusicAsset
-- (BOOL)isAudioEqualToAsset:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isAudioEqualToAsset:(id)asset;
+- (BOOL)isEqual:(id)equal;
 - (PXDisplayAsset)artworkDisplayAsset;
-- (PXFlexMusicAsset)assetWithTargetDuration:(id *)a3;
-- (PXFlexMusicAsset)initWithConfiguration:(id)a3;
-- (void)setDuration:(id *)a3;
-- (void)setTargetDuration:(id *)a3;
+- (PXFlexMusicAsset)assetWithTargetDuration:(id *)duration;
+- (PXFlexMusicAsset)initWithConfiguration:(id)configuration;
+- (void)setDuration:(id *)duration;
+- (void)setTargetDuration:(id *)duration;
 @end
 
 @implementation PXFlexMusicAsset
 
-- (void)setDuration:(id *)a3
+- (void)setDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_duration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_duration.epoch = duration->var3;
   *&self->_duration.value = v3;
 }
 
-- (void)setTargetDuration:(id *)a3
+- (void)setTargetDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_targetDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_targetDuration.epoch = duration->var3;
   *&self->_targetDuration.value = v3;
 }
 
-- (PXFlexMusicAsset)assetWithTargetDuration:(id *)a3
+- (PXFlexMusicAsset)assetWithTargetDuration:(id *)duration
 {
   v5 = [PXFlexMusicAsset alloc];
   v8[0] = MEMORY[0x1E69E9820];
@@ -32,7 +32,7 @@
   v8[2] = __44__PXFlexMusicAsset_assetWithTargetDuration___block_invoke;
   v8[3] = &unk_1E772C7D8;
   v8[4] = self;
-  v9 = *a3;
+  v9 = *duration;
   v6 = [(PXFlexMusicAsset *)v5 initWithConfiguration:v8];
 
   return v6;
@@ -76,34 +76,34 @@ void __44__PXFlexMusicAsset_assetWithTargetDuration___block_invoke(uint64_t a1, 
   return v2;
 }
 
-- (PXFlexMusicAsset)initWithConfiguration:(id)a3
+- (PXFlexMusicAsset)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v7.receiver = self;
   v7.super_class = PXFlexMusicAsset;
   v5 = [(PXFlexMusicAsset *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    configurationCopy[2](configurationCopy, v5);
   }
 
   return v5;
 }
 
-- (BOOL)isAudioEqualToAsset:(id)a3
+- (BOOL)isAudioEqualToAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PXFlexMusicAsset *)self identifier];
-    v6 = [v4 identifier];
-    if (v5 == v6 || [v5 isEqual:v6])
+    identifier = [(PXFlexMusicAsset *)self identifier];
+    identifier2 = [assetCopy identifier];
+    if (identifier == identifier2 || [identifier isEqual:identifier2])
     {
       [(PXFlexMusicAsset *)self targetDuration];
-      if (v4)
+      if (assetCopy)
       {
-        [v4 targetDuration];
+        [assetCopy targetDuration];
       }
 
       else
@@ -128,10 +128,10 @@ void __44__PXFlexMusicAsset_assetWithTargetDuration___block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -141,16 +141,16 @@ void __44__PXFlexMusicAsset_assetWithTargetDuration___block_invoke(uint64_t a1, 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PXFlexMusicAsset *)v4 identifier];
-      v6 = [(PXFlexMusicAsset *)self identifier];
-      if (v5 == v6)
+      identifier = [(PXFlexMusicAsset *)equalCopy identifier];
+      identifier2 = [(PXFlexMusicAsset *)self identifier];
+      if (identifier == identifier2)
       {
         v7 = 1;
       }
 
       else
       {
-        v7 = [v5 isEqual:v6];
+        v7 = [identifier isEqual:identifier2];
       }
     }
 

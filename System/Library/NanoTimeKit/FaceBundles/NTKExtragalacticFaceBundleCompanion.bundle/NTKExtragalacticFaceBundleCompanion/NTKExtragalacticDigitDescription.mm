@@ -1,7 +1,7 @@
 @interface NTKExtragalacticDigitDescription
 - (NTKExtragalacticDigitDescription)init;
-- (id)glyphsForStyle:(unint64_t)a3;
-- (void)addGlyph:(id)a3 ofStyle:(unint64_t)a4;
+- (id)glyphsForStyle:(unint64_t)style;
+- (void)addGlyph:(id)glyph ofStyle:(unint64_t)style;
 @end
 
 @implementation NTKExtragalacticDigitDescription
@@ -13,36 +13,36 @@
   v2 = [(NTKExtragalacticDigitDescription *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     allGlyphs = v2->_allGlyphs;
-    v2->_allGlyphs = v3;
+    v2->_allGlyphs = dictionary;
   }
 
   return v2;
 }
 
-- (void)addGlyph:(id)a3 ofStyle:(unint64_t)a4
+- (void)addGlyph:(id)glyph ofStyle:(unint64_t)style
 {
-  v11 = a3;
+  glyphCopy = glyph;
   allGlyphs = self->_allGlyphs;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v8 = [(NSMutableDictionary *)allGlyphs objectForKeyedSubscript:v7];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:style];
+  array = [(NSMutableDictionary *)allGlyphs objectForKeyedSubscript:v7];
 
-  if (!v8)
+  if (!array)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  [v8 addObject:v11];
+  [array addObject:glyphCopy];
   v9 = self->_allGlyphs;
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  [(NSMutableDictionary *)v9 setObject:v8 forKeyedSubscript:v10];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:style];
+  [(NSMutableDictionary *)v9 setObject:array forKeyedSubscript:v10];
 }
 
-- (id)glyphsForStyle:(unint64_t)a3
+- (id)glyphsForStyle:(unint64_t)style
 {
   allGlyphs = self->_allGlyphs;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:style];
   v5 = [(NSMutableDictionary *)allGlyphs objectForKeyedSubscript:v4];
 
   if (v5)

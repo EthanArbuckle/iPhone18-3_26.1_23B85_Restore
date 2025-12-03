@@ -1,16 +1,16 @@
 @interface UIActivityViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation UIActivityViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"viewWillDisappear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"UIActivityViewController" hasInstanceMethod:@"_cancel" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"UIActivityViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"viewWillDisappear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"UIActivityViewController" hasInstanceMethod:@"_cancel" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"UIActivityViewController" isKindOfClass:@"UIViewController"];
 }
 
 @end

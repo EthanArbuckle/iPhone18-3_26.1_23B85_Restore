@@ -1,6 +1,6 @@
 @interface PXStoryAssetsConfiguration
-- (BOOL)isEqual:(id)a3;
-- (PXStoryAssetsConfiguration)initWithKeyAsset:(id)a3 curatedAssets:(id)a4 allAssets:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PXStoryAssetsConfiguration)initWithKeyAsset:(id)asset curatedAssets:(id)assets allAssets:(id)allAssets;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -11,53 +11,53 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(PXStoryAssetsConfiguration *)self keyAsset];
-  v6 = [v5 firstObject];
-  v7 = [(PXStoryAssetsConfiguration *)self curatedAssets];
-  v8 = [v7 count];
-  v9 = [(PXStoryAssetsConfiguration *)self allAssets];
-  v10 = [v3 initWithFormat:@"<%@ %p; key: %@; curated count: %ld; all count: %ld>", v4, self, v6, v8, objc_msgSend(v9, "count")];
+  keyAsset = [(PXStoryAssetsConfiguration *)self keyAsset];
+  firstObject = [keyAsset firstObject];
+  curatedAssets = [(PXStoryAssetsConfiguration *)self curatedAssets];
+  v8 = [curatedAssets count];
+  allAssets = [(PXStoryAssetsConfiguration *)self allAssets];
+  v10 = [v3 initWithFormat:@"<%@ %p; key: %@; curated count: %ld; all count: %ld>", v4, self, firstObject, v8, objc_msgSend(allAssets, "count")];
 
   return v10;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(PXStoryAssetsConfiguration *)self keyAsset];
-  v4 = [v3 hash];
-  v5 = [(PXStoryAssetsConfiguration *)self curatedAssets];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(PXStoryAssetsConfiguration *)self allAssets];
-  v8 = [v7 hash];
+  keyAsset = [(PXStoryAssetsConfiguration *)self keyAsset];
+  v4 = [keyAsset hash];
+  curatedAssets = [(PXStoryAssetsConfiguration *)self curatedAssets];
+  v6 = [curatedAssets hash] ^ v4;
+  allAssets = [(PXStoryAssetsConfiguration *)self allAssets];
+  v8 = [allAssets hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXStoryAssetsConfiguration *)self keyAsset];
-    v7 = [v5 keyAsset];
-    if (v6 == v7 || [v6 isEqual:v7])
+    v5 = equalCopy;
+    keyAsset = [(PXStoryAssetsConfiguration *)self keyAsset];
+    keyAsset2 = [v5 keyAsset];
+    if (keyAsset == keyAsset2 || [keyAsset isEqual:keyAsset2])
     {
-      v8 = [(PXStoryAssetsConfiguration *)self curatedAssets];
-      v9 = [v5 curatedAssets];
-      if (v8 == v9 || [v8 isEqual:v9])
+      curatedAssets = [(PXStoryAssetsConfiguration *)self curatedAssets];
+      curatedAssets2 = [v5 curatedAssets];
+      if (curatedAssets == curatedAssets2 || [curatedAssets isEqual:curatedAssets2])
       {
-        v10 = [(PXStoryAssetsConfiguration *)self allAssets];
-        v11 = [v5 allAssets];
-        if (v10 == v11)
+        allAssets = [(PXStoryAssetsConfiguration *)self allAssets];
+        allAssets2 = [v5 allAssets];
+        if (allAssets == allAssets2)
         {
           v12 = 1;
         }
 
         else
         {
-          v12 = [v10 isEqual:v11];
+          v12 = [allAssets isEqual:allAssets2];
         }
       }
 
@@ -81,20 +81,20 @@
   return v12;
 }
 
-- (PXStoryAssetsConfiguration)initWithKeyAsset:(id)a3 curatedAssets:(id)a4 allAssets:(id)a5
+- (PXStoryAssetsConfiguration)initWithKeyAsset:(id)asset curatedAssets:(id)assets allAssets:(id)allAssets
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  assetsCopy = assets;
+  allAssetsCopy = allAssets;
   v15.receiver = self;
   v15.super_class = PXStoryAssetsConfiguration;
   v12 = [(PXStoryAssetsConfiguration *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_keyAsset, a3);
-    objc_storeStrong(&v13->_curatedAssets, a4);
-    objc_storeStrong(&v13->_allAssets, a5);
+    objc_storeStrong(&v12->_keyAsset, asset);
+    objc_storeStrong(&v13->_curatedAssets, assets);
+    objc_storeStrong(&v13->_allAssets, allAssets);
   }
 
   return v13;

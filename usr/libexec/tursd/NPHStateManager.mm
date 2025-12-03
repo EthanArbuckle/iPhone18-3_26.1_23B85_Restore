@@ -1,27 +1,27 @@
 @interface NPHStateManager
-+ (id)currentCallConfigurationWithSource:(id)a3;
++ (id)currentCallConfigurationWithSource:(id)source;
 + (void)updateSharedCallCenter;
-- (NPHStateManager)initWithDelegate:(id)a3;
+- (NPHStateManager)initWithDelegate:(id)delegate;
 - (NPHStateManagerDelegate)delegate;
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 remoteMembersChangedForConversation:(id)a4;
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager remoteMembersChangedForConversation:(id)conversation;
 - (void)dealloc;
 - (void)didChangeFaceTimeCallingAvailability;
-- (void)handleStateChanged:(id)a3;
+- (void)handleStateChanged:(id)changed;
 @end
 
 @implementation NPHStateManager
 
-- (NPHStateManager)initWithDelegate:(id)a3
+- (NPHStateManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = NPHStateManager;
   v5 = [(NPHStateManager *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:v6 selector:"handleStateChanged:" name:TUCallCenterCallStatusChangedNotification object:0];
     [v7 addObserver:v6 selector:"handleStateChanged:" name:TUCallCenterVideoCallStatusChangedNotification object:0];
@@ -57,8 +57,8 @@
     [v8 registerWithCompletionHandler:v13];
 
     v10 = +[TUCallCenter sharedInstance];
-    v11 = [v10 conversationManager];
-    [v11 addDelegate:v9 queue:&_dispatch_main_q];
+    conversationManager = [v10 conversationManager];
+    [conversationManager addDelegate:v9 queue:&_dispatch_main_q];
 
     [TUCallCapabilities addDelegate:v9 queue:&_dispatch_main_q];
   }
@@ -77,16 +77,16 @@
   [(NPHStateManager *)&v4 dealloc];
 }
 
-+ (id)currentCallConfigurationWithSource:(id)a3
++ (id)currentCallConfigurationWithSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   v4 = +[TUCallCenter sharedInstance];
   v5 = [NPHCallConfiguration alloc];
-  v6 = [v4 currentAudioAndVideoCalls];
-  v7 = v6;
-  if (v6)
+  currentAudioAndVideoCalls = [v4 currentAudioAndVideoCalls];
+  v7 = currentAudioAndVideoCalls;
+  if (currentAudioAndVideoCalls)
   {
-    v8 = v6;
+    v8 = currentAudioAndVideoCalls;
   }
 
   else
@@ -95,11 +95,11 @@
   }
 
   v9 = [NPHCall callsFromTUCalls:v8];
-  v10 = [v4 callsOnDefaultPairedDevice];
-  v11 = v10;
-  if (v10)
+  callsOnDefaultPairedDevice = [v4 callsOnDefaultPairedDevice];
+  v11 = callsOnDefaultPairedDevice;
+  if (callsOnDefaultPairedDevice)
   {
-    v12 = v10;
+    v12 = callsOnDefaultPairedDevice;
   }
 
   else
@@ -108,7 +108,7 @@
   }
 
   v13 = [NPHCall callsFromTUCalls:v12];
-  v14 = [(NPHCallConfiguration *)v5 initWithCalls:v9 andCallsOnDefaultPairedDevice:v13 source:v3];
+  v14 = [(NPHCallConfiguration *)v5 initWithCalls:v9 andCallsOnDefaultPairedDevice:v13 source:sourceCopy];
 
   return v14;
 }
@@ -135,23 +135,23 @@
   [v4 postNotificationName:TUCallCenterCallStatusChangedNotification object:0];
 }
 
-- (void)handleStateChanged:(id)a3
+- (void)handleStateChanged:(id)changed
 {
-  v4 = a3;
-  v3 = v4;
+  changedCopy = changed;
+  v3 = changedCopy;
   nph_ensure_on_main_queue();
 }
 
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation
 {
-  v5 = [NSString stringWithUTF8String:"[NPHStateManager conversationManager:activeRemoteParticipantsChangedForConversation:]", a4];
-  [(NPHStateManager *)self handleStateChanged:v5];
+  conversation = [NSString stringWithUTF8String:"[NPHStateManager conversationManager:activeRemoteParticipantsChangedForConversation:]", conversation];
+  [(NPHStateManager *)self handleStateChanged:conversation];
 }
 
-- (void)conversationManager:(id)a3 remoteMembersChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager remoteMembersChangedForConversation:(id)conversation
 {
-  v5 = [NSString stringWithUTF8String:"[NPHStateManager conversationManager:remoteMembersChangedForConversation:]", a4];
-  [(NPHStateManager *)self handleStateChanged:v5];
+  conversation = [NSString stringWithUTF8String:"[NPHStateManager conversationManager:remoteMembersChangedForConversation:]", conversation];
+  [(NPHStateManager *)self handleStateChanged:conversation];
 }
 
 - (void)didChangeFaceTimeCallingAvailability

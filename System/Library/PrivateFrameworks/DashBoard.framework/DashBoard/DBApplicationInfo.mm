@@ -1,8 +1,8 @@
 @interface DBApplicationInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)displayName;
 - (unint64_t)hash;
-- (void)_loadFromRecord:(id)a3;
+- (void)_loadFromRecord:(id)record;
 @end
 
 @implementation DBApplicationInfo
@@ -12,22 +12,22 @@
   carDisplayName = self->_carDisplayName;
   if (carDisplayName)
   {
-    v3 = carDisplayName;
+    displayName = carDisplayName;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = DBApplicationInfo;
-    v3 = [(DBApplicationInfo *)&v5 displayName];
+    displayName = [(DBApplicationInfo *)&v5 displayName];
   }
 
-  return v3;
+  return displayName;
 }
 
-- (void)_loadFromRecord:(id)a3
+- (void)_loadFromRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   if (_loadFromRecord__onceToken != -1)
   {
     [DBApplicationInfo _loadFromRecord:];
@@ -35,15 +35,15 @@
 
   v32.receiver = self;
   v32.super_class = DBApplicationInfo;
-  [(DBApplicationInfo *)&v32 _loadFromRecord:v4];
-  v5 = [(DBApplicationInfo *)self bundleIdentifier];
-  v6 = [v4 infoDictionary];
-  v7 = [v6 objectsForKeys:_loadFromRecord____infoKeys];
+  [(DBApplicationInfo *)&v32 _loadFromRecord:recordCopy];
+  bundleIdentifier = [(DBApplicationInfo *)self bundleIdentifier];
+  infoDictionary = [recordCopy infoDictionary];
+  v7 = [infoDictionary objectsForKeys:_loadFromRecord____infoKeys];
 
-  v8 = [v4 entitlements];
-  v9 = [v8 objectsForKeys:_loadFromRecord____entitlementKeys];
+  entitlements = [recordCopy entitlements];
+  v9 = [entitlements objectsForKeys:_loadFromRecord____entitlementKeys];
 
-  v10 = [MEMORY[0x277CF8A10] declarationForAppRecord:v4];
+  v10 = [MEMORY[0x277CF8A10] declarationForAppRecord:recordCopy];
   carPlayDeclaration = self->_carPlayDeclaration;
   self->_carPlayDeclaration = v10;
 
@@ -90,39 +90,39 @@
   requiredVehicleAccessories = self->_requiredVehicleAccessories;
   self->_requiredVehicleAccessories = v21;
 
-  v23 = [v4 db_localizedCarName];
+  db_localizedCarName = [recordCopy db_localizedCarName];
   carDisplayName = self->_carDisplayName;
-  self->_carDisplayName = v23;
+  self->_carDisplayName = db_localizedCarName;
 
-  v25 = [v4 applicationState];
-  self->_valid = [v25 isValid];
+  applicationState = [recordCopy applicationState];
+  self->_valid = [applicationState isValid];
 
-  v26 = [v4 applicationState];
-  self->_installed = [v26 isInstalled];
+  applicationState2 = [recordCopy applicationState];
+  self->_installed = [applicationState2 isInstalled];
 
   v27 = [v7 objectForKey:@"UIApplicationSceneManifest" ofClass:objc_opt_class()];
   v28 = [v27 objectForKey:@"CPSupportsDashboardNavigationScene"];
-  if ([v28 BOOLValue] & 1) != 0 || (objc_msgSend(v4, "supportsCarPlayDashboardScene"))
+  if ([v28 BOOLValue] & 1) != 0 || (objc_msgSend(recordCopy, "supportsCarPlayDashboardScene"))
   {
     v29 = 1;
   }
 
   else
   {
-    v29 = [v5 isEqualToString:@"com.apple.Maps"];
+    v29 = [bundleIdentifier isEqualToString:@"com.apple.Maps"];
   }
 
   self->_supportsDashboardNavigation = v29;
 
   v30 = [v27 objectForKey:@"CPSupportsInstrumentClusterNavigationScene"];
-  if ([v30 BOOLValue] & 1) != 0 || (objc_msgSend(v4, "supportsCarPlayInstrumentClusterScene"))
+  if ([v30 BOOLValue] & 1) != 0 || (objc_msgSend(recordCopy, "supportsCarPlayInstrumentClusterScene"))
   {
     v31 = 1;
   }
 
   else
   {
-    v31 = [v5 isEqualToString:@"com.apple.Maps"];
+    v31 = [bundleIdentifier isEqualToString:@"com.apple.Maps"];
   }
 
   self->_supportsInstrumentClusterNavigation = v31;
@@ -162,20 +162,20 @@ void __37__DBApplicationInfo__loadFromRecord___block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(DBApplicationInfo *)self bundleIdentifier];
-  v3 = [v2 hash];
+  bundleIdentifier = [(DBApplicationInfo *)self bundleIdentifier];
+  v3 = [bundleIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(DBApplicationInfo *)self bundleIdentifier];
-    v6 = [v4 bundleIdentifier];
-    v7 = [v5 isEqualToString:v6];
+    bundleIdentifier = [(DBApplicationInfo *)self bundleIdentifier];
+    bundleIdentifier2 = [equalCopy bundleIdentifier];
+    v7 = [bundleIdentifier isEqualToString:bundleIdentifier2];
   }
 
   else

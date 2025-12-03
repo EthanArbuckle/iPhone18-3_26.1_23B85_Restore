@@ -1,10 +1,10 @@
 @interface PXMessagesStackBalloonViewController
-- (PXMessagesStackBalloonViewController)initWithCoder:(id)a3;
-- (PXMessagesStackBalloonViewController)initWithDataSourceManager:(id)a3 mediaProvider:(id)a4;
-- (PXMessagesStackBalloonViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PXMessagesStackBalloonViewController)initWithCoder:(id)coder;
+- (PXMessagesStackBalloonViewController)initWithDataSourceManager:(id)manager mediaProvider:(id)provider;
+- (PXMessagesStackBalloonViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_executeReuseTest;
 - (void)_executeScroll;
-- (void)_presentGridWithAssetReference:(id)a3;
+- (void)_presentGridWithAssetReference:(id)reference;
 - (void)_toggleAdditionalItems;
 - (void)_togglePlayableLoading;
 - (void)_toggleSnapshot;
@@ -14,13 +14,13 @@
 
 @implementation PXMessagesStackBalloonViewController
 
-- (void)_presentGridWithAssetReference:(id)a3
+- (void)_presentGridWithAssetReference:(id)reference
 {
   v4 = [off_1E7721830 alloc];
-  v5 = [(PXMessagesStackBalloonViewController *)self dataSourceManager];
-  v6 = [(PXMessagesStackBalloonViewController *)self mediaProvider];
-  v7 = [(PXMessagesStackBalloonViewController *)self assetActionManager];
-  v13 = [v4 initWithDataSourceManager:v5 mediaProvider:v6 selectionManager:0 assetActionManager:v7 assetCollectionActionManager:0];
+  dataSourceManager = [(PXMessagesStackBalloonViewController *)self dataSourceManager];
+  mediaProvider = [(PXMessagesStackBalloonViewController *)self mediaProvider];
+  assetActionManager = [(PXMessagesStackBalloonViewController *)self assetActionManager];
+  v13 = [v4 initWithDataSourceManager:dataSourceManager mediaProvider:mediaProvider selectionManager:0 assetActionManager:assetActionManager assetCollectionActionManager:0];
 
   [v13 setAllowedActions:{objc_msgSend(v13, "allowedActions") | 0x12000}];
   [v13 setAllowedBehaviors:{objc_msgSend(v13, "allowedBehaviors") & 0xFFFFFFFFFFFFFFDFLL}];
@@ -44,8 +44,8 @@
   v10 = [[PXPhotosUIViewController alloc] initWithConfiguration:v13];
   v11 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v10];
   [v11 setModalPresentationStyle:0];
-  v12 = [(PXMessagesStackView *)self->_stackView gridTransitioningDelegate];
-  [v11 setTransitioningDelegate:v12];
+  gridTransitioningDelegate = [(PXMessagesStackView *)self->_stackView gridTransitioningDelegate];
+  [v11 setTransitioningDelegate:gridTransitioningDelegate];
 
   [(PXMessagesStackBalloonViewController *)self presentViewController:v11 animated:1 completion:0];
 }
@@ -88,8 +88,8 @@ LABEL_9:
 
   else
   {
-    v4 = [(PXMessagesStackView *)self->_stackView currentAssetReference];
-    v5 = [(PXMessagesStackView *)stackView installTransitionSnapshotViewForAssetReference:v4 uncroppedImageFrame:0];
+    currentAssetReference = [(PXMessagesStackView *)self->_stackView currentAssetReference];
+    v5 = [(PXMessagesStackView *)stackView installTransitionSnapshotViewForAssetReference:currentAssetReference uncroppedImageFrame:0];
   }
 
   self->_hasTransitionSnapshot ^= 1u;
@@ -105,10 +105,10 @@ LABEL_9:
 
 - (void)_executeScroll
 {
-  v3 = [(PXBaseMessagesStackView *)self->_stackView dataSourceManager];
-  v8 = [v3 dataSource];
+  dataSourceManager = [(PXBaseMessagesStackView *)self->_stackView dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
-  v4 = arc4random_uniform([v8 numberOfItemsInSection:0]);
+  v4 = arc4random_uniform([dataSource numberOfItemsInSection:0]);
   if (![(PXBaseMessagesStackView *)self->_stackView scrollToIndex:v4 animated:1])
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to scroll to index %lu", v4];
@@ -123,8 +123,8 @@ LABEL_9:
 - (void)_executeReuseTest
 {
   v3 = self->_stackView;
-  v4 = [(PXMessagesStackBalloonViewController *)self dataSourceManager];
-  v5 = [(PXMessagesStackBalloonViewController *)self mediaProvider];
+  dataSourceManager = [(PXMessagesStackBalloonViewController *)self dataSourceManager];
+  mediaProvider = [(PXMessagesStackBalloonViewController *)self mediaProvider];
   [(PXBaseMessagesStackView *)v3 setDataSourceManager:0];
   [(PXMessagesStackView *)v3 setMediaProvider:0];
   v6 = dispatch_time(0, 3000000000);
@@ -133,10 +133,10 @@ LABEL_9:
   block[2] = __57__PXMessagesStackBalloonViewController__executeReuseTest__block_invoke;
   block[3] = &unk_1E774A1B8;
   v11 = v3;
-  v12 = v5;
-  v13 = v4;
-  v7 = v4;
-  v8 = v5;
+  v12 = mediaProvider;
+  v13 = dataSourceManager;
+  v7 = dataSourceManager;
+  v8 = mediaProvider;
   v9 = v3;
   dispatch_after(v6, MEMORY[0x1E69E96A0], block);
 }
@@ -152,8 +152,8 @@ uint64_t __57__PXMessagesStackBalloonViewController__executeReuseTest__block_inv
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(PXMessagesStackBalloonViewController *)self view];
-  [v3 bounds];
+  view = [(PXMessagesStackBalloonViewController *)self view];
+  [view bounds];
 
   [(PXMessagesStackBalloonViewController *)self px_safeAreaInsets];
   PXEdgeInsetsInsetRect();
@@ -165,17 +165,17 @@ uint64_t __57__PXMessagesStackBalloonViewController__executeReuseTest__block_inv
   v45.receiver = self;
   v45.super_class = PXMessagesStackBalloonViewController;
   [(PXMessagesStackBalloonViewController *)&v45 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v4 = [(PXMessagesStackBalloonViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(PXMessagesStackBalloonViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = [PXMessagesStackView alloc];
   v6 = [(PXMessagesStackView *)v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   stackView = self->_stackView;
   self->_stackView = v6;
 
-  v8 = [(PXMessagesStackBalloonViewController *)self mediaProvider];
-  [(PXMessagesStackView *)self->_stackView setMediaProvider:v8];
+  mediaProvider = [(PXMessagesStackBalloonViewController *)self mediaProvider];
+  [(PXMessagesStackView *)self->_stackView setMediaProvider:mediaProvider];
 
   [(PXMessagesStackView *)self->_stackView setAllowPlayableContentLoading:1];
   v9 = +[PXMessagesUISettings sharedInstance];
@@ -191,16 +191,16 @@ uint64_t __57__PXMessagesStackBalloonViewController__executeReuseTest__block_inv
   }
 
   self->_allowAutoplay = 1;
-  v11 = [(PXMessagesStackBalloonViewController *)self dataSourceManager];
-  [(PXBaseMessagesStackView *)self->_stackView setDataSourceManager:v11];
+  dataSourceManager = [(PXMessagesStackBalloonViewController *)self dataSourceManager];
+  [(PXBaseMessagesStackView *)self->_stackView setDataSourceManager:dataSourceManager];
 
   v12 = +[PXMessagesUISettings sharedInstance];
   [v12 verticalContentInsets];
   [(PXBaseMessagesStackView *)self->_stackView setVerticalContentInsets:?];
 
   [(PXMessagesStackView *)self->_stackView setDelegate:self];
-  v13 = [(PXMessagesStackBalloonViewController *)self view];
-  [v13 addSubview:self->_stackView];
+  view2 = [(PXMessagesStackBalloonViewController *)self view];
+  [view2 addSubview:self->_stackView];
 
   objc_initWeak(&location, self);
   v14 = MEMORY[0x1E69DC628];
@@ -256,8 +256,8 @@ uint64_t __57__PXMessagesStackBalloonViewController__executeReuseTest__block_inv
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:6];
   v27 = [v25 menuWithChildren:v26];
   v28 = [v24 initWithTitle:@"Actions" menu:v27];
-  v29 = [(PXMessagesStackBalloonViewController *)self navigationItem];
-  [v29 setRightBarButtonItem:v28];
+  navigationItem = [(PXMessagesStackBalloonViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v28];
 
   objc_destroyWeak(&v33);
   objc_destroyWeak(&v35);
@@ -306,37 +306,37 @@ void __51__PXMessagesStackBalloonViewController_viewDidLoad__block_invoke_6(uint
   [WeakRetained _toggleAdditionalItems];
 }
 
-- (PXMessagesStackBalloonViewController)initWithCoder:(id)a3
+- (PXMessagesStackBalloonViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXMessagesStackBalloonViewController.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXMessagesStackBalloonViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMessagesStackBalloonViewController.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXMessagesStackBalloonViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PXMessagesStackBalloonViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXMessagesStackBalloonViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXMessagesStackBalloonViewController.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXMessagesStackBalloonViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMessagesStackBalloonViewController.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXMessagesStackBalloonViewController initWithNibName:bundle:]"}];
 
   abort();
 }
 
-- (PXMessagesStackBalloonViewController)initWithDataSourceManager:(id)a3 mediaProvider:(id)a4
+- (PXMessagesStackBalloonViewController)initWithDataSourceManager:(id)manager mediaProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = PXMessagesStackBalloonViewController;
   v9 = [(PXMessagesStackBalloonViewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataSourceManager, a3);
-    objc_storeStrong(&v10->_mediaProvider, a4);
+    objc_storeStrong(&v9->_dataSourceManager, manager);
+    objc_storeStrong(&v10->_mediaProvider, provider);
   }
 
   return v10;

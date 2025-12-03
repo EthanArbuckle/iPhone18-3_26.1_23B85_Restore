@@ -1,14 +1,14 @@
 @interface AXVoiceOverVoiceRotorItem
 - (AXCVoiceSelection)selection;
 - (AXVoiceOverVoiceRotorItem)init;
-- (AXVoiceOverVoiceRotorItem)initWithIdentifier:(id)a3 selection:(id)a4 userDefinedName:(id)a5;
+- (AXVoiceOverVoiceRotorItem)initWithIdentifier:(id)identifier selection:(id)selection userDefinedName:(id)name;
 - (NSString)identifier;
 - (NSString)userDefinedName;
 - (NSString)voiceId;
-- (void)setIdentifier:(id)a3;
-- (void)setSelection:(id)a3;
-- (void)setUserDefinedName:(id)a3;
-- (void)setVoiceId:(id)a3;
+- (void)setIdentifier:(id)identifier;
+- (void)setSelection:(id)selection;
+- (void)setUserDefinedName:(id)name;
+- (void)setVoiceId:(id)id;
 @end
 
 @implementation AXVoiceOverVoiceRotorItem
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v4 = sub_18B2C9894();
   v6 = v5;
@@ -50,9 +50,9 @@
   return v3;
 }
 
-- (void)setUserDefinedName:(id)a3
+- (void)setUserDefinedName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_18B2C9894();
     v6 = v5;
@@ -72,11 +72,11 @@
 
 - (NSString)voiceId
 {
-  v2 = self;
-  v3 = [(AXVoiceOverVoiceRotorItem *)v2 selection];
-  v4 = [(AXCVoiceSelection *)v3 voiceId];
+  selfCopy = self;
+  selection = [(AXVoiceOverVoiceRotorItem *)selfCopy selection];
+  voiceId = [(AXCVoiceSelection *)selection voiceId];
 
-  if (v4)
+  if (voiceId)
   {
     sub_18B2C9894();
   }
@@ -90,12 +90,12 @@
   return v5;
 }
 
-- (void)setVoiceId:(id)a3
+- (void)setVoiceId:(id)id
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [(AXVoiceOverVoiceRotorItem *)v6 selection];
-  [(AXCVoiceSelection *)v5 setVoiceId:v4];
+  idCopy = id;
+  selfCopy = self;
+  selection = [(AXVoiceOverVoiceRotorItem *)selfCopy selection];
+  [(AXCVoiceSelection *)selection setVoiceId:idCopy];
 }
 
 - (AXCVoiceSelection)selection
@@ -105,22 +105,22 @@
   return *(self + v3);
 }
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
   v5 = OBJC_IVAR___AXVoiceOverVoiceRotorItem_selection;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = selection;
+  selectionCopy = selection;
 }
 
-- (AXVoiceOverVoiceRotorItem)initWithIdentifier:(id)a3 selection:(id)a4 userDefinedName:(id)a5
+- (AXVoiceOverVoiceRotorItem)initWithIdentifier:(id)identifier selection:(id)selection userDefinedName:(id)name
 {
   v8 = sub_18B2C9894();
   v10 = v9;
-  if (a5)
+  if (name)
   {
-    a5 = sub_18B2C9894();
+    name = sub_18B2C9894();
     v12 = v11;
   }
 
@@ -135,13 +135,13 @@
   v14 = (self + OBJC_IVAR___AXVoiceOverVoiceRotorItem_identifier);
   *v14 = v8;
   v14[1] = v10;
-  *(self + OBJC_IVAR___AXVoiceOverVoiceRotorItem_selection) = a4;
+  *(self + OBJC_IVAR___AXVoiceOverVoiceRotorItem_selection) = selection;
   swift_beginAccess();
-  *v13 = a5;
+  *v13 = name;
   v13[1] = v12;
   v17.receiver = self;
   v17.super_class = AXVoiceOverVoiceRotorItem;
-  v15 = a4;
+  selectionCopy = selection;
   return [(AXVoiceOverVoiceRotorItem *)&v17 init];
 }
 

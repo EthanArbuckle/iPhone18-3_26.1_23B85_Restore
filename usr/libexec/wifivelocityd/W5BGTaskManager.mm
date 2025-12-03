@@ -1,5 +1,5 @@
 @interface W5BGTaskManager
-- (BOOL)scheduleRepeatingTask:(id)a3 interval:(double)a4 repeatingTask:(id)a5;
+- (BOOL)scheduleRepeatingTask:(id)task interval:(double)interval repeatingTask:(id)repeatingTask;
 - (W5BGTaskManager)init;
 - (void)dealloc;
 - (void)stopAllRepeatingTasks;
@@ -30,7 +30,7 @@
   return v2;
 }
 
-- (BOOL)scheduleRepeatingTask:(id)a3 interval:(double)a4 repeatingTask:(id)a5
+- (BOOL)scheduleRepeatingTask:(id)task interval:(double)interval repeatingTask:(id)repeatingTask
 {
   if ([(NSMutableArray *)self->_registeredIdentifiers containsObject:?])
   {
@@ -44,7 +44,7 @@
       v26 = 1024;
       v27 = 40;
       v28 = 2114;
-      v29 = a3;
+      taskCopy4 = task;
 LABEL_9:
       _os_log_send_and_compose_impl();
       return 0;
@@ -59,7 +59,7 @@ LABEL_9:
     return 0;
   }
 
-  if (([(BGSystemTaskScheduler *)scheduler registerForTaskWithIdentifier:a3 usingQueue:0 launchHandler:a5]& 1) == 0)
+  if (([(BGSystemTaskScheduler *)scheduler registerForTaskWithIdentifier:task usingQueue:0 launchHandler:repeatingTask]& 1) == 0)
   {
     v18 = sub_100098A04();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -74,11 +74,11 @@ LABEL_9:
     v26 = 1024;
     v27 = 50;
     v28 = 2114;
-    v29 = a3;
+    taskCopy4 = task;
     goto LABEL_9;
   }
 
-  if ([(BGSystemTaskScheduler *)self->_scheduler taskRequestForIdentifier:a3])
+  if ([(BGSystemTaskScheduler *)self->_scheduler taskRequestForIdentifier:task])
   {
     v11 = sub_100098A04();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -90,18 +90,18 @@ LABEL_9:
       v26 = 1024;
       v27 = 53;
       v28 = 2114;
-      v29 = a3;
+      taskCopy4 = task;
       goto LABEL_9;
     }
 
     return 0;
   }
 
-  v14 = [[BGRepeatingSystemTaskRequest alloc] initWithIdentifier:a3];
+  v14 = [[BGRepeatingSystemTaskRequest alloc] initWithIdentifier:task];
   [v14 setRequiresNetworkConnectivity:0];
   [v14 setRequiresExternalPower:0];
-  [v14 setInterval:a4];
-  [v14 setMinDurationBetweenInstances:a4];
+  [v14 setInterval:interval];
+  [v14 setMinDurationBetweenInstances:interval];
   [v14 setShouldWakeDevice:0];
   v21 = 0;
   v12 = [+[BGSystemTaskScheduler sharedScheduler](BGSystemTaskScheduler "sharedScheduler")];
@@ -118,13 +118,13 @@ LABEL_9:
       v26 = 1024;
       v27 = 70;
       v28 = 2114;
-      v29 = a3;
+      taskCopy4 = task;
       LODWORD(v20) = 38;
       v19 = &v22;
       _os_log_send_and_compose_impl();
     }
 
-    [(NSMutableArray *)self->_registeredIdentifiers addObject:a3, v19, v20];
+    [(NSMutableArray *)self->_registeredIdentifiers addObject:task, v19, v20];
   }
 
   else if (v16)
@@ -142,7 +142,7 @@ LABEL_9:
     v26 = 1024;
     v27 = 66;
     v28 = 2114;
-    v29 = v17;
+    taskCopy4 = v17;
     _os_log_send_and_compose_impl();
   }
 

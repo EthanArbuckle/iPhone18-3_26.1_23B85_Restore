@@ -7,25 +7,25 @@
 - (uint64_t)safari_belongsToDomain:()SafariSharedExtras
 {
   v4 = a3;
-  v5 = [a1 domain];
-  if ([v5 length] && objc_msgSend(v4, "length"))
+  domain = [self domain];
+  if ([domain length] && objc_msgSend(v4, "length"))
   {
-    if ([v5 hasPrefix:@"."])
+    if ([domain hasPrefix:@"."])
     {
-      v6 = [v5 substringFromIndex:1];
+      v6 = [domain substringFromIndex:1];
     }
 
     else
     {
-      v6 = v5;
+      v6 = domain;
     }
 
     v8 = v6;
-    v9 = [v6 safari_highLevelDomainFromHost];
-    v10 = v9;
-    if (v9)
+    safari_highLevelDomainFromHost = [v6 safari_highLevelDomainFromHost];
+    v10 = safari_highLevelDomainFromHost;
+    if (safari_highLevelDomainFromHost)
     {
-      v11 = v9;
+      v11 = safari_highLevelDomainFromHost;
 
       v8 = v11;
     }

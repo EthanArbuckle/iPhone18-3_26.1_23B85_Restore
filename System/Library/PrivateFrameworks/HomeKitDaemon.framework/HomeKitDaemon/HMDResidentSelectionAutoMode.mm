@@ -1,9 +1,9 @@
 @interface HMDResidentSelectionAutoMode
 + (id)logCategory;
-- (HMDResidentSelectionAutoMode)initWithContext:(id)a3;
+- (HMDResidentSelectionAutoMode)initWithContext:(id)context;
 - (id)logIdentifier;
 - (id)shortDescription;
-- (void)performSelectionWithPreferredPrimaryResident:(id)a3 requireAutoUpdate:(BOOL)a4 reason:(unint64_t)a5 completion:(id)a6;
+- (void)performSelectionWithPreferredPrimaryResident:(id)resident requireAutoUpdate:(BOOL)update reason:(unint64_t)reason completion:(id)completion;
 @end
 
 @implementation HMDResidentSelectionAutoMode
@@ -11,45 +11,45 @@
 - (id)shortDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDResidentSelectionMode *)self context];
-  v4 = [v3 home];
-  v5 = [v4 uuid];
-  v6 = [v2 stringWithFormat:@"%@", v5];
+  context = [(HMDResidentSelectionMode *)self context];
+  home = [context home];
+  uuid = [home uuid];
+  v6 = [v2 stringWithFormat:@"%@", uuid];
 
   return v6;
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDResidentSelectionMode *)self context];
-  v3 = [v2 home];
-  v4 = [v3 uuid];
-  v5 = [v4 UUIDString];
+  context = [(HMDResidentSelectionMode *)self context];
+  home = [context home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v5;
+  return uUIDString;
 }
 
-- (void)performSelectionWithPreferredPrimaryResident:(id)a3 requireAutoUpdate:(BOOL)a4 reason:(unint64_t)a5 completion:(id)a6
+- (void)performSelectionWithPreferredPrimaryResident:(id)resident requireAutoUpdate:(BOOL)update reason:(unint64_t)reason completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a6;
-  v10 = [(HMDResidentSelectionMode *)self context];
-  v11 = [v10 primaryResidentDevice];
+  residentCopy = resident;
+  completionCopy = completion;
+  context = [(HMDResidentSelectionMode *)self context];
+  primaryResidentDevice = [context primaryResidentDevice];
 
-  v12 = [(HMDResidentSelectionMode *)self sortedResidents];
-  if ([v12 count])
+  sortedResidents = [(HMDResidentSelectionMode *)self sortedResidents];
+  if ([sortedResidents count])
   {
-    v13 = [v12 mutableCopy];
-    v14 = v13;
-    if (v11)
+    v13 = [sortedResidents mutableCopy];
+    delegate = v13;
+    if (primaryResidentDevice)
     {
-      [v13 removeObject:v11];
-      [v14 insertObject:v11 atIndex:0];
+      [v13 removeObject:primaryResidentDevice];
+      [delegate insertObject:primaryResidentDevice atIndex:0];
     }
 
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -57,25 +57,25 @@
       *buf = 138543618;
       v29 = v18;
       v30 = 2112;
-      v31 = v14;
+      v31 = delegate;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Sorted list of residents for auto selection: %@.", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v15);
-    v19 = [v14 copy];
+    v19 = [delegate copy];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __113__HMDResidentSelectionAutoMode_performSelectionWithPreferredPrimaryResident_requireAutoUpdate_reason_completion___block_invoke;
     v26[3] = &unk_278678440;
-    v26[4] = v16;
-    v27 = v9;
-    [(HMDResidentSelectionMode *)v16 selectPrimaryResidentFromResidents:v19 requireAutoUpdate:0 completion:v26];
+    v26[4] = selfCopy;
+    v27 = completionCopy;
+    [(HMDResidentSelectionMode *)selfCopy selectPrimaryResidentFromResidents:v19 requireAutoUpdate:0 completion:v26];
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -86,9 +86,9 @@
     }
 
     objc_autoreleasePoolPop(v20);
-    v14 = [(HMDResidentSelectionMode *)v21 delegate];
+    delegate = [(HMDResidentSelectionMode *)selfCopy2 delegate];
     v24 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:14];
-    [v14 primarySelectionMode:v21 didFailToSelectWithError:v24];
+    [delegate primarySelectionMode:selfCopy2 didFailToSelectWithError:v24];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -159,11 +159,11 @@ void __113__HMDResidentSelectionAutoMode_performSelectionWithPreferredPrimaryRes
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDResidentSelectionAutoMode)initWithContext:(id)a3
+- (HMDResidentSelectionAutoMode)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = HMDResidentSelectionAutoMode;
-  return [(HMDResidentSelectionMode *)&v4 initWithContext:a3];
+  return [(HMDResidentSelectionMode *)&v4 initWithContext:context];
 }
 
 + (id)logCategory

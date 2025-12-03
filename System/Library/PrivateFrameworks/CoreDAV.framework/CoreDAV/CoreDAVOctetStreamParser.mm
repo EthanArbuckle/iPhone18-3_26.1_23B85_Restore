@@ -1,5 +1,5 @@
 @interface CoreDAVOctetStreamParser
-- (BOOL)processData:(id)a3 forTask:(id)a4;
+- (BOOL)processData:(id)data forTask:(id)task;
 - (CoreDAVOctetStreamParser)init;
 - (NSString)description;
 @end
@@ -33,13 +33,13 @@
   return v2;
 }
 
-- (BOOL)processData:(id)a3 forTask:(id)a4
+- (BOOL)processData:(id)data forTask:(id)task
 {
-  if (a3)
+  if (data)
   {
-    v5 = a3;
-    v6 = [(CoreDAVOctetStreamParser *)self octetStreamData];
-    [v6 appendData:v5];
+    dataCopy = data;
+    octetStreamData = [(CoreDAVOctetStreamParser *)self octetStreamData];
+    [octetStreamData appendData:dataCopy];
   }
 
   return 1;

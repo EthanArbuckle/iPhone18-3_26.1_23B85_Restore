@@ -2,8 +2,8 @@
 + (MTSubscriptionController)sharedInstance;
 + (NSString)subscriptionControllerErrorDomain;
 - (MTSubscriptionController)init;
-- (void)podcastExistsInStoreWithFeedUrl:(id)a3 completion:(id)a4;
-- (void)subscribeToShowWithPodcastStoreId:(id)a3 account:(id)a4 completion:(id)a5;
+- (void)podcastExistsInStoreWithFeedUrl:(id)url completion:(id)completion;
+- (void)subscribeToShowWithPodcastStoreId:(id)id account:(id)account completion:(id)completion;
 @end
 
 @implementation MTSubscriptionController
@@ -27,26 +27,26 @@
   return v2;
 }
 
-- (void)subscribeToShowWithPodcastStoreId:(id)a3 account:(id)a4 completion:(id)a5
+- (void)subscribeToShowWithPodcastStoreId:(id)id account:(id)account completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   v8 = sub_1D917820C();
   v10 = v9;
   v11 = swift_allocObject();
   *(v11 + 16) = v7;
-  v12 = a4;
-  v13 = self;
-  sub_1D905C8C4(v8, v10, a4, sub_1D8E899BC, v11);
+  accountCopy = account;
+  selfCopy = self;
+  sub_1D905C8C4(v8, v10, account, sub_1D8E899BC, v11);
 }
 
-- (void)podcastExistsInStoreWithFeedUrl:(id)a3 completion:(id)a4
+- (void)podcastExistsInStoreWithFeedUrl:(id)url completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_1D917820C();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  sub_1D905EA64(v6, v8, v9, v5);
+  selfCopy = self;
+  sub_1D905EA64(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }

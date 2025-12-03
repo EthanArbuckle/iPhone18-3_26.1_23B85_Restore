@@ -1,5 +1,5 @@
 @interface FCNewsTabiTagScoringConfiguration
-- (FCNewsTabiTagScoringConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiTagScoringConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -8,33 +8,33 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiTagScoringConfiguration *)self bundleOutputConfiguration];
-  v5 = [v4 indentedDescription];
-  [v3 appendFormat:@"\n\tbundleOutputConfiguration: %@;", v5];
+  bundleOutputConfiguration = [(FCNewsTabiTagScoringConfiguration *)self bundleOutputConfiguration];
+  indentedDescription = [bundleOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tbundleOutputConfiguration: %@;", indentedDescription];
 
   [(FCNewsTabiTagScoringConfiguration *)self minimumChannelScoreForGrouping];
   [v3 appendFormat:@"\n\tminimumChannelScoreForGrouping: %.4f;", v6];
-  v7 = [(FCNewsTabiTagScoringConfiguration *)self nonBundleOutputConfiguration];
-  v8 = [v7 indentedDescription];
-  [v3 appendFormat:@"\n\tnonBundleOutputConfiguration: %@;", v8];
+  nonBundleOutputConfiguration = [(FCNewsTabiTagScoringConfiguration *)self nonBundleOutputConfiguration];
+  indentedDescription2 = [nonBundleOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tnonBundleOutputConfiguration: %@;", indentedDescription2];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiTagScoringConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiTagScoringConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [FCNewsTabiTagScoringOutputConfiguration alloc];
-  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"bundleOutputConfiguration", 0);
+  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"bundleOutputConfiguration", 0);
   v7 = [(FCNewsTabiTagScoringOutputConfiguration *)v5 initWithDictionary:v6];
 
   if (v7)
   {
     v8 = v7;
     v9 = [FCNewsTabiTagScoringOutputConfiguration alloc];
-    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"nonBundleOutputConfiguration", 0);
+    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"nonBundleOutputConfiguration", 0);
     v11 = [(FCNewsTabiTagScoringOutputConfiguration *)v9 initWithDictionary:v10];
 
     if (v11)
@@ -47,12 +47,12 @@
       if (v13)
       {
         objc_storeStrong(&v13->_bundleOutputConfiguration, v7);
-        v14->_minimumChannelScoreForGrouping = FCAppConfigurationDoubleValue(v4, @"minimumChannelScoreForGrouping", 0.03);
+        v14->_minimumChannelScoreForGrouping = FCAppConfigurationDoubleValue(dictionaryCopy, @"minimumChannelScoreForGrouping", 0.03);
         objc_storeStrong(&v14->_nonBundleOutputConfiguration, v11);
       }
 
       self = v14;
-      v15 = self;
+      selfCopy = self;
     }
 
     else
@@ -61,8 +61,8 @@
       v18[1] = 3221225472;
       v18[2] = __56__FCNewsTabiTagScoringConfiguration_initWithDictionary___block_invoke_58;
       v18[3] = &unk_1E7C36F98;
-      v19 = v4;
-      v15 = __56__FCNewsTabiTagScoringConfiguration_initWithDictionary___block_invoke_58(v18);
+      v19 = dictionaryCopy;
+      selfCopy = __56__FCNewsTabiTagScoringConfiguration_initWithDictionary___block_invoke_58(v18);
       v12 = v19;
     }
   }
@@ -73,12 +73,12 @@
     v20[1] = 3221225472;
     v20[2] = __56__FCNewsTabiTagScoringConfiguration_initWithDictionary___block_invoke;
     v20[3] = &unk_1E7C36F98;
-    v21 = v4;
-    v15 = __56__FCNewsTabiTagScoringConfiguration_initWithDictionary___block_invoke(v20);
+    v21 = dictionaryCopy;
+    selfCopy = __56__FCNewsTabiTagScoringConfiguration_initWithDictionary___block_invoke(v20);
     v8 = v21;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 uint64_t __56__FCNewsTabiTagScoringConfiguration_initWithDictionary___block_invoke(uint64_t a1)

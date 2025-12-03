@@ -1,22 +1,22 @@
 @interface OrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder_State
 + (void)initialize;
 - (BOOL)hasChildren;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder_State)init;
-- (id)getStateWithInt:(int)a3;
+- (id)getStateWithInt:(int)int;
 - (id)lastChild;
-- (id)lastChildWithInt:(int)a3;
-- (id)newStateWithInt:(int)a3;
+- (id)lastChildWithInt:(int)int;
+- (id)newStateWithInt:(int)int;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)replaceLastChildWithOrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder_State:(id)a3;
+- (void)replaceLastChildWithOrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder_State:(id)state;
 @end
 
 @implementation OrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder_State
 
-- (id)getStateWithInt:(int)a3
+- (id)getStateWithInt:(int)int
 {
-  v4 = JavaUtilArrays_binarySearchWithIntArray_withInt_(self->labels_, a3);
+  v4 = JavaUtilArrays_binarySearchWithIntArray_withInt_(self->labels_, int);
   if ((v4 & 0x80000000) != 0)
   {
     return 0;
@@ -38,10 +38,10 @@
   return (&states->elementType_)[v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_21;
   }
@@ -51,19 +51,19 @@
     JreThrowClassCastException();
   }
 
-  if (self->is_final_ != *(a3 + 24))
+  if (self->is_final_ != *(equal + 24))
   {
     goto LABEL_16;
   }
 
-  v5 = JavaUtilArrays_equalsWithIntArray_withIntArray_(self->labels_, *(a3 + 1));
+  v5 = JavaUtilArrays_equalsWithIntArray_withIntArray_(self->labels_, *(equal + 1));
   if (!v5)
   {
     return v5;
   }
 
   states = self->states_;
-  v7 = *(a3 + 2);
+  v7 = *(equal + 2);
   if ((atomic_load_explicit(OrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder_State__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10010F608();
@@ -176,7 +176,7 @@ LABEL_10:
   return labels->super.size_ > 0;
 }
 
-- (id)newStateWithInt:(int)a3
+- (id)newStateWithInt:(int)int
 {
   p_labels = &self->labels_;
   labels = self->labels_;
@@ -209,7 +209,7 @@ LABEL_10:
     IOSArray_throwOutOfBoundsWithMsg(size, size - 1);
   }
 
-  *(&v12->super.size_ + size) = a3;
+  *(&v12->super.size_ + size) = int;
   v14 = *p_states;
   if (!*p_states)
   {
@@ -240,7 +240,7 @@ LABEL_9:
   return *(&states->isRetained_ + size);
 }
 
-- (id)lastChildWithInt:(int)a3
+- (id)lastChildWithInt:(int)int
 {
   labels = self->labels_;
   if (!labels)
@@ -260,7 +260,7 @@ LABEL_9:
     IOSArray_throwOutOfBoundsWithMsg(0x80000000, v5);
   }
 
-  if (*(&labels->super.size_ + v5 + 1) != a3)
+  if (*(&labels->super.size_ + v5 + 1) != int)
   {
     return 0;
   }
@@ -281,7 +281,7 @@ LABEL_9:
   return (&states->elementType_)[v5];
 }
 
-- (void)replaceLastChildWithOrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder_State:(id)a3
+- (void)replaceLastChildWithOrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder_State:(id)state
 {
   states = self->states_;
   if (!states)
@@ -291,7 +291,7 @@ LABEL_9:
 
   v5 = states->super.size_ - 1;
 
-  IOSObjectArray_Set(states, v5, a3);
+  IOSObjectArray_Set(states, v5, state);
 }
 
 - (OrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder_State)init
@@ -310,7 +310,7 @@ LABEL_9:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&qword_100554708, [IOSIntArray newArrayWithLength:0]);
     v2 = [IOSObjectArray newArrayWithLength:0 type:OrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder_State_class_()];

@@ -1,11 +1,11 @@
 @interface _UIDefaultFocusSoundPlayer
 + (id)sharedInstance;
 - (id)_init;
-- (void)_playSystemSound:(unsigned int)a3 behavior:(unsigned int)a4 withVolume:(double)a5 pan:(double)a6;
+- (void)_playSystemSound:(unsigned int)sound behavior:(unsigned int)behavior withVolume:(double)volume pan:(double)pan;
 - (void)_registerForSystemSoundsIfNecessary;
 - (void)dealloc;
-- (void)playSoundWithFocusSound:(int64_t)a3 volume:(double)a4 pan:(double)a5;
-- (void)playSoundWithURL:(id)a3 volume:(double)a4 pan:(double)a5;
+- (void)playSoundWithFocusSound:(int64_t)sound volume:(double)volume pan:(double)pan;
+- (void)playSoundWithURL:(id)l volume:(double)volume pan:(double)pan;
 @end
 
 @implementation _UIDefaultFocusSoundPlayer
@@ -75,8 +75,8 @@
   v7 = self->_unregisterTimer;
   self->_unregisterTimer = v6;
 
-  v8 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v8 addTimer:self->_unregisterTimer forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [mainRunLoop addTimer:self->_unregisterTimer forMode:*MEMORY[0x1E695DA28]];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -112,62 +112,62 @@
   [(_UIDefaultFocusSoundPlayer *)&v6 dealloc];
 }
 
-- (void)playSoundWithURL:(id)a3 volume:(double)a4 pan:(double)a5
+- (void)playSoundWithURL:(id)l volume:(double)volume pan:(double)pan
 {
-  v9 = a3;
-  if (!v9)
+  lCopy = l;
+  if (!lCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIFocusSoundGenerator.m" lineNumber:366 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusSoundGenerator.m" lineNumber:366 description:{@"Invalid parameter not satisfying: %@", @"url"}];
 
-    v9 = 0;
+    lCopy = 0;
   }
 
-  if (fabs(a4) >= 2.22044605e-16)
+  if (fabs(volume) >= 2.22044605e-16)
   {
-    v12 = v9;
-    v10 = [(NSMutableDictionary *)self->_urlPools objectForKeyedSubscript:v9];
+    v12 = lCopy;
+    v10 = [(NSMutableDictionary *)self->_urlPools objectForKeyedSubscript:lCopy];
     if (!v10)
     {
       v10 = [[_UIFocusSoundPool alloc] initWithSoundFileURL:v12];
       [(NSMutableDictionary *)self->_urlPools setObject:v10 forKeyedSubscript:v12];
     }
 
-    [(_UIDefaultFocusSoundPlayer *)self _playSystemSound:[(_UIFocusSoundPool *)v10 playableSystemSoundID] behavior:[(_UIFocusSoundPool *)v10 originalSystemSoundID] withVolume:a4 pan:a5];
+    [(_UIDefaultFocusSoundPlayer *)self _playSystemSound:[(_UIFocusSoundPool *)v10 playableSystemSoundID] behavior:[(_UIFocusSoundPool *)v10 originalSystemSoundID] withVolume:volume pan:pan];
 
-    v9 = v12;
+    lCopy = v12;
   }
 }
 
-- (void)playSoundWithFocusSound:(int64_t)a3 volume:(double)a4 pan:(double)a5
+- (void)playSoundWithFocusSound:(int64_t)sound volume:(double)volume pan:(double)pan
 {
-  if (a3 && fabs(a4) >= 2.22044605e-16)
+  if (sound && fabs(volume) >= 2.22044605e-16)
   {
     focusSoundPools = self->_focusSoundPools;
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:?];
     v10 = [(NSMutableDictionary *)focusSoundPools objectForKeyedSubscript:v9];
 
-    -[_UIDefaultFocusSoundPlayer _playSystemSound:behavior:withVolume:pan:](self, "_playSystemSound:behavior:withVolume:pan:", [v10 playableSystemSoundID], objc_msgSend(v10, "originalSystemSoundID"), a4, a5);
+    -[_UIDefaultFocusSoundPlayer _playSystemSound:behavior:withVolume:pan:](self, "_playSystemSound:behavior:withVolume:pan:", [v10 playableSystemSoundID], objc_msgSend(v10, "originalSystemSoundID"), volume, pan);
   }
 }
 
-- (void)_playSystemSound:(unsigned int)a3 behavior:(unsigned int)a4 withVolume:(double)a5 pan:(double)a6
+- (void)_playSystemSound:(unsigned int)sound behavior:(unsigned int)behavior withVolume:(double)volume pan:(double)pan
 {
   [(_UIDefaultFocusSoundPlayer *)self _registerForSystemSoundsIfNecessary];
   v11 = +[UIDevice currentDevice];
-  v12 = [v11 _isSystemSoundEnabled];
+  _isSystemSoundEnabled = [v11 _isSystemSoundEnabled];
 
-  if (v12)
+  if (_isSystemSoundEnabled)
   {
     soundQueue = self->_soundQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __71___UIDefaultFocusSoundPlayer__playSystemSound_behavior_withVolume_pan___block_invoke;
     block[3] = &__block_descriptor_56_e5_v8__0l;
-    *&block[4] = a5;
-    *&block[5] = a6;
-    v15 = a4;
-    v16 = a3;
+    *&block[4] = volume;
+    *&block[5] = pan;
+    behaviorCopy = behavior;
+    soundCopy = sound;
     dispatch_async(soundQueue, block);
   }
 }

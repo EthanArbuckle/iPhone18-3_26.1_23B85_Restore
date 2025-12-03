@@ -1,13 +1,13 @@
 @interface CPUIGridViewBaseStyleImageGridOptions
 - (CPUIGridViewBaseStyleImageGridOptions)init;
-- (CPUIGridViewBaseStyleImageGridOptions)initWithUseFillDistribution:(BOOL)a3;
+- (CPUIGridViewBaseStyleImageGridOptions)initWithUseFillDistribution:(BOOL)distribution;
 @end
 
 @implementation CPUIGridViewBaseStyleImageGridOptions
 
-- (CPUIGridViewBaseStyleImageGridOptions)initWithUseFillDistribution:(BOOL)a3
+- (CPUIGridViewBaseStyleImageGridOptions)initWithUseFillDistribution:(BOOL)distribution
 {
-  *(&self->super.isa + OBJC_IVAR___CPUIGridViewBaseStyleImageGridOptions_useFillDistribution) = a3;
+  *(&self->super.isa + OBJC_IVAR___CPUIGridViewBaseStyleImageGridOptions_useFillDistribution) = distribution;
   v4.receiver = self;
   v4.super_class = CPUIGridViewBaseStyleImageGridOptions;
   return [(CPUIGridViewBaseStyleImageGridOptions *)&v4 init];

@@ -1,31 +1,31 @@
 @interface STContactAddress
-- (STContactAddress)initWithCoder:(id)a3;
-- (STContactAddress)initWithType:(int64_t)a3 stringValue:(id)a4 contactIdentifier:(id)a5 contactInternalGUID:(id)a6;
+- (STContactAddress)initWithCoder:(id)coder;
+- (STContactAddress)initWithType:(int64_t)type stringValue:(id)value contactIdentifier:(id)identifier contactInternalGUID:(id)d;
 - (id)_aceContextObjectValue;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STContactAddress
 
-- (STContactAddress)initWithCoder:(id)a3
+- (STContactAddress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = STContactAddress;
-  v5 = [(STSiriModelObject *)&v13 initWithCoder:v4];
+  v5 = [(STSiriModelObject *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_stringValue"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_stringValue"];
     stringValue = v5->_stringValue;
     v5->_stringValue = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contactIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contactIdentifier"];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contactInternalGUID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contactInternalGUID"];
     contactInternalGUID = v5->_contactInternalGUID;
     v5->_contactInternalGUID = v10;
   }
@@ -33,23 +33,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STContactAddress;
-  v4 = a3;
-  [(STSiriModelObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_type forKey:{@"_type", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_stringValue forKey:@"_stringValue"];
-  [v4 encodeObject:self->_contactIdentifier forKey:@"_contactIdentifier"];
-  [v4 encodeObject:self->_contactInternalGUID forKey:@"_contactInternalGUID"];
+  coderCopy = coder;
+  [(STSiriModelObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_type forKey:{@"_type", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_stringValue forKey:@"_stringValue"];
+  [coderCopy encodeObject:self->_contactIdentifier forKey:@"_contactIdentifier"];
+  [coderCopy encodeObject:self->_contactInternalGUID forKey:@"_contactInternalGUID"];
 }
 
 - (id)_aceContextObjectValue
 {
   v3 = objc_alloc_init(MEMORY[0x1E69C7938]);
-  v4 = [(STContactAddress *)self stringValue];
-  [v3 setData:v4];
+  stringValue = [(STContactAddress *)self stringValue];
+  [v3 setData:stringValue];
 
   return v3;
 }
@@ -90,8 +90,8 @@
   contactIdentifier = self->_contactIdentifier;
   if (contactIdentifier)
   {
-    v9 = [(NSURL *)contactIdentifier absoluteString];
-    [v3 appendString:v9];
+    absoluteString = [(NSURL *)contactIdentifier absoluteString];
+    [v3 appendString:absoluteString];
   }
 
   else
@@ -116,24 +116,24 @@
   return v3;
 }
 
-- (STContactAddress)initWithType:(int64_t)a3 stringValue:(id)a4 contactIdentifier:(id)a5 contactInternalGUID:(id)a6
+- (STContactAddress)initWithType:(int64_t)type stringValue:(id)value contactIdentifier:(id)identifier contactInternalGUID:(id)d
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  valueCopy = value;
+  identifierCopy = identifier;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = STContactAddress;
   v13 = [(STContactAddress *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_type = a3;
-    v15 = [v10 copy];
+    v13->_type = type;
+    v15 = [valueCopy copy];
     stringValue = v14->_stringValue;
     v14->_stringValue = v15;
 
-    objc_storeStrong(&v14->_contactIdentifier, a5);
-    objc_storeStrong(&v14->_contactInternalGUID, a6);
+    objc_storeStrong(&v14->_contactIdentifier, identifier);
+    objc_storeStrong(&v14->_contactInternalGUID, d);
   }
 
   return v14;

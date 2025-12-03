@@ -1,13 +1,13 @@
 @interface TSCHPropertyMutationHelper
-+ (BOOL)anyPropertiesChanged:(id)a3 forStyleOwner:(id)a4;
-+ (BOOL)propertyChanged:(int)a3 forStyleOwner:(id)a4 newValue:(id)a5;
-+ (id)convertToStyleSwapTuplesForStyleOwner:(id)a3 styleSwapType:(int)a4 nonStyleSwapType:(int)a5 index:(unint64_t)a6 fromMutations:(id)a7 forImport:(BOOL)a8 withOptionalStyleValueConversionBlock:(id)a9;
-+ (id)styleSwapTuplesFromMutationTuples:(id)a3 forImport:(BOOL)a4;
-+ (id)transformedTuplesWithStyleOwner:(id)a3 mutations:(id)a4;
-+ (int)safe_specificMutationPropertyForGeneric:(int)a3 styleOwner:(id)a4 allowSpecificProperties:(BOOL)a5;
-+ (int)specificMutationPropertyForGeneric:(int)a3 styleOwner:(id)a4 allowSpecificProperties:(BOOL)a5;
-+ (void)applyMutations:(id)a3 forImport:(BOOL)a4 forStyleOwner:(id)a5 withNonStylePropertyList:(id)a6 toStylePropertyMap:(id)a7 andNonStylePropertyMap:(id)a8;
-+ (void)setValue:(id)a3 forProperty:(int)a4 ofStyleOwner:(id)a5;
++ (BOOL)anyPropertiesChanged:(id)changed forStyleOwner:(id)owner;
++ (BOOL)propertyChanged:(int)changed forStyleOwner:(id)owner newValue:(id)value;
++ (id)convertToStyleSwapTuplesForStyleOwner:(id)owner styleSwapType:(int)type nonStyleSwapType:(int)swapType index:(unint64_t)index fromMutations:(id)mutations forImport:(BOOL)import withOptionalStyleValueConversionBlock:(id)block;
++ (id)styleSwapTuplesFromMutationTuples:(id)tuples forImport:(BOOL)import;
++ (id)transformedTuplesWithStyleOwner:(id)owner mutations:(id)mutations;
++ (int)safe_specificMutationPropertyForGeneric:(int)generic styleOwner:(id)owner allowSpecificProperties:(BOOL)properties;
++ (int)specificMutationPropertyForGeneric:(int)generic styleOwner:(id)owner allowSpecificProperties:(BOOL)properties;
++ (void)applyMutations:(id)mutations forImport:(BOOL)import forStyleOwner:(id)owner withNonStylePropertyList:(id)list toStylePropertyMap:(id)map andNonStylePropertyMap:(id)propertyMap;
++ (void)setValue:(id)value forProperty:(int)property ofStyleOwner:(id)owner;
 - (TSCHPropertyMutationHelper)init;
 @end
 
@@ -24,25 +24,25 @@
   return 0;
 }
 
-+ (void)applyMutations:(id)a3 forImport:(BOOL)a4 forStyleOwner:(id)a5 withNonStylePropertyList:(id)a6 toStylePropertyMap:(id)a7 andNonStylePropertyMap:(id)a8
++ (void)applyMutations:(id)mutations forImport:(BOOL)import forStyleOwner:(id)owner withNonStylePropertyList:(id)list toStylePropertyMap:(id)map andNonStylePropertyMap:(id)propertyMap
 {
-  v114 = a4;
+  importCopy = import;
   v121 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v115 = a5;
-  v112 = a6;
-  v107 = a7;
-  v108 = a8;
-  v113 = v13;
-  if (objc_msgSend_count(v13, v14, v15, v16, v17))
+  mutationsCopy = mutations;
+  ownerCopy = owner;
+  listCopy = list;
+  mapCopy = map;
+  propertyMapCopy = propertyMap;
+  v113 = mutationsCopy;
+  if (objc_msgSend_count(mutationsCopy, v14, v15, v16, v17))
   {
-    v110 = v107;
-    v111 = v108;
+    v110 = mapCopy;
+    v111 = propertyMapCopy;
     v116 = 0u;
     v117 = 0u;
     v118 = 0u;
     v119 = 0u;
-    obj = objc_msgSend_allKeys(v13, v18, 0.0, v19, v20);
+    obj = objc_msgSend_allKeys(mutationsCopy, v18, 0.0, v19, v20);
     v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v21, v22, v23, v24, &v116, v120, 16);
     if (!v26)
     {
@@ -61,11 +61,11 @@
 
         v32 = *(*(&v116 + 1) + 8 * i);
         v33 = objc_msgSend_tsch_stylePropertyValue(v32, v25, v27, v28, v29);
-        v38 = objc_msgSend_specificMutationPropertyForGeneric_styleOwner_allowSpecificProperties_(a1, v34, v35, v36, v37, v33, v115, v114);
+        v38 = objc_msgSend_specificMutationPropertyForGeneric_styleOwner_allowSpecificProperties_(self, v34, v35, v36, v37, v33, ownerCopy, importCopy);
         if (v38)
         {
           v39 = objc_msgSend_objectForKey_(v113, v25, v27, v28, v29, v32);
-          v44 = objc_msgSend_containsProperty_(v112, v40, v41, v42, v43, v38);
+          v44 = objc_msgSend_containsProperty_(listCopy, v40, v41, v42, v43, v38);
           v45 = v110;
           if (v44)
           {
@@ -156,13 +156,13 @@ LABEL_27:
   }
 }
 
-+ (id)styleSwapTuplesFromMutationTuples:(id)a3 forImport:(BOOL)a4
++ (id)styleSwapTuplesFromMutationTuples:(id)tuples forImport:(BOOL)import
 {
-  v158 = a4;
+  importCopy = import;
   v174 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v156 = v4;
-  if (!v4 || !objc_msgSend_count(v4, v5, v6, v7, v8))
+  tuplesCopy = tuples;
+  v156 = tuplesCopy;
+  if (!tuplesCopy || !objc_msgSend_count(tuplesCopy, v5, v6, v7, v8))
   {
     v79 = MEMORY[0x277CBEBF8];
     goto LABEL_39;
@@ -309,7 +309,7 @@ LABEL_21:
 
         v144 = *(*(&v159 + 1) + 8 * k);
         v145 = objc_msgSend_objectForKey_(v95, v137, v139, v140, v141, v144);
-        v150 = objc_msgSend_swapTuplesForMutations_forImport_(v144, v146, v147, v148, v149, v145, v158);
+        v150 = objc_msgSend_swapTuplesForMutations_forImport_(v144, v146, v147, v148, v149, v145, importCopy);
         objc_msgSend_addObjectsFromArray_(v79, v151, v152, v153, v154, v150);
       }
 
@@ -324,14 +324,14 @@ LABEL_39:
   return v79;
 }
 
-+ (id)convertToStyleSwapTuplesForStyleOwner:(id)a3 styleSwapType:(int)a4 nonStyleSwapType:(int)a5 index:(unint64_t)a6 fromMutations:(id)a7 forImport:(BOOL)a8 withOptionalStyleValueConversionBlock:(id)a9
++ (id)convertToStyleSwapTuplesForStyleOwner:(id)owner styleSwapType:(int)type nonStyleSwapType:(int)swapType index:(unint64_t)index fromMutations:(id)mutations forImport:(BOOL)import withOptionalStyleValueConversionBlock:(id)block
 {
-  v9 = a8;
-  v12 = a3;
-  v308 = a7;
-  v307 = a9;
-  v309 = v12;
-  if (!v12)
+  importCopy = import;
+  ownerCopy = owner;
+  mutationsCopy = mutations;
+  blockCopy = block;
+  v309 = ownerCopy;
+  if (!ownerCopy)
   {
     v17 = MEMORY[0x277D81150];
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, v14, v15, v16, "+[TSCHPropertyMutationHelper convertToStyleSwapTuplesForStyleOwner:styleSwapType:nonStyleSwapType:index:fromMutations:forImport:withOptionalStyleValueConversionBlock:]");
@@ -341,8 +341,8 @@ LABEL_39:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31);
   }
 
-  v310 = objc_msgSend_chartInfo(v12, v13, v14, v15, v16);
-  v37 = objc_msgSend_styleOwnerRefForStyleOwner_(v310, v32, v33, v34, v35, v12);
+  v310 = objc_msgSend_chartInfo(ownerCopy, v13, v14, v15, v16);
+  v37 = objc_msgSend_styleOwnerRefForStyleOwner_(v310, v32, v33, v34, v35, ownerCopy);
   v306 = v37;
   if (!v37)
   {
@@ -355,11 +355,11 @@ LABEL_39:
   }
 
   objc_msgSend_styleClass(v37, v36, v38, v39, v40);
-  v60 = objc_msgSend_style(v12, v56, v57, v58, v59);
+  v60 = objc_msgSend_style(ownerCopy, v56, v57, v58, v59);
   v312 = TSUDynamicCast();
 
   objc_msgSend_nonstyleClass(v37, v61, v62, v63, v64);
-  v69 = objc_msgSend_nonstyle(v12, v65, v66, v67, v68);
+  v69 = objc_msgSend_nonstyle(ownerCopy, v65, v66, v67, v68);
   v313 = TSUDynamicCast();
 
   v74 = objc_msgSend_styleClass(v37, v70, v71, v72, v73);
@@ -433,7 +433,7 @@ LABEL_39:
   }
 
   v304 = objc_msgSend_properties(v311, v153, v154, v155, v156);
-  objc_msgSend_applyMutations_forImport_forStyleOwner_withNonStylePropertyList_toStylePropertyMap_andNonStylePropertyMap_(a1, v173, v174, v175, v176, v308, v9, v157, v304, v120, v149);
+  objc_msgSend_applyMutations_forImport_forStyleOwner_withNonStylePropertyList_toStylePropertyMap_andNonStylePropertyMap_(self, v173, v174, v175, v176, mutationsCopy, importCopy, v157, v304, v120, v149);
   v177 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v182 = objc_msgSend_propertyMap(v312, v178, v179, v180, v181);
   v183 = sub_2762CD52C(v120, v182);
@@ -466,18 +466,18 @@ LABEL_39:
     v189 = v221;
     v222 = v188;
     v223 = v221;
-    if (v307)
+    if (blockCopy)
     {
       v314 = v221;
       v315 = v188;
-      v307[2](v307, v188, v221, &v315, &v314);
+      blockCopy[2](blockCopy, v188, v221, &v315, &v314);
       v222 = v315;
 
       v223 = v314;
     }
 
     v224 = [TSCHStyleSwapUndoTuple alloc];
-    v229 = objc_msgSend_initWithChartInfo_swapType_index_oldValue_newValue_(v224, v225, v226, v227, v228, v310, a4, a6, v222, v223);
+    v229 = objc_msgSend_initWithChartInfo_swapType_index_oldValue_newValue_(v224, v225, v226, v227, v228, v310, type, index, v222, v223);
     objc_msgSend_addObject_(v177, v230, v231, v232, v233, v229);
 
     v157 = v309;
@@ -527,7 +527,7 @@ LABEL_39:
     }
 
     v289 = [TSCHStyleSwapUndoTuple alloc];
-    v294 = objc_msgSend_initWithChartInfo_swapType_index_oldValue_newValue_(v289, v290, v291, v292, v293, v310, a5, a6, v240, v241);
+    v294 = objc_msgSend_initWithChartInfo_swapType_index_oldValue_newValue_(v289, v290, v291, v292, v293, v310, swapType, index, v240, v241);
     objc_msgSend_addObject_(v177, v295, v296, v297, v298, v294);
 
     v157 = v309;
@@ -538,26 +538,26 @@ LABEL_39:
   return v299;
 }
 
-+ (void)setValue:(id)a3 forProperty:(int)a4 ofStyleOwner:(id)a5
++ (void)setValue:(id)value forProperty:(int)property ofStyleOwner:(id)owner
 {
-  v6 = *&a4;
-  v34 = a3;
-  v7 = a5;
+  v6 = *&property;
+  valueCopy = value;
+  ownerCopy = owner;
   v8 = MEMORY[0x277CBEAC0];
   v13 = objc_msgSend_tsch_numberWithStyleProperty_(MEMORY[0x277CCABB0], v9, v10, v11, v12, v6);
-  v18 = objc_msgSend_dictionaryWithObject_forKey_(v8, v14, v15, v16, v17, v34, v13);
+  v18 = objc_msgSend_dictionaryWithObject_forKey_(v8, v14, v15, v16, v17, valueCopy, v13);
 
-  v23 = objc_msgSend_swapTuplesForMutations_forImport_(v7, v19, v20, v21, v22, v18, 0);
-  v28 = objc_msgSend_chartInfo(v7, v24, v25, v26, v27);
+  v23 = objc_msgSend_swapTuplesForMutations_forImport_(ownerCopy, v19, v20, v21, v22, v18, 0);
+  v28 = objc_msgSend_chartInfo(ownerCopy, v24, v25, v26, v27);
   v33 = objc_msgSend_applyStyleSwapTuples_(v28, v29, v30, v31, v32, v23);
 }
 
-+ (int)specificMutationPropertyForGeneric:(int)a3 styleOwner:(id)a4 allowSpecificProperties:(BOOL)a5
++ (int)specificMutationPropertyForGeneric:(int)generic styleOwner:(id)owner allowSpecificProperties:(BOOL)properties
 {
-  v5 = a5;
-  v6 = *&a3;
-  v9 = a4;
-  if (!v9)
+  propertiesCopy = properties;
+  v6 = *&generic;
+  ownerCopy = owner;
+  if (!ownerCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v10, v11, v12, "+[TSCHPropertyMutationHelper specificMutationPropertyForGeneric:styleOwner:allowSpecificProperties:]");
@@ -577,7 +577,7 @@ LABEL_39:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v39, v40, v41, v42);
   }
 
-  v44 = objc_msgSend_safe_specificMutationPropertyForGeneric_styleOwner_allowSpecificProperties_(a1, v8, v10, v11, v12, v6, v9, v5);
+  v44 = objc_msgSend_safe_specificMutationPropertyForGeneric_styleOwner_allowSpecificProperties_(self, v8, v10, v11, v12, v6, ownerCopy, propertiesCopy);
   if (!v44)
   {
     v48 = MEMORY[0x277D81150];
@@ -592,21 +592,21 @@ LABEL_39:
   return v44;
 }
 
-+ (int)safe_specificMutationPropertyForGeneric:(int)a3 styleOwner:(id)a4 allowSpecificProperties:(BOOL)a5
++ (int)safe_specificMutationPropertyForGeneric:(int)generic styleOwner:(id)owner allowSpecificProperties:(BOOL)properties
 {
-  v6 = *&a3;
-  v7 = a4;
-  v12 = v7;
+  v6 = *&generic;
+  ownerCopy = owner;
+  v12 = ownerCopy;
   v13 = 0;
-  if (v6 && v7)
+  if (v6 && ownerCopy)
   {
-    v14 = objc_msgSend_specificPropertyForGeneric_(v7, v8, v9, v10, v11, v6);
+    v14 = objc_msgSend_specificPropertyForGeneric_(ownerCopy, v8, v9, v10, v11, v6);
     if (!v14)
     {
       v14 = objc_msgSend_defaultPropertyForGeneric_(v12, v15, v16, v17, v18, v6);
     }
 
-    if (a5 && v14 == 0)
+    if (properties && v14 == 0)
     {
       v13 = v6;
     }
@@ -620,27 +620,27 @@ LABEL_39:
   return v13;
 }
 
-+ (id)transformedTuplesWithStyleOwner:(id)a3 mutations:(id)a4
++ (id)transformedTuplesWithStyleOwner:(id)owner mutations:(id)mutations
 {
-  v5 = a3;
-  v6 = a4;
+  ownerCopy = owner;
+  mutationsCopy = mutations;
   v7 = [TSCHPropertyMutationTuple alloc];
-  v12 = objc_msgSend_initWithStyleOwner_mutations_(v7, v8, v9, v10, v11, v5, v6);
-  v17 = objc_msgSend_transformedTuplesWithTuple_(v5, v13, v14, v15, v16, v12);
+  v12 = objc_msgSend_initWithStyleOwner_mutations_(v7, v8, v9, v10, v11, ownerCopy, mutationsCopy);
+  v17 = objc_msgSend_transformedTuplesWithTuple_(ownerCopy, v13, v14, v15, v16, v12);
 
   return v17;
 }
 
-+ (BOOL)anyPropertiesChanged:(id)a3 forStyleOwner:(id)a4
++ (BOOL)anyPropertiesChanged:(id)changed forStyleOwner:(id)owner
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  ownerCopy = owner;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = v6;
+  v8 = changedCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, v10, v11, v12, &v33, v37, 16);
   if (v14)
   {
@@ -657,7 +657,7 @@ LABEL_39:
         v20 = *(*(&v33 + 1) + 8 * i);
         v21 = objc_msgSend_tsch_stylePropertyValue(v20, v13, v15, v16, v17, v33);
         v26 = objc_msgSend_objectForKeyedSubscript_(v8, v22, v23, v24, v25, v20);
-        LOBYTE(v21) = objc_msgSend_propertyChanged_forStyleOwner_newValue_(a1, v27, v28, v29, v30, v21, v7, v26);
+        LOBYTE(v21) = objc_msgSend_propertyChanged_forStyleOwner_newValue_(self, v27, v28, v29, v30, v21, ownerCopy, v26);
 
         if (v21)
         {
@@ -682,11 +682,11 @@ LABEL_11:
   return v31;
 }
 
-+ (BOOL)propertyChanged:(int)a3 forStyleOwner:(id)a4 newValue:(id)a5
++ (BOOL)propertyChanged:(int)changed forStyleOwner:(id)owner newValue:(id)value
 {
-  v6 = *&a3;
-  v7 = a4;
-  v8 = a5;
+  v6 = *&changed;
+  ownerCopy = owner;
+  valueCopy = value;
   v9 = String();
   if (v9)
   {
@@ -695,7 +695,7 @@ LABEL_11:
       objc_opt_class();
       v14 = TSUCheckedDynamicCast();
       v43 = 0.0;
-      if (objc_msgSend_hasFloatValueForProperty_value_(v7, v25, v26, v27, v28, v6, &v43))
+      if (objc_msgSend_hasFloatValueForProperty_value_(ownerCopy, v25, v26, v27, v28, v6, &v43))
       {
         objc_msgSend_floatValue(v14, v29, v30, v31, v32);
         v24 = v33 == v43;
@@ -716,7 +716,7 @@ LABEL_8:
       objc_opt_class();
       v14 = TSUCheckedDynamicCast();
       v43 = 0.0;
-      if (objc_msgSend_hasIntValueForProperty_value_(v7, v15, v16, v17, v18, v6, &v43))
+      if (objc_msgSend_hasIntValueForProperty_value_(ownerCopy, v15, v16, v17, v18, v6, &v43))
       {
         v23 = objc_msgSend_tsch_styleIntValue(v14, v19, v20, v21, v22);
         v24 = v23 == LODWORD(v43);
@@ -728,7 +728,7 @@ LABEL_8:
   }
 
   v42 = 0;
-  hasObjectValueForProperty_value = objc_msgSend_hasObjectValueForProperty_value_(v7, v10, v11, v12, v13, v6, &v42);
+  hasObjectValueForProperty_value = objc_msgSend_hasObjectValueForProperty_value_(ownerCopy, v10, v11, v12, v13, v6, &v42);
   v36 = v42;
   v14 = v36;
   if (!hasObjectValueForProperty_value)
@@ -738,7 +738,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v34 = objc_msgSend_isEqual_(v36, v37, v38, v39, v40, v8) ^ 1;
+  v34 = objc_msgSend_isEqual_(v36, v37, v38, v39, v40, valueCopy) ^ 1;
 LABEL_14:
 
 LABEL_16:

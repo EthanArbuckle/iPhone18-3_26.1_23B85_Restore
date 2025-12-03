@@ -1,29 +1,29 @@
 @interface NRDBackgroundActivitySchedulerServerImpl
-- (NRDBackgroundActivitySchedulerServerImpl)initWithIdentifier:(id)a3;
-- (void)_isAppRefresh:(id)a3;
-- (void)_setAdditionalXPCActivityProperties:(id)a3;
+- (NRDBackgroundActivitySchedulerServerImpl)initWithIdentifier:(id)identifier;
+- (void)_isAppRefresh:(id)refresh;
+- (void)_setAdditionalXPCActivityProperties:(id)properties;
 - (void)dealloc;
-- (void)delay:(id)a3;
-- (void)identifier:(id)a3;
-- (void)interval:(id)a3;
-- (void)preregistered:(id)a3;
-- (void)qualityOfService:(id)a3;
-- (void)repeats:(id)a3;
-- (void)scheduleWithRemoteableBlock:(id)a3;
-- (void)setCheckInHandler:(id)a3;
-- (void)shouldDefer:(id)a3;
-- (void)tolerance:(id)a3;
+- (void)delay:(id)delay;
+- (void)identifier:(id)identifier;
+- (void)interval:(id)interval;
+- (void)preregistered:(id)preregistered;
+- (void)qualityOfService:(id)service;
+- (void)repeats:(id)repeats;
+- (void)scheduleWithRemoteableBlock:(id)block;
+- (void)setCheckInHandler:(id)handler;
+- (void)shouldDefer:(id)defer;
+- (void)tolerance:(id)tolerance;
 @end
 
 @implementation NRDBackgroundActivitySchedulerServerImpl
 
-- (NRDBackgroundActivitySchedulerServerImpl)initWithIdentifier:(id)a3
+- (NRDBackgroundActivitySchedulerServerImpl)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(NRDBackgroundActivitySchedulerServerImpl *)self init];
   if (v5)
   {
-    v6 = [[NSBackgroundActivityScheduler alloc] initWithIdentifier:v4];
+    v6 = [[NSBackgroundActivityScheduler alloc] initWithIdentifier:identifierCopy];
     scheduler = v5->_scheduler;
     v5->_scheduler = v6;
   }
@@ -41,51 +41,51 @@
   [(NRDBackgroundActivitySchedulerServerImpl *)&v4 dealloc];
 }
 
-- (void)identifier:(id)a3
+- (void)identifier:(id)identifier
 {
   scheduler = self->_scheduler;
-  v5 = a3;
-  v6 = [(NSBackgroundActivityScheduler *)scheduler identifier];
-  (*(a3 + 2))(v5, v6);
+  identifierCopy = identifier;
+  identifier = [(NSBackgroundActivityScheduler *)scheduler identifier];
+  (*(identifier + 2))(identifierCopy, identifier);
 }
 
-- (void)qualityOfService:(id)a3
+- (void)qualityOfService:(id)service
 {
   scheduler = self->_scheduler;
-  v5 = a3;
-  (*(a3 + 2))(v5, [(NSBackgroundActivityScheduler *)scheduler qualityOfService]);
+  serviceCopy = service;
+  (*(service + 2))(serviceCopy, [(NSBackgroundActivityScheduler *)scheduler qualityOfService]);
 }
 
-- (void)repeats:(id)a3
+- (void)repeats:(id)repeats
 {
   scheduler = self->_scheduler;
-  v5 = a3;
-  (*(a3 + 2))(v5, [(NSBackgroundActivityScheduler *)scheduler repeats]);
+  repeatsCopy = repeats;
+  (*(repeats + 2))(repeatsCopy, [(NSBackgroundActivityScheduler *)scheduler repeats]);
 }
 
-- (void)interval:(id)a3
+- (void)interval:(id)interval
 {
   scheduler = self->_scheduler;
-  v5 = a3;
+  intervalCopy = interval;
   [(NSBackgroundActivityScheduler *)scheduler interval];
-  (*(a3 + 2))(v5);
+  (*(interval + 2))(intervalCopy);
 }
 
-- (void)tolerance:(id)a3
+- (void)tolerance:(id)tolerance
 {
   scheduler = self->_scheduler;
-  v5 = a3;
+  toleranceCopy = tolerance;
   [(NSBackgroundActivityScheduler *)scheduler tolerance];
-  (*(a3 + 2))(v5);
+  (*(tolerance + 2))(toleranceCopy);
 }
 
-- (void)scheduleWithRemoteableBlock:(id)a3
+- (void)scheduleWithRemoteableBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = nrdSharedLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NSBackgroundActivityScheduler *)self->_scheduler identifier];
+    identifier = [(NSBackgroundActivityScheduler *)self->_scheduler identifier];
     v7 = "NO";
     if ([(NSBackgroundActivityScheduler *)self->_scheduler isPreregistered])
     {
@@ -97,7 +97,7 @@
       v8 = "NO";
     }
 
-    v9 = [(NSBackgroundActivityScheduler *)self->_scheduler qualityOfService];
+    qualityOfService = [(NSBackgroundActivityScheduler *)self->_scheduler qualityOfService];
     if ([(NSBackgroundActivityScheduler *)self->_scheduler repeats])
     {
       v7 = "YES";
@@ -109,13 +109,13 @@
     v13 = v12;
     [(NSBackgroundActivityScheduler *)self->_scheduler tolerance];
     *buf = 138545154;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
-    v22 = v6;
+    v22 = identifier;
     v23 = 2082;
     v24 = v8;
     v25 = 2048;
-    v26 = v9;
+    v26 = qualityOfService;
     v27 = 2082;
     v28 = v7;
     v29 = 2048;
@@ -133,8 +133,8 @@
   v17[2] = __72__NRDBackgroundActivitySchedulerServerImpl_scheduleWithRemoteableBlock___block_invoke;
   v17[3] = &unk_1000187B8;
   v17[4] = self;
-  v18 = v4;
-  v16 = v4;
+  v18 = blockCopy;
+  v16 = blockCopy;
   [(NSBackgroundActivityScheduler *)scheduler scheduleWithBlock:v17];
 }
 
@@ -200,54 +200,54 @@ uint64_t __72__NRDBackgroundActivitySchedulerServerImpl_scheduleWithRemoteableBl
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)shouldDefer:(id)a3
+- (void)shouldDefer:(id)defer
 {
   scheduler = self->_scheduler;
-  v5 = a3;
-  (*(a3 + 2))(v5, [(NSBackgroundActivityScheduler *)scheduler shouldDefer]);
+  deferCopy = defer;
+  (*(defer + 2))(deferCopy, [(NSBackgroundActivityScheduler *)scheduler shouldDefer]);
 }
 
-- (void)preregistered:(id)a3
+- (void)preregistered:(id)preregistered
 {
   scheduler = self->_scheduler;
-  v5 = a3;
-  (*(a3 + 2))(v5, [(NSBackgroundActivityScheduler *)scheduler isPreregistered]);
+  preregisteredCopy = preregistered;
+  (*(preregistered + 2))(preregisteredCopy, [(NSBackgroundActivityScheduler *)scheduler isPreregistered]);
 }
 
-- (void)delay:(id)a3
+- (void)delay:(id)delay
 {
   scheduler = self->_scheduler;
-  v5 = a3;
+  delayCopy = delay;
   [(NSBackgroundActivityScheduler *)scheduler delay];
-  (*(a3 + 2))(v5);
+  (*(delay + 2))(delayCopy);
 }
 
-- (void)_setAdditionalXPCActivityProperties:(id)a3
+- (void)_setAdditionalXPCActivityProperties:(id)properties
 {
   v4 = _CFXPCCreateXPCObjectFromCFObject();
   [(NSBackgroundActivityScheduler *)self->_scheduler _setAdditionalXPCActivityProperties:v4];
 }
 
-- (void)setCheckInHandler:(id)a3
+- (void)setCheckInHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
   v15 = 0;
   scheduler = self->_scheduler;
-  if (v4)
+  if (handlerCopy)
   {
-    v6 = [(NSBackgroundActivityScheduler *)scheduler identifier];
+    identifier = [(NSBackgroundActivityScheduler *)scheduler identifier];
     [(NSBackgroundActivityScheduler *)self->_scheduler description];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = __62__NRDBackgroundActivitySchedulerServerImpl_setCheckInHandler___block_invoke;
     v7 = v9[3] = &unk_100018808;
     v10 = v7;
-    v8 = v6;
+    v8 = identifier;
     v11 = v8;
-    v12 = v4;
+    v12 = handlerCopy;
     v13 = v14;
     [(NSBackgroundActivityScheduler *)self->_scheduler setCheckInHandler:v9];
   }
@@ -333,11 +333,11 @@ void __62__NRDBackgroundActivitySchedulerServerImpl_setCheckInHandler___block_in
   }
 }
 
-- (void)_isAppRefresh:(id)a3
+- (void)_isAppRefresh:(id)refresh
 {
   scheduler = self->_scheduler;
-  v5 = a3;
-  (*(a3 + 2))(v5, [(NSBackgroundActivityScheduler *)scheduler _isAppRefresh]);
+  refreshCopy = refresh;
+  (*(refresh + 2))(refreshCopy, [(NSBackgroundActivityScheduler *)scheduler _isAppRefresh]);
 }
 
 @end

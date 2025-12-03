@@ -1,55 +1,55 @@
 @interface CALNMutableNotificationRecord
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setContent:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setSourceClientIdentifier:(id)a3;
-- (void)setSourceIdentifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setContent:(id)content;
+- (void)setDate:(id)date;
+- (void)setSourceClientIdentifier:(id)identifier;
+- (void)setSourceIdentifier:(id)identifier;
 @end
 
 @implementation CALNMutableNotificationRecord
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CALNNotificationRecord allocWithZone:a3];
-  v5 = [(CALNNotificationRecord *)self sourceIdentifier];
-  v6 = [(CALNNotificationRecord *)self sourceClientIdentifier];
-  v7 = [(CALNNotificationRecord *)self content];
-  v8 = [(CALNNotificationRecord *)self date];
-  v9 = [(CALNNotificationRecord *)v4 initWithSourceIdentifier:v5 sourceClientIdentifier:v6 content:v7 date:v8 shouldPresentAlert:[(CALNNotificationRecord *)self shouldPresentAlert] shouldPlaySound:[(CALNNotificationRecord *)self shouldPlaySound]];
+  v4 = [CALNNotificationRecord allocWithZone:zone];
+  sourceIdentifier = [(CALNNotificationRecord *)self sourceIdentifier];
+  sourceClientIdentifier = [(CALNNotificationRecord *)self sourceClientIdentifier];
+  content = [(CALNNotificationRecord *)self content];
+  date = [(CALNNotificationRecord *)self date];
+  v9 = [(CALNNotificationRecord *)v4 initWithSourceIdentifier:sourceIdentifier sourceClientIdentifier:sourceClientIdentifier content:content date:date shouldPresentAlert:[(CALNNotificationRecord *)self shouldPresentAlert] shouldPlaySound:[(CALNNotificationRecord *)self shouldPlaySound]];
 
   return v9;
 }
 
-- (void)setSourceIdentifier:(id)a3
+- (void)setSourceIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   sourceIdentifier = self->super._sourceIdentifier;
   self->super._sourceIdentifier = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSourceClientIdentifier:(id)a3
+- (void)setSourceClientIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   sourceClientIdentifier = self->super._sourceClientIdentifier;
   self->super._sourceClientIdentifier = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v4 = [a3 copy];
+  v4 = [content copy];
   content = self->super._content;
   self->super._content = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   date = self->super._date;
   self->super._date = v4;
 

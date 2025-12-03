@@ -1,5 +1,5 @@
 @interface UIInputViewPostPinningReloadState
-+ (id)stateWithResponder:(id)a3;
++ (id)stateWithResponder:(id)responder;
 - (void)dealloc;
 @end
 
@@ -13,11 +13,11 @@
   [(UIInputViewPostPinningReloadState *)&v3 dealloc];
 }
 
-+ (id)stateWithResponder:(id)a3
++ (id)stateWithResponder:(id)responder
 {
-  v3 = a3;
+  responderCopy = responder;
   v4 = objc_alloc_init(UIInputViewPostPinningReloadState);
-  [(UIInputViewPostPinningReloadState *)v4 setResponderToReload:v3];
+  [(UIInputViewPostPinningReloadState *)v4 setResponderToReload:responderCopy];
 
   return v4;
 }

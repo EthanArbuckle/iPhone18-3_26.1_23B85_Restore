@@ -1,27 +1,27 @@
 @interface WBWebsiteDataRecord
-+ (id)websiteDataRecordFromXPCDictionary:(id)a3;
-+ (id)websiteDataRecordWithDomain:(id)a3 profileIdentifiers:(id)a4;
++ (id)websiteDataRecordFromXPCDictionary:(id)dictionary;
++ (id)websiteDataRecordWithDomain:(id)domain profileIdentifiers:(id)identifiers;
 - (OS_xpc_object)XPCDictionaryRepresentation;
-- (id)_initWithDomain:(id)a3 usage:(unint64_t)a4 profileIdentifiers:(id)a5;
+- (id)_initWithDomain:(id)domain usage:(unint64_t)usage profileIdentifiers:(id)identifiers;
 @end
 
 @implementation WBWebsiteDataRecord
 
-+ (id)websiteDataRecordWithDomain:(id)a3 profileIdentifiers:(id)a4
++ (id)websiteDataRecordWithDomain:(id)domain profileIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithDomain:v7 profileIdentifiers:v6];
+  identifiersCopy = identifiers;
+  domainCopy = domain;
+  v8 = [[self alloc] _initWithDomain:domainCopy profileIdentifiers:identifiersCopy];
 
   return v8;
 }
 
-+ (id)websiteDataRecordFromXPCDictionary:(id)a3
++ (id)websiteDataRecordFromXPCDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:{xpc_dictionary_get_string(v3, "WebsiteDataRecordDomain")}];
-  uint64 = xpc_dictionary_get_uint64(v3, "WebsiteDataRecordUsage");
-  v6 = xpc_dictionary_get_value(v3, kWebsiteProfileIdentifiersKey);
+  dictionaryCopy = dictionary;
+  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:{xpc_dictionary_get_string(dictionaryCopy, "WebsiteDataRecordDomain")}];
+  uint64 = xpc_dictionary_get_uint64(dictionaryCopy, "WebsiteDataRecordUsage");
+  v6 = xpc_dictionary_get_value(dictionaryCopy, kWebsiteProfileIdentifiersKey);
   v7 = v6;
   if (v6)
   {
@@ -90,21 +90,21 @@
   return v3;
 }
 
-- (id)_initWithDomain:(id)a3 usage:(unint64_t)a4 profileIdentifiers:(id)a5
+- (id)_initWithDomain:(id)domain usage:(unint64_t)usage profileIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a5;
+  domainCopy = domain;
+  identifiersCopy = identifiers;
   v17.receiver = self;
   v17.super_class = WBWebsiteDataRecord;
   v10 = [(WBWebsiteDataRecord *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [domainCopy copy];
     domain = v10->_domain;
     v10->_domain = v11;
 
-    v10->_usage = a4;
-    v13 = [v9 mutableCopy];
+    v10->_usage = usage;
+    v13 = [identifiersCopy mutableCopy];
     profileIdentifiers = v10->_profileIdentifiers;
     v10->_profileIdentifiers = v13;
 

@@ -1,8 +1,8 @@
 @interface FormatLayoutView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)isAccessibilityElement;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (NSArray)accessibilityCustomActions;
 - (NSArray)accessibilityElements;
 - (int64_t)accessibilityContainerType;
@@ -12,28 +12,28 @@
 
 @implementation FormatLayoutView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v11.value.super.isa = v4;
-  LOBYTE(v4) = FormatLayoutView.point(inside:with:)(__PAIR128__(*&y, *&x), v11);
+  eventCopy = event;
+  y = inside.y;
+  x = inside.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  v11.value.super.isa = eventCopy;
+  LOBYTE(eventCopy) = FormatLayoutView.point(inside:with:)(__PAIR128__(*&y, *&x), v11);
 
-  return v4 & 1;
+  return eventCopy & 1;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   FormatLayoutView.layoutSubviews()();
 }
 
 - (int64_t)accessibilityContainerType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FormatLayoutView.accessibilityContainerType.getter();
 
   return v3;
@@ -46,7 +46,7 @@
     return 0;
   }
 
-  v2 = self;
+  selfCopy = self;
 
   v3 = sub_1D6A5E96C();
   v5 = v4;
@@ -86,7 +86,7 @@
     return 0;
   }
 
-  v2 = self;
+  selfCopy = self;
 
   v3 = sub_1D6A6082C();
 
@@ -95,7 +95,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FormatLayoutView.accessibilityCustomActions.getter();
 
   if (v3)
@@ -112,42 +112,42 @@
   return v4;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = [a4 view];
-  if (v4)
+  view = [gestureRecognizer view];
+  if (view)
   {
-    v5 = v4;
+    v5 = view;
     type metadata accessor for FormatButton();
-    v4 = swift_dynamicCastClass();
-    if (!v4)
+    view = swift_dynamicCastClass();
+    if (!view)
     {
 
-      v4 = 0;
+      view = 0;
     }
   }
 
-  v6 = v4 != 0;
+  v6 = view != 0;
 
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v4 = [a4 view];
-  if (v4)
+  view = [touch view];
+  if (view)
   {
-    v5 = v4;
+    v5 = view;
     type metadata accessor for FormatButton();
-    v4 = swift_dynamicCastClass();
-    if (!v4)
+    view = swift_dynamicCastClass();
+    if (!view)
     {
 
-      v4 = 0;
+      view = 0;
     }
   }
 
-  v6 = v4 == 0;
+  v6 = view == 0;
 
   return v6;
 }

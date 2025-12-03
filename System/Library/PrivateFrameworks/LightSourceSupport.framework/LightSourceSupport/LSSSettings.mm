@@ -1,9 +1,9 @@
 @interface LSSSettings
 + (id)_defaultSettings;
 + (id)currentSettings;
-- (double)doubleForKey:(uint64_t)a1;
-- (float)floatForKey:(uint64_t)a1;
-- (uint64_t)BOOLForKey:(uint64_t)a1;
+- (double)doubleForKey:(uint64_t)key;
+- (float)floatForKey:(uint64_t)key;
+- (uint64_t)BOOLForKey:(uint64_t)key;
 - (uint64_t)defaults;
 - (uint64_t)dynamic;
 - (void)logDebugInfo;
@@ -176,10 +176,10 @@ LABEL_6:
   __30__LSSSettings_currentSettings__block_invoke_cold_2();
 }
 
-- (float)floatForKey:(uint64_t)a1
+- (float)floatForKey:(uint64_t)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
     if (!*__tls_guard(&__tls_guard))
     {
@@ -187,8 +187,8 @@ LABEL_6:
     }
 
     v4 = _cache(&_cache);
-    v5 = *(a1 + 16);
-    v6 = *(a1 + 24);
+    v5 = *(key + 16);
+    v6 = *(key + 24);
     v7 = v6;
     if (v5 == 1)
     {
@@ -255,10 +255,10 @@ LABEL_11:
   return v9;
 }
 
-- (double)doubleForKey:(uint64_t)a1
+- (double)doubleForKey:(uint64_t)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
     if (!*__tls_guard())
     {
@@ -266,8 +266,8 @@ LABEL_11:
     }
 
     v4 = _cache();
-    v5 = *(a1 + 16);
-    v6 = *(a1 + 24);
+    v5 = *(key + 16);
+    v6 = *(key + 24);
     v7 = v6;
     if (v5 == 1)
     {
@@ -334,10 +334,10 @@ LABEL_11:
   return v9;
 }
 
-- (uint64_t)BOOLForKey:(uint64_t)a1
+- (uint64_t)BOOLForKey:(uint64_t)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
     if (!*__tls_guard())
     {
@@ -345,8 +345,8 @@ LABEL_11:
     }
 
     v4 = _cache();
-    v5 = *(a1 + 16);
-    v6 = *(a1 + 24);
+    v5 = *(key + 16);
+    v6 = *(key + 24);
     v7 = v6;
     if (v5 == 1)
     {
@@ -414,9 +414,9 @@ LABEL_11:
 
 - (uint64_t)dynamic
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 16);
+    v1 = *(self + 16);
   }
 
   else
@@ -430,7 +430,7 @@ LABEL_11:
 - (void)logDebugInfo
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     if (qword_280D2F5D0 != -1)
     {

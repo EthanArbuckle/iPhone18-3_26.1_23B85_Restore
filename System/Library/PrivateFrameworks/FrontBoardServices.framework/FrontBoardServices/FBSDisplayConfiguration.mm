@@ -1,6 +1,6 @@
 @interface FBSDisplayConfiguration
-+ (id)_virtualDisplayConfigurationWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_virtualDisplayConfigurationWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMainRootDisplay;
 - (CGPoint)nativeCenter;
 - (CGRect)_nativeBounds;
@@ -8,39 +8,39 @@
 - (CGSize)pixelSize;
 - (CGSize)safeOverscanRatio;
 - (FBSDisplayConfiguration)init;
-- (FBSDisplayConfiguration)initWithCADisplay:(id)a3;
-- (FBSDisplayConfiguration)initWithCADisplay:(id)a3 isMainDisplay:(BOOL)a4;
-- (FBSDisplayConfiguration)initWithCoder:(id)a3;
-- (FBSDisplayConfiguration)initWithXPCDictionary:(id)a3;
+- (FBSDisplayConfiguration)initWithCADisplay:(id)display;
+- (FBSDisplayConfiguration)initWithCADisplay:(id)display isMainDisplay:(BOOL)mainDisplay;
+- (FBSDisplayConfiguration)initWithCoder:(id)coder;
+- (FBSDisplayConfiguration)initWithXPCDictionary:(id)dictionary;
 - (FBSDisplayMode)preferredMode;
 - (double)nativeOrientation;
 - (id)CADisplay;
-- (id)_initWithIdentity:(void *)a3 hardwareIdentifier:(void *)a4 name:(void *)a5 deviceName:(void *)a6 seed:(int)a7 comparable:(char)a8 tags:(double)a9 currentMode:(double)a10 preferredMode:(CGFloat)a11 otherModes:(CGFloat)a12 cloningSupported:(CGFloat)a13 overscanned:(CGFloat)a14 overscanCompensation:(CGFloat)a15 safeOverscanRatio:(CGFloat)a16 pixelSize:(unint64_t)a17 nativeBounds:(void *)a18 bounds:(void *)a19 latency:(void *)a20 originatingConfiguration:(char)a21 validityCheck:(char)a22;
-- (id)_initWithImmutableDisplay:(id)a3 originalDisplay:(id)a4 assertIfInvalid:(BOOL)a5;
+- (id)_initWithIdentity:(void *)identity hardwareIdentifier:(void *)identifier name:(void *)name deviceName:(void *)deviceName seed:(int)seed comparable:(char)comparable tags:(double)tags currentMode:(double)self0 preferredMode:(CGFloat)self1 otherModes:(CGFloat)self2 cloningSupported:(CGFloat)self3 overscanned:(CGFloat)self4 overscanCompensation:(CGFloat)self5 safeOverscanRatio:(CGFloat)self6 pixelSize:(unint64_t)self7 nativeBounds:(void *)self8 bounds:(void *)self9 latency:(void *)latency originatingConfiguration:(char)configuration validityCheck:(char)check;
+- (id)_initWithImmutableDisplay:(id)display originalDisplay:(id)originalDisplay assertIfInvalid:(BOOL)invalid;
 - (id)_nameForDisplayType;
 - (id)copyForSecureRendering;
-- (id)copyWithOverrideBounds:(CGRect)a3;
-- (id)copyWithOverrideMode:(id)a3;
-- (id)copyWithOverrideMode:(id)a3 pixelSize:(CGSize)a4 nativeBounds:(CGRect)a5;
-- (id)copyWithUniqueIdentifier:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)laterConfiguration:(id)a3;
+- (id)copyWithOverrideBounds:(CGRect)bounds;
+- (id)copyWithOverrideMode:(id)mode;
+- (id)copyWithOverrideMode:(id)mode pixelSize:(CGSize)size nativeBounds:(CGRect)bounds;
+- (id)copyWithUniqueIdentifier:(id)identifier;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)laterConfiguration:(id)configuration;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)CADisplay;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation FBSDisplayConfiguration
 
 - (BOOL)isMainRootDisplay
 {
-  v2 = [(FBSDisplayConfiguration *)self identity];
-  v3 = [v2 isMainRootDisplay];
+  identity = [(FBSDisplayConfiguration *)self identity];
+  isMainRootDisplay = [identity isMainRootDisplay];
 
-  return v3;
+  return isMainRootDisplay;
 }
 
 - (CGRect)bounds
@@ -75,17 +75,17 @@
 
   else
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    if (!v4->_caDisplay)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy->_caDisplay)
     {
-      v5 = [(FBSDisplayIdentity *)v4->_identity displayID];
+      displayID = [(FBSDisplayIdentity *)selfCopy->_identity displayID];
       v15 = 0u;
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v6 = [getCADisplayClass() displays];
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      displays = [getCADisplayClass() displays];
+      v7 = [displays countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         v8 = *v14;
@@ -95,18 +95,18 @@
           {
             if (*v14 != v8)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(displays);
             }
 
             v10 = *(*(&v13 + 1) + 8 * i);
-            if ([v10 displayId] == v5)
+            if ([v10 displayId] == displayID)
             {
-              objc_storeStrong(&v4->_caDisplay, v10);
+              objc_storeStrong(&selfCopy->_caDisplay, v10);
               goto LABEL_14;
             }
           }
 
-          v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v7 = [displays countByEnumeratingWithState:&v13 objects:v17 count:16];
           if (v7)
           {
             continue;
@@ -118,19 +118,19 @@
 
 LABEL_14:
 
-      if (!v4->_caDisplay)
+      if (!selfCopy->_caDisplay)
       {
         v11 = FBLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          [(FBSDisplayConfiguration *)v5 CADisplay];
+          [(FBSDisplayConfiguration *)displayID CADisplay];
         }
       }
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
-    v3 = v4->_caDisplay;
+    v3 = selfCopy->_caDisplay;
   }
 
   return v3;
@@ -138,10 +138,10 @@ LABEL_14:
 
 - (id)succinctDescription
 {
-  v2 = [(FBSDisplayConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSDisplayConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -149,12 +149,12 @@ LABEL_14:
   v3 = [off_1E76BC9B0 builderWithObject:self];
   v4 = [v3 appendObject:self->_identity withName:0];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(FBSDisplayMode *)self->_currentMode _referenceSizeDescription];
+  _referenceSizeDescription = [(FBSDisplayMode *)self->_currentMode _referenceSizeDescription];
   [(FBSDisplayMode *)self->_currentMode refreshRate];
   v8 = v7;
   v9 = FBSDisplayGamutDescription([(FBSDisplayMode *)self->_currentMode colorGamut]);
   v10 = FBSDisplayHDRModeDescription([(FBSDisplayMode *)self->_currentMode hdrMode]);
-  v11 = [v5 stringWithFormat:@"%@ %gHz %@ %@", v6, v8, v9, v10];
+  v11 = [v5 stringWithFormat:@"%@ %gHz %@ %@", _referenceSizeDescription, v8, v9, v10];
   [v3 appendString:v11 withName:@"mode"];
 
   if (self->_overscanned)
@@ -185,9 +185,9 @@ LABEL_7:
 
 - (id)_nameForDisplayType
 {
-  v2 = [(FBSDisplayIdentity *)self->_identity type];
+  type = [(FBSDisplayIdentity *)self->_identity type];
 
-  return FBSDisplayTypeName(v2);
+  return FBSDisplayTypeName(type);
 }
 
 - (FBSDisplayConfiguration)init
@@ -207,7 +207,7 @@ LABEL_7:
     v13 = 2114;
     v14 = v10;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"FBSDisplay.m";
     v19 = 1024;
@@ -221,71 +221,71 @@ LABEL_7:
   _bs_set_crash_log_message();
 }
 
-- (FBSDisplayConfiguration)initWithCADisplay:(id)a3
+- (FBSDisplayConfiguration)initWithCADisplay:(id)display
 {
-  v4 = a3;
-  v5 = [v4 immutableCopy];
-  v6 = [(FBSDisplayConfiguration *)self _initWithImmutableDisplay:v5 originalDisplay:v4 assertIfInvalid:0];
+  displayCopy = display;
+  immutableCopy = [displayCopy immutableCopy];
+  v6 = [(FBSDisplayConfiguration *)self _initWithImmutableDisplay:immutableCopy originalDisplay:displayCopy assertIfInvalid:0];
 
   return v6;
 }
 
-- (FBSDisplayConfiguration)initWithCADisplay:(id)a3 isMainDisplay:(BOOL)a4
+- (FBSDisplayConfiguration)initWithCADisplay:(id)display isMainDisplay:(BOOL)mainDisplay
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = [(FBSDisplayConfiguration *)self initWithCADisplay:v7];
+  mainDisplayCopy = mainDisplay;
+  displayCopy = display;
+  v8 = [(FBSDisplayConfiguration *)self initWithCADisplay:displayCopy];
   v9 = v8;
-  if (v4)
+  if (mainDisplayCopy)
   {
     if (![(FBSDisplayConfiguration *)v8 isMainDisplay])
     {
-      [(FBSDisplayConfiguration *)v7 initWithCADisplay:v9 isMainDisplay:a2];
+      [(FBSDisplayConfiguration *)displayCopy initWithCADisplay:v9 isMainDisplay:a2];
     }
   }
 
   else if (v8 && [(FBSDisplayConfiguration *)v8 isMainDisplay])
   {
-    [(FBSDisplayConfiguration *)v7 initWithCADisplay:v9 isMainDisplay:a2];
+    [(FBSDisplayConfiguration *)displayCopy initWithCADisplay:v9 isMainDisplay:a2];
   }
 
   return v9;
 }
 
-- (id)_initWithImmutableDisplay:(id)a3 originalDisplay:(id)a4 assertIfInvalid:(BOOL)a5
+- (id)_initWithImmutableDisplay:(id)display originalDisplay:(id)originalDisplay assertIfInvalid:(BOOL)invalid
 {
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  a4;
-  LODWORD(a4) = [v6 tag];
-  v7 = [v6 displayId];
+  displayCopy = display;
+  originalDisplay;
+  LODWORD(originalDisplay) = [displayCopy tag];
+  displayId = [displayCopy displayId];
   v58 = 0;
-  v8 = FBSDisplayTagToFBSDisplayType(v7, a4, &v58);
-  v9 = [v6 displayType];
-  if (v9 >= 3)
+  v8 = FBSDisplayTagToFBSDisplayType(displayId, originalDisplay, &v58);
+  displayType = [displayCopy displayType];
+  if (displayType >= 3)
   {
     v10 = 3;
   }
 
   else
   {
-    v10 = v9;
+    v10 = displayType;
   }
 
   v11 = [FBSDisplayIdentity alloc];
   v12 = v58;
-  v13 = [v6 connectionSeed];
-  v14 = [v6 processId];
+  connectionSeed = [displayCopy connectionSeed];
+  processId = [displayCopy processId];
   LOBYTE(v44) = 0;
-  LOBYTE(v43) = [v6 isExternal];
-  v15 = [(FBSDisplayIdentity *)v11 _initWithType:v8 UIKitMainLike:v12 displayID:v7 connectionType:v10 connectionSeed:v13 pid:v14 external:v43 uniqueIdentifier:0 secure:v44 root:0];
-  v16 = [v6 nativeOrientation];
-  v17 = FBSDisplayRotationFromCADisplayRotation(v16);
+  LOBYTE(v43) = [displayCopy isExternal];
+  v15 = [(FBSDisplayIdentity *)v11 _initWithType:v8 UIKitMainLike:v12 displayID:displayId connectionType:v10 connectionSeed:connectionSeed pid:processId external:v43 uniqueIdentifier:0 secure:v44 root:0];
+  nativeOrientation = [displayCopy nativeOrientation];
+  v17 = FBSDisplayRotationFromCADisplayRotation(nativeOrientation);
 
   if (v8)
   {
-    v18 = [v6 currentOrientation];
-    v19 = v17 - FBSDisplayRotationFromCADisplayRotation(v18) + 4;
+    currentOrientation = [displayCopy currentOrientation];
+    v19 = v17 - FBSDisplayRotationFromCADisplayRotation(currentOrientation) + 4;
     v20 = v19 & 3;
     v22 = -v19;
     v21 = v22 < 0;
@@ -308,9 +308,9 @@ LABEL_7:
     v24 = v25;
   }
 
-  v53 = [v6 currentMode];
-  v52 = [v6 preferredMode];
-  [v6 availableModes];
+  currentMode = [displayCopy currentMode];
+  preferredMode = [displayCopy preferredMode];
+  [displayCopy availableModes];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
@@ -321,7 +321,7 @@ LABEL_7:
   if (v27)
   {
     v28 = v27;
-    v45 = v6;
+    v45 = displayCopy;
     v50 = 0;
     v48 = 0;
     v29 = 0;
@@ -337,8 +337,8 @@ LABEL_7:
 
         v32 = *(*(&v54 + 1) + 8 * i);
         v33 = [[FBSDisplayMode alloc] _initWithCADisplayMode:v32 scale:v17 rotation:v24];
-        v34 = [v32 isEqual:v53];
-        v35 = [v32 isEqual:v52];
+        v34 = [v32 isEqual:currentMode];
+        v35 = [v32 isEqual:preferredMode];
         v36 = v35;
         if ((v34 & 1) != 0 || v35)
         {
@@ -346,7 +346,7 @@ LABEL_7:
           {
             if (v29)
             {
-              v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"somehow I have multiple availableModes that match currentMode : current=%@ new=%@ available=%@", v53, v32, obj];
+              v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"somehow I have multiple availableModes that match currentMode : current=%@ new=%@ available=%@", currentMode, v32, obj];
               if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
               {
                 [FBSDisplayConfiguration _initWithImmutableDisplay:a2 originalDisplay:? assertIfInvalid:?];
@@ -363,7 +363,7 @@ LABEL_7:
           {
             if (v48)
             {
-              v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"somehow I have multiple availableModes that match preferredMode : preferred=%@ new=%@ available=%@", v52, v32, obj];
+              v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"somehow I have multiple availableModes that match preferredMode : preferred=%@ new=%@ available=%@", preferredMode, v32, obj];
               if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
               {
                 [FBSDisplayConfiguration _initWithImmutableDisplay:a2 originalDisplay:? assertIfInvalid:?];
@@ -396,18 +396,18 @@ LABEL_7:
 
     if (v29)
     {
-      v6 = v45;
+      displayCopy = v45;
       goto LABEL_37;
     }
 
     v15 = v46;
-    v6 = v45;
+    displayCopy = v45;
     v37 = v50;
     v38 = v48;
     if (v48)
     {
 LABEL_45:
-      v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"if there is no currentMode then there can't be any modes at all : preferred=%@ other=%@ : currentCA=%@ preferredCA=%@ availableCA=%@", v38, v37, v53, v52, v26];
+      v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"if there is no currentMode then there can't be any modes at all : preferred=%@ other=%@ : currentCA=%@ preferredCA=%@ availableCA=%@", v38, v37, currentMode, preferredMode, v26];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         [FBSDisplayConfiguration _initWithImmutableDisplay:a2 originalDisplay:? assertIfInvalid:?];
@@ -438,9 +438,9 @@ LABEL_45:
     }
 
 LABEL_37:
-    [v6 frame];
+    [displayCopy frame];
     [v29 pointScale];
-    [v6 bounds];
+    [displayCopy bounds];
     BSFloatIsZero();
   }
 
@@ -449,41 +449,41 @@ LABEL_37:
   goto LABEL_45;
 }
 
-- (id)_initWithIdentity:(void *)a3 hardwareIdentifier:(void *)a4 name:(void *)a5 deviceName:(void *)a6 seed:(int)a7 comparable:(char)a8 tags:(double)a9 currentMode:(double)a10 preferredMode:(CGFloat)a11 otherModes:(CGFloat)a12 cloningSupported:(CGFloat)a13 overscanned:(CGFloat)a14 overscanCompensation:(CGFloat)a15 safeOverscanRatio:(CGFloat)a16 pixelSize:(unint64_t)a17 nativeBounds:(void *)a18 bounds:(void *)a19 latency:(void *)a20 originatingConfiguration:(char)a21 validityCheck:(char)a22
+- (id)_initWithIdentity:(void *)identity hardwareIdentifier:(void *)identifier name:(void *)name deviceName:(void *)deviceName seed:(int)seed comparable:(char)comparable tags:(double)tags currentMode:(double)self0 preferredMode:(CGFloat)self1 otherModes:(CGFloat)self2 cloningSupported:(CGFloat)self3 overscanned:(CGFloat)self4 overscanCompensation:(CGFloat)self5 safeOverscanRatio:(CGFloat)self6 pixelSize:(unint64_t)self7 nativeBounds:(void *)self8 bounds:(void *)self9 latency:(void *)latency originatingConfiguration:(char)configuration validityCheck:(char)check
 {
   v84 = *MEMORY[0x1E69E9840];
-  v77 = a3;
-  v43 = a4;
-  v80 = a5;
-  v79 = a6;
-  v44 = a18;
+  identityCopy = identity;
+  identifierCopy = identifier;
+  nameCopy = name;
+  deviceNameCopy = deviceName;
+  boundsCopy = bounds;
   v78 = a19;
-  v45 = v43;
-  v46 = a20;
+  v45 = identifierCopy;
+  latencyCopy = latency;
   v47 = a29;
-  v81.receiver = a1;
+  v81.receiver = self;
   v81.super_class = FBSDisplayConfiguration;
   v48 = objc_msgSendSuper2(&v81, sel_init);
   v49 = v48;
   if (v48)
   {
-    objc_storeStrong(v48 + 14, a3);
+    objc_storeStrong(v48 + 14, identity);
     v50 = [v45 copy];
     v51 = v49[15];
     v49[15] = v50;
 
-    v52 = [v80 copy];
+    v52 = [nameCopy copy];
     v53 = v49[16];
     v49[16] = v52;
 
-    v54 = [v79 copy];
+    v54 = [deviceNameCopy copy];
     v55 = v49[17];
     v49[17] = v54;
 
-    *(v49 + 52) = a7;
-    *(v49 + 218) = a8;
-    v49[24] = a17;
-    objc_storeStrong(v49 + 18, a18);
+    *(v49 + 52) = seed;
+    *(v49 + 218) = comparable;
+    v49[24] = size;
+    objc_storeStrong(v49 + 18, bounds);
     if (v49[18])
     {
       [MEMORY[0x1E695DFA8] setWithObject:?];
@@ -500,30 +500,30 @@ LABEL_37:
       [v56 addObject:v49[19]];
     }
 
-    if ([v46 count])
+    if ([latencyCopy count])
     {
-      v57 = [v46 copy];
+      v57 = [latencyCopy copy];
       v58 = v49[20];
       v49[20] = v57;
 
-      [v56 unionSet:v46];
+      [v56 unionSet:latencyCopy];
     }
 
     v59 = [v56 copy];
     v60 = v49[21];
     v49[21] = v59;
 
-    *(v49 + 216) = a21;
-    *(v49 + 217) = a22;
+    *(v49 + 216) = configuration;
+    *(v49 + 217) = check;
     v49[25] = a23;
-    *(v49 + 9) = a9;
-    *(v49 + 10) = a10;
-    *(v49 + 11) = a11;
-    *(v49 + 12) = a12;
-    *(v49 + 1) = a13;
-    *(v49 + 2) = a14;
-    *(v49 + 3) = a15;
-    *(v49 + 4) = a16;
+    *(v49 + 9) = tags;
+    *(v49 + 10) = mode;
+    *(v49 + 11) = preferredMode;
+    *(v49 + 12) = modes;
+    *(v49 + 1) = supported;
+    *(v49 + 2) = overscanned;
+    *(v49 + 3) = compensation;
+    *(v49 + 4) = ratio;
     *(v49 + 5) = a24;
     *(v49 + 6) = a25;
     *(v49 + 7) = a26;
@@ -536,26 +536,26 @@ LABEL_37:
 
   if (a30 == 3)
   {
-    v63 = v77;
+    v63 = identityCopy;
   }
 
   else
   {
-    v63 = v77;
-    if (v77)
+    v63 = identityCopy;
+    if (identityCopy)
     {
-      v64 = [v77 type];
-      v65 = [v77 connectionType];
+      type = [identityCopy type];
+      connectionType = [identityCopy connectionType];
     }
 
     else
     {
-      v64 = -1;
-      v65 = -1;
+      type = -1;
+      connectionType = -1;
     }
 
     v66 = objc_opt_class();
-    if (v66 != objc_opt_class() || !FBSDisplayTypeIsValid(v64) || !FBSDisplayConnectionTypeIsValid(v65) || !v64 && [v77 displayID] != 1 || (v67 = FBSDisplayTypeToDisplayTag(v64), !v44) || (v67 & a17) != v67 || !FBSDisplayOverscanCompensationIsValid(a23) || a9 < 0.0 || a9 > 1.0 || a10 < 0.0 || a10 > 1.0 || (v68 = *MEMORY[0x1E695EFF8], v69 = *(MEMORY[0x1E695EFF8] + 8), v85.origin.x = *MEMORY[0x1E695EFF8], v85.origin.y = v69, v85.size.width = a11, v85.size.height = a12, CGRectIsNull(v85)) || (v86.origin.x = v68, v86.origin.y = v69, v86.size.width = a11, v86.size.height = a12, CGRectIsInfinite(v86)) || (v87.origin.x = a13, v87.origin.y = a14, v87.size.width = a15, v87.size.height = a16, CGRectIsNull(v87)) || (v88.origin.x = a13, v88.origin.y = a14, v88.size.width = a15, v88.size.height = a16, CGRectIsInfinite(v88)) || (v89.origin.x = a24, v89.origin.y = a25, v89.size.width = a26, v89.size.height = a27, CGRectIsNull(v89)) || (v90.origin.x = a24, v90.origin.y = a25, v90.size.width = a26, v90.size.height = a27, CGRectIsInfinite(v90)))
+    if (v66 != objc_opt_class() || !FBSDisplayTypeIsValid(type) || !FBSDisplayConnectionTypeIsValid(connectionType) || !type && [identityCopy displayID] != 1 || (v67 = FBSDisplayTypeToDisplayTag(type), !boundsCopy) || (v67 & size) != v67 || !FBSDisplayOverscanCompensationIsValid(a23) || tags < 0.0 || tags > 1.0 || mode < 0.0 || mode > 1.0 || (v68 = *MEMORY[0x1E695EFF8], v69 = *(MEMORY[0x1E695EFF8] + 8), v85.origin.x = *MEMORY[0x1E695EFF8], v85.origin.y = v69, v85.size.width = preferredMode, v85.size.height = modes, CGRectIsNull(v85)) || (v86.origin.x = v68, v86.origin.y = v69, v86.size.width = preferredMode, v86.size.height = modes, CGRectIsInfinite(v86)) || (v87.origin.x = supported, v87.origin.y = overscanned, v87.size.width = compensation, v87.size.height = ratio, CGRectIsNull(v87)) || (v88.origin.x = supported, v88.origin.y = overscanned, v88.size.width = compensation, v88.size.height = ratio, CGRectIsInfinite(v88)) || (v89.origin.x = a24, v89.origin.y = a25, v89.size.width = a26, v89.size.height = a27, CGRectIsNull(v89)) || (v90.origin.x = a24, v90.origin.y = a25, v90.size.width = a26, v90.size.height = a27, CGRectIsInfinite(v90)))
     {
       if (a30 == 2)
       {
@@ -567,7 +567,7 @@ LABEL_37:
           _os_log_impl(&dword_1A2DBB000, v71, OS_LOG_TYPE_INFO, "FBSDisplayConfiguration cannot be initialized as requested : %{public}@", buf, 0xCu);
         }
 
-        v70 = v49;
+        currentHandler = v49;
         v49 = 0;
       }
 
@@ -585,8 +585,8 @@ LABEL_37:
           _bs_set_crash_log_message();
         }
 
-        v70 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v70 handleFailureInMethod:a2 object:v49 file:@"FBSDisplay.m" lineNumber:615 description:{@"FBSDisplayConfiguration cannot be initialized as requested : %@", v49}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v49 file:@"FBSDisplay.m" lineNumber:615 description:{@"FBSDisplayConfiguration cannot be initialized as requested : %@", v49}];
       }
     }
   }
@@ -594,12 +594,12 @@ LABEL_37:
   return v49;
 }
 
-+ (id)_virtualDisplayConfigurationWithIdentifier:(id)a3
++ (id)_virtualDisplayConfigurationWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   LOBYTE(v24) = 0;
   LOBYTE(v23) = 1;
-  v4 = [[FBSDisplayIdentity alloc] _initWithType:7 UIKitMainLike:0 displayID:0xFFFFFFFFLL connectionType:3 connectionSeed:0 pid:0 external:v23 uniqueIdentifier:v3 secure:v24 root:0];
+  v4 = [[FBSDisplayIdentity alloc] _initWithType:7 UIKitMainLike:0 displayID:0xFFFFFFFFLL connectionType:3 connectionSeed:0 pid:0 external:v23 uniqueIdentifier:identifierCopy secure:v24 root:0];
   v5 = +[FBSDisplayMode _emptyMode];
   v6 = *MEMORY[0x1E695EFF8];
   v7 = *(MEMORY[0x1E695EFF8] + 8);
@@ -615,7 +615,7 @@ LABEL_37:
   v18 = [FBSDisplayConfiguration alloc];
   [v5 pixelSize];
   LOWORD(v25) = 0;
-  v21 = [(FBSDisplayConfiguration *)v18 _initWithIdentity:v4 hardwareIdentifier:v3 name:@"Virtual Display" deviceName:@"vDisplay" seed:0 comparable:0 tags:*MEMORY[0x1E695F060] currentMode:*(MEMORY[0x1E695F060] + 8) preferredMode:v19 otherModes:v20 cloningSupported:v6 overscanned:v7 overscanCompensation:v9 safeOverscanRatio:v11 pixelSize:v17 nativeBounds:v5 bounds:0 latency:0 originatingConfiguration:v25 validityCheck:0, *&v13, *&v14, *&v15, *&v16, 0, 0, 1];
+  v21 = [(FBSDisplayConfiguration *)v18 _initWithIdentity:v4 hardwareIdentifier:identifierCopy name:@"Virtual Display" deviceName:@"vDisplay" seed:0 comparable:0 tags:*MEMORY[0x1E695F060] currentMode:*(MEMORY[0x1E695F060] + 8) preferredMode:v19 otherModes:v20 cloningSupported:v6 overscanned:v7 overscanCompensation:v9 safeOverscanRatio:v11 pixelSize:v17 nativeBounds:v5 bounds:0 latency:0 originatingConfiguration:v25 validityCheck:0, *&v13, *&v14, *&v15, *&v16, 0, 0, 1];
 
   return v21;
 }
@@ -633,16 +633,16 @@ LABEL_37:
 
 - (double)nativeOrientation
 {
-  v2 = [(FBSDisplayMode *)self->_currentMode _rotation];
+  _rotation = [(FBSDisplayMode *)self->_currentMode _rotation];
 
-  return FBSDisplayRotationRadians(v2);
+  return FBSDisplayRotationRadians(_rotation);
 }
 
-- (id)copyWithUniqueIdentifier:(id)a3
+- (id)copyWithUniqueIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (v5)
+  if (identifierCopy)
   {
     if (objc_opt_isKindOfClass())
     {
@@ -658,11 +658,11 @@ LABEL_37:
   [FBSDisplayConfiguration copyWithUniqueIdentifier:a2];
 }
 
-- (id)copyWithOverrideMode:(id)a3
+- (id)copyWithOverrideMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   NSClassFromString(&cfstr_Fbsdisplaymode.isa);
-  if (!v5)
+  if (!modeCopy)
   {
     [FBSDisplayConfiguration copyWithOverrideMode:a2];
   }
@@ -672,23 +672,23 @@ LABEL_37:
     [FBSDisplayConfiguration copyWithOverrideMode:a2];
   }
 
-  [v5 pixelSize];
+  [modeCopy pixelSize];
   v7 = v6;
   v9 = v8;
   v10 = *MEMORY[0x1E695EFF8];
   v11 = *(MEMORY[0x1E695EFF8] + 8);
-  [v5 nativePixelSize];
-  v14 = [(FBSDisplayConfiguration *)self copyWithOverrideMode:v5 pixelSize:v7 nativeBounds:v9, v10, v11, v12, v13];
+  [modeCopy nativePixelSize];
+  v14 = [(FBSDisplayConfiguration *)self copyWithOverrideMode:modeCopy pixelSize:v7 nativeBounds:v9, v10, v11, v12, v13];
 
   return v14;
 }
 
-- (id)copyWithOverrideBounds:(CGRect)a3
+- (id)copyWithOverrideBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = [[FBSDisplayConfigurationBuilder alloc] initWithConfiguration:self];
   [(FBSDisplayConfigurationBuilder *)v8 setPixelSize:self->_pixelSize.width nativeBounds:self->_pixelSize.height bounds:self->_nativeBounds.origin.x, self->_nativeBounds.origin.y, self->_nativeBounds.size.width, self->_nativeBounds.size.height, *&x, *&y, *&width, *&height];
   v9 = [(FBSDisplayConfigurationBuilder *)v8 buildWithError:0];
@@ -696,17 +696,17 @@ LABEL_37:
   return v9;
 }
 
-- (id)copyWithOverrideMode:(id)a3 pixelSize:(CGSize)a4 nativeBounds:(CGRect)a5
+- (id)copyWithOverrideMode:(id)mode pixelSize:(CGSize)size nativeBounds:(CGRect)bounds
 {
-  v6 = a3;
+  modeCopy = mode;
   NSClassFromString(&cfstr_Fbsdisplaymode.isa);
-  if (v6)
+  if (modeCopy)
   {
     if (objc_opt_isKindOfClass())
     {
 
-      [v6 _rotation];
-      [v6 pointScale];
+      [modeCopy _rotation];
+      [modeCopy pointScale];
       BSFloatIsZero();
     }
 
@@ -729,9 +729,9 @@ LABEL_37:
   return result;
 }
 
-- (id)laterConfiguration:(id)a3
+- (id)laterConfiguration:(id)configuration
 {
-  [a3 identity];
+  [configuration identity];
   objc_claimAutoreleasedReturnValue();
   BSEqualObjects();
 }
@@ -754,16 +754,16 @@ LABEL_37:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [off_1E76BC9C0 builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [off_1E76BC9C0 builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   identity = self->_identity;
   v86[0] = MEMORY[0x1E69E9820];
   v86[1] = 3221225472;
   v86[2] = __35__FBSDisplayConfiguration_isEqual___block_invoke;
   v86[3] = &unk_1E76BE088;
-  v7 = v4;
+  v7 = equalCopy;
   v87 = v7;
   v8 = [v5 appendObject:identity counterpart:v86];
   hardwareIdentifier = self->_hardwareIdentifier;
@@ -882,24 +882,24 @@ LABEL_37:
   v48 = v45;
   v57 = v48;
   v49 = [v5 appendDouble:v56 counterpart:latency];
-  v50 = [(FBSDisplayConfiguration *)self isVirtualized];
+  isVirtualized = [(FBSDisplayConfiguration *)self isVirtualized];
   v54[0] = MEMORY[0x1E69E9820];
   v54[1] = 3221225472;
   v54[2] = __35__FBSDisplayConfiguration_isEqual___block_invoke_17;
   v54[3] = &unk_1E76BD8B8;
   v55 = v48;
   v51 = v48;
-  v52 = [v5 appendBool:v50 counterpart:v54];
+  v52 = [v5 appendBool:isVirtualized counterpart:v54];
   LOBYTE(v48) = [v5 isEqual];
 
   return v48;
 }
 
-- (FBSDisplayConfiguration)initWithCoder:(id)a3
+- (FBSDisplayConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"currentMode"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentMode"];
   if (v5)
   {
     goto LABEL_2;
@@ -924,24 +924,24 @@ LABEL_2:
 
   v6 = 0;
 LABEL_3:
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"safeOverscanRatio"];
-  v53 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"pixelSize"];
-  v52 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"nativeBounds"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"bounds"];
-  v50 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"hardwareIdentifier"];
-  v49 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v48 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
-  v47 = [v3 decodeInt32ForKey:@"seed"];
-  v45 = [v3 decodeBoolForKey:@"notComparable"];
-  v46 = [v3 decodeIntegerForKey:@"tags"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"preferredMode"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"safeOverscanRatio"];
+  v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pixelSize"];
+  v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nativeBounds"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bounds"];
+  v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hardwareIdentifier"];
+  v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
+  v47 = [coderCopy decodeInt32ForKey:@"seed"];
+  v45 = [coderCopy decodeBoolForKey:@"notComparable"];
+  v46 = [coderCopy decodeIntegerForKey:@"tags"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredMode"];
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v44 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v12 = [v3 decodeObjectOfClasses:? forKey:?];
-  v13 = [v3 decodeBoolForKey:@"cloningSupported"];
-  v14 = [v3 decodeBoolForKey:@"overscanned"];
-  v15 = [v3 decodeIntegerForKey:@"overscanCompensation"];
+  v12 = [coderCopy decodeObjectOfClasses:? forKey:?];
+  v13 = [coderCopy decodeBoolForKey:@"cloningSupported"];
+  v14 = [coderCopy decodeBoolForKey:@"overscanned"];
+  v15 = [coderCopy decodeIntegerForKey:@"overscanCompensation"];
   if (v7)
   {
     v16 = MEMORY[0x1A58E7870](v7);
@@ -989,7 +989,7 @@ LABEL_3:
   v31 = v30;
   v33 = v32;
   v35 = v34;
-  [v3 decodeDoubleForKey:@"latency"];
+  [coderCopy decodeDoubleForKey:@"latency"];
   BYTE1(v39) = v14;
   LOBYTE(v39) = v13;
   v37 = [(FBSDisplayConfiguration *)self _initWithIdentity:v4 hardwareIdentifier:v50 name:v49 deviceName:v48 seed:v47 comparable:v45 ^ 1u tags:v43 currentMode:v42 preferredMode:v41 otherModes:v40 cloningSupported:v24 overscanned:v25 overscanCompensation:v26 safeOverscanRatio:v27 pixelSize:v46 nativeBounds:v6 bounds:v9 latency:v12 originatingConfiguration:v39 validityCheck:v15, v29, v31, v33, v35, v36, 0, 2];
@@ -997,40 +997,40 @@ LABEL_3:
   return v37;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  [v13 encodeObject:self->_identity forKey:@"identity"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identity forKey:@"identity"];
   hardwareIdentifier = self->_hardwareIdentifier;
   if (hardwareIdentifier)
   {
-    [v13 encodeObject:hardwareIdentifier forKey:@"hardwareIdentifier"];
+    [coderCopy encodeObject:hardwareIdentifier forKey:@"hardwareIdentifier"];
   }
 
   name = self->_name;
   if (name)
   {
-    [v13 encodeObject:name forKey:@"name"];
+    [coderCopy encodeObject:name forKey:@"name"];
   }
 
   deviceName = self->_deviceName;
-  v7 = v13;
+  v7 = coderCopy;
   if (deviceName)
   {
-    [v13 encodeObject:deviceName forKey:@"deviceName"];
-    v7 = v13;
+    [coderCopy encodeObject:deviceName forKey:@"deviceName"];
+    v7 = coderCopy;
   }
 
   [v7 encodeInt32:self->_noEqual_seed forKey:@"seed"];
   if (!self->_noEqual_comparable)
   {
-    [v13 encodeBool:1 forKey:@"notComparable"];
+    [coderCopy encodeBool:1 forKey:@"notComparable"];
   }
 
   tags = self->_tags;
   if (tags)
   {
-    [v13 encodeInteger:tags forKey:@"tags"];
+    [coderCopy encodeInteger:tags forKey:@"tags"];
   }
 
   currentMode = self->_currentMode;
@@ -1038,42 +1038,42 @@ LABEL_3:
 
   if (currentMode != v10)
   {
-    [v13 encodeObject:self->_currentMode forKey:@"currentMode"];
+    [coderCopy encodeObject:self->_currentMode forKey:@"currentMode"];
   }
 
   preferredMode = self->_preferredMode;
   if (preferredMode)
   {
-    [v13 encodeObject:preferredMode forKey:@"preferredMode"];
+    [coderCopy encodeObject:preferredMode forKey:@"preferredMode"];
   }
 
   if ([(NSSet *)self->_otherModes count])
   {
-    [v13 encodeObject:self->_otherModes forKey:@"otherModes"];
+    [coderCopy encodeObject:self->_otherModes forKey:@"otherModes"];
   }
 
   if (self->_cloningSupported)
   {
-    [v13 encodeBool:1 forKey:@"cloningSupported"];
+    [coderCopy encodeBool:1 forKey:@"cloningSupported"];
   }
 
   if (self->_overscanned)
   {
-    [v13 encodeBool:1 forKey:@"overscanned"];
+    [coderCopy encodeBool:1 forKey:@"overscanned"];
   }
 
   overscanCompensation = self->_overscanCompensation;
   if (overscanCompensation)
   {
-    [v13 encodeInteger:overscanCompensation forKey:@"overscanCompensation"];
+    [coderCopy encodeInteger:overscanCompensation forKey:@"overscanCompensation"];
   }
 
   BSSizeEqualToSize();
 }
 
-- (FBSDisplayConfiguration)initWithXPCDictionary:(id)a3
+- (FBSDisplayConfiguration)initWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     [@"identity" UTF8String];
     BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
@@ -1082,36 +1082,36 @@ LABEL_3:
   return 0;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     [@"identity" UTF8String];
     BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSDisplayConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSDisplayConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSDisplayConfiguration *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSDisplayConfiguration *)self succinctDescriptionBuilder];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__FBSDisplayConfiguration_descriptionBuilderWithMultilinePrefix___block_invoke;
   v11[3] = &unk_1E76BE100;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v12 = v6;
-  v13 = self;
-  v14 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v14 = prefixCopy;
+  v7 = prefixCopy;
   [v6 appendBodySectionWithName:0 multilinePrefix:v7 block:v11];
   v8 = v14;
   v9 = v6;
@@ -1368,7 +1368,7 @@ void __65__FBSDisplayConfiguration_descriptionBuilderWithMultilinePrefix___block
 {
   v3 = *MEMORY[0x1E69E9840];
   v2[0] = 67109120;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_1A2DBB000, a2, OS_LOG_TYPE_ERROR, "Unable to find a CADisplay for decoded displayID %u. The render server process may have crashed.", v2, 8u);
 }
 

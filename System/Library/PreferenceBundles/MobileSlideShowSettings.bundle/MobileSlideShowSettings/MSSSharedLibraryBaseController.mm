@@ -1,7 +1,7 @@
 @interface MSSSharedLibraryBaseController
 + (void)initialize;
 - (MSSSharedLibraryBaseController)init;
-- (MSSSharedLibraryBaseController)initWithSettingsBaseController:(id)a3;
+- (MSSSharedLibraryBaseController)initWithSettingsBaseController:(id)controller;
 - (NSArray)invitationSpecifiers;
 - (NSArray)settingsSpecifiers;
 - (SettingsBaseController)settingsBaseController;
@@ -9,13 +9,13 @@
 - (id)_sharedLibraryButtonTitle;
 - (void)_popToSettingsBaseControllerIfNeeded;
 - (void)_updateSharedLibrarySpecifiers;
-- (void)didTapLearnMoreLink:(id)a3;
-- (void)didTapSharedLibraryButton:(id)a3;
-- (void)didTapSharedLibraryInvitation:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setCanEnableSharedLibrary:(BOOL)a3;
-- (void)setCloudPhotosEnabled:(BOOL)a3;
-- (void)setCloudPhotosStatus:(id)a3;
+- (void)didTapLearnMoreLink:(id)link;
+- (void)didTapSharedLibraryButton:(id)button;
+- (void)didTapSharedLibraryInvitation:(id)invitation;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setCanEnableSharedLibrary:(BOOL)library;
+- (void)setCloudPhotosEnabled:(BOOL)enabled;
+- (void)setCloudPhotosStatus:(id)status;
 @end
 
 @implementation MSSSharedLibraryBaseController
@@ -27,17 +27,17 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (off_33360 == a5)
+  if (off_33360 == context)
   {
-    [(MSSSharedLibraryBaseController *)self _updateSharedLibrarySpecifiers:a3];
+    [(MSSSharedLibraryBaseController *)self _updateSharedLibrarySpecifiers:observable];
 
     [(MSSSharedLibraryBaseController *)self _popToSettingsBaseControllerIfNeeded];
   }
 }
 
-- (void)didTapLearnMoreLink:(id)a3
+- (void)didTapLearnMoreLink:(id)link
 {
   if (self->_learnMoreURL)
   {
@@ -52,11 +52,11 @@
   }
 }
 
-- (void)didTapSharedLibraryButton:(id)a3
+- (void)didTapSharedLibraryButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_settingsBaseController);
-  v5 = [WeakRetained navigationController];
-  v6 = [PXViewControllerPresenter defaultPresenterWithViewController:v5];
+  navigationController = [WeakRetained navigationController];
+  v6 = [PXViewControllerPresenter defaultPresenterWithViewController:navigationController];
 
   v7 = [APApplication applicationWithBundleIdentifier:PLMobileSlideshowBundleId];
   v8 = +[APGuard sharedGuard];
@@ -70,23 +70,23 @@
   [v8 authenticateForSubject:v7 completion:v10];
 }
 
-- (void)didTapSharedLibraryInvitation:(id)a3
+- (void)didTapSharedLibraryInvitation:(id)invitation
 {
-  v8 = [(MSSSharedLibraryBaseController *)self statusProvider];
+  statusProvider = [(MSSSharedLibraryBaseController *)self statusProvider];
   WeakRetained = objc_loadWeakRetained(&self->_settingsBaseController);
-  v5 = [WeakRetained navigationController];
-  v6 = [PXViewControllerPresenter defaultPresenterWithViewController:v5];
+  navigationController = [WeakRetained navigationController];
+  v6 = [PXViewControllerPresenter defaultPresenterWithViewController:navigationController];
 
-  v7 = [v8 invitation];
+  invitation = [statusProvider invitation];
   PXSharedLibraryViewInvitation();
 }
 
-- (void)setCloudPhotosStatus:(id)a3
+- (void)setCloudPhotosStatus:(id)status
 {
-  v8 = a3;
+  statusCopy = status;
   v5 = self->_cloudPhotosStatus;
   settingsSpecifiers = v5;
-  if (v5 != v8)
+  if (v5 != statusCopy)
   {
     v7 = [(PXCPLUIStatus *)v5 isEqual:?];
 
@@ -95,7 +95,7 @@
       goto LABEL_5;
     }
 
-    objc_storeStrong(&self->_cloudPhotosStatus, a3);
+    objc_storeStrong(&self->_cloudPhotosStatus, status);
     settingsSpecifiers = self->_settingsSpecifiers;
     self->_settingsSpecifiers = 0;
   }
@@ -103,22 +103,22 @@
 LABEL_5:
 }
 
-- (void)setCloudPhotosEnabled:(BOOL)a3
+- (void)setCloudPhotosEnabled:(BOOL)enabled
 {
-  if (self->_cloudPhotosEnabled != a3)
+  if (self->_cloudPhotosEnabled != enabled)
   {
-    self->_cloudPhotosEnabled = a3;
+    self->_cloudPhotosEnabled = enabled;
     settingsSpecifiers = self->_settingsSpecifiers;
     self->_settingsSpecifiers = 0;
     _objc_release_x1();
   }
 }
 
-- (void)setCanEnableSharedLibrary:(BOOL)a3
+- (void)setCanEnableSharedLibrary:(BOOL)library
 {
-  if (self->_canEnableSharedLibrary != a3)
+  if (self->_canEnableSharedLibrary != library)
   {
-    self->_canEnableSharedLibrary = a3;
+    self->_canEnableSharedLibrary = library;
     settingsSpecifiers = self->_settingsSpecifiers;
     self->_settingsSpecifiers = 0;
     _objc_release_x1();
@@ -127,7 +127,7 @@ LABEL_5:
 
 - (NSArray)settingsSpecifiers
 {
-  v3 = [(MSSSharedLibraryBaseController *)self canEnableSharedLibrary];
+  canEnableSharedLibrary = [(MSSSharedLibraryBaseController *)self canEnableSharedLibrary];
   settingsSpecifiers = self->_settingsSpecifiers;
   if (settingsSpecifiers)
   {
@@ -136,15 +136,15 @@ LABEL_5:
 
   else
   {
-    v5 = v3 == 0;
+    v5 = canEnableSharedLibrary == 0;
   }
 
   if (!v5)
   {
     v35 = PXLocalizedSharedLibraryString();
     v6 = [PSSpecifier groupSpecifierWithID:@"SharedLibrarySettingsGroup" name:?];
-    v7 = [(MSSSharedLibraryBaseController *)self _sharedLibraryButtonTitle];
-    v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:"_sharedLibraryButtonSubtitle" detail:0 cell:2 edit:0];
+    _sharedLibraryButtonTitle = [(MSSSharedLibraryBaseController *)self _sharedLibraryButtonTitle];
+    v8 = [PSSpecifier preferenceSpecifierNamed:_sharedLibraryButtonTitle target:self set:0 get:"_sharedLibraryButtonSubtitle" detail:0 cell:2 edit:0];
 
     [v8 setIdentifier:@"SharedLibrarySettingsButton"];
     v9 = [UIImage px_imageNamed:@"SharedLibrary-28-Rounded"];
@@ -152,46 +152,46 @@ LABEL_5:
 
     [v8 setObject:objc_opt_class() forKeyedSubscript:PSCellClassKey];
     [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:PSAllowMultilineTitleKey];
-    v10 = [(MSSSharedLibraryBaseController *)self cloudPhotosStatus];
+    cloudPhotosStatus = [(MSSSharedLibraryBaseController *)self cloudPhotosStatus];
     if ([(MSSSharedLibraryBaseController *)self cloudPhotosEnabled])
     {
-      v12 = [v10 hasCompletedInitialSync];
+      hasCompletedInitialSync = [cloudPhotosStatus hasCompletedInitialSync];
     }
 
     else
     {
-      v12 = 0;
+      hasCompletedInitialSync = 0;
     }
 
     v34 = v6;
-    if (-[MSSSharedLibraryBaseController cloudPhotosEnabled](self, "cloudPhotosEnabled") && ([v10 hasCompletedInitialSync] & 1) == 0)
+    if (-[MSSSharedLibraryBaseController cloudPhotosEnabled](self, "cloudPhotosEnabled") && ([cloudPhotosStatus hasCompletedInitialSync] & 1) == 0)
     {
-      v13 = [v10 isPaused];
+      isPaused = [cloudPhotosStatus isPaused];
       v33 = 1;
     }
 
     else
     {
       v33 = 0;
-      v13 = 0;
+      isPaused = 0;
     }
 
-    v14 = [v10 inResetSync];
-    v15 = [v10 isRestoringLibrary];
-    v16 = [(MSSSharedLibraryBaseController *)self cloudPhotosInExitMode];
-    v17 = [(MSSSharedLibraryBaseController *)self statusProvider];
+    inResetSync = [cloudPhotosStatus inResetSync];
+    isRestoringLibrary = [cloudPhotosStatus isRestoringLibrary];
+    cloudPhotosInExitMode = [(MSSSharedLibraryBaseController *)self cloudPhotosInExitMode];
+    statusProvider = [(MSSSharedLibraryBaseController *)self statusProvider];
     v36[0] = _NSConcreteStackBlock;
     v36[1] = 3221225472;
     v36[2] = sub_12E14;
     v36[3] = &unk_2D100;
     v18 = v8;
     v37 = v18;
-    v38 = v12;
-    v39 = v14;
-    v40 = v15;
-    v41 = v16;
+    v38 = hasCompletedInitialSync;
+    v39 = inResetSync;
+    v40 = isRestoringLibrary;
+    v41 = cloudPhotosInExitMode;
     v19 = objc_retainBlock(v36);
-    if (PXSharedLibraryShouldDisplaySettings() && (!(v14 & 1 | ((v12 & 1) == 0) | (v15 | v16) & 1) || PXSharedLibraryLocalModeFeatureEnabled()))
+    if (PXSharedLibraryShouldDisplaySettings() && (!(inResetSync & 1 | ((hasCompletedInitialSync & 1) == 0) | (isRestoringLibrary | cloudPhotosInExitMode) & 1) || PXSharedLibraryLocalModeFeatureEnabled()))
     {
       [v18 setDetailControllerClass:objc_opt_class()];
       (v19[2])(v19, 1);
@@ -207,7 +207,7 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    if ([v17 hasPreview])
+    if ([statusProvider hasPreview])
     {
       [v18 setDetailControllerClass:objc_opt_class()];
       CanSetupSharedLibraryOrPreview = PXSharedLibraryCanSetupSharedLibraryOrPreview();
@@ -218,7 +218,7 @@ LABEL_30:
     [v18 setControllerLoadAction:"didTapSharedLibraryButton:"];
     v22 = PXSharedLibraryCanSetupSharedLibraryOrPreview();
     (v19[2])(v19, v22);
-    if (v15 || ([(MSSSharedLibraryBaseController *)self cloudPhotosEnabled]& v13) == 1 || [(MSSSharedLibraryBaseController *)self cloudPhotosEnabled]&& ((v33 | v14) & 1) != 0 || ([(MSSSharedLibraryBaseController *)self cloudPhotosEnabled]& v16) == 1)
+    if (isRestoringLibrary || ([(MSSSharedLibraryBaseController *)self cloudPhotosEnabled]& isPaused) == 1 || [(MSSSharedLibraryBaseController *)self cloudPhotosEnabled]&& ((v33 | inResetSync) & 1) != 0 || ([(MSSSharedLibraryBaseController *)self cloudPhotosEnabled]& cloudPhotosInExitMode) == 1)
     {
       v23 = PXLocalizedSharedLibraryString();
       v24 = PSFooterTextGroupKey;
@@ -230,9 +230,9 @@ LABEL_30:
       v21 = v34;
       if ([(MSSSharedLibraryBaseController *)self cloudPhotosEnabled])
       {
-        v29 = [v17 exiting];
+        exiting = [statusProvider exiting];
 
-        if (!v29)
+        if (!exiting)
         {
           if (!self->_learnMoreTitle || !self->_learnMoreURL)
           {
@@ -276,16 +276,16 @@ LABEL_31:
   invitationSpecifiers = self->_invitationSpecifiers;
   if (!invitationSpecifiers)
   {
-    v4 = [(MSSSharedLibraryBaseController *)self statusProvider];
+    statusProvider = [(MSSSharedLibraryBaseController *)self statusProvider];
     if (PXSharedLibraryShouldDisplayInvitation())
     {
       v5 = [PSSpecifier groupSpecifierWithID:@"SharedLibrarySettingsGroup"];
       v6 = [PSSpecifier preferenceSpecifierNamed:&stru_2D398 target:self set:0 get:0 detail:0 cell:2 edit:0];
       [v6 setControllerLoadAction:"didTapSharedLibraryInvitation:"];
       [v6 setObject:objc_opt_class() forKeyedSubscript:PSCellClassKey];
-      v7 = [v4 invitation];
-      v8 = [v7 owner];
-      [v6 setUserInfo:v8];
+      invitation = [statusProvider invitation];
+      owner = [invitation owner];
+      [v6 setUserInfo:owner];
 
       v13[0] = v5;
       v13[1] = v6;
@@ -306,18 +306,18 @@ LABEL_31:
   return invitationSpecifiers;
 }
 
-- (MSSSharedLibraryBaseController)initWithSettingsBaseController:(id)a3
+- (MSSSharedLibraryBaseController)initWithSettingsBaseController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v18.receiver = self;
   v18.super_class = MSSSharedLibraryBaseController;
   v5 = [(MSSSharedLibraryBaseController *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_settingsBaseController, v4);
-    v8 = [v4 systemPhotoLibrary];
-    v9 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v8];
+    v7 = objc_storeWeak(&v5->_settingsBaseController, controllerCopy);
+    systemPhotoLibrary = [controllerCopy systemPhotoLibrary];
+    v9 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:systemPhotoLibrary];
     statusProvider = v6->_statusProvider;
     v6->_statusProvider = v9;
 
@@ -347,9 +347,9 @@ LABEL_31:
 
 - (id)_sharedLibraryButtonSubtitle
 {
-  v3 = [(MSSSharedLibraryBaseController *)self statusProvider];
-  v4 = [v3 exiting];
-  if (v4)
+  statusProvider = [(MSSSharedLibraryBaseController *)self statusProvider];
+  exiting = [statusProvider exiting];
+  if (exiting)
   {
 
 LABEL_6:
@@ -362,15 +362,15 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if ([v3 hasSharedLibrary])
+  if ([statusProvider hasSharedLibrary])
   {
-    v5 = [v3 sharedLibrary];
+    sharedLibrary = [statusProvider sharedLibrary];
     v6 = PXSharedLibrarySettingsSubtitle();
   }
 
   else
   {
-    [v3 hasPreview];
+    [statusProvider hasPreview];
     v6 = PXLocalizedSharedLibraryString();
   }
 
@@ -381,12 +381,12 @@ LABEL_7:
 
 - (id)_sharedLibraryButtonTitle
 {
-  v2 = [(MSSSharedLibraryBaseController *)self statusProvider];
-  v3 = [v2 exiting];
+  statusProvider = [(MSSSharedLibraryBaseController *)self statusProvider];
+  exiting = [statusProvider exiting];
 
-  if (v3)
+  if (exiting)
   {
-    [v3 isOwned];
+    [exiting isOwned];
   }
 
   v4 = PXLocalizedSharedLibraryString();
@@ -396,15 +396,15 @@ LABEL_7:
 
 - (void)_popToSettingsBaseControllerIfNeeded
 {
-  v3 = [(MSSSharedLibraryBaseController *)self statusProvider];
-  v4 = [v3 exiting];
+  statusProvider = [(MSSSharedLibraryBaseController *)self statusProvider];
+  exiting = [statusProvider exiting];
 
-  if (v4)
+  if (exiting)
   {
-    v5 = [(MSSSharedLibraryBaseController *)self settingsBaseController];
-    v6 = [v5 navigationController];
-    v7 = [v6 viewControllers];
-    v8 = [v7 containsObject:v5];
+    settingsBaseController = [(MSSSharedLibraryBaseController *)self settingsBaseController];
+    navigationController = [settingsBaseController navigationController];
+    viewControllers = [navigationController viewControllers];
+    v8 = [viewControllers containsObject:settingsBaseController];
 
     if (v8)
     {
@@ -416,14 +416,14 @@ LABEL_7:
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEBUG, "%{public}@: _popToSettingsBaseControllerIfNeeded: Use settingsBaseController", buf, 0xCu);
       }
 
-      v10 = v5;
+      parentViewController2 = settingsBaseController;
     }
 
     else
     {
-      v11 = [v6 viewControllers];
-      v12 = [v5 parentViewController];
-      v13 = [v11 containsObject:v12];
+      viewControllers2 = [navigationController viewControllers];
+      parentViewController = [settingsBaseController parentViewController];
+      v13 = [viewControllers2 containsObject:parentViewController];
 
       v14 = PLSharedLibraryGetLog();
       v15 = v14;
@@ -447,14 +447,14 @@ LABEL_7:
         _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEBUG, "%{public}@: _popToSettingsBaseControllerIfNeeded: Use settingsBaseController's parent", buf, 0xCu);
       }
 
-      v10 = [v5 parentViewController];
+      parentViewController2 = [settingsBaseController parentViewController];
     }
 
-    v16 = v10;
+    v16 = parentViewController2;
 LABEL_16:
-    v17 = [v6 topViewController];
+    topViewController = [navigationController topViewController];
 
-    if (v17 == v16)
+    if (topViewController == v16)
     {
       v18 = PLSharedLibraryGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -479,12 +479,12 @@ LABEL_16:
     goto LABEL_22;
   }
 
-  v5 = PLSharedLibraryGetLog();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  settingsBaseController = PLSharedLibraryGetLog();
+  if (os_log_type_enabled(settingsBaseController, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
     v22 = objc_opt_class();
-    _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEBUG, "%{public}@: No need to pop to settingsControllerInNavigation, library not exiting", buf, 0xCu);
+    _os_log_impl(&dword_0, settingsBaseController, OS_LOG_TYPE_DEBUG, "%{public}@: No need to pop to settingsControllerInNavigation, library not exiting", buf, 0xCu);
   }
 
 LABEL_22:

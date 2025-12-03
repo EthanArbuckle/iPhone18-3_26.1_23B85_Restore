@@ -1,28 +1,28 @@
 @interface HKHealthDataclassSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (HKHealthDataclassSpecifierProvider)initWithAccountManager:(id)a3;
+- (HKHealthDataclassSpecifierProvider)initWithAccountManager:(id)manager;
 - (NSArray)specifiers;
 - (id)_account;
-- (id)switchStateForSpecifier:(id)a3;
-- (void)_persistHealthDataclassEnablementState:(BOOL)a3;
+- (id)switchStateForSpecifier:(id)specifier;
+- (void)_persistHealthDataclassEnablementState:(BOOL)state;
 - (void)_presentHealthDatabaseObliterationAlert;
 - (void)_reloadAccount;
 - (void)_reloadDataclassSpecifier;
-- (void)switchStateDidChange:(id)a3 withSpecifier:(id)a4;
+- (void)switchStateDidChange:(id)change withSpecifier:(id)specifier;
 @end
 
 @implementation HKHealthDataclassSpecifierProvider
 
-- (HKHealthDataclassSpecifierProvider)initWithAccountManager:(id)a3
+- (HKHealthDataclassSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = HKHealthDataclassSpecifierProvider;
   v6 = [(HKHealthDataclassSpecifierProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
   }
 
   return v7;
@@ -30,8 +30,8 @@
 
 - (id)_account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:AIDAServiceTypeCloud];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:AIDAServiceTypeCloud];
 
   return v3;
 }
@@ -43,9 +43,9 @@
   {
     v4 = objc_alloc_init(NSMutableArray);
     v5 = +[_HKBehavior sharedBehavior];
-    v6 = [v5 isDeviceSupported];
+    isDeviceSupported = [v5 isDeviceSupported];
 
-    if (v6)
+    if (isDeviceSupported)
     {
       if (+[AAUIFeatureFlags isTobleroneEnabled])
       {
@@ -62,8 +62,8 @@
       else
       {
         v10 = kAccountDataclassHealth;
-        v11 = [(HKHealthDataclassSpecifierProvider *)self _account];
-        v12 = [PSSpecifier acui_specifierForDataclass:v10 account:v11 target:self set:"switchStateDidChange:withSpecifier:" get:"switchStateForSpecifier:"];
+        _account = [(HKHealthDataclassSpecifierProvider *)self _account];
+        v12 = [PSSpecifier acui_specifierForDataclass:v10 account:_account target:self set:"switchStateDidChange:withSpecifier:" get:"switchStateForSpecifier:"];
         v13 = self->_dataclassSpecifier;
         self->_dataclassSpecifier = v12;
       }
@@ -81,9 +81,9 @@
   return specifiers;
 }
 
-- (void)switchStateDidChange:(id)a3 withSpecifier:(id)a4
+- (void)switchStateDidChange:(id)change withSpecifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([change BOOLValue])
   {
 
     [(HKHealthDataclassSpecifierProvider *)self _persistHealthDataclassEnablementState:1];
@@ -123,10 +123,10 @@
   }
 }
 
-- (id)switchStateForSpecifier:(id)a3
+- (id)switchStateForSpecifier:(id)specifier
 {
-  v3 = [(HKHealthDataclassSpecifierProvider *)self _account];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabledForDataclass:kAccountDataclassHealth]);
+  _account = [(HKHealthDataclassSpecifierProvider *)self _account];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [_account isEnabledForDataclass:kAccountDataclassHealth]);
 
   return v4;
 }
@@ -138,28 +138,28 @@
   [WeakRetained specifierProvider:self dataclassSwitchStateDidChange:v4 withSpecifier:self->_dataclassSpecifier];
 }
 
-- (void)_persistHealthDataclassEnablementState:(BOOL)a3
+- (void)_persistHealthDataclassEnablementState:(BOOL)state
 {
-  v5 = [(HKHealthDataclassSpecifierProvider *)self _account];
-  v6 = [(AIDAAccountManager *)self->_accountManager accountStore];
+  _account = [(HKHealthDataclassSpecifierProvider *)self _account];
+  accountStore = [(AIDAAccountManager *)self->_accountManager accountStore];
   v7 = dispatch_get_global_queue(2, 0);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1E14;
   v10[3] = &unk_8378;
-  v14 = a3;
-  v11 = v5;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v5;
+  stateCopy = state;
+  v11 = _account;
+  selfCopy = self;
+  v13 = accountStore;
+  v8 = accountStore;
+  v9 = _account;
   dispatch_async(v7, v10);
 }
 
 - (void)_reloadAccount
 {
-  v3 = [(HKHealthDataclassSpecifierProvider *)self _account];
-  [v3 refresh];
+  _account = [(HKHealthDataclassSpecifierProvider *)self _account];
+  [_account refresh];
 
   [(HKHealthDataclassSpecifierProvider *)self _reloadDataclassSpecifier];
 }

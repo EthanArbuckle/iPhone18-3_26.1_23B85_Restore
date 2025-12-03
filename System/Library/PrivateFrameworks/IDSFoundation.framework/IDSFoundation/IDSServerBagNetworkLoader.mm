@@ -1,10 +1,10 @@
 @interface IDSServerBagNetworkLoader
 - (BOOL)isLoading;
 - (BOOL)isServerAvailable;
-- (IDSServerBagNetworkLoader)initWithConfig:(id)a3 queue:(id)a4 connectionMonitorBlock:(id)a5 URLSessionCreationBlock:(id)a6;
-- (void)connectionMonitorDidUpdate:(id)a3;
+- (IDSServerBagNetworkLoader)initWithConfig:(id)config queue:(id)queue connectionMonitorBlock:(id)block URLSessionCreationBlock:(id)creationBlock;
+- (void)connectionMonitorDidUpdate:(id)update;
 - (void)dealloc;
-- (void)loadBagIfPossibleWithCompletion:(id)a3;
+- (void)loadBagIfPossibleWithCompletion:(id)completion;
 @end
 
 @implementation IDSServerBagNetworkLoader
@@ -25,26 +25,26 @@
   return v3;
 }
 
-- (IDSServerBagNetworkLoader)initWithConfig:(id)a3 queue:(id)a4 connectionMonitorBlock:(id)a5 URLSessionCreationBlock:(id)a6
+- (IDSServerBagNetworkLoader)initWithConfig:(id)config queue:(id)queue connectionMonitorBlock:(id)block URLSessionCreationBlock:(id)creationBlock
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  configCopy = config;
+  queueCopy = queue;
+  blockCopy = block;
+  creationBlockCopy = creationBlock;
   v22.receiver = self;
   v22.super_class = IDSServerBagNetworkLoader;
   v15 = [(IDSServerBagNetworkLoader *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_config, a3);
-    objc_storeStrong(&v16->_queue, a4);
+    objc_storeStrong(&v15->_config, config);
+    objc_storeStrong(&v16->_queue, queue);
     v16->_lock._os_unfair_lock_opaque = 0;
-    v17 = _Block_copy(v13);
+    v17 = _Block_copy(blockCopy);
     connectionMonitorBlock = v16->_connectionMonitorBlock;
     v16->_connectionMonitorBlock = v17;
 
-    v19 = _Block_copy(v14);
+    v19 = _Block_copy(creationBlockCopy);
     URLSessionCreationBlock = v16->_URLSessionCreationBlock;
     v16->_URLSessionCreationBlock = v19;
   }
@@ -52,19 +52,19 @@
   return v16;
 }
 
-- (void)loadBagIfPossibleWithCompletion:(id)a3
+- (void)loadBagIfPossibleWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(IDSServerBagNetworkLoader *)self queue];
+    queue = [(IDSServerBagNetworkLoader *)self queue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_1A7B16458;
     v6[3] = &unk_1E77DCE00;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = completionCopy;
+    dispatch_async(queue, v6);
   }
 }
 
@@ -77,47 +77,47 @@
   [(IDSServerBagNetworkLoader *)&v3 dealloc];
 }
 
-- (void)connectionMonitorDidUpdate:(id)a3
+- (void)connectionMonitorDidUpdate:(id)update
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [a3 isImmediatelyReachable];
+  isImmediatelyReachable = [update isImmediatelyReachable];
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(IDSServerBagNetworkLoader *)self loaderState];
-  v6 = [(IDSServerBagNetworkLoader *)self config];
-  v7 = [v6 logCategory];
+  loaderState = [(IDSServerBagNetworkLoader *)self loaderState];
+  config = [(IDSServerBagNetworkLoader *)self config];
+  logCategory = [config logCategory];
 
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(logCategory, OS_LOG_TYPE_INFO))
   {
     v8 = objc_opt_class();
-    v9 = [(IDSServerBagNetworkLoader *)self loaderState];
+    loaderState2 = [(IDSServerBagNetworkLoader *)self loaderState];
     v10 = @"NO";
     v12 = 138413058;
     v13 = v8;
     v14 = 2048;
-    if (v4)
+    if (isImmediatelyReachable)
     {
       v10 = @"YES";
     }
 
-    v15 = self;
+    selfCopy = self;
     v16 = 1024;
-    v17 = v9;
+    v17 = loaderState2;
     v18 = 2112;
     v19 = v10;
-    _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_INFO, "<%@:%p> Received connectionMonitorDidUpdate {_loaderState: %d; isImmediatelyReachable: %@}", &v12, 0x26u);
+    _os_log_impl(&dword_1A7AD9000, logCategory, OS_LOG_TYPE_INFO, "<%@:%p> Received connectionMonitorDidUpdate {_loaderState: %d; isImmediatelyReachable: %@}", &v12, 0x26u);
   }
 
-  if (((v5 == 2) & v4) == 1)
+  if (((loaderState == 2) & isImmediatelyReachable) == 1)
   {
     [(IDSServerBagNetworkLoader *)self setLoaderState:0];
-    v11 = [(IDSServerBagNetworkLoader *)self storedCompletion];
+    storedCompletion = [(IDSServerBagNetworkLoader *)self storedCompletion];
     os_unfair_lock_unlock(&self->_lock);
-    [(IDSServerBagNetworkLoader *)self loadBagIfPossibleWithCompletion:v11];
+    [(IDSServerBagNetworkLoader *)self loadBagIfPossibleWithCompletion:storedCompletion];
   }
 
   else
   {
-    if (!((v5 != 1) | v4 & 1))
+    if (!((loaderState != 1) | isImmediatelyReachable & 1))
     {
       [(IDSServerBagNetworkLoader *)self setURLRequestSession:0];
       [(IDSServerBagNetworkLoader *)self setLoaderState:2];

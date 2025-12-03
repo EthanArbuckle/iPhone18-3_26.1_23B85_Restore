@@ -1,12 +1,12 @@
 @interface NWSInterfaceSnapshot
 - (NSString)interfaceDescription;
 - (NSString)interfaceName;
-- (NWSInterfaceSnapshot)initWithCounts:(const nstat_counts *)a3 interfaceDescriptor:(nstat_ifnet_descriptor *)a4 sourceIdent:(unint64_t)a5 seqno:(unint64_t)a6;
+- (NWSInterfaceSnapshot)initWithCounts:(const nstat_counts *)counts interfaceDescriptor:(nstat_ifnet_descriptor *)descriptor sourceIdent:(unint64_t)ident seqno:(unint64_t)seqno;
 - (id)description;
 - (id)traditionalDictionary;
-- (void)_handleCellExtra:(nstat_ifnet_desc_cellular_status *)a3;
-- (void)_handleDescriptor:(nstat_ifnet_descriptor *)a3;
-- (void)_handleWifiExtra:(nstat_ifnet_desc_wifi_status *)a3;
+- (void)_handleCellExtra:(nstat_ifnet_desc_cellular_status *)extra;
+- (void)_handleDescriptor:(nstat_ifnet_descriptor *)descriptor;
+- (void)_handleWifiExtra:(nstat_ifnet_desc_wifi_status *)extra;
 - (void)_invalidateAllExtraCounts;
 - (void)_invalidateCellCounts;
 - (void)_invalidateCommonCounts;
@@ -97,20 +97,20 @@
   if (v3)
   {
     [v3 setObject:kNStatProviderInterface forKeyedSubscript:kNStatSrcKeyProvider];
-    v5 = [(NWSInterfaceSnapshot *)self interfaceName];
+    interfaceName = [(NWSInterfaceSnapshot *)self interfaceName];
 
-    if (v5)
+    if (interfaceName)
     {
-      v6 = [(NWSInterfaceSnapshot *)self interfaceName];
-      [v4 setObject:v6 forKeyedSubscript:kNStatSrcKeyInterfaceName];
+      interfaceName2 = [(NWSInterfaceSnapshot *)self interfaceName];
+      [v4 setObject:interfaceName2 forKeyedSubscript:kNStatSrcKeyInterfaceName];
     }
 
-    v7 = [(NWSInterfaceSnapshot *)self interfaceDescription];
+    interfaceDescription = [(NWSInterfaceSnapshot *)self interfaceDescription];
 
-    if (v7)
+    if (interfaceDescription)
     {
-      v8 = [(NWSInterfaceSnapshot *)self interfaceDescription];
-      [v4 setObject:v8 forKeyedSubscript:kNStatSrcKeyInterfaceDescription];
+      interfaceDescription2 = [(NWSInterfaceSnapshot *)self interfaceDescription];
+      [v4 setObject:interfaceDescription2 forKeyedSubscript:kNStatSrcKeyInterfaceDescription];
     }
 
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_descriptor.type];
@@ -272,13 +272,13 @@
   return v4;
 }
 
-- (void)_handleCellExtra:(nstat_ifnet_desc_cellular_status *)a3
+- (void)_handleCellExtra:(nstat_ifnet_desc_cellular_status *)extra
 {
-  valid_bitmask = a3->valid_bitmask;
+  valid_bitmask = extra->valid_bitmask;
   [(NWSInterfaceSnapshot *)self _invalidateWifiCounts];
   if (valid_bitmask)
   {
-    link_quality_metric = a3->link_quality_metric;
+    link_quality_metric = extra->link_quality_metric;
   }
 
   else
@@ -289,7 +289,7 @@
   [(NWSInterfaceSnapshot *)self setLinkQualityMetric:link_quality_metric];
   if ((valid_bitmask & 2) != 0)
   {
-    ul_effective_bandwidth = a3->ul_effective_bandwidth;
+    ul_effective_bandwidth = extra->ul_effective_bandwidth;
   }
 
   else
@@ -300,7 +300,7 @@
   [(NWSInterfaceSnapshot *)self setUlEffectiveBandwidth:ul_effective_bandwidth];
   if ((valid_bitmask & 4) != 0)
   {
-    ul_max_bandwidth = a3->ul_max_bandwidth;
+    ul_max_bandwidth = extra->ul_max_bandwidth;
   }
 
   else
@@ -311,7 +311,7 @@
   [(NWSInterfaceSnapshot *)self setUlMaxBandwidth:ul_max_bandwidth];
   if ((valid_bitmask & 8) != 0)
   {
-    ul_min_latency = a3->ul_min_latency;
+    ul_min_latency = extra->ul_min_latency;
   }
 
   else
@@ -322,8 +322,8 @@
   [(NWSInterfaceSnapshot *)self setUlMinLatency:ul_min_latency];
   if ((valid_bitmask & 0x20) != 0)
   {
-    [(NWSInterfaceSnapshot *)self setUlEffectiveLatency:a3->ul_effective_latency];
-    ul_max_latency = a3->ul_max_latency;
+    [(NWSInterfaceSnapshot *)self setUlEffectiveLatency:extra->ul_effective_latency];
+    ul_max_latency = extra->ul_max_latency;
   }
 
   else
@@ -335,7 +335,7 @@
   [(NWSInterfaceSnapshot *)self setUlMaxLatency:ul_max_latency];
   if ((valid_bitmask & 0x40) != 0)
   {
-    ul_retxt_level = a3->ul_retxt_level;
+    ul_retxt_level = extra->ul_retxt_level;
   }
 
   else
@@ -346,7 +346,7 @@
   [(NWSInterfaceSnapshot *)self setUlReTxtLevel:ul_retxt_level];
   if ((valid_bitmask & 0x80) != 0)
   {
-    ul_bytes_lost = a3->ul_bytes_lost;
+    ul_bytes_lost = extra->ul_bytes_lost;
   }
 
   else
@@ -357,7 +357,7 @@
   [(NWSInterfaceSnapshot *)self setUlBytesLost:ul_bytes_lost];
   if ((valid_bitmask & 0x100) != 0)
   {
-    ul_min_queue_size = a3->ul_min_queue_size;
+    ul_min_queue_size = extra->ul_min_queue_size;
   }
 
   else
@@ -368,7 +368,7 @@
   [(NWSInterfaceSnapshot *)self setCellUlMinQueueSize:ul_min_queue_size];
   if ((valid_bitmask & 0x200) != 0)
   {
-    ul_avg_queue_size = a3->ul_avg_queue_size;
+    ul_avg_queue_size = extra->ul_avg_queue_size;
   }
 
   else
@@ -379,7 +379,7 @@
   [(NWSInterfaceSnapshot *)self setCellUlAvgQueueSize:ul_avg_queue_size];
   if ((valid_bitmask & 0x400) != 0)
   {
-    ul_max_queue_size = a3->ul_max_queue_size;
+    ul_max_queue_size = extra->ul_max_queue_size;
   }
 
   else
@@ -390,7 +390,7 @@
   [(NWSInterfaceSnapshot *)self setCellUlMaxQueueSize:ul_max_queue_size];
   if ((valid_bitmask & 0x800) != 0)
   {
-    dl_effective_bandwidth = a3->dl_effective_bandwidth;
+    dl_effective_bandwidth = extra->dl_effective_bandwidth;
   }
 
   else
@@ -401,7 +401,7 @@
   [(NWSInterfaceSnapshot *)self setDlEffectiveBandwidth:dl_effective_bandwidth];
   if ((valid_bitmask & 0x1000) != 0)
   {
-    dl_max_bandwidth = a3->dl_max_bandwidth;
+    dl_max_bandwidth = extra->dl_max_bandwidth;
   }
 
   else
@@ -412,7 +412,7 @@
   [(NWSInterfaceSnapshot *)self setDlMaxBandwidth:dl_max_bandwidth];
   if ((valid_bitmask & 0x2000) != 0)
   {
-    config_inactivity_time = a3->config_inactivity_time;
+    config_inactivity_time = extra->config_inactivity_time;
   }
 
   else
@@ -423,7 +423,7 @@
   [(NWSInterfaceSnapshot *)self setCellConfigInactivityTime:config_inactivity_time];
   if ((valid_bitmask & 0x4000) != 0)
   {
-    config_backoff_time = a3->config_backoff_time;
+    config_backoff_time = extra->config_backoff_time;
   }
 
   else
@@ -434,13 +434,13 @@
   [(NWSInterfaceSnapshot *)self setCellConfigBackoffTime:config_backoff_time];
 }
 
-- (void)_handleWifiExtra:(nstat_ifnet_desc_wifi_status *)a3
+- (void)_handleWifiExtra:(nstat_ifnet_desc_wifi_status *)extra
 {
-  valid_bitmask = a3->valid_bitmask;
+  valid_bitmask = extra->valid_bitmask;
   [(NWSInterfaceSnapshot *)self _invalidateCellCounts];
   if (valid_bitmask)
   {
-    link_quality_metric = a3->link_quality_metric;
+    link_quality_metric = extra->link_quality_metric;
   }
 
   else
@@ -451,7 +451,7 @@
   [(NWSInterfaceSnapshot *)self setLinkQualityMetric:link_quality_metric];
   if ((valid_bitmask & 2) != 0)
   {
-    ul_effective_bandwidth = a3->ul_effective_bandwidth;
+    ul_effective_bandwidth = extra->ul_effective_bandwidth;
   }
 
   else
@@ -462,7 +462,7 @@
   [(NWSInterfaceSnapshot *)self setUlEffectiveBandwidth:ul_effective_bandwidth];
   if ((valid_bitmask & 4) != 0)
   {
-    ul_max_bandwidth = a3->ul_max_bandwidth;
+    ul_max_bandwidth = extra->ul_max_bandwidth;
   }
 
   else
@@ -473,7 +473,7 @@
   [(NWSInterfaceSnapshot *)self setUlMaxBandwidth:ul_max_bandwidth];
   if ((valid_bitmask & 8) != 0)
   {
-    ul_min_latency = a3->ul_min_latency;
+    ul_min_latency = extra->ul_min_latency;
   }
 
   else
@@ -484,7 +484,7 @@
   [(NWSInterfaceSnapshot *)self setUlMinLatency:ul_min_latency];
   if ((valid_bitmask & 0x10) != 0)
   {
-    ul_effective_latency = a3->ul_effective_latency;
+    ul_effective_latency = extra->ul_effective_latency;
   }
 
   else
@@ -495,7 +495,7 @@
   [(NWSInterfaceSnapshot *)self setUlEffectiveLatency:ul_effective_latency];
   if ((valid_bitmask & 0x20) != 0)
   {
-    ul_max_latency = a3->ul_max_latency;
+    ul_max_latency = extra->ul_max_latency;
   }
 
   else
@@ -506,7 +506,7 @@
   [(NWSInterfaceSnapshot *)self setUlMaxLatency:ul_max_latency];
   if ((valid_bitmask & 0x40) != 0)
   {
-    ul_retxt_level = a3->ul_retxt_level;
+    ul_retxt_level = extra->ul_retxt_level;
   }
 
   else
@@ -517,7 +517,7 @@
   [(NWSInterfaceSnapshot *)self setUlReTxtLevel:ul_retxt_level];
   if ((valid_bitmask & 0x100) != 0)
   {
-    ul_bytes_lost = a3->ul_bytes_lost;
+    ul_bytes_lost = extra->ul_bytes_lost;
   }
 
   else
@@ -528,7 +528,7 @@
   [(NWSInterfaceSnapshot *)self setUlBytesLost:ul_bytes_lost];
   if ((valid_bitmask & 0x4000) != 0)
   {
-    ul_error_rate = a3->ul_error_rate;
+    ul_error_rate = extra->ul_error_rate;
   }
 
   else
@@ -539,7 +539,7 @@
   [(NWSInterfaceSnapshot *)self setWifiUlErrorRate:ul_error_rate];
   if ((valid_bitmask & 0x200) != 0)
   {
-    dl_effective_bandwidth = a3->dl_effective_bandwidth;
+    dl_effective_bandwidth = extra->dl_effective_bandwidth;
   }
 
   else
@@ -550,7 +550,7 @@
   [(NWSInterfaceSnapshot *)self setDlEffectiveBandwidth:dl_effective_bandwidth];
   if ((valid_bitmask & 0x400) != 0)
   {
-    dl_max_bandwidth = a3->dl_max_bandwidth;
+    dl_max_bandwidth = extra->dl_max_bandwidth;
   }
 
   else
@@ -561,7 +561,7 @@
   [(NWSInterfaceSnapshot *)self setDlMaxBandwidth:dl_max_bandwidth];
   if ((valid_bitmask & 0x800) != 0)
   {
-    dl_min_latency = a3->dl_min_latency;
+    dl_min_latency = extra->dl_min_latency;
   }
 
   else
@@ -572,7 +572,7 @@
   [(NWSInterfaceSnapshot *)self setWifiDlMinLatency:dl_min_latency];
   if ((valid_bitmask & 0x1000) != 0)
   {
-    dl_effective_latency = a3->dl_effective_latency;
+    dl_effective_latency = extra->dl_effective_latency;
   }
 
   else
@@ -583,7 +583,7 @@
   [(NWSInterfaceSnapshot *)self setWifiDlEffectiveLatency:dl_effective_latency];
   if ((valid_bitmask & 0x2000) != 0)
   {
-    dl_max_latency = a3->dl_max_latency;
+    dl_max_latency = extra->dl_max_latency;
   }
 
   else
@@ -594,7 +594,7 @@
   [(NWSInterfaceSnapshot *)self setWifiDlMaxLatency:dl_max_latency];
   if ((valid_bitmask & 0x4000) != 0)
   {
-    dl_error_rate = a3->dl_error_rate;
+    dl_error_rate = extra->dl_error_rate;
   }
 
   else
@@ -605,7 +605,7 @@
   [(NWSInterfaceSnapshot *)self setWifiDlErrorRate:dl_error_rate];
   if ((valid_bitmask & 0x8000) != 0)
   {
-    config_frequency = a3->config_frequency;
+    config_frequency = extra->config_frequency;
   }
 
   else
@@ -616,7 +616,7 @@
   [(NWSInterfaceSnapshot *)self setWifiConfigFrequency:config_frequency];
   if ((valid_bitmask & 0x10000) != 0)
   {
-    config_multicast_rate = a3->config_multicast_rate;
+    config_multicast_rate = extra->config_multicast_rate;
   }
 
   else
@@ -627,7 +627,7 @@
   [(NWSInterfaceSnapshot *)self setWifiConfigMulticastRate:config_multicast_rate];
   if ((valid_bitmask & 0x20000) != 0)
   {
-    scan_count = a3->scan_count;
+    scan_count = extra->scan_count;
   }
 
   else
@@ -638,7 +638,7 @@
   [(NWSInterfaceSnapshot *)self setWifiScanCount:scan_count];
   if ((valid_bitmask & 0x40000) != 0)
   {
-    scan_duration = a3->scan_duration;
+    scan_duration = extra->scan_duration;
   }
 
   else
@@ -649,45 +649,45 @@
   [(NWSInterfaceSnapshot *)self setWifiScanDuration:scan_duration];
 }
 
-- (void)_handleDescriptor:(nstat_ifnet_descriptor *)a3
+- (void)_handleDescriptor:(nstat_ifnet_descriptor *)descriptor
 {
-  v3 = *&a3->link_status.u.wifi.ul_bytes_lost;
-  v5 = *&a3->threshold;
-  v4 = *&a3->link_status.u.cellular.valid_bitmask;
-  *&self->_descriptor.link_status.u.wifi.ul_min_latency = *&a3->link_status.u.wifi.ul_min_latency;
+  v3 = *&descriptor->link_status.u.wifi.ul_bytes_lost;
+  v5 = *&descriptor->threshold;
+  v4 = *&descriptor->link_status.u.cellular.valid_bitmask;
+  *&self->_descriptor.link_status.u.wifi.ul_min_latency = *&descriptor->link_status.u.wifi.ul_min_latency;
   *&self->_descriptor.link_status.u.wifi.ul_bytes_lost = v3;
   *&self->_descriptor.threshold = v5;
   *&self->_descriptor.link_status.u.cellular.valid_bitmask = v4;
-  v6 = *&a3->description[12];
-  v8 = *&a3->link_status.u.wifi.dl_min_latency;
-  v7 = *&a3->link_status.u.wifi.config_frequency;
-  *&self->_descriptor.type = *&a3->type;
+  v6 = *&descriptor->description[12];
+  v8 = *&descriptor->link_status.u.wifi.dl_min_latency;
+  v7 = *&descriptor->link_status.u.wifi.config_frequency;
+  *&self->_descriptor.type = *&descriptor->type;
   *&self->_descriptor.description[12] = v6;
   *&self->_descriptor.link_status.u.wifi.dl_min_latency = v8;
   *&self->_descriptor.link_status.u.wifi.config_frequency = v7;
-  v9 = *&a3->description[76];
-  v11 = *&a3->description[28];
-  v10 = *&a3->description[44];
-  *&self->_descriptor.description[60] = *&a3->description[60];
+  v9 = *&descriptor->description[76];
+  v11 = *&descriptor->description[28];
+  v10 = *&descriptor->description[44];
+  *&self->_descriptor.description[60] = *&descriptor->description[60];
   *&self->_descriptor.description[76] = v9;
   *&self->_descriptor.description[28] = v11;
   *&self->_descriptor.description[44] = v10;
-  v13 = *&a3->description[108];
-  v12 = *&a3->description[124];
-  v14 = *&a3->description[92];
-  *&self->_descriptor.name[12] = *&a3->name[12];
+  v13 = *&descriptor->description[108];
+  v12 = *&descriptor->description[124];
+  v14 = *&descriptor->description[92];
+  *&self->_descriptor.name[12] = *&descriptor->name[12];
   *&self->_descriptor.description[108] = v13;
   *&self->_descriptor.description[124] = v12;
   *&self->_descriptor.description[92] = v14;
-  link_status_type = a3->link_status.link_status_type;
+  link_status_type = descriptor->link_status.link_status_type;
   if (link_status_type == 2)
   {
-    [(NWSInterfaceSnapshot *)self _handleWifiExtra:&a3->link_status.u];
+    [(NWSInterfaceSnapshot *)self _handleWifiExtra:&descriptor->link_status.u];
   }
 
   else if (link_status_type == 1)
   {
-    [(NWSInterfaceSnapshot *)self _handleCellExtra:&a3->link_status.u];
+    [(NWSInterfaceSnapshot *)self _handleCellExtra:&descriptor->link_status.u];
   }
 
   else
@@ -715,15 +715,15 @@
   return v4;
 }
 
-- (NWSInterfaceSnapshot)initWithCounts:(const nstat_counts *)a3 interfaceDescriptor:(nstat_ifnet_descriptor *)a4 sourceIdent:(unint64_t)a5 seqno:(unint64_t)a6
+- (NWSInterfaceSnapshot)initWithCounts:(const nstat_counts *)counts interfaceDescriptor:(nstat_ifnet_descriptor *)descriptor sourceIdent:(unint64_t)ident seqno:(unint64_t)seqno
 {
   v10.receiver = self;
   v10.super_class = NWSInterfaceSnapshot;
-  v7 = [(NWSSnapshot *)&v10 _initWithCounts:a3 sourceIdent:a5 seqno:a6];
+  v7 = [(NWSSnapshot *)&v10 _initWithCounts:counts sourceIdent:ident seqno:seqno];
   v8 = v7;
   if (v7)
   {
-    [(NWSInterfaceSnapshot *)v7 _handleDescriptor:a4];
+    [(NWSInterfaceSnapshot *)v7 _handleDescriptor:descriptor];
   }
 
   return v8;

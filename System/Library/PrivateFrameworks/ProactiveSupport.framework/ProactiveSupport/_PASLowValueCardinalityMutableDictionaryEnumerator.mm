@@ -8,15 +8,15 @@
 
 - (BOOL)_loadNextKeyEnumerator
 {
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   if (v1)
   {
-    v3 = [*(a1 + 8) objectAtIndexedSubscript:v1 - 1];
-    v4 = [v3 objectEnumerator];
-    v5 = *(a1 + 24);
-    *(a1 + 24) = v4;
+    v3 = [*(self + 8) objectAtIndexedSubscript:v1 - 1];
+    objectEnumerator = [v3 objectEnumerator];
+    v5 = *(self + 24);
+    *(self + 24) = objectEnumerator;
 
-    *(a1 + 16) -= 2;
+    *(self + 16) -= 2;
   }
 
   return v1 != 0;
@@ -26,13 +26,13 @@
 {
   if (self)
   {
-    v3 = self;
+    selfCopy = self;
     self = [(NSEnumerator *)self->_keyEnumerator nextObject];
     if (!self)
     {
-      if ([(_PASLowValueCardinalityMutableDictionaryEnumerator *)v3 _loadNextKeyEnumerator])
+      if ([(_PASLowValueCardinalityMutableDictionaryEnumerator *)selfCopy _loadNextKeyEnumerator])
       {
-        self = [(NSEnumerator *)v3->_keyEnumerator nextObject];
+        self = [(NSEnumerator *)selfCopy->_keyEnumerator nextObject];
       }
 
       else
@@ -53,19 +53,19 @@
   if (self)
   {
     v3 = objc_opt_new();
-    v4 = [(NSEnumerator *)self->_keyEnumerator nextObject];
-    if (v4)
+    nextObject = [(NSEnumerator *)self->_keyEnumerator nextObject];
+    if (nextObject)
     {
-      v5 = v4;
+      v5 = nextObject;
       do
       {
         [v3 addObject:v5];
-        v6 = [(NSEnumerator *)self->_keyEnumerator nextObject];
+        nextObject2 = [(NSEnumerator *)self->_keyEnumerator nextObject];
 
-        v5 = v6;
+        v5 = nextObject2;
       }
 
-      while (v6);
+      while (nextObject2);
     }
 
     for (i = self->_i; i; i = self->_i)

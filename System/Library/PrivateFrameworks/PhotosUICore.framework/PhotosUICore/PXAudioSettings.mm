@@ -1,7 +1,7 @@
 @interface PXAudioSettings
 + (PXAudioSettings)sharedInstance;
 + (id)settingsControllerModule;
-+ (void)purgeFlexDataFromModuleController:(id)a3;
++ (void)purgeFlexDataFromModuleController:(id)controller;
 - (void)setDefaultValues;
 @end
 
@@ -39,9 +39,9 @@ void __33__PXAudioSettings_sharedInstance__block_invoke()
   sharedInstance_sharedInstance_168403 = v0;
 }
 
-+ (void)purgeFlexDataFromModuleController:(id)a3
++ (void)purgeFlexDataFromModuleController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = [PXAlertController progressAlertControllerWithMessage:@"Purging Flex Data…"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -49,7 +49,7 @@ void __33__PXAudioSettings_sharedInstance__block_invoke()
   v6[3] = &unk_1E774C648;
   v7 = v4;
   v5 = v4;
-  [v3 presentViewController:v5 animated:1 completion:v6];
+  [controllerCopy presentViewController:v5 animated:1 completion:v6];
 }
 
 uint64_t __57__PXAudioSettings_UI__purgeFlexDataFromModuleController___block_invoke(uint64_t a1, double a2)
@@ -99,7 +99,7 @@ uint64_t __57__PXAudioSettings_UI__purgeFlexDataFromModuleController___block_inv
   v34[1] = 3221225472;
   v34[2] = __47__PXAudioSettings_UI__settingsControllerModule__block_invoke_2;
   v34[3] = &__block_descriptor_40_e11_B24__0_8_16l;
-  v34[4] = a1;
+  v34[4] = self;
   v16 = [MEMORY[0x1E69C6658] actionWithHandler:v34];
   v17 = [v15 rowWithTitle:@"Purge All Local Flex Data" action:v16];
   v35[3] = v17;

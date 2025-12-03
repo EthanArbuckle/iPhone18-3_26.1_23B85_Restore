@@ -1,13 +1,13 @@
 @interface CRLScenesNavigatorViewController.PlatformView
-- (_TtCC8Freeform32CRLScenesNavigatorViewController12PlatformView)initWithCoder:(id)a3;
-- (_TtCC8Freeform32CRLScenesNavigatorViewController12PlatformView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtCC8Freeform32CRLScenesNavigatorViewController12PlatformView)initWithCoder:(id)coder;
+- (_TtCC8Freeform32CRLScenesNavigatorViewController12PlatformView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)updateConstraints;
 @end
 
 @implementation CRLScenesNavigatorViewController.PlatformView
 
-- (_TtCC8Freeform32CRLScenesNavigatorViewController12PlatformView)initWithCoder:(id)a3
+- (_TtCC8Freeform32CRLScenesNavigatorViewController12PlatformView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -29,18 +29,18 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_100F3486C(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_100F3486C(event, x, y);
 
   return v10;
 }
 
-- (_TtCC8Freeform32CRLScenesNavigatorViewController12PlatformView)initWithFrame:(CGRect)a3
+- (_TtCC8Freeform32CRLScenesNavigatorViewController12PlatformView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -2,8 +2,8 @@
 - (CGPath)createBezierPath;
 - (CGPoint)point;
 - (CGSize)size;
-- (int)mapStrType:(__CFString *)a3;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4;
+- (int)mapStrType:(__CFString *)type;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor;
 @end
 
 @implementation GQDPointPath
@@ -31,7 +31,7 @@
   [(GQDPointPath *)self size];
   v4 = v3;
   v6 = v5;
-  v7 = [(GQDPointPath *)self type];
+  type = [(GQDPointPath *)self type];
   [(GQDPointPath *)self point];
   v9 = v8;
   [(GQDPointPath *)self point];
@@ -44,11 +44,11 @@
   {
     v11 = 0;
     v12 = v6 * v10;
-    if (v7 <= 9)
+    if (type <= 9)
     {
-      if (v7)
+      if (type)
       {
-        if (v7 != 1)
+        if (type != 1)
         {
           return v11;
         }
@@ -94,7 +94,7 @@
 
     else
     {
-      switch(v7)
+      switch(type)
       {
         case 10:
           v35.a = 0.0;
@@ -214,9 +214,9 @@ LABEL_26:
   return v11;
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor
 {
-  v5 = sub_4294C(a3, qword_A35E8, "type");
+  v5 = sub_4294C(reader, qword_A35E8, "type");
   if (!v5)
   {
     return 3;
@@ -228,21 +228,21 @@ LABEL_26:
   return 1;
 }
 
-- (int)mapStrType:(__CFString *)a3
+- (int)mapStrType:(__CFString *)type
 {
-  if (CFStringCompare(a3, @"left", 1uLL) == kCFCompareEqualTo)
+  if (CFStringCompare(type, @"left", 1uLL) == kCFCompareEqualTo)
   {
     return 0;
   }
 
   v4 = 1;
-  if (CFStringCompare(a3, @"right", 1uLL))
+  if (CFStringCompare(type, @"right", 1uLL))
   {
-    if (CFStringCompare(a3, @"double", 1uLL))
+    if (CFStringCompare(type, @"double", 1uLL))
     {
-      if (CFStringCompare(a3, @"star", 1uLL))
+      if (CFStringCompare(type, @"star", 1uLL))
       {
-        if (CFStringCompare(a3, @"plus", 1uLL))
+        if (CFStringCompare(type, @"plus", 1uLL))
         {
           return -1;
         }

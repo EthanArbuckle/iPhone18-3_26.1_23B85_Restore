@@ -1,16 +1,16 @@
 @interface SearchUIBiomeEvent
-+ (id)eventForEvent:(id)a3 contextualAction:(id)a4;
-- (SearchUIBiomeEvent)initWithEvent:(id)a3 contextualAction:(id)a4;
-- (void)getEnabledStatusWithCompletion:(id)a3;
++ (id)eventForEvent:(id)event contextualAction:(id)action;
+- (SearchUIBiomeEvent)initWithEvent:(id)event contextualAction:(id)action;
+- (void)getEnabledStatusWithCompletion:(id)completion;
 @end
 
 @implementation SearchUIBiomeEvent
 
-+ (id)eventForEvent:(id)a3 contextualAction:(id)a4
++ (id)eventForEvent:(id)event contextualAction:(id)action
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  actionCopy = action;
   v7 = eventForEvent_contextualAction__classes;
   if (!eventForEvent_contextualAction__classes)
   {
@@ -43,9 +43,9 @@
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
-        if (([(objc_class *)v14 supportsEvent:v5 contextualAction:v6, v16]& 1) != 0)
+        if (([(objc_class *)v14 supportsEvent:eventCopy contextualAction:actionCopy, v16]& 1) != 0)
         {
-          v11 = [[v14 alloc] initWithEvent:v5 contextualAction:v6];
+          v11 = [[v14 alloc] initWithEvent:eventCopy contextualAction:actionCopy];
           goto LABEL_13;
         }
       }
@@ -65,34 +65,34 @@ LABEL_13:
   return v11;
 }
 
-- (SearchUIBiomeEvent)initWithEvent:(id)a3 contextualAction:(id)a4
+- (SearchUIBiomeEvent)initWithEvent:(id)event contextualAction:(id)action
 {
-  v5 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = SearchUIBiomeEvent;
   v6 = [(BMEventBase *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    [(SearchUIBiomeEvent *)v6 setBiomeEvent:v5];
+    [(SearchUIBiomeEvent *)v6 setBiomeEvent:eventCopy];
   }
 
   return v7;
 }
 
-- (void)getEnabledStatusWithCompletion:(id)a3
+- (void)getEnabledStatusWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(SearchUIBiomeEvent *)self biomeEvent];
-  if (v4 && (v5 = v4, [(SearchUIBiomeEvent *)self biomeEvent], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, v5, (v7 & 1) != 0))
+  completionCopy = completion;
+  biomeEvent = [(SearchUIBiomeEvent *)self biomeEvent];
+  if (biomeEvent && (v5 = biomeEvent, [(SearchUIBiomeEvent *)self biomeEvent], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, v5, (v7 & 1) != 0))
   {
-    v8 = [(SearchUIBiomeEvent *)self biomeEvent];
-    [v8 getEnabledStatusWithCompletion:v9];
+    biomeEvent2 = [(SearchUIBiomeEvent *)self biomeEvent];
+    [biomeEvent2 getEnabledStatusWithCompletion:completionCopy];
   }
 
   else
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 

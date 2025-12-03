@@ -1,16 +1,16 @@
 @interface CKMessageEntryTextView
 + (BOOL)shouldUseModernMentionsAndEmojiAnimations;
-+ (void)setNeedsDisplayCurrentRenderAttributesForView:(id)a3;
++ (void)setNeedsDisplayCurrentRenderAttributesForView:(id)view;
 - (BOOL)_canSuggestSupplementalItemsForCurrentSelection;
-- (BOOL)_shouldHandleTextFormattingChangeValue:(id)a3;
+- (BOOL)_shouldHandleTextFormattingChangeValue:(id)value;
 - (BOOL)allowsMentions;
 - (BOOL)isSingleLine;
 - (BOOL)resignFirstResponder;
 - (BOOL)shouldIncludeDictationPadding;
-- (BOOL)shouldUpdateMentionsInRange:(_NSRange *)a3 replacementText:(id)a4;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKMessageEntryTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (BOOL)shouldUpdateMentionsInRange:(_NSRange *)range replacementText:(id)text;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKMessageEntryTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (CKMessageEntryTextViewMentionsDelegate)mentionsDelegate;
 - (CKMessageEntryTextViewTextFormattingDelegate)textFormattingDelegate;
 - (NSAttributedString)compositionText;
@@ -20,65 +20,65 @@
 - (id)_supportedAnimationAccessibilityHintsForTextFormatting;
 - (id)_supportedAnimationNamesForTextFormatting;
 - (id)_supportedAnimationTitlesForTextFormatting;
-- (id)initUsingTextLayoutManagerWithFrame:(CGRect)a3;
-- (id)initUsingTextLayoutManagerWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (id)initUsingTextLayoutManagerWithFrame:(CGRect)frame;
+- (id)initUsingTextLayoutManagerWithFrame:(CGRect)frame textContainer:(id)container;
 - (id)insertDictationResultPlaceholder;
 - (void)_cancelChooseSupplementalItemToInsert;
-- (void)_chooseSupplementalItemToInsert:(id)a3 replacementRange:(id)a4 completionHandler:(id)a5;
-- (void)_insertSupplementalItem:(id)a3 forString:(id)a4 replacementRange:(id)a5;
-- (void)_insertionPointEnteredRange:(id)a3 string:(id)a4 supplementalItems:(id)a5;
+- (void)_chooseSupplementalItemToInsert:(id)insert replacementRange:(id)range completionHandler:(id)handler;
+- (void)_insertSupplementalItem:(id)item forString:(id)string replacementRange:(id)range;
+- (void)_insertionPointEnteredRange:(id)range string:(id)string supplementalItems:(id)items;
 - (void)_insertionPointExitedRangeWithSupplementalItems;
 - (void)_layoutPlaceholder;
 - (void)_localeChanged;
-- (void)_setAnimatingMentionsHidden:(BOOL)a3;
+- (void)_setAnimatingMentionsHidden:(BOOL)hidden;
 - (void)_setupTapOrLongPressGestureRecognizers;
-- (void)_showTextFormattingAnimationOptions:(id)a3;
+- (void)_showTextFormattingAnimationOptions:(id)options;
 - (void)_stripEmojisIfNecessary;
 - (void)_updateAttributedPlaceholder;
-- (void)_updateTextContainerInsetUsingFont:(id)a3;
+- (void)_updateTextContainerInsetUsingFont:(id)font;
 - (void)_updateTextEffectsPickerEditMenuAction;
-- (void)_updatedAllowedTypingAttributesWithKeys:(id)a3;
+- (void)_updatedAllowedTypingAttributesWithKeys:(id)keys;
 - (void)acceptAutomaticMentionConfirmation;
 - (void)checkForMentions;
 - (void)dealloc;
-- (void)didEndEditing:(id)a3;
-- (void)didLongPressMentionForTextView:(id)a3 characterIndex:(unint64_t)a4 isLongPress:(BOOL)a5;
-- (void)didTapMentionForTextView:(id)a3 atCharacterIndex:(double)a4;
-- (void)handleHoverGesture:(id)a3;
-- (void)handleTapOrLongPress:(id)a3;
+- (void)didEndEditing:(id)editing;
+- (void)didLongPressMentionForTextView:(id)view characterIndex:(unint64_t)index isLongPress:(BOOL)press;
+- (void)didTapMentionForTextView:(id)view atCharacterIndex:(double)index;
+- (void)handleHoverGesture:(id)gesture;
+- (void)handleTapOrLongPress:(id)press;
 - (void)hideTextEffectsPickerIfNeeded;
 - (void)hideTextEffectsPickerIfNeededAndResetTypingAttributes;
-- (void)insertMentionByName:(id)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)layoutManagerDidFinishAnimatingMentionWithAnimationIdentifier:(id)a3;
+- (void)insertMentionByName:(id)name;
+- (void)keyboardWillShow:(id)show;
+- (void)layoutManagerDidFinishAnimatingMentionWithAnimationIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)reloadMentionsData;
-- (void)removeDictationResultPlaceholder:(id)a3 willInsertResult:(BOOL)a4;
-- (void)replaceRange:(id)a3 withAttributedText:(id)a4;
+- (void)removeDictationResultPlaceholder:(id)placeholder willInsertResult:(BOOL)result;
+- (void)replaceRange:(id)range withAttributedText:(id)text;
 - (void)restoreKeyboardInputMode;
 - (void)saveKeyboardInputMode;
-- (void)scribbleInteractionDidFinishWriting:(id)a3;
-- (void)scribbleInteractionWillBeginWriting:(id)a3;
-- (void)setAttributedText:(id)a3 checkForMentions:(BOOL)a4;
-- (void)setCompositionText:(id)a3;
-- (void)setExpressiveTextEnabled:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setFontType:(unint64_t)a3;
-- (void)setInPencilMode:(BOOL)a3;
-- (void)setMentionsDelegate:(id)a3;
+- (void)scribbleInteractionDidFinishWriting:(id)writing;
+- (void)scribbleInteractionWillBeginWriting:(id)writing;
+- (void)setAttributedText:(id)text checkForMentions:(BOOL)mentions;
+- (void)setCompositionText:(id)text;
+- (void)setExpressiveTextEnabled:(BOOL)enabled;
+- (void)setFont:(id)font;
+- (void)setFontType:(unint64_t)type;
+- (void)setInPencilMode:(BOOL)mode;
+- (void)setMentionsDelegate:(id)delegate;
 - (void)setNeedsDisplayCurrentRenderAttributes;
-- (void)setPlaceHolderWidth:(double)a3;
-- (void)setPlaceholderColor:(id)a3;
-- (void)setPlaceholderText:(id)a3;
-- (void)setShouldStripEmojis:(BOOL)a3;
+- (void)setPlaceHolderWidth:(double)width;
+- (void)setPlaceholderColor:(id)color;
+- (void)setPlaceholderText:(id)text;
+- (void)setShouldStripEmojis:(BOOL)emojis;
 - (void)setupScribbleInteraction;
-- (void)setupTextViewFromInitWithTextLayoutManagerWithFrame:(CGRect)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)updateFontIfNeededAndGetWasUsingBigEmojiStyle:(int64_t *)a3;
-- (void)updateMentionAssociationsForInputModeChange:(id)a3;
+- (void)setupTextViewFromInitWithTextLayoutManagerWithFrame:(CGRect)frame;
+- (void)textViewDidChange:(id)change;
+- (void)updateFontIfNeededAndGetWasUsingBigEmojiStyle:(int64_t *)style;
+- (void)updateMentionAssociationsForInputModeChange:(id)change;
 - (void)updateMentionsAssociations;
-- (void)updateTextAttributesWithConversionHandler:(id)a3;
-- (void)updateTextViewAndCheckForMentions:(BOOL)a3;
+- (void)updateTextAttributesWithConversionHandler:(id)handler;
+- (void)updateTextViewAndCheckForMentions:(BOOL)mentions;
 - (void)updateTintColor;
 @end
 
@@ -88,15 +88,15 @@
 {
   v5.receiver = self;
   v5.super_class = CKMessageEntryTextView;
-  v3 = [(CKMessageEntryTextView *)&v5 resignFirstResponder];
-  if (v3)
+  resignFirstResponder = [(CKMessageEntryTextView *)&v5 resignFirstResponder];
+  if (resignFirstResponder)
   {
     [(CKMessageEntryTextView *)self setSavedKeyboardInputMode:0];
     [(CKMessageEntryTextView *)self setInPencilMode:0];
     [(CKMessageEntryTextView *)self setPencilWriting:0];
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
 - (void)_updateAttributedPlaceholder
@@ -111,18 +111,18 @@
   placeholderColor = self->_placeholderColor;
   if (placeholderColor)
   {
-    v5 = placeholderColor;
+    entryFieldGrayColor = placeholderColor;
   }
 
   else
   {
     v6 = +[CKUIBehavior sharedBehaviors];
-    v7 = [v6 theme];
-    v5 = [v7 entryFieldGrayColor];
+    theme = [v6 theme];
+    entryFieldGrayColor = [theme entryFieldGrayColor];
   }
 
   v8 = objc_opt_new();
-  [v8 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+  [v8 setObject:entryFieldGrayColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
   v9 = [MEMORY[0x1E69DB878] ck_fontWithMessageEntryTextViewFontType:0];
   if (v9)
   {
@@ -171,8 +171,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer setDelegate:0];
   [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer setDelegate:0];
@@ -196,10 +196,10 @@
 
 - (BOOL)_canSuggestSupplementalItemsForCurrentSelection
 {
-  v2 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  v3 = [v2 canSuggestSupplementalItemsForCurrentSelection];
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  canSuggestSupplementalItemsForCurrentSelection = [mentionsDelegate canSuggestSupplementalItemsForCurrentSelection];
 
-  return v3;
+  return canSuggestSupplementalItemsForCurrentSelection;
 }
 
 - (CKMessageEntryTextViewMentionsDelegate)mentionsDelegate
@@ -215,18 +215,18 @@
   v8.super_class = CKMessageEntryTextView;
   [(EMKTextView *)&v8 layoutSubviews];
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v3 isAccessibilityPreferredContentSizeCategory];
 
-  if (v4)
+  if (isAccessibilityPreferredContentSizeCategory)
   {
-    v5 = [(CKMessageEntryTextView *)self _placeholderLabel];
-    [v5 setAdjustsFontSizeToFitWidth:1];
+    _placeholderLabel = [(CKMessageEntryTextView *)self _placeholderLabel];
+    [_placeholderLabel setAdjustsFontSizeToFitWidth:1];
 
-    v6 = [(CKMessageEntryTextView *)self _placeholderLabel];
-    [v6 setBaselineAdjustment:1];
+    _placeholderLabel2 = [(CKMessageEntryTextView *)self _placeholderLabel];
+    [_placeholderLabel2 setBaselineAdjustment:1];
 
-    v7 = [(CKMessageEntryTextView *)self _placeholderLabel];
-    [v7 setMinimumScaleFactor:0.01];
+    _placeholderLabel3 = [(CKMessageEntryTextView *)self _placeholderLabel];
+    [_placeholderLabel3 setMinimumScaleFactor:0.01];
   }
 }
 
@@ -240,19 +240,19 @@
     [(CKMessageEntryTextView *)self bounds];
     [(CKMessageEntryTextView *)self placeHolderWidth];
     v4 = v3;
-    v5 = [(CKMessageEntryTextView *)self _placeholderLabel];
+    _placeholderLabel = [(CKMessageEntryTextView *)self _placeholderLabel];
     [(CKMessageEntryTextView *)self bounds];
-    [v5 sizeThatFits:{v6, v7}];
+    [_placeholderLabel sizeThatFits:{v6, v7}];
     v9 = v8;
 
-    v10 = [(CKMessageEntryTextView *)self textContainer];
-    [v10 lineFragmentPadding];
+    textContainer = [(CKMessageEntryTextView *)self textContainer];
+    [textContainer lineFragmentPadding];
     v12 = v11;
 
-    v13 = [(CKMessageEntryTextView *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(CKMessageEntryTextView *)self effectiveUserInterfaceLayoutDirection];
     [(CKMessageEntryTextView *)self textContainerInset];
     v15 = v14;
-    if (v13 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v16 = +[CKUIBehavior sharedBehaviors];
       [v16 audioButtonSize];
@@ -261,12 +261,12 @@
       v12 = -2.0 - v12;
     }
 
-    v18 = [(CKMessageEntryTextView *)self _placeholderLabel];
-    [v18 setFrame:{v12, v15, v4, v9}];
+    _placeholderLabel2 = [(CKMessageEntryTextView *)self _placeholderLabel];
+    [_placeholderLabel2 setFrame:{v12, v15, v4, v9}];
   }
 }
 
-- (void)didEndEditing:(id)a3
+- (void)didEndEditing:(id)editing
 {
   if (CKIsRunningInMessagesNotificationExtension())
   {
@@ -275,136 +275,136 @@
   }
 }
 
-- (void)_insertSupplementalItem:(id)a3 forString:(id)a4 replacementRange:(id)a5
+- (void)_insertSupplementalItem:(id)item forString:(id)string replacementRange:(id)range
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v11 insertSupplementalItem:v10 forString:v9 replacementRange:v8];
+  rangeCopy = range;
+  stringCopy = string;
+  itemCopy = item;
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate insertSupplementalItem:itemCopy forString:stringCopy replacementRange:rangeCopy];
 }
 
-- (void)_insertionPointEnteredRange:(id)a3 string:(id)a4 supplementalItems:(id)a5
+- (void)_insertionPointEnteredRange:(id)range string:(id)string supplementalItems:(id)items
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v11 insertionPointEnteredRange:v10 string:v9 supplementalItems:v8];
+  itemsCopy = items;
+  stringCopy = string;
+  rangeCopy = range;
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate insertionPointEnteredRange:rangeCopy string:stringCopy supplementalItems:itemsCopy];
 }
 
 - (void)_insertionPointExitedRangeWithSupplementalItems
 {
-  v2 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v2 insertionPointExitedRangeWithSupplementalItems];
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate insertionPointExitedRangeWithSupplementalItems];
 }
 
-- (void)_chooseSupplementalItemToInsert:(id)a3 replacementRange:(id)a4 completionHandler:(id)a5
+- (void)_chooseSupplementalItemToInsert:(id)insert replacementRange:(id)range completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v11 chooseSupplementalItemToInsert:v10 replacementRange:v9 completionHandler:v8];
+  handlerCopy = handler;
+  rangeCopy = range;
+  insertCopy = insert;
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate chooseSupplementalItemToInsert:insertCopy replacementRange:rangeCopy completionHandler:handlerCopy];
 }
 
 - (void)_cancelChooseSupplementalItemToInsert
 {
-  v2 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v2 cancelChooseSupplementalItemToInsert];
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate cancelChooseSupplementalItemToInsert];
 }
 
-- (void)didTapMentionForTextView:(id)a3 atCharacterIndex:(double)a4
+- (void)didTapMentionForTextView:(id)view atCharacterIndex:(double)index
 {
-  v5 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v5 didTapMentionAtCharacterIndex:a4];
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate didTapMentionAtCharacterIndex:index];
 }
 
-- (void)didLongPressMentionForTextView:(id)a3 characterIndex:(unint64_t)a4 isLongPress:(BOOL)a5
+- (void)didLongPressMentionForTextView:(id)view characterIndex:(unint64_t)index isLongPress:(BOOL)press
 {
-  v5 = a5;
-  v7 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v7 didLongPressMentionAtCharacterIndex:a4 isLongPress:v5];
+  pressCopy = press;
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate didLongPressMentionAtCharacterIndex:index isLongPress:pressCopy];
 }
 
-- (void)updateMentionAssociationsForInputModeChange:(id)a3
+- (void)updateMentionAssociationsForInputModeChange:(id)change
 {
-  v3 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v3 updateMentionsAssociations];
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate updateMentionsAssociations];
 }
 
 - (void)acceptAutomaticMentionConfirmation
 {
-  v2 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v2 acceptAutomaticMentionConfirmation];
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate acceptAutomaticMentionConfirmation];
 }
 
 - (void)updateMentionsAssociations
 {
-  v2 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v2 updateMentionsAssociations];
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate updateMentionsAssociations];
 }
 
 - (void)reloadMentionsData
 {
-  v2 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v2 reloadMentionsData];
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate reloadMentionsData];
 }
 
 - (void)checkForMentions
 {
   if ([(CKMessageEntryTextView *)self allowsMentions])
   {
-    v3 = [(CKMessageEntryTextView *)self mentionsDelegate];
-    [v3 checkForMentions];
+    mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+    [mentionsDelegate checkForMentions];
   }
 }
 
-- (void)insertMentionByName:(id)a3
+- (void)insertMentionByName:(id)name
 {
-  v4 = a3;
-  v5 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v5 insertMentionByName:v4];
+  nameCopy = name;
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate insertMentionByName:nameCopy];
 }
 
-- (BOOL)shouldUpdateMentionsInRange:(_NSRange *)a3 replacementText:(id)a4
+- (BOOL)shouldUpdateMentionsInRange:(_NSRange *)range replacementText:(id)text
 {
-  v6 = a4;
-  v7 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v7 setCurrentTappedCharacterIndex:0x7FFFFFFFFFFFFFFFLL];
+  textCopy = text;
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate setCurrentTappedCharacterIndex:0x7FFFFFFFFFFFFFFFLL];
 
-  v8 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  LOBYTE(a3) = [v8 shouldUpdateMentionsInRange:a3->location withReplacementText:{a3->length, v6}];
+  mentionsDelegate2 = [(CKMessageEntryTextView *)self mentionsDelegate];
+  LOBYTE(range) = [mentionsDelegate2 shouldUpdateMentionsInRange:range->location withReplacementText:{range->length, textCopy}];
 
-  return a3;
+  return range;
 }
 
 - (BOOL)allowsMentions
 {
-  v2 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  v3 = [v2 allowsMentions];
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  allowsMentions = [mentionsDelegate allowsMentions];
 
-  return v3;
+  return allowsMentions;
 }
 
-- (void)_setAnimatingMentionsHidden:(BOOL)a3
+- (void)_setAnimatingMentionsHidden:(BOOL)hidden
 {
-  v6 = [(CKMessageEntryTextView *)self textLayoutManager];
-  if (!v6)
+  textLayoutManager = [(CKMessageEntryTextView *)self textLayoutManager];
+  if (!textLayoutManager)
   {
     [(CKMessageEntryTextView(CKMentionsController) *)a2 _setAnimatingMentionsHidden:?];
   }
 
-  v7 = [(CKMessageEntryTextView *)self attributedText];
+  attributedText = [(CKMessageEntryTextView *)self attributedText];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHidden___block_invoke;
   v9[3] = &unk_1E72F3240;
-  v12 = a3;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
-  [v7 ck_enumerateAllMentionAnimationIdentifiersUsingBlock:v9];
+  hiddenCopy = hidden;
+  v10 = textLayoutManager;
+  selfCopy = self;
+  v8 = textLayoutManager;
+  [attributedText ck_enumerateAllMentionAnimationIdentifiersUsingBlock:v9];
 
   [objc_opt_class() setNeedsDisplayCurrentRenderAttributesForView:self];
 }
@@ -442,17 +442,17 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
   [v3 setNeedsDisplayCurrentRenderAttributesForView:self];
 }
 
-+ (void)setNeedsDisplayCurrentRenderAttributesForView:(id)a3
++ (void)setNeedsDisplayCurrentRenderAttributesForView:(id)view
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 setNeedsDisplay];
+  viewCopy = view;
+  [viewCopy setNeedsDisplay];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [v4 subviews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subviews = [viewCopy subviews];
+  v6 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -464,14 +464,14 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
-        [a1 setNeedsDisplayCurrentRenderAttributesForView:*(*(&v10 + 1) + 8 * v9++)];
+        [self setNeedsDisplayCurrentRenderAttributesForView:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -484,8 +484,8 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
   v4 = objc_opt_class();
   [(CKMessageEntryTextView *)self frame];
   v5 = NSStringFromCGRect(v16);
-  v6 = [(CKMessageEntryTextView *)self text];
-  v7 = [v6 length];
+  text = [(CKMessageEntryTextView *)self text];
+  v7 = [text length];
   [(CKMessageEntryTextView *)self contentSize];
   v8 = NSStringFromCGSize(v14);
   [(CKMessageEntryTextView *)self contentOffset];
@@ -497,23 +497,23 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
   return v11;
 }
 
-- (CKMessageEntryTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (CKMessageEntryTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   v28.receiver = self;
   v28.super_class = CKMessageEntryTextView;
-  v4 = [(EMKTextView *)&v28 initWithFrame:a4 textContainer:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(EMKTextView *)&v28 initWithFrame:container textContainer:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel_textViewDidChange_ name:*MEMORY[0x1E69DE750] object:v4];
-    [v5 addObserver:v4 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-    v6 = [(CKMessageEntryTextView *)v4 textContainer];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_textViewDidChange_ name:*MEMORY[0x1E69DE750] object:v4];
+    [defaultCenter addObserver:v4 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    textContainer = [(CKMessageEntryTextView *)v4 textContainer];
     v7 = +[CKUIBehavior sharedBehaviors];
     [v7 balloonLineFragmentPadding];
-    [v6 setLineFragmentPadding:?];
+    [textContainer setLineFragmentPadding:?];
 
-    v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LODWORD(v7) = [v8 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LODWORD(v7) = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
     if (v7)
     {
@@ -540,22 +540,22 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
     [(CKMessageEntryTextView *)v4 setOpaque:0];
     [(CKMessageEntryTextView *)v4 setScrollEnabled:0];
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 theme];
-    v21 = [v20 entryFieldGrayColor];
-    [(CKMessageEntryTextView *)v4 setPlaceholderColor:v21];
+    theme = [v19 theme];
+    entryFieldGrayColor = [theme entryFieldGrayColor];
+    [(CKMessageEntryTextView *)v4 setPlaceholderColor:entryFieldGrayColor];
 
-    v22 = [(CKMessageEntryTextView *)v4 _placeholderLabel];
-    [v22 setNumberOfLines:1];
+    _placeholderLabel = [(CKMessageEntryTextView *)v4 _placeholderLabel];
+    [_placeholderLabel setNumberOfLines:1];
 
     [(CKMessageEntryTextView *)v4 setupScribbleInteraction];
     v4->_supportsBigEmojiTextStyles = 1;
     [(CKMessageEntryTextView *)v4 _setupTapOrLongPressGestureRecognizers];
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v24 = *MEMORY[0x1E69DE6B8];
-    [v23 addObserver:v4 selector:sel__localeChanged name:*MEMORY[0x1E69DE6B8] object:0];
+    [defaultCenter2 addObserver:v4 selector:sel__localeChanged name:*MEMORY[0x1E69DE6B8] object:0];
 
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 addObserver:v4 selector:sel_updateMentionAssociationsForInputModeChange_ name:v24 object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v4 selector:sel_updateMentionAssociationsForInputModeChange_ name:v24 object:0];
 
     [(CKMessageEntryTextView *)v4 _localeChanged];
     v26 = [[CKEntryRichTextViewEffectsPickerAssistant alloc] initWithTextView:v4];
@@ -567,24 +567,24 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
   return v4;
 }
 
-- (void)setupTextViewFromInitWithTextLayoutManagerWithFrame:(CGRect)a3
+- (void)setupTextViewFromInitWithTextLayoutManagerWithFrame:(CGRect)frame
 {
   self->_fontType = 0;
   self->_supportsBigEmojiTextStyles = 1;
   self->_expressiveTextEnabled = 0;
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_textViewDidChange_ name:*MEMORY[0x1E69DE750] object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_textViewDidChange_ name:*MEMORY[0x1E69DE750] object:self];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
 
-  v6 = [(CKMessageEntryTextView *)self textContainer];
+  textContainer = [(CKMessageEntryTextView *)self textContainer];
   v7 = +[CKUIBehavior sharedBehaviors];
   [v7 balloonLineFragmentPadding];
-  [v6 setLineFragmentPadding:?];
+  [textContainer setLineFragmentPadding:?];
 
-  v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  LODWORD(v7) = [v8 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  LODWORD(v7) = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   if (v7)
   {
@@ -611,15 +611,15 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
   [(CKMessageEntryTextView *)self setOpaque:0];
   [(CKMessageEntryTextView *)self setScrollEnabled:0];
   v19 = +[CKUIBehavior sharedBehaviors];
-  v20 = [v19 theme];
-  v21 = [v20 entryFieldGrayColor];
-  [(CKMessageEntryTextView *)self setPlaceholderColor:v21];
+  theme = [v19 theme];
+  entryFieldGrayColor = [theme entryFieldGrayColor];
+  [(CKMessageEntryTextView *)self setPlaceholderColor:entryFieldGrayColor];
 
-  v22 = [(CKMessageEntryTextView *)self _placeholderLabel];
-  [v22 setNumberOfLines:1];
+  _placeholderLabel = [(CKMessageEntryTextView *)self _placeholderLabel];
+  [_placeholderLabel setNumberOfLines:1];
 
-  v23 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v23 addObserver:self selector:sel__localeChanged name:*MEMORY[0x1E69DE6B8] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__localeChanged name:*MEMORY[0x1E69DE6B8] object:0];
 
   [(CKMessageEntryTextView *)self _setupTapOrLongPressGestureRecognizers];
   [(CKMessageEntryTextView *)self setupScribbleInteraction];
@@ -632,19 +632,19 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
     [(EMKTextView *)self setUsingTextEffectBasedEmojiAnimations:1];
   }
 
-  v25 = [(CKMessageEntryTextView *)self layer];
-  [v25 setAllowsGroupBlending:0];
+  layer = [(CKMessageEntryTextView *)self layer];
+  [layer setAllowsGroupBlending:0];
 }
 
-- (id)initUsingTextLayoutManagerWithFrame:(CGRect)a3 textContainer:(id)a4
+- (id)initUsingTextLayoutManagerWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = CKMessageEntryTextView;
-  v8 = [(EMKTextView *)&v11 initUsingTextLayoutManagerWithFrame:a4 textContainer:?];
+  v8 = [(EMKTextView *)&v11 initUsingTextLayoutManagerWithFrame:container textContainer:?];
   v9 = v8;
   if (v8)
   {
@@ -654,12 +654,12 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
   return v9;
 }
 
-- (id)initUsingTextLayoutManagerWithFrame:(CGRect)a3
+- (id)initUsingTextLayoutManagerWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = CKMessageEntryTextView;
   v7 = [(EMKTextView *)&v10 initUsingTextLayoutManagerWithFrame:?];
@@ -675,18 +675,18 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
 - (void)updateTintColor
 {
   v5 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v5 theme];
-  v4 = [v3 entryViewTextViewSelectionTintColor];
-  [(CKMessageEntryTextView *)self setTintColor:v4];
+  theme = [v5 theme];
+  entryViewTextViewSelectionTintColor = [theme entryViewTextViewSelectionTintColor];
+  [(CKMessageEntryTextView *)self setTintColor:entryViewTextViewSelectionTintColor];
 }
 
 - (void)_localeChanged
 {
-  v2 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v2 localeChanged];
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate localeChanged];
 }
 
-- (void)_updatedAllowedTypingAttributesWithKeys:(id)a3
+- (void)_updatedAllowedTypingAttributesWithKeys:(id)keys
 {
   v45 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69DB688];
@@ -724,20 +724,20 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
   v43 = v14;
   v44 = *MEMORY[0x1E69A70D8];
   v15 = MEMORY[0x1E695DEC8];
-  v16 = a3;
+  keysCopy = keys;
   v17 = [v15 arrayWithObjects:&v22 count:23];
   v18 = [v17 mutableCopy];
 
-  [v18 addObjectsFromArray:v16];
+  [v18 addObjectsFromArray:keysCopy];
   v19 = MEMORY[0x1E695DFD8];
   v20 = [v18 copy];
   v21 = [v19 setWithArray:v20];
   [(CKMessageEntryTextView *)self _setAllowedTypingAttributes:v21];
 }
 
-- (void)setMentionsDelegate:(id)a3
+- (void)setMentionsDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_mentionsDelegate);
 
   v5 = obj;
@@ -749,9 +749,9 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
   }
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   if (self->_hideCaret || self->_hideCaretUntilUserTypes)
   {
     v5 = *MEMORY[0x1E695F058];
@@ -764,7 +764,7 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
   {
     v17.receiver = self;
     v17.super_class = CKMessageEntryTextView;
-    [(CKMessageEntryTextView *)&v17 caretRectForPosition:v4];
+    [(CKMessageEntryTextView *)&v17 caretRectForPosition:positionCopy];
     v5 = v9;
     v6 = v10;
     v7 = v11;
@@ -782,14 +782,14 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
   return result;
 }
 
-- (void)_updateTextContainerInsetUsingFont:(id)a3
+- (void)_updateTextContainerInsetUsingFont:(id)font
 {
   v4 = MEMORY[0x1E69A8070];
-  v5 = a3;
-  v6 = [v4 sharedFeatureFlags];
-  v7 = [v6 isEntryViewRefreshEnabled];
+  fontCopy = font;
+  sharedFeatureFlags = [v4 sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [sharedFeatureFlags isEntryViewRefreshEnabled];
 
-  if (v7)
+  if (isEntryViewRefreshEnabled)
   {
     [(CKMessageEntryTextView *)self textContainerInset];
     v9 = v8;
@@ -814,7 +814,7 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
   [v21 entryViewCoverMinHeight];
   v23 = v22;
 
-  [v5 lineHeight];
+  [fontCopy lineHeight];
   v25 = v24;
 
   v26 = v16 + v14 + v25;
@@ -841,26 +841,26 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
   [(CKMessageEntryTextView *)self setTextContainerInset:v28, v9, v27, v11];
 }
 
-- (void)setFontType:(unint64_t)a3
+- (void)setFontType:(unint64_t)type
 {
-  if (self->_fontType != a3)
+  if (self->_fontType != type)
   {
-    self->_fontType = a3;
+    self->_fontType = type;
     [(CKMessageEntryTextView *)self _updateAttributedPlaceholder];
     v4 = [MEMORY[0x1E69DB878] ck_fontWithMessageEntryTextViewFontType:self->_fontType];
     [(CKMessageEntryTextView *)self _updateTextContainerInsetUsingFont:v4];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(CKMessageEntryTextView *)self font];
-  if ([v5 isEqual:v4])
+  fontCopy = font;
+  font = [(CKMessageEntryTextView *)self font];
+  if ([font isEqual:fontCopy])
   {
-    v6 = [(CKMessageEntryTextView *)self _placeholderLabel];
-    v7 = [v6 font];
-    v8 = [v7 isEqual:v4];
+    _placeholderLabel = [(CKMessageEntryTextView *)self _placeholderLabel];
+    font2 = [_placeholderLabel font];
+    v8 = [font2 isEqual:fontCopy];
 
     if (v8)
     {
@@ -874,51 +874,51 @@ void __76__CKMessageEntryTextView_CKMentionsController___setAnimatingMentionsHid
 
   v12.receiver = self;
   v12.super_class = CKMessageEntryTextView;
-  [(CKMessageEntryTextView *)&v12 setFont:v4];
+  [(CKMessageEntryTextView *)&v12 setFont:fontCopy];
   [(CKMessageEntryTextView *)self _updateAttributedPlaceholder];
-  v9 = [(CKMessageEntryTextView *)self font];
-  v10 = [v9 isEqual:v4];
+  font3 = [(CKMessageEntryTextView *)self font];
+  v10 = [font3 isEqual:fontCopy];
 
   if ((v10 & 1) == 0)
   {
     [(CKMessageEntryTextView *)self setNeedsLayout];
   }
 
-  v11 = [(CKMessageEntryTextView *)self font];
-  [(CKMessageEntryTextView *)self _updateTextContainerInsetUsingFont:v11];
+  font4 = [(CKMessageEntryTextView *)self font];
+  [(CKMessageEntryTextView *)self _updateTextContainerInsetUsingFont:font4];
 
 LABEL_8:
 }
 
-- (void)setAttributedText:(id)a3 checkForMentions:(BOOL)a4
+- (void)setAttributedText:(id)text checkForMentions:(BOOL)mentions
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CKMessageEntryTextView *)self attributedText];
-  if (v6 | v7)
+  mentionsCopy = mentions;
+  textCopy = text;
+  attributedText = [(CKMessageEntryTextView *)self attributedText];
+  if (textCopy | attributedText)
   {
-    v8 = v7;
-    v9 = [(CKMessageEntryTextView *)self attributedText];
-    v10 = [v9 isEqualToAttributedString:v6];
+    v8 = attributedText;
+    attributedText2 = [(CKMessageEntryTextView *)self attributedText];
+    v10 = [attributedText2 isEqualToAttributedString:textCopy];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [(CKMessageEntryTextView *)self mentionsDelegate];
-      [v11 didSetAttributedTextOfTextView];
+      mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+      [mentionsDelegate didSetAttributedTextOfTextView];
 
-      v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v13 = [v12 isExpressiveTextEnabled];
+      mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-      if (v13)
+      if (isExpressiveTextEnabled)
       {
-        v14 = [v6 mutableCopy];
+        v14 = [textCopy mutableCopy];
         if (self->_supportsBigEmojiTextStyles)
         {
           v15 = +[CKUIBehavior sharedBehaviors];
-          v16 = [v15 entryViewSupportsSingleBigEmojiFont];
-          v17 = [(CKMessageEntryTextView *)self mediaObjects];
-          v18 = [v17 allValues];
-          [v14 ck_adjustFontsForBigEmojisIfNeededWithSingleBigEmojiSupported:v16 mediaObjects:v18];
+          entryViewSupportsSingleBigEmojiFont = [v15 entryViewSupportsSingleBigEmojiFont];
+          mediaObjects = [(CKMessageEntryTextView *)self mediaObjects];
+          allValues = [mediaObjects allValues];
+          [v14 ck_adjustFontsForBigEmojisIfNeededWithSingleBigEmojiSupported:entryViewSupportsSingleBigEmojiFont mediaObjects:allValues];
         }
 
         v21.receiver = self;
@@ -930,28 +930,28 @@ LABEL_8:
       {
         v20.receiver = self;
         v20.super_class = CKMessageEntryTextView;
-        [(CKMessageEntryTextView *)&v20 setAttributedText:v6];
+        [(CKMessageEntryTextView *)&v20 setAttributedText:textCopy];
       }
 
-      [(CKMessageEntryTextView *)self updateTextViewAndCheckForMentions:v4];
-      v19 = [(CKMessageEntryTextView *)self delegate];
-      [v19 textViewDidChange:self];
+      [(CKMessageEntryTextView *)self updateTextViewAndCheckForMentions:mentionsCopy];
+      delegate = [(CKMessageEntryTextView *)self delegate];
+      [delegate textViewDidChange:self];
     }
   }
 }
 
-- (void)handleTapOrLongPress:(id)a3
+- (void)handleTapOrLongPress:(id)press
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isExpressiveTextEnabled];
+  pressCopy = press;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v6)
+  if (isExpressiveTextEnabled)
   {
     [(CKMessageEntryTextView *)self hideTextEffectsPickerIfNeeded];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if ((isKindOfClass & 1) == 0 || [v4 state] == 3)
+    if ((isKindOfClass & 1) == 0 || [pressCopy state] == 3)
     {
       if ([(CKMessageEntryTextView *)self hideCaret])
       {
@@ -965,18 +965,18 @@ LABEL_8:
         dispatch_after(v8, MEMORY[0x1E69E96A0], block);
       }
 
-      [v4 locationInView:self];
+      [pressCopy locationInView:self];
       v10 = v9;
       v12 = v11;
       [(CKMessageEntryTextView *)self textContainerInset];
       v14 = v10 - v13;
       [(CKMessageEntryTextView *)self textContainerInset];
       v16 = v12 - v15;
-      v17 = [(CKMessageEntryTextView *)self textLayoutManager];
-      v18 = [v17 documentRange];
-      [v17 ensureLayoutForRange:v18];
-      v19 = [v18 location];
-      v20 = [v17 lineFragmentRangeForPoint:v19 inContainerAtLocation:{v14, v16}];
+      textLayoutManager = [(CKMessageEntryTextView *)self textLayoutManager];
+      documentRange = [textLayoutManager documentRange];
+      [textLayoutManager ensureLayoutForRange:documentRange];
+      location = [documentRange location];
+      v20 = [textLayoutManager lineFragmentRangeForPoint:location inContainerAtLocation:{v14, v16}];
 
       if (v20)
       {
@@ -993,27 +993,27 @@ LABEL_8:
         v21 = *(MEMORY[0x1E695F058] + 16);
         v43 = *MEMORY[0x1E695F058];
         v44 = v21;
-        v22 = [v20 location];
+        location2 = [v20 location];
         v33[0] = MEMORY[0x1E69E9820];
         v33[1] = 3221225472;
         v33[2] = __47__CKMessageEntryTextView_handleTapOrLongPress___block_invoke_278;
         v33[3] = &unk_1E72F65E8;
-        v23 = v17;
+        v23 = textLayoutManager;
         v37 = v14;
         v38 = v16;
         v34 = v23;
         v35 = &v45;
         v36 = &v39;
-        [v23 enumerateSubstringsFromLocation:v22 options:2 usingBlock:v33];
+        [v23 enumerateSubstringsFromLocation:location2 options:2 usingBlock:v33];
 
         if (v46[5])
         {
-          v24 = [v18 location];
-          v25 = [v46[5] location];
-          v26 = [v23 offsetFromLocation:v24 toLocation:v25];
+          location3 = [documentRange location];
+          location4 = [v46[5] location];
+          v26 = [v23 offsetFromLocation:location3 toLocation:location4];
 
-          v27 = [(CKMessageEntryTextView *)self attributedText];
-          v28 = [v27 attribute:@"CKFileTransferGUIDAttributeName" atIndex:v26 effectiveRange:0];
+          attributedText = [(CKMessageEntryTextView *)self attributedText];
+          v28 = [attributedText attribute:@"CKFileTransferGUIDAttributeName" atIndex:v26 effectiveRange:0];
 
           if ([(CKMessageEntryTextView *)self handleTapOrLongPressOnMediaObjectForTransferGUID:v28 characterIndex:v26 location:v14 touchedCharacterFrame:v16, v40[4], v40[5], v40[6], v40[7]])
           {
@@ -1030,8 +1030,8 @@ LABEL_8:
 
           else
           {
-            v30 = [(CKMessageEntryTextView *)self attributedText];
-            v31 = [v30 attribute:*MEMORY[0x1E69A70C8] atIndex:v26 effectiveRange:0];
+            attributedText2 = [(CKMessageEntryTextView *)self attributedText];
+            v31 = [attributedText2 attribute:*MEMORY[0x1E69A70C8] atIndex:v26 effectiveRange:0];
 
             if (v31)
             {
@@ -1088,14 +1088,14 @@ BOOL __47__CKMessageEntryTextView_handleTapOrLongPress___block_invoke_2(uint64_t
   return !v13;
 }
 
-- (void)replaceRange:(id)a3 withAttributedText:(id)a4
+- (void)replaceRange:(id)range withAttributedText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v9 = [v8 isExpressiveTextEnabled];
+  rangeCopy = range;
+  textCopy = text;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v9)
+  if (isExpressiveTextEnabled)
   {
     if (IMOSLoggingEnabled())
     {
@@ -1107,25 +1107,25 @@ BOOL __47__CKMessageEntryTextView_handleTapOrLongPress___block_invoke_2(uint64_t
       }
     }
 
-    v11 = [(CKMessageEntryTextView *)self beginningOfDocument];
-    v12 = [v6 start];
-    v13 = [(CKMessageEntryTextView *)self offsetFromPosition:v11 toPosition:v12];
+    beginningOfDocument = [(CKMessageEntryTextView *)self beginningOfDocument];
+    start = [rangeCopy start];
+    v13 = [(CKMessageEntryTextView *)self offsetFromPosition:beginningOfDocument toPosition:start];
 
-    v14 = [v6 start];
-    v15 = [v6 end];
-    v16 = [(CKMessageEntryTextView *)self offsetFromPosition:v14 toPosition:v15];
+    start2 = [rangeCopy start];
+    v15 = [rangeCopy end];
+    v16 = [(CKMessageEntryTextView *)self offsetFromPosition:start2 toPosition:v15];
 
-    v17 = [(CKMessageEntryTextView *)self textFormattingDelegate];
-    [v17 messageEntryTextView:self replaceRange:v13 withAttributedText:{v16, v7}];
+    textFormattingDelegate = [(CKMessageEntryTextView *)self textFormattingDelegate];
+    [textFormattingDelegate messageEntryTextView:self replaceRange:v13 withAttributedText:{v16, textCopy}];
   }
 }
 
 + (BOOL)shouldUseModernMentionsAndEmojiAnimations
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isModernMentionsAndEmojiAnimationsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernMentionsAndEmojiAnimationsEnabled = [mEMORY[0x1E69A8070] isModernMentionsAndEmojiAnimationsEnabled];
 
-  return v3 && NSClassFromString(&cfstr_Emkrippleanima.isa) != 0;
+  return isModernMentionsAndEmojiAnimationsEnabled && NSClassFromString(&cfstr_Emkrippleanima.isa) != 0;
 }
 
 - (id)insertDictationResultPlaceholder
@@ -1134,37 +1134,37 @@ BOOL __47__CKMessageEntryTextView_handleTapOrLongPress___block_invoke_2(uint64_t
   [(CKMessageEntryTextView *)self updateTextView];
   v5.receiver = self;
   v5.super_class = CKMessageEntryTextView;
-  v3 = [(CKMessageEntryTextView *)&v5 insertDictationResultPlaceholder];
+  insertDictationResultPlaceholder = [(CKMessageEntryTextView *)&v5 insertDictationResultPlaceholder];
 
-  return v3;
+  return insertDictationResultPlaceholder;
 }
 
-- (void)removeDictationResultPlaceholder:(id)a3 willInsertResult:(BOOL)a4
+- (void)removeDictationResultPlaceholder:(id)placeholder willInsertResult:(BOOL)result
 {
-  v4 = a4;
-  v6 = a3;
+  resultCopy = result;
+  placeholderCopy = placeholder;
   [(CKMessageEntryTextView *)self setShowingDictationPlaceholder:0];
   v7.receiver = self;
   v7.super_class = CKMessageEntryTextView;
-  [(CKMessageEntryTextView *)&v7 removeDictationResultPlaceholder:v6 willInsertResult:v4];
+  [(CKMessageEntryTextView *)&v7 removeDictationResultPlaceholder:placeholderCopy willInsertResult:resultCopy];
 
   [(CKMessageEntryTextView *)self updateTextView];
 }
 
-- (void)setCompositionText:(id)a3
+- (void)setCompositionText:(id)text
 {
-  v4 = a3;
-  v5 = [(CKMessageEntryTextView *)self undoManager];
-  [v5 removeAllActions];
+  textCopy = text;
+  undoManager = [(CKMessageEntryTextView *)self undoManager];
+  [undoManager removeAllActions];
 
-  v8 = [v4 mutableCopy];
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  LODWORD(v5) = [v6 isExpressiveTextEnabled];
+  v8 = [textCopy mutableCopy];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  LODWORD(undoManager) = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (!v5 || ![(CKMessageEntryTextView *)self isExpressiveTextEnabled])
+  if (!undoManager || ![(CKMessageEntryTextView *)self isExpressiveTextEnabled])
   {
-    v7 = [(CKMessageEntryTextView *)self typingAttributes];
-    [v8 addAttributes:v7 range:{0, objc_msgSend(v8, "length")}];
+    typingAttributes = [(CKMessageEntryTextView *)self typingAttributes];
+    [v8 addAttributes:typingAttributes range:{0, objc_msgSend(v8, "length")}];
   }
 
   [(CKMessageEntryTextView *)self setAttributedText:v8];
@@ -1172,8 +1172,8 @@ BOOL __47__CKMessageEntryTextView_handleTapOrLongPress___block_invoke_2(uint64_t
 
 - (NSAttributedString)compositionText
 {
-  v3 = [(CKMessageEntryTextView *)self attributedText];
-  v4 = [v3 mutableCopy];
+  attributedText = [(CKMessageEntryTextView *)self attributedText];
+  v4 = [attributedText mutableCopy];
   v5 = [v4 length];
   [v4 setAttributes:0 range:{0, v5}];
   v17[0] = MEMORY[0x1E69E9820];
@@ -1182,35 +1182,35 @@ BOOL __47__CKMessageEntryTextView_handleTapOrLongPress___block_invoke_2(uint64_t
   v17[3] = &unk_1E72F1708;
   v6 = v4;
   v18 = v6;
-  [v3 enumerateAttributesInRange:0 options:v5 usingBlock:{0, v17}];
-  v7 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v8 = [v7 isExpressiveTextEnabled];
+  [attributedText enumerateAttributesInRange:0 options:v5 usingBlock:{0, v17}];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v8)
+  if (isExpressiveTextEnabled)
   {
-    [v6 ck_addAttribute:*MEMORY[0x1E69A7CF8] from:v3 range:{0, v5}];
-    [v6 ck_addAttribute:*MEMORY[0x1E69A7CF0] from:v3 range:{0, v5}];
-    [v6 ck_addAttribute:*MEMORY[0x1E69A7D00] from:v3 range:{0, v5}];
-    [v6 ck_addAttribute:*MEMORY[0x1E69A7D18] from:v3 range:{0, v5}];
-    [v6 ck_addAttribute:*MEMORY[0x1E69A7D08] from:v3 range:{0, v5}];
+    [v6 ck_addAttribute:*MEMORY[0x1E69A7CF8] from:attributedText range:{0, v5}];
+    [v6 ck_addAttribute:*MEMORY[0x1E69A7CF0] from:attributedText range:{0, v5}];
+    [v6 ck_addAttribute:*MEMORY[0x1E69A7D00] from:attributedText range:{0, v5}];
+    [v6 ck_addAttribute:*MEMORY[0x1E69A7D18] from:attributedText range:{0, v5}];
+    [v6 ck_addAttribute:*MEMORY[0x1E69A7D08] from:attributedText range:{0, v5}];
   }
 
   if ([(CKMessageEntryTextView *)self shouldPreserveAdaptiveImageGlyphsInCompositionText])
   {
-    v9 = [MEMORY[0x1E69A5B80] sharedInstance];
+    mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __41__CKMessageEntryTextView_compositionText__block_invoke_2;
     aBlock[3] = &unk_1E72EBF70;
-    v16 = v9;
-    v10 = v9;
+    v16 = mEMORY[0x1E69A5B80];
+    v10 = mEMORY[0x1E69A5B80];
     v11 = _Block_copy(aBlock);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __41__CKMessageEntryTextView_compositionText__block_invoke_3;
     v13[3] = &unk_1E72F6610;
     v14 = v6;
-    [v3 __im_enumerateAdaptiveImageGlyphFileTransfersUsingFileTransferProvider:v11 block:v13];
+    [attributedText __im_enumerateAdaptiveImageGlyphFileTransfersUsingFileTransferProvider:v11 block:v13];
   }
 
   return v6;
@@ -1243,12 +1243,12 @@ void __41__CKMessageEntryTextView_compositionText__block_invoke_3(uint64_t a1, v
   }
 }
 
-- (void)setPlaceholderText:(id)a3
+- (void)setPlaceholderText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_placeholderText isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     placeholderText = self->_placeholderText;
     self->_placeholderText = v4;
 
@@ -1263,22 +1263,22 @@ void __41__CKMessageEntryTextView_compositionText__block_invoke_3(uint64_t a1, v
   return v2;
 }
 
-- (void)setPlaceHolderWidth:(double)a3
+- (void)setPlaceHolderWidth:(double)width
 {
-  if (!CKFloatApproximatelyEqualToFloatWithTolerance(self->_placeHolderWidth, a3, 0.00000999999975))
+  if (!CKFloatApproximatelyEqualToFloatWithTolerance(self->_placeHolderWidth, width, 0.00000999999975))
   {
-    self->_placeHolderWidth = a3;
+    self->_placeHolderWidth = width;
 
     [(CKMessageEntryTextView *)self setNeedsLayout];
   }
 }
 
-- (void)setPlaceholderColor:(id)a3
+- (void)setPlaceholderColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_placeholderColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_placeholderColor, a3);
+    objc_storeStrong(&self->_placeholderColor, color);
     [(CKMessageEntryTextView *)self _updateAttributedPlaceholder];
   }
 }
@@ -1289,20 +1289,20 @@ void __41__CKMessageEntryTextView_compositionText__block_invoke_3(uint64_t a1, v
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [(CKMessageEntryTextView *)self textLayoutManager];
-  v4 = [(CKMessageEntryTextView *)self textLayoutManager];
-  v5 = [v4 documentRange];
-  v6 = [v5 location];
+  textLayoutManager = [(CKMessageEntryTextView *)self textLayoutManager];
+  textLayoutManager2 = [(CKMessageEntryTextView *)self textLayoutManager];
+  documentRange = [textLayoutManager2 documentRange];
+  location = [documentRange location];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __38__CKMessageEntryTextView_isSingleLine__block_invoke;
   v9[3] = &unk_1E72EC8C8;
   v9[4] = &v10;
-  v7 = [v3 enumerateTextLayoutFragmentsFromLocation:v6 options:4 usingBlock:v9];
+  v7 = [textLayoutManager enumerateTextLayoutFragmentsFromLocation:location options:4 usingBlock:v9];
 
-  LOBYTE(v3) = v11[3] == 1;
+  LOBYTE(textLayoutManager) = v11[3] == 1;
   _Block_object_dispose(&v10, 8);
-  return v3;
+  return textLayoutManager;
 }
 
 BOOL __38__CKMessageEntryTextView_isSingleLine__block_invoke(uint64_t a1, void *a2)
@@ -1319,20 +1319,20 @@ BOOL __38__CKMessageEntryTextView_isSingleLine__block_invoke(uint64_t a1, void *
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [(CKMessageEntryTextView *)self textLayoutManager];
-  v4 = [(CKMessageEntryTextView *)self textLayoutManager];
-  v5 = [v4 documentRange];
-  v6 = [v5 location];
+  textLayoutManager = [(CKMessageEntryTextView *)self textLayoutManager];
+  textLayoutManager2 = [(CKMessageEntryTextView *)self textLayoutManager];
+  documentRange = [textLayoutManager2 documentRange];
+  location = [documentRange location];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__CKMessageEntryTextView_shouldIncludeDictationPadding__block_invoke;
   v9[3] = &unk_1E72EC8C8;
   v9[4] = &v10;
-  v7 = [v3 enumerateTextLayoutFragmentsFromLocation:v6 options:12 usingBlock:v9];
+  v7 = [textLayoutManager enumerateTextLayoutFragmentsFromLocation:location options:12 usingBlock:v9];
 
-  LOBYTE(v3) = v11[3] > 1;
+  LOBYTE(textLayoutManager) = v11[3] > 1;
   _Block_object_dispose(&v10, 8);
-  return v3;
+  return textLayoutManager;
 }
 
 BOOL __55__CKMessageEntryTextView_shouldIncludeDictationPadding__block_invoke(uint64_t a1, void *a2)
@@ -1343,21 +1343,21 @@ BOOL __55__CKMessageEntryTextView_shouldIncludeDictationPadding__block_invoke(ui
   return *(*(*(a1 + 32) + 8) + 24) < 3uLL;
 }
 
-- (void)updateFontIfNeededAndGetWasUsingBigEmojiStyle:(int64_t *)a3
+- (void)updateFontIfNeededAndGetWasUsingBigEmojiStyle:(int64_t *)style
 {
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 singleBigEmojiFont];
-  v7 = [v5 singleBigAssetFont];
-  v8 = [v5 multipleBigEmojiFont];
+  singleBigEmojiFont = [v5 singleBigEmojiFont];
+  singleBigAssetFont = [v5 singleBigAssetFont];
+  multipleBigEmojiFont = [v5 multipleBigEmojiFont];
   [v5 balloonTextFont];
-  v46 = v44 = a3;
+  v46 = v44 = style;
   if (self->_supportsBigEmojiTextStyles)
   {
-    v9 = [v5 entryViewSupportsSingleBigEmojiFont];
-    v10 = [(CKMessageEntryTextView *)self attributedText];
-    v11 = [(CKMessageEntryTextView *)self mediaObjects];
-    v12 = [v11 allValues];
-    v13 = [v10 __ck_bigEmojiStyleWithSingleBigEmojiSupported:v9 mediaObjects:v12];
+    entryViewSupportsSingleBigEmojiFont = [v5 entryViewSupportsSingleBigEmojiFont];
+    attributedText = [(CKMessageEntryTextView *)self attributedText];
+    mediaObjects = [(CKMessageEntryTextView *)self mediaObjects];
+    allValues = [mediaObjects allValues];
+    v13 = [attributedText __ck_bigEmojiStyleWithSingleBigEmojiSupported:entryViewSupportsSingleBigEmojiFont mediaObjects:allValues];
   }
 
   else
@@ -1365,20 +1365,20 @@ BOOL __55__CKMessageEntryTextView_shouldIncludeDictationPadding__block_invoke(ui
     v13 = 0;
   }
 
-  v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v15 = [v14 isExpressiveTextEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (!v15)
+  if (!isExpressiveTextEnabled)
   {
-    v29 = [(CKMessageEntryTextView *)self font];
+    font = [(CKMessageEntryTextView *)self font];
     v30 = 0;
     if (v13 > 1)
     {
-      v32 = v8;
+      v32 = multipleBigEmojiFont;
       v31 = v44;
       if (v13 != 2)
       {
-        v32 = v7;
+        v32 = singleBigAssetFont;
         if (v13 != 3)
         {
           goto LABEL_28;
@@ -1391,25 +1391,25 @@ BOOL __55__CKMessageEntryTextView_shouldIncludeDictationPadding__block_invoke(ui
       v31 = v44;
       if (v13)
       {
-        v32 = v6;
+        v32 = singleBigEmojiFont;
         if (v13 != 1)
         {
 LABEL_28:
-          if (v31 && v29 != v30)
+          if (v31 && font != v30)
           {
-            if ([v29 isEqual:v6])
+            if ([font isEqual:singleBigEmojiFont])
             {
               v33 = 1;
             }
 
-            else if ([v29 isEqual:v7])
+            else if ([font isEqual:singleBigAssetFont])
             {
               v33 = 3;
             }
 
             else
             {
-              v34 = [v29 isEqual:v8];
+              v34 = [font isEqual:multipleBigEmojiFont];
               v33 = 2;
               if (!v34)
               {
@@ -1420,32 +1420,32 @@ LABEL_28:
             *v31 = v33;
           }
 
-          v45 = v7;
-          v35 = [(CKMessageEntryTextView *)self attributedText];
-          v36 = [v35 length];
+          v45 = singleBigAssetFont;
+          attributedText2 = [(CKMessageEntryTextView *)self attributedText];
+          v36 = [attributedText2 length];
 
           if (v36)
           {
-            v43 = v8;
+            v43 = multipleBigEmojiFont;
             v53 = 0;
             v54 = &v53;
             v55 = 0x2020000000;
             v56 = 0;
-            v37 = [(CKMessageEntryTextView *)self attributedText];
-            v38 = [(CKMessageEntryTextView *)self attributedText];
-            v39 = [v38 length];
+            attributedText3 = [(CKMessageEntryTextView *)self attributedText];
+            attributedText4 = [(CKMessageEntryTextView *)self attributedText];
+            v39 = [attributedText4 length];
             v40 = *MEMORY[0x1E69DB648];
             v47[0] = MEMORY[0x1E69E9820];
             v47[1] = 3221225472;
             v47[2] = __72__CKMessageEntryTextView_updateFontIfNeededAndGetWasUsingBigEmojiStyle___block_invoke;
             v47[3] = &unk_1E72F6638;
-            v48 = v6;
+            v48 = singleBigEmojiFont;
             v49 = v43;
             v50 = v46;
             v52 = &v53;
             v41 = v30;
             v51 = v41;
-            [v37 enumerateAttribute:v40 inRange:0 options:v39 usingBlock:{0, v47}];
+            [attributedText3 enumerateAttribute:v40 inRange:0 options:v39 usingBlock:{0, v47}];
 
             if (*(v54 + 24) == 1)
             {
@@ -1453,7 +1453,7 @@ LABEL_28:
             }
 
             _Block_object_dispose(&v53, 8);
-            v8 = v43;
+            multipleBigEmojiFont = v43;
           }
 
           else
@@ -1461,7 +1461,7 @@ LABEL_28:
             [(CKMessageEntryTextView *)self setFont:v30];
           }
 
-          v7 = v45;
+          singleBigAssetFont = v45;
           goto LABEL_46;
         }
       }
@@ -1476,7 +1476,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v16 = [(CKMessageEntryTextView *)self fontType];
+  fontType = [(CKMessageEntryTextView *)self fontType];
   if ((v13 - 1) >= 3)
   {
     v17 = 0;
@@ -1488,55 +1488,55 @@ LABEL_28:
   }
 
   [(CKMessageEntryTextView *)self setFontType:v17];
-  v18 = [(CKMessageEntryTextView *)self attributedText];
-  v19 = [v18 length];
+  attributedText5 = [(CKMessageEntryTextView *)self attributedText];
+  v19 = [attributedText5 length];
 
   if (!v19)
   {
     v42 = [MEMORY[0x1E69DB878] ck_fontWithMessageEntryTextViewFontType:{-[CKMessageEntryTextView fontType](self, "fontType")}];
     [(CKMessageEntryTextView *)self setFont:v42];
-    v20 = [(CKMessageEntryTextView *)self effectsPickerAssistant];
-    [v20 removeTypingAttributesAdjustments];
+    effectsPickerAssistant = [(CKMessageEntryTextView *)self effectsPickerAssistant];
+    [effectsPickerAssistant removeTypingAttributesAdjustments];
 
-    v21 = [(CKMessageEntryTextView *)self typingAttributes];
-    v22 = [v21 mutableCopy];
+    typingAttributes = [(CKMessageEntryTextView *)self typingAttributes];
+    v22 = [typingAttributes mutableCopy];
 
     [v22 setObject:v42 forKeyedSubscript:*MEMORY[0x1E69DB648]];
-    v23 = [v5 theme];
-    [v23 entryFieldTextColor];
-    v24 = v8;
-    v25 = v6;
-    v27 = v26 = v7;
+    theme = [v5 theme];
+    [theme entryFieldTextColor];
+    v24 = multipleBigEmojiFont;
+    v25 = singleBigEmojiFont;
+    v27 = v26 = singleBigAssetFont;
     [v22 setObject:v27 forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
-    v7 = v26;
-    v6 = v25;
-    v8 = v24;
+    singleBigAssetFont = v26;
+    singleBigEmojiFont = v25;
+    multipleBigEmojiFont = v24;
 
     [v22 removeObjectForKey:*MEMORY[0x1E69A7CF8]];
     [(CKMessageEntryTextView *)self setTypingAttributes:v22];
   }
 
-  if (v44 && v16 != v17)
+  if (v44 && fontType != v17)
   {
-    if (v16 > 1)
+    if (fontType > 1)
     {
-      if (v16 == 2)
+      if (fontType == 2)
       {
         v28 = 2;
         goto LABEL_45;
       }
 
-      if (v16 == 3)
+      if (fontType == 3)
       {
         v28 = 3;
         goto LABEL_45;
       }
     }
 
-    else if (v16)
+    else if (fontType)
     {
-      if (v16 == 1)
+      if (fontType == 1)
       {
         v28 = 1;
 LABEL_45:
@@ -1578,43 +1578,43 @@ void __72__CKMessageEntryTextView_updateFontIfNeededAndGetWasUsingBigEmojiStyle_
 
 - (void)saveKeyboardInputMode
 {
-  v4 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v3 = [v4 currentInputMode];
-  [(CKMessageEntryTextView *)self setSavedKeyboardInputMode:v3];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  currentInputMode = [mEMORY[0x1E69DCBF0] currentInputMode];
+  [(CKMessageEntryTextView *)self setSavedKeyboardInputMode:currentInputMode];
 }
 
 - (void)restoreKeyboardInputMode
 {
-  v3 = [(CKMessageEntryTextView *)self savedKeyboardInputMode];
-  if (v3)
+  savedKeyboardInputMode = [(CKMessageEntryTextView *)self savedKeyboardInputMode];
+  if (savedKeyboardInputMode)
   {
-    v5 = v3;
-    v4 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-    [v4 setCurrentInputMode:v5];
+    v5 = savedKeyboardInputMode;
+    mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+    [mEMORY[0x1E69DCBF0] setCurrentInputMode:v5];
 
     [(CKMessageEntryTextView *)self setSavedKeyboardInputMode:0];
-    v3 = v5;
+    savedKeyboardInputMode = v5;
   }
 }
 
-- (void)setShouldStripEmojis:(BOOL)a3
+- (void)setShouldStripEmojis:(BOOL)emojis
 {
-  if (self->_shouldStripEmojis != a3)
+  if (self->_shouldStripEmojis != emojis)
   {
-    self->_shouldStripEmojis = a3;
+    self->_shouldStripEmojis = emojis;
   }
 }
 
-- (void)setExpressiveTextEnabled:(BOOL)a3
+- (void)setExpressiveTextEnabled:(BOOL)enabled
 {
-  if (self->_expressiveTextEnabled != a3)
+  if (self->_expressiveTextEnabled != enabled)
   {
-    v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v6 = [v5 isExpressiveTextEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-    if (v6)
+    if (isExpressiveTextEnabled)
     {
-      self->_expressiveTextEnabled = a3;
+      self->_expressiveTextEnabled = enabled;
 
       [(CKMessageEntryTextView *)self _updateTextEffectsPickerEditMenuAction];
     }
@@ -1689,7 +1689,7 @@ void __64__CKMessageEntryTextView__updateTextEffectsPickerEditMenuAction__block_
   [WeakRetained _showTextFormattingAnimationOptions:0];
 }
 
-- (void)scribbleInteractionWillBeginWriting:(id)a3
+- (void)scribbleInteractionWillBeginWriting:(id)writing
 {
   [(CKMessageEntryTextView *)self setPencilWriting:1];
   [(CKMessageEntryTextView *)self setInPencilMode:1];
@@ -1697,7 +1697,7 @@ void __64__CKMessageEntryTextView__updateTextEffectsPickerEditMenuAction__block_
   [(CKMessageEntryTextView *)self updateTextView];
 }
 
-- (void)scribbleInteractionDidFinishWriting:(id)a3
+- (void)scribbleInteractionDidFinishWriting:(id)writing
 {
   [(CKMessageEntryTextView *)self setPencilWriting:0];
   [(CKMessageEntryTextView *)self setInPencilMode:1];
@@ -1705,21 +1705,21 @@ void __64__CKMessageEntryTextView__updateTextEffectsPickerEditMenuAction__block_
   [(CKMessageEntryTextView *)self updateTextView];
 }
 
-- (void)setInPencilMode:(BOOL)a3
+- (void)setInPencilMode:(BOOL)mode
 {
-  if (self->_inPencilMode != a3)
+  if (self->_inPencilMode != mode)
   {
-    self->_inPencilMode = a3;
-    v5 = [(CKMessageEntryTextView *)self delegate];
-    [v5 messageEntryTextViewDidChangePencilMode:self];
+    self->_inPencilMode = mode;
+    delegate = [(CKMessageEntryTextView *)self delegate];
+    [delegate messageEntryTextViewDidChangePencilMode:self];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v17.receiver = self;
   v17.super_class = CKMessageEntryTextView;
-  [(CKMessageEntryTextView *)&v17 sizeThatFits:a3.width, a3.height];
+  [(CKMessageEntryTextView *)&v17 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   if ([(CKMessageEntryTextView *)self isInPencilMode])
@@ -1730,13 +1730,13 @@ void __64__CKMessageEntryTextView__updateTextEffectsPickerEditMenuAction__block_
 
   else if ([MEMORY[0x1E69DC940] isRunning] && -[CKMessageEntryTextView shouldIncludeDictationPadding](self, "shouldIncludeDictationPadding"))
   {
-    v9 = [(CKMessageEntryTextView *)self font];
-    [v9 pointSize];
+    font = [(CKMessageEntryTextView *)self font];
+    [font pointSize];
     v7 = v7 + v10 * 0.65;
   }
 
-  v11 = [(CKMessageEntryTextView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(CKMessageEntryTextView *)self traitCollection];
+  [traitCollection displayScale];
   v13 = v12;
 
   if (v13 == 0.0)
@@ -1775,107 +1775,107 @@ void __64__CKMessageEntryTextView__updateTextEffectsPickerEditMenuAction__block_
   return result;
 }
 
-- (void)handleHoverGesture:(id)a3
+- (void)handleHoverGesture:(id)gesture
 {
-  if ([a3 state] == 1)
+  if ([gesture state] == 1)
   {
     [(CKMessageEntryTextView *)self setInPencilMode:1];
     [(CKMessageEntryTextView *)self updateTextView];
-    v4 = [(CKMessageEntryTextView *)self delegate];
-    [v4 textViewDidChange:self];
+    delegate = [(CKMessageEntryTextView *)self delegate];
+    [delegate textViewDidChange:self];
   }
 }
 
 - (void)_stripEmojisIfNecessary
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 stewieEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  stewieEnabled = [mEMORY[0x1E69A8070] stewieEnabled];
 
-  if (v4 && [(CKMessageEntryTextView *)self shouldStripEmojis])
+  if (stewieEnabled && [(CKMessageEntryTextView *)self shouldStripEmojis])
   {
-    v5 = [(CKMessageEntryTextView *)self attributedText];
-    v12 = [v5 mutableCopy];
+    attributedText = [(CKMessageEntryTextView *)self attributedText];
+    v12 = [attributedText mutableCopy];
 
     v6 = MEMORY[0x193AF5ED0]("CEMCreateStringByStrippingEmojiCharacters", @"CoreEmoji");
     v7 = v6([v12 string]);
-    v8 = [v12 string];
-    v9 = [v7 isEqualToString:v8];
+    string = [v12 string];
+    v9 = [v7 isEqualToString:string];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [v12 mutableString];
-      [v10 setString:v7];
+      mutableString = [v12 mutableString];
+      [mutableString setString:v7];
 
-      v11 = [(CKMessageEntryTextView *)self textStorage];
-      [v11 setAttributedString:v12];
+      textStorage = [(CKMessageEntryTextView *)self textStorage];
+      [textStorage setAttributedString:v12];
     }
   }
 }
 
-- (void)updateTextViewAndCheckForMentions:(BOOL)a3
+- (void)updateTextViewAndCheckForMentions:(BOOL)mentions
 {
-  v3 = a3;
-  v5 = [(CKMessageEntryTextView *)self textStorage];
-  v6 = [v5 length] || -[CKMessageEntryTextView isShowingDictationPlaceholder](self, "isShowingDictationPlaceholder") || -[CKMessageEntryTextView isPencilWriting](self, "isPencilWriting");
+  mentionsCopy = mentions;
+  textStorage = [(CKMessageEntryTextView *)self textStorage];
+  v6 = [textStorage length] || -[CKMessageEntryTextView isShowingDictationPlaceholder](self, "isShowingDictationPlaceholder") || -[CKMessageEntryTextView isPencilWriting](self, "isPencilWriting");
 
-  v7 = [(CKMessageEntryTextView *)self _placeholderLabel];
-  [v7 setHidden:v6];
+  _placeholderLabel = [(CKMessageEntryTextView *)self _placeholderLabel];
+  [_placeholderLabel setHidden:v6];
 
   [(CKMessageEntryTextView *)self _stripEmojisIfNecessary];
-  v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v9 = [v8 isExpressiveTextEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v9 && self->_supportsBigEmojiTextStyles)
+  if (isExpressiveTextEnabled && self->_supportsBigEmojiTextStyles)
   {
-    v10 = [(CKMessageEntryTextView *)self textStorage];
-    [v10 beginEditing];
+    textStorage2 = [(CKMessageEntryTextView *)self textStorage];
+    [textStorage2 beginEditing];
 
     v11 = +[CKUIBehavior sharedBehaviors];
-    v12 = [v11 entryViewSupportsSingleBigEmojiFont];
-    v13 = [(CKMessageEntryTextView *)self textStorage];
-    v14 = [(CKMessageEntryTextView *)self mediaObjects];
-    v15 = [v14 allValues];
-    [v13 ck_adjustFontsForBigEmojisIfNeededWithSingleBigEmojiSupported:v12 mediaObjects:v15];
+    entryViewSupportsSingleBigEmojiFont = [v11 entryViewSupportsSingleBigEmojiFont];
+    textStorage3 = [(CKMessageEntryTextView *)self textStorage];
+    mediaObjects = [(CKMessageEntryTextView *)self mediaObjects];
+    allValues = [mediaObjects allValues];
+    [textStorage3 ck_adjustFontsForBigEmojisIfNeededWithSingleBigEmojiSupported:entryViewSupportsSingleBigEmojiFont mediaObjects:allValues];
 
-    v16 = [(CKMessageEntryTextView *)self textStorage];
-    [v16 endEditing];
+    textStorage4 = [(CKMessageEntryTextView *)self textStorage];
+    [textStorage4 endEditing];
   }
 
-  if (v3)
+  if (mentionsCopy)
   {
 
     [(CKMessageEntryTextView *)self checkForMentions];
   }
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
   [(CKMessageEntryTextView *)self updateTextViewAndCheckForMentions:0];
 
   [(CKMessageEntryTextView *)self setHideCaretUntilUserTypes:0];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v4 reloadMentionsDataIfNecessary];
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate reloadMentionsDataIfNecessary];
 
-  v5 = [(CKMessageEntryTextView *)self showTextEffectsPickerEditMenuAction];
+  showTextEffectsPickerEditMenuAction = [(CKMessageEntryTextView *)self showTextEffectsPickerEditMenuAction];
 
-  if (v5)
+  if (showTextEffectsPickerEditMenuAction)
   {
     if ([MEMORY[0x1E69DCBB8] isInHardwareKeyboardMode])
     {
-      v8 = CKFrameworkBundle();
-      v6 = [v8 localizedStringForKey:@"TEXT_EFFECTS" value:&stru_1F04268F8 table:@"ChatKit"];
-      v7 = [(CKMessageEntryTextView *)self showTextEffectsPickerEditMenuAction];
-      [v7 setTitle:v6];
+      showTextEffectsPickerEditMenuAction3 = CKFrameworkBundle();
+      v6 = [showTextEffectsPickerEditMenuAction3 localizedStringForKey:@"TEXT_EFFECTS" value:&stru_1F04268F8 table:@"ChatKit"];
+      showTextEffectsPickerEditMenuAction2 = [(CKMessageEntryTextView *)self showTextEffectsPickerEditMenuAction];
+      [showTextEffectsPickerEditMenuAction2 setTitle:v6];
     }
 
     else
     {
-      v8 = [(CKMessageEntryTextView *)self showTextEffectsPickerEditMenuAction];
-      [v8 setTitle:&stru_1F04268F8];
+      showTextEffectsPickerEditMenuAction3 = [(CKMessageEntryTextView *)self showTextEffectsPickerEditMenuAction];
+      [showTextEffectsPickerEditMenuAction3 setTitle:&stru_1F04268F8];
     }
   }
 
@@ -1886,27 +1886,27 @@ void __64__CKMessageEntryTextView__updateTextEffectsPickerEditMenuAction__block_
   }
 }
 
-- (void)layoutManagerDidFinishAnimatingMentionWithAnimationIdentifier:(id)a3
+- (void)layoutManagerDidFinishAnimatingMentionWithAnimationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CKMessageEntryTextView *)self mentionsDelegate];
-  [v5 didFinishAnimatingMentionWithAnimationIdentifier:v4];
+  identifierCopy = identifier;
+  mentionsDelegate = [(CKMessageEntryTextView *)self mentionsDelegate];
+  [mentionsDelegate didFinishAnimatingMentionWithAnimationIdentifier:identifierCopy];
 }
 
 - (void)hideTextEffectsPickerIfNeeded
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isExpressiveTextEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v4)
+  if (isExpressiveTextEnabled)
   {
     if (objc_opt_respondsToSelector())
     {
       [(CKMessageEntryTextView *)self performSelector:sel__hideTextFormattingOptions_ withObject:self];
       if ([(CKMessageEntryTextView *)self applyDefaultTypingAttributesOnTextEffectPickerDismissal])
       {
-        v5 = [(CKMessageEntryTextView *)self effectsPickerAssistant];
-        [v5 removeTypingAttributesAdjustments];
+        effectsPickerAssistant = [(CKMessageEntryTextView *)self effectsPickerAssistant];
+        [effectsPickerAssistant removeTypingAttributesAdjustments];
 
         [(CKMessageEntryTextView *)self setApplyDefaultTypingAttributesOnTextEffectPickerDismissal:0];
       }
@@ -1917,22 +1917,22 @@ void __64__CKMessageEntryTextView__updateTextEffectsPickerEditMenuAction__block_
 - (void)hideTextEffectsPickerIfNeededAndResetTypingAttributes
 {
   [(CKMessageEntryTextView *)self hideTextEffectsPickerIfNeeded];
-  v3 = [(CKMessageEntryTextView *)self effectsPickerAssistant];
-  [v3 removeTypingAttributesAdjustments];
+  effectsPickerAssistant = [(CKMessageEntryTextView *)self effectsPickerAssistant];
+  [effectsPickerAssistant removeTypingAttributesAdjustments];
 }
 
-- (void)_showTextFormattingAnimationOptions:(id)a3
+- (void)_showTextFormattingAnimationOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(CKMessageEntryTextView *)self effectsPickerAssistant];
-  [v5 selectSentenceAtCaretIfPossible];
+  optionsCopy = options;
+  effectsPickerAssistant = [(CKMessageEntryTextView *)self effectsPickerAssistant];
+  [effectsPickerAssistant selectSentenceAtCaretIfPossible];
 
-  v6 = [(CKMessageEntryTextView *)self delegate];
-  [v6 messageEntryTextViewTextFormattingAnimationsOptionsPresentationInProgress:1];
+  delegate = [(CKMessageEntryTextView *)self delegate];
+  [delegate messageEntryTextViewTextFormattingAnimationsOptionsPresentationInProgress:1];
 
   v11.receiver = self;
   v11.super_class = CKMessageEntryTextView;
-  [(CKMessageEntryTextView *)&v11 _showTextFormattingAnimationOptions:v4];
+  [(CKMessageEntryTextView *)&v11 _showTextFormattingAnimationOptions:optionsCopy];
 
   objc_initWeak(&location, self);
   v7 = dispatch_time(0, 500000000);
@@ -1953,20 +1953,20 @@ void __62__CKMessageEntryTextView__showTextFormattingAnimationOptions___block_in
   [v1 messageEntryTextViewTextFormattingAnimationsOptionsPresentationInProgress:0];
 }
 
-- (BOOL)_shouldHandleTextFormattingChangeValue:(id)a3
+- (BOOL)_shouldHandleTextFormattingChangeValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 changeType];
+  valueCopy = value;
+  changeType = [valueCopy changeType];
   [(CKMessageEntryTextView *)self setApplyDefaultTypingAttributesOnTextEffectPickerDismissal:0];
-  v6 = [(CKMessageEntryTextView *)self typingAttributes];
-  v7 = [v6 mutableCopy];
+  typingAttributes = [(CKMessageEntryTextView *)self typingAttributes];
+  v7 = [typingAttributes mutableCopy];
 
   [(CKMessageEntryTextView *)self selectedRange];
   v9 = v8;
   [(CKMessageEntryTextView *)self selectedRange];
   v11 = v10;
-  v12 = [v5 isEqualToString:@"UITextFormattingViewControllerRemoveUnderlineChange"];
-  v13 = [v5 isEqualToString:@"UITextFormattingViewControllerSetUnderlineChange"];
+  v12 = [changeType isEqualToString:@"UITextFormattingViewControllerRemoveUnderlineChange"];
+  v13 = [changeType isEqualToString:@"UITextFormattingViewControllerSetUnderlineChange"];
   v14 = v13;
   if ((v12 & 1) != 0 || v13)
   {
@@ -1985,24 +1985,24 @@ void __62__CKMessageEntryTextView__showTextFormattingAnimationOptions___block_in
     }
 
     v24 = v11 != 0;
-    v25 = [(CKMessageEntryTextView *)self effectsPickerAssistant];
-    [v25 setShouldSkipNextAdjustingOfTypingAttributes:v9 == 0];
+    effectsPickerAssistant = [(CKMessageEntryTextView *)self effectsPickerAssistant];
+    [effectsPickerAssistant setShouldSkipNextAdjustingOfTypingAttributes:v9 == 0];
 
     [(CKMessageEntryTextView *)self setTypingAttributes:v7];
-    v26 = [MEMORY[0x1E69A8168] sharedInstance];
+    mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
     [(CKMessageEntryTextView *)self selectedRange];
-    [v26 trackDidSelectTextStyle:4 styleLength:v27];
+    [mEMORY[0x1E69A8168] trackDidSelectTextStyle:4 styleLength:v27];
 
-    v28 = [(CKMessageEntryTextView *)self textFormattingDelegate];
-    v30 = [(CKMessageEntryTextView *)self selectedRange];
-    v31 = v28;
-    v32 = self;
+    textFormattingDelegate = [(CKMessageEntryTextView *)self textFormattingDelegate];
+    selectedRange = [(CKMessageEntryTextView *)self selectedRange];
+    v31 = textFormattingDelegate;
+    selfCopy4 = self;
     v33 = 4;
     goto LABEL_36;
   }
 
-  v14 = [v5 isEqualToString:@"UITextFormattingViewControllerSetStrikethroughChange"];
-  v15 = [v5 isEqualToString:@"UITextFormattingViewControllerRemoveStrikethroughChange"];
+  v14 = [changeType isEqualToString:@"UITextFormattingViewControllerSetStrikethroughChange"];
+  v15 = [changeType isEqualToString:@"UITextFormattingViewControllerRemoveStrikethroughChange"];
   if ((v14 & 1) != 0 || v15)
   {
     if (v15)
@@ -2020,24 +2020,24 @@ void __62__CKMessageEntryTextView__showTextFormattingAnimationOptions___block_in
     }
 
     v24 = v11 != 0;
-    v34 = [(CKMessageEntryTextView *)self effectsPickerAssistant];
-    [v34 setShouldSkipNextAdjustingOfTypingAttributes:v9 == 0];
+    effectsPickerAssistant2 = [(CKMessageEntryTextView *)self effectsPickerAssistant];
+    [effectsPickerAssistant2 setShouldSkipNextAdjustingOfTypingAttributes:v9 == 0];
 
     [(CKMessageEntryTextView *)self setTypingAttributes:v7];
-    v35 = [MEMORY[0x1E69A8168] sharedInstance];
+    mEMORY[0x1E69A8168]2 = [MEMORY[0x1E69A8168] sharedInstance];
     [(CKMessageEntryTextView *)self selectedRange];
-    [v35 trackDidSelectTextStyle:8 styleLength:v36];
+    [mEMORY[0x1E69A8168]2 trackDidSelectTextStyle:8 styleLength:v36];
 
-    v28 = [(CKMessageEntryTextView *)self textFormattingDelegate];
-    v30 = [(CKMessageEntryTextView *)self selectedRange];
-    v31 = v28;
-    v32 = self;
+    textFormattingDelegate = [(CKMessageEntryTextView *)self textFormattingDelegate];
+    selectedRange = [(CKMessageEntryTextView *)self selectedRange];
+    v31 = textFormattingDelegate;
+    selfCopy4 = self;
     v33 = 8;
     goto LABEL_36;
   }
 
-  v14 = [v5 isEqualToString:@"UITextFormattingViewControllerSetBoldChange"];
-  v16 = [v5 isEqualToString:@"UITextFormattingViewControllerRemoveBoldChange"];
+  v14 = [changeType isEqualToString:@"UITextFormattingViewControllerSetBoldChange"];
+  v16 = [changeType isEqualToString:@"UITextFormattingViewControllerRemoveBoldChange"];
   if ((v14 & 1) != 0 || v16)
   {
     if (v16)
@@ -2055,24 +2055,24 @@ void __62__CKMessageEntryTextView__showTextFormattingAnimationOptions___block_in
     }
 
     v24 = v11 != 0;
-    v37 = [(CKMessageEntryTextView *)self effectsPickerAssistant];
-    [v37 setShouldSkipNextAdjustingOfTypingAttributes:v9 == 0];
+    effectsPickerAssistant3 = [(CKMessageEntryTextView *)self effectsPickerAssistant];
+    [effectsPickerAssistant3 setShouldSkipNextAdjustingOfTypingAttributes:v9 == 0];
 
     [(CKMessageEntryTextView *)self setTypingAttributes:v7];
-    v38 = [MEMORY[0x1E69A8168] sharedInstance];
+    mEMORY[0x1E69A8168]3 = [MEMORY[0x1E69A8168] sharedInstance];
     [(CKMessageEntryTextView *)self selectedRange];
-    [v38 trackDidSelectTextStyle:1 styleLength:v39];
+    [mEMORY[0x1E69A8168]3 trackDidSelectTextStyle:1 styleLength:v39];
 
-    v28 = [(CKMessageEntryTextView *)self textFormattingDelegate];
-    v30 = [(CKMessageEntryTextView *)self selectedRange];
-    v31 = v28;
-    v32 = self;
+    textFormattingDelegate = [(CKMessageEntryTextView *)self textFormattingDelegate];
+    selectedRange = [(CKMessageEntryTextView *)self selectedRange];
+    v31 = textFormattingDelegate;
+    selfCopy4 = self;
     v33 = 1;
     goto LABEL_36;
   }
 
-  v14 = [v5 isEqualToString:@"UITextFormattingViewControllerSetItalicChange"];
-  v17 = [v5 isEqualToString:@"UITextFormattingViewControllerRemoveItalicChange"];
+  v14 = [changeType isEqualToString:@"UITextFormattingViewControllerSetItalicChange"];
+  v17 = [changeType isEqualToString:@"UITextFormattingViewControllerRemoveItalicChange"];
   if ((v14 & 1) != 0 || v17)
   {
     if (v17)
@@ -2090,45 +2090,45 @@ void __62__CKMessageEntryTextView__showTextFormattingAnimationOptions___block_in
     }
 
     v24 = v11 != 0;
-    v40 = [(CKMessageEntryTextView *)self effectsPickerAssistant];
-    [v40 setShouldSkipNextAdjustingOfTypingAttributes:v9 == 0];
+    effectsPickerAssistant4 = [(CKMessageEntryTextView *)self effectsPickerAssistant];
+    [effectsPickerAssistant4 setShouldSkipNextAdjustingOfTypingAttributes:v9 == 0];
 
     [(CKMessageEntryTextView *)self setTypingAttributes:v7];
-    v41 = [MEMORY[0x1E69A8168] sharedInstance];
+    mEMORY[0x1E69A8168]4 = [MEMORY[0x1E69A8168] sharedInstance];
     [(CKMessageEntryTextView *)self selectedRange];
-    [v41 trackDidSelectTextStyle:2 styleLength:v42];
+    [mEMORY[0x1E69A8168]4 trackDidSelectTextStyle:2 styleLength:v42];
 
-    v28 = [(CKMessageEntryTextView *)self textFormattingDelegate];
-    v30 = [(CKMessageEntryTextView *)self selectedRange];
-    v31 = v28;
-    v32 = self;
+    textFormattingDelegate = [(CKMessageEntryTextView *)self textFormattingDelegate];
+    selectedRange = [(CKMessageEntryTextView *)self selectedRange];
+    v31 = textFormattingDelegate;
+    selfCopy4 = self;
     v33 = 2;
 LABEL_36:
-    [v31 messageEntryTextView:v32 applyStyleChangeOfType:v33 add:v14 forRange:{v30, v29}];
+    [v31 messageEntryTextView:selfCopy4 applyStyleChangeOfType:v33 add:v14 forRange:{selectedRange, v29}];
 
     [(CKMessageEntryTextView *)self setApplyDefaultTypingAttributesOnTextEffectPickerDismissal:v24];
     v19 = 0;
     goto LABEL_37;
   }
 
-  if ([v5 isEqualToString:@"UITextFormattingViewControllerCustomComponentSelectedChange"] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([changeType isEqualToString:@"UITextFormattingViewControllerCustomComponentSelectedChange"] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v18 = [v4 performSelector:sel__textAnimationName];
+    v18 = [valueCopy performSelector:sel__textAnimationName];
     v19 = v18 == 0;
     if (v18)
     {
       v20 = *MEMORY[0x1E69A7CF8];
-      v21 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A7CF8]];
+      unsignedIntegerValue = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A7CF8]];
 
       v52 = v20;
-      if (v21)
+      if (unsignedIntegerValue)
       {
         v22 = [v7 objectForKeyedSubscript:v20];
-        v21 = [v22 unsignedIntegerValue];
+        unsignedIntegerValue = [v22 unsignedIntegerValue];
       }
 
       v23 = IMTextEffectTypeFromName();
-      if (v21 == v23)
+      if (unsignedIntegerValue == v23)
       {
         [v7 removeObjectForKey:*MEMORY[0x1E69DB6D8]];
         [v7 removeObjectForKey:v52];
@@ -2151,17 +2151,17 @@ LABEL_36:
         [v7 removeObjectForKey:*MEMORY[0x1E69A7D08]];
       }
 
-      v45 = [(CKMessageEntryTextView *)self effectsPickerAssistant];
-      [v45 setShouldSkipNextAdjustingOfTypingAttributes:v9 == 0];
+      effectsPickerAssistant5 = [(CKMessageEntryTextView *)self effectsPickerAssistant];
+      [effectsPickerAssistant5 setShouldSkipNextAdjustingOfTypingAttributes:v9 == 0];
 
       [(CKMessageEntryTextView *)self setTypingAttributes:v7];
-      v46 = [MEMORY[0x1E69A8168] sharedInstance];
+      mEMORY[0x1E69A8168]5 = [MEMORY[0x1E69A8168] sharedInstance];
       [(CKMessageEntryTextView *)self selectedRange];
-      [v46 trackDidSelectTextEffect:v23 effectLength:v47];
+      [mEMORY[0x1E69A8168]5 trackDidSelectTextEffect:v23 effectLength:v47];
 
-      v48 = [(CKMessageEntryTextView *)self textFormattingDelegate];
-      v49 = [(CKMessageEntryTextView *)self selectedRange];
-      [v48 messageEntryTextView:self didSetAnimationName:v18 forRange:{v49, v50}];
+      textFormattingDelegate2 = [(CKMessageEntryTextView *)self textFormattingDelegate];
+      selectedRange2 = [(CKMessageEntryTextView *)self selectedRange];
+      [textFormattingDelegate2 messageEntryTextView:self didSetAnimationName:v18 forRange:{selectedRange2, v50}];
 
       [(CKMessageEntryTextView *)self setApplyDefaultTypingAttributesOnTextEffectPickerDismissal:v11 != 0];
     }
@@ -2198,8 +2198,8 @@ LABEL_37:
 
 - (id)_supportedAnimationTitlesForTextFormatting
 {
-  v2 = [(CKMessageEntryTextView *)self _supportedAnimationNamesForTextFormatting];
-  if (v2)
+  _supportedAnimationNamesForTextFormatting = [(CKMessageEntryTextView *)self _supportedAnimationNamesForTextFormatting];
+  if (_supportedAnimationNamesForTextFormatting)
   {
     v3 = objc_opt_new();
     v6[0] = MEMORY[0x1E69E9820];
@@ -2208,7 +2208,7 @@ LABEL_37:
     v6[3] = &unk_1E72F0A10;
     v4 = v3;
     v7 = v4;
-    [v2 enumerateObjectsUsingBlock:v6];
+    [_supportedAnimationNamesForTextFormatting enumerateObjectsUsingBlock:v6];
   }
 
   else
@@ -2232,8 +2232,8 @@ void __68__CKMessageEntryTextView__supportedAnimationTitlesForTextFormatting__bl
 
 - (id)_supportedAnimationAccessibilityHintsForTextFormatting
 {
-  v2 = [(CKMessageEntryTextView *)self _supportedAnimationNamesForTextFormatting];
-  if (v2)
+  _supportedAnimationNamesForTextFormatting = [(CKMessageEntryTextView *)self _supportedAnimationNamesForTextFormatting];
+  if (_supportedAnimationNamesForTextFormatting)
   {
     v3 = objc_opt_new();
     v6[0] = MEMORY[0x1E69E9820];
@@ -2242,7 +2242,7 @@ void __68__CKMessageEntryTextView__supportedAnimationTitlesForTextFormatting__bl
     v6[3] = &unk_1E72F0A10;
     v4 = v3;
     v7 = v4;
-    [v2 enumerateObjectsUsingBlock:v6];
+    [_supportedAnimationNamesForTextFormatting enumerateObjectsUsingBlock:v6];
   }
 
   else
@@ -2264,15 +2264,15 @@ void __80__CKMessageEntryTextView__supportedAnimationAccessibilityHintsForTextFo
   [*(a1 + 32) setValue:v5 forKey:v3];
 }
 
-- (void)updateTextAttributesWithConversionHandler:(id)a3
+- (void)updateTextAttributesWithConversionHandler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = CKMessageEntryTextView;
-  v4 = a3;
-  [(CKMessageEntryTextView *)&v8 updateTextAttributesWithConversionHandler:v4];
+  handlerCopy = handler;
+  [(CKMessageEntryTextView *)&v8 updateTextAttributesWithConversionHandler:handlerCopy];
   v5 = [(CKMessageEntryTextView *)self textFormattingDelegate:v8.receiver];
-  v6 = [(CKMessageEntryTextView *)self selectedRange];
-  [v5 messageEntryTextView:self didUpdateForRange:v6 conversionHandler:{v7, v4}];
+  selectedRange = [(CKMessageEntryTextView *)self selectedRange];
+  [v5 messageEntryTextView:self didUpdateForRange:selectedRange conversionHandler:{v7, handlerCopy}];
 
   if (objc_opt_respondsToSelector())
   {

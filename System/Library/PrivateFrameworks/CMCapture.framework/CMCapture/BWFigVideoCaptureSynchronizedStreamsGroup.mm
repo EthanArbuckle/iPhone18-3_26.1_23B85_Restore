@@ -1,19 +1,19 @@
 @interface BWFigVideoCaptureSynchronizedStreamsGroup
 + (void)initialize;
-- (BWFigVideoCaptureSynchronizedStreamsGroup)initWithSynchronizedStreamsGroup:(id)a3 activeStreams:(id)a4 readOnly:(BOOL)a5 baseZoomFactorOverrides:(id)a6 clientBaseZoomFactorsByPortType:(id)a7 error:(int *)a8;
-- (int)setCameraControlsStatisticsMasterStream:(id)a3;
-- (int)setMasterStream:(id)a3 allStreams:(id)a4;
-- (uint64_t)_computeBaseZoomFactorsWithOverrides:(void *)a3 clientBaseZoomFactorsByPortType:;
+- (BWFigVideoCaptureSynchronizedStreamsGroup)initWithSynchronizedStreamsGroup:(id)group activeStreams:(id)streams readOnly:(BOOL)only baseZoomFactorOverrides:(id)overrides clientBaseZoomFactorsByPortType:(id)type error:(int *)error;
+- (int)setCameraControlsStatisticsMasterStream:(id)stream;
+- (int)setMasterStream:(id)stream allStreams:(id)streams;
+- (uint64_t)_computeBaseZoomFactorsWithOverrides:(void *)overrides clientBaseZoomFactorsByPortType:;
 - (uint64_t)_getViewAndPoseMatrices;
 - (uint64_t)_slaveConfigurationForStream:(uint64_t)result;
 - (uint64_t)_worldPortType;
 - (unsigned)minimumMasterToSlaveFrameRateRatio;
 - (void)dealloc;
-- (void)setBaseZoomFactorsByPortType:(id)a3;
-- (void)setMaximumNumberOfEnabledSlaveTimeMachines:(int)a3;
-- (void)setMaximumNumberOfSlaveStreamsWithFrameProcessingEnabled:(int)a3;
-- (void)setMaximumNumberOfSlaveStreamsWithoutFrameSkipping:(int)a3;
-- (void)setMinimumMasterToSlaveFrameRateRatio:(unsigned int)a3;
+- (void)setBaseZoomFactorsByPortType:(id)type;
+- (void)setMaximumNumberOfEnabledSlaveTimeMachines:(int)machines;
+- (void)setMaximumNumberOfSlaveStreamsWithFrameProcessingEnabled:(int)enabled;
+- (void)setMaximumNumberOfSlaveStreamsWithoutFrameSkipping:(int)skipping;
+- (void)setMinimumMasterToSlaveFrameRateRatio:(unsigned int)ratio;
 @end
 
 @implementation BWFigVideoCaptureSynchronizedStreamsGroup
@@ -34,7 +34,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -43,10 +43,10 @@
   }
 }
 
-- (BWFigVideoCaptureSynchronizedStreamsGroup)initWithSynchronizedStreamsGroup:(id)a3 activeStreams:(id)a4 readOnly:(BOOL)a5 baseZoomFactorOverrides:(id)a6 clientBaseZoomFactorsByPortType:(id)a7 error:(int *)a8
+- (BWFigVideoCaptureSynchronizedStreamsGroup)initWithSynchronizedStreamsGroup:(id)group activeStreams:(id)streams readOnly:(BOOL)only baseZoomFactorOverrides:(id)overrides clientBaseZoomFactorsByPortType:(id)type error:(int *)error
 {
   v38[0] = 0;
-  if (![a4 count])
+  if (![streams count])
   {
     [BWFigVideoCaptureSynchronizedStreamsGroup initWithSynchronizedStreamsGroup:activeStreams:readOnly:baseZoomFactorOverrides:clientBaseZoomFactorsByPortType:error:];
     goto LABEL_33;
@@ -60,17 +60,17 @@
     return self;
   }
 
-  v31 = a3;
-  v27 = a8;
-  v29 = a7;
-  self->_activeStreams = a4;
-  v14 = [MEMORY[0x1E695DF70] array];
+  groupCopy = group;
+  errorCopy = error;
+  typeCopy = type;
+  self->_activeStreams = streams;
+  array = [MEMORY[0x1E695DF70] array];
   v33 = 0u;
   v34 = 0u;
-  v15 = a4 != 0;
+  v15 = streams != 0;
   v35 = 0u;
   v36 = 0u;
-  v16 = [a4 countByEnumeratingWithState:&v33 objects:v32 count:16];
+  v16 = [streams countByEnumeratingWithState:&v33 objects:v32 count:16];
   if (v16)
   {
     v17 = v16;
@@ -82,34 +82,34 @@
       {
         if (*v34 != v18)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(streams);
         }
 
         v21 = *(*(&v33 + 1) + 8 * i);
-        [v14 addObject:{objc_msgSend(v21, "portType", v27)}];
+        [array addObject:{objc_msgSend(v21, "portType", errorCopy)}];
         v15 &= [objc_msgSend(v21 "supportedProperties")] != 0;
       }
 
-      v17 = [a4 countByEnumeratingWithState:&v33 objects:v32 count:16];
+      v17 = [streams countByEnumeratingWithState:&v33 objects:v32 count:16];
     }
 
     while (v17);
   }
 
-  self->_activePortTypes = [v14 copy];
-  v22 = v31;
+  self->_activePortTypes = [array copy];
+  v22 = groupCopy;
   self->_synchronizedStreamsGroup = v22;
   if (v22)
   {
-    self->_readOnly = a5;
-    if (!a5 && (v38[0] = [(BWFigCaptureSynchronizedStreamsGroup *)v22 setActiveStreams:a4]) != 0)
+    self->_readOnly = only;
+    if (!only && (v38[0] = [(BWFigCaptureSynchronizedStreamsGroup *)v22 setActiveStreams:streams]) != 0)
     {
       [BWFigVideoCaptureSynchronizedStreamsGroup initWithSynchronizedStreamsGroup:activeStreams:readOnly:baseZoomFactorOverrides:clientBaseZoomFactorsByPortType:error:];
     }
 
     else if ((v15 & 1) != 0 || (v38[0] = [(BWFigVideoCaptureSynchronizedStreamsGroup *)self _getViewAndPoseMatrices]) == 0)
     {
-      if ([(NSArray *)self->_activeStreams count]< 2 || (v38[0] = [(BWFigVideoCaptureSynchronizedStreamsGroup *)self _computeBaseZoomFactorsWithOverrides:a6 clientBaseZoomFactorsByPortType:v29]) == 0)
+      if ([(NSArray *)self->_activeStreams count]< 2 || (v38[0] = [(BWFigVideoCaptureSynchronizedStreamsGroup *)self _computeBaseZoomFactorsWithOverrides:overrides clientBaseZoomFactorsByPortType:typeCopy]) == 0)
       {
         if (![(NSArray *)self->_activePortTypes containsObject:*off_1E798A0E8])
         {
@@ -158,43 +158,43 @@
   }
 
 LABEL_32:
-  a8 = v28;
+  error = v28;
 LABEL_33:
 
   self = 0;
-  if (a8)
+  if (error)
   {
-    *a8 = v38[0];
+    *error = v38[0];
   }
 
   return self;
 }
 
-- (void)setBaseZoomFactorsByPortType:(id)a3
+- (void)setBaseZoomFactorsByPortType:(id)type
 {
   v5 = [(NSDictionary *)self->_baseZoomFactorsByPortType mutableCopy];
-  [v5 addEntriesFromDictionary:a3];
+  [v5 addEntriesFromDictionary:type];
 
   self->_baseZoomFactorsByPortType = [v5 copy];
 }
 
-- (void)setMinimumMasterToSlaveFrameRateRatio:(unsigned int)a3
+- (void)setMinimumMasterToSlaveFrameRateRatio:(unsigned int)ratio
 {
   if (!self->_readOnly)
   {
     synchronizedStreamsGroup = self->_synchronizedStreamsGroup;
     v5 = *off_1E798CCD0;
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&ratio];
 
     [(BWFigCaptureSynchronizedStreamsGroup *)synchronizedStreamsGroup setProperty:v5 value:v6];
   }
 }
 
-- (void)setMaximumNumberOfSlaveStreamsWithoutFrameSkipping:(int)a3
+- (void)setMaximumNumberOfSlaveStreamsWithoutFrameSkipping:(int)skipping
 {
   if (!self->_readOnly)
   {
-    v3 = *&a3;
+    v3 = *&skipping;
     if ([(BWFigVideoCaptureSynchronizedStreamsGroup *)self maximumNumberOfSlaveStreamsWithoutFrameSkippingSupported])
     {
       if (self->_maximumNumberOfSlaveStreamsWithoutFrameSkipping != v3 && !-[BWFigCaptureSynchronizedStreamsGroup setProperty:value:](self->_synchronizedStreamsGroup, "setProperty:value:", *off_1E798CCC0, [MEMORY[0x1E696AD98] numberWithInt:v3]))
@@ -205,11 +205,11 @@ LABEL_33:
   }
 }
 
-- (void)setMaximumNumberOfSlaveStreamsWithFrameProcessingEnabled:(int)a3
+- (void)setMaximumNumberOfSlaveStreamsWithFrameProcessingEnabled:(int)enabled
 {
   if (!self->_readOnly)
   {
-    v3 = *&a3;
+    v3 = *&enabled;
     if ([(BWFigVideoCaptureSynchronizedStreamsGroup *)self maximumNumberOfSlaveStreamsWithFrameProcessingEnabledSupported])
     {
       if (self->_maximumNumberOfSlaveStreamsWithFrameProcessingEnabled != v3 && !-[BWFigCaptureSynchronizedStreamsGroup setProperty:value:](self->_synchronizedStreamsGroup, "setProperty:value:", *off_1E798CCB8, [MEMORY[0x1E696AD98] numberWithInt:v3]))
@@ -220,14 +220,14 @@ LABEL_33:
   }
 }
 
-- (void)setMaximumNumberOfEnabledSlaveTimeMachines:(int)a3
+- (void)setMaximumNumberOfEnabledSlaveTimeMachines:(int)machines
 {
   if (!self->_readOnly && self->_atomicMasterSlaveReconfigurationSupported)
   {
-    v4 = *&a3;
-    v5 = [(BWFigCaptureSynchronizedStreamsGroup *)self->_synchronizedStreamsGroup supportedProperties];
+    v4 = *&machines;
+    supportedProperties = [(BWFigCaptureSynchronizedStreamsGroup *)self->_synchronizedStreamsGroup supportedProperties];
     v6 = *off_1E798CCB0;
-    if ([(NSDictionary *)v5 objectForKeyedSubscript:*off_1E798CCB0])
+    if ([(NSDictionary *)supportedProperties objectForKeyedSubscript:*off_1E798CCB0])
     {
       if (self->_maximumNumberOfEnabledSlaveTimeMachines != v4 && !-[BWFigCaptureSynchronizedStreamsGroup setProperty:value:](self->_synchronizedStreamsGroup, "setProperty:value:", v6, [MEMORY[0x1E696AD98] numberWithInt:v4]))
       {
@@ -246,7 +246,7 @@ LABEL_33:
 
   v1 = result;
   v28[0] = 0;
-  v17 = [(BWFigVideoCaptureSynchronizedStreamsGroup *)result _worldPortType];
+  _worldPortType = [(BWFigVideoCaptureSynchronizedStreamsGroup *)result _worldPortType];
   memset(v27, 0, sizeof(v27));
   v26 = 0u;
   v25 = 1065353216;
@@ -260,8 +260,8 @@ LABEL_33:
     goto LABEL_26;
   }
 
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -306,9 +306,9 @@ LABEL_33:
 
         if (![objc_msgSend(v16 "allKeys")])
         {
-          v12 = [objc_msgSend(v16 objectForKeyedSubscript:{v17), "objectForKeyedSubscript:", v11}];
+          v12 = [objc_msgSend(v16 objectForKeyedSubscript:{_worldPortType), "objectForKeyedSubscript:", v11}];
 LABEL_15:
-          [v3 setObject:0 forKeyedSubscript:v11];
+          [dictionary setObject:0 forKeyedSubscript:v11];
           if (v12)
           {
             goto LABEL_19;
@@ -317,10 +317,10 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v12 = [objc_msgSend(v16 objectForKeyedSubscript:{v11), "objectForKeyedSubscript:", v17}];
+        v12 = [objc_msgSend(v16 objectForKeyedSubscript:{v11), "objectForKeyedSubscript:", _worldPortType}];
       }
 
-      [v3 setObject:v12 forKeyedSubscript:v11];
+      [dictionary setObject:v12 forKeyedSubscript:v11];
 LABEL_16:
       if ([v12 length] == 48)
       {
@@ -333,7 +333,7 @@ LABEL_16:
       }
 
 LABEL_19:
-      [v4 setObject:v12 forKeyedSubscript:v11];
+      [dictionary2 setObject:v12 forKeyedSubscript:v11];
     }
 
     v6 = [obj countByEnumeratingWithState:&v21 objects:v20 count:16];
@@ -341,17 +341,17 @@ LABEL_19:
 
   while (v6);
 LABEL_21:
-  v13 = [v3 count];
+  v13 = [dictionary count];
   if (v13)
   {
-    v13 = [v3 copy];
+    v13 = [dictionary copy];
   }
 
   *(v15 + 32) = v13;
-  v14 = [v4 count];
+  v14 = [dictionary2 count];
   if (v14)
   {
-    v14 = [v4 copy];
+    v14 = [dictionary2 copy];
   }
 
   *(v15 + 40) = v14;
@@ -367,7 +367,7 @@ LABEL_26:
   }
 }
 
-- (uint64_t)_computeBaseZoomFactorsWithOverrides:(void *)a3 clientBaseZoomFactorsByPortType:
+- (uint64_t)_computeBaseZoomFactorsWithOverrides:(void *)overrides clientBaseZoomFactorsByPortType:
 {
   if (result)
   {
@@ -464,25 +464,25 @@ LABEL_26:
         while (v24);
       }
 
-      if (a3)
+      if (overrides)
       {
-        v30 = a3;
+        overridesCopy = overrides;
       }
 
       else
       {
-        v30 = v7;
+        overridesCopy = v7;
       }
 
-      v5[7] = [v30 copy];
+      v5[7] = [overridesCopy copy];
       if (a2)
       {
         v39 = 0u;
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v31 = [a2 allKeys];
-        v32 = [v31 countByEnumeratingWithState:&v37 objects:v36 count:16];
+        allKeys = [a2 allKeys];
+        v32 = [allKeys countByEnumeratingWithState:&v37 objects:v36 count:16];
         if (v32)
         {
           v33 = v32;
@@ -493,14 +493,14 @@ LABEL_26:
             {
               if (*v38 != v34)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(allKeys);
               }
 
               [a2 objectForKeyedSubscript:*(*(&v37 + 1) + 8 * k)];
               [OUTLINED_FUNCTION_17() setObject:? forKeyedSubscript:?];
             }
 
-            v33 = [v31 countByEnumeratingWithState:&v37 objects:v36 count:16];
+            v33 = [allKeys countByEnumeratingWithState:&v37 objects:v36 count:16];
           }
 
           while (v33);
@@ -516,16 +516,16 @@ LABEL_26:
   return result;
 }
 
-- (int)setMasterStream:(id)a3 allStreams:(id)a4
+- (int)setMasterStream:(id)stream allStreams:(id)streams
 {
   if (!self->_readOnly)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v106 = 0u;
     v107 = 0u;
     v108 = 0u;
     v109 = 0u;
-    v16 = OUTLINED_FUNCTION_3_25(v8, v9, v10, v11, v12, v13, v14, v15, v42, v44, v46, v48, v50, v52, v54, v56, v58, v4, v61, v63, v65, v67, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, *(&v85 + 1), v86, *(&v86 + 1), v87, *(&v87 + 1), v88, *(&v88 + 1), v89, v90, v91, v92, v93, v94, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, v105);
+    v16 = OUTLINED_FUNCTION_3_25(dictionary, v9, v10, v11, v12, v13, v14, v15, v42, v44, v46, v48, v50, v52, v54, v56, v58, v4, v61, v63, v65, v67, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, *(&v85 + 1), v86, *(&v86 + 1), v87, *(&v87 + 1), v88, *(&v88 + 1), v89, v90, v91, v92, v93, v94, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, v105);
     if (v16)
     {
       v24 = v16;
@@ -537,13 +537,13 @@ LABEL_26:
         {
           if (*v107 != v25)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(streams);
           }
 
           v27 = *(*(&v106 + 1) + 8 * v26);
-          if (v27 != a3)
+          if (v27 != stream)
           {
-            v16 = [v8 setObject:-[BWFigVideoCaptureSynchronizedStreamsGroup _slaveConfigurationForStream:](self forKeyedSubscript:{*(*(&v106 + 1) + 8 * v26)), objc_msgSend(v27, "portType")}];
+            v16 = [dictionary setObject:-[BWFigVideoCaptureSynchronizedStreamsGroup _slaveConfigurationForStream:](self forKeyedSubscript:{*(*(&v106 + 1) + 8 * v26)), objc_msgSend(v27, "portType")}];
           }
 
           ++v26;
@@ -557,7 +557,7 @@ LABEL_26:
       while (v16);
     }
 
-    if (self->_currentMasterStream == a3 && ([v8 isEqualToDictionary:self->_currentSlaveConfigurationsByPortType] & 1) != 0)
+    if (self->_currentMasterStream == stream && ([dictionary isEqualToDictionary:self->_currentSlaveConfigurationsByPortType] & 1) != 0)
     {
       return 0;
     }
@@ -573,7 +573,7 @@ LABEL_26:
 
     if (self->_atomicMasterSlaveReconfigurationSupported)
     {
-      [a3 stream];
+      [stream stream];
       v29 = [OUTLINED_FUNCTION_17() setMasterStream:? slaveConfigurationsByPortType:?];
       if (v29)
       {
@@ -586,20 +586,20 @@ LABEL_32:
 
 LABEL_29:
 
-      self->_currentMasterStream = a3;
+      self->_currentMasterStream = stream;
       v30 = 0;
-      self->_currentSlaveConfigurationsByPortType = v8;
+      self->_currentSlaveConfigurationsByPortType = dictionary;
       return v30;
     }
 
-    v31 = a4;
-    v32 = v8;
+    streamsCopy = streams;
+    v32 = dictionary;
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v33 = v31;
-    v34 = [v31 countByEnumeratingWithState:&v85 objects:&v69 count:16];
+    v33 = streamsCopy;
+    v34 = [streamsCopy countByEnumeratingWithState:&v85 objects:&v69 count:16];
     if (v34)
     {
       v36 = v34;
@@ -615,7 +615,7 @@ LABEL_20:
         }
 
         v40 = *(*(&v85 + 1) + 8 * v39);
-        if (v40 != a3)
+        if (v40 != stream)
         {
           v34 = [objc_msgSend(v40 "stream")];
           if (v34)
@@ -641,13 +641,13 @@ LABEL_20:
     else
     {
 LABEL_27:
-      v8 = v32;
+      dictionary = v32;
       if (!self->_masterConfigurationSupported)
       {
         goto LABEL_29;
       }
 
-      [a3 stream];
+      [stream stream];
       LODWORD(v34) = [OUTLINED_FUNCTION_17() setMasterStream:? slaveConfigurationsByPortType:?];
       if (!v34)
       {
@@ -671,32 +671,32 @@ LABEL_27:
   {
     if ([a2 streamingRequiredWhenConfiguredAsSlave])
     {
-      v3 = 1;
+      visionDataRequiredWhenConfiguredAsSlave = 1;
     }
 
     else
     {
-      v3 = [a2 visionDataRequiredWhenConfiguredAsSlave];
+      visionDataRequiredWhenConfiguredAsSlave = [a2 visionDataRequiredWhenConfiguredAsSlave];
     }
 
-    v4 = [a2 firmwareTimeMachineEnabledWhenConfiguredAsSlave];
-    v5 = [a2 masterToSlaveFrameRateRatio];
-    v7[0] = [MEMORY[0x1E696AD98] numberWithBool:{v3, *off_1E798C730}];
+    firmwareTimeMachineEnabledWhenConfiguredAsSlave = [a2 firmwareTimeMachineEnabledWhenConfiguredAsSlave];
+    masterToSlaveFrameRateRatio = [a2 masterToSlaveFrameRateRatio];
+    v7[0] = [MEMORY[0x1E696AD98] numberWithBool:{visionDataRequiredWhenConfiguredAsSlave, *off_1E798C730}];
     v6[1] = *off_1E798C728;
-    v7[1] = [MEMORY[0x1E696AD98] numberWithInt:v5];
+    v7[1] = [MEMORY[0x1E696AD98] numberWithInt:masterToSlaveFrameRateRatio];
     v6[2] = *off_1E798C720;
-    v7[2] = [MEMORY[0x1E696AD98] numberWithInt:v5 > 1];
+    v7[2] = [MEMORY[0x1E696AD98] numberWithInt:masterToSlaveFrameRateRatio > 1];
     v6[3] = *off_1E798C738;
-    v7[3] = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v7[3] = [MEMORY[0x1E696AD98] numberWithBool:firmwareTimeMachineEnabledWhenConfiguredAsSlave];
     return [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:4];
   }
 
   return result;
 }
 
-- (int)setCameraControlsStatisticsMasterStream:(id)a3
+- (int)setCameraControlsStatisticsMasterStream:(id)stream
 {
-  if (self->_statsMasterHasBeenSet && self->_cameraControlsStatisticsMasterStream == a3)
+  if (self->_statsMasterHasBeenSet && self->_cameraControlsStatisticsMasterStream == stream)
   {
     return 0;
   }
@@ -709,10 +709,10 @@ LABEL_27:
 
   else
   {
-    result = -[BWFigCaptureSynchronizedStreamsGroup setCameraControlsMasterStream:](self->_synchronizedStreamsGroup, "setCameraControlsMasterStream:", [a3 stream]);
+    result = -[BWFigCaptureSynchronizedStreamsGroup setCameraControlsMasterStream:](self->_synchronizedStreamsGroup, "setCameraControlsMasterStream:", [stream stream]);
     if (!result)
     {
-      self->_cameraControlsStatisticsMasterStream = a3;
+      self->_cameraControlsStatisticsMasterStream = stream;
       self->_statsMasterHasBeenSet = 1;
     }
   }
@@ -722,7 +722,7 @@ LABEL_27:
 
 - (uint64_t)_worldPortType
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -731,8 +731,8 @@ LABEL_27:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v1 = [*(a1 + 8) streams];
-  v2 = [v1 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  streams = [*(self + 8) streams];
+  v2 = [streams countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v2)
   {
     v3 = v2;
@@ -745,7 +745,7 @@ LABEL_27:
       {
         if (*v14 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(streams);
         }
 
         if ([objc_msgSend(*(*(&v13 + 1) + 8 * i) "portType")])
@@ -764,7 +764,7 @@ LABEL_27:
         }
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v3 = [streams countByEnumeratingWithState:&v13 objects:v12 count:16];
       if (v3)
       {
         continue;

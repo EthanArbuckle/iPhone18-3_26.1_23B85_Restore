@@ -13,8 +13,8 @@
   [(SXComponentAnimationHandler *)&v4 prepareAnimation];
   if (!UIAccessibilityIsVoiceOverRunning())
   {
-    v3 = [(SXComponentAnimationHandler *)self component];
-    [v3 setHidden:1];
+    component = [(SXComponentAnimationHandler *)self component];
+    [component setHidden:1];
   }
 }
 
@@ -25,11 +25,11 @@
     v7.receiver = self;
     v7.super_class = SXAppearComponentAnimationHandler;
     [(SXComponentAnimationHandler *)&v7 startAnimation];
-    v3 = [(SXComponentAnimationHandler *)self component];
-    [v3 setAlpha:0.0];
+    component = [(SXComponentAnimationHandler *)self component];
+    [component setAlpha:0.0];
 
-    v4 = [(SXComponentAnimationHandler *)self component];
-    [v4 setHidden:0];
+    component2 = [(SXComponentAnimationHandler *)self component];
+    [component2 setHidden:0];
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -58,8 +58,8 @@ void __51__SXAppearComponentAnimationHandler_startAnimation__block_invoke(uint64
   [(SXComponentAnimationHandler *)&v4 finishAnimation];
   if (!UIAccessibilityIsVoiceOverRunning())
   {
-    v3 = [(SXComponentAnimationHandler *)self component];
-    [v3 setHidden:0];
+    component = [(SXComponentAnimationHandler *)self component];
+    [component setHidden:0];
   }
 }
 

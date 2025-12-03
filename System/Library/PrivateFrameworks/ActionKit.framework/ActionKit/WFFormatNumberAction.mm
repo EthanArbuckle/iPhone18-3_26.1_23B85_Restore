@@ -1,21 +1,21 @@
 @interface WFFormatNumberAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFFormatNumberAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFFormatNumberAction *)self parameterValueForKey:@"WFNumberFormatDecimalPlaces" ofClass:objc_opt_class()];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
   v7 = objc_opt_new();
   [v7 setNumberStyle:1];
-  [v7 setMinimumFractionDigits:v6];
-  [v7 setMaximumFractionDigits:v6];
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v7 setLocale:v8];
+  [v7 setMinimumFractionDigits:integerValue];
+  [v7 setMaximumFractionDigits:integerValue];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [v7 setLocale:currentLocale];
 
   v9 = objc_opt_class();
   v12[0] = MEMORY[0x277D85DD0];
@@ -29,7 +29,7 @@
   v11[3] = &unk_278C21E70;
   v11[4] = self;
   v10 = v7;
-  [v4 transformObjectRepresentationsForClass:v9 usingBlock:v12 completionHandler:v11];
+  [inputCopy transformObjectRepresentationsForClass:v9 usingBlock:v12 completionHandler:v11];
 }
 
 void __51__WFFormatNumberAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4, void *a5)

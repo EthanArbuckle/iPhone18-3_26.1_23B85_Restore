@@ -1,29 +1,29 @@
 @interface GizmoRepairCell
-- (GizmoRepairCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (GizmoRepairCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)_newFormattedLabel;
 - (void)_setupLabels;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateConstraints;
 @end
 
 @implementation GizmoRepairCell
 
-- (GizmoRepairCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (GizmoRepairCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v11.receiver = self;
   v11.super_class = GizmoRepairCell;
-  v5 = [(GizmoRepairCell *)&v11 initWithStyle:a3 reuseIdentifier:a4, a5];
-  v6 = v5;
-  if (v5)
+  specifier = [(GizmoRepairCell *)&v11 initWithStyle:style reuseIdentifier:identifier, specifier];
+  v6 = specifier;
+  if (specifier)
   {
-    [(GizmoRepairCell *)v5 _setupLabels];
-    v7 = [(GizmoRepairCell *)v6 contentView];
-    v8 = [(GizmoRepairCell *)v6 repairTitle];
-    [v7 addSubview:v8];
+    [(GizmoRepairCell *)specifier _setupLabels];
+    contentView = [(GizmoRepairCell *)v6 contentView];
+    repairTitle = [(GizmoRepairCell *)v6 repairTitle];
+    [contentView addSubview:repairTitle];
 
-    v9 = [(GizmoRepairCell *)v6 repairSubtitle];
-    [v7 addSubview:v9];
+    repairSubtitle = [(GizmoRepairCell *)v6 repairSubtitle];
+    [contentView addSubview:repairSubtitle];
 
     [(GizmoRepairCell *)v6 layoutSubviews];
   }
@@ -39,16 +39,16 @@
   [(GizmoRepairCell *)self setNeedsUpdateConstraints];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v11.receiver = self;
   v11.super_class = GizmoRepairCell;
-  v4 = a3;
-  [(GizmoRepairCell *)&v11 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"repairDialog", v11.receiver, v11.super_class}];
+  specifierCopy = specifier;
+  [(GizmoRepairCell *)&v11 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"repairDialog", v11.receiver, v11.super_class}];
 
-  v6 = [v5 identifier];
-  v7 = [v6 isEqualToString:@"ASDAuthenticateActiveAccount"];
+  identifier = [v5 identifier];
+  v7 = [identifier isEqualToString:@"ASDAuthenticateActiveAccount"];
 
   if (v7)
   {
@@ -60,8 +60,8 @@
 
   else
   {
-    v9 = [v5 title];
-    [(UILabel *)self->_repairTitle setText:v9];
+    title = [v5 title];
+    [(UILabel *)self->_repairTitle setText:title];
 
     [v5 message];
   }
@@ -93,10 +93,10 @@
 {
   v2 = objc_opt_new();
   v3 = +[PSListController appearance];
-  v4 = [v3 textColor];
-  if (v4)
+  textColor = [v3 textColor];
+  if (textColor)
   {
-    [v2 setTextColor:v4];
+    [v2 setTextColor:textColor];
   }
 
   else
@@ -115,16 +115,16 @@
 
 - (void)_setupLabels
 {
-  v3 = [(GizmoRepairCell *)self _newFormattedLabel];
+  _newFormattedLabel = [(GizmoRepairCell *)self _newFormattedLabel];
   repairSubtitle = self->_repairSubtitle;
-  self->_repairSubtitle = v3;
+  self->_repairSubtitle = _newFormattedLabel;
 
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
   [(UILabel *)self->_repairSubtitle setFont:v5];
 
-  v6 = [(GizmoRepairCell *)self _newFormattedLabel];
+  _newFormattedLabel2 = [(GizmoRepairCell *)self _newFormattedLabel];
   repairTitle = self->_repairTitle;
-  self->_repairTitle = v6;
+  self->_repairTitle = _newFormattedLabel2;
 
   v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
   [(UILabel *)self->_repairTitle setFont:v8];

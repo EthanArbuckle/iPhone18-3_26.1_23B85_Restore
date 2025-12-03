@@ -1,6 +1,6 @@
 @interface ACFComponents
 + (id)components;
-+ (void)setComponents:(id)a3;
++ (void)setComponents:(id)components;
 - (id)createLocalAuthenticationContext;
 - (id)createTransport;
 - (void)dealloc;
@@ -10,22 +10,22 @@
 
 + (id)components
 {
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   v3 = sComponents;
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return v3;
 }
 
-+ (void)setComponents:(id)a3
++ (void)setComponents:(id)components
 {
-  objc_sync_enter(a1);
-  if (([a3 isEqual:sComponents] & 1) == 0)
+  objc_sync_enter(self);
+  if (([components isEqual:sComponents] & 1) == 0)
   {
     v5 = sComponents;
-    sComponents = a3;
+    sComponents = components;
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
 }
 
 - (void)dealloc

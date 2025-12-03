@@ -1,24 +1,24 @@
 @interface NSFileManager
-+ (BOOL)copySQLiteFile:(id)a3 toPath:(id)a4 timeout:(double)a5 error:(id *)a6;
-+ (BOOL)isSQLiteFile:(id)a3 error:(id *)a4;
-+ (int)_getProtectionClassForFile:(id)a3 error:(id *)a4;
-+ (void)removeJournalsForSQLiteFileAtPaths:(id)a3;
-- (BOOL)cloneFile:(id)a3 to:(id)a4 expectingHash:(id)a5 correctOwnership:(BOOL)a6;
++ (BOOL)copySQLiteFile:(id)file toPath:(id)path timeout:(double)timeout error:(id *)error;
++ (BOOL)isSQLiteFile:(id)file error:(id *)error;
++ (int)_getProtectionClassForFile:(id)file error:(id *)error;
++ (void)removeJournalsForSQLiteFileAtPaths:(id)paths;
+- (BOOL)cloneFile:(id)file to:(id)to expectingHash:(id)hash correctOwnership:(BOOL)ownership;
 @end
 
 @implementation NSFileManager
 
-- (BOOL)cloneFile:(id)a3 to:(id)a4 expectingHash:(id)a5 correctOwnership:(BOOL)a6
+- (BOOL)cloneFile:(id)file to:(id)to expectingHash:(id)hash correctOwnership:(BOOL)ownership
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  ownershipCopy = ownership;
+  fileCopy = file;
+  toCopy = to;
+  hashCopy = hash;
   v13 = +[NSMutableArray array];
   v14 = copyfile_state_alloc();
   copyfile_state_set(v14, 6u, sub_100015D64);
   copyfile_state_set(v14, 7u, v13);
-  v15 = copyfile([v10 UTF8String], objc_msgSend(v11, "UTF8String"), v14, 0x1008000u);
+  v15 = copyfile([fileCopy UTF8String], objc_msgSend(toCopy, "UTF8String"), v14, 0x1008000u);
   copyfile_state_free(v14);
   if (v15)
   {
@@ -29,15 +29,15 @@
     }
 
     v20 = 0;
-    v17 = 0;
+    fileHash = 0;
     goto LABEL_18;
   }
 
   [NSFileManager removeJournalsForSQLiteFileAtPaths:v13];
-  if (!v12)
+  if (!hashCopy)
   {
-    v17 = 0;
-    if (v6)
+    fileHash = 0;
+    if (ownershipCopy)
     {
       goto LABEL_5;
     }
@@ -48,20 +48,20 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v16 = [NSURL fileURLWithString:v11];
-  v17 = [v16 fileHash];
+  v16 = [NSURL fileURLWithString:toCopy];
+  fileHash = [v16 fileHash];
 
-  if (([v17 isEqualToData:v12] & 1) == 0)
+  if (([fileHash isEqualToData:hashCopy] & 1) == 0)
   {
     v18 = sub_100063A54();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v30 = v10;
+      v30 = fileCopy;
       v31 = 2114;
-      v32 = v17;
+      v32 = fileHash;
       v33 = 2114;
-      v34 = v12;
+      v34 = hashCopy;
       _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "File has been changed after device manifest generation: %{public}@ - Current hash:  %{public}@ - Expected hash:  %{public}@", buf, 0x20u);
     }
 
@@ -69,7 +69,7 @@ LABEL_9:
     goto LABEL_18;
   }
 
-  if (!v6)
+  if (!ownershipCopy)
   {
     goto LABEL_9;
   }
@@ -81,21 +81,21 @@ LABEL_5:
   v28[1] = @"mobile";
   v18 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:2];
   v26 = 0;
-  v19 = [(NSFileManager *)self setAttributes:v18 ofItemAtPath:v11 error:&v26];
+  v19 = [(NSFileManager *)self setAttributes:v18 ofItemAtPath:toCopy error:&v26];
   v20 = v26;
   if ((v19 & 1) == 0)
   {
     sub_1000C83CC();
 LABEL_18:
 
-    if (![(NSFileManager *)self fileExistsAtPath:v11])
+    if (![(NSFileManager *)self fileExistsAtPath:toCopy])
     {
       v21 = 0;
       goto LABEL_10;
     }
 
     v25 = v20;
-    v23 = [(NSFileManager *)self removeItemAtPath:v11 error:&v25];
+    v23 = [(NSFileManager *)self removeItemAtPath:toCopy error:&v25];
     v24 = v25;
 
     if (v23)
@@ -108,7 +108,7 @@ LABEL_18:
     v18 = sub_100063A54();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      sub_1000C846C(v11, v24);
+      sub_1000C846C(toCopy, v24);
     }
 
     v21 = 0;
@@ -123,17 +123,17 @@ LABEL_10:
   return v21;
 }
 
-+ (BOOL)isSQLiteFile:(id)a3 error:(id *)a4
++ (BOOL)isSQLiteFile:(id)file error:(id *)error
 {
-  v5 = a3;
-  v6 = [NSURL fileURLWithPath:v5];
+  fileCopy = file;
+  v6 = [NSURL fileURLWithPath:fileCopy];
   v25[0] = 0;
   v7 = [NSFileHandle fileHandleForReadingFromURL:v6 error:v25];
   v8 = v25[0];
   v9 = v8;
   if (v7)
   {
-    v10 = [v7 fileDescriptor];
+    fileDescriptor = [v7 fileDescriptor];
     v23 = 0;
     v22 = 0;
     [v6 getResourceValue:&v23 forKey:NSURLIsRegularFileKey error:&v22];
@@ -144,7 +144,7 @@ LABEL_10:
     {
       __buf = 0;
       v27 = 0;
-      v13 = pread(v10, &__buf, 0x10uLL, 0);
+      v13 = pread(fileDescriptor, &__buf, 0x10uLL, 0);
 
       if (v13 < 0)
       {
@@ -155,12 +155,12 @@ LABEL_10:
         }
 
         v21 = v12;
-        v18 = [NSString stringWithFormat:@"pread() error errno: %d - file: %@", *__error(), v5];
-        sub_1000C1390(&v21, 0, v18);
+        fileCopy = [NSString stringWithFormat:@"pread() error errno: %d - file: %@", *__error(), fileCopy];
+        sub_1000C1390(&v21, 0, fileCopy);
         v16 = v21;
 
         v7 = 0;
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
           goto LABEL_17;
@@ -193,13 +193,13 @@ LABEL_10:
     v12 = v25[1];
   }
 
-  if (a4)
+  if (error)
   {
     v16 = v12;
 LABEL_15:
     v19 = v16;
     v15 = 0;
-    *a4 = v16;
+    *error = v16;
     goto LABEL_17;
   }
 
@@ -211,33 +211,33 @@ LABEL_17:
   return v15;
 }
 
-+ (BOOL)copySQLiteFile:(id)a3 toPath:(id)a4 timeout:(double)a5 error:(id *)a6
++ (BOOL)copySQLiteFile:(id)file toPath:(id)path timeout:(double)timeout error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 fileSystemRepresentation];
-  v11 = [v9 fileSystemRepresentation];
+  fileCopy = file;
+  pathCopy = path;
+  fileSystemRepresentation = [fileCopy fileSystemRepresentation];
+  fileSystemRepresentation2 = [pathCopy fileSystemRepresentation];
   db = 0;
   ppDb = 0;
   +[NSDate timeIntervalSinceReferenceDate];
   v13 = v12;
-  v14 = [MSDFileMetadata fileMetadatatWithPath:v8];
+  v14 = [MSDFileMetadata fileMetadatatWithPath:fileCopy];
   v15 = sub_100063A54();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543874;
-    *&buf[4] = v8;
+    *&buf[4] = fileCopy;
     v55 = 2114;
-    v56 = v9;
+    v56 = pathCopy;
     v57 = 2048;
     v58 = COERCE_DOUBLE([v14 getFileSize]);
     _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Copying SQLite database at %{public}@ to %{public}@ (%lld bytes)", buf, 0x20u);
   }
 
   v51 = 0;
-  v16 = [NSFileManager _getProtectionClassForFile:v8 error:&v51];
+  v16 = [NSFileManager _getProtectionClassForFile:fileCopy error:&v51];
   v17 = v51;
-  v18 = sqlite3_open_v2(v10, &ppDb, 65537, 0);
+  v18 = sqlite3_open_v2(fileSystemRepresentation, &ppDb, 65537, 0);
   if (v18)
   {
     v40 = v18;
@@ -260,7 +260,7 @@ LABEL_17:
     sub_1000C8828();
   }
 
-  v20 = sqlite3_open_v2(v11, &db, v16 | 0x10006, 0);
+  v20 = sqlite3_open_v2(fileSystemRepresentation2, &db, v16 | 0x10006, 0);
   if (v20)
   {
     v43 = v20;
@@ -310,7 +310,7 @@ LABEL_18:
       sub_1000C8978(v24);
     }
 
-    if ([v14 restoreAttribuesToPath:v9])
+    if ([v14 restoreAttribuesToPath:pathCopy])
     {
       v25 = 1;
     }
@@ -379,15 +379,15 @@ LABEL_19:
   {
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
     {
-      v35 = [v14 getFileSize];
+      getFileSize = [v14 getFileSize];
       *buf = 138544130;
-      *&buf[4] = v8;
+      *&buf[4] = fileCopy;
       v55 = 2114;
-      v56 = v9;
+      v56 = pathCopy;
       v57 = 2048;
       v58 = v32 - v13;
       v59 = 2048;
-      v60 = v35;
+      v60 = getFileSize;
       _os_log_debug_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEBUG, "Finished copying SQLite database from %{public}@ to %{public}@ in %0.3fs (%lld bytes)", buf, 0x2Au);
     }
   }
@@ -400,10 +400,10 @@ LABEL_19:
     }
 
     v34 = +[NSFileManager defaultManager];
-    if ([v34 fileExistsAtPath:v9])
+    if ([v34 fileExistsAtPath:pathCopy])
     {
       v36 = +[NSFileManager defaultManager];
-      v37 = [v36 removeItemAtPath:v9 error:0];
+      v37 = [v36 removeItemAtPath:pathCopy error:0];
 
       if (v37)
       {
@@ -419,24 +419,24 @@ LABEL_19:
   }
 
 LABEL_41:
-  if (a6)
+  if (error)
   {
     v38 = v17;
-    *a6 = v17;
+    *error = v17;
   }
 
   return v25;
 }
 
-+ (void)removeJournalsForSQLiteFileAtPaths:(id)a3
++ (void)removeJournalsForSQLiteFileAtPaths:(id)paths
 {
-  v3 = a3;
+  pathsCopy = paths;
   v4 = +[NSFileManager defaultManager];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = pathsCopy;
   v19 = [obj countByEnumeratingWithState:&v26 objects:v33 count:16];
   v5 = 0;
   if (v19)
@@ -523,12 +523,12 @@ LABEL_41:
   }
 }
 
-+ (int)_getProtectionClassForFile:(id)a3 error:(id *)a4
++ (int)_getProtectionClassForFile:(id)file error:(id *)error
 {
-  v5 = a3;
+  fileCopy = file;
   v6 = +[NSFileManager defaultManager];
   v15 = 0;
-  v7 = [v6 attributesOfItemAtPath:v5 error:&v15];
+  v7 = [v6 attributesOfItemAtPath:fileCopy error:&v15];
   v8 = v15;
 
   v9 = [v7 objectForKey:NSFileProtectionKey];
@@ -538,7 +538,7 @@ LABEL_41:
     if ([v9 isEqualToString:NSFileProtectionComplete])
     {
       v11 = 0x100000;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_17;
       }
@@ -549,7 +549,7 @@ LABEL_41:
     if ([v10 isEqualToString:NSFileProtectionCompleteUnlessOpen])
     {
       v11 = 0x200000;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_17;
       }
@@ -560,7 +560,7 @@ LABEL_41:
     if ([v10 isEqualToString:NSFileProtectionCompleteUntilFirstUserAuthentication])
     {
       v11 = 3145728;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_17;
       }
@@ -574,7 +574,7 @@ LABEL_41:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v17 = v5;
+        v17 = fileCopy;
         v18 = 2114;
         v19 = v10;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Invalid file protection level for file %{public}@ - %{public}@. Defaulting to 'None'", buf, 0x16u);
@@ -583,11 +583,11 @@ LABEL_41:
   }
 
   v11 = 0x400000;
-  if (a4)
+  if (error)
   {
 LABEL_16:
     v13 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_17:

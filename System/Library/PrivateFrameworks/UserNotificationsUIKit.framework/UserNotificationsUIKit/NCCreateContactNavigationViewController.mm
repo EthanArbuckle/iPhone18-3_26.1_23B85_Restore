@@ -1,31 +1,31 @@
 @interface NCCreateContactNavigationViewController
-+ (id)navigationControllerWithContact:(id)a3 bundleIdentifier:(id)a4 imageData:(id)a5 presenterDelegate:(id)a6;
-- (id)_initWithContact:(id)a3 bundleIdentifier:(id)a4 imageData:(id)a5 presenterDelegate:(id)a6;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
++ (id)navigationControllerWithContact:(id)contact bundleIdentifier:(id)identifier imageData:(id)data presenterDelegate:(id)delegate;
+- (id)_initWithContact:(id)contact bundleIdentifier:(id)identifier imageData:(id)data presenterDelegate:(id)delegate;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 @end
 
 @implementation NCCreateContactNavigationViewController
 
-+ (id)navigationControllerWithContact:(id)a3 bundleIdentifier:(id)a4 imageData:(id)a5 presenterDelegate:(id)a6
++ (id)navigationControllerWithContact:(id)contact bundleIdentifier:(id)identifier imageData:(id)data presenterDelegate:(id)delegate
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[NCCreateContactNavigationViewController alloc] _initWithContact:v12 bundleIdentifier:v11 imageData:v10 presenterDelegate:v9];
+  delegateCopy = delegate;
+  dataCopy = data;
+  identifierCopy = identifier;
+  contactCopy = contact;
+  v13 = [[NCCreateContactNavigationViewController alloc] _initWithContact:contactCopy bundleIdentifier:identifierCopy imageData:dataCopy presenterDelegate:delegateCopy];
 
   return v13;
 }
 
-- (id)_initWithContact:(id)a3 bundleIdentifier:(id)a4 imageData:(id)a5 presenterDelegate:(id)a6
+- (id)_initWithContact:(id)contact bundleIdentifier:(id)identifier imageData:(id)data presenterDelegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  contactCopy = contact;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v14 = MEMORY[0x277D77F58];
-  v15 = a5;
-  v16 = [v14 sharedInstance];
-  v17 = [v16 newCuratedContactForContact:v11 imageData:v15 bundleIdentifier:v12];
+  dataCopy = data;
+  sharedInstance = [v14 sharedInstance];
+  v17 = [sharedInstance newCuratedContactForContact:contactCopy imageData:dataCopy bundleIdentifier:identifierCopy];
 
   v18 = [MEMORY[0x277CBDC48] viewControllerForUnknownContact:v17];
   v19 = objc_alloc_init(MEMORY[0x277CBDAB8]);
@@ -33,9 +33,9 @@
 
   [v18 setDelegate:self];
   [v18 setActions:32];
-  v20 = [v18 navigationItem];
+  navigationItem = [v18 navigationItem];
   v21 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelAddToContacts_];
-  [v20 setRightBarButtonItem:v21];
+  [navigationItem setRightBarButtonItem:v21];
 
   v25.receiver = self;
   v25.super_class = NCCreateContactNavigationViewController;
@@ -43,29 +43,29 @@
   p_isa = &v22->super.super.super.super.super.isa;
   if (v22)
   {
-    [(NCModalNavigationController *)v22 setPresenterDelegate:v13];
-    objc_storeStrong(p_isa + 185, a3);
-    objc_storeStrong(p_isa + 186, a4);
+    [(NCModalNavigationController *)v22 setPresenterDelegate:delegateCopy];
+    objc_storeStrong(p_isa + 185, contact);
+    objc_storeStrong(p_isa + 186, identifier);
   }
 
   return p_isa;
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v8 = [a4 identifier];
-  if ([v8 length])
+  identifier = [contact identifier];
+  if ([identifier length])
   {
-    v6 = [MEMORY[0x277D77F58] sharedInstance];
-    [v6 didAddToCuratedContactsForContact:self->_contact bundleIdentifier:self->_bundleIdentifier cnContactIdentifier:v8];
+    mEMORY[0x277D77F58] = [MEMORY[0x277D77F58] sharedInstance];
+    [mEMORY[0x277D77F58] didAddToCuratedContactsForContact:self->_contact bundleIdentifier:self->_bundleIdentifier cnContactIdentifier:identifier];
   }
 
-  if (a4)
+  if (contact)
   {
-    v7 = [(NCModalNavigationController *)self presenterDelegate];
+    presenterDelegate = [(NCModalNavigationController *)self presenterDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 createContactNavigationControllerDidComplete:self];
+      [presenterDelegate createContactNavigationControllerDidComplete:self];
     }
   }
 

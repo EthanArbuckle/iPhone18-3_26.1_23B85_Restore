@@ -1,5 +1,5 @@
 @interface CRAccNavRouteGuidance
-+ (id)resetForComponent:(id)a3;
++ (id)resetForComponent:(id)component;
 - (ACCNavigationRouteGuidanceUpdateInfo)routeGuidance;
 - (BOOL)hasCurrentLaneGuidanceIndex;
 - (NSArray)currentManeuverIndexes;
@@ -10,10 +10,10 @@
 - (ACCNavigationRouteGuidanceUpdateInfo)routeGuidance
 {
   [objc_opt_class() ACCNavigationInfoClass];
-  v3 = [(CRAccNavInfo *)self accNavInfo];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  accNavInfo = [(CRAccNavInfo *)self accNavInfo];
+  if (accNavInfo && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = accNavInfo;
   }
 
   else
@@ -46,12 +46,12 @@
   return v3;
 }
 
-+ (id)resetForComponent:(id)a3
++ (id)resetForComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v5 = objc_opt_new();
   [v5 setInfo:1 data:&unk_283821E58];
-  v6 = [[a1 alloc] initWithComponent:v4 accNavInfo:v5];
+  v6 = [[self alloc] initWithComponent:componentCopy accNavInfo:v5];
 
   return v6;
 }

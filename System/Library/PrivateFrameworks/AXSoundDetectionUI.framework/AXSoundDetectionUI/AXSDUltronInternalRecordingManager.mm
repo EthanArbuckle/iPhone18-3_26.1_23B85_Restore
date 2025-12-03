@@ -1,28 +1,28 @@
 @interface AXSDUltronInternalRecordingManager
-+ (BOOL)_cleanupUltronFiles:(id)a3;
++ (BOOL)_cleanupUltronFiles:(id)files;
 + (BOOL)isEnrolled;
 + (BOOL)wasPrompted;
 + (id)_directory;
-+ (id)_retrieveFilesOlderThan:(double)a3;
++ (id)_retrieveFilesOlderThan:(double)than;
 + (id)defaults;
 + (void)_reduceFileDirectorySize;
 + (void)cleanupUltron;
 + (void)enroll;
 + (void)setPrompted;
 + (void)unenroll;
-- (AXSDUltronInternalRecordingManager)initWithSampleLength:(double)a3 bufferSize:(double)a4;
+- (AXSDUltronInternalRecordingManager)initWithSampleLength:(double)length bufferSize:(double)size;
 - (id)audioFileSettings;
 - (id)getDictionaryForListenType;
-- (void)_recordResultToFile:(id)a3;
+- (void)_recordResultToFile:(id)file;
 - (void)dealloc;
-- (void)listenEngineFailedToStartWithError:(id)a3;
-- (void)saveDetectionResult:(id)a3;
-- (void)trackBuffer:(id)a3 atTime:(id)a4;
+- (void)listenEngineFailedToStartWithError:(id)error;
+- (void)saveDetectionResult:(id)result;
+- (void)trackBuffer:(id)buffer atTime:(id)time;
 @end
 
 @implementation AXSDUltronInternalRecordingManager
 
-- (AXSDUltronInternalRecordingManager)initWithSampleLength:(double)a3 bufferSize:(double)a4
+- (AXSDUltronInternalRecordingManager)initWithSampleLength:(double)length bufferSize:(double)size
 {
   v27.receiver = self;
   v27.super_class = AXSDUltronInternalRecordingManager;
@@ -33,8 +33,8 @@
     fileProcessingQueue = v6->_fileProcessingQueue;
     v6->_fileProcessingQueue = v7;
 
-    v6->_sampleLength = a3;
-    v9 = [[AXSDRingBuffer alloc] initWithCount:vcvtpd_u64_f64(20.0 / (a3 * a4))];
+    v6->_sampleLength = length;
+    v9 = [[AXSDRingBuffer alloc] initWithCount:vcvtpd_u64_f64(20.0 / (length * size))];
     audioRingBuffer = v6->_audioRingBuffer;
     v6->_audioRingBuffer = v9;
 
@@ -106,8 +106,8 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
 
 + (BOOL)isEnrolled
 {
-  v2 = [a1 defaults];
-  v3 = [v2 stringForKey:@"com.apple.accessibility.ultron.user_identifier_key"];
+  defaults = [self defaults];
+  v3 = [defaults stringForKey:@"com.apple.accessibility.ultron.user_identifier_key"];
   v4 = v3 != 0;
 
   return v4;
@@ -116,8 +116,8 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
 + (void)enroll
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = [a1 defaults];
-  v2 = [v1 stringForKey:@"com.apple.accessibility.ultron.user_identifier_key"];
+  defaults = [self defaults];
+  v2 = [defaults stringForKey:@"com.apple.accessibility.ultron.user_identifier_key"];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v3, v4, v5, v6, v7, 0xCu);
@@ -133,22 +133,22 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
     +[AXSDUltronInternalRecordingManager unenroll];
   }
 
-  v4 = [a1 defaults];
-  [v4 removeObjectForKey:@"com.apple.accessibility.ultron.user_identifier_key"];
+  defaults = [self defaults];
+  [defaults removeObjectForKey:@"com.apple.accessibility.ultron.user_identifier_key"];
 }
 
 + (BOOL)wasPrompted
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"com.apple.accessibility.ultron.user_identifier_prompt_key"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"com.apple.accessibility.ultron.user_identifier_prompt_key"];
 
   return v3;
 }
 
 + (void)setPrompted
 {
-  v2 = [a1 defaults];
-  [v2 setBool:1 forKey:@"com.apple.accessibility.ultron.user_identifier_prompt_key"];
+  defaults = [self defaults];
+  [defaults setBool:1 forKey:@"com.apple.accessibility.ultron.user_identifier_prompt_key"];
 
   v3 = AXLogUltron();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -160,8 +160,8 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
 + (void)cleanupUltron
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() defaults];
-  v4 = [v3 objectForKey:@"com.apple.accessibility.ultron.last_cleanup_key"];
+  defaults = [objc_opt_class() defaults];
+  v4 = [defaults objectForKey:@"com.apple.accessibility.ultron.last_cleanup_key"];
 
   v5 = [MEMORY[0x277CBEAA8] now];
   v6 = [v5 dateByAddingTimeInterval:-86400.0];
@@ -179,16 +179,16 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
 
   else
   {
-    v8 = [a1 _retrieveFilesOlderThan:1209600.0];
+    v8 = [self _retrieveFilesOlderThan:1209600.0];
     if ([v8 count])
     {
-      [a1 _cleanupUltronFiles:v8];
+      [self _cleanupUltronFiles:v8];
     }
 
-    [a1 _reduceFileDirectorySize];
-    v9 = [a1 defaults];
+    [self _reduceFileDirectorySize];
+    defaults2 = [self defaults];
     v10 = [MEMORY[0x277CBEAA8] now];
-    [v9 setObject:v10 forKey:@"com.apple.accessibility.ultron.last_cleanup_key"];
+    [defaults2 setObject:v10 forKey:@"com.apple.accessibility.ultron.last_cleanup_key"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -197,9 +197,9 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
 + (id)_directory
 {
   v10 = 1;
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [a1 path];
-  v5 = [v3 fileExistsAtPath:v4 isDirectory:&v10];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [self path];
+  v5 = [defaultManager fileExistsAtPath:path isDirectory:&v10];
 
   if ((v5 & 1) == 0)
   {
@@ -209,50 +209,50 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
       +[AXSDUltronInternalRecordingManager _directory];
     }
 
-    v7 = [a1 path];
-    [v3 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0];
+    path2 = [self path];
+    [defaultManager createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:0];
   }
 
-  v8 = [a1 path];
+  path3 = [self path];
 
-  return v8;
+  return path3;
 }
 
-+ (id)_retrieveFilesOlderThan:(double)a3
++ (id)_retrieveFilesOlderThan:(double)than
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0.0)
+  if (than <= 0.0)
   {
-    v4 = a3;
+    thanCopy = than;
   }
 
   else
   {
-    v4 = -a3;
+    thanCopy = -than;
   }
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v23 = [v5 dateByAddingTimeInterval:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  v23 = [date dateByAddingTimeInterval:thanCopy];
 
-  v6 = [a1 _directory];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 enumeratorAtPath:v6];
+  _directory = [self _directory];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager enumeratorAtPath:_directory];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [v8 nextObject];
-  if (v10)
+  nextObject = [v8 nextObject];
+  if (nextObject)
   {
-    v12 = v10;
+    v12 = nextObject;
     *&v11 = 138412546;
     v22 = v11;
     do
     {
-      v13 = [v6 stringByAppendingPathComponent:{v12, v22}];
-      v14 = [MEMORY[0x277CCAA00] defaultManager];
+      v13 = [_directory stringByAppendingPathComponent:{v12, v22}];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v24 = 0;
-      v15 = [v14 attributesOfItemAtPath:v13 error:&v24];
+      v15 = [defaultManager2 attributesOfItemAtPath:v13 error:&v24];
       v16 = v24;
-      v17 = [v15 fileCreationDate];
+      fileCreationDate = [v15 fileCreationDate];
 
       if (v16)
       {
@@ -267,17 +267,17 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
         }
       }
 
-      else if ([v17 compare:v23] == -1)
+      else if ([fileCreationDate compare:v23] == -1)
       {
         [v9 addObject:v13];
       }
 
-      v19 = [v8 nextObject];
+      nextObject2 = [v8 nextObject];
 
-      v12 = v19;
+      v12 = nextObject2;
     }
 
-    while (v19);
+    while (nextObject2);
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -285,17 +285,17 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
   return v9;
 }
 
-- (void)trackBuffer:(id)a3 atTime:(id)a4
+- (void)trackBuffer:(id)buffer atTime:(id)time
 {
   audioRingBuffer = self->_audioRingBuffer;
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AXSDTimedAudioBuffer alloc] initWithBuffer:v7 atTime:v6];
+  timeCopy = time;
+  bufferCopy = buffer;
+  v8 = [[AXSDTimedAudioBuffer alloc] initWithBuffer:bufferCopy atTime:timeCopy];
 
   [(AXSDRingBuffer *)audioRingBuffer addObject:v8];
 }
 
-- (void)listenEngineFailedToStartWithError:(id)a3
+- (void)listenEngineFailedToStartWithError:(id)error
 {
   v3 = AXLogUltron();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -304,15 +304,15 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
   }
 }
 
-+ (BOOL)_cleanupUltronFiles:(id)a3
++ (BOOL)_cleanupUltronFiles:(id)files
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  filesCopy = files;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  v4 = [filesCopy countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v4)
   {
     v6 = v4;
@@ -329,13 +329,13 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(filesCopy);
         }
 
         v12 = *(*(&v19 + 1) + 8 * v10);
-        v13 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v18 = v11;
-        [v13 removeItemAtPath:v12 error:&v18];
+        [defaultManager removeItemAtPath:v12 error:&v18];
         v7 = v18;
 
         if (v7)
@@ -358,7 +358,7 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
       }
 
       while (v6 != v10);
-      v6 = [v3 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v6 = [filesCopy countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v6);
@@ -373,32 +373,32 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
   return v9 & 1;
 }
 
-- (void)saveDetectionResult:(id)a3
+- (void)saveDetectionResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(NSMutableDictionary *)self->_detectionResultCollection objectForKey:v5];
+  resultCopy = result;
+  identifier = [resultCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_detectionResultCollection objectForKey:identifier];
 
   if (!v6)
   {
     detectionResultCollection = self->_detectionResultCollection;
     v8 = [[AXSDRingBuffer alloc] initWithCount:[(AXSDRingBuffer *)self->_audioRingBuffer count]];
-    [(NSMutableDictionary *)detectionResultCollection setObject:v8 forKey:v5];
+    [(NSMutableDictionary *)detectionResultCollection setObject:v8 forKey:identifier];
   }
 
-  v9 = [(NSMutableDictionary *)self->_detectionResultCollection objectForKey:v5];
-  [v9 addObject:v4];
+  v9 = [(NSMutableDictionary *)self->_detectionResultCollection objectForKey:identifier];
+  [v9 addObject:resultCopy];
 
-  if ([v4 detected])
+  if ([resultCopy detected])
   {
-    v10 = [(NSMutableDictionary *)self->_currentDetections objectForKey:v5];
+    v10 = [(NSMutableDictionary *)self->_currentDetections objectForKey:identifier];
 
     if (!v10)
     {
       v11 = AXLogUltron();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        [(AXSDUltronInternalRecordingManager *)v5 saveDetectionResult:v4];
+        [(AXSDUltronInternalRecordingManager *)identifier saveDetectionResult:resultCopy];
       }
 
       v12 = MEMORY[0x277CBEBB8];
@@ -407,8 +407,8 @@ uint64_t __70__AXSDUltronInternalRecordingManager_initWithSampleLength_bufferSiz
       v15[2] = __58__AXSDUltronInternalRecordingManager_saveDetectionResult___block_invoke;
       v15[3] = &unk_278BDD298;
       v15[4] = self;
-      v16 = v4;
-      v13 = v5;
+      v16 = resultCopy;
+      v13 = identifier;
       v17 = v13;
       v14 = [v12 scheduledTimerWithTimeInterval:0 repeats:v15 block:10.0];
       [(NSMutableDictionary *)self->_currentDetections setObject:v14 forKey:v13];
@@ -426,29 +426,29 @@ void __58__AXSDUltronInternalRecordingManager_saveDetectionResult___block_invoke
   [v5 invalidate];
 }
 
-- (void)_recordResultToFile:(id)a3
+- (void)_recordResultToFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [AXSDUltronInternalRecordingManager _recordResultToFile:v4];
+    [AXSDUltronInternalRecordingManager _recordResultToFile:fileCopy];
   }
 
-  v6 = [(AXSDRingBuffer *)self->_audioRingBuffer content];
-  v7 = [(NSMutableDictionary *)self->_detectionResultCollection ax_deepMutableCopy];
+  content = [(AXSDRingBuffer *)self->_audioRingBuffer content];
+  ax_deepMutableCopy = [(NSMutableDictionary *)self->_detectionResultCollection ax_deepMutableCopy];
   fileProcessingQueue = self->_fileProcessingQueue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__AXSDUltronInternalRecordingManager__recordResultToFile___block_invoke;
   v12[3] = &unk_278BDD2E8;
-  v13 = v4;
-  v14 = self;
-  v15 = v7;
-  v16 = v6;
-  v9 = v6;
-  v10 = v7;
-  v11 = v4;
+  v13 = fileCopy;
+  selfCopy = self;
+  v15 = ax_deepMutableCopy;
+  v16 = content;
+  v9 = content;
+  v10 = ax_deepMutableCopy;
+  v11 = fileCopy;
   dispatch_async(fileProcessingQueue, v12);
 }
 
@@ -856,7 +856,7 @@ uint64_t __58__AXSDUltronInternalRecordingManager__recordResultToFile___block_in
 + (void)_reduceFileDirectorySize
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_23D62D000, a2, OS_LOG_TYPE_ERROR, "Failed to get files list. Giving up on directory size reduction. Error: %@", &v4, 0xCu);

@@ -1,16 +1,16 @@
 @interface CSDDirtyCallManager
 - (id)callChanged;
-- (void)add:(id)a3;
-- (void)setCallChanged:(id)a3;
+- (void)add:(id)add;
+- (void)setCallChanged:(id)changed;
 @end
 
 @implementation CSDDirtyCallManager
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  v4 = a3;
-  v5 = self;
-  sub_100022780(v4);
+  addCopy = add;
+  selfCopy = self;
+  sub_100022780(addCopy);
 }
 
 - (id)callChanged
@@ -35,9 +35,9 @@
   return v4;
 }
 
-- (void)setCallChanged:(id)a3
+- (void)setCallChanged:(id)changed
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(changed);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -50,7 +50,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_100317724(v4, v5);
 }
 

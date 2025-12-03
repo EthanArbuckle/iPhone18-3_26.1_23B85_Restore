@@ -1,24 +1,24 @@
 @interface PDURLSessionProxyDataTaskWithRequestReply
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
 - (__NSCFURLSessionTaskInfo)_actualTaskInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)_setActualTaskInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)_setActualTaskInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxyDataTaskWithRequestReply
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   task = self->_task;
-  v6 = v4[1];
-  v7 = v4;
+  v6 = fromCopy[1];
+  v7 = fromCopy;
   if (task)
   {
     if (!v6)
@@ -39,22 +39,22 @@
     [(PDURLSessionProxyDataTaskWithRequestReply *)self setTask:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(PDURLSessionProxyDataTaskWithRequestReply *)self setTaskInfo:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((task = self->_task, !(task | v4[1])) || -[PDURLSessionProxyTaskMessage isEqual:](task, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((task = self->_task, !(task | equalCopy[1])) || -[PDURLSessionProxyTaskMessage isEqual:](task, "isEqual:")))
   {
     taskInfo = self->_taskInfo;
-    if (taskInfo | v4[2])
+    if (taskInfo | equalCopy[2])
     {
       v7 = [(NSData *)taskInfo isEqual:?];
     }
@@ -73,64 +73,64 @@ LABEL_7:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_taskInfo copyWithZone:a3];
+  v8 = [(NSData *)self->_taskInfo copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_task)
   {
-    [v4 setTask:?];
-    v4 = v5;
+    [toCopy setTask:?];
+    toCopy = v5;
   }
 
   if (self->_taskInfo)
   {
     [v5 setTaskInfo:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_task)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_taskInfo)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -139,18 +139,18 @@ LABEL_7:
       while (1)
       {
         LOBYTE(v18[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v18 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v18 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v18[0] & 0x7F) << v6;
@@ -167,11 +167,11 @@ LABEL_7:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       if ((v13 >> 3) == 2)
@@ -185,7 +185,7 @@ LABEL_15:
         objc_storeStrong(&self->_task, taskInfo);
         v18[0] = 0;
         v18[1] = 0;
-        if (!PBReaderPlaceMark() || !sub_10006CE20(taskInfo, a3))
+        if (!PBReaderPlaceMark() || !sub_10006CE20(taskInfo, from))
         {
 
           return 0;
@@ -201,10 +201,10 @@ LABEL_15:
       }
 
 LABEL_25:
-      v16 = [a3 position];
-      if (v16 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -216,7 +216,7 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -225,8 +225,8 @@ LABEL_23:
   task = self->_task;
   if (task)
   {
-    v5 = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"task"];
+    dictionaryRepresentation = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"task"];
   }
 
   taskInfo = self->_taskInfo;
@@ -243,23 +243,23 @@ LABEL_23:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxyDataTaskWithRequestReply;
   v3 = [(PDURLSessionProxyDataTaskWithRequestReply *)&v7 description];
-  v4 = [(PDURLSessionProxyDataTaskWithRequestReply *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxyDataTaskWithRequestReply *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)_setActualTaskInfo:(id)a3
+- (void)_setActualTaskInfo:(id)info
 {
-  v4 = [NSKeyedArchiver _nsurlsessionproxy_secureArchivedDataWithRootObject:a3];
+  v4 = [NSKeyedArchiver _nsurlsessionproxy_secureArchivedDataWithRootObject:info];
   [(PDURLSessionProxyDataTaskWithRequestReply *)self setTaskInfo:?];
 }
 
 - (__NSCFURLSessionTaskInfo)_actualTaskInfo
 {
   v3 = objc_opt_class();
-  v4 = [(PDURLSessionProxyDataTaskWithRequestReply *)self taskInfo];
-  v5 = [NSKeyedUnarchiver _nsurlsessionproxy_secureUnarchiveObjectOfClass:v3 withData:v4];
+  taskInfo = [(PDURLSessionProxyDataTaskWithRequestReply *)self taskInfo];
+  v5 = [NSKeyedUnarchiver _nsurlsessionproxy_secureUnarchiveObjectOfClass:v3 withData:taskInfo];
 
   return v5;
 }

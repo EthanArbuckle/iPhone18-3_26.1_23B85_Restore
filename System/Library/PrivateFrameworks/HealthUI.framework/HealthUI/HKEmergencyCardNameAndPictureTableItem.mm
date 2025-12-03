@@ -1,39 +1,39 @@
 @interface HKEmergencyCardNameAndPictureTableItem
 - (HKEmergencyCardRowHeightChangeDelegate)rowHeightChangeDelegate;
-- (double)_cellFittedHeightWithWidth:(double)a3;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndex:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4;
+- (double)_cellFittedHeightWithWidth:(double)width;
+- (double)tableView:(id)view estimatedHeightForRowAtIndex:(int64_t)index;
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index;
 - (id)_cell;
 - (id)_makeMedicalIDPhotoMenu;
-- (id)initInEditMode:(BOOL)a3;
+- (id)initInEditMode:(BOOL)mode;
 - (id)title;
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
-- (void)_checkOrRequestForCameraAccessIfNeededWithCompletion:(id)a3;
-- (void)_editPhotoTapped:(id)a3;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
+- (void)_checkOrRequestForCameraAccessIfNeededWithCompletion:(id)completion;
+- (void)_editPhotoTapped:(id)tapped;
 - (void)_updateMedicalIDPhotoMenu;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
-- (void)medicalIDEditorCell:(id)a3 didChangeHeight:(double)a4 keepRectVisible:(CGRect)a5 inView:(id)a6;
-- (void)medicalIDEditorCellDidBeginEditing:(id)a3 keepRectVisible:(CGRect)a4 inView:(id)a5;
-- (void)medicalIDEditorCellDidChangeSelection:(id)a3 keepRectVisible:(CGRect)a4 inView:(id)a5;
-- (void)medicalIDEditorCellDidChangeValue:(id)a3;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
+- (void)medicalIDEditorCell:(id)cell didChangeHeight:(double)height keepRectVisible:(CGRect)visible inView:(id)view;
+- (void)medicalIDEditorCellDidBeginEditing:(id)editing keepRectVisible:(CGRect)visible inView:(id)view;
+- (void)medicalIDEditorCellDidChangeSelection:(id)selection keepRectVisible:(CGRect)visible inView:(id)view;
+- (void)medicalIDEditorCellDidChangeValue:(id)value;
 - (void)presentCameraAuthorizationStatusDeniedAlert;
-- (void)setData:(id)a3;
+- (void)setData:(id)data;
 @end
 
 @implementation HKEmergencyCardNameAndPictureTableItem
 
-- (id)initInEditMode:(BOOL)a3
+- (id)initInEditMode:(BOOL)mode
 {
-  v3 = a3;
-  if (!a3)
+  modeCopy = mode;
+  if (!mode)
   {
     [(HKEmergencyCardNameAndPictureTableItem *)a2 initInEditMode:?];
   }
 
   v6.receiver = self;
   v6.super_class = HKEmergencyCardNameAndPictureTableItem;
-  return [(HKEmergencyCardTableItem *)&v6 initInEditMode:v3];
+  return [(HKEmergencyCardTableItem *)&v6 initInEditMode:modeCopy];
 }
 
 - (id)title
@@ -56,17 +56,17 @@
     [(HKMedicalIDEditorCell *)self->_cell setEditDelegate:self];
     [(HKMedicalIDEditorMultilineStringCell *)self->_cell setHeightChangeDelegate:self];
     [(HKEmergencyCardNameAndPictureTableItem *)self _updateMedicalIDPhotoMenu];
-    v6 = [(HKMedicalIDEditorNameAndPhotoCell *)self->_cell editPhotoButton];
-    [v6 setShowsMenuAsPrimaryAction:1];
+    editPhotoButton = [(HKMedicalIDEditorNameAndPhotoCell *)self->_cell editPhotoButton];
+    [editPhotoButton setShowsMenuAsPrimaryAction:1];
 
-    v7 = [(HKMedicalIDEditorNameAndPhotoCell *)self->_cell editPhotoLabelButton];
-    [v7 setShowsMenuAsPrimaryAction:1];
+    editPhotoLabelButton = [(HKMedicalIDEditorNameAndPhotoCell *)self->_cell editPhotoLabelButton];
+    [editPhotoLabelButton setShowsMenuAsPrimaryAction:1];
 
-    v8 = [(HKMedicalIDEditorNameAndPhotoCell *)self->_cell editPhotoButton];
-    [v8 addTarget:self action:sel__editPhotoTapped_ forControlEvents:64];
+    editPhotoButton2 = [(HKMedicalIDEditorNameAndPhotoCell *)self->_cell editPhotoButton];
+    [editPhotoButton2 addTarget:self action:sel__editPhotoTapped_ forControlEvents:64];
 
-    v9 = [(HKMedicalIDEditorNameAndPhotoCell *)self->_cell editPhotoLabelButton];
-    [v9 addTarget:self action:sel__editPhotoTapped_ forControlEvents:64];
+    editPhotoLabelButton2 = [(HKMedicalIDEditorNameAndPhotoCell *)self->_cell editPhotoLabelButton];
+    [editPhotoLabelButton2 addTarget:self action:sel__editPhotoTapped_ forControlEvents:64];
 
     cell = self->_cell;
   }
@@ -74,112 +74,112 @@
   return cell;
 }
 
-- (void)_editPhotoTapped:(id)a3
+- (void)_editPhotoTapped:(id)tapped
 {
-  v4 = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
-  [v4 commitEditing];
+  _cell = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
+  [_cell commitEditing];
 
-  v5 = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
-  [v5 beginEditing];
+  _cell2 = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
+  [_cell2 beginEditing];
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndex:(int64_t)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndex:(int64_t)index
 {
-  [a3 frame];
+  [view frame];
 
   [(HKEmergencyCardNameAndPictureTableItem *)self _cellFittedHeightWithWidth:v5];
   return result;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index
 {
-  [a3 frame];
+  [view frame];
 
   [(HKEmergencyCardNameAndPictureTableItem *)self _cellFittedHeightWithWidth:v5];
   return result;
 }
 
-- (double)_cellFittedHeightWithWidth:(double)a3
+- (double)_cellFittedHeightWithWidth:(double)width
 {
-  v5 = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
-  [v5 layoutIfNeeded];
+  _cell = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
+  [_cell layoutIfNeeded];
 
-  v6 = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
-  [v6 sizeThatFits:{a3, 1.79769313e308}];
+  _cell2 = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
+  [_cell2 sizeThatFits:{width, 1.79769313e308}];
   v8 = v7;
 
   return v8;
 }
 
-- (void)medicalIDEditorCell:(id)a3 didChangeHeight:(double)a4 keepRectVisible:(CGRect)a5 inView:(id)a6
+- (void)medicalIDEditorCell:(id)cell didChangeHeight:(double)height keepRectVisible:(CGRect)visible inView:(id)view
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a6;
-  v12 = [(HKEmergencyCardNameAndPictureTableItem *)self rowHeightChangeDelegate];
-  [v12 tableItem:self heightDidChangeForRowIndex:0 keepRectVisible:v11 inView:{x, y, width, height}];
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  viewCopy = view;
+  rowHeightChangeDelegate = [(HKEmergencyCardNameAndPictureTableItem *)self rowHeightChangeDelegate];
+  [rowHeightChangeDelegate tableItem:self heightDidChangeForRowIndex:0 keepRectVisible:viewCopy inView:{x, y, width, height}];
 }
 
-- (void)medicalIDEditorCellDidBeginEditing:(id)a3 keepRectVisible:(CGRect)a4 inView:(id)a5
+- (void)medicalIDEditorCellDidBeginEditing:(id)editing keepRectVisible:(CGRect)visible inView:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a5;
-  v11 = [(HKEmergencyCardNameAndPictureTableItem *)self rowHeightChangeDelegate];
-  [v11 tableItemDidBeginEditing:self keepRectVisible:v10 inView:{x, y, width, height}];
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  viewCopy = view;
+  rowHeightChangeDelegate = [(HKEmergencyCardNameAndPictureTableItem *)self rowHeightChangeDelegate];
+  [rowHeightChangeDelegate tableItemDidBeginEditing:self keepRectVisible:viewCopy inView:{x, y, width, height}];
 }
 
-- (void)medicalIDEditorCellDidChangeSelection:(id)a3 keepRectVisible:(CGRect)a4 inView:(id)a5
+- (void)medicalIDEditorCellDidChangeSelection:(id)selection keepRectVisible:(CGRect)visible inView:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a5;
-  v11 = [(HKEmergencyCardNameAndPictureTableItem *)self rowHeightChangeDelegate];
-  [v11 tableItemDidChangeSelection:self keepRectVisible:v10 inView:{x, y, width, height}];
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  viewCopy = view;
+  rowHeightChangeDelegate = [(HKEmergencyCardNameAndPictureTableItem *)self rowHeightChangeDelegate];
+  [rowHeightChangeDelegate tableItemDidChangeSelection:self keepRectVisible:viewCopy inView:{x, y, width, height}];
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
   v12.receiver = self;
   v12.super_class = HKEmergencyCardNameAndPictureTableItem;
-  [(HKEmergencyCardTableItem *)&v12 setData:a3];
-  v4 = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
-  v5 = [(HKEmergencyCardTableItem *)self data];
-  v6 = [v5 name];
-  [v4 setName:v6];
+  [(HKEmergencyCardTableItem *)&v12 setData:data];
+  _cell = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
+  data = [(HKEmergencyCardTableItem *)self data];
+  name = [data name];
+  [_cell setName:name];
 
-  v7 = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
+  _cell2 = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
   v8 = MEMORY[0x1E69DCAB8];
-  v9 = [(HKEmergencyCardTableItem *)self data];
-  v10 = [v9 pictureData];
-  v11 = [v8 imageWithData:v10];
-  [v7 setPhoto:v11];
+  data2 = [(HKEmergencyCardTableItem *)self data];
+  pictureData = [data2 pictureData];
+  v11 = [v8 imageWithData:pictureData];
+  [_cell2 setPhoto:v11];
 }
 
 - (void)_updateMedicalIDPhotoMenu
 {
-  v7 = [(HKEmergencyCardNameAndPictureTableItem *)self _makeMedicalIDPhotoMenu];
-  v3 = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
-  v4 = [v3 editPhotoButton];
-  [v4 setMenu:v7];
+  _makeMedicalIDPhotoMenu = [(HKEmergencyCardNameAndPictureTableItem *)self _makeMedicalIDPhotoMenu];
+  _cell = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
+  editPhotoButton = [_cell editPhotoButton];
+  [editPhotoButton setMenu:_makeMedicalIDPhotoMenu];
 
-  v5 = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
-  v6 = [v5 editPhotoLabelButton];
-  [v6 setMenu:v7];
+  _cell2 = [(HKEmergencyCardNameAndPictureTableItem *)self _cell];
+  editPhotoLabelButton = [_cell2 editPhotoLabelButton];
+  [editPhotoLabelButton setMenu:_makeMedicalIDPhotoMenu];
 }
 
 - (id)_makeMedicalIDPhotoMenu
 {
   objc_initWeak(&location, self);
   v3 = [MEMORY[0x1E69DCAD0] isSourceTypeAvailable:1];
-  v4 = [(HKEmergencyCardTableItem *)self data];
-  v5 = [v4 pictureData];
+  data = [(HKEmergencyCardTableItem *)self data];
+  pictureData = [data pictureData];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (v3)
@@ -211,7 +211,7 @@
   v16 = [v12 actionWithTitle:v14 image:v15 identifier:@"com.apple.health.medical_id.choose_photo" handler:v29];
 
   [v6 addObject:v16];
-  if (v5)
+  if (pictureData)
   {
     v17 = MEMORY[0x1E69DC628];
     v18 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -311,9 +311,9 @@ void __65__HKEmergencyCardNameAndPictureTableItem__makeMedicalIDPhotoMenu__block
   [WeakRetained _updateMedicalIDPhotoMenu];
 }
 
-- (void)_checkOrRequestForCameraAccessIfNeededWithCompletion:(id)a3
+- (void)_checkOrRequestForCameraAccessIfNeededWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = *MEMORY[0x1E6987608];
   v5 = [MEMORY[0x1E69870A0] authorizationStatusForMediaType:v4];
   v6 = v5;
@@ -333,7 +333,7 @@ void __65__HKEmergencyCardNameAndPictureTableItem__makeMedicalIDPhotoMenu__block
       v11[2] = __95__HKEmergencyCardNameAndPictureTableItem__checkOrRequestForCameraAccessIfNeededWithCompletion___block_invoke_355;
       v11[3] = &unk_1E81B6A60;
       v7 = &v13;
-      v13 = v3;
+      v13 = completionCopy;
       v12 = v4;
       dispatch_async(MEMORY[0x1E69E96A0], v11);
       v9 = v12;
@@ -347,7 +347,7 @@ void __65__HKEmergencyCardNameAndPictureTableItem__makeMedicalIDPhotoMenu__block
       v14[2] = __95__HKEmergencyCardNameAndPictureTableItem__checkOrRequestForCameraAccessIfNeededWithCompletion___block_invoke_2;
       v14[3] = &unk_1E81B6A88;
       v7 = &v16;
-      v16 = v3;
+      v16 = completionCopy;
       v15 = v4;
       [v8 requestAccessForMediaType:v15 completionHandler:v14];
       v9 = v15;
@@ -361,7 +361,7 @@ void __65__HKEmergencyCardNameAndPictureTableItem__makeMedicalIDPhotoMenu__block
     block[2] = __95__HKEmergencyCardNameAndPictureTableItem__checkOrRequestForCameraAccessIfNeededWithCompletion___block_invoke;
     block[3] = &unk_1E81B6A38;
     v7 = v18;
-    v18[0] = v3;
+    v18[0] = completionCopy;
     v18[1] = v6;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
@@ -418,8 +418,8 @@ uint64_t __95__HKEmergencyCardNameAndPictureTableItem__checkOrRequestForCameraAc
 
   [v17 addAction:v15];
   [v17 setPreferredAction:v15];
-  v16 = [(HKEmergencyCardTableItem *)self owningViewController];
-  [v16 presentViewController:v17 animated:1 completion:0];
+  owningViewController = [(HKEmergencyCardTableItem *)self owningViewController];
+  [owningViewController presentViewController:v17 animated:1 completion:0];
 }
 
 void __85__HKEmergencyCardNameAndPictureTableItem_presentCameraAuthorizationStatusDeniedAlert__block_invoke()
@@ -431,18 +431,18 @@ void __85__HKEmergencyCardNameAndPictureTableItem_presentCameraAuthorizationStat
   [v3 openSensitiveURL:v2 withOptions:0];
 }
 
-- (void)medicalIDEditorCellDidChangeValue:(id)a3
+- (void)medicalIDEditorCellDidChangeValue:(id)value
 {
-  v5 = [(HKMedicalIDEditorNameAndPhotoCell *)self->_cell name];
-  v4 = [(HKEmergencyCardTableItem *)self data];
-  [v4 setName:v5];
+  name = [(HKMedicalIDEditorNameAndPhotoCell *)self->_cell name];
+  data = [(HKEmergencyCardTableItem *)self data];
+  [data setName:name];
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  if (a4)
+  if (info)
   {
-    v34 = [a4 objectForKeyedSubscript:*MEMORY[0x1E69DDDE8]];
+    v34 = [info objectForKeyedSubscript:*MEMORY[0x1E69DDDE8]];
     [v34 size];
     v6 = v5;
     [v34 size];
@@ -495,34 +495,34 @@ void __85__HKEmergencyCardNameAndPictureTableItem_presentCameraAuthorizationStat
         if (v30 > 0.0)
         {
           v31 = UIImageJPEGRepresentation(v28, 1.0);
-          v32 = [(HKEmergencyCardTableItem *)self data];
-          [v32 setPictureData:v31];
+          data = [(HKEmergencyCardTableItem *)self data];
+          [data setPictureData:v31];
 
           [(HKMedicalIDEditorNameAndPhotoCell *)self->_cell setPhoto:v28];
         }
       }
     }
 
-    v33 = [(HKEmergencyCardTableItem *)self owningViewController];
-    [v33 dismissViewControllerAnimated:1 completion:0];
+    owningViewController = [(HKEmergencyCardTableItem *)self owningViewController];
+    [owningViewController dismissViewControllerAnimated:1 completion:0];
 
     [(HKEmergencyCardNameAndPictureTableItem *)self _updateMedicalIDPhotoMenu];
   }
 }
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
-  v3 = [(HKEmergencyCardTableItem *)self owningViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  owningViewController = [(HKEmergencyCardTableItem *)self owningViewController];
+  [owningViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
-  v3 = a3;
+  orientationsCopy = orientations;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 navigationControllerSupportedInterfaceOrientations:v3];
+    v4 = [orientationsCopy navigationControllerSupportedInterfaceOrientations:orientationsCopy];
   }
 
   else

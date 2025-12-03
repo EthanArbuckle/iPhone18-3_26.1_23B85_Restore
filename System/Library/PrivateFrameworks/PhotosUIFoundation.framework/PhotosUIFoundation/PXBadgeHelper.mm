@@ -23,8 +23,8 @@
 + (UIImageSymbolConfiguration)mediumSymbolConfiguration;
 + (UIImageSymbolConfiguration)miniSymbolConfiguration;
 + (UIImageSymbolConfiguration)smallSymbolConfiguration;
-+ (id)_favoriteBadgeImageWithSymbolConfiguration:(id)a3;
-+ (id)_sensitiveWarningBadgeImageWithSymbolConfiguration:(id)a3;
++ (id)_favoriteBadgeImageWithSymbolConfiguration:(id)configuration;
++ (id)_sensitiveWarningBadgeImageWithSymbolConfiguration:(id)configuration;
 @end
 
 @implementation PXBadgeHelper
@@ -35,8 +35,8 @@
   v3 = +[PXBadgeHelper miniSymbolConfiguration];
   v4 = [v2 px_imageWithSymbolConfiguration:v3];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [v4 px_tintedImageWithColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [v4 px_tintedImageWithColor:whiteColor];
 
   return v6;
 }
@@ -47,8 +47,8 @@
   v3 = +[PXBadgeHelper miniSymbolConfiguration];
   v4 = [v2 px_imageWithSymbolConfiguration:v3];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [v4 px_tintedImageWithColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [v4 px_tintedImageWithColor:whiteColor];
 
   return v6;
 }
@@ -59,8 +59,8 @@
   v3 = +[PXBadgeHelper smallSymbolConfiguration];
   v4 = [v2 px_imageWithSymbolConfiguration:v3];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [v4 px_tintedImageWithColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [v4 px_tintedImageWithColor:whiteColor];
 
   return v6;
 }
@@ -71,8 +71,8 @@
   v3 = +[PXBadgeHelper smallSymbolConfiguration];
   v4 = [v2 px_imageWithSymbolConfiguration:v3];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [v4 px_tintedImageWithColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [v4 px_tintedImageWithColor:whiteColor];
 
   return v6;
 }
@@ -83,8 +83,8 @@
   v3 = +[PXBadgeHelper miniSymbolConfiguration];
   v4 = [v2 px_imageWithSymbolConfiguration:v3];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [v4 px_tintedImageWithColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [v4 px_tintedImageWithColor:whiteColor];
 
   return v6;
 }
@@ -95,8 +95,8 @@
   v3 = +[PXBadgeHelper smallSymbolConfiguration];
   v4 = [v2 px_imageWithSymbolConfiguration:v3];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [v4 px_tintedImageWithColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [v4 px_tintedImageWithColor:whiteColor];
 
   return v6;
 }
@@ -107,8 +107,8 @@
   v3 = +[PXBadgeHelper miniSymbolConfiguration];
   v4 = [v2 px_imageWithSymbolConfiguration:v3];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [v4 px_tintedImageWithColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [v4 px_tintedImageWithColor:whiteColor];
 
   return v6;
 }
@@ -143,15 +143,15 @@ void __35__PXBadgeHelper_panoramaBadgeImage__block_invoke()
   panoramaBadgeImage_panoBadgeImage = v6;
 }
 
-+ (id)_favoriteBadgeImageWithSymbolConfiguration:(id)a3
++ (id)_favoriteBadgeImageWithSymbolConfiguration:(id)configuration
 {
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [v3 systemImageNamed:@"heart.fill"];
-  v6 = [v5 px_imageWithSymbolConfiguration:v4];
+  v6 = [v5 px_imageWithSymbolConfiguration:configurationCopy];
 
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
-  v8 = [v6 px_tintedImageWithColor:v7];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v8 = [v6 px_tintedImageWithColor:whiteColor];
 
   return v8;
 }
@@ -180,15 +180,15 @@ void __35__PXBadgeHelper_panoramaBadgeImage__block_invoke()
   return v3;
 }
 
-+ (id)_sensitiveWarningBadgeImageWithSymbolConfiguration:(id)a3
++ (id)_sensitiveWarningBadgeImageWithSymbolConfiguration:(id)configuration
 {
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [v3 px_systemImageNamed:@"exclamationmark.shield.fill"];
-  v6 = [v5 px_imageWithSymbolConfiguration:v4];
+  v6 = [v5 px_imageWithSymbolConfiguration:configurationCopy];
 
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
-  v8 = [v6 px_tintedImageWithColor:v7];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v8 = [v6 px_tintedImageWithColor:whiteColor];
 
   return v8;
 }
@@ -215,8 +215,8 @@ void __35__PXBadgeHelper_panoramaBadgeImage__block_invoke()
   v3 = [MEMORY[0x1E69DCAB8] px_systemImageNamed:@"person.2.fill"];
   v4 = [v3 px_imageWithSymbolConfiguration:v2];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [v4 px_tintedImageWithColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [v4 px_tintedImageWithColor:whiteColor];
 
   return v6;
 }
@@ -304,8 +304,8 @@ void __34__PXBadgeHelper_loopingBadgeImage__block_invoke()
   v3 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"spatial"];
   v4 = [v3 px_imageWithSymbolConfiguration:v2];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [v4 px_tintedImageWithColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [v4 px_tintedImageWithColor:whiteColor];
 
   return v6;
 }

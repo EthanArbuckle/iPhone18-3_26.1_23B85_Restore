@@ -1,14 +1,14 @@
 @interface MSDDomainsPlistPatcher
-+ (id)patchDomainsPlist:(id)a3;
++ (id)patchDomainsPlist:(id)plist;
 @end
 
 @implementation MSDDomainsPlistPatcher
 
-+ (id)patchDomainsPlist:(id)a3
++ (id)patchDomainsPlist:(id)plist
 {
-  v3 = a3;
+  plistCopy = plist;
   has_internal_content = os_variant_has_internal_content();
-  v5 = [NSMutableDictionary dictionaryWithContentsOfFile:v3];
+  v5 = [NSMutableDictionary dictionaryWithContentsOfFile:plistCopy];
   v6 = v5;
   if (v5)
   {
@@ -16,7 +16,7 @@
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v8 = [v7 objectForKey:@"CameraRollDomain"];
-      v48 = v3;
+      v48 = plistCopy;
       if (v8)
       {
         objc_opt_class();
@@ -563,7 +563,7 @@ LABEL_135:
             v46 = v6;
 
 LABEL_136:
-            v3 = v48;
+            plistCopy = v48;
             goto LABEL_137;
           }
 
@@ -594,7 +594,7 @@ LABEL_172:
     v7 = sub_100021268();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_10002C604(v3, v7);
+      sub_10002C604(plistCopy, v7);
     }
   }
 

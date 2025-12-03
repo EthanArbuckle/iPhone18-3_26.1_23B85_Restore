@@ -1,18 +1,18 @@
 @interface TMMonotonicClock
-- (TMMonotonicClock)initWithSyncInterval:(double)a3;
+- (TMMonotonicClock)initWithSyncInterval:(double)interval;
 - (double)coarseMonotonicTime;
 - (unint64_t)lastWake;
 - (void)dealloc;
-- (void)montonicTimeForMachTime:(unint64_t)a3 toQueue:(id)a4 withCompletionHandler:(id)a5;
+- (void)montonicTimeForMachTime:(unint64_t)time toQueue:(id)queue withCompletionHandler:(id)handler;
 @end
 
 @implementation TMMonotonicClock
 
 - (double)coarseMonotonicTime
 {
-  v3 = [(TMMonotonicClock *)self machTime];
+  machTime = [(TMMonotonicClock *)self machTime];
   v4 = sub_100001918(0, 0);
-  v5 = sub_100001E00(self->_lastCoarseMonotonicTimeMachTime, v3);
+  v5 = sub_100001E00(self->_lastCoarseMonotonicTimeMachTime, machTime);
   v6 = v4 - self->_lastCoarseMonotonicTime;
   v7 = sub_100001EB0();
   if (v6 >= v7 * -0.5)
@@ -64,7 +64,7 @@ LABEL_12:
   }
 
   self->_lastCoarseMonotonicTime = v4;
-  self->_lastCoarseMonotonicTimeMachTime = v3;
+  self->_lastCoarseMonotonicTimeMachTime = machTime;
   return v4;
 }
 
@@ -112,7 +112,7 @@ LABEL_12:
   return v4;
 }
 
-- (TMMonotonicClock)initWithSyncInterval:(double)a3
+- (TMMonotonicClock)initWithSyncInterval:(double)interval
 {
   v8.receiver = self;
   v8.super_class = TMMonotonicClock;
@@ -123,7 +123,7 @@ LABEL_12:
     v6 = [+[NSString stringWithFormat:](NSString UTF8String:@"%@.%llx"];
     v4->_workQ = dispatch_queue_create(v6, 0);
     v4->_lastCoarseMonotonicTimeMachTime = [(TMMonotonicClock *)v4 machTime];
-    v4->_syncInterval = a3;
+    v4->_syncInterval = interval;
   }
 
   return v4;
@@ -136,12 +136,12 @@ LABEL_12:
   [(TMMonotonicClock *)&v3 dealloc];
 }
 
-- (void)montonicTimeForMachTime:(unint64_t)a3 toQueue:(id)a4 withCompletionHandler:(id)a5
+- (void)montonicTimeForMachTime:(unint64_t)time toQueue:(id)queue withCompletionHandler:(id)handler
 {
   v10 = mach_absolute_time();
-  if (v10 < a3)
+  if (v10 < time)
   {
-    sub_100017478(a2, self, a3, v10);
+    sub_100017478(a2, self, time, v10);
   }
 
   v11[0] = _NSConcreteStackBlock;
@@ -149,9 +149,9 @@ LABEL_12:
   v11[2] = sub_10000C190;
   v11[3] = &unk_100029210;
   v11[4] = self;
-  v11[5] = a4;
-  v11[6] = a5;
-  v11[7] = a3;
+  v11[5] = queue;
+  v11[6] = handler;
+  v11[7] = time;
   dispatch_async([(TMMonotonicClock *)self workQ], v11);
 }
 

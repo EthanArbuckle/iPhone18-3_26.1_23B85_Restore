@@ -1,31 +1,31 @@
 @interface PKPaymentWebServiceRequest
-- (id)_murlRequestWithServiceURL:(id)a3 version:(id)a4 endpointComponents:(id)a5 queryParameters:(id)a6 appleAccountInformation:(id)a7;
-- (id)_murlRequestWithURL:(id)a3;
-- (void)_signRequest:(id)a3 webService:(id)a4 completion:(id)a5;
-- (void)_signRequestData:(id)a3 forRequest:(id)a4 webService:(id)a5 completion:(id)a6;
+- (id)_murlRequestWithServiceURL:(id)l version:(id)version endpointComponents:(id)components queryParameters:(id)parameters appleAccountInformation:(id)information;
+- (id)_murlRequestWithURL:(id)l;
+- (void)_signRequest:(id)request webService:(id)service completion:(id)completion;
+- (void)_signRequestData:(id)data forRequest:(id)request webService:(id)service completion:(id)completion;
 @end
 
 @implementation PKPaymentWebServiceRequest
 
-- (void)_signRequest:(id)a3 webService:(id)a4 completion:(id)a5
+- (void)_signRequest:(id)request webService:(id)service completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [v10 HTTPBody];
-  v11 = [v12 SHA256Hash];
-  [(PKPaymentWebServiceRequest *)self _signRequestData:v11 forRequest:v10 webService:v9 completion:v8];
+  completionCopy = completion;
+  serviceCopy = service;
+  requestCopy = request;
+  hTTPBody = [requestCopy HTTPBody];
+  sHA256Hash = [hTTPBody SHA256Hash];
+  [(PKPaymentWebServiceRequest *)self _signRequestData:sHA256Hash forRequest:requestCopy webService:serviceCopy completion:completionCopy];
 }
 
-- (void)_signRequestData:(id)a3 forRequest:(id)a4 webService:(id)a5 completion:(id)a6
+- (void)_signRequestData:(id)data forRequest:(id)request webService:(id)service completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  requestCopy = request;
+  serviceCopy = service;
+  completionCopy = completion;
   v13 = PKLogFacilityTypeGetObject(7uLL);
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (v10 && v11)
+  if (requestCopy && serviceCopy)
   {
     if (v14)
     {
@@ -33,14 +33,14 @@
       _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Signing request", buf, 2u);
     }
 
-    v15 = [v11 targetDevice];
+    targetDevice = [serviceCopy targetDevice];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __80__PKPaymentWebServiceRequest__signRequestData_forRequest_webService_completion___block_invoke;
     v16[3] = &unk_1E79C4608;
-    v17 = v10;
-    v18 = v12;
-    [v15 paymentWebService:v11 signData:v9 signatureEntanglementMode:1 withCompletionHandler:v16];
+    v17 = requestCopy;
+    v18 = completionCopy;
+    [targetDevice paymentWebService:serviceCopy signData:dataCopy signatureEntanglementMode:1 withCompletionHandler:v16];
   }
 
   else
@@ -51,9 +51,9 @@
       _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Error: No webservice or nil request. Could not sign request", buf, 2u);
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      (*(v12 + 2))(v12, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -100,20 +100,20 @@ void __80__PKPaymentWebServiceRequest__signRequestData_forRequest_webService_com
   }
 }
 
-- (id)_murlRequestWithURL:(id)a3
+- (id)_murlRequestWithURL:(id)l
 {
   v12.receiver = self;
   v12.super_class = PKPaymentWebServiceRequest;
-  v4 = [(PKWebServiceRequest *)&v12 _murlRequestWithURL:a3];
+  v4 = [(PKWebServiceRequest *)&v12 _murlRequestWithURL:l];
   targetDevice = self->_targetDevice;
   if (targetDevice)
   {
-    v6 = [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice secureElementIdentifiers];
-    v7 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice bridgedClientInfo];
-    [v4 setValue:v7 forHTTPHeaderField:@"X-Apple-Bridged-Client-Info"];
+    secureElementIdentifiers = [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice secureElementIdentifiers];
+    bridgedClientInfo = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice bridgedClientInfo];
+    [v4 setValue:bridgedClientInfo forHTTPHeaderField:@"X-Apple-Bridged-Client-Info"];
 
-    v8 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceRegion];
-    [v4 setValue:v8 forHTTPHeaderField:@"X-Apple-Device-Region"];
+    deviceRegion = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceRegion];
+    [v4 setValue:deviceRegion forHTTPHeaderField:@"X-Apple-Device-Region"];
   }
 
   else
@@ -121,31 +121,31 @@ void __80__PKPaymentWebServiceRequest__signRequestData_forRequest_webService_com
     v9 = PKCurrentRegion();
     [v4 setValue:v9 forHTTPHeaderField:@"X-Apple-Device-Region"];
 
-    v6 = +[PKSecureElement secureElementIdentifiers];
+    secureElementIdentifiers = +[PKSecureElement secureElementIdentifiers];
   }
 
   if ([objc_opt_class() includeSEIDHeader])
   {
-    v10 = [v6 componentsJoinedByString:{@", "}];
+    v10 = [secureElementIdentifiers componentsJoinedByString:{@", "}];
     [v4 setValue:v10 forHTTPHeaderField:@"x-apple-seid"];
   }
 
   return v4;
 }
 
-- (id)_murlRequestWithServiceURL:(id)a3 version:(id)a4 endpointComponents:(id)a5 queryParameters:(id)a6 appleAccountInformation:(id)a7
+- (id)_murlRequestWithServiceURL:(id)l version:(id)version endpointComponents:(id)components queryParameters:(id)parameters appleAccountInformation:(id)information
 {
   v12 = MEMORY[0x1E696AEC0];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a3;
-  v17 = [v12 stringWithFormat:@"v%@", a4];
-  v18 = [v16 URLByAppendingPathComponent:v17];
+  informationCopy = information;
+  parametersCopy = parameters;
+  componentsCopy = components;
+  lCopy = l;
+  version = [v12 stringWithFormat:@"v%@", version];
+  v18 = [lCopy URLByAppendingPathComponent:version];
 
   v21.receiver = self;
   v21.super_class = PKPaymentWebServiceRequest;
-  v19 = [(PKWebServiceRequest *)&v21 _murlRequestWithServiceURL:v18 endpointComponents:v15 queryParameters:v14 appleAccountInformation:v13];
+  v19 = [(PKWebServiceRequest *)&v21 _murlRequestWithServiceURL:v18 endpointComponents:componentsCopy queryParameters:parametersCopy appleAccountInformation:informationCopy];
 
   return v19;
 }

@@ -1,28 +1,28 @@
 @interface NSGlyphNameGlyphInfo
 + (void)initialize;
-- (NSGlyphNameGlyphInfo)initWithCoder:(id)a3;
-- (NSGlyphNameGlyphInfo)initWithGlyphName:(id)a3 glyph:(unsigned int)a4 forFont:(id)a5 baseString:(id)a6;
+- (NSGlyphNameGlyphInfo)initWithCoder:(id)coder;
+- (NSGlyphNameGlyphInfo)initWithGlyphName:(id)name glyph:(unsigned int)glyph forFont:(id)font baseString:(id)string;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSGlyphNameGlyphInfo
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
-- (NSGlyphNameGlyphInfo)initWithGlyphName:(id)a3 glyph:(unsigned int)a4 forFont:(id)a5 baseString:(id)a6
+- (NSGlyphNameGlyphInfo)initWithGlyphName:(id)name glyph:(unsigned int)glyph forFont:(id)font baseString:(id)string
 {
   v9.receiver = self;
   v9.super_class = NSGlyphNameGlyphInfo;
-  v7 = [(NSIdentityGlyphInfo *)&v9 initWithGlyph:*&a4 forFont:a5 baseString:a6];
-  v7->_name = a3;
+  v7 = [(NSIdentityGlyphInfo *)&v9 initWithGlyph:*&glyph forFont:font baseString:string];
+  v7->_name = name;
   return v7;
 }
 
@@ -33,44 +33,44 @@
   [(NSIdentityGlyphInfo *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = NSGlyphNameGlyphInfo;
   [(NSIdentityGlyphInfo *)&v7 encodeWithCoder:?];
-  v5 = [a3 allowsKeyedCoding];
+  allowsKeyedCoding = [coder allowsKeyedCoding];
   name = self->_name;
-  if (v5)
+  if (allowsKeyedCoding)
   {
     if (name)
     {
-      [a3 encodeObject:name forKey:@"NSGlyphName"];
+      [coder encodeObject:name forKey:@"NSGlyphName"];
     }
   }
 
   else
   {
-    [a3 encodeObject:name];
+    [coder encodeObject:name];
   }
 }
 
-- (NSGlyphNameGlyphInfo)initWithCoder:(id)a3
+- (NSGlyphNameGlyphInfo)initWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     v12.receiver = self;
     v12.super_class = NSGlyphNameGlyphInfo;
-    return [(NSIdentityGlyphInfo *)&v12 initWithCoder:a3];
+    return [(NSIdentityGlyphInfo *)&v12 initWithCoder:coder];
   }
 
-  v6 = [a3 versionForClassName:@"NSGlyphNameGlyphInfo"];
+  v6 = [coder versionForClassName:@"NSGlyphNameGlyphInfo"];
   v7 = objc_opt_class();
   if (v7 != objc_opt_class() || v6 != 0)
   {
     v11.receiver = self;
     v11.super_class = NSGlyphNameGlyphInfo;
-    v5 = [(NSIdentityGlyphInfo *)&v11 initWithCoder:a3];
-    v5->_name = [a3 decodeObject];
+    v5 = [(NSIdentityGlyphInfo *)&v11 initWithCoder:coder];
+    v5->_name = [coder decodeObject];
     return v5;
   }
 

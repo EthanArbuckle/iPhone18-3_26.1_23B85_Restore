@@ -1,7 +1,7 @@
 @interface CSAudioDecoder
-- (CSAudioDecoder)initWithInASBD:(AudioStreamBasicDescription *)a3 outASBD:(AudioStreamBasicDescription *)a4;
+- (CSAudioDecoder)initWithInASBD:(AudioStreamBasicDescription *)d outASBD:(AudioStreamBasicDescription *)bD;
 - (CSAudioDecoderDelegate)delegate;
-- (void)addPackets:(id)a3 audioStreamHandleId:(unint64_t)a4 remoteVAD:(id)a5 timestamp:(unint64_t)a6 arrivalTimestampToAudioRecorder:(unint64_t)a7 wasBuffered:(BOOL)a8 receivedNumChannels:(unsigned int)a9;
+- (void)addPackets:(id)packets audioStreamHandleId:(unint64_t)id remoteVAD:(id)d timestamp:(unint64_t)timestamp arrivalTimestampToAudioRecorder:(unint64_t)recorder wasBuffered:(BOOL)buffered receivedNumChannels:(unsigned int)channels;
 - (void)dealloc;
 @end
 
@@ -14,16 +14,16 @@
   return WeakRetained;
 }
 
-- (void)addPackets:(id)a3 audioStreamHandleId:(unint64_t)a4 remoteVAD:(id)a5 timestamp:(unint64_t)a6 arrivalTimestampToAudioRecorder:(unint64_t)a7 wasBuffered:(BOOL)a8 receivedNumChannels:(unsigned int)a9
+- (void)addPackets:(id)packets audioStreamHandleId:(unint64_t)id remoteVAD:(id)d timestamp:(unint64_t)timestamp arrivalTimestampToAudioRecorder:(unint64_t)recorder wasBuffered:(BOOL)buffered receivedNumChannels:(unsigned int)channels
 {
   v45 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v30 = a5;
+  packetsCopy = packets;
+  dCopy = d;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v11;
+  obj = packetsCopy;
   v12 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v12)
   {
@@ -39,12 +39,12 @@
 
         v14 = *(*(&v39 + 1) + 8 * i);
         mFramesPerPacket = self->_inASBD.mFramesPerPacket;
-        v16 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:2 * mFramesPerPacket];
+        mFramesPerPacket = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:2 * mFramesPerPacket];
         memset(&outOutputData.mNumberBuffers + 1, 0, 20);
         outOutputData.mNumberBuffers = 1;
-        v17 = v16;
-        outOutputData.mBuffers[0].mData = [v16 mutableBytes];
-        v18 = [v16 length];
+        v17 = mFramesPerPacket;
+        outOutputData.mBuffers[0].mData = [mFramesPerPacket mutableBytes];
+        v18 = [mFramesPerPacket length];
         outOutputData.mBuffers[0].mNumberChannels = 1;
         outOutputData.mBuffers[0].mDataByteSize = v18;
         ioOutputDataPacketSize = mFramesPerPacket;
@@ -81,17 +81,17 @@
           {
             v22 = [CSFLPCMTypeConverter convertToFloatLPCMBufFromShortLPCMBuf:v21];
             WeakRetained = objc_loadWeakRetained(&self->_delegate);
-            HIDWORD(v25) = a9;
-            LOBYTE(v25) = a8;
-            [WeakRetained audioDecoderDidDecodePackets:self audioStreamHandleId:a4 buffer:v22 remoteVAD:v30 timestamp:a6 arrivalTimestampToAudioRecorder:a7 wasBuffered:v25 receivedNumChannels:?];
+            HIDWORD(v25) = channels;
+            LOBYTE(v25) = buffered;
+            [WeakRetained audioDecoderDidDecodePackets:self audioStreamHandleId:id buffer:v22 remoteVAD:dCopy timestamp:timestamp arrivalTimestampToAudioRecorder:recorder wasBuffered:v25 receivedNumChannels:?];
           }
 
           else
           {
             v22 = objc_loadWeakRetained(&self->_delegate);
-            HIDWORD(v25) = a9;
-            LOBYTE(v25) = a8;
-            [v22 audioDecoderDidDecodePackets:self audioStreamHandleId:a4 buffer:v21 remoteVAD:v30 timestamp:a6 arrivalTimestampToAudioRecorder:a7 wasBuffered:v25 receivedNumChannels:?];
+            HIDWORD(v25) = channels;
+            LOBYTE(v25) = buffered;
+            [v22 audioDecoderDidDecodePackets:self audioStreamHandleId:id buffer:v21 remoteVAD:dCopy timestamp:timestamp arrivalTimestampToAudioRecorder:recorder wasBuffered:v25 receivedNumChannels:?];
           }
         }
 
@@ -178,7 +178,7 @@ uint64_t __133__CSAudioDecoder_addPackets_audioStreamHandleId_remoteVAD_timestam
   [(CSAudioDecoder *)&v4 dealloc];
 }
 
-- (CSAudioDecoder)initWithInASBD:(AudioStreamBasicDescription *)a3 outASBD:(AudioStreamBasicDescription *)a4
+- (CSAudioDecoder)initWithInASBD:(AudioStreamBasicDescription *)d outASBD:(AudioStreamBasicDescription *)bD
 {
   v14.receiver = self;
   v14.super_class = CSAudioDecoder;
@@ -186,21 +186,21 @@ uint64_t __133__CSAudioDecoder_addPackets_audioStreamHandleId_remoteVAD_timestam
   v7 = v6;
   if (v6)
   {
-    AudioConverterNew(a3, a4, &v6->_decoder);
+    AudioConverterNew(d, bD, &v6->_decoder);
     if (!v7->_decoder)
     {
       v12 = 0;
       goto LABEL_6;
     }
 
-    v8 = *&a3->mSampleRate;
-    v9 = *&a3->mBytesPerPacket;
-    *&v7->_inASBD.mBitsPerChannel = *&a3->mBitsPerChannel;
+    v8 = *&d->mSampleRate;
+    v9 = *&d->mBytesPerPacket;
+    *&v7->_inASBD.mBitsPerChannel = *&d->mBitsPerChannel;
     *&v7->_inASBD.mSampleRate = v8;
     *&v7->_inASBD.mBytesPerPacket = v9;
-    v10 = *&a4->mSampleRate;
-    v11 = *&a4->mBytesPerPacket;
-    *&v7->_outASBD.mBitsPerChannel = *&a4->mBitsPerChannel;
+    v10 = *&bD->mSampleRate;
+    v11 = *&bD->mBytesPerPacket;
+    *&v7->_outASBD.mBitsPerChannel = *&bD->mBitsPerChannel;
     *&v7->_outASBD.mBytesPerPacket = v11;
     *&v7->_outASBD.mSampleRate = v10;
   }

@@ -1,31 +1,31 @@
 @interface AVTransportControlsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (AVTransportControlsViewAccessibility)initWithFrame:(CGRect)a3 styleSheet:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (AVTransportControlsViewAccessibility)initWithFrame:(CGRect)frame styleSheet:(id)sheet;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation AVTransportControlsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTransportControlsView" hasInstanceMethod:@"elapsedTimeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTransportControlsView" hasInstanceMethod:@"timeRemainingLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTransportControlsView" hasInstanceMethod:@"scrubber" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTransportControlsView" hasInstanceVariable:@"_standardPlayPauseButton" withType:"AVButton"];
-  [v3 validateClass:@"AVTransportControlsView" hasInstanceVariable:@"_skipBackButton" withType:"AVButton"];
-  [v3 validateClass:@"AVTransportControlsView" hasInstanceVariable:@"_skipForwardButton" withType:"AVButton"];
-  [v3 validateClass:@"AVTransportControlsView" hasInstanceVariable:@"_startRightwardContentTransitionButton" withType:"AVButton"];
-  [v3 validateClass:@"AVTransportControlsView" hasInstanceVariable:@"_startLeftwardContentTransitionButton" withType:"AVButton"];
-  [v3 validateClass:@"AVLabel" isKindOfClass:@"UILabel"];
-  [v3 validateClass:@"AVTransportControlsView" hasInstanceMethod:@"initWithFrame:styleSheet:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTransportControlsView" hasInstanceMethod:@"elapsedTimeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTransportControlsView" hasInstanceMethod:@"timeRemainingLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTransportControlsView" hasInstanceMethod:@"scrubber" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTransportControlsView" hasInstanceVariable:@"_standardPlayPauseButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVTransportControlsView" hasInstanceVariable:@"_skipBackButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVTransportControlsView" hasInstanceVariable:@"_skipForwardButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVTransportControlsView" hasInstanceVariable:@"_startRightwardContentTransitionButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVTransportControlsView" hasInstanceVariable:@"_startLeftwardContentTransitionButton" withType:"AVButton"];
+  [validationsCopy validateClass:@"AVLabel" isKindOfClass:@"UILabel"];
+  [validationsCopy validateClass:@"AVTransportControlsView" hasInstanceMethod:@"initWithFrame:styleSheet:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
 }
 
-- (AVTransportControlsViewAccessibility)initWithFrame:(CGRect)a3 styleSheet:(id)a4
+- (AVTransportControlsViewAccessibility)initWithFrame:(CGRect)frame styleSheet:(id)sheet
 {
   v6.receiver = self;
   v6.super_class = AVTransportControlsViewAccessibility;
-  v4 = [(AVTransportControlsViewAccessibility *)&v6 initWithFrame:a4 styleSheet:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(AVTransportControlsViewAccessibility *)&v6 initWithFrame:sheet styleSheet:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(AVTransportControlsViewAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;
@@ -94,8 +94,8 @@
   v21 = [(AVTransportControlsViewAccessibility *)self safeValueForKey:@"_skipForwardButton"];
   v22 = MEMORY[0x29EDBA0F8];
   v23 = accessibilityLocalizedString(@"media.skip.forward");
-  v24 = [v22 localizedStringWithFormat:v23, 0x402E000000000000];
-  [v21 setAccessibilityLabel:v24];
+  0x402E000000000000 = [v22 localizedStringWithFormat:v23, 0x402E000000000000];
+  [v21 setAccessibilityLabel:0x402E000000000000];
 
   v25 = accessibilityLocalizedString(@"next.track");
   v26 = [(AVTransportControlsViewAccessibility *)self safeUIViewForKey:@"_startRightwardContentTransitionButton"];

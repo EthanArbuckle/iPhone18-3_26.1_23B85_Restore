@@ -1,15 +1,15 @@
 @interface VCVideoRuleCollectionsCameraEmbedded
 + (id)sharedInstance;
-- (BOOL)isPreferredVideoRule:(id)a3 preferredFormat:(id)a4;
+- (BOOL)isPreferredVideoRule:(id)rule preferredFormat:(id)format;
 - (BOOL)setupH264Rules;
 - (BOOL)setupHEVCRules;
 - (BOOL)setupRules;
-- (BOOL)setupVideoRulesForPayload:(int)a3 transportType:(unsigned __int8)a4 encodingType:(unsigned __int8)a5 formatList:(_VCVideoFormat *)a6 formatListCount:(unsigned int)a7 preferredFormat:(id)a8 supportsHighDef:(BOOL *)a9;
+- (BOOL)setupVideoRulesForPayload:(int)payload transportType:(unsigned __int8)type encodingType:(unsigned __int8)encodingType formatList:(_VCVideoFormat *)list formatListCount:(unsigned int)count preferredFormat:(id)format supportsHighDef:(BOOL *)def;
 - (BOOL)supportsHEVCWifiDecoding;
 - (BOOL)supportsHEVCWifiEncoding;
-- (VCVideoRuleCollectionsCameraEmbedded)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsCameraEmbedded)initWithHardwareSettings:(id)settings;
 - (_VCBitrateConfiguration)bitrateConfiguration;
-- (_VCHardwareConfiguration)hardwareConfigurationForPayload:(int)a3 transportType:(unsigned __int8)a4;
+- (_VCHardwareConfiguration)hardwareConfigurationForPayload:(int)payload transportType:(unsigned __int8)type;
 - (id)description;
 - (void)bitrateConfiguration;
 - (void)dealloc;
@@ -19,7 +19,7 @@
 
 @implementation VCVideoRuleCollectionsCameraEmbedded
 
-- (VCVideoRuleCollectionsCameraEmbedded)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsCameraEmbedded)initWithHardwareSettings:(id)settings
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -28,7 +28,7 @@
   v5 = v4;
   if (v4)
   {
-    *&v4->super._encodeHighDef = a3;
+    *&v4->super._encodeHighDef = settings;
     [(VCVideoRuleCollectionsCameraEmbedded *)v4 initSupportedPayloads];
     if (![(VCVideoRuleCollectionsCameraEmbedded *)v5 setupRules])
     {
@@ -70,8 +70,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [*&self->super._encodeHighDef supportedVideoPayloads];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+  supportedVideoPayloads = [*&self->super._encodeHighDef supportedVideoPayloads];
+  v4 = [supportedVideoPayloads countByEnumeratingWithState:&v9 objects:v8 count:16];
   if (v4)
   {
     v5 = v4;
@@ -83,14 +83,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(supportedVideoPayloads);
         }
 
         -[VCVideoRuleCollections addSupportedPayload:](self, "addSupportedPayload:", [*(*(&v9 + 1) + 8 * v7++) unsignedIntValue]);
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+      v5 = [supportedVideoPayloads countByEnumeratingWithState:&v9 objects:v8 count:16];
     }
 
     while (v5);
@@ -114,14 +114,14 @@ VCVideoRuleCollectionsCameraEmbedded *__54__VCVideoRuleCollectionsCameraEmbedded
   return result;
 }
 
-- (_VCHardwareConfiguration)hardwareConfigurationForPayload:(int)a3 transportType:(unsigned __int8)a4
+- (_VCHardwareConfiguration)hardwareConfigurationForPayload:(int)payload transportType:(unsigned __int8)type
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3 != 100)
+  if (payload != 100)
   {
-    if (a3 == 126 || a3 == 123)
+    if (payload == 126 || payload == 123)
     {
-      if (a4 == 2)
+      if (type == 2)
       {
         v5 = [*&self->super._encodeHighDef deviceClass] - 1;
         if (v5 < 8 && ((0x87u >> v5) & 1) != 0)
@@ -132,7 +132,7 @@ VCVideoRuleCollectionsCameraEmbedded *__54__VCVideoRuleCollectionsCameraEmbedded
         }
       }
 
-      else if (a4 == 1)
+      else if (type == 1)
       {
         v5 = [*&self->super._encodeHighDef deviceClass] - 1;
         if (v5 < 8 && ((0x87u >> v5) & 1) != 0)
@@ -149,7 +149,7 @@ LABEL_21:
     return 0;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v5 = [*&self->super._encodeHighDef deviceClass] - 1;
     if (v5 < 8 && ((0x87u >> v5) & 1) != 0)
@@ -162,17 +162,17 @@ LABEL_21:
     return 0;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
     return 0;
   }
 
   v8 = +[GKSConnectivitySettings getAbTestMasterLocalSwitches];
-  v9 = [*&self->super._encodeHighDef deviceClass];
+  deviceClass = [*&self->super._encodeHighDef deviceClass];
   v10 = 0;
-  if (v9 > 2)
+  if (deviceClass > 2)
   {
-    if (v9 == 3)
+    if (deviceClass == 3)
     {
       v10 = &_hardwareConfigHEVCWifiIPad;
       v6 = 11;
@@ -180,7 +180,7 @@ LABEL_21:
 
     else
     {
-      if (v9 != 8)
+      if (deviceClass != 8)
       {
         return v10;
       }
@@ -190,7 +190,7 @@ LABEL_21:
     }
   }
 
-  else if (v9 == 1)
+  else if (deviceClass == 1)
   {
     v14 = v8 & 0x800;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -226,7 +226,7 @@ LABEL_21:
 
   else
   {
-    if (v9 != 2)
+    if (deviceClass != 2)
     {
       return v10;
     }
@@ -263,36 +263,36 @@ LABEL_22:
   return 0;
 }
 
-- (BOOL)isPreferredVideoRule:(id)a3 preferredFormat:(id)a4
+- (BOOL)isPreferredVideoRule:(id)rule preferredFormat:(id)format
 {
-  if (!a4)
+  if (!format)
   {
     return 0;
   }
 
-  if ([a3 compare:a4])
+  if ([rule compare:format])
   {
     v6 = -1;
     for (i = &dword_1DBD4F4B4; ; i += 6)
     {
       v8 = *i;
-      if (v8 == [a3 iWidth])
+      if (v8 == [rule iWidth])
       {
         v9 = i[1];
-        if (v9 == [a3 iHeight])
+        if (v9 == [rule iHeight])
         {
           v10 = i[2];
-          [a3 fRate];
+          [rule fRate];
           if (v10 == v11)
           {
             v12 = *(i - 3);
-            if (v12 == [a4 iWidth])
+            if (v12 == [format iWidth])
             {
               v13 = *(i - 2);
-              if (v13 == [a4 iHeight])
+              if (v13 == [format iHeight])
               {
                 v14 = *(i - 1);
-                [a4 fRate];
+                [format fRate];
                 if (v14 == v15)
                 {
                   break;
@@ -313,30 +313,30 @@ LABEL_22:
   return 1;
 }
 
-- (BOOL)setupVideoRulesForPayload:(int)a3 transportType:(unsigned __int8)a4 encodingType:(unsigned __int8)a5 formatList:(_VCVideoFormat *)a6 formatListCount:(unsigned int)a7 preferredFormat:(id)a8 supportsHighDef:(BOOL *)a9
+- (BOOL)setupVideoRulesForPayload:(int)payload transportType:(unsigned __int8)type encodingType:(unsigned __int8)encodingType formatList:(_VCVideoFormat *)list formatListCount:(unsigned int)count preferredFormat:(id)format supportsHighDef:(BOOL *)def
 {
-  LODWORD(v10) = a7;
-  v12 = a5;
-  v43 = a4;
-  v13 = *&a3;
+  LODWORD(v10) = count;
+  encodingTypeCopy = encodingType;
+  typeCopy = type;
+  v13 = *&payload;
   v54 = *MEMORY[0x1E69E9840];
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = +[VCHardwareSettings supportsDecodingSquareCameraVideo];
-  v42 = v12;
-  if (v12 == 2 && v16)
+  v42 = encodingTypeCopy;
+  if (encodingTypeCopy == 2 && v16)
   {
-    v41 = a6;
+    listCopy = list;
     v17 = [VCVideoRule alloc];
     LODWORD(v18) = 30.0;
     v19 = [(VCVideoRule *)v17 initWithFrameWidth:1088 frameHeight:1088 frameRate:v13 payload:v18];
     v20 = [VCVideoRule alloc];
     LODWORD(v21) = 1114636288;
     v22 = [(VCVideoRule *)v20 initWithFrameWidth:1088 frameHeight:1088 frameRate:v13 payload:v21];
-    [a8 setToVideoRule:v19];
+    [format setToVideoRule:v19];
     LODWORD(v23) = 1.0;
     [(VCVideoRule *)v19 setFPref:v23];
-    [v15 addObject:v19];
-    [v15 addObject:v22];
+    [array addObject:v19];
+    [array addObject:v22];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v40 = VRTraceErrorLogLevelToCSTR();
@@ -353,36 +353,36 @@ LABEL_22:
       }
     }
 
-    a6 = v41;
+    list = listCopy;
   }
 
   if (v10)
   {
     v10 = v10;
-    p_var2 = &a6->var2;
+    p_var2 = &list->var2;
     do
     {
       v26 = [VCVideoRule alloc];
       *&v27 = *p_var2;
       v28 = [(VCVideoRule *)v26 initWithFrameWidth:*(p_var2 - 2) frameHeight:*(p_var2 - 1) frameRate:v13 payload:v27];
       v29 = v28;
-      if (a9)
+      if (def)
       {
-        v30 = [(VCVideoRule *)v28 iWidth];
-        if ([(VCVideoRule *)v29 iHeight]* v30 > 307200)
+        iWidth = [(VCVideoRule *)v28 iWidth];
+        if ([(VCVideoRule *)v29 iHeight]* iWidth > 307200)
         {
-          *a9 = 1;
+          *def = 1;
         }
       }
 
-      if ([(VCVideoRuleCollectionsCameraEmbedded *)self isPreferredVideoRule:v29 preferredFormat:a8])
+      if ([(VCVideoRuleCollectionsCameraEmbedded *)self isPreferredVideoRule:v29 preferredFormat:format])
       {
         LODWORD(v31) = 1.0;
         [(VCVideoRule *)v29 setFPref:v31];
       }
 
       p_var2 += 3;
-      [v15 addObject:v29];
+      [array addObject:v29];
 
       --v10;
     }
@@ -407,18 +407,18 @@ LABEL_22:
         v50 = 1024;
         v51 = v13;
         v52 = 1024;
-        v53 = v43;
+        v53 = typeCopy;
         _os_log_impl(&dword_1DB56E000, v33, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d formatList size is zero for payload=%d, transfportType=%d", buf, 0x28u);
       }
     }
 
-    if (a9)
+    if (def)
     {
-      *a9 = 0;
+      *def = 0;
     }
   }
 
-  [v15 sortUsingSelector:sel_compare_];
+  [array sortUsingSelector:sel_compare_];
   if (v13 == 100)
   {
     if (![(VCVideoRuleCollections *)self isPayloadSupported:100])
@@ -428,12 +428,12 @@ LABEL_31:
       return v38;
     }
 
-    v34 = self;
-    v35 = v15;
-    v36 = v43;
+    selfCopy2 = self;
+    v35 = array;
+    v36 = typeCopy;
     v37 = 100;
 LABEL_30:
-    [(VCVideoRuleCollections *)v34 addVideoRules:v35 transportType:v36 payload:v37 encodingType:v42];
+    [(VCVideoRuleCollections *)selfCopy2 addVideoRules:v35 transportType:v36 payload:v37 encodingType:v42];
     goto LABEL_31;
   }
 
@@ -441,7 +441,7 @@ LABEL_30:
   {
     if ([(VCVideoRuleCollections *)self isPayloadSupported:126])
     {
-      [(VCVideoRuleCollections *)self addVideoRules:v15 transportType:v43 payload:126 encodingType:v42];
+      [(VCVideoRuleCollections *)self addVideoRules:array transportType:typeCopy payload:126 encodingType:v42];
     }
 
     if (![(VCVideoRuleCollections *)self isPayloadSupported:123])
@@ -449,9 +449,9 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v34 = self;
-    v35 = v15;
-    v36 = v43;
+    selfCopy2 = self;
+    v35 = array;
+    v36 = typeCopy;
     v37 = 123;
     goto LABEL_30;
   }
@@ -635,12 +635,12 @@ LABEL_11:
 
   if ([(VCVideoRuleCollectionsCameraEmbedded *)self setupH264Rules])
   {
-    v5 = [(VCVideoRuleCollectionsCameraEmbedded *)self setupHEVCRules];
+    setupHEVCRules = [(VCVideoRuleCollectionsCameraEmbedded *)self setupHEVCRules];
   }
 
   else
   {
-    v5 = 0;
+    setupHEVCRules = 0;
   }
 
   if (+[VCHardwareSettingsEmbedded shouldDisable1080pForOneToOne])
@@ -706,7 +706,7 @@ LABEL_11:
     [(VCVideoRuleCollections *)self limitVideoRulesToMaxWidth:640 maxHeight:480 transportType:2];
   }
 
-  return v5;
+  return setupHEVCRules;
 }
 
 - (BOOL)setupH264Rules
@@ -904,15 +904,15 @@ LABEL_12:
 - (void)bitrateConfiguration
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = [*a2 deviceClass];
+  deviceClass = [*a2 deviceClass];
   v6 = 136315906;
-  v7 = a1;
+  selfCopy = self;
   v8 = 2080;
   v9 = "[VCVideoRuleCollectionsCameraEmbedded bitrateConfiguration]";
   v10 = 1024;
   v11 = 753;
   v12 = 1024;
-  v13 = v5;
+  v13 = deviceClass;
   _os_log_error_impl(&dword_1DB56E000, a3, OS_LOG_TYPE_ERROR, " [%s] %s:%d Couldn't find configuration for _hardwareSettings.deviceClass = %d", &v6, 0x22u);
 }
 

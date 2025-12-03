@@ -1,22 +1,22 @@
 @interface AMSMetricsLoadURLEvent
-+ (BOOL)isPerHostLoadURLSamplingEnabled:(id)a3 perHostSamplingSuppressed:(BOOL *)a4 featureFlagEnabled:(BOOL *)a5;
-+ (BOOL)shouldCollectMetricsForContext:(id)a3;
-+ (double)_samplingPercentageForURLSessionTask:(id)a3 performanceDictionary:(id)a4;
-+ (double)_timingDataMetricToServerTimeInterval:(id)a3;
++ (BOOL)isPerHostLoadURLSamplingEnabled:(id)enabled perHostSamplingSuppressed:(BOOL *)suppressed featureFlagEnabled:(BOOL *)flagEnabled;
++ (BOOL)shouldCollectMetricsForContext:(id)context;
++ (double)_samplingPercentageForURLSessionTask:(id)task performanceDictionary:(id)dictionary;
++ (double)_timingDataMetricToServerTimeInterval:(id)interval;
 + (id)_DNSServerIPAddresses;
 + (id)_buildVariant;
-+ (id)_edgeRelayWasUsedFor:(id)a3 domains:(id)a4;
++ (id)_edgeRelayWasUsedFor:(id)for domains:(id)domains;
 + (id)_fetchNetworkQualityReportsPromise;
-+ (id)_hostnameFrom:(id)a3;
-+ (id)_isAnEdgeRelayServer:(id)a3 domains:(id)a4;
++ (id)_hostnameFrom:(id)from;
++ (id)_isAnEdgeRelayServer:(id)server domains:(id)domains;
 + (id)_propertyValueClassesForKnownProperties;
-+ (id)_radioTypeStringValueFromRadioType:(int)a3;
-+ (id)_resolvedIPAddressFromTask:(id)a3;
-+ (id)loadURLEventPromiseWithContext:(id)a3;
-+ (id)loadURLEventWithTopic:(id)a3 context:(id)a4;
-+ (id)loadURLTopicFromContext:(id)a3;
-+ (id)shouldCollectMetricsPromiseForContext:(id)a3;
-- (AMSMetricsLoadURLEvent)initWithContext:(id)a3;
++ (id)_radioTypeStringValueFromRadioType:(int)type;
++ (id)_resolvedIPAddressFromTask:(id)task;
++ (id)loadURLEventPromiseWithContext:(id)context;
++ (id)loadURLEventWithTopic:(id)topic context:(id)context;
++ (id)loadURLTopicFromContext:(id)context;
++ (id)shouldCollectMetricsPromiseForContext:(id)context;
+- (AMSMetricsLoadURLEvent)initWithContext:(id)context;
 - (BOOL)TFOEnabled;
 - (BOOL)TLSSessionTickets;
 - (BOOL)apsRelayAttempted;
@@ -41,7 +41,7 @@
 - (double)xpSamplingPercentageCachedResponses;
 - (double)xpSamplingPercentageUsers;
 - (double)xpSessionDuration;
-- (id)_prepareEventPromiseWithContext:(id)a3;
+- (id)_prepareEventPromiseWithContext:(id)context;
 - (int64_t)statusCode;
 - (unint64_t)connectionStartNStatRXBytes;
 - (unint64_t)connectionStartNStatTXBytes;
@@ -56,42 +56,42 @@
 - (void)_addSharedURLCacheProperties;
 - (void)_forceLoadURLMetricsAlways;
 - (void)_forceLoadURLMetricsDisabled;
-- (void)setApsRelayAttempted:(BOOL)a3;
-- (void)setApsRelayDidFallback:(BOOL)a3;
-- (void)setApsRelaySucceeded:(BOOL)a3;
-- (void)setCachedResponse:(BOOL)a3;
-- (void)setConnectionEndTime:(double)a3;
-- (void)setConnectionReused:(BOOL)a3;
-- (void)setConnectionStartNStatRXBytes:(unint64_t)a3;
-- (void)setConnectionStartNStatTXBytes:(unint64_t)a3;
-- (void)setConnectionStartTime:(double)a3;
-- (void)setConnectionStopNStatRXBytes:(unint64_t)a3;
-- (void)setConnectionStopNStatTXBytes:(unint64_t)a3;
-- (void)setDNUSubmissionAllowed:(BOOL)a3;
-- (void)setDomainLookupEndTime:(double)a3;
-- (void)setDomainLookupStartTime:(double)a3;
-- (void)setFetchStartTime:(double)a3;
-- (void)setMetricsOverlay:(id)a3;
-- (void)setRedirectCount:(unint64_t)a3;
-- (void)setRedirectEndTime:(double)a3;
-- (void)setRedirectStartTime:(double)a3;
-- (void)setRequestMessageSize:(unint64_t)a3;
-- (void)setRequestStartTime:(double)a3;
-- (void)setResponseEndTime:(double)a3;
-- (void)setResponseMessageSize:(unint64_t)a3;
-- (void)setResponseMessageSizeUncompressed:(unint64_t)a3;
-- (void)setResponseStartTime:(double)a3;
-- (void)setSecureConnectionStartTime:(double)a3;
-- (void)setStatusCode:(int64_t)a3;
-- (void)setTFOEnabled:(BOOL)a3;
-- (void)setTLSSessionTickets:(BOOL)a3;
-- (void)setUrlCacheDiskCapacity:(unint64_t)a3;
-- (void)setUrlCacheMaxCacheableEntrySizeRatio:(double)a3;
-- (void)setUrlCacheMemoryCapacity:(unint64_t)a3;
-- (void)setXpSamplingForced:(BOOL)a3;
-- (void)setXpSamplingPercentageCachedResponses:(double)a3;
-- (void)setXpSamplingPercentageUsers:(double)a3;
-- (void)setXpSessionDuration:(double)a3;
+- (void)setApsRelayAttempted:(BOOL)attempted;
+- (void)setApsRelayDidFallback:(BOOL)fallback;
+- (void)setApsRelaySucceeded:(BOOL)succeeded;
+- (void)setCachedResponse:(BOOL)response;
+- (void)setConnectionEndTime:(double)time;
+- (void)setConnectionReused:(BOOL)reused;
+- (void)setConnectionStartNStatRXBytes:(unint64_t)bytes;
+- (void)setConnectionStartNStatTXBytes:(unint64_t)bytes;
+- (void)setConnectionStartTime:(double)time;
+- (void)setConnectionStopNStatRXBytes:(unint64_t)bytes;
+- (void)setConnectionStopNStatTXBytes:(unint64_t)bytes;
+- (void)setDNUSubmissionAllowed:(BOOL)allowed;
+- (void)setDomainLookupEndTime:(double)time;
+- (void)setDomainLookupStartTime:(double)time;
+- (void)setFetchStartTime:(double)time;
+- (void)setMetricsOverlay:(id)overlay;
+- (void)setRedirectCount:(unint64_t)count;
+- (void)setRedirectEndTime:(double)time;
+- (void)setRedirectStartTime:(double)time;
+- (void)setRequestMessageSize:(unint64_t)size;
+- (void)setRequestStartTime:(double)time;
+- (void)setResponseEndTime:(double)time;
+- (void)setResponseMessageSize:(unint64_t)size;
+- (void)setResponseMessageSizeUncompressed:(unint64_t)uncompressed;
+- (void)setResponseStartTime:(double)time;
+- (void)setSecureConnectionStartTime:(double)time;
+- (void)setStatusCode:(int64_t)code;
+- (void)setTFOEnabled:(BOOL)enabled;
+- (void)setTLSSessionTickets:(BOOL)tickets;
+- (void)setUrlCacheDiskCapacity:(unint64_t)capacity;
+- (void)setUrlCacheMaxCacheableEntrySizeRatio:(double)ratio;
+- (void)setUrlCacheMemoryCapacity:(unint64_t)capacity;
+- (void)setXpSamplingForced:(BOOL)forced;
+- (void)setXpSamplingPercentageCachedResponses:(double)responses;
+- (void)setXpSamplingPercentageUsers:(double)users;
+- (void)setXpSessionDuration:(double)duration;
 @end
 
 @implementation AMSMetricsLoadURLEvent
@@ -210,7 +210,7 @@
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:54];
   v4 = [v3 mutableCopy];
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___AMSMetricsLoadURLEvent;
   v5 = objc_msgSendSuper2(&v7, sel__propertyValueClassesForKnownProperties);
   [v4 addEntriesFromDictionary:v5];
@@ -220,10 +220,10 @@
 
 - (void)_addSharedURLCacheProperties
 {
-  v3 = [MEMORY[0x1E695AC38] sharedURLCache];
-  -[AMSMetricsLoadURLEvent setUrlCacheDiskCapacity:](self, "setUrlCacheDiskCapacity:", [v3 diskCapacity]);
-  -[AMSMetricsLoadURLEvent setUrlCacheMemoryCapacity:](self, "setUrlCacheMemoryCapacity:", [v3 memoryCapacity]);
-  [v3 _maxCacheableEntrySizeRatio];
+  mEMORY[0x1E695AC38] = [MEMORY[0x1E695AC38] sharedURLCache];
+  -[AMSMetricsLoadURLEvent setUrlCacheDiskCapacity:](self, "setUrlCacheDiskCapacity:", [mEMORY[0x1E695AC38] diskCapacity]);
+  -[AMSMetricsLoadURLEvent setUrlCacheMemoryCapacity:](self, "setUrlCacheMemoryCapacity:", [mEMORY[0x1E695AC38] memoryCapacity]);
+  [mEMORY[0x1E695AC38] _maxCacheableEntrySizeRatio];
   [(AMSMetricsLoadURLEvent *)self setUrlCacheMaxCacheableEntrySizeRatio:?];
 }
 
@@ -233,20 +233,20 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 investigateNetworks];
+    investigateNetworks = [v3 investigateNetworks];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __60__AMSMetricsLoadURLEvent__fetchNetworkQualityReportsPromise__block_invoke;
     v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-    v9[4] = a1;
-    [v5 addErrorBlock:v9];
-    v6 = [v5 promiseWithTimeout:10.0];
+    v9[4] = self;
+    [investigateNetworks addErrorBlock:v9];
+    v6 = [investigateNetworks promiseWithTimeout:10.0];
   }
 
   else
   {
-    v5 = AMSError(12, @"Failed to get network quality inquiry singleton", @"Network quality inquiry is not available", 0);
-    v6 = [AMSPromise promiseWithError:v5];
+    investigateNetworks = AMSError(12, @"Failed to get network quality inquiry singleton", @"Network quality inquiry is not available", 0);
+    v6 = [AMSPromise promiseWithError:investigateNetworks];
   }
 
   v7 = v6;
@@ -341,46 +341,46 @@ LABEL_11:
   }
 }
 
-- (AMSMetricsLoadURLEvent)initWithContext:(id)a3
+- (AMSMetricsLoadURLEvent)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = AMSMetricsLoadURLEvent;
   v5 = [(AMSMetricsEvent *)&v9 initWithTopic:@"xp_amp_clientperf"];
   v6 = v5;
   if (v5)
   {
-    v7 = [(AMSMetricsLoadURLEvent *)v5 _prepareEventPromiseWithContext:v4];
+    v7 = [(AMSMetricsLoadURLEvent *)v5 _prepareEventPromiseWithContext:contextCopy];
     [v7 waitUntilFinished];
   }
 
   return v6;
 }
 
-+ (id)loadURLEventPromiseWithContext:(id)a3
++ (id)loadURLEventPromiseWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 loadURLTopicFromContext:v4];
+  contextCopy = context;
+  v5 = [self loadURLTopicFromContext:contextCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__AMSMetricsLoadURLEvent_loadURLEventPromiseWithContext___block_invoke;
   v9[3] = &unk_1E73B4E20;
-  v10 = v4;
-  v6 = v4;
+  v10 = contextCopy;
+  v6 = contextCopy;
   v7 = [v5 thenWithBlock:v9];
 
   return v7;
 }
 
-+ (id)loadURLTopicFromContext:(id)a3
++ (id)loadURLTopicFromContext:(id)context
 {
-  v4 = [a3 metricsDictionaryPromise];
+  metricsDictionaryPromise = [context metricsDictionaryPromise];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__AMSMetricsLoadURLEvent_loadURLTopicFromContext___block_invoke;
   v7[3] = &__block_descriptor_40_e46___AMSPromise_24__0__NSDictionary_8__NSError_16l;
-  v7[4] = a1;
-  v5 = [v4 continueWithBlock:v7];
+  v7[4] = self;
+  v5 = [metricsDictionaryPromise continueWithBlock:v7];
 
   return v5;
 }
@@ -474,19 +474,19 @@ id __50__AMSMetricsLoadURLEvent_loadURLTopicFromContext___block_invoke(uint64_t 
   return v9;
 }
 
-+ (id)loadURLEventWithTopic:(id)a3 context:(id)a4
++ (id)loadURLEventWithTopic:(id)topic context:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  topicCopy = topic;
+  contextCopy = context;
   v8 = +[AMSLogConfig sharedURLLoadingConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v10 = objc_opt_class();
     v11 = AMSLogKey();
@@ -495,28 +495,28 @@ id __50__AMSMetricsLoadURLEvent_loadURLTopicFromContext___block_invoke(uint64_t 
     v22 = 2114;
     v23 = v11;
     v24 = 2114;
-    v25 = v6;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] creating load url event for [%{public}@]", buf, 0x20u);
+    v25 = topicCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] creating load url event for [%{public}@]", buf, 0x20u);
   }
 
-  v12 = [[a1 alloc] initWithTopic:v6];
-  v13 = [v12 _prepareEventPromiseWithContext:v7];
+  v12 = [[self alloc] initWithTopic:topicCopy];
+  v13 = [v12 _prepareEventPromiseWithContext:contextCopy];
 
-  v14 = [v13 promiseAdapter];
+  promiseAdapter = [v13 promiseAdapter];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __56__AMSMetricsLoadURLEvent_loadURLEventWithTopic_context___block_invoke;
   v18[3] = &unk_1E73B3F70;
   v19 = v12;
   v15 = v12;
-  v16 = [v14 thenWithBlock:v18];
+  v16 = [promiseAdapter thenWithBlock:v18];
 
   return v16;
 }
 
-+ (BOOL)isPerHostLoadURLSamplingEnabled:(id)a3 perHostSamplingSuppressed:(BOOL *)a4 featureFlagEnabled:(BOOL *)a5
++ (BOOL)isPerHostLoadURLSamplingEnabled:(id)enabled perHostSamplingSuppressed:(BOOL *)suppressed featureFlagEnabled:(BOOL *)flagEnabled
 {
-  v7 = [a3 ams_objectForKey:@"suppressPerHostSampling" defaultValue:MEMORY[0x1E695E110]];
+  v7 = [enabled ams_objectForKey:@"suppressPerHostSampling" defaultValue:MEMORY[0x1E695E110]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -528,29 +528,29 @@ id __50__AMSMetricsLoadURLEvent_loadURLTopicFromContext___block_invoke(uint64_t 
     v8 = 0;
   }
 
-  v9 = [v8 BOOLValue];
-  if (a4)
+  bOOLValue = [v8 BOOLValue];
+  if (suppressed)
   {
-    *a4 = v9;
+    *suppressed = bOOLValue;
   }
 
-  if (a5)
+  if (flagEnabled)
   {
-    *a5 = 1;
+    *flagEnabled = 1;
   }
 
-  return v9 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-+ (id)_hostnameFrom:(id)a3
++ (id)_hostnameFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 _establishmentReport];
+  fromCopy = from;
+  _establishmentReport = [fromCopy _establishmentReport];
 
-  if (v4)
+  if (_establishmentReport)
   {
-    v5 = [v3 _establishmentReport];
-    v6 = nw_establishment_report_copy_proxy_endpoint(v5);
+    _establishmentReport2 = [fromCopy _establishmentReport];
+    v6 = nw_establishment_report_copy_proxy_endpoint(_establishmentReport2);
 
     if (v6 && nw_endpoint_get_type(v6) == nw_endpoint_type_host)
     {
@@ -571,18 +571,18 @@ id __50__AMSMetricsLoadURLEvent_loadURLTopicFromContext___block_invoke(uint64_t 
   return v7;
 }
 
-+ (id)_isAnEdgeRelayServer:(id)a3 domains:(id)a4
++ (id)_isAnEdgeRelayServer:(id)server domains:(id)domains
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  serverCopy = server;
+  domainsCopy = domains;
+  if ([domainsCopy count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = v6;
+    v7 = domainsCopy;
     v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -598,7 +598,7 @@ LABEL_4:
           objc_enumerationMutation(v7);
         }
 
-        if ([*(*(&v14 + 1) + 8 * v12) isEqualToString:{v5, v14}])
+        if ([*(*(&v14 + 1) + 8 * v12) isEqualToString:{serverCopy, v14}])
         {
           break;
         }
@@ -623,7 +623,7 @@ LABEL_10:
     }
   }
 
-  else if ([@"tether.edge.apple" isEqualToString:v5])
+  else if ([@"tether.edge.apple" isEqualToString:serverCopy])
   {
     v11 = MEMORY[0x1E695E118];
   }
@@ -636,14 +636,14 @@ LABEL_10:
   return v11;
 }
 
-+ (id)_edgeRelayWasUsedFor:(id)a3 domains:(id)a4
++ (id)_edgeRelayWasUsedFor:(id)for domains:(id)domains
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isProxyConnection])
+  forCopy = for;
+  domainsCopy = domains;
+  if ([forCopy isProxyConnection])
   {
-    v8 = [a1 _hostnameFrom:v6];
-    v9 = [a1 _isAnEdgeRelayServer:v8 domains:v7];
+    v8 = [self _hostnameFrom:forCopy];
+    v9 = [self _isAnEdgeRelayServer:v8 domains:domainsCopy];
   }
 
   else
@@ -654,21 +654,21 @@ LABEL_10:
   return v9;
 }
 
-- (id)_prepareEventPromiseWithContext:(id)a3
+- (id)_prepareEventPromiseWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_new();
-  v6 = [v4 metricsDictionaryPromise];
+  metricsDictionaryPromise = [contextCopy metricsDictionaryPromise];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__AMSMetricsLoadURLEvent__prepareEventPromiseWithContext___block_invoke;
   v12[3] = &unk_1E73BA0A0;
-  v13 = v4;
-  v14 = self;
+  v13 = contextCopy;
+  selfCopy = self;
   v7 = v5;
   v15 = v7;
-  v8 = v4;
-  [v6 addFinishBlock:v12];
+  v8 = contextCopy;
+  [metricsDictionaryPromise addFinishBlock:v12];
 
   v9 = v15;
   v10 = v7;
@@ -1188,19 +1188,19 @@ void __58__AMSMetricsLoadURLEvent__prepareEventPromiseWithContext___block_invoke
   [(AMSMetricsLoadURLEvent *)self setXpSamplingPercentageCachedResponses:0.0];
 }
 
-+ (BOOL)shouldCollectMetricsForContext:(id)a3
++ (BOOL)shouldCollectMetricsForContext:(id)context
 {
-  v3 = [a1 shouldCollectMetricsPromiseForContext:a3];
+  v3 = [self shouldCollectMetricsPromiseForContext:context];
   v4 = [v3 resultWithError:0];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (id)shouldCollectMetricsPromiseForContext:(id)a3
++ (id)shouldCollectMetricsPromiseForContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = +[AMSDefaults forceLoadUrlMetrics];
   if (!v5)
   {
@@ -1215,8 +1215,8 @@ void __58__AMSMetricsLoadURLEvent__prepareEventPromiseWithContext___block_invoke
           v6 = +[AMSLogConfig sharedConfig];
         }
 
-        v7 = [v6 OSLogObject];
-        if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+        oSLogObject = [v6 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
         {
           goto LABEL_19;
         }
@@ -1228,14 +1228,14 @@ void __58__AMSMetricsLoadURLEvent__prepareEventPromiseWithContext___block_invoke
       }
 
 LABEL_20:
-      v14 = [v4 metricsDictionaryPromise];
+      metricsDictionaryPromise = [contextCopy metricsDictionaryPromise];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __64__AMSMetricsLoadURLEvent_shouldCollectMetricsPromiseForContext___block_invoke;
       v17[3] = &unk_1E73B9120;
-      v19 = a1;
-      v18 = v4;
-      v15 = [v14 thenWithBlock:v17];
+      selfCopy = self;
+      v18 = contextCopy;
+      v15 = [metricsDictionaryPromise thenWithBlock:v17];
 
       goto LABEL_28;
     }
@@ -1246,8 +1246,8 @@ LABEL_20:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
 LABEL_26:
 
@@ -1259,7 +1259,7 @@ LABEL_26:
     v21 = objc_opt_class();
     v11 = "%{public}@: AMSEphemeralDefaults forcing loadUrl to disabled for this process";
 LABEL_25:
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEBUG, v11, buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, v11, buf, 0xCu);
     goto LABEL_26;
   }
 
@@ -1271,8 +1271,8 @@ LABEL_25:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_26;
     }
@@ -1294,8 +1294,8 @@ LABEL_25:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v6 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     goto LABEL_19;
   }
@@ -1304,7 +1304,7 @@ LABEL_25:
   v21 = objc_opt_class();
   v8 = "%{public}@: AMSDefaults forcing loadUrl to always globally";
 LABEL_18:
-  _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEBUG, v8, buf, 0xCu);
+  _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, v8, buf, 0xCu);
 LABEL_19:
 
   v13 = MEMORY[0x1E695E118];
@@ -1469,33 +1469,33 @@ LABEL_34:
 - (BOOL)apsRelayAttempted
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"apsRelayAttempted"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)apsRelayDidFallback
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"apsRelayDidFallback"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)apsRelaySucceeded
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"apsRelaySucceeded"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)cachedResponse
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"cachedResponse"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)connectionEndTime
@@ -1510,41 +1510,41 @@ LABEL_34:
 - (BOOL)connectionReused
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"connectionReused"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)connectionStartNStatRXBytes
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"connectionStartNStatRXBytes"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)connectionStartNStatTXBytes
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"connectionStartNStatTXBytes"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)connectionStopNStatRXBytes
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"connectionStopNStatRXBytes"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)connectionStopNStatTXBytes
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"connectionStopNStatTXBytes"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)connectionStartTime
@@ -1559,9 +1559,9 @@ LABEL_34:
 - (BOOL)isDNUSubmissionAllowed
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"DNUSubmissionAllowed"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)domainLookupEndTime
@@ -1594,9 +1594,9 @@ LABEL_34:
 - (unint64_t)redirectCount
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"redirectCount"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)redirectEndTime
@@ -1620,9 +1620,9 @@ LABEL_34:
 - (unint64_t)requestMessageSize
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"requestMessageSize"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)requestStartTime
@@ -1646,17 +1646,17 @@ LABEL_34:
 - (unint64_t)responseMessageSize
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"responseMessageSize"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)responseMessageSizeUncompressed
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"responseMessageSizeUncompressed"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)responseStartTime
@@ -1680,41 +1680,41 @@ LABEL_34:
 - (int64_t)statusCode
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"statusCode"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)TFOEnabled
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"TFOEnabled"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)TLSSessionTickets
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"TLSSessionTickets"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)urlCacheDiskCapacity
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"urlCacheDiskCapacity"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)urlCacheMemoryCapacity
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"urlCacheMemoryCapacity"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)urlCacheMaxCacheableEntrySizeRatio
@@ -1738,9 +1738,9 @@ LABEL_34:
 - (BOOL)xpSamplingForced
 {
   v2 = [(AMSMetricsEvent *)self propertyForBodyKey:@"xpSamplingForced"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)xpSamplingPercentageUsers
@@ -1761,33 +1761,33 @@ LABEL_34:
   return v4;
 }
 
-- (void)setApsRelayAttempted:(BOOL)a3
+- (void)setApsRelayAttempted:(BOOL)attempted
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:attempted];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"apsRelayAttempted"];
 }
 
-- (void)setApsRelayDidFallback:(BOOL)a3
+- (void)setApsRelayDidFallback:(BOOL)fallback
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:fallback];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"apsRelayDidFallback"];
 }
 
-- (void)setApsRelaySucceeded:(BOOL)a3
+- (void)setApsRelaySucceeded:(BOOL)succeeded
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:succeeded];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"apsRelaySucceeded"];
 }
 
-- (void)setCachedResponse:(BOOL)a3
+- (void)setCachedResponse:(BOOL)response
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:response];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"cachedResponse"];
 }
 
-- (void)setConnectionEndTime:(double)a3
+- (void)setConnectionEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -1801,39 +1801,39 @@ LABEL_34:
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"connectionEndTime"];
 }
 
-- (void)setConnectionReused:(BOOL)a3
+- (void)setConnectionReused:(BOOL)reused
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:reused];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"connectionReused"];
 }
 
-- (void)setConnectionStartNStatRXBytes:(unint64_t)a3
+- (void)setConnectionStartNStatRXBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bytes];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"connectionStartNStatRXBytes"];
 }
 
-- (void)setConnectionStartNStatTXBytes:(unint64_t)a3
+- (void)setConnectionStartNStatTXBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bytes];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"connectionStartNStatTXBytes"];
 }
 
-- (void)setConnectionStopNStatRXBytes:(unint64_t)a3
+- (void)setConnectionStopNStatRXBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bytes];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"connectionStopNStatRXBytes"];
 }
 
-- (void)setConnectionStopNStatTXBytes:(unint64_t)a3
+- (void)setConnectionStopNStatTXBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bytes];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"connectionStopNStatTXBytes"];
 }
 
-- (void)setConnectionStartTime:(double)a3
+- (void)setConnectionStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -1847,15 +1847,15 @@ LABEL_34:
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"connectionStartTime"];
 }
 
-- (void)setDNUSubmissionAllowed:(BOOL)a3
+- (void)setDNUSubmissionAllowed:(BOOL)allowed
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:allowed];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"DNUSubmissionAllowed"];
 }
 
-- (void)setDomainLookupEndTime:(double)a3
+- (void)setDomainLookupEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -1869,9 +1869,9 @@ LABEL_34:
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"domainLookupEndTime"];
 }
 
-- (void)setDomainLookupStartTime:(double)a3
+- (void)setDomainLookupStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -1885,9 +1885,9 @@ LABEL_34:
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"domainLookupStartTime"];
 }
 
-- (void)setFetchStartTime:(double)a3
+- (void)setFetchStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -1901,15 +1901,15 @@ LABEL_34:
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"fetchStartTime"];
 }
 
-- (void)setRedirectCount:(unint64_t)a3
+- (void)setRedirectCount:(unint64_t)count
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"redirectCount"];
 }
 
-- (void)setRedirectEndTime:(double)a3
+- (void)setRedirectEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -1923,9 +1923,9 @@ LABEL_34:
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"redirectEndTime"];
 }
 
-- (void)setRedirectStartTime:(double)a3
+- (void)setRedirectStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -1939,9 +1939,9 @@ LABEL_34:
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"redirectStartTime"];
 }
 
-- (void)setRequestStartTime:(double)a3
+- (void)setRequestStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -1955,15 +1955,15 @@ LABEL_34:
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"requestStartTime"];
 }
 
-- (void)setRequestMessageSize:(unint64_t)a3
+- (void)setRequestMessageSize:(unint64_t)size
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"requestMessageSize"];
 }
 
-- (void)setResponseEndTime:(double)a3
+- (void)setResponseEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -1977,21 +1977,21 @@ LABEL_34:
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"responseEndTime"];
 }
 
-- (void)setResponseMessageSize:(unint64_t)a3
+- (void)setResponseMessageSize:(unint64_t)size
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"responseMessageSize"];
 }
 
-- (void)setResponseMessageSizeUncompressed:(unint64_t)a3
+- (void)setResponseMessageSizeUncompressed:(unint64_t)uncompressed
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:uncompressed];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"responseMessageSizeUncompressed"];
 }
 
-- (void)setResponseStartTime:(double)a3
+- (void)setResponseStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -2005,9 +2005,9 @@ LABEL_34:
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"responseStartTime"];
 }
 
-- (void)setSecureConnectionStartTime:(double)a3
+- (void)setSecureConnectionStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -2021,72 +2021,72 @@ LABEL_34:
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"secureConnectionStartTime"];
 }
 
-- (void)setStatusCode:(int64_t)a3
+- (void)setStatusCode:(int64_t)code
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:code];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"statusCode"];
 }
 
-- (void)setTFOEnabled:(BOOL)a3
+- (void)setTFOEnabled:(BOOL)enabled
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"TFOEnabled"];
 }
 
-- (void)setTLSSessionTickets:(BOOL)a3
+- (void)setTLSSessionTickets:(BOOL)tickets
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:tickets];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"TLSSessionTickets"];
 }
 
-- (void)setUrlCacheDiskCapacity:(unint64_t)a3
+- (void)setUrlCacheDiskCapacity:(unint64_t)capacity
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:capacity];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"urlCacheDiskCapacity"];
 }
 
-- (void)setUrlCacheMemoryCapacity:(unint64_t)a3
+- (void)setUrlCacheMemoryCapacity:(unint64_t)capacity
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:capacity];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"urlCacheMemoryCapacity"];
 }
 
-- (void)setUrlCacheMaxCacheableEntrySizeRatio:(double)a3
+- (void)setUrlCacheMaxCacheableEntrySizeRatio:(double)ratio
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:ratio];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"urlCacheMaxCacheableEntrySizeRatio"];
 }
 
-- (void)setXpSessionDuration:(double)a3
+- (void)setXpSessionDuration:(double)duration
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"xpSessionDuration"];
 }
 
-- (void)setXpSamplingForced:(BOOL)a3
+- (void)setXpSamplingForced:(BOOL)forced
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:forced];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"xpSamplingForced"];
 }
 
-- (void)setXpSamplingPercentageUsers:(double)a3
+- (void)setXpSamplingPercentageUsers:(double)users
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:users];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"xpSamplingPercentageUsers"];
 }
 
-- (void)setXpSamplingPercentageCachedResponses:(double)a3
+- (void)setXpSamplingPercentageCachedResponses:(double)responses
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:responses];
   [(AMSMetricsEvent *)self setProperty:v4 forBodyKey:@"xpSamplingPercentageCachedResponses"];
 }
 
-- (void)setMetricsOverlay:(id)a3
+- (void)setMetricsOverlay:(id)overlay
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5 || ([v5 allKeys], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, !v8))
+  overlayCopy = overlay;
+  v6 = overlayCopy;
+  if (!overlayCopy || ([overlayCopy allKeys], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, !v8))
   {
     metricsOverlay = self->_metricsOverlay;
     self->_metricsOverlay = 0;
@@ -2108,8 +2108,8 @@ LABEL_7:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v15 = AMSLogKey();
       v16 = MEMORY[0x1E696AEC0];
@@ -2127,8 +2127,8 @@ LABEL_7:
       }
       v19 = ;
       *buf = 138543362;
-      v26 = v19;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@Removing topic from overlay", buf, 0xCu);
+      selfCopy = v19;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Removing topic from overlay", buf, 0xCu);
       if (v15)
       {
 
@@ -2157,15 +2157,15 @@ LABEL_17:
     v22 = +[AMSLogConfig sharedConfig];
   }
 
-  v23 = [v22 OSLogObject];
-  if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [v22 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v24 = AMSHashIfNeeded(self->_metricsOverlay);
     *buf = 138543618;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
     v28 = v24;
-    _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_INFO, "%{public}@: Adding metrics overlay %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: Adding metrics overlay %{public}@", buf, 0x16u);
   }
 
   [(AMSMetricsEvent *)self addPropertiesWithDictionary:self->_metricsOverlay];
@@ -2196,15 +2196,15 @@ void __60__AMSMetricsLoadURLEvent__fetchNetworkQualityReportsPromise__block_invo
   }
 }
 
-+ (id)_radioTypeStringValueFromRadioType:(int)a3
++ (id)_radioTypeStringValueFromRadioType:(int)type
 {
-  if (a3 > 128)
+  if (type > 128)
   {
-    if (a3 <= 132)
+    if (type <= 132)
     {
-      if (a3 > 130)
+      if (type > 130)
       {
-        if (a3 == 131)
+        if (type == 131)
         {
           v4 = @"cell_nr_sa_sub6";
         }
@@ -2215,7 +2215,7 @@ void __60__AMSMetricsLoadURLEvent__fetchNetworkQualityReportsPromise__block_invo
         }
       }
 
-      else if (a3 == 129)
+      else if (type == 129)
       {
         v4 = @"cell_endc_sub6";
       }
@@ -2228,9 +2228,9 @@ void __60__AMSMetricsLoadURLEvent__fetchNetworkQualityReportsPromise__block_invo
       return v4;
     }
 
-    if (a3 <= 134)
+    if (type <= 134)
     {
-      if (a3 == 133)
+      if (type == 133)
       {
         v4 = @"cell_wcdma";
       }
@@ -2243,14 +2243,14 @@ void __60__AMSMetricsLoadURLEvent__fetchNetworkQualityReportsPromise__block_invo
       return v4;
     }
 
-    if (a3 == 135)
+    if (type == 135)
     {
       v4 = @"cell_cdma";
 
       return v4;
     }
 
-    if (a3 == 136)
+    if (type == 136)
     {
       v4 = @"cell_evdo";
 
@@ -2258,16 +2258,16 @@ void __60__AMSMetricsLoadURLEvent__fetchNetworkQualityReportsPromise__block_invo
     }
 
 LABEL_67:
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", *&type];
 
     return v4;
   }
 
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 <= 5)
+    if (type <= 5)
     {
-      if (a3 == 4)
+      if (type == 4)
       {
         v4 = @"wifi_n";
       }
@@ -2280,14 +2280,14 @@ LABEL_67:
       return v4;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       v4 = @"wifi_ax";
 
       return v4;
     }
 
-    if (a3 == 128)
+    if (type == 128)
     {
       v4 = @"cell_lte";
 
@@ -2297,9 +2297,9 @@ LABEL_67:
     goto LABEL_67;
   }
 
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v4 = @"wifi_a";
     }
@@ -2312,9 +2312,9 @@ LABEL_67:
 
   else
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v4 = @"wifi_b";
 
@@ -2330,13 +2330,13 @@ LABEL_67:
   return v4;
 }
 
-+ (id)_resolvedIPAddressFromTask:(id)a3
++ (id)_resolvedIPAddressFromTask:(id)task
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 response];
-  v4 = [v3 _CFURLResponse];
+  response = [task response];
+  _CFURLResponse = [response _CFURLResponse];
 
-  if (v4 && (v5 = CFURLResponseCopyPeerAddress()) != 0)
+  if (_CFURLResponse && (v5 = CFURLResponseCopyPeerAddress()) != 0)
   {
     v6 = v5;
     BytePtr = CFDataGetBytePtr(v5);
@@ -2355,9 +2355,9 @@ LABEL_67:
   return v10;
 }
 
-+ (double)_timingDataMetricToServerTimeInterval:(id)a3
++ (double)_timingDataMetricToServerTimeInterval:(id)interval
 {
-  [a3 doubleValue];
+  [interval doubleValue];
   v4 = v3;
   result = 0.0;
   if (v4 != 0.0)
@@ -2381,12 +2381,12 @@ void __64__AMSMetricsLoadURLEvent__timingDataMetricToServerTimeInterval___block_
   _MergedGlobals_135 = v1;
 }
 
-+ (double)_samplingPercentageForURLSessionTask:(id)a3 performanceDictionary:(id)a4
++ (double)_samplingPercentageForURLSessionTask:(id)task performanceDictionary:(id)dictionary
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 objectForKeyedSubscript:@"samplingPercentageUsers"];
+  dictionaryCopy = dictionary;
+  taskCopy = task;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"samplingPercentageUsers"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2402,106 +2402,106 @@ void __64__AMSMetricsLoadURLEvent__timingDataMetricToServerTimeInterval___block_
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v13 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
       v14 = AMSHashIfNeeded(v13);
       *buf = 138543618;
-      v44 = a1;
+      selfCopy6 = self;
       v45 = 2114;
       v46 = v14;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch fallback sampling percentage value from performance metrics dictionary, will use %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch fallback sampling percentage value from performance metrics dictionary, will use %{public}@", buf, 0x16u);
     }
 
     v10 = 0.0;
   }
 
-  v15 = [v7 originalRequest];
+  originalRequest = [taskCopy originalRequest];
 
-  v16 = [v15 URL];
-  v17 = [v16 host];
+  v16 = [originalRequest URL];
+  host = [v16 host];
 
-  if (v17)
+  if (host)
   {
-    v18 = [v6 objectForKeyedSubscript:@"samplingPercentagePerHost"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"samplingPercentagePerHost"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v20 = +[AMSLogConfig sharedURLLoadingConfig];
-      if (!v20)
+      oSLogObject4 = +[AMSLogConfig sharedURLLoadingConfig];
+      if (!oSLogObject4)
       {
-        v20 = +[AMSLogConfig sharedConfig];
+        oSLogObject4 = +[AMSLogConfig sharedConfig];
       }
 
-      v23 = [v20 OSLogObject];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [oSLogObject4 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v30 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
         v31 = AMSHashIfNeeded(v30);
         *buf = 138543618;
-        v44 = a1;
+        selfCopy6 = self;
         v45 = 2114;
         v46 = v31;
-        _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch per-host sampling percentage values from performance metrics dictionary, falling back to global sampling percentage value of %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch per-host sampling percentage values from performance metrics dictionary, falling back to global sampling percentage value of %{public}@", buf, 0x16u);
       }
 
       goto LABEL_35;
     }
 
-    v19 = [v18 objectForKeyedSubscript:v17];
+    v19 = [v18 objectForKeyedSubscript:host];
     if (v19)
     {
-      v20 = v19;
+      oSLogObject4 = v19;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       v22 = +[AMSLogConfig sharedURLLoadingConfig];
-      v23 = v22;
+      oSLogObject2 = v22;
       if (isKindOfClass)
       {
         if (!v22)
         {
-          v23 = +[AMSLogConfig sharedConfig];
+          oSLogObject2 = +[AMSLogConfig sharedConfig];
         }
 
-        v24 = [v23 OSLogObject];
-        if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+        v23OSLogObject = [oSLogObject2 OSLogObject];
+        if (os_log_type_enabled(v23OSLogObject, OS_LOG_TYPE_INFO))
         {
-          v41 = AMSHashIfNeeded(v17);
+          v41 = AMSHashIfNeeded(host);
           v25 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
           v26 = AMSHashIfNeeded(v25);
           *buf = 138543874;
-          v44 = a1;
+          selfCopy6 = self;
           v45 = 2114;
           v46 = v41;
           v47 = 2114;
           v48 = v26;
-          _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_INFO, "%{public}@: Found per-host sampling percentage value in per-host dictionary for %{public}@: %{public}@. Using that", buf, 0x20u);
+          _os_log_impl(&dword_192869000, v23OSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Found per-host sampling percentage value in per-host dictionary for %{public}@: %{public}@. Using that", buf, 0x20u);
         }
 
-        [v20 doubleValue];
+        [oSLogObject4 doubleValue];
         v10 = v27;
         goto LABEL_36;
       }
 
       if (!v22)
       {
-        v23 = +[AMSLogConfig sharedConfig];
+        oSLogObject2 = +[AMSLogConfig sharedConfig];
       }
 
-      v37 = [v23 OSLogObject];
-      if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+      v23OSLogObject2 = [oSLogObject2 OSLogObject];
+      if (os_log_type_enabled(v23OSLogObject2, OS_LOG_TYPE_ERROR))
       {
-        v42 = AMSHashIfNeeded(v17);
+        v42 = AMSHashIfNeeded(host);
         v38 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
         v39 = AMSHashIfNeeded(v38);
         *buf = 138543874;
-        v44 = a1;
+        selfCopy6 = self;
         v45 = 2114;
         v46 = v42;
         v47 = 2114;
         v48 = v39;
-        _os_log_impl(&dword_192869000, v37, OS_LOG_TYPE_ERROR, "%{public}@: Unexpected type for per-host sampling percentage value in per-host dictionary for %{public}@, falling back to global sampling percentage value of %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, v23OSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Unexpected type for per-host sampling percentage value in per-host dictionary for %{public}@, falling back to global sampling percentage value of %{public}@", buf, 0x20u);
       }
 
 LABEL_35:
@@ -2514,22 +2514,22 @@ LABEL_35:
       v32 = +[AMSLogConfig sharedConfig];
     }
 
-    v33 = [v32 OSLogObject];
-    if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
+    oSLogObject3 = [v32 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
-      v34 = AMSHashIfNeeded(v17);
+      v34 = AMSHashIfNeeded(host);
       v35 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
       v36 = AMSHashIfNeeded(v35);
       *buf = 138543874;
-      v44 = a1;
+      selfCopy6 = self;
       v45 = 2114;
       v46 = v34;
       v47 = 2114;
       v48 = v36;
-      _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_INFO, "%{public}@: No per-host sampling percentage value in per-host dictionary for %{public}@, falling back to global sampling percentage value of %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_INFO, "%{public}@: No per-host sampling percentage value in per-host dictionary for %{public}@, falling back to global sampling percentage value of %{public}@", buf, 0x20u);
     }
 
-    v20 = 0;
+    oSLogObject4 = 0;
   }
 
   else
@@ -2540,16 +2540,16 @@ LABEL_35:
       v18 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v18 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    oSLogObject4 = [v18 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
     {
       v28 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
       v29 = AMSHashIfNeeded(v28);
       *buf = 138543618;
-      v44 = a1;
+      selfCopy6 = self;
       v45 = 2114;
       v46 = v29;
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@: Failed to retrieve original request's hostname from url session task, falling back to global sampling percentage value of %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: Failed to retrieve original request's hostname from url session task, falling back to global sampling percentage value of %{public}@", buf, 0x16u);
     }
   }
 

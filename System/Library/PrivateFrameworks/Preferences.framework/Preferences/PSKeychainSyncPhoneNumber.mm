@@ -1,6 +1,6 @@
 @interface PSKeychainSyncPhoneNumber
-+ (id)phoneNumberWithDigits:(id)a3 countryInfo:(id)a4;
-- (id)_stringByAddingDialingPrefixToString:(id)a3;
++ (id)phoneNumberWithDigits:(id)digits countryInfo:(id)info;
+- (id)_stringByAddingDialingPrefixToString:(id)string;
 - (id)formattedAndObfuscatedString;
 - (id)formattedString;
 - (id)formattedStringWithDialingPrefix;
@@ -8,48 +8,48 @@
 
 @implementation PSKeychainSyncPhoneNumber
 
-+ (id)phoneNumberWithDigits:(id)a3 countryInfo:(id)a4
++ (id)phoneNumberWithDigits:(id)digits countryInfo:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  digitsCopy = digits;
   v7 = objc_alloc_init(PSKeychainSyncPhoneNumber);
-  [(PSKeychainSyncPhoneNumber *)v7 setDigits:v6];
+  [(PSKeychainSyncPhoneNumber *)v7 setDigits:digitsCopy];
 
-  [(PSKeychainSyncPhoneNumber *)v7 setCountryInfo:v5];
+  [(PSKeychainSyncPhoneNumber *)v7 setCountryInfo:infoCopy];
 
   return v7;
 }
 
-- (id)_stringByAddingDialingPrefixToString:(id)a3
+- (id)_stringByAddingDialingPrefixToString:(id)string
 {
-  v4 = a3;
-  v5 = [(PSKeychainSyncPhoneNumber *)self countryInfo];
-  v6 = [v5 dialingPrefix];
-  v7 = [v6 length];
+  stringCopy = string;
+  countryInfo = [(PSKeychainSyncPhoneNumber *)self countryInfo];
+  dialingPrefix = [countryInfo dialingPrefix];
+  v7 = [dialingPrefix length];
 
   if (v7)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(PSKeychainSyncPhoneNumber *)self countryInfo];
-    v10 = [v9 dialingPrefix];
-    v11 = [v8 stringWithFormat:@"+%@ %@", v10, v4];
+    countryInfo2 = [(PSKeychainSyncPhoneNumber *)self countryInfo];
+    dialingPrefix2 = [countryInfo2 dialingPrefix];
+    stringCopy = [v8 stringWithFormat:@"+%@ %@", dialingPrefix2, stringCopy];
 
-    v4 = v11;
+    stringCopy = stringCopy;
   }
 
-  return v4;
+  return stringCopy;
 }
 
 - (id)formattedString
 {
-  v3 = [(PSKeychainSyncPhoneNumber *)self digits];
-  v4 = [(PSKeychainSyncPhoneNumber *)self countryInfo];
-  v5 = [v4 countryCode];
+  digits = [(PSKeychainSyncPhoneNumber *)self digits];
+  countryInfo = [(PSKeychainSyncPhoneNumber *)self countryInfo];
+  countryCode = [countryInfo countryCode];
 
-  if ([v5 length])
+  if ([countryCode length])
   {
-    v6 = [v5 lowercaseString];
-    v7 = [(PSKeychainSyncPhoneNumber *)self digits];
+    lowercaseString = [countryCode lowercaseString];
+    digits2 = [(PSKeychainSyncPhoneNumber *)self digits];
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
@@ -66,7 +66,7 @@
     _Block_object_dispose(&v17, 8);
     if (v8)
     {
-      v10 = v8(0, v7, v6);
+      v10 = v8(0, digits2, lowercaseString);
       if (!v10)
       {
         goto LABEL_10;
@@ -92,7 +92,7 @@
         v14 = v12(0, v11, 1);
 
         CFRelease(v11);
-        v3 = v14;
+        digits = v14;
         goto LABEL_10;
       }
     }
@@ -109,30 +109,30 @@
 
 LABEL_10:
 
-  return v3;
+  return digits;
 }
 
 - (id)formattedStringWithDialingPrefix
 {
-  v3 = [(PSKeychainSyncPhoneNumber *)self formattedString];
-  v4 = [(PSKeychainSyncPhoneNumber *)self _stringByAddingDialingPrefixToString:v3];
+  formattedString = [(PSKeychainSyncPhoneNumber *)self formattedString];
+  v4 = [(PSKeychainSyncPhoneNumber *)self _stringByAddingDialingPrefixToString:formattedString];
 
   return v4;
 }
 
 - (id)formattedAndObfuscatedString
 {
-  v3 = [(PSKeychainSyncPhoneNumber *)self formattedString];
-  if ([v3 length] < 3)
+  formattedString = [(PSKeychainSyncPhoneNumber *)self formattedString];
+  if ([formattedString length] < 3)
   {
-    v4 = v3;
+    v4 = formattedString;
   }
 
   else
   {
-    v4 = [v3 mutableCopy];
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", 9679];
-    v6 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    v4 = [formattedString mutableCopy];
+    9679 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", 9679];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
     v7 = [v4 length];
     if (v7 - 1 >= 0)
     {
@@ -140,11 +140,11 @@ LABEL_10:
       v9 = 0;
       do
       {
-        if ([v6 characterIsMember:{objc_msgSend(v4, "characterAtIndex:", --v8)}])
+        if ([decimalDigitCharacterSet characterIsMember:{objc_msgSend(v4, "characterAtIndex:", --v8)}])
         {
           if (v9 > 1)
           {
-            [v4 replaceCharactersInRange:v8 withString:{1, v5}];
+            [v4 replaceCharactersInRange:v8 withString:{1, 9679}];
           }
 
           else

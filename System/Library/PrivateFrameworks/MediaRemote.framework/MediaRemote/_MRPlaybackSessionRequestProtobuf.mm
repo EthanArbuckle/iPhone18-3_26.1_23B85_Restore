@@ -1,12 +1,12 @@
 @interface _MRPlaybackSessionRequestProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRPlaybackSessionRequestProtobuf
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = _MRPlaybackSessionRequestProtobuf;
   v4 = [(_MRPlaybackSessionRequestProtobuf *)&v8 description];
-  v5 = [(_MRPlaybackSessionRequestProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRPlaybackSessionRequestProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   requestID = self->_requestID;
   if (requestID)
   {
-    [v3 setObject:requestID forKey:@"requestID"];
+    [dictionary setObject:requestID forKey:@"requestID"];
   }
 
   identifier = self->_identifier;
@@ -48,15 +48,15 @@
   destinationPlayerPath = self->_destinationPlayerPath;
   if (destinationPlayerPath)
   {
-    v9 = [(_MRNowPlayingPlayerPathProtobuf *)destinationPlayerPath dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"destinationPlayerPath"];
+    dictionaryRepresentation = [(_MRNowPlayingPlayerPathProtobuf *)destinationPlayerPath dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"destinationPlayerPath"];
   }
 
   destinationCommandInfo = self->_destinationCommandInfo;
   if (destinationCommandInfo)
   {
-    v11 = [(_MRDictionaryProtobuf *)destinationCommandInfo dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"destinationCommandInfo"];
+    dictionaryRepresentation2 = [(_MRDictionaryProtobuf *)destinationCommandInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"destinationCommandInfo"];
   }
 
   if (*&self->_has)
@@ -68,109 +68,109 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_requestID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_type)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_destinationPlayerPath)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_destinationCommandInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     isPreflight = self->_isPreflight;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestID)
   {
-    [v4 setRequestID:?];
-    v4 = v5;
+    [toCopy setRequestID:?];
+    toCopy = v5;
   }
 
   if (self->_identifier)
   {
     [v5 setIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_type)
   {
     [v5 setType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_destinationPlayerPath)
   {
     [v5 setDestinationPlayerPath:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_destinationCommandInfo)
   {
     [v5 setDestinationCommandInfo:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[48] = self->_isPreflight;
-    v4[52] |= 1u;
+    toCopy[48] = self->_isPreflight;
+    toCopy[52] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_requestID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_requestID copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_identifier copyWithZone:a3];
+  v8 = [(NSString *)self->_identifier copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_type copyWithZone:a3];
+  v10 = [(NSString *)self->_type copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
-  v12 = [(_MRNowPlayingPlayerPathProtobuf *)self->_destinationPlayerPath copyWithZone:a3];
+  v12 = [(_MRNowPlayingPlayerPathProtobuf *)self->_destinationPlayerPath copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
-  v14 = [(_MRDictionaryProtobuf *)self->_destinationCommandInfo copyWithZone:a3];
+  v14 = [(_MRDictionaryProtobuf *)self->_destinationCommandInfo copyWithZone:zone];
   v15 = *(v5 + 8);
   *(v5 + 8) = v14;
 
@@ -183,16 +183,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   requestID = self->_requestID;
-  if (requestID | *(v4 + 4))
+  if (requestID | *(equalCopy + 4))
   {
     if (![(NSString *)requestID isEqual:?])
     {
@@ -201,7 +201,7 @@
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 3))
+  if (identifier | *(equalCopy + 3))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -210,7 +210,7 @@
   }
 
   type = self->_type;
-  if (type | *(v4 + 5))
+  if (type | *(equalCopy + 5))
   {
     if (![(NSString *)type isEqual:?])
     {
@@ -219,7 +219,7 @@
   }
 
   destinationPlayerPath = self->_destinationPlayerPath;
-  if (destinationPlayerPath | *(v4 + 2))
+  if (destinationPlayerPath | *(equalCopy + 2))
   {
     if (![(_MRNowPlayingPlayerPathProtobuf *)destinationPlayerPath isEqual:?])
     {
@@ -228,7 +228,7 @@
   }
 
   destinationCommandInfo = self->_destinationCommandInfo;
-  if (destinationCommandInfo | *(v4 + 1))
+  if (destinationCommandInfo | *(equalCopy + 1))
   {
     if (![(_MRDictionaryProtobuf *)destinationCommandInfo isEqual:?])
     {
@@ -236,10 +236,10 @@
     }
   }
 
-  v10 = (*(v4 + 52) & 1) == 0;
+  v10 = (*(equalCopy + 52) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0)
+    if ((*(equalCopy + 52) & 1) == 0)
     {
 LABEL_14:
       v10 = 0;
@@ -248,13 +248,13 @@ LABEL_14:
 
     if (self->_isPreflight)
     {
-      if ((*(v4 + 48) & 1) == 0)
+      if ((*(equalCopy + 48) & 1) == 0)
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(v4 + 48))
+    else if (*(equalCopy + 48))
     {
       goto LABEL_14;
     }
@@ -287,30 +287,30 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v9 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v9 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(_MRPlaybackSessionRequestProtobuf *)self setRequestID:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(_MRPlaybackSessionRequestProtobuf *)self setIdentifier:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(_MRPlaybackSessionRequestProtobuf *)self setType:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
   destinationPlayerPath = self->_destinationPlayerPath;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (destinationPlayerPath)
   {
     if (!v6)
@@ -331,10 +331,10 @@ LABEL_15:
     [(_MRPlaybackSessionRequestProtobuf *)self setDestinationPlayerPath:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
   destinationCommandInfo = self->_destinationCommandInfo;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (destinationCommandInfo)
   {
     if (!v8)
@@ -355,11 +355,11 @@ LABEL_13:
     [(_MRPlaybackSessionRequestProtobuf *)self setDestinationCommandInfo:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_19:
-  if (v4[52])
+  if (fromCopy[52])
   {
-    self->_isPreflight = v4[48];
+    self->_isPreflight = fromCopy[48];
     *&self->_has |= 1u;
   }
 }

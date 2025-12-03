@@ -1,21 +1,21 @@
 @interface CDAppSignInGetAuthInfoResponse
-- (CDAppSignInGetAuthInfoResponse)initWithRapportDictionary:(id)a3;
+- (CDAppSignInGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDAppSignInGetAuthInfoResponse
 
-- (CDAppSignInGetAuthInfoResponse)initWithRapportDictionary:(id)a3
+- (CDAppSignInGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v53.receiver = self;
   v53.super_class = CDAppSignInGetAuthInfoResponse;
   v5 = [(CDAppSignInGetAuthInfoResponse *)&v53 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = v4;
+    v7 = dictionaryCopy;
     v8 = [NSSet setWithObject:v6];
     v9 = sub_100017500(v7, @"appleIDRequest", v8);
 
@@ -153,9 +153,9 @@
   v11 = [v3 appendObject:self->_appDomains withName:@"appDomains" skipIfNil:1];
   [v3 appendString:self->_deviceClass withName:@"deviceClass" skipIfEmpty:1];
   [v3 appendString:self->_deviceName withName:@"deviceName" skipIfEmpty:1];
-  v12 = [v3 build];
+  build = [v3 build];
 
-  return v12;
+  return build;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface FSVolume
-- (FSVolume)initWithVolumeID:(id)a3 volumeName:(id)a4;
+- (FSVolume)initWithVolumeID:(id)d volumeName:(id)name;
 @end
 
 @implementation FSVolume
 
-- (FSVolume)initWithVolumeID:(id)a3 volumeName:(id)a4
+- (FSVolume)initWithVolumeID:(id)d volumeName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  dCopy = d;
+  nameCopy = name;
+  if (dCopy)
   {
     v13.receiver = self;
     v13.super_class = FSVolume;
@@ -16,20 +16,20 @@
     p_isa = &v9->super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_volumeID, a3);
-      objc_storeStrong(p_isa + 3, a4);
+      objc_storeStrong(&v9->_volumeID, d);
+      objc_storeStrong(p_isa + 3, name);
     }
 
     self = p_isa;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface BMSiriAssistantSuggestionFeaturesUserSegmentation
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriAssistantSuggestionFeaturesUserSegmentation)initWithIs2x3:(id)a3 siriWasDisabled:(id)a4 siriWasdictationOnly:(id)a5 active6MonthsOrMoreAgo:(id)a6 active28To6MonthsDaysAgo:(id)a7 active14To28DaysAgo:(id)a8 active7To14DaysAgo:(id)a9 activeWithin7days:(id)a10 activeWithin7days1Turn:(id)a11 activeWithin7Days2To3Turns:(id)a12 activeWithin7Days4PlusTurns:(id)a13;
-- (BMSiriAssistantSuggestionFeaturesUserSegmentation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriAssistantSuggestionFeaturesUserSegmentation)initWithIs2x3:(id)is2x3 siriWasDisabled:(id)disabled siriWasdictationOnly:(id)only active6MonthsOrMoreAgo:(id)ago active28To6MonthsDaysAgo:(id)daysAgo active14To28DaysAgo:(id)to28DaysAgo active7To14DaysAgo:(id)to14DaysAgo activeWithin7days:(id)self0 activeWithin7days1Turn:(id)self1 activeWithin7Days2To3Turns:(id)self2 activeWithin7Days4PlusTurns:(id)self3;
+- (BMSiriAssistantSuggestionFeaturesUserSegmentation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriAssistantSuggestionFeaturesUserSegmentation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMSiriAssistantSuggestionFeaturesUserSegmentation hasIs2x3](self, "hasIs2x3") || [v5 hasIs2x3])
     {
       if (![(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self hasIs2x3])
@@ -33,8 +33,8 @@
         goto LABEL_58;
       }
 
-      v6 = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self is2x3];
-      if (v6 != [v5 is2x3])
+      is2x3 = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self is2x3];
+      if (is2x3 != [v5 is2x3])
       {
         goto LABEL_58;
       }
@@ -52,8 +52,8 @@
         goto LABEL_58;
       }
 
-      v7 = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self siriWasDisabled];
-      if (v7 != [v5 siriWasDisabled])
+      siriWasDisabled = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self siriWasDisabled];
+      if (siriWasDisabled != [v5 siriWasDisabled])
       {
         goto LABEL_58;
       }
@@ -71,8 +71,8 @@
         goto LABEL_58;
       }
 
-      v8 = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self siriWasdictationOnly];
-      if (v8 != [v5 siriWasdictationOnly])
+      siriWasdictationOnly = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self siriWasdictationOnly];
+      if (siriWasdictationOnly != [v5 siriWasdictationOnly])
       {
         goto LABEL_58;
       }
@@ -90,8 +90,8 @@
         goto LABEL_58;
       }
 
-      v9 = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self active6MonthsOrMoreAgo];
-      if (v9 != [v5 active6MonthsOrMoreAgo])
+      active6MonthsOrMoreAgo = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self active6MonthsOrMoreAgo];
+      if (active6MonthsOrMoreAgo != [v5 active6MonthsOrMoreAgo])
       {
         goto LABEL_58;
       }
@@ -109,8 +109,8 @@
         goto LABEL_58;
       }
 
-      v10 = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self active28To6MonthsDaysAgo];
-      if (v10 != [v5 active28To6MonthsDaysAgo])
+      active28To6MonthsDaysAgo = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self active28To6MonthsDaysAgo];
+      if (active28To6MonthsDaysAgo != [v5 active28To6MonthsDaysAgo])
       {
         goto LABEL_58;
       }
@@ -128,8 +128,8 @@
         goto LABEL_58;
       }
 
-      v11 = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self active14To28DaysAgo];
-      if (v11 != [v5 active14To28DaysAgo])
+      active14To28DaysAgo = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self active14To28DaysAgo];
+      if (active14To28DaysAgo != [v5 active14To28DaysAgo])
       {
         goto LABEL_58;
       }
@@ -147,8 +147,8 @@
         goto LABEL_58;
       }
 
-      v12 = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self active7To14DaysAgo];
-      if (v12 != [v5 active7To14DaysAgo])
+      active7To14DaysAgo = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self active7To14DaysAgo];
+      if (active7To14DaysAgo != [v5 active7To14DaysAgo])
       {
         goto LABEL_58;
       }
@@ -166,8 +166,8 @@
         goto LABEL_58;
       }
 
-      v13 = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self activeWithin7days];
-      if (v13 != [v5 activeWithin7days])
+      activeWithin7days = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self activeWithin7days];
+      if (activeWithin7days != [v5 activeWithin7days])
       {
         goto LABEL_58;
       }
@@ -185,8 +185,8 @@
         goto LABEL_58;
       }
 
-      v14 = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self activeWithin7days1Turn];
-      if (v14 != [v5 activeWithin7days1Turn])
+      activeWithin7days1Turn = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self activeWithin7days1Turn];
+      if (activeWithin7days1Turn != [v5 activeWithin7days1Turn])
       {
         goto LABEL_58;
       }
@@ -204,8 +204,8 @@
         goto LABEL_58;
       }
 
-      v15 = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self activeWithin7Days2To3Turns];
-      if (v15 != [v5 activeWithin7Days2To3Turns])
+      activeWithin7Days2To3Turns = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self activeWithin7Days2To3Turns];
+      if (activeWithin7Days2To3Turns != [v5 activeWithin7Days2To3Turns])
       {
         goto LABEL_58;
       }
@@ -219,8 +219,8 @@
 
     if (-[BMSiriAssistantSuggestionFeaturesUserSegmentation hasActiveWithin7Days4PlusTurns](self, "hasActiveWithin7Days4PlusTurns") && [v5 hasActiveWithin7Days4PlusTurns])
     {
-      v16 = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self activeWithin7Days4PlusTurns];
-      v17 = v16 ^ [v5 activeWithin7Days4PlusTurns] ^ 1;
+      activeWithin7Days4PlusTurns = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self activeWithin7Days4PlusTurns];
+      v17 = activeWithin7Days4PlusTurns ^ [v5 activeWithin7Days4PlusTurns] ^ 1;
     }
 
     else
@@ -354,102 +354,102 @@ LABEL_60:
   }
 
   v37[0] = @"is2x3";
-  v10 = v3;
+  null = v3;
   if (!v3)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v10;
-  v38[0] = v10;
+  v28 = null;
+  v38[0] = null;
   v37[1] = @"siriWasDisabled";
-  v11 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v11;
-  v38[1] = v11;
+  v27 = null2;
+  v38[1] = null2;
   v37[2] = @"siriWasdictationOnly";
-  v12 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v12;
-  v38[2] = v12;
+  v26 = null3;
+  v38[2] = null3;
   v37[3] = @"active6MonthsOrMoreAgo";
-  v13 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v32 = v3;
-  v25 = v13;
-  v38[3] = v13;
+  v25 = null4;
+  v38[3] = null4;
   v37[4] = @"active28To6MonthsDaysAgo";
-  v14 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v31 = v4;
-  v24 = v14;
-  v38[4] = v14;
+  v24 = null5;
+  v38[4] = null5;
   v37[5] = @"active14To28DaysAgo";
-  v15 = v36;
+  null6 = v36;
   if (!v36)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v30 = v5;
-  v38[5] = v15;
+  v38[5] = null6;
   v37[6] = @"active7To14DaysAgo";
-  v16 = v35;
+  null7 = v35;
   if (!v35)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38[6] = v16;
+  v38[6] = null7;
   v37[7] = @"activeWithin7days";
-  v17 = v34;
+  null8 = v34;
   if (!v34)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
   v18 = v7;
-  v38[7] = v17;
+  v38[7] = null8;
   v37[8] = @"activeWithin7days1Turn";
-  v19 = v33;
+  null9 = v33;
   if (!v33)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38[8] = v19;
+  v38[8] = null9;
   v37[9] = @"activeWithin7Days2To3Turns";
-  v20 = v8;
+  null10 = v8;
   if (!v8)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38[9] = v20;
+  v38[9] = null10;
   v37[10] = @"activeWithin7Days4PlusTurns";
-  v21 = v9;
+  null11 = v9;
   if (!v9)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38[10] = v21;
+  v38[10] = null11;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:11];
   if (v9)
   {
@@ -538,28 +538,28 @@ LABEL_72:
   return v29;
 }
 
-- (BMSiriAssistantSuggestionFeaturesUserSegmentation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriAssistantSuggestionFeaturesUserSegmentation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v132[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"is2x3"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"is2x3"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"siriWasDisabled"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"siriWasDisabled"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
           goto LABEL_45;
         }
 
-        v39 = a4;
+        errorCopy = error;
         v40 = v8;
         v41 = objc_alloc(MEMORY[0x1E696ABC0]);
         v42 = *MEMORY[0x1E698F240];
@@ -571,8 +571,8 @@ LABEL_4:
         v8 = v40;
         v44 = [v43 initWithDomain:v42 code:2 userInfo:v12];
         v10 = 0;
-        a4 = 0;
-        *v39 = v44;
+        error = 0;
+        *errorCopy = v44;
         goto LABEL_44;
       }
 
@@ -584,9 +584,9 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"siriWasdictationOnly"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"siriWasdictationOnly"];
     v109 = v10;
-    v110 = self;
+    errorCopy9 = self;
     v107 = v11;
     v108 = v8;
     v106 = v9;
@@ -595,7 +595,7 @@ LABEL_4:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v29 = 0;
           goto LABEL_44;
@@ -604,19 +604,19 @@ LABEL_4:
         v45 = objc_alloc(MEMORY[0x1E696ABC0]);
         v46 = *MEMORY[0x1E698F240];
         v127 = *MEMORY[0x1E696A578];
-        v47 = a4;
+        errorCopy2 = error;
         v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"siriWasdictationOnly"];
         v128 = v14;
         v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v128 forKeys:&v127 count:1];
         v48 = v45;
         v8 = v108;
         v29 = 0;
-        a4 = 0;
-        *v47 = [v48 initWithDomain:v46 code:2 userInfo:v30];
+        error = 0;
+        *errorCopy2 = [v48 initWithDomain:v46 code:2 userInfo:v30];
 LABEL_43:
 
         v10 = v109;
-        self = v110;
+        self = errorCopy9;
         v9 = v106;
         v12 = v107;
 LABEL_44:
@@ -632,14 +632,14 @@ LABEL_44:
       v105 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"active6MonthsOrMoreAgo"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"active6MonthsOrMoreAgo"];
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v30 = v13;
-        if (!a4)
+        if (!error)
         {
           v14 = 0;
           v29 = v105;
@@ -649,7 +649,7 @@ LABEL_44:
         v49 = objc_alloc(MEMORY[0x1E696ABC0]);
         v50 = *MEMORY[0x1E698F240];
         v125 = *MEMORY[0x1E696A578];
-        v51 = a4;
+        errorCopy3 = error;
         v104 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"active6MonthsOrMoreAgo"];
         v126 = v104;
         v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v126 forKeys:&v125 count:1];
@@ -657,8 +657,8 @@ LABEL_44:
         v8 = v108;
         v53 = [v52 initWithDomain:v50 code:2 userInfo:v15];
         v14 = 0;
-        a4 = 0;
-        *v51 = v53;
+        error = 0;
+        *errorCopy3 = v53;
         v29 = v105;
         goto LABEL_42;
       }
@@ -673,13 +673,13 @@ LABEL_44:
       v14 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"active28To6MonthsDaysAgo"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"active28To6MonthsDaysAgo"];
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v104 = 0;
           v29 = v105;
@@ -690,7 +690,7 @@ LABEL_44:
         v54 = objc_alloc(MEMORY[0x1E696ABC0]);
         v55 = *MEMORY[0x1E698F240];
         v123 = *MEMORY[0x1E696A578];
-        v56 = a4;
+        errorCopy4 = error;
         v57 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"active28To6MonthsDaysAgo"];
         v124 = v57;
         v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v124 forKeys:&v123 count:1];
@@ -700,8 +700,8 @@ LABEL_44:
         v19 = v57;
         v102 = v58;
         v104 = 0;
-        a4 = 0;
-        *v56 = [v59 initWithDomain:v60 code:2 userInfo:?];
+        error = 0;
+        *errorCopy4 = [v59 initWithDomain:v60 code:2 userInfo:?];
         v29 = v105;
         v30 = v103;
 LABEL_41:
@@ -720,14 +720,14 @@ LABEL_42:
       v104 = 0;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"active14To28DaysAgo"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"active14To28DaysAgo"];
     v102 = v17;
     if (v17 && (v18 = v17, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v19 = 0;
           v29 = v105;
@@ -739,14 +739,14 @@ LABEL_42:
         v61 = objc_alloc(MEMORY[0x1E696ABC0]);
         v62 = *MEMORY[0x1E698F240];
         v121 = *MEMORY[0x1E696A578];
-        v63 = a4;
+        errorCopy5 = error;
         v101 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"active14To28DaysAgo"];
         v122 = v101;
         v100 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v122 forKeys:&v121 count:1];
         v64 = [v61 initWithDomain:v62 code:2 userInfo:?];
         v19 = 0;
-        a4 = 0;
-        *v63 = v64;
+        error = 0;
+        *errorCopy5 = v64;
         goto LABEL_98;
       }
 
@@ -758,20 +758,20 @@ LABEL_42:
       v19 = 0;
     }
 
-    v20 = [v6 objectForKeyedSubscript:@"active7To14DaysAgo"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"active7To14DaysAgo"];
     v100 = v20;
     if (!v20 || (v21 = v20, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v101 = 0;
 LABEL_22:
-      [v6 objectForKeyedSubscript:@"activeWithin7days"];
+      [dictionaryCopy objectForKeyedSubscript:@"activeWithin7days"];
       v22 = v15 = v16;
       if (v22 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v99 = 0;
             v29 = v105;
@@ -785,7 +785,7 @@ LABEL_22:
           v74 = *MEMORY[0x1E698F240];
           v117 = *MEMORY[0x1E696A578];
           v92 = v14;
-          v75 = a4;
+          errorCopy6 = error;
           v98 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"activeWithin7days"];
           v118 = v98;
           v76 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v118 forKeys:&v117 count:1];
@@ -796,8 +796,8 @@ LABEL_22:
           v22 = v72;
           v96 = v76;
           v99 = 0;
-          a4 = 0;
-          *v75 = [v77 initWithDomain:v78 code:2 userInfo:?];
+          error = 0;
+          *errorCopy6 = [v77 initWithDomain:v78 code:2 userInfo:?];
           v14 = v92;
           goto LABEL_101;
         }
@@ -810,27 +810,27 @@ LABEL_22:
         v99 = 0;
       }
 
-      v23 = [v6 objectForKeyedSubscript:@"activeWithin7days1Turn"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"activeWithin7days1Turn"];
       v96 = v23;
       v97 = v19;
       if (!v23 || (v24 = v23, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v98 = 0;
 LABEL_28:
-        v25 = [v6 objectForKeyedSubscript:@"activeWithin7Days2To3Turns"];
+        v25 = [dictionaryCopy objectForKeyedSubscript:@"activeWithin7Days2To3Turns"];
         if (v25 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v26 = 0;
               goto LABEL_37;
             }
 
             v83 = objc_alloc(MEMORY[0x1E696ABC0]);
-            v95 = a4;
+            errorCopy7 = error;
             v84 = *MEMORY[0x1E698F240];
             v113 = *MEMORY[0x1E696A578];
             v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"activeWithin7Days2To3Turns"];
@@ -838,8 +838,8 @@ LABEL_28:
             v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
             v85 = [v83 initWithDomain:v84 code:2 userInfo:v27];
             v26 = 0;
-            a4 = 0;
-            *v95 = v85;
+            error = 0;
+            *errorCopy7 = v85;
             goto LABEL_36;
           }
 
@@ -855,25 +855,25 @@ LABEL_28:
           v26 = 0;
         }
 
-        v27 = [v6 objectForKeyedSubscript:@"activeWithin7Days4PlusTurns"];
+        v27 = [dictionaryCopy objectForKeyedSubscript:@"activeWithin7Days4PlusTurns"];
         if (v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (a4)
+            if (error)
             {
-              v86 = a4;
+              errorCopy8 = error;
               v90 = objc_alloc(MEMORY[0x1E696ABC0]);
               v89 = *MEMORY[0x1E698F240];
               v111 = *MEMORY[0x1E696A578];
               v87 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"activeWithin7Days4PlusTurns"];
               v112 = v87;
               v88 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
-              *v86 = [v90 initWithDomain:v89 code:2 userInfo:v88];
+              *errorCopy8 = [v90 initWithDomain:v89 code:2 userInfo:v88];
 
               v28 = 0;
-              a4 = 0;
+              error = 0;
             }
 
             else
@@ -894,8 +894,8 @@ LABEL_28:
         }
 
         v14 = v91;
-        a4 = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)v110 initWithIs2x3:v108 siriWasDisabled:v109 siriWasdictationOnly:v105 active6MonthsOrMoreAgo:v91 active28To6MonthsDaysAgo:v104 active14To28DaysAgo:v97 active7To14DaysAgo:v101 activeWithin7days:v99 activeWithin7days1Turn:v98 activeWithin7Days2To3Turns:v26 activeWithin7Days4PlusTurns:v28];
-        v110 = a4;
+        error = [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)errorCopy9 initWithIs2x3:v108 siriWasDisabled:v109 siriWasdictationOnly:v105 active6MonthsOrMoreAgo:v91 active28To6MonthsDaysAgo:v104 active14To28DaysAgo:v97 active7To14DaysAgo:v101 activeWithin7days:v99 activeWithin7days1Turn:v98 activeWithin7Days2To3Turns:v26 activeWithin7Days4PlusTurns:v28];
+        errorCopy9 = error;
 LABEL_35:
         v22 = v93;
 LABEL_36:
@@ -920,9 +920,9 @@ LABEL_40:
         goto LABEL_28;
       }
 
-      if (a4)
+      if (error)
       {
-        v79 = a4;
+        errorCopy10 = error;
         v80 = objc_alloc(MEMORY[0x1E696ABC0]);
         v81 = *MEMORY[0x1E698F240];
         v115 = *MEMORY[0x1E696A578];
@@ -931,8 +931,8 @@ LABEL_40:
         v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v116 forKeys:&v115 count:1];
         v82 = [v80 initWithDomain:v81 code:2 userInfo:v25];
         v98 = 0;
-        a4 = 0;
-        *v79 = v82;
+        error = 0;
+        *errorCopy10 = v82;
         goto LABEL_37;
       }
 
@@ -950,13 +950,13 @@ LABEL_101:
       goto LABEL_22;
     }
 
-    if (a4)
+    if (error)
     {
       v65 = objc_alloc(MEMORY[0x1E696ABC0]);
       v66 = v19;
       v67 = *MEMORY[0x1E698F240];
       v119 = *MEMORY[0x1E696A578];
-      v68 = a4;
+      errorCopy11 = error;
       v99 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"active7To14DaysAgo"];
       v120 = v99;
       v94 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v120 forKeys:&v119 count:1];
@@ -965,8 +965,8 @@ LABEL_101:
       v70 = v67;
       v19 = v66;
       v101 = 0;
-      a4 = 0;
-      *v68 = [v69 initWithDomain:v70 code:2 userInfo:v94];
+      error = 0;
+      *errorCopy11 = [v69 initWithDomain:v70 code:2 userInfo:v94];
       v29 = v105;
       v30 = v103;
       v15 = v16;
@@ -989,7 +989,7 @@ LABEL_98:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     goto LABEL_46;
@@ -1005,28 +1005,28 @@ LABEL_98:
   v10 = v35;
   v37 = [v33 initWithDomain:v36 code:2 userInfo:v9];
   v8 = 0;
-  v38 = a4;
-  a4 = 0;
-  *v38 = v37;
+  errorCopy12 = error;
+  error = 0;
+  *errorCopy12 = v37;
 LABEL_45:
 
 LABEL_46:
   v31 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   if (self->_hasIs2x3)
   {
     is2x3 = self->_is2x3;
@@ -1094,9 +1094,9 @@ LABEL_46:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v78.receiver = self;
   v78.super_class = BMSiriAssistantSuggestionFeaturesUserSegmentation;
   v5 = [(BMEventBase *)&v78 init];
@@ -1105,12 +1105,12 @@ LABEL_46:
     goto LABEL_149;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1121,18 +1121,18 @@ LABEL_46:
       while (1)
       {
         v79 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v79 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v79 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v79 & 0x7F) << v7;
@@ -1149,9 +1149,9 @@ LABEL_46:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1170,18 +1170,18 @@ LABEL_16:
             while (1)
             {
               v79 = 0;
-              v42 = [v4 position] + 1;
-              if (v42 >= [v4 position] && (v43 = objc_msgSend(v4, "position") + 1, v43 <= objc_msgSend(v4, "length")))
+              v42 = [fromCopy position] + 1;
+              if (v42 >= [fromCopy position] && (v43 = objc_msgSend(fromCopy, "position") + 1, v43 <= objc_msgSend(fromCopy, "length")))
               {
-                v44 = [v4 data];
-                [v44 getBytes:&v79 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v79 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v79 & 0x7F) << v40;
@@ -1223,18 +1223,18 @@ LABEL_131:
             while (1)
             {
               v79 = 0;
-              v37 = [v4 position] + 1;
-              if (v37 >= [v4 position] && (v38 = objc_msgSend(v4, "position") + 1, v38 <= objc_msgSend(v4, "length")))
+              v37 = [fromCopy position] + 1;
+              if (v37 >= [fromCopy position] && (v38 = objc_msgSend(fromCopy, "position") + 1, v38 <= objc_msgSend(fromCopy, "length")))
               {
-                v39 = [v4 data];
-                [v39 getBytes:&v79 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v79 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v79 & 0x7F) << v35;
@@ -1269,18 +1269,18 @@ LABEL_131:
               while (1)
               {
                 v79 = 0;
-                v62 = [v4 position] + 1;
-                if (v62 >= [v4 position] && (v63 = objc_msgSend(v4, "position") + 1, v63 <= objc_msgSend(v4, "length")))
+                v62 = [fromCopy position] + 1;
+                if (v62 >= [fromCopy position] && (v63 = objc_msgSend(fromCopy, "position") + 1, v63 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v64 = [v4 data];
-                  [v64 getBytes:&v79 range:{objc_msgSend(v4, "position"), 1}];
+                  data4 = [fromCopy data];
+                  [data4 getBytes:&v79 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v18 |= (v79 & 0x7F) << v60;
@@ -1309,18 +1309,18 @@ LABEL_131:
               while (1)
               {
                 v79 = 0;
-                v47 = [v4 position] + 1;
-                if (v47 >= [v4 position] && (v48 = objc_msgSend(v4, "position") + 1, v48 <= objc_msgSend(v4, "length")))
+                v47 = [fromCopy position] + 1;
+                if (v47 >= [fromCopy position] && (v48 = objc_msgSend(fromCopy, "position") + 1, v48 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v49 = [v4 data];
-                  [v49 getBytes:&v79 range:{objc_msgSend(v4, "position"), 1}];
+                  data5 = [fromCopy data];
+                  [data5 getBytes:&v79 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v18 |= (v79 & 0x7F) << v45;
@@ -1349,18 +1349,18 @@ LABEL_131:
               while (1)
               {
                 v79 = 0;
-                v27 = [v4 position] + 1;
-                if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+                v27 = [fromCopy position] + 1;
+                if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v29 = [v4 data];
-                  [v29 getBytes:&v79 range:{objc_msgSend(v4, "position"), 1}];
+                  data6 = [fromCopy data];
+                  [data6 getBytes:&v79 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v18 |= (v79 & 0x7F) << v25;
@@ -1399,18 +1399,18 @@ LABEL_131:
             while (1)
             {
               v79 = 0;
-              v72 = [v4 position] + 1;
-              if (v72 >= [v4 position] && (v73 = objc_msgSend(v4, "position") + 1, v73 <= objc_msgSend(v4, "length")))
+              v72 = [fromCopy position] + 1;
+              if (v72 >= [fromCopy position] && (v73 = objc_msgSend(fromCopy, "position") + 1, v73 <= objc_msgSend(fromCopy, "length")))
               {
-                v74 = [v4 data];
-                [v74 getBytes:&v79 range:{objc_msgSend(v4, "position"), 1}];
+                data7 = [fromCopy data];
+                [data7 getBytes:&v79 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v79 & 0x7F) << v70;
@@ -1439,18 +1439,18 @@ LABEL_131:
             while (1)
             {
               v79 = 0;
-              v57 = [v4 position] + 1;
-              if (v57 >= [v4 position] && (v58 = objc_msgSend(v4, "position") + 1, v58 <= objc_msgSend(v4, "length")))
+              v57 = [fromCopy position] + 1;
+              if (v57 >= [fromCopy position] && (v58 = objc_msgSend(fromCopy, "position") + 1, v58 <= objc_msgSend(fromCopy, "length")))
               {
-                v59 = [v4 data];
-                [v59 getBytes:&v79 range:{objc_msgSend(v4, "position"), 1}];
+                data8 = [fromCopy data];
+                [data8 getBytes:&v79 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v79 & 0x7F) << v55;
@@ -1479,18 +1479,18 @@ LABEL_131:
             while (1)
             {
               v79 = 0;
-              v32 = [v4 position] + 1;
-              if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+              v32 = [fromCopy position] + 1;
+              if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
               {
-                v34 = [v4 data];
-                [v34 getBytes:&v79 range:{objc_msgSend(v4, "position"), 1}];
+                data9 = [fromCopy data];
+                [data9 getBytes:&v79 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v79 & 0x7F) << v30;
@@ -1528,18 +1528,18 @@ LABEL_131:
             while (1)
             {
               v79 = 0;
-              v67 = [v4 position] + 1;
-              if (v67 >= [v4 position] && (v68 = objc_msgSend(v4, "position") + 1, v68 <= objc_msgSend(v4, "length")))
+              v67 = [fromCopy position] + 1;
+              if (v67 >= [fromCopy position] && (v68 = objc_msgSend(fromCopy, "position") + 1, v68 <= objc_msgSend(fromCopy, "length")))
               {
-                v69 = [v4 data];
-                [v69 getBytes:&v79 range:{objc_msgSend(v4, "position"), 1}];
+                data10 = [fromCopy data];
+                [data10 getBytes:&v79 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v79 & 0x7F) << v65;
@@ -1568,18 +1568,18 @@ LABEL_131:
             while (1)
             {
               v79 = 0;
-              v52 = [v4 position] + 1;
-              if (v52 >= [v4 position] && (v53 = objc_msgSend(v4, "position") + 1, v53 <= objc_msgSend(v4, "length")))
+              v52 = [fromCopy position] + 1;
+              if (v52 >= [fromCopy position] && (v53 = objc_msgSend(fromCopy, "position") + 1, v53 <= objc_msgSend(fromCopy, "length")))
               {
-                v54 = [v4 data];
-                [v54 getBytes:&v79 range:{objc_msgSend(v4, "position"), 1}];
+                data11 = [fromCopy data];
+                [data11 getBytes:&v79 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v79 & 0x7F) << v50;
@@ -1608,18 +1608,18 @@ LABEL_131:
             while (1)
             {
               v79 = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v79 range:{objc_msgSend(v4, "position"), 1}];
+                data12 = [fromCopy data];
+                [data12 getBytes:&v79 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v79 & 0x7F) << v16;
@@ -1645,17 +1645,17 @@ LABEL_131:
         }
       }
 
-      v23 = (v18 != 0) & ~[v4 hasError];
+      v23 = (v18 != 0) & ~[fromCopy hasError];
 LABEL_145:
       *(&v5->super.super.isa + *v24) = v23;
 LABEL_146:
-      v75 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v75 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_148:
     v76 = 0;
@@ -1689,29 +1689,29 @@ LABEL_149:
   return v15;
 }
 
-- (BMSiriAssistantSuggestionFeaturesUserSegmentation)initWithIs2x3:(id)a3 siriWasDisabled:(id)a4 siriWasdictationOnly:(id)a5 active6MonthsOrMoreAgo:(id)a6 active28To6MonthsDaysAgo:(id)a7 active14To28DaysAgo:(id)a8 active7To14DaysAgo:(id)a9 activeWithin7days:(id)a10 activeWithin7days1Turn:(id)a11 activeWithin7Days2To3Turns:(id)a12 activeWithin7Days4PlusTurns:(id)a13
+- (BMSiriAssistantSuggestionFeaturesUserSegmentation)initWithIs2x3:(id)is2x3 siriWasDisabled:(id)disabled siriWasdictationOnly:(id)only active6MonthsOrMoreAgo:(id)ago active28To6MonthsDaysAgo:(id)daysAgo active14To28DaysAgo:(id)to28DaysAgo active7To14DaysAgo:(id)to14DaysAgo activeWithin7days:(id)self0 activeWithin7days1Turn:(id)self1 activeWithin7Days2To3Turns:(id)self2 activeWithin7Days4PlusTurns:(id)self3
 {
-  v18 = a3;
-  v31 = a4;
-  v30 = a5;
-  v29 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
+  is2x3Copy = is2x3;
+  disabledCopy = disabled;
+  onlyCopy = only;
+  agoCopy = ago;
+  daysAgoCopy = daysAgo;
+  to28DaysAgoCopy = to28DaysAgo;
+  to14DaysAgoCopy = to14DaysAgo;
+  within7daysCopy = within7days;
+  turnCopy = turn;
+  turnsCopy = turns;
+  plusTurnsCopy = plusTurns;
   v32.receiver = self;
   v32.super_class = BMSiriAssistantSuggestionFeaturesUserSegmentation;
   v26 = [(BMEventBase *)&v32 init];
   if (v26)
   {
     v26->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v18)
+    if (is2x3Copy)
     {
       v26->_hasIs2x3 = 1;
-      v26->_is2x3 = [v18 BOOLValue];
+      v26->_is2x3 = [is2x3Copy BOOLValue];
     }
 
     else
@@ -1720,10 +1720,10 @@ LABEL_149:
       v26->_is2x3 = 0;
     }
 
-    if (v31)
+    if (disabledCopy)
     {
       v26->_hasSiriWasDisabled = 1;
-      v26->_siriWasDisabled = [v31 BOOLValue];
+      v26->_siriWasDisabled = [disabledCopy BOOLValue];
     }
 
     else
@@ -1732,10 +1732,10 @@ LABEL_149:
       v26->_siriWasDisabled = 0;
     }
 
-    if (v30)
+    if (onlyCopy)
     {
       v26->_hasSiriWasdictationOnly = 1;
-      v26->_siriWasdictationOnly = [v30 BOOLValue];
+      v26->_siriWasdictationOnly = [onlyCopy BOOLValue];
     }
 
     else
@@ -1744,10 +1744,10 @@ LABEL_149:
       v26->_siriWasdictationOnly = 0;
     }
 
-    if (v29)
+    if (agoCopy)
     {
       v26->_hasActive6MonthsOrMoreAgo = 1;
-      v26->_active6MonthsOrMoreAgo = [v29 BOOLValue];
+      v26->_active6MonthsOrMoreAgo = [agoCopy BOOLValue];
     }
 
     else
@@ -1756,10 +1756,10 @@ LABEL_149:
       v26->_active6MonthsOrMoreAgo = 0;
     }
 
-    if (v19)
+    if (daysAgoCopy)
     {
       v26->_hasActive28To6MonthsDaysAgo = 1;
-      v26->_active28To6MonthsDaysAgo = [v19 BOOLValue];
+      v26->_active28To6MonthsDaysAgo = [daysAgoCopy BOOLValue];
     }
 
     else
@@ -1768,10 +1768,10 @@ LABEL_149:
       v26->_active28To6MonthsDaysAgo = 0;
     }
 
-    if (v20)
+    if (to28DaysAgoCopy)
     {
       v26->_hasActive14To28DaysAgo = 1;
-      v26->_active14To28DaysAgo = [v20 BOOLValue];
+      v26->_active14To28DaysAgo = [to28DaysAgoCopy BOOLValue];
     }
 
     else
@@ -1780,10 +1780,10 @@ LABEL_149:
       v26->_active14To28DaysAgo = 0;
     }
 
-    if (v21)
+    if (to14DaysAgoCopy)
     {
       v26->_hasActive7To14DaysAgo = 1;
-      v26->_active7To14DaysAgo = [v21 BOOLValue];
+      v26->_active7To14DaysAgo = [to14DaysAgoCopy BOOLValue];
     }
 
     else
@@ -1792,10 +1792,10 @@ LABEL_149:
       v26->_active7To14DaysAgo = 0;
     }
 
-    if (v22)
+    if (within7daysCopy)
     {
       v26->_hasActiveWithin7days = 1;
-      v26->_activeWithin7days = [v22 BOOLValue];
+      v26->_activeWithin7days = [within7daysCopy BOOLValue];
     }
 
     else
@@ -1804,10 +1804,10 @@ LABEL_149:
       v26->_activeWithin7days = 0;
     }
 
-    if (v23)
+    if (turnCopy)
     {
       v26->_hasActiveWithin7days1Turn = 1;
-      v26->_activeWithin7days1Turn = [v23 BOOLValue];
+      v26->_activeWithin7days1Turn = [turnCopy BOOLValue];
     }
 
     else
@@ -1816,10 +1816,10 @@ LABEL_149:
       v26->_activeWithin7days1Turn = 0;
     }
 
-    if (v24)
+    if (turnsCopy)
     {
       v26->_hasActiveWithin7Days2To3Turns = 1;
-      v26->_activeWithin7Days2To3Turns = [v24 BOOLValue];
+      v26->_activeWithin7Days2To3Turns = [turnsCopy BOOLValue];
     }
 
     else
@@ -1828,10 +1828,10 @@ LABEL_149:
       v26->_activeWithin7Days2To3Turns = 0;
     }
 
-    if (v25)
+    if (plusTurnsCopy)
     {
       v26->_hasActiveWithin7Days4PlusTurns = 1;
-      v26->_activeWithin7Days4PlusTurns = [v25 BOOLValue];
+      v26->_activeWithin7Days4PlusTurns = [plusTurnsCopy BOOLValue];
     }
 
     else
@@ -1908,9 +1908,9 @@ LABEL_149:
   return v13;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1918,8 +1918,8 @@ LABEL_149:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriAssistantSuggestionFeaturesUserSegmentation alloc] initByReadFrom:v7];
     v4 = v8;

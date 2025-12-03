@@ -2,7 +2,7 @@
 + (id)configuration;
 + (unint64_t)portraitMaximumNumberOfFaces;
 + (void)initialize;
-- (BWLandmarksInferenceConfiguration)initWithInferenceType:(int)a3;
+- (BWLandmarksInferenceConfiguration)initWithInferenceType:(int)type;
 - (void)dealloc;
 @end
 
@@ -30,15 +30,15 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     gPortraitMaximumNumberOfFaces = 1;
   }
 }
 
-- (BWLandmarksInferenceConfiguration)initWithInferenceType:(int)a3
+- (BWLandmarksInferenceConfiguration)initWithInferenceType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v8.receiver = self;
   v8.super_class = BWLandmarksInferenceConfiguration;
   v4 = [(BWInferenceConfiguration *)&v8 initWithInferenceType:?];

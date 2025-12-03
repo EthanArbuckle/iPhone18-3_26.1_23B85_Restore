@@ -1,18 +1,18 @@
 @interface _LTDSiriConfigurationModel
-- (_LTDSiriConfigurationModel)initWithDictionary:(id)a3;
+- (_LTDSiriConfigurationModel)initWithDictionary:(id)dictionary;
 @end
 
 @implementation _LTDSiriConfigurationModel
 
-- (_LTDSiriConfigurationModel)initWithDictionary:(id)a3
+- (_LTDSiriConfigurationModel)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = _LTDSiriConfigurationModel;
   v5 = [(_LTDSiriConfigurationModel *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"LanguagePairs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"LanguagePairs"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v7 = [v6 lt_ensureElementType:objc_opt_class()];

@@ -1,19 +1,19 @@
 @interface STAllActivityViewController
-- (_TtC20ScreenTimeSettingsUI27STAllActivityViewController)initWithCoder:(id)a3;
-- (_TtC20ScreenTimeSettingsUI27STAllActivityViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC20ScreenTimeSettingsUI27STAllActivityViewController)initWithUserAltDSID:(id)a3 deviceIdentifier:(id)a4;
-- (void)updateWithUserAltDSID:(id)a3 deviceIdentifier:(id)a4;
+- (_TtC20ScreenTimeSettingsUI27STAllActivityViewController)initWithCoder:(id)coder;
+- (_TtC20ScreenTimeSettingsUI27STAllActivityViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC20ScreenTimeSettingsUI27STAllActivityViewController)initWithUserAltDSID:(id)d deviceIdentifier:(id)identifier;
+- (void)updateWithUserAltDSID:(id)d deviceIdentifier:(id)identifier;
 - (void)viewDidLoad;
 @end
 
 @implementation STAllActivityViewController
 
-- (_TtC20ScreenTimeSettingsUI27STAllActivityViewController)initWithUserAltDSID:(id)a3 deviceIdentifier:(id)a4
+- (_TtC20ScreenTimeSettingsUI27STAllActivityViewController)initWithUserAltDSID:(id)d deviceIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
-  if (!a3)
+  if (!d)
   {
-    if (!a4)
+    if (!identifier)
     {
       goto LABEL_5;
     }
@@ -22,7 +22,7 @@
   }
 
   sub_264CC45DC();
-  if (a4)
+  if (identifier)
   {
 LABEL_3:
     sub_264CC45DC();
@@ -37,21 +37,21 @@ LABEL_5:
   return [(STAllActivityViewController *)&v9 initWithNibName:0 bundle:0];
 }
 
-- (_TtC20ScreenTimeSettingsUI27STAllActivityViewController)initWithCoder:(id)a3
+- (_TtC20ScreenTimeSettingsUI27STAllActivityViewController)initWithCoder:(id)coder
 {
   result = sub_264CC49FC();
   __break(1u);
   return result;
 }
 
-- (void)updateWithUserAltDSID:(id)a3 deviceIdentifier:(id)a4
+- (void)updateWithUserAltDSID:(id)d deviceIdentifier:(id)identifier
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FFA9528);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v12 - v8;
-  if (!a3)
+  if (!d)
   {
-    if (!a4)
+    if (!identifier)
     {
       goto LABEL_5;
     }
@@ -60,14 +60,14 @@ LABEL_5:
   }
 
   sub_264CC45DC();
-  if (a4)
+  if (identifier)
   {
 LABEL_3:
     sub_264CC45DC();
   }
 
 LABEL_5:
-  v10 = self;
+  selfCopy = self;
   sub_264CC37CC();
   v11 = sub_264CC37DC();
   (*(*(v11 - 8) + 56))(v9, 0, 1, v11);
@@ -76,11 +76,11 @@ LABEL_5:
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   STAllActivityViewController.viewDidLoad()();
 }
 
-- (_TtC20ScreenTimeSettingsUI27STAllActivityViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20ScreenTimeSettingsUI27STAllActivityViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

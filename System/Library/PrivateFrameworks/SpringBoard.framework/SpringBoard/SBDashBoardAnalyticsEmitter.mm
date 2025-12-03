@@ -1,22 +1,22 @@
 @interface SBDashBoardAnalyticsEmitter
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (NSString)coverSheetIdentifier;
-- (SBDashBoardAnalyticsEmitter)initWithCoverSheetViewController:(id)a3;
+- (SBDashBoardAnalyticsEmitter)initWithCoverSheetViewController:(id)controller;
 - (void)dealloc;
 @end
 
 @implementation SBDashBoardAnalyticsEmitter
 
-- (SBDashBoardAnalyticsEmitter)initWithCoverSheetViewController:(id)a3
+- (SBDashBoardAnalyticsEmitter)initWithCoverSheetViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SBDashBoardAnalyticsEmitter;
   v6 = [(SBDashBoardAnalyticsEmitter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coverSheetViewController, a3);
+    objc_storeStrong(&v6->_coverSheetViewController, controller);
     [(CSCoverSheetViewController *)v7->_coverSheetViewController registerExternalEventHandler:v7];
   }
 
@@ -38,12 +38,12 @@
   return NSStringFromClass(v2);
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v3 = [a3 type];
-  v4 = v3;
-  if (v3 == 25)
+  type = [event type];
+  v4 = type;
+  if (type == 25)
   {
     v20 = *MEMORY[0x277D67618];
     v21 = MEMORY[0x277CBEC28];
@@ -54,7 +54,7 @@
 
   else
   {
-    if (v3 != 24)
+    if (type != 24)
     {
       goto LABEL_6;
     }
@@ -69,8 +69,8 @@
   v8 = [v5 dictionaryWithObjects:v6 forKeys:v7 count:1];
   v9 = MEMORY[0x277D65DD0];
   v10 = v8;
-  v11 = [v9 sharedInstance];
-  [v11 emitEvent:36 withPayload:v10];
+  sharedInstance = [v9 sharedInstance];
+  [sharedInstance emitEvent:36 withPayload:v10];
 
 LABEL_6:
   if (CSEventShouldBeLogged())
@@ -81,8 +81,8 @@ LABEL_6:
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v14 = MEMORY[0x277D65DD0];
     v15 = v13;
-    v16 = [v14 sharedInstance];
-    [v16 emitEvent:37 withPayload:v15];
+    sharedInstance2 = [v14 sharedInstance];
+    [sharedInstance2 emitEvent:37 withPayload:v15];
   }
 
   return 0;

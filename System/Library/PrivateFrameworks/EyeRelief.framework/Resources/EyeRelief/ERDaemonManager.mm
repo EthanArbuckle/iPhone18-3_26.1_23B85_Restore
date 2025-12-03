@@ -1,17 +1,17 @@
 @interface ERDaemonManager
-+ (void)reportAnalyticsDistanceEvent:(id)a3;
-+ (void)reportAnalyticsEyeReliefToggle:(BOOL)a3;
++ (void)reportAnalyticsDistanceEvent:(id)event;
++ (void)reportAnalyticsEyeReliefToggle:(BOOL)toggle;
 - (ERDaemonManager)init;
 - (void)applyConfigurations;
 - (void)dealloc;
 - (void)disablePermissibleOnscreenContentMonitoring;
 - (void)enablePermissibleOnscreenContentMonitoring;
-- (void)handleDistanceSample:(id)a3 interventionType:(int64_t)a4 withBackgroundActivityCompletionHandler:(id)a5;
-- (void)handleTransitionForLayout:(id)a3;
-- (void)interveneWithType:(int64_t)a3 withCompletion:(id)a4;
+- (void)handleDistanceSample:(id)sample interventionType:(int64_t)type withBackgroundActivityCompletionHandler:(id)handler;
+- (void)handleTransitionForLayout:(id)layout;
+- (void)interveneWithType:(int64_t)type withCompletion:(id)completion;
 - (void)scheduleSampling;
 - (void)start;
-- (void)unscheduleSamplingWithReason:(int64_t)a3;
+- (void)unscheduleSamplingWithReason:(int64_t)reason;
 @end
 
 @implementation ERDaemonManager
@@ -93,12 +93,12 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [(ERDaemonManager *)self layoutMonitor];
+  layoutMonitor = [(ERDaemonManager *)self layoutMonitor];
 
-  if (v3)
+  if (layoutMonitor)
   {
-    v4 = [(ERDaemonManager *)self layoutMonitor];
-    [v4 invalidate];
+    layoutMonitor2 = [(ERDaemonManager *)self layoutMonitor];
+    [layoutMonitor2 invalidate];
   }
 
   v5.receiver = self;
@@ -128,13 +128,13 @@ LABEL_8:
 
 - (void)applyConfigurations
 {
-  v3 = [(ERDaemonManager *)self configurationQueue];
+  configurationQueue = [(ERDaemonManager *)self configurationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001658;
   block[3] = &unk_1000082F8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(configurationQueue, block);
 }
 
 - (void)enablePermissibleOnscreenContentMonitoring
@@ -158,21 +158,21 @@ LABEL_8:
   v3 = [NSString stringWithFormat:@"Disabling permissible distance sample monitoring"];
   [ERLogging log:v3 withType:0];
 
-  v4 = [(ERDaemonManager *)self layoutMonitor];
-  [v4 invalidate];
+  layoutMonitor = [(ERDaemonManager *)self layoutMonitor];
+  [layoutMonitor invalidate];
 
   [(ERDaemonManager *)self setLayoutMonitor:0];
 }
 
-- (void)handleTransitionForLayout:(id)a3
+- (void)handleTransitionForLayout:(id)layout
 {
-  v4 = [a3 elements];
-  v5 = [(ERDaemonManager *)self nonPermissibleOnscreenContent];
+  elements = [layout elements];
+  nonPermissibleOnscreenContent = [(ERDaemonManager *)self nonPermissibleOnscreenContent];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = elements;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -189,26 +189,26 @@ LABEL_3:
       }
 
       v12 = *(*(&v20 + 1) + 8 * v11);
-      v13 = [v12 bundleIdentifier];
-      v14 = v13;
-      if (v13)
+      bundleIdentifier = [v12 bundleIdentifier];
+      v14 = bundleIdentifier;
+      if (bundleIdentifier)
       {
-        v15 = v13;
+        identifier = bundleIdentifier;
       }
 
       else
       {
-        v15 = [v12 identifier];
+        identifier = [v12 identifier];
       }
 
-      v16 = v15;
+      v16 = identifier;
 
       if ([v16 isEqualToString:@"com.apple.lock-screen"])
       {
         break;
       }
 
-      if ([v5 containsObject:v16])
+      if ([nonPermissibleOnscreenContent containsObject:v16])
       {
         v10 = @"Onscreen content does not permit distance sampling";
         v18 = 2;
@@ -247,32 +247,32 @@ LABEL_17:
 
 - (void)scheduleSampling
 {
-  v3 = [(ERDaemonManager *)self samplingStateQueue];
+  samplingStateQueue = [(ERDaemonManager *)self samplingStateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001D94;
   block[3] = &unk_1000082F8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(samplingStateQueue, block);
 }
 
-- (void)unscheduleSamplingWithReason:(int64_t)a3
+- (void)unscheduleSamplingWithReason:(int64_t)reason
 {
-  v5 = [(ERDaemonManager *)self samplingStateQueue];
+  samplingStateQueue = [(ERDaemonManager *)self samplingStateQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100002394;
   v6[3] = &unk_1000083E8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = reason;
+  dispatch_async(samplingStateQueue, v6);
 }
 
-- (void)handleDistanceSample:(id)a3 interventionType:(int64_t)a4 withBackgroundActivityCompletionHandler:(id)a5
+- (void)handleDistanceSample:(id)sample interventionType:(int64_t)type withBackgroundActivityCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v8)
+  sampleCopy = sample;
+  handlerCopy = handler;
+  if (!sampleCopy)
   {
     v12 = [NSString stringWithFormat:@"Distance sample was nil. Will schedule next sample"];
     [ERLogging log:v12 withType:0];
@@ -280,29 +280,29 @@ LABEL_17:
     goto LABEL_8;
   }
 
-  if ([v8 distanceCategory] == 1 || objc_msgSend(v8, "distanceCategory") == 2)
+  if ([sampleCopy distanceCategory] == 1 || objc_msgSend(sampleCopy, "distanceCategory") == 2)
   {
     v10 = @"Distance was normal. Will schedule next sample";
   }
 
   else
   {
-    if ([v8 distanceCategory] | a4)
+    if ([sampleCopy distanceCategory] | type)
     {
-      v13 = [v8 distanceCategory];
-      if (a4 && !v13)
+      distanceCategory = [sampleCopy distanceCategory];
+      if (type && !distanceCategory)
       {
-        v14 = [NSString stringWithFormat:@"Distance too close, intervention needed. Will launch EyeReliefUI with intervention type %li", a4];
-        [ERLogging log:v14 withType:0];
+        type = [NSString stringWithFormat:@"Distance too close, intervention needed. Will launch EyeReliefUI with intervention type %li", type];
+        [ERLogging log:type withType:0];
 
-        [objc_opt_class() reportAnalyticsDistanceEvent:v8];
+        [objc_opt_class() reportAnalyticsDistanceEvent:sampleCopy];
         v16[0] = _NSConcreteStackBlock;
         v16[1] = 3221225472;
         v16[2] = sub_100002738;
         v16[3] = &unk_100008410;
         v16[4] = self;
-        v17 = v9;
-        [(ERDaemonManager *)self interveneWithType:a4 withCompletion:v16];
+        v17 = handlerCopy;
+        [(ERDaemonManager *)self interveneWithType:type withCompletion:v16];
 
         goto LABEL_9;
       }
@@ -320,23 +320,23 @@ LABEL_17:
   [ERLogging log:v11 withType:0];
 
 LABEL_6:
-  [objc_opt_class() reportAnalyticsDistanceEvent:v8];
+  [objc_opt_class() reportAnalyticsDistanceEvent:sampleCopy];
 LABEL_8:
-  (*(v9 + 2))(v9, 1);
+  (*(handlerCopy + 2))(handlerCopy, 1);
 LABEL_9:
 }
 
-- (void)interveneWithType:(int64_t)a3 withCompletion:(id)a4
+- (void)interveneWithType:(int64_t)type withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [[SBSRemoteAlertDefinition alloc] initWithServiceName:@"com.apple.EyeReliefUI" viewControllerClassName:@"EyeReliefUI.ViewController"];
   v8 = objc_alloc_init(SBSRemoteAlertConfigurationContext);
   v26[0] = @"Type";
-  v9 = [NSNumber numberWithInteger:a3];
+  v9 = [NSNumber numberWithInteger:type];
   v26[1] = @"Distance Threshold";
   v27[0] = v9;
-  v10 = [(ERDaemonManager *)self engine];
-  v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 tooCloseDistanceThreshold]);
+  engine = [(ERDaemonManager *)self engine];
+  v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [engine tooCloseDistanceThreshold]);
   v27[1] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:2];
   [v8 setUserInfo:v12];
@@ -348,8 +348,8 @@ LABEL_9:
   v22 = sub_100002A64;
   v23 = &unk_100008438;
   v24 = v13;
-  v25 = v6;
-  v15 = v6;
+  v25 = completionCopy;
+  v15 = completionCopy;
   v16 = v13;
   v17 = [BSActionResponder responderWithHandler:&v20];
   v18 = [[BSAction alloc] initWithInfo:0 responder:v17];
@@ -359,20 +359,20 @@ LABEL_9:
   [v16 activateWithContext:v14];
 }
 
-+ (void)reportAnalyticsDistanceEvent:(id)a3
++ (void)reportAnalyticsDistanceEvent:(id)event
 {
-  v4 = a3;
-  v3 = v4;
+  eventCopy = event;
+  v3 = eventCopy;
   AnalyticsSendEventLazy();
 }
 
-+ (void)reportAnalyticsEyeReliefToggle:(BOOL)a3
++ (void)reportAnalyticsEyeReliefToggle:(BOOL)toggle
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002DDC;
   block[3] = &unk_1000084A0;
-  v4 = a3;
+  toggleCopy = toggle;
   dispatch_async(&_dispatch_main_q, block);
 }
 

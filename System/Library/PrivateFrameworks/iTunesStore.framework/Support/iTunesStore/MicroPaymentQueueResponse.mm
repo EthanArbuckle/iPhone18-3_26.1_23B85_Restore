@@ -1,35 +1,35 @@
 @interface MicroPaymentQueueResponse
-- (BOOL)_ntsLoadFromPropertyList:(id)a3;
-- (BOOL)loadFromPropertyList:(id)a3;
+- (BOOL)_ntsLoadFromPropertyList:(id)list;
+- (BOOL)loadFromPropertyList:(id)list;
 - (BOOL)shouldTriggerQueueCheck;
-- (MicroPaymentQueueResponse)initWithRequestType:(int64_t)a3;
+- (MicroPaymentQueueResponse)initWithRequestType:(int64_t)type;
 - (NSArray)payments;
 - (NSArray)rangesToLoad;
 - (NSData)appReceipt;
 - (NSNumber)userIdentifier;
-- (id)_copyAppReceiptFromDictionary:(id)a3;
-- (id)_copyPaymentsFromDictionary:(id)a3;
-- (id)_dsidFromDictionary:(id)a3;
+- (id)_copyAppReceiptFromDictionary:(id)dictionary;
+- (id)_copyPaymentsFromDictionary:(id)dictionary;
+- (id)_dsidFromDictionary:(id)dictionary;
 - (int64_t)serverPaymentCount;
-- (void)appendResponse:(id)a3;
+- (void)appendResponse:(id)response;
 - (void)dealloc;
-- (void)setPayments:(id)a3;
-- (void)setRangesToLoad:(id)a3;
-- (void)setServerPaymentCount:(int64_t)a3;
-- (void)setShouldTriggerQueueCheck:(BOOL)a3;
-- (void)setUserIdentifier:(id)a3;
+- (void)setPayments:(id)payments;
+- (void)setRangesToLoad:(id)load;
+- (void)setServerPaymentCount:(int64_t)count;
+- (void)setShouldTriggerQueueCheck:(BOOL)check;
+- (void)setUserIdentifier:(id)identifier;
 @end
 
 @implementation MicroPaymentQueueResponse
 
-- (MicroPaymentQueueResponse)initWithRequestType:(int64_t)a3
+- (MicroPaymentQueueResponse)initWithRequestType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = MicroPaymentQueueResponse;
   result = [(MicroPaymentQueueResponse *)&v5 init];
   if (result)
   {
-    result->_requestType = a3;
+    result->_requestType = type;
   }
 
   return result;
@@ -42,37 +42,37 @@
   [(MicroPaymentQueueResponse *)&v3 dealloc];
 }
 
-- (void)appendResponse:(id)a3
+- (void)appendResponse:(id)response
 {
-  if (a3)
+  if (response)
   {
-    [*(a3 + 2) lock];
+    [*(response + 2) lock];
     [(NSLock *)self->_lock lock];
-    if ([*(a3 + 3) count])
+    if ([*(response + 3) count])
     {
       payments = self->_payments;
       if (payments)
       {
-        [(NSMutableArray *)payments addObjectsFromArray:*(a3 + 3)];
+        [(NSMutableArray *)payments addObjectsFromArray:*(response + 3)];
       }
 
       else
       {
-        self->_payments = [*(a3 + 3) mutableCopy];
+        self->_payments = [*(response + 3) mutableCopy];
       }
     }
 
-    if ([*(a3 + 4) count])
+    if ([*(response + 4) count])
     {
       rangesToLoad = self->_rangesToLoad;
       if (rangesToLoad)
       {
-        [(NSMutableArray *)rangesToLoad addObjectsFromArray:*(a3 + 4)];
+        [(NSMutableArray *)rangesToLoad addObjectsFromArray:*(response + 4)];
       }
 
       else
       {
-        self->_rangesToLoad = [*(a3 + 4) mutableCopy];
+        self->_rangesToLoad = [*(response + 4) mutableCopy];
       }
     }
 
@@ -82,15 +82,15 @@
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -107,7 +107,7 @@
       v21 = 2048;
       v22 = v11;
       v23 = 2048;
-      v24 = [objc_msgSend(a3 "appReceipt")];
+      v24 = [objc_msgSend(response "appReceipt")];
       LODWORD(v18) = 32;
       v17 = &v19;
       v12 = _os_log_send_and_compose_impl();
@@ -121,17 +121,17 @@
       }
     }
 
-    if ([objc_msgSend(a3 appReceipt])
+    if ([objc_msgSend(response appReceipt])
     {
       appReceipt = self->_appReceipt;
-      if (appReceipt != [a3 appReceipt])
+      if (appReceipt != [response appReceipt])
       {
 
-        self->_appReceipt = [a3 appReceipt];
+        self->_appReceipt = [response appReceipt];
       }
     }
 
-    self->_serverPaymentCount += *(a3 + 6);
+    self->_serverPaymentCount += *(response + 6);
     if (self->_shouldTriggerQueueCheck)
     {
       v16 = 1;
@@ -139,21 +139,21 @@
 
     else
     {
-      v16 = *(a3 + 56);
+      v16 = *(response + 56);
     }
 
     self->_shouldTriggerQueueCheck = v16 & 1;
     [(NSLock *)self->_lock unlock];
-    [*(a3 + 2) unlock];
+    [*(response + 2) unlock];
   }
 }
 
-- (BOOL)loadFromPropertyList:(id)a3
+- (BOOL)loadFromPropertyList:(id)list
 {
   [(NSLock *)self->_lock lock];
-  LOBYTE(a3) = [(MicroPaymentQueueResponse *)self _ntsLoadFromPropertyList:a3];
+  LOBYTE(list) = [(MicroPaymentQueueResponse *)self _ntsLoadFromPropertyList:list];
   [(NSLock *)self->_lock unlock];
-  return a3;
+  return list;
 }
 
 - (NSData)appReceipt
@@ -188,23 +188,23 @@
   return serverPaymentCount;
 }
 
-- (void)setServerPaymentCount:(int64_t)a3
+- (void)setServerPaymentCount:(int64_t)count
 {
   [(NSLock *)self->_lock lock];
-  self->_serverPaymentCount = a3;
+  self->_serverPaymentCount = count;
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (void)setPayments:(id)a3
+- (void)setPayments:(id)payments
 {
   [(NSLock *)self->_lock lock];
   payments = self->_payments;
-  if (payments != a3)
+  if (payments != payments)
   {
 
-    self->_payments = [a3 mutableCopy];
+    self->_payments = [payments mutableCopy];
   }
 
   lock = self->_lock;
@@ -212,14 +212,14 @@
   [(NSLock *)lock unlock];
 }
 
-- (void)setRangesToLoad:(id)a3
+- (void)setRangesToLoad:(id)load
 {
   [(NSLock *)self->_lock lock];
   rangesToLoad = self->_rangesToLoad;
-  if (rangesToLoad != a3)
+  if (rangesToLoad != load)
   {
 
-    self->_rangesToLoad = [a3 mutableCopy];
+    self->_rangesToLoad = [load mutableCopy];
   }
 
   lock = self->_lock;
@@ -227,23 +227,23 @@
   [(NSLock *)lock unlock];
 }
 
-- (void)setShouldTriggerQueueCheck:(BOOL)a3
+- (void)setShouldTriggerQueueCheck:(BOOL)check
 {
   [(NSLock *)self->_lock lock];
-  self->_shouldTriggerQueueCheck = a3;
+  self->_shouldTriggerQueueCheck = check;
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (void)setUserIdentifier:(id)a3
+- (void)setUserIdentifier:(id)identifier
 {
   [(NSLock *)self->_lock lock];
   userIdentifier = self->_userIdentifier;
-  if (userIdentifier != a3)
+  if (userIdentifier != identifier)
   {
 
-    self->_userIdentifier = [a3 copy];
+    self->_userIdentifier = [identifier copy];
   }
 
   lock = self->_lock;
@@ -267,9 +267,9 @@
   return v3;
 }
 
-- (id)_copyAppReceiptFromDictionary:(id)a3
+- (id)_copyAppReceiptFromDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:@"receipt-data"];
+  v3 = [dictionary objectForKey:@"receipt-data"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -280,15 +280,15 @@
   return v3;
 }
 
-- (id)_copyPaymentsFromDictionary:(id)a3
+- (id)_copyPaymentsFromDictionary:(id)dictionary
 {
-  v5 = [(MicroPaymentQueueResponse *)self _dsidFromDictionary:?];
-  if (!v5)
+  userIdentifier = [(MicroPaymentQueueResponse *)self _dsidFromDictionary:?];
+  if (!userIdentifier)
   {
-    v5 = [(MicroPaymentQueueResponse *)self userIdentifier];
+    userIdentifier = [(MicroPaymentQueueResponse *)self userIdentifier];
   }
 
-  v6 = [a3 objectForKey:@"app-list"];
+  v6 = [dictionary objectForKey:@"app-list"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -317,10 +317,10 @@
         v12 = *(*(&v15 + 1) + 8 * i);
         if ([MicroPayment responseIsValid:v12])
         {
-          if (v5)
+          if (userIdentifier)
           {
             v13 = [v12 mutableCopy];
-            [v13 setObject:v5 forKey:@"dsid"];
+            [v13 setObject:userIdentifier forKey:@"dsid"];
             [v7 addObject:v13];
           }
 
@@ -340,9 +340,9 @@
   return v7;
 }
 
-- (id)_dsidFromDictionary:(id)a3
+- (id)_dsidFromDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:@"dsid"];
+  v3 = [dictionary objectForKey:@"dsid"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -364,20 +364,20 @@
   return [NSNumber numberWithUnsignedLongLong:v4];
 }
 
-- (BOOL)_ntsLoadFromPropertyList:(id)a3
+- (BOOL)_ntsLoadFromPropertyList:(id)list
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MicroPaymentQueueResponse *)self _copyPaymentsFromDictionary:a3];
-    v6 = [(MicroPaymentQueueResponse *)self _copyAppReceiptFromDictionary:a3];
-    v7 = [a3 objectForKey:kISTriggerDownloadQueueKey];
+    v5 = [(MicroPaymentQueueResponse *)self _copyPaymentsFromDictionary:list];
+    v6 = [(MicroPaymentQueueResponse *)self _copyAppReceiptFromDictionary:list];
+    v7 = [list objectForKey:kISTriggerDownloadQueueKey];
     if (objc_opt_respondsToSelector())
     {
       self->_shouldTriggerQueueCheck = [v7 BOOLValue];
     }
 
-    [a3 objectForKey:@"more"];
+    [list objectForKey:@"more"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

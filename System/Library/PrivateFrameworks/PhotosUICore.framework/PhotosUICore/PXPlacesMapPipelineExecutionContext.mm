@@ -1,14 +1,14 @@
 @interface PXPlacesMapPipelineExecutionContext
-- (PXPlacesMapPipelineExecutionContext)initWithViewPort:(id)a3 completionHandler:(id)a4;
+- (PXPlacesMapPipelineExecutionContext)initWithViewPort:(id)port completionHandler:(id)handler;
 - (id)durationForDataSources;
 - (id)durationForPipelines;
-- (void)addDataSources:(id)a3 changesForDataSources:(id)a4;
+- (void)addDataSources:(id)sources changesForDataSources:(id)dataSources;
 - (void)start;
-- (void)startTimerForDataSource:(id)a3;
-- (void)startTimerForPipeline:(id)a3;
+- (void)startTimerForDataSource:(id)source;
+- (void)startTimerForPipeline:(id)pipeline;
 - (void)stop;
-- (void)stopTimerForDataSource:(id)a3;
-- (void)stopTimerForPipeline:(id)a3;
+- (void)stopTimerForDataSource:(id)source;
+- (void)stopTimerForPipeline:(id)pipeline;
 @end
 
 @implementation PXPlacesMapPipelineExecutionContext
@@ -43,10 +43,10 @@
         v29 = 0u;
         v30 = 0u;
         v5 = [(NSMutableDictionary *)self->_timerStartPipeline objectForKeyedSubscript:v4];
-        v6 = [v5 allKeys];
+        allKeys = [v5 allKeys];
 
-        v23 = v6;
-        v25 = [v6 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v23 = allKeys;
+        v25 = [allKeys countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v25)
         {
           v24 = *v28;
@@ -99,9 +99,9 @@
   return v26;
 }
 
-- (void)stopTimerForPipeline:(id)a3
+- (void)stopTimerForPipeline:(id)pipeline
 {
-  v4 = a3;
+  pipelineCopy = pipeline;
   if (stopTimerForPipeline__onceToken != -1)
   {
     dispatch_once(&stopTimerForPipeline__onceToken, &__block_literal_global_20_60254);
@@ -113,8 +113,8 @@
   v7[2] = __60__PXPlacesMapPipelineExecutionContext_stopTimerForPipeline___block_invoke_2;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pipelineCopy;
+  v6 = pipelineCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -140,9 +140,9 @@ void __60__PXPlacesMapPipelineExecutionContext_stopTimerForPipeline___block_invo
   stopTimerForPipeline__stopPipelineQueue = v0;
 }
 
-- (void)startTimerForPipeline:(id)a3
+- (void)startTimerForPipeline:(id)pipeline
 {
-  v4 = a3;
+  pipelineCopy = pipeline;
   if (startTimerForPipeline__onceToken != -1)
   {
     dispatch_once(&startTimerForPipeline__onceToken, &__block_literal_global_18);
@@ -154,8 +154,8 @@ void __60__PXPlacesMapPipelineExecutionContext_stopTimerForPipeline___block_invo
   v7[2] = __61__PXPlacesMapPipelineExecutionContext_startTimerForPipeline___block_invoke_2;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pipelineCopy;
+  v6 = pipelineCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -222,9 +222,9 @@ void __61__PXPlacesMapPipelineExecutionContext_startTimerForPipeline___block_inv
   return v3;
 }
 
-- (void)stopTimerForDataSource:(id)a3
+- (void)stopTimerForDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   if (stopTimerForDataSource__onceToken != -1)
   {
     dispatch_once(&stopTimerForDataSource__onceToken, &__block_literal_global_14);
@@ -236,8 +236,8 @@ void __61__PXPlacesMapPipelineExecutionContext_startTimerForPipeline___block_inv
   v7[2] = __62__PXPlacesMapPipelineExecutionContext_stopTimerForDataSource___block_invoke_2;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sourceCopy;
+  v6 = sourceCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -257,9 +257,9 @@ void __62__PXPlacesMapPipelineExecutionContext_stopTimerForDataSource___block_in
   stopTimerForDataSource__stopDataSourceQueue = v0;
 }
 
-- (void)startTimerForDataSource:(id)a3
+- (void)startTimerForDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   if (startTimerForDataSource__onceToken != -1)
   {
     dispatch_once(&startTimerForDataSource__onceToken, &__block_literal_global_60262);
@@ -271,8 +271,8 @@ void __62__PXPlacesMapPipelineExecutionContext_stopTimerForDataSource___block_in
   v7[2] = __63__PXPlacesMapPipelineExecutionContext_startTimerForDataSource___block_invoke_2;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sourceCopy;
+  v6 = sourceCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -292,16 +292,16 @@ void __63__PXPlacesMapPipelineExecutionContext_startTimerForDataSource___block_i
   startTimerForDataSource__startDataSourceQueue = v0;
 }
 
-- (void)addDataSources:(id)a3 changesForDataSources:(id)a4
+- (void)addDataSources:(id)sources changesForDataSources:(id)dataSources
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  [(NSMutableSet *)self->_dataSources addObjectsFromArray:a3];
+  dataSourcesCopy = dataSources;
+  [(NSMutableSet *)self->_dataSources addObjectsFromArray:sources];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v6;
+  v7 = dataSourcesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -339,8 +339,8 @@ void __63__PXPlacesMapPipelineExecutionContext_startTimerForDataSource___block_i
 {
   if (self->_duration == 0.0)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    [v3 timeIntervalSinceDate:self->_start];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:self->_start];
     self->_duration = v4;
   }
 
@@ -351,21 +351,21 @@ void __63__PXPlacesMapPipelineExecutionContext_startTimerForDataSource___block_i
 
 - (void)start
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   start = self->_start;
-  self->_start = v3;
+  self->_start = date;
 }
 
-- (PXPlacesMapPipelineExecutionContext)initWithViewPort:(id)a3 completionHandler:(id)a4
+- (PXPlacesMapPipelineExecutionContext)initWithViewPort:(id)port completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  portCopy = port;
+  handlerCopy = handler;
   v9 = [(PXPlacesMapPipelineExecutionContext *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_viewPort, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_viewPort, port);
+    v11 = _Block_copy(handlerCopy);
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v11;
 

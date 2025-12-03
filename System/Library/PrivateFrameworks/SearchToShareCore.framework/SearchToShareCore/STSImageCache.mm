@@ -1,21 +1,21 @@
 @interface STSImageCache
 + (id)sharedCache;
 - (STSImageCache)init;
-- (id)_imageFromSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (id)_imageInfoUsingAVAssetReaderWithFileURL:(id)a3;
-- (id)_imageInfoWithData:(id)a3;
+- (id)_imageFromSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (id)_imageInfoUsingAVAssetReaderWithFileURL:(id)l;
+- (id)_imageInfoWithData:(id)data;
 - (id)_imageSession;
-- (id)fetchCachedImageInfoForURL:(id)a3;
-- (id)fetchCachedStaticImageForURL:(id)a3 hasMultipleFrames:(BOOL *)a4;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (id)fetchCachedImageInfoForURL:(id)l;
+- (id)fetchCachedStaticImageForURL:(id)l hasMultipleFrames:(BOOL *)frames;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 - (void)cancelAllDownloads;
-- (void)cancelQueuedDownloadForURL:(id)a3;
+- (void)cancelQueuedDownloadForURL:(id)l;
 - (void)clearInMemoryCache;
-- (void)fetchImageDataWithURL:(id)a3 priority:(int64_t)a4 isSource:(BOOL)a5 begin:(id)a6 progress:(id)a7 completion:(id)a8;
-- (void)fetchImageWithURL:(id)a3 priority:(int64_t)a4 isSource:(BOOL)a5 begin:(id)a6 progress:(id)a7 completion:(id)a8;
-- (void)setPriority:(int64_t)a3 forQueuedDownloadWithURL:(id)a4;
+- (void)fetchImageDataWithURL:(id)l priority:(int64_t)priority isSource:(BOOL)source begin:(id)begin progress:(id)progress completion:(id)completion;
+- (void)fetchImageWithURL:(id)l priority:(int64_t)priority isSource:(BOOL)source begin:(id)begin progress:(id)progress completion:(id)completion;
+- (void)setPriority:(int64_t)priority forQueuedDownloadWithURL:(id)l;
 @end
 
 @implementation STSImageCache
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __28__STSImageCache_sharedCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCache_onceToken != -1)
   {
     dispatch_once(&sharedCache_onceToken, block);
@@ -58,13 +58,13 @@ uint64_t __28__STSImageCache_sharedCache__block_invoke()
     v2->_operationQueue = v3;
 
     [(NSOperationQueue *)v2->_operationQueue setMaxConcurrentOperationCount:4];
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     downloadOperationInfos = v2->_downloadOperationInfos;
-    v2->_downloadOperationInfos = v5;
+    v2->_downloadOperationInfos = dictionary;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     cancelledDownloadOperationInfos = v2->_cancelledDownloadOperationInfos;
-    v2->_cancelledDownloadOperationInfos = v7;
+    v2->_cancelledDownloadOperationInfos = dictionary2;
 
     v9 = dispatch_queue_create("com.apple.siri.parsec.SearchToShareApp.SearchToShareAppExtension.queuedOperationsInfo", 0);
     queuedOperationsInfoQueue = v2->_queuedOperationsInfoQueue;
@@ -74,38 +74,38 @@ uint64_t __28__STSImageCache_sharedCache__block_invoke()
     urlCache = v2->_urlCache;
     v2->_urlCache = v11;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     staticImageCache = v2->_staticImageCache;
-    v2->_staticImageCache = v13;
+    v2->_staticImageCache = dictionary3;
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     firstFrameImageCache = v2->_firstFrameImageCache;
-    v2->_firstFrameImageCache = v15;
+    v2->_firstFrameImageCache = dictionary4;
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary5 = [MEMORY[0x277CBEB38] dictionary];
     imageInfoCache = v2->_imageInfoCache;
-    v2->_imageInfoCache = v17;
+    v2->_imageInfoCache = dictionary5;
   }
 
   return v2;
 }
 
-- (id)fetchCachedStaticImageForURL:(id)a3 hasMultipleFrames:(BOOL *)a4
+- (id)fetchCachedStaticImageForURL:(id)l hasMultipleFrames:(BOOL *)frames
 {
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
     v8 = 0;
     goto LABEL_7;
   }
 
-  v7 = [(NSMutableDictionary *)self->_firstFrameImageCache objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_firstFrameImageCache objectForKey:lCopy];
   if (!v7)
   {
-    v8 = [(NSMutableDictionary *)self->_staticImageCache objectForKey:v6];
+    v8 = [(NSMutableDictionary *)self->_staticImageCache objectForKey:lCopy];
 LABEL_7:
     v9 = 0;
-    if (!a4)
+    if (!frames)
     {
       goto LABEL_9;
     }
@@ -115,10 +115,10 @@ LABEL_7:
 
   v8 = v7;
   v9 = 1;
-  if (a4)
+  if (frames)
   {
 LABEL_8:
-    *a4 = v9;
+    *frames = v9;
   }
 
 LABEL_9:
@@ -126,9 +126,9 @@ LABEL_9:
   return v8;
 }
 
-- (id)fetchCachedImageInfoForURL:(id)a3
+- (id)fetchCachedImageInfoForURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v4 = [(NSMutableDictionary *)self->_imageInfoCache objectForKey:?];
   }
@@ -141,21 +141,21 @@ LABEL_9:
   return v4;
 }
 
-- (void)fetchImageWithURL:(id)a3 priority:(int64_t)a4 isSource:(BOOL)a5 begin:(id)a6 progress:(id)a7 completion:(id)a8
+- (void)fetchImageWithURL:(id)l priority:(int64_t)priority isSource:(BOOL)source begin:(id)begin progress:(id)progress completion:(id)completion
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a8;
+  sourceCopy = source;
+  lCopy = l;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __79__STSImageCache_fetchImageWithURL_priority_isSource_begin_progress_completion___block_invoke;
   v18[3] = &unk_279B8B6E8;
   v18[4] = self;
-  v19 = v14;
-  v20 = v15;
-  v16 = v15;
-  v17 = v14;
-  [(STSImageCache *)self fetchImageDataWithURL:v17 priority:a4 isSource:v11 begin:a6 progress:a7 completion:v18];
+  v19 = lCopy;
+  v20 = completionCopy;
+  v16 = completionCopy;
+  v17 = lCopy;
+  [(STSImageCache *)self fetchImageDataWithURL:v17 priority:priority isSource:sourceCopy begin:begin progress:progress completion:v18];
 }
 
 void __79__STSImageCache_fetchImageWithURL_priority_isSource_begin_progress_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5, void *a6)
@@ -323,19 +323,19 @@ uint64_t __79__STSImageCache_fetchImageWithURL_priority_isSource_begin_progress_
   return [*(*(a1 + 32) + v1) setObject:*(a1 + 40) forKey:*(a1 + 48)];
 }
 
-- (void)fetchImageDataWithURL:(id)a3 priority:(int64_t)a4 isSource:(BOOL)a5 begin:(id)a6 progress:(id)a7 completion:(id)a8
+- (void)fetchImageDataWithURL:(id)l priority:(int64_t)priority isSource:(BOOL)source begin:(id)begin progress:(id)progress completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  if (v13)
+  lCopy = l;
+  beginCopy = begin;
+  progressCopy = progress;
+  completionCopy = completion;
+  if (lCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v13;
+      v26 = lCopy;
       _os_log_impl(&dword_264E95000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Fetch image data for %@", buf, 0xCu);
     }
 
@@ -344,12 +344,12 @@ uint64_t __79__STSImageCache_fetchImageWithURL_priority_isSource_begin_progress_
     v18[1] = 3221225472;
     v18[2] = __83__STSImageCache_fetchImageDataWithURL_priority_isSource_begin_progress_completion___block_invoke;
     v18[3] = &unk_279B8B8C0;
-    v19 = v13;
-    v20 = self;
-    v21 = v16;
-    v24 = a4;
-    v22 = v14;
-    v23 = v15;
+    v19 = lCopy;
+    selfCopy = self;
+    v21 = completionCopy;
+    priorityCopy = priority;
+    v22 = beginCopy;
+    v23 = progressCopy;
     dispatch_async(v17, v18);
   }
 }
@@ -822,11 +822,11 @@ void __83__STSImageCache_fetchImageDataWithURL_priority_isSource_begin_progress_
   [*(a1[5] + 56) setObject:v2 forKeyedSubscript:a1[6]];
 }
 
-- (void)setPriority:(int64_t)a3 forQueuedDownloadWithURL:(id)a4
+- (void)setPriority:(int64_t)priority forQueuedDownloadWithURL:(id)l
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  lCopy = l;
+  v7 = lCopy;
+  if (lCopy)
   {
     queuedOperationsInfoQueue = self->_queuedOperationsInfoQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -834,8 +834,8 @@ void __83__STSImageCache_fetchImageDataWithURL_priority_isSource_begin_progress_
     block[2] = __54__STSImageCache_setPriority_forQueuedDownloadWithURL___block_invoke;
     block[3] = &unk_279B8B008;
     block[4] = self;
-    v10 = v6;
-    v11 = a3;
+    v10 = lCopy;
+    priorityCopy = priority;
     dispatch_async(queuedOperationsInfoQueue, block);
   }
 }
@@ -847,11 +847,11 @@ void __54__STSImageCache_setPriority_forQueuedDownloadWithURL___block_invoke(voi
   [v2 setQueuePriority:a1[6]];
 }
 
-- (void)cancelQueuedDownloadForURL:(id)a3
+- (void)cancelQueuedDownloadForURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy)
   {
     queuedOperationsInfoQueue = self->_queuedOperationsInfoQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -859,7 +859,7 @@ void __54__STSImageCache_setPriority_forQueuedDownloadWithURL___block_invoke(voi
     v7[2] = __44__STSImageCache_cancelQueuedDownloadForURL___block_invoke;
     v7[3] = &unk_279B8AEF0;
     v7[4] = self;
-    v8 = v4;
+    v8 = lCopy;
     dispatch_async(queuedOperationsInfoQueue, v7);
   }
 }
@@ -907,12 +907,12 @@ uint64_t __35__STSImageCache_cancelAllDownloads__block_invoke(uint64_t a1)
   [(NSMutableDictionary *)imageInfoCache removeAllObjects];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  if (errorCopy)
   {
     v20 = 0;
     v21 = &v20;
@@ -925,15 +925,15 @@ uint64_t __35__STSImageCache_cancelAllDownloads__block_invoke(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __54__STSImageCache_URLSession_task_didCompleteWithError___block_invoke;
     block[3] = &unk_279B8B738;
-    v12 = v9;
+    v12 = taskCopy;
     v17 = v12;
-    v18 = self;
+    selfCopy = self;
     v19 = &v20;
     dispatch_sync(queuedOperationsInfoQueue, block);
     v13 = v21[5];
-    v14 = [v12 response];
-    v15 = [v12 _timingData];
-    [v13 completedWithResponse:v14 location:0 timingData:v15 error:v10];
+    response = [v12 response];
+    _timingData = [v12 _timingData];
+    [v13 completedWithResponse:response location:0 timingData:_timingData error:errorCopy];
 
     _Block_object_dispose(&v20, 8);
   }
@@ -956,11 +956,11 @@ void __54__STSImageCache_URLSession_task_didCompleteWithError___block_invoke(uin
   *(v5 + 40) = v4;
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  lCopy = l;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -973,14 +973,14 @@ void __54__STSImageCache_URLSession_task_didCompleteWithError___block_invoke(uin
   block[2] = __67__STSImageCache_URLSession_downloadTask_didFinishDownloadingToURL___block_invoke;
   block[3] = &unk_279B8B738;
   block[4] = self;
-  v12 = v9;
+  v12 = taskCopy;
   v17 = v12;
   v18 = &v19;
   dispatch_sync(queuedOperationsInfoQueue, block);
   v13 = v20[5];
-  v14 = [v12 response];
-  v15 = [v12 _timingData];
-  [v13 completedWithResponse:v14 location:v10 timingData:v15 error:0];
+  response = [v12 response];
+  _timingData = [v12 _timingData];
+  [v13 completedWithResponse:response location:lCopy timingData:_timingData error:0];
 
   _Block_object_dispose(&v19, 8);
 }
@@ -998,10 +998,10 @@ void __67__STSImageCache_URLSession_downloadTask_didFinishDownloadingToURL___blo
   *(v6 + 40) = v5;
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  v11 = a3;
-  v12 = a4;
+  sessionCopy = session;
+  taskCopy = task;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -1014,11 +1014,11 @@ void __67__STSImageCache_URLSession_downloadTask_didFinishDownloadingToURL___blo
   block[2] = __98__STSImageCache_URLSession_downloadTask_didWriteData_totalBytesWritten_totalBytesExpectedToWrite___block_invoke;
   block[3] = &unk_279B8B738;
   block[4] = self;
-  v14 = v12;
+  v14 = taskCopy;
   v16 = v14;
   v17 = &v18;
   dispatch_sync(queuedOperationsInfoQueue, block);
-  [v19[5] updateProgressWithTotalBytesWritten:a6 totalBytesExpectedToWrite:a7];
+  [v19[5] updateProgressWithTotalBytesWritten:written totalBytesExpectedToWrite:write];
 
   _Block_object_dispose(&v18, 8);
 }
@@ -1042,7 +1042,7 @@ void __98__STSImageCache_URLSession_downloadTask_didWriteData_totalBytesWritten_
   imageSession = self->_imageSession;
   if (!imageSession)
   {
-    v4 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
     v5 = MEMORY[0x277CCACA8];
     v6 = MGCopyAnswer();
     v7 = MGCopyAnswer();
@@ -1052,16 +1052,16 @@ void __98__STSImageCache_URLSession_downloadTask_didWriteData_totalBytesWritten_
     v14 = @"User-Agent";
     v15[0] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    [v4 setHTTPAdditionalHeaders:v10];
+    [defaultSessionConfiguration setHTTPAdditionalHeaders:v10];
 
-    [v4 setURLCache:self->_urlCache];
-    [v4 setHTTPCookieAcceptPolicy:1];
-    [v4 setHTTPMaximumConnectionsPerHost:4];
-    [v4 setTimeoutIntervalForResource:60.0];
-    [v4 setTimeoutIntervalForRequest:15.0];
-    [v4 set_connectionCacheCellPurgeTimeout:10.0];
-    [v4 set_timingDataOptions:9];
-    v11 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v4 delegate:self delegateQueue:0];
+    [defaultSessionConfiguration setURLCache:self->_urlCache];
+    [defaultSessionConfiguration setHTTPCookieAcceptPolicy:1];
+    [defaultSessionConfiguration setHTTPMaximumConnectionsPerHost:4];
+    [defaultSessionConfiguration setTimeoutIntervalForResource:60.0];
+    [defaultSessionConfiguration setTimeoutIntervalForRequest:15.0];
+    [defaultSessionConfiguration set_connectionCacheCellPurgeTimeout:10.0];
+    [defaultSessionConfiguration set_timingDataOptions:9];
+    v11 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration delegate:self delegateQueue:0];
     v12 = self->_imageSession;
     self->_imageSession = v11;
 
@@ -1071,10 +1071,10 @@ void __98__STSImageCache_URLSession_downloadTask_didWriteData_totalBytesWritten_
   return imageSession;
 }
 
-- (id)_imageInfoUsingAVAssetReaderWithFileURL:(id)a3
+- (id)_imageInfoUsingAVAssetReaderWithFileURL:(id)l
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CE63D8] assetWithURL:a3];
+  v4 = [MEMORY[0x277CE63D8] assetWithURL:l];
   v37 = 0;
   v5 = [objc_alloc(MEMORY[0x277CE6410]) initWithAsset:v4 error:&v37];
   v6 = v37;
@@ -1093,11 +1093,11 @@ void __98__STSImageCache_URLSession_downloadTask_didWriteData_totalBytesWritten_
       [v5 addOutput:v10];
       if (([v5 startReading] & 1) == 0)
       {
-        v11 = [v5 error];
+        error = [v5 error];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v39 = v11;
+          v39 = error;
           _os_log_impl(&dword_264E95000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Calling AVAssetReader failed with error: %@", buf, 0xCu);
         }
       }
@@ -1114,14 +1114,14 @@ void __98__STSImageCache_URLSession_downloadTask_didWriteData_totalBytesWritten_
             _os_log_impl(&dword_264E95000, v13, OS_LOG_TYPE_DEFAULT, "AVAssetReaderStatusReading", buf, 2u);
           }
 
-          v14 = [v10 copyNextSampleBuffer];
-          if (!v14)
+          copyNextSampleBuffer = [v10 copyNextSampleBuffer];
+          if (!copyNextSampleBuffer)
           {
             break;
           }
 
-          v15 = v14;
-          v16 = [(STSImageCache *)self _imageFromSampleBuffer:v14];
+          v15 = copyNextSampleBuffer;
+          v16 = [(STSImageCache *)self _imageFromSampleBuffer:copyNextSampleBuffer];
           if (v16)
           {
             [v12 addObject:v16];
@@ -1133,7 +1133,7 @@ void __98__STSImageCache_URLSession_downloadTask_didWriteData_totalBytesWritten_
         while ([v5 status] == 1);
       }
 
-      v17 = [v5 status];
+      status = [v5 status];
       [v5 cancelReading];
       if ([v12 count])
       {
@@ -1182,7 +1182,7 @@ void __98__STSImageCache_URLSession_downloadTask_didWriteData_totalBytesWritten_
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          [STSImageCache _imageInfoUsingAVAssetReaderWithFileURL:v17];
+          [STSImageCache _imageInfoUsingAVAssetReaderWithFileURL:status];
         }
 
         v18 = 0;
@@ -1214,9 +1214,9 @@ void __98__STSImageCache_URLSession_downloadTask_didWriteData_totalBytesWritten_
   return v18;
 }
 
-- (id)_imageFromSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (id)_imageFromSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   CVPixelBufferLockBaseAddress(ImageBuffer, 0);
   BaseAddress = CVPixelBufferGetBaseAddress(ImageBuffer);
   BytesPerRow = CVPixelBufferGetBytesPerRow(ImageBuffer);
@@ -1229,8 +1229,8 @@ void __98__STSImageCache_URLSession_downloadTask_didWriteData_totalBytesWritten_
   CGContextRelease(v9);
   CGColorSpaceRelease(DeviceRGB);
   v11 = MEMORY[0x277D755B8];
-  v12 = [MEMORY[0x277D759A0] mainScreen];
-  [v12 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v13 = [v11 imageWithCGImage:Image scale:0 orientation:?];
 
   CGImageRelease(Image);
@@ -1238,20 +1238,20 @@ void __98__STSImageCache_URLSession_downloadTask_didWriteData_totalBytesWritten_
   return v13;
 }
 
-- (id)_imageInfoWithData:(id)a3
+- (id)_imageInfoWithData:(id)data
 {
   v35 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAA00];
-  v5 = a3;
-  v6 = [v4 defaultManager];
+  dataCopy = data;
+  defaultManager = [v4 defaultManager];
   v7 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
   v9 = objc_alloc(MEMORY[0x277CCACA8]);
   v10 = MEMORY[0x277CCACA8];
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  v12 = [v11 UUIDString];
-  v13 = [v10 stringWithFormat:@"%@.mp4", v12];
-  v14 = [v8 stringByAppendingPathComponent:v13];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v13 = [v10 stringWithFormat:@"%@.mp4", uUIDString];
+  v14 = [firstObject stringByAppendingPathComponent:v13];
   v15 = [v9 initWithString:v14];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -1261,7 +1261,7 @@ void __98__STSImageCache_URLSession_downloadTask_didWriteData_totalBytesWritten_
     _os_log_impl(&dword_264E95000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "video file %@", buf, 0xCu);
   }
 
-  v16 = [v5 writeToFile:v15 atomically:1];
+  v16 = [dataCopy writeToFile:v15 atomically:1];
 
   if (v16)
   {
@@ -1286,13 +1286,13 @@ void __98__STSImageCache_URLSession_downloadTask_didWriteData_totalBytesWritten_
     v23 = CFAbsoluteTimeGetCurrent();
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [MEMORY[0x277CCABB0] numberWithDouble:v23 - Current];
+      current = [MEMORY[0x277CCABB0] numberWithDouble:v23 - Current];
       *buf = 138412290;
-      v34 = v24;
+      v34 = current;
       _os_log_impl(&dword_264E95000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "end MP4Processing (duration %@)", buf, 0xCu);
     }
 
-    [v6 removeItemAtPath:v15 error:0];
+    [defaultManager removeItemAtPath:v15 error:0];
   }
 
   else

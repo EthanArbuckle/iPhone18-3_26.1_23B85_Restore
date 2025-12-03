@@ -1,27 +1,27 @@
 @interface EditFavoritesController
-- (BOOL)selectedStateForMailbox:(id)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)toggleAndReturnSelectedStateForMailbox:(id)a3;
-- (EditFavoritesController)initWithAccountsProvider:(id)a3 favoritesManager:(id)a4;
+- (BOOL)selectedStateForMailbox:(id)mailbox;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)toggleAndReturnSelectedStateForMailbox:(id)mailbox;
+- (EditFavoritesController)initWithAccountsProvider:(id)provider favoritesManager:(id)manager;
 - (EditFavoritesControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_contentSizeCategoryChanged:(id)a3;
-- (void)doneButtonClicked:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_contentSizeCategoryChanged:(id)changed;
+- (void)doneButtonClicked:(id)clicked;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation EditFavoritesController
 
-- (EditFavoritesController)initWithAccountsProvider:(id)a3 favoritesManager:(id)a4
+- (EditFavoritesController)initWithAccountsProvider:(id)provider favoritesManager:(id)manager
 {
-  v29 = a3;
-  v30 = a4;
+  providerCopy = provider;
+  managerCopy = manager;
   v35.receiver = self;
   v35.super_class = EditFavoritesController;
   v6 = [(EditFavoritesController *)&v35 initWithStyle:2];
@@ -35,16 +35,16 @@
     selectedFavoriteMailboxes = v6->_selectedFavoriteMailboxes;
     v6->_selectedFavoriteMailboxes = v9;
 
-    v28 = [v29 orderedAccounts];
-    -[EditFavoritesController setIsSingleAccount:](v6, "setIsSingleAccount:", [v29 isDisplayingMultipleAccounts] ^ 1);
+    orderedAccounts = [providerCopy orderedAccounts];
+    -[EditFavoritesController setIsSingleAccount:](v6, "setIsSingleAccount:", [providerCopy isDisplayingMultipleAccounts] ^ 1);
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = [v30 mailboxesCollection];
-    v12 = [v11 items];
+    mailboxesCollection = [managerCopy mailboxesCollection];
+    items = [mailboxesCollection items];
 
-    v13 = [v12 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    v13 = [items countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v13)
     {
       v14 = *v32;
@@ -54,7 +54,7 @@
         {
           if (*v32 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(items);
           }
 
           v16 = *(*(&v31 + 1) + 8 * i);
@@ -81,7 +81,7 @@
           [*p_selectedFavoriteMailboxes addObject:v16];
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v13 = [items countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v13);
@@ -89,7 +89,7 @@
 
     if ([(EditFavoritesController *)v6 isSingleAccount])
     {
-      sortedAccounts = [v28 firstObject];
+      sortedAccounts = [orderedAccounts firstObject];
       v22 = +[MailChangeManager sharedChangeManager];
       v23 = [v22 allMailboxUidsSortedWithSpecialsAtTopForAccount:sortedAccounts includingLocals:1 client:v6 outbox:0];
       sortedMailboxes = v6->_sortedMailboxes;
@@ -98,7 +98,7 @@
 
     else
     {
-      v25 = v28;
+      v25 = orderedAccounts;
       sortedAccounts = v6->_sortedAccounts;
       v6->_sortedAccounts = v25;
     }
@@ -122,62 +122,62 @@
   v5 = [v4 localizedStringForKey:@"DONE" value:&stru_100662A88 table:@"Main"];
   v6 = [v3 initWithTitle:v5 style:2 target:self action:"doneButtonClicked:"];
 
-  v7 = [(EditFavoritesController *)self navigationItem];
-  [v7 setRightBarButtonItem:v6];
+  navigationItem = [(EditFavoritesController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v6];
 
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"MAILBOXES" value:&stru_100662A88 table:@"Main"];
-  v10 = [(EditFavoritesController *)self navigationItem];
-  [v10 setTitle:v9];
+  navigationItem2 = [(EditFavoritesController *)self navigationItem];
+  [navigationItem2 setTitle:v9];
 
-  v11 = [(EditFavoritesController *)self tableView];
+  tableView = [(EditFavoritesController *)self tableView];
   +[MailboxTableCell defaultRowHeight];
-  [v11 setEstimatedRowHeight:?];
+  [tableView setEstimatedRowHeight:?];
 
-  v12 = [(EditFavoritesController *)self navigationController];
-  [v12 _setClipUnderlapWhileTransitioning:1];
+  navigationController = [(EditFavoritesController *)self navigationController];
+  [navigationController _setClipUnderlapWhileTransitioning:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = EditFavoritesController;
-  [(EditFavoritesController *)&v6 viewWillAppear:a3];
+  [(EditFavoritesController *)&v6 viewWillAppear:appear];
   [(EditFavoritesController *)self preferredContentSize];
   [(EditFavoritesController *)self setPreferredContentSize:375.0];
-  v4 = [(EditFavoritesController *)self mf_updatePreferredContentSizeBasedOnTableView];
-  [(EditFavoritesController *)self setTableViewObserver:v4];
+  mf_updatePreferredContentSizeBasedOnTableView = [(EditFavoritesController *)self mf_updatePreferredContentSizeBasedOnTableView];
+  [(EditFavoritesController *)self setTableViewObserver:mf_updatePreferredContentSizeBasedOnTableView];
 
-  v5 = [(EditFavoritesController *)self tableView];
-  [v5 reloadData];
+  tableView = [(EditFavoritesController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = EditFavoritesController;
-  [(EditFavoritesController *)&v5 traitCollectionDidChange:v4];
+  [(EditFavoritesController *)&v5 traitCollectionDidChange:changeCopy];
   [(EditFavoritesController *)self mf_updateTableViewBackgroundColorForPopover];
 }
 
-- (void)doneButtonClicked:(id)a3
+- (void)doneButtonClicked:(id)clicked
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained editFavoritesControllerDidFinish:self];
 }
 
-- (BOOL)selectedStateForMailbox:(id)a3
+- (BOOL)selectedStateForMailbox:(id)mailbox
 {
-  v4 = [FavoriteItem itemForMailbox:a3 selected:1];
+  v4 = [FavoriteItem itemForMailbox:mailbox selected:1];
   LOBYTE(self) = [(NSMutableArray *)self->_selectedFavoriteMailboxes containsObject:v4];
 
   return self;
 }
 
-- (BOOL)toggleAndReturnSelectedStateForMailbox:(id)a3
+- (BOOL)toggleAndReturnSelectedStateForMailbox:(id)mailbox
 {
-  v4 = [FavoriteItem itemForMailbox:a3 selected:1];
+  v4 = [FavoriteItem itemForMailbox:mailbox selected:1];
   v5 = [(NSMutableArray *)self->_selectedFavoriteMailboxes containsObject:v4];
   selectedFavoriteMailboxes = self->_selectedFavoriteMailboxes;
   if (v5)
@@ -193,9 +193,9 @@
   return v5 ^ 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return -1;
   }
@@ -215,25 +215,25 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v30 = a3;
-  v31 = a4;
-  if ([v31 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
     goto LABEL_26;
   }
 
   if ([(EditFavoritesController *)self isSingleAccount])
   {
-    v6 = [v30 dequeueReusableCellWithIdentifier:@"MailReuseFavorites_Mailboxes"];
+    v6 = [viewCopy dequeueReusableCellWithIdentifier:@"MailReuseFavorites_Mailboxes"];
     if (!v6)
     {
       v6 = [[MailboxTableCell alloc] initWithStyle:0 reuseIdentifier:@"MailReuseFavorites_Mailboxes"];
     }
 
-    v7 = [(EditFavoritesController *)self sortedMailboxes];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v31, "row")}];
+    sortedMailboxes = [(EditFavoritesController *)self sortedMailboxes];
+    v8 = [sortedMailboxes objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     v9 = [NSSet setWithObject:v8];
     [(MailboxTableCell *)v6 setLegacyMailboxes:v9];
@@ -245,14 +245,14 @@
 
   else
   {
-    v6 = [v30 dequeueReusableCellWithIdentifier:@"MailReuseFavorites_Accounts"];
+    v6 = [viewCopy dequeueReusableCellWithIdentifier:@"MailReuseFavorites_Accounts"];
     if (!v6)
     {
       v6 = [[MailboxTableCell alloc] initWithStyle:1 reuseIdentifier:@"MailReuseFavorites_Accounts"];
     }
 
-    v12 = [(EditFavoritesController *)self sortedAccounts];
-    v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v31, "row")}];
+    sortedAccounts = [(EditFavoritesController *)self sortedAccounts];
+    v13 = [sortedAccounts objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     v34 = 0u;
     v35 = 0u;
@@ -273,8 +273,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v32 + 1) + 8 * i) account];
-          v20 = [v19 isEqual:v13];
+          account = [*(*(&v32 + 1) + 8 * i) account];
+          v20 = [account isEqual:v13];
 
           v15 += v20;
         }
@@ -285,8 +285,8 @@
       while (v16);
     }
 
-    v21 = [v13 displayName];
-    [(MailboxTableCell *)v6 setTitle:v21];
+    displayName = [v13 displayName];
+    [(MailboxTableCell *)v6 setTitle:displayName];
 
     v22 = [MailAccount accountImageForAccount:v13];
     [(MailboxTableCell *)v6 setIcon:v22];
@@ -294,20 +294,20 @@
     if (v15)
     {
       v23 = [NSNumber numberWithUnsignedInteger:v15];
-      v24 = [NSNumberFormatter localizedStringFromNumber:v23 numberStyle:1];
+      detailTextLabel2 = [NSNumberFormatter localizedStringFromNumber:v23 numberStyle:1];
 
       v25 = [NSBundle bundleForClass:objc_opt_class()];
       v26 = [v25 localizedStringForKey:@"ITEMS_SELECTED%1$lu%2$@" value:&stru_100662A88 table:@"Main"];
-      v27 = [NSString localizedStringWithFormat:v26, v15, v24];
+      v27 = [NSString localizedStringWithFormat:v26, v15, detailTextLabel2];
 
-      v28 = [(MailboxTableCell *)v6 detailTextLabel];
-      [v28 setText:v27];
+      detailTextLabel = [(MailboxTableCell *)v6 detailTextLabel];
+      [detailTextLabel setText:v27];
     }
 
     else
     {
-      v24 = [(MailboxTableCell *)v6 detailTextLabel];
-      [v24 setText:0];
+      detailTextLabel2 = [(MailboxTableCell *)v6 detailTextLabel];
+      [detailTextLabel2 setText:0];
     }
 
     [(MailboxTableCell *)v6 setAccessoryType:1];
@@ -322,24 +322,24 @@ LABEL_26:
   return v6;
 }
 
-- (void)_contentSizeCategoryChanged:(id)a3
+- (void)_contentSizeCategoryChanged:(id)changed
 {
   +[MailboxTableCell invalidateCachedLayoutInformation];
-  v4 = [(EditFavoritesController *)self tableView];
-  [v4 reloadData];
+  tableView = [(EditFavoritesController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
-  if (![v6 section])
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy section])
   {
     if ([(EditFavoritesController *)self isSingleAccount])
     {
-      v7 = [v13 cellForRowAtIndexPath:v6];
-      v8 = [(EditFavoritesController *)self sortedMailboxes];
-      v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+      v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
+      sortedMailboxes = [(EditFavoritesController *)self sortedMailboxes];
+      v9 = [sortedMailboxes objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
       if ([(EditFavoritesController *)self toggleAndReturnSelectedStateForMailbox:v9])
       {
@@ -352,29 +352,29 @@ LABEL_26:
       }
 
       [v7 setAccessoryType:v10];
-      [v13 deselectRowAtIndexPath:v6 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     }
 
     else
     {
-      v11 = [(EditFavoritesController *)self sortedAccounts];
-      v7 = [v11 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+      sortedAccounts = [(EditFavoritesController *)self sortedAccounts];
+      v7 = [sortedAccounts objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
       v9 = objc_alloc_init(AccountFavoritesPickerController);
       [(MailboxListViewControllerBase *)v9 setAccount:v7];
       [(AccountFavoritesPickerController *)v9 setDelegate:self];
-      v12 = [(EditFavoritesController *)self navigationController];
-      [v12 pushViewController:v9 animated:1];
+      navigationController = [(EditFavoritesController *)self navigationController];
+      [navigationController pushViewController:v9 animated:1];
     }
   }
 
-  [v13 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -385,29 +385,29 @@ LABEL_26:
   return result;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [v6 mf_updateBackgroundColorForPopover:{-[EditFavoritesController mf_supportsPopoverPresentation](self, "mf_supportsPopoverPresentation")}];
+  cellCopy = cell;
+  [cellCopy mf_updateBackgroundColorForPopover:{-[EditFavoritesController mf_supportsPopoverPresentation](self, "mf_supportsPopoverPresentation")}];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(EditFavoritesController *)self sortedMailboxes];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  sortedMailboxes = [(EditFavoritesController *)self sortedMailboxes];
+  v7 = [sortedMailboxes objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   if (v7)
   {
-    v8 = [v7 mv_isSelectable];
+    mv_isSelectable = [v7 mv_isSelectable];
   }
 
   else
   {
-    v8 = 1;
+    mv_isSelectable = 1;
   }
 
-  return v8;
+  return mv_isSelectable;
 }
 
 - (EditFavoritesControllerDelegate)delegate

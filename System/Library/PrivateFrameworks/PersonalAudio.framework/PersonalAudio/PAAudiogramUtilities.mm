@@ -1,19 +1,19 @@
 @interface PAAudiogramUtilities
-+ ($85CD2974BE96D4886BB301820D1C36C2)entryFromData:(id)a3 atIndex:(unsigned int)a4;
-+ (id)frequencyDictionaryFromOffsets:(id)a3;
-+ (id)normalizedOffsetsFromAudiogram:(id)a3;
-+ (id)normalizedOffsetsFromLeftOffsets:(id)a3 andRightOffsets:(id)a4;
-+ (id)offsetsSortedByFrequency:(id)a3;
++ ($85CD2974BE96D4886BB301820D1C36C2)entryFromData:(id)data atIndex:(unsigned int)index;
++ (id)frequencyDictionaryFromOffsets:(id)offsets;
++ (id)normalizedOffsetsFromAudiogram:(id)audiogram;
++ (id)normalizedOffsetsFromLeftOffsets:(id)offsets andRightOffsets:(id)rightOffsets;
++ (id)offsetsSortedByFrequency:(id)frequency;
 + (id)presetFrequencies;
 + (id)ptaFrequencies;
 @end
 
 @implementation PAAudiogramUtilities
 
-+ ($85CD2974BE96D4886BB301820D1C36C2)entryFromData:(id)a3 atIndex:(unsigned int)a4
++ ($85CD2974BE96D4886BB301820D1C36C2)entryFromData:(id)data atIndex:(unsigned int)index
 {
   v5 = 0;
-  [a3 getBytes:&v5 range:{8 * (a4 + 3) + 12, 8}];
+  [data getBytes:&v5 range:{8 * (index + 3) + 12, 8}];
   return v5;
 }
 
@@ -47,25 +47,25 @@
   return v2;
 }
 
-+ (id)normalizedOffsetsFromAudiogram:(id)a3
++ (id)normalizedOffsetsFromAudiogram:(id)audiogram
 {
-  if (a3)
+  if (audiogram)
   {
     v3 = MEMORY[0x277CBEB38];
-    v4 = a3;
-    v5 = [v3 dictionary];
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    v7 = [v4 sensitivityPoints];
+    audiogramCopy = audiogram;
+    dictionary = [v3 dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    sensitivityPoints = [audiogramCopy sensitivityPoints];
 
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __55__PAAudiogramUtilities_normalizedOffsetsFromAudiogram___block_invoke;
     v15 = &unk_279A1D438;
-    v16 = v5;
-    v17 = v6;
-    v8 = v6;
-    v9 = v5;
-    [v7 enumerateObjectsUsingBlock:&v12];
+    v16 = dictionary;
+    v17 = dictionary2;
+    v8 = dictionary2;
+    v9 = dictionary;
+    [sensitivityPoints enumerateObjectsUsingBlock:&v12];
 
     v10 = [PAAudiogramUtilities normalizedOffsetsFromLeftOffsets:v9 andRightOffsets:v8, v12, v13, v14, v15];
   }
@@ -108,18 +108,18 @@ void __55__PAAudiogramUtilities_normalizedOffsetsFromAudiogram___block_invoke(ui
   [v18 setObject:v19 forKey:v20];
 }
 
-+ (id)normalizedOffsetsFromLeftOffsets:(id)a3 andRightOffsets:(id)a4
++ (id)normalizedOffsetsFromLeftOffsets:(id)offsets andRightOffsets:(id)rightOffsets
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  offsetsCopy = offsets;
+  rightOffsetsCopy = rightOffsets;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v9 = +[PAAudiogramUtilities presetFrequencies];
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __73__PAAudiogramUtilities_normalizedOffsetsFromLeftOffsets_andRightOffsets___block_invoke;
   v50[3] = &unk_279A1D460;
-  v10 = v8;
+  v10 = dictionary2;
   v51 = v10;
   [v9 enumerateObjectsUsingBlock:v50];
 
@@ -136,13 +136,13 @@ void __55__PAAudiogramUtilities_normalizedOffsetsFromAudiogram___block_invoke(ui
   v41[2] = __73__PAAudiogramUtilities_normalizedOffsetsFromLeftOffsets_andRightOffsets___block_invoke_123;
   v41[3] = &unk_279A1D488;
   v41[4] = &v46;
-  [v5 enumerateKeysAndObjectsUsingBlock:v41];
+  [offsetsCopy enumerateKeysAndObjectsUsingBlock:v41];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __73__PAAudiogramUtilities_normalizedOffsetsFromLeftOffsets_andRightOffsets___block_invoke_2;
   v40[3] = &unk_279A1D488;
   v40[4] = &v42;
-  [v6 enumerateKeysAndObjectsUsingBlock:v40];
+  [rightOffsetsCopy enumerateKeysAndObjectsUsingBlock:v40];
   v11 = +[PAAudiogramUtilities ptaFrequencies];
   v12 = [v11 count];
 
@@ -155,12 +155,12 @@ void __55__PAAudiogramUtilities_normalizedOffsetsFromAudiogram___block_invoke(ui
   {
     if (v15 >= v14)
     {
-      v17 = v6;
+      v17 = rightOffsetsCopy;
     }
 
     else
     {
-      v17 = v5;
+      v17 = offsetsCopy;
     }
 
     v16 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v17];
@@ -172,16 +172,16 @@ void __55__PAAudiogramUtilities_normalizedOffsetsFromAudiogram___block_invoke(ui
     v37[1] = 3221225472;
     v37[2] = __73__PAAudiogramUtilities_normalizedOffsetsFromLeftOffsets_andRightOffsets___block_invoke_3;
     v37[3] = &unk_279A1D4B0;
-    v38 = v6;
-    v16 = v7;
+    v38 = rightOffsetsCopy;
+    v16 = dictionary;
     v39 = v16;
-    [v5 enumerateKeysAndObjectsUsingBlock:v37];
+    [offsetsCopy enumerateKeysAndObjectsUsingBlock:v37];
 
-    v7 = v38;
+    dictionary = v38;
   }
 
-  v18 = [v16 allKeys];
-  v19 = [v18 sortedArrayUsingComparator:&__block_literal_global_2];
+  allKeys = [v16 allKeys];
+  v19 = [allKeys sortedArrayUsingComparator:&__block_literal_global_2];
 
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
@@ -341,35 +341,35 @@ void __73__PAAudiogramUtilities_normalizedOffsetsFromLeftOffsets_andRightOffsets
   }
 }
 
-+ (id)offsetsSortedByFrequency:(id)a3
++ (id)offsetsSortedByFrequency:(id)frequency
 {
-  v3 = a3;
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_127];
+  frequencyCopy = frequency;
+  allKeys = [frequencyCopy allKeys];
+  v5 = [allKeys sortedArrayUsingComparator:&__block_literal_global_127];
 
-  v6 = [v3 objectsForKeys:v5 notFoundMarker:&unk_28702BDD8];
+  v6 = [frequencyCopy objectsForKeys:v5 notFoundMarker:&unk_28702BDD8];
 
   return v6;
 }
 
-+ (id)frequencyDictionaryFromOffsets:(id)a3
++ (id)frequencyDictionaryFromOffsets:(id)offsets
 {
-  v3 = a3;
+  offsetsCopy = offsets;
   v4 = +[PAAudiogramUtilities presetFrequencies];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = [v4 count];
-  if (v6 == [v3 count])
+  if (v6 == [offsetsCopy count])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __55__PAAudiogramUtilities_frequencyDictionaryFromOffsets___block_invoke;
     v8[3] = &unk_279A1D548;
-    v9 = v5;
+    v9 = dictionary;
     v10 = v4;
-    [v3 enumerateObjectsUsingBlock:v8];
+    [offsetsCopy enumerateObjectsUsingBlock:v8];
   }
 
-  return v5;
+  return dictionary;
 }
 
 void __55__PAAudiogramUtilities_frequencyDictionaryFromOffsets___block_invoke(uint64_t a1, void *a2, uint64_t a3)

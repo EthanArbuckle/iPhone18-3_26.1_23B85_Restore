@@ -1,17 +1,17 @@
 @interface MPSNNOptimizerRMSProp
-- (MPSNNOptimizerRMSProp)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNNOptimizerRMSProp)initWithDevice:(id)a3 decay:(double)a4 epsilon:(float)a5 momentumScale:(double)a6 centered:(BOOL)a7 optimizerDescriptor:(id)a8;
+- (MPSNNOptimizerRMSProp)initWithCoder:(id)coder device:(id)device;
+- (MPSNNOptimizerRMSProp)initWithDevice:(id)device decay:(double)decay epsilon:(float)epsilon momentumScale:(double)scale centered:(BOOL)centered optimizerDescriptor:(id)descriptor;
 - (MPSNNOptimizerRMSProp)initWithDevice:(id)device learningRate:(float)learningRate;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (void)encodeToCommandBuffer:(id)a3 inputGradientMatrix:(id)a4 inputValuesMatrix:(id)a5 inputSumOfSquaresMatrix:(id)a6 inputWeightedSumMatrix:(id)a7 inputMomentumMatrix:(id)a8 resultValuesMatrix:(id)a9;
-- (void)encodeToCommandBuffer:(id)a3 inputGradientVector:(id)a4 inputValuesVector:(id)a5 inputSumOfSquaresVector:(id)a6 inputWeightedSumVector:(id)a7 inputMomentumVector:(id)a8 resultValuesVector:(id)a9;
+- (void)encodeToCommandBuffer:(id)buffer inputGradientMatrix:(id)matrix inputValuesMatrix:(id)valuesMatrix inputSumOfSquaresMatrix:(id)squaresMatrix inputWeightedSumMatrix:(id)sumMatrix inputMomentumMatrix:(id)momentumMatrix resultValuesMatrix:(id)resultValuesMatrix;
+- (void)encodeToCommandBuffer:(id)buffer inputGradientVector:(id)vector inputValuesVector:(id)valuesVector inputSumOfSquaresVector:(id)squaresVector inputWeightedSumVector:(id)sumVector inputMomentumVector:(id)momentumVector resultValuesVector:(id)resultValuesVector;
 - (void)encodeToCommandBuffer:(id)commandBuffer batchNormalizationGradientState:(MPSCNNBatchNormalizationState *)batchNormalizationGradientState batchNormalizationSourceState:(MPSCNNBatchNormalizationState *)batchNormalizationSourceState inputSumOfSquaresVectors:(NSArray *)inputSumOfSquaresVectors resultState:(MPSCNNNormalizationGammaAndBetaState *)resultState;
 - (void)encodeToCommandBuffer:(id)commandBuffer batchNormalizationState:(MPSCNNBatchNormalizationState *)batchNormalizationState inputSumOfSquaresVectors:(NSArray *)inputSumOfSquaresVectors resultState:(MPSCNNNormalizationGammaAndBetaState *)resultState;
 - (void)encodeToCommandBuffer:(id)commandBuffer convolutionGradientState:(MPSCNNConvolutionGradientState *)convolutionGradientState convolutionSourceState:(MPSCNNConvolutionWeightsAndBiasesState *)convolutionSourceState inputSumOfSquaresVectors:(NSArray *)inputSumOfSquaresVectors resultState:(MPSCNNConvolutionWeightsAndBiasesState *)resultState;
 - (void)encodeToCommandBuffer:(id)commandBuffer inputGradientMatrix:(MPSMatrix *)inputGradientMatrix inputValuesMatrix:(MPSMatrix *)inputValuesMatrix inputSumOfSquaresMatrix:(MPSMatrix *)inputSumOfSquaresMatrix resultValuesMatrix:(MPSMatrix *)resultValuesMatrix;
 - (void)encodeToCommandBuffer:(id)commandBuffer inputGradientVector:(MPSVector *)inputGradientVector inputValuesVector:(MPSVector *)inputValuesVector inputSumOfSquaresVector:(MPSVector *)inputSumOfSquaresVector resultValuesVector:(MPSVector *)resultValuesVector;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNOptimizerRMSProp
@@ -23,27 +23,27 @@
   return MEMORY[0x2821F9670](self, sel_initWithDevice_decay_epsilon_momentumScale_centered_optimizerDescriptor_, device, 0, v11, v12, v13, v14);
 }
 
-- (MPSNNOptimizerRMSProp)initWithDevice:(id)a3 decay:(double)a4 epsilon:(float)a5 momentumScale:(double)a6 centered:(BOOL)a7 optimizerDescriptor:(id)a8
+- (MPSNNOptimizerRMSProp)initWithDevice:(id)device decay:(double)decay epsilon:(float)epsilon momentumScale:(double)scale centered:(BOOL)centered optimizerDescriptor:(id)descriptor
 {
   v13.receiver = self;
   v13.super_class = MPSNNOptimizerRMSProp;
-  result = [(MPSNNOptimizer *)&v13 initWithDevice:a3 optimizerDescriptor:a8];
+  result = [(MPSNNOptimizer *)&v13 initWithDevice:device optimizerDescriptor:descriptor];
   if (result)
   {
-    result->_decay = a4;
-    result->_epsilon = a5;
-    result->_momentumScale = a6;
-    result->_centered = a7;
+    result->_decay = decay;
+    result->_epsilon = epsilon;
+    result->_momentumScale = scale;
+    result->_centered = centered;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNNOptimizerRMSProp;
-  result = [(MPSNNOptimizer *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNNOptimizer *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 16) = *&self->_decay;
@@ -55,24 +55,24 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 1) = 1;
   v29.receiver = self;
   v29.super_class = MPSNNOptimizerRMSProp;
   [(MPSNNOptimizer *)&v29 encodeWithCoder:?];
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"kMPSNNOptimizer.decay", v6, v7, v8, v9, v10, self->_decay);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"kMPSNNOptimizer.decay", v6, v7, v8, v9, v10, self->_decay);
   *&v11 = self->_epsilon;
-  objc_msgSend_encodeFloat_forKey_(a3, v12, @"kMPSNNOptimizer.epsilon", v13, v14, v15, v16, v17, v11);
-  objc_msgSend_encodeDouble_forKey_(a3, v18, @"kMPSNNOptimizer.momentumScale", v19, v20, v21, v22, v23, self->_momentumScale);
-  objc_msgSend_encodeBool_forKey_(a3, v24, self->_centered, @"kMPSNNOptimizer.centered", v25, v26, v27, v28);
+  objc_msgSend_encodeFloat_forKey_(coder, v12, @"kMPSNNOptimizer.epsilon", v13, v14, v15, v16, v17, v11);
+  objc_msgSend_encodeDouble_forKey_(coder, v18, @"kMPSNNOptimizer.momentumScale", v19, v20, v21, v22, v23, self->_momentumScale);
+  objc_msgSend_encodeBool_forKey_(coder, v24, self->_centered, @"kMPSNNOptimizer.centered", v25, v26, v27, v28);
 }
 
-- (MPSNNOptimizerRMSProp)initWithCoder:(id)a3 device:(id)a4
+- (MPSNNOptimizerRMSProp)initWithCoder:(id)coder device:(id)device
 {
   v37.receiver = self;
   v37.super_class = MPSNNOptimizerRMSProp;
-  v5 = [(MPSNNOptimizer *)&v37 initWithCoder:a3 device:a4];
+  v5 = [(MPSNNOptimizer *)&v37 initWithCoder:coder device:device];
   v12 = v5;
   if (!v5)
   {
@@ -81,13 +81,13 @@
 
   if (*(&v5->super.super.super.isa + *MEMORY[0x277CD7358] + 1) << 8 == 256)
   {
-    objc_msgSend_decodeDoubleForKey_(a3, v6, @"kMPSNNOptimizer.decay", v7, v8, v9, v10, v11);
+    objc_msgSend_decodeDoubleForKey_(coder, v6, @"kMPSNNOptimizer.decay", v7, v8, v9, v10, v11);
     v12->_decay = v13;
-    objc_msgSend_decodeFloatForKey_(a3, v14, @"kMPSNNOptimizer.epsilon", v15, v16, v17, v18, v19);
+    objc_msgSend_decodeFloatForKey_(coder, v14, @"kMPSNNOptimizer.epsilon", v15, v16, v17, v18, v19);
     v12->_epsilon = v20;
-    objc_msgSend_decodeFloatForKey_(a3, v21, @"kMPSNNOptimizer.momentumScale", v22, v23, v24, v25, v26);
+    objc_msgSend_decodeFloatForKey_(coder, v21, @"kMPSNNOptimizer.momentumScale", v22, v23, v24, v25, v26);
     v12->_momentumScale = v27;
-    objc_msgSend_decodeFloatForKey_(a3, v28, @"kMPSNNOptimizer.centered", v29, v30, v31, v32, v33);
+    objc_msgSend_decodeFloatForKey_(coder, v28, @"kMPSNNOptimizer.centered", v29, v30, v31, v32, v33);
     v12->_centered = v34 != 0.0;
     return v12;
   }
@@ -131,52 +131,52 @@
   objc_autoreleasePoolPop(v13);
 }
 
-- (void)encodeToCommandBuffer:(id)a3 inputGradientVector:(id)a4 inputValuesVector:(id)a5 inputSumOfSquaresVector:(id)a6 inputWeightedSumVector:(id)a7 inputMomentumVector:(id)a8 resultValuesVector:(id)a9
+- (void)encodeToCommandBuffer:(id)buffer inputGradientVector:(id)vector inputValuesVector:(id)valuesVector inputSumOfSquaresVector:(id)squaresVector inputWeightedSumVector:(id)sumVector inputMomentumVector:(id)momentumVector resultValuesVector:(id)resultValuesVector
 {
   v16 = objc_autoreleasePoolPush();
-  v17 = sub_239C05678(a4);
-  v18 = sub_239C05678(a5);
-  v19 = sub_239C05678(a6);
-  v20 = sub_239C05678(a7);
-  v21 = sub_239C05678(a8);
-  v22 = sub_239C05678(a9);
-  objc_msgSend_encodeToCommandBuffer_inputGradientMatrix_inputValuesMatrix_inputSumOfSquaresMatrix_inputWeightedSumMatrix_inputMomentumMatrix_resultValuesMatrix_(self, v23, a3, v17, v18, v19, v20, v21, v22);
+  v17 = sub_239C05678(vector);
+  v18 = sub_239C05678(valuesVector);
+  v19 = sub_239C05678(squaresVector);
+  v20 = sub_239C05678(sumVector);
+  v21 = sub_239C05678(momentumVector);
+  v22 = sub_239C05678(resultValuesVector);
+  objc_msgSend_encodeToCommandBuffer_inputGradientMatrix_inputValuesMatrix_inputSumOfSquaresMatrix_inputWeightedSumMatrix_inputMomentumMatrix_resultValuesMatrix_(self, v23, buffer, v17, v18, v19, v20, v21, v22);
 
   objc_autoreleasePoolPop(v16);
 }
 
-- (void)encodeToCommandBuffer:(id)a3 inputGradientMatrix:(id)a4 inputValuesMatrix:(id)a5 inputSumOfSquaresMatrix:(id)a6 inputWeightedSumMatrix:(id)a7 inputMomentumMatrix:(id)a8 resultValuesMatrix:(id)a9
+- (void)encodeToCommandBuffer:(id)buffer inputGradientMatrix:(id)matrix inputValuesMatrix:(id)valuesMatrix inputSumOfSquaresMatrix:(id)squaresMatrix inputWeightedSumMatrix:(id)sumMatrix inputMomentumMatrix:(id)momentumMatrix resultValuesMatrix:(id)resultValuesMatrix
 {
   v399[4] = *MEMORY[0x277D85DE8];
-  sub_239C05C9C(a4, a4, "inputGradientMatrix", a4, a5, a6, a7, a8);
-  sub_239C05C9C(a4, a5, "inputValuesMatrix", v15, v16, v17, v18, v19);
-  sub_239C05C9C(a4, a6, "inputSumOfSquaresMatrix", v20, v21, v22, v23, v24);
+  sub_239C05C9C(matrix, matrix, "inputGradientMatrix", matrix, valuesMatrix, squaresMatrix, sumMatrix, momentumMatrix);
+  sub_239C05C9C(matrix, valuesMatrix, "inputValuesMatrix", v15, v16, v17, v18, v19);
+  sub_239C05C9C(matrix, squaresMatrix, "inputSumOfSquaresMatrix", v20, v21, v22, v23, v24);
   if (self->_momentumScale != 0.0)
   {
-    if (!a8 && MTLReportFailureTypeEnabled())
+    if (!momentumMatrix && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    sub_239C05C9C(a4, a8, "inputMomentumMatrix", v25, v26, v27, v28, v29);
+    sub_239C05C9C(matrix, momentumMatrix, "inputMomentumMatrix", v25, v26, v27, v28, v29);
   }
 
   if (self->_centered)
   {
-    if (!a7 && MTLReportFailureTypeEnabled())
+    if (!sumMatrix && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    sub_239C05C9C(a4, a7, "inputWeightedSumMatrix", v25, v26, v27, v28, v29);
+    sub_239C05C9C(matrix, sumMatrix, "inputWeightedSumMatrix", v25, v26, v27, v28, v29);
   }
 
-  sub_239C05C9C(a4, a9, "resultValuesMatrix", v25, v26, v27, v28, v29);
-  v399[0] = a4;
-  v399[1] = a5;
-  v370 = a5;
-  v399[2] = a9;
-  v399[3] = a6;
+  sub_239C05C9C(matrix, resultValuesMatrix, "resultValuesMatrix", v25, v26, v27, v28, v29);
+  v399[0] = matrix;
+  v399[1] = valuesMatrix;
+  valuesMatrixCopy = valuesMatrix;
+  v399[2] = resultValuesMatrix;
+  v399[3] = squaresMatrix;
   v35 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v30, v399, 4, v31, v32, v33, v34);
   if (objc_msgSend_count(v35, v36, v37, v38, v39, v40, v41, v42))
   {
@@ -189,10 +189,10 @@
     }
 
     while ((v66 & 1) != 0);
-    if (!a7)
+    if (!sumMatrix)
     {
 LABEL_11:
-      if (!a8)
+      if (!momentumMatrix)
       {
         goto LABEL_26;
       }
@@ -204,14 +204,14 @@ LABEL_11:
   else
   {
     v58 = 1;
-    if (!a7)
+    if (!sumMatrix)
     {
       goto LABEL_11;
     }
   }
 
-  v398 = a7;
-  v67 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v43, &v398, 1, v45, v46, v47, v48);
+  sumMatrixCopy = sumMatrix;
+  v67 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v43, &sumMatrixCopy, 1, v45, v46, v47, v48);
   if (objc_msgSend_count(v67, v68, v69, v70, v71, v72, v73, v74))
   {
     v76 = 1;
@@ -223,20 +223,20 @@ LABEL_11:
 
     while (v76++ < objc_msgSend_count(v67, v86, v87, v88, v89, v90, v91, v92) && v85);
     v58 &= v85;
-    if (!a8)
+    if (!momentumMatrix)
     {
       goto LABEL_26;
     }
   }
 
-  else if (!a8)
+  else if (!momentumMatrix)
   {
     goto LABEL_26;
   }
 
 LABEL_20:
-  v397 = a8;
-  v94 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v43, &v397, 1, v45, v46, v47, v48);
+  momentumMatrixCopy = momentumMatrix;
+  v94 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v43, &momentumMatrixCopy, 1, v45, v46, v47, v48);
   if (objc_msgSend_count(v94, v95, v96, v97, v98, v99, v100, v101))
   {
     v108 = 1;
@@ -257,9 +257,9 @@ LABEL_20:
   v58 &= v117;
 LABEL_26:
   v126 = objc_alloc(MEMORY[0x277CD7210]);
-  v138 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v126, v127, a3, 0, v128, v129, v130, v131);
+  v138 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v126, v127, buffer, 0, v128, v129, v130, v131);
   v395 = v138;
-  v396 = self;
+  selfCopy = self;
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x18) != 0)
   {
     v139 = *(&self->super.super.super.isa + *MEMORY[0x277CD7360]);
@@ -283,15 +283,15 @@ LABEL_26:
   MPSLibrary::ReleaseComputeState();
   if (v58)
   {
-    v169 = (objc_msgSend_columns(a4, v155, v156, v157, v158, v159, v160, v161) + 3) >> 2;
+    v169 = (objc_msgSend_columns(matrix, v155, v156, v157, v158, v159, v160, v161) + 3) >> 2;
   }
 
   else
   {
-    v169 = objc_msgSend_columns(a4, v155, v156, v157, v158, v159, v160, v161);
+    v169 = objc_msgSend_columns(matrix, v155, v156, v157, v158, v159, v160, v161);
   }
 
-  v369 = objc_msgSend_rows(a4, v162, v163, v164, v165, v166, v167, v168);
+  v369 = objc_msgSend_rows(matrix, v162, v163, v164, v165, v166, v167, v168);
   decay = self->_decay;
   v171 = decay;
   epsilon = self->_epsilon;
@@ -316,33 +316,33 @@ LABEL_26:
   v379 = regularizationScale;
   applyGradientClipping = self->super._applyGradientClipping;
   regularizationType = self->super._regularizationType;
-  v380 = objc_msgSend_rowBytes(a4, v177, v178, v179, v180, v181, v182, v183);
-  v382 = objc_msgSend_rowBytes(a9, v184, v185, v186, v187, v188, v189, v190);
-  v381 = objc_msgSend_rowBytes(v370, v191, v192, v193, v194, v195, v196, v197);
-  v385 = objc_msgSend_rowBytes(a6, v198, v199, v200, v201, v202, v203, v204);
-  v386 = objc_msgSend_rowBytes(a7, v205, v206, v207, v208, v209, v210, v211);
-  v387 = objc_msgSend_rowBytes(a8, v212, v213, v214, v215, v216, v217, v218);
-  v226 = objc_msgSend_data(a4, v219, v220, v221, v222, v223, v224, v225);
+  v380 = objc_msgSend_rowBytes(matrix, v177, v178, v179, v180, v181, v182, v183);
+  v382 = objc_msgSend_rowBytes(resultValuesMatrix, v184, v185, v186, v187, v188, v189, v190);
+  v381 = objc_msgSend_rowBytes(valuesMatrixCopy, v191, v192, v193, v194, v195, v196, v197);
+  v385 = objc_msgSend_rowBytes(squaresMatrix, v198, v199, v200, v201, v202, v203, v204);
+  v386 = objc_msgSend_rowBytes(sumMatrix, v205, v206, v207, v208, v209, v210, v211);
+  v387 = objc_msgSend_rowBytes(momentumMatrix, v212, v213, v214, v215, v216, v217, v218);
+  v226 = objc_msgSend_data(matrix, v219, v220, v221, v222, v223, v224, v225);
   v227 = MEMORY[0x277CD73A8];
-  objc_msgSend_setBuffer_offset_atIndex_(v138, v228, v226, *(a4 + *MEMORY[0x277CD73A8]), 0, v229, v230, v231);
-  v239 = objc_msgSend_data(a6, v232, v233, v234, v235, v236, v237, v238);
-  objc_msgSend_setBuffer_offset_atIndex_(v138, v240, v239, *(a6 + *v227), 1, v241, v242, v243);
-  v251 = objc_msgSend_data(v370, v244, v245, v246, v247, v248, v249, v250);
-  objc_msgSend_setBuffer_offset_atIndex_(v138, v252, v251, *&v370[*v227], 2, v253, v254, v255);
-  if (a7)
+  objc_msgSend_setBuffer_offset_atIndex_(v138, v228, v226, *(matrix + *MEMORY[0x277CD73A8]), 0, v229, v230, v231);
+  v239 = objc_msgSend_data(squaresMatrix, v232, v233, v234, v235, v236, v237, v238);
+  objc_msgSend_setBuffer_offset_atIndex_(v138, v240, v239, *(squaresMatrix + *v227), 1, v241, v242, v243);
+  v251 = objc_msgSend_data(valuesMatrixCopy, v244, v245, v246, v247, v248, v249, v250);
+  objc_msgSend_setBuffer_offset_atIndex_(v138, v252, v251, *&valuesMatrixCopy[*v227], 2, v253, v254, v255);
+  if (sumMatrix)
   {
-    v263 = objc_msgSend_data(a7, v256, v257, v258, v259, v260, v261, v262);
-    objc_msgSend_setBuffer_offset_atIndex_(v138, v264, v263, *(a7 + *v227), 3, v265, v266, v267);
+    v263 = objc_msgSend_data(sumMatrix, v256, v257, v258, v259, v260, v261, v262);
+    objc_msgSend_setBuffer_offset_atIndex_(v138, v264, v263, *(sumMatrix + *v227), 3, v265, v266, v267);
   }
 
-  if (a8)
+  if (momentumMatrix)
   {
-    v268 = objc_msgSend_data(a8, v256, v257, v258, v259, v260, v261, v262);
-    objc_msgSend_setBuffer_offset_atIndex_(v138, v269, v268, *(a8 + *v227), 4, v270, v271, v272);
+    v268 = objc_msgSend_data(momentumMatrix, v256, v257, v258, v259, v260, v261, v262);
+    objc_msgSend_setBuffer_offset_atIndex_(v138, v269, v268, *(momentumMatrix + *v227), 4, v270, v271, v272);
   }
 
-  v273 = objc_msgSend_data(a9, v256, v257, v258, v259, v260, v261, v262);
-  objc_msgSend_setBuffer_offset_atIndex_(v138, v274, v273, *(a9 + *v227), 5, v275, v276, v277);
+  v273 = objc_msgSend_data(resultValuesMatrix, v256, v257, v258, v259, v260, v261, v262);
+  objc_msgSend_setBuffer_offset_atIndex_(v138, v274, v273, *(resultValuesMatrix + *v227), 5, v275, v276, v277);
   objc_msgSend_setBytes_length_atIndex_(v138, v278, v374, 72, 6, v279, v280, v281);
   v289 = objc_msgSend_threadExecutionWidth(PipelineStateForMPSKey, v282, v283, v284, v285, v286, v287, v288);
   v297 = objc_msgSend_maxTotalThreadsPerThreadgroup(PipelineStateForMPSKey, v290, v291, v292, v293, v294, v295, v296);
@@ -373,29 +373,29 @@ LABEL_26:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    Count = objc_msgSend_readCount(a4, v312, v313, v314, v315, v316, v317, v318);
-    objc_msgSend_setReadCount_(a4, v320, Count - 1, v321, v322, v323, v324, v325);
+    Count = objc_msgSend_readCount(matrix, v312, v313, v314, v315, v316, v317, v318);
+    objc_msgSend_setReadCount_(matrix, v320, Count - 1, v321, v322, v323, v324, v325);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v333 = objc_msgSend_readCount(v370, v326, v327, v328, v329, v330, v331, v332);
-    objc_msgSend_setReadCount_(v370, v334, v333 - 1, v335, v336, v337, v338, v339);
+    v333 = objc_msgSend_readCount(valuesMatrixCopy, v326, v327, v328, v329, v330, v331, v332);
+    objc_msgSend_setReadCount_(valuesMatrixCopy, v334, v333 - 1, v335, v336, v337, v338, v339);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v347 = objc_msgSend_readCount(a7, v340, v341, v342, v343, v344, v345, v346);
-    objc_msgSend_setReadCount_(a7, v348, v347 - 1, v349, v350, v351, v352, v353);
+    v347 = objc_msgSend_readCount(sumMatrix, v340, v341, v342, v343, v344, v345, v346);
+    objc_msgSend_setReadCount_(sumMatrix, v348, v347 - 1, v349, v350, v351, v352, v353);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v361 = objc_msgSend_readCount(a8, v354, v355, v356, v357, v358, v359, v360);
-    objc_msgSend_setReadCount_(a8, v362, v361 - 1, v363, v364, v365, v366, v367);
+    v361 = objc_msgSend_readCount(momentumMatrix, v354, v355, v356, v357, v358, v359, v360);
+    objc_msgSend_setReadCount_(momentumMatrix, v362, v361 - 1, v363, v364, v365, v366, v367);
   }
 }
 

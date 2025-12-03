@@ -1,33 +1,33 @@
 @interface CRScriptCategoryResult
 - (BOOL)valid;
-- (CRScriptCategoryResult)initWithScriptCategory:(id)a3 probability:(float)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CRScriptCategoryResult)initWithScriptCategory:(id)category probability:(float)probability;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CRScriptCategoryResult
 
-- (CRScriptCategoryResult)initWithScriptCategory:(id)a3 probability:(float)a4
+- (CRScriptCategoryResult)initWithScriptCategory:(id)category probability:(float)probability
 {
-  v7 = a3;
+  categoryCopy = category;
   v11.receiver = self;
   v11.super_class = CRScriptCategoryResult;
   v8 = [(CRScriptCategoryResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_scriptCategory, a3);
-    v9->_probability = a4;
+    objc_storeStrong(&v8->_scriptCategory, category);
+    v9->_probability = probability;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CRScriptCategoryResult alloc];
-  v5 = [(CRScriptCategoryResult *)self scriptCategory];
+  scriptCategory = [(CRScriptCategoryResult *)self scriptCategory];
   [(CRScriptCategoryResult *)self probability];
-  v6 = [(CRScriptCategoryResult *)v4 initWithScriptCategory:v5 probability:?];
+  v6 = [(CRScriptCategoryResult *)v4 initWithScriptCategory:scriptCategory probability:?];
 
   return v6;
 }
@@ -36,7 +36,7 @@
 {
   [(CRScriptCategoryResult *)self probability];
   v4 = v3;
-  v5 = [(CRScriptCategoryResult *)self scriptCategory];
+  scriptCategory = [(CRScriptCategoryResult *)self scriptCategory];
   [objc_opt_class() confidenceThreshold];
   v7 = v4 >= v6;
 

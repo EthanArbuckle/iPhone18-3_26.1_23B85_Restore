@@ -1,8 +1,8 @@
 @interface MTLAccelerationStructureTriangleGeometryDescriptor
 + (MTLAccelerationStructureTriangleGeometryDescriptor)descriptor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLAccelerationStructureTriangleGeometryDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -39,11 +39,11 @@
   [(MTLAccelerationStructureGeometryDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MTLAccelerationStructureTriangleGeometryDescriptor;
-  v4 = [(MTLAccelerationStructureGeometryDescriptor *)&v6 copyWithZone:a3];
+  v4 = [(MTLAccelerationStructureGeometryDescriptor *)&v6 copyWithZone:zone];
   [v4 setVertexBuffer:self->_vertexBuffer];
   [v4 setVertexBufferOffset:self->_vertexBufferOffset];
   [v4 setVertexStride:self->_vertexStride];
@@ -58,9 +58,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -70,42 +70,42 @@
     v22 = v3;
     v23 = v4;
     Class = object_getClass(self);
-    if (Class != object_getClass(a3))
+    if (Class != object_getClass(equal))
     {
       goto LABEL_3;
     }
 
     v21.receiver = self;
     v21.super_class = MTLAccelerationStructureTriangleGeometryDescriptor;
-    v8 = [(MTLAccelerationStructureGeometryDescriptor *)&v21 isEqual:a3];
+    v8 = [(MTLAccelerationStructureGeometryDescriptor *)&v21 isEqual:equal];
     if (!v8)
     {
       return v8;
     }
 
-    v9 = [(MTLAccelerationStructureTriangleGeometryDescriptor *)self vertexBuffer];
-    if (v9 != [a3 vertexBuffer])
+    vertexBuffer = [(MTLAccelerationStructureTriangleGeometryDescriptor *)self vertexBuffer];
+    if (vertexBuffer != [equal vertexBuffer])
     {
       goto LABEL_3;
     }
 
-    v10 = [(MTLAccelerationStructureTriangleGeometryDescriptor *)self vertexBufferOffset];
-    if (v10 != [a3 vertexBufferOffset])
+    vertexBufferOffset = [(MTLAccelerationStructureTriangleGeometryDescriptor *)self vertexBufferOffset];
+    if (vertexBufferOffset != [equal vertexBufferOffset])
     {
       goto LABEL_3;
     }
 
-    v11 = [(MTLAccelerationStructureTriangleGeometryDescriptor *)self vertexStride];
-    if (v11 != [a3 vertexStride])
+    vertexStride = [(MTLAccelerationStructureTriangleGeometryDescriptor *)self vertexStride];
+    if (vertexStride != [equal vertexStride])
     {
       goto LABEL_3;
     }
 
-    v12 = [(MTLAccelerationStructureTriangleGeometryDescriptor *)self indexBuffer];
-    if (v12 == [a3 indexBuffer] && (v13 = -[MTLAccelerationStructureTriangleGeometryDescriptor indexBufferOffset](self, "indexBufferOffset"), v13 == objc_msgSend(a3, "indexBufferOffset")) && (v14 = -[MTLAccelerationStructureTriangleGeometryDescriptor indexType](self, "indexType"), v14 == objc_msgSend(a3, "indexType")) && (v15 = -[MTLAccelerationStructureTriangleGeometryDescriptor triangleCount](self, "triangleCount"), v15 == objc_msgSend(a3, "triangleCount")) && (v16 = -[MTLAccelerationStructureTriangleGeometryDescriptor vertexFormat](self, "vertexFormat"), v16 == objc_msgSend(a3, "vertexFormat")) && (v17 = -[MTLAccelerationStructureTriangleGeometryDescriptor transformationMatrixBuffer](self, "transformationMatrixBuffer"), v17 == objc_msgSend(a3, "transformationMatrixBuffer")) && (v18 = -[MTLAccelerationStructureTriangleGeometryDescriptor transformationMatrixBufferOffset](self, "transformationMatrixBufferOffset"), v18 == objc_msgSend(a3, "transformationMatrixBufferOffset")))
+    indexBuffer = [(MTLAccelerationStructureTriangleGeometryDescriptor *)self indexBuffer];
+    if (indexBuffer == [equal indexBuffer] && (v13 = -[MTLAccelerationStructureTriangleGeometryDescriptor indexBufferOffset](self, "indexBufferOffset"), v13 == objc_msgSend(equal, "indexBufferOffset")) && (v14 = -[MTLAccelerationStructureTriangleGeometryDescriptor indexType](self, "indexType"), v14 == objc_msgSend(equal, "indexType")) && (v15 = -[MTLAccelerationStructureTriangleGeometryDescriptor triangleCount](self, "triangleCount"), v15 == objc_msgSend(equal, "triangleCount")) && (v16 = -[MTLAccelerationStructureTriangleGeometryDescriptor vertexFormat](self, "vertexFormat"), v16 == objc_msgSend(equal, "vertexFormat")) && (v17 = -[MTLAccelerationStructureTriangleGeometryDescriptor transformationMatrixBuffer](self, "transformationMatrixBuffer"), v17 == objc_msgSend(equal, "transformationMatrixBuffer")) && (v18 = -[MTLAccelerationStructureTriangleGeometryDescriptor transformationMatrixBufferOffset](self, "transformationMatrixBufferOffset"), v18 == objc_msgSend(equal, "transformationMatrixBufferOffset")))
     {
-      v19 = [(MTLAccelerationStructureTriangleGeometryDescriptor *)self transformationMatrixLayout];
-      LOBYTE(v8) = v19 == [a3 transformationMatrixLayout];
+      transformationMatrixLayout = [(MTLAccelerationStructureTriangleGeometryDescriptor *)self transformationMatrixLayout];
+      LOBYTE(v8) = transformationMatrixLayout == [equal transformationMatrixLayout];
     }
 
     else

@@ -1,28 +1,28 @@
 @interface DSDownloadProgressButton
-+ (id)_finishedImageForLayoutSize:(CGSize)a3 traitCollection:(id)a4;
-- (BOOL)_needsAddToLibraryOrDownloadImageViewForProgressType:(int64_t)a3;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (DSDownloadProgressButton)initWithStyle:(int64_t)a3;
++ (id)_finishedImageForLayoutSize:(CGSize)size traitCollection:(id)collection;
+- (BOOL)_needsAddToLibraryOrDownloadImageViewForProgressType:(int64_t)type;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (DSDownloadProgressButton)initWithStyle:(int64_t)style;
 - (id)_addToLibraryOrDownloadImage;
-- (void)_handleDisplayLinkDidFire:(id)a3;
-- (void)_reloadForCurrentStateForInitialSetup:(BOOL)a3 previousProgressType:(int64_t)a4;
+- (void)_handleDisplayLinkDidFire:(id)fire;
+- (void)_reloadForCurrentStateForInitialSetup:(BOOL)setup previousProgressType:(int64_t)type;
 - (void)_stopProgressAnimation;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)drawRect:(CGRect)rect;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setProgressType:(int64_t)a3;
+- (void)setProgressType:(int64_t)type;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DSDownloadProgressButton
 
-- (DSDownloadProgressButton)initWithStyle:(int64_t)a3
+- (DSDownloadProgressButton)initWithStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = DSDownloadProgressButton;
@@ -30,7 +30,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_style = a3;
+    v4->_style = style;
     [(DSDownloadProgressButton *)v4 setOpaque:0];
     [(DSDownloadProgressButton *)v5 setUserInteractionEnabled:v5->_style == 1];
     [(DSDownloadProgressButton *)v5 sizeToFit];
@@ -49,18 +49,18 @@
   [(DSDownloadProgressButton *)&v3 dealloc];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  if (![(DSDownloadProgressButton *)self _usesDrawingForProgressType:self->_progressType, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height])
+  if (![(DSDownloadProgressButton *)self _usesDrawingForProgressType:self->_progressType, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height])
   {
     return;
   }
 
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
-  v28 = [(DSDownloadProgressButton *)self tintColor];
-  v5 = [(DSDownloadProgressButton *)self traitCollection];
-  [v5 displayScale];
+  tintColor = [(DSDownloadProgressButton *)self tintColor];
+  traitCollection = [(DSDownloadProgressButton *)self traitCollection];
+  [traitCollection displayScale];
   MPUFloatGetSafeScaleForValue();
 
   [(DSDownloadProgressButton *)self bounds];
@@ -104,7 +104,7 @@
     }
 
     v24 = *(&self->super.super.super.super.isa + *v23) * 6.28318531 + -1.57079633;
-    v25 = [v28 colorWithAlphaComponent:1.0];
+    v25 = [tintColor colorWithAlphaComponent:1.0];
     CGContextSetFillColorWithColor(CurrentContext, [v25 CGColor]);
 
     v19 = objc_alloc_init(UIBezierPath);
@@ -113,7 +113,7 @@
     [v19 addArcWithCenter:1 radius:v11 startAngle:v13 endAngle:v15 clockwise:{-1.57079633, v24}];
     [v19 closePath];
     [v19 fill];
-    v26 = [v28 colorWithAlphaComponent:0.2];
+    v26 = [tintColor colorWithAlphaComponent:0.2];
     CGContextSetFillColorWithColor(CurrentContext, [v26 CGColor]);
 
     v27 = objc_alloc_init(UIBezierPath);
@@ -128,7 +128,7 @@
 
   if (progressType == 2)
   {
-    v17 = [v28 colorWithAlphaComponent:0.4];
+    v17 = [tintColor colorWithAlphaComponent:0.4];
     CGContextSetStrokeColorWithColor(CurrentContext, [v17 CGColor]);
 
     v18 = v15 + -0.5;
@@ -160,8 +160,8 @@ LABEL_12:
   v23.receiver = self;
   v23.super_class = DSDownloadProgressButton;
   [(DSDownloadProgressButton *)&v23 layoutSubviews];
-  v3 = [(DSDownloadProgressButton *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(DSDownloadProgressButton *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
   [(DSDownloadProgressButton *)self bounds];
   v7 = v6;
@@ -170,8 +170,8 @@ LABEL_12:
   if (addToLibraryOrDownloadImageView && ([(UIImageView *)addToLibraryOrDownloadImageView isHidden]& 1) == 0)
   {
     y = CGRectZero.origin.y;
-    v12 = [(UIImageView *)self->_addToLibraryOrDownloadImageView image];
-    [v12 size];
+    image = [(UIImageView *)self->_addToLibraryOrDownloadImageView image];
+    [image size];
 
     UIRectCenteredXInRectScale();
     UIRectCenteredYInRectScale();
@@ -185,13 +185,13 @@ LABEL_12:
     height = self->_lastLayoutSize.height;
     if (!MPUSizeEqualToSize() || ([(UIImageView *)self->_finishedImageView image], v16 = objc_claimAutoreleasedReturnValue(), v16, !v16))
     {
-      v17 = [objc_opt_class() _finishedImageForLayoutSize:v3 traitCollection:{v7, v9}];
+      v17 = [objc_opt_class() _finishedImageForLayoutSize:traitCollection traitCollection:{v7, v9}];
       [(UIImageView *)self->_finishedImageView setImage:v17];
     }
 
     v18 = CGRectZero.origin.y;
-    v19 = [(UIImageView *)self->_finishedImageView image];
-    [v19 size];
+    image2 = [(UIImageView *)self->_finishedImageView image];
+    [image2 size];
 
     UIRectCenteredXInRectScale();
     UIRectCenteredYInRectScale();
@@ -213,13 +213,13 @@ LABEL_12:
   self->_lastLayoutSize.height = v9;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v17.receiver = self;
   v17.super_class = DSDownloadProgressButton;
-  if ([(DSDownloadProgressButton *)&v17 pointInside:a4 withEvent:?])
+  if ([(DSDownloadProgressButton *)&v17 pointInside:event withEvent:?])
   {
     return 1;
   }
@@ -271,7 +271,7 @@ LABEL_12:
   return CGRectContainsPoint(v22, v18);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   style = self->_style;
   if (style == 1)
@@ -307,19 +307,19 @@ LABEL_12:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = DSDownloadProgressButton;
-  v4 = a3;
-  [(DSDownloadProgressButton *)&v6 traitCollectionDidChange:v4];
-  [v4 displayScale];
+  changeCopy = change;
+  [(DSDownloadProgressButton *)&v6 traitCollectionDidChange:changeCopy];
+  [changeCopy displayScale];
 
-  v5 = [(DSDownloadProgressButton *)self traitCollection];
-  [v5 displayScale];
-  LOBYTE(v4) = MPUFloatEqualToFloat();
+  traitCollection = [(DSDownloadProgressButton *)self traitCollection];
+  [traitCollection displayScale];
+  LOBYTE(changeCopy) = MPUFloatEqualToFloat();
 
-  if ((v4 & 1) == 0)
+  if ((changeCopy & 1) == 0)
   {
     if ([(DSDownloadProgressButton *)self _usesDrawingForProgressType:self->_progressType])
     {
@@ -333,10 +333,10 @@ LABEL_12:
   }
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   addToLibraryOrDownloadImageView = self->_addToLibraryOrDownloadImageView;
   if (addToLibraryOrDownloadImageView && ![(UIImageView *)addToLibraryOrDownloadImageView isHidden])
   {
@@ -348,7 +348,7 @@ LABEL_12:
     itemOfferButton = self->_itemOfferButton;
     if (itemOfferButton && ([(SUUIItemOfferButton *)itemOfferButton isHidden]& 1) == 0)
     {
-      LOBYTE(self) = [(SUUIItemOfferButton *)self->_itemOfferButton beginTrackingWithTouch:v6 withEvent:v7];
+      LOBYTE(self) = [(SUUIItemOfferButton *)self->_itemOfferButton beginTrackingWithTouch:touchCopy withEvent:eventCopy];
     }
 
     else
@@ -369,13 +369,13 @@ LABEL_12:
   return self;
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   itemOfferButton = self->_itemOfferButton;
   if (itemOfferButton)
   {
-    v6 = v4;
+    v6 = eventCopy;
     if (([(SUUIItemOfferButton *)itemOfferButton isHidden]& 1) == 0)
     {
       [(SUUIItemOfferButton *)self->_itemOfferButton cancelTrackingWithEvent:v6];
@@ -385,10 +385,10 @@ LABEL_12:
   _objc_release_x1();
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   addToLibraryOrDownloadImageView = self->_addToLibraryOrDownloadImageView;
   if (addToLibraryOrDownloadImageView && ![(UIImageView *)addToLibraryOrDownloadImageView isHidden])
   {
@@ -400,7 +400,7 @@ LABEL_12:
     itemOfferButton = self->_itemOfferButton;
     if (itemOfferButton && ([(SUUIItemOfferButton *)itemOfferButton isHidden]& 1) == 0)
     {
-      LOBYTE(self) = [(SUUIItemOfferButton *)self->_itemOfferButton continueTrackingWithTouch:v6 withEvent:v7];
+      LOBYTE(self) = [(SUUIItemOfferButton *)self->_itemOfferButton continueTrackingWithTouch:touchCopy withEvent:eventCopy];
     }
 
     else
@@ -421,34 +421,34 @@ LABEL_12:
   return self;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v8 = a3;
-  v6 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   itemOfferButton = self->_itemOfferButton;
   if (itemOfferButton && ([(SUUIItemOfferButton *)itemOfferButton isHidden]& 1) == 0)
   {
-    [(SUUIItemOfferButton *)self->_itemOfferButton cancelTrackingWithEvent:v6];
+    [(SUUIItemOfferButton *)self->_itemOfferButton cancelTrackingWithEvent:eventCopy];
   }
 }
 
-- (void)setProgressType:(int64_t)a3
+- (void)setProgressType:(int64_t)type
 {
-  if (self->_progressType != a3)
+  if (self->_progressType != type)
   {
-    self->_progressType = a3;
+    self->_progressType = type;
     [(DSDownloadProgressButton *)self _reloadForCurrentStateForInitialSetup:0 previousProgressType:?];
   }
 }
 
-- (void)_handleDisplayLinkDidFire:(id)a3
+- (void)_handleDisplayLinkDidFire:(id)fire
 {
-  v10 = a3;
+  fireCopy = fire;
   progressAnimationStartTime = self->_progressAnimationStartTime;
   progressAnimationEndTime = self->_progressAnimationEndTime;
   if ((MPUFloatEqualToFloat() & 1) == 0)
   {
-    [v10 timestamp];
+    [fireCopy timestamp];
     v7 = (v6 - self->_progressAnimationStartTime) / (self->_progressAnimationEndTime - self->_progressAnimationStartTime);
     if (v7 >= 0.99)
     {
@@ -474,9 +474,9 @@ LABEL_12:
   _objc_release_x1();
 }
 
-+ (id)_finishedImageForLayoutSize:(CGSize)a3 traitCollection:(id)a4
++ (id)_finishedImageForLayoutSize:(CGSize)size traitCollection:(id)collection
 {
-  if (a3.width <= 7.0 || a3.height <= 11.0)
+  if (size.width <= 7.0 || size.height <= 11.0)
   {
     v5 = @"UniversalRowOfflineAvailabilityIndicator";
   }
@@ -486,9 +486,9 @@ LABEL_12:
     v5 = @"UniversalAddControlDownloaded";
   }
 
-  v6 = a4;
+  collectionCopy = collection;
   v7 = [NSBundle bundleForClass:objc_opt_class()];
-  v8 = [UIImage imageNamed:v5 inBundle:v7 compatibleWithTraitCollection:v6];
+  v8 = [UIImage imageNamed:v5 inBundle:v7 compatibleWithTraitCollection:collectionCopy];
 
   return v8;
 }
@@ -517,31 +517,31 @@ LABEL_5:
   v4 = @"UniversalAddControlDownload";
 LABEL_7:
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [(DSDownloadProgressButton *)self traitCollection];
-  v5 = [UIImage imageNamed:v4 inBundle:v6 compatibleWithTraitCollection:v7];
+  traitCollection = [(DSDownloadProgressButton *)self traitCollection];
+  v5 = [UIImage imageNamed:v4 inBundle:v6 compatibleWithTraitCollection:traitCollection];
 
 LABEL_8:
 
   return v5;
 }
 
-- (BOOL)_needsAddToLibraryOrDownloadImageViewForProgressType:(int64_t)a3
+- (BOOL)_needsAddToLibraryOrDownloadImageViewForProgressType:(int64_t)type
 {
   if ([(DSDownloadProgressButton *)self _usesDrawingForProgressType:?])
   {
     return 0;
   }
 
-  return a3 < 2 && self->_style == 1;
+  return type < 2 && self->_style == 1;
 }
 
-- (void)_reloadForCurrentStateForInitialSetup:(BOOL)a3 previousProgressType:(int64_t)a4
+- (void)_reloadForCurrentStateForInitialSetup:(BOOL)setup previousProgressType:(int64_t)type
 {
-  v5 = a3;
-  v7 = [(DSDownloadProgressButton *)self _usesDrawingForProgressType:a4];
+  setupCopy = setup;
+  v7 = [(DSDownloadProgressButton *)self _usesDrawingForProgressType:type];
   v8 = [(DSDownloadProgressButton *)self _usesDrawingForProgressType:self->_progressType];
   v9 = v8;
-  if (!v5 && v7 != v8)
+  if (!setupCopy && v7 != v8)
   {
     [(DSDownloadProgressButton *)self setNeedsDisplay];
   }
@@ -565,24 +565,24 @@ LABEL_8:
 
     [(UIImageView *)addToLibraryOrDownloadImageView setAlpha:1.0];
     [(UIImageView *)self->_addToLibraryOrDownloadImageView setHidden:0];
-    v15 = [(DSDownloadProgressButton *)self _addToLibraryOrDownloadImage];
-    if (a4 || v5 || self->_progressType != 1)
+    _addToLibraryOrDownloadImage = [(DSDownloadProgressButton *)self _addToLibraryOrDownloadImage];
+    if (type || setupCopy || self->_progressType != 1)
     {
-      [(UIImageView *)self->_addToLibraryOrDownloadImageView setImage:v15];
+      [(UIImageView *)self->_addToLibraryOrDownloadImageView setImage:_addToLibraryOrDownloadImage];
     }
 
     else
     {
-      v16 = [(UIImageView *)self->_addToLibraryOrDownloadImageView _animatesContents];
+      _animatesContents = [(UIImageView *)self->_addToLibraryOrDownloadImageView _animatesContents];
       [(UIImageView *)self->_addToLibraryOrDownloadImageView _setAnimatesContents:1];
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
       v32[2] = sub_558C;
       v32[3] = &unk_C7C8;
       v32[4] = self;
-      v33 = v15;
+      v33 = _addToLibraryOrDownloadImage;
       [UIView animateWithDuration:v32 animations:0.25];
-      [(UIImageView *)self->_addToLibraryOrDownloadImageView _setAnimatesContents:v16];
+      [(UIImageView *)self->_addToLibraryOrDownloadImageView _setAnimatesContents:_animatesContents];
     }
 
     [(DSDownloadProgressButton *)self setNeedsLayout];
@@ -652,12 +652,12 @@ LABEL_25:
     [(DSDownloadProgressButton *)self addSubview:self->_itemOfferButton];
   }
 
-  v25 = [(DSDownloadProgressButton *)self window];
+  window = [(DSDownloadProgressButton *)self window];
 
   [(SUUIItemOfferButton *)self->_itemOfferButton setProgress:0 animated:self->_progress];
   [(SUUIItemOfferButton *)self->_itemOfferButton setHidden:0];
   v26 = self->_itemOfferButton;
-  if (v25)
+  if (window)
   {
     CGAffineTransformMakeScale(&v31, 0.0, 0.0);
     [(SUUIItemOfferButton *)v26 setTransform:&v31];

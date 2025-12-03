@@ -1,19 +1,19 @@
 @interface ATXCompactTimeSummary
-- (ATXCompactTimeSummary)initWithCoder:(id)a3;
-- (ATXCompactTimeSummary)initWithTimeMarbles:(id)a3;
+- (ATXCompactTimeSummary)initWithCoder:(id)coder;
+- (ATXCompactTimeSummary)initWithTimeMarbles:(id)marbles;
 @end
 
 @implementation ATXCompactTimeSummary
 
-- (ATXCompactTimeSummary)initWithTimeMarbles:(id)a3
+- (ATXCompactTimeSummary)initWithTimeMarbles:(id)marbles
 {
-  v4 = a3;
+  marblesCopy = marbles;
   v10.receiver = self;
   v10.super_class = ATXCompactTimeSummary;
   v5 = [(ATXCompactTimeSummary *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [marblesCopy copy];
     timeMarbles = v5->_timeMarbles;
     v5->_timeMarbles = v6;
 
@@ -23,10 +23,10 @@
   return v5;
 }
 
-- (ATXCompactTimeSummary)initWithCoder:(id)a3
+- (ATXCompactTimeSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"timeMarbles"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"timeMarbles"];
 
   v6 = [(ATXCompactTimeSummary *)self initWithTimeMarbles:v5];
   return v6;

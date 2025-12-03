@@ -1,10 +1,10 @@
 @interface VNImageAnalyzerCompoundRequestGroupingConfiguration
-- (id)addSceneConfigurationForOriginalRequest:(id)a3;
-- (id)addSceneprintConfigurationForOriginalRequest:(id)a3;
+- (id)addSceneConfigurationForOriginalRequest:(id)request;
+- (id)addSceneprintConfigurationForOriginalRequest:(id)request;
 - (id)computeStageDeviceAssignments;
-- (void)addOriginalRequest:(id)a3 forKind:(unint64_t)a4;
-- (void)addTilingWarningRecorder:(id)a3;
-- (void)enumerateOriginalRequestsByKindUsingBlock:(id)a3;
+- (void)addOriginalRequest:(id)request forKind:(unint64_t)kind;
+- (void)addTilingWarningRecorder:(id)recorder;
+- (void)enumerateOriginalRequestsByKindUsingBlock:(id)block;
 @end
 
 @implementation VNImageAnalyzerCompoundRequestGroupingConfiguration
@@ -16,16 +16,16 @@
   return v2;
 }
 
-- (void)enumerateOriginalRequestsByKindUsingBlock:(id)a3
+- (void)enumerateOriginalRequestsByKindUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   kindToOriginalRequestsMapping = self->_kindToOriginalRequestsMapping;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __97__VNImageAnalyzerCompoundRequestGroupingConfiguration_enumerateOriginalRequestsByKindUsingBlock___block_invoke;
   v7[3] = &unk_1E77B2858;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)kindToOriginalRequestsMapping enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -39,9 +39,9 @@ void __97__VNImageAnalyzerCompoundRequestGroupingConfiguration_enumerateOriginal
   (*(v8 + 16))(v8, v9, v10, a4);
 }
 
-- (void)addTilingWarningRecorder:(id)a3
+- (void)addTilingWarningRecorder:(id)recorder
 {
-  v5 = a3;
+  recorderCopy = recorder;
   v4 = [(NSMutableDictionary *)self->_detectorConfigurationOptions objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorProcessingOption_TilingWarningRecorders"];
   if (!v4)
   {
@@ -49,16 +49,16 @@ void __97__VNImageAnalyzerCompoundRequestGroupingConfiguration_enumerateOriginal
     [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
   }
 
-  if ([v4 indexOfObjectIdenticalTo:v5] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([v4 indexOfObjectIdenticalTo:recorderCopy] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v4 addObject:v5];
+    [v4 addObject:recorderCopy];
   }
 }
 
-- (void)addOriginalRequest:(id)a3 forKind:(unint64_t)a4
+- (void)addOriginalRequest:(id)request forKind:(unint64_t)kind
 {
-  v8 = a3;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  requestCopy = request;
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:kind];
   v7 = [(NSMutableDictionary *)self->_kindToOriginalRequestsMapping objectForKey:v6];
   if (!v7)
   {
@@ -66,13 +66,13 @@ void __97__VNImageAnalyzerCompoundRequestGroupingConfiguration_enumerateOriginal
     [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
   }
 
-  [v7 addObject:v8];
-  [(NSMutableArray *)self->_originalRequests addObject:v8];
+  [v7 addObject:requestCopy];
+  [(NSMutableArray *)self->_originalRequests addObject:requestCopy];
 }
 
-- (id)addSceneprintConfigurationForOriginalRequest:(id)a3
+- (id)addSceneprintConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [(NSMutableDictionary *)self->_detectorConfigurationOptions objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneprintConfigurations"];
   if (!v5)
   {
@@ -80,15 +80,15 @@ void __97__VNImageAnalyzerCompoundRequestGroupingConfiguration_enumerateOriginal
     [(NSMutableDictionary *)self->_detectorConfigurationOptions setObject:v5 forKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneprintConfigurations"];
   }
 
-  v6 = [(VNImageAnalyzerMultiDetectorAnalysisConfiguration *)[VNImageAnalyzerMultiDetectorSceneprintConfiguration alloc] initWithObservationsRecipient:v4];
+  v6 = [(VNImageAnalyzerMultiDetectorAnalysisConfiguration *)[VNImageAnalyzerMultiDetectorSceneprintConfiguration alloc] initWithObservationsRecipient:requestCopy];
   [v5 addObject:v6];
 
   return v6;
 }
 
-- (id)addSceneConfigurationForOriginalRequest:(id)a3
+- (id)addSceneConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [(NSMutableDictionary *)self->_detectorConfigurationOptions objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneConfigurations"];
   if (!v5)
   {
@@ -96,7 +96,7 @@ void __97__VNImageAnalyzerCompoundRequestGroupingConfiguration_enumerateOriginal
     [(NSMutableDictionary *)self->_detectorConfigurationOptions setObject:v5 forKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneConfigurations"];
   }
 
-  v6 = [[VNImageAnalyzerMultiDetectorSceneClassificationConfiguration alloc] initWithObservationsRecipient:v4];
+  v6 = [[VNImageAnalyzerMultiDetectorSceneClassificationConfiguration alloc] initWithObservationsRecipient:requestCopy];
   [v5 addObject:v6];
 
   return v6;

@@ -1,32 +1,32 @@
 @interface DTSamplingService
-+ (void)registerCapabilities:(id)a3;
-- (DTSamplingService)initWithChannel:(id)a3;
++ (void)registerCapabilities:(id)capabilities;
+- (DTSamplingService)initWithChannel:(id)channel;
 - (void)_allocateBuffer;
 - (void)_outputData;
-- (void)addSampleWithTimeInfo:(__CFDictionary *)a3 useZeroDelta:(BOOL)a4;
+- (void)addSampleWithTimeInfo:(__CFDictionary *)info useZeroDelta:(BOOL)delta;
 - (void)collectData;
 - (void)dealloc;
-- (void)setOutputRate:(id)a3;
-- (void)setTargetPid:(id)a3;
+- (void)setOutputRate:(id)rate;
+- (void)setTargetPid:(id)pid;
 - (void)startSampling;
 @end
 
 @implementation DTSamplingService
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
-  v4 = a3;
-  [v4 publishCapability:@"com.apple.instruments.server.services.sampling" withVersion:11 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.sampling.immediate" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.sampling.deferred" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.coresampling" withVersion:10 forClass:a1];
+  capabilitiesCopy = capabilities;
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.sampling" withVersion:11 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.sampling.immediate" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.sampling.deferred" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.coresampling" withVersion:10 forClass:self];
 }
 
-- (DTSamplingService)initWithChannel:(id)a3
+- (DTSamplingService)initWithChannel:(id)channel
 {
   v4.receiver = self;
   v4.super_class = DTSamplingService;
-  result = [(DTXService *)&v4 initWithChannel:a3];
+  result = [(DTXService *)&v4 initWithChannel:channel];
   if (result)
   {
     result->_samplingRate = 100000;
@@ -62,27 +62,27 @@
   [(DTSamplingService *)&v5 dealloc];
 }
 
-- (void)setOutputRate:(id)a3
+- (void)setOutputRate:(id)rate
 {
-  v4 = [a3 unsignedLongLongValue];
-  self->_outputRate = v4;
+  unsignedLongLongValue = [rate unsignedLongLongValue];
+  self->_outputRate = unsignedLongLongValue;
   samplingRate = self->_samplingRate;
-  if (v4 > samplingRate)
+  if (unsignedLongLongValue > samplingRate)
   {
-    samplingRate = v4;
+    samplingRate = unsignedLongLongValue;
   }
 
   self->_outputRate = samplingRate;
 }
 
-- (void)setTargetPid:(id)a3
+- (void)setTargetPid:(id)pid
 {
-  v4 = [a3 intValue];
-  v5 = [DTInstrumentServer taskForPid:v4];
+  intValue = [pid intValue];
+  v5 = [DTInstrumentServer taskForPid:intValue];
   self->_task = v5;
   if (v5 + 1 <= 1)
   {
-    [MEMORY[0x277CBEAD8] raise:@"DTSamplingServiceException" format:{@"Failed to get task for pid %d", v4}];
+    [MEMORY[0x277CBEAD8] raise:@"DTSamplingServiceException" format:{@"Failed to get task for pid %d", intValue}];
   }
 }
 
@@ -98,9 +98,9 @@
 
 - (void)_outputData
 {
-  v4 = [(DTXService *)self channel];
+  channel = [(DTXService *)self channel];
   v3 = [MEMORY[0x277D03668] messageWithBuffer:self->_backtraceBuffer length:8 * self->_backtraceBufferUsedSize];
-  [v4 sendMessage:v3 replyHandler:0];
+  [channel sendMessage:v3 replyHandler:0];
 }
 
 - (void)_allocateBuffer
@@ -171,9 +171,9 @@
   }
 }
 
-- (void)addSampleWithTimeInfo:(__CFDictionary *)a3 useZeroDelta:(BOOL)a4
+- (void)addSampleWithTimeInfo:(__CFDictionary *)info useZeroDelta:(BOOL)delta
 {
-  v4 = a4;
+  deltaCopy = delta;
   act_list = 0;
   act_listCnt = 0;
   if (!task_threads(self->_task, &act_list, &act_listCnt))
@@ -216,13 +216,13 @@
     if (act_listCnt)
     {
       v16 = 0;
-      v27 = v4;
-      v17 = a3;
+      v27 = deltaCopy;
+      infoCopy = info;
       do
       {
         v18 = act_list[v16];
         thread_info(act_list[v16], 3u, thread_info_out, &thread_info_outCnt);
-        if (CFDictionaryGetValueIfPresent(a3, v18, &value))
+        if (CFDictionaryGetValueIfPresent(info, v18, &value))
         {
           mach_port_deallocate(*MEMORY[0x277D85F48], v18);
         }
@@ -232,10 +232,10 @@
           v19 = malloc_type_malloc(8uLL, 0x100004000313F17uLL);
           value = v19;
           *v19 = 0;
-          CFDictionarySetValue(a3, v18, v19);
+          CFDictionarySetValue(info, v18, v19);
         }
 
-        if (v4)
+        if (deltaCopy)
         {
           v20 = value;
         }
@@ -261,11 +261,11 @@
         self->_backtraceBufferUsedSize = v24;
         *v25 = 0;
         v25[1] = 0;
-        a3 = v17;
+        info = infoCopy;
         self->_backtraceBufferUsedSize = v24 + 1;
         v23[v24] = v18;
         ++v16;
-        v4 = v27;
+        deltaCopy = v27;
       }
 
       while (v16 < act_listCnt);

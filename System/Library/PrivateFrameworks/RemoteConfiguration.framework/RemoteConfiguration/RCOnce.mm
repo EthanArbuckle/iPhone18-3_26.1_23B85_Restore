@@ -1,20 +1,20 @@
 @interface RCOnce
 - (BOOL)hasBeenTriggered;
 - (BOOL)trigger;
-- (RCOnce)initWithOptions:(unint64_t)a3;
-- (void)executeOnce:(id)a3;
+- (RCOnce)initWithOptions:(unint64_t)options;
+- (void)executeOnce:(id)once;
 @end
 
 @implementation RCOnce
 
-- (RCOnce)initWithOptions:(unint64_t)a3
+- (RCOnce)initWithOptions:(unint64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = RCOnce;
   v4 = [(RCOnce *)&v9 init];
   v5 = v4;
-  if ((v3 & 1) != 0 && v4)
+  if ((optionsCopy & 1) != 0 && v4)
   {
     v6 = objc_alloc_init(RCMutexLock);
     lock = v5->_lock;
@@ -24,15 +24,15 @@
   return v5;
 }
 
-- (void)executeOnce:(id)a3
+- (void)executeOnce:(id)once
 {
-  v4 = a3;
+  onceCopy = once;
   [(RCMutexLock *)self->_lock lock];
   if (![(RCOnce *)self finished])
   {
-    if (v4)
+    if (onceCopy)
     {
-      v4[2]();
+      onceCopy[2]();
     }
 
     [(RCOnce *)self setFinished:1];
@@ -44,18 +44,18 @@
 - (BOOL)trigger
 {
   [(RCMutexLock *)self->_lock lock];
-  v3 = [(RCOnce *)self finished];
+  finished = [(RCOnce *)self finished];
   [(RCOnce *)self setFinished:1];
   [(RCMutexLock *)self->_lock unlock];
-  return !v3;
+  return !finished;
 }
 
 - (BOOL)hasBeenTriggered
 {
   [(RCMutexLock *)self->_lock lock];
-  v3 = [(RCOnce *)self finished];
+  finished = [(RCOnce *)self finished];
   [(RCMutexLock *)self->_lock unlock];
-  return v3;
+  return finished;
 }
 
 @end

@@ -1,59 +1,59 @@
 @interface RBOriginatorEntitlementDomainRestriction
-+ (id)domainRestrictionForDictionary:(id)a3 withError:(id *)a4;
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithEntitlement:(id)a3;
++ (id)domainRestrictionForDictionary:(id)dictionary withError:(id *)error;
+- (BOOL)allowsContext:(id)context withError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithEntitlement:(id)entitlement;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation RBOriginatorEntitlementDomainRestriction
 
-- (id)_initWithEntitlement:(id)a3
+- (id)_initWithEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   v10.receiver = self;
   v10.super_class = RBOriginatorEntitlementDomainRestriction;
-  v5 = [(RBDomainRestriction *)&v10 _init];
-  if (v5)
+  _init = [(RBDomainRestriction *)&v10 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    v7 = v5[1];
-    v5[1] = v6;
+    v6 = [entitlementCopy copy];
+    v7 = _init[1];
+    _init[1] = v6;
 
-    v8 = v5;
+    v8 = _init;
   }
 
-  return v5;
+  return _init;
 }
 
-+ (id)domainRestrictionForDictionary:(id)a3 withError:(id *)a4
++ (id)domainRestrictionForDictionary:(id)dictionary withError:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKey:@"Entitlement"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKey:@"Entitlement"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    a4 = [[RBOriginatorEntitlementDomainRestriction alloc] _initWithEntitlement:v6];
+    error = [[RBOriginatorEntitlementDomainRestriction alloc] _initWithEntitlement:v6];
   }
 
-  else if (a4)
+  else if (error)
   {
     v7 = MEMORY[0x277CCA9B8];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"RBOriginatorEntitlementDomainRestriction doesn't specify entitlement: %@", v5, *MEMORY[0x277CCA470]];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"RBOriginatorEntitlementDomainRestriction doesn't specify entitlement: %@", dictionaryCopy, *MEMORY[0x277CCA470]];
     v15[0] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v10 = [v7 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:1 userInfo:v9];
 
     v11 = v10;
-    *a4 = v10;
+    *error = v10;
 
-    a4 = 0;
+    error = 0;
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
 - (id)dictionaryRepresentation
@@ -70,13 +70,13 @@
   return v3;
 }
 
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4
+- (BOOL)allowsContext:(id)context withError:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = [a3 originatorEntitlements];
-  v7 = [v6 rb_hasEntitlement:self->_entitlement];
+  originatorEntitlements = [context originatorEntitlements];
+  v7 = [originatorEntitlements rb_hasEntitlement:self->_entitlement];
 
-  if (a4 && (v7 & 1) == 0)
+  if (error && (v7 & 1) == 0)
   {
     v8 = MEMORY[0x277CCA9B8];
     v9 = *MEMORY[0x277D47098];
@@ -84,17 +84,17 @@
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"originator doesn't have entitlement %@", entitlement, *MEMORY[0x277CCA470]];
     v16[0] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    *a4 = [v8 errorWithDomain:v9 code:1 userInfo:v12];
+    *error = [v8 errorWithDomain:v9 code:1 userInfo:v12];
   }
 
   v13 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_10;
   }
@@ -106,7 +106,7 @@
   }
 
   entitlement = self->_entitlement;
-  v8 = v4->_entitlement;
+  v8 = equalCopy->_entitlement;
   if (entitlement == v8)
   {
 LABEL_10:

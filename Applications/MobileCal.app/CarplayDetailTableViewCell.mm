@@ -2,7 +2,7 @@
 + (id)reuseIdentifier;
 - (DetailTableViewCellDelegate)delegate;
 - (void)cellWasTapped;
-- (void)updateWithEvent:(id)a3;
+- (void)updateWithEvent:(id)event;
 @end
 
 @implementation CarplayDetailTableViewCell
@@ -21,7 +21,7 @@
   return WeakRetained;
 }
 
-- (void)updateWithEvent:(id)a3
+- (void)updateWithEvent:(id)event
 {
   objc_opt_class();
 

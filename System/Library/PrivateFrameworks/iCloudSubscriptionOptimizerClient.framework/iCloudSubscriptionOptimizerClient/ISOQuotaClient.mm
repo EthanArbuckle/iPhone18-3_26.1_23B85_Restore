@@ -1,38 +1,38 @@
 @interface ISOQuotaClient
 - (id)failsafeDelayedOfferJsonContext;
-- (id)parseDelayedOffer:(id)a3;
-- (id)parseDelayedOfferFromJson:(id)a3;
-- (void)clearNotificationState:(id)a3;
-- (void)isNotificationPending:(id)a3;
-- (void)logFailsafeEvent:(id)a3;
+- (id)parseDelayedOffer:(id)offer;
+- (id)parseDelayedOfferFromJson:(id)json;
+- (void)clearNotificationState:(id)state;
+- (void)isNotificationPending:(id)pending;
+- (void)logFailsafeEvent:(id)event;
 @end
 
 @implementation ISOQuotaClient
 
-- (void)isNotificationPending:(id)a3
+- (void)isNotificationPending:(id)pending
 {
-  v3 = a3;
+  pendingCopy = pending;
   v4 = +[ISONotificationContent notImplementedException];
   objc_exception_throw(v4);
 }
 
-- (void)clearNotificationState:(id)a3
+- (void)clearNotificationState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = +[ISONotificationContent notImplementedException];
   objc_exception_throw(v4);
 }
 
-- (id)parseDelayedOfferFromJson:(id)a3
+- (id)parseDelayedOfferFromJson:(id)json
 {
-  v3 = a3;
+  jsonCopy = json;
   v4 = +[ISONotificationContent notImplementedException];
   objc_exception_throw(v4);
 }
 
-- (id)parseDelayedOffer:(id)a3
+- (id)parseDelayedOffer:(id)offer
 {
-  v3 = a3;
+  offerCopy = offer;
   v4 = +[ISONotificationContent notImplementedException];
   objc_exception_throw(v4);
 }
@@ -43,9 +43,9 @@
   objc_exception_throw(v2);
 }
 
-- (void)logFailsafeEvent:(id)a3
+- (void)logFailsafeEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = +[ISONotificationContent notImplementedException];
   objc_exception_throw(v4);
 }

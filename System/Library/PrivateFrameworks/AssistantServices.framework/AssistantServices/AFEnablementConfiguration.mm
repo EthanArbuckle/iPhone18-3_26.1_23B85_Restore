@@ -1,16 +1,16 @@
 @interface AFEnablementConfiguration
-- (AFEnablementConfiguration)initWithRequiresVoiceSelection:(BOOL)a3 voiceSelectionAllowsChooseForMe:(BOOL)a4 voiceCountForRecognitionLanguage:(id)a5 completionLoggingBlock:(id)a6;
-- (BOOL)requiresVoiceSelectionForRecognitionLanguage:(id)a3;
+- (AFEnablementConfiguration)initWithRequiresVoiceSelection:(BOOL)selection voiceSelectionAllowsChooseForMe:(BOOL)me voiceCountForRecognitionLanguage:(id)language completionLoggingBlock:(id)block;
+- (BOOL)requiresVoiceSelectionForRecognitionLanguage:(id)language;
 @end
 
 @implementation AFEnablementConfiguration
 
-- (BOOL)requiresVoiceSelectionForRecognitionLanguage:(id)a3
+- (BOOL)requiresVoiceSelectionForRecognitionLanguage:(id)language
 {
-  v4 = a3;
-  if (v4 && self->_requiresVoiceSelection)
+  languageCopy = language;
+  if (languageCopy && self->_requiresVoiceSelection)
   {
-    v5 = [(NSDictionary *)self->_voiceCountForRecognitionLanguage objectForKey:v4];
+    v5 = [(NSDictionary *)self->_voiceCountForRecognitionLanguage objectForKey:languageCopy];
     v6 = [v5 intValue] > 1;
   }
 
@@ -22,23 +22,23 @@
   return v6;
 }
 
-- (AFEnablementConfiguration)initWithRequiresVoiceSelection:(BOOL)a3 voiceSelectionAllowsChooseForMe:(BOOL)a4 voiceCountForRecognitionLanguage:(id)a5 completionLoggingBlock:(id)a6
+- (AFEnablementConfiguration)initWithRequiresVoiceSelection:(BOOL)selection voiceSelectionAllowsChooseForMe:(BOOL)me voiceCountForRecognitionLanguage:(id)language completionLoggingBlock:(id)block
 {
-  v10 = a5;
-  v11 = a6;
+  languageCopy = language;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = AFEnablementConfiguration;
   v12 = [(AFEnablementConfiguration *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    v12->_requiresVoiceSelection = a3;
-    v12->_voiceSelectionAllowsRandomSelection = a4;
-    v14 = MEMORY[0x193AFB7B0](v11);
+    v12->_requiresVoiceSelection = selection;
+    v12->_voiceSelectionAllowsRandomSelection = me;
+    v14 = MEMORY[0x193AFB7B0](blockCopy);
     completionLoggingBlock = v13->_completionLoggingBlock;
     v13->_completionLoggingBlock = v14;
 
-    v13->_voiceCountForRecognitionLanguage = v10;
+    v13->_voiceCountForRecognitionLanguage = languageCopy;
   }
 
   return v13;

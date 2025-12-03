@@ -1,13 +1,13 @@
 @interface IFTSchemaIFTClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (IFTSchemaASTFlatExprSearchVariantTier1)astFlatExprSearchVariantTier1;
 - (IFTSchemaIFTAction)actionCreated;
 - (IFTSchemaIFTActionCancellation)actionCancelled;
 - (IFTSchemaIFTActionResolverRequest)actionResolverRequestCreated;
 - (IFTSchemaIFTClientAction)clientActionCreated;
-- (IFTSchemaIFTClientEvent)initWithDictionary:(id)a3;
-- (IFTSchemaIFTClientEvent)initWithJSON:(id)a3;
+- (IFTSchemaIFTClientEvent)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTClientEvent)initWithJSON:(id)n;
 - (IFTSchemaIFTContextPrewarmCompleted)contextPrewarmCompleted;
 - (IFTSchemaIFTContextPrewarmRequest)contextPrewarmRequest;
 - (IFTSchemaIFTContextRetrieved)contextRetrieved;
@@ -34,7 +34,7 @@
 - (IFTSchemaIFTVariableStep)variablesSet;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -70,49 +70,49 @@
 - (void)deleteToolResolution;
 - (void)deleteToolsRetrieved;
 - (void)deleteVariablesSet;
-- (void)setActionCancelled:(id)a3;
-- (void)setActionCreated:(id)a3;
-- (void)setActionResolverRequestCreated:(id)a3;
-- (void)setAstFlatExprSearchVariantTier1:(id)a3;
-- (void)setClientActionCreated:(id)a3;
-- (void)setContextPrewarmCompleted:(id)a3;
-- (void)setContextPrewarmRequest:(id)a3;
-- (void)setContextRetrieved:(id)a3;
-- (void)setContinuePlanning:(id)a3;
-- (void)setCriticalError:(id)a3;
-- (void)setEntitySpanMatched:(id)a3;
-- (void)setExecutionPreconditionEvaluatorRequest:(id)a3;
-- (void)setPlanCreated:(id)a3;
-- (void)setQueriesCreated:(id)a3;
-- (void)setQueriesExecuted:(id)a3;
-- (void)setQueryDecorationPrePlannerResult:(id)a3;
-- (void)setQueryDecorationResult:(id)a3;
-- (void)setRecoverableError:(id)a3;
-- (void)setRequest:(id)a3;
-- (void)setRequestContextTextContentTier1:(id)a3;
-- (void)setResponseGenerationRequest:(id)a3;
-- (void)setSessionStart:(id)a3;
-- (void)setSkipStatement:(id)a3;
-- (void)setStatementEvaluated:(id)a3;
-- (void)setSystemResponseGenerated:(id)a3;
-- (void)setTerminate:(id)a3;
-- (void)setToolResolution:(id)a3;
-- (void)setToolsRetrieved:(id)a3;
-- (void)setVariablesSet:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setActionCancelled:(id)cancelled;
+- (void)setActionCreated:(id)created;
+- (void)setActionResolverRequestCreated:(id)created;
+- (void)setAstFlatExprSearchVariantTier1:(id)tier1;
+- (void)setClientActionCreated:(id)created;
+- (void)setContextPrewarmCompleted:(id)completed;
+- (void)setContextPrewarmRequest:(id)request;
+- (void)setContextRetrieved:(id)retrieved;
+- (void)setContinuePlanning:(id)planning;
+- (void)setCriticalError:(id)error;
+- (void)setEntitySpanMatched:(id)matched;
+- (void)setExecutionPreconditionEvaluatorRequest:(id)request;
+- (void)setPlanCreated:(id)created;
+- (void)setQueriesCreated:(id)created;
+- (void)setQueriesExecuted:(id)executed;
+- (void)setQueryDecorationPrePlannerResult:(id)result;
+- (void)setQueryDecorationResult:(id)result;
+- (void)setRecoverableError:(id)error;
+- (void)setRequest:(id)request;
+- (void)setRequestContextTextContentTier1:(id)tier1;
+- (void)setResponseGenerationRequest:(id)request;
+- (void)setSessionStart:(id)start;
+- (void)setSkipStatement:(id)statement;
+- (void)setStatementEvaluated:(id)evaluated;
+- (void)setSystemResponseGenerated:(id)generated;
+- (void)setTerminate:(id)terminate;
+- (void)setToolResolution:(id)resolution;
+- (void)setToolsRetrieved:(id)retrieved;
+- (void)setVariablesSet:(id)set;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTClientEvent
 
-- (IFTSchemaIFTClientEvent)initWithDictionary:(id)a3
+- (IFTSchemaIFTClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v91.receiver = self;
   v91.super_class = IFTSchemaIFTClientEvent;
   v5 = [(IFTSchemaIFTClientEvent *)&v91 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -120,7 +120,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"contextPrewarmRequest"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"contextPrewarmRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,7 +128,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setContextPrewarmRequest:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"contextPrewarmCompleted"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"contextPrewarmCompleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -136,7 +136,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setContextPrewarmCompleted:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"terminate"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"terminate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -144,7 +144,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setTerminate:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"sessionStart"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"sessionStart"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -152,7 +152,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setSessionStart:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"request"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"request"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -160,7 +160,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setRequest:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"requestContextTextContentTier1"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"requestContextTextContentTier1"];
     objc_opt_class();
     v90 = v18;
     if (objc_opt_isKindOfClass())
@@ -169,7 +169,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setRequestContextTextContentTier1:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"entitySpanMatched"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"entitySpanMatched"];
     objc_opt_class();
     v89 = v20;
     if (objc_opt_isKindOfClass())
@@ -178,7 +178,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setEntitySpanMatched:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"contextRetrieved"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"contextRetrieved"];
     objc_opt_class();
     v88 = v22;
     if (objc_opt_isKindOfClass())
@@ -187,7 +187,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setContextRetrieved:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"toolsRetrieved"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"toolsRetrieved"];
     objc_opt_class();
     v87 = v24;
     if (objc_opt_isKindOfClass())
@@ -196,7 +196,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setToolsRetrieved:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"queryDecorationResult"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"queryDecorationResult"];
     objc_opt_class();
     v86 = v26;
     if (objc_opt_isKindOfClass())
@@ -205,7 +205,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setQueryDecorationResult:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"queryDecorationPrePlannerResult"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"queryDecorationPrePlannerResult"];
     objc_opt_class();
     v85 = v28;
     if (objc_opt_isKindOfClass())
@@ -214,7 +214,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setQueryDecorationPrePlannerResult:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"planCreated"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"planCreated"];
     objc_opt_class();
     v84 = v30;
     if (objc_opt_isKindOfClass())
@@ -223,7 +223,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setPlanCreated:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"astFlatExprSearchVariantTier1"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"astFlatExprSearchVariantTier1"];
     objc_opt_class();
     v83 = v32;
     if (objc_opt_isKindOfClass())
@@ -232,7 +232,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setAstFlatExprSearchVariantTier1:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"variablesSet"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"variablesSet"];
     objc_opt_class();
     v82 = v34;
     if (objc_opt_isKindOfClass())
@@ -241,7 +241,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setVariablesSet:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"toolResolution"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"toolResolution"];
     objc_opt_class();
     v81 = v36;
     if (objc_opt_isKindOfClass())
@@ -250,7 +250,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setToolResolution:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"queriesCreated"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"queriesCreated"];
     objc_opt_class();
     v80 = v38;
     if (objc_opt_isKindOfClass())
@@ -259,7 +259,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setQueriesCreated:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"actionResolverRequestCreated"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"actionResolverRequestCreated"];
     objc_opt_class();
     v79 = v40;
     if (objc_opt_isKindOfClass())
@@ -268,7 +268,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setActionResolverRequestCreated:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"responseGenerationRequest"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"responseGenerationRequest"];
     objc_opt_class();
     v78 = v42;
     if (objc_opt_isKindOfClass())
@@ -277,7 +277,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setResponseGenerationRequest:v43];
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"actionCancelled"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"actionCancelled"];
     objc_opt_class();
     v77 = v44;
     if (objc_opt_isKindOfClass())
@@ -286,7 +286,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setActionCancelled:v45];
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"continuePlanning"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"continuePlanning"];
     objc_opt_class();
     v76 = v46;
     if (objc_opt_isKindOfClass())
@@ -295,7 +295,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setContinuePlanning:v47];
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"skipStatement"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"skipStatement"];
     objc_opt_class();
     v75 = v48;
     if (objc_opt_isKindOfClass())
@@ -305,7 +305,7 @@
     }
 
     v69 = v16;
-    v50 = [v4 objectForKeyedSubscript:@"executionPreconditionEvaluatorRequest"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"executionPreconditionEvaluatorRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -314,7 +314,7 @@
     }
 
     v74 = v6;
-    v52 = [v4 objectForKeyedSubscript:{@"actionCreated", v50}];
+    v52 = [dictionaryCopy objectForKeyedSubscript:{@"actionCreated", v50}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -323,7 +323,7 @@
     }
 
     v73 = v8;
-    v54 = [v4 objectForKeyedSubscript:@"clientActionCreated"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"clientActionCreated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -332,7 +332,7 @@
     }
 
     v72 = v10;
-    v56 = [v4 objectForKeyedSubscript:@"queriesExecuted"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"queriesExecuted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -341,7 +341,7 @@
     }
 
     v71 = v12;
-    v58 = [v4 objectForKeyedSubscript:@"statementEvaluated"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"statementEvaluated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -350,7 +350,7 @@
     }
 
     v70 = v14;
-    v60 = [v4 objectForKeyedSubscript:@"systemResponseGenerated"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"systemResponseGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -358,7 +358,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setSystemResponseGenerated:v61];
     }
 
-    v62 = [v4 objectForKeyedSubscript:@"criticalError"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"criticalError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -366,7 +366,7 @@
       [(IFTSchemaIFTClientEvent *)v5 setCriticalError:v63];
     }
 
-    v64 = [v4 objectForKeyedSubscript:@"recoverableError"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"recoverableError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -380,30 +380,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTClientEvent)initWithJSON:(id)a3
+- (IFTSchemaIFTClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -416,491 +416,491 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionCancelled)
   {
-    v4 = [(IFTSchemaIFTClientEvent *)self actionCancelled];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    actionCancelled = [(IFTSchemaIFTClientEvent *)self actionCancelled];
+    dictionaryRepresentation = [actionCancelled dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"actionCancelled"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"actionCancelled"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"actionCancelled"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"actionCancelled"];
     }
   }
 
   if (self->_actionCreated)
   {
-    v7 = [(IFTSchemaIFTClientEvent *)self actionCreated];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    actionCreated = [(IFTSchemaIFTClientEvent *)self actionCreated];
+    dictionaryRepresentation2 = [actionCreated dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"actionCreated"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"actionCreated"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"actionCreated"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"actionCreated"];
     }
   }
 
   if (self->_actionResolverRequestCreated)
   {
-    v10 = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    actionResolverRequestCreated = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
+    dictionaryRepresentation3 = [actionResolverRequestCreated dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"actionResolverRequestCreated"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"actionResolverRequestCreated"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"actionResolverRequestCreated"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"actionResolverRequestCreated"];
     }
   }
 
   if (self->_astFlatExprSearchVariantTier1)
   {
-    v13 = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    astFlatExprSearchVariantTier1 = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
+    dictionaryRepresentation4 = [astFlatExprSearchVariantTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"astFlatExprSearchVariantTier1"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"astFlatExprSearchVariantTier1"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"astFlatExprSearchVariantTier1"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"astFlatExprSearchVariantTier1"];
     }
   }
 
   if (self->_clientActionCreated)
   {
-    v16 = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    clientActionCreated = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
+    dictionaryRepresentation5 = [clientActionCreated dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"clientActionCreated"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"clientActionCreated"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"clientActionCreated"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"clientActionCreated"];
     }
   }
 
   if (self->_contextPrewarmCompleted)
   {
-    v19 = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    contextPrewarmCompleted = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
+    dictionaryRepresentation6 = [contextPrewarmCompleted dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"contextPrewarmCompleted"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"contextPrewarmCompleted"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"contextPrewarmCompleted"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"contextPrewarmCompleted"];
     }
   }
 
   if (self->_contextPrewarmRequest)
   {
-    v22 = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    contextPrewarmRequest = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
+    dictionaryRepresentation7 = [contextPrewarmRequest dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"contextPrewarmRequest"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"contextPrewarmRequest"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"contextPrewarmRequest"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"contextPrewarmRequest"];
     }
   }
 
   if (self->_contextRetrieved)
   {
-    v25 = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    contextRetrieved = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
+    dictionaryRepresentation8 = [contextRetrieved dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"contextRetrieved"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"contextRetrieved"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"contextRetrieved"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"contextRetrieved"];
     }
   }
 
   if (self->_continuePlanning)
   {
-    v28 = [(IFTSchemaIFTClientEvent *)self continuePlanning];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    continuePlanning = [(IFTSchemaIFTClientEvent *)self continuePlanning];
+    dictionaryRepresentation9 = [continuePlanning dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"continuePlanning"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"continuePlanning"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"continuePlanning"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"continuePlanning"];
     }
   }
 
   if (self->_criticalError)
   {
-    v31 = [(IFTSchemaIFTClientEvent *)self criticalError];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    criticalError = [(IFTSchemaIFTClientEvent *)self criticalError];
+    dictionaryRepresentation10 = [criticalError dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"criticalError"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"criticalError"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"criticalError"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"criticalError"];
     }
   }
 
   if (self->_entitySpanMatched)
   {
-    v34 = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    entitySpanMatched = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
+    dictionaryRepresentation11 = [entitySpanMatched dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"entitySpanMatched"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"entitySpanMatched"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"entitySpanMatched"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"entitySpanMatched"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v37 = [(IFTSchemaIFTClientEvent *)self eventMetadata];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    eventMetadata = [(IFTSchemaIFTClientEvent *)self eventMetadata];
+    dictionaryRepresentation12 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"eventMetadata"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_executionPreconditionEvaluatorRequest)
   {
-    v40 = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    executionPreconditionEvaluatorRequest = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
+    dictionaryRepresentation13 = [executionPreconditionEvaluatorRequest dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"executionPreconditionEvaluatorRequest"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"executionPreconditionEvaluatorRequest"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"executionPreconditionEvaluatorRequest"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"executionPreconditionEvaluatorRequest"];
     }
   }
 
   if (self->_planCreated)
   {
-    v43 = [(IFTSchemaIFTClientEvent *)self planCreated];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    planCreated = [(IFTSchemaIFTClientEvent *)self planCreated];
+    dictionaryRepresentation14 = [planCreated dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"planCreated"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"planCreated"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"planCreated"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"planCreated"];
     }
   }
 
   if (self->_queriesCreated)
   {
-    v46 = [(IFTSchemaIFTClientEvent *)self queriesCreated];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    queriesCreated = [(IFTSchemaIFTClientEvent *)self queriesCreated];
+    dictionaryRepresentation15 = [queriesCreated dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"queriesCreated"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"queriesCreated"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"queriesCreated"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"queriesCreated"];
     }
   }
 
   if (self->_queriesExecuted)
   {
-    v49 = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    queriesExecuted = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
+    dictionaryRepresentation16 = [queriesExecuted dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"queriesExecuted"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"queriesExecuted"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"queriesExecuted"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"queriesExecuted"];
     }
   }
 
   if (self->_queryDecorationPrePlannerResult)
   {
-    v52 = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    queryDecorationPrePlannerResult = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
+    dictionaryRepresentation17 = [queryDecorationPrePlannerResult dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"queryDecorationPrePlannerResult"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"queryDecorationPrePlannerResult"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"queryDecorationPrePlannerResult"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"queryDecorationPrePlannerResult"];
     }
   }
 
   if (self->_queryDecorationResult)
   {
-    v55 = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    queryDecorationResult = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
+    dictionaryRepresentation18 = [queryDecorationResult dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"queryDecorationResult"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"queryDecorationResult"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"queryDecorationResult"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"queryDecorationResult"];
     }
   }
 
   if (self->_recoverableError)
   {
-    v58 = [(IFTSchemaIFTClientEvent *)self recoverableError];
-    v59 = [v58 dictionaryRepresentation];
-    if (v59)
+    recoverableError = [(IFTSchemaIFTClientEvent *)self recoverableError];
+    dictionaryRepresentation19 = [recoverableError dictionaryRepresentation];
+    if (dictionaryRepresentation19)
     {
-      [v3 setObject:v59 forKeyedSubscript:@"recoverableError"];
+      [dictionary setObject:dictionaryRepresentation19 forKeyedSubscript:@"recoverableError"];
     }
 
     else
     {
-      v60 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v60 forKeyedSubscript:@"recoverableError"];
+      null19 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null19 forKeyedSubscript:@"recoverableError"];
     }
   }
 
   if (self->_request)
   {
-    v61 = [(IFTSchemaIFTClientEvent *)self request];
-    v62 = [v61 dictionaryRepresentation];
-    if (v62)
+    request = [(IFTSchemaIFTClientEvent *)self request];
+    dictionaryRepresentation20 = [request dictionaryRepresentation];
+    if (dictionaryRepresentation20)
     {
-      [v3 setObject:v62 forKeyedSubscript:@"request"];
+      [dictionary setObject:dictionaryRepresentation20 forKeyedSubscript:@"request"];
     }
 
     else
     {
-      v63 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v63 forKeyedSubscript:@"request"];
+      null20 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null20 forKeyedSubscript:@"request"];
     }
   }
 
   if (self->_requestContextTextContentTier1)
   {
-    v64 = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
-    v65 = [v64 dictionaryRepresentation];
-    if (v65)
+    requestContextTextContentTier1 = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
+    dictionaryRepresentation21 = [requestContextTextContentTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation21)
     {
-      [v3 setObject:v65 forKeyedSubscript:@"requestContextTextContentTier1"];
+      [dictionary setObject:dictionaryRepresentation21 forKeyedSubscript:@"requestContextTextContentTier1"];
     }
 
     else
     {
-      v66 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v66 forKeyedSubscript:@"requestContextTextContentTier1"];
+      null21 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null21 forKeyedSubscript:@"requestContextTextContentTier1"];
     }
   }
 
   if (self->_responseGenerationRequest)
   {
-    v67 = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
-    v68 = [v67 dictionaryRepresentation];
-    if (v68)
+    responseGenerationRequest = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
+    dictionaryRepresentation22 = [responseGenerationRequest dictionaryRepresentation];
+    if (dictionaryRepresentation22)
     {
-      [v3 setObject:v68 forKeyedSubscript:@"responseGenerationRequest"];
+      [dictionary setObject:dictionaryRepresentation22 forKeyedSubscript:@"responseGenerationRequest"];
     }
 
     else
     {
-      v69 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v69 forKeyedSubscript:@"responseGenerationRequest"];
+      null22 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null22 forKeyedSubscript:@"responseGenerationRequest"];
     }
   }
 
   if (self->_sessionStart)
   {
-    v70 = [(IFTSchemaIFTClientEvent *)self sessionStart];
-    v71 = [v70 dictionaryRepresentation];
-    if (v71)
+    sessionStart = [(IFTSchemaIFTClientEvent *)self sessionStart];
+    dictionaryRepresentation23 = [sessionStart dictionaryRepresentation];
+    if (dictionaryRepresentation23)
     {
-      [v3 setObject:v71 forKeyedSubscript:@"sessionStart"];
+      [dictionary setObject:dictionaryRepresentation23 forKeyedSubscript:@"sessionStart"];
     }
 
     else
     {
-      v72 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v72 forKeyedSubscript:@"sessionStart"];
+      null23 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null23 forKeyedSubscript:@"sessionStart"];
     }
   }
 
   if (self->_skipStatement)
   {
-    v73 = [(IFTSchemaIFTClientEvent *)self skipStatement];
-    v74 = [v73 dictionaryRepresentation];
-    if (v74)
+    skipStatement = [(IFTSchemaIFTClientEvent *)self skipStatement];
+    dictionaryRepresentation24 = [skipStatement dictionaryRepresentation];
+    if (dictionaryRepresentation24)
     {
-      [v3 setObject:v74 forKeyedSubscript:@"skipStatement"];
+      [dictionary setObject:dictionaryRepresentation24 forKeyedSubscript:@"skipStatement"];
     }
 
     else
     {
-      v75 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v75 forKeyedSubscript:@"skipStatement"];
+      null24 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null24 forKeyedSubscript:@"skipStatement"];
     }
   }
 
   if (self->_statementEvaluated)
   {
-    v76 = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
-    v77 = [v76 dictionaryRepresentation];
-    if (v77)
+    statementEvaluated = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
+    dictionaryRepresentation25 = [statementEvaluated dictionaryRepresentation];
+    if (dictionaryRepresentation25)
     {
-      [v3 setObject:v77 forKeyedSubscript:@"statementEvaluated"];
+      [dictionary setObject:dictionaryRepresentation25 forKeyedSubscript:@"statementEvaluated"];
     }
 
     else
     {
-      v78 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v78 forKeyedSubscript:@"statementEvaluated"];
+      null25 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null25 forKeyedSubscript:@"statementEvaluated"];
     }
   }
 
   if (self->_systemResponseGenerated)
   {
-    v79 = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
-    v80 = [v79 dictionaryRepresentation];
-    if (v80)
+    systemResponseGenerated = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
+    dictionaryRepresentation26 = [systemResponseGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation26)
     {
-      [v3 setObject:v80 forKeyedSubscript:@"systemResponseGenerated"];
+      [dictionary setObject:dictionaryRepresentation26 forKeyedSubscript:@"systemResponseGenerated"];
     }
 
     else
     {
-      v81 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v81 forKeyedSubscript:@"systemResponseGenerated"];
+      null26 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null26 forKeyedSubscript:@"systemResponseGenerated"];
     }
   }
 
   if (self->_terminate)
   {
-    v82 = [(IFTSchemaIFTClientEvent *)self terminate];
-    v83 = [v82 dictionaryRepresentation];
-    if (v83)
+    terminate = [(IFTSchemaIFTClientEvent *)self terminate];
+    dictionaryRepresentation27 = [terminate dictionaryRepresentation];
+    if (dictionaryRepresentation27)
     {
-      [v3 setObject:v83 forKeyedSubscript:@"terminate"];
+      [dictionary setObject:dictionaryRepresentation27 forKeyedSubscript:@"terminate"];
     }
 
     else
     {
-      v84 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v84 forKeyedSubscript:@"terminate"];
+      null27 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null27 forKeyedSubscript:@"terminate"];
     }
   }
 
   if (self->_toolResolution)
   {
-    v85 = [(IFTSchemaIFTClientEvent *)self toolResolution];
-    v86 = [v85 dictionaryRepresentation];
-    if (v86)
+    toolResolution = [(IFTSchemaIFTClientEvent *)self toolResolution];
+    dictionaryRepresentation28 = [toolResolution dictionaryRepresentation];
+    if (dictionaryRepresentation28)
     {
-      [v3 setObject:v86 forKeyedSubscript:@"toolResolution"];
+      [dictionary setObject:dictionaryRepresentation28 forKeyedSubscript:@"toolResolution"];
     }
 
     else
     {
-      v87 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v87 forKeyedSubscript:@"toolResolution"];
+      null28 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null28 forKeyedSubscript:@"toolResolution"];
     }
   }
 
   if (self->_toolsRetrieved)
   {
-    v88 = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
-    v89 = [v88 dictionaryRepresentation];
-    if (v89)
+    toolsRetrieved = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
+    dictionaryRepresentation29 = [toolsRetrieved dictionaryRepresentation];
+    if (dictionaryRepresentation29)
     {
-      [v3 setObject:v89 forKeyedSubscript:@"toolsRetrieved"];
+      [dictionary setObject:dictionaryRepresentation29 forKeyedSubscript:@"toolsRetrieved"];
     }
 
     else
     {
-      v90 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v90 forKeyedSubscript:@"toolsRetrieved"];
+      null29 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null29 forKeyedSubscript:@"toolsRetrieved"];
     }
   }
 
   if (self->_variablesSet)
   {
-    v91 = [(IFTSchemaIFTClientEvent *)self variablesSet];
-    v92 = [v91 dictionaryRepresentation];
-    if (v92)
+    variablesSet = [(IFTSchemaIFTClientEvent *)self variablesSet];
+    dictionaryRepresentation30 = [variablesSet dictionaryRepresentation];
+    if (dictionaryRepresentation30)
     {
-      [v3 setObject:v92 forKeyedSubscript:@"variablesSet"];
+      [dictionary setObject:dictionaryRepresentation30 forKeyedSubscript:@"variablesSet"];
     }
 
     else
     {
-      v93 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v93 forKeyedSubscript:@"variablesSet"];
+      null30 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null30 forKeyedSubscript:@"variablesSet"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v94 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v94 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -937,34 +937,34 @@
   return v31 ^ [(IFTSchemaIFTRecoverableError *)self->_recoverableError hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_153;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_153;
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v8 = [(IFTSchemaIFTClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(IFTSchemaIFTClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(IFTSchemaIFTClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -976,20 +976,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
-  v7 = [v4 contextPrewarmRequest];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
+  eventMetadata2 = [equalCopy contextPrewarmRequest];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v13 = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
-  if (v13)
+  contextPrewarmRequest = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
+  if (contextPrewarmRequest)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
-    v16 = [v4 contextPrewarmRequest];
-    v17 = [v15 isEqual:v16];
+    v14 = contextPrewarmRequest;
+    contextPrewarmRequest2 = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
+    contextPrewarmRequest3 = [equalCopy contextPrewarmRequest];
+    v17 = [contextPrewarmRequest2 isEqual:contextPrewarmRequest3];
 
     if (!v17)
     {
@@ -1001,20 +1001,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
-  v7 = [v4 contextPrewarmCompleted];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
+  eventMetadata2 = [equalCopy contextPrewarmCompleted];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v18 = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
-  if (v18)
+  contextPrewarmCompleted = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
+  if (contextPrewarmCompleted)
   {
-    v19 = v18;
-    v20 = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
-    v21 = [v4 contextPrewarmCompleted];
-    v22 = [v20 isEqual:v21];
+    v19 = contextPrewarmCompleted;
+    contextPrewarmCompleted2 = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
+    contextPrewarmCompleted3 = [equalCopy contextPrewarmCompleted];
+    v22 = [contextPrewarmCompleted2 isEqual:contextPrewarmCompleted3];
 
     if (!v22)
     {
@@ -1026,20 +1026,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self terminate];
-  v7 = [v4 terminate];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self terminate];
+  eventMetadata2 = [equalCopy terminate];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v23 = [(IFTSchemaIFTClientEvent *)self terminate];
-  if (v23)
+  terminate = [(IFTSchemaIFTClientEvent *)self terminate];
+  if (terminate)
   {
-    v24 = v23;
-    v25 = [(IFTSchemaIFTClientEvent *)self terminate];
-    v26 = [v4 terminate];
-    v27 = [v25 isEqual:v26];
+    v24 = terminate;
+    terminate2 = [(IFTSchemaIFTClientEvent *)self terminate];
+    terminate3 = [equalCopy terminate];
+    v27 = [terminate2 isEqual:terminate3];
 
     if (!v27)
     {
@@ -1051,20 +1051,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self sessionStart];
-  v7 = [v4 sessionStart];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self sessionStart];
+  eventMetadata2 = [equalCopy sessionStart];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v28 = [(IFTSchemaIFTClientEvent *)self sessionStart];
-  if (v28)
+  sessionStart = [(IFTSchemaIFTClientEvent *)self sessionStart];
+  if (sessionStart)
   {
-    v29 = v28;
-    v30 = [(IFTSchemaIFTClientEvent *)self sessionStart];
-    v31 = [v4 sessionStart];
-    v32 = [v30 isEqual:v31];
+    v29 = sessionStart;
+    sessionStart2 = [(IFTSchemaIFTClientEvent *)self sessionStart];
+    sessionStart3 = [equalCopy sessionStart];
+    v32 = [sessionStart2 isEqual:sessionStart3];
 
     if (!v32)
     {
@@ -1076,20 +1076,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self request];
-  v7 = [v4 request];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self request];
+  eventMetadata2 = [equalCopy request];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v33 = [(IFTSchemaIFTClientEvent *)self request];
-  if (v33)
+  request = [(IFTSchemaIFTClientEvent *)self request];
+  if (request)
   {
-    v34 = v33;
-    v35 = [(IFTSchemaIFTClientEvent *)self request];
-    v36 = [v4 request];
-    v37 = [v35 isEqual:v36];
+    v34 = request;
+    request2 = [(IFTSchemaIFTClientEvent *)self request];
+    request3 = [equalCopy request];
+    v37 = [request2 isEqual:request3];
 
     if (!v37)
     {
@@ -1101,20 +1101,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
-  v7 = [v4 requestContextTextContentTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
+  eventMetadata2 = [equalCopy requestContextTextContentTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v38 = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
-  if (v38)
+  requestContextTextContentTier1 = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
+  if (requestContextTextContentTier1)
   {
-    v39 = v38;
-    v40 = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
-    v41 = [v4 requestContextTextContentTier1];
-    v42 = [v40 isEqual:v41];
+    v39 = requestContextTextContentTier1;
+    requestContextTextContentTier12 = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
+    requestContextTextContentTier13 = [equalCopy requestContextTextContentTier1];
+    v42 = [requestContextTextContentTier12 isEqual:requestContextTextContentTier13];
 
     if (!v42)
     {
@@ -1126,20 +1126,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
-  v7 = [v4 entitySpanMatched];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
+  eventMetadata2 = [equalCopy entitySpanMatched];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v43 = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
-  if (v43)
+  entitySpanMatched = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
+  if (entitySpanMatched)
   {
-    v44 = v43;
-    v45 = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
-    v46 = [v4 entitySpanMatched];
-    v47 = [v45 isEqual:v46];
+    v44 = entitySpanMatched;
+    entitySpanMatched2 = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
+    entitySpanMatched3 = [equalCopy entitySpanMatched];
+    v47 = [entitySpanMatched2 isEqual:entitySpanMatched3];
 
     if (!v47)
     {
@@ -1151,20 +1151,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
-  v7 = [v4 contextRetrieved];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
+  eventMetadata2 = [equalCopy contextRetrieved];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v48 = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
-  if (v48)
+  contextRetrieved = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
+  if (contextRetrieved)
   {
-    v49 = v48;
-    v50 = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
-    v51 = [v4 contextRetrieved];
-    v52 = [v50 isEqual:v51];
+    v49 = contextRetrieved;
+    contextRetrieved2 = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
+    contextRetrieved3 = [equalCopy contextRetrieved];
+    v52 = [contextRetrieved2 isEqual:contextRetrieved3];
 
     if (!v52)
     {
@@ -1176,20 +1176,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
-  v7 = [v4 toolsRetrieved];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
+  eventMetadata2 = [equalCopy toolsRetrieved];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v53 = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
-  if (v53)
+  toolsRetrieved = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
+  if (toolsRetrieved)
   {
-    v54 = v53;
-    v55 = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
-    v56 = [v4 toolsRetrieved];
-    v57 = [v55 isEqual:v56];
+    v54 = toolsRetrieved;
+    toolsRetrieved2 = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
+    toolsRetrieved3 = [equalCopy toolsRetrieved];
+    v57 = [toolsRetrieved2 isEqual:toolsRetrieved3];
 
     if (!v57)
     {
@@ -1201,20 +1201,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
-  v7 = [v4 queryDecorationResult];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
+  eventMetadata2 = [equalCopy queryDecorationResult];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v58 = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
-  if (v58)
+  queryDecorationResult = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
+  if (queryDecorationResult)
   {
-    v59 = v58;
-    v60 = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
-    v61 = [v4 queryDecorationResult];
-    v62 = [v60 isEqual:v61];
+    v59 = queryDecorationResult;
+    queryDecorationResult2 = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
+    queryDecorationResult3 = [equalCopy queryDecorationResult];
+    v62 = [queryDecorationResult2 isEqual:queryDecorationResult3];
 
     if (!v62)
     {
@@ -1226,20 +1226,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
-  v7 = [v4 queryDecorationPrePlannerResult];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
+  eventMetadata2 = [equalCopy queryDecorationPrePlannerResult];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v63 = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
-  if (v63)
+  queryDecorationPrePlannerResult = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
+  if (queryDecorationPrePlannerResult)
   {
-    v64 = v63;
-    v65 = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
-    v66 = [v4 queryDecorationPrePlannerResult];
-    v67 = [v65 isEqual:v66];
+    v64 = queryDecorationPrePlannerResult;
+    queryDecorationPrePlannerResult2 = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
+    queryDecorationPrePlannerResult3 = [equalCopy queryDecorationPrePlannerResult];
+    v67 = [queryDecorationPrePlannerResult2 isEqual:queryDecorationPrePlannerResult3];
 
     if (!v67)
     {
@@ -1251,20 +1251,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self planCreated];
-  v7 = [v4 planCreated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self planCreated];
+  eventMetadata2 = [equalCopy planCreated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v68 = [(IFTSchemaIFTClientEvent *)self planCreated];
-  if (v68)
+  planCreated = [(IFTSchemaIFTClientEvent *)self planCreated];
+  if (planCreated)
   {
-    v69 = v68;
-    v70 = [(IFTSchemaIFTClientEvent *)self planCreated];
-    v71 = [v4 planCreated];
-    v72 = [v70 isEqual:v71];
+    v69 = planCreated;
+    planCreated2 = [(IFTSchemaIFTClientEvent *)self planCreated];
+    planCreated3 = [equalCopy planCreated];
+    v72 = [planCreated2 isEqual:planCreated3];
 
     if (!v72)
     {
@@ -1276,20 +1276,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
-  v7 = [v4 astFlatExprSearchVariantTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
+  eventMetadata2 = [equalCopy astFlatExprSearchVariantTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v73 = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
-  if (v73)
+  astFlatExprSearchVariantTier1 = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
+  if (astFlatExprSearchVariantTier1)
   {
-    v74 = v73;
-    v75 = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
-    v76 = [v4 astFlatExprSearchVariantTier1];
-    v77 = [v75 isEqual:v76];
+    v74 = astFlatExprSearchVariantTier1;
+    astFlatExprSearchVariantTier12 = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
+    astFlatExprSearchVariantTier13 = [equalCopy astFlatExprSearchVariantTier1];
+    v77 = [astFlatExprSearchVariantTier12 isEqual:astFlatExprSearchVariantTier13];
 
     if (!v77)
     {
@@ -1301,20 +1301,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self variablesSet];
-  v7 = [v4 variablesSet];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self variablesSet];
+  eventMetadata2 = [equalCopy variablesSet];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v78 = [(IFTSchemaIFTClientEvent *)self variablesSet];
-  if (v78)
+  variablesSet = [(IFTSchemaIFTClientEvent *)self variablesSet];
+  if (variablesSet)
   {
-    v79 = v78;
-    v80 = [(IFTSchemaIFTClientEvent *)self variablesSet];
-    v81 = [v4 variablesSet];
-    v82 = [v80 isEqual:v81];
+    v79 = variablesSet;
+    variablesSet2 = [(IFTSchemaIFTClientEvent *)self variablesSet];
+    variablesSet3 = [equalCopy variablesSet];
+    v82 = [variablesSet2 isEqual:variablesSet3];
 
     if (!v82)
     {
@@ -1326,20 +1326,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self toolResolution];
-  v7 = [v4 toolResolution];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self toolResolution];
+  eventMetadata2 = [equalCopy toolResolution];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v83 = [(IFTSchemaIFTClientEvent *)self toolResolution];
-  if (v83)
+  toolResolution = [(IFTSchemaIFTClientEvent *)self toolResolution];
+  if (toolResolution)
   {
-    v84 = v83;
-    v85 = [(IFTSchemaIFTClientEvent *)self toolResolution];
-    v86 = [v4 toolResolution];
-    v87 = [v85 isEqual:v86];
+    v84 = toolResolution;
+    toolResolution2 = [(IFTSchemaIFTClientEvent *)self toolResolution];
+    toolResolution3 = [equalCopy toolResolution];
+    v87 = [toolResolution2 isEqual:toolResolution3];
 
     if (!v87)
     {
@@ -1351,20 +1351,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self queriesCreated];
-  v7 = [v4 queriesCreated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self queriesCreated];
+  eventMetadata2 = [equalCopy queriesCreated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v88 = [(IFTSchemaIFTClientEvent *)self queriesCreated];
-  if (v88)
+  queriesCreated = [(IFTSchemaIFTClientEvent *)self queriesCreated];
+  if (queriesCreated)
   {
-    v89 = v88;
-    v90 = [(IFTSchemaIFTClientEvent *)self queriesCreated];
-    v91 = [v4 queriesCreated];
-    v92 = [v90 isEqual:v91];
+    v89 = queriesCreated;
+    queriesCreated2 = [(IFTSchemaIFTClientEvent *)self queriesCreated];
+    queriesCreated3 = [equalCopy queriesCreated];
+    v92 = [queriesCreated2 isEqual:queriesCreated3];
 
     if (!v92)
     {
@@ -1376,20 +1376,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
-  v7 = [v4 actionResolverRequestCreated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
+  eventMetadata2 = [equalCopy actionResolverRequestCreated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v93 = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
-  if (v93)
+  actionResolverRequestCreated = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
+  if (actionResolverRequestCreated)
   {
-    v94 = v93;
-    v95 = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
-    v96 = [v4 actionResolverRequestCreated];
-    v97 = [v95 isEqual:v96];
+    v94 = actionResolverRequestCreated;
+    actionResolverRequestCreated2 = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
+    actionResolverRequestCreated3 = [equalCopy actionResolverRequestCreated];
+    v97 = [actionResolverRequestCreated2 isEqual:actionResolverRequestCreated3];
 
     if (!v97)
     {
@@ -1401,20 +1401,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
-  v7 = [v4 responseGenerationRequest];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
+  eventMetadata2 = [equalCopy responseGenerationRequest];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v98 = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
-  if (v98)
+  responseGenerationRequest = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
+  if (responseGenerationRequest)
   {
-    v99 = v98;
-    v100 = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
-    v101 = [v4 responseGenerationRequest];
-    v102 = [v100 isEqual:v101];
+    v99 = responseGenerationRequest;
+    responseGenerationRequest2 = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
+    responseGenerationRequest3 = [equalCopy responseGenerationRequest];
+    v102 = [responseGenerationRequest2 isEqual:responseGenerationRequest3];
 
     if (!v102)
     {
@@ -1426,20 +1426,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self actionCancelled];
-  v7 = [v4 actionCancelled];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self actionCancelled];
+  eventMetadata2 = [equalCopy actionCancelled];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v103 = [(IFTSchemaIFTClientEvent *)self actionCancelled];
-  if (v103)
+  actionCancelled = [(IFTSchemaIFTClientEvent *)self actionCancelled];
+  if (actionCancelled)
   {
-    v104 = v103;
-    v105 = [(IFTSchemaIFTClientEvent *)self actionCancelled];
-    v106 = [v4 actionCancelled];
-    v107 = [v105 isEqual:v106];
+    v104 = actionCancelled;
+    actionCancelled2 = [(IFTSchemaIFTClientEvent *)self actionCancelled];
+    actionCancelled3 = [equalCopy actionCancelled];
+    v107 = [actionCancelled2 isEqual:actionCancelled3];
 
     if (!v107)
     {
@@ -1451,20 +1451,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self continuePlanning];
-  v7 = [v4 continuePlanning];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self continuePlanning];
+  eventMetadata2 = [equalCopy continuePlanning];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v108 = [(IFTSchemaIFTClientEvent *)self continuePlanning];
-  if (v108)
+  continuePlanning = [(IFTSchemaIFTClientEvent *)self continuePlanning];
+  if (continuePlanning)
   {
-    v109 = v108;
-    v110 = [(IFTSchemaIFTClientEvent *)self continuePlanning];
-    v111 = [v4 continuePlanning];
-    v112 = [v110 isEqual:v111];
+    v109 = continuePlanning;
+    continuePlanning2 = [(IFTSchemaIFTClientEvent *)self continuePlanning];
+    continuePlanning3 = [equalCopy continuePlanning];
+    v112 = [continuePlanning2 isEqual:continuePlanning3];
 
     if (!v112)
     {
@@ -1476,20 +1476,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self skipStatement];
-  v7 = [v4 skipStatement];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self skipStatement];
+  eventMetadata2 = [equalCopy skipStatement];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v113 = [(IFTSchemaIFTClientEvent *)self skipStatement];
-  if (v113)
+  skipStatement = [(IFTSchemaIFTClientEvent *)self skipStatement];
+  if (skipStatement)
   {
-    v114 = v113;
-    v115 = [(IFTSchemaIFTClientEvent *)self skipStatement];
-    v116 = [v4 skipStatement];
-    v117 = [v115 isEqual:v116];
+    v114 = skipStatement;
+    skipStatement2 = [(IFTSchemaIFTClientEvent *)self skipStatement];
+    skipStatement3 = [equalCopy skipStatement];
+    v117 = [skipStatement2 isEqual:skipStatement3];
 
     if (!v117)
     {
@@ -1501,20 +1501,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
-  v7 = [v4 executionPreconditionEvaluatorRequest];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
+  eventMetadata2 = [equalCopy executionPreconditionEvaluatorRequest];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v118 = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
-  if (v118)
+  executionPreconditionEvaluatorRequest = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
+  if (executionPreconditionEvaluatorRequest)
   {
-    v119 = v118;
-    v120 = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
-    v121 = [v4 executionPreconditionEvaluatorRequest];
-    v122 = [v120 isEqual:v121];
+    v119 = executionPreconditionEvaluatorRequest;
+    executionPreconditionEvaluatorRequest2 = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
+    executionPreconditionEvaluatorRequest3 = [equalCopy executionPreconditionEvaluatorRequest];
+    v122 = [executionPreconditionEvaluatorRequest2 isEqual:executionPreconditionEvaluatorRequest3];
 
     if (!v122)
     {
@@ -1526,20 +1526,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self actionCreated];
-  v7 = [v4 actionCreated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self actionCreated];
+  eventMetadata2 = [equalCopy actionCreated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v123 = [(IFTSchemaIFTClientEvent *)self actionCreated];
-  if (v123)
+  actionCreated = [(IFTSchemaIFTClientEvent *)self actionCreated];
+  if (actionCreated)
   {
-    v124 = v123;
-    v125 = [(IFTSchemaIFTClientEvent *)self actionCreated];
-    v126 = [v4 actionCreated];
-    v127 = [v125 isEqual:v126];
+    v124 = actionCreated;
+    actionCreated2 = [(IFTSchemaIFTClientEvent *)self actionCreated];
+    actionCreated3 = [equalCopy actionCreated];
+    v127 = [actionCreated2 isEqual:actionCreated3];
 
     if (!v127)
     {
@@ -1551,20 +1551,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
-  v7 = [v4 clientActionCreated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
+  eventMetadata2 = [equalCopy clientActionCreated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v128 = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
-  if (v128)
+  clientActionCreated = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
+  if (clientActionCreated)
   {
-    v129 = v128;
-    v130 = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
-    v131 = [v4 clientActionCreated];
-    v132 = [v130 isEqual:v131];
+    v129 = clientActionCreated;
+    clientActionCreated2 = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
+    clientActionCreated3 = [equalCopy clientActionCreated];
+    v132 = [clientActionCreated2 isEqual:clientActionCreated3];
 
     if (!v132)
     {
@@ -1576,20 +1576,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
-  v7 = [v4 queriesExecuted];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
+  eventMetadata2 = [equalCopy queriesExecuted];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v133 = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
-  if (v133)
+  queriesExecuted = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
+  if (queriesExecuted)
   {
-    v134 = v133;
-    v135 = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
-    v136 = [v4 queriesExecuted];
-    v137 = [v135 isEqual:v136];
+    v134 = queriesExecuted;
+    queriesExecuted2 = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
+    queriesExecuted3 = [equalCopy queriesExecuted];
+    v137 = [queriesExecuted2 isEqual:queriesExecuted3];
 
     if (!v137)
     {
@@ -1601,20 +1601,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
-  v7 = [v4 statementEvaluated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
+  eventMetadata2 = [equalCopy statementEvaluated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v138 = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
-  if (v138)
+  statementEvaluated = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
+  if (statementEvaluated)
   {
-    v139 = v138;
-    v140 = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
-    v141 = [v4 statementEvaluated];
-    v142 = [v140 isEqual:v141];
+    v139 = statementEvaluated;
+    statementEvaluated2 = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
+    statementEvaluated3 = [equalCopy statementEvaluated];
+    v142 = [statementEvaluated2 isEqual:statementEvaluated3];
 
     if (!v142)
     {
@@ -1626,20 +1626,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
-  v7 = [v4 systemResponseGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
+  eventMetadata2 = [equalCopy systemResponseGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v143 = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
-  if (v143)
+  systemResponseGenerated = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
+  if (systemResponseGenerated)
   {
-    v144 = v143;
-    v145 = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
-    v146 = [v4 systemResponseGenerated];
-    v147 = [v145 isEqual:v146];
+    v144 = systemResponseGenerated;
+    systemResponseGenerated2 = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
+    systemResponseGenerated3 = [equalCopy systemResponseGenerated];
+    v147 = [systemResponseGenerated2 isEqual:systemResponseGenerated3];
 
     if (!v147)
     {
@@ -1651,20 +1651,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self criticalError];
-  v7 = [v4 criticalError];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self criticalError];
+  eventMetadata2 = [equalCopy criticalError];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_152;
   }
 
-  v148 = [(IFTSchemaIFTClientEvent *)self criticalError];
-  if (v148)
+  criticalError = [(IFTSchemaIFTClientEvent *)self criticalError];
+  if (criticalError)
   {
-    v149 = v148;
-    v150 = [(IFTSchemaIFTClientEvent *)self criticalError];
-    v151 = [v4 criticalError];
-    v152 = [v150 isEqual:v151];
+    v149 = criticalError;
+    criticalError2 = [(IFTSchemaIFTClientEvent *)self criticalError];
+    criticalError3 = [equalCopy criticalError];
+    v152 = [criticalError2 isEqual:criticalError3];
 
     if (!v152)
     {
@@ -1676,12 +1676,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self recoverableError];
-  v7 = [v4 recoverableError];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self recoverableError];
+  eventMetadata2 = [equalCopy recoverableError];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v153 = [(IFTSchemaIFTClientEvent *)self recoverableError];
-    if (!v153)
+    recoverableError = [(IFTSchemaIFTClientEvent *)self recoverableError];
+    if (!recoverableError)
     {
 
 LABEL_156:
@@ -1689,10 +1689,10 @@ LABEL_156:
       goto LABEL_154;
     }
 
-    v154 = v153;
-    v155 = [(IFTSchemaIFTClientEvent *)self recoverableError];
-    v156 = [v4 recoverableError];
-    v157 = [v155 isEqual:v156];
+    v154 = recoverableError;
+    recoverableError2 = [(IFTSchemaIFTClientEvent *)self recoverableError];
+    recoverableError3 = [equalCopy recoverableError];
+    v157 = [recoverableError2 isEqual:recoverableError3];
 
     if (v157)
     {
@@ -1712,250 +1712,250 @@ LABEL_154:
   return v158;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v65 = a3;
-  v4 = [(IFTSchemaIFTClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(IFTSchemaIFTClientEvent *)self eventMetadata];
+    eventMetadata2 = [(IFTSchemaIFTClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
+  contextPrewarmRequest = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
 
-  if (v6)
+  if (contextPrewarmRequest)
   {
-    v7 = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
+    contextPrewarmRequest2 = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
+  contextPrewarmCompleted = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
 
-  if (v8)
+  if (contextPrewarmCompleted)
   {
-    v9 = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
+    contextPrewarmCompleted2 = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(IFTSchemaIFTClientEvent *)self terminate];
+  terminate = [(IFTSchemaIFTClientEvent *)self terminate];
 
-  if (v10)
+  if (terminate)
   {
-    v11 = [(IFTSchemaIFTClientEvent *)self terminate];
+    terminate2 = [(IFTSchemaIFTClientEvent *)self terminate];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(IFTSchemaIFTClientEvent *)self sessionStart];
+  sessionStart = [(IFTSchemaIFTClientEvent *)self sessionStart];
 
-  if (v12)
+  if (sessionStart)
   {
-    v13 = [(IFTSchemaIFTClientEvent *)self sessionStart];
+    sessionStart2 = [(IFTSchemaIFTClientEvent *)self sessionStart];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(IFTSchemaIFTClientEvent *)self request];
+  request = [(IFTSchemaIFTClientEvent *)self request];
 
-  if (v14)
+  if (request)
   {
-    v15 = [(IFTSchemaIFTClientEvent *)self request];
+    request2 = [(IFTSchemaIFTClientEvent *)self request];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
+  requestContextTextContentTier1 = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
 
-  if (v16)
+  if (requestContextTextContentTier1)
   {
-    v17 = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
+    requestContextTextContentTier12 = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
+  entitySpanMatched = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
 
-  if (v18)
+  if (entitySpanMatched)
   {
-    v19 = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
+    entitySpanMatched2 = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
+  contextRetrieved = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
 
-  if (v20)
+  if (contextRetrieved)
   {
-    v21 = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
+    contextRetrieved2 = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
+  toolsRetrieved = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
 
-  if (v22)
+  if (toolsRetrieved)
   {
-    v23 = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
+    toolsRetrieved2 = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
+  queryDecorationResult = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
 
-  if (v24)
+  if (queryDecorationResult)
   {
-    v25 = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
+    queryDecorationResult2 = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
+  queryDecorationPrePlannerResult = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
 
-  if (v26)
+  if (queryDecorationPrePlannerResult)
   {
-    v27 = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
+    queryDecorationPrePlannerResult2 = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(IFTSchemaIFTClientEvent *)self planCreated];
+  planCreated = [(IFTSchemaIFTClientEvent *)self planCreated];
 
-  if (v28)
+  if (planCreated)
   {
-    v29 = [(IFTSchemaIFTClientEvent *)self planCreated];
+    planCreated2 = [(IFTSchemaIFTClientEvent *)self planCreated];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
+  astFlatExprSearchVariantTier1 = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
 
-  if (v30)
+  if (astFlatExprSearchVariantTier1)
   {
-    v31 = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
+    astFlatExprSearchVariantTier12 = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(IFTSchemaIFTClientEvent *)self variablesSet];
+  variablesSet = [(IFTSchemaIFTClientEvent *)self variablesSet];
 
-  if (v32)
+  if (variablesSet)
   {
-    v33 = [(IFTSchemaIFTClientEvent *)self variablesSet];
+    variablesSet2 = [(IFTSchemaIFTClientEvent *)self variablesSet];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(IFTSchemaIFTClientEvent *)self toolResolution];
+  toolResolution = [(IFTSchemaIFTClientEvent *)self toolResolution];
 
-  if (v34)
+  if (toolResolution)
   {
-    v35 = [(IFTSchemaIFTClientEvent *)self toolResolution];
+    toolResolution2 = [(IFTSchemaIFTClientEvent *)self toolResolution];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(IFTSchemaIFTClientEvent *)self queriesCreated];
+  queriesCreated = [(IFTSchemaIFTClientEvent *)self queriesCreated];
 
-  if (v36)
+  if (queriesCreated)
   {
-    v37 = [(IFTSchemaIFTClientEvent *)self queriesCreated];
+    queriesCreated2 = [(IFTSchemaIFTClientEvent *)self queriesCreated];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
+  actionResolverRequestCreated = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
 
-  if (v38)
+  if (actionResolverRequestCreated)
   {
-    v39 = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
+    actionResolverRequestCreated2 = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
+  responseGenerationRequest = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
 
-  if (v40)
+  if (responseGenerationRequest)
   {
-    v41 = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
+    responseGenerationRequest2 = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
     PBDataWriterWriteSubmessage();
   }
 
-  v42 = [(IFTSchemaIFTClientEvent *)self actionCancelled];
+  actionCancelled = [(IFTSchemaIFTClientEvent *)self actionCancelled];
 
-  if (v42)
+  if (actionCancelled)
   {
-    v43 = [(IFTSchemaIFTClientEvent *)self actionCancelled];
+    actionCancelled2 = [(IFTSchemaIFTClientEvent *)self actionCancelled];
     PBDataWriterWriteSubmessage();
   }
 
-  v44 = [(IFTSchemaIFTClientEvent *)self continuePlanning];
+  continuePlanning = [(IFTSchemaIFTClientEvent *)self continuePlanning];
 
-  if (v44)
+  if (continuePlanning)
   {
-    v45 = [(IFTSchemaIFTClientEvent *)self continuePlanning];
+    continuePlanning2 = [(IFTSchemaIFTClientEvent *)self continuePlanning];
     PBDataWriterWriteSubmessage();
   }
 
-  v46 = [(IFTSchemaIFTClientEvent *)self skipStatement];
+  skipStatement = [(IFTSchemaIFTClientEvent *)self skipStatement];
 
-  if (v46)
+  if (skipStatement)
   {
-    v47 = [(IFTSchemaIFTClientEvent *)self skipStatement];
+    skipStatement2 = [(IFTSchemaIFTClientEvent *)self skipStatement];
     PBDataWriterWriteSubmessage();
   }
 
-  v48 = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
+  executionPreconditionEvaluatorRequest = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
 
-  if (v48)
+  if (executionPreconditionEvaluatorRequest)
   {
-    v49 = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
+    executionPreconditionEvaluatorRequest2 = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
     PBDataWriterWriteSubmessage();
   }
 
-  v50 = [(IFTSchemaIFTClientEvent *)self actionCreated];
+  actionCreated = [(IFTSchemaIFTClientEvent *)self actionCreated];
 
-  if (v50)
+  if (actionCreated)
   {
-    v51 = [(IFTSchemaIFTClientEvent *)self actionCreated];
+    actionCreated2 = [(IFTSchemaIFTClientEvent *)self actionCreated];
     PBDataWriterWriteSubmessage();
   }
 
-  v52 = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
+  clientActionCreated = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
 
-  if (v52)
+  if (clientActionCreated)
   {
-    v53 = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
+    clientActionCreated2 = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
     PBDataWriterWriteSubmessage();
   }
 
-  v54 = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
+  queriesExecuted = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
 
-  if (v54)
+  if (queriesExecuted)
   {
-    v55 = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
+    queriesExecuted2 = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
     PBDataWriterWriteSubmessage();
   }
 
-  v56 = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
+  statementEvaluated = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
 
-  if (v56)
+  if (statementEvaluated)
   {
-    v57 = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
+    statementEvaluated2 = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
     PBDataWriterWriteSubmessage();
   }
 
-  v58 = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
+  systemResponseGenerated = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
 
-  if (v58)
+  if (systemResponseGenerated)
   {
-    v59 = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
+    systemResponseGenerated2 = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v60 = [(IFTSchemaIFTClientEvent *)self criticalError];
+  criticalError = [(IFTSchemaIFTClientEvent *)self criticalError];
 
-  if (v60)
+  if (criticalError)
   {
-    v61 = [(IFTSchemaIFTClientEvent *)self criticalError];
+    criticalError2 = [(IFTSchemaIFTClientEvent *)self criticalError];
     PBDataWriterWriteSubmessage();
   }
 
-  v62 = [(IFTSchemaIFTClientEvent *)self recoverableError];
+  recoverableError = [(IFTSchemaIFTClientEvent *)self recoverableError];
 
-  v63 = v65;
-  if (v62)
+  v63 = toCopy;
+  if (recoverableError)
   {
-    v64 = [(IFTSchemaIFTClientEvent *)self recoverableError];
+    recoverableError2 = [(IFTSchemaIFTClientEvent *)self recoverableError];
     PBDataWriterWriteSubmessage();
 
-    v63 = v65;
+    v63 = toCopy;
   }
 }
 
@@ -1984,9 +1984,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setRecoverableError:(id)a3
+- (void)setRecoverableError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -2072,14 +2072,14 @@ LABEL_154:
   self->_criticalError = 0;
 
   v33 = 125;
-  if (!v4)
+  if (!errorCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   recoverableError = self->_recoverableError;
-  self->_recoverableError = v4;
+  self->_recoverableError = errorCopy;
 }
 
 - (void)deleteCriticalError
@@ -2107,9 +2107,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setCriticalError:(id)a3
+- (void)setCriticalError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -2195,14 +2195,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 120;
-  if (!v4)
+  if (!errorCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   criticalError = self->_criticalError;
-  self->_criticalError = v4;
+  self->_criticalError = errorCopy;
 }
 
 - (void)deleteSystemResponseGenerated
@@ -2230,9 +2230,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setSystemResponseGenerated:(id)a3
+- (void)setSystemResponseGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -2318,14 +2318,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 119;
-  if (!v4)
+  if (!generatedCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   systemResponseGenerated = self->_systemResponseGenerated;
-  self->_systemResponseGenerated = v4;
+  self->_systemResponseGenerated = generatedCopy;
 }
 
 - (void)deleteStatementEvaluated
@@ -2353,9 +2353,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setStatementEvaluated:(id)a3
+- (void)setStatementEvaluated:(id)evaluated
 {
-  v4 = a3;
+  evaluatedCopy = evaluated;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -2441,14 +2441,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 118;
-  if (!v4)
+  if (!evaluatedCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   statementEvaluated = self->_statementEvaluated;
-  self->_statementEvaluated = v4;
+  self->_statementEvaluated = evaluatedCopy;
 }
 
 - (void)deleteQueriesExecuted
@@ -2476,9 +2476,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setQueriesExecuted:(id)a3
+- (void)setQueriesExecuted:(id)executed
 {
-  v4 = a3;
+  executedCopy = executed;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -2564,14 +2564,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 117;
-  if (!v4)
+  if (!executedCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   queriesExecuted = self->_queriesExecuted;
-  self->_queriesExecuted = v4;
+  self->_queriesExecuted = executedCopy;
 }
 
 - (void)deleteClientActionCreated
@@ -2599,9 +2599,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setClientActionCreated:(id)a3
+- (void)setClientActionCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -2687,14 +2687,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 116;
-  if (!v4)
+  if (!createdCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   clientActionCreated = self->_clientActionCreated;
-  self->_clientActionCreated = v4;
+  self->_clientActionCreated = createdCopy;
 }
 
 - (void)deleteActionCreated
@@ -2722,9 +2722,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setActionCreated:(id)a3
+- (void)setActionCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -2810,14 +2810,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 115;
-  if (!v4)
+  if (!createdCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   actionCreated = self->_actionCreated;
-  self->_actionCreated = v4;
+  self->_actionCreated = createdCopy;
 }
 
 - (void)deleteExecutionPreconditionEvaluatorRequest
@@ -2845,9 +2845,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setExecutionPreconditionEvaluatorRequest:(id)a3
+- (void)setExecutionPreconditionEvaluatorRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -2933,14 +2933,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 129;
-  if (!v4)
+  if (!requestCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   executionPreconditionEvaluatorRequest = self->_executionPreconditionEvaluatorRequest;
-  self->_executionPreconditionEvaluatorRequest = v4;
+  self->_executionPreconditionEvaluatorRequest = requestCopy;
 }
 
 - (void)deleteSkipStatement
@@ -2968,9 +2968,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setSkipStatement:(id)a3
+- (void)setSkipStatement:(id)statement
 {
-  v4 = a3;
+  statementCopy = statement;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -3055,9 +3055,9 @@ LABEL_154:
   recoverableError = self->_recoverableError;
   self->_recoverableError = 0;
 
-  self->_whichEvent_Type = (v4 != 0) << 7;
+  self->_whichEvent_Type = (statementCopy != 0) << 7;
   skipStatement = self->_skipStatement;
-  self->_skipStatement = v4;
+  self->_skipStatement = statementCopy;
 }
 
 - (void)deleteContinuePlanning
@@ -3085,9 +3085,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setContinuePlanning:(id)a3
+- (void)setContinuePlanning:(id)planning
 {
-  v4 = a3;
+  planningCopy = planning;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -3173,14 +3173,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 124;
-  if (!v4)
+  if (!planningCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   continuePlanning = self->_continuePlanning;
-  self->_continuePlanning = v4;
+  self->_continuePlanning = planningCopy;
 }
 
 - (void)deleteActionCancelled
@@ -3208,9 +3208,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setActionCancelled:(id)a3
+- (void)setActionCancelled:(id)cancelled
 {
-  v4 = a3;
+  cancelledCopy = cancelled;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -3296,14 +3296,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 114;
-  if (!v4)
+  if (!cancelledCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   actionCancelled = self->_actionCancelled;
-  self->_actionCancelled = v4;
+  self->_actionCancelled = cancelledCopy;
 }
 
 - (void)deleteResponseGenerationRequest
@@ -3331,9 +3331,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setResponseGenerationRequest:(id)a3
+- (void)setResponseGenerationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -3419,14 +3419,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 113;
-  if (!v4)
+  if (!requestCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   responseGenerationRequest = self->_responseGenerationRequest;
-  self->_responseGenerationRequest = v4;
+  self->_responseGenerationRequest = requestCopy;
 }
 
 - (void)deleteActionResolverRequestCreated
@@ -3454,9 +3454,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setActionResolverRequestCreated:(id)a3
+- (void)setActionResolverRequestCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -3542,14 +3542,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 112;
-  if (!v4)
+  if (!createdCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   actionResolverRequestCreated = self->_actionResolverRequestCreated;
-  self->_actionResolverRequestCreated = v4;
+  self->_actionResolverRequestCreated = createdCopy;
 }
 
 - (void)deleteQueriesCreated
@@ -3577,9 +3577,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setQueriesCreated:(id)a3
+- (void)setQueriesCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -3665,14 +3665,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 111;
-  if (!v4)
+  if (!createdCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   queriesCreated = self->_queriesCreated;
-  self->_queriesCreated = v4;
+  self->_queriesCreated = createdCopy;
 }
 
 - (void)deleteToolResolution
@@ -3700,9 +3700,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setToolResolution:(id)a3
+- (void)setToolResolution:(id)resolution
 {
-  v4 = a3;
+  resolutionCopy = resolution;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -3788,14 +3788,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 110;
-  if (!v4)
+  if (!resolutionCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   toolResolution = self->_toolResolution;
-  self->_toolResolution = v4;
+  self->_toolResolution = resolutionCopy;
 }
 
 - (void)deleteVariablesSet
@@ -3823,9 +3823,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setVariablesSet:(id)a3
+- (void)setVariablesSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -3911,14 +3911,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 109;
-  if (!v4)
+  if (!setCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   variablesSet = self->_variablesSet;
-  self->_variablesSet = v4;
+  self->_variablesSet = setCopy;
 }
 
 - (void)deleteAstFlatExprSearchVariantTier1
@@ -3946,9 +3946,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setAstFlatExprSearchVariantTier1:(id)a3
+- (void)setAstFlatExprSearchVariantTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -4034,14 +4034,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 123;
-  if (!v4)
+  if (!tier1Copy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   astFlatExprSearchVariantTier1 = self->_astFlatExprSearchVariantTier1;
-  self->_astFlatExprSearchVariantTier1 = v4;
+  self->_astFlatExprSearchVariantTier1 = tier1Copy;
 }
 
 - (void)deletePlanCreated
@@ -4069,9 +4069,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setPlanCreated:(id)a3
+- (void)setPlanCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -4157,14 +4157,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 108;
-  if (!v4)
+  if (!createdCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   planCreated = self->_planCreated;
-  self->_planCreated = v4;
+  self->_planCreated = createdCopy;
 }
 
 - (void)deleteQueryDecorationPrePlannerResult
@@ -4192,9 +4192,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setQueryDecorationPrePlannerResult:(id)a3
+- (void)setQueryDecorationPrePlannerResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -4280,14 +4280,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 127;
-  if (!v4)
+  if (!resultCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   queryDecorationPrePlannerResult = self->_queryDecorationPrePlannerResult;
-  self->_queryDecorationPrePlannerResult = v4;
+  self->_queryDecorationPrePlannerResult = resultCopy;
 }
 
 - (void)deleteQueryDecorationResult
@@ -4315,9 +4315,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setQueryDecorationResult:(id)a3
+- (void)setQueryDecorationResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -4403,14 +4403,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 121;
-  if (!v4)
+  if (!resultCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   queryDecorationResult = self->_queryDecorationResult;
-  self->_queryDecorationResult = v4;
+  self->_queryDecorationResult = resultCopy;
 }
 
 - (void)deleteToolsRetrieved
@@ -4438,9 +4438,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setToolsRetrieved:(id)a3
+- (void)setToolsRetrieved:(id)retrieved
 {
-  v4 = a3;
+  retrievedCopy = retrieved;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -4526,14 +4526,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 107;
-  if (!v4)
+  if (!retrievedCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   toolsRetrieved = self->_toolsRetrieved;
-  self->_toolsRetrieved = v4;
+  self->_toolsRetrieved = retrievedCopy;
 }
 
 - (void)deleteContextRetrieved
@@ -4561,9 +4561,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setContextRetrieved:(id)a3
+- (void)setContextRetrieved:(id)retrieved
 {
-  v4 = a3;
+  retrievedCopy = retrieved;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -4649,14 +4649,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 106;
-  if (!v4)
+  if (!retrievedCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   contextRetrieved = self->_contextRetrieved;
-  self->_contextRetrieved = v4;
+  self->_contextRetrieved = retrievedCopy;
 }
 
 - (void)deleteEntitySpanMatched
@@ -4684,9 +4684,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setEntitySpanMatched:(id)a3
+- (void)setEntitySpanMatched:(id)matched
 {
-  v4 = a3;
+  matchedCopy = matched;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -4772,14 +4772,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 105;
-  if (!v4)
+  if (!matchedCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   entitySpanMatched = self->_entitySpanMatched;
-  self->_entitySpanMatched = v4;
+  self->_entitySpanMatched = matchedCopy;
 }
 
 - (void)deleteRequestContextTextContentTier1
@@ -4807,9 +4807,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setRequestContextTextContentTier1:(id)a3
+- (void)setRequestContextTextContentTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -4895,14 +4895,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 122;
-  if (!v4)
+  if (!tier1Copy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   requestContextTextContentTier1 = self->_requestContextTextContentTier1;
-  self->_requestContextTextContentTier1 = v4;
+  self->_requestContextTextContentTier1 = tier1Copy;
 }
 
 - (void)deleteRequest
@@ -4930,9 +4930,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -5018,14 +5018,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 104;
-  if (!v4)
+  if (!requestCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   request = self->_request;
-  self->_request = v4;
+  self->_request = requestCopy;
 }
 
 - (void)deleteSessionStart
@@ -5053,9 +5053,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setSessionStart:(id)a3
+- (void)setSessionStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -5141,14 +5141,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 126;
-  if (!v4)
+  if (!startCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   sessionStart = self->_sessionStart;
-  self->_sessionStart = v4;
+  self->_sessionStart = startCopy;
 }
 
 - (void)deleteTerminate
@@ -5176,9 +5176,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setTerminate:(id)a3
+- (void)setTerminate:(id)terminate
 {
-  v4 = a3;
+  terminateCopy = terminate;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -5264,14 +5264,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 103;
-  if (!v4)
+  if (!terminateCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   terminate = self->_terminate;
-  self->_terminate = v4;
+  self->_terminate = terminateCopy;
 }
 
 - (void)deleteContextPrewarmCompleted
@@ -5299,9 +5299,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setContextPrewarmCompleted:(id)a3
+- (void)setContextPrewarmCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   contextPrewarmRequest = self->_contextPrewarmRequest;
   self->_contextPrewarmRequest = 0;
 
@@ -5387,14 +5387,14 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 102;
-  if (!v4)
+  if (!completedCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   contextPrewarmCompleted = self->_contextPrewarmCompleted;
-  self->_contextPrewarmCompleted = v4;
+  self->_contextPrewarmCompleted = completedCopy;
 }
 
 - (void)deleteContextPrewarmRequest
@@ -5422,9 +5422,9 @@ LABEL_154:
   return v3;
 }
 
-- (void)setContextPrewarmRequest:(id)a3
+- (void)setContextPrewarmRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   contextPrewarmCompleted = self->_contextPrewarmCompleted;
   self->_contextPrewarmCompleted = 0;
 
@@ -5510,332 +5510,332 @@ LABEL_154:
   self->_recoverableError = 0;
 
   v33 = 101;
-  if (!v4)
+  if (!requestCopy)
   {
     v33 = 0;
   }
 
   self->_whichEvent_Type = v33;
   contextPrewarmRequest = self->_contextPrewarmRequest;
-  self->_contextPrewarmRequest = v4;
+  self->_contextPrewarmRequest = requestCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(IFTSchemaIFTClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 0x1C)
+  whichEvent_Type = [(IFTSchemaIFTClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0x1C)
   {
     return @"com.apple.aiml.siri.ift.IFTClientEvent";
   }
 
   else
   {
-    return off_1E78D8320[v2 - 101];
+    return off_1E78D8320[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v98.receiver = self;
   v98.super_class = IFTSchemaIFTClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v98 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v98 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(IFTSchemaIFTClientEvent *)self deleteRequestContextTextContentTier1];
     [(IFTSchemaIFTClientEvent *)self deleteAstFlatExprSearchVariantTier1];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(IFTSchemaIFTClientEvent *)self deleteRequestContextTextContentTier1];
     [(IFTSchemaIFTClientEvent *)self deleteAstFlatExprSearchVariantTier1];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(IFTSchemaIFTClientEvent *)self deleteRequestContextTextContentTier1];
     [(IFTSchemaIFTClientEvent *)self deleteAstFlatExprSearchVariantTier1];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(IFTSchemaIFTClientEvent *)self deleteRequestContextTextContentTier1];
     [(IFTSchemaIFTClientEvent *)self deleteAstFlatExprSearchVariantTier1];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(IFTSchemaIFTClientEvent *)self deleteRequestContextTextContentTier1];
     [(IFTSchemaIFTClientEvent *)self deleteAstFlatExprSearchVariantTier1];
   }
 
-  v6 = [(IFTSchemaIFTClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  contextPrewarmRequest = [(IFTSchemaIFTClientEvent *)self contextPrewarmRequest];
+  v10 = [contextPrewarmRequest applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTClientEvent *)self deleteContextPrewarmRequest];
   }
 
-  v12 = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  contextPrewarmCompleted = [(IFTSchemaIFTClientEvent *)self contextPrewarmCompleted];
+  v13 = [contextPrewarmCompleted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(IFTSchemaIFTClientEvent *)self deleteContextPrewarmCompleted];
   }
 
-  v15 = [(IFTSchemaIFTClientEvent *)self terminate];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  terminate = [(IFTSchemaIFTClientEvent *)self terminate];
+  v16 = [terminate applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(IFTSchemaIFTClientEvent *)self deleteTerminate];
   }
 
-  v18 = [(IFTSchemaIFTClientEvent *)self sessionStart];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  sessionStart = [(IFTSchemaIFTClientEvent *)self sessionStart];
+  v19 = [sessionStart applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(IFTSchemaIFTClientEvent *)self deleteSessionStart];
   }
 
-  v21 = [(IFTSchemaIFTClientEvent *)self request];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  request = [(IFTSchemaIFTClientEvent *)self request];
+  v22 = [request applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(IFTSchemaIFTClientEvent *)self deleteRequest];
   }
 
-  v24 = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  requestContextTextContentTier1 = [(IFTSchemaIFTClientEvent *)self requestContextTextContentTier1];
+  v25 = [requestContextTextContentTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(IFTSchemaIFTClientEvent *)self deleteRequestContextTextContentTier1];
   }
 
-  v27 = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  entitySpanMatched = [(IFTSchemaIFTClientEvent *)self entitySpanMatched];
+  v28 = [entitySpanMatched applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(IFTSchemaIFTClientEvent *)self deleteEntitySpanMatched];
   }
 
-  v30 = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  contextRetrieved = [(IFTSchemaIFTClientEvent *)self contextRetrieved];
+  v31 = [contextRetrieved applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(IFTSchemaIFTClientEvent *)self deleteContextRetrieved];
   }
 
-  v33 = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  toolsRetrieved = [(IFTSchemaIFTClientEvent *)self toolsRetrieved];
+  v34 = [toolsRetrieved applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(IFTSchemaIFTClientEvent *)self deleteToolsRetrieved];
   }
 
-  v36 = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  queryDecorationResult = [(IFTSchemaIFTClientEvent *)self queryDecorationResult];
+  v37 = [queryDecorationResult applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(IFTSchemaIFTClientEvent *)self deleteQueryDecorationResult];
   }
 
-  v39 = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  queryDecorationPrePlannerResult = [(IFTSchemaIFTClientEvent *)self queryDecorationPrePlannerResult];
+  v40 = [queryDecorationPrePlannerResult applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(IFTSchemaIFTClientEvent *)self deleteQueryDecorationPrePlannerResult];
   }
 
-  v42 = [(IFTSchemaIFTClientEvent *)self planCreated];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  planCreated = [(IFTSchemaIFTClientEvent *)self planCreated];
+  v43 = [planCreated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(IFTSchemaIFTClientEvent *)self deletePlanCreated];
   }
 
-  v45 = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  astFlatExprSearchVariantTier1 = [(IFTSchemaIFTClientEvent *)self astFlatExprSearchVariantTier1];
+  v46 = [astFlatExprSearchVariantTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(IFTSchemaIFTClientEvent *)self deleteAstFlatExprSearchVariantTier1];
   }
 
-  v48 = [(IFTSchemaIFTClientEvent *)self variablesSet];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  variablesSet = [(IFTSchemaIFTClientEvent *)self variablesSet];
+  v49 = [variablesSet applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(IFTSchemaIFTClientEvent *)self deleteVariablesSet];
   }
 
-  v51 = [(IFTSchemaIFTClientEvent *)self toolResolution];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  toolResolution = [(IFTSchemaIFTClientEvent *)self toolResolution];
+  v52 = [toolResolution applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(IFTSchemaIFTClientEvent *)self deleteToolResolution];
   }
 
-  v54 = [(IFTSchemaIFTClientEvent *)self queriesCreated];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  queriesCreated = [(IFTSchemaIFTClientEvent *)self queriesCreated];
+  v55 = [queriesCreated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(IFTSchemaIFTClientEvent *)self deleteQueriesCreated];
   }
 
-  v57 = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  actionResolverRequestCreated = [(IFTSchemaIFTClientEvent *)self actionResolverRequestCreated];
+  v58 = [actionResolverRequestCreated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(IFTSchemaIFTClientEvent *)self deleteActionResolverRequestCreated];
   }
 
-  v60 = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
-  v61 = [v60 applySensitiveConditionsPolicy:v4];
-  v62 = [v61 suppressMessage];
+  responseGenerationRequest = [(IFTSchemaIFTClientEvent *)self responseGenerationRequest];
+  v61 = [responseGenerationRequest applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage19 = [v61 suppressMessage];
 
-  if (v62)
+  if (suppressMessage19)
   {
     [(IFTSchemaIFTClientEvent *)self deleteResponseGenerationRequest];
   }
 
-  v63 = [(IFTSchemaIFTClientEvent *)self actionCancelled];
-  v64 = [v63 applySensitiveConditionsPolicy:v4];
-  v65 = [v64 suppressMessage];
+  actionCancelled = [(IFTSchemaIFTClientEvent *)self actionCancelled];
+  v64 = [actionCancelled applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage20 = [v64 suppressMessage];
 
-  if (v65)
+  if (suppressMessage20)
   {
     [(IFTSchemaIFTClientEvent *)self deleteActionCancelled];
   }
 
-  v66 = [(IFTSchemaIFTClientEvent *)self continuePlanning];
-  v67 = [v66 applySensitiveConditionsPolicy:v4];
-  v68 = [v67 suppressMessage];
+  continuePlanning = [(IFTSchemaIFTClientEvent *)self continuePlanning];
+  v67 = [continuePlanning applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage21 = [v67 suppressMessage];
 
-  if (v68)
+  if (suppressMessage21)
   {
     [(IFTSchemaIFTClientEvent *)self deleteContinuePlanning];
   }
 
-  v69 = [(IFTSchemaIFTClientEvent *)self skipStatement];
-  v70 = [v69 applySensitiveConditionsPolicy:v4];
-  v71 = [v70 suppressMessage];
+  skipStatement = [(IFTSchemaIFTClientEvent *)self skipStatement];
+  v70 = [skipStatement applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage22 = [v70 suppressMessage];
 
-  if (v71)
+  if (suppressMessage22)
   {
     [(IFTSchemaIFTClientEvent *)self deleteSkipStatement];
   }
 
-  v72 = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
-  v73 = [v72 applySensitiveConditionsPolicy:v4];
-  v74 = [v73 suppressMessage];
+  executionPreconditionEvaluatorRequest = [(IFTSchemaIFTClientEvent *)self executionPreconditionEvaluatorRequest];
+  v73 = [executionPreconditionEvaluatorRequest applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage23 = [v73 suppressMessage];
 
-  if (v74)
+  if (suppressMessage23)
   {
     [(IFTSchemaIFTClientEvent *)self deleteExecutionPreconditionEvaluatorRequest];
   }
 
-  v75 = [(IFTSchemaIFTClientEvent *)self actionCreated];
-  v76 = [v75 applySensitiveConditionsPolicy:v4];
-  v77 = [v76 suppressMessage];
+  actionCreated = [(IFTSchemaIFTClientEvent *)self actionCreated];
+  v76 = [actionCreated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage24 = [v76 suppressMessage];
 
-  if (v77)
+  if (suppressMessage24)
   {
     [(IFTSchemaIFTClientEvent *)self deleteActionCreated];
   }
 
-  v78 = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
-  v79 = [v78 applySensitiveConditionsPolicy:v4];
-  v80 = [v79 suppressMessage];
+  clientActionCreated = [(IFTSchemaIFTClientEvent *)self clientActionCreated];
+  v79 = [clientActionCreated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage25 = [v79 suppressMessage];
 
-  if (v80)
+  if (suppressMessage25)
   {
     [(IFTSchemaIFTClientEvent *)self deleteClientActionCreated];
   }
 
-  v81 = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
-  v82 = [v81 applySensitiveConditionsPolicy:v4];
-  v83 = [v82 suppressMessage];
+  queriesExecuted = [(IFTSchemaIFTClientEvent *)self queriesExecuted];
+  v82 = [queriesExecuted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage26 = [v82 suppressMessage];
 
-  if (v83)
+  if (suppressMessage26)
   {
     [(IFTSchemaIFTClientEvent *)self deleteQueriesExecuted];
   }
 
-  v84 = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
-  v85 = [v84 applySensitiveConditionsPolicy:v4];
-  v86 = [v85 suppressMessage];
+  statementEvaluated = [(IFTSchemaIFTClientEvent *)self statementEvaluated];
+  v85 = [statementEvaluated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage27 = [v85 suppressMessage];
 
-  if (v86)
+  if (suppressMessage27)
   {
     [(IFTSchemaIFTClientEvent *)self deleteStatementEvaluated];
   }
 
-  v87 = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
-  v88 = [v87 applySensitiveConditionsPolicy:v4];
-  v89 = [v88 suppressMessage];
+  systemResponseGenerated = [(IFTSchemaIFTClientEvent *)self systemResponseGenerated];
+  v88 = [systemResponseGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage28 = [v88 suppressMessage];
 
-  if (v89)
+  if (suppressMessage28)
   {
     [(IFTSchemaIFTClientEvent *)self deleteSystemResponseGenerated];
   }
 
-  v90 = [(IFTSchemaIFTClientEvent *)self criticalError];
-  v91 = [v90 applySensitiveConditionsPolicy:v4];
-  v92 = [v91 suppressMessage];
+  criticalError = [(IFTSchemaIFTClientEvent *)self criticalError];
+  v91 = [criticalError applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage29 = [v91 suppressMessage];
 
-  if (v92)
+  if (suppressMessage29)
   {
     [(IFTSchemaIFTClientEvent *)self deleteCriticalError];
   }
 
-  v93 = [(IFTSchemaIFTClientEvent *)self recoverableError];
-  v94 = [v93 applySensitiveConditionsPolicy:v4];
-  v95 = [v94 suppressMessage];
+  recoverableError = [(IFTSchemaIFTClientEvent *)self recoverableError];
+  v94 = [recoverableError applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage30 = [v94 suppressMessage];
 
-  if (v95)
+  if (suppressMessage30)
   {
     [(IFTSchemaIFTClientEvent *)self deleteRecoverableError];
   }
@@ -5855,98 +5855,98 @@ LABEL_154:
 
 - (int)componentName
 {
-  v2 = [(IFTSchemaIFTClientEvent *)self eventMetadata];
-  v3 = [v2 ifRequestId];
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self eventMetadata];
+  ifRequestId = [eventMetadata ifRequestId];
 
-  if (v3)
+  if (ifRequestId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [ifRequestId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [ifRequestId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 45;
+        LODWORD(value) = 45;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(IFTSchemaIFTClientEvent *)self eventMetadata];
-  v3 = [v2 ifRequestId];
+  eventMetadata = [(IFTSchemaIFTClientEvent *)self eventMetadata];
+  ifRequestId = [eventMetadata ifRequestId];
 
-  if (!v3)
+  if (!ifRequestId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [ifRequestId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [ifRequestId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = ifRequestId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(IFTSchemaIFTClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 0x1C)
+  whichEvent_Type = [(IFTSchemaIFTClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0x1C)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E9A38[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E9A38[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 0x1C)
+  if (tag - 101 > 0x1C)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E9B20[a3 - 101];
+    return off_1E78E9B20[tag - 101];
   }
 }
 

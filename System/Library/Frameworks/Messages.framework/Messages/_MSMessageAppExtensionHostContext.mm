@@ -2,44 +2,44 @@
 + (id)_allowedItemPayloadClasses;
 + (id)_extensionContextHostProtocolAllowedClassesForItems;
 - (_MSMessageComposeHostProtocol)delegate;
-- (void)_canShowBrowserForPluginIdentifier:(id)a3 completion:(id)a4;
+- (void)_canShowBrowserForPluginIdentifier:(id)identifier completion:(id)completion;
 - (void)_contentDidLoad;
 - (void)_dismiss;
 - (void)_dismissAndPresentPhotosApp;
 - (void)_dragMediaItemCanceled;
-- (void)_dragMediaItemMoved:(id)a3 frameInRemoteView:(CGRect)a4 rotation:(double)a5 scale:(double)a6 completionHandler:(id)a7;
-- (void)_openURL:(id)a3 completionHandler:(id)a4;
-- (void)_presentAlertSheetWith:(id)a3 styles:(id)a4 completion:(id)a5;
-- (void)_presentAlertSheetWithTitle:(id)a3 message:(id)a4 buttonTitles:(id)a5 styles:(id)a6 completion:(id)a7;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 completion:(id)a6;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 destructiveButtonTitle:(id)a6 completion:(id)a7;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 image:(id)a6 completion:(id)a7;
-- (void)_presentContextMenuWithButtonTitles:(id)a3 imageNames:(id)a4 buttonFrame:(CGRect)a5 completion:(id)a6;
+- (void)_dragMediaItemMoved:(id)moved frameInRemoteView:(CGRect)view rotation:(double)rotation scale:(double)scale completionHandler:(id)handler;
+- (void)_openURL:(id)l completionHandler:(id)handler;
+- (void)_presentAlertSheetWith:(id)with styles:(id)styles completion:(id)completion;
+- (void)_presentAlertSheetWithTitle:(id)title message:(id)message buttonTitles:(id)titles styles:(id)styles completion:(id)completion;
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle completion:(id)completion;
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle destructiveButtonTitle:(id)destructiveButtonTitle completion:(id)completion;
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle image:(id)image completion:(id)completion;
+- (void)_presentContextMenuWithButtonTitles:(id)titles imageNames:(id)names buttonFrame:(CGRect)frame completion:(id)completion;
 - (void)_remoteViewDidBecomeReadyForDisplay;
-- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)a3;
+- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)color;
 - (void)_remoteViewNeedsSizeMatchBeforeSnapshotSwap;
 - (void)_remoteViewProvidesExplicitSizeSnapshot;
-- (void)_removeAssetArchiveWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)_requestConversationAvatarsWithSize:(CGSize)a3 completionHandler:(id)a4;
-- (void)_requestFullScreenModalPresentationWithSize:(CGSize)a3;
-- (void)_requestHostSceneIdentifierWithCompletion:(id)a3;
-- (void)_requestPresentationStyle:(unint64_t)a3;
-- (void)_requestPresentationWithStickerType:(id)a3 identifier:(id)a4;
+- (void)_removeAssetArchiveWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_requestConversationAvatarsWithSize:(CGSize)size completionHandler:(id)handler;
+- (void)_requestFullScreenModalPresentationWithSize:(CGSize)size;
+- (void)_requestHostSceneIdentifierWithCompletion:(id)completion;
+- (void)_requestPresentationStyle:(unint64_t)style;
+- (void)_requestPresentationWithStickerType:(id)type identifier:(id)identifier;
 - (void)_requestResize;
-- (void)_requestStickerExtensionMetadataDictionary:(id)a3;
-- (void)_sendCustomAcknowledgement:(id)a3 selectedMessage:(id)a4 completionHandler:(id)a5;
-- (void)_setSendingEnabled:(BOOL)a3;
-- (void)_showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5;
-- (void)_stageAppItem:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)_stageAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)_stageMediaItem:(id)a3 skipShelf:(BOOL)a4 forceStage:(BOOL)a5 completionHandler:(id)a6;
-- (void)_stageRichLink:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)_startDragMediaItem:(id)a3 frameInRemoteView:(CGRect)a4 fence:(id)a5 completionHandler:(id)a6;
-- (void)_stickerDruidDragEndedWithPayload:(id)a3;
-- (void)_stickerDruidDragEndedWithPayload:(id)a3 pluginIdentifier:(id)a4;
+- (void)_requestStickerExtensionMetadataDictionary:(id)dictionary;
+- (void)_sendCustomAcknowledgement:(id)acknowledgement selectedMessage:(id)message completionHandler:(id)handler;
+- (void)_setSendingEnabled:(BOOL)enabled;
+- (void)_showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion;
+- (void)_stageAppItem:(id)item skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)_stageAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)_stageMediaItem:(id)item skipShelf:(BOOL)shelf forceStage:(BOOL)stage completionHandler:(id)handler;
+- (void)_stageRichLink:(id)link skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)_startDragMediaItem:(id)item frameInRemoteView:(CGRect)view fence:(id)fence completionHandler:(id)handler;
+- (void)_stickerDruidDragEndedWithPayload:(id)payload;
+- (void)_stickerDruidDragEndedWithPayload:(id)payload pluginIdentifier:(id)identifier;
 - (void)_stickerDruidDragStarted;
-- (void)_updateSnapshotForNextLaunch:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)_updateSnapshotForNextLaunch:(id)launch;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _MSMessageAppExtensionHostContext
@@ -50,7 +50,7 @@
   block[1] = 3221225472;
   block[2] = __88___MSMessageAppExtensionHostContext__extensionContextHostProtocolAllowedClassesForItems__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_extensionContextHostProtocolAllowedClassesForItems_onceToken_0 != -1)
   {
     dispatch_once(&_extensionContextHostProtocolAllowedClassesForItems_onceToken_0, block);
@@ -75,116 +75,116 @@
   return v4;
 }
 
-- (void)_stageAppItem:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)_stageAppItem:(id)item skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v6 = a4;
-  v12 = a3;
-  v8 = a5;
+  shelfCopy = shelf;
+  itemCopy = item;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 _stageAppItem:v12 skipShelf:v6 completionHandler:v8];
+    [v11 _stageAppItem:itemCopy skipShelf:shelfCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)_stageMediaItem:(id)a3 skipShelf:(BOOL)a4 forceStage:(BOOL)a5 completionHandler:(id)a6
+- (void)_stageMediaItem:(id)item skipShelf:(BOOL)shelf forceStage:(BOOL)stage completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v14 = a3;
-  v10 = a6;
+  stageCopy = stage;
+  shelfCopy = shelf;
+  itemCopy = item;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
     v13 = objc_loadWeakRetained(&self->_delegate);
-    [v13 _stageMediaItem:v14 skipShelf:v8 forceStage:v7 completionHandler:v10];
+    [v13 _stageMediaItem:itemCopy skipShelf:shelfCopy forceStage:stageCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)_stageRichLink:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)_stageRichLink:(id)link skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v6 = a4;
-  v12 = a3;
-  v8 = a5;
+  shelfCopy = shelf;
+  linkCopy = link;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 _stageRichLink:v12 skipShelf:v6 completionHandler:v8];
+    [v11 _stageRichLink:linkCopy skipShelf:shelfCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)_sendCustomAcknowledgement:(id)a3 selectedMessage:(id)a4 completionHandler:(id)a5
+- (void)_sendCustomAcknowledgement:(id)acknowledgement selectedMessage:(id)message completionHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  acknowledgementCopy = acknowledgement;
+  messageCopy = message;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 _sendCustomAcknowledgement:v13 selectedMessage:v8 completionHandler:v9];
+    [v12 _sendCustomAcknowledgement:acknowledgementCopy selectedMessage:messageCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)_requestConversationAvatarsWithSize:(CGSize)a3 completionHandler:(id)a4
+- (void)_requestConversationAvatarsWithSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a4;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 _requestConversationAvatarsWithSize:v10 completionHandler:{width, height}];
+    [v9 _requestConversationAvatarsWithSize:handlerCopy completionHandler:{width, height}];
   }
 }
 
-- (void)_startDragMediaItem:(id)a3 frameInRemoteView:(CGRect)a4 fence:(id)a5 completionHandler:(id)a6
+- (void)_startDragMediaItem:(id)item frameInRemoteView:(CGRect)view fence:(id)fence completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a3;
-  v13 = a5;
-  v14 = a6;
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
+  itemCopy = item;
+  fenceCopy = fence;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
     v17 = objc_loadWeakRetained(&self->_delegate);
-    [v17 _startDragMediaItem:v18 frameInRemoteView:v13 fence:v14 completionHandler:{x, y, width, height}];
+    [v17 _startDragMediaItem:itemCopy frameInRemoteView:fenceCopy fence:handlerCopy completionHandler:{x, y, width, height}];
   }
 }
 
-- (void)_dragMediaItemMoved:(id)a3 frameInRemoteView:(CGRect)a4 rotation:(double)a5 scale:(double)a6 completionHandler:(id)a7
+- (void)_dragMediaItemMoved:(id)moved frameInRemoteView:(CGRect)view rotation:(double)rotation scale:(double)scale completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v19 = a3;
-  v15 = a7;
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
+  movedCopy = moved;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
     v18 = objc_loadWeakRetained(&self->_delegate);
-    [v18 _dragMediaItemMoved:v19 frameInRemoteView:v15 rotation:x scale:y completionHandler:{width, height, a5, a6}];
+    [v18 _dragMediaItemMoved:movedCopy frameInRemoteView:handlerCopy rotation:x scale:y completionHandler:{width, height, rotation, scale}];
   }
 }
 
@@ -212,34 +212,34 @@
   }
 }
 
-- (void)_stickerDruidDragEndedWithPayload:(id)a3
+- (void)_stickerDruidDragEndedWithPayload:(id)payload
 {
-  v7 = a3;
+  payloadCopy = payload;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 _stickerDruidDragEndedWithPayload:v7];
+    [v6 _stickerDruidDragEndedWithPayload:payloadCopy];
   }
 }
 
-- (void)_stickerDruidDragEndedWithPayload:(id)a3 pluginIdentifier:(id)a4
+- (void)_stickerDruidDragEndedWithPayload:(id)payload pluginIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  payloadCopy = payload;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 _stickerDruidDragEndedWithPayload:v10 pluginIdentifier:v6];
+    [v9 _stickerDruidDragEndedWithPayload:payloadCopy pluginIdentifier:identifierCopy];
   }
 }
 
-- (void)_requestPresentationStyle:(unint64_t)a3
+- (void)_requestPresentationStyle:(unint64_t)style
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
@@ -247,14 +247,14 @@
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 _requestPresentationStyle:a3];
+    [v7 _requestPresentationStyle:style];
   }
 }
 
-- (void)_requestFullScreenModalPresentationWithSize:(CGSize)a3
+- (void)_requestFullScreenModalPresentationWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
@@ -289,130 +289,130 @@
   }
 }
 
-- (void)_setSendingEnabled:(BOOL)a3
+- (void)_setSendingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 _setSendingEnabled:v3];
+    [v7 _setSendingEnabled:enabledCopy];
   }
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 completion:(id)a6
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle completion:(id)completion
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
     v15 = objc_loadWeakRetained(&self->_delegate);
-    [v15 _presentAlertWithTitle:v16 message:v10 buttonTitle:v11 completion:v12];
+    [v15 _presentAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy completion:completionCopy];
   }
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 image:(id)a6 completion:(id)a7
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle image:(id)image completion:(id)completion
 {
-  v19 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  imageCopy = image;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
     v18 = objc_loadWeakRetained(&self->_delegate);
-    [v18 _presentAlertWithTitle:v19 message:v12 buttonTitle:v13 image:v14 completion:v15];
+    [v18 _presentAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy image:imageCopy completion:completionCopy];
   }
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 destructiveButtonTitle:(id)a6 completion:(id)a7
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle destructiveButtonTitle:(id)destructiveButtonTitle completion:(id)completion
 {
-  v19 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  destructiveButtonTitleCopy = destructiveButtonTitle;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
     v18 = objc_loadWeakRetained(&self->_delegate);
-    [v18 _presentAlertWithTitle:v19 message:v12 buttonTitle:v13 destructiveButtonTitle:v14 completion:v15];
+    [v18 _presentAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy destructiveButtonTitle:destructiveButtonTitleCopy completion:completionCopy];
   }
 }
 
-- (void)_presentAlertSheetWith:(id)a3 styles:(id)a4 completion:(id)a5
+- (void)_presentAlertSheetWith:(id)with styles:(id)styles completion:(id)completion
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  withCopy = with;
+  stylesCopy = styles;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 _presentAlertSheetWith:v13 styles:v8 completion:v9];
+    [v12 _presentAlertSheetWith:withCopy styles:stylesCopy completion:completionCopy];
   }
 }
 
-- (void)_presentAlertSheetWithTitle:(id)a3 message:(id)a4 buttonTitles:(id)a5 styles:(id)a6 completion:(id)a7
+- (void)_presentAlertSheetWithTitle:(id)title message:(id)message buttonTitles:(id)titles styles:(id)styles completion:(id)completion
 {
-  v19 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  titlesCopy = titles;
+  stylesCopy = styles;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
     v18 = objc_loadWeakRetained(&self->_delegate);
-    [v18 _presentAlertSheetWithTitle:v19 message:v12 buttonTitles:v13 styles:v14 completion:v15];
+    [v18 _presentAlertSheetWithTitle:titleCopy message:messageCopy buttonTitles:titlesCopy styles:stylesCopy completion:completionCopy];
   }
 }
 
-- (void)_presentContextMenuWithButtonTitles:(id)a3 imageNames:(id)a4 buttonFrame:(CGRect)a5 completion:(id)a6
+- (void)_presentContextMenuWithButtonTitles:(id)titles imageNames:(id)names buttonFrame:(CGRect)frame completion:(id)completion
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v18 = a3;
-  v13 = a4;
-  v14 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  titlesCopy = titles;
+  namesCopy = names;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
     v17 = objc_loadWeakRetained(&self->_delegate);
-    [v17 _presentContextMenuWithButtonTitles:v18 imageNames:v13 buttonFrame:v14 completion:{x, y, width, height}];
+    [v17 _presentContextMenuWithButtonTitles:titlesCopy imageNames:namesCopy buttonFrame:completionCopy completion:{x, y, width, height}];
   }
 }
 
-- (void)_updateSnapshotForNextLaunch:(id)a3
+- (void)_updateSnapshotForNextLaunch:(id)launch
 {
-  v7 = a3;
+  launchCopy = launch;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 _updateSnapshotForNextLaunch:v7];
+    [v6 _updateSnapshotForNextLaunch:launchCopy];
   }
 }
 
@@ -452,57 +452,57 @@
   }
 }
 
-- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)a3
+- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 _remoteViewDidInvalidateMessageTintColorWithUpdatedColor:v7];
+    [v6 _remoteViewDidInvalidateMessageTintColorWithUpdatedColor:colorCopy];
   }
 }
 
-- (void)_requestStickerExtensionMetadataDictionary:(id)a3
+- (void)_requestStickerExtensionMetadataDictionary:(id)dictionary
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 _requestStickerExtensionMetadataDictionary:v7];
+    [v6 _requestStickerExtensionMetadataDictionary:dictionaryCopy];
   }
 }
 
-- (void)_requestPresentationWithStickerType:(id)a3 identifier:(id)a4
+- (void)_requestPresentationWithStickerType:(id)type identifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 _requestPresentationWithStickerType:v10 identifier:v6];
+    [v9 _requestPresentationWithStickerType:typeCopy identifier:identifierCopy];
   }
 }
 
-- (void)_openURL:(id)a3 completionHandler:(id)a4
+- (void)_openURL:(id)l completionHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 _openURL:v10 completionHandler:v6];
+    [v9 _openURL:lCopy completionHandler:handlerCopy];
   }
 }
 
@@ -530,57 +530,57 @@
   }
 }
 
-- (void)_stageAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)_stageAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v6 = a4;
-  v12 = a3;
-  v8 = a5;
+  shelfCopy = shelf;
+  archiveCopy = archive;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 _stageAssetArchive:v12 skipShelf:v6 completionHandler:v8];
+    [v11 _stageAssetArchive:archiveCopy skipShelf:shelfCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)_removeAssetArchiveWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)_removeAssetArchiveWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 _removeAssetArchiveWithIdentifier:v10 completionHandler:v6];
+    [v9 _removeAssetArchiveWithIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)_requestHostSceneIdentifierWithCompletion:(id)a3
+- (void)_requestHostSceneIdentifierWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 _requestHostSceneIdentifierWithCompletion:v7];
+    [v6 _requestHostSceneIdentifierWithCompletion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_canShowBrowserForPluginIdentifier:(id)a3 completion:(id)a4
+- (void)_canShowBrowserForPluginIdentifier:(id)identifier completion:(id)completion
 {
-  v14 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
@@ -591,46 +591,46 @@
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      [v11 _canShowBrowserForPluginIdentifier:v14 completion:v7];
+      [v11 _canShowBrowserForPluginIdentifier:identifierCopy completion:completionCopy];
     }
 
-    else if (v7)
+    else if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_queuedCanShowBrowserPluginIdentifier, a3);
-    v12 = _Block_copy(v7);
+    objc_storeStrong(&self->_queuedCanShowBrowserPluginIdentifier, identifier);
+    v12 = _Block_copy(completionCopy);
     queuedCanShowBrowserCompletion = self->_queuedCanShowBrowserCompletion;
     self->_queuedCanShowBrowserCompletion = v12;
   }
 }
 
-- (void)_showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5
+- (void)_showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion
 {
-  v12 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 _showBrowserForPluginIdentifier:v12 style:a4 completion:v8];
+    [v11 _showBrowserForPluginIdentifier:identifierCopy style:style completion:completionCopy];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   if (self->_queuedCanShowBrowserPluginIdentifier && self->_queuedCanShowBrowserCompletion)
   {
     [_MSMessageAppExtensionHostContext _canShowBrowserForPluginIdentifier:"_canShowBrowserForPluginIdentifier:completion:" completion:?];

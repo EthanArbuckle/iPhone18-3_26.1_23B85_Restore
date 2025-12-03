@@ -1,20 +1,20 @@
 @interface MOMetric
 + ($E278B6834D55977C8D8083A775B4AB36)event;
-+ (id)binForNumber:(id)a3 bins:(id)a4;
-+ (id)binsFromStart:(id)a3 toEnd:(id)a4 gap:(id)a5;
++ (id)binForNumber:(id)number bins:(id)bins;
++ (id)binsFromStart:(id)start toEnd:(id)end gap:(id)gap;
 + (id)metricName;
-+ (id)metricNameFromEvent:(id)a3;
++ (id)metricNameFromEvent:(id)event;
 + (id)supportedMetricKeys;
-- (BOOL)setAllMetrics:(id)a3 error:(id *)a4;
-- (BOOL)submitMetricsWithError:(id *)a3;
-- (BOOL)submitMetricsWithError:(id *)a3 forEvent:(id)a4;
-- (MOMetric)initWithLoggingEnabled:(BOOL)a3;
+- (BOOL)setAllMetrics:(id)metrics error:(id *)error;
+- (BOOL)submitMetricsWithError:(id *)error;
+- (BOOL)submitMetricsWithError:(id *)error forEvent:(id)event;
+- (MOMetric)initWithLoggingEnabled:(BOOL)enabled;
 - (NSString)description;
 @end
 
 @implementation MOMetric
 
-- (MOMetric)initWithLoggingEnabled:(BOOL)a3
+- (MOMetric)initWithLoggingEnabled:(BOOL)enabled
 {
   v9.receiver = self;
   v9.super_class = MOMetric;
@@ -22,7 +22,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_loggingEnabled = a3;
+    v4->_loggingEnabled = enabled;
     v6 = +[NSMutableDictionary dictionary];
     metrics = v5->_metrics;
     v5->_metrics = v6;
@@ -33,10 +33,10 @@
   return v5;
 }
 
-+ (id)metricNameFromEvent:(id)a3
++ (id)metricNameFromEvent:(id)event
 {
-  var0 = a3.var0;
-  if (a3.var0)
+  var0 = event.var0;
+  if (event.var0)
   {
     v3 = [[NSString alloc] initWithCString:_mo_analytics_get_event(&var0) encoding:1];
   }
@@ -57,10 +57,10 @@
 
 + (id)metricName
 {
-  v6 = [objc_opt_class() event];
-  if (v6)
+  event = [objc_opt_class() event];
+  if (event)
   {
-    v3 = [[NSString alloc] initWithCString:_mo_analytics_get_event(&v6) encoding:1];
+    v3 = [[NSString alloc] initWithCString:_mo_analytics_get_event(&event) encoding:1];
   }
 
   else
@@ -77,12 +77,12 @@
   return v3;
 }
 
-+ (id)binForNumber:(id)a3 bins:(id)a4
++ (id)binForNumber:(id)number bins:(id)bins
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  numberCopy = number;
+  binsCopy = bins;
+  v9 = binsCopy;
+  if (!numberCopy)
   {
     v25 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -94,12 +94,12 @@
     v27 = v26;
     v28 = @"Invalid parameter not satisfying: number != nil";
     v29 = a2;
-    v30 = a1;
+    selfCopy2 = self;
     v31 = 86;
     goto LABEL_16;
   }
 
-  if (![v8 count])
+  if (![binsCopy count])
   {
     v32 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -111,10 +111,10 @@
     v27 = v26;
     v28 = @"Invalid parameter not satisfying: bins.count > 0";
     v29 = a2;
-    v30 = a1;
+    selfCopy2 = self;
     v31 = 87;
 LABEL_16:
-    [v26 handleFailureInMethod:v29 object:v30 file:@"MOMetric.m" lineNumber:v31 description:v28];
+    [v26 handleFailureInMethod:v29 object:selfCopy2 file:@"MOMetric.m" lineNumber:v31 description:v28];
 
     v33 = 0;
     goto LABEL_22;
@@ -136,7 +136,7 @@ LABEL_16:
       v14 = [v9 objectAtIndexedSubscript:v13];
       [v14 doubleValue];
       v16 = v15;
-      [v7 doubleValue];
+      [numberCopy doubleValue];
       v18 = v17;
 
       if (v16 >= v18)
@@ -144,7 +144,7 @@ LABEL_16:
         v19 = [v9 objectAtIndexedSubscript:&v12[v11] >> 1];
         [v19 doubleValue];
         v21 = v20;
-        [v7 doubleValue];
+        [numberCopy doubleValue];
         v23 = v22;
 
         if (v21 <= v23)
@@ -166,7 +166,7 @@ LABEL_16:
     v24 = &v12[v11] >> 1;
   }
 
-  [v7 doubleValue];
+  [numberCopy doubleValue];
   v35 = v34;
   v36 = [v9 objectAtIndexedSubscript:v24];
   [v36 doubleValue];
@@ -188,13 +188,13 @@ LABEL_22:
   return v33;
 }
 
-+ (id)binsFromStart:(id)a3 toEnd:(id)a4 gap:(id)a5
++ (id)binsFromStart:(id)start toEnd:(id)end gap:(id)gap
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  startCopy = start;
+  endCopy = end;
+  gapCopy = gap;
+  v12 = gapCopy;
+  if (!startCopy)
   {
     v20 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -206,12 +206,12 @@ LABEL_22:
     v22 = v21;
     v23 = @"Invalid parameter not satisfying: start != nil";
     v24 = a2;
-    v25 = a1;
+    selfCopy3 = self;
     v26 = 115;
     goto LABEL_16;
   }
 
-  if (!v10)
+  if (!endCopy)
   {
     v27 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -223,12 +223,12 @@ LABEL_22:
     v22 = v21;
     v23 = @"Invalid parameter not satisfying: end != nil";
     v24 = a2;
-    v25 = a1;
+    selfCopy3 = self;
     v26 = 116;
     goto LABEL_16;
   }
 
-  if (!v11)
+  if (!gapCopy)
   {
     v28 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -240,19 +240,19 @@ LABEL_22:
     v22 = v21;
     v23 = @"Invalid parameter not satisfying: gap != nil";
     v24 = a2;
-    v25 = a1;
+    selfCopy3 = self;
     v26 = 117;
 LABEL_16:
-    [v21 handleFailureInMethod:v24 object:v25 file:@"MOMetric.m" lineNumber:v26 description:v23];
+    [v21 handleFailureInMethod:v24 object:selfCopy3 file:@"MOMetric.m" lineNumber:v26 description:v23];
 
     v13 = 0;
     goto LABEL_17;
   }
 
   v13 = +[NSMutableArray array];
-  [v9 doubleValue];
+  [startCopy doubleValue];
   v15 = v14;
-  [v10 doubleValue];
+  [endCopy doubleValue];
   if (v15 <= v16)
   {
     do
@@ -262,7 +262,7 @@ LABEL_16:
 
       [v12 doubleValue];
       v15 = v15 + v18;
-      [v10 doubleValue];
+      [endCopy doubleValue];
     }
 
     while (v15 <= v19);
@@ -273,12 +273,12 @@ LABEL_17:
   return v13;
 }
 
-- (BOOL)submitMetricsWithError:(id *)a3 forEvent:(id)a4
+- (BOOL)submitMetricsWithError:(id *)error forEvent:(id)event
 {
-  var0 = a4.var0;
-  if (a3)
+  var0 = event.var0;
+  if (error)
   {
-    v7 = [objc_opt_class() metricNameFromEvent:a4.var0];
+    v7 = [objc_opt_class() metricNameFromEvent:event.var0];
     if (v7)
     {
       if (self->_submitted)
@@ -296,18 +296,18 @@ LABEL_17:
         }
 
         v12 = v10;
-        *a3 = v10;
+        *error = v10;
 
         v13 = 0;
       }
 
       else
       {
-        v18 = [(NSMutableDictionary *)self->_metrics allKeys];
-        v8 = [NSSet setWithArray:v18];
+        allKeys = [(NSMutableDictionary *)self->_metrics allKeys];
+        v8 = [NSSet setWithArray:allKeys];
 
-        v19 = [objc_opt_class() supportedMetricKeys];
-        v20 = [NSSet setWithSet:v19];
+        supportedMetricKeys = [objc_opt_class() supportedMetricKeys];
+        v20 = [NSSet setWithSet:supportedMetricKeys];
 
         v13 = [v8 isEqualToSet:v20];
         if (v13)
@@ -358,7 +358,7 @@ LABEL_17:
           }
 
           v33 = v31;
-          *a3 = v31;
+          *error = v31;
 
           v20 = v36;
         }
@@ -380,7 +380,7 @@ LABEL_17:
 
       v17 = v8;
       v13 = 0;
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -400,17 +400,17 @@ LABEL_17:
   return v13;
 }
 
-- (BOOL)submitMetricsWithError:(id *)a3
+- (BOOL)submitMetricsWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    v37 = [objc_opt_class() event];
-    v6 = [objc_opt_class() metricName];
-    if (v6)
+    event = [objc_opt_class() event];
+    metricName = [objc_opt_class() metricName];
+    if (metricName)
     {
       if (self->_submitted)
       {
-        v7 = [NSString stringWithFormat:@"metric, %@, has already been submitted", v6];
+        v7 = [NSString stringWithFormat:@"metric, %@, has already been submitted", metricName];
         v46 = NSLocalizedDescriptionKey;
         v47 = v7;
         v8 = [NSDictionary dictionaryWithObjects:&v47 forKeys:&v46 count:1];
@@ -423,18 +423,18 @@ LABEL_17:
         }
 
         v11 = v9;
-        *a3 = v9;
+        *error = v9;
 
         v12 = 0;
       }
 
       else
       {
-        v18 = [(NSMutableDictionary *)self->_metrics allKeys];
-        v7 = [NSSet setWithArray:v18];
+        allKeys = [(NSMutableDictionary *)self->_metrics allKeys];
+        v7 = [NSSet setWithArray:allKeys];
 
-        v19 = [objc_opt_class() supportedMetricKeys];
-        v20 = [NSSet setWithSet:v19];
+        supportedMetricKeys = [objc_opt_class() supportedMetricKeys];
+        v20 = [NSSet setWithSet:supportedMetricKeys];
 
         v12 = [v7 isEqualToSet:v20];
         if (v12)
@@ -449,14 +449,14 @@ LABEL_17:
               *buf = 138412802;
               v39 = v22;
               v40 = 2112;
-              v41 = v6;
+              v41 = metricName;
               v42 = 2112;
               v43 = metrics;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "MO_LOG_INFO: %@, submitting, %@, metrics, %@", buf, 0x20u);
             }
           }
 
-          v24 = [[NSString alloc] initWithCString:_mo_analytics_get_event(&v37) encoding:1];
+          v24 = [[NSString alloc] initWithCString:_mo_analytics_get_event(&event) encoding:1];
           v25 = [NSString stringWithFormat:@"com.apple.Moments.%@", v24];
           v26 = self->_metrics;
           AnalyticsSendEvent();
@@ -472,7 +472,7 @@ LABEL_17:
           v28 = [NSMutableSet setWithSet:v20];
           [v28 minusSet:v7];
           v35 = v27;
-          v29 = [NSString stringWithFormat:@"metric keys set does not match with keys that metric, %@, supports.  Extra keys, %@, missing keys, %@", v6, v27, v28];
+          v29 = [NSString stringWithFormat:@"metric keys set does not match with keys that metric, %@, supports.  Extra keys, %@, missing keys, %@", metricName, v27, v28];
           v44 = NSLocalizedDescriptionKey;
           v45 = v29;
           v30 = [NSDictionary dictionaryWithObjects:&v45 forKeys:&v44 count:1];
@@ -485,7 +485,7 @@ LABEL_17:
           }
 
           v33 = v31;
-          *a3 = v31;
+          *error = v31;
 
           v20 = v36;
         }
@@ -507,7 +507,7 @@ LABEL_17:
 
       v17 = v7;
       v12 = 0;
-      *a3 = v7;
+      *error = v7;
     }
   }
 
@@ -528,22 +528,22 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)setAllMetrics:(id)a3 error:(id *)a4
+- (BOOL)setAllMetrics:(id)metrics error:(id *)error
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  metricsCopy = metrics;
+  v8 = metricsCopy;
+  if (error)
   {
-    if (v7)
+    if (metricsCopy)
     {
-      v9 = [objc_opt_class() metricName];
-      if (v9)
+      metricName = [objc_opt_class() metricName];
+      if (metricName)
       {
-        v10 = [v8 allKeys];
-        v11 = [NSSet setWithArray:v10];
+        allKeys = [v8 allKeys];
+        v11 = [NSSet setWithArray:allKeys];
 
-        v12 = [objc_opt_class() supportedMetricKeys];
-        v13 = [v11 isSubsetOfSet:v12];
+        supportedMetricKeys = [objc_opt_class() supportedMetricKeys];
+        v13 = [v11 isSubsetOfSet:supportedMetricKeys];
         if (v13)
         {
           v29[0] = _NSConcreteStackBlock;
@@ -557,9 +557,9 @@ LABEL_17:
         else
         {
           v21 = [NSMutableSet setWithSet:v11];
-          [v21 minusSet:v12];
+          [v21 minusSet:supportedMetricKeys];
           v28 = v21;
-          [NSString stringWithFormat:@"metric keys contains keys that metric, %@, does not support.  Extra keys, %@", v9, v21];
+          [NSString stringWithFormat:@"metric keys contains keys that metric, %@, does not support.  Extra keys, %@", metricName, v21];
           v31 = v30 = NSLocalizedDescriptionKey;
           v27 = v31;
           v22 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
@@ -572,7 +572,7 @@ LABEL_17:
           }
 
           v25 = v23;
-          *a4 = v23;
+          *error = v23;
         }
       }
 
@@ -591,7 +591,7 @@ LABEL_17:
 
         v20 = v11;
         v13 = 0;
-        *a4 = v11;
+        *error = v11;
       }
     }
 
@@ -607,7 +607,7 @@ LABEL_17:
       [v17 handleFailureInMethod:a2 object:self file:@"MOMetric.m" lineNumber:263 description:@"Invalid parameter not satisfying: metrics"];
 
       _MOErrorInvalidParameterCreate(@"metrics");
-      *a4 = v13 = 0;
+      *error = v13 = 0;
     }
   }
 
@@ -630,9 +630,9 @@ LABEL_17:
 
 - (NSString)description
 {
-  v3 = [objc_opt_class() metricName];
-  v4 = [(MOMetric *)self metrics];
-  v5 = [NSString stringWithFormat:@"name, %@, metrics, %@", v3, v4];
+  metricName = [objc_opt_class() metricName];
+  metrics = [(MOMetric *)self metrics];
+  v5 = [NSString stringWithFormat:@"name, %@, metrics, %@", metricName, metrics];
 
   return v5;
 }

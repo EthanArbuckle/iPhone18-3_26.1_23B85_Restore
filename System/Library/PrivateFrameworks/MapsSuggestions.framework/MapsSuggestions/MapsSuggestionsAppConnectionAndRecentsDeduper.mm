@@ -1,16 +1,16 @@
 @interface MapsSuggestionsAppConnectionAndRecentsDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
 @end
 
 @implementation MapsSuggestionsAppConnectionAndRecentsDeduper
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v7 = withEntryCopy;
+  if (!entryCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -35,7 +35,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v6)
+  if (!withEntryCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -55,14 +55,14 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if (!MapsSuggestionsEntriesShouldBeOfOneOfEachType(12, 5, v5, v6) || ([v7 BOOLeanForKey:@"MapsSuggestionsIsSuppressedKey" is:1] & 1) != 0)
+  if (!MapsSuggestionsEntriesShouldBeOfOneOfEachType(12, 5, entryCopy, withEntryCopy) || ([v7 BOOLeanForKey:@"MapsSuggestionsIsSuppressedKey" is:1] & 1) != 0)
   {
     goto LABEL_14;
   }
 
-  if (([v7 expiresBeforeEntry:v5] & 1) == 0)
+  if (([v7 expiresBeforeEntry:entryCopy] & 1) == 0)
   {
-    [v5 replaceByEntry:v7];
+    [entryCopy replaceByEntry:v7];
   }
 
   v8 = 1;

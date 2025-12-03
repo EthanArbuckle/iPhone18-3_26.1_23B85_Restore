@@ -1,6 +1,6 @@
 @interface PLComputedAssetAttributes
 + (id)fetchRequest;
-- (void)setPropertiesFromImageAestheticsObservation:(id)a3;
+- (void)setPropertiesFromImageAestheticsObservation:(id)observation;
 @end
 
 @implementation PLComputedAssetAttributes
@@ -12,50 +12,50 @@
   return v2;
 }
 
-- (void)setPropertiesFromImageAestheticsObservation:(id)a3
+- (void)setPropertiesFromImageAestheticsObservation:(id)observation
 {
-  v4 = a3;
-  [v4 wellFramedSubjectScore];
+  observationCopy = observation;
+  [observationCopy wellFramedSubjectScore];
   [(PLComputedAssetAttributes *)self setWellFramedSubjectScore:?];
-  [v4 tastefullyBlurredScore];
+  [observationCopy tastefullyBlurredScore];
   [(PLComputedAssetAttributes *)self setTastefullyBlurredScore:?];
-  [v4 sharplyFocusedSubjectScore];
+  [observationCopy sharplyFocusedSubjectScore];
   [(PLComputedAssetAttributes *)self setSharplyFocusedSubjectScore:?];
-  [v4 wellTimedShotScore];
+  [observationCopy wellTimedShotScore];
   [(PLComputedAssetAttributes *)self setWellTimedShotScore:?];
-  [v4 pleasantLightingScore];
+  [observationCopy pleasantLightingScore];
   [(PLComputedAssetAttributes *)self setPleasantLightingScore:?];
-  [v4 pleasantReflectionsScore];
+  [observationCopy pleasantReflectionsScore];
   [(PLComputedAssetAttributes *)self setPleasantReflectionsScore:?];
-  [v4 harmoniousColorScore];
+  [observationCopy harmoniousColorScore];
   [(PLComputedAssetAttributes *)self setHarmoniousColorScore:?];
-  [v4 livelyColorScore];
+  [observationCopy livelyColorScore];
   [(PLComputedAssetAttributes *)self setLivelyColorScore:?];
-  [v4 pleasantSymmetryScore];
+  [observationCopy pleasantSymmetryScore];
   [(PLComputedAssetAttributes *)self setPleasantSymmetryScore:?];
-  [v4 pleasantPatternScore];
+  [observationCopy pleasantPatternScore];
   [(PLComputedAssetAttributes *)self setPleasantPatternScore:?];
-  [v4 immersivenessScore];
+  [observationCopy immersivenessScore];
   [(PLComputedAssetAttributes *)self setImmersivenessScore:?];
-  [v4 pleasantPerspectiveScore];
+  [observationCopy pleasantPerspectiveScore];
   [(PLComputedAssetAttributes *)self setPleasantPerspectiveScore:?];
-  [v4 pleasantPostProcessingScore];
+  [observationCopy pleasantPostProcessingScore];
   [(PLComputedAssetAttributes *)self setPleasantPostProcessingScore:?];
-  [v4 noiseScore];
+  [observationCopy noiseScore];
   [(PLComputedAssetAttributes *)self setNoiseScore:?];
-  [v4 noiseScore];
+  [observationCopy noiseScore];
   [(PLComputedAssetAttributes *)self setNoiseScore:?];
-  [v4 failureScore];
+  [observationCopy failureScore];
   [(PLComputedAssetAttributes *)self setFailureScore:?];
-  [v4 pleasantCompositionScore];
+  [observationCopy pleasantCompositionScore];
   [(PLComputedAssetAttributes *)self setPleasantCompositionScore:?];
-  [v4 interestingSubjectScore];
+  [observationCopy interestingSubjectScore];
   [(PLComputedAssetAttributes *)self setInterestingSubjectScore:?];
-  [v4 intrusiveObjectPresenceScore];
+  [observationCopy intrusiveObjectPresenceScore];
   [(PLComputedAssetAttributes *)self setIntrusiveObjectPresenceScore:?];
-  [v4 pleasantCameraTiltScore];
+  [observationCopy pleasantCameraTiltScore];
   [(PLComputedAssetAttributes *)self setPleasantCameraTiltScore:?];
-  [v4 lowKeyLightingScore];
+  [observationCopy lowKeyLightingScore];
   v6 = v5;
 
   LODWORD(v7) = v6;

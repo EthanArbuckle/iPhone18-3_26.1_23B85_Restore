@@ -1,6 +1,6 @@
 @interface MTRBridgedDeviceBasicInformationClusterActiveChangedEvent
 - (MTRBridgedDeviceBasicInformationClusterActiveChangedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRBridgedDeviceBasicInformationClusterActiveChangedEvent);
-  v5 = [(MTRBridgedDeviceBasicInformationClusterActiveChangedEvent *)self promisedActiveDuration];
-  [(MTRBridgedDeviceBasicInformationClusterActiveChangedEvent *)v4 setPromisedActiveDuration:v5];
+  promisedActiveDuration = [(MTRBridgedDeviceBasicInformationClusterActiveChangedEvent *)self promisedActiveDuration];
+  [(MTRBridgedDeviceBasicInformationClusterActiveChangedEvent *)v4 setPromisedActiveDuration:promisedActiveDuration];
 
   return v4;
 }

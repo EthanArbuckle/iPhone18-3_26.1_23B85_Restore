@@ -1,19 +1,19 @@
 @interface MAGAngelSystemApertureViewController
 - (NSString)associatedAppBundleIdentifier;
-- (_TtC14MagnifierAngel36MAGAngelSystemApertureViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setAssociatedAppBundleIdentifier:(id)a3;
-- (void)setElementIdentifier:(id)a3;
+- (_TtC14MagnifierAngel36MAGAngelSystemApertureViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setAssociatedAppBundleIdentifier:(id)identifier;
+- (void)setElementIdentifier:(id)identifier;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MAGAngelSystemApertureViewController
 
-- (void)setElementIdentifier:(id)a3
+- (void)setElementIdentifier:(id)identifier
 {
   v4 = *(self + OBJC_IVAR____TtC14MagnifierAngel36MAGAngelSystemApertureViewController_elementIdentifier);
-  *(self + OBJC_IVAR____TtC14MagnifierAngel36MAGAngelSystemApertureViewController_elementIdentifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC14MagnifierAngel36MAGAngelSystemApertureViewController_elementIdentifier) = identifier;
+  identifierCopy = identifier;
 }
 
 - (NSString)associatedAppBundleIdentifier
@@ -34,9 +34,9 @@
   return v4;
 }
 
-- (void)setAssociatedAppBundleIdentifier:(id)a3
+- (void)setAssociatedAppBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -55,23 +55,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100029898();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_10002AF04(a4, width, height);
+  selfCopy = self;
+  sub_10002AF04(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC14MagnifierAngel36MAGAngelSystemApertureViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14MagnifierAngel36MAGAngelSystemApertureViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -83,8 +83,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10002B378(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10002B378(v5, v7, bundle);
 }
 
 @end

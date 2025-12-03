@@ -1,6 +1,6 @@
 @interface HealthManager
 - (BOOL)hasSeenBothHealthTCCs;
-- (void)setHasSeenBothHealthTCCs:(BOOL)a3;
+- (void)setHasSeenBothHealthTCCs:(BOOL)cs;
 @end
 
 @implementation HealthManager
@@ -28,17 +28,17 @@
   }
 }
 
-- (void)setHasSeenBothHealthTCCs:(BOOL)a3
+- (void)setHasSeenBothHealthTCCs:(BOOL)cs
 {
-  v3 = a3;
+  csCopy = cs;
   v5 = *self->sharedUserDefaults;
 
   v6 = sub_100100F94();
-  [v5 setBool:v3 forKey:v6];
+  [v5 setBool:csCopy forKey:v6];
 
   v7 = *self->sharedUserDefaults;
   v8 = sub_100100F94();
-  [v7 setBool:v3 forKey:v8];
+  [v7 setBool:csCopy forKey:v8];
 }
 
 @end

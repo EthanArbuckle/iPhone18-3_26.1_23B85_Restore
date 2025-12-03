@@ -1,15 +1,15 @@
 @interface WPXMLRPCDataCleaner
-- (WPXMLRPCDataCleaner)initWithData:(id)a3;
-- (_NSRange)rangeOfLastValidClosingTagInString:(id)a3;
-- (id)appendClosingTags:(id)a3 toResponseString:(id)a4;
-- (id)cleanCharactersBeforePreamble:(id)a3;
-- (id)cleanClosingTagIfNeeded:(id)a3 lengthOfCharactersPrecedingPreamble:(int64_t)a4;
+- (WPXMLRPCDataCleaner)initWithData:(id)data;
+- (_NSRange)rangeOfLastValidClosingTagInString:(id)string;
+- (id)appendClosingTags:(id)tags toResponseString:(id)string;
+- (id)cleanCharactersBeforePreamble:(id)preamble;
+- (id)cleanClosingTagIfNeeded:(id)needed lengthOfCharactersPrecedingPreamble:(int64_t)preamble;
 - (id)cleanData;
-- (id)cleanInvalidUTF8:(id)a3;
-- (id)cleanInvalidXMLCharacters:(id)a3;
-- (id)cleanWithTidyIfPresent:(id)a3;
-- (id)cloingTagsForString:(id)a3;
-- (id)repairTruncatedClosingTags:(id)a3 inResponseString:(id)a4;
+- (id)cleanInvalidUTF8:(id)f8;
+- (id)cleanInvalidXMLCharacters:(id)characters;
+- (id)cleanWithTidyIfPresent:(id)present;
+- (id)cloingTagsForString:(id)string;
+- (id)repairTruncatedClosingTags:(id)tags inResponseString:(id)string;
 @end
 
 @implementation WPXMLRPCDataCleaner
@@ -46,35 +46,35 @@
   return v11;
 }
 
-- (WPXMLRPCDataCleaner)initWithData:(id)a3
+- (WPXMLRPCDataCleaner)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = WPXMLRPCDataCleaner;
   v6 = [(WPXMLRPCDataCleaner *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->xmlData, a3);
+    objc_storeStrong(&v6->xmlData, data);
   }
 
   return v7;
 }
 
-- (id)appendClosingTags:(id)a3 toResponseString:(id)a4
+- (id)appendClosingTags:(id)tags toResponseString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 rangeOfString:@"<" options:4];
+  tagsCopy = tags;
+  stringCopy = string;
+  v7 = [stringCopy rangeOfString:@"<" options:4];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = v6;
+    v8 = stringCopy;
   }
 
   else
   {
-    v9 = [v6 substringFromIndex:v7];
-    v10 = [v5 rangeOfString:v9];
+    v9 = [stringCopy substringFromIndex:v7];
+    v10 = [tagsCopy rangeOfString:v9];
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v12 = 0;
@@ -86,28 +86,28 @@
     }
 
     v13 = MEMORY[0x277CCACA8];
-    v14 = [v5 substringFromIndex:v12];
-    v8 = [v13 stringWithFormat:@"%@%@", v6, v14];
+    v14 = [tagsCopy substringFromIndex:v12];
+    v8 = [v13 stringWithFormat:@"%@%@", stringCopy, v14];
   }
 
   return v8;
 }
 
-- (id)repairTruncatedClosingTags:(id)a3 inResponseString:(id)a4
+- (id)repairTruncatedClosingTags:(id)tags inResponseString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WPXMLRPCDataCleaner *)self rangeOfLastValidClosingTagInString:v7];
+  tagsCopy = tags;
+  stringCopy = string;
+  v8 = [(WPXMLRPCDataCleaner *)self rangeOfLastValidClosingTagInString:stringCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = v7;
+    v10 = stringCopy;
   }
 
   else
   {
     v11 = v8;
-    v12 = [v7 substringWithRange:{v8, v9}];
-    v13 = [v6 rangeOfString:v12];
+    v12 = [stringCopy substringWithRange:{v8, v9}];
+    v13 = [tagsCopy rangeOfString:v12];
     if (v13 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = 0;
@@ -116,8 +116,8 @@
     else
     {
       v14 = v13;
-      v15 = [v7 substringToIndex:v11];
-      v16 = [v6 substringFromIndex:v14];
+      v15 = [stringCopy substringToIndex:v11];
+      v16 = [tagsCopy substringFromIndex:v14];
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v15, v16];
     }
   }
@@ -125,16 +125,16 @@
   return v10;
 }
 
-- (_NSRange)rangeOfLastValidClosingTagInString:(id)a3
+- (_NSRange)rangeOfLastValidClosingTagInString:(id)string
 {
   v3 = rangeOfLastValidClosingTagInString__onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     dispatch_once(&rangeOfLastValidClosingTagInString__onceToken, &__block_literal_global_17286);
   }
 
-  v5 = [rangeOfLastValidClosingTagInString__regex rangeOfFirstMatchInString:v4 options:2 range:{0, objc_msgSend(v4, "length")}];
+  v5 = [rangeOfLastValidClosingTagInString__regex rangeOfFirstMatchInString:stringCopy options:2 range:{0, objc_msgSend(stringCopy, "length")}];
   v7 = v6;
 
   v8 = v5;
@@ -153,9 +153,9 @@ void __73__WPXMLRPCDataCleaner_CleaningSteps__rangeOfLastValidClosingTagInString
   rangeOfLastValidClosingTagInString__regex = v0;
 }
 
-- (id)cloingTagsForString:(id)a3
+- (id)cloingTagsForString:(id)string
 {
-  if ([a3 rangeOfString:@"<params>"] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([string rangeOfString:@"<params>"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     return @"</value></fault></methodResponse>";
   }
@@ -166,23 +166,23 @@ void __73__WPXMLRPCDataCleaner_CleaningSteps__rangeOfLastValidClosingTagInString
   }
 }
 
-- (id)cleanClosingTagIfNeeded:(id)a3 lengthOfCharactersPrecedingPreamble:(int64_t)a4
+- (id)cleanClosingTagIfNeeded:(id)needed lengthOfCharactersPrecedingPreamble:(int64_t)preamble
 {
-  v6 = a3;
-  if ([v6 rangeOfString:@"methodResponse"] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v6, "rangeOfString:", @"</methodResponse>") != 0x7FFFFFFFFFFFFFFFLL)
+  neededCopy = needed;
+  if ([neededCopy rangeOfString:@"methodResponse"] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(neededCopy, "rangeOfString:", @"</methodResponse>") != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = v6;
+    v8 = neededCopy;
   }
 
   else
   {
-    v7 = [(WPXMLRPCDataCleaner *)self cloingTagsForString:v6];
-    if ([v7 length] >= a4)
+    v7 = [(WPXMLRPCDataCleaner *)self cloingTagsForString:neededCopy];
+    if ([v7 length] >= preamble)
     {
-      v9 = [(WPXMLRPCDataCleaner *)self repairTruncatedClosingTags:v7 inResponseString:v6];
+      v9 = [(WPXMLRPCDataCleaner *)self repairTruncatedClosingTags:v7 inResponseString:neededCopy];
       if (!v9)
       {
-        v9 = [(WPXMLRPCDataCleaner *)self appendClosingTags:v7 toResponseString:v6];
+        v9 = [(WPXMLRPCDataCleaner *)self appendClosingTags:v7 toResponseString:neededCopy];
       }
 
       v8 = v9;
@@ -190,16 +190,16 @@ void __73__WPXMLRPCDataCleaner_CleaningSteps__rangeOfLastValidClosingTagInString
 
     else
     {
-      v8 = v6;
+      v8 = neededCopy;
     }
   }
 
   return v8;
 }
 
-- (id)cleanWithTidyIfPresent:(id)a3
+- (id)cleanWithTidyIfPresent:(id)present
 {
-  v3 = a3;
+  presentCopy = present;
   v4 = NSClassFromString(&cfstr_Ctidy.isa);
   v5 = NSSelectorFromString(&cfstr_Tidy.isa);
   v6 = NSSelectorFromString(&cfstr_TidystringInpu.isa);
@@ -214,7 +214,7 @@ void __73__WPXMLRPCDataCleaner_CleaningSteps__rangeOfLastValidClosingTagInString
         if (objc_opt_respondsToSelector())
         {
           v12 = 0;
-          v9 = ([v8 methodForSelector:v7])(v8, v7, v3, 1, 1, @"utf8", &v12);
+          v9 = ([v8 methodForSelector:v7])(v8, v7, presentCopy, 1, 1, @"utf8", &v12);
           if (v9)
           {
             v10 = v9;
@@ -226,22 +226,22 @@ void __73__WPXMLRPCDataCleaner_CleaningSteps__rangeOfLastValidClosingTagInString
     }
   }
 
-  v10 = v3;
+  v10 = presentCopy;
 LABEL_9:
 
   return v10;
 }
 
-- (id)cleanInvalidXMLCharacters:(id)a3
+- (id)cleanInvalidXMLCharacters:(id)characters
 {
-  v3 = a3;
-  v4 = [v3 length];
+  charactersCopy = characters;
+  v4 = [charactersCopy length];
   v5 = [MEMORY[0x277CCAB68] stringWithCapacity:v4];
   if (v4)
   {
     for (i = 0; i != v4; ++i)
     {
-      v7 = [v3 characterAtIndex:i];
+      v7 = [charactersCopy characterAtIndex:i];
       v8 = v7 > 0xD || ((1 << v7) & 0x2600) == 0;
       if (!v8 || (v7 - 32) >> 5 < 0x6BF || (v7 - 57344) >> 1 <= 0xFFE)
       {
@@ -254,10 +254,10 @@ LABEL_9:
   return v5;
 }
 
-- (id)cleanCharactersBeforePreamble:(id)a3
+- (id)cleanCharactersBeforePreamble:(id)preamble
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"<?xml"];
+  preambleCopy = preamble;
+  v4 = [preambleCopy rangeOfString:@"<?xml"];
   if (v5)
   {
     v6 = v4 == 0;
@@ -270,34 +270,34 @@ LABEL_9:
 
   if (!v6 && v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [v3 substringFromIndex:v4];
+    v8 = [preambleCopy substringFromIndex:v4];
 
-    v3 = v8;
+    preambleCopy = v8;
   }
 
-  return v3;
+  return preambleCopy;
 }
 
-- (id)cleanInvalidUTF8:(id)a3
+- (id)cleanInvalidUTF8:(id)f8
 {
-  v3 = a3;
+  f8Copy = f8;
   v4 = MEMORY[0x23EF06700]("UTF-8", "UTF-8");
   v15 = 1;
   MEMORY[0x23EF06710](v4, 4, &v15);
-  v13 = [v3 length];
+  v13 = [f8Copy length];
   v14 = v13;
-  v12 = [v3 bytes];
-  v5 = malloc_type_malloc([v3 length], 0x100004077774924uLL);
+  bytes = [f8Copy bytes];
+  v5 = malloc_type_malloc([f8Copy length], 0x100004077774924uLL);
   v11 = v5;
-  if (MEMORY[0x23EF066E0](v4, &v12, &v14, &v11, &v13) == -1)
+  if (MEMORY[0x23EF066E0](v4, &bytes, &v14, &v11, &v13) == -1)
   {
-    v8 = v3;
+    v8 = f8Copy;
   }
 
   else
   {
     v6 = MEMORY[0x277CBEA90];
-    v7 = [v3 length];
+    v7 = [f8Copy length];
     v8 = [v6 dataWithBytes:v5 length:v7 - v13];
   }
 

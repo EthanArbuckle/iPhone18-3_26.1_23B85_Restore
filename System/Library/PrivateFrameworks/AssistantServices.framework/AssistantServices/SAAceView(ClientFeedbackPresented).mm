@@ -9,20 +9,20 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 _af_dialogPhase];
-    v6 = [a1 _af_dialogIdentifier];
-    v7 = [a1 aceId];
-    v8 = [a1 encodedClassName];
-    v9 = [a1 listenAfterSpeaking];
-    v10 = [v9 BOOLValue];
+    _af_dialogPhase = [self _af_dialogPhase];
+    _af_dialogIdentifier = [self _af_dialogIdentifier];
+    aceId = [self aceId];
+    encodedClassName = [self encodedClassName];
+    listenAfterSpeaking = [self listenAfterSpeaking];
+    bOOLValue = [listenAfterSpeaking BOOLValue];
 
-    if (v5 || v6 || v7)
+    if (_af_dialogPhase || _af_dialogIdentifier || aceId)
     {
-      v12[0] = v7;
-      v12[1] = v8;
-      v12[3] = v6;
-      v12[2] = v5;
-      v13 = v10;
+      v12[0] = aceId;
+      v12[1] = encodedClassName;
+      v12[3] = _af_dialogIdentifier;
+      v12[2] = _af_dialogPhase;
+      v13 = bOOLValue;
       __copy_constructor_8_8_s0_s8_s16_s24_t32w1(v11, v12);
       v4[2](v4, v11);
       __destructor_8_s0_s8_s16_s24(v12);

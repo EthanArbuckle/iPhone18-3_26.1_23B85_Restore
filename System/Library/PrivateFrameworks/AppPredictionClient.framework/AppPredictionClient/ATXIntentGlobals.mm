@@ -19,9 +19,9 @@
     v4 = +[ATXABHelper abGroupOverride];
     v5 = [(ATXAssetsABHelper *)v3 initWithAssetsForResource:@"_ATXGlobals" ofType:@"plplist" specifiedABGroup:v4];
 
-    v6 = [(ATXAssetsABHelper *)v5 abGroupContents];
+    abGroupContents = [(ATXAssetsABHelper *)v5 abGroupContents];
     parameters = v2->_parameters;
-    v2->_parameters = v6;
+    v2->_parameters = abGroupContents;
   }
 
   return v2;
@@ -74,15 +74,15 @@ void __34__ATXIntentGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)onlyUseEligibleForPrediction
@@ -91,15 +91,15 @@ void __34__ATXIntentGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

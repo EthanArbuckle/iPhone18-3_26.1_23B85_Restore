@@ -1,57 +1,57 @@
 @interface PKDatabase
-- (PKDatabase)initWithDatabase:(id)a3 externalProviders:(id)a4;
+- (PKDatabase)initWithDatabase:(id)database externalProviders:(id)providers;
 - (PKDatabaseDelegate)delegate;
-- (id)_locked_cachedPlugInWithUUID:(id)a3;
-- (id)addPlugIn:(id)a3;
-- (id)annotationForIdentifier:(id)a3;
-- (id)annotationForPlugIn:(id)a3;
-- (id)cachedPlugInWithUUID:(id)a3;
-- (id)createPlugInForProxy:(id)a3 uuid:(id)a4 discoveryInstanceUUID:(id)a5 extensionPointCache:(id)a6;
-- (id)findPlugInAtPath:(id)a3;
-- (id)findPlugInWithUUID:(id)a3;
-- (id)findPlugInWithUUID:(id)a3 discoveryUUID:(id)a4 extensionPointCache:(id)a5;
-- (id)findPlugInsForQuery:(id)a3 discoveryInstanceUUID:(id)a4 allVersions:(BOOL)a5;
-- (id)plugInForExtensionRecord:(id)a3 discoveryInstanceUUID:(id)a4 extensionPointCache:(id)a5;
-- (id)plugInForProxy:(id)a3 discoveryInstanceUUID:(id)a4 extensionPointCache:(id)a5;
-- (id)plugInsWithExtensionPointName:(id)a3 platforms:(id)a4;
-- (id)plugInsWithinApplication:(id)a3;
-- (id)removePlugIn:(id)a3;
-- (id)setAnnotation:(id)a3 forPlugIn:(id)a4;
-- (void)_locked_autoElect:(id)a3;
+- (id)_locked_cachedPlugInWithUUID:(id)d;
+- (id)addPlugIn:(id)in;
+- (id)annotationForIdentifier:(id)identifier;
+- (id)annotationForPlugIn:(id)in;
+- (id)cachedPlugInWithUUID:(id)d;
+- (id)createPlugInForProxy:(id)proxy uuid:(id)uuid discoveryInstanceUUID:(id)d extensionPointCache:(id)cache;
+- (id)findPlugInAtPath:(id)path;
+- (id)findPlugInWithUUID:(id)d;
+- (id)findPlugInWithUUID:(id)d discoveryUUID:(id)iD extensionPointCache:(id)cache;
+- (id)findPlugInsForQuery:(id)query discoveryInstanceUUID:(id)d allVersions:(BOOL)versions;
+- (id)plugInForExtensionRecord:(id)record discoveryInstanceUUID:(id)d extensionPointCache:(id)cache;
+- (id)plugInForProxy:(id)proxy discoveryInstanceUUID:(id)d extensionPointCache:(id)cache;
+- (id)plugInsWithExtensionPointName:(id)name platforms:(id)platforms;
+- (id)plugInsWithinApplication:(id)application;
+- (id)removePlugIn:(id)in;
+- (id)setAnnotation:(id)annotation forPlugIn:(id)in;
+- (void)_locked_autoElect:(id)elect;
 - (void)notifyAnnotationChange;
-- (void)pluginsDidInstall:(id)a3;
-- (void)pluginsWillUninstall:(id)a3;
+- (void)pluginsDidInstall:(id)install;
+- (void)pluginsWillUninstall:(id)uninstall;
 @end
 
 @implementation PKDatabase
 
-- (PKDatabase)initWithDatabase:(id)a3 externalProviders:(id)a4
+- (PKDatabase)initWithDatabase:(id)database externalProviders:(id)providers
 {
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  providersCopy = providers;
   v29.receiver = self;
   v29.super_class = PKDatabase;
   v8 = [(PKDatabase *)&v29 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_external, a4);
-    v10 = [(PKDatabase *)v9 external];
-    v11 = [v10 ls];
-    v12 = [v11 defaultApplicationWorkspace];
-    [(PKDatabase *)v9 setWorkspace:v12];
+    objc_storeStrong(&v8->_external, providers);
+    external = [(PKDatabase *)v9 external];
+    v11 = [external ls];
+    defaultApplicationWorkspace = [v11 defaultApplicationWorkspace];
+    [(PKDatabase *)v9 setWorkspace:defaultApplicationWorkspace];
 
     v13 = [PKDAnnotationStore alloc];
-    v14 = [(PKDatabase *)v9 external];
-    v15 = [(PKDAnnotationStore *)v13 initWithDatabase:v6 externalProviders:v14];
+    external2 = [(PKDatabase *)v9 external];
+    v15 = [(PKDAnnotationStore *)v13 initWithDatabase:databaseCopy externalProviders:external2];
     [(PKDatabase *)v9 setAnnotations:v15];
 
     v16 = objc_opt_new();
     [(PKDatabase *)v9 setCache:v16];
 
     [(PKDatabase *)v9 setCacheLock:0];
-    v17 = [(PKDatabase *)v9 workspace];
-    [v17 addObserver:v9];
+    workspace = [(PKDatabase *)v9 workspace];
+    [workspace addObserver:v9];
 
     v18 = +[NSNotificationCenter defaultCenter];
     v19 = +[NSOperationQueue mainQueue];
@@ -65,8 +65,8 @@
     [(PKDatabase *)v20 setRegionObserver:v21];
 
     v22 = [PKDPersonaCache alloc];
-    v23 = [(PKDatabase *)v20 external];
-    v24 = [(PKDPersonaCache *)v22 initWithExternalProviders:v23];
+    external3 = [(PKDatabase *)v20 external];
+    v24 = [(PKDPersonaCache *)v22 initWithExternalProviders:external3];
     personaCache = v20->_personaCache;
     v20->_personaCache = v24;
   }
@@ -90,12 +90,12 @@ void __49__PKDatabase_initWithDatabase_externalProviders___block_invoke(uint64_t
   os_unfair_lock_unlock((*(a1 + 32) + 8));
 }
 
-- (id)_locked_cachedPlugInWithUUID:(id)a3
+- (id)_locked_cachedPlugInWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_assert_owner(&self->_cacheLock);
-  v5 = [(PKDatabase *)self cache];
-  v6 = [v5 objectForKey:v4];
+  cache = [(PKDatabase *)self cache];
+  v6 = [cache objectForKey:dCopy];
 
   v7 = pklog_handle_for_category();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
@@ -103,7 +103,7 @@ void __49__PKDatabase_initWithDatabase_externalProviders___block_invoke(uint64_t
   {
     if (v8)
     {
-      [(PKDatabase *)v6 _locked_cachedPlugInWithUUID:v4, v7];
+      [(PKDatabase *)v6 _locked_cachedPlugInWithUUID:dCopy, v7];
     }
 
     [(PKDatabase *)self setCacheHits:[(PKDatabase *)self cacheHits]+ 1];
@@ -122,24 +122,24 @@ void __49__PKDatabase_initWithDatabase_externalProviders___block_invoke(uint64_t
   return v6;
 }
 
-- (id)cachedPlugInWithUUID:(id)a3
+- (id)cachedPlugInWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_cacheLock);
-  v5 = [(PKDatabase *)self _locked_cachedPlugInWithUUID:v4];
+  v5 = [(PKDatabase *)self _locked_cachedPlugInWithUUID:dCopy];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 
   return v5;
 }
 
-- (id)plugInForProxy:(id)a3 discoveryInstanceUUID:(id)a4 extensionPointCache:(id)a5
+- (id)plugInForProxy:(id)proxy discoveryInstanceUUID:(id)d extensionPointCache:(id)cache
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 pluginUUID];
-  v12 = [(PKDatabase *)self cachedPlugInWithUUID:v11];
+  proxyCopy = proxy;
+  dCopy = d;
+  cacheCopy = cache;
+  pluginUUID = [proxyCopy pluginUUID];
+  v12 = [(PKDatabase *)self cachedPlugInWithUUID:pluginUUID];
 
   v13 = +[PKDPlugIn nullPlugIn];
 
@@ -152,8 +152,8 @@ void __49__PKDatabase_initWithDatabase_externalProviders___block_invoke(uint64_t
   {
     if (!v12)
     {
-      v14 = [v8 pluginUUID];
-      v12 = [(PKDatabase *)self createPlugInForProxy:v8 uuid:v14 discoveryInstanceUUID:v9 extensionPointCache:v10];
+      pluginUUID2 = [proxyCopy pluginUUID];
+      v12 = [(PKDatabase *)self createPlugInForProxy:proxyCopy uuid:pluginUUID2 discoveryInstanceUUID:dCopy extensionPointCache:cacheCopy];
     }
 
     v15 = v12;
@@ -163,13 +163,13 @@ void __49__PKDatabase_initWithDatabase_externalProviders___block_invoke(uint64_t
   return v15;
 }
 
-- (id)plugInForExtensionRecord:(id)a3 discoveryInstanceUUID:(id)a4 extensionPointCache:(id)a5
+- (id)plugInForExtensionRecord:(id)record discoveryInstanceUUID:(id)d extensionPointCache:(id)cache
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 uniqueIdentifier];
-  v12 = [(PKDatabase *)self cachedPlugInWithUUID:v11];
+  recordCopy = record;
+  dCopy = d;
+  cacheCopy = cache;
+  uniqueIdentifier = [recordCopy uniqueIdentifier];
+  v12 = [(PKDatabase *)self cachedPlugInWithUUID:uniqueIdentifier];
 
   v13 = +[PKDPlugIn nullPlugIn];
 
@@ -182,11 +182,11 @@ void __49__PKDatabase_initWithDatabase_externalProviders___block_invoke(uint64_t
   {
     if (!v12)
     {
-      v14 = [v8 compatibilityObject];
-      if (v14)
+      compatibilityObject = [recordCopy compatibilityObject];
+      if (compatibilityObject)
       {
-        v15 = [v8 uniqueIdentifier];
-        v12 = [(PKDatabase *)self createPlugInForProxy:v14 uuid:v15 discoveryInstanceUUID:v9 extensionPointCache:v10];
+        uniqueIdentifier2 = [recordCopy uniqueIdentifier];
+        v12 = [(PKDatabase *)self createPlugInForProxy:compatibilityObject uuid:uniqueIdentifier2 discoveryInstanceUUID:dCopy extensionPointCache:cacheCopy];
       }
 
       else
@@ -202,16 +202,16 @@ void __49__PKDatabase_initWithDatabase_externalProviders___block_invoke(uint64_t
   return v16;
 }
 
-- (id)createPlugInForProxy:(id)a3 uuid:(id)a4 discoveryInstanceUUID:(id)a5 extensionPointCache:(id)a6
+- (id)createPlugInForProxy:(id)proxy uuid:(id)uuid discoveryInstanceUUID:(id)d extensionPointCache:(id)cache
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
+  uuidCopy = uuid;
+  cacheCopy = cache;
+  dCopy = d;
+  proxyCopy = proxy;
   v14 = [PKDPlugIn alloc];
-  v15 = [(PKDatabase *)self personaCache];
-  v16 = [(PKDatabase *)self external];
-  v17 = [(PKDPlugIn *)v14 initWithLSData:v13 personaCache:v15 discoveryInstanceUUID:v12 extensionPointCache:v11 externalProviders:v16];
+  personaCache = [(PKDatabase *)self personaCache];
+  external = [(PKDatabase *)self external];
+  v17 = [(PKDPlugIn *)v14 initWithLSData:proxyCopy personaCache:personaCache discoveryInstanceUUID:dCopy extensionPointCache:cacheCopy externalProviders:external];
 
   v18 = v17;
   if (!v17)
@@ -231,10 +231,10 @@ void __49__PKDatabase_initWithDatabase_externalProviders___block_invoke(uint64_t
     [(PKDatabase *)self _locked_autoElect:v17];
   }
 
-  if (v10)
+  if (uuidCopy)
   {
-    v21 = [(PKDatabase *)self cache];
-    [v21 setObject:v19 forKey:v10];
+    cache = [(PKDatabase *)self cache];
+    [cache setObject:v19 forKey:uuidCopy];
   }
 
   os_unfair_lock_unlock(&self->_cacheLock);
@@ -247,76 +247,76 @@ void __49__PKDatabase_initWithDatabase_externalProviders___block_invoke(uint64_t
   return v17;
 }
 
-- (id)findPlugInsForQuery:(id)a3 discoveryInstanceUUID:(id)a4 allVersions:(BOOL)a5
+- (id)findPlugInsForQuery:(id)query discoveryInstanceUUID:(id)d allVersions:(BOOL)versions
 {
-  v8 = a3;
-  v9 = a4;
+  queryCopy = query;
+  dCopy = d;
   v10 = objc_autoreleasePoolPush();
-  [v8 signpostBegin];
-  if (!a5)
+  [queryCopy signpostBegin];
+  if (!versions)
   {
-    v11 = [v8 findPlugIns];
-    if (v11)
+    findPlugIns = [queryCopy findPlugIns];
+    if (findPlugIns)
     {
-      v46 = v11;
-      [v8 signpostEnd];
-      v12 = 0;
+      v46 = findPlugIns;
+      [queryCopy signpostEnd];
+      installedPlugins = 0;
       goto LABEL_33;
     }
   }
 
-  v13 = [v8 criteria];
-  v14 = [v13 count];
+  criteria = [queryCopy criteria];
+  v14 = [criteria count];
 
-  v15 = [(PKDatabase *)self workspace];
-  v16 = v15;
+  workspace = [(PKDatabase *)self workspace];
+  v16 = workspace;
   if (v14)
   {
-    v17 = [v8 criteria];
+    criteria2 = [queryCopy criteria];
     v53[0] = _NSConcreteStackBlock;
     v53[1] = 3221225472;
     v53[2] = __68__PKDatabase_findPlugInsForQuery_discoveryInstanceUUID_allVersions___block_invoke;
     v53[3] = &unk_28A70;
-    v54 = v8;
-    v12 = [v16 pluginsMatchingQuery:v17 applyFilter:v53];
+    v54 = queryCopy;
+    installedPlugins = [v16 pluginsMatchingQuery:criteria2 applyFilter:v53];
 
     v18 = v54;
   }
 
   else
   {
-    v12 = [v15 installedPlugins];
+    installedPlugins = [workspace installedPlugins];
 
     v18 = pklog_handle_for_category();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      [PKDatabase findPlugInsForQuery:v12 discoveryInstanceUUID:v18 allVersions:?];
+      [PKDatabase findPlugInsForQuery:installedPlugins discoveryInstanceUUID:v18 allVersions:?];
     }
   }
 
-  [v8 signpostEnd];
+  [queryCopy signpostEnd];
   os_unfair_lock_lock(&self->_cacheLock);
-  v19 = [(PKDatabase *)self cacheHits];
-  v20 = [(PKDatabase *)self cacheMisses];
+  cacheHits = [(PKDatabase *)self cacheHits];
+  cacheMisses = [(PKDatabase *)self cacheMisses];
   os_unfair_lock_unlock(&self->_cacheLock);
-  if (!v12)
+  if (!installedPlugins)
   {
     v46 = 0;
     goto LABEL_33;
   }
 
-  v42 = v20;
-  v43 = v19;
+  v42 = cacheMisses;
+  v43 = cacheHits;
   v44 = v10;
-  v45 = v8;
-  v21 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v12, "count")}];
+  v45 = queryCopy;
+  v21 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(installedPlugins, "count")}];
   v47 = +[NSMutableDictionary dictionary];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v12 = v12;
-  v22 = [v12 countByEnumeratingWithState:&v49 objects:v59 count:16];
+  installedPlugins = installedPlugins;
+  v22 = [installedPlugins countByEnumeratingWithState:&v49 objects:v59 count:16];
   v46 = v21;
   if (!v22)
   {
@@ -342,39 +342,39 @@ void __49__PKDatabase_initWithDatabase_externalProviders___block_invoke(uint64_t
     {
       if (*v50 != v23)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(installedPlugins);
       }
 
       v26 = *(*(&v49 + 1) + 8 * v24);
-      v27 = [v26 bundleURL];
+      bundleURL = [v26 bundleURL];
 
-      if (v27)
+      if (bundleURL)
       {
-        v28 = [v26 containingBundle];
-        if ([v28 isPlaceholder])
+        containingBundle = [v26 containingBundle];
+        if ([containingBundle isPlaceholder])
         {
-          v29 = pklog_handle_for_category();
-          if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
+          pluginUUID2 = pklog_handle_for_category();
+          if (os_log_type_enabled(pluginUUID2, OS_LOG_TYPE_INFO))
           {
-            v30 = [v26 pluginUUID];
+            pluginUUID = [v26 pluginUUID];
             [v26 pluginIdentifier];
-            v31 = v12;
-            v32 = self;
-            v34 = v33 = v9;
-            v35 = [v26 bundleVersion];
+            v31 = installedPlugins;
+            selfCopy = self;
+            v34 = v33 = dCopy;
+            bundleVersion = [v26 bundleVersion];
             *buf = 138413058;
             *v56 = v33;
             *&v56[8] = 2114;
-            *&v56[10] = v30;
+            *&v56[10] = pluginUUID;
             *&v56[18] = 2112;
             *&v56[20] = v34;
             v57 = 2112;
-            v58 = v35;
-            _os_log_impl(&dword_0, v29, OS_LOG_TYPE_INFO, "[d %@] [u %{public}@] [%@(%@)] rejecting; containing app is a placeholder", buf, 0x2Au);
+            v58 = bundleVersion;
+            _os_log_impl(&dword_0, pluginUUID2, OS_LOG_TYPE_INFO, "[d %@] [u %{public}@] [%@(%@)] rejecting; containing app is a placeholder", buf, 0x2Au);
 
-            v9 = v33;
-            self = v32;
-            v12 = v31;
+            dCopy = v33;
+            self = selfCopy;
+            installedPlugins = v31;
             v21 = v46;
             goto LABEL_16;
           }
@@ -382,31 +382,31 @@ void __49__PKDatabase_initWithDatabase_externalProviders___block_invoke(uint64_t
 
         else
         {
-          v29 = [(PKDatabase *)self plugInForProxy:v26 discoveryInstanceUUID:v9 extensionPointCache:v47];
-          if (v29)
+          pluginUUID2 = [(PKDatabase *)self plugInForProxy:v26 discoveryInstanceUUID:dCopy extensionPointCache:v47];
+          if (pluginUUID2)
           {
-            [v21 addObject:v29];
+            [v21 addObject:pluginUUID2];
           }
         }
 
         goto LABEL_17;
       }
 
-      v28 = pklog_handle_for_category();
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
+      containingBundle = pklog_handle_for_category();
+      if (os_log_type_enabled(containingBundle, OS_LOG_TYPE_INFO))
       {
-        v29 = [v26 pluginUUID];
-        v30 = [v26 pluginIdentifier];
-        v36 = [v26 bundleVersion];
+        pluginUUID2 = [v26 pluginUUID];
+        pluginUUID = [v26 pluginIdentifier];
+        bundleVersion2 = [v26 bundleVersion];
         *buf = 138413058;
-        *v56 = v9;
+        *v56 = dCopy;
         *&v56[8] = 2114;
-        *&v56[10] = v29;
+        *&v56[10] = pluginUUID2;
         *&v56[18] = 2112;
-        *&v56[20] = v30;
+        *&v56[20] = pluginUUID;
         v57 = 2112;
-        v58 = v36;
-        _os_log_impl(&dword_0, v28, OS_LOG_TYPE_INFO, "[d %@] [u %{public}@] [%@(%@)] rejecting; nil bundleURL from LS proxy", buf, 0x2Au);
+        v58 = bundleVersion2;
+        _os_log_impl(&dword_0, containingBundle, OS_LOG_TYPE_INFO, "[d %@] [u %{public}@] [%@(%@)] rejecting; nil bundleURL from LS proxy", buf, 0x2Au);
 
 LABEL_16:
         v23 = v48;
@@ -417,7 +417,7 @@ LABEL_17:
     }
 
     while (v25 != v24);
-    v22 = [v12 countByEnumeratingWithState:&v49 objects:v59 count:16];
+    v22 = [installedPlugins countByEnumeratingWithState:&v49 objects:v59 count:16];
     if (v22)
     {
       continue;
@@ -429,8 +429,8 @@ LABEL_17:
 LABEL_29:
 
   os_unfair_lock_lock(&self->_cacheLock);
-  v37 = [(PKDatabase *)self cacheHits];
-  v38 = [(PKDatabase *)self cacheMisses];
+  cacheHits2 = [(PKDatabase *)self cacheHits];
+  cacheMisses2 = [(PKDatabase *)self cacheMisses];
   os_unfair_lock_unlock(&self->_cacheLock);
   v39 = pklog_handle_for_category();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
@@ -439,14 +439,14 @@ LABEL_29:
     *buf = 67109632;
     *v56 = v41;
     *&v56[4] = 2048;
-    *&v56[6] = v37 - v43;
+    *&v56[6] = cacheHits2 - v43;
     *&v56[14] = 2048;
-    *&v56[16] = v38 - v42 + v37 - v43;
+    *&v56[16] = cacheMisses2 - v42 + cacheHits2 - v43;
     _os_log_debug_impl(&dword_0, v39, OS_LOG_TYPE_DEBUG, "LS reported %u plug-ins (cached %qu/%qu)", buf, 0x1Cu);
   }
 
   v10 = v44;
-  v8 = v45;
+  queryCopy = v45;
 LABEL_33:
 
   objc_autoreleasePoolPop(v10);
@@ -454,21 +454,21 @@ LABEL_33:
   return v46;
 }
 
-- (id)findPlugInWithUUID:(id)a3
+- (id)findPlugInWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(PKDatabase *)self findPlugInWithUUID:v4 discoveryUUID:0 extensionPointCache:v5];
+  v6 = [(PKDatabase *)self findPlugInWithUUID:dCopy discoveryUUID:0 extensionPointCache:v5];
 
   return v6;
 }
 
-- (id)findPlugInWithUUID:(id)a3 discoveryUUID:(id)a4 extensionPointCache:(id)a5
+- (id)findPlugInWithUUID:(id)d discoveryUUID:(id)iD extensionPointCache:(id)cache
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKDatabase *)self cachedPlugInWithUUID:v8];
+  dCopy = d;
+  iDCopy = iD;
+  cacheCopy = cache;
+  v11 = [(PKDatabase *)self cachedPlugInWithUUID:dCopy];
   v12 = +[PKDPlugIn nullPlugIn];
 
   if (v11 == v12)
@@ -480,13 +480,13 @@ LABEL_33:
   {
     if (!v11)
     {
-      v13 = [(PKDatabase *)self external];
-      v14 = [v13 ls];
-      v15 = [v14 plugInKitProxyForUUID:v8];
+      external = [(PKDatabase *)self external];
+      v14 = [external ls];
+      v15 = [v14 plugInKitProxyForUUID:dCopy];
 
       if (v15)
       {
-        v11 = [(PKDatabase *)self createPlugInForProxy:v15 uuid:v8 discoveryInstanceUUID:v9 extensionPointCache:v10];
+        v11 = [(PKDatabase *)self createPlugInForProxy:v15 uuid:dCopy discoveryInstanceUUID:iDCopy extensionPointCache:cacheCopy];
       }
 
       else
@@ -494,7 +494,7 @@ LABEL_33:
         v17 = pklog_handle_for_category();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          [PKDatabase findPlugInWithUUID:v8 discoveryUUID:? extensionPointCache:?];
+          [PKDatabase findPlugInWithUUID:dCopy discoveryUUID:? extensionPointCache:?];
         }
 
         v11 = 0;
@@ -508,25 +508,25 @@ LABEL_33:
   return v16;
 }
 
-- (id)findPlugInAtPath:(id)a3
+- (id)findPlugInAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PKDatabase *)self external];
-  v6 = [v5 ls];
-  v7 = [v6 plugInKitProxyForURL:v4];
+  pathCopy = path;
+  external = [(PKDatabase *)self external];
+  v6 = [external ls];
+  v7 = [v6 plugInKitProxyForURL:pathCopy];
 
   if (v7)
   {
-    v8 = [v7 pluginUUID];
-    v9 = [(PKDatabase *)self findPlugInWithUUID:v8];
+    pluginUUID = [v7 pluginUUID];
+    v9 = [(PKDatabase *)self findPlugInWithUUID:pluginUUID];
   }
 
   else
   {
-    v8 = pklog_handle_for_category();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    pluginUUID = pklog_handle_for_category();
+    if (os_log_type_enabled(pluginUUID, OS_LOG_TYPE_ERROR))
     {
-      [PKDatabase findPlugInAtPath:v4];
+      [PKDatabase findPlugInAtPath:pathCopy];
     }
 
     v9 = 0;
@@ -535,24 +535,24 @@ LABEL_33:
   return v9;
 }
 
-- (id)plugInsWithinApplication:(id)a3
+- (id)plugInsWithinApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(PKDatabase *)self external];
-  v6 = [v5 ls];
-  v7 = [v6 applicationProxyForBundleURL:v4];
+  applicationCopy = application;
+  external = [(PKDatabase *)self external];
+  v6 = [external ls];
+  v7 = [v6 applicationProxyForBundleURL:applicationCopy];
 
-  v8 = [v7 plugInKitPlugins];
-  if ([v8 count])
+  plugInKitPlugins = [v7 plugInKitPlugins];
+  if ([plugInKitPlugins count])
   {
-    v18 = v4;
-    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v8 count]);
+    v18 = applicationCopy;
+    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [plugInKitPlugins count]);
     v10 = +[NSMutableDictionary dictionary];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = v8;
+    v11 = plugInKitPlugins;
     v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
@@ -593,7 +593,7 @@ LABEL_33:
       while (v12);
     }
 
-    v4 = v18;
+    applicationCopy = v18;
   }
 
   else
@@ -604,24 +604,24 @@ LABEL_33:
   return v9;
 }
 
-- (id)plugInsWithExtensionPointName:(id)a3 platforms:(id)a4
+- (id)plugInsWithExtensionPointName:(id)name platforms:(id)platforms
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  platformsCopy = platforms;
   v8 = objc_opt_new();
   context = objc_autoreleasePoolPush();
   v9 = +[NSMutableDictionary dictionary];
   v10 = objc_opt_new();
-  v25 = v6;
-  [v10 setObject:v6 forKeyedSubscript:PKProtocolAttribute];
-  if ([v7 count])
+  v25 = nameCopy;
+  [v10 setObject:nameCopy forKeyedSubscript:PKProtocolAttribute];
+  if ([platformsCopy count])
   {
-    [v10 setObject:v7 forKeyedSubscript:PKExtensionPlatformsAttribute];
+    [v10 setObject:platformsCopy forKeyedSubscript:PKExtensionPlatformsAttribute];
   }
 
-  v24 = v7;
-  v11 = [(PKDatabase *)self workspace];
-  v12 = [v11 pluginsMatchingQuery:v10 applyFilter:&__block_literal_global];
+  v24 = platformsCopy;
+  workspace = [(PKDatabase *)self workspace];
+  v12 = [workspace pluginsMatchingQuery:v10 applyFilter:&__block_literal_global];
 
   v28 = 0u;
   v29 = 0u;
@@ -677,20 +677,20 @@ LABEL_33:
   return v21;
 }
 
-- (id)addPlugIn:(id)a3
+- (id)addPlugIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   v5 = pklog_handle_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 path];
+    path = [inCopy path];
     v12 = 138412290;
-    v13 = v6;
+    v13 = path;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Registering plugin at [%@]", &v12, 0xCu);
   }
 
-  v7 = [(PKDatabase *)self workspace];
-  v8 = [v7 registerPlugin:v4];
+  workspace = [(PKDatabase *)self workspace];
+  v8 = [workspace registerPlugin:inCopy];
 
   if (v8)
   {
@@ -702,7 +702,7 @@ LABEL_33:
     v10 = pklog_handle_for_category();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [PKDatabase addPlugIn:v4];
+      [PKDatabase addPlugIn:inCopy];
     }
 
     v9 = pkError();
@@ -711,20 +711,20 @@ LABEL_33:
   return v9;
 }
 
-- (id)removePlugIn:(id)a3
+- (id)removePlugIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   v5 = pklog_handle_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 path];
+    path = [inCopy path];
     v12 = 138412290;
-    v13 = v6;
+    v13 = path;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Unregistering plugin at [%@]", &v12, 0xCu);
   }
 
-  v7 = [(PKDatabase *)self workspace];
-  v8 = [v7 unregisterPlugin:v4];
+  workspace = [(PKDatabase *)self workspace];
+  v8 = [workspace unregisterPlugin:inCopy];
 
   if (v8)
   {
@@ -736,7 +736,7 @@ LABEL_33:
     v10 = pklog_handle_for_category();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [PKDatabase removePlugIn:v4];
+      [PKDatabase removePlugIn:inCopy];
     }
 
     v9 = pkError();
@@ -745,37 +745,37 @@ LABEL_33:
   return v9;
 }
 
-- (id)annotationForPlugIn:(id)a3
+- (id)annotationForPlugIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   os_unfair_lock_lock(&self->_cacheLock);
-  v5 = [(PKDatabase *)self annotations];
-  v6 = [v5 annotationForPlugIn:v4];
+  annotations = [(PKDatabase *)self annotations];
+  v6 = [annotations annotationForPlugIn:inCopy];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 
   return v6;
 }
 
-- (id)annotationForIdentifier:(id)a3
+- (id)annotationForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_cacheLock);
-  v5 = [(PKDatabase *)self annotations];
-  v6 = [v5 annotationForIdentifier:v4];
+  annotations = [(PKDatabase *)self annotations];
+  v6 = [annotations annotationForIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 
   return v6;
 }
 
-- (id)setAnnotation:(id)a3 forPlugIn:(id)a4
+- (id)setAnnotation:(id)annotation forPlugIn:(id)in
 {
-  v6 = a4;
-  v7 = a3;
+  inCopy = in;
+  annotationCopy = annotation;
   os_unfair_lock_lock(&self->_cacheLock);
-  v8 = [(PKDatabase *)self annotations];
-  [v8 setAnnotation:v7 forPlugIn:v6];
+  annotations = [(PKDatabase *)self annotations];
+  [annotations setAnnotation:annotationCopy forPlugIn:inCopy];
 
   os_unfair_lock_unlock(&self->_cacheLock);
   return 0;
@@ -793,12 +793,12 @@ LABEL_33:
   PKAnnotationNotificationPost();
 }
 
-- (void)_locked_autoElect:(id)a3
+- (void)_locked_autoElect:(id)elect
 {
-  v12 = a3;
+  electCopy = elect;
   os_unfair_lock_assert_owner(&self->_cacheLock);
-  v4 = [(PKDatabase *)self annotations];
-  v5 = [v4 annotationForPlugIn:v12];
+  annotations = [(PKDatabase *)self annotations];
+  v5 = [annotations annotationForPlugIn:electCopy];
 
   if (v5)
   {
@@ -815,19 +815,19 @@ LABEL_33:
   v9 = v8;
   if (!v8 || ![v8 integerValue])
   {
-    v10 = [(PKDatabase *)self annotations];
+    annotations2 = [(PKDatabase *)self annotations];
     v11 = [v6 dictionaryChanging:v7 to:&off_2A1C8];
-    [v10 setAnnotation:v11 forPlugIn:v12];
+    [annotations2 setAnnotation:v11 forPlugIn:electCopy];
   }
 }
 
-- (void)pluginsDidInstall:(id)a3
+- (void)pluginsDidInstall:(id)install
 {
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = a3;
+  obj = install;
   v3 = [obj countByEnumeratingWithState:&v20 objects:v36 count:16];
   if (v3)
   {
@@ -858,26 +858,26 @@ LABEL_33:
         v8 = pklog_handle_for_category();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [v7 pluginUUID];
-          v10 = [v7 pluginIdentifier];
-          v11 = [v7 bundleVersion];
-          v12 = [v7 bundleIdentifier];
-          v19 = [v7 bundleURL];
-          v13 = [v19 path];
-          v14 = [v7 containingBundle];
-          v15 = [v14 bundleIdentifier];
+          pluginUUID = [v7 pluginUUID];
+          pluginIdentifier = [v7 pluginIdentifier];
+          bundleVersion = [v7 bundleVersion];
+          bundleIdentifier = [v7 bundleIdentifier];
+          bundleURL = [v7 bundleURL];
+          path = [bundleURL path];
+          containingBundle = [v7 containingBundle];
+          bundleIdentifier2 = [containingBundle bundleIdentifier];
           *buf = 138544642;
-          v25 = v9;
+          v25 = pluginUUID;
           v26 = 2112;
-          v27 = v10;
+          v27 = pluginIdentifier;
           v28 = 2112;
-          v29 = v11;
+          v29 = bundleVersion;
           v30 = 2112;
-          v31 = v12;
+          v31 = bundleIdentifier;
           v32 = 2112;
-          v33 = v13;
+          v33 = path;
           v34 = 2112;
-          v35 = v15;
+          v35 = bundleIdentifier2;
           _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "[u %{public}@] [%@(%@)] plugin INSTALLED; bundleID: [%@], path: [%@], contained in [%@]", buf, 0x3Eu);
 
           v4 = v16;
@@ -896,9 +896,9 @@ LABEL_33:
   }
 }
 
-- (void)pluginsWillUninstall:(id)a3
+- (void)pluginsWillUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   v5 = pklog_handle_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -912,13 +912,13 @@ LABEL_33:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v4;
+  obj = uninstallCopy;
   v6 = [obj countByEnumeratingWithState:&v31 objects:v47 count:16];
   if (v6)
   {
     v30 = *v32;
     v7 = &selRef_plugInForProxy_discoveryInstanceUUID_extensionPointCache_;
-    v25 = self;
+    selfCopy = self;
     do
     {
       v8 = 0;
@@ -944,45 +944,45 @@ LABEL_33:
         v11 = pklog_handle_for_category();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [v10 pluginUUID];
-          v12 = [v10 pluginIdentifier];
-          v13 = [v10 bundleVersion];
-          v14 = [v10 bundleIdentifier];
-          v28 = [v10 bundleURL];
-          v15 = [v28 path];
-          v16 = [v10 containingBundle];
-          v17 = [v16 bundleIdentifier];
+          pluginUUID = [v10 pluginUUID];
+          pluginIdentifier = [v10 pluginIdentifier];
+          bundleVersion = [v10 bundleVersion];
+          bundleIdentifier = [v10 bundleIdentifier];
+          bundleURL = [v10 bundleURL];
+          path = [bundleURL path];
+          containingBundle = [v10 containingBundle];
+          bundleIdentifier2 = [containingBundle bundleIdentifier];
           *buf = 138544642;
-          v36 = v29;
+          v36 = pluginUUID;
           v37 = 2112;
-          v38 = v12;
-          v18 = v12;
+          v38 = pluginIdentifier;
+          v18 = pluginIdentifier;
           v39 = 2112;
-          v40 = v13;
+          v40 = bundleVersion;
           v41 = 2112;
-          v42 = v14;
+          v42 = bundleIdentifier;
           v43 = 2112;
-          v44 = v15;
+          v44 = path;
           v45 = 2112;
-          v46 = v17;
+          v46 = bundleIdentifier2;
           _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "[u %{public}@] [%@(%@)] plugin UNINSTALLED; bundleID: [%@], path: [%@], contained in [%@]", buf, 0x3Eu);
 
           v7 = &selRef_plugInForProxy_discoveryInstanceUUID_extensionPointCache_;
           v9 = v26;
 
-          self = v25;
+          self = selfCopy;
         }
 
-        v19 = [v10 pluginUUID];
+        pluginUUID2 = [v10 pluginUUID];
         os_unfair_lock_lock(&self->_cacheLock);
-        v20 = [(PKDatabase *)self _locked_cachedPlugInWithUUID:v19];
-        v21 = [(PKDatabase *)self cache];
-        [v21 removeObjectForKey:v19];
+        v20 = [(PKDatabase *)self _locked_cachedPlugInWithUUID:pluginUUID2];
+        cache = [(PKDatabase *)self cache];
+        [cache removeObjectForKey:pluginUUID2];
 
         os_unfair_lock_unlock(&self->_cacheLock);
-        v22 = [v7 + 264 nullPlugIn];
+        nullPlugIn = [v7 + 264 nullPlugIn];
 
-        if (v20 != v22)
+        if (v20 != nullPlugIn)
         {
           pkdMessageTraceUninstall(v20);
         }
@@ -998,8 +998,8 @@ LABEL_33:
   }
 
   objc_autoreleasePoolPop(context);
-  v23 = [(PKDatabase *)self delegate];
-  [v23 removedPlugIns:obj];
+  delegate = [(PKDatabase *)self delegate];
+  [delegate removedPlugIns:obj];
 }
 
 - (PKDatabaseDelegate)delegate

@@ -1,7 +1,7 @@
 @interface CALNUNDefaultUserNotificationCenter
-- (BOOL)addNotificationRequest:(id)a3 error:(id *)a4;
-- (BOOL)replaceContentForRequestWithIdentifier:(id)a3 replacementContent:(id)a4 error:(id *)a5;
-- (CALNUNDefaultUserNotificationCenter)initWithBundleIdentifier:(id)a3;
+- (BOOL)addNotificationRequest:(id)request error:(id *)error;
+- (BOOL)replaceContentForRequestWithIdentifier:(id)identifier replacementContent:(id)content error:(id *)error;
+- (CALNUNDefaultUserNotificationCenter)initWithBundleIdentifier:(id)identifier;
 - (UNUserNotificationCenterDelegate)delegate;
 - (id)deliveredNotifications;
 - (id)notificationCategories;
@@ -9,23 +9,23 @@
 - (id)notificationSettingsForTopics;
 - (void)removeAllDeliveredNotifications;
 - (void)removeAllPendingNotificationRequests;
-- (void)removeDeliveredNotificationsWithIdentifiers:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setNotificationCategories:(id)a3;
+- (void)removeDeliveredNotificationsWithIdentifiers:(id)identifiers;
+- (void)setDelegate:(id)delegate;
+- (void)setNotificationCategories:(id)categories;
 - (void)setWantsNotificationResponsesDelivered;
 @end
 
 @implementation CALNUNDefaultUserNotificationCenter
 
-- (CALNUNDefaultUserNotificationCenter)initWithBundleIdentifier:(id)a3
+- (CALNUNDefaultUserNotificationCenter)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = CALNUNDefaultUserNotificationCenter;
   v5 = [(CALNUNDefaultUserNotificationCenter *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CE2028]) initWithBundleIdentifier:v4];
+    v6 = [objc_alloc(MEMORY[0x277CE2028]) initWithBundleIdentifier:identifierCopy];
     userNotificationCenter = v5->_userNotificationCenter;
     v5->_userNotificationCenter = v6;
   }
@@ -33,47 +33,47 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  userNotificationCenter = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
+  [userNotificationCenter setDelegate:delegateCopy];
 }
 
 - (UNUserNotificationCenterDelegate)delegate
 {
-  v2 = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
-  v3 = [v2 delegate];
+  userNotificationCenter = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
+  delegate = [userNotificationCenter delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setNotificationCategories:(id)a3
+- (void)setNotificationCategories:(id)categories
 {
-  v4 = a3;
-  v5 = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
-  [v5 setNotificationCategories:v4];
+  categoriesCopy = categories;
+  userNotificationCenter = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
+  [userNotificationCenter setNotificationCategories:categoriesCopy];
 }
 
 - (id)notificationCategories
 {
-  v2 = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
-  v3 = [v2 notificationCategories];
+  userNotificationCenter = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
+  notificationCategories = [userNotificationCenter notificationCategories];
 
-  return v3;
+  return notificationCategories;
 }
 
-- (BOOL)addNotificationRequest:(id)a3 error:(id *)a4
+- (BOOL)addNotificationRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  v6 = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
+  requestCopy = request;
+  userNotificationCenter = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__CALNUNDefaultUserNotificationCenter_addNotificationRequest_error___block_invoke;
   v9[3] = &unk_278D6F228;
-  v10 = v5;
-  v7 = v5;
-  [v6 addNotificationRequest:v7 withCompletionHandler:v9];
+  v10 = requestCopy;
+  v7 = requestCopy;
+  [userNotificationCenter addNotificationRequest:v7 withCompletionHandler:v9];
 
   return 1;
 }
@@ -91,18 +91,18 @@ void __68__CALNUNDefaultUserNotificationCenter_addNotificationRequest_error___bl
   }
 }
 
-- (BOOL)replaceContentForRequestWithIdentifier:(id)a3 replacementContent:(id)a4 error:(id *)a5
+- (BOOL)replaceContentForRequestWithIdentifier:(id)identifier replacementContent:(id)content error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
+  identifierCopy = identifier;
+  contentCopy = content;
+  userNotificationCenter = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __103__CALNUNDefaultUserNotificationCenter_replaceContentForRequestWithIdentifier_replacementContent_error___block_invoke;
   v12[3] = &unk_278D6F228;
-  v13 = v7;
-  v10 = v7;
-  [v9 replaceContentForRequestWithIdentifier:v10 replacementContent:v8 completionHandler:v12];
+  v13 = identifierCopy;
+  v10 = identifierCopy;
+  [userNotificationCenter replaceContentForRequestWithIdentifier:v10 replacementContent:contentCopy completionHandler:v12];
 
   return 1;
 }
@@ -122,51 +122,51 @@ void __103__CALNUNDefaultUserNotificationCenter_replaceContentForRequestWithIden
 
 - (id)deliveredNotifications
 {
-  v2 = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
-  v3 = [v2 deliveredNotifications];
+  userNotificationCenter = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
+  deliveredNotifications = [userNotificationCenter deliveredNotifications];
 
-  return v3;
+  return deliveredNotifications;
 }
 
-- (void)removeDeliveredNotificationsWithIdentifiers:(id)a3
+- (void)removeDeliveredNotificationsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
-  [v5 removeDeliveredNotificationsWithIdentifiers:v4];
+  identifiersCopy = identifiers;
+  userNotificationCenter = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
+  [userNotificationCenter removeDeliveredNotificationsWithIdentifiers:identifiersCopy];
 }
 
 - (void)removeAllDeliveredNotifications
 {
-  v2 = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
-  [v2 removeAllDeliveredNotifications];
+  userNotificationCenter = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
+  [userNotificationCenter removeAllDeliveredNotifications];
 }
 
 - (void)removeAllPendingNotificationRequests
 {
-  v2 = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
-  [v2 removeAllPendingNotificationRequests];
+  userNotificationCenter = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
+  [userNotificationCenter removeAllPendingNotificationRequests];
 }
 
 - (void)setWantsNotificationResponsesDelivered
 {
-  v2 = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
-  [v2 setWantsNotificationResponsesDelivered];
+  userNotificationCenter = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
+  [userNotificationCenter setWantsNotificationResponsesDelivered];
 }
 
 - (id)notificationSettings
 {
-  v2 = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
-  v3 = [v2 notificationSettings];
+  userNotificationCenter = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
+  notificationSettings = [userNotificationCenter notificationSettings];
 
-  return v3;
+  return notificationSettings;
 }
 
 - (id)notificationSettingsForTopics
 {
-  v2 = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
-  v3 = [v2 notificationSettingsForTopics];
+  userNotificationCenter = [(CALNUNDefaultUserNotificationCenter *)self userNotificationCenter];
+  notificationSettingsForTopics = [userNotificationCenter notificationSettingsForTopics];
 
-  return v3;
+  return notificationSettingsForTopics;
 }
 
 void __68__CALNUNDefaultUserNotificationCenter_addNotificationRequest_error___block_invoke_cold_1(uint64_t a1, uint64_t a2, NSObject *a3)

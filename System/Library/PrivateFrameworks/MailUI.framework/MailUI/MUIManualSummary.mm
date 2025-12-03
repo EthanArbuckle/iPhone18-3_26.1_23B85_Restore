@@ -1,34 +1,34 @@
 @interface MUIManualSummary
-- (BOOL)isEqual:(id)a3;
-- (MUIManualSummary)initWithSummary:(id)a3 requiresConfirmation:(BOOL)a4 isExternalSummary:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (MUIManualSummary)initWithSummary:(id)summary requiresConfirmation:(BOOL)confirmation isExternalSummary:(BOOL)externalSummary;
 - (unint64_t)hash;
 @end
 
 @implementation MUIManualSummary
 
-- (MUIManualSummary)initWithSummary:(id)a3 requiresConfirmation:(BOOL)a4 isExternalSummary:(BOOL)a5
+- (MUIManualSummary)initWithSummary:(id)summary requiresConfirmation:(BOOL)confirmation isExternalSummary:(BOOL)externalSummary
 {
-  v8 = a3;
+  summaryCopy = summary;
   v13.receiver = self;
   v13.super_class = MUIManualSummary;
   v9 = [(MUIManualSummary *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [summaryCopy copy];
     attributedString = v9->_attributedString;
     v9->_attributedString = v10;
 
-    v9->_requiresConfirmation = a4;
-    v9->_isExternalSummary = a5;
+    v9->_requiresConfirmation = confirmation;
+    v9->_isExternalSummary = externalSummary;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v9) = 1;
   }
@@ -38,13 +38,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MUIManualSummary *)self attributedString];
-      v7 = [(MUIManualSummary *)v5 attributedString];
+      v5 = equalCopy;
+      attributedString = [(MUIManualSummary *)self attributedString];
+      attributedString2 = [(MUIManualSummary *)v5 attributedString];
       if (EFObjectsAreEqual() && (v8 = [(MUIManualSummary *)self requiresConfirmation], v8 == [(MUIManualSummary *)v5 requiresConfirmation]))
       {
-        v10 = [(MUIManualSummary *)self isExternalSummary];
-        v9 = v10 ^ [(MUIManualSummary *)v5 isExternalSummary]^ 1;
+        isExternalSummary = [(MUIManualSummary *)self isExternalSummary];
+        v9 = isExternalSummary ^ [(MUIManualSummary *)v5 isExternalSummary]^ 1;
       }
 
       else
@@ -64,8 +64,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MUIManualSummary *)self attributedString];
-  v4 = [v3 hash];
+  attributedString = [(MUIManualSummary *)self attributedString];
+  v4 = [attributedString hash];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[MUIManualSummary requiresConfirmation](self, "requiresConfirmation")}];
   v6 = 33 * (33 * v4 + [v5 hash]);

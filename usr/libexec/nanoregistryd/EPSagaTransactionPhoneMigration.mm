@@ -1,11 +1,11 @@
 @interface EPSagaTransactionPhoneMigration
-- (id)_deviceCollectionDiffWithPairingID:(id)a3;
+- (id)_deviceCollectionDiffWithPairingID:(id)d;
 - (id)keymaster;
 - (id)migrationReporter;
 - (id)registry;
-- (void)buildRoutingSlipEntries:(id)a3 serviceRegistry:(id)a4 completion:(id)a5;
-- (void)routingSlip:(id)a3 entryDidCompleteRollback:(id)a4;
-- (void)routingSlip:(id)a3 entryDidCompleteTransaction:(id)a4;
+- (void)buildRoutingSlipEntries:(id)entries serviceRegistry:(id)registry completion:(id)completion;
+- (void)routingSlip:(id)slip entryDidCompleteRollback:(id)rollback;
+- (void)routingSlip:(id)slip entryDidCompleteTransaction:(id)transaction;
 @end
 
 @implementation EPSagaTransactionPhoneMigration
@@ -34,24 +34,24 @@
   return [(EPServiceRegistry *)serviceRegistry serviceFromClass:v3];
 }
 
-- (id)_deviceCollectionDiffWithPairingID:(id)a3
+- (id)_deviceCollectionDiffWithPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [NRDevicePropertyDiffType alloc];
   v6 = [[NRDevicePropertyDiff alloc] initWithValue:&__kCFBooleanTrue];
   v7 = [v5 initWithDiff:v6 andChangeType:1];
 
   v28 = [[NRDevicePropertyDiffType alloc] initWithDiff:0 andChangeType:2];
   v29 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
-  v8 = [v29 collection];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  collection = [v29 collection];
+  v9 = [collection objectForKeyedSubscript:dCopy];
   v10 = _NRDevicePropertyMigrationCount;
   v11 = [v9 objectForKeyedSubscript:_NRDevicePropertyMigrationCount];
-  v12 = [v11 value];
+  value = [v11 value];
 
   v13 = [NRDevicePropertyDiffType alloc];
   v14 = [NRDevicePropertyDiff alloc];
-  v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 integerValue] + 1);
+  v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [value integerValue] + 1);
   v16 = [v14 initWithValue:v15];
   v17 = [v13 initWithDiff:v16 andChangeType:1];
 
@@ -72,57 +72,57 @@
   v23 = +[NSMutableDictionary dictionary];
   v24 = [[NRDeviceDiff alloc] initWithDiffPropertyDiffs:v22];
   v25 = [[NRDeviceDiffType alloc] initWithDiff:v24 andChangeType:1];
-  [v23 setObject:v25 forKeyedSubscript:v4];
+  [v23 setObject:v25 forKeyedSubscript:dCopy];
 
   v26 = [[NRDeviceCollectionDiff alloc] initWithDeviceCollectionDiffDeviceDiffs:v23];
 
   return v26;
 }
 
-- (void)buildRoutingSlipEntries:(id)a3 serviceRegistry:(id)a4 completion:(id)a5
+- (void)buildRoutingSlipEntries:(id)entries serviceRegistry:(id)registry completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entriesCopy = entries;
+  registryCopy = registry;
+  completionCopy = completion;
   parentRoutingSlipEntry = self->_parentRoutingSlipEntry;
-  self->_parentRoutingSlipEntry = v8;
-  v12 = v8;
+  self->_parentRoutingSlipEntry = entriesCopy;
+  v12 = entriesCopy;
 
-  objc_storeStrong(&self->_serviceRegistry, a4);
+  objc_storeStrong(&self->_serviceRegistry, registry);
   v13 = [(EPRoutingSlipEntry *)v12 objectForKeyedSubscript:@"nrDeviceIdentifier"];
-  v14 = [(EPSagaTransactionPhoneMigration *)self registry];
+  registry = [(EPSagaTransactionPhoneMigration *)self registry];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10001DA6C;
   v18[3] = &unk_100176148;
   v19 = v13;
-  v20 = self;
-  v21 = v9;
-  v22 = v10;
-  v15 = v10;
-  v16 = v9;
+  selfCopy = self;
+  v21 = registryCopy;
+  v22 = completionCopy;
+  v15 = completionCopy;
+  v16 = registryCopy;
   v17 = v13;
-  [v14 grabRegistryWithReadBlock:v18];
+  [registry grabRegistryWithReadBlock:v18];
 }
 
-- (void)routingSlip:(id)a3 entryDidCompleteTransaction:(id)a4
+- (void)routingSlip:(id)slip entryDidCompleteTransaction:(id)transaction
 {
   parentRoutingSlipEntry = self->_parentRoutingSlipEntry;
-  v7 = a4;
-  v8 = a3;
+  transactionCopy = transaction;
+  slipCopy = slip;
   v10 = [(EPRoutingSlipEntry *)parentRoutingSlipEntry objectForKeyedSubscript:@"nrDeviceIdentifier"];
-  v9 = [(EPSagaTransactionPhoneMigration *)self migrationReporter];
-  [v9 checkInWithCompletedMigrationTransaction:v8 routingSlipEntry:v7 forPairingID:v10];
+  migrationReporter = [(EPSagaTransactionPhoneMigration *)self migrationReporter];
+  [migrationReporter checkInWithCompletedMigrationTransaction:slipCopy routingSlipEntry:transactionCopy forPairingID:v10];
 }
 
-- (void)routingSlip:(id)a3 entryDidCompleteRollback:(id)a4
+- (void)routingSlip:(id)slip entryDidCompleteRollback:(id)rollback
 {
   parentRoutingSlipEntry = self->_parentRoutingSlipEntry;
-  v7 = a4;
-  v8 = a3;
+  rollbackCopy = rollback;
+  slipCopy = slip;
   v10 = [(EPRoutingSlipEntry *)parentRoutingSlipEntry objectForKeyedSubscript:@"nrDeviceIdentifier"];
-  v9 = [(EPSagaTransactionPhoneMigration *)self migrationReporter];
-  [v9 checkInWithMigrationTransactionRollback:v8 routingSlipEntry:v7 forPairingID:v10];
+  migrationReporter = [(EPSagaTransactionPhoneMigration *)self migrationReporter];
+  [migrationReporter checkInWithMigrationTransactionRollback:slipCopy routingSlipEntry:rollbackCopy forPairingID:v10];
 }
 
 @end

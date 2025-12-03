@@ -1,12 +1,12 @@
 @interface RemoveFromWatchListIntentResponse
-- (RemoveFromWatchListIntentResponse)initWithPropertiesByName:(id)a3;
+- (RemoveFromWatchListIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation RemoveFromWatchListIntentResponse
 
-- (RemoveFromWatchListIntentResponse)initWithPropertiesByName:(id)a3
+- (RemoveFromWatchListIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_2698549E4();
   }

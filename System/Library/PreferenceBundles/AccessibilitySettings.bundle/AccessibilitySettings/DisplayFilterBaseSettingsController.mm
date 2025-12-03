@@ -1,14 +1,14 @@
 @interface DisplayFilterBaseSettingsController
 - (DisplayFilterBaseSettingsController)init;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (unint64_t)_filterTypeForRow:(int64_t)a3;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (unint64_t)_filterTypeForRow:(int64_t)row;
 - (unint64_t)selectedFilter;
 - (void)accessibilitySettingsDidChange;
 - (void)dealloc;
-- (void)setFilterCategory:(unint64_t)a3 filter:(unint64_t)a4;
-- (void)setGlobalFilterEnabled:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setFilterCategory:(unint64_t)category filter:(unint64_t)filter;
+- (void)setGlobalFilterEnabled:(BOOL)enabled;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)updateSystemFilter;
 @end
 
@@ -38,7 +38,7 @@
   [(DisplayFilterBaseSettingsController *)&v4 dealloc];
 }
 
-- (unint64_t)_filterTypeForRow:(int64_t)a3
+- (unint64_t)_filterTypeForRow:(int64_t)row
 {
   v15 = 0u;
   v16 = 0u;
@@ -66,7 +66,7 @@
           v12 = [v11 propertyForKey:@"filterOption"];
           if ([v12 length])
           {
-            if (v8 == a3)
+            if (v8 == row)
             {
               v13 = [(DisplayFilterBaseSettingsController *)self filterForCellIdentifier:v12];
 
@@ -96,20 +96,20 @@ LABEL_15:
 
 - (unint64_t)selectedFilter
 {
-  v2 = [(DisplayFilterBaseSettingsController *)self filterCategory];
+  filterCategory = [(DisplayFilterBaseSettingsController *)self filterCategory];
 
-  return _MADisplayFilterPrefGetType(v2);
+  return _MADisplayFilterPrefGetType(filterCategory);
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v12 = a4;
-  v7 = a5;
-  v8 = [(DisplayFilterBaseSettingsController *)self specifierAtIndex:[(DisplayFilterBaseSettingsController *)self indexForIndexPath:v7]];
+  cellCopy = cell;
+  pathCopy = path;
+  v8 = [(DisplayFilterBaseSettingsController *)self specifierAtIndex:[(DisplayFilterBaseSettingsController *)self indexForIndexPath:pathCopy]];
   v9 = [v8 propertyForKey:@"filterOption"];
   if ([v9 length])
   {
-    v10 = -[DisplayFilterBaseSettingsController _filterTypeForRow:](self, "_filterTypeForRow:", [v7 row]);
+    v10 = -[DisplayFilterBaseSettingsController _filterTypeForRow:](self, "_filterTypeForRow:", [pathCopy row]);
     if (v10)
     {
       v11 = v10 == [(DisplayFilterBaseSettingsController *)self selectedFilter];
@@ -120,37 +120,37 @@ LABEL_15:
       v11 = 0;
     }
 
-    [v12 setChecked:v11];
+    [cellCopy setChecked:v11];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = DisplayFilterBaseSettingsController;
-  [(DisplayFilterBaseSettingsController *)&v9 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(DisplayFilterBaseSettingsController *)self specifierAtIndex:[(DisplayFilterBaseSettingsController *)self indexForIndexPath:v6]];
+  [(DisplayFilterBaseSettingsController *)&v9 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(DisplayFilterBaseSettingsController *)self specifierAtIndex:[(DisplayFilterBaseSettingsController *)self indexForIndexPath:pathCopy]];
   v8 = [v7 propertyForKey:@"filterOption"];
   if ([v8 length])
   {
-    -[DisplayFilterBaseSettingsController setFilterCategory:filter:](self, "setFilterCategory:filter:", -[DisplayFilterBaseSettingsController filterCategory](self, "filterCategory"), -[DisplayFilterBaseSettingsController _filterTypeForRow:](self, "_filterTypeForRow:", [v6 row]));
+    -[DisplayFilterBaseSettingsController setFilterCategory:filter:](self, "setFilterCategory:filter:", -[DisplayFilterBaseSettingsController filterCategory](self, "filterCategory"), -[DisplayFilterBaseSettingsController _filterTypeForRow:](self, "_filterTypeForRow:", [pathCopy row]));
     [(DisplayFilterBaseSettingsController *)self updateSystemFilter];
   }
 }
 
-- (void)setFilterCategory:(unint64_t)a3 filter:(unint64_t)a4
+- (void)setFilterCategory:(unint64_t)category filter:(unint64_t)filter
 {
   MADisplayFilterPrefSetType();
 
-  __AXSGrayscaleSetEnabled(a4 == 1);
+  __AXSGrayscaleSetEnabled(filter == 1);
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DisplayFilterBaseSettingsController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(DisplayFilterBaseSettingsController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->AXUISettingsSetupCapableListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   v10 = [v9 propertyForKey:PSCellClassKey];
   v11 = [v10 isEqual:objc_opt_class()];
@@ -164,7 +164,7 @@ LABEL_15:
   {
     v15.receiver = self;
     v15.super_class = DisplayFilterBaseSettingsController;
-    [(DisplayFilterBaseSettingsController *)&v15 tableView:v6 estimatedHeightForRowAtIndexPath:v7];
+    [(DisplayFilterBaseSettingsController *)&v15 tableView:viewCopy estimatedHeightForRowAtIndexPath:pathCopy];
   }
 
   v13 = v12;
@@ -174,12 +174,12 @@ LABEL_15:
 
 - (void)updateSystemFilter
 {
-  v3 = [(DisplayFilterBaseSettingsController *)self globalFilterEnabled];
+  globalFilterEnabled = [(DisplayFilterBaseSettingsController *)self globalFilterEnabled];
 
-  [(DisplayFilterBaseSettingsController *)self setGlobalFilterEnabled:v3];
+  [(DisplayFilterBaseSettingsController *)self setGlobalFilterEnabled:globalFilterEnabled];
 }
 
-- (void)setGlobalFilterEnabled:(BOOL)a3
+- (void)setGlobalFilterEnabled:(BOOL)enabled
 {
   [(DisplayFilterBaseSettingsController *)self filterCategory];
   v3 = MADisplayFilterPrefSetCategoryEnabled();
@@ -189,8 +189,8 @@ LABEL_15:
 
 - (void)accessibilitySettingsDidChange
 {
-  v2 = [(DisplayFilterBaseSettingsController *)self table];
-  [v2 reloadData];
+  table = [(DisplayFilterBaseSettingsController *)self table];
+  [table reloadData];
 }
 
 @end

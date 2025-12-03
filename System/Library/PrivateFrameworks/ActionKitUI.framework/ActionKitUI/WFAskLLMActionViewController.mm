@@ -1,8 +1,8 @@
 @interface WFAskLLMActionViewController
 - (CGSize)platterContentSize;
-- (_TtC11ActionKitUI28WFAskLLMActionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dismissEmbeddedPlatterWithCompletion:(id)a3 interruptible:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC11ActionKitUI28WFAskLLMActionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dismissEmbeddedPlatterWithCompletion:(id)completion interruptible:(BOOL)interruptible;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -10,28 +10,28 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_23E370840();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_23E3708FC(a3);
+  selfCopy = self;
+  sub_23E3708FC(appear);
 }
 
-- (void)dismissEmbeddedPlatterWithCompletion:(id)a3 interruptible:(BOOL)a4
+- (void)dismissEmbeddedPlatterWithCompletion:(id)completion interruptible:(BOOL)interruptible
 {
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = self;
-  sub_23E3718F4(sub_23E372594, v7, a4);
+  selfCopy = self;
+  sub_23E3718F4(sub_23E372594, v7, interruptible);
 }
 
 - (CGSize)platterContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23E371B60();
   v5 = v4;
 
@@ -42,14 +42,14 @@
   return result;
 }
 
-- (_TtC11ActionKitUI28WFAskLLMActionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11ActionKitUI28WFAskLLMActionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_23E3AA9D0();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_23E371D78();
 }
 

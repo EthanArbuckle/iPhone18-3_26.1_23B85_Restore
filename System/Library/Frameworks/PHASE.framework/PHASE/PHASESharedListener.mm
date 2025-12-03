@@ -1,39 +1,39 @@
 @interface PHASESharedListener
-- (PHASESharedListener)initWithEngine:(id)a3;
-- (PHASESharedListener)initWithEngine:(id)a3 entityType:(unsigned int)a4;
-- (id)initInternalWithEngine:(id)a3;
+- (PHASESharedListener)initWithEngine:(id)engine;
+- (PHASESharedListener)initWithEngine:(id)engine entityType:(unsigned int)type;
+- (id)initInternalWithEngine:(id)engine;
 - (void)dealloc;
-- (void)setAutomaticHeadTrackingFlags:(unint64_t)a3;
-- (void)setGain:(double)a3;
-- (void)setTransform:(double)a3;
-- (void)setUpdateMode:(int64_t)a3;
+- (void)setAutomaticHeadTrackingFlags:(unint64_t)flags;
+- (void)setGain:(double)gain;
+- (void)setTransform:(double)transform;
+- (void)setUpdateMode:(int64_t)mode;
 @end
 
 @implementation PHASESharedListener
 
-- (PHASESharedListener)initWithEngine:(id)a3
+- (PHASESharedListener)initWithEngine:(id)engine
 {
   [(PHASESharedListener *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (PHASESharedListener)initWithEngine:(id)a3 entityType:(unsigned int)a4
+- (PHASESharedListener)initWithEngine:(id)engine entityType:(unsigned int)type
 {
-  [(PHASESharedListener *)self doesNotRecognizeSelector:a2, *&a4];
+  [(PHASESharedListener *)self doesNotRecognizeSelector:a2, *&type];
 
   return 0;
 }
 
-- (id)initInternalWithEngine:(id)a3
+- (id)initInternalWithEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v9.receiver = self;
   v9.super_class = PHASESharedListener;
-  v5 = [(PHASEListener *)&v9 initWithEngine:v4 entityType:0];
+  v5 = [(PHASEListener *)&v9 initWithEngine:engineCopy entityType:0];
   if (v5)
   {
-    v6 = *([v4 implementation] + 488);
+    v6 = *([engineCopy implementation] + 488);
     if (!v6)
     {
       v7 = 0;
@@ -50,12 +50,12 @@ LABEL_6:
   return v7;
 }
 
-- (void)setUpdateMode:(int64_t)a3
+- (void)setUpdateMode:(int64_t)mode
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [(PHASEObject *)self engine];
-  v6 = v5;
-  if (v5)
+  engine = [(PHASEObject *)self engine];
+  v6 = engine;
+  if (engine)
   {
     if (Phase::CurrentProcessCanModifySharedEntities(void)::onceToken != -1)
     {
@@ -64,23 +64,23 @@ LABEL_6:
 
     if (Phase::CurrentProcessCanModifySharedEntities(void)::currentProcessCanModifySharedEntities)
     {
-      v7 = [(Phase::Logger *)v6 implementation];
-      if (v7)
+      implementation = [(Phase::Logger *)v6 implementation];
+      if (implementation)
       {
-        v8 = *(v7 + 488);
+        v8 = *(implementation + 488);
         if (v8)
         {
-          ListenerUpdateModeFromEnum = Phase::GetListenerUpdateModeFromEnum(a3);
+          ListenerUpdateModeFromEnum = Phase::GetListenerUpdateModeFromEnum(mode);
           (*(*v8 + 32))(v8, ListenerUpdateModeFromEnum);
         }
       }
 
-      self->_updateMode = a3;
+      self->_updateMode = mode;
     }
 
     else
     {
-      v10 = **(Phase::Logger::GetInstance(v5) + 448);
+      v10 = **(Phase::Logger::GetInstance(engine) + 448);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v11 = 136315394;
@@ -95,14 +95,14 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [(PHASEObject *)self engine];
-  v4 = v3;
-  if (v3)
+  engine = [(PHASEObject *)self engine];
+  v4 = engine;
+  if (engine)
   {
-    v5 = [v3 implementation];
-    if (v5)
+    implementation = [engine implementation];
+    if (implementation)
     {
-      v6 = *(v5 + 488);
+      v6 = *(implementation + 488);
       if (v6)
       {
         (*(*v6 + 24))(v6);
@@ -115,7 +115,7 @@ LABEL_6:
   [(PHASEObject *)&v7 dealloc];
 }
 
-- (void)setGain:(double)a3
+- (void)setGain:(double)gain
 {
   v11 = *MEMORY[0x277D85DE8];
   if (Phase::CurrentProcessCanModifySharedEntities(void)::onceToken != -1)
@@ -127,7 +127,7 @@ LABEL_6:
   {
     v6.receiver = self;
     v6.super_class = PHASESharedListener;
-    [(PHASEListener *)&v6 setGain:a3];
+    [(PHASEListener *)&v6 setGain:gain];
   }
 
   else
@@ -144,12 +144,12 @@ LABEL_6:
   }
 }
 
-- (void)setTransform:(double)a3
+- (void)setTransform:(double)transform
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = [a1 engine];
-  v7 = v6;
-  if (v6)
+  engine = [self engine];
+  v7 = engine;
+  if (engine)
   {
     if (Phase::CurrentProcessCanModifySharedEntities(void)::onceToken != -1)
     {
@@ -164,9 +164,9 @@ LABEL_6:
       v25 = 0.0;
       v26 = 0;
       v27 = 1065353216;
-      v23.receiver = a1;
+      v23.receiver = self;
       v23.super_class = PHASESharedListener;
-      v9 = [(PHASEObject *)&v23 validateTransform:&v24 outAffine:a2, a3, a4, a5];
+      v9 = [(PHASEObject *)&v23 validateTransform:&v24 outAffine:a2, transform, a4, a5];
       if (v9)
       {
         Instance = Phase::Logger::GetInstance(v9);
@@ -180,11 +180,11 @@ LABEL_6:
             v14 = v13;
             if (os_signpost_enabled(v11))
             {
-              v15 = [a1 geoEntityHandle];
+              geoEntityHandle = [self geoEntityHandle];
               *buf = 134220032;
-              v29 = a1;
+              selfCopy = self;
               v30 = 2048;
-              v31 = v15;
+              v31 = geoEntityHandle;
               v32 = 2048;
               v33 = *&v24;
               v34 = 2048;
@@ -205,20 +205,20 @@ LABEL_6:
         }
 
         v16 = *([(Phase::Logger *)v7 implementation]+ 368);
-        (*(*v16 + 304))(v16, [a1 geoEntityHandle], &v24, v8);
-        v22.receiver = a1;
+        (*(*v16 + 304))(v16, [self geoEntityHandle], &v24, v8);
+        v22.receiver = self;
         v22.super_class = PHASESharedListener;
-        [(PHASEObject *)&v22 _storeTransform:a2, a3, a4, a5];
+        [(PHASEObject *)&v22 _storeTransform:a2, transform, a4, a5];
       }
     }
 
     else
     {
-      v17 = **(Phase::Logger::GetInstance(v6) + 448);
+      v17 = **(Phase::Logger::GetInstance(engine) + 448);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315394;
-        v29 = "PHASESharedListener.mm";
+        selfCopy = "PHASESharedListener.mm";
         v30 = 1024;
         LODWORD(v31) = 110;
         _os_log_impl(&dword_23A302000, v17, OS_LOG_TYPE_ERROR, "%25s:%-5d Setting PHASESharedListener's transform has no effect", buf, 0x12u);
@@ -227,7 +227,7 @@ LABEL_6:
   }
 }
 
-- (void)setAutomaticHeadTrackingFlags:(unint64_t)a3
+- (void)setAutomaticHeadTrackingFlags:(unint64_t)flags
 {
   v8 = *MEMORY[0x277D85DE8];
   v3 = **(Phase::Logger::GetInstance(self) + 448);

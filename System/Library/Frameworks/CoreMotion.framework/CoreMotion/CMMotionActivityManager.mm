@@ -1,15 +1,15 @@
 @interface CMMotionActivityManager
 + (BOOL)isActivityAvailable;
-+ (void)paginateDatesIntoDatesFrom:(id)a3 datesTo:(id)a4 start:(id)a5 end:(id)a6 intervalLength:(double)a7;
++ (void)paginateDatesIntoDatesFrom:(id)from datesTo:(id)to start:(id)start end:(id)end intervalLength:(double)length;
 - (CMMotionActivityManager)init;
-- (id)filterActivities:(id)a3 withAttribute:(int64_t)a4;
-- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)a3 onQueue:(id)a4 withHandler:(id)a5;
+- (id)filterActivities:(id)activities withAttribute:(int64_t)attribute;
+- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)response onQueue:(id)queue withHandler:(id)handler;
 - (void)dealloc;
 - (void)queryActivityStartingFromDate:(NSDate *)start toDate:(NSDate *)end toQueue:(NSOperationQueue *)queue withHandler:(CMMotionActivityQueryHandler)handler;
-- (void)queryActivityWithAttribute:(int64_t)a3 fromDate:(id)a4 toDate:(id)a5 toQueue:(id)a6 withHandler:(id)a7;
-- (void)startActivityLiteUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)queryActivityWithAttribute:(int64_t)attribute fromDate:(id)date toDate:(id)toDate toQueue:(id)queue withHandler:(id)handler;
+- (void)startActivityLiteUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)startActivityUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMMotionActivityHandler)handler;
-- (void)startPeriodicActivityUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)startPeriodicActivityUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)stopActivityLiteUpdates;
 - (void)stopActivityUpdates;
 - (void)stopPeriodicActivityUpdates;
@@ -94,32 +94,32 @@
   [(CMMotionActivityManager *)&v7 dealloc];
 }
 
-+ (void)paginateDatesIntoDatesFrom:(id)a3 datesTo:(id)a4 start:(id)a5 end:(id)a6 intervalLength:(double)a7
++ (void)paginateDatesIntoDatesFrom:(id)from datesTo:(id)to start:(id)start end:(id)end intervalLength:(double)length
 {
-  v9 = a5;
-  objc_msgSend_timeIntervalSinceDate_(a6, a2, a5);
-  if (v13 <= a7)
+  startCopy = start;
+  objc_msgSend_timeIntervalSinceDate_(end, a2, start);
+  if (v13 <= length)
   {
-    v14 = v9;
+    v14 = startCopy;
   }
 
   else
   {
     do
     {
-      v14 = objc_msgSend_dateWithTimeInterval_sinceDate_(MEMORY[0x1E695DF00], v12, v9, a7);
-      objc_msgSend_addObject_(a3, v15, v9);
-      objc_msgSend_addObject_(a4, v16, v14);
-      objc_msgSend_timeIntervalSinceDate_(a6, v17, v14);
-      v9 = v14;
+      v14 = objc_msgSend_dateWithTimeInterval_sinceDate_(MEMORY[0x1E695DF00], v12, startCopy, length);
+      objc_msgSend_addObject_(from, v15, startCopy);
+      objc_msgSend_addObject_(to, v16, v14);
+      objc_msgSend_timeIntervalSinceDate_(end, v17, v14);
+      startCopy = v14;
     }
 
-    while (v18 > a7);
+    while (v18 > length);
   }
 
-  objc_msgSend_addObject_(a3, v12, v14);
+  objc_msgSend_addObject_(from, v12, v14);
 
-  objc_msgSend_addObject_(a4, v19, a6);
+  objc_msgSend_addObject_(to, v19, end);
 }
 
 - (void)queryActivityStartingFromDate:(NSDate *)start toDate:(NSDate *)end toQueue:(NSOperationQueue *)queue withHandler:(CMMotionActivityQueryHandler)handler
@@ -223,12 +223,12 @@ LABEL_3:
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v12);
 }
 
-- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)a3 onQueue:(id)a4 withHandler:(id)a5
+- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)response onQueue:(id)queue withHandler:(id)handler
 {
-  var1 = a3.var1;
-  if (*a3.var0)
+  var1 = response.var1;
+  if (*response.var0)
   {
-    var0 = a3.var0;
+    var0 = response.var0;
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = objc_opt_class();
@@ -247,8 +247,8 @@ LABEL_3:
         v22[1] = 3221225472;
         v22[2] = sub_19B5D243C;
         v22[3] = &unk_1E7532B90;
-        v22[5] = a4;
-        a4 = v16;
+        v22[5] = queue;
+        queue = v16;
       }
 
       else if (v18)
@@ -258,8 +258,8 @@ LABEL_3:
         v21[1] = 3221225472;
         v21[2] = sub_19B5D24B4;
         v21[3] = &unk_1E7532B90;
-        v21[5] = a4;
-        a4 = v18;
+        v21[5] = queue;
+        queue = v18;
       }
 
       else
@@ -291,28 +291,28 @@ LABEL_3:
     v24[3] = &unk_1E7532B40;
   }
 
-  v19[4] = a4;
+  v19[4] = queue;
   objc_msgSend_addOperationWithBlock_(var1, a2, v19);
 }
 
-- (void)startPeriodicActivityUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startPeriodicActivityUpdatesToQueue:(id)queue withHandler:(id)handler
 {
-  if (!a3)
+  if (!queue)
   {
     v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMMotionActivityManager.mm", 299, @"Invalid parameter not satisfying: %@", @"queue");
-    if (a4)
+    if (handler)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v10 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v10 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, queue);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v10, v11, a2, self, @"CMMotionActivityManager.mm", 300, @"Invalid parameter not satisfying: %@", @"handler");
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!handler)
   {
     goto LABEL_5;
   }
@@ -322,8 +322,8 @@ LABEL_3:
   v12[1] = 3221225472;
   v12[2] = sub_19B5D2648;
   v12[3] = &unk_1E7532C80;
-  v12[5] = a3;
-  v12[6] = a4;
+  v12[5] = queue;
+  v12[6] = handler;
   v12[4] = self;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v12);
 }
@@ -338,12 +338,12 @@ LABEL_3:
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v2);
 }
 
-- (void)startActivityLiteUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startActivityLiteUpdatesToQueue:(id)queue withHandler:(id)handler
 {
-  v5 = a3;
+  queueCopy = queue;
   v6 = a2;
   v29 = *MEMORY[0x1E69E9840];
-  if ((objc_msgSend_isActivityLiteAvailable(CMMotionActivityManager, a2, a3) & 1) == 0)
+  if ((objc_msgSend_isActivityLiteAvailable(CMMotionActivityManager, a2, queue) & 1) == 0)
   {
     if (qword_1ED71C7A0 != -1)
     {
@@ -353,7 +353,7 @@ LABEL_3:
     v11 = qword_1ED71C7A8;
     v6 = "";
     self = "assert";
-    a4 = "[CMMotionActivityManager isActivityLiteAvailable]";
+    handler = "[CMMotionActivityManager isActivityLiteAvailable]";
     if (os_log_type_enabled(qword_1ED71C7A8, OS_LOG_TYPE_FAULT))
     {
       *buf = 68289539;
@@ -389,7 +389,7 @@ LABEL_3:
       }
     }
 
-    v5 = qword_1ED71C7A8;
+    queueCopy = qword_1ED71C7A8;
     if (os_log_type_enabled(qword_1ED71C7A8, OS_LOG_TYPE_INFO))
     {
       *buf = 68289539;
@@ -400,7 +400,7 @@ LABEL_3:
       v26 = "assert";
       v27 = 2081;
       v28 = "[CMMotionActivityManager isActivityLiteAvailable]";
-      _os_log_impl(&dword_19B41C000, v5, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Activity Lite is unavailable on this platform, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
+      _os_log_impl(&dword_19B41C000, queueCopy, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Activity Lite is unavailable on this platform, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
     }
 
     v18 = 347;
@@ -410,7 +410,7 @@ LABEL_3:
 LABEL_16:
     v13 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v8, v9, v17, v18, v19);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v13, v14, v6, self, @"CMMotionActivityManager.mm", 349, @"Invalid parameter not satisfying: %@", @"queue");
-    if (a4)
+    if (handler)
     {
       goto LABEL_4;
     }
@@ -421,12 +421,12 @@ LABEL_17:
     goto LABEL_4;
   }
 
-  if (!v5)
+  if (!queueCopy)
   {
     goto LABEL_16;
   }
 
-  if (!a4)
+  if (!handler)
   {
     goto LABEL_17;
   }
@@ -436,8 +436,8 @@ LABEL_4:
   v20[1] = 3221225472;
   v20[2] = sub_19B5D2DAC;
   v20[3] = &unk_1E7532C80;
-  v20[5] = v5;
-  v20[6] = a4;
+  v20[5] = queueCopy;
+  v20[6] = handler;
   v20[4] = self;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, v8, v20);
   v10 = *MEMORY[0x1E69E9840];
@@ -515,33 +515,33 @@ LABEL_4:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)filterActivities:(id)a3 withAttribute:(int64_t)a4
+- (id)filterActivities:(id)activities withAttribute:(int64_t)attribute
 {
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  if (objc_msgSend_count(a3, v8, v9))
+  if (objc_msgSend_count(activities, v8, v9))
   {
     v11 = 0;
     do
     {
-      v12 = objc_msgSend_objectAtIndexedSubscript_(a3, v10, v11);
+      v12 = objc_msgSend_objectAtIndexedSubscript_(activities, v10, v11);
       v15 = objc_msgSend_copy(v12, v13, v14);
-      objc_msgSend_evaluateNextActivity_attribute_result_(v6, v16, v15, a4, v7);
+      objc_msgSend_evaluateNextActivity_attribute_result_(v6, v16, v15, attribute, v7);
 
       ++v11;
     }
 
-    while (v11 < objc_msgSend_count(a3, v17, v18));
+    while (v11 < objc_msgSend_count(activities, v17, v18));
   }
 
   return v7;
 }
 
-- (void)queryActivityWithAttribute:(int64_t)a3 fromDate:(id)a4 toDate:(id)a5 toQueue:(id)a6 withHandler:(id)a7
+- (void)queryActivityWithAttribute:(int64_t)attribute fromDate:(id)date toDate:(id)toDate toQueue:(id)queue withHandler:(id)handler
 {
-  if (!a7)
+  if (!handler)
   {
-    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, attribute);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CMMotionActivityManager.mm", 415, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
@@ -549,12 +549,12 @@ LABEL_4:
   v16[1] = 3221225472;
   v16[2] = sub_19B5D359C;
   v16[3] = &unk_1E7532CA8;
-  v16[4] = a4;
-  v16[5] = a5;
+  v16[4] = date;
+  v16[5] = toDate;
   v16[6] = self;
-  v16[7] = a7;
-  v16[8] = a3;
-  objc_msgSend_queryActivityStartingFromDate_toDate_toQueue_withHandler_(self, a2, a4, a5, a6, v16);
+  v16[7] = handler;
+  v16[8] = attribute;
+  objc_msgSend_queryActivityStartingFromDate_toDate_toQueue_withHandler_(self, a2, date, toDate, queue, v16);
 }
 
 @end

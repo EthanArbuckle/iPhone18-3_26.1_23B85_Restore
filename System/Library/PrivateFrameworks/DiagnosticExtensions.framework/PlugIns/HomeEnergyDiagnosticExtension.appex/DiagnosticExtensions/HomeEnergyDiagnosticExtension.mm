@@ -1,11 +1,11 @@
 @interface HomeEnergyDiagnosticExtension
 - (id)_attachments;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation HomeEnergyDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v4 = os_log_create("com.apple.HomeEnergyDaemon", "DiagnosticExtension");
   log = self->_log;
@@ -31,8 +31,8 @@
         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Looking for contents in %@.", &v13, 0xCu);
       }
 
-      v7 = [v4 path];
-      v8 = [DEAttachmentItem attachmentWithPath:v7];
+      path = [v4 path];
+      v8 = [DEAttachmentItem attachmentWithPath:path];
 
       [v5 addObject:v8];
       v9 = [v5 copy];

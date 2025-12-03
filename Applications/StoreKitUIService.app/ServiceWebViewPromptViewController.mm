@@ -1,35 +1,35 @@
 @interface ServiceWebViewPromptViewController
 + (id)_generateClientInterface;
 - (BOOL)shouldAutorotate;
-- (ServiceWebViewPromptViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ServiceWebViewPromptViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_bag;
 - (id)_sanitizedURL;
-- (id)_viewControllerForType:(int64_t)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)_viewControllerForType:(int64_t)type;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_determineTypeForURL:(id)a3 completion:(id)a4;
+- (void)_determineTypeForURL:(id)l completion:(id)completion;
 - (void)_dismiss;
 - (void)_presentViewController;
 - (void)_willAppearInRemoteViewController;
 - (void)attemptDismissHostViewController;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dealloc;
-- (void)handleButtonActions:(id)a3;
+- (void)handleButtonActions:(id)actions;
 - (void)viewDidLoad;
 @end
 
 @implementation ServiceWebViewPromptViewController
 
-- (ServiceWebViewPromptViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ServiceWebViewPromptViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = ServiceWebViewPromptViewController;
-  v4 = [(ServiceWebViewPromptViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(ServiceWebViewPromptViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [objc_opt_class() _generateClientInterface];
+    _generateClientInterface = [objc_opt_class() _generateClientInterface];
     clientInterface = v4->_clientInterface;
-    v4->_clientInterface = v5;
+    v4->_clientInterface = _generateClientInterface;
 
     [(SUClientInterface *)v4->_clientInterface setDelegate:v4];
   }
@@ -45,17 +45,17 @@
   [(ServiceWebViewPromptViewController *)&v3 dealloc];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v17 = a4;
-  v6 = [a3 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"URLString"];
-  v8 = [v6 objectForKeyedSubscript:@"referrer"];
+  completionCopy = completion;
+  userInfo = [context userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"URLString"];
+  v8 = [userInfo objectForKeyedSubscript:@"referrer"];
   if (v7)
   {
     v9 = [NSURL URLWithString:v7];
-    v10 = [v9 scheme];
-    v11 = [v10 isEqualToString:@"ams-ui"];
+    scheme = [v9 scheme];
+    v11 = [scheme isEqualToString:@"ams-ui"];
 
     if (v11)
     {
@@ -79,21 +79,21 @@
 
   if ([v8 length])
   {
-    v16 = [(ServiceWebViewPromptViewController *)self clientInterface];
-    [v16 setHostApplicationIdentifier:v8];
+    clientInterface = [(ServiceWebViewPromptViewController *)self clientInterface];
+    [clientInterface setHostApplicationIdentifier:v8];
   }
 
-  v17[2]();
+  completionCopy[2]();
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -105,7 +105,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * v8) events] & 0x10) != 0)
@@ -117,7 +117,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -129,9 +129,9 @@
   v5.receiver = self;
   v5.super_class = ServiceWebViewPromptViewController;
   [(ServiceWebViewPromptViewController *)&v5 viewDidLoad];
-  v3 = [(ServiceWebViewPromptViewController *)self view];
+  view = [(ServiceWebViewPromptViewController *)self view];
   v4 = +[UIColor clearColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 }
 
 - (void)_willAppearInRemoteViewController
@@ -139,18 +139,18 @@
   v4.receiver = self;
   v4.super_class = ServiceWebViewPromptViewController;
   [(ServiceWebViewPromptViewController *)&v4 _willAppearInRemoteViewController];
-  v3 = [(ServiceWebViewPromptViewController *)self _remoteViewControllerProxy];
-  [v3 setDesiredHardwareButtonEvents:16];
-  [v3 setAllowsAlertItems:1];
-  [v3 setAllowsAlertStacking:1];
+  _remoteViewControllerProxy = [(ServiceWebViewPromptViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setAllowsAlertItems:1];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -164,27 +164,27 @@
 - (BOOL)shouldAutorotate
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
 - (void)attemptDismissHostViewController
 {
-  v3 = [(ServiceWebViewPromptViewController *)self presentedViewController];
+  presentedViewController = [(ServiceWebViewPromptViewController *)self presentedViewController];
 
-  if (!v3)
+  if (!presentedViewController)
   {
 
     [(ServiceWebViewPromptViewController *)self _dismiss];
   }
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[UIPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v7];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v9 = [[UIPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   [v9 setDelegate:self];
 
@@ -193,10 +193,10 @@
 
 - (id)_bag
 {
-  v2 = [sub_1000172F4() bagSubProfile];
-  v3 = [sub_1000172F4() bagSubProfileVersion];
-  v4 = [sub_1000172F4() bagKeySet];
-  [AMSBagKeySet registerBagKeySet:v4 forProfile:v2 profileVersion:v3];
+  bagSubProfile = [sub_1000172F4() bagSubProfile];
+  bagSubProfileVersion = [sub_1000172F4() bagSubProfileVersion];
+  bagKeySet = [sub_1000172F4() bagKeySet];
+  [AMSBagKeySet registerBagKeySet:bagKeySet forProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   v10 = 0;
   v11 = &v10;
@@ -216,15 +216,15 @@
 
   v6 = v5;
   _Block_object_dispose(&v10, 8);
-  v7 = [v5 bagForProfile:v2 profileVersion:v3];
+  v7 = [v5 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v7;
 }
 
-- (void)_determineTypeForURL:(id)a3 completion:(id)a4
+- (void)_determineTypeForURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   if ([(ServiceWebViewPromptViewController *)self shouldUseAMS])
   {
     v21 = 0;
@@ -246,18 +246,18 @@
     v9 = v8;
     _Block_object_dispose(&v21, 8);
     v10 = [v8 alloc];
-    v11 = [(ServiceWebViewPromptViewController *)self _bag];
-    v12 = [v10 initWithBag:v11];
+    _bag = [(ServiceWebViewPromptViewController *)self _bag];
+    v12 = [v10 initWithBag:_bag];
 
-    v13 = [(ServiceWebViewPromptViewController *)self _sanitizedURL];
-    v14 = [v12 typeForURL:v13];
+    _sanitizedURL = [(ServiceWebViewPromptViewController *)self _sanitizedURL];
+    v14 = [v12 typeForURL:_sanitizedURL];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10001761C;
     v16[3] = &unk_100051910;
-    v17 = v7;
-    v15 = v7;
+    v17 = completionCopy;
+    v15 = completionCopy;
     [v14 addFinishBlock:v16];
   }
 
@@ -267,8 +267,8 @@
     block[1] = 3221225472;
     block[2] = sub_100017608;
     block[3] = &unk_100051088;
-    v19 = v7;
-    v12 = v7;
+    v19 = completionCopy;
+    v12 = completionCopy;
     dispatch_async(&_dispatch_main_q, block);
     v14 = v19;
   }
@@ -276,23 +276,23 @@
 
 - (void)_dismiss
 {
-  v3 = [(ServiceWebViewPromptViewController *)self _remoteViewControllerProxy];
-  v4 = [(ServiceWebViewPromptViewController *)self presentedViewController];
+  _remoteViewControllerProxy = [(ServiceWebViewPromptViewController *)self _remoteViewControllerProxy];
+  presentedViewController = [(ServiceWebViewPromptViewController *)self presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
-    v5 = [(ServiceWebViewPromptViewController *)self presentedViewController];
+    presentedViewController2 = [(ServiceWebViewPromptViewController *)self presentedViewController];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000177B8;
     v6[3] = &unk_100051148;
-    v7 = v3;
-    [v5 dismissViewControllerAnimated:1 completion:v6];
+    v7 = _remoteViewControllerProxy;
+    [presentedViewController2 dismissViewControllerAnimated:1 completion:v6];
   }
 
   else
   {
-    [v3 dismiss];
+    [_remoteViewControllerProxy dismiss];
   }
 }
 
@@ -300,8 +300,8 @@
 {
   v2 = objc_alloc_init(SUClientInterface);
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleIdentifier];
-  [v2 setClientIdentifier:v4];
+  bundleIdentifier = [v3 bundleIdentifier];
+  [v2 setClientIdentifier:bundleIdentifier];
 
   v5 = +[SUWebViewManager defaultLocalStoragePath];
   [v2 setLocalStoragePath:v5];
@@ -314,19 +314,19 @@
 
 - (void)_presentViewController
 {
-  v3 = [(ServiceWebViewPromptViewController *)self _sanitizedURL];
+  _sanitizedURL = [(ServiceWebViewPromptViewController *)self _sanitizedURL];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100017910;
   v4[3] = &unk_100051938;
   v4[4] = self;
-  [(ServiceWebViewPromptViewController *)self _determineTypeForURL:v3 completion:v4];
+  [(ServiceWebViewPromptViewController *)self _determineTypeForURL:_sanitizedURL completion:v4];
 }
 
 - (id)_sanitizedURL
 {
   v3 = [(ServiceWebViewPromptViewController *)self URL];
-  v4 = [v3 absoluteString];
+  absoluteString = [v3 absoluteString];
 
   v5 = [NSURLComponents alloc];
   v6 = [(ServiceWebViewPromptViewController *)self URL];
@@ -336,8 +336,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v7 queryItems];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  queryItems = [v7 queryItems];
+  v9 = [queryItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -348,23 +348,23 @@
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(queryItems);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 name];
-        v15 = [v14 isEqualToString:@"url"];
+        name = [v13 name];
+        v15 = [name isEqualToString:@"url"];
 
         if (v15)
         {
-          v16 = [v13 value];
+          value = [v13 value];
 
-          v4 = v16;
+          absoluteString = value;
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [queryItems countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v10)
       {
         continue;
@@ -376,19 +376,19 @@
 
 LABEL_11:
 
-  v17 = [NSURL URLWithString:v4];
+  v17 = [NSURL URLWithString:absoluteString];
 
   return v17;
 }
 
-- (id)_viewControllerForType:(int64_t)a3
+- (id)_viewControllerForType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v10 = +[SSAccountStore defaultStore];
-      v9 = [v10 activeAccount];
+      activeAccount = [v10 activeAccount];
 
       v11 = [(ServiceWebViewPromptViewController *)self URL];
 
@@ -396,14 +396,14 @@ LABEL_11:
       {
         v12 = [ServiceSUAccountViewController alloc];
         v13 = [(ServiceWebViewPromptViewController *)self URL];
-        v8 = [(ServiceSUAccountViewController *)v12 initWithExternalAccountURL:v13];
+        ams_activeiTunesAccount = [(ServiceSUAccountViewController *)v12 initWithExternalAccountURL:v13];
       }
 
       else
       {
         v18 = objc_alloc_init(ServiceSUAccountViewController);
-        v8 = v18;
-        if (v9)
+        ams_activeiTunesAccount = v18;
+        if (activeAccount)
         {
           v19 = 2;
         }
@@ -416,54 +416,54 @@ LABEL_11:
         [(ServiceSUAccountViewController *)v18 setStyle:v19];
       }
 
-      v20 = [(ServiceWebViewPromptViewController *)self clientInterface];
-      [(ServiceSUAccountViewController *)v8 setClientInterface:v20];
+      clientInterface = [(ServiceWebViewPromptViewController *)self clientInterface];
+      [(ServiceSUAccountViewController *)ams_activeiTunesAccount setClientInterface:clientInterface];
 
-      [(ServiceSUAccountViewController *)v8 setEmbeddedParent:self];
-      v21 = [(ServiceSUAccountViewController *)v8 authenticationContext];
-      v22 = [v21 mutableCopy];
+      [(ServiceSUAccountViewController *)ams_activeiTunesAccount setEmbeddedParent:self];
+      authenticationContext = [(ServiceSUAccountViewController *)ams_activeiTunesAccount authenticationContext];
+      v22 = [authenticationContext mutableCopy];
 
       if (!v22)
       {
-        v22 = [[SSMutableAuthenticationContext alloc] initWithAccount:v9];
+        v22 = [[SSMutableAuthenticationContext alloc] initWithAccount:activeAccount];
       }
 
       [v22 setDisplaysOnLockScreen:1];
-      [(ServiceSUAccountViewController *)v8 setAuthenticationContext:v22];
-      v7 = [[SUNavigationContainerViewController alloc] initWithChildViewController:v8];
+      [(ServiceSUAccountViewController *)ams_activeiTunesAccount setAuthenticationContext:v22];
+      v7 = [[SUNavigationContainerViewController alloc] initWithChildViewController:ams_activeiTunesAccount];
     }
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         v7 = 0;
         goto LABEL_17;
       }
 
       v4 = [AMSUIDynamicViewController alloc];
-      v5 = [(ServiceWebViewPromptViewController *)self _bag];
-      v6 = [(ServiceWebViewPromptViewController *)self _sanitizedURL];
-      v7 = [v4 initWithBag:v5 URL:v6];
+      _bag = [(ServiceWebViewPromptViewController *)self _bag];
+      _sanitizedURL = [(ServiceWebViewPromptViewController *)self _sanitizedURL];
+      v7 = [v4 initWithBag:_bag URL:_sanitizedURL];
 
-      v8 = +[ACAccountStore ams_sharedAccountStore];
-      v9 = [(ServiceSUAccountViewController *)v8 ams_activeiTunesAccount];
-      [(ServiceAMSUIWebViewController *)v7 setAccount:v9];
+      ams_activeiTunesAccount = +[ACAccountStore ams_sharedAccountStore];
+      activeAccount = [(ServiceSUAccountViewController *)ams_activeiTunesAccount ams_activeiTunesAccount];
+      [(ServiceAMSUIWebViewController *)v7 setAccount:activeAccount];
     }
   }
 
   else
   {
     v14 = +[ACAccountStore ams_sharedAccountStore];
-    v8 = [v14 ams_activeiTunesAccount];
+    ams_activeiTunesAccount = [v14 ams_activeiTunesAccount];
 
     v15 = [ServiceAMSUIWebViewController alloc];
-    v16 = [(ServiceWebViewPromptViewController *)self _bag];
-    v7 = [(ServiceAMSUIWebViewController *)v15 initWithBag:v16 account:v8 clientInfo:0];
+    _bag2 = [(ServiceWebViewPromptViewController *)self _bag];
+    v7 = [(ServiceAMSUIWebViewController *)v15 initWithBag:_bag2 account:ams_activeiTunesAccount clientInfo:0];
 
     [(ServiceAMSUIWebViewController *)v7 setEmbeddedParent:self];
-    v9 = [(ServiceWebViewPromptViewController *)self URL];
-    v17 = [(ServiceAMSUIWebViewController *)v7 loadURL:v9];
+    activeAccount = [(ServiceWebViewPromptViewController *)self URL];
+    v17 = [(ServiceAMSUIWebViewController *)v7 loadURL:activeAccount];
   }
 
 LABEL_17:

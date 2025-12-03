@@ -2,16 +2,16 @@
 - (_TtC18ReplicatorServices33ReplicatorControlClientObjcBridge)init;
 - (id)allowList;
 - (id)devices;
-- (id)pushToken:(id)a3;
-- (void)setAllowList:(id)a3;
-- (void)setEnabled:(BOOL)a3;
+- (id)pushToken:(id)token;
+- (void)setAllowList:(id)list;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation ReplicatorControlClientObjcBridge
 
 - (id)devices
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BAB2E5A8();
 
   sub_1BAB2F8D8();
@@ -20,15 +20,15 @@
   return v3;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_1BAB2E8B0(a3);
+  selfCopy = self;
+  sub_1BAB2E8B0(enabled);
 }
 
 - (id)allowList
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BAB2EBD4();
 
   if (v3)
@@ -45,9 +45,9 @@
   return v4;
 }
 
-- (void)setAllowList:(id)a3
+- (void)setAllowList:(id)list
 {
-  if (a3)
+  if (list)
   {
     sub_1BABE6CFC();
     v4 = sub_1BABE76AC();
@@ -58,19 +58,19 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v6._rawValue = v4;
   sub_1BAB2ED50(v6);
 }
 
-- (id)pushToken:(id)a3
+- (id)pushToken:(id)token
 {
   v4 = sub_1BABE6CFC();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v15 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1BABE6CDC();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1BAB2EFDC();
   v11 = v10;
 

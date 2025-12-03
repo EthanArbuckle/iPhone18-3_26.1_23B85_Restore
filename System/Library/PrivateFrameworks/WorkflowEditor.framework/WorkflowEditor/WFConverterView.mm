@@ -1,16 +1,16 @@
 @interface WFConverterView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (void)didMoveToSuperview;
 @end
 
 @implementation WFConverterView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  selfCopy = self;
   v9 = sub_27459C038(x, y);
 
   return v9;
@@ -18,7 +18,7 @@
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_27459C0EC();
 }
 

@@ -1,21 +1,21 @@
 @interface PSGCarrierRejectCodePane
-- (PSGCarrierRejectCodePane)initWithFrame:(CGRect)a3;
+- (PSGCarrierRejectCodePane)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setPreferenceSpecifier:(id)a3;
+- (void)setPreferenceSpecifier:(id)specifier;
 @end
 
 @implementation PSGCarrierRejectCodePane
 
-- (void)setPreferenceSpecifier:(id)a3
+- (void)setPreferenceSpecifier:(id)specifier
 {
   v11.receiver = self;
   v11.super_class = PSGCarrierRejectCodePane;
-  [(PSEditingPane *)&v11 setPreferenceSpecifier:a3];
-  v4 = [(PSEditingPane *)self preferenceSpecifier];
-  v5 = [v4 propertyForKey:@"CauseCode"];
-  v6 = [v5 intValue];
+  [(PSEditingPane *)&v11 setPreferenceSpecifier:specifier];
+  preferenceSpecifier = [(PSEditingPane *)self preferenceSpecifier];
+  v5 = [preferenceSpecifier propertyForKey:@"CauseCode"];
+  intValue = [v5 intValue];
 
-  switch(v6)
+  switch(intValue)
   {
     case 6:
       v7 = PSG_BundleForGeneralSettingsUIFramework();
@@ -50,11 +50,11 @@ LABEL_7:
   [(UILabel *)rejectMessage sizeToFit];
 }
 
-- (PSGCarrierRejectCodePane)initWithFrame:(CGRect)a3
+- (PSGCarrierRejectCodePane)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PSGCarrierRejectCodePane;
-  v3 = [(PSEditingPane *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PSEditingPane *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
@@ -65,11 +65,11 @@ LABEL_7:
     v7 = [MEMORY[0x277D74300] systemFontOfSize:15.0];
     [(UILabel *)v3->_rejectMessage setFont:v7];
 
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v3->_rejectMessage setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v3->_rejectMessage setBackgroundColor:clearColor];
 
-    v9 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v3->_rejectMessage setTextColor:v9];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v3->_rejectMessage setTextColor:labelColor];
 
     [(PSGCarrierRejectCodePane *)v3 addSubview:v3->_rejectMessage];
   }

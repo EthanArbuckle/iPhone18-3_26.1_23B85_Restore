@@ -1,33 +1,33 @@
 @interface ICAttributionViewConfigurationSharedState
-- (BOOL)isTimestampUnread:(id)a3 forUserID:(id)a4;
-- (ICAttributionViewConfigurationSharedState)initWithTextView:(id)a3 note:(id)a4;
+- (BOOL)isTimestampUnread:(id)unread forUserID:(id)d;
+- (ICAttributionViewConfigurationSharedState)initWithTextView:(id)view note:(id)note;
 - (ICBaseTextView)textView;
 - (ICTTTextStorage)noteTextStorage;
-- (id)disclosureImageWithSymbolName:(id)a3;
-- (id)highlightColorForUserID:(id)a3;
-- (id)shortNameForUserID:(id)a3;
-- (void)synchronouslyLoadDataForEditGroups:(id)a3;
+- (id)disclosureImageWithSymbolName:(id)name;
+- (id)highlightColorForUserID:(id)d;
+- (id)shortNameForUserID:(id)d;
+- (void)synchronouslyLoadDataForEditGroups:(id)groups;
 - (void)updateFontStorages;
 - (void)updateFonts;
-- (void)updateHighlightColorsForUserIDs:(id)a3;
+- (void)updateHighlightColorsForUserIDs:(id)ds;
 - (void)updateImages;
-- (void)updateShortNamesForUserIDs:(id)a3;
+- (void)updateShortNamesForUserIDs:(id)ds;
 @end
 
 @implementation ICAttributionViewConfigurationSharedState
 
-- (ICAttributionViewConfigurationSharedState)initWithTextView:(id)a3 note:(id)a4
+- (ICAttributionViewConfigurationSharedState)initWithTextView:(id)view note:(id)note
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  noteCopy = note;
   v11.receiver = self;
   v11.super_class = ICAttributionViewConfigurationSharedState;
   v8 = [(ICAttributionViewConfigurationSharedState *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_textView, v6);
-    objc_storeStrong(&v9->_note, a4);
+    objc_storeWeak(&v8->_textView, viewCopy);
+    objc_storeStrong(&v9->_note, note);
   }
 
   return v9;
@@ -35,36 +35,36 @@
 
 - (ICTTTextStorage)noteTextStorage
 {
-  v3 = [(ICAttributionViewConfigurationSharedState *)self textView];
-  v4 = [v3 editorContainer];
-  v5 = [v4 note];
+  textView = [(ICAttributionViewConfigurationSharedState *)self textView];
+  editorContainer = [textView editorContainer];
+  note = [editorContainer note];
 
-  v6 = [v5 objectID];
-  v7 = [(ICAttributionViewConfigurationSharedState *)self note];
-  v8 = [v7 objectID];
-  if ([v6 isEqual:v8])
+  objectID = [note objectID];
+  note2 = [(ICAttributionViewConfigurationSharedState *)self note];
+  objectID2 = [note2 objectID];
+  if ([objectID isEqual:objectID2])
   {
-    v9 = [v5 textStorageWithoutCreating];
+    textStorageWithoutCreating = [note textStorageWithoutCreating];
   }
 
   else
   {
-    v9 = 0;
+    textStorageWithoutCreating = 0;
   }
 
-  return v9;
+  return textStorageWithoutCreating;
 }
 
-- (void)synchronouslyLoadDataForEditGroups:(id)a3
+- (void)synchronouslyLoadDataForEditGroups:(id)groups
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupsCopy = groups;
   v5 = [MEMORY[0x277CBEB58] set];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = groupsCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -80,8 +80,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v10) userID];
-        [v5 ic_addNonNilObject:v11];
+        userID = [*(*(&v12 + 1) + 8 * v10) userID];
+        [v5 ic_addNonNilObject:userID];
 
         ++v10;
       }
@@ -104,12 +104,12 @@
   v3 = *MEMORY[0x277D76938];
   v4 = *MEMORY[0x277D76808];
   v5 = [MEMORY[0x277D74300] ic_preferredFontForStyle:*MEMORY[0x277D76938] symbolicTraits:2 maxContentSizeCategory:*MEMORY[0x277D76808]];
-  v6 = [v5 ic_fontWithSingleLineA];
-  [(ICAttributionViewConfigurationSharedState *)self setPrimaryFont:v6];
+  ic_fontWithSingleLineA = [v5 ic_fontWithSingleLineA];
+  [(ICAttributionViewConfigurationSharedState *)self setPrimaryFont:ic_fontWithSingleLineA];
 
   v7 = [MEMORY[0x277D74300] ic_preferredFontForTextStyle:v3 maxContentSizeCategory:v4];
-  v8 = [v7 ic_fontWithSingleLineA];
-  [(ICAttributionViewConfigurationSharedState *)self setSecondaryFont:v8];
+  ic_fontWithSingleLineA2 = [v7 ic_fontWithSingleLineA];
+  [(ICAttributionViewConfigurationSharedState *)self setSecondaryFont:ic_fontWithSingleLineA2];
 
   [(ICAttributionViewConfigurationSharedState *)self updateFontStorages];
 }
@@ -123,20 +123,20 @@
   [(ICAttributionViewConfigurationSharedState *)self setCollapsedDisclosureImage:v4];
 }
 
-- (id)disclosureImageWithSymbolName:(id)a3
+- (id)disclosureImageWithSymbolName:(id)name
 {
   v4 = MEMORY[0x277D755D0];
-  v5 = a3;
-  v6 = [(ICAttributionViewConfigurationSharedState *)self primaryFont];
-  v7 = [v4 configurationWithFont:v6 scale:1];
+  nameCopy = name;
+  primaryFont = [(ICAttributionViewConfigurationSharedState *)self primaryFont];
+  v7 = [v4 configurationWithFont:primaryFont scale:1];
 
-  v8 = [MEMORY[0x277D755B8] systemImageNamed:v5 withConfiguration:v7];
+  v8 = [MEMORY[0x277D755B8] systemImageNamed:nameCopy withConfiguration:v7];
 
-  v9 = [MEMORY[0x277D75418] ic_isVision];
-  if (v9)
+  ic_isVision = [MEMORY[0x277D75418] ic_isVision];
+  if (ic_isVision)
   {
-    v6 = [MEMORY[0x277D75348] systemGrayColor];
-    [v6 colorWithAlphaComponent:0.4];
+    primaryFont = [MEMORY[0x277D75348] systemGrayColor];
+    [primaryFont colorWithAlphaComponent:0.4];
   }
 
   else
@@ -146,10 +146,10 @@
   v10 = ;
   v11 = [v8 imageWithTintColor:v10];
 
-  if (v9)
+  if (ic_isVision)
   {
 
-    v10 = v6;
+    v10 = primaryFont;
   }
 
   v12 = [v11 imageWithRenderingMode:1];
@@ -157,24 +157,24 @@
   return v12;
 }
 
-- (void)updateHighlightColorsForUserIDs:(id)a3
+- (void)updateHighlightColorsForUserIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(ICAttributionViewConfigurationSharedState *)self textView];
-  v6 = [v5 editorContainer];
-  v7 = [v6 note];
+  dsCopy = ds;
+  textView = [(ICAttributionViewConfigurationSharedState *)self textView];
+  editorContainer = [textView editorContainer];
+  note = [editorContainer note];
 
-  v8 = [v7 managedObjectContext];
+  managedObjectContext = [note managedObjectContext];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__ICAttributionViewConfigurationSharedState_updateHighlightColorsForUserIDs___block_invoke;
   v11[3] = &unk_2781AC5B0;
   v11[4] = self;
-  v12 = v4;
-  v13 = v7;
-  v9 = v7;
-  v10 = v4;
-  [v8 performBlockAndWait:v11];
+  v12 = dsCopy;
+  v13 = note;
+  v9 = note;
+  v10 = dsCopy;
+  [managedObjectContext performBlockAndWait:v11];
 }
 
 void __77__ICAttributionViewConfigurationSharedState_updateHighlightColorsForUserIDs___block_invoke(id *a1)
@@ -220,40 +220,40 @@ void __77__ICAttributionViewConfigurationSharedState_updateHighlightColorsForUse
   }
 }
 
-- (id)highlightColorForUserID:(id)a3
+- (id)highlightColorForUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICAttributionViewConfigurationSharedState *)self userIDToHighlightColor];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  userIDToHighlightColor = [(ICAttributionViewConfigurationSharedState *)self userIDToHighlightColor];
+  v6 = [userIDToHighlightColor objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
-    v7 = v6;
+    defaultColor = v6;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D36760] defaultColor];
+    defaultColor = [MEMORY[0x277D36760] defaultColor];
   }
 
-  v8 = v7;
+  v8 = defaultColor;
 
   return v8;
 }
 
-- (void)updateShortNamesForUserIDs:(id)a3
+- (void)updateShortNamesForUserIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(ICAttributionViewConfigurationSharedState *)self note];
-  v6 = [v5 managedObjectContext];
+  dsCopy = ds;
+  note = [(ICAttributionViewConfigurationSharedState *)self note];
+  managedObjectContext = [note managedObjectContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __72__ICAttributionViewConfigurationSharedState_updateShortNamesForUserIDs___block_invoke;
   v8[3] = &unk_2781ABEB8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 performBlockAndWait:v8];
+  v9 = dsCopy;
+  v7 = dsCopy;
+  [managedObjectContext performBlockAndWait:v8];
 }
 
 void __72__ICAttributionViewConfigurationSharedState_updateShortNamesForUserIDs___block_invoke(uint64_t a1)
@@ -300,11 +300,11 @@ void __72__ICAttributionViewConfigurationSharedState_updateShortNamesForUserIDs_
   }
 }
 
-- (id)shortNameForUserID:(id)a3
+- (id)shortNameForUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICAttributionViewConfigurationSharedState *)self userIDToShortName];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  userIDToShortName = [(ICAttributionViewConfigurationSharedState *)self userIDToShortName];
+  v6 = [userIDToShortName objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
@@ -313,39 +313,39 @@ void __72__ICAttributionViewConfigurationSharedState_updateShortNamesForUserIDs_
 
   else
   {
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v8 localizedStringForKey:@"Somebody" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v7 = [mainBundle localizedStringForKey:@"Somebody" value:&stru_282757698 table:0];
   }
 
   return v7;
 }
 
-- (BOOL)isTimestampUnread:(id)a3 forUserID:(id)a4
+- (BOOL)isTimestampUnread:(id)unread forUserID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICAttributionViewConfigurationSharedState *)self note];
-  v9 = [v8 account];
-  v10 = [v9 userRecordName];
-  v11 = [v7 isEqualToString:v10];
+  unreadCopy = unread;
+  dCopy = d;
+  note = [(ICAttributionViewConfigurationSharedState *)self note];
+  account = [note account];
+  userRecordName = [account userRecordName];
+  v11 = [dCopy isEqualToString:userRecordName];
 
   v12 = v11 ^ 1;
-  v13 = [(ICAttributionViewConfigurationSharedState *)self noteLastOpenedDate];
+  noteLastOpenedDate = [(ICAttributionViewConfigurationSharedState *)self noteLastOpenedDate];
 
-  if (v13)
+  if (noteLastOpenedDate)
   {
-    v14 = [(ICAttributionViewConfigurationSharedState *)self noteLastOpenedDate];
-    v12 &= [v6 ic_isLaterThanDate:v14];
+    noteLastOpenedDate2 = [(ICAttributionViewConfigurationSharedState *)self noteLastOpenedDate];
+    v12 &= [unreadCopy ic_isLaterThanDate:noteLastOpenedDate2];
   }
 
-  v15 = [(ICAttributionViewConfigurationSharedState *)self note];
-  v16 = [v15 lastAttributionsViewedDate];
+  note2 = [(ICAttributionViewConfigurationSharedState *)self note];
+  lastAttributionsViewedDate = [note2 lastAttributionsViewedDate];
 
-  if (v16)
+  if (lastAttributionsViewedDate)
   {
-    v17 = [(ICAttributionViewConfigurationSharedState *)self note];
-    v18 = [v17 lastAttributionsViewedDate];
-    v12 &= [v6 ic_isLaterThanDate:v18];
+    note3 = [(ICAttributionViewConfigurationSharedState *)self note];
+    lastAttributionsViewedDate2 = [note3 lastAttributionsViewedDate];
+    v12 &= [unreadCopy ic_isLaterThanDate:lastAttributionsViewedDate2];
   }
 
   return v12;
@@ -360,7 +360,7 @@ void __72__ICAttributionViewConfigurationSharedState_updateShortNamesForUserIDs_
 
 - (void)updateFontStorages
 {
-  v2 = self;
+  selfCopy = self;
   sub_2153D5ECC();
 }
 

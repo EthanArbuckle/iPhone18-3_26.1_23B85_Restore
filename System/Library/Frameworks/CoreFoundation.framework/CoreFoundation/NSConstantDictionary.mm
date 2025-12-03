@@ -1,47 +1,47 @@
 @interface NSConstantDictionary
-- (NSConstantDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
+- (NSConstantDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
 - (id)keyEnumerator;
-- (id)keyOfEntryWithOptions:(unint64_t)a3 passingTest:(id)a4;
-- (id)keysOfEntriesWithOptions:(unint64_t)a3 passingTest:(id)a4;
+- (id)keyOfEntryWithOptions:(unint64_t)options passingTest:(id)test;
+- (id)keysOfEntriesWithOptions:(unint64_t)options passingTest:(id)test;
 - (id)objectEnumerator;
-- (id)objectForKey:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)__apply:(void *)a3 context:(void *)a4;
-- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)getObjects:(id *)a3 andKeys:(id *)a4 count:(unint64_t)a5;
+- (id)objectForKey:(id)key;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)__apply:(void *)__apply context:(void *)context;
+- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)getObjects:(id *)objects andKeys:(id *)keys count:(unint64_t)count;
 @end
 
 @implementation NSConstantDictionary
 
-- (NSConstantDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (NSConstantDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   qword_1EA849A30 = "attempting to allocate a constant object";
   __break(1u);
   return self;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v13 = *MEMORY[0x1E69E9840];
   options = self->_options;
   count = self->_count;
   keys = self->_keys;
   objects = self->_objects;
-  v12 = a3;
+  keyCopy = key;
   if (!count)
   {
     goto LABEL_14;
   }
 
-  if (count == 1 && *keys == a3)
+  if (count == 1 && *keys == key)
   {
     goto LABEL_30;
   }
 
   if ((options & 2) != 0)
   {
-    if (_NSIsNSNumber(a3))
+    if (_NSIsNSNumber(key))
     {
       if (count != 1)
       {
@@ -52,20 +52,20 @@ LABEL_20:
           while (1)
           {
             v10 = *keys;
-            if (*keys == a3)
+            if (*keys == key)
             {
               goto LABEL_30;
             }
 
             if ((options & 2) != 0)
             {
-              if ([v10 isEqualToNumber:{a3, v12, v13}])
+              if ([v10 isEqualToNumber:{key, keyCopy, v13}])
               {
                 goto LABEL_30;
               }
             }
 
-            else if ([v10 isEqualToString:a3])
+            else if ([v10 isEqualToString:key])
             {
               goto LABEL_30;
             }
@@ -83,7 +83,7 @@ LABEL_20:
         goto LABEL_28;
       }
 
-      if ([a3 isEqualToNumber:{*keys, v12, v13}])
+      if ([key isEqualToNumber:{*keys, keyCopy, v13}])
       {
         goto LABEL_30;
       }
@@ -94,11 +94,11 @@ LABEL_14:
     goto LABEL_31;
   }
 
-  if ((_NSIsNSString(a3) & 1) == 0)
+  if ((_NSIsNSString(key) & 1) == 0)
   {
     if (!options)
     {
-      while (*keys != a3 && ([*keys isEqual:{a3, v12, v13}] & 1) == 0)
+      while (*keys != key && ([*keys isEqual:{key, keyCopy, v13}] & 1) == 0)
       {
         result = 0;
         ++objects;
@@ -117,7 +117,7 @@ LABEL_14:
 
   if (count == 1)
   {
-    if ([a3 isEqualToString:{*keys, v12, v13}])
+    if ([key isEqualToString:{*keys, keyCopy, v13}])
     {
       goto LABEL_30;
     }
@@ -132,7 +132,7 @@ LABEL_14:
   }
 
 LABEL_28:
-  result = bsearch(&v12, keys, count, 8uLL, v9);
+  result = bsearch(&keyCopy, keys, count, 8uLL, v9);
   if (result)
   {
     objects = (objects + result - keys);
@@ -152,35 +152,35 @@ LABEL_31:
   return v2;
 }
 
-- (void)getObjects:(id *)a3 andKeys:(id *)a4 count:(unint64_t)a5
+- (void)getObjects:(id *)objects andKeys:(id *)keys count:(unint64_t)count
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = a5 >> 61;
-  if (a3 && v7 || a4 && v7)
+  v7 = count >> 61;
+  if (objects && v7 || keys && v7)
   {
     v13 = _os_log_pack_size();
     v14 = _os_log_pack_fill();
     *v14 = 136315394;
     *(v14 + 4) = "[NSConstantDictionary getObjects:andKeys:count:]";
     *(v14 + 12) = 2048;
-    *(v14 + 14) = a5;
-    v15 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSConstantDictionary getObjects:andKeys:count:]", a5);
+    *(v14 + 14) = count;
+    v15 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSConstantDictionary getObjects:andKeys:count:]", count);
     v16 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v15) osLogPack:0 size:v17 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0), v13];
     objc_exception_throw(v16);
   }
 
   v8 = 8 * self->_count;
-  if (a4)
+  if (keys)
   {
-    memmove(a4, self->_keys, v8);
+    memmove(keys, self->_keys, v8);
   }
 
-  if (a3)
+  if (objects)
   {
     objects = self->_objects;
     v10 = *MEMORY[0x1E69E9840];
 
-    memmove(a3, objects, v8);
+    memmove(objects, objects, v8);
   }
 
   else
@@ -189,9 +189,9 @@ LABEL_31:
   }
 }
 
-- (void)__apply:(void *)a3 context:(void *)a4
+- (void)__apply:(void *)__apply context:(void *)context
 {
-  if (!a3)
+  if (!__apply)
   {
     v8 = __CFExceptionProem(self, a2);
     v9 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: function pointer is NULL", v8);
@@ -204,7 +204,7 @@ LABEL_31:
     v7 = 0;
     do
     {
-      (a3)(self->_keys[v7], self->_objects[v7], a4);
+      (__apply)(self->_keys[v7], self->_objects[v7], context);
       ++v7;
     }
 
@@ -212,10 +212,10 @@ LABEL_31:
   }
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  if (!a4 && a5)
+  if (!objects && count)
   {
     v12 = _os_log_pack_size();
     v13 = v19 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -223,12 +223,12 @@ LABEL_31:
     *v14 = 136315394;
     *(v14 + 4) = "[NSConstantDictionary countByEnumeratingWithState:objects:count:]";
     *(v14 + 12) = 2048;
-    *(v14 + 14) = a5;
-    v15 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSConstantDictionary countByEnumeratingWithState:objects:count:]", a5);
+    *(v14 + 14) = count;
+    v15 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSConstantDictionary countByEnumeratingWithState:objects:count:]", count);
     goto LABEL_18;
   }
 
-  if (a5 >> 61)
+  if (count >> 61)
   {
     v12 = _os_log_pack_size();
     v13 = v19 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -236,35 +236,35 @@ LABEL_31:
     *v17 = 136315394;
     *(v17 + 4) = "[NSConstantDictionary countByEnumeratingWithState:objects:count:]";
     *(v17 + 12) = 2048;
-    *(v17 + 14) = a5;
-    v15 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSConstantDictionary countByEnumeratingWithState:objects:count:]", a5);
+    *(v17 + 14) = count;
+    v15 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSConstantDictionary countByEnumeratingWithState:objects:count:]", count);
 LABEL_18:
     v18 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v15) osLogPack:0 size:v13, v12];
     objc_exception_throw(v18);
   }
 
   count = self->_count;
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = state->var0;
+  if (!state->var0)
   {
-    a3->var2 = &countByEnumeratingWithState_objects_count__const_mu_4;
+    state->var2 = &countByEnumeratingWithState_objects_count__const_mu_4;
   }
 
-  if (count > var0 && (a3->var1 = a4, a5))
+  if (count > var0 && (state->var1 = objects, count))
   {
     v7 = 0;
     do
     {
       v8 = self->_keys[var0++];
-      a3->var0 = var0;
+      state->var0 = var0;
       if (v8)
       {
-        a4[v7++] = v8;
-        var0 = a3->var0;
+        objects[v7++] = v8;
+        var0 = state->var0;
       }
     }
 
-    while (var0 < count && v7 < a5);
+    while (var0 < count && v7 < count);
   }
 
   else
@@ -276,10 +276,10 @@ LABEL_18:
   return v7;
 }
 
-- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!block)
   {
     v11 = _os_log_pack_size();
     v12 = _os_log_pack_fill();
@@ -300,7 +300,7 @@ LABEL_18:
       {
         v8 = _CFAutoreleasePoolPush();
         v9 = self->_objects[i];
-        __NSDICTIONARY_IS_CALLING_OUT_TO_A_BLOCK__(a4);
+        __NSDICTIONARY_IS_CALLING_OUT_TO_A_BLOCK__(block);
         _CFAutoreleasePoolPop(v8);
       }
     }
@@ -309,7 +309,7 @@ LABEL_18:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)keyOfEntryWithOptions:(unint64_t)a3 passingTest:(id)a4
+- (id)keyOfEntryWithOptions:(unint64_t)options passingTest:(id)test
 {
   v15 = *MEMORY[0x1E69E9840];
   count = self->_count;
@@ -324,7 +324,7 @@ LABEL_18:
       {
         v10 = self->_objects[i];
         v11 = _CFAutoreleasePoolPush();
-        if ((*(a4 + 2))(a4, v9, v10, &v14))
+        if ((*(test + 2))(test, v9, v10, &v14))
         {
           v14 = 1;
           v7 = v9;
@@ -348,10 +348,10 @@ LABEL_18:
   return v7;
 }
 
-- (id)keysOfEntriesWithOptions:(unint64_t)a3 passingTest:(id)a4
+- (id)keysOfEntriesWithOptions:(unint64_t)options passingTest:(id)test
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!test)
   {
     v14 = _os_log_pack_size();
     v15 = _os_log_pack_fill();
@@ -374,7 +374,7 @@ LABEL_18:
       {
         v10 = self->_objects[i];
         v11 = _CFAutoreleasePoolPush();
-        if ((*(a4 + 2))(a4, v9, v10, &v18 + 7))
+        if ((*(test + 2))(test, v9, v10, &v18 + 7))
         {
           [(NSSet *)v7 addObject:v9];
         }
@@ -393,27 +393,27 @@ LABEL_18:
   return result;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
   v13 = *MEMORY[0x1E69E9840];
   options = self->_options;
   count = self->_count;
   keys = self->_keys;
   objects = self->_objects;
-  v12 = a3;
+  subscriptCopy = subscript;
   if (!count)
   {
     goto LABEL_14;
   }
 
-  if (count == 1 && *keys == a3)
+  if (count == 1 && *keys == subscript)
   {
     goto LABEL_30;
   }
 
   if ((options & 2) != 0)
   {
-    if (_NSIsNSNumber(a3))
+    if (_NSIsNSNumber(subscript))
     {
       if (count != 1)
       {
@@ -424,20 +424,20 @@ LABEL_20:
           while (1)
           {
             v10 = *keys;
-            if (*keys == a3)
+            if (*keys == subscript)
             {
               goto LABEL_30;
             }
 
             if ((options & 2) != 0)
             {
-              if ([v10 isEqualToNumber:{a3, v12, v13}])
+              if ([v10 isEqualToNumber:{subscript, subscriptCopy, v13}])
               {
                 goto LABEL_30;
               }
             }
 
-            else if ([v10 isEqualToString:a3])
+            else if ([v10 isEqualToString:subscript])
             {
               goto LABEL_30;
             }
@@ -455,7 +455,7 @@ LABEL_20:
         goto LABEL_28;
       }
 
-      if ([a3 isEqualToNumber:{*keys, v12, v13}])
+      if ([subscript isEqualToNumber:{*keys, subscriptCopy, v13}])
       {
         goto LABEL_30;
       }
@@ -466,11 +466,11 @@ LABEL_14:
     goto LABEL_31;
   }
 
-  if ((_NSIsNSString(a3) & 1) == 0)
+  if ((_NSIsNSString(subscript) & 1) == 0)
   {
     if (!options)
     {
-      while (*keys != a3 && ([*keys isEqual:{a3, v12, v13}] & 1) == 0)
+      while (*keys != subscript && ([*keys isEqual:{subscript, subscriptCopy, v13}] & 1) == 0)
       {
         result = 0;
         ++objects;
@@ -489,7 +489,7 @@ LABEL_14:
 
   if (count == 1)
   {
-    if ([a3 isEqualToString:{*keys, v12, v13}])
+    if ([subscript isEqualToString:{*keys, subscriptCopy, v13}])
     {
       goto LABEL_30;
     }
@@ -504,7 +504,7 @@ LABEL_14:
   }
 
 LABEL_28:
-  result = bsearch(&v12, keys, count, 8uLL, v9);
+  result = bsearch(&subscriptCopy, keys, count, 8uLL, v9);
   if (result)
   {
     objects = (objects + result - keys);

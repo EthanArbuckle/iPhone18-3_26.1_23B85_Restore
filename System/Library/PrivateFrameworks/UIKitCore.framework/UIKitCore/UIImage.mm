@@ -1,10 +1,10 @@
 @interface UIImage
-+ (BOOL)_isCGImageAlphaMask:(CGImage *)a3;
-+ (CGSize)_applyOrientation:(int64_t)a3 toContentSizeInPixels:(CGSize)result;
-+ (CGSize)_legibilityImageSizeForSize:(CGSize)a3 style:(int64_t)a4;
++ (BOOL)_isCGImageAlphaMask:(CGImage *)mask;
++ (CGSize)_applyOrientation:(int64_t)orientation toContentSizeInPixels:(CGSize)result;
++ (CGSize)_legibilityImageSizeForSize:(CGSize)size style:(int64_t)style;
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (UIEdgeInsets)_edgeInsetsForStylePresetNames:(id)a3 scale:(double)a4 traitCollection:(id)a5;
++ (UIEdgeInsets)_edgeInsetsForStylePresetNames:(id)names scale:(double)scale traitCollection:(id)collection;
 + (UIImage)actionsImage;
 + (UIImage)addImage;
 + (UIImage)animatedImageWithImages:(NSArray *)images duration:(NSTimeInterval)duration;
@@ -15,80 +15,80 @@
 + (UIImage)imageWithCGImage:(CGImageRef)cgImage scale:(CGFloat)scale orientation:(UIImageOrientation)orientation;
 + (UIImage)imageWithCIImage:(CIImage *)ciImage;
 + (UIImage)imageWithCIImage:(CIImage *)ciImage scale:(CGFloat)scale orientation:(UIImageOrientation)orientation;
-+ (UIImage)imageWithContentsOfCPBitmapFile:(id)a3 flags:(int)a4;
++ (UIImage)imageWithContentsOfCPBitmapFile:(id)file flags:(int)flags;
 + (UIImage)imageWithContentsOfFile:(NSString *)path;
 + (UIImage)imageWithData:(NSData *)data;
 + (UIImage)imageWithData:(NSData *)data scale:(CGFloat)scale;
 + (UIImage)removeImage;
 + (UIImage)strokedCheckmarkImage;
 + (UIImage)systemImageNamed:(NSString *)name compatibleWithTraitCollection:(UITraitCollection *)traitCollection;
-+ (id)_ISImageDescriptorNameForUIApplicationIconFormat:(int)a3;
-+ (id)_animatedImageNamed:(id)a3 inBundle:(id)a4 compatibleWithTraitCollection:(id)a5 duration:(double)a6;
-+ (id)_animatedResizableImageNamed:(id)a3 inBundle:(id)a4 compatibleWithTraitCollection:(id)a5 capInsets:(UIEdgeInsets)a6 resizingMode:(int64_t)a7 duration:(double)a8;
-+ (id)_applicationIconImageForBundleIdentifier:(id)a3 format:(int)a4;
-+ (id)_applicationIconImageForBundleIdentifier:(id)a3 format:(int)a4 scale:(double)a5;
-+ (id)_applicationIconImageForBundleIdentifier:(id)a3 format:(int)a4 scale:(double)a5 appearance:(id)a6 style:(int64_t)a7;
-+ (id)_backgroundGradientWithStartColor:(id)a3 andEndColor:(id)a4;
-+ (id)_baseImageDescriptorForUIApplicationIconFormat:(int)a3;
-+ (id)_cachedImageForKey:(id)a3 fromBlock:(id)a4;
++ (id)_ISImageDescriptorNameForUIApplicationIconFormat:(int)format;
++ (id)_animatedImageNamed:(id)named inBundle:(id)bundle compatibleWithTraitCollection:(id)collection duration:(double)duration;
++ (id)_animatedResizableImageNamed:(id)named inBundle:(id)bundle compatibleWithTraitCollection:(id)collection capInsets:(UIEdgeInsets)insets resizingMode:(int64_t)mode duration:(double)duration;
++ (id)_applicationIconImageForBundleIdentifier:(id)identifier format:(int)format;
++ (id)_applicationIconImageForBundleIdentifier:(id)identifier format:(int)format scale:(double)scale;
++ (id)_applicationIconImageForBundleIdentifier:(id)identifier format:(int)format scale:(double)scale appearance:(id)appearance style:(int64_t)style;
++ (id)_backgroundGradientWithStartColor:(id)color andEndColor:(id)endColor;
++ (id)_baseImageDescriptorForUIApplicationIconFormat:(int)format;
++ (id)_cachedImageForKey:(id)key fromBlock:(id)block;
 + (id)_defaultBackgroundGradient;
-+ (id)_deviceSpecificImageNamed:(id)a3;
-+ (id)_deviceSpecificImageNamed:(id)a3 inBundle:(id)a4;
-+ (id)_generateCompositedSymbolImageForAsset:(id)a3 usingLayers:(id)a4 configuration:(id)a5 alignUsingBaselines:(BOOL)a6;
-+ (id)_iconForResourceProxy:(id)a3 format:(int)a4 options:(unint64_t)a5;
-+ (id)_imageNamed:(id)a3 withTrait:(id)a4;
-+ (id)_imageWithCGPDFPage:(CGPDFPage *)a3;
-+ (id)_imageWithCGPDFPage:(CGPDFPage *)a3 scale:(double)a4 orientation:(int64_t)a5;
-+ (id)_imageWithCGSVGDocument:(CGSVGDocument *)a3;
-+ (id)_imageWithCGSVGDocument:(CGSVGDocument *)a3 scale:(double)a4 orientation:(int64_t)a5;
-+ (id)_imageWithIcon:(void *)a3 descriptor:;
-+ (id)_systemImageNamed:(id)a3 fallback:(id)a4 withConfiguration:(id)a5;
-+ (id)_systemImageNamed:(id)a3 shape:(int64_t)a4;
-+ (id)_systemImageNamed:(id)a3 shape:(int64_t)a4 fill:(int64_t)a5;
-+ (id)_systemImageNamed:(id)a3 shape:(int64_t)a4 fill:(int64_t)a5 withConfiguration:(id)a6;
-+ (id)_systemImageNamed:(id)a3 variableValue:(double)a4 withConfiguration:(id)a5 allowPrivate:(BOOL)a6;
-+ (id)_systemImageNamed:(id)a3 variant:(unint64_t)a4;
-+ (id)_systemImageNamed:(id)a3 variant:(unint64_t)a4 withConfiguration:(id)a5;
-+ (id)_tintedImageForSize:(CGSize)a3 withTint:(id)a4 effectsImage:(id)a5 maskImage:(id)a6 style:(int)a7;
-+ (id)_tintedImageForSize:(CGSize)a3 withTint:(id)a4 maskImage:(id)a5 effectsImage:(id)a6 style:(int)a7;
-+ (id)_tintedImageForSize:(CGSize)a3 withTint:(id)a4 maskImage:(id)a5 effectsImage:(id)a6 style:(int)a7 edgeInsets:(UIEdgeInsets)a8;
-+ (id)imageFromAlbumArtData:(id)a3 height:(int)a4 width:(int)a5 bytesPerRow:(int)a6 cache:(BOOL)a7;
-+ (id)imageNamed:(id)a3 inBundle:(id)a4;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-+ (id)preferredSymbolImageNamed:(id)a3;
-+ (id)preferredSymbolImageNamed:(id)a3 size:(int64_t)a4 compatibleWithTextStyle:(id)a5;
-+ (id)preferredSymbolImageNamed:(id)a3 size:(int64_t)a4 compatibleWithTextStyle:(id)a5 traitCollection:(id)a6 inBundle:(id)a7;
-+ (id)symbolImageNamed:(id)a3;
-+ (id)symbolImageNamed:(id)a3 size:(int64_t)a4 compatibleWithFont:(id)a5;
-+ (id)symbolImageNamed:(id)a3 size:(int64_t)a4 compatibleWithFont:(id)a5 traitCollection:(id)a6 inBundle:(id)a7;
-+ (id)symbolImageNamed:(id)a3 size:(int64_t)a4 weight:(int64_t)a5 compatibleWithFontSize:(double)a6;
-+ (id)symbolImageNamed:(id)a3 size:(int64_t)a4 weight:(int64_t)a5 compatibleWithFontSize:(double)a6 traitCollection:(id)a7 inBundle:(id)a8;
-+ (int)_iconVariantForUIApplicationIconFormat:(int)a3 idiom:(int64_t)a4 scale:(double *)a5;
-+ (int)_iconVariantForUIApplicationIconFormat:(int)a3 scale:(double *)a4;
-+ (int64_t)_horizontallyFlippedOrientationForOrientation:(int64_t)a3;
-+ (int64_t)_idiomDefinedByPath:(id)a3;
-+ (unint64_t)_scaleDefinedByPath:(id)a3;
-+ (void)_flushCache:(id)a3;
++ (id)_deviceSpecificImageNamed:(id)named;
++ (id)_deviceSpecificImageNamed:(id)named inBundle:(id)bundle;
++ (id)_generateCompositedSymbolImageForAsset:(id)asset usingLayers:(id)layers configuration:(id)configuration alignUsingBaselines:(BOOL)baselines;
++ (id)_iconForResourceProxy:(id)proxy format:(int)format options:(unint64_t)options;
++ (id)_imageNamed:(id)named withTrait:(id)trait;
++ (id)_imageWithCGPDFPage:(CGPDFPage *)page;
++ (id)_imageWithCGPDFPage:(CGPDFPage *)page scale:(double)scale orientation:(int64_t)orientation;
++ (id)_imageWithCGSVGDocument:(CGSVGDocument *)document;
++ (id)_imageWithCGSVGDocument:(CGSVGDocument *)document scale:(double)scale orientation:(int64_t)orientation;
++ (id)_imageWithIcon:(void *)icon descriptor:;
++ (id)_systemImageNamed:(id)named fallback:(id)fallback withConfiguration:(id)configuration;
++ (id)_systemImageNamed:(id)named shape:(int64_t)shape;
++ (id)_systemImageNamed:(id)named shape:(int64_t)shape fill:(int64_t)fill;
++ (id)_systemImageNamed:(id)named shape:(int64_t)shape fill:(int64_t)fill withConfiguration:(id)configuration;
++ (id)_systemImageNamed:(id)named variableValue:(double)value withConfiguration:(id)configuration allowPrivate:(BOOL)private;
++ (id)_systemImageNamed:(id)named variant:(unint64_t)variant;
++ (id)_systemImageNamed:(id)named variant:(unint64_t)variant withConfiguration:(id)configuration;
++ (id)_tintedImageForSize:(CGSize)size withTint:(id)tint effectsImage:(id)image maskImage:(id)maskImage style:(int)style;
++ (id)_tintedImageForSize:(CGSize)size withTint:(id)tint maskImage:(id)image effectsImage:(id)effectsImage style:(int)style;
++ (id)_tintedImageForSize:(CGSize)size withTint:(id)tint maskImage:(id)image effectsImage:(id)effectsImage style:(int)style edgeInsets:(UIEdgeInsets)insets;
++ (id)imageFromAlbumArtData:(id)data height:(int)height width:(int)width bytesPerRow:(int)row cache:(BOOL)cache;
++ (id)imageNamed:(id)named inBundle:(id)bundle;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
++ (id)preferredSymbolImageNamed:(id)named;
++ (id)preferredSymbolImageNamed:(id)named size:(int64_t)size compatibleWithTextStyle:(id)style;
++ (id)preferredSymbolImageNamed:(id)named size:(int64_t)size compatibleWithTextStyle:(id)style traitCollection:(id)collection inBundle:(id)bundle;
++ (id)symbolImageNamed:(id)named;
++ (id)symbolImageNamed:(id)named size:(int64_t)size compatibleWithFont:(id)font;
++ (id)symbolImageNamed:(id)named size:(int64_t)size compatibleWithFont:(id)font traitCollection:(id)collection inBundle:(id)bundle;
++ (id)symbolImageNamed:(id)named size:(int64_t)size weight:(int64_t)weight compatibleWithFontSize:(double)fontSize;
++ (id)symbolImageNamed:(id)named size:(int64_t)size weight:(int64_t)weight compatibleWithFontSize:(double)fontSize traitCollection:(id)collection inBundle:(id)bundle;
++ (int)_iconVariantForUIApplicationIconFormat:(int)format idiom:(int64_t)idiom scale:(double *)scale;
++ (int)_iconVariantForUIApplicationIconFormat:(int)format scale:(double *)scale;
++ (int64_t)_horizontallyFlippedOrientationForOrientation:(int64_t)orientation;
++ (int64_t)_idiomDefinedByPath:(id)path;
++ (unint64_t)_scaleDefinedByPath:(id)path;
++ (void)_flushCache:(id)cache;
 + (void)_flushSharedImageCache;
-+ (void)_loadImageFromURL:(id)a3 completionHandler:(id)a4;
++ (void)_loadImageFromURL:(id)l completionHandler:(id)handler;
 + (void)initialize;
-- ($8452678F12DBC466148836A9D382CAFC)_calculateStatisticsOfEdge:(SEL)a3;
-- (BOOL)_canEncodeAsCatalogData:(id)a3;
-- (BOOL)_canEncodeWithName:(id)a3 coder:(id)a4;
+- ($8452678F12DBC466148836A9D382CAFC)_calculateStatisticsOfEdge:(SEL)edge;
+- (BOOL)_canEncodeAsCatalogData:(id)data;
+- (BOOL)_canEncodeWithName:(id)name coder:(id)coder;
 - (BOOL)_hasContentInsets;
-- (BOOL)_hasVisibleContentInRect:(CGRect)a3 atScale:(double)a4;
+- (BOOL)_hasVisibleContentInRect:(CGRect)rect atScale:(double)scale;
 - (BOOL)_isAlphaMask;
 - (BOOL)_isColoredSymbolImage;
 - (BOOL)_isIconImage;
-- (BOOL)_isInvisibleAndGetIsTranslucent:(BOOL *)a3;
+- (BOOL)_isInvisibleAndGetIsTranslucent:(BOOL *)translucent;
 - (BOOL)_isRTLImage;
-- (BOOL)_isSameSymbolImageExceptVariableValue:(id)a3;
+- (BOOL)_isSameSymbolImageExceptVariableValue:(id)value;
 - (BOOL)_probeIsSeeThrough;
 - (BOOL)_representsCIImageWhichSupportsIOSurfaceRendering;
 - (BOOL)_representsLayeredImage;
 - (BOOL)_suppressesAccessibilityHairlineThickening;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)writeToCPBitmapFile:(id)a3 flags:(int)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)writeToCPBitmapFile:(id)file flags:(int)flags;
 - (CGColor)_tiledPatternColor;
 - (CGRect)_contentRectInPixels;
 - (CGRect)_contentStretchInPixels;
@@ -97,7 +97,7 @@
 - (CGSize)_fullSize;
 - (CGSize)_sizeInPixels;
 - (CGSize)_sizeInPixelsFromPDF;
-- (CGSize)_sizeWithHairlineThickening:(BOOL)a3 forTraitCollection:(id)a4;
+- (CGSize)_sizeWithHairlineThickening:(BOOL)thickening forTraitCollection:(id)collection;
 - (UIEdgeInsets)_contentInsets;
 - (UIEdgeInsets)_inverseAlignmentRectInsets;
 - (UIEdgeInsets)_subimageInsets;
@@ -118,9 +118,9 @@
 - (UIImage)imageWithoutBaseline;
 - (UIImage)initWithCGImage:(CGImageRef)cgImage scale:(CGFloat)scale orientation:(UIImageOrientation)orientation;
 - (UIImage)initWithCIImage:(CIImage *)ciImage scale:(CGFloat)scale orientation:(UIImageOrientation)orientation;
-- (UIImage)initWithCoder:(id)a3;
-- (UIImage)initWithContentsOfFile:(id)a3 cache:(BOOL)a4;
-- (UIImage)initWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
+- (UIImage)initWithCoder:(id)coder;
+- (UIImage)initWithContentsOfFile:(id)file cache:(BOOL)cache;
+- (UIImage)initWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
 - (UIImage)resizableImageWithCapInsets:(UIEdgeInsets)capInsets resizingMode:(UIImageResizingMode)resizingMode;
 - (UIImage)stretchableImageWithLeftCapWidth:(NSInteger)leftCapWidth topCapHeight:(NSInteger)topCapHeight;
 - (UIImageAsset)imageAsset;
@@ -129,102 +129,102 @@
 - (__IOSurface)_copyIOSurface;
 - (double)_capHeight;
 - (double)_scaleFromPDF;
-- (id)_applicationIconImageForFormat:(int)a3 precomposed:(BOOL)a4;
-- (id)_applicationIconImageForFormat:(int)a3 precomposed:(BOOL)a4 scale:(double)a5;
-- (id)_applyBackdropViewSettings:(id)a3 allowImageResizing:(BOOL)a4;
-- (id)_applyBackdropViewSettings:(id)a3 includeTints:(BOOL)a4 includeBlur:(BOOL)a5 allowImageResizing:(BOOL)a6;
-- (id)_applyBackdropViewStyle:(int64_t)a3 includeTints:(BOOL)a4 includeBlur:(BOOL)a5;
-- (id)_applyBackdropViewStyle:(int64_t)a3 includeTints:(BOOL)a4 includeBlur:(BOOL)a5 graphicsQuality:(int64_t)a6;
-- (id)_applyBackdropViewStyle:(int64_t)a3 includeTints:(BOOL)a4 includeBlur:(BOOL)a5 graphicsQuality:(int64_t)a6 allowImageResizing:(BOOL)a7;
-- (id)_bezeledImageWithShadowRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 fillRed:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10 drawShadow:(BOOL)a11;
+- (id)_applicationIconImageForFormat:(int)format precomposed:(BOOL)precomposed;
+- (id)_applicationIconImageForFormat:(int)format precomposed:(BOOL)precomposed scale:(double)scale;
+- (id)_applyBackdropViewSettings:(id)settings allowImageResizing:(BOOL)resizing;
+- (id)_applyBackdropViewSettings:(id)settings includeTints:(BOOL)tints includeBlur:(BOOL)blur allowImageResizing:(BOOL)resizing;
+- (id)_applyBackdropViewStyle:(int64_t)style includeTints:(BOOL)tints includeBlur:(BOOL)blur;
+- (id)_applyBackdropViewStyle:(int64_t)style includeTints:(BOOL)tints includeBlur:(BOOL)blur graphicsQuality:(int64_t)quality;
+- (id)_applyBackdropViewStyle:(int64_t)style includeTints:(BOOL)tints includeBlur:(BOOL)blur graphicsQuality:(int64_t)quality allowImageResizing:(BOOL)resizing;
+- (id)_bezeledImageWithShadowRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha fillRed:(double)fillRed green:(double)a8 blue:(double)a9 alpha:(double)self0 drawShadow:(BOOL)self1;
 - (id)_bundle;
-- (id)_cachedRenditionForKey:(id)a3;
-- (id)_colorForName:(id)a3 withTraitCollection:(id)a4;
+- (id)_cachedRenditionForKey:(id)key;
+- (id)_colorForName:(id)name withTraitCollection:(id)collection;
 - (id)_defaultConfiguration;
-- (id)_descriptionOmittingSymbolConfiguration:(BOOL)a3;
-- (id)_doubleBezeledImageWithExteriorShadowRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 interiorShadowRed:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10 fillRed:(double)a11 green:(double)a12 blue:(double)a13 alpha:(double)a14;
+- (id)_descriptionOmittingSymbolConfiguration:(BOOL)configuration;
+- (id)_doubleBezeledImageWithExteriorShadowRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha interiorShadowRed:(double)shadowRed green:(double)a8 blue:(double)a9 alpha:(double)self0 fillRed:(double)self1 green:(double)self2 blue:(double)self3 alpha:(double)self4;
 - (id)_existingIdentityDescription;
-- (id)_flatImageWithColor:(id)a3;
-- (id)_flatImageWithWhite:(double)a3 alpha:(double)a4;
+- (id)_flatImageWithColor:(id)color;
+- (id)_flatImageWithWhite:(double)white alpha:(double)alpha;
 - (id)_identityDescription;
-- (id)_imageByApplyingSymbolVariant:(id)a3;
-- (id)_imageByApplyingVariant:(unint64_t)a3 allowNone:(BOOL)a4;
-- (id)_imageForLegibilitySettings:(id)a3 strength:(double)a4 alphaOnly:(BOOL)a5;
-- (id)_imageForLegibilityStyle:(int64_t)a3;
-- (id)_imagePaddedByInsets:(UIEdgeInsets)a3;
-- (id)_imageScaledToProportion:(double)a3 interpolationQuality:(int)a4;
+- (id)_imageByApplyingSymbolVariant:(id)variant;
+- (id)_imageByApplyingVariant:(unint64_t)variant allowNone:(BOOL)none;
+- (id)_imageForLegibilitySettings:(id)settings strength:(double)strength alphaOnly:(BOOL)only;
+- (id)_imageForLegibilityStyle:(int64_t)style;
+- (id)_imagePaddedByInsets:(UIEdgeInsets)insets;
+- (id)_imageScaledToProportion:(double)proportion interpolationQuality:(int)quality;
 - (id)_imageThatSuppressesAccessibilityHairlineThickening;
-- (id)_imageTintedWithColor:(id)a3 renderingMode:(int64_t)a4 withUpdatedCGImage:(BOOL)a5;
+- (id)_imageTintedWithColor:(id)color renderingMode:(int64_t)mode withUpdatedCGImage:(BOOL)image;
 - (id)_imageWithBitmapRepresentation;
-- (id)_imageWithBrightnessModifiedForLegibilityStyle:(int64_t)a3;
-- (id)_imageWithContent:(id)a3;
-- (id)_imageWithContentInsets:(UIEdgeInsets)a3 withUpdatedCGImage:(BOOL)a4;
-- (id)_imageWithImageAsset:(id)a3;
-- (id)_imageWithImageAsset:(id)a3 configuration:(id)a4;
-- (id)_imageWithSize:(CGSize)a3;
-- (id)_imageWithSize:(CGSize)a3 content:(id)a4;
-- (id)_imageWithStylePresets:(id)a3 tintColor:(id)a4 traitCollection:(id)a5;
-- (id)_imageWithSymbolMetricsFromNamedVectorGlyph:(id)a3;
-- (id)_imageWithVariableValue:(double)a3;
-- (id)_initWithCGPDFPage:(CGPDFPage *)a3 scale:(double)a4 orientation:(int64_t)a5;
-- (id)_initWithCGSVGDocument:(CGSVGDocument *)a3 scale:(double)a4 orientation:(int64_t)a5;
-- (id)_initWithCompositedSymbolImageLayers:(id)a3 name:(id)a4 alignUsingBaselines:(BOOL)a5;
-- (id)_initWithContent:(id)a3 orientation:(int64_t)a4;
-- (id)_initWithData:(id)a3 immediateLoadWithMaxSize:(CGSize)a4 scale:(double)a5 renderingIntent:(unint64_t)a6 cache:(BOOL)a7;
-- (id)_initWithData:(id)a3 preserveScale:(BOOL)a4 cache:(BOOL)a5 scale:(double)a6;
-- (id)_initWithFilledSystemImageNamed:(id)a3 fillColor:(id)a4 symbolColor:(id)a5 withName:(id)a6;
-- (id)_initWithIOSurface:(__IOSurface *)a3 imageOrientation:(int64_t)a4;
-- (id)_initWithOtherImage:(id)a3;
-- (id)_initWithSDRIOSurface:(__IOSurface *)a3 HDRIOSurface:(__IOSurface *)a4 scale:(double)a5 orientation:(int64_t)a6;
-- (id)_localRenditionCache:(BOOL)a3;
+- (id)_imageWithBrightnessModifiedForLegibilityStyle:(int64_t)style;
+- (id)_imageWithContent:(id)content;
+- (id)_imageWithContentInsets:(UIEdgeInsets)insets withUpdatedCGImage:(BOOL)image;
+- (id)_imageWithImageAsset:(id)asset;
+- (id)_imageWithImageAsset:(id)asset configuration:(id)configuration;
+- (id)_imageWithSize:(CGSize)size;
+- (id)_imageWithSize:(CGSize)size content:(id)content;
+- (id)_imageWithStylePresets:(id)presets tintColor:(id)color traitCollection:(id)collection;
+- (id)_imageWithSymbolMetricsFromNamedVectorGlyph:(id)glyph;
+- (id)_imageWithVariableValue:(double)value;
+- (id)_initWithCGPDFPage:(CGPDFPage *)page scale:(double)scale orientation:(int64_t)orientation;
+- (id)_initWithCGSVGDocument:(CGSVGDocument *)document scale:(double)scale orientation:(int64_t)orientation;
+- (id)_initWithCompositedSymbolImageLayers:(id)layers name:(id)name alignUsingBaselines:(BOOL)baselines;
+- (id)_initWithContent:(id)content orientation:(int64_t)orientation;
+- (id)_initWithData:(id)data immediateLoadWithMaxSize:(CGSize)size scale:(double)scale renderingIntent:(unint64_t)intent cache:(BOOL)cache;
+- (id)_initWithData:(id)data preserveScale:(BOOL)scale cache:(BOOL)cache scale:(double)a6;
+- (id)_initWithFilledSystemImageNamed:(id)named fillColor:(id)color symbolColor:(id)symbolColor withName:(id)name;
+- (id)_initWithIOSurface:(__IOSurface *)surface imageOrientation:(int64_t)orientation;
+- (id)_initWithOtherImage:(id)image;
+- (id)_initWithSDRIOSurface:(__IOSurface *)surface HDRIOSurface:(__IOSurface *)oSurface scale:(double)scale orientation:(int64_t)orientation;
+- (id)_localRenditionCache:(BOOL)cache;
 - (id)_metricsDescription;
 - (id)_outlinePath;
 - (id)_rasterizedCustomSymbolImageForFastXPCCoding;
 - (id)_rasterizedImage;
-- (id)_resizableImageWithSubimageInsets:(UIEdgeInsets)a3 resizeInsets:(UIEdgeInsets)a4;
+- (id)_resizableImageWithSubimageInsets:(UIEdgeInsets)insets resizeInsets:(UIEdgeInsets)resizeInsets;
 - (id)_serializedData;
-- (id)_stretchableImageWithCapInsets:(UIEdgeInsets)a3;
-- (id)_swizzleContent:(id)a3;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (int64_t)_effectiveRenderingModeWithSymbolConfiguration:(id)a3;
+- (id)_stretchableImageWithCapInsets:(UIEdgeInsets)insets;
+- (id)_swizzleContent:(id)content;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (int64_t)_effectiveRenderingModeWithSymbolConfiguration:(id)configuration;
 - (int64_t)_imageOrientationConsideringRTL;
-- (int64_t)_imageOrientationConsideringRTLForUserInterfaceLayoutDirection:(int64_t)a3;
-- (int64_t)_imageOrientationForSymbolLayerConsideringRTLForUserInterfaceLayoutDirection:(int64_t)a3;
+- (int64_t)_imageOrientationConsideringRTLForUserInterfaceLayoutDirection:(int64_t)direction;
+- (int64_t)_imageOrientationForSymbolLayerConsideringRTLForUserInterfaceLayoutDirection:(int64_t)direction;
 - (unint64_t)hash;
-- (void)_cacheRendition:(id)a3 forKey:(id)a4;
-- (void)_configureImage:(id)a3 assumePreconfigured:(BOOL)a4;
-- (void)_drawImageForLegibilitySettings:(id)a3 strength:(double)a4 size:(CGSize)a5 alphaOnly:(BOOL)a6;
-- (void)_drawImageForLegibilityStyle:(int64_t)a3 size:(CGSize)a4;
-- (void)_drawInContext:(CGContext *)a3 rect:(CGRect)a4 layout:(id)a5;
-- (void)_drawInContext:(CGContext *)a3 rect:(CGRect)a4 layout:(id)a5 scale:(double)a6 applyContentsTransform:(BOOL)a7;
-- (void)_encodeDataWithCoder:(id)a3 imageName:(id)a4;
-- (void)_encodePropertiesWithCoder:(id)a3;
+- (void)_cacheRendition:(id)rendition forKey:(id)key;
+- (void)_configureImage:(id)image assumePreconfigured:(BOOL)preconfigured;
+- (void)_drawImageForLegibilitySettings:(id)settings strength:(double)strength size:(CGSize)size alphaOnly:(BOOL)only;
+- (void)_drawImageForLegibilityStyle:(int64_t)style size:(CGSize)size;
+- (void)_drawInContext:(CGContext *)context rect:(CGRect)rect layout:(id)layout;
+- (void)_drawInContext:(CGContext *)context rect:(CGRect)rect layout:(id)layout scale:(double)scale applyContentsTransform:(BOOL)transform;
+- (void)_encodeDataWithCoder:(id)coder imageName:(id)name;
+- (void)_encodePropertiesWithCoder:(id)coder;
 - (void)_removeBaseline;
-- (void)_setAlignmentRectInsets:(UIEdgeInsets)a3;
-- (void)_setBaselineOffsetFromBottom:(double)a3;
-- (void)_setCached:(BOOL)a3;
-- (void)_setContentInsets:(UIEdgeInsets)a3;
-- (void)_setContentInsetsExplicitly:(UIEdgeInsets)a3;
-- (void)_setLocalRenditionCache:(id)a3;
-- (void)_setSymbolMetricsFromNamedVectorGlyph:(id)a3;
-- (void)compositeToPoint:(CGPoint)a3 fromRect:(CGRect)a4 operation:(int)a5 fraction:(double)a6;
-- (void)compositeToPoint:(CGPoint)a3 operation:(int)a4 fraction:(double)a5;
-- (void)compositeToRect:(CGRect)a3 fromRect:(CGRect)a4 operation:(int)a5 fraction:(double)a6;
+- (void)_setAlignmentRectInsets:(UIEdgeInsets)insets;
+- (void)_setBaselineOffsetFromBottom:(double)bottom;
+- (void)_setCached:(BOOL)cached;
+- (void)_setContentInsets:(UIEdgeInsets)insets;
+- (void)_setContentInsetsExplicitly:(UIEdgeInsets)explicitly;
+- (void)_setLocalRenditionCache:(id)cache;
+- (void)_setSymbolMetricsFromNamedVectorGlyph:(id)glyph;
+- (void)compositeToPoint:(CGPoint)point fromRect:(CGRect)rect operation:(int)operation fraction:(double)fraction;
+- (void)compositeToPoint:(CGPoint)point operation:(int)operation fraction:(double)fraction;
+- (void)compositeToRect:(CGRect)rect fromRect:(CGRect)fromRect operation:(int)operation fraction:(double)fraction;
 - (void)dealloc;
-- (void)draw1PartImageInRect:(CGRect)a3 fraction:(double)a4 operation:(int)a5;
-- (void)draw3PartImageWithSliceRects:(id *)a3 inRect:(CGRect)a4;
-- (void)draw3PartImageWithSliceRects:(id *)a3 inRect:(CGRect)a4 fraction:(double)a5;
-- (void)draw3PartImageWithSliceRects:(id *)a3 inRect:(CGRect)a4 operation:(int)a5 fraction:(double)a6;
-- (void)draw9PartImageWithSliceRects:(id *)a3 inRect:(CGRect)a4;
-- (void)draw9PartImageWithSliceRects:(id *)a3 inRect:(CGRect)a4 fraction:(double)a5;
-- (void)draw9PartImageWithSliceRects:(id *)a3 inRect:(CGRect)a4 operation:(int)a5 fraction:(double)a6;
+- (void)draw1PartImageInRect:(CGRect)rect fraction:(double)fraction operation:(int)operation;
+- (void)draw3PartImageWithSliceRects:(id *)rects inRect:(CGRect)rect;
+- (void)draw3PartImageWithSliceRects:(id *)rects inRect:(CGRect)rect fraction:(double)fraction;
+- (void)draw3PartImageWithSliceRects:(id *)rects inRect:(CGRect)rect operation:(int)operation fraction:(double)fraction;
+- (void)draw9PartImageWithSliceRects:(id *)rects inRect:(CGRect)rect;
+- (void)draw9PartImageWithSliceRects:(id *)rects inRect:(CGRect)rect fraction:(double)fraction;
+- (void)draw9PartImageWithSliceRects:(id *)rects inRect:(CGRect)rect operation:(int)operation fraction:(double)fraction;
 - (void)drawAsPatternInRect:(CGRect)rect;
 - (void)drawAtPoint:(CGPoint)point blendMode:(CGBlendMode)blendMode alpha:(CGFloat)alpha;
 - (void)drawInRect:(CGRect)rect blendMode:(CGBlendMode)blendMode alpha:(CGFloat)alpha;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)prepareForDisplayWithCompletionHandler:(void *)completionHandler;
 - (void)prepareThumbnailOfSize:(CGSize)size completionHandler:(void *)completionHandler;
-- (void)setFlipsForRightToLeftLayoutDirection:(BOOL)a3;
+- (void)setFlipsForRightToLeftLayoutDirection:(BOOL)direction;
 @end
 
 @implementation UIImage
@@ -236,17 +236,17 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 imageConfiguration];
+    imageConfiguration = [v2 imageConfiguration];
   }
 
   else
   {
-    v4 = 0;
+    imageConfiguration = 0;
   }
 
-  v5 = v4;
+  v5 = imageConfiguration;
 
-  return v4;
+  return imageConfiguration;
 }
 
 - (CGSize)_fullSize
@@ -267,8 +267,8 @@
 
     else
     {
-      v5 = self;
-      content = [(UIImage *)v5 _initWithContent:0 orientation:[(UIImage *)v5 imageOrientation]];
+      selfCopy = self;
+      content = [(UIImage *)selfCopy _initWithContent:0 orientation:[(UIImage *)selfCopy imageOrientation]];
     }
   }
 
@@ -355,8 +355,8 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIImage.m" lineNumber:2034 description:{@"Don’t know how to obtain orientation from <%p:%@>", objc_opt_class(), self->_content}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImage.m" lineNumber:2034 description:{@"Don’t know how to obtain orientation from <%p:%@>", objc_opt_class(), self->_content}];
   }
 
   content = self->_content;
@@ -366,17 +366,17 @@
 
 - (BOOL)_representsCIImageWhichSupportsIOSurfaceRendering
 {
-  v3 = [(_UIImageContent *)self->_content isCIImage];
-  if (v3)
+  isCIImage = [(_UIImageContent *)self->_content isCIImage];
+  if (isCIImage)
   {
-    v3 = [(_UIImageContent *)self->_content canRenderCIImage];
-    if (v3)
+    isCIImage = [(_UIImageContent *)self->_content canRenderCIImage];
+    if (isCIImage)
     {
-      LOBYTE(v3) = ![(UIImage *)self _isResizable];
+      LOBYTE(isCIImage) = ![(UIImage *)self _isResizable];
     }
   }
 
-  return v3;
+  return isCIImage;
 }
 
 - (UIImageSymbolConfiguration)symbolConfiguration
@@ -449,11 +449,11 @@ LABEL_7:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:a1 selector:sel__flushCache_ name:@"UIApplicationDidReceiveMemoryWarningNotification" object:UIApp];
-    [v3 addObserver:a1 selector:sel__flushCache_ name:@"UIApplicationDidEnterBackgroundNotification" object:UIApp];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__flushCache_ name:@"UIApplicationDidReceiveMemoryWarningNotification" object:UIApp];
+    [defaultCenter addObserver:self selector:sel__flushCache_ name:@"UIApplicationDidEnterBackgroundNotification" object:UIApp];
   }
 }
 
@@ -497,9 +497,9 @@ LABEL_7:
       goto LABEL_22;
     }
 
-    v7 = [(UIImage *)self _isSymbolImage];
+    _isSymbolImage = [(UIImage *)self _isSymbolImage];
     v8 = _UIImageIsFromMainBundle(self);
-    if (v7)
+    if (_isSymbolImage)
     {
       if (v8)
       {
@@ -568,12 +568,12 @@ LABEL_23:
 
 - (BOOL)_representsLayeredImage
 {
-  v3 = [(UIImage *)self _primitiveImageAsset];
-  if (v3)
+  _primitiveImageAsset = [(UIImage *)self _primitiveImageAsset];
+  if (_primitiveImageAsset)
   {
-    v4 = [(UIImage *)self imageAsset];
-    v5 = [v4 _layerStack];
-    v6 = v5 != 0;
+    imageAsset = [(UIImage *)self imageAsset];
+    _layerStack = [imageAsset _layerStack];
+    v6 = _layerStack != 0;
   }
 
   else
@@ -588,16 +588,16 @@ LABEL_23:
 {
   if (*(&self->_imageFlags + 2))
   {
-    v2 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
-    [(UIImage *)v2 _setIsFlippedInRightToLeft];
+    selfCopy = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
+    [(UIImage *)selfCopy _setIsFlippedInRightToLeft];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (CGColor)_tiledPatternColor
@@ -628,8 +628,8 @@ LABEL_23:
         v14.f64[1] = v22;
         v21 = vmulq_f64(v14, vrndpq_f64(vdivq_f64(vmulq_f64(v12, vdupq_n_s64(0x4040000000000000uLL)), v14)));
         v15 = [UIGraphicsImageRenderer alloc];
-        v16 = [(UIImage *)self imageRendererFormat];
-        v17 = [(UIGraphicsImageRenderer *)v15 initWithSize:v16 format:*&v21];
+        imageRendererFormat = [(UIImage *)self imageRendererFormat];
+        v17 = [(UIGraphicsImageRenderer *)v15 initWithSize:imageRendererFormat format:*&v21];
 
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
@@ -734,12 +734,12 @@ LABEL_12:
 {
   if (self->_imageAsset)
   {
-    v2 = [(UIImage *)self _existingIdentityDescription];
-    v3 = v2;
+    _existingIdentityDescription = [(UIImage *)self _existingIdentityDescription];
+    v3 = _existingIdentityDescription;
     v4 = @"?";
-    if (v2)
+    if (_existingIdentityDescription)
     {
-      v4 = v2;
+      v4 = _existingIdentityDescription;
     }
 
     v5 = v4;
@@ -755,19 +755,19 @@ LABEL_12:
 
 - (UIImage)imageByPreparingForDisplay
 {
-  v3 = [(_UIImageContent *)self->_content contentPreparedForDisplay];
-  v4 = v3;
-  if (v3 == self->_content)
+  contentPreparedForDisplay = [(_UIImageContent *)self->_content contentPreparedForDisplay];
+  v4 = contentPreparedForDisplay;
+  if (contentPreparedForDisplay == self->_content)
   {
-    v5 = self;
+    selfCopy = self;
     goto LABEL_5;
   }
 
-  if (v3)
+  if (contentPreparedForDisplay)
   {
-    v5 = [(UIImage *)self _imageWithContent:v3];
+    selfCopy = [(UIImage *)self _imageWithContent:contentPreparedForDisplay];
 LABEL_5:
-    v6 = v5;
+    v6 = selfCopy;
     goto LABEL_7;
   }
 
@@ -781,7 +781,7 @@ LABEL_7:
 {
   if ([(_UIImageContent *)self->_content isCGImage]&& ([(UIImage *)self _contentInsets], v6 == 0.0) && v4 == 0.0 && v3 == 0.0 && v5 == 0.0)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -809,16 +809,16 @@ LABEL_7:
       *(v14 + 8) = 0;
 
       *(v14 + 104) &= ~1u;
-      v7 = [v14 _imageWithContentInsets:{0.0, 0.0, 0.0, 0.0}];
+      selfCopy = [v14 _imageWithContentInsets:{0.0, 0.0, 0.0, 0.0}];
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (UIImage)imageWithoutBaseline
@@ -833,19 +833,19 @@ LABEL_7:
 {
   if ([(UIImage *)self CGImage])
   {
-    v3 = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
-    if (v3)
+    selfCopy = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
+    if (selfCopy)
     {
-      *&v3->_imageFlags |= 0x800u;
+      *&selfCopy->_imageFlags |= 0x800u;
     }
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (void)_flushSharedImageCache
@@ -993,26 +993,26 @@ LABEL_28:
     objc_setAssociatedObject(self, &__imageSeeThroughKey, v3, 1);
   }
 
-  v28 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v28;
+  return bOOLValue;
 }
 
-+ (id)_imageNamed:(id)a3 withTrait:(id)a4
++ (id)_imageNamed:(id)named withTrait:(id)trait
 {
-  v6 = a3;
-  if (a4)
+  namedCopy = named;
+  if (trait)
   {
-    v7 = [a4 imageConfiguration];
+    imageConfiguration = [trait imageConfiguration];
   }
 
   else
   {
-    v7 = 0;
+    imageConfiguration = 0;
   }
 
-  v8 = v7;
-  v9 = [a1 imageNamed:v6 inBundle:0 withConfiguration:v8];
+  v8 = imageConfiguration;
+  v9 = [self imageNamed:namedCopy inBundle:0 withConfiguration:v8];
 
   return v9;
 }
@@ -1023,16 +1023,16 @@ LABEL_28:
   v9 = name;
   if (traitCollection)
   {
-    v10 = [(UITraitCollection *)traitCollection imageConfiguration];
+    imageConfiguration = [(UITraitCollection *)traitCollection imageConfiguration];
   }
 
   else
   {
-    v10 = 0;
+    imageConfiguration = 0;
   }
 
-  v11 = v10;
-  v12 = [a1 imageNamed:v9 inBundle:v8 withConfiguration:v11];
+  v11 = imageConfiguration;
+  v12 = [self imageNamed:v9 inBundle:v8 withConfiguration:v11];
 
   return v12;
 }
@@ -1040,7 +1040,7 @@ LABEL_28:
 + (UIImage)imageNamed:(NSString *)name inBundle:(NSBundle *)bundle variableValue:(double)value withConfiguration:(UIImageConfiguration *)configuration
 {
   v9 = name;
-  v10 = bundle;
+  mainBundle = bundle;
   v11 = configuration;
   os_unfair_lock_lock(&stru_1ED498CF0);
   if (!qword_1ED498D00)
@@ -1051,27 +1051,27 @@ LABEL_28:
   }
 
   v14 = [UIImageConfiguration _completeConfiguration:v11 fromConfiguration:0];
-  if (!v10)
+  if (!mainBundle)
   {
-    v10 = [MEMORY[0x1E696AAE8] mainBundle];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
   }
 
-  v15 = [_UIImageCacheKey keyWithName:v9 configuration:v14 bundle:v10];
+  v15 = [_UIImageCacheKey keyWithName:v9 configuration:v14 bundle:mainBundle];
   v16 = [qword_1ED498D00 objectForKey:v15];
   os_unfair_lock_unlock(&stru_1ED498CF0);
   if (!v16)
   {
-    if (v10)
+    if (mainBundle)
     {
-      v17 = [MEMORY[0x1E696AAE8] mainBundle];
-      if (v10 == v17)
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+      if (mainBundle == mainBundle2)
       {
         _UIKitGetApplicationAssetManager();
       }
 
       else
       {
-        [_UIAssetManager assetManagerForBundle:v10];
+        [_UIAssetManager assetManagerForBundle:mainBundle];
       }
       v18 = ;
     }
@@ -1089,22 +1089,22 @@ LABEL_28:
 
     else
     {
-      if (!v10)
+      if (!mainBundle)
       {
-        v10 = [MEMORY[0x1E696AAE8] mainBundle];
+        mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
       }
 
       if (dyld_program_sdk_at_least())
       {
-        v27 = [_UIAssetManager newAssetNamed:v9 fromBundle:v10];
-        v20 = [v27 _defaultTraitCollection];
-        v21 = v20;
-        if (v20)
+        v27 = [_UIAssetManager newAssetNamed:v9 fromBundle:mainBundle];
+        _defaultTraitCollection = [v27 _defaultTraitCollection];
+        v21 = _defaultTraitCollection;
+        if (_defaultTraitCollection)
         {
-          v20 = [v20 imageConfiguration];
+          _defaultTraitCollection = [_defaultTraitCollection imageConfiguration];
         }
 
-        v22 = v20;
+        v22 = _defaultTraitCollection;
         v23 = [UIImageConfiguration _completeConfiguration:v11 fromConfiguration:v22];
 
         v16 = [v27 imageWithConfiguration:v23];
@@ -1119,7 +1119,7 @@ LABEL_28:
       else
       {
         v24 = _UIScreenForcedMainScreenScale(2) == 1.0;
-        v16 = _UIImageAtPath(v9, v10, v24, 1);
+        v16 = _UIImageAtPath(v9, mainBundle, v24, 1);
         if (!v16)
         {
 LABEL_23:
@@ -1146,27 +1146,27 @@ LABEL_24:
   v6 = name;
   if (traitCollection)
   {
-    v7 = [(UITraitCollection *)traitCollection imageConfiguration];
+    imageConfiguration = [(UITraitCollection *)traitCollection imageConfiguration];
   }
 
   else
   {
-    v7 = 0;
+    imageConfiguration = 0;
   }
 
-  v8 = v7;
-  v9 = [a1 systemImageNamed:v6 withConfiguration:v8];
+  v8 = imageConfiguration;
+  v9 = [self systemImageNamed:v6 withConfiguration:v8];
 
   return v9;
 }
 
-+ (id)_systemImageNamed:(id)a3 variableValue:(double)a4 withConfiguration:(id)a5 allowPrivate:(BOOL)a6
++ (id)_systemImageNamed:(id)named variableValue:(double)value withConfiguration:(id)configuration allowPrivate:(BOOL)private
 {
-  v6 = a6;
+  privateCopy = private;
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [UIImageConfiguration _completeConfiguration:a5 fromConfiguration:0];
-  v11 = v9;
+  namedCopy = named;
+  v10 = [UIImageConfiguration _completeConfiguration:configuration fromConfiguration:0];
+  v11 = namedCopy;
   objc_opt_self();
   v12 = objc_opt_new();
   v13 = [v11 copy];
@@ -1181,7 +1181,7 @@ LABEL_24:
   v17 = *(v12 + 24);
   *(v12 + 24) = 0;
 
-  if (v6)
+  if (privateCopy)
   {
     v18 = 3;
   }
@@ -1211,7 +1211,7 @@ LABEL_24:
     v22 = [v23 imageNamed:v11 configuration:v16];
     if (!v22)
     {
-      if (!v6)
+      if (!privateCopy)
       {
         if (qword_1ED498D18 != -1)
         {
@@ -1269,7 +1269,7 @@ LABEL_16:
   }
 
 LABEL_17:
-  v25 = [v22 _imageWithVariableValue:a4];
+  v25 = [v22 _imageWithVariableValue:value];
 
   return v25;
 }
@@ -1294,36 +1294,36 @@ void __74__UIImage__systemImageNamed_variableValue_withConfiguration_allowPrivat
   byte_1ED498CE9 = v2;
 }
 
-- (id)_imageWithVariableValue:(double)a3
+- (id)_imageWithVariableValue:(double)value
 {
-  v4 = [(_UIImageContent *)self->_content contentWithVariableValue:a3];
+  v4 = [(_UIImageContent *)self->_content contentWithVariableValue:value];
   if (self->_content == v4)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [(UIImage *)self _imageWithContent:v4];
+    selfCopy = [(UIImage *)self _imageWithContent:v4];
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
 
-+ (id)_systemImageNamed:(id)a3 fallback:(id)a4 withConfiguration:(id)a5
++ (id)_systemImageNamed:(id)named fallback:(id)fallback withConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  namedCopy = named;
+  fallbackCopy = fallback;
+  configurationCopy = configuration;
+  if (!namedCopy)
   {
     goto LABEL_8;
   }
 
   v10 = dyld_program_sdk_at_least();
-  if (v8)
+  if (fallbackCopy)
   {
     if (!v10)
     {
@@ -1331,66 +1331,66 @@ void __74__UIImage__systemImageNamed_variableValue_withConfiguration_allowPrivat
     }
   }
 
-  if (v9)
+  if (configurationCopy)
   {
-    [UIImage systemImageNamed:v7 withConfiguration:v9];
+    [UIImage systemImageNamed:namedCopy withConfiguration:configurationCopy];
   }
 
   else
   {
-    [UIImage systemImageNamed:v7];
+    [UIImage systemImageNamed:namedCopy];
   }
   v11 = ;
   if (!v11)
   {
 LABEL_8:
-    v11 = _UIImageWithName(v8);
+    v11 = _UIImageWithName(fallbackCopy);
   }
 
   return v11;
 }
 
-- (id)_initWithFilledSystemImageNamed:(id)a3 fillColor:(id)a4 symbolColor:(id)a5 withName:(id)a6
+- (id)_initWithFilledSystemImageNamed:(id)named fillColor:(id)color symbolColor:(id)symbolColor withName:(id)name
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [UIImage systemImageNamed:v10];
+  namedCopy = named;
+  colorCopy = color;
+  symbolColorCopy = symbolColor;
+  nameCopy = name;
+  v14 = [UIImage systemImageNamed:namedCopy];
   if (!v14)
   {
     goto LABEL_21;
   }
 
-  if ([v10 containsString:@".circle"])
+  if ([namedCopy containsString:@".circle"])
   {
     v15 = @"circle.fill";
   }
 
-  else if ([v10 containsString:@".square.stack"])
+  else if ([namedCopy containsString:@".square.stack"])
   {
     v15 = @"square.stack.fill";
   }
 
-  else if ([v10 containsString:@".rectangle.stack"])
+  else if ([namedCopy containsString:@".rectangle.stack"])
   {
     v15 = @"rectangle.stack.fill";
   }
 
-  else if ([v10 containsString:@".square"])
+  else if ([namedCopy containsString:@".square"])
   {
     v15 = @"square.fill";
   }
 
-  else if ([v10 containsString:@".rectangle"])
+  else if ([namedCopy containsString:@".rectangle"])
   {
     v15 = @"rectangle.fill";
   }
 
   else
   {
-    if (![v10 containsString:@".triangle"])
+    if (![namedCopy containsString:@".triangle"])
     {
 LABEL_21:
       v24 = 0;
@@ -1407,8 +1407,8 @@ LABEL_21:
   }
 
   v17 = v16;
-  v26 = self;
-  if ([v10 containsString:@".fill"])
+  selfCopy = self;
+  if ([namedCopy containsString:@".fill"])
   {
     v18 = 0.85;
   }
@@ -1420,52 +1420,52 @@ LABEL_21:
 
   v19 = *MEMORY[0x1E695EFF8];
   v20 = *(MEMORY[0x1E695EFF8] + 8);
-  v21 = [_UIImageSymbolLayer _symbolLayerWithImage:v14 color:v12 offset:*MEMORY[0x1E695EFF8] scaleFactor:v20, 1.0];
+  v21 = [_UIImageSymbolLayer _symbolLayerWithImage:v14 color:symbolColorCopy offset:*MEMORY[0x1E695EFF8] scaleFactor:v20, 1.0];
   v27[0] = v21;
-  v22 = [_UIImageSymbolLayer _symbolLayerWithImage:v17 color:v11 offset:v19 scaleFactor:v20, v18];
+  v22 = [_UIImageSymbolLayer _symbolLayerWithImage:v17 color:colorCopy offset:v19 scaleFactor:v20, v18];
   v27[1] = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
 
-  if (!v13)
+  if (!nameCopy)
   {
-    v13 = [v10 stringByAppendingString:@".composite"];
+    nameCopy = [namedCopy stringByAppendingString:@".composite"];
   }
 
-  v24 = [[UIImage alloc] _initWithCompositedSymbolImageLayers:v23 name:v13 alignUsingBaselines:0];
+  v24 = [[UIImage alloc] _initWithCompositedSymbolImageLayers:v23 name:nameCopy alignUsingBaselines:0];
 
-  self = v26;
+  self = selfCopy;
 LABEL_22:
 
   return v24;
 }
 
-- (id)_initWithCompositedSymbolImageLayers:(id)a3 name:(id)a4 alignUsingBaselines:(BOOL)a5
+- (id)_initWithCompositedSymbolImageLayers:(id)layers name:(id)name alignUsingBaselines:(BOOL)baselines
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  layersCopy = layers;
+  nameCopy = name;
+  if ([layersCopy count])
   {
-    if (!v9)
+    if (!nameCopy)
     {
-      v10 = [MEMORY[0x1E696AFB0] UUID];
-      v11 = [v10 UUIDString];
-      v12 = [v11 stringByReplacingOccurrencesOfString:@"-" withString:@"."];
-      v9 = [v12 lowercaseString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v12 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:@"."];
+      nameCopy = [v12 lowercaseString];
     }
 
-    v13 = [@"_." stringByAppendingString:v9];
+    v13 = [@"_." stringByAppendingString:nameCopy];
 
     v25 = MEMORY[0x1E69E9820];
     v26 = 3221225472;
     v27 = __73__UIImage__initWithCompositedSymbolImageLayers_name_alignUsingBaselines___block_invoke;
     v28 = &unk_1E710BF38;
-    v14 = v8;
+    v14 = layersCopy;
     v29 = v14;
-    v30 = a5;
+    baselinesCopy = baselines;
     v15 = [UIImageAsset _dynamicAssetNamed:v13 generator:&v25];
-    v16 = [v14 firstObject];
-    v17 = [v16 content];
-    [v17 scale];
+    firstObject = [v14 firstObject];
+    content = [firstObject content];
+    [content scale];
     v19 = v18;
 
     v20 = +[UIImageSymbolConfiguration unspecifiedConfiguration];
@@ -1474,7 +1474,7 @@ LABEL_22:
 
     v23 = [v15 imageWithConfiguration:v22];
 
-    v9 = v13;
+    nameCopy = v13;
   }
 
   else
@@ -1485,19 +1485,19 @@ LABEL_22:
   return v23;
 }
 
-+ (id)_generateCompositedSymbolImageForAsset:(id)a3 usingLayers:(id)a4 configuration:(id)a5 alignUsingBaselines:(BOOL)a6
++ (id)_generateCompositedSymbolImageForAsset:(id)asset usingLayers:(id)layers configuration:(id)configuration alignUsingBaselines:(BOOL)baselines
 {
-  v106 = a6;
+  baselinesCopy = baselines;
   v133 = *MEMORY[0x1E69E9840];
-  v108 = a3;
-  v8 = a5;
-  v9 = [a4 reverseObjectEnumerator];
-  v10 = [v9 allObjects];
+  assetCopy = asset;
+  configurationCopy = configuration;
+  reverseObjectEnumerator = [layers reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v112 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
-  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
-  v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
-  v107 = [v10 valueForKeyPath:@"color"];
+  v112 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(allObjects, "count")}];
+  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(allObjects, "count")}];
+  v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(allObjects, "count")}];
+  v107 = [allObjects valueForKeyPath:@"color"];
   v14 = *MEMORY[0x1E695F058];
   v13 = *(MEMORY[0x1E695F058] + 8);
   v15 = *(MEMORY[0x1E695F058] + 16);
@@ -1506,7 +1506,7 @@ LABEL_22:
   v129 = 0u;
   v130 = 0u;
   v131 = 0u;
-  obj = v10;
+  obj = allObjects;
   v17 = [obj countByEnumeratingWithState:&v128 objects:v132 count:16];
   if (!v17)
   {
@@ -1538,11 +1538,11 @@ LABEL_22:
       v113 = v14;
       v114 = v13;
       v21 = *(*(&v128 + 1) + 8 * i);
-      v22 = [v21 asset];
-      v23 = [v22 imageWithConfiguration:v8];
+      asset = [v21 asset];
+      v23 = [asset imageWithConfiguration:configurationCopy];
 
-      v24 = [v8 traitCollection];
-      [v24 displayScale];
+      traitCollection = [configurationCopy traitCollection];
+      [traitCollection displayScale];
       v26 = v25;
       if (v25 == 0.0)
       {
@@ -1550,18 +1550,18 @@ LABEL_22:
         v26 = v27;
       }
 
-      v28 = [v23 content];
-      v29 = [v23 content];
-      [v112 addObject:v29];
+      content = [v23 content];
+      content2 = [v23 content];
+      [v112 addObject:content2];
 
       [v21 offset];
       v31 = v30;
-      [v28 glyphScaleFactor];
+      [content glyphScaleFactor];
       UICeilToScale(v31 * v32, v26);
       v34 = v33;
       [v21 offset];
       v36 = v35;
-      [v28 glyphScaleFactor];
+      [content glyphScaleFactor];
       UICeilToScale(v36 * v37, v26);
       v39 = v38;
       v40 = [MEMORY[0x1E696B098] valueWithCGPoint:{v34, v38}];
@@ -1717,19 +1717,19 @@ LABEL_21:
   v93 = CGRectGetMaxX(v118);
   v94 = CGRectGetMaxY(v118);
   v95 = v94;
-  if (v106)
+  if (baselinesCopy)
   {
     v96 = v115;
     v97 = (v115 + v16 - v94) / v16;
     v99 = v107;
-    v98 = v108;
+    v98 = assetCopy;
   }
 
   else
   {
     v97 = 0.5;
     v99 = v107;
-    v98 = v108;
+    v98 = assetCopy;
     v96 = v115;
   }
 
@@ -1768,7 +1768,7 @@ LABEL_21:
   [v104 _setRenderingMode:0];
   [v104 _setContentInsets:{v102, v101, v96, v100}];
   [v104 _setBaselineOffsetFromBottom:v95];
-  [v104 _setConfiguration:v8];
+  [v104 _setConfiguration:configurationCopy];
   [v104 _setNamed:1];
   [v104 _setImageAsset:v98];
 
@@ -1829,24 +1829,24 @@ LABEL_21:
   return v8;
 }
 
-+ (void)_loadImageFromURL:(id)a3 completionHandler:(id)a4
++ (void)_loadImageFromURL:(id)l completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  handlerCopy = handler;
+  if (!lCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"UIImage.m" lineNumber:1455 description:{@"Invalid parameter not satisfying: %@", @"url != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImage.m" lineNumber:1455 description:{@"Invalid parameter not satisfying: %@", @"url != nil"}];
   }
 
-  v9 = [MEMORY[0x1E695AC78] sharedSession];
+  mEMORY[0x1E695AC78] = [MEMORY[0x1E695AC78] sharedSession];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __47__UIImage__loadImageFromURL_completionHandler___block_invoke;
   v13[3] = &unk_1E710BF60;
-  v14 = v8;
-  v10 = v8;
-  v11 = [v9 downloadTaskWithURL:v7 completionHandler:v13];
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = [mEMORY[0x1E695AC78] downloadTaskWithURL:lCopy completionHandler:v13];
 
   [v11 resume];
 }
@@ -1905,17 +1905,17 @@ void __47__UIImage__loadImageFromURL_completionHandler___block_invoke(uint64_t a
   return v10;
 }
 
-- (id)_initWithContent:(id)a3 orientation:(int64_t)a4
+- (id)_initWithContent:(id)content orientation:(int64_t)orientation
 {
-  v6 = a3;
+  contentCopy = content;
   v15.receiver = self;
   v15.super_class = UIImage;
   v7 = [(UIImage *)&v15 init];
   if (v7)
   {
-    if (v6)
+    if (contentCopy)
     {
-      v8 = v6;
+      v8 = contentCopy;
     }
 
     else
@@ -1926,32 +1926,32 @@ void __47__UIImage__loadImageFromURL_completionHandler___block_invoke(uint64_t a
     content = v7->_content;
     v7->_content = v8;
 
-    v7->_imageFlags = (*&v7->_imageFlags & 0xFFFFFFE3 | (4 * (a4 & 7)));
+    v7->_imageFlags = (*&v7->_imageFlags & 0xFFFFFFE3 | (4 * (orientation & 7)));
     [(_UIImageContent *)v7->_content sizeInPixels];
-    [UIImage _applyOrientation:a4 toContentSizeInPixels:?];
+    [UIImage _applyOrientation:orientation toContentSizeInPixels:?];
     v7->_sizeInPixels.width = v10;
     v7->_sizeInPixels.height = v11;
-    v12 = [(UIImage *)v7 _defaultConfiguration];
+    _defaultConfiguration = [(UIImage *)v7 _defaultConfiguration];
     configuration = v7->_configuration;
-    v7->_configuration = v12;
+    v7->_configuration = _defaultConfiguration;
   }
 
   return v7;
 }
 
-- (id)_initWithOtherImage:(id)a3
+- (id)_initWithOtherImage:(id)image
 {
-  v5 = a3;
-  if (!v5)
+  imageCopy = image;
+  if (!imageCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIImage.m" lineNumber:1532 description:{@"Invalid parameter not satisfying: %@", @"otherImage != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImage.m" lineNumber:1532 description:{@"Invalid parameter not satisfying: %@", @"otherImage != nil"}];
   }
 
-  v6 = v5[2];
+  v6 = imageCopy[2];
   if (v6)
   {
-    v7 = -[UIImage _initWithContent:orientation:](self, "_initWithContent:orientation:", v6, [v5 imageOrientation]);
+    v7 = -[UIImage _initWithContent:orientation:](self, "_initWithContent:orientation:", v6, [imageCopy imageOrientation]);
   }
 
   else
@@ -1962,33 +1962,33 @@ void __47__UIImage__loadImageFromURL_completionHandler___block_invoke(uint64_t a
   v8 = v7;
   if (v7)
   {
-    [v5 _configureImage:v7 assumePreconfigured:0];
+    [imageCopy _configureImage:v7 assumePreconfigured:0];
   }
 
   return v8;
 }
 
-- (void)_configureImage:(id)a3 assumePreconfigured:(BOOL)a4
+- (void)_configureImage:(id)image assumePreconfigured:(BOOL)preconfigured
 {
-  v4 = a4;
-  v15 = a3;
-  if (!v4)
+  preconfiguredCopy = preconfigured;
+  imageCopy = image;
+  if (!preconfiguredCopy)
   {
-    v6 = [(UIImage *)self configuration];
-    [v15 _setConfiguration:v6];
+    configuration = [(UIImage *)self configuration];
+    [imageCopy _setConfiguration:configuration];
   }
 
-  if ([(UIImage *)self _isSymbolImage]&& !*(v15 + 1))
+  if ([(UIImage *)self _isSymbolImage]&& !*(imageCopy + 1))
   {
-    [v15 _setImageAsset:self->_imageAsset];
-    [v15 _setNamed:*&self->_imageFlags & 1];
-    if (!v4)
+    [imageCopy _setImageAsset:self->_imageAsset];
+    [imageCopy _setNamed:*&self->_imageFlags & 1];
+    if (!preconfiguredCopy)
     {
       goto LABEL_9;
     }
   }
 
-  else if (!v4)
+  else if (!preconfiguredCopy)
   {
     goto LABEL_9;
   }
@@ -2002,8 +2002,8 @@ LABEL_9:
   if ([(UIImage *)self hasBaseline])
   {
     [(UIImage *)self baselineOffsetFromBottom];
-    [v15 _setBaselineOffsetFromBottom:?];
-    if (!v4)
+    [imageCopy _setBaselineOffsetFromBottom:?];
+    if (!preconfiguredCopy)
     {
       goto LABEL_11;
     }
@@ -2011,15 +2011,15 @@ LABEL_9:
 
   else
   {
-    [v15 _removeBaseline];
-    if (!v4)
+    [imageCopy _removeBaseline];
+    if (!preconfiguredCopy)
     {
 LABEL_11:
-      *(v15 + 12) = *&self->_capHeight;
-      *(v15 + 26) = *(v15 + 26) & 0xFFFDFFFF | (((*&self->_imageFlags >> 17) & 1) << 17);
-      *(v15 + 72) = self->_sizeInPixels;
+      *(imageCopy + 12) = *&self->_capHeight;
+      *(imageCopy + 26) = *(imageCopy + 26) & 0xFFFDFFFF | (((*&self->_imageFlags >> 17) & 1) << 17);
+      *(imageCopy + 72) = self->_sizeInPixels;
       v7 = [(UIImage *)self _localRenditionCache:0];
-      [v15 _setLocalRenditionCache:v7];
+      [imageCopy _setLocalRenditionCache:v7];
 
       if ([(UIImage *)self _hasExplicitContentInsets])
       {
@@ -2044,12 +2044,12 @@ LABEL_15:
   v8 = 0x4000;
 LABEL_17:
   [(UIImage *)self _contentInsets];
-  *(v15 + 5) = v9;
-  *(v15 + 6) = v10;
-  *(v15 + 7) = v11;
-  *(v15 + 8) = v12;
-  *(v15 + 26) = *(v15 + 26) & 0xFFFFBFFF | v8;
-  if (v4)
+  *(imageCopy + 5) = v9;
+  *(imageCopy + 6) = v10;
+  *(imageCopy + 7) = v11;
+  *(imageCopy + 8) = v12;
+  *(imageCopy + 26) = *(imageCopy + 26) & 0xFFFFBFFF | v8;
+  if (preconfiguredCopy)
   {
 LABEL_18:
     if (![(UIImage *)self _hasExplicitAlignmentRectInsets])
@@ -2059,32 +2059,32 @@ LABEL_18:
   }
 
   [(UIImage *)self alignmentRectInsets];
-  [v15 _setAlignmentRectInsets:?];
+  [imageCopy _setAlignmentRectInsets:?];
 LABEL_20:
   if ([(UIImage *)self flipsForRightToLeftLayoutDirection])
   {
-    [v15 _setIsFlippedInRightToLeft];
+    [imageCopy _setIsFlippedInRightToLeft];
   }
 
-  v13 = *(v15 + 26) & 0xFFFFF9FF | (([(UIImage *)self renderingMode]& 3) << 9);
-  *(v15 + 26) = v13;
-  *(v15 + 26) = v13 & 0xFFFFFFDF | (32 * ((*&self->_imageFlags >> 5) & 1));
-  v14 = [(UIImage *)self _colorForFlattening];
-  [v15 _setColorForFlattening:v14];
+  v13 = *(imageCopy + 26) & 0xFFFFF9FF | (([(UIImage *)self renderingMode]& 3) << 9);
+  *(imageCopy + 26) = v13;
+  *(imageCopy + 26) = v13 & 0xFFFFFFDF | (32 * ((*&self->_imageFlags >> 5) & 1));
+  _colorForFlattening = [(UIImage *)self _colorForFlattening];
+  [imageCopy _setColorForFlattening:_colorForFlattening];
 
-  *(v15 + 26) = *(v15 + 26) & 0xFFFFF7FF | (((*&self->_imageFlags >> 11) & 1) << 11);
+  *(imageCopy + 26) = *(imageCopy + 26) & 0xFFFFF7FF | (((*&self->_imageFlags >> 11) & 1) << 11);
 }
 
-- (id)_imageWithContent:(id)a3
+- (id)_imageWithContent:(id)content
 {
-  v5 = a3;
-  if (v5)
+  contentCopy = content;
+  if (contentCopy)
   {
     v6 = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong((v6 + 16), a3);
+      objc_storeStrong((v6 + 16), content);
     }
   }
 
@@ -2096,83 +2096,83 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)_canEncodeWithName:(id)a3 coder:(id)a4
+- (BOOL)_canEncodeWithName:(id)name coder:(id)coder
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = (_UIIsSystemSymbolImage(self) & 1) != 0 || ([v7 _ui_isInterprocess] & 1) == 0 && -[UIImage _isNamed](self, "_isNamed") && objc_msgSend(v6, "length") != 0;
+  nameCopy = name;
+  coderCopy = coder;
+  v8 = (_UIIsSystemSymbolImage(self) & 1) != 0 || ([coderCopy _ui_isInterprocess] & 1) == 0 && -[UIImage _isNamed](self, "_isNamed") && objc_msgSend(nameCopy, "length") != 0;
 
   return v8;
 }
 
-- (BOOL)_canEncodeAsCatalogData:(id)a3
+- (BOOL)_canEncodeAsCatalogData:(id)data
 {
   if (![(UIImage *)self isSymbolImage]|| (_UIIsSystemSymbolImage(self) & 1) != 0)
   {
     return 0;
   }
 
-  v5 = [(UIImage *)self _primitiveImageAsset];
-  v6 = [v5 _canProvideCatalogData];
+  _primitiveImageAsset = [(UIImage *)self _primitiveImageAsset];
+  _canProvideCatalogData = [_primitiveImageAsset _canProvideCatalogData];
 
-  return v6;
+  return _canProvideCatalogData;
 }
 
-- (void)_encodeDataWithCoder:(id)a3 imageName:(id)a4
+- (void)_encodeDataWithCoder:(id)coder imageName:(id)name
 {
-  v5 = a3;
+  coderCopy = coder;
   v7 = UIImagePNGRepresentation(self);
   v6 = [v7 copy];
-  [v5 encodeObject:v6 forKey:@"UIImageData"];
+  [coderCopy encodeObject:v6 forKey:@"UIImageData"];
 }
 
-- (void)_encodePropertiesWithCoder:(id)a3
+- (void)_encodePropertiesWithCoder:(id)coder
 {
-  v10 = a3;
-  [v10 encodeBool:1 forKey:@"UIKitWantsProperties"];
+  coderCopy = coder;
+  [coderCopy encodeBool:1 forKey:@"UIKitWantsProperties"];
   [(_UIImageContent *)self->_content scale];
   *&v4 = v4;
-  [v10 encodeFloat:@"UIScale" forKey:v4];
-  [v10 encodeCGSize:@"UIImageSizeInPixels" forKey:{self->_sizeInPixels.width, self->_sizeInPixels.height}];
-  [v10 encodeInt:-[UIImage imageOrientation](self forKey:{"imageOrientation"), @"UIImageOrientation"}];
-  [v10 encodeBool:(*&self->_imageFlags >> 7) & 1 forKey:@"UIHasPattern"];
-  [v10 encodeInt:(*&self->_imageFlags >> 9) & 3 forKey:@"UIRenderingMode"];
+  [coderCopy encodeFloat:@"UIScale" forKey:v4];
+  [coderCopy encodeCGSize:@"UIImageSizeInPixels" forKey:{self->_sizeInPixels.width, self->_sizeInPixels.height}];
+  [coderCopy encodeInt:-[UIImage imageOrientation](self forKey:{"imageOrientation"), @"UIImageOrientation"}];
+  [coderCopy encodeBool:(*&self->_imageFlags >> 7) & 1 forKey:@"UIHasPattern"];
+  [coderCopy encodeInt:(*&self->_imageFlags >> 9) & 3 forKey:@"UIRenderingMode"];
   v5 = *&self->_alignmentRectInsets.top;
   v6 = *&self->_alignmentRectInsets.bottom;
   if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(v5), vceqzq_f64(v6))))))
   {
-    [v10 encodeUIEdgeInsets:@"UIImageAlignmentRectInsets" forKey:{*&v5, *&v6}];
+    [coderCopy encodeUIEdgeInsets:@"UIImageAlignmentRectInsets" forKey:{*&v5, *&v6}];
   }
 
   if ([(UIImage *)self hasBaseline])
   {
     baselineOffsetFromBottom = self->_baselineOffsetFromBottom;
     *&baselineOffsetFromBottom = baselineOffsetFromBottom;
-    [v10 encodeFloat:@"UIBaselineOffsetFromBottom" forKey:baselineOffsetFromBottom];
+    [coderCopy encodeFloat:@"UIBaselineOffsetFromBottom" forKey:baselineOffsetFromBottom];
   }
 
-  v8 = [(UIImage *)self symbolConfiguration];
-  v9 = v8;
-  if (v8 && ([v8 _isUnspecified] & 1) == 0)
+  symbolConfiguration = [(UIImage *)self symbolConfiguration];
+  v9 = symbolConfiguration;
+  if (symbolConfiguration && ([symbolConfiguration _isUnspecified] & 1) == 0)
   {
-    [v10 encodeObject:v9 forKey:@"UIImageSymbolConfiguration"];
+    [coderCopy encodeObject:v9 forKey:@"UIImageSymbolConfiguration"];
   }
 
   if ([(UIImage *)self _hasContentInsets])
   {
-    [v10 encodeUIEdgeInsets:@"UIImageContentInsets" forKey:{self->_contentInsets.top, self->_contentInsets.left, self->_contentInsets.bottom, self->_contentInsets.right}];
+    [coderCopy encodeUIEdgeInsets:@"UIImageContentInsets" forKey:{self->_contentInsets.top, self->_contentInsets.left, self->_contentInsets.bottom, self->_contentInsets.right}];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v24 = a3;
-  [v24 encodeBool:1 forKey:@"UIKitDidEncode"];
+  coderCopy = coder;
+  [coderCopy encodeBool:1 forKey:@"UIKitDidEncode"];
   v4 = _UIImageName(self);
   v5 = _UIIsKitImage(self);
   v6 = _UIIsSystemSymbolImage(self);
-  v7 = [(UIImage *)self _canEncodeWithName:v4 coder:v24];
-  v8 = v24;
+  v7 = [(UIImage *)self _canEncodeWithName:v4 coder:coderCopy];
+  v8 = coderCopy;
   if (!v7)
   {
     goto LABEL_16;
@@ -2182,7 +2182,7 @@ LABEL_20:
   {
     if (_UIIsPrivateSystemSymbolImage(self))
     {
-      [v24 encodeBool:1 forKey:@"UIIsPrivateSystemImage"];
+      [coderCopy encodeBool:1 forKey:@"UIIsPrivateSystemImage"];
     }
 
     v9 = @"UIIsSystemImage";
@@ -2193,59 +2193,59 @@ LABEL_20:
   {
     if (!dyld_program_sdk_at_least())
     {
-      v11 = _UIPathForImageWithCacheName(v4);
-      [v24 encodeObject:v11 forKey:@"UIImageName"];
+      bundle = _UIPathForImageWithCacheName(v4);
+      [coderCopy encodeObject:bundle forKey:@"UIImageName"];
 LABEL_21:
 
       goto LABEL_24;
     }
 
-    v10 = [(UIImageAsset *)self->_imageAsset _assetManager];
-    v11 = [v10 bundle];
+    _assetManager = [(UIImageAsset *)self->_imageAsset _assetManager];
+    bundle = [_assetManager bundle];
 
-    v12 = [v11 bundlePath];
+    bundlePath = [bundle bundlePath];
 
-    if (v12)
+    if (bundlePath)
     {
-      [v24 encodeObject:v4 forKey:@"UIImageName"];
-      v13 = [v11 bundleIdentifier];
-      [v24 encodeObject:v13 forKey:@"UIImageBundleIdentifier"];
+      [coderCopy encodeObject:v4 forKey:@"UIImageName"];
+      bundleIdentifier = [bundle bundleIdentifier];
+      [coderCopy encodeObject:bundleIdentifier forKey:@"UIImageBundleIdentifier"];
 
-      v14 = [v11 executablePath];
-      v15 = [v14 lastPathComponent];
-      [v24 encodeObject:v15 forKey:@"UIImageBundleLibraryName"];
+      executablePath = [bundle executablePath];
+      lastPathComponent = [executablePath lastPathComponent];
+      [coderCopy encodeObject:lastPathComponent forKey:@"UIImageBundleLibraryName"];
 
 LABEL_20:
       goto LABEL_21;
     }
 
-    v14 = _UIPathForImageWithCacheName(v4);
-    if ([v14 length])
+    executablePath = _UIPathForImageWithCacheName(v4);
+    if ([executablePath length])
     {
       v16 = @"UIImageName";
 LABEL_19:
-      [v24 encodeObject:v14 forKey:v16];
+      [coderCopy encodeObject:executablePath forKey:v16];
       goto LABEL_20;
     }
 
-    v8 = v24;
+    v8 = coderCopy;
 LABEL_16:
     v17 = [(UIImage *)self _canEncodeAsCatalogData:v8];
-    v18 = v24;
+    v18 = coderCopy;
     if (v17)
     {
-      v11 = _UIImageName(self);
-      v19 = [(UIImage *)self _primitiveImageAsset];
-      v14 = [v19 _catalogData];
+      bundle = _UIImageName(self);
+      _primitiveImageAsset = [(UIImage *)self _primitiveImageAsset];
+      executablePath = [_primitiveImageAsset _catalogData];
 
-      if (v14)
+      if (executablePath)
       {
-        [v24 encodeObject:v11 forKey:@"UIImageCatalogAssetName"];
+        [coderCopy encodeObject:bundle forKey:@"UIImageCatalogAssetName"];
         v16 = @"UIImageCatalogData";
         goto LABEL_19;
       }
 
-      v18 = v24;
+      v18 = coderCopy;
     }
 
     [(UIImage *)self _encodeDataWithCoder:v18 imageName:v4];
@@ -2254,57 +2254,57 @@ LABEL_16:
 
   v9 = @"UIIsKitImage";
 LABEL_8:
-  [v24 encodeBool:1 forKey:v9];
-  [v24 encodeObject:v4 forKey:@"UIImageName"];
+  [coderCopy encodeBool:1 forKey:v9];
+  [coderCopy encodeObject:v4 forKey:@"UIImageName"];
 LABEL_24:
-  if (![(UIImage *)self _canEncodeWithName:v4 coder:v24]|| ![(UIImage *)self isMemberOfClass:objc_opt_class()]|| [(UIImage *)self _isSymbolImage])
+  if (![(UIImage *)self _canEncodeWithName:v4 coder:coderCopy]|| ![(UIImage *)self isMemberOfClass:objc_opt_class()]|| [(UIImage *)self _isSymbolImage])
   {
-    [(UIImage *)self _encodePropertiesWithCoder:v24];
+    [(UIImage *)self _encodePropertiesWithCoder:coderCopy];
   }
 
-  [v24 encodeObject:self->_configuration forKey:@"UIImageConfiguration"];
-  v20 = [(UIImageConfiguration *)self->_configuration _effectiveTraitCollectionForImageLookup];
-  [v24 encodeObject:v20 forKey:@"UIImageTraitCollection"];
+  [coderCopy encodeObject:self->_configuration forKey:@"UIImageConfiguration"];
+  _effectiveTraitCollectionForImageLookup = [(UIImageConfiguration *)self->_configuration _effectiveTraitCollectionForImageLookup];
+  [coderCopy encodeObject:_effectiveTraitCollectionForImageLookup forKey:@"UIImageTraitCollection"];
 
   [(UIImage *)self variableValue];
   if (v21 != INFINITY)
   {
-    [v24 encodeDouble:@"UIImageVariableValue" forKey:?];
+    [coderCopy encodeDouble:@"UIImageVariableValue" forKey:?];
   }
 
-  [v24 encodeBool:HIWORD(*&self->_imageFlags) & 1 forKey:@"UIImageIsFlippedInRightToLeft"];
-  v22 = [self accessibilityLabel];
-  [v24 encodeObject:v22 forKey:@"UIImageAccessibilityLabel"];
+  [coderCopy encodeBool:HIWORD(*&self->_imageFlags) & 1 forKey:@"UIImageIsFlippedInRightToLeft"];
+  accessibilityLabel = [self accessibilityLabel];
+  [coderCopy encodeObject:accessibilityLabel forKey:@"UIImageAccessibilityLabel"];
 
-  v23 = [self accessibilityLanguage];
-  [v24 encodeObject:v23 forKey:@"UIImageAccessibilityLanguage"];
+  accessibilityLanguage = [self accessibilityLanguage];
+  [coderCopy encodeObject:accessibilityLanguage forKey:@"UIImageAccessibilityLanguage"];
 }
 
-- (UIImage)initWithCoder:(id)a3
+- (UIImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (![v4 decodeBoolForKey:@"UIKitDidEncode"])
+  coderCopy = coder;
+  if (![coderCopy decodeBoolForKey:@"UIKitDidEncode"])
   {
     v9 = 0;
     goto LABEL_53;
   }
 
-  if ([v4 containsValueForKey:@"UIImageData"] & 1) != 0 || (objc_msgSend(v4, "containsValueForKey:", @"UIImageCatalogData"))
+  if ([coderCopy containsValueForKey:@"UIImageData"] & 1) != 0 || (objc_msgSend(coderCopy, "containsValueForKey:", @"UIImageCatalogData"))
   {
     goto LABEL_16;
   }
 
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIImageName"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIImageName"];
   if (![v5 length])
   {
     goto LABEL_15;
   }
 
-  v6 = [v4 decodeBoolForKey:@"UIIsSystemImage"];
-  v7 = [v4 decodeBoolForKey:@"UIIsKitImage"];
+  v6 = [coderCopy decodeBoolForKey:@"UIIsSystemImage"];
+  v7 = [coderCopy decodeBoolForKey:@"UIIsKitImage"];
   if (v6)
   {
-    v8 = +[UIImage _systemImageNamed:withConfiguration:allowPrivate:](UIImage, "_systemImageNamed:withConfiguration:allowPrivate:", v5, 0, [v4 decodeBoolForKey:@"UIIsPrivateSystemImage"]);
+    v8 = +[UIImage _systemImageNamed:withConfiguration:allowPrivate:](UIImage, "_systemImageNamed:withConfiguration:allowPrivate:", v5, 0, [coderCopy decodeBoolForKey:@"UIIsPrivateSystemImage"]);
     goto LABEL_10;
   }
 
@@ -2321,8 +2321,8 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIImageBundleIdentifier"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIImageBundleLibraryName"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIImageBundleIdentifier"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIImageBundleLibraryName"];
   v14 = [MEMORY[0x1E696AAE8] _bundleWithIdentifier:v12 andLibraryName:v13];
   v10 = [UIImage imageNamed:v5 inBundle:v14 withConfiguration:0];
 
@@ -2331,15 +2331,15 @@ LABEL_10:
 LABEL_15:
 
 LABEL_16:
-    if (([v4 containsValueForKey:@"UIImageCatalogData"] & 1) == 0)
+    if (([coderCopy containsValueForKey:@"UIImageCatalogData"] & 1) == 0)
     {
       v9 = [(UIImage *)self init];
       v10 = 0;
       goto LABEL_34;
     }
 
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIImageCatalogAssetName"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIImageCatalogData"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIImageCatalogAssetName"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIImageCatalogData"];
     if ([v5 length] && v15)
     {
       v16 = [_UIAssetManager alloc];
@@ -2349,8 +2349,8 @@ LABEL_16:
       if (v18)
       {
         v10 = [(_UIAssetManager *)v18 imageNamed:v5 configuration:0];
-        v19 = [(UIImage *)v10 _primitiveImageAsset];
-        [v19 _setStronglyRetainsAssetManager:1];
+        _primitiveImageAsset = [(UIImage *)v10 _primitiveImageAsset];
+        [_primitiveImageAsset _setStronglyRetainsAssetManager:1];
 
         if (v10)
         {
@@ -2405,7 +2405,7 @@ LABEL_33:
       }
 
 LABEL_35:
-      [v4 decodeFloatForKey:@"UIScale"];
+      [coderCopy decodeFloatForKey:@"UIScale"];
       v31 = [[_UIImageCGImageContent alloc] initWithCGImage:v26 scale:v30];
       v32 = v9->_content;
       v9->_content = &v31->super;
@@ -2415,7 +2415,7 @@ LABEL_35:
     }
 
 LABEL_34:
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIImageData"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIImageData"];
     v26 = _UIImageRefFromData(v29, 0, 0, 0);
 
     if (!v26)
@@ -2427,10 +2427,10 @@ LABEL_34:
   }
 
 LABEL_22:
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIImageConfigurationClass"];
-  if (![v21 conformsToProtocol:&unk_1EFFF8ED0] || (objc_msgSend(v4, "decodeObjectOfClass:forKey:", v21, @"UIImageConfiguration"), (v22 = objc_claimAutoreleasedReturnValue()) == 0))
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIImageConfigurationClass"];
+  if (![v21 conformsToProtocol:&unk_1EFFF8ED0] || (objc_msgSend(coderCopy, "decodeObjectOfClass:forKey:", v21, @"UIImageConfiguration"), (v22 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIImageSymbolConfiguration"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIImageSymbolConfiguration"];
     if (!v22)
     {
       v9 = v10;
@@ -2447,16 +2447,16 @@ LABEL_50:
 
   v9 = [(UIImage *)v24 imageWithConfiguration:v23];
 
-  v25 = [v4 decodeBoolForKey:@"UIKitWantsProperties"];
+  v25 = [coderCopy decodeBoolForKey:@"UIKitWantsProperties"];
   v10 = v24;
   self = v24;
   if (v25)
   {
 LABEL_36:
-    v9->_imageFlags = (*&v9->_imageFlags & 0xFFFFFFE3 | (4 * ([v4 decodeIntForKey:@"UIImageOrientation"] & 7)));
-    if ([v4 containsValueForKey:@"UIImageSizeInPixels"])
+    v9->_imageFlags = (*&v9->_imageFlags & 0xFFFFFFE3 | (4 * ([coderCopy decodeIntForKey:@"UIImageOrientation"] & 7)));
+    if ([coderCopy containsValueForKey:@"UIImageSizeInPixels"])
     {
-      [v4 decodeCGSizeForKey:@"UIImageSizeInPixels"];
+      [coderCopy decodeCGSizeForKey:@"UIImageSizeInPixels"];
     }
 
     else
@@ -2468,7 +2468,7 @@ LABEL_36:
 
     v9->_sizeInPixels.width = v33;
     v9->_sizeInPixels.height = v34;
-    if ([v4 decodeBoolForKey:@"UIHasPattern"])
+    if ([coderCopy decodeBoolForKey:@"UIHasPattern"])
     {
       v36 = 128;
     }
@@ -2479,29 +2479,29 @@ LABEL_36:
     }
 
     v9->_imageFlags = (*&v9->_imageFlags & 0xFFFFFF7F | v36);
-    v9->_imageFlags = (*&v9->_imageFlags & 0xFFFFF9FF | (([v4 decodeIntForKey:@"UIRenderingMode"] & 3) << 9));
-    [v4 decodeUIEdgeInsetsForKey:@"UIImageAlignmentRectInsets"];
+    v9->_imageFlags = (*&v9->_imageFlags & 0xFFFFF9FF | (([coderCopy decodeIntForKey:@"UIRenderingMode"] & 3) << 9));
+    [coderCopy decodeUIEdgeInsetsForKey:@"UIImageAlignmentRectInsets"];
     v9->_alignmentRectInsets.top = v37;
     v9->_alignmentRectInsets.left = v38;
     v9->_alignmentRectInsets.bottom = v39;
     v9->_alignmentRectInsets.right = v40;
-    if ([v4 containsValueForKey:@"UIImageContentInsets"])
+    if ([coderCopy containsValueForKey:@"UIImageContentInsets"])
     {
-      [v4 decodeUIEdgeInsetsForKey:@"UIImageContentInsets"];
+      [coderCopy decodeUIEdgeInsetsForKey:@"UIImageContentInsets"];
       v9->_contentInsets.top = v41;
       v9->_contentInsets.left = v42;
       v9->_contentInsets.bottom = v43;
       v9->_contentInsets.right = v44;
     }
 
-    if ([v4 containsValueForKey:@"UIBaselineOffsetFromBottom"])
+    if ([coderCopy containsValueForKey:@"UIBaselineOffsetFromBottom"])
     {
-      [v4 decodeFloatForKey:@"UIBaselineOffsetFromBottom"];
+      [coderCopy decodeFloatForKey:@"UIBaselineOffsetFromBottom"];
       v9->_baselineOffsetFromBottom = v45;
       *&v9->_imageFlags |= 0x1000u;
     }
 
-    if ([v4 decodeBoolForKey:@"UIImageIsFlippedInRightToLeft"])
+    if ([coderCopy decodeBoolForKey:@"UIImageIsFlippedInRightToLeft"])
     {
       v46 = 0x10000;
     }
@@ -2512,18 +2512,18 @@ LABEL_36:
     }
 
     v9->_imageFlags = (*&v9->_imageFlags & 0xFFFEFFFF | v46);
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIImageAccessibilityLabel"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIImageAccessibilityLabel"];
     [v9 setAccessibilityLabel:v47];
 
-    self = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIImageAccessibilityLanguage"];
+    self = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIImageAccessibilityLanguage"];
     [v9 setAccessibilityLanguage:self];
     goto LABEL_50;
   }
 
 LABEL_51:
-  if ([v4 containsValueForKey:@"UIImageVariableValue"])
+  if ([coderCopy containsValueForKey:@"UIImageVariableValue"])
   {
-    [v4 decodeDoubleForKey:@"UIImageVariableValue"];
+    [coderCopy decodeDoubleForKey:@"UIImageVariableValue"];
     v48 = [(UIImage *)v9 _imageWithVariableValue:?];
 
     v9 = v48;
@@ -2534,9 +2534,9 @@ LABEL_53:
   return v9;
 }
 
-+ (CGSize)_applyOrientation:(int64_t)a3 toContentSizeInPixels:(CGSize)result
++ (CGSize)_applyOrientation:(int64_t)orientation toContentSizeInPixels:(CGSize)result
 {
-  if ((a3 & 2) != 0)
+  if ((orientation & 2) != 0)
   {
     height = result.height;
   }
@@ -2546,7 +2546,7 @@ LABEL_53:
     height = result.width;
   }
 
-  if ((a3 & 2) != 0)
+  if ((orientation & 2) != 0)
   {
     result.height = result.width;
   }
@@ -2556,11 +2556,11 @@ LABEL_53:
   return result;
 }
 
-- (void)setFlipsForRightToLeftLayoutDirection:(BOOL)a3
+- (void)setFlipsForRightToLeftLayoutDirection:(BOOL)direction
 {
-  v3 = a3;
+  directionCopy = direction;
   [(UIImage *)self willChangeValueForKey:@"flipsForRightToLeftLayoutDirection"];
-  if (v3)
+  if (directionCopy)
   {
     v5 = 0x10000;
   }
@@ -2577,33 +2577,33 @@ LABEL_53:
 
 - (int64_t)_imageOrientationConsideringRTL
 {
-  v3 = [UIApp userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
 
-  return [(UIImage *)self _imageOrientationConsideringRTLForUserInterfaceLayoutDirection:v3];
+  return [(UIImage *)self _imageOrientationConsideringRTLForUserInterfaceLayoutDirection:userInterfaceLayoutDirection];
 }
 
-- (int64_t)_imageOrientationConsideringRTLForUserInterfaceLayoutDirection:(int64_t)a3
+- (int64_t)_imageOrientationConsideringRTLForUserInterfaceLayoutDirection:(int64_t)direction
 {
-  v5 = [(UIImage *)self imageOrientation];
+  imageOrientation = [(UIImage *)self imageOrientation];
   if ((*(&self->_imageFlags + 2) & 1) == 0)
   {
-    return v5;
+    return imageOrientation;
   }
 
   v7 = +[UIView _enableRTL];
-  if (a3 != 1 || !v7 || [(UIImage *)self _isRTLImage])
+  if (direction != 1 || !v7 || [(UIImage *)self _isRTLImage])
   {
-    return v5;
+    return imageOrientation;
   }
 
   v8 = objc_opt_class();
 
-  return [v8 _horizontallyFlippedOrientationForOrientation:v5];
+  return [v8 _horizontallyFlippedOrientationForOrientation:imageOrientation];
 }
 
-- (int64_t)_imageOrientationForSymbolLayerConsideringRTLForUserInterfaceLayoutDirection:(int64_t)a3
+- (int64_t)_imageOrientationForSymbolLayerConsideringRTLForUserInterfaceLayoutDirection:(int64_t)direction
 {
-  v4 = [(UIImage *)self _imageOrientationConsideringRTLForUserInterfaceLayoutDirection:a3];
+  v4 = [(UIImage *)self _imageOrientationConsideringRTLForUserInterfaceLayoutDirection:direction];
   if (![(UIImage *)self isSymbolImage]|| (*&self->_imageFlags & 0x20) == 0)
   {
     return v4;
@@ -2619,51 +2619,51 @@ LABEL_53:
     return 0;
   }
 
-  v4 = [(UIImage *)self configuration];
-  v5 = [v4 traitCollection];
-  v3 = [v5 layoutDirection] == 1;
+  configuration = [(UIImage *)self configuration];
+  traitCollection = [configuration traitCollection];
+  v3 = [traitCollection layoutDirection] == 1;
 
   return v3;
 }
 
-+ (int64_t)_horizontallyFlippedOrientationForOrientation:(int64_t)a3
++ (int64_t)_horizontallyFlippedOrientationForOrientation:(int64_t)orientation
 {
-  if (a3 > 3)
+  if (orientation > 3)
   {
-    if ((a3 - 4) >= 2)
+    if ((orientation - 4) >= 2)
     {
-      if (a3 == 6)
+      if (orientation == 6)
       {
         return 3;
       }
 
-      if (a3 == 7)
+      if (orientation == 7)
       {
         return 2;
       }
 
-      return a3;
+      return orientation;
     }
 
-    return [a1 _mirroredImageOrientationForOrientation:?];
+    return [self _mirroredImageOrientationForOrientation:?];
   }
 
-  if (a3 < 2)
+  if (orientation < 2)
   {
-    return [a1 _mirroredImageOrientationForOrientation:?];
+    return [self _mirroredImageOrientationForOrientation:?];
   }
 
-  if (a3 == 2)
+  if (orientation == 2)
   {
     return 7;
   }
 
-  if (a3 == 3)
+  if (orientation == 3)
   {
     return 6;
   }
 
-  return a3;
+  return orientation;
 }
 
 - (UIImage)imageWithHorizontallyFlippedOrientation
@@ -2702,33 +2702,33 @@ LABEL_53:
 
 - (id)_bundle
 {
-  v2 = [(UIImage *)self _primitiveImageAsset];
-  v3 = [v2 _assetManager];
-  v4 = [v3 bundle];
+  _primitiveImageAsset = [(UIImage *)self _primitiveImageAsset];
+  _assetManager = [_primitiveImageAsset _assetManager];
+  bundle = [_assetManager bundle];
 
-  return v4;
+  return bundle;
 }
 
-+ (id)_imageWithCGPDFPage:(CGPDFPage *)a3
++ (id)_imageWithCGPDFPage:(CGPDFPage *)page
 {
-  v3 = [[a1 alloc] _initWithCGPDFPage:a3];
+  v3 = [[self alloc] _initWithCGPDFPage:page];
 
   return v3;
 }
 
-+ (id)_imageWithCGPDFPage:(CGPDFPage *)a3 scale:(double)a4 orientation:(int64_t)a5
++ (id)_imageWithCGPDFPage:(CGPDFPage *)page scale:(double)scale orientation:(int64_t)orientation
 {
-  v5 = [[a1 alloc] _initWithCGPDFPage:a3 scale:a5 orientation:a4];
+  v5 = [[self alloc] _initWithCGPDFPage:page scale:orientation orientation:scale];
 
   return v5;
 }
 
-- (id)_initWithCGPDFPage:(CGPDFPage *)a3 scale:(double)a4 orientation:(int64_t)a5
+- (id)_initWithCGPDFPage:(CGPDFPage *)page scale:(double)scale orientation:(int64_t)orientation
 {
-  if (a3)
+  if (page)
   {
-    v7 = [[_UIImageCGPDFPageContent alloc] initWithCGPDFPage:a3 scale:a4];
-    v8 = [(UIImage *)self _initWithContent:v7 orientation:a5];
+    v7 = [[_UIImageCGPDFPageContent alloc] initWithCGPDFPage:page scale:scale];
+    v8 = [(UIImage *)self _initWithContent:v7 orientation:orientation];
     self = v7;
   }
 
@@ -2787,26 +2787,26 @@ LABEL_53:
   return result;
 }
 
-+ (id)_imageWithCGSVGDocument:(CGSVGDocument *)a3
++ (id)_imageWithCGSVGDocument:(CGSVGDocument *)document
 {
-  v3 = [[a1 alloc] _initWithCGSVGDocument:a3];
+  v3 = [[self alloc] _initWithCGSVGDocument:document];
 
   return v3;
 }
 
-+ (id)_imageWithCGSVGDocument:(CGSVGDocument *)a3 scale:(double)a4 orientation:(int64_t)a5
++ (id)_imageWithCGSVGDocument:(CGSVGDocument *)document scale:(double)scale orientation:(int64_t)orientation
 {
-  v5 = [[a1 alloc] _initWithCGSVGDocument:a3 scale:a5 orientation:a4];
+  v5 = [[self alloc] _initWithCGSVGDocument:document scale:orientation orientation:scale];
 
   return v5;
 }
 
-- (id)_initWithCGSVGDocument:(CGSVGDocument *)a3 scale:(double)a4 orientation:(int64_t)a5
+- (id)_initWithCGSVGDocument:(CGSVGDocument *)document scale:(double)scale orientation:(int64_t)orientation
 {
-  if (a3)
+  if (document)
   {
-    v7 = [[_UIImageCGSVGDocumentContent alloc] initWithCGSVGDocument:a3 scale:a4];
-    v8 = [(UIImage *)self _initWithContent:v7 orientation:a5];
+    v7 = [[_UIImageCGSVGDocumentContent alloc] initWithCGSVGDocument:document scale:scale];
+    v8 = [(UIImage *)self _initWithContent:v7 orientation:orientation];
     self = v7;
   }
 
@@ -2842,19 +2842,19 @@ LABEL_53:
 {
   if (((self->_imageFlags >> 9) & 3) == renderingMode)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
     os_unfair_lock_lock(&stru_1ED498CF0);
-    v4 = [(NSMapTable *)self->_siblingImages objectForKey:renderingMode + 1];
+    selfCopy = [(NSMapTable *)self->_siblingImages objectForKey:renderingMode + 1];
     os_unfair_lock_unlock(&stru_1ED498CF0);
-    if (!v4)
+    if (!selfCopy)
     {
-      v4 = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
-      [(UIImage *)v4 _setRenderingMode:renderingMode];
-      objc_storeStrong(&v4->_siblingImages, self->_siblingImages);
+      selfCopy = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
+      [(UIImage *)selfCopy _setRenderingMode:renderingMode];
+      objc_storeStrong(&selfCopy->_siblingImages, self->_siblingImages);
       os_unfair_lock_lock(&stru_1ED498CF0);
       siblingImages = self->_siblingImages;
       if (!siblingImages)
@@ -2867,65 +2867,65 @@ LABEL_53:
         siblingImages = self->_siblingImages;
       }
 
-      [(NSMapTable *)siblingImages setObject:v4 forKey:renderingMode + 1];
+      [(NSMapTable *)siblingImages setObject:selfCopy forKey:renderingMode + 1];
       os_unfair_lock_unlock(&stru_1ED498CF0);
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (int64_t)_effectiveRenderingModeWithSymbolConfiguration:(id)a3
+- (int64_t)_effectiveRenderingModeWithSymbolConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(UIImage *)self renderingMode];
-  if (v5 == UIImageRenderingModeAutomatic)
+  configurationCopy = configuration;
+  renderingMode = [(UIImage *)self renderingMode];
+  if (renderingMode == UIImageRenderingModeAutomatic)
   {
-    if (-[UIImage _isMultiColorSymbolImage](self, "_isMultiColorSymbolImage") && ([v4 _prefersMulticolor] & 1) != 0)
+    if (-[UIImage _isMultiColorSymbolImage](self, "_isMultiColorSymbolImage") && ([configurationCopy _prefersMulticolor] & 1) != 0)
     {
-      v5 = UIImageRenderingModeAlwaysOriginal;
+      renderingMode = UIImageRenderingModeAlwaysOriginal;
     }
 
     else if ([(UIImage *)self _isSymbolImage])
     {
-      v5 = UIImageRenderingModeAlwaysTemplate;
+      renderingMode = UIImageRenderingModeAlwaysTemplate;
     }
 
     else
     {
-      v5 = UIImageRenderingModeAlwaysOriginal;
+      renderingMode = UIImageRenderingModeAlwaysOriginal;
     }
   }
 
-  return v5;
+  return renderingMode;
 }
 
 - (UIImage)imageRestrictedToStandardDynamicRange
 {
-  v2 = self;
-  if ([(UIImage *)v2 isHighDynamicRange])
+  selfCopy = self;
+  if ([(UIImage *)selfCopy isHighDynamicRange])
   {
-    v3 = [(_UIImageContent *)v2->_content makeSDRVersion];
-    v4 = [(UIImage *)v2 _imageWithContent:v3];
+    makeSDRVersion = [(_UIImageContent *)selfCopy->_content makeSDRVersion];
+    v4 = [(UIImage *)selfCopy _imageWithContent:makeSDRVersion];
 
-    v2 = v4;
+    selfCopy = v4;
   }
 
-  return v2;
+  return selfCopy;
 }
 
-+ (UIEdgeInsets)_edgeInsetsForStylePresetNames:(id)a3 scale:(double)a4 traitCollection:(id)a5
++ (UIEdgeInsets)_edgeInsetsForStylePresetNames:(id)names scale:(double)scale traitCollection:(id)collection
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if ([v7 count])
+  namesCopy = names;
+  collectionCopy = collection;
+  if ([namesCopy count])
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v9 = v7;
+    v9 = namesCopy;
     v10 = [v9 countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v10)
     {
@@ -2968,8 +2968,8 @@ LABEL_53:
     v17 = objc_alloc_init(MEMORY[0x1E6999430]);
     [v17 setState:0];
     [v17 setValue:0];
-    v18 = [(UITraitCollection *)v8 _styleEffectAppearanceName];
-    [v17 setAppearanceName:v18];
+    _styleEffectAppearanceName = [(UITraitCollection *)collectionCopy _styleEffectAppearanceName];
+    [v17 setAppearanceName:_styleEffectAppearanceName];
 
     v38 = 0u;
     v39 = 0u;
@@ -2994,11 +2994,11 @@ LABEL_53:
             objc_enumerationMutation(v19);
           }
 
-          [v9 styledInsetsForStylePresetName:*(*(&v36 + 1) + 8 * j) styleConfiguration:v17 foregroundColor:0 scale:{a4, v36}];
-          v26 = v26 - v28 / a4;
-          v25 = v25 - v29 / a4;
-          v24 = v24 - v30 / a4;
-          v23 = v23 - v31 / a4;
+          [v9 styledInsetsForStylePresetName:*(*(&v36 + 1) + 8 * j) styleConfiguration:v17 foregroundColor:0 scale:{scale, v36}];
+          v26 = v26 - v28 / scale;
+          v25 = v25 - v29 / scale;
+          v24 = v24 - v30 / scale;
+          v23 = v23 - v31 / scale;
         }
 
         v21 = [v19 countByEnumeratingWithState:&v36 objects:v44 count:16];
@@ -3037,15 +3037,15 @@ LABEL_23:
   return result;
 }
 
-- (id)_imageWithStylePresets:(id)a3 tintColor:(id)a4 traitCollection:(id)a5
+- (id)_imageWithStylePresets:(id)presets tintColor:(id)color traitCollection:(id)collection
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  presetsCopy = presets;
+  colorCopy = color;
+  collectionCopy = collection;
   if (-[UIImage renderingMode](self, "renderingMode") == UIImageRenderingModeAlwaysOriginal || (-[UIImage content](self, "content"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isCGImage], v11, (v12 & 1) == 0))
   {
-    v35 = self;
+    selfCopy3 = self;
   }
 
   else
@@ -3053,23 +3053,23 @@ LABEL_23:
     v13 = _UIKitGetTextEffectsCatalog();
     if (v13)
     {
-      v54 = v10;
-      v14 = [(UITraitCollection *)v10 _styleEffectAppearanceName];
-      v15 = [(UIImage *)self CGImage];
+      v54 = collectionCopy;
+      _styleEffectAppearanceName = [(UITraitCollection *)collectionCopy _styleEffectAppearanceName];
+      cGImage = [(UIImage *)self CGImage];
       v16 = objc_alloc_init(MEMORY[0x1E6999430]);
       [v16 setState:0];
       [v16 setValue:0];
-      v52 = v14;
-      [v16 setAppearanceName:v14];
-      v53 = self;
+      v52 = _styleEffectAppearanceName;
+      [v16 setAppearanceName:_styleEffectAppearanceName];
+      selfCopy2 = self;
       [(UIImage *)self scale];
       v18 = v17;
       v57 = 0u;
       v58 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v55 = v8;
-      obj = v8;
+      v55 = presetsCopy;
+      obj = presetsCopy;
       v19 = [obj countByEnumeratingWithState:&v57 objects:v61 count:16];
       if (v19)
       {
@@ -3094,11 +3094,11 @@ LABEL_23:
 
             v30 = *(*(&v57 + 1) + 8 * v28);
             [v16 setForegroundColorShouldTintEffects:{objc_msgSend(v30, "isEqualToString:", @"_UIKitBoldTintStyle"}];
-            v21 = [v13 imageByStylingImage:v15 stylePresetName:v30 styleConfiguration:v16 foregroundColor:objc_msgSend(v9 scale:{"CGColor"), v18}];
+            v21 = [v13 imageByStylingImage:cGImage stylePresetName:v30 styleConfiguration:v16 foregroundColor:objc_msgSend(colorCopy scale:{"CGColor"), v18}];
 
             if (v21)
             {
-              v15 = [v21 image];
+              cGImage = [v21 image];
             }
 
             [v13 styledInsetsForStylePresetName:v30 styleConfiguration:v16 foregroundColor:0 scale:v18];
@@ -3126,16 +3126,16 @@ LABEL_23:
         v26 = 0.0;
       }
 
-      v36 = [v21 image];
-      if (v36 && (v37 = [objc_alloc(objc_opt_class()) initWithCGImage:v36 scale:-[UIImage imageOrientation](v53 orientation:{"imageOrientation"), v18}]) != 0)
+      image = [v21 image];
+      if (image && (v37 = [objc_alloc(objc_opt_class()) initWithCGImage:image scale:-[UIImage imageOrientation](selfCopy2 orientation:{"imageOrientation"), v18}]) != 0)
       {
-        v35 = v37;
+        selfCopy3 = v37;
         *(v37 + 104) = *(v37 + 104) & 0xFFFFF9FF | 0x200;
-        v10 = v54;
-        v8 = v55;
-        if ([(UIImage *)v53 _isResizable])
+        collectionCopy = v54;
+        presetsCopy = v55;
+        if ([(UIImage *)selfCopy2 _isResizable])
         {
-          [(UIImage *)v53 capInsets];
+          [(UIImage *)selfCopy2 capInsets];
           v42 = v38;
           if (v39 != 0.0 || v38 != 0.0 || v41 != 0.0 || (v43 = v23, v44 = v24, v45 = v25, v46 = v26, v40 != 0.0))
           {
@@ -3166,23 +3166,23 @@ LABEL_23:
             }
           }
 
-          [(UIImage *)v35 _setCapInsets:v43, v44, v45, v46];
-          if ([(UIImage *)v53 resizingMode]== UIImageResizingModeStretch)
+          [(UIImage *)selfCopy3 _setCapInsets:v43, v44, v45, v46];
+          if ([(UIImage *)selfCopy2 resizingMode]== UIImageResizingModeStretch)
           {
-            [(UIImage *)v35 _setAlwaysStretches:1];
+            [(UIImage *)selfCopy3 _setAlwaysStretches:1];
           }
         }
 
-        [(UIImage *)v53 alignmentRectInsets];
-        [(UIImage *)v35 _setAlignmentRectInsets:v23 + v47, v24 + v48, v25 + v49, v26 + v50];
+        [(UIImage *)selfCopy2 alignmentRectInsets];
+        [(UIImage *)selfCopy3 _setAlignmentRectInsets:v23 + v47, v24 + v48, v25 + v49, v26 + v50];
       }
 
       else
       {
         NSLog(&cfstr_SUnexpectedlyF.isa, "[UIImage _imageWithStylePresets:tintColor:traitCollection:]");
-        v35 = v53;
-        v10 = v54;
-        v8 = v55;
+        selfCopy3 = selfCopy2;
+        collectionCopy = v54;
+        presetsCopy = v55;
       }
     }
 
@@ -3193,11 +3193,11 @@ LABEL_23:
         dispatch_once(&_imageWithStylePresets_tintColor_traitCollection__once, &__block_literal_global_447_0);
       }
 
-      v35 = self;
+      selfCopy3 = self;
     }
   }
 
-  return v35;
+  return selfCopy3;
 }
 
 void __60__UIImage__imageWithStylePresets_tintColor_traitCollection___block_invoke()
@@ -3212,19 +3212,19 @@ void __60__UIImage__imageWithStylePresets_tintColor_traitCollection___block_invo
   }
 }
 
-- (CGSize)_sizeWithHairlineThickening:(BOOL)a3 forTraitCollection:(id)a4
+- (CGSize)_sizeWithHairlineThickening:(BOOL)thickening forTraitCollection:(id)collection
 {
-  v4 = a3;
+  thickeningCopy = thickening;
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = self;
-  v8 = v7;
-  if (v6)
+  collectionCopy = collection;
+  selfCopy = self;
+  v8 = selfCopy;
+  if (collectionCopy)
   {
-    imageAsset = v7->_imageAsset;
+    imageAsset = selfCopy->_imageAsset;
     if (imageAsset)
     {
-      v10 = [(UIImageAsset *)imageAsset imageWithTraitCollection:v6];
+      v10 = [(UIImageAsset *)imageAsset imageWithTraitCollection:collectionCopy];
 
       v8 = v10;
     }
@@ -3233,16 +3233,16 @@ void __60__UIImage__imageWithStylePresets_tintColor_traitCollection___block_invo
   [v8 size];
   v12 = v11;
   v14 = v13;
-  v15 = [v8 _suppressesAccessibilityHairlineThickening];
+  _suppressesAccessibilityHairlineThickening = [v8 _suppressesAccessibilityHairlineThickening];
   v16 = MEMORY[0x1E695E0F0];
-  if (!v15 && v4)
+  if (!_suppressesAccessibilityHairlineThickening && thickeningCopy)
   {
     v27[0] = @"_UIKitBoldTintStyle";
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
   }
 
   [v8 scale];
-  [UIImage _edgeInsetsForStylePresetNames:v16 scale:v6 traitCollection:?];
+  [UIImage _edgeInsetsForStylePresetNames:v16 scale:collectionCopy traitCollection:?];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -3268,11 +3268,11 @@ void __60__UIImage__imageWithStylePresets_tintColor_traitCollection___block_invo
   return result;
 }
 
-- (void)_setAlignmentRectInsets:(UIEdgeInsets)a3
+- (void)_setAlignmentRectInsets:(UIEdgeInsets)insets
 {
   if ((*(&self->_imageFlags + 1) & 0x80) == 0)
   {
-    self->_alignmentRectInsets = a3;
+    self->_alignmentRectInsets = insets;
   }
 }
 
@@ -3300,39 +3300,39 @@ void __60__UIImage__imageWithStylePresets_tintColor_traitCollection___block_invo
 
 - (BOOL)_isIconImage
 {
-  v2 = [(UIImage *)self _primitiveImageAsset];
-  v3 = [v2 _isIconAsset];
+  _primitiveImageAsset = [(UIImage *)self _primitiveImageAsset];
+  _isIconAsset = [_primitiveImageAsset _isIconAsset];
 
-  return v3;
+  return _isIconAsset;
 }
 
 - (id)_outlinePath
 {
-  v3 = [(UIImage *)self content];
-  v4 = [v3 outlinePath];
+  content = [(UIImage *)self content];
+  outlinePath = [content outlinePath];
 
   [(UIImage *)self scale];
   CGAffineTransformMakeScale(&v7, 1.0 / v5, 1.0 / v5);
-  [v4 applyTransform:&v7];
+  [outlinePath applyTransform:&v7];
 
-  return v4;
+  return outlinePath;
 }
 
-- (BOOL)_isSameSymbolImageExceptVariableValue:(id)a3
+- (BOOL)_isSameSymbolImageExceptVariableValue:(id)value
 {
   content = self->_content;
-  v4 = [a3 content];
-  LOBYTE(content) = [(_UIImageContent *)content _isSameSymbolImageContentExceptVariableValue:v4];
+  content = [value content];
+  LOBYTE(content) = [(_UIImageContent *)content _isSameSymbolImageContentExceptVariableValue:content];
 
   return content;
 }
 
-- (void)_setBaselineOffsetFromBottom:(double)a3
+- (void)_setBaselineOffsetFromBottom:(double)bottom
 {
   imageFlags = self->_imageFlags;
   if ((*&imageFlags & 0x2000) == 0)
   {
-    self->_baselineOffsetFromBottom = a3;
+    self->_baselineOffsetFromBottom = bottom;
     self->_imageFlags = (*&imageFlags | 0x1000);
   }
 }
@@ -3358,10 +3358,10 @@ void __60__UIImage__imageWithStylePresets_tintColor_traitCollection___block_invo
   return v4;
 }
 
-- (void)_cacheRendition:(id)a3 forKey:(id)a4
+- (void)_cacheRendition:(id)rendition forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  renditionCopy = rendition;
+  keyCopy = key;
   if (pthread_main_np() != 1)
   {
     if (os_variant_has_internal_diagnostics())
@@ -3385,23 +3385,23 @@ void __60__UIImage__imageWithStylePresets_tintColor_traitCollection___block_invo
     }
   }
 
-  v8 = [(UIImage *)self _primitiveImageAsset];
-  v9 = v8;
-  if (v8)
+  _primitiveImageAsset = [(UIImage *)self _primitiveImageAsset];
+  v9 = _primitiveImageAsset;
+  if (_primitiveImageAsset)
   {
-    [v8 _cacheRendition:v6 forKey:v7];
+    [_primitiveImageAsset _cacheRendition:renditionCopy forKey:keyCopy];
   }
 
   else
   {
     v10 = [(UIImage *)self _localRenditionCache:1];
-    [v10 setObject:v6 forKey:v7];
+    [v10 setObject:renditionCopy forKey:keyCopy];
   }
 }
 
-- (id)_cachedRenditionForKey:(id)a3
+- (id)_cachedRenditionForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (pthread_main_np() != 1)
   {
     if (os_variant_has_internal_diagnostics())
@@ -3425,21 +3425,21 @@ void __60__UIImage__imageWithStylePresets_tintColor_traitCollection___block_invo
     }
   }
 
-  v5 = [(UIImage *)self _primitiveImageAsset];
-  v6 = [v5 _cachedRenditionForKey:v4];
+  _primitiveImageAsset = [(UIImage *)self _primitiveImageAsset];
+  v6 = [_primitiveImageAsset _cachedRenditionForKey:keyCopy];
 
   if (!v6)
   {
     v7 = [(UIImage *)self _localRenditionCache:0];
-    v6 = [v7 objectForKey:v4];
+    v6 = [v7 objectForKey:keyCopy];
   }
 
   return v6;
 }
 
-- (id)_localRenditionCache:(BOOL)a3
+- (id)_localRenditionCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   if ((*(&self->_imageFlags + 2) & 8) != 0)
   {
     v5 = objc_getAssociatedObject(self, &_UIImageLocalRenditionCacheKey);
@@ -3454,7 +3454,7 @@ void __60__UIImage__imageWithStylePresets_tintColor_traitCollection___block_invo
     v5 = 0;
   }
 
-  if (v3)
+  if (cacheCopy)
   {
     v5 = objc_opt_new();
     [(UIImage *)self _setLocalRenditionCache:v5];
@@ -3465,37 +3465,37 @@ LABEL_6:
   return v5;
 }
 
-- (void)_setLocalRenditionCache:(id)a3
+- (void)_setLocalRenditionCache:(id)cache
 {
-  if (a3 || (*&self->_imageFlags & 0x80000) != 0)
+  if (cache || (*&self->_imageFlags & 0x80000) != 0)
   {
-    objc_setAssociatedObject(self, &_UIImageLocalRenditionCacheKey, a3, 1);
-    self->_imageFlags = (*&self->_imageFlags & 0xFFF7FFFF | ((a3 != 0) << 19));
+    objc_setAssociatedObject(self, &_UIImageLocalRenditionCacheKey, cache, 1);
+    self->_imageFlags = (*&self->_imageFlags & 0xFFF7FFFF | ((cache != 0) << 19));
   }
 }
 
-- (id)_imageWithSymbolMetricsFromNamedVectorGlyph:(id)a3
+- (id)_imageWithSymbolMetricsFromNamedVectorGlyph:(id)glyph
 {
-  v4 = a3;
+  glyphCopy = glyph;
   v5 = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
-  [v5 _setSymbolMetricsFromNamedVectorGlyph:v4];
+  [v5 _setSymbolMetricsFromNamedVectorGlyph:glyphCopy];
 
   return v5;
 }
 
-- (void)_setSymbolMetricsFromNamedVectorGlyph:(id)a3
+- (void)_setSymbolMetricsFromNamedVectorGlyph:(id)glyph
 {
-  if (a3)
+  if (glyph)
   {
-    v4 = a3;
-    [v4 scale];
+    glyphCopy = glyph;
+    [glyphCopy scale];
     v40 = v5;
-    [v4 contentBounds];
+    [glyphCopy contentBounds];
     v7 = v6;
     v9 = v8;
     rect = v10;
     v12 = v11;
-    [v4 alignmentRect];
+    [glyphCopy alignmentRect];
     x = v45.origin.x;
     width = v45.size.width;
     y = v45.origin.y;
@@ -3579,18 +3579,18 @@ LABEL_6:
     }
 
     [(UIImage *)self _setContentInsets:v39, v23, v20, v25, *&v38];
-    [v4 baselineOffset];
+    [glyphCopy baselineOffset];
     v28 = v27;
     v29 = v20 + v27;
     UIRoundToScale(v20 + v27, v40);
     [(UIImage *)self _setBaselineOffsetFromBottom:?];
-    [v4 capHeight];
+    [glyphCopy capHeight];
     UIRoundToScale(v30, v40);
     [(UIImage *)self _setCapHeight:?];
-    [v4 pointSize];
+    [glyphCopy pointSize];
     CTFontGetAscentForSystemFontOfSize();
     v32 = v31;
-    [v4 pointSize];
+    [glyphCopy pointSize];
 
     CTFontGetDescentForSystemFontOfSize();
     v34 = -v33;
@@ -3605,8 +3605,8 @@ LABEL_6:
 - (UIImage)imageByApplyingSymbolConfiguration:(UIImageSymbolConfiguration *)configuration
 {
   v4 = configuration;
-  v5 = [(UIImage *)self symbolConfiguration];
-  v6 = [v5 configurationByApplyingConfiguration:v4];
+  symbolConfiguration = [(UIImage *)self symbolConfiguration];
+  v6 = [symbolConfiguration configurationByApplyingConfiguration:v4];
   v7 = v6;
   if (v6)
   {
@@ -3628,7 +3628,7 @@ LABEL_6:
   v4 = [UIImageConfiguration _completeConfiguration:0 fromConfiguration:?];
   if ([(UIImage *)self _isSymbolImage])
   {
-    v5 = [(UIImage *)self symbolConfiguration];
+    symbolConfiguration = [(UIImage *)self symbolConfiguration];
     v6 = v4;
     if (!v6)
     {
@@ -3667,13 +3667,13 @@ LABEL_32:
         }
 
         v10 = v10;
-        v19 = v5;
+        v19 = symbolConfiguration;
         v20 = v19;
         if (v10 == v19)
         {
 
           v17 = 0;
-          v23 = v10;
+          _primitiveImageAsset = v10;
         }
 
         else
@@ -3692,8 +3692,8 @@ LABEL_32:
           {
           }
 
-          v23 = [(UIImage *)self _primitiveImageAsset];
-          v17 = [v23 imageWithConfiguration:v10];
+          _primitiveImageAsset = [(UIImage *)self _primitiveImageAsset];
+          v17 = [_primitiveImageAsset imageWithConfiguration:v10];
         }
 
         goto LABEL_32;
@@ -3740,11 +3740,11 @@ LABEL_16:
     }
   }
 
-  v18 = [(UIImage *)self _primitiveImageAsset];
-  v5 = v18;
-  if (v18)
+  _primitiveImageAsset2 = [(UIImage *)self _primitiveImageAsset];
+  symbolConfiguration = _primitiveImageAsset2;
+  if (_primitiveImageAsset2)
   {
-    v17 = [v18 imageWithConfiguration:v12];
+    v17 = [_primitiveImageAsset2 imageWithConfiguration:v12];
 LABEL_33:
     v22 = 1;
     goto LABEL_34;
@@ -3773,7 +3773,7 @@ LABEL_34:
   }
 
 LABEL_39:
-  v26 = self;
+  selfCopy = self;
 
   return self;
 }
@@ -3786,30 +3786,30 @@ LABEL_39:
   return v5;
 }
 
-- (id)_flatImageWithColor:(id)a3
+- (id)_flatImageWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [(UIImage *)self _imageTintedWithColor:v4 renderingMode:[(UIImage *)self renderingMode] withUpdatedCGImage:1];
+  colorCopy = color;
+  v5 = [(UIImage *)self _imageTintedWithColor:colorCopy renderingMode:[(UIImage *)self renderingMode] withUpdatedCGImage:1];
 
   return v5;
 }
 
-- (id)_flatImageWithWhite:(double)a3 alpha:(double)a4
+- (id)_flatImageWithWhite:(double)white alpha:(double)alpha
 {
-  v5 = [UIColor colorWithWhite:a3 alpha:a4];
+  v5 = [UIColor colorWithWhite:white alpha:alpha];
   v6 = [(UIImage *)self _flatImageWithColor:v5];
 
   return v6;
 }
 
-- (id)_imageTintedWithColor:(id)a3 renderingMode:(int64_t)a4 withUpdatedCGImage:(BOOL)a5
+- (id)_imageTintedWithColor:(id)color renderingMode:(int64_t)mode withUpdatedCGImage:(BOOL)image
 {
-  v5 = a5;
-  v8 = a3;
-  if (v5)
+  imageCopy = image;
+  colorCopy = color;
+  if (imageCopy)
   {
-    v9 = [(UIImage *)self content];
-    [v9 size];
+    content = [(UIImage *)self content];
+    [content size];
     v11 = v10;
     v13 = v12;
 
@@ -3823,8 +3823,8 @@ LABEL_39:
     v26 = &unk_1E710BF90;
     v29 = v11;
     v30 = v13;
-    v27 = v8;
-    v28 = self;
+    v27 = colorCopy;
+    selfCopy = self;
     v16 = [(UIGraphicsImageRenderer *)v15 imageWithActions:&v23];
 
     v17 = v16;
@@ -3842,8 +3842,8 @@ LABEL_39:
     v16 = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
   }
 
-  [v16 _setColorForFlattening:v8];
-  [v16 _setRenderingMode:a4];
+  [v16 _setColorForFlattening:colorCopy];
+  [v16 _setRenderingMode:mode];
   if ([(UIImage *)self _isResizable])
   {
     [(UIImage *)self capInsets];
@@ -3854,9 +3854,9 @@ LABEL_39:
 
   if (*(&self->_imageFlags + 2))
   {
-    v21 = [v16 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v16 imageFlippedForRightToLeftLayoutDirection];
 
-    v16 = v21;
+    v16 = imageFlippedForRightToLeftLayoutDirection;
   }
 
   return v16;
@@ -3872,31 +3872,31 @@ uint64_t __66__UIImage__imageTintedWithColor_renderingMode_withUpdatedCGImage___
   return [v4 drawAtPoint:22 blendMode:-v3 alpha:{-v2, 1.0}];
 }
 
-- (id)_colorForName:(id)a3 withTraitCollection:(id)a4
+- (id)_colorForName:(id)name withTraitCollection:(id)collection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIImage *)self _primitiveImageAsset];
-  v9 = [v8 _assetManager];
-  v10 = [v9 colorNamed:v7 withTraitCollection:v6];
+  collectionCopy = collection;
+  nameCopy = name;
+  _primitiveImageAsset = [(UIImage *)self _primitiveImageAsset];
+  _assetManager = [_primitiveImageAsset _assetManager];
+  v10 = [_assetManager colorNamed:nameCopy withTraitCollection:collectionCopy];
 
   return v10;
 }
 
-- (id)_imageWithContentInsets:(UIEdgeInsets)a3 withUpdatedCGImage:(BOOL)a4
+- (id)_imageWithContentInsets:(UIEdgeInsets)insets withUpdatedCGImage:(BOOL)image
 {
-  v4 = a4;
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  imageCopy = image;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   if ([(UIImage *)self _isResizable]|| ((v10 = fmax(top, 0.0), v11 = fmax(left, 0.0), v12 = fmax(bottom, 0.0), v13 = fmax(right, 0.0), [(UIImage *)self _contentInsets], v11 == v17) ? (v18 = v10 == v14) : (v18 = 0), v18 ? (v19 = v13 == v16) : (v19 = 0), v19 ? (v20 = v12 == v15) : (v20 = 0), v20))
   {
-    v31 = self;
+    selfCopy = self;
     goto LABEL_16;
   }
 
-  if (v4)
+  if (imageCopy)
   {
     v21 = v10 - self->_contentInsets.top;
     v22 = v11 - self->_contentInsets.left;
@@ -3915,9 +3915,9 @@ uint64_t __66__UIImage__imageTintedWithColor_renderingMode_withUpdatedCGImage___
     *&v41[8] = v24;
     v28 = [(UIGraphicsImageRenderer *)v27 imageWithActions:v41];
 
-    v29 = [(UIImage *)self content];
-    v30 = [v29 contentWithCGImage:{objc_msgSend(v28, "CGImage")}];
-    v31 = [(UIImage *)self _imageWithContent:v30];
+    content = [(UIImage *)self content];
+    v30 = [content contentWithCGImage:{objc_msgSend(v28, "CGImage")}];
+    selfCopy = [(UIImage *)self _imageWithContent:v30];
 
     if ([(_UIImageContent *)self->_content canScaleImageToTargetResolution])
     {
@@ -3928,13 +3928,13 @@ uint64_t __66__UIImage__imageTintedWithColor_renderingMode_withUpdatedCGImage___
     v33 = 0.0;
     v34 = 0.0;
     v35 = 0.0;
-    v36 = v31;
+    v36 = selfCopy;
   }
 
   else
   {
     v36 = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
-    v31 = v36;
+    selfCopy = v36;
     v32 = v10;
     v33 = v11;
     v34 = v12;
@@ -3948,37 +3948,37 @@ LABEL_21:
     [(UIImage *)self baselineOffsetFromBottom];
     v39 = v38;
     [(UIImage *)self _contentInsets];
-    [(UIImage *)v31 _setBaselineOffsetFromBottom:v12 + v39 + v40];
+    [(UIImage *)selfCopy _setBaselineOffsetFromBottom:v12 + v39 + v40];
   }
 
 LABEL_16:
 
-  return v31;
+  return selfCopy;
 }
 
-- (void)_setContentInsets:(UIEdgeInsets)a3
+- (void)_setContentInsets:(UIEdgeInsets)insets
 {
   if ((*(&self->_imageFlags + 1) & 0x40) == 0)
   {
     content = self->_content;
     v7 = *&self->_contentInsets.bottom;
     v8 = *&self->_contentInsets.top;
-    self->_contentInsets.top = fmax(a3.top, 0.0);
-    self->_contentInsets.left = fmax(a3.left, 0.0);
-    self->_contentInsets.bottom = fmax(a3.bottom, 0.0);
-    self->_contentInsets.right = fmax(a3.right, 0.0);
+    self->_contentInsets.top = fmax(insets.top, 0.0);
+    self->_contentInsets.left = fmax(insets.left, 0.0);
+    self->_contentInsets.bottom = fmax(insets.bottom, 0.0);
+    self->_contentInsets.right = fmax(insets.right, 0.0);
     [(_UIImageContent *)content scale];
     v6 = vmulq_n_f64(vsubq_f64(vaddq_f64(*&self->_contentInsets.top, *&self->_contentInsets.bottom), vaddq_f64(v8, v7)), v5);
     self->_sizeInPixels = vaddq_f64(self->_sizeInPixels, vextq_s8(v6, v6, 8uLL));
   }
 }
 
-- (void)_setContentInsetsExplicitly:(UIEdgeInsets)a3
+- (void)_setContentInsetsExplicitly:(UIEdgeInsets)explicitly
 {
-  self->_contentInsets.top = fmax(a3.top, 0.0);
-  self->_contentInsets.left = fmax(a3.left, 0.0);
-  self->_contentInsets.bottom = fmax(a3.bottom, 0.0);
-  self->_contentInsets.right = fmax(a3.right, 0.0);
+  self->_contentInsets.top = fmax(explicitly.top, 0.0);
+  self->_contentInsets.left = fmax(explicitly.left, 0.0);
+  self->_contentInsets.bottom = fmax(explicitly.bottom, 0.0);
+  self->_contentInsets.right = fmax(explicitly.right, 0.0);
   [(_UIImageContent *)self->_content scale];
   v5 = v4 * self->_contentInsets.top;
   v6 = v4 * self->_contentInsets.left;
@@ -4006,12 +4006,12 @@ LABEL_16:
   return result;
 }
 
-+ (id)_animatedImageNamed:(id)a3 inBundle:(id)a4 compatibleWithTraitCollection:(id)a5 duration:(double)a6
++ (id)_animatedImageNamed:(id)named inBundle:(id)bundle compatibleWithTraitCollection:(id)collection duration:(double)duration
 {
-  v8 = LoadImageSequence(a3, a4, a5, 0, 0, 0.0, 0.0, 0.0, 0.0);
+  v8 = LoadImageSequence(named, bundle, collection, 0, 0, 0.0, 0.0, 0.0, 0.0);
   if ([v8 count])
   {
-    v9 = [a1 animatedImageWithImages:v8 duration:a6];
+    v9 = [self animatedImageWithImages:v8 duration:duration];
   }
 
   else
@@ -4022,12 +4022,12 @@ LABEL_16:
   return v9;
 }
 
-+ (id)_animatedResizableImageNamed:(id)a3 inBundle:(id)a4 compatibleWithTraitCollection:(id)a5 capInsets:(UIEdgeInsets)a6 resizingMode:(int64_t)a7 duration:(double)a8
++ (id)_animatedResizableImageNamed:(id)named inBundle:(id)bundle compatibleWithTraitCollection:(id)collection capInsets:(UIEdgeInsets)insets resizingMode:(int64_t)mode duration:(double)duration
 {
-  v10 = LoadImageSequence(a3, a4, a5, 1, a7, a6.top, a6.left, a6.bottom, a6.right);
+  v10 = LoadImageSequence(named, bundle, collection, 1, mode, insets.top, insets.left, insets.bottom, insets.right);
   if ([v10 count])
   {
-    v11 = [a1 animatedImageWithImages:v10 duration:a8];
+    v11 = [self animatedImageWithImages:v10 duration:duration];
   }
 
   else
@@ -4115,8 +4115,8 @@ LABEL_16:
         v29.size.height = height;
         MinY = CGRectGetMinY(v29);
         CGContextTranslateCTM(v20, MinX, MinY);
-        v25 = [v17 contentsMultiplyColor];
-        if ([(UIImage *)self renderingMode]== UIImageRenderingModeAlwaysTemplate || v25)
+        contentsMultiplyColor = [v17 contentsMultiplyColor];
+        if ([(UIImage *)self renderingMode]== UIImageRenderingModeAlwaysTemplate || contentsMultiplyColor)
         {
           v30.origin.x = v22;
           v30.origin.y = v21;
@@ -4124,7 +4124,7 @@ LABEL_16:
           v30.size.height = height;
           CGContextBeginTransparencyLayerWithRect(v20, v30, 0);
           [(UIImage *)self _drawInContext:v20 rect:v17 layout:1 scale:v22 applyContentsTransform:v21, width, height, v15];
-          [v25 setFill];
+          [contentsMultiplyColor setFill];
           v31.origin.x = v22;
           v31.origin.y = v21;
           v31.size.width = width;
@@ -4144,25 +4144,25 @@ LABEL_16:
   }
 }
 
-- (void)_drawInContext:(CGContext *)a3 rect:(CGRect)a4 layout:(id)a5
+- (void)_drawInContext:(CGContext *)context rect:(CGRect)rect layout:(id)layout
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layoutCopy = layout;
   [(UIImage *)self scale];
-  [(UIImage *)self _drawInContext:a3 rect:v12 layout:0 scale:x applyContentsTransform:y, width, height, v11];
+  [(UIImage *)self _drawInContext:context rect:layoutCopy layout:0 scale:x applyContentsTransform:y, width, height, v11];
 }
 
-- (void)_drawInContext:(CGContext *)a3 rect:(CGRect)a4 layout:(id)a5 scale:(double)a6 applyContentsTransform:(BOOL)a7
+- (void)_drawInContext:(CGContext *)context rect:(CGRect)rect layout:(id)layout scale:(double)scale applyContentsTransform:(BOOL)transform
 {
-  v7 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a5;
+  transformCopy = transform;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layoutCopy = layout;
   [(UIImage *)self size];
   if (v16 > 0.0 && v17 > 0.0)
   {
@@ -4175,9 +4175,9 @@ LABEL_16:
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    v27 = [(UIImage *)self _isTiledWhenStretchedToSize:width, height];
+    height = [(UIImage *)self _isTiledWhenStretchedToSize:width, height];
     v43 = v26;
-    v28 = (fmax(v22, v26) > 0.0) | v27;
+    v28 = (fmax(v22, v26) > 0.0) | height;
     if (v24 > 0.0)
     {
       v28 = 1;
@@ -4193,13 +4193,13 @@ LABEL_16:
       v29 = 1;
     }
 
-    CGContextTranslateCTM(a3, 0.0, height);
-    CGContextScaleCTM(a3, 1.0, -1.0);
-    if (v7)
+    CGContextTranslateCTM(context, 0.0, height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    if (transformCopy)
     {
-      if (v15)
+      if (layoutCopy)
       {
-        [v15 contentsTransform];
+        [layoutCopy contentsTransform];
       }
 
       else
@@ -4207,19 +4207,19 @@ LABEL_16:
         memset(&transform, 0, sizeof(transform));
       }
 
-      CGContextConcatCTM(a3, &transform);
+      CGContextConcatCTM(context, &transform);
     }
 
     if (v29)
     {
-      v30 = v15;
-      if (v15)
+      v30 = layoutCopy;
+      if (layoutCopy)
       {
-        [(_UIImageContentLayout *)v15 _materializeRenditionContents];
+        [(_UIImageContentLayout *)layoutCopy _materializeRenditionContents];
         v31 = v42;
-        if (v15[1])
+        if (layoutCopy[1])
         {
-          v32 = v15[4];
+          v32 = layoutCopy[4];
         }
 
         else
@@ -4234,7 +4234,7 @@ LABEL_16:
         v31 = v42;
       }
 
-      v37 = a6;
+      scaleCopy = scale;
       *&transform.a = *MEMORY[0x1E695EFF8];
       transform.c = width;
       transform.d = height;
@@ -4253,32 +4253,32 @@ LABEL_16:
       CGRectDivide(v49, &v45, &remainder, v24, CGRectMinYEdge);
       if (!CGRectIsEmpty(slice))
       {
-        Draw3PartSlice(a3, v32, v37, v27, 0.0, 0.0, v18, v20, slice.origin.x, slice.origin.y, slice.size.width, slice.size.height, v20, v22, v24, v43);
+        Draw3PartSlice(context, v32, scaleCopy, height, 0.0, 0.0, v18, v20, slice.origin.x, slice.origin.y, slice.size.width, slice.size.height, v20, v22, v24, v43);
       }
 
-      Draw3PartSlice(a3, v32, v37, v27, 0.0, v20, v18, v31 - v20 - v24, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height, v20, v22, v24, v43);
+      Draw3PartSlice(context, v32, scaleCopy, height, 0.0, v20, v18, v31 - v20 - v24, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height, v20, v22, v24, v43);
       if (!CGRectIsEmpty(v45))
       {
-        Draw3PartSlice(a3, v32, v37, v27, 0.0, v31 - v24, v18, v24, v45.origin.x, v45.origin.y, v45.size.width, v45.size.height, v20, v22, v24, v43);
+        Draw3PartSlice(context, v32, scaleCopy, height, 0.0, v31 - v24, v18, v24, v45.origin.x, v45.origin.y, v45.size.width, v45.size.height, v20, v22, v24, v43);
       }
     }
 
     else if ([(UIImage *)self _shouldDrawVectorContentDirectly])
     {
-      [v15 drawInContext:a3 withSize:{width, height}];
+      [layoutCopy drawInContext:context withSize:{width, height}];
     }
 
     else
     {
-      v33 = v15;
-      if (v15)
+      v33 = layoutCopy;
+      if (layoutCopy)
       {
-        [(_UIImageContentLayout *)v15 _materializeRenditionContents];
+        [(_UIImageContentLayout *)layoutCopy _materializeRenditionContents];
         v34 = v40;
         v35 = v41;
-        if (v15[1])
+        if (layoutCopy[1])
         {
-          v36 = v15[4];
+          v36 = layoutCopy[4];
         }
 
         else
@@ -4296,7 +4296,7 @@ LABEL_16:
 
       v38 = width;
       v39 = height;
-      CGContextDrawImage(a3, *&v34, v36);
+      CGContextDrawImage(context, *&v34, v36);
     }
   }
 }
@@ -4333,27 +4333,27 @@ LABEL_16:
   }
 }
 
-- (id)_imageWithImageAsset:(id)a3
+- (id)_imageWithImageAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   if (dyld_program_sdk_at_least())
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UIImage.m" lineNumber:3484 description:@"This code path should not be taken when linked against iOS 14 or newer."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImage.m" lineNumber:3484 description:@"This code path should not be taken when linked against iOS 14 or newer."];
   }
 
-  v6 = [(UIImage *)self imageAsset];
-  v7 = v5;
+  imageAsset = [(UIImage *)self imageAsset];
+  v7 = assetCopy;
   v8 = v7;
-  if (v6 == v7)
+  if (imageAsset == v7)
   {
 
     goto LABEL_9;
   }
 
-  if (v7 && v6)
+  if (v7 && imageAsset)
   {
-    v9 = [v6 isEqual:v7];
+    v9 = [imageAsset isEqual:v7];
 
     if ((v9 & 1) == 0)
     {
@@ -4361,46 +4361,46 @@ LABEL_16:
     }
 
 LABEL_9:
-    v10 = self;
+    selfCopy = self;
     goto LABEL_12;
   }
 
 LABEL_11:
-  v10 = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
-  [(UIImage *)v10 _setImageAsset:v8];
+  selfCopy = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
+  [(UIImage *)selfCopy _setImageAsset:v8];
 LABEL_12:
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)_imageWithImageAsset:(id)a3 configuration:(id)a4
+- (id)_imageWithImageAsset:(id)asset configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIImage *)self _primitiveImageAsset];
-  v9 = v6;
+  assetCopy = asset;
+  configurationCopy = configuration;
+  _primitiveImageAsset = [(UIImage *)self _primitiveImageAsset];
+  v9 = assetCopy;
   v10 = v9;
-  if (v8 == v9)
+  if (_primitiveImageAsset == v9)
   {
   }
 
   else
   {
-    v11 = v9;
-    v12 = v8;
+    configuration = v9;
+    v12 = _primitiveImageAsset;
     if (!v9)
     {
       goto LABEL_15;
     }
 
-    v11 = v9;
-    v12 = v8;
-    if (!v8)
+    configuration = v9;
+    v12 = _primitiveImageAsset;
+    if (!_primitiveImageAsset)
     {
       goto LABEL_15;
     }
 
-    v13 = [v8 isEqual:v9];
+    v13 = [_primitiveImageAsset isEqual:v9];
 
     if (!v13)
     {
@@ -4408,18 +4408,18 @@ LABEL_12:
     }
   }
 
-  v11 = [(UIImage *)self configuration];
-  v14 = v7;
+  configuration = [(UIImage *)self configuration];
+  v14 = configurationCopy;
   v15 = v14;
-  if (v11 == v14)
+  if (configuration == v14)
   {
 
     goto LABEL_13;
   }
 
-  if (v14 && v11)
+  if (v14 && configuration)
   {
-    v16 = [v11 isEqual:v14];
+    v16 = [configuration isEqual:v14];
 
     if ((v16 & 1) == 0)
     {
@@ -4427,27 +4427,27 @@ LABEL_12:
     }
 
 LABEL_13:
-    v17 = self;
+    selfCopy = self;
     goto LABEL_18;
   }
 
-  v12 = v11;
+  v12 = configuration;
 LABEL_15:
 
 LABEL_16:
 LABEL_17:
-  v17 = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
-  [(UIImage *)v17 _setImageAsset:v10];
-  [(UIImage *)v17 _setConfiguration:v7];
+  selfCopy = [objc_alloc(objc_opt_class()) _initWithOtherImage:self];
+  [(UIImage *)selfCopy _setImageAsset:v10];
+  [(UIImage *)selfCopy _setConfiguration:configurationCopy];
 LABEL_18:
 
-  return v17;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -4457,34 +4457,34 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UIImage *)v5 content];
+      v5 = equalCopy;
+      content = [(UIImage *)v5 content];
       content = self->_content;
-      if (content == v6)
+      if (content == content)
       {
         v8 = 0;
       }
 
       else
       {
-        v8 = ![(_UIImageContent *)content isEqual:v6];
+        v8 = ![(_UIImageContent *)content isEqual:content];
       }
 
-      v10 = [(UIImage *)v5 _primitiveImageAsset];
+      _primitiveImageAsset = [(UIImage *)v5 _primitiveImageAsset];
       v11 = dyld_program_sdk_at_least();
       imageAsset = self->_imageAsset;
-      if (v11 && imageAsset == v10)
+      if (v11 && imageAsset == _primitiveImageAsset)
       {
         v13 = 0;
       }
 
       else
       {
-        v13 = ![(UIImageAsset *)imageAsset isEqual:v10];
+        v13 = ![(UIImageAsset *)imageAsset isEqual:_primitiveImageAsset];
       }
 
-      v14 = [(UIImage *)self hasBaseline];
-      if (v14 == [(UIImage *)v5 hasBaseline])
+      hasBaseline = [(UIImage *)self hasBaseline];
+      if (hasBaseline == [(UIImage *)v5 hasBaseline])
       {
         if ([(UIImage *)self hasBaseline])
         {
@@ -4505,8 +4505,8 @@ LABEL_18:
         v15 = 1;
       }
 
-      v19 = [(UIImage *)self hasMidline];
-      if (v19 == [(UIImage *)v5 hasMidline])
+      hasMidline = [(UIImage *)self hasMidline];
+      if (hasMidline == [(UIImage *)v5 hasMidline])
       {
         if ([(UIImage *)self hasMidline])
         {
@@ -4532,17 +4532,17 @@ LABEL_18:
         [(UIImage *)v5 scale];
         if (v26 == v27)
         {
-          v28 = [(UIImage *)self imageOrientation];
-          if (v28 == [(UIImage *)v5 imageOrientation])
+          imageOrientation = [(UIImage *)self imageOrientation];
+          if (imageOrientation == [(UIImage *)v5 imageOrientation])
           {
-            v29 = [(UIImage *)self renderingMode];
-            if (v29 == [(UIImage *)v5 renderingMode])
+            renderingMode = [(UIImage *)self renderingMode];
+            if (renderingMode == [(UIImage *)v5 renderingMode])
             {
-              v30 = [(UIImage *)self flipsForRightToLeftLayoutDirection];
-              if (v30 == [(UIImage *)v5 flipsForRightToLeftLayoutDirection])
+              flipsForRightToLeftLayoutDirection = [(UIImage *)self flipsForRightToLeftLayoutDirection];
+              if (flipsForRightToLeftLayoutDirection == [(UIImage *)v5 flipsForRightToLeftLayoutDirection])
               {
-                v31 = [(UIImage *)self _suppressesAccessibilityHairlineThickening];
-                if (v31 == [(UIImage *)v5 _suppressesAccessibilityHairlineThickening])
+                _suppressesAccessibilityHairlineThickening = [(UIImage *)self _suppressesAccessibilityHairlineThickening];
+                if (_suppressesAccessibilityHairlineThickening == [(UIImage *)v5 _suppressesAccessibilityHairlineThickening])
                 {
                   [(UIImage *)self alignmentRectInsets];
                   v33 = v32;
@@ -4553,13 +4553,13 @@ LABEL_18:
                   v9 = 0;
                   if (v35 == v43 && v33 == v40 && v39 == v42 && v37 == v41)
                   {
-                    v44 = [(UIImage *)self _colorForFlattening];
-                    v45 = [(UIImage *)v5 _colorForFlattening];
-                    if (_deferringTokenEqualToToken(v44, v45))
+                    _colorForFlattening = [(UIImage *)self _colorForFlattening];
+                    _colorForFlattening2 = [(UIImage *)v5 _colorForFlattening];
+                    if (_deferringTokenEqualToToken(_colorForFlattening, _colorForFlattening2))
                     {
-                      v46 = [(UIImage *)self configuration];
-                      v47 = [(UIImage *)v5 configuration];
-                      v9 = _deferringTokenEqualToToken(v46, v47);
+                      configuration = [(UIImage *)self configuration];
+                      configuration2 = [(UIImage *)v5 configuration];
+                      v9 = _deferringTokenEqualToToken(configuration, configuration2);
                     }
 
                     else
@@ -4590,11 +4590,11 @@ LABEL_20:
   return v9;
 }
 
-- (id)_descriptionOmittingSymbolConfiguration:(BOOL)a3
+- (id)_descriptionOmittingSymbolConfiguration:(BOOL)configuration
 {
-  v5 = [(UIImage *)self _metricsDescription];
+  _metricsDescription = [(UIImage *)self _metricsDescription];
   v6 = [(_UIImageContent *)self->_content description];
-  if (a3 || ([(UIImage *)self symbolConfiguration], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+  if (configuration || ([(UIImage *)self symbolConfiguration], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
     v10 = &stru_1EFB14550;
   }
@@ -4602,27 +4602,27 @@ LABEL_20:
   else
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(UIImage *)self symbolConfiguration];
-    v10 = [v8 stringWithFormat:@" config=<%@>", v9];
+    symbolConfiguration = [(UIImage *)self symbolConfiguration];
+    v10 = [v8 stringWithFormat:@" config=<%@>", symbolConfiguration];
   }
 
   if ([(UIImage *)self renderingMode])
   {
-    v11 = [(UIImage *)self renderingMode];
+    renderingMode = [(UIImage *)self renderingMode];
     v12 = @"Unknown";
-    if (v11 == UIImageRenderingModeAlwaysTemplate)
+    if (renderingMode == UIImageRenderingModeAlwaysTemplate)
     {
       v12 = @"alwaysTemplate";
     }
 
     v13 = @"alwaysOriginal";
-    v14 = v11 == UIImageRenderingModeAlwaysOriginal;
+    v14 = renderingMode == UIImageRenderingModeAlwaysOriginal;
   }
 
   else
   {
-    v15 = [(UIImage *)self symbolConfiguration];
-    v16 = [(UIImage *)self _effectiveRenderingModeWithSymbolConfiguration:v15];
+    symbolConfiguration2 = [(UIImage *)self symbolConfiguration];
+    v16 = [(UIImage *)self _effectiveRenderingModeWithSymbolConfiguration:symbolConfiguration2];
 
     v12 = @"automatic";
     if (v16 == 2)
@@ -4647,18 +4647,18 @@ LABEL_20:
   v18 = [@" renderingMode=" stringByAppendingString:v17];
   v19 = MEMORY[0x1E696AEC0];
   v20 = objc_opt_class();
-  v21 = [(UIImage *)self _identityDescription];
-  v22 = [v19 stringWithFormat:@"<%@:%p %@ %@%@%@>", v20, self, v21, v5, v10, v18];
+  _identityDescription = [(UIImage *)self _identityDescription];
+  v22 = [v19 stringWithFormat:@"<%@:%p %@ %@%@%@>", v20, self, _identityDescription, _metricsDescription, v10, v18];
 
   return v22;
 }
 
-+ (BOOL)_isCGImageAlphaMask:(CGImage *)a3
++ (BOOL)_isCGImageAlphaMask:(CGImage *)mask
 {
-  IsMask = CGImageIsMask(a3);
+  IsMask = CGImageIsMask(mask);
   if (IsMask)
   {
-    CGImageGetAlphaInfo(a3);
+    CGImageGetAlphaInfo(mask);
   }
 
   return IsMask;
@@ -4666,22 +4666,22 @@ LABEL_20:
 
 - (BOOL)_isAlphaMask
 {
-  v2 = [(_UIImageContent *)self->_content CGImage];
+  cGImage = [(_UIImageContent *)self->_content CGImage];
 
-  return [UIImage _isCGImageAlphaMask:v2];
+  return [UIImage _isCGImageAlphaMask:cGImage];
 }
 
-+ (id)imageNamed:(id)a3 inBundle:(id)a4
++ (id)imageNamed:(id)named inBundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
+  bundleCopy = bundle;
+  namedCopy = named;
   v8 = +[UIScreen _mainScreenThreadSafeTraitCollection];
-  v9 = [a1 imageNamed:v7 inBundle:v6 compatibleWithTraitCollection:v8];
+  v9 = [self imageNamed:namedCopy inBundle:bundleCopy compatibleWithTraitCollection:v8];
 
   return v9;
 }
 
-+ (id)symbolImageNamed:(id)a3
++ (id)symbolImageNamed:(id)named
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4689,13 +4689,13 @@ LABEL_20:
   block[3] = &__block_descriptor_40_e5_v8__0l;
   block[4] = a2;
   v4 = symbolImageNamed__once;
-  v5 = a3;
+  namedCopy = named;
   if (v4 != -1)
   {
     dispatch_once(&symbolImageNamed__once, block);
   }
 
-  v6 = [a1 systemImageNamed:v5];
+  v6 = [self systemImageNamed:namedCopy];
 
   return v6;
 }
@@ -4715,7 +4715,7 @@ void __28__UIImage_symbolImageNamed___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)symbolImageNamed:(id)a3 size:(int64_t)a4 weight:(int64_t)a5 compatibleWithFontSize:(double)a6
++ (id)symbolImageNamed:(id)named size:(int64_t)size weight:(int64_t)weight compatibleWithFontSize:(double)fontSize
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4723,14 +4723,14 @@ void __28__UIImage_symbolImageNamed___block_invoke(uint64_t a1)
   block[3] = &__block_descriptor_40_e5_v8__0l;
   block[4] = a2;
   v10 = symbolImageNamed_size_weight_compatibleWithFontSize__once;
-  v11 = a3;
+  namedCopy = named;
   if (v10 != -1)
   {
     dispatch_once(&symbolImageNamed_size_weight_compatibleWithFontSize__once, block);
   }
 
-  v12 = [UIImageSymbolConfiguration configurationWithPointSize:a5 weight:a4 scale:a6];
-  v13 = [a1 systemImageNamed:v11 withConfiguration:v12];
+  v12 = [UIImageSymbolConfiguration configurationWithPointSize:weight weight:size scale:fontSize];
+  v13 = [self systemImageNamed:namedCopy withConfiguration:v12];
 
   return v13;
 }
@@ -4750,11 +4750,11 @@ void __63__UIImage_symbolImageNamed_size_weight_compatibleWithFontSize___block_i
   }
 }
 
-+ (id)symbolImageNamed:(id)a3 size:(int64_t)a4 weight:(int64_t)a5 compatibleWithFontSize:(double)a6 traitCollection:(id)a7 inBundle:(id)a8
++ (id)symbolImageNamed:(id)named size:(int64_t)size weight:(int64_t)weight compatibleWithFontSize:(double)fontSize traitCollection:(id)collection inBundle:(id)bundle
 {
-  v15 = a3;
-  v16 = a7;
-  v17 = a8;
+  namedCopy = named;
+  collectionCopy = collection;
+  bundleCopy = bundle;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__UIImage_symbolImageNamed_size_weight_compatibleWithFontSize_traitCollection_inBundle___block_invoke;
@@ -4765,15 +4765,15 @@ void __63__UIImage_symbolImageNamed_size_weight_compatibleWithFontSize___block_i
     dispatch_once(&symbolImageNamed_size_weight_compatibleWithFontSize_traitCollection_inBundle__once, block);
   }
 
-  v18 = [UIImageSymbolConfiguration configurationWithPointSize:a5 weight:a4 scale:a6];
-  if (v17)
+  v18 = [UIImageSymbolConfiguration configurationWithPointSize:weight weight:size scale:fontSize];
+  if (bundleCopy)
   {
-    [a1 imageNamed:v15 inBundle:v17 compatibleWithTraitCollection:v16];
+    [self imageNamed:namedCopy inBundle:bundleCopy compatibleWithTraitCollection:collectionCopy];
   }
 
   else
   {
-    [a1 systemImageNamed:v15 compatibleWithTraitCollection:v16];
+    [self systemImageNamed:namedCopy compatibleWithTraitCollection:collectionCopy];
   }
   v19 = ;
   v20 = [v19 imageWithConfiguration:v18];
@@ -4796,7 +4796,7 @@ void __88__UIImage_symbolImageNamed_size_weight_compatibleWithFontSize_traitColl
   }
 }
 
-+ (id)preferredSymbolImageNamed:(id)a3
++ (id)preferredSymbolImageNamed:(id)named
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4804,14 +4804,14 @@ void __88__UIImage_symbolImageNamed_size_weight_compatibleWithFontSize_traitColl
   block[3] = &__block_descriptor_40_e5_v8__0l;
   block[4] = a2;
   v4 = preferredSymbolImageNamed__once;
-  v5 = a3;
+  namedCopy = named;
   if (v4 != -1)
   {
     dispatch_once(&preferredSymbolImageNamed__once, block);
   }
 
   v6 = [UIImageSymbolConfiguration configurationWithTextStyle:@"UICTFontTextStyleBody"];
-  v7 = [a1 systemImageNamed:v5 withConfiguration:v6];
+  v7 = [self systemImageNamed:namedCopy withConfiguration:v6];
 
   return v7;
 }
@@ -4831,7 +4831,7 @@ void __37__UIImage_preferredSymbolImageNamed___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)preferredSymbolImageNamed:(id)a3 size:(int64_t)a4 compatibleWithTextStyle:(id)a5
++ (id)preferredSymbolImageNamed:(id)named size:(int64_t)size compatibleWithTextStyle:(id)style
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4839,16 +4839,16 @@ void __37__UIImage_preferredSymbolImageNamed___block_invoke(uint64_t a1)
   block[3] = &__block_descriptor_40_e5_v8__0l;
   block[4] = a2;
   v8 = preferredSymbolImageNamed_size_compatibleWithTextStyle__once;
-  v9 = a5;
-  v10 = a3;
+  styleCopy = style;
+  namedCopy = named;
   if (v8 != -1)
   {
     dispatch_once(&preferredSymbolImageNamed_size_compatibleWithTextStyle__once, block);
   }
 
-  v11 = [UIImageSymbolConfiguration configurationWithTextStyle:v9 scale:a4];
+  v11 = [UIImageSymbolConfiguration configurationWithTextStyle:styleCopy scale:size];
 
-  v12 = [a1 systemImageNamed:v10 withConfiguration:v11];
+  v12 = [self systemImageNamed:namedCopy withConfiguration:v11];
 
   return v12;
 }
@@ -4868,12 +4868,12 @@ void __66__UIImage_preferredSymbolImageNamed_size_compatibleWithTextStyle___bloc
   }
 }
 
-+ (id)preferredSymbolImageNamed:(id)a3 size:(int64_t)a4 compatibleWithTextStyle:(id)a5 traitCollection:(id)a6 inBundle:(id)a7
++ (id)preferredSymbolImageNamed:(id)named size:(int64_t)size compatibleWithTextStyle:(id)style traitCollection:(id)collection inBundle:(id)bundle
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  namedCopy = named;
+  styleCopy = style;
+  collectionCopy = collection;
+  bundleCopy = bundle;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__UIImage_preferredSymbolImageNamed_size_compatibleWithTextStyle_traitCollection_inBundle___block_invoke;
@@ -4884,15 +4884,15 @@ void __66__UIImage_preferredSymbolImageNamed_size_compatibleWithTextStyle___bloc
     dispatch_once(&preferredSymbolImageNamed_size_compatibleWithTextStyle_traitCollection_inBundle__once, block);
   }
 
-  v17 = [UIImageSymbolConfiguration configurationWithTextStyle:v14 scale:a4];
-  if (v16)
+  v17 = [UIImageSymbolConfiguration configurationWithTextStyle:styleCopy scale:size];
+  if (bundleCopy)
   {
-    [a1 imageNamed:v13 inBundle:v16 compatibleWithTraitCollection:v15];
+    [self imageNamed:namedCopy inBundle:bundleCopy compatibleWithTraitCollection:collectionCopy];
   }
 
   else
   {
-    [a1 systemImageNamed:v13 compatibleWithTraitCollection:v15];
+    [self systemImageNamed:namedCopy compatibleWithTraitCollection:collectionCopy];
   }
   v18 = ;
   v19 = [v18 imageWithConfiguration:v17];
@@ -4915,7 +4915,7 @@ void __91__UIImage_preferredSymbolImageNamed_size_compatibleWithTextStyle_traitC
   }
 }
 
-+ (id)symbolImageNamed:(id)a3 size:(int64_t)a4 compatibleWithFont:(id)a5
++ (id)symbolImageNamed:(id)named size:(int64_t)size compatibleWithFont:(id)font
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4923,16 +4923,16 @@ void __91__UIImage_preferredSymbolImageNamed_size_compatibleWithTextStyle_traitC
   block[3] = &__block_descriptor_40_e5_v8__0l;
   block[4] = a2;
   v8 = symbolImageNamed_size_compatibleWithFont__once;
-  v9 = a5;
-  v10 = a3;
+  fontCopy = font;
+  namedCopy = named;
   if (v8 != -1)
   {
     dispatch_once(&symbolImageNamed_size_compatibleWithFont__once, block);
   }
 
-  v11 = [UIImageSymbolConfiguration configurationWithFont:v9 scale:a4];
+  v11 = [UIImageSymbolConfiguration configurationWithFont:fontCopy scale:size];
 
-  v12 = [a1 systemImageNamed:v10 withConfiguration:v11];
+  v12 = [self systemImageNamed:namedCopy withConfiguration:v11];
 
   return v12;
 }
@@ -4952,12 +4952,12 @@ void __52__UIImage_symbolImageNamed_size_compatibleWithFont___block_invoke(uint6
   }
 }
 
-+ (id)symbolImageNamed:(id)a3 size:(int64_t)a4 compatibleWithFont:(id)a5 traitCollection:(id)a6 inBundle:(id)a7
++ (id)symbolImageNamed:(id)named size:(int64_t)size compatibleWithFont:(id)font traitCollection:(id)collection inBundle:(id)bundle
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  namedCopy = named;
+  fontCopy = font;
+  collectionCopy = collection;
+  bundleCopy = bundle;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBundle___block_invoke;
@@ -4968,15 +4968,15 @@ void __52__UIImage_symbolImageNamed_size_compatibleWithFont___block_invoke(uint6
     dispatch_once(&symbolImageNamed_size_compatibleWithFont_traitCollection_inBundle__once, block);
   }
 
-  v17 = [UIImageSymbolConfiguration configurationWithFont:v14 scale:a4];
-  if (v16)
+  v17 = [UIImageSymbolConfiguration configurationWithFont:fontCopy scale:size];
+  if (bundleCopy)
   {
-    [a1 imageNamed:v13 inBundle:v16 compatibleWithTraitCollection:v15];
+    [self imageNamed:namedCopy inBundle:bundleCopy compatibleWithTraitCollection:collectionCopy];
   }
 
   else
   {
-    [a1 systemImageNamed:v13 compatibleWithTraitCollection:v15];
+    [self systemImageNamed:namedCopy compatibleWithTraitCollection:collectionCopy];
   }
   v18 = ;
   v19 = [v18 imageWithConfiguration:v17];
@@ -4999,23 +4999,23 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
   }
 }
 
-- (UIImage)initWithContentsOfFile:(id)a3 cache:(BOOL)a4
+- (UIImage)initWithContentsOfFile:(id)file cache:(BOOL)cache
 {
-  v4 = a4;
-  v6 = a3;
+  cacheCopy = cache;
+  fileCopy = file;
   v19 = 0.0;
   v20 = 0;
   v18 = 0;
-  v7 = _UIImageSourceAtPath(v6, v4, &v20, &v19, &v18);
+  v7 = _UIImageSourceAtPath(fileCopy, cacheCopy, &v20, &v19, &v18);
   v8 = v18;
   if (v7)
   {
     v9 = [_UIImageCGImageContent alloc];
-    v10 = [(_UIImageCGImageContent *)v9 initWithCGImageSource:v7 scale:v19];
+    selfCopy = [(_UIImageCGImageContent *)v9 initWithCGImageSource:v7 scale:v19];
     CFRelease(v7);
-    if (v10)
+    if (selfCopy)
     {
-      v11 = [(UIImage *)self _initWithContent:v10 orientation:v20];
+      v11 = [(UIImage *)self _initWithContent:selfCopy orientation:v20];
       if (dyld_program_sdk_at_least())
       {
         v12 = v8;
@@ -5023,7 +5023,7 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
 
       else
       {
-        v12 = v6;
+        v12 = fileCopy;
       }
 
       v13 = v12;
@@ -5031,34 +5031,34 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
       v15 = v14;
       if (v14)
       {
-        v16 = [v14 imageConfiguration];
+        imageConfiguration = [v14 imageConfiguration];
       }
 
       else
       {
-        v16 = 0;
+        imageConfiguration = 0;
       }
 
-      objc_storeStrong(v11 + 4, v16);
+      objc_storeStrong(v11 + 4, imageConfiguration);
 
       self = v11;
-      v10 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)_initWithData:(id)a3 preserveScale:(BOOL)a4 cache:(BOOL)a5 scale:(double)a6
+- (id)_initWithData:(id)data preserveScale:(BOOL)scale cache:(BOOL)cache scale:(double)a6
 {
   v15 = a6;
   v14 = 0;
-  if (a4)
+  if (scale)
   {
     v7 = &v15;
   }
@@ -5068,7 +5068,7 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
     v7 = 0;
   }
 
-  v8 = _UIImageRefFromData(a3, a5, &v14, v7);
+  v8 = _UIImageRefFromData(data, cache, &v14, v7);
   if (v8)
   {
     v9 = v8;
@@ -5088,11 +5088,11 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
   return v12;
 }
 
-- (id)_initWithSDRIOSurface:(__IOSurface *)a3 HDRIOSurface:(__IOSurface *)a4 scale:(double)a5 orientation:(int64_t)a6
+- (id)_initWithSDRIOSurface:(__IOSurface *)surface HDRIOSurface:(__IOSurface *)oSurface scale:(double)scale orientation:(int64_t)orientation
 {
-  if (a3)
+  if (surface)
   {
-    v8 = [[_UIImageIOSurfaceContent alloc] initWithSDRIOSurface:a3 HDRIOSurface:a4 scale:a5];
+    v8 = [[_UIImageIOSurfaceContent alloc] initWithSDRIOSurface:surface HDRIOSurface:oSurface scale:scale];
   }
 
   else
@@ -5100,20 +5100,20 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
     v8 = 0;
   }
 
-  v9 = [(UIImage *)self _initWithContent:v8 orientation:a6];
+  v9 = [(UIImage *)self _initWithContent:v8 orientation:orientation];
 
   return v9;
 }
 
-- (id)_initWithIOSurface:(__IOSurface *)a3 imageOrientation:(int64_t)a4
+- (id)_initWithIOSurface:(__IOSurface *)surface imageOrientation:(int64_t)orientation
 {
-  Scale = _UIRenderingBufferGetScale(a3);
+  Scale = _UIRenderingBufferGetScale(surface);
   if (Scale == 0.0)
   {
     Scale = 1.0;
   }
 
-  return [(UIImage *)self _initWithIOSurface:a3 scale:a4 orientation:Scale];
+  return [(UIImage *)self _initWithIOSurface:surface scale:orientation orientation:Scale];
 }
 
 - (__IOSurface)_copyIOSurface
@@ -5124,7 +5124,7 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
     return 0;
   }
 
-  v4 = [(UIImage *)self CGImage];
+  cGImage = [(UIImage *)self CGImage];
   [(UIImage *)self scale];
   v6 = v5;
   [(UIImage *)self size];
@@ -5145,7 +5145,7 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
   if (v3)
   {
     IOSurfaceLock(v3, 0, 0);
-    CGImageGetColorSpace(v4);
+    CGImageGetColorSpace(cGImage);
     v14 = CGIOSurfaceContextCreate();
     if (v14)
     {
@@ -5158,7 +5158,7 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
       v22.origin.x = 0.0;
       v22.origin.y = 0.0;
       v22.size.width = v17;
-      CGContextDrawImage(v15, v22, v4);
+      CGContextDrawImage(v15, v22, cGImage);
       CGContextRelease(v15);
     }
 
@@ -5168,11 +5168,11 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
   return v3;
 }
 
-+ (id)_backgroundGradientWithStartColor:(id)a3 andEndColor:(id)a4
++ (id)_backgroundGradientWithStartColor:(id)color andEndColor:(id)endColor
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  endColorCopy = endColor;
+  colorCopy = color;
   _UIGraphicsBeginImageContextWithOptions(1, 0, 16.0, 1024.0, 0.0);
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
@@ -5185,9 +5185,9 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
     v8 = ContextStack[3 * (*ContextStack - 1) + 1];
   }
 
-  [v6 getRed:&components green:&v15 blue:&v16 alpha:&v17];
+  [colorCopy getRed:&components green:&v15 blue:&v16 alpha:&v17];
 
-  [v5 getRed:&v18 green:&v19 blue:&v20 alpha:v21];
+  [endColorCopy getRed:&v18 green:&v19 blue:&v20 alpha:v21];
   v9 = +[UIColor clearColor];
   [v9 set];
 
@@ -5213,9 +5213,9 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
   if (!_defaultBackgroundGradient___defaultBackgroundGradient)
   {
     v4 = +[UIDevice currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-    if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v6 = [UIColor colorWithRed:0.88627451 green:0.898039216 blue:0.917647059 alpha:1.0];
       v7 = 0.815686275;
@@ -5232,7 +5232,7 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
     }
 
     v10 = [UIColor colorWithRed:v7 green:v8 blue:v9 alpha:1.0];
-    v11 = [a1 _backgroundGradientWithStartColor:v6 andEndColor:v10];
+    v11 = [self _backgroundGradientWithStartColor:v6 andEndColor:v10];
     v12 = _defaultBackgroundGradient___defaultBackgroundGradient;
     _defaultBackgroundGradient___defaultBackgroundGradient = v11;
 
@@ -5242,11 +5242,11 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
   return v3;
 }
 
-+ (id)imageFromAlbumArtData:(id)a3 height:(int)a4 width:(int)a5 bytesPerRow:(int)a6 cache:(BOOL)a7
++ (id)imageFromAlbumArtData:(id)data height:(int)height width:(int)width bytesPerRow:(int)row cache:(BOOL)cache
 {
-  v10 = a3;
-  v11 = v10;
-  if (a4 < 1)
+  dataCopy = data;
+  v11 = dataCopy;
+  if (height < 1)
   {
     v12 = 0;
   }
@@ -5254,15 +5254,15 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
   else
   {
     v12 = 0;
-    if (v10 && a5 >= 1)
+    if (dataCopy && width >= 1)
     {
       DeviceRGB = CGColorSpaceCreateDeviceRGB();
       v14 = CGDataProviderCreateWithCFData(v11);
-      v15 = CGImageCreate(a5, a4, 5uLL, 0x10uLL, a6, DeviceRGB, 0x1006u, v14, 0, 0, kCGRenderingIntentDefault);
+      v15 = CGImageCreate(width, height, 5uLL, 0x10uLL, row, DeviceRGB, 0x1006u, v14, 0, 0, kCGRenderingIntentDefault);
       CGDataProviderRelease(v14);
       v16 = [UIImage alloc];
-      v17 = [objc_opt_self() mainScreen];
-      [v17 scale];
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen scale];
       v12 = [(UIImage *)v16 initWithCGImage:v15 scale:0 orientation:?];
 
       CGImageRelease(v15);
@@ -5273,7 +5273,7 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
   return v12;
 }
 
-+ (UIImage)imageWithContentsOfCPBitmapFile:(id)a3 flags:(int)a4
++ (UIImage)imageWithContentsOfCPBitmapFile:(id)file flags:(int)flags
 {
   valuePtr = 1.0;
   MappedDataFromPath = CPBitmapCreateMappedDataFromPath();
@@ -5310,13 +5310,13 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
   return MappedDataFromPath;
 }
 
-- (BOOL)writeToCPBitmapFile:(id)a3 flags:(int)a4
+- (BOOL)writeToCPBitmapFile:(id)file flags:(int)flags
 {
-  v5 = a3;
-  v6 = [(_UIImageContent *)self->_content CGImage];
+  fileCopy = file;
+  cGImage = [(_UIImageContent *)self->_content CGImage];
   v7 = 0;
-  values = v6;
-  if (v5 && v6)
+  values = cGImage;
+  if (fileCopy && cGImage)
   {
     v8 = *MEMORY[0x1E695E480];
     v9 = CFArrayCreate(*MEMORY[0x1E695E480], &values, 1, MEMORY[0x1E695E9C0]);
@@ -5357,52 +5357,52 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
   return v7;
 }
 
-- (id)_stretchableImageWithCapInsets:(UIEdgeInsets)a3
+- (id)_stretchableImageWithCapInsets:(UIEdgeInsets)insets
 {
-  v3 = [(UIImage *)self resizableImageWithCapInsets:a3.top, a3.left, a3.bottom, a3.right];
+  v3 = [(UIImage *)self resizableImageWithCapInsets:insets.top, insets.left, insets.bottom, insets.right];
   [v3 _setAlwaysStretches:1];
 
   return v3;
 }
 
-- (id)_resizableImageWithSubimageInsets:(UIEdgeInsets)a3 resizeInsets:(UIEdgeInsets)a4
+- (id)_resizableImageWithSubimageInsets:(UIEdgeInsets)insets resizeInsets:(UIEdgeInsets)resizeInsets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [[_UIResizableImage alloc] initWithImage:self capInsets:a4.top, a4.left, a4.bottom, a4.right];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  v8 = [[_UIResizableImage alloc] initWithImage:self capInsets:resizeInsets.top, resizeInsets.left, resizeInsets.bottom, resizeInsets.right];
   [(_UIResizableImage *)v8 _setSubimageInsets:top, left, bottom, right];
 
   return v8;
 }
 
-+ (id)_deviceSpecificImageNamed:(id)a3
++ (id)_deviceSpecificImageNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v5 = _UIImageDeviceSpecificName();
-  if (!v5 || ([v4 stringByAppendingString:v5], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a1, "imageNamed:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  if (!v5 || ([namedCopy stringByAppendingString:v5], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(self, "imageNamed:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
-    v7 = [a1 imageNamed:v4];
+    v7 = [self imageNamed:namedCopy];
   }
 
   return v7;
 }
 
-+ (id)_deviceSpecificImageNamed:(id)a3 inBundle:(id)a4
++ (id)_deviceSpecificImageNamed:(id)named inBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  namedCopy = named;
+  bundleCopy = bundle;
   v8 = _UIImageDeviceSpecificName();
-  if (!v8 || ([v6 stringByAppendingString:v8], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a1, "imageNamed:inBundle:", v9, v7), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
+  if (!v8 || ([namedCopy stringByAppendingString:v8], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(self, "imageNamed:inBundle:", v9, bundleCopy), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
   {
-    v10 = [a1 imageNamed:v6 inBundle:v7];
+    v10 = [self imageNamed:namedCopy inBundle:bundleCopy];
   }
 
   return v10;
 }
 
-- ($8452678F12DBC466148836A9D382CAFC)_calculateStatisticsOfEdge:(SEL)a3
+- ($8452678F12DBC466148836A9D382CAFC)_calculateStatisticsOfEdge:(SEL)edge
 {
   v92[1] = *MEMORY[0x1E69E9840];
   retstr->var8 = 0.0;
@@ -5414,14 +5414,14 @@ void __77__UIImage_symbolImageNamed_size_compatibleWithFont_traitCollection_inBu
   v8 = v7;
   v10 = v9;
   v11 = 4 * v7;
-  v12 = [(UIImage *)self ioSurface];
-  v13 = v12;
-  if (!v12)
+  ioSurface = [(UIImage *)self ioSurface];
+  v13 = ioSurface;
+  if (!ioSurface)
   {
     goto LABEL_5;
   }
 
-  IOSurfaceLock(v12, 1u, 0);
+  IOSurfaceLock(ioSurface, 1u, 0);
   BaseAddress = IOSurfaceGetBaseAddress(v13);
   PixelFormat = IOSurfaceGetPixelFormat(v13);
   if (PixelFormat != 1999843442 && PixelFormat != 1647534392)
@@ -5774,12 +5774,12 @@ LABEL_55:
   return result;
 }
 
-- (id)_imagePaddedByInsets:(UIEdgeInsets)a3
+- (id)_imagePaddedByInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   if ([(UIImage *)self _isResizable])
   {
     NSLog(&cfstr_Imagepaddedbyi.isa);
@@ -5798,28 +5798,28 @@ LABEL_55:
 - (id)_rasterizedCustomSymbolImageForFastXPCCoding
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if ((_UIImageIsCustomSymbol(a1) & 1) == 0)
+    if ((_UIImageIsCustomSymbol(self) & 1) == 0)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:sel__rasterizedCustomSymbolImageForFastXPCCoding object:a1 file:@"UIImage.m" lineNumber:4524 description:@"This should only ever be called for custom symbol images."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__rasterizedCustomSymbolImageForFastXPCCoding object:self file:@"UIImage.m" lineNumber:4524 description:@"This should only ever be called for custom symbol images."];
     }
 
-    v7 = [a1 _rasterizedImage];
-    v8 = [a1 symbolConfiguration];
-    if ([a1 _effectiveRenderingModeWithSymbolConfiguration:v8] != 2 || objc_msgSend(v8, "colorRenderingMode") == 2)
+    _rasterizedImage = [self _rasterizedImage];
+    symbolConfiguration = [self symbolConfiguration];
+    if ([self _effectiveRenderingModeWithSymbolConfiguration:symbolConfiguration] != 2 || objc_msgSend(symbolConfiguration, "colorRenderingMode") == 2)
     {
       goto LABEL_37;
     }
 
-    if ([v8 _hasSpecifiedHierarchicalColors] && objc_msgSend(a1, "_isHierarchicalColorSymbolImage"))
+    if ([symbolConfiguration _hasSpecifiedHierarchicalColors] && objc_msgSend(self, "_isHierarchicalColorSymbolImage"))
     {
-      v9 = [v8 _colors];
+      _colors = [symbolConfiguration _colors];
       v22 = +[UIColor tintColor];
       v24[0] = v22;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-      v1 = v9;
+      v1 = _colors;
       v11 = v10;
       v2 = v11;
       if (v1 == v11)
@@ -5850,17 +5850,17 @@ LABEL_55:
       v12 = 0;
     }
 
-    if (![v8 _hasSpecifiedPaletteColors] || !objc_msgSend(a1, "_isPaletteColorSymbolImage"))
+    if (![symbolConfiguration _hasSpecifiedPaletteColors] || !objc_msgSend(self, "_isPaletteColorSymbolImage"))
     {
       v18 = 0;
       goto LABEL_22;
     }
 
-    v13 = [v8 _colors];
+    _colors2 = [symbolConfiguration _colors];
     v3 = +[UIColor tintColor];
     v23 = v3;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
-    v4 = v13;
+    v4 = _colors2;
     v15 = v14;
     v5 = v15;
     if (v4 == v15)
@@ -5869,8 +5869,8 @@ LABEL_55:
 LABEL_32:
       v18 = 1;
 LABEL_22:
-      v19 = [a1 _colorForFlattening];
-      v17 = v19 == 0;
+      _colorForFlattening = [self _colorForFlattening];
+      v17 = _colorForFlattening == 0;
 
       if (!v18)
       {
@@ -5889,8 +5889,8 @@ LABEL_24:
         if (v17)
         {
 LABEL_28:
-          [v7 imageWithRenderingMode:2];
-          v7 = v1 = v7;
+          [_rasterizedImage imageWithRenderingMode:2];
+          _rasterizedImage = v1 = _rasterizedImage;
 LABEL_36:
         }
 
@@ -5927,42 +5927,42 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v7 = 0;
+  _rasterizedImage = 0;
 LABEL_38:
 
-  return v7;
+  return _rasterizedImage;
 }
 
-- (id)_imageWithSize:(CGSize)a3
+- (id)_imageWithSize:(CGSize)size
 {
-  v4 = 0;
-  if (a3.width >= 0.0)
+  selfCopy = 0;
+  if (size.width >= 0.0)
   {
-    height = a3.height;
-    if (a3.height >= 0.0)
+    height = size.height;
+    if (size.height >= 0.0)
     {
-      width = a3.width;
+      width = size.width;
       [(UIImage *)self size];
       if (width == v8 && height == v7)
       {
-        v4 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v4 = [(UIImage *)self _imageWithSize:self->_content content:width, height];
+        selfCopy = [(UIImage *)self _imageWithSize:self->_content content:width, height];
       }
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)_imageWithSize:(CGSize)a3 content:(id)a4
+- (id)_imageWithSize:(CGSize)size content:(id)content
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  contentCopy = content;
   [(UIImage *)self size];
   v9 = v8;
   v11 = v10;
@@ -5985,8 +5985,8 @@ LABEL_38:
   }
 
   v16 = height / v13;
-  v17 = [(UIImage *)self _imageWithContent:v7];
-  [v7 scale];
+  v17 = [(UIImage *)self _imageWithContent:contentCopy];
+  [contentCopy scale];
   v19 = v18;
 
   v17[9] = width * v19;
@@ -6071,9 +6071,9 @@ void __50__UIImage_prepareForDisplayWithCompletionHandler___block_invoke(uint64_
     if (v5)
     {
       v6 = v5;
-      v7 = [(UIImage *)self imageOrientation];
+      imageOrientation = [(UIImage *)self imageOrientation];
       [v6 size];
-      [UIImage _applyOrientation:v7 toContentSizeInPixels:?];
+      [UIImage _applyOrientation:imageOrientation toContentSizeInPixels:?];
       v3 = [(UIImage *)self _imageWithSize:v6 content:?];
     }
 
@@ -6134,23 +6134,23 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
 
 - (id)_imageWithBitmapRepresentation
 {
-  v3 = [objc_opt_self() mainScreen];
-  v4 = [(UIImage *)self _imagePreparedForScreen:v3];
+  mainScreen = [objc_opt_self() mainScreen];
+  v4 = [(UIImage *)self _imagePreparedForScreen:mainScreen];
 
   return v4;
 }
 
-- (id)_initWithData:(id)a3 immediateLoadWithMaxSize:(CGSize)a4 scale:(double)a5 renderingIntent:(unint64_t)a6 cache:(BOOL)a7
+- (id)_initWithData:(id)data immediateLoadWithMaxSize:(CGSize)size scale:(double)scale renderingIntent:(unint64_t)intent cache:(BOOL)cache
 {
-  v7 = a7;
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = v13;
-  if (v13 && [v13 length])
+  cacheCopy = cache;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  v14 = dataCopy;
+  if (dataCopy && [dataCopy length])
   {
-    v15 = [[_UIImageAsyncCGImageContent alloc] initWithData:v14 immediateLoadWithMaxSize:a6 scale:v7 renderingIntent:width cache:height, a5];
-    v16 = [(UIImage *)self _initWithContent:v15 orientation:0];
+    scale = [[_UIImageAsyncCGImageContent alloc] initWithData:v14 immediateLoadWithMaxSize:intent scale:cacheCopy renderingIntent:width cache:height, scale];
+    v16 = [(UIImage *)self _initWithContent:scale orientation:0];
     if (v16)
     {
       v16[26] |= 2u;
@@ -6158,15 +6158,15 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
 
     self = v16;
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (UIImage)stretchableImageWithLeftCapWidth:(NSInteger)leftCapWidth topCapHeight:(NSInteger)topCapHeight
@@ -6198,23 +6198,23 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
   return [(UIImage *)self _stretchableImageWithCapInsets:topCapHeight, leftCapWidth, v11, v13, topCapHeight, v8];
 }
 
-- (void)compositeToRect:(CGRect)a3 fromRect:(CGRect)a4 operation:(int)a5 fraction:(double)a6
+- (void)compositeToRect:(CGRect)rect fromRect:(CGRect)fromRect operation:(int)operation fraction:(double)fraction
 {
-  v6 = *&a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.size.height;
-  v34 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
+  v6 = *&operation;
+  height = fromRect.size.height;
+  width = fromRect.size.width;
+  y = fromRect.origin.y;
+  x = fromRect.origin.x;
+  v11 = rect.size.height;
+  v34 = rect.size.width;
+  v12 = rect.origin.y;
+  v13 = rect.origin.x;
   if ([(_UIImageContent *)self->_content isCGImage])
   {
     v33 = v11;
     [(UIImage *)self scale];
     v16 = v15;
-    v17 = [(_UIImageContent *)self->_content CGImage];
+    cGImage = [(_UIImageContent *)self->_content CGImage];
     v36.origin.x = x;
     v36.origin.y = y;
     v36.size.width = width;
@@ -6223,9 +6223,9 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
     v19 = v16 != 0.0 && v16 != 1.0;
     if (IsEmpty)
     {
-      v20 = CGImageGetWidth(v17);
+      v20 = CGImageGetWidth(cGImage);
       v21 = v20;
-      v22 = CGImageGetHeight(v17);
+      v22 = CGImageGetHeight(cGImage);
       v23 = v22;
       v24 = 0.0;
       if (v19)
@@ -6251,9 +6251,9 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
         v23 = v25 * v23;
       }
 
-      v27 = [(UIImage *)self imageOrientation];
+      imageOrientation = [(UIImage *)self imageOrientation];
 
-      compositeCGImageRefInRect(v17, v13, v12, v34, v33, v24, v24, v21, v23, v6, v27, a6);
+      compositeCGImageRefInRect(cGImage, v13, v12, v34, v33, v24, v24, v21, v23, v6, imageOrientation, fraction);
     }
 
     else
@@ -6283,28 +6283,28 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
         v28 = x;
       }
 
-      v32 = CGImageCreateWithImageInRect(v17, *&v28);
-      compositeCGImageRefInRect(v32, v13, v12, v34, v33, x, y, width, height, v6, [(UIImage *)self imageOrientation], a6);
+      v32 = CGImageCreateWithImageInRect(cGImage, *&v28);
+      compositeCGImageRefInRect(v32, v13, v12, v34, v33, x, y, width, height, v6, [(UIImage *)self imageOrientation], fraction);
 
       CGImageRelease(v32);
     }
   }
 }
 
-- (void)compositeToPoint:(CGPoint)a3 fromRect:(CGRect)a4 operation:(int)a5 fraction:(double)a6
+- (void)compositeToPoint:(CGPoint)point fromRect:(CGRect)rect operation:(int)operation fraction:(double)fraction
 {
-  v7 = *&a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3.y;
-  v13 = a3.x;
+  v7 = *&operation;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v12 = point.y;
+  v13 = point.x;
   if ([(_UIImageContent *)self->_content isCGImage])
   {
     [(UIImage *)self scale];
     v16 = v15;
-    v17 = [(_UIImageContent *)self->_content CGImage];
+    cGImage = [(_UIImageContent *)self->_content CGImage];
     v18 = width * v16;
     if (width <= 1.0)
     {
@@ -6388,24 +6388,24 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
       v26 = v22;
     }
 
-    v27 = CGImageCreateWithImageInRect(v17, *(&v23 - 3));
-    compositeCGImageRef(v27, v13, v12, x, y, width, height, a6, v7, [(UIImage *)self imageOrientation]);
+    v27 = CGImageCreateWithImageInRect(cGImage, *(&v23 - 3));
+    compositeCGImageRef(v27, v13, v12, x, y, width, height, fraction, v7, [(UIImage *)self imageOrientation]);
 
     CGImageRelease(v27);
   }
 }
 
-- (void)compositeToPoint:(CGPoint)a3 operation:(int)a4 fraction:(double)a5
+- (void)compositeToPoint:(CGPoint)point operation:(int)operation fraction:(double)fraction
 {
-  v6 = *&a4;
-  y = a3.y;
-  x = a3.x;
+  v6 = *&operation;
+  y = point.y;
+  x = point.x;
   if ([(_UIImageContent *)self->_content isCGImage])
   {
-    v10 = [(_UIImageContent *)self->_content CGImage];
-    Width = CGImageGetWidth(v10);
+    cGImage = [(_UIImageContent *)self->_content CGImage];
+    Width = CGImageGetWidth(cGImage);
     v12 = Width;
-    Height = CGImageGetHeight(v10);
+    Height = CGImageGetHeight(cGImage);
     v14 = Height;
     [(UIImage *)self scale];
     v16 = 0.0;
@@ -6432,75 +6432,75 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
       v14 = v17 * v14;
     }
 
-    v19 = [(UIImage *)self imageOrientation];
+    imageOrientation = [(UIImage *)self imageOrientation];
 
-    compositeCGImageRef(v10, x, y, v16, v16, v12, v14, a5, v6, v19);
+    compositeCGImageRef(cGImage, x, y, v16, v16, v12, v14, fraction, v6, imageOrientation);
   }
 }
 
-- (void)draw9PartImageWithSliceRects:(id *)a3 inRect:(CGRect)a4
+- (void)draw9PartImageWithSliceRects:(id *)rects inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  memcpy(v9, a3, sizeof(v9));
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  memcpy(v9, rects, sizeof(v9));
   [(UIImage *)self draw9PartImageWithSliceRects:v9 inRect:x fraction:y, width, height, 1.0];
 }
 
-- (void)draw9PartImageWithSliceRects:(id *)a3 inRect:(CGRect)a4 fraction:(double)a5
+- (void)draw9PartImageWithSliceRects:(id *)rects inRect:(CGRect)rect fraction:(double)fraction
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  memcpy(v11, a3, sizeof(v11));
-  [(UIImage *)self draw9PartImageWithSliceRects:v11 inRect:2 operation:x fraction:y, width, height, a5];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  memcpy(v11, rects, sizeof(v11));
+  [(UIImage *)self draw9PartImageWithSliceRects:v11 inRect:2 operation:x fraction:y, width, height, fraction];
 }
 
-- (void)draw9PartImageWithSliceRects:(id *)a3 inRect:(CGRect)a4 operation:(int)a5 fraction:(double)a6
+- (void)draw9PartImageWithSliceRects:(id *)rects inRect:(CGRect)rect operation:(int)operation fraction:(double)fraction
 {
-  v7 = *&a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  v7 = *&operation;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v49 = *MEMORY[0x1E69E9840];
   if ([(_UIImageContent *)self->_content isCGImage])
   {
-    origin = a3->var0.var0.origin;
-    v32.width = a3->var0.var0.size.width;
-    v14 = a3->var0.var0.size.height;
-    size = a3->var1.var1.size;
-    v45 = a3->var1.var1.origin;
+    origin = rects->var0.var0.origin;
+    v32.width = rects->var0.var0.size.width;
+    v14 = rects->var0.var0.size.height;
+    size = rects->var1.var1.size;
+    v45 = rects->var1.var1.origin;
     v46 = size;
-    v16 = a3->var1.var2.size;
-    v47 = a3->var1.var2.origin;
+    v16 = rects->var1.var2.size;
+    v47 = rects->var1.var2.origin;
     v48 = v16;
-    v17 = a3->var0.var2.size;
-    v41 = a3->var0.var2.origin;
+    v17 = rects->var0.var2.size;
+    v41 = rects->var0.var2.origin;
     v42 = v17;
-    v18 = a3->var1.var0.size;
-    v43 = a3->var1.var0.origin;
+    v18 = rects->var1.var0.size;
+    v43 = rects->var1.var0.origin;
     v44 = v18;
-    v19 = a3->var0.var1.size;
-    v39 = a3->var0.var1.origin;
+    v19 = rects->var0.var1.size;
+    v39 = rects->var0.var1.origin;
     v40 = v19;
-    v24 = a3->var2.var0.origin;
-    v25 = a3->var2.var0.size.width;
-    v20 = a3->var2.var0.size.height;
-    v21 = a3->var2.var1.size;
-    v27 = a3->var2.var1.origin;
+    v24 = rects->var2.var0.origin;
+    v25 = rects->var2.var0.size.width;
+    v20 = rects->var2.var0.size.height;
+    v21 = rects->var2.var1.size;
+    v27 = rects->var2.var1.origin;
     v28 = v21;
-    v22 = a3->var2.var2.size;
-    v29 = a3->var2.var2.origin;
+    v22 = rects->var2.var2.size;
+    v29 = rects->var2.var2.origin;
     v30 = v22;
     remainder.origin.x = x;
     remainder.origin.y = y;
     remainder.size.width = width;
     remainder.size.height = height;
     memset(&slice, 0, sizeof(slice));
-    v23 = self;
+    selfCopy = self;
     v50.origin.x = x;
     v50.origin.y = y;
     v50.size.width = width;
@@ -6511,7 +6511,7 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
     v34 = v40;
     v35 = v41;
     v36 = v42;
-    draw9PartSlice(v23, &origin.x, v7, slice.origin.x, slice.origin.y, slice.size.width, slice.size.height, a6);
+    draw9PartSlice(selfCopy, &origin.x, v7, slice.origin.x, slice.origin.y, slice.size.width, slice.size.height, fraction);
     CGRectDivide(remainder, &slice, &remainder, v20, CGRectMaxYEdge);
     v33 = v45;
     v34 = v46;
@@ -6519,65 +6519,65 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
     v36 = v48;
     origin = v43;
     v32 = v44;
-    draw9PartSlice(v23, &origin.x, v7, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height, a6);
+    draw9PartSlice(selfCopy, &origin.x, v7, remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height, fraction);
     v26 = v20;
-    draw9PartSlice(v23, &v24.x, v7, slice.origin.x, slice.origin.y, slice.size.width, slice.size.height, a6);
+    draw9PartSlice(selfCopy, &v24.x, v7, slice.origin.x, slice.origin.y, slice.size.width, slice.size.height, fraction);
   }
 }
 
-- (void)draw3PartImageWithSliceRects:(id *)a3 inRect:(CGRect)a4
+- (void)draw3PartImageWithSliceRects:(id *)rects inRect:(CGRect)rect
 {
-  size = a3->var1.size;
-  v7[2] = a3->var1.origin;
+  size = rects->var1.size;
+  v7[2] = rects->var1.origin;
   v7[3] = size;
-  v5 = a3->var2.size;
-  v7[4] = a3->var2.origin;
+  v5 = rects->var2.size;
+  v7[4] = rects->var2.origin;
   v7[5] = v5;
-  v6 = a3->var0.size;
-  v7[0] = a3->var0.origin;
+  v6 = rects->var0.size;
+  v7[0] = rects->var0.origin;
   v7[1] = v6;
-  [(UIImage *)self draw3PartImageWithSliceRects:v7 inRect:a4.origin.x fraction:a4.origin.y, a4.size.width, a4.size.height, 1.0];
+  [(UIImage *)self draw3PartImageWithSliceRects:v7 inRect:rect.origin.x fraction:rect.origin.y, rect.size.width, rect.size.height, 1.0];
 }
 
-- (void)draw3PartImageWithSliceRects:(id *)a3 inRect:(CGRect)a4 fraction:(double)a5
+- (void)draw3PartImageWithSliceRects:(id *)rects inRect:(CGRect)rect fraction:(double)fraction
 {
-  size = a3->var1.size;
-  v8[2] = a3->var1.origin;
+  size = rects->var1.size;
+  v8[2] = rects->var1.origin;
   v8[3] = size;
-  v6 = a3->var2.size;
-  v8[4] = a3->var2.origin;
+  v6 = rects->var2.size;
+  v8[4] = rects->var2.origin;
   v8[5] = v6;
-  v7 = a3->var0.size;
-  v8[0] = a3->var0.origin;
+  v7 = rects->var0.size;
+  v8[0] = rects->var0.origin;
   v8[1] = v7;
-  [(UIImage *)self draw3PartImageWithSliceRects:v8 inRect:2 operation:a4.origin.x fraction:a4.origin.y, a4.size.width, a4.size.height, a5];
+  [(UIImage *)self draw3PartImageWithSliceRects:v8 inRect:2 operation:rect.origin.x fraction:rect.origin.y, rect.size.width, rect.size.height, fraction];
 }
 
-- (void)draw3PartImageWithSliceRects:(id *)a3 inRect:(CGRect)a4 operation:(int)a5 fraction:(double)a6
+- (void)draw3PartImageWithSliceRects:(id *)rects inRect:(CGRect)rect operation:(int)operation fraction:(double)fraction
 {
-  v7 = *&a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  v7 = *&operation;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(_UIImageContent *)self->_content isCGImage])
   {
     v26 = width;
     v27 = height;
-    v14 = a3->var0.origin.x;
-    v15 = a3->var0.size.width;
-    v28 = a3->var0.size.height;
-    v29 = a3->var1.origin.x;
-    v17 = a3->var1.size.width;
-    v16 = a3->var1.size.height;
-    v18 = a3->var2.origin.x;
-    v30 = a3->var1.origin.y;
-    v31 = a3->var2.origin.y;
-    v35 = a3->var2.size.width;
-    v32 = a3->var0.origin.y;
-    v34 = a3->var2.size.height;
-    v36 = self;
-    [(UIImage *)v36 compositeToPoint:v7 fromRect:x operation:y fraction:v14, v32, v15, v28, a6];
+    v14 = rects->var0.origin.x;
+    v15 = rects->var0.size.width;
+    v28 = rects->var0.size.height;
+    v29 = rects->var1.origin.x;
+    v17 = rects->var1.size.width;
+    v16 = rects->var1.size.height;
+    v18 = rects->var2.origin.x;
+    v30 = rects->var1.origin.y;
+    v31 = rects->var2.origin.y;
+    v35 = rects->var2.size.width;
+    v32 = rects->var0.origin.y;
+    v34 = rects->var2.size.height;
+    selfCopy = self;
+    [(UIImage *)selfCopy compositeToPoint:v7 fromRect:x operation:y fraction:v14, v32, v15, v28, fraction];
     v33 = v18;
     if (v17 > v16 && v14 == v18)
     {
@@ -6585,7 +6585,7 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
       v24 = y + v27 - v34;
       if (v16 <= 1.0 && v23 < v24)
       {
-        [(UIImage *)v36 compositeToRect:v7 fromRect:x operation:v23 fraction:v17, v24 - v23, v29, v30, v17, v16, *&a6];
+        [(UIImage *)selfCopy compositeToRect:v7 fromRect:x operation:v23 fraction:v17, v24 - v23, v29, v30, v17, v16, *&fraction];
         v23 = v24;
       }
 
@@ -6598,7 +6598,7 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
             v16 = v24 - v23;
           }
 
-          [(UIImage *)v36 compositeToPoint:v7 fromRect:x operation:v23 fraction:v29, v30, v17, v16, a6];
+          [(UIImage *)selfCopy compositeToPoint:v7 fromRect:x operation:v23 fraction:v29, v30, v17, v16, fraction];
         }
       }
 
@@ -6611,7 +6611,7 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
       v21 = x + v26 - v35;
       if (v17 <= 1.0 && v20 < v21)
       {
-        [(UIImage *)v36 compositeToRect:v7 fromRect:v20 operation:y fraction:v21 - v20, v16, v29, v30, v17, v16, *&a6];
+        [(UIImage *)selfCopy compositeToRect:v7 fromRect:v20 operation:y fraction:v21 - v20, v16, v29, v30, v17, v16, *&fraction];
         v20 = v21;
       }
 
@@ -6624,37 +6624,37 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
             v17 = v21 - v20;
           }
 
-          [(UIImage *)v36 compositeToPoint:v7 fromRect:v20 operation:y fraction:v29, v30, v17, v16, a6];
+          [(UIImage *)selfCopy compositeToPoint:v7 fromRect:v20 operation:y fraction:v29, v30, v17, v16, fraction];
         }
       }
 
       x = floor(v20);
     }
 
-    [(UIImage *)v36 compositeToPoint:v7 fromRect:x operation:y fraction:v33, v31, v35, v34, a6];
+    [(UIImage *)selfCopy compositeToPoint:v7 fromRect:x operation:y fraction:v33, v31, v35, v34, fraction];
   }
 }
 
-- (void)draw1PartImageInRect:(CGRect)a3 fraction:(double)a4 operation:(int)a5
+- (void)draw1PartImageInRect:(CGRect)rect fraction:(double)fraction operation:(int)operation
 {
-  v5 = *&a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v5 = *&operation;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(_UIImageContent *)self->_content isCGImage])
   {
     v20 = height;
-    v12 = self;
+    selfCopy = self;
     v13 = *MEMORY[0x1E695EFF8];
     v14 = *(MEMORY[0x1E695EFF8] + 8);
-    v21 = v12;
-    [(UIImage *)v12 size];
+    v21 = selfCopy;
+    [(UIImage *)selfCopy size];
     v17 = v15;
     v18 = v16;
     if (v15 <= 1.0)
     {
-      [(UIImage *)v21 compositeToRect:v5 fromRect:x operation:y fraction:width, v20, v13, v14, v15, v16, *&a4];
+      [(UIImage *)v21 compositeToRect:v5 fromRect:x operation:y fraction:width, v20, v13, v14, v15, v16, *&fraction];
     }
 
     else
@@ -6667,7 +6667,7 @@ void __52__UIImage_prepareThumbnailOfSize_completionHandler___block_invoke(uint6
           v17 = v19 - x;
         }
 
-        [(UIImage *)v21 compositeToPoint:v5 fromRect:x operation:y fraction:v13, v14, v17, v18, a4];
+        [(UIImage *)v21 compositeToPoint:v5 fromRect:x operation:y fraction:v13, v14, v17, v18, fraction];
         x = x + v17;
       }
     }
@@ -6775,28 +6775,28 @@ LABEL_22:
   CGContextDrawTiledImage(v3, *(a1 + 96), [*(a1 + 32) CGImage]);
 }
 
-+ (void)_flushCache:(id)a3
++ (void)_flushCache:(id)cache
 {
   _UISharedImageFlushAll();
 
   +[_UIOldCGImageDecompressor flushCaches];
 }
 
-- (id)_swizzleContent:(id)a3
+- (id)_swizzleContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   content = self->_content;
-  v6 = content;
+  contentCopy2 = content;
   v7 = self->_content;
-  self->_content = v4;
-  v8 = v4;
+  self->_content = contentCopy;
+  v8 = contentCopy;
 
   return content;
 }
 
-- (void)_setCached:(BOOL)a3
+- (void)_setCached:(BOOL)cached
 {
-  if (a3)
+  if (cached)
   {
     v3 = 64;
   }
@@ -6807,20 +6807,20 @@ LABEL_22:
   }
 
   self->_imageFlags = (*&self->_imageFlags & 0xFFFFFFBF | v3);
-  if (a3)
+  if (cached)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  objc_setAssociatedObject(self, &_UIImageTableCachedRetainCycleAssociationKey, v4, 1);
+  objc_setAssociatedObject(self, &_UIImageTableCachedRetainCycleAssociationKey, selfCopy, 1);
 }
 
-- (BOOL)_isInvisibleAndGetIsTranslucent:(BOOL *)a3
+- (BOOL)_isInvisibleAndGetIsTranslucent:(BOOL *)translucent
 {
   v5 = objc_getAssociatedObject(self, &unk_1ED498CEA);
   v6 = objc_getAssociatedObject(self, &unk_1ED498CEB);
@@ -6957,44 +6957,44 @@ LABEL_34:
   objc_setAssociatedObject(self, &unk_1ED498CEB, v35, 1);
   v6 = v35;
 LABEL_35:
-  if (a3)
+  if (translucent)
   {
-    *a3 = [v6 BOOLValue];
+    *translucent = [v6 BOOLValue];
   }
 
-  v36 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v36;
+  return bOOLValue;
 }
 
-- (BOOL)_hasVisibleContentInRect:(CGRect)a3 atScale:(double)a4
+- (BOOL)_hasVisibleContentInRect:(CGRect)rect atScale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsEmpty(rect))
   {
     return 0;
   }
 
-  v11 = [(UIImage *)self ioSurface];
-  IOSurfaceLock(v11, 1u, 0);
-  BaseAddress = IOSurfaceGetBaseAddress(v11);
-  v13 = IOSurfaceGetHeight(v11);
-  v14 = IOSurfaceGetWidth(v11);
-  BytesPerRow = IOSurfaceGetBytesPerRow(v11);
-  BytesPerElement = IOSurfaceGetBytesPerElement(v11);
+  ioSurface = [(UIImage *)self ioSurface];
+  IOSurfaceLock(ioSurface, 1u, 0);
+  BaseAddress = IOSurfaceGetBaseAddress(ioSurface);
+  v13 = IOSurfaceGetHeight(ioSurface);
+  v14 = IOSurfaceGetWidth(ioSurface);
+  BytesPerRow = IOSurfaceGetBytesPerRow(ioSurface);
+  BytesPerElement = IOSurfaceGetBytesPerElement(ioSurface);
   v28.origin.x = x;
   v28.origin.y = y;
   v28.size.width = width;
   v28.size.height = height;
-  v17 = fmax(CGRectGetMinY(v28) * a4, 0.0);
+  v17 = fmax(CGRectGetMinY(v28) * scale, 0.0);
   v29.origin.x = x;
   v29.origin.y = y;
   v29.size.width = width;
   v29.size.height = height;
-  v18 = CGRectGetMaxY(v29) * a4;
+  v18 = CGRectGetMaxY(v29) * scale;
   if (v18 >= v13)
   {
     v18 = v13;
@@ -7010,7 +7010,7 @@ LABEL_35:
   v31.origin.y = y;
   v31.size.width = width;
   v31.size.height = height;
-  v21 = CGRectGetMaxX(v31) * a4;
+  v21 = CGRectGetMaxX(v31) * scale;
   if (v21 >= v14)
   {
     v21 = v14;
@@ -7025,7 +7025,7 @@ LABEL_35:
   {
     v10 = 0;
     v22 = v21;
-    v23 = fmax(MinX * a4, 0.0);
+    v23 = fmax(MinX * scale, 0.0);
     v24 = &BaseAddress[BytesPerRow * v17];
     do
     {
@@ -7053,20 +7053,20 @@ LABEL_14:
     while (v17 != v19);
   }
 
-  IOSurfaceUnlock(v11, 1u, 0);
+  IOSurfaceUnlock(ioSurface, 1u, 0);
   return v10;
 }
 
-- (id)_bezeledImageWithShadowRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 fillRed:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10 drawShadow:(BOOL)a11
+- (id)_bezeledImageWithShadowRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha fillRed:(double)fillRed green:(double)a8 blue:(double)a9 alpha:(double)self0 drawShadow:(BOOL)self1
 {
-  v11 = a11;
-  v17 = [UIColor colorWithRed:a3 green:a4 blue:a5 alpha:a6];
-  v18 = [UIColor colorWithRed:a7 green:a8 blue:a9 alpha:a10];
+  shadowCopy = shadow;
+  v17 = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+  v18 = [UIColor colorWithRed:fillRed green:a8 blue:a9 alpha:a10];
   [(UIImage *)self size];
   v21 = v20;
   v22 = v19;
   v23 = 0.0;
-  if (v11)
+  if (shadowCopy)
   {
     v23 = 1.0;
   }
@@ -7078,7 +7078,7 @@ LABEL_14:
   if (*ContextStack < 1)
   {
     v27 = 0;
-    if (v11)
+    if (shadowCopy)
     {
       goto LABEL_5;
     }
@@ -7087,13 +7087,13 @@ LABEL_14:
   else
   {
     v27 = ContextStack[3 * (*ContextStack - 1) + 1];
-    if (v11)
+    if (shadowCopy)
     {
 LABEL_5:
-      v28 = [v17 CGColor];
+      cGColor = [v17 CGColor];
       v32.width = 0.0;
       v32.height = -1.0;
-      CGContextSetShadowWithColor(v27, v32, 0.0, v28);
+      CGContextSetShadowWithColor(v27, v32, 0.0, cGColor);
       CGContextBeginTransparencyLayer(v27, 0);
       [v18 set];
       UIRectFillUsingOperation(1, 0.0, 1.0, v21, v22);
@@ -7113,11 +7113,11 @@ LABEL_8:
   return v29;
 }
 
-- (id)_doubleBezeledImageWithExteriorShadowRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 interiorShadowRed:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10 fillRed:(double)a11 green:(double)a12 blue:(double)a13 alpha:(double)a14
+- (id)_doubleBezeledImageWithExteriorShadowRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha interiorShadowRed:(double)shadowRed green:(double)a8 blue:(double)a9 alpha:(double)self0 fillRed:(double)self1 green:(double)self2 blue:(double)self3 alpha:(double)self4
 {
-  v19 = [UIColor colorWithRed:a3 green:a4 blue:a5 alpha:a6];
-  v20 = [UIColor colorWithRed:a11 green:a12 blue:a13 alpha:a14];
-  v21 = [UIColor colorWithRed:a7 green:a8 blue:a9 alpha:a10];
+  v19 = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+  v20 = [UIColor colorWithRed:fillRed green:a12 blue:a13 alpha:a14];
+  v21 = [UIColor colorWithRed:shadowRed green:a8 blue:a9 alpha:a10];
   [(UIImage *)self size];
   v23 = v22;
   v25 = v24;
@@ -7135,10 +7135,10 @@ LABEL_8:
     v29 = ContextStack[3 * (*ContextStack - 1) + 1];
   }
 
-  v30 = [v19 CGColor];
+  cGColor = [v19 CGColor];
   v39.width = 0.0;
   v39.height = 1.0;
-  CGContextSetShadowWithColor(v29, v39, 0.0, v30);
+  CGContextSetShadowWithColor(v29, v39, 0.0, cGColor);
   CGContextBeginTransparencyLayer(v29, 0);
   [v20 set];
   UIRectFillUsingOperation(1, 0.0, 0.0, v23, v25);
@@ -7148,19 +7148,19 @@ LABEL_8:
   CGContextScaleCTM(v29, 1.0, -1.0);
   [v31 size];
   CGContextTranslateCTM(v29, 0.0, -v32);
-  v33 = [v31 CGImage];
+  cGImage = [v31 CGImage];
   v41.origin.x = 0.0;
   v41.origin.y = 0.0;
   v41.size.width = v23;
   v41.size.height = v25;
-  CGContextClipToMask(v29, v41, v33);
+  CGContextClipToMask(v29, v41, cGImage);
   [v31 size];
   CGContextTranslateCTM(v29, 0.0, v34);
   CGContextScaleCTM(v29, 1.0, -1.0);
-  v35 = [v21 CGColor];
+  cGColor2 = [v21 CGColor];
   v40.width = 0.0;
   v40.height = 1.0;
-  CGContextSetShadowWithColor(v29, v40, 0.0, v35);
+  CGContextSetShadowWithColor(v29, v40, 0.0, cGColor2);
   CGContextBeginTransparencyLayer(v29, 0);
   [v20 set];
   UIRectFillUsingOperation(1, 0.0, -1.0, v23, v26 + 1.0);
@@ -7172,11 +7172,11 @@ LABEL_8:
   return v36;
 }
 
-- (id)_imageScaledToProportion:(double)a3 interpolationQuality:(int)a4
+- (id)_imageScaledToProportion:(double)proportion interpolationQuality:(int)quality
 {
   [(UIImage *)self size];
-  v8 = ceil(v7 * a3);
-  v10 = ceil(v9 * a3);
+  v8 = ceil(v7 * proportion);
+  v10 = ceil(v9 * proportion);
   [(UIImage *)self scale];
   _UIGraphicsBeginImageContextWithOptions(0, 0, v8, v10, v11);
   ContextStack = GetContextStack(0);
@@ -7190,7 +7190,7 @@ LABEL_8:
     v13 = ContextStack[3 * (*ContextStack - 1) + 1];
   }
 
-  CGContextSetInterpolationQuality(v13, a4);
+  CGContextSetInterpolationQuality(v13, quality);
   [(UIImage *)self drawInRect:0.0, 0.0, v8, v10];
   v14 = _UIGraphicsGetImageFromCurrentImageContext(0);
   UIGraphicsEndImageContext();
@@ -7203,47 +7203,47 @@ LABEL_8:
 {
   if (_UIIsKitImage(self) & 1) != 0 || (_UIIsSystemSymbolImage(self))
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [[_UIImageSerializationWrapper alloc] initWithImage:self];
+    selfCopy = [[_UIImageSerializationWrapper alloc] initWithImage:self];
   }
 
-  v4 = v3;
-  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:0];
+  v4 = selfCopy;
+  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:selfCopy requiringSecureCoding:1 error:0];
 
   return v5;
 }
 
-+ (unint64_t)_scaleDefinedByPath:(id)a3
++ (unint64_t)_scaleDefinedByPath:(id)path
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"@" options:4];
+  pathCopy = path;
+  v4 = [pathCopy rangeOfString:@"@" options:4];
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [v3 substringWithRange:{v4 + 1, 1}];
-    v7 = [v6 integerValue];
+    v6 = [pathCopy substringWithRange:{v4 + 1, 1}];
+    integerValue = [v6 integerValue];
 
-    if (v7)
+    if (integerValue)
     {
-      v5 = v7;
+      v5 = integerValue;
     }
   }
 
   return v5;
 }
 
-+ (int64_t)_idiomDefinedByPath:(id)a3
++ (int64_t)_idiomDefinedByPath:(id)path
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"~" options:4];
+  pathCopy = path;
+  v4 = [pathCopy rangeOfString:@"~" options:4];
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [v3 substringFromIndex:v4];
+    v6 = [pathCopy substringFromIndex:v4];
     if ([v6 rangeOfString:@"iphone"] == 0x7FFFFFFFFFFFFFFFLL)
     {
       if ([v6 rangeOfString:@"ipad"] == 0x7FFFFFFFFFFFFFFFLL)
@@ -7266,17 +7266,17 @@ LABEL_8:
   return v5;
 }
 
-- (id)_imageByApplyingSymbolVariant:(id)a3
+- (id)_imageByApplyingSymbolVariant:(id)variant
 {
-  v4 = a3;
-  if ([(UIImage *)self isSymbolImage]&& v4)
+  variantCopy = variant;
+  if ([(UIImage *)self isSymbolImage]&& variantCopy)
   {
     v5 = objc_opt_self();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 isUnspecified];
+      isUnspecified = [variantCopy isUnspecified];
 
-      if (!v6)
+      if (!isUnspecified)
       {
         if (!_UIIsSystemSymbolImage(self))
         {
@@ -7284,15 +7284,15 @@ LABEL_8:
 LABEL_27:
           if (v15)
           {
-            v20 = v15;
+            selfCopy = v15;
           }
 
           else
           {
-            v20 = self;
+            selfCopy = self;
           }
 
-          v13 = v20;
+          selfCopy2 = selfCopy;
 
           goto LABEL_13;
         }
@@ -7306,37 +7306,37 @@ LABEL_27:
         }
 
         v10 = *v9;
-        v11 = [v4 fillVariant];
-        if (v11 == 2)
+        fillVariant = [variantCopy fillVariant];
+        if (fillVariant == 2)
         {
           v16 = [v10 allKeysForObject:v7];
-          v12 = [v16 firstObject];
+          firstObject = [v16 firstObject];
         }
 
         else
         {
-          if (v11 != 1)
+          if (fillVariant != 1)
           {
-            v12 = 0;
+            firstObject = 0;
             goto LABEL_23;
           }
 
-          v12 = [v10 objectForKeyedSubscript:v7];
+          firstObject = [v10 objectForKeyedSubscript:v7];
         }
 
-        if (v12 && ([v7 isEqualToString:v12] & 1) == 0)
+        if (firstObject && ([v7 isEqualToString:firstObject] & 1) == 0)
         {
           [(UIImage *)self variableValue];
           v18 = v17;
-          v19 = [(UIImage *)self configuration];
+          configuration = [(UIImage *)self configuration];
           if (v8)
           {
-            [UIImage _systemImageNamed:v12 variableValue:v19 withConfiguration:v18];
+            [UIImage _systemImageNamed:firstObject variableValue:configuration withConfiguration:v18];
           }
 
           else
           {
-            [UIImage systemImageNamed:v12 variableValue:v19 withConfiguration:v18];
+            [UIImage systemImageNamed:firstObject variableValue:configuration withConfiguration:v18];
           }
           v15 = ;
 
@@ -7356,27 +7356,27 @@ LABEL_26:
     }
   }
 
-  v13 = self;
+  selfCopy2 = self;
 LABEL_13:
 
-  return v13;
+  return selfCopy2;
 }
 
-+ (int)_iconVariantForUIApplicationIconFormat:(int)a3 scale:(double *)a4
++ (int)_iconVariantForUIApplicationIconFormat:(int)format scale:(double *)scale
 {
-  v5 = *&a3;
+  v5 = *&format;
   v7 = +[UIDevice currentDevice];
-  LODWORD(a4) = [a1 _iconVariantForUIApplicationIconFormat:v5 idiom:objc_msgSend(v7 scale:"userInterfaceIdiom"), a4];
+  LODWORD(scale) = [self _iconVariantForUIApplicationIconFormat:v5 idiom:objc_msgSend(v7 scale:"userInterfaceIdiom"), scale];
 
-  return a4;
+  return scale;
 }
 
-+ (int)_iconVariantForUIApplicationIconFormat:(int)a3 idiom:(int64_t)a4 scale:(double *)a5
++ (int)_iconVariantForUIApplicationIconFormat:(int)format idiom:(int64_t)idiom scale:(double *)scale
 {
-  v6 = *a5;
-  if (a3 <= 11)
+  v6 = *scale;
+  if (format <= 11)
   {
-    switch(a3)
+    switch(format)
     {
       case 0:
         if (v6 < 3.0)
@@ -7423,9 +7423,9 @@ LABEL_13:
     }
   }
 
-  else if (a3 > 14)
+  else if (format > 14)
   {
-    if (a3 == 15)
+    if (format == 15)
     {
       if (v6 < 3.0)
       {
@@ -7442,7 +7442,7 @@ LABEL_13:
       goto LABEL_48;
     }
 
-    if (a3 == 16)
+    if (format == 16)
     {
       if (v6 < 3.0)
       {
@@ -7462,7 +7462,7 @@ LABEL_13:
 
   else
   {
-    if (a3 == 12)
+    if (format == 12)
     {
       v13 = v6 < 2.0;
       v14 = 58;
@@ -7470,7 +7470,7 @@ LABEL_13:
       goto LABEL_37;
     }
 
-    if (a3 == 13)
+    if (format == 13)
     {
       if (v6 < 3.0)
       {
@@ -7497,14 +7497,14 @@ LABEL_48:
     }
   }
 
-  if (a4 == 1)
+  if (idiom == 1)
   {
-    if (a3 <= 6)
+    if (format <= 6)
     {
-      if (a3 > 3)
+      if (format > 3)
       {
         v13 = v6 < 2.0;
-        if (a3 == 4)
+        if (format == 4)
         {
           v14 = 7;
           v15 = 28;
@@ -7517,7 +7517,7 @@ LABEL_48:
         }
       }
 
-      else if (a3 == 1)
+      else if (format == 1)
       {
         v13 = v6 < 2.0;
         v14 = 3;
@@ -7526,7 +7526,7 @@ LABEL_48:
 
       else
       {
-        if (a3 != 3)
+        if (format != 3)
         {
 LABEL_99:
           if (v6 < 2.0)
@@ -7534,8 +7534,8 @@ LABEL_99:
             return 1;
           }
 
-          v20 = [objc_opt_self() mainScreen];
-          [v20 _referenceBounds];
+          mainScreen = [objc_opt_self() mainScreen];
+          [mainScreen _referenceBounds];
           Height = CGRectGetHeight(v23);
 
           v13 = Height < 1366.0;
@@ -7552,11 +7552,11 @@ LABEL_99:
 
     else
     {
-      if (a3 > 8)
+      if (format > 8)
       {
-        if (a3 != 9)
+        if (format != 9)
         {
-          if (a3 == 10)
+          if (format == 10)
           {
             if (v6 < 2.0)
             {
@@ -7569,13 +7569,13 @@ LABEL_99:
             }
           }
 
-          if (a3 == 14)
+          if (format == 14)
           {
             v10 = 71;
             if (v6 >= 2.0)
             {
-              v11 = [objc_opt_self() mainScreen];
-              [v11 _referenceBounds];
+              mainScreen2 = [objc_opt_self() mainScreen];
+              [mainScreen2 _referenceBounds];
               v12 = CGRectGetHeight(v22);
 
               if (v12 < 1366.0)
@@ -7598,7 +7598,7 @@ LABEL_99:
         goto LABEL_86;
       }
 
-      if (a3 != 7)
+      if (format != 7)
       {
 LABEL_81:
         v13 = v6 < 3.0;
@@ -7629,11 +7629,11 @@ LABEL_37:
     dispatch_once(&qword_1ED498D28, &__block_literal_global_1014);
   }
 
-  if (a3 > 6)
+  if (format > 6)
   {
-    if (a3 > 8)
+    if (format > 8)
     {
-      if (a3 == 9)
+      if (format == 9)
       {
 LABEL_86:
         v13 = v6 < 3.0;
@@ -7642,7 +7642,7 @@ LABEL_86:
         goto LABEL_37;
       }
 
-      if (a3 == 14)
+      if (format == 14)
       {
         if (v6 < 3.0)
         {
@@ -7662,7 +7662,7 @@ LABEL_86:
       goto LABEL_91;
     }
 
-    if (a3 != 7)
+    if (format != 7)
     {
       goto LABEL_81;
     }
@@ -7683,9 +7683,9 @@ LABEL_82:
     goto LABEL_48;
   }
 
-  if (a3 <= 3)
+  if (format <= 3)
   {
-    if (a3 == 1)
+    if (format == 1)
     {
       if (v6 < 3.0)
       {
@@ -7702,7 +7702,7 @@ LABEL_82:
       goto LABEL_48;
     }
 
-    if (a3 != 3)
+    if (format != 3)
     {
       goto LABEL_91;
     }
@@ -7723,12 +7723,12 @@ LABEL_68:
     goto LABEL_48;
   }
 
-  if (a3 == 4)
+  if (format == 4)
   {
     goto LABEL_82;
   }
 
-  if (a3 == 6)
+  if (format == 6)
   {
     goto LABEL_68;
   }
@@ -7770,72 +7770,72 @@ void __88__UIImage_UIApplicationIconPrivate___iconVariantForUIApplicationIconFor
   byte_1ED498CEC = _UIScreenIsPhyiscallyLargePhone([v0 _screenType]);
 }
 
-+ (id)_ISImageDescriptorNameForUIApplicationIconFormat:(int)a3
++ (id)_ISImageDescriptorNameForUIApplicationIconFormat:(int)format
 {
-  if (a3 > 0x10)
+  if (format > 0x10)
   {
     v3 = MEMORY[0x1E69A8A78];
   }
 
   else
   {
-    v3 = qword_1E710C0E8[a3];
+    v3 = qword_1E710C0E8[format];
   }
 
   return *v3;
 }
 
-+ (id)_baseImageDescriptorForUIApplicationIconFormat:(int)a3
++ (id)_baseImageDescriptorForUIApplicationIconFormat:(int)format
 {
   v4 = [UIImage _ISImageDescriptorNameForUIApplicationIconFormat:?];
   v5 = [MEMORY[0x1E69A8A30] imageDescriptorNamed:v4];
-  [v5 setDrawBorder:(a3 < 0x11) & (0x1C001u >> a3)];
+  [v5 setDrawBorder:(format < 0x11) & (0x1C001u >> format)];
 
   return v5;
 }
 
-+ (id)_imageWithIcon:(void *)a3 descriptor:
++ (id)_imageWithIcon:(void *)icon descriptor:
 {
-  v4 = a3;
+  iconCopy = icon;
   v5 = a2;
   objc_opt_self();
-  v6 = [v5 prepareImageForDescriptor:v4];
+  v6 = [v5 prepareImageForDescriptor:iconCopy];
 
-  v7 = [v6 CGImage];
+  cGImage = [v6 CGImage];
   [v6 scale];
-  v8 = [UIImage imageWithCGImage:v7 scale:0 orientation:?];
+  v8 = [UIImage imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v8;
 }
 
-+ (id)_applicationIconImageForBundleIdentifier:(id)a3 format:(int)a4
++ (id)_applicationIconImageForBundleIdentifier:(id)identifier format:(int)format
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [objc_opt_self() mainScreen];
-  [v7 scale];
-  v8 = [a1 _applicationIconImageForBundleIdentifier:v6 format:v4 scale:?];
+  v4 = *&format;
+  identifierCopy = identifier;
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
+  v8 = [self _applicationIconImageForBundleIdentifier:identifierCopy format:v4 scale:?];
 
   return v8;
 }
 
-+ (id)_applicationIconImageForBundleIdentifier:(id)a3 format:(int)a4 scale:(double)a5
++ (id)_applicationIconImageForBundleIdentifier:(id)identifier format:(int)format scale:(double)scale
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AppIcon(bundleID=%@, format=%d, scale=%.1lf)", v8, v6, *&a5];
-  v10 = [MEMORY[0x1E695DF90] dictionary];
+  v6 = *&format;
+  identifierCopy = identifier;
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AppIcon(bundleID=%@, format=%d, scale=%.1lf)", identifierCopy, v6, *&scale];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __91__UIImage_UIApplicationIconPrivate___applicationIconImageForBundleIdentifier_format_scale___block_invoke;
   v17[3] = &unk_1E710C028;
-  v19 = v8;
-  v20 = a1;
-  v18 = v10;
+  v19 = identifierCopy;
+  selfCopy = self;
+  v18 = dictionary;
   v22 = v6;
-  v21 = a5;
-  v11 = v8;
-  v12 = v10;
+  scaleCopy = scale;
+  v11 = identifierCopy;
+  v12 = dictionary;
   v13 = [UIImageAsset _uncachedDynamicIconAssetNamed:v9 generator:v17];
   v14 = +[UIImageConfiguration _unspecifiedConfiguration];
   v15 = [v13 imageWithConfiguration:v14];
@@ -7935,35 +7935,35 @@ void __91__UIImage_UIApplicationIconPrivate___applicationIconImageForBundleIdent
   *(v3 + 40) = v2;
 }
 
-+ (id)_applicationIconImageForBundleIdentifier:(id)a3 format:(int)a4 scale:(double)a5 appearance:(id)a6 style:(int64_t)a7
++ (id)_applicationIconImageForBundleIdentifier:(id)identifier format:(int)format scale:(double)scale appearance:(id)appearance style:(int64_t)style
 {
-  v9 = *&a4;
-  v12 = a6;
+  v9 = *&format;
+  appearanceCopy = appearance;
   v13 = MEMORY[0x1E69A8A00];
-  v14 = a3;
-  v15 = [[v13 alloc] initWithBundleIdentifier:v14];
+  identifierCopy = identifier;
+  v15 = [[v13 alloc] initWithBundleIdentifier:identifierCopy];
 
-  v16 = [a1 _baseImageDescriptorForUIApplicationIconFormat:v9];
+  v16 = [self _baseImageDescriptorForUIApplicationIconFormat:v9];
   v17 = v16;
-  if (v12)
+  if (appearanceCopy)
   {
-    [(_UISystemIconAppearance *)v12 applyAppearanceToDescriptor:v16 userInterfaceStyle:a7];
+    [(_UISystemIconAppearance *)appearanceCopy applyAppearanceToDescriptor:v16 userInterfaceStyle:style];
   }
 
   else
   {
-    [v16 setAppearance:a7 == 2];
+    [v16 setAppearance:style == 2];
   }
 
-  if (a5 > 0.0)
+  if (scale > 0.0)
   {
-    [v17 setScale:a5];
+    [v17 setScale:scale];
   }
 
   else
   {
-    v18 = [objc_opt_self() mainScreen];
-    [v18 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     [v17 setScale:?];
   }
 
@@ -7972,20 +7972,20 @@ void __91__UIImage_UIApplicationIconPrivate___applicationIconImageForBundleIdent
   return v19;
 }
 
-+ (id)_iconForResourceProxy:(id)a3 format:(int)a4 options:(unint64_t)a5
++ (id)_iconForResourceProxy:(id)proxy format:(int)format options:(unint64_t)options
 {
-  v5 = a5;
-  v6 = *&a4;
+  optionsCopy = options;
+  v6 = *&format;
   v8 = MEMORY[0x1E69A8A00];
-  v9 = a3;
-  v10 = [[v8 alloc] initWithResourceProxy:v9];
+  proxyCopy = proxy;
+  v10 = [[v8 alloc] initWithResourceProxy:proxyCopy];
 
-  v11 = [a1 _baseImageDescriptorForUIApplicationIconFormat:v6];
-  v12 = [objc_opt_self() mainScreen];
-  [v12 scale];
+  v11 = [self _baseImageDescriptorForUIApplicationIconFormat:v6];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   [v11 setScale:?];
 
-  if (v5)
+  if (optionsCopy)
   {
     [v11 setVariantOptions:{objc_msgSend(v11, "variantOptions") | 1}];
   }
@@ -7995,25 +7995,25 @@ void __91__UIImage_UIApplicationIconPrivate___applicationIconImageForBundleIdent
   return v13;
 }
 
-- (id)_applicationIconImageForFormat:(int)a3 precomposed:(BOOL)a4
+- (id)_applicationIconImageForFormat:(int)format precomposed:(BOOL)precomposed
 {
-  v4 = a4;
-  v5 = *&a3;
-  v7 = [objc_opt_self() mainScreen];
-  [v7 scale];
-  v8 = [(UIImage *)self _applicationIconImageForFormat:v5 precomposed:v4 scale:?];
+  precomposedCopy = precomposed;
+  v5 = *&format;
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
+  v8 = [(UIImage *)self _applicationIconImageForFormat:v5 precomposed:precomposedCopy scale:?];
 
   return v8;
 }
 
-- (id)_applicationIconImageForFormat:(int)a3 precomposed:(BOOL)a4 scale:(double)a5
+- (id)_applicationIconImageForFormat:(int)format precomposed:(BOOL)precomposed scale:(double)scale
 {
-  v6 = *&a3;
+  v6 = *&format;
   v19[1] = *MEMORY[0x1E69E9840];
   v8 = objc_alloc(MEMORY[0x1E69A8988]);
-  v9 = [(UIImage *)self CGImage];
+  cGImage = [(UIImage *)self CGImage];
   [(UIImage *)self scale];
-  v10 = [v8 initWithCGImage:v9 scale:?];
+  v10 = [v8 initWithCGImage:cGImage scale:?];
   v11 = objc_alloc(MEMORY[0x1E69A8A00]);
   v19[0] = v10;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
@@ -8021,15 +8021,15 @@ void __91__UIImage_UIApplicationIconPrivate___applicationIconImageForBundleIdent
 
   v14 = [UIImage _baseImageDescriptorForUIApplicationIconFormat:v6];
   v15 = v14;
-  if (a5 > 0.0)
+  if (scale > 0.0)
   {
-    [v14 setScale:a5];
+    [v14 setScale:scale];
   }
 
   else
   {
-    v16 = [objc_opt_self() mainScreen];
-    [v16 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     [v15 setScale:?];
   }
 
@@ -8042,52 +8042,52 @@ void __91__UIImage_UIApplicationIconPrivate___applicationIconImageForBundleIdent
 {
   objc_opt_self();
   v2 = +[_UIImageSystemImageVisualStyle _iosVisualStyle];
-  v3 = [(_UIImageSystemImageVisualStyle *)v2 actionsImage];
+  actionsImage = [(_UIImageSystemImageVisualStyle *)v2 actionsImage];
 
-  return v3;
+  return actionsImage;
 }
 
 + (UIImage)addImage
 {
   objc_opt_self();
   v2 = +[_UIImageSystemImageVisualStyle _iosVisualStyle];
-  v3 = [(_UIImageSystemImageVisualStyle *)v2 addImage];
+  addImage = [(_UIImageSystemImageVisualStyle *)v2 addImage];
 
-  return v3;
+  return addImage;
 }
 
 + (UIImage)removeImage
 {
   objc_opt_self();
   v2 = +[_UIImageSystemImageVisualStyle _iosVisualStyle];
-  v3 = [(_UIImageSystemImageVisualStyle *)v2 removeImage];
+  removeImage = [(_UIImageSystemImageVisualStyle *)v2 removeImage];
 
-  return v3;
+  return removeImage;
 }
 
 + (UIImage)checkmarkImage
 {
   objc_opt_self();
   v2 = +[_UIImageSystemImageVisualStyle _iosVisualStyle];
-  v3 = [(_UIImageSystemImageVisualStyle *)v2 checkmarkImage];
+  checkmarkImage = [(_UIImageSystemImageVisualStyle *)v2 checkmarkImage];
 
-  return v3;
+  return checkmarkImage;
 }
 
 + (UIImage)strokedCheckmarkImage
 {
   objc_opt_self();
   v2 = +[_UIImageSystemImageVisualStyle _iosVisualStyle];
-  v3 = [(_UIImageSystemImageVisualStyle *)v2 strokedCheckmarkImage];
+  strokedCheckmarkImage = [(_UIImageSystemImageVisualStyle *)v2 strokedCheckmarkImage];
 
-  return v3;
+  return strokedCheckmarkImage;
 }
 
-- (id)_imageByApplyingVariant:(unint64_t)a3 allowNone:(BOOL)a4
+- (id)_imageByApplyingVariant:(unint64_t)variant allowNone:(BOOL)none
 {
-  if (!a3 && !a4 || (_UIImageName(self), v6 = objc_claimAutoreleasedReturnValue(), v7 = _UIImageVariantValueForName(v6), v6, (a3 & ~v7) == 0))
+  if (!variant && !none || (_UIImageName(self), v6 = objc_claimAutoreleasedReturnValue(), v7 = _UIImageVariantValueForName(v6), v6, (variant & ~v7) == 0))
   {
-    v8 = self;
+    selfCopy3 = self;
     goto LABEL_17;
   }
 
@@ -8102,32 +8102,32 @@ void __91__UIImage_UIApplicationIconPrivate___applicationIconImageForBundleIdent
   v15 = __61__UIImage_UIImageVariant___imageByApplyingVariant_allowNone___block_invoke;
   v16 = &unk_1E710C050;
   v17 = v9;
-  v18 = self;
+  selfCopy2 = self;
   v10 = _Block_copy(&v13);
-  v11 = v10[2](v10, a3);
+  v11 = v10[2](v10, variant);
   if (!v11)
   {
-    v11 = v10[2](v10, a3 & 0xFFFFFFFFFFFEFFFFLL);
+    v11 = v10[2](v10, variant & 0xFFFFFFFFFFFEFFFFLL);
     if (!v11)
     {
-      v11 = v10[2](v10, a3 & 0xFFFFFFFFBFFFFFFFLL);
+      v11 = v10[2](v10, variant & 0xFFFFFFFFBFFFFFFFLL);
       if (!v11)
       {
-        v11 = v10[2](v10, a3 & 0xFFFFFFFFFFFFFFF1);
+        v11 = v10[2](v10, variant & 0xFFFFFFFFFFFFFFF1);
         if (!v11)
         {
-          v11 = v10[2](v10, a3 & 0xFFFFFFFFBFFEFFFFLL);
+          v11 = v10[2](v10, variant & 0xFFFFFFFFBFFEFFFFLL);
           if (!v11)
           {
-            v11 = v10[2](v10, a3 & 0xFFFFFFFFFFFEFFF1);
+            v11 = v10[2](v10, variant & 0xFFFFFFFFFFFEFFF1);
             if (!v11)
             {
-              v11 = v10[2](v10, a3 & 0xFFFFFFFFBFFFFFF1);
+              v11 = v10[2](v10, variant & 0xFFFFFFFFBFFFFFF1);
               if (!v11)
               {
 
 LABEL_15:
-                v8 = self;
+                selfCopy3 = self;
                 goto LABEL_16;
               }
             }
@@ -8137,13 +8137,13 @@ LABEL_15:
     }
   }
 
-  v8 = v11;
+  selfCopy3 = v11;
   [(UIImage *)self _configureImage:v11 assumePreconfigured:0, v13, v14, v15, v16];
 
 LABEL_16:
 LABEL_17:
 
-  return v8;
+  return selfCopy3;
 }
 
 id __61__UIImage_UIImageVariant___imageByApplyingVariant_allowNone___block_invoke(uint64_t a1, uint64_t a2)
@@ -8165,51 +8165,51 @@ id __61__UIImage_UIImageVariant___imageByApplyingVariant_allowNone___block_invok
   return v6;
 }
 
-+ (id)_systemImageNamed:(id)a3 variant:(unint64_t)a4
++ (id)_systemImageNamed:(id)named variant:(unint64_t)variant
 {
-  v4 = _UIImageVariantName(a3, a4);
+  v4 = _UIImageVariantName(named, variant);
   v5 = [UIImage _systemImageNamed:v4 withConfiguration:0];
 
   return v5;
 }
 
-+ (id)_systemImageNamed:(id)a3 variant:(unint64_t)a4 withConfiguration:(id)a5
++ (id)_systemImageNamed:(id)named variant:(unint64_t)variant withConfiguration:(id)configuration
 {
-  v7 = a5;
-  v8 = _UIImageVariantName(a3, a4);
-  v9 = [UIImage _systemImageNamed:v8 withConfiguration:v7];
+  configurationCopy = configuration;
+  v8 = _UIImageVariantName(named, variant);
+  v9 = [UIImage _systemImageNamed:v8 withConfiguration:configurationCopy];
 
   return v9;
 }
 
-+ (id)_systemImageNamed:(id)a3 shape:(int64_t)a4
++ (id)_systemImageNamed:(id)named shape:(int64_t)shape
 {
-  if ((a4 - 1) > 2)
+  if ((shape - 1) > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = qword_18A67CB50[a4 - 1];
+    v4 = qword_18A67CB50[shape - 1];
   }
 
-  return [a1 _systemImageNamed:a3 variant:v4];
+  return [self _systemImageNamed:named variant:v4];
 }
 
-+ (id)_systemImageNamed:(id)a3 shape:(int64_t)a4 fill:(int64_t)a5
++ (id)_systemImageNamed:(id)named shape:(int64_t)shape fill:(int64_t)fill
 {
-  if ((a4 - 1) > 2)
+  if ((shape - 1) > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_18A67CB50[a4 - 1];
+    v5 = qword_18A67CB50[shape - 1];
   }
 
-  if (a5 == 1)
+  if (fill == 1)
   {
     v6 = v5 | 0x40000000;
   }
@@ -8219,22 +8219,22 @@ id __61__UIImage_UIImageVariant___imageByApplyingVariant_allowNone___block_invok
     v6 = v5;
   }
 
-  return [a1 _systemImageNamed:a3 variant:v6];
+  return [self _systemImageNamed:named variant:v6];
 }
 
-+ (id)_systemImageNamed:(id)a3 shape:(int64_t)a4 fill:(int64_t)a5 withConfiguration:(id)a6
++ (id)_systemImageNamed:(id)named shape:(int64_t)shape fill:(int64_t)fill withConfiguration:(id)configuration
 {
-  if ((a4 - 1) > 2)
+  if ((shape - 1) > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = qword_18A67CB50[a4 - 1];
+    v6 = qword_18A67CB50[shape - 1];
   }
 
-  if (a5 == 1)
+  if (fill == 1)
   {
     v7 = v6 | 0x40000000;
   }
@@ -8244,14 +8244,14 @@ id __61__UIImage_UIImageVariant___imageByApplyingVariant_allowNone___block_invok
     v7 = v6;
   }
 
-  return [a1 _systemImageNamed:a3 variant:v7 withConfiguration:a6];
+  return [self _systemImageNamed:named variant:v7 withConfiguration:configuration];
 }
 
-- (id)_applyBackdropViewSettings:(id)a3 allowImageResizing:(BOOL)a4
+- (id)_applyBackdropViewSettings:(id)settings allowImageResizing:(BOOL)resizing
 {
-  v4 = a4;
+  resizingCopy = resizing;
   v144 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  settingsCopy = settings;
   [(UIImage *)self size];
   if (v7 < 1.0 || ([(UIImage *)self size], v8 < 1.0))
   {
@@ -8270,66 +8270,66 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v14 = [v6 grayscaleTintMaskImage];
-  if (v14)
+  grayscaleTintMaskImage = [settingsCopy grayscaleTintMaskImage];
+  if (grayscaleTintMaskImage)
   {
-    v15 = v14;
-    v16 = [v6 grayscaleTintMaskImage];
-    v17 = [v16 CGImage];
+    v15 = grayscaleTintMaskImage;
+    grayscaleTintMaskImage2 = [settingsCopy grayscaleTintMaskImage];
+    cGImage = [grayscaleTintMaskImage2 CGImage];
 
-    if (!v17)
+    if (!cGImage)
     {
-      v47 = [v6 grayscaleTintMaskImage];
-      NSLog(&cfstr_Applybackdropv_1.isa, v47);
+      grayscaleTintMaskImage3 = [settingsCopy grayscaleTintMaskImage];
+      NSLog(&cfstr_Applybackdropv_1.isa, grayscaleTintMaskImage3);
 LABEL_31:
 
       goto LABEL_4;
     }
   }
 
-  v18 = [v6 colorTintMaskImage];
-  if (v18)
+  colorTintMaskImage = [settingsCopy colorTintMaskImage];
+  if (colorTintMaskImage)
   {
-    v19 = v18;
-    v20 = [v6 colorTintMaskImage];
-    v21 = [v20 CGImage];
+    v19 = colorTintMaskImage;
+    colorTintMaskImage2 = [settingsCopy colorTintMaskImage];
+    cGImage2 = [colorTintMaskImage2 CGImage];
 
-    if (!v21)
+    if (!cGImage2)
     {
-      v47 = [v6 colorTintMaskImage];
-      NSLog(&cfstr_Applybackdropv_2.isa, v47);
+      grayscaleTintMaskImage3 = [settingsCopy colorTintMaskImage];
+      NSLog(&cfstr_Applybackdropv_2.isa, grayscaleTintMaskImage3);
       goto LABEL_31;
     }
   }
 
-  v22 = [v6 filterMaskImage];
-  if (v22)
+  filterMaskImage = [settingsCopy filterMaskImage];
+  if (filterMaskImage)
   {
-    v23 = v22;
-    v24 = [v6 filterMaskImage];
-    v25 = [v24 CGImage];
+    v23 = filterMaskImage;
+    filterMaskImage2 = [settingsCopy filterMaskImage];
+    cGImage3 = [filterMaskImage2 CGImage];
 
-    if (!v25)
+    if (!cGImage3)
     {
-      v47 = [v6 filterMaskImage];
-      NSLog(&cfstr_Applybackdropv_3.isa, v47);
+      grayscaleTintMaskImage3 = [settingsCopy filterMaskImage];
+      NSLog(&cfstr_Applybackdropv_3.isa, grayscaleTintMaskImage3);
       goto LABEL_31;
     }
   }
 
-  [v6 blurRadius];
+  [settingsCopy blurRadius];
   v27 = v26;
-  [v6 saturationDeltaFactor];
+  [settingsCopy saturationDeltaFactor];
   v29 = v28;
-  v30 = [objc_opt_self() mainScreen];
-  [v30 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   v32 = v31;
 
-  v33 = [v6 usesBackdropEffectView];
+  usesBackdropEffectView = [settingsCopy usesBackdropEffectView];
   v34 = fabs(v29 + -1.0);
   if (v27 > 0.00000011920929)
   {
-    v35 = v33;
+    v35 = usesBackdropEffectView;
   }
 
   else
@@ -8338,7 +8338,7 @@ LABEL_31:
   }
 
   v36 = 1.0;
-  if ((v35 & v4) != 0)
+  if ((v35 & resizingCopy) != 0)
   {
     v36 = 0.25;
   }
@@ -8348,17 +8348,17 @@ LABEL_31:
   v131 = v37;
   [(UIImage *)self size];
   v130 = v38;
-  v39 = self;
-  v40 = [v6 usesBackdropEffectView];
+  selfCopy = self;
+  usesBackdropEffectView2 = [settingsCopy usesBackdropEffectView];
   v41.f64[0] = v131.f64[0];
   *&v41.f64[1] = v130;
   v42 = vrndp_f32(vcvt_f32_f64(vmulq_n_f64(v41, v132.f64[0])));
   v132 = vcvtq_f64_f32(v42);
   v43 = v34 > 0.00000011920929 || v27 > 0.00000011920929;
-  v44 = v39;
-  if (v40)
+  v44 = selfCopy;
+  if (usesBackdropEffectView2)
   {
-    v44 = v39;
+    v44 = selfCopy;
     if (v43)
     {
       _UIGraphicsBeginImageContextWithOptions(0, 0, v132.f64[0], v132.f64[1], v32);
@@ -8375,11 +8375,11 @@ LABEL_31:
 
       CGContextScaleCTM(v46, 1.0, -1.0);
       CGContextTranslateCTM(v46, 0.0, -v132.f64[1]);
-      v48 = [(UIImage *)v39 CGImage];
+      cGImage4 = [(UIImage *)selfCopy CGImage];
       v146.origin.x = 0.0;
       v146.origin.y = 0.0;
       v146.size = v132;
-      CGContextDrawImage(v46, v146, v48);
+      CGContextDrawImage(v46, v146, cGImage4);
       src.data = CGBitmapContextGetData(v46);
       src.width = CGBitmapContextGetWidth(v46);
       src.height = CGBitmapContextGetHeight(v46);
@@ -8402,7 +8402,7 @@ LABEL_31:
       dest.rowBytes = CGBitmapContextGetBytesPerRow(v50);
       if (v27 > 0.00000011920929)
       {
-        [v6 blurRadius];
+        [settingsCopy blurRadius];
         v52 = v32 * (v51 * 0.25);
         if (v52 < 2.0)
         {
@@ -8411,7 +8411,7 @@ LABEL_31:
 
         v53 = vcvtmd_u64_f64(v52 * 3.0 * 2.50662827 * 0.25 + 0.5);
         v54 = v53 | 1;
-        if (v4)
+        if (resizingCopy)
         {
           vImageBoxConvolve_ARGB8888(&src, &dest, 0, 0, 0, v53 | 1, v53 | 1, 0, 8u);
           vImageBoxConvolve_ARGB8888(&dest, &src, 0, 0, 0, v54, v54, 0, 8u);
@@ -8469,7 +8469,7 @@ LABEL_31:
 
       if (v34 > 0.00000011920929)
       {
-        v66 = [v6 saturationDeltaFactor];
+        saturationDeltaFactor = [settingsCopy saturationDeltaFactor];
         v68 = vmulq_n_f64(xmmword_18A67CAD0, v67);
         v69.f64[0] = 0.7152;
         *&v69.f64[0] = *&vsubq_f64(v69, v68);
@@ -8489,7 +8489,7 @@ LABEL_31:
         v141 = 0u;
         v142 = 0u;
         v143 = 0x3FF0000000000000;
-        MEMORY[0x1EEE9AC00](v66);
+        MEMORY[0x1EEE9AC00](saturationDeltaFactor);
         v77 = 0;
         v78 = &v136;
         v79 = vdupq_n_s64(0x4070000000000000uLL);
@@ -8527,9 +8527,9 @@ LABEL_55:
   }
 
 LABEL_56:
-  v84 = +[_UIBackdropViewSettings settingsForStyle:](_UIBackdropViewSettings, "settingsForStyle:", [v6 style]);
-  [v84 setValuesFromModel:v6];
-  v85 = +[_UIBackdropViewSettings settingsForStyle:](_UIBackdropViewSettings, "settingsForStyle:", [v6 style]);
+  v84 = +[_UIBackdropViewSettings settingsForStyle:](_UIBackdropViewSettings, "settingsForStyle:", [settingsCopy style]);
+  [v84 setValuesFromModel:settingsCopy];
+  v85 = +[_UIBackdropViewSettings settingsForStyle:](_UIBackdropViewSettings, "settingsForStyle:", [settingsCopy style]);
   if ([v85 requiresColorStatistics])
   {
     v139 = 0;
@@ -8547,35 +8547,35 @@ LABEL_56:
       v86 = 0.0;
     }
 
-    v87 = [v84 colorSettings];
-    [v87 setAverageHue:v86];
+    colorSettings = [v84 colorSettings];
+    [colorSettings setAverageHue:v86];
 
     v88 = v137.f64[0];
-    v89 = [v84 colorSettings];
-    [v89 setAverageSaturation:v88];
+    colorSettings2 = [v84 colorSettings];
+    [colorSettings2 setAverageSaturation:v88];
 
     v90 = v137.f64[1];
-    v91 = [v84 colorSettings];
-    [v91 setAverageBrightness:v90];
+    colorSettings3 = [v84 colorSettings];
+    [colorSettings3 setAverageBrightness:v90];
 
     v92 = *(&v138 + 1);
-    v93 = [v84 colorSettings];
-    [v93 setContrast:v92];
+    colorSettings4 = [v84 colorSettings];
+    [colorSettings4 setContrast:v92];
   }
 
   [v85 computeOutputSettingsUsingModel:v84];
-  v94 = [v6 grayscaleTintMaskImage];
-  if (v94 || ([v6 colorTintMaskImage], (v94 = objc_claimAutoreleasedReturnValue()) != 0))
+  grayscaleTintMaskImage4 = [settingsCopy grayscaleTintMaskImage];
+  if (grayscaleTintMaskImage4 || ([settingsCopy colorTintMaskImage], (grayscaleTintMaskImage4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v128 = [v6 filterMaskImage];
+    filterMaskImage3 = [settingsCopy filterMaskImage];
 
-    if (!v128)
+    if (!filterMaskImage3)
     {
-      v95 = 0x61u >> CGImageGetBitmapInfo([(UIImage *)v39 CGImage]);
+      v95 = 0x61u >> CGImageGetBitmapInfo([(UIImage *)selfCopy CGImage]);
       goto LABEL_65;
     }
   }
@@ -8583,7 +8583,7 @@ LABEL_56:
   LOBYTE(v95) = 0;
 LABEL_65:
   v96 = v132;
-  if (v4)
+  if (resizingCopy)
   {
     v97 = v132.f64[1];
     v98 = 0.0;
@@ -8594,7 +8594,7 @@ LABEL_65:
   {
     v98 = *MEMORY[0x1E695EFF8];
     v99 = *(MEMORY[0x1E695EFF8] + 8);
-    [(UIImage *)v39 size];
+    [(UIImage *)selfCopy size];
     v97 = v100;
   }
 
@@ -8613,34 +8613,34 @@ LABEL_65:
 
   CGContextScaleCTM(v102, 1.0, -1.0);
   CGContextTranslateCTM(v102, 0.0, -v97);
-  v103 = [(UIImage *)v39 CGImage];
+  cGImage5 = [(UIImage *)selfCopy CGImage];
   v147.origin.x = v98;
   v147.origin.y = v99;
   v147.size.width = v132.f64[0];
   v147.size.height = v97;
-  CGContextDrawImage(v102, v147, v103);
+  CGContextDrawImage(v102, v147, cGImage5);
   if ([v85 usesBackdropEffectView])
   {
     CGContextSaveGState(v102);
-    v104 = [v6 filterMaskImage];
+    filterMaskImage4 = [settingsCopy filterMaskImage];
 
-    if (v104)
+    if (filterMaskImage4)
     {
-      v105 = [v6 filterMaskImage];
-      v106 = [v105 CGImage];
+      filterMaskImage5 = [settingsCopy filterMaskImage];
+      cGImage6 = [filterMaskImage5 CGImage];
       v148.origin.x = v98;
       v148.origin.y = v99;
       v148.size.width = v132.f64[0];
       v148.size.height = v97;
-      CGContextClipToMask(v102, v148, v106);
+      CGContextClipToMask(v102, v148, cGImage6);
     }
 
-    v107 = [v44 CGImage];
+    cGImage7 = [v44 CGImage];
     v149.origin.x = v98;
     v149.origin.y = v99;
     v149.size.width = v132.f64[0];
     v149.size.height = v97;
-    CGContextDrawImage(v102, v149, v107);
+    CGContextDrawImage(v102, v149, cGImage7);
     CGContextRestoreGState(v102);
   }
 
@@ -8651,18 +8651,18 @@ LABEL_65:
     v109 = v108;
     [v85 grayscaleTintLevel];
     CGContextSetGrayFillColor(v102, v110, v109);
-    v111 = [v6 grayscaleTintMaskImage];
+    grayscaleTintMaskImage5 = [settingsCopy grayscaleTintMaskImage];
 
     v112 = v132.f64[0];
-    if (v111)
+    if (grayscaleTintMaskImage5)
     {
-      v113 = [v6 grayscaleTintMaskImage];
-      v114 = [v113 CGImage];
+      grayscaleTintMaskImage6 = [settingsCopy grayscaleTintMaskImage];
+      cGImage8 = [grayscaleTintMaskImage6 CGImage];
       v150.origin.x = v98;
       v150.origin.y = v99;
       v150.size.width = v132.f64[0];
       v150.size.height = v97;
-      CGContextClipToMask(v102, v150, v114);
+      CGContextClipToMask(v102, v150, cGImage8);
 
       v112 = v132.f64[0];
     }
@@ -8676,33 +8676,33 @@ LABEL_65:
 
   if ([v85 usesColorTintView])
   {
-    v118 = [v85 colorTint];
+    colorTint = [v85 colorTint];
 
-    if (v118)
+    if (colorTint)
     {
       CGContextSaveGState(v102);
       v136.data = 0;
       src.data = 0;
       dest.data = 0;
       v133.data = 0;
-      v119 = [v85 colorTint];
-      [v119 getRed:&v136 green:&src blue:&dest alpha:&v133];
+      colorTint2 = [v85 colorTint];
+      [colorTint2 getRed:&v136 green:&src blue:&dest alpha:&v133];
 
       [v85 colorTintAlpha];
       *&v133.data = v120 * *&v133.data;
       CGContextSetRGBFillColor(v102, *&v136.data, *&src.data, *&dest.data, *&v133.data);
-      v121 = [v6 colorTintMaskImage];
+      colorTintMaskImage3 = [settingsCopy colorTintMaskImage];
 
       v122 = v132.f64[0];
-      if (v121)
+      if (colorTintMaskImage3)
       {
-        v123 = [v6 colorTintMaskImage];
-        v124 = [v123 CGImage];
+        colorTintMaskImage4 = [settingsCopy colorTintMaskImage];
+        cGImage9 = [colorTintMaskImage4 CGImage];
         v151.origin.x = v98;
         v151.origin.y = v99;
         v151.size.width = v132.f64[0];
         v151.size.height = v97;
-        CGContextClipToMask(v102, v151, v124);
+        CGContextClipToMask(v102, v151, cGImage9);
 
         v122 = v132.f64[0];
       }
@@ -8723,99 +8723,99 @@ LABEL_5:
   return v12;
 }
 
-- (id)_applyBackdropViewSettings:(id)a3 includeTints:(BOOL)a4 includeBlur:(BOOL)a5 allowImageResizing:(BOOL)a6
+- (id)_applyBackdropViewSettings:(id)settings includeTints:(BOOL)tints includeBlur:(BOOL)blur allowImageResizing:(BOOL)resizing
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = v10;
-  if (a4 || a5)
+  resizingCopy = resizing;
+  settingsCopy = settings;
+  v11 = settingsCopy;
+  if (tints || blur)
   {
-    if (!a4)
+    if (!tints)
     {
-      [v10 setUsesGrayscaleTintView:0];
+      [settingsCopy setUsesGrayscaleTintView:0];
       [v11 setUsesColorTintView:0];
     }
 
-    if (!a5)
+    if (!blur)
     {
       [v11 setBlurRadius:0.0];
       [v11 setSaturationDeltaFactor:1.0];
     }
 
-    v12 = [(UIImage *)self _applyBackdropViewSettings:v11 allowImageResizing:v6];
+    selfCopy = [(UIImage *)self _applyBackdropViewSettings:v11 allowImageResizing:resizingCopy];
   }
 
   else
   {
-    v12 = self;
+    selfCopy = self;
   }
 
-  v13 = v12;
+  v13 = selfCopy;
 
   return v13;
 }
 
-- (id)_applyBackdropViewStyle:(int64_t)a3 includeTints:(BOOL)a4 includeBlur:(BOOL)a5
+- (id)_applyBackdropViewStyle:(int64_t)style includeTints:(BOOL)tints includeBlur:(BOOL)blur
 {
-  v5 = a5;
-  v6 = a4;
+  blurCopy = blur;
+  tintsCopy = tints;
   v9 = +[UIDevice currentDevice];
-  v10 = -[UIImage _applyBackdropViewStyle:includeTints:includeBlur:graphicsQuality:](self, "_applyBackdropViewStyle:includeTints:includeBlur:graphicsQuality:", a3, v6, v5, [v9 _graphicsQuality]);
+  v10 = -[UIImage _applyBackdropViewStyle:includeTints:includeBlur:graphicsQuality:](self, "_applyBackdropViewStyle:includeTints:includeBlur:graphicsQuality:", style, tintsCopy, blurCopy, [v9 _graphicsQuality]);
 
   return v10;
 }
 
-- (id)_applyBackdropViewStyle:(int64_t)a3 includeTints:(BOOL)a4 includeBlur:(BOOL)a5 graphicsQuality:(int64_t)a6
+- (id)_applyBackdropViewStyle:(int64_t)style includeTints:(BOOL)tints includeBlur:(BOOL)blur graphicsQuality:(int64_t)quality
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = [UIDevice currentDevice:a3];
-  v11 = -[UIImage _applyBackdropViewStyle:includeTints:includeBlur:graphicsQuality:allowImageResizing:](self, "_applyBackdropViewStyle:includeTints:includeBlur:graphicsQuality:allowImageResizing:", a3, v7, v6, [v10 _graphicsQuality], 0);
+  blurCopy = blur;
+  tintsCopy = tints;
+  v10 = [UIDevice currentDevice:style];
+  v11 = -[UIImage _applyBackdropViewStyle:includeTints:includeBlur:graphicsQuality:allowImageResizing:](self, "_applyBackdropViewStyle:includeTints:includeBlur:graphicsQuality:allowImageResizing:", style, tintsCopy, blurCopy, [v10 _graphicsQuality], 0);
 
   return v11;
 }
 
-- (id)_applyBackdropViewStyle:(int64_t)a3 includeTints:(BOOL)a4 includeBlur:(BOOL)a5 graphicsQuality:(int64_t)a6 allowImageResizing:(BOOL)a7
+- (id)_applyBackdropViewStyle:(int64_t)style includeTints:(BOOL)tints includeBlur:(BOOL)blur graphicsQuality:(int64_t)quality allowImageResizing:(BOOL)resizing
 {
-  v7 = a7;
-  v8 = a5;
-  v9 = a4;
-  if (a4 || a5)
+  resizingCopy = resizing;
+  blurCopy = blur;
+  tintsCopy = tints;
+  if (tints || blur)
   {
-    v12 = [_UIBackdropViewSettings settingsForPrivateStyle:a3 graphicsQuality:a6];
-    v11 = [(UIImage *)self _applyBackdropViewSettings:v12 includeTints:v9 includeBlur:v8 allowImageResizing:v7];
+    v12 = [_UIBackdropViewSettings settingsForPrivateStyle:style graphicsQuality:quality];
+    selfCopy = [(UIImage *)self _applyBackdropViewSettings:v12 includeTints:tintsCopy includeBlur:blurCopy allowImageResizing:resizingCopy];
   }
 
   else
   {
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-+ (id)_tintedImageForSize:(CGSize)a3 withTint:(id)a4 effectsImage:(id)a5 maskImage:(id)a6 style:(int)a7
++ (id)_tintedImageForSize:(CGSize)size withTint:(id)tint effectsImage:(id)image maskImage:(id)maskImage style:(int)style
 {
   v7 = 0;
-  if (a3.width > 0.0)
+  if (size.width > 0.0)
   {
-    height = a3.height;
-    if (a3.height > 0.0)
+    height = size.height;
+    if (size.height > 0.0)
     {
-      width = a3.width;
+      width = size.width;
       v13 = *MEMORY[0x1E695EFF8];
       v14 = *(MEMORY[0x1E695EFF8] + 8);
-      v15 = a6;
-      v16 = a5;
-      v17 = a4;
+      maskImageCopy = maskImage;
+      imageCopy = image;
+      tintCopy = tint;
       _UIGraphicsBeginImageContextWithOptions(0, 0, width, height, 0.0);
-      v18 = _UIImagePressedTintColor(v17, a7);
+      v18 = _UIImagePressedTintColor(tintCopy, style);
 
       [v18 set];
       UIRectFillUsingOperation(1, v13, v14, width, height);
-      [v16 drawInRect:{v13, v14, width, height}];
+      [imageCopy drawInRect:{v13, v14, width, height}];
 
-      [v15 drawInRect:22 blendMode:v13 alpha:{v14, width, height, 1.0}];
+      [maskImageCopy drawInRect:22 blendMode:v13 alpha:{v14, width, height, 1.0}];
       v7 = _UIGraphicsGetImageFromCurrentImageContext(0);
       ContextStack = GetContextStack(0);
       PopContextFromStack(ContextStack);
@@ -8825,28 +8825,28 @@ LABEL_5:
   return v7;
 }
 
-+ (id)_tintedImageForSize:(CGSize)a3 withTint:(id)a4 maskImage:(id)a5 effectsImage:(id)a6 style:(int)a7
++ (id)_tintedImageForSize:(CGSize)size withTint:(id)tint maskImage:(id)image effectsImage:(id)effectsImage style:(int)style
 {
   v7 = 0;
-  if (a3.width > 0.0)
+  if (size.width > 0.0)
   {
-    height = a3.height;
-    if (a3.height > 0.0)
+    height = size.height;
+    if (size.height > 0.0)
     {
-      width = a3.width;
+      width = size.width;
       v13 = *MEMORY[0x1E695EFF8];
       v14 = *(MEMORY[0x1E695EFF8] + 8);
-      v15 = a6;
-      v16 = a5;
-      v17 = a4;
+      effectsImageCopy = effectsImage;
+      imageCopy = image;
+      tintCopy = tint;
       _UIGraphicsBeginImageContextWithOptions(0, 0, width, height, 0.0);
-      v18 = _UIImagePressedTintColor(v17, a7);
+      v18 = _UIImagePressedTintColor(tintCopy, style);
 
       [v18 set];
       UIRectFillUsingOperation(1, v13, v14, width, height);
-      [v16 drawInRect:22 blendMode:v13 alpha:{v14, width, height, 1.0}];
+      [imageCopy drawInRect:22 blendMode:v13 alpha:{v14, width, height, 1.0}];
 
-      [v15 drawInRect:{v13, v14, width, height}];
+      [effectsImageCopy drawInRect:{v13, v14, width, height}];
       v7 = _UIGraphicsGetImageFromCurrentImageContext(0);
       ContextStack = GetContextStack(0);
       PopContextFromStack(ContextStack);
@@ -8856,34 +8856,34 @@ LABEL_5:
   return v7;
 }
 
-+ (id)_tintedImageForSize:(CGSize)a3 withTint:(id)a4 maskImage:(id)a5 effectsImage:(id)a6 style:(int)a7 edgeInsets:(UIEdgeInsets)a8
++ (id)_tintedImageForSize:(CGSize)size withTint:(id)tint maskImage:(id)image effectsImage:(id)effectsImage style:(int)style edgeInsets:(UIEdgeInsets)insets
 {
   v8 = 0;
-  if (a3.width > 0.0)
+  if (size.width > 0.0)
   {
-    height = a3.height;
-    if (a3.height > 0.0)
+    height = size.height;
+    if (size.height > 0.0)
     {
-      left = a8.left;
-      top = a8.top;
-      width = a3.width;
+      left = insets.left;
+      top = insets.top;
+      width = size.width;
       v16 = *MEMORY[0x1E695EFF8];
       v17 = *(MEMORY[0x1E695EFF8] + 8);
-      v18 = a3.width - (a8.left + a8.right);
-      v19 = a3.height - (a8.top + a8.bottom);
-      v20 = a6;
-      v21 = a5;
-      v22 = a4;
+      v18 = size.width - (insets.left + insets.right);
+      v19 = size.height - (insets.top + insets.bottom);
+      effectsImageCopy = effectsImage;
+      imageCopy = image;
+      tintCopy = tint;
       _UIGraphicsBeginImageContextWithOptions(0, 0, v18, v19, 0.0);
       v23 = v16 - left;
       v24 = v17 - top;
-      v25 = _UIImagePressedTintColor(v22, a7);
+      v25 = _UIImagePressedTintColor(tintCopy, style);
 
       [v25 set];
       UIRectFillUsingOperation(1, v23, v24, width, height);
-      [v21 drawInRect:22 blendMode:v23 alpha:{v24, width, height, 1.0}];
+      [imageCopy drawInRect:22 blendMode:v23 alpha:{v24, width, height, 1.0}];
 
-      [v20 drawInRect:{v23, v24, width, height}];
+      [effectsImageCopy drawInRect:{v23, v24, width, height}];
       v8 = _UIGraphicsGetImageFromCurrentImageContext(0);
       ContextStack = GetContextStack(0);
       PopContextFromStack(ContextStack);
@@ -8893,10 +8893,10 @@ LABEL_5:
   return v8;
 }
 
-+ (id)_cachedImageForKey:(id)a3 fromBlock:(id)a4
++ (id)_cachedImageForKey:(id)key fromBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  blockCopy = block;
   if (qword_1ED49E6A0 != -1)
   {
     dispatch_once(&qword_1ED49E6A0, &__block_literal_global_312);
@@ -8914,13 +8914,13 @@ LABEL_5:
   block[2] = __74__UIImage__UIImageTintedInterfaceExtension___cachedImageForKey_fromBlock___block_invoke_3;
   block[3] = &unk_1E70FCDA0;
   v20 = &v21;
-  v8 = v5;
+  v8 = keyCopy;
   v19 = v8;
   dispatch_sync(v7, block);
   v9 = v22[5];
   if (!v9)
   {
-    v10 = v6[2](v6);
+    v10 = blockCopy[2](blockCopy);
     v11 = v22[5];
     v22[5] = v10;
 
@@ -8989,11 +8989,11 @@ void __74__UIImage__UIImageTintedInterfaceExtension___cachedImageForKey_fromBloc
 LABEL_6:
 }
 
-+ (CGSize)_legibilityImageSizeForSize:(CGSize)a3 style:(int64_t)a4
++ (CGSize)_legibilityImageSizeForSize:(CGSize)size style:(int64_t)style
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [_UILegibilitySettings sharedInstanceForStyle:a4];
+  height = size.height;
+  width = size.width;
+  v6 = [_UILegibilitySettings sharedInstanceForStyle:style];
   [v6 imageOutset];
   v8 = width + v7;
   [v6 imageOutset];
@@ -9004,7 +9004,7 @@ LABEL_6:
   return result;
 }
 
-- (id)_imageForLegibilityStyle:(int64_t)a3
+- (id)_imageForLegibilityStyle:(int64_t)style
 {
   [(UIImage *)self size];
   if (v5 < 1.0)
@@ -9018,70 +9018,70 @@ LABEL_6:
     return self;
   }
 
-  v8 = [_UILegibilitySettings sharedInstanceForStyle:a3];
+  v8 = [_UILegibilitySettings sharedInstanceForStyle:style];
 
   return [(UIImage *)self _imageForLegibilitySettings:v8 strength:1.5];
 }
 
-- (id)_imageForLegibilitySettings:(id)a3 strength:(double)a4 alphaOnly:(BOOL)a5
+- (id)_imageForLegibilitySettings:(id)settings strength:(double)strength alphaOnly:(BOOL)only
 {
-  v5 = a5;
-  v8 = self;
+  onlyCopy = only;
+  selfCopy = self;
   [(UIImage *)self size];
   if (v9 >= 1.0)
   {
-    [(UIImage *)v8 size];
+    [(UIImage *)selfCopy size];
     if (v10 >= 1.0)
     {
-      v11 = [a3 style];
-      if (a4 != 0.0)
+      style = [settings style];
+      if (strength != 0.0)
       {
-        if (v11)
+        if (style)
         {
-          [(UIImage *)v8 size];
+          [(UIImage *)selfCopy size];
           v13 = v12;
-          [a3 imageOutset];
+          [settings imageOutset];
           v15 = v13 + v14;
-          [(UIImage *)v8 size];
+          [(UIImage *)selfCopy size];
           v17 = v16;
-          [a3 imageOutset];
+          [settings imageOutset];
           v19 = v17 + v18;
           [objc_msgSend(objc_opt_self() "mainScreen")];
           v22[0] = MEMORY[0x1E69E9820];
           v22[1] = 3221225472;
           v22[2] = __73__UIImage__UILegibility___imageForLegibilitySettings_strength_alphaOnly___block_invoke;
           v22[3] = &unk_1E710C2F8;
-          v22[4] = v8;
-          v22[5] = a3;
-          *&v22[6] = a4;
+          v22[4] = selfCopy;
+          v22[5] = settings;
+          *&v22[6] = strength;
           *&v22[7] = v15;
           *&v22[8] = v19;
-          v23 = v5;
-          return _UIGraphicsDrawIntoImageContextWithMoreOptions(0, v5, v22, v15, v19, v20);
+          v23 = onlyCopy;
+          return _UIGraphicsDrawIntoImageContextWithMoreOptions(0, onlyCopy, v22, v15, v19, v20);
         }
       }
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)_drawImageForLegibilityStyle:(int64_t)a3 size:(CGSize)a4
+- (void)_drawImageForLegibilityStyle:(int64_t)style size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = [_UILegibilitySettings sharedInstanceForStyle:a3];
+  height = size.height;
+  width = size.width;
+  v7 = [_UILegibilitySettings sharedInstanceForStyle:style];
 
   [(UIImage *)self _drawImageForLegibilitySettings:v7 strength:1.5 size:width, height];
 }
 
-- (void)_drawImageForLegibilitySettings:(id)a3 strength:(double)a4 size:(CGSize)a5 alphaOnly:(BOOL)a6
+- (void)_drawImageForLegibilitySettings:(id)settings strength:(double)strength size:(CGSize)size alphaOnly:(BOOL)only
 {
-  v6 = a6;
-  width = a5.width;
-  height = a5.height;
-  v10 = [a3 style];
-  if (a4 != 0.0 && v10 != 0)
+  onlyCopy = only;
+  width = size.width;
+  height = size.height;
+  style = [settings style];
+  if (strength != 0.0 && style != 0)
   {
     [(UIImage *)self size];
     v13 = v12;
@@ -9093,10 +9093,10 @@ LABEL_6:
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!onlyCopy)
     {
-      v25 = -[UIImage _flatImageWithColor:](self, "_flatImageWithColor:", [a3 shadowColor]);
+      selfCopy = -[UIImage _flatImageWithColor:](self, "_flatImageWithColor:", [settings shadowColor]);
     }
 
     v47 = 0;
@@ -9118,18 +9118,18 @@ LABEL_6:
     v39 = vcvtq_f64_f32(vrndp_f32(vcvt_f32_f64(vmulq_f64(v28, _Q1))));
     v40 = 0x3FD0000000000000;
     v38[4] = self;
-    v38[5] = a3;
+    v38[5] = settings;
     v41 = v17;
     v42 = v18;
     v43 = v20;
     v44 = v22;
     v45 = v24;
-    v46 = v6;
-    v38[6] = v25;
+    v46 = onlyCopy;
+    v38[6] = selfCopy;
     v38[7] = &v47;
-    _UIGraphicsDrawIntoImageContextWithMoreOptions(0, v6, v38, v39.f64[0], v39.f64[1], v27);
-    [a3 shadowAlpha];
-    for (i = v33 * a4; i > 0.00000011920929; i = i + -1.0)
+    _UIGraphicsDrawIntoImageContextWithMoreOptions(0, onlyCopy, v38, v39.f64[0], v39.f64[1], v27);
+    [settings shadowAlpha];
+    for (i = v33 * strength; i > 0.00000011920929; i = i + -1.0)
     {
       if (i + 0.00000011920929 <= 1.0)
       {
@@ -9263,22 +9263,22 @@ id __82__UIImage__UILegibility___drawImageForLegibilitySettings_strength_size_al
   return result;
 }
 
-- (id)_imageWithBrightnessModifiedForLegibilityStyle:(int64_t)a3
+- (id)_imageWithBrightnessModifiedForLegibilityStyle:(int64_t)style
 {
   [objc_msgSend(objc_opt_self() "mainScreen")];
   v6 = v5;
-  v7 = self;
-  if (a3 != 2)
+  selfCopy = self;
+  if (style != 2)
   {
     v8 = [MEMORY[0x1E695F648] filterWithName:@"CIWhitePointAdjust"];
     v9 = [UIColor colorWithWhite:0.92 alpha:1.0];
     [v8 setValue:objc_msgSend(MEMORY[0x1E695F610] forKey:{"colorWithCGColor:", -[UIColor CGColor](v9, "CGColor")), @"inputColor"}];
     v10 = [objc_alloc(MEMORY[0x1E695F658]) initWithImage:self];
     [v8 setValue:v10 forKey:*MEMORY[0x1E695FAB0]];
-    v7 = +[UIImage imageWithCIImage:scale:orientation:](UIImage, "imageWithCIImage:scale:orientation:", [v8 valueForKey:*MEMORY[0x1E695FB50]], 0, v6);
+    selfCopy = +[UIImage imageWithCIImage:scale:orientation:](UIImage, "imageWithCIImage:scale:orientation:", [v8 valueForKey:*MEMORY[0x1E695FB50]], 0, v6);
   }
 
-  if (v7)
+  if (selfCopy)
   {
     if ([(UIImage *)self CGImage])
     {
@@ -9295,7 +9295,7 @@ id __82__UIImage__UILegibility___drawImageForLegibilitySettings_strength_size_al
     v15[1] = 3221225472;
     v15[2] = __73__UIImage__UILegibility___imageWithBrightnessModifiedForLegibilityStyle___block_invoke;
     v15[3] = &unk_1E7101E78;
-    v15[4] = v7;
+    v15[4] = selfCopy;
     v15[5] = self;
     return _UIGraphicsDrawIntoImageContextWithMoreOptions(v11 & 1, 0, v15, v12, v13, v6);
   }
@@ -9325,16 +9325,16 @@ uint64_t __73__UIImage__UILegibility___imageWithBrightnessModifiedForLegibilityS
   return v3;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E6982C40] _typeWithIdentifier:v8 allowUndeclared:1];
+  dataCopy = data;
+  identifierCopy = identifier;
+  v9 = [MEMORY[0x1E6982C40] _typeWithIdentifier:identifierCopy allowUndeclared:1];
   v10 = [MEMORY[0x1E6982C40] _typeWithIdentifier:@"com.apple.uikit.image" allowUndeclared:1];
   if ([v9 conformsToType:v10])
   {
-    v11 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v7 error:0];
+    v11 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:0];
     v12 = [v11 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E696A508]];
     [v11 finishDecoding];
   }
@@ -9368,7 +9368,7 @@ uint64_t __73__UIImage__UILegibility___imageWithBrightnessModifiedForLegibilityS
           if ([v13 conformsToType:{*(*(&v20 + 1) + 8 * i), v20}])
           {
 
-            v12 = [[a1 alloc] initWithData:v7];
+            v12 = [[self alloc] initWithData:dataCopy];
             goto LABEL_15;
           }
         }
@@ -9392,12 +9392,12 @@ LABEL_15:
   return v12;
 }
 
-- (UIImage)initWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
+- (UIImage)initWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
   v10 = [(UIImage *)self init];
-  v11 = [objc_opt_class() objectWithItemProviderData:v9 typeIdentifier:v8 error:a5];
+  v11 = [objc_opt_class() objectWithItemProviderData:dataCopy typeIdentifier:identifierCopy error:error];
 
   v12 = v11;
   return v12;
@@ -9407,32 +9407,32 @@ LABEL_15:
 {
   v7[4] = *MEMORY[0x1E69E9840];
   v7[0] = @"com.apple.uikit.image";
-  v2 = [*MEMORY[0x1E6982E00] identifier];
-  v7[1] = v2;
-  v3 = [*MEMORY[0x1E6982F28] identifier];
-  v7[2] = v3;
-  v4 = [*MEMORY[0x1E6982E58] identifier];
-  v7[3] = v4;
+  identifier = [*MEMORY[0x1E6982E00] identifier];
+  v7[1] = identifier;
+  identifier2 = [*MEMORY[0x1E6982F28] identifier];
+  v7[2] = identifier2;
+  identifier3 = [*MEMORY[0x1E6982E58] identifier];
+  v7[3] = identifier3;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:4];
 
   return v5;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"com.apple.uikit.image"])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([identifierCopy isEqualToString:@"com.apple.uikit.image"])
   {
     v8 = [MEMORY[0x1E696ACC8] _ui_archivedInterprocessDataWithRootObject:self requiringSecureCoding:1 error:0];
 LABEL_7:
     v13 = v8;
-    v7[2](v7, v8, 0);
+    handlerCopy[2](handlerCopy, v8, 0);
     goto LABEL_8;
   }
 
-  v9 = [*MEMORY[0x1E6982F28] identifier];
-  v10 = [v6 isEqualToString:v9];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
+  v10 = [identifierCopy isEqualToString:identifier];
 
   if (v10)
   {
@@ -9440,8 +9440,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v11 = [*MEMORY[0x1E6982E58] identifier];
-  v12 = [v6 isEqualToString:v11];
+  identifier2 = [*MEMORY[0x1E6982E58] identifier];
+  v12 = [identifierCopy isEqualToString:identifier2];
 
   if (v12)
   {
@@ -9449,17 +9449,17 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v15 = [*MEMORY[0x1E6982E00] identifier];
-  v16 = [v6 isEqualToString:v15];
+  identifier3 = [*MEMORY[0x1E6982E00] identifier];
+  v16 = [identifierCopy isEqualToString:identifier3];
 
   if (!v16)
   {
-    v7[2](v7, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
     goto LABEL_9;
   }
 
   v13 = UIImageHEICRepresentation(self);
-  v7[2](v7, v13, 0);
+  handlerCopy[2](handlerCopy, v13, 0);
 LABEL_8:
 
 LABEL_9:

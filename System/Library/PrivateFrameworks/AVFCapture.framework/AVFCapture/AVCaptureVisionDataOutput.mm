@@ -1,42 +1,42 @@
 @interface AVCaptureVisionDataOutput
 - (AVCaptureVisionDataOutput)init;
-- (BOOL)_isPropertySupported:(id)a3;
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4;
-- (id)addConnection:(id)a3 error:(id *)a4;
-- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)a3;
-- (void)_handleNotification:(id)a3 payload:(id)a4;
-- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)a3;
-- (void)_initializeClientVisiblePropertiesForSourceDevice:(id)a3;
-- (void)_processSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)_updateLocalQueue:(localQueueOpaque *)a3;
-- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)a3;
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3;
+- (BOOL)_isPropertySupported:(id)supported;
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason;
+- (id)addConnection:(id)connection error:(id *)error;
+- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)message;
+- (void)_handleNotification:(id)notification payload:(id)payload;
+- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)operation;
+- (void)_initializeClientVisiblePropertiesForSourceDevice:(id)device;
+- (void)_processSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)_updateLocalQueue:(localQueueOpaque *)queue;
+- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)queue;
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session;
 - (void)dealloc;
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3;
-- (void)handleChangedActiveFormat:(id)a3 forDevice:(id)a4;
-- (void)removeConnection:(id)a3;
-- (void)setDelegate:(id)a3 callbackQueue:(id)a4;
-- (void)setDelegateOverride:(id)a3 delegateOverrideCallbackQueue:(id)a4;
-- (void)setDynamicThresholdingEnabled:(BOOL)a3;
-- (void)setFeatureBinningEnabled:(BOOL)a3;
-- (void)setFeatureMatchingDescriptorSize:(unint64_t)a3;
-- (void)setFeatureMatchingEnabled:(BOOL)a3;
-- (void)setFeatureOrientationAssignmentEnabled:(BOOL)a3;
-- (void)setGaussianPyramidBaseOctaveDownscalingFactor:(float)a3;
-- (void)setGaussianPyramidOctavesCount:(unint64_t)a3;
-- (void)setHammingDistanceThreshold:(unint64_t)a3;
-- (void)setKeypointDetectionFlowType:(unint64_t)a3;
-- (void)setKeypointDetectionThreshold:(float)a3;
-- (void)setLaccConfigAndMetadata:(id)a3;
-- (void)setMaxBurstDuration:(id *)a3;
-- (void)setMaxKeypointsCount:(unint64_t)a3;
-- (void)setMinBurstFrameDuration:(id *)a3;
-- (void)setMinFrameDuration:(id *)a3;
-- (void)setOrientationDistanceThreshold:(float)a3;
-- (void)setRuntimeUpdates:(id)a3;
-- (void)setSigmaDistanceThreshold:(float)a3;
-- (void)setSquareDistanceDisparityFraction:(float)a3;
-- (void)setSubPixelThreshold:(unint64_t)a3;
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session;
+- (void)handleChangedActiveFormat:(id)format forDevice:(id)device;
+- (void)removeConnection:(id)connection;
+- (void)setDelegate:(id)delegate callbackQueue:(id)queue;
+- (void)setDelegateOverride:(id)override delegateOverrideCallbackQueue:(id)queue;
+- (void)setDynamicThresholdingEnabled:(BOOL)enabled;
+- (void)setFeatureBinningEnabled:(BOOL)enabled;
+- (void)setFeatureMatchingDescriptorSize:(unint64_t)size;
+- (void)setFeatureMatchingEnabled:(BOOL)enabled;
+- (void)setFeatureOrientationAssignmentEnabled:(BOOL)enabled;
+- (void)setGaussianPyramidBaseOctaveDownscalingFactor:(float)factor;
+- (void)setGaussianPyramidOctavesCount:(unint64_t)count;
+- (void)setHammingDistanceThreshold:(unint64_t)threshold;
+- (void)setKeypointDetectionFlowType:(unint64_t)type;
+- (void)setKeypointDetectionThreshold:(float)threshold;
+- (void)setLaccConfigAndMetadata:(id)metadata;
+- (void)setMaxBurstDuration:(id *)duration;
+- (void)setMaxKeypointsCount:(unint64_t)count;
+- (void)setMinBurstFrameDuration:(id *)duration;
+- (void)setMinFrameDuration:(id *)duration;
+- (void)setOrientationDistanceThreshold:(float)threshold;
+- (void)setRuntimeUpdates:(id)updates;
+- (void)setSigmaDistanceThreshold:(float)threshold;
+- (void)setSquareDistanceDisparityFraction:(float)fraction;
+- (void)setSubPixelThreshold:(unint64_t)threshold;
 - (void)triggerBurst;
 @end
 
@@ -46,15 +46,15 @@
 {
   v5.receiver = self;
   v5.super_class = AVCaptureVisionDataOutput;
-  v2 = [(AVCaptureOutput *)&v5 initSubclass];
-  if (v2)
+  initSubclass = [(AVCaptureOutput *)&v5 initSubclass];
+  if (initSubclass)
   {
     v3 = objc_alloc_init(AVCaptureVisionDataOutputInternal);
-    v2->_internal = v3;
+    initSubclass->_internal = v3;
     if (v3)
     {
-      v2->_internal->weakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:v2];
-      [(AVCaptureVisionDataOutput *)v2 _initializeClientVisiblePropertiesForSourceDevice:0];
+      initSubclass->_internal->weakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:initSubclass];
+      [(AVCaptureVisionDataOutput *)initSubclass _initializeClientVisiblePropertiesForSourceDevice:0];
     }
 
     else
@@ -64,7 +64,7 @@
     }
   }
 
-  return v2;
+  return initSubclass;
 }
 
 - (void)dealloc
@@ -74,16 +74,16 @@
   [(AVCaptureOutput *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3 callbackQueue:(id)a4
+- (void)setDelegate:(id)delegate callbackQueue:(id)queue
 {
   if (AVCaptureIsRunningInMediaserverd())
   {
-    a4 = 0;
+    queue = 0;
   }
 
   [(AVCaptureVisionDataOutput *)self willChangeValueForKey:@"delegate"];
   v8 = 0;
-  if ([(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper setClientDelegate:a3 clientCallbackQueue:a4 exceptionReason:&v8])
+  if ([(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper setClientDelegate:delegate clientCallbackQueue:queue exceptionReason:&v8])
   {
     [(AVCaptureVisionDataOutput *)self didChangeValueForKey:@"delegate"];
   }
@@ -101,21 +101,21 @@
   }
 }
 
-- (void)setMinFrameDuration:(id *)a3
+- (void)setMinFrameDuration:(id *)duration
 {
-  v5 = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:@"visn"] sourceDevice];
-  v6 = v5;
-  var0 = a3->var0;
-  var2 = a3->var2;
-  var1 = a3->var1;
+  sourceDevice = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:@"visn"] sourceDevice];
+  v6 = sourceDevice;
+  var0 = duration->var0;
+  var2 = duration->var2;
+  var1 = duration->var1;
   if (var2)
   {
-    var3 = a3->var3;
+    var3 = duration->var3;
   }
 
   else
   {
-    if (!v5)
+    if (!sourceDevice)
     {
       var2 = 0;
       var3 = 0;
@@ -124,7 +124,7 @@
       goto LABEL_17;
     }
 
-    [v5 activeVideoMinFrameDuration];
+    [sourceDevice activeVideoMinFrameDuration];
     var3 = v18.epoch;
     var0 = v18.value;
     var2 = v18.flags;
@@ -141,8 +141,8 @@ LABEL_17:
       if (CMTimeCompare(&v18, &minFrameDuration))
       {
         v13 = self->_internal;
-        v14 = *&a3->var0;
-        v13->minFrameDuration.epoch = a3->var3;
+        v14 = *&duration->var0;
+        v13->minFrameDuration.epoch = duration->var3;
         *&v13->minFrameDuration.value = v14;
         [(AVCaptureOutput *)self bumpChangeSeed];
       }
@@ -152,10 +152,10 @@ LABEL_17:
   }
 
   memset(&v18, 0, sizeof(v18));
-  v9 = [v6 activeFormat];
-  if (v9)
+  activeFormat = [v6 activeFormat];
+  if (activeFormat)
   {
-    [v9 lowestSupportedVideoFrameDuration];
+    [activeFormat lowestSupportedVideoFrameDuration];
   }
 
   else
@@ -164,10 +164,10 @@ LABEL_17:
   }
 
   memset(&minFrameDuration, 0, sizeof(minFrameDuration));
-  v10 = [v6 activeFormat];
-  if (v10)
+  activeFormat2 = [v6 activeFormat];
+  if (activeFormat2)
   {
-    [v10 highestSupportedVideoFrameDuration];
+    [activeFormat2 highestSupportedVideoFrameDuration];
   }
 
   else
@@ -202,21 +202,21 @@ LABEL_17:
   NSLog(&cfstr_SuppressingExc.isa, v11);
 }
 
-- (void)setMinBurstFrameDuration:(id *)a3
+- (void)setMinBurstFrameDuration:(id *)duration
 {
-  v5 = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:@"visn"] sourceDevice];
-  v6 = v5;
-  var0 = a3->var0;
-  var2 = a3->var2;
-  var1 = a3->var1;
+  sourceDevice = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:@"visn"] sourceDevice];
+  v6 = sourceDevice;
+  var0 = duration->var0;
+  var2 = duration->var2;
+  var1 = duration->var1;
   if (var2)
   {
-    var3 = a3->var3;
+    var3 = duration->var3;
   }
 
   else
   {
-    if (!v5)
+    if (!sourceDevice)
     {
       var2 = 0;
       var3 = 0;
@@ -225,7 +225,7 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    [v5 activeVideoMinFrameDuration];
+    [sourceDevice activeVideoMinFrameDuration];
     var3 = v17.epoch;
     var0 = v17.value;
     var2 = v17.flags;
@@ -254,10 +254,10 @@ LABEL_17:
   }
 
   memset(&v17, 0, sizeof(v17));
-  v9 = [v6 activeFormat];
-  if (v9)
+  activeFormat = [v6 activeFormat];
+  if (activeFormat)
   {
-    [v9 lowestSupportedVideoFrameDuration];
+    [activeFormat lowestSupportedVideoFrameDuration];
   }
 
   else
@@ -266,10 +266,10 @@ LABEL_17:
   }
 
   memset(&minBurstFrameDuration, 0, sizeof(minBurstFrameDuration));
-  v10 = [v6 activeFormat];
-  if (v10)
+  activeFormat2 = [v6 activeFormat];
+  if (activeFormat2)
   {
-    [v10 highestSupportedVideoFrameDuration];
+    [activeFormat2 highestSupportedVideoFrameDuration];
   }
 
   else
@@ -304,14 +304,14 @@ LABEL_17:
   NSLog(&cfstr_SuppressingExc.isa, v11);
 }
 
-- (void)setMaxBurstDuration:(id *)a3
+- (void)setMaxBurstDuration:(id *)duration
 {
-  var0 = a3->var0;
-  var2 = a3->var2;
-  var1 = a3->var1;
+  var0 = duration->var0;
+  var2 = duration->var2;
+  var1 = duration->var1;
   if (var2)
   {
-    var3 = a3->var3;
+    var3 = duration->var3;
   }
 
   else
@@ -354,14 +354,14 @@ LABEL_17:
   }
 }
 
-- (void)setGaussianPyramidOctavesCount:(unint64_t)a3
+- (void)setGaussianPyramidOctavesCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
     internal = self->_internal;
-    if (internal->gaussianPyramidOctavesCount != a3)
+    if (internal->gaussianPyramidOctavesCount != count)
     {
-      internal->gaussianPyramidOctavesCount = a3;
+      internal->gaussianPyramidOctavesCount = count;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -379,14 +379,14 @@ LABEL_17:
   }
 }
 
-- (void)setGaussianPyramidBaseOctaveDownscalingFactor:(float)a3
+- (void)setGaussianPyramidBaseOctaveDownscalingFactor:(float)factor
 {
-  if (a3 >= 1.0)
+  if (factor >= 1.0)
   {
     internal = self->_internal;
-    if (internal->gaussianPyramidBaseOctaveDownscalingFactor != a3)
+    if (internal->gaussianPyramidBaseOctaveDownscalingFactor != factor)
     {
-      internal->gaussianPyramidBaseOctaveDownscalingFactor = a3;
+      internal->gaussianPyramidBaseOctaveDownscalingFactor = factor;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -404,14 +404,14 @@ LABEL_17:
   }
 }
 
-- (void)setMaxKeypointsCount:(unint64_t)a3
+- (void)setMaxKeypointsCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
     internal = self->_internal;
-    if (internal->maxKeypointsCount != a3)
+    if (internal->maxKeypointsCount != count)
     {
-      internal->maxKeypointsCount = a3;
+      internal->maxKeypointsCount = count;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -429,30 +429,30 @@ LABEL_17:
   }
 }
 
-- (void)setFeatureBinningEnabled:(BOOL)a3
+- (void)setFeatureBinningEnabled:(BOOL)enabled
 {
   internal = self->_internal;
-  if (internal->featureBinningEnabled != a3)
+  if (internal->featureBinningEnabled != enabled)
   {
-    internal->featureBinningEnabled = a3;
+    internal->featureBinningEnabled = enabled;
     [(AVCaptureOutput *)self bumpChangeSeed];
   }
 }
 
-- (void)setFeatureOrientationAssignmentEnabled:(BOOL)a3
+- (void)setFeatureOrientationAssignmentEnabled:(BOOL)enabled
 {
   internal = self->_internal;
-  if (internal->featureOrientationAssignmentEnabled != a3)
+  if (internal->featureOrientationAssignmentEnabled != enabled)
   {
-    internal->featureOrientationAssignmentEnabled = a3;
+    internal->featureOrientationAssignmentEnabled = enabled;
     [(AVCaptureOutput *)self bumpChangeSeed];
   }
 }
 
-- (void)setDynamicThresholdingEnabled:(BOOL)a3
+- (void)setDynamicThresholdingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3 && ![(AVCaptureVisionDataOutput *)self isDynamicThresholdingSupported])
+  enabledCopy = enabled;
+  if (enabled && ![(AVCaptureVisionDataOutput *)self isDynamicThresholdingSupported])
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -466,20 +466,20 @@ LABEL_17:
   else
   {
     internal = self->_internal;
-    if (internal->dynamicThresholdingEnabled != v3)
+    if (internal->dynamicThresholdingEnabled != enabledCopy)
     {
-      internal->dynamicThresholdingEnabled = v3;
+      internal->dynamicThresholdingEnabled = enabledCopy;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
   }
 }
 
-- (void)setKeypointDetectionFlowType:(unint64_t)a3
+- (void)setKeypointDetectionFlowType:(unint64_t)type
 {
-  if (a3 && ![(AVCaptureVisionDataOutput *)self isKeypointDetectionFlowTypeSupported:a3])
+  if (type && ![(AVCaptureVisionDataOutput *)self isKeypointDetectionFlowTypeSupported:type])
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, a3}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, type}];
     if (AVCaptureShouldThrowForAPIViolations())
     {
       objc_exception_throw(v6);
@@ -491,18 +491,18 @@ LABEL_17:
   else
   {
     internal = self->_internal;
-    if (internal->keypointDetectionFlowType != a3)
+    if (internal->keypointDetectionFlowType != type)
     {
-      internal->keypointDetectionFlowType = a3;
+      internal->keypointDetectionFlowType = type;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
   }
 }
 
-- (void)setSubPixelThreshold:(unint64_t)a3
+- (void)setSubPixelThreshold:(unint64_t)threshold
 {
-  if (a3 && ![(AVCaptureVisionDataOutput *)self isSubPixelThresholdSupported])
+  if (threshold && ![(AVCaptureVisionDataOutput *)self isSubPixelThresholdSupported])
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -516,19 +516,19 @@ LABEL_17:
   else
   {
     internal = self->_internal;
-    if (internal->subPixelThreshold != a3)
+    if (internal->subPixelThreshold != threshold)
     {
-      internal->subPixelThreshold = a3;
+      internal->subPixelThreshold = threshold;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
   }
 }
 
-- (void)setFeatureMatchingEnabled:(BOOL)a3
+- (void)setFeatureMatchingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3 && ![(AVCaptureVisionDataOutput *)self isFeatureMatchingSupported])
+  enabledCopy = enabled;
+  if (enabled && ![(AVCaptureVisionDataOutput *)self isFeatureMatchingSupported])
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -542,18 +542,18 @@ LABEL_17:
   else
   {
     internal = self->_internal;
-    if (internal->featureMatchingEnabled != v3)
+    if (internal->featureMatchingEnabled != enabledCopy)
     {
-      internal->featureMatchingEnabled = v3;
+      internal->featureMatchingEnabled = enabledCopy;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
   }
 }
 
-- (void)setFeatureMatchingDescriptorSize:(unint64_t)a3
+- (void)setFeatureMatchingDescriptorSize:(unint64_t)size
 {
-  if (a3 && ![(AVCaptureVisionDataOutput *)self isFeatureMatchingSupported])
+  if (size && ![(AVCaptureVisionDataOutput *)self isFeatureMatchingSupported])
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -567,48 +567,23 @@ LABEL_17:
   else
   {
     internal = self->_internal;
-    if (internal->featureMatchingDescriptorSize != a3)
+    if (internal->featureMatchingDescriptorSize != size)
     {
-      internal->featureMatchingDescriptorSize = a3;
+      internal->featureMatchingDescriptorSize = size;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
   }
 }
 
-- (void)setOrientationDistanceThreshold:(float)a3
+- (void)setOrientationDistanceThreshold:(float)threshold
 {
-  if (a3 == 0.0 || [(AVCaptureVisionDataOutput *)self isOrientationDistanceThresholdSupported])
+  if (threshold == 0.0 || [(AVCaptureVisionDataOutput *)self isOrientationDistanceThresholdSupported])
   {
     internal = self->_internal;
-    if (internal->orientationDistanceThreshold != a3)
+    if (internal->orientationDistanceThreshold != threshold)
     {
-      internal->orientationDistanceThreshold = a3;
-
-      [(AVCaptureOutput *)self bumpChangeSeed];
-    }
-  }
-
-  else
-  {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
-    if (AVCaptureShouldThrowForAPIViolations())
-    {
-      objc_exception_throw(v6);
-    }
-
-    NSLog(&cfstr_SuppressingExc.isa, v6);
-  }
-}
-
-- (void)setSigmaDistanceThreshold:(float)a3
-{
-  if (a3 == 0.0 || [(AVCaptureVisionDataOutput *)self isSigmaDistanceThresholdSupported])
-  {
-    internal = self->_internal;
-    if (internal->sigmaDistanceThreshold != a3)
-    {
-      internal->sigmaDistanceThreshold = a3;
+      internal->orientationDistanceThreshold = threshold;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -626,14 +601,14 @@ LABEL_17:
   }
 }
 
-- (void)setSquareDistanceDisparityFraction:(float)a3
+- (void)setSigmaDistanceThreshold:(float)threshold
 {
-  if (a3 == 0.0 || [(AVCaptureVisionDataOutput *)self isSquareDistanceDisparityFractionSupported])
+  if (threshold == 0.0 || [(AVCaptureVisionDataOutput *)self isSigmaDistanceThresholdSupported])
   {
     internal = self->_internal;
-    if (internal->squareDistanceDisparityFraction != a3)
+    if (internal->sigmaDistanceThreshold != threshold)
     {
-      internal->squareDistanceDisparityFraction = a3;
+      internal->sigmaDistanceThreshold = threshold;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -651,9 +626,34 @@ LABEL_17:
   }
 }
 
-- (void)setHammingDistanceThreshold:(unint64_t)a3
+- (void)setSquareDistanceDisparityFraction:(float)fraction
 {
-  if (a3 && ![(AVCaptureVisionDataOutput *)self isHammingDistanceThresholdSupported])
+  if (fraction == 0.0 || [(AVCaptureVisionDataOutput *)self isSquareDistanceDisparityFractionSupported])
+  {
+    internal = self->_internal;
+    if (internal->squareDistanceDisparityFraction != fraction)
+    {
+      internal->squareDistanceDisparityFraction = fraction;
+
+      [(AVCaptureOutput *)self bumpChangeSeed];
+    }
+  }
+
+  else
+  {
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
+    if (AVCaptureShouldThrowForAPIViolations())
+    {
+      objc_exception_throw(v6);
+    }
+
+    NSLog(&cfstr_SuppressingExc.isa, v6);
+  }
+}
+
+- (void)setHammingDistanceThreshold:(unint64_t)threshold
+{
+  if (threshold && ![(AVCaptureVisionDataOutput *)self isHammingDistanceThresholdSupported])
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -667,18 +667,18 @@ LABEL_17:
   else
   {
     internal = self->_internal;
-    if (internal->hammingDistanceThreshold != a3)
+    if (internal->hammingDistanceThreshold != threshold)
     {
-      internal->hammingDistanceThreshold = a3;
+      internal->hammingDistanceThreshold = threshold;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
   }
 }
 
-- (void)setLaccConfigAndMetadata:(id)a3
+- (void)setLaccConfigAndMetadata:(id)metadata
 {
-  if (a3 && ![(AVCaptureVisionDataOutput *)self isLACCConfigAndMetadataSupported])
+  if (metadata && ![(AVCaptureVisionDataOutput *)self isLACCConfigAndMetadataSupported])
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -689,29 +689,29 @@ LABEL_17:
     NSLog(&cfstr_SuppressingExc.isa, v5);
   }
 
-  else if (self->_internal->laccConfigAndMetadata != a3 && ([a3 isEqualToData:?] & 1) == 0)
+  else if (self->_internal->laccConfigAndMetadata != metadata && ([metadata isEqualToData:?] & 1) == 0)
   {
 
-    self->_internal->laccConfigAndMetadata = [a3 copy];
+    self->_internal->laccConfigAndMetadata = [metadata copy];
 
     [(AVCaptureOutput *)self bumpChangeSeed];
   }
 }
 
-- (void)setKeypointDetectionThreshold:(float)a3
+- (void)setKeypointDetectionThreshold:(float)threshold
 {
   internal = self->_internal;
-  if (internal->keypointDetectionThreshold != a3)
+  if (internal->keypointDetectionThreshold != threshold)
   {
     v8 = v3;
     v9 = v4;
-    internal->keypointDetectionThreshold = a3;
+    internal->keypointDetectionThreshold = threshold;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __59__AVCaptureVisionDataOutput_setKeypointDetectionThreshold___block_invoke;
     v6[3] = &unk_1E786F338;
     v6[4] = self;
-    v7 = a3;
+    thresholdCopy = threshold;
     [(AVCaptureOutput *)self performFigCaptureSessionOperationSafelyUsingBlock:v6];
   }
 }
@@ -739,7 +739,7 @@ uint64_t __59__AVCaptureVisionDataOutput_setKeypointDetectionThreshold___block_i
   return result;
 }
 
-- (void)setRuntimeUpdates:(id)a3
+- (void)setRuntimeUpdates:(id)updates
 {
   if ([(AVCaptureVisionDataOutput *)self areRuntimeUpdatesSupported])
   {
@@ -748,7 +748,7 @@ uint64_t __59__AVCaptureVisionDataOutput_setKeypointDetectionThreshold___block_i
     v6[2] = __47__AVCaptureVisionDataOutput_setRuntimeUpdates___block_invoke;
     v6[3] = &unk_1E786EFA8;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = updates;
     [(AVCaptureOutput *)self performFigCaptureSessionOperationSafelyUsingBlock:v6];
   }
 
@@ -815,9 +815,9 @@ uint64_t __41__AVCaptureVisionDataOutput_triggerBurst__block_invoke(uint64_t res
   return result;
 }
 
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason
 {
-  if (![objc_msgSend(a3 "mediaType")])
+  if (![objc_msgSend(connection "mediaType")])
   {
     v7 = 1;
     goto LABEL_5;
@@ -827,21 +827,21 @@ uint64_t __41__AVCaptureVisionDataOutput_triggerBurst__block_invoke(uint64_t res
   {
     v7 = 2;
 LABEL_5:
-    v8 = AVCaptureOutputConnectionFailureReasonString(v7, self, a3);
+    v8 = AVCaptureOutputConnectionFailureReasonString(v7, self, connection);
     result = 0;
-    *a4 = v8;
+    *reason = v8;
     return result;
   }
 
   return 1;
 }
 
-- (id)addConnection:(id)a3 error:(id *)a4
+- (id)addConnection:(id)connection error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = AVCaptureVisionDataOutput;
-  v6 = [(AVCaptureOutput *)&v8 addConnection:a3 error:a4];
-  if ([objc_msgSend(a3 "mediaType")])
+  v6 = [(AVCaptureOutput *)&v8 addConnection:connection error:error];
+  if ([objc_msgSend(connection "mediaType")])
   {
     -[AVCaptureVisionDataOutput _initializeClientVisiblePropertiesForSourceDevice:](self, "_initializeClientVisiblePropertiesForSourceDevice:", [v6 sourceDevice]);
   }
@@ -849,49 +849,49 @@ LABEL_5:
   return v6;
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
   v4.receiver = self;
   v4.super_class = AVCaptureVisionDataOutput;
-  [(AVCaptureOutput *)&v4 removeConnection:a3];
+  [(AVCaptureOutput *)&v4 removeConnection:connection];
   [(AVCaptureVisionDataOutput *)self _initializeClientVisiblePropertiesForSourceDevice:0];
 }
 
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   v5 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   weakReference = self->_internal->weakReference;
-  [v5 addListenerWithWeakReference:weakReference callback:vsndo_notificationHandler name:*MEMORY[0x1E698FE48] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:weakReference callback:vsndo_notificationHandler name:*MEMORY[0x1E698FE40] object:a3 flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:vsndo_notificationHandler name:*MEMORY[0x1E698FE48] object:session flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:vsndo_notificationHandler name:*MEMORY[0x1E698FE40] object:session flags:0];
   v7.receiver = self;
   v7.super_class = AVCaptureVisionDataOutput;
-  [(AVCaptureOutput *)&v7 attachSafelyToFigCaptureSession:a3];
+  [(AVCaptureOutput *)&v7 attachSafelyToFigCaptureSession:session];
 }
 
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   v5 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vsndo_notificationHandler name:*MEMORY[0x1E698FE48] object:a3];
-  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vsndo_notificationHandler name:*MEMORY[0x1E698FE40] object:a3];
+  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vsndo_notificationHandler name:*MEMORY[0x1E698FE48] object:session];
+  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vsndo_notificationHandler name:*MEMORY[0x1E698FE40] object:session];
   v6.receiver = self;
   v6.super_class = AVCaptureVisionDataOutput;
-  [(AVCaptureOutput *)&v6 detachSafelyFromFigCaptureSession:a3];
+  [(AVCaptureOutput *)&v6 detachSafelyFromFigCaptureSession:session];
 }
 
-- (void)setDelegateOverride:(id)a3 delegateOverrideCallbackQueue:(id)a4
+- (void)setDelegateOverride:(id)override delegateOverrideCallbackQueue:(id)queue
 {
   if (AVCaptureIsRunningInMediaserverd())
   {
-    v7 = 0;
+    queueCopy = 0;
   }
 
   else
   {
-    v7 = a4;
+    queueCopy = queue;
   }
 
   v9 = 0;
-  if (![(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper setDelegateOverride:a3 delegateOverrideCallbackQueue:v7 exceptionReason:&v9])
+  if (![(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper setDelegateOverride:override delegateOverrideCallbackQueue:queueCopy exceptionReason:&v9])
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -903,45 +903,45 @@ LABEL_5:
   }
 }
 
-- (void)handleChangedActiveFormat:(id)a3 forDevice:(id)a4
+- (void)handleChangedActiveFormat:(id)format forDevice:(id)device
 {
-  if ([a3 isVisionDataDeliverySupported])
+  if ([format isVisionDataDeliverySupported])
   {
-    [(AVCaptureVisionDataOutput *)self _initializeClientVisiblePropertiesForSourceDevice:a4];
+    [(AVCaptureVisionDataOutput *)self _initializeClientVisiblePropertiesForSourceDevice:device];
   }
 
   v7.receiver = self;
   v7.super_class = AVCaptureVisionDataOutput;
-  [(AVCaptureOutput *)&v7 handleChangedActiveFormat:a3 forDevice:a4];
+  [(AVCaptureOutput *)&v7 handleChangedActiveFormat:format forDevice:device];
 }
 
-- (void)_handleNotification:(id)a3 payload:(id)a4
+- (void)_handleNotification:(id)notification payload:(id)payload
 {
-  if ([objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqual:", -[AVCaptureOutput sinkID](self, "sinkID")}])
+  if ([objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqual:", -[AVCaptureOutput sinkID](self, "sinkID")}])
   {
-    if ([a3 isEqualToString:*MEMORY[0x1E698FE48]])
+    if ([notification isEqualToString:*MEMORY[0x1E698FE48]])
     {
-      v7 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FE38]];
+      v7 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FE38]];
 
       [(AVCaptureVisionDataOutput *)self _updateRemoteQueue:v7];
     }
 
-    else if ([a3 isEqualToString:*MEMORY[0x1E698FE40]])
+    else if ([notification isEqualToString:*MEMORY[0x1E698FE40]])
     {
-      v8 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FBB8]];
+      v8 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FBB8]];
 
       [(AVCaptureVisionDataOutput *)self _updateLocalQueue:v8];
     }
   }
 }
 
-- (void)_initializeClientVisiblePropertiesForSourceDevice:(id)a3
+- (void)_initializeClientVisiblePropertiesForSourceDevice:(id)device
 {
   [-[AVCaptureOutput session](self "session")];
   memset(&v16[1], 0, sizeof(CMTime));
-  if (a3)
+  if (device)
   {
-    [a3 activeVideoMinFrameDuration];
+    [device activeVideoMinFrameDuration];
   }
 
   v16[0] = v16[1];
@@ -974,25 +974,25 @@ LABEL_5:
   [(AVCaptureVisionDataOutput *)self setSubPixelThreshold:v7];
   [(AVCaptureVisionDataOutput *)self setFeatureMatchingEnabled:0];
   [(AVCaptureVisionDataOutput *)self setFeatureMatchingDescriptorSize:[(AVCaptureVisionDataOutput *)self isFeatureMatchingSupported]];
-  v8 = [(AVCaptureVisionDataOutput *)self isOrientationDistanceThresholdSupported];
+  isOrientationDistanceThresholdSupported = [(AVCaptureVisionDataOutput *)self isOrientationDistanceThresholdSupported];
   LODWORD(v9) = 20.0;
-  if (!v8)
+  if (!isOrientationDistanceThresholdSupported)
   {
     *&v9 = 0.0;
   }
 
   [(AVCaptureVisionDataOutput *)self setOrientationDistanceThreshold:v9];
-  v10 = [(AVCaptureVisionDataOutput *)self isSigmaDistanceThresholdSupported];
+  isSigmaDistanceThresholdSupported = [(AVCaptureVisionDataOutput *)self isSigmaDistanceThresholdSupported];
   LODWORD(v11) = 0.5;
-  if (!v10)
+  if (!isSigmaDistanceThresholdSupported)
   {
     *&v11 = 0.0;
   }
 
   [(AVCaptureVisionDataOutput *)self setSigmaDistanceThreshold:v11];
-  v12 = [(AVCaptureVisionDataOutput *)self isSquareDistanceDisparityFractionSupported];
+  isSquareDistanceDisparityFractionSupported = [(AVCaptureVisionDataOutput *)self isSquareDistanceDisparityFractionSupported];
   LODWORD(v13) = 1045220557;
-  if (!v12)
+  if (!isSquareDistanceDisparityFractionSupported)
   {
     *&v13 = 0.0;
   }
@@ -1012,11 +1012,11 @@ LABEL_5:
   [-[AVCaptureOutput session](self "session")];
 }
 
-- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)a3
+- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)queue
 {
   v5 = self->_internal->weakReference;
   MessageReceiver = FigRemoteOperationReceiverCreateMessageReceiver();
-  -[AVCaptureDataOutputDelegateCallbackHelper updateRemoteQueueReceiver:handler:](self->_internal->delegateCallbackHelper, "updateRemoteQueueReceiver:handler:", a3, [MessageReceiver copy]);
+  -[AVCaptureDataOutputDelegateCallbackHelper updateRemoteQueueReceiver:handler:](self->_internal->delegateCallbackHelper, "updateRemoteQueueReceiver:handler:", queue, [MessageReceiver copy]);
 }
 
 void __48__AVCaptureVisionDataOutput__updateRemoteQueue___block_invoke(uint64_t a1, int a2, uint64_t a3)
@@ -1040,15 +1040,15 @@ void __48__AVCaptureVisionDataOutput__updateRemoteQueue___block_invoke(uint64_t 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)a3
+- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)operation
 {
-  if (a3->var0 == 3)
+  if (operation->var0 == 3)
   {
-    [(AVCaptureVisionDataOutput *)self _processSampleBuffer:a3->var4.var4.var0];
+    [(AVCaptureVisionDataOutput *)self _processSampleBuffer:operation->var4.var4.var0];
   }
 }
 
-- (void)_updateLocalQueue:(localQueueOpaque *)a3
+- (void)_updateLocalQueue:(localQueueOpaque *)queue
 {
   v5 = self->_internal->weakReference;
   v6[0] = MEMORY[0x1E69E9820];
@@ -1056,7 +1056,7 @@ void __48__AVCaptureVisionDataOutput__updateRemoteQueue___block_invoke(uint64_t 
   v6[2] = __47__AVCaptureVisionDataOutput__updateLocalQueue___block_invoke;
   v6[3] = &unk_1E786F260;
   v6[4] = v5;
-  -[AVCaptureDataOutputDelegateCallbackHelper updateLocalQueue:handler:](self->_internal->delegateCallbackHelper, "updateLocalQueue:handler:", a3, [v6 copy]);
+  -[AVCaptureDataOutputDelegateCallbackHelper updateLocalQueue:handler:](self->_internal->delegateCallbackHelper, "updateLocalQueue:handler:", queue, [v6 copy]);
 }
 
 void __47__AVCaptureVisionDataOutput__updateLocalQueue___block_invoke(uint64_t a1, __int128 *a2)
@@ -1074,52 +1074,52 @@ void __47__AVCaptureVisionDataOutput__updateLocalQueue___block_invoke(uint64_t a
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)a3
+- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)message
 {
-  if (a3->var0 == 3)
+  if (message->var0 == 3)
   {
-    [(AVCaptureVisionDataOutput *)self _processSampleBuffer:*(&a3->var0 + 1)];
+    [(AVCaptureVisionDataOutput *)self _processSampleBuffer:*(&message->var0 + 1)];
   }
 }
 
-- (void)_processSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)_processSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = [(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper activeDelegate];
-  v6 = [(NSArray *)[(AVCaptureOutput *)self connections] firstObject];
-  if ([v6 isLive] && objc_msgSend(-[AVCaptureOutput session](self, "session"), "isRunning") && (objc_msgSend(-[AVCaptureOutput session](self, "session"), "isInterrupted") & 1) == 0)
+  activeDelegate = [(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper activeDelegate];
+  firstObject = [(NSArray *)[(AVCaptureOutput *)self connections] firstObject];
+  if ([firstObject isLive] && objc_msgSend(-[AVCaptureOutput session](self, "session"), "isRunning") && (objc_msgSend(-[AVCaptureOutput session](self, "session"), "isInterrupted") & 1) == 0)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     memset(&v11, 0, sizeof(v11));
-    CMSampleBufferGetPresentationTimeStamp(&v11, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v11, buffer);
     if (ImageBuffer)
     {
       if (objc_opt_respondsToSelector())
       {
-        v8 = CMGetAttachment(a3, @"VisionDataCameraIntrinsicMatrix", 0);
+        v8 = CMGetAttachment(buffer, @"VisionDataCameraIntrinsicMatrix", 0);
         if (v8)
         {
           CMSetAttachment(ImageBuffer, @"VisionDataCameraIntrinsicMatrix", v8, 1u);
         }
 
         v10 = v11;
-        [v5 visionDataOutput:self didOutputVisionDataPixelBuffer:ImageBuffer timestamp:&v10 connection:v6];
+        [activeDelegate visionDataOutput:self didOutputVisionDataPixelBuffer:ImageBuffer timestamp:&v10 connection:firstObject];
       }
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      v9 = [AVCaptureOutput dataDroppedReasonFromSampleBuffer:a3];
+      v9 = [AVCaptureOutput dataDroppedReasonFromSampleBuffer:buffer];
       v10 = v11;
-      [v5 visionDataOutput:self didDropVisionDataPixelBufferForTimestamp:&v10 connection:v6 reason:v9];
+      [activeDelegate visionDataOutput:self didDropVisionDataPixelBufferForTimestamp:&v10 connection:firstObject reason:v9];
     }
   }
 }
 
-- (BOOL)_isPropertySupported:(id)a3
+- (BOOL)_isPropertySupported:(id)supported
 {
   v4 = [-[AVCaptureConnection sourceDevice](-[AVCaptureOutput connectionWithMediaType:](self connectionWithMediaType:{@"visn", "sourceDevice"), "supportedVisionDataProperties"}];
 
-  return [v4 containsObject:a3];
+  return [v4 containsObject:supported];
 }
 
 @end

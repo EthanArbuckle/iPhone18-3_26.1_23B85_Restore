@@ -1,16 +1,16 @@
 @interface MTEpisodeUpdaterCache
 + (id)defaultPropertiesToFetch;
-+ (id)episodeCacheWithPredicate:(id)a3 inCtx:(id)a4 extraProperties:(id)a5;
-- (MTEpisodeUpdaterCache)initWithPredicate:(id)a3 inCtx:(id)a4 extraProperties:(id)a5;
-- (id)episodeForAssetUrl:(id)a3;
-- (id)episodeForEnclosure:(id)a3;
-- (id)episodeForGuid:(id)a3;
-- (id)episodeForPersistentID:(id)a3;
-- (id)episodeForTitle:(id)a3 pubDate:(double)a4;
-- (id)episodeForUUID:(id)a3;
-- (id)episodeWithValue:(id)a3 forPropertyKey:(id)a4;
-- (id)searchCacheForEpisodeMatchingFeedItem:(id)a3 enclosureUrl:(id)a4;
-- (id)searchCacheForEpisodeMatchingMediaItem:(id)a3;
++ (id)episodeCacheWithPredicate:(id)predicate inCtx:(id)ctx extraProperties:(id)properties;
+- (MTEpisodeUpdaterCache)initWithPredicate:(id)predicate inCtx:(id)ctx extraProperties:(id)properties;
+- (id)episodeForAssetUrl:(id)url;
+- (id)episodeForEnclosure:(id)enclosure;
+- (id)episodeForGuid:(id)guid;
+- (id)episodeForPersistentID:(id)d;
+- (id)episodeForTitle:(id)title pubDate:(double)date;
+- (id)episodeForUUID:(id)d;
+- (id)episodeWithValue:(id)value forPropertyKey:(id)key;
+- (id)searchCacheForEpisodeMatchingFeedItem:(id)item enclosureUrl:(id)url;
+- (id)searchCacheForEpisodeMatchingMediaItem:(id)item;
 - (id)unvisitedEpisodes;
 @end
 
@@ -33,41 +33,41 @@
   return v2;
 }
 
-+ (id)episodeCacheWithPredicate:(id)a3 inCtx:(id)a4 extraProperties:(id)a5
++ (id)episodeCacheWithPredicate:(id)predicate inCtx:(id)ctx extraProperties:(id)properties
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithPredicate:v10 inCtx:v9 extraProperties:v8];
+  propertiesCopy = properties;
+  ctxCopy = ctx;
+  predicateCopy = predicate;
+  v11 = [[self alloc] initWithPredicate:predicateCopy inCtx:ctxCopy extraProperties:propertiesCopy];
 
   return v11;
 }
 
-- (MTEpisodeUpdaterCache)initWithPredicate:(id)a3 inCtx:(id)a4 extraProperties:(id)a5
+- (MTEpisodeUpdaterCache)initWithPredicate:(id)predicate inCtx:(id)ctx extraProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  ctxCopy = ctx;
+  propertiesCopy = properties;
   v56.receiver = self;
   v56.super_class = MTEpisodeUpdaterCache;
   v11 = [(MTEpisodeUpdaterCache *)&v56 init];
   if (v11)
   {
-    v43 = v8;
+    v43 = predicateCopy;
     v12 = &__NSArray0__struct;
-    if (v10)
+    if (propertiesCopy)
     {
-      v12 = v10;
+      v12 = propertiesCopy;
     }
 
     v13 = v12;
 
-    v14 = [objc_opt_class() defaultPropertiesToFetch];
-    v15 = [v14 arrayByAddingObjectsFromArray:v13];
+    defaultPropertiesToFetch = [objc_opt_class() defaultPropertiesToFetch];
+    v15 = [defaultPropertiesToFetch arrayByAddingObjectsFromArray:v13];
 
     objc_storeStrong(&v11->_propertiesToFetch, v15);
-    objc_storeStrong(&v11->_ctx, a4);
-    v16 = v9;
+    objc_storeStrong(&v11->_ctx, ctx);
+    v16 = ctxCopy;
     if (([(MTManagedObjectContext *)v11->_ctx isResetable]& 1) != 0)
     {
       v40 = 0;
@@ -92,8 +92,8 @@
     v42 = v16;
     v45 = v16;
     v46 = v43;
-    v10 = v15;
-    v47 = v10;
+    propertiesCopy = v15;
+    v47 = propertiesCopy;
     v48 = v37;
     v49 = v17;
     v50 = v18;
@@ -136,49 +136,49 @@
     v11->_managedObjectCache = v22;
     v34 = v22;
 
-    v8 = v43;
+    predicateCopy = v43;
     v35 = v11;
 
-    v9 = v42;
+    ctxCopy = v42;
   }
 
   return v11;
 }
 
-- (id)searchCacheForEpisodeMatchingMediaItem:(id)a3
+- (id)searchCacheForEpisodeMatchingMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 persistentId];
-  v6 = [(MTEpisodeUpdaterCache *)self episodeForPersistentID:v5];
+  itemCopy = item;
+  persistentId = [itemCopy persistentId];
+  v6 = [(MTEpisodeUpdaterCache *)self episodeForPersistentID:persistentId];
 
   if (!v6)
   {
-    v7 = [v4 assetUrl];
-    v6 = [(MTEpisodeUpdaterCache *)self episodeForAssetUrl:v7];
+    assetUrl = [itemCopy assetUrl];
+    v6 = [(MTEpisodeUpdaterCache *)self episodeForAssetUrl:assetUrl];
 
     if (!v6)
     {
-      v8 = [v4 guid];
-      v6 = [(MTEpisodeUpdaterCache *)self episodeForGuid:v8];
+      guid = [itemCopy guid];
+      v6 = [(MTEpisodeUpdaterCache *)self episodeForGuid:guid];
 
       if (!v6)
       {
-        v9 = [v4 title];
-        v10 = [v9 stringByStrippingHTML];
-        v11 = [v4 pubDate];
-        [v11 timeIntervalSinceReferenceDate];
-        v6 = [(MTEpisodeUpdaterCache *)self episodeForTitle:v10 pubDate:?];
+        title = [itemCopy title];
+        stringByStrippingHTML = [title stringByStrippingHTML];
+        pubDate = [itemCopy pubDate];
+        [pubDate timeIntervalSinceReferenceDate];
+        v6 = [(MTEpisodeUpdaterCache *)self episodeForTitle:stringByStrippingHTML pubDate:?];
       }
     }
   }
 
-  v12 = [v6 uuid];
+  uuid = [v6 uuid];
 
-  if (v12)
+  if (uuid)
   {
     unvisitedUUIDs = self->_unvisitedUUIDs;
-    v14 = [v6 uuid];
-    [(NSMutableSet *)unvisitedUUIDs removeObject:v14];
+    uuid2 = [v6 uuid];
+    [(NSMutableSet *)unvisitedUUIDs removeObject:uuid2];
   }
 
   else if (v6)
@@ -186,9 +186,9 @@
     v15 = _MTLogCategoryDatabase();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v6 title];
+      title2 = [v6 title];
       v18 = 138412290;
-      v19 = v16;
+      v19 = title2;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "MTEpisodeUpdaterCache encountered episode without UUID %@", &v18, 0xCu);
     }
   }
@@ -196,15 +196,15 @@
   return v6;
 }
 
-- (id)searchCacheForEpisodeMatchingFeedItem:(id)a3 enclosureUrl:(id)a4
+- (id)searchCacheForEpisodeMatchingFeedItem:(id)item enclosureUrl:(id)url
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 guid];
+  itemCopy = item;
+  urlCopy = url;
+  guid = [itemCopy guid];
 
-  if (!v8 || ([v6 guid], v9 = objc_claimAutoreleasedReturnValue(), -[MTEpisodeUpdaterCache episodeForGuid:](self, "episodeForGuid:", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
+  if (!guid || ([itemCopy guid], v9 = objc_claimAutoreleasedReturnValue(), -[MTEpisodeUpdaterCache episodeForGuid:](self, "episodeForGuid:", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
   {
-    v11 = [(MTEpisodeUpdaterCache *)self episodeForEnclosure:v7];
+    v11 = [(MTEpisodeUpdaterCache *)self episodeForEnclosure:urlCopy];
     if (v11)
     {
       v10 = v11;
@@ -212,21 +212,21 @@
 
     else
     {
-      v12 = [v6 title];
-      v13 = [v12 stringByStrippingHTML];
-      v14 = [v6 pubDate];
-      [v14 timeIntervalSinceReferenceDate];
-      v10 = [(MTEpisodeUpdaterCache *)self episodeForTitle:v13 pubDate:?];
+      title = [itemCopy title];
+      stringByStrippingHTML = [title stringByStrippingHTML];
+      pubDate = [itemCopy pubDate];
+      [pubDate timeIntervalSinceReferenceDate];
+      v10 = [(MTEpisodeUpdaterCache *)self episodeForTitle:stringByStrippingHTML pubDate:?];
     }
   }
 
-  v15 = [v10 uuid];
+  uuid = [v10 uuid];
 
-  if (v15)
+  if (uuid)
   {
     unvisitedUUIDs = self->_unvisitedUUIDs;
-    v17 = [v10 uuid];
-    [(NSMutableSet *)unvisitedUUIDs removeObject:v17];
+    uuid2 = [v10 uuid];
+    [(NSMutableSet *)unvisitedUUIDs removeObject:uuid2];
   }
 
   else if (v10)
@@ -234,9 +234,9 @@
     v18 = _MTLogCategoryDatabase();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v10 title];
+      title2 = [v10 title];
       v21 = 138412290;
-      v22 = v19;
+      v22 = title2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "MTEpisodeUpdaterCache encountered episode without UUID %@", &v21, 0xCu);
     }
   }
@@ -298,10 +298,10 @@
   return v17;
 }
 
-- (id)episodeForUUID:(id)a3
+- (id)episodeForUUID:(id)d
 {
-  v4 = a3;
-  if (![v4 length])
+  dCopy = d;
+  if (![dCopy length])
   {
     v7 = 0;
     goto LABEL_9;
@@ -323,14 +323,14 @@
     v13[3] = &unk_1004D9040;
     v13[6] = &v14;
     v13[4] = self;
-    v13[5] = v4;
+    v13[5] = dCopy;
     [(MTManagedObjectContext *)ctx performBlockAndWait:v13];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v8 = [(NSCache *)self->_managedObjectCache objectForKey:v4];
+  v8 = [(NSCache *)self->_managedObjectCache objectForKey:dCopy];
   v9 = v15[5];
   v15[5] = v8;
 
@@ -344,7 +344,7 @@ LABEL_7:
     v12[3] = &unk_1004D9040;
     v12[6] = &v14;
     v12[4] = self;
-    v12[5] = v4;
+    v12[5] = dCopy;
     [(MTManagedObjectContext *)v10 performBlockAndWait:v12];
     goto LABEL_7;
   }
@@ -358,18 +358,18 @@ LABEL_9:
   return v7;
 }
 
-- (id)episodeWithValue:(id)a3 forPropertyKey:(id)a4
+- (id)episodeWithValue:(id)value forPropertyKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && ([v7 isEqualToString:kEpisodeTitle] & 1) == 0)
+  valueCopy = value;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (keyCopy && ([keyCopy isEqualToString:kEpisodeTitle] & 1) == 0)
   {
     v10 = [(NSDictionary *)self->_lookupDict objectForKey:v8];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 objectForKey:v6];
+      v12 = [v10 objectForKey:valueCopy];
       if (v12)
       {
         v9 = [(MTEpisodeUpdaterCache *)self episodeForUUID:v12];
@@ -395,12 +395,12 @@ LABEL_9:
   return v9;
 }
 
-- (id)episodeForGuid:(id)a3
+- (id)episodeForGuid:(id)guid
 {
-  v4 = a3;
-  if ([v4 length])
+  guidCopy = guid;
+  if ([guidCopy length])
   {
-    v5 = [(MTEpisodeUpdaterCache *)self episodeWithValue:v4 forPropertyKey:kEpisodeGuid];
+    v5 = [(MTEpisodeUpdaterCache *)self episodeWithValue:guidCopy forPropertyKey:kEpisodeGuid];
   }
 
   else
@@ -411,12 +411,12 @@ LABEL_9:
   return v5;
 }
 
-- (id)episodeForEnclosure:(id)a3
+- (id)episodeForEnclosure:(id)enclosure
 {
-  v4 = a3;
-  if ([v4 length])
+  enclosureCopy = enclosure;
+  if ([enclosureCopy length])
   {
-    v5 = [(MTEpisodeUpdaterCache *)self episodeWithValue:v4 forPropertyKey:kEpisodeEnclosureUrl];
+    v5 = [(MTEpisodeUpdaterCache *)self episodeWithValue:enclosureCopy forPropertyKey:kEpisodeEnclosureUrl];
   }
 
   else
@@ -427,12 +427,12 @@ LABEL_9:
   return v5;
 }
 
-- (id)episodeForAssetUrl:(id)a3
+- (id)episodeForAssetUrl:(id)url
 {
-  v4 = a3;
-  if ([v4 length])
+  urlCopy = url;
+  if ([urlCopy length])
   {
-    v5 = [(MTEpisodeUpdaterCache *)self episodeWithValue:v4 forPropertyKey:kEpisodeAssetURL];
+    v5 = [(MTEpisodeUpdaterCache *)self episodeWithValue:urlCopy forPropertyKey:kEpisodeAssetURL];
   }
 
   else
@@ -443,11 +443,11 @@ LABEL_9:
   return v5;
 }
 
-- (id)episodeForPersistentID:(id)a3
+- (id)episodeForPersistentID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = [(MTEpisodeUpdaterCache *)self episodeWithValue:a3 forPropertyKey:kEpisodePersistentID];
+    v4 = [(MTEpisodeUpdaterCache *)self episodeWithValue:d forPropertyKey:kEpisodePersistentID];
   }
 
   else
@@ -458,14 +458,14 @@ LABEL_9:
   return v4;
 }
 
-- (id)episodeForTitle:(id)a3 pubDate:(double)a4
+- (id)episodeForTitle:(id)title pubDate:(double)date
 {
-  v6 = a3;
-  if ([v6 length])
+  titleCopy = title;
+  if ([titleCopy length])
   {
-    v7 = [(MTEpisodeUpdaterCache *)self lookupDict];
-    v8 = [v7 objectForKey:kEpisodeTitle];
-    v9 = [v8 objectForKey:v6];
+    lookupDict = [(MTEpisodeUpdaterCache *)self lookupDict];
+    v8 = [lookupDict objectForKey:kEpisodeTitle];
+    v9 = [v8 objectForKey:titleCopy];
 
     v26 = 0u;
     v27 = 0u;
@@ -496,7 +496,7 @@ LABEL_4:
 
         v18 = v17;
         [v17 pubDate];
-        v20 = vabdd_f64(v19, a4);
+        v20 = vabdd_f64(v19, date);
         if (v20 < v15)
         {
           v21 = v18;

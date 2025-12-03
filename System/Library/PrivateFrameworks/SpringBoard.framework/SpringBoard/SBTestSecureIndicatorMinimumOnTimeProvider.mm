@@ -1,20 +1,20 @@
 @interface SBTestSecureIndicatorMinimumOnTimeProvider
-- (double)remainingTimeToSatisfyMinimumOnTimeForIndicators:(int64_t)a3 error:(id *)a4;
+- (double)remainingTimeToSatisfyMinimumOnTimeForIndicators:(int64_t)indicators error:(id *)error;
 @end
 
 @implementation SBTestSecureIndicatorMinimumOnTimeProvider
 
-- (double)remainingTimeToSatisfyMinimumOnTimeForIndicators:(int64_t)a3 error:(id *)a4
+- (double)remainingTimeToSatisfyMinimumOnTimeForIndicators:(int64_t)indicators error:(id *)error
 {
   minimumOnTimeRequestedHandler = self->_minimumOnTimeRequestedHandler;
   if (minimumOnTimeRequestedHandler)
   {
-    minimumOnTimeRequestedHandler[2](minimumOnTimeRequestedHandler, a3);
+    minimumOnTimeRequestedHandler[2](minimumOnTimeRequestedHandler, indicators);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = self->_error;
+    *error = self->_error;
   }
 
   return self->_remainingTimeToSatisfyMinimumOnTime;

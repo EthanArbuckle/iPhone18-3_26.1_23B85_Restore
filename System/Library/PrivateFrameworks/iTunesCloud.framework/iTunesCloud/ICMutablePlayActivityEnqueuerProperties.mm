@@ -1,21 +1,21 @@
 @interface ICMutablePlayActivityEnqueuerProperties
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setBuildVersion:(id)a3;
-- (void)setDeviceGUID:(id)a3;
-- (void)setDeviceName:(id)a3;
-- (void)setPrivateListeningEnabled:(id)a3;
-- (void)setStoreFrontID:(id)a3;
-- (void)setTimeZone:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setBuildVersion:(id)version;
+- (void)setDeviceGUID:(id)d;
+- (void)setDeviceName:(id)name;
+- (void)setPrivateListeningEnabled:(id)enabled;
+- (void)setStoreFrontID:(id)d;
+- (void)setTimeZone:(id)zone;
 @end
 
 @implementation ICMutablePlayActivityEnqueuerProperties
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  if (self->super._timeZone != a3)
+  if (self->super._timeZone != zone)
   {
-    v5 = [a3 copy];
+    v5 = [zone copy];
     timeZone = self->super._timeZone;
     self->super._timeZone = v5;
 
@@ -23,11 +23,11 @@
   }
 }
 
-- (void)setStoreFrontID:(id)a3
+- (void)setStoreFrontID:(id)d
 {
-  if (self->super._storeFrontID != a3)
+  if (self->super._storeFrontID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     storeFrontID = self->super._storeFrontID;
     self->super._storeFrontID = v5;
 
@@ -35,11 +35,11 @@
   }
 }
 
-- (void)setPrivateListeningEnabled:(id)a3
+- (void)setPrivateListeningEnabled:(id)enabled
 {
-  if (self->super._privateListeningEnabled != a3)
+  if (self->super._privateListeningEnabled != enabled)
   {
-    v5 = [a3 copy];
+    v5 = [enabled copy];
     privateListeningEnabled = self->super._privateListeningEnabled;
     self->super._privateListeningEnabled = v5;
 
@@ -47,11 +47,11 @@
   }
 }
 
-- (void)setDeviceName:(id)a3
+- (void)setDeviceName:(id)name
 {
-  if (self->super._deviceName != a3)
+  if (self->super._deviceName != name)
   {
-    v5 = [a3 copy];
+    v5 = [name copy];
     deviceName = self->super._deviceName;
     self->super._deviceName = v5;
 
@@ -59,11 +59,11 @@
   }
 }
 
-- (void)setDeviceGUID:(id)a3
+- (void)setDeviceGUID:(id)d
 {
-  if (self->super._deviceGUID != a3)
+  if (self->super._deviceGUID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     deviceGUID = self->super._deviceGUID;
     self->super._deviceGUID = v5;
 
@@ -71,11 +71,11 @@
   }
 }
 
-- (void)setBuildVersion:(id)a3
+- (void)setBuildVersion:(id)version
 {
-  if (self->super._buildVersion != a3)
+  if (self->super._buildVersion != version)
   {
-    v5 = [a3 copy];
+    v5 = [version copy];
     buildVersion = self->super._buildVersion;
     self->super._buildVersion = v5;
 
@@ -83,18 +83,18 @@
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(ICPlayActivityEnqueuerProperties *)self _copyWithClass:v5 zone:a3];
+  return [(ICPlayActivityEnqueuerProperties *)self _copyWithClass:v5 zone:zone];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(ICPlayActivityEnqueuerProperties *)self _copyWithClass:v5 zone:a3];
+  return [(ICPlayActivityEnqueuerProperties *)self _copyWithClass:v5 zone:zone];
 }
 
 @end

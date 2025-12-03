@@ -1,47 +1,47 @@
 @interface BLSHWaiterForBacklight
-+ (id)waitForBacklightDisplayMode:(int64_t)a3;
-+ (id)waitForBacklightDisplayModePassingTest:(id)a3;
-+ (id)waitForBacklightState:(int64_t)a3;
-+ (id)waitForBacklightStatePassingTest:(id)a3;
++ (id)waitForBacklightDisplayMode:(int64_t)mode;
++ (id)waitForBacklightDisplayModePassingTest:(id)test;
++ (id)waitForBacklightState:(int64_t)state;
++ (id)waitForBacklightStatePassingTest:(id)test;
 + (id)waitForBlanked;
 + (id)waitForUnblanked;
 - (BLSHWaiterForBacklight)init;
 - (BOOL)isInvalidated;
 - (void)_main_callCompletion;
-- (void)_main_waitWithCompletion:(id)a3;
+- (void)_main_waitWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)waitWithCompletion:(id)a3;
+- (void)waitWithCompletion:(id)completion;
 @end
 
 @implementation BLSHWaiterForBacklight
 
-+ (id)waitForBacklightState:(int64_t)a3
++ (id)waitForBacklightState:(int64_t)state
 {
-  v3 = [[BLSHWaiterForBacklightState alloc] initWithBacklightState:a3];
+  v3 = [[BLSHWaiterForBacklightState alloc] initWithBacklightState:state];
 
   return v3;
 }
 
-+ (id)waitForBacklightStatePassingTest:(id)a3
++ (id)waitForBacklightStatePassingTest:(id)test
 {
-  v3 = a3;
-  v4 = [[BLSHWaiterForBacklightState alloc] initWithPredicate:v3];
+  testCopy = test;
+  v4 = [[BLSHWaiterForBacklightState alloc] initWithPredicate:testCopy];
 
   return v4;
 }
 
-+ (id)waitForBacklightDisplayMode:(int64_t)a3
++ (id)waitForBacklightDisplayMode:(int64_t)mode
 {
-  v3 = [[BLSHWaiterForBacklightDisplayMode alloc] initWithDisplayMode:a3];
+  v3 = [[BLSHWaiterForBacklightDisplayMode alloc] initWithDisplayMode:mode];
 
   return v3;
 }
 
-+ (id)waitForBacklightDisplayModePassingTest:(id)a3
++ (id)waitForBacklightDisplayModePassingTest:(id)test
 {
-  v3 = a3;
-  v4 = [[BLSHWaiterForBacklightDisplayMode alloc] initWithPredicate:v3];
+  testCopy = test;
+  v4 = [[BLSHWaiterForBacklightDisplayMode alloc] initWithPredicate:testCopy];
 
   return v4;
 }
@@ -75,7 +75,7 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"must invalidate %@ before dealloc", a1];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"must invalidate %@ before dealloc", self];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v5 = NSStringFromSelector(a2);
@@ -86,7 +86,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = a1;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"BLSHWaiterForBacklight.m";
     v16 = 1024;
@@ -101,10 +101,10 @@
   __break(0);
 }
 
-- (void)waitWithCompletion:(id)a3
+- (void)waitWithCompletion:(id)completion
 {
-  v4 = a3;
-  v3 = v4;
+  completionCopy = completion;
+  v3 = completionCopy;
   BSDispatchMain();
 }
 
@@ -126,9 +126,9 @@ uint64_t __45__BLSHWaiterForBacklight_waitWithCompletion___block_invoke(uint64_t
   }
 }
 
-- (void)_main_waitWithCompletion:(id)a3
+- (void)_main_waitWithCompletion:(id)completion
 {
-  v4 = MEMORY[0x223D70730](a3, a2);
+  v4 = MEMORY[0x223D70730](completion, a2);
   completion = self->_completion;
   self->_completion = v4;
 

@@ -1,8 +1,8 @@
 @interface CAFCarManagerConfiguration
 - (CAFCarManagerConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CAFCarManagerConfiguration
@@ -23,9 +23,9 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(CAFCarManagerConfiguration *)self sparseTree];
+  sparseTree = [(CAFCarManagerConfiguration *)self sparseTree];
   v4 = @"NO";
-  if (v3)
+  if (sparseTree)
   {
     v4 = @"YES";
   }
@@ -33,21 +33,21 @@
   return [v2 stringWithFormat:@"sparseTree=%@", v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CAFCarManagerConfiguration allocWithZone:?]];
-  v5 = [(CAFCarManagerConfiguration *)self registrations];
-  [(CAFCarManagerConfiguration *)v4 setRegistrations:v5];
+  registrations = [(CAFCarManagerConfiguration *)self registrations];
+  [(CAFCarManagerConfiguration *)v4 setRegistrations:registrations];
 
   [(CAFCarManagerConfiguration *)v4 setSparseTree:[(CAFCarManagerConfiguration *)self sparseTree]];
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(CAFCarManagerConfiguration *)[CAFCarManagerMutableConfiguration allocWithZone:?]];
-  v5 = [(CAFCarManagerConfiguration *)self registrations];
-  [(CAFCarManagerConfiguration *)v4 setRegistrations:v5];
+  registrations = [(CAFCarManagerConfiguration *)self registrations];
+  [(CAFCarManagerConfiguration *)v4 setRegistrations:registrations];
 
   [(CAFCarManagerConfiguration *)v4 setSparseTree:[(CAFCarManagerConfiguration *)self sparseTree]];
   return v4;

@@ -1,10 +1,10 @@
 @interface CBBootArgsConfigProvider
-- (BOOL)loadFixedFloat:(id)a3 withScaler:(float)a4 toDestination:(float *)a5;
-- (BOOL)loadFloat:(id)a3 toDestination:(float *)a4;
-- (BOOL)loadInt:(id)a3 toDestination:(int *)a4;
-- (BOOL)loadUint:(id)a3 toDestination:(unsigned int *)a4;
+- (BOOL)loadFixedFloat:(id)float withScaler:(float)scaler toDestination:(float *)destination;
+- (BOOL)loadFloat:(id)float toDestination:(float *)destination;
+- (BOOL)loadInt:(id)int toDestination:(int *)destination;
+- (BOOL)loadUint:(id)uint toDestination:(unsigned int *)destination;
 - (CBBootArgsConfigProvider)init;
-- (CBBootArgsConfigProvider)initWithBootArgs:(const char *)a3;
+- (CBBootArgsConfigProvider)initWithBootArgs:(const char *)args;
 - (void)dealloc;
 @end
 
@@ -26,12 +26,12 @@
   return result;
 }
 
-- (CBBootArgsConfigProvider)initWithBootArgs:(const char *)a3
+- (CBBootArgsConfigProvider)initWithBootArgs:(const char *)args
 {
   v7.receiver = self;
   v7.super_class = CBBootArgsConfigProvider;
   v4 = [(CBBootArgsConfigProvider *)&v7 init];
-  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:a3 encoding:1];
+  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:args encoding:1];
   v4->_logHandle = 0;
   v4->_bootargs = v5;
   return v4;
@@ -44,21 +44,21 @@
   [(CBBootArgsConfigProvider *)&v3 dealloc];
 }
 
-- (BOOL)loadFixedFloat:(id)a3 withScaler:(float)a4 toDestination:(float *)a5
+- (BOOL)loadFixedFloat:(id)float withScaler:(float)scaler toDestination:(float *)destination
 {
   v9 = 0.0;
-  v7 = [(CBBootArgsConfigProvider *)self loadFloat:a3 toDestination:&v9];
+  v7 = [(CBBootArgsConfigProvider *)self loadFloat:float toDestination:&v9];
   if (v7)
   {
-    *a5 = v9 * a4;
+    *destination = v9 * scaler;
   }
 
   return v7;
 }
 
-- (BOOL)loadFloat:(id)a3 toDestination:(float *)a4
+- (BOOL)loadFloat:(id)float toDestination:(float *)destination
 {
-  v6 = [(NSString *)self->_bootargs rangeOfString:a3];
+  v6 = [(NSString *)self->_bootargs rangeOfString:float];
   if (!v7)
   {
     return 0;
@@ -71,13 +71,13 @@
   }
 
   [[(NSString *)self->_bootargs substringFromIndex:v8] floatValue];
-  *a4 = v9;
+  *destination = v9;
   return 1;
 }
 
-- (BOOL)loadInt:(id)a3 toDestination:(int *)a4
+- (BOOL)loadInt:(id)int toDestination:(int *)destination
 {
-  v6 = [(NSString *)self->_bootargs rangeOfString:a3];
+  v6 = [(NSString *)self->_bootargs rangeOfString:int];
   if (!v7)
   {
     return 0;
@@ -89,13 +89,13 @@
     return 0;
   }
 
-  *a4 = [[(NSString *)self->_bootargs substringFromIndex:v8] intValue];
+  *destination = [[(NSString *)self->_bootargs substringFromIndex:v8] intValue];
   return 1;
 }
 
-- (BOOL)loadUint:(id)a3 toDestination:(unsigned int *)a4
+- (BOOL)loadUint:(id)uint toDestination:(unsigned int *)destination
 {
-  v6 = [(NSString *)self->_bootargs rangeOfString:a3];
+  v6 = [(NSString *)self->_bootargs rangeOfString:uint];
   if (!v7)
   {
     return 0;
@@ -107,7 +107,7 @@
     return 0;
   }
 
-  *a4 = [[(NSString *)self->_bootargs substringFromIndex:v8] intValue];
+  *destination = [[(NSString *)self->_bootargs substringFromIndex:v8] intValue];
   return 1;
 }
 

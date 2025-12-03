@@ -1,9 +1,9 @@
 @interface FRSubscribedTagRanker
 - (FRSubscribedTagRanker)init;
-- (FRSubscribedTagRanker)initWithTagRanker:(id)a3;
-- (id)rankTagIDsDescending:(id)a3;
-- (id)scoresForTagIDs:(id)a3;
-- (void)prepareForUseWithCompletionHandler:(id)a3;
+- (FRSubscribedTagRanker)initWithTagRanker:(id)ranker;
+- (id)rankTagIDsDescending:(id)descending;
+- (id)scoresForTagIDs:(id)ds;
+- (void)prepareForUseWithCompletionHandler:(id)handler;
 @end
 
 @implementation FRSubscribedTagRanker
@@ -31,10 +31,10 @@
   objc_exception_throw(v4);
 }
 
-- (FRSubscribedTagRanker)initWithTagRanker:(id)a3
+- (FRSubscribedTagRanker)initWithTagRanker:(id)ranker
 {
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  rankerCopy = ranker;
+  if (!rankerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006DCBC();
   }
@@ -45,35 +45,35 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tagRanker, a3);
+    objc_storeStrong(&v6->_tagRanker, ranker);
   }
 
   return v7;
 }
 
-- (id)rankTagIDsDescending:(id)a3
+- (id)rankTagIDsDescending:(id)descending
 {
-  v4 = a3;
-  v5 = [(FRSubscribedTagRanker *)self tagRanker];
-  v6 = [v5 rankTagIDsDescending:v4];
+  descendingCopy = descending;
+  tagRanker = [(FRSubscribedTagRanker *)self tagRanker];
+  v6 = [tagRanker rankTagIDsDescending:descendingCopy];
 
   return v6;
 }
 
-- (id)scoresForTagIDs:(id)a3
+- (id)scoresForTagIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(FRSubscribedTagRanker *)self tagRanker];
-  v6 = [v5 scoresForTagIDs:v4];
+  dsCopy = ds;
+  tagRanker = [(FRSubscribedTagRanker *)self tagRanker];
+  v6 = [tagRanker scoresForTagIDs:dsCopy];
 
   return v6;
 }
 
-- (void)prepareForUseWithCompletionHandler:(id)a3
+- (void)prepareForUseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FRSubscribedTagRanker *)self tagRanker];
-  [v5 prepareForUseWithCompletionHandler:v4];
+  handlerCopy = handler;
+  tagRanker = [(FRSubscribedTagRanker *)self tagRanker];
+  [tagRanker prepareForUseWithCompletionHandler:handlerCopy];
 }
 
 @end

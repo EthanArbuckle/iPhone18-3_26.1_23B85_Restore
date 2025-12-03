@@ -1,11 +1,11 @@
 @interface WFAttribution
-+ (id)platformSpecializedWeatherSourceAttributionURLForTrafficParameter:(id)a3;
++ (id)platformSpecializedWeatherSourceAttributionURLForTrafficParameter:(id)parameter;
 + (id)sharedAttribution;
-+ (id)weatherSourceAttributionURLForTrafficParameter:(id)a3;
++ (id)weatherSourceAttributionURLForTrafficParameter:(id)parameter;
 - (NSString)localizedSourceAttribution;
 - (NSString)sourceName;
 - (NSURL)sourceAttributionURL;
-- (id)sourceAttributionImageForStyle:(unint64_t)a3;
+- (id)sourceAttributionImageForStyle:(unint64_t)style;
 @end
 
 @implementation WFAttribution
@@ -54,16 +54,16 @@ uint64_t __34__WFAttribution_sharedAttribution__block_invoke()
   return v3;
 }
 
-- (id)sourceAttributionImageForStyle:(unint64_t)a3
+- (id)sourceAttributionImageForStyle:(unint64_t)style
 {
-  if (a3 > 2)
+  if (style > 2)
   {
     v7 = 0;
   }
 
   else
   {
-    v3 = off_279E6FA18[a3];
+    v3 = off_279E6FA18[style];
     v10 = 0;
     v11 = &v10;
     v12 = 0x2050000000;
@@ -89,36 +89,36 @@ uint64_t __34__WFAttribution_sharedAttribution__block_invoke()
   return v7;
 }
 
-+ (id)weatherSourceAttributionURLForTrafficParameter:(id)a3
++ (id)weatherSourceAttributionURLForTrafficParameter:(id)parameter
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  parameterCopy = parameter;
   v4 = [MEMORY[0x277CCACE0] componentsWithString:@"http://www.weather.com/wx/today/"];
-  if (![(__CFString *)v3 length])
+  if (![(__CFString *)parameterCopy length])
   {
 
-    v3 = @"TWC";
+    parameterCopy = @"TWC";
   }
 
-  v22 = v3;
+  v22 = parameterCopy;
   v5 = MEMORY[0x277CCAD18];
-  v6 = [@"apple_" stringByAppendingString:v3];
+  v6 = [@"apple_" stringByAppendingString:parameterCopy];
   v7 = [v5 queryItemWithName:@"par" value:v6];
 
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
-  v9 = [v8 objectForKey:*MEMORY[0x277CBE690]];
-  v10 = [v9 uppercaseString];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v9 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
+  uppercaseString = [v9 uppercaseString];
 
-  v11 = [v8 objectForKey:*MEMORY[0x277CBE6C8]];
-  v12 = [v11 lowercaseString];
+  v11 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
+  lowercaseString = [v11 lowercaseString];
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v12, v10];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", lowercaseString, uppercaseString];
   v14 = [MEMORY[0x277CCAD18] queryItemWithName:@"locale" value:v13];
-  v15 = [v4 queryItems];
-  v16 = v15;
-  if (v15)
+  queryItems = [v4 queryItems];
+  v16 = queryItems;
+  if (queryItems)
   {
-    v17 = v15;
+    v17 = queryItems;
   }
 
   else
@@ -137,16 +137,16 @@ uint64_t __34__WFAttribution_sharedAttribution__block_invoke()
   return v20;
 }
 
-+ (id)platformSpecializedWeatherSourceAttributionURLForTrafficParameter:(id)a3
++ (id)platformSpecializedWeatherSourceAttributionURLForTrafficParameter:(id)parameter
 {
-  v4 = a3;
+  parameterCopy = parameter;
   if (platformSpecializedWeatherSourceAttributionURLForTrafficParameter__onceToken != -1)
   {
     +[WFAttribution platformSpecializedWeatherSourceAttributionURLForTrafficParameter:];
   }
 
-  v5 = [getUIApplicationClass() sharedApplication];
-  v6 = [v5 canOpenURL:platformSpecializedWeatherSourceAttributionURLForTrafficParameter__sTWCAppiPadURL];
+  sharedApplication = [getUIApplicationClass() sharedApplication];
+  v6 = [sharedApplication canOpenURL:platformSpecializedWeatherSourceAttributionURLForTrafficParameter__sTWCAppiPadURL];
 
   if (v6)
   {
@@ -156,8 +156,8 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v8 = [getUIApplicationClass() sharedApplication];
-  v9 = [v8 canOpenURL:platformSpecializedWeatherSourceAttributionURLForTrafficParameter__sTWCAppiPhoneURL];
+  sharedApplication2 = [getUIApplicationClass() sharedApplication];
+  v9 = [sharedApplication2 canOpenURL:platformSpecializedWeatherSourceAttributionURLForTrafficParameter__sTWCAppiPhoneURL];
 
   if (v9)
   {
@@ -165,7 +165,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v10 = [a1 weatherSourceAttributionURLForTrafficParameter:v4];
+  v10 = [self weatherSourceAttributionURLForTrafficParameter:parameterCopy];
 LABEL_9:
   v11 = v10;
 

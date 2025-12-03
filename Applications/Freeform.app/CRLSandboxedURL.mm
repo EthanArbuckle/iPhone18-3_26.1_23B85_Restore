@@ -1,12 +1,12 @@
 @interface CRLSandboxedURL
-+ (id)sandboxedURLByResolvingBookmarkData:(id)a3 options:(unint64_t)a4 relativeToURL:(id)a5 bookmarkDataIsStale:(BOOL *)a6 error:(id *)a7;
-+ (id)sandboxedURLByResolvingBookmarkData:(id)a3 relativeToURL:(id)a4 bookmarkDataIsStale:(BOOL *)a5 error:(id *)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)sandboxedURLByResolvingBookmarkData:(id)data options:(unint64_t)options relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error;
++ (id)sandboxedURLByResolvingBookmarkData:(id)data relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (CRLSandboxedURL)init;
-- (CRLSandboxedURL)initWithURL:(id)a3;
+- (CRLSandboxedURL)initWithURL:(id)l;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initByResolvingBookmarkData:(id)a3 options:(unint64_t)a4 relativeToURL:(id)a5 bookmarkDataIsStale:(BOOL *)a6 error:(id *)a7;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initByResolvingBookmarkData:(id)data options:(unint64_t)options relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error;
 - (id)normalize;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -64,23 +64,23 @@
   objc_exception_throw(v10);
 }
 
-- (CRLSandboxedURL)initWithURL:(id)a3
+- (CRLSandboxedURL)initWithURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     v18.receiver = self;
     v18.super_class = CRLSandboxedURL;
     v5 = [(CRLSandboxedURL *)&v18 init];
     if (v5)
     {
-      if ([v4 isFileURL])
+      if ([lCopy isFileURL])
       {
-        v6 = [v4 copy];
+        v6 = [lCopy copy];
         URL = v5->_URL;
         v5->_URL = v6;
 
-        v8 = [v4 startAccessingSecurityScopedResource];
+        startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
       }
 
       else
@@ -94,7 +94,7 @@
         v11 = off_1019EDA68;
         if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
         {
-          sub_10131AA10(v4, v10, v11);
+          sub_10131AA10(lCopy, v10, v11);
         }
 
         if (qword_101AD5A10 != -1)
@@ -110,35 +110,35 @@
 
         v13 = [NSString stringWithUTF8String:"[CRLSandboxedURL initWithURL:]"];
         v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLSandboxedURL.m"];
-        [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:39 isFatal:0 description:"Sandboxed URL should not be initialized with a non-file URL. URL=%@", v4];
+        [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:39 isFatal:0 description:"Sandboxed URL should not be initialized with a non-file URL. URL=%@", lCopy];
 
-        v15 = [v4 copy];
+        v15 = [lCopy copy];
         v16 = v5->_URL;
         v5->_URL = v15;
 
-        v8 = 0;
+        startAccessingSecurityScopedResource = 0;
       }
 
-      v5->_URLStartedAccessingSecurityScopedResource = v8;
+      v5->_URLStartedAccessingSecurityScopedResource = startAccessingSecurityScopedResource;
     }
 
     self = v5;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)initByResolvingBookmarkData:(id)a3 options:(unint64_t)a4 relativeToURL:(id)a5 bookmarkDataIsStale:(BOOL *)a6 error:(id *)a7
+- (id)initByResolvingBookmarkData:(id)data options:(unint64_t)options relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error
 {
-  v12 = a5;
-  v13 = a3;
-  v14 = [[NSURL alloc] initByResolvingBookmarkData:v13 options:a4 | 0x8000 relativeToURL:v12 bookmarkDataIsStale:a6 error:a7];
+  lCopy = l;
+  dataCopy = data;
+  v14 = [[NSURL alloc] initByResolvingBookmarkData:dataCopy options:options | 0x8000 relativeToURL:lCopy bookmarkDataIsStale:stale error:error];
 
   if (v14)
   {
@@ -154,20 +154,20 @@
   return v15;
 }
 
-+ (id)sandboxedURLByResolvingBookmarkData:(id)a3 relativeToURL:(id)a4 bookmarkDataIsStale:(BOOL *)a5 error:(id *)a6
++ (id)sandboxedURLByResolvingBookmarkData:(id)data relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [[a1 alloc] initByResolvingBookmarkData:v11 relativeToURL:v10 bookmarkDataIsStale:a5 error:a6];
+  lCopy = l;
+  dataCopy = data;
+  v12 = [[self alloc] initByResolvingBookmarkData:dataCopy relativeToURL:lCopy bookmarkDataIsStale:stale error:error];
 
   return v12;
 }
 
-+ (id)sandboxedURLByResolvingBookmarkData:(id)a3 options:(unint64_t)a4 relativeToURL:(id)a5 bookmarkDataIsStale:(BOOL *)a6 error:(id *)a7
++ (id)sandboxedURLByResolvingBookmarkData:(id)data options:(unint64_t)options relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error
 {
-  v12 = a5;
-  v13 = a3;
-  v14 = [[a1 alloc] initByResolvingBookmarkData:v13 options:a4 relativeToURL:v12 bookmarkDataIsStale:a6 error:a7];
+  lCopy = l;
+  dataCopy = data;
+  v14 = [[self alloc] initByResolvingBookmarkData:dataCopy options:options relativeToURL:lCopy bookmarkDataIsStale:stale error:error];
 
   return v14;
 }
@@ -193,15 +193,15 @@
     goto LABEL_12;
   }
 
-  v4 = [v3 path];
-  if (v4)
+  path = [v3 path];
+  if (path)
   {
-    v5 = [[NSURL alloc] initFileURLWithPath:v4];
+    v5 = [[NSURL alloc] initFileURLWithPath:path];
     if (v5 && ([v3 isEqual:v5] & 1) == 0)
     {
-      v6 = [(CRLSandboxedURL *)self originalSandboxedURLForNormalizing];
-      v7 = v6;
-      if (v6 == self || (-[CRLSandboxedURL URL](v6, "URL"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqual:v5], v8, (v9 & 1) == 0))
+      originalSandboxedURLForNormalizing = [(CRLSandboxedURL *)self originalSandboxedURLForNormalizing];
+      v7 = originalSandboxedURLForNormalizing;
+      if (originalSandboxedURLForNormalizing == self || (-[CRLSandboxedURL URL](originalSandboxedURLForNormalizing, "URL"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqual:v5], v8, (v9 & 1) == 0))
       {
         v10 = [[TSUNormalizedSandboxedURL alloc] initWithURL:v5 originalSandboxedURL:v7];
       }
@@ -230,7 +230,7 @@ LABEL_12:
   return p_super;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CRLSandboxedURL allocWithZone:?], "initWithURL:", self->_URL];
   if (!v4)
@@ -267,8 +267,8 @@ LABEL_12:
   }
 
   v5 = v4;
-  v6 = [(CRLSandboxedURL *)v4 hasSandboxAccess];
-  if (v6 != [(CRLSandboxedURL *)self hasSandboxAccess])
+  hasSandboxAccess = [(CRLSandboxedURL *)v4 hasSandboxAccess];
+  if (hasSandboxAccess != [(CRLSandboxedURL *)self hasSandboxAccess])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -320,11 +320,11 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6)
   {
@@ -332,8 +332,8 @@ LABEL_12:
     v8 = [v6 URL];
     if ([v7 isEqual:v8])
     {
-      v9 = [(CRLSandboxedURL *)self hasSandboxAccess];
-      v10 = v9 ^ [v6 hasSandboxAccess] ^ 1;
+      hasSandboxAccess = [(CRLSandboxedURL *)self hasSandboxAccess];
+      v10 = hasSandboxAccess ^ [v6 hasSandboxAccess] ^ 1;
     }
 
     else
@@ -354,9 +354,9 @@ LABEL_12:
 {
   v3 = [(CRLSandboxedURL *)self URL];
   v4 = [v3 hash];
-  v5 = [(CRLSandboxedURL *)self hasSandboxAccess];
+  hasSandboxAccess = [(CRLSandboxedURL *)self hasSandboxAccess];
 
-  return v4 ^ v5;
+  return v4 ^ hasSandboxAccess;
 }
 
 @end

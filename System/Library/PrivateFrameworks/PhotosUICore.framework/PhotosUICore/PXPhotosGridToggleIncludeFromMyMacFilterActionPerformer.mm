@@ -1,47 +1,47 @@
 @interface PXPhotosGridToggleIncludeFromMyMacFilterActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotosGridToggleIncludeFromMyMacFilterActionPerformer
 
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model
 {
-  v4 = a4;
-  v5 = [v4 dataSourceManager];
-  v6 = [v5 supportsFiltering];
+  modelCopy = model;
+  dataSourceManager = [modelCopy dataSourceManager];
+  supportsFiltering = [dataSourceManager supportsFiltering];
 
-  if (v6 && ([v4 currentDataSource], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "firstAssetCollection"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "px_isMacSyncedAlbum"), v8, v7, (v9 & 1) == 0))
+  if (supportsFiltering && ([modelCopy currentDataSource], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "firstAssetCollection"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "px_isMacSyncedAlbum"), v8, v7, (v9 & 1) == 0))
   {
-    v11 = [v4 contentFilterState];
-    v12 = [v11 photoLibrary];
-    v13 = [v12 px_macSyncedAssetsStatusProvider];
-    v10 = [v13 hasAnyAssets];
+    contentFilterState = [modelCopy contentFilterState];
+    photoLibrary = [contentFilterState photoLibrary];
+    px_macSyncedAssetsStatusProvider = [photoLibrary px_macSyncedAssetsStatusProvider];
+    hasAnyAssets = [px_macSyncedAssetsStatusProvider hasAnyAssets];
   }
 
   else
   {
-    v10 = 0;
+    hasAnyAssets = 0;
   }
 
-  return v10;
+  return hasAnyAssets;
 }
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  [v3 setIncludeFromMyMac:{objc_msgSend(v3, "includeFromMyMac") ^ 1}];
-  [(PXPhotosGridToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:v3];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  [currentContentFilterState setIncludeFromMyMac:{objc_msgSend(currentContentFilterState, "includeFromMyMac") ^ 1}];
+  [(PXPhotosGridToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:currentContentFilterState];
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  if (a3 == 1)
+  if (case == 1)
   {
-    v3 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-    v4 = [v3 isContentFilterActive:4];
+    currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+    v4 = [currentContentFilterState isContentFilterActive:4];
 
     if (v4)
     {
@@ -66,8 +66,8 @@
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  v3 = [v2 isContentFilterActive:4];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  v3 = [currentContentFilterState isContentFilterActive:4];
 
   return v3;
 }

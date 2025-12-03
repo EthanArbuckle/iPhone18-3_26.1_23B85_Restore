@@ -1,5 +1,5 @@
 @interface UberBackgroundContainerView
-- (_TtC23ShelfKitCollectionViews27UberBackgroundContainerView)initWithCoder:(id)a3;
+- (_TtC23ShelfKitCollectionViews27UberBackgroundContainerView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
@@ -19,7 +19,7 @@
   }
 }
 
-- (_TtC23ShelfKitCollectionViews27UberBackgroundContainerView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews27UberBackgroundContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews27UberBackgroundContainerView_backgroundImageView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews27UberBackgroundContainerView_gradientOverlayView) = 0;

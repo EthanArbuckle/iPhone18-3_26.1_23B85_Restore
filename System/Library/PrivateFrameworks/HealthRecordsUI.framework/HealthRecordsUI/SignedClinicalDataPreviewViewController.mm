@@ -1,33 +1,33 @@
 @interface SignedClinicalDataPreviewViewController
-- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6;
-- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5;
-- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
+- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view;
+- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name;
+- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (void)addRecords;
-- (void)dismissAnimated:(id)a3;
+- (void)dismissAnimated:(id)animated;
 - (void)dismissPreview;
-- (void)learnMoreButtonTapped:(id)a3;
+- (void)learnMoreButtonTapped:(id)tapped;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SignedClinicalDataPreviewViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D12DA3FC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1D12DABFC(a3);
+  selfCopy = self;
+  sub_1D12DABFC(appear);
 }
 
 - (void)addRecords
@@ -35,11 +35,11 @@
   v2 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController_addToHealthButton);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     [v2 showsBusyIndicator];
     v4 = swift_allocObject();
-    *(v4 + 16) = v3;
-    v5 = v3;
+    *(v4 + 16) = selfCopy;
+    v5 = selfCopy;
     sub_1D1230504(sub_1D12DDC1C, v4);
   }
 
@@ -51,15 +51,15 @@
 
 - (void)dismissPreview
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D12DB4BC();
 }
 
-- (void)learnMoreButtonTapped:(id)a3
+- (void)learnMoreButtonTapped:(id)tapped
 {
-  if (a3)
+  if (tapped)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1D139101C();
     swift_unknownObjectRelease();
@@ -68,7 +68,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1D12DBAE8();
@@ -76,11 +76,11 @@
   sub_1D1096BE0(v6);
 }
 
-- (void)dismissAnimated:(id)a3
+- (void)dismissAnimated:(id)animated
 {
-  if (a3)
+  if (animated)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1D139101C();
     swift_unknownObjectRelease();
@@ -90,7 +90,7 @@
   {
     v6 = 0u;
     v7 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   [(SignedClinicalDataPreviewViewController *)self dismissViewControllerAnimated:1 completion:0, v6, v7];
@@ -98,7 +98,7 @@
   sub_1D1096BE0(&v6);
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v3 = (*(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController_handler))[3];
   if (v3 >> 62)
@@ -112,25 +112,25 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1D138D82C();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D138D7EC();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_1D12DBF9C(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_1D12DBF9C(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v5 = 0;
   }
@@ -138,8 +138,8 @@
   else
   {
     v8 = qword_1EC608CD0;
-    v9 = a3;
-    v10 = self;
+    viewCopy = view;
+    selfCopy = self;
     if (v8 != -1)
     {
       swift_once();
@@ -155,7 +155,7 @@
   return v5;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
   v4 = sub_1D138D82C();
   v5 = *(v4 - 8);
@@ -167,10 +167,10 @@
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = *MEMORY[0x1E69DE3D0];
-  if (!a4)
+  if (!section)
   {
     return 10.0;
   }
@@ -178,28 +178,28 @@
   return result;
 }
 
-- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5
+- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6
+- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6
+- (_TtC15HealthRecordsUI39SignedClinicalDataPreviewViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

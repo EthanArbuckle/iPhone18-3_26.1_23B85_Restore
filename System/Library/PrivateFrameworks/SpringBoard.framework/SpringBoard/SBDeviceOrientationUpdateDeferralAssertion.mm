@@ -1,5 +1,5 @@
 @interface SBDeviceOrientationUpdateDeferralAssertion
-- (SBDeviceOrientationUpdateDeferralAssertion)initWithReason:(id)a3;
+- (SBDeviceOrientationUpdateDeferralAssertion)initWithReason:(id)reason;
 - (SBDeviceOrientationUpdateManager)hackyBackReference;
 - (void)dealloc;
 - (void)invalidate;
@@ -9,14 +9,14 @@
 
 - (void)invalidate
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBDeviceOrientationUpdateManager.m" lineNumber:228 description:@"Invalidating an assert without a back-reference"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBDeviceOrientationUpdateManager.m" lineNumber:228 description:@"Invalidating an assert without a back-reference"];
 }
 
-- (SBDeviceOrientationUpdateDeferralAssertion)initWithReason:(id)a3
+- (SBDeviceOrientationUpdateDeferralAssertion)initWithReason:(id)reason
 {
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [(SBDeviceOrientationUpdateDeferralAssertion *)a2 initWithReason:?];
   }
@@ -26,7 +26,7 @@
   v6 = [(SBDeviceOrientationUpdateDeferralAssertion *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [reasonCopy copy];
     reason = v6->_reason;
     v6->_reason = v7;
   }

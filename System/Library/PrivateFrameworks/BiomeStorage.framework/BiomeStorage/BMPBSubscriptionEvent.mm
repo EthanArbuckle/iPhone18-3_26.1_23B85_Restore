@@ -3,8 +3,8 @@
 - (BOOL)hasClient;
 - (BOOL)hasIdentifier;
 - (BOOL)hasUseCase;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)bootUUID;
@@ -16,13 +16,13 @@
 - (uint64_t)starting;
 - (uint64_t)useCase;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setBootUUID:(uint64_t)a1;
-- (void)setClient:(uint64_t)a1;
-- (void)setIdentifier:(uint64_t)a1;
-- (void)setUseCase:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setBootUUID:(uint64_t)d;
+- (void)setClient:(uint64_t)client;
+- (void)setIdentifier:(uint64_t)identifier;
+- (void)setUseCase:(uint64_t)case;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBSubscriptionEvent
@@ -33,87 +33,87 @@
   v8.receiver = self;
   v8.super_class = BMPBSubscriptionEvent;
   v4 = [(BMPBSubscriptionEvent *)&v8 description];
-  v5 = [(BMPBSubscriptionEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBSubscriptionEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_starting];
-    [v3 setObject:v4 forKey:@"starting"];
+    [dictionary setObject:v4 forKey:@"starting"];
   }
 
   client = self->_client;
   if (client)
   {
-    [v3 setObject:client forKey:@"client"];
+    [dictionary setObject:client forKey:@"client"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   useCase = self->_useCase;
   if (useCase)
   {
-    [v3 setObject:useCase forKey:@"useCase"];
+    [dictionary setObject:useCase forKey:@"useCase"];
   }
 
   bootUUID = self->_bootUUID;
   if (bootUUID)
   {
-    [v3 setObject:bootUUID forKey:@"bootUUID"];
+    [dictionary setObject:bootUUID forKey:@"bootUUID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     starting = self->_starting;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_client)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_useCase)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bootUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -121,45 +121,45 @@
     *(v5 + 44) |= 1u;
   }
 
-  v7 = [(NSString *)self->_client copyWithZone:a3];
+  v7 = [(NSString *)self->_client copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(NSString *)self->_identifier copyWithZone:a3];
+  v9 = [(NSString *)self->_identifier copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
-  v11 = [(NSString *)self->_useCase copyWithZone:a3];
+  v11 = [(NSString *)self->_useCase copyWithZone:zone];
   v12 = v6[4];
   v6[4] = v11;
 
-  v13 = [(NSString *)self->_bootUUID copyWithZone:a3];
+  v13 = [(NSString *)self->_bootUUID copyWithZone:zone];
   v14 = v6[1];
   v6[1] = v13;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(equalCopy + 44);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  if ((*(v4 + 44) & 1) == 0)
+  if ((*(equalCopy + 44) & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (!self->_starting)
   {
 LABEL_3:
@@ -173,20 +173,20 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ((*(v4 + 40) & 1) == 0)
+  if ((*(equalCopy + 40) & 1) == 0)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
   client = self->_client;
-  if (client | *(v4 + 2) && ![(NSString *)client isEqual:?])
+  if (client | *(equalCopy + 2) && ![(NSString *)client isEqual:?])
   {
     goto LABEL_13;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 3))
+  if (identifier | *(equalCopy + 3))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -195,7 +195,7 @@ LABEL_4:
   }
 
   useCase = self->_useCase;
-  if (useCase | *(v4 + 4))
+  if (useCase | *(equalCopy + 4))
   {
     if (![(NSString *)useCase isEqual:?])
     {
@@ -204,7 +204,7 @@ LABEL_4:
   }
 
   bootUUID = self->_bootUUID;
-  if (bootUUID | *(v4 + 1))
+  if (bootUUID | *(equalCopy + 1))
   {
     v10 = [(NSString *)bootUUID isEqual:?];
   }
@@ -308,18 +308,18 @@ LABEL_14:
   return result;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (a1)
+  if (to)
   {
-    if (*(a1 + 44))
+    if (*(to + 44))
     {
-      v3[40] = *(a1 + 40);
+      v3[40] = *(to + 40);
       v3[44] |= 1u;
     }
 
-    v4 = *(a1 + 16);
+    v4 = *(to + 16);
     if (v4)
     {
       v8 = v3;
@@ -327,7 +327,7 @@ LABEL_14:
       v3 = v8;
     }
 
-    v5 = *(a1 + 24);
+    v5 = *(to + 24);
     if (v5)
     {
       v9 = v3;
@@ -335,7 +335,7 @@ LABEL_14:
       v3 = v9;
     }
 
-    v6 = *(a1 + 32);
+    v6 = *(to + 32);
     if (v6)
     {
       v10 = v3;
@@ -343,7 +343,7 @@ LABEL_14:
       v3 = v10;
     }
 
-    v7 = *(a1 + 8);
+    v7 = *(to + 8);
     if (v7)
     {
       v11 = v3;
@@ -353,75 +353,75 @@ LABEL_14:
   }
 }
 
-- (void)setClient:(uint64_t)a1
+- (void)setClient:(uint64_t)client
 {
-  if (a1)
+  if (client)
   {
-    OUTLINED_FUNCTION_0_0(a1, a2, 16);
+    OUTLINED_FUNCTION_0_0(client, a2, 16);
   }
 }
 
-- (void)setIdentifier:(uint64_t)a1
+- (void)setIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    OUTLINED_FUNCTION_0_0(a1, a2, 24);
+    OUTLINED_FUNCTION_0_0(identifier, a2, 24);
   }
 }
 
-- (void)setUseCase:(uint64_t)a1
+- (void)setUseCase:(uint64_t)case
 {
-  if (a1)
+  if (case)
   {
-    OUTLINED_FUNCTION_0_0(a1, a2, 32);
+    OUTLINED_FUNCTION_0_0(case, a2, 32);
   }
 }
 
-- (void)setBootUUID:(uint64_t)a1
+- (void)setBootUUID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    OUTLINED_FUNCTION_0_0(a1, a2, 8);
+    OUTLINED_FUNCTION_0_0(d, a2, 8);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v3 = a2;
-  if (a1)
+  if (from)
   {
     if (v3[44])
     {
-      *(a1 + 40) = v3[40];
-      *(a1 + 44) |= 1u;
+      *(from + 40) = v3[40];
+      *(from + 44) |= 1u;
     }
 
     v4 = *(v3 + 2);
     v8 = v3;
     if (v4)
     {
-      objc_storeStrong((a1 + 16), v4);
+      objc_storeStrong((from + 16), v4);
       v3 = v8;
     }
 
     v5 = *(v3 + 3);
     if (v5)
     {
-      objc_storeStrong((a1 + 24), v5);
+      objc_storeStrong((from + 24), v5);
       v3 = v8;
     }
 
     v6 = *(v3 + 4);
     if (v6)
     {
-      objc_storeStrong((a1 + 32), v6);
+      objc_storeStrong((from + 32), v6);
       v3 = v8;
     }
 
     v7 = *(v3 + 1);
     if (v7)
     {
-      objc_storeStrong((a1 + 8), v7);
+      objc_storeStrong((from + 8), v7);
       v3 = v8;
     }
   }
@@ -429,9 +429,9 @@ LABEL_14:
 
 - (uint64_t)starting
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 40);
+    v1 = *(self + 40);
   }
 
   else

@@ -1,15 +1,15 @@
 @interface PLModelMigrationAction_ReprocessInvalidDuplicateHashes
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (int64_t)removeDuplicateHashesAndResetAlbumsWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
+- (int64_t)removeDuplicateHashesAndResetAlbumsWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ReprocessInvalidDuplicateHashes
 
-- (int64_t)removeDuplicateHashesAndResetAlbumsWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)removeDuplicateHashesAndResetAlbumsWithManagedObjectContext:(id)context error:(id *)error
 {
   v36[3] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v28 = a3;
+  contextCopy = context;
   v5 = +[PLDuplicateDetectorExactPixel invalidHashData];
   v6 = [v4 setWithArray:v5];
 
@@ -48,29 +48,29 @@
   v31[3] = &unk_1E756C850;
   v21 = v27;
   v32 = v21;
-  v22 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v28 fetchRequest:v9 pendingParentUnitCount:0 error:&v33 processingBlock:v31];
+  v22 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:contextCopy fetchRequest:v9 pendingParentUnitCount:0 error:&v33 processingBlock:v31];
 
   v23 = v33;
   v24 = v23;
-  if (v22 != 1 && a4)
+  if (v22 != 1 && error)
   {
     v25 = v23;
-    *a4 = v24;
+    *error = v24;
   }
 
   return v22;
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v11 = 0;
-  v6 = [(PLModelMigrationAction_ReprocessInvalidDuplicateHashes *)self removeDuplicateHashesAndResetAlbumsWithManagedObjectContext:a3 error:&v11];
+  v6 = [(PLModelMigrationAction_ReprocessInvalidDuplicateHashes *)self removeDuplicateHashesAndResetAlbumsWithManagedObjectContext:context error:&v11];
   v7 = v11;
   v8 = v7;
-  if (v6 != 1 && a4)
+  if (v6 != 1 && error)
   {
     v9 = v7;
-    *a4 = v8;
+    *error = v8;
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];

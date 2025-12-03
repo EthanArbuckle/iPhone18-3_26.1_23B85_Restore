@@ -1,8 +1,8 @@
 @interface SCATFirstLaunchScanningModeController
 - (SCATFirstLaunchScanningModeController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SCATFirstLaunchScanningModeController
@@ -109,37 +109,37 @@ void __45__SCATFirstLaunchScanningModeController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = SCATFirstLaunchScanningModeController;
-  v6 = a4;
-  v7 = [(SCATFirstLaunchScanningModeController *)&v13 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(SCATFirstLaunchScanningModeController *)self specifierAtIndexPath:v6, v13.receiver, v13.super_class];
+  pathCopy = path;
+  v7 = [(SCATFirstLaunchScanningModeController *)&v13 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(SCATFirstLaunchScanningModeController *)self specifierAtIndexPath:pathCopy, v13.receiver, v13.super_class];
 
   v9 = [v8 propertyForKey:@"ScanningMode"];
-  v10 = [v9 integerValue];
+  integerValue = [v9 integerValue];
 
   v11 = +[AXSettings sharedInstance];
-  [v7 setChecked:{objc_msgSend(v11, "switchControlFirstLaunchScanningMode") == v10}];
+  [v7 setChecked:{objc_msgSend(v11, "switchControlFirstLaunchScanningMode") == integerValue}];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = SCATFirstLaunchScanningModeController;
-  v6 = a4;
-  [(SCATFirstLaunchScanningModeController *)&v11 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(SCATFirstLaunchScanningModeController *)self specifierAtIndexPath:v6, v11.receiver, v11.super_class];
+  pathCopy = path;
+  [(SCATFirstLaunchScanningModeController *)&v11 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(SCATFirstLaunchScanningModeController *)self specifierAtIndexPath:pathCopy, v11.receiver, v11.super_class];
   v8 = [v7 propertyForKey:@"ScanningMode"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
   v10 = +[AXSettings sharedInstance];
-  [v10 setSwitchControlFirstLaunchScanningMode:v9];
+  [v10 setSwitchControlFirstLaunchScanningMode:integerValue];
 
-  [(SCATFirstLaunchScanningModeController *)self updateTableCheckedSelection:v6];
+  [(SCATFirstLaunchScanningModeController *)self updateTableCheckedSelection:pathCopy];
 }
 
 @end

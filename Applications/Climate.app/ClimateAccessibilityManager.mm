@@ -9,18 +9,18 @@
 {
   sub_1000BE674();
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v4 = self;
-  v5 = [ObjCClassFromMetadata defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [ObjCClassFromMetadata defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for ClimateAccessibilityManager();
   [(ClimateAccessibilityManager *)&v6 dealloc];
 }
 
 - (void)didUpdateVehicle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000BE2BC();
 }
 

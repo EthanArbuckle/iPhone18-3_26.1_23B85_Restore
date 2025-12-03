@@ -5,7 +5,7 @@
 + (id)configurationForSubscription;
 + (id)storeConfigurationForFamilyPrediction;
 + (id)storeConfigurationForSubscription;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -14,7 +14,7 @@
 + (id)FamilyPrediction
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForFamilyPrediction];
+  configurationForFamilyPrediction = [self configurationForFamilyPrediction];
   v3 = +[BMiCloudFamilyPrediction columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -26,7 +26,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"iCloud.FamilyPrediction" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"iCloud.FamilyPrediction" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"iCloud.FamilyPrediction" schema:v9 configuration:configurationForFamilyPrediction];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -35,13 +35,13 @@
 
 + (id)configurationForFamilyPrediction
 {
-  v3 = [a1 storeConfigurationForFamilyPrediction];
-  v4 = [a1 syncPolicyForFamilyPrediction];
+  storeConfigurationForFamilyPrediction = [self storeConfigurationForFamilyPrediction];
+  syncPolicyForFamilyPrediction = [self syncPolicyForFamilyPrediction];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"BE33AA20-792B-4043-BD57-C063812AD271"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"iCloud.FamilyPrediction" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"iCloud.FamilyPrediction" eventClass:objc_opt_class() storeConfig:storeConfigurationForFamilyPrediction syncPolicy:syncPolicyForFamilyPrediction legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -56,13 +56,13 @@
 
 + (id)configurationForSubscription
 {
-  v3 = [a1 storeConfigurationForSubscription];
-  v4 = [a1 syncPolicyForSubscription];
+  storeConfigurationForSubscription = [self storeConfigurationForSubscription];
+  syncPolicyForSubscription = [self syncPolicyForSubscription];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"BC7DC39D-B901-4424-AE56-AF54D9C11F53"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"iCloud.Subscription" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"iCloud.Subscription" eventClass:objc_opt_class() storeConfig:storeConfigurationForSubscription syncPolicy:syncPolicyForSubscription legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -78,7 +78,7 @@
 + (id)Subscription
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSubscription];
+  configurationForSubscription = [self configurationForSubscription];
   v3 = +[BMiCloudSubscription columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -90,27 +90,27 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"iCloud.Subscription" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"iCloud.Subscription" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"iCloud.Subscription" schema:v9 configuration:configurationForSubscription];
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"FamilyPrediction"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"FamilyPrediction"])
   {
-    v5 = [a1 FamilyPrediction];
+    familyPrediction = [self FamilyPrediction];
 LABEL_5:
-    v6 = v5;
+    v6 = familyPrediction;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Subscription"])
+  if ([nameCopy isEqualToString:@"Subscription"])
   {
-    v5 = [a1 Subscription];
+    familyPrediction = [self Subscription];
     goto LABEL_5;
   }
 

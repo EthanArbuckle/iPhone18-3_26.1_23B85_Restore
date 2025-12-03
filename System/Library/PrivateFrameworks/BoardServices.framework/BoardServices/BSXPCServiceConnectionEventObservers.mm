@@ -1,20 +1,20 @@
 @interface BSXPCServiceConnectionEventObservers
 - (BSXPCServiceConnectionEventObservers)init;
 - (void)clearRevocations;
-- (void)consumeRevocations:(uint64_t)a1;
+- (void)consumeRevocations:(uint64_t)revocations;
 @end
 
 @implementation BSXPCServiceConnectionEventObservers
 
 - (void)clearRevocations
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 16));
-    v2 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    os_unfair_lock_lock((self + 16));
+    v2 = *(self + 8);
+    *(self + 8) = 0;
 
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((self + 16));
   }
 }
 
@@ -31,10 +31,10 @@
   return result;
 }
 
-- (void)consumeRevocations:(uint64_t)a1
+- (void)consumeRevocations:(uint64_t)revocations
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (revocations)
   {
     if (!a2)
     {
@@ -49,7 +49,7 @@
         v17 = 2114;
         v18 = v12;
         v19 = 2048;
-        v20 = a1;
+        revocationsCopy = revocations;
         v21 = 2114;
         v22 = @"BSXPCServiceConnection.m";
         v23 = 1024;
@@ -66,8 +66,8 @@
       JUMPOUT(0x19A877B38);
     }
 
-    os_unfair_lock_lock((a1 + 16));
-    if ([*(a1 + 8) count])
+    os_unfair_lock_lock((revocations + 16));
+    if ([*(revocations + 8) count])
     {
       v4 = *a2;
       if (!*a2)
@@ -77,16 +77,16 @@
         *a2 = v4;
       }
 
-      v6 = NSAllMapTableValues(*(a1 + 8));
+      v6 = NSAllMapTableValues(*(revocations + 8));
       [v4 addObjectsFromArray:v6];
     }
 
-    v7 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v7 = *(revocations + 8);
+    *(revocations + 8) = 0;
 
     v8 = *MEMORY[0x1E69E9840];
 
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((revocations + 16));
   }
 
   else

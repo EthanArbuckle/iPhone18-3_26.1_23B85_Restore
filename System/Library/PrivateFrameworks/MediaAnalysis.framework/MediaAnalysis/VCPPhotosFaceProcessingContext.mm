@@ -1,14 +1,14 @@
 @interface VCPPhotosFaceProcessingContext
-+ (id)contextWithPhotoLibrary:(id)a3;
-- (VCPPhotosFaceProcessingContext)initWithPhotoLibrary:(id)a3;
++ (id)contextWithPhotoLibrary:(id)library;
+- (VCPPhotosFaceProcessingContext)initWithPhotoLibrary:(id)library;
 @end
 
 @implementation VCPPhotosFaceProcessingContext
 
-- (VCPPhotosFaceProcessingContext)initWithPhotoLibrary:(id)a3
+- (VCPPhotosFaceProcessingContext)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
-  if (v4)
+  libraryCopy = library;
+  if (libraryCopy)
   {
     v10.receiver = self;
     v10.super_class = VCPPhotosFaceProcessingContext;
@@ -17,28 +17,28 @@
     if (v5)
     {
       v5->_faceMergeFaceprintDistanceThreshold = 0.1;
-      v7 = [VCPFaceProcessingVersionManager sharedManagerForPhotoLibrary:v4];
+      v7 = [VCPFaceProcessingVersionManager sharedManagerForPhotoLibrary:libraryCopy];
       v6->_processingVersion = [v7 currentProcessingVersion];
 
       v6->_skipGallerySyncing = _os_feature_enabled_impl();
     }
 
     self = v6;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-+ (id)contextWithPhotoLibrary:(id)a3
++ (id)contextWithPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v3];
+  libraryCopy = library;
+  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy];
 
   return v4;
 }

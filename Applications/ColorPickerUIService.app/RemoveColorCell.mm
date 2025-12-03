@@ -15,13 +15,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000376A4();
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100037A44();
 
   return v3;

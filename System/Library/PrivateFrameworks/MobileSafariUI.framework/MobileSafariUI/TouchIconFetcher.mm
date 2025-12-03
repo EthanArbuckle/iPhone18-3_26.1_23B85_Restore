@@ -1,27 +1,27 @@
 @interface TouchIconFetcher
-- (TouchIconFetcher)initWithWebView:(id)a3;
+- (TouchIconFetcher)initWithWebView:(id)view;
 - (id)_webProcessActivityProxy;
 - (void)_setUpTouchIconFetcherObserver;
-- (void)didFetchTouchIconURLs:(id)a3 forURL:(id)a4;
-- (void)fetchTouchIconURLsWithCompletion:(id)a3;
+- (void)didFetchTouchIconURLs:(id)ls forURL:(id)l;
+- (void)fetchTouchIconURLsWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
 @implementation TouchIconFetcher
 
-- (TouchIconFetcher)initWithWebView:(id)a3
+- (TouchIconFetcher)initWithWebView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = TouchIconFetcher;
   v5 = [(TouchIconFetcher *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_webView, v4);
-    v7 = [MEMORY[0x277CBEB18] array];
+    objc_storeWeak(&v5->_webView, viewCopy);
+    array = [MEMORY[0x277CBEB18] array];
     completionBlocks = v6->_completionBlocks;
-    v6->_completionBlocks = v7;
+    v6->_completionBlocks = array;
 
     [(TouchIconFetcher *)v6 _setUpTouchIconFetcherObserver];
     v9 = v6;
@@ -42,8 +42,8 @@
   [(_WKRemoteObjectInterface *)self->_touchIconFetcherObserver setClasses:v9 forSelector:sel_didFetchTouchIconURLs_forURL_ argumentIndex:0 ofReply:0];
   [(_WKRemoteObjectInterface *)self->_touchIconFetcherObserver setClasses:v9 forSelector:sel_didFetchTouchIconURLs_forURL_ argumentIndex:1 ofReply:0];
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v8 = [WeakRetained _remoteObjectRegistry];
-  [v8 registerExportedObject:self interface:self->_touchIconFetcherObserver];
+  _remoteObjectRegistry = [WeakRetained _remoteObjectRegistry];
+  [_remoteObjectRegistry registerExportedObject:self interface:self->_touchIconFetcherObserver];
 }
 
 - (void)invalidate
@@ -88,8 +88,8 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_webView);
-    v9 = [WeakRetained _remoteObjectRegistry];
-    [v9 unregisterExportedObject:self interface:self->_touchIconFetcherObserver];
+    _remoteObjectRegistry = [WeakRetained _remoteObjectRegistry];
+    [_remoteObjectRegistry unregisterExportedObject:self interface:self->_touchIconFetcherObserver];
 
     touchIconFetcherObserver = self->_touchIconFetcherObserver;
     self->_touchIconFetcherObserver = 0;
@@ -105,8 +105,8 @@
   {
     v4 = [MEMORY[0x277CE3898] remoteObjectInterfaceWithProtocol:&unk_2828EF138];
     WeakRetained = objc_loadWeakRetained(&self->_webView);
-    v6 = [WeakRetained _remoteObjectRegistry];
-    v7 = [v6 remoteObjectProxyWithInterface:v4];
+    _remoteObjectRegistry = [WeakRetained _remoteObjectRegistry];
+    v7 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v4];
     v8 = self->_activityProxy;
     self->_activityProxy = v7;
 
@@ -116,38 +116,38 @@
   return activityProxy;
 }
 
-- (void)fetchTouchIconURLsWithCompletion:(id)a3
+- (void)fetchTouchIconURLsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = v4;
+  completionCopy = completion;
+  v8 = completionCopy;
   if (self->_invalidated)
   {
-    (*(v4 + 2))(v4, MEMORY[0x277CBEBF8]);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x277CBEBF8]);
   }
 
   else
   {
     completionBlocks = self->_completionBlocks;
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(completionCopy);
     [(NSMutableArray *)completionBlocks addObject:v6];
 
     if (!self->_fetchingURLs)
     {
       self->_fetchingURLs = 1;
-      v7 = [(TouchIconFetcher *)self _webProcessActivityProxy];
-      [v7 fetchTouchIconURLs];
+      _webProcessActivityProxy = [(TouchIconFetcher *)self _webProcessActivityProxy];
+      [_webProcessActivityProxy fetchTouchIconURLs];
     }
   }
 }
 
-- (void)didFetchTouchIconURLs:(id)a3 forURL:(id)a4
+- (void)didFetchTouchIconURLs:(id)ls forURL:(id)l
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277D28F60] deviceIdealDefaultTouchIconURLsWithURL:a4];
+  lsCopy = ls;
+  v7 = [MEMORY[0x277D28F60] deviceIdealDefaultTouchIconURLsWithURL:l];
   v8 = [v7 mutableCopy];
 
-  [v8 addObjectsFromArray:v6];
+  [v8 addObjectsFromArray:lsCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;

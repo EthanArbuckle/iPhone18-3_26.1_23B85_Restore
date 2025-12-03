@@ -1,31 +1,31 @@
 @interface MRIDSCompanionDiscoverySession
 - (BOOL)devicePresenceDetected;
-- (MRIDSCompanionDiscoverySession)initWithConfiguration:(id)a3;
+- (MRIDSCompanionDiscoverySession)initWithConfiguration:(id)configuration;
 - (MRProtocolClientConnection)discoveryChannel;
 - (NSString)debugDescription;
 - (unsigned)discoveryMode;
 - (unsigned)endpointFeatures;
-- (void)_handleCompanionDeviceDidConnectNotification:(id)a3;
-- (void)_handleCompanionDeviceDisconnectedNotification:(id)a3;
-- (void)_onIDSQueue_connectDiscoveryChannel:(id)a3;
-- (void)_onIDSQueue_disconnectDiscoveryChannel:(id)a3;
+- (void)_handleCompanionDeviceDidConnectNotification:(id)notification;
+- (void)_handleCompanionDeviceDisconnectedNotification:(id)notification;
+- (void)_onIDSQueue_connectDiscoveryChannel:(id)channel;
+- (void)_onIDSQueue_disconnectDiscoveryChannel:(id)channel;
 - (void)_onIDSQueue_initializeDiscoveryChannel;
-- (void)_syncClientStateToConnection:(id)a3;
-- (void)clientConnection:(id)a3 didReceiveMessage:(id)a4;
-- (void)handleUpdateOutputDevicesMessage:(id)a3 forClient:(id)a4;
+- (void)_syncClientStateToConnection:(id)connection;
+- (void)clientConnection:(id)connection didReceiveMessage:(id)message;
+- (void)handleUpdateOutputDevicesMessage:(id)message forClient:(id)client;
 @end
 
 @implementation MRIDSCompanionDiscoverySession
 
-- (MRIDSCompanionDiscoverySession)initWithConfiguration:(id)a3
+- (MRIDSCompanionDiscoverySession)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v19.receiver = self;
   v19.super_class = MRIDSCompanionDiscoverySession;
-  v5 = [(MRIDSCompanionDiscoverySession *)&v19 initWithConfiguration:v4];
+  v5 = [(MRIDSCompanionDiscoverySession *)&v19 initWithConfiguration:configurationCopy];
   if (v5)
   {
-    v5->_endpointFeatures = [v4 features];
+    v5->_endpointFeatures = [configurationCopy features];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_create("com.apple.mediaremote.MRExternalRoutingDiscoverySession.idsQueue", v6);
     idsQueue = v5->_idsQueue;
@@ -60,28 +60,28 @@
   v9.super_class = MRIDSCompanionDiscoverySession;
   v4 = [(MRIDSCompanionDiscoverySession *)&v9 debugDescription];
   v5 = +[MRIDSCompanionConnection sharedManager];
-  v6 = [(MRIDSCompanionDiscoverySession *)self availableOutputDevices];
-  v7 = [v3 initWithFormat:@"%@\nIDSCompanion: %@\navailableDevices = %@\n", v4, v5, v6];
+  availableOutputDevices = [(MRIDSCompanionDiscoverySession *)self availableOutputDevices];
+  v7 = [v3 initWithFormat:@"%@\nIDSCompanion: %@\navailableDevices = %@\n", v4, v5, availableOutputDevices];
 
   return v7;
 }
 
 - (unsigned)discoveryMode
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  discoveryMode = v2->_discoveryMode;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveryMode = selfCopy->_discoveryMode;
+  objc_sync_exit(selfCopy);
 
   return discoveryMode;
 }
 
 - (unsigned)endpointFeatures
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  endpointFeatures = v2->_endpointFeatures;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  endpointFeatures = selfCopy->_endpointFeatures;
+  objc_sync_exit(selfCopy);
 
   return endpointFeatures;
 }
@@ -106,13 +106,13 @@
 
 - (BOOL)devicePresenceDetected
 {
-  v2 = [(MRIDSCompanionDiscoverySession *)self availableOutputDevices];
-  v3 = [v2 count] != 0;
+  availableOutputDevices = [(MRIDSCompanionDiscoverySession *)self availableOutputDevices];
+  v3 = [availableOutputDevices count] != 0;
 
   return v3;
 }
 
-- (void)_handleCompanionDeviceDisconnectedNotification:(id)a3
+- (void)_handleCompanionDeviceDisconnectedNotification:(id)notification
 {
   idsQueue = self->_idsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -123,7 +123,7 @@
   dispatch_async(idsQueue, block);
 }
 
-- (void)_handleCompanionDeviceDidConnectNotification:(id)a3
+- (void)_handleCompanionDeviceDidConnectNotification:(id)notification
 {
   idsQueue = self->_idsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -134,48 +134,48 @@
   dispatch_async(idsQueue, block);
 }
 
-- (void)clientConnection:(id)a3 didReceiveMessage:(id)a4
+- (void)clientConnection:(id)connection didReceiveMessage:(id)message
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v6 type] == 109)
+  connectionCopy = connection;
+  messageCopy = message;
+  if ([messageCopy type] == 109)
   {
-    [(MRIDSCompanionDiscoverySession *)self handleUpdateOutputDevicesMessage:v6 forClient:v7];
+    [(MRIDSCompanionDiscoverySession *)self handleUpdateOutputDevicesMessage:messageCopy forClient:connectionCopy];
   }
 }
 
-- (void)handleUpdateOutputDevicesMessage:(id)a3 forClient:(id)a4
+- (void)handleUpdateOutputDevicesMessage:(id)message forClient:(id)client
 {
-  v5 = [a3 outputDevices];
-  v6 = [v5 msv_map:&stru_1004C0540];
+  outputDevices = [message outputDevices];
+  v6 = [outputDevices msv_map:&stru_1004C0540];
 
   [(MRIDSCompanionDiscoverySession *)self notifyOutputDevicesChanged:v6];
 }
 
-- (void)_onIDSQueue_connectDiscoveryChannel:(id)a3
+- (void)_onIDSQueue_connectDiscoveryChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   dispatch_assert_queue_V2(self->_idsQueue);
-  [(MRIDSCompanionDiscoverySession *)self _onIDSQueue_disconnectDiscoveryChannel:v4];
+  [(MRIDSCompanionDiscoverySession *)self _onIDSQueue_disconnectDiscoveryChannel:channelCopy];
   v5 = _MRLogForCategory();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (channelCopy)
   {
     if (v6)
     {
       v7 = +[MRIDSCompanionConnection sharedManager];
-      v8 = [v7 deviceInfo];
-      v9 = [v8 name];
+      deviceInfo = [v7 deviceInfo];
+      name = [deviceInfo name];
       v12 = 138412290;
-      v13 = v9;
+      v13 = name;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRIDSDiscoverySession] Connecting discoveryChannel to <%@>...", &v12, 0xCu);
     }
 
     v10 = +[MRIDSCompanionConnection sharedManager];
-    v11 = [v10 deviceInfo];
-    [v4 setDeviceInfo:v11];
+    deviceInfo2 = [v10 deviceInfo];
+    [channelCopy setDeviceInfo:deviceInfo2];
 
-    [(MRIDSCompanionDiscoverySession *)self _syncClientStateToConnection:v4];
+    [(MRIDSCompanionDiscoverySession *)self _syncClientStateToConnection:channelCopy];
   }
 
   else
@@ -189,38 +189,38 @@
   }
 }
 
-- (void)_syncClientStateToConnection:(id)a3
+- (void)_syncClientStateToConnection:(id)connection
 {
-  v10 = a3;
+  connectionCopy = connection;
   v4 = objc_alloc_init(MRProtocolMessageOptions);
   [v4 setPriority:5];
   [v4 setWaking:1];
   v5 = objc_alloc_init(MRCompositeMessage);
   [v5 setTransportOptions:v4];
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = [[MRSetConnectionStateMessage alloc] initWithConnectionState:2];
   [v5 addMessage:v7];
 
-  v8 = [(MRIDSCompanionDiscoverySession *)v6 discoveryMode];
-  if (v8)
+  discoveryMode = [(MRIDSCompanionDiscoverySession *)selfCopy discoveryMode];
+  if (discoveryMode)
   {
-    v9 = [[MRSetDiscoveryModeMessage alloc] initWithMode:v8 features:{-[MRIDSCompanionDiscoverySession endpointFeatures](v6, "endpointFeatures")}];
+    v9 = [[MRSetDiscoveryModeMessage alloc] initWithMode:discoveryMode features:{-[MRIDSCompanionDiscoverySession endpointFeatures](selfCopy, "endpointFeatures")}];
     [v5 addMessage:v9];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  [v10 sendMessage:v5];
+  [connectionCopy sendMessage:v5];
 }
 
-- (void)_onIDSQueue_disconnectDiscoveryChannel:(id)a3
+- (void)_onIDSQueue_disconnectDiscoveryChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   dispatch_assert_queue_V2(self->_idsQueue);
-  v5 = [v4 deviceInfo];
+  deviceInfo = [channelCopy deviceInfo];
 
-  if (v5)
+  if (deviceInfo)
   {
     v6 = _MRLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -230,7 +230,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[MRIDSDiscoverySession] Disconnecting discoveryChannel for <%@>...", &v7, 0xCu);
     }
 
-    [v4 setDeviceInfo:0];
+    [channelCopy setDeviceInfo:0];
     [(MRIDSCompanionDiscoverySession *)self notifyOutputDevicesChanged:0];
   }
 }
@@ -262,8 +262,8 @@
 
   [(MRProtocolClientConnection *)self->_discoveryChannel setDelegate:self];
   [(MRProtocolClientConnection *)self->_discoveryChannel setLabel:@"IDSDiscoveryChannel"];
-  v10 = [[MRSupportedProtocolMessages alloc] initWithAllSupportedMessages];
-  [(MRProtocolClientConnection *)self->_discoveryChannel setSupportedMessages:v10];
+  initWithAllSupportedMessages = [[MRSupportedProtocolMessages alloc] initWithAllSupportedMessages];
+  [(MRProtocolClientConnection *)self->_discoveryChannel setSupportedMessages:initWithAllSupportedMessages];
 }
 
 @end

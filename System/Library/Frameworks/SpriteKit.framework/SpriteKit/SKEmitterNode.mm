@@ -1,29 +1,29 @@
 @interface SKEmitterNode
 + (id)debugHierarchyPropertyDescriptions;
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)Mutable;
-- (BOOL)isEqualToNode:(id)a3;
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)Mutable;
+- (BOOL)isEqualToNode:(id)node;
 - (CGPoint)particlePosition;
 - (CGSize)particleSize;
 - (CGVector)particlePositionRange;
 - (SKAction)particleAction;
 - (SKAttributeValue)valueForAttributeNamed:(NSString *)key;
 - (SKEmitterNode)init;
-- (SKEmitterNode)initWithCoder:(id)a3;
-- (SKEmitterNode)initWithMinimumParticleCapacity:(unint64_t)a3;
-- (SKEmitterNode)initWithMinimumParticleCapacity:(unint64_t)a3 minimumPositionBufferCapacity:(unint64_t)a4;
+- (SKEmitterNode)initWithCoder:(id)coder;
+- (SKEmitterNode)initWithMinimumParticleCapacity:(unint64_t)capacity;
+- (SKEmitterNode)initWithMinimumParticleCapacity:(unint64_t)capacity minimumPositionBufferCapacity:(unint64_t)bufferCapacity;
 - (SKNode)targetNode;
 - (UIColor)particleColor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)subEmitterNode;
 - (void)_didMakeBackingNode;
 - (void)advanceSimulationTime:(NSTimeInterval)sec;
-- (void)copyParticlePropertiesToNode:(id)a3;
+- (void)copyParticlePropertiesToNode:(id)node;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDensityBased:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDensityBased:(BOOL)based;
 - (void)setFieldBitMask:(uint32_t)fieldBitMask;
-- (void)setFieldInfluenceSequence:(id)a3;
+- (void)setFieldInfluenceSequence:(id)sequence;
 - (void)setParticleAction:(SKAction *)particleAction;
 - (void)setParticleAlphaSequence:(SKKeyframeSequence *)particleAlphaSequence;
 - (void)setParticleBirthRate:(CGFloat)particleBirthRate;
@@ -35,9 +35,9 @@
 - (void)setParticleLifetimeRange:(CGFloat)particleLifetimeRange;
 - (void)setParticlePosition:(CGPoint)particlePosition;
 - (void)setParticlePositionRange:(CGVector)particlePositionRange;
-- (void)setParticleRotationSequence:(id)a3;
+- (void)setParticleRotationSequence:(id)sequence;
 - (void)setParticleScaleSequence:(SKKeyframeSequence *)particleScaleSequence;
-- (void)setParticleSpeedSequence:(id)a3;
+- (void)setParticleSpeedSequence:(id)sequence;
 - (void)setParticleTexture:(SKTexture *)particleTexture;
 - (void)setParticleZPosition:(CGFloat)particleZPosition;
 - (void)setParticleZPositionRange:(CGFloat)particleZPositionRange;
@@ -45,8 +45,8 @@
 - (void)setShader:(SKShader *)shader;
 - (void)setTargetNode:(SKNode *)targetNode;
 - (void)setValue:(SKAttributeValue *)value forAttributeNamed:(NSString *)key;
-- (void)setWantsNewParticles:(BOOL)a3;
-- (void)setZPosition:(double)a3;
+- (void)setWantsNewParticles:(BOOL)particles;
+- (void)setZPosition:(double)position;
 @end
 
 @implementation SKEmitterNode
@@ -71,9 +71,9 @@
   return v3;
 }
 
-- (void)setFieldInfluenceSequence:(id)a3
+- (void)setFieldInfluenceSequence:(id)sequence
 {
-  v4 = a3;
+  sequenceCopy = sequence;
   v5 = *(self->_skcEmitterNode + 83);
   if (v5)
   {
@@ -82,9 +82,9 @@
     *(self->_skcEmitterNode + 83) = 0;
   }
 
-  if (v4)
+  if (sequenceCopy)
   {
-    [v4 count];
+    [sequenceCopy count];
     operator new();
   }
 
@@ -92,9 +92,9 @@
   self->_fieldInfluenceSequence = 0;
 }
 
-- (void)setParticleSpeedSequence:(id)a3
+- (void)setParticleSpeedSequence:(id)sequence
 {
-  v4 = a3;
+  sequenceCopy = sequence;
   v5 = *(self->_skcEmitterNode + 84);
   if (v5)
   {
@@ -103,9 +103,9 @@
     *(self->_skcEmitterNode + 84) = 0;
   }
 
-  if (v4)
+  if (sequenceCopy)
   {
-    [v4 count];
+    [sequenceCopy count];
     operator new();
   }
 
@@ -113,10 +113,10 @@
   self->_particleSpeedSequence = 0;
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  if (self == v4)
+  nodeCopy = node;
+  if (self == nodeCopy)
   {
     v22 = 1;
   }
@@ -126,7 +126,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = nodeCopy;
       skcEmitterNode = v5->_skcEmitterNode;
       v162.receiver = self;
       v162.super_class = SKEmitterNode;
@@ -136,9 +136,9 @@
         goto LABEL_14;
       }
 
-      v12 = [(SKEmitterNode *)self targetNode];
-      v13 = [(SKEmitterNode *)v5 targetNode];
-      if (v12 == v13)
+      targetNode = [(SKEmitterNode *)self targetNode];
+      targetNode2 = [(SKEmitterNode *)v5 targetNode];
+      if (targetNode == targetNode2)
       {
         [(SKEmitterNode *)self particleLifetime];
         v15 = v14;
@@ -248,56 +248,56 @@
                                   *&v77 = v77;
                                   if ((COERCE_UNSIGNED_INT(v76 - *&v77) & 0x60000000) == 0)
                                   {
-                                    v78 = [(SKEmitterNode *)self particleTexture];
-                                    v79 = [v78 imageNameOrPath];
-                                    v80 = [(SKEmitterNode *)v5 particleTexture];
-                                    v81 = [v80 imageNameOrPath];
-                                    if (![v79 isEqualToString:v81] || (-[SKEmitterNode particleSize](self, "particleSize"), v83 = v82, -[SKEmitterNode particleSize](v5, "particleSize"), v84 = v83, *&v85 = v85, (COERCE_UNSIGNED_INT(v84 - *&v85) & 0x60000000) != 0) || (-[SKEmitterNode particleSize](self, "particleSize"), v87 = v86, -[SKEmitterNode particleSize](v5, "particleSize"), v88 = v87, *&v89 = v89, (COERCE_UNSIGNED_INT(v88 - *&v89) & 0x60000000) != 0))
+                                    particleTexture = [(SKEmitterNode *)self particleTexture];
+                                    imageNameOrPath = [particleTexture imageNameOrPath];
+                                    particleTexture2 = [(SKEmitterNode *)v5 particleTexture];
+                                    imageNameOrPath2 = [particleTexture2 imageNameOrPath];
+                                    if (![imageNameOrPath isEqualToString:imageNameOrPath2] || (-[SKEmitterNode particleSize](self, "particleSize"), v83 = v82, -[SKEmitterNode particleSize](v5, "particleSize"), v84 = v83, *&v85 = v85, (COERCE_UNSIGNED_INT(v84 - *&v85) & 0x60000000) != 0) || (-[SKEmitterNode particleSize](self, "particleSize"), v87 = v86, -[SKEmitterNode particleSize](v5, "particleSize"), v88 = v87, *&v89 = v89, (COERCE_UNSIGNED_INT(v88 - *&v89) & 0x60000000) != 0))
                                     {
                                       v22 = 0;
                                     }
 
                                     else
                                     {
-                                      v161 = [(SKEmitterNode *)self particleColorSequence];
-                                      v90 = [v161 hash];
-                                      v160 = [(SKEmitterNode *)v5 particleColorSequence];
-                                      if (v90 == [v160 hash])
+                                      particleColorSequence = [(SKEmitterNode *)self particleColorSequence];
+                                      v90 = [particleColorSequence hash];
+                                      particleColorSequence2 = [(SKEmitterNode *)v5 particleColorSequence];
+                                      if (v90 == [particleColorSequence2 hash])
                                       {
-                                        v159 = [(SKEmitterNode *)self particleColor];
-                                        v91 = [v159 hash];
-                                        v158 = [(SKEmitterNode *)v5 particleColor];
-                                        if (v91 != [v158 hash] || (-[SKEmitterNode particleColorAlphaRange](self, "particleColorAlphaRange"), v93 = v92, -[SKEmitterNode particleColorAlphaRange](v5, "particleColorAlphaRange"), v94 = v93, *&v95 = v95, (COERCE_UNSIGNED_INT(v94 - *&v95) & 0x60000000) != 0) || (-[SKEmitterNode particleColorBlueRange](self, "particleColorBlueRange"), v97 = v96, -[SKEmitterNode particleColorBlueRange](v5, "particleColorBlueRange"), v98 = v97, *&v99 = v99, (COERCE_UNSIGNED_INT(v98 - *&v99) & 0x60000000) != 0) || (-[SKEmitterNode particleColorGreenRange](self, "particleColorGreenRange"), v101 = v100, -[SKEmitterNode particleColorGreenRange](v5, "particleColorGreenRange"), v102 = v101, *&v103 = v103, (COERCE_UNSIGNED_INT(v102 - *&v103) & 0x60000000) != 0) || (-[SKEmitterNode particleColorRedRange](self, "particleColorRedRange"), v105 = v104, -[SKEmitterNode particleColorRedRange](v5, "particleColorRedRange"), v106 = v105, *&v107 = v107, (COERCE_UNSIGNED_INT(v106 - *&v107) & 0x60000000) != 0) || (-[SKEmitterNode particleColorAlphaSpeed](self, "particleColorAlphaSpeed"), v109 = v108, -[SKEmitterNode particleColorAlphaSpeed](v5, "particleColorAlphaSpeed"), v110 = v109, *&v111 = v111, (COERCE_UNSIGNED_INT(v110 - *&v111) & 0x60000000) != 0) || (-[SKEmitterNode particleColorBlueSpeed](self, "particleColorBlueSpeed"), v113 = v112, -[SKEmitterNode particleColorBlueSpeed](v5, "particleColorBlueSpeed"), v114 = v113, *&v115 = v115, (COERCE_UNSIGNED_INT(v114 - *&v115) & 0x60000000) != 0) || (-[SKEmitterNode particleColorGreenSpeed](self, "particleColorGreenSpeed"), v117 = v116, -[SKEmitterNode particleColorGreenSpeed](v5, "particleColorGreenSpeed"), v118 = v117, *&v119 = v119, (COERCE_UNSIGNED_INT(v118 - *&v119) & 0x60000000) != 0) || (-[SKEmitterNode particleColorRedSpeed](self, "particleColorRedSpeed"), v121 = v120, -[SKEmitterNode particleColorRedSpeed](v5, "particleColorRedSpeed"), v122 = v121, *&v123 = v123, (COERCE_UNSIGNED_INT(v122 - *&v123) & 0x60000000) != 0))
+                                        particleColor = [(SKEmitterNode *)self particleColor];
+                                        v91 = [particleColor hash];
+                                        particleColor2 = [(SKEmitterNode *)v5 particleColor];
+                                        if (v91 != [particleColor2 hash] || (-[SKEmitterNode particleColorAlphaRange](self, "particleColorAlphaRange"), v93 = v92, -[SKEmitterNode particleColorAlphaRange](v5, "particleColorAlphaRange"), v94 = v93, *&v95 = v95, (COERCE_UNSIGNED_INT(v94 - *&v95) & 0x60000000) != 0) || (-[SKEmitterNode particleColorBlueRange](self, "particleColorBlueRange"), v97 = v96, -[SKEmitterNode particleColorBlueRange](v5, "particleColorBlueRange"), v98 = v97, *&v99 = v99, (COERCE_UNSIGNED_INT(v98 - *&v99) & 0x60000000) != 0) || (-[SKEmitterNode particleColorGreenRange](self, "particleColorGreenRange"), v101 = v100, -[SKEmitterNode particleColorGreenRange](v5, "particleColorGreenRange"), v102 = v101, *&v103 = v103, (COERCE_UNSIGNED_INT(v102 - *&v103) & 0x60000000) != 0) || (-[SKEmitterNode particleColorRedRange](self, "particleColorRedRange"), v105 = v104, -[SKEmitterNode particleColorRedRange](v5, "particleColorRedRange"), v106 = v105, *&v107 = v107, (COERCE_UNSIGNED_INT(v106 - *&v107) & 0x60000000) != 0) || (-[SKEmitterNode particleColorAlphaSpeed](self, "particleColorAlphaSpeed"), v109 = v108, -[SKEmitterNode particleColorAlphaSpeed](v5, "particleColorAlphaSpeed"), v110 = v109, *&v111 = v111, (COERCE_UNSIGNED_INT(v110 - *&v111) & 0x60000000) != 0) || (-[SKEmitterNode particleColorBlueSpeed](self, "particleColorBlueSpeed"), v113 = v112, -[SKEmitterNode particleColorBlueSpeed](v5, "particleColorBlueSpeed"), v114 = v113, *&v115 = v115, (COERCE_UNSIGNED_INT(v114 - *&v115) & 0x60000000) != 0) || (-[SKEmitterNode particleColorGreenSpeed](self, "particleColorGreenSpeed"), v117 = v116, -[SKEmitterNode particleColorGreenSpeed](v5, "particleColorGreenSpeed"), v118 = v117, *&v119 = v119, (COERCE_UNSIGNED_INT(v118 - *&v119) & 0x60000000) != 0) || (-[SKEmitterNode particleColorRedSpeed](self, "particleColorRedSpeed"), v121 = v120, -[SKEmitterNode particleColorRedSpeed](v5, "particleColorRedSpeed"), v122 = v121, *&v123 = v123, (COERCE_UNSIGNED_INT(v122 - *&v123) & 0x60000000) != 0))
                                         {
                                           v22 = 0;
                                         }
 
                                         else
                                         {
-                                          v157 = [(SKEmitterNode *)self particleColorBlendFactorSequence];
-                                          v124 = [v157 hash];
-                                          v156 = [(SKEmitterNode *)v5 particleColorBlendFactorSequence];
-                                          if (v124 != [v156 hash] || (-[SKEmitterNode particleColorBlendFactor](self, "particleColorBlendFactor"), v126 = v125, -[SKEmitterNode particleColorBlendFactor](v5, "particleColorBlendFactor"), v127 = v126, *&v128 = v128, (COERCE_UNSIGNED_INT(v127 - *&v128) & 0x60000000) != 0) || (-[SKEmitterNode particleColorBlendFactorRange](self, "particleColorBlendFactorRange"), v130 = v129, -[SKEmitterNode particleColorBlendFactorRange](v5, "particleColorBlendFactorRange"), v131 = v130, *&v132 = v132, (COERCE_UNSIGNED_INT(v131 - *&v132) & 0x60000000) != 0) || (-[SKEmitterNode particleColorBlendFactorSpeed](self, "particleColorBlendFactorSpeed"), v134 = v133, -[SKEmitterNode particleColorBlendFactorSpeed](v5, "particleColorBlendFactorSpeed"), v135 = v134, *&v136 = v136, (COERCE_UNSIGNED_INT(v135 - *&v136) & 0x60000000) != 0) || (v137 = -[SKEmitterNode particleBlendMode](self, "particleBlendMode"), v137 != -[SKEmitterNode particleBlendMode](v5, "particleBlendMode")))
+                                          particleColorBlendFactorSequence = [(SKEmitterNode *)self particleColorBlendFactorSequence];
+                                          v124 = [particleColorBlendFactorSequence hash];
+                                          particleColorBlendFactorSequence2 = [(SKEmitterNode *)v5 particleColorBlendFactorSequence];
+                                          if (v124 != [particleColorBlendFactorSequence2 hash] || (-[SKEmitterNode particleColorBlendFactor](self, "particleColorBlendFactor"), v126 = v125, -[SKEmitterNode particleColorBlendFactor](v5, "particleColorBlendFactor"), v127 = v126, *&v128 = v128, (COERCE_UNSIGNED_INT(v127 - *&v128) & 0x60000000) != 0) || (-[SKEmitterNode particleColorBlendFactorRange](self, "particleColorBlendFactorRange"), v130 = v129, -[SKEmitterNode particleColorBlendFactorRange](v5, "particleColorBlendFactorRange"), v131 = v130, *&v132 = v132, (COERCE_UNSIGNED_INT(v131 - *&v132) & 0x60000000) != 0) || (-[SKEmitterNode particleColorBlendFactorSpeed](self, "particleColorBlendFactorSpeed"), v134 = v133, -[SKEmitterNode particleColorBlendFactorSpeed](v5, "particleColorBlendFactorSpeed"), v135 = v134, *&v136 = v136, (COERCE_UNSIGNED_INT(v135 - *&v136) & 0x60000000) != 0) || (v137 = -[SKEmitterNode particleBlendMode](self, "particleBlendMode"), v137 != -[SKEmitterNode particleBlendMode](v5, "particleBlendMode")))
                                           {
                                             v22 = 0;
                                           }
 
                                           else
                                           {
-                                            v155 = [(SKEmitterNode *)self particleAlphaSequence];
-                                            v138 = [v155 hash];
-                                            v154 = [(SKEmitterNode *)v5 particleAlphaSequence];
-                                            if (v138 != [v154 hash] || (-[SKEmitterNode particleAlpha](self, "particleAlpha"), v140 = v139, -[SKEmitterNode particleAlpha](v5, "particleAlpha"), v141 = v140, *&v142 = v142, (COERCE_UNSIGNED_INT(v141 - *&v142) & 0x60000000) != 0) || (-[SKEmitterNode particleAlphaRange](self, "particleAlphaRange"), v144 = v143, -[SKEmitterNode particleAlphaRange](v5, "particleAlphaRange"), v145 = v144, *&v146 = v146, (COERCE_UNSIGNED_INT(v145 - *&v146) & 0x60000000) != 0) || (-[SKEmitterNode particleAlphaSpeed](self, "particleAlphaSpeed"), v148 = v147, -[SKEmitterNode particleAlphaSpeed](v5, "particleAlphaSpeed"), v149 = v148, *&v150 = v150, (COERCE_UNSIGNED_INT(v149 - *&v150) & 0x60000000) != 0))
+                                            particleAlphaSequence = [(SKEmitterNode *)self particleAlphaSequence];
+                                            v138 = [particleAlphaSequence hash];
+                                            particleAlphaSequence2 = [(SKEmitterNode *)v5 particleAlphaSequence];
+                                            if (v138 != [particleAlphaSequence2 hash] || (-[SKEmitterNode particleAlpha](self, "particleAlpha"), v140 = v139, -[SKEmitterNode particleAlpha](v5, "particleAlpha"), v141 = v140, *&v142 = v142, (COERCE_UNSIGNED_INT(v141 - *&v142) & 0x60000000) != 0) || (-[SKEmitterNode particleAlphaRange](self, "particleAlphaRange"), v144 = v143, -[SKEmitterNode particleAlphaRange](v5, "particleAlphaRange"), v145 = v144, *&v146 = v146, (COERCE_UNSIGNED_INT(v145 - *&v146) & 0x60000000) != 0) || (-[SKEmitterNode particleAlphaSpeed](self, "particleAlphaSpeed"), v148 = v147, -[SKEmitterNode particleAlphaSpeed](v5, "particleAlphaSpeed"), v149 = v148, *&v150 = v150, (COERCE_UNSIGNED_INT(v149 - *&v150) & 0x60000000) != 0))
                                             {
                                               v22 = 0;
                                             }
 
                                             else
                                             {
-                                              v153 = [(SKEmitterNode *)self particleSpeedSequence];
-                                              v151 = [v153 hash];
-                                              v152 = [(SKEmitterNode *)v5 particleSpeedSequence];
-                                              v22 = v151 == [v152 hash];
+                                              particleSpeedSequence = [(SKEmitterNode *)self particleSpeedSequence];
+                                              v151 = [particleSpeedSequence hash];
+                                              particleSpeedSequence2 = [(SKEmitterNode *)v5 particleSpeedSequence];
+                                              v22 = v151 == [particleSpeedSequence2 hash];
                                             }
                                           }
                                         }
@@ -344,13 +344,13 @@ LABEL_15:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SKNode *)self name];
-  v5 = [(SKEmitterNode *)self particleTexture];
+  name = [(SKNode *)self name];
+  particleTexture = [(SKEmitterNode *)self particleTexture];
   [(SKNode *)self position];
   v6 = NSStringFromCGPoint(v11);
   [(SKNode *)self calculateAccumulatedFrame];
   v7 = NSStringFromCGRect(v12);
-  v8 = [v3 stringWithFormat:@"<SKEmitterNode> name:'%@' particleTexture:%@ position:%@ accumulatedFrame:%@", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"<SKEmitterNode> name:'%@' particleTexture:%@ position:%@ accumulatedFrame:%@", name, particleTexture, v6, v7];
 
   return v8;
 }
@@ -448,9 +448,9 @@ LABEL_15:
   self->_scaleSequence = 0;
 }
 
-- (void)setParticleRotationSequence:(id)a3
+- (void)setParticleRotationSequence:(id)sequence
 {
-  v4 = a3;
+  sequenceCopy = sequence;
   v5 = *(self->_skcEmitterNode + 81);
   if (v5)
   {
@@ -459,9 +459,9 @@ LABEL_15:
     *(self->_skcEmitterNode + 81) = 0;
   }
 
-  if (v4)
+  if (sequenceCopy)
   {
-    [v4 count];
+    [sequenceCopy count];
     operator new();
   }
 
@@ -469,20 +469,20 @@ LABEL_15:
   self->_rotationSequence = 0;
 }
 
-- (void)setWantsNewParticles:(BOOL)a3
+- (void)setWantsNewParticles:(BOOL)particles
 {
   skcEmitterNode = self->_skcEmitterNode;
-  if (skcEmitterNode[561] != a3)
+  if (skcEmitterNode[561] != particles)
   {
-    skcEmitterNode[561] = a3;
+    skcEmitterNode[561] = particles;
     skcEmitterNode[560] = 1;
   }
 }
 
-- (void)setDensityBased:(BOOL)a3
+- (void)setDensityBased:(BOOL)based
 {
   skcEmitterNode = self->_skcEmitterNode;
-  *(skcEmitterNode + 616) = a3;
+  *(skcEmitterNode + 616) = based;
   SKCNode::recomputeFlags(skcEmitterNode, 1);
 }
 
@@ -511,11 +511,11 @@ LABEL_15:
   return result;
 }
 
-- (void)setZPosition:(double)a3
+- (void)setZPosition:(double)position
 {
   v4.receiver = self;
   v4.super_class = SKEmitterNode;
-  [(SKNode *)&v4 setZPosition:a3];
+  [(SKNode *)&v4 setZPosition:position];
   SKCEmitterNode::computeZPostion(self->_skcEmitterNode);
 }
 
@@ -682,9 +682,9 @@ LABEL_15:
   return v3;
 }
 
-- (SKEmitterNode)initWithMinimumParticleCapacity:(unint64_t)a3
+- (SKEmitterNode)initWithMinimumParticleCapacity:(unint64_t)capacity
 {
-  v3 = a3;
+  capacityCopy = capacity;
   v8.receiver = self;
   v8.super_class = SKEmitterNode;
   v4 = [(SKNode *)&v8 init];
@@ -694,17 +694,17 @@ LABEL_15:
     [(SKEmitterNode *)v4 commonInit];
     [(SKEmitterNode *)v5 setTargetNode:0];
     skcEmitterNode = v5->_skcEmitterNode;
-    skcEmitterNode[245] = v3;
-    skcEmitterNode[246] = 4 * v3;
+    skcEmitterNode[245] = capacityCopy;
+    skcEmitterNode[246] = 4 * capacityCopy;
   }
 
   return v5;
 }
 
-- (SKEmitterNode)initWithMinimumParticleCapacity:(unint64_t)a3 minimumPositionBufferCapacity:(unint64_t)a4
+- (SKEmitterNode)initWithMinimumParticleCapacity:(unint64_t)capacity minimumPositionBufferCapacity:(unint64_t)bufferCapacity
 {
-  v4 = a4;
-  v5 = a3;
+  bufferCapacityCopy = bufferCapacity;
+  capacityCopy = capacity;
   v10.receiver = self;
   v10.super_class = SKEmitterNode;
   v6 = [(SKNode *)&v10 init];
@@ -714,37 +714,37 @@ LABEL_15:
     [(SKEmitterNode *)v6 commonInit];
     [(SKEmitterNode *)v7 setTargetNode:0];
     skcEmitterNode = v7->_skcEmitterNode;
-    skcEmitterNode[245] = v5;
-    skcEmitterNode[246] = v4;
+    skcEmitterNode[245] = capacityCopy;
+    skcEmitterNode[246] = bufferCapacityCopy;
   }
 
   return v7;
 }
 
-- (SKEmitterNode)initWithCoder:(id)a3
+- (SKEmitterNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v76.receiver = self;
   v76.super_class = SKEmitterNode;
-  v5 = [(SKNode *)&v76 initWithCoder:v4];
+  v5 = [(SKNode *)&v76 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(SKEmitterNode *)v5 commonInit];
     skcEmitterNode = v6->_skcEmitterNode;
-    [v4 decodeDoubleForKey:@"_startColorMix"];
+    [coderCopy decodeDoubleForKey:@"_startColorMix"];
     *&v8 = v8;
     skcEmitterNode[208] = *&v8;
-    [v4 decodeDoubleForKey:@"_startColorBlendVariance"];
+    [coderCopy decodeDoubleForKey:@"_startColorBlendVariance"];
     *&v9 = v9;
     skcEmitterNode[209] = *&v9;
-    [v4 decodeDoubleForKey:@"_startColorR"];
+    [coderCopy decodeDoubleForKey:@"_startColorR"];
     v11 = v10;
-    [v4 decodeDoubleForKey:@"_startColorG"];
+    [coderCopy decodeDoubleForKey:@"_startColorG"];
     v13 = v12;
-    [v4 decodeDoubleForKey:@"_startColorB"];
+    [coderCopy decodeDoubleForKey:@"_startColorB"];
     v15 = v14;
-    [v4 decodeDoubleForKey:@"_startColorA"];
+    [coderCopy decodeDoubleForKey:@"_startColorA"];
     v16 = v11;
     v17 = v13;
     v18 = v15;
@@ -753,13 +753,13 @@ LABEL_15:
     *&v19 = v19;
     skcEmitterNode[198] = v18;
     skcEmitterNode[199] = *&v19;
-    [v4 decodeDoubleForKey:@"_startColorVarianceR"];
+    [coderCopy decodeDoubleForKey:@"_startColorVarianceR"];
     v21 = v20;
-    [v4 decodeDoubleForKey:@"_startColorVarianceG"];
+    [coderCopy decodeDoubleForKey:@"_startColorVarianceG"];
     v23 = v22;
-    [v4 decodeDoubleForKey:@"_startColorVarianceB"];
+    [coderCopy decodeDoubleForKey:@"_startColorVarianceB"];
     v25 = v24;
-    [v4 decodeDoubleForKey:@"_startColorVarianceA"];
+    [coderCopy decodeDoubleForKey:@"_startColorVarianceA"];
     v26 = v21;
     v27 = v23;
     v28 = v25;
@@ -768,59 +768,59 @@ LABEL_15:
     skcEmitterNode[201] = v27;
     skcEmitterNode[202] = v28;
     skcEmitterNode[203] = *&v29;
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_particleTexture"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_particleTexture"];
     [(SKEmitterNode *)v6 setParticleTexture:v30];
 
-    [v4 decodeCGPointForKey:@"_startPosition"];
+    [coderCopy decodeCGPointForKey:@"_startPosition"];
     [(SKEmitterNode *)v6 setParticlePosition:?];
-    [v4 decodeCGVectorForKey:@"_startPositionVariance"];
+    [coderCopy decodeCGVectorForKey:@"_startPositionVariance"];
     [(SKEmitterNode *)v6 setParticlePositionRange:?];
-    [v4 decodeDoubleForKey:@"_startZPosition"];
+    [coderCopy decodeDoubleForKey:@"_startZPosition"];
     *&v31 = v31;
     skcEmitterNode[188] = *&v31;
-    [v4 decodeDoubleForKey:@"_startZPositionVariance"];
+    [coderCopy decodeDoubleForKey:@"_startZPositionVariance"];
     *&v32 = v32;
     skcEmitterNode[189] = *&v32;
-    [v4 decodeDoubleForKey:@"_lifetime"];
+    [coderCopy decodeDoubleForKey:@"_lifetime"];
     *&v33 = v33;
     skcEmitterNode[229] = *&v33;
-    [v4 decodeDoubleForKey:@"_lifetimeVariance"];
+    [coderCopy decodeDoubleForKey:@"_lifetimeVariance"];
     *&v34 = v34;
     skcEmitterNode[230] = *&v34;
-    [v4 decodeDoubleForKey:@"_startOpacity"];
+    [coderCopy decodeDoubleForKey:@"_startOpacity"];
     *&v35 = v35;
     skcEmitterNode[237] = *&v35;
-    [v4 decodeDoubleForKey:@"_startOpacityVariance"];
+    [coderCopy decodeDoubleForKey:@"_startOpacityVariance"];
     *&v36 = v36;
     skcEmitterNode[238] = *&v36;
-    -[SKEmitterNode setParticleBlendMode:](v6, "setParticleBlendMode:", [v4 decodeIntForKey:@"_particleBlendMode"]);
-    [v4 decodeDoubleForKey:@"_startRotation"];
+    -[SKEmitterNode setParticleBlendMode:](v6, "setParticleBlendMode:", [coderCopy decodeIntForKey:@"_particleBlendMode"]);
+    [coderCopy decodeDoubleForKey:@"_startRotation"];
     *&v37 = v37;
     skcEmitterNode[231] = *&v37;
-    [v4 decodeDoubleForKey:@"_startRotationVariance"];
+    [coderCopy decodeDoubleForKey:@"_startRotationVariance"];
     *&v38 = v38;
     skcEmitterNode[232] = *&v38;
-    [v4 decodeCGSizeForKey:@"_startSize"];
+    [coderCopy decodeCGSizeForKey:@"_startSize"];
     *(skcEmitterNode + 92) = v39;
     *(skcEmitterNode + 93) = v40;
-    [v4 decodeDoubleForKey:@"_startScale"];
+    [coderCopy decodeDoubleForKey:@"_startScale"];
     *&v41 = v41;
     skcEmitterNode[234] = *&v41;
-    [v4 decodeDoubleForKey:@"_startScaleVariance"];
+    [coderCopy decodeDoubleForKey:@"_startScaleVariance"];
     *&v42 = v42;
     skcEmitterNode[235] = *&v42;
-    [v4 decodeCGPointForKey:@"_acceleration"];
+    [coderCopy decodeCGPointForKey:@"_acceleration"];
     *&v43 = v43;
     *&v44 = v44;
     skcEmitterNode[226] = *&v43;
     skcEmitterNode[227] = *&v44;
-    [v4 decodeDoubleForKey:@"_colorSpeedR"];
+    [coderCopy decodeDoubleForKey:@"_colorSpeedR"];
     v46 = v45;
-    [v4 decodeDoubleForKey:@"_colorSpeedG"];
+    [coderCopy decodeDoubleForKey:@"_colorSpeedG"];
     v48 = v47;
-    [v4 decodeDoubleForKey:@"_colorSpeedB"];
+    [coderCopy decodeDoubleForKey:@"_colorSpeedB"];
     v50 = v49;
-    [v4 decodeDoubleForKey:@"_colorSpeedA"];
+    [coderCopy decodeDoubleForKey:@"_colorSpeedA"];
     v51 = v46;
     v52 = v48;
     v53 = v50;
@@ -829,71 +829,71 @@ LABEL_15:
     *&v54 = v54;
     skcEmitterNode[206] = v53;
     skcEmitterNode[207] = *&v54;
-    [v4 decodeDoubleForKey:@"_colorBlendSpeed"];
+    [coderCopy decodeDoubleForKey:@"_colorBlendSpeed"];
     *&v55 = v55;
     skcEmitterNode[210] = *&v55;
-    [v4 decodeDoubleForKey:@"_rotationSpeed"];
+    [coderCopy decodeDoubleForKey:@"_rotationSpeed"];
     *&v56 = v56;
     skcEmitterNode[233] = *&v56;
-    [v4 decodeDoubleForKey:@"_scaleSpeed"];
+    [coderCopy decodeDoubleForKey:@"_scaleSpeed"];
     *&v57 = v57;
     skcEmitterNode[236] = *&v57;
-    [v4 decodeDoubleForKey:@"_opacitySpeed"];
+    [coderCopy decodeDoubleForKey:@"_opacitySpeed"];
     *&v58 = v58;
     skcEmitterNode[239] = *&v58;
-    [v4 decodeDoubleForKey:@"_startSpeed"];
+    [coderCopy decodeDoubleForKey:@"_startSpeed"];
     *&v59 = v59;
     skcEmitterNode[222] = *&v59;
-    [v4 decodeDoubleForKey:@"_startSpeedVariance"];
+    [coderCopy decodeDoubleForKey:@"_startSpeedVariance"];
     *&v60 = v60;
     skcEmitterNode[223] = *&v60;
-    [v4 decodeDoubleForKey:@"_emissionAngle"];
+    [coderCopy decodeDoubleForKey:@"_emissionAngle"];
     *&v61 = v61;
     skcEmitterNode[224] = *&v61;
-    [v4 decodeDoubleForKey:@"_emissionAngleVariance"];
+    [coderCopy decodeDoubleForKey:@"_emissionAngleVariance"];
     *&v62 = v62;
     skcEmitterNode[225] = *&v62;
-    [v4 decodeDoubleForKey:@"_zPositionSpeed"];
+    [coderCopy decodeDoubleForKey:@"_zPositionSpeed"];
     *&v63 = v63;
     skcEmitterNode[190] = *&v63;
-    v64 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_target"];
+    v64 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_target"];
     [(SKEmitterNode *)v6 setTargetNode:v64];
 
-    [v4 decodeDoubleForKey:@"_birthrate"];
+    [coderCopy decodeDoubleForKey:@"_birthrate"];
     [(SKEmitterNode *)v6 setParticleBirthRate:?];
-    v65 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_particleAction"];
+    v65 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_particleAction"];
     [(SKEmitterNode *)v6 setParticleAction:v65];
 
-    v66 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_numParticlesToEmit"];
+    v66 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_numParticlesToEmit"];
     -[SKEmitterNode setNumParticlesToEmit:](v6, "setNumParticlesToEmit:", [v66 unsignedIntegerValue]);
 
-    [v4 decodeDoubleForKey:@"_emissionDistance"];
+    [coderCopy decodeDoubleForKey:@"_emissionDistance"];
     [(SKEmitterNode *)v6 setEmissionDistance:?];
-    [v4 decodeDoubleForKey:@"_emissionDistanceRange"];
+    [coderCopy decodeDoubleForKey:@"_emissionDistanceRange"];
     [(SKEmitterNode *)v6 setEmissionDistanceRange:?];
-    -[SKEmitterNode setFieldBitMask:](v6, "setFieldBitMask:", [v4 decodeInt32ForKey:@"_fieldBitMask"]);
-    v67 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_particleAlphaSequence"];
+    -[SKEmitterNode setFieldBitMask:](v6, "setFieldBitMask:", [coderCopy decodeInt32ForKey:@"_fieldBitMask"]);
+    v67 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_particleAlphaSequence"];
     [(SKEmitterNode *)v6 setParticleAlphaSequence:v67];
 
-    v68 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_particleColorSequence"];
+    v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_particleColorSequence"];
     [(SKEmitterNode *)v6 setParticleColorSequence:v68];
 
-    v69 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_particleColorBlendFactorSequence"];
+    v69 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_particleColorBlendFactorSequence"];
     [(SKEmitterNode *)v6 setParticleColorBlendFactorSequence:v69];
 
-    v70 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_particleScaleSequence"];
+    v70 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_particleScaleSequence"];
     [(SKEmitterNode *)v6 setParticleScaleSequence:v70];
 
-    v71 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_particleRotationSequence"];
+    v71 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_particleRotationSequence"];
     [(SKEmitterNode *)v6 setParticleRotationSequence:v71];
 
-    v72 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fieldInfluenceSequence"];
+    v72 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fieldInfluenceSequence"];
     [(SKEmitterNode *)v6 setFieldInfluenceSequence:v72];
 
-    v73 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_particleSpeedSequence"];
+    v73 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_particleSpeedSequence"];
     [(SKEmitterNode *)v6 setParticleSpeedSequence:v73];
 
-    v74 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_shader"];
+    v74 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_shader"];
     [(SKEmitterNode *)v6 setShader:v74];
 
     *(skcEmitterNode + 560) = 1;
@@ -902,232 +902,232 @@ LABEL_15:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SKEmitterNode;
-  [(SKNode *)&v17 encodeWithCoder:v4];
+  [(SKNode *)&v17 encodeWithCoder:coderCopy];
   skcEmitterNode = self->_skcEmitterNode;
-  v6 = [(SKEmitterNode *)self particleAction];
-  [v4 encodeObject:v6 forKey:@"_particleAction"];
+  particleAction = [(SKEmitterNode *)self particleAction];
+  [coderCopy encodeObject:particleAction forKey:@"_particleAction"];
 
-  [v4 encodeDouble:@"_startColorMix" forKey:skcEmitterNode[208]];
-  [v4 encodeDouble:@"_startColorBlendVariance" forKey:skcEmitterNode[209]];
-  [v4 encodeDouble:@"_startColorR" forKey:skcEmitterNode[196]];
-  [v4 encodeDouble:@"_startColorG" forKey:skcEmitterNode[197]];
-  [v4 encodeDouble:@"_startColorB" forKey:skcEmitterNode[198]];
-  [v4 encodeDouble:@"_startColorA" forKey:skcEmitterNode[199]];
-  [v4 encodeDouble:@"_startColorVarianceR" forKey:skcEmitterNode[200]];
-  [v4 encodeDouble:@"_startColorVarianceG" forKey:skcEmitterNode[201]];
-  [v4 encodeDouble:@"_startColorVarianceB" forKey:skcEmitterNode[202]];
-  [v4 encodeDouble:@"_startColorVarianceA" forKey:skcEmitterNode[203]];
-  [v4 encodeDouble:@"_birthrate" forKey:skcEmitterNode[228]];
-  [v4 encodeObject:*(skcEmitterNode + 120) forKey:@"_particleTexture"];
+  [coderCopy encodeDouble:@"_startColorMix" forKey:skcEmitterNode[208]];
+  [coderCopy encodeDouble:@"_startColorBlendVariance" forKey:skcEmitterNode[209]];
+  [coderCopy encodeDouble:@"_startColorR" forKey:skcEmitterNode[196]];
+  [coderCopy encodeDouble:@"_startColorG" forKey:skcEmitterNode[197]];
+  [coderCopy encodeDouble:@"_startColorB" forKey:skcEmitterNode[198]];
+  [coderCopy encodeDouble:@"_startColorA" forKey:skcEmitterNode[199]];
+  [coderCopy encodeDouble:@"_startColorVarianceR" forKey:skcEmitterNode[200]];
+  [coderCopy encodeDouble:@"_startColorVarianceG" forKey:skcEmitterNode[201]];
+  [coderCopy encodeDouble:@"_startColorVarianceB" forKey:skcEmitterNode[202]];
+  [coderCopy encodeDouble:@"_startColorVarianceA" forKey:skcEmitterNode[203]];
+  [coderCopy encodeDouble:@"_birthrate" forKey:skcEmitterNode[228]];
+  [coderCopy encodeObject:*(skcEmitterNode + 120) forKey:@"_particleTexture"];
   [(SKEmitterNode *)self particlePosition];
-  [v4 encodeCGPoint:@"_startPosition" forKey:?];
+  [coderCopy encodeCGPoint:@"_startPosition" forKey:?];
   [(SKEmitterNode *)self particlePositionRange];
-  [v4 encodeCGVector:@"_startPositionVariance" forKey:?];
-  [v4 encodeDouble:@"_startZPosition" forKey:skcEmitterNode[188]];
-  [v4 encodeDouble:@"_startZPositionVariance" forKey:skcEmitterNode[189]];
-  [v4 encodeDouble:@"_lifetime" forKey:skcEmitterNode[229]];
-  [v4 encodeDouble:@"_lifetimeVariance" forKey:skcEmitterNode[230]];
-  [v4 encodeDouble:@"_startOpacity" forKey:skcEmitterNode[237]];
-  [v4 encodeDouble:@"_startOpacityVariance" forKey:skcEmitterNode[238]];
-  [v4 encodeInteger:*(skcEmitterNode + 121) forKey:@"_particleBlendMode"];
-  [v4 encodeDouble:@"_startRotation" forKey:skcEmitterNode[231]];
-  [v4 encodeDouble:@"_startRotationVariance" forKey:skcEmitterNode[232]];
-  [v4 encodeCGSize:@"_startSize" forKey:{*(skcEmitterNode + 92), *(skcEmitterNode + 93)}];
-  [v4 encodeDouble:@"_startScale" forKey:skcEmitterNode[234]];
-  [v4 encodeDouble:@"_startScaleVariance" forKey:skcEmitterNode[235]];
-  [v4 encodeCGPoint:@"_acceleration" forKey:{skcEmitterNode[226], skcEmitterNode[227]}];
-  [v4 encodeDouble:@"_colorSpeedR" forKey:skcEmitterNode[204]];
-  [v4 encodeDouble:@"_colorSpeedG" forKey:skcEmitterNode[205]];
-  [v4 encodeDouble:@"_colorSpeedB" forKey:skcEmitterNode[206]];
-  [v4 encodeDouble:@"_colorSpeedA" forKey:skcEmitterNode[207]];
-  [v4 encodeDouble:@"_colorBlendSpeed" forKey:skcEmitterNode[210]];
-  [v4 encodeDouble:@"_rotationSpeed" forKey:skcEmitterNode[233]];
-  [v4 encodeDouble:@"_scaleSpeed" forKey:skcEmitterNode[236]];
-  [v4 encodeDouble:@"_opacitySpeed" forKey:skcEmitterNode[239]];
-  [v4 encodeDouble:@"_startSpeed" forKey:skcEmitterNode[222]];
-  [v4 encodeDouble:@"_startSpeedVariance" forKey:skcEmitterNode[223]];
-  [v4 encodeDouble:@"_emissionAngle" forKey:skcEmitterNode[224]];
-  [v4 encodeDouble:@"_emissionAngleVariance" forKey:skcEmitterNode[225]];
+  [coderCopy encodeCGVector:@"_startPositionVariance" forKey:?];
+  [coderCopy encodeDouble:@"_startZPosition" forKey:skcEmitterNode[188]];
+  [coderCopy encodeDouble:@"_startZPositionVariance" forKey:skcEmitterNode[189]];
+  [coderCopy encodeDouble:@"_lifetime" forKey:skcEmitterNode[229]];
+  [coderCopy encodeDouble:@"_lifetimeVariance" forKey:skcEmitterNode[230]];
+  [coderCopy encodeDouble:@"_startOpacity" forKey:skcEmitterNode[237]];
+  [coderCopy encodeDouble:@"_startOpacityVariance" forKey:skcEmitterNode[238]];
+  [coderCopy encodeInteger:*(skcEmitterNode + 121) forKey:@"_particleBlendMode"];
+  [coderCopy encodeDouble:@"_startRotation" forKey:skcEmitterNode[231]];
+  [coderCopy encodeDouble:@"_startRotationVariance" forKey:skcEmitterNode[232]];
+  [coderCopy encodeCGSize:@"_startSize" forKey:{*(skcEmitterNode + 92), *(skcEmitterNode + 93)}];
+  [coderCopy encodeDouble:@"_startScale" forKey:skcEmitterNode[234]];
+  [coderCopy encodeDouble:@"_startScaleVariance" forKey:skcEmitterNode[235]];
+  [coderCopy encodeCGPoint:@"_acceleration" forKey:{skcEmitterNode[226], skcEmitterNode[227]}];
+  [coderCopy encodeDouble:@"_colorSpeedR" forKey:skcEmitterNode[204]];
+  [coderCopy encodeDouble:@"_colorSpeedG" forKey:skcEmitterNode[205]];
+  [coderCopy encodeDouble:@"_colorSpeedB" forKey:skcEmitterNode[206]];
+  [coderCopy encodeDouble:@"_colorSpeedA" forKey:skcEmitterNode[207]];
+  [coderCopy encodeDouble:@"_colorBlendSpeed" forKey:skcEmitterNode[210]];
+  [coderCopy encodeDouble:@"_rotationSpeed" forKey:skcEmitterNode[233]];
+  [coderCopy encodeDouble:@"_scaleSpeed" forKey:skcEmitterNode[236]];
+  [coderCopy encodeDouble:@"_opacitySpeed" forKey:skcEmitterNode[239]];
+  [coderCopy encodeDouble:@"_startSpeed" forKey:skcEmitterNode[222]];
+  [coderCopy encodeDouble:@"_startSpeedVariance" forKey:skcEmitterNode[223]];
+  [coderCopy encodeDouble:@"_emissionAngle" forKey:skcEmitterNode[224]];
+  [coderCopy encodeDouble:@"_emissionAngleVariance" forKey:skcEmitterNode[225]];
   WeakRetained = objc_loadWeakRetained(&self->_target);
-  [v4 encodeObject:WeakRetained forKey:@"_target"];
+  [coderCopy encodeObject:WeakRetained forKey:@"_target"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SKEmitterNode numParticlesToEmit](self, "numParticlesToEmit")}];
-  [v4 encodeObject:v8 forKey:@"_numParticlesToEmit"];
+  [coderCopy encodeObject:v8 forKey:@"_numParticlesToEmit"];
 
-  [v4 encodeDouble:@"_zPositionSpeed" forKey:skcEmitterNode[190]];
+  [coderCopy encodeDouble:@"_zPositionSpeed" forKey:skcEmitterNode[190]];
   [(SKEmitterNode *)self emissionDistance];
-  [v4 encodeDouble:@"_emissionDistance" forKey:?];
+  [coderCopy encodeDouble:@"_emissionDistance" forKey:?];
   [(SKEmitterNode *)self emissionDistanceRange];
-  [v4 encodeDouble:@"_emissionDistanceRange" forKey:?];
-  [v4 encodeInt32:-[SKEmitterNode fieldBitMask](self forKey:{"fieldBitMask"), @"_fieldBitMask"}];
-  v9 = [(SKEmitterNode *)self particleAlphaSequence];
-  [v4 encodeObject:v9 forKey:@"_particleAlphaSequence"];
+  [coderCopy encodeDouble:@"_emissionDistanceRange" forKey:?];
+  [coderCopy encodeInt32:-[SKEmitterNode fieldBitMask](self forKey:{"fieldBitMask"), @"_fieldBitMask"}];
+  particleAlphaSequence = [(SKEmitterNode *)self particleAlphaSequence];
+  [coderCopy encodeObject:particleAlphaSequence forKey:@"_particleAlphaSequence"];
 
-  v10 = [(SKEmitterNode *)self particleColorSequence];
-  [v4 encodeObject:v10 forKey:@"_particleColorSequence"];
+  particleColorSequence = [(SKEmitterNode *)self particleColorSequence];
+  [coderCopy encodeObject:particleColorSequence forKey:@"_particleColorSequence"];
 
-  v11 = [(SKEmitterNode *)self particleColorBlendFactorSequence];
-  [v4 encodeObject:v11 forKey:@"_particleColorBlendFactorSequence"];
+  particleColorBlendFactorSequence = [(SKEmitterNode *)self particleColorBlendFactorSequence];
+  [coderCopy encodeObject:particleColorBlendFactorSequence forKey:@"_particleColorBlendFactorSequence"];
 
-  v12 = [(SKEmitterNode *)self particleScaleSequence];
-  [v4 encodeObject:v12 forKey:@"_particleScaleSequence"];
+  particleScaleSequence = [(SKEmitterNode *)self particleScaleSequence];
+  [coderCopy encodeObject:particleScaleSequence forKey:@"_particleScaleSequence"];
 
-  v13 = [(SKEmitterNode *)self particleRotationSequence];
-  [v4 encodeObject:v13 forKey:@"_particleRotationSequence"];
+  particleRotationSequence = [(SKEmitterNode *)self particleRotationSequence];
+  [coderCopy encodeObject:particleRotationSequence forKey:@"_particleRotationSequence"];
 
-  v14 = [(SKEmitterNode *)self fieldInfluenceSequence];
-  [v4 encodeObject:v14 forKey:@"_fieldInfluenceSequence"];
+  fieldInfluenceSequence = [(SKEmitterNode *)self fieldInfluenceSequence];
+  [coderCopy encodeObject:fieldInfluenceSequence forKey:@"_fieldInfluenceSequence"];
 
-  v15 = [(SKEmitterNode *)self particleSpeedSequence];
-  [v4 encodeObject:v15 forKey:@"_particleSpeedSequence"];
+  particleSpeedSequence = [(SKEmitterNode *)self particleSpeedSequence];
+  [coderCopy encodeObject:particleSpeedSequence forKey:@"_particleSpeedSequence"];
 
-  v16 = [(SKEmitterNode *)self shader];
-  [v4 encodeObject:v16 forKey:@"_shader"];
+  shader = [(SKEmitterNode *)self shader];
+  [coderCopy encodeObject:shader forKey:@"_shader"];
 }
 
-- (void)copyParticlePropertiesToNode:(id)a3
+- (void)copyParticlePropertiesToNode:(id)node
 {
-  v27 = a3;
-  v4 = v27[18];
-  v5 = [(SKEmitterNode *)self particleColor];
-  [v27 setParticleColor:v5];
+  nodeCopy = node;
+  v4 = nodeCopy[18];
+  particleColor = [(SKEmitterNode *)self particleColor];
+  [nodeCopy setParticleColor:particleColor];
 
   [(SKEmitterNode *)self particleColorRedRange];
-  [v27 setParticleColorRedRange:?];
+  [nodeCopy setParticleColorRedRange:?];
   [(SKEmitterNode *)self particleColorGreenRange];
-  [v27 setParticleColorGreenRange:?];
+  [nodeCopy setParticleColorGreenRange:?];
   [(SKEmitterNode *)self particleColorBlueRange];
-  [v27 setParticleColorBlueRange:?];
+  [nodeCopy setParticleColorBlueRange:?];
   [(SKEmitterNode *)self particleColorAlphaRange];
-  [v27 setParticleColorAlphaRange:?];
+  [nodeCopy setParticleColorAlphaRange:?];
   [(SKEmitterNode *)self particleColorRedSpeed];
-  [v27 setParticleColorRedSpeed:?];
+  [nodeCopy setParticleColorRedSpeed:?];
   [(SKEmitterNode *)self particleColorGreenSpeed];
-  [v27 setParticleColorGreenSpeed:?];
+  [nodeCopy setParticleColorGreenSpeed:?];
   [(SKEmitterNode *)self particleColorBlueSpeed];
-  [v27 setParticleColorBlueSpeed:?];
+  [nodeCopy setParticleColorBlueSpeed:?];
   [(SKEmitterNode *)self particleColorAlphaSpeed];
-  [v27 setParticleColorAlphaSpeed:?];
+  [nodeCopy setParticleColorAlphaSpeed:?];
   [(SKEmitterNode *)self particleColorBlendFactor];
-  [v27 setParticleColorBlendFactor:?];
+  [nodeCopy setParticleColorBlendFactor:?];
   [(SKEmitterNode *)self particleColorBlendFactorRange];
-  [v27 setParticleColorBlendFactorRange:?];
+  [nodeCopy setParticleColorBlendFactorRange:?];
   [(SKEmitterNode *)self particleColorBlendFactorSpeed];
-  [v27 setParticleColorBlendFactorSpeed:?];
+  [nodeCopy setParticleColorBlendFactorSpeed:?];
   [(SKEmitterNode *)self particlePosition];
-  [v27 setParticlePosition:?];
+  [nodeCopy setParticlePosition:?];
   [(SKEmitterNode *)self particlePositionRange];
-  [v27 setParticlePositionRange:?];
+  [nodeCopy setParticlePositionRange:?];
   [(SKEmitterNode *)self xAcceleration];
-  [v27 setXAcceleration:?];
+  [nodeCopy setXAcceleration:?];
   [(SKEmitterNode *)self yAcceleration];
-  [v27 setYAcceleration:?];
+  [nodeCopy setYAcceleration:?];
   [(SKEmitterNode *)self particleLifetime];
-  [v27 setParticleLifetime:?];
+  [nodeCopy setParticleLifetime:?];
   [(SKEmitterNode *)self particleLifetimeRange];
-  [v27 setParticleLifetimeRange:?];
+  [nodeCopy setParticleLifetimeRange:?];
   [(SKEmitterNode *)self particleRotation];
-  [v27 setParticleRotation:?];
+  [nodeCopy setParticleRotation:?];
   [(SKEmitterNode *)self particleRotationRange];
-  [v27 setParticleRotationRange:?];
+  [nodeCopy setParticleRotationRange:?];
   [(SKEmitterNode *)self particleRotationSpeed];
-  [v27 setParticleRotationSpeed:?];
+  [nodeCopy setParticleRotationSpeed:?];
   [(SKEmitterNode *)self particleScale];
-  [v27 setParticleScale:?];
+  [nodeCopy setParticleScale:?];
   [(SKEmitterNode *)self particleScaleRange];
-  [v27 setParticleScaleRange:?];
+  [nodeCopy setParticleScaleRange:?];
   [(SKEmitterNode *)self particleScaleSpeed];
-  [v27 setParticleScaleSpeed:?];
+  [nodeCopy setParticleScaleSpeed:?];
   [(SKEmitterNode *)self particleAlpha];
-  [v27 setParticleAlpha:?];
+  [nodeCopy setParticleAlpha:?];
   [(SKEmitterNode *)self particleAlphaRange];
-  [v27 setParticleAlphaRange:?];
+  [nodeCopy setParticleAlphaRange:?];
   [(SKEmitterNode *)self particleAlphaSpeed];
-  [v27 setParticleAlphaSpeed:?];
-  v6 = [(SKEmitterNode *)self particleTexture];
-  [v27 setParticleTexture:v6];
+  [nodeCopy setParticleAlphaSpeed:?];
+  particleTexture = [(SKEmitterNode *)self particleTexture];
+  [nodeCopy setParticleTexture:particleTexture];
 
-  [v27 setParticleBlendMode:{-[SKEmitterNode particleBlendMode](self, "particleBlendMode")}];
+  [nodeCopy setParticleBlendMode:{-[SKEmitterNode particleBlendMode](self, "particleBlendMode")}];
   [(SKEmitterNode *)self particleSpeed];
-  [v27 setParticleSpeed:?];
+  [nodeCopy setParticleSpeed:?];
   [(SKEmitterNode *)self particleSpeedRange];
-  [v27 setParticleSpeedRange:?];
+  [nodeCopy setParticleSpeedRange:?];
   [(SKEmitterNode *)self emissionAngle];
-  [v27 setEmissionAngle:?];
+  [nodeCopy setEmissionAngle:?];
   [(SKEmitterNode *)self emissionAngleRange];
-  [v27 setEmissionAngleRange:?];
-  v7 = [(SKEmitterNode *)self targetNode];
-  [v27 setTargetNode:v7];
+  [nodeCopy setEmissionAngleRange:?];
+  targetNode = [(SKEmitterNode *)self targetNode];
+  [nodeCopy setTargetNode:targetNode];
 
   [(SKEmitterNode *)self particleZPosition];
-  [v27 setParticleZPosition:?];
+  [nodeCopy setParticleZPosition:?];
   skcEmitterNode = self->_skcEmitterNode;
   *(v4 + 756) = skcEmitterNode[189];
   *(v4 + 760) = skcEmitterNode[190];
-  v9 = [(SKEmitterNode *)self particleAction];
-  [v27 setParticleAction:v9];
+  particleAction = [(SKEmitterNode *)self particleAction];
+  [nodeCopy setParticleAction:particleAction];
 
-  [v27 setNumParticlesToEmit:{-[SKEmitterNode numParticlesToEmit](self, "numParticlesToEmit")}];
-  [v27 setFieldBitMask:{-[SKEmitterNode fieldBitMask](self, "fieldBitMask")}];
-  v10 = [(SKNode *)self _info];
-  v11 = [v10 mutableCopy];
-  [v27 set_info:v11];
+  [nodeCopy setNumParticlesToEmit:{-[SKEmitterNode numParticlesToEmit](self, "numParticlesToEmit")}];
+  [nodeCopy setFieldBitMask:{-[SKEmitterNode fieldBitMask](self, "fieldBitMask")}];
+  _info = [(SKNode *)self _info];
+  v11 = [_info mutableCopy];
+  [nodeCopy set_info:v11];
 
-  v12 = [(SKEmitterNode *)self shader];
-  [v27 setShader:v12];
+  shader = [(SKEmitterNode *)self shader];
+  [nodeCopy setShader:shader];
 
-  [v27 setDensityBased:{-[SKEmitterNode densityBased](self, "densityBased")}];
+  [nodeCopy setDensityBased:{-[SKEmitterNode densityBased](self, "densityBased")}];
   [(SKEmitterNode *)self particleDensity];
-  [v27 setParticleDensity:?];
+  [nodeCopy setParticleDensity:?];
   [(SKEmitterNode *)self particleSize];
-  [v27 setParticleSize:?];
-  [v27 setWantsNewParticles:{-[SKEmitterNode wantsNewParticles](self, "wantsNewParticles")}];
-  v13 = [(SKEmitterNode *)self particleAlphaSequence];
-  v14 = [v13 copy];
-  [v27 setParticleAlphaSequence:v14];
+  [nodeCopy setParticleSize:?];
+  [nodeCopy setWantsNewParticles:{-[SKEmitterNode wantsNewParticles](self, "wantsNewParticles")}];
+  particleAlphaSequence = [(SKEmitterNode *)self particleAlphaSequence];
+  v14 = [particleAlphaSequence copy];
+  [nodeCopy setParticleAlphaSequence:v14];
 
-  v15 = [(SKEmitterNode *)self particleScaleSequence];
-  v16 = [v15 copy];
-  [v27 setParticleScaleSequence:v16];
+  particleScaleSequence = [(SKEmitterNode *)self particleScaleSequence];
+  v16 = [particleScaleSequence copy];
+  [nodeCopy setParticleScaleSequence:v16];
 
-  v17 = [(SKEmitterNode *)self particleRotationSequence];
-  v18 = [v17 copy];
-  [v27 setParticleRotationSequence:v18];
+  particleRotationSequence = [(SKEmitterNode *)self particleRotationSequence];
+  v18 = [particleRotationSequence copy];
+  [nodeCopy setParticleRotationSequence:v18];
 
-  v19 = [(SKEmitterNode *)self particleColorBlendFactorSequence];
-  v20 = [v19 copy];
-  [v27 setParticleColorBlendFactorSequence:v20];
+  particleColorBlendFactorSequence = [(SKEmitterNode *)self particleColorBlendFactorSequence];
+  v20 = [particleColorBlendFactorSequence copy];
+  [nodeCopy setParticleColorBlendFactorSequence:v20];
 
-  v21 = [(SKEmitterNode *)self particleColorSequence];
-  v22 = [v21 copy];
-  [v27 setParticleColorSequence:v22];
+  particleColorSequence = [(SKEmitterNode *)self particleColorSequence];
+  v22 = [particleColorSequence copy];
+  [nodeCopy setParticleColorSequence:v22];
 
-  v23 = [(SKEmitterNode *)self fieldInfluenceSequence];
-  v24 = [v23 copy];
-  [v27 setFieldInfluenceSequence:v24];
+  fieldInfluenceSequence = [(SKEmitterNode *)self fieldInfluenceSequence];
+  v24 = [fieldInfluenceSequence copy];
+  [nodeCopy setFieldInfluenceSequence:v24];
 
-  v25 = [(SKEmitterNode *)self particleSpeedSequence];
-  v26 = [v25 copy];
-  [v27 setParticleSpeedSequence:v26];
+  particleSpeedSequence = [(SKEmitterNode *)self particleSpeedSequence];
+  v26 = [particleSpeedSequence copy];
+  [nodeCopy setParticleSpeedSequence:v26];
 
   [(SKEmitterNode *)self emissionDistance];
-  [v27 setEmissionDistance:?];
+  [nodeCopy setEmissionDistance:?];
   [(SKEmitterNode *)self emissionDistanceRange];
-  [v27 setEmissionDistanceRange:?];
+  [nodeCopy setEmissionDistanceRange:?];
   [(SKEmitterNode *)self particleBirthRate];
-  [v27 setParticleBirthRate:?];
+  [nodeCopy setParticleBirthRate:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SKEmitterNode;
-  v4 = [(SKNode *)&v8 copyWithZone:a3];
+  v4 = [(SKNode *)&v8 copyWithZone:zone];
   [(SKEmitterNode *)self copyParticlePropertiesToNode:v4];
   v5 = v4[18];
   skcEmitterNode = self->_skcEmitterNode;
@@ -1166,8 +1166,8 @@ LABEL_15:
 {
   if (self->_skcEmitterNode)
   {
-    v3 = [(SKEmitterNode *)self targetNode];
-    if (v3)
+    targetNode = [(SKEmitterNode *)self targetNode];
+    if (targetNode)
     {
       skcEmitterNode = self->_skcEmitterNode;
       WeakRetained = objc_loadWeakRetained(skcEmitterNode + 71);
@@ -1263,42 +1263,42 @@ LABEL_15:
   return v12;
 }
 
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)Mutable
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)Mutable
 {
   keys[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v55 = a4;
-  if ([v9 isEqualToString:@"particleTexture"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"particleTexture"])
   {
-    Mutable = [v55 particleTexture];
+    Mutable = [objectCopy particleTexture];
 
     if (Mutable)
     {
-      v10 = [v55 particleTexture];
-      v11 = [v10 CGImage];
+      particleTexture = [objectCopy particleTexture];
+      cGImage = [particleTexture CGImage];
 
-      if (v11)
+      if (cGImage)
       {
         v12 = *MEMORY[0x277CE1E10];
-        v13 = [*MEMORY[0x277CE1E10] identifier];
+        identifier = [*MEMORY[0x277CE1E10] identifier];
         valuePtr = 1065353216;
         Mutable = CFDataCreateMutable(0, 0);
-        v14 = CGImageDestinationCreateWithData(Mutable, v13, 1uLL, 0);
+        v14 = CGImageDestinationCreateWithData(Mutable, identifier, 1uLL, 0);
         v15 = *MEMORY[0x277CBECE8];
         v16 = CFNumberCreate(*MEMORY[0x277CBECE8], kCFNumberFloatType, &valuePtr);
         keys[0] = *MEMORY[0x277CD2D48];
         values[0] = v16;
         v17 = CFDictionaryCreate(v15, keys, values, 1, 0, 0);
-        CGImageDestinationAddImage(v14, v11, v17);
+        CGImageDestinationAddImage(v14, cGImage, v17);
         CGImageDestinationFinalize(v14);
         CFRelease(v17);
         CFRelease(v16);
         CFRelease(v14);
 
         v59 = @"propertyFormat";
-        v18 = [v12 identifier];
-        v60 = v18;
-        *a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
+        identifier2 = [v12 identifier];
+        v60 = identifier2;
+        *options = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
       }
 
       else
@@ -1306,27 +1306,27 @@ LABEL_15:
         Mutable = 0;
       }
 
-      CGImageRelease(v11);
+      CGImageRelease(cGImage);
     }
 
     goto LABEL_67;
   }
 
-  if (![v9 isEqualToString:@"particleColor"])
+  if (![nameCopy isEqualToString:@"particleColor"])
   {
-    if ([v9 isEqualToString:@"visualRepresentation"])
+    if ([nameCopy isEqualToString:@"visualRepresentation"])
     {
-      Mutable = [v55 createDebugHierarchyVisualRepresentation];
+      Mutable = [objectCopy createDebugHierarchyVisualRepresentation];
       v57 = @"propertyFormat";
-      v27 = [*MEMORY[0x277CE1E10] identifier];
-      v58 = v27;
-      *a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
+      identifier3 = [*MEMORY[0x277CE1E10] identifier];
+      v58 = identifier3;
+      *options = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
 
       goto LABEL_67;
     }
 
-    v28 = v55;
-    v29 = v9;
+    v28 = objectCopy;
+    v29 = nameCopy;
     if ([(NSString *)v29 length])
     {
       NSSelectorFromString(v29);
@@ -1347,18 +1347,18 @@ LABEL_66:
       {
         if ([(NSString *)v29 length]< 2)
         {
-          v42 = [(NSString *)v29 uppercaseString];
+          uppercaseString = [(NSString *)v29 uppercaseString];
         }
 
         else
         {
           v39 = [(NSString *)v29 substringToIndex:1];
-          v40 = [v39 uppercaseString];
+          uppercaseString2 = [v39 uppercaseString];
           v41 = [(NSString *)v29 substringFromIndex:1];
-          v42 = [v40 stringByAppendingString:v41];
+          uppercaseString = [uppercaseString2 stringByAppendingString:v41];
         }
 
-        v43 = [@"is" stringByAppendingString:v42];
+        v43 = [@"is" stringByAppendingString:uppercaseString];
         NSSelectorFromString(v43);
         if (objc_opt_respondsToSelector())
         {
@@ -1426,14 +1426,14 @@ LABEL_66:
     goto LABEL_66;
   }
 
-  v19 = [v55 particleColor];
-  v20 = [v19 CGColor];
-  if (v20)
+  particleColor = [objectCopy particleColor];
+  cGColor = [particleColor CGColor];
+  if (cGColor)
   {
     Mutable = CFDictionaryCreateMutable(0, 20, MEMORY[0x277CBED60], MEMORY[0x277CBF150]);
-    space = CGColorGetColorSpace(v20);
+    space = CGColorGetColorSpace(cGColor);
     value = CGColorSpaceCopyName(space);
-    NumberOfComponents = CGColorGetNumberOfComponents(v20);
+    NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
     v22 = NumberOfComponents << 32;
     v23 = NumberOfComponents;
     if (NumberOfComponents << 32)
@@ -1470,7 +1470,7 @@ LABEL_66:
       v24 = &stru_282E190D8;
     }
 
-    Components = CGColorGetComponents(v20);
+    Components = CGColorGetComponents(cGColor);
     v32 = malloc_type_malloc(v22 >> 29, 0x6004044C4A2DFuLL);
     v33 = v32;
     if (v22)

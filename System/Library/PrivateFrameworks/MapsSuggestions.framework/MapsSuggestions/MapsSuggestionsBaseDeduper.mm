@@ -1,6 +1,6 @@
 @interface MapsSuggestionsBaseDeduper
 + (BOOL)isEnabled;
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
 - (NSString)uniqueName;
 @end
 
@@ -13,10 +13,10 @@
   return [v2 description];
 }
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
-  v7 = a3;
-  v8 = a4;
+  entryCopy = entry;
+  withEntryCopy = withEntry;
   result = [(MapsSuggestionsBaseDeduper *)self doesNotRecognizeSelector:a2];
   __break(1u);
   return result;
@@ -24,7 +24,7 @@
 
 + (BOOL)isEnabled
 {
-  result = [a1 doesNotRecognizeSelector:a2];
+  result = [self doesNotRecognizeSelector:a2];
   __break(1u);
   return result;
 }

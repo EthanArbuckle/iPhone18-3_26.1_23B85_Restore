@@ -1,26 +1,26 @@
 @interface _SFPBProductAvailability
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBProductAvailability)initWithDictionary:(id)a3;
-- (_SFPBProductAvailability)initWithFacade:(id)a3;
-- (_SFPBProductAvailability)initWithJSON:(id)a3;
+- (_SFPBProductAvailability)initWithDictionary:(id)dictionary;
+- (_SFPBProductAvailability)initWithFacade:(id)facade;
+- (_SFPBProductAvailability)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)addResults:(id)a3;
-- (void)setResults:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addResults:(id)results;
+- (void)setResults:(id)results;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBProductAvailability
 
-- (_SFPBProductAvailability)initWithFacade:(id)a3
+- (_SFPBProductAvailability)initWithFacade:(id)facade
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBProductAvailability *)self init];
   if (v5)
   {
-    v6 = [v4 results];
-    if (v6)
+    results = [facadeCopy results];
+    if (results)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -34,8 +34,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v4 results];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    results2 = [facadeCopy results];
+    v9 = [results2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -46,7 +46,7 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(results2);
           }
 
           v13 = [[_SFPBProductInventoryResult alloc] initWithFacade:*(*(&v17 + 1) + 8 * i)];
@@ -56,7 +56,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [results2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -70,16 +70,16 @@
   return v5;
 }
 
-- (_SFPBProductAvailability)initWithDictionary:(id)a3
+- (_SFPBProductAvailability)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = _SFPBProductAvailability;
   v5 = [(_SFPBProductAvailability *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"results"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"results"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -130,30 +130,30 @@
   return v5;
 }
 
-- (_SFPBProductAvailability)initWithJSON:(id)a3
+- (_SFPBProductAvailability)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBProductAvailability *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBProductAvailability *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBProductAvailability *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -167,10 +167,10 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_results count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -190,16 +190,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -209,26 +209,26 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"results"];
+    [dictionary setObject:array forKeyedSubscript:@"results"];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBProductAvailability *)self results];
-    v6 = [v4 results];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    results = [(_SFPBProductAvailability *)self results];
+    results2 = [equalCopy results];
+    v7 = results2;
+    if ((results != 0) != (results2 == 0))
     {
-      v8 = [(_SFPBProductAvailability *)self results];
-      if (!v8)
+      results3 = [(_SFPBProductAvailability *)self results];
+      if (!results3)
       {
 
 LABEL_10:
@@ -236,10 +236,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBProductAvailability *)self results];
-      v11 = [v4 results];
-      v12 = [v10 isEqual:v11];
+      v9 = results3;
+      results4 = [(_SFPBProductAvailability *)self results];
+      results5 = [equalCopy results];
+      v12 = [results4 isEqual:results5];
 
       if (v12)
       {
@@ -258,16 +258,16 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBProductAvailability *)self results];
+  toCopy = to;
+  results = [(_SFPBProductAvailability *)self results];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [results countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -279,7 +279,7 @@ LABEL_8:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(results);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -288,7 +288,7 @@ LABEL_8:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [results countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -297,27 +297,27 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addResults:(id)a3
+- (void)addResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   results = self->_results;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!results)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_results;
-    self->_results = v6;
+    self->_results = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     results = self->_results;
   }
 
-  [(NSArray *)results addObject:v4];
+  [(NSArray *)results addObject:resultsCopy];
 }
 
-- (void)setResults:(id)a3
+- (void)setResults:(id)results
 {
-  v4 = [a3 copy];
+  v4 = [results copy];
   results = self->_results;
   self->_results = v4;
 

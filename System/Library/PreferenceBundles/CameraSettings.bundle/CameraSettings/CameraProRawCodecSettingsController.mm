@@ -1,13 +1,13 @@
 @interface CameraProRawCodecSettingsController
-+ (id)_fileEstimatesFooterForValues:(id)a3 rawFileFormatBehavior:(int64_t)a4;
-+ (id)_localizationKeyForFormatPreference:(int64_t)a3;
-+ (id)_localizationKeyForRawEncodingFormatPreference:(int64_t)a3;
-+ (id)_proRawFileFormatFooterForValues:(id)a3 selectedProRawFileFormatFormat:(id)a4;
-+ (id)proRawFileFormatPreferenceTitleForValue:(id)a3;
++ (id)_fileEstimatesFooterForValues:(id)values rawFileFormatBehavior:(int64_t)behavior;
++ (id)_localizationKeyForFormatPreference:(int64_t)preference;
++ (id)_localizationKeyForRawEncodingFormatPreference:(int64_t)preference;
++ (id)_proRawFileFormatFooterForValues:(id)values selectedProRawFileFormatFormat:(id)format;
++ (id)proRawFileFormatPreferenceTitleForValue:(id)value;
 + (id)selectedProRawFileFormat;
 - (id)specifiers;
-- (void)_setSelectedProRawFileFormat:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_setSelectedProRawFileFormat:(id)format;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CameraProRawCodecSettingsController
@@ -20,18 +20,18 @@
   {
     v5 = objc_alloc_init(NSMutableArray);
     v6 = +[CameraSettingsBaseController capabilities];
-    v7 = [v6 isProRawJpegXLSupported];
-    v8 = [objc_opt_class() selectedProRawFileFormat];
-    if (v7)
+    isProRawJpegXLSupported = [v6 isProRawJpegXLSupported];
+    selectedProRawFileFormat = [objc_opt_class() selectedProRawFileFormat];
+    if (isProRawJpegXLSupported)
     {
       v26 = v6;
       v27 = v3;
       v9 = [PSSpecifier groupSpecifierWithID:@"ProRawFileFormatGroupSpecifierID"];
-      v10 = [objc_opt_class() _proRawFileFormatPreferenceTitle];
-      [v9 setName:v10];
+      _proRawFileFormatPreferenceTitle = [objc_opt_class() _proRawFileFormatPreferenceTitle];
+      [v9 setName:_proRawFileFormatPreferenceTitle];
 
-      v28 = v8;
-      v11 = [objc_opt_class() _proRawFileFormatFooterForValues:&off_32188 selectedProRawFileFormatFormat:v8];
+      v28 = selectedProRawFileFormat;
+      v11 = [objc_opt_class() _proRawFileFormatFooterForValues:&off_32188 selectedProRawFileFormatFormat:selectedProRawFileFormat];
       [v9 setObject:v11 forKeyedSubscript:PSFooterTextGroupKey];
 
       [v9 setObject:&__kCFBooleanTrue forKeyedSubscript:PSIsRadioGroupKey];
@@ -87,7 +87,7 @@
       v6 = v26;
       v3 = v27;
       v5 = v12;
-      v8 = v28;
+      selectedProRawFileFormat = v28;
     }
 
     v23 = *&self->PSListController_opaque[v3];
@@ -99,27 +99,27 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = CameraProRawCodecSettingsController;
-  [(CameraProRawCodecSettingsController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
+  [(CameraProRawCodecSettingsController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
   v7 = [(CameraProRawCodecSettingsController *)self specifierForID:@"ProRawFileFormatGroupSpecifierID"];
   if (v7)
   {
     v8 = [(CameraProRawCodecSettingsController *)self indexPathForSpecifier:v7];
-    v9 = [v8 section];
+    section = [v8 section];
   }
 
   else
   {
-    v9 = -1;
+    section = -1;
   }
 
-  if ([v6 section] == v9)
+  if ([pathCopy section] == section)
   {
-    v10 = [(CameraProRawCodecSettingsController *)self specifierAtIndexPath:v6];
+    v10 = [(CameraProRawCodecSettingsController *)self specifierAtIndexPath:pathCopy];
     v11 = [v10 propertyForKey:PSValueKey];
     [(CameraProRawCodecSettingsController *)self _setSelectedProRawFileFormat:v11];
   }
@@ -144,24 +144,24 @@
   return v3;
 }
 
-- (void)_setSelectedProRawFileFormat:(id)a3
+- (void)_setSelectedProRawFileFormat:(id)format
 {
-  CFPreferencesSetAppValue(CAMUserPreferenceProRawFileFormatFormat, a3, @"com.apple.camera");
+  CFPreferencesSetAppValue(CAMUserPreferenceProRawFileFormatFormat, format, @"com.apple.camera");
 
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }
 
-+ (id)_fileEstimatesFooterForValues:(id)a3 rawFileFormatBehavior:(int64_t)a4
++ (id)_fileEstimatesFooterForValues:(id)values rawFileFormatBehavior:(int64_t)behavior
 {
-  v6 = a3;
+  valuesCopy = values;
   v7 = [[NSMutableString alloc] initWithString:@"\n\n"];
   v8 = &stru_2DB58;
-  if (a4 == 1)
+  if (behavior == 1)
   {
     v8 = @"_JPEG_XL_LOSSLESS";
   }
 
-  if (a4 == 2)
+  if (behavior == 2)
   {
     v9 = @"_JPEG_XL_LOSSY";
   }
@@ -179,7 +179,7 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v6;
+  v11 = valuesCopy;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
@@ -194,9 +194,9 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v23 + 1) + 8 * i) integerValue];
-        v17 = [a1 _localizationKeyForFormatPreference:v16];
-        if ((v16 - 3) <= 1)
+        integerValue = [*(*(&v23 + 1) + 8 * i) integerValue];
+        v17 = [self _localizationKeyForFormatPreference:integerValue];
+        if ((integerValue - 3) <= 1)
         {
           v18 = [NSString stringWithFormat:@"CAM_SECONDARY_PHOTO_FORMAT_FOOTER_%@%@", v17, v9];
           if (v18)
@@ -217,19 +217,19 @@
   return v22;
 }
 
-+ (id)_localizationKeyForFormatPreference:(int64_t)a3
++ (id)_localizationKeyForFormatPreference:(int64_t)preference
 {
-  if (a3 == 4)
+  if (preference == 4)
   {
     return @"RAW48";
   }
 
-  if (a3 == 3)
+  if (preference == 3)
   {
     return @"RAW12";
   }
 
-  if (a3 != 2)
+  if (preference != 2)
   {
     return &stru_2DB58;
   }
@@ -242,39 +242,39 @@
   return @"HEIF48";
 }
 
-+ (id)proRawFileFormatPreferenceTitleForValue:(id)a3
++ (id)proRawFileFormatPreferenceTitleForValue:(id)value
 {
-  v3 = [a1 _localizationKeyForRawEncodingFormatPreference:{objc_msgSend(a3, "integerValue")}];
+  v3 = [self _localizationKeyForRawEncodingFormatPreference:{objc_msgSend(value, "integerValue")}];
   v4 = [NSString stringWithFormat:@"CAM_PRO_RAW_ENCODING_%@", v3];
   v5 = sub_13388(v4);
 
   return v5;
 }
 
-+ (id)_localizationKeyForRawEncodingFormatPreference:(int64_t)a3
++ (id)_localizationKeyForRawEncodingFormatPreference:(int64_t)preference
 {
-  if (a3 > 2)
+  if (preference > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_2CE18 + a3);
+    return *(&off_2CE18 + preference);
   }
 }
 
-+ (id)_proRawFileFormatFooterForValues:(id)a3 selectedProRawFileFormatFormat:(id)a4
++ (id)_proRawFileFormatFooterForValues:(id)values selectedProRawFileFormatFormat:(id)format
 {
-  v5 = a4;
-  v6 = a3;
+  formatCopy = format;
+  valuesCopy = values;
   v7 = sub_13388(@"CAM_PRO_RAW_ENCODING_FOOTER");
   v8 = [NSMutableString stringWithString:v7];
 
   v9 = objc_opt_class();
-  v10 = [v5 integerValue];
+  integerValue = [formatCopy integerValue];
 
-  v11 = [v9 _fileEstimatesFooterForValues:v6 rawFileFormatBehavior:v10];
+  v11 = [v9 _fileEstimatesFooterForValues:valuesCopy rawFileFormatBehavior:integerValue];
 
   [v8 appendString:v11];
 

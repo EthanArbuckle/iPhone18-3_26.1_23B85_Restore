@@ -1,26 +1,26 @@
 @interface AWDProactiveModelFittingEvaluation
-- (BOOL)isEqual:(id)a3;
-- (float)precisionAtK:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)precisionAtK:(unint64_t)k;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPrecisionAtK:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPrecisionAtK:(id)k;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveModelFittingEvaluation
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4[6])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[6])
   {
-    self->_timestamp = v4[1];
+    self->_timestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 
@@ -118,24 +118,24 @@
   return v6 ^ [(NSMutableArray *)self->_precisionAtKs hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -143,13 +143,13 @@ LABEL_15:
   }
 
   modelInfo = self->_modelInfo;
-  if (modelInfo | *(v4 + 4) && ![(AWDProactiveModelFittingModelInfo *)modelInfo isEqual:?])
+  if (modelInfo | *(equalCopy + 4) && ![(AWDProactiveModelFittingModelInfo *)modelInfo isEqual:?])
   {
     goto LABEL_15;
   }
 
   minibatchStats = self->_minibatchStats;
-  if (minibatchStats | *(v4 + 3))
+  if (minibatchStats | *(equalCopy + 3))
   {
     if (![(AWDProactiveModelFittingMinibatchStats *)minibatchStats isEqual:?])
     {
@@ -158,7 +158,7 @@ LABEL_15:
   }
 
   evaluationMetrics = self->_evaluationMetrics;
-  if (evaluationMetrics | *(v4 + 2))
+  if (evaluationMetrics | *(equalCopy + 2))
   {
     if (![(AWDProactiveModelFittingEvalMetrics *)evaluationMetrics isEqual:?])
     {
@@ -167,7 +167,7 @@ LABEL_15:
   }
 
   precisionAtKs = self->_precisionAtKs;
-  if (precisionAtKs | *(v4 + 5))
+  if (precisionAtKs | *(equalCopy + 5))
   {
     v10 = [(NSMutableArray *)precisionAtKs isEqual:?];
   }
@@ -182,10 +182,10 @@ LABEL_16:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -193,15 +193,15 @@ LABEL_16:
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copyWithZone:a3];
+  v7 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(AWDProactiveModelFittingMinibatchStats *)self->_minibatchStats copyWithZone:a3];
+  v9 = [(AWDProactiveModelFittingMinibatchStats *)self->_minibatchStats copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
-  v11 = [(AWDProactiveModelFittingEvalMetrics *)self->_evaluationMetrics copyWithZone:a3];
+  v11 = [(AWDProactiveModelFittingEvalMetrics *)self->_evaluationMetrics copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
@@ -225,7 +225,7 @@ LABEL_16:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{a3, v21}];
+        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{zone, v21}];
         [v6 addPrecisionAtK:v18];
 
         ++v17;
@@ -242,19 +242,19 @@ LABEL_16:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 48) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 48) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_modelInfo)
   {
-    [v4 setModelInfo:?];
+    [toCopy setModelInfo:?];
   }
 
   if (self->_minibatchStats)
@@ -270,10 +270,10 @@ LABEL_16:
   if ([(AWDProactiveModelFittingEvaluation *)self precisionAtKsCount])
   {
     [v9 clearPrecisionAtKs];
-    v5 = [(AWDProactiveModelFittingEvaluation *)self precisionAtKsCount];
-    if (v5)
+    precisionAtKsCount = [(AWDProactiveModelFittingEvaluation *)self precisionAtKsCount];
+    if (precisionAtKsCount)
     {
-      v6 = v5;
+      v6 = precisionAtKsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(AWDProactiveModelFittingEvaluation *)self precisionAtKAtIndex:i];
@@ -283,10 +283,10 @@ LABEL_16:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -346,32 +346,32 @@ LABEL_16:
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   modelInfo = self->_modelInfo;
   if (modelInfo)
   {
-    v6 = [(AWDProactiveModelFittingModelInfo *)modelInfo dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"modelInfo"];
+    dictionaryRepresentation = [(AWDProactiveModelFittingModelInfo *)modelInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"modelInfo"];
   }
 
   minibatchStats = self->_minibatchStats;
   if (minibatchStats)
   {
-    v8 = [(AWDProactiveModelFittingMinibatchStats *)minibatchStats dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"minibatchStats"];
+    dictionaryRepresentation2 = [(AWDProactiveModelFittingMinibatchStats *)minibatchStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"minibatchStats"];
   }
 
   evaluationMetrics = self->_evaluationMetrics;
   if (evaluationMetrics)
   {
-    v10 = [(AWDProactiveModelFittingEvalMetrics *)evaluationMetrics dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"evaluationMetrics"];
+    dictionaryRepresentation3 = [(AWDProactiveModelFittingEvalMetrics *)evaluationMetrics dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"evaluationMetrics"];
   }
 
   if ([(NSMutableArray *)self->_precisionAtKs count])
@@ -396,8 +396,8 @@ LABEL_16:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation4 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation4];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -406,12 +406,12 @@ LABEL_16:
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"precisionAtK"];
+    [dictionary setObject:v11 forKey:@"precisionAtK"];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -420,39 +420,39 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = AWDProactiveModelFittingEvaluation;
   v4 = [(AWDProactiveModelFittingEvaluation *)&v8 description];
-  v5 = [(AWDProactiveModelFittingEvaluation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveModelFittingEvaluation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addPrecisionAtK:(id)a3
+- (void)addPrecisionAtK:(id)k
 {
-  v4 = a3;
+  kCopy = k;
   precisionAtKs = self->_precisionAtKs;
-  v8 = v4;
+  v8 = kCopy;
   if (!precisionAtKs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_precisionAtKs;
     self->_precisionAtKs = v6;
 
-    v4 = v8;
+    kCopy = v8;
     precisionAtKs = self->_precisionAtKs;
   }
 
-  [(NSMutableArray *)precisionAtKs addObject:v4];
+  [(NSMutableArray *)precisionAtKs addObject:kCopy];
 }
 
-- (float)precisionAtK:(unint64_t)a3
+- (float)precisionAtK:(unint64_t)k
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(AWDProactiveModelFittingEvaluation *)self precisionAtKs];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  precisionAtKs = [(AWDProactiveModelFittingEvaluation *)self precisionAtKs];
+  v5 = [precisionAtKs countByEnumeratingWithState:&v14 objects:v18 count:16];
   v6 = -1.0;
   if (v5)
   {
@@ -464,11 +464,11 @@ LABEL_16:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(precisionAtKs);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if ([v10 k] == a3)
+        if ([v10 k] == k)
         {
           [v10 precision];
           v6 = v11;
@@ -476,7 +476,7 @@ LABEL_16:
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [precisionAtKs countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;

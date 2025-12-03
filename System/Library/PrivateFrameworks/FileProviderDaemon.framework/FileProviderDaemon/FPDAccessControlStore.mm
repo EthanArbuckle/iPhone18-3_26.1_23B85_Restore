@@ -1,20 +1,20 @@
 @interface FPDAccessControlStore
 + (id)sharedStore;
-- (BOOL)lookupLRUSignature:(id)a3;
+- (BOOL)lookupLRUSignature:(id)signature;
 - (FPDAccessControlStore)init;
-- (FPDAccessControlStore)initWithDatabaseBaseURL:(id)a3;
-- (id)bookmarkForItemID:(id)a3 consumerIdentifier:(id)a4;
-- (id)keyForBundleIdentifier:(id)a3 generateIfNotFound:(BOOL)a4 keyGenBlock:(id)a5;
-- (id)swift_bookmarkForItemID:(id)a3 consumerIdentifier:(id)a4 installSessionIdentifier:(id)a5;
-- (id)swift_parseUnverifiedBookmark:(id)a3;
-- (id)swift_verifyBookmark:(id)a3 consumerIdentifier:(id)a4 installSessionIdentifier:(id)a5;
-- (id)verifyBookmark:(id)a3 auditToken:(id *)a4 consumerIdentifier:(id)a5;
-- (void)addLRUSignature:(id)a3;
+- (FPDAccessControlStore)initWithDatabaseBaseURL:(id)l;
+- (id)bookmarkForItemID:(id)d consumerIdentifier:(id)identifier;
+- (id)keyForBundleIdentifier:(id)identifier generateIfNotFound:(BOOL)found keyGenBlock:(id)block;
+- (id)swift_bookmarkForItemID:(id)d consumerIdentifier:(id)identifier installSessionIdentifier:(id)sessionIdentifier;
+- (id)swift_parseUnverifiedBookmark:(id)bookmark;
+- (id)swift_verifyBookmark:(id)bookmark consumerIdentifier:(id)identifier installSessionIdentifier:(id)sessionIdentifier;
+- (id)verifyBookmark:(id)bookmark auditToken:(id *)token consumerIdentifier:(id)identifier;
+- (void)addLRUSignature:(id)signature;
 - (void)dealloc;
 - (void)openDatabase;
-- (void)performWithDBConnection:(id)a3;
+- (void)performWithDBConnection:(id)connection;
 - (void)reopenDatabaseAfterUnlock;
-- (void)validateDatabase:(id)a3;
+- (void)validateDatabase:(id)database;
 @end
 
 @implementation FPDAccessControlStore
@@ -50,16 +50,16 @@ void __36__FPDAccessControlStore_sharedStore__block_invoke()
   return [(FPDAccessControlStore *)self initWithDatabaseBaseURL:v3];
 }
 
-- (FPDAccessControlStore)initWithDatabaseBaseURL:(id)a3
+- (FPDAccessControlStore)initWithDatabaseBaseURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = FPDAccessControlStore;
   v6 = [(FPDAccessControlStore *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_databaseBaseURL, a3);
+    objc_storeStrong(&v6->_databaseBaseURL, l);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("FPDAccessControlStore sync queue", v8);
     syncQueue = v7->_syncQueue;
@@ -92,29 +92,29 @@ void __36__FPDAccessControlStore_sharedStore__block_invoke()
   [(FPDAccessControlStore *)&v3 dealloc];
 }
 
-- (void)performWithDBConnection:(id)a3
+- (void)performWithDBConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(FPDAccessControlStore *)self syncQueue];
+  connectionCopy = connection;
+  syncQueue = [(FPDAccessControlStore *)self syncQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__FPDAccessControlStore_performWithDBConnection___block_invoke;
   v7[3] = &unk_1E83BF450;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = connectionCopy;
+  v6 = connectionCopy;
+  dispatch_sync(syncQueue, v7);
 }
 
 - (void)reopenDatabaseAfterUnlock
 {
-  v3 = [(FPDAccessControlStore *)self syncQueue];
+  syncQueue = [(FPDAccessControlStore *)self syncQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__FPDAccessControlStore_reopenDatabaseAfterUnlock__block_invoke;
   block[3] = &unk_1E83BE068;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(syncQueue, block);
 }
 
 uint64_t __50__FPDAccessControlStore_reopenDatabaseAfterUnlock__block_invoke(uint64_t a1)
@@ -131,27 +131,27 @@ uint64_t __50__FPDAccessControlStore_reopenDatabaseAfterUnlock__block_invoke(uin
 - (void)openDatabase
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = [a1 fp_prettyDescription];
+  fp_prettyDescription = [self fp_prettyDescription];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_4_5(&dword_1CEFC7000, v2, v3, "[ERROR] Cannot open access control database. Error: %@", v4, v5, v6, v7, v9);
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)validateDatabase:(id)a3
+- (void)validateDatabase:(id)database
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userVersion];
-  if (!v5)
+  databaseCopy = database;
+  userVersion = [databaseCopy userVersion];
+  if (!userVersion)
   {
-    v6 = [v4 lastError];
-    v7 = [v6 domain];
-    if ([v7 isEqualToString:*MEMORY[0x1E69E5948]])
+    lastError = [databaseCopy lastError];
+    domain = [lastError domain];
+    if ([domain isEqualToString:*MEMORY[0x1E69E5948]])
     {
-      v8 = [v6 code];
+      code = [lastError code];
 
-      if (v8 == 11)
+      if (code == 11)
       {
         v9 = fp_current_or_default_log();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -159,8 +159,8 @@ uint64_t __50__FPDAccessControlStore_reopenDatabaseAfterUnlock__block_invoke(uin
           [FPDAccessControlStore validateDatabase:];
         }
 
-        v28 = v6;
-        v10 = [v4 destroyDatabaseWithError:&v28];
+        v28 = lastError;
+        v10 = [databaseCopy destroyDatabaseWithError:&v28];
         v11 = v28;
 
         if ((v10 & 1) == 0)
@@ -174,8 +174,8 @@ uint64_t __50__FPDAccessControlStore_reopenDatabaseAfterUnlock__block_invoke(uin
           abort();
         }
 
-        v5 = &unk_1F4C62A18;
-        v6 = v11;
+        userVersion = &unk_1F4C62A18;
+        lastError = v11;
         goto LABEL_10;
       }
     }
@@ -184,17 +184,17 @@ uint64_t __50__FPDAccessControlStore_reopenDatabaseAfterUnlock__block_invoke(uin
     {
     }
 
-    v5 = 0;
+    userVersion = 0;
 LABEL_10:
   }
 
-  v12 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [userVersion unsignedIntegerValue];
   v13 = [(NSURL *)self->_databaseBaseURL URLByAppendingPathExtension:@"plist"];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
-  v27 = v12;
-  if (v12 <= 3)
+  v27 = unsignedIntegerValue;
+  if (unsignedIntegerValue <= 3)
   {
     v14 = MEMORY[0x1E69E9820];
     do
@@ -216,7 +216,7 @@ LABEL_10:
       v21[3] = &unk_1E83BF5D8;
       v23 = &v24;
       v22 = v13;
-      v17 = [v4 performWithFlags:10 action:v21];
+      v17 = [databaseCopy performWithFlags:10 action:v21];
 
       if (!v17)
       {
@@ -231,7 +231,7 @@ LABEL_10:
   }
 
   _Block_object_dispose(&v24, 8);
-  [v4 performWithFlags:0 action:&__block_literal_global_35];
+  [databaseCopy performWithFlags:0 action:&__block_literal_global_35];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -293,10 +293,10 @@ uint64_t __42__FPDAccessControlStore_validateDatabase___block_invoke_33(uint64_t
   return v3;
 }
 
-- (id)keyForBundleIdentifier:(id)a3 generateIfNotFound:(BOOL)a4 keyGenBlock:(id)a5
+- (id)keyForBundleIdentifier:(id)identifier generateIfNotFound:(BOOL)found keyGenBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  blockCopy = block;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -307,10 +307,10 @@ uint64_t __42__FPDAccessControlStore_validateDatabase___block_invoke_33(uint64_t
   v14[1] = 3221225472;
   v14[2] = __79__FPDAccessControlStore_keyForBundleIdentifier_generateIfNotFound_keyGenBlock___block_invoke;
   v14[3] = &unk_1E83BF648;
-  v10 = v8;
+  v10 = identifierCopy;
   v15 = v10;
-  v18 = a4;
-  v11 = v9;
+  foundCopy = found;
+  v11 = blockCopy;
   v16 = v11;
   v17 = &v19;
   [(FPDAccessControlStore *)self performWithDBConnection:v14];
@@ -371,26 +371,26 @@ LABEL_8:
   return v9;
 }
 
-- (id)bookmarkForItemID:(id)a3 consumerIdentifier:(id)a4
+- (id)bookmarkForItemID:(id)d consumerIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:v7 allowPlaceholder:0 error:0];
+  dCopy = d;
+  identifierCopy = identifier;
+  v8 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:0];
   v9 = containingApplicationRecord(v8);
 
   if (v9)
   {
-    if (checkBundleRecord(v9, v7))
+    if (checkBundleRecord(v9, identifierCopy))
     {
       v10 = fp_current_or_default_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        [(FPDAccessControlStore *)v6 bookmarkForItemID:v9 consumerIdentifier:v10];
+        [(FPDAccessControlStore *)dCopy bookmarkForItemID:v9 consumerIdentifier:v10];
       }
 
-      v11 = [v9 bundleIdentifier];
-      v12 = [v9 installSessionIdentifier];
-      v13 = [(FPDAccessControlStore *)self swift_bookmarkForItemID:v6 consumerIdentifier:v11 installSessionIdentifier:v12];
+      bundleIdentifier = [v9 bundleIdentifier];
+      installSessionIdentifier = [v9 installSessionIdentifier];
+      v13 = [(FPDAccessControlStore *)self swift_bookmarkForItemID:dCopy consumerIdentifier:bundleIdentifier installSessionIdentifier:installSessionIdentifier];
     }
 
     else
@@ -407,25 +407,25 @@ LABEL_8:
       [FPDAccessControlStore bookmarkForItemID:consumerIdentifier:];
     }
 
-    v13 = [(FPDAccessControlStore *)self swift_bookmarkForItemID:v6 consumerIdentifier:v7 installSessionIdentifier:0];
+    v13 = [(FPDAccessControlStore *)self swift_bookmarkForItemID:dCopy consumerIdentifier:identifierCopy installSessionIdentifier:0];
   }
 
   return v13;
 }
 
-- (id)verifyBookmark:(id)a3 auditToken:(id *)a4 consumerIdentifier:(id)a5
+- (id)verifyBookmark:(id)bookmark auditToken:(id *)token consumerIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = *&a4->var0[4];
-  v19[0] = *a4->var0;
+  bookmarkCopy = bookmark;
+  identifierCopy = identifier;
+  v10 = *&token->var0[4];
+  v19[0] = *token->var0;
   v19[1] = v10;
   v11 = [MEMORY[0x1E6963620] bundleRecordForAuditToken:v19 error:0];
   v12 = containingApplicationRecord(v11);
 
   if (v12)
   {
-    if (checkBundleRecord(v12, v9))
+    if (checkBundleRecord(v12, identifierCopy))
     {
       v13 = fp_current_or_default_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -433,9 +433,9 @@ LABEL_8:
         [FPDAccessControlStore verifyBookmark:v12 auditToken:v13 consumerIdentifier:?];
       }
 
-      v14 = [v12 bundleIdentifier];
-      v15 = [v12 installSessionIdentifier];
-      v16 = [(FPDAccessControlStore *)self swift_verifyBookmark:v8 consumerIdentifier:v14 installSessionIdentifier:v15];
+      bundleIdentifier = [v12 bundleIdentifier];
+      installSessionIdentifier = [v12 installSessionIdentifier];
+      v16 = [(FPDAccessControlStore *)self swift_verifyBookmark:bookmarkCopy consumerIdentifier:bundleIdentifier installSessionIdentifier:installSessionIdentifier];
     }
 
     else
@@ -452,15 +452,15 @@ LABEL_8:
       [FPDAccessControlStore verifyBookmark:auditToken:consumerIdentifier:];
     }
 
-    v16 = [(FPDAccessControlStore *)self swift_verifyBookmark:v8 consumerIdentifier:v9 installSessionIdentifier:0];
+    v16 = [(FPDAccessControlStore *)self swift_verifyBookmark:bookmarkCopy consumerIdentifier:identifierCopy installSessionIdentifier:0];
   }
 
   return v16;
 }
 
-- (BOOL)lookupLRUSignature:(id)a3
+- (BOOL)lookupLRUSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -469,7 +469,7 @@ LABEL_8:
   v7[1] = 3221225472;
   v7[2] = __44__FPDAccessControlStore_lookupLRUSignature___block_invoke;
   v7[3] = &unk_1E83BF698;
-  v5 = v4;
+  v5 = signatureCopy;
   v8 = v5;
   v9 = &v10;
   [(FPDAccessControlStore *)self performWithDBConnection:v7];
@@ -503,15 +503,15 @@ uint64_t __44__FPDAccessControlStore_lookupLRUSignature___block_invoke_2(uint64_
   return 1;
 }
 
-- (void)addLRUSignature:(id)a3
+- (void)addLRUSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__FPDAccessControlStore_addLRUSignature___block_invoke;
   v6[3] = &unk_1E83BF6E8;
-  v7 = v4;
-  v5 = v4;
+  v7 = signatureCopy;
+  v5 = signatureCopy;
   [(FPDAccessControlStore *)self performWithDBConnection:v6];
 }
 
@@ -525,16 +525,16 @@ void __41__FPDAccessControlStore_addLRUSignature___block_invoke(uint64_t a1, voi
   [a2 performWithFlags:0 action:v3];
 }
 
-- (id)swift_bookmarkForItemID:(id)a3 consumerIdentifier:(id)a4 installSessionIdentifier:(id)a5
+- (id)swift_bookmarkForItemID:(id)d consumerIdentifier:(id)identifier installSessionIdentifier:(id)sessionIdentifier
 {
   v8 = _sSo28NSFileProviderItemIdentifiera04FileB6DaemonE15parseableStringSSvg_0();
   v10 = v9;
-  v11 = a3;
-  v12 = self;
-  if (a5)
+  dCopy = d;
+  selfCopy = self;
+  if (sessionIdentifier)
   {
-    v13 = a5;
-    a5 = sub_1CF9E5B88();
+    sessionIdentifierCopy = sessionIdentifier;
+    sessionIdentifier = sub_1CF9E5B88();
     v15 = v14;
   }
 
@@ -543,9 +543,9 @@ void __41__FPDAccessControlStore_addLRUSignature___block_invoke(uint64_t a1, voi
     v15 = 0xF000000000000000;
   }
 
-  FPDAccessControlStore.swift_bookmark(for:consumerIdentifier:installSessionIdentifier:)(a3, v8, v10, a5, v15);
+  FPDAccessControlStore.swift_bookmark(for:consumerIdentifier:installSessionIdentifier:)(d, v8, v10, sessionIdentifier, v15);
   v17 = v16;
-  sub_1CEFE48D8(a5, v15);
+  sub_1CEFE48D8(sessionIdentifier, v15);
 
   if (v17)
   {
@@ -560,17 +560,17 @@ void __41__FPDAccessControlStore_addLRUSignature___block_invoke(uint64_t a1, voi
   return v18;
 }
 
-- (id)swift_verifyBookmark:(id)a3 consumerIdentifier:(id)a4 installSessionIdentifier:(id)a5
+- (id)swift_verifyBookmark:(id)bookmark consumerIdentifier:(id)identifier installSessionIdentifier:(id)sessionIdentifier
 {
   v7 = _sSo28NSFileProviderItemIdentifiera04FileB6DaemonE15parseableStringSSvg_0();
   v9 = v8;
   v10 = _sSo28NSFileProviderItemIdentifiera04FileB6DaemonE15parseableStringSSvg_0();
   v12 = v11;
-  v13 = self;
-  if (a5)
+  selfCopy = self;
+  if (sessionIdentifier)
   {
-    v14 = a5;
-    a5 = sub_1CF9E5B88();
+    sessionIdentifierCopy = sessionIdentifier;
+    sessionIdentifier = sub_1CF9E5B88();
     v16 = v15;
   }
 
@@ -579,17 +579,17 @@ void __41__FPDAccessControlStore_addLRUSignature___block_invoke(uint64_t a1, voi
     v16 = 0xF000000000000000;
   }
 
-  v17 = sub_1CF711874(v7, v9, v10, v12, a5, v16);
-  sub_1CEFE48D8(a5, v16);
+  v17 = sub_1CF711874(v7, v9, v10, v12, sessionIdentifier, v16);
+  sub_1CEFE48D8(sessionIdentifier, v16);
 
   return v17;
 }
 
-- (id)swift_parseUnverifiedBookmark:(id)a3
+- (id)swift_parseUnverifiedBookmark:(id)bookmark
 {
   v4 = _sSo28NSFileProviderItemIdentifiera04FileB6DaemonE15parseableStringSSvg_0();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1CF71290C(v4, v6, v13);
 
   if (v13[1])

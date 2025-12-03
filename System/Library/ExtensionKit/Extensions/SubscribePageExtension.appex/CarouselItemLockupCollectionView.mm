@@ -1,13 +1,13 @@
 @interface CarouselItemLockupCollectionView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC22SubscribePageExtension32CarouselItemLockupCollectionView)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension32CarouselItemLockupCollectionView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC22SubscribePageExtension32CarouselItemLockupCollectionView)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension32CarouselItemLockupCollectionView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CarouselItemLockupCollectionView
 
-- (_TtC22SubscribePageExtension32CarouselItemLockupCollectionView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension32CarouselItemLockupCollectionView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension32CarouselItemLockupCollectionView_artworkViews) = _swiftEmptyArrayStorage;
   v4 = OBJC_IVAR____TtC22SubscribePageExtension32CarouselItemLockupCollectionView____lazy_storage___artworkViewPool;
@@ -28,16 +28,16 @@
   sub_100382578(v4);
   sub_10000C888(v4, v4[3]);
   sub_1007477B4();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   sub_100751244();
 
   sub_10000C620(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
-  v4 = [(CarouselItemLockupCollectionView *)v3 traitCollection];
+  selfCopy = self;
+  traitCollection = [(CarouselItemLockupCollectionView *)selfCopy traitCollection];
   sub_100382578(v11);
   sub_10000C888(v11, v11[3]);
   sub_100751254();
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (_TtC22SubscribePageExtension32CarouselItemLockupCollectionView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension32CarouselItemLockupCollectionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

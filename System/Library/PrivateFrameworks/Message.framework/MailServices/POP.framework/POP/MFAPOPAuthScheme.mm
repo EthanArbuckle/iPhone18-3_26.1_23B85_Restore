@@ -1,8 +1,8 @@
 @interface MFAPOPAuthScheme
 + (void)initialize;
-- (BOOL)canAuthenticateAccountClass:(Class)a3 connection:(id)a4;
-- (BOOL)supportsAccountType:(id)a3;
-- (Class)connectionClassForAccountClass:(Class)a3;
+- (BOOL)canAuthenticateAccountClass:(Class)class connection:(id)connection;
+- (BOOL)supportsAccountType:(id)type;
+- (Class)connectionClassForAccountClass:(Class)class;
 @end
 
 @implementation MFAPOPAuthScheme
@@ -15,17 +15,17 @@
   {
     v4 = MEMORY[0x277D07070];
 
-    [v4 registerSchemeClass:a1];
+    [v4 registerSchemeClass:self];
   }
 }
 
-- (BOOL)supportsAccountType:(id)a3
+- (BOOL)supportsAccountType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  typeCopy = type;
+  v4 = typeCopy;
+  if (typeCopy)
   {
-    v5 = [v3 isEqualToString:@"pop"];
+    v5 = [typeCopy isEqualToString:@"pop"];
   }
 
   else
@@ -36,10 +36,10 @@
   return v5;
 }
 
-- (Class)connectionClassForAccountClass:(Class)a3
+- (Class)connectionClassForAccountClass:(Class)class
 {
-  v3 = [(objc_class *)a3 saslProfileName];
-  v4 = [v3 isEqualToString:@"pop"];
+  saslProfileName = [(objc_class *)class saslProfileName];
+  v4 = [saslProfileName isEqualToString:@"pop"];
 
   if (v4)
   {
@@ -54,16 +54,16 @@
   return v5;
 }
 
-- (BOOL)canAuthenticateAccountClass:(Class)a3 connection:(id)a4
+- (BOOL)canAuthenticateAccountClass:(Class)class connection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = MFAPOPAuthScheme;
-  v7 = [(ECAuthenticationScheme *)&v10 canAuthenticateAccountClass:a3 connection:v6];
+  v7 = [(ECAuthenticationScheme *)&v10 canAuthenticateAccountClass:class connection:connectionCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7 & [v6 supportsAPOP];
+    v8 = v7 & [connectionCopy supportsAPOP];
   }
 
   else

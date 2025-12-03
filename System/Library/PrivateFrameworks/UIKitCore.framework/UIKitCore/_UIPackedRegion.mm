@@ -1,19 +1,19 @@
 @interface _UIPackedRegion
-- (BOOL)_isBoundaryCrossedFromPoint:(const double *)a3 toPoint:(const double *)a4;
-- (BOOL)isEqual:(id)a3;
-- (_UIPackedRegion)initWithCoder:(id)a3;
-- (_UIPackedRegion)initWithDimensions:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_closestPoint:(double *)a3 toPoint:(const double *)a4;
-- (void)_setRegions:(id)a3;
+- (BOOL)_isBoundaryCrossedFromPoint:(const double *)point toPoint:(const double *)toPoint;
+- (BOOL)isEqual:(id)equal;
+- (_UIPackedRegion)initWithCoder:(id)coder;
+- (_UIPackedRegion)initWithDimensions:(unint64_t)dimensions;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_closestPoint:(double *)point toPoint:(const double *)toPoint;
+- (void)_setRegions:(id)regions;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _UIPackedRegion
 
-- (_UIPackedRegion)initWithDimensions:(unint64_t)a3
+- (_UIPackedRegion)initWithDimensions:(unint64_t)dimensions
 {
   v9.receiver = self;
   v9.super_class = _UIPackedRegion;
@@ -23,7 +23,7 @@
   {
     regions = v4->__regions;
     v7 = MEMORY[0x1E695E0F0];
-    v4->__dimensions = a3;
+    v4->__dimensions = dimensions;
     v4->__regions = v7;
   }
 
@@ -41,18 +41,18 @@
   [(_UIPackedRegion *)&v5 dealloc];
 }
 
-- (void)_setRegions:(id)a3
+- (void)_setRegions:(id)regions
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->__regions != v5)
+  regionsCopy = regions;
+  v6 = regionsCopy;
+  if (self->__regions != regionsCopy)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [(NSArray *)v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v7 = [(NSArray *)regionsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = v7;
@@ -83,8 +83,8 @@
 
     if (v9 != self->__dimensions)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"_UIHyperregion.m" lineNumber:1430 description:{@"Tried to set _regions %@ with unequal total dimensions %lu to %@ (%lu)", v6, v9, self, self->__dimensions}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHyperregion.m" lineNumber:1430 description:{@"Tried to set _regions %@ with unequal total dimensions %lu to %@ (%lu)", v6, v9, self, self->__dimensions}];
     }
 
     [(_UIPackedRegion *)self willChangeValueForKey:@"_regions"];
@@ -104,15 +104,15 @@
   }
 }
 
-- (void)_closestPoint:(double *)a3 toPoint:(const double *)a4
+- (void)_closestPoint:(double *)point toPoint:(const double *)toPoint
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(_UIPackedRegion *)self _regions];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _regions = [(_UIPackedRegion *)self _regions];
+  v7 = [_regions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -124,30 +124,30 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_regions);
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
-        [v12 _closestPoint:&a3[v9] toPoint:&a4[v9]];
+        [v12 _closestPoint:&point[v9] toPoint:&toPoint[v9]];
         v9 += [v12 _dimensions];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [_regions countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 }
 
-- (BOOL)_isBoundaryCrossedFromPoint:(const double *)a3 toPoint:(const double *)a4
+- (BOOL)_isBoundaryCrossedFromPoint:(const double *)point toPoint:(const double *)toPoint
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(_UIPackedRegion *)self _regions];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _regions = [(_UIPackedRegion *)self _regions];
+  v7 = [_regions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -159,11 +159,11 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_regions);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if (_UIHyperregionIsBoundaryCrossedFromPointToPoint(v12, &a3[v9], &a4[v9]))
+        if (_UIHyperregionIsBoundaryCrossedFromPointToPoint(v12, &point[v9], &toPoint[v9]))
         {
           v13 = 1;
           goto LABEL_11;
@@ -172,7 +172,7 @@
         v9 += [v12 _dimensions];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [_regions countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -188,51 +188,51 @@ LABEL_11:
   return v13;
 }
 
-- (_UIPackedRegion)initWithCoder:(id)a3
+- (_UIPackedRegion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[_UIPackedRegion initWithDimensions:](self, "initWithDimensions:", [v4 decodeIntegerForKey:@"_dimensions"]);
+  coderCopy = coder;
+  v5 = -[_UIPackedRegion initWithDimensions:](self, "initWithDimensions:", [coderCopy decodeIntegerForKey:@"_dimensions"]);
   v6 = _UIHyperregionClasses();
   v7 = [v6 setByAddingObject:objc_opt_class()];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"_regions"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"_regions"];
 
   [(_UIPackedRegion *)v5 _setRegions:v8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dimensions = self->__dimensions;
-  v5 = a3;
-  [v5 encodeInteger:dimensions forKey:@"_dimensions"];
-  [v5 encodeObject:self->__regions forKey:@"_regions"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:dimensions forKey:@"_dimensions"];
+  [coderCopy encodeObject:self->__regions forKey:@"_regions"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_UIPackedRegion alloc] initWithDimensions:[(_UIPackedRegion *)self _dimensions]];
   v5 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v6 = [(_UIPackedRegion *)self _regions];
-  v7 = [v5 initWithArray:v6 copyItems:1];
+  _regions = [(_UIPackedRegion *)self _regions];
+  v7 = [v5 initWithArray:_regions copyItems:1];
   [(_UIPackedRegion *)v4 _setRegions:v7];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_UIPackedRegion *)self _dimensions];
-    if (v6 == [v5 _dimensions])
+    v5 = equalCopy;
+    _dimensions = [(_UIPackedRegion *)self _dimensions];
+    if (_dimensions == [v5 _dimensions])
     {
-      v7 = [(_UIPackedRegion *)self _regions];
-      v8 = [v5 _regions];
-      v9 = v7;
-      v10 = v8;
+      _regions = [(_UIPackedRegion *)self _regions];
+      _regions2 = [v5 _regions];
+      v9 = _regions;
+      v10 = _regions2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -263,11 +263,11 @@ LABEL_11:
   return v12;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (_UIPackedRegionRegionsObservationContext == a6)
+  if (_UIPackedRegionRegionsObservationContext == context)
   {
-    [(_UIPackedRegion *)self willChangeValueForKey:@"_regions", a4, a5];
+    [(_UIPackedRegion *)self willChangeValueForKey:@"_regions", object, change];
 
     [(_UIPackedRegion *)self didChangeValueForKey:@"_regions"];
   }
@@ -276,7 +276,7 @@ LABEL_11:
   {
     v7.receiver = self;
     v7.super_class = _UIPackedRegion;
-    [(_UIPackedRegion *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(_UIPackedRegion *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

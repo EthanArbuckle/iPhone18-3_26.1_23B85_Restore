@@ -7,13 +7,13 @@
 
 - (char)_cs_xpcObject
 {
-  v1 = [a1 UTF8String];
-  if (v1)
+  uTF8String = [self UTF8String];
+  if (uTF8String)
   {
-    v1 = xpc_string_create(v1);
+    uTF8String = xpc_string_create(uTF8String);
   }
 
-  return v1;
+  return uTF8String;
 }
 
 - (id)_cs_initWithXPCObject:()XPCObject
@@ -59,7 +59,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v7 = [a1 initWithUTF8String:string_ptr];
+  v7 = [self initWithUTF8String:string_ptr];
 LABEL_5:
 
   v8 = *MEMORY[0x1E69E9840];

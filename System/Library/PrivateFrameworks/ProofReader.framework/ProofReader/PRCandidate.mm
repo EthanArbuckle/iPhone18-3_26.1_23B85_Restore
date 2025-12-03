@@ -1,12 +1,12 @@
 @interface PRCandidate
-+ (id)candidateWithBuffer:(char *)a3 encoding:(unsigned int)a4 transform:(unint64_t)a5 replacementRange:(_NSRange)a6 errorScore:(double)a7 capitalizationDictionaryArray:(id)a8;
-+ (id)candidateWithString:(id)a3 replacementRange:(_NSRange)a4 errorScore:(double)a5;
-+ (id)candidateWithString:(id)a3 replacementRange:(_NSRange)a4 errorType:(unint64_t)a5 errorModel:(id)a6;
-+ (id)candidateWithWords:(id)a3 replacementRange:(_NSRange)a4 errorScore:(double)a5;
-+ (id)candidateWithWords:(id)a3 replacementRange:(_NSRange)a4 errorType:(unint64_t)a5 errorModel:(id)a6;
++ (id)candidateWithBuffer:(char *)buffer encoding:(unsigned int)encoding transform:(unint64_t)transform replacementRange:(_NSRange)range errorScore:(double)score capitalizationDictionaryArray:(id)array;
++ (id)candidateWithString:(id)string replacementRange:(_NSRange)range errorScore:(double)score;
++ (id)candidateWithString:(id)string replacementRange:(_NSRange)range errorType:(unint64_t)type errorModel:(id)model;
++ (id)candidateWithWords:(id)words replacementRange:(_NSRange)range errorScore:(double)score;
++ (id)candidateWithWords:(id)words replacementRange:(_NSRange)range errorType:(unint64_t)type errorModel:(id)model;
 - (NSString)string;
-- (PRCandidate)initWithCandidateWords:(id)a3 replacementRange:(_NSRange)a4 errorScore:(double)a5;
-- (PRCandidate)initWithString:(id)a3 replacementRange:(_NSRange)a4 errorScore:(double)a5;
+- (PRCandidate)initWithCandidateWords:(id)words replacementRange:(_NSRange)range errorScore:(double)score;
+- (PRCandidate)initWithString:(id)string replacementRange:(_NSRange)range errorScore:(double)score;
 - (_NSRange)replacementRange;
 - (id)description;
 - (void)dealloc;
@@ -14,19 +14,19 @@
 
 @implementation PRCandidate
 
-- (PRCandidate)initWithCandidateWords:(id)a3 replacementRange:(_NSRange)a4 errorScore:(double)a5
+- (PRCandidate)initWithCandidateWords:(id)words replacementRange:(_NSRange)range errorScore:(double)score
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v11.receiver = self;
   v11.super_class = PRCandidate;
   v9 = [(PRCandidate *)&v11 init];
   if (v9)
   {
-    v9->_candidateWords = [a3 copy];
+    v9->_candidateWords = [words copy];
     v9->_replacementRange.location = location;
     v9->_replacementRange.length = length;
-    v9->_errorScore = a5;
+    v9->_errorScore = score;
     v9->_linguisticScore = 0.0;
     v9->_lexiconScore = 0.0;
     v9->_blocklisted = 0;
@@ -35,95 +35,95 @@
   return v9;
 }
 
-- (PRCandidate)initWithString:(id)a3 replacementRange:(_NSRange)a4 errorScore:(double)a5
+- (PRCandidate)initWithString:(id)string replacementRange:(_NSRange)range errorScore:(double)score
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = [MEMORY[0x1E695DEC8] arrayWithObject:{objc_msgSend(a3, "copy")}];
+  length = range.length;
+  location = range.location;
+  v9 = [MEMORY[0x1E695DEC8] arrayWithObject:{objc_msgSend(string, "copy")}];
 
-  return [(PRCandidate *)self initWithCandidateWords:v9 replacementRange:location errorScore:length, a5];
+  return [(PRCandidate *)self initWithCandidateWords:v9 replacementRange:location errorScore:length, score];
 }
 
-+ (id)candidateWithWords:(id)a3 replacementRange:(_NSRange)a4 errorScore:(double)a5
++ (id)candidateWithWords:(id)words replacementRange:(_NSRange)range errorScore:(double)score
 {
-  if (!a3)
+  if (!words)
   {
     return 0;
   }
 
-  length = a4.length;
-  location = a4.location;
-  if (![a3 count])
+  length = range.length;
+  location = range.location;
+  if (![words count])
   {
     return 0;
   }
 
-  v10 = [[a1 alloc] initWithCandidateWords:a3 replacementRange:location errorScore:{length, a5}];
+  v10 = [[self alloc] initWithCandidateWords:words replacementRange:location errorScore:{length, score}];
 
   return v10;
 }
 
-+ (id)candidateWithWords:(id)a3 replacementRange:(_NSRange)a4 errorType:(unint64_t)a5 errorModel:(id)a6
++ (id)candidateWithWords:(id)words replacementRange:(_NSRange)range errorType:(unint64_t)type errorModel:(id)model
 {
-  if (!a3)
+  if (!words)
   {
     return 0;
   }
 
-  length = a4.length;
-  location = a4.location;
-  if (![a3 count])
+  length = range.length;
+  location = range.location;
+  if (![words count])
   {
     return 0;
   }
 
-  v12 = [a1 alloc];
-  [a6 errorScoreForType:a5];
-  v13 = [v12 initWithCandidateWords:a3 replacementRange:location errorScore:length];
+  v12 = [self alloc];
+  [model errorScoreForType:type];
+  v13 = [v12 initWithCandidateWords:words replacementRange:location errorScore:length];
 
   return v13;
 }
 
-+ (id)candidateWithString:(id)a3 replacementRange:(_NSRange)a4 errorScore:(double)a5
++ (id)candidateWithString:(id)string replacementRange:(_NSRange)range errorScore:(double)score
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  v5 = [[a1 alloc] initWithString:a3 replacementRange:a4.location errorScore:{a4.length, a5}];
+  v5 = [[self alloc] initWithString:string replacementRange:range.location errorScore:{range.length, score}];
 
   return v5;
 }
 
-+ (id)candidateWithString:(id)a3 replacementRange:(_NSRange)a4 errorType:(unint64_t)a5 errorModel:(id)a6
++ (id)candidateWithString:(id)string replacementRange:(_NSRange)range errorType:(unint64_t)type errorModel:(id)model
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  length = a4.length;
-  location = a4.location;
-  v11 = [a1 alloc];
-  [a6 errorScoreForType:a5];
-  v12 = [v11 initWithString:a3 replacementRange:location errorScore:length];
+  length = range.length;
+  location = range.location;
+  v11 = [self alloc];
+  [model errorScoreForType:type];
+  v12 = [v11 initWithString:string replacementRange:location errorScore:length];
 
   return v12;
 }
 
-+ (id)candidateWithBuffer:(char *)a3 encoding:(unsigned int)a4 transform:(unint64_t)a5 replacementRange:(_NSRange)a6 errorScore:(double)a7 capitalizationDictionaryArray:(id)a8
++ (id)candidateWithBuffer:(char *)buffer encoding:(unsigned int)encoding transform:(unint64_t)transform replacementRange:(_NSRange)range errorScore:(double)score capitalizationDictionaryArray:(id)array
 {
-  length = a6.length;
-  location = a6.location;
+  length = range.length;
+  location = range.location;
   v37 = *MEMORY[0x1E69E9840];
-  v15 = CFStringCreateWithCString(0, a3, a4);
-  v16 = [(__CFString *)v15 lowercaseString];
+  v15 = CFStringCreateWithCString(0, buffer, encoding);
+  lowercaseString = [(__CFString *)v15 lowercaseString];
   v17 = 0;
-  v31 = a1;
+  selfCopy = self;
   v18 = location;
   v19 = length;
-  if (a4 == 1284 && a5 >= 2)
+  if (encoding == 1284 && transform >= 2)
   {
     v17 = candidateWithBuffer_encoding_transform_replacementRange_errorScore_capitalizationDictionaryArray__turkishLocale;
     if (!candidateWithBuffer_encoding_transform_replacementRange_errorScore_capitalizationDictionaryArray__turkishLocale)
@@ -137,7 +137,7 @@
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v20 = [a8 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  v20 = [array countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v20)
   {
     v21 = v20;
@@ -148,10 +148,10 @@ LABEL_7:
     {
       if (*v33 != v22)
       {
-        objc_enumerationMutation(a8);
+        objc_enumerationMutation(array);
       }
 
-      v24 = [*(*(&v32 + 1) + 8 * v23) objectForKey:v16];
+      v24 = [*(*(&v32 + 1) + 8 * v23) objectForKey:lowercaseString];
       if (v24)
       {
         goto LABEL_20;
@@ -159,7 +159,7 @@ LABEL_7:
 
       if (v21 == ++v23)
       {
-        v21 = [a8 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v21 = [array countByEnumeratingWithState:&v32 objects:v36 count:16];
         if (v21)
         {
           goto LABEL_7;
@@ -170,28 +170,28 @@ LABEL_7:
     }
   }
 
-  if (a5 == 3)
+  if (transform == 3)
   {
     v24 = initialCapitalizedString(v15, v17);
 LABEL_20:
     v28 = v24;
     v25 = v19;
     v26 = v18;
-    v27 = v31;
+    v27 = selfCopy;
     goto LABEL_21;
   }
 
   v25 = v19;
   v26 = v18;
-  v27 = v31;
-  if (a5 == 2)
+  v27 = selfCopy;
+  if (transform == 2)
   {
     v28 = uppercasedString(v15, v17);
   }
 
-  else if (a5 == 1)
+  else if (transform == 1)
   {
-    v28 = v16;
+    v28 = lowercaseString;
   }
 
   else
@@ -200,7 +200,7 @@ LABEL_20:
   }
 
 LABEL_21:
-  result = [v27 candidateWithString:v28 replacementRange:v26 errorScore:{v25, a7}];
+  result = [v27 candidateWithString:v28 replacementRange:v26 errorScore:{v25, score}];
   v30 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -208,14 +208,14 @@ LABEL_21:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PRCandidate *)self string];
+  string = [(PRCandidate *)self string];
   [(PRCandidate *)self errorScore];
   v6 = v5;
   [(PRCandidate *)self linguisticScore];
   v8 = v7;
-  v9 = [(PRCandidate *)self isBlocklisted];
+  isBlocklisted = [(PRCandidate *)self isBlocklisted];
   [(PRCandidate *)self score];
-  return [v3 stringWithFormat:@"%@(%.2g, %.2g, %d;%.2g)", v4, v6, v8, v9, v10];
+  return [v3 stringWithFormat:@"%@(%.2g, %.2g, %d;%.2g)", string, v6, v8, isBlocklisted, v10];
 }
 
 - (void)dealloc

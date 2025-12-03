@@ -1,5 +1,5 @@
 @interface PKSpotlightCardView
-- (PKSpotlightCardView)initWithDiffuse:(CGImage *)a3 contentInsets:(PKEdgeInsets)a4 averageColor:(CGColor *)a5;
+- (PKSpotlightCardView)initWithDiffuse:(CGImage *)diffuse contentInsets:(PKEdgeInsets)insets averageColor:(CGColor *)color;
 @end
 
 @implementation PKSpotlightCardView
@@ -24,13 +24,13 @@ id *__66__PKSpotlightCardView_initWithDiffuse_contentInsets_averageColor___block
   return v6;
 }
 
-- (PKSpotlightCardView)initWithDiffuse:(CGImage *)a3 contentInsets:(PKEdgeInsets)a4 averageColor:(CGColor *)a5
+- (PKSpotlightCardView)initWithDiffuse:(CGImage *)diffuse contentInsets:(PKEdgeInsets)insets averageColor:(CGColor *)color
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  if (a5)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  if (color)
   {
     PKColorGetRelativeLuminance();
     v11 = v12 > 0.8;
@@ -46,7 +46,7 @@ id *__66__PKSpotlightCardView_initWithDiffuse_contentInsets_averageColor___block
   v16[2] = __66__PKSpotlightCardView_initWithDiffuse_contentInsets_averageColor___block_invoke;
   v16[3] = &__block_descriptor_73_e51___PKTexturedCardRenderer_16__0__PKMetalRenderLoop_8l;
   v17 = v11;
-  v16[4] = a3;
+  v16[4] = diffuse;
   *&v16[5] = top;
   *&v16[6] = left;
   *&v16[7] = bottom;

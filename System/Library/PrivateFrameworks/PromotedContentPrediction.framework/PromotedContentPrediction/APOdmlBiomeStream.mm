@@ -1,22 +1,22 @@
 @interface APOdmlBiomeStream
-- (APOdmlBiomeStream)initWithName:(id)a3;
+- (APOdmlBiomeStream)initWithName:(id)name;
 - (id)_applicationSupportDirectory;
 - (id)publisher;
-- (void)enumerateEvents:(id)a3;
-- (void)enumerateEvents:(id)a3 result:(id)a4;
-- (void)enumerateEventsWithDictionary:(id)a3;
-- (void)filterEvents:(id)a3 result:(id)a4;
-- (void)filterEventsWithDictionary:(id)a3 result:(id)a4;
-- (void)removeEvents:(id)a3;
-- (void)removeEventsWithDictionary:(id)a3;
-- (void)writeEvent:(id)a3;
+- (void)enumerateEvents:(id)events;
+- (void)enumerateEvents:(id)events result:(id)result;
+- (void)enumerateEventsWithDictionary:(id)dictionary;
+- (void)filterEvents:(id)events result:(id)result;
+- (void)filterEventsWithDictionary:(id)dictionary result:(id)result;
+- (void)removeEvents:(id)events;
+- (void)removeEventsWithDictionary:(id)dictionary;
+- (void)writeEvent:(id)event;
 @end
 
 @implementation APOdmlBiomeStream
 
-- (APOdmlBiomeStream)initWithName:(id)a3
+- (APOdmlBiomeStream)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v27.receiver = self;
   v27.super_class = APOdmlBiomeStream;
   v6 = [(APOdmlBiomeStream *)&v27 init];
@@ -30,7 +30,7 @@
     config = v9->_config;
     v9->_config = v14;
 
-    objc_storeStrong(&v9->_streamName, a3);
+    objc_storeStrong(&v9->_streamName, name);
     v16 = objc_alloc(MEMORY[0x277CF1B30]);
     v19 = objc_msgSend_streamName(v9, v17, v18);
     v22 = objc_msgSend_config(v9, v20, v21);
@@ -42,97 +42,97 @@
   return v9;
 }
 
-- (void)enumerateEventsWithDictionary:(id)a3
+- (void)enumerateEventsWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_260ED157C;
   v7[3] = &unk_279AC6028;
-  v8 = v4;
-  v5 = v4;
+  v8 = dictionaryCopy;
+  v5 = dictionaryCopy;
   objc_msgSend_enumerateEvents_(self, v6, v7);
 }
 
-- (void)filterEventsWithDictionary:(id)a3 result:(id)a4
+- (void)filterEventsWithDictionary:(id)dictionary result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  resultCopy = result;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_260ED16E4;
   v13[3] = &unk_279AC6050;
-  v14 = v6;
+  v14 = dictionaryCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_260ED1734;
   v11[3] = &unk_279AC6028;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v12 = resultCopy;
+  v8 = resultCopy;
+  v9 = dictionaryCopy;
   objc_msgSend_filterEvents_result_(self, v10, v13, v11);
 }
 
-- (void)enumerateEvents:(id)a3
+- (void)enumerateEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v8 = objc_msgSend_publisher(self, v5, v6);
-  objc_msgSend_enumerateEvents_result_(self, v7, v8, v4);
+  objc_msgSend_enumerateEvents_result_(self, v7, v8, eventsCopy);
 }
 
-- (void)filterEvents:(id)a3 result:(id)a4
+- (void)filterEvents:(id)events result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  resultCopy = result;
   v10 = objc_msgSend_publisher(self, v8, v9);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_260ED18EC;
   v15[3] = &unk_279AC6078;
-  v16 = v6;
-  v11 = v6;
+  v16 = eventsCopy;
+  v11 = eventsCopy;
   v13 = objc_msgSend_filterWithIsIncluded_(v10, v12, v15);
 
-  objc_msgSend_enumerateEvents_result_(self, v14, v13, v7);
+  objc_msgSend_enumerateEvents_result_(self, v14, v13, resultCopy);
 }
 
-- (void)removeEventsWithDictionary:(id)a3
+- (void)removeEventsWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_260ED19E4;
   v7[3] = &unk_279AC60C0;
-  v8 = v4;
-  v5 = v4;
+  v8 = dictionaryCopy;
+  v5 = dictionaryCopy;
   objc_msgSend_removeEvents_(self, v6, v7);
 }
 
-- (void)removeEvents:(id)a3
+- (void)removeEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v7 = objc_msgSend_stream(self, v5, v6);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_260ED1AF0;
   v10[3] = &unk_279AC60E8;
-  v11 = v4;
-  v8 = v4;
+  v11 = eventsCopy;
+  v8 = eventsCopy;
   objc_msgSend_pruneWithPredicateBlock_(v7, v9, v10);
 }
 
-- (void)writeEvent:(id)a3
+- (void)writeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v11 = objc_msgSend_stream(self, v5, v6);
   v9 = objc_msgSend_source(v11, v7, v8);
-  objc_msgSend_sendEvent_(v9, v10, v4);
+  objc_msgSend_sendEvent_(v9, v10, eventCopy);
 }
 
-- (void)enumerateEvents:(id)a3 result:(id)a4
+- (void)enumerateEvents:(id)events result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  resultCopy = result;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
@@ -146,10 +146,10 @@
   v11[1] = 3221225472;
   v11[2] = sub_260ED1E60;
   v11[3] = &unk_279AC6138;
-  v8 = v7;
+  v8 = resultCopy;
   v12 = v8;
   v13 = v15;
-  v10 = objc_msgSend_sinkWithCompletion_shouldContinue_(v6, v9, v14, v11);
+  v10 = objc_msgSend_sinkWithCompletion_shouldContinue_(eventsCopy, v9, v14, v11);
 
   _Block_object_dispose(v15, 8);
 }

@@ -1,19 +1,19 @@
 @interface UGCPhotoFeedHeaderView
 + (id)_floatingButtonImageSymbolConfiguration;
-- (UGCPhotoFeedHeaderView)initWithOptions:(unint64_t)a3;
+- (UGCPhotoFeedHeaderView)initWithOptions:(unint64_t)options;
 - (UGCPhotoFeedHeaderViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_addPhoto;
-- (void)_addPhotosWithEntryPoint:(int64_t)a3;
+- (void)_addPhotosWithEntryPoint:(int64_t)point;
 - (void)_doneButtonPressed;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateFonts;
 - (void)_updateForOptionsChange;
 - (void)_updateTitleText;
-- (void)setOptions:(unint64_t)a3;
-- (void)setTitleModel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setOptions:(unint64_t)options;
+- (void)setTitleModel:(id)model;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UGCPhotoFeedHeaderView
@@ -34,19 +34,19 @@
   [(UIButton *)floatingAddButton setHidden:v3];
 }
 
-- (void)setOptions:(unint64_t)a3
+- (void)setOptions:(unint64_t)options
 {
-  if (self->_options != a3)
+  if (self->_options != options)
   {
-    self->_options = a3;
+    self->_options = options;
     [(UGCPhotoFeedHeaderView *)self _updateForOptionsChange];
   }
 }
 
 - (void)_updateFonts
 {
-  v3 = [(UGCPhotoFeedHeaderView *)self traitCollection];
-  v10 = [v3 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraLarge];
+  traitCollection = [(UGCPhotoFeedHeaderView *)self traitCollection];
+  v10 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraLarge];
 
   v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
   v5 = [v4 _mapkit_fontWithWeight:UIFontWeightBold];
@@ -59,36 +59,36 @@
   [(UILabel *)self->_attributionLabel setFont:v9];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = UGCPhotoFeedHeaderView;
-  v4 = a3;
-  [(UGCPhotoFeedHeaderView *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(UGCPhotoFeedHeaderView *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(UGCPhotoFeedHeaderView *)self traitCollection:v9.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  v8 = sub_10008FB5C(v6, v7);
+  v8 = sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2);
   if (v8)
   {
     [(UGCPhotoFeedHeaderView *)self _updateFonts];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [(UGCPhotoFeedHeaderView *)self subviews];
-  v9 = [v8 reverseObjectEnumerator];
+  subviews = [(UGCPhotoFeedHeaderView *)self subviews];
+  reverseObjectEnumerator = [subviews reverseObjectEnumerator];
 
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -99,7 +99,7 @@
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
@@ -113,9 +113,9 @@
               [v14 convertPoint:self fromView:{x, y}];
               v17 = v16;
               v19 = v18;
-              if ([v14 pointInside:v7 withEvent:?])
+              if ([v14 pointInside:eventCopy withEvent:?])
               {
-                v20 = [v14 hitTest:v7 withEvent:{v17, v19}];
+                v20 = [v14 hitTest:eventCopy withEvent:{v17, v19}];
                 if (v20)
                 {
                   v21 = v20;
@@ -127,7 +127,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v11)
       {
         continue;
@@ -145,8 +145,8 @@ LABEL_15:
 
 - (void)_updateTitleText
 {
-  v3 = [(UGCPhotoFeedHeaderTitleModel *)self->_titleModel titleText];
-  v4 = [v3 length];
+  titleText = [(UGCPhotoFeedHeaderTitleModel *)self->_titleModel titleText];
+  v4 = [titleText length];
 
   if (v4)
   {
@@ -162,9 +162,9 @@ LABEL_15:
     if ([(UGCPhotoFeedHeaderTitleModel *)self->_titleModel showPunchoutSymbol])
     {
       v9 = +[NSBundle mainBundle];
-      v10 = [v9 localizedStringForKey:@"%@ %@ [Badge format]" value:@"localized string not found" table:0];
+      titleText3 = [v9 localizedStringForKey:@"%@ %@ [Badge format]" value:@"localized string not found" table:0];
 
-      v26 = [[NSAttributedString alloc] initWithString:v10];
+      v26 = [[NSAttributedString alloc] initWithString:titleText3];
       v11 = objc_alloc_init(NSTextAttachment);
       [UIImage systemImageNamed:@"arrow.up.right.square.fill"];
       v12 = v27 = v8;
@@ -178,8 +178,8 @@ LABEL_15:
       v8 = v27;
       v18 = [NSAttributedString attributedStringWithAttachment:v11];
       v19 = [NSAttributedString alloc];
-      v20 = [(UGCPhotoFeedHeaderTitleModel *)self->_titleModel titleText];
-      v21 = [v19 initWithString:v20];
+      titleText2 = [(UGCPhotoFeedHeaderTitleModel *)self->_titleModel titleText];
+      v21 = [v19 initWithString:titleText2];
 
       v22 = [NSMutableAttributedString localizedAttributedStringWithFormat:v26, v21, v18];
     }
@@ -187,8 +187,8 @@ LABEL_15:
     else
     {
       v24 = [NSMutableAttributedString alloc];
-      v10 = [(UGCPhotoFeedHeaderTitleModel *)self->_titleModel titleText];
-      v22 = [v24 initWithString:v10 attributes:v8];
+      titleText3 = [(UGCPhotoFeedHeaderTitleModel *)self->_titleModel titleText];
+      v22 = [v24 initWithString:titleText3 attributes:v8];
     }
 
     [v22 addAttributes:v8 range:{0, objc_msgSend(v22, "length")}];
@@ -204,12 +204,12 @@ LABEL_15:
   }
 }
 
-- (void)setTitleModel:(id)a3
+- (void)setTitleModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   if (![(UGCPhotoFeedHeaderTitleModel *)self->_titleModel isEqual:?])
   {
-    objc_storeStrong(&self->_titleModel, a3);
+    objc_storeStrong(&self->_titleModel, model);
     [(UGCPhotoFeedHeaderView *)self _updateTitleText];
   }
 }
@@ -217,87 +217,87 @@ LABEL_15:
 - (void)_setupConstraints
 {
   v67 = objc_alloc_init(NSMutableArray);
-  v66 = [(UILabel *)self->_placeNameLabel leadingAnchor];
-  v65 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide leadingAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  leadingAnchor = [(UILabel *)self->_placeNameLabel leadingAnchor];
+  leadingAnchor2 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide leadingAnchor];
+  v64 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v68[0] = v64;
-  v63 = [(UILabel *)self->_placeNameLabel trailingAnchor];
-  v62 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide trailingAnchor];
-  v61 = [v63 constraintLessThanOrEqualToAnchor:v62];
+  trailingAnchor = [(UILabel *)self->_placeNameLabel trailingAnchor];
+  trailingAnchor2 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide trailingAnchor];
+  v61 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v68[1] = v61;
-  v60 = [(UILabel *)self->_placeNameLabel topAnchor];
-  v59 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide topAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  topAnchor = [(UILabel *)self->_placeNameLabel topAnchor];
+  topAnchor2 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide topAnchor];
+  v58 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v68[2] = v58;
-  v57 = [(UILabel *)self->_placeNameLabel bottomAnchor];
-  v56 = [(UILabel *)self->_attributionLabel topAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56 constant:-4.0];
+  bottomAnchor = [(UILabel *)self->_placeNameLabel bottomAnchor];
+  topAnchor3 = [(UILabel *)self->_attributionLabel topAnchor];
+  v55 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-4.0];
   v68[3] = v55;
-  v54 = [(UILabel *)self->_attributionLabel leadingAnchor];
-  v53 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide leadingAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  leadingAnchor3 = [(UILabel *)self->_attributionLabel leadingAnchor];
+  leadingAnchor4 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide leadingAnchor];
+  v52 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v68[4] = v52;
-  v51 = [(UILabel *)self->_attributionLabel trailingAnchor];
-  v50 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide trailingAnchor];
-  v49 = [v51 constraintLessThanOrEqualToAnchor:v50];
+  trailingAnchor3 = [(UILabel *)self->_attributionLabel trailingAnchor];
+  trailingAnchor4 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide trailingAnchor];
+  v49 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
   v68[5] = v49;
-  v48 = [(UILabel *)self->_attributionLabel bottomAnchor];
-  v47 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide bottomAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  bottomAnchor2 = [(UILabel *)self->_attributionLabel bottomAnchor];
+  bottomAnchor3 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide bottomAnchor];
+  v46 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v68[6] = v46;
-  v44 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide leadingAnchor];
-  v45 = [(UGCPhotoFeedHeaderView *)self layoutMarginsGuide];
-  v43 = [v45 leadingAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  leadingAnchor5 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide leadingAnchor];
+  layoutMarginsGuide = [(UGCPhotoFeedHeaderView *)self layoutMarginsGuide];
+  leadingAnchor6 = [layoutMarginsGuide leadingAnchor];
+  v42 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v68[7] = v42;
-  v40 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide topAnchor];
-  v41 = [(UGCPhotoFeedHeaderView *)self layoutMarginsGuide];
-  v39 = [v41 topAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  topAnchor4 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide topAnchor];
+  layoutMarginsGuide2 = [(UGCPhotoFeedHeaderView *)self layoutMarginsGuide];
+  topAnchor5 = [layoutMarginsGuide2 topAnchor];
+  v38 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v68[8] = v38;
-  v37 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide bottomAnchor];
-  v36 = [(UGCPhotoFeedHeaderView *)self bottomAnchor];
-  v35 = [v37 constraintLessThanOrEqualToAnchor:v36 constant:-16.0];
+  bottomAnchor4 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide bottomAnchor];
+  bottomAnchor5 = [(UGCPhotoFeedHeaderView *)self bottomAnchor];
+  v35 = [bottomAnchor4 constraintLessThanOrEqualToAnchor:bottomAnchor5 constant:-16.0];
   v68[9] = v35;
-  v33 = [(UIButton *)self->_floatingDoneButton topAnchor];
-  v34 = [(UGCPhotoFeedHeaderView *)self layoutMarginsGuide];
-  v32 = [v34 topAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  topAnchor6 = [(UIButton *)self->_floatingDoneButton topAnchor];
+  layoutMarginsGuide3 = [(UGCPhotoFeedHeaderView *)self layoutMarginsGuide];
+  topAnchor7 = [layoutMarginsGuide3 topAnchor];
+  v31 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
   v68[10] = v31;
-  v29 = [(UIButton *)self->_floatingDoneButton trailingAnchor];
-  v30 = [(UGCPhotoFeedHeaderView *)self layoutMarginsGuide];
-  v28 = [v30 trailingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  trailingAnchor5 = [(UIButton *)self->_floatingDoneButton trailingAnchor];
+  layoutMarginsGuide4 = [(UGCPhotoFeedHeaderView *)self layoutMarginsGuide];
+  trailingAnchor6 = [layoutMarginsGuide4 trailingAnchor];
+  v27 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v68[11] = v27;
-  v26 = [(UIButton *)self->_floatingDoneButton widthAnchor];
-  v25 = [v26 constraintEqualToConstant:44.0];
+  widthAnchor = [(UIButton *)self->_floatingDoneButton widthAnchor];
+  v25 = [widthAnchor constraintEqualToConstant:44.0];
   v68[12] = v25;
-  v24 = [(UIButton *)self->_floatingDoneButton heightAnchor];
-  v23 = [v24 constraintEqualToConstant:44.0];
+  heightAnchor = [(UIButton *)self->_floatingDoneButton heightAnchor];
+  v23 = [heightAnchor constraintEqualToConstant:44.0];
   v68[13] = v23;
-  v22 = [(UIStackView *)self->_floatingButtonsStackView leadingAnchor];
-  v21 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide trailingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21 constant:8.0];
+  leadingAnchor7 = [(UIStackView *)self->_floatingButtonsStackView leadingAnchor];
+  trailingAnchor7 = [(UILayoutGuide *)self->_photoViewerDescriptionLayoutGuide trailingAnchor];
+  v20 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor7 constant:8.0];
   v68[14] = v20;
-  v18 = [(UIStackView *)self->_floatingButtonsStackView topAnchor];
-  v19 = [(UGCPhotoFeedHeaderView *)self layoutMarginsGuide];
-  v17 = [v19 topAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  topAnchor8 = [(UIStackView *)self->_floatingButtonsStackView topAnchor];
+  layoutMarginsGuide5 = [(UGCPhotoFeedHeaderView *)self layoutMarginsGuide];
+  topAnchor9 = [layoutMarginsGuide5 topAnchor];
+  v16 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
   v68[15] = v16;
-  v14 = [(UIStackView *)self->_floatingButtonsStackView trailingAnchor];
-  v15 = [(UGCPhotoFeedHeaderView *)self layoutMarginsGuide];
-  v3 = [v15 trailingAnchor];
-  v4 = [v14 constraintEqualToAnchor:v3];
+  trailingAnchor8 = [(UIStackView *)self->_floatingButtonsStackView trailingAnchor];
+  layoutMarginsGuide6 = [(UGCPhotoFeedHeaderView *)self layoutMarginsGuide];
+  trailingAnchor9 = [layoutMarginsGuide6 trailingAnchor];
+  v4 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
   v68[16] = v4;
-  v5 = [(UIButton *)self->_floatingAddButton heightAnchor];
-  v6 = [(UIButton *)self->_floatingDoneButton heightAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  heightAnchor2 = [(UIButton *)self->_floatingAddButton heightAnchor];
+  heightAnchor3 = [(UIButton *)self->_floatingDoneButton heightAnchor];
+  v7 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   v68[17] = v7;
-  v8 = [(UIButton *)self->_floatingAddButton widthAnchor];
-  v9 = [v8 constraintEqualToConstant:44.0];
+  widthAnchor2 = [(UIButton *)self->_floatingAddButton widthAnchor];
+  v9 = [widthAnchor2 constraintEqualToConstant:44.0];
   v68[18] = v9;
-  v10 = [(UIButton *)self->_floatingAddButton heightAnchor];
-  v11 = [v10 constraintEqualToConstant:44.0];
+  heightAnchor4 = [(UIButton *)self->_floatingAddButton heightAnchor];
+  v11 = [heightAnchor4 constraintEqualToConstant:44.0];
   v68[19] = v11;
   v12 = [NSArray arrayWithObjects:v68 count:20];
   [v67 addObjectsFromArray:v12];
@@ -317,21 +317,21 @@ LABEL_15:
   }
 }
 
-- (void)_addPhotosWithEntryPoint:(int64_t)a3
+- (void)_addPhotosWithEntryPoint:(int64_t)point
 {
   v6 = objc_alloc_init(MUPresentationOptions);
   [v6 setSourceView:self->_floatingAddButton];
   [v6 setProgressObserver:self->_floatingAddButton];
-  v5 = [(UGCPhotoFeedHeaderView *)self delegate];
-  [v5 photoFeedHeaderView:self selectedAddPhotoWithEntryPoint:a3 usingPresentationOptions:v6];
+  delegate = [(UGCPhotoFeedHeaderView *)self delegate];
+  [delegate photoFeedHeaderView:self selectedAddPhotoWithEntryPoint:point usingPresentationOptions:v6];
 }
 
 - (void)_doneButtonPressed
 {
   v4 = objc_alloc_init(MUPresentationOptions);
   [v4 setSourceView:self->_floatingDoneButton];
-  v3 = [(UGCPhotoFeedHeaderView *)self delegate];
-  [v3 photoFeedHeaderView:self selectedDoneWithPresentationOptions:v4];
+  delegate = [(UGCPhotoFeedHeaderView *)self delegate];
+  [delegate photoFeedHeaderView:self selectedDoneWithPresentationOptions:v4];
 }
 
 - (void)_setupSubviews
@@ -381,8 +381,8 @@ LABEL_15:
   self->_floatingDoneButton = v21;
 
   [(UIButton *)self->_floatingDoneButton _setTouchInsets:-16.0, -16.0, -16.0, -16.0];
-  v23 = [(UIButton *)self->_floatingDoneButton layer];
-  [v23 setCornerRadius:22.0];
+  layer = [(UIButton *)self->_floatingDoneButton layer];
+  [layer setCornerRadius:22.0];
 
   [(UIButton *)self->_floatingDoneButton setAccessibilityIdentifier:@"DoneButton"];
   [(UIButton *)self->_floatingDoneButton setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -398,8 +398,8 @@ LABEL_15:
   self->_floatingAddButton = v27;
 
   [(UIButton *)self->_floatingAddButton _setTouchInsets:-16.0, -16.0, -16.0, -16.0];
-  v29 = [(UIButton *)self->_floatingAddButton layer];
-  [v29 setCornerRadius:22.0];
+  layer2 = [(UIButton *)self->_floatingAddButton layer];
+  [layer2 setCornerRadius:22.0];
 
   [(UIButton *)self->_floatingAddButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_floatingAddButton setShowsMenuAsPrimaryAction:1];
@@ -450,7 +450,7 @@ LABEL_15:
   objc_destroyWeak(&location);
 }
 
-- (UGCPhotoFeedHeaderView)initWithOptions:(unint64_t)a3
+- (UGCPhotoFeedHeaderView)initWithOptions:(unint64_t)options
 {
   v7.receiver = self;
   v7.super_class = UGCPhotoFeedHeaderView;
@@ -458,7 +458,7 @@ LABEL_15:
   v5 = v4;
   if (v4)
   {
-    v4->_options = a3;
+    v4->_options = options;
     [(UGCPhotoFeedHeaderView *)v4 setAccessibilityIdentifier:@"PhotoFeedHeader"];
     [(UGCPhotoFeedHeaderView *)v5 _setupSubviews];
     [(UGCPhotoFeedHeaderView *)v5 _setupConstraints];

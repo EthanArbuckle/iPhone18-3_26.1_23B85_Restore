@@ -1,22 +1,22 @@
 @interface CKDAccount
-+ (BOOL)isAuthTokenRenewalInProgressForAccountID:(id)a3;
++ (BOOL)isAuthTokenRenewalInProgressForAccountID:(id)d;
 + (id)authTokenRenewalsInProgress;
 + (id)globalAuthTokenQueue;
-+ (void)beginAuthTokenRenewalForAccountID:(id)a3;
-+ (void)endAuthTokenRenewalForAccountID:(id)a3;
++ (void)beginAuthTokenRenewalForAccountID:(id)d;
++ (void)endAuthTokenRenewalForAccountID:(id)d;
 - (BOOL)_userCloudDBURLisInCarryPartition;
 - (BOOL)hasCredentials;
-- (BOOL)isDataclassEnabled:(id)a3;
-- (BOOL)isDataclassEnabledForCellular:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isDataclassEnabled:(id)enabled;
+- (BOOL)isDataclassEnabledForCellular:(id)cellular;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPrimaryAccount;
 - (BOOL)isPrimaryEmailVerified;
 - (BOOL)isRenewingAuthToken;
 - (BOOL)isValidTestAccount;
 - (BOOL)isWarmingUp;
 - (BOOL)needsToVerifyTerms;
-- (CKDAccount)initWithAccountID:(id)a3;
-- (CKDAccount)initWithAltDSID:(id)a3;
+- (CKDAccount)initWithAccountID:(id)d;
+- (CKDAccount)initWithAltDSID:(id)d;
 - (CKPersona)persona;
 - (NSPersonNameComponents)fullName;
 - (NSString)accountID;
@@ -35,27 +35,27 @@
 - (NSURL)privateMetricsServiceURL;
 - (NSURL)privateShareServiceURL;
 - (OS_dispatch_queue)authTokenQueue;
-- (id)_lockedCloudKitAuthTokenWithContainer:(id)a3 error:(id *)a4;
-- (id)_lockediCloudAuthTokenWithContainer:(id)a3 error:(id *)a4;
-- (id)_lockediCloudAuthTokenWithError:(id *)a3;
-- (id)cloudKitAuthTokenWithContainer:(id)a3 error:(id *)a4;
+- (id)_lockedCloudKitAuthTokenWithContainer:(id)container error:(id *)error;
+- (id)_lockediCloudAuthTokenWithContainer:(id)container error:(id *)error;
+- (id)_lockediCloudAuthTokenWithError:(id *)error;
+- (id)cloudKitAuthTokenWithContainer:(id)container error:(id *)error;
 - (id)description;
-- (id)iCloudAuthTokenWithContainer:(id)a3 error:(id *)a4;
+- (id)iCloudAuthTokenWithContainer:(id)container error:(id *)error;
 - (id)initAnonymousAccount;
-- (id)initExplicitCredentialsAccountWithAccountOverrideInfo:(id)a3;
+- (id)initExplicitCredentialsAccountWithAccountOverrideInfo:(id)info;
 - (id)initInternal;
-- (id)initMockAccountWithTestAccount:(id)a3 testDevice:(id)a4;
+- (id)initMockAccountWithTestAccount:(id)account testDevice:(id)device;
 - (id)initPrimaryAccount;
 - (int64_t)accountType;
 - (unint64_t)hash;
-- (void)_lockedRenewTokenWithReason:(id)a3 shouldForce:(BOOL)a4 container:(id)a5 tokenFetchBlock:(id)a6 completionHandler:(id)a7;
-- (void)cloudKitAuthTokenWithContainer:(id)a3 completionHandler:(id)a4;
-- (void)iCloudAuthTokenWithCompletionHandler:(id)a3;
-- (void)iCloudAuthTokenWithContainer:(id)a3 completionHandler:(id)a4;
-- (void)renewCloudKitAuthTokenWithReason:(id)a3 shouldForce:(BOOL)a4 container:(id)a5 failedToken:(id)a6 completionHandler:(id)a7;
-- (void)renewiCloudAuthTokenWithReason:(id)a3 shouldForce:(BOOL)a4 container:(id)a5 failedToken:(id)a6 completionHandler:(id)a7;
-- (void)updateAccountPropertiesAndSaveAccountWithCompletionHandler:(id)a3;
-- (void)validateVettingToken:(id)a3 vettingEmail:(id)a4 vettingPhone:(id)a5 container:(id)a6 completionHandler:(id)a7;
+- (void)_lockedRenewTokenWithReason:(id)reason shouldForce:(BOOL)force container:(id)container tokenFetchBlock:(id)block completionHandler:(id)handler;
+- (void)cloudKitAuthTokenWithContainer:(id)container completionHandler:(id)handler;
+- (void)iCloudAuthTokenWithCompletionHandler:(id)handler;
+- (void)iCloudAuthTokenWithContainer:(id)container completionHandler:(id)handler;
+- (void)renewCloudKitAuthTokenWithReason:(id)reason shouldForce:(BOOL)force container:(id)container failedToken:(id)token completionHandler:(id)handler;
+- (void)renewiCloudAuthTokenWithReason:(id)reason shouldForce:(BOOL)force container:(id)container failedToken:(id)token completionHandler:(id)handler;
+- (void)updateAccountPropertiesAndSaveAccountWithCompletionHandler:(id)handler;
+- (void)validateVettingToken:(id)token vettingEmail:(id)email vettingPhone:(id)phone container:(id)container completionHandler:(id)handler;
 @end
 
 @implementation CKDAccount
@@ -197,9 +197,9 @@ LABEL_13:
 
     if (isAppleInternalInstall)
     {
-      v16 = self;
-      objc_sync_enter(v16);
-      if ((objc_msgSend_haveWarnedAboutServerPreferredPushEnvironment(v16, v17, v18) & 1) == 0)
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      if ((objc_msgSend_haveWarnedAboutServerPreferredPushEnvironment(selfCopy, v17, v18) & 1) == 0)
       {
         if (*MEMORY[0x277CBC880] != -1)
         {
@@ -209,16 +209,16 @@ LABEL_13:
         v19 = *MEMORY[0x277CBC830];
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
-          v22 = objc_msgSend_backingAccount(v16, v20, v21);
+          v22 = objc_msgSend_backingAccount(selfCopy, v20, v21);
           v27 = 138412290;
           v28 = v22;
           _os_log_impl(&dword_22506F000, v19, OS_LOG_TYPE_INFO, "Warn: Couldn't determine server preferred push environment from backing account %@", &v27, 0xCu);
         }
 
-        objc_msgSend_setHaveWarnedAboutServerPreferredPushEnvironment_(v16, v23, 1);
+        objc_msgSend_setHaveWarnedAboutServerPreferredPushEnvironment_(selfCopy, v23, 1);
       }
 
-      objc_sync_exit(v16);
+      objc_sync_exit(selfCopy);
     }
 
     v24 = *MEMORY[0x277CEE9F0];
@@ -350,60 +350,60 @@ LABEL_13:
   return v3;
 }
 
-+ (void)beginAuthTokenRenewalForAccountID:(id)a3
++ (void)beginAuthTokenRenewalForAccountID:(id)d
 {
-  v20 = a3;
-  v6 = objc_msgSend_authTokenRenewalsInProgress(a1, v4, v5);
+  dCopy = d;
+  v6 = objc_msgSend_authTokenRenewalsInProgress(self, v4, v5);
   objc_sync_enter(v6);
-  v9 = objc_msgSend_authTokenRenewalsInProgress(a1, v7, v8);
-  objc_msgSend_addObject_(v9, v10, v20);
+  v9 = objc_msgSend_authTokenRenewalsInProgress(self, v7, v8);
+  objc_msgSend_addObject_(v9, v10, dCopy);
 
-  v13 = objc_msgSend_authTokenRenewalsInProgress(a1, v11, v12);
-  v15 = objc_msgSend_countForObject_(v13, v14, v20);
+  v13 = objc_msgSend_authTokenRenewalsInProgress(self, v11, v12);
+  v15 = objc_msgSend_countForObject_(v13, v14, dCopy);
 
   objc_sync_exit(v6);
   if (v15 == 1)
   {
     v18 = objc_msgSend_sharedNotifier(CKDAccountNotifier, v16, v17);
-    objc_msgSend_notifyAuthTokenRenewalInProgress_forAccountID_(v18, v19, 1, v20);
+    objc_msgSend_notifyAuthTokenRenewalInProgress_forAccountID_(v18, v19, 1, dCopy);
   }
 }
 
-+ (void)endAuthTokenRenewalForAccountID:(id)a3
++ (void)endAuthTokenRenewalForAccountID:(id)d
 {
-  v20 = a3;
-  v6 = objc_msgSend_authTokenRenewalsInProgress(a1, v4, v5);
+  dCopy = d;
+  v6 = objc_msgSend_authTokenRenewalsInProgress(self, v4, v5);
   objc_sync_enter(v6);
-  v9 = objc_msgSend_authTokenRenewalsInProgress(a1, v7, v8);
-  objc_msgSend_removeObject_(v9, v10, v20);
+  v9 = objc_msgSend_authTokenRenewalsInProgress(self, v7, v8);
+  objc_msgSend_removeObject_(v9, v10, dCopy);
 
-  v13 = objc_msgSend_authTokenRenewalsInProgress(a1, v11, v12);
-  v15 = objc_msgSend_countForObject_(v13, v14, v20);
+  v13 = objc_msgSend_authTokenRenewalsInProgress(self, v11, v12);
+  v15 = objc_msgSend_countForObject_(v13, v14, dCopy);
 
   objc_sync_exit(v6);
   if (!v15)
   {
     v18 = objc_msgSend_sharedNotifier(CKDAccountNotifier, v16, v17);
-    objc_msgSend_notifyAuthTokenRenewalInProgress_forAccountID_(v18, v19, 0, v20);
+    objc_msgSend_notifyAuthTokenRenewalInProgress_forAccountID_(v18, v19, 0, dCopy);
   }
 }
 
-+ (BOOL)isAuthTokenRenewalInProgressForAccountID:(id)a3
++ (BOOL)isAuthTokenRenewalInProgressForAccountID:(id)d
 {
-  v4 = a3;
-  v7 = objc_msgSend_authTokenRenewalsInProgress(a1, v5, v6);
+  dCopy = d;
+  v7 = objc_msgSend_authTokenRenewalsInProgress(self, v5, v6);
   objc_sync_enter(v7);
-  v10 = objc_msgSend_authTokenRenewalsInProgress(a1, v8, v9);
-  v12 = objc_msgSend_countForObject_(v10, v11, v4) != 0;
+  v10 = objc_msgSend_authTokenRenewalsInProgress(self, v8, v9);
+  v12 = objc_msgSend_countForObject_(v10, v11, dCopy) != 0;
 
   objc_sync_exit(v7);
   return v12;
 }
 
-- (CKDAccount)initWithAccountID:(id)a3
+- (CKDAccount)initWithAccountID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   inited = objc_msgSend_initInternal(self, v5, v6);
   if (!inited)
   {
@@ -412,7 +412,7 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v9 = objc_msgSend_accountWithIdentifier_(CKDBackingAccount, v7, v4);
+  v9 = objc_msgSend_accountWithIdentifier_(CKDBackingAccount, v7, dCopy);
   v10 = inited[2];
   inited[2] = v9;
 
@@ -447,7 +447,7 @@ LABEL_7:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
     v22 = 138412290;
-    v23 = v4;
+    v23 = dCopy;
     _os_log_error_impl(&dword_22506F000, v19, OS_LOG_TYPE_ERROR, "Could not create backing account with ID %@", &v22, 0xCu);
   }
 
@@ -458,10 +458,10 @@ LABEL_13:
   return v18;
 }
 
-- (CKDAccount)initWithAltDSID:(id)a3
+- (CKDAccount)initWithAltDSID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   inited = objc_msgSend_initInternal(self, v5, v6);
   if (!inited)
   {
@@ -470,7 +470,7 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v9 = objc_msgSend_accountWithAltDSID_(CKDBackingAccount, v7, v4);
+  v9 = objc_msgSend_accountWithAltDSID_(CKDBackingAccount, v7, dCopy);
   v10 = inited[2];
   inited[2] = v9;
 
@@ -505,7 +505,7 @@ LABEL_7:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
     v22 = 138412290;
-    v23 = v4;
+    v23 = dCopy;
     _os_log_error_impl(&dword_22506F000, v19, OS_LOG_TYPE_ERROR, "Could not create backing account with altDSID %@", &v22, 0xCu);
   }
 
@@ -516,10 +516,10 @@ LABEL_13:
   return v18;
 }
 
-- (id)initExplicitCredentialsAccountWithAccountOverrideInfo:(id)a3
+- (id)initExplicitCredentialsAccountWithAccountOverrideInfo:(id)info
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   inited = objc_msgSend_initInternal(self, v5, v6);
   if (!inited)
   {
@@ -528,11 +528,11 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v10 = objc_msgSend_email(v4, v7, v8);
-  v13 = objc_msgSend_password(v4, v11, v12);
-  v16 = objc_msgSend_recoveryKey(v4, v14, v15);
-  v19 = objc_msgSend_accountPropertyOverrides(v4, v17, v18);
-  v22 = objc_msgSend_overridesByDataclass(v4, v20, v21);
+  v10 = objc_msgSend_email(infoCopy, v7, v8);
+  v13 = objc_msgSend_password(infoCopy, v11, v12);
+  v16 = objc_msgSend_recoveryKey(infoCopy, v14, v15);
+  v19 = objc_msgSend_accountPropertyOverrides(infoCopy, v17, v18);
+  v22 = objc_msgSend_overridesByDataclass(infoCopy, v20, v21);
   v24 = objc_msgSend_explicitCredentialsAccountWithEmail_password_recoveryKey_propertyOverrides_overridesByDataclass_(CKDBackingAccount, v23, v10, v13, v16, v19, v22);
   v25 = inited[2];
   inited[2] = v24;
@@ -552,7 +552,7 @@ LABEL_7:
       v29 = v28;
       v32 = objc_msgSend_accountID(inited, v30, v31);
       v37 = 138412546;
-      v38 = v4;
+      v38 = infoCopy;
       v39 = 2112;
       v40 = v32;
       _os_log_impl(&dword_22506F000, v29, OS_LOG_TYPE_INFO, "Created fake backing account with account override info %@ and ID %@", &v37, 0x16u);
@@ -570,7 +570,7 @@ LABEL_7:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
     v37 = 138412290;
-    v38 = v4;
+    v38 = infoCopy;
     _os_log_error_impl(&dword_22506F000, v34, OS_LOG_TYPE_ERROR, "Could not create fake backing account with account override info %@", &v37, 0xCu);
   }
 
@@ -581,11 +581,11 @@ LABEL_13:
   return v33;
 }
 
-- (id)initMockAccountWithTestAccount:(id)a3 testDevice:(id)a4
+- (id)initMockAccountWithTestAccount:(id)account testDevice:(id)device
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  deviceCopy = device;
   inited = objc_msgSend_initInternal(self, v8, v9);
   if (!inited)
   {
@@ -594,7 +594,7 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v12 = objc_msgSend_mockAccountWithTestAccount_testDevice_(CKDBackingAccount, v10, v6, v7);
+  v12 = objc_msgSend_mockAccountWithTestAccount_testDevice_(CKDBackingAccount, v10, accountCopy, deviceCopy);
   v13 = inited[2];
   inited[2] = v12;
 
@@ -611,9 +611,9 @@ LABEL_7:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
     {
       v21 = 138412546;
-      v22 = v6;
+      v22 = accountCopy;
       v23 = 2112;
-      v24 = v7;
+      v24 = deviceCopy;
       _os_log_impl(&dword_22506F000, v16, OS_LOG_TYPE_INFO, "Created mock backing account with test account %@, testDevice %@", &v21, 0x16u);
     }
 
@@ -629,9 +629,9 @@ LABEL_7:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
     v21 = 138412546;
-    v22 = v6;
+    v22 = accountCopy;
     v23 = 2112;
-    v24 = v7;
+    v24 = deviceCopy;
     _os_log_error_impl(&dword_22506F000, v18, OS_LOG_TYPE_ERROR, "Could not create mock backing account with test account %@, test device %@", &v21, 0x16u);
   }
 
@@ -677,7 +677,7 @@ LABEL_13:
 
 - (BOOL)hasCredentials
 {
-  v3 = self;
+  selfCopy = self;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -687,18 +687,18 @@ LABEL_13:
   v6[1] = 3221225472;
   v6[2] = sub_22510A39C;
   v6[3] = &unk_278545678;
-  v6[4] = v3;
+  v6[4] = selfCopy;
   v6[5] = &v7;
   dispatch_sync(v4, v6);
 
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)needsToVerifyTerms
 {
-  v3 = self;
+  selfCopy = self;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -708,13 +708,13 @@ LABEL_13:
   v6[1] = 3221225472;
   v6[2] = sub_22510A54C;
   v6[3] = &unk_278545678;
-  v6[4] = v3;
+  v6[4] = selfCopy;
   v6[5] = &v7;
   dispatch_sync(v4, v6);
 
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return selfCopy;
 }
 
 - (NSString)formattedUsername
@@ -749,10 +749,10 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -762,7 +762,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_backingAccount(self, v6, v7);
       v11 = objc_msgSend_backingAccount(v5, v9, v10);
 
@@ -786,24 +786,24 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isDataclassEnabled:(id)a3
+- (BOOL)isDataclassEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v7 = objc_msgSend_backingAccount(self, v5, v6);
-  isDataclassEnabled = objc_msgSend_isDataclassEnabled_(v7, v8, v4);
+  isDataclassEnabled = objc_msgSend_isDataclassEnabled_(v7, v8, enabledCopy);
 
   return isDataclassEnabled;
 }
 
-- (BOOL)isDataclassEnabledForCellular:(id)a3
+- (BOOL)isDataclassEnabledForCellular:(id)cellular
 {
-  v4 = a3;
+  cellularCopy = cellular;
   v7 = objc_msgSend_backingAccount(self, v5, v6);
 
   if (v7)
   {
     v10 = objc_msgSend_backingAccount(self, v8, v9);
-    isDataclassEnabledForCellular = objc_msgSend_isDataclassEnabledForCellular_(v10, v11, v4);
+    isDataclassEnabledForCellular = objc_msgSend_isDataclassEnabledForCellular_(v10, v11, cellularCopy);
   }
 
   else
@@ -834,48 +834,48 @@ LABEL_13:
   return v6;
 }
 
-- (void)updateAccountPropertiesAndSaveAccountWithCompletionHandler:(id)a3
+- (void)updateAccountPropertiesAndSaveAccountWithCompletionHandler:(id)handler
 {
-  v12 = a3;
+  handlerCopy = handler;
   v6 = objc_msgSend_backingAccount(self, v4, v5);
 
   if (v6)
   {
     v9 = objc_msgSend_backingAccount(self, v7, v8);
-    objc_msgSend_updateAccountPropertiesAndSaveAccount_(v9, v10, v12);
+    objc_msgSend_updateAccountPropertiesAndSaveAccount_(v9, v10, handlerCopy);
   }
 
   else
   {
-    v11 = v12;
-    if (!v12)
+    v11 = handlerCopy;
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
     v9 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v7, *MEMORY[0x277CBC120], 1002, @"Can't update account properties because we have no account");
-    (*(v12 + 2))(v12, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
   }
 
-  v11 = v12;
+  v11 = handlerCopy;
 LABEL_6:
 }
 
-- (void)_lockedRenewTokenWithReason:(id)a3 shouldForce:(BOOL)a4 container:(id)a5 tokenFetchBlock:(id)a6 completionHandler:(id)a7
+- (void)_lockedRenewTokenWithReason:(id)reason shouldForce:(BOOL)force container:(id)container tokenFetchBlock:(id)block completionHandler:(id)handler
 {
-  v10 = a4;
+  forceCopy = force;
   v105 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  reasonCopy = reason;
+  containerCopy = container;
+  blockCopy = block;
+  handlerCopy = handler;
   v18 = objc_msgSend_authTokenQueue(self, v16, v17);
   dispatch_assert_queue_V2(v18);
 
   v102 = 0;
-  v19 = v14[2](v14, &v102);
+  v19 = blockCopy[2](blockCopy, &v102);
   v22 = v102;
-  if (!v22 && v19 && !v10)
+  if (!v22 && v19 && !forceCopy)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -897,7 +897,7 @@ LABEL_6:
     block[1] = 3221225472;
     block[2] = sub_22510B300;
     block[3] = &unk_2785456A0;
-    v101 = v15;
+    v101 = handlerCopy;
     dispatch_async(v30, block);
 
     v22 = 0;
@@ -913,7 +913,7 @@ LABEL_6:
     v38 = objc_msgSend_backingAccount(self, v36, v37);
     canSuspendedAccountRenewCredentials = objc_msgSend_canSuspendedAccountRenewCredentials(v38, v39, v40);
 
-    if (((canSuspendedAccountRenewCredentials | v10) & 1) == 0)
+    if (((canSuspendedAccountRenewCredentials | forceCopy) & 1) == 0)
     {
       if (*MEMORY[0x277CBC880] != -1)
       {
@@ -932,7 +932,7 @@ LABEL_6:
         v22 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v70, *MEMORY[0x277CBC120], 1004, @"Can't renew our auth token since account is suspended and renewal is rate limited");
       }
 
-      if (v15)
+      if (handlerCopy)
       {
         v72 = objc_msgSend_authTokenCallbackQueue(self, v70, v71);
         v73 = v97;
@@ -940,7 +940,7 @@ LABEL_6:
         v97[1] = 3221225472;
         v97[2] = sub_22510B320;
         v97[3] = &unk_2785456C8;
-        v99 = v15;
+        v99 = handlerCopy;
         v22 = v22;
         v98 = v22;
         dispatch_async(v72, v97);
@@ -955,7 +955,7 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    if (objc_msgSend_canAccessAccount(v13, v42, v43))
+    if (objc_msgSend_canAccessAccount(containerCopy, v42, v43))
     {
       v46 = objc_msgSend_backingAccount(self, v44, v45);
       objc_msgSend_noteSuspendedAccountRenewalDate(v46, v47, v48);
@@ -963,12 +963,12 @@ LABEL_43:
 LABEL_14:
       v49 = objc_opt_new();
       v31 = v49;
-      if (v12)
+      if (reasonCopy)
       {
-        objc_msgSend_setObject_forKeyedSubscript_(v49, v50, v12, *MEMORY[0x277CB9088]);
+        objc_msgSend_setObject_forKeyedSubscript_(v49, v50, reasonCopy, *MEMORY[0x277CB9088]);
       }
 
-      if (v10)
+      if (forceCopy)
       {
         objc_msgSend_setObject_forKeyedSubscript_(v31, v50, MEMORY[0x277CBEC38], *MEMORY[0x277CB90A0]);
       }
@@ -987,7 +987,7 @@ LABEL_14:
         objc_copyWeak(&v93, buf);
         v60 = v56;
         v91 = v60;
-        v92 = v15;
+        v92 = handlerCopy;
         objc_msgSend_renewAuthTokenWithOptions_completionHandler_(v59, v61, v31, v90);
 
         objc_destroyWeak(&v93);
@@ -1019,7 +1019,7 @@ LABEL_14:
         v86[3] = &unk_2785456F0;
         v89 = 0;
         v87 = v85;
-        v88 = v15;
+        v88 = handlerCopy;
         v83 = v85;
         dispatch_async(v82, v86);
       }
@@ -1028,7 +1028,7 @@ LABEL_14:
     }
   }
 
-  else if (objc_msgSend_canAccessAccount(v13, v36, v37))
+  else if (objc_msgSend_canAccessAccount(containerCopy, v36, v37))
   {
     goto LABEL_14;
   }
@@ -1050,7 +1050,7 @@ LABEL_14:
 
   if (v22)
   {
-    if (!v15)
+    if (!handlerCopy)
     {
       goto LABEL_44;
     }
@@ -1059,7 +1059,7 @@ LABEL_14:
   }
 
   v22 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v63, *MEMORY[0x277CBC120], 2011, @"Can't renew our auth token since we don't have access to the account");
-  if (v15)
+  if (handlerCopy)
   {
 LABEL_36:
     v74 = objc_msgSend_authTokenCallbackQueue(self, v63, v64);
@@ -1068,7 +1068,7 @@ LABEL_36:
     v94[1] = 3221225472;
     v94[2] = sub_22510B338;
     v94[3] = &unk_2785456C8;
-    v96 = v15;
+    v96 = handlerCopy;
     v22 = v22;
     v95 = v22;
     dispatch_async(v74, v94);
@@ -1081,12 +1081,12 @@ LABEL_44:
   v84 = *MEMORY[0x277D85DE8];
 }
 
-- (void)renewCloudKitAuthTokenWithReason:(id)a3 shouldForce:(BOOL)a4 container:(id)a5 failedToken:(id)a6 completionHandler:(id)a7
+- (void)renewCloudKitAuthTokenWithReason:(id)reason shouldForce:(BOOL)force container:(id)container failedToken:(id)token completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  reasonCopy = reason;
+  containerCopy = container;
+  tokenCopy = token;
+  handlerCopy = handler;
   v18 = objc_msgSend_accountID(self, v16, v17);
   v19 = objc_opt_class();
   objc_msgSend_beginAuthTokenRenewalForAccountID_(v19, v20, v18);
@@ -1098,7 +1098,7 @@ LABEL_44:
   v41 = v21;
   v22 = v18;
   v42 = v22;
-  v23 = v15;
+  v23 = handlerCopy;
   v43 = v23;
   v24 = _Block_copy(aBlock);
   objc_initWeak(&location, self);
@@ -1108,24 +1108,24 @@ LABEL_44:
   block[2] = sub_22510B8B8;
   block[3] = &unk_278545790;
   objc_copyWeak(&v37, &location);
-  v38 = a4;
-  v33 = v12;
-  v34 = v13;
-  v35 = v14;
+  forceCopy = force;
+  v33 = reasonCopy;
+  v34 = containerCopy;
+  v35 = tokenCopy;
   v36 = v24;
   v28 = v24;
-  v29 = v14;
-  v30 = v13;
-  v31 = v12;
+  v29 = tokenCopy;
+  v30 = containerCopy;
+  v31 = reasonCopy;
   dispatch_async(v27, block);
 
   objc_destroyWeak(&v37);
   objc_destroyWeak(&location);
 }
 
-- (id)cloudKitAuthTokenWithContainer:(id)a3 error:(id *)a4
+- (id)cloudKitAuthTokenWithContainer:(id)container error:(id *)error
 {
-  v6 = a3;
+  containerCopy = container;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1145,14 +1145,14 @@ LABEL_44:
   v13[3] = &unk_2785457B8;
   v15 = &v23;
   v13[4] = self;
-  v10 = v6;
+  v10 = containerCopy;
   v14 = v10;
   v16 = &v17;
   dispatch_sync(v9, v13);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v11 = v24[5];
@@ -1163,11 +1163,11 @@ LABEL_44:
   return v11;
 }
 
-- (void)cloudKitAuthTokenWithContainer:(id)a3 completionHandler:(id)a4
+- (void)cloudKitAuthTokenWithContainer:(id)container completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  containerCopy = container;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(&location, self);
     v10 = objc_msgSend_authTokenQueue(self, v8, v9);
@@ -1176,9 +1176,9 @@ LABEL_44:
     block[2] = sub_22510BF7C;
     block[3] = &unk_278545808;
     objc_copyWeak(&v15, &location);
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
+    v12 = containerCopy;
+    selfCopy = self;
+    v14 = handlerCopy;
     dispatch_async(v10, block);
 
     objc_destroyWeak(&v15);
@@ -1186,15 +1186,15 @@ LABEL_44:
   }
 }
 
-- (id)_lockedCloudKitAuthTokenWithContainer:(id)a3 error:(id *)a4
+- (id)_lockedCloudKitAuthTokenWithContainer:(id)container error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  containerCopy = container;
   v9 = objc_msgSend_authTokenQueue(self, v7, v8);
   dispatch_assert_queue_V2(v9);
 
   v12 = objc_msgSend_backingAccount(self, v10, v11);
-  if (!v12 || (v15 = v12, canAuthWithCloudKit = objc_msgSend_canAuthWithCloudKit(v6, v13, v14), v15, (canAuthWithCloudKit & 1) == 0))
+  if (!v12 || (v15 = v12, canAuthWithCloudKit = objc_msgSend_canAuthWithCloudKit(containerCopy, v13, v14), v15, (canAuthWithCloudKit & 1) == 0))
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -1212,7 +1212,7 @@ LABEL_44:
     goto LABEL_21;
   }
 
-  if ((objc_msgSend_canAccessAccount(v6, v17, v18) & 1) == 0)
+  if ((objc_msgSend_canAccessAccount(containerCopy, v17, v18) & 1) == 0)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -1270,7 +1270,7 @@ LABEL_22:
     v29 = *MEMORY[0x277CBC830];
     if (!os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_23;
       }
@@ -1281,11 +1281,11 @@ LABEL_22:
     *buf = 138412290;
     v37 = v24;
     _os_log_error_impl(&dword_22506F000, v29, OS_LOG_TYPE_ERROR, "Error getting CloudKit auth token: %@", buf, 0xCu);
-    if (a4)
+    if (error)
     {
 LABEL_16:
       v30 = v24;
-      *a4 = v24;
+      *error = v24;
     }
   }
 
@@ -1296,12 +1296,12 @@ LABEL_23:
   return v23;
 }
 
-- (void)renewiCloudAuthTokenWithReason:(id)a3 shouldForce:(BOOL)a4 container:(id)a5 failedToken:(id)a6 completionHandler:(id)a7
+- (void)renewiCloudAuthTokenWithReason:(id)reason shouldForce:(BOOL)force container:(id)container failedToken:(id)token completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  reasonCopy = reason;
+  containerCopy = container;
+  tokenCopy = token;
+  handlerCopy = handler;
   v18 = objc_msgSend_accountID(self, v16, v17);
   v19 = objc_opt_class();
   objc_msgSend_beginAuthTokenRenewalForAccountID_(v19, v20, v18);
@@ -1313,7 +1313,7 @@ LABEL_23:
   v41 = v21;
   v22 = v18;
   v42 = v22;
-  v23 = v15;
+  v23 = handlerCopy;
   v43 = v23;
   v24 = _Block_copy(aBlock);
   objc_initWeak(&location, self);
@@ -1323,24 +1323,24 @@ LABEL_23:
   block[2] = sub_22510C6A0;
   block[3] = &unk_278545790;
   objc_copyWeak(&v37, &location);
-  v38 = a4;
-  v33 = v12;
-  v34 = v13;
-  v35 = v14;
+  forceCopy = force;
+  v33 = reasonCopy;
+  v34 = containerCopy;
+  v35 = tokenCopy;
   v36 = v24;
   v28 = v24;
-  v29 = v14;
-  v30 = v13;
-  v31 = v12;
+  v29 = tokenCopy;
+  v30 = containerCopy;
+  v31 = reasonCopy;
   dispatch_async(v27, block);
 
   objc_destroyWeak(&v37);
   objc_destroyWeak(&location);
 }
 
-- (id)iCloudAuthTokenWithContainer:(id)a3 error:(id *)a4
+- (id)iCloudAuthTokenWithContainer:(id)container error:(id *)error
 {
-  v6 = a3;
+  containerCopy = container;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1360,14 +1360,14 @@ LABEL_23:
   v13[3] = &unk_2785457B8;
   v15 = &v23;
   v13[4] = self;
-  v10 = v6;
+  v10 = containerCopy;
   v14 = v10;
   v16 = &v17;
   dispatch_sync(v9, v13);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v11 = v24[5];
@@ -1378,11 +1378,11 @@ LABEL_23:
   return v11;
 }
 
-- (void)iCloudAuthTokenWithContainer:(id)a3 completionHandler:(id)a4
+- (void)iCloudAuthTokenWithContainer:(id)container completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  containerCopy = container;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(&location, self);
     v10 = objc_msgSend_authTokenQueue(self, v8, v9);
@@ -1391,9 +1391,9 @@ LABEL_23:
     block[2] = sub_22510CBF4;
     block[3] = &unk_278545808;
     objc_copyWeak(&v15, &location);
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
+    v12 = containerCopy;
+    selfCopy = self;
+    v14 = handlerCopy;
     dispatch_async(v10, block);
 
     objc_destroyWeak(&v15);
@@ -1401,15 +1401,15 @@ LABEL_23:
   }
 }
 
-- (id)_lockediCloudAuthTokenWithContainer:(id)a3 error:(id *)a4
+- (id)_lockediCloudAuthTokenWithContainer:(id)container error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  containerCopy = container;
   v9 = objc_msgSend_authTokenQueue(self, v7, v8);
   dispatch_assert_queue_V2(v9);
 
   v12 = objc_msgSend_backingAccount(self, v10, v11);
-  if (!v12 || (v15 = v12, canAuthWithCloudKit = objc_msgSend_canAuthWithCloudKit(v6, v13, v14), v15, (canAuthWithCloudKit & 1) == 0))
+  if (!v12 || (v15 = v12, canAuthWithCloudKit = objc_msgSend_canAuthWithCloudKit(containerCopy, v13, v14), v15, (canAuthWithCloudKit & 1) == 0))
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -1427,7 +1427,7 @@ LABEL_23:
     goto LABEL_10;
   }
 
-  if (objc_msgSend_canAccessAccount(v6, v17, v18))
+  if (objc_msgSend_canAccessAccount(containerCopy, v17, v18))
   {
     v21 = objc_msgSend_backingAccount(self, v19, v20);
     v37 = 0;
@@ -1483,7 +1483,7 @@ LABEL_14:
   v33 = *MEMORY[0x277CBC830];
   if (!os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -1494,11 +1494,11 @@ LABEL_14:
   *buf = 138412290;
   v39 = v24;
   _os_log_error_impl(&dword_22506F000, v33, OS_LOG_TYPE_ERROR, "Error getting iCloud auth token: %@", buf, 0xCu);
-  if (a4)
+  if (error)
   {
 LABEL_18:
     v34 = v24;
-    *a4 = v24;
+    *error = v24;
   }
 
 LABEL_20:
@@ -1508,10 +1508,10 @@ LABEL_20:
   return v23;
 }
 
-- (void)iCloudAuthTokenWithCompletionHandler:(id)a3
+- (void)iCloudAuthTokenWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(&location, self);
     v7 = objc_msgSend_authTokenQueue(self, v5, v6);
@@ -1521,7 +1521,7 @@ LABEL_20:
     v8[3] = &unk_278545830;
     objc_copyWeak(&v10, &location);
     v8[4] = self;
-    v9 = v4;
+    v9 = handlerCopy;
     dispatch_async(v7, v8);
 
     objc_destroyWeak(&v10);
@@ -1529,10 +1529,10 @@ LABEL_20:
   }
 }
 
-- (id)_lockediCloudAuthTokenWithError:(id *)a3
+- (id)_lockediCloudAuthTokenWithError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_authTokenQueue(self, a2, a3);
+  v5 = objc_msgSend_authTokenQueue(self, a2, error);
   dispatch_assert_queue_V2(v5);
 
   v8 = objc_msgSend_backingAccount(self, v6, v7);
@@ -1566,7 +1566,7 @@ LABEL_2:
     v14 = *MEMORY[0x277CBC830];
     if (!os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
-      if (!a3)
+      if (!error)
       {
         goto LABEL_11;
       }
@@ -1577,11 +1577,11 @@ LABEL_2:
     *buf = 138412290;
     v24 = v11;
     _os_log_error_impl(&dword_22506F000, v14, OS_LOG_TYPE_ERROR, "Error getting iCloud auth token: %@", buf, 0xCu);
-    if (a3)
+    if (error)
     {
 LABEL_6:
       v15 = v11;
-      *a3 = v11;
+      *error = v11;
     }
   }
 
@@ -1616,27 +1616,27 @@ LABEL_11:
   return v6;
 }
 
-- (void)validateVettingToken:(id)a3 vettingEmail:(id)a4 vettingPhone:(id)a5 container:(id)a6 completionHandler:(id)a7
+- (void)validateVettingToken:(id)token vettingEmail:(id)email vettingPhone:(id)phone container:(id)container completionHandler:(id)handler
 {
-  v21 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (objc_msgSend_canAccessAccount(a6, v15, v16))
+  tokenCopy = token;
+  emailCopy = email;
+  phoneCopy = phone;
+  handlerCopy = handler;
+  if (objc_msgSend_canAccessAccount(container, v15, v16))
   {
     v19 = objc_msgSend_backingAccount(self, v17, v18);
-    objc_msgSend_validateVettingToken_vettingEmail_vettingPhone_completionHandler_(v19, v20, v21, v12, v13, v14);
+    objc_msgSend_validateVettingToken_vettingEmail_vettingPhone_completionHandler_(v19, v20, tokenCopy, emailCopy, phoneCopy, handlerCopy);
   }
 
   else
   {
-    if (!v14)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
     v19 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v17, *MEMORY[0x277CBC120], 2011, @"Can't reauth since we don't have access to the account");
-    v14[2](v14, 0, v19);
+    handlerCopy[2](handlerCopy, 0, v19);
   }
 
 LABEL_6:
@@ -1672,7 +1672,7 @@ LABEL_6:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
       {
         v54 = 138412290;
-        v55 = self;
+        selfCopy5 = self;
         _os_log_error_impl(&dword_22506F000, v31, OS_LOG_TYPE_ERROR, "Account %@ is not valid because it has no iCloud auth token", &v54, 0xCu);
       }
 
@@ -1700,7 +1700,7 @@ LABEL_6:
         v51 = objc_msgSend_backingAccount(self, v49, v50);
         v53 = objc_msgSend_accountPropertiesForDataclass_(v51, v52, @"com.apple.Dataclass.Account");
         v54 = 138412802;
-        v55 = self;
+        selfCopy5 = self;
         v56 = 2112;
         v57 = v48;
         v58 = 2112;
@@ -1728,7 +1728,7 @@ LABEL_6:
       }
 
       v54 = 138412290;
-      v55 = self;
+      selfCopy5 = self;
       v28 = "Account %@ is not valid because it's marked as suspended";
     }
 
@@ -1761,7 +1761,7 @@ LABEL_31:
       }
 
       v54 = 138412290;
-      v55 = self;
+      selfCopy5 = self;
       v28 = "Account %@ is not valid because it can't get Stingray identities via PCS";
     }
 
@@ -1778,7 +1778,7 @@ LABEL_31:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
     v54 = 138412290;
-    v55 = self;
+    selfCopy5 = self;
     _os_log_error_impl(&dword_22506F000, v29, OS_LOG_TYPE_ERROR, "Account %@ is not valid because it has no iCloud auth token", &v54, 0xCu);
   }
 

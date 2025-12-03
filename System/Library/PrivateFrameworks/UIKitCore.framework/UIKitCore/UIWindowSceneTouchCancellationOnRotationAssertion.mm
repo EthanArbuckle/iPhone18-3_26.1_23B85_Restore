@@ -1,22 +1,22 @@
 @interface UIWindowSceneTouchCancellationOnRotationAssertion
-- (UIWindowSceneTouchCancellationOnRotationAssertion)initWithWindowScene:(id)a3;
+- (UIWindowSceneTouchCancellationOnRotationAssertion)initWithWindowScene:(id)scene;
 - (void)cancel;
 - (void)dealloc;
 @end
 
 @implementation UIWindowSceneTouchCancellationOnRotationAssertion
 
-- (UIWindowSceneTouchCancellationOnRotationAssertion)initWithWindowScene:(id)a3
+- (UIWindowSceneTouchCancellationOnRotationAssertion)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v9.receiver = self;
   v9.super_class = UIWindowSceneTouchCancellationOnRotationAssertion;
   v5 = [(UIWindowSceneTouchCancellationOnRotationAssertion *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_windowScene, v4);
-    [v4 _setShouldDisableTouchCancellationOnRotation:1];
+    v7 = objc_storeWeak(&v5->_windowScene, sceneCopy);
+    [sceneCopy _setShouldDisableTouchCancellationOnRotation:1];
   }
 
   return v6;

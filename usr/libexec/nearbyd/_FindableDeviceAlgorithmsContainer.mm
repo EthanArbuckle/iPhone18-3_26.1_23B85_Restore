@@ -1,17 +1,17 @@
 @interface _FindableDeviceAlgorithmsContainer
-- (_FindableDeviceAlgorithmsContainer)initWithToken:(id)a3 queue:(id)a4 delegate:(id)a5;
+- (_FindableDeviceAlgorithmsContainer)initWithToken:(id)token queue:(id)queue delegate:(id)delegate;
 - (basic_string<char,)uniqueIdentifierForEngine:(std::allocator<char>> *__return_ptr)retstr;
-- (id)objectFromIdentifier:(unint64_t)a3;
-- (optional<unsigned)identifierFromDiscoveryToken:(id)a3;
+- (id)objectFromIdentifier:(unint64_t)identifier;
+- (optional<unsigned)identifierFromDiscoveryToken:(id)token;
 @end
 
 @implementation _FindableDeviceAlgorithmsContainer
 
-- (_FindableDeviceAlgorithmsContainer)initWithToken:(id)a3 queue:(id)a4 delegate:(id)a5
+- (_FindableDeviceAlgorithmsContainer)initWithToken:(id)token queue:(id)queue delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  tokenCopy = token;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v31.receiver = self;
   v31.super_class = _FindableDeviceAlgorithmsContainer;
   v12 = [(_FindableDeviceAlgorithmsContainer *)&v31 init];
@@ -21,13 +21,13 @@
     containerIdentifier = v12->_containerIdentifier;
     v12->_containerIdentifier = v13;
 
-    objc_storeStrong(&v12->_token, a3);
+    objc_storeStrong(&v12->_token, token);
     v15 = [[NIServerAnalyticsManager alloc] initWithBundleIdentifier:@"nearbyd"];
     analyticsManager = v12->_analyticsManager;
     v12->_analyticsManager = v15;
 
     v12->_currentSolutionMacAddress = 0;
-    v17 = [[NIFindingConfiguration alloc] initWithRole:1 discoveryToken:v9 preferredUpdateRate:3];
+    v17 = [[NIFindingConfiguration alloc] initWithRole:1 discoveryToken:tokenCopy preferredUpdateRate:3];
     configuration = v12->_configuration;
     v12->_configuration = v17;
 
@@ -45,7 +45,7 @@
     }
 
     v28 = 0;
-    v24 = [(NINearbyUpdatesEngine *)v19 initWithConfiguration:v20 queue:v10 delegate:v11 dataSource:v12 analyticsManager:v21 protobufLogger:&v29 error:&v28];
+    v24 = [(NINearbyUpdatesEngine *)v19 initWithConfiguration:v20 queue:queueCopy delegate:delegateCopy dataSource:v12 analyticsManager:v21 protobufLogger:&v29 error:&v28];
     v25 = v28;
     updatesEngine = v12->_updatesEngine;
     v12->_updatesEngine = v24;
@@ -64,7 +64,7 @@
   return v12;
 }
 
-- (optional<unsigned)identifierFromDiscoveryToken:(id)a3
+- (optional<unsigned)identifierFromDiscoveryToken:(id)token
 {
   currentSolutionMacAddress = self->_currentSolutionMacAddress;
   v4 = 1;
@@ -73,7 +73,7 @@
   return result;
 }
 
-- (id)objectFromIdentifier:(unint64_t)a3
+- (id)objectFromIdentifier:(unint64_t)identifier
 {
   v3 = [[NINearbyObject alloc] initWithToken:self->_token];
 
@@ -82,8 +82,8 @@
 
 - (basic_string<char,)uniqueIdentifierForEngine:(std::allocator<char>> *__return_ptr)retstr
 {
-  v4 = [*(v1 + 16) UUIDString];
-  sub_100004A08(retstr, [v4 UTF8String]);
+  uUIDString = [*(v1 + 16) UUIDString];
+  sub_100004A08(retstr, [uUIDString UTF8String]);
 
   return result;
 }

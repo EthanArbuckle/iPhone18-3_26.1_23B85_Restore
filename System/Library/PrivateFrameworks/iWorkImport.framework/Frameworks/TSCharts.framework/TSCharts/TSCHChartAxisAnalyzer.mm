@@ -1,37 +1,37 @@
 @interface TSCHChartAxisAnalyzer
-+ (id)analyzerForAxis:(id)a3 needsMedian:(BOOL)a4;
++ (id)analyzerForAxis:(id)axis needsMedian:(BOOL)median;
 - (double)average;
 - (double)median;
-- (id)initForAxis:(id)a3 needsMedian:(BOOL)a4;
-- (void)addGridValue:(id)a3 forSeries:(id)a4;
+- (id)initForAxis:(id)axis needsMedian:(BOOL)median;
+- (void)addGridValue:(id)value forSeries:(id)series;
 @end
 
 @implementation TSCHChartAxisAnalyzer
 
-+ (id)analyzerForAxis:(id)a3 needsMedian:(BOOL)a4
++ (id)analyzerForAxis:(id)axis needsMedian:(BOOL)median
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [a1 alloc];
-  v12 = objc_msgSend_initForAxis_needsMedian_(v7, v8, v9, v10, v11, v6, v4);
+  medianCopy = median;
+  axisCopy = axis;
+  v7 = [self alloc];
+  v12 = objc_msgSend_initForAxis_needsMedian_(v7, v8, v9, v10, v11, axisCopy, medianCopy);
 
   return v12;
 }
 
-- (id)initForAxis:(id)a3 needsMedian:(BOOL)a4
+- (id)initForAxis:(id)axis needsMedian:(BOOL)median
 {
-  v4 = a4;
-  v7 = a3;
+  medianCopy = median;
+  axisCopy = axis;
   v18.receiver = self;
   v18.super_class = TSCHChartAxisAnalyzer;
   v8 = [(TSCHChartAxisAnalyzer *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_axis, a3);
+    objc_storeStrong(&v8->_axis, axis);
     v9->_shouldCalculateMedian = 0;
     v9->_firstValue = 1;
-    if (v4)
+    if (medianCopy)
     {
       hasMedianReferenceLine = objc_msgSend_p_hasMedianReferenceLine(v9, v10, v11, v12, v13);
       v9->_shouldCalculateMedian = hasMedianReferenceLine;
@@ -47,14 +47,14 @@
   return v9;
 }
 
-- (void)addGridValue:(id)a3 forSeries:(id)a4
+- (void)addGridValue:(id)value forSeries:(id)series
 {
-  v29 = a3;
-  v6 = a4;
-  if (v29)
+  valueCopy = value;
+  seriesCopy = series;
+  if (valueCopy)
   {
-    objc_msgSend_doubleValue(v29, v29, v7, v8, v9);
-    objc_msgSend_doubleModelToAxisValue_forSeries_(self->_axis, v10, v11, v12, v13, v6);
+    objc_msgSend_doubleValue(valueCopy, valueCopy, v7, v8, v9);
+    objc_msgSend_doubleModelToAxisValue_forSeries_(self->_axis, v10, v11, v12, v13, seriesCopy);
     v28 = v14;
     if (objc_msgSend_shouldAnalyzeAxisValue_(self->_axis, v15, v14, v16, v17))
     {

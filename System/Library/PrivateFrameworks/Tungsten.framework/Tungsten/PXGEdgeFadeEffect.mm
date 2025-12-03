@@ -1,15 +1,15 @@
 @interface PXGEdgeFadeEffect
-- (PXGEdgeFadeEffect)initWithEntityManager:(id)a3;
+- (PXGEdgeFadeEffect)initWithEntityManager:(id)manager;
 @end
 
 @implementation PXGEdgeFadeEffect
 
-- (PXGEdgeFadeEffect)initWithEntityManager:(id)a3
+- (PXGEdgeFadeEffect)initWithEntityManager:(id)manager
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = PXGEdgeFadeEffect;
-  v3 = [(PXGEffect *)&v11 initWithEntityManager:a3];
+  v3 = [(PXGEffect *)&v11 initWithEntityManager:manager];
   if (v3)
   {
     v4 = [[PXGUniform alloc] initWithName:@"directionUniform" type:0];

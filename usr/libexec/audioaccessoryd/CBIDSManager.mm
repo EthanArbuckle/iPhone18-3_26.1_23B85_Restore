@@ -1,58 +1,58 @@
 @interface CBIDSManager
 + (id)sharedInstance;
 - (BOOL)allDevicesStarSky;
-- (BOOL)isLegacyDevice:(id)a3;
+- (BOOL)isLegacyDevice:(id)device;
 - (BOOL)shouldUpgradeToManatee;
-- (BOOL)validateKeys:(id)a3 requestedTypes:(id)a4 from:(id)a5;
-- (BOOL)validateMessage:(id)a3 from:(id)a4;
+- (BOOL)validateKeys:(id)keys requestedTypes:(id)types from:(id)from;
+- (BOOL)validateMessage:(id)message from:(id)from;
 - (CBIDSManager)init;
 - (NSArray)idsDevices;
-- (id)_fetchArrayOfCloudDevicesForPeripheral:(id)a3;
-- (id)_fetchCloudPairingIdentifierForPeripheral:(id)a3;
+- (id)_fetchArrayOfCloudDevicesForPeripheral:(id)peripheral;
+- (id)_fetchCloudPairingIdentifierForPeripheral:(id)peripheral;
 - (id)_statedumpAndRecordDailyMetric;
-- (id)deviceForIDSDevice:(id)a3 createNew:(BOOL)a4;
-- (id)filteredDevicesForIDSDevices:(id)a3;
-- (id)idsDeviceForBTAddress:(id)a3;
-- (id)publicAddressForIDSDevice:(id)a3;
+- (id)deviceForIDSDevice:(id)device createNew:(BOOL)new;
+- (id)filteredDevicesForIDSDevices:(id)devices;
+- (id)idsDeviceForBTAddress:(id)address;
+- (id)publicAddressForIDSDevice:(id)device;
 - (id)statedumpAndRecordDailyMetric;
-- (unint64_t)roleWithDevice:(id)a3;
-- (void)_sendRePairRequest:(id)a3 forBundleID:(id)a4;
+- (unint64_t)roleWithDevice:(id)device;
+- (void)_sendRePairRequest:(id)request forBundleID:(id)d;
 - (void)checkFirstUnlockForIDS;
-- (void)cloudPairingCompletedWithResponse:(id)a3 localKeys:(id)a4 from:(id)a5 forProtocolID:(id)a6;
-- (void)connectionUpdatedForBluetoothIdentifier:(id)a3 connected:(BOOL)a4;
-- (void)fetchCloudPairingIdentifierForPeripheral:(id)a3 withCompletion:(id)a4;
-- (void)fetchIDSDevicesWithCompletion:(id)a3;
-- (void)fetchPublicAddressWithCompletion:(id)a3;
-- (void)generateKeyDictForTypes:(id)a3 keyLength:(unint64_t)a4 forAddress:(id)a5 withCompletion:(id)a6;
-- (void)handleCloudPairingMessage:(id)a3 from:(id)a4;
-- (void)handleInitiatorPairingKeys:(id)a3 from:(id)a4 forProtocolID:(id)a5;
-- (void)handleKeyDistribution:(id)a3 from:(id)a4;
-- (void)handlePairingFailure:(id)a3 from:(id)a4;
-- (void)handlePairingRequest:(id)a3 from:(id)a4;
-- (void)handlePairingResponse:(id)a3 from:(id)a4;
-- (void)handleRepairRequest:(id)a3 from:(id)a4;
-- (void)handleResponderPairingKeys:(id)a3 from:(id)a4 forProtocolID:(id)a5;
-- (void)handleSecurityRequest:(id)a3 from:(id)a4;
-- (void)handleUnpairCommand:(id)a3 from:(id)a4;
+- (void)cloudPairingCompletedWithResponse:(id)response localKeys:(id)keys from:(id)from forProtocolID:(id)d;
+- (void)connectionUpdatedForBluetoothIdentifier:(id)identifier connected:(BOOL)connected;
+- (void)fetchCloudPairingIdentifierForPeripheral:(id)peripheral withCompletion:(id)completion;
+- (void)fetchIDSDevicesWithCompletion:(id)completion;
+- (void)fetchPublicAddressWithCompletion:(id)completion;
+- (void)generateKeyDictForTypes:(id)types keyLength:(unint64_t)length forAddress:(id)address withCompletion:(id)completion;
+- (void)handleCloudPairingMessage:(id)message from:(id)from;
+- (void)handleInitiatorPairingKeys:(id)keys from:(id)from forProtocolID:(id)d;
+- (void)handleKeyDistribution:(id)distribution from:(id)from;
+- (void)handlePairingFailure:(id)failure from:(id)from;
+- (void)handlePairingRequest:(id)request from:(id)from;
+- (void)handlePairingResponse:(id)response from:(id)from;
+- (void)handleRepairRequest:(id)request from:(id)from;
+- (void)handleResponderPairingKeys:(id)keys from:(id)from forProtocolID:(id)d;
+- (void)handleSecurityRequest:(id)request from:(id)from;
+- (void)handleUnpairCommand:(id)command from:(id)from;
 - (void)initializeIDS;
-- (void)initiatePairing:(id)a3;
-- (void)initiatePairingAgainIfNoAckReceived:(id)a3 attempt:(unint64_t)a4;
+- (void)initiatePairing:(id)pairing;
+- (void)initiatePairingAgainIfNoAckReceived:(id)received attempt:(unint64_t)attempt;
 - (void)retryIDSSetup;
-- (void)sendCloudPairingResponseMessage:(id)a3 toDevice:(id)a4 version:(id)a5;
-- (void)sendErrorMessageToDevice:(id)a3 reason:(id)a4;
-- (void)sendInitialPairingIDSMessage:(id)a3 forDevice:(id)a4 withRole:(unint64_t)a5;
-- (void)sendRePairCloudPairingMessage:(id)a3 toDevice:(id)a4 bundleID:(id)a5;
-- (void)sendRePairRequest:(id)a3 forBundleID:(id)a4;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 fromID:(id)a6 hasBeenDeliveredWithContext:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)storePublicAddressMapping:(id)a3 message:(id)a4;
-- (void)updateActiveAccount:(id)a3;
-- (void)updateCloudPairings:(id)a3 newDevices:(id)a4;
-- (void)validateCloudPairing:(id)a3;
-- (void)xpcUpdateCloudPairings:(id)a3;
+- (void)sendCloudPairingResponseMessage:(id)message toDevice:(id)device version:(id)version;
+- (void)sendErrorMessageToDevice:(id)device reason:(id)reason;
+- (void)sendInitialPairingIDSMessage:(id)message forDevice:(id)device withRole:(unint64_t)role;
+- (void)sendRePairCloudPairingMessage:(id)message toDevice:(id)device bundleID:(id)d;
+- (void)sendRePairRequest:(id)request forBundleID:(id)d;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account identifier:(id)identifier fromID:(id)d hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)storePublicAddressMapping:(id)mapping message:(id)message;
+- (void)updateActiveAccount:(id)account;
+- (void)updateCloudPairings:(id)pairings newDevices:(id)devices;
+- (void)validateCloudPairing:(id)pairing;
+- (void)xpcUpdateCloudPairings:(id)pairings;
 @end
 
 @implementation CBIDSManager
@@ -131,13 +131,13 @@
 
   if (+[BTSystemConfiguration isFirstUnlocked])
   {
-    v4 = [(CBIDSManager *)self cloudPairingQueue];
+    cloudPairingQueue = [(CBIDSManager *)self cloudPairingQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10007EE98;
     block[3] = &unk_1002B6880;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(cloudPairingQueue, block);
   }
 
   else
@@ -159,9 +159,9 @@
 
 - (void)initializeIDS
 {
-  v3 = [(CBIDSManager *)self service];
+  service = [(CBIDSManager *)self service];
 
-  if (v3)
+  if (service)
   {
     v4 = sub_100005C14("CloudPairing");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -192,26 +192,26 @@
     v10 = sub_100005C14("CloudPairing");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(CBIDSManager *)self cloudIdentifier];
-      v12 = [(CBIDSManager *)self localDeviceName];
+      cloudIdentifier = [(CBIDSManager *)self cloudIdentifier];
+      localDeviceName = [(CBIDSManager *)self localDeviceName];
       *buf = 138412802;
-      v24 = v11;
+      v24 = cloudIdentifier;
       v25 = 2112;
       v26 = &off_1002CB7F8;
       v27 = 2112;
-      v28 = v12;
+      v28 = localDeviceName;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "initializeIDS (%@) checkIn version: %@, local name: %@", buf, 0x20u);
     }
 
-    v13 = [(CBIDSManager *)self cloudIdentifier];
-    if (v13 && (v14 = v13, [(CBIDSManager *)self localDeviceName], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+    cloudIdentifier2 = [(CBIDSManager *)self cloudIdentifier];
+    if (cloudIdentifier2 && (v14 = cloudIdentifier2, [(CBIDSManager *)self localDeviceName], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
     {
       v16 = +[CloudXPCService sharedInstance];
       v21[0] = @"kCheckInVersion";
       v21[1] = @"kIDSLocalDeviceUniqueID";
       v22[0] = &off_1002CB7F8;
-      v17 = [(CBIDSManager *)self cloudIdentifier];
-      v22[1] = v17;
+      cloudIdentifier3 = [(CBIDSManager *)self cloudIdentifier];
+      v22[1] = cloudIdentifier3;
       v18 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
@@ -237,27 +237,27 @@
 - (void)retryIDSSetup
 {
   v3 = dispatch_time(0, 30000000000);
-  v4 = [(CBIDSManager *)self cloudPairingQueue];
+  cloudPairingQueue = [(CBIDSManager *)self cloudPairingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007FB48;
   block[3] = &unk_1002B6880;
   block[4] = self;
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, cloudPairingQueue, block);
 }
 
-- (void)validateCloudPairing:(id)a3
+- (void)validateCloudPairing:(id)pairing
 {
-  v4 = a3;
+  pairingCopy = pairing;
   v50 = +[NSMutableArray array];
-  v5 = [(CBIDSManager *)self associatedDevices];
-  v51 = [NSMutableArray arrayWithArray:v5];
+  associatedDevices = [(CBIDSManager *)self associatedDevices];
+  v51 = [NSMutableArray arrayWithArray:associatedDevices];
 
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v55 = self;
+  selfCopy = self;
   obj = [(CBIDSManager *)self associatedDevices];
   v6 = [obj countByEnumeratingWithState:&v60 objects:v71 count:16];
   if (v6)
@@ -266,7 +266,7 @@
     v48 = v57;
     v8 = *v61;
     v53 = *v61;
-    v49 = v4;
+    v49 = pairingCopy;
     do
     {
       v9 = 0;
@@ -279,25 +279,25 @@
         }
 
         v10 = *(*(&v60 + 1) + 8 * v9);
-        v11 = [v10 idsDevice];
-        v12 = [v11 nsuuid];
+        idsDevice = [v10 idsDevice];
+        nsuuid = [idsDevice nsuuid];
 
-        if (v12)
+        if (nsuuid)
         {
-          v13 = [v10 idsDevice];
-          v14 = [v13 nsuuid];
-          v15 = [v14 UUIDString];
-          v16 = [v4 objectForKey:v15];
+          idsDevice2 = [v10 idsDevice];
+          nsuuid2 = [idsDevice2 nsuuid];
+          uUIDString = [nsuuid2 UUIDString];
+          v16 = [pairingCopy objectForKey:uUIDString];
 
           if (-[NSObject length](v16, "length") && ([v10 idsDevice], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "uniqueID"), v18 = objc_claimAutoreleasedReturnValue(), v19 = -[NSObject isEqualToString:](v16, "isEqualToString:", v18), v18, v17, v19))
           {
             v20 = sub_100005C14("CloudPairing");
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
-              v21 = [v10 idsDevice];
-              v22 = [v21 nsuuid];
+              idsDevice3 = [v10 idsDevice];
+              nsuuid3 = [idsDevice3 nsuuid];
               *buf = 138412546;
-              v68 = v22;
+              v68 = nsuuid3;
               v69 = 2112;
               v70 = v16;
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%@ is already cloud paired with IDS Device: %@", buf, 0x16u);
@@ -308,9 +308,9 @@
 
           else
           {
-            v23 = [v10 idsDevice];
-            v24 = [v23 nsuuid];
-            v25 = [(CBIDSManager *)v55 _fetchArrayOfCloudDevicesForPeripheral:v24];
+            idsDevice4 = [v10 idsDevice];
+            nsuuid4 = [idsDevice4 nsuuid];
+            v25 = [(CBIDSManager *)selfCopy _fetchArrayOfCloudDevicesForPeripheral:nsuuid4];
 
             if (-[NSObject length](v16, "length") && [v25 count] >= 2)
             {
@@ -327,48 +327,48 @@
 
             else
             {
-              v28 = [v10 idsDevice];
-              v29 = [v28 nsuuid];
-              v30 = [(CBIDSManager *)v55 _fetchCloudPairingIdentifierForPeripheral:v29];
+              idsDevice5 = [v10 idsDevice];
+              nsuuid5 = [idsDevice5 nsuuid];
+              v30 = [(CBIDSManager *)selfCopy _fetchCloudPairingIdentifierForPeripheral:nsuuid5];
 
               if (v30)
               {
                 v31 = sub_100005C14("CloudPairing");
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
                 {
-                  v32 = [v10 idsDevice];
-                  v33 = [v32 nsuuid];
-                  v34 = [v10 idsDevice];
-                  v35 = [v34 uniqueID];
+                  idsDevice6 = [v10 idsDevice];
+                  nsuuid6 = [idsDevice6 nsuuid];
+                  idsDevice7 = [v10 idsDevice];
+                  uniqueID = [idsDevice7 uniqueID];
                   *buf = 138412546;
-                  v68 = v33;
+                  v68 = nsuuid6;
                   v69 = 2112;
-                  v70 = v35;
+                  v70 = uniqueID;
                   _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Removing stale LE Cloud Paired Device %@ is already cloud paired with IDS Device: %@", buf, 0x16u);
                 }
 
                 v36 = +[CloudXPCService sharedInstance];
                 v65 = @"kCloudDeviceID";
-                v37 = [v10 idsDevice];
-                v38 = [v37 nsuuid];
-                v39 = [v38 UUIDString];
-                v66 = v39;
+                idsDevice8 = [v10 idsDevice];
+                nsuuid7 = [idsDevice8 nsuuid];
+                uUIDString2 = [nsuuid7 UUIDString];
+                v66 = uUIDString2;
                 v40 = [NSDictionary dictionaryWithObjects:&v66 forKeys:&v65 count:1];
                 [v36 sendCloudKitMsg:@"RemoveStaleLEPairedDevice" args:v40];
 
-                v41 = [v10 idsDevice];
-                [v41 setNSUUID:0];
+                idsDevice9 = [v10 idsDevice];
+                [idsDevice9 setNSUUID:0];
 
                 [v51 removeObject:v10];
-                v42 = [v10 idsDevice];
-                v43 = [v42 uniqueID];
-                v64 = v43;
+                idsDevice10 = [v10 idsDevice];
+                uniqueID2 = [idsDevice10 uniqueID];
+                v64 = uniqueID2;
                 v44 = [NSArray arrayWithObjects:&v64 count:1];
                 v45 = +[NSBundle mainBundle];
-                v46 = [v45 bundleIdentifier];
-                [(CBIDSManager *)v55 sendRePairRequest:v44 forBundleID:v46];
+                bundleIdentifier = [v45 bundleIdentifier];
+                [(CBIDSManager *)selfCopy sendRePairRequest:v44 forBundleID:bundleIdentifier];
 
-                v4 = v49;
+                pairingCopy = v49;
                 v8 = v53;
               }
 
@@ -382,10 +382,10 @@
           v16 = sub_100005C14("CloudPairing");
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [v10 idsDevice];
-            v27 = [v26 uniqueID];
+            idsDevice11 = [v10 idsDevice];
+            uniqueID3 = [idsDevice11 uniqueID];
             *buf = 138412290;
-            v68 = v27;
+            v68 = uniqueID3;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@ is not cloud paired with IDS Device", buf, 0xCu);
 
             v8 = v53;
@@ -402,30 +402,30 @@
     while (v7);
   }
 
-  v47 = [(CBIDSManager *)v55 _statedumpAndRecordDailyMetric];
-  [(CBIDSManager *)v55 updateCloudPairings:v50 newDevices:v51];
+  _statedumpAndRecordDailyMetric = [(CBIDSManager *)selfCopy _statedumpAndRecordDailyMetric];
+  [(CBIDSManager *)selfCopy updateCloudPairings:v50 newDevices:v51];
 }
 
-- (void)fetchPublicAddressWithCompletion:(id)a3
+- (void)fetchPublicAddressWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CBIDSManager *)self publicAddress];
+  completionCopy = completion;
+  publicAddress = [(CBIDSManager *)self publicAddress];
 
   v6 = sub_100005C14("CloudPairing");
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (publicAddress)
   {
     if (v7)
     {
-      v8 = [(CBIDSManager *)self publicAddress];
+      publicAddress2 = [(CBIDSManager *)self publicAddress];
       *buf = 138412290;
-      v13 = v8;
+      v13 = publicAddress2;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "have public address: %@", buf, 0xCu);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -443,35 +443,35 @@
     v10[2] = sub_1000805D8;
     v10[3] = &unk_1002B9690;
     v10[4] = self;
-    v11 = v4;
+    v11 = completionCopy;
     [v9 sendCloudKitMsg:@"FetchPublicAddress" args:&__NSDictionary0__struct withReply:v10];
   }
 }
 
-- (void)xpcUpdateCloudPairings:(id)a3
+- (void)xpcUpdateCloudPairings:(id)pairings
 {
-  v4 = a3;
-  v5 = [(CBIDSManager *)self cloudPairingQueue];
+  pairingsCopy = pairings;
+  cloudPairingQueue = [(CBIDSManager *)self cloudPairingQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100080924;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = pairingsCopy;
+  v6 = pairingsCopy;
+  dispatch_async(cloudPairingQueue, v7);
 }
 
-- (void)connectionUpdatedForBluetoothIdentifier:(id)a3 connected:(BOOL)a4
+- (void)connectionUpdatedForBluetoothIdentifier:(id)identifier connected:(BOOL)connected
 {
-  v18 = a4;
-  v5 = a3;
+  connectedCopy = connected;
+  identifierCopy = identifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(CBIDSManager *)self associatedDevices];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  associatedDevices = [(CBIDSManager *)self associatedDevices];
+  v7 = [associatedDevices countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -482,14 +482,14 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(associatedDevices);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 idsDevice];
-        v13 = [v12 nsuuid];
-        v14 = [v13 UUIDString];
-        v15 = [v14 isEqualToString:v5];
+        idsDevice = [v11 idsDevice];
+        nsuuid = [idsDevice nsuuid];
+        uUIDString = [nsuuid UUIDString];
+        v15 = [uUIDString isEqualToString:identifierCopy];
 
         if (v15)
         {
@@ -497,7 +497,7 @@
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             v17 = "no";
-            if (v18)
+            if (connectedCopy)
             {
               v17 = "yes";
             }
@@ -509,12 +509,12 @@
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Connection updated for device: %@, connected: %s", buf, 0x16u);
           }
 
-          [v11 setIsConnected:v18];
+          [v11 setIsConnected:connectedCopy];
           goto LABEL_15;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v8 = [associatedDevices countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (v8)
       {
         continue;
@@ -527,32 +527,32 @@
 LABEL_15:
 }
 
-- (void)updateCloudPairings:(id)a3 newDevices:(id)a4
+- (void)updateCloudPairings:(id)pairings newDevices:(id)devices
 {
-  v6 = a3;
-  v7 = a4;
+  pairingsCopy = pairings;
+  devicesCopy = devices;
   v8 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *v139 = v6;
+    *v139 = pairingsCopy;
     *&v139[8] = 2112;
-    *v140 = v7;
+    *v140 = devicesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "MUC - updateCloudPairings, ids: %@, devices: %@", buf, 0x16u);
   }
 
-  v9 = [(CBIDSManager *)self publicAddress];
+  publicAddress = [(CBIDSManager *)self publicAddress];
 
-  if (v9)
+  if (publicAddress)
   {
     v132 = 0u;
     v133 = 0u;
     v130 = 0u;
     v131 = 0u;
-    v103 = v7;
-    obj = v7;
-    v106 = v6;
-    v117 = self;
+    v103 = devicesCopy;
+    obj = devicesCopy;
+    v106 = pairingsCopy;
+    selfCopy = self;
     v112 = [obj countByEnumeratingWithState:&v130 objects:v141 count:16];
     if (!v112)
     {
@@ -570,18 +570,18 @@ LABEL_15:
         }
 
         v11 = *(*(&v130 + 1) + 8 * i);
-        v12 = [v11 idsDevice];
-        v13 = [v12 uniqueID];
-        v14 = [v6 indexOfObject:v13];
+        idsDevice = [v11 idsDevice];
+        uniqueID = [idsDevice uniqueID];
+        v14 = [pairingsCopy indexOfObject:uniqueID];
 
-        v15 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+        messageIdentifiersWaitingForAck = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
         v129[0] = _NSConcreteStackBlock;
         v129[1] = 3221225472;
         v129[2] = sub_100081C00;
         v129[3] = &unk_1002B96B8;
         v129[4] = v11;
         v129[5] = self;
-        v16 = [v15 keysOfEntriesPassingTest:v129];
+        v16 = [messageIdentifiersWaitingForAck keysOfEntriesPassingTest:v129];
 
         if ([v16 count])
         {
@@ -597,15 +597,15 @@ LABEL_15:
         if (v14 == 0x7FFFFFFFFFFFFFFFLL)
         {
 LABEL_20:
-          v25 = [(CBIDSManager *)self service];
-          v26 = [v25 canSend];
+          service = [(CBIDSManager *)self service];
+          canSend = [service canSend];
 
-          if (v26)
+          if (canSend)
           {
-            v27 = [(CBIDSManager *)self unpairedIDSCloudIdentifiers];
-            v28 = [v11 idsDevice];
-            v29 = [v28 uniqueID];
-            [v27 addObject:v29];
+            unpairedIDSCloudIdentifiers = [(CBIDSManager *)self unpairedIDSCloudIdentifiers];
+            idsDevice2 = [v11 idsDevice];
+            uniqueID2 = [idsDevice2 uniqueID];
+            [unpairedIDSCloudIdentifiers addObject:uniqueID2];
 
             v30 = sub_100005C14("CloudPairing");
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -621,30 +621,30 @@ LABEL_20:
                 v32 = "";
               }
 
-              v33 = [v11 idsDevice];
-              v34 = [v33 nsuuid];
+              idsDevice3 = [v11 idsDevice];
+              nsuuid = [idsDevice3 nsuuid];
               v35 = [v11 description];
-              v36 = [v35 UTF8String];
+              uTF8String = [v35 UTF8String];
               *buf = 136315907;
               *v139 = v32;
               *&v139[8] = 1024;
               *v140 = v31;
               *&v140[4] = 2112;
-              *&v140[6] = v34;
+              *&v140[6] = nsuuid;
               *&v140[14] = 2081;
-              *&v140[16] = v36;
+              *&v140[16] = uTF8String;
               _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Initiating pairing %swith unpaired IDS device [New: %i] (BT UUID: %@) %{private}s", buf, 0x26u);
             }
 
-            self = v117;
+            self = selfCopy;
             if (v114)
             {
-              -[CBIDSManager initiatePairingAgainIfNoAckReceived:attempt:](v117, "initiatePairingAgainIfNoAckReceived:attempt:", v11, [v16 count]);
+              -[CBIDSManager initiatePairingAgainIfNoAckReceived:attempt:](selfCopy, "initiatePairingAgainIfNoAckReceived:attempt:", v11, [v16 count]);
             }
 
             else
             {
-              [(CBIDSManager *)v117 initiatePairing:v11];
+              [(CBIDSManager *)selfCopy initiatePairing:v11];
             }
           }
 
@@ -653,29 +653,29 @@ LABEL_20:
             v37 = sub_100005C14("CloudPairing");
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
             {
-              v38 = [v11 idsDevice];
-              v39 = [v38 nsuuid];
+              idsDevice4 = [v11 idsDevice];
+              nsuuid2 = [idsDevice4 nsuuid];
               v40 = [v11 description];
-              v41 = [v40 UTF8String];
+              uTF8String2 = [v40 UTF8String];
               *buf = 138412547;
-              *v139 = v39;
+              *v139 = nsuuid2;
               *&v139[8] = 2081;
-              *v140 = v41;
+              *v140 = uTF8String2;
               _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "IDS not ready cannot initiate pairing with IDS device (BT UUID: %@) %{private}s", buf, 0x16u);
 
-              self = v117;
+              self = selfCopy;
             }
           }
 
           goto LABEL_36;
         }
 
-        v18 = [v11 idsDevice];
-        v19 = [v18 nsuuid];
-        if (v19)
+        idsDevice5 = [v11 idsDevice];
+        nsuuid3 = [idsDevice5 nsuuid];
+        if (nsuuid3)
         {
-          v110 = [v11 idsDevice];
-          v109 = [v110 uniqueID];
+          idsDevice6 = [v11 idsDevice];
+          uniqueID3 = [idsDevice6 uniqueID];
           v20 = [(CBIDSManager *)self publicAddressForIDSDevice:?];
           if (v20)
           {
@@ -686,15 +686,15 @@ LABEL_20:
           v108 = 0;
         }
 
-        v22 = [(CBIDSManager *)self unpairedIDSCloudIdentifiers];
-        v23 = [v11 idsDevice];
-        v24 = [v23 uniqueID];
-        v21 = [v22 containsObject:v24] ^ 1 | v17;
+        unpairedIDSCloudIdentifiers2 = [(CBIDSManager *)self unpairedIDSCloudIdentifiers];
+        idsDevice7 = [v11 idsDevice];
+        uniqueID4 = [idsDevice7 uniqueID];
+        v21 = [unpairedIDSCloudIdentifiers2 containsObject:uniqueID4] ^ 1 | v17;
 
-        if (v19)
+        if (nsuuid3)
         {
-          v6 = v106;
-          self = v117;
+          pairingsCopy = v106;
+          self = selfCopy;
           v20 = v108;
 LABEL_19:
           v108 = v20;
@@ -707,8 +707,8 @@ LABEL_19:
           goto LABEL_33;
         }
 
-        v6 = v106;
-        self = v117;
+        pairingsCopy = v106;
+        self = selfCopy;
         if (v21)
         {
           goto LABEL_20;
@@ -718,29 +718,29 @@ LABEL_33:
         v42 = sub_100005C14("CloudPairing");
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
         {
-          v115 = [v11 idsDevice];
-          v105 = [v115 uniqueID];
-          v43 = [v6 indexOfObject:v105] != 0x7FFFFFFFFFFFFFFFLL;
-          v104 = [(CBIDSManager *)self unpairedIDSCloudIdentifiers];
-          v44 = [v11 idsDevice];
-          v45 = [v44 uniqueID];
-          v46 = [v104 containsObject:v45];
-          v47 = [v11 idsDevice];
-          v48 = [v47 nsuuid];
+          idsDevice8 = [v11 idsDevice];
+          uniqueID5 = [idsDevice8 uniqueID];
+          v43 = [pairingsCopy indexOfObject:uniqueID5] != 0x7FFFFFFFFFFFFFFFLL;
+          unpairedIDSCloudIdentifiers3 = [(CBIDSManager *)self unpairedIDSCloudIdentifiers];
+          idsDevice9 = [v11 idsDevice];
+          uniqueID6 = [idsDevice9 uniqueID];
+          v46 = [unpairedIDSCloudIdentifiers3 containsObject:uniqueID6];
+          idsDevice10 = [v11 idsDevice];
+          nsuuid4 = [idsDevice10 nsuuid];
           v49 = [v11 description];
-          v50 = [v49 UTF8String];
+          uTF8String3 = [v49 UTF8String];
           *buf = 67109891;
           *v139 = v43;
           *&v139[4] = 1024;
           *&v139[6] = v46;
           *v140 = 2112;
-          *&v140[2] = v48;
+          *&v140[2] = nsuuid4;
           *&v140[10] = 2081;
-          *&v140[12] = v50;
+          *&v140[12] = uTF8String3;
           _os_log_debug_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEBUG, "Device paired or deffered pairing for IDS device [Old: %i - Cached: %i] (BT UUID: %@) %{private}s", buf, 0x22u);
 
-          v6 = v106;
-          self = v117;
+          pairingsCopy = v106;
+          self = selfCopy;
         }
 
 LABEL_36:
@@ -751,7 +751,7 @@ LABEL_36:
       {
 LABEL_38:
 
-        if ([v6 count])
+        if ([pairingsCopy count])
         {
           v51 = 0;
           do
@@ -760,7 +760,7 @@ LABEL_38:
             v126[1] = 3221225472;
             v126[2] = sub_100081D1C;
             v126[3] = &unk_1002B96E0;
-            v52 = v6;
+            v52 = pairingsCopy;
             v127 = v52;
             v128 = v51;
             if ([obj indexOfObjectPassingTest:v126] == 0x7FFFFFFFFFFFFFFFLL)
@@ -769,8 +769,8 @@ LABEL_38:
               v125 = 0u;
               v122 = 0u;
               v123 = 0u;
-              v53 = [(CBIDSManager *)v117 associatedDevices];
-              v54 = [v53 countByEnumeratingWithState:&v122 objects:v137 count:16];
+              associatedDevices = [(CBIDSManager *)selfCopy associatedDevices];
+              v54 = [associatedDevices countByEnumeratingWithState:&v122 objects:v137 count:16];
               v55 = v52;
               v113 = v52;
               if (v54)
@@ -783,7 +783,7 @@ LABEL_38:
                   {
                     if (*v123 != v57)
                     {
-                      objc_enumerationMutation(v53);
+                      objc_enumerationMutation(associatedDevices);
                     }
 
                     v59 = *(*(&v122 + 1) + 8 * j);
@@ -795,10 +795,10 @@ LABEL_38:
                       objc_opt_class();
                       if (objc_opt_isKindOfClass() & 1) != 0 && ([v59 isConnected])
                       {
-                        v63 = [v59 idsDevice];
-                        v64 = [v63 deviceType];
+                        idsDevice11 = [v59 idsDevice];
+                        deviceType = [idsDevice11 deviceType];
 
-                        if (v64 == 5)
+                        if (deviceType == 5)
                         {
                           v93 = sub_100005C14("CloudPairing");
                           if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
@@ -809,7 +809,7 @@ LABEL_38:
                             _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "Skip telling btd to remove ATV that maybe in setup: %@", buf, 0xCu);
                           }
 
-                          v6 = v106;
+                          pairingsCopy = v106;
                           goto LABEL_77;
                         }
                       }
@@ -820,7 +820,7 @@ LABEL_38:
                     }
                   }
 
-                  v56 = [v53 countByEnumeratingWithState:&v122 objects:v137 count:16];
+                  v56 = [associatedDevices countByEnumeratingWithState:&v122 objects:v137 count:16];
                   if (v56)
                   {
                     continue;
@@ -843,8 +843,8 @@ LABEL_38:
               v121 = 0u;
               v118 = 0u;
               v119 = 0u;
-              v116 = [(CBIDSManager *)v117 associatedDevices];
-              v67 = [v116 countByEnumeratingWithState:&v118 objects:v136 count:16];
+              associatedDevices2 = [(CBIDSManager *)selfCopy associatedDevices];
+              v67 = [associatedDevices2 countByEnumeratingWithState:&v118 objects:v136 count:16];
               if (v67)
               {
                 v68 = v67;
@@ -855,57 +855,57 @@ LABEL_38:
                   {
                     if (*v119 != v69)
                     {
-                      objc_enumerationMutation(v116);
+                      objc_enumerationMutation(associatedDevices2);
                     }
 
                     v71 = *(*(&v118 + 1) + 8 * k);
-                    v72 = [v71 idsDevice];
-                    v73 = [v72 uniqueID];
+                    idsDevice12 = [v71 idsDevice];
+                    uniqueID7 = [idsDevice12 uniqueID];
                     v74 = [v55 objectAtIndexedSubscript:v51];
-                    v75 = [v73 isEqualToIgnoringCase:v74];
+                    v75 = [uniqueID7 isEqualToIgnoringCase:v74];
 
                     if (v75)
                     {
                       [v71 setState:0];
-                      v76 = [v71 idsDevice];
-                      v77 = [v76 uniqueID];
-                      v78 = [(CBIDSManager *)v117 publicAddressForIDSDevice:v77];
+                      idsDevice13 = [v71 idsDevice];
+                      uniqueID8 = [idsDevice13 uniqueID];
+                      v78 = [(CBIDSManager *)selfCopy publicAddressForIDSDevice:uniqueID8];
 
                       if (v78)
                       {
                         v79 = sub_100005C14("CloudPairing");
                         if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
                         {
-                          v80 = [v71 idsDevice];
-                          v81 = [v80 uniqueID];
+                          idsDevice14 = [v71 idsDevice];
+                          uniqueID9 = [idsDevice14 uniqueID];
                           *buf = 138412546;
                           *v139 = v78;
                           *&v139[8] = 2112;
-                          *v140 = v81;
+                          *v140 = uniqueID9;
                           _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "Removing address %@ for IDS device %@ as it is no longer signed into our iCloud account", buf, 0x16u);
                         }
 
-                        v82 = [(CBIDSManager *)v117 CPAddressMapping];
-                        v83 = [v71 idsDevice];
-                        v84 = [v83 uniqueID];
-                        [v82 removeObjectForKey:v84];
+                        cPAddressMapping = [(CBIDSManager *)selfCopy CPAddressMapping];
+                        idsDevice15 = [v71 idsDevice];
+                        uniqueID10 = [idsDevice15 uniqueID];
+                        [cPAddressMapping removeObjectForKey:uniqueID10];
 
-                        v85 = [(CBIDSManager *)v117 CPAddressMapping];
-                        [CBPreferencesManager setuserPreference:@"AddressMapping" value:v85 sync:1];
+                        cPAddressMapping2 = [(CBIDSManager *)selfCopy CPAddressMapping];
+                        [CBPreferencesManager setuserPreference:@"AddressMapping" value:cPAddressMapping2 sync:1];
 
                         v55 = v113;
                       }
                     }
                   }
 
-                  v68 = [v116 countByEnumeratingWithState:&v118 objects:v136 count:16];
+                  v68 = [associatedDevices2 countByEnumeratingWithState:&v118 objects:v136 count:16];
                 }
 
                 while (v68);
               }
 
               v86 = [v55 objectAtIndexedSubscript:v51];
-              v6 = v106;
+              pairingsCopy = v106;
               v52 = v55;
               if (v86)
               {
@@ -925,12 +925,12 @@ LABEL_38:
                     _os_log_impl(&_mh_execute_header, v90, OS_LOG_TYPE_DEFAULT, "Tell btd to remove this device: %@", buf, 0xCu);
                   }
 
-                  v53 = +[CloudXPCService sharedInstance];
+                  associatedDevices = +[CloudXPCService sharedInstance];
                   v134 = @"kCloudDeviceUniqueID";
                   v93 = [v113 objectAtIndexedSubscript:v51];
                   v135 = v93;
                   v92 = [NSDictionary dictionaryWithObjects:&v135 forKeys:&v134 count:1];
-                  [v53 sendCloudKitMsg:@"RemoveCloudPairedDevice" args:v92];
+                  [associatedDevices sendCloudKitMsg:@"RemoveCloudPairedDevice" args:v92];
 
 LABEL_77:
                   v52 = v113;
@@ -944,27 +944,27 @@ LABEL_77:
           while (v51 < [v52 count]);
         }
 
-        v96 = [v6 count];
-        v7 = v103;
+        v96 = [pairingsCopy count];
+        devicesCopy = v103;
         if (v96 != [obj count])
         {
-          v97 = [(CBIDSManager *)v117 account];
-          if (v97)
+          account = [(CBIDSManager *)selfCopy account];
+          if (account)
           {
-            v98 = v97;
-            v99 = [(CBIDSManager *)v117 account];
-            v100 = [v99 isActive];
+            v98 = account;
+            account2 = [(CBIDSManager *)selfCopy account];
+            isActive = [account2 isActive];
 
-            if (v100)
+            if (isActive)
             {
-              v101 = [(CBIDSManager *)v117 _statedumpAndRecordDailyMetric];
+              _statedumpAndRecordDailyMetric = [(CBIDSManager *)selfCopy _statedumpAndRecordDailyMetric];
               if (IsAppleInternalBuild())
               {
                 v102 = sub_100005C14("CloudPairing");
                 if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
-                  *v139 = v101;
+                  *v139 = _statedumpAndRecordDailyMetric;
                   _os_log_impl(&_mh_execute_header, v102, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
                 }
               }
@@ -979,8 +979,8 @@ LABEL_77:
     }
   }
 
-  v101 = sub_100005C14("CloudPairing");
-  if (os_log_type_enabled(v101, OS_LOG_TYPE_ERROR))
+  _statedumpAndRecordDailyMetric = sub_100005C14("CloudPairing");
+  if (os_log_type_enabled(_statedumpAndRecordDailyMetric, OS_LOG_TYPE_ERROR))
   {
     sub_1001EFA38();
   }
@@ -990,17 +990,17 @@ LABEL_88:
 LABEL_89:
 }
 
-- (void)updateActiveAccount:(id)a3
+- (void)updateActiveAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 description];
+    v6 = [accountCopy description];
     *buf = 136315394;
-    v43 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v44 = 2048;
-    v45 = [v4 count];
+    v45 = [accountCopy count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MUC - updateActiveAccount - %s, count %lu", buf, 0x16u);
   }
 
@@ -1008,7 +1008,7 @@ LABEL_89:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v4;
+  v7 = accountCopy;
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v41 count:16];
   if (v8)
   {
@@ -1029,22 +1029,22 @@ LABEL_89:
         {
           if ([v13 canSend])
           {
-            v14 = [v13 loginID];
+            loginID = [v13 loginID];
 
-            if (v14)
+            if (loginID)
             {
-              v15 = [(CBIDSManager *)self account];
+              account = [(CBIDSManager *)self account];
 
-              if (v13 == v15)
+              if (v13 == account)
               {
                 v17 = sub_100005C14("CloudPairing");
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
                 {
-                  v18 = [(CBIDSManager *)self account];
-                  v19 = [v18 loginID];
-                  v20 = [v19 UTF8String];
+                  account2 = [(CBIDSManager *)self account];
+                  loginID2 = [account2 loginID];
+                  uTF8String2 = [loginID2 UTF8String];
                   *buf = 136380675;
-                  v43 = v20;
+                  uTF8String = uTF8String2;
                   _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Local device is still associated with iCloud account %{private}s", buf, 0xCu);
                 }
 
@@ -1102,23 +1102,23 @@ LABEL_89:
   }
 
   [(CBIDSManager *)self setAccount:v10];
-  v22 = [(CBIDSManager *)self account];
+  account3 = [(CBIDSManager *)self account];
 
   v21 = sub_100005C14("CloudPairing");
   v23 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-  if (v22)
+  if (account3)
   {
     if (v23)
     {
-      v24 = [(CBIDSManager *)self account];
-      v25 = [v24 loginID];
-      v26 = [v25 UTF8String];
-      v27 = [(CBIDSManager *)self cloudIdentifier];
-      v28 = [v27 UTF8String];
+      account4 = [(CBIDSManager *)self account];
+      loginID3 = [account4 loginID];
+      uTF8String3 = [loginID3 UTF8String];
+      cloudIdentifier = [(CBIDSManager *)self cloudIdentifier];
+      uTF8String4 = [cloudIdentifier UTF8String];
       *buf = 136380931;
-      v43 = v26;
+      uTF8String = uTF8String3;
       v44 = 2080;
-      v45 = v28;
+      v45 = uTF8String4;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "MUC - Local device is now associated with iCloud account %{private}s and identifier %s", buf, 0x16u);
     }
   }
@@ -1127,22 +1127,22 @@ LABEL_89:
   {
     if (v23)
     {
-      v29 = [(CBIDSManager *)self cloudIdentifier];
-      v30 = [v29 UTF8String];
-      v31 = [(CBIDSManager *)self localDeviceRandomAddress];
+      cloudIdentifier2 = [(CBIDSManager *)self cloudIdentifier];
+      uTF8String5 = [cloudIdentifier2 UTF8String];
+      localDeviceRandomAddress = [(CBIDSManager *)self localDeviceRandomAddress];
       *buf = 136315394;
-      v43 = v30;
+      uTF8String = uTF8String5;
       v44 = 2112;
-      v45 = v31;
+      v45 = localDeviceRandomAddress;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "MUC - Local device %s is not associated with any iCloud accounts with RSA %@", buf, 0x16u);
     }
 
     [(CBIDSManager *)self setTotalCloudDeviceCount:0];
-    v32 = [(CBIDSManager *)self unpairedIDSCloudIdentifiers];
-    [v32 removeAllObjects];
+    unpairedIDSCloudIdentifiers = [(CBIDSManager *)self unpairedIDSCloudIdentifiers];
+    [unpairedIDSCloudIdentifiers removeAllObjects];
 
-    v33 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
-    [v33 removeAllObjects];
+    messageIdentifiersWaitingForAck = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+    [messageIdentifiersWaitingForAck removeAllObjects];
 
     v21 = +[NSNotificationCenter defaultCenter];
     [v21 postNotificationName:@"BTTotalIDSDeviceCountChanged" object:0 userInfo:&off_1002CBE78];
@@ -1151,54 +1151,54 @@ LABEL_89:
 LABEL_32:
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  v6 = a4;
-  v7 = [a3 iCloudAccount];
-  v8 = [v7 registrationStatus];
+  changedCopy = changed;
+  iCloudAccount = [service iCloudAccount];
+  registrationStatus = [iCloudAccount registrationStatus];
 
   v9 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 description];
-    v11 = [v10 UTF8String];
-    v12 = [v6 count];
+    v10 = [changedCopy description];
+    uTF8String = [v10 UTF8String];
+    v12 = [changedCopy count];
     v13 = _IDSStringFromIDSRegistrationStatus();
     v14 = 136315906;
-    v15 = v11;
+    v15 = uTF8String;
     v16 = 2048;
     v17 = v12;
     v18 = 1024;
-    v19 = v8;
+    v19 = registrationStatus;
     v20 = 2112;
     v21 = v13;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "MUC - Active service accounts changed - %s, accounts %lu, R: %d, %@", &v14, 0x26u);
   }
 
-  [(CBIDSManager *)self updateActiveAccount:v6];
+  [(CBIDSManager *)self updateActiveAccount:changedCopy];
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 iCloudAccount];
-  v9 = [v8 registrationStatus];
+  serviceCopy = service;
+  changedCopy = changed;
+  iCloudAccount = [serviceCopy iCloudAccount];
+  registrationStatus = [iCloudAccount registrationStatus];
 
   v10 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = _IDSStringFromIDSRegistrationStatus();
     *buf = 134218498;
-    v44 = v9;
+    v44 = registrationStatus;
     v45 = 2112;
     v46 = v11;
     v47 = 2112;
-    v48 = v7;
+    v48 = changedCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "MUC - devicesChanged, R: %ld, %@ - %@", buf, 0x20u);
   }
 
-  if (-[CBIDSManager totalCloudDeviceCount](self, "totalCloudDeviceCount") >= 1 && ![v7 count] && v9 <= 4)
+  if (-[CBIDSManager totalCloudDeviceCount](self, "totalCloudDeviceCount") >= 1 && ![changedCopy count] && registrationStatus <= 4)
   {
     v12 = sub_100005C14("CloudPairing");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1209,31 +1209,31 @@ LABEL_32:
     goto LABEL_27;
   }
 
-  v13 = [(CBIDSManager *)self cloudIdentifier];
+  cloudIdentifier = [(CBIDSManager *)self cloudIdentifier];
 
-  if (v13 || (v14 = IDSCopyLocalDeviceUniqueID(), [(CBIDSManager *)self setCloudIdentifier:v14], v14, [(CBIDSManager *)self cloudIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
+  if (cloudIdentifier || (v14 = IDSCopyLocalDeviceUniqueID(), [(CBIDSManager *)self setCloudIdentifier:v14], v14, [(CBIDSManager *)self cloudIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
   {
-    v16 = [(CBIDSManager *)self account];
-    if (!v16)
+    account = [(CBIDSManager *)self account];
+    if (!account)
     {
-      v17 = [v6 accounts];
-      v18 = [v17 count];
+      accounts = [serviceCopy accounts];
+      v18 = [accounts count];
 
       if (!v18)
       {
 LABEL_16:
-        v35 = v6;
+        v35 = serviceCopy;
         v21 = +[CloudXPCService sharedInstance];
         [v21 beginTransaction:@"IDSdevicesChanged"];
 
-        v12 = [(CBIDSManager *)self filteredDevicesForIDSDevices:v7];
+        v12 = [(CBIDSManager *)self filteredDevicesForIDSDevices:changedCopy];
         v22 = +[NSMutableArray array];
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v23 = [(CBIDSManager *)self associatedDevices];
-        v24 = [v23 countByEnumeratingWithState:&v36 objects:v42 count:16];
+        associatedDevices = [(CBIDSManager *)self associatedDevices];
+        v24 = [associatedDevices countByEnumeratingWithState:&v36 objects:v42 count:16];
         if (v24)
         {
           v25 = v24;
@@ -1245,18 +1245,18 @@ LABEL_16:
             {
               if (*v37 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(associatedDevices);
               }
 
-              v28 = [*(*(&v36 + 1) + 8 * v27) idsDevice];
-              v29 = [v28 uniqueID];
-              [v22 addObject:v29];
+              idsDevice = [*(*(&v36 + 1) + 8 * v27) idsDevice];
+              uniqueID = [idsDevice uniqueID];
+              [v22 addObject:uniqueID];
 
               v27 = v27 + 1;
             }
 
             while (v25 != v27);
-            v25 = [v23 countByEnumeratingWithState:&v36 objects:v42 count:16];
+            v25 = [associatedDevices countByEnumeratingWithState:&v36 objects:v42 count:16];
           }
 
           while (v25);
@@ -1267,11 +1267,11 @@ LABEL_16:
         v30 = +[CloudXPCService sharedInstance];
         [v30 endTransaction:@"IDSdevicesChanged"];
 
-        -[CBIDSManager setTotalCloudDeviceCount:](self, "setTotalCloudDeviceCount:", [v7 count] + 1);
+        -[CBIDSManager setTotalCloudDeviceCount:](self, "setTotalCloudDeviceCount:", [changedCopy count] + 1);
         v31 = +[NSNotificationCenter defaultCenter];
-        if (v7)
+        if (changedCopy)
         {
-          v32 = v7;
+          v32 = changedCopy;
         }
 
         else
@@ -1287,21 +1287,21 @@ LABEL_16:
         v34 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:2];
         [v31 postNotificationName:@"BTTotalIDSDeviceCountChanged" object:0 userInfo:v34];
 
-        v6 = v35;
+        serviceCopy = v35;
         goto LABEL_27;
       }
 
       v19 = sub_100005C14("CloudPairing");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v6 accounts];
+        accounts2 = [serviceCopy accounts];
         *buf = 138412290;
-        v44 = v20;
+        v44 = accounts2;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "No account but got devicesChanged, update account status - %@", buf, 0xCu);
       }
 
-      v16 = [v6 accounts];
-      [(CBIDSManager *)self service:v6 activeAccountsChanged:v16];
+      account = [serviceCopy accounts];
+      [(CBIDSManager *)self service:serviceCopy activeAccountsChanged:account];
     }
 
     goto LABEL_16;
@@ -1316,19 +1316,19 @@ LABEL_16:
 LABEL_27:
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
-  v10 = a5;
-  v11 = a7;
+  successCopy = success;
+  identifierCopy = identifier;
+  errorCopy = error;
   v12 = sub_100005C14("CloudPairing");
   v13 = v12;
-  if (v8)
+  if (successCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 136315138;
-      v19 = [v10 UTF8String];
+      uTF8String = [identifierCopy UTF8String];
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Message %s sent successfully", &v18, 0xCu);
     }
   }
@@ -1337,30 +1337,30 @@ LABEL_27:
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_1001EFCA0(v10, v11);
+      sub_1001EFCA0(identifierCopy, errorCopy);
     }
 
-    v14 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
-    v13 = [v14 objectForKey:v10];
+    messageIdentifiersWaitingForAck = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+    v13 = [messageIdentifiersWaitingForAck objectForKey:identifierCopy];
 
-    v15 = [v13 idsDevice];
-    v16 = [(CBIDSManager *)self deviceForIDSDevice:v15 createNew:0];
+    idsDevice = [v13 idsDevice];
+    v16 = [(CBIDSManager *)self deviceForIDSDevice:idsDevice createNew:0];
 
     [v16 setState:0];
-    v17 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
-    [v17 removeObjectForKey:v10];
+    messageIdentifiersWaitingForAck2 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+    [messageIdentifiersWaitingForAck2 removeObjectForKey:identifierCopy];
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d
 {
-  v8 = a5;
-  v9 = a6;
+  messageCopy = message;
+  dCopy = d;
   v10 = +[CloudXPCService sharedInstance];
   [v10 beginTransaction:@"IDSincomingMessage"];
 
-  v11 = [(CBIDSManager *)self service];
-  v12 = [v11 deviceForFromID:v9];
+  service = [(CBIDSManager *)self service];
+  v12 = [service deviceForFromID:dCopy];
 
   if (v12)
   {
@@ -1374,16 +1374,16 @@ LABEL_27:
         v20 = 138478083;
         v21 = v13;
         v22 = 2113;
-        v23 = v8;
+        uTF8String2 = messageCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Received message from IDS device %{private}@: %{private}@", &v20, 0x16u);
       }
 
-      v16 = [v8 objectForKeyedSubscript:@"MessageType"];
+      v16 = [messageCopy objectForKeyedSubscript:@"MessageType"];
       v17 = [@"CloudPairing" isEqualToString:v16];
 
       if (v17)
       {
-        [(CBIDSManager *)self handleCloudPairingMessage:v8 from:v13];
+        [(CBIDSManager *)self handleCloudPairingMessage:messageCopy from:v13];
       }
 
       else
@@ -1391,7 +1391,7 @@ LABEL_27:
         v19 = sub_100005C14("CloudPairing");
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          sub_1001EFD60(v8);
+          sub_1001EFD60(messageCopy);
         }
       }
 
@@ -1401,7 +1401,7 @@ LABEL_27:
 
     else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_1001EFDF4(v8);
+      sub_1001EFDF4(messageCopy);
     }
 
     goto LABEL_15;
@@ -1410,33 +1410,33 @@ LABEL_27:
   v13 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v9 UTF8String];
-    v15 = [v8 description];
+    uTF8String = [dCopy UTF8String];
+    v15 = [messageCopy description];
     v20 = 136315394;
-    v21 = v18;
+    v21 = uTF8String;
     v22 = 2080;
-    v23 = [v15 UTF8String];
+    uTF8String2 = [v15 UTF8String];
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Failed to retrieve IDS device from destination %s - ignoring message %s", &v20, 0x16u);
 LABEL_15:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 fromID:(id)a6 hasBeenDeliveredWithContext:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier fromID:(id)d hasBeenDeliveredWithContext:(id)context
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [(CBIDSManager *)self service];
-  v12 = [v11 deviceForFromID:v10];
+  identifierCopy = identifier;
+  dCopy = d;
+  service = [(CBIDSManager *)self service];
+  v12 = [service deviceForFromID:dCopy];
 
-  v13 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
-  v14 = [v13 objectForKey:v9];
+  messageIdentifiersWaitingForAck = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+  v14 = [messageIdentifiersWaitingForAck objectForKey:identifierCopy];
 
-  v15 = [v14 idsDevice];
-  v16 = [(CBIDSManager *)self deviceForIDSDevice:v15 createNew:0];
+  idsDevice = [v14 idsDevice];
+  v16 = [(CBIDSManager *)self deviceForIDSDevice:idsDevice createNew:0];
 
-  v17 = [v16 idsDevice];
-  v18 = [v17 uniqueID];
-  v19 = [NSString stringWithFormat:@"%@-RePairingRequest-%@", v9, v18];
+  idsDevice2 = [v16 idsDevice];
+  uniqueID = [idsDevice2 uniqueID];
+  v19 = [NSString stringWithFormat:@"%@-RePairingRequest-%@", identifierCopy, uniqueID];
 
   if ([v16 state] == 2)
   {
@@ -1444,12 +1444,12 @@ LABEL_15:
     v20 = sub_100005C14("CloudPairing");
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v9 UTF8String];
-      v22 = [v12 uniqueID];
+      uTF8String = [identifierCopy UTF8String];
+      uniqueID2 = [v12 uniqueID];
       *buf = 136315394;
-      v31 = v21;
+      v31 = uTF8String;
       v32 = 2080;
-      v33 = [v22 UTF8String];
+      uTF8String2 = [uniqueID2 UTF8String];
       v23 = "Pairing Request Message %s has been delivered to: %s";
 LABEL_12:
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, v23, buf, 0x16u);
@@ -1462,12 +1462,12 @@ LABEL_12:
     v20 = sub_100005C14("CloudPairing");
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v9 UTF8String];
-      v22 = [v12 uniqueID];
+      uTF8String3 = [identifierCopy UTF8String];
+      uniqueID2 = [v12 uniqueID];
       *buf = 136315394;
-      v31 = v24;
+      v31 = uTF8String3;
       v32 = 2080;
-      v33 = [v22 UTF8String];
+      uTF8String2 = [uniqueID2 UTF8String];
       v23 = "Pairing Response Message %s has been delivered to: %s";
       goto LABEL_12;
     }
@@ -1481,12 +1481,12 @@ LABEL_12:
     {
       if (v25)
       {
-        v26 = [v9 UTF8String];
-        v22 = [v12 uniqueID];
+        uTF8String4 = [identifierCopy UTF8String];
+        uniqueID2 = [v12 uniqueID];
         *buf = 136315394;
-        v31 = v26;
+        v31 = uTF8String4;
         v32 = 2080;
-        v33 = [v22 UTF8String];
+        uTF8String2 = [uniqueID2 UTF8String];
         v23 = "RePairing Message %s has been delivered to: %s";
         goto LABEL_12;
       }
@@ -1494,39 +1494,39 @@ LABEL_12:
 
     else if (v25)
     {
-      v27 = [v9 UTF8String];
-      v22 = [v12 uniqueID];
+      uTF8String5 = [identifierCopy UTF8String];
+      uniqueID2 = [v12 uniqueID];
       *buf = 136315394;
-      v31 = v27;
+      v31 = uTF8String5;
       v32 = 2080;
-      v33 = [v22 UTF8String];
+      uTF8String2 = [uniqueID2 UTF8String];
       v23 = "Message %s has been delivered to: %s";
       goto LABEL_12;
     }
   }
 
-  v28 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
-  [v28 removeObjectForKey:v9];
+  messageIdentifiersWaitingForAck2 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+  [messageIdentifiersWaitingForAck2 removeObjectForKey:identifierCopy];
 
-  v29 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
-  [v29 removeObjectForKey:v19];
+  messageIdentifiersWaitingForAck3 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+  [messageIdentifiersWaitingForAck3 removeObjectForKey:v19];
 }
 
-- (id)filteredDevicesForIDSDevices:(id)a3
+- (id)filteredDevicesForIDSDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   v5 = +[NSMutableArray array];
   v6 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(CBIDSManager *)self account];
-    v8 = [v7 loginID];
-    v9 = [v8 UTF8String];
-    v10 = [(CBIDSManager *)self cloudIdentifier];
+    account = [(CBIDSManager *)self account];
+    loginID = [account loginID];
+    uTF8String = [loginID UTF8String];
+    cloudIdentifier = [(CBIDSManager *)self cloudIdentifier];
     *buf = 136380931;
-    v27 = v9;
+    v27 = uTF8String;
     v28 = 2080;
-    *v29 = [v10 UTF8String];
+    *v29 = [cloudIdentifier UTF8String];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Local device is associated with iCloud account %{private}s and identifier %s", buf, 0x16u);
   }
 
@@ -1550,9 +1550,9 @@ LABEL_12:
   v16 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(CBIDSManager *)self CPAddressMapping];
+    cPAddressMapping = [(CBIDSManager *)self CPAddressMapping];
     *buf = 138412290;
-    v27 = v17;
+    v27 = cPAddressMapping;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "PublicAddressForIDSDevice: current mapping :%@", buf, 0xCu);
   }
 
@@ -1565,31 +1565,31 @@ LABEL_12:
   v25 = v13;
   v18 = v5;
   v23 = v18;
-  [v4 enumerateObjectsUsingBlock:v22];
+  [devicesCopy enumerateObjectsUsingBlock:v22];
   v19 = v23;
   v20 = v18;
 
   return v18;
 }
 
-- (id)deviceForIDSDevice:(id)a3 createNew:(BOOL)a4
+- (id)deviceForIDSDevice:(id)device createNew:(BOOL)new
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CBIDSManager *)self associatedDevices];
+  newCopy = new;
+  deviceCopy = device;
+  associatedDevices = [(CBIDSManager *)self associatedDevices];
 
-  if (!v7)
+  if (!associatedDevices)
   {
     goto LABEL_3;
   }
 
-  v8 = [(CBIDSManager *)self associatedDevices];
+  associatedDevices2 = [(CBIDSManager *)self associatedDevices];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100083E40;
   v18[3] = &unk_1002B9730;
-  v19 = v6;
-  v9 = [v8 indexOfObjectPassingTest:v18];
+  v19 = deviceCopy;
+  v9 = [associatedDevices2 indexOfObjectPassingTest:v18];
 
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1600,8 +1600,8 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "CloudPaired Device found, returning it", v17, 2u);
     }
 
-    v15 = [(CBIDSManager *)self associatedDevices];
-    v13 = [v15 objectAtIndexedSubscript:v9];
+    associatedDevices3 = [(CBIDSManager *)self associatedDevices];
+    v13 = [associatedDevices3 objectAtIndexedSubscript:v9];
   }
 
   else
@@ -1616,7 +1616,7 @@ LABEL_3:
 
     v11 = sub_100005C14("CloudPairing");
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (newCopy)
     {
       if (v12)
       {
@@ -1624,7 +1624,7 @@ LABEL_3:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "New CloudPaired Device created and returned", v17, 2u);
       }
 
-      v13 = [CloudDevice deviceWithIDSDevice:v6];
+      v13 = [CloudDevice deviceWithIDSDevice:deviceCopy];
     }
 
     else
@@ -1642,21 +1642,21 @@ LABEL_3:
   return v13;
 }
 
-- (void)handleCloudPairingMessage:(id)a3 from:(id)a4
+- (void)handleCloudPairingMessage:(id)message from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"Version 3"];
+  messageCopy = message;
+  fromCopy = from;
+  v8 = [messageCopy objectForKey:@"Version 3"];
 
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"Version 3"];
+    v9 = [messageCopy objectForKeyedSubscript:@"Version 3"];
     v10 = [v9 objectForKeyedSubscript:@"MessageType"];
     if ([@"InitiatorPairingKeys" isEqualToString:v10])
     {
       v11 = @"Version 3";
 LABEL_7:
-      [(CBIDSManager *)self handleInitiatorPairingKeys:v9 from:v7 forProtocolID:v11];
+      [(CBIDSManager *)self handleInitiatorPairingKeys:v9 from:fromCopy forProtocolID:v11];
 LABEL_16:
 
       goto LABEL_17;
@@ -1671,11 +1671,11 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  v12 = [v6 objectForKey:@"Version 2"];
+  v12 = [messageCopy objectForKey:@"Version 2"];
 
   if (v12)
   {
-    v9 = [v6 objectForKeyedSubscript:@"Version 2"];
+    v9 = [messageCopy objectForKeyedSubscript:@"Version 2"];
     v10 = [v9 objectForKeyedSubscript:@"MessageType"];
     if ([@"InitiatorPairingKeys" isEqualToString:v10])
     {
@@ -1690,49 +1690,49 @@ LABEL_16:
 
     v13 = @"Version 2";
 LABEL_15:
-    [(CBIDSManager *)self handleResponderPairingKeys:v9 from:v7 forProtocolID:v13];
+    [(CBIDSManager *)self handleResponderPairingKeys:v9 from:fromCopy forProtocolID:v13];
     goto LABEL_16;
   }
 
-  v14 = [v6 objectForKey:@"Version 1"];
+  v14 = [messageCopy objectForKey:@"Version 1"];
 
   if (v14)
   {
-    v9 = [v6 objectForKeyedSubscript:@"Version 1"];
+    v9 = [messageCopy objectForKeyedSubscript:@"Version 1"];
     v10 = [v9 objectForKeyedSubscript:@"MessageType"];
     if ([@"SecurityRequest" isEqualToString:v10])
     {
-      [(CBIDSManager *)self handleSecurityRequest:v9 from:v7];
+      [(CBIDSManager *)self handleSecurityRequest:v9 from:fromCopy];
     }
 
     else if ([@"RepairRequest" isEqualToString:v10])
     {
-      [(CBIDSManager *)self handleRepairRequest:v9 from:v7];
+      [(CBIDSManager *)self handleRepairRequest:v9 from:fromCopy];
     }
 
     else if ([@"PairingRequest" isEqualToString:v10])
     {
-      [(CBIDSManager *)self handlePairingRequest:v9 from:v7];
+      [(CBIDSManager *)self handlePairingRequest:v9 from:fromCopy];
     }
 
     else if ([@"PairingResponse" isEqualToString:v10])
     {
-      [(CBIDSManager *)self handlePairingResponse:v9 from:v7];
+      [(CBIDSManager *)self handlePairingResponse:v9 from:fromCopy];
     }
 
     else if ([@"KeyDistribution" isEqualToString:v10])
     {
-      [(CBIDSManager *)self handleKeyDistribution:v9 from:v7];
+      [(CBIDSManager *)self handleKeyDistribution:v9 from:fromCopy];
     }
 
     else if ([@"PairingFailure" isEqualToString:v10])
     {
-      [(CBIDSManager *)self handlePairingFailure:v9 from:v7];
+      [(CBIDSManager *)self handlePairingFailure:v9 from:fromCopy];
     }
 
     else if ([@"UnpairCommand" isEqualToString:v10])
     {
-      [(CBIDSManager *)self handleUnpairCommand:v9 from:v7];
+      [(CBIDSManager *)self handleUnpairCommand:v9 from:fromCopy];
     }
 
     else if ([@"CloudKitFetch" isEqualToString:v10])
@@ -1762,7 +1762,7 @@ LABEL_15:
 
       else if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        sub_1001EFE88(v7, v10);
+        sub_1001EFE88(fromCopy, v10);
       }
     }
 
@@ -1772,22 +1772,22 @@ LABEL_15:
   v15 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    sub_1001EFF38(v7);
+    sub_1001EFF38(fromCopy);
   }
 
 LABEL_17:
 }
 
-- (void)handleInitiatorPairingKeys:(id)a3 from:(id)a4 forProtocolID:(id)a5
+- (void)handleInitiatorPairingKeys:(id)keys from:(id)from forProtocolID:(id)d
 {
-  v70 = a3;
-  v8 = a4;
-  v69 = a5;
-  v71 = v8;
-  LOBYTE(a5) = [(CBIDSManager *)self roleWithDevice:v8]== 2;
+  keysCopy = keys;
+  fromCopy = from;
+  dCopy = d;
+  v71 = fromCopy;
+  LOBYTE(d) = [(CBIDSManager *)self roleWithDevice:fromCopy]== 2;
   v9 = sub_100005C14("CloudPairing");
   v10 = v9;
-  if (a5)
+  if (d)
   {
     v11 = v9;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1800,24 +1800,24 @@ LABEL_17:
       v11 = v10;
     }
 
-    v13 = [v71 idsDevice];
-    v68 = [v13 uniqueID];
+    idsDevice = [v71 idsDevice];
+    uniqueID = [idsDevice uniqueID];
 
-    v14 = [NSMutableString stringWithCapacity:[v68 length]];
-    v15 = [v68 length];
+    v14 = [NSMutableString stringWithCapacity:[uniqueID length]];
+    v15 = [uniqueID length];
     v88[0] = _NSConcreteStackBlock;
     v88[1] = 3221225472;
     v88[2] = sub_100084FE4;
     v88[3] = &unk_1002B9758;
     v16 = v14;
     v89 = v16;
-    [v68 enumerateSubstringsInRange:0 options:v15 usingBlock:258, v88];
+    [uniqueID enumerateSubstringsInRange:0 options:v15 usingBlock:258, v88];
     v86 = 0u;
     v87 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v17 = [(CBIDSManager *)self cloudDevices];
-    v18 = [v17 countByEnumeratingWithState:&v84 objects:v98 count:16];
+    cloudDevices = [(CBIDSManager *)self cloudDevices];
+    v18 = [cloudDevices countByEnumeratingWithState:&v84 objects:v98 count:16];
     if (v18)
     {
       v19 = *v85;
@@ -1828,7 +1828,7 @@ LABEL_17:
         {
           if (*v85 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(cloudDevices);
           }
 
           v22 = *(*(&v84 + 1) + 8 * i);
@@ -1844,7 +1844,7 @@ LABEL_17:
           }
         }
 
-        v18 = [v17 countByEnumeratingWithState:&v84 objects:v98 count:16];
+        v18 = [cloudDevices countByEnumeratingWithState:&v84 objects:v98 count:16];
       }
 
       while (v18);
@@ -1852,23 +1852,23 @@ LABEL_17:
       if (v20 == 0.0)
       {
 LABEL_22:
-        v17 = +[NSMutableDictionary dictionary];
+        cloudDevices = +[NSMutableDictionary dictionary];
         v66 = [NSString stringWithFormat:@"%llu", mach_absolute_time()];
-        v34 = [v71 idsDevice];
-        v67 = [v34 uniqueID];
+        idsDevice2 = [v71 idsDevice];
+        uniqueID2 = [idsDevice2 uniqueID];
 
-        v35 = +[NSMutableString stringWithCapacity:](NSMutableString, "stringWithCapacity:", [v67 length]);
-        v36 = [v67 length];
+        v35 = +[NSMutableString stringWithCapacity:](NSMutableString, "stringWithCapacity:", [uniqueID2 length]);
+        v36 = [uniqueID2 length];
         v82[0] = _NSConcreteStackBlock;
         v82[1] = 3221225472;
         v82[2] = sub_100084FF0;
         v82[3] = &unk_1002B9758;
         v37 = v35;
         v83 = v37;
-        [v67 enumerateSubstringsInRange:0 options:v36 usingBlock:{258, v82}];
-        [v17 setObject:v66 forKey:v37];
-        v38 = [(CBIDSManager *)self cloudDevices];
-        v39 = [NSArray arrayWithArray:v38];
+        [uniqueID2 enumerateSubstringsInRange:0 options:v36 usingBlock:{258, v82}];
+        [cloudDevices setObject:v66 forKey:v37];
+        cloudDevices2 = [(CBIDSManager *)self cloudDevices];
+        v39 = [NSArray arrayWithArray:cloudDevices2];
 
         v80 = 0u;
         v81 = 0u;
@@ -1893,8 +1893,8 @@ LABEL_22:
 
               if (v45)
               {
-                v46 = [(CBIDSManager *)self cloudDevices];
-                [v46 removeObject:v44];
+                cloudDevices3 = [(CBIDSManager *)self cloudDevices];
+                [cloudDevices3 removeObject:v44];
               }
             }
 
@@ -1904,11 +1904,11 @@ LABEL_22:
           while (v41);
         }
 
-        v47 = [(CBIDSManager *)self cloudDevices];
-        [v47 addObject:v17];
+        cloudDevices4 = [(CBIDSManager *)self cloudDevices];
+        [cloudDevices4 addObject:cloudDevices];
 
-        v48 = [(CBIDSManager *)self cloudDevices];
-        [CBPreferencesManager setuserPreference:@"CloudDevice" value:v48 sync:1];
+        cloudDevices5 = [(CBIDSManager *)self cloudDevices];
+        [CBPreferencesManager setuserPreference:@"CloudDevice" value:cloudDevices5 sync:1];
 
         v65 = [[NSArray alloc] initWithObjects:{@"PublicKeys", @"IdentityKeys", 0}];
         *&buf = 0;
@@ -1919,11 +1919,11 @@ LABEL_22:
         v91[0] = @"ResponderPairingKeys";
         v90[0] = @"MessageType";
         v90[1] = @"DeviceName";
-        v49 = [(CBIDSManager *)self localDeviceName];
-        v91[1] = v49;
+        localDeviceName = [(CBIDSManager *)self localDeviceName];
+        v91[1] = localDeviceName;
         v90[2] = @"PublicAddress";
-        v50 = [(CBIDSManager *)self publicAddress];
-        v91[2] = v50;
+        publicAddress = [(CBIDSManager *)self publicAddress];
+        v91[2] = publicAddress;
         v90[3] = @"TimeStamp";
         v90[4] = @"EncryptionType";
         v91[3] = v66;
@@ -1936,22 +1936,22 @@ LABEL_22:
         v52 = [NSDictionary dictionaryWithObjects:v91 forKeys:v90 count:7];
         v96 = [NSMutableDictionary dictionaryWithDictionary:v52];
 
-        v53 = [v70 mutableCopy];
-        v54 = [(CBIDSManager *)self localDeviceRandomAddress];
+        v53 = [keysCopy mutableCopy];
+        localDeviceRandomAddress = [(CBIDSManager *)self localDeviceRandomAddress];
 
-        if (v54)
+        if (localDeviceRandomAddress)
         {
-          v55 = [(CBIDSManager *)self localDeviceRandomAddress];
-          [v53 setObject:v55 forKey:@"IDSLocalRandomAddress"];
+          localDeviceRandomAddress2 = [(CBIDSManager *)self localDeviceRandomAddress];
+          [v53 setObject:localDeviceRandomAddress2 forKey:@"IDSLocalRandomAddress"];
         }
 
-        if ([v69 isEqualToString:@"Version 3"])
+        if ([dCopy isEqualToString:@"Version 3"])
         {
-          v56 = [(CBIDSManager *)self localDeviceRandomAddress];
+          localDeviceRandomAddress3 = [(CBIDSManager *)self localDeviceRandomAddress];
 
-          if (!v56)
+          if (!localDeviceRandomAddress3)
           {
-            v64 = [(CBIDSManager *)self keyLength];
+            keyLength = [(CBIDSManager *)self keyLength];
             v73[0] = _NSConcreteStackBlock;
             v73[1] = 3221225472;
             v73[2] = sub_100085184;
@@ -1959,17 +1959,17 @@ LABEL_22:
             v76[1] = &buf;
             v73[4] = self;
             v74 = v71;
-            v75 = v70;
-            v76[0] = v69;
-            [(CBIDSManager *)self generateKeyDictForTypes:v65 keyLength:v64 forAddress:0 withCompletion:v73];
+            v75 = keysCopy;
+            v76[0] = dCopy;
+            [(CBIDSManager *)self generateKeyDictForTypes:v65 keyLength:keyLength forAddress:0 withCompletion:v73];
             v61 = &v74;
             v62 = &v75;
             v63 = v76;
             goto LABEL_38;
           }
 
-          v57 = [(CBIDSManager *)self keyLength];
-          v58 = [(CBIDSManager *)self localDeviceRandomAddress];
+          keyLength2 = [(CBIDSManager *)self keyLength];
+          localDeviceRandomAddress4 = [(CBIDSManager *)self localDeviceRandomAddress];
           v59 = v77;
           v77[0] = _NSConcreteStackBlock;
           v77[1] = 3221225472;
@@ -1978,15 +1978,15 @@ LABEL_22:
           v77[9] = &buf;
           v77[4] = self;
           v77[5] = v71;
-          v77[6] = v70;
+          v77[6] = keysCopy;
           v77[7] = v53;
-          v77[8] = v69;
-          [(CBIDSManager *)self generateKeyDictForTypes:v65 keyLength:v57 forAddress:v58 withCompletion:v77];
+          v77[8] = dCopy;
+          [(CBIDSManager *)self generateKeyDictForTypes:v65 keyLength:keyLength2 forAddress:localDeviceRandomAddress4 withCompletion:v77];
         }
 
         else
         {
-          v60 = [(CBIDSManager *)self keyLength];
+          keyLength3 = [(CBIDSManager *)self keyLength];
           v59 = v72;
           v72[0] = _NSConcreteStackBlock;
           v72[1] = 3221225472;
@@ -1995,10 +1995,10 @@ LABEL_22:
           v72[9] = &buf;
           v72[4] = self;
           v72[5] = v71;
-          v72[6] = v70;
+          v72[6] = keysCopy;
           v72[7] = v53;
-          v72[8] = v69;
-          [(CBIDSManager *)self generateKeyDictForTypes:v65 keyLength:v60 forAddress:0 withCompletion:v72];
+          v72[8] = dCopy;
+          [(CBIDSManager *)self generateKeyDictForTypes:v65 keyLength:keyLength3 forAddress:0 withCompletion:v72];
         }
 
         v61 = v59 + 5;
@@ -2009,23 +2009,23 @@ LABEL_38:
         _Block_object_dispose(&buf, 8);
 
 LABEL_39:
-        v32 = v68;
+        v32 = uniqueID;
         goto LABEL_40;
       }
 
       v27 = v20 > [(CBIDSManager *)self timeStamp];
-      v17 = sub_100005C14("CloudPairing");
-      v28 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
+      cloudDevices = sub_100005C14("CloudPairing");
+      v28 = os_log_type_enabled(cloudDevices, OS_LOG_TYPE_DEFAULT);
       if (v27)
       {
         if (v28)
         {
           v29 = [v71 description];
           v30 = v29;
-          v31 = [v29 UTF8String];
+          uTF8String = [v29 UTF8String];
           LODWORD(buf) = 136380675;
-          *(&buf + 4) = v31;
-          _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Received 'InitiatorPairingKeys' local Timestamp saved is newer than received message: %{private}s", &buf, 0xCu);
+          *(&buf + 4) = uTF8String;
+          _os_log_impl(&_mh_execute_header, cloudDevices, OS_LOG_TYPE_DEFAULT, "Received 'InitiatorPairingKeys' local Timestamp saved is newer than received message: %{private}s", &buf, 0xCu);
         }
 
         goto LABEL_39;
@@ -2033,10 +2033,10 @@ LABEL_39:
 
       if (v28)
       {
-        v33 = [(CBIDSManager *)self timeStamp];
+        timeStamp = [(CBIDSManager *)self timeStamp];
         LODWORD(buf) = 134217984;
-        *(&buf + 4) = v33 - v20;
-        _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Received 'InitiatorPairingKeys' Time to receive message: %f", &buf, 0xCu);
+        *(&buf + 4) = timeStamp - v20;
+        _os_log_impl(&_mh_execute_header, cloudDevices, OS_LOG_TYPE_DEFAULT, "Received 'InitiatorPairingKeys' Time to receive message: %f", &buf, 0xCu);
       }
     }
 
@@ -2053,27 +2053,27 @@ LABEL_39:
 LABEL_40:
 }
 
-- (void)generateKeyDictForTypes:(id)a3 keyLength:(unint64_t)a4 forAddress:(id)a5 withCompletion:(id)a6
+- (void)generateKeyDictForTypes:(id)types keyLength:(unint64_t)length forAddress:(id)address withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  typesCopy = types;
+  addressCopy = address;
+  completionCopy = completion;
   v13 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v10;
+    v21 = typesCopy;
     v22 = 2112;
-    v23 = v11;
+    v23 = addressCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "MUC - generateKeyDictForTypes: %@ for local address: %@", buf, 0x16u);
   }
 
-  v14 = [NSNumber numberWithUnsignedInteger:a4];
-  v15 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v10, @"kCloudPairingKeyTypes", v14, @"kCloudPairingKeyLength", 0];
+  v14 = [NSNumber numberWithUnsignedInteger:length];
+  v15 = [NSMutableDictionary dictionaryWithObjectsAndKeys:typesCopy, @"kCloudPairingKeyTypes", v14, @"kCloudPairingKeyLength", 0];
 
-  if (v11)
+  if (addressCopy)
   {
-    [v15 setObject:v11 forKeyedSubscript:@"kLocalRandomAddress"];
+    [v15 setObject:addressCopy forKeyedSubscript:@"kLocalRandomAddress"];
   }
 
   v16 = +[CloudXPCService sharedInstance];
@@ -2082,33 +2082,33 @@ LABEL_40:
   v18[2] = sub_100085628;
   v18[3] = &unk_1002B97D0;
   v18[4] = self;
-  v19 = v12;
-  v17 = v12;
+  v19 = completionCopy;
+  v17 = completionCopy;
   [v16 sendCloudKitMsg:@"GenerateCloudPairingKeys" args:v15 withReply:v18];
 }
 
-- (void)cloudPairingCompletedWithResponse:(id)a3 localKeys:(id)a4 from:(id)a5 forProtocolID:(id)a6
+- (void)cloudPairingCompletedWithResponse:(id)response localKeys:(id)keys from:(id)from forProtocolID:(id)d
 {
-  v9 = a5;
-  if (a4)
+  fromCopy = from;
+  if (keys)
   {
-    v10 = a4;
+    keysCopy = keys;
   }
 
   else
   {
-    v10 = &__NSDictionary0__struct;
+    keysCopy = &__NSDictionary0__struct;
   }
 
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v9 idsDevice];
-  v15 = [v14 uniqueID];
-  v16 = v15;
-  if (v15)
+  dCopy = d;
+  keysCopy2 = keys;
+  responseCopy = response;
+  idsDevice = [fromCopy idsDevice];
+  uniqueID = [idsDevice uniqueID];
+  v16 = uniqueID;
+  if (uniqueID)
   {
-    v17 = v15;
+    v17 = uniqueID;
   }
 
   else
@@ -2116,7 +2116,7 @@ LABEL_40:
     v17 = &__NSDictionary0__struct;
   }
 
-  v18 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v13, @"kCloudPairingCompleteResponse", v10, @"kCloudPairingLocalKeys", v17, @"kCloudDeviceUniqueID", v11, @"kCloudPairingProtocolID", 0];
+  v18 = [NSMutableDictionary dictionaryWithObjectsAndKeys:responseCopy, @"kCloudPairingCompleteResponse", keysCopy, @"kCloudPairingLocalKeys", v17, @"kCloudDeviceUniqueID", dCopy, @"kCloudPairingProtocolID", 0];
 
   v19 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -2132,36 +2132,36 @@ LABEL_40:
   v23[2] = sub_100085A5C;
   v23[3] = &unk_1002B97F8;
   v23[4] = self;
-  v24 = v9;
-  v21 = v9;
+  v24 = fromCopy;
+  v21 = fromCopy;
   [v20 sendCloudKitMsg:@"CloudPairingComplete" args:v18 withReply:v23];
 }
 
-- (unint64_t)roleWithDevice:(id)a3
+- (unint64_t)roleWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(CBIDSManager *)self cloudIdentifier];
+  deviceCopy = device;
+  cloudIdentifier = [(CBIDSManager *)self cloudIdentifier];
 
-  if (!v5)
+  if (!cloudIdentifier)
   {
     v12 = sub_100005C14("CloudPairing");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_1001F02A4(v4);
+      sub_1001F02A4(deviceCopy);
     }
 
     goto LABEL_11;
   }
 
-  v6 = [v4 idsDevice];
-  v7 = [v6 uniqueID];
+  idsDevice = [deviceCopy idsDevice];
+  uniqueID = [idsDevice uniqueID];
 
-  if (!v7)
+  if (!uniqueID)
   {
     v12 = sub_100005C14("CloudPairing");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_1001F0210(v4);
+      sub_1001F0210(deviceCopy);
     }
 
 LABEL_11:
@@ -2170,10 +2170,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = [(CBIDSManager *)self cloudIdentifier];
-  v9 = [v4 idsDevice];
-  v10 = [v9 uniqueID];
-  if ([v8 compare:v10] == 1)
+  cloudIdentifier2 = [(CBIDSManager *)self cloudIdentifier];
+  idsDevice2 = [deviceCopy idsDevice];
+  uniqueID2 = [idsDevice2 uniqueID];
+  if ([cloudIdentifier2 compare:uniqueID2] == 1)
   {
     v11 = 1;
   }
@@ -2187,40 +2187,40 @@ LABEL_12:
   return v11;
 }
 
-- (void)handleResponderPairingKeys:(id)a3 from:(id)a4 forProtocolID:(id)a5
+- (void)handleResponderPairingKeys:(id)keys from:(id)from forProtocolID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CBIDSManager *)self roleWithDevice:v9];
+  keysCopy = keys;
+  fromCopy = from;
+  dCopy = d;
+  v11 = [(CBIDSManager *)self roleWithDevice:fromCopy];
   v12 = sub_100005C14("CloudPairing");
   v13 = v12;
   if (v11 == 1)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v9 description];
+      v14 = [fromCopy description];
       v18 = 136380675;
-      v19 = [v14 UTF8String];
+      uTF8String = [v14 UTF8String];
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received 'ResponderPairingKeys' message from IDS device %{private}s", &v18, 0xCu);
     }
 
-    v15 = [v9 idsDevice];
-    [(CBIDSManager *)self storePublicAddressMapping:v15 message:v8];
+    idsDevice = [fromCopy idsDevice];
+    [(CBIDSManager *)self storePublicAddressMapping:idsDevice message:keysCopy];
 
-    v16 = [(CBIDSManager *)self localDeviceRandomAddress];
+    localDeviceRandomAddress = [(CBIDSManager *)self localDeviceRandomAddress];
 
-    if (!v16)
+    if (!localDeviceRandomAddress)
     {
-      [(CBIDSManager *)self cloudPairingCompletedWithResponse:v8 localKeys:0 from:v9 forProtocolID:v10];
+      [(CBIDSManager *)self cloudPairingCompletedWithResponse:keysCopy localKeys:0 from:fromCopy forProtocolID:dCopy];
       goto LABEL_9;
     }
 
-    v13 = [v8 mutableCopy];
-    v17 = [(CBIDSManager *)self localDeviceRandomAddress];
-    [v13 setObject:v17 forKey:@"IDSLocalRandomAddress"];
+    v13 = [keysCopy mutableCopy];
+    localDeviceRandomAddress2 = [(CBIDSManager *)self localDeviceRandomAddress];
+    [v13 setObject:localDeviceRandomAddress2 forKey:@"IDSLocalRandomAddress"];
 
-    [(CBIDSManager *)self cloudPairingCompletedWithResponse:v13 localKeys:0 from:v9 forProtocolID:v10];
+    [(CBIDSManager *)self cloudPairingCompletedWithResponse:v13 localKeys:0 from:fromCopy forProtocolID:dCopy];
   }
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2231,23 +2231,23 @@ LABEL_12:
 LABEL_9:
 }
 
-- (void)handleSecurityRequest:(id)a3 from:(id)a4
+- (void)handleSecurityRequest:(id)request from:(id)from
 {
-  v5 = a4;
-  if ([(CBIDSManager *)self roleWithDevice:v5]== 1)
+  fromCopy = from;
+  if ([(CBIDSManager *)self roleWithDevice:fromCopy]== 1)
   {
-    if ([v5 state] && objc_msgSend(v5, "state") != 6)
+    if ([fromCopy state] && objc_msgSend(fromCopy, "state") != 6)
     {
       v11 = sub_100005C14("CloudPairing");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v5 description];
-        v13 = [v12 UTF8String];
-        v14 = [v5 stateString];
+        v12 = [fromCopy description];
+        uTF8String = [v12 UTF8String];
+        stateString = [fromCopy stateString];
         v15 = 136380931;
-        v16 = v13;
+        v16 = uTF8String;
         v17 = 2080;
-        v18 = [v14 UTF8String];
+        uTF8String2 = [stateString UTF8String];
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Dropping 'security request' message from IDS device %{private}s as our state is '%s'", &v15, 0x16u);
       }
     }
@@ -2257,17 +2257,17 @@ LABEL_9:
       v6 = sub_100005C14("CloudPairing");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v5 description];
-        v8 = [v7 UTF8String];
-        v9 = [v5 stateString];
+        v7 = [fromCopy description];
+        uTF8String3 = [v7 UTF8String];
+        stateString2 = [fromCopy stateString];
         v15 = 136380931;
-        v16 = v8;
+        v16 = uTF8String3;
         v17 = 2080;
-        v18 = [v9 UTF8String];
+        uTF8String2 = [stateString2 UTF8String];
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received 'security request' message from IDS device %{private}s with current state is '%s'", &v15, 0x16u);
       }
 
-      [(CBIDSManager *)self initiatePairing:v5];
+      [(CBIDSManager *)self initiatePairing:fromCopy];
     }
   }
 
@@ -2281,41 +2281,41 @@ LABEL_9:
   }
 }
 
-- (void)handleRepairRequest:(id)a3 from:(id)a4
+- (void)handleRepairRequest:(id)request from:(id)from
 {
-  v5 = a4;
+  fromCopy = from;
   v6 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 description];
+    v7 = [fromCopy description];
     v8 = 136380675;
-    v9 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received 'Repair request' message from IDS device %{private}s", &v8, 0xCu);
   }
 
-  [(CBIDSManager *)self initiatePairing:v5];
+  [(CBIDSManager *)self initiatePairing:fromCopy];
 }
 
-- (void)handlePairingRequest:(id)a3 from:(id)a4
+- (void)handlePairingRequest:(id)request from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(CBIDSManager *)self validateMessage:v6 from:v7])
+  requestCopy = request;
+  fromCopy = from;
+  if ([(CBIDSManager *)self validateMessage:requestCopy from:fromCopy])
   {
-    if ([(CBIDSManager *)self roleWithDevice:v7]== 2)
+    if ([(CBIDSManager *)self roleWithDevice:fromCopy]== 2)
     {
-      if ([v7 state] && objc_msgSend(v7, "state") != 1)
+      if ([fromCopy state] && objc_msgSend(fromCopy, "state") != 1)
       {
         v14 = sub_100005C14("CloudPairing");
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v7 description];
-          v16 = [v15 UTF8String];
-          v17 = [v7 stateString];
+          v15 = [fromCopy description];
+          uTF8String = [v15 UTF8String];
+          stateString = [fromCopy stateString];
           *buf = 136380931;
-          v22 = v16;
+          uTF8String3 = uTF8String;
           v23 = 2080;
-          v24 = [v17 UTF8String];
+          uTF8String2 = [stateString UTF8String];
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Dropping 'pairing request' message from IDS device %{private}s as our state is '%s'", buf, 0x16u);
         }
       }
@@ -2325,23 +2325,23 @@ LABEL_9:
         v8 = sub_100005C14("CloudPairing");
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [v7 description];
+          v9 = [fromCopy description];
           *buf = 136380675;
-          v22 = [v9 UTF8String];
+          uTF8String3 = [v9 UTF8String];
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received 'pairing request' message from IDS device %{private}s", buf, 0xCu);
         }
 
-        v10 = [v6 objectForKeyedSubscript:@"RequestedKeyType"];
-        v11 = [v6 objectForKeyedSubscript:@"RequestedKeyLength"];
-        v12 = [v11 unsignedIntegerValue];
+        v10 = [requestCopy objectForKeyedSubscript:@"RequestedKeyType"];
+        v11 = [requestCopy objectForKeyedSubscript:@"RequestedKeyLength"];
+        unsignedIntegerValue = [v11 unsignedIntegerValue];
         v18[0] = _NSConcreteStackBlock;
         v18[1] = 3221225472;
         v18[2] = sub_100086940;
         v18[3] = &unk_1002B9820;
         v18[4] = self;
-        v19 = v6;
-        v20 = v7;
-        [(CBIDSManager *)self generateKeyDictForTypes:v10 keyLength:v12 forAddress:0 withCompletion:v18];
+        v19 = requestCopy;
+        v20 = fromCopy;
+        [(CBIDSManager *)self generateKeyDictForTypes:v10 keyLength:unsignedIntegerValue forAddress:0 withCompletion:v18];
       }
     }
 
@@ -2356,39 +2356,39 @@ LABEL_9:
   }
 }
 
-- (void)handlePairingResponse:(id)a3 from:(id)a4
+- (void)handlePairingResponse:(id)response from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(CBIDSManager *)self validateMessage:v6 from:v7])
+  responseCopy = response;
+  fromCopy = from;
+  if ([(CBIDSManager *)self validateMessage:responseCopy from:fromCopy])
   {
-    if ([(CBIDSManager *)self roleWithDevice:v7]== 1)
+    if ([(CBIDSManager *)self roleWithDevice:fromCopy]== 1)
     {
-      if ([v7 state] == 2 && objc_msgSend(v7, "state") == 3)
+      if ([fromCopy state] == 2 && objc_msgSend(fromCopy, "state") == 3)
       {
         v8 = sub_100005C14("CloudPairing");
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [v7 description];
+          v9 = [fromCopy description];
           *buf = 136380675;
-          v23 = [v9 UTF8String];
+          uTF8String = [v9 UTF8String];
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received 'pairing response' message from IDS device %{private}s", buf, 0xCu);
         }
 
-        v10 = [v6 objectForKeyedSubscript:@"RequestedKeys"];
-        v11 = [v6 objectForKeyedSubscript:@"RequestedKeyType"];
-        v12 = [v6 objectForKeyedSubscript:@"RequestedKeyLength"];
-        v13 = [v12 unsignedIntegerValue];
+        v10 = [responseCopy objectForKeyedSubscript:@"RequestedKeys"];
+        v11 = [responseCopy objectForKeyedSubscript:@"RequestedKeyType"];
+        v12 = [responseCopy objectForKeyedSubscript:@"RequestedKeyLength"];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
         v18[0] = _NSConcreteStackBlock;
         v18[1] = 3221225472;
         v18[2] = sub_100086DEC;
         v18[3] = &unk_1002B9848;
         v18[4] = self;
-        v19 = v6;
+        v19 = responseCopy;
         v20 = v10;
-        v21 = v7;
+        v21 = fromCopy;
         v14 = v10;
-        [(CBIDSManager *)self generateKeyDictForTypes:v11 keyLength:v13 forAddress:0 withCompletion:v18];
+        [(CBIDSManager *)self generateKeyDictForTypes:v11 keyLength:unsignedIntegerValue forAddress:0 withCompletion:v18];
       }
 
       else
@@ -2396,13 +2396,13 @@ LABEL_9:
         v14 = sub_100005C14("CloudPairing");
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v7 description];
-          v16 = [v15 UTF8String];
-          v17 = [v7 stateString];
+          v15 = [fromCopy description];
+          uTF8String2 = [v15 UTF8String];
+          stateString = [fromCopy stateString];
           *buf = 136380931;
-          v23 = v16;
+          uTF8String = uTF8String2;
           v24 = 2080;
-          v25 = [v17 UTF8String];
+          uTF8String3 = [stateString UTF8String];
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Dropping 'pairing response' message from IDS device %{private}s as our state is '%s'", buf, 0x16u);
         }
       }
@@ -2419,25 +2419,25 @@ LABEL_9:
   }
 }
 
-- (void)handleKeyDistribution:(id)a3 from:(id)a4
+- (void)handleKeyDistribution:(id)distribution from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(CBIDSManager *)self validateMessage:v6 from:v7])
+  distributionCopy = distribution;
+  fromCopy = from;
+  if ([(CBIDSManager *)self validateMessage:distributionCopy from:fromCopy])
   {
-    if ([v7 state] != 4 || objc_msgSend(v7, "state") != 5)
+    if ([fromCopy state] != 4 || objc_msgSend(fromCopy, "state") != 5)
     {
-      v19 = sub_100005C14("CloudPairing");
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      idsDevice = sub_100005C14("CloudPairing");
+      if (os_log_type_enabled(idsDevice, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v7 description];
-        v21 = [v20 UTF8String];
-        v22 = [v7 stateString];
+        v20 = [fromCopy description];
+        uTF8String = [v20 UTF8String];
+        stateString = [fromCopy stateString];
         *buf = 136380931;
-        v27 = v21;
+        uTF8String3 = uTF8String;
         v28 = 2080;
-        v29 = [v22 UTF8String];
-        _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Dropping 'key distribution' message from IDS device %{private}s as our state is '%s'", buf, 0x16u);
+        uTF8String2 = [stateString UTF8String];
+        _os_log_impl(&_mh_execute_header, idsDevice, OS_LOG_TYPE_DEFAULT, "Dropping 'key distribution' message from IDS device %{private}s as our state is '%s'", buf, 0x16u);
       }
 
       goto LABEL_14;
@@ -2446,51 +2446,51 @@ LABEL_9:
     v8 = sub_100005C14("CloudPairing");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 description];
+      v9 = [fromCopy description];
       *buf = 136380675;
-      v27 = [v9 UTF8String];
+      uTF8String3 = [v9 UTF8String];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received 'key distribution' message from IDS device %{private}s", buf, 0xCu);
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"LocalKeys"];
+    v10 = [distributionCopy objectForKeyedSubscript:@"LocalKeys"];
     v11 = [v10 objectForKeyedSubscript:@"LTKLength"];
-    v12 = [v11 unsignedIntegerValue];
-    v13 = [(CBIDSManager *)self keyLength];
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
+    keyLength = [(CBIDSManager *)self keyLength];
 
-    if (v12 == v13)
+    if (unsignedIntegerValue == keyLength)
     {
-      v14 = [v6 objectForKeyedSubscript:@"RequestedKeys"];
+      v14 = [distributionCopy objectForKeyedSubscript:@"RequestedKeys"];
       v15 = [v14 objectForKeyedSubscript:@"LTKLength"];
-      v16 = [v15 unsignedIntegerValue];
-      v17 = [(CBIDSManager *)self keyLength];
+      unsignedIntegerValue2 = [v15 unsignedIntegerValue];
+      keyLength2 = [(CBIDSManager *)self keyLength];
 
-      if (v16 == v17)
+      if (unsignedIntegerValue2 == keyLength2)
       {
-        v18 = [v6 objectForKeyedSubscript:@"LocalKeys"];
-        [(CBIDSManager *)self cloudPairingCompletedWithResponse:v6 localKeys:v18 from:v7 forProtocolID:@"Version 1"];
+        v18 = [distributionCopy objectForKeyedSubscript:@"LocalKeys"];
+        [(CBIDSManager *)self cloudPairingCompletedWithResponse:distributionCopy localKeys:v18 from:fromCopy forProtocolID:@"Version 1"];
 
-        v19 = [v7 idsDevice];
-        [(CBIDSManager *)self storePublicAddressMapping:v19 message:v6];
+        idsDevice = [fromCopy idsDevice];
+        [(CBIDSManager *)self storePublicAddressMapping:idsDevice message:distributionCopy];
 LABEL_14:
 
         goto LABEL_15;
       }
 
-      v19 = [v7 idsDevice];
-      v23 = [v6 objectForKeyedSubscript:@"RequestedKeys"];
+      idsDevice = [fromCopy idsDevice];
+      v23 = [distributionCopy objectForKeyedSubscript:@"RequestedKeys"];
       v24 = [v23 objectForKeyedSubscript:@"LTKLength"];
       [NSString stringWithFormat:@"Invalid requested key length (%@)", v24];
     }
 
     else
     {
-      v19 = [v7 idsDevice];
-      v23 = [v6 objectForKeyedSubscript:@"LocalKeys"];
+      idsDevice = [fromCopy idsDevice];
+      v23 = [distributionCopy objectForKeyedSubscript:@"LocalKeys"];
       v24 = [v23 objectForKeyedSubscript:@"LTKLength"];
       [NSString stringWithFormat:@"Invalid local key length (%@)", v24];
     }
     v25 = ;
-    [(CBIDSManager *)self sendErrorMessageToDevice:v19 reason:v25];
+    [(CBIDSManager *)self sendErrorMessageToDevice:idsDevice reason:v25];
 
     goto LABEL_14;
   }
@@ -2498,10 +2498,10 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)handlePairingFailure:(id)a3 from:(id)a4
+- (void)handlePairingFailure:(id)failure from:(id)from
 {
-  v5 = a3;
-  v6 = a4;
+  failureCopy = failure;
+  fromCopy = from;
   v7 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -2509,29 +2509,29 @@ LABEL_15:
   }
 }
 
-- (void)initiatePairingAgainIfNoAckReceived:(id)a3 attempt:(unint64_t)a4
+- (void)initiatePairingAgainIfNoAckReceived:(id)received attempt:(unint64_t)attempt
 {
-  v6 = a3;
-  v7 = [(CBIDSManager *)self roleWithDevice:v6];
+  receivedCopy = received;
+  v7 = [(CBIDSManager *)self roleWithDevice:receivedCopy];
   if (v7)
   {
     v8 = v7;
-    v9 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
-    v10 = [v6 idsDevice];
-    v11 = [v10 uniqueID];
-    v12 = [v9 objectForKey:v11];
+    messageIdentifiersWaitingForAck = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+    idsDevice = [receivedCopy idsDevice];
+    uniqueID = [idsDevice uniqueID];
+    v12 = [messageIdentifiersWaitingForAck objectForKey:uniqueID];
 
-    v13 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
-    v14 = [v6 idsDevice];
-    v15 = [v14 uniqueID];
-    [v13 setObject:v6 forKey:v15];
+    messageIdentifiersWaitingForAck2 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+    idsDevice2 = [receivedCopy idsDevice];
+    uniqueID2 = [idsDevice2 uniqueID];
+    [messageIdentifiersWaitingForAck2 setObject:receivedCopy forKey:uniqueID2];
 
     if (v12)
     {
       v22 = sub_100005C14("CloudPairing");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = a4 - 1;
+        v23 = attempt - 1;
         if (v8 == 1)
         {
           v24 = "pairing";
@@ -2542,13 +2542,13 @@ LABEL_15:
           v24 = "security";
         }
 
-        v25 = [v6 description];
+        v25 = [receivedCopy description];
         *buf = 134218499;
         v33 = v23;
         v34 = 2080;
-        v35 = v24;
+        attemptCopy = v24;
         v36 = 2081;
-        v37 = [v25 UTF8String];
+        uTF8String = [v25 UTF8String];
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "MUC - Dropping delay sending again attempt (%lu) '%s request' message to IDS device %{private}s", buf, 0x20u);
       }
     }
@@ -2569,30 +2569,30 @@ LABEL_15:
           v18 = "security";
         }
 
-        v19 = [v6 description];
+        v19 = [receivedCopy description];
         *buf = 134218755;
         v33 = v16;
         v34 = 2048;
-        v35 = a4;
+        attemptCopy = attempt;
         v36 = 2080;
-        v37 = v18;
+        uTF8String = v18;
         v38 = 2081;
-        v39 = [v19 UTF8String];
+        uTF8String2 = [v19 UTF8String];
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "MUC - Delaying (%lu) seconds to send (%lu) attempt '%s request' message to IDS device %{private}s", buf, 0x2Au);
       }
 
-      v20 = dispatch_time(0, (v16 * a4 * 1000000000.0));
-      v21 = [(CBIDSManager *)self cloudPairingQueue];
+      v20 = dispatch_time(0, (v16 * attempt * 1000000000.0));
+      cloudPairingQueue = [(CBIDSManager *)self cloudPairingQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100087784;
       block[3] = &unk_1002B9898;
       v29 = v16;
-      v30 = a4;
+      attemptCopy2 = attempt;
       v31 = v8;
-      v27 = v6;
-      v28 = self;
-      dispatch_after(v20, v21, block);
+      v27 = receivedCopy;
+      selfCopy = self;
+      dispatch_after(v20, cloudPairingQueue, block);
 
       v22 = v27;
     }
@@ -2603,15 +2603,15 @@ LABEL_15:
     v12 = sub_100005C14("CloudPairing");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_1001F06DC(v6);
+      sub_1001F06DC(receivedCopy);
     }
   }
 }
 
-- (void)initiatePairing:(id)a3
+- (void)initiatePairing:(id)pairing
 {
-  v4 = a3;
-  v5 = [(CBIDSManager *)self roleWithDevice:v4];
+  pairingCopy = pairing;
+  v5 = [(CBIDSManager *)self roleWithDevice:pairingCopy];
   if (v5)
   {
     v6 = v5;
@@ -2629,11 +2629,11 @@ LABEL_15:
         v8 = "security";
       }
 
-      v9 = [v4 description];
+      v9 = [pairingCopy description];
       *buf = 136315395;
       v64 = v8;
       v65 = 2081;
-      v66 = [v9 UTF8String];
+      uTF8String = [v9 UTF8String];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "MUC - Sending '%s request' message to IDS device %{private}s", buf, 0x16u);
     }
 
@@ -2647,16 +2647,16 @@ LABEL_15:
     v62[0] = v10;
     v61[0] = @"MessageType";
     v61[1] = @"DeviceName";
-    v11 = [(CBIDSManager *)self localDeviceName];
-    v62[1] = v11;
+    localDeviceName = [(CBIDSManager *)self localDeviceName];
+    v62[1] = localDeviceName;
     v61[2] = @"PublicAddress";
-    v12 = [(CBIDSManager *)self publicAddress];
-    v62[2] = v12;
+    publicAddress = [(CBIDSManager *)self publicAddress];
+    v62[2] = publicAddress;
     v62[3] = @"Basic";
     v61[3] = @"EncryptionType";
     v61[4] = @"RequestedKeyType";
-    v13 = [(CBIDSManager *)self requestedKeyTypes];
-    v62[4] = v13;
+    requestedKeyTypes = [(CBIDSManager *)self requestedKeyTypes];
+    v62[4] = requestedKeyTypes;
     v61[5] = @"RequestedKeyLength";
     v14 = [NSNumber numberWithUnsignedInteger:[(CBIDSManager *)self keyLength]];
     v62[5] = v14;
@@ -2664,13 +2664,13 @@ LABEL_15:
 
     [v45 setObject:v42 forKey:@"Version 1"];
     v44 = +[NSMutableDictionary dictionary];
-    v15 = [v4 idsDevice];
-    v16 = [v15 uniqueID];
+    idsDevice = [pairingCopy idsDevice];
+    uniqueID = [idsDevice uniqueID];
 
-    [v44 setObject:v43 forKey:v16];
+    [v44 setObject:v43 forKey:uniqueID];
     v17 = [NSMutableArray alloc];
-    v18 = [(CBIDSManager *)self cloudDevices];
-    v19 = [v17 initWithArray:v18];
+    cloudDevices = [(CBIDSManager *)self cloudDevices];
+    v19 = [v17 initWithArray:cloudDevices];
 
     v56 = 0u;
     v57 = 0u;
@@ -2691,12 +2691,12 @@ LABEL_15:
           }
 
           v24 = *(*(&v54 + 1) + 8 * i);
-          v25 = [v24 objectForKey:v16];
+          v25 = [v24 objectForKey:uniqueID];
 
           if (v25)
           {
-            v26 = [(CBIDSManager *)self cloudDevices];
-            [v26 removeObject:v24];
+            cloudDevices2 = [(CBIDSManager *)self cloudDevices];
+            [cloudDevices2 removeObject:v24];
           }
         }
 
@@ -2706,11 +2706,11 @@ LABEL_15:
       while (v21);
     }
 
-    v27 = [(CBIDSManager *)self cloudDevices];
-    [v27 addObject:v44];
+    cloudDevices3 = [(CBIDSManager *)self cloudDevices];
+    [cloudDevices3 addObject:v44];
 
-    v28 = [(CBIDSManager *)self cloudDevices];
-    [CBPreferencesManager setuserPreference:@"CloudDevice" value:v28 sync:1];
+    cloudDevices4 = [(CBIDSManager *)self cloudDevices];
+    [CBPreferencesManager setuserPreference:@"CloudDevice" value:cloudDevices4 sync:1];
 
     if (v6 == 1)
     {
@@ -2725,11 +2725,11 @@ LABEL_15:
       v59[0] = @"InitiatorPairingKeys";
       v58[0] = @"MessageType";
       v58[1] = @"DeviceName";
-      v31 = [(CBIDSManager *)self localDeviceName];
-      v59[1] = v31;
+      localDeviceName2 = [(CBIDSManager *)self localDeviceName];
+      v59[1] = localDeviceName2;
       v58[2] = @"PublicAddress";
-      v32 = [(CBIDSManager *)self publicAddress];
-      v59[2] = v32;
+      publicAddress2 = [(CBIDSManager *)self publicAddress];
+      v59[2] = publicAddress2;
       v58[3] = @"TimeStamp";
       v58[4] = @"EncryptionType";
       v59[3] = v43;
@@ -2742,9 +2742,9 @@ LABEL_15:
       v34 = [NSDictionary dictionaryWithObjects:v59 forKeys:v58 count:7];
 
       objc_initWeak(buf, self);
-      v35 = [(CBIDSManager *)self localDeviceRandomAddress];
+      localDeviceRandomAddress = [(CBIDSManager *)self localDeviceRandomAddress];
 
-      v36 = [(CBIDSManager *)self keyLength];
+      keyLength = [(CBIDSManager *)self keyLength];
       v46[0] = _NSConcreteStackBlock;
       v46[1] = 3221225472;
       v46[2] = sub_1000882E8;
@@ -2753,14 +2753,14 @@ LABEL_15:
       v37 = v34;
       v47 = v37;
       v38 = v45;
-      v53 = v35 != 0;
+      v53 = localDeviceRandomAddress != 0;
       v48 = v38;
-      v49 = self;
-      v50 = v4;
+      selfCopy = self;
+      v50 = pairingCopy;
       v52[1] = 1;
       v39 = v30;
       v51 = v39;
-      [(CBIDSManager *)self generateKeyDictForTypes:v39 keyLength:v36 forAddress:0 withCompletion:v46];
+      [(CBIDSManager *)self generateKeyDictForTypes:v39 keyLength:keyLength forAddress:0 withCompletion:v46];
 
       objc_destroyWeak(v52);
       objc_destroyWeak(buf);
@@ -2769,7 +2769,7 @@ LABEL_15:
     else
     {
       [v45 setObject:@"CloudPairing" forKey:@"MessageType"];
-      [(CBIDSManager *)self sendInitialPairingIDSMessage:v45 forDevice:v4 withRole:v6];
+      [(CBIDSManager *)self sendInitialPairingIDSMessage:v45 forDevice:pairingCopy withRole:v6];
     }
 
     v41 = v43;
@@ -2781,45 +2781,45 @@ LABEL_15:
     v41 = v40;
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
-      sub_1001F086C(v4);
+      sub_1001F086C(pairingCopy);
       v41 = v40;
     }
   }
 }
 
-- (void)sendInitialPairingIDSMessage:(id)a3 forDevice:(id)a4 withRole:(unint64_t)a5
+- (void)sendInitialPairingIDSMessage:(id)message forDevice:(id)device withRole:(unint64_t)role
 {
-  v8 = a3;
-  v9 = a4;
+  messageCopy = message;
+  deviceCopy = device;
   v10 = objc_autoreleasePoolPush();
-  v11 = [v9 idsDevice];
+  idsDevice = [deviceCopy idsDevice];
   v12 = IDSCopyForDevice();
 
   v13 = sub_100005C14("CloudPairing");
   v14 = v13;
   if (v12)
   {
-    v31 = a5;
+    roleCopy = role;
     v33 = v10;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 141558787;
       v39 = 1752392040;
       v40 = 2113;
-      v41 = v9;
+      v41 = deviceCopy;
       v42 = 2160;
       v43 = 1752392040;
       v44 = 2113;
-      v45 = v8;
+      v45 = messageCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Attempting to send message to %{private, mask.hash}@ : %{private, mask.hash}@", buf, 0x2Au);
     }
 
-    v15 = [v8 objectForKeyedSubscript:@"MessageType"];
-    v16 = [v9 idsDevice];
-    v17 = [v16 uniqueID];
-    v18 = [NSString stringWithFormat:@"Initial-%@-%@", v15, v17];
+    v15 = [messageCopy objectForKeyedSubscript:@"MessageType"];
+    idsDevice2 = [deviceCopy idsDevice];
+    uniqueID = [idsDevice2 uniqueID];
+    v18 = [NSString stringWithFormat:@"Initial-%@-%@", v15, uniqueID];
 
-    v19 = [(CBIDSManager *)self service];
+    service = [(CBIDSManager *)self service];
     v20 = [NSMutableSet setWithObject:v12];
     v36[0] = IDSSendMessageOptionTimeoutKey;
     v36[1] = IDSSendMessageOptionWantsClientAcknowledgementKey;
@@ -2831,23 +2831,23 @@ LABEL_15:
     v21 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:3];
     v34 = 0;
     v35 = 0;
-    v22 = [v19 sendMessage:v8 fromAccount:0 toDestinations:v20 priority:300 options:v21 identifier:&v35 error:&v34];
+    v22 = [service sendMessage:messageCopy fromAccount:0 toDestinations:v20 priority:300 options:v21 identifier:&v35 error:&v34];
     v14 = v35;
     v23 = v34;
 
     v24 = sub_100005C14("CloudPairing");
-    v25 = v24;
+    messageIdentifiersWaitingForAck = v24;
     if (v22)
     {
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v14 UTF8String];
+        uTF8String = [v14 UTF8String];
         *buf = 136315138;
-        v39 = v26;
-        _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Successfully sent message %s", buf, 0xCu);
+        v39 = uTF8String;
+        _os_log_impl(&_mh_execute_header, messageIdentifiersWaitingForAck, OS_LOG_TYPE_DEFAULT, "Successfully sent message %s", buf, 0xCu);
       }
 
-      if (v31 == 1)
+      if (roleCopy == 1)
       {
         v27 = 2;
       }
@@ -2857,9 +2857,9 @@ LABEL_15:
         v27 = 1;
       }
 
-      [v9 setState:v27];
-      v25 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
-      [v25 setObject:v9 forKey:v14];
+      [deviceCopy setState:v27];
+      messageIdentifiersWaitingForAck = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+      [messageIdentifiersWaitingForAck setObject:deviceCopy forKey:v14];
     }
 
     else if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -2867,48 +2867,48 @@ LABEL_15:
       sub_1001F0904(v23);
     }
 
-    v28 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
-    v29 = [v9 idsDevice];
-    v30 = [v29 uniqueID];
-    [v28 removeObjectForKey:v30];
+    messageIdentifiersWaitingForAck2 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+    idsDevice3 = [deviceCopy idsDevice];
+    uniqueID2 = [idsDevice3 uniqueID];
+    [messageIdentifiersWaitingForAck2 removeObjectForKey:uniqueID2];
 
     v10 = v33;
   }
 
   else if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    sub_1001F0998(v9, v8, v14);
+    sub_1001F0998(deviceCopy, messageCopy, v14);
   }
 
   objc_autoreleasePoolPop(v10);
 }
 
-- (void)sendRePairRequest:(id)a3 forBundleID:(id)a4
+- (void)sendRePairRequest:(id)request forBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CBIDSManager *)self cloudPairingQueue];
+  requestCopy = request;
+  dCopy = d;
+  cloudPairingQueue = [(CBIDSManager *)self cloudPairingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100088C38;
   block[3] = &unk_1002B6CF0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = requestCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = requestCopy;
+  dispatch_async(cloudPairingQueue, block);
 }
 
-- (void)_sendRePairRequest:(id)a3 forBundleID:(id)a4
+- (void)_sendRePairRequest:(id)request forBundleID:(id)d
 {
-  v6 = a3;
-  v42 = a4;
+  requestCopy = request;
+  dCopy = d;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v7 = v6;
+  v7 = requestCopy;
   v38 = [v7 countByEnumeratingWithState:&v54 objects:v65 count:16];
   if (v38)
   {
@@ -2931,11 +2931,11 @@ LABEL_15:
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v11 = [(CBIDSManager *)self service];
-        v12 = [v11 devices];
+        service = [(CBIDSManager *)self service];
+        devices = [service devices];
 
-        obj = v12;
-        v13 = [v12 countByEnumeratingWithState:&v50 objects:v64 count:16];
+        obj = devices;
+        v13 = [devices countByEnumeratingWithState:&v50 objects:v64 count:16];
         if (v13)
         {
           v14 = v13;
@@ -2955,25 +2955,25 @@ LABEL_15:
               v18 = sub_100005C14("CloudPairing");
               if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
               {
-                v19 = [v17 nsuuid];
+                nsuuid = [v17 nsuuid];
                 *buf = 138412546;
-                v61 = v19;
+                v61 = nsuuid;
                 v62 = 2112;
                 v63 = v10;
                 _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "cloudpaird: sendRePairRequest: BTUUID: %@ peerUUID %@", buf, 0x16u);
               }
 
-              v20 = [v17 uniqueID];
-              v21 = [v20 isEqualToString:v10];
+              uniqueID = [v17 uniqueID];
+              v21 = [uniqueID isEqualToString:v10];
 
               if (v21)
               {
                 v22 = sub_100005C14("CloudPairing");
                 if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
                 {
-                  v23 = [v17 uniqueID];
+                  uniqueID2 = [v17 uniqueID];
                   *buf = 138412290;
-                  v61 = v23;
+                  v61 = uniqueID2;
                   _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "cloudpaird: sendRePairRequest: IDS to repair is a valid device %@", buf, 0xCu);
                 }
 
@@ -2994,13 +2994,13 @@ LABEL_15:
                 }
 
                 v27 = [NSString stringWithFormat:@"RePairingRequest-%@", v10];
-                v28 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+                messageIdentifiersWaitingForAck = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
                 v47[0] = _NSConcreteStackBlock;
                 v47[1] = 3221225472;
                 v47[2] = sub_100089240;
                 v47[3] = &unk_1002B9910;
                 v47[4] = v27;
-                v29 = [v28 keysOfEntriesPassingTest:v47];
+                v29 = [messageIdentifiersWaitingForAck keysOfEntriesPassingTest:v47];
 
                 v30 = [v29 count];
                 if (v30)
@@ -3017,7 +3017,7 @@ LABEL_15:
                   }
 
                   v33 = dispatch_time(0, (v31 * 1000000000.0));
-                  v34 = [(CBIDSManager *)self cloudPairingQueue];
+                  cloudPairingQueue = [(CBIDSManager *)self cloudPairingQueue];
                   block[0] = _NSConcreteStackBlock;
                   block[1] = 3221225472;
                   block[2] = sub_10008924C;
@@ -3026,8 +3026,8 @@ LABEL_15:
                   block[5] = v27;
                   block[6] = v10;
                   v45 = v25;
-                  v46 = v42;
-                  dispatch_after(v33, v34, block);
+                  v46 = dCopy;
+                  dispatch_after(v33, cloudPairingQueue, block);
                 }
 
                 else
@@ -3035,10 +3035,10 @@ LABEL_15:
                   v58[0] = @"MessageType";
                   v58[1] = @"DeviceName";
                   v59[0] = @"RepairRequest";
-                  v35 = [(CBIDSManager *)self localDeviceName];
-                  v59[1] = v35;
+                  localDeviceName = [(CBIDSManager *)self localDeviceName];
+                  v59[1] = localDeviceName;
                   v36 = [NSDictionary dictionaryWithObjects:v59 forKeys:v58 count:2];
-                  [(CBIDSManager *)self sendRePairCloudPairingMessage:v36 toDevice:v25 bundleID:v42];
+                  [(CBIDSManager *)self sendRePairCloudPairingMessage:v36 toDevice:v25 bundleID:dCopy];
                 }
 
                 v14 = v41;
@@ -3079,18 +3079,18 @@ LABEL_15:
 LABEL_33:
 }
 
-- (void)sendRePairCloudPairingMessage:(id)a3 toDevice:(id)a4 bundleID:(id)a5
+- (void)sendRePairCloudPairingMessage:(id)message toDevice:(id)device bundleID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CBIDSManager *)self service];
-  v12 = [v11 accounts];
-  v13 = [v12 count];
+  messageCopy = message;
+  deviceCopy = device;
+  dCopy = d;
+  service = [(CBIDSManager *)self service];
+  accounts = [service accounts];
+  v13 = [accounts count];
 
   if (v13)
   {
-    v14 = [v9 idsDevice];
+    idsDevice = [deviceCopy idsDevice];
     v15 = IDSCopyIDForDevice();
 
     if (!v15)
@@ -3100,36 +3100,36 @@ LABEL_33:
       goto LABEL_17;
     }
 
-    v38 = v10;
+    v38 = dCopy;
     v16 = objc_alloc_init(NSMutableDictionary);
     [v16 setObject:@"CloudPairing" forKey:@"MessageType"];
-    v37 = v8;
-    [v16 setObject:v8 forKey:@"Version 1"];
+    v37 = messageCopy;
+    [v16 setObject:messageCopy forKey:@"Version 1"];
     v17 = [NSNumber numberWithDouble:2592000.0];
     v18 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v17, IDSSendMessageOptionTimeoutKey, 0];
 
-    v19 = [v9 idsDevice];
-    v20 = [v19 uniqueID];
-    v21 = [NSString stringWithFormat:@"RePairingRequest-%@", v20];
+    idsDevice2 = [deviceCopy idsDevice];
+    uniqueID = [idsDevice2 uniqueID];
+    v21 = [NSString stringWithFormat:@"RePairingRequest-%@", uniqueID];
 
     [v18 setObject:v21 forKey:IDSSendMessageOptionQueueOneIdentifierKey];
     [v18 setObject:&__kCFBooleanTrue forKey:IDSSendMessageOptionWantsClientAcknowledgementKey];
-    v22 = [(CBIDSManager *)self service];
+    service2 = [(CBIDSManager *)self service];
     v23 = [NSMutableSet setWithObject:v15];
     v39 = 0;
     v40 = 0;
-    v24 = [v22 sendMessage:v16 fromAccount:0 toDestinations:v23 priority:300 options:v18 identifier:&v40 error:&v39];
+    v24 = [service2 sendMessage:v16 fromAccount:0 toDestinations:v23 priority:300 options:v18 identifier:&v40 error:&v39];
     v25 = v40;
     v36 = v39;
 
     if (v24)
     {
-      v8 = v37;
+      messageCopy = v37;
       if (!v25)
       {
 LABEL_16:
 
-        v10 = v38;
+        dCopy = v38;
 LABEL_17:
 
         goto LABEL_18;
@@ -3138,27 +3138,27 @@ LABEL_17:
       v26 = sub_100005C14("CloudPairing");
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v9 idsDevice];
-        v28 = [v27 name];
+        idsDevice3 = [deviceCopy idsDevice];
+        name = [idsDevice3 name];
         *buf = 138413058;
         *&buf[4] = v16;
         v44 = 2112;
-        v45 = v28;
+        v45 = name;
         v46 = 2112;
         v47 = v15;
         v48 = 2112;
         v49 = v25;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "cloudpaird: sendRePairCloudPairingMessage: Sending message :%@ to device %@ of account :%@ with GUID :%@", buf, 0x2Au);
 
-        v8 = v37;
+        messageCopy = v37;
       }
 
       v29 = [NSString stringWithFormat:@"%@-%@", v25, v21];
-      v30 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
-      [v30 setObject:v9 forKey:v29];
+      messageIdentifiersWaitingForAck = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+      [messageIdentifiersWaitingForAck setObject:deviceCopy forKey:v29];
 
       v41[0] = @"MessageType";
-      v31 = [v8 objectForKeyedSubscript:?];
+      v31 = [messageCopy objectForKeyedSubscript:?];
       v41[1] = @"BundleID";
       v42[0] = v31;
       v32 = @"Unknown";
@@ -3177,12 +3177,12 @@ LABEL_17:
       v29 = sub_100005C14("CloudPairing");
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        v34 = [v9 idsDevice];
-        v35 = [v34 name];
+        idsDevice4 = [deviceCopy idsDevice];
+        name2 = [idsDevice4 name];
         *buf = 138413058;
         *&buf[4] = v16;
         v44 = 2112;
-        v45 = v35;
+        v45 = name2;
         v46 = 2112;
         v47 = v15;
         v48 = 2112;
@@ -3190,7 +3190,7 @@ LABEL_17:
         _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "cloudpaird: sendRePairCloudPairingMessage: Sending message failed  :%@ to device %@ of account :%@ with error %@", buf, 0x2Au);
       }
 
-      v8 = v37;
+      messageCopy = v37;
     }
 
     goto LABEL_16;
@@ -3205,11 +3205,11 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)sendCloudPairingResponseMessage:(id)a3 toDevice:(id)a4 version:(id)a5
+- (void)sendCloudPairingResponseMessage:(id)message toDevice:(id)device version:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  deviceCopy = device;
+  versionCopy = version;
   v11 = objc_autoreleasePoolPush();
   v12 = IDSCopyForDevice();
   v13 = sub_100005C14("CloudPairing");
@@ -3219,49 +3219,49 @@ LABEL_18:
     v45 = v11;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v9 cpDescription];
-      v16 = [v15 UTF8String];
-      v17 = [v8 description];
+      cpDescription = [deviceCopy cpDescription];
+      uTF8String = [cpDescription UTF8String];
+      v17 = [messageCopy description];
       *buf = 136380931;
-      v58 = v16;
+      v58 = uTF8String;
       v59 = 2080;
-      v60 = [v17 UTF8String];
+      uTF8String2 = [v17 UTF8String];
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Sending message to IDS device %{private}s: %s", buf, 0x16u);
     }
 
-    v46 = v10;
-    if ([v10 isEqualToString:@"Version 1"])
+    v46 = versionCopy;
+    if ([versionCopy isEqualToString:@"Version 1"])
     {
       v55[0] = @"MessageType";
       v55[1] = @"Version 1";
       v56[0] = @"CloudPairing";
-      v56[1] = v8;
+      v56[1] = messageCopy;
       v18 = v56;
       v19 = v55;
     }
 
-    else if ([v10 isEqualToString:@"Version 2"])
+    else if ([versionCopy isEqualToString:@"Version 2"])
     {
       v53[0] = @"MessageType";
       v53[1] = @"Version 2";
       v54[0] = @"CloudPairing";
-      v54[1] = v8;
+      v54[1] = messageCopy;
       v18 = v54;
       v19 = v53;
     }
 
     else
     {
-      if (![v10 isEqualToString:@"Version 3"])
+      if (![versionCopy isEqualToString:@"Version 3"])
       {
         v20 = 0;
 LABEL_13:
-        v21 = [v8 objectForKeyedSubscript:@"MessageType"];
-        v22 = [v9 uniqueID];
-        v23 = [NSString stringWithFormat:@"%@-%@", v21, v22];
+        v21 = [messageCopy objectForKeyedSubscript:@"MessageType"];
+        uniqueID = [deviceCopy uniqueID];
+        v23 = [NSString stringWithFormat:@"%@-%@", v21, uniqueID];
 
-        v42 = self;
-        v24 = [(CBIDSManager *)self service];
+        selfCopy = self;
+        service = [(CBIDSManager *)self service];
         v25 = [NSMutableSet setWithObject:v12];
         v49[0] = IDSSendMessageOptionTimeoutKey;
         v49[1] = IDSSendMessageOptionWantsClientAcknowledgementKey;
@@ -3274,7 +3274,7 @@ LABEL_13:
         v47 = 0;
         v48 = 0;
         v44 = v20;
-        v27 = [v24 sendMessage:v20 fromAccount:0 toDestinations:v25 priority:300 options:v26 identifier:&v48 error:&v47];
+        v27 = [service sendMessage:v20 fromAccount:0 toDestinations:v25 priority:300 options:v26 identifier:&v48 error:&v47];
         v14 = v48;
         v28 = v47;
 
@@ -3293,21 +3293,21 @@ LABEL_13:
 
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
-          v31 = [v14 UTF8String];
+          uTF8String3 = [v14 UTF8String];
           *buf = 136315138;
-          v58 = v31;
+          v58 = uTF8String3;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Successfully sent message %s", buf, 0xCu);
         }
 
-        v30 = [(CBIDSManager *)v42 deviceForIDSDevice:v9 createNew:0];
-        v32 = [v8 objectForKeyedSubscript:@"MessageType"];
+        v30 = [(CBIDSManager *)selfCopy deviceForIDSDevice:deviceCopy createNew:0];
+        v32 = [messageCopy objectForKeyedSubscript:@"MessageType"];
         if (([@"ResponderPairingKeys" isEqualToString:v32] & 1) == 0)
         {
-          v33 = [v8 objectForKeyedSubscript:@"MessageType"];
+          v33 = [messageCopy objectForKeyedSubscript:@"MessageType"];
           if (![@"PairingResponse" isEqualToString:v33])
           {
             v34 = v28;
-            v40 = [v8 objectForKeyedSubscript:@"MessageType"];
+            v40 = [messageCopy objectForKeyedSubscript:@"MessageType"];
             v41 = [@"KeyDistribution" isEqualToString:v40];
 
             if ((v41 & 1) == 0)
@@ -3315,21 +3315,21 @@ LABEL_13:
 LABEL_24:
 
               v11 = v45;
-              v10 = v46;
+              versionCopy = v46;
               goto LABEL_25;
             }
 
 LABEL_20:
-            v35 = [v30 idsDevice];
-            v36 = [v35 uniqueID];
-            v37 = [v9 uniqueID];
-            v38 = [v36 isEqualToString:v37];
+            idsDevice = [v30 idsDevice];
+            uniqueID2 = [idsDevice uniqueID];
+            uniqueID3 = [deviceCopy uniqueID];
+            v38 = [uniqueID2 isEqualToString:uniqueID3];
 
             if (v38)
             {
               [v30 setState:4];
-              v39 = [(CBIDSManager *)v42 messageIdentifiersWaitingForAck];
-              [v39 setObject:v30 forKey:v14];
+              messageIdentifiersWaitingForAck = [(CBIDSManager *)selfCopy messageIdentifiersWaitingForAck];
+              [messageIdentifiersWaitingForAck setObject:v30 forKey:v14];
             }
 
             goto LABEL_24;
@@ -3344,7 +3344,7 @@ LABEL_20:
       v51[0] = @"MessageType";
       v51[1] = @"Version 3";
       v52[0] = @"CloudPairing";
-      v52[1] = v8;
+      v52[1] = messageCopy;
       v18 = v52;
       v19 = v51;
     }
@@ -3363,64 +3363,64 @@ LABEL_25:
   objc_autoreleasePoolPop(v11);
 }
 
-- (void)sendErrorMessageToDevice:(id)a3 reason:(id)a4
+- (void)sendErrorMessageToDevice:(id)device reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  reasonCopy = reason;
   v8 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 cpDescription];
+    cpDescription = [deviceCopy cpDescription];
     *buf = 136380931;
-    v14 = [v9 UTF8String];
+    uTF8String = [cpDescription UTF8String];
     v15 = 2080;
-    v16 = [v7 UTF8String];
+    uTF8String2 = [reasonCopy UTF8String];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Rejecting pairing attempt from IDS device %{private}s - %s", buf, 0x16u);
   }
 
   v11[0] = @"MessageType";
   v11[1] = @"FailureReason";
   v12[0] = @"PairingFailure";
-  v12[1] = v7;
+  v12[1] = reasonCopy;
   v10 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
-  [(CBIDSManager *)self sendCloudPairingResponseMessage:v10 toDevice:v6 version:@"Version 1"];
+  [(CBIDSManager *)self sendCloudPairingResponseMessage:v10 toDevice:deviceCopy version:@"Version 1"];
 }
 
-- (void)handleUnpairCommand:(id)a3 from:(id)a4
+- (void)handleUnpairCommand:(id)command from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  fromCopy = from;
   v8 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v7;
+    v29 = fromCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Unpair Cloud Device: %@", buf, 0xCu);
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"DeviceName"];
+  v9 = [commandCopy objectForKeyedSubscript:@"DeviceName"];
   if (![v9 length])
   {
-    v18 = [v7 idsDevice];
-    [(CBIDSManager *)self sendErrorMessageToDevice:v18 reason:@"No friendly name specified"];
+    idsDevice = [fromCopy idsDevice];
+    [(CBIDSManager *)self sendErrorMessageToDevice:idsDevice reason:@"No friendly name specified"];
 LABEL_9:
 
     goto LABEL_13;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"PublicAddress"];
+  v10 = [commandCopy objectForKeyedSubscript:@"PublicAddress"];
   v11 = [NSString stringWithFormat:@"Public %@", v10];
   v12 = sub_10007E7C4(v11);
 
-  v13 = [v6 objectForKeyedSubscript:@"RandomAddress"];
+  v13 = [commandCopy objectForKeyedSubscript:@"RandomAddress"];
   v14 = [NSString stringWithFormat:@"Random %@", v13];
   v15 = sub_10007E7C4(v14);
 
   if (!(v12 | v15))
   {
-    v16 = [v6 objectForKeyedSubscript:@"PublicAddress"];
-    v17 = [v6 objectForKeyedSubscript:@"RandomAddress"];
-    v18 = [NSString stringWithFormat:@"Invalid public address %@ and Invalid random address %@", v16, v17];
+    v16 = [commandCopy objectForKeyedSubscript:@"PublicAddress"];
+    v17 = [commandCopy objectForKeyedSubscript:@"RandomAddress"];
+    idsDevice = [NSString stringWithFormat:@"Invalid public address %@ and Invalid random address %@", v16, v17];
 
     v19 = sub_100005C14("CloudPairing");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -3428,8 +3428,8 @@ LABEL_9:
       sub_1001F0C2C();
     }
 
-    v20 = [v7 idsDevice];
-    [(CBIDSManager *)self sendErrorMessageToDevice:v20 reason:v18];
+    idsDevice2 = [fromCopy idsDevice];
+    [(CBIDSManager *)self sendErrorMessageToDevice:idsDevice2 reason:idsDevice];
 
     goto LABEL_9;
   }
@@ -3437,10 +3437,10 @@ LABEL_9:
   v21 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v7 description];
-    v23 = [v22 UTF8String];
+    v22 = [fromCopy description];
+    uTF8String = [v22 UTF8String];
     *buf = 136380675;
-    v29 = v23;
+    v29 = uTF8String;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Received 'unpair command' message from IDS device %{private}s", buf, 0xCu);
   }
 
@@ -3450,87 +3450,87 @@ LABEL_9:
   v25[2] = sub_10008A370;
   v25[3] = &unk_1002B9820;
   v25[4] = self;
-  v26 = v7;
+  v26 = fromCopy;
   v27 = v9;
-  [v24 sendCloudKitMsg:@"UnpairCloudDevice" args:v6 withReply:v25];
+  [v24 sendCloudKitMsg:@"UnpairCloudDevice" args:commandCopy withReply:v25];
 
 LABEL_13:
 }
 
-- (BOOL)validateMessage:(id)a3 from:(id)a4
+- (BOOL)validateMessage:(id)message from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"MessageType"];
-  v9 = [v6 objectForKeyedSubscript:@"DeviceName"];
+  messageCopy = message;
+  fromCopy = from;
+  v8 = [messageCopy objectForKeyedSubscript:@"MessageType"];
+  v9 = [messageCopy objectForKeyedSubscript:@"DeviceName"];
   if (![v9 length])
   {
-    v16 = [v7 idsDevice];
-    [(CBIDSManager *)self sendErrorMessageToDevice:v16 reason:@"No friendly name specified"];
+    idsDevice = [fromCopy idsDevice];
+    [(CBIDSManager *)self sendErrorMessageToDevice:idsDevice reason:@"No friendly name specified"];
 LABEL_18:
 
     LOBYTE(v24) = 0;
     goto LABEL_19;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"PublicAddress"];
+  v10 = [messageCopy objectForKeyedSubscript:@"PublicAddress"];
   v11 = [NSString stringWithFormat:@"Public %@", v10];
   v12 = sub_10007E7C4(v11);
 
   if (!v12)
   {
-    v16 = [v7 idsDevice];
-    v17 = [v6 objectForKeyedSubscript:@"PublicAddress"];
+    idsDevice = [fromCopy idsDevice];
+    v17 = [messageCopy objectForKeyedSubscript:@"PublicAddress"];
     [NSString stringWithFormat:@"Invalid public address (%@)", v17];
     v25 = LABEL_17:;
-    [(CBIDSManager *)self sendErrorMessageToDevice:v16 reason:v25];
+    [(CBIDSManager *)self sendErrorMessageToDevice:idsDevice reason:v25];
 
     goto LABEL_18;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"EncryptionType"];
+  v13 = [messageCopy objectForKeyedSubscript:@"EncryptionType"];
   v14 = [v13 isEqualToString:@"Basic"];
 
   if ((v14 & 1) == 0)
   {
-    v16 = [v7 idsDevice];
-    v17 = [v6 objectForKeyedSubscript:@"EncryptionType"];
+    idsDevice = [fromCopy idsDevice];
+    v17 = [messageCopy objectForKeyedSubscript:@"EncryptionType"];
     [NSString stringWithFormat:@"Invalid encryption type (%@)", v17];
     goto LABEL_17;
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"RequestedKeyType"];
+  v15 = [messageCopy objectForKeyedSubscript:@"RequestedKeyType"];
   if ([v15 containsObject:@"EncryptionKeys"])
   {
   }
 
   else
   {
-    v18 = [v6 objectForKeyedSubscript:@"RequestedKeyType"];
+    v18 = [messageCopy objectForKeyedSubscript:@"RequestedKeyType"];
     v19 = [v18 containsObject:@"IdentityKeys"];
 
     if ((v19 & 1) == 0)
     {
-      v16 = [v7 idsDevice];
-      v17 = [v6 objectForKeyedSubscript:@"RequestedKeyType"];
+      idsDevice = [fromCopy idsDevice];
+      v17 = [messageCopy objectForKeyedSubscript:@"RequestedKeyType"];
       [NSString stringWithFormat:@"Invalid requested keys (%@)", v17];
       goto LABEL_17;
     }
   }
 
-  v20 = [v6 objectForKeyedSubscript:@"RequestedKeyLength"];
-  v21 = [v20 integerValue];
-  v22 = [(CBIDSManager *)self keyLength];
+  v20 = [messageCopy objectForKeyedSubscript:@"RequestedKeyLength"];
+  integerValue = [v20 integerValue];
+  keyLength = [(CBIDSManager *)self keyLength];
 
-  if (v21 != v22)
+  if (integerValue != keyLength)
   {
-    v16 = [v7 idsDevice];
-    v17 = [v6 objectForKeyedSubscript:@"RequestedKeyLength"];
+    idsDevice = [fromCopy idsDevice];
+    v17 = [messageCopy objectForKeyedSubscript:@"RequestedKeyLength"];
     [NSString stringWithFormat:@"Invalid requested key length (%@)", v17];
     goto LABEL_17;
   }
 
-  if (([@"PairingResponse" isEqualToString:v8] & 1) == 0 && !objc_msgSend(@"KeyDistribution", "isEqualToString:", v8) || (-[CBIDSManager requestedKeyTypes](self, "requestedKeyTypes"), v23 = objc_claimAutoreleasedReturnValue(), v24 = -[CBIDSManager validateKeys:requestedTypes:from:](self, "validateKeys:requestedTypes:from:", v6, v23, v7), v23, v24))
+  if (([@"PairingResponse" isEqualToString:v8] & 1) == 0 && !objc_msgSend(@"KeyDistribution", "isEqualToString:", v8) || (-[CBIDSManager requestedKeyTypes](self, "requestedKeyTypes"), v23 = objc_claimAutoreleasedReturnValue(), v24 = -[CBIDSManager validateKeys:requestedTypes:from:](self, "validateKeys:requestedTypes:from:", messageCopy, v23, fromCopy), v23, v24))
   {
     LOBYTE(v24) = 1;
   }
@@ -3540,12 +3540,12 @@ LABEL_19:
   return v24;
 }
 
-- (BOOL)validateKeys:(id)a3 requestedTypes:(id)a4 from:(id)a5
+- (BOOL)validateKeys:(id)keys requestedTypes:(id)types from:(id)from
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 objectForKeyedSubscript:@"RequestedKeys"];
-  if (![v8 containsObject:@"EncryptionKeys"])
+  typesCopy = types;
+  fromCopy = from;
+  v10 = [keys objectForKeyedSubscript:@"RequestedKeys"];
+  if (![typesCopy containsObject:@"EncryptionKeys"])
   {
     goto LABEL_16;
   }
@@ -3573,14 +3573,14 @@ LABEL_21:
   if (v16 != 16)
   {
 LABEL_22:
-    v38 = [v9 idsDevice];
+    idsDevice = [fromCopy idsDevice];
     v39 = [v10 objectForKeyedSubscript:v11];
     v45 = v11;
     v46 = v39;
     v40 = @"%@ not specified or invalid (%@)";
 LABEL_23:
     v41 = [NSString stringWithFormat:v40, v45, v46];
-    [(CBIDSManager *)self sendErrorMessageToDevice:v38 reason:v41];
+    [(CBIDSManager *)self sendErrorMessageToDevice:idsDevice reason:v41];
 
     v37 = 0;
     goto LABEL_24;
@@ -3589,7 +3589,7 @@ LABEL_23:
   v17 = [v10 objectForKeyedSubscript:@"LTKType"];
   if (!v17 || (v18 = v17, [v10 objectForKeyedSubscript:@"LTKType"], v19 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v19, v18, (isKindOfClass & 1) == 0))
   {
-    v38 = [v9 idsDevice];
+    idsDevice = [fromCopy idsDevice];
     v43 = [v10 objectForKeyedSubscript:@"LTKType"];
     v39 = v43;
     v44 = @"LTK type";
@@ -3603,7 +3603,7 @@ LABEL_27:
   v21 = [v10 objectForKeyedSubscript:@"LTKLength"];
   if (!v21 || (v22 = v21, [v10 objectForKeyedSubscript:@"LTKLength"], v23 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v24 = objc_opt_isKindOfClass(), v23, v22, (v24 & 1) == 0))
   {
-    v38 = [v9 idsDevice];
+    idsDevice = [fromCopy idsDevice];
     v43 = [v10 objectForKeyedSubscript:@"LTKLength"];
     v39 = v43;
     v44 = @"LTK length";
@@ -3611,12 +3611,12 @@ LABEL_27:
   }
 
   v25 = [v10 objectForKeyedSubscript:@"LTKLength"];
-  v26 = [v25 unsignedIntegerValue];
-  v27 = [(CBIDSManager *)self keyLength];
+  unsignedIntegerValue = [v25 unsignedIntegerValue];
+  keyLength = [(CBIDSManager *)self keyLength];
 
-  if (v26 != v27)
+  if (unsignedIntegerValue != keyLength)
   {
-    v38 = [v9 idsDevice];
+    idsDevice = [fromCopy idsDevice];
     v39 = [v10 objectForKeyedSubscript:@"LTKLength"];
     v45 = v39;
     v40 = @"Invalid LTK key length (%@)";
@@ -3670,7 +3670,7 @@ LABEL_27:
   }
 
 LABEL_16:
-  if ([v8 containsObject:@"IdentityKeys"])
+  if ([typesCopy containsObject:@"IdentityKeys"])
   {
     v11 = @"IRK";
     v34 = [v10 objectForKeyedSubscript:@"IRK"];
@@ -3713,14 +3713,14 @@ LABEL_24:
   v10 = sub_100003948;
   v11 = sub_100003850;
   v12 = &stru_1002C1358;
-  v3 = [(CBIDSManager *)self cloudPairingQueue];
+  cloudPairingQueue = [(CBIDSManager *)self cloudPairingQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10008AF60;
   v6[3] = &unk_1002B6ED8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(cloudPairingQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -3751,47 +3751,47 @@ LABEL_24:
     if (v96)
     {
       v6 = v96;
-      v7 = [v96 UTF8String];
+      uTF8String = [v96 UTF8String];
     }
 
     else
     {
-      v7 = "none";
+      uTF8String = "none";
     }
 
-    v82 = v7;
+    v82 = uTF8String;
     NSAppendPrintF_safe();
     objc_storeStrong(v5, v131);
   }
 
   v8 = (v135 + 5);
   v130 = v135[5];
-  v9 = [(CBIDSManager *)self account];
-  if (v9)
+  account = [(CBIDSManager *)self account];
+  if (account)
   {
     if (IsAppleInternalBuild())
     {
-      v2 = [(CBIDSManager *)self account];
-      v3 = [v2 loginID];
-      v10 = v3;
-      v11 = [v3 UTF8String];
+      account2 = [(CBIDSManager *)self account];
+      loginID = [account2 loginID];
+      v10 = loginID;
+      uTF8String2 = [loginID UTF8String];
       v12 = 1;
     }
 
     else
     {
       v12 = 0;
-      v11 = "<redacted>";
+      uTF8String2 = "<redacted>";
     }
   }
 
   else
   {
     v12 = 0;
-    v11 = "none";
+    uTF8String2 = "none";
   }
 
-  v83 = v11;
+  v83 = uTF8String2;
   NSAppendPrintF_safe();
   objc_storeStrong(v8, v130);
   if (v12)
@@ -3800,31 +3800,31 @@ LABEL_24:
 
   v13 = (v135 + 5);
   v129 = v135[5];
-  v14 = [(CBIDSManager *)self cloudIdentifier];
-  if (v14)
+  cloudIdentifier = [(CBIDSManager *)self cloudIdentifier];
+  if (cloudIdentifier)
   {
-    v2 = [(CBIDSManager *)self cloudIdentifier];
-    v15 = v2;
-    v16 = [v2 UTF8String];
+    account2 = [(CBIDSManager *)self cloudIdentifier];
+    v15 = account2;
+    uTF8String3 = [account2 UTF8String];
   }
 
   else
   {
-    v16 = "none";
+    uTF8String3 = "none";
   }
 
-  v84 = v16;
+  v84 = uTF8String3;
   NSAppendPrintF_safe();
   objc_storeStrong(v13, v129);
-  if (v14)
+  if (cloudIdentifier)
   {
   }
 
   v17 = (v135 + 5);
   v128 = v135[5];
-  v18 = [(CBIDSManager *)self supportsVirtualAddress];
+  supportsVirtualAddress = [(CBIDSManager *)self supportsVirtualAddress];
   v19 = "NO";
-  if (v18)
+  if (supportsVirtualAddress)
   {
     v19 = "YES";
   }
@@ -3834,23 +3834,23 @@ LABEL_24:
   objc_storeStrong(v17, v128);
   v20 = (v135 + 5);
   v127 = v135[5];
-  v21 = [(CBIDSManager *)self localDeviceRandomAddress];
-  if (v21)
+  localDeviceRandomAddress = [(CBIDSManager *)self localDeviceRandomAddress];
+  if (localDeviceRandomAddress)
   {
-    v2 = [(CBIDSManager *)self localDeviceRandomAddress];
-    v22 = v2;
-    v23 = [v2 UTF8String];
+    account2 = [(CBIDSManager *)self localDeviceRandomAddress];
+    v22 = account2;
+    uTF8String4 = [account2 UTF8String];
   }
 
   else
   {
-    v23 = "none";
+    uTF8String4 = "none";
   }
 
-  v86 = v23;
+  v86 = uTF8String4;
   NSAppendPrintF_safe();
   objc_storeStrong(v20, v127);
-  if (v21)
+  if (localDeviceRandomAddress)
   {
   }
 
@@ -3860,8 +3860,8 @@ LABEL_24:
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
-  v24 = [(CBIDSManager *)self associatedDevices];
-  v97 = [v24 sortedArrayUsingComparator:&stru_1002B9978];
+  associatedDevices = [(CBIDSManager *)self associatedDevices];
+  v97 = [associatedDevices sortedArrayUsingComparator:&stru_1002B9978];
 
   v100 = [v97 countByEnumeratingWithState:&v123 objects:v142 count:16];
   if (v100)
@@ -3878,17 +3878,17 @@ LABEL_24:
 
         v25 = *(*(&v123 + 1) + 8 * i);
         v26 = [(CBIDSManager *)self roleWithDevice:v25];
-        v27 = [v25 idsDevice];
-        v28 = [v27 productName];
-        v105 = [v103 objectForKeyedSubscript:v28];
+        idsDevice = [v25 idsDevice];
+        productName = [idsDevice productName];
+        v105 = [v103 objectForKeyedSubscript:productName];
 
         if (!v105)
         {
           v105 = +[NSMutableDictionary dictionary];
         }
 
-        v29 = [v27 deviceTypeToString];
-        v30 = [v105 objectForKeyedSubscript:v29];
+        deviceTypeToString = [idsDevice deviceTypeToString];
+        v30 = [v105 objectForKeyedSubscript:deviceTypeToString];
 
         if (v30)
         {
@@ -3902,44 +3902,44 @@ LABEL_24:
 
         v101 = v31;
         v32 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v31 intValue] + 1);
-        v33 = [v27 deviceTypeToString];
-        [v105 setObject:v32 forKeyedSubscript:v33];
+        deviceTypeToString2 = [idsDevice deviceTypeToString];
+        [v105 setObject:v32 forKeyedSubscript:deviceTypeToString2];
 
-        v34 = [v27 productName];
-        [v103 setObject:v105 forKeyedSubscript:v34];
+        productName2 = [idsDevice productName];
+        [v103 setObject:v105 forKeyedSubscript:productName2];
 
-        v35 = [v27 productName];
-        v36 = [v102 objectForKeyedSubscript:v35];
+        productName3 = [idsDevice productName];
+        v36 = [v102 objectForKeyedSubscript:productName3];
 
         if (!v36)
         {
           v36 = +[NSMutableDictionary dictionary];
         }
 
-        v37 = [v27 deviceTypeToString];
-        v38 = [v36 objectForKeyedSubscript:v37];
+        deviceTypeToString3 = [idsDevice deviceTypeToString];
+        v38 = [v36 objectForKeyedSubscript:deviceTypeToString3];
 
         v122 = v38;
         NSAppendPrintF_safe();
         v39 = v38;
 
         v121 = v39;
-        v40 = [v27 name];
-        v41 = v40;
-        v87 = [v40 UTF8String];
+        name = [idsDevice name];
+        v41 = name;
+        uTF8String5 = [name UTF8String];
         NSAppendPrintF_safe();
         v42 = v39;
 
         v120 = v42;
-        v43 = [v27 uniqueID];
-        v44 = v43;
-        v88 = [v43 UTF8String];
+        uniqueID = [idsDevice uniqueID];
+        v44 = uniqueID;
+        uTF8String6 = [uniqueID UTF8String];
         NSAppendPrintF_safe();
         v45 = v42;
 
         v119 = v45;
-        v46 = [v27 nsuuid];
-        v89 = [v46 UUIDString];
+        nsuuid = [idsDevice nsuuid];
+        uUIDString = [nsuuid UUIDString];
         NSAppendPrintF_safe();
         v47 = v45;
 
@@ -3965,35 +3965,35 @@ LABEL_24:
         v50 = v117;
 
         v116 = v50;
-        v51 = [v25 stateString];
-        v52 = [v51 capitalizedString];
-        v53 = v52;
-        v91 = [v52 UTF8String];
+        stateString = [v25 stateString];
+        capitalizedString = [stateString capitalizedString];
+        v53 = capitalizedString;
+        uTF8String7 = [capitalizedString UTF8String];
         NSAppendPrintF_safe();
         v54 = v50;
 
         v115 = v54;
-        v55 = [v27 deviceTypeToString];
-        v56 = v55;
-        v57 = [v55 UTF8String];
-        v58 = [v27 productName];
-        v59 = v58;
-        v60 = [v58 UTF8String];
-        v61 = [v27 productVersion];
-        v62 = v61;
-        v63 = [v61 UTF8String];
-        v64 = [v27 productBuildVersion];
-        v65 = v64;
-        v95 = [v64 UTF8String];
-        v92 = v57;
+        deviceTypeToString4 = [idsDevice deviceTypeToString];
+        v56 = deviceTypeToString4;
+        uTF8String8 = [deviceTypeToString4 UTF8String];
+        productName4 = [idsDevice productName];
+        v59 = productName4;
+        uTF8String9 = [productName4 UTF8String];
+        productVersion = [idsDevice productVersion];
+        v62 = productVersion;
+        uTF8String10 = [productVersion UTF8String];
+        productBuildVersion = [idsDevice productBuildVersion];
+        v65 = productBuildVersion;
+        uTF8String11 = [productBuildVersion UTF8String];
+        v92 = uTF8String8;
         NSAppendPrintF_safe();
         v66 = v54;
 
-        v67 = [v27 deviceTypeToString];
-        [v36 setObject:v66 forKeyedSubscript:v67];
+        deviceTypeToString5 = [idsDevice deviceTypeToString];
+        [v36 setObject:v66 forKeyedSubscript:deviceTypeToString5];
 
-        v68 = [v27 productName];
-        [v102 setObject:v36 forKeyedSubscript:v68];
+        productName5 = [idsDevice productName];
+        [v102 setObject:v36 forKeyedSubscript:productName5];
       }
 
       v100 = [v97 countByEnumeratingWithState:&v123 objects:v142 count:16];
@@ -4004,15 +4004,15 @@ LABEL_24:
 
   v69 = (v135 + 5);
   v114 = v135[5];
-  v70 = [(CBIDSManager *)self associatedDevices];
-  v93 = [v70 count];
+  associatedDevices2 = [(CBIDSManager *)self associatedDevices];
+  v93 = [associatedDevices2 count];
   NSAppendPrintF_safe();
   objc_storeStrong(v69, v114);
 
   v71 = (v135 + 5);
   v113 = v135[5];
-  v72 = [(CBIDSManager *)self associatedDevices];
-  v73 = [v72 cuFilteredArrayUsingBlock:&stru_1002B99B8];
+  associatedDevices3 = [(CBIDSManager *)self associatedDevices];
+  v73 = [associatedDevices3 cuFilteredArrayUsingBlock:&stru_1002B99B8];
   v94 = [v73 count];
   NSAppendPrintF_safe();
   objc_storeStrong(v71, v113);
@@ -4029,13 +4029,13 @@ LABEL_24:
   v109 = v135[5];
   NSAppendPrintF_safe();
   objc_storeStrong(v75, v109);
-  v76 = [(CBIDSManager *)self CPAddressMapping];
+  cPAddressMapping = [(CBIDSManager *)self CPAddressMapping];
   v108[0] = _NSConcreteStackBlock;
   v108[1] = 3221225472;
   v108[2] = sub_10008BFD4;
   v108[3] = &unk_1002B9A30;
   v108[4] = &v134;
-  [v76 enumerateKeysAndObjectsUsingBlock:v108];
+  [cPAddressMapping enumerateKeysAndObjectsUsingBlock:v108];
 
   if (IsAppleInternalBuild())
   {
@@ -4043,13 +4043,13 @@ LABEL_24:
     v107 = v135[5];
     NSAppendPrintF_safe();
     objc_storeStrong(v77, v107);
-    v78 = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
+    messageIdentifiersWaitingForAck = [(CBIDSManager *)self messageIdentifiersWaitingForAck];
     v106[0] = _NSConcreteStackBlock;
     v106[1] = 3221225472;
     v106[2] = sub_10008C028;
     v106[3] = &unk_1002B9A58;
     v106[4] = &v134;
-    [v78 enumerateKeysAndObjectsUsingBlock:v106];
+    [messageIdentifiersWaitingForAck enumerateKeysAndObjectsUsingBlock:v106];
   }
 
   v140 = @"Stats";
@@ -4076,10 +4076,10 @@ LABEL_24:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v4 = [(CBIDSManager *)self service];
-  v5 = [v4 devices];
+  service = [(CBIDSManager *)self service];
+  devices = [service devices];
 
-  v6 = [v5 countByEnumeratingWithState:&v44 objects:v54 count:16];
+  v6 = [devices countByEnumeratingWithState:&v44 objects:v54 count:16];
   if (v6)
   {
     v8 = v6;
@@ -4093,14 +4093,14 @@ LABEL_24:
       {
         if (*v45 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devices);
         }
 
         v12 = *(*(&v44 + 1) + 8 * i);
         if ([v12 isHSATrusted])
         {
-          v13 = [v12 productName];
-          v14 = [v13 isEqualToString:@"Apple TVOS"];
+          productName = [v12 productName];
+          v14 = [productName isEqualToString:@"Apple TVOS"];
 
           if (v14)
           {
@@ -4115,8 +4115,8 @@ LABEL_24:
             goto LABEL_51;
           }
 
-          v15 = [v12 productName];
-          v16 = [v15 isEqualToString:@"iPhone OS"];
+          productName2 = [v12 productName];
+          v16 = [productName2 isEqualToString:@"iPhone OS"];
 
           if (v16)
           {
@@ -4168,8 +4168,8 @@ LABEL_24:
 
           else
           {
-            v21 = [v12 modelIdentifier];
-            v22 = [v21 containsString:@"Mac"];
+            modelIdentifier = [v12 modelIdentifier];
+            v22 = [modelIdentifier containsString:@"Mac"];
 
             if (v22)
             {
@@ -4228,7 +4228,7 @@ LABEL_51:
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v44 objects:v54 count:16];
+      v8 = [devices countByEnumeratingWithState:&v44 objects:v54 count:16];
       if (v8)
       {
         continue;
@@ -4276,8 +4276,8 @@ LABEL_51:
 
   if (v9)
   {
-    v5 = +[CloudXPCService sharedInstance];
-    LODWORD(v31) = [v5 manateeZoneUpgraded] ^ 1;
+    devices = +[CloudXPCService sharedInstance];
+    LODWORD(v31) = [devices manateeZoneUpgraded] ^ 1;
 LABEL_52:
   }
 
@@ -4291,14 +4291,14 @@ LABEL_52:
 
 - (BOOL)allDevicesStarSky
 {
-  v2 = [(CBIDSManager *)self service];
-  v3 = [v2 devices];
+  service = [(CBIDSManager *)self service];
+  devices = [service devices];
 
   v4 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v43 = [v3 count];
+    v43 = [devices count];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Check for allDevicesStarSky, count: %lu", buf, 0xCu);
   }
 
@@ -4306,7 +4306,7 @@ LABEL_52:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = v3;
+  v5 = devices;
   v6 = [v5 countByEnumeratingWithState:&v38 objects:v48 count:16];
   if (v6)
   {
@@ -4327,8 +4327,8 @@ LABEL_5:
         break;
       }
 
-      v11 = [v10 modelIdentifier];
-      if ([v11 hasPrefix:@"AppleTV"])
+      modelIdentifier = [v10 modelIdentifier];
+      if ([modelIdentifier hasPrefix:@"AppleTV"])
       {
         if (!v10)
         {
@@ -4360,8 +4360,8 @@ LABEL_34:
       {
       }
 
-      v12 = [v10 modelIdentifier];
-      if ([v12 hasPrefix:@"iPhone"])
+      modelIdentifier2 = [v10 modelIdentifier];
+      if ([modelIdentifier2 hasPrefix:@"iPhone"])
       {
         if (!v10)
         {
@@ -4412,8 +4412,8 @@ LABEL_36:
       {
       }
 
-      v13 = [v10 modelIdentifier];
-      if ([v13 containsString:@"Mac"])
+      modelIdentifier3 = [v10 modelIdentifier];
+      if ([modelIdentifier3 containsString:@"Mac"])
       {
         if (!v10)
         {
@@ -4501,9 +4501,9 @@ LABEL_26:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = +[MPCloudKit_Manatee sharedInstance];
-    v16 = [v15 manateeZoneUpgraded];
+    manateeZoneUpgraded = [v15 manateeZoneUpgraded];
     *buf = 67109120;
-    LODWORD(v43) = v16;
+    LODWORD(v43) = manateeZoneUpgraded;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "allDevicesStarSky, current manatee state - %d", buf, 8u);
   }
 
@@ -4515,20 +4515,20 @@ LABEL_50:
 
 - (NSArray)idsDevices
 {
-  v2 = [(CBIDSManager *)self service];
-  v3 = [v2 devices];
+  service = [(CBIDSManager *)self service];
+  devices = [service devices];
 
-  return v3;
+  return devices;
 }
 
-- (void)storePublicAddressMapping:(id)a3 message:(id)a4
+- (void)storePublicAddressMapping:(id)mapping message:(id)message
 {
-  v6 = a3;
-  v7 = [a4 objectForKey:@"PublicAddress"];
+  mappingCopy = mapping;
+  v7 = [message objectForKey:@"PublicAddress"];
   if (!v7)
   {
-    v16 = sub_100005C14("CloudPairing");
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    cPAddressMapping4 = sub_100005C14("CloudPairing");
+    if (!os_log_type_enabled(cPAddressMapping4, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_16;
     }
@@ -4536,14 +4536,14 @@ LABEL_50:
     LOWORD(v18) = 0;
     v17 = "cloudpaird: storePublicAddressMapping: Ignoring unpair becasue the address passed in is nil";
 LABEL_15:
-    _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, v17, &v18, 2u);
+    _os_log_impl(&_mh_execute_header, cPAddressMapping4, OS_LOG_TYPE_DEFAULT, v17, &v18, 2u);
     goto LABEL_16;
   }
 
-  if (!v6)
+  if (!mappingCopy)
   {
-    v16 = sub_100005C14("CloudPairing");
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    cPAddressMapping4 = sub_100005C14("CloudPairing");
+    if (!os_log_type_enabled(cPAddressMapping4, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_16;
     }
@@ -4553,12 +4553,12 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v8 = [v6 uniqueID];
+  uniqueID = [mappingCopy uniqueID];
 
-  if (!v8)
+  if (!uniqueID)
   {
-    v16 = sub_100005C14("CloudPairing");
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    cPAddressMapping4 = sub_100005C14("CloudPairing");
+    if (!os_log_type_enabled(cPAddressMapping4, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_16;
     }
@@ -4568,48 +4568,48 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v9 = [(CBIDSManager *)self CPAddressMapping];
-  v10 = [v6 uniqueID];
-  v11 = [v9 objectForKey:v10];
+  cPAddressMapping = [(CBIDSManager *)self CPAddressMapping];
+  uniqueID2 = [mappingCopy uniqueID];
+  v11 = [cPAddressMapping objectForKey:uniqueID2];
 
-  v12 = [(CBIDSManager *)self CPAddressMapping];
-  v13 = [v6 uniqueID];
+  cPAddressMapping2 = [(CBIDSManager *)self CPAddressMapping];
+  uniqueID3 = [mappingCopy uniqueID];
   if (v11)
   {
-    [v12 removeObjectForKey:v13];
+    [cPAddressMapping2 removeObjectForKey:uniqueID3];
 
-    v12 = [(CBIDSManager *)self CPAddressMapping];
-    v13 = [v6 uniqueID];
+    cPAddressMapping2 = [(CBIDSManager *)self CPAddressMapping];
+    uniqueID3 = [mappingCopy uniqueID];
   }
 
-  [v12 setObject:v7 forKey:v13];
+  [cPAddressMapping2 setObject:v7 forKey:uniqueID3];
 
   v14 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(CBIDSManager *)self CPAddressMapping];
+    cPAddressMapping3 = [(CBIDSManager *)self CPAddressMapping];
     v18 = 138412290;
-    v19 = v15;
+    v19 = cPAddressMapping3;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "cloudpaird: storePublicAddressMapping: current mapping :%@", &v18, 0xCu);
   }
 
   [CBPreferencesManager removeuserPreference:@"AddressMapping" sync:1];
-  v16 = [(CBIDSManager *)self CPAddressMapping];
-  [CBPreferencesManager setuserPreference:@"AddressMapping" value:v16 sync:1];
+  cPAddressMapping4 = [(CBIDSManager *)self CPAddressMapping];
+  [CBPreferencesManager setuserPreference:@"AddressMapping" value:cPAddressMapping4 sync:1];
 LABEL_16:
 }
 
-- (id)publicAddressForIDSDevice:(id)a3
+- (id)publicAddressForIDSDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_1001F0DC0();
   }
 
-  v6 = [(CBIDSManager *)self CPAddressMapping];
-  v7 = [v6 count];
+  cPAddressMapping = [(CBIDSManager *)self CPAddressMapping];
+  v7 = [cPAddressMapping count];
 
   if (!v7)
   {
@@ -4623,13 +4623,13 @@ LABEL_16:
     }
   }
 
-  v11 = [(CBIDSManager *)self CPAddressMapping];
-  v12 = [v11 objectForKey:v4];
+  cPAddressMapping2 = [(CBIDSManager *)self CPAddressMapping];
+  v12 = [cPAddressMapping2 objectForKey:deviceCopy];
 
   if (v12)
   {
-    v13 = [(CBIDSManager *)self CPAddressMapping];
-    v14 = [v13 objectForKey:v4];
+    cPAddressMapping3 = [(CBIDSManager *)self CPAddressMapping];
+    v14 = [cPAddressMapping3 objectForKey:deviceCopy];
   }
 
   else
@@ -4640,17 +4640,17 @@ LABEL_16:
   return v14;
 }
 
-- (id)idsDeviceForBTAddress:(id)a3
+- (id)idsDeviceForBTAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CBIDSManager *)self service];
-  v6 = [v5 devices];
+  service = [(CBIDSManager *)self service];
+  devices = [service devices];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [devices countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -4660,15 +4660,15 @@ LABEL_16:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(devices);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = +[CBIDSManager sharedInstance];
-        v12 = [v10 uniqueID];
-        v13 = [v11 publicAddressForIDSDevice:v12];
+        uniqueID = [v10 uniqueID];
+        v13 = [v11 publicAddressForIDSDevice:uniqueID];
 
-        if (v13 && ([v13 isEqualToString:v4] & 1) != 0)
+        if (v13 && ([v13 isEqualToString:addressCopy] & 1) != 0)
         {
           v7 = v10;
 
@@ -4676,7 +4676,7 @@ LABEL_16:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [devices countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -4691,18 +4691,18 @@ LABEL_12:
   return v7;
 }
 
-- (id)_fetchArrayOfCloudDevicesForPeripheral:(id)a3
+- (id)_fetchArrayOfCloudDevicesForPeripheral:(id)peripheral
 {
-  v4 = a3;
-  v5 = [(CBIDSManager *)self cloudPairingQueue];
-  dispatch_assert_queue_V2(v5);
+  peripheralCopy = peripheral;
+  cloudPairingQueue = [(CBIDSManager *)self cloudPairingQueue];
+  dispatch_assert_queue_V2(cloudPairingQueue);
 
   v6 = [NSMutableArray arrayWithCapacity:2];
   v7 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v4;
+    v30 = peripheralCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Find cloud pairing identifier for peripheral: %@", buf, 0xCu);
   }
 
@@ -4710,8 +4710,8 @@ LABEL_12:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [(CBIDSManager *)self associatedDevices];
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  associatedDevices = [(CBIDSManager *)self associatedDevices];
+  v9 = [associatedDevices countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v9)
   {
     v11 = v9;
@@ -4724,25 +4724,25 @@ LABEL_12:
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(associatedDevices);
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        v15 = [v14 idsDevice];
-        v16 = [v15 nsuuid];
-        v17 = [v16 isEqual:v4];
+        idsDevice = [v14 idsDevice];
+        nsuuid = [idsDevice nsuuid];
+        v17 = [nsuuid isEqual:peripheralCopy];
 
         if (v17)
         {
           v18 = sub_100005C14("CloudPairing");
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v14 idsDevice];
-            v20 = [v19 uniqueID];
+            idsDevice2 = [v14 idsDevice];
+            uniqueID = [idsDevice2 uniqueID];
             *buf = v24;
-            v30 = v4;
+            v30 = peripheralCopy;
             v31 = 2112;
-            v32 = v20;
+            v32 = uniqueID;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Found cloud pairing identifier for peripheral: %@ as %@", buf, 0x16u);
           }
 
@@ -4750,7 +4750,7 @@ LABEL_12:
         }
       }
 
-      v11 = [v8 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v11 = [associatedDevices countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v11);
@@ -4760,7 +4760,7 @@ LABEL_12:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v30 = v4;
+    v30 = peripheralCopy;
     v31 = 2112;
     v32 = v6;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Cloud Devices for peripheral: %@ - %@", buf, 0x16u);
@@ -4771,17 +4771,17 @@ LABEL_12:
   return v22;
 }
 
-- (id)_fetchCloudPairingIdentifierForPeripheral:(id)a3
+- (id)_fetchCloudPairingIdentifierForPeripheral:(id)peripheral
 {
-  v4 = a3;
-  v5 = [(CBIDSManager *)self cloudPairingQueue];
-  dispatch_assert_queue_V2(v5);
+  peripheralCopy = peripheral;
+  cloudPairingQueue = [(CBIDSManager *)self cloudPairingQueue];
+  dispatch_assert_queue_V2(cloudPairingQueue);
 
   v6 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v4;
+    v27 = peripheralCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Find cloud pairing identifier for peripheral: %@", buf, 0xCu);
   }
 
@@ -4789,8 +4789,8 @@ LABEL_12:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(CBIDSManager *)self associatedDevices];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  associatedDevices = [(CBIDSManager *)self associatedDevices];
+  v8 = [associatedDevices countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4801,36 +4801,36 @@ LABEL_12:
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(associatedDevices);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 idsDevice];
-        v14 = [v13 nsuuid];
-        v15 = [v14 isEqual:v4];
+        idsDevice = [v12 idsDevice];
+        nsuuid = [idsDevice nsuuid];
+        v15 = [nsuuid isEqual:peripheralCopy];
 
         if (v15)
         {
           v17 = sub_100005C14("CloudPairing");
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v12 idsDevice];
-            v19 = [v18 uniqueID];
+            idsDevice2 = [v12 idsDevice];
+            uniqueID = [idsDevice2 uniqueID];
             *buf = 138412546;
-            v27 = v4;
+            v27 = peripheralCopy;
             v28 = 2112;
-            v29 = v19;
+            v29 = uniqueID;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Found cloud pairing identifier for peripheral: %@ as %@", buf, 0x16u);
           }
 
-          v20 = [v12 idsDevice];
-          v16 = [v20 uniqueID];
+          idsDevice3 = [v12 idsDevice];
+          uniqueID2 = [idsDevice3 uniqueID];
 
           goto LABEL_17;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v9 = [associatedDevices countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (v9)
       {
         continue;
@@ -4840,72 +4840,72 @@ LABEL_12:
     }
   }
 
-  v7 = sub_100005C14("CloudPairing");
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  associatedDevices = sub_100005C14("CloudPairing");
+  if (os_log_type_enabled(associatedDevices, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v4;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "No cloud pairing identifier FOUND for peripheral: %@", buf, 0xCu);
+    v27 = peripheralCopy;
+    _os_log_impl(&_mh_execute_header, associatedDevices, OS_LOG_TYPE_DEFAULT, "No cloud pairing identifier FOUND for peripheral: %@", buf, 0xCu);
   }
 
-  v16 = 0;
+  uniqueID2 = 0;
 LABEL_17:
 
-  return v16;
+  return uniqueID2;
 }
 
-- (void)fetchCloudPairingIdentifierForPeripheral:(id)a3 withCompletion:(id)a4
+- (void)fetchCloudPairingIdentifierForPeripheral:(id)peripheral withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  peripheralCopy = peripheral;
+  completionCopy = completion;
   v8 = sub_100005C14("CloudPairing");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = peripheralCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Find cloud pairing identifier for peripheral: %@", buf, 0xCu);
   }
 
-  v9 = [(CBIDSManager *)self cloudPairingQueue];
+  cloudPairingQueue = [(CBIDSManager *)self cloudPairingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008D8C8;
   block[3] = &unk_1002B6BB0;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = peripheralCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = peripheralCopy;
+  dispatch_async(cloudPairingQueue, block);
 }
 
-- (void)fetchIDSDevicesWithCompletion:(id)a3
+- (void)fetchIDSDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CBIDSManager *)self cloudPairingQueue];
+  completionCopy = completion;
+  cloudPairingQueue = [(CBIDSManager *)self cloudPairingQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008D9E0;
   v7[3] = &unk_1002B6998;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(cloudPairingQueue, v7);
 }
 
-- (BOOL)isLegacyDevice:(id)a3
+- (BOOL)isLegacyDevice:(id)device
 {
-  v4 = a3;
-  if (v4 && ![(CBIDSManager *)self allDevicesStarSky])
+  deviceCopy = device;
+  if (deviceCopy && ![(CBIDSManager *)self allDevicesStarSky])
   {
-    v6 = [(CBIDSManager *)self service];
-    v7 = [v6 devices];
+    service = [(CBIDSManager *)self service];
+    devices = [service devices];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v7;
+    v8 = devices;
     v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
@@ -4923,13 +4923,13 @@ LABEL_17:
           v13 = *(*(&v23 + 1) + 8 * i);
           if ([v13 isHSATrusted])
           {
-            v14 = [v13 name];
-            v15 = [v14 isEqualToString:v4];
+            name = [v13 name];
+            v15 = [name isEqualToString:deviceCopy];
 
             if (v15)
             {
-              v16 = [v13 modelIdentifier];
-              if ([v16 containsString:@"Mac"])
+              modelIdentifier = [v13 modelIdentifier];
+              if ([modelIdentifier containsString:@"Mac"])
               {
                 v17 = &v22;
                 if (!v13)
@@ -4950,8 +4950,8 @@ LABEL_17:
               {
               }
 
-              v16 = [v13 productName];
-              if ([v16 isEqualToString:@"iPhone OS"])
+              modelIdentifier = [v13 productName];
+              if ([modelIdentifier isEqualToString:@"iPhone OS"])
               {
                 v17 = &v21;
                 if (!v13)

@@ -1,6 +1,6 @@
 @interface PLVolumeInfo
-- (PLVolumeInfo)initWithMountPoint:(id)a3;
-- (PLVolumeInfo)initWithPath:(id)a3;
+- (PLVolumeInfo)initWithMountPoint:(id)point;
+- (PLVolumeInfo)initWithPath:(id)path;
 - (unint64_t)desiredDiskThreshold;
 - (unint64_t)lowDiskThreshold;
 - (unint64_t)nearLowDiskThreshold;
@@ -161,22 +161,22 @@
   return result;
 }
 
-- (PLVolumeInfo)initWithMountPoint:(id)a3
+- (PLVolumeInfo)initWithMountPoint:(id)point
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pointCopy = point;
   v6 = [(PLVolumeInfo *)self init];
   if (v6)
   {
-    if (v5)
+    if (pointCopy)
     {
       bzero(&v16, 0x878uLL);
-      if (!statfs([v5 fileSystemRepresentation], &v16))
+      if (!statfs([pointCopy fileSystemRepresentation], &v16))
       {
         f_bsize = v16.f_bsize;
         v6->_blockSize = v16.f_bsize;
         v6->_volumeSize = v16.f_blocks * f_bsize;
-        objc_storeStrong(&v6->_mountPoint, a3);
+        objc_storeStrong(&v6->_mountPoint, point);
         goto LABEL_9;
       }
 
@@ -186,7 +186,7 @@
         v8 = __error();
         v9 = strerror(*v8);
         v12 = 138412546;
-        v13 = v5;
+        v13 = pointCopy;
         v14 = 2080;
         v15 = v9;
         _os_log_impl(&dword_1AA9BD000, v7, OS_LOG_TYPE_ERROR, "unable to stat volume %@: %s", &v12, 0x16u);
@@ -201,9 +201,9 @@ LABEL_9:
   return v6;
 }
 
-- (PLVolumeInfo)initWithPath:(id)a3
+- (PLVolumeInfo)initWithPath:(id)path
 {
-  v4 = [PLDiskController mountPointForPath:a3];
+  v4 = [PLDiskController mountPointForPath:path];
   v5 = [(PLVolumeInfo *)self initWithMountPoint:v4];
 
   return v5;

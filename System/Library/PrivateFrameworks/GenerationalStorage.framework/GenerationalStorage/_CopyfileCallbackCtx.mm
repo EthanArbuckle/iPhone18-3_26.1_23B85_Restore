@@ -1,10 +1,10 @@
 @interface _CopyfileCallbackCtx
-- (_CopyfileCallbackCtx)initWithPath:(const char *)a3 error:(id *)a4;
+- (_CopyfileCallbackCtx)initWithPath:(const char *)path error:(id *)error;
 @end
 
 @implementation _CopyfileCallbackCtx
 
-- (_CopyfileCallbackCtx)initWithPath:(const char *)a3 error:(id *)a4
+- (_CopyfileCallbackCtx)initWithPath:(const char *)path error:(id *)error
 {
   v16.receiver = self;
   v16.super_class = _CopyfileCallbackCtx;
@@ -18,7 +18,7 @@
 
   if (v7)
   {
-    v8 = sub_10000B1E0(a3, a4);
+    v8 = sub_10000B1E0(path, error);
     if ((v8 & 0x8000000000000000) == 0)
     {
       v9 = [NSProgress progressWithTotalUnitCount:v8];
@@ -27,7 +27,7 @@
 
       [(NSProgress *)v6->_progress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
       v11 = v6->_progress;
-      v12 = [NSString gs_stringWithFileSystemRepresentation:a3];
+      v12 = [NSString gs_stringWithFileSystemRepresentation:path];
       v13 = [NSURL fileURLWithPath:v12];
       [(NSProgress *)v11 setUserInfoObject:v13 forKey:NSProgressFileURLKey];
 

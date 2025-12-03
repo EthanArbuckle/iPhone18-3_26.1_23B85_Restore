@@ -1,21 +1,21 @@
 @interface SIAnalytics
-+ (void)setResourcesCallback:(id)a3;
-- (BOOL)incrementPerIndexHeartbeatCount:(int64_t)a3 forKey:(id)a4 withError:(id *)a5;
-- (BOOL)readFromHeartbeatFileWithError:(id *)a3;
-- (BOOL)refreshPerIndexHeartbeatFieldsForIndex:(__SI *)a3 protectionClass:(id)a4 withError:(id *)a5;
-- (BOOL)refreshSharedHeartbeatFieldsWithError:(id *)a3;
-- (BOOL)setPerIndexHeartbeatTimestamp:(double)a3 forKey:(id)a4 withError:(id *)a5;
-- (BOOL)setSharedHeartbeatTimestamp:(double)a3 forKey:(id)a4 withError:(id *)a5;
-- (BOOL)writeToHeartbeatFileWithError:(id *)a3;
-- (SIAnalytics)initWithParentDirectoryPath:(id)a3 corespotlight:(BOOL)a4 heartbeatIndex:(BOOL)a5;
++ (void)setResourcesCallback:(id)callback;
+- (BOOL)incrementPerIndexHeartbeatCount:(int64_t)count forKey:(id)key withError:(id *)error;
+- (BOOL)readFromHeartbeatFileWithError:(id *)error;
+- (BOOL)refreshPerIndexHeartbeatFieldsForIndex:(__SI *)index protectionClass:(id)class withError:(id *)error;
+- (BOOL)refreshSharedHeartbeatFieldsWithError:(id *)error;
+- (BOOL)setPerIndexHeartbeatTimestamp:(double)timestamp forKey:(id)key withError:(id *)error;
+- (BOOL)setSharedHeartbeatTimestamp:(double)timestamp forKey:(id)key withError:(id *)error;
+- (BOOL)writeToHeartbeatFileWithError:(id *)error;
+- (SIAnalytics)initWithParentDirectoryPath:(id)path corespotlight:(BOOL)corespotlight heartbeatIndex:(BOOL)index;
 @end
 
 @implementation SIAnalytics
 
-- (BOOL)incrementPerIndexHeartbeatCount:(int64_t)a3 forKey:(id)a4 withError:(id *)a5
+- (BOOL)incrementPerIndexHeartbeatCount:(int64_t)count forKey:(id)key withError:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = [a4 hasPrefix:@"count_"];
+  v7 = [key hasPrefix:@"count_"];
   if ((v7 & 1) == 0)
   {
     v8 = *__error();
@@ -27,14 +27,14 @@
       v14 = 1024;
       v15 = 721;
       v16 = 2112;
-      v17 = a4;
+      keyCopy = key;
       _os_log_error_impl(&dword_1C278D000, v9, OS_LOG_TYPE_ERROR, "%s:%d: %@ is not a counter field", &v12, 0x1Cu);
     }
 
     *__error() = v8;
-    if (a5)
+    if (error)
     {
-      *a5 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SIAnalyticsError" code:16 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SIAnalyticsError" code:16 userInfo:0];
     }
   }
 
@@ -42,10 +42,10 @@
   return v7;
 }
 
-- (BOOL)setPerIndexHeartbeatTimestamp:(double)a3 forKey:(id)a4 withError:(id *)a5
+- (BOOL)setPerIndexHeartbeatTimestamp:(double)timestamp forKey:(id)key withError:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  if ([a4 hasPrefix:{@"age_", a3}] & 1) != 0 || (objc_msgSend(a4, "hasPrefix:", @"time_since_"))
+  if ([key hasPrefix:{@"age_", timestamp}] & 1) != 0 || (objc_msgSend(key, "hasPrefix:", @"time_since_"))
   {
     result = 1;
   }
@@ -61,16 +61,16 @@
       v14 = 1024;
       v15 = 708;
       v16 = 2112;
-      v17 = a4;
+      keyCopy = key;
       _os_log_error_impl(&dword_1C278D000, v10, OS_LOG_TYPE_ERROR, "%s:%d: %@ is not a timestamp field", &v12, 0x1Cu);
     }
 
     *__error() = v9;
-    if (a5)
+    if (error)
     {
       v11 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SIAnalyticsError" code:16 userInfo:0];
       result = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -83,14 +83,14 @@
   return result;
 }
 
-- (BOOL)refreshPerIndexHeartbeatFieldsForIndex:(__SI *)a3 protectionClass:(id)a4 withError:(id *)a5
+- (BOOL)refreshPerIndexHeartbeatFieldsForIndex:(__SI *)index protectionClass:(id)class withError:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (index)
   {
-    if (a4)
+    if (class)
     {
-      if (![&unk_1F428F468 objectForKeyedSubscript:{a4, a4, a5}])
+      if (![&unk_1F428F468 objectForKeyedSubscript:{class, class, error}])
       {
         v7 = *__error();
         v8 = _SILogForLogForCategory(21);
@@ -101,7 +101,7 @@
           v25 = 1024;
           v26 = 234;
           v27 = 2112;
-          v28 = a4;
+          classCopy = class;
           _os_log_error_impl(&dword_1C278D000, v8, OS_LOG_TYPE_ERROR, "%s:%d: Invalid pc %@", &v23, 0x1Cu);
         }
 
@@ -111,7 +111,7 @@
 
     else
     {
-      var6 = a3->var6;
+      var6 = index->var6;
       if ((var6 | 2) != 3)
       {
         v15 = var6 >> 1;
@@ -133,7 +133,7 @@
             v25 = 1024;
             v26 = 268;
             v27 = 1024;
-            LODWORD(v28) = var6;
+            LODWORD(classCopy) = var6;
             _os_log_error_impl(&dword_1C278D000, v22, OS_LOG_TYPE_ERROR, "%s:%d: Invalid pc %u", &v23, 0x18u);
           }
 
@@ -159,21 +159,21 @@
     *__error() = v11;
     v13 = self->_errorFlags | 8;
     self->_errorFlags = v13;
-    if (a5)
+    if (error)
     {
-      *a5 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SIAnalyticsError" code:v13 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SIAnalyticsError" code:v13 userInfo:0];
     }
   }
 
-  result = a3 != 0;
+  result = index != 0;
   v20 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)setSharedHeartbeatTimestamp:(double)a3 forKey:(id)a4 withError:(id *)a5
+- (BOOL)setSharedHeartbeatTimestamp:(double)timestamp forKey:(id)key withError:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  if ([a4 hasPrefix:{@"age_", a3}] & 1) != 0 || (objc_msgSend(a4, "hasPrefix:", @"time_since_"))
+  if ([key hasPrefix:{@"age_", timestamp}] & 1) != 0 || (objc_msgSend(key, "hasPrefix:", @"time_since_"))
   {
     result = 1;
   }
@@ -189,16 +189,16 @@
       v14 = 1024;
       v15 = 668;
       v16 = 2112;
-      v17 = a4;
+      keyCopy = key;
       _os_log_error_impl(&dword_1C278D000, v10, OS_LOG_TYPE_ERROR, "%s:%d: %@ is not a timestamp field", &v12, 0x1Cu);
     }
 
     *__error() = v9;
-    if (a5)
+    if (error)
     {
       v11 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SIAnalyticsError" code:16 userInfo:0];
       result = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -211,7 +211,7 @@
   return result;
 }
 
-- (BOOL)refreshSharedHeartbeatFieldsWithError:(id *)a3
+- (BOOL)refreshSharedHeartbeatFieldsWithError:(id *)error
 {
   v75 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_heartbeatLock);
@@ -520,7 +520,7 @@ LABEL_41:
 
   else
   {
-    v63 = a3;
+    errorCopy = error;
     -[NSMutableDictionary setObject:forKeyedSubscript:](self->_heartbeatData, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AEC0] stringWithUTF8String:buf.f_fstypename], @"system_fs_type");
     -[NSMutableDictionary setObject:forKeyedSubscript:](self->_heartbeatData, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:buf.f_flags], @"system_fs_mount_flags");
     f_bsize = buf.f_bsize;
@@ -551,7 +551,7 @@ LABEL_41:
     }
 
     v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{buf.f_mntonname, log}];
-    a3 = v63;
+    error = errorCopy;
     if (v43 && [MEMORY[0x1E695DFF8] fileURLWithPath:v43])
     {
       if (_CFURLGetVolumePropertyFlags())
@@ -569,7 +569,7 @@ LABEL_41:
           }
 
           *__error() = v60;
-          a3 = v63;
+          error = errorCopy;
         }
 
         v44 = self->_errorFlags & 0xFFFFFFFFFFFFFEFFLL;
@@ -604,16 +604,16 @@ LABEL_41:
   self->_errorFlags = v39;
   *__error() = v36;
   os_unfair_lock_unlock(&self->_heartbeatLock);
-  if (a3 && !v9)
+  if (error && !v9)
   {
-    *a3 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SIAnalyticsError" code:self->_errorFlags userInfo:0];
+    *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SIAnalyticsError" code:self->_errorFlags userInfo:0];
   }
 
   v47 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (BOOL)writeToHeartbeatFileWithError:(id *)a3
+- (BOOL)writeToHeartbeatFileWithError:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   v16 = 0;
@@ -651,9 +651,9 @@ LABEL_41:
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = v16;
+      *error = v16;
     }
 
     v9 = *__error();
@@ -686,7 +686,7 @@ uint64_t __45__SIAnalytics_writeToHeartbeatFileWithError___block_invoke(uint64_t
   return [v6 setObject:v5 forKeyedSubscript:a2];
 }
 
-- (BOOL)readFromHeartbeatFileWithError:(id *)a3
+- (BOOL)readFromHeartbeatFileWithError:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
   if (![objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")])
@@ -733,9 +733,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v17;
+    *error = v17;
   }
 
   v7 = *__error();
@@ -782,10 +782,10 @@ void __46__SIAnalytics_readFromHeartbeatFileWithError___block_invoke(uint64_t a1
   os_unfair_lock_unlock(v9);
 }
 
-- (SIAnalytics)initWithParentDirectoryPath:(id)a3 corespotlight:(BOOL)a4 heartbeatIndex:(BOOL)a5
+- (SIAnalytics)initWithParentDirectoryPath:(id)path corespotlight:(BOOL)corespotlight heartbeatIndex:(BOOL)index
 {
-  v5 = a5;
-  v6 = a4;
+  indexCopy = index;
+  corespotlightCopy = corespotlight;
   v26 = *MEMORY[0x1E69E9840];
   v9 = *__error();
   v10 = _SILogForLogForCategory(21);
@@ -805,10 +805,10 @@ void __46__SIAnalytics_readFromHeartbeatFileWithError___block_invoke(uint64_t a1
   v12 = v11;
   if (v11)
   {
-    v11->_parentDirectoryPath = a3;
-    v11->_isCoreSpotlight = v6;
-    v11->_isHeartbeatIndex = v5;
-    v13 = [a3 stringByAppendingPathComponent:@"heartbeat.plist"];
+    v11->_parentDirectoryPath = path;
+    v11->_isCoreSpotlight = corespotlightCopy;
+    v11->_isHeartbeatIndex = indexCopy;
+    v13 = [path stringByAppendingPathComponent:@"heartbeat.plist"];
     v12->_heartbeatData = 0;
     v12->_errorFlags = 0;
     v12->_heartbeatPath = v13;
@@ -823,9 +823,9 @@ void __46__SIAnalytics_readFromHeartbeatFileWithError___block_invoke(uint64_t a1
         *buf = 138412802;
         v21 = parentDirectoryPath;
         v22 = 1024;
-        v23 = v6;
+        v23 = corespotlightCopy;
         v24 = 1024;
-        v25 = v5;
+        v25 = indexCopy;
         _os_log_impl(&dword_1C278D000, v17, OS_LOG_TYPE_DEFAULT, "init:%@, cs:%d, hb:%d", buf, 0x18u);
       }
 
@@ -837,9 +837,9 @@ void __46__SIAnalytics_readFromHeartbeatFileWithError___block_invoke(uint64_t a1
   return v12;
 }
 
-+ (void)setResourcesCallback:(id)a3
++ (void)setResourcesCallback:(id)callback
 {
-  sResourcesCallback = [a3 copy];
+  sResourcesCallback = [callback copy];
   if (dword_1EBF46B20 >= 5)
   {
     v3 = *__error();

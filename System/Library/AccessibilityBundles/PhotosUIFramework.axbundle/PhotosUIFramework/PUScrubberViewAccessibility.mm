@@ -1,11 +1,11 @@
 @interface PUScrubberViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axDecrementForThreeFingerScroll;
 - (BOOL)_axIncrementForThreeFingerScroll;
 - (BOOL)_axIsVideoPlayerActivated;
 - (BOOL)canBecomeFocused;
 - (id)_axShowingType;
-- (id)_axTileControllerForAsset:(id)a3;
+- (id)_axTileControllerForAsset:(id)asset;
 - (id)_axVideoPlaybackValue;
 - (id)_axVideoPlayer;
 - (id)_axVideoSession;
@@ -15,55 +15,55 @@
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)_axCloseVideoPlaybackAction;
-- (void)_axScrollToAssetReference:(id)a3 inViewModel:(id)a4 forThreeFingerScroll:(BOOL)a5;
+- (void)_axScrollToAssetReference:(id)reference inViewModel:(id)model forThreeFingerScroll:(BOOL)scroll;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 @end
 
 @implementation PUScrubberViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUFilmstripTileViewController" isKindOfClass:@"PUImageTileViewController"];
-  [v3 validateClass:@"PUScrubberView" hasInstanceMethod:@"_tilingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUScrubberView" hasInstanceMethod:@"browsingSession" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUScrubberView" hasInstanceVariable:@"_transitionLayoutIdentifier" withType:"NSString"];
-  [v3 validateClass:@"PUScrubberView" hasInstanceMethod:@"_endScrubbing" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUScrubberView" hasInstanceMethod:@"_updateScrollPositionAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PUViewModel" hasInstanceMethod:@"performChanges:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"PUAssetViewModel" hasInstanceMethod:@"videoPlayer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"setCurrentAssetReference:transitionProgress:transitionDriverIdentifier:animated:" withFullSignature:{"v", "@", "d", "@", "B", 0}];
-  [v3 validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"assetViewModelForAssetReference:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"currentAssetReference" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"assetsDataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"leadingAssetReference" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"trailingAssetReference" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUTilingView" hasInstanceMethod:@"enumerateAllTileControllersUsingBlock:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"PUTilingView" hasInstanceMethod:@"layout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUTilingView" hasInstanceMethod:@"presentedTileControllerWithIndexPath: kind: dataSourceIdentifier:" withFullSignature:{"@", "@", "@", "@", 0}];
-  [v3 validateClass:@"PUScrubberTilingLayout" hasInstanceMethod:@"slitAspectRatio" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PUTileLayoutInfo" hasInstanceMethod:@"tileKind" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUTileLayoutInfo" hasInstanceMethod:@"dataSourceIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUTileLayoutInfo" hasInstanceMethod:@"indexPath" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUAssetReference" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUAssetReference" hasInstanceMethod:@"indexPath" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUBrowsingVideoPlayer" hasInstanceMethod:@"videoSession" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXVideoSession" hasInstanceMethod:@"currentTime" withFullSignature:{"{?=qiIq}", 0}];
-  [v3 validateClass:@"PXVideoSession" hasInstanceMethod:@"videoDuration" withFullSignature:{"{?=qiIq}", 0}];
-  [v3 validateClass:@"PUBrowsingVideoPlayer" hasInstanceMethod:@"isActivated" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PUImageTileViewController" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"PUDisplayAsset" hasRequiredInstanceMethod:@"mediaSubtypes"];
-  [v3 validateClass:@"PUScrubberView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUFilmstripTileViewController" isKindOfClass:@"PUImageTileViewController"];
+  [validationsCopy validateClass:@"PUScrubberView" hasInstanceMethod:@"_tilingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUScrubberView" hasInstanceMethod:@"browsingSession" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUScrubberView" hasInstanceVariable:@"_transitionLayoutIdentifier" withType:"NSString"];
+  [validationsCopy validateClass:@"PUScrubberView" hasInstanceMethod:@"_endScrubbing" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUScrubberView" hasInstanceMethod:@"_updateScrollPositionAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PUViewModel" hasInstanceMethod:@"performChanges:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"PUAssetViewModel" hasInstanceMethod:@"videoPlayer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"setCurrentAssetReference:transitionProgress:transitionDriverIdentifier:animated:" withFullSignature:{"v", "@", "d", "@", "B", 0}];
+  [validationsCopy validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"assetViewModelForAssetReference:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"currentAssetReference" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"assetsDataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"leadingAssetReference" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"trailingAssetReference" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUTilingView" hasInstanceMethod:@"enumerateAllTileControllersUsingBlock:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"PUTilingView" hasInstanceMethod:@"layout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUTilingView" hasInstanceMethod:@"presentedTileControllerWithIndexPath: kind: dataSourceIdentifier:" withFullSignature:{"@", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"PUScrubberTilingLayout" hasInstanceMethod:@"slitAspectRatio" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PUTileLayoutInfo" hasInstanceMethod:@"tileKind" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUTileLayoutInfo" hasInstanceMethod:@"dataSourceIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUTileLayoutInfo" hasInstanceMethod:@"indexPath" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUAssetReference" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUAssetReference" hasInstanceMethod:@"indexPath" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUBrowsingVideoPlayer" hasInstanceMethod:@"videoSession" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXVideoSession" hasInstanceMethod:@"currentTime" withFullSignature:{"{?=qiIq}", 0}];
+  [validationsCopy validateClass:@"PXVideoSession" hasInstanceMethod:@"videoDuration" withFullSignature:{"{?=qiIq}", 0}];
+  [validationsCopy validateClass:@"PUBrowsingVideoPlayer" hasInstanceMethod:@"isActivated" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PUImageTileViewController" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"PUDisplayAsset" hasRequiredInstanceMethod:@"mediaSubtypes"];
+  [validationsCopy validateClass:@"PUScrubberView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
 {
   if ([(PUScrubberViewAccessibility *)self _axIsVideoPlayerActivated])
   {
-    v3 = [(PUScrubberViewAccessibility *)self _axVideoPlayer];
-    v4 = [v3 safeIntegerForKey:@"desiredPlayState"];
+    _axVideoPlayer = [(PUScrubberViewAccessibility *)self _axVideoPlayer];
+    v4 = [_axVideoPlayer safeIntegerForKey:@"desiredPlayState"];
 
     v5 = @"scrubber.playing";
     if (v4 == 2)
@@ -72,7 +72,7 @@
     }
 
     v6 = v5;
-    v7 = accessibilityPULocalizedString(@"video.playbackcontrol.label");
+    _axShowingType = accessibilityPULocalizedString(@"video.playbackcontrol.label");
     v8 = accessibilityPULocalizedString(v6);
 
     v9 = __UIAXStringForVariables();
@@ -80,10 +80,10 @@
 
   else
   {
-    v7 = [(PUScrubberViewAccessibility *)self _axShowingType];
+    _axShowingType = [(PUScrubberViewAccessibility *)self _axShowingType];
     v10 = MEMORY[0x29EDBA0F8];
     v8 = accessibilityPULocalizedString(@"photo.scrubber.label.format");
-    v9 = [v10 stringWithFormat:v8, v7];
+    v9 = [v10 stringWithFormat:v8, _axShowingType];
   }
 
   v11 = v9;
@@ -97,14 +97,14 @@
   {
     v3 = @"video.playbackcontrol.hint.expanded";
 LABEL_5:
-    v6 = accessibilityPULocalizedString(v3);
+    accessibilityHint = accessibilityPULocalizedString(v3);
     goto LABEL_7;
   }
 
   v4 = [(PUScrubberViewAccessibility *)self _accessibilityValueForKey:@"AXIsVideoOnlyScrubber"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v3 = @"video.playbackcontrol.hint.collapsed";
     goto LABEL_5;
@@ -112,34 +112,34 @@ LABEL_5:
 
   v8.receiver = self;
   v8.super_class = PUScrubberViewAccessibility;
-  v6 = [(PUScrubberViewAccessibility *)&v8 accessibilityHint];
+  accessibilityHint = [(PUScrubberViewAccessibility *)&v8 accessibilityHint];
 LABEL_7:
 
-  return v6;
+  return accessibilityHint;
 }
 
 - (id)accessibilityValue
 {
   if ([(PUScrubberViewAccessibility *)self _axIsVideoPlayerActivated])
   {
-    v3 = [(PUScrubberViewAccessibility *)self _axVideoPlaybackValue];
+    _axVideoPlaybackValue = [(PUScrubberViewAccessibility *)self _axVideoPlaybackValue];
   }
 
   else
   {
-    v4 = [(PUScrubberViewAccessibility *)self _axShowingType];
+    _axShowingType = [(PUScrubberViewAccessibility *)self _axShowingType];
     v5 = [(PUScrubberViewAccessibility *)self safeValueForKey:@"browsingSession"];
-    v3 = AXScrollStatusForBrowsingSession(v5, v4);
+    _axVideoPlaybackValue = AXScrollStatusForBrowsingSession(v5, _axShowingType);
   }
 
-  return v3;
+  return _axVideoPlaybackValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v6.receiver = self;
   v6.super_class = PUScrubberViewAccessibility;
-  v3 = [(PUScrubberViewAccessibility *)&v6 accessibilityTraits];
+  accessibilityTraits = [(PUScrubberViewAccessibility *)&v6 accessibilityTraits];
   if (![(PUScrubberViewAccessibility *)self _axIsVideoPlayerActivated])
   {
     v5.receiver = self;
@@ -147,7 +147,7 @@ LABEL_7:
     return *MEMORY[0x29EDC7F60] | [(PUScrubberViewAccessibility *)&v5 accessibilityTraits];
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityCustomActions
@@ -234,7 +234,7 @@ LABEL_7:
     v14[3] = &unk_29F2E8538;
     v7 = v4;
     v15 = v7;
-    v16 = self;
+    selfCopy = self;
     v8 = MEMORY[0x29C2E7430](v14);
     v9 = [v7 safeValueForKey:@"_currentAssetReference"];
     (v8)[2](v8, v6);
@@ -278,25 +278,25 @@ void __58__PUScrubberViewAccessibility__axCloseVideoPlaybackAction__block_invoke
   [v1 setCurrentAssetReference:v2 transitionProgress:v3 transitionDriverIdentifier:1 animated:0.0];
 }
 
-- (void)_axScrollToAssetReference:(id)a3 inViewModel:(id)a4 forThreeFingerScroll:(BOOL)a5
+- (void)_axScrollToAssetReference:(id)reference inViewModel:(id)model forThreeFingerScroll:(BOOL)scroll
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8 && v9)
+  scrollCopy = scroll;
+  referenceCopy = reference;
+  modelCopy = model;
+  v10 = modelCopy;
+  if (referenceCopy && modelCopy)
   {
-    v17 = v9;
-    v18 = v8;
+    v17 = modelCopy;
+    v18 = referenceCopy;
     AXPerformSafeBlock();
     v11 = [v18 safeValueForKey:@"asset"];
-    v12 = [(PUScrubberViewAccessibility *)self accessibilityValue];
-    v13 = [v11 accessibilityLabel];
-    v16 = [v11 accessibilityValue];
+    accessibilityValue = [(PUScrubberViewAccessibility *)self accessibilityValue];
+    accessibilityLabel = [v11 accessibilityLabel];
+    accessibilityValue2 = [v11 accessibilityValue];
     v14 = __UIAXStringForVariables();
 
     v15 = MEMORY[0x29EDC7EF0];
-    if (!v5)
+    if (!scrollCopy)
     {
       v15 = MEMORY[0x29EDC7ED8];
     }
@@ -414,11 +414,11 @@ double __52__PUScrubberViewAccessibility__axVideoPlaybackValue__block_invoke_2(u
   return result;
 }
 
-- (id)_axTileControllerForAsset:(id)a3
+- (id)_axTileControllerForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 safeValueForKey:@"indexPath"];
-  v6 = [v4 safeValueForKey:@"dataSourceIdentifier"];
+  assetCopy = asset;
+  v5 = [assetCopy safeValueForKey:@"indexPath"];
+  v6 = [assetCopy safeValueForKey:@"dataSourceIdentifier"];
 
   v7 = [(PUScrubberViewAccessibility *)self safeValueForKey:@"_tilingView"];
   v8 = [v7 presentedTileControllerWithIndexPath:v5 kind:@"PUTileKindItemContent" dataSourceIdentifier:v6];
@@ -517,19 +517,19 @@ void __45__PUScrubberViewAccessibility__axVideoPlayer__block_invoke(uint64_t a1)
 
 - (id)_axVideoSession
 {
-  v2 = [(PUScrubberViewAccessibility *)self _axVideoPlayer];
-  v3 = [v2 safeValueForKey:@"videoSession"];
+  _axVideoPlayer = [(PUScrubberViewAccessibility *)self _axVideoPlayer];
+  v3 = [_axVideoPlayer safeValueForKey:@"videoSession"];
 
   return v3;
 }
 
 - (BOOL)_axIsVideoPlayerActivated
 {
-  v2 = [(PUScrubberViewAccessibility *)self _axVideoPlayer];
-  v3 = v2;
-  if (v2)
+  _axVideoPlayer = [(PUScrubberViewAccessibility *)self _axVideoPlayer];
+  v3 = _axVideoPlayer;
+  if (_axVideoPlayer)
   {
-    v4 = [v2 safeBoolForKey:@"isActivated"];
+    v4 = [_axVideoPlayer safeBoolForKey:@"isActivated"];
   }
 
   else
@@ -544,8 +544,8 @@ void __45__PUScrubberViewAccessibility__axVideoPlayer__block_invoke(uint64_t a1)
 {
   v5.receiver = self;
   v5.super_class = PUScrubberViewAccessibility;
-  v3 = [(PUScrubberViewAccessibility *)&v5 canBecomeFocused];
-  return ([(PUScrubberViewAccessibility *)self _accessibilityIsFKARunningForFocusItem]| v3) & 1;
+  canBecomeFocused = [(PUScrubberViewAccessibility *)&v5 canBecomeFocused];
+  return ([(PUScrubberViewAccessibility *)self _accessibilityIsFKARunningForFocusItem]| canBecomeFocused) & 1;
 }
 
 @end

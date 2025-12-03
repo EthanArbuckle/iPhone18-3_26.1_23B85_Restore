@@ -13,8 +13,8 @@
   }
 
   v2 = rui_isSupportedNativeURL_supportedSchemes;
-  v3 = [a1 scheme];
-  v4 = [v2 containsObject:v3];
+  scheme = [self scheme];
+  v4 = [v2 containsObject:scheme];
 
   return v4;
 }
@@ -27,8 +27,8 @@
   }
 
   v2 = rui_isSupportedSafariURL_supportedSafariSchemes;
-  v3 = [a1 scheme];
-  v4 = [v2 containsObject:v3];
+  scheme = [self scheme];
+  v4 = [v2 containsObject:scheme];
 
   return v4;
 }

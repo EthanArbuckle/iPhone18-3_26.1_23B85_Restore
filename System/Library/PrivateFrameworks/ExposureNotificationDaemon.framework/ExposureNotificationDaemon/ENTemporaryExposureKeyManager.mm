@@ -1,29 +1,29 @@
 @interface ENTemporaryExposureKeyManager
-+ (id)temporaryExposureKeyFromRawKey:(id)a3 error:(id *)a4;
-- (BOOL)requireKeyReleasePromptForClient:(id)a3;
-- (ENTemporaryExposureKeyManager)initWithQueue:(id)a3;
++ (id)temporaryExposureKeyFromRawKey:(id)key error:(id *)error;
+- (BOOL)requireKeyReleasePromptForClient:(id)client;
+- (ENTemporaryExposureKeyManager)initWithQueue:(id)queue;
 - (ENTemporaryExposureKeyManagerDelegate)delegate;
 - (void)resetClientState;
 @end
 
 @implementation ENTemporaryExposureKeyManager
 
-- (ENTemporaryExposureKeyManager)initWithQueue:(id)a3
+- (ENTemporaryExposureKeyManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = ENTemporaryExposureKeyManager;
   v6 = [(ENTemporaryExposureKeyManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
 }
 
-- (BOOL)requireKeyReleasePromptForClient:(id)a3
+- (BOOL)requireKeyReleasePromptForClient:(id)client
 {
   nextPromptDate = self->_nextPromptDate;
   if (!nextPromptDate)
@@ -31,20 +31,20 @@
     return 1;
   }
 
-  v4 = a3;
+  clientCopy = client;
   [(NSDate *)nextPromptDate timeIntervalSinceNow];
   v6 = v5;
-  v7 = [v4 appAPIVersion];
+  appAPIVersion = [clientCopy appAPIVersion];
 
-  return v6 <= 0.0 || v7 > 1;
+  return v6 <= 0.0 || appAPIVersion > 1;
 }
 
 - (void)resetClientState
 {
   v3 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v4 = [v3 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v3 isSensitiveLoggingAllowed];
 
-  if (v4 && gLogCategory_ENTemporaryExposureKeyManager <= 50 && (gLogCategory_ENTemporaryExposureKeyManager != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENTemporaryExposureKeyManager <= 50 && (gLogCategory_ENTemporaryExposureKeyManager != -1 || _LogCategory_Initialize()))
   {
     [ENTemporaryExposureKeyManager resetClientState];
   }
@@ -57,26 +57,26 @@
   self->_oldestTEK = 0;
 }
 
-+ (id)temporaryExposureKeyFromRawKey:(id)a3 error:(id *)a4
++ (id)temporaryExposureKeyFromRawKey:(id)key error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 length];
-  v7 = [v5 bytes];
+  keyCopy = key;
+  v6 = [keyCopy length];
+  bytes = [keyCopy bytes];
   if (v6 == 21)
   {
-    v8 = v7;
+    v8 = bytes;
     v9 = objc_alloc_init(MEMORY[0x277CC5D28]);
-    v10 = [v5 subdataWithRange:{0, 16}];
+    v10 = [keyCopy subdataWithRange:{0, 16}];
     [v9 setKeyData:v10];
 
     [v9 setRollingStartNumber:*(v8 + 16)];
     [v9 setRollingPeriod:*(v8 + 20)];
   }
 
-  else if (a4)
+  else if (error)
   {
     ENErrorF();
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else

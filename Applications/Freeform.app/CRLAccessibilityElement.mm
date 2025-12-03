@@ -1,24 +1,24 @@
 @interface CRLAccessibilityElement
-- (CRLAccessibilityElement)initWithAccessibilityParent:(id)a3;
+- (CRLAccessibilityElement)initWithAccessibilityParent:(id)parent;
 - (id)description;
 @end
 
 @implementation CRLAccessibilityElement
 
-- (CRLAccessibilityElement)initWithAccessibilityParent:(id)a3
+- (CRLAccessibilityElement)initWithAccessibilityParent:(id)parent
 {
   v4.receiver = self;
   v4.super_class = CRLAccessibilityElement;
-  return [(CRLAccessibilityElement *)&v4 initWithAccessibilityContainer:a3];
+  return [(CRLAccessibilityElement *)&v4 initWithAccessibilityContainer:parent];
 }
 
 - (id)description
 {
-  v3 = [(CRLAccessibilityElement *)self accessibilityValue];
+  accessibilityValue = [(CRLAccessibilityElement *)self accessibilityValue];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CRLAccessibilityElement *)self accessibilityLabel];
-  if (v3)
+  accessibilityLabel = [(CRLAccessibilityElement *)self accessibilityLabel];
+  if (accessibilityValue)
   {
     v7 = @"; value = ";
   }
@@ -28,9 +28,9 @@
     v7 = &stru_1018BCA28;
   }
 
-  if (v3)
+  if (accessibilityValue)
   {
-    v8 = v3;
+    v8 = accessibilityValue;
   }
 
   else
@@ -38,7 +38,7 @@
     v8 = &stru_1018BCA28;
   }
 
-  if (v3)
+  if (accessibilityValue)
   {
     v9 = @"";
   }
@@ -50,7 +50,7 @@
 
   [(CRLAccessibilityElement *)self accessibilityFrame];
   v10 = NSStringFromCGRect(v14);
-  v11 = [NSString stringWithFormat:@"<%@: %p label = %@%@%@%@; frame = %@>", v5, self, v6, v7, v8, v9, v10];;
+  v11 = [NSString stringWithFormat:@"<%@: %p label = %@%@%@%@; frame = %@>", v5, self, accessibilityLabel, v7, v8, v9, v10];;
 
   return v11;
 }

@@ -1,28 +1,28 @@
 @interface COSDiagnosticLogsController
 - (COSDiagnosticLogsController)init;
 - (NSString)transferredFilesPath;
-- (id)diagFileSpecifier:(id)a3 isScreenshot:(BOOL)a4;
+- (id)diagFileSpecifier:(id)specifier isScreenshot:(BOOL)screenshot;
 - (id)specifiers;
-- (void)cancelDownload:(id)a3;
-- (void)cancelLogTransfer:(id)a3;
-- (void)cancelTransferProgress:(id)a3;
-- (void)checkIfFileInTransit:(id)a3;
+- (void)cancelDownload:(id)download;
+- (void)cancelLogTransfer:(id)transfer;
+- (void)cancelTransferProgress:(id)progress;
+- (void)checkIfFileInTransit:(id)transit;
 - (void)dealloc;
-- (void)deleteLog:(id)a3 withCompletion:(id)a4;
-- (void)dismissLogPreviewForDeletedSpecifier:(id)a3;
-- (void)displayProgressDetails:(id)a3;
-- (void)downloadFileAction:(id)a3;
-- (void)downloadFileFromNotification:(id)a3;
-- (void)presentCancelLogDownloadAlert:(id)a3;
-- (void)recheckFileDownload:(id)a3;
-- (void)recheckFileDownloadForCompletetransfer:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)showDeleteOrShareAlert:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)updateSpecifier:(id)a3 withDownloadPath:(id)a4;
+- (void)deleteLog:(id)log withCompletion:(id)completion;
+- (void)dismissLogPreviewForDeletedSpecifier:(id)specifier;
+- (void)displayProgressDetails:(id)details;
+- (void)downloadFileAction:(id)action;
+- (void)downloadFileFromNotification:(id)notification;
+- (void)presentCancelLogDownloadAlert:(id)alert;
+- (void)recheckFileDownload:(id)download;
+- (void)recheckFileDownloadForCompletetransfer:(id)completetransfer;
+- (void)setSpecifier:(id)specifier;
+- (void)showDeleteOrShareAlert:(id)alert;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)updateSpecifier:(id)specifier withDownloadPath:(id)path;
 - (void)updateTransferedLogFilesCache;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSDiagnosticLogsController
@@ -60,7 +60,7 @@
   [(COSDiagnosticLogsController *)&v6 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = COSDiagnosticLogsController;
@@ -73,8 +73,8 @@
   if (!self->_nssManager)
   {
     v4 = [NSSManager alloc];
-    v5 = [(COSDiagnosticLogsController *)self queue];
-    v6 = [v4 initWithQueue:v5];
+    queue = [(COSDiagnosticLogsController *)self queue];
+    v6 = [v4 initWithQueue:queue];
     nssManager = self->_nssManager;
     self->_nssManager = v6;
   }
@@ -94,22 +94,22 @@
   v4.receiver = self;
   v4.super_class = COSDiagnosticLogsController;
   [(COSDiagnosticLogsController *)&v4 viewDidLoad];
-  v3 = [(COSDiagnosticLogsController *)self table];
-  [v3 _setDisplaysCellContentStringsOnTapAndHold:1];
+  table = [(COSDiagnosticLogsController *)self table];
+  [table _setDisplaysCellContentStringsOnTapAndHold:1];
 }
 
-- (void)downloadFileFromNotification:(id)a3
+- (void)downloadFileFromNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"Specifier"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"Specifier"];
 
   [(COSDiagnosticLogsController *)self downloadFileAction:v5];
 }
 
-- (void)cancelDownload:(id)a3
+- (void)cancelDownload:(id)download
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"Specifier"];
+  userInfo = [download userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"Specifier"];
 
   [(COSDiagnosticLogsController *)self presentCancelLogDownloadAlert:v5];
 }
@@ -118,19 +118,19 @@
 {
   v2 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
   v3 = [v2 valueForProperty:NRDevicePropertyPairingID];
-  v4 = [v3 UUIDString];
+  uUIDString = [v3 UUIDString];
 
-  v5 = [@"/var/mobile/tmp/BridgeDiagnosticLogs/" stringByAppendingPathComponent:v4];
+  v5 = [@"/var/mobile/tmp/BridgeDiagnosticLogs/" stringByAppendingPathComponent:uUIDString];
 
   return v5;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v18.receiver = self;
   v18.super_class = COSDiagnosticLogsController;
-  [(COSDiagnosticLogsController *)&v18 setSpecifier:v4];
+  [(COSDiagnosticLogsController *)&v18 setSpecifier:specifierCopy];
   [(COSDiagnosticLogsController *)self setPathsLoaded:0];
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -142,8 +142,8 @@
   if (!self->_nssManager)
   {
     v6 = [NSSManager alloc];
-    v7 = [(COSDiagnosticLogsController *)self queue];
-    v8 = [v6 initWithQueue:v7];
+    queue = [(COSDiagnosticLogsController *)self queue];
+    v8 = [v6 initWithQueue:queue];
     nssManager = self->_nssManager;
     self->_nssManager = v8;
   }
@@ -355,21 +355,21 @@ LABEL_26:
   return v32;
 }
 
-- (void)downloadFileAction:(id)a3
+- (void)downloadFileAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"DiagnosticLogDownloadingKey"];
-  v6 = [v5 BOOLValue];
+  actionCopy = action;
+  v5 = [actionCopy propertyForKey:@"DiagnosticLogDownloadingKey"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    [(COSDiagnosticLogsController *)self presentCancelLogDownloadAlert:v4];
+    [(COSDiagnosticLogsController *)self presentCancelLogDownloadAlert:actionCopy];
   }
 
   else
   {
-    v7 = [v4 propertyForKey:@"DiagnosticLogOriginalPathKey"];
-    [(COSDiagnosticLogsController *)self displayProgressDetails:v4];
+    v7 = [actionCopy propertyForKey:@"DiagnosticLogOriginalPathKey"];
+    [(COSDiagnosticLogsController *)self displayProgressDetails:actionCopy];
     v8 = pbb_bridge_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -385,7 +385,7 @@ LABEL_26:
     v10[2] = sub_10002346C;
     v10[3] = &unk_100268750;
     objc_copyWeak(&v12, buf);
-    v11 = v4;
+    v11 = actionCopy;
     [(NSSManager *)nssManager getDiagnosticLogFileFromGizmo:v7 withResults:v10];
 
     objc_destroyWeak(&v12);
@@ -393,12 +393,12 @@ LABEL_26:
   }
 }
 
-- (void)presentCancelLogDownloadAlert:(id)a3
+- (void)presentCancelLogDownloadAlert:(id)alert
 {
-  v19 = a3;
+  alertCopy = alert;
   v21 = objc_alloc_init(PSConfirmationSpecifier);
-  v3 = [v19 propertyForKey:@"DiagnosticLogOriginalPathKey"];
-  v18 = [v3 lastPathComponent];
+  v3 = [alertCopy propertyForKey:@"DiagnosticLogOriginalPathKey"];
+  lastPathComponent = [v3 lastPathComponent];
 
   v17 = +[NSBundle mainBundle];
   v16 = [v17 localizedStringForKey:@"CANCEL_LOG_TRANSFER_TITLE" value:&stru_10026E598 table:@"DiagnosticLogs"];
@@ -408,7 +408,7 @@ LABEL_26:
   v6 = PSConfirmationCancelKey;
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"CANCEL_LOG_TRANSFER_DESCRIPTION_%@" value:&stru_10026E598 table:@"DiagnosticLogs"];
-  v9 = [NSString stringWithFormat:v8, v18];
+  v9 = [NSString stringWithFormat:v8, lastPathComponent];
   v10 = PSConfirmationPromptKey;
   v11 = +[NSBundle mainBundle];
   v12 = [v11 localizedStringForKey:@"CANCEL_LOG_TRANSFER_TITLE" value:&stru_10026E598 table:@"DiagnosticLogs"];
@@ -420,17 +420,17 @@ LABEL_26:
 
   objc_storeWeak(&v21[OBJC_IVAR___PSSpecifier_target], self);
   [v21 setConfirmationAction:"cancelLogTransfer:"];
-  [v21 setProperty:v19 forKey:@"ParentSpecifier"];
+  [v21 setProperty:alertCopy forKey:@"ParentSpecifier"];
 
   [(COSDiagnosticLogsController *)self showConfirmationViewForSpecifier:v21];
 }
 
-- (void)cancelLogTransfer:(id)a3
+- (void)cancelLogTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"ParentSpecifier"];
+  transferCopy = transfer;
+  v5 = [transferCopy propertyForKey:@"ParentSpecifier"];
   v6 = [v5 propertyForKey:@"DiagnosticLogOriginalPathKey"];
-  v7 = [v6 lastPathComponent];
+  lastPathComponent = [v6 lastPathComponent];
 
   objc_initWeak(&location, self);
   nssManager = self->_nssManager;
@@ -438,7 +438,7 @@ LABEL_26:
   v11[1] = 3221225472;
   v11[2] = sub_1000239A0;
   v11[3] = &unk_100268778;
-  v9 = v7;
+  v9 = lastPathComponent;
   v12 = v9;
   objc_copyWeak(&v14, &location);
   v10 = v5;
@@ -449,12 +449,12 @@ LABEL_26:
   objc_destroyWeak(&location);
 }
 
-- (id)diagFileSpecifier:(id)a3 isScreenshot:(BOOL)a4
+- (id)diagFileSpecifier:(id)specifier isScreenshot:(BOOL)screenshot
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 lastPathComponent];
-  v8 = [NSString stringWithFormat:@"%@", v7];
+  screenshotCopy = screenshot;
+  specifierCopy = specifier;
+  lastPathComponent = [specifierCopy lastPathComponent];
+  v8 = [NSString stringWithFormat:@"%@", lastPathComponent];
 
   v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:0 get:0 detail:0 cell:3 edit:0];
   [v9 setButtonAction:"downloadFileAction:"];
@@ -462,22 +462,22 @@ LABEL_26:
   if (!self->_containsAbsolutePath)
   {
     v10 = @"/var/mobile/Library/Logs/CrashReporter";
-    if (v4)
+    if (screenshotCopy)
     {
       v10 = @"/tmp/com.apple.Carousel";
     }
 
-    v11 = [NSString stringWithFormat:@"%@/%@", v10, v6];
+    specifierCopy = [NSString stringWithFormat:@"%@/%@", v10, specifierCopy];
 
-    v6 = v11;
+    specifierCopy = specifierCopy;
   }
 
-  [v9 setProperty:v6 forKey:@"DiagnosticLogOriginalPathKey"];
+  [v9 setProperty:specifierCopy forKey:@"DiagnosticLogOriginalPathKey"];
 
   [v9 setProperty:objc_opt_class() forKey:PSCellClassKey];
   [v9 setProperty:v8 forKey:PSIDKey];
   [v9 setProperty:&__kCFBooleanFalse forKey:@"FileDownloadedKey"];
-  if (v4)
+  if (screenshotCopy)
   {
     v12 = &__kCFBooleanFalse;
   }
@@ -492,54 +492,54 @@ LABEL_26:
   return v9;
 }
 
-- (void)recheckFileDownloadForCompletetransfer:(id)a3
+- (void)recheckFileDownloadForCompletetransfer:(id)completetransfer
 {
-  v4 = [a3 userInfo];
-  v8 = [v4 objectForKey:@"DiagnosticLogTransferComplete"];
+  userInfo = [completetransfer userInfo];
+  v8 = [userInfo objectForKey:@"DiagnosticLogTransferComplete"];
 
   v5 = [(COSDiagnosticLogsController *)self specifierForID:v8];
   [(COSDiagnosticLogsController *)self updateTransferedLogFilesCache];
   v6 = [v5 propertyForKey:@"FileDownloadedKey"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  if ((v7 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     [(COSDiagnosticLogsController *)self recheckFileDownload:v5];
   }
 }
 
-- (void)recheckFileDownload:(id)a3
+- (void)recheckFileDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x2020000000;
   v12 = 0;
-  v5 = [(COSDiagnosticLogsController *)self queue];
+  queue = [(COSDiagnosticLogsController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100023E08;
   block[3] = &unk_1002687A0;
-  v8 = v4;
-  v9 = self;
+  v8 = downloadCopy;
+  selfCopy = self;
   v10 = v11;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v6 = downloadCopy;
+  dispatch_async(queue, block);
 
   _Block_object_dispose(v11, 8);
 }
 
-- (void)checkIfFileInTransit:(id)a3
+- (void)checkIfFileInTransit:(id)transit
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:PSIDKey];
+  transitCopy = transit;
+  v5 = [transitCopy propertyForKey:PSIDKey];
   objc_initWeak(&location, self);
   nssManager = self->_nssManager;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000240C8;
   v8[3] = &unk_1002687C8;
-  v7 = v4;
+  v7 = transitCopy;
   v9 = v7;
   objc_copyWeak(&v10, &location);
   [(NSSManager *)nssManager retrieveDiagnosticLogTransferProgress:v5 withProgress:v8];
@@ -548,33 +548,33 @@ LABEL_26:
   objc_destroyWeak(&location);
 }
 
-- (void)updateSpecifier:(id)a3 withDownloadPath:(id)a4
+- (void)updateSpecifier:(id)specifier withDownloadPath:(id)path
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000242AC;
   block[3] = &unk_100268638;
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  v6 = v10;
-  v7 = v9;
+  specifierCopy = specifier;
+  pathCopy = path;
+  selfCopy = self;
+  v6 = pathCopy;
+  v7 = specifierCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
 - (void)updateTransferedLogFilesCache
 {
-  v3 = [(COSDiagnosticLogsController *)self transferredFilesPath];
+  transferredFilesPath = [(COSDiagnosticLogsController *)self transferredFilesPath];
   v4 = +[NSFileManager defaultManager];
   v10 = 0;
-  v5 = [v4 subpathsOfDirectoryAtPath:v3 error:&v10];
+  v5 = [v4 subpathsOfDirectoryAtPath:transferredFilesPath error:&v10];
   v6 = v10;
   [(COSDiagnosticLogsController *)self setDownloadedDiagnosticLogs:v5];
 
   if (v6)
   {
-    v7 = [v6 userInfo];
-    v8 = [v7 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [v6 userInfo];
+    v8 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
     if ([v8 code] != 2)
     {
@@ -589,65 +589,65 @@ LABEL_26:
   }
 }
 
-- (void)cancelTransferProgress:(id)a3
+- (void)cancelTransferProgress:(id)progress
 {
-  v4 = a3;
-  [v4 setProperty:&__kCFBooleanFalse forKey:@"DiagnosticLogDownloadingKey"];
+  progressCopy = progress;
+  [progressCopy setProperty:&__kCFBooleanFalse forKey:@"DiagnosticLogDownloadingKey"];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10002452C;
   v6[3] = &unk_100268358;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = progressCopy;
+  v5 = progressCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)showDeleteOrShareAlert:(id)a3
+- (void)showDeleteOrShareAlert:(id)alert
 {
-  v4 = a3;
-  v10 = [v4 propertyForKey:@"DiagnosticLogSharePathKey"];
+  alertCopy = alert;
+  v10 = [alertCopy propertyForKey:@"DiagnosticLogSharePathKey"];
   v5 = [COSDiagnosticLogPreviewViewController alloc];
-  v6 = [(COSDiagnosticLogsController *)self queue];
-  v7 = [(COSDiagnosticLogPreviewViewController *)v5 initWithFilePath:v10 andQueue:v6];
+  queue = [(COSDiagnosticLogsController *)self queue];
+  v7 = [(COSDiagnosticLogPreviewViewController *)v5 initWithFilePath:v10 andQueue:queue];
 
-  v8 = [v4 propertyForKey:@"DiagnosticLogOriginalPathKey"];
+  v8 = [alertCopy propertyForKey:@"DiagnosticLogOriginalPathKey"];
   [(COSDiagnosticLogPreviewViewController *)v7 setPathOnWatch:v8];
 
-  [(COSDiagnosticLogPreviewViewController *)v7 setParentSpecifier:v4];
+  [(COSDiagnosticLogPreviewViewController *)v7 setParentSpecifier:alertCopy];
   [(COSDiagnosticLogPreviewViewController *)v7 setLogPreviewDelegate:self];
   v9 = [[UINavigationController alloc] initWithRootViewController:v7];
   [(COSDiagnosticLogsController *)self presentViewController:v9 withTransition:3 completion:&stru_1002687E8];
 }
 
-- (void)displayProgressDetails:(id)a3
+- (void)displayProgressDetails:(id)details
 {
-  v4 = a3;
-  [v4 setProperty:&__kCFBooleanTrue forKey:@"DiagnosticLogDownloadingKey"];
-  [(COSDiagnosticLogsController *)self reloadSpecifier:v4];
+  detailsCopy = details;
+  [detailsCopy setProperty:&__kCFBooleanTrue forKey:@"DiagnosticLogDownloadingKey"];
+  [(COSDiagnosticLogsController *)self reloadSpecifier:detailsCopy];
 }
 
-- (void)dismissLogPreviewForDeletedSpecifier:(id)a3
+- (void)dismissLogPreviewForDeletedSpecifier:(id)specifier
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100024750;
   v4[3] = &unk_100268358;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  specifierCopy = specifier;
+  v3 = specifierCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)deleteLog:(id)a3 withCompletion:(id)a4
+- (void)deleteLog:(id)log withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  logCopy = log;
+  completionCopy = completion;
   v8 = pbb_bridge_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v6;
+    v14 = logCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "request to delete %@", buf, 0xCu);
   }
 
@@ -656,18 +656,18 @@ LABEL_26:
   v11[1] = 3221225472;
   v11[2] = sub_100024930;
   v11[3] = &unk_100268810;
-  v12 = v7;
-  v10 = v7;
-  [(NSSManager *)nssManager deleteDiagnosticLogFile:v6 withResult:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [(NSSManager *)nssManager deleteDiagnosticLogFile:logCopy withResult:v11];
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  if (style == 1)
   {
-    v10 = [(COSDiagnosticLogsController *)self specifierAtIndexPath:v9];
+    v10 = [(COSDiagnosticLogsController *)self specifierAtIndexPath:pathCopy];
     v11 = [v10 propertyForKey:@"DiagnosticLogOriginalPathKey"];
     objc_initWeak(&location, self);
     v14[0] = _NSConcreteStackBlock;

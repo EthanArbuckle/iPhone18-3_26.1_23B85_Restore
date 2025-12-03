@@ -1,37 +1,37 @@
 @interface ProximityCardSceneDelegate
 - (_TtC13MediaRemoteUI26ProximityCardSceneDelegate)init;
 - (void)proxCardFlowDidDismiss;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)setWindow:(id)window;
 @end
 
 @implementation ProximityCardSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC13MediaRemoteUI26ProximityCardSceneDelegate_window);
-  *(&self->super.isa + OBJC_IVAR____TtC13MediaRemoteUI26ProximityCardSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC13MediaRemoteUI26ProximityCardSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100017E24(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100017E24(sceneCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC13MediaRemoteUI26ProximityCardSceneDelegate_window);
   *(&self->super.isa + OBJC_IVAR____TtC13MediaRemoteUI26ProximityCardSceneDelegate_window) = 0;
-  v4 = self;
+  selfCopy = self;
 
-  v5 = *(&v4->super.isa + OBJC_IVAR____TtC13MediaRemoteUI26ProximityCardSceneDelegate_navigationController);
-  *(&v4->super.isa + OBJC_IVAR____TtC13MediaRemoteUI26ProximityCardSceneDelegate_navigationController) = 0;
+  v5 = *(&selfCopy->super.isa + OBJC_IVAR____TtC13MediaRemoteUI26ProximityCardSceneDelegate_navigationController);
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC13MediaRemoteUI26ProximityCardSceneDelegate_navigationController) = 0;
 }
 
 - (void)proxCardFlowDidDismiss
@@ -39,11 +39,11 @@
   v2 = *(&self->super.isa + OBJC_IVAR____TtC13MediaRemoteUI26ProximityCardSceneDelegate_window);
   if (v2)
   {
-    v3 = self;
-    v4 = [v2 windowScene];
-    if (v4)
+    selfCopy = self;
+    windowScene = [v2 windowScene];
+    if (windowScene)
     {
-      v7 = v4;
+      v7 = windowScene;
       objc_opt_self();
       v5 = swift_dynamicCastObjCClass();
       if (v5)
@@ -56,7 +56,7 @@
 
     else
     {
-      v6 = v3;
+      v6 = selfCopy;
     }
   }
 }

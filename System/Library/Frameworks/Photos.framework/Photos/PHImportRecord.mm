@@ -1,14 +1,14 @@
 @interface PHImportRecord
 - (BOOL)canReference;
 - (NSString)rawAssetIdentifier;
-- (PHImportRecord)initWithImportAsset:(id)a3;
+- (PHImportRecord)initWithImportAsset:(id)asset;
 - (id)allAssetIdentifiers;
 - (id)allImportAssets;
 - (id)allImportRecords;
 - (id)description;
-- (id)descriptionWithPrefix:(id)a3;
-- (id)recordForAsset:(id)a3;
-- (void)addRelatedRecord:(id)a3;
+- (id)descriptionWithPrefix:(id)prefix;
+- (id)recordForAsset:(id)asset;
+- (void)addRelatedRecord:(id)record;
 - (void)cleanupAfterFailure;
 @end
 
@@ -16,16 +16,16 @@
 
 - (BOOL)canReference
 {
-  v3 = [(PHImportAsset *)self->_importAsset canReference];
-  if (v3)
+  canReference = [(PHImportAsset *)self->_importAsset canReference];
+  if (canReference)
   {
-    v4 = [(PHImportAsset *)self->_importAsset source];
-    v5 = [v4 canReference];
+    source = [(PHImportAsset *)self->_importAsset source];
+    canReference2 = [source canReference];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(canReference) = canReference2;
   }
 
-  return v3;
+  return canReference;
 }
 
 - (id)allImportRecords
@@ -37,8 +37,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(PHImportRecord *)self relatedRecords];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  relatedRecords = [(PHImportRecord *)self relatedRecords];
+  v5 = [relatedRecords countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -49,14 +49,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(relatedRecords);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) allImportRecords];
-        [v3 addObjectsFromArray:v9];
+        allImportRecords = [*(*(&v11 + 1) + 8 * i) allImportRecords];
+        [v3 addObjectsFromArray:allImportRecords];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [relatedRecords countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -69,15 +69,15 @@
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(PHImportRecord *)self importAsset];
-  [v3 addObject:v4];
+  importAsset = [(PHImportRecord *)self importAsset];
+  [v3 addObject:importAsset];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(PHImportRecord *)self relatedRecords];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  relatedRecords = [(PHImportRecord *)self relatedRecords];
+  v6 = [relatedRecords countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -88,14 +88,14 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(relatedRecords);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) allImportAssets];
-        [v3 addObjectsFromArray:v10];
+        allImportAssets = [*(*(&v12 + 1) + 8 * i) allImportAssets];
+        [v3 addObjectsFromArray:allImportAssets];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [relatedRecords countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -104,21 +104,21 @@
   return v3;
 }
 
-- (id)recordForAsset:(id)a3
+- (id)recordForAsset:(id)asset
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  v6 = [(PHImportRecord *)v5 importAsset];
+  assetCopy = asset;
+  selfCopy = self;
+  importAsset = [(PHImportRecord *)selfCopy importAsset];
 
-  if (v6 != v4)
+  if (importAsset != assetCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(PHImportRecord *)v5 relatedRecords];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    relatedRecords = [(PHImportRecord *)selfCopy relatedRecords];
+    v8 = [relatedRecords countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -130,18 +130,18 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(relatedRecords);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) recordForAsset:v4];
+          v12 = [*(*(&v14 + 1) + 8 * i) recordForAsset:assetCopy];
           if (v12)
           {
-            v5 = v12;
+            selfCopy = v12;
             goto LABEL_12;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [relatedRecords countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v9)
         {
           continue;
@@ -150,31 +150,31 @@
         break;
       }
 
-      v5 = 0;
+      selfCopy = 0;
     }
 
 LABEL_12:
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)addRelatedRecord:(id)a3
+- (void)addRelatedRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   relatedRecords = self->_relatedRecords;
-  v8 = v4;
+  v8 = recordCopy;
   if (!relatedRecords)
   {
     v6 = objc_opt_new();
     v7 = self->_relatedRecords;
     self->_relatedRecords = v6;
 
-    v4 = v8;
+    recordCopy = v8;
     relatedRecords = self->_relatedRecords;
   }
 
-  [(NSMutableArray *)relatedRecords addObject:v4];
+  [(NSMutableArray *)relatedRecords addObject:recordCopy];
   [v8 setImportType:{-[PHImportRecord importType](self, "importType")}];
 }
 
@@ -188,8 +188,8 @@ LABEL_12:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [(PHImportRecord *)self relatedRecords];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    relatedRecords = [(PHImportRecord *)self relatedRecords];
+    v5 = [relatedRecords countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (!v5)
     {
       goto LABEL_13;
@@ -203,27 +203,27 @@ LABEL_12:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(relatedRecords);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 importAsset];
-        if ([v10 isRAW])
+        importAsset = [v9 importAsset];
+        if ([importAsset isRAW])
         {
-          v11 = [v9 assetIdentifier];
+          assetIdentifier = [v9 assetIdentifier];
 
-          if (!v11)
+          if (!assetIdentifier)
           {
             continue;
           }
 
-          v12 = [v9 assetIdentifier];
-          v10 = self->_rawAssetIdentifier;
-          self->_rawAssetIdentifier = v12;
+          assetIdentifier2 = [v9 assetIdentifier];
+          importAsset = self->_rawAssetIdentifier;
+          self->_rawAssetIdentifier = assetIdentifier2;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [relatedRecords countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (!v6)
       {
 LABEL_13:
@@ -241,20 +241,20 @@ LABEL_13:
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(PHImportRecord *)self assetIdentifier];
+  assetIdentifier = [(PHImportRecord *)self assetIdentifier];
 
-  if (v4)
+  if (assetIdentifier)
   {
-    v5 = [(PHImportRecord *)self assetIdentifier];
-    [v3 addObject:v5];
+    assetIdentifier2 = [(PHImportRecord *)self assetIdentifier];
+    [v3 addObject:assetIdentifier2];
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(PHImportRecord *)self relatedRecords];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  relatedRecords = [(PHImportRecord *)self relatedRecords];
+  v7 = [relatedRecords countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -265,20 +265,20 @@ LABEL_13:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(relatedRecords);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 assetIdentifier];
+        assetIdentifier3 = [v11 assetIdentifier];
 
-        if (v12)
+        if (assetIdentifier3)
         {
-          v13 = [v11 assetIdentifier];
-          [v3 addObject:v13];
+          assetIdentifier4 = [v11 assetIdentifier];
+          [v3 addObject:assetIdentifier4];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [relatedRecords countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -290,12 +290,12 @@ LABEL_13:
 - (void)cleanupAfterFailure
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(PHImportRecord *)self downloadedPath];
+  downloadedPath = [(PHImportRecord *)self downloadedPath];
 
-  if (v3)
+  if (downloadedPath)
   {
-    v4 = [(PHImportRecord *)self downloadedPath];
-    v5 = [PHImporter removeItemAtPath:v4 type:0 recursive:0];
+    downloadedPath2 = [(PHImportRecord *)self downloadedPath];
+    v5 = [PHImporter removeItemAtPath:downloadedPath2 type:0 recursive:0];
   }
 
   v13 = 0u;
@@ -329,18 +329,18 @@ LABEL_13:
   }
 }
 
-- (id)descriptionWithPrefix:(id)a3
+- (id)descriptionWithPrefix:(id)prefix
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(PHImportRecord *)self importAsset];
-  v7 = [v6 fileName];
-  v8 = [(PHImportRecord *)self assetIdentifier];
-  v9 = v8;
-  if (v8)
+  importAsset = [(PHImportRecord *)self importAsset];
+  fileName = [importAsset fileName];
+  assetIdentifier = [(PHImportRecord *)self assetIdentifier];
+  v9 = assetIdentifier;
+  if (assetIdentifier)
   {
-    v10 = v8;
+    v10 = assetIdentifier;
   }
 
   else
@@ -348,15 +348,15 @@ LABEL_13:
     v10 = &stru_1F0FC60C8;
   }
 
-  v11 = [v5 stringWithFormat:@"\n%@Asset: %@ <%@>", v4, v7, v10];
+  v11 = [v5 stringWithFormat:@"\n%@Asset: %@ <%@>", prefixCopy, fileName, v10];
 
-  v12 = [(PHImportRecord *)self importAsset];
-  v13 = [v12 url];
-  v14 = [v13 path];
-  v15 = v14;
-  if (v14)
+  importAsset2 = [(PHImportRecord *)self importAsset];
+  v13 = [importAsset2 url];
+  path = [v13 path];
+  v15 = path;
+  if (path)
   {
-    v16 = v14;
+    v16 = path;
   }
 
   else
@@ -364,13 +364,13 @@ LABEL_13:
     v16 = &stru_1F0FC60C8;
   }
 
-  v17 = [v11 stringByAppendingFormat:@"\n%@Source Path: %@", v4, v16];
+  v17 = [v11 stringByAppendingFormat:@"\n%@Source Path: %@", prefixCopy, v16];
 
-  v18 = [(PHImportRecord *)self downloadedPath];
-  v19 = v18;
-  if (v18)
+  downloadedPath = [(PHImportRecord *)self downloadedPath];
+  v19 = downloadedPath;
+  if (downloadedPath)
   {
-    v20 = v18;
+    v20 = downloadedPath;
   }
 
   else
@@ -378,25 +378,25 @@ LABEL_13:
     v20 = &stru_1F0FC60C8;
   }
 
-  v21 = [v17 stringByAppendingFormat:@"\n%@Destination Path: %@", v4, v20];
+  v21 = [v17 stringByAppendingFormat:@"\n%@Destination Path: %@", prefixCopy, v20];
 
-  v22 = [(PHImportRecord *)self importAsset];
-  v23 = [v22 metadata];
-  v24 = [v21 stringByAppendingFormat:@"\n%@Metadata: <%p>", v4, v23];
+  importAsset3 = [(PHImportRecord *)self importAsset];
+  metadata = [importAsset3 metadata];
+  v24 = [v21 stringByAppendingFormat:@"\n%@Metadata: <%p>", prefixCopy, metadata];
 
-  v25 = [(PHImportRecord *)self relatedRecords];
-  v26 = [v25 count];
+  relatedRecords = [(PHImportRecord *)self relatedRecords];
+  v26 = [relatedRecords count];
 
   if (v26)
   {
-    v27 = [v24 stringByAppendingFormat:@"\n%@Additional Assets:\n", v4];
+    prefixCopy = [v24 stringByAppendingFormat:@"\n%@Additional Assets:\n", prefixCopy];
 
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v28 = [(PHImportRecord *)self relatedRecords];
-    v29 = [v28 countByEnumeratingWithState:&v38 objects:v42 count:16];
+    relatedRecords2 = [(PHImportRecord *)self relatedRecords];
+    v29 = [relatedRecords2 countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v29)
     {
       v30 = v29;
@@ -404,31 +404,31 @@ LABEL_13:
       do
       {
         v32 = 0;
-        v33 = v27;
+        v33 = prefixCopy;
         do
         {
           if (*v39 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(relatedRecords2);
           }
 
           v34 = *(*(&v38 + 1) + 8 * v32);
-          v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\t", v4];
-          v36 = [v34 descriptionWithPrefix:v35];
-          v27 = [v33 stringByAppendingString:v36];
+          prefixCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\t", prefixCopy];
+          v36 = [v34 descriptionWithPrefix:prefixCopy2];
+          prefixCopy = [v33 stringByAppendingString:v36];
 
           ++v32;
-          v33 = v27;
+          v33 = prefixCopy;
         }
 
         while (v30 != v32);
-        v30 = [v28 countByEnumeratingWithState:&v38 objects:v42 count:16];
+        v30 = [relatedRecords2 countByEnumeratingWithState:&v38 objects:v42 count:16];
       }
 
       while (v30);
     }
 
-    v24 = v27;
+    v24 = prefixCopy;
   }
 
   return v24;
@@ -438,8 +438,8 @@ LABEL_13:
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = [(PHImportRecord *)self descriptionWithPrefix:&stru_1F0FC60C8];
-  v4 = [(PHImportExceptionRecorder *)self exceptions];
-  v5 = [v4 count];
+  exceptions = [(PHImportExceptionRecorder *)self exceptions];
+  v5 = [exceptions count];
 
   if (v5)
   {
@@ -450,8 +450,8 @@ LABEL_13:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(PHImportExceptionRecorder *)self exceptions];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    exceptions2 = [(PHImportExceptionRecorder *)self exceptions];
+    v9 = [exceptions2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -464,7 +464,7 @@ LABEL_13:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(exceptions2);
           }
 
           v7 = [v13 stringByAppendingFormat:@"\n\t%@", *(*(&v15 + 1) + 8 * v12)];
@@ -474,7 +474,7 @@ LABEL_13:
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [exceptions2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v10);
@@ -486,23 +486,23 @@ LABEL_13:
   return v3;
 }
 
-- (PHImportRecord)initWithImportAsset:(id)a3
+- (PHImportRecord)initWithImportAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v13.receiver = self;
   v13.super_class = PHImportRecord;
   v6 = [(PHImportExceptionRecorder *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_importAsset, a3);
+    objc_storeStrong(&v6->_importAsset, asset);
     v8 = [PHImportTimerCollection alloc];
-    if ([v5 isImage])
+    if ([assetCopy isImage])
     {
       v9 = 1;
     }
 
-    else if ([v5 isMovie])
+    else if ([assetCopy isMovie])
     {
       v9 = 3;
     }
@@ -512,7 +512,7 @@ LABEL_13:
       v9 = 2;
     }
 
-    v10 = -[PHImportTimerCollection initForMediaType:fileSize:](v8, "initForMediaType:fileSize:", v9, [v5 fileSize]);
+    v10 = -[PHImportTimerCollection initForMediaType:fileSize:](v8, "initForMediaType:fileSize:", v9, [assetCopy fileSize]);
     timers = v7->_timers;
     v7->_timers = v10;
   }

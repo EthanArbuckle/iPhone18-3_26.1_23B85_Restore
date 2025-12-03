@@ -1,23 +1,23 @@
 @interface BMDistributedContextTranslatedEventMessage
-- (BMDistributedContextTranslatedEventMessage)initWithStreamIdentifier:(id)a3 eventData:(id)a4 eventDataVersion:(id)a5;
+- (BMDistributedContextTranslatedEventMessage)initWithStreamIdentifier:(id)identifier eventData:(id)data eventDataVersion:(id)version;
 @end
 
 @implementation BMDistributedContextTranslatedEventMessage
 
-- (BMDistributedContextTranslatedEventMessage)initWithStreamIdentifier:(id)a3 eventData:(id)a4 eventDataVersion:(id)a5
+- (BMDistributedContextTranslatedEventMessage)initWithStreamIdentifier:(id)identifier eventData:(id)data eventDataVersion:(id)version
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  dataCopy = data;
+  versionCopy = version;
   v15.receiver = self;
   v15.super_class = BMDistributedContextTranslatedEventMessage;
   v12 = [(BMDistributedContextTranslatedEventMessage *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_streamIdentifier, a3);
-    objc_storeStrong(&v13->_eventData, a4);
-    objc_storeStrong(&v13->_eventDataVersion, a5);
+    objc_storeStrong(&v12->_streamIdentifier, identifier);
+    objc_storeStrong(&v13->_eventData, data);
+    objc_storeStrong(&v13->_eventDataVersion, version);
   }
 
   return v13;

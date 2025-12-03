@@ -1,60 +1,60 @@
 @interface SiriGKMapPod
-- (SiriGKMapPod)initWithMapPod:(id)a3 snippetTitle:(id)a4 mapHeight:(double)a5;
-- (id)viewAtIndex:(int64_t)a3;
+- (SiriGKMapPod)initWithMapPod:(id)pod snippetTitle:(id)title mapHeight:(double)height;
+- (id)viewAtIndex:(int64_t)index;
 @end
 
 @implementation SiriGKMapPod
 
-- (SiriGKMapPod)initWithMapPod:(id)a3 snippetTitle:(id)a4 mapHeight:(double)a5
+- (SiriGKMapPod)initWithMapPod:(id)pod snippetTitle:(id)title mapHeight:(double)height
 {
-  v8 = a3;
-  v9 = a4;
+  podCopy = pod;
+  titleCopy = title;
   v30.receiver = self;
   v30.super_class = SiriGKMapPod;
   v10 = [(SiriGKMapPod *)&v30 init];
   if (v10)
   {
-    v11 = [v8 location];
-    v12 = [v11 latitude];
-    [v12 doubleValue];
+    location = [podCopy location];
+    latitude = [location latitude];
+    [latitude doubleValue];
     v14 = v13;
-    v15 = [v8 location];
-    v16 = [v15 longitude];
-    [v16 doubleValue];
+    location2 = [podCopy location];
+    longitude = [location2 longitude];
+    [longitude doubleValue];
     v18 = v17;
 
-    v19 = [v8 zoomLevel];
-    [v19 doubleValue];
+    zoomLevel = [podCopy zoomLevel];
+    [zoomLevel doubleValue];
     v21 = v20;
 
-    v22 = [v8 showButton];
-    LOBYTE(v12) = [v22 BOOLValue];
+    showButton = [podCopy showButton];
+    LOBYTE(latitude) = [showButton BOOLValue];
 
-    if (v12)
+    if (latitude)
     {
-      v23 = [[SiriGKMapButtonView alloc] initWithCoordinate:v9 mapSpan:v14 mapTitle:v18, v21];
+      height = [[SiriGKMapButtonView alloc] initWithCoordinate:titleCopy mapSpan:v14 mapTitle:v18, v21];
       v24 = &OBJC_IVAR___SiriGKMapPod__mapButtonView;
     }
 
     else
     {
-      v23 = [[SiriGKMapView alloc] initWithCoordinate:v9 mapSpan:v14 mapHeight:v18 calloutTitle:v21, a5];
+      height = [[SiriGKMapView alloc] initWithCoordinate:titleCopy mapSpan:v14 mapHeight:v18 calloutTitle:v21, height];
       v24 = &OBJC_IVAR___SiriGKMapPod__mapView;
     }
 
     v25 = *v24;
     v26 = *(&v10->super.super.isa + v25);
-    *(&v10->super.super.isa + v25) = v23;
+    *(&v10->super.super.isa + v25) = height;
 
     v27 = *(&v10->super.super.isa + v25);
-    v28 = [v8 punchOut];
-    [v27 setCommand:v28];
+    punchOut = [podCopy punchOut];
+    [v27 setCommand:punchOut];
   }
 
   return v10;
 }
 
-- (id)viewAtIndex:(int64_t)a3
+- (id)viewAtIndex:(int64_t)index
 {
   mapView = self->_mapView;
   if (!mapView)

@@ -1,11 +1,11 @@
 @interface STAskForTimeClient
 - (STAskForTimeClient)init;
-- (void)_asynchronousProxyWithHandler:(id)a3;
-- (void)_synchronousProxyWithHandler:(id)a3;
-- (void)approveExceptionForRequest:(id)a3 completionHandler:(id)a4;
-- (void)fetchLastResponseForRequestedResourceIdentifier:(id)a3 usageType:(int64_t)a4 withCompletionHandler:(id)a5;
-- (void)handleAnswer:(int64_t)a3 requestIdentifier:(id)a4 timeApproved:(id)a5 completionHandler:(id)a6;
-- (void)sendAskForTimeRequest:(id)a3 completionHandler:(id)a4;
+- (void)_asynchronousProxyWithHandler:(id)handler;
+- (void)_synchronousProxyWithHandler:(id)handler;
+- (void)approveExceptionForRequest:(id)request completionHandler:(id)handler;
+- (void)fetchLastResponseForRequestedResourceIdentifier:(id)identifier usageType:(int64_t)type withCompletionHandler:(id)handler;
+- (void)handleAnswer:(int64_t)answer requestIdentifier:(id)identifier timeApproved:(id)approved completionHandler:(id)handler;
+- (void)sendAskForTimeRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation STAskForTimeClient
@@ -30,19 +30,19 @@
   return v2;
 }
 
-- (void)sendAskForTimeRequest:(id)a3 completionHandler:(id)a4
+- (void)sendAskForTimeRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__STAskForTimeClient_sendAskForTimeRequest_completionHandler___block_invoke;
   v10[3] = &unk_1E7CE6C20;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = requestCopy;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = requestCopy;
   [(STAskForTimeClient *)self _asynchronousProxyWithHandler:v10];
 }
 
@@ -73,19 +73,19 @@ void __62__STAskForTimeClient_sendAskForTimeRequest_completionHandler___block_in
   }
 }
 
-- (void)approveExceptionForRequest:(id)a3 completionHandler:(id)a4
+- (void)approveExceptionForRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__STAskForTimeClient_approveExceptionForRequest_completionHandler___block_invoke;
   v10[3] = &unk_1E7CE6C20;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = requestCopy;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = requestCopy;
   [(STAskForTimeClient *)self _asynchronousProxyWithHandler:v10];
 }
 
@@ -116,20 +116,20 @@ void __67__STAskForTimeClient_approveExceptionForRequest_completionHandler___blo
   }
 }
 
-- (void)fetchLastResponseForRequestedResourceIdentifier:(id)a3 usageType:(int64_t)a4 withCompletionHandler:(id)a5
+- (void)fetchLastResponseForRequestedResourceIdentifier:(id)identifier usageType:(int64_t)type withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __102__STAskForTimeClient_fetchLastResponseForRequestedResourceIdentifier_usageType_withCompletionHandler___block_invoke;
   v12[3] = &unk_1E7CE6C70;
-  v13 = v8;
-  v14 = self;
-  v15 = v9;
-  v16 = a4;
-  v10 = v9;
-  v11 = v8;
+  v13 = identifierCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  typeCopy = type;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   [(STAskForTimeClient *)self _asynchronousProxyWithHandler:v12];
 }
 
@@ -161,23 +161,23 @@ void __102__STAskForTimeClient_fetchLastResponseForRequestedResourceIdentifier_u
   }
 }
 
-- (void)handleAnswer:(int64_t)a3 requestIdentifier:(id)a4 timeApproved:(id)a5 completionHandler:(id)a6
+- (void)handleAnswer:(int64_t)answer requestIdentifier:(id)identifier timeApproved:(id)approved completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  approvedCopy = approved;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __84__STAskForTimeClient_handleAnswer_requestIdentifier_timeApproved_completionHandler___block_invoke;
   v16[3] = &unk_1E7CE6CC0;
-  v20 = v12;
-  v21 = a3;
-  v17 = v10;
-  v18 = v11;
-  v19 = self;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v20 = handlerCopy;
+  answerCopy = answer;
+  v17 = identifierCopy;
+  v18 = approvedCopy;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v14 = approvedCopy;
+  v15 = identifierCopy;
   [(STAskForTimeClient *)self _asynchronousProxyWithHandler:v16];
 }
 
@@ -210,17 +210,17 @@ void __84__STAskForTimeClient_handleAnswer_requestIdentifier_timeApproved_comple
   }
 }
 
-- (void)_synchronousProxyWithHandler:(id)a3
+- (void)_synchronousProxyWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STAskForTimeClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(STAskForTimeClient *)self xpcConnection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__STAskForTimeClient__synchronousProxyWithHandler___block_invoke;
   v8[3] = &unk_1E7CE6CE8;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v8];
+  v9 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v8];
   v6[2](v6, v7, 0);
 }
 
@@ -236,17 +236,17 @@ void __51__STAskForTimeClient__synchronousProxyWithHandler___block_invoke(uint64
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_asynchronousProxyWithHandler:(id)a3
+- (void)_asynchronousProxyWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STAskForTimeClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(STAskForTimeClient *)self xpcConnection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__STAskForTimeClient__asynchronousProxyWithHandler___block_invoke;
   v8[3] = &unk_1E7CE6CE8;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
   v6[2](v6, v7, 0);
 }
 

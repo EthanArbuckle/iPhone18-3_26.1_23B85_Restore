@@ -1,25 +1,25 @@
 @interface CRLCanvasLayoutAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)crlaxIsDraggable;
 - (BOOL)crlaxIsSelectable;
-- (CGPoint)getCardinalPositionFromTypeInUnscaledCanvas:(unint64_t)a3;
+- (CGPoint)getCardinalPositionFromTypeInUnscaledCanvas:(unint64_t)canvas;
 - (CRLCanvasLayoutGeometryAccessibility)crlaxInspectorGeometry;
 - (CRLCanvasRepAccessibility)crlaxRepForLayout;
 - (NSString)crlaxDescriptionForConnections;
 - (id)_crlaxCanvas;
-- (id)_dragAnnouncementStringForDiff:(CGPoint)a3;
-- (id)_longDragAnnouncementStringForDiff:(CGPoint)a3;
-- (id)crlaxCommandForAccessibilityIncrementDecrement:(BOOL)a3 forKnobTag:(unint64_t)a4 inSmartPathSource:(id)a5;
-- (void)dragBy:(CGPoint)a3;
+- (id)_dragAnnouncementStringForDiff:(CGPoint)diff;
+- (id)_longDragAnnouncementStringForDiff:(CGPoint)diff;
+- (id)crlaxCommandForAccessibilityIncrementDecrement:(BOOL)decrement forKnobTag:(unint64_t)tag inSmartPathSource:(id)source;
+- (void)dragBy:(CGPoint)by;
 - (void)invalidate;
 @end
 
 @implementation CRLCanvasLayoutAccessibility
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
+  y = by.y;
+  x = by.x;
   v11.receiver = self;
   v11.super_class = CRLCanvasLayoutAccessibility;
   [(CRLCanvasLayoutAccessibility *)&v11 dragBy:?];
@@ -36,10 +36,10 @@
   }
 }
 
-- (id)_dragAnnouncementStringForDiff:(CGPoint)a3
+- (id)_dragAnnouncementStringForDiff:(CGPoint)diff
 {
-  y = a3.y;
-  x = a3.x;
+  y = diff.y;
+  x = diff.x;
   if ([(CRLCanvasLayoutAccessibility *)self crlaxDragAnnouncementType]== 1)
   {
     v6 = [(CRLCanvasLayoutAccessibility *)self _longDragAnnouncementStringForDiff:x, y];
@@ -53,19 +53,19 @@
   return v6;
 }
 
-- (id)_longDragAnnouncementStringForDiff:(CGPoint)a3
+- (id)_longDragAnnouncementStringForDiff:(CGPoint)diff
 {
-  y = a3.y;
-  v4 = fabs(a3.x);
-  if (a3.x == 0.0)
+  y = diff.y;
+  v4 = fabs(diff.x);
+  if (diff.x == 0.0)
   {
     v7 = 0;
   }
 
   else
   {
-    x = a3.x;
-    if (a3.x > 0.0)
+    x = diff.x;
+    if (diff.x > 0.0)
     {
       v6 = CRLAccessibilityStringsDictKey(@"moving.object.right");
       [NSString localizedStringWithFormat:v6, *&x];
@@ -128,11 +128,11 @@
   return v21;
 }
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -140,11 +140,11 @@
 - (CRLCanvasLayoutGeometryAccessibility)crlaxInspectorGeometry
 {
   v8 = 0;
-  v2 = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
-  v3 = [v2 inspectorGeometry];
+  crlaxTarget = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
+  inspectorGeometry = [crlaxTarget inspectorGeometry];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, inspectorGeometry, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -157,26 +157,26 @@
 
 - (BOOL)crlaxIsSelectable
 {
-  v2 = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
-  v3 = [v2 isSelectable];
+  crlaxTarget = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
+  isSelectable = [crlaxTarget isSelectable];
 
-  return v3;
+  return isSelectable;
 }
 
 - (BOOL)crlaxIsDraggable
 {
-  v2 = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
-  v3 = [v2 isDraggable];
+  crlaxTarget = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
+  isDraggable = [crlaxTarget isDraggable];
 
-  return v3;
+  return isDraggable;
 }
 
 - (CRLCanvasRepAccessibility)crlaxRepForLayout
 {
-  v3 = [(CRLCanvasLayoutAccessibility *)self _crlaxCanvas];
+  _crlaxCanvas = [(CRLCanvasLayoutAccessibility *)self _crlaxCanvas];
   v4 = objc_opt_class();
-  v5 = [v3 crlaxInteractiveCanvasController];
-  v6 = __CRLAccessibilityCastAsSafeCategory(v4, v5, 0, 0);
+  crlaxInteractiveCanvasController = [_crlaxCanvas crlaxInteractiveCanvasController];
+  v6 = __CRLAccessibilityCastAsSafeCategory(v4, crlaxInteractiveCanvasController, 0, 0);
 
   v7 = [v6 crlaxRepForLayout:self];
 
@@ -185,17 +185,17 @@
 
 - (NSString)crlaxDescriptionForConnections
 {
-  v3 = [(CRLCanvasLayoutAccessibility *)self crlaxRepForLayout];
-  v4 = [v3 crlaxDescriptionForConnections];
+  crlaxRepForLayout = [(CRLCanvasLayoutAccessibility *)self crlaxRepForLayout];
+  crlaxDescriptionForConnections = [crlaxRepForLayout crlaxDescriptionForConnections];
 
-  if (![v4 length])
+  if (![crlaxDescriptionForConnections length])
   {
     v15 = 0;
-    v5 = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
-    v6 = [v5 info];
+    crlaxTarget = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
+    info = [crlaxTarget info];
 
     v7 = objc_opt_class();
-    v8 = __CRLAccessibilityCastAsSafeCategory(v7, v6, 1, &v15);
+    v8 = __CRLAccessibilityCastAsSafeCategory(v7, info, 1, &v15);
     if (v15 == 1)
     {
       abort();
@@ -203,17 +203,17 @@
 
     v9 = v8;
 
-    v10 = [v9 crlaxTypeDescription];
+    crlaxTypeDescription = [v9 crlaxTypeDescription];
 
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@"Off-screen %@" value:0 table:0];
 
-    v13 = [NSString localizedStringWithFormat:v12, v10];
+    v13 = [NSString localizedStringWithFormat:v12, crlaxTypeDescription];
 
-    v4 = v13;
+    crlaxDescriptionForConnections = v13;
   }
 
-  return v4;
+  return crlaxDescriptionForConnections;
 }
 
 - (void)invalidate
@@ -221,13 +221,13 @@
   v11.receiver = self;
   v11.super_class = CRLCanvasLayoutAccessibility;
   [(CRLCanvasLayoutAccessibility *)&v11 invalidate];
-  v3 = [(CRLCanvasLayoutAccessibility *)self crlaxStorage];
-  if (v3)
+  crlaxStorage = [(CRLCanvasLayoutAccessibility *)self crlaxStorage];
+  if (crlaxStorage)
   {
-    v4 = [(CRLCanvasLayoutAccessibility *)self _crlaxCanvas];
+    _crlaxCanvas = [(CRLCanvasLayoutAccessibility *)self _crlaxCanvas];
     v5 = objc_opt_class();
-    v6 = [v4 crlaxInteractiveCanvasController];
-    v7 = __CRLAccessibilityCastAsSafeCategory(v5, v6, 0, 0);
+    crlaxInteractiveCanvasController = [_crlaxCanvas crlaxInteractiveCanvasController];
+    v7 = __CRLAccessibilityCastAsSafeCategory(v5, crlaxInteractiveCanvasController, 0, 0);
 
     if (v7)
     {
@@ -235,7 +235,7 @@
       v8[1] = 3221225472;
       v8[2] = sub_100538104;
       v8[3] = &unk_10183AE28;
-      v9 = v3;
+      v9 = crlaxStorage;
       v10 = v7;
       if (__CRLAccessibilityPerformSafeBlock(v8))
       {
@@ -245,17 +245,17 @@
   }
 }
 
-- (CGPoint)getCardinalPositionFromTypeInUnscaledCanvas:(unint64_t)a3
+- (CGPoint)getCardinalPositionFromTypeInUnscaledCanvas:(unint64_t)canvas
 {
-  v5 = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
-  [v5 invalidateCacheForMagnets];
-  [v5 getCardinalPositionFromType:a3];
+  crlaxTarget = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
+  [crlaxTarget invalidateCacheForMagnets];
+  [crlaxTarget getCardinalPositionFromType:canvas];
   v7 = v6;
   v9 = v8;
   v37 = 0;
-  v10 = [v5 parent];
+  parent = [crlaxTarget parent];
   v11 = objc_opt_class();
-  v12 = __CRLAccessibilityCastAsClass(v11, v10, 1, &v37);
+  v12 = __CRLAccessibilityCastAsClass(v11, parent, 1, &v37);
   if (v37 == 1)
   {
     goto LABEL_8;
@@ -270,8 +270,8 @@
     v9 = v15;
   }
 
-  v16 = [(CRLCanvasLayoutAccessibility *)self crlaxRepForLayout];
-  [v16 crlaxFrameInUnscaledCanvas];
+  crlaxRepForLayout = [(CRLCanvasLayoutAccessibility *)self crlaxRepForLayout];
+  [crlaxRepForLayout crlaxFrameInUnscaledCanvas];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -282,7 +282,7 @@
     if (!sub_10011EF78(v18, v20, v22, v24, v7, v9))
     {
       ShouldCrashOnValidationErrorAfterLaunch = CRLAccessibilityShouldCrashOnValidationErrorAfterLaunch();
-      v26 = [(CRLCanvasLayoutAccessibility *)self crlaxRepForLayout];
+      crlaxRepForLayout2 = [(CRLCanvasLayoutAccessibility *)self crlaxRepForLayout];
       v40.origin.x = v18;
       v40.origin.y = v20;
       v40.size.width = v22;
@@ -291,7 +291,7 @@
       v38.x = v7;
       v38.y = v9;
       v36 = NSStringFromCGPoint(v38);
-      v33 = __CRLAccessibilityHandleValidationErrorWithDescription(ShouldCrashOnValidationErrorAfterLaunch, 0, @"The rep %@ has an unscaled canvas frame %@, that does not include the unscaled canvas point %@ for magnet %lu.", v28, v29, v30, v31, v32, v26);
+      v33 = __CRLAccessibilityHandleValidationErrorWithDescription(ShouldCrashOnValidationErrorAfterLaunch, 0, @"The rep %@ has an unscaled canvas frame %@, that does not include the unscaled canvas point %@ for magnet %lu.", v28, v29, v30, v31, v32, crlaxRepForLayout2);
 
       if (v33)
       {
@@ -308,16 +308,16 @@ LABEL_8:
   return result;
 }
 
-- (id)crlaxCommandForAccessibilityIncrementDecrement:(BOOL)a3 forKnobTag:(unint64_t)a4 inSmartPathSource:(id)a5
+- (id)crlaxCommandForAccessibilityIncrementDecrement:(BOOL)decrement forKnobTag:(unint64_t)tag inSmartPathSource:(id)source
 {
-  v6 = a3;
-  v8 = a5;
+  decrementCopy = decrement;
+  sourceCopy = source;
   v84 = 0;
-  v9 = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
-  v10 = [v9 info];
+  crlaxTarget = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
+  info = [crlaxTarget info];
 
   v11 = objc_opt_class();
-  v12 = __CRLAccessibilityCastAsClass(v11, v10, 1, &v84);
+  v12 = __CRLAccessibilityCastAsClass(v11, info, 1, &v84);
   if (v84 == 1)
   {
     goto LABEL_93;
@@ -326,11 +326,11 @@ LABEL_8:
   v13 = v12;
 
   v83 = 0;
-  v14 = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
-  v15 = [v14 info];
+  crlaxTarget2 = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
+  info2 = [crlaxTarget2 info];
 
   v16 = objc_opt_class();
-  v17 = __CRLAccessibilityCastAsClass(v16, v15, 1, &v83);
+  v17 = __CRLAccessibilityCastAsClass(v16, info2, 1, &v83);
   if (v83 == 1)
   {
     goto LABEL_93;
@@ -340,14 +340,14 @@ LABEL_8:
 
   if (objc_opt_respondsToSelector())
   {
-    v19 = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
-    v20 = [v19 maskLayout];
+    crlaxTarget3 = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
+    maskLayout = [crlaxTarget3 maskLayout];
 
-    v21 = [v20 maskInfo];
+    maskInfo = [maskLayout maskInfo];
     v82 = 0;
-    v22 = [v21 pathSource];
+    pathSource = [maskInfo pathSource];
     v23 = objc_opt_class();
-    v24 = __CRLAccessibilityCastAsClassAndProtocol(v23, &OBJC_PROTOCOL___CRLSmartPathSource, v22, 1, &v82);
+    v24 = __CRLAccessibilityCastAsClassAndProtocol(v23, &OBJC_PROTOCOL___CRLSmartPathSource, pathSource, 1, &v82);
     if (v82 == 1)
     {
       goto LABEL_93;
@@ -355,7 +355,7 @@ LABEL_8:
 
     v25 = v24;
 
-    if (!v18 || !v21)
+    if (!v18 || !maskInfo)
     {
 
       if (!v13)
@@ -366,11 +366,11 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    v26 = [v25 crlaxIsAdjustableForKnobTag:a4];
+    v26 = [v25 crlaxIsAdjustableForKnobTag:tag];
 
     if (v26)
     {
-      if (v20)
+      if (maskLayout)
       {
         v27 = 1;
         goto LABEL_13;
@@ -384,7 +384,7 @@ LABEL_21:
 
   else
   {
-    v20 = 0;
+    maskLayout = 0;
   }
 
   if (!v13)
@@ -395,22 +395,22 @@ LABEL_21:
 LABEL_12:
   v27 = 0;
 LABEL_13:
-  if ([v8 crlaxIsAdjustableForKnobTag:a4])
+  if ([sourceCopy crlaxIsAdjustableForKnobTag:tag])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v81 = 0;
-      v28 = v8;
+      v28 = sourceCopy;
       v29 = objc_opt_class();
       v30 = __CRLAccessibilityCastAsClass(v29, v28, 1, &v81);
       if (v81 != 1)
       {
         v31 = v30;
 
-        if (a4 == 14)
+        if (tag == 14)
         {
-          if (v6)
+          if (decrementCopy)
           {
             [v31 maxTailSize];
             v53 = v52;
@@ -436,7 +436,7 @@ LABEL_13:
 
           if (v27)
           {
-            [CRLPathSourceCommandHelper commandForSettingCalloutTailSize:v28 withPathSource:v18 imageItem:v20 maskLayout:v55];
+            [CRLPathSourceCommandHelper commandForSettingCalloutTailSize:v28 withPathSource:v18 imageItem:maskLayout maskLayout:v55];
           }
 
           else
@@ -447,9 +447,9 @@ LABEL_13:
           goto LABEL_52;
         }
 
-        if (a4 == 13)
+        if (tag == 13)
         {
-          if (v6)
+          if (decrementCopy)
           {
             [v31 maxCornerRadius];
             v33 = v32;
@@ -479,7 +479,7 @@ LABEL_13:
 
           if (v27)
           {
-            [CRLPathSourceCommandHelper commandForSettingCalloutCornerRadius:v28 withPathSource:v18 imageItem:v20 maskLayout:v35];
+            [CRLPathSourceCommandHelper commandForSettingCalloutCornerRadius:v28 withPathSource:v18 imageItem:maskLayout maskLayout:v35];
           }
 
           else
@@ -503,17 +503,17 @@ LABEL_72:
     if (objc_opt_isKindOfClass())
     {
       v80 = 0;
-      v37 = v8;
+      v37 = sourceCopy;
       v38 = objc_opt_class();
       v39 = __CRLAccessibilityCastAsClass(v38, v37, 1, &v80);
       if (v80 != 1)
       {
         v31 = v39;
 
-        v40 = [v31 type];
-        if (v40 == 1)
+        type = [v31 type];
+        if (type == 1)
         {
-          if (v6)
+          if (decrementCopy)
           {
             v61 = +[CRLScalarPathSource crlaxMaximumAllowedPolygonPointsDuringAdjustment];
             [v31 scalar];
@@ -532,7 +532,7 @@ LABEL_72:
 
           if (v27)
           {
-            [CRLPathSourceCommandHelper commandForSettingNumberOfSides:v37 withPathSource:v18 imageItem:v20 maskLayout:v63];
+            [CRLPathSourceCommandHelper commandForSettingNumberOfSides:v37 withPathSource:v18 imageItem:maskLayout maskLayout:v63];
           }
 
           else
@@ -543,12 +543,12 @@ LABEL_72:
 
         else
         {
-          if (v40)
+          if (type)
           {
             goto LABEL_40;
           }
 
-          if (v6)
+          if (decrementCopy)
           {
             [v31 maxCornerRadius];
             v42 = v41;
@@ -568,7 +568,7 @@ LABEL_72:
 
           if (v27)
           {
-            [CRLPathSourceCommandHelper commandForSettingCornerRadius:v37 withPathSource:v18 imageItem:v20 maskLayout:v44];
+            [CRLPathSourceCommandHelper commandForSettingCornerRadius:v37 withPathSource:v18 imageItem:maskLayout maskLayout:v44];
           }
 
           else
@@ -587,7 +587,7 @@ LABEL_72:
     if (objc_opt_isKindOfClass())
     {
       v79 = 0;
-      v45 = v8;
+      v45 = sourceCopy;
       v46 = objc_opt_class();
       v47 = __CRLAccessibilityCastAsClass(v46, v45, 1, &v79);
       if (v79 != 1)
@@ -596,9 +596,9 @@ LABEL_72:
 
         if ([v31 type] == 100)
         {
-          if (a4 == 13)
+          if (tag == 13)
           {
-            if (v6)
+            if (decrementCopy)
             {
               [v31 maxStarRadius];
               v71 = v70;
@@ -624,7 +624,7 @@ LABEL_72:
 
             if (v27)
             {
-              [CRLPathSourceCommandHelper commandForSettingStarRadius:v45 withPathSource:v18 imageItem:v20 maskLayout:v73];
+              [CRLPathSourceCommandHelper commandForSettingStarRadius:v45 withPathSource:v18 imageItem:maskLayout maskLayout:v73];
             }
 
             else
@@ -635,40 +635,40 @@ LABEL_72:
 
           else
           {
-            if (a4 != 12)
+            if (tag != 12)
             {
               goto LABEL_40;
             }
 
-            if (v6)
+            if (decrementCopy)
             {
-              v48 = [v31 maxStarPoints];
-              v49 = [v31 starPoints];
-              if (v48 >= v49 + 1)
+              maxStarPoints = [v31 maxStarPoints];
+              starPoints = [v31 starPoints];
+              if (maxStarPoints >= starPoints + 1)
               {
-                v50 = v49 + 1;
+                v50 = starPoints + 1;
               }
 
               else
               {
-                v50 = v48;
+                v50 = maxStarPoints;
               }
             }
 
             else
             {
-              v74 = [v31 minStarPoints];
+              minStarPoints = [v31 minStarPoints];
               v50 = [v31 starPoints] - 1;
-              if (v74 > v50)
+              if (minStarPoints > v50)
               {
-                v50 = v74;
+                v50 = minStarPoints;
               }
             }
 
             v75 = v50;
             if (v27)
             {
-              [CRLPathSourceCommandHelper commandForSettingStarPoints:v45 withPathSource:v18 imageItem:v20 maskLayout:v75];
+              [CRLPathSourceCommandHelper commandForSettingStarPoints:v45 withPathSource:v18 imageItem:maskLayout maskLayout:v75];
             }
 
             else
@@ -703,12 +703,12 @@ LABEL_75:
 - (id)_crlaxCanvas
 {
   v9 = 0;
-  v2 = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
-  v3 = [v2 layoutController];
-  v4 = [v3 canvas];
+  crlaxTarget = [(CRLCanvasLayoutAccessibility *)self crlaxTarget];
+  layoutController = [crlaxTarget layoutController];
+  canvas = [layoutController canvas];
 
   v5 = objc_opt_class();
-  v6 = __CRLAccessibilityCastAsSafeCategory(v5, v4, 1, &v9);
+  v6 = __CRLAccessibilityCastAsSafeCategory(v5, canvas, 1, &v9);
   if (v9 == 1)
   {
     abort();

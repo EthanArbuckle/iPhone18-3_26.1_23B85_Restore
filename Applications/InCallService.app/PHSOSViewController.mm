@@ -1,7 +1,7 @@
 @interface PHSOSViewController
 + (BOOL)isCallBufferDismissalAssertionActive;
 + (BOOL)isSOSDismissalAssertionActive;
-+ (BOOL)shouldShowMedicalID:(id)a3;
++ (BOOL)shouldShowMedicalID:(id)d;
 + (void)releaseAllCallBufferDismissalAssertions;
 - (BOOL)allowsMenuButtonDismissal;
 - (BOOL)clawButtonPressGapWithinThreshold;
@@ -12,40 +12,40 @@
 - (PHSOSAlertRestingView)alertRestingView;
 - (PHSOSNumbersViewController)sosNumbersViewController;
 - (PHSOSRestingView)restingView;
-- (PHSOSViewController)initWithSOSHandles:(id)a3;
+- (PHSOSViewController)initWithSOSHandles:(id)handles;
 - (PHSlidingView)slidingView;
 - (UILabel)infoLabel;
 - (double)marginPadding;
 - (id)getCheckInViewModel;
 - (id)getSOSDialCountdownViewModel;
-- (id)nameForSOSMode:(int64_t)a3;
+- (id)nameForSOSMode:(int64_t)mode;
 - (void)addDismissalAssertionReleasedObserver;
 - (void)addObservers;
-- (void)buttonPressStateChangedNotification:(id)a3;
-- (void)buttonPressed:(id)a3;
-- (void)callStateChangedNotification:(id)a3;
+- (void)buttonPressStateChangedNotification:(id)notification;
+- (void)buttonPressed:(id)pressed;
+- (void)callStateChangedNotification:(id)notification;
 - (void)clearStatusHeartbeatTimer;
-- (void)deactivateSOSWithSOSDismissalType:(int64_t)a3;
+- (void)deactivateSOSWithSOSDismissalType:(int64_t)type;
 - (void)dialEmergencyCall;
-- (void)dialSOSNumberAtIndex:(int64_t)a3;
+- (void)dialSOSNumberAtIndex:(int64_t)index;
 - (void)didReceiveMemoryWarning;
 - (void)didTapTemporarilyDisableFindMy;
 - (void)dismissMedicalIDViewController;
-- (void)dismissSOSNotification:(id)a3;
-- (void)dismissalAssertionReleasedNotification:(id)a3;
-- (void)emergencyCallbackModeChangedNotification:(id)a3;
-- (void)fetchMedicalIDWithCompletion:(id)a3;
-- (void)handleAlertDisconnectingCallsNotification:(id)a3;
+- (void)dismissSOSNotification:(id)notification;
+- (void)dismissalAssertionReleasedNotification:(id)notification;
+- (void)emergencyCallbackModeChangedNotification:(id)notification;
+- (void)fetchMedicalIDWithCompletion:(id)completion;
+- (void)handleAlertDisconnectingCallsNotification:(id)notification;
 - (void)handleAnimationSlidingCompletionResponse;
-- (void)handleCallBufferCompletionNotification:(id)a3;
-- (void)handleNetworkUnavailableAlertDidFinishNotification:(id)a3;
+- (void)handleCallBufferCompletionNotification:(id)notification;
+- (void)handleNetworkUnavailableAlertDidFinishNotification:(id)notification;
 - (void)handleVolumeChanges;
 - (void)handleVolumeHUDEnablement;
-- (void)hideMedicalIDWithCompletion:(id)a3;
+- (void)hideMedicalIDWithCompletion:(id)completion;
 - (void)interactiveStart;
-- (void)interactiveStateChangedNotification:(id)a3;
-- (void)interactiveStop:(BOOL)a3;
-- (void)loadMedicalIDWithCompletion:(id)a3;
+- (void)interactiveStateChangedNotification:(id)notification;
+- (void)interactiveStop:(BOOL)stop;
+- (void)loadMedicalIDWithCompletion:(id)completion;
 - (void)notifyEmergencyContacts;
 - (void)presentMedicalID;
 - (void)raiseAccidentalSOSNotification;
@@ -54,7 +54,7 @@
 - (void)sendFlowStateUpdateForCurrentSOSMode;
 - (void)setPostCallMode;
 - (void)setPostContactNotificationMode;
-- (void)setSosMode:(int64_t)a3;
+- (void)setSosMode:(int64_t)mode;
 - (void)setSystemVolumeToMax;
 - (void)setUpAlertRestingViewConstraints;
 - (void)setUpCancelButtonConstraints;
@@ -68,7 +68,7 @@
 - (void)showCheckInView;
 - (void)showConfirmationAlert;
 - (void)showPowerDownFindMyAlert;
-- (void)showPowerDownFindMyInfoAlertWithProceed:(id)a3 cancelCompletion:(id)a4;
+- (void)showPowerDownFindMyInfoAlertWithProceed:(id)proceed cancelCompletion:(id)completion;
 - (void)showRestingView;
 - (void)showSOSDialCanceled;
 - (void)showSOSDialCountdown;
@@ -77,19 +77,19 @@
 - (void)showSOSNotificationCountdown;
 - (void)showSOSNotified;
 - (void)showSOSNumbersList;
-- (void)sosNumbersViewController:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)sosNumbersViewController:(id)controller didSelectRowAtIndexPath:(id)path;
 - (void)startSOSNotificationCountdown;
 - (void)startStatusHeartbeatTimer;
-- (void)stateChanged:(id)a3;
-- (void)submitSOSResolutionMetric:(BOOL)a3;
+- (void)stateChanged:(id)changed;
+- (void)submitSOSResolutionMetric:(BOOL)metric;
 - (void)submitSOSUserActivityMetric;
-- (void)transitionToView:(id)a3 animated:(BOOL)a4;
+- (void)transitionToView:(id)view animated:(BOOL)animated;
 - (void)updateInteractiveState;
-- (void)updateSOSHandles:(id)a3;
+- (void)updateSOSHandles:(id)handles;
 - (void)userAcknowledgedFindMyInfo;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willStartSendingLocationUpdate;
 @end
 
@@ -120,9 +120,9 @@
   [PHInCallRootViewController releaseDismissalAssertionForReason:@"PHSliderSwipeCallBufferScreenAssertionReason"];
 }
 
-- (PHSOSViewController)initWithSOSHandles:(id)a3
+- (PHSOSViewController)initWithSOSHandles:(id)handles
 {
-  v5 = a3;
+  handlesCopy = handles;
   v44.receiver = self;
   v44.super_class = PHSOSViewController;
   v6 = [(PHSOSViewController *)&v44 init];
@@ -139,7 +139,7 @@
   analyticsReporter = v6->_analyticsReporter;
   v6->_analyticsReporter = v9;
 
-  objc_storeStrong(&v6->_sosHandles, a3);
+  objc_storeStrong(&v6->_sosHandles, handles);
   v6->_sosTrigger = +[SOSUtilities mostRecentlyUsedSOSTriggerMechanism];
   v6->_isPendingAudioSessionActivation = 1;
   v11 = objc_alloc_init(PHAudioDeviceController);
@@ -152,17 +152,17 @@
   v6->_coreAnalyticsReporter = v13;
 
   v6->_priorSystemVolume = -1.0;
-  v15 = [(PHAudioDeviceController *)v6->_audioDeviceController currentRoute];
+  currentRoute = [(PHAudioDeviceController *)v6->_audioDeviceController currentRoute];
   priorSystemAudioRoute = v6->_priorSystemAudioRoute;
-  v6->_priorSystemAudioRoute = v15;
+  v6->_priorSystemAudioRoute = currentRoute;
 
   v6->_callDialStartTime = -1.0;
   v6->_timeTillActive = -1.0;
   v6->_callAutoDialled = 0;
   v17 = +[NSUUID UUID];
-  v18 = [v17 UUIDString];
+  uUIDString = [v17 UUIDString];
   sessionId = v6->_sessionId;
-  v6->_sessionId = v18;
+  v6->_sessionId = uUIDString;
 
   v6->_sessionStartTime = CFAbsoluteTimeGetCurrent();
   v20 = +[PHInCallRootViewController dismissalAssertions];
@@ -182,9 +182,9 @@
       v6->_stewieStateMonitor = v31;
 
       [(CTStewieStateMonitor *)v6->_stewieStateMonitor start];
-      v33 = [(CTStewieStateMonitor *)v6->_stewieStateMonitor getState];
+      getState = [(CTStewieStateMonitor *)v6->_stewieStateMonitor getState];
       stewieState = v6->_stewieState;
-      v6->_stewieState = v33;
+      v6->_stewieState = getState;
 
       v35 = sub_100004F84();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -311,10 +311,10 @@ LABEL_32:
   [v3 addObserver:self selector:"handleCallBufferCompletionNotification:" name:@"PHCallBufferCompletionNotification" object:0];
 }
 
-- (void)updateSOSHandles:(id)a3
+- (void)updateSOSHandles:(id)handles
 {
-  v6 = a3;
-  objc_storeStrong(&self->_sosHandles, a3);
+  handlesCopy = handles;
+  objc_storeStrong(&self->_sosHandles, handles);
   sosNumbersViewController = self->_sosNumbersViewController;
   if (sosNumbersViewController)
   {
@@ -344,8 +344,8 @@ LABEL_32:
   }
 
   v3 = +[SOSManager sharedInstance];
-  v4 = [v3 currentSOSButtonPressState];
-  [v4 getButtonPressGap];
+  currentSOSButtonPressState = [v3 currentSOSButtonPressState];
+  [currentSOSButtonPressState getButtonPressGap];
   v6 = v5 <= 3.0;
 
   return v6;
@@ -358,23 +358,23 @@ LABEL_32:
     goto LABEL_8;
   }
 
-  v3 = [(PHSOSViewController *)self slidingView];
-  if ([v3 slidingViewState] == 1 || !sub_10008B280())
+  slidingView = [(PHSOSViewController *)self slidingView];
+  if ([slidingView slidingViewState] == 1 || !sub_10008B280())
   {
     goto LABEL_7;
   }
 
-  v4 = [(PHSOSViewController *)self coreTelephonyClient];
-  if ([SOSUtilities shouldForceDisableAutoCallForClient:v4])
+  coreTelephonyClient = [(PHSOSViewController *)self coreTelephonyClient];
+  if ([SOSUtilities shouldForceDisableAutoCallForClient:coreTelephonyClient])
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v5 = [(PHSOSViewController *)self clawButtonPressGapWithinThreshold];
+  clawButtonPressGapWithinThreshold = [(PHSOSViewController *)self clawButtonPressGapWithinThreshold];
 
-  if (!v5)
+  if (!clawButtonPressGapWithinThreshold)
   {
 LABEL_8:
     if (![(PHSOSViewController *)self clawButtonPressGapWithinThreshold])
@@ -388,16 +388,16 @@ LABEL_8:
     return;
   }
 
-  v6 = [(PHSOSViewController *)self slidingView];
+  slidingView2 = [(PHSOSViewController *)self slidingView];
   v7 = objc_alloc_init(PHSOSDialSlidingViewModel);
-  [v6 interactiveStartWithCountdownModel:v7];
+  [slidingView2 interactiveStartWithCountdownModel:v7];
 
   +[NSDate timeIntervalSinceReferenceDate];
 
   [(PHSOSViewController *)self setInteractiveStartTime:?];
 }
 
-- (void)interactiveStop:(BOOL)a3
+- (void)interactiveStop:(BOOL)stop
 {
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
@@ -405,12 +405,12 @@ LABEL_8:
   v7[2] = sub_10008B800;
   v7[3] = &unk_100358078;
   objc_copyWeak(&v8, &location);
-  v9 = a3;
+  stopCopy = stop;
   v5 = objc_retainBlock(v7);
   if ([(PHSOSViewController *)self sosMode]== 2)
   {
-    v6 = [(PHSOSViewController *)self slidingView];
-    [v6 interactiveStop:v5];
+    slidingView = [(PHSOSViewController *)self slidingView];
+    [slidingView interactiveStop:v5];
   }
 
   objc_destroyWeak(&v8);
@@ -432,10 +432,10 @@ LABEL_8:
   if ([(PHAudioDeviceController *)self->_audioDeviceController speakerRouteAvailable])
   {
     [(PHAudioDeviceController *)self->_audioDeviceController pickSpeakerRoute];
-    v3 = [(PHAudioDeviceController *)self->_audioDeviceController speakerRouteIsPicked];
+    speakerRouteIsPicked = [(PHAudioDeviceController *)self->_audioDeviceController speakerRouteIsPicked];
     v4 = sub_100004F84();
     v5 = v4;
-    if (v3)
+    if (speakerRouteIsPicked)
     {
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
@@ -463,15 +463,15 @@ LABEL_8:
   v7 = [[PHBottomBarButton alloc] initWithConfiguration:v6 appType:2];
   [(PHSOSViewController *)self setCancelButton:v7];
 
-  v8 = [(PHSOSViewController *)self cancelButton];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  [cancelButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(PHSOSViewController *)self cancelButton];
-  [v9 addTarget:self action:"buttonPressed:" forEvents:64];
+  cancelButton2 = [(PHSOSViewController *)self cancelButton];
+  [cancelButton2 addTarget:self action:"buttonPressed:" forEvents:64];
 
-  v10 = [(PHSOSViewController *)self view];
-  v11 = [(PHSOSViewController *)self cancelButton];
-  [v10 addSubview:v11];
+  view = [(PHSOSViewController *)self view];
+  cancelButton3 = [(PHSOSViewController *)self cancelButton];
+  [view addSubview:cancelButton3];
 
   [(PHSOSViewController *)self setUpCancelButtonConstraints];
   [(PHSOSViewController *)self setSosMode:self->_sosMode];
@@ -481,9 +481,9 @@ LABEL_8:
   [(PHSOSViewController *)self updateInteractiveState];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   countdownView = self->_countdownView;
   if (countdownView)
   {
@@ -498,7 +498,7 @@ LABEL_8:
 
   v7.receiver = self;
   v7.super_class = PHSOSViewController;
-  [(PHSOSViewController *)&v7 viewWillDisappear:v3];
+  [(PHSOSViewController *)&v7 viewWillDisappear:disappearCopy];
   if (!+[PHSOSViewController isCallBufferDismissalAssertionActive])
   {
     [(PHSOSViewController *)self setVolumeHUDHiddenPending:0];
@@ -506,11 +506,11 @@ LABEL_8:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = PHSOSViewController;
-  [(PHSOSViewController *)&v10 viewWillAppear:a3];
+  [(PHSOSViewController *)&v10 viewWillAppear:appear];
   countdownView = self->_countdownView;
   if (countdownView)
   {
@@ -527,23 +527,23 @@ LABEL_8:
   [(PHSOSViewController *)self setCountdownStartedTime:?];
   [(PHSOSViewController *)self setVolumeHUDHiddenPending:1];
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 delegate];
-  v8 = [v7 sceneManager];
+  delegate = [v6 delegate];
+  sceneManager = [delegate sceneManager];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10008BD14;
   v9[3] = &unk_100357AF8;
   v9[4] = self;
-  [v8 waitForRegistrationOfSceneWithType:0 completion:v9];
+  [sceneManager waitForRegistrationOfSceneWithType:0 completion:v9];
 }
 
 - (void)handleVolumeHUDEnablement
 {
-  v3 = [(PHSOSViewController *)self volumeHUDHiddenPending];
-  v4 = [(PHSOSViewController *)self volumeHUDHiddenCurrently];
+  volumeHUDHiddenPending = [(PHSOSViewController *)self volumeHUDHiddenPending];
+  volumeHUDHiddenCurrently = [(PHSOSViewController *)self volumeHUDHiddenCurrently];
   v5 = sub_100004F84();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v3 == v4)
+  if (volumeHUDHiddenPending == volumeHUDHiddenCurrently)
   {
     if (v6)
     {
@@ -564,9 +564,9 @@ LABEL_8:
 
     [(PHSOSViewController *)self setVolumeHUDHiddenCurrently:[(PHSOSViewController *)self volumeHUDHiddenPending]];
     v5 = +[UIApplication sharedApplication];
-    v7 = [v5 delegate];
-    v8 = [v7 currentInCallScene];
-    [v8 _setSystemVolumeHUDEnabled:{-[PHSOSViewController volumeHUDHiddenPending](self, "volumeHUDHiddenPending") ^ 1}];
+    delegate = [v5 delegate];
+    currentInCallScene = [delegate currentInCallScene];
+    [currentInCallScene _setSystemVolumeHUDEnabled:{-[PHSOSViewController volumeHUDHiddenPending](self, "volumeHUDHiddenPending") ^ 1}];
   }
 }
 
@@ -582,7 +582,7 @@ LABEL_8:
   return result;
 }
 
-- (void)handleNetworkUnavailableAlertDidFinishNotification:(id)a3
+- (void)handleNetworkUnavailableAlertDidFinishNotification:(id)notification
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -594,7 +594,7 @@ LABEL_8:
   [(PHSOSViewController *)self deactivateSOS];
 }
 
-- (void)handleAlertDisconnectingCallsNotification:(id)a3
+- (void)handleAlertDisconnectingCallsNotification:(id)notification
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -607,28 +607,28 @@ LABEL_8:
   [(PHSOSViewController *)self setShouldDropBioAuthTokenOnDismiss:0];
 }
 
-- (void)callStateChangedNotification:(id)a3
+- (void)callStateChangedNotification:(id)notification
 {
-  v4 = [a3 object];
-  if ([v4 isConnected] && objc_msgSend(v4, "isSOSOrFakeSOS"))
+  object = [notification object];
+  if ([object isConnected] && objc_msgSend(object, "isSOSOrFakeSOS"))
   {
     [(PHSOSViewController *)self setShouldDropBioAuthTokenOnDismiss:0];
   }
 
-  v5 = [v4 status];
-  if (v5 <= 3)
+  status = [object status];
+  if (status <= 3)
   {
-    if (v5 == 1)
+    if (status == 1)
     {
       goto LABEL_20;
     }
 
-    if (v5 != 3)
+    if (status != 3)
     {
       goto LABEL_59;
     }
 
-    if ([v4 isSOSOrFakeSOS])
+    if ([object isSOSOrFakeSOS])
     {
       [(PHSOSViewController *)self removeDismissalAssertionReleasedObserver];
     }
@@ -641,28 +641,28 @@ LABEL_19:
     v35[4] = self;
     [(PHSOSViewController *)self hideMedicalIDWithCompletion:v35];
 LABEL_20:
-    v14 = [(PHSOSViewController *)self sosMode];
-    if (v14 <= 8 && ((1 << v14) & 0x107) != 0)
+    sosMode = [(PHSOSViewController *)self sosMode];
+    if (sosMode <= 8 && ((1 << sosMode) & 0x107) != 0)
     {
-      if (-[PHSOSViewController requestedCallActive](self, "requestedCallActive") && [v4 isSOSOrFakeSOS])
+      if (-[PHSOSViewController requestedCallActive](self, "requestedCallActive") && [object isSOSOrFakeSOS])
       {
-        v15 = [v4 callUUID];
+        callUUID = [object callUUID];
         sosCallUUID = self->_sosCallUUID;
-        self->_sosCallUUID = v15;
+        self->_sosCallUUID = callUUID;
       }
 
       if (![(PHSOSViewController *)self requestedCallActive])
       {
         v17 = self->_sosCallUUID;
-        v18 = [v4 callUUID];
-        LOBYTE(v17) = [(NSString *)v17 isEqualToString:v18];
+        callUUID2 = [object callUUID];
+        LOBYTE(v17) = [(NSString *)v17 isEqualToString:callUUID2];
 
         if ((v17 & 1) == 0)
         {
-          v19 = [v4 isEmergency];
+          isEmergency = [object isEmergency];
           v20 = sub_100004F84();
           v21 = v20;
-          if (v19)
+          if (isEmergency)
           {
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
@@ -685,7 +685,7 @@ LABEL_20:
       }
     }
 
-    if ([v4 status] == 1)
+    if ([object status] == 1)
     {
       [(PHSOSViewController *)self callDialStartTime];
       if (v24 > 0.0)
@@ -703,20 +703,20 @@ LABEL_20:
     goto LABEL_59;
   }
 
-  if (v5 == 4)
+  if (status == 4)
   {
     goto LABEL_19;
   }
 
-  if (v5 != 6)
+  if (status != 6)
   {
     goto LABEL_59;
   }
 
-  if ([v4 isSOSOrFakeSOS])
+  if ([object isSOSOrFakeSOS])
   {
     [(PHSOSViewController *)self setRequestedCallActive:0];
-    -[PHSOSViewController setCallDisconnectReason:](self, "setCallDisconnectReason:", [v4 disconnectedReason]);
+    -[PHSOSViewController setCallDisconnectReason:](self, "setCallDisconnectReason:", [object disconnectedReason]);
   }
 
   [(PHSOSViewController *)self timeTillActive];
@@ -734,11 +734,11 @@ LABEL_20:
     }
   }
 
-  v12 = [v4 disconnectedReasonRequiresCallFailureUI];
-  v13 = [v4 isSOSOrFakeSOS];
-  if (v12)
+  disconnectedReasonRequiresCallFailureUI = [object disconnectedReasonRequiresCallFailureUI];
+  isSOSOrFakeSOS = [object isSOSOrFakeSOS];
+  if (disconnectedReasonRequiresCallFailureUI)
   {
-    if (v13)
+    if (isSOSOrFakeSOS)
     {
       [(PHSOSViewController *)self addDismissalAssertionReleasedObserver];
     }
@@ -746,12 +746,12 @@ LABEL_20:
     goto LABEL_57;
   }
 
-  if (!v13)
+  if (!isSOSOrFakeSOS)
   {
     sosMode = self->_sosMode;
     if (sosMode == 2)
     {
-      if ([v4 isOutgoing])
+      if ([object isOutgoing])
       {
         [(PHSOSViewController *)self deactivateSOS];
       }
@@ -774,12 +774,12 @@ LABEL_20:
   }
 
   [(PHSOSViewController *)self setPostCallMode];
-  v22 = [(PHSOSViewController *)self sosTrigger];
-  if (v22 >= 3)
+  sosTrigger = [(PHSOSViewController *)self sosTrigger];
+  if (sosTrigger >= 3)
   {
-    if (v22 != 3)
+    if (sosTrigger != 3)
     {
-      if (v22 != 7)
+      if (sosTrigger != 7)
       {
         v30 = sub_100004F84();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -788,7 +788,7 @@ LABEL_20:
         }
       }
 
-      [v4 callDuration];
+      [object callDuration];
       [(PHSOSViewController *)self setTimeTillCancelCall:?];
       [(PHSOSViewController *)self setWasCallCancelled:0];
       goto LABEL_56;
@@ -803,10 +803,10 @@ LABEL_20:
   }
 
   v31 = v23;
-  [v4 callDuration];
+  [object callDuration];
   [(PHSOSViewController *)self setTimeTillCancelCall:?];
   [(PHSOSViewController *)self setWasCallCancelled:0];
-  if (!v31 || ([v4 callDuration], v32 > 12.0))
+  if (!v31 || ([object callDuration], v32 > 12.0))
   {
 LABEL_56:
     [(PHSOSViewController *)self submitSOSResolutionMetric:0];
@@ -815,7 +815,7 @@ LABEL_56:
 
   [(PHSOSViewController *)self raiseAccidentalSOSNotification];
 LABEL_57:
-  if ([v4 isSOSOrFakeSOS])
+  if ([object isSOSOrFakeSOS])
   {
     [(PHSOSViewController *)self setSlidingViewExitReason:10];
     [(PHSOSViewController *)self submitSOSUserActivityMetric];
@@ -824,7 +824,7 @@ LABEL_57:
 LABEL_59:
 }
 
-- (void)dismissalAssertionReleasedNotification:(id)a3
+- (void)dismissalAssertionReleasedNotification:(id)notification
 {
   v4 = +[PHInCallRootViewController dismissalAssertions];
   v5 = [v4 containsObject:@"PHAudioCallViewControllerDismissalAssertionHandlingCallFailure"];
@@ -849,7 +849,7 @@ LABEL_59:
   [v3 addObserver:self selector:"dismissalAssertionReleasedNotification:" name:@"PHDismissalAssertionReleasedNotification" object:0];
 }
 
-- (void)interactiveStateChangedNotification:(id)a3
+- (void)interactiveStateChangedNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -862,24 +862,24 @@ LABEL_59:
 - (void)updateInteractiveState
 {
   v3 = +[SOSManager sharedInstance];
-  v4 = [v3 currentSOSInteractiveState];
+  currentSOSInteractiveState = [v3 currentSOSInteractiveState];
 
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134218240;
-    v7 = [(PHSOSViewController *)self currentInteractiveState];
+    currentInteractiveState = [(PHSOSViewController *)self currentInteractiveState];
     v8 = 2048;
-    v9 = v4;
+    v9 = currentSOSInteractiveState;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHSOSViewController attempting to set currentInteractiveState from %lu to %lu", &v6, 0x16u);
   }
 
-  if ([(PHSOSViewController *)self currentInteractiveState]!= v4)
+  if ([(PHSOSViewController *)self currentInteractiveState]!= currentSOSInteractiveState)
   {
-    [(PHSOSViewController *)self setCurrentInteractiveState:v4];
-    if (v4)
+    [(PHSOSViewController *)self setCurrentInteractiveState:currentSOSInteractiveState];
+    if (currentSOSInteractiveState)
     {
-      if (v4 == 1)
+      if (currentSOSInteractiveState == 1)
       {
         [(PHSOSViewController *)self interactiveStart];
       }
@@ -892,34 +892,34 @@ LABEL_59:
   }
 }
 
-- (void)buttonPressStateChangedNotification:(id)a3
+- (void)buttonPressStateChangedNotification:(id)notification
 {
   v4 = +[SOSManager sharedInstance];
-  v5 = [v4 currentSOSButtonPressState];
-  [(PHSOSViewController *)self setCurrentButtonPressState:v5];
+  currentSOSButtonPressState = [v4 currentSOSButtonPressState];
+  [(PHSOSViewController *)self setCurrentButtonPressState:currentSOSButtonPressState];
 
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(PHSOSViewController *)self currentButtonPressState];
+    currentButtonPressState = [(PHSOSViewController *)self currentButtonPressState];
     v8 = 138543362;
-    v9 = v7;
+    v9 = currentButtonPressState;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PHSOSViewController,currentButtonPressState:%{public}@", &v8, 0xCu);
   }
 }
 
-- (void)dismissSOSNotification:(id)a3
+- (void)dismissSOSNotification:(id)notification
 {
-  v4 = [(PHSOSViewController *)self shouldAllowLockButtonPressesToDismissSOS];
+  shouldAllowLockButtonPressesToDismissSOS = [(PHSOSViewController *)self shouldAllowLockButtonPressesToDismissSOS];
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v4;
+    v6[1] = shouldAllowLockButtonPressesToDismissSOS;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHSOSViewController attempting to dismiss SOS due to lock button press; shouldAllowLockButtonPressesToDismissSOS: %d", v6, 8u);
   }
 
-  if (v4)
+  if (shouldAllowLockButtonPressesToDismissSOS)
   {
     [(PHSOSViewController *)self deactivateSOSWithSOSDismissalType:1];
   }
@@ -942,9 +942,9 @@ LABEL_3:
   }
 
   v3 = objc_alloc_init(SOSContactsManager);
-  v4 = [v3 hasValidContactsToMessage];
+  hasValidContactsToMessage = [v3 hasValidContactsToMessage];
 
-  if (v4)
+  if (hasValidContactsToMessage)
   {
 
     [(PHSOSViewController *)self setSosMode:4];
@@ -968,38 +968,38 @@ LABEL_3:
       return;
     }
 
-    v3 = self;
+    selfCopy2 = self;
     v4 = 9;
   }
 
   else
   {
-    v3 = self;
+    selfCopy2 = self;
     v4 = 7;
   }
 
-  [(PHSOSViewController *)v3 setSosMode:v4];
+  [(PHSOSViewController *)selfCopy2 setSosMode:v4];
 }
 
-- (void)setSosMode:(int64_t)a3
+- (void)setSosMode:(int64_t)mode
 {
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PHSOSViewController *)self nameForSOSMode:a3];
+    v6 = [(PHSOSViewController *)self nameForSOSMode:mode];
     v7 = 138412290;
     v8 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating SOS mode to %@", &v7, 0xCu);
   }
 
-  self->_sosMode = a3;
-  if (a3 <= 4)
+  self->_sosMode = mode;
+  if (mode <= 4)
   {
-    if (a3 <= 1)
+    if (mode <= 1)
     {
-      if (a3)
+      if (mode)
       {
-        if (a3 == 1)
+        if (mode == 1)
         {
           [(PHSOSViewController *)self showSOSDialCountdown];
         }
@@ -1011,12 +1011,12 @@ LABEL_3:
       }
     }
 
-    else if (a3 == 2)
+    else if (mode == 2)
     {
       [(PHSOSViewController *)self showSOSDialSliding];
     }
 
-    else if (a3 == 3)
+    else if (mode == 3)
     {
       [(PHSOSViewController *)self showSOSDialCanceled];
     }
@@ -1027,9 +1027,9 @@ LABEL_3:
     }
   }
 
-  else if (a3 > 7)
+  else if (mode > 7)
   {
-    switch(a3)
+    switch(mode)
     {
       case 8:
         [(PHSOSViewController *)self showCheckInView];
@@ -1043,12 +1043,12 @@ LABEL_3:
     }
   }
 
-  else if (a3 == 5)
+  else if (mode == 5)
   {
     [(PHSOSViewController *)self showSOSNotified];
   }
 
-  else if (a3 == 6)
+  else if (mode == 6)
   {
     [(PHSOSViewController *)self showSOSNotificationCanceled];
   }
@@ -1063,24 +1063,24 @@ LABEL_3:
 
 - (void)sendFlowStateUpdateForCurrentSOSMode
 {
-  v3 = [(PHSOSViewController *)self launchedForAssertionReason];
+  launchedForAssertionReason = [(PHSOSViewController *)self launchedForAssertionReason];
 
-  if (v3 != @"PHSOSCallAssertionReason")
+  if (launchedForAssertionReason != @"PHSOSCallAssertionReason")
   {
     return;
   }
 
-  v4 = [(PHSOSViewController *)self sosMode];
-  if (v4 <= 4)
+  sosMode = [(PHSOSViewController *)self sosMode];
+  if (sosMode <= 4)
   {
-    if (v4 <= 1)
+    if (sosMode <= 1)
     {
-      if (!v4)
+      if (!sosMode)
       {
         return;
       }
 
-      v5 = v4 == 1;
+      v5 = sosMode == 1;
       v6 = 2;
       goto LABEL_23;
     }
@@ -1088,29 +1088,29 @@ LABEL_3:
     v7 = 13;
     v8 = 6;
     v9 = 5;
-    if (v4 != 4)
+    if (sosMode != 4)
     {
       v9 = 0;
     }
 
-    if (v4 != 3)
+    if (sosMode != 3)
     {
       v8 = v9;
     }
 
-    v10 = v4 == 2;
+    v10 = sosMode == 2;
   }
 
   else
   {
-    if (v4 <= 7)
+    if (sosMode <= 7)
     {
-      if ((v4 - 5) < 2)
+      if ((sosMode - 5) < 2)
       {
         return;
       }
 
-      v5 = v4 == 7;
+      v5 = sosMode == 7;
       v6 = 8;
 LABEL_23:
       if (v5)
@@ -1129,17 +1129,17 @@ LABEL_23:
     v7 = 1;
     v8 = 9;
     v11 = 11;
-    if (v4 != 10)
+    if (sosMode != 10)
     {
       v11 = 0;
     }
 
-    if (v4 != 9)
+    if (sosMode != 9)
     {
       v8 = v11;
     }
 
-    v10 = v4 == 8;
+    v10 = sosMode == 8;
   }
 
   if (v10)
@@ -1157,16 +1157,16 @@ LABEL_26:
   [v13 updateSOSFlowState:v12];
 }
 
-- (id)nameForSOSMode:(int64_t)a3
+- (id)nameForSOSMode:(int64_t)mode
 {
-  if (a3 > 0xA)
+  if (mode > 0xA)
   {
     return &stru_100361FD0;
   }
 
   else
   {
-    return off_100358300[a3];
+    return off_100358300[mode];
   }
 }
 
@@ -1176,13 +1176,13 @@ LABEL_26:
   if (!sosNumbersViewController)
   {
     v4 = [PHSOSNumbersViewController alloc];
-    v5 = [(PHSOSViewController *)self sosHandles];
-    v6 = [(PHSOSNumbersViewController *)v4 initWithSOSHandles:v5];
+    sosHandles = [(PHSOSViewController *)self sosHandles];
+    v6 = [(PHSOSNumbersViewController *)v4 initWithSOSHandles:sosHandles];
     v7 = self->_sosNumbersViewController;
     self->_sosNumbersViewController = v6;
 
-    v8 = [(PHSOSNumbersViewController *)self->_sosNumbersViewController view];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(PHSOSNumbersViewController *)self->_sosNumbersViewController view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
     [(PHSOSNumbersViewController *)self->_sosNumbersViewController setDelegate:self];
     sosNumbersViewController = self->_sosNumbersViewController;
@@ -1314,8 +1314,8 @@ LABEL_26:
 
 - (void)dialEmergencyCall
 {
-  v3 = [(PHSOSViewController *)self sosHandles];
-  v4 = [v3 count];
+  sosHandles = [(PHSOSViewController *)self sosHandles];
+  v4 = [sosHandles count];
 
   if (v4 > 1)
   {
@@ -1325,13 +1325,13 @@ LABEL_26:
       v10 = &v9;
       v11 = 0x2020000000;
       v12 = -1;
-      v5 = [(PHSOSViewController *)self sosHandles];
+      sosHandles2 = [(PHSOSViewController *)self sosHandles];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_10008D3E0;
       v8[3] = &unk_1003580A0;
       v8[4] = &v9;
-      [v5 enumerateObjectsUsingBlock:v8];
+      [sosHandles2 enumerateObjectsUsingBlock:v8];
 
       v6 = v10[3];
       if (v6 < 0)
@@ -1364,16 +1364,16 @@ LABEL_26:
   }
 }
 
-- (void)dialSOSNumberAtIndex:(int64_t)a3
+- (void)dialSOSNumberAtIndex:(int64_t)index
 {
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PHSOSViewController *)self sosHandles];
+    sosHandles = [(PHSOSViewController *)self sosHandles];
     *buf = 134218242;
-    v36 = a3;
+    indexCopy = index;
     v37 = 2112;
-    v38 = v6;
+    v38 = sosHandles;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "index: %ld self.sosHandles: %@", buf, 0x16u);
   }
 
@@ -1383,12 +1383,12 @@ LABEL_26:
   v8 = +[TUCall shouldMakeFakeSOSCall];
   v9 = [TUDialRequest alloc];
   v10 = +[TUCallCenter sharedInstance];
-  v11 = [v10 providerManager];
-  v12 = v11;
+  providerManager = [v10 providerManager];
+  v12 = providerManager;
   if (v8)
   {
-    v13 = [v11 telephonyProvider];
-    v14 = [v9 initWithProvider:v13];
+    telephonyProvider = [providerManager telephonyProvider];
+    v14 = [v9 initWithProvider:telephonyProvider];
 
     v15 = [TUHandle handleWithDestinationID:@"+14089619342"];
     [v14 setHandle:v15];
@@ -1396,17 +1396,17 @@ LABEL_26:
 
   else
   {
-    v16 = [v11 emergencyProvider];
-    v14 = [v9 initWithProvider:v16];
+    emergencyProvider = [providerManager emergencyProvider];
+    v14 = [v9 initWithProvider:emergencyProvider];
 
     [v14 setDialType:1];
     [v14 setSOS:1];
   }
 
-  v17 = [(PHSOSViewController *)self sosTrigger];
-  if (v17 <= 2)
+  sosTrigger = [(PHSOSViewController *)self sosTrigger];
+  if (sosTrigger <= 2)
   {
-    if (v17 < 3)
+    if (sosTrigger < 3)
     {
       v18 = 3;
 LABEL_23:
@@ -1426,15 +1426,15 @@ LABEL_15:
     goto LABEL_23;
   }
 
-  if (v17 != 7)
+  if (sosTrigger != 7)
   {
-    if (v17 == 5)
+    if (sosTrigger == 5)
     {
       v18 = 13;
       goto LABEL_23;
     }
 
-    if (v17 == 3)
+    if (sosTrigger == 3)
     {
       goto LABEL_15;
     }
@@ -1442,8 +1442,8 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  v20 = [(PHSOSViewController *)self isUserResponsive];
-  if (v20)
+  isUserResponsive = [(PHSOSViewController *)self isUserResponsive];
+  if (isUserResponsive)
   {
     v18 = 12;
   }
@@ -1453,7 +1453,7 @@ LABEL_15:
     v18 = 10;
   }
 
-  if (v20)
+  if (isUserResponsive)
   {
     v21 = 3;
   }
@@ -1465,8 +1465,8 @@ LABEL_15:
 
 LABEL_24:
   [v14 setOriginatingUIType:v18];
-  v22 = [(PHSOSViewController *)self launchedForAssertionReason];
-  v23 = v22 == @"PHSOSCallAssertionReason";
+  launchedForAssertionReason = [(PHSOSViewController *)self launchedForAssertionReason];
+  v23 = launchedForAssertionReason == @"PHSOSCallAssertionReason";
 
   if (v23)
   {
@@ -1479,8 +1479,8 @@ LABEL_24:
     [v14 setTtyType:2];
   }
 
-  v25 = [(PHSOSViewController *)self sosHandles];
-  if ([v25 count] <= a3)
+  sosHandles2 = [(PHSOSViewController *)self sosHandles];
+  if ([sosHandles2 count] <= index)
   {
   }
 
@@ -1490,10 +1490,10 @@ LABEL_24:
 
     if ((v26 & 1) == 0)
     {
-      v27 = [(PHSOSViewController *)self sosHandles];
-      v28 = [v27 objectAtIndexedSubscript:a3];
-      v29 = [v28 handle];
-      [v14 setHandle:v29];
+      sosHandles3 = [(PHSOSViewController *)self sosHandles];
+      v28 = [sosHandles3 objectAtIndexedSubscript:index];
+      handle = [v28 handle];
+      [v14 setHandle:handle];
 
       if (([v14 isValid] & 1) == 0)
       {
@@ -1501,7 +1501,7 @@ LABEL_24:
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v36 = v14;
+          indexCopy = v14;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "[WARN] Dial request %@ is invalid using the chosen handle. Falling back to using a default emergency number", buf, 0xCu);
         }
 
@@ -1514,7 +1514,7 @@ LABEL_24:
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v14;
+    indexCopy = v14;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "SOSViewController is launching dial request for SOS call: %@", buf, 0xCu);
   }
 
@@ -1581,55 +1581,55 @@ LABEL_24:
 
 - (void)showSOSNumbersList
 {
-  v3 = [(PHSOSViewController *)self cancelButton];
-  [v3 setHidden:0];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  [cancelButton setHidden:0];
 
-  v4 = [(PHSOSViewController *)self sosNumbersViewController];
-  v5 = [v4 view];
-  [(PHSOSViewController *)self transitionToView:v5 animated:0];
+  sosNumbersViewController = [(PHSOSViewController *)self sosNumbersViewController];
+  view = [sosNumbersViewController view];
+  [(PHSOSViewController *)self transitionToView:view animated:0];
 
   [(PHSOSViewController *)self setUpSOSNumbersListViewConstraints];
-  v6 = [(PHSOSViewController *)self cancelButton];
+  cancelButton2 = [(PHSOSViewController *)self cancelButton];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"CANCEL" value:&stru_100361FD0 table:@"InCallService"];
-  [v6 setTitle:v8 forState:0];
+  [cancelButton2 setTitle:v8 forState:0];
 
   [(PHSOSViewController *)self willStartSendingLocationUpdate];
 }
 
 - (void)showCheckInView
 {
-  v3 = [(PHSOSViewController *)self cancelButton];
-  [v3 setHidden:0];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  [cancelButton setHidden:0];
 
-  v4 = [(PHSOSViewController *)self checkInView];
-  [(PHSOSViewController *)self transitionToView:v4 animated:0];
+  checkInView = [(PHSOSViewController *)self checkInView];
+  [(PHSOSViewController *)self transitionToView:checkInView animated:0];
 
   [(PHSOSViewController *)self setUpCheckInViewConstraints];
-  v5 = [(PHSOSViewController *)self cancelButton];
+  cancelButton2 = [(PHSOSViewController *)self cancelButton];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"CANCEL" value:&stru_100361FD0 table:@"InCallService"];
-  [v5 setTitle:v7 forState:0];
+  [cancelButton2 setTitle:v7 forState:0];
 
   [(PHSOSViewController *)self willStartSendingLocationUpdate];
-  v8 = [(PHSOSViewController *)self getCheckInViewModel];
-  if ([v8 sosVoiceMessageType])
+  getCheckInViewModel = [(PHSOSViewController *)self getCheckInViewModel];
+  if ([getCheckInViewModel sosVoiceMessageType])
   {
     [(PHSOSViewController *)self setVolumeMaxedPending:1];
     v9 = +[UIApplication sharedApplication];
-    v10 = [v9 delegate];
-    v11 = [v10 sceneManager];
+    delegate = [v9 delegate];
+    sceneManager = [delegate sceneManager];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10008E000;
     v17[3] = &unk_100357AF8;
     v17[4] = self;
-    [v11 waitForRegistrationOfSceneWithType:0 completion:v17];
+    [sceneManager waitForRegistrationOfSceneWithType:0 completion:v17];
   }
 
   Current = CFAbsoluteTimeGetCurrent();
   objc_initWeak(&location, self);
-  v13 = [(PHSOSViewController *)self checkInView];
+  checkInView2 = [(PHSOSViewController *)self checkInView];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10008E03C;
@@ -1637,7 +1637,7 @@ LABEL_24:
   objc_copyWeak(v15, &location);
   v15[1] = *&Current;
   v14[4] = self;
-  [v13 start:v8 completion:v14];
+  [checkInView2 start:getCheckInViewModel completion:v14];
 
   objc_destroyWeak(v15);
   objc_destroyWeak(&location);
@@ -1652,8 +1652,8 @@ LABEL_24:
 
 - (void)handleVolumeChanges
 {
-  v3 = [(PHSOSViewController *)self volumeMaxedPending];
-  if (v3 == [(PHSOSViewController *)self volumeMaxedCurrently])
+  volumeMaxedPending = [(PHSOSViewController *)self volumeMaxedPending];
+  if (volumeMaxedPending == [(PHSOSViewController *)self volumeMaxedCurrently])
   {
     v4 = sub_100004F84();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1763,16 +1763,16 @@ LABEL_24:
 
 - (id)getSOSDialCountdownViewModel
 {
-  v3 = [(PHSOSViewController *)self sosTrigger];
-  if (v3 >= 3)
+  sosTrigger = [(PHSOSViewController *)self sosTrigger];
+  if (sosTrigger >= 3)
   {
-    if (v3 == 7)
+    if (sosTrigger == 7)
     {
       v5 = PHSOSKappaDialCountdownViewModel;
       goto LABEL_12;
     }
 
-    if (v3 == 3)
+    if (sosTrigger == 3)
     {
       v4 = sub_100004F84();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1800,28 +1800,28 @@ LABEL_12:
 
 - (void)showSOSDialCountdown
 {
-  v3 = [(PHSOSViewController *)self cancelButton];
-  [v3 setHidden:0];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  [cancelButton setHidden:0];
 
-  v4 = [(PHSOSViewController *)self countdownView];
-  [(PHSOSViewController *)self transitionToView:v4 animated:0];
+  countdownView = [(PHSOSViewController *)self countdownView];
+  [(PHSOSViewController *)self transitionToView:countdownView animated:0];
 
   [(PHSOSViewController *)self setUpCountdownViewConstraints];
-  v5 = [(PHSOSViewController *)self cancelButton];
+  cancelButton2 = [(PHSOSViewController *)self cancelButton];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"STOP" value:&stru_100361FD0 table:@"InCallService"];
-  [v5 setTitle:v7 forState:0];
+  [cancelButton2 setTitle:v7 forState:0];
 
   [(PHSOSViewController *)self willStartSendingLocationUpdate];
-  v8 = [(PHSOSViewController *)self getSOSDialCountdownViewModel];
+  getSOSDialCountdownViewModel = [(PHSOSViewController *)self getSOSDialCountdownViewModel];
   objc_initWeak(&location, self);
-  v9 = [(PHSOSViewController *)self countdownView];
+  countdownView2 = [(PHSOSViewController *)self countdownView];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10008E82C;
   v10[3] = &unk_100358118;
   objc_copyWeak(&v11, &location);
-  [v9 start:v8 showSlider:1 completion:v10];
+  [countdownView2 start:getSOSDialCountdownViewModel showSlider:1 completion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1829,17 +1829,17 @@ LABEL_12:
 
 - (void)showSOSDialSliding
 {
-  v3 = [(PHSOSViewController *)self cancelButton];
-  [v3 setHidden:0];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  [cancelButton setHidden:0];
 
-  v4 = [(PHSOSViewController *)self slidingView];
-  [(PHSOSViewController *)self transitionToView:v4 animated:0];
+  slidingView = [(PHSOSViewController *)self slidingView];
+  [(PHSOSViewController *)self transitionToView:slidingView animated:0];
 
   [(PHSOSViewController *)self setUpSlidingViewConstraints];
-  v5 = [(PHSOSViewController *)self cancelButton];
+  cancelButton2 = [(PHSOSViewController *)self cancelButton];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"CANCEL" value:&stru_100361FD0 table:@"InCallService"];
-  [v5 setTitle:v7 forState:0];
+  [cancelButton2 setTitle:v7 forState:0];
 
   [(PHSOSViewController *)self setCallDialStartTime:-1.0];
   [(PHSOSViewController *)self setTimeTillActive:-1.0];
@@ -1847,8 +1847,8 @@ LABEL_12:
   [(PHSOSViewController *)self setClawSwipeAfterRTCTimeout:0];
   [(PHSOSViewController *)self setWasCallCancelled:1];
   v8 = +[SOSManager sharedInstance];
-  v9 = [v8 currentSOSButtonPressState];
-  [(PHSOSViewController *)self setCurrentButtonPressState:v9];
+  currentSOSButtonPressState = [v8 currentSOSButtonPressState];
+  [(PHSOSViewController *)self setCurrentButtonPressState:currentSOSButtonPressState];
 
   objc_initWeak(location, self);
   v30[0] = _NSConcreteStackBlock;
@@ -1875,14 +1875,14 @@ LABEL_12:
   v24[3] = &unk_100356F60;
   objc_copyWeak(&v25, location);
   v13 = objc_retainBlock(v24);
-  v14 = [(PHSOSViewController *)self slidingView];
-  [v14 setAnimatedSlidingButtonCompletionBlock:v10];
+  slidingView2 = [(PHSOSViewController *)self slidingView];
+  [slidingView2 setAnimatedSlidingButtonCompletionBlock:v10];
 
-  v15 = [(PHSOSViewController *)self slidingView];
-  [v15 setShouldMaxVolumeCompletionBlock:v12];
+  slidingView3 = [(PHSOSViewController *)self slidingView];
+  [slidingView3 setShouldMaxVolumeCompletionBlock:v12];
 
-  v16 = [(PHSOSViewController *)self slidingView];
-  [v16 setPowerDownCompletionBlock:v13];
+  slidingView4 = [(PHSOSViewController *)self slidingView];
+  [slidingView4 setPowerDownCompletionBlock:v13];
 
   v18 = _NSConcreteStackBlock;
   v19 = 3221225472;
@@ -1906,16 +1906,16 @@ LABEL_12:
 
 - (void)showSOSDialCanceled
 {
-  v3 = [(PHSOSViewController *)self cancelButton];
-  [v3 setHidden:1];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  [cancelButton setHidden:1];
 
-  v4 = [(PHSOSViewController *)self infoLabel];
+  infoLabel = [(PHSOSViewController *)self infoLabel];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"EMERGENCY_CALL_CANCELED" value:&stru_100361FD0 table:@"InCallService"];
-  [v4 setText:v6];
+  [infoLabel setText:v6];
 
-  v7 = [(PHSOSViewController *)self infoLabel];
-  [(PHSOSViewController *)self transitionToView:v7 animated:1];
+  infoLabel2 = [(PHSOSViewController *)self infoLabel];
+  [(PHSOSViewController *)self transitionToView:infoLabel2 animated:1];
 
   [(PHSOSViewController *)self setUpInfoLabelConstraints];
   objc_initWeak(&location, self);
@@ -1932,21 +1932,21 @@ LABEL_12:
 
 - (void)showSOSNotified
 {
-  v3 = [(PHSOSViewController *)self cancelButton];
-  [v3 setHidden:1];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  [cancelButton setHidden:1];
 
-  v4 = [(PHSOSViewController *)self cancelButton];
+  cancelButton2 = [(PHSOSViewController *)self cancelButton];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"CLOSE" value:&stru_100361FD0 table:@"InCallService"];
-  [v4 setTitle:v6 forState:0];
+  [cancelButton2 setTitle:v6 forState:0];
 
-  v7 = [(PHSOSViewController *)self infoLabel];
+  infoLabel = [(PHSOSViewController *)self infoLabel];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"SOS_NOTIFIED" value:&stru_100361FD0 table:@"InCallService"];
-  [v7 setText:v9];
+  [infoLabel setText:v9];
 
-  v10 = [(PHSOSViewController *)self infoLabel];
-  [(PHSOSViewController *)self transitionToView:v10 animated:1];
+  infoLabel2 = [(PHSOSViewController *)self infoLabel];
+  [(PHSOSViewController *)self transitionToView:infoLabel2 animated:1];
 
   [(PHSOSViewController *)self setUpInfoLabelConstraints];
   objc_initWeak(&location, self);
@@ -1963,16 +1963,16 @@ LABEL_12:
 
 - (void)showSOSNotificationCanceled
 {
-  v3 = [(PHSOSViewController *)self cancelButton];
-  [v3 setHidden:1];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  [cancelButton setHidden:1];
 
-  v4 = [(PHSOSViewController *)self infoLabel];
+  infoLabel = [(PHSOSViewController *)self infoLabel];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"SOS_NOTIFICATION_CANCELED" value:&stru_100361FD0 table:@"InCallService"];
-  [v4 setText:v6];
+  [infoLabel setText:v6];
 
-  v7 = [(PHSOSViewController *)self infoLabel];
-  [(PHSOSViewController *)self transitionToView:v7 animated:1];
+  infoLabel2 = [(PHSOSViewController *)self infoLabel];
+  [(PHSOSViewController *)self transitionToView:infoLabel2 animated:1];
 
   [(PHSOSViewController *)self setUpInfoLabelConstraints];
   objc_initWeak(&location, self);
@@ -1989,16 +1989,16 @@ LABEL_12:
 
 - (void)showSOSNotificationCountdown
 {
-  v3 = [(PHSOSViewController *)self cancelButton];
-  [v3 setHidden:0];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  [cancelButton setHidden:0];
 
-  v4 = [(PHSOSViewController *)self cancelButton];
+  cancelButton2 = [(PHSOSViewController *)self cancelButton];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"STOP" value:&stru_100361FD0 table:@"InCallService"];
-  [v4 setTitle:v6 forState:0];
+  [cancelButton2 setTitle:v6 forState:0];
 
-  v7 = [(PHSOSViewController *)self countdownView];
-  [(PHSOSViewController *)self transitionToView:v7 animated:0];
+  countdownView = [(PHSOSViewController *)self countdownView];
+  [(PHSOSViewController *)self transitionToView:countdownView animated:0];
 
   [(PHSOSViewController *)self setUpCountdownViewConstraints];
   if ((+[TUCallCapabilities isEmergencyCallbackModeEnabled]& 1) != 0)
@@ -2020,22 +2020,22 @@ LABEL_12:
 
 - (void)startSOSNotificationCountdown
 {
-  v3 = [(PHSOSViewController *)self sosTrigger];
+  sosTrigger = [(PHSOSViewController *)self sosTrigger];
   v4 = off_100353220;
-  if (v3 != 7)
+  if (sosTrigger != 7)
   {
     v4 = off_100353240;
   }
 
   v5 = objc_alloc_init(*v4);
   objc_initWeak(&location, self);
-  v6 = [(PHSOSViewController *)self countdownView];
+  countdownView = [(PHSOSViewController *)self countdownView];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008F8F4;
   v7[3] = &unk_100358118;
   objc_copyWeak(&v8, &location);
-  [v6 start:v5 showSlider:0 completion:v7];
+  [countdownView start:v5 showSlider:0 completion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -2044,52 +2044,52 @@ LABEL_12:
 - (void)showRestingView
 {
   [(PHSOSViewController *)self setAlreadyVisitedRestingScreen:1];
-  v3 = [(PHSOSViewController *)self cancelButton];
-  [v3 setHidden:0];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  [cancelButton setHidden:0];
 
-  v4 = [(PHSOSViewController *)self cancelButton];
+  cancelButton2 = [(PHSOSViewController *)self cancelButton];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"CLOSE" value:&stru_100361FD0 table:@"InCallService"];
-  [v4 setTitle:v6 forState:0];
+  [cancelButton2 setTitle:v6 forState:0];
 
-  v7 = [(PHSOSViewController *)self restingView];
-  [(PHSOSViewController *)self transitionToView:v7 animated:0];
+  restingView = [(PHSOSViewController *)self restingView];
+  [(PHSOSViewController *)self transitionToView:restingView animated:0];
 
   [(PHSOSViewController *)self setUpRestingViewConstraints];
   v8 = +[SOSUtilities mostRecentSOSStatus];
   v9 = v8;
   if (v8 && ([v8 timeOfDetection], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
-    v11 = [v9 timeOfDetection];
+    timeOfDetection = [v9 timeOfDetection];
   }
 
   else
   {
-    v12 = [(PHSOSViewController *)self dateOfCall];
+    dateOfCall = [(PHSOSViewController *)self dateOfCall];
 
-    if (!v12)
+    if (!dateOfCall)
     {
       goto LABEL_7;
     }
 
-    v11 = [(PHSOSViewController *)self dateOfCall];
+    timeOfDetection = [(PHSOSViewController *)self dateOfCall];
   }
 
-  v13 = v11;
-  v14 = [(PHSOSViewController *)self restingView];
-  [v14 setDateOfSOSEvent:v13];
+  v13 = timeOfDetection;
+  restingView2 = [(PHSOSViewController *)self restingView];
+  [restingView2 setDateOfSOSEvent:v13];
 
 LABEL_7:
-  v15 = [(PHSOSViewController *)self sosTrigger];
+  sosTrigger = [(PHSOSViewController *)self sosTrigger];
   v16 = off_100353228;
-  if (v15 != 7)
+  if (sosTrigger != 7)
   {
     v16 = off_100353238;
   }
 
   v17 = objc_alloc_init(*v16);
-  v18 = [(PHSOSViewController *)self restingView];
-  [v18 setViewModel:v17];
+  restingView3 = [(PHSOSViewController *)self restingView];
+  [restingView3 setViewModel:v17];
 
   objc_initWeak(&location, self);
   v23[0] = _NSConcreteStackBlock;
@@ -2097,8 +2097,8 @@ LABEL_7:
   v23[2] = sub_10008FC50;
   v23[3] = &unk_100358118;
   objc_copyWeak(&v24, &location);
-  v19 = [(PHSOSViewController *)self restingView];
-  [v19 setCompletionHandler:v23];
+  restingView4 = [(PHSOSViewController *)self restingView];
+  [restingView4 setCompletionHandler:v23];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -2106,9 +2106,9 @@ LABEL_7:
   v21[3] = &unk_100358188;
   objc_copyWeak(&v22, &location);
   [(PHSOSViewController *)self fetchMedicalIDWithCompletion:v21];
-  v20 = [(PHSOSViewController *)self launchedForAssertionReason];
+  launchedForAssertionReason = [(PHSOSViewController *)self launchedForAssertionReason];
 
-  if (v20 == @"PHSOSCallAssertionReason")
+  if (launchedForAssertionReason == @"PHSOSCallAssertionReason")
   {
     [(PHSOSViewController *)self startStatusHeartbeatTimer];
   }
@@ -2156,9 +2156,9 @@ LABEL_7:
 
 - (void)clearStatusHeartbeatTimer
 {
-  v3 = [(PHSOSViewController *)self statusHeartbeatTimer];
+  statusHeartbeatTimer = [(PHSOSViewController *)self statusHeartbeatTimer];
 
-  if (v3)
+  if (statusHeartbeatTimer)
   {
     v4 = sub_100004F84();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2167,8 +2167,8 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "PHSOSViewController,clearing status heartbeat timer", v6, 2u);
     }
 
-    v5 = [(PHSOSViewController *)self statusHeartbeatTimer];
-    [v5 invalidate];
+    statusHeartbeatTimer2 = [(PHSOSViewController *)self statusHeartbeatTimer];
+    [statusHeartbeatTimer2 invalidate];
 
     [(PHSOSViewController *)self setStatusHeartbeatTimer:0];
   }
@@ -2176,28 +2176,28 @@ LABEL_7:
 
 - (void)showAlertRestingView
 {
-  v3 = [(PHSOSViewController *)self cancelButton];
-  [v3 setHidden:0];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  [cancelButton setHidden:0];
 
-  v4 = [(PHSOSViewController *)self cancelButton];
+  cancelButton2 = [(PHSOSViewController *)self cancelButton];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"CLOSE" value:&stru_100361FD0 table:@"InCallService"];
-  [v4 setTitle:v6 forState:0];
+  [cancelButton2 setTitle:v6 forState:0];
 
-  v7 = [(PHSOSViewController *)self alertRestingView];
-  [(PHSOSViewController *)self transitionToView:v7 animated:0];
+  alertRestingView = [(PHSOSViewController *)self alertRestingView];
+  [(PHSOSViewController *)self transitionToView:alertRestingView animated:0];
 
   [(PHSOSViewController *)self setUpAlertRestingViewConstraints];
-  v8 = [(PHSOSViewController *)self sosTrigger];
+  sosTrigger = [(PHSOSViewController *)self sosTrigger];
   v9 = off_100353218;
-  if (v8 != 7)
+  if (sosTrigger != 7)
   {
     v9 = off_100353230;
   }
 
   v10 = objc_alloc_init(*v9);
-  v11 = [(PHSOSViewController *)self alertRestingView];
-  [v11 setViewModel:v10];
+  alertRestingView2 = [(PHSOSViewController *)self alertRestingView];
+  [alertRestingView2 setViewModel:v10];
 
   objc_initWeak(&location, self);
   v15[0] = _NSConcreteStackBlock;
@@ -2205,8 +2205,8 @@ LABEL_7:
   v15[2] = sub_100090350;
   v15[3] = &unk_100358118;
   objc_copyWeak(&v16, &location);
-  v12 = [(PHSOSViewController *)self alertRestingView];
-  [v12 setCompletionHandler:v15];
+  alertRestingView3 = [(PHSOSViewController *)self alertRestingView];
+  [alertRestingView3 setCompletionHandler:v15];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -2219,16 +2219,16 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-+ (BOOL)shouldShowMedicalID:(id)a3
++ (BOOL)shouldShowMedicalID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = CUTWeakLinkClass();
-  v5 = [v3 hasAnyData];
+  hasAnyData = [dCopy hasAnyData];
 
-  if (v5)
+  if (hasAnyData)
   {
-    v6 = [v4 sharedInstance];
-    v7 = [v6 lostModeIsActive] ^ 1;
+    sharedInstance = [v4 sharedInstance];
+    v7 = [sharedInstance lostModeIsActive] ^ 1;
   }
 
   else
@@ -2239,22 +2239,22 @@ LABEL_7:
   return v7;
 }
 
-- (void)fetchMedicalIDWithCompletion:(id)a3
+- (void)fetchMedicalIDWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PHSOSViewController *)self healthStore];
+  completionCopy = completion;
+  healthStore = [(PHSOSViewController *)self healthStore];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100090640;
   v7[3] = &unk_1003581D8;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchMedicalIDDataWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [healthStore fetchMedicalIDDataWithCompletion:v7];
 }
 
-- (void)loadMedicalIDWithCompletion:(id)a3
+- (void)loadMedicalIDWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2269,7 +2269,7 @@ LABEL_7:
   v7[3] = &unk_100358200;
   objc_copyWeak(&v9, buf);
   v7[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(PHSOSViewController *)self fetchMedicalIDWithCompletion:v7];
 
@@ -2279,23 +2279,23 @@ LABEL_7:
 
 - (void)dismissMedicalIDViewController
 {
-  v3 = [(PHSOSViewController *)self medicalIDNavigationController];
+  medicalIDNavigationController = [(PHSOSViewController *)self medicalIDNavigationController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100090AA0;
   v4[3] = &unk_100356988;
   v4[4] = self;
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [medicalIDNavigationController dismissViewControllerAnimated:1 completion:v4];
 }
 
-- (void)hideMedicalIDWithCompletion:(id)a3
+- (void)hideMedicalIDWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(UINavigationController *)self->_medicalIDNavigationController presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(UINavigationController *)self->_medicalIDNavigationController presentingViewController];
 
-  if (v4)
+  if (presentingViewController)
   {
-    [(UINavigationController *)self->_medicalIDNavigationController dismissViewControllerAnimated:1 completion:v5];
+    [(UINavigationController *)self->_medicalIDNavigationController dismissViewControllerAnimated:1 completion:completionCopy];
   }
 }
 
@@ -2320,9 +2320,9 @@ LABEL_7:
     v6[3] = &unk_100356F60;
     objc_copyWeak(&v7, buf);
     v4 = objc_retainBlock(v6);
-    v5 = [(PHSOSViewController *)self medicalIDNavigationController];
+    medicalIDNavigationController = [(PHSOSViewController *)self medicalIDNavigationController];
 
-    if (v5)
+    if (medicalIDNavigationController)
     {
       (v4[2])(v4);
     }
@@ -2337,16 +2337,16 @@ LABEL_7:
   }
 }
 
-- (void)transitionToView:(id)a3 animated:(BOOL)a4
+- (void)transitionToView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  animatedCopy = animated;
+  viewCopy = view;
+  v7 = viewCopy;
+  if (animatedCopy)
   {
-    [v6 setAlpha:0.0];
-    v8 = [(PHSOSViewController *)self view];
-    [v8 addSubview:v7];
+    [viewCopy setAlpha:0.0];
+    view = [(PHSOSViewController *)self view];
+    [view addSubview:v7];
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -2365,32 +2365,32 @@ LABEL_7:
 
   else
   {
-    v9 = [(PHSOSViewController *)self currentView];
-    [v9 removeFromSuperview];
+    currentView = [(PHSOSViewController *)self currentView];
+    [currentView removeFromSuperview];
 
-    v10 = [(PHSOSViewController *)self view];
-    [v10 addSubview:v7];
+    view2 = [(PHSOSViewController *)self view];
+    [view2 addSubview:v7];
 
     [(PHSOSViewController *)self setCurrentView:v7];
   }
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
-  v4 = [(PHSOSViewController *)self sosMode];
-  if (v4 > 5)
+  sosMode = [(PHSOSViewController *)self sosMode];
+  if (sosMode > 5)
   {
-    if (v4 > 8)
+    if (sosMode > 8)
     {
-      if (v4 == 9)
+      if (sosMode == 9)
       {
-        v15 = [(PHSOSViewController *)self coreAnalyticsReporter];
-        v16 = [(PHSOSViewController *)self sosTrigger];
-        v17 = [(PHSOSViewController *)self restingView];
-        [v15 reportSOSRestingResponse:v16 restingResponse:2 hasMedicalID:{objc_msgSend(v17, "hasMedicalIDSlider")}];
+        coreAnalyticsReporter = [(PHSOSViewController *)self coreAnalyticsReporter];
+        sosTrigger = [(PHSOSViewController *)self sosTrigger];
+        restingView = [(PHSOSViewController *)self restingView];
+        [coreAnalyticsReporter reportSOSRestingResponse:sosTrigger restingResponse:2 hasMedicalID:{objc_msgSend(restingView, "hasMedicalIDSlider")}];
       }
 
-      else if (v4 != 10)
+      else if (sosMode != 10)
       {
         return;
       }
@@ -2398,12 +2398,12 @@ LABEL_7:
       goto LABEL_44;
     }
 
-    if ((v4 - 6) < 2)
+    if ((sosMode - 6) < 2)
     {
       goto LABEL_44;
     }
 
-    if (v4 != 8)
+    if (sosMode != 8)
     {
       return;
     }
@@ -2429,16 +2429,16 @@ LABEL_24:
     return;
   }
 
-  if (v4 <= 2)
+  if (sosMode <= 2)
   {
-    if (!v4)
+    if (!sosMode)
     {
       goto LABEL_44;
     }
 
-    if (v4 != 1)
+    if (sosMode != 1)
     {
-      if (v4 != 2)
+      if (sosMode != 2)
       {
         return;
       }
@@ -2456,16 +2456,16 @@ LABEL_24:
       }
 
       [(PHSOSViewController *)self setTimeTillCancelCall:v7];
-      v11 = [(PHSOSViewController *)self slidingView];
-      v12 = [v11 slidingViewState];
+      slidingView = [(PHSOSViewController *)self slidingView];
+      slidingViewState = [slidingView slidingViewState];
 
-      if (v12 <= 2)
+      if (slidingViewState <= 2)
       {
-        if (v12)
+        if (slidingViewState)
         {
-          if (v12 != 1)
+          if (slidingViewState != 1)
           {
-            if (v12 == 2)
+            if (slidingViewState == 2)
             {
               [(PHSOSViewController *)self setSlidingViewExitReason:8];
               [(PHSOSViewController *)self submitSOSUserActivityMetric];
@@ -2473,8 +2473,8 @@ LABEL_24:
               [(PHSOSViewController *)self handleVolumeChanges];
               [(PHSOSViewController *)self setClawResolution:1];
               [(PHSOSViewController *)self raiseAccidentalSOSNotification];
-              v13 = [(PHSOSViewController *)self slidingView];
-              [v13 clearReleaseToCallState];
+              slidingView2 = [(PHSOSViewController *)self slidingView];
+              [slidingView2 clearReleaseToCallState];
 
               [(PHSOSViewController *)self setSosMode:3];
             }
@@ -2489,10 +2489,10 @@ LABEL_24:
           [(PHSOSViewController *)self submitSOSUserActivityMetric];
         }
 
-        v18 = [(PHSOSViewController *)self slidingView];
-        v19 = [v18 slidingViewState];
+        slidingView3 = [(PHSOSViewController *)self slidingView];
+        slidingViewState2 = [slidingView3 slidingViewState];
 
-        if (v19 == 1)
+        if (slidingViewState2 == 1)
         {
           [(PHSOSViewController *)self setSlidingViewExitReason:7];
         }
@@ -2500,18 +2500,18 @@ LABEL_24:
         goto LABEL_41;
       }
 
-      if ((v12 - 4) >= 2)
+      if ((slidingViewState - 4) >= 2)
       {
-        if (v12 != 3)
+        if (slidingViewState != 3)
         {
           return;
         }
 
 LABEL_41:
-        v20 = [(PHSOSViewController *)self slidingView];
-        v21 = [v20 slidingViewState];
+        slidingView4 = [(PHSOSViewController *)self slidingView];
+        slidingViewState3 = [slidingView4 slidingViewState];
 
-        if (v21 == 3)
+        if (slidingViewState3 == 3)
         {
           [(PHSOSViewController *)self setSlidingViewExitReason:6];
           [(PHSOSViewController *)self submitSOSUserActivityMetric];
@@ -2532,12 +2532,12 @@ LABEL_44:
     goto LABEL_18;
   }
 
-  if (v4 == 3)
+  if (sosMode == 3)
   {
     goto LABEL_44;
   }
 
-  if (v4 == 4)
+  if (sosMode == 4)
   {
     goto LABEL_24;
   }
@@ -2599,7 +2599,7 @@ LABEL_44:
   objc_destroyWeak(&location);
 }
 
-- (void)deactivateSOSWithSOSDismissalType:(int64_t)a3
+- (void)deactivateSOSWithSOSDismissalType:(int64_t)type
 {
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2615,7 +2615,7 @@ LABEL_44:
   if ([(PHSOSViewController *)self shouldDropBioAuthTokenOnDismiss])
   {
     v6 = +[SOSManager sharedInstance];
-    [v6 didDismissSOSBeforeSOSCall:a3];
+    [v6 didDismissSOSBeforeSOSCall:type];
 
     v7 = 6;
   }
@@ -2625,16 +2625,16 @@ LABEL_44:
     v7 = 10;
   }
 
-  v8 = [(PHSOSViewController *)self launchedForAssertionReason];
+  launchedForAssertionReason = [(PHSOSViewController *)self launchedForAssertionReason];
 
-  if (v8 == @"PHSOSCallAssertionReason")
+  if (launchedForAssertionReason == @"PHSOSCallAssertionReason")
   {
     v9 = +[SOSStatusReporter sharedInstance];
     [v9 updateSOSFlowState:v7];
   }
 
-  v10 = [(PHSOSViewController *)self launchedForAssertionReason];
-  [PHInCallRootViewController releaseDismissalAssertionForReason:v10];
+  launchedForAssertionReason2 = [(PHSOSViewController *)self launchedForAssertionReason];
+  [PHInCallRootViewController releaseDismissalAssertionForReason:launchedForAssertionReason2];
 
   if (!+[PHSOSViewController isSOSDismissalAssertionActive])
   {
@@ -2649,8 +2649,8 @@ LABEL_44:
     [v12 setCurrentSOSInitiationState:0];
 
     v13 = +[UIApplication sharedApplication];
-    v14 = [v13 delegate];
-    [v14 setActivationContext:0];
+    delegate = [v13 delegate];
+    [delegate setActivationContext:0];
   }
 
   if (!+[PHSOSViewController isSOSDismissalAssertionActive]&& self->_priorSystemAudioRoute)
@@ -2663,12 +2663,12 @@ LABEL_44:
     }
 
     audioDeviceController = self->_audioDeviceController;
-    v17 = [(TUAudioRoute *)self->_priorSystemAudioRoute uniqueIdentifier];
-    [(PHAudioDeviceController *)audioDeviceController pickRouteWithUID:v17];
+    uniqueIdentifier = [(TUAudioRoute *)self->_priorSystemAudioRoute uniqueIdentifier];
+    [(PHAudioDeviceController *)audioDeviceController pickRouteWithUID:uniqueIdentifier];
   }
 }
 
-- (void)emergencyCallbackModeChangedNotification:(id)a3
+- (void)emergencyCallbackModeChangedNotification:(id)notification
 {
   objc_initWeak(&location, self);
   v3[0] = _NSConcreteStackBlock;
@@ -2683,9 +2683,9 @@ LABEL_44:
 
 - (void)raiseAccidentalSOSNotification
 {
-  v3 = [(PHSOSViewController *)self launchedForAssertionReason];
+  launchedForAssertionReason = [(PHSOSViewController *)self launchedForAssertionReason];
 
-  if (v3 == @"PHSOSCallAssertionReason" && ([(PHSOSViewController *)self sosTrigger]== 1 || [(PHSOSViewController *)self sosTrigger]== 2 || [(PHSOSViewController *)self sosTrigger]== 3))
+  if (launchedForAssertionReason == @"PHSOSCallAssertionReason" && ([(PHSOSViewController *)self sosTrigger]== 1 || [(PHSOSViewController *)self sosTrigger]== 2 || [(PHSOSViewController *)self sosTrigger]== 3))
   {
     v4 = sub_100004F84();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2702,8 +2702,8 @@ LABEL_44:
     [v5 setBody:v7];
 
     v8 = SOSSettingsURLBaseString;
-    v9 = [SOSSettingsURLSourceKey UTF8String];
-    v10 = [v8 stringByAppendingFormat:@"&%s=%s", v9, objc_msgSend(SOSSettingsURLSourceAccCallNotification, "UTF8String")];
+    uTF8String = [SOSSettingsURLSourceKey UTF8String];
+    v10 = [v8 stringByAppendingFormat:@"&%s=%s", uTF8String, objc_msgSend(SOSSettingsURLSourceAccCallNotification, "UTF8String")];
     v11 = [NSURL URLWithString:v10];
     [v5 setDefaultActionURL:v11];
 
@@ -2734,9 +2734,9 @@ LABEL_44:
   }
 }
 
-- (void)handleCallBufferCompletionNotification:(id)a3
+- (void)handleCallBufferCompletionNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2746,15 +2746,15 @@ LABEL_44:
 
   [(PHSOSViewController *)self setVolumeMaxedPending:0];
   [(PHSOSViewController *)self handleVolumeChanges];
-  v6 = [v4 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  if (v6)
+  if (userInfo)
   {
     [(PHSOSViewController *)self setSlidingViewEntryReason:5];
-    v7 = [v6 objectForKeyedSubscript:@"PHCallBufferCompletionReasonKey"];
-    v8 = [v7 integerValue];
+    v7 = [userInfo objectForKeyedSubscript:@"PHCallBufferCompletionReasonKey"];
+    integerValue = [v7 integerValue];
 
-    if (v8 == 1)
+    if (integerValue == 1)
     {
       v11 = sub_100004F84();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2783,7 +2783,7 @@ LABEL_44:
       [(PHSOSViewController *)self submitSOSUserActivityMetric];
     }
 
-    else if (!v8)
+    else if (!integerValue)
     {
       v9 = sub_100004F84();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2822,12 +2822,12 @@ LABEL_2:
     return;
   }
 
-  v4 = [(PHSOSViewController *)self sosHandles];
+  sosHandles = [(PHSOSViewController *)self sosHandles];
 
-  if (v4)
+  if (sosHandles)
   {
-    v5 = [(PHSOSViewController *)self sosHandles];
-    v6 = [v5 count];
+    sosHandles2 = [(PHSOSViewController *)self sosHandles];
+    v6 = [sosHandles2 count];
 
     if (v6 > 1)
     {
@@ -2838,9 +2838,9 @@ LABEL_2:
 
     [(PHSOSViewController *)self setVolumeMaxedPending:1];
     [(PHSOSViewController *)self handleVolumeChanges];
-    v7 = [(PHSOSViewController *)self callAutoDialled];
+    callAutoDialled = [(PHSOSViewController *)self callAutoDialled];
     v8 = off_100359450;
-    if (!v7)
+    if (!callAutoDialled)
     {
       v8 = off_100359458;
     }
@@ -2864,17 +2864,17 @@ LABEL_2:
   }
 }
 
-- (void)sosNumbersViewController:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)sosNumbersViewController:(id)controller didSelectRowAtIndexPath:(id)path
 {
-  v5 = [a4 row];
+  v5 = [path row];
 
   [(PHSOSViewController *)self dialSOSNumberAtIndex:v5];
 }
 
-- (void)showPowerDownFindMyInfoAlertWithProceed:(id)a3 cancelCompletion:(id)a4
+- (void)showPowerDownFindMyInfoAlertWithProceed:(id)proceed cancelCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  proceedCopy = proceed;
+  completionCopy = completion;
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"POWER_DOWN_FIND_MY_TITLE" value:&stru_100361FD0 table:@"InCallService"];
 
@@ -2892,8 +2892,8 @@ LABEL_2:
   v23[1] = 3221225472;
   v23[2] = sub_100092B94;
   v23[3] = &unk_1003582A0;
-  v24 = v5;
-  v16 = v5;
+  v24 = proceedCopy;
+  v16 = proceedCopy;
   v17 = [UIAlertAction actionWithTitle:v12 style:0 handler:v23];
   [v15 addAction:v17];
 
@@ -2901,8 +2901,8 @@ LABEL_2:
   v21[1] = 3221225472;
   v21[2] = sub_100092BAC;
   v21[3] = &unk_1003582A0;
-  v22 = v6;
-  v18 = v6;
+  v22 = completionCopy;
+  v18 = completionCopy;
   v19 = [UIAlertAction actionWithTitle:v14 style:0 handler:v21];
   [v15 addAction:v19];
 
@@ -2945,11 +2945,11 @@ LABEL_2:
 
 - (void)userAcknowledgedFindMyInfo
 {
-  v3 = [(PHSOSViewController *)self beaconManager];
-  [v3 setUserHasAcknowledgedFindMy:1 completion:&stru_1003582C0];
+  beaconManager = [(PHSOSViewController *)self beaconManager];
+  [beaconManager setUserHasAcknowledgedFindMy:1 completion:&stru_1003582C0];
 
-  v4 = [(PHSOSViewController *)self slidingView];
-  [v4 didAcknowledgeFindMyInfo];
+  slidingView = [(PHSOSViewController *)self slidingView];
+  [slidingView didAcknowledgeFindMyInfo];
 }
 
 - (void)didTapTemporarilyDisableFindMy
@@ -2986,30 +2986,30 @@ LABEL_2:
   return v4;
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(PHSOSViewController *)self launchedForAssertionReason];
+  changedCopy = changed;
+  launchedForAssertionReason = [(PHSOSViewController *)self launchedForAssertionReason];
 
   v6 = sub_100004F84();
   v7 = v6;
-  if (v5 == @"PHAlertRestingScreenAssertionReason")
+  if (launchedForAssertionReason == @"PHAlertRestingScreenAssertionReason")
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = changedCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "PHSOSViewController,Stewie state changed: %@", &v10, 0xCu);
     }
 
     if ([(PHSOSViewController *)self sosMode]== 10)
     {
-      v8 = [(PHSOSViewController *)self stewieState];
-      if ([v8 activeServices])
+      stewieState = [(PHSOSViewController *)self stewieState];
+      if ([stewieState activeServices])
       {
-        v9 = [v4 activeServices];
+        activeServices = [changedCopy activeServices];
 
-        if ((v9 & 1) == 0)
+        if ((activeServices & 1) == 0)
         {
           [(PHSOSViewController *)self setSosMode:9];
         }
@@ -3020,7 +3020,7 @@ LABEL_2:
       }
     }
 
-    [(PHSOSViewController *)self setStewieState:v4];
+    [(PHSOSViewController *)self setStewieState:changedCopy];
   }
 
   else
@@ -3034,19 +3034,19 @@ LABEL_2:
 
 - (void)setUpCancelButtonConstraints
 {
-  v3 = [(PHSOSViewController *)self cancelButton];
-  v4 = [v3 centerXAnchor];
-  v5 = [(PHSOSViewController *)self view];
-  v6 = [v5 centerXAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  centerXAnchor = [cancelButton centerXAnchor];
+  view = [(PHSOSViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v8 = [(PHSOSViewController *)self cancelButton];
-  v9 = [v8 bottomAnchor];
-  v10 = [(PHSOSViewController *)self view];
-  v11 = [v10 bottomAnchor];
-  v12 = [(PHSOSViewController *)self view];
-  [PHCallViewController _bottomBarBottomMarginForView:v12];
-  v14 = [v9 constraintEqualToAnchor:v11 constant:-v13];
+  cancelButton2 = [(PHSOSViewController *)self cancelButton];
+  bottomAnchor = [cancelButton2 bottomAnchor];
+  view2 = [(PHSOSViewController *)self view];
+  bottomAnchor2 = [view2 bottomAnchor];
+  view3 = [(PHSOSViewController *)self view];
+  [PHCallViewController _bottomBarBottomMarginForView:view3];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v13];
 
   v16[0] = v7;
   v16[1] = v14;
@@ -3059,39 +3059,39 @@ LABEL_2:
   v30 = objc_alloc_init(NSMutableArray);
   [(PHSOSViewController *)self marginPadding];
   v4 = v3;
-  v5 = [(PHSOSViewController *)self checkInView];
-  v6 = [v5 leadingAnchor];
-  v7 = [(PHSOSViewController *)self view];
-  v8 = [v7 leadingAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8 constant:v4];
+  checkInView = [(PHSOSViewController *)self checkInView];
+  leadingAnchor = [checkInView leadingAnchor];
+  view = [(PHSOSViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v4];
   [v30 addObject:v9];
 
-  v10 = [(PHSOSViewController *)self checkInView];
-  v11 = [v10 trailingAnchor];
-  v12 = [(PHSOSViewController *)self view];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:-v4];
+  checkInView2 = [(PHSOSViewController *)self checkInView];
+  trailingAnchor = [checkInView2 trailingAnchor];
+  view2 = [(PHSOSViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v4];
   [v30 addObject:v14];
 
-  v15 = [(PHSOSViewController *)self checkInView];
-  v16 = [v15 centerXAnchor];
-  v17 = [(PHSOSViewController *)self view];
-  v18 = [v17 centerXAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  checkInView3 = [(PHSOSViewController *)self checkInView];
+  centerXAnchor = [checkInView3 centerXAnchor];
+  view3 = [(PHSOSViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v30 addObject:v19];
 
-  v20 = [(PHSOSViewController *)self checkInView];
-  v21 = [v20 topAnchor];
-  v22 = [(PHSOSViewController *)self view];
-  v23 = [v22 topAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  checkInView4 = [(PHSOSViewController *)self checkInView];
+  topAnchor = [checkInView4 topAnchor];
+  view4 = [(PHSOSViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v30 addObject:v24];
 
-  v25 = [(PHSOSViewController *)self checkInView];
-  v26 = [v25 bottomAnchor];
-  v27 = [(PHSOSViewController *)self cancelButton];
-  v28 = [v27 topAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  checkInView5 = [(PHSOSViewController *)self checkInView];
+  bottomAnchor = [checkInView5 bottomAnchor];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  topAnchor3 = [cancelButton topAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
   [v30 addObject:v29];
 
   [NSLayoutConstraint activateConstraints:v30];
@@ -3102,39 +3102,39 @@ LABEL_2:
   v30 = objc_alloc_init(NSMutableArray);
   [(PHSOSViewController *)self marginPadding];
   v4 = v3;
-  v5 = [(PHSOSViewController *)self restingView];
-  v6 = [v5 leadingAnchor];
-  v7 = [(PHSOSViewController *)self view];
-  v8 = [v7 leadingAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8 constant:v4];
+  restingView = [(PHSOSViewController *)self restingView];
+  leadingAnchor = [restingView leadingAnchor];
+  view = [(PHSOSViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v4];
   [v30 addObject:v9];
 
-  v10 = [(PHSOSViewController *)self restingView];
-  v11 = [v10 trailingAnchor];
-  v12 = [(PHSOSViewController *)self view];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:-v4];
+  restingView2 = [(PHSOSViewController *)self restingView];
+  trailingAnchor = [restingView2 trailingAnchor];
+  view2 = [(PHSOSViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v4];
   [v30 addObject:v14];
 
-  v15 = [(PHSOSViewController *)self restingView];
-  v16 = [v15 centerXAnchor];
-  v17 = [(PHSOSViewController *)self view];
-  v18 = [v17 centerXAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  restingView3 = [(PHSOSViewController *)self restingView];
+  centerXAnchor = [restingView3 centerXAnchor];
+  view3 = [(PHSOSViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v30 addObject:v19];
 
-  v20 = [(PHSOSViewController *)self restingView];
-  v21 = [v20 topAnchor];
-  v22 = [(PHSOSViewController *)self view];
-  v23 = [v22 topAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  restingView4 = [(PHSOSViewController *)self restingView];
+  topAnchor = [restingView4 topAnchor];
+  view4 = [(PHSOSViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v30 addObject:v24];
 
-  v25 = [(PHSOSViewController *)self restingView];
-  v26 = [v25 bottomAnchor];
-  v27 = [(PHSOSViewController *)self cancelButton];
-  v28 = [v27 topAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  restingView5 = [(PHSOSViewController *)self restingView];
+  bottomAnchor = [restingView5 bottomAnchor];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  topAnchor3 = [cancelButton topAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
   [v30 addObject:v29];
 
   [NSLayoutConstraint activateConstraints:v30];
@@ -3145,39 +3145,39 @@ LABEL_2:
   v30 = objc_alloc_init(NSMutableArray);
   [(PHSOSViewController *)self marginPadding];
   v4 = v3;
-  v5 = [(PHSOSViewController *)self alertRestingView];
-  v6 = [v5 leadingAnchor];
-  v7 = [(PHSOSViewController *)self view];
-  v8 = [v7 leadingAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8 constant:v4];
+  alertRestingView = [(PHSOSViewController *)self alertRestingView];
+  leadingAnchor = [alertRestingView leadingAnchor];
+  view = [(PHSOSViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v4];
   [v30 addObject:v9];
 
-  v10 = [(PHSOSViewController *)self alertRestingView];
-  v11 = [v10 trailingAnchor];
-  v12 = [(PHSOSViewController *)self view];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:-v4];
+  alertRestingView2 = [(PHSOSViewController *)self alertRestingView];
+  trailingAnchor = [alertRestingView2 trailingAnchor];
+  view2 = [(PHSOSViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v4];
   [v30 addObject:v14];
 
-  v15 = [(PHSOSViewController *)self alertRestingView];
-  v16 = [v15 centerXAnchor];
-  v17 = [(PHSOSViewController *)self view];
-  v18 = [v17 centerXAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  alertRestingView3 = [(PHSOSViewController *)self alertRestingView];
+  centerXAnchor = [alertRestingView3 centerXAnchor];
+  view3 = [(PHSOSViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v30 addObject:v19];
 
-  v20 = [(PHSOSViewController *)self alertRestingView];
-  v21 = [v20 topAnchor];
-  v22 = [(PHSOSViewController *)self view];
-  v23 = [v22 topAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  alertRestingView4 = [(PHSOSViewController *)self alertRestingView];
+  topAnchor = [alertRestingView4 topAnchor];
+  view4 = [(PHSOSViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v30 addObject:v24];
 
-  v25 = [(PHSOSViewController *)self alertRestingView];
-  v26 = [v25 bottomAnchor];
-  v27 = [(PHSOSViewController *)self cancelButton];
-  v28 = [v27 topAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  alertRestingView5 = [(PHSOSViewController *)self alertRestingView];
+  bottomAnchor = [alertRestingView5 bottomAnchor];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  topAnchor3 = [cancelButton topAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
   [v30 addObject:v29];
 
   [NSLayoutConstraint activateConstraints:v30];
@@ -3187,35 +3187,35 @@ LABEL_2:
 {
   [(PHSOSViewController *)self marginPadding];
   v4 = v3;
-  v5 = [(PHSOSViewController *)self countdownView];
-  v6 = [v5 leadingAnchor];
-  v7 = [(PHSOSViewController *)self view];
-  v8 = [v7 leadingAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8 constant:v4];
+  countdownView = [(PHSOSViewController *)self countdownView];
+  leadingAnchor = [countdownView leadingAnchor];
+  view = [(PHSOSViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v4];
 
-  v10 = [(PHSOSViewController *)self countdownView];
-  v11 = [v10 trailingAnchor];
-  v12 = [(PHSOSViewController *)self view];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:-v4];
+  countdownView2 = [(PHSOSViewController *)self countdownView];
+  trailingAnchor = [countdownView2 trailingAnchor];
+  view2 = [(PHSOSViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v4];
 
-  v15 = [(PHSOSViewController *)self countdownView];
-  v16 = [v15 centerXAnchor];
-  v17 = [(PHSOSViewController *)self view];
-  v18 = [v17 centerXAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  countdownView3 = [(PHSOSViewController *)self countdownView];
+  centerXAnchor = [countdownView3 centerXAnchor];
+  view3 = [(PHSOSViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v20 = [(PHSOSViewController *)self countdownView];
-  v21 = [v20 topAnchor];
-  v22 = [(PHSOSViewController *)self view];
-  v23 = [v22 topAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  countdownView4 = [(PHSOSViewController *)self countdownView];
+  topAnchor = [countdownView4 topAnchor];
+  view4 = [(PHSOSViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v25 = [(PHSOSViewController *)self countdownView];
-  v26 = [v25 bottomAnchor];
-  v27 = [(PHSOSViewController *)self cancelButton];
-  v28 = [v27 topAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  countdownView5 = [(PHSOSViewController *)self countdownView];
+  bottomAnchor = [countdownView5 bottomAnchor];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  topAnchor3 = [cancelButton topAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
 
   v31[0] = v9;
   v31[1] = v14;
@@ -3228,35 +3228,35 @@ LABEL_2:
 
 - (void)setUpSlidingViewConstraints
 {
-  v3 = [(PHSOSViewController *)self slidingView];
-  v4 = [v3 leadingAnchor];
-  v5 = [(PHSOSViewController *)self view];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  slidingView = [(PHSOSViewController *)self slidingView];
+  leadingAnchor = [slidingView leadingAnchor];
+  view = [(PHSOSViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v8 = [(PHSOSViewController *)self slidingView];
-  v9 = [v8 trailingAnchor];
-  v10 = [(PHSOSViewController *)self view];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  slidingView2 = [(PHSOSViewController *)self slidingView];
+  trailingAnchor = [slidingView2 trailingAnchor];
+  view2 = [(PHSOSViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-  v13 = [(PHSOSViewController *)self slidingView];
-  v14 = [v13 centerXAnchor];
-  v15 = [(PHSOSViewController *)self view];
-  v16 = [v15 centerXAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  slidingView3 = [(PHSOSViewController *)self slidingView];
+  centerXAnchor = [slidingView3 centerXAnchor];
+  view3 = [(PHSOSViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v18 = [(PHSOSViewController *)self slidingView];
-  v19 = [v18 topAnchor];
-  v20 = [(PHSOSViewController *)self view];
-  v21 = [v20 topAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  slidingView4 = [(PHSOSViewController *)self slidingView];
+  topAnchor = [slidingView4 topAnchor];
+  view4 = [(PHSOSViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v23 = [(PHSOSViewController *)self slidingView];
-  v24 = [v23 bottomAnchor];
-  v25 = [(PHSOSViewController *)self cancelButton];
-  v26 = [v25 topAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  slidingView5 = [(PHSOSViewController *)self slidingView];
+  bottomAnchor = [slidingView5 bottomAnchor];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  topAnchor3 = [cancelButton topAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
 
   v29[0] = v7;
   v29[1] = v12;
@@ -3271,41 +3271,41 @@ LABEL_2:
 {
   [(PHSOSViewController *)self marginPadding];
   v4 = v3;
-  v5 = [(PHSOSViewController *)self sosNumbersViewController];
-  v6 = [v5 view];
-  v7 = [v6 leadingAnchor];
-  v8 = [(PHSOSViewController *)self view];
-  v9 = [v8 leadingAnchor];
-  v36 = [v7 constraintEqualToAnchor:v9 constant:v4];
+  sosNumbersViewController = [(PHSOSViewController *)self sosNumbersViewController];
+  view = [sosNumbersViewController view];
+  leadingAnchor = [view leadingAnchor];
+  view2 = [(PHSOSViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v4];
 
-  v10 = [(PHSOSViewController *)self sosNumbersViewController];
-  v11 = [v10 view];
-  v12 = [v11 trailingAnchor];
-  v13 = [(PHSOSViewController *)self view];
-  v14 = [v13 trailingAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14 constant:-v4];
+  sosNumbersViewController2 = [(PHSOSViewController *)self sosNumbersViewController];
+  view3 = [sosNumbersViewController2 view];
+  trailingAnchor = [view3 trailingAnchor];
+  view4 = [(PHSOSViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v4];
 
-  v16 = [(PHSOSViewController *)self sosNumbersViewController];
-  v17 = [v16 view];
-  v18 = [v17 centerXAnchor];
-  v19 = [(PHSOSViewController *)self view];
-  v20 = [v19 centerXAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  sosNumbersViewController3 = [(PHSOSViewController *)self sosNumbersViewController];
+  view5 = [sosNumbersViewController3 view];
+  centerXAnchor = [view5 centerXAnchor];
+  view6 = [(PHSOSViewController *)self view];
+  centerXAnchor2 = [view6 centerXAnchor];
+  v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v22 = [(PHSOSViewController *)self sosNumbersViewController];
-  v23 = [v22 view];
-  v24 = [v23 topAnchor];
-  v25 = [(PHSOSViewController *)self view];
-  v26 = [v25 safeAreaLayoutGuide];
-  v27 = [v26 topAnchor];
-  v28 = [v24 constraintEqualToAnchor:v27 constant:52.0];
+  sosNumbersViewController4 = [(PHSOSViewController *)self sosNumbersViewController];
+  view7 = [sosNumbersViewController4 view];
+  topAnchor = [view7 topAnchor];
+  view8 = [(PHSOSViewController *)self view];
+  safeAreaLayoutGuide = [view8 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:52.0];
 
-  v29 = [(PHSOSViewController *)self sosNumbersViewController];
-  v30 = [v29 view];
-  v31 = [v30 bottomAnchor];
-  v32 = [(PHSOSViewController *)self cancelButton];
-  v33 = [v32 topAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33 constant:-28.0];
+  sosNumbersViewController5 = [(PHSOSViewController *)self sosNumbersViewController];
+  view9 = [sosNumbersViewController5 view];
+  bottomAnchor = [view9 bottomAnchor];
+  cancelButton = [(PHSOSViewController *)self cancelButton];
+  topAnchor3 = [cancelButton topAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-28.0];
 
   v37[0] = v36;
   v37[1] = v15;
@@ -3320,23 +3320,23 @@ LABEL_2:
 {
   [(PHSOSViewController *)self marginPadding];
   v4 = v3;
-  v5 = [(PHSOSViewController *)self infoLabel];
-  v6 = [v5 leadingAnchor];
-  v7 = [(PHSOSViewController *)self view];
-  v8 = [v7 leadingAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8 constant:v4];
+  infoLabel = [(PHSOSViewController *)self infoLabel];
+  leadingAnchor = [infoLabel leadingAnchor];
+  view = [(PHSOSViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v4];
 
-  v10 = [(PHSOSViewController *)self infoLabel];
-  v11 = [v10 trailingAnchor];
-  v12 = [(PHSOSViewController *)self view];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:-v4];
+  infoLabel2 = [(PHSOSViewController *)self infoLabel];
+  trailingAnchor = [infoLabel2 trailingAnchor];
+  view2 = [(PHSOSViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v4];
 
-  v15 = [(PHSOSViewController *)self infoLabel];
-  v16 = [v15 centerXAnchor];
-  v17 = [(PHSOSViewController *)self view];
-  v18 = [v17 centerXAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  infoLabel3 = [(PHSOSViewController *)self infoLabel];
+  centerXAnchor = [infoLabel3 centerXAnchor];
+  view3 = [(PHSOSViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
   v20 = 27.0;
   if ((+[PHUIConfiguration shouldUseSOSTightSpacing]& 1) == 0)
@@ -3346,11 +3346,11 @@ LABEL_2:
     v20 = v22 * 0.0599999987;
   }
 
-  v23 = [(PHSOSViewController *)self infoLabel];
-  v24 = [v23 topAnchor];
-  v25 = [(PHSOSViewController *)self safeAreaLayoutGuide];
-  v26 = [v25 topAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:v20];
+  infoLabel4 = [(PHSOSViewController *)self infoLabel];
+  topAnchor = [infoLabel4 topAnchor];
+  safeAreaLayoutGuide = [(PHSOSViewController *)self safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v20];
 
   v29[0] = v9;
   v29[1] = v14;
@@ -3360,21 +3360,21 @@ LABEL_2:
   [NSLayoutConstraint activateConstraints:v28];
 }
 
-- (void)submitSOSResolutionMetric:(BOOL)a3
+- (void)submitSOSResolutionMetric:(BOOL)metric
 {
-  v3 = a3;
-  v5 = [(PHSOSViewController *)self launchedForAssertionReason];
+  metricCopy = metric;
+  launchedForAssertionReason = [(PHSOSViewController *)self launchedForAssertionReason];
 
-  if (v5 != @"PHSOSCallAssertionReason")
+  if (launchedForAssertionReason != @"PHSOSCallAssertionReason")
   {
     return;
   }
 
-  v6 = [(PHSOSViewController *)self sosTrigger];
-  if (v6 > 4)
+  sosTrigger = [(PHSOSViewController *)self sosTrigger];
+  if (sosTrigger > 4)
   {
     v8 = 1;
-    if (v6 == 5 || v6 == 7)
+    if (sosTrigger == 5 || sosTrigger == 7)
     {
       goto LABEL_14;
     }
@@ -3382,7 +3382,7 @@ LABEL_2:
 
   else
   {
-    if ((v6 - 1) < 2)
+    if ((sosTrigger - 1) < 2)
     {
       v7 = +[SOSUtilities isCallWithSideButtonPressesEnabled];
 LABEL_10:
@@ -3390,7 +3390,7 @@ LABEL_10:
       goto LABEL_14;
     }
 
-    if (v6 == 3)
+    if (sosTrigger == 3)
     {
       v7 = +[SOSUtilities isCallWithVolumeLockHoldEnabled];
       goto LABEL_10;
@@ -3405,20 +3405,20 @@ LABEL_10:
 
   v8 = 0;
 LABEL_14:
-  v10 = [(PHSOSViewController *)self sosTrigger];
-  if ([SOSCoreAnalyticsReporter isSensitiveTrigger:v10])
+  sosTrigger2 = [(PHSOSViewController *)self sosTrigger];
+  if ([SOSCoreAnalyticsReporter isSensitiveTrigger:sosTrigger2])
   {
     v11 = +[MCProfileConnection sharedConnection];
-    v12 = [v11 isSafetyDataSubmissionAllowed];
+    isSafetyDataSubmissionAllowed = [v11 isSafetyDataSubmissionAllowed];
 
-    if ((v12 & 1) == 0)
+    if ((isSafetyDataSubmissionAllowed & 1) == 0)
     {
-      v10 = 9;
+      sosTrigger2 = 9;
     }
   }
 
   v13 = objc_alloc_init(NSMutableDictionary);
-  v14 = [NSNumber numberWithInteger:v10];
+  v14 = [NSNumber numberWithInteger:sosTrigger2];
   [v13 setValue:v14 forKey:@"trigger"];
 
   v15 = [NSNumber numberWithBool:[(PHSOSViewController *)self wasCallCancelled]];
@@ -3429,7 +3429,7 @@ LABEL_14:
   v18 = [NSNumber numberWithInt:v17];
   [v13 setValue:v18 forKey:@"timeTillCancel"];
 
-  v19 = [NSNumber numberWithBool:v3];
+  v19 = [NSNumber numberWithBool:metricCopy];
   [v13 setValue:v19 forKey:@"notificationPosted"];
 
   v20 = [NSNumber numberWithBool:v8];
@@ -3446,12 +3446,12 @@ LABEL_14:
   v25 = [NSNumber numberWithBool:[(PHSOSViewController *)self callAutoDialled]];
   [v13 setValue:v25 forKey:@"callAutoDialled"];
 
-  v26 = [(PHSOSViewController *)self currentButtonPressState];
+  currentButtonPressState = [(PHSOSViewController *)self currentButtonPressState];
 
-  if (v26)
+  if (currentButtonPressState)
   {
-    v27 = [(PHSOSViewController *)self currentButtonPressState];
-    [v27 getButtonPressGap];
+    currentButtonPressState2 = [(PHSOSViewController *)self currentButtonPressState];
+    [currentButtonPressState2 getButtonPressGap];
     v29 = v28;
 
     LODWORD(v30) = vcvtpd_s64_f64(v29);
@@ -3473,20 +3473,20 @@ LABEL_14:
   v34 = [NSNumber numberWithUnsignedInteger:[(PHSOSViewController *)self clawResolution]];
   [v13 setValue:v34 forKey:@"clawResolution"];
 
-  v35 = [(PHSOSViewController *)self slidingView];
-  v36 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v35 wasMounted]);
+  slidingView = [(PHSOSViewController *)self slidingView];
+  v36 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [slidingView wasMounted]);
   [v13 setValue:v36 forKey:@"wasMounted"];
 
-  v37 = [(PHSOSViewController *)self slidingView];
-  v38 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v37 wasMountedProbability]);
+  slidingView2 = [(PHSOSViewController *)self slidingView];
+  v38 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [slidingView2 wasMountedProbability]);
   [v13 setValue:v38 forKey:@"wasMountedProbability"];
 
-  v39 = [(PHSOSViewController *)self slidingView];
-  v40 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v39 numberOfEpochsForMountProbability]);
+  slidingView3 = [(PHSOSViewController *)self slidingView];
+  v40 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [slidingView3 numberOfEpochsForMountProbability]);
   [v13 setValue:v40 forKey:@"numberEpochs"];
 
-  v41 = [(PHSOSViewController *)self slidingView];
-  if (!v41)
+  slidingView4 = [(PHSOSViewController *)self slidingView];
+  if (!slidingView4)
   {
     goto LABEL_24;
   }
@@ -3497,13 +3497,13 @@ LABEL_14:
     goto LABEL_24;
   }
 
-  v43 = [(PHSOSViewController *)self slidingView];
-  v44 = [v43 timeToReleaseClaw];
+  slidingView5 = [(PHSOSViewController *)self slidingView];
+  timeToReleaseClaw = [slidingView5 timeToReleaseClaw];
 
-  if ((v44 & 0x8000000000000000) == 0)
+  if ((timeToReleaseClaw & 0x8000000000000000) == 0)
   {
-    v41 = [(PHSOSViewController *)self slidingView];
-    v45 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v41 timeToReleaseClaw]);
+    slidingView4 = [(PHSOSViewController *)self slidingView];
+    v45 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [slidingView4 timeToReleaseClaw]);
     [v13 setValue:v45 forKey:@"timeToReleaseClaw"];
 
 LABEL_24:
@@ -3516,43 +3516,43 @@ LABEL_26:
   if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
   {
     v82 = [v13 valueForKey:@"trigger"];
-    v74 = [v82 intValue];
+    intValue = [v82 intValue];
     v80 = [v13 valueForKey:@"callCancelled"];
-    v72 = [v80 intValue];
+    intValue2 = [v80 intValue];
     v78 = [v13 valueForKey:@"timeTillCancel"];
-    v71 = [v78 intValue];
+    intValue3 = [v78 intValue];
     v76 = [v13 valueForKey:@"notificationPosted"];
-    v70 = [v76 intValue];
+    intValue4 = [v76 intValue];
     v75 = [v13 valueForKey:@"autoCallEnabled"];
-    v69 = [v75 intValue];
+    intValue5 = [v75 intValue];
     v73 = [v13 valueForKey:@"callDisconnectReason"];
-    v47 = [v73 intValue];
+    intValue6 = [v73 intValue];
     v48 = [v13 valueForKey:@"timeTillActive"];
-    v49 = [v48 intValue];
+    intValue7 = [v48 intValue];
     v50 = [v13 valueForKey:@"callAutoDialled"];
-    v51 = [v50 intValue];
+    intValue8 = [v50 intValue];
     v52 = [v13 valueForKey:@"clawButtonPressGap"];
-    v53 = [v52 intValue];
+    intValue9 = [v52 intValue];
     v54 = [v13 valueForKey:@"clawButtonPressGapFloat"];
     [v54 doubleValue];
     *buf = 67111424;
-    v86 = v74;
+    v86 = intValue;
     v87 = 1024;
-    v88 = v72;
+    v88 = intValue2;
     v89 = 1024;
-    v90 = v71;
+    v90 = intValue3;
     v91 = 1024;
-    v92 = v70;
+    v92 = intValue4;
     v93 = 1024;
-    v94 = v69;
+    v94 = intValue5;
     v95 = 1024;
-    v96 = v47;
+    v96 = intValue6;
     v97 = 1024;
-    v98 = v49;
+    v98 = intValue7;
     v99 = 1024;
-    v100 = v51;
+    v100 = intValue8;
     v101 = 1024;
-    v102 = v53;
+    v102 = intValue9;
     v103 = 2048;
     v104 = v55;
     _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "PHSOSViewController,SOS Resolution details,trigger,%d,callCancelled,%d,timeTillCancel,%d,notificationPosted,%d,autoCallEnabled,%d,callDisconnectReason,%d,timeTillActive,%d,callAutoDialled,%d,clawButtonPressGap,%d,clawButtonPressGapFloat,%f", buf, 0x42u);
@@ -3562,29 +3562,29 @@ LABEL_26:
   if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
   {
     v83 = [v13 valueForKey:@"clawResolution"];
-    v79 = [v83 intValue];
+    intValue10 = [v83 intValue];
     v81 = [v13 valueForKey:@"wasMounted"];
-    v77 = [v81 intValue];
+    intValue11 = [v81 intValue];
     v57 = [v13 valueForKey:@"wasMountedProbability"];
-    v58 = [v57 intValue];
+    intValue12 = [v57 intValue];
     v59 = [v13 valueForKey:@"numberEpochs"];
-    v60 = [v59 intValue];
+    intValue13 = [v59 intValue];
     v61 = [v13 valueForKey:@"timeToReleaseClaw"];
-    v62 = [v61 intValue];
+    intValue14 = [v61 intValue];
     v63 = [v13 valueForKey:@"clawSwipeAfterRTCTimeout"];
-    v64 = [v63 intValue];
+    intValue15 = [v63 intValue];
     *buf = 67110400;
-    v86 = v79;
+    v86 = intValue10;
     v87 = 1024;
-    v88 = v77;
+    v88 = intValue11;
     v89 = 1024;
-    v90 = v58;
+    v90 = intValue12;
     v91 = 1024;
-    v92 = v60;
+    v92 = intValue13;
     v93 = 1024;
-    v94 = v62;
+    v94 = intValue14;
     v95 = 1024;
-    v96 = v64;
+    v96 = intValue15;
     _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "PHSOSViewController,SOS Resolution details II,clawResolution,%d,wasMounted,%d,wasMountedProbability,%d,numberEpochs,%d,timeToReleaseClaw,%d, clawSwipeAfterRTCTimeout,%d", buf, 0x26u);
   }
 
@@ -3606,13 +3606,13 @@ LABEL_26:
 
 - (void)submitSOSUserActivityMetric
 {
-  v3 = [(PHSOSViewController *)self launchedForAssertionReason];
+  launchedForAssertionReason = [(PHSOSViewController *)self launchedForAssertionReason];
 
-  if (v3 == @"PHSOSCallAssertionReason")
+  if (launchedForAssertionReason == @"PHSOSCallAssertionReason")
   {
     v4 = objc_alloc_init(NSMutableDictionary);
-    v5 = [(PHSOSViewController *)self sessionId];
-    [v4 setValue:v5 forKey:@"sessionId"];
+    sessionId = [(PHSOSViewController *)self sessionId];
+    [v4 setValue:sessionId forKey:@"sessionId"];
 
     Current = CFAbsoluteTimeGetCurrent();
     [(PHSOSViewController *)self sessionStartTime];
@@ -3652,8 +3652,8 @@ LABEL_26:
     if ([(PHSOSViewController *)self sosTrigger]== 3 || (+[SOSUtilities isCallWithSideButtonPressesEnabled]& 1) == 0 && ([(PHSOSViewController *)self sosTrigger]== 2 || [(PHSOSViewController *)self sosTrigger]== 1))
     {
       v21 = +[SOSManager sharedInstance];
-      v22 = [v21 currentSOSButtonPressState];
-      [v22 getButtonPressGap];
+      currentSOSButtonPressState = [v21 currentSOSButtonPressState];
+      [currentSOSButtonPressState getButtonPressGap];
       v24 = v23;
 
       v25 = [NSNumber numberWithDouble:ceil(v24 * 10.0) / 10.0];
@@ -3684,47 +3684,47 @@ LABEL_26:
     {
       v35 = [v4 valueForKey:@"sessionId"];
       v56 = [v4 valueForKey:@"timeSinceSessionStart"];
-      v51 = [v56 intValue];
+      intValue = [v56 intValue];
       v55 = [v4 valueForKey:@"entryReason"];
-      v49 = [v55 intValue];
+      intValue2 = [v55 intValue];
       v54 = [v4 valueForKey:@"exitReason"];
-      v48 = [v54 intValue];
+      intValue3 = [v54 intValue];
       v53 = [v4 valueForKey:@"callConnected"];
-      v47 = [v53 intValue];
+      intValue4 = [v53 intValue];
       v52 = [v4 valueForKey:@"callDuration"];
-      v46 = [v52 intValue];
+      intValue5 = [v52 intValue];
       v50 = [v4 valueForKey:@"callConnectTimeSinceSessionStart"];
-      v45 = [v50 intValue];
+      intValue6 = [v50 intValue];
       v36 = [v4 valueForKey:@"callDisconnectReason"];
-      v37 = [v36 intValue];
+      intValue7 = [v36 intValue];
       v38 = [v4 valueForKey:@"clawButtonPressGapFloat"];
       [v38 doubleValue];
       v40 = v39;
       v41 = [v4 valueForKey:@"clawSwipeAfterRTCTimeout"];
-      v42 = [v41 intValue];
+      intValue8 = [v41 intValue];
       v43 = [v4 valueForKey:@"sliderProgressDuration"];
       *buf = 138414850;
       v58 = v35;
       v59 = 1024;
-      v60 = v51;
+      v60 = intValue;
       v61 = 1024;
-      v62 = v49;
+      v62 = intValue2;
       v63 = 1024;
-      v64 = v48;
+      v64 = intValue3;
       v65 = 1024;
-      v66 = v47;
+      v66 = intValue4;
       v67 = 1024;
-      v68 = v46;
+      v68 = intValue5;
       v69 = 1024;
-      v70 = v45;
+      v70 = intValue6;
       v71 = 1024;
-      v72 = v37;
+      v72 = intValue7;
       v73 = 2048;
       v74 = v40;
       v75 = 1024;
-      v76 = v42;
+      v76 = intValue8;
       v77 = 1024;
-      v78 = [v43 intValue];
+      intValue9 = [v43 intValue];
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "PHSOSViewController,User Activity details,sessionId,%@,timeSinceSessionStart,%d,entryReason,%d,exitReason,%d,callConnected,%d,callDuration,%d,callConnectTimeSinceSessionStart,%d,callDisconnectReason,%d,clawButtonPressGapFloat,%f,clawSwipeAfterRTCTimeout,%d,sliderProgressDuration,%d", buf, 0x4Cu);
     }
   }

@@ -1,33 +1,33 @@
 @interface THWInteractiveImageCalloutLayout
-- (CGPoint)stackedControlContainerOrigin:(id)a3;
+- (CGPoint)stackedControlContainerOrigin:(id)origin;
 - (CGRect)backgroundRect;
 - (CGRect)backgroundRectTitleOnly;
-- (CGRect)groupFrameWithViewScale:(double)a3;
-- (THWInteractiveImageCalloutLayout)initWithInfo:(id)a3;
+- (CGRect)groupFrameWithViewScale:(double)scale;
+- (THWInteractiveImageCalloutLayout)initWithInfo:(id)info;
 - (UIEdgeInsets)p_scaledInsets;
 - (double)p_scaledWidth;
-- (double)stackedControlContainer:(id)a3 verticalPaddingAfter:(id)a4;
-- (double)stackedControlContainer:(id)a3 verticalSpacingBefore:(id)a4;
+- (double)stackedControlContainer:(id)container verticalPaddingAfter:(id)after;
+- (double)stackedControlContainer:(id)container verticalSpacingBefore:(id)before;
 - (id)computeLayoutGeometry;
-- (id)controlContainerChildInfosForLayout:(id)a3;
+- (id)controlContainerChildInfosForLayout:(id)layout;
 - (id)sccLayout;
-- (id)stackedControlContainer:(id)a3 styleProviderForLayout:(id)a4;
-- (id)stackedControlContainerHeightLastChild:(id)a3;
+- (id)stackedControlContainer:(id)container styleProviderForLayout:(id)layout;
+- (id)stackedControlContainerHeightLastChild:(id)child;
 - (void)dealloc;
 - (void)invalidateTitleStyle;
 - (void)p_invalidateTitleIfNeeded;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setTitleOnly:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setTitleOnly:(BOOL)only;
 @end
 
 @implementation THWInteractiveImageCalloutLayout
 
-- (THWInteractiveImageCalloutLayout)initWithInfo:(id)a3
+- (THWInteractiveImageCalloutLayout)initWithInfo:(id)info
 {
   v5.receiver = self;
   v5.super_class = THWInteractiveImageCalloutLayout;
-  v3 = [(THWInteractiveImageCalloutLayout *)&v5 initWithInfo:a3];
+  v3 = [(THWInteractiveImageCalloutLayout *)&v5 initWithInfo:info];
   if (v3)
   {
     v3->_stackedControlContainer = [[THWStackedControlContainer alloc] initWithDelegate:v3];
@@ -53,13 +53,13 @@
 
 - (id)computeLayoutGeometry
 {
-  v3 = [(THWInteractiveImageCalloutLayout *)self sccLayout];
+  sccLayout = [(THWInteractiveImageCalloutLayout *)self sccLayout];
   [(THWInteractiveImageCalloutLayout *)self p_scaledInsets];
   [objc_msgSend(objc_msgSend(-[THWInteractiveImageCalloutLayout layoutController](self "layoutController")];
   [(THWInteractiveImageCalloutLayout *)self p_scaledWidth];
-  v4 = [(THWInteractiveImageCalloutLayout *)self delegate];
+  delegate = [(THWInteractiveImageCalloutLayout *)self delegate];
   [(THWInteractiveImageCalloutInfo *)self->_calloutInfo placardFixedPoint];
-  [(THWInteractiveImageCalloutLayoutDelegate *)v4 interactiveImageCallout:self convertContentPointToUnscaledOverlayPoint:?];
+  [(THWInteractiveImageCalloutLayoutDelegate *)delegate interactiveImageCallout:self convertContentPointToUnscaledOverlayPoint:?];
   TSDRectWithCenterAndSize();
   v6 = v5;
   v8 = v7;
@@ -72,7 +72,7 @@
   self->_backgroundRectTitleOnly.size.height = v16;
   if (self->_selected)
   {
-    [objc_msgSend(v3 "geometry")];
+    [objc_msgSend(sccLayout "geometry")];
     v12 = v17;
     TSDRectWithSize();
   }
@@ -86,12 +86,12 @@
   return v18;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
     v8 = v3;
-    self->_selected = a3;
+    self->_selected = selected;
     if (!self->_titleOnly)
     {
       [(THWInteractiveImageCalloutLayout *)self invalidateSize];
@@ -104,22 +104,22 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [objc_msgSend(-[THWInteractiveImageCalloutLayout layoutController](self "layoutController")];
 
     [(THWInteractiveImageCalloutLayout *)self p_invalidateTitleIfNeeded];
   }
 }
 
-- (void)setTitleOnly:(BOOL)a3
+- (void)setTitleOnly:(BOOL)only
 {
-  if (self->_titleOnly != a3)
+  if (self->_titleOnly != only)
   {
-    self->_titleOnly = a3;
+    self->_titleOnly = only;
     [(THWInteractiveImageCalloutLayout *)self invalidateSize];
     [-[THWInteractiveImageCalloutLayout sccLayout](self "sccLayout")];
     [-[THWInteractiveImageCalloutLayout sccLayout](self "sccLayout")];
@@ -138,17 +138,17 @@
 
 - (void)invalidateTitleStyle
 {
-  v3 = [(THWInteractiveImageCalloutInfo *)self->_calloutInfo titleStorage];
+  titleStorage = [(THWInteractiveImageCalloutInfo *)self->_calloutInfo titleStorage];
   v4 = [(TSWPStorage *)[(THWInteractiveImageCalloutInfo *)self->_calloutInfo titleStorage] length];
 
-  [(TSWPStorage *)v3 styleDidChangeInRange:0, v4];
+  [(TSWPStorage *)titleStorage styleDidChangeInRange:0, v4];
 }
 
-- (CGRect)groupFrameWithViewScale:(double)a3
+- (CGRect)groupFrameWithViewScale:(double)scale
 {
-  v4 = [(THWInteractiveImageCalloutLayout *)self calloutInfo];
+  calloutInfo = [(THWInteractiveImageCalloutLayout *)self calloutInfo];
   [-[TSDShapeInfo geometry](-[THWInteractiveImageCalloutInfo groupShape](-[THWInteractiveImageCalloutLayout calloutInfo](self "calloutInfo")];
-  [(THWInteractiveImageCalloutInfo *)v4 placardFixedPoint];
+  [(THWInteractiveImageCalloutInfo *)calloutInfo placardFixedPoint];
   TSDMultiplyPointScalar();
 
   TSDRectWithCenterAndSize();
@@ -159,16 +159,16 @@
   return result;
 }
 
-- (id)controlContainerChildInfosForLayout:(id)a3
+- (id)controlContainerChildInfosForLayout:(id)layout
 {
-  v4 = [(THWInteractiveImageCalloutLayout *)self hasTitle];
-  v5 = [(THWInteractiveImageCalloutLayout *)self hasDescription];
+  hasTitle = [(THWInteractiveImageCalloutLayout *)self hasTitle];
+  hasDescription = [(THWInteractiveImageCalloutLayout *)self hasDescription];
   if (self->_titleOnly)
   {
-    if (v4)
+    if (hasTitle)
     {
-      v11 = [(THWInteractiveImageCalloutInfo *)self->_calloutInfo titleStorage];
-      v6 = &v11;
+      titleStorage = [(THWInteractiveImageCalloutInfo *)self->_calloutInfo titleStorage];
+      v6 = &titleStorage;
 LABEL_8:
       v7 = 1;
       return [NSArray arrayWithObjects:v6 count:v7];
@@ -177,7 +177,7 @@ LABEL_8:
 
   else
   {
-    if ((v4 & v5) == 1)
+    if ((hasTitle & hasDescription) == 1)
     {
       v10[0] = [(THWInteractiveImageCalloutInfo *)self->_calloutInfo titleStorage];
       v10[1] = [(THWInteractiveImageCalloutInfo *)self->_calloutInfo descriptionStorage];
@@ -186,10 +186,10 @@ LABEL_8:
       return [NSArray arrayWithObjects:v6 count:v7];
     }
 
-    if (v4)
+    if (hasTitle)
     {
-      v9 = [(THWInteractiveImageCalloutInfo *)self->_calloutInfo titleStorage];
-      v6 = &v9;
+      titleStorage2 = [(THWInteractiveImageCalloutInfo *)self->_calloutInfo titleStorage];
+      v6 = &titleStorage2;
       goto LABEL_8;
     }
   }
@@ -197,16 +197,16 @@ LABEL_8:
   return 0;
 }
 
-- (id)stackedControlContainerHeightLastChild:(id)a3
+- (id)stackedControlContainerHeightLastChild:(id)child
 {
   if (self->_selected)
   {
     return 0;
   }
 
-  v6 = [a3 children];
+  children = [child children];
 
-  return [v6 firstObject];
+  return [children firstObject];
 }
 
 - (double)p_scaledWidth
@@ -217,7 +217,7 @@ LABEL_8:
   return fmax(v3, 1.0);
 }
 
-- (CGPoint)stackedControlContainerOrigin:(id)a3
+- (CGPoint)stackedControlContainerOrigin:(id)origin
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -257,33 +257,33 @@ LABEL_8:
   return result;
 }
 
-- (double)stackedControlContainer:(id)a3 verticalPaddingAfter:(id)a4
+- (double)stackedControlContainer:(id)container verticalPaddingAfter:(id)after
 {
-  [(THWInteractiveImageCalloutInfo *)self->_calloutInfo verticalSpacing:a3];
+  [(THWInteractiveImageCalloutInfo *)self->_calloutInfo verticalSpacing:container];
   [(THWInteractiveImageCalloutLayoutDelegate *)self->_delegate interactiveImageCalloutFontScale:self];
 
   TSURound();
   return result;
 }
 
-- (double)stackedControlContainer:(id)a3 verticalSpacingBefore:(id)a4
+- (double)stackedControlContainer:(id)container verticalSpacingBefore:(id)before
 {
-  [objc_msgSend(a3 "children")];
+  [objc_msgSend(container "children")];
   [(THWInteractiveImageCalloutLayoutDelegate *)self->_delegate interactiveImageCalloutFontScale:self];
 
   TSURound();
   return result;
 }
 
-- (id)stackedControlContainer:(id)a3 styleProviderForLayout:(id)a4
+- (id)stackedControlContainer:(id)container styleProviderForLayout:(id)layout
 {
   if (!self->_titleOnly)
   {
     return 0;
   }
 
-  v5 = [a4 info];
-  if (v5 != [(THWInteractiveImageCalloutInfo *)self->_calloutInfo titleStorage])
+  info = [layout info];
+  if (info != [(THWInteractiveImageCalloutInfo *)self->_calloutInfo titleStorage])
   {
     return 0;
   }

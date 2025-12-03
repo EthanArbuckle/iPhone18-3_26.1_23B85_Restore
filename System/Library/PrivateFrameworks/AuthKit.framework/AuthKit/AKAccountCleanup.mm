@@ -1,11 +1,11 @@
 @interface AKAccountCleanup
 - (AKAccountCleanup)init;
 - (id)_eligibleCleanupAccounts;
-- (id)_inMemoryTokensForAccounts:(id)a3;
-- (void)_cleanupAccountsToRemove:(id)a3 accountsToSave:(id)a4 completion:(id)a5;
-- (void)_removeAccounts:(id)a3;
-- (void)_saveAccounts:(id)a3 inMemoryTokens:(id)a4 completion:(id)a5;
-- (void)cleanupStaleAccountsWithCompletion:(id)a3;
+- (id)_inMemoryTokensForAccounts:(id)accounts;
+- (void)_cleanupAccountsToRemove:(id)remove accountsToSave:(id)save completion:(id)completion;
+- (void)_removeAccounts:(id)accounts;
+- (void)_saveAccounts:(id)accounts inMemoryTokens:(id)tokens completion:(id)completion;
+- (void)cleanupStaleAccountsWithCompletion:(id)completion;
 @end
 
 @implementation AKAccountCleanup
@@ -42,18 +42,18 @@
   return v9;
 }
 
-- (void)cleanupStaleAccountsWithCompletion:(id)a3
+- (void)cleanupStaleAccountsWithCompletion:(id)completion
 {
-  v56 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v54 = [(AKAccountCleanup *)v56 _eligibleCleanupAccounts];
+  objc_storeStrong(location, completion);
+  _eligibleCleanupAccounts = [(AKAccountCleanup *)selfCopy _eligibleCleanupAccounts];
   v53 = _AKLogSystem();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100036FE8(v63, [v54 count]);
+    sub_100036FE8(v63, [_eligibleCleanupAccounts count]);
     _os_log_impl(&_mh_execute_header, v53, type, "Checking if IDMS account cleanup is necessary (%lu accounts found)...", v63, 0xCu);
   }
 
@@ -62,7 +62,7 @@
   v50 = +[NSMutableDictionary dictionary];
   v49 = +[NSMutableDictionary dictionary];
   memset(__b, 0, sizeof(__b));
-  obj = _objc_retain(v54);
+  obj = _objc_retain(_eligibleCleanupAccounts);
   v29 = [obj countByEnumeratingWithState:__b objects:v62 count:16];
   if (v29)
   {
@@ -78,8 +78,8 @@
       }
 
       v48 = *(__b[1] + 8 * v26);
-      v46 = [(AKAccountManager *)v56->_accountManager altDSIDForAccount:v48];
-      v45 = [(AKAccountManager *)v56->_accountManager servicesUsingAccount:v48];
+      v46 = [(AKAccountManager *)selfCopy->_accountManager altDSIDForAccount:v48];
+      v45 = [(AKAccountManager *)selfCopy->_accountManager servicesUsingAccount:v48];
       if ([v45 count])
       {
         [v50 setObject:v48 forKeyedSubscript:v46];
@@ -117,7 +117,7 @@
 
   _objc_release(obj);
   memset(v41, 0, sizeof(v41));
-  v21 = _objc_retain(v54);
+  v21 = _objc_retain(_eligibleCleanupAccounts);
   v22 = [v21 countByEnumeratingWithState:v41 objects:v60 count:16];
   if (v22)
   {
@@ -133,18 +133,18 @@
       }
 
       v42 = *(v41[1] + 8 * v19);
-      v40 = [(AKAccountManager *)v56->_accountManager altDSIDForAccount:v42];
+      v40 = [(AKAccountManager *)selfCopy->_accountManager altDSIDForAccount:v42];
       v39 = [v50 objectForKeyedSubscript:v40];
-      v16 = [v39 identifier];
-      v15 = [v42 identifier];
-      _objc_release(v15);
-      _objc_release(v16);
-      if (v16 == v15)
+      identifier = [v39 identifier];
+      identifier2 = [v42 identifier];
+      _objc_release(identifier2);
+      _objc_release(identifier);
+      if (identifier == identifier2)
       {
         v13 = +[AKFeatureManager sharedManager];
-        v14 = [v13 isTokenCacheEnabled];
+        isTokenCacheEnabled = [v13 isTokenCacheEnabled];
         _objc_release(v13);
-        if (v14)
+        if (isTokenCacheEnabled)
         {
           v38 = 0;
           v11 = +[AKTokenManager sharedInstance];
@@ -221,26 +221,26 @@
   }
 
   _objc_release(v21);
-  v3 = v56;
-  v5 = [v51 allObjects];
-  v4 = [v49 allValues];
-  [AKAccountCleanup _cleanupAccountsToRemove:v3 accountsToSave:"_cleanupAccountsToRemove:accountsToSave:completion:" completion:v5];
-  _objc_release(v4);
-  _objc_release(v5);
+  v3 = selfCopy;
+  allObjects = [v51 allObjects];
+  allValues = [v49 allValues];
+  [AKAccountCleanup _cleanupAccountsToRemove:v3 accountsToSave:"_cleanupAccountsToRemove:accountsToSave:completion:" completion:allObjects];
+  _objc_release(allValues);
+  _objc_release(allObjects);
   objc_storeStrong(&v49, 0);
   objc_storeStrong(&v50, 0);
   objc_storeStrong(&v51, 0);
-  objc_storeStrong(&v54, 0);
+  objc_storeStrong(&_eligibleCleanupAccounts, 0);
   objc_storeStrong(location, 0);
 }
 
 - (id)_eligibleCleanupAccounts
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [(AKAccountManager *)self->_accountManager allAuthKitAccountsWithError:?];
   v3 = v7[0];
-  v5 = _objc_retain(v8);
+  v5 = _objc_retain(selfCopy);
   v6 = [v3 aaf_filter:?];
   v4 = _objc_retain(v6);
   objc_storeStrong(&v6, 0);
@@ -250,26 +250,26 @@
   return v4;
 }
 
-- (void)_cleanupAccountsToRemove:(id)a3 accountsToSave:(id)a4 completion:(id)a5
+- (void)_cleanupAccountsToRemove:(id)remove accountsToSave:(id)save completion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, remove);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, save);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
-  v18 = [(AKAccountCleanup *)v22 _inMemoryTokensForAccounts:v20];
-  [(AKAccountCleanup *)v22 _removeAccounts:location[0]];
-  group = v22->_group;
-  queue = v22->_queue;
+  objc_storeStrong(&v19, completion);
+  v18 = [(AKAccountCleanup *)selfCopy _inMemoryTokensForAccounts:v20];
+  [(AKAccountCleanup *)selfCopy _removeAccounts:location[0]];
+  group = selfCopy->_group;
+  queue = selfCopy->_queue;
   v9 = _NSConcreteStackBlock;
   v10 = -1073741824;
   v11 = 0;
   v12 = sub_10004A54C;
   v13 = &unk_1003200A8;
-  v14 = _objc_retain(v22);
+  v14 = _objc_retain(selfCopy);
   v15 = _objc_retain(v20);
   v16 = _objc_retain(v18);
   v17 = _objc_retain(v19);
@@ -284,12 +284,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_inMemoryTokensForAccounts:(id)a3
+- (id)_inMemoryTokensForAccounts:(id)accounts
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, accounts);
   v21 = objc_opt_new();
   memset(__b, 0, sizeof(__b));
   obj = _objc_retain(location[0]);
@@ -309,8 +309,8 @@
 
       v20 = *(__b[1] + 8 * v10);
       v18 = 0;
-      v17 = [(AKAccountManager *)v23->_accountManager altDSIDForAccount:v20];
-      accountManager = v23->_accountManager;
+      v17 = [(AKAccountManager *)selfCopy->_accountManager altDSIDForAccount:v20];
+      accountManager = selfCopy->_accountManager;
       v15 = v18;
       v7 = [(AKAccountManager *)accountManager allTokensForAccount:v20 error:&v15];
       objc_storeStrong(&v18, v15);
@@ -357,12 +357,12 @@
   return v5;
 }
 
-- (void)_removeAccounts:(id)a3
+- (void)_removeAccounts:(id)accounts
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, accounts);
   memset(__b, 0, sizeof(__b));
   obj = _objc_retain(location[0]);
   v10 = [obj countByEnumeratingWithState:__b objects:v22 count:16];
@@ -380,8 +380,8 @@
       }
 
       v19 = *(__b[1] + 8 * v7);
-      dispatch_group_enter(v21->_group);
-      v4 = [(AKAccountManager *)v21->_accountManager store];
+      dispatch_group_enter(selfCopy->_group);
+      store = [(AKAccountManager *)selfCopy->_accountManager store];
       v3 = v19;
       v11 = _NSConcreteStackBlock;
       v12 = -1073741824;
@@ -389,9 +389,9 @@
       v14 = sub_10004AB58;
       v15 = &unk_1003200D0;
       v16 = _objc_retain(v19);
-      v17 = _objc_retain(v21);
-      [v4 removeAccount:v3 withCompletionHandler:&v11];
-      _objc_release(v4);
+      v17 = _objc_retain(selfCopy);
+      [store removeAccount:v3 withCompletionHandler:&v11];
+      _objc_release(store);
       objc_storeStrong(&v17, 0);
       objc_storeStrong(&v16, 0);
       ++v7;
@@ -411,16 +411,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_saveAccounts:(id)a3 inMemoryTokens:(id)a4 completion:(id)a5
+- (void)_saveAccounts:(id)accounts inMemoryTokens:(id)tokens completion:(id)completion
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, accounts);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, tokens);
   v29 = 0;
-  objc_storeStrong(&v29, a5);
+  objc_storeStrong(&v29, completion);
   memset(__b, 0, sizeof(__b));
   v12 = _objc_retain(location[0]);
   v13 = [v12 countByEnumeratingWithState:__b objects:v33 count:16];
@@ -444,7 +444,7 @@
       v21 = 0;
       v22 = sub_10004B260;
       v23 = &unk_10031F050;
-      v24 = _objc_retain(v32);
+      v24 = _objc_retain(selfCopy);
       v25 = _objc_retain(v28);
       v26 = _objc_retain(v30);
       [AKAccountManager performWithinPersonaForAccount:v7 withBlock:&v19];

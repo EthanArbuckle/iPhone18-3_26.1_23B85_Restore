@@ -1,6 +1,6 @@
 @interface UniversalSearchSession
 + (id)sharedSession;
-- (void)session:(id)a3 bag:(id)a4 didLoadWithError:(id)a5;
+- (void)session:(id)session bag:(id)bag didLoadWithError:(id)error;
 @end
 
 @implementation UniversalSearchSession
@@ -13,7 +13,7 @@
     block[1] = 3221225472;
     block[2] = __39__UniversalSearchSession_sharedSession__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (sharedSession_onceToken != -1)
     {
       dispatch_once(&sharedSession_onceToken, block);
@@ -39,30 +39,30 @@ void __39__UniversalSearchSession_sharedSession__block_invoke(uint64_t a1)
   sharedSession_sharedSession = v2;
 }
 
-- (void)session:(id)a3 bag:(id)a4 didLoadWithError:(id)a5
+- (void)session:(id)session bag:(id)bag didLoadWithError:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  bagCopy = bag;
+  errorCopy = error;
   v10 = MEMORY[0x277CBEB38];
-  v11 = a3;
+  sessionCopy = session;
   v12 = [v10 dictionaryWithCapacity:2];
   v13 = v12;
-  if (v8)
+  if (bagCopy)
   {
-    [v12 setObject:v8 forKeyedSubscript:@"UniversalSearchBagUserInfoDictionaryKey"];
+    [v12 setObject:bagCopy forKeyedSubscript:@"UniversalSearchBagUserInfoDictionaryKey"];
   }
 
-  if (v9)
+  if (errorCopy)
   {
-    [v13 setObject:v9 forKeyedSubscript:@"UniversalSearchBagLoadErrorUserInfoDictionaryKey"];
+    [v13 setObject:errorCopy forKeyedSubscript:@"UniversalSearchBagLoadErrorUserInfoDictionaryKey"];
   }
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 postNotificationName:@"UniversalSearchDidLoadBagNotification" object:self userInfo:v13];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"UniversalSearchDidLoadBagNotification" object:self userInfo:v13];
 
   v15.receiver = self;
   v15.super_class = UniversalSearchSession;
-  [(WBSParsecDSession *)&v15 session:v11 bag:v8 didLoadWithError:v9];
+  [(WBSParsecDSession *)&v15 session:sessionCopy bag:bagCopy didLoadWithError:errorCopy];
 }
 
 @end

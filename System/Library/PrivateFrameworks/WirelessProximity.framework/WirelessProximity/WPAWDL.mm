@@ -1,35 +1,35 @@
 @interface WPAWDL
-+ (id)generateDataFromEmails:(id)a3;
-+ (id)hashEmail:(id)a3;
-- (WPAWDL)initWithDelegate:(id)a3 queue:(id)a4 machName:(id)a5;
++ (id)generateDataFromEmails:(id)emails;
++ (id)hashEmail:(id)email;
+- (WPAWDL)initWithDelegate:(id)delegate queue:(id)queue machName:(id)name;
 - (WPAWDLDelegate)delegate;
-- (void)advertisingFailedToStart:(id)a3 ofType:(unsigned __int8)a4;
-- (void)deviceDiscovered:(id)a3;
+- (void)advertisingFailedToStart:(id)start ofType:(unsigned __int8)type;
+- (void)deviceDiscovered:(id)discovered;
 - (void)invalidate;
-- (void)scanningFailedToStart:(id)a3 ofType:(unsigned __int8)a4;
-- (void)startConnectionlessAWDLServiceAdvertisingWithData:(id)a3;
+- (void)scanningFailedToStart:(id)start ofType:(unsigned __int8)type;
+- (void)startConnectionlessAWDLServiceAdvertisingWithData:(id)data;
 - (void)startConnectionlessAWDLServiceScanning;
-- (void)stateDidChange:(int64_t)a3;
+- (void)stateDidChange:(int64_t)change;
 - (void)stopConnectionlessAWDLServiceAdvertising;
 - (void)stopConnectionlessAWDLServiceScanning;
-- (void)updateAdvertisingRequest:(id)a3 withUpdate:(id)a4;
+- (void)updateAdvertisingRequest:(id)request withUpdate:(id)update;
 @end
 
 @implementation WPAWDL
 
-- (WPAWDL)initWithDelegate:(id)a3 queue:(id)a4 machName:(id)a5
+- (WPAWDL)initWithDelegate:(id)delegate queue:(id)queue machName:(id)name
 {
-  v8 = a3;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = WPAWDL;
-  v9 = [(WPClient *)&v22 initWithQueue:a4 machName:a5];
+  v9 = [(WPClient *)&v22 initWithQueue:queue machName:name];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v10->_useSmallerAirDrop = 0;
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v12 = [v11 persistentDomainForName:@"com.apple.MobileBluetooth.debug"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v12 = [standardUserDefaults persistentDomainForName:@"com.apple.MobileBluetooth.debug"];
     v13 = [v12 objectForKeyedSubscript:@"WIPROX"];
 
     v14 = [v13 objectForKeyedSubscript:@"UseSmallerAirDrop"];
@@ -79,16 +79,16 @@
   [(WPClient *)&v3 invalidate];
 }
 
-+ (id)hashEmail:(id)a3
++ (id)hashEmail:(id)email
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  emailCopy = email;
+  if (!emailCopy)
   {
-    [(WPAWDL *)a2 hashEmail:a1];
+    [(WPAWDL *)a2 hashEmail:self];
   }
 
-  v6 = [v5 dataUsingEncoding:{4, 0, 0, 0, 0}];
+  v6 = [emailCopy dataUsingEncoding:{4, 0, 0, 0, 0}];
   CC_SHA256([v6 bytes], objc_msgSend(v6, "length"), &v10);
   v7 = [MEMORY[0x277CBEA90] dataWithBytes:&v10 length:3];
 
@@ -97,26 +97,26 @@
   return v7;
 }
 
-+ (id)generateDataFromEmails:(id)a3
++ (id)generateDataFromEmails:(id)emails
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  emailsCopy = emails;
+  if (!emailsCopy)
   {
-    [(WPAWDL *)a2 generateDataFromEmails:a1];
+    [(WPAWDL *)a2 generateDataFromEmails:self];
   }
 
   v20 = 0;
   v19 = 0;
   v18 = 1;
-  if ([v5 count] > 2)
+  if ([emailsCopy count] > 2)
   {
     v6 = 3;
   }
 
   else
   {
-    v6 = [v5 count];
+    v6 = [emailsCopy count];
     if (v6 < 1)
     {
       goto LABEL_12;
@@ -128,19 +128,19 @@
   v9 = &v19 + 2;
   do
   {
-    v10 = [v5 objectAtIndexedSubscript:v7];
+    v10 = [emailsCopy objectAtIndexedSubscript:v7];
     if (v10)
     {
-      v11 = [MEMORY[0x277CBEB68] null];
-      v12 = [v10 isEqual:v11];
+      null = [MEMORY[0x277CBEB68] null];
+      v12 = [v10 isEqual:null];
 
       if ((v12 & 1) == 0)
       {
         v13 = [WPAWDL hashEmail:v10];
-        v14 = [v13 bytes];
-        *(v9 - 2) = *v14;
-        *(v9 - 1) = v14[1];
-        *v9 = v14[2];
+        bytes = [v13 bytes];
+        *(v9 - 2) = *bytes;
+        *(v9 - 1) = bytes[1];
+        *v9 = bytes[2];
       }
     }
 
@@ -157,11 +157,11 @@ LABEL_12:
   return v15;
 }
 
-- (void)startConnectionlessAWDLServiceAdvertisingWithData:(id)a3
+- (void)startConnectionlessAWDLServiceAdvertisingWithData:(id)data
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length] < 0x17)
+  dataCopy = data;
+  if ([dataCopy length] < 0x17)
   {
     v19[0] = 0;
     v19[1] = 0;
@@ -173,26 +173,26 @@ LABEL_12:
       v9 = 8;
     }
 
-    v10 = [v4 bytes];
+    bytes = [dataCopy bytes];
     if (![(WPAWDL *)self useSmallerAirDrop])
     {
-      *(v19 + v9) = *v10;
+      *(v19 + v9) = *bytes;
       v9 |= 1u;
     }
 
     v11 = v19 + v9;
-    *v11 = v10[1];
-    v11[1] = v10[2];
-    v11[2] = v10[3];
-    v11[3] = v10[4];
-    v11[4] = v10[5];
-    v11[5] = v10[6];
-    v11[6] = v10[7];
+    *v11 = bytes[1];
+    v11[1] = bytes[2];
+    v11[2] = bytes[3];
+    v11[3] = bytes[4];
+    v11[4] = bytes[5];
+    v11[5] = bytes[6];
+    v11[6] = bytes[7];
     v12 = v9 + 8;
-    v11[7] = v10[8];
+    v11[7] = bytes[8];
     if (![(WPAWDL *)self useSmallerAirDrop])
     {
-      *(v19 + v12) = v10[9];
+      *(v19 + v12) = bytes[9];
       LODWORD(v12) = v9 + 9;
     }
 
@@ -230,7 +230,7 @@ LABEL_12:
     v5 = WiProxLog;
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
     {
-      [(WPAWDL *)v5 startConnectionlessAWDLServiceAdvertisingWithData:v4];
+      [(WPAWDL *)v5 startConnectionlessAWDLServiceAdvertisingWithData:dataCopy];
     }
 
     v6 = MEMORY[0x277CCA9B8];
@@ -245,13 +245,13 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAdvertisingRequest:(id)a3 withUpdate:(id)a4
+- (void)updateAdvertisingRequest:(id)request withUpdate:(id)update
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  [v5 setUpdateTime:0.0];
-  [v5 setAdvertisingRate:290];
+  requestCopy = request;
+  updateCopy = update;
+  [requestCopy setUpdateTime:0.0];
+  [requestCopy setAdvertisingRate:290];
   if (WPLogInitOnce != -1)
   {
     [WPAWDL updateAdvertisingRequest:withUpdate:];
@@ -261,11 +261,11 @@ LABEL_12:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v5;
+    v10 = requestCopy;
     _os_log_impl(&dword_274327000, v7, OS_LOG_TYPE_DEFAULT, "AWDL update advertising with data: %{public}@", &v9, 0xCu);
   }
 
-  v6[2](v6, v5);
+  updateCopy[2](updateCopy, requestCopy);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -300,52 +300,52 @@ LABEL_12:
   [(WPClient *)&v4 stopScanning:v3];
 }
 
-- (void)stateDidChange:(int64_t)a3
+- (void)stateDidChange:(int64_t)change
 {
   v7.receiver = self;
   v7.super_class = WPAWDL;
-  [(WPClient *)&v7 stateDidChange:a3];
-  v4 = [(WPAWDL *)self delegate];
+  [(WPClient *)&v7 stateDidChange:change];
+  delegate = [(WPAWDL *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WPAWDL *)self delegate];
-    [v6 awdlDidUpdateState:self];
+    delegate2 = [(WPAWDL *)self delegate];
+    [delegate2 awdlDidUpdateState:self];
   }
 }
 
-- (void)advertisingFailedToStart:(id)a3 ofType:(unsigned __int8)a4
+- (void)advertisingFailedToStart:(id)start ofType:(unsigned __int8)type
 {
-  v8 = a3;
-  v5 = [(WPAWDL *)self delegate];
+  startCopy = start;
+  delegate = [(WPAWDL *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WPAWDL *)self delegate];
-    [v7 awdl:self failedToStartAdvertisingWithError:v8];
+    delegate2 = [(WPAWDL *)self delegate];
+    [delegate2 awdl:self failedToStartAdvertisingWithError:startCopy];
   }
 }
 
-- (void)scanningFailedToStart:(id)a3 ofType:(unsigned __int8)a4
+- (void)scanningFailedToStart:(id)start ofType:(unsigned __int8)type
 {
-  v8 = a3;
-  v5 = [(WPAWDL *)self delegate];
+  startCopy = start;
+  delegate = [(WPAWDL *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WPAWDL *)self delegate];
-    [v7 awdl:self failedToStartScanningWithError:v8];
+    delegate2 = [(WPAWDL *)self delegate];
+    [delegate2 awdl:self failedToStartScanningWithError:startCopy];
   }
 }
 
-- (void)deviceDiscovered:(id)a3
+- (void)deviceDiscovered:(id)discovered
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kDeviceAdvertisingData"];
+  discoveredCopy = discovered;
+  v5 = [discoveredCopy objectForKeyedSubscript:@"kDeviceAdvertisingData"];
   v6 = [v5 length];
   if (v6 >= 22)
   {
@@ -354,23 +354,23 @@ LABEL_5:
     v9 = v7;
 
     v5 = v9;
-    v10 = [(WPAWDL *)self delegate];
+    delegate = [(WPAWDL *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(WPAWDL *)self delegate];
-      [v12 awdl:self foundDevice:v5];
+      delegate2 = [(WPAWDL *)self delegate];
+      [delegate2 awdl:self foundDevice:v5];
     }
 
-    v13 = [(WPAWDL *)self delegate];
+    delegate3 = [(WPAWDL *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [v4 objectForKeyedSubscript:@"kDeviceRSSI"];
-      v16 = [(WPAWDL *)self delegate];
-      [v16 awdl:self foundDevice:v5 rssi:v15];
+      v15 = [discoveredCopy objectForKeyedSubscript:@"kDeviceRSSI"];
+      delegate4 = [(WPAWDL *)self delegate];
+      [delegate4 awdl:self foundDevice:v5 rssi:v15];
     }
 
     goto LABEL_13;

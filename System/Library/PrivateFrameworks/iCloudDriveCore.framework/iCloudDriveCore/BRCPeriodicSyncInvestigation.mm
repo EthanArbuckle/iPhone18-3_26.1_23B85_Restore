@@ -1,28 +1,28 @@
 @interface BRCPeriodicSyncInvestigation
 - (BOOL)_shouldCompleteInvestigation;
-- (BRCPeriodicSyncInvestigation)initWithZoneAppRetriver:(id)a3 containerScheduler:(id)a4 tapToRadarManager:(id)a5 analyticsReporter:(id)a6;
-- (void)addEditingDevice:(id)a3;
-- (void)addZoneWithNoRealChanges:(id)a3;
+- (BRCPeriodicSyncInvestigation)initWithZoneAppRetriver:(id)retriver containerScheduler:(id)scheduler tapToRadarManager:(id)manager analyticsReporter:(id)reporter;
+- (void)addEditingDevice:(id)device;
+- (void)addZoneWithNoRealChanges:(id)changes;
 - (void)close;
 - (void)completeInvestigation;
 - (void)completeInvestigationIfNecessary;
-- (void)completeInvestigationIfNecessaryWithOldSyncState:(unsigned int)a3 newSyncState:(unsigned int)a4;
-- (void)setZonesOutOfSync:(unsigned __int16)a3 zonesType:(unsigned __int8)a4;
+- (void)completeInvestigationIfNecessaryWithOldSyncState:(unsigned int)state newSyncState:(unsigned int)syncState;
+- (void)setZonesOutOfSync:(unsigned __int16)sync zonesType:(unsigned __int8)type;
 - (void)startInvestigation;
 @end
 
 @implementation BRCPeriodicSyncInvestigation
 
-- (BRCPeriodicSyncInvestigation)initWithZoneAppRetriver:(id)a3 containerScheduler:(id)a4 tapToRadarManager:(id)a5 analyticsReporter:(id)a6
+- (BRCPeriodicSyncInvestigation)initWithZoneAppRetriver:(id)retriver containerScheduler:(id)scheduler tapToRadarManager:(id)manager analyticsReporter:(id)reporter
 {
-  v20 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  retriverCopy = retriver;
+  schedulerCopy = scheduler;
+  managerCopy = manager;
+  reporterCopy = reporter;
   v14 = [BRCUserDefaults defaultsForMangledID:0];
-  v15 = [v14 shouldPerformPeriodicSyncInvestigation];
+  shouldPerformPeriodicSyncInvestigation = [v14 shouldPerformPeriodicSyncInvestigation];
 
-  if (v15)
+  if (shouldPerformPeriodicSyncInvestigation)
   {
     v21.receiver = self;
     v21.super_class = BRCPeriodicSyncInvestigation;
@@ -30,100 +30,100 @@
     v17 = v16;
     if (v16)
     {
-      objc_storeStrong(&v16->_zoneAppRetriever, a3);
-      objc_storeStrong(&v17->_containerScheduler, a4);
-      objc_storeStrong(&v17->_tapToRadarManager, a5);
-      objc_storeStrong(&v17->_analyticsReporter, a6);
+      objc_storeStrong(&v16->_zoneAppRetriever, retriver);
+      objc_storeStrong(&v17->_containerScheduler, scheduler);
+      objc_storeStrong(&v17->_tapToRadarManager, manager);
+      objc_storeStrong(&v17->_analyticsReporter, reporter);
       v17->_investigationStarted = 0;
     }
 
     self = v17;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (void)startInvestigation
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_223E7A000, a2, OS_LOG_TYPE_DEBUG, "[DEBUG] starting periodic sync investigation%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addEditingDevice:(id)a3
+- (void)addEditingDevice:(id)device
 {
-  v4 = a3;
-  if (v4)
+  deviceCopy = device;
+  if (deviceCopy)
   {
-    v9 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    if (v5->_investigationStarted)
+    v9 = deviceCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_investigationStarted)
     {
-      editingDevices = v5->_editingDevices;
+      editingDevices = selfCopy->_editingDevices;
       if (!editingDevices)
       {
         v7 = objc_opt_new();
-        v8 = v5->_editingDevices;
-        v5->_editingDevices = v7;
+        v8 = selfCopy->_editingDevices;
+        selfCopy->_editingDevices = v7;
 
-        editingDevices = v5->_editingDevices;
+        editingDevices = selfCopy->_editingDevices;
       }
 
       [(NSMutableSet *)editingDevices addObject:v9];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v9;
+    deviceCopy = v9;
   }
 }
 
-- (void)addZoneWithNoRealChanges:(id)a3
+- (void)addZoneWithNoRealChanges:(id)changes
 {
-  v4 = a3;
-  if (v4)
+  changesCopy = changes;
+  if (changesCopy)
   {
-    v9 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    if (v5->_investigationStarted)
+    v9 = changesCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_investigationStarted)
     {
-      zonesWithNoRealChanges = v5->_zonesWithNoRealChanges;
+      zonesWithNoRealChanges = selfCopy->_zonesWithNoRealChanges;
       if (!zonesWithNoRealChanges)
       {
         v7 = objc_opt_new();
-        v8 = v5->_zonesWithNoRealChanges;
-        v5->_zonesWithNoRealChanges = v7;
+        v8 = selfCopy->_zonesWithNoRealChanges;
+        selfCopy->_zonesWithNoRealChanges = v7;
 
-        zonesWithNoRealChanges = v5->_zonesWithNoRealChanges;
+        zonesWithNoRealChanges = selfCopy->_zonesWithNoRealChanges;
       }
 
       [(NSMutableSet *)zonesWithNoRealChanges addObject:v9];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v9;
+    changesCopy = v9;
   }
 }
 
-- (void)setZonesOutOfSync:(unsigned __int16)a3 zonesType:(unsigned __int8)a4
+- (void)setZonesOutOfSync:(unsigned __int16)sync zonesType:(unsigned __int8)type
 {
   obj = self;
   objc_sync_enter(obj);
   if (obj->_investigationStarted)
   {
-    obj->_zonesOutOfSync = a3;
-    obj->_zonesType = a4;
+    obj->_zonesOutOfSync = sync;
+    obj->_zonesType = type;
   }
 
   objc_sync_exit(obj);
@@ -172,10 +172,10 @@ uint64_t __60__BRCPeriodicSyncInvestigation__shouldCompleteInvestigation__block_
   objc_sync_enter(obj);
   if (obj->_investigationStarted)
   {
-    v2 = [(BRCPeriodicSyncInvestigation *)obj _shouldCompleteInvestigation];
+    _shouldCompleteInvestigation = [(BRCPeriodicSyncInvestigation *)obj _shouldCompleteInvestigation];
     objc_sync_exit(obj);
 
-    if (v2)
+    if (_shouldCompleteInvestigation)
     {
 
       [(BRCPeriodicSyncInvestigation *)obj completeInvestigation];
@@ -196,9 +196,9 @@ uint64_t __60__BRCPeriodicSyncInvestigation__shouldCompleteInvestigation__block_
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)completeInvestigationIfNecessaryWithOldSyncState:(unsigned int)a3 newSyncState:(unsigned int)a4
+- (void)completeInvestigationIfNecessaryWithOldSyncState:(unsigned int)state newSyncState:(unsigned int)syncState
 {
-  v4 = (a4 & 0xA) != 0 || (a3 & 0xA) == 0;
+  v4 = (syncState & 0xA) != 0 || (state & 0xA) == 0;
   if (!v4 && self->_investigationStarted)
   {
     [(BRCPeriodicSyncInvestigation *)self completeInvestigationIfNecessary];

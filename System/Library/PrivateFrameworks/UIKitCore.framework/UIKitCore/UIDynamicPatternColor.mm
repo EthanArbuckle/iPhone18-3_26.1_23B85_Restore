@@ -1,17 +1,17 @@
 @interface UIDynamicPatternColor
-- (BOOL)isEqual:(id)a3;
-- (UIDynamicPatternColor)initWithPatternImage:(id)a3;
-- (id)_resolvedColorWithTraitCollection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UIDynamicPatternColor)initWithPatternImage:(id)image;
+- (id)_resolvedColorWithTraitCollection:(id)collection;
 - (id)description;
 @end
 
 @implementation UIDynamicPatternColor
 
-- (UIDynamicPatternColor)initWithPatternImage:(id)a3
+- (UIDynamicPatternColor)initWithPatternImage:(id)image
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 _tiledPatternColor])
+  imageCopy = image;
+  v6 = imageCopy;
+  if (imageCopy && [imageCopy _tiledPatternColor])
   {
     v11.receiver = self;
     v11.super_class = UIDynamicPatternColor;
@@ -19,25 +19,25 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_image, a3);
+      objc_storeStrong(&v7->_image, image);
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -45,35 +45,35 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(UIImage *)self->_image isEqual:v4->_image];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(UIImage *)self->_image isEqual:equalCopy->_image];
   }
 
   return v5;
 }
 
-- (id)_resolvedColorWithTraitCollection:(id)a3
+- (id)_resolvedColorWithTraitCollection:(id)collection
 {
   image = self->_image;
-  if (a3)
+  if (collection)
   {
-    v5 = [a3 imageConfiguration];
+    imageConfiguration = [collection imageConfiguration];
   }
 
   else
   {
-    v5 = 0;
+    imageConfiguration = 0;
   }
 
-  v6 = v5;
+  v6 = imageConfiguration;
   v7 = [(UIImage *)image imageWithConfiguration:v6];
 
-  v8 = [v7 _tiledPatternColor];
-  if (!v8)
+  _tiledPatternColor = [v7 _tiledPatternColor];
+  if (!_tiledPatternColor)
   {
-    v8 = [(UIImage *)self->_image _tiledPatternColor];
+    _tiledPatternColor = [(UIImage *)self->_image _tiledPatternColor];
   }
 
-  v9 = [[UIColor alloc] initWithCGColor:v8];
+  v9 = [[UIColor alloc] initWithCGColor:_tiledPatternColor];
 
   return v9;
 }

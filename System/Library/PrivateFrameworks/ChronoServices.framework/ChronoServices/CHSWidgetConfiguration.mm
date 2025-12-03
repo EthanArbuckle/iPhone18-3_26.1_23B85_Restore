@@ -1,57 +1,57 @@
 @interface CHSWidgetConfiguration
 + (id)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CHSWidgetConfiguration)init;
-- (CHSWidgetConfiguration)initWithCoder:(id)a3;
-- (CHSWidgetConfiguration)initWithConfiguration:(id)a3;
-- (CHSWidgetConfiguration)initWithContainerDescriptors:(id)a3 metricsSpecification:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (CHSWidgetConfiguration)initWithCoder:(id)coder;
+- (CHSWidgetConfiguration)initWithConfiguration:(id)configuration;
+- (CHSWidgetConfiguration)initWithContainerDescriptors:(id)descriptors metricsSpecification:(id)specification;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSWidgetConfiguration
 
 + (id)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CHSWidgetConfiguration.m" lineNumber:30 description:@"use initWithContainerDescriptors:metricsSpecification:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSWidgetConfiguration.m" lineNumber:30 description:@"use initWithContainerDescriptors:metricsSpecification:"];
 
   return 0;
 }
 
 - (CHSWidgetConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CHSWidgetConfiguration.m" lineNumber:35 description:@"use initWithContainerDescriptors:metricsSpecification:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSWidgetConfiguration.m" lineNumber:35 description:@"use initWithContainerDescriptors:metricsSpecification:"];
 
   return 0;
 }
 
-- (CHSWidgetConfiguration)initWithContainerDescriptors:(id)a3 metricsSpecification:(id)a4
+- (CHSWidgetConfiguration)initWithContainerDescriptors:(id)descriptors metricsSpecification:(id)specification
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorsCopy = descriptors;
+  specificationCopy = specification;
   v16.receiver = self;
   v16.super_class = CHSWidgetConfiguration;
   v8 = [(CHSWidgetConfiguration *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [descriptorsCopy copy];
     containerDescriptors = v8->_containerDescriptors;
     v8->_containerDescriptors = v9;
 
-    v11 = [v7 copy];
+    v11 = [specificationCopy copy];
     metricsSpecification = v8->_metricsSpecification;
     v8->_metricsSpecification = v11;
 
-    v13 = [objc_opt_class() defaultRemoteDevicePredicate];
+    defaultRemoteDevicePredicate = [objc_opt_class() defaultRemoteDevicePredicate];
     replicationPredicate = v8->_replicationPredicate;
-    v8->_replicationPredicate = v13;
+    v8->_replicationPredicate = defaultRemoteDevicePredicate;
 
     v8->_automaticallyOrphaned = 1;
     v8->_expirationTimeout = 1800.0;
@@ -60,43 +60,43 @@
   return v8;
 }
 
-- (CHSWidgetConfiguration)initWithConfiguration:(id)a3
+- (CHSWidgetConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = CHSWidgetConfiguration;
   v5 = [(CHSWidgetConfiguration *)&v15 init];
   if (v5)
   {
-    v6 = [v4[1] copy];
+    v6 = [configurationCopy[1] copy];
     containerDescriptors = v5->_containerDescriptors;
     v5->_containerDescriptors = v6;
 
-    v8 = [v4[2] copy];
+    v8 = [configurationCopy[2] copy];
     metricsSpecification = v5->_metricsSpecification;
     v5->_metricsSpecification = v8;
 
-    v10 = [v4[3] copy];
+    v10 = [configurationCopy[3] copy];
     rateLimitPolicies = v5->_rateLimitPolicies;
     v5->_rateLimitPolicies = v10;
 
-    v12 = [v4[4] copy];
+    v12 = [configurationCopy[4] copy];
     replicationPredicate = v5->_replicationPredicate;
     v5->_replicationPredicate = v12;
 
-    v5->_automaticallyOrphaned = *(v4 + 40);
-    *&v5->_expirationTimeout = v4[6];
+    v5->_automaticallyOrphaned = *(configurationCopy + 40);
+    *&v5->_expirationTimeout = configurationCopy[6];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v6 = objc_opt_class();
-  v7 = v4;
+  v7 = equalCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -172,24 +172,24 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_containerDescriptors];
-  v5 = [v3 appendObject:self->_metricsSpecification];
-  v6 = [v3 appendObject:self->_rateLimitPolicies];
-  v7 = [v3 appendObject:self->_replicationPredicate];
-  v8 = [v3 appendBool:self->_automaticallyOrphaned];
-  v9 = [v3 appendDouble:self->_expirationTimeout];
-  v10 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_containerDescriptors];
+  v5 = [builder appendObject:self->_metricsSpecification];
+  v6 = [builder appendObject:self->_rateLimitPolicies];
+  v7 = [builder appendObject:self->_replicationPredicate];
+  v8 = [builder appendBool:self->_automaticallyOrphaned];
+  v9 = [builder appendDouble:self->_expirationTimeout];
+  v10 = [builder hash];
 
   return v10;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(CHSWidgetConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CHSWidgetConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -201,7 +201,7 @@
   v8[3] = &unk_1E7453000;
   v4 = v3;
   v9 = v4;
-  v10 = self;
+  selfCopy = self;
   v5 = [v4 modifyProem:v8];
   v6 = v4;
 
@@ -268,17 +268,17 @@ id __52__CHSWidgetConfiguration_succinctDescriptionBuilder__block_invoke(uint64_
   return result;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CHSWidgetConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CHSWidgetConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -286,8 +286,8 @@ id __52__CHSWidgetConfiguration_succinctDescriptionBuilder__block_invoke(uint64_
   v9[3] = &unk_1E7453000;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   v7 = v6;
 
   return v6;
@@ -352,23 +352,23 @@ id __64__CHSWidgetConfiguration_descriptionBuilderWithMultilinePrefix___block_in
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CHSMutableWidgetConfiguration allocWithZone:a3];
+  v4 = [CHSMutableWidgetConfiguration allocWithZone:zone];
 
   return [(CHSWidgetConfiguration *)v4 initWithConfiguration:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v57 = *MEMORY[0x1E69E9840];
-  v30 = a3;
+  coderCopy = coder;
   v37 = objc_opt_new();
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v36 = self;
+  selfCopy = self;
   v4 = self->_rateLimitPolicies;
   v5 = [(NSSet *)v4 countByEnumeratingWithState:&v46 objects:v56 count:16];
   if (v5)
@@ -384,8 +384,8 @@ id __64__CHSWidgetConfiguration_descriptionBuilderWithMultilinePrefix___block_in
         }
 
         v8 = *(*(&v46 + 1) + 8 * i);
-        v9 = [v8 identifier];
-        [v37 setObject:v8 forKeyedSubscript:v9];
+        identifier = [v8 identifier];
+        [v37 setObject:v8 forKeyedSubscript:identifier];
       }
 
       v5 = [(NSSet *)v4 countByEnumeratingWithState:&v46 objects:v56 count:16];
@@ -398,7 +398,7 @@ id __64__CHSWidgetConfiguration_descriptionBuilderWithMultilinePrefix___block_in
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v36->_containerDescriptors;
+  obj = selfCopy->_containerDescriptors;
   v33 = [(NSArray *)obj countByEnumeratingWithState:&v42 objects:v55 count:16];
   if (v33)
   {
@@ -417,8 +417,8 @@ id __64__CHSWidgetConfiguration_descriptionBuilderWithMultilinePrefix___block_in
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v11 = [v10 widgets];
-        v12 = [v11 countByEnumeratingWithState:&v38 objects:v54 count:16];
+        widgets = [v10 widgets];
+        v12 = [widgets countByEnumeratingWithState:&v38 objects:v54 count:16];
         if (v12)
         {
           v13 = *v39;
@@ -428,44 +428,44 @@ id __64__CHSWidgetConfiguration_descriptionBuilderWithMultilinePrefix___block_in
             {
               if (*v39 != v13)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(widgets);
               }
 
               v15 = *(*(&v38 + 1) + 8 * k);
-              v16 = [v15 refreshStrategy];
+              refreshStrategy = [v15 refreshStrategy];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v17 = v16;
-                v18 = [v17 rateLimitIdentifier];
-                v19 = v18 == 0;
+                v17 = refreshStrategy;
+                rateLimitIdentifier = [v17 rateLimitIdentifier];
+                v19 = rateLimitIdentifier == 0;
 
                 if (!v19)
                 {
-                  v20 = [v17 rateLimitIdentifier];
-                  v21 = [v37 objectForKeyedSubscript:v20];
+                  rateLimitIdentifier2 = [v17 rateLimitIdentifier];
+                  v21 = [v37 objectForKeyedSubscript:rateLimitIdentifier2];
                   v22 = v21 == 0;
 
                   if (v22)
                   {
-                    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-                    v24 = [v17 rateLimitIdentifier];
+                    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+                    rateLimitIdentifier3 = [v17 rateLimitIdentifier];
 
                     v25 = CHSLogChronoServices();
                     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
                     {
-                      v26 = [v17 rateLimitIdentifier];
+                      rateLimitIdentifier4 = [v17 rateLimitIdentifier];
                       *buf = 138543618;
                       v51 = v15;
                       v52 = 2114;
-                      v53 = v26;
+                      v53 = rateLimitIdentifier4;
                     }
                   }
                 }
               }
             }
 
-            v12 = [v11 countByEnumeratingWithState:&v38 objects:v54 count:16];
+            v12 = [widgets countByEnumeratingWithState:&v38 objects:v54 count:16];
           }
 
           while (v12);
@@ -478,61 +478,61 @@ id __64__CHSWidgetConfiguration_descriptionBuilderWithMultilinePrefix___block_in
     while (v33);
   }
 
-  [v30 encodeObject:v36->_containerDescriptors forKey:@"_containerDescriptors"];
-  [v30 encodeObject:v36->_metricsSpecification forKey:@"_metricsSpecification"];
-  v27 = [(NSSet *)v36->_rateLimitPolicies allObjects];
-  [v30 encodeObject:v27 forKey:@"rateLimits2"];
+  [coderCopy encodeObject:selfCopy->_containerDescriptors forKey:@"_containerDescriptors"];
+  [coderCopy encodeObject:selfCopy->_metricsSpecification forKey:@"_metricsSpecification"];
+  allObjects = [(NSSet *)selfCopy->_rateLimitPolicies allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"rateLimits2"];
 
-  [v30 encodeObject:v36->_replicationPredicate forKey:@"replicationPredicate"];
-  [v30 encodeBool:v36->_automaticallyOrphaned forKey:@"automaticallyOrphaned"];
-  v28 = [MEMORY[0x1E696AD98] numberWithDouble:v36->_expirationTimeout];
-  [v30 encodeObject:v28 forKey:@"expirationTimeout"];
+  [coderCopy encodeObject:selfCopy->_replicationPredicate forKey:@"replicationPredicate"];
+  [coderCopy encodeBool:selfCopy->_automaticallyOrphaned forKey:@"automaticallyOrphaned"];
+  v28 = [MEMORY[0x1E696AD98] numberWithDouble:selfCopy->_expirationTimeout];
+  [coderCopy encodeObject:v28 forKey:@"expirationTimeout"];
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (CHSWidgetConfiguration)initWithCoder:(id)a3
+- (CHSWidgetConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"_containerDescriptors"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"_containerDescriptors"];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_metricsSpecification"];
-  if ([v4 containsValueForKey:@"rateLimits2"])
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_metricsSpecification"];
+  if ([coderCopy containsValueForKey:@"rateLimits2"])
   {
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"rateLimits2"];
+    allObjects = [coderCopy decodeObjectOfClasses:v12 forKey:@"rateLimits2"];
   }
 
   else
   {
-    if (![v4 containsValueForKey:@"rateLimits"])
+    if (![coderCopy containsValueForKey:@"rateLimits"])
     {
-      v13 = 0;
+      allObjects = 0;
       goto LABEL_7;
     }
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v12 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v12 forKey:@"rateLimits"];
-    v13 = [v16 allObjects];
+    v16 = [coderCopy decodeObjectOfClasses:v12 forKey:@"rateLimits"];
+    allObjects = [v16 allObjects];
   }
 
 LABEL_7:
-  v17 = 0;
+  selfCopy = 0;
   if (v8 && v9)
   {
     v18 = [(CHSWidgetConfiguration *)self initWithContainerDescriptors:v8 metricsSpecification:v9];
     if (v18)
     {
-      if ([v4 containsValueForKey:@"replicationPredicate"])
+      if ([coderCopy containsValueForKey:@"replicationPredicate"])
       {
-        [v4 decodeObjectOfClass:objc_opt_class() forKey:@"replicationPredicate"];
+        [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"replicationPredicate"];
       }
 
       else
@@ -543,9 +543,9 @@ LABEL_7:
       replicationPredicate = v18->_replicationPredicate;
       v18->_replicationPredicate = v19;
 
-      if (v13)
+      if (allObjects)
       {
-        v21 = [MEMORY[0x1E695DFD8] setWithArray:v13];
+        v21 = [MEMORY[0x1E695DFD8] setWithArray:allObjects];
       }
 
       else
@@ -556,9 +556,9 @@ LABEL_7:
       rateLimitPolicies = v18->_rateLimitPolicies;
       v18->_rateLimitPolicies = v21;
 
-      if ([v4 containsValueForKey:@"automaticallyOrphaned"])
+      if ([coderCopy containsValueForKey:@"automaticallyOrphaned"])
       {
-        v18->_automaticallyOrphaned = [v4 decodeBoolForKey:@"automaticallyOrphaned"];
+        v18->_automaticallyOrphaned = [coderCopy decodeBoolForKey:@"automaticallyOrphaned"];
       }
 
       else
@@ -566,9 +566,9 @@ LABEL_7:
         v18->_automaticallyOrphaned = 1;
       }
 
-      if ([v4 containsValueForKey:@"expirationTimeout"])
+      if ([coderCopy containsValueForKey:@"expirationTimeout"])
       {
-        v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationTimeout"];
+        v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationTimeout"];
         [v23 doubleValue];
         v25 = v24;
       }
@@ -582,10 +582,10 @@ LABEL_7:
     }
 
     self = v18;
-    v17 = self;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 @end

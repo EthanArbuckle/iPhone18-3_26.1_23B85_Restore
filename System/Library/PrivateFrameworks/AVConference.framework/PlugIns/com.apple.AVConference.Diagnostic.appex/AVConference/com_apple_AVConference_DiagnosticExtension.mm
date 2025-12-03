@@ -1,9 +1,9 @@
 @interface com_apple_AVConference_DiagnosticExtension
 + (id)realHomeDirectory;
 + (void)realHomeDirectory;
-- (BOOL)copyFile:(id)a3 withPredicate:(id)a4 toSaveDirectory:(id)a5;
-- (id)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4;
-- (int)copyDirectory:(id)a3 withPredicate:(id)a4 toSubDirectory:(id)a5;
+- (BOOL)copyFile:(id)file withPredicate:(id)predicate toSaveDirectory:(id)directory;
+- (id)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler;
+- (int)copyDirectory:(id)directory withPredicate:(id)predicate toSubDirectory:(id)subDirectory;
 - (int)copyDumps;
 - (int)copyRTCReporting;
 - (int)copySpindumps;
@@ -35,13 +35,13 @@
   return v4;
 }
 
-- (int)copyDirectory:(id)a3 withPredicate:(id)a4 toSubDirectory:(id)a5
+- (int)copyDirectory:(id)directory withPredicate:(id)predicate toSubDirectory:(id)subDirectory
 {
-  v8 = a3;
-  v30 = a4;
-  v9 = a5;
+  directoryCopy = directory;
+  predicateCopy = predicate;
+  subDirectoryCopy = subDirectory;
   v10 = +[NSFileManager defaultManager];
-  v11 = [(NSString *)self->_temporaryDirectoryURL stringByAppendingString:v9];
+  v11 = [(NSString *)self->_temporaryDirectoryURL stringByAppendingString:subDirectoryCopy];
   if ([v10 fileExistsAtPath:v11])
   {
     goto LABEL_23;
@@ -62,15 +62,15 @@
 LABEL_23:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
-      v15 = [v8 cStringUsingEncoding:4];
+      v15 = [directoryCopy cStringUsingEncoding:4];
       *buf = 136315138;
       v39 = v15;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "[AVCDiagnosticExtension] copying files from %s", buf, 0xCu);
     }
 
-    v28 = v9;
-    v29 = v8;
-    v16 = [NSURL URLWithString:v8];
+    v28 = subDirectoryCopy;
+    v29 = directoryCopy;
+    v16 = [NSURL URLWithString:directoryCopy];
     v37[0] = NSURLNameKey;
     v37[1] = NSURLIsDirectoryKey;
     v17 = [NSArray arrayWithObjects:v37 count:2];
@@ -99,7 +99,7 @@ LABEL_23:
 
           v24 = *(*(&v33 + 1) + 8 * i);
           v25 = [v11 stringByAppendingString:@"/"];
-          LODWORD(v24) = [(com_apple_AVConference_DiagnosticExtension *)self copyFile:v24 withPredicate:v30 toSaveDirectory:v25];
+          LODWORD(v24) = [(com_apple_AVConference_DiagnosticExtension *)self copyFile:v24 withPredicate:predicateCopy toSaveDirectory:v25];
 
           v14 += v24;
         }
@@ -116,8 +116,8 @@ LABEL_23:
     }
 
     v13 = 0;
-    v9 = v28;
-    v8 = v29;
+    subDirectoryCopy = v28;
+    directoryCopy = v29;
     v10 = v27;
   }
 
@@ -135,45 +135,45 @@ LABEL_23:
   return v14;
 }
 
-- (BOOL)copyFile:(id)a3 withPredicate:(id)a4 toSaveDirectory:(id)a5
+- (BOOL)copyFile:(id)file withPredicate:(id)predicate toSaveDirectory:(id)directory
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  fileCopy = file;
+  predicateCopy = predicate;
+  directoryCopy = directory;
   v28 = 0;
-  [v7 getResourceValue:&v28 forKey:NSURLIsDirectoryKey error:0];
+  [fileCopy getResourceValue:&v28 forKey:NSURLIsDirectoryKey error:0];
   v10 = v28;
   if (([v10 BOOLValue] & 1) == 0)
   {
     v12 = [NSDate dateWithTimeIntervalSinceNow:-604800.0];
     v27 = 0;
-    [v7 getResourceValue:&v27 forKey:NSURLContentModificationDateKey error:0];
+    [fileCopy getResourceValue:&v27 forKey:NSURLContentModificationDateKey error:0];
     v13 = v27;
-    v14 = [v7 absoluteString];
-    v15 = [v8 evaluateWithObject:v14];
+    absoluteString = [fileCopy absoluteString];
+    v15 = [predicateCopy evaluateWithObject:absoluteString];
 
     v16 = [v12 earlierDate:v13];
 
     if (v15 && v16 == v12)
     {
-      v17 = [v7 lastPathComponent];
-      v18 = [v9 stringByAppendingFormat:@"/%@", v17];
+      lastPathComponent = [fileCopy lastPathComponent];
+      v18 = [directoryCopy stringByAppendingFormat:@"/%@", lastPathComponent];
       v19 = [NSURL fileURLWithPath:v18];
 
       v20 = +[NSFileManager defaultManager];
       v26 = 0;
-      [v20 copyItemAtURL:v7 toURL:v19 error:&v26];
-      v21 = v26;
+      [v20 copyItemAtURL:fileCopy toURL:v19 error:&v26];
+      absoluteString3 = v26;
 
-      if (!v21)
+      if (!absoluteString3)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
         {
-          v25 = [v7 absoluteString];
+          absoluteString2 = [fileCopy absoluteString];
           *buf = 138412546;
-          *v30 = v25;
+          *v30 = absoluteString2;
           *&v30[8] = 2112;
-          *v31 = v9;
+          *v31 = directoryCopy;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "[AVCDiagnosticExtension] Successfully copied file from %@ to %@", buf, 0x16u);
         }
 
@@ -183,7 +183,7 @@ LABEL_23:
 
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        [com_apple_AVConference_DiagnosticExtension copyFile:v7 withPredicate:? toSaveDirectory:?];
+        [com_apple_AVConference_DiagnosticExtension copyFile:fileCopy withPredicate:? toSaveDirectory:?];
       }
     }
 
@@ -199,8 +199,8 @@ LABEL_13:
       }
 
       v22 = v16 == v12;
-      v21 = [v7 absoluteString];
-      v23 = [v21 cStringUsingEncoding:4];
+      absoluteString3 = [fileCopy absoluteString];
+      v23 = [absoluteString3 cStringUsingEncoding:4];
       *buf = 67109634;
       *v30 = v15;
       *&v30[4] = 1024;
@@ -284,15 +284,15 @@ LABEL_14:
   return v5;
 }
 
-- (id)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4
+- (id)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [[DECollectionProgress alloc] initWithPercentComplete:0.0];
-  v5[2](v5, v6);
+  handlerCopy[2](handlerCopy, v6);
 
   v7 = objc_opt_new();
-  v8 = [v7 UUIDString];
-  v9 = [NSString stringWithFormat:@"/private/var/tmp/avconference/%@/AVCDiagnosticExtensionLogs", v8];
+  uUIDString = [v7 UUIDString];
+  v9 = [NSString stringWithFormat:@"/private/var/tmp/avconference/%@/AVCDiagnosticExtensionLogs", uUIDString];
   temporaryDirectoryURL = self->_temporaryDirectoryURL;
   self->_temporaryDirectoryURL = v9;
 
@@ -307,20 +307,20 @@ LABEL_14:
   v12 = [[NSMutableString alloc] initWithString:@"file copy results - "];
   [v12 appendFormat:@"stackshots/crashes=%d ", -[com_apple_AVConference_DiagnosticExtension copyStackshotsAndCrashes](self, "copyStackshotsAndCrashes")];
   v13 = [[DECollectionProgress alloc] initWithPercentComplete:30.0];
-  v5[2](v5, v13);
+  handlerCopy[2](handlerCopy, v13);
 
   [v12 appendFormat:@"dumps=%d ", -[com_apple_AVConference_DiagnosticExtension copyDumps](self, "copyDumps")];
   v14 = [[DECollectionProgress alloc] initWithPercentComplete:60.0];
-  v5[2](v5, v14);
+  handlerCopy[2](handlerCopy, v14);
 
   [v12 appendFormat:@"rtcReports=%d ", -[com_apple_AVConference_DiagnosticExtension copyRTCReporting](self, "copyRTCReporting")];
   v15 = [[DECollectionProgress alloc] initWithPercentComplete:90.0];
-  v5[2](v5, v15);
+  handlerCopy[2](handlerCopy, v15);
 
   [v12 appendFormat:@"spins=%d ", -[com_apple_AVConference_DiagnosticExtension copySpindumps](self, "copySpindumps")];
   v16 = [DEAttachmentItem attachmentWithPath:self->_temporaryDirectoryURL];
   v17 = [[DECollectionProgress alloc] initWithPercentComplete:100.0];
-  v5[2](v5, v17);
+  handlerCopy[2](handlerCopy, v17);
 
   [v16 setDisplayName:@"AVCDiagnosticExtensionLogs"];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))

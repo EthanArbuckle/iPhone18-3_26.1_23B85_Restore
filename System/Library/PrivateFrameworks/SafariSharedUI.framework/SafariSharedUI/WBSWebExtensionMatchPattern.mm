@@ -1,12 +1,12 @@
 @interface WBSWebExtensionMatchPattern
-+ (id)matchPatternForDomain:(id)a3;
-- (BOOL)matchesPattern:(id)a3 options:(unint64_t)a4;
-- (id)_descriptionWithScheme:(id)a3;
++ (id)matchPatternForDomain:(id)domain;
+- (BOOL)matchesPattern:(id)pattern options:(unint64_t)options;
+- (id)_descriptionWithScheme:(id)scheme;
 @end
 
 @implementation WBSWebExtensionMatchPattern
 
-+ (id)matchPatternForDomain:(id)a3
++ (id)matchPatternForDomain:(id)domain
             v9 = {;
             [v3 addObject:v9];
           }
@@ -29,23 +29,23 @@
   return v3;
 }
 
-- (id)_descriptionWithScheme:(id)a3
+- (id)_descriptionWithScheme:(id)scheme
 {
-  v4 = a3;
+  schemeCopy = scheme;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(WBSWebExtensionMatchPattern *)self host];
-  v7 = [(WBSWebExtensionMatchPattern *)self path];
-  v8 = [v5 stringWithFormat:@"%@://%@%@", v4, v6, v7];
+  host = [(WBSWebExtensionMatchPattern *)self host];
+  path = [(WBSWebExtensionMatchPattern *)self path];
+  v8 = [v5 stringWithFormat:@"%@://%@%@", schemeCopy, host, path];
 
   return v8;
 }
 
-- (BOOL)matchesPattern:(id)a3 options:(unint64_t)a4
+- (BOOL)matchesPattern:(id)pattern options:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   webKitMatchPattern = self->_webKitMatchPattern;
-  v6 = [a3 _webKitMatchPattern];
-  v7 = [(WKWebExtensionMatchPattern *)webKitMatchPattern matchesPattern:v6 options:v4 & 7];
+  _webKitMatchPattern = [pattern _webKitMatchPattern];
+  v7 = [(WKWebExtensionMatchPattern *)webKitMatchPattern matchesPattern:_webKitMatchPattern options:optionsCopy & 7];
 
   return v7;
 }

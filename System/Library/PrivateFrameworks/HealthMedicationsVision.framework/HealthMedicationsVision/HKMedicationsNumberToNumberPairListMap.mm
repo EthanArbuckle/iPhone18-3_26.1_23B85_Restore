@@ -1,7 +1,7 @@
 @interface HKMedicationsNumberToNumberPairListMap
 - (HKMedicationsNumberToNumberPairListMap)init;
-- (void)addInteger:(int64_t)a3 andInteger:(int64_t)a4 forKey:(int64_t)a5;
-- (void)enumerateIntegersForKey:(int64_t)a3 block:(id)a4;
+- (void)addInteger:(int64_t)integer andInteger:(int64_t)andInteger forKey:(int64_t)key;
+- (void)enumerateIntegersForKey:(int64_t)key block:(id)block;
 @end
 
 @implementation HKMedicationsNumberToNumberPairListMap
@@ -21,34 +21,34 @@
   return v2;
 }
 
-- (void)addInteger:(int64_t)a3 andInteger:(int64_t)a4 forKey:(int64_t)a5
+- (void)addInteger:(int64_t)integer andInteger:(int64_t)andInteger forKey:(int64_t)key
 {
   storage = self->_storage;
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:key];
   v14 = [(NSMutableDictionary *)storage objectForKeyedSubscript:v10];
 
   if (!v14)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v11 = self->_storage;
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:key];
     [(NSMutableDictionary *)v11 setObject:v14 forKeyedSubscript:v12];
   }
 
   v13 = objc_alloc_init(HKMedicationsIntegerPair);
-  [(HKMedicationsIntegerPair *)v13 setFirst:a3];
-  [(HKMedicationsIntegerPair *)v13 setSecond:a4];
+  [(HKMedicationsIntegerPair *)v13 setFirst:integer];
+  [(HKMedicationsIntegerPair *)v13 setSecond:andInteger];
   [v14 addObject:v13];
 }
 
-- (void)enumerateIntegersForKey:(int64_t)a3 block:(id)a4
+- (void)enumerateIntegersForKey:(int64_t)key block:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     storage = self->_storage;
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:key];
     v9 = [(NSMutableDictionary *)storage objectForKeyedSubscript:v8];
 
     v18 = 0u;
@@ -71,7 +71,7 @@
             objc_enumerationMutation(v10);
           }
 
-          v6[2](v6, [*(*(&v16 + 1) + 8 * v14) first], objc_msgSend(*(*(&v16 + 1) + 8 * v14), "second"));
+          blockCopy[2](blockCopy, [*(*(&v16 + 1) + 8 * v14) first], objc_msgSend(*(*(&v16 + 1) + 8 * v14), "second"));
           ++v14;
         }
 

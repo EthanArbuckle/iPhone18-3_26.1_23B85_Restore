@@ -1,33 +1,33 @@
 @interface AWDSymptomsAdvisoryAppCanUseAlternateNetwork
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsBailOutOf:(id)a3;
-- (int)StringAsDeliberation:(id)a3;
-- (int)StringAsRationale:(id)a3;
+- (int)StringAsBailOutOf:(id)of;
+- (int)StringAsDeliberation:(id)deliberation;
+- (int)StringAsRationale:(id)rationale;
 - (int)bailOutOf;
 - (int)deliberation;
 - (int)rationale;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAltUsage:(BOOL)a3;
-- (void)setHasBailOutOf:(BOOL)a3;
-- (void)setHasDeliberation:(BOOL)a3;
-- (void)setHasJumboFlows:(BOOL)a3;
-- (void)setHasRationale:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasWifiUsage:(BOOL)a3;
-- (void)setHasWwanUsage:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAltUsage:(BOOL)usage;
+- (void)setHasBailOutOf:(BOOL)of;
+- (void)setHasDeliberation:(BOOL)deliberation;
+- (void)setHasJumboFlows:(BOOL)flows;
+- (void)setHasRationale:(BOOL)rationale;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasWifiUsage:(BOOL)usage;
+- (void)setHasWwanUsage:(BOOL)usage;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsAdvisoryAppCanUseAlternateNetwork
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 8;
   }
@@ -53,9 +53,9 @@
   }
 }
 
-- (void)setHasBailOutOf:(BOOL)a3
+- (void)setHasBailOutOf:(BOOL)of
 {
-  if (a3)
+  if (of)
   {
     v3 = 64;
   }
@@ -68,20 +68,20 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (int)StringAsBailOutOf:(id)a3
+- (int)StringAsBailOutOf:(id)of
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WIFI"])
+  ofCopy = of;
+  if ([ofCopy isEqualToString:@"WIFI"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CELLULAR"])
+  else if ([ofCopy isEqualToString:@"CELLULAR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WIRED_ETHERNET"])
+  else if ([ofCopy isEqualToString:@"WIRED_ETHERNET"])
   {
     v4 = 3;
   }
@@ -107,9 +107,9 @@
   }
 }
 
-- (void)setHasDeliberation:(BOOL)a3
+- (void)setHasDeliberation:(BOOL)deliberation
 {
-  if (a3)
+  if (deliberation)
   {
     v3 = 128;
   }
@@ -122,13 +122,13 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (int)StringAsDeliberation:(id)a3
+- (int)StringAsDeliberation:(id)deliberation
 {
-  v3 = a3;
+  deliberationCopy = deliberation;
   v4 = 1;
-  if (([v3 isEqualToString:@"Allowed"] & 1) == 0)
+  if (([deliberationCopy isEqualToString:@"Allowed"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"NotAllowed"])
+    if ([deliberationCopy isEqualToString:@"NotAllowed"])
     {
       v4 = 2;
     }
@@ -155,9 +155,9 @@
   }
 }
 
-- (void)setHasRationale:(BOOL)a3
+- (void)setHasRationale:(BOOL)rationale
 {
-  if (a3)
+  if (rationale)
   {
     v3 = 256;
   }
@@ -170,40 +170,40 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (int)StringAsRationale:(id)a3
+- (int)StringAsRationale:(id)rationale
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WithinAllowance"])
+  rationaleCopy = rationale;
+  if ([rationaleCopy isEqualToString:@"WithinAllowance"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OutsideAllowance"])
+  else if ([rationaleCopy isEqualToString:@"OutsideAllowance"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AppUnknown"])
+  else if ([rationaleCopy isEqualToString:@"AppUnknown"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AppSettleInPeriod"])
+  else if ([rationaleCopy isEqualToString:@"AppSettleInPeriod"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"AppBlacklisted"])
+  else if ([rationaleCopy isEqualToString:@"AppBlacklisted"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"AppWhitelisted"])
+  else if ([rationaleCopy isEqualToString:@"AppWhitelisted"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"AppFreePassed"])
+  else if ([rationaleCopy isEqualToString:@"AppFreePassed"])
   {
     v4 = 7;
   }
@@ -216,9 +216,9 @@
   return v4;
 }
 
-- (void)setHasWwanUsage:(BOOL)a3
+- (void)setHasWwanUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 32;
   }
@@ -231,9 +231,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasWifiUsage:(BOOL)a3
+- (void)setHasWifiUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 16;
   }
@@ -246,9 +246,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasAltUsage:(BOOL)a3
+- (void)setHasAltUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 2;
   }
@@ -261,9 +261,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasJumboFlows:(BOOL)a3
+- (void)setHasJumboFlows:(BOOL)flows
 {
-  if (a3)
+  if (flows)
   {
     v3 = 4;
   }
@@ -282,25 +282,25 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsAdvisoryAppCanUseAlternateNetwork;
   v4 = [(AWDSymptomsAdvisoryAppCanUseAlternateNetwork *)&v8 description];
-  v5 = [(AWDSymptomsAdvisoryAppCanUseAlternateNetwork *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsAdvisoryAppCanUseAlternateNetwork *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 8) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   bundleName = self->_bundleName;
   if (bundleName)
   {
-    [v3 setObject:bundleName forKey:@"bundleName"];
+    [dictionary setObject:bundleName forKey:@"bundleName"];
   }
 
   has = self->_has;
@@ -317,7 +317,7 @@
       v10 = off_27898DFE8[v9];
     }
 
-    [v3 setObject:v10 forKey:@"bailOutOf"];
+    [dictionary setObject:v10 forKey:@"bailOutOf"];
 
     has = self->_has;
     if ((has & 0x80) == 0)
@@ -353,7 +353,7 @@ LABEL_7:
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_deliberation];
   }
 
-  [v3 setObject:v12 forKey:@"deliberation"];
+  [dictionary setObject:v12 forKey:@"deliberation"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -379,7 +379,7 @@ LABEL_27:
     v14 = off_27898E000[v13];
   }
 
-  [v3 setObject:v14 forKey:@"rationale"];
+  [dictionary setObject:v14 forKey:@"rationale"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -395,7 +395,7 @@ LABEL_9:
 
 LABEL_31:
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_wwanUsage];
-  [v3 setObject:v15 forKey:@"wwanUsage"];
+  [dictionary setObject:v15 forKey:@"wwanUsage"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -411,7 +411,7 @@ LABEL_10:
 
 LABEL_32:
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_wifiUsage];
-  [v3 setObject:v16 forKey:@"wifiUsage"];
+  [dictionary setObject:v16 forKey:@"wifiUsage"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -427,7 +427,7 @@ LABEL_11:
 
 LABEL_33:
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_altUsage];
-  [v3 setObject:v17 forKey:@"altUsage"];
+  [dictionary setObject:v17 forKey:@"altUsage"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -443,23 +443,23 @@ LABEL_12:
 
 LABEL_34:
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_allFlows];
-  [v3 setObject:v18 forKey:@"allFlows"];
+  [dictionary setObject:v18 forKey:@"allFlows"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_13:
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_jumboFlows];
-    [v3 setObject:v7 forKey:@"jumboFlows"];
+    [dictionary setObject:v7 forKey:@"jumboFlows"];
   }
 
 LABEL_14:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if ((*&self->_has & 8) != 0)
   {
     timestamp = self->_timestamp;
@@ -581,27 +581,27 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 8) != 0)
   {
-    v4[4] = self->_timestamp;
-    *(v4 + 40) |= 8u;
+    toCopy[4] = self->_timestamp;
+    *(toCopy + 40) |= 8u;
   }
 
   if (self->_bundleName)
   {
-    v6 = v4;
-    [v4 setBundleName:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setBundleName:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    *(v4 + 14) = self->_bailOutOf;
-    *(v4 + 40) |= 0x40u;
+    *(toCopy + 14) = self->_bailOutOf;
+    *(toCopy + 40) |= 0x40u;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -620,8 +620,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 18) = self->_deliberation;
-  *(v4 + 40) |= 0x80u;
+  *(toCopy + 18) = self->_deliberation;
+  *(toCopy + 40) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -635,8 +635,8 @@ LABEL_8:
   }
 
 LABEL_19:
-  *(v4 + 19) = self->_rationale;
-  *(v4 + 40) |= 0x100u;
+  *(toCopy + 19) = self->_rationale;
+  *(toCopy + 40) |= 0x100u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -650,8 +650,8 @@ LABEL_9:
   }
 
 LABEL_20:
-  v4[6] = self->_wwanUsage;
-  *(v4 + 40) |= 0x20u;
+  toCopy[6] = self->_wwanUsage;
+  *(toCopy + 40) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -665,8 +665,8 @@ LABEL_10:
   }
 
 LABEL_21:
-  v4[5] = self->_wifiUsage;
-  *(v4 + 40) |= 0x10u;
+  toCopy[5] = self->_wifiUsage;
+  *(toCopy + 40) |= 0x10u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -680,8 +680,8 @@ LABEL_11:
   }
 
 LABEL_22:
-  v4[2] = self->_altUsage;
-  *(v4 + 40) |= 2u;
+  toCopy[2] = self->_altUsage;
+  *(toCopy + 40) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -695,21 +695,21 @@ LABEL_12:
   }
 
 LABEL_23:
-  v4[1] = self->_allFlows;
-  *(v4 + 40) |= 1u;
+  toCopy[1] = self->_allFlows;
+  *(toCopy + 40) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_13:
-    v4[3] = self->_jumboFlows;
-    *(v4 + 40) |= 4u;
+    toCopy[3] = self->_jumboFlows;
+    *(toCopy + 40) |= 4u;
   }
 
 LABEL_14:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 8) != 0)
   {
@@ -717,7 +717,7 @@ LABEL_14:
     *(v5 + 80) |= 8u;
   }
 
-  v7 = [(NSString *)self->_bundleName copyWithZone:a3];
+  v7 = [(NSString *)self->_bundleName copyWithZone:zone];
   v8 = *(v6 + 64);
   *(v6 + 64) = v7;
 
@@ -831,19 +831,19 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_50;
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_timestamp != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_timestamp != *(equalCopy + 4))
     {
       goto LABEL_50;
     }
@@ -855,7 +855,7 @@ LABEL_11:
   }
 
   bundleName = self->_bundleName;
-  if (bundleName | *(v4 + 8))
+  if (bundleName | *(equalCopy + 8))
   {
     if (![(NSString *)bundleName isEqual:?])
     {
@@ -867,10 +867,10 @@ LABEL_50:
     has = self->_has;
   }
 
-  v8 = *(v4 + 40);
+  v8 = *(equalCopy + 40);
   if ((has & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_bailOutOf != *(v4 + 14))
+    if ((v8 & 0x40) == 0 || self->_bailOutOf != *(equalCopy + 14))
     {
       goto LABEL_50;
     }
@@ -883,7 +883,7 @@ LABEL_50:
 
   if ((has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_deliberation != *(v4 + 18))
+    if ((v8 & 0x80) == 0 || self->_deliberation != *(equalCopy + 18))
     {
       goto LABEL_50;
     }
@@ -896,20 +896,20 @@ LABEL_50:
 
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 40) & 0x100) == 0 || self->_rationale != *(v4 + 19))
+    if ((*(equalCopy + 40) & 0x100) == 0 || self->_rationale != *(equalCopy + 19))
     {
       goto LABEL_50;
     }
   }
 
-  else if ((*(v4 + 40) & 0x100) != 0)
+  else if ((*(equalCopy + 40) & 0x100) != 0)
   {
     goto LABEL_50;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v8 & 0x20) == 0 || self->_wwanUsage != *(v4 + 6))
+    if ((v8 & 0x20) == 0 || self->_wwanUsage != *(equalCopy + 6))
     {
       goto LABEL_50;
     }
@@ -922,7 +922,7 @@ LABEL_50:
 
   if ((has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_wifiUsage != *(v4 + 5))
+    if ((v8 & 0x10) == 0 || self->_wifiUsage != *(equalCopy + 5))
     {
       goto LABEL_50;
     }
@@ -935,7 +935,7 @@ LABEL_50:
 
   if ((has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_altUsage != *(v4 + 2))
+    if ((v8 & 2) == 0 || self->_altUsage != *(equalCopy + 2))
     {
       goto LABEL_50;
     }
@@ -948,7 +948,7 @@ LABEL_50:
 
   if (has)
   {
-    if ((v8 & 1) == 0 || self->_allFlows != *(v4 + 1))
+    if ((v8 & 1) == 0 || self->_allFlows != *(equalCopy + 1))
     {
       goto LABEL_50;
     }
@@ -961,7 +961,7 @@ LABEL_50:
 
   if ((has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_jumboFlows != *(v4 + 3))
+    if ((v8 & 4) == 0 || self->_jumboFlows != *(equalCopy + 3))
     {
       goto LABEL_50;
     }
@@ -1101,28 +1101,28 @@ LABEL_12:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 40) & 8) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 40) & 8) != 0)
   {
-    self->_timestamp = *(v4 + 4);
+    self->_timestamp = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(AWDSymptomsAdvisoryAppCanUseAlternateNetwork *)self setBundleName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x40) != 0)
   {
-    self->_bailOutOf = *(v4 + 14);
+    self->_bailOutOf = *(fromCopy + 14);
     *&self->_has |= 0x40u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 0x80) == 0)
     {
 LABEL_7:
@@ -1140,9 +1140,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_deliberation = *(v4 + 18);
+  self->_deliberation = *(fromCopy + 18);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x100) == 0)
   {
 LABEL_8:
@@ -1155,9 +1155,9 @@ LABEL_8:
   }
 
 LABEL_19:
-  self->_rationale = *(v4 + 19);
+  self->_rationale = *(fromCopy + 19);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x20) == 0)
   {
 LABEL_9:
@@ -1170,9 +1170,9 @@ LABEL_9:
   }
 
 LABEL_20:
-  self->_wwanUsage = *(v4 + 6);
+  self->_wwanUsage = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x10) == 0)
   {
 LABEL_10:
@@ -1185,9 +1185,9 @@ LABEL_10:
   }
 
 LABEL_21:
-  self->_wifiUsage = *(v4 + 5);
+  self->_wifiUsage = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) == 0)
   {
 LABEL_11:
@@ -1200,9 +1200,9 @@ LABEL_11:
   }
 
 LABEL_22:
-  self->_altUsage = *(v4 + 2);
+  self->_altUsage = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 1) == 0)
   {
 LABEL_12:
@@ -1215,12 +1215,12 @@ LABEL_12:
   }
 
 LABEL_23:
-  self->_allFlows = *(v4 + 1);
+  self->_allFlows = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 40) & 4) != 0)
+  if ((*(fromCopy + 40) & 4) != 0)
   {
 LABEL_13:
-    self->_jumboFlows = *(v4 + 3);
+    self->_jumboFlows = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 

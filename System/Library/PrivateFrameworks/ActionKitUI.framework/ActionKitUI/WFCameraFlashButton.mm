@@ -1,14 +1,14 @@
 @interface WFCameraFlashButton
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
 - (UIImageView)flashView;
-- (WFCameraFlashButton)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (WFCameraFlashButton)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)flashMode;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setExpanded:(BOOL)a3;
-- (void)setFlashMode:(int64_t)a3;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setFlashMode:(int64_t)mode;
 @end
 
 @implementation WFCameraFlashButton
@@ -22,35 +22,35 @@
 
 - (int64_t)flashMode
 {
-  v2 = [(WFCameraFlashButton *)self selectedLabel];
-  v3 = [v2 tag];
+  selectedLabel = [(WFCameraFlashButton *)self selectedLabel];
+  v3 = [selectedLabel tag];
 
   return v3;
 }
 
-- (void)setFlashMode:(int64_t)a3
+- (void)setFlashMode:(int64_t)mode
 {
-  v5 = [(WFCameraFlashButton *)self labels];
+  labels = [(WFCameraFlashButton *)self labels];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __36__WFCameraFlashButton_setFlashMode___block_invoke;
   v9[3] = &__block_descriptor_40_e23_B32__0__UIView_8Q16_B24l;
-  v9[4] = a3;
-  v6 = [v5 indexOfObjectPassingTest:v9];
+  v9[4] = mode;
+  v6 = [labels indexOfObjectPassingTest:v9];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(WFCameraFlashButton *)self labels];
-    v8 = [v7 objectAtIndexedSubscript:v6];
+    labels2 = [(WFCameraFlashButton *)self labels];
+    v8 = [labels2 objectAtIndexedSubscript:v6];
     [(WFCameraFlashButton *)self setSelectedLabel:v8];
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    if (a3)
+    if (expanded)
     {
       v5 = MEMORY[0x277D75D18];
       v10[0] = MEMORY[0x277D85DD0];
@@ -63,8 +63,8 @@
 
     else
     {
-      v7 = [(WFCameraFlashButton *)self flashView];
-      [v7 frame];
+      flashView = [(WFCameraFlashButton *)self flashView];
+      [flashView frame];
       v8 = CGRectGetMaxX(v11) + 5.0;
 
       v5 = MEMORY[0x277D75D18];
@@ -80,7 +80,7 @@
     [v5 animateWithDuration:v6 animations:0.200000003];
   }
 
-  self->_expanded = a3;
+  self->_expanded = expanded;
 }
 
 void __35__WFCameraFlashButton_setExpanded___block_invoke(uint64_t a1)
@@ -206,37 +206,37 @@ void __35__WFCameraFlashButton_setExpanded___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   v21.receiver = self;
   v21.super_class = WFCameraFlashButton;
-  v8 = [(WFCameraFlashButton *)&v21 beginTrackingWithTouch:v6 withEvent:v7];
+  v8 = [(WFCameraFlashButton *)&v21 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
   if (v8)
   {
     if ([(WFCameraFlashButton *)self expanded])
     {
-      [v6 locationInView:self];
+      [touchCopy locationInView:self];
       v20.receiver = self;
       v20.super_class = WFCameraFlashButton;
-      v9 = [(WFCameraFlashButton *)&v20 hitTest:v7 withEvent:?];
+      v9 = [(WFCameraFlashButton *)&v20 hitTest:eventCopy withEvent:?];
       if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v10 = [(WFCameraFlashButton *)self labels];
-        v11 = [v10 containsObject:v9];
+        labels = [(WFCameraFlashButton *)self labels];
+        v11 = [labels containsObject:v9];
 
         v12 = v9;
         if (v11)
         {
-          v13 = [MEMORY[0x277D75348] whiteColor];
-          v14 = [(WFCameraFlashButton *)self selectedLabel];
-          [v14 setTextColor:v13];
+          whiteColor = [MEMORY[0x277D75348] whiteColor];
+          selectedLabel = [(WFCameraFlashButton *)self selectedLabel];
+          [selectedLabel setTextColor:whiteColor];
 
           [(WFCameraFlashButton *)self setSelectedLabel:v9];
-          v15 = [(WFCameraFlashButton *)self tintColor];
-          v16 = [(WFCameraFlashButton *)self selectedLabel];
-          [v16 setTextColor:v15];
+          tintColor = [(WFCameraFlashButton *)self tintColor];
+          selectedLabel2 = [(WFCameraFlashButton *)self selectedLabel];
+          [selectedLabel2 setTextColor:tintColor];
 
           [(WFCameraFlashButton *)self setExpanded:0];
           [(WFCameraFlashButton *)self sendActionsForControlEvents:4096];
@@ -253,8 +253,8 @@ LABEL_11:
         v12 = 0;
       }
 
-      v17 = [(WFCameraFlashButton *)self flashView];
-      v18 = [v9 isEqual:v17];
+      flashView = [(WFCameraFlashButton *)self flashView];
+      v18 = [v9 isEqual:flashView];
 
       if (v18)
       {
@@ -272,20 +272,20 @@ LABEL_12:
   return v8;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   v8.receiver = self;
   v8.super_class = WFCameraFlashButton;
-  v5 = [(WFCameraFlashButton *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
-  if (![(WFCameraFlashButton *)v5 isDescendantOfView:v4])
+  v5 = [(WFCameraFlashButton *)&v8 hitTest:event withEvent:test.x, test.y];
+  if (![(WFCameraFlashButton *)v5 isDescendantOfView:selfCopy])
   {
-    v4 = v5;
+    selfCopy = v5;
   }
 
-  v6 = v4;
+  v6 = selfCopy;
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)didMoveToWindow
@@ -293,9 +293,9 @@ LABEL_12:
   v4.receiver = self;
   v4.super_class = WFCameraFlashButton;
   [(WFCameraFlashButton *)&v4 didMoveToWindow];
-  v3 = [(WFCameraFlashButton *)self window];
+  window = [(WFCameraFlashButton *)self window];
 
-  if (v3)
+  if (window)
   {
     [(WFCameraFlashButton *)self setNeedsHiding:1];
   }
@@ -316,12 +316,12 @@ LABEL_12:
   }
 }
 
-- (WFCameraFlashButton)initWithFrame:(CGRect)a3
+- (WFCameraFlashButton)initWithFrame:(CGRect)frame
 {
   v35[3] = *MEMORY[0x277D85DE8];
   v34.receiver = self;
   v34.super_class = WFCameraFlashButton;
-  v3 = [(WFCameraFlashButton *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFCameraFlashButton *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D75348] colorWithRed:0.945 green:0.804 blue:0.137 alpha:1.0];
@@ -329,8 +329,8 @@ LABEL_12:
 
     v5 = objc_alloc(MEMORY[0x277D755E8]);
     v6 = [MEMORY[0x277D79FC8] actionKitImageNamed:@"CameraFlash"];
-    v7 = [v6 UIImage];
-    v8 = [v5 initWithImage:v7];
+    uIImage = [v6 UIImage];
+    v8 = [v5 initWithImage:uIImage];
 
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v8 setContentMode:1];
@@ -352,7 +352,7 @@ LABEL_12:
     v35[2] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:3];
 
-    v16 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __37__WFCameraFlashButton_initWithFrame___block_invoke;
@@ -360,16 +360,16 @@ LABEL_12:
     v29 = &unk_2850AB3D8;
     v17 = v3;
     v30 = v17;
-    v31 = v16;
+    v31 = array;
     v32 = v8;
     v33 = v15;
     v18 = v15;
     v19 = v8;
-    v20 = v16;
+    v20 = array;
     [v18 enumerateObjectsUsingBlock:v28];
     [(WFCameraFlashButton *)v17 setLabels:v20];
-    v21 = [v20 firstObject];
-    [(WFCameraFlashButton *)v17 setSelectedLabel:v21];
+    firstObject = [v20 firstObject];
+    [(WFCameraFlashButton *)v17 setSelectedLabel:firstObject];
 
     [(WFCameraFlashButton *)v17 setExpanded:1];
     LODWORD(v22) = 1144750080;

@@ -1,15 +1,15 @@
 @interface _SBHLibraryCategoryStackViewBackgroundView
-- (_SBHLibraryCategoryStackViewBackgroundView)initWithFrame:(CGRect)a3;
-- (void)setBackdropGroupName:(id)a3;
+- (_SBHLibraryCategoryStackViewBackgroundView)initWithFrame:(CGRect)frame;
+- (void)setBackdropGroupName:(id)name;
 @end
 
 @implementation _SBHLibraryCategoryStackViewBackgroundView
 
-- (_SBHLibraryCategoryStackViewBackgroundView)initWithFrame:(CGRect)a3
+- (_SBHLibraryCategoryStackViewBackgroundView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _SBHLibraryCategoryStackViewBackgroundView;
-  v3 = [(_SBHLibraryCategoryStackViewBackgroundView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SBHLibraryCategoryStackViewBackgroundView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -19,13 +19,13 @@
   return v4;
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if ([(UIView *)self sbh_hasGlass])
   {
-    v4 = [(_SBHLibraryCategoryStackViewBackgroundView *)self _background];
-    [v4 setBackdropGroupName:v5];
+    _background = [(_SBHLibraryCategoryStackViewBackgroundView *)self _background];
+    [_background setBackdropGroupName:nameCopy];
   }
 }
 

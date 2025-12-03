@@ -1,24 +1,24 @@
 @interface KNBuildFireworksSystem
 - ($94F468A8D4C62B317260615823C2B210)lifeSpan;
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3;
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)colorAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3;
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point;
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)colorAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point;
 - (CGPoint)randomParticleSpeedMinMax;
 - (CGPoint)startingPoint;
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3;
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point;
 - (CGSize)randomParticleSizeMinMax;
-- (double)scaleAtIndexPoint:(CGPoint)a3;
-- (void)setupWithTexture:(id)a3 particleTextureSize:(CGSize)a4 reverseDrawOrder:(BOOL)a5;
+- (double)scaleAtIndexPoint:(CGPoint)point;
+- (void)setupWithTexture:(id)texture particleTextureSize:(CGSize)size reverseDrawOrder:(BOOL)order;
 @end
 
 @implementation KNBuildFireworksSystem
 
-- (void)setupWithTexture:(id)a3 particleTextureSize:(CGSize)a4 reverseDrawOrder:(BOOL)a5
+- (void)setupWithTexture:(id)texture particleTextureSize:(CGSize)size reverseDrawOrder:(BOOL)order
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  orderCopy = order;
+  height = size.height;
+  width = size.width;
+  textureCopy = texture;
   [(KNBuildFireworksSystem *)self fireworkStartingPositionX];
   v10 = v9;
   [(KNBuildFireworksSystem *)self objectSize];
@@ -32,11 +32,11 @@
     v14 = v16;
   }
 
-  [v8 frame];
+  [textureCopy frame];
   v18 = v17;
-  [v8 frame];
+  [textureCopy frame];
   v20 = v19;
-  v21 = [(KNBuildFireworksSystem *)self randomGenerator];
+  randomGenerator = [(KNBuildFireworksSystem *)self randomGenerator];
   [(KNBuildFireworksSystem *)self objectSize];
   v23 = v22;
   [(KNBuildFireworksSystem *)self slideSize];
@@ -48,7 +48,7 @@
 
   v26 = -v25;
   [(KNBuildFireworksSystem *)self objectSize];
-  [v21 doubleBetween:v26 :?];
+  [randomGenerator doubleBetween:v26 :?];
   v28 = v27;
 
   [(KNBuildFireworksSystem *)self slideSize];
@@ -60,9 +60,9 @@
 
   v31 = v18 + v20 * (v10 * v12 / v14);
   v32 = v28 / v13;
-  [v8 frame];
+  [textureCopy frame];
   v34 = v33;
-  [v8 frame];
+  [textureCopy frame];
   self->_startingPoint.x = v31;
   self->_startingPoint.y = v34 + v35 * v32;
   TSURandom();
@@ -80,10 +80,10 @@
   self->_startingColorRGB.z = *&v43;
   v45.receiver = self;
   v45.super_class = KNBuildFireworksSystem;
-  [(KNBuildFireworksSystem *)&v45 setupWithTexture:0 particleTextureSize:v5 reverseDrawOrder:width, height];
+  [(KNBuildFireworksSystem *)&v45 setupWithTexture:0 particleTextureSize:orderCopy reverseDrawOrder:width, height];
 }
 
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point
 {
   x = self->_startingPoint.x;
   y = self->_startingPoint.y;
@@ -92,10 +92,10 @@
   return result;
 }
 
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)colorAtIndexPoint:(CGPoint)a3
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)colorAtIndexPoint:(CGPoint)point
 {
   objc_opt_class();
-  v4 = [(KNBuildFireworksSystem *)self randomGenerator];
+  randomGenerator = [(KNBuildFireworksSystem *)self randomGenerator];
   v5 = TSUDynamicCast();
 
   [v5 metalPoint3DRandomDirection];
@@ -118,9 +118,9 @@
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildFireworksSystem *)self randomGenerator:a3.x];
+  v4 = [(KNBuildFireworksSystem *)self randomGenerator:point.x];
   [v4 metalPoint3DRandomDirection];
   v6 = v5;
   v8 = v7;
@@ -142,9 +142,9 @@
   return result;
 }
 
-- (double)scaleAtIndexPoint:(CGPoint)a3
+- (double)scaleAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildFireworksSystem *)self randomGenerator:a3.x];
+  v4 = [(KNBuildFireworksSystem *)self randomGenerator:point.x];
   [(KNBuildFireworksSystem *)self randomParticleSizeMinMax];
   v6 = v5;
   [(KNBuildFireworksSystem *)self randomParticleSizeMinMax];
@@ -154,9 +154,9 @@
   return v8;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildFireworksSystem *)self randomGenerator:a3.x];
+  v4 = [(KNBuildFireworksSystem *)self randomGenerator:point.x];
   [(KNBuildFireworksSystem *)self lifeSpanMinDuration];
   [v4 doubleBetween:? :?];
   v6 = v5;

@@ -1,15 +1,15 @@
 @interface AAUICustodianHelpCodeView
-- (AAUICustodianHelpCodeView)initWithFrame:(CGRect)a3;
-- (void)setText:(id)a3;
+- (AAUICustodianHelpCodeView)initWithFrame:(CGRect)frame;
+- (void)setText:(id)text;
 @end
 
 @implementation AAUICustodianHelpCodeView
 
-- (AAUICustodianHelpCodeView)initWithFrame:(CGRect)a3
+- (AAUICustodianHelpCodeView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AAUICustodianHelpCodeView;
-  v3 = [(AAUICustodianHelpCodeView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AAUICustodianHelpCodeView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -20,11 +20,11 @@
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v4];
-  if ([v4 length] != 1)
+  textCopy = text;
+  v5 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:textCopy];
+  if ([textCopy length] != 1)
   {
     v6 = 0;
     v7 = *MEMORY[0x1E69DB660];
@@ -33,7 +33,7 @@
       [v5 addAttribute:v7 value:&unk_1F44C06F0 range:{v6++, 1}];
     }
 
-    while ([v4 length] - 1 > v6);
+    while ([textCopy length] - 1 > v6);
   }
 
   v8 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD20]];

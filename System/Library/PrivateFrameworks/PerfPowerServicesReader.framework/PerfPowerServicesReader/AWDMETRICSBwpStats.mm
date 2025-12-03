@@ -1,23 +1,23 @@
 @interface AWDMETRICSBwpStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsBandwidth:(id)a3;
+- (int)StringAsBandwidth:(id)bandwidth;
 - (int)bandwidth;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasScsSpacing:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasScsSpacing:(BOOL)spacing;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSBwpStats
 
-- (void)setHasScsSpacing:(BOOL)a3
+- (void)setHasScsSpacing:(BOOL)spacing
 {
-  if (a3)
+  if (spacing)
   {
     v3 = 4;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -58,95 +58,95 @@
   }
 }
 
-- (int)StringAsBandwidth:(id)a3
+- (int)StringAsBandwidth:(id)bandwidth
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NR5G_BW_5MHz"])
+  bandwidthCopy = bandwidth;
+  if ([bandwidthCopy isEqualToString:@"NR5G_BW_5MHz"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_10MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_10MHz"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_15MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_15MHz"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_20MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_20MHz"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_25MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_25MHz"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_30MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_30MHz"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_35MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_35MHz"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_40MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_40MHz"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_45MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_45MHz"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_50MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_50MHz"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_60MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_60MHz"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_70MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_70MHz"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_80MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_80MHz"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_90MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_90MHz"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_100MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_100MHz"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_200MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_200MHz"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_400MHz"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_400MHz"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"NR5G_BW_INVALID"])
+  else if ([bandwidthCopy isEqualToString:@"NR5G_BW_INVALID"])
   {
     v4 = 17;
   }
@@ -165,15 +165,15 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSBwpStats;
   v4 = [(AWDMETRICSBwpStats *)&v8 description];
-  v5 = [(AWDMETRICSBwpStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSBwpStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -184,7 +184,7 @@
 
 LABEL_6:
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_duration];
-    [v3 setObject:v6 forKey:@"duration"];
+    [dictionary setObject:v6 forKey:@"duration"];
 
     if ((*&self->_has & 1) == 0)
     {
@@ -203,13 +203,13 @@ LABEL_7:
       v8 = off_279A10830[bandwidth];
     }
 
-    [v3 setObject:v8 forKey:@"bandwidth"];
+    [dictionary setObject:v8 forKey:@"bandwidth"];
 
     goto LABEL_11;
   }
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_scsSpacing];
-  [v3 setObject:v5 forKey:@"scs_spacing"];
+  [dictionary setObject:v5 forKey:@"scs_spacing"];
 
   has = self->_has;
   if ((has & 2) != 0)
@@ -225,19 +225,19 @@ LABEL_3:
 
 LABEL_11:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
     scsSpacing = self->_scsSpacing;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -258,26 +258,26 @@ LABEL_3:
 
   duration = self->_duration;
   PBDataWriterWriteUint32Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_4:
     bandwidth = self->_bandwidth;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[4] = self->_scsSpacing;
-    *(v4 + 20) |= 4u;
+    toCopy[4] = self->_scsSpacing;
+    *(toCopy + 20) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -296,21 +296,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_duration;
-  *(v4 + 20) |= 2u;
+  toCopy[3] = self->_duration;
+  *(toCopy + 20) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    v4[2] = self->_bandwidth;
-    *(v4 + 20) |= 1u;
+    toCopy[2] = self->_bandwidth;
+    *(toCopy + 20) |= 1u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -347,23 +347,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 20) & 4) == 0 || self->_scsSpacing != *(v4 + 4))
+    if ((*(equalCopy + 20) & 4) == 0 || self->_scsSpacing != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 20) & 4) != 0)
+  else if ((*(equalCopy + 20) & 4) != 0)
   {
 LABEL_16:
     v5 = 0;
@@ -372,21 +372,21 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_duration != *(v4 + 3))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_duration != *(equalCopy + 3))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 20) & 2) != 0)
+  else if ((*(equalCopy + 20) & 2) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 20) & 1) == 0;
+  v5 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_bandwidth != *(v4 + 2))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_bandwidth != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
@@ -439,15 +439,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if ((v5 & 4) != 0)
   {
-    self->_scsSpacing = *(v4 + 4);
+    self->_scsSpacing = *(fromCopy + 4);
     *&self->_has |= 4u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -460,17 +460,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 20) & 2) == 0)
+  else if ((*(fromCopy + 20) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_duration = *(v4 + 3);
+  self->_duration = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
 LABEL_4:
-    self->_bandwidth = *(v4 + 2);
+    self->_bandwidth = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 

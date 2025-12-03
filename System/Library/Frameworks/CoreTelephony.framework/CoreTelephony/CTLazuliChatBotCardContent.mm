@@ -1,11 +1,11 @@
 @interface CTLazuliChatBotCardContent
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliChatBotCardContent:(id)a3;
-- (CTLazuliChatBotCardContent)initWithCoder:(id)a3;
-- (CTLazuliChatBotCardContent)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliChatBotCardContent:(id)content;
+- (CTLazuliChatBotCardContent)initWithCoder:(id)coder;
+- (CTLazuliChatBotCardContent)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliChatBotCardContent
@@ -13,33 +13,33 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliChatBotCardContent *)self media];
-  [v3 appendFormat:@", media = %@", v4];
+  media = [(CTLazuliChatBotCardContent *)self media];
+  [v3 appendFormat:@", media = %@", media];
 
-  v5 = [(CTLazuliChatBotCardContent *)self title];
-  [v3 appendFormat:@", title = %@", v5];
+  title = [(CTLazuliChatBotCardContent *)self title];
+  [v3 appendFormat:@", title = %@", title];
 
-  v6 = [(CTLazuliChatBotCardContent *)self cardDescription];
-  [v3 appendFormat:@", cardDescription = %@", v6];
+  cardDescription = [(CTLazuliChatBotCardContent *)self cardDescription];
+  [v3 appendFormat:@", cardDescription = %@", cardDescription];
 
-  v7 = [(CTLazuliChatBotCardContent *)self chipList];
-  [v3 appendFormat:@", chipList = %@", v7];
+  chipList = [(CTLazuliChatBotCardContent *)self chipList];
+  [v3 appendFormat:@", chipList = %@", chipList];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliChatBotCardContent:(id)a3
+- (BOOL)isEqualToCTLazuliChatBotCardContent:(id)content
 {
-  v4 = a3;
-  v5 = [(CTLazuliChatBotCardContent *)self media];
-  v6 = [v4 media];
-  if (v5 != v6)
+  contentCopy = content;
+  media = [(CTLazuliChatBotCardContent *)self media];
+  media2 = [contentCopy media];
+  if (media != media2)
   {
-    v24 = [(CTLazuliChatBotCardContent *)self media];
-    v21 = [v4 media];
-    if (![v24 isEqualToCTLazuliChatBotCardMedia:?])
+    media3 = [(CTLazuliChatBotCardContent *)self media];
+    media4 = [contentCopy media];
+    if (![media3 isEqualToCTLazuliChatBotCardMedia:?])
     {
       v7 = 0;
 LABEL_18:
@@ -48,18 +48,18 @@ LABEL_18:
     }
   }
 
-  v25 = [(CTLazuliChatBotCardContent *)self title];
-  v23 = [v4 title];
-  if (v25 == v23 || (-[CTLazuliChatBotCardContent title](self, "title"), v22 = objc_claimAutoreleasedReturnValue(), [v4 title], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "isEqualToCTLazuliChatBotCardTitle:")))
+  title = [(CTLazuliChatBotCardContent *)self title];
+  title2 = [contentCopy title];
+  if (title == title2 || (-[CTLazuliChatBotCardContent title](self, "title"), v22 = objc_claimAutoreleasedReturnValue(), [contentCopy title], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "isEqualToCTLazuliChatBotCardTitle:")))
   {
-    v10 = [(CTLazuliChatBotCardContent *)self cardDescription];
-    v11 = [v4 cardDescription];
-    if (v10 == v11 || (-[CTLazuliChatBotCardContent cardDescription](self, "cardDescription"), v20 = objc_claimAutoreleasedReturnValue(), [v4 cardDescription], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "isEqualToCTLazuliChatBotCardDescription:")))
+    cardDescription = [(CTLazuliChatBotCardContent *)self cardDescription];
+    cardDescription2 = [contentCopy cardDescription];
+    if (cardDescription == cardDescription2 || (-[CTLazuliChatBotCardContent cardDescription](self, "cardDescription"), v20 = objc_claimAutoreleasedReturnValue(), [contentCopy cardDescription], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "isEqualToCTLazuliChatBotCardDescription:")))
     {
-      v12 = [(CTLazuliChatBotCardContent *)self chipList];
-      v13 = [v4 chipList];
-      v14 = v13;
-      if (v12 == v13)
+      chipList = [(CTLazuliChatBotCardContent *)self chipList];
+      chipList2 = [contentCopy chipList];
+      v14 = chipList2;
+      if (chipList == chipList2)
       {
 
         v7 = 1;
@@ -67,18 +67,18 @@ LABEL_18:
 
       else
       {
-        v15 = [(CTLazuliChatBotCardContent *)self chipList];
-        v16 = [v4 chipList];
-        v7 = [v15 isEqualToCTLazuliChatBotSuggestedChipList:v16];
+        chipList3 = [(CTLazuliChatBotCardContent *)self chipList];
+        chipList4 = [contentCopy chipList];
+        v7 = [chipList3 isEqualToCTLazuliChatBotSuggestedChipList:chipList4];
       }
 
-      if (v10 == v11)
+      if (cardDescription == cardDescription2)
       {
 LABEL_15:
 
-        v8 = v25;
-        v9 = v23;
-        if (v25 == v23)
+        v8 = title;
+        v9 = title2;
+        if (title == title2)
         {
           goto LABEL_17;
         }
@@ -96,12 +96,12 @@ LABEL_15:
   }
 
   v7 = 0;
-  v8 = v25;
-  v9 = v23;
+  v8 = title;
+  v9 = title2;
 LABEL_16:
 
 LABEL_17:
-  if (v5 != v6)
+  if (media != media2)
   {
     goto LABEL_18;
   }
@@ -111,71 +111,71 @@ LABEL_19:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotCardContent *)self isEqualToCTLazuliChatBotCardContent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotCardContent *)self isEqualToCTLazuliChatBotCardContent:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliChatBotCardContent allocWithZone:?];
-  v6 = [(CTLazuliChatBotCardMedia *)self->_media copyWithZone:a3];
+  v6 = [(CTLazuliChatBotCardMedia *)self->_media copyWithZone:zone];
   [(CTLazuliChatBotCardContent *)v5 setMedia:v6];
 
-  v7 = [(CTLazuliChatBotCardTitle *)self->_title copyWithZone:a3];
+  v7 = [(CTLazuliChatBotCardTitle *)self->_title copyWithZone:zone];
   [(CTLazuliChatBotCardContent *)v5 setTitle:v7];
 
-  v8 = [(CTLazuliChatBotCardDescription *)self->_cardDescription copyWithZone:a3];
+  v8 = [(CTLazuliChatBotCardDescription *)self->_cardDescription copyWithZone:zone];
   [(CTLazuliChatBotCardContent *)v5 setCardDescription:v8];
 
-  v9 = [(CTLazuliChatBotSuggestedChipList *)self->_chipList copyWithZone:a3];
+  v9 = [(CTLazuliChatBotSuggestedChipList *)self->_chipList copyWithZone:zone];
   [(CTLazuliChatBotCardContent *)v5 setChipList:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_media forKey:@"kMediaKey"];
-  [v4 encodeObject:self->_title forKey:@"kTitleKey"];
-  [v4 encodeObject:self->_cardDescription forKey:@"kCardDescriptionKey"];
-  [v4 encodeObject:self->_chipList forKey:@"kChipListKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_media forKey:@"kMediaKey"];
+  [coderCopy encodeObject:self->_title forKey:@"kTitleKey"];
+  [coderCopy encodeObject:self->_cardDescription forKey:@"kCardDescriptionKey"];
+  [coderCopy encodeObject:self->_chipList forKey:@"kChipListKey"];
 }
 
-- (CTLazuliChatBotCardContent)initWithCoder:(id)a3
+- (CTLazuliChatBotCardContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CTLazuliChatBotCardContent;
   v5 = [(CTLazuliChatBotCardContent *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMediaKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMediaKey"];
     media = v5->_media;
     v5->_media = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kTitleKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTitleKey"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCardDescriptionKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCardDescriptionKey"];
     cardDescription = v5->_cardDescription;
     v5->_cardDescription = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kChipListKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kChipListKey"];
     chipList = v5->_chipList;
     v5->_chipList = v12;
   }
@@ -183,7 +183,7 @@ LABEL_19:
   return v5;
 }
 
-- (CTLazuliChatBotCardContent)initWithReflection:(const void *)a3
+- (CTLazuliChatBotCardContent)initWithReflection:(const void *)reflection
 {
   v21.receiver = self;
   v21.super_class = CTLazuliChatBotCardContent;
@@ -191,16 +191,16 @@ LABEL_19:
   v5 = v4;
   if (v4)
   {
-    if (*(a3 + 176) == 1)
+    if (*(reflection + 176) == 1)
     {
       v6 = v4;
       v7 = [CTLazuliChatBotCardMedia alloc];
-      if ((*(a3 + 176) & 1) == 0)
+      if ((*(reflection + 176) & 1) == 0)
       {
         goto LABEL_20;
       }
 
-      v8 = [(CTLazuliChatBotCardMedia *)v7 initWithReflection:a3];
+      v8 = [(CTLazuliChatBotCardMedia *)v7 initWithReflection:reflection];
     }
 
     else
@@ -211,16 +211,16 @@ LABEL_19:
     media = v5->_media;
     v5->_media = v8;
 
-    if (*(a3 + 208) == 1)
+    if (*(reflection + 208) == 1)
     {
       v6 = v5;
       v10 = [CTLazuliChatBotCardTitle alloc];
-      if ((*(a3 + 208) & 1) == 0)
+      if ((*(reflection + 208) & 1) == 0)
       {
         goto LABEL_20;
       }
 
-      v11 = [(CTLazuliChatBotCardTitle *)v10 initWithReflection:a3 + 184];
+      v11 = [(CTLazuliChatBotCardTitle *)v10 initWithReflection:reflection + 184];
     }
 
     else
@@ -231,16 +231,16 @@ LABEL_19:
     title = v5->_title;
     v5->_title = v11;
 
-    if (*(a3 + 240) == 1)
+    if (*(reflection + 240) == 1)
     {
       v6 = v5;
       v13 = [CTLazuliChatBotCardDescription alloc];
-      if ((*(a3 + 240) & 1) == 0)
+      if ((*(reflection + 240) & 1) == 0)
       {
         goto LABEL_20;
       }
 
-      v14 = [(CTLazuliChatBotCardDescription *)v13 initWithReflection:a3 + 216];
+      v14 = [(CTLazuliChatBotCardDescription *)v13 initWithReflection:reflection + 216];
     }
 
     else
@@ -251,7 +251,7 @@ LABEL_19:
     cardDescription = v5->_cardDescription;
     v5->_cardDescription = v14;
 
-    if (*(a3 + 272) != 1)
+    if (*(reflection + 272) != 1)
     {
       v17 = 0;
       goto LABEL_18;
@@ -259,9 +259,9 @@ LABEL_19:
 
     v6 = v5;
     v16 = [CTLazuliChatBotSuggestedChipList alloc];
-    if (*(a3 + 272))
+    if (*(reflection + 272))
     {
-      v17 = [(CTLazuliChatBotSuggestedChipList *)v16 initWithReflection:a3 + 248];
+      v17 = [(CTLazuliChatBotSuggestedChipList *)v16 initWithReflection:reflection + 248];
 LABEL_18:
       chipList = v5->_chipList;
       v5->_chipList = v17;

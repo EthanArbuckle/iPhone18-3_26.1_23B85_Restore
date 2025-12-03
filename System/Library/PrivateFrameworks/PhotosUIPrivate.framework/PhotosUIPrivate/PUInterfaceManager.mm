@@ -1,9 +1,9 @@
 @interface PUInterfaceManager
-+ (BOOL)shouldUseAccessibilityLargeTextLayoutWithTraitCollecton:(id)a3;
-+ (BOOL)shouldUsePhoneLayoutWithTraitCollection:(id)a3;
++ (BOOL)shouldUseAccessibilityLargeTextLayoutWithTraitCollecton:(id)collecton;
++ (BOOL)shouldUsePhoneLayoutWithTraitCollection:(id)collection;
 + (PUInterfaceTheme)currentTheme;
-+ (id)beginDisablingUserInteractionForReason:(int64_t)a3 withExpectedTimeout:(double)a4;
-+ (void)_disabledUserInteractionRequestDidTimeOut:(id)a3;
++ (id)beginDisablingUserInteractionForReason:(int64_t)reason withExpectedTimeout:(double)timeout;
++ (void)_disabledUserInteractionRequestDidTimeOut:(id)out;
 + (void)_handleInteractionDisablingTimeout;
 + (void)_handleInteractionDisablingTimeoutForAlbumStackTransition;
 + (void)_handleInteractionDisablingTimeoutForBannerViewImagesJump;
@@ -21,30 +21,30 @@
 + (void)_handleInteractionDisablingTimeoutForSearchSelectResult;
 + (void)_handleInteractionDisablingTimeoutForSearchSelectSuggestion;
 + (void)_handleInteractionDisablingTimeoutForStartSlideshowFromGrid;
-+ (void)endDisablingUserInteraction:(id)a3;
++ (void)endDisablingUserInteraction:(id)interaction;
 @end
 
 @implementation PUInterfaceManager
 
-+ (BOOL)shouldUseAccessibilityLargeTextLayoutWithTraitCollecton:(id)a3
++ (BOOL)shouldUseAccessibilityLargeTextLayoutWithTraitCollecton:(id)collecton
 {
   v4 = *MEMORY[0x1E69DDA98];
-  v5 = a3;
-  v6 = [v4 preferredContentSizeCategory];
-  v7 = [a1 shouldUsePhoneLayoutWithTraitCollection:v5];
+  collectonCopy = collecton;
+  preferredContentSizeCategory = [v4 preferredContentSizeCategory];
+  v7 = [self shouldUsePhoneLayoutWithTraitCollection:collectonCopy];
 
   if (v7)
   {
-    LOBYTE(v7) = UIContentSizeCategoryIsAccessibilityCategory(v6);
+    LOBYTE(v7) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   }
 
   return v7;
 }
 
-+ (BOOL)shouldUsePhoneLayoutWithTraitCollection:(id)a3
++ (BOOL)shouldUsePhoneLayoutWithTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 horizontalSizeClass] == 1 || objc_msgSend(v3, "verticalSizeClass") == 1;
+  collectionCopy = collection;
+  v4 = [collectionCopy horizontalSizeClass] == 1 || objc_msgSend(collectionCopy, "verticalSizeClass") == 1;
 
   return v4;
 }
@@ -73,7 +73,7 @@
           objc_enumerationMutation(v3);
         }
 
-        [a1 endDisablingUserInteraction:*(*(&v8 + 1) + 8 * v7++)];
+        [self endDisablingUserInteraction:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
@@ -91,7 +91,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForBurningInTrim
@@ -101,7 +101,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForOverOneUpTransition
@@ -111,7 +111,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForOneUpToPhotoEditorTransition
@@ -121,7 +121,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForPhotoEditorComputingAutoEnhance
@@ -131,7 +131,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForPhotoEditorWaitingToDismiss
@@ -141,7 +141,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForPhotoEditorRevertingChanges
@@ -151,7 +151,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForPhotoEditorSavingChanges
@@ -161,7 +161,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForPhotoEditorToPhotoBrowserTransition
@@ -171,7 +171,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForPhotoBrowserToPhotoEditorTransition
@@ -181,7 +181,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForAlbumStackTransition
@@ -191,7 +191,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForSearchSelectSuggestion
@@ -201,7 +201,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForSearchSelectResult
@@ -211,7 +211,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForBannerViewImagesJump
@@ -221,7 +221,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForStartSlideshowFromGrid
@@ -231,7 +231,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
 + (void)_handleInteractionDisablingTimeoutForPhotoBrowserZoomTransition
@@ -241,83 +241,83 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"No call to +endDisablingUserInteraction: did occur in time for: %@", __disabledUserInteractionTokens}];
   }
 
-  [a1 _handleInteractionDisablingTimeout];
+  [self _handleInteractionDisablingTimeout];
 }
 
-+ (void)_disabledUserInteractionRequestDidTimeOut:(id)a3
++ (void)_disabledUserInteractionRequestDidTimeOut:(id)out
 {
-  v4 = [__disabledUserInteractionTokens anyObject];
-  switch([v4 reason])
+  anyObject = [__disabledUserInteractionTokens anyObject];
+  switch([anyObject reason])
   {
     case 0:
-      [a1 _handleInteractionDisablingTimeout];
+      [self _handleInteractionDisablingTimeout];
       break;
     case 1:
-      [a1 _handleInteractionDisablingTimeoutForPhotoBrowserZoomTransition];
+      [self _handleInteractionDisablingTimeoutForPhotoBrowserZoomTransition];
       break;
     case 2:
-      [a1 _handleInteractionDisablingTimeoutForStartSlideshowFromGrid];
+      [self _handleInteractionDisablingTimeoutForStartSlideshowFromGrid];
       break;
     case 3:
-      [a1 _handleInteractionDisablingTimeoutForBannerViewImagesJump];
+      [self _handleInteractionDisablingTimeoutForBannerViewImagesJump];
       break;
     case 4:
-      [a1 _handleInteractionDisablingTimeoutForSearchSelectResult];
+      [self _handleInteractionDisablingTimeoutForSearchSelectResult];
       break;
     case 5:
-      [a1 _handleInteractionDisablingTimeoutForSearchSelectSuggestion];
+      [self _handleInteractionDisablingTimeoutForSearchSelectSuggestion];
       break;
     case 6:
-      [a1 _handleInteractionDisablingTimeoutForAlbumStackTransition];
+      [self _handleInteractionDisablingTimeoutForAlbumStackTransition];
       break;
     case 7:
-      [a1 _handleInteractionDisablingTimeoutForPhotoBrowserToPhotoEditorTransition];
+      [self _handleInteractionDisablingTimeoutForPhotoBrowserToPhotoEditorTransition];
       break;
     case 8:
-      [a1 _handleInteractionDisablingTimeoutForPhotoEditorToPhotoBrowserTransition];
+      [self _handleInteractionDisablingTimeoutForPhotoEditorToPhotoBrowserTransition];
       break;
     case 9:
-      [a1 _handleInteractionDisablingTimeoutForOneUpToPhotoEditorTransition];
+      [self _handleInteractionDisablingTimeoutForOneUpToPhotoEditorTransition];
       goto LABEL_5;
     case 10:
 LABEL_5:
-      [a1 _handleInteractionDisablingTimeoutForOverOneUpTransition];
+      [self _handleInteractionDisablingTimeoutForOverOneUpTransition];
       break;
     case 11:
-      [a1 _handleInteractionDisablingTimeoutForPhotoEditorSavingChanges];
+      [self _handleInteractionDisablingTimeoutForPhotoEditorSavingChanges];
       break;
     case 12:
-      [a1 _handleInteractionDisablingTimeoutForPhotoEditorRevertingChanges];
+      [self _handleInteractionDisablingTimeoutForPhotoEditorRevertingChanges];
       break;
     case 13:
-      [a1 _handleInteractionDisablingTimeoutForPhotoEditorWaitingToDismiss];
+      [self _handleInteractionDisablingTimeoutForPhotoEditorWaitingToDismiss];
       break;
     case 14:
-      [a1 _handleInteractionDisablingTimeoutForPhotoEditorComputingAutoEnhance];
+      [self _handleInteractionDisablingTimeoutForPhotoEditorComputingAutoEnhance];
       break;
     case 16:
-      [a1 _handleInteractionDisablingTimeoutForBurningInTrim];
+      [self _handleInteractionDisablingTimeoutForBurningInTrim];
       break;
     case 17:
-      [a1 _handleInteractionDisablingTimeoutForRetouching];
+      [self _handleInteractionDisablingTimeoutForRetouching];
       break;
     default:
       break;
   }
 }
 
-+ (void)endDisablingUserInteraction:(id)a3
++ (void)endDisablingUserInteraction:(id)interaction
 {
-  v6 = a3;
+  interactionCopy = interaction;
   if ([__disabledUserInteractionTokens containsObject:?])
   {
-    [__disabledUserInteractionTokens removeObject:v6];
+    [__disabledUserInteractionTokens removeObject:interactionCopy];
     if (![__disabledUserInteractionTokens count])
     {
-      v3 = [MEMORY[0x1E69DC668] sharedApplication];
-      v4 = [v3 px_firstKeyWindow];
-      [v3 endIgnoringInteractionEvents];
-      [v4 endDisablingInterfaceAutorotation];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
+      [mEMORY[0x1E69DC668] endIgnoringInteractionEvents];
+      [px_firstKeyWindow endDisablingInterfaceAutorotation];
       [__disabledUserInteractionTimeoutTimer invalidate];
       v5 = __disabledUserInteractionTimeoutTimer;
       __disabledUserInteractionTimeoutTimer = 0;
@@ -335,35 +335,35 @@ LABEL_5:
   }
 }
 
-+ (id)beginDisablingUserInteractionForReason:(int64_t)a3 withExpectedTimeout:(double)a4
++ (id)beginDisablingUserInteractionForReason:(int64_t)reason withExpectedTimeout:(double)timeout
 {
-  if (!a3)
+  if (!reason)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PUInterfaceManager.m" lineNumber:66 description:@"Need a valid interaction disabling reason."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUInterfaceManager.m" lineNumber:66 description:@"Need a valid interaction disabling reason."];
   }
 
   v7 = objc_alloc_init(_PUDisabledUserInteractionToken);
-  [(_PUDisabledUserInteractionToken *)v7 setReason:a3];
+  [(_PUDisabledUserInteractionToken *)v7 setReason:reason];
   if (PFOSVariantHasInternalUI())
   {
-    v8 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v9 = [v8 description];
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+    v9 = [callStackSymbols description];
 
     [(_PUDisabledUserInteractionToken *)v7 setIdentifier:v9];
   }
 
   if (![__disabledUserInteractionTokens count])
   {
-    v10 = [MEMORY[0x1E69DC668] sharedApplication];
-    v11 = [v10 px_firstKeyWindow];
-    [v10 beginIgnoringInteractionEvents];
-    [v11 beginDisablingInterfaceAutorotation];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
+    [mEMORY[0x1E69DC668] beginIgnoringInteractionEvents];
+    [px_firstKeyWindow beginDisablingInterfaceAutorotation];
     v12 = MEMORY[0x1E695DFF0];
     UIAnimationDragCoefficient();
-    v14 = [v12 scheduledTimerWithTimeInterval:a1 target:sel__disabledUserInteractionRequestDidTimeOut_ selector:0 userInfo:0 repeats:v13 * a4];
+    timeout = [v12 scheduledTimerWithTimeInterval:self target:sel__disabledUserInteractionRequestDidTimeOut_ selector:0 userInfo:0 repeats:v13 * timeout];
     v15 = __disabledUserInteractionTimeoutTimer;
-    __disabledUserInteractionTimeoutTimer = v14;
+    __disabledUserInteractionTimeoutTimer = timeout;
   }
 
   v16 = __disabledUserInteractionTokens;
@@ -384,16 +384,16 @@ LABEL_5:
 + (PUInterfaceTheme)currentTheme
 {
   v2 = +[PURootSettings sharedInstance];
-  v3 = [v2 interfaceThemeClass];
+  interfaceThemeClass = [v2 interfaceThemeClass];
 
-  if (!v3)
+  if (!interfaceThemeClass)
   {
-    v3 = objc_opt_class();
+    interfaceThemeClass = objc_opt_class();
   }
 
-  if (([currentTheme_currentTheme isMemberOfClass:v3] & 1) == 0)
+  if (([currentTheme_currentTheme isMemberOfClass:interfaceThemeClass] & 1) == 0)
   {
-    v4 = objc_alloc_init(v3);
+    v4 = objc_alloc_init(interfaceThemeClass);
     v5 = currentTheme_currentTheme;
     currentTheme_currentTheme = v4;
   }

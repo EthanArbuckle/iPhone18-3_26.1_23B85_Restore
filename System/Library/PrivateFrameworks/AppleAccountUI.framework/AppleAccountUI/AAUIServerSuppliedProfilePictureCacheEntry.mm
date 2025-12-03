@@ -2,21 +2,21 @@
 - (BOOL)expired;
 - (id)description;
 - (void)extendExpirationDate;
-- (void)setPicture:(id)a3;
+- (void)setPicture:(id)picture;
 @end
 
 @implementation AAUIServerSuppliedProfilePictureCacheEntry
 
-- (void)setPicture:(id)a3
+- (void)setPicture:(id)picture
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v5 dateByAddingTimeInterval:3600.0];
+  pictureCopy = picture;
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [date dateByAddingTimeInterval:3600.0];
   expirationDate = self->_expirationDate;
   self->_expirationDate = v6;
 
   picture = self->_picture;
-  self->_picture = v4;
+  self->_picture = pictureCopy;
 }
 
 - (BOOL)expired
@@ -26,16 +26,16 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v3 compare:self->_expirationDate] == 1;
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [date compare:self->_expirationDate] == 1;
 
   return v4;
 }
 
 - (void)extendExpirationDate
 {
-  v5 = [MEMORY[0x1E695DF00] date];
-  v3 = [v5 dateByAddingTimeInterval:3600.0];
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [date dateByAddingTimeInterval:3600.0];
   expirationDate = self->_expirationDate;
   self->_expirationDate = v3;
 }

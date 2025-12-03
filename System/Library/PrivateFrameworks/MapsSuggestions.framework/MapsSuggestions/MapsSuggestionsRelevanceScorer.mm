@@ -1,12 +1,12 @@
 @interface MapsSuggestionsRelevanceScorer
 - (MapsSuggestionsRelevanceScorer)init;
-- (id)_confidenceForData:(void *)a1;
-- (id)_postProcessConfidences:(id)a1;
-- (id)confidenceForContacts:(id)a3 addresses:(id)a4;
-- (id)confidenceForMapItems:(id)a3;
-- (uint64_t)_preProcess:(uint64_t)a1;
-- (void)_confidenceForData:(uint64_t)a3 scorerIndex:(void *)a4 group:;
-- (void)_processScorerConfidences:(void *)a3 data:(void *)a4 error:;
+- (id)_confidenceForData:(void *)data;
+- (id)_postProcessConfidences:(id)confidences;
+- (id)confidenceForContacts:(id)contacts addresses:(id)addresses;
+- (id)confidenceForMapItems:(id)items;
+- (uint64_t)_preProcess:(uint64_t)process;
+- (void)_confidenceForData:(uint64_t)data scorerIndex:(void *)index group:;
+- (void)_processScorerConfidences:(void *)confidences data:(void *)data error:;
 - (void)preLoadAllScorers;
 @end
 
@@ -23,19 +23,19 @@
     scorers = v2->_scorers;
     v2->_scorers = v3;
 
-    v5 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     scorersUpdatedAt = v2->_scorersUpdatedAt;
-    v2->_scorersUpdatedAt = v5;
+    v2->_scorersUpdatedAt = distantPast;
   }
 
   return v2;
 }
 
-- (id)confidenceForMapItems:(id)a3
+- (id)confidenceForMapItems:(id)items
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
+  itemsCopy = items;
+  v5 = [itemsCopy count];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v5];
@@ -43,7 +43,7 @@
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = v4;
+    v9 = itemsCopy;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v10)
     {
@@ -58,16 +58,16 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v19 + 1) + 8 * i) name];
-          if (v14)
+          name = [*(*(&v19 + 1) + 8 * i) name];
+          if (name)
           {
-            [v6 addObject:v14];
+            [v6 addObject:name];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v15];
+            null = [MEMORY[0x1E695DFB0] null];
+            [v6 addObject:null];
           }
         }
 
@@ -99,13 +99,13 @@
   return v7;
 }
 
-- (id)confidenceForContacts:(id)a3 addresses:(id)a4
+- (id)confidenceForContacts:(id)contacts addresses:(id)addresses
 {
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  if (v8 != [v7 count])
+  contactsCopy = contacts;
+  addressesCopy = addresses;
+  v8 = [contactsCopy count];
+  if (v8 != [addressesCopy count])
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -148,15 +148,15 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v36 = self;
+  selfCopy = self;
   v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
-  v16 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v38 = v6;
-  v17 = v6;
+  v38 = contactsCopy;
+  v17 = contactsCopy;
   v18 = [v17 countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v18)
   {
@@ -171,16 +171,16 @@ LABEL_7:
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v45 + 1) + 8 * i) givenName];
-        v23 = v22;
-        if (v22)
+        givenName = [*(*(&v45 + 1) + 8 * i) givenName];
+        v23 = givenName;
+        if (givenName)
         {
-          v24 = v22;
+          v24 = givenName;
         }
 
         else
         {
-          v24 = v16;
+          v24 = null;
         }
 
         [v9 addObject:v24];
@@ -192,13 +192,13 @@ LABEL_7:
     while (v19);
   }
 
-  v25 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v7];
+  v25 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:addressesCopy];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v37 = v7;
-  obj = v7;
+  v37 = addressesCopy;
+  obj = addressesCopy;
   v26 = [obj countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v26)
   {
@@ -219,14 +219,14 @@ LABEL_7:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 || ([v31 label], v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "isEqualToString:", v39), v32, v33))
         {
-          [v25 setObject:v16 atIndexedSubscript:v28];
-          [v9 setObject:v16 atIndexedSubscript:v28];
+          [v25 setObject:null atIndexedSubscript:v28];
+          [v9 setObject:null atIndexedSubscript:v28];
         }
 
         else
         {
-          v34 = [v31 value];
-          [v25 setObject:v34 atIndexedSubscript:v28];
+          value = [v31 value];
+          [v25 setObject:value atIndexedSubscript:v28];
         }
 
         ++v28;
@@ -239,10 +239,10 @@ LABEL_7:
   }
 
   v35 = [[_RelevanceScorerData alloc] initWithNames:v9 addresses:v25 mapItems:0];
-  v14 = [(MapsSuggestionsRelevanceScorer *)v36 _confidenceForData:v35];
+  v14 = [(MapsSuggestionsRelevanceScorer *)selfCopy _confidenceForData:v35];
 
-  v7 = v37;
-  v6 = v38;
+  addressesCopy = v37;
+  contactsCopy = v38;
 LABEL_9:
 
   return v14;
@@ -320,41 +320,41 @@ LABEL_15:
   while (v13 != v17);
 }
 
-- (uint64_t)_preProcess:(uint64_t)a1
+- (uint64_t)_preProcess:(uint64_t)process
 {
   v3 = a2;
-  if (a1)
+  if (process)
   {
-    v4 = *(a1 + 8);
+    v4 = *(process + 8);
     if (v4 && [v4 count])
     {
       v5 = objc_alloc_init(MEMORY[0x1E696AD50]);
-      v6 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       if ([v3 inputCount])
       {
         v7 = 0;
         do
         {
-          v8 = [v3 finalRelevanceScores];
-          objc_sync_enter(v8);
-          v9 = [v3 finalRelevanceScores];
-          [v9 addObject:v6];
+          finalRelevanceScores = [v3 finalRelevanceScores];
+          objc_sync_enter(finalRelevanceScores);
+          finalRelevanceScores2 = [v3 finalRelevanceScores];
+          [finalRelevanceScores2 addObject:null];
 
-          objc_sync_exit(v8);
-          v10 = [v3 names];
-          v11 = [v10 objectAtIndexedSubscript:v7];
-          v12 = [v11 isEqual:v6];
+          objc_sync_exit(finalRelevanceScores);
+          names = [v3 names];
+          v11 = [names objectAtIndexedSubscript:v7];
+          v12 = [v11 isEqual:null];
 
-          if (v12 && (([v3 addresses], (v13 = objc_claimAutoreleasedReturnValue()) == 0) || (v14 = v13, objc_msgSend(v3, "addresses"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "objectAtIndexedSubscript:", v7), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqual:", v6), v16, v15, v14, v17)) && ((objc_msgSend(v3, "mapItems"), (v18 = objc_claimAutoreleasedReturnValue()) == 0) || (v19 = v18, objc_msgSend(v3, "mapItems"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "objectAtIndexedSubscript:", v7), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqual:", v6), v21, v20, v19, v22)))
+          if (v12 && (([v3 addresses], (v13 = objc_claimAutoreleasedReturnValue()) == 0) || (v14 = v13, objc_msgSend(v3, "addresses"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "objectAtIndexedSubscript:", v7), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqual:", null), v16, v15, v14, v17)) && ((objc_msgSend(v3, "mapItems"), (v18 = objc_claimAutoreleasedReturnValue()) == 0) || (v19 = v18, objc_msgSend(v3, "mapItems"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "objectAtIndexedSubscript:", v7), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqual:", null), v21, v20, v19, v22)))
           {
             [v5 addIndex:v7];
           }
 
           else
           {
-            v23 = [v3 indexMapping];
+            indexMapping = [v3 indexMapping];
             v24 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:v7];
-            [v23 addObject:v24];
+            [indexMapping addObject:v24];
           }
 
           ++v7;
@@ -363,39 +363,39 @@ LABEL_15:
         while (v7 < [v3 inputCount]);
       }
 
-      [(MapsSuggestionsRelevanceScorer *)v3 _preProcess:v5, v6, &v26];
-      a1 = v26;
+      [(MapsSuggestionsRelevanceScorer *)v3 _preProcess:v5, null, &v26];
+      process = v26;
     }
 
     else
     {
       [MapsSuggestionsRelevanceScorer _preProcess:];
-      a1 = 0;
+      process = 0;
     }
   }
 
-  return a1;
+  return process;
 }
 
-- (id)_postProcessConfidences:(id)a1
+- (id)_postProcessConfidences:(id)confidences
 {
   v35 = *MEMORY[0x1E69E9840];
   v25 = a2;
-  if (a1)
+  if (confidences)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v23 = [[MapsSuggestionsRelevanceScore alloc] initWithConfidence:MapsSuggestionsConfidenceDontKnow()];
     obj = [v25 finalRelevanceScores];
     objc_sync_enter(obj);
     for (i = 0; i < [v25 inputCount]; ++i)
     {
-      v4 = [v25 finalRelevanceScores];
-      v5 = [v4 objectAtIndexedSubscript:i];
+      finalRelevanceScores = [v25 finalRelevanceScores];
+      v5 = [finalRelevanceScores objectAtIndexedSubscript:i];
 
-      if (v24 == v5)
+      if (null == v5)
       {
-        v6 = [v25 finalRelevanceScores];
-        [v6 setObject:v23 atIndexedSubscript:i];
+        finalRelevanceScores2 = [v25 finalRelevanceScores];
+        [finalRelevanceScores2 setObject:v23 atIndexedSubscript:i];
       }
     }
 
@@ -403,8 +403,8 @@ LABEL_15:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = [v25 finalRelevanceScores];
-    v8 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    finalRelevanceScores3 = [v25 finalRelevanceScores];
+    v8 = [finalRelevanceScores3 countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v8)
     {
       v9 = *v27;
@@ -414,7 +414,7 @@ LABEL_15:
         {
           if (*v27 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(finalRelevanceScores3);
           }
 
           v11 = *(*(&v26 + 1) + 8 * j);
@@ -425,79 +425,79 @@ LABEL_15:
             {
               [v11 confidence];
               v14 = v13;
-              v15 = [v11 lastInteractionTime];
+              lastInteractionTime = [v11 lastInteractionTime];
               *buf = 134218242;
               *&buf[4] = v14;
               v32 = 2112;
-              v33 = v15;
+              v33 = lastInteractionTime;
               _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "finalConfidence: %f, Time: %@", buf, 0x16u);
             }
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v8 = [finalRelevanceScores3 countByEnumeratingWithState:&v26 objects:v34 count:16];
       }
 
       while (v8);
     }
 
-    v16 = [v25 finalRelevanceScores];
-    v17 = [v16 count];
+    finalRelevanceScores4 = [v25 finalRelevanceScores];
+    v17 = [finalRelevanceScores4 count];
     v18 = v17 == [v25 inputCount];
 
     if (v18)
     {
-      v19 = [v25 finalRelevanceScores];
-      a1 = [v19 copy];
+      finalRelevanceScores5 = [v25 finalRelevanceScores];
+      confidences = [finalRelevanceScores5 copy];
     }
 
     else
     {
       v20 = GEOFindOrCreateLog();
       [(MapsSuggestionsRelevanceScorer *)v20 _postProcessConfidences:buf];
-      v19 = v30;
-      a1 = *buf;
+      finalRelevanceScores5 = v30;
+      confidences = *buf;
     }
 
     objc_sync_exit(obj);
   }
 
-  return a1;
+  return confidences;
 }
 
-- (void)_confidenceForData:(uint64_t)a3 scorerIndex:(void *)a4 group:
+- (void)_confidenceForData:(uint64_t)data scorerIndex:(void *)index group:
 {
   v31 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  indexCopy = index;
+  if (self)
   {
-    if ([a1[1] count] != a3)
+    if ([self[1] count] != data)
     {
-      v9 = [v7 names];
-      v10 = [v9 count];
+      names = [v7 names];
+      v10 = [names count];
 
       if (v10)
       {
         v11 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
-          v12 = [a1[1] objectAtIndexedSubscript:a3];
+          v12 = [self[1] objectAtIndexedSubscript:data];
           *buf = 138412290;
           v30 = v12;
           _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_DEBUG, "Processing scorer %@", buf, 0xCu);
         }
 
-        dispatch_group_enter(v8);
-        objc_initWeak(buf, a1);
-        v24 = [a1[1] objectAtIndexedSubscript:a3];
-        v13 = [v7 names];
-        v23 = [v13 copy];
-        v14 = [v7 addresses];
-        v15 = [v14 copy];
-        v16 = [v7 mapItems];
-        v17 = [v16 copy];
-        v22 = v13;
+        dispatch_group_enter(indexCopy);
+        objc_initWeak(buf, self);
+        v24 = [self[1] objectAtIndexedSubscript:data];
+        names2 = [v7 names];
+        v23 = [names2 copy];
+        addresses = [v7 addresses];
+        v15 = [addresses copy];
+        mapItems = [v7 mapItems];
+        v17 = [mapItems copy];
+        v22 = names2;
         v25[0] = MEMORY[0x1E69E9820];
         v25[1] = 3221225472;
         v25[2] = __71__MapsSuggestionsRelevanceScorer__confidenceForData_scorerIndex_group___block_invoke;
@@ -505,15 +505,15 @@ LABEL_15:
         objc_copyWeak(v28, buf);
         v18 = v7;
         v26 = v18;
-        v21 = a3 + 1;
-        v28[1] = (a3 + 1);
-        v19 = v8;
+        v21 = data + 1;
+        v28[1] = (data + 1);
+        v19 = indexCopy;
         v27 = v19;
         v20 = [v24 relevanceScoreForNames:v23 addresses:v15 mapItems:v17 completion:v25];
 
         if ((v20 & 1) == 0)
         {
-          [(MapsSuggestionsRelevanceScorer *)a1 _confidenceForData:v18 scorerIndex:v21 group:v19];
+          [(MapsSuggestionsRelevanceScorer *)self _confidenceForData:v18 scorerIndex:v21 group:v19];
           dispatch_group_leave(v19);
         }
 
@@ -554,22 +554,22 @@ void __71__MapsSuggestionsRelevanceScorer__confidenceForData_scorerIndex_group__
   }
 }
 
-- (void)_processScorerConfidences:(void *)a3 data:(void *)a4 error:
+- (void)_processScorerConfidences:(void *)confidences data:(void *)data error:
 {
   v74 = *MEMORY[0x1E69E9840];
   v61 = a2;
-  v63 = a3;
-  v7 = a4;
-  if (a1)
+  confidencesCopy = confidences;
+  dataCopy = data;
+  if (self)
   {
-    v60 = v7;
-    if (v7)
+    v60 = dataCopy;
+    if (dataCopy)
     {
-      [MapsSuggestionsRelevanceScorer _processScorerConfidences:v7 data:buf error:?];
+      [MapsSuggestionsRelevanceScorer _processScorerConfidences:dataCopy data:buf error:?];
       v8 = *buf;
 LABEL_44:
 
-      v7 = v60;
+      dataCopy = v60;
       goto LABEL_45;
     }
 
@@ -610,11 +610,11 @@ LABEL_44:
             {
               [v13 confidence];
               v16 = v15;
-              v17 = [v13 lastInteractionTime];
+              lastInteractionTime = [v13 lastInteractionTime];
               *buf = 134218242;
               *&buf[4] = v16;
               v71 = 2112;
-              v72 = v17;
+              v72 = lastInteractionTime;
               _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "Confidence: %f, Time: %@", buf, 0x16u);
             }
           }
@@ -626,7 +626,7 @@ LABEL_44:
       while (v10);
     }
 
-    v7 = 0;
+    dataCopy = 0;
     if (obj)
     {
       v64 = [obj count];
@@ -653,64 +653,64 @@ LABEL_44:
               _os_log_impl(&dword_1C5126000, v39, OS_LOG_TYPE_DEBUG, "Scorer returned high confidence for %lu", buf, 0xCu);
             }
 
-            v37 = [v63 finalRelevanceScores];
-            objc_sync_enter(v37);
-            v40 = [v63 finalRelevanceScores];
-            v41 = [v63 indexMapping];
-            v42 = [v41 objectAtIndexedSubscript:v19];
-            v43 = [v42 unsignedIntegerValue];
+            finalRelevanceScores = [confidencesCopy finalRelevanceScores];
+            objc_sync_enter(finalRelevanceScores);
+            finalRelevanceScores2 = [confidencesCopy finalRelevanceScores];
+            indexMapping = [confidencesCopy indexMapping];
+            v42 = [indexMapping objectAtIndexedSubscript:v19];
+            unsignedIntegerValue = [v42 unsignedIntegerValue];
             v44 = [obj objectAtIndexedSubscript:v19];
-            [v40 replaceObjectAtIndex:v43 withObject:v44];
+            [finalRelevanceScores2 replaceObjectAtIndex:unsignedIntegerValue withObject:v44];
 
-            objc_sync_exit(v37);
+            objc_sync_exit(finalRelevanceScores);
           }
 
           else
           {
-            v22 = [v63 names];
-            if (v22)
+            names = [confidencesCopy names];
+            if (names)
             {
-              v23 = [v63 names];
-              v24 = [v23 count] == 0;
+              names2 = [confidencesCopy names];
+              v24 = [names2 count] == 0;
 
               if (!v24)
               {
-                v25 = [v63 names];
-                v26 = [v25 objectAtIndexedSubscript:v19];
+                names3 = [confidencesCopy names];
+                v26 = [names3 objectAtIndexedSubscript:v19];
                 [v8 addObject:v26];
               }
             }
 
-            v27 = [v63 addresses];
-            if (v27)
+            addresses = [confidencesCopy addresses];
+            if (addresses)
             {
-              v28 = [v63 addresses];
-              v29 = [v28 count] == 0;
+              addresses2 = [confidencesCopy addresses];
+              v29 = [addresses2 count] == 0;
 
               if (!v29)
               {
-                v30 = [v63 addresses];
-                v31 = [v30 objectAtIndexedSubscript:v19];
+                addresses3 = [confidencesCopy addresses];
+                v31 = [addresses3 objectAtIndexedSubscript:v19];
                 [v59 addObject:v31];
               }
             }
 
-            v32 = [v63 mapItems];
-            if (v32)
+            mapItems = [confidencesCopy mapItems];
+            if (mapItems)
             {
-              v33 = [v63 mapItems];
-              v34 = [v33 count] == 0;
+              mapItems2 = [confidencesCopy mapItems];
+              v34 = [mapItems2 count] == 0;
 
               if (!v34)
               {
-                v35 = [v63 mapItems];
-                v36 = [v35 objectAtIndexedSubscript:v19];
+                mapItems3 = [confidencesCopy mapItems];
+                v36 = [mapItems3 objectAtIndexedSubscript:v19];
                 [v58 addObject:v36];
               }
             }
 
-            v37 = [v63 indexMapping];
-            v38 = [v37 objectAtIndexedSubscript:v19];
+            finalRelevanceScores = [confidencesCopy indexMapping];
+            v38 = [finalRelevanceScores objectAtIndexedSubscript:v19];
             [v62 addObject:v38];
           }
 
@@ -720,43 +720,43 @@ LABEL_44:
         while (v64 != v19);
       }
 
-      v45 = [v63 names];
-      v46 = v45 == 0;
+      names4 = [confidencesCopy names];
+      v46 = names4 == 0;
 
       if (!v46)
       {
-        v47 = [v63 names];
-        [v47 removeAllObjects];
+        names5 = [confidencesCopy names];
+        [names5 removeAllObjects];
 
-        v48 = [v63 names];
-        [v48 addObjectsFromArray:v8];
+        names6 = [confidencesCopy names];
+        [names6 addObjectsFromArray:v8];
       }
 
-      v49 = [v63 addresses];
-      v50 = v49 == 0;
+      addresses4 = [confidencesCopy addresses];
+      v50 = addresses4 == 0;
 
       if (!v50)
       {
-        v51 = [v63 addresses];
-        [v51 removeAllObjects];
+        addresses5 = [confidencesCopy addresses];
+        [addresses5 removeAllObjects];
 
-        v52 = [v63 addresses];
-        [v52 addObjectsFromArray:v59];
+        addresses6 = [confidencesCopy addresses];
+        [addresses6 addObjectsFromArray:v59];
       }
 
-      v53 = [v63 mapItems];
-      v54 = v53 == 0;
+      mapItems4 = [confidencesCopy mapItems];
+      v54 = mapItems4 == 0;
 
       if (!v54)
       {
-        v55 = [v63 mapItems];
-        [v55 removeAllObjects];
+        mapItems5 = [confidencesCopy mapItems];
+        [mapItems5 removeAllObjects];
 
-        v56 = [v63 mapItems];
-        [v56 addObjectsFromArray:v58];
+        mapItems6 = [confidencesCopy mapItems];
+        [mapItems6 addObjectsFromArray:v58];
       }
 
-      [v63 setIndexMapping:v62];
+      [confidencesCopy setIndexMapping:v62];
 
       goto LABEL_44;
     }
@@ -765,14 +765,14 @@ LABEL_44:
 LABEL_45:
 }
 
-- (id)_confidenceForData:(void *)a1
+- (id)_confidenceForData:(void *)data
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (data)
   {
-    v5 = [v3 names];
-    [v4 setInputCount:{objc_msgSend(v5, "count")}];
+    names = [v3 names];
+    [v4 setInputCount:{objc_msgSend(names, "count")}];
 
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [v4 setFinalRelevanceScores:v6];
@@ -788,17 +788,17 @@ LABEL_45:
       [(MapsSuggestionsRelevanceScorer *)v11 _confidenceForData:v12 scorerIndex:0 group:v10];
       dispatch_group_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
       v13 = OUTLINED_FUNCTION_0_10();
-      a1 = [(MapsSuggestionsRelevanceScorer *)v13 _postProcessConfidences:v14];
+      data = [(MapsSuggestionsRelevanceScorer *)v13 _postProcessConfidences:v14];
     }
 
     else
     {
       v15 = OUTLINED_FUNCTION_0_10();
-      a1 = [(MapsSuggestionsRelevanceScorer *)v15 _postProcessConfidences:v16];
+      data = [(MapsSuggestionsRelevanceScorer *)v15 _postProcessConfidences:v16];
     }
   }
 
-  return a1;
+  return data;
 }
 
 - (void)_preProcess:(void *)a3 .cold.1(void *a1, void *a2, void *a3, BOOL *a4)

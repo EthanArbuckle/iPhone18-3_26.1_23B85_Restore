@@ -6,14 +6,14 @@
 
 - (id)safari_decodedImageIfPossible
 {
-  v1 = a1;
+  selfCopy = self;
   v28[5] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 CGImage];
-    if (v2)
+    cGImage = [self CGImage];
+    if (cGImage)
     {
-      v3 = v2;
+      v3 = cGImage;
       if (CGImageGetImageProvider())
       {
         Width = CGImageGetWidth(v3);
@@ -63,7 +63,7 @@
             CGDataProviderRelease(v18);
             if (v25)
             {
-              v1 = [objc_alloc(objc_opt_class()) initWithCGImage:v25];
+              selfCopy = [objc_alloc(objc_opt_class()) initWithCGImage:v25];
               CGImageRelease(v25);
               goto LABEL_16;
             }
@@ -77,12 +77,12 @@
       }
     }
 
-    v1 = v1;
+    selfCopy = selfCopy;
   }
 
 LABEL_16:
 
-  return v1;
+  return selfCopy;
 }
 
 @end

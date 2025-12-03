@@ -1,46 +1,46 @@
 @interface PXSharedLibraryAssistantPeopleViewController
-+ (id)_fetchedPeople:(id)a3 sortedByLocalIdentifiers:(id)a4;
++ (id)_fetchedPeople:(id)people sortedByLocalIdentifiers:(id)identifiers;
 - (BOOL)_hasPeople;
 - (NSString)textForFooter;
 - (PXAssistantViewControllerDelegate)assistantViewControllerDelegate;
-- (PXSharedLibraryAssistantPeopleViewController)initWithViewModel:(id)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)peopleInfosToIdentifyInDataSource:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (PXSharedLibraryAssistantPeopleViewController)initWithViewModel:(id)model;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)peopleInfosToIdentifyInDataSource:(id)source;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (void)_advanceToNextStep;
-- (void)_fixupStalePersonForUUID:(id)a3 loneParticipantInfo:(id)a4;
-- (void)_presentPickerForInfos:(id)a3;
+- (void)_fixupStalePersonForUUID:(id)d loneParticipantInfo:(id)info;
+- (void)_presentPickerForInfos:(id)infos;
 - (void)_suggestedStartDateChanged;
 - (void)_updateButtonCell;
 - (void)_updateContinueButton;
 - (void)_updateFooterText;
 - (void)_updateHeaderDetailText;
-- (void)addLaterButtonTapped:(id)a3;
+- (void)addLaterButtonTapped:(id)tapped;
 - (void)completeRulesStep;
-- (void)continueButtonTapped:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
+- (void)continueButtonTapped:(id)tapped;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
 - (void)setupLibraryChangeListening;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateWithPerson:(id)a3 loneParticipantInfo:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateWithPerson:(id)person loneParticipantInfo:(id)info;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PXSharedLibraryAssistantPeopleViewController
 
-- (void)_fixupStalePersonForUUID:(id)a3 loneParticipantInfo:(id)a4
+- (void)_fixupStalePersonForUUID:(id)d loneParticipantInfo:(id)info
 {
-  v46 = a3;
-  v7 = a4;
-  v8 = [(PXSharedLibraryAssistantPeopleViewController *)self viewModel];
-  v9 = [(PXSharedLibraryAssistantPeopleViewController *)self dataSourceManager];
-  v10 = [v8 sourceLibraryInfo];
-  if (v10)
+  dCopy = d;
+  infoCopy = info;
+  viewModel = [(PXSharedLibraryAssistantPeopleViewController *)self viewModel];
+  dataSourceManager = [(PXSharedLibraryAssistantPeopleViewController *)self dataSourceManager];
+  sourceLibraryInfo = [viewModel sourceLibraryInfo];
+  if (sourceLibraryInfo)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -48,68 +48,68 @@
       goto LABEL_3;
     }
 
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v35 = objc_opt_class();
     v34 = NSStringFromClass(v35);
-    v36 = [v10 px_descriptionForAssertionMessage];
-    [v32 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantPeopleViewController+Internal.m" lineNumber:109 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"viewModel.sourceLibraryInfo", v34, v36}];
+    px_descriptionForAssertionMessage = [sourceLibraryInfo px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantPeopleViewController+Internal.m" lineNumber:109 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"viewModel.sourceLibraryInfo", v34, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v33 = objc_opt_class();
     v34 = NSStringFromClass(v33);
-    [v32 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantPeopleViewController+Internal.m" lineNumber:109 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"viewModel.sourceLibraryInfo", v34}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantPeopleViewController+Internal.m" lineNumber:109 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"viewModel.sourceLibraryInfo", v34}];
   }
 
 LABEL_3:
   v40 = a2;
-  v11 = [v10 photoLibrary];
-  v12 = [v11 librarySpecificFetchOptions];
+  photoLibrary = [sourceLibraryInfo photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v13 = [v9 dataSource];
-  v14 = [v13 allPersonUUIDs];
+  dataSource = [dataSourceManager dataSource];
+  allPersonUUIDs = [dataSource allPersonUUIDs];
 
-  v15 = [MEMORY[0x1E6978980] fetchFinalMergeTargetPersonsForPersonWithUUID:v46 options:v12];
-  v16 = [v15 firstObject];
+  v15 = [MEMORY[0x1E6978980] fetchFinalMergeTargetPersonsForPersonWithUUID:dCopy options:librarySpecificFetchOptions];
+  firstObject = [v15 firstObject];
 
-  if (!v7)
+  if (!infoCopy)
   {
-    v17 = [v9 dataSource];
-    v18 = [v17 infosWithoutPeople];
-    v7 = [v18 firstObject];
+    dataSource2 = [dataSourceManager dataSource];
+    infosWithoutPeople = [dataSource2 infosWithoutPeople];
+    infoCopy = [infosWithoutPeople firstObject];
   }
 
-  v45 = [v7 participant];
-  v44 = v14;
-  if (([v14 containsObject:v46] & 1) == 0)
+  participant = [infoCopy participant];
+  v44 = allPersonUUIDs;
+  if (([allPersonUUIDs containsObject:dCopy] & 1) == 0)
   {
-    v19 = [v16 uuid];
-    v20 = [v14 containsObject:v19];
+    uuid = [firstObject uuid];
+    v20 = [allPersonUUIDs containsObject:uuid];
 
     if ((v20 & 1) == 0)
     {
-      v21 = [[PXSharedLibraryIncludedPeopleInfo alloc] initWithParticipant:v45 person:v16];
-      [v9 replaceInfo:v7 withInfo:v21];
+      uuid2 = [[PXSharedLibraryIncludedPeopleInfo alloc] initWithParticipant:participant person:firstObject];
+      [dataSourceManager replaceInfo:infoCopy withInfo:uuid2];
       goto LABEL_25;
     }
   }
 
-  v41 = v12;
-  v21 = [v16 uuid];
-  v22 = [v9 dataSource];
-  v23 = [v22 infoForPersonUUID:v46];
+  v41 = librarySpecificFetchOptions;
+  uuid2 = [firstObject uuid];
+  dataSource3 = [dataSourceManager dataSource];
+  v23 = [dataSource3 infoForPersonUUID:dCopy];
 
-  v24 = [v9 dataSource];
-  v25 = [v24 infoForPersonUUID:v21];
+  dataSource4 = [dataSourceManager dataSource];
+  v25 = [dataSource4 infoForPersonUUID:uuid2];
 
-  v42 = v10;
-  v43 = v8;
+  v42 = sourceLibraryInfo;
+  v43 = viewModel;
   if (!(v23 | v25))
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:v40 object:self file:@"PXSharedLibraryAssistantPeopleViewController+Internal.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"stalePersonInfo || refreshedPersonInfo"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:v40 object:self file:@"PXSharedLibraryAssistantPeopleViewController+Internal.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"stalePersonInfo || refreshedPersonInfo"}];
 
     goto LABEL_32;
   }
@@ -123,10 +123,10 @@ LABEL_3:
   if (v23 || !v25)
   {
 LABEL_32:
-    if (v7)
+    if (infoCopy)
     {
       v27 = v25;
-      if ([v46 isEqualToString:v21])
+      if ([dCopy isEqualToString:uuid2])
       {
         v38 = 0;
       }
@@ -137,8 +137,8 @@ LABEL_32:
       }
 
       v30 = v38;
-      v31 = v7;
-      v29 = [[PXSharedLibraryIncludedPeopleInfo alloc] initWithParticipant:v45 person:v16];
+      v31 = infoCopy;
+      v29 = [[PXSharedLibraryIncludedPeopleInfo alloc] initWithParticipant:participant person:firstObject];
       if (v27)
       {
         goto LABEL_16;
@@ -147,7 +147,7 @@ LABEL_32:
 
     else
     {
-      if ([v46 isEqualToString:v21])
+      if ([dCopy isEqualToString:uuid2])
       {
         v39 = 0;
       }
@@ -159,14 +159,14 @@ LABEL_32:
 
       v30 = v39;
       v31 = v25;
-      v29 = [[PXSharedLibraryIncludedPeopleInfo alloc] initWithPerson:v16];
+      v29 = [[PXSharedLibraryIncludedPeopleInfo alloc] initWithPerson:firstObject];
       v27 = 0;
     }
 
 LABEL_17:
     if (v30)
     {
-      [v9 removeInfo:v30];
+      [dataSourceManager removeInfo:v30];
     }
 
     if (!v31)
@@ -180,44 +180,44 @@ LABEL_17:
   v26 = v25;
 LABEL_14:
   v27 = v26;
-  if (v7)
+  if (infoCopy)
   {
-    v28 = v7;
-    v29 = [[PXSharedLibraryIncludedPeopleInfo alloc] initWithParticipant:v45 person:v16];
+    v28 = infoCopy;
+    v29 = [[PXSharedLibraryIncludedPeopleInfo alloc] initWithParticipant:participant person:firstObject];
     v30 = 0;
 LABEL_16:
-    [v9 removeInfo:v27];
-    v31 = v7;
+    [dataSourceManager removeInfo:v27];
+    v31 = infoCopy;
     goto LABEL_17;
   }
 
-  v29 = [[PXSharedLibraryIncludedPeopleInfo alloc] initWithPerson:v16];
+  v29 = [[PXSharedLibraryIncludedPeopleInfo alloc] initWithPerson:firstObject];
   v30 = 0;
   v31 = v27;
   v27 = 0;
 LABEL_23:
-  [v9 replaceInfo:v31 withInfo:v29];
+  [dataSourceManager replaceInfo:v31 withInfo:v29];
 
 LABEL_24:
-  v10 = v42;
-  v8 = v43;
-  v12 = v41;
+  sourceLibraryInfo = v42;
+  viewModel = v43;
+  librarySpecificFetchOptions = v41;
 LABEL_25:
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(PXSharedLibraryAssistantPeopleViewController *)self dataSourceManager];
-  v6 = [v5 dataSource];
-  v7 = [v6 allInfos];
+  dataSourceManager = [(PXSharedLibraryAssistantPeopleViewController *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  allInfos = [dataSource allInfos];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [allInfos countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -229,17 +229,17 @@ LABEL_25:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allInfos);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) person];
-        if (v12)
+        person = [*(*(&v15 + 1) + 8 * v11) person];
+        if (person)
         {
-          v13 = [v4 changeDetailsForObject:v12];
+          v13 = [queueCopy changeDetailsForObject:person];
           if (v13)
           {
-            v14 = [v12 uuid];
-            [(PXSharedLibraryAssistantPeopleViewController *)self _fixupStalePersonForUUID:v14 loneParticipantInfo:0];
+            uuid = [person uuid];
+            [(PXSharedLibraryAssistantPeopleViewController *)self _fixupStalePersonForUUID:uuid loneParticipantInfo:0];
           }
         }
 
@@ -247,40 +247,40 @@ LABEL_25:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [allInfos countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)updateWithPerson:(id)a3 loneParticipantInfo:(id)a4
+- (void)updateWithPerson:(id)person loneParticipantInfo:(id)info
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [v14 uuid];
-  v8 = [(PXSharedLibraryAssistantPeopleViewController *)self dataSourceManager];
-  v9 = [v6 participant];
-  v10 = [v8 dataSource];
-  v11 = [v10 infoForPersonUUID:v7];
+  personCopy = person;
+  infoCopy = info;
+  uuid = [personCopy uuid];
+  dataSourceManager = [(PXSharedLibraryAssistantPeopleViewController *)self dataSourceManager];
+  participant = [infoCopy participant];
+  dataSource = [dataSourceManager dataSource];
+  v11 = [dataSource infoForPersonUUID:uuid];
 
   if (v11)
   {
-    v12 = [v11 participant];
+    participant2 = [v11 participant];
 
-    if (v12)
+    if (participant2)
     {
       goto LABEL_6;
     }
 
-    v13 = [v14 uuid];
-    [(PXSharedLibraryAssistantPeopleViewController *)self _fixupStalePersonForUUID:v13 loneParticipantInfo:v6];
+    uuid2 = [personCopy uuid];
+    [(PXSharedLibraryAssistantPeopleViewController *)self _fixupStalePersonForUUID:uuid2 loneParticipantInfo:infoCopy];
   }
 
   else
   {
-    v13 = [[PXSharedLibraryIncludedPeopleInfo alloc] initWithParticipant:v9 person:v14];
-    [v8 replaceInfo:v6 withInfo:v13];
+    uuid2 = [[PXSharedLibraryIncludedPeopleInfo alloc] initWithParticipant:participant person:personCopy];
+    [dataSourceManager replaceInfo:infoCopy withInfo:uuid2];
   }
 
 LABEL_6:
@@ -288,14 +288,14 @@ LABEL_6:
 
 - (NSString)textForFooter
 {
-  v2 = [(PXSharedLibraryAssistantPeopleViewController *)self viewModel];
+  viewModel = [(PXSharedLibraryAssistantPeopleViewController *)self viewModel];
   v7 = 0;
-  v3 = [v2 localizedSelectedPeopleWithAdditionalPeopleCount:&v7];
+  v3 = [viewModel localizedSelectedPeopleWithAdditionalPeopleCount:&v7];
   v4 = [v3 count];
   v5 = v7;
-  if (v2)
+  if (viewModel)
   {
-    [v2 shareCounts];
+    [viewModel shareCounts];
   }
 
   if (v5 + v4 >= 1)
@@ -306,10 +306,10 @@ LABEL_6:
   return &stru_1F1741150;
 }
 
-- (id)peopleInfosToIdentifyInDataSource:(id)a3
+- (id)peopleInfosToIdentifyInDataSource:(id)source
 {
-  v3 = [a3 infosWithoutPeople];
-  v4 = [v3 count];
+  infosWithoutPeople = [source infosWithoutPeople];
+  v4 = [infosWithoutPeople count];
   if (v4)
   {
     if (v4 >= 3)
@@ -322,7 +322,7 @@ LABEL_6:
       v5 = v4;
     }
 
-    v6 = [v3 subarrayWithRange:{0, v5}];
+    v6 = [infosWithoutPeople subarrayWithRange:{0, v5}];
   }
 
   else
@@ -335,10 +335,10 @@ LABEL_6:
 
 - (void)setupLibraryChangeListening
 {
-  v3 = [(PXSharedLibraryAssistantPeopleViewController *)self viewModel];
-  v4 = [v3 sourceLibraryInfo];
+  viewModel = [(PXSharedLibraryAssistantPeopleViewController *)self viewModel];
+  sourceLibraryInfo = [viewModel sourceLibraryInfo];
 
-  v7 = v4;
+  v7 = sourceLibraryInfo;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v5 = v7;
@@ -349,9 +349,9 @@ LABEL_6:
     v5 = 0;
   }
 
-  v6 = [v5 photoLibrary];
+  photoLibrary = [v5 photoLibrary];
 
-  [v6 px_registerChangeObserver:self];
+  [photoLibrary px_registerChangeObserver:self];
 }
 
 - (PXAssistantViewControllerDelegate)assistantViewControllerDelegate
@@ -361,12 +361,12 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)_presentPickerForInfos:(id)a3
+- (void)_presentPickerForInfos:(id)infos
 {
-  v5 = [(PXSharedLibraryAssistantPeopleViewController *)self viewModel];
-  v6 = [v5 sourceLibraryInfo];
+  viewModel = [(PXSharedLibraryAssistantPeopleViewController *)self viewModel];
+  sourceLibraryInfo = [viewModel sourceLibraryInfo];
 
-  if (v6)
+  if (sourceLibraryInfo)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -374,25 +374,25 @@ LABEL_6:
       goto LABEL_3;
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v15 = NSStringFromClass(v16);
-    v17 = [v6 px_descriptionForAssertionMessage];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantPeopleViewController+iOS.m" lineNumber:427 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.viewModel.sourceLibraryInfo", v15, v17}];
+    px_descriptionForAssertionMessage = [sourceLibraryInfo px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantPeopleViewController+iOS.m" lineNumber:427 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.viewModel.sourceLibraryInfo", v15, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    [v13 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantPeopleViewController+iOS.m" lineNumber:427 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.viewModel.sourceLibraryInfo", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantPeopleViewController+iOS.m" lineNumber:427 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.viewModel.sourceLibraryInfo", v15}];
   }
 
 LABEL_3:
   v7 = objc_alloc(MEMORY[0x1E69790E0]);
-  v8 = [v6 photoLibrary];
-  v9 = [v7 initWithPhotoLibrary:v8];
+  photoLibrary = [sourceLibraryInfo photoLibrary];
+  v9 = [v7 initWithPhotoLibrary:photoLibrary];
 
   [v9 setSelectionLimit:0];
   [v9 _setSourceType:1];
@@ -401,54 +401,54 @@ LABEL_3:
 
   v11 = [objc_alloc(MEMORY[0x1E69790F8]) initWithConfiguration:v9];
   [v11 setDelegate:self];
-  v12 = [(PXSharedLibraryAssistantPeopleViewController *)self assistantViewControllerDelegate];
-  if (!v12)
+  assistantViewControllerDelegate = [(PXSharedLibraryAssistantPeopleViewController *)self assistantViewControllerDelegate];
+  if (!assistantViewControllerDelegate)
   {
     PXAssertGetLog();
   }
 
-  [v12 assistantViewController:self presentViewController:v11 animated:1];
+  [assistantViewControllerDelegate assistantViewController:self presentViewController:v11 animated:1];
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
   v7 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(PXSharedLibraryAssistantPeopleViewController *)self assistantViewControllerDelegate];
-  if (!v6)
+  pickingCopy = picking;
+  assistantViewControllerDelegate = [(PXSharedLibraryAssistantPeopleViewController *)self assistantViewControllerDelegate];
+  if (!assistantViewControllerDelegate)
   {
     PXAssertGetLog();
   }
 
-  [v6 assistantViewController:self dismissViewControllerAnimated:1];
+  [assistantViewControllerDelegate assistantViewController:self dismissViewControllerAnimated:1];
   PXMap();
 }
 
 - (void)_updateFooterText
 {
-  v9 = [MEMORY[0x1E69DCC28] footerConfiguration];
-  v3 = [(PXSharedLibraryAssistantPeopleViewController *)self textForFooter];
-  [v9 setText:v3];
+  footerConfiguration = [MEMORY[0x1E69DCC28] footerConfiguration];
+  textForFooter = [(PXSharedLibraryAssistantPeopleViewController *)self textForFooter];
+  [footerConfiguration setText:textForFooter];
 
   v4 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
-  v5 = [v9 textProperties];
-  [v5 setFont:v4];
+  textProperties = [footerConfiguration textProperties];
+  [textProperties setFont:v4];
 
-  v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v7 = [v9 textProperties];
-  [v7 setColor:v6];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  textProperties2 = [footerConfiguration textProperties];
+  [textProperties2 setColor:secondaryLabelColor];
 
-  [v9 directionalLayoutMargins];
-  [v9 setDirectionalLayoutMargins:7.0];
-  v8 = [v9 textProperties];
-  [v8 setAdjustsFontForContentSizeCategory:1];
+  [footerConfiguration directionalLayoutMargins];
+  [footerConfiguration setDirectionalLayoutMargins:7.0];
+  textProperties3 = [footerConfiguration textProperties];
+  [textProperties3 setAdjustsFontForContentSizeCategory:1];
 
-  [(UITableViewHeaderFooterView *)self->_peopleSectionFooterView setContentConfiguration:v9];
+  [(UITableViewHeaderFooterView *)self->_peopleSectionFooterView setContentConfiguration:footerConfiguration];
 }
 
 - (void)_updateButtonCell
 {
-  v5 = [(UITableViewCell *)self->_buttonCell contentConfiguration];
+  contentConfiguration = [(UITableViewCell *)self->_buttonCell contentConfiguration];
   if ([(PXSharedLibraryAssistantPeopleViewController *)self _hasPeople])
   {
     v3 = @"PXSharedLibraryAssistant_PeopleSelection_ButtonTitle_AddOthers";
@@ -460,40 +460,40 @@ LABEL_3:
   }
 
   v4 = PXLocalizedSharedLibraryString(v3);
-  [v5 setText:v4];
+  [contentConfiguration setText:v4];
 
-  [(UITableViewCell *)self->_buttonCell setContentConfiguration:v5];
+  [(UITableViewCell *)self->_buttonCell setContentConfiguration:contentConfiguration];
 }
 
 - (void)_updateHeaderDetailText
 {
   v4 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_PeopleSelection_Subtitle");
-  v3 = [(PXSharedLibraryAssistantPeopleViewController *)self headerView];
-  [v3 setDetailText:v4];
+  headerView = [(PXSharedLibraryAssistantPeopleViewController *)self headerView];
+  [headerView setDetailText:v4];
 }
 
 - (void)_updateContinueButton
 {
-  v3 = [(PXSharedLibraryAssistantPeopleViewController *)self _hasPeople];
+  _hasPeople = [(PXSharedLibraryAssistantPeopleViewController *)self _hasPeople];
   continueButton = self->_continueButton;
 
-  [(OBBoldTrayButton *)continueButton setEnabled:v3];
+  [(OBBoldTrayButton *)continueButton setEnabled:_hasPeople];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXSharedLibraryAssistantViewModelObservationContext_236236 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXSharedLibraryAssistantViewModelObservationContext_236236 == context)
   {
-    if ((v6 & 8) != 0)
+    if ((changeCopy & 8) != 0)
     {
       [(PXSharedLibraryAssistantPeopleViewController *)self _updateContinueButton];
       [(PXSharedLibraryAssistantPeopleViewController *)self _updateHeaderDetailText];
-      if ((v6 & 0x800) == 0)
+      if ((changeCopy & 0x800) == 0)
       {
 LABEL_7:
-        if ((v6 & 0x2000) == 0)
+        if ((changeCopy & 0x2000) == 0)
         {
           goto LABEL_9;
         }
@@ -504,13 +504,13 @@ LABEL_8:
       }
     }
 
-    else if ((v6 & 0x800) == 0)
+    else if ((changeCopy & 0x800) == 0)
     {
       goto LABEL_7;
     }
 
     [(PXSharedLibraryAssistantPeopleViewController *)self _updateFooterText];
-    if ((v6 & 0x2000) == 0)
+    if ((changeCopy & 0x2000) == 0)
     {
       goto LABEL_9;
     }
@@ -518,30 +518,30 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (PXSharedLibraryIncludedPeopleDataSourceManagerObservationContext != a5)
+  if (PXSharedLibraryIncludedPeopleDataSourceManagerObservationContext != context)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantPeopleViewController+iOS.m" lineNumber:334 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantPeopleViewController+iOS.m" lineNumber:334 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v10 = [(OBTableWelcomeController *)self tableView];
-    [v10 reloadData];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    [tableView reloadData];
 
     [(PXSharedLibraryAssistantPeopleViewController *)self _updateFooterText];
     [(PXSharedLibraryAssistantPeopleViewController *)self _updateButtonCell];
-    v11 = [(PXSectionedDataSourceManager *)self->_dataSourceManager dataSource];
-    v12 = [(PXSharedLibraryAssistantPeopleViewController *)self viewModel];
+    dataSource = [(PXSectionedDataSourceManager *)self->_dataSourceManager dataSource];
+    viewModel = [(PXSharedLibraryAssistantPeopleViewController *)self viewModel];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __77__PXSharedLibraryAssistantPeopleViewController_observable_didChange_context___block_invoke;
     v15[3] = &unk_1E7749B98;
-    v16 = v11;
-    v13 = v11;
-    [v12 performChanges:v15];
+    v16 = dataSource;
+    v13 = dataSource;
+    [viewModel performChanges:v15];
   }
 
 LABEL_9:
@@ -562,20 +562,20 @@ void __77__PXSharedLibraryAssistantPeopleViewController_observable_didChange_con
 {
   v4 = *MEMORY[0x1E69E9840];
   self->_wantsToContinueToNextStep = 0;
-  v3 = [(PXSharedLibraryAssistantPeopleViewController *)self assistantViewControllerDelegate];
-  if (!v3)
+  assistantViewControllerDelegate = [(PXSharedLibraryAssistantPeopleViewController *)self assistantViewControllerDelegate];
+  if (!assistantViewControllerDelegate)
   {
     PXAssertGetLog();
   }
 
-  [v3 stepForwardInAssistantForAssistantViewController:self];
+  [assistantViewControllerDelegate stepForwardInAssistantForAssistantViewController:self];
 }
 
 - (void)_suggestedStartDateChanged
 {
-  v3 = [(PXSharedLibraryAssistantViewModel *)self->_viewModel suggestedStartDate];
+  suggestedStartDate = [(PXSharedLibraryAssistantViewModel *)self->_viewModel suggestedStartDate];
 
-  if (v3 && self->_wantsToContinueToNextStep)
+  if (suggestedStartDate && self->_wantsToContinueToNextStep)
   {
     [(OBBoldTrayButton *)self->_continueButton hidesBusyIndicator];
 
@@ -586,15 +586,15 @@ void __77__PXSharedLibraryAssistantPeopleViewController_observable_didChange_con
 - (void)completeRulesStep
 {
   self->_wantsToContinueToNextStep = 1;
-  v3 = [(PXSectionedDataSourceManager *)self->_dataSourceManager dataSource];
-  v4 = [v3 allInfos];
-  v5 = [v4 count];
+  dataSource = [(PXSectionedDataSourceManager *)self->_dataSourceManager dataSource];
+  allInfos = [dataSource allInfos];
+  v5 = [allInfos count];
 
-  v6 = [(PXSharedLibraryAssistantViewModel *)self->_viewModel suggestedStartDate];
+  suggestedStartDate = [(PXSharedLibraryAssistantViewModel *)self->_viewModel suggestedStartDate];
 
   if (v5)
   {
-    v7 = v6 == 0;
+    v7 = suggestedStartDate == 0;
   }
 
   else
@@ -616,26 +616,26 @@ void __77__PXSharedLibraryAssistantPeopleViewController_observable_didChange_con
   }
 }
 
-- (void)addLaterButtonTapped:(id)a3
+- (void)addLaterButtonTapped:(id)tapped
 {
   [(PXSharedLibraryIncludedPeopleDataSourceManager *)self->_dataSourceManager setViewModelSyncingDisabled:1];
 
   [(PXSharedLibraryAssistantPeopleViewController *)self completeRulesStep];
 }
 
-- (void)continueButtonTapped:(id)a3
+- (void)continueButtonTapped:(id)tapped
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tappedCopy = tapped;
   self->_pickerWasPresentedFromContinueButton = 1;
-  v5 = [(PXSectionedDataSourceManager *)self->_dataSourceManager dataSource];
-  v6 = [(PXSharedLibraryAssistantPeopleViewController *)self peopleInfosToIdentifyInDataSource:v5];
+  dataSource = [(PXSectionedDataSourceManager *)self->_dataSourceManager dataSource];
+  v6 = [(PXSharedLibraryAssistantPeopleViewController *)self peopleInfosToIdentifyInDataSource:dataSource];
 
   if (![v6 count])
   {
     self->_pickerWasPresentedFromContinueButton = 0;
-    v9 = [(PXSectionedDataSourceManager *)self->_dataSourceManager dataSource];
-    [v9 allInfos];
+    dataSource2 = [(PXSectionedDataSourceManager *)self->_dataSourceManager dataSource];
+    [dataSource2 allInfos];
     objc_claimAutoreleasedReturnValue();
 
     PXMap();
@@ -650,14 +650,14 @@ void __77__PXSharedLibraryAssistantPeopleViewController_observable_didChange_con
   v11 = v6;
   v7 = [(PXSharedLibraryAssistantPeopleViewController *)self alertConfigurationForIdentifyingPeopleInfos:v11 action:v10];
   [v7 setStyle:0];
-  [v7 setSourceItem:v4];
-  v8 = [(PXSharedLibraryAssistantPeopleViewController *)self assistantViewControllerDelegate];
-  if (!v8)
+  [v7 setSourceItem:tappedCopy];
+  assistantViewControllerDelegate = [(PXSharedLibraryAssistantPeopleViewController *)self assistantViewControllerDelegate];
+  if (!assistantViewControllerDelegate)
   {
     PXAssertGetLog();
   }
 
-  [v8 assistantViewController:self presentAlertWithConfiguration:v7 animated:1];
+  [assistantViewControllerDelegate assistantViewController:self presentAlertWithConfiguration:v7 animated:1];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -669,14 +669,14 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
   [WeakRetained _presentPickerForInfos:*(a1 + 32)];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  [a3 deselectRowAtIndexPath:a4 animated:1];
-  v5 = [(PXSharedLibraryAssistantPeopleViewController *)self viewModel];
-  v6 = [v5 sourceLibraryInfo];
+  [view deselectRowAtIndexPath:path animated:1];
+  viewModel = [(PXSharedLibraryAssistantPeopleViewController *)self viewModel];
+  sourceLibraryInfo = [viewModel sourceLibraryInfo];
 
-  v7 = v6;
+  v7 = sourceLibraryInfo;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v8 = v7;
@@ -687,11 +687,11 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
     v8 = 0;
   }
 
-  v9 = [v8 photoLibrary];
+  photoLibrary = [v8 photoLibrary];
 
-  if (v9)
+  if (photoLibrary)
   {
-    v10 = [objc_alloc(MEMORY[0x1E69790E0]) initWithPhotoLibrary:v9];
+    v10 = [objc_alloc(MEMORY[0x1E69790E0]) initWithPhotoLibrary:photoLibrary];
     [v10 setSelectionLimit:0];
     v11 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_Rules_AddPeople");
     [v10 setPrompt:v11];
@@ -699,8 +699,8 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
     [v10 _setSourceType:1];
     v12 = objc_alloc_init(MEMORY[0x1E6979160]);
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v14 = [(PXSharedLibraryAssistantViewModel *)self->_viewModel personUUIDs];
-    if ([v14 count])
+    personUUIDs = [(PXSharedLibraryAssistantViewModel *)self->_viewModel personUUIDs];
+    if ([personUUIDs count])
     {
       PXMap();
     }
@@ -710,13 +710,13 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
     v15 = [objc_alloc(MEMORY[0x1E69790F8]) initWithConfiguration:v10];
     [v15 setDelegate:self];
     self->_pickerWasPresentedFromContinueButton = 0;
-    v16 = [(PXSharedLibraryAssistantPeopleViewController *)self assistantViewControllerDelegate];
-    if (!v16)
+    assistantViewControllerDelegate = [(PXSharedLibraryAssistantPeopleViewController *)self assistantViewControllerDelegate];
+    if (!assistantViewControllerDelegate)
     {
       PXAssertGetLog();
     }
 
-    [v16 assistantViewController:self presentViewController:v15 animated:1];
+    [assistantViewControllerDelegate assistantViewController:self presentViewController:v15 animated:1];
   }
 
   else
@@ -731,19 +731,19 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  if (-[PXSharedLibraryAssistantPeopleViewController _isPeopleCellRepresentedAtSection:](self, "_isPeopleCellRepresentedAtSection:", [a4 section]))
+  viewCopy = view;
+  if (-[PXSharedLibraryAssistantPeopleViewController _isPeopleCellRepresentedAtSection:](self, "_isPeopleCellRepresentedAtSection:", [path section]))
   {
-    v7 = [(PXSectionedDataSourceManager *)self->_dataSourceManager dataSource];
-    v8 = [v7 totalNumberOfItems];
+    dataSource = [(PXSectionedDataSourceManager *)self->_dataSourceManager dataSource];
+    totalNumberOfItems = [dataSource totalNumberOfItems];
 
-    [v6 layoutMargins];
+    [viewCopy layoutMargins];
     v10 = v9;
     v12 = v11;
-    [v6 bounds];
-    [PXSharedLibraryIncludedPeopleTableViewCell heightForWidth:v8 numberOfItems:v13 - (v10 + v12)];
+    [viewCopy bounds];
+    [PXSharedLibraryIncludedPeopleTableViewCell heightForWidth:totalNumberOfItems numberOfItems:v13 - (v10 + v12)];
     v15 = v14;
   }
 
@@ -755,9 +755,9 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
   return v15;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  if ([(PXSharedLibraryAssistantPeopleViewController *)self _isPeopleCellRepresentedAtSection:a4])
+  if ([(PXSharedLibraryAssistantPeopleViewController *)self _isPeopleCellRepresentedAtSection:section])
   {
     peopleSectionFooterView = self->_peopleSectionFooterView;
   }
@@ -770,9 +770,9 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
   return peopleSectionFooterView;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 0;
   }
@@ -783,9 +783,9 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = -[PXSharedLibraryAssistantPeopleViewController _isPeopleCellRepresentedAtSection:](self, "_isPeopleCellRepresentedAtSection:", [a4 section]);
+  v5 = -[PXSharedLibraryAssistantPeopleViewController _isPeopleCellRepresentedAtSection:](self, "_isPeopleCellRepresentedAtSection:", [path section]);
   v6 = &OBJC_IVAR___PXSharedLibraryAssistantPeopleViewController__buttonCell;
   if (v5)
   {
@@ -797,7 +797,7 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
   return v7;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(PXSharedLibraryAssistantPeopleViewController *)self _hasPeople])
   {
@@ -812,17 +812,17 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
 
 - (BOOL)_hasPeople
 {
-  v2 = [(PXSectionedDataSourceManager *)self->_dataSourceManager dataSource];
-  v3 = [v2 totalNumberOfItems] > 0;
+  dataSource = [(PXSectionedDataSourceManager *)self->_dataSourceManager dataSource];
+  v3 = [dataSource totalNumberOfItems] > 0;
 
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PXSharedLibraryAssistantPeopleViewController;
-  [(OBTableWelcomeController *)&v4 viewWillAppear:a3];
+  [(OBTableWelcomeController *)&v4 viewWillAppear:appear];
   [(PXSharedLibraryAssistantPeopleViewController *)self _updateContinueButton];
   [(PXSharedLibraryIncludedPeopleDataSourceManager *)self->_dataSourceManager setViewModelSyncingDisabled:0];
 }
@@ -841,32 +841,32 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
   v5 = objc_alloc(MEMORY[0x1E69DD020]);
   v6 = [v5 initWithFrame:2 style:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v6 setBackgroundColor:v7];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v6 setBackgroundColor:systemBackgroundColor];
 
   [v6 setDelegate:self];
   [v6 setDataSource:self];
   [(OBTableWelcomeController *)self setTableView:v6];
-  v8 = [MEMORY[0x1E69DCC28] headerConfiguration];
+  headerConfiguration = [MEMORY[0x1E69DCC28] headerConfiguration];
   v9 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_PeopleSelection_PickerDetail");
-  [v8 setText:v9];
+  [headerConfiguration setText:v9];
 
   v10 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
-  v11 = [v8 textProperties];
-  [v11 setFont:v10];
+  textProperties = [headerConfiguration textProperties];
+  [textProperties setFont:v10];
 
-  v12 = [MEMORY[0x1E69DC888] labelColor];
-  v13 = [v8 textProperties];
-  [v13 setColor:v12];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  textProperties2 = [headerConfiguration textProperties];
+  [textProperties2 setColor:labelColor];
 
-  v14 = [v8 textProperties];
-  [v14 setAdjustsFontForContentSizeCategory:1];
+  textProperties3 = [headerConfiguration textProperties];
+  [textProperties3 setAdjustsFontForContentSizeCategory:1];
 
   v15 = objc_alloc_init(MEMORY[0x1E69DD050]);
   peopleSectionHeaderView = self->_peopleSectionHeaderView;
   self->_peopleSectionHeaderView = v15;
 
-  [(UITableViewHeaderFooterView *)self->_peopleSectionHeaderView setContentConfiguration:v8];
+  [(UITableViewHeaderFooterView *)self->_peopleSectionHeaderView setContentConfiguration:headerConfiguration];
   [(UITableViewHeaderFooterView *)self->_peopleSectionHeaderView setAutomaticallyUpdatesContentConfiguration:1];
   v17 = [[PXSharedLibraryIncludedPeopleTableViewCell alloc] initWithDataSourceManager:self->_dataSourceManager];
   peopleCell = self->_peopleCell;
@@ -880,64 +880,64 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
   buttonCell = self->_buttonCell;
   self->_buttonCell = v21;
 
-  v23 = [(UITableViewCell *)self->_buttonCell defaultContentConfiguration];
+  defaultContentConfiguration = [(UITableViewCell *)self->_buttonCell defaultContentConfiguration];
   v24 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] withSymbolicTraits:0x8000 options:2];
-  v25 = [v23 textProperties];
-  [v25 setFont:v24];
+  textProperties4 = [defaultContentConfiguration textProperties];
+  [textProperties4 setFont:v24];
 
-  v26 = [(PXSharedLibraryAssistantPeopleViewController *)self view];
-  v27 = [v26 tintColor];
-  v28 = [v23 textProperties];
-  [v28 setColor:v27];
+  view = [(PXSharedLibraryAssistantPeopleViewController *)self view];
+  tintColor = [view tintColor];
+  textProperties5 = [defaultContentConfiguration textProperties];
+  [textProperties5 setColor:tintColor];
 
-  v29 = [v23 textProperties];
-  [v29 setAdjustsFontForContentSizeCategory:1];
+  textProperties6 = [defaultContentConfiguration textProperties];
+  [textProperties6 setAdjustsFontForContentSizeCategory:1];
 
   v30 = PXSharedLibraryCellSystemImageNamed(@"plus");
-  [v23 setImage:v30];
+  [defaultContentConfiguration setImage:v30];
 
-  [(UITableViewCell *)self->_buttonCell setContentConfiguration:v23];
-  v31 = [MEMORY[0x1E69DC6E8] listPlainCellConfiguration];
-  v32 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  [v31 setBackgroundColor:v32];
+  [(UITableViewCell *)self->_buttonCell setContentConfiguration:defaultContentConfiguration];
+  listPlainCellConfiguration = [MEMORY[0x1E69DC6E8] listPlainCellConfiguration];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  [listPlainCellConfiguration setBackgroundColor:secondarySystemBackgroundColor];
 
-  [(UITableViewCell *)self->_buttonCell setBackgroundConfiguration:v31];
+  [(UITableViewCell *)self->_buttonCell setBackgroundConfiguration:listPlainCellConfiguration];
   [(PXSharedLibraryAssistantPeopleViewController *)self _updateButtonCell];
-  v33 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   continueButton = self->_continueButton;
-  self->_continueButton = v33;
+  self->_continueButton = boldButton;
 
   v35 = self->_continueButton;
   v36 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_ButtonTitle_Continue");
   [(OBBoldTrayButton *)v35 setTitle:v36 forState:0];
 
   [(OBBoldTrayButton *)self->_continueButton addTarget:self action:sel_continueButtonTapped_ forControlEvents:0x2000];
-  v37 = [(PXSharedLibraryAssistantPeopleViewController *)self buttonTray];
-  [v37 addButton:self->_continueButton];
+  buttonTray = [(PXSharedLibraryAssistantPeopleViewController *)self buttonTray];
+  [buttonTray addButton:self->_continueButton];
 
   v38 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"\r" modifierFlags:0 action:sel_continueButtonTapped_];
   [(PXSharedLibraryAssistantPeopleViewController *)self addKeyCommand:v38];
 
-  v39 = [MEMORY[0x1E69B7D38] linkButton];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
   v40 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_ButtonTitle_Skip");
-  [v39 setTitle:v40 forState:0];
+  [linkButton setTitle:v40 forState:0];
 
-  [v39 addTarget:self action:sel_addLaterButtonTapped_ forControlEvents:0x2000];
-  v41 = [(PXSharedLibraryAssistantPeopleViewController *)self buttonTray];
-  [v41 addButton:v39];
+  [linkButton addTarget:self action:sel_addLaterButtonTapped_ forControlEvents:0x2000];
+  buttonTray2 = [(PXSharedLibraryAssistantPeopleViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 
-  v42 = [MEMORY[0x1E69DC888] tableCellBlueTextColor];
-  v43 = [(PXSharedLibraryAssistantPeopleViewController *)self view];
-  [v43 setTintColor:v42];
+  tableCellBlueTextColor = [MEMORY[0x1E69DC888] tableCellBlueTextColor];
+  view2 = [(PXSharedLibraryAssistantPeopleViewController *)self view];
+  [view2 setTintColor:tableCellBlueTextColor];
 }
 
-- (PXSharedLibraryAssistantPeopleViewController)initWithViewModel:(id)a3
+- (PXSharedLibraryAssistantPeopleViewController)initWithViewModel:(id)model
 {
-  v6 = a3;
-  if (!v6)
+  modelCopy = model;
+  if (!modelCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantPeopleViewController+iOS.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantPeopleViewController+iOS.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
   }
 
   v7 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_PeopleSelection_Title");
@@ -947,12 +947,12 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_viewModel, a3);
+    objc_storeStrong(&v8->_viewModel, model);
     [(PXSharedLibraryAssistantViewModel *)v9->_viewModel registerChangeObserver:v9 context:PXSharedLibraryAssistantViewModelObservationContext_236236];
-    v10 = [v6 sourceLibraryInfo];
+    sourceLibraryInfo = [modelCopy sourceLibraryInfo];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v11 = v10;
+      v11 = sourceLibraryInfo;
     }
 
     else
@@ -960,25 +960,25 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
       v11 = 0;
     }
 
-    v12 = [v11 photoLibrary];
+    photoLibrary = [v11 photoLibrary];
 
-    [v12 px_registerChangeObserver:v9];
+    [photoLibrary px_registerChangeObserver:v9];
   }
 
   return v9;
 }
 
-+ (id)_fetchedPeople:(id)a3 sortedByLocalIdentifiers:(id)a4
++ (id)_fetchedPeople:(id)people sortedByLocalIdentifiers:(id)identifiers
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  peopleCopy = people;
+  identifiersCopy = identifiers;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = peopleCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -995,8 +995,8 @@ void __69__PXSharedLibraryAssistantPeopleViewController_continueButtonTapped___b
 
         v13 = *(*(&v19 + 1) + 8 * i);
         v14 = MEMORY[0x1E696AD98];
-        v15 = [v13 localIdentifier];
-        v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v6, "indexOfObject:", v15)}];
+        localIdentifier = [v13 localIdentifier];
+        v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(identifiersCopy, "indexOfObject:", localIdentifier)}];
         [v7 setObject:v16 forKeyedSubscript:v13];
       }
 

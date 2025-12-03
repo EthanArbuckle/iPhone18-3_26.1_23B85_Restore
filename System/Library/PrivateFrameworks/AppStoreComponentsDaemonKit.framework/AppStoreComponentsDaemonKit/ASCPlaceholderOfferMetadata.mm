@@ -1,7 +1,7 @@
 @interface ASCPlaceholderOfferMetadata
 - (ASCPlaceholderOfferMetadata)init;
-- (ASCPlaceholderOfferMetadata)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCPlaceholderOfferMetadata)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation ASCPlaceholderOfferMetadata
@@ -13,18 +13,18 @@
   return [(ASCOfferMetadata *)&v3 _init];
 }
 
-- (ASCPlaceholderOfferMetadata)initWithCoder:(id)a3
+- (ASCPlaceholderOfferMetadata)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ASCPlaceholderOfferMetadata;
-  return [(ASCOfferMetadata *)&v4 initWithCoder:a3];
+  return [(ASCOfferMetadata *)&v4 initWithCoder:coder];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }

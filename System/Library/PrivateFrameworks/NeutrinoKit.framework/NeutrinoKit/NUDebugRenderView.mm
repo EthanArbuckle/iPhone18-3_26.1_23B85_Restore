@@ -1,15 +1,15 @@
 @interface NUDebugRenderView
-- (NUDebugRenderView)initWithFrame:(CGRect)a3;
-- (void)_debugToggle:(id)a3;
-- (void)_orientWithX:(double)a3 andY:(double)a4;
-- (void)_resetOrientation:(id)a3;
+- (NUDebugRenderView)initWithFrame:(CGRect)frame;
+- (void)_debugToggle:(id)toggle;
+- (void)_orientWithX:(double)x andY:(double)y;
+- (void)_resetOrientation:(id)orientation;
 - (void)_setupDeviceMotion;
 - (void)_startDeviceMotion;
 - (void)_stopDeviceMotion;
 - (void)dealloc;
-- (void)setBounds:(CGRect)a3;
-- (void)setDebugMode:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setDebugMode:(BOOL)mode;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation NUDebugRenderView
@@ -29,7 +29,7 @@
     v9[3] = 0;
     objc_initWeak(&location, self);
     motionManager = self->_motionManager;
-    v4 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __39__NUDebugRenderView__setupDeviceMotion__block_invoke;
@@ -38,7 +38,7 @@
     v5[5] = v9;
     objc_copyWeak(&v6, &location);
     v7 = xmmword_25BD44910;
-    [(CMMotionManager *)motionManager startDeviceMotionUpdatesUsingReferenceFrame:2 toQueue:v4 withHandler:v5];
+    [(CMMotionManager *)motionManager startDeviceMotionUpdatesUsingReferenceFrame:2 toQueue:mainQueue withHandler:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -78,7 +78,7 @@ void __39__NUDebugRenderView__setupDeviceMotion__block_invoke(uint64_t a1, void 
   [(CMMotionManager *)v5 setDeviceMotionUpdateInterval:0.0166666667];
 }
 
-- (void)_resetOrientation:(id)a3
+- (void)_resetOrientation:(id)orientation
 {
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setAnimationDuration:0.25];
@@ -86,7 +86,7 @@ void __39__NUDebugRenderView__setupDeviceMotion__block_invoke(uint64_t a1, void 
   v5 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
   [v4 setAnimationTimingFunction:v5];
 
-  v6 = [(NURenderView *)self _containerLayer];
+  _containerLayer = [(NURenderView *)self _containerLayer];
   v7 = *(MEMORY[0x277CD9DE8] + 80);
   v11[4] = *(MEMORY[0x277CD9DE8] + 64);
   v11[5] = v7;
@@ -99,12 +99,12 @@ void __39__NUDebugRenderView__setupDeviceMotion__block_invoke(uint64_t a1, void 
   v10 = *(MEMORY[0x277CD9DE8] + 48);
   v11[2] = *(MEMORY[0x277CD9DE8] + 32);
   v11[3] = v10;
-  [v6 setSublayerTransform:v11];
+  [_containerLayer setSublayerTransform:v11];
 
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)_orientWithX:(double)a3 andY:(double)a4
+- (void)_orientWithX:(double)x andY:(double)y
 {
   [(NUDebugRenderView *)self bounds];
   Width = CGRectGetWidth(v28);
@@ -147,7 +147,7 @@ void __39__NUDebugRenderView__setupDeviceMotion__block_invoke(uint64_t a1, void 
   v20 = *&v19.m41;
   v21 = *&v19.m43;
   v18 = v19;
-  CATransform3DRotate(&v19, &v18, a3, 0.0, 1.0, 0.0);
+  CATransform3DRotate(&v19, &v18, x, 0.0, 1.0, 0.0);
   v24 = *&v19.m21;
   v25 = *&v19.m23;
   v26 = *&v19.m31;
@@ -157,7 +157,7 @@ void __39__NUDebugRenderView__setupDeviceMotion__block_invoke(uint64_t a1, void 
   v20 = *&v19.m41;
   v21 = *&v19.m43;
   v18 = v19;
-  CATransform3DRotate(&v19, &v18, a4, 1.0, 0.0, 0.0);
+  CATransform3DRotate(&v19, &v18, y, 1.0, 0.0, 0.0);
   v24 = *&v19.m21;
   v25 = *&v19.m23;
   v26 = *&v19.m31;
@@ -167,10 +167,10 @@ void __39__NUDebugRenderView__setupDeviceMotion__block_invoke(uint64_t a1, void 
   m34 = v19.m34;
   v20 = *&v19.m41;
   v21 = *&v19.m43;
-  v16 = [(NURenderView *)self _roiLayer];
-  [v16 setZPosition:200.0];
+  _roiLayer = [(NURenderView *)self _roiLayer];
+  [_roiLayer setZPosition:200.0];
 
-  v17 = [(NURenderView *)self _containerLayer];
+  _containerLayer = [(NURenderView *)self _containerLayer];
   *&v19.m21 = v24;
   *&v19.m23 = v25;
   *&v19.m31 = v26;
@@ -180,34 +180,34 @@ void __39__NUDebugRenderView__setupDeviceMotion__block_invoke(uint64_t a1, void 
   v19.m34 = m34;
   *&v19.m41 = v20;
   *&v19.m43 = v21;
-  [v17 setSublayerTransform:&v19];
+  [_containerLayer setSublayerTransform:&v19];
 }
 
-- (void)_debugToggle:(id)a3
+- (void)_debugToggle:(id)toggle
 {
   showDebug = self->_showDebug;
-  if ([a3 state] == 1)
+  if ([toggle state] == 1)
   {
 
     [(NUDebugRenderView *)self setDebugMode:!showDebug];
   }
 }
 
-- (void)setDebugMode:(BOOL)a3
+- (void)setDebugMode:(BOOL)mode
 {
-  if (self->_showDebug != a3)
+  if (self->_showDebug != mode)
   {
     v8.receiver = self;
     v8.super_class = NUDebugRenderView;
     [(NURenderView *)&v8 setDebugMode:?];
-    self->_showDebug = a3;
-    v5 = [(NURenderView *)self _roiLayer];
-    v6 = v5;
+    self->_showDebug = mode;
+    _roiLayer = [(NURenderView *)self _roiLayer];
+    v6 = _roiLayer;
     if (self->_showDebug)
     {
-      [v5 setBorderWidth:2.0];
-      v7 = [MEMORY[0x277D75348] whiteColor];
-      [v6 setBorderColor:{objc_msgSend(v7, "CGColor")}];
+      [_roiLayer setBorderWidth:2.0];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [v6 setBorderColor:{objc_msgSend(whiteColor, "CGColor")}];
 
       [(NUDebugRenderView *)self _startDeviceMotion];
       [(NUDebugRenderView *)self _setupDeviceMotion];
@@ -230,25 +230,25 @@ void __39__NUDebugRenderView__setupDeviceMotion__block_invoke(uint64_t a1, void 
   [(NUDebugRenderView *)&v3 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = NUDebugRenderView;
-  [(NUDebugRenderView *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NUDebugRenderView *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v3.receiver = self;
   v3.super_class = NUDebugRenderView;
-  [(NUDebugRenderView *)&v3 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NUDebugRenderView *)&v3 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
 }
 
-- (NUDebugRenderView)initWithFrame:(CGRect)a3
+- (NUDebugRenderView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = NUDebugRenderView;
-  v3 = [(NURenderView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NURenderView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v3 action:sel__debugToggle_];

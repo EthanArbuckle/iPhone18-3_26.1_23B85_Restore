@@ -1,6 +1,6 @@
 @interface JavaUtilCollections_UnmodifiableCollection_$1
 - (BOOL)hasNext;
-- (JavaUtilCollections_UnmodifiableCollection_$1)initWithJavaUtilCollections_UnmodifiableCollection:(id)a3;
+- (JavaUtilCollections_UnmodifiableCollection_$1)initWithJavaUtilCollections_UnmodifiableCollection:(id)collection;
 - (id)next;
 - (void)dealloc;
 @end
@@ -29,9 +29,9 @@
   return [(JavaUtilIterator *)iterator next];
 }
 
-- (JavaUtilCollections_UnmodifiableCollection_$1)initWithJavaUtilCollections_UnmodifiableCollection:(id)a3
+- (JavaUtilCollections_UnmodifiableCollection_$1)initWithJavaUtilCollections_UnmodifiableCollection:(id)collection
 {
-  v4 = *(a3 + 1);
+  v4 = *(collection + 1);
   if (!v4)
   {
     JreThrowNullPointerException();

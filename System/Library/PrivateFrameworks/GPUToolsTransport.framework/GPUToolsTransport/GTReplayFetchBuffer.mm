@@ -1,39 +1,39 @@
 @interface GTReplayFetchBuffer
 - (GTRange)range;
-- (GTReplayFetchBuffer)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTReplayFetchBuffer)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTReplayFetchBuffer
 
-- (GTReplayFetchBuffer)initWithCoder:(id)a3
+- (GTReplayFetchBuffer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = GTReplayFetchBuffer;
-  v5 = [(GTReplayRequest *)&v8 initWithCoder:v4];
+  v5 = [(GTReplayRequest *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_streamRef = [v4 decodeInt64ForKey:@"streamRef"];
-    v5->_range.location = [v4 decodeInt64ForKey:@"range.location"];
-    v5->_range.length = [v4 decodeInt64ForKey:@"range.length"];
-    v5->_dispatchUID.uid = GTDispatchUIDDecode(v4, @"dispatchUID");
+    v5->_streamRef = [coderCopy decodeInt64ForKey:@"streamRef"];
+    v5->_range.location = [coderCopy decodeInt64ForKey:@"range.location"];
+    v5->_range.length = [coderCopy decodeInt64ForKey:@"range.length"];
+    v5->_dispatchUID.uid = GTDispatchUIDDecode(coderCopy, @"dispatchUID");
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GTReplayFetchBuffer;
-  v4 = a3;
-  [(GTReplayRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_streamRef forKey:{@"streamRef", v5.receiver, v5.super_class}];
-  [v4 encodeInt64:self->_range.location forKey:@"range.location"];
-  [v4 encodeInt64:self->_range.length forKey:@"range.length"];
-  GTDispatchUIDEncode(v4, self->_dispatchUID.uid, @"dispatchUID");
+  coderCopy = coder;
+  [(GTReplayRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_streamRef forKey:{@"streamRef", v5.receiver, v5.super_class}];
+  [coderCopy encodeInt64:self->_range.location forKey:@"range.location"];
+  [coderCopy encodeInt64:self->_range.length forKey:@"range.length"];
+  GTDispatchUIDEncode(coderCopy, self->_dispatchUID.uid, @"dispatchUID");
 }
 
 - (GTRange)range

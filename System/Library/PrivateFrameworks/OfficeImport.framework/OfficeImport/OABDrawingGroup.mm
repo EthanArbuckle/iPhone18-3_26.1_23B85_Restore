@@ -1,40 +1,40 @@
 @interface OABDrawingGroup
-+ (void)readBlipsFromDrawingGroup:(id)a3 toDocument:(id)a4 state:(id)a5;
-+ (void)readGraphicalDefaultsFromDrawingGroup:(id)a3 toTheme:(id)a4 state:(id)a5;
++ (void)readBlipsFromDrawingGroup:(id)group toDocument:(id)document state:(id)state;
++ (void)readGraphicalDefaultsFromDrawingGroup:(id)group toTheme:(id)theme state:(id)state;
 @end
 
 @implementation OABDrawingGroup
 
-+ (void)readBlipsFromDrawingGroup:(id)a3 toDocument:(id)a4 state:(id)a5
++ (void)readBlipsFromDrawingGroup:(id)group toDocument:(id)document state:(id)state
 {
-  v14 = a4;
-  v7 = a5;
-  v8 = [a3 firstChildOfType:61441];
-  [v7 setBstoreContainerHolder:v8];
-  v9 = [v8 childCount];
-  if (v9)
+  documentCopy = document;
+  stateCopy = state;
+  v8 = [group firstChildOfType:61441];
+  [stateCopy setBstoreContainerHolder:v8];
+  childCount = [v8 childCount];
+  if (childCount)
   {
-    for (i = 0; i != v9; ++i)
+    for (i = 0; i != childCount; ++i)
     {
       v11 = [v8 childAt:i];
-      v12 = [v14 blips];
+      blips = [documentCopy blips];
       v13 = [OABBlip readBlipFromBse:v11];
-      [v12 addBlip:v13];
+      [blips addBlip:v13];
     }
   }
 }
 
-+ (void)readGraphicalDefaultsFromDrawingGroup:(id)a3 toTheme:(id)a4 state:(id)a5
++ (void)readGraphicalDefaultsFromDrawingGroup:(id)group toTheme:(id)theme state:(id)state
 {
-  v40 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v40 firstChildOfType:4];
+  groupCopy = group;
+  themeCopy = theme;
+  stateCopy = state;
+  v9 = [groupCopy firstChildOfType:4];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 eshObject];
-    if (v11)
+    eshObject = [v9 eshObject];
+    if (eshObject)
     {
     }
 
@@ -43,48 +43,48 @@
       v12 = 0;
     }
 
-    v13 = [v7 drawableDefaults];
-    v14 = [v13 lineDefaults];
-    v15 = [v14 shapeProperties];
-    [OABShape readGraphicDefaults:v10 to:v15 state:v8];
+    drawableDefaults = [themeCopy drawableDefaults];
+    lineDefaults = [drawableDefaults lineDefaults];
+    shapeProperties = [lineDefaults shapeProperties];
+    [OABShape readGraphicDefaults:v10 to:shapeProperties state:stateCopy];
 
     v16 = +[OADNullFill nullFill];
-    v17 = [v7 drawableDefaults];
-    v18 = [v17 lineDefaults];
-    v19 = [v18 shapeProperties];
-    [v19 setFill:v16];
+    drawableDefaults2 = [themeCopy drawableDefaults];
+    lineDefaults2 = [drawableDefaults2 lineDefaults];
+    shapeProperties2 = [lineDefaults2 shapeProperties];
+    [shapeProperties2 setFill:v16];
 
-    v20 = [v7 drawableDefaults];
-    v21 = [v20 shapeDefaults];
-    v22 = [v21 shapeProperties];
-    [OABShape readGraphicDefaults:v10 to:v22 state:v8];
+    drawableDefaults3 = [themeCopy drawableDefaults];
+    shapeDefaults = [drawableDefaults3 shapeDefaults];
+    shapeProperties3 = [shapeDefaults shapeProperties];
+    [OABShape readGraphicDefaults:v10 to:shapeProperties3 state:stateCopy];
 
-    v23 = [v7 drawableDefaults];
-    v24 = [v23 shapeDefaults];
-    v25 = [v24 textBodyProperties];
-    [OABTextBodyProperties readTextBodyProperties:v25 textBox:v12 + 272 useDefaults:1 state:v8];
+    drawableDefaults4 = [themeCopy drawableDefaults];
+    shapeDefaults2 = [drawableDefaults4 shapeDefaults];
+    textBodyProperties = [shapeDefaults2 textBodyProperties];
+    [OABTextBodyProperties readTextBodyProperties:textBodyProperties textBox:v12 + 272 useDefaults:1 state:stateCopy];
 
-    v26 = [v7 drawableDefaults];
-    v27 = [v26 textDefaults];
-    v28 = [v27 shapeProperties];
-    [OABShape readGraphicDefaults:v10 to:v28 state:v8];
+    drawableDefaults5 = [themeCopy drawableDefaults];
+    textDefaults = [drawableDefaults5 textDefaults];
+    shapeProperties4 = [textDefaults shapeProperties];
+    [OABShape readGraphicDefaults:v10 to:shapeProperties4 state:stateCopy];
 
     v29 = +[OADNullFill nullFill];
-    v30 = [v7 drawableDefaults];
-    v31 = [v30 textDefaults];
-    v32 = [v31 shapeProperties];
-    [v32 setFill:v29];
+    drawableDefaults6 = [themeCopy drawableDefaults];
+    textDefaults2 = [drawableDefaults6 textDefaults];
+    shapeProperties5 = [textDefaults2 shapeProperties];
+    [shapeProperties5 setFill:v29];
 
     v33 = +[OADStroke nullStroke];
-    v34 = [v7 drawableDefaults];
-    v35 = [v34 textDefaults];
-    v36 = [v35 shapeProperties];
-    [v36 setStroke:v33];
+    drawableDefaults7 = [themeCopy drawableDefaults];
+    textDefaults3 = [drawableDefaults7 textDefaults];
+    shapeProperties6 = [textDefaults3 shapeProperties];
+    [shapeProperties6 setStroke:v33];
 
-    v37 = [v7 drawableDefaults];
-    v38 = [v37 textDefaults];
-    v39 = [v38 textBodyProperties];
-    [OABTextBodyProperties readTextBodyProperties:v39 textBox:v12 + 272 useDefaults:1 state:v8];
+    drawableDefaults8 = [themeCopy drawableDefaults];
+    textDefaults4 = [drawableDefaults8 textDefaults];
+    textBodyProperties2 = [textDefaults4 textBodyProperties];
+    [OABTextBodyProperties readTextBodyProperties:textBodyProperties2 textBox:v12 + 272 useDefaults:1 state:stateCopy];
   }
 }
 

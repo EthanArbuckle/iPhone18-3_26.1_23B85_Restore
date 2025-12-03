@@ -1,10 +1,10 @@
 @interface CPSRestrictedAccessResponse
-- (CPSRestrictedAccessResponse)initWithCoder:(id)a3;
+- (CPSRestrictedAccessResponse)initWithCoder:(id)coder;
 @end
 
 @implementation CPSRestrictedAccessResponse
 
-- (CPSRestrictedAccessResponse)initWithCoder:(id)a3
+- (CPSRestrictedAccessResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CPSRestrictedAccessResponse;

@@ -2,18 +2,18 @@
 - (AVPlaybackContentContainerView)activeContentView;
 - (AVPlayerViewController)playerViewController;
 - (AVZoomingBehavior)behavior;
-- (AVZoomingBehaviorContext)initWithAVKitOwner:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (AVZoomingBehaviorContext)initWithAVKitOwner:(id)owner;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (CGSize)contentAspectRatio;
-- (id)makePlaybackContentContainerWithFrame:(CGRect)a3 activeContentView:(id)a4;
-- (void)_handleDoubleTapGestureRecognizer:(id)a3;
+- (id)makePlaybackContentContainerWithFrame:(CGRect)frame activeContentView:(id)view;
+- (void)_handleDoubleTapGestureRecognizer:(id)recognizer;
 - (void)_updateZoomingView;
 - (void)dealloc;
-- (void)didAddBehavior:(id)a3;
-- (void)didRemoveBehavior:(id)a3;
-- (void)setContentAspectRatio:(CGSize)a3;
+- (void)didAddBehavior:(id)behavior;
+- (void)didRemoveBehavior:(id)behavior;
+- (void)setContentAspectRatio:(CGSize)ratio;
 - (void)viewDidLoad;
 @end
 
@@ -47,9 +47,9 @@
   [(AVZoomingBehaviorContext *)self contentAspectRatio];
   if (v4 == *MEMORY[0x1E695F060] && v3 == *(MEMORY[0x1E695F060] + 8))
   {
-    v10 = [(AVZoomingBehaviorContext *)self playerViewController];
-    v11 = [v10 playerController];
-    [v11 contentDimensions];
+    playerViewController = [(AVZoomingBehaviorContext *)self playerViewController];
+    playerController = [playerViewController playerController];
+    [playerController contentDimensions];
     v7 = v12;
     v9 = v13;
   }
@@ -63,68 +63,68 @@
 
   if (v7 > 0.0 && v9 > 0.0)
   {
-    v14 = [(AVZoomingBehaviorContext *)self contentZoomingView];
-    [v14 setContentAspectRatio:{v7, v9}];
+    contentZoomingView = [(AVZoomingBehaviorContext *)self contentZoomingView];
+    [contentZoomingView setContentAspectRatio:{v7, v9}];
   }
 
-  v15 = [(AVZoomingBehaviorContext *)self contentZoomingView];
-  [v15 setZoomingEnabled:{-[AVZoomingBehaviorContext isZoomingEnabled](self, "isZoomingEnabled")}];
+  contentZoomingView2 = [(AVZoomingBehaviorContext *)self contentZoomingView];
+  [contentZoomingView2 setZoomingEnabled:{-[AVZoomingBehaviorContext isZoomingEnabled](self, "isZoomingEnabled")}];
 
-  v16 = [(AVZoomingBehaviorContext *)self doubleTapGestureRecognizer];
-  [v16 setEnabled:1];
+  doubleTapGestureRecognizer = [(AVZoomingBehaviorContext *)self doubleTapGestureRecognizer];
+  [doubleTapGestureRecognizer setEnabled:1];
 
-  v17 = [(AVZoomingBehaviorContext *)self contentZoomingView];
-  v18 = [(AVZoomingBehaviorContext *)self playerViewController];
-  [v17 setFullScreen:{objc_msgSend(v18, "isPresentedFullScreen")}];
+  contentZoomingView3 = [(AVZoomingBehaviorContext *)self contentZoomingView];
+  playerViewController2 = [(AVZoomingBehaviorContext *)self playerViewController];
+  [contentZoomingView3 setFullScreen:{objc_msgSend(playerViewController2, "isPresentedFullScreen")}];
 
   if ([(AVZoomingBehaviorContext *)self isZoomingEnabled])
   {
-    v19 = [(AVZoomingBehaviorContext *)self playerViewController];
-    v20 = [v19 isViewLoaded];
+    playerViewController3 = [(AVZoomingBehaviorContext *)self playerViewController];
+    isViewLoaded = [playerViewController3 isViewLoaded];
 
-    if (v20)
+    if (isViewLoaded)
     {
-      v21 = [(AVZoomingBehaviorContext *)self contentZoomingView];
-      v22 = [v21 pinchGestureRecognizer];
+      contentZoomingView4 = [(AVZoomingBehaviorContext *)self contentZoomingView];
+      pinchGestureRecognizer = [contentZoomingView4 pinchGestureRecognizer];
 
-      if (v22)
+      if (pinchGestureRecognizer)
       {
-        v23 = [(AVZoomingBehaviorContext *)self contentZoomingView];
-        v24 = [v23 pinchGestureRecognizer];
-        v25 = [v24 view];
-        v26 = [(AVZoomingBehaviorContext *)self playerViewController];
-        v27 = [v26 contentView];
+        contentZoomingView5 = [(AVZoomingBehaviorContext *)self contentZoomingView];
+        pinchGestureRecognizer2 = [contentZoomingView5 pinchGestureRecognizer];
+        view = [pinchGestureRecognizer2 view];
+        playerViewController4 = [(AVZoomingBehaviorContext *)self playerViewController];
+        contentView = [playerViewController4 contentView];
 
-        if (v25 != v27)
+        if (view != contentView)
         {
-          v28 = [(AVZoomingBehaviorContext *)self playerViewController];
-          v29 = [v28 contentView];
-          v30 = [(AVZoomingBehaviorContext *)self contentZoomingView];
-          v31 = [v30 pinchGestureRecognizer];
-          [v29 addGestureRecognizer:v31];
+          playerViewController5 = [(AVZoomingBehaviorContext *)self playerViewController];
+          contentView2 = [playerViewController5 contentView];
+          contentZoomingView6 = [(AVZoomingBehaviorContext *)self contentZoomingView];
+          pinchGestureRecognizer3 = [contentZoomingView6 pinchGestureRecognizer];
+          [contentView2 addGestureRecognizer:pinchGestureRecognizer3];
 
-          v32 = [(AVZoomingBehaviorContext *)self playerViewController];
-          v33 = [v32 contentView];
-          v34 = [(AVZoomingBehaviorContext *)self contentZoomingView];
-          v35 = [v34 panGestureRecognizer];
-          [v33 addGestureRecognizer:v35];
+          playerViewController6 = [(AVZoomingBehaviorContext *)self playerViewController];
+          contentView3 = [playerViewController6 contentView];
+          contentZoomingView7 = [(AVZoomingBehaviorContext *)self contentZoomingView];
+          panGestureRecognizer = [contentZoomingView7 panGestureRecognizer];
+          [contentView3 addGestureRecognizer:panGestureRecognizer];
         }
       }
 
       v39 = +[AVKitGlobalSettings shared];
       if (![v39 playerGeneration])
       {
-        v36 = [(AVZoomingBehaviorContext *)self doubleTapGestureRecognizer];
+        doubleTapGestureRecognizer2 = [(AVZoomingBehaviorContext *)self doubleTapGestureRecognizer];
 
-        if (v36)
+        if (doubleTapGestureRecognizer2)
         {
           return;
         }
 
         v39 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleDoubleTapGestureRecognizer_];
-        v37 = [(AVZoomingBehaviorContext *)self playerViewController];
-        v38 = [v37 contentView];
-        [v38 addGestureRecognizer:v39];
+        playerViewController7 = [(AVZoomingBehaviorContext *)self playerViewController];
+        contentView4 = [playerViewController7 contentView];
+        [contentView4 addGestureRecognizer:v39];
 
         [v39 setNumberOfTapsRequired:2];
         [v39 setDelegate:self];
@@ -134,11 +134,11 @@
   }
 }
 
-- (void)_handleDoubleTapGestureRecognizer:(id)a3
+- (void)_handleDoubleTapGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(AVZoomingBehaviorContext *)self contentZoomingView];
-  [v4 locationInView:v5];
+  recognizerCopy = recognizer;
+  contentZoomingView = [(AVZoomingBehaviorContext *)self contentZoomingView];
+  [recognizerCopy locationInView:contentZoomingView];
   v7 = v6;
   v9 = v8;
 
@@ -158,94 +158,94 @@ void __62__AVZoomingBehaviorContext__handleDoubleTapGestureRecognizer___block_in
   [v2 zoomToPoint:{*(a1 + 40), *(a1 + 48)}];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a4;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(AVZoomingBehaviorContext *)self doubleTapGestureRecognizer];
+  recognizerCopy = recognizer;
+  doubleTapGestureRecognizer = [(AVZoomingBehaviorContext *)self doubleTapGestureRecognizer];
 
-  return v6 == v5;
+  return doubleTapGestureRecognizer == recognizerCopy;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 view];
-  v9 = [v7 view];
+  touchCopy = touch;
+  recognizerCopy = recognizer;
+  view = [recognizerCopy view];
+  view2 = [recognizerCopy view];
 
-  [v6 locationInView:v9];
+  [touchCopy locationInView:view2];
   v11 = v10;
   v13 = v12;
 
-  v14 = [v8 hitTest:0 withEvent:{v11, v13}];
+  v14 = [view hitTest:0 withEvent:{v11, v13}];
 
-  v15 = [(AVZoomingBehaviorContext *)self playerViewController];
-  v16 = [v15 contentView];
-  LOBYTE(v8) = [v16 isViewDescendantOfPlaybackControlsSubview:v14];
+  playerViewController = [(AVZoomingBehaviorContext *)self playerViewController];
+  contentView = [playerViewController contentView];
+  LOBYTE(view) = [contentView isViewDescendantOfPlaybackControlsSubview:v14];
 
-  return v8 ^ 1;
+  return view ^ 1;
 }
 
-- (void)didRemoveBehavior:(id)a3
+- (void)didRemoveBehavior:(id)behavior
 {
-  v4 = [(AVZoomingBehaviorContext *)self contentZoomingView];
-  v5 = [(AVZoomingBehaviorContext *)self playerViewController];
-  v6 = [v5 contentView];
-  v7 = [v6 playbackContentContainerView];
+  contentZoomingView = [(AVZoomingBehaviorContext *)self contentZoomingView];
+  playerViewController = [(AVZoomingBehaviorContext *)self playerViewController];
+  contentView = [playerViewController contentView];
+  playbackContentContainerView = [contentView playbackContentContainerView];
 
-  if (v4 == v7)
+  if (contentZoomingView == playbackContentContainerView)
   {
-    v8 = [(AVZoomingBehaviorContext *)self playerViewController];
-    v9 = [v8 contentView];
-    v10 = [(AVZoomingBehaviorContext *)self contentZoomingView];
-    v11 = [v10 activeContentView];
-    [v9 setPlaybackContentContainerView:v11];
+    playerViewController2 = [(AVZoomingBehaviorContext *)self playerViewController];
+    contentView2 = [playerViewController2 contentView];
+    contentZoomingView2 = [(AVZoomingBehaviorContext *)self contentZoomingView];
+    activeContentView = [contentZoomingView2 activeContentView];
+    [contentView2 setPlaybackContentContainerView:activeContentView];
   }
 
-  v12 = [(AVZoomingBehaviorContext *)self doubleTapGestureRecognizer];
-  v13 = [v12 view];
-  v14 = [(AVZoomingBehaviorContext *)self doubleTapGestureRecognizer];
-  [v13 removeGestureRecognizer:v14];
+  doubleTapGestureRecognizer = [(AVZoomingBehaviorContext *)self doubleTapGestureRecognizer];
+  view = [doubleTapGestureRecognizer view];
+  doubleTapGestureRecognizer2 = [(AVZoomingBehaviorContext *)self doubleTapGestureRecognizer];
+  [view removeGestureRecognizer:doubleTapGestureRecognizer2];
 
-  v15 = [(AVZoomingBehaviorContext *)self playerViewController];
-  LODWORD(v13) = [v15 isViewLoaded];
+  playerViewController3 = [(AVZoomingBehaviorContext *)self playerViewController];
+  LODWORD(view) = [playerViewController3 isViewLoaded];
 
-  if (v13)
+  if (view)
   {
     usesGlassCatalystControls = self->_usesGlassCatalystControls;
-    v17 = [(AVZoomingBehaviorContext *)self playerViewController];
-    v19 = v17;
+    playerViewController4 = [(AVZoomingBehaviorContext *)self playerViewController];
+    v19 = playerViewController4;
     if (usesGlassCatalystControls)
     {
-      v18 = [v17 catalystPlaybackControlsController];
-      [v18 setShowsVideoZoomControl:1];
+      catalystPlaybackControlsController = [playerViewController4 catalystPlaybackControlsController];
+      [catalystPlaybackControlsController setShowsVideoZoomControl:1];
     }
 
     else
     {
-      v18 = [v17 chromePlaybackControlsController];
-      [v18 setShowsVideoGravityButton:1];
+      catalystPlaybackControlsController = [playerViewController4 chromePlaybackControlsController];
+      [catalystPlaybackControlsController setShowsVideoGravityButton:1];
     }
   }
 }
 
-- (void)didAddBehavior:(id)a3
+- (void)didAddBehavior:(id)behavior
 {
-  v4 = [(AVZoomingBehaviorContext *)self playerViewController];
-  if ([v4 isViewLoaded])
+  playerViewController = [(AVZoomingBehaviorContext *)self playerViewController];
+  if ([playerViewController isViewLoaded])
   {
-    v5 = [(AVZoomingBehaviorContext *)self playerViewController];
-    v6 = [v5 contentView];
-    v7 = [v6 playbackContentContainerView];
+    playerViewController2 = [(AVZoomingBehaviorContext *)self playerViewController];
+    contentView = [playerViewController2 contentView];
+    playbackContentContainerView = [contentView playbackContentContainerView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -254,28 +254,28 @@ void __62__AVZoomingBehaviorContext__handleDoubleTapGestureRecognizer___block_in
       goto LABEL_8;
     }
 
-    v9 = [(AVZoomingBehaviorContext *)self playerViewController];
-    v10 = [v9 contentView];
-    v11 = [v10 playbackContentContainerView];
-    v4 = [v11 activeContentView];
+    playerViewController3 = [(AVZoomingBehaviorContext *)self playerViewController];
+    contentView2 = [playerViewController3 contentView];
+    playbackContentContainerView2 = [contentView2 playbackContentContainerView];
+    playerViewController = [playbackContentContainerView2 activeContentView];
 
-    v12 = [(AVZoomingBehaviorContext *)self playerViewController];
-    v13 = [v12 contentView];
-    [v4 frame];
-    v14 = [(AVZoomingBehaviorContext *)self makePlaybackContentContainerWithFrame:v4 activeContentView:?];
-    [v13 setPlaybackContentContainerView:v14];
+    playerViewController4 = [(AVZoomingBehaviorContext *)self playerViewController];
+    contentView3 = [playerViewController4 contentView];
+    [playerViewController frame];
+    v14 = [(AVZoomingBehaviorContext *)self makePlaybackContentContainerWithFrame:playerViewController activeContentView:?];
+    [contentView3 setPlaybackContentContainerView:v14];
 
-    LODWORD(v13) = self->_usesGlassCatalystControls;
-    v15 = [(AVZoomingBehaviorContext *)self playerViewController];
-    v16 = v15;
-    if (v13 == 1)
+    LODWORD(contentView3) = self->_usesGlassCatalystControls;
+    playerViewController5 = [(AVZoomingBehaviorContext *)self playerViewController];
+    v16 = playerViewController5;
+    if (contentView3 == 1)
     {
-      [v15 catalystPlaybackControlsController];
+      [playerViewController5 catalystPlaybackControlsController];
     }
 
     else
     {
-      [v15 chromePlaybackControlsController];
+      [playerViewController5 chromePlaybackControlsController];
     }
     v17 = ;
     [v17 setPlaybackControlsIncludeStartContentTransitionButtons:1];
@@ -283,23 +283,23 @@ void __62__AVZoomingBehaviorContext__handleDoubleTapGestureRecognizer___block_in
 
 LABEL_8:
   usesGlassCatalystControls = self->_usesGlassCatalystControls;
-  v19 = [(AVZoomingBehaviorContext *)self playerViewController];
-  v20 = v19;
+  playerViewController6 = [(AVZoomingBehaviorContext *)self playerViewController];
+  v20 = playerViewController6;
   if (usesGlassCatalystControls)
   {
-    v21 = [v19 catalystPlaybackControlsController];
-    [v21 setShowsVideoZoomControl:0];
+    catalystPlaybackControlsController = [playerViewController6 catalystPlaybackControlsController];
+    [catalystPlaybackControlsController setShowsVideoZoomControl:0];
   }
 
   else
   {
-    v21 = [v19 chromePlaybackControlsController];
-    [v21 setShowsVideoGravityButton:0];
+    catalystPlaybackControlsController = [playerViewController6 chromePlaybackControlsController];
+    [catalystPlaybackControlsController setShowsVideoGravityButton:0];
   }
 
   [(AVZoomingBehaviorContext *)self _updateZoomingView];
-  v22 = [(AVZoomingBehaviorContext *)self observationController];
-  [v22 startObservingNotificationForName:@"AVPlayerControllerContentDimensionsChangedNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_23706];
+  observationController = [(AVZoomingBehaviorContext *)self observationController];
+  [observationController startObservingNotificationForName:@"AVPlayerControllerContentDimensionsChangedNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_23706];
 }
 
 void __43__AVZoomingBehaviorContext_didAddBehavior___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -319,31 +319,31 @@ void __43__AVZoomingBehaviorContext_didAddBehavior___block_invoke(uint64_t a1, v
 {
   [(AVZoomingBehaviorContext *)self _updateZoomingView];
   usesGlassCatalystControls = self->_usesGlassCatalystControls;
-  v4 = [(AVZoomingBehaviorContext *)self playerViewController];
-  v6 = v4;
+  playerViewController = [(AVZoomingBehaviorContext *)self playerViewController];
+  v6 = playerViewController;
   if (usesGlassCatalystControls)
   {
-    v5 = [v4 catalystPlaybackControlsController];
-    [v5 setShowsVideoZoomControl:0];
+    catalystPlaybackControlsController = [playerViewController catalystPlaybackControlsController];
+    [catalystPlaybackControlsController setShowsVideoZoomControl:0];
   }
 
   else
   {
-    v5 = [v4 chromePlaybackControlsController];
-    [v5 setShowsVideoGravityButton:0];
+    catalystPlaybackControlsController = [playerViewController chromePlaybackControlsController];
+    [catalystPlaybackControlsController setShowsVideoGravityButton:0];
   }
 }
 
-- (id)makePlaybackContentContainerWithFrame:(CGRect)a3 activeContentView:(id)a4
+- (id)makePlaybackContentContainerWithFrame:(CGRect)frame activeContentView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(AVZoomingBehaviorContext *)self contentZoomingView];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  contentZoomingView = [(AVZoomingBehaviorContext *)self contentZoomingView];
 
-  if (v10)
+  if (contentZoomingView)
   {
     v11 = _AVLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -353,58 +353,58 @@ void __43__AVZoomingBehaviorContext_didAddBehavior___block_invoke(uint64_t a1, v
     }
   }
 
-  v12 = [[AVPlaybackContentZoomingView alloc] initWithFrame:v9 activeContentView:x, y, width, height];
-  v13 = [v9 playerLayerView];
+  height = [[AVPlaybackContentZoomingView alloc] initWithFrame:viewCopy activeContentView:x, y, width, height];
+  playerLayerView = [viewCopy playerLayerView];
 
-  if (!v13)
+  if (!playerLayerView)
   {
     v14 = [__AVPlayerLayerView alloc];
-    [v9 bounds];
+    [viewCopy bounds];
     v15 = [(__AVPlayerLayerView *)v14 initWithFrame:?];
-    [v9 setPlayerLayerView:v15];
+    [viewCopy setPlayerLayerView:v15];
 
-    [v9 layoutIfNeeded];
+    [viewCopy layoutIfNeeded];
   }
 
-  [(AVZoomingBehaviorContext *)self setContentZoomingView:v12];
+  [(AVZoomingBehaviorContext *)self setContentZoomingView:height];
 
-  return v12;
+  return height;
 }
 
 - (AVPlaybackContentContainerView)activeContentView
 {
-  v2 = [(AVZoomingBehaviorContext *)self contentZoomingView];
-  v3 = [v2 activeContentView];
+  contentZoomingView = [(AVZoomingBehaviorContext *)self contentZoomingView];
+  activeContentView = [contentZoomingView activeContentView];
 
-  return v3;
+  return activeContentView;
 }
 
-- (void)setContentAspectRatio:(CGSize)a3
+- (void)setContentAspectRatio:(CGSize)ratio
 {
-  if (a3.width != self->_contentAspectRatio.width || a3.height != self->_contentAspectRatio.height)
+  if (ratio.width != self->_contentAspectRatio.width || ratio.height != self->_contentAspectRatio.height)
   {
-    self->_contentAspectRatio = a3;
+    self->_contentAspectRatio = ratio;
     [(AVZoomingBehaviorContext *)self _updateZoomingView];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(AVZoomingBehaviorContext *)self observationController];
-  [v3 stopAllObservation];
+  observationController = [(AVZoomingBehaviorContext *)self observationController];
+  [observationController stopAllObservation];
 
   v4.receiver = self;
   v4.super_class = AVZoomingBehaviorContext;
   [(AVZoomingBehaviorContext *)&v4 dealloc];
 }
 
-- (AVZoomingBehaviorContext)initWithAVKitOwner:(id)a3
+- (AVZoomingBehaviorContext)initWithAVKitOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   if (self)
   {
-    v5 = objc_storeWeak(&self->_playerViewController, v4);
-    [v4 setRequiresImmediateAssetInspection:1];
+    v5 = objc_storeWeak(&self->_playerViewController, ownerCopy);
+    [ownerCopy setRequiresImmediateAssetInspection:1];
 
     v6 = [[AVObservationController alloc] initWithOwner:self];
     observationController = self->_observationController;

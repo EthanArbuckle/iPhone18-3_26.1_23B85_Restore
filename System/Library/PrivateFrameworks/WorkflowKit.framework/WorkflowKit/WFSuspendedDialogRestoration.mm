@@ -1,39 +1,39 @@
 @interface WFSuspendedDialogRestoration
-- (BOOL)presenterShouldShowRequest:(id)a3 runningContext:(id)a4 withCompletionHandler:(id)a5;
-- (BOOL)shortcutsAppIsForegroundInLayout:(id)a3;
-- (WFSuspendedDialogRestoration)initWithUserInterfacePresenter:(id)a3;
+- (BOOL)presenterShouldShowRequest:(id)request runningContext:(id)context withCompletionHandler:(id)handler;
+- (BOOL)shortcutsAppIsForegroundInLayout:(id)layout;
+- (WFSuspendedDialogRestoration)initWithUserInterfacePresenter:(id)presenter;
 - (void)beginObservingApplicationState;
-- (void)presenterDidReceiveSuspendedResponseForRequest:(id)a3 runningContext:(id)a4 withCompletionHandler:(id)a5;
+- (void)presenterDidReceiveSuspendedResponseForRequest:(id)request runningContext:(id)context withCompletionHandler:(id)handler;
 - (void)reset;
 - (void)stopObservingApplicationState;
 @end
 
 @implementation WFSuspendedDialogRestoration
 
-- (void)presenterDidReceiveSuspendedResponseForRequest:(id)a3 runningContext:(id)a4 withCompletionHandler:(id)a5
+- (void)presenterDidReceiveSuspendedResponseForRequest:(id)request runningContext:(id)context withCompletionHandler:(id)handler
 {
-  v9 = a5;
-  v8 = a4;
-  [(WFSuspendedDialogRestoration *)self setSuspendedRequest:a3];
-  [(WFSuspendedDialogRestoration *)self setSuspendedRunningContext:v8];
+  handlerCopy = handler;
+  contextCopy = context;
+  [(WFSuspendedDialogRestoration *)self setSuspendedRequest:request];
+  [(WFSuspendedDialogRestoration *)self setSuspendedRunningContext:contextCopy];
 
-  [(WFSuspendedDialogRestoration *)self setSuspendedRequestCompletion:v9];
+  [(WFSuspendedDialogRestoration *)self setSuspendedRequestCompletion:handlerCopy];
 }
 
-- (BOOL)presenterShouldShowRequest:(id)a3 runningContext:(id)a4 withCompletionHandler:(id)a5
+- (BOOL)presenterShouldShowRequest:(id)request runningContext:(id)context withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  contextCopy = context;
+  handlerCopy = handler;
   [(WFSuspendedDialogRestoration *)self reset];
-  if (![v9 isShortcutsApp])
+  if (![contextCopy isShortcutsApp])
   {
     goto LABEL_7;
   }
 
-  v11 = [(WFSuspendedDialogRestoration *)self layoutMonitor];
+  layoutMonitor = [(WFSuspendedDialogRestoration *)self layoutMonitor];
 
-  if (v11)
+  if (layoutMonitor)
   {
     [(WFSuspendedDialogRestoration *)self stopObservingApplicationState];
   }
@@ -42,15 +42,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(WFSuspendedDialogRestoration *)self setSuspendedRequest:v8];
-    [(WFSuspendedDialogRestoration *)self setSuspendedRunningContext:v9];
-    [(WFSuspendedDialogRestoration *)self setSuspendedRequestCompletion:v10];
+    [(WFSuspendedDialogRestoration *)self setSuspendedRequest:requestCopy];
+    [(WFSuspendedDialogRestoration *)self setSuspendedRunningContext:contextCopy];
+    [(WFSuspendedDialogRestoration *)self setSuspendedRequestCompletion:handlerCopy];
   }
 
-  v12 = [(WFSuspendedDialogRestoration *)self screenOnObserver];
-  v13 = [v12 screenOn];
+  screenOnObserver = [(WFSuspendedDialogRestoration *)self screenOnObserver];
+  screenOn = [screenOnObserver screenOn];
 
-  if ((v13 & 1) == 0)
+  if ((screenOn & 1) == 0)
   {
     [(WFSuspendedDialogRestoration *)self setScreenDidTurnOffDuringActiveRequest:1];
     v14 = 0;
@@ -65,15 +65,15 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)shortcutsAppIsForegroundInLayout:(id)a3
+- (BOOL)shortcutsAppIsForegroundInLayout:(id)layout
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [a3 elements];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  elements = [layout elements];
+  v4 = [elements countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -87,12 +87,12 @@ LABEL_3:
     {
       if (*v19 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(elements);
       }
 
       v11 = *(*(&v18 + 1) + 8 * v10);
-      v12 = [v11 identifier];
-      v13 = [v12 isEqualToString:v8];
+      identifier = [v11 identifier];
+      v13 = [identifier isEqualToString:v8];
 
       if (v13)
       {
@@ -101,15 +101,15 @@ LABEL_3:
 
       if ([v11 isUIApplicationElement])
       {
-        v14 = [v11 bundleIdentifier];
-        v15 = [v14 isEqualToString:v9];
+        bundleIdentifier = [v11 bundleIdentifier];
+        v15 = [bundleIdentifier isEqualToString:v9];
 
         v6 |= v15;
       }
 
       if (v5 == ++v10)
       {
-        v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v5 = [elements countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -139,8 +139,8 @@ LABEL_13:
 
 - (void)stopObservingApplicationState
 {
-  v3 = [(WFSuspendedDialogRestoration *)self layoutMonitor];
-  [v3 invalidate];
+  layoutMonitor = [(WFSuspendedDialogRestoration *)self layoutMonitor];
+  [layoutMonitor invalidate];
 
   layoutMonitor = self->_layoutMonitor;
   self->_layoutMonitor = 0;
@@ -148,15 +148,15 @@ LABEL_13:
 
 - (void)beginObservingApplicationState
 {
-  v3 = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
-  [v3 setNeedsUserInteractivePriority:1];
+  configurationForDefaultMainDisplayMonitor = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
+  [configurationForDefaultMainDisplayMonitor setNeedsUserInteractivePriority:1];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__WFSuspendedDialogRestoration_beginObservingApplicationState__block_invoke;
   v6[3] = &unk_1E837F8C0;
   v6[4] = self;
-  [v3 setTransitionHandler:v6];
-  v4 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:v3];
+  [configurationForDefaultMainDisplayMonitor setTransitionHandler:v6];
+  v4 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
   layoutMonitor = self->_layoutMonitor;
   self->_layoutMonitor = v4;
 }
@@ -282,16 +282,16 @@ void __62__WFSuspendedDialogRestoration_beginObservingApplicationState__block_in
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (WFSuspendedDialogRestoration)initWithUserInterfacePresenter:(id)a3
+- (WFSuspendedDialogRestoration)initWithUserInterfacePresenter:(id)presenter
 {
-  v5 = a3;
+  presenterCopy = presenter;
   v12.receiver = self;
   v12.super_class = WFSuspendedDialogRestoration;
   v6 = [(WFSuspendedDialogRestoration *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_presenter, a3);
+    objc_storeStrong(&v6->_presenter, presenter);
     v8 = objc_alloc_init(WFScreenOnObserver);
     screenOnObserver = v7->_screenOnObserver;
     v7->_screenOnObserver = v8;

@@ -1,22 +1,22 @@
 @interface _HDDataManagerDeletionJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (_HDDataManagerDeletionJournalEntry)initWithCoder:(id)a3;
-- (_HDDataManagerDeletionJournalEntry)initWithConfiguration:(id)a3 objectUUIDs:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (_HDDataManagerDeletionJournalEntry)initWithCoder:(id)coder;
+- (_HDDataManagerDeletionJournalEntry)initWithConfiguration:(id)configuration objectUUIDs:(id)ds;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HDDataManagerDeletionJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = entriesCopy;
   v7 = [obj countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v7)
   {
@@ -32,11 +32,11 @@
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v6 dataManager];
-        v13 = [v11 UUIDCollection];
-        v14 = [v11 configuration];
+        dataManager = [profileCopy dataManager];
+        uUIDCollection = [v11 UUIDCollection];
+        configuration = [v11 configuration];
         v26 = 0;
-        v15 = [v12 deleteObjectsWithUUIDCollection:v13 configuration:v14 error:&v26];
+        v15 = [dataManager deleteObjectsWithUUIDCollection:uUIDCollection configuration:configuration error:&v26];
         v16 = v26;
 
         if ((v15 & 1) == 0)
@@ -62,9 +62,9 @@
           }
 
           v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", objc_opt_class()];
-          v19 = [v6 daemon];
-          v20 = [v19 autoBugCaptureReporter];
-          [v20 reportJournalFailureWithErrorDescription:v18 provenance:0 error:v16];
+          daemon = [profileCopy daemon];
+          autoBugCaptureReporter = [daemon autoBugCaptureReporter];
+          [autoBugCaptureReporter reportJournalFailureWithErrorDescription:v18 provenance:0 error:v16];
         }
       }
 
@@ -83,40 +83,40 @@ LABEL_15:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (_HDDataManagerDeletionJournalEntry)initWithConfiguration:(id)a3 objectUUIDs:(id)a4
+- (_HDDataManagerDeletionJournalEntry)initWithConfiguration:(id)configuration objectUUIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  dsCopy = ds;
   v12.receiver = self;
   v12.super_class = _HDDataManagerDeletionJournalEntry;
   v8 = [(_HDDataManagerDeletionJournalEntry *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [configurationCopy copy];
     configuration = v8->_configuration;
     v8->_configuration = v9;
 
-    objc_storeStrong(&v8->_UUIDCollection, a4);
+    objc_storeStrong(&v8->_UUIDCollection, ds);
   }
 
   return v8;
 }
 
-- (_HDDataManagerDeletionJournalEntry)initWithCoder:(id)a3
+- (_HDDataManagerDeletionJournalEntry)initWithCoder:(id)coder
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = _HDDataManagerDeletionJournalEntry;
-  v5 = [(HDJournalEntry *)&v18 initWithCoder:v4];
+  v5 = [(HDJournalEntry *)&v18 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
     v8 = objc_autoreleasePoolPush();
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuids_data"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuids_data"];
     UUIDCollection = v5->_UUIDCollection;
     v5->_UUIDCollection = v9;
 
@@ -127,7 +127,7 @@ LABEL_15:
       v19[1] = objc_opt_class();
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
       v13 = [v11 setWithArray:v12];
-      v14 = [v4 decodeObjectOfClasses:v13 forKey:@"object_uuids"];
+      v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"object_uuids"];
       v15 = v5->_UUIDCollection;
       v5->_UUIDCollection = v14;
     }
@@ -139,16 +139,16 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = _HDDataManagerDeletionJournalEntry;
-  [(HDJournalEntry *)&v7 encodeWithCoder:v4];
-  [v4 encodeObject:self->_configuration forKey:@"configuration"];
+  [(HDJournalEntry *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_configuration forKey:@"configuration"];
   v5 = objc_autoreleasePoolPush();
-  v6 = [(HKUUIDCollection *)self->_UUIDCollection hk_dataForAllUUIDs];
-  [v4 encodeObject:v6 forKey:@"uuids_data"];
+  hk_dataForAllUUIDs = [(HKUUIDCollection *)self->_UUIDCollection hk_dataForAllUUIDs];
+  [coderCopy encodeObject:hk_dataForAllUUIDs forKey:@"uuids_data"];
 
   objc_autoreleasePoolPop(v5);
 }

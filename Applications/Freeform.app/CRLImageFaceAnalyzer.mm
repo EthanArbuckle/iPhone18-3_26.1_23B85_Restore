@@ -1,21 +1,21 @@
 @interface CRLImageFaceAnalyzer
-+ (CGPoint)maskCenterForFacesInImageData:(id)a3 imageSize:(CGSize)a4 maskSize:(CGSize)a5 defaultCenter:(CGPoint)a6 assetOwner:(id)a7;
-- (CRLImageFaceAnalyzer)initWithImageData:(id)a3 assetOwner:(id)a4;
++ (CGPoint)maskCenterForFacesInImageData:(id)data imageSize:(CGSize)size maskSize:(CGSize)maskSize defaultCenter:(CGPoint)center assetOwner:(id)owner;
+- (CRLImageFaceAnalyzer)initWithImageData:(id)data assetOwner:(id)owner;
 - (_TtC8Freeform26CRLImageFaceAnalyzerResult)faceAnalyzerResult;
-- (double)p_largestAreaFromFaceRects:(id)a3;
-- (id)p_faceRectsForResults:(id)a3;
-- (id)p_interestingfaceRectsFromFaceRects:(id)a3;
+- (double)p_largestAreaFromFaceRects:(id)rects;
+- (id)p_faceRectsForResults:(id)results;
+- (id)p_interestingfaceRectsFromFaceRects:(id)rects;
 - (void)p_analyzeFaceRectsIfNeeded;
-- (void)p_analyzeFaceRectsWithProvider:(id)a3;
+- (void)p_analyzeFaceRectsWithProvider:(id)provider;
 @end
 
 @implementation CRLImageFaceAnalyzer
 
-- (CRLImageFaceAnalyzer)initWithImageData:(id)a3 assetOwner:(id)a4
+- (CRLImageFaceAnalyzer)initWithImageData:(id)data assetOwner:(id)owner
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dataCopy = data;
+  ownerCopy = owner;
+  if (!dataCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -50,30 +50,30 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_imageData, a3);
-    objc_storeStrong(&v13->_assetOwner, a4);
+    objc_storeStrong(&v12->_imageData, data);
+    objc_storeStrong(&v13->_assetOwner, owner);
   }
 
   return v13;
 }
 
-+ (CGPoint)maskCenterForFacesInImageData:(id)a3 imageSize:(CGSize)a4 maskSize:(CGSize)a5 defaultCenter:(CGPoint)a6 assetOwner:(id)a7
++ (CGPoint)maskCenterForFacesInImageData:(id)data imageSize:(CGSize)size maskSize:(CGSize)maskSize defaultCenter:(CGPoint)center assetOwner:(id)owner
 {
-  y = a6.y;
-  x = a6.x;
-  height = a5.height;
-  width = a5.width;
-  v11 = a4.height;
-  v12 = a4.width;
-  v14 = a7;
-  v15 = a3;
-  v16 = [[CRLImageFaceAnalyzer alloc] initWithImageData:v15 assetOwner:v14];
+  y = center.y;
+  x = center.x;
+  height = maskSize.height;
+  width = maskSize.width;
+  v11 = size.height;
+  v12 = size.width;
+  ownerCopy = owner;
+  dataCopy = data;
+  v16 = [[CRLImageFaceAnalyzer alloc] initWithImageData:dataCopy assetOwner:ownerCopy];
 
-  v17 = [(CRLImageFaceAnalyzer *)v16 faceAnalyzerResult];
-  v18 = v17;
-  if (v17)
+  faceAnalyzerResult = [(CRLImageFaceAnalyzer *)v16 faceAnalyzerResult];
+  v18 = faceAnalyzerResult;
+  if (faceAnalyzerResult)
   {
-    [v17 maskCenterForFacesWithImageSize:v12 maskSize:v11 defaultCenter:{width, height, x, y}];
+    [faceAnalyzerResult maskCenterForFacesWithImageSize:v12 maskSize:v11 defaultCenter:{width, height, x, y}];
     x = v19;
     y = v20;
   }
@@ -146,13 +146,13 @@
   }
 }
 
-- (void)p_analyzeFaceRectsWithProvider:(id)a3
+- (void)p_analyzeFaceRectsWithProvider:(id)provider
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  providerCopy = provider;
+  v5 = providerCopy;
+  if (providerCopy)
   {
-    [v4 naturalSize];
+    [providerCopy naturalSize];
     if (v6 >= v7)
     {
       v8 = v6;
@@ -165,7 +165,7 @@
 
     if (v8 <= 5000.0)
     {
-      v9 = [v5 CGImageOfLargestSafeSize];
+      cGImageOfLargestSafeSize = [v5 CGImageOfLargestSafeSize];
     }
 
     else
@@ -176,10 +176,10 @@
       }
 
       while (v8 > 5000.0);
-      v9 = [v5 CGImageForSize:0 inContext:self orContentsScaleProvider:{sub_100121E58(v6, v7, v8, v8)}];
+      cGImageOfLargestSafeSize = [v5 CGImageForSize:0 inContext:self orContentsScaleProvider:{sub_100121E58(v6, v7, v8, v8)}];
     }
 
-    v10 = [[VNImageRequestHandler alloc] initWithCGImage:v9 orientation:sub_1004F3D60(objc_msgSend(v5 options:{"orientation")), &__NSDictionary0__struct}];
+    v10 = [[VNImageRequestHandler alloc] initWithCGImage:cGImageOfLargestSafeSize orientation:sub_1004F3D60(objc_msgSend(v5 options:{"orientation")), &__NSDictionary0__struct}];
     v11 = objc_alloc_init(VNDetectFaceRectanglesRequest);
     v21 = v11;
     v12 = [NSArray arrayWithObjects:&v21 count:1];
@@ -203,8 +203,8 @@
 
     else
     {
-      v15 = [v11 results];
-      v16 = [(CRLImageFaceAnalyzer *)self p_faceRectsForResults:v15];
+      results = [v11 results];
+      v16 = [(CRLImageFaceAnalyzer *)self p_faceRectsForResults:results];
 
       if ([v16 count])
       {
@@ -222,30 +222,30 @@
   self->_hasAnalyzedData = 1;
 }
 
-- (id)p_interestingfaceRectsFromFaceRects:(id)a3
+- (id)p_interestingfaceRectsFromFaceRects:(id)rects
 {
-  v4 = a3;
-  [(CRLImageFaceAnalyzer *)self p_largestAreaFromFaceRects:v4];
+  rectsCopy = rects;
+  [(CRLImageFaceAnalyzer *)self p_largestAreaFromFaceRects:rectsCopy];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10030B2D0;
   v9[3] = &unk_101855428;
   v9[4] = v5;
-  v6 = [v4 indexesOfObjectsPassingTest:v9];
-  v7 = [v4 objectsAtIndexes:v6];
+  v6 = [rectsCopy indexesOfObjectsPassingTest:v9];
+  v7 = [rectsCopy objectsAtIndexes:v6];
 
   return v7;
 }
 
-- (id)p_faceRectsForResults:(id)a3
+- (id)p_faceRectsForResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v4 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = resultsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -281,14 +281,14 @@
   return v4;
 }
 
-- (double)p_largestAreaFromFaceRects:(id)a3
+- (double)p_largestAreaFromFaceRects:(id)rects
 {
-  v3 = a3;
+  rectsCopy = rects;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [rectsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -300,7 +300,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(rectsCopy);
         }
 
         [*(*(&v12 + 1) + 8 * i) CGRectValue];
@@ -310,7 +310,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [rectsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

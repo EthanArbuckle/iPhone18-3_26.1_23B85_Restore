@@ -1,65 +1,65 @@
 @interface CAMRemoteShutterController
-- (BOOL)cameraConnection:(id)a3 setCaptureDevice:(int64_t)a4;
-- (BOOL)cameraConnection:(id)a3 setCaptureMode:(int64_t)a4;
-- (BOOL)cameraConnectionBeginBurstCapture:(id)a3;
-- (BOOL)cameraConnectionBurstSupport:(id)a3;
-- (BOOL)cameraConnectionEndBurstCapture:(id)a3;
-- (BOOL)cameraConnectionPauseCapture:(id)a3;
-- (BOOL)cameraConnectionResumeCapture:(id)a3;
-- (BOOL)cameraConnectionStartCapture:(id)a3;
-- (BOOL)cameraConnectionStopCapture:(id)a3;
-- (BOOL)cameraConnectionSupportsMomentCapture:(id)a3;
-- (BOOL)cameraConnectionToggleCameraDeviceSupport:(id)a3;
-- (BOOL)cameraConnectionZoomMagnificationSupport:(id)a3;
-- (BOOL)cameraConnectionZoomSupport:(id)a3;
-- (CAMRemoteShutterController)initWithCaptureConfiguration:(id)a3 motionController:(id)a4;
+- (BOOL)cameraConnection:(id)connection setCaptureDevice:(int64_t)device;
+- (BOOL)cameraConnection:(id)connection setCaptureMode:(int64_t)mode;
+- (BOOL)cameraConnectionBeginBurstCapture:(id)capture;
+- (BOOL)cameraConnectionBurstSupport:(id)support;
+- (BOOL)cameraConnectionEndBurstCapture:(id)capture;
+- (BOOL)cameraConnectionPauseCapture:(id)capture;
+- (BOOL)cameraConnectionResumeCapture:(id)capture;
+- (BOOL)cameraConnectionStartCapture:(id)capture;
+- (BOOL)cameraConnectionStopCapture:(id)capture;
+- (BOOL)cameraConnectionSupportsMomentCapture:(id)capture;
+- (BOOL)cameraConnectionToggleCameraDeviceSupport:(id)support;
+- (BOOL)cameraConnectionZoomMagnificationSupport:(id)support;
+- (BOOL)cameraConnectionZoomSupport:(id)support;
+- (CAMRemoteShutterController)initWithCaptureConfiguration:(id)configuration motionController:(id)controller;
 - (CAMRemoteShutterDelegate)delegate;
 - (double)_displayZoomValueForZoomFactor:(double)result;
 - (double)_zoomFactorForDisplayZoomValue:(double)result;
-- (double)cameraConnectionMaximumZoomMagnification:(id)a3;
-- (double)cameraConnectionMinimumZoomMagnification:(id)a3;
-- (id)cameraConnectionSupportedCaptureDevices:(id)a3;
-- (id)cameraConnectionSupportedCaptureModes:(id)a3;
-- (int64_t)_convertCaptureDevice:(int64_t)a3;
-- (int64_t)_convertMode:(int64_t)a3;
-- (int64_t)_convertPanoramaDirection:(int64_t)a3;
-- (int64_t)cameraConnectionFlashMode:(id)a3;
-- (int64_t)cameraConnectionFlashSupport:(id)a3;
-- (int64_t)cameraConnectionHDRSupport:(id)a3;
-- (int64_t)cameraConnectionIrisMode:(id)a3;
-- (int64_t)cameraConnectionIrisSupport:(id)a3;
-- (int64_t)cameraConnectionOrientation:(id)a3;
-- (void)_captureOrientationDidChange:(id)a3;
+- (double)cameraConnectionMaximumZoomMagnification:(id)magnification;
+- (double)cameraConnectionMinimumZoomMagnification:(id)magnification;
+- (id)cameraConnectionSupportedCaptureDevices:(id)devices;
+- (id)cameraConnectionSupportedCaptureModes:(id)modes;
+- (int64_t)_convertCaptureDevice:(int64_t)device;
+- (int64_t)_convertMode:(int64_t)mode;
+- (int64_t)_convertPanoramaDirection:(int64_t)direction;
+- (int64_t)cameraConnectionFlashMode:(id)mode;
+- (int64_t)cameraConnectionFlashSupport:(id)support;
+- (int64_t)cameraConnectionHDRSupport:(id)support;
+- (int64_t)cameraConnectionIrisMode:(id)mode;
+- (int64_t)cameraConnectionIrisSupport:(id)support;
+- (int64_t)cameraConnectionOrientation:(id)orientation;
+- (void)_captureOrientationDidChange:(id)change;
 - (void)_reevaluateConnectionOpenState;
 - (void)_refreshZoomMagnificationState;
 - (void)_sendMode;
-- (void)applyCaptureConfiguration:(id)a3;
-- (void)cameraConnection:(id)a3 setFlashMode:(int64_t)a4;
-- (void)cameraConnection:(id)a3 setFocusPoint:(CGPoint)a4;
-- (void)cameraConnection:(id)a3 setHDRMode:(int64_t)a4;
-- (void)cameraConnection:(id)a3 setIrisMode:(int64_t)a4;
-- (void)cameraConnection:(id)a3 setSharedLibraryMode:(int64_t)a4;
-- (void)cameraConnection:(id)a3 setZoomAmount:(double)a4;
-- (void)cameraConnection:(id)a3 setZoomMagnificationAmount:(double)a4;
-- (void)cameraConnection:(id)a3 takePhotoWithCountdown:(unint64_t)a4;
-- (void)cameraConnectionCancelCountdown:(id)a3;
-- (void)cameraConnectionSuspend:(id)a3;
-- (void)cameraConnectionToggleCameraDevice:(id)a3;
+- (void)applyCaptureConfiguration:(id)configuration;
+- (void)cameraConnection:(id)connection setFlashMode:(int64_t)mode;
+- (void)cameraConnection:(id)connection setFocusPoint:(CGPoint)point;
+- (void)cameraConnection:(id)connection setHDRMode:(int64_t)mode;
+- (void)cameraConnection:(id)connection setIrisMode:(int64_t)mode;
+- (void)cameraConnection:(id)connection setSharedLibraryMode:(int64_t)mode;
+- (void)cameraConnection:(id)connection setZoomAmount:(double)amount;
+- (void)cameraConnection:(id)connection setZoomMagnificationAmount:(double)amount;
+- (void)cameraConnection:(id)connection takePhotoWithCountdown:(unint64_t)countdown;
+- (void)cameraConnectionCancelCountdown:(id)countdown;
+- (void)cameraConnectionSuspend:(id)suspend;
+- (void)cameraConnectionToggleCameraDevice:(id)device;
 - (void)createConnectionIfNecessary;
 - (void)dealloc;
-- (void)sendThumbnailImage:(id)a3 isVideo:(BOOL)a4;
-- (void)setCaptureDevice:(int64_t)a3;
-- (void)setCaptureMode:(int64_t)a3;
-- (void)setFlashMode:(int64_t)a3;
-- (void)setHdrMode:(int64_t)a3;
-- (void)setIrisMode:(int64_t)a3;
-- (void)setPanoramaDirection:(int64_t)a3;
-- (void)setShallowDepthOfFieldStatus:(int64_t)a3;
-- (void)setSharedLibraryMode:(int64_t)a3;
-- (void)setSharedLibrarySupported:(BOOL)a3;
-- (void)setShowingPreview:(BOOL)a3;
-- (void)setStereoCaptureStatus:(int64_t)a3;
-- (void)setZoomAmount:(double)a3;
+- (void)sendThumbnailImage:(id)image isVideo:(BOOL)video;
+- (void)setCaptureDevice:(int64_t)device;
+- (void)setCaptureMode:(int64_t)mode;
+- (void)setFlashMode:(int64_t)mode;
+- (void)setHdrMode:(int64_t)mode;
+- (void)setIrisMode:(int64_t)mode;
+- (void)setPanoramaDirection:(int64_t)direction;
+- (void)setShallowDepthOfFieldStatus:(int64_t)status;
+- (void)setSharedLibraryMode:(int64_t)mode;
+- (void)setSharedLibrarySupported:(BOOL)supported;
+- (void)setShowingPreview:(BOOL)preview;
+- (void)setStereoCaptureStatus:(int64_t)status;
+- (void)setZoomAmount:(double)amount;
 @end
 
 @implementation CAMRemoteShutterController
@@ -86,32 +86,32 @@
   }
 }
 
-- (CAMRemoteShutterController)initWithCaptureConfiguration:(id)a3 motionController:(id)a4
+- (CAMRemoteShutterController)initWithCaptureConfiguration:(id)configuration motionController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = CAMRemoteShutterController;
   v8 = [(CAMRemoteShutterController *)&v13 init];
   if (v8)
   {
-    v8->_captureMode = [v6 mode];
-    v8->_captureDevice = [v6 device];
-    v8->_flashMode = [v6 flashMode];
-    v8->_hdrMode = [v6 HDRMode];
-    v8->_irisMode = [v6 irisMode];
-    v8->_sharedLibraryMode = [v6 sharedLibraryMode];
+    v8->_captureMode = [configurationCopy mode];
+    v8->_captureDevice = [configurationCopy device];
+    v8->_flashMode = [configurationCopy flashMode];
+    v8->_hdrMode = [configurationCopy HDRMode];
+    v8->_irisMode = [configurationCopy irisMode];
+    v8->_sharedLibraryMode = [configurationCopy sharedLibraryMode];
     v8->_showingPreview = 1;
     v8->_isForeground = [*MEMORY[0x1E69DDA98] applicationState] != 2;
-    objc_storeStrong(&v8->__motionController, a4);
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v8 selector:sel__enterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    objc_storeStrong(&v8->__motionController, controller);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__enterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v8 selector:sel__enterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v8 selector:sel__enterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v8 selector:sel__captureOrientationDidChange_ name:@"CAMMotionControllerCaptureOrientationChangedNotification" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v8 selector:sel__captureOrientationDidChange_ name:@"CAMMotionControllerCaptureOrientationChangedNotification" object:0];
 
     v8->_stereoCaptureStatus = 1;
   }
@@ -121,8 +121,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CCCameraConnection *)self->_connection close];
   v4.receiver = self;
@@ -130,71 +130,71 @@
   [(CAMRemoteShutterController *)&v4 dealloc];
 }
 
-- (void)applyCaptureConfiguration:(id)a3
+- (void)applyCaptureConfiguration:(id)configuration
 {
-  v4 = a3;
-  -[CAMRemoteShutterController setCaptureMode:](self, "setCaptureMode:", [v4 mode]);
-  -[CAMRemoteShutterController setCaptureDevice:](self, "setCaptureDevice:", [v4 device]);
-  -[CAMRemoteShutterController setFlashMode:](self, "setFlashMode:", [v4 flashMode]);
-  -[CAMRemoteShutterController setHdrMode:](self, "setHdrMode:", [v4 HDRMode]);
-  -[CAMRemoteShutterController setIrisMode:](self, "setIrisMode:", [v4 irisMode]);
-  v5 = [v4 sharedLibraryMode];
+  configurationCopy = configuration;
+  -[CAMRemoteShutterController setCaptureMode:](self, "setCaptureMode:", [configurationCopy mode]);
+  -[CAMRemoteShutterController setCaptureDevice:](self, "setCaptureDevice:", [configurationCopy device]);
+  -[CAMRemoteShutterController setFlashMode:](self, "setFlashMode:", [configurationCopy flashMode]);
+  -[CAMRemoteShutterController setHdrMode:](self, "setHdrMode:", [configurationCopy HDRMode]);
+  -[CAMRemoteShutterController setIrisMode:](self, "setIrisMode:", [configurationCopy irisMode]);
+  sharedLibraryMode = [configurationCopy sharedLibraryMode];
 
-  [(CAMRemoteShutterController *)self setSharedLibraryMode:v5];
+  [(CAMRemoteShutterController *)self setSharedLibraryMode:sharedLibraryMode];
 }
 
-- (int64_t)_convertCaptureDevice:(int64_t)a3
+- (int64_t)_convertCaptureDevice:(int64_t)device
 {
-  if ((a3 - 1) > 0xA)
+  if ((device - 1) > 0xA)
   {
     return 0;
   }
 
   else
   {
-    return qword_1A3A69D08[a3 - 1];
+    return qword_1A3A69D08[device - 1];
   }
 }
 
-- (int64_t)_convertMode:(int64_t)a3
+- (int64_t)_convertMode:(int64_t)mode
 {
-  if ((a3 - 1) >= 9)
+  if ((mode - 1) >= 9)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return mode;
   }
 }
 
-- (int64_t)_convertPanoramaDirection:(int64_t)a3
+- (int64_t)_convertPanoramaDirection:(int64_t)direction
 {
-  if (a3 == 2)
+  if (direction == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return direction == 1;
   }
 }
 
 - (void)_sendMode
 {
   connection = self->_connection;
-  v3 = [(CAMRemoteShutterController *)self _currentMode];
+  _currentMode = [(CAMRemoteShutterController *)self _currentMode];
 
-  [(CCCameraConnection *)connection modeSelected:v3];
+  [(CCCameraConnection *)connection modeSelected:_currentMode];
 }
 
-- (void)setShowingPreview:(BOOL)a3
+- (void)setShowingPreview:(BOOL)preview
 {
-  if (self->_showingPreview != a3)
+  if (self->_showingPreview != preview)
   {
-    self->_showingPreview = a3;
+    self->_showingPreview = preview;
     [(CCCameraConnection *)self->_connection showingLivePreviewDidChange];
   }
 }
@@ -208,11 +208,11 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       isForeground = self->_isForeground;
-      v5 = [(CCCameraConnection *)self->_connection isOpen];
+      isOpen = [(CCCameraConnection *)self->_connection isOpen];
       LODWORD(buf) = 67109376;
       HIDWORD(buf) = isForeground;
       v12 = 1024;
-      v13 = v5;
+      v13 = isOpen;
       _os_log_impl(&dword_1A3640000, v3, OS_LOG_TYPE_DEFAULT, "[ConnectionOpenStateEval] isForeground=%d, isOpen=%d", &buf, 0xEu);
     }
 
@@ -288,185 +288,185 @@ void __60__CAMRemoteShutterController__reevaluateConnectionOpenState__block_invo
   }
 }
 
-- (void)setCaptureMode:(int64_t)a3
+- (void)setCaptureMode:(int64_t)mode
 {
-  if (self->_captureMode != a3)
+  if (self->_captureMode != mode)
   {
-    self->_captureMode = a3;
+    self->_captureMode = mode;
     [(CAMRemoteShutterController *)self _sendMode];
   }
 }
 
-- (void)setCaptureDevice:(int64_t)a3
+- (void)setCaptureDevice:(int64_t)device
 {
-  if (self->_captureDevice != a3)
+  if (self->_captureDevice != device)
   {
-    self->_captureDevice = a3;
+    self->_captureDevice = device;
     connection = self->_connection;
-    v5 = [(CAMRemoteShutterController *)self _currentCaptureDevice];
+    _currentCaptureDevice = [(CAMRemoteShutterController *)self _currentCaptureDevice];
 
-    [(CCCameraConnection *)connection captureDeviceDidChange:v5];
+    [(CCCameraConnection *)connection captureDeviceDidChange:_currentCaptureDevice];
   }
 }
 
-- (void)setPanoramaDirection:(int64_t)a3
+- (void)setPanoramaDirection:(int64_t)direction
 {
   connection = self->_connection;
-  v4 = [(CAMRemoteShutterController *)self _convertPanoramaDirection:a3];
+  v4 = [(CAMRemoteShutterController *)self _convertPanoramaDirection:direction];
 
   [(CCCameraConnection *)connection panoramaDirectionDidChange:v4];
 }
 
-- (void)setFlashMode:(int64_t)a3
+- (void)setFlashMode:(int64_t)mode
 {
-  if (self->_flashMode != a3)
+  if (self->_flashMode != mode)
   {
-    self->_flashMode = a3;
+    self->_flashMode = mode;
     [(CCCameraConnection *)self->_connection flashModeDidChange];
   }
 }
 
-- (void)setHdrMode:(int64_t)a3
+- (void)setHdrMode:(int64_t)mode
 {
-  if (self->_hdrMode != a3)
+  if (self->_hdrMode != mode)
   {
-    self->_hdrMode = a3;
+    self->_hdrMode = mode;
     [(CCCameraConnection *)self->_connection hdrModeDidChange];
   }
 }
 
-- (void)setIrisMode:(int64_t)a3
+- (void)setIrisMode:(int64_t)mode
 {
-  if (self->_irisMode != a3)
+  if (self->_irisMode != mode)
   {
-    self->_irisMode = a3;
+    self->_irisMode = mode;
     [(CCCameraConnection *)self->_connection irisModeDidChange];
   }
 }
 
-- (void)setSharedLibrarySupported:(BOOL)a3
+- (void)setSharedLibrarySupported:(BOOL)supported
 {
-  if (self->_sharedLibrarySupported != a3)
+  if (self->_sharedLibrarySupported != supported)
   {
-    self->_sharedLibrarySupported = a3;
+    self->_sharedLibrarySupported = supported;
     [(CCCameraConnection *)self->_connection sharedLibrarySupportDidChange];
   }
 }
 
-- (void)setSharedLibraryMode:(int64_t)a3
+- (void)setSharedLibraryMode:(int64_t)mode
 {
-  if (self->_sharedLibraryMode != a3)
+  if (self->_sharedLibraryMode != mode)
   {
-    self->_sharedLibraryMode = a3;
+    self->_sharedLibraryMode = mode;
     [(CCCameraConnection *)self->_connection sharedLibraryModeDidChange];
   }
 }
 
-- (void)setZoomAmount:(double)a3
+- (void)setZoomAmount:(double)amount
 {
-  if (self->_zoomAmount != a3)
+  if (self->_zoomAmount != amount)
   {
-    self->_zoomAmount = a3;
+    self->_zoomAmount = amount;
     [(CCCameraConnection *)self->_connection zoomDidChange:?];
   }
 }
 
-- (void)setShallowDepthOfFieldStatus:(int64_t)a3
+- (void)setShallowDepthOfFieldStatus:(int64_t)status
 {
-  if (self->_shallowDepthOfFieldStatus != a3)
+  if (self->_shallowDepthOfFieldStatus != status)
   {
-    self->_shallowDepthOfFieldStatus = a3;
-    if ((a3 - 1) >= 0xF)
+    self->_shallowDepthOfFieldStatus = status;
+    if ((status - 1) >= 0xF)
     {
-      a3 = 0;
+      status = 0;
     }
 
-    [(CCCameraConnection *)self->_connection didUpdateShallowDepthOfFieldStatus:a3];
+    [(CCCameraConnection *)self->_connection didUpdateShallowDepthOfFieldStatus:status];
   }
 }
 
-- (void)setStereoCaptureStatus:(int64_t)a3
+- (void)setStereoCaptureStatus:(int64_t)status
 {
-  if (self->_stereoCaptureStatus != a3)
+  if (self->_stereoCaptureStatus != status)
   {
-    self->_stereoCaptureStatus = a3;
-    [(CCCameraConnection *)self->_connection didUpdateStereoCaptureStatus:a3 & 7];
+    self->_stereoCaptureStatus = status;
+    [(CCCameraConnection *)self->_connection didUpdateStereoCaptureStatus:status & 7];
   }
 }
 
-- (void)sendThumbnailImage:(id)a3 isVideo:(BOOL)a4
+- (void)sendThumbnailImage:(id)image isVideo:(BOOL)video
 {
-  v4 = a4;
-  image = a3;
+  videoCopy = video;
+  image = image;
   if ([(CCCameraConnection *)self->_connection isOpen])
   {
     v6 = UIImageJPEGRepresentation(image, 0.8);
-    [(CAMRemoteShutterController *)self sendThumbnailData:v6 isVideo:v4];
+    [(CAMRemoteShutterController *)self sendThumbnailData:v6 isVideo:videoCopy];
   }
 }
 
-- (void)_captureOrientationDidChange:(id)a3
+- (void)_captureOrientationDidChange:(id)change
 {
-  v4 = [(CAMRemoteShutterController *)self _motionController];
-  v5 = [v4 captureOrientation];
+  _motionController = [(CAMRemoteShutterController *)self _motionController];
+  captureOrientation = [_motionController captureOrientation];
 
   connection = self->_connection;
 
-  [(CCCameraConnection *)connection switchedOrientation:v5];
+  [(CCCameraConnection *)connection switchedOrientation:captureOrientation];
 }
 
-- (void)cameraConnection:(id)a3 takePhotoWithCountdown:(unint64_t)a4
+- (void)cameraConnection:(id)connection takePhotoWithCountdown:(unint64_t)countdown
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteShutter:self takePhotoWithCountdown:a4];
+  [WeakRetained remoteShutter:self takePhotoWithCountdown:countdown];
 }
 
-- (void)cameraConnectionCancelCountdown:(id)a3
+- (void)cameraConnectionCancelCountdown:(id)countdown
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained remoteShutterCancelCountdown:self];
 }
 
-- (BOOL)cameraConnectionBeginBurstCapture:(id)a3
+- (BOOL)cameraConnectionBeginBurstCapture:(id)capture
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained remoteShutterBeginBurstCapture:v3];
+  LOBYTE(selfCopy) = [WeakRetained remoteShutterBeginBurstCapture:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)cameraConnectionEndBurstCapture:(id)a3
+- (BOOL)cameraConnectionEndBurstCapture:(id)capture
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained remoteShutterEndBurstCapture:v3];
+  LOBYTE(selfCopy) = [WeakRetained remoteShutterEndBurstCapture:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)cameraConnectionSupportedCaptureDevices:(id)a3
+- (id)cameraConnectionSupportedCaptureDevices:(id)devices
 {
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = +[CAMCaptureCapabilities capabilities];
   if ([v5 isSupportedMode:self->_captureMode withDevice:0])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMRemoteShutterController _convertCaptureDevice:](self, "_convertCaptureDevice:", 0)}];
-    [v4 addObject:v6];
+    [array addObject:v6];
   }
 
   if ([v5 isSupportedMode:self->_captureMode withDevice:1])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMRemoteShutterController _convertCaptureDevice:](self, "_convertCaptureDevice:", 1)}];
-    [v4 addObject:v7];
+    [array addObject:v7];
   }
 
-  v8 = [v4 copy];
+  v8 = [array copy];
 
   return v8;
 }
 
-- (BOOL)cameraConnection:(id)a3 setCaptureDevice:(int64_t)a4
+- (BOOL)cameraConnection:(id)connection setCaptureDevice:(int64_t)device
 {
   if ([(CAMRemoteShutterController *)self isCapturingVideo]|| [(CAMRemoteShutterController *)self isCapturingTimelapse])
   {
@@ -474,15 +474,15 @@ void __60__CAMRemoteShutterController__reevaluateConnectionOpenState__block_invo
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteShutter:self setCaptureDevice:a4 == 1];
+  [WeakRetained remoteShutter:self setCaptureDevice:device == 1];
 
   return 1;
 }
 
-- (id)cameraConnectionSupportedCaptureModes:(id)a3
+- (id)cameraConnectionSupportedCaptureModes:(id)modes
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](self->_availableCaptureModes, "count", a3)}];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](self->_availableCaptureModes, "count", modes)}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -517,118 +517,118 @@ void __60__CAMRemoteShutterController__reevaluateConnectionOpenState__block_invo
   return v11;
 }
 
-- (BOOL)cameraConnection:(id)a3 setCaptureMode:(int64_t)a4
+- (BOOL)cameraConnection:(id)connection setCaptureMode:(int64_t)mode
 {
   if ([(CAMRemoteShutterController *)self isCapturingVideo]|| [(CAMRemoteShutterController *)self isCapturingTimelapse])
   {
     return 0;
   }
 
-  if ((a4 - 1) >= 9)
+  if ((mode - 1) >= 9)
   {
-    a4 = 0;
+    mode = 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteShutter:self setMode:a4];
+  [WeakRetained remoteShutter:self setMode:mode];
 
   return 1;
 }
 
-- (void)cameraConnection:(id)a3 setFocusPoint:(CGPoint)a4
+- (void)cameraConnection:(id)connection setFocusPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained remoteShutter:self focusOn:{x, y}];
 }
 
-- (BOOL)cameraConnectionStartCapture:(id)a3
+- (BOOL)cameraConnectionStartCapture:(id)capture
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained remoteShutterStartCapture:v3];
+  LOBYTE(selfCopy) = [WeakRetained remoteShutterStartCapture:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)cameraConnectionPauseCapture:(id)a3
+- (BOOL)cameraConnectionPauseCapture:(id)capture
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained remoteShutterPauseCapture:v3];
+  LOBYTE(selfCopy) = [WeakRetained remoteShutterPauseCapture:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)cameraConnectionResumeCapture:(id)a3
+- (BOOL)cameraConnectionResumeCapture:(id)capture
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained remoteShutterResumeCapture:v3];
+  LOBYTE(selfCopy) = [WeakRetained remoteShutterResumeCapture:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)cameraConnectionStopCapture:(id)a3
+- (BOOL)cameraConnectionStopCapture:(id)capture
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained remoteShutterStopCapture:v3];
+  LOBYTE(selfCopy) = [WeakRetained remoteShutterStopCapture:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)cameraConnectionSuspend:(id)a3
+- (void)cameraConnectionSuspend:(id)suspend
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained remoteShutterShouldSuspendApp:self];
 
-  v6 = os_log_create("com.apple.camera", "RemoteShutter");
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
+  mEMORY[0x1E69DC668] = os_log_create("com.apple.camera", "RemoteShutter");
+  v7 = os_log_type_enabled(mEMORY[0x1E69DC668], OS_LOG_TYPE_DEFAULT);
   if (v5)
   {
     if (v7)
     {
       *buf = 0;
-      _os_log_impl(&dword_1A3640000, v6, OS_LOG_TYPE_DEFAULT, "Suspending camera for [CCCameraConnection cameraConnectionSuspend:]", buf, 2u);
+      _os_log_impl(&dword_1A3640000, mEMORY[0x1E69DC668], OS_LOG_TYPE_DEFAULT, "Suspending camera for [CCCameraConnection cameraConnectionSuspend:]", buf, 2u);
     }
 
-    v6 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v6 suspend];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] suspend];
   }
 
   else if (v7)
   {
     *v8 = 0;
-    _os_log_impl(&dword_1A3640000, v6, OS_LOG_TYPE_DEFAULT, "Ignoring [CCCameraConnection cameraConnectionSuspend:]", v8, 2u);
+    _os_log_impl(&dword_1A3640000, mEMORY[0x1E69DC668], OS_LOG_TYPE_DEFAULT, "Ignoring [CCCameraConnection cameraConnectionSuspend:]", v8, 2u);
   }
 }
 
-- (int64_t)cameraConnectionOrientation:(id)a3
+- (int64_t)cameraConnectionOrientation:(id)orientation
 {
-  v3 = [(CAMRemoteShutterController *)self _motionController];
-  v4 = [v3 captureOrientation];
+  _motionController = [(CAMRemoteShutterController *)self _motionController];
+  captureOrientation = [_motionController captureOrientation];
 
-  return v4;
+  return captureOrientation;
 }
 
-- (BOOL)cameraConnectionZoomSupport:(id)a3
+- (BOOL)cameraConnectionZoomSupport:(id)support
 {
   v4 = +[CAMCaptureCapabilities capabilities];
-  v5 = 0;
+  continuousZoomSupportedForCinematicMode = 0;
   captureMode = self->_captureMode;
   if (captureMode > 3)
   {
     if (captureMode == 7)
     {
-      v5 = [v4 continuousZoomSupportedForCinematicMode];
+      continuousZoomSupportedForCinematicMode = [v4 continuousZoomSupportedForCinematicMode];
       goto LABEL_8;
     }
 
     if (captureMode == 6)
     {
-      v5 = [v4 continuousZoomSupportedForPortraitMode];
+      continuousZoomSupportedForCinematicMode = [v4 continuousZoomSupportedForPortraitMode];
       goto LABEL_8;
     }
 
@@ -638,7 +638,7 @@ void __60__CAMRemoteShutterController__reevaluateConnectionOpenState__block_invo
     }
 
 LABEL_7:
-    v5 = 1;
+    continuousZoomSupportedForCinematicMode = 1;
     goto LABEL_8;
   }
 
@@ -650,10 +650,10 @@ LABEL_7:
 LABEL_8:
   v7 = self->_captureDevice - 1;
   v8 = v7 > 0xA;
-  v9 = ((0x781u >> v7) ^ 1) & v5;
+  v9 = ((0x781u >> v7) ^ 1) & continuousZoomSupportedForCinematicMode;
   if (v8)
   {
-    v10 = v5;
+    v10 = continuousZoomSupportedForCinematicMode;
   }
 
   else
@@ -664,11 +664,11 @@ LABEL_8:
   return v10 & 1;
 }
 
-- (void)cameraConnection:(id)a3 setZoomAmount:(double)a4
+- (void)cameraConnection:(id)connection setZoomAmount:(double)amount
 {
-  self->_zoomAmount = a4;
+  self->_zoomAmount = amount;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteShutter:self setZoomAmount:a4];
+  [WeakRetained remoteShutter:self setZoomAmount:amount];
 }
 
 - (void)_refreshZoomMagnificationState
@@ -682,20 +682,20 @@ LABEL_8:
   currentContinuousDisplayZoomFactors = self->_currentContinuousDisplayZoomFactors;
   self->_currentContinuousDisplayZoomFactors = 0;
 
-  v7 = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration mode];
-  v8 = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration device];
-  v9 = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration videoConfiguration];
+  mode = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration mode];
+  device = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration device];
+  videoConfiguration = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration videoConfiguration];
   v10 = +[CAMCaptureCapabilities capabilities];
-  v11 = [v10 resolvedDeviceForDesiredDevice:v8 mode:v7 videoConfiguration:v9 videoStabilizationStrength:-[CAMCaptureGraphConfiguration videoStabilizationStrength](self->_currentGraphConfiguration frontRearSimultaneousVideoEnabled:{"videoStabilizationStrength"), -[CAMCaptureGraphConfiguration frontRearSimultaneousVideoEnabled](self->_currentGraphConfiguration, "frontRearSimultaneousVideoEnabled")}];
+  v11 = [v10 resolvedDeviceForDesiredDevice:device mode:mode videoConfiguration:videoConfiguration videoStabilizationStrength:-[CAMCaptureGraphConfiguration videoStabilizationStrength](self->_currentGraphConfiguration frontRearSimultaneousVideoEnabled:{"videoStabilizationStrength"), -[CAMCaptureGraphConfiguration frontRearSimultaneousVideoEnabled](self->_currentGraphConfiguration, "frontRearSimultaneousVideoEnabled")}];
   self->_currentResolvedDevice = v11;
-  if ([v10 isZoomAllowedForMode:v7 device:v11 videoConfiguration:v9 videoStabilizationStrength:{-[CAMCaptureGraphConfiguration videoStabilizationStrength](self->_currentGraphConfiguration, "videoStabilizationStrength")}])
+  if ([v10 isZoomAllowedForMode:mode device:v11 videoConfiguration:videoConfiguration videoStabilizationStrength:{-[CAMCaptureGraphConfiguration videoStabilizationStrength](self->_currentGraphConfiguration, "videoStabilizationStrength")}])
   {
     currentResolvedDevice = self->_currentResolvedDevice;
-    v13 = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration videoStabilizationStrength];
-    v14 = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration frontRearSimultaneousVideoEnabled];
+    videoStabilizationStrength = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration videoStabilizationStrength];
+    frontRearSimultaneousVideoEnabled = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration frontRearSimultaneousVideoEnabled];
     v35 = 0;
     v36 = 0;
-    v15 = [CAMZoomControlUtilities shouldApplyContinuousZoomForMode:v7 device:currentResolvedDevice videoConfiguration:v9 videoStabilizationStrength:v13 frontRearSimultaneousVideoEnabled:v14 zoomFactors:&v36 displayZoomFactors:&v35];
+    v15 = [CAMZoomControlUtilities shouldApplyContinuousZoomForMode:mode device:currentResolvedDevice videoConfiguration:videoConfiguration videoStabilizationStrength:videoStabilizationStrength frontRearSimultaneousVideoEnabled:frontRearSimultaneousVideoEnabled zoomFactors:&v36 displayZoomFactors:&v35];
     v16 = v36;
     v17 = v36;
     v18 = v35;
@@ -706,21 +706,21 @@ LABEL_8:
       v34 = v19;
       objc_storeStrong(p_currentContinuousZoomFactors, v16);
       objc_storeStrong(&self->_currentContinuousDisplayZoomFactors, v18);
-      v33 = [CAMZoomControlUtilities shouldEmulateTripleCameraZoomForMode:v7 device:self->_currentResolvedDevice videoConfiguration:v9 videoStabilizationStrength:[(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration videoStabilizationStrength] frontRearSimultaneousVideoEnabled:[(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration frontRearSimultaneousVideoEnabled]];
+      v33 = [CAMZoomControlUtilities shouldEmulateTripleCameraZoomForMode:mode device:self->_currentResolvedDevice videoConfiguration:videoConfiguration videoStabilizationStrength:[(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration videoStabilizationStrength] frontRearSimultaneousVideoEnabled:[(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration frontRearSimultaneousVideoEnabled]];
       v20 = self->_currentResolvedDevice;
       v21 = v17;
-      v22 = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration videoStabilizationStrength];
-      v23 = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration frontRearSimultaneousVideoEnabled];
-      v24 = v22;
+      videoStabilizationStrength2 = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration videoStabilizationStrength];
+      frontRearSimultaneousVideoEnabled2 = [(CAMCaptureGraphConfiguration *)self->_currentGraphConfiguration frontRearSimultaneousVideoEnabled];
+      v24 = videoStabilizationStrength2;
       v17 = v21;
-      self->_currentlyEmulatingMulticam = (v33 | [CAMZoomControlUtilities shouldEmulateWideDualCameraZoomForMode:v7 device:v20 videoConfiguration:v9 videoStabilizationStrength:v24 frontRearSimultaneousVideoEnabled:v23]) & 1;
-      v25 = [v10 isCustomLensSupportedForMode:v7 device:self->_currentResolvedDevice isTrueVideo:{-[CAMCaptureGraphConfiguration trueVideoEnabled](self->_currentGraphConfiguration, "trueVideoEnabled")}];
+      self->_currentlyEmulatingMulticam = (v33 | [CAMZoomControlUtilities shouldEmulateWideDualCameraZoomForMode:mode device:v20 videoConfiguration:videoConfiguration videoStabilizationStrength:v24 frontRearSimultaneousVideoEnabled:frontRearSimultaneousVideoEnabled2]) & 1;
+      v25 = [v10 isCustomLensSupportedForMode:mode device:self->_currentResolvedDevice isTrueVideo:{-[CAMCaptureGraphConfiguration trueVideoEnabled](self->_currentGraphConfiguration, "trueVideoEnabled")}];
       v19 = v34;
       if (v25)
       {
         v26 = +[CAMUserPreferences preferences];
-        v27 = [v26 customLensGroup];
-        v28 = [CAMZoomPoint zoomPointsWithFactors:v21 displayZoomFactors:v34 customLensGroup:v27];
+        customLensGroup = [v26 customLensGroup];
+        v28 = [CAMZoomPoint zoomPointsWithFactors:v21 displayZoomFactors:v34 customLensGroup:customLensGroup];
         v29 = [CAMZoomPoint zoomFactorsFromZoomPoints:v28];
         v30 = *p_currentContinuousZoomFactors;
         *p_currentContinuousZoomFactors = v29;
@@ -761,7 +761,7 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)cameraConnectionZoomMagnificationSupport:(id)a3
+- (BOOL)cameraConnectionZoomMagnificationSupport:(id)support
 {
   [(CAMRemoteShutterController *)self _refreshZoomMagnificationState];
   v4 = +[CAMCaptureCapabilities capabilities];
@@ -818,22 +818,22 @@ LABEL_15:
   return v5;
 }
 
-- (void)cameraConnection:(id)a3 setZoomMagnificationAmount:(double)a4
+- (void)cameraConnection:(id)connection setZoomMagnificationAmount:(double)amount
 {
-  [(CAMRemoteShutterController *)self _zoomFactorForDisplayZoomValue:a3, a4];
+  [(CAMRemoteShutterController *)self _zoomFactorForDisplayZoomValue:connection, amount];
   v6 = v5;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained remoteShutter:self setZoomFactor:v6];
 }
 
-- (double)cameraConnectionMinimumZoomMagnification:(id)a3
+- (double)cameraConnectionMinimumZoomMagnification:(id)magnification
 {
-  v3 = [(CAMRemoteShutterController *)self currentContinuousDisplayZoomFactors];
-  v4 = [v3 firstObject];
+  currentContinuousDisplayZoomFactors = [(CAMRemoteShutterController *)self currentContinuousDisplayZoomFactors];
+  firstObject = [currentContinuousDisplayZoomFactors firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    [v4 floatValue];
+    [firstObject floatValue];
     v6 = v5;
   }
 
@@ -845,14 +845,14 @@ LABEL_15:
   return v6;
 }
 
-- (double)cameraConnectionMaximumZoomMagnification:(id)a3
+- (double)cameraConnectionMaximumZoomMagnification:(id)magnification
 {
-  v3 = [(CAMRemoteShutterController *)self currentContinuousDisplayZoomFactors];
-  v4 = [v3 lastObject];
+  currentContinuousDisplayZoomFactors = [(CAMRemoteShutterController *)self currentContinuousDisplayZoomFactors];
+  lastObject = [currentContinuousDisplayZoomFactors lastObject];
 
-  if (v4)
+  if (lastObject)
   {
-    [v4 floatValue];
+    [lastObject floatValue];
     v6 = v5;
   }
 
@@ -864,7 +864,7 @@ LABEL_15:
   return v6;
 }
 
-- (int64_t)cameraConnectionFlashSupport:(id)a3
+- (int64_t)cameraConnectionFlashSupport:(id)support
 {
   captureMode = self->_captureMode;
   v4 = captureMode > 7;
@@ -900,7 +900,7 @@ LABEL_15:
   return v12;
 }
 
-- (int64_t)cameraConnectionFlashMode:(id)a3
+- (int64_t)cameraConnectionFlashMode:(id)mode
 {
   flashMode = self->_flashMode;
   if (flashMode == 1)
@@ -914,7 +914,7 @@ LABEL_15:
   }
 }
 
-- (int64_t)cameraConnectionHDRSupport:(id)a3
+- (int64_t)cameraConnectionHDRSupport:(id)support
 {
   v4 = +[CAMCaptureCapabilities capabilities];
   if (([v4 isHDRSettingAllowed] & 1) == 0 && (objc_msgSend(v4, "isModernHDRSupported") & 1) != 0 || ((captureMode = self->_captureMode, v6 = captureMode > 9, v7 = (1 << captureMode) & 0x211, !v6) ? (v8 = v7 == 0) : (v8 = 1), v8))
@@ -941,7 +941,7 @@ LABEL_15:
   return v11;
 }
 
-- (int64_t)cameraConnectionIrisSupport:(id)a3
+- (int64_t)cameraConnectionIrisSupport:(id)support
 {
   v4 = +[CAMCaptureCapabilities capabilities];
   v5 = v4;
@@ -977,7 +977,7 @@ LABEL_15:
   return v8;
 }
 
-- (int64_t)cameraConnectionIrisMode:(id)a3
+- (int64_t)cameraConnectionIrisMode:(id)mode
 {
   irisMode = self->_irisMode;
   if (irisMode == 2)
@@ -991,7 +991,7 @@ LABEL_15:
   }
 }
 
-- (BOOL)cameraConnectionBurstSupport:(id)a3
+- (BOOL)cameraConnectionBurstSupport:(id)support
 {
   v4 = +[CAMCaptureCapabilities capabilities];
   LOBYTE(self) = [v4 isBurstSupportedForMode:-[CAMRemoteShutterController captureMode](self device:{"captureMode"), -[CAMRemoteShutterController captureDevice](self, "captureDevice")}];
@@ -999,7 +999,7 @@ LABEL_15:
   return self;
 }
 
-- (BOOL)cameraConnectionSupportsMomentCapture:(id)a3
+- (BOOL)cameraConnectionSupportsMomentCapture:(id)capture
 {
   v4 = +[CAMCaptureCapabilities capabilities];
   LOBYTE(self) = [v4 isCTMVideoCaptureSupportedForMode:{-[CAMRemoteShutterController captureMode](self, "captureMode")}];
@@ -1007,7 +1007,7 @@ LABEL_15:
   return self;
 }
 
-- (BOOL)cameraConnectionToggleCameraDeviceSupport:(id)a3
+- (BOOL)cameraConnectionToggleCameraDeviceSupport:(id)support
 {
   captureMode = self->_captureMode;
   v4 = captureMode > 5;
@@ -1020,18 +1020,18 @@ LABEL_15:
   v7 = +[CAMCaptureCapabilities capabilities];
   if ([v7 isBackCameraSupported])
   {
-    v8 = [v7 isFrontCameraSupported];
+    isFrontCameraSupported = [v7 isFrontCameraSupported];
   }
 
   else
   {
-    v8 = 0;
+    isFrontCameraSupported = 0;
   }
 
-  return v8;
+  return isFrontCameraSupported;
 }
 
-- (void)cameraConnectionToggleCameraDevice:(id)a3
+- (void)cameraConnectionToggleCameraDevice:(id)device
 {
   v4 = self->_captureDevice - 1;
   if (v4 > 0xA)
@@ -1049,10 +1049,10 @@ LABEL_15:
   [WeakRetained remoteShutter:self setCaptureDevice:self->_captureDevice];
 }
 
-- (void)cameraConnection:(id)a3 setFlashMode:(int64_t)a4
+- (void)cameraConnection:(id)connection setFlashMode:(int64_t)mode
 {
-  v5 = a4 == 1;
-  if (a4 == 2)
+  v5 = mode == 1;
+  if (mode == 2)
   {
     v5 = 2;
   }
@@ -1062,17 +1062,17 @@ LABEL_15:
   [WeakRetained remoteShutter:self setFlashMode:self->_flashMode];
 }
 
-- (void)cameraConnection:(id)a3 setHDRMode:(int64_t)a4
+- (void)cameraConnection:(id)connection setHDRMode:(int64_t)mode
 {
-  self->_hdrMode = (a4 - 1) < 2;
+  self->_hdrMode = (mode - 1) < 2;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained remoteShutter:self setHDRMode:self->_hdrMode];
 }
 
-- (void)cameraConnection:(id)a3 setIrisMode:(int64_t)a4
+- (void)cameraConnection:(id)connection setIrisMode:(int64_t)mode
 {
-  v5 = a4 == 1;
-  if (a4 == 2)
+  v5 = mode == 1;
+  if (mode == 2)
   {
     v5 = 2;
   }
@@ -1082,10 +1082,10 @@ LABEL_15:
   [WeakRetained remoteShutter:self setIrisMode:self->_irisMode];
 }
 
-- (void)cameraConnection:(id)a3 setSharedLibraryMode:(int64_t)a4
+- (void)cameraConnection:(id)connection setSharedLibraryMode:(int64_t)mode
 {
-  v5 = 2 * (a4 == 1);
-  if (!a4)
+  v5 = 2 * (mode == 1);
+  if (!mode)
   {
     v5 = 3;
   }

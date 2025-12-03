@@ -1,17 +1,17 @@
 @interface PPEvictingMaxTokenCountPriorityQueue
-- (PPEvictingMaxTokenCountPriorityQueue)initWithCapacity:(unint64_t)a3;
+- (PPEvictingMaxTokenCountPriorityQueue)initWithCapacity:(unint64_t)capacity;
 - (id)getMaxItemWithoutPopping;
 - (id)popItem;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)dealloc;
-- (void)enumerateTokenCountsUsingBlock:(id)a3;
+- (void)enumerateTokenCountsUsingBlock:(id)block;
 @end
 
 @implementation PPEvictingMaxTokenCountPriorityQueue
 
-- (void)enumerateTokenCountsUsingBlock:(id)a3
+- (void)enumerateTokenCountsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9 = 0;
   v5 = *(self->_queue + 1) - *self->_queue;
   if (v5)
@@ -19,7 +19,7 @@
     v6 = (v5 >> 3) - 1;
     do
     {
-      v4[2](v4, **self->_queue, &v9);
+      blockCopy[2](blockCopy, **self->_queue, &v9);
       std::priority_queue<PPTokenCount * {__strong},std::vector<PPTokenCount * {__strong}>,PPTokenCountCompareLess>::pop(self->_queue);
       v8 = v6-- != 0;
     }
@@ -61,19 +61,19 @@
   return v4;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   capacity = self->_capacity;
   if (capacity)
   {
     queue = self->_queue;
-    v25 = v4;
+    v25 = objectCopy;
     if (capacity <= (queue[1] - *queue) >> 3)
     {
-      v7 = [v4 count];
+      v7 = [objectCopy count];
       v8 = v7 > [**self->_queue count];
-      v4 = v25;
+      objectCopy = v25;
       if (v8)
       {
         goto LABEL_24;
@@ -81,10 +81,10 @@
 
       std::priority_queue<PPTokenCount * {__strong},std::vector<PPTokenCount * {__strong}>,PPTokenCountCompareLess>::pop(self->_queue);
       queue = self->_queue;
-      v4 = v25;
+      objectCopy = v25;
     }
 
-    v9 = v4;
+    v9 = objectCopy;
     v11 = queue[1];
     v10 = queue[2];
     if (v11 >= v10)
@@ -167,7 +167,7 @@
 
     queue[1] = v13;
     std::__sift_up[abi:ne200100]<std::_ClassicAlgPolicy,PPTokenCountCompareLess &,std::__wrap_iter<PPTokenCount * {__strong}*>>(*queue, v13, (v13 - *queue) >> 3);
-    v4 = v25;
+    objectCopy = v25;
   }
 
 LABEL_24:
@@ -207,14 +207,14 @@ LABEL_24:
   [(PPEvictingMaxTokenCountPriorityQueue *)&v8 dealloc];
 }
 
-- (PPEvictingMaxTokenCountPriorityQueue)initWithCapacity:(unint64_t)a3
+- (PPEvictingMaxTokenCountPriorityQueue)initWithCapacity:(unint64_t)capacity
 {
   v6.receiver = self;
   v6.super_class = PPEvictingMaxTokenCountPriorityQueue;
   v4 = [(PPEvictingMaxTokenCountPriorityQueue *)&v6 init];
   if (v4)
   {
-    v4->_capacity = a3;
+    v4->_capacity = capacity;
     operator new();
   }
 

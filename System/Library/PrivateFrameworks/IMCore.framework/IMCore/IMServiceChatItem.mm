@@ -1,11 +1,11 @@
 @interface IMServiceChatItem
-- (id)_initWithItem:(id)a3 service:(id)a4 handle:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithItem:(id)item service:(id)service handle:(id)handle;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IMServiceChatItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -14,20 +14,20 @@
   return v9;
 }
 
-- (id)_initWithItem:(id)a3 service:(id)a4 handle:(id)a5
+- (id)_initWithItem:(id)item service:(id)service handle:(id)handle
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  serviceCopy = service;
+  handleCopy = handle;
   v34.receiver = self;
   v34.super_class = IMServiceChatItem;
-  v11 = [(IMChatItem *)&v34 _initWithItem:v8];
+  v11 = [(IMChatItem *)&v34 _initWithItem:itemCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(v11 + 8, a4);
-    objc_storeStrong(v12 + 9, a5);
-    v15 = objc_msgSend_name(v9, v13, v14);
+    objc_storeStrong(v11 + 8, service);
+    objc_storeStrong(v12 + 9, handle);
+    v15 = objc_msgSend_name(serviceCopy, v13, v14);
     v16 = v15;
     if (v15)
     {
@@ -41,7 +41,7 @@
 
     v18 = v17;
 
-    v21 = objc_msgSend_ID(v10, v19, v20);
+    v21 = objc_msgSend_ID(handleCopy, v19, v20);
     v22 = v21;
     if (v21)
     {
@@ -55,7 +55,7 @@
 
     v24 = v23;
 
-    v27 = objc_msgSend_guid(v8, v25, v26);
+    v27 = objc_msgSend_guid(itemCopy, v25, v26);
     v28 = v27;
     if (v27)
     {

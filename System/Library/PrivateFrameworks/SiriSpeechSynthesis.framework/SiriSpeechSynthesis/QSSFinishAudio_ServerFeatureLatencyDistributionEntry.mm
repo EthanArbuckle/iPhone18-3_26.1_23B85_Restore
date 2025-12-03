@@ -1,7 +1,7 @@
 @interface QSSFinishAudio_ServerFeatureLatencyDistributionEntry
 - (NSString)key;
-- (Offset<siri::speech::schema_fb::FinishAudio_::ServerFeatureLatencyDistributionEntry>)addObjectToBuffer:(void *)a3;
-- (QSSFinishAudio_ServerFeatureLatencyDistributionEntry)initWithFlatbuffData:(id)a3 root:(const ServerFeatureLatencyDistributionEntry *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::FinishAudio_::ServerFeatureLatencyDistributionEntry>)addObjectToBuffer:(void *)buffer;
+- (QSSFinishAudio_ServerFeatureLatencyDistributionEntry)initWithFlatbuffData:(id)data root:(const ServerFeatureLatencyDistributionEntry *)root verify:(BOOL)verify;
 - (float)value;
 - (id)flatbuffData;
 @end
@@ -24,7 +24,7 @@
   operator new();
 }
 
-- (Offset<siri::speech::schema_fb::FinishAudio_::ServerFeatureLatencyDistributionEntry>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::FinishAudio_::ServerFeatureLatencyDistributionEntry>)addObjectToBuffer:(void *)buffer
 {
   v5 = [(QSSFinishAudio_ServerFeatureLatencyDistributionEntry *)self key];
   v6 = v5;
@@ -33,20 +33,20 @@
     v5 = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  LODWORD(v7) = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)v5 UTF8String];
+  v8 = strlen(uTF8String);
+  LODWORD(uTF8String) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
   [(QSSFinishAudio_ServerFeatureLatencyDistributionEntry *)self value];
   v10 = v9;
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v11 = *(a3 + 10);
-  v12 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v7);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 6, v10);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v11 = *(buffer + 10);
+  v12 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, uTF8String);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 6, v10);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v12 + v11);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v12 + v11);
 }
 
 - (float)value
@@ -89,42 +89,42 @@
   return v6;
 }
 
-- (QSSFinishAudio_ServerFeatureLatencyDistributionEntry)initWithFlatbuffData:(id)a3 root:(const ServerFeatureLatencyDistributionEntry *)a4 verify:(BOOL)a5
+- (QSSFinishAudio_ServerFeatureLatencyDistributionEntry)initWithFlatbuffData:(id)data root:(const ServerFeatureLatencyDistributionEntry *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSFinishAudio_ServerFeatureLatencyDistributionEntry;
   v10 = [(QSSFinishAudio_ServerFeatureLatencyDistributionEntry *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -146,9 +146,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

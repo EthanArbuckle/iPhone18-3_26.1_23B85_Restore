@@ -1,14 +1,14 @@
 @interface ENKeyedArchiverFromDataTransformer
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation ENKeyedArchiverFromDataTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:0 error:0];
+    v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:value requiringSecureCoding:0 error:0];
   }
 
   else

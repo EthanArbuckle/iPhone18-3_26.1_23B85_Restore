@@ -1,18 +1,18 @@
 @interface PXStoryAssetActionPerformer
-+ (BOOL)canPerformWithActionManager:(id)a3 error:(id *)a4;
++ (BOOL)canPerformWithActionManager:(id)manager error:(id *)error;
 - (PXStoryViewActionPerformer)storyViewActionPerformer;
 @end
 
 @implementation PXStoryAssetActionPerformer
 
-+ (BOOL)canPerformWithActionManager:(id)a3 error:(id *)a4
++ (BOOL)canPerformWithActionManager:(id)manager error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 performerDelegate];
+  managerCopy = manager;
+  performerDelegate = [managerCopy performerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v6 performerDelegate];
-    v9 = [v8 hostViewControllerForActionPerformer:0];
+    performerDelegate2 = [managerCopy performerDelegate];
+    v9 = [performerDelegate2 hostViewControllerForActionPerformer:0];
   }
 
   else
@@ -22,9 +22,9 @@
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v9 conformsToProtocol:&unk_1F1B44518])
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = &OBJC_METACLASS___PXStoryAssetActionPerformer;
-    v10 = objc_msgSendSuper2(&v12, sel_canPerformWithActionManager_error_, v6, a4);
+    v10 = objc_msgSendSuper2(&v12, sel_canPerformWithActionManager_error_, managerCopy, error);
   }
 
   else
@@ -40,8 +40,8 @@
   WeakRetained = objc_loadWeakRetained(&self->_storyViewActionPerformer);
   if (!WeakRetained)
   {
-    v4 = [(PXActionPerformer *)self hostViewController];
-    v5 = [v4 conformsToProtocol:&unk_1F1B44518];
+    hostViewController = [(PXActionPerformer *)self hostViewController];
+    v5 = [hostViewController conformsToProtocol:&unk_1F1B44518];
 
     if (!v5)
     {

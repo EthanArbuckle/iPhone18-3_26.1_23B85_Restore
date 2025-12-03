@@ -1,19 +1,19 @@
 @interface PKCatalog
-+ (id)catalogWithContentsOfURL:(id)a3 nonUbiquitousCatalogURL:(id)a4 directoryCoordinator:(id)a5;
-+ (id)catalogWithLocalCatalog:(id)a3 ubiquitousCatalog:(id)a4;
-- (BOOL)isEquivalentToCatalog:(id)a3;
-- (BOOL)isNewerThanCatalog:(id)a3;
++ (id)catalogWithContentsOfURL:(id)l nonUbiquitousCatalogURL:(id)rL directoryCoordinator:(id)coordinator;
++ (id)catalogWithLocalCatalog:(id)catalog ubiquitousCatalog:(id)ubiquitousCatalog;
+- (BOOL)isEquivalentToCatalog:(id)catalog;
+- (BOOL)isNewerThanCatalog:(id)catalog;
 - (NSMutableArray)groups;
 - (PKCatalog)init;
-- (PKCatalog)initWithCloudStoreCoder:(id)a3;
-- (PKCatalog)initWithCoder:(id)a3;
+- (PKCatalog)initWithCloudStoreCoder:(id)coder;
+- (PKCatalog)initWithCoder:(id)coder;
 - (id)allGroupIDs;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3;
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)shuffle:(int)a3;
-- (void)writeToURL:(id)a3 nonUbiquitousCatalogURL:(id)a4 atomically:(BOOL)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type;
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
+- (void)shuffle:(int)shuffle;
+- (void)writeToURL:(id)l nonUbiquitousCatalogURL:(id)rL atomically:(BOOL)atomically;
 @end
 
 @implementation PKCatalog
@@ -25,9 +25,9 @@
   v2 = [(PKCatalog *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     timestamp = v2->_timestamp;
-    v2->_timestamp = v3;
+    v2->_timestamp = date;
   }
 
   return v2;
@@ -71,10 +71,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) groupID];
-        if (v9)
+        groupID = [*(*(&v11 + 1) + 8 * i) groupID];
+        if (groupID)
         {
-          [v3 addObject:v9];
+          [v3 addObject:groupID];
         }
       }
 
@@ -87,11 +87,11 @@
   return v3;
 }
 
-+ (id)catalogWithContentsOfURL:(id)a3 nonUbiquitousCatalogURL:(id)a4 directoryCoordinator:(id)a5
++ (id)catalogWithContentsOfURL:(id)l nonUbiquitousCatalogURL:(id)rL directoryCoordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  coordinatorCopy = coordinator;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -109,21 +109,21 @@
   aBlock[2] = __83__PKCatalog_catalogWithContentsOfURL_nonUbiquitousCatalogURL_directoryCoordinator___block_invoke;
   aBlock[3] = &unk_1E79DF5C8;
   v21 = &v29;
-  v10 = v7;
+  v10 = lCopy;
   v19 = v10;
   v22 = &v23;
-  v11 = v8;
+  v11 = rLCopy;
   v20 = v11;
   v12 = _Block_copy(aBlock);
   v13 = v12;
-  if (v9)
+  if (coordinatorCopy)
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __83__PKCatalog_catalogWithContentsOfURL_nonUbiquitousCatalogURL_directoryCoordinator___block_invoke_2;
     v16[3] = &unk_1E79DA550;
     v17 = v12;
-    [v9 performCoordinatedAction:v16];
+    [coordinatorCopy performCoordinatedAction:v16];
   }
 
   else
@@ -162,23 +162,23 @@ uint64_t __83__PKCatalog_catalogWithContentsOfURL_nonUbiquitousCatalogURL_direct
   return result;
 }
 
-- (void)writeToURL:(id)a3 nonUbiquitousCatalogURL:(id)a4 atomically:(BOOL)a5
+- (void)writeToURL:(id)l nonUbiquitousCatalogURL:(id)rL atomically:(BOOL)atomically
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  atomicallyCopy = atomically;
+  rLCopy = rL;
+  lCopy = l;
   v11 = _DictionaryFromCatalogForUbiquity(self, 1);
   v10 = _DictionaryFromCatalogForUbiquity(self, 0);
-  [v11 writeToURL:v9 atomically:v5];
+  [v11 writeToURL:lCopy atomically:atomicallyCopy];
 
-  [v10 writeToURL:v8 atomically:v5];
+  [v10 writeToURL:rLCopy atomically:atomicallyCopy];
 }
 
-- (BOOL)isEquivalentToCatalog:(id)a3
+- (BOOL)isEquivalentToCatalog:(id)catalog
 {
-  v4 = a3;
+  catalogCopy = catalog;
   v5 = [(NSMutableArray *)self->_groups count];
-  if (v5 == [v4[1] count])
+  if (v5 == [catalogCopy[1] count])
   {
     if (v5)
     {
@@ -187,7 +187,7 @@ uint64_t __83__PKCatalog_catalogWithContentsOfURL_nonUbiquitousCatalogURL_direct
       do
       {
         v8 = [(NSMutableArray *)self->_groups objectAtIndex:v6];
-        v9 = [v4[1] objectAtIndex:v6];
+        v9 = [catalogCopy[1] objectAtIndex:v6];
         v10 = [v8 isEqualToGroup:v9];
 
         if (v10)
@@ -220,21 +220,21 @@ uint64_t __83__PKCatalog_catalogWithContentsOfURL_nonUbiquitousCatalogURL_direct
   return v10;
 }
 
-- (BOOL)isNewerThanCatalog:(id)a3
+- (BOOL)isNewerThanCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = [(PKCatalog *)self timestamp];
-  v6 = [v4 timestamp];
+  catalogCopy = catalog;
+  timestamp = [(PKCatalog *)self timestamp];
+  timestamp2 = [catalogCopy timestamp];
 
-  [v5 timeIntervalSinceDate:v6];
-  LOBYTE(v4) = v7 > 0.0;
+  [timestamp timeIntervalSinceDate:timestamp2];
+  LOBYTE(catalogCopy) = v7 > 0.0;
 
-  return v4;
+  return catalogCopy;
 }
 
-- (PKCatalog)initWithCoder:(id)a3
+- (PKCatalog)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKCatalog;
   v5 = [(PKCatalog *)&v15 init];
@@ -244,11 +244,11 @@ uint64_t __83__PKCatalog_catalogWithContentsOfURL_nonUbiquitousCatalogURL_direct
     v7 = objc_alloc(MEMORY[0x1E695DFD8]);
     v8 = objc_opt_class();
     v9 = [v7 initWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"groups"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"groups"];
     groups = v5->_groups;
     v5->_groups = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v12;
 
@@ -258,17 +258,17 @@ uint64_t __83__PKCatalog_catalogWithContentsOfURL_nonUbiquitousCatalogURL_direct
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = [+[PKCatalog allocWithZone:](PKCatalog init];
-  v6 = [(NSDate *)self->_timestamp copyWithZone:a3];
+  v6 = [(NSDate *)self->_timestamp copyWithZone:zone];
   timestamp = v5->_timestamp;
   v5->_timestamp = v6;
 
   if (self->_groups)
   {
-    v8 = [objc_msgSend(MEMORY[0x1E695DF70] allocWithZone:{a3), "initWithCapacity:", -[NSMutableArray count](self->_groups, "count")}];
+    v8 = [objc_msgSend(MEMORY[0x1E695DF70] allocWithZone:{zone), "initWithCapacity:", -[NSMutableArray count](self->_groups, "count")}];
     groups = v5->_groups;
     v5->_groups = v8;
 
@@ -293,7 +293,7 @@ uint64_t __83__PKCatalog_catalogWithContentsOfURL_nonUbiquitousCatalogURL_direct
           }
 
           v15 = v5->_groups;
-          v16 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+          v16 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
           [(NSMutableArray *)v15 addObject:v16];
 
           ++v14;
@@ -310,49 +310,49 @@ uint64_t __83__PKCatalog_catalogWithContentsOfURL_nonUbiquitousCatalogURL_direct
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   groups = self->_groups;
-  v5 = a3;
-  [v5 encodeObject:groups forKey:@"groups"];
-  [v5 encodeObject:self->_timestamp forKey:@"timestamp"];
+  coderCopy = coder;
+  [coderCopy encodeObject:groups forKey:@"groups"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"timestamp"];
 }
 
-- (void)shuffle:(int)a3
+- (void)shuffle:(int)shuffle
 {
-  v5 = [(PKCatalog *)self groups];
-  v6 = [v5 count];
+  groups = [(PKCatalog *)self groups];
+  v6 = [groups count];
 
-  if (a3 >= 1)
+  if (shuffle >= 1)
   {
     do
     {
       v7 = arc4random_uniform(v6);
       v8 = arc4random_uniform(v6);
-      v9 = [(PKCatalog *)self groups];
-      v10 = [v9 objectAtIndex:v7];
+      groups2 = [(PKCatalog *)self groups];
+      v10 = [groups2 objectAtIndex:v7];
 
-      v11 = [(PKCatalog *)self groups];
-      [v11 removeObjectAtIndex:v7];
+      groups3 = [(PKCatalog *)self groups];
+      [groups3 removeObjectAtIndex:v7];
 
-      v12 = [(PKCatalog *)self groups];
-      [v12 insertObject:v10 atIndex:v8];
+      groups4 = [(PKCatalog *)self groups];
+      [groups4 insertObject:v10 atIndex:v8];
 
-      --a3;
+      --shuffle;
     }
 
-    while (a3);
+    while (shuffle);
   }
 }
 
-- (PKCatalog)initWithCloudStoreCoder:(id)a3
+- (PKCatalog)initWithCloudStoreCoder:(id)coder
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [a3 recordsWithRecordType:@"PassCatalog"];
-  v5 = [v4 firstObject];
+  v4 = [coder recordsWithRecordType:@"PassCatalog"];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 encryptedValues];
-  v7 = [v6 objectForKeyedSubscript:@"manifest"];
+  encryptedValues = [firstObject encryptedValues];
+  v7 = [encryptedValues objectForKeyedSubscript:@"manifest"];
 
   if (v7)
   {
@@ -397,36 +397,36 @@ LABEL_11:
   return v16;
 }
 
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type
 {
-  v5 = [a3 recordsWithRecordType:{@"PassCatalog", a4}];
-  v6 = [v5 firstObject];
+  v5 = [coder recordsWithRecordType:{@"PassCatalog", type}];
+  firstObject = [v5 firstObject];
 
   v7 = _DictionaryFromCatalogForUbiquity(self, 1);
   v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
   if (v8)
   {
-    v9 = [v6 encryptedValues];
-    [v9 setObject:v8 forKeyedSubscript:@"manifest"];
+    encryptedValues = [firstObject encryptedValues];
+    [encryptedValues setObject:v8 forKeyedSubscript:@"manifest"];
   }
 
   else
   {
-    v9 = PKLogFacilityTypeGetObject(0xAuLL);
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    encryptedValues = PKLogFacilityTypeGetObject(0xAuLL);
+    if (os_log_type_enabled(encryptedValues, OS_LOG_TYPE_DEFAULT))
     {
       *v10 = 0;
-      _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Cannot set data for Catalog record because it is nil.", v10, 2u);
+      _os_log_impl(&dword_1AD337000, encryptedValues, OS_LOG_TYPE_DEFAULT, "Cannot set data for Catalog record because it is nil.", v10, 2u);
     }
   }
 }
 
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [objc_opt_class() recordNamePrefix];
-  v5 = [v3 stringWithFormat:@"%@%@", v4, @"manifest", @"PassCatalog"];
+  recordNamePrefix = [objc_opt_class() recordNamePrefix];
+  v5 = [v3 stringWithFormat:@"%@%@", recordNamePrefix, @"manifest", @"PassCatalog"];
   v10 = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v11[0] = v6;
@@ -435,11 +435,11 @@ LABEL_11:
   return v7;
 }
 
-+ (id)catalogWithLocalCatalog:(id)a3 ubiquitousCatalog:(id)a4
++ (id)catalogWithLocalCatalog:(id)catalog ubiquitousCatalog:(id)ubiquitousCatalog
 {
-  v5 = a3;
-  v6 = _DictionaryFromCatalogForUbiquity(a4, 1);
-  v7 = _DictionaryFromCatalogForUbiquity(v5, 0);
+  catalogCopy = catalog;
+  v6 = _DictionaryFromCatalogForUbiquity(ubiquitousCatalog, 1);
+  v7 = _DictionaryFromCatalogForUbiquity(catalogCopy, 0);
 
   v8 = _CatalogFromDictionaries(v6, v7);
 

@@ -1,27 +1,27 @@
 @interface CAMTimerIndicatorView
-- (CAMTimerIndicatorView)initWithCoder:(id)a3;
-- (CAMTimerIndicatorView)initWithFrame:(CGRect)a3;
-- (CGRect)_landscapeSwapBoundsCoordinates:(CGRect)a3;
-- (id)_decrementAnimationForTick:(int64_t)a3;
-- (id)_dimmingAnimationForTick:(int64_t)a3;
+- (CAMTimerIndicatorView)initWithCoder:(id)coder;
+- (CAMTimerIndicatorView)initWithFrame:(CGRect)frame;
+- (CGRect)_landscapeSwapBoundsCoordinates:(CGRect)coordinates;
+- (id)_decrementAnimationForTick:(int64_t)tick;
+- (id)_dimmingAnimationForTick:(int64_t)tick;
 - (id)_finalDimmingAnimation;
-- (id)_fontForStyle:(int64_t)a3;
-- (void)_addDecrementAnimationForTick:(int64_t)a3;
-- (void)_addDimmingAnimationForTick:(int64_t)a3;
+- (id)_fontForStyle:(int64_t)style;
+- (void)_addDecrementAnimationForTick:(int64_t)tick;
+- (void)_addDimmingAnimationForTick:(int64_t)tick;
 - (void)_commonCAMTimerIndicatorViewInitialization;
-- (void)_handleOrientationChange:(int64_t)a3;
+- (void)_handleOrientationChange:(int64_t)change;
 - (void)_layoutCountdownLabelForLargeStyle;
 - (void)_layoutCountdownLabelForSmallStyle;
-- (void)_layoutCountdownLabelForStyle:(int64_t)a3;
-- (void)_transitionDimmingViewFromStyle:(int64_t)a3;
-- (void)_updateCountdownLabelWithTicksRemaining:(BOOL)a3;
-- (void)_updateFromChangeToStyle:(int64_t)a3 animated:(BOOL)a4;
+- (void)_layoutCountdownLabelForStyle:(int64_t)style;
+- (void)_transitionDimmingViewFromStyle:(int64_t)style;
+- (void)_updateCountdownLabelWithTicksRemaining:(BOOL)remaining;
+- (void)_updateFromChangeToStyle:(int64_t)style animated:(BOOL)animated;
 - (void)decrement;
 - (void)layoutSubviews;
-- (void)resetWithNumberOfTicks:(int64_t)a3 showBeforeAnimationStarts:(BOOL)a4;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)startCountdownWithAnimationDelegate:(id)a3;
+- (void)resetWithNumberOfTicks:(int64_t)ticks showBeforeAnimationStarts:(BOOL)starts;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setStyle:(int64_t)style animated:(BOOL)animated;
+- (void)startCountdownWithAnimationDelegate:(id)delegate;
 @end
 
 @implementation CAMTimerIndicatorView
@@ -29,8 +29,8 @@
 - (void)_commonCAMTimerIndicatorViewInitialization
 {
   [(CAMTimerIndicatorView *)self setUserInteractionEnabled:0];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  self->_style = 2 * ([v3 cam_initialLayoutStyle] == 1);
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  self->_style = 2 * ([currentDevice cam_initialLayoutStyle] == 1);
 
   [(CAMTimerIndicatorView *)self setAutoresizingMask:18];
   v4 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -44,8 +44,8 @@
 
   [(UIView *)self->__dimmingView setAutoresizingMask:18];
   v11 = self->__dimmingView;
-  v12 = [MEMORY[0x1E69DC888] blackColor];
-  [(UIView *)v11 setBackgroundColor:v12];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(UIView *)v11 setBackgroundColor:blackColor];
 
   [(UIView *)self->__dimmingView setAlpha:0.0];
   [(CAMTimerIndicatorView *)self addSubview:self->__dimmingView];
@@ -59,27 +59,27 @@
   [(UILabel *)v15 setFont:v16];
 
   v17 = self->__countdownLabel;
-  v18 = [MEMORY[0x1E69DC888] whiteColor];
-  [(UILabel *)v17 setTextColor:v18];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(UILabel *)v17 setTextColor:whiteColor];
 
   [(UILabel *)self->__countdownLabel setTextAlignment:1];
   v19 = self->__countdownLabel;
-  v20 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)v19 setBackgroundColor:v20];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)v19 setBackgroundColor:clearColor];
 
-  v21 = [(UILabel *)self->__countdownLabel layer];
+  layer = [(UILabel *)self->__countdownLabel layer];
   v22 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.63];
-  [v21 setShadowColor:{objc_msgSend(v22, "CGColor")}];
+  [layer setShadowColor:{objc_msgSend(v22, "CGColor")}];
 
-  v23 = [(UILabel *)self->__countdownLabel layer];
-  [v23 setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  layer2 = [(UILabel *)self->__countdownLabel layer];
+  [layer2 setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
 
-  v24 = [(UILabel *)self->__countdownLabel layer];
+  layer3 = [(UILabel *)self->__countdownLabel layer];
   LODWORD(v25) = 1.0;
-  [v24 setShadowOpacity:v25];
+  [layer3 setShadowOpacity:v25];
 
-  v26 = [(UILabel *)self->__countdownLabel layer];
-  [v26 setShadowRadius:2.0];
+  layer4 = [(UILabel *)self->__countdownLabel layer];
+  [layer4 setShadowRadius:2.0];
 
   [(CAMTimerIndicatorView *)self addSubview:self->__countdownLabel];
 
@@ -111,11 +111,11 @@
   [(UILabel *)countdownLabel setFrame:9.0, 9.0, v5, v6];
 }
 
-- (CAMTimerIndicatorView)initWithFrame:(CGRect)a3
+- (CAMTimerIndicatorView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CAMTimerIndicatorView;
-  v3 = [(CAMTimerIndicatorView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMTimerIndicatorView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -126,11 +126,11 @@
   return v4;
 }
 
-- (CAMTimerIndicatorView)initWithCoder:(id)a3
+- (CAMTimerIndicatorView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CAMTimerIndicatorView;
-  v3 = [(CAMTimerIndicatorView *)&v7 initWithCoder:a3];
+  v3 = [(CAMTimerIndicatorView *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -141,13 +141,13 @@
   return v4;
 }
 
-- (CGRect)_landscapeSwapBoundsCoordinates:(CGRect)a3
+- (CGRect)_landscapeSwapBoundsCoordinates:(CGRect)coordinates
 {
-  width = a3.size.width;
-  x = a3.origin.x;
-  y = a3.origin.y;
+  width = coordinates.size.width;
+  x = coordinates.origin.x;
+  y = coordinates.origin.y;
   v6 = x;
-  height = a3.size.height;
+  height = coordinates.size.height;
   v8 = width;
   result.size.height = v8;
   result.size.width = height;
@@ -173,13 +173,13 @@
   [(UILabel *)countdownLabel setFrame:?];
 }
 
-- (void)_layoutCountdownLabelForStyle:(int64_t)a3
+- (void)_layoutCountdownLabelForStyle:(int64_t)style
 {
   if (![(CAMTimerIndicatorView *)self _isPerformingStyleAnimation])
   {
-    if (a3 >= 2)
+    if (style >= 2)
     {
-      if (a3 == 2)
+      if (style == 2)
       {
 
         [(CAMTimerIndicatorView *)self _layoutCountdownLabelForLargeStyle];
@@ -194,34 +194,34 @@
   }
 }
 
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setStyle:(int64_t)style animated:(BOOL)animated
 {
   style = self->_style;
-  if (style != a3)
+  if (style != style)
   {
-    self->_style = a3;
-    [(CAMTimerIndicatorView *)self _updateFromChangeToStyle:style animated:a4];
+    self->_style = style;
+    [(CAMTimerIndicatorView *)self _updateFromChangeToStyle:style animated:animated];
   }
 }
 
-- (id)_fontForStyle:(int64_t)a3
+- (id)_fontForStyle:(int64_t)style
 {
-  if (a3 > 2)
+  if (style > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [CAMFont cameraMonospacedFontOfSize:dbl_1A3A687B8[a3], v3];
+    v5 = [CAMFont cameraMonospacedFontOfSize:dbl_1A3A687B8[style], v3];
   }
 
   return v5;
 }
 
-- (void)_updateFromChangeToStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)_updateFromChangeToStyle:(int64_t)style animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = [(CAMTimerIndicatorView *)self _fontForStyle:?];
   v8 = [(CAMTimerIndicatorView *)self _fontForStyle:self->_style];
   [v8 pointSize];
@@ -266,7 +266,7 @@
   v21 = v20;
   v23 = v22;
   [(CAMTimerIndicatorView *)self setNeedsLayout];
-  if (v4)
+  if (animatedCopy)
   {
     v50 = 0u;
     v51 = 0u;
@@ -297,7 +297,7 @@
     v37 = v13;
     [v25 performWithoutAnimation:v36];
     [(CAMTimerIndicatorView *)self _setPerformingStyleAnimation:1];
-    [(CAMTimerIndicatorView *)self _transitionDimmingViewFromStyle:a3];
+    [(CAMTimerIndicatorView *)self _transitionDimmingViewFromStyle:style];
     v26 = MEMORY[0x1E69DD250];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
@@ -433,9 +433,9 @@ uint64_t __59__CAMTimerIndicatorView__updateFromChangeToStyle_animated___block_i
   return [*(a1 + 32) setNeedsLayout];
 }
 
-- (void)startCountdownWithAnimationDelegate:(id)a3
+- (void)startCountdownWithAnimationDelegate:(id)delegate
 {
-  objc_storeStrong(&self->__animationDelegate, a3);
+  objc_storeStrong(&self->__animationDelegate, delegate);
   [(CAMTimerIndicatorView *)self _addDecrementAnimationForTick:self->__remainingTicks];
   remainingTicks = self->__remainingTicks;
 
@@ -452,25 +452,25 @@ uint64_t __59__CAMTimerIndicatorView__updateFromChangeToStyle_animated___block_i
   [(CAMTimerIndicatorView *)self _addDimmingAnimationForTick:remainingTicks];
 }
 
-- (void)resetWithNumberOfTicks:(int64_t)a3 showBeforeAnimationStarts:(BOOL)a4
+- (void)resetWithNumberOfTicks:(int64_t)ticks showBeforeAnimationStarts:(BOOL)starts
 {
-  v4 = a4;
+  startsCopy = starts;
   animationDelegate = self->__animationDelegate;
   self->__animationDelegate = 0;
 
   [(CAMTimerIndicatorView *)self _removeAllAnimations:1];
-  self->__startingTicks = a3;
-  self->__remainingTicks = a3;
-  [(CAMTimerIndicatorView *)self _updateCountdownLabelWithTicksRemaining:v4];
+  self->__startingTicks = ticks;
+  self->__remainingTicks = ticks;
+  [(CAMTimerIndicatorView *)self _updateCountdownLabelWithTicksRemaining:startsCopy];
 
   [(CAMTimerIndicatorView *)self setNeedsLayout];
 }
 
-- (void)_updateCountdownLabelWithTicksRemaining:(BOOL)a3
+- (void)_updateCountdownLabelWithTicksRemaining:(BOOL)remaining
 {
   countdownLabel = self->__countdownLabel;
   v5 = 0.0;
-  if (a3)
+  if (remaining)
   {
     v5 = 1.0;
   }
@@ -483,7 +483,7 @@ uint64_t __59__CAMTimerIndicatorView__updateFromChangeToStyle_animated___block_i
   [(UILabel *)self->__countdownLabel setText:v7];
 }
 
-- (id)_decrementAnimationForTick:(int64_t)a3
+- (id)_decrementAnimationForTick:(int64_t)tick
 {
   v5 = [MEMORY[0x1E6979390] animationWithKeyPath:@"opacity"];
   v6 = v5;
@@ -502,17 +502,17 @@ uint64_t __59__CAMTimerIndicatorView__updateFromChangeToStyle_animated___block_i
 
   [v6 setRemovedOnCompletion:0];
   [v6 setDuration:1.0];
-  [v6 setBeginTime:CACurrentMediaTime() + (self->__remainingTicks - a3)];
+  [v6 setBeginTime:CACurrentMediaTime() + (self->__remainingTicks - tick)];
 
   return v6;
 }
 
-- (void)_addDecrementAnimationForTick:(int64_t)a3
+- (void)_addDecrementAnimationForTick:(int64_t)tick
 {
-  v5 = [(CAMTimerIndicatorView *)self _decrementAnimationForTick:a3];
+  v5 = [(CAMTimerIndicatorView *)self _decrementAnimationForTick:tick];
   [v5 setDelegate:self->__animationDelegate];
-  v4 = [(UILabel *)self->__countdownLabel layer];
-  [v4 addAnimation:v5 forKey:@"decrement"];
+  layer = [(UILabel *)self->__countdownLabel layer];
+  [layer addAnimation:v5 forKey:@"decrement"];
 }
 
 - (id)_finalDimmingAnimation
@@ -526,9 +526,9 @@ uint64_t __59__CAMTimerIndicatorView__updateFromChangeToStyle_animated___block_i
   return v2;
 }
 
-- (void)_transitionDimmingViewFromStyle:(int64_t)a3
+- (void)_transitionDimmingViewFromStyle:(int64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     if (!self->_style)
     {
@@ -543,7 +543,7 @@ uint64_t __59__CAMTimerIndicatorView__updateFromChangeToStyle_animated___block_i
     }
   }
 
-  else if (!a3 && self->_style == 2)
+  else if (!style && self->_style == 2)
   {
     remainingTicks = self->__remainingTicks;
 
@@ -551,13 +551,13 @@ uint64_t __59__CAMTimerIndicatorView__updateFromChangeToStyle_animated___block_i
   }
 }
 
-- (id)_dimmingAnimationForTick:(int64_t)a3
+- (id)_dimmingAnimationForTick:(int64_t)tick
 {
   v23[2] = *MEMORY[0x1E69E9840];
   v4 = 0.6 / self->__startingTicks;
-  v5 = [(UIView *)self->__dimmingView layer];
-  v6 = [v5 presentationLayer];
-  [v6 opacity];
+  layer = [(UIView *)self->__dimmingView layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer opacity];
   v8 = v7;
 
   startingTicks = self->__startingTicks;
@@ -611,44 +611,44 @@ uint64_t __59__CAMTimerIndicatorView__updateFromChangeToStyle_animated___block_i
   return v16;
 }
 
-- (void)_addDimmingAnimationForTick:(int64_t)a3
+- (void)_addDimmingAnimationForTick:(int64_t)tick
 {
   if (self->_style)
   {
-    v7 = [(CAMTimerIndicatorView *)self _dimmingAnimationForTick:a3];
-    v4 = [(UIView *)self->__dimmingView layer];
-    [v4 addAnimation:v7 forKey:@"dimming"];
+    v7 = [(CAMTimerIndicatorView *)self _dimmingAnimationForTick:tick];
+    layer = [(UIView *)self->__dimmingView layer];
+    [layer addAnimation:v7 forKey:@"dimming"];
 
     if (self->__remainingTicks == 1)
     {
-      v5 = [(CAMTimerIndicatorView *)self _finalDimmingAnimation];
-      v6 = [(UIView *)self->__dimmingView layer];
-      [v6 addAnimation:v5 forKey:@"finalDimming"];
+      _finalDimmingAnimation = [(CAMTimerIndicatorView *)self _finalDimmingAnimation];
+      layer2 = [(UIView *)self->__dimmingView layer];
+      [layer2 addAnimation:_finalDimmingAnimation forKey:@"finalDimming"];
     }
   }
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if ([(CAMTimerIndicatorView *)self _isPerformingStyleAnimation:a3])
+  if ([(CAMTimerIndicatorView *)self _isPerformingStyleAnimation:orientation])
   {
 
-    [(CAMTimerIndicatorView *)self _setDeferredOrientation:a3];
+    [(CAMTimerIndicatorView *)self _setDeferredOrientation:orientation];
   }
 
   else
   {
 
-    [(CAMTimerIndicatorView *)self _handleOrientationChange:a3];
+    [(CAMTimerIndicatorView *)self _handleOrientationChange:orientation];
   }
 }
 
-- (void)_handleOrientationChange:(int64_t)a3
+- (void)_handleOrientationChange:(int64_t)change
 {
-  if (a3)
+  if (change)
   {
     [(CAMTimerIndicatorView *)self _setLabelOrientation:?];
-    [CAMView rotateView:self->__countdownLabel toInterfaceOrientation:a3 animated:1];
+    [CAMView rotateView:self->__countdownLabel toInterfaceOrientation:change animated:1];
 
     [(CAMTimerIndicatorView *)self setNeedsLayout];
   }

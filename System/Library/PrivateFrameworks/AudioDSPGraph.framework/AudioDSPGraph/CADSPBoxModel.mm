@@ -1,11 +1,11 @@
 @interface CADSPBoxModel
-- (BOOL)getAudioComponentDescription:(AudioComponentDescription *)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)getAudioComponentDescription:(AudioComponentDescription *)description;
+- (BOOL)isEqual:(id)equal;
 - (NSString)className;
 - (NSString)name;
 - (NSString)subsetName;
 - (id).cxx_construct;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CADSPBoxModel
@@ -24,18 +24,18 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && (self == v4 || AudioDSPGraph::IR::BoxModel::operator==(&self->_this.name.__rep_.__l.__data_, &v4->_this));
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && (self == equalCopy || AudioDSPGraph::IR::BoxModel::operator==(&self->_this.name.__rep_.__l.__data_, &equalCopy->_this));
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CADSPMutableBoxModel allocWithZone:a3];
+  v4 = [CADSPMutableBoxModel allocWithZone:zone];
   std::string::operator=(&v4->super._this, &self->_this);
   std::__optional_storage_base<std::string,false>::__assign_from[abi:ne200100]<std::__optional_copy_assign_base<std::string,false> const&>(&v4->super._this.var0, &self->_this.var0);
   v5 = *&self[2].super.isa;
@@ -45,14 +45,14 @@
   return v4;
 }
 
-- (BOOL)getAudioComponentDescription:(AudioComponentDescription *)a3
+- (BOOL)getAudioComponentDescription:(AudioComponentDescription *)description
 {
   v4 = BYTE4(self[2].super.isa);
-  if (a3 && v4)
+  if (description && v4)
   {
     v5 = *(&self[1]._this.name.__rep_.__l + 1);
-    a3->componentFlagsMask = self[2].super.isa;
-    *&a3->componentType = v5;
+    description->componentFlagsMask = self[2].super.isa;
+    *&description->componentType = v5;
   }
 
   return v4;

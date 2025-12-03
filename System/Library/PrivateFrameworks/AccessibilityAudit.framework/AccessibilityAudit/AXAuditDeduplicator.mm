@@ -1,9 +1,9 @@
 @interface AXAuditDeduplicator
 + (void)downloadUIUnderstandingAssetsIfNeeded;
 - (AXAuditDeduplicator)init;
-- (BOOL)modelsAvailableForPlatform:(id)a3;
-- (CGImage)getCGImageForIssue:(id)a3;
-- (int)findNewIssues:(id)a3 forPlatform:(id)a4;
+- (BOOL)modelsAvailableForPlatform:(id)platform;
+- (CGImage)getCGImageForIssue:(id)issue;
+- (int)findNewIssues:(id)issues forPlatform:(id)platform;
 @end
 
 @implementation AXAuditDeduplicator
@@ -28,34 +28,34 @@
   return v2;
 }
 
-- (BOOL)modelsAvailableForPlatform:(id)a3
+- (BOOL)modelsAvailableForPlatform:(id)platform
 {
-  v3 = a3;
-  v4 = ([v3 localizedCaseInsensitiveContainsString:@"iPhone"] & 1) != 0 || objc_msgSend(v3, "localizedCaseInsensitiveContainsString:", @"iPad");
+  platformCopy = platform;
+  v4 = ([platformCopy localizedCaseInsensitiveContainsString:@"iPhone"] & 1) != 0 || objc_msgSend(platformCopy, "localizedCaseInsensitiveContainsString:", @"iPad");
 
   return v4;
 }
 
-- (CGImage)getCGImageForIssue:(id)a3
+- (CGImage)getCGImageForIssue:(id)issue
 {
-  v3 = a3;
+  issueCopy = issue;
   v4 = +[AXAuditScreenshotManager sharedManager];
-  v5 = [v3 timeStamp];
+  timeStamp = [issueCopy timeStamp];
 
-  v6 = [v4 screenshotImageForTimestamp:v5];
-  v7 = [v6 CGImage];
+  v6 = [v4 screenshotImageForTimestamp:timeStamp];
+  cGImage = [v6 CGImage];
 
-  return v7;
+  return cGImage;
 }
 
-- (int)findNewIssues:(id)a3 forPlatform:(id)a4
+- (int)findNewIssues:(id)issues forPlatform:(id)platform
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 firstObject];
-  v9 = [(AXAuditDeduplicator *)self getCGImageForIssue:v8];
+  platformCopy = platform;
+  issuesCopy = issues;
+  firstObject = [issuesCopy firstObject];
+  v9 = [(AXAuditDeduplicator *)self getCGImageForIssue:firstObject];
 
-  v10 = [(AXAuditDeduplicator *)self modelsAvailableForPlatform:v6];
+  v10 = [(AXAuditDeduplicator *)self modelsAvailableForPlatform:platformCopy];
   v11 = [(AXAuditDeduplicator *)self log];
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
   if (v10)
@@ -66,7 +66,7 @@
       _os_log_impl(&dword_23D6FE000, v11, OS_LOG_TYPE_DEFAULT, "Deduplicating with models", v17, 2u);
     }
 
-    v13 = [(AXAuditDeduplicator *)self models];
+    models = [(AXAuditDeduplicator *)self models];
   }
 
   else
@@ -77,11 +77,11 @@
       _os_log_impl(&dword_23D6FE000, v11, OS_LOG_TYPE_DEFAULT, "Deduplicating with heuristics", buf, 2u);
     }
 
-    v13 = [(AXAuditDeduplicator *)self heuristics];
+    models = [(AXAuditDeduplicator *)self heuristics];
   }
 
-  v14 = v13;
-  v15 = [v13 deduplicateIssues:v7 onImage:v9 forPlatform:v6];
+  v14 = models;
+  v15 = [models deduplicateIssues:issuesCopy onImage:v9 forPlatform:platformCopy];
 
   return v15;
 }

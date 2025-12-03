@@ -1,19 +1,19 @@
 @interface DashboardPresenter
-+ (void)presentLeaderboardsFrom:(id)a3 request:(id)a4 gameRecord:(id)a5 leaderboard:(id)a6 leaderboardSet:(id)a7 animated:(BOOL)a8;
-+ (void)processLeaderboardRequestFrom:(id)a3 request:(id)a4 gameRecord:(id)a5;
++ (void)presentLeaderboardsFrom:(id)from request:(id)request gameRecord:(id)record leaderboard:(id)leaderboard leaderboardSet:(id)set animated:(BOOL)animated;
++ (void)processLeaderboardRequestFrom:(id)from request:(id)request gameRecord:(id)record;
 - (GKGameRecord)gameRecord;
 - (NSIndexPath)scrollToIndexPath;
 - (NSString)title;
-- (_TtC12GameCenterUI18DashboardPresenter)initWithPlayerId:(id)a3;
-- (void)fetchDashboardRequiredDataWithForce:(BOOL)a3;
+- (_TtC12GameCenterUI18DashboardPresenter)initWithPlayerId:(id)id;
+- (void)fetchDashboardRequiredDataWithForce:(BOOL)force;
 - (void)handleViewDidLoad;
-- (void)presentAchievementsFrom:(id)a3 request:(id)a4 gameRecord:(id)a5;
-- (void)presentChallengesFrom:(id)a3 gameRecord:(id)a4 shouldShowPlayForChallenge:(BOOL)a5;
-- (void)presentLeaderboardsFrom:(id)a3 request:(id)a4 gameBundleID:(id)a5;
-- (void)presentPlayerProfileFrom:(id)a3 request:(id)a4 animated:(BOOL)a5;
-- (void)setDisplayInSplitView:(BOOL)a3;
-- (void)setGameRecord:(id)a3;
-- (void)setScrollToIndexPath:(id)a3;
+- (void)presentAchievementsFrom:(id)from request:(id)request gameRecord:(id)record;
+- (void)presentChallengesFrom:(id)from gameRecord:(id)record shouldShowPlayForChallenge:(BOOL)challenge;
+- (void)presentLeaderboardsFrom:(id)from request:(id)request gameBundleID:(id)d;
+- (void)presentPlayerProfileFrom:(id)from request:(id)request animated:(BOOL)animated;
+- (void)setDisplayInSplitView:(BOOL)view;
+- (void)setGameRecord:(id)record;
+- (void)setScrollToIndexPath:(id)path;
 - (void)updateSnapshot;
 @end
 
@@ -21,7 +21,7 @@
 
 - (NSString)title
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E03C064();
   v4 = v3;
 
@@ -45,17 +45,17 @@
   return v2;
 }
 
-- (void)setGameRecord:(id)a3
+- (void)setGameRecord:(id)record
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E2631F4(a3);
+  recordCopy = record;
+  selfCopy = self;
+  sub_24E2631F4(record);
 }
 
-- (void)setDisplayInSplitView:(BOOL)a3
+- (void)setDisplayInSplitView:(BOOL)view
 {
-  v4 = self;
-  sub_24E2607C0(a3);
+  selfCopy = self;
+  sub_24E2607C0(view);
 }
 
 - (NSIndexPath)scrollToIndexPath
@@ -75,12 +75,12 @@
   return v6;
 }
 
-- (void)setScrollToIndexPath:(id)a3
+- (void)setScrollToIndexPath:(id)path
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27F1E6C80);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (path)
   {
     sub_24E343498();
     v8 = sub_24E343518();
@@ -94,84 +94,84 @@
   }
 
   __swift_storeEnumTagSinglePayload(v7, v9, 1, v8);
-  v10 = self;
+  selfCopy = self;
   sub_24E263B8C(v7);
 }
 
 - (void)handleViewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E260410();
 }
 
-- (void)fetchDashboardRequiredDataWithForce:(BOOL)a3
+- (void)fetchDashboardRequiredDataWithForce:(BOOL)force
 {
-  v4 = self;
-  sub_24E2604EC(a3);
+  selfCopy = self;
+  sub_24E2604EC(force);
 }
 
 - (void)updateSnapshot
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E263294();
 }
 
-+ (void)processLeaderboardRequestFrom:(id)a3 request:(id)a4 gameRecord:(id)a5
++ (void)processLeaderboardRequestFrom:(id)from request:(id)request gameRecord:(id)record
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  sub_24E260A60(v8, a4, v10);
+  fromCopy = from;
+  requestCopy = request;
+  recordCopy = record;
+  sub_24E260A60(fromCopy, request, recordCopy);
 }
 
-+ (void)presentLeaderboardsFrom:(id)a3 request:(id)a4 gameRecord:(id)a5 leaderboard:(id)a6 leaderboardSet:(id)a7 animated:(BOOL)a8
++ (void)presentLeaderboardsFrom:(id)from request:(id)request gameRecord:(id)record leaderboard:(id)leaderboard leaderboardSet:(id)set animated:(BOOL)animated
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  fromCopy = from;
+  requestCopy = request;
+  recordCopy = record;
+  leaderboardCopy = leaderboard;
+  setCopy = set;
   sub_24E267464();
 }
 
-- (void)presentLeaderboardsFrom:(id)a3 request:(id)a4 gameBundleID:(id)a5
+- (void)presentLeaderboardsFrom:(id)from request:(id)request gameBundleID:(id)d
 {
   sub_24E347CF8();
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
+  fromCopy = from;
+  requestCopy = request;
+  selfCopy = self;
   sub_24E260928();
 }
 
-- (void)presentAchievementsFrom:(id)a3 request:(id)a4 gameRecord:(id)a5
+- (void)presentAchievementsFrom:(id)from request:(id)request gameRecord:(id)record
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  fromCopy = from;
+  requestCopy = request;
+  recordCopy = record;
+  selfCopy = self;
   sub_24E260D0C();
 }
 
-- (void)presentChallengesFrom:(id)a3 gameRecord:(id)a4 shouldShowPlayForChallenge:(BOOL)a5
+- (void)presentChallengesFrom:(id)from gameRecord:(id)record shouldShowPlayForChallenge:(BOOL)challenge
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  fromCopy = from;
+  recordCopy = record;
+  selfCopy = self;
   sub_24E2611A8();
 }
 
-- (void)presentPlayerProfileFrom:(id)a3 request:(id)a4 animated:(BOOL)a5
+- (void)presentPlayerProfileFrom:(id)from request:(id)request animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  fromCopy = from;
+  requestCopy = request;
+  selfCopy = self;
   sub_24E2614D4();
 }
 
-- (_TtC12GameCenterUI18DashboardPresenter)initWithPlayerId:(id)a3
+- (_TtC12GameCenterUI18DashboardPresenter)initWithPlayerId:(id)id
 {
-  if (a3)
+  if (id)
   {
     sub_24E347CF8();
   }

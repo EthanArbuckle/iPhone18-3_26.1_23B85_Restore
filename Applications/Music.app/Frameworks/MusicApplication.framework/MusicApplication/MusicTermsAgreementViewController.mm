@@ -1,33 +1,33 @@
 @interface MusicTermsAgreementViewController
-- (MusicTermsAgreementViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MusicTermsAgreementViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (MusicTermsAgreementViewControllerDelegate)delegate;
-- (void)_agreeBarButtonItemAction:(id)a3;
-- (void)_cancelBarButtonItemAction:(id)a3;
-- (void)_sendEmailBarButtonItemAction:(id)a3;
+- (void)_agreeBarButtonItemAction:(id)action;
+- (void)_cancelBarButtonItemAction:(id)action;
+- (void)_sendEmailBarButtonItemAction:(id)action;
 - (void)_updateBarButtonItems;
 - (void)_updateViewState;
-- (void)setAccepting:(BOOL)a3;
-- (void)setLoading:(BOOL)a3;
-- (void)setTermsText:(id)a3;
+- (void)setAccepting:(BOOL)accepting;
+- (void)setLoading:(BOOL)loading;
+- (void)setTermsText:(id)text;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MusicTermsAgreementViewController
 
-- (MusicTermsAgreementViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MusicTermsAgreementViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = MusicTermsAgreementViewController;
-  v4 = [(MusicTermsAgreementViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(MusicTermsAgreementViewController *)&v10 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
-    v6 = [(MusicTermsAgreementViewController *)v4 navigationItem];
+    navigationItem = [(MusicTermsAgreementViewController *)v4 navigationItem];
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"Terms & Conditions" value:&stru_D5B658 table:0];
-    [v6 setTitle:v8];
+    [navigationItem setTitle:v8];
   }
 
   return v5;
@@ -38,21 +38,21 @@
   v69.receiver = self;
   v69.super_class = MusicTermsAgreementViewController;
   [(MusicTermsAgreementViewController *)&v69 viewDidLayoutSubviews];
-  v3 = [(MusicTermsAgreementViewController *)self view];
-  [v3 bounds];
+  view = [(MusicTermsAgreementViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(MusicTermsAgreementViewController *)self traitCollection];
-  [v12 displayScale];
+  traitCollection = [(MusicTermsAgreementViewController *)self traitCollection];
+  [traitCollection displayScale];
   v14 = MusicSafeDisplayScale(v13);
   if (self->_loading)
   {
     v58 = v14;
-    v15 = [(MusicTermsAgreementViewController *)self view];
-    v16 = [v15 safeAreaLayoutGuide];
-    [v16 layoutFrame];
+    view2 = [(MusicTermsAgreementViewController *)self view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     rect = v11;
     v18 = v17;
     v20 = v19;
@@ -135,15 +135,15 @@
     v43 = x + v42;
     v59 = CGPointZero.x + v42;
     loadingLabel = self->_loadingLabel;
-    v45 = [(MusicTermsAgreementViewController *)self view];
-    v46 = [v45 effectiveUserInterfaceLayoutDirection];
+    view3 = [(MusicTermsAgreementViewController *)self view];
+    effectiveUserInterfaceLayoutDirection = [view3 effectiveUserInterfaceLayoutDirection];
     v47 = v43;
     v11 = rect;
-    [(UILabel *)loadingLabel setFrame:MusicRectByApplyingUserInterfaceLayoutDirectionInRect(v46, v47, v54 + v40, width, v56, v66, v65, v67, v64)];
+    [(UILabel *)loadingLabel setFrame:MusicRectByApplyingUserInterfaceLayoutDirectionInRect(effectiveUserInterfaceLayoutDirection, v47, v54 + v40, width, v56, v66, v65, v67, v64)];
 
     loadingActivityIndicatorView = self->_loadingActivityIndicatorView;
-    v49 = [(MusicTermsAgreementViewController *)self view];
-    -[UIActivityIndicatorView setFrame:](loadingActivityIndicatorView, "setFrame:", MusicRectByApplyingUserInterfaceLayoutDirectionInRect([v49 effectiveUserInterfaceLayoutDirection], v59, v53 + v40, v60, v61, v66, v65, v67, v64));
+    view4 = [(MusicTermsAgreementViewController *)self view];
+    -[UIActivityIndicatorView setFrame:](loadingActivityIndicatorView, "setFrame:", MusicRectByApplyingUserInterfaceLayoutDirectionInRect([view4 effectiveUserInterfaceLayoutDirection], v59, v53 + v40, v60, v61, v66, v65, v67, v64));
   }
 
   [(UITextView *)self->_termsTextView setFrame:v5, v7, v9, v11];
@@ -154,9 +154,9 @@
   v11.receiver = self;
   v11.super_class = MusicTermsAgreementViewController;
   [(MusicTermsAgreementViewController *)&v11 viewDidLoad];
-  v3 = [(MusicTermsAgreementViewController *)self view];
+  view = [(MusicTermsAgreementViewController *)self view];
   v4 = +[UIColor systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = [[UITextView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   termsTextView = self->_termsTextView;
@@ -174,52 +174,52 @@
   [(UITextView *)self->_termsTextView setSelectable:0];
   [(UITextView *)self->_termsTextView setScrollEnabled:1];
   [(UITextView *)self->_termsTextView setScrollsToTop:1];
-  [v3 addSubview:self->_termsTextView];
+  [view addSubview:self->_termsTextView];
   [(MusicTermsAgreementViewController *)self _updateViewState];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = MusicTermsAgreementViewController;
-  [(MusicTermsAgreementViewController *)&v6 viewWillAppear:a3];
-  v4 = [(MusicTermsAgreementViewController *)self navigationController];
-  v5 = [v4 presentationController];
-  [v5 setDelegate:self];
+  [(MusicTermsAgreementViewController *)&v6 viewWillAppear:appear];
+  navigationController = [(MusicTermsAgreementViewController *)self navigationController];
+  presentationController = [navigationController presentationController];
+  [presentationController setDelegate:self];
 
-  [v4 setToolbarHidden:0];
+  [navigationController setToolbarHidden:0];
   [(MusicTermsAgreementViewController *)self _updateBarButtonItems];
 }
 
-- (void)setAccepting:(BOOL)a3
+- (void)setAccepting:(BOOL)accepting
 {
-  if (self->_accepting != a3)
+  if (self->_accepting != accepting)
   {
-    self->_accepting = a3;
+    self->_accepting = accepting;
     [(MusicTermsAgreementViewController *)self _updateBarButtonItems];
   }
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (self->_loading != a3)
+  if (self->_loading != loading)
   {
-    self->_loading = a3;
+    self->_loading = loading;
     [(MusicTermsAgreementViewController *)self _updateBarButtonItems];
 
     [(MusicTermsAgreementViewController *)self _updateViewState];
   }
 }
 
-- (void)setTermsText:(id)a3
+- (void)setTermsText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   termsText = self->_termsText;
-  if (termsText != v4)
+  if (termsText != textCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)termsText isEqualToString:v4];
-    v4 = v9;
+    v9 = textCopy;
+    v6 = [(NSString *)termsText isEqualToString:textCopy];
+    textCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSString *)v9 copy];
@@ -227,12 +227,12 @@
       self->_termsText = v7;
 
       [(MusicTermsAgreementViewController *)self _updateViewState];
-      v4 = v9;
+      textCopy = v9;
     }
   }
 }
 
-- (void)_agreeBarButtonItemAction:(id)a3
+- (void)_agreeBarButtonItemAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -244,7 +244,7 @@
   }
 }
 
-- (void)_cancelBarButtonItemAction:(id)a3
+- (void)_cancelBarButtonItemAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -256,7 +256,7 @@
   }
 }
 
-- (void)_sendEmailBarButtonItemAction:(id)a3
+- (void)_sendEmailBarButtonItemAction:(id)action
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"Send by Email" value:&stru_D5B658 table:0];
@@ -271,12 +271,12 @@
   v17 = 3221225472;
   v18 = __67__MusicTermsAgreementViewController__sendEmailBarButtonItemAction___block_invoke_2;
   v19 = &unk_CEEE38;
-  v20 = self;
+  selfCopy = self;
   v21 = v8;
   v11 = v8;
   v12 = [UIAlertAction actionWithTitle:v10 style:0 handler:&v16];
 
-  [v11 addAction:{v12, v16, v17, v18, v19, v20}];
+  [v11 addAction:{v12, v16, v17, v18, v19, selfCopy}];
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"Cancel" value:&stru_D5B658 table:0];
   v15 = [UIAlertAction actionWithTitle:v14 style:1 handler:0];
@@ -330,7 +330,7 @@ void __67__MusicTermsAgreementViewController__sendEmailBarButtonItemAction___blo
 
   v12 = !self->_loading && !self->_accepting;
   [(UIBarButtonItem *)sendEmailBarButtonItem setEnabled:v12];
-  v13 = [(MusicTermsAgreementViewController *)self navigationItem];
+  navigationItem = [(MusicTermsAgreementViewController *)self navigationItem];
   if (self->_accepting)
   {
     p_acceptingBarButtonItem = &self->_acceptingBarButtonItem;
@@ -371,7 +371,7 @@ LABEL_13:
   }
 
 LABEL_14:
-  [v13 setRightBarButtonItem:acceptingBarButtonItem];
+  [navigationItem setRightBarButtonItem:acceptingBarButtonItem];
   cancelBarButtonItem = self->_cancelBarButtonItem;
   if (!cancelBarButtonItem)
   {
@@ -379,7 +379,7 @@ LABEL_14:
     v24 = self->_cancelBarButtonItem;
     self->_cancelBarButtonItem = v23;
 
-    [v13 setLeftBarButtonItem:self->_cancelBarButtonItem];
+    [navigationItem setLeftBarButtonItem:self->_cancelBarButtonItem];
     cancelBarButtonItem = self->_cancelBarButtonItem;
   }
 
@@ -393,7 +393,7 @@ LABEL_14:
     return;
   }
 
-  v22 = [(MusicTermsAgreementViewController *)self view];
+  view = [(MusicTermsAgreementViewController *)self view];
   termsTextView = self->_termsTextView;
   if (self->_loading)
   {
@@ -420,7 +420,7 @@ LABEL_14:
       [(UILabel *)v13 setFont:v14];
 
       [(UILabel *)self->_loadingLabel sizeToFit];
-      [v22 addSubview:self->_loadingLabel];
+      [view addSubview:self->_loadingLabel];
     }
 
     if (!self->_loadingActivityIndicatorView)
@@ -431,10 +431,10 @@ LABEL_14:
 
       [(UIActivityIndicatorView *)self->_loadingActivityIndicatorView startAnimating];
       [(UIActivityIndicatorView *)self->_loadingActivityIndicatorView sizeToFit];
-      [v22 addSubview:self->_loadingActivityIndicatorView];
+      [view addSubview:self->_loadingActivityIndicatorView];
 LABEL_13:
-      [v22 setNeedsLayout];
-      v21 = v22;
+      [view setNeedsLayout];
+      v21 = view;
       goto LABEL_14;
     }
   }
@@ -464,7 +464,7 @@ LABEL_13:
     }
   }
 
-  v21 = v22;
+  v21 = view;
   if (v5)
   {
     goto LABEL_13;

@@ -1,18 +1,18 @@
 @interface FxMatrix44
 - (BOOL)_planarInverseZ;
 - (BOOL)invert;
-- (BOOL)invertColorMatrixWithTolerance:(double)a3;
-- (CGPoint)transform2DPoint:(CGPoint)a3;
+- (BOOL)invertColorMatrixWithTolerance:(double)tolerance;
+- (CGPoint)transform2DPoint:(CGPoint)point;
 - (FxMatrix44)init;
-- (FxMatrix44)initWithCoder:(id)a3;
-- (FxMatrix44)initWithColorMatrix44Data:(double)a3[4][4];
-- (FxMatrix44)initWithFxMatrix:(id)a3;
-- (FxMatrix44)initWithInverseOfFxMatrix:(id)a3;
-- (FxMatrix44)initWithMatrix44Data:(double)a3[4][4];
-- (FxPoint3D)transform3DPoint:(FxPoint3D)a3;
+- (FxMatrix44)initWithCoder:(id)coder;
+- (FxMatrix44)initWithColorMatrix44Data:(double)data[4][4];
+- (FxMatrix44)initWithFxMatrix:(id)matrix;
+- (FxMatrix44)initWithInverseOfFxMatrix:(id)matrix;
+- (FxMatrix44)initWithMatrix44Data:(double)data[4][4];
+- (FxPoint3D)transform3DPoint:(FxPoint3D)point;
 - (id)copy;
 - (id)description;
-- (void)setMatrix:(double)a3[4][4];
+- (void)setMatrix:(double)matrix[4][4];
 - (void)setToIdentity;
 - (void)transpose;
 @end
@@ -49,7 +49,7 @@
   return result;
 }
 
-- (FxMatrix44)initWithMatrix44Data:(double)a3[4][4]
+- (FxMatrix44)initWithMatrix44Data:(double)data[4][4]
 {
   v8.receiver = self;
   v8.super_class = FxMatrix44;
@@ -60,11 +60,11 @@
   {
     for (i = 0; i != 4; ++i)
     {
-      (*mat)[i] = (*a3)[i];
+      (*mat)[i] = (*data)[i];
     }
 
     ++v5;
-    ++a3;
+    ++data;
     ++mat;
   }
 
@@ -80,7 +80,7 @@
   return result;
 }
 
-- (FxMatrix44)initWithColorMatrix44Data:(double)a3[4][4]
+- (FxMatrix44)initWithColorMatrix44Data:(double)data[4][4]
 {
   v8.receiver = self;
   v8.super_class = FxMatrix44;
@@ -91,11 +91,11 @@
   {
     for (i = 0; i != 4; ++i)
     {
-      (*mat)[i] = (*a3)[i];
+      (*mat)[i] = (*data)[i];
     }
 
     ++v5;
-    ++a3;
+    ++data;
     ++mat;
   }
 
@@ -103,13 +103,13 @@
   return result;
 }
 
-- (FxMatrix44)initWithFxMatrix:(id)a3
+- (FxMatrix44)initWithFxMatrix:(id)matrix
 {
   v9.receiver = self;
   v9.super_class = FxMatrix44;
   result = [(FxMatrix44 *)&v9 init];
   v5 = 0;
-  v6 = a3 + 8;
+  v6 = matrix + 8;
   mat = result->_mat;
   do
   {
@@ -127,9 +127,9 @@
   return result;
 }
 
-- (FxMatrix44)initWithInverseOfFxMatrix:(id)a3
+- (FxMatrix44)initWithInverseOfFxMatrix:(id)matrix
 {
-  v3 = [(FxMatrix44 *)self initWithFxMatrix:a3];
+  v3 = [(FxMatrix44 *)self initWithFxMatrix:matrix];
   v4 = v3;
   if (v3 && ![(FxMatrix44 *)v3 invert])
   {
@@ -147,7 +147,7 @@
   return [(FxMatrix44 *)v3 initWithFxMatrix:self];
 }
 
-- (FxMatrix44)initWithCoder:(id)a3
+- (FxMatrix44)initWithCoder:(id)coder
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v15.receiver = self;
@@ -156,7 +156,7 @@
   if (v4)
   {
     v14 = 0;
-    v5 = [a3 decodeBytesForKey:@"Matrix" returnedLength:&v14];
+    v5 = [coder decodeBytesForKey:@"Matrix" returnedLength:&v14];
     if (v14 == 128)
     {
       v6 = *v5;
@@ -180,7 +180,7 @@
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Found an invalid data length in %s", "-[FxMatrix44 initWithCoder:]"];
       v16 = *MEMORY[0x277CCA450];
       v17[0] = v12;
-      [a3 failWithError:{objc_msgSend(MEMORY[0x277CCA9B8], "errorWithDomain:code:userInfo:", FxPlugErrorDomain, 15, objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v17, &v16, 1))}];
+      [coder failWithError:{objc_msgSend(MEMORY[0x277CCA9B8], "errorWithDomain:code:userInfo:", FxPlugErrorDomain, 15, objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v17, &v16, 1))}];
     }
   }
 
@@ -213,7 +213,7 @@
   while (v2 != 4);
 }
 
-- (void)setMatrix:(double)a3[4][4]
+- (void)setMatrix:(double)matrix[4][4]
 {
   v3 = 0;
   mat = self->_mat;
@@ -221,11 +221,11 @@
   {
     for (i = 0; i != 4; ++i)
     {
-      (*mat)[i] = (*a3)[i];
+      (*mat)[i] = (*matrix)[i];
     }
 
     ++v3;
-    ++a3;
+    ++matrix;
     ++mat;
   }
 
@@ -347,7 +347,7 @@
   }
 }
 
-- (BOOL)invertColorMatrixWithTolerance:(double)a3
+- (BOOL)invertColorMatrixWithTolerance:(double)tolerance
 {
   v5 = self->_mat[2][0];
   v4 = self->_mat[2][1];
@@ -372,7 +372,7 @@
   v23 = vextq_s8(v22, v22, 8uLL);
   v24 = vmulq_f64(v19, v23);
   v25 = vsubq_f64(vaddq_f64(vdupq_laneq_s64(v24, 1), v21), v24).f64[0];
-  v26 = fabs(v25) >= a3 && v25 != 0.0;
+  v26 = fabs(v25) >= tolerance && v25 != 0.0;
   if (v26)
   {
     v27 = vmuld_lane_f64(v14.f64[0], v8, 1) - vmuld_lane_f64(v8.f64[0], v14, 1);
@@ -416,24 +416,24 @@
   return v26;
 }
 
-- (CGPoint)transform2DPoint:(CGPoint)a3
+- (CGPoint)transform2DPoint:(CGPoint)point
 {
-  v3 = self->_mat[3][3] + a3.x * self->_mat[3][0] + a3.y * self->_mat[3][1];
-  v4 = (self->_mat[0][3] + a3.x * self->_mat[0][0] + a3.y * self->_mat[0][1]) / v3;
-  v5 = (self->_mat[1][3] + a3.x * self->_mat[1][0] + a3.y * self->_mat[1][1]) / v3;
+  v3 = self->_mat[3][3] + point.x * self->_mat[3][0] + point.y * self->_mat[3][1];
+  v4 = (self->_mat[0][3] + point.x * self->_mat[0][0] + point.y * self->_mat[0][1]) / v3;
+  v5 = (self->_mat[1][3] + point.x * self->_mat[1][0] + point.y * self->_mat[1][1]) / v3;
   v6 = v4;
   result.y = v5;
   result.x = v6;
   return result;
 }
 
-- (FxPoint3D)transform3DPoint:(FxPoint3D)a3
+- (FxPoint3D)transform3DPoint:(FxPoint3D)point
 {
-  v3 = self->_mat[3][3] + a3.var0 * self->_mat[3][0] + a3.var1 * self->_mat[3][1] + a3.var2 * self->_mat[3][2];
-  v4 = self->_mat[1][3] + a3.var0 * self->_mat[1][0] + a3.var1 * self->_mat[1][1] + a3.var2 * self->_mat[1][2];
-  v5 = a3.var0 * self->_mat[2][0];
-  v6 = (self->_mat[0][3] + a3.var0 * self->_mat[0][0] + a3.var1 * self->_mat[0][1] + a3.var2 * self->_mat[0][2]) / v3;
-  v7 = (self->_mat[2][3] + v5 + a3.var1 * self->_mat[2][1] + a3.var2 * self->_mat[2][2]) / v3;
+  v3 = self->_mat[3][3] + point.var0 * self->_mat[3][0] + point.var1 * self->_mat[3][1] + point.var2 * self->_mat[3][2];
+  v4 = self->_mat[1][3] + point.var0 * self->_mat[1][0] + point.var1 * self->_mat[1][1] + point.var2 * self->_mat[1][2];
+  v5 = point.var0 * self->_mat[2][0];
+  v6 = (self->_mat[0][3] + point.var0 * self->_mat[0][0] + point.var1 * self->_mat[0][1] + point.var2 * self->_mat[0][2]) / v3;
+  v7 = (self->_mat[2][3] + v5 + point.var1 * self->_mat[2][1] + point.var2 * self->_mat[2][2]) / v3;
   v8 = v4 / v3;
   result.var2 = v7;
   result.var1 = v8;

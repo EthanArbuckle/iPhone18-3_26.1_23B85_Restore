@@ -1,117 +1,117 @@
 @interface HUHomeControlServiceContext
-+ (id)_homeInfoFromDefaultActionURL:(id)a3;
++ (id)_homeInfoFromDefaultActionURL:(id)l;
 - (CGRect)animationOriginRect;
-- (HUHomeControlServiceContext)initWithAlertConfigurationContext:(id)a3;
-- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)a3 defaultActionURL:(id)a4;
-- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)a3 home:(id)a4 accessory:(id)a5 presentingViewController:(id)a6;
-- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)a3 home:(id)a4 room:(id)a5;
-- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)a3 homeIdentifier:(id)a4 accessoryIdentifier:(id)a5;
-- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)a3 homeIdentifier:(id)a4 roomIdentifier:(id)a5;
+- (HUHomeControlServiceContext)initWithAlertConfigurationContext:(id)context;
+- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)type defaultActionURL:(id)l;
+- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)type home:(id)home accessory:(id)accessory presentingViewController:(id)controller;
+- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)type home:(id)home room:(id)room;
+- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)type homeIdentifier:(id)identifier accessoryIdentifier:(id)accessoryIdentifier;
+- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)type homeIdentifier:(id)identifier roomIdentifier:(id)roomIdentifier;
 - (UIViewController)presentingViewController;
-- (id)_initWithUserInfo:(id)a3;
+- (id)_initWithUserInfo:(id)info;
 - (id)userInfo;
 - (void)dealloc;
 @end
 
 @implementation HUHomeControlServiceContext
 
-- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)a3 homeIdentifier:(id)a4 roomIdentifier:(id)a5
+- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)type homeIdentifier:(id)identifier roomIdentifier:(id)roomIdentifier
 {
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  roomIdentifierCopy = roomIdentifier;
   v14.receiver = self;
   v14.super_class = HUHomeControlServiceContext;
   v11 = [(HUHomeControlServiceContext *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_homeIdentifier, a4);
-    objc_storeStrong(&v12->_roomIdentifier, a5);
-    v12->_serviceType = a3;
+    objc_storeStrong(&v11->_homeIdentifier, identifier);
+    objc_storeStrong(&v12->_roomIdentifier, roomIdentifier);
+    v12->_serviceType = type;
   }
 
   return v12;
 }
 
-- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)a3 home:(id)a4 room:(id)a5
+- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)type home:(id)home room:(id)room
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 uniqueIdentifier];
-  v11 = [v10 UUIDString];
-  v12 = [v9 uniqueIdentifier];
-  v13 = [v12 UUIDString];
-  v14 = [(HUHomeControlServiceContext *)self initWithServiceType:a3 homeIdentifier:v11 roomIdentifier:v13];
+  homeCopy = home;
+  roomCopy = room;
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  uniqueIdentifier2 = [roomCopy uniqueIdentifier];
+  uUIDString2 = [uniqueIdentifier2 UUIDString];
+  v14 = [(HUHomeControlServiceContext *)self initWithServiceType:type homeIdentifier:uUIDString roomIdentifier:uUIDString2];
 
   if (v14)
   {
-    v15 = [v8 name];
+    name = [homeCopy name];
     homeName = v14->_homeName;
-    v14->_homeName = v15;
+    v14->_homeName = name;
 
-    v17 = [v9 name];
+    name2 = [roomCopy name];
     roomName = v14->_roomName;
-    v14->_roomName = v17;
+    v14->_roomName = name2;
   }
 
   return v14;
 }
 
-- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)a3 homeIdentifier:(id)a4 accessoryIdentifier:(id)a5
+- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)type homeIdentifier:(id)identifier accessoryIdentifier:(id)accessoryIdentifier
 {
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  accessoryIdentifierCopy = accessoryIdentifier;
   v14.receiver = self;
   v14.super_class = HUHomeControlServiceContext;
   v11 = [(HUHomeControlServiceContext *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_homeIdentifier, a4);
-    objc_storeStrong(&v12->_accessoryIdentifier, a5);
-    v12->_serviceType = a3;
+    objc_storeStrong(&v11->_homeIdentifier, identifier);
+    objc_storeStrong(&v12->_accessoryIdentifier, accessoryIdentifier);
+    v12->_serviceType = type;
   }
 
   return v12;
 }
 
-- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)a3 home:(id)a4 accessory:(id)a5 presentingViewController:(id)a6
+- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)type home:(id)home accessory:(id)accessory presentingViewController:(id)controller
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 uniqueIdentifier];
-  v14 = [v13 UUIDString];
-  v15 = [v11 uniqueIdentifier];
-  v16 = [v15 UUIDString];
-  v17 = [(HUHomeControlServiceContext *)self initWithServiceType:a3 homeIdentifier:v14 accessoryIdentifier:v16];
+  homeCopy = home;
+  accessoryCopy = accessory;
+  controllerCopy = controller;
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  uniqueIdentifier2 = [accessoryCopy uniqueIdentifier];
+  uUIDString2 = [uniqueIdentifier2 UUIDString];
+  v17 = [(HUHomeControlServiceContext *)self initWithServiceType:type homeIdentifier:uUIDString accessoryIdentifier:uUIDString2];
 
   if (v17)
   {
-    v18 = [v10 name];
+    name = [homeCopy name];
     homeName = v17->_homeName;
-    v17->_homeName = v18;
+    v17->_homeName = name;
 
-    v20 = [v11 name];
+    name2 = [accessoryCopy name];
     accessoryName = v17->_accessoryName;
-    v17->_accessoryName = v20;
+    v17->_accessoryName = name2;
 
-    objc_storeWeak(&v17->_presentingViewController, v12);
+    objc_storeWeak(&v17->_presentingViewController, controllerCopy);
     v22 = HFLogForCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
-      v25 = [(HUHomeControlServiceContext *)v17 presentingViewController];
+      presentingViewController = [(HUHomeControlServiceContext *)v17 presentingViewController];
       v27 = 138413058;
       v28 = v24;
       v29 = 2112;
-      v30 = v10;
+      v30 = homeCopy;
       v31 = 2112;
-      v32 = v11;
+      v32 = accessoryCopy;
       v33 = 2112;
-      v34 = v25;
+      v34 = presentingViewController;
       _os_log_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_DEFAULT, "Initializing %@ with home %@, accessory name %@, presentingViewController = %@", &v27, 0x2Au);
     }
   }
@@ -119,16 +119,16 @@
   return v17;
 }
 
-- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)a3 defaultActionURL:(id)a4
+- (HUHomeControlServiceContext)initWithServiceType:(unint64_t)type defaultActionURL:(id)l
 {
-  v7 = a4;
-  v8 = [HUHomeControlServiceContext _homeInfoFromDefaultActionURL:v7];
+  lCopy = l;
+  v8 = [HUHomeControlServiceContext _homeInfoFromDefaultActionURL:lCopy];
   v9 = [v8 objectForKeyedSubscript:@"home-identifier-key"];
-  v10 = [(HUHomeControlServiceContext *)self initWithServiceType:a3 homeIdentifier:v9 roomIdentifier:0];
+  v10 = [(HUHomeControlServiceContext *)self initWithServiceType:type homeIdentifier:v9 roomIdentifier:0];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_defaultActionURL, a4);
+    objc_storeStrong(&v10->_defaultActionURL, l);
     v11 = [v8 objectForKeyedSubscript:@"home-name-key"];
     homeName = v10->_homeName;
     v10->_homeName = v11;
@@ -137,17 +137,17 @@
   return v10;
 }
 
-- (HUHomeControlServiceContext)initWithAlertConfigurationContext:(id)a3
+- (HUHomeControlServiceContext)initWithAlertConfigurationContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [(HUHomeControlServiceContext *)self _initWithUserInfo:v5];
+  contextCopy = context;
+  userInfo = [contextCopy userInfo];
+  v6 = [(HUHomeControlServiceContext *)self _initWithUserInfo:userInfo];
 
   if (v6)
   {
-    v7 = [v4 actions];
+    actions = [contextCopy actions];
     actions = v6->_actions;
-    v6->_actions = v7;
+    v6->_actions = actions;
   }
 
   return v6;
@@ -170,64 +170,64 @@
 - (id)userInfo
 {
   v3 = objc_opt_new();
-  v4 = [(HUHomeControlServiceContext *)self homeIdentifier];
+  homeIdentifier = [(HUHomeControlServiceContext *)self homeIdentifier];
 
-  if (v4)
+  if (homeIdentifier)
   {
-    v5 = [(HUHomeControlServiceContext *)self homeIdentifier];
-    [v3 setObject:v5 forKeyedSubscript:@"home-identifier-key"];
+    homeIdentifier2 = [(HUHomeControlServiceContext *)self homeIdentifier];
+    [v3 setObject:homeIdentifier2 forKeyedSubscript:@"home-identifier-key"];
   }
 
-  v6 = [(HUHomeControlServiceContext *)self roomIdentifier];
+  roomIdentifier = [(HUHomeControlServiceContext *)self roomIdentifier];
 
-  if (v6)
+  if (roomIdentifier)
   {
-    v7 = [(HUHomeControlServiceContext *)self roomIdentifier];
-    [v3 setObject:v7 forKeyedSubscript:@"room-identifier-key"];
+    roomIdentifier2 = [(HUHomeControlServiceContext *)self roomIdentifier];
+    [v3 setObject:roomIdentifier2 forKeyedSubscript:@"room-identifier-key"];
   }
 
-  v8 = [(HUHomeControlServiceContext *)self accessoryIdentifier];
+  accessoryIdentifier = [(HUHomeControlServiceContext *)self accessoryIdentifier];
 
-  if (v8)
+  if (accessoryIdentifier)
   {
-    v9 = [(HUHomeControlServiceContext *)self accessoryIdentifier];
-    [v3 setObject:v9 forKeyedSubscript:@"accessory-identifier-key"];
+    accessoryIdentifier2 = [(HUHomeControlServiceContext *)self accessoryIdentifier];
+    [v3 setObject:accessoryIdentifier2 forKeyedSubscript:@"accessory-identifier-key"];
   }
 
-  v10 = [(HUHomeControlServiceContext *)self homeName];
+  homeName = [(HUHomeControlServiceContext *)self homeName];
 
-  if (v10)
+  if (homeName)
   {
-    v11 = [(HUHomeControlServiceContext *)self homeName];
-    [v3 setObject:v11 forKeyedSubscript:@"home-name-key"];
+    homeName2 = [(HUHomeControlServiceContext *)self homeName];
+    [v3 setObject:homeName2 forKeyedSubscript:@"home-name-key"];
   }
 
-  v12 = [(HUHomeControlServiceContext *)self roomName];
+  roomName = [(HUHomeControlServiceContext *)self roomName];
 
-  if (v12)
+  if (roomName)
   {
-    v13 = [(HUHomeControlServiceContext *)self roomName];
-    [v3 setObject:v13 forKeyedSubscript:@"room-name-key"];
+    roomName2 = [(HUHomeControlServiceContext *)self roomName];
+    [v3 setObject:roomName2 forKeyedSubscript:@"room-name-key"];
   }
 
-  v14 = [(HUHomeControlServiceContext *)self accessoryName];
+  accessoryName = [(HUHomeControlServiceContext *)self accessoryName];
 
-  if (v14)
+  if (accessoryName)
   {
-    v15 = [(HUHomeControlServiceContext *)self accessoryName];
-    [v3 setObject:v15 forKeyedSubscript:@"accessory-name-key"];
+    accessoryName2 = [(HUHomeControlServiceContext *)self accessoryName];
+    [v3 setObject:accessoryName2 forKeyedSubscript:@"accessory-name-key"];
   }
 
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HUHomeControlServiceContext serviceType](self, "serviceType")}];
   [v3 setObject:v16 forKeyedSubscript:@"service-type-key"];
 
-  v17 = [(HUHomeControlServiceContext *)self defaultActionURL];
+  defaultActionURL = [(HUHomeControlServiceContext *)self defaultActionURL];
 
-  if (v17)
+  if (defaultActionURL)
   {
-    v18 = [(HUHomeControlServiceContext *)self defaultActionURL];
-    v19 = [v18 absoluteString];
-    [v3 setObject:v19 forKeyedSubscript:@"default-action-url-key"];
+    defaultActionURL2 = [(HUHomeControlServiceContext *)self defaultActionURL];
+    absoluteString = [defaultActionURL2 absoluteString];
+    [v3 setObject:absoluteString forKeyedSubscript:@"default-action-url-key"];
   }
 
   [(HUHomeControlServiceContext *)self animationOriginRect];
@@ -243,10 +243,10 @@
   return v21;
 }
 
-- (id)_initWithUserInfo:(id)a3
+- (id)_initWithUserInfo:(id)info
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v27.receiver = self;
   v27.super_class = HUHomeControlServiceContext;
   v5 = [(HUHomeControlServiceContext *)&v27 init];
@@ -259,7 +259,7 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = infoCopy;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
@@ -345,9 +345,9 @@
     v15 = 0;
   }
 
-  v17 = [(HUHomeControlServiceContext *)v5 serviceType];
+  serviceType = [(HUHomeControlServiceContext *)v5 serviceType];
   v18 = v15 & v16;
-  if (v17 != 2)
+  if (serviceType != 2)
   {
     v18 = v15;
   }
@@ -366,20 +366,20 @@ LABEL_32:
   return v19;
 }
 
-+ (id)_homeInfoFromDefaultActionURL:(id)a3
++ (id)_homeInfoFromDefaultActionURL:(id)l
 {
   v28 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCACE0];
-  v4 = [a3 absoluteString];
-  v5 = [v3 componentsWithString:v4];
+  absoluteString = [l absoluteString];
+  v5 = [v3 componentsWithString:absoluteString];
 
-  v6 = [v5 queryItems];
+  queryItems = [v5 queryItems];
   v7 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v6;
+  obj = queryItems;
   v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
@@ -397,14 +397,14 @@ LABEL_32:
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v14 name];
-        v16 = [v15 isEqualToString:v11];
+        name = [v14 name];
+        v16 = [name isEqualToString:v11];
 
         v17 = @"home-name-key";
         if ((v16 & 1) == 0)
         {
-          v18 = [v14 name];
-          v19 = [v18 isEqualToString:v12];
+          name2 = [v14 name];
+          v19 = [name2 isEqualToString:v12];
 
           v17 = @"home-identifier-key";
           if (!v19)
@@ -413,8 +413,8 @@ LABEL_32:
           }
         }
 
-        v20 = [v14 value];
-        [v7 setObject:v20 forKey:v17];
+        value = [v14 value];
+        [v7 setObject:value forKey:v17];
       }
 
       v9 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];

@@ -1,14 +1,14 @@
 @interface MXStorageUtil
-- (BOOL)_removeFile:(id)a3 error:(id *)a4;
-- (BOOL)_removeFiles:(id)a3 fromDirectory:(id)a4 error:(id *)a5;
-- (BOOL)createDirectory:(id)a3 error:(id *)a4;
-- (BOOL)isDataExistAsDirectoryForPath:(id)a3;
-- (BOOL)removeExistingFilesFromDirectory:(id)a3;
-- (BOOL)saveData:(id)a3 withFilePath:(id)a4;
+- (BOOL)_removeFile:(id)file error:(id *)error;
+- (BOOL)_removeFiles:(id)files fromDirectory:(id)directory error:(id *)error;
+- (BOOL)createDirectory:(id)directory error:(id *)error;
+- (BOOL)isDataExistAsDirectoryForPath:(id)path;
+- (BOOL)removeExistingFilesFromDirectory:(id)directory;
+- (BOOL)saveData:(id)data withFilePath:(id)path;
 - (MXStorageUtil)init;
-- (id)dataFromPath:(id)a3;
-- (void)removeFiles:(id)a3 withFilenameContainsSubstring:(id)a4 fromDirectory:(id)a5 error:(id *)a6;
-- (void)setAuthProtectionForPath:(id)a3 fromAttributes:(id)a4;
+- (id)dataFromPath:(id)path;
+- (void)removeFiles:(id)files withFilenameContainsSubstring:(id)substring fromDirectory:(id)directory error:(id *)error;
+- (void)setAuthProtectionForPath:(id)path fromAttributes:(id)attributes;
 @end
 
 @implementation MXStorageUtil
@@ -20,9 +20,9 @@
   v2 = [(MXStorageUtil *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     fileManager = v2->_fileManager;
-    v2->_fileManager = v3;
+    v2->_fileManager = defaultManager;
 
     v5 = os_log_create("com.apple.metrickit", "storage.utility");
     logHandle = v2->_logHandle;
@@ -37,24 +37,24 @@
   return v2;
 }
 
-- (BOOL)saveData:(id)a3 withFilePath:(id)a4
+- (BOOL)saveData:(id)data withFilePath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v16 = 0;
-  v7 = [a3 writeToFile:v6 options:0x40000000 error:&v16];
+  v7 = [data writeToFile:pathCopy options:0x40000000 error:&v16];
   v8 = v16;
   if (v8 && os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_ERROR))
   {
     [MXStorageUtil saveData:withFilePath:];
   }
 
-  v9 = open([v6 UTF8String], 0);
+  v9 = open([pathCopy UTF8String], 0);
   if (v9 < 0)
   {
     logHandle = self->_logHandle;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      [MXStorageUtil saveData:v6 withFilePath:logHandle];
+      [MXStorageUtil saveData:pathCopy withFilePath:logHandle];
     }
   }
 
@@ -83,36 +83,36 @@
   return v7;
 }
 
-- (id)dataFromPath:(id)a3
+- (id)dataFromPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MXStorageUtil *)self fileManager];
-  v6 = [v5 contentsAtPath:v4];
+  pathCopy = path;
+  fileManager = [(MXStorageUtil *)self fileManager];
+  v6 = [fileManager contentsAtPath:pathCopy];
 
   return v6;
 }
 
-- (BOOL)removeExistingFilesFromDirectory:(id)a3
+- (BOOL)removeExistingFilesFromDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(MXStorageUtil *)self _filesFromDirectory:v4 error:0];
+  directoryCopy = directory;
+  v5 = [(MXStorageUtil *)self _filesFromDirectory:directoryCopy error:0];
   v7 = 0;
-  LOBYTE(self) = [(MXStorageUtil *)self _removeFiles:v5 fromDirectory:v4 error:&v7];
+  LOBYTE(self) = [(MXStorageUtil *)self _removeFiles:v5 fromDirectory:directoryCopy error:&v7];
 
   return self;
 }
 
-- (void)removeFiles:(id)a3 withFilenameContainsSubstring:(id)a4 fromDirectory:(id)a5 error:(id *)a6
+- (void)removeFiles:(id)files withFilenameContainsSubstring:(id)substring fromDirectory:(id)directory error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  filesCopy = files;
+  substringCopy = substring;
+  directoryCopy = directory;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = [v9 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  v12 = [filesCopy countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v12)
   {
     v14 = v12;
@@ -125,22 +125,22 @@
       {
         if (*v26 != v15)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(filesCopy);
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
-        if ([v17 containsString:{v10, v23}])
+        if ([v17 containsString:{substringCopy, v23}])
         {
           fileManager = self->_fileManager;
-          v19 = [v11 stringByAppendingPathComponent:v17];
-          LOBYTE(fileManager) = [(NSFileManager *)fileManager removeItemAtPath:v19 error:a6];
+          v19 = [directoryCopy stringByAppendingPathComponent:v17];
+          LOBYTE(fileManager) = [(NSFileManager *)fileManager removeItemAtPath:v19 error:error];
 
           if ((fileManager & 1) == 0)
           {
             logHandle = self->_logHandle;
             if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
             {
-              v21 = *a6;
+              v21 = *error;
               *buf = v23;
               v30 = v17;
               v31 = 2112;
@@ -151,7 +151,7 @@
         }
       }
 
-      v14 = [v9 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v14 = [filesCopy countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v14);
@@ -160,31 +160,31 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)createDirectory:(id)a3 error:(id *)a4
+- (BOOL)createDirectory:(id)directory error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NSFileManager *)self->_fileManager createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:a4];
+  directoryCopy = directory;
+  v7 = [(NSFileManager *)self->_fileManager createDirectoryAtPath:directoryCopy withIntermediateDirectories:1 attributes:0 error:error];
   if (!v7 && os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_ERROR))
   {
-    [MXStorageUtil createDirectory:v6 error:a4];
+    [MXStorageUtil createDirectory:directoryCopy error:error];
   }
 
   return v7;
 }
 
-- (BOOL)isDataExistAsDirectoryForPath:(id)a3
+- (BOOL)isDataExistAsDirectoryForPath:(id)path
 {
   v5 = 0;
-  v3 = [(NSFileManager *)self->_fileManager fileExistsAtPath:a3 isDirectory:&v5];
+  v3 = [(NSFileManager *)self->_fileManager fileExistsAtPath:path isDirectory:&v5];
   return v3 & v5;
 }
 
-- (void)setAuthProtectionForPath:(id)a3 fromAttributes:(id)a4
+- (void)setAuthProtectionForPath:(id)path fromAttributes:(id)attributes
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathCopy = path;
   v7 = *MEMORY[0x277CCA1B0];
-  v8 = [a4 objectForKeyedSubscript:*MEMORY[0x277CCA1B0]];
+  v8 = [attributes objectForKeyedSubscript:*MEMORY[0x277CCA1B0]];
   v9 = *MEMORY[0x277CCA1A0];
   v10 = [v8 isEqualToString:*MEMORY[0x277CCA1A0]];
 
@@ -194,22 +194,22 @@
     v14 = v7;
     v15[0] = v9;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    [(NSFileManager *)fileManager setAttributes:v12 ofItemAtPath:v6 error:0];
+    [(NSFileManager *)fileManager setAttributes:v12 ofItemAtPath:pathCopy error:0];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_removeFiles:(id)a3 fromDirectory:(id)a4 error:(id *)a5
+- (BOOL)_removeFiles:(id)files fromDirectory:(id)directory error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  filesCopy = files;
+  directoryCopy = directory;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v8;
+  v10 = filesCopy;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
@@ -225,14 +225,14 @@
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v9 stringByAppendingPathComponent:{v15, v21}];
-        v17 = [(MXStorageUtil *)self _removeFile:v16 error:a5];
+        v16 = [directoryCopy stringByAppendingPathComponent:{v15, v21}];
+        v17 = [(MXStorageUtil *)self _removeFile:v16 error:error];
 
         if (!v17)
         {
           if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_ERROR))
           {
-            [MXStorageUtil _removeFiles:v15 fromDirectory:a5 error:?];
+            [MXStorageUtil _removeFiles:v15 fromDirectory:error error:?];
           }
 
           v18 = 0;
@@ -257,13 +257,13 @@ LABEL_13:
   return v18;
 }
 
-- (BOOL)_removeFile:(id)a3 error:(id *)a4
+- (BOOL)_removeFile:(id)file error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MXStorageUtil *)self fileManager];
-  LOBYTE(a4) = [v7 removeItemAtPath:v6 error:a4];
+  fileCopy = file;
+  fileManager = [(MXStorageUtil *)self fileManager];
+  LOBYTE(error) = [fileManager removeItemAtPath:fileCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (void)saveData:withFilePath:.cold.1()

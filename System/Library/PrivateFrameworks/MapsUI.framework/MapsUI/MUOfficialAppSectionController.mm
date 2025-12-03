@@ -1,12 +1,12 @@
 @interface MUOfficialAppSectionController
-- (MUOfficialAppSectionController)initWithMapItem:(id)a3 usingCachedMediaResults:(id)a4;
+- (MUOfficialAppSectionController)initWithMapItem:(id)item usingCachedMediaResults:(id)results;
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel;
 - (id)_sectionHeaderText;
 - (id)infoCardChildPossibleActions;
 - (void)_hydrateViewWithApp;
 - (void)_setupLockupView;
-- (void)_updateViewWithMediaServicesResult:(id)a3;
-- (void)appLockupViewDidSelectPunchOutButton:(id)a3;
+- (void)_updateViewWithMediaServicesResult:(id)result;
+- (void)appLockupViewDidSelectPunchOutButton:(id)button;
 @end
 
 @implementation MUOfficialAppSectionController
@@ -41,41 +41,41 @@
   return v3;
 }
 
-- (void)appLockupViewDidSelectPunchOutButton:(id)a3
+- (void)appLockupViewDidSelectPunchOutButton:(id)button
 {
-  v4 = [(MUPlaceSectionController *)self mapItem];
-  v5 = [v4 _attribution];
-  v6 = [v5 providerID];
-  [(MUPlaceSectionController *)self captureInfoCardAction:6040 eventValue:0 feedbackType:0 actionRichProviderId:v6 classification:0];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _attribution = [mapItem _attribution];
+  providerID = [_attribution providerID];
+  [(MUPlaceSectionController *)self captureInfoCardAction:6040 eventValue:0 feedbackType:0 actionRichProviderId:providerID classification:0];
 
   if ([(GEOAppleMediaServicesResult *)self->_appStoreApp isInstalled])
   {
-    v8 = [MEMORY[0x1E6963608] defaultWorkspace];
-    v7 = [(GEOAppleMediaServicesResult *)self->_appStoreApp iOSBundleIdentifier];
-    [v8 openApplicationWithBundleID:v7];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    iOSBundleIdentifier = [(GEOAppleMediaServicesResult *)self->_appStoreApp iOSBundleIdentifier];
+    [defaultWorkspace openApplicationWithBundleID:iOSBundleIdentifier];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696F3B8] sharedInstance];
-    v7 = [(GEOAppleMediaServicesResult *)self->_appStoreApp url];
-    [v8 openURL:v7 completionHandler:0];
+    defaultWorkspace = [MEMORY[0x1E696F3B8] sharedInstance];
+    iOSBundleIdentifier = [(GEOAppleMediaServicesResult *)self->_appStoreApp url];
+    [defaultWorkspace openURL:iOSBundleIdentifier completionHandler:0];
   }
 }
 
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel
 {
   v3 = [MUPlaceSectionHeaderViewModel alloc];
-  v4 = [(MUOfficialAppSectionController *)self _sectionHeaderText];
-  v5 = [(MUPlaceSectionHeaderViewModel *)v3 initWithTitleString:v4];
+  _sectionHeaderText = [(MUOfficialAppSectionController *)self _sectionHeaderText];
+  v5 = [(MUPlaceSectionHeaderViewModel *)v3 initWithTitleString:_sectionHeaderText];
 
   return v5;
 }
 
-- (void)_updateViewWithMediaServicesResult:(id)a3
+- (void)_updateViewWithMediaServicesResult:(id)result
 {
-  objc_storeStrong(&self->_appStoreApp, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_appStoreApp, result);
+  resultCopy = result;
   [(MUOfficialAppSectionController *)self _setupLockupView];
   [(MUPlaceAppLockupView *)self->_officialAppView setViewModel:self->_appStoreApp];
 }
@@ -83,11 +83,11 @@
 - (void)_hydrateViewWithApp
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(MUPlaceSectionController *)self mapItem];
-  v4 = [v3 _preferedAppAdamID];
-  v5 = [v4 stringValue];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _preferedAppAdamID = [mapItem _preferedAppAdamID];
+  stringValue = [_preferedAppAdamID stringValue];
 
-  v6 = [(MUTimeExpirableLRUCache *)self->_cachedMediaResults objectForKey:v5];
+  v6 = [(MUTimeExpirableLRUCache *)self->_cachedMediaResults objectForKey:stringValue];
   v7 = MUGetPlaceCardLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
   if (v6)
@@ -95,7 +95,7 @@
     if (v8)
     {
       *buf = 138412290;
-      v26 = v5;
+      v26 = stringValue;
       _os_log_impl(&dword_1C5620000, v7, OS_LOG_TYPE_INFO, "Have cached app store app for identifier %@.  Early return.", buf, 0xCu);
     }
 
@@ -107,29 +107,29 @@
     if (v8)
     {
       *buf = 138412290;
-      v26 = v5;
+      v26 = stringValue;
       _os_log_impl(&dword_1C5620000, v7, OS_LOG_TYPE_INFO, "Fetching app store app with identifier %@", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
-    v9 = [MEMORY[0x1E696F1A0] sharedInstance];
-    v10 = [(MUPlaceSectionController *)self mapItem];
-    v11 = [v10 _preferedAppAdamID];
-    v12 = [v11 stringValue];
-    v24 = v12;
+    mEMORY[0x1E696F1A0] = [MEMORY[0x1E696F1A0] sharedInstance];
+    mapItem2 = [(MUPlaceSectionController *)self mapItem];
+    _preferedAppAdamID2 = [mapItem2 _preferedAppAdamID];
+    stringValue2 = [_preferedAppAdamID2 stringValue];
+    v24 = stringValue2;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
     +[MUPlaceAppLockupView appIconSize];
     v15 = v14;
     v17 = v16;
-    v18 = [MEMORY[0x1E696F3B8] sharedInstance];
-    [v18 screenScale];
+    mEMORY[0x1E696F3B8] = [MEMORY[0x1E696F3B8] sharedInstance];
+    [mEMORY[0x1E696F3B8] screenScale];
     v20 = v19;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __53__MUOfficialAppSectionController__hydrateViewWithApp__block_invoke;
     v22[3] = &unk_1E8219220;
     objc_copyWeak(&v23, buf);
-    [v9 appleMediaServicesResultsWithIdentifiers:v13 artworkSize:1 screenScale:4 type:v22 source:v15 completion:{v17, v20}];
+    [mEMORY[0x1E696F1A0] appleMediaServicesResultsWithIdentifiers:v13 artworkSize:1 screenScale:4 type:v22 source:v15 completion:{v17, v20}];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(buf);
@@ -192,8 +192,8 @@ void __53__MUOfficialAppSectionController__hydrateViewWithApp__block_invoke(uint
   [(MUPlaceAppLockupView *)self->_officialAppView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MUPlaceAppLockupView *)self->_officialAppView setDelegate:self];
   v6 = self->_officialAppView;
-  v7 = [(MUOfficialAppSectionController *)self sectionHeaderViewModel];
-  v8 = [MUPlaceSectionView insetPlatterSectionViewForContentView:v6 sectionHeaderViewModel:v7 sectionFooterViewModel:0];
+  sectionHeaderViewModel = [(MUOfficialAppSectionController *)self sectionHeaderViewModel];
+  v8 = [MUPlaceSectionView insetPlatterSectionViewForContentView:v6 sectionHeaderViewModel:sectionHeaderViewModel sectionFooterViewModel:0];
   sectionView = self->_sectionView;
   self->_sectionView = v8;
 
@@ -202,12 +202,12 @@ void __53__MUOfficialAppSectionController__hydrateViewWithApp__block_invoke(uint
   [(MUPlaceSectionView *)v10 configureWithSectionController:self];
 }
 
-- (MUOfficialAppSectionController)initWithMapItem:(id)a3 usingCachedMediaResults:(id)a4
+- (MUOfficialAppSectionController)initWithMapItem:(id)item usingCachedMediaResults:(id)results
 {
-  v7 = a4;
+  resultsCopy = results;
   v13.receiver = self;
   v13.super_class = MUOfficialAppSectionController;
-  v8 = [(MUPlaceSectionController *)&v13 initWithMapItem:a3];
+  v8 = [(MUPlaceSectionController *)&v13 initWithMapItem:item];
   if (v8)
   {
     v9 = MUGetPlaceCardLog();
@@ -217,7 +217,7 @@ void __53__MUOfficialAppSectionController__hydrateViewWithApp__block_invoke(uint
       _os_signpost_emit_with_name_impl(&dword_1C5620000, v9, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUOfficialAppSectionControllerInit", "", v12, 2u);
     }
 
-    objc_storeStrong(&v8->_cachedMediaResults, a4);
+    objc_storeStrong(&v8->_cachedMediaResults, results);
     [(MUOfficialAppSectionController *)v8 _hydrateViewWithApp];
     v10 = MUGetPlaceCardLog();
     if (os_signpost_enabled(v10))

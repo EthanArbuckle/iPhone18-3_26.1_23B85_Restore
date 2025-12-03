@@ -1,14 +1,14 @@
 @interface SFCapsuleInputAccessorySpacerView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (SFCapsuleInputAccessorySpacerView)initWithCapsuleView:(id)a3;
-- (void)setCapsuleHeight:(double)a3;
+- (SFCapsuleInputAccessorySpacerView)initWithCapsuleView:(id)view;
+- (void)setCapsuleHeight:(double)height;
 @end
 
 @implementation SFCapsuleInputAccessorySpacerView
 
-- (SFCapsuleInputAccessorySpacerView)initWithCapsuleView:(id)a3
+- (SFCapsuleInputAccessorySpacerView)initWithCapsuleView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = SFCapsuleInputAccessorySpacerView;
   v5 = [(SFCapsuleInputAccessorySpacerView *)&v9 init];
@@ -16,7 +16,7 @@
   if (v5)
   {
     [(SFCapsuleInputAccessorySpacerView *)v5 setUserInteractionEnabled:0];
-    [v4 frame];
+    [viewCopy frame];
     v6->_capsuleHeight = CGRectGetHeight(v10);
     [(SFCapsuleInputAccessorySpacerView *)v6 sizeToFit];
     v7 = v6;
@@ -25,11 +25,11 @@
   return v6;
 }
 
-- (void)setCapsuleHeight:(double)a3
+- (void)setCapsuleHeight:(double)height
 {
-  if (self->_capsuleHeight != a3)
+  if (self->_capsuleHeight != height)
   {
-    self->_capsuleHeight = a3;
+    self->_capsuleHeight = height;
     [(SFCapsuleInputAccessorySpacerView *)self sizeToFit];
 
     [(SFCapsuleInputAccessorySpacerView *)self setNeedsLayout];

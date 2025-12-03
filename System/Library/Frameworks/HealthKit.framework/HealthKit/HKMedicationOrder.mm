@@ -1,97 +1,97 @@
 @interface HKMedicationOrder
-+ (id)_newMedicationOrderWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 medicationCodingCollection:(id)a15 prescriber:(id)a16 numberOfFills:(int64_t)a17 dosages:(id)a18 earliestDosageDate:(id)a19 writtenDate:(id)a20 endedDate:(id)a21 statusCoding:(id)a22 reasonCodingCollections:(id)a23 reasonEndedCodingCollection:(id)a24 statusReasonCodingCollection:(id)a25 config:(id)a26;
++ (id)_newMedicationOrderWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 medicationCodingCollection:(id)self5 prescriber:(id)self6 numberOfFills:(int64_t)self7 dosages:(id)self8 earliestDosageDate:(id)self9 writtenDate:(id)writtenDate endedDate:(id)endedDate statusCoding:(id)coding reasonCodingCollections:(id)collections reasonEndedCodingCollection:(id)codingCollection statusReasonCodingCollection:(id)reasonCodingCollection config:(id)config;
 + (id)cachedConceptRelationshipKeyPaths;
 + (id)defaultDisplayString;
 + (id)indexableConceptKeyPaths;
-+ (id)medicationOrderWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 medicationCodingCollection:(id)a14 prescriber:(id)a15 numberOfFills:(int64_t)a16 dosages:(id)a17 earliestDosageDate:(id)a18 writtenDate:(id)a19 endedDate:(id)a20 statusCoding:(id)a21 reasonCodingCollections:(id)a22 reasonEndedCodingCollection:(id)a23 statusReasonCodingCollection:(id)a24;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEquivalent:(id)a3;
++ (id)medicationOrderWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 medicationCodingCollection:(id)self4 prescriber:(id)self5 numberOfFills:(int64_t)self6 dosages:(id)self7 earliestDosageDate:(id)self8 writtenDate:(id)self9 endedDate:(id)endedDate statusCoding:(id)coding reasonCodingCollections:(id)collections reasonEndedCodingCollection:(id)codingCollection statusReasonCodingCollection:(id)reasonCodingCollection;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HKConcept)medication;
 - (HKConcept)reasonEnded;
 - (HKConcept)status;
 - (HKConcept)statusReason;
 - (HKMedicationOrder)init;
-- (HKMedicationOrder)initWithCoder:(id)a3;
+- (HKMedicationOrder)initWithCoder:(id)coder;
 - (NSArray)reason;
 - (NSString)description;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (id)medicalRecordCodings;
 - (id)statusCodingCollection;
-- (void)_setDosages:(id)a3;
-- (void)_setEarliestDosageDate:(id)a3;
-- (void)_setEndedDate:(id)a3;
-- (void)_setMedication:(id)a3;
-- (void)_setMedicationCodingCollection:(id)a3;
-- (void)_setPrescriber:(id)a3;
-- (void)_setReason:(id)a3;
-- (void)_setReasonCodingCollections:(id)a3;
-- (void)_setReasonEnded:(id)a3;
-- (void)_setReasonEndedCodingCollection:(id)a3;
-- (void)_setStatus:(id)a3;
-- (void)_setStatusCoding:(id)a3;
-- (void)_setStatusReason:(id)a3;
-- (void)_setStatusReasonCodingCollection:(id)a3;
-- (void)_setWrittenDate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setDosages:(id)dosages;
+- (void)_setEarliestDosageDate:(id)date;
+- (void)_setEndedDate:(id)date;
+- (void)_setMedication:(id)medication;
+- (void)_setMedicationCodingCollection:(id)collection;
+- (void)_setPrescriber:(id)prescriber;
+- (void)_setReason:(id)reason;
+- (void)_setReasonCodingCollections:(id)collections;
+- (void)_setReasonEnded:(id)ended;
+- (void)_setReasonEndedCodingCollection:(id)collection;
+- (void)_setStatus:(id)status;
+- (void)_setStatusCoding:(id)coding;
+- (void)_setStatusReason:(id)reason;
+- (void)_setStatusReasonCodingCollection:(id)collection;
+- (void)_setWrittenDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationOrder
 
-+ (id)_newMedicationOrderWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 medicationCodingCollection:(id)a15 prescriber:(id)a16 numberOfFills:(int64_t)a17 dosages:(id)a18 earliestDosageDate:(id)a19 writtenDate:(id)a20 endedDate:(id)a21 statusCoding:(id)a22 reasonCodingCollections:(id)a23 reasonEndedCodingCollection:(id)a24 statusReasonCodingCollection:(id)a25 config:(id)a26
++ (id)_newMedicationOrderWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 medicationCodingCollection:(id)self5 prescriber:(id)self6 numberOfFills:(int64_t)self7 dosages:(id)self8 earliestDosageDate:(id)self9 writtenDate:(id)writtenDate endedDate:(id)endedDate statusCoding:(id)coding reasonCodingCollections:(id)collections reasonEndedCodingCollection:(id)codingCollection statusReasonCodingCollection:(id)reasonCodingCollection config:(id)config
 {
-  v65 = a5;
-  v53 = a15;
-  v26 = a16;
-  v27 = a18;
-  v28 = a19;
-  v29 = a20;
-  v30 = a21;
-  v31 = a22;
-  v32 = a23;
-  v33 = a24;
-  v34 = a25;
-  v35 = a26;
+  errorCopy = error;
+  collectionCopy = collection;
+  prescriberCopy = prescriber;
+  dosagesCopy = dosages;
+  dosageDateCopy = dosageDate;
+  writtenDateCopy = writtenDate;
+  endedDateCopy = endedDate;
+  codingCopy = coding;
+  collectionsCopy = collections;
+  codingCollectionCopy = codingCollection;
+  reasonCodingCollectionCopy = reasonCodingCollection;
+  configCopy = config;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_medicationCodingCollection_prescriber_numberOfFills_dosages_earliestDosageDate_writtenDate_endedDate_statusCoding_reasonCodingCollections_reasonEndedCodingCollection_statusReasonCodingCollection_config___block_invoke;
   aBlock[3] = &unk_1E7376CD0;
-  v69 = v53;
-  v70 = v26;
-  v71 = v27;
-  v72 = v28;
-  v73 = v29;
-  v74 = v30;
-  v75 = v31;
-  v76 = v32;
-  v77 = v33;
-  v78 = v34;
-  v79 = v35;
-  v80 = a17;
-  v64 = v35;
-  v63 = v34;
-  v62 = v33;
-  v61 = v32;
-  v60 = v31;
-  v59 = v30;
-  v58 = v29;
-  v57 = v28;
-  v56 = v27;
-  v55 = v26;
-  v54 = v53;
-  v36 = a13;
-  v37 = a12;
-  v38 = a11;
-  v39 = a10;
-  v40 = a8;
-  v41 = a7;
-  v42 = a6;
-  v43 = a4;
-  v44 = a3;
+  v69 = collectionCopy;
+  v70 = prescriberCopy;
+  v71 = dosagesCopy;
+  v72 = dosageDateCopy;
+  v73 = writtenDateCopy;
+  v74 = endedDateCopy;
+  v75 = codingCopy;
+  v76 = collectionsCopy;
+  v77 = codingCollectionCopy;
+  v78 = reasonCodingCollectionCopy;
+  v79 = configCopy;
+  fillsCopy = fills;
+  v64 = configCopy;
+  v63 = reasonCodingCollectionCopy;
+  v62 = codingCollectionCopy;
+  v61 = collectionsCopy;
+  v60 = codingCopy;
+  v59 = endedDateCopy;
+  v58 = writtenDateCopy;
+  v57 = dosageDateCopy;
+  v56 = dosagesCopy;
+  v55 = prescriberCopy;
+  v54 = collectionCopy;
+  countryCopy = country;
+  sortDateCopy = sortDate;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  dateCopy = date;
+  noteCopy = note;
+  typeCopy = type;
   v45 = _Block_copy(aBlock);
-  v67.receiver = a1;
+  v67.receiver = self;
   v67.super_class = &OBJC_METACLASS___HKMedicationOrder;
-  v66 = objc_msgSendSuper2(&v67, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, v44, v43, v65, v42, v41, v40, a9, v39, v38, v37, v36, a14, v45);
+  v66 = objc_msgSendSuper2(&v67, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, typeCopy, noteCopy, errorCopy, dateCopy, identifierCopy, localeCopy, version, deviceCopy, metadataCopy, sortDateCopy, countryCopy, state, v45);
 
   return v66;
 }
@@ -171,99 +171,99 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKMedicationOrder;
-  v4 = a3;
-  [(HKMedicalRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_medicationCodingCollection forKey:{@"MedicationCodingCollection", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_prescriber forKey:@"Prescriber"];
-  [v4 encodeInteger:self->_numberOfFills forKey:@"NumberOfFills"];
-  [v4 encodeObject:self->_dosages forKey:@"Dosages"];
-  [v4 encodeObject:self->_earliestDosageDate forKey:@"EarliestDosageDate"];
-  [v4 encodeObject:self->_writtenDate forKey:@"WrittenDate"];
-  [v4 encodeObject:self->_endedDate forKey:@"EndedDate"];
-  [v4 encodeObject:self->_statusCoding forKey:@"StatusCoding"];
-  [v4 encodeObject:self->_reasonCodingCollections forKey:@"ReasonCodingCollections"];
-  [v4 encodeObject:self->_reasonEndedCodingCollection forKey:@"ReasonEndedCodingCollection"];
-  [v4 encodeObject:self->_statusReasonCodingCollection forKey:@"StatusReasonCodingCollection"];
-  [v4 encodeObject:self->_medication forKey:@"Medication"];
-  [v4 encodeObject:self->_status forKey:@"Status"];
-  [v4 encodeObject:self->_reason forKey:@"Reason"];
-  [v4 encodeObject:self->_reasonEnded forKey:@"ReasonEnded"];
-  [v4 encodeObject:self->_statusReason forKey:@"StatusReason"];
+  coderCopy = coder;
+  [(HKMedicalRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_medicationCodingCollection forKey:{@"MedicationCodingCollection", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_prescriber forKey:@"Prescriber"];
+  [coderCopy encodeInteger:self->_numberOfFills forKey:@"NumberOfFills"];
+  [coderCopy encodeObject:self->_dosages forKey:@"Dosages"];
+  [coderCopy encodeObject:self->_earliestDosageDate forKey:@"EarliestDosageDate"];
+  [coderCopy encodeObject:self->_writtenDate forKey:@"WrittenDate"];
+  [coderCopy encodeObject:self->_endedDate forKey:@"EndedDate"];
+  [coderCopy encodeObject:self->_statusCoding forKey:@"StatusCoding"];
+  [coderCopy encodeObject:self->_reasonCodingCollections forKey:@"ReasonCodingCollections"];
+  [coderCopy encodeObject:self->_reasonEndedCodingCollection forKey:@"ReasonEndedCodingCollection"];
+  [coderCopy encodeObject:self->_statusReasonCodingCollection forKey:@"StatusReasonCodingCollection"];
+  [coderCopy encodeObject:self->_medication forKey:@"Medication"];
+  [coderCopy encodeObject:self->_status forKey:@"Status"];
+  [coderCopy encodeObject:self->_reason forKey:@"Reason"];
+  [coderCopy encodeObject:self->_reasonEnded forKey:@"ReasonEnded"];
+  [coderCopy encodeObject:self->_statusReason forKey:@"StatusReason"];
 }
 
-- (HKMedicationOrder)initWithCoder:(id)a3
+- (HKMedicationOrder)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v40.receiver = self;
   v40.super_class = HKMedicationOrder;
-  v5 = [(HKMedicalRecord *)&v40 initWithCoder:v4];
+  v5 = [(HKMedicalRecord *)&v40 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MedicationCodingCollection"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MedicationCodingCollection"];
     medicationCodingCollection = v5->_medicationCodingCollection;
     v5->_medicationCodingCollection = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Prescriber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Prescriber"];
     prescriber = v5->_prescriber;
     v5->_prescriber = v8;
 
-    v5->_numberOfFills = [v4 decodeIntegerForKey:@"NumberOfFills"];
+    v5->_numberOfFills = [coderCopy decodeIntegerForKey:@"NumberOfFills"];
     v10 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"Dosages"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"Dosages"];
     dosages = v5->_dosages;
     v5->_dosages = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EarliestDosageDate"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EarliestDosageDate"];
     earliestDosageDate = v5->_earliestDosageDate;
     v5->_earliestDosageDate = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WrittenDate"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WrittenDate"];
     writtenDate = v5->_writtenDate;
     v5->_writtenDate = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EndedDate"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EndedDate"];
     endedDate = v5->_endedDate;
     v5->_endedDate = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StatusCoding"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StatusCoding"];
     statusCoding = v5->_statusCoding;
     v5->_statusCoding = v19;
 
     v21 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"ReasonCodingCollections"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"ReasonCodingCollections"];
     reasonCodingCollections = v5->_reasonCodingCollections;
     v5->_reasonCodingCollections = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReasonEndedCodingCollection"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReasonEndedCodingCollection"];
     reasonEndedCodingCollection = v5->_reasonEndedCodingCollection;
     v5->_reasonEndedCodingCollection = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StatusReasonCodingCollection"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StatusReasonCodingCollection"];
     statusReasonCodingCollection = v5->_statusReasonCodingCollection;
     v5->_statusReasonCodingCollection = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Medication"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Medication"];
     medication = v5->_medication;
     v5->_medication = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Status"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Status"];
     status = v5->_status;
     v5->_status = v30;
 
     v32 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"Reason"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"Reason"];
     reason = v5->_reason;
     v5->_reason = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReasonEnded"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReasonEnded"];
     reasonEnded = v5->_reasonEnded;
     v5->_reasonEnded = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StatusReason"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StatusReason"];
     statusReason = v5->_statusReason;
     v5->_statusReason = v37;
   }
@@ -271,13 +271,13 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equivalentCopy;
     v101.receiver = self;
     v101.super_class = HKMedicationOrder;
     if (![(HKMedicalRecord *)&v101 isEquivalent:v5])
@@ -285,25 +285,25 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       goto LABEL_80;
     }
 
-    v6 = [(HKMedicationOrder *)self medicationCodingCollection];
-    v7 = [v5 medicationCodingCollection];
-    v8 = v7;
-    if (v6 == v7)
+    medicationCodingCollection = [(HKMedicationOrder *)self medicationCodingCollection];
+    medicationCodingCollection2 = [v5 medicationCodingCollection];
+    v8 = medicationCodingCollection2;
+    if (medicationCodingCollection == medicationCodingCollection2)
     {
     }
 
     else
     {
-      v9 = [v5 medicationCodingCollection];
-      if (!v9)
+      medicationCodingCollection3 = [v5 medicationCodingCollection];
+      if (!medicationCodingCollection3)
       {
         goto LABEL_79;
       }
 
-      v10 = v9;
-      v11 = [(HKMedicationOrder *)self medicationCodingCollection];
-      v12 = [v5 medicationCodingCollection];
-      v13 = [v11 isEqual:v12];
+      v10 = medicationCodingCollection3;
+      medicationCodingCollection4 = [(HKMedicationOrder *)self medicationCodingCollection];
+      medicationCodingCollection5 = [v5 medicationCodingCollection];
+      v13 = [medicationCodingCollection4 isEqual:medicationCodingCollection5];
 
       if (!v13)
       {
@@ -311,25 +311,25 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKMedicationOrder *)self prescriber];
-    v15 = [v5 prescriber];
-    v8 = v15;
-    if (v6 == v15)
+    medicationCodingCollection = [(HKMedicationOrder *)self prescriber];
+    prescriber = [v5 prescriber];
+    v8 = prescriber;
+    if (medicationCodingCollection == prescriber)
     {
     }
 
     else
     {
-      v16 = [v5 prescriber];
-      if (!v16)
+      prescriber2 = [v5 prescriber];
+      if (!prescriber2)
       {
         goto LABEL_79;
       }
 
-      v17 = v16;
-      v18 = [(HKMedicationOrder *)self prescriber];
-      v19 = [v5 prescriber];
-      v20 = [v18 isEqualToString:v19];
+      v17 = prescriber2;
+      prescriber3 = [(HKMedicationOrder *)self prescriber];
+      prescriber4 = [v5 prescriber];
+      v20 = [prescriber3 isEqualToString:prescriber4];
 
       if (!v20)
       {
@@ -337,31 +337,31 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v21 = [(HKMedicationOrder *)self numberOfFills];
-    if (v21 != [v5 numberOfFills])
+    numberOfFills = [(HKMedicationOrder *)self numberOfFills];
+    if (numberOfFills != [v5 numberOfFills])
     {
       goto LABEL_80;
     }
 
-    v6 = [(HKMedicationOrder *)self dosages];
-    v22 = [v5 dosages];
-    v8 = v22;
-    if (v6 == v22)
+    medicationCodingCollection = [(HKMedicationOrder *)self dosages];
+    dosages = [v5 dosages];
+    v8 = dosages;
+    if (medicationCodingCollection == dosages)
     {
     }
 
     else
     {
-      v23 = [v5 dosages];
-      if (!v23)
+      dosages2 = [v5 dosages];
+      if (!dosages2)
       {
         goto LABEL_79;
       }
 
-      v24 = v23;
-      v25 = [(HKMedicationOrder *)self dosages];
-      v26 = [v5 dosages];
-      v27 = [v25 isEqualToArray:v26];
+      v24 = dosages2;
+      dosages3 = [(HKMedicationOrder *)self dosages];
+      dosages4 = [v5 dosages];
+      v27 = [dosages3 isEqualToArray:dosages4];
 
       if (!v27)
       {
@@ -369,25 +369,25 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKMedicationOrder *)self earliestDosageDate];
-    v28 = [v5 earliestDosageDate];
-    v8 = v28;
-    if (v6 == v28)
+    medicationCodingCollection = [(HKMedicationOrder *)self earliestDosageDate];
+    earliestDosageDate = [v5 earliestDosageDate];
+    v8 = earliestDosageDate;
+    if (medicationCodingCollection == earliestDosageDate)
     {
     }
 
     else
     {
-      v29 = [v5 earliestDosageDate];
-      if (!v29)
+      earliestDosageDate2 = [v5 earliestDosageDate];
+      if (!earliestDosageDate2)
       {
         goto LABEL_79;
       }
 
-      v30 = v29;
-      v31 = [(HKMedicationOrder *)self earliestDosageDate];
-      v32 = [v5 earliestDosageDate];
-      v33 = [v31 isEqual:v32];
+      v30 = earliestDosageDate2;
+      earliestDosageDate3 = [(HKMedicationOrder *)self earliestDosageDate];
+      earliestDosageDate4 = [v5 earliestDosageDate];
+      v33 = [earliestDosageDate3 isEqual:earliestDosageDate4];
 
       if (!v33)
       {
@@ -395,25 +395,25 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKMedicationOrder *)self writtenDate];
-    v34 = [v5 writtenDate];
-    v8 = v34;
-    if (v6 == v34)
+    medicationCodingCollection = [(HKMedicationOrder *)self writtenDate];
+    writtenDate = [v5 writtenDate];
+    v8 = writtenDate;
+    if (medicationCodingCollection == writtenDate)
     {
     }
 
     else
     {
-      v35 = [v5 writtenDate];
-      if (!v35)
+      writtenDate2 = [v5 writtenDate];
+      if (!writtenDate2)
       {
         goto LABEL_79;
       }
 
-      v36 = v35;
-      v37 = [(HKMedicationOrder *)self writtenDate];
-      v38 = [v5 writtenDate];
-      v39 = [v37 isEqual:v38];
+      v36 = writtenDate2;
+      writtenDate3 = [(HKMedicationOrder *)self writtenDate];
+      writtenDate4 = [v5 writtenDate];
+      v39 = [writtenDate3 isEqual:writtenDate4];
 
       if (!v39)
       {
@@ -421,25 +421,25 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKMedicationOrder *)self endedDate];
-    v40 = [v5 endedDate];
-    v8 = v40;
-    if (v6 == v40)
+    medicationCodingCollection = [(HKMedicationOrder *)self endedDate];
+    endedDate = [v5 endedDate];
+    v8 = endedDate;
+    if (medicationCodingCollection == endedDate)
     {
     }
 
     else
     {
-      v41 = [v5 endedDate];
-      if (!v41)
+      endedDate2 = [v5 endedDate];
+      if (!endedDate2)
       {
         goto LABEL_79;
       }
 
-      v42 = v41;
-      v43 = [(HKMedicationOrder *)self endedDate];
-      v44 = [v5 endedDate];
-      v45 = [v43 isEqual:v44];
+      v42 = endedDate2;
+      endedDate3 = [(HKMedicationOrder *)self endedDate];
+      endedDate4 = [v5 endedDate];
+      v45 = [endedDate3 isEqual:endedDate4];
 
       if (!v45)
       {
@@ -447,25 +447,25 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKMedicationOrder *)self statusCoding];
-    v46 = [v5 statusCoding];
-    v8 = v46;
-    if (v6 == v46)
+    medicationCodingCollection = [(HKMedicationOrder *)self statusCoding];
+    statusCoding = [v5 statusCoding];
+    v8 = statusCoding;
+    if (medicationCodingCollection == statusCoding)
     {
     }
 
     else
     {
-      v47 = [v5 statusCoding];
-      if (!v47)
+      statusCoding2 = [v5 statusCoding];
+      if (!statusCoding2)
       {
         goto LABEL_79;
       }
 
-      v48 = v47;
-      v49 = [(HKMedicationOrder *)self statusCoding];
-      v50 = [v5 statusCoding];
-      v51 = [v49 isEqual:v50];
+      v48 = statusCoding2;
+      statusCoding3 = [(HKMedicationOrder *)self statusCoding];
+      statusCoding4 = [v5 statusCoding];
+      v51 = [statusCoding3 isEqual:statusCoding4];
 
       if (!v51)
       {
@@ -473,25 +473,25 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKMedicationOrder *)self reasonCodingCollections];
-    v52 = [v5 reasonCodingCollections];
-    v8 = v52;
-    if (v6 == v52)
+    medicationCodingCollection = [(HKMedicationOrder *)self reasonCodingCollections];
+    reasonCodingCollections = [v5 reasonCodingCollections];
+    v8 = reasonCodingCollections;
+    if (medicationCodingCollection == reasonCodingCollections)
     {
     }
 
     else
     {
-      v53 = [v5 reasonCodingCollections];
-      if (!v53)
+      reasonCodingCollections2 = [v5 reasonCodingCollections];
+      if (!reasonCodingCollections2)
       {
         goto LABEL_79;
       }
 
-      v54 = v53;
-      v55 = [(HKMedicationOrder *)self reasonCodingCollections];
-      v56 = [v5 reasonCodingCollections];
-      v57 = [v55 isEqualToArray:v56];
+      v54 = reasonCodingCollections2;
+      reasonCodingCollections3 = [(HKMedicationOrder *)self reasonCodingCollections];
+      reasonCodingCollections4 = [v5 reasonCodingCollections];
+      v57 = [reasonCodingCollections3 isEqualToArray:reasonCodingCollections4];
 
       if (!v57)
       {
@@ -499,25 +499,25 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKMedicationOrder *)self reasonEndedCodingCollection];
-    v58 = [v5 reasonEndedCodingCollection];
-    v8 = v58;
-    if (v6 == v58)
+    medicationCodingCollection = [(HKMedicationOrder *)self reasonEndedCodingCollection];
+    reasonEndedCodingCollection = [v5 reasonEndedCodingCollection];
+    v8 = reasonEndedCodingCollection;
+    if (medicationCodingCollection == reasonEndedCodingCollection)
     {
     }
 
     else
     {
-      v59 = [v5 reasonEndedCodingCollection];
-      if (!v59)
+      reasonEndedCodingCollection2 = [v5 reasonEndedCodingCollection];
+      if (!reasonEndedCodingCollection2)
       {
         goto LABEL_79;
       }
 
-      v60 = v59;
-      v61 = [(HKMedicationOrder *)self reasonEndedCodingCollection];
-      v62 = [v5 reasonEndedCodingCollection];
-      v63 = [v61 isEqual:v62];
+      v60 = reasonEndedCodingCollection2;
+      reasonEndedCodingCollection3 = [(HKMedicationOrder *)self reasonEndedCodingCollection];
+      reasonEndedCodingCollection4 = [v5 reasonEndedCodingCollection];
+      v63 = [reasonEndedCodingCollection3 isEqual:reasonEndedCodingCollection4];
 
       if (!v63)
       {
@@ -525,25 +525,25 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKMedicationOrder *)self statusReasonCodingCollection];
-    v64 = [v5 statusReasonCodingCollection];
-    v8 = v64;
-    if (v6 == v64)
+    medicationCodingCollection = [(HKMedicationOrder *)self statusReasonCodingCollection];
+    statusReasonCodingCollection = [v5 statusReasonCodingCollection];
+    v8 = statusReasonCodingCollection;
+    if (medicationCodingCollection == statusReasonCodingCollection)
     {
     }
 
     else
     {
-      v65 = [v5 statusReasonCodingCollection];
-      if (!v65)
+      statusReasonCodingCollection2 = [v5 statusReasonCodingCollection];
+      if (!statusReasonCodingCollection2)
       {
         goto LABEL_79;
       }
 
-      v66 = v65;
-      v67 = [(HKMedicationOrder *)self statusReasonCodingCollection];
-      v68 = [v5 statusReasonCodingCollection];
-      v69 = [v67 isEqual:v68];
+      v66 = statusReasonCodingCollection2;
+      statusReasonCodingCollection3 = [(HKMedicationOrder *)self statusReasonCodingCollection];
+      statusReasonCodingCollection4 = [v5 statusReasonCodingCollection];
+      v69 = [statusReasonCodingCollection3 isEqual:statusReasonCodingCollection4];
 
       if (!v69)
       {
@@ -551,25 +551,25 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKMedicationOrder *)self medication];
-    v70 = [v5 medication];
-    v8 = v70;
-    if (v6 == v70)
+    medicationCodingCollection = [(HKMedicationOrder *)self medication];
+    medication = [v5 medication];
+    v8 = medication;
+    if (medicationCodingCollection == medication)
     {
     }
 
     else
     {
-      v71 = [v5 medication];
-      if (!v71)
+      medication2 = [v5 medication];
+      if (!medication2)
       {
         goto LABEL_79;
       }
 
-      v72 = v71;
-      v73 = [(HKMedicationOrder *)self medication];
-      v74 = [v5 medication];
-      v75 = [v73 isEqual:v74];
+      v72 = medication2;
+      medication3 = [(HKMedicationOrder *)self medication];
+      medication4 = [v5 medication];
+      v75 = [medication3 isEqual:medication4];
 
       if (!v75)
       {
@@ -577,25 +577,25 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKMedicationOrder *)self status];
-    v76 = [v5 status];
-    v8 = v76;
-    if (v6 == v76)
+    medicationCodingCollection = [(HKMedicationOrder *)self status];
+    status = [v5 status];
+    v8 = status;
+    if (medicationCodingCollection == status)
     {
     }
 
     else
     {
-      v77 = [v5 status];
-      if (!v77)
+      status2 = [v5 status];
+      if (!status2)
       {
         goto LABEL_79;
       }
 
-      v78 = v77;
-      v79 = [(HKMedicationOrder *)self status];
-      v80 = [v5 status];
-      v81 = [v79 isEqual:v80];
+      v78 = status2;
+      status3 = [(HKMedicationOrder *)self status];
+      status4 = [v5 status];
+      v81 = [status3 isEqual:status4];
 
       if (!v81)
       {
@@ -603,25 +603,25 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKMedicationOrder *)self reason];
-    v82 = [v5 reason];
-    v8 = v82;
-    if (v6 == v82)
+    medicationCodingCollection = [(HKMedicationOrder *)self reason];
+    reason = [v5 reason];
+    v8 = reason;
+    if (medicationCodingCollection == reason)
     {
     }
 
     else
     {
-      v83 = [v5 reason];
-      if (!v83)
+      reason2 = [v5 reason];
+      if (!reason2)
       {
         goto LABEL_79;
       }
 
-      v84 = v83;
-      v85 = [(HKMedicationOrder *)self reason];
-      v86 = [v5 reason];
-      v87 = [v85 isEqualToArray:v86];
+      v84 = reason2;
+      reason3 = [(HKMedicationOrder *)self reason];
+      reason4 = [v5 reason];
+      v87 = [reason3 isEqualToArray:reason4];
 
       if (!v87)
       {
@@ -629,25 +629,25 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKMedicationOrder *)self reasonEnded];
-    v88 = [v5 reasonEnded];
-    v8 = v88;
-    if (v6 == v88)
+    medicationCodingCollection = [(HKMedicationOrder *)self reasonEnded];
+    reasonEnded = [v5 reasonEnded];
+    v8 = reasonEnded;
+    if (medicationCodingCollection == reasonEnded)
     {
     }
 
     else
     {
-      v89 = [v5 reasonEnded];
-      if (!v89)
+      reasonEnded2 = [v5 reasonEnded];
+      if (!reasonEnded2)
       {
         goto LABEL_79;
       }
 
-      v90 = v89;
-      v91 = [(HKMedicationOrder *)self reasonEnded];
-      v92 = [v5 reasonEnded];
-      v93 = [v91 isEqual:v92];
+      v90 = reasonEnded2;
+      reasonEnded3 = [(HKMedicationOrder *)self reasonEnded];
+      reasonEnded4 = [v5 reasonEnded];
+      v93 = [reasonEnded3 isEqual:reasonEnded4];
 
       if (!v93)
       {
@@ -655,10 +655,10 @@ void __365__HKMedicationOrder__newMedicationOrderWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKMedicationOrder *)self statusReason];
-    v94 = [v5 statusReason];
-    v8 = v94;
-    if (v6 == v94)
+    medicationCodingCollection = [(HKMedicationOrder *)self statusReason];
+    statusReason = [v5 statusReason];
+    v8 = statusReason;
+    if (medicationCodingCollection == statusReason)
     {
 
 LABEL_84:
@@ -666,13 +666,13 @@ LABEL_84:
       goto LABEL_81;
     }
 
-    v95 = [v5 statusReason];
-    if (v95)
+    statusReason2 = [v5 statusReason];
+    if (statusReason2)
     {
-      v96 = v95;
-      v97 = [(HKMedicationOrder *)self statusReason];
-      v98 = [v5 statusReason];
-      v99 = [v97 isEqual:v98];
+      v96 = statusReason2;
+      statusReason3 = [(HKMedicationOrder *)self statusReason];
+      statusReason4 = [v5 statusReason];
+      v99 = [statusReason3 isEqual:statusReason4];
 
       if (v99)
       {
@@ -699,95 +699,95 @@ LABEL_82:
 
 - (id)statusCodingCollection
 {
-  v2 = [(HKMedicationOrder *)self statusCoding];
-  v3 = [HKMedicalCodingCollection collectionWithCoding:v2];
+  statusCoding = [(HKMedicationOrder *)self statusCoding];
+  v3 = [HKMedicalCodingCollection collectionWithCoding:statusCoding];
 
   return v3;
 }
 
-- (void)_setMedicationCodingCollection:(id)a3
+- (void)_setMedicationCodingCollection:(id)collection
 {
-  v4 = [a3 copy];
+  v4 = [collection copy];
   medicationCodingCollection = self->_medicationCodingCollection;
   self->_medicationCodingCollection = v4;
 
-  v8 = [(HKMedicationOrder *)self medicationCodingCollection];
-  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v8];
+  medicationCodingCollection = [(HKMedicationOrder *)self medicationCodingCollection];
+  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:medicationCodingCollection];
   medication = self->_medication;
   self->_medication = v6;
 }
 
-- (void)_setPrescriber:(id)a3
+- (void)_setPrescriber:(id)prescriber
 {
-  v4 = [a3 copy];
+  v4 = [prescriber copy];
   prescriber = self->_prescriber;
   self->_prescriber = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setDosages:(id)a3
+- (void)_setDosages:(id)dosages
 {
-  v4 = [a3 copy];
+  v4 = [dosages copy];
   dosages = self->_dosages;
   self->_dosages = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setEarliestDosageDate:(id)a3
+- (void)_setEarliestDosageDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   earliestDosageDate = self->_earliestDosageDate;
   self->_earliestDosageDate = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setWrittenDate:(id)a3
+- (void)_setWrittenDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   writtenDate = self->_writtenDate;
   self->_writtenDate = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setEndedDate:(id)a3
+- (void)_setEndedDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   endedDate = self->_endedDate;
   self->_endedDate = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setStatusCoding:(id)a3
+- (void)_setStatusCoding:(id)coding
 {
-  v4 = [a3 copy];
+  v4 = [coding copy];
   statusCoding = self->_statusCoding;
   self->_statusCoding = v4;
 
-  v8 = [(HKMedicationOrder *)self statusCodingCollection];
-  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v8];
+  statusCodingCollection = [(HKMedicationOrder *)self statusCodingCollection];
+  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:statusCodingCollection];
   status = self->_status;
   self->_status = v6;
 }
 
-- (void)_setReasonCodingCollections:(id)a3
+- (void)_setReasonCodingCollections:(id)collections
 {
-  v4 = [a3 copy];
+  v4 = [collections copy];
   reasonCodingCollections = self->_reasonCodingCollections;
   self->_reasonCodingCollections = v4;
 
   if (self->_reasonCodingCollections)
   {
-    v9 = [(HKMedicationOrder *)self reasonCodingCollections];
-    v6 = [(NSArray *)v9 hk_map:&__block_literal_global_1];
+    reasonCodingCollections = [(HKMedicationOrder *)self reasonCodingCollections];
+    v6 = [(NSArray *)reasonCodingCollections hk_map:&__block_literal_global_1];
     reason = self->_reason;
     self->_reason = v6;
 
-    v8 = v9;
+    v8 = reasonCodingCollections;
   }
 
   else
@@ -797,20 +797,20 @@ LABEL_82:
   }
 }
 
-- (void)_setReasonEndedCodingCollection:(id)a3
+- (void)_setReasonEndedCodingCollection:(id)collection
 {
-  v4 = [a3 copy];
+  v4 = [collection copy];
   reasonEndedCodingCollection = self->_reasonEndedCodingCollection;
   self->_reasonEndedCodingCollection = v4;
 
   if (self->_reasonEndedCodingCollection)
   {
-    v9 = [(HKMedicationOrder *)self reasonEndedCodingCollection];
-    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v9];
+    reasonEndedCodingCollection = [(HKMedicationOrder *)self reasonEndedCodingCollection];
+    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:reasonEndedCodingCollection];
     reasonEnded = self->_reasonEnded;
     self->_reasonEnded = v6;
 
-    v8 = v9;
+    v8 = reasonEndedCodingCollection;
   }
 
   else
@@ -820,20 +820,20 @@ LABEL_82:
   }
 }
 
-- (void)_setStatusReasonCodingCollection:(id)a3
+- (void)_setStatusReasonCodingCollection:(id)collection
 {
-  v4 = [a3 copy];
+  v4 = [collection copy];
   statusReasonCodingCollection = self->_statusReasonCodingCollection;
   self->_statusReasonCodingCollection = v4;
 
   if (self->_statusReasonCodingCollection)
   {
-    v9 = [(HKMedicationOrder *)self statusReasonCodingCollection];
-    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v9];
+    statusReasonCodingCollection = [(HKMedicationOrder *)self statusReasonCodingCollection];
+    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:statusReasonCodingCollection];
     statusReason = self->_statusReason;
     self->_statusReason = v6;
 
-    v8 = v9;
+    v8 = statusReasonCodingCollection;
   }
 
   else
@@ -853,17 +853,17 @@ LABEL_82:
 
   else
   {
-    v4 = [(HKMedicationOrder *)self medicationCodingCollection];
-    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+    medicationCodingCollection = [(HKMedicationOrder *)self medicationCodingCollection];
+    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:medicationCodingCollection];
   }
 
   return v3;
 }
 
-- (void)_setMedication:(id)a3
+- (void)_setMedication:(id)medication
 {
-  v4 = a3;
-  if (!v4)
+  medicationCopy = medication;
+  if (!medicationCopy)
   {
     _HKInitializeLogging();
     v5 = HKLogHealthRecords;
@@ -873,7 +873,7 @@ LABEL_82:
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [medicationCopy copy];
   medication = self->_medication;
   self->_medication = v6;
 }
@@ -888,17 +888,17 @@ LABEL_82:
 
   else
   {
-    v4 = [(HKMedicationOrder *)self statusCodingCollection];
-    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+    statusCodingCollection = [(HKMedicationOrder *)self statusCodingCollection];
+    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:statusCodingCollection];
   }
 
   return v3;
 }
 
-- (void)_setStatus:(id)a3
+- (void)_setStatus:(id)status
 {
-  v4 = a3;
-  if (!v4)
+  statusCopy = status;
+  if (!statusCopy)
   {
     _HKInitializeLogging();
     v5 = HKLogHealthRecords;
@@ -908,7 +908,7 @@ LABEL_82:
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [statusCopy copy];
   status = self->_status;
   self->_status = v6;
 }
@@ -925,8 +925,8 @@ LABEL_82:
 
     else
     {
-      v4 = [(HKMedicationOrder *)self reasonCodingCollections];
-      v3 = [v4 hk_map:&__block_literal_global_126];
+      reasonCodingCollections = [(HKMedicationOrder *)self reasonCodingCollections];
+      v3 = [reasonCodingCollections hk_map:&__block_literal_global_126];
     }
   }
 
@@ -938,9 +938,9 @@ LABEL_82:
   return v3;
 }
 
-- (void)_setReason:(id)a3
+- (void)_setReason:(id)reason
 {
-  v4 = [a3 copy];
+  v4 = [reason copy];
   reason = self->_reason;
   self->_reason = v4;
 
@@ -959,8 +959,8 @@ LABEL_82:
 
     else
     {
-      v4 = [(HKMedicationOrder *)self reasonEndedCodingCollection];
-      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+      reasonEndedCodingCollection = [(HKMedicationOrder *)self reasonEndedCodingCollection];
+      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:reasonEndedCodingCollection];
     }
   }
 
@@ -972,9 +972,9 @@ LABEL_82:
   return v3;
 }
 
-- (void)_setReasonEnded:(id)a3
+- (void)_setReasonEnded:(id)ended
 {
-  v4 = [a3 copy];
+  v4 = [ended copy];
   reasonEnded = self->_reasonEnded;
   self->_reasonEnded = v4;
 
@@ -993,8 +993,8 @@ LABEL_82:
 
     else
     {
-      v4 = [(HKMedicationOrder *)self statusReasonCodingCollection];
-      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+      statusReasonCodingCollection = [(HKMedicationOrder *)self statusReasonCodingCollection];
+      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:statusReasonCodingCollection];
     }
   }
 
@@ -1006,20 +1006,20 @@ LABEL_82:
   return v3;
 }
 
-- (void)_setStatusReason:(id)a3
+- (void)_setStatusReason:(id)reason
 {
-  v4 = [a3 copy];
+  v4 = [reason copy];
   statusReason = self->_statusReason;
   self->_statusReason = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v13.receiver = self;
   v13.super_class = HKMedicationOrder;
-  v5 = [(HKMedicalRecord *)&v13 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKMedicalRecord *)&v13 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {
@@ -1059,10 +1059,10 @@ LABEL_10:
 
 - (id)medicalRecordCodings
 {
-  v2 = [(HKMedicationOrder *)self medicationCodingCollection];
-  v3 = [v2 codings];
+  medicationCodingCollection = [(HKMedicationOrder *)self medicationCodingCollection];
+  codings = [medicationCodingCollection codings];
 
-  return v3;
+  return codings;
 }
 
 + (id)defaultDisplayString
@@ -1075,7 +1075,7 @@ LABEL_10:
 
 + (id)indexableConceptKeyPaths
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___HKMedicationOrder;
   v2 = objc_msgSendSuper2(&v5, sel_indexableConceptKeyPaths);
   v3 = [v2 mutableCopy];
@@ -1091,18 +1091,18 @@ LABEL_10:
 
 + (id)cachedConceptRelationshipKeyPaths
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___HKMedicationOrder;
   v2 = objc_msgSendSuper2(&v4, sel_cachedConceptRelationshipKeyPaths);
 
   return v2;
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:v6 error:a4];
+  pathCopy = path;
+  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v8 = v7;
   if (!v7)
   {
@@ -1112,8 +1112,8 @@ LABEL_10:
 
   if ([v7 isEqualToString:@"medication"])
   {
-    v9 = [(HKMedicationOrder *)self medicationCodingCollection];
-    v10 = [HKIndexableObject indexableObjectWithObject:v9];
+    medicationCodingCollection = [(HKMedicationOrder *)self medicationCodingCollection];
+    v10 = [HKIndexableObject indexableObjectWithObject:medicationCodingCollection];
     v26[0] = v10;
     v11 = MEMORY[0x1E695DEC8];
     v12 = v26;
@@ -1125,8 +1125,8 @@ LABEL_4:
 
   if ([v8 isEqualToString:@"status"])
   {
-    v14 = [(HKMedicationOrder *)self statusCoding];
-    v15 = [HKMedicalCodingCollection collectionWithCoding:v14];
+    statusCoding = [(HKMedicationOrder *)self statusCoding];
+    v15 = [HKMedicalCodingCollection collectionWithCoding:statusCoding];
     v16 = [HKIndexableObject indexableObjectWithObject:v15];
     v25 = v16;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
@@ -1137,12 +1137,12 @@ LABEL_11:
 
   if ([v8 isEqualToString:@"reason"])
   {
-    v17 = [(HKMedicationOrder *)self reasonCodingCollections];
+    reasonCodingCollections = [(HKMedicationOrder *)self reasonCodingCollections];
 
-    if (v17)
+    if (reasonCodingCollections)
     {
-      v14 = [(HKMedicationOrder *)self reasonCodingCollections];
-      v13 = [HKConceptIndexUtilities indexedCodingsForCodingCollections:v14 context:v6 error:a4];
+      statusCoding = [(HKMedicationOrder *)self reasonCodingCollections];
+      v13 = [HKConceptIndexUtilities indexedCodingsForCodingCollections:statusCoding context:pathCopy error:error];
       goto LABEL_11;
     }
 
@@ -1151,12 +1151,12 @@ LABEL_11:
 
   if ([v8 isEqualToString:@"reasonEnded"])
   {
-    v20 = [(HKMedicationOrder *)self reasonEndedCodingCollection];
+    reasonEndedCodingCollection = [(HKMedicationOrder *)self reasonEndedCodingCollection];
 
-    if (v20)
+    if (reasonEndedCodingCollection)
     {
-      v9 = [(HKMedicationOrder *)self reasonEndedCodingCollection];
-      v10 = [HKIndexableObject indexableObjectWithObject:v9];
+      medicationCodingCollection = [(HKMedicationOrder *)self reasonEndedCodingCollection];
+      v10 = [HKIndexableObject indexableObjectWithObject:medicationCodingCollection];
       v24 = v10;
       v11 = MEMORY[0x1E695DEC8];
       v12 = &v24;
@@ -1168,12 +1168,12 @@ LABEL_11:
 
   if ([v8 isEqualToString:@"statusReason"])
   {
-    v21 = [(HKMedicationOrder *)self statusReasonCodingCollection];
+    statusReasonCodingCollection = [(HKMedicationOrder *)self statusReasonCodingCollection];
 
-    if (v21)
+    if (statusReasonCodingCollection)
     {
-      v9 = [(HKMedicationOrder *)self statusReasonCodingCollection];
-      v10 = [HKIndexableObject indexableObjectWithObject:v9];
+      medicationCodingCollection = [(HKMedicationOrder *)self statusReasonCodingCollection];
+      v10 = [HKIndexableObject indexableObjectWithObject:medicationCodingCollection];
       v23 = v10;
       v11 = MEMORY[0x1E695DEC8];
       v12 = &v23;
@@ -1187,7 +1187,7 @@ LABEL_21:
 
   v22.receiver = self;
   v22.super_class = HKMedicationOrder;
-  v13 = [(HKMedicalRecord *)&v22 codingsForKeyPath:v6 error:a4];
+  v13 = [(HKMedicalRecord *)&v22 codingsForKeyPath:pathCopy error:error];
 LABEL_12:
 
   v18 = *MEMORY[0x1E69E9840];
@@ -1195,11 +1195,11 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:v9 error:a5];
+  conceptsCopy = concepts;
+  pathCopy = path;
+  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v11 = v10;
   if (!v10)
   {
@@ -1208,14 +1208,14 @@ LABEL_12:
 
   if ([v10 isEqualToString:@"medication"])
   {
-    if (HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 1, v9, a5))
+    if (HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 1, pathCopy, error))
     {
-      a5 = [v8 firstObject];
-      v12 = [a5 object];
-      [(HKMedicationOrder *)self _setMedication:v12];
+      error = [conceptsCopy firstObject];
+      object = [error object];
+      [(HKMedicationOrder *)self _setMedication:object];
 LABEL_8:
 
-      LOBYTE(a5) = 1;
+      LOBYTE(error) = 1;
       goto LABEL_10;
     }
 
@@ -1224,16 +1224,16 @@ LABEL_8:
 
   if ([v11 isEqualToString:@"status"])
   {
-    if (HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 1, v9, a5))
+    if (HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 1, pathCopy, error))
     {
-      a5 = [v8 firstObject];
-      v12 = [a5 object];
-      [(HKMedicationOrder *)self _setStatus:v12];
+      error = [conceptsCopy firstObject];
+      object = [error object];
+      [(HKMedicationOrder *)self _setStatus:object];
       goto LABEL_8;
     }
 
 LABEL_9:
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_10;
   }
 
@@ -1241,99 +1241,99 @@ LABEL_9:
   {
     if ([v11 isEqualToString:@"reasonEnded"])
     {
-      v17 = [v8 count];
-      v18 = [(HKMedicationOrder *)self reasonEndedCodingCollection];
-      LODWORD(a5) = HKIndexableObjectCheckCardinalityForIndexRestore(v17, v18 != 0, v9, a5);
+      v17 = [conceptsCopy count];
+      reasonEndedCodingCollection = [(HKMedicationOrder *)self reasonEndedCodingCollection];
+      LODWORD(error) = HKIndexableObjectCheckCardinalityForIndexRestore(v17, reasonEndedCodingCollection != 0, pathCopy, error);
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_10;
       }
 
-      a5 = [v8 firstObject];
-      v12 = [a5 object];
-      [(HKMedicationOrder *)self _setReasonEnded:v12];
+      error = [conceptsCopy firstObject];
+      object = [error object];
+      [(HKMedicationOrder *)self _setReasonEnded:object];
       goto LABEL_8;
     }
 
     if ([v11 isEqualToString:@"statusReason"])
     {
-      v19 = [v8 count];
-      v20 = [(HKMedicationOrder *)self statusReasonCodingCollection];
-      LODWORD(a5) = HKIndexableObjectCheckCardinalityForIndexRestore(v19, v20 != 0, v9, a5);
+      v19 = [conceptsCopy count];
+      statusReasonCodingCollection = [(HKMedicationOrder *)self statusReasonCodingCollection];
+      LODWORD(error) = HKIndexableObjectCheckCardinalityForIndexRestore(v19, statusReasonCodingCollection != 0, pathCopy, error);
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_10;
       }
 
-      a5 = [v8 firstObject];
-      v12 = [a5 object];
-      [(HKMedicationOrder *)self _setStatusReason:v12];
+      error = [conceptsCopy firstObject];
+      object = [error object];
+      [(HKMedicationOrder *)self _setStatusReason:object];
       goto LABEL_8;
     }
 
     v22.receiver = self;
     v22.super_class = HKMedicationOrder;
-    v21 = [(HKMedicalRecord *)&v22 applyConcepts:v8 forKeyPath:v9 error:a5];
+    v21 = [(HKMedicalRecord *)&v22 applyConcepts:conceptsCopy forKeyPath:pathCopy error:error];
 LABEL_24:
-    LOBYTE(a5) = v21;
+    LOBYTE(error) = v21;
     goto LABEL_10;
   }
 
-  v14 = [(HKMedicationOrder *)self reasonCodingCollections];
+  reasonCodingCollections = [(HKMedicationOrder *)self reasonCodingCollections];
 
-  if (!v14)
+  if (!reasonCodingCollections)
   {
-    v21 = HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 0, v9, a5);
+    v21 = HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 0, pathCopy, error);
     goto LABEL_24;
   }
 
-  v15 = [(HKMedicationOrder *)self reasonCodingCollections];
-  v16 = +[HKConceptIndexUtilities conceptsForIndexedConcepts:expectedCount:context:error:](HKConceptIndexUtilities, "conceptsForIndexedConcepts:expectedCount:context:error:", v8, [v15 count], v9, a5);
+  reasonCodingCollections2 = [(HKMedicationOrder *)self reasonCodingCollections];
+  v16 = +[HKConceptIndexUtilities conceptsForIndexedConcepts:expectedCount:context:error:](HKConceptIndexUtilities, "conceptsForIndexedConcepts:expectedCount:context:error:", conceptsCopy, [reasonCodingCollections2 count], pathCopy, error);
 
-  LOBYTE(a5) = v16 != 0;
+  LOBYTE(error) = v16 != 0;
   if (v16)
   {
     [(HKMedicationOrder *)self _setReason:v16];
   }
 
 LABEL_10:
-  return a5;
+  return error;
 }
 
-+ (id)medicationOrderWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 medicationCodingCollection:(id)a14 prescriber:(id)a15 numberOfFills:(int64_t)a16 dosages:(id)a17 earliestDosageDate:(id)a18 writtenDate:(id)a19 endedDate:(id)a20 statusCoding:(id)a21 reasonCodingCollections:(id)a22 reasonEndedCodingCollection:(id)a23 statusReasonCodingCollection:(id)a24
++ (id)medicationOrderWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 medicationCodingCollection:(id)self4 prescriber:(id)self5 numberOfFills:(int64_t)self6 dosages:(id)self7 earliestDosageDate:(id)self8 writtenDate:(id)self9 endedDate:(id)endedDate statusCoding:(id)coding reasonCodingCollections:(id)collections reasonEndedCodingCollection:(id)codingCollection statusReasonCodingCollection:(id)reasonCodingCollection
 {
-  v48 = a5;
-  v58 = a3;
-  v57 = a4;
-  v28 = a6;
-  v53 = a7;
-  v52 = a8;
-  v51 = a10;
-  v50 = a11;
-  v56 = a12;
-  v29 = a14;
-  v55 = a15;
-  v54 = a17;
-  v30 = a18;
-  v31 = a19;
-  v47 = a20;
-  v32 = a21;
-  v46 = a22;
-  v33 = a23;
-  v34 = a24;
+  errorCopy = error;
+  typeCopy = type;
+  noteCopy = note;
+  dateCopy = date;
+  identifierCopy = identifier;
+  localeCopy = locale;
+  deviceCopy = device;
+  metadataCopy = metadata;
+  countryCopy = country;
+  collectionCopy = collection;
+  prescriberCopy = prescriber;
+  dosagesCopy = dosages;
+  dosageDateCopy = dosageDate;
+  writtenDateCopy = writtenDate;
+  endedDateCopy = endedDate;
+  codingCopy = coding;
+  collectionsCopy = collections;
+  codingCollectionCopy = codingCollection;
+  reasonCodingCollectionCopy = reasonCodingCollection;
   v35 = @"modifiedDate";
-  v36 = v28;
+  v36 = dateCopy;
   v37 = v36;
-  if (v30)
+  if (dosageDateCopy)
   {
     v38 = @"earliestDosageDate";
 
-    v39 = [v30 dateForUTC];
+    dateForUTC = [dosageDateCopy dateForUTC];
 
     v35 = v38;
-    if (!v31)
+    if (!writtenDateCopy)
     {
       goto LABEL_4;
     }
@@ -1341,23 +1341,23 @@ LABEL_10:
     goto LABEL_3;
   }
 
-  v39 = v36;
-  if (v31)
+  dateForUTC = v36;
+  if (writtenDateCopy)
   {
 LABEL_3:
     v40 = @"writtenDate";
 
-    v41 = [v31 dateForUTC];
+    dateForUTC2 = [writtenDateCopy dateForUTC];
 
-    v39 = v41;
+    dateForUTC = dateForUTC2;
     v35 = v40;
   }
 
 LABEL_4:
-  v42 = v31;
-  v45 = v31;
-  v43 = [HKSemanticDate semanticDateWithKeyPath:v35 date:v39];
-  v49 = [HKMedicationOrder medicationOrderWithType:v58 note:v57 enteredInError:v48 modifiedDate:v37 originIdentifier:v53 locale:v52 extractionVersion:a9 device:v51 metadata:v50 sortDate:v43 country:v56 state:a13 medicationCodingCollection:v29 prescriber:v55 numberOfFills:a16 dosages:v54 earliestDosageDate:v30 writtenDate:v42 endedDate:v47 statusCoding:v32 reasonCodingCollections:v46 reasonEndedCodingCollection:v33 statusReasonCodingCollection:v34];
+  v42 = writtenDateCopy;
+  v45 = writtenDateCopy;
+  v43 = [HKSemanticDate semanticDateWithKeyPath:v35 date:dateForUTC];
+  v49 = [HKMedicationOrder medicationOrderWithType:typeCopy note:noteCopy enteredInError:errorCopy modifiedDate:v37 originIdentifier:identifierCopy locale:localeCopy extractionVersion:version device:deviceCopy metadata:metadataCopy sortDate:v43 country:countryCopy state:state medicationCodingCollection:collectionCopy prescriber:prescriberCopy numberOfFills:fills dosages:dosagesCopy earliestDosageDate:dosageDateCopy writtenDate:v42 endedDate:endedDateCopy statusCoding:codingCopy reasonCodingCollections:collectionsCopy reasonEndedCodingCollection:codingCollectionCopy statusReasonCodingCollection:reasonCodingCollectionCopy];
 
   return v49;
 }

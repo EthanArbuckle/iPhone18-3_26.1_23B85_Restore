@@ -1,34 +1,34 @@
 @interface MPMediaLibraryEntityTranslator
 + (NSArray)allTranslators;
-+ (id)_translatorForMPModelClass:(Class)a3 mlcoreEntityClass:(void *)a4 create:(BOOL)a5 transient:(BOOL)a6;
-+ (id)translatorForMPModelClass:(Class)a3;
-- (Class)classForRelationshipKey:(id)a3;
-- (id)_cachedIdentifierSourceForContext:(id)a3;
-- (id)_objectForPropertySet:(id)a3 entityClass:(void *)a4 propertyCache:(const void *)a5 baseTranslator:(id)a6 prependKeyPath:(id)a7 context:(id)a8;
-- (id)_propertyTranslatorForKeyPath:(id)a3;
-- (id)_valueForKeyPath:(id)a3 forPropertyCache:(const void *)a4 context:(id)a5;
-- (id)identifiersForPropertyCache:(const void *)a3 context:(id)a4;
-- (id)objectForPropertySet:(id)a3 entityClass:(void *)a4 propertyCache:(const void *)a5 context:(id)a6;
-- (shared_ptr<mlcore::EntityQuery>)entityQueryForPropertySet:(id)a3 sortDescriptors:(id)a4 context:(id)a5 view:(id)a6;
-- (shared_ptr<mlcore::EntityQuery>)entityQueryForPropertySet:(id)a3 sortDescriptors:(id)a4 context:(id)a5 view:(id)a6 deferLoadingRelationProperties:(BOOL)a7;
-- (shared_ptr<mlcore::PropertiesQuery>)propertiesQueryForPropertySet:(id)a3 scopedContainers:(id)a4 allowedItemIdentifiers:(id)a5 view:(id)a6;
-- (shared_ptr<std::unordered_map<std::string,)_propertyMapForKeyPath:(id)a3 includePropertiesToSort:(BOOL)a4;
++ (id)_translatorForMPModelClass:(Class)class mlcoreEntityClass:(void *)entityClass create:(BOOL)create transient:(BOOL)transient;
++ (id)translatorForMPModelClass:(Class)class;
+- (Class)classForRelationshipKey:(id)key;
+- (id)_cachedIdentifierSourceForContext:(id)context;
+- (id)_objectForPropertySet:(id)set entityClass:(void *)class propertyCache:(const void *)cache baseTranslator:(id)translator prependKeyPath:(id)path context:(id)context;
+- (id)_propertyTranslatorForKeyPath:(id)path;
+- (id)_valueForKeyPath:(id)path forPropertyCache:(const void *)cache context:(id)context;
+- (id)identifiersForPropertyCache:(const void *)cache context:(id)context;
+- (id)objectForPropertySet:(id)set entityClass:(void *)class propertyCache:(const void *)cache context:(id)context;
+- (shared_ptr<mlcore::EntityQuery>)entityQueryForPropertySet:(id)set sortDescriptors:(id)descriptors context:(id)context view:(id)view;
+- (shared_ptr<mlcore::EntityQuery>)entityQueryForPropertySet:(id)set sortDescriptors:(id)descriptors context:(id)context view:(id)view deferLoadingRelationProperties:(BOOL)properties;
+- (shared_ptr<mlcore::PropertiesQuery>)propertiesQueryForPropertySet:(id)set scopedContainers:(id)containers allowedItemIdentifiers:(id)identifiers view:(id)view;
+- (shared_ptr<std::unordered_map<std::string,)_propertyMapForKeyPath:(id)path includePropertiesToSort:(BOOL)sort;
 - (unordered_map<std::string,)propertiesToFetchForPropertyKey:()std:()std:(std:(mlcore:(MPMediaLibraryEntityTranslator *)self :(SEL)a3 ModelPropertyBase *>>> *__return_ptr)retstr :(id)a4 allocator<std::pair<const)std::string :equal_to<std::string> :hash<std::string>;
-- (vector<mlcore::ModelPropertyBase)_MLCorePropertiesForPropertySet:(MPMediaLibraryEntityTranslator *)self withForeignPropertyBase:(SEL)a3 deferLoadingRelationProperties:(id)a4;
+- (vector<mlcore::ModelPropertyBase)_MLCorePropertiesForPropertySet:(MPMediaLibraryEntityTranslator *)self withForeignPropertyBase:(SEL)base deferLoadingRelationProperties:(id)properties;
 - (vector<mlcore::SortDescriptor,)MLCoreSortDescriptorsForModelSortDescriptors:(MPMediaLibraryEntityTranslator *)self;
 - (vector<std::shared_ptr<mlcore::Predicate>,)MLCorePredicateForModelPropertyFilters:(MPMediaLibraryEntityTranslator *)self;
-- (void)_propertyForKeyPath:(id)a3;
-- (void)mapIdentifierMLProperties:(const void *)a3 identifierCreationBlock:(id)a4;
-- (void)mapPropertyKey:(id)a3 toMLProperty:(void *)a4;
-- (void)mapPropertyKey:(id)a3 withPropertiesToFetch:(const void *)a4 propertiesToSort:(const void *)a5 sortTransformer:(id)a6 filterTransformer:(id)a7 valueTransformer:(id)a8;
-- (void)mapPropertyKey:(id)a3 withPropertiesToFetch:(const void *)a4 valueTransformer:(id)a5;
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4 transient:(BOOL)a5 usingForeignPropertyBase:(void *)a6;
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4 transient:(BOOL)a5 usingForeignPropertyBase:(void *)a6 relationshipValidationProperties:(const void *)a7 isValidRelationshipHandler:(id)a8;
+- (void)_propertyForKeyPath:(id)path;
+- (void)mapIdentifierMLProperties:(const void *)properties identifierCreationBlock:(id)block;
+- (void)mapPropertyKey:(id)key toMLProperty:(void *)property;
+- (void)mapPropertyKey:(id)key withPropertiesToFetch:(const void *)fetch propertiesToSort:(const void *)sort sortTransformer:(id)transformer filterTransformer:(id)filterTransformer valueTransformer:(id)valueTransformer;
+- (void)mapPropertyKey:(id)key withPropertiesToFetch:(const void *)fetch valueTransformer:(id)transformer;
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class transient:(BOOL)transient usingForeignPropertyBase:(void *)base;
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class transient:(BOOL)transient usingForeignPropertyBase:(void *)base relationshipValidationProperties:(const void *)properties isValidRelationshipHandler:(id)handler;
 @end
 
 @implementation MPMediaLibraryEntityTranslator
 
-- (vector<mlcore::ModelPropertyBase)_MLCorePropertiesForPropertySet:(MPMediaLibraryEntityTranslator *)self withForeignPropertyBase:(SEL)a3 deferLoadingRelationProperties:(id)a4
+- (vector<mlcore::ModelPropertyBase)_MLCorePropertiesForPropertySet:(MPMediaLibraryEntityTranslator *)self withForeignPropertyBase:(SEL)base deferLoadingRelationProperties:(id)properties
 {
   v81 = *MEMORY[0x1E69E9840];
   v72 = 0;
@@ -39,12 +39,12 @@
   v77 = "";
   memset(v78, 0, sizeof(v78));
   v79 = 1065353216;
-  v50 = a4;
-  v7 = [v50 properties];
-  v8 = v7;
-  if (v7)
+  propertiesCopy = properties;
+  properties = [propertiesCopy properties];
+  v8 = properties;
+  if (properties)
   {
-    v9 = [v7 setByAddingObject:@"_default"];
+    v9 = [properties setByAddingObject:@"_default"];
   }
 
   else
@@ -75,18 +75,18 @@
         v15 = v14;
         if (!v14)
         {
-          v17 = [(MPMediaLibraryEntityTranslator *)self MPModelClass];
+          mPModelClass = [(MPMediaLibraryEntityTranslator *)self MPModelClass];
           v18 = MEMORY[0x1E696AEC0];
           v19 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
           v20 = [v18 stringWithFormat:@"MediaLibrary property mapping missing for %@:%@", v19, v13];
-          MPModelPropertyMappingMissing(v17, v13, v20);
+          MPModelPropertyMappingMissing(mPModelClass, v13, v20);
 
 LABEL_15:
-          v21 = [(MPMediaLibraryEntityTranslator *)self MPModelClass];
+          mPModelClass2 = [(MPMediaLibraryEntityTranslator *)self MPModelClass];
           v22 = MEMORY[0x1E696AEC0];
           v23 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
           v24 = [v22 stringWithFormat:@"MediaLibrary property translator mapping missing for %@:%@", v23, v13];
-          MPModelPropertyMappingMissing(v21, v13, v24);
+          MPModelPropertyMappingMissing(mPModelClass2, v13, v24);
 
           goto LABEL_16;
         }
@@ -159,7 +159,7 @@ LABEL_16:
   v61 = 0;
   if (!a6)
   {
-    v29 = [v50 relationships];
+    relationships = [propertiesCopy relationships];
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
     v56[2] = __121__MPMediaLibraryEntityTranslator__MLCorePropertiesForPropertySet_withForeignPropertyBase_deferLoadingRelationProperties___block_invoke;
@@ -169,7 +169,7 @@ LABEL_16:
     v56[6] = &v72;
     v56[7] = a5;
     v57 = a6;
-    [v29 enumerateKeysAndObjectsUsingBlock:v56];
+    [relationships enumerateKeysAndObjectsUsingBlock:v56];
 
     if (v59[3])
     {
@@ -192,18 +192,18 @@ LABEL_16:
 
       else
       {
-        v33 = [(MPMediaLibraryEntityTranslator *)self MPModelClass];
+        mPModelClass3 = [(MPMediaLibraryEntityTranslator *)self MPModelClass];
         v34 = MEMORY[0x1E696AEC0];
         v35 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
         v36 = [v34 stringWithFormat:@"MediaLibrary property mapping missing for %@:%@", v35, @"_MPModelPropertyPlaylistEntryArtwork"];
-        MPModelPropertyMappingMissing(v33, @"_MPModelPropertyPlaylistEntryArtwork", v36);
+        MPModelPropertyMappingMissing(mPModelClass3, @"_MPModelPropertyPlaylistEntryArtwork", v36);
       }
 
-      v37 = [(MPMediaLibraryEntityTranslator *)self MPModelClass];
+      mPModelClass4 = [(MPMediaLibraryEntityTranslator *)self MPModelClass];
       v38 = MEMORY[0x1E696AEC0];
       v39 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
       v40 = [v38 stringWithFormat:@"MediaLibrary property translator mapping missing for %@:%@", v39, @"_MPModelPropertyPlaylistEntryArtwork"];
-      MPModelPropertyMappingMissing(v37, @"_MPModelPropertyPlaylistEntryArtwork", v40);
+      MPModelPropertyMappingMissing(mPModelClass4, @"_MPModelPropertyPlaylistEntryArtwork", v40);
 
 LABEL_37:
       [v31 propertiesToFetchMap];
@@ -431,30 +431,30 @@ LABEL_29:
   }
 }
 
-- (id)_objectForPropertySet:(id)a3 entityClass:(void *)a4 propertyCache:(const void *)a5 baseTranslator:(id)a6 prependKeyPath:(id)a7 context:(id)a8
+- (id)_objectForPropertySet:(id)set entityClass:(void *)class propertyCache:(const void *)cache baseTranslator:(id)translator prependKeyPath:(id)path context:(id)context
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (*(a5 + 19) + *(a5 + 24) + *(a5 + 14) + *(a5 + 9) + *(a5 + 4))
+  setCopy = set;
+  translatorCopy = translator;
+  pathCopy = path;
+  contextCopy = context;
+  if (*(cache + 19) + *(cache + 24) + *(cache + 14) + *(cache + 9) + *(cache + 4))
   {
-    v20 = [v17 arrayByAddingObject:@"_default"];
-    v21 = [v16 _valueForKeyPath:v20 forPropertyCache:a5 context:v18];
+    v20 = [pathCopy arrayByAddingObject:@"_default"];
+    v21 = [translatorCopy _valueForKeyPath:v20 forPropertyCache:cache context:contextCopy];
 
     v22 = objc_alloc([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __120__MPMediaLibraryEntityTranslator__objectForPropertySet_entityClass_propertyCache_baseTranslator_prependKeyPath_context___block_invoke;
     v24[3] = &unk_1E767DC50;
-    v25 = v15;
-    v26 = self;
+    v25 = setCopy;
+    selfCopy = self;
     v30 = a2;
-    v27 = v16;
-    v28 = v17;
-    v31 = a5;
-    v29 = v18;
-    v32 = a4;
+    v27 = translatorCopy;
+    v28 = pathCopy;
+    cacheCopy = cache;
+    v29 = contextCopy;
+    classCopy = class;
     v19 = [v22 initWithIdentifiers:v21 block:v24];
   }
 
@@ -706,25 +706,25 @@ LABEL_24:
   [*(a1 + 48) setValue:v27 forModelKey:v5];
 }
 
-- (id)_valueForKeyPath:(id)a3 forPropertyCache:(const void *)a4 context:(id)a5
+- (id)_valueForKeyPath:(id)path forPropertyCache:(const void *)cache context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(MPMediaLibraryEntityTranslator *)self _propertyTranslatorForKeyPath:v9];
+  pathCopy = path;
+  contextCopy = context;
+  v11 = [(MPMediaLibraryEntityTranslator *)self _propertyTranslatorForKeyPath:pathCopy];
   if (!v11)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
-    [v16 handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:561 description:{@"Property mapping missing for %@:%@", v17, v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:561 description:{@"Property mapping missing for %@:%@", v17, pathCopy}];
   }
 
-  v12 = [v11 valueTransformer];
+  valueTransformer = [v11 valueTransformer];
 
-  if (v12)
+  if (valueTransformer)
   {
-    [(MPMediaLibraryEntityTranslator *)self _propertyMapForKeyPath:v9 includePropertiesToSort:0];
-    v13 = [v11 valueTransformer];
-    v14 = (v13)[2](v13, v10, v18, a4);
+    [(MPMediaLibraryEntityTranslator *)self _propertyMapForKeyPath:pathCopy includePropertiesToSort:0];
+    valueTransformer2 = [v11 valueTransformer];
+    v14 = (valueTransformer2)[2](valueTransformer2, contextCopy, v18, cache);
 
     if (v19)
     {
@@ -740,21 +740,21 @@ LABEL_24:
   return v14;
 }
 
-- (shared_ptr<std::unordered_map<std::string,)_propertyMapForKeyPath:(id)a3 includePropertiesToSort:(BOOL)a4
+- (shared_ptr<std::unordered_map<std::string,)_propertyMapForKeyPath:(id)path includePropertiesToSort:(BOOL)sort
 {
-  v5 = a4;
+  sortCopy = sort;
   v8 = v4;
   v41[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if ([v9 count] < 2 || (v41[0] = @"MPModelRelationshipPlaylistEntrySong", v41[1] = @"MPModelRelationshipPlaylistEntryTVEpisode", v41[2] = @"MPModelRelationshipPlaylistEntryMovie", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v41, 3), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectAtIndexedSubscript:", objc_msgSend(v9, "count") - 2), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "containsObject:", v11), v11, v10, !v12))
+  pathCopy = path;
+  if ([pathCopy count] < 2 || (v41[0] = @"MPModelRelationshipPlaylistEntrySong", v41[1] = @"MPModelRelationshipPlaylistEntryTVEpisode", v41[2] = @"MPModelRelationshipPlaylistEntryMovie", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v41, 3), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(pathCopy, "objectAtIndexedSubscript:", objc_msgSend(pathCopy, "count") - 2), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "containsObject:", v11), v11, v10, !v12))
   {
 LABEL_11:
-    v19 = [(MPMediaLibraryEntityTranslator *)self _propertyTranslatorForKeyPath:v9];
+    v19 = [(MPMediaLibraryEntityTranslator *)self _propertyTranslatorForKeyPath:pathCopy];
     v13 = v19;
     if (v19)
     {
       [v19 propertiesToFetchMap];
-      if (v5)
+      if (sortCopy)
       {
         goto LABEL_14;
       }
@@ -762,26 +762,26 @@ LABEL_11:
 
     else
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v29 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
-      [v28 handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:539 description:{@"Property mapping missing for %@:%@", v29, v9}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:539 description:{@"Property mapping missing for %@:%@", v29, pathCopy}];
 
       *v8 = 0;
       v8[1] = 0;
-      if (v5)
+      if (sortCopy)
       {
         goto LABEL_14;
       }
     }
 
-    if ([v9 count] < 2)
+    if ([pathCopy count] < 2)
     {
       goto LABEL_27;
     }
 
 LABEL_14:
     std::unordered_map<std::string,mlcore::ModelPropertyBase *>::unordered_map(&v34, *v8);
-    if (v5)
+    if (sortCopy)
     {
       [v13 propertiesToSortMap];
       std::unordered_map<std::string,mlcore::ModelPropertyBase *>::unordered_map(__p, v36);
@@ -817,9 +817,9 @@ LABEL_14:
       }
     }
 
-    if ([v9 count] >= 2)
+    if ([pathCopy count] >= 2)
     {
-      v23 = [v9 subarrayWithRange:{0, objc_msgSend(v9, "count") - 1}];
+      v23 = [pathCopy subarrayWithRange:{0, objc_msgSend(pathCopy, "count") - 1}];
       v24 = [(MPMediaLibraryEntityTranslator *)self _propertyForKeyPath:v23];
 
       _MPMLGetForeignPropertyMap(__p, v24, &v34);
@@ -841,8 +841,8 @@ LABEL_14:
   v40[1] = @"MPModelPropertyTVEpisodeArtwork";
   v40[2] = @"MPModelPropertyMovieArtwork";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:3];
-  v15 = [v9 lastObject];
-  v16 = [v14 containsObject:v15];
+  lastObject = [pathCopy lastObject];
+  v16 = [v14 containsObject:lastObject];
 
   if (!v16)
   {
@@ -868,14 +868,14 @@ LABEL_14:
 
   else
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v31 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
-    [v30 handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:531 description:{@"Property mapping missing for %@:%@", v31, @"_MPModelPropertyPlaylistEntryArtwork"}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:531 description:{@"Property mapping missing for %@:%@", v31, @"_MPModelPropertyPlaylistEntryArtwork"}];
   }
 
-  v32 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
   v33 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
-  [v32 handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:532 description:{@"Property translator mapping missing for %@:%@", v33, @"_MPModelPropertyPlaylistEntryArtwork"}];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:532 description:{@"Property translator mapping missing for %@:%@", v33, @"_MPModelPropertyPlaylistEntryArtwork"}];
 
   if (!v18)
   {
@@ -894,16 +894,16 @@ LABEL_27:
   return result;
 }
 
-- (void)_propertyForKeyPath:(id)a3
+- (void)_propertyForKeyPath:(id)path
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v21 = self;
+  pathCopy = path;
+  selfCopy = self;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v5;
+  v6 = pathCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -911,7 +911,7 @@ LABEL_27:
     v8 = 0;
     v9 = 0;
     v10 = *v23;
-    p_isa = &v21->super.isa;
+    p_isa = &selfCopy->super.isa;
     do
     {
       for (i = 0; i != v7; ++i)
@@ -927,14 +927,14 @@ LABEL_27:
         v8 = v14;
         if (!v14)
         {
-          v19 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v17 = NSStringFromClass([p_isa MPModelClass]);
-          [v19 handleFailureInMethod:v20 object:v21 file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:505 description:{@"Relationship mapping missing for %@:%@", v17, v13}];
+          [currentHandler handleFailureInMethod:v20 object:selfCopy file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:505 description:{@"Relationship mapping missing for %@:%@", v17, v13}];
         }
 
-        v15 = [v8 entityTranslator];
+        entityTranslator = [v8 entityTranslator];
 
-        p_isa = v15;
+        p_isa = entityTranslator;
         if (([v8 transient] & 1) == 0)
         {
           if (v9)
@@ -956,7 +956,7 @@ LABEL_27:
 
     while (v7);
 
-    v21 = v15;
+    selfCopy = entityTranslator;
   }
 
   else
@@ -967,34 +967,34 @@ LABEL_27:
   return v9;
 }
 
-- (id)_propertyTranslatorForKeyPath:(id)a3
+- (id)_propertyTranslatorForKeyPath:(id)path
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  pathCopy = path;
+  if ([pathCopy count] == 1)
   {
     propertiesToTranslators = self->_propertiesToTranslators;
-    v6 = [v4 lastObject];
-    v7 = [(NSMutableDictionary *)propertiesToTranslators objectForKeyedSubscript:v6];
+    lastObject = [pathCopy lastObject];
+    v7 = [(NSMutableDictionary *)propertiesToTranslators objectForKeyedSubscript:lastObject];
   }
 
   else
   {
     relationshipsToTranslators = self->_relationshipsToTranslators;
-    v9 = [v4 firstObject];
-    v6 = [(NSMutableDictionary *)relationshipsToTranslators objectForKeyedSubscript:v9];
+    firstObject = [pathCopy firstObject];
+    lastObject = [(NSMutableDictionary *)relationshipsToTranslators objectForKeyedSubscript:firstObject];
 
-    v10 = [v6 entityTranslator];
-    v11 = [v4 subarrayWithRange:{1, objc_msgSend(v4, "count") - 1}];
-    v7 = [v10 _propertyTranslatorForKeyPath:v11];
+    entityTranslator = [lastObject entityTranslator];
+    v11 = [pathCopy subarrayWithRange:{1, objc_msgSend(pathCopy, "count") - 1}];
+    v7 = [entityTranslator _propertyTranslatorForKeyPath:v11];
   }
 
   return v7;
 }
 
-- (id)_cachedIdentifierSourceForContext:(id)a3
+- (id)_cachedIdentifierSourceForContext:(id)context
 {
   v122 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   os_unfair_lock_lock_with_options();
   {
     [MPMediaLibraryEntityTranslator _cachedIdentifierSourceForContext:]::cachedIdentifiers = 0u;
@@ -1011,13 +1011,13 @@ LABEL_27:
   v115.i32[3] = v4 + 1640531535;
   v116 = 0uLL;
   LODWORD(v117[0]) = 0;
-  v5 = [v3 mediaLibrary];
-  v6 = [v5 uniqueIdentifier];
-  _MSV_XXH_XXH32_update_27340(&v114 + 2, [v6 UTF8String], objc_msgSend(v6, "length"));
+  mediaLibrary = [contextCopy mediaLibrary];
+  uniqueIdentifier = [mediaLibrary uniqueIdentifier];
+  _MSV_XXH_XXH32_update_27340(&v114 + 2, [uniqueIdentifier UTF8String], objc_msgSend(uniqueIdentifier, "length"));
 
-  v7 = [v3 identifierSourcePrefix];
-  v8 = v7;
-  _MSV_XXH_XXH32_update_27340(&v114 + 2, [v7 UTF8String], objc_msgSend(v7, "length"));
+  identifierSourcePrefix = [contextCopy identifierSourcePrefix];
+  v8 = identifierSourcePrefix;
+  _MSV_XXH_XXH32_update_27340(&v114 + 2, [identifierSourcePrefix UTF8String], objc_msgSend(identifierSourcePrefix, "length"));
 
   memset(&v119[8], 0, 64);
   *v119 = v114;
@@ -1027,9 +1027,9 @@ LABEL_27:
     {
       if (!v114)
       {
-        v42 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-        [v42 handleFailureInFunction:v43 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+        [currentHandler handleFailureInFunction:v43 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
 
         goto LABEL_51;
       }
@@ -1335,9 +1335,9 @@ LABEL_51:
   else if (*v119 != 1000 && *v119 != 2000)
   {
 LABEL_113:
-    v110 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v111 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSUInteger _MSVHashGetHash(MSVHash)"];
-    [v110 handleFailureInFunction:v111 file:@"MSVHasher+Algorithms.h" lineNumber:301 description:@"Cannot obtain hash from unknown hasher algorithm"];
+    [currentHandler2 handleFailureInFunction:v111 file:@"MSVHasher+Algorithms.h" lineNumber:301 description:@"Cannot obtain hash from unknown hasher algorithm"];
 
     v69 = 0;
     goto LABEL_65;
@@ -1371,17 +1371,17 @@ LABEL_65:
   {
 LABEL_81:
     v75 = MEMORY[0x1E696AD60];
-    v76 = [v3 identifierSourcePrefix];
-    v77 = [v76 length];
-    v78 = [v3 mediaLibrary];
-    v79 = [v78 uniqueIdentifier];
-    v80 = [v75 stringWithCapacity:{v77 + objc_msgSend(v79, "length") + 8}];
+    identifierSourcePrefix2 = [contextCopy identifierSourcePrefix];
+    v77 = [identifierSourcePrefix2 length];
+    mediaLibrary2 = [contextCopy mediaLibrary];
+    uniqueIdentifier2 = [mediaLibrary2 uniqueIdentifier];
+    v80 = [v75 stringWithCapacity:{v77 + objc_msgSend(uniqueIdentifier2, "length") + 8}];
 
-    v81 = [v3 identifierSourcePrefix];
-    v82 = v81;
-    if (v81)
+    identifierSourcePrefix3 = [contextCopy identifierSourcePrefix];
+    v82 = identifierSourcePrefix3;
+    if (identifierSourcePrefix3)
     {
-      v83 = v81;
+      v83 = identifierSourcePrefix3;
     }
 
     else
@@ -1392,9 +1392,9 @@ LABEL_81:
     [v80 appendString:v83];
 
     [v80 appendString:@"Library-"];
-    v84 = [v3 mediaLibrary];
-    v85 = [v84 uniqueIdentifier];
-    [v80 appendString:v85];
+    mediaLibrary3 = [contextCopy mediaLibrary];
+    uniqueIdentifier3 = [mediaLibrary3 uniqueIdentifier];
+    [v80 appendString:uniqueIdentifier3];
 
     v86 = [v80 copy];
     if (!*(&[MPMediaLibraryEntityTranslator _cachedIdentifierSourceForContext:]::cachedIdentifiers + 1))
@@ -1526,14 +1526,14 @@ LABEL_114:
   v9 = v8;
   if (!v8)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
-    [v11 handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:448 description:{@"Property mapping missing for %@:%@", v12, v7}];
+    [currentHandler handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:448 description:{@"Property mapping missing for %@:%@", v12, v7}];
 
 LABEL_9:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
-    [v13 handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:449 description:{@"Property translator mapping missing for %@:%@", v14, v7}];
+    [currentHandler2 handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:449 description:{@"Property translator mapping missing for %@:%@", v14, v7}];
 
     goto LABEL_5;
   }
@@ -1560,12 +1560,12 @@ LABEL_5:
   return result;
 }
 
-- (Class)classForRelationshipKey:(id)a3
+- (Class)classForRelationshipKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_relationshipsToTranslators objectForKeyedSubscript:a3];
-  v4 = [v3 relationshipModelClass];
+  v3 = [(NSMutableDictionary *)self->_relationshipsToTranslators objectForKeyedSubscript:key];
+  relationshipModelClass = [v3 relationshipModelClass];
 
-  return v4;
+  return relationshipModelClass;
 }
 
 - (vector<std::shared_ptr<mlcore::Predicate>,)MLCorePredicateForModelPropertyFilters:(MPMediaLibraryEntityTranslator *)self
@@ -1595,35 +1595,35 @@ LABEL_5:
         }
 
         v9 = *(*(&v46 + 1) + 8 * i);
-        v10 = [v9 keys];
-        v11 = [v9 value];
+        keys = [v9 keys];
+        value = [v9 value];
         [v9 comparisonType];
-        v12 = [(MPMediaLibraryEntityTranslator *)self _propertyTranslatorForKeyPath:v10];
+        v12 = [(MPMediaLibraryEntityTranslator *)self _propertyTranslatorForKeyPath:keys];
         if (!v12)
         {
-          v38 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v35 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
-          [v38 handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:431 description:{@"Property mapping missing for %@:%@", v35, v10}];
+          [currentHandler handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:431 description:{@"Property mapping missing for %@:%@", v35, keys}];
         }
 
-        v13 = [v12 filterTransformer];
-        v14 = v13 == 0;
+        filterTransformer = [v12 filterTransformer];
+        v14 = filterTransformer == 0;
 
         if (v14)
         {
-          v36 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v36 handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:432 description:{@"Property filter transformer missing for property filter: %@", v9}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:432 description:{@"Property filter transformer missing for property filter: %@", v9}];
         }
 
-        [(MPMediaLibraryEntityTranslator *)self _propertyMapForKeyPath:v10 includePropertiesToSort:0];
-        v15 = [v12 filterTransformer];
-        v15[2](&v44);
+        [(MPMediaLibraryEntityTranslator *)self _propertyMapForKeyPath:keys includePropertiesToSort:0];
+        filterTransformer2 = [v12 filterTransformer];
+        filterTransformer2[2](&v44);
 
         var1 = retstr->var1;
         var2 = retstr->var2;
         if (var1 >= var2)
         {
-          v19 = self;
+          selfCopy = self;
           var0 = retstr->var0;
           v21 = var1 - retstr->var0;
           v22 = v21 >> 4;
@@ -1660,7 +1660,7 @@ LABEL_5:
           v51 = 16 * v22;
           v52 = (16 * v22);
           v27 = v22 == 0;
-          self = v19;
+          self = selfCopy;
           if (v27)
           {
             if (v21 < 1)
@@ -1762,7 +1762,7 @@ LABEL_5:
   {
     v8 = 0;
     v61 = *v67;
-    v58 = self;
+    selfCopy = self;
     do
     {
       v62 = v7;
@@ -1777,42 +1777,42 @@ LABEL_5:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 keyPath];
+          keyPath = [v10 keyPath];
         }
 
         else
         {
           v12 = [v10 key];
           v71 = v12;
-          v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v71 count:1];
+          keyPath = [MEMORY[0x1E695DEC8] arrayWithObjects:&v71 count:1];
         }
 
-        if (![v11 count])
+        if (![keyPath count])
         {
-          v53 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v53 handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:408 description:@"Sort descriptor must have at least one key."];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:408 description:@"Sort descriptor must have at least one key."];
         }
 
-        v13 = [(MPMediaLibraryEntityTranslator *)self _propertyTranslatorForKeyPath:v11];
+        v13 = [(MPMediaLibraryEntityTranslator *)self _propertyTranslatorForKeyPath:keyPath];
         if (!v13)
         {
-          v60 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v54 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
-          [v60 handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:411 description:{@"Property mapping missing for %@:%@", v54, v11}];
+          [currentHandler2 handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:411 description:{@"Property mapping missing for %@:%@", v54, keyPath}];
         }
 
-        v14 = [v13 sortTransformer];
-        v15 = v14 == 0;
+        sortTransformer = [v13 sortTransformer];
+        v15 = sortTransformer == 0;
 
         if (v15)
         {
-          v55 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v55 handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:412 description:{@"Sort descriptor missing transformer: %@", v10}];
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler3 handleFailureInMethod:a3 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:412 description:{@"Sort descriptor missing transformer: %@", v10}];
         }
 
-        [(MPMediaLibraryEntityTranslator *)self _propertyMapForKeyPath:v11 includePropertiesToSort:1];
-        v16 = [v13 sortTransformer];
-        v16[2](&v63);
+        [(MPMediaLibraryEntityTranslator *)self _propertyMapForKeyPath:keyPath includePropertiesToSort:1];
+        sortTransformer2 = [v13 sortTransformer];
+        sortTransformer2[2](&v63);
 
         v17 = retstr;
         v19 = v63;
@@ -1937,7 +1937,7 @@ LABEL_5:
           var0 = *p_var0;
           v44 = (v25 - (v8 - *p_var0));
           v45 = v8 - *p_var0;
-          self = v58;
+          self = selfCopy;
           if (v45)
           {
             v46 = v26 - 8 * (v45 >> 3);
@@ -1967,7 +1967,7 @@ LABEL_5:
 
             while (v51 != v8);
             var0 = v17->var0;
-            self = v58;
+            self = selfCopy;
           }
 
           v8 = (v27 + v42 - v8);
@@ -1998,16 +1998,16 @@ LABEL_5:
   return result;
 }
 
-- (shared_ptr<mlcore::PropertiesQuery>)propertiesQueryForPropertySet:(id)a3 scopedContainers:(id)a4 allowedItemIdentifiers:(id)a5 view:(id)a6
+- (shared_ptr<mlcore::PropertiesQuery>)propertiesQueryForPropertySet:(id)set scopedContainers:(id)containers allowedItemIdentifiers:(id)identifiers view:(id)view
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  setCopy = set;
+  containersCopy = containers;
+  identifiersCopy = identifiers;
+  viewCopy = view;
   v31 = 0;
   v32 = 0;
   v33 = 0;
-  if ([v12 count])
+  if ([identifiersCopy count])
   {
     allowedItemPredicatesBlock = self->_allowedItemPredicatesBlock;
     if (allowedItemPredicatesBlock)
@@ -2103,29 +2103,29 @@ LABEL_5:
   operator new();
 }
 
-- (shared_ptr<mlcore::EntityQuery>)entityQueryForPropertySet:(id)a3 sortDescriptors:(id)a4 context:(id)a5 view:(id)a6 deferLoadingRelationProperties:(BOOL)a7
+- (shared_ptr<mlcore::EntityQuery>)entityQueryForPropertySet:(id)set sortDescriptors:(id)descriptors context:(id)context view:(id)view deferLoadingRelationProperties:(BOOL)properties
 {
-  v8 = a7;
+  propertiesCopy = properties;
   v13 = v7;
   v113 = *MEMORY[0x1E69E9840];
-  v60 = a3;
-  v61 = a4;
-  v62 = a5;
-  v14 = a6;
+  setCopy = set;
+  descriptorsCopy = descriptors;
+  contextCopy = context;
+  viewCopy = view;
   entityQueryBlock = self->_entityQueryBlock;
-  v63 = v14;
+  v63 = viewCopy;
   if (!entityQueryBlock)
   {
-    v54 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v55 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
-    [v54 handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:277 description:{@"No entityQueryBlock was mapped for %@", v55}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:277 description:{@"No entityQueryBlock was mapped for %@", v55}];
 
     entityQueryBlock = self->_entityQueryBlock;
   }
 
-  if (v14)
+  if (viewCopy)
   {
-    [v14 mlCoreView];
+    [viewCopy mlCoreView];
     v16 = v76;
   }
 
@@ -2136,14 +2136,14 @@ LABEL_5:
 
   v107 = v16;
   v76 = 0uLL;
-  entityQueryBlock[2](entityQueryBlock, v62, &v107);
+  entityQueryBlock[2](entityQueryBlock, contextCopy, &v107);
   if (*(&v107 + 1))
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](*(&v107 + 1));
   }
 
   v17 = +[MPPropertySet emptyPropertySet];
-  [(MPMediaLibraryEntityTranslator *)self MLCorePropertiesForPropertySet:v17 deferLoadingRelationProperties:v8];
+  [(MPMediaLibraryEntityTranslator *)self MLCorePropertiesForPropertySet:v17 deferLoadingRelationProperties:propertiesCopy];
 
   v104 = 0;
   __p = 0;
@@ -2158,13 +2158,13 @@ LABEL_5:
 
   if (!*v13)
   {
-    v56 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v57 = NSStringFromClass([(MPMediaLibraryEntityTranslator *)self MPModelClass]);
-    [v56 handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:283 description:{@"%@ entityQueryBlock did not return a query.", v57}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:283 description:{@"%@ entityQueryBlock did not return a query.", v57}];
   }
 
-  v18 = [(MPMediaLibraryEntityTranslator *)self MPModelClass];
-  if (v18 == objc_opt_class())
+  mPModelClass = [(MPMediaLibraryEntityTranslator *)self MPModelClass];
+  if (mPModelClass == objc_opt_class())
   {
     v94 = 0;
     v95 = &v94;
@@ -2180,8 +2180,8 @@ LABEL_5:
       atomic_fetch_add_explicit(&v22->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v58 = [v62 modelKind];
-    v23 = [v60 relationships];
+    modelKind = [contextCopy modelKind];
+    relationships = [setCopy relationships];
     v88[0] = MEMORY[0x1E69E9820];
     v88[1] = 3221225472;
     v88[2] = __120__MPMediaLibraryEntityTranslator_entityQueryForPropertySet_sortDescriptors_context_view_deferLoadingRelationProperties___block_invoke;
@@ -2189,12 +2189,12 @@ LABEL_5:
     v93 = a2;
     v88[4] = self;
     v92 = &v94;
-    v89 = v14;
-    v24 = v62;
+    v89 = viewCopy;
+    v24 = contextCopy;
     v90 = v24;
-    v59 = v58;
+    v59 = modelKind;
     v91 = v59;
-    [v23 enumerateKeysAndObjectsUsingBlock:v88];
+    [relationships enumerateKeysAndObjectsUsingBlock:v88];
 
     [v24 setModelKind:v59];
     __src = 0;
@@ -2203,12 +2203,12 @@ LABEL_5:
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
-    obj = v61;
+    obj = descriptorsCopy;
     v25 = [obj countByEnumeratingWithState:&v82 objects:v112 count:16];
     if (v25)
     {
       v67 = *v83;
-      v64 = self;
+      selfCopy = self;
       do
       {
         v26 = 0;
@@ -2224,8 +2224,8 @@ LABEL_5:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v41 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v41 handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:311 description:@"MPModelGenericObject can only be sorted by MPMulitSortDescriptor."];
+            currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler3 handleFailureInMethod:a2 object:self file:@"MPMediaLibraryEntityTranslator.mm" lineNumber:311 description:@"MPModelGenericObject can only be sorted by MPMulitSortDescriptor."];
           }
 
           *&v76 = 0;
@@ -2235,7 +2235,7 @@ LABEL_5:
           v79 = __Block_byref_object_dispose__128;
           v80 = "";
           memset(v81, 0, 24);
-          v28 = [v27 relatedProperties];
+          relatedProperties = [v27 relatedProperties];
           v75[0] = MEMORY[0x1E69E9820];
           v75[1] = 3221225472;
           v75[2] = __120__MPMediaLibraryEntityTranslator_entityQueryForPropertySet_sortDescriptors_context_view_deferLoadingRelationProperties___block_invoke_130;
@@ -2244,7 +2244,7 @@ LABEL_5:
           v75[5] = v27;
           v75[6] = &v76;
           v75[7] = a2;
-          [v28 enumerateKeysAndObjectsUsingBlock:v75];
+          [relatedProperties enumerateKeysAndObjectsUsingBlock:v75];
 
           v30 = *(*(&v76 + 1) + 48);
           v29 = *(*(&v76 + 1) + 56);
@@ -2267,7 +2267,7 @@ LABEL_5:
 
                 while (v30 + v35 * 8 != v29);
                 v32 = (v32 + v35 * 8);
-                self = v64;
+                self = selfCopy;
                 v25 = v66;
               }
 
@@ -2332,8 +2332,8 @@ LABEL_5:
               v109 = v39;
               v108 = v39;
               std::__split_buffer<mlcore::MultiSortDescriptor>::~__split_buffer(&v108);
-              v14 = v63;
-              self = v64;
+              viewCopy = v63;
+              self = selfCopy;
               v25 = v66;
             }
           }
@@ -2364,7 +2364,7 @@ LABEL_5:
 
   else
   {
-    [(MPMediaLibraryEntityTranslator *)self MLCorePropertiesForPropertySet:v60 deferLoadingRelationProperties:v8];
+    [(MPMediaLibraryEntityTranslator *)self MLCorePropertiesForPropertySet:setCopy deferLoadingRelationProperties:propertiesCopy];
     v73 = 0;
     v74 = 0;
     v72 = 0;
@@ -2376,14 +2376,14 @@ LABEL_5:
       operator delete(v72);
     }
 
-    [(MPMediaLibraryEntityTranslator *)self MLCoreSortDescriptorsForModelSortDescriptors:v61];
+    [(MPMediaLibraryEntityTranslator *)self MLCoreSortDescriptorsForModelSortDescriptors:descriptorsCopy];
     if (v109 != v108)
     {
       mlcore::PropertiesQuery::setSortDescriptors();
     }
 
-    v19 = [v62 propertyFilters];
-    [(MPMediaLibraryEntityTranslator *)self MLCorePredicateForModelPropertyFilters:v19];
+    propertyFilters = [contextCopy propertyFilters];
+    [(MPMediaLibraryEntityTranslator *)self MLCorePredicateForModelPropertyFilters:propertyFilters];
 
     if (v87 != __src)
     {
@@ -2476,7 +2476,7 @@ LABEL_5:
     }
   }
 
-  if ([v62 sortUsingAllowedEntityIdentifiers])
+  if ([contextCopy sortUsingAllowedEntityIdentifiers])
   {
     v76 = 0uLL;
     v77 = 0;
@@ -2744,33 +2744,33 @@ void __120__MPMediaLibraryEntityTranslator_entityQueryForPropertySet_sortDescrip
   std::vector<mlcore::SortDescriptor>::__destroy_vector::operator()[abi:ne200100](&v34);
 }
 
-- (shared_ptr<mlcore::EntityQuery>)entityQueryForPropertySet:(id)a3 sortDescriptors:(id)a4 context:(id)a5 view:(id)a6
+- (shared_ptr<mlcore::EntityQuery>)entityQueryForPropertySet:(id)set sortDescriptors:(id)descriptors context:(id)context view:(id)view
 {
-  v6 = [(MPMediaLibraryEntityTranslator *)self entityQueryForPropertySet:a3 sortDescriptors:a4 context:a5 view:a6 deferLoadingRelationProperties:0];
+  v6 = [(MPMediaLibraryEntityTranslator *)self entityQueryForPropertySet:set sortDescriptors:descriptors context:context view:view deferLoadingRelationProperties:0];
   result.__cntrl_ = v7;
   result.__ptr_ = v6;
   return result;
 }
 
-- (id)identifiersForPropertyCache:(const void *)a3 context:(id)a4
+- (id)identifiersForPropertyCache:(const void *)cache context:(id)context
 {
-  v4 = [(MPMediaLibraryEntityTranslator *)self _valueForKeyPath:&unk_1F150A8A0 forPropertyCache:a3 context:a4];
+  v4 = [(MPMediaLibraryEntityTranslator *)self _valueForKeyPath:&unk_1F150A8A0 forPropertyCache:cache context:context];
 
   return v4;
 }
 
-- (id)objectForPropertySet:(id)a3 entityClass:(void *)a4 propertyCache:(const void *)a5 context:(id)a6
+- (id)objectForPropertySet:(id)set entityClass:(void *)class propertyCache:(const void *)cache context:(id)context
 {
-  v6 = [(MPMediaLibraryEntityTranslator *)self _objectForPropertySet:a3 entityClass:a4 propertyCache:a5 baseTranslator:self prependKeyPath:MEMORY[0x1E695E0F0] context:a6];
+  v6 = [(MPMediaLibraryEntityTranslator *)self _objectForPropertySet:set entityClass:class propertyCache:cache baseTranslator:self prependKeyPath:MEMORY[0x1E695E0F0] context:context];
 
   return v6;
 }
 
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4 transient:(BOOL)a5 usingForeignPropertyBase:(void *)a6 relationshipValidationProperties:(const void *)a7 isValidRelationshipHandler:(id)a8
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class transient:(BOOL)transient usingForeignPropertyBase:(void *)base relationshipValidationProperties:(const void *)properties isValidRelationshipHandler:(id)handler
 {
-  v10 = a5;
-  v13 = a3;
-  v14 = a8;
+  transientCopy = transient;
+  keyCopy = key;
+  handlerCopy = handler;
   if (!self->_relationshipsToTranslators)
   {
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -2779,23 +2779,23 @@ void __120__MPMediaLibraryEntityTranslator_entityQueryForPropertySet_sortDescrip
   }
 
   v17 = objc_alloc_init(_MPMediaLibraryEntityRelationshipTranslator);
-  [(NSMutableDictionary *)self->_relationshipsToTranslators setObject:v17 forKeyedSubscript:v13];
-  [(_MPMediaLibraryEntityRelationshipTranslator *)v17 setTransient:v10];
-  [(_MPMediaLibraryEntityRelationshipTranslator *)v17 setRelationshipModelClass:a4];
-  [(_MPMediaLibraryEntityRelationshipTranslator *)v17 setForeignPropertyBase:a6];
-  [(_MPMediaLibraryEntityRelationshipTranslator *)v17 setValidRelationshipHandler:v14];
+  [(NSMutableDictionary *)self->_relationshipsToTranslators setObject:v17 forKeyedSubscript:keyCopy];
+  [(_MPMediaLibraryEntityRelationshipTranslator *)v17 setTransient:transientCopy];
+  [(_MPMediaLibraryEntityRelationshipTranslator *)v17 setRelationshipModelClass:class];
+  [(_MPMediaLibraryEntityRelationshipTranslator *)v17 setForeignPropertyBase:base];
+  [(_MPMediaLibraryEntityRelationshipTranslator *)v17 setValidRelationshipHandler:handlerCopy];
   std::allocate_shared[abi:ne200100]<std::unordered_map<std::string,mlcore::ModelPropertyBase *>,std::allocator<std::unordered_map<std::string,mlcore::ModelPropertyBase *>>,std::unordered_map<std::string,mlcore::ModelPropertyBase *> const&,0>();
 }
 
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4 transient:(BOOL)a5 usingForeignPropertyBase:(void *)a6
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class transient:(BOOL)transient usingForeignPropertyBase:(void *)base
 {
-  v7 = a5;
+  transientCopy = transient;
   v16 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  keyCopy = key;
   std::string::basic_string[abi:ne200100]<0>(v13, "joinProperty");
-  v15 = a6;
+  baseCopy = base;
   std::unordered_map<std::string,mlcore::ModelPropertyBase *>::unordered_map(__p, v13, 1);
-  [(MPMediaLibraryEntityTranslator *)self mapRelationshipKey:v10 toModelClass:a4 transient:v7 usingForeignPropertyBase:a6 relationshipValidationProperties:__p isValidRelationshipHandler:&__block_literal_global_108_43634];
+  [(MPMediaLibraryEntityTranslator *)self mapRelationshipKey:keyCopy toModelClass:class transient:transientCopy usingForeignPropertyBase:base relationshipValidationProperties:__p isValidRelationshipHandler:&__block_literal_global_108_43634];
   std::__hash_table<std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>>>::__deallocate_node(__p[2]);
   v11 = __p[0];
   __p[0] = 0;
@@ -2827,12 +2827,12 @@ BOOL __101__MPMediaLibraryEntityTranslator_mapRelationshipKey_toModelClass_trans
   return v9 != 0;
 }
 
-- (void)mapPropertyKey:(id)a3 withPropertiesToFetch:(const void *)a4 propertiesToSort:(const void *)a5 sortTransformer:(id)a6 filterTransformer:(id)a7 valueTransformer:(id)a8
+- (void)mapPropertyKey:(id)key withPropertiesToFetch:(const void *)fetch propertiesToSort:(const void *)sort sortTransformer:(id)transformer filterTransformer:(id)filterTransformer valueTransformer:(id)valueTransformer
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
+  keyCopy = key;
+  transformerCopy = transformer;
+  filterTransformerCopy = filterTransformer;
+  valueTransformerCopy = valueTransformer;
   propertiesToTranslators = self->_propertiesToTranslators;
   if (!propertiesToTranslators)
   {
@@ -2843,18 +2843,18 @@ BOOL __101__MPMediaLibraryEntityTranslator_mapRelationshipKey_toModelClass_trans
     propertiesToTranslators = self->_propertiesToTranslators;
   }
 
-  [(NSMutableDictionary *)propertiesToTranslators objectForKeyedSubscript:v12];
+  [(NSMutableDictionary *)propertiesToTranslators objectForKeyedSubscript:keyCopy];
   if (!objc_claimAutoreleasedReturnValue())
   {
-    [(NSMutableDictionary *)self->_propertiesToTranslators setObject:objc_alloc_init(_MPMediaLibraryEntityPropertyTranslator) forKey:v12];
+    [(NSMutableDictionary *)self->_propertiesToTranslators setObject:objc_alloc_init(_MPMediaLibraryEntityPropertyTranslator) forKey:keyCopy];
   }
 
   std::allocate_shared[abi:ne200100]<std::unordered_map<std::string,mlcore::ModelPropertyBase *>,std::allocator<std::unordered_map<std::string,mlcore::ModelPropertyBase *>>,std::unordered_map<std::string,mlcore::ModelPropertyBase *> const&,0>();
 }
 
-- (void)mapPropertyKey:(id)a3 withPropertiesToFetch:(const void *)a4 valueTransformer:(id)a5
+- (void)mapPropertyKey:(id)key withPropertiesToFetch:(const void *)fetch valueTransformer:(id)transformer
 {
-  v9 = a3;
+  keyCopy = key;
   *__p = 0u;
   *v16 = 0u;
   v17 = 1065353216;
@@ -2862,11 +2862,11 @@ BOOL __101__MPMediaLibraryEntityTranslator_mapRelationshipKey_toModelClass_trans
   v12[1] = 3221225472;
   v12[2] = __88__MPMediaLibraryEntityTranslator_mapPropertyKey_withPropertiesToFetch_valueTransformer___block_invoke;
   v12[3] = &unk_1E767DB88;
-  v13 = v9;
+  v13 = keyCopy;
   v14 = a2;
   v12[4] = self;
-  v10 = v9;
-  [(MPMediaLibraryEntityTranslator *)self mapPropertyKey:v10 withPropertiesToFetch:a4 propertiesToSort:__p sortTransformer:v12 valueTransformer:a5];
+  v10 = keyCopy;
+  [(MPMediaLibraryEntityTranslator *)self mapPropertyKey:v10 withPropertiesToFetch:fetch propertiesToSort:__p sortTransformer:v12 valueTransformer:transformer];
   std::__hash_table<std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>>>::__deallocate_node(v16[0]);
   v11 = __p[0];
   __p[0] = 0;
@@ -2894,14 +2894,14 @@ void __88__MPMediaLibraryEntityTranslator_mapPropertyKey_withPropertiesToFetch_v
   std::vector<mlcore::SortDescriptor>::__init_with_size[abi:ne200100]<mlcore::SortDescriptor const*,mlcore::SortDescriptor const*>(a4, v9, &v10, 1uLL);
 }
 
-- (void)mapPropertyKey:(id)a3 toMLProperty:(void *)a4
+- (void)mapPropertyKey:(id)key toMLProperty:(void *)property
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keyCopy = key;
   std::string::basic_string[abi:ne200100]<0>(v9, "property");
-  v11 = a4;
+  propertyCopy = property;
   std::unordered_map<std::string,mlcore::ModelPropertyBase *>::unordered_map(__p, v9, 1);
-  [(MPMediaLibraryEntityTranslator *)self mapPropertyKey:v6 withPropertiesToFetch:__p valueTransformer:&__block_literal_global_94_43643];
+  [(MPMediaLibraryEntityTranslator *)self mapPropertyKey:keyCopy withPropertiesToFetch:__p valueTransformer:&__block_literal_global_94_43643];
   std::__hash_table<std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>>>::__deallocate_node(__p[2]);
   v7 = __p[0];
   __p[0] = 0;
@@ -2935,9 +2935,9 @@ id __62__MPMediaLibraryEntityTranslator_mapPropertyKey_toMLProperty___block_invo
   return v8;
 }
 
-- (void)mapIdentifierMLProperties:(const void *)a3 identifierCreationBlock:(id)a4
+- (void)mapIdentifierMLProperties:(const void *)properties identifierCreationBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   *__p = 0u;
   *v12 = 0u;
   v13 = 1065353216;
@@ -2946,9 +2946,9 @@ id __62__MPMediaLibraryEntityTranslator_mapPropertyKey_toMLProperty___block_invo
   v9[2] = __84__MPMediaLibraryEntityTranslator_mapIdentifierMLProperties_identifierCreationBlock___block_invoke;
   v9[3] = &unk_1E767DB60;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
-  [(MPMediaLibraryEntityTranslator *)self mapPropertyKey:@"_default" withPropertiesToFetch:a3 propertiesToSort:__p sortTransformer:0 valueTransformer:v9];
+  v10 = blockCopy;
+  v7 = blockCopy;
+  [(MPMediaLibraryEntityTranslator *)self mapPropertyKey:@"_default" withPropertiesToFetch:properties propertiesToSort:__p sortTransformer:0 valueTransformer:v9];
   std::__hash_table<std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,mlcore::ModelPropertyBase *>>>::__deallocate_node(v12[0]);
   v8 = __p[0];
   __p[0] = 0;
@@ -2991,79 +2991,79 @@ void __84__MPMediaLibraryEntityTranslator_mapIdentifierMLProperties_identifierCr
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)translatorForMPModelClass:(Class)a3
++ (id)translatorForMPModelClass:(Class)class
 {
   if (MPMLCoreInitialize(void)::onceToken != -1)
   {
     dispatch_once(&MPMLCoreInitialize(void)::onceToken, &__block_literal_global_43831);
   }
 
-  return [a1 _translatorForMPModelClass:a3 mlcoreEntityClass:0 create:0 transient:0];
+  return [self _translatorForMPModelClass:class mlcoreEntityClass:0 create:0 transient:0];
 }
 
-+ (id)_translatorForMPModelClass:(Class)a3 mlcoreEntityClass:(void *)a4 create:(BOOL)a5 transient:(BOOL)a6
++ (id)_translatorForMPModelClass:(Class)class mlcoreEntityClass:(void *)entityClass create:(BOOL)create transient:(BOOL)transient
 {
-  v7 = a5;
-  v8 = a4;
-  v20 = a4;
-  v21 = a3;
+  createCopy = create;
+  entityClassCopy = entityClass;
+  entityClassCopy2 = entityClass;
+  classCopy = class;
   os_unfair_lock_lock_with_options();
-  if (a3)
+  if (class)
   {
     v11 = __MPClassToTranslator();
-    v22 = &v21;
-    v12 = std::__hash_table<std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>,std::__unordered_map_hasher<objc_class * {__strong},std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>,std::hash<objc_class * {__strong}>,std::equal_to<objc_class * {__strong}>,true>,std::__unordered_map_equal<objc_class * {__strong},std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>,std::equal_to<objc_class * {__strong}>,std::hash<objc_class * {__strong}>,true>,std::allocator<std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>>>::__emplace_unique_key_args<objc_class * {__strong},std::piecewise_construct_t const&,std::tuple<objc_class * const {__strong}&>,std::tuple<>>(v11, v21);
+    v22 = &classCopy;
+    v12 = std::__hash_table<std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>,std::__unordered_map_hasher<objc_class * {__strong},std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>,std::hash<objc_class * {__strong}>,std::equal_to<objc_class * {__strong}>,true>,std::__unordered_map_equal<objc_class * {__strong},std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>,std::equal_to<objc_class * {__strong}>,std::hash<objc_class * {__strong}>,true>,std::allocator<std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>>>::__emplace_unique_key_args<objc_class * {__strong},std::piecewise_construct_t const&,std::tuple<objc_class * const {__strong}&>,std::tuple<>>(v11, classCopy);
 LABEL_5:
-    v8 = v12[3];
+    entityClassCopy = v12[3];
     goto LABEL_6;
   }
 
-  if (v8)
+  if (entityClassCopy)
   {
     v13 = __MLEntityClassToTranslator();
-    v22 = &v20;
-    v12 = std::__hash_table<std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>,std::__unordered_map_hasher<mlcore::EntityClass *,std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>,std::hash<mlcore::EntityClass *>,std::equal_to<mlcore::EntityClass *>,true>,std::__unordered_map_equal<mlcore::EntityClass *,std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>,std::equal_to<mlcore::EntityClass *>,std::hash<mlcore::EntityClass *>,true>,std::allocator<std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>>>::__emplace_unique_key_args<mlcore::EntityClass *,std::piecewise_construct_t const&,std::tuple<mlcore::EntityClass * const&>,std::tuple<>>(v13, v20);
+    v22 = &entityClassCopy2;
+    v12 = std::__hash_table<std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>,std::__unordered_map_hasher<mlcore::EntityClass *,std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>,std::hash<mlcore::EntityClass *>,std::equal_to<mlcore::EntityClass *>,true>,std::__unordered_map_equal<mlcore::EntityClass *,std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>,std::equal_to<mlcore::EntityClass *>,std::hash<mlcore::EntityClass *>,true>,std::allocator<std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>>>::__emplace_unique_key_args<mlcore::EntityClass *,std::piecewise_construct_t const&,std::tuple<mlcore::EntityClass * const&>,std::tuple<>>(v13, entityClassCopy2);
     goto LABEL_5;
   }
 
 LABEL_6:
-  if (!v8 && v7)
+  if (!entityClassCopy && createCopy)
   {
-    if (v20)
+    if (entityClassCopy2)
     {
-      v14 = 1;
+      transientCopy = 1;
     }
 
     else
     {
-      v14 = a6;
+      transientCopy = transient;
     }
 
-    if (!v21 || !v14)
+    if (!classCopy || !transientCopy)
     {
       __assert_rtn("+[MPMediaLibraryEntityTranslator _translatorForMPModelClass:mlcoreEntityClass:create:transient:]", "MPMediaLibraryEntityTranslator.mm", 138, "MPModelClass && (entityClass || transient)");
     }
 
-    v8 = objc_alloc_init(a1);
-    objc_storeStrong(v8 + 4, v21);
-    v8[5] = v20;
-    *(v8 + 24) = a6;
+    entityClassCopy = objc_alloc_init(self);
+    objc_storeStrong(entityClassCopy + 4, classCopy);
+    entityClassCopy[5] = entityClassCopy2;
+    *(entityClassCopy + 24) = transient;
     v15 = __MPClassToTranslator();
-    v22 = &v21;
-    v16 = std::__hash_table<std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>,std::__unordered_map_hasher<objc_class * {__strong},std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>,std::hash<objc_class * {__strong}>,std::equal_to<objc_class * {__strong}>,true>,std::__unordered_map_equal<objc_class * {__strong},std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>,std::equal_to<objc_class * {__strong}>,std::hash<objc_class * {__strong}>,true>,std::allocator<std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>>>::__emplace_unique_key_args<objc_class * {__strong},std::piecewise_construct_t const&,std::tuple<objc_class * const {__strong}&>,std::tuple<>>(v15, v21);
-    objc_storeStrong(v16 + 3, v8);
-    if (v20)
+    v22 = &classCopy;
+    v16 = std::__hash_table<std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>,std::__unordered_map_hasher<objc_class * {__strong},std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>,std::hash<objc_class * {__strong}>,std::equal_to<objc_class * {__strong}>,true>,std::__unordered_map_equal<objc_class * {__strong},std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>,std::equal_to<objc_class * {__strong}>,std::hash<objc_class * {__strong}>,true>,std::allocator<std::__hash_value_type<objc_class * {__strong},MPMediaLibraryEntityTranslator * {__strong}>>>::__emplace_unique_key_args<objc_class * {__strong},std::piecewise_construct_t const&,std::tuple<objc_class * const {__strong}&>,std::tuple<>>(v15, classCopy);
+    objc_storeStrong(v16 + 3, entityClassCopy);
+    if (entityClassCopy2)
     {
       v17 = __MLEntityClassToTranslator();
-      v22 = &v20;
-      v18 = std::__hash_table<std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>,std::__unordered_map_hasher<mlcore::EntityClass *,std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>,std::hash<mlcore::EntityClass *>,std::equal_to<mlcore::EntityClass *>,true>,std::__unordered_map_equal<mlcore::EntityClass *,std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>,std::equal_to<mlcore::EntityClass *>,std::hash<mlcore::EntityClass *>,true>,std::allocator<std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>>>::__emplace_unique_key_args<mlcore::EntityClass *,std::piecewise_construct_t const&,std::tuple<mlcore::EntityClass * const&>,std::tuple<>>(v17, v20);
-      objc_storeStrong(v18 + 3, v8);
+      v22 = &entityClassCopy2;
+      v18 = std::__hash_table<std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>,std::__unordered_map_hasher<mlcore::EntityClass *,std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>,std::hash<mlcore::EntityClass *>,std::equal_to<mlcore::EntityClass *>,true>,std::__unordered_map_equal<mlcore::EntityClass *,std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>,std::equal_to<mlcore::EntityClass *>,std::hash<mlcore::EntityClass *>,true>,std::allocator<std::__hash_value_type<mlcore::EntityClass *,MPMediaLibraryEntityTranslator * {__strong}>>>::__emplace_unique_key_args<mlcore::EntityClass *,std::piecewise_construct_t const&,std::tuple<mlcore::EntityClass * const&>,std::tuple<>>(v17, entityClassCopy2);
+      objc_storeStrong(v18 + 3, entityClassCopy);
     }
   }
 
   os_unfair_lock_unlock(&__translatorLock);
 
-  return v8;
+  return entityClassCopy;
 }
 
 + (NSArray)allTranslators

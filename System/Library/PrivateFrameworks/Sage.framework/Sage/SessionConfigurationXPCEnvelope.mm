@@ -1,14 +1,14 @@
 @interface SessionConfigurationXPCEnvelope
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SessionConfigurationXPCEnvelope
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SessionConfigurationXPCEnvelope.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SessionConfigurationXPCEnvelope.encode(with:)(coderCopy);
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface DOCEjectButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)frame;
-- (_TtC26DocumentManagerExecutables14DOCEjectButton)initWithFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutables14DOCEjectButton)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
-- (void)setFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConfiguration;
 @end
 
@@ -22,48 +22,48 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = type metadata accessor for DOCEjectButton();
   v19.receiver = self;
   v19.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(DOCEjectButton *)&v19 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18.receiver = v9;
+  v18.receiver = selfCopy;
   v18.super_class = v8;
   [(DOCEjectButton *)&v18 setFrame:x, y, width, height];
-  [(DOCEjectButton *)v9 frame];
+  [(DOCEjectButton *)selfCopy frame];
   v21.origin.x = v11;
   v21.origin.y = v13;
   v21.size.width = v15;
   v21.size.height = v17;
   if (!CGRectEqualToRect(v20, v21))
   {
-    [(DOCEjectButton *)v9 setNeedsLayout];
+    [(DOCEjectButton *)selfCopy setNeedsLayout];
   }
 }
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   DOCEjectButton.updateConfiguration()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   DOCEjectButton.traitCollectionDidChange(_:)(v9);
 }
 
@@ -80,12 +80,12 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  [(DOCEjectButton *)v6 bounds];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  [(DOCEjectButton *)selfCopy bounds];
   v7 = v18.origin.x;
   v8 = v18.origin.y;
   width = v18.size.width;
@@ -127,7 +127,7 @@
   return v15;
 }
 
-- (_TtC26DocumentManagerExecutables14DOCEjectButton)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables14DOCEjectButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

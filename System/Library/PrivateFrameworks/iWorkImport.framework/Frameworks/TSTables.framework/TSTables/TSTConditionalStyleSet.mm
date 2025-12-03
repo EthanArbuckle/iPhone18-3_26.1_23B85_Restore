@@ -1,56 +1,56 @@
 @interface TSTConditionalStyleSet
 - (BOOL)containsUidReferences;
 - (BOOL)hasBadRefWithUidInfo;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualForInspector:(id)a3;
-- (TSTConditionalStyleSet)initWithConditionalStyleSet:(id)a3;
-- (TSTConditionalStyleSet)initWithContext:(id)a3 rules:(id)a4;
-- (id)copyByClearingUids:(id)a3 containingTableUID:(const TSKUIDStruct *)a4;
-- (id)copyByOffsettingRelativeReferencesWithOffset:(TSUColumnRowOffset)a3;
-- (id)copyByRemappingHostCellAgnosticOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5;
-- (id)copyByRemappingOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5;
-- (id)copyByRepairingBadReferences:(TSCEFormulaRewriteContext *)a3 clearUidHistory:(BOOL)a4;
-- (id)copyByReparenting:(id)a3 groupByUID:(const TSKUIDStruct *)a4 rewriteContext:(TSCEFormulaRewriteContext *)a5;
-- (id)copyByRewritingWithContext:(TSCEFormulaRewriteContext *)a3 rewriteBlock:(id)a4;
-- (id)copyByRewritingWithSpec:(id)a3 inOwner:(id)a4 inCellCoordinate:(TSUCellCoord)a5;
-- (id)copyByUpdatingHostCellRef:(const TSCECellRef *)a3;
-- (id)copyByUpgradingToLinkedRefAtHostCellRef:(const TSCECellRef *)a3;
-- (id)copyToGeometricFormWithRewriteContext:(TSCEFormulaRewriteContext *)a3;
-- (id)copyToUidFormForTableInfo:(id)a3 inCellCoordinate:(TSUCellCoord)a4 preserveHostCell:(BOOL)a5;
-- (id)copyWithContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualForInspector:(id)inspector;
+- (TSTConditionalStyleSet)initWithConditionalStyleSet:(id)set;
+- (TSTConditionalStyleSet)initWithContext:(id)context rules:(id)rules;
+- (id)copyByClearingUids:(id)uids containingTableUID:(const TSKUIDStruct *)d;
+- (id)copyByOffsettingRelativeReferencesWithOffset:(TSUColumnRowOffset)offset;
+- (id)copyByRemappingHostCellAgnosticOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error;
+- (id)copyByRemappingOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error;
+- (id)copyByRepairingBadReferences:(TSCEFormulaRewriteContext *)references clearUidHistory:(BOOL)history;
+- (id)copyByReparenting:(id)reparenting groupByUID:(const TSKUIDStruct *)d rewriteContext:(TSCEFormulaRewriteContext *)context;
+- (id)copyByRewritingWithContext:(TSCEFormulaRewriteContext *)context rewriteBlock:(id)block;
+- (id)copyByRewritingWithSpec:(id)spec inOwner:(id)owner inCellCoordinate:(TSUCellCoord)coordinate;
+- (id)copyByUpdatingHostCellRef:(const TSCECellRef *)ref;
+- (id)copyByUpgradingToLinkedRefAtHostCellRef:(const TSCECellRef *)ref;
+- (id)copyToGeometricFormWithRewriteContext:(TSCEFormulaRewriteContext *)context;
+- (id)copyToUidFormForTableInfo:(id)info inCellCoordinate:(TSUCellCoord)coordinate preserveHostCell:(BOOL)cell;
+- (id)copyWithContext:(id)context;
 - (id)description;
-- (id)precedentsWithCalcEngine:(id)a3 hostOwnerUID:(const TSKUIDStruct *)a4 hostCellID:(const TSUCellCoord *)a5;
-- (id)ruleAtIndex:(unint64_t)a3;
+- (id)precedentsWithCalcEngine:(id)engine hostOwnerUID:(const TSKUIDStruct *)d hostCellID:(const TSUCellCoord *)iD;
+- (id)ruleAtIndex:(unint64_t)index;
 - (id)rulesDescription;
 - (unint64_t)hash;
-- (void)iterateFormulasWithContext:(TSCEFormulaRewriteContext *)a3 block:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setHostCell:(const TSKUIDStruct *)a3 hostColumnUID:(const TSKUIDStruct *)a4 hostRowUID:(const TSKUIDStruct *)a5;
+- (void)iterateFormulasWithContext:(TSCEFormulaRewriteContext *)context block:(id)block;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setHostCell:(const TSKUIDStruct *)cell hostColumnUID:(const TSKUIDStruct *)d hostRowUID:(const TSKUIDStruct *)iD;
 @end
 
 @implementation TSTConditionalStyleSet
 
-- (TSTConditionalStyleSet)initWithConditionalStyleSet:(id)a3
+- (TSTConditionalStyleSet)initWithConditionalStyleSet:(id)set
 {
-  v4 = a3;
-  v9 = objc_msgSend_context(v4, v5, v6, v7, v8);
-  v12 = objc_msgSend_initWithContext_rules_(self, v10, v9, v4[8], v11);
+  setCopy = set;
+  v9 = objc_msgSend_context(setCopy, v5, v6, v7, v8);
+  v12 = objc_msgSend_initWithContext_rules_(self, v10, v9, setCopy[8], v11);
 
   return v12;
 }
 
-- (TSTConditionalStyleSet)initWithContext:(id)a3 rules:(id)a4
+- (TSTConditionalStyleSet)initWithContext:(id)context rules:(id)rules
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  rulesCopy = rules;
   v16.receiver = self;
   v16.super_class = TSTConditionalStyleSet;
-  v8 = [(TSTConditionalStyleSet *)&v16 initWithContext:v6];
+  v8 = [(TSTConditionalStyleSet *)&v16 initWithContext:contextCopy];
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277CBEB18]);
-    v13 = objc_msgSend_initWithArray_(v9, v10, v7, v11, v12);
+    v13 = objc_msgSend_initWithArray_(v9, v10, rulesCopy, v11, v12);
     conditionalStyleSetRules = v8->_conditionalStyleSetRules;
     v8->_conditionalStyleSetRules = v13;
   }
@@ -58,28 +58,28 @@
   return v8;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v13 = objc_msgSend_array(MEMORY[0x277CBEB18], v5, v6, v7, v8);
   for (i = 0; i < objc_msgSend_count(self->_conditionalStyleSetRules, v9, v10, v11, v12); ++i)
   {
     v18 = objc_msgSend_objectAtIndex_(self->_conditionalStyleSetRules, v15, i, v16, v17);
-    v22 = objc_msgSend_copyWithContext_(v18, v19, v4, v20, v21);
+    v22 = objc_msgSend_copyWithContext_(v18, v19, contextCopy, v20, v21);
 
     objc_msgSend_addObject_(v13, v23, v22, v24, v25);
   }
 
   v26 = objc_alloc(objc_opt_class());
-  v29 = objc_msgSend_initWithContext_rules_(v26, v27, v4, v13, v28);
+  v29 = objc_msgSend_initWithContext_rules_(v26, v27, contextCopy, v13, v28);
 
   return v29;
 }
 
-- (id)copyByRemappingOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5
+- (id)copyByRemappingOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3, a4, a5);
+  v9 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, map, context, error);
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -99,7 +99,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v16 = objc_msgSend_copyByRemappingOwnerUIDsWithMap_rewriteContext_error_(*(*(&v30 + 1) + 8 * v15), v12, a3, a4, a5, v30);
+        v16 = objc_msgSend_copyByRemappingOwnerUIDsWithMap_rewriteContext_error_(*(*(&v30 + 1) + 8 * v15), v12, map, context, error, v30);
         objc_msgSend_addObject_(v9, v17, v16, v18, v19);
 
         ++v15;
@@ -119,10 +119,10 @@
   return v28;
 }
 
-- (id)copyByRemappingHostCellAgnosticOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5
+- (id)copyByRemappingHostCellAgnosticOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3, a4, a5);
+  v9 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, map, context, error);
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -143,13 +143,13 @@
 
         v16 = *(*(&v32 + 1) + 8 * i);
         v31 = 0;
-        v17 = objc_msgSend_copyByRemappingHostCellAgnosticOwnerUIDsWithMap_rewriteContext_error_(v16, v12, a3, a4, &v31);
+        v17 = objc_msgSend_copyByRemappingHostCellAgnosticOwnerUIDsWithMap_rewriteContext_error_(v16, v12, map, context, &v31);
         v21 = v17;
         if (v31 == 1)
         {
-          if (a5)
+          if (error)
           {
-            *a5 = 1;
+            *error = 1;
           }
 
           v29 = 0;
@@ -177,11 +177,11 @@ LABEL_13:
   return v29;
 }
 
-- (id)copyByRewritingWithSpec:(id)a3 inOwner:(id)a4 inCellCoordinate:(TSUCellCoord)a5
+- (id)copyByRewritingWithSpec:(id)spec inOwner:(id)owner inCellCoordinate:(TSUCellCoord)coordinate
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  specCopy = spec;
+  ownerCopy = owner;
   v14 = objc_msgSend_array(MEMORY[0x277CBEB18], v10, v11, v12, v13);
   v37 = 0u;
   v38 = 0u;
@@ -202,7 +202,7 @@ LABEL_13:
           objc_enumerationMutation(v15);
         }
 
-        v21 = objc_msgSend_copyByRewritingWithSpec_inOwner_inCellCoordinate_(*(*(&v35 + 1) + 8 * v20), v17, v8, v9, *&a5, v35);
+        v21 = objc_msgSend_copyByRewritingWithSpec_inOwner_inCellCoordinate_(*(*(&v35 + 1) + 8 * v20), v17, specCopy, ownerCopy, *&coordinate, v35);
         objc_msgSend_addObject_(v14, v22, v21, v23, v24);
 
         ++v20;
@@ -222,10 +222,10 @@ LABEL_13:
   return v33;
 }
 
-- (id)copyByOffsettingRelativeReferencesWithOffset:(TSUColumnRowOffset)a3
+- (id)copyByOffsettingRelativeReferencesWithOffset:(TSUColumnRowOffset)offset
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, *&a3, v3, v4);
+  v7 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, *&offset, v3, v4);
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -245,7 +245,7 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        v16 = objc_msgSend_copyByOffsettingRelativeReferencesWithOffset_(*(*(&v30 + 1) + 8 * v15), v10, *&a3, v11, v12, v30);
+        v16 = objc_msgSend_copyByOffsettingRelativeReferencesWithOffset_(*(*(&v30 + 1) + 8 * v15), v10, *&offset, v11, v12, v30);
         objc_msgSend_addObject_(v7, v17, v16, v18, v19);
 
         ++v15;
@@ -265,10 +265,10 @@ LABEL_13:
   return v28;
 }
 
-- (id)copyByUpgradingToLinkedRefAtHostCellRef:(const TSCECellRef *)a3
+- (id)copyByUpgradingToLinkedRefAtHostCellRef:(const TSCECellRef *)ref
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3, v3, v4);
+  v7 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, ref, v3, v4);
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -288,7 +288,7 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        v16 = objc_msgSend_copyByUpgradingToLinkedRefAtHostCellRef_(*(*(&v30 + 1) + 8 * v15), v10, a3, v11, v12, v30);
+        v16 = objc_msgSend_copyByUpgradingToLinkedRefAtHostCellRef_(*(*(&v30 + 1) + 8 * v15), v10, ref, v11, v12, v30);
         objc_msgSend_addObject_(v7, v17, v16, v18, v19);
 
         ++v15;
@@ -308,10 +308,10 @@ LABEL_13:
   return v28;
 }
 
-- (id)copyByUpdatingHostCellRef:(const TSCECellRef *)a3
+- (id)copyByUpdatingHostCellRef:(const TSCECellRef *)ref
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3, v3, v4);
+  v7 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, ref, v3, v4);
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -331,7 +331,7 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        v16 = objc_msgSend_copyByUpdatingHostCellRef_(*(*(&v30 + 1) + 8 * v15), v10, a3, v11, v12, v30);
+        v16 = objc_msgSend_copyByUpdatingHostCellRef_(*(*(&v30 + 1) + 8 * v15), v10, ref, v11, v12, v30);
         objc_msgSend_addObject_(v7, v17, v16, v18, v19);
 
         ++v15;
@@ -351,10 +351,10 @@ LABEL_13:
   return v28;
 }
 
-- (id)copyByRewritingWithContext:(TSCEFormulaRewriteContext *)a3 rewriteBlock:(id)a4
+- (id)copyByRewritingWithContext:(TSCEFormulaRewriteContext *)context rewriteBlock:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v11 = objc_msgSend_array(MEMORY[0x277CBEB18], v7, v8, v9, v10);
   v38 = 0u;
   v39 = 0u;
@@ -362,12 +362,12 @@ LABEL_13:
   v37 = 0u;
   v12 = self->_conditionalStyleSetRules;
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v36, v40, 16);
-  v35 = self;
+  selfCopy = self;
   if (!v16)
   {
 
 LABEL_11:
-    v33 = v35;
+    v33 = selfCopy;
     goto LABEL_12;
   }
 
@@ -383,7 +383,7 @@ LABEL_11:
       }
 
       v20 = *(*(&v36 + 1) + 8 * i);
-      v21 = objc_msgSend_copyByRewritingWithContext_rewriteBlock_(v20, v14, a3, v6, v15);
+      v21 = objc_msgSend_copyByRewritingWithContext_rewriteBlock_(v20, v14, context, blockCopy, v15);
       objc_msgSend_addObject_(v11, v22, v21, v23, v24);
 
       v17 |= v20 != v21;
@@ -400,17 +400,17 @@ LABEL_11:
   }
 
   v25 = objc_alloc(objc_opt_class());
-  v30 = objc_msgSend_context(v35, v26, v27, v28, v29);
+  v30 = objc_msgSend_context(selfCopy, v26, v27, v28, v29);
   v33 = objc_msgSend_initWithContext_rules_(v25, v31, v30, v11, v32);
 
 LABEL_12:
   return v33;
 }
 
-- (void)iterateFormulasWithContext:(TSCEFormulaRewriteContext *)a3 block:(id)a4
+- (void)iterateFormulasWithContext:(TSCEFormulaRewriteContext *)context block:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v17 = 0;
   v13 = 0u;
   v14 = 0u;
@@ -430,7 +430,7 @@ LABEL_3:
         objc_enumerationMutation(v7);
       }
 
-      objc_msgSend_iterateFormulasWithContext_shouldStop_block_(*(*(&v13 + 1) + 8 * v12), v9, a3, &v17, v6, v13);
+      objc_msgSend_iterateFormulasWithContext_shouldStop_block_(*(*(&v13 + 1) + 8 * v12), v9, context, &v17, blockCopy, v13);
       if (v17)
       {
         break;
@@ -450,20 +450,20 @@ LABEL_3:
   }
 }
 
-- (id)copyByReparenting:(id)a3 groupByUID:(const TSKUIDStruct *)a4 rewriteContext:(TSCEFormulaRewriteContext *)a5
+- (id)copyByReparenting:(id)reparenting groupByUID:(const TSKUIDStruct *)d rewriteContext:(TSCEFormulaRewriteContext *)context
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_22148AE2C;
   v6[3] = &unk_2784653E0;
-  v6[4] = a4;
-  return objc_msgSend_copyByRewritingWithContext_rewriteBlock_(self, a2, a5, v6, a5);
+  v6[4] = d;
+  return objc_msgSend_copyByRewritingWithContext_rewriteBlock_(self, a2, context, v6, context);
 }
 
-- (id)copyByClearingUids:(id)a3 containingTableUID:(const TSKUIDStruct *)a4
+- (id)copyByClearingUids:(id)uids containingTableUID:(const TSKUIDStruct *)d
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  uidsCopy = uids;
   v11 = objc_msgSend_array(MEMORY[0x277CBEB18], v7, v8, v9, v10);
   v35 = 0u;
   v36 = 0u;
@@ -484,7 +484,7 @@ LABEL_3:
           objc_enumerationMutation(v12);
         }
 
-        v19 = objc_msgSend_copyByClearingUids_containingTableUID_(*(*(&v33 + 1) + 8 * v18), v14, v6, a4, v15, v33);
+        v19 = objc_msgSend_copyByClearingUids_containingTableUID_(*(*(&v33 + 1) + 8 * v18), v14, uidsCopy, d, v15, v33);
         objc_msgSend_addObject_(v11, v20, v19, v21, v22);
 
         ++v18;
@@ -504,7 +504,7 @@ LABEL_3:
   return v31;
 }
 
-- (void)setHostCell:(const TSKUIDStruct *)a3 hostColumnUID:(const TSKUIDStruct *)a4 hostRowUID:(const TSKUIDStruct *)a5
+- (void)setHostCell:(const TSKUIDStruct *)cell hostColumnUID:(const TSKUIDStruct *)d hostRowUID:(const TSKUIDStruct *)iD
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
@@ -526,7 +526,7 @@ LABEL_3:
           objc_enumerationMutation(v8);
         }
 
-        objc_msgSend_setHostCell_hostColumnUID_hostRowUID_(*(*(&v14 + 1) + 8 * v13++), v10, a3, a4, a5, v14);
+        objc_msgSend_setHostCell_hostColumnUID_hostRowUID_(*(*(&v14 + 1) + 8 * v13++), v10, cell, d, iD, v14);
       }
 
       while (v11 != v13);
@@ -537,11 +537,11 @@ LABEL_3:
   }
 }
 
-- (id)copyToUidFormForTableInfo:(id)a3 inCellCoordinate:(TSUCellCoord)a4 preserveHostCell:(BOOL)a5
+- (id)copyToUidFormForTableInfo:(id)info inCellCoordinate:(TSUCellCoord)coordinate preserveHostCell:(BOOL)cell
 {
-  v5 = a5;
+  cellCopy = cell;
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  infoCopy = info;
   v13 = objc_msgSend_array(MEMORY[0x277CBEB18], v9, v10, v11, v12);
   v36 = 0u;
   v37 = 0u;
@@ -562,7 +562,7 @@ LABEL_3:
           objc_enumerationMutation(v14);
         }
 
-        v20 = objc_msgSend_copyToUidFormForTableInfo_inCellCoordinate_preserveHostCell_(*(*(&v34 + 1) + 8 * v19), v16, v8, *&a4, v5, v34);
+        v20 = objc_msgSend_copyToUidFormForTableInfo_inCellCoordinate_preserveHostCell_(*(*(&v34 + 1) + 8 * v19), v16, infoCopy, *&coordinate, cellCopy, v34);
         objc_msgSend_addObject_(v13, v21, v20, v22, v23);
 
         ++v19;
@@ -582,10 +582,10 @@ LABEL_3:
   return v32;
 }
 
-- (id)copyToGeometricFormWithRewriteContext:(TSCEFormulaRewriteContext *)a3
+- (id)copyToGeometricFormWithRewriteContext:(TSCEFormulaRewriteContext *)context
 {
-  v5 = a3->var0;
-  v6 = TSCEFormulaRewriteContext::containingTableUID(a3);
+  v5 = context->var0;
+  v6 = TSCEFormulaRewriteContext::containingTableUID(context);
   v9 = objc_msgSend_ownerKindForOwnerUID_(v5, v7, v6, v7, v8);
 
   if (v9 == 1)
@@ -593,7 +593,7 @@ LABEL_3:
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSTConditionalStyleSet copyToGeometricFormWithRewriteContext:]", v11, v12);
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTConditionalStyleSet.mm", v16, v17);
-    v27._lower = TSCEFormulaRewriteContext::containingTableUID(a3);
+    v27._lower = TSCEFormulaRewriteContext::containingTableUID(context);
     v27._upper = v19;
     v20 = TSKUIDStruct::description(&v27);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v21, v14, v18, 226, 0, "Trying to rewrite a conditional style with a non-conditionalStyleFormulaOwner containing ownerUID: %@", v20);
@@ -601,13 +601,13 @@ LABEL_3:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
   }
 
-  return objc_msgSend_copyByRewritingWithContext_rewriteBlock_(self, v10, a3, &unk_2834A86E8, v12);
+  return objc_msgSend_copyByRewritingWithContext_rewriteBlock_(self, v10, context, &unk_2834A86E8, v12);
 }
 
-- (id)copyByRepairingBadReferences:(TSCEFormulaRewriteContext *)a3 clearUidHistory:(BOOL)a4
+- (id)copyByRepairingBadReferences:(TSCEFormulaRewriteContext *)references clearUidHistory:(BOOL)history
 {
-  v7 = a3->var0;
-  v8 = TSCEFormulaRewriteContext::containingTableUID(a3);
+  v7 = references->var0;
+  v8 = TSCEFormulaRewriteContext::containingTableUID(references);
   v11 = objc_msgSend_ownerKindForOwnerUID_(v7, v9, v8, v9, v10);
 
   if (v11 == 1)
@@ -615,7 +615,7 @@ LABEL_3:
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSTConditionalStyleSet copyByRepairingBadReferences:clearUidHistory:]", v13, v14);
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTConditionalStyleSet.mm", v18, v19);
-    v31._lower = TSCEFormulaRewriteContext::containingTableUID(a3);
+    v31._lower = TSCEFormulaRewriteContext::containingTableUID(references);
     v31._upper = v21;
     v22 = TSKUIDStruct::description(&v31);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v23, v16, v20, 235, 0, "Trying to rewrite a conditional style with a non-conditionalStyleFormulaOwner containing ownerUID: %@", v22);
@@ -627,8 +627,8 @@ LABEL_3:
   v29[1] = 3221225472;
   v29[2] = sub_22148B6E8;
   v29[3] = &unk_278465A38;
-  v30 = a4;
-  return objc_msgSend_copyByRewritingWithContext_rewriteBlock_(self, v12, a3, v29, v14);
+  historyCopy = history;
+  return objc_msgSend_copyByRewritingWithContext_rewriteBlock_(self, v12, references, v29, v14);
 }
 
 - (BOOL)containsUidReferences
@@ -717,14 +717,14 @@ LABEL_11:
   return v8;
 }
 
-- (id)precedentsWithCalcEngine:(id)a3 hostOwnerUID:(const TSKUIDStruct *)a4 hostCellID:(const TSUCellCoord *)a5
+- (id)precedentsWithCalcEngine:(id)engine hostOwnerUID:(const TSKUIDStruct *)d hostCellID:(const TSUCellCoord *)iD
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v13 = v8;
-  if (v8)
+  engineCopy = engine;
+  v13 = engineCopy;
+  if (engineCopy)
   {
-    v14 = objc_msgSend_emptyReferenceSetWrapper(v8, v9, v10, v11, v12);
+    v14 = objc_msgSend_emptyReferenceSetWrapper(engineCopy, v9, v10, v11, v12);
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -745,7 +745,7 @@ LABEL_11:
 
           v24 = *(*(&v28 + 1) + 8 * i);
           v25 = objc_msgSend_referenceSet(v14, v17, v18, v19, v20, v28);
-          objc_msgSend_getPrecedents_calcEngine_hostOwnerUID_hostCellID_(v24, v26, v25, v13, a4, a5);
+          objc_msgSend_getPrecedents_calcEngine_hostOwnerUID_hostCellID_(v24, v26, v25, v13, d, iD);
         }
 
         v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v17, &v28, v32, 16);
@@ -800,16 +800,16 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  p_isa = &v4->super.super.isa;
-  if (self == v4)
+  equalCopy = equal;
+  p_isa = &equalCopy->super.super.isa;
+  if (self == equalCopy)
   {
     v24 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v10 = objc_msgSend_count(self->_conditionalStyleSetRules, v6, v7, v8, v9), v10 == objc_msgSend_count(p_isa[8], v11, v12, v13, v14)))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v10 = objc_msgSend_count(self->_conditionalStyleSetRules, v6, v7, v8, v9), v10 == objc_msgSend_count(p_isa[8], v11, v12, v13, v14)))
   {
     v19 = 0;
     do
@@ -839,16 +839,16 @@ LABEL_11:
   return v24;
 }
 
-- (BOOL)isEqualForInspector:(id)a3
+- (BOOL)isEqualForInspector:(id)inspector
 {
-  v4 = a3;
-  p_isa = &v4->super.super.isa;
-  if (self == v4)
+  inspectorCopy = inspector;
+  p_isa = &inspectorCopy->super.super.isa;
+  if (self == inspectorCopy)
   {
     v24 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v10 = objc_msgSend_count(self->_conditionalStyleSetRules, v6, v7, v8, v9), v10 == objc_msgSend_count(p_isa[8], v11, v12, v13, v14)))
+  else if (inspectorCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v10 = objc_msgSend_count(self->_conditionalStyleSetRules, v6, v7, v8, v9), v10 == objc_msgSend_count(p_isa[8], v11, v12, v13, v14)))
   {
     v19 = 0;
     do
@@ -949,30 +949,30 @@ LABEL_11:
   return v5;
 }
 
-- (id)ruleAtIndex:(unint64_t)a3
+- (id)ruleAtIndex:(unint64_t)index
 {
-  if (objc_msgSend_count(self->_conditionalStyleSetRules, a2, a3, v3, v4) <= a3)
+  if (objc_msgSend_count(self->_conditionalStyleSetRules, a2, index, v3, v4) <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_objectAtIndex_(self->_conditionalStyleSetRules, v7, a3, v8, v9);
+    v10 = objc_msgSend_objectAtIndex_(self->_conditionalStyleSetRules, v7, index, v8, v9);
   }
 
   return v10;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
-  if (objc_msgSend_fileFormatVersion(v4, v5, v6, v7, v8, v4) == 0x300020000000ALL)
+  unarchiverCopy = unarchiver;
+  if (objc_msgSend_fileFormatVersion(unarchiverCopy, v5, v6, v7, v8, unarchiverCopy) == 0x300020000000ALL)
   {
     objc_msgSend_willModifyForUpgrade(self, v9, v10, v11, v12);
   }
 
-  v13 = v4;
+  v13 = unarchiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v17 = objc_msgSend_messageWithDescriptor_(v13, v14, off_2812E4498[178], v15, v16);
 
@@ -982,7 +982,7 @@ LABEL_11:
   conditionalStyleSetRules = self->_conditionalStyleSetRules;
   self->_conditionalStyleSetRules = v23;
 
-  v88 = self;
+  selfCopy = self;
   if (*(v17 + 16))
   {
     v58 = *(v17 + 48);
@@ -1002,7 +1002,7 @@ LABEL_11:
             objc_msgSend_setForConditionalStyle_(v66, v67, 1, v68, v69);
             v71 = [TSTConditionalStyleRule alloc];
             v73 = objc_msgSend_initWithPredicate_cellStyle_textStyle_(v71, v72, v70, 0, 0);
-            objc_msgSend_insertObject_atIndex_(v88->_conditionalStyleSetRules, v74, v73, i, v75);
+            objc_msgSend_insertObject_atIndex_(selfCopy->_conditionalStyleSetRules, v74, v73, i, v75);
             v107 = 0;
             v108 = &v107;
             v109 = 0x3032000000;
@@ -1162,11 +1162,11 @@ LABEL_11:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v101 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v101, v4, sub_22148D134, off_2812E4498[178], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_22148D134, off_2812E4498[178], v5);
 
   v11 = objc_msgSend_ruleCount(self, v7, v8, v9, v10);
   *(v6 + 16) |= 2u;
@@ -1226,7 +1226,7 @@ LABEL_14:
         *(v27 + 24) = v38;
       }
 
-      objc_msgSend_encodeToArchive_archiver_(v37, v35, v38, v101, v36);
+      objc_msgSend_encodeToArchive_archiver_(v37, v35, v38, archiverCopy, v36);
       if (canDowngradeForPrePivotFormat)
       {
         if (objc_msgSend_backwardCompatiblePrePivot(v37, v40, v41, v42, v43))
@@ -1260,7 +1260,7 @@ LABEL_14:
         *(v27 + 40) = v47;
       }
 
-      objc_msgSend_setStrongReference_message_(v101, v44, v46, v47, v45);
+      objc_msgSend_setStrongReference_message_(archiverCopy, v44, v46, v47, v45);
 
       v55 = objc_msgSend_privateCellStyle(v30, v49, v50, v51, v52);
       *(v27 + 16) |= 2u;
@@ -1277,7 +1277,7 @@ LABEL_14:
         *(v27 + 32) = v56;
       }
 
-      objc_msgSend_setStrongReference_message_(v101, v53, v55, v56, v54);
+      objc_msgSend_setStrongReference_message_(archiverCopy, v53, v55, v56, v54);
 
       if (v22 == ++v21)
       {
@@ -1304,7 +1304,7 @@ LABEL_12:
 
   canDowngradeForPrePivotFormat = 1;
 LABEL_34:
-  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v101, v16, 3, v6, v18);
+  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(archiverCopy, v16, 3, v6, v18);
   if (canDowngradeForPrePivotFormat)
   {
     if (v99)
@@ -1353,7 +1353,7 @@ LABEL_44:
             *(v65 + 24) = v83;
           }
 
-          objc_msgSend_encodeToPrePivotArchive_archiver_(v73, v78, v83, v101, v81);
+          objc_msgSend_encodeToPrePivotArchive_archiver_(v73, v78, v83, archiverCopy, v81);
         }
 
         v87 = objc_msgSend_privateTextStyle(v68, v78, v79, v80, v81);
@@ -1371,7 +1371,7 @@ LABEL_44:
           *(v65 + 40) = v88;
         }
 
-        objc_msgSend_setStrongReference_message_(v101, v85, v87, v88, v86);
+        objc_msgSend_setStrongReference_message_(archiverCopy, v85, v87, v88, v86);
 
         v96 = objc_msgSend_privateCellStyle(v68, v90, v91, v92, v93);
         *(v65 + 16) |= 2u;
@@ -1388,7 +1388,7 @@ LABEL_44:
           *(v65 + 32) = v97;
         }
 
-        objc_msgSend_setStrongReference_message_(v101, v94, v96, v97, v95);
+        objc_msgSend_setStrongReference_message_(archiverCopy, v94, v96, v97, v95);
 
         if (v99 == ++v61)
         {
@@ -1416,7 +1416,7 @@ LABEL_42:
 
   else
   {
-    objc_msgSend_requiresDocumentVersion_featureIdentifier_(v101, v58, 0xB000200000006, @"TSTPivotTables", v60);
+    objc_msgSend_requiresDocumentVersion_featureIdentifier_(archiverCopy, v58, 0xB000200000006, @"TSTPivotTables", v60);
   }
 
 LABEL_63:

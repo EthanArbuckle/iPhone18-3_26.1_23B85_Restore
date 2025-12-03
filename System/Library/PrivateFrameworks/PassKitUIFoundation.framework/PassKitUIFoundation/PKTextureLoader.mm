@@ -1,7 +1,7 @@
 @interface PKTextureLoader
-- (id)initForDevice:(CGImage *)a3 image:(void *)a4 withStorageMode:(int)a5 premultiplyAlpha:(CGColorSpace *)a6 colorSpace:(CGColorRenderingIntent)a7 renderingIntent:;
-- (void)_decode:(uint64_t)a1;
-- (void)_tiling:(void *)a3 read:;
+- (id)initForDevice:(CGImage *)device image:(void *)image withStorageMode:(int)mode premultiplyAlpha:(CGColorSpace *)alpha colorSpace:(CGColorRenderingIntent)space renderingIntent:;
+- (void)_decode:(uint64_t)_decode;
+- (void)_tiling:(void *)_tiling read:;
 - (void)dealloc;
 @end
 
@@ -23,34 +23,34 @@
   [(PKTextureLoader *)&v4 dealloc];
 }
 
-- (id)initForDevice:(CGImage *)a3 image:(void *)a4 withStorageMode:(int)a5 premultiplyAlpha:(CGColorSpace *)a6 colorSpace:(CGColorRenderingIntent)a7 renderingIntent:
+- (id)initForDevice:(CGImage *)device image:(void *)image withStorageMode:(int)mode premultiplyAlpha:(CGColorSpace *)alpha colorSpace:(CGColorRenderingIntent)space renderingIntent:
 {
   v71 = *MEMORY[0x277D85DE8];
   v14 = a2;
   v15 = v14;
-  v16 = 0;
-  if (!a1 || !v14 || !a3)
+  selfCopy = 0;
+  if (!self || !v14 || !device)
   {
     goto LABEL_103;
   }
 
-  v63 = a5;
-  v64 = a7;
+  modeCopy = mode;
+  spaceCopy = space;
   obj = a2;
-  v62 = a4;
+  imageCopy = image;
   *(&srcFormat.renderingIntent + 1) = 0;
-  BitsPerComponent = CGImageGetBitsPerComponent(a3);
-  BitsPerPixel = CGImageGetBitsPerPixel(a3);
-  ColorSpace = CGImageGetColorSpace(a3);
-  BitmapInfo = CGImageGetBitmapInfo(a3);
+  BitsPerComponent = CGImageGetBitsPerComponent(device);
+  BitsPerPixel = CGImageGetBitsPerPixel(device);
+  ColorSpace = CGImageGetColorSpace(device);
+  BitmapInfo = CGImageGetBitmapInfo(device);
   srcFormat.bitsPerComponent = BitsPerComponent;
   srcFormat.bitsPerPixel = BitsPerPixel;
   srcFormat.colorSpace = ColorSpace;
   srcFormat.bitmapInfo = BitmapInfo;
   srcFormat.version = 0;
-  srcFormat.decode = CGImageGetDecode(a3);
+  srcFormat.decode = CGImageGetDecode(device);
   v21 = BitmapInfo & 0x1F;
-  srcFormat.renderingIntent = CGImageGetRenderingIntent(a3);
+  srcFormat.renderingIntent = CGImageGetRenderingIntent(device);
   if (!ColorSpace && v21 != 7)
   {
     [PKTextureLoader initForDevice:image:withStorageMode:premultiplyAlpha:colorSpace:renderingIntent:];
@@ -83,15 +83,15 @@
     goto LABEL_102;
   }
 
-  if (!a6)
+  if (!alpha)
   {
-    a6 = ColorSpace;
+    alpha = ColorSpace;
   }
 
-  if (a6 && v21 != 7)
+  if (alpha && v21 != 7)
   {
-    Model = CGColorSpaceGetModel(a6);
-    v25 = CGColorSpaceGetNumberOfComponents(a6);
+    Model = CGColorSpaceGetModel(alpha);
+    v25 = CGColorSpaceGetNumberOfComponents(alpha);
     if (Model == kCGColorSpaceModelRGB)
     {
       if (v25 != 3)
@@ -113,7 +113,7 @@
       {
         [PKTextureLoader initForDevice:image:withStorageMode:premultiplyAlpha:colorSpace:renderingIntent:];
 LABEL_102:
-        v16 = 0;
+        selfCopy = 0;
         goto LABEL_103;
       }
     }
@@ -157,9 +157,9 @@ LABEL_102:
   }
 
   *&destFormat.renderingIntent = 0;
-  if (a6)
+  if (alpha)
   {
-    v28 = CGColorSpaceGetNumberOfComponents(a6);
+    v28 = CGColorSpaceGetNumberOfComponents(alpha);
   }
 
   else
@@ -370,7 +370,7 @@ LABEL_87:
   if ((v34 - 1) < 4)
   {
     v46 = &unk_25E0D5E40;
-    if (v63)
+    if (modeCopy)
     {
       v46 = &unk_25E0D5E30;
     }
@@ -387,11 +387,11 @@ LABEL_87:
     v47 = v48;
   }
 
-  destFormat.colorSpace = a6;
+  destFormat.colorSpace = alpha;
   destFormat.bitmapInfo = v47;
   destFormat.version = 0;
   destFormat.decode = 0;
-  destFormat.renderingIntent = v64;
+  destFormat.renderingIntent = spaceCopy;
   error = 0;
   v49 = vImageConverter_CreateWithCGImageFormat(&srcFormat, &destFormat, 0, 0, &error);
   if (!v49)
@@ -416,14 +416,14 @@ LABEL_87:
     goto LABEL_102;
   }
 
-  v65.receiver = a1;
+  v65.receiver = self;
   v65.super_class = PKTextureLoader;
   v53 = objc_msgSendSuper2(&v65, sel_init);
   v54 = v53;
   if (v53)
   {
     objc_storeStrong(v53 + 15, obj);
-    v54[16] = CGImageRetain(a3);
+    v54[16] = CGImageRetain(device);
     v54[17] = v50;
     v55 = *&srcFormat.renderingIntent;
     v56 = *&srcFormat.bitmapInfo;
@@ -436,29 +436,29 @@ LABEL_87:
     *(v54 + 9) = *&destFormat.bitsPerComponent;
     *(v54 + 11) = v57;
     v54[13] = *&destFormat.renderingIntent;
-    v54[14] = CGColorSpaceRetain(a6);
-    v54[2] = v62;
+    v54[14] = CGColorSpaceRetain(alpha);
+    v54[2] = imageCopy;
   }
 
-  a1 = v54;
-  v16 = a1;
+  self = v54;
+  selfCopy = self;
 LABEL_103:
 
   v59 = *MEMORY[0x277D85DE8];
-  return v16;
+  return selfCopy;
 }
 
-- (void)_decode:(uint64_t)a1
+- (void)_decode:(uint64_t)_decode
 {
   v119 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (_decode)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v4 = *(a1 + 128);
+    os_unfair_lock_lock((_decode + 8));
+    v4 = *(_decode + 128);
     if (!v4)
     {
 LABEL_59:
-      os_unfair_lock_unlock((a1 + 8));
+      os_unfair_lock_unlock((_decode + 8));
       goto LABEL_60;
     }
 
@@ -472,7 +472,7 @@ LABEL_59:
       v5 = 16;
     }
 
-    if (*(a1 + 176) && *(a1 + 120) && *(a1 + 136))
+    if (*(_decode + 176) && *(_decode + 120) && *(_decode + 136))
     {
       v6 = 1;
     }
@@ -488,11 +488,11 @@ LABEL_59:
       }
 
       v6 = 0;
-      v4 = *(a1 + 128);
+      v4 = *(_decode + 128);
     }
 
     Width = CGImageGetWidth(v4);
-    Height = CGImageGetHeight(*(a1 + 128));
+    Height = CGImageGetHeight(*(_decode + 128));
     address.data = 0;
     address.height = Height;
     address.width = Width;
@@ -512,7 +512,7 @@ LABEL_59:
 
     v11 = Height;
     memset(v118, 0, sizeof(v118));
-    v12 = *(a1 + 28);
+    v12 = *(_decode + 28);
     OUTLINED_FUNCTION_11();
     v14 = MEMORY[0x277D85FA0];
     if ((v13 & 0x8000000000000000) != 0)
@@ -564,7 +564,7 @@ LABEL_59:
 LABEL_21:
           address.rowBytes = v15;
           memset(v118, 0, sizeof(v118));
-          v32 = *(a1 + 76);
+          v32 = *(_decode + 76);
           OUTLINED_FUNCTION_11();
           if ((v33 & 0x8000000000000000) != 0)
           {
@@ -595,8 +595,8 @@ LABEL_41:
 LABEL_44:
 
 LABEL_45:
-              CFRelease(*(a1 + 128));
-              *(a1 + 128) = 0;
+              CFRelease(*(_decode + 128));
+              *(_decode + 128) = 0;
               goto LABEL_46;
             }
 
@@ -671,7 +671,7 @@ LABEL_39:
             goto LABEL_43;
           }
 
-          v88 = MEMORY[0x25F8AB180](&address, a1 + 24, 0, *(a1 + 128), v5 | 0x200);
+          v88 = MEMORY[0x25F8AB180](&address, _decode + 24, 0, *(_decode + 128), v5 | 0x200);
           if (v88)
           {
             v89 = v88;
@@ -688,9 +688,9 @@ LABEL_39:
             goto LABEL_43;
           }
 
-          CFRelease(*(a1 + 128));
-          *(a1 + 128) = 0;
-          if (v61 == v31 && (v112.data = address.data, vImageConverter_MustOperateOutOfPlace(*(a1 + 136), &address, &v112, v5)))
+          CFRelease(*(_decode + 128));
+          *(_decode + 128) = 0;
+          if (v61 == v31 && (v112.data = address.data, vImageConverter_MustOperateOutOfPlace(*(_decode + 136), &address, &v112, v5)))
           {
             v112.data = 0;
           }
@@ -716,7 +716,7 @@ LABEL_89:
           }
 
 LABEL_73:
-          v91 = vImageConvert_AnyToAny(*(a1 + 136), &address, &v112, 0, v5);
+          v91 = vImageConvert_AnyToAny(*(_decode + 136), &address, &v112, 0, v5);
           v92 = v91;
           if (address.data == v112.data)
           {
@@ -725,14 +725,14 @@ LABEL_73:
 
           if (!v91)
           {
-            *(a1 + 168) = v112.rowBytes;
-            *(a1 + 152) = vextq_s8(*&v112.height, *&v112.height, 8uLL);
-            v93 = *(a1 + 16);
-            v94 = [*(a1 + 120) newBufferWithBytesNoCopy:? length:? options:? deallocator:?];
-            v95 = *(a1 + 144);
-            *(a1 + 144) = v94;
+            *(_decode + 168) = v112.rowBytes;
+            *(_decode + 152) = vextq_s8(*&v112.height, *&v112.height, 8uLL);
+            v93 = *(_decode + 16);
+            v94 = [*(_decode + 120) newBufferWithBytesNoCopy:? length:? options:? deallocator:?];
+            v95 = *(_decode + 144);
+            *(_decode + 144) = v94;
 
-            if (*(a1 + 144))
+            if (*(_decode + 144))
             {
               v112.data = 0;
             }
@@ -748,21 +748,21 @@ LABEL_46:
               MEMORY[0x25F8AB200](*v10, v112.data, v61);
             }
 
-            v71 = *(a1 + 136);
+            v71 = *(_decode + 136);
             if (v71)
             {
               vImageConverter_Release(v71);
-              *(a1 + 136) = 0;
+              *(_decode + 136) = 0;
             }
 
-            v72 = *(a1 + 120);
-            *(a1 + 120) = 0;
+            v72 = *(_decode + 120);
+            *(_decode + 120) = 0;
 
-            v73 = *(a1 + 144);
+            v73 = *(_decode + 144);
             if (v73)
             {
-              v74 = *(a1 + 160);
-              v75 = *(a1 + 168);
+              v74 = *(_decode + 160);
+              v75 = *(_decode + 168);
               v76 = PKLogFacilityTypeGetObject();
               if (OUTLINED_FUNCTION_9(v76))
               {
@@ -830,35 +830,35 @@ LABEL_60:
   v86 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_tiling:(void *)a3 read:
+- (void)_tiling:(void *)_tiling read:
 {
-  v5 = a3;
-  if (a1)
+  _tilingCopy = _tiling;
+  if (self)
   {
-    [(PKTextureLoader *)a1 _decode:a2];
-    v6 = *(a1 + 144);
+    [(PKTextureLoader *)self _decode:a2];
+    v6 = *(self + 144);
     if (v6)
     {
       v7 = 0;
-      v8 = *(a1 + 88) & 0x1F;
+      v8 = *(self + 88) & 0x1F;
       v14 = 0;
       v10 = v6;
-      v9 = *(a1 + 168);
-      v11 = *(a1 + 152);
+      v9 = *(self + 168);
+      v11 = *(self + 152);
       v12 = v9;
       if (v8 != 7)
       {
-        v7 = *(a1 + 112);
+        v7 = *(self + 112);
       }
 
       v13 = v7;
       LODWORD(v14) = v8;
-      v5[2](v5, &v10);
+      _tilingCopy[2](_tilingCopy, &v10);
     }
 
     else
     {
-      v5[2](v5, 0);
+      _tilingCopy[2](_tilingCopy, 0);
     }
   }
 }

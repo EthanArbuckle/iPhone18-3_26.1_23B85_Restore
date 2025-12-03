@@ -1,43 +1,43 @@
 @interface SGM2ContactDetailUsed
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsApp:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsApp:(id)app;
+- (int)StringAsType:(id)type;
 - (int)app;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGM2ContactDetailUsed
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SGM2ContactDetailUsed *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_app = v4[2];
+    self->_app = fromCopy[2];
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_type = v4[6];
+    self->_type = fromCopy[6];
     *&self->_has |= 2u;
   }
 }
@@ -69,16 +69,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   key = self->_key;
-  if (key | *(v4 + 2))
+  if (key | *(equalCopy + 2))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -88,23 +88,23 @@ LABEL_3:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_app != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_app != *(equalCopy + 2))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 28) & 2) == 0;
+  v6 = (*(equalCopy + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_type != *(v4 + 6))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_type != *(equalCopy + 6))
     {
       goto LABEL_13;
     }
@@ -117,10 +117,10 @@ LABEL_14:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -141,39 +141,39 @@ LABEL_14:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_key)
   {
-    v6 = v4;
-    [v4 setKey:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = self->_app;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 2) = self->_app;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_type;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 6) = self->_type;
+    *(toCopy + 28) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -181,7 +181,7 @@ LABEL_14:
   {
     app = self->_app;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -189,18 +189,18 @@ LABEL_14:
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   has = self->_has;
@@ -247,36 +247,36 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = SGM2ContactDetailUsed;
   v4 = [(SGM2ContactDetailUsed *)&v8 description];
-  v5 = [(SGM2ContactDetailUsed *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGM2ContactDetailUsed *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMContactDetailTypeEmail"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"SGMContactDetailTypeEmail"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypePhone"])
+  else if ([typeCopy isEqualToString:@"SGMContactDetailTypePhone"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeAddress"])
+  else if ([typeCopy isEqualToString:@"SGMContactDetailTypeAddress"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeOther"])
+  else if ([typeCopy isEqualToString:@"SGMContactDetailTypeOther"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeBirthday"])
+  else if ([typeCopy isEqualToString:@"SGMContactDetailTypeBirthday"])
   {
     v4 = 4;
   }
@@ -289,9 +289,9 @@ LABEL_14:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -317,65 +317,65 @@ LABEL_14:
   }
 }
 
-- (int)StringAsApp:(id)a3
+- (int)StringAsApp:(id)app
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMContactDetailUsedAppMessages"])
+  appCopy = app;
+  if ([appCopy isEqualToString:@"SGMContactDetailUsedAppMessages"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailUsedAppPhone"])
+  else if ([appCopy isEqualToString:@"SGMContactDetailUsedAppPhone"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailUsedAppMail"])
+  else if ([appCopy isEqualToString:@"SGMContactDetailUsedAppMail"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailUsedAppCalendar"])
+  else if ([appCopy isEqualToString:@"SGMContactDetailUsedAppCalendar"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailUsedAppOther"])
+  else if ([appCopy isEqualToString:@"SGMContactDetailUsedAppOther"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailUsedAppFaceTime"])
+  else if ([appCopy isEqualToString:@"SGMContactDetailUsedAppFaceTime"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailUsedAppAddressBook"])
+  else if ([appCopy isEqualToString:@"SGMContactDetailUsedAppAddressBook"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailUsedAppSpringBoard"])
+  else if ([appCopy isEqualToString:@"SGMContactDetailUsedAppSpringBoard"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailUsedAppHome"])
+  else if ([appCopy isEqualToString:@"SGMContactDetailUsedAppHome"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailUsedAppMaps"])
+  else if ([appCopy isEqualToString:@"SGMContactDetailUsedAppMaps"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailUsedAppFitness"])
+  else if ([appCopy isEqualToString:@"SGMContactDetailUsedAppFitness"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailUsedAppReminders"])
+  else if ([appCopy isEqualToString:@"SGMContactDetailUsedAppReminders"])
   {
     v4 = 11;
   }

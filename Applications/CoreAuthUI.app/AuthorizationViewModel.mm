@@ -1,6 +1,6 @@
 @interface AuthorizationViewModel
 - (_TtC10CoreAuthUI22AuthorizationViewModel)init;
-- (void)authenticationResult:(id)a3 error:(id)a4 context:(id)a5;
+- (void)authenticationResult:(id)result error:(id)error context:(id)context;
 - (void)biometricNoMatch;
 - (void)biometryDidBecomeIdle;
 @end
@@ -14,22 +14,22 @@
   return result;
 }
 
-- (void)authenticationResult:(id)a3 error:(id)a4 context:(id)a5
+- (void)authenticationResult:(id)result error:(id)error context:(id)context
 {
-  if (a3)
+  if (result)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v10 = a4;
-  v8 = a5;
-  v9 = self;
-  sub_1000688AC(a4);
+  errorCopy = error;
+  contextCopy = context;
+  selfCopy = self;
+  sub_1000688AC(error);
 }
 
 - (void)biometricNoMatch
 {
-  v2 = self;
+  selfCopy = self;
   sub_100067418();
 }
 
@@ -45,7 +45,7 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_100067B18(0, 0, v6, &unk_100079F58, v8);
 }
 

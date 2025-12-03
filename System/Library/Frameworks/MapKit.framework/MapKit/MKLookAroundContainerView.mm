@@ -1,9 +1,9 @@
 @interface MKLookAroundContainerView
-- (MKLookAroundContainerView)initWithCoder:(id)a3;
-- (MKLookAroundContainerView)initWithFloatingDimmingStyle:(BOOL)a3;
-- (MKLookAroundContainerView)initWithFrame:(CGRect)a3;
-- (MKLookAroundContainerView)initWithLookAroundView:(id)a3;
-- (MKLookAroundContainerView)initWithPhotosDimmingStyle:(BOOL)a3;
+- (MKLookAroundContainerView)initWithCoder:(id)coder;
+- (MKLookAroundContainerView)initWithFloatingDimmingStyle:(BOOL)style;
+- (MKLookAroundContainerView)initWithFrame:(CGRect)frame;
+- (MKLookAroundContainerView)initWithLookAroundView:(id)view;
+- (MKLookAroundContainerView)initWithPhotosDimmingStyle:(BOOL)style;
 - (MKLookAroundContainerViewDelegate)delegate;
 - (UIColor)dimmingViewBackgroundColorBlackOpaque;
 - (UIColor)dimmingViewBackgroundColorBlackTranslucent;
@@ -11,22 +11,22 @@
 - (UIColor)dimmingViewBackgroundColorGreyOpaque;
 - (UIColor)dimmingViewBackgroundColorPhotosOpaque;
 - (id)lookAroundViewIfPresent;
-- (void)_commonInitWithLookAroundView:(id)a3;
-- (void)_setDimmingViewHidden:(BOOL)a3 loading:(BOOL)a4 animated:(BOOL)a5;
+- (void)_commonInitWithLookAroundView:(id)view;
+- (void)_setDimmingViewHidden:(BOOL)hidden loading:(BOOL)loading animated:(BOOL)animated;
 - (void)_updateBadgeConstraints;
-- (void)_updateDimmingStateForLookAroundView:(id)a3 completion:(id)a4;
+- (void)_updateDimmingStateForLookAroundView:(id)view completion:(id)completion;
 - (void)_updateDimmingViewActivityIndicator;
 - (void)_updateDimmingViewBackgroundColor;
 - (void)cancelIfPresent;
 - (void)dealloc;
-- (void)didAddSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
 - (void)infoCardThemeChanged;
 - (void)layoutSubviews;
-- (void)setBadgeHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setBadgeOnLeadingEdge:(BOOL)a3;
-- (void)setBorderWidth:(double)a3;
-- (void)setDimmingState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setMapItem:(id)a3 isMarkedLocation:(BOOL)a4 wantsCloseUpView:(BOOL)a5;
+- (void)setBadgeHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setBadgeOnLeadingEdge:(BOOL)edge;
+- (void)setBorderWidth:(double)width;
+- (void)setDimmingState:(unint64_t)state animated:(BOOL)animated;
+- (void)setMapItem:(id)item isMarkedLocation:(BOOL)location wantsCloseUpView:(BOOL)view;
 @end
 
 @implementation MKLookAroundContainerView
@@ -40,26 +40,26 @@
 
 - (void)_updateDimmingViewBackgroundColor
 {
-  v3 = [(MKLookAroundContainerView *)self lookAroundViewIfPresent];
-  v4 = v3;
+  lookAroundViewIfPresent = [(MKLookAroundContainerView *)self lookAroundViewIfPresent];
+  v4 = lookAroundViewIfPresent;
   if (self->_floatingDimmingStyle)
   {
-    v5 = [(MKLookAroundContainerView *)self dimmingViewBackgroundColorGreyOpaque];
+    dimmingViewBackgroundColorGreyOpaque = [(MKLookAroundContainerView *)self dimmingViewBackgroundColorGreyOpaque];
   }
 
   else if (self->_photosDimmingStyle)
   {
-    v5 = [(MKLookAroundContainerView *)self dimmingViewBackgroundColorPhotosOpaque];
+    dimmingViewBackgroundColorGreyOpaque = [(MKLookAroundContainerView *)self dimmingViewBackgroundColorPhotosOpaque];
   }
 
   else if (self->_pipDimmingStyle)
   {
-    v5 = [(MKLookAroundContainerView *)self dimmingViewBackgroundColorClear];
+    dimmingViewBackgroundColorGreyOpaque = [(MKLookAroundContainerView *)self dimmingViewBackgroundColorClear];
   }
 
   else
   {
-    if ([v3 hasEnteredLookAround])
+    if ([lookAroundViewIfPresent hasEnteredLookAround])
     {
       [(MKLookAroundContainerView *)self dimmingViewBackgroundColorBlackTranslucent];
     }
@@ -68,11 +68,11 @@
     {
       [(MKLookAroundContainerView *)self dimmingViewBackgroundColorBlackOpaque];
     }
-    v5 = ;
+    dimmingViewBackgroundColorGreyOpaque = ;
   }
 
-  v6 = v5;
-  [(UIView *)self->_dimmingView setBackgroundColor:v5];
+  v6 = dimmingViewBackgroundColorGreyOpaque;
+  [(UIView *)self->_dimmingView setBackgroundColor:dimmingViewBackgroundColorGreyOpaque];
 }
 
 - (void)_updateDimmingViewActivityIndicator
@@ -97,50 +97,50 @@
 
     [(UIActivityIndicatorView *)self->_activityIndicator setHidesWhenStopped:1];
     [(UIActivityIndicatorView *)self->_activityIndicator startAnimating];
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIActivityIndicatorView *)self->_activityIndicator setColor:v7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIActivityIndicatorView *)self->_activityIndicator setColor:whiteColor];
 
     [(UIActivityIndicatorView *)self->_activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_dimmingView addSubview:self->_activityIndicator];
     v8 = MEMORY[0x1E696ACD8];
-    v9 = [(UIActivityIndicatorView *)self->_activityIndicator centerXAnchor];
-    v10 = [(UIView *)self->_dimmingView centerXAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    centerXAnchor = [(UIActivityIndicatorView *)self->_activityIndicator centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_dimmingView centerXAnchor];
+    v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v16[0] = v11;
-    v12 = [(UIActivityIndicatorView *)self->_activityIndicator centerYAnchor];
-    v13 = [(UIView *)self->_dimmingView centerYAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    centerYAnchor = [(UIActivityIndicatorView *)self->_activityIndicator centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_dimmingView centerYAnchor];
+    v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v16[1] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     [v8 activateConstraints:v15];
   }
 }
 
-- (void)_updateDimmingStateForLookAroundView:(id)a3 completion:(id)a4
+- (void)_updateDimmingStateForLookAroundView:(id)view completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  completionCopy = completion;
   floatingDimmingStyle = self->_floatingDimmingStyle;
-  if (([v6 adequatelyDrawn] & 1) == 0 && !floatingDimmingStyle)
+  if (([viewCopy adequatelyDrawn] & 1) == 0 && !floatingDimmingStyle)
   {
     [(MKLookAroundContainerView *)self setDimmingState:2 animated:0];
     objc_initWeak(&location, self);
     if (self->_lookAroundViewDidBecomeAdequatelyDrawnObserver)
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 removeObserver:self->_lookAroundViewDidBecomeAdequatelyDrawnObserver];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self->_lookAroundViewDidBecomeAdequatelyDrawnObserver];
     }
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    v11 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v12 = v24;
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __77__MKLookAroundContainerView__updateDimmingStateForLookAroundView_completion___block_invoke;
     v24[3] = &unk_1E76CA7E0;
     objc_copyWeak(&v26, &location);
-    v25 = v7;
-    v13 = [v10 addObserverForName:@"MKLookAroundViewDidBecomeAdequatelyDrawn" object:v6 queue:v11 usingBlock:v24];
+    v25 = completionCopy;
+    v13 = [defaultCenter2 addObserverForName:@"MKLookAroundViewDidBecomeAdequatelyDrawn" object:viewCopy queue:mainQueue usingBlock:v24];
     lookAroundViewDidBecomeAdequatelyDrawnObserver = self->_lookAroundViewDidBecomeAdequatelyDrawnObserver;
     self->_lookAroundViewDidBecomeAdequatelyDrawnObserver = v13;
 
@@ -152,26 +152,26 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v6 isLoading] && floatingDimmingStyle)
+  if ([viewCopy isLoading] && floatingDimmingStyle)
   {
     [(MKLookAroundContainerView *)self setDimmingState:2 animated:0];
     objc_initWeak(&location, self);
     if (self->_lookAroundViewDidBecomeFullyDrawnObserver)
     {
-      v16 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v16 removeObserver:self->_lookAroundViewDidBecomeFullyDrawnObserver];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter3 removeObserver:self->_lookAroundViewDidBecomeFullyDrawnObserver];
     }
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    v18 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue2 = [MEMORY[0x1E696ADC8] mainQueue];
     v12 = v21;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __77__MKLookAroundContainerView__updateDimmingStateForLookAroundView_completion___block_invoke_2;
     v21[3] = &unk_1E76CA7E0;
     objc_copyWeak(&v23, &location);
-    v22 = v7;
-    v19 = [v17 addObserverForName:@"MKLookAroundViewDidBecomeFullyDrawn" object:v6 queue:v18 usingBlock:v21];
+    v22 = completionCopy;
+    v19 = [defaultCenter4 addObserverForName:@"MKLookAroundViewDidBecomeFullyDrawn" object:viewCopy queue:mainQueue2 usingBlock:v21];
     lookAroundViewDidBecomeFullyDrawnObserver = self->_lookAroundViewDidBecomeFullyDrawnObserver;
     self->_lookAroundViewDidBecomeFullyDrawnObserver = v19;
 
@@ -180,9 +180,9 @@ LABEL_11:
   }
 
   [(MKLookAroundContainerView *)self setDimmingState:0 animated:0];
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_12:
@@ -263,28 +263,28 @@ void __77__MKLookAroundContainerView__updateDimmingStateForLookAroundView_comple
 
 - (void)cancelIfPresent
 {
-  v2 = [(MKLookAroundContainerView *)self lookAroundViewIfPresent];
-  if (v2)
+  lookAroundViewIfPresent = [(MKLookAroundContainerView *)self lookAroundViewIfPresent];
+  if (lookAroundViewIfPresent)
   {
-    v3 = v2;
-    [v2 removeFromSuperview];
-    v2 = v3;
+    v3 = lookAroundViewIfPresent;
+    [lookAroundViewIfPresent removeFromSuperview];
+    lookAroundViewIfPresent = v3;
   }
 }
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
   v39[4] = *MEMORY[0x1E69E9840];
-  v5 = [(MKLookAroundContainerView *)self layer];
-  [v5 setBorderWidth:a3];
+  layer = [(MKLookAroundContainerView *)self layer];
+  [layer setBorderWidth:width];
 
   v6 = +[MKSystemController sharedInstance];
-  v7 = [v6 isGlassEnabled];
+  isGlassEnabled = [v6 isGlassEnabled];
 
-  if (v7)
+  if (isGlassEnabled)
   {
     innerBorderView = self->_innerBorderView;
-    if (a3 == 0.0)
+    if (width == 0.0)
     {
       if (innerBorderView)
       {
@@ -296,11 +296,11 @@ void __77__MKLookAroundContainerView__updateDimmingStateForLookAroundView_comple
 
     else
     {
-      v10 = [(UIView *)innerBorderView layer];
-      [v10 borderWidth];
+      layer2 = [(UIView *)innerBorderView layer];
+      [layer2 borderWidth];
       v12 = v11;
 
-      if (v12 != a3)
+      if (v12 != width)
       {
         v13 = self->_innerBorderView;
         if (v13)
@@ -317,37 +317,37 @@ void __77__MKLookAroundContainerView__updateDimmingStateForLookAroundView_comple
 
           [(UIView *)self->_innerBorderView setTranslatesAutoresizingMaskIntoConstraints:0];
           v17 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.0799999982];
-          v18 = [v17 CGColor];
-          v19 = [(UIView *)self->_innerBorderView layer];
-          [v19 setBorderColor:v18];
+          cGColor = [v17 CGColor];
+          layer3 = [(UIView *)self->_innerBorderView layer];
+          [layer3 setBorderColor:cGColor];
 
-          v20 = [(MKLookAroundContainerView *)self layer];
-          [v20 cornerRadius];
+          layer4 = [(MKLookAroundContainerView *)self layer];
+          [layer4 cornerRadius];
           v22 = v21;
-          v23 = [(UIView *)self->_innerBorderView layer];
-          [v23 setCornerRadius:v22];
+          layer5 = [(UIView *)self->_innerBorderView layer];
+          [layer5 setCornerRadius:v22];
         }
 
-        v24 = [(UIView *)self->_innerBorderView layer];
-        [v24 setBorderWidth:a3];
+        layer6 = [(UIView *)self->_innerBorderView layer];
+        [layer6 setBorderWidth:width];
 
         [(MKLookAroundContainerView *)self addSubview:self->_innerBorderView];
         v34 = MEMORY[0x1E696ACD8];
-        v38 = [(UIView *)self->_innerBorderView leadingAnchor];
-        v37 = [(MKLookAroundContainerView *)self leadingAnchor];
-        v36 = [v38 constraintEqualToAnchor:v37 constant:a3];
+        leadingAnchor = [(UIView *)self->_innerBorderView leadingAnchor];
+        leadingAnchor2 = [(MKLookAroundContainerView *)self leadingAnchor];
+        v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:width];
         v39[0] = v36;
-        v35 = [(UIView *)self->_innerBorderView trailingAnchor];
-        v25 = [(MKLookAroundContainerView *)self trailingAnchor];
-        v26 = [v35 constraintEqualToAnchor:v25 constant:-a3];
+        trailingAnchor = [(UIView *)self->_innerBorderView trailingAnchor];
+        trailingAnchor2 = [(MKLookAroundContainerView *)self trailingAnchor];
+        v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-width];
         v39[1] = v26;
-        v27 = [(UIView *)self->_innerBorderView topAnchor];
-        v28 = [(MKLookAroundContainerView *)self topAnchor];
-        v29 = [v27 constraintEqualToAnchor:v28 constant:a3];
+        topAnchor = [(UIView *)self->_innerBorderView topAnchor];
+        topAnchor2 = [(MKLookAroundContainerView *)self topAnchor];
+        v29 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:width];
         v39[2] = v29;
-        v30 = [(UIView *)self->_innerBorderView bottomAnchor];
-        v31 = [(MKLookAroundContainerView *)self bottomAnchor];
-        v32 = [v30 constraintEqualToAnchor:v31 constant:-a3];
+        bottomAnchor = [(UIView *)self->_innerBorderView bottomAnchor];
+        bottomAnchor2 = [(MKLookAroundContainerView *)self bottomAnchor];
+        v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-width];
         v39[3] = v32;
         v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:4];
         [v34 activateConstraints:v33];
@@ -356,15 +356,15 @@ void __77__MKLookAroundContainerView__updateDimmingStateForLookAroundView_comple
   }
 }
 
-- (void)_setDimmingViewHidden:(BOOL)a3 loading:(BOOL)a4 animated:(BOOL)a5
+- (void)_setDimmingViewHidden:(BOOL)hidden loading:(BOOL)loading animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
+  animatedCopy = animated;
+  loadingCopy = loading;
   v9 = self->_dimmingView;
-  v10 = [(MKLookAroundContainerView *)self lookAroundViewIfPresent];
+  lookAroundViewIfPresent = [(MKLookAroundContainerView *)self lookAroundViewIfPresent];
   v11 = self->_activityIndicator;
   v12 = v11;
-  if (v6)
+  if (loadingCopy)
   {
     [(UIActivityIndicatorView *)v11 startAnimating];
   }
@@ -374,26 +374,26 @@ void __77__MKLookAroundContainerView__updateDimmingStateForLookAroundView_comple
   v27 = 3221225472;
   v28 = __68__MKLookAroundContainerView__setDimmingViewHidden_loading_animated___block_invoke;
   v29 = &unk_1E76CA788;
-  v32 = a3;
+  hiddenCopy = hidden;
   v33 = photosDimmingStyle;
   v14 = v9;
   v30 = v14;
-  v15 = v10;
+  v15 = lookAroundViewIfPresent;
   v31 = v15;
   v16 = MEMORY[0x1A58E9F30](&v26);
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __68__MKLookAroundContainerView__setDimmingViewHidden_loading_animated___block_invoke_2;
   v22 = &unk_1E76CA7B0;
-  LOBYTE(v25) = v6;
+  LOBYTE(v25) = loadingCopy;
   v23 = v12;
-  v24 = self;
-  BYTE1(v25) = a3;
+  selfCopy = self;
+  BYTE1(v25) = hidden;
   v17 = v12;
   v18 = MEMORY[0x1A58E9F30](&v19);
-  if (v5)
+  if (animatedCopy)
   {
-    [MEMORY[0x1E69DD250] _mapkit_animateWithDuration:v16 animations:v18 completion:{0.25, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30}];
+    [MEMORY[0x1E69DD250] _mapkit_animateWithDuration:v16 animations:v18 completion:{0.25, v19, v20, v21, v22, v23, selfCopy, v25, v26, v27, v28, v29, v30}];
   }
 
   else
@@ -452,18 +452,18 @@ uint64_t __68__MKLookAroundContainerView__setDimmingViewHidden_loading_animated_
   return result;
 }
 
-- (void)setDimmingState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setDimmingState:(unint64_t)state animated:(BOOL)animated
 {
-  if (self->_dimmingState != a3)
+  if (self->_dimmingState != state)
   {
-    self->_dimmingState = a3;
-    [(MKLookAroundContainerView *)self _setDimmingViewHidden:a3 == 0 loading:a3 == 2 animated:a4];
+    self->_dimmingState = state;
+    [(MKLookAroundContainerView *)self _setDimmingViewHidden:state == 0 loading:state == 2 animated:animated];
   }
 }
 
-- (void)setBadgeHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setBadgeHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6 = self->_badgeView;
   if ([(MKLookAroundContainerBadgeView *)v6 isHidden])
   {
@@ -474,7 +474,7 @@ uint64_t __68__MKLookAroundContainerView__setDimmingViewHidden_loading_animated_
   v18 = 3221225472;
   v19 = __53__MKLookAroundContainerView_setBadgeHidden_animated___block_invoke;
   v20 = &unk_1E76CA760;
-  v22 = a3;
+  hiddenCopy = hidden;
   v7 = v6;
   v21 = v7;
   v8 = MEMORY[0x1A58E9F30](&v17);
@@ -482,11 +482,11 @@ uint64_t __68__MKLookAroundContainerView__setDimmingViewHidden_loading_animated_
   v12 = 3221225472;
   v13 = __53__MKLookAroundContainerView_setBadgeHidden_animated___block_invoke_2;
   v14 = &unk_1E76CCF40;
-  LOBYTE(v16) = a3;
+  LOBYTE(v16) = hidden;
   v15 = v7;
   v9 = v7;
   v10 = MEMORY[0x1A58E9F30](&v11);
-  if (v4)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] _mapkit_animateWithDuration:v8 animations:v10 completion:{0.25, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20}];
   }
@@ -546,10 +546,10 @@ uint64_t __53__MKLookAroundContainerView_setBadgeHidden_animated___block_invoke_
   }
 
   v6 = MEMORY[0x1E695DF70];
-  v7 = [(MKLookAroundContainerBadgeView *)self->_badgeView bottomAnchor];
-  v8 = [(MKLookAroundContainerView *)self safeAreaLayoutGuide];
-  v9 = [v8 bottomAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9 constant:-v5];
+  bottomAnchor = [(MKLookAroundContainerBadgeView *)self->_badgeView bottomAnchor];
+  safeAreaLayoutGuide = [(MKLookAroundContainerView *)self safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v5];
   v23[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   v12 = [v6 arrayWithArray:v11];
@@ -557,21 +557,21 @@ uint64_t __53__MKLookAroundContainerView_setBadgeHidden_animated___block_invoke_
   badgeView = self->_badgeView;
   if (self->_badgeOnLeadingEdge)
   {
-    v14 = [(MKLookAroundContainerBadgeView *)badgeView leadingAnchor];
-    v15 = [(MKLookAroundContainerView *)self safeAreaLayoutGuide];
-    v16 = [v15 leadingAnchor];
-    v17 = v14;
-    v18 = v16;
+    leadingAnchor = [(MKLookAroundContainerBadgeView *)badgeView leadingAnchor];
+    safeAreaLayoutGuide2 = [(MKLookAroundContainerView *)self safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+    v17 = leadingAnchor;
+    v18 = leadingAnchor2;
     v19 = v5;
   }
 
   else
   {
-    v14 = [(MKLookAroundContainerBadgeView *)badgeView trailingAnchor];
-    v15 = [(MKLookAroundContainerView *)self safeAreaLayoutGuide];
-    v16 = [v15 trailingAnchor];
-    v17 = v14;
-    v18 = v16;
+    leadingAnchor = [(MKLookAroundContainerBadgeView *)badgeView trailingAnchor];
+    safeAreaLayoutGuide2 = [(MKLookAroundContainerView *)self safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v17 = leadingAnchor;
+    v18 = leadingAnchor2;
     v19 = -v5;
   }
 
@@ -585,11 +585,11 @@ uint64_t __53__MKLookAroundContainerView_setBadgeHidden_animated___block_invoke_
   [MEMORY[0x1E696ACD8] activateConstraints:self->_badgeConstraints];
 }
 
-- (void)setBadgeOnLeadingEdge:(BOOL)a3
+- (void)setBadgeOnLeadingEdge:(BOOL)edge
 {
-  if (self->_badgeOnLeadingEdge != a3)
+  if (self->_badgeOnLeadingEdge != edge)
   {
-    self->_badgeOnLeadingEdge = a3;
+    self->_badgeOnLeadingEdge = edge;
     [(MKLookAroundContainerView *)self _updateBadgeConstraints];
   }
 }
@@ -611,8 +611,8 @@ uint64_t __53__MKLookAroundContainerView_setBadgeHidden_animated___block_invoke_
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(MKLookAroundContainerView *)self lookAroundViewIfPresent];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  lookAroundViewIfPresent = [(MKLookAroundContainerView *)self lookAroundViewIfPresent];
+  [lookAroundViewIfPresent setFrame:{v5, v7, v9, v11}];
 
   [(UIView *)self->_dimmingView setFrame:v5, v7, v9, v11];
   v13 = MKGetMKLookAroundLog();
@@ -623,19 +623,19 @@ uint64_t __53__MKLookAroundContainerView_setBadgeHidden_animated___block_invoke_
   }
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
-  v7 = a3;
+  subviewCopy = subview;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(MKLookAroundContainerView *)self delegate];
+    delegate = [(MKLookAroundContainerView *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(MKLookAroundContainerView *)self delegate];
-      [v6 lookAroundContainerView:self didAddLookAroundView:v7];
+      delegate2 = [(MKLookAroundContainerView *)self delegate];
+      [delegate2 lookAroundContainerView:self didAddLookAroundView:subviewCopy];
     }
   }
 }
@@ -647,8 +647,8 @@ uint64_t __53__MKLookAroundContainerView_setBadgeHidden_animated___block_invoke_
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(MKLookAroundContainerView *)self subviews];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  subviews = [(MKLookAroundContainerView *)self subviews];
+  v3 = [subviews countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -658,7 +658,7 @@ uint64_t __53__MKLookAroundContainerView_setBadgeHidden_animated___block_invoke_
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subviews);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -670,7 +670,7 @@ uint64_t __53__MKLookAroundContainerView_setBadgeHidden_animated___block_invoke_
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [subviews countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -685,24 +685,24 @@ LABEL_11:
   return v3;
 }
 
-- (void)setMapItem:(id)a3 isMarkedLocation:(BOOL)a4 wantsCloseUpView:(BOOL)a5
+- (void)setMapItem:(id)item isMarkedLocation:(BOOL)location wantsCloseUpView:(BOOL)view
 {
-  v5 = a5;
-  v14 = a3;
-  objc_storeStrong(&self->_mapItem, a3);
-  v9 = v14;
-  self->_isMarkedLocation = a4;
-  if (v14)
+  viewCopy = view;
+  itemCopy = item;
+  objc_storeStrong(&self->_mapItem, item);
+  v9 = itemCopy;
+  self->_isMarkedLocation = location;
+  if (itemCopy)
   {
-    v10 = [(MKLookAroundContainerView *)self lookAroundViewIfPresent];
-    v11 = v10;
-    if (v10)
+    lookAroundViewIfPresent = [(MKLookAroundContainerView *)self lookAroundViewIfPresent];
+    v11 = lookAroundViewIfPresent;
+    if (lookAroundViewIfPresent)
     {
-      v12 = [v10 mapItem];
+      mapItem = [lookAroundViewIfPresent mapItem];
 
-      if (v12 == v14)
+      if (mapItem == itemCopy)
       {
-        if (v5)
+        if (viewCopy)
         {
           [v11 moveToCloseUpView];
         }
@@ -717,7 +717,7 @@ LABEL_11:
       }
     }
 
-    v9 = v14;
+    v9 = itemCopy;
   }
 }
 
@@ -725,14 +725,14 @@ LABEL_11:
 {
   if (self->_lookAroundViewDidBecomeAdequatelyDrawnObserver)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_lookAroundViewDidBecomeAdequatelyDrawnObserver];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_lookAroundViewDidBecomeAdequatelyDrawnObserver];
   }
 
   if (self->_lookAroundViewDidBecomeFullyDrawnObserver)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self->_lookAroundViewDidBecomeFullyDrawnObserver];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self->_lookAroundViewDidBecomeFullyDrawnObserver];
   }
 
   v5.receiver = self;
@@ -740,7 +740,7 @@ LABEL_11:
   [(MKLookAroundContainerView *)&v5 dealloc];
 }
 
-- (MKLookAroundContainerView)initWithFloatingDimmingStyle:(BOOL)a3
+- (MKLookAroundContainerView)initWithFloatingDimmingStyle:(BOOL)style
 {
   v7.receiver = self;
   v7.super_class = MKLookAroundContainerView;
@@ -748,14 +748,14 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    v4->_floatingDimmingStyle = a3;
+    v4->_floatingDimmingStyle = style;
     [(MKLookAroundContainerView *)v4 _commonInitWithLookAroundView:0];
   }
 
   return v5;
 }
 
-- (MKLookAroundContainerView)initWithPhotosDimmingStyle:(BOOL)a3
+- (MKLookAroundContainerView)initWithPhotosDimmingStyle:(BOOL)style
 {
   v7.receiver = self;
   v7.super_class = MKLookAroundContainerView;
@@ -763,16 +763,16 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    v4->_photosDimmingStyle = a3;
+    v4->_photosDimmingStyle = style;
     [(MKLookAroundContainerView *)v4 _commonInitWithLookAroundView:0];
   }
 
   return v5;
 }
 
-- (MKLookAroundContainerView)initWithLookAroundView:(id)a3
+- (MKLookAroundContainerView)initWithLookAroundView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = MKLookAroundContainerView;
   v5 = [(MKLookAroundContainerView *)&v8 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -780,17 +780,17 @@ LABEL_11:
   if (v5)
   {
     v5->_pipDimmingStyle = 1;
-    [(MKLookAroundContainerView *)v5 _commonInitWithLookAroundView:v4];
+    [(MKLookAroundContainerView *)v5 _commonInitWithLookAroundView:viewCopy];
   }
 
   return v6;
 }
 
-- (MKLookAroundContainerView)initWithFrame:(CGRect)a3
+- (MKLookAroundContainerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MKLookAroundContainerView;
-  v3 = [(MKLookAroundContainerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKLookAroundContainerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -800,11 +800,11 @@ LABEL_11:
   return v4;
 }
 
-- (MKLookAroundContainerView)initWithCoder:(id)a3
+- (MKLookAroundContainerView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MKLookAroundContainerView;
-  v3 = [(MKLookAroundContainerView *)&v6 initWithCoder:a3];
+  v3 = [(MKLookAroundContainerView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -814,13 +814,13 @@ LABEL_11:
   return v4;
 }
 
-- (void)_commonInitWithLookAroundView:(id)a3
+- (void)_commonInitWithLookAroundView:(id)view
 {
-  v18 = a3;
+  viewCopy = view;
   [(MKLookAroundContainerView *)self setClipsToBounds:1];
   [(MKLookAroundContainerView *)self setAccessibilityIdentifier:@"LookAroundContainer"];
-  v4 = v18;
-  if (v18)
+  v4 = viewCopy;
+  if (viewCopy)
   {
     v5 = *MEMORY[0x1E695F058];
     v6 = *(MEMORY[0x1E695F058] + 8);
@@ -874,10 +874,10 @@ LABEL_11:
   dimmingViewBackgroundColorPhotosOpaque = self->_dimmingViewBackgroundColorPhotosOpaque;
   if (!dimmingViewBackgroundColorPhotosOpaque)
   {
-    v4 = [(UIView *)self mk_theme];
-    v5 = [v4 normalBackgroundColor];
+    mk_theme = [(UIView *)self mk_theme];
+    normalBackgroundColor = [mk_theme normalBackgroundColor];
     v6 = self->_dimmingViewBackgroundColorPhotosOpaque;
-    self->_dimmingViewBackgroundColorPhotosOpaque = v5;
+    self->_dimmingViewBackgroundColorPhotosOpaque = normalBackgroundColor;
 
     dimmingViewBackgroundColorPhotosOpaque = self->_dimmingViewBackgroundColorPhotosOpaque;
   }
@@ -890,9 +890,9 @@ LABEL_11:
   dimmingViewBackgroundColorClear = self->_dimmingViewBackgroundColorClear;
   if (!dimmingViewBackgroundColorClear)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
     v5 = self->_dimmingViewBackgroundColorClear;
-    self->_dimmingViewBackgroundColorClear = v4;
+    self->_dimmingViewBackgroundColorClear = clearColor;
 
     dimmingViewBackgroundColorClear = self->_dimmingViewBackgroundColorClear;
   }
@@ -935,9 +935,9 @@ LABEL_11:
   dimmingViewBackgroundColorGreyOpaque = self->_dimmingViewBackgroundColorGreyOpaque;
   if (!dimmingViewBackgroundColorGreyOpaque)
   {
-    v4 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
     v5 = self->_dimmingViewBackgroundColorGreyOpaque;
-    self->_dimmingViewBackgroundColorGreyOpaque = v4;
+    self->_dimmingViewBackgroundColorGreyOpaque = systemGrayColor;
 
     dimmingViewBackgroundColorGreyOpaque = self->_dimmingViewBackgroundColorGreyOpaque;
   }

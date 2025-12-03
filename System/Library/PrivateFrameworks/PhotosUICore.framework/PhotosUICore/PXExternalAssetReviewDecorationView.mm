@@ -6,8 +6,8 @@
 
 - (void)_updateAssetInformation
 {
-  v3 = [(PXContentSyndicationReviewDecorationView *)self userData];
-  v4 = PXExternalAssetReviewDecorationEligibilityForAssetReference(v3);
+  userData = [(PXContentSyndicationReviewDecorationView *)self userData];
+  v4 = PXExternalAssetReviewDecorationEligibilityForAssetReference(userData);
 
   [(PXContentSyndicationReviewDecorationView *)self _setEligibility:v4];
 }

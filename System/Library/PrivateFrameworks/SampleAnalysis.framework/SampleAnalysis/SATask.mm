@@ -1,10 +1,10 @@
 @interface SATask
-+ (double)taskWithoutReferencesFromPAStyleSerializedTask:(uint64_t)a1;
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-+ (id)taskWithPid:(uint64_t)a3 uniquePid:(uint64_t)a4 name:(uint64_t)a5 mainBinaryPath:(uint64_t)a6 forkTime:(uint64_t)a7 loadInfos:(int)a8 numLoadInfos:(uint64_t)a9 textExecLoadInfos:(int)a10 numTextExecLoadInfos:(uint64_t)a11 architecture:(uint64_t)a12 sharedCache:;
-+ (id)taskWithPid:(uint64_t)a3 uniquePid:(uint64_t)a4 name:(uint64_t)a5 sharedCache:;
-- (BOOL)addImageInfos:(uint64_t)a1;
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (double)taskWithoutReferencesFromPAStyleSerializedTask:(uint64_t)task;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
++ (id)taskWithPid:(uint64_t)pid uniquePid:(uint64_t)uniquePid name:(uint64_t)name mainBinaryPath:(uint64_t)path forkTime:(uint64_t)time loadInfos:(int)infos numLoadInfos:(uint64_t)loadInfos textExecLoadInfos:(int)self0 numTextExecLoadInfos:(uint64_t)self1 architecture:(uint64_t)self2 sharedCache:;
++ (id)taskWithPid:(uint64_t)pid uniquePid:(uint64_t)uniquePid name:(uint64_t)name sharedCache:;
+- (BOOL)addImageInfos:(uint64_t)infos;
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (NSString)bundleIdentifier;
 - (NSString)bundleShortVersion;
 - (NSString)bundleVersion;
@@ -15,51 +15,51 @@
 - (NSString)teamID;
 - (SABinary)mainBinary;
 - (SABinaryLoadInfo)mainBinaryLoadInfo;
-- (SAFrame)truncatedUserStackFrameSwiftAsync:(SAFrame *)a1;
-- (SATask)initWithPid:(int)pid andUniquePid:(unint64_t)a4 andName:(id)a5 sharedCache:(id)a6;
+- (SAFrame)truncatedUserStackFrameSwiftAsync:(SAFrame *)async;
+- (SATask)initWithPid:(int)pid andUniquePid:(unint64_t)pid andName:(id)name sharedCache:(id)cache;
 - (id)architectureString;
 - (id)endTimestamp;
-- (id)firstTaskStateOnOrAfterTime:(id)a3 sampleIndex:(unint64_t)a4;
-- (id)firstTaskStateOnOrAfterTime:(id)a3 withSampleIndex:(BOOL)a4;
-- (id)lastTaskStateOnOrBeforeTime:(id)a3 sampleIndex:(unint64_t)a4;
-- (id)leafFrameAfterAddingStack:(void *)a3 leafOfCRootFramesReplacedBySwiftAsync:;
+- (id)firstTaskStateOnOrAfterTime:(id)time sampleIndex:(unint64_t)index;
+- (id)firstTaskStateOnOrAfterTime:(id)time withSampleIndex:(BOOL)index;
+- (id)lastTaskStateOnOrBeforeTime:(id)time sampleIndex:(unint64_t)index;
+- (id)leafFrameAfterAddingStack:(void *)stack leafOfCRootFramesReplacedBySwiftAsync:;
 - (id)removeStacksOutsideThisProcess;
 - (id)startTimestamp;
-- (uint64_t)_matchesNameStr:(uint64_t)a1;
-- (uint64_t)addOutOfOrderState:(uint64_t)a1;
-- (uint64_t)correspondsToName:(uint64_t *)a3 loadInfos:(int)a4 numLoadInfos:(uint64_t)a5 architecture:(uint64_t)a6 sharedCache:;
-- (uint64_t)correspondsToName:(void *)a3 mainBinaryLoadInfo:(uint64_t)a4 architecture:(uint64_t)a5 sharedCache:;
-- (uint64_t)correspondsToPid:(uint64_t)a3 name:(uint64_t *)a4 loadInfos:(unsigned int)a5 numLoadInfos:(uint64_t)a6 textExecLoadInfos:(unsigned int)a7 numTextExecLoadInfos:(uint64_t)a8 architecture:(uint64_t)a9 sharedCache:;
-- (uint64_t)correspondsToUniquePid:(uint64_t)a3 name:(uint64_t *)a4 loadInfos:(unsigned int)a5 numLoadInfos:(uint64_t)a6 textExecLoadInfos:(unsigned int)a7 numTextExecLoadInfos:(uint64_t)a8 architecture:(uint64_t)a9 sharedCache:;
-- (uint64_t)gatherLoadInfoFromLiveProcessWithDataGatheringOptions:(int)a3 additionalCSSymbolicatorFlags:;
-- (uint64_t)isAliveAtTimestamp:(void *)a1;
+- (uint64_t)_matchesNameStr:(uint64_t)str;
+- (uint64_t)addOutOfOrderState:(uint64_t)state;
+- (uint64_t)correspondsToName:(uint64_t *)name loadInfos:(int)infos numLoadInfos:(uint64_t)loadInfos architecture:(uint64_t)architecture sharedCache:;
+- (uint64_t)correspondsToName:(void *)name mainBinaryLoadInfo:(uint64_t)info architecture:(uint64_t)architecture sharedCache:;
+- (uint64_t)correspondsToPid:(uint64_t)pid name:(uint64_t *)name loadInfos:(unsigned int)infos numLoadInfos:(uint64_t)loadInfos textExecLoadInfos:(unsigned int)execLoadInfos numTextExecLoadInfos:(uint64_t)textExecLoadInfos architecture:(uint64_t)architecture sharedCache:;
+- (uint64_t)correspondsToUniquePid:(uint64_t)pid name:(uint64_t *)name loadInfos:(unsigned int)infos numLoadInfos:(uint64_t)loadInfos textExecLoadInfos:(unsigned int)execLoadInfos numTextExecLoadInfos:(uint64_t)textExecLoadInfos architecture:(uint64_t)architecture sharedCache:;
+- (uint64_t)gatherLoadInfoFromLiveProcessWithDataGatheringOptions:(int)options additionalCSSymbolicatorFlags:;
+- (uint64_t)isAliveAtTimestamp:(void *)timestamp;
 - (uint64_t)isFromCurrentBootCycle;
-- (unint64_t)indexOfFirstTaskStateOnOrAfterTime:(id)a3 sampleIndex:(unint64_t)a4;
-- (unint64_t)indexOfFirstTaskStateOnOrAfterTime:(id)a3 withSampleIndex:(BOOL)a4;
-- (unint64_t)indexOfLastTaskStateOnOrBeforeTime:(id)a3 sampleIndex:(unint64_t)a4;
-- (unint64_t)indexOfLastTaskStateOnOrBeforeTime:(id)a3 withSampleIndex:(BOOL)a4;
-- (unint64_t)sampleCountInSampleIndexRangeStart:(unint64_t)a3 end:(unint64_t)a4;
-- (unint64_t)sampleCountInTimestampRangeStart:(id)a3 end:(id)a4;
+- (unint64_t)indexOfFirstTaskStateOnOrAfterTime:(id)time sampleIndex:(unint64_t)index;
+- (unint64_t)indexOfFirstTaskStateOnOrAfterTime:(id)time withSampleIndex:(BOOL)index;
+- (unint64_t)indexOfLastTaskStateOnOrBeforeTime:(id)time sampleIndex:(unint64_t)index;
+- (unint64_t)indexOfLastTaskStateOnOrBeforeTime:(id)time withSampleIndex:(BOOL)index;
+- (unint64_t)sampleCountInSampleIndexRangeStart:(unint64_t)start end:(unint64_t)end;
+- (unint64_t)sampleCountInTimestampRangeStart:(id)start end:(id)end;
 - (unint64_t)sizeInBytesForSerializedVersion;
-- (void)_gatherDataFromLiveProcessIsLate:(void *)a3 mainBinaryPath:;
-- (void)_incorporateNewKernelLoadInfos:(unsigned int)a3 numLoadInfos:(uint64_t)a4 textExecLoadInfos:(unsigned int)a5 numTextExecLoadInfos:;
-- (void)addDispatchQueue:(uint64_t)a1;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)addSwiftTask:(uint64_t)a1;
-- (void)addThread:(uint64_t)a1;
-- (void)cpuTimeNs:(void *)a3 cpuInstructions:(void *)a4 cpuCycles:(void *)a5 nonThreadCpuTimeNs:(void *)a6 nonThreadCpuInstructions:(void *)a7 nonThreadCpuCycles:(uint64_t)a8 betweenStartTime:(void *)a9 endTime:;
+- (void)_gatherDataFromLiveProcessIsLate:(void *)late mainBinaryPath:;
+- (void)_incorporateNewKernelLoadInfos:(unsigned int)infos numLoadInfos:(uint64_t)loadInfos textExecLoadInfos:(unsigned int)execLoadInfos numTextExecLoadInfos:;
+- (void)addDispatchQueue:(uint64_t)queue;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)addSwiftTask:(uint64_t)task;
+- (void)addThread:(uint64_t)thread;
+- (void)cpuTimeNs:(void *)ns cpuInstructions:(void *)instructions cpuCycles:(void *)cycles nonThreadCpuTimeNs:(void *)timeNs nonThreadCpuInstructions:(void *)cpuInstructions nonThreadCpuCycles:(uint64_t)cpuCycles betweenStartTime:(void *)time endTime:;
 - (void)dealloc;
-- (void)enumerateFrames:(uint64_t)a1;
-- (void)enumerateTaskStatesBetweenStartTime:(id)a3 startSampleIndex:(unint64_t)a4 endTime:(id)a5 endSampleIndex:(unint64_t)a6 reverseOrder:(BOOL)a7 block:(id)a8;
-- (void)enumerateThreadStatesForThread:(uint64_t)a3 dispatchQueue:(uint64_t)a4 betweenStartTime:(unint64_t)a5 startSampleIndex:(uint64_t)a6 endTime:(unint64_t)a7 endSampleIndex:(uint64_t)a8 reverseOrder:(uint64_t)a9 block:;
-- (void)fixupFrameInstructionsWithDataGatheringOptions:(int)a3 mightBeAlive:(_BYTE *)a4 foundNewBinaryInfo:(uint64_t)a5 uuidsWithNewInstructions:(int)a6 additionalCSSymbolicatorFlags:;
+- (void)enumerateFrames:(uint64_t)frames;
+- (void)enumerateTaskStatesBetweenStartTime:(id)time startSampleIndex:(unint64_t)index endTime:(id)endTime endSampleIndex:(unint64_t)sampleIndex reverseOrder:(BOOL)order block:(id)block;
+- (void)enumerateThreadStatesForThread:(uint64_t)thread dispatchQueue:(uint64_t)queue betweenStartTime:(unint64_t)time startSampleIndex:(uint64_t)index endTime:(unint64_t)endTime endSampleIndex:(uint64_t)sampleIndex reverseOrder:(uint64_t)order block:;
+- (void)fixupFrameInstructionsWithDataGatheringOptions:(int)options mightBeAlive:(_BYTE *)alive foundNewBinaryInfo:(uint64_t)info uuidsWithNewInstructions:(int)instructions additionalCSSymbolicatorFlags:;
 - (void)fixupThreadSuspension;
-- (void)guessArchitectureGivenMachineArchitecture:(uint64_t)a3 dataSource:;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
-- (void)populateReferencesUsingPAStyleSerializedTask:(void *)a3 andDeserializationDictionary:(void *)a4 andDataBufferDictionary:;
-- (void)postprocessWithDataGatheringOptions:(int)a3 mightBeAlive:(void *)a4 machineArchitecture:(uint64_t)a5 dataSource:(uint64_t)a6 spindumpArchitecture:(void *)a7 spindumpSharedCache:(int)a8 additionalCSSymbolicatorFlags:;
-- (void)setMainBinaryPath:(id)a3;
-- (void)setName:(uint64_t)a1;
+- (void)guessArchitectureGivenMachineArchitecture:(uint64_t)architecture dataSource:;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
+- (void)populateReferencesUsingPAStyleSerializedTask:(void *)task andDeserializationDictionary:(void *)dictionary andDataBufferDictionary:;
+- (void)postprocessWithDataGatheringOptions:(int)options mightBeAlive:(void *)alive machineArchitecture:(uint64_t)architecture dataSource:(uint64_t)source spindumpArchitecture:(void *)spindumpArchitecture spindumpSharedCache:(int)cache additionalCSSymbolicatorFlags:;
+- (void)setMainBinaryPath:(id)path;
+- (void)setName:(uint64_t)name;
 @end
 
 @implementation SATask
@@ -75,10 +75,10 @@
   v16 = v3;
   if (!v3)
   {
-    v4 = [(NSMutableArray *)self->_taskStates firstObject];
-    v5 = [v4 startTimestamp];
+    firstObject = [(NSMutableArray *)self->_taskStates firstObject];
+    startTimestamp = [firstObject startTimestamp];
     v6 = v12[5];
-    v12[5] = v5;
+    v12[5] = startTimestamp;
 
     v3 = v12[5];
     if (!v3)
@@ -111,10 +111,10 @@
   v16 = v3;
   if (!v3)
   {
-    v4 = [(NSMutableArray *)self->_taskStates lastObject];
-    v5 = [v4 endTimestamp];
+    lastObject = [(NSMutableArray *)self->_taskStates lastObject];
+    endTimestamp = [lastObject endTimestamp];
     v6 = v12[5];
-    v12[5] = v5;
+    v12[5] = endTimestamp;
 
     v3 = v12[5];
     if (!v3)
@@ -146,8 +146,8 @@
 
   else
   {
-    v4 = [(SATask *)self mainBinaryPath];
-    Path = [(NSString *)v4 copyLastPathComponent];
+    mainBinaryPath = [(SATask *)self mainBinaryPath];
+    Path = [(NSString *)mainBinaryPath copyLastPathComponent];
   }
 
   return Path;
@@ -158,16 +158,16 @@
   mainBinary = self->_mainBinary;
   if (mainBinary)
   {
-    v3 = mainBinary;
+    binary = mainBinary;
   }
 
   else
   {
-    v4 = [(SATask *)self mainBinaryLoadInfo];
-    v3 = [v4 binary];
+    mainBinaryLoadInfo = [(SATask *)self mainBinaryLoadInfo];
+    binary = [mainBinaryLoadInfo binary];
   }
 
-  return v3;
+  return binary;
 }
 
 - (void)dealloc
@@ -254,16 +254,16 @@ LABEL_9:
   mainBinaryPath = self->_mainBinaryPath;
   if (mainBinaryPath)
   {
-    v3 = mainBinaryPath;
+    path = mainBinaryPath;
   }
 
   else
   {
-    v4 = [(SATask *)self mainBinary];
-    v3 = [v4 path];
+    mainBinary = [(SATask *)self mainBinary];
+    path = [mainBinary path];
   }
 
-  return v3;
+  return path;
 }
 
 - (SABinaryLoadInfo)mainBinaryLoadInfo
@@ -277,21 +277,21 @@ LABEL_9:
   architecture = self->_architecture;
   if ((CSArchitectureIs32Bit() & 1) != 0 || self->_pid)
   {
-    v5 = [(NSArray *)self->_binaryLoadInfos firstObject];
+    firstObject = [(NSArray *)self->_binaryLoadInfos firstObject];
   }
 
   else
   {
-    v5 = [(NSArray *)self->_binaryLoadInfos lastObject];
+    firstObject = [(NSArray *)self->_binaryLoadInfos lastObject];
   }
 
-  v6 = v5;
+  v6 = firstObject;
   if (self->_mainBinary)
   {
-    v7 = [v5 binary];
+    binary = [firstObject binary];
     mainBinary = self->_mainBinary;
 
-    if (v7 != mainBinary)
+    if (binary != mainBinary)
     {
 
 LABEL_9:
@@ -304,42 +304,42 @@ LABEL_9:
 
 - (NSString)bundleVersion
 {
-  v2 = [(SATask *)self mainBinary];
-  v3 = [v2 bundleVersion];
+  mainBinary = [(SATask *)self mainBinary];
+  bundleVersion = [mainBinary bundleVersion];
 
-  return v3;
+  return bundleVersion;
 }
 
 - (NSString)codesigningID
 {
-  v2 = [(SATask *)self mainBinary];
-  v3 = [v2 codesigningID];
+  mainBinary = [(SATask *)self mainBinary];
+  codesigningID = [mainBinary codesigningID];
 
-  return v3;
+  return codesigningID;
 }
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(SATask *)self mainBinary];
-  v3 = [v2 bundleIdentifier];
+  mainBinary = [(SATask *)self mainBinary];
+  bundleIdentifier = [mainBinary bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (NSString)bundleShortVersion
 {
-  v2 = [(SATask *)self mainBinary];
-  v3 = [v2 bundleShortVersion];
+  mainBinary = [(SATask *)self mainBinary];
+  bundleShortVersion = [mainBinary bundleShortVersion];
 
-  return v3;
+  return bundleShortVersion;
 }
 
 - (NSString)teamID
 {
-  v2 = [(SATask *)self mainBinary];
-  v3 = [v2 teamID];
+  mainBinary = [(SATask *)self mainBinary];
+  teamID = [mainBinary teamID];
 
-  return v3;
+  return teamID;
 }
 
 - (id)architectureString
@@ -359,21 +359,21 @@ LABEL_9:
   return architecture;
 }
 
-- (uint64_t)addOutOfOrderState:(uint64_t)a1
+- (uint64_t)addOutOfOrderState:(uint64_t)state
 {
-  if (!a1)
+  if (!state)
   {
     return 0;
   }
 
-  v4 = *(a1 + 8);
+  v4 = *(state + 8);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __29__SATask_addOutOfOrderState___block_invoke;
   v7[3] = &unk_1E86F8610;
   v7[4] = a2;
   v5 = SABinarySearchArray(v4, 1024, v7);
-  [*(a1 + 8) insertObject:a2 atIndex:v5];
+  [*(state + 8) insertObject:a2 atIndex:v5];
   return v5;
 }
 
@@ -386,71 +386,71 @@ uint64_t __29__SATask_addOutOfOrderState___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)addThread:(uint64_t)a1
+- (void)addThread:(uint64_t)thread
 {
-  if (a1)
+  if (thread)
   {
-    v3 = *(a1 + 16);
+    v3 = *(thread + 16);
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a2, "threadId")}];
     [v3 setObject:a2 forKeyedSubscript:v4];
   }
 }
 
-- (void)addDispatchQueue:(uint64_t)a1
+- (void)addDispatchQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
-    v3 = *(a1 + 24);
+    v3 = *(queue + 24);
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a2, "identifier")}];
     [v3 setObject:a2 forKeyedSubscript:v4];
   }
 }
 
-- (void)addSwiftTask:(uint64_t)a1
+- (void)addSwiftTask:(uint64_t)task
 {
-  if (a1)
+  if (task)
   {
-    v3 = *(a1 + 32);
+    v3 = *(task + 32);
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a2, "identifier")}];
     [v3 setObject:a2 forKeyedSubscript:v4];
   }
 }
 
-- (void)guessArchitectureGivenMachineArchitecture:(uint64_t)a3 dataSource:
+- (void)guessArchitectureGivenMachineArchitecture:(uint64_t)architecture dataSource:
 {
   v87 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_36;
   }
 
-  if (*(a1 + 288))
+  if (*(self + 288))
   {
     v39 = *__error();
     v40 = _sa_logt();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
-      v41 = [a1 debugDescription];
-      v42 = [v41 UTF8String];
-      v43 = *(a1 + 288);
+      v41 = [self debugDescription];
+      uTF8String = [v41 UTF8String];
+      v43 = *(self + 288);
       *buf = 136315906;
-      v80 = v42;
+      v80 = uTF8String;
       v81 = 2080;
       FamilyName = CSArchitectureGetFamilyName();
       v83 = 2080;
       v84 = CSArchitectureGetFamilyName();
       v85 = 2048;
-      v86 = a3;
+      architectureCopy = architecture;
       _os_log_error_impl(&dword_1E0E2F000, v40, OS_LOG_TYPE_ERROR, "%s: already know architecture %s, but guessing from machine architecture %s (data source 0x%llx)", buf, 0x2Au);
     }
 
     *__error() = v39;
-    v44 = [a1 debugDescription];
-    v34 = [v44 UTF8String];
-    v45 = *(a1 + 288);
+    v44 = [self debugDescription];
+    uTF8String2 = [v44 UTF8String];
+    v45 = *(self + 288);
     CSArchitectureGetFamilyName();
     CSArchitectureGetFamilyName();
-    _SASetCrashLogMessage(106, "%s: already know architecture %s, but guessing from machine architecture %s (data source 0x%llx)", v46, v47, v48, v49, v50, v51, v34);
+    _SASetCrashLogMessage(106, "%s: already know architecture %s, but guessing from machine architecture %s (data source 0x%llx)", v46, v47, v48, v49, v50, v51, uTF8String2);
 
     _os_crash();
     __break(1u);
@@ -465,23 +465,23 @@ uint64_t __29__SATask_addOutOfOrderState___block_invoke(uint64_t a1, void *a2)
     goto LABEL_4;
   }
 
-  if ((a3 & 5) != 0)
+  if ((architecture & 5) != 0)
   {
-    v9 = [*(a1 + 8) lastObject];
-    if (v9)
+    lastObject = [*(self + 8) lastObject];
+    if (lastObject)
     {
-      v10 = v9;
-      v63 = v9;
-      if ((a3 & 1) == 0 && !*(a1 + 80) || (v11 = [v9 ssFlags], v10 = v63, (v11 & 1) == 0))
+      v10 = lastObject;
+      v63 = lastObject;
+      if ((architecture & 1) == 0 && !*(self + 80) || (v11 = [lastObject ssFlags], v10 = v63, (v11 & 1) == 0))
       {
-        if ((a3 & 4) == 0 || *(a1 + 80) || (v12 = [v10 ssFlags], v10 = v63, (v12 & 2) == 0))
+        if ((architecture & 4) == 0 || *(self + 80) || (v12 = [v10 ssFlags], v10 = v63, (v12 & 2) == 0))
         {
           v7 &= ~0x1000000u;
         }
       }
 
-      *(a1 + 288) = v7;
-      *(a1 + 292) = v8;
+      *(self + 288) = v7;
+      *(self + 292) = v8;
       v13 = *MEMORY[0x1E69E9840];
 
       return;
@@ -492,7 +492,7 @@ uint64_t __29__SATask_addOutOfOrderState___block_invoke(uint64_t a1, void *a2)
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v14 = *(a1 + 256);
+  v14 = *(self + 256);
   v15 = [v14 countByEnumeratingWithState:&v72 objects:v78 count:16];
   if (v15)
   {
@@ -517,9 +517,9 @@ uint64_t __29__SATask_addOutOfOrderState___block_invoke(uint64_t a1, void *a2)
         {
           v7 &= ~0x1000000u;
 LABEL_33:
-          *(a1 + 288) = v7;
+          *(self + 288) = v7;
 LABEL_34:
-          *(a1 + 292) = v8;
+          *(self + 292) = v8;
 LABEL_35:
 
           goto LABEL_36;
@@ -532,17 +532,17 @@ LABEL_35:
     while (v16);
   }
 
-  v20 = *(a1 + 264);
+  v20 = *(self + 264);
   if (v20 && [v20 startAddress] != -1)
   {
-    if ([*(a1 + 264) startAddress] >> 32)
+    if ([*(self + 264) startAddress] >> 32)
     {
       goto LABEL_4;
     }
 
-    if ([*(a1 + 264) startAddress])
+    if ([*(self + 264) startAddress])
     {
-      *(a1 + 288) = v7 & 0xFEFFFFFF;
+      *(self + 288) = v7 & 0xFEFFFFFF;
       goto LABEL_5;
     }
   }
@@ -551,7 +551,7 @@ LABEL_35:
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v14 = *(a1 + 280);
+  v14 = *(self + 280);
   v22 = [v14 countByEnumeratingWithState:&v68 objects:v77 count:16];
   if (!v22)
   {
@@ -582,21 +582,21 @@ LABEL_35:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v27 = a2;
+          anyObject = a2;
 LABEL_60:
-          v34 = v27;
+          uTF8String2 = anyObject;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v35 = [v34 address];
+            address = [uTF8String2 address];
             v36 = v7 & 0xFEFFFFFF;
-            if (HIDWORD(v35))
+            if (HIDWORD(address))
             {
               v36 = v7;
             }
 
-            *(a1 + 288) = v36;
-            *(a1 + 292) = v8;
+            *(self + 288) = v36;
+            *(self + 292) = v8;
 
             goto LABEL_35;
           }
@@ -607,7 +607,7 @@ LABEL_70:
           if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
           {
             ClassName = object_getClassName(a2);
-            v55 = object_getClassName(v34);
+            v55 = object_getClassName(uTF8String2);
             *buf = 136315394;
             v80 = ClassName;
             v81 = 2080;
@@ -617,14 +617,14 @@ LABEL_70:
 
           *__error() = v52;
           v56 = object_getClassName(a2);
-          object_getClassName(v34);
+          object_getClassName(uTF8String2);
           _SASetCrashLogMessage(160, "children is %s, child is %s", v57, v58, v59, v60, v61, v62, v56);
           _os_crash();
           __break(1u);
         }
 
-        v27 = [a2 anyObject];
-        if (v27)
+        anyObject = [a2 anyObject];
+        if (anyObject)
         {
           goto LABEL_60;
         }
@@ -652,7 +652,7 @@ LABEL_50:
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v14 = *(a1 + 280);
+  v14 = *(self + 280);
   v29 = [v14 countByEnumeratingWithState:&v64 objects:v76 count:16];
   if (v29)
   {
@@ -670,14 +670,14 @@ LABEL_50:
         v33 = *(*(&v64 + 1) + 8 * j);
         if (![v33 isFakeFrame])
         {
-          v37 = [v33 address];
+          address2 = [v33 address];
           v38 = v7 & 0xFEFFFFFF;
-          if (HIDWORD(v37))
+          if (HIDWORD(address2))
           {
             v38 = v7;
           }
 
-          *(a1 + 288) = v38;
+          *(self + 288) = v38;
           goto LABEL_34;
         }
       }
@@ -693,31 +693,31 @@ LABEL_50:
   }
 
 LABEL_4:
-  *(a1 + 288) = v7;
+  *(self + 288) = v7;
 LABEL_5:
-  *(a1 + 292) = v8;
+  *(self + 292) = v8;
 LABEL_36:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMainBinaryPath:(id)a3
+- (void)setMainBinaryPath:(id)path
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (path)
   {
-    v5 = [(SATask *)self mainBinary];
-    v6 = v5;
-    if (v5)
+    mainBinary = [(SATask *)self mainBinary];
+    v6 = mainBinary;
+    if (mainBinary)
     {
       v21 = 0;
-      v7 = [v5 path];
-      v8 = SAFilepathMatches(v7, a3, &v21);
+      path = [mainBinary path];
+      v8 = SAFilepathMatches(path, path, &v21);
 
       if (v8)
       {
         if (v21 == 1)
         {
-          objc_setProperty_atomic_copy(v6, v9, a3, 80);
+          objc_setProperty_atomic_copy(v6, v9, path, 80);
         }
 
         v10 = 0;
@@ -729,27 +729,27 @@ LABEL_36:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         v19 = [(SATask *)self debugDescription];
-        v20 = [v6 path];
+        path2 = [v6 path];
         *buf = 138412802;
         v23 = v19;
         v24 = 2112;
-        v25 = a3;
+        pathCopy = path;
         v26 = 2112;
-        v27 = v20;
+        v27 = path2;
         _os_log_debug_impl(&dword_1E0E2F000, v14, OS_LOG_TYPE_DEBUG, "%@: Setting mainBinaryPath to %@ when its already %@", buf, 0x20u);
       }
 
       *__error() = v13;
     }
 
-    v10 = SACachedNSString(a3);
+    v10 = SACachedNSString(path);
 LABEL_14:
     mainBinaryPath = self->_mainBinaryPath;
     self->_mainBinaryPath = v10;
 
     if (self->_name)
     {
-      Path = [(NSString *)a3 copyLastPathComponent];
+      Path = [(NSString *)path copyLastPathComponent];
       if ([Path hasPrefix:self->_name])
       {
         name = self->_name;
@@ -766,10 +766,10 @@ LABEL_14:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setName:(uint64_t)a1
+- (void)setName:(uint64_t)name
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!name)
   {
     goto LABEL_12;
   }
@@ -780,23 +780,23 @@ LABEL_14:
     v8 = _sa_logt();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      [a1 debugDescription];
+      [name debugDescription];
       v11 = v12 = v7;
       *buf = 136315138;
-      v14 = [v11 UTF8String];
+      uTF8String = [v11 UTF8String];
       _os_log_fault_impl(&dword_1E0E2F000, v8, OS_LOG_TYPE_FAULT, "%s: applying emptry string for task name", buf, 0xCu);
 
       v7 = v12;
     }
 
     *__error() = v7;
-    v9 = *(a1 + 56);
-    *(a1 + 56) = 0;
+    v9 = *(name + 56);
+    *(name + 56) = 0;
 
     goto LABEL_12;
   }
 
-  if (*(a1 + 80) && ([a2 isEqualToString:@"kernel_task"] & 1) != 0)
+  if (*(name + 80) && ([a2 isEqualToString:@"kernel_task"] & 1) != 0)
   {
 LABEL_12:
     v10 = *MEMORY[0x1E69E9840];
@@ -804,12 +804,12 @@ LABEL_12:
   }
 
   v4 = [a2 copy];
-  v5 = *(a1 + 56);
-  *(a1 + 56) = v4;
+  v5 = *(name + 56);
+  *(name + 56) = v4;
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (SATask)initWithPid:(int)pid andUniquePid:(unint64_t)a4 andName:(id)a5 sharedCache:(id)a6
+- (SATask)initWithPid:(int)pid andUniquePid:(unint64_t)pid andName:(id)name sharedCache:(id)cache
 {
   v35 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
@@ -832,10 +832,10 @@ LABEL_12:
     *&v10->_rpid = 0xFFFFFEC6FFFFFFFFLL;
     v10->_pid = pid;
     v10->_ppid = v13;
-    v10->_uniquePid = a4;
-    if (a5)
+    v10->_uniquePid = pid;
+    if (name)
     {
-      if (![a5 length])
+      if (![name length])
       {
         v26 = *__error();
         v27 = _sa_logt();
@@ -843,9 +843,9 @@ LABEL_12:
         {
           [(SATask *)v11 debugDescription];
           v29 = v31 = v26;
-          v30 = [v29 UTF8String];
+          uTF8String = [v29 UTF8String];
           *buf = 136315138;
-          v34 = v30;
+          v34 = uTF8String;
           _os_log_fault_impl(&dword_1E0E2F000, v27, OS_LOG_TYPE_FAULT, "%s: applying empty string for task name", buf, 0xCu);
 
           v26 = v31;
@@ -859,9 +859,9 @@ LABEL_12:
       pid = v11->_pid;
     }
 
-    if (!pid || ([a5 isEqualToString:{@"kernel_task", v12}] & 1) == 0)
+    if (!pid || ([name isEqualToString:{@"kernel_task", v12}] & 1) == 0)
     {
-      v14 = [a5 copy];
+      v14 = [name copy];
       v15 = v11->_name;
       v11->_name = v14;
     }
@@ -882,42 +882,42 @@ LABEL_12:
     taskStates = v11->_taskStates;
     v11->_taskStates = v22;
 
-    objc_storeStrong(&v11->_sharedCache, a6);
+    objc_storeStrong(&v11->_sharedCache, cache);
   }
 
   v24 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-+ (id)taskWithPid:(uint64_t)a3 uniquePid:(uint64_t)a4 name:(uint64_t)a5 sharedCache:
++ (id)taskWithPid:(uint64_t)pid uniquePid:(uint64_t)uniquePid name:(uint64_t)name sharedCache:
 {
-  v5 = [objc_alloc(objc_opt_self()) initWithPid:a2 andUniquePid:a3 andName:a4 sharedCache:a5];
+  v5 = [objc_alloc(objc_opt_self()) initWithPid:a2 andUniquePid:pid andName:uniquePid sharedCache:name];
 
   return v5;
 }
 
-- (void)_incorporateNewKernelLoadInfos:(unsigned int)a3 numLoadInfos:(uint64_t)a4 textExecLoadInfos:(unsigned int)a5 numTextExecLoadInfos:
+- (void)_incorporateNewKernelLoadInfos:(unsigned int)infos numLoadInfos:(uint64_t)loadInfos textExecLoadInfos:(unsigned int)execLoadInfos numTextExecLoadInfos:
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_23;
   }
 
   v8 = a2;
-  if (!a2 && a3)
+  if (!a2 && infos)
   {
     v22 = *__error();
     v23 = _sa_logt();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v44 = a3;
+      execLoadInfosCopy = infos;
       _os_log_error_impl(&dword_1E0E2F000, v23, OS_LOG_TYPE_ERROR, "%u load infos, but null", buf, 8u);
     }
 
     *__error() = v22;
-    _SASetCrashLogMessage(1352, "%u load infos, but null", v24, v25, v26, v27, v28, v29, a3);
+    _SASetCrashLogMessage(1352, "%u load infos, but null", v24, v25, v26, v27, v28, v29, infos);
     _os_crash();
     __break(1u);
 LABEL_28:
@@ -926,28 +926,28 @@ LABEL_28:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v44 = a5;
+      execLoadInfosCopy = execLoadInfos;
       _os_log_error_impl(&dword_1E0E2F000, v31, OS_LOG_TYPE_ERROR, "%u text exec load infos, but null", buf, 8u);
     }
 
     *__error() = v30;
-    _SASetCrashLogMessage(1353, "%u text exec load infos, but null", v32, v33, v34, v35, v36, v37, a5);
+    _SASetCrashLogMessage(1353, "%u text exec load infos, but null", v32, v33, v34, v35, v36, v37, execLoadInfos);
     _os_crash();
     __break(1u);
   }
 
-  if (!a4 && a5)
+  if (!loadInfos && execLoadInfos)
   {
     goto LABEL_28;
   }
 
-  if ([*(a1 + 256) count] < (a5 + a3))
+  if ([*(self + 256) count] < (execLoadInfos + infos))
   {
-    v10 = _SABinaryCreateLoadInfoArrayFromDyldImageInfos(v8, a3, 0, a4, a5, 1);
+    v10 = _SABinaryCreateLoadInfoArrayFromDyldImageInfos(v8, infos, 0, loadInfos, execLoadInfos, 1);
     v11 = v10;
-    if (!*(a1 + 48))
+    if (!*(self + 48))
     {
-      if (a3 || (v8 = a4, a5))
+      if (infos || (v8 = loadInfos, execLoadInfos))
       {
         v12 = *v8;
       }
@@ -979,9 +979,9 @@ LABEL_28:
             v18 = *(*(&v38 + 1) + 8 * i);
             if ([v18 loadAddress] == v12)
             {
-              v19 = [v18 binary];
-              v20 = *(a1 + 48);
-              *(a1 + 48) = v19;
+              binary = [v18 binary];
+              v20 = *(self + 48);
+              *(self + 48) = binary;
 
               goto LABEL_21;
             }
@@ -1000,75 +1000,75 @@ LABEL_28:
 LABEL_21:
     }
 
-    [(SATask *)a1 addImageInfos:v11];
-    *(a1 + 79) = 1;
+    [(SATask *)self addImageInfos:v11];
+    *(self + 79) = 1;
   }
 
 LABEL_23:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)taskWithPid:(uint64_t)a3 uniquePid:(uint64_t)a4 name:(uint64_t)a5 mainBinaryPath:(uint64_t)a6 forkTime:(uint64_t)a7 loadInfos:(int)a8 numLoadInfos:(uint64_t)a9 textExecLoadInfos:(int)a10 numTextExecLoadInfos:(uint64_t)a11 architecture:(uint64_t)a12 sharedCache:
++ (id)taskWithPid:(uint64_t)pid uniquePid:(uint64_t)uniquePid name:(uint64_t)name mainBinaryPath:(uint64_t)path forkTime:(uint64_t)time loadInfos:(int)infos numLoadInfos:(uint64_t)loadInfos textExecLoadInfos:(int)self0 numTextExecLoadInfos:(uint64_t)self1 architecture:(uint64_t)self2 sharedCache:
 {
-  LODWORD(v15) = a10;
-  LODWORD(v14) = a8;
-  v12 = [objc_alloc(objc_opt_self()) initWithPid:a2 uniquePid:a3 name:a4 mainBinaryPath:a5 forkTime:a6 loadInfos:a7 numLoadInfos:v14 textExecLoadInfos:a9 numTextExecLoadInfos:v15 architecture:a11 sharedCache:a12];
+  LODWORD(v15) = execLoadInfos;
+  LODWORD(v14) = infos;
+  v12 = [objc_alloc(objc_opt_self()) initWithPid:a2 uniquePid:pid name:uniquePid mainBinaryPath:name forkTime:path loadInfos:time numLoadInfos:v14 textExecLoadInfos:loadInfos numTextExecLoadInfos:v15 architecture:textExecLoadInfos sharedCache:architecture];
 
   return v12;
 }
 
-- (unint64_t)indexOfFirstTaskStateOnOrAfterTime:(id)a3 sampleIndex:(unint64_t)a4
+- (unint64_t)indexOfFirstTaskStateOnOrAfterTime:(id)time sampleIndex:(unint64_t)index
 {
   if (![(NSMutableArray *)self->_taskStates count])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a3)
+  if (time)
   {
     taskStates = self->_taskStates;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __57__SATask_indexOfFirstTaskStateOnOrAfterTime_sampleIndex___block_invoke;
     v12[3] = &unk_1E86F8610;
-    v12[4] = a3;
-    a3 = SABinarySearchArray(taskStates, 1280, v12);
+    v12[4] = time;
+    time = SABinarySearchArray(taskStates, 1280, v12);
   }
 
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL && a3 < [(NSMutableArray *)self->_taskStates count])
+  if (index != 0x7FFFFFFFFFFFFFFFLL && time < [(NSMutableArray *)self->_taskStates count])
   {
     do
     {
-      v8 = [(NSMutableArray *)self->_taskStates objectAtIndexedSubscript:a3];
+      v8 = [(NSMutableArray *)self->_taskStates objectAtIndexedSubscript:time];
       if ([v8 startSampleIndex] == 0x7FFFFFFFFFFFFFFFLL)
       {
       }
 
       else
       {
-        v9 = [(NSMutableArray *)self->_taskStates objectAtIndexedSubscript:a3];
-        v10 = [v9 endSampleIndex];
+        v9 = [(NSMutableArray *)self->_taskStates objectAtIndexedSubscript:time];
+        endSampleIndex = [v9 endSampleIndex];
 
-        if (v10 >= a4)
+        if (endSampleIndex >= index)
         {
           break;
         }
       }
 
-      a3 = a3 + 1;
+      time = time + 1;
     }
 
-    while (a3 < [(NSMutableArray *)self->_taskStates count]);
+    while (time < [(NSMutableArray *)self->_taskStates count]);
   }
 
-  if (a3 >= [(NSMutableArray *)self->_taskStates count])
+  if (time >= [(NSMutableArray *)self->_taskStates count])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    return a3;
+    return time;
   }
 }
 
@@ -1090,9 +1090,9 @@ uint64_t __57__SATask_indexOfFirstTaskStateOnOrAfterTime_sampleIndex___block_inv
   return v7;
 }
 
-- (id)firstTaskStateOnOrAfterTime:(id)a3 sampleIndex:(unint64_t)a4
+- (id)firstTaskStateOnOrAfterTime:(id)time sampleIndex:(unint64_t)index
 {
-  v5 = [(SATask *)self indexOfFirstTaskStateOnOrAfterTime:a3 sampleIndex:a4];
+  v5 = [(SATask *)self indexOfFirstTaskStateOnOrAfterTime:time sampleIndex:index];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -1106,7 +1106,7 @@ uint64_t __57__SATask_indexOfFirstTaskStateOnOrAfterTime_sampleIndex___block_inv
   return v6;
 }
 
-- (unint64_t)indexOfLastTaskStateOnOrBeforeTime:(id)a3 sampleIndex:(unint64_t)a4
+- (unint64_t)indexOfLastTaskStateOnOrBeforeTime:(id)time sampleIndex:(unint64_t)index
 {
   if (![(NSMutableArray *)self->_taskStates count])
   {
@@ -1114,13 +1114,13 @@ uint64_t __57__SATask_indexOfFirstTaskStateOnOrAfterTime_sampleIndex___block_inv
   }
 
   taskStates = self->_taskStates;
-  if (a3)
+  if (time)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __57__SATask_indexOfLastTaskStateOnOrBeforeTime_sampleIndex___block_invoke;
     v14[3] = &unk_1E86F8610;
-    v14[4] = a3;
+    v14[4] = time;
     v8 = SABinarySearchArray(taskStates, 1536, v14);
     if (!v8)
     {
@@ -1134,7 +1134,7 @@ uint64_t __57__SATask_indexOfFirstTaskStateOnOrAfterTime_sampleIndex___block_inv
   }
 
   v9 = v8 - 1;
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return v9;
   }
@@ -1149,9 +1149,9 @@ uint64_t __57__SATask_indexOfFirstTaskStateOnOrAfterTime_sampleIndex___block_inv
     else
     {
       v12 = [(NSMutableArray *)self->_taskStates objectAtIndexedSubscript:v9];
-      v13 = [v12 startSampleIndex];
+      startSampleIndex = [v12 startSampleIndex];
 
-      if (v13 <= a4)
+      if (startSampleIndex <= index)
       {
         return v9;
       }
@@ -1186,9 +1186,9 @@ uint64_t __57__SATask_indexOfLastTaskStateOnOrBeforeTime_sampleIndex___block_inv
   return v7;
 }
 
-- (id)lastTaskStateOnOrBeforeTime:(id)a3 sampleIndex:(unint64_t)a4
+- (id)lastTaskStateOnOrBeforeTime:(id)time sampleIndex:(unint64_t)index
 {
-  v5 = [(SATask *)self indexOfLastTaskStateOnOrBeforeTime:a3 sampleIndex:a4];
+  v5 = [(SATask *)self indexOfLastTaskStateOnOrBeforeTime:time sampleIndex:index];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -1202,9 +1202,9 @@ uint64_t __57__SATask_indexOfLastTaskStateOnOrBeforeTime_sampleIndex___block_inv
   return v6;
 }
 
-- (id)firstTaskStateOnOrAfterTime:(id)a3 withSampleIndex:(BOOL)a4
+- (id)firstTaskStateOnOrAfterTime:(id)time withSampleIndex:(BOOL)index
 {
-  if (a4)
+  if (index)
   {
     v4 = 0;
   }
@@ -1214,12 +1214,12 @@ uint64_t __57__SATask_indexOfLastTaskStateOnOrBeforeTime_sampleIndex___block_inv
     v4 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return [(SATask *)self firstTaskStateOnOrAfterTime:a3 sampleIndex:v4];
+  return [(SATask *)self firstTaskStateOnOrAfterTime:time sampleIndex:v4];
 }
 
-- (unint64_t)indexOfFirstTaskStateOnOrAfterTime:(id)a3 withSampleIndex:(BOOL)a4
+- (unint64_t)indexOfFirstTaskStateOnOrAfterTime:(id)time withSampleIndex:(BOOL)index
 {
-  if (a4)
+  if (index)
   {
     v4 = 0;
   }
@@ -1229,20 +1229,20 @@ uint64_t __57__SATask_indexOfLastTaskStateOnOrBeforeTime_sampleIndex___block_inv
     v4 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return [(SATask *)self indexOfFirstTaskStateOnOrAfterTime:a3 sampleIndex:v4];
+  return [(SATask *)self indexOfFirstTaskStateOnOrAfterTime:time sampleIndex:v4];
 }
 
-- (unint64_t)indexOfLastTaskStateOnOrBeforeTime:(id)a3 withSampleIndex:(BOOL)a4
+- (unint64_t)indexOfLastTaskStateOnOrBeforeTime:(id)time withSampleIndex:(BOOL)index
 {
-  v4 = a4;
-  v7 = [(NSMutableArray *)self->_taskStates lastObject];
-  v8 = v7;
-  if (v7)
+  indexCopy = index;
+  lastObject = [(NSMutableArray *)self->_taskStates lastObject];
+  v8 = lastObject;
+  if (lastObject)
   {
     v9 = 0x7FFFFFFFFFFFFFFFLL;
-    if (!v4 || (v10 = 0x7FFFFFFFFFFFFFFFLL, v9 = [v7 endSampleIndex], v9 != 0x7FFFFFFFFFFFFFFFLL))
+    if (!indexCopy || (v10 = 0x7FFFFFFFFFFFFFFFLL, v9 = [lastObject endSampleIndex], v9 != 0x7FFFFFFFFFFFFFFFLL))
     {
-      v10 = [(SATask *)self indexOfLastTaskStateOnOrBeforeTime:a3 sampleIndex:v9];
+      v10 = [(SATask *)self indexOfLastTaskStateOnOrBeforeTime:time sampleIndex:v9];
     }
   }
 
@@ -1254,13 +1254,13 @@ uint64_t __57__SATask_indexOfLastTaskStateOnOrBeforeTime_sampleIndex___block_inv
   return v10;
 }
 
-- (void)enumerateTaskStatesBetweenStartTime:(id)a3 startSampleIndex:(unint64_t)a4 endTime:(id)a5 endSampleIndex:(unint64_t)a6 reverseOrder:(BOOL)a7 block:(id)a8
+- (void)enumerateTaskStatesBetweenStartTime:(id)time startSampleIndex:(unint64_t)index endTime:(id)endTime endSampleIndex:(unint64_t)sampleIndex reverseOrder:(BOOL)order block:(id)block
 {
-  v13 = [(SATask *)self indexOfFirstTaskStateOnOrAfterTime:a3 sampleIndex:a4];
+  v13 = [(SATask *)self indexOfFirstTaskStateOnOrAfterTime:time sampleIndex:index];
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = v13;
-    v15 = [(SATask *)self indexOfLastTaskStateOnOrBeforeTime:a5 sampleIndex:a6];
+    v15 = [(SATask *)self indexOfLastTaskStateOnOrBeforeTime:endTime sampleIndex:sampleIndex];
     if (v15 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v16 = v15;
@@ -1271,9 +1271,9 @@ uint64_t __57__SATask_indexOfLastTaskStateOnOrBeforeTime_sampleIndex___block_inv
         v19[2] = __105__SATask_enumerateTaskStatesBetweenStartTime_startSampleIndex_endTime_endSampleIndex_reverseOrder_block___block_invoke;
         v19[3] = &unk_1E86F7068;
         v19[4] = self;
-        v19[5] = a8;
+        v19[5] = block;
         v17 = MEMORY[0x1E12EBE50](v19);
-        if (a7)
+        if (order)
         {
           do
           {
@@ -1329,11 +1329,11 @@ uint64_t __89__SATask_enumerateTaskStatesBetweenStartTime_endTime_reverseOrder_w
   return result;
 }
 
-- (void)enumerateThreadStatesForThread:(uint64_t)a3 dispatchQueue:(uint64_t)a4 betweenStartTime:(unint64_t)a5 startSampleIndex:(uint64_t)a6 endTime:(unint64_t)a7 endSampleIndex:(uint64_t)a8 reverseOrder:(uint64_t)a9 block:
+- (void)enumerateThreadStatesForThread:(uint64_t)thread dispatchQueue:(uint64_t)queue betweenStartTime:(unint64_t)time startSampleIndex:(uint64_t)index endTime:(unint64_t)endTime endSampleIndex:(uint64_t)sampleIndex reverseOrder:(uint64_t)order block:
 {
-  if (a1)
+  if (self)
   {
-    if (a2 | a3)
+    if (a2 | thread)
     {
       if (a2)
       {
@@ -1342,9 +1342,9 @@ uint64_t __89__SATask_enumerateTaskStatesBetweenStartTime_endTime_reverseOrder_w
         v18[2] = __131__SATask_enumerateThreadStatesForThread_dispatchQueue_betweenStartTime_startSampleIndex_endTime_endSampleIndex_reverseOrder_block___block_invoke;
         v18[3] = &unk_1E86F8660;
         v18[5] = a2;
-        v18[6] = a9;
-        v18[4] = a3;
-        [a2 enumerateThreadStatesBetweenStartTime:a4 startSampleIndex:a5 endTime:a6 endSampleIndex:a7 reverseOrder:a8 block:v18];
+        v18[6] = order;
+        v18[4] = thread;
+        [a2 enumerateThreadStatesBetweenStartTime:queue startSampleIndex:time endTime:index endSampleIndex:endTime reverseOrder:sampleIndex block:v18];
       }
 
       else
@@ -1353,8 +1353,8 @@ uint64_t __89__SATask_enumerateTaskStatesBetweenStartTime_endTime_reverseOrder_w
         v17[1] = 3221225472;
         v17[2] = __131__SATask_enumerateThreadStatesForThread_dispatchQueue_betweenStartTime_startSampleIndex_endTime_endSampleIndex_reverseOrder_block___block_invoke_2;
         v17[3] = &unk_1E86F8050;
-        v17[4] = a9;
-        [(SARecipe *)a3 enumerateStatesBetweenStartTime:a4 startSampleIndex:a5 endTime:a6 endSampleIndex:a7 reverseOrder:a8 block:v17];
+        v17[4] = order;
+        [(SARecipe *)thread enumerateStatesBetweenStartTime:queue startSampleIndex:time endTime:index endSampleIndex:endTime reverseOrder:sampleIndex block:v17];
       }
     }
 
@@ -1395,43 +1395,43 @@ void __131__SATask_enumerateThreadStatesForThread_dispatchQueue_betweenStartTime
   (*(v5 + 16))(v5, v7, v6, [a2 threadStateIndex], a3);
 }
 
-- (uint64_t)gatherLoadInfoFromLiveProcessWithDataGatheringOptions:(int)a3 additionalCSSymbolicatorFlags:
+- (uint64_t)gatherLoadInfoFromLiveProcessWithDataGatheringOptions:(int)options additionalCSSymbolicatorFlags:
 {
   v62 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_6;
   }
 
   v4 = 0;
-  if ((a2 & 2) != 0 && (*(a1 + 64) & 1) == 0)
+  if ((a2 & 2) != 0 && (*(self + 64) & 1) == 0)
   {
-    if ((a2 & 0x400) == 0 && *(a1 + 80))
+    if ((a2 & 0x400) == 0 && *(self + 80))
     {
 LABEL_6:
       v4 = 0;
       goto LABEL_40;
     }
 
-    v7 = a1;
-    objc_sync_enter(v7);
-    if (*(a1 + 64))
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (*(self + 64))
     {
       v4 = 0;
 LABEL_39:
-      objc_sync_exit(v7);
+      objc_sync_exit(selfCopy);
 
       goto LABEL_40;
     }
 
-    *(a1 + 64) = 1;
+    *(self + 64) = 1;
     v54 = 0;
     v55 = 0;
-    v8 = *(v7 + 20);
+    v8 = *(selfCopy + 20);
     v52 = 0;
     v53 = 0;
     v51 = 0;
-    CopyLoadInfosForLiveProcess(v8, a2, &v54, &v53, &v52, &v51, &v55, a3);
+    CopyLoadInfosForLiveProcess(v8, a2, &v54, &v53, &v52, &v51, &v55, options);
     v9 = v54;
     v10 = v54;
     v50 = v53;
@@ -1446,7 +1446,7 @@ LABEL_39:
       v21 = _sa_logt();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        v36 = [v7 debugDescription];
+        v36 = [selfCopy debugDescription];
         *buf = 138412290;
         v57 = v36;
         _os_log_debug_impl(&dword_1E0E2F000, v21, OS_LOG_TYPE_DEBUG, "%@: Unable to inspect live processes for images infos", buf, 0xCu);
@@ -1457,12 +1457,12 @@ LABEL_39:
       goto LABEL_38;
     }
 
-    if (*(v7 + 20))
+    if (*(selfCopy + 20))
     {
-      v16 = [v10 firstObject];
-      v17 = [v16 binary];
-      v18 = [v17 name];
-      v19 = [(SATask *)v7 correspondsToName:v18 mainBinaryLoadInfo:v16 architecture:v55 sharedCache:v12];
+      firstObject = [v10 firstObject];
+      binary = [firstObject binary];
+      name = [binary name];
+      v19 = [(SATask *)selfCopy correspondsToName:name mainBinaryLoadInfo:firstObject architecture:v55 sharedCache:v12];
 
       if ((v19 & 1) == 0)
       {
@@ -1470,10 +1470,10 @@ LABEL_39:
         v23 = _sa_logt();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          v48 = [v7 debugDescription];
-          v39 = [v7 mainBinaryLoadInfo];
-          v40 = [v39 debugDescription];
-          v41 = [v16 debugDescription];
+          v48 = [selfCopy debugDescription];
+          mainBinaryLoadInfo = [selfCopy mainBinaryLoadInfo];
+          v40 = [mainBinaryLoadInfo debugDescription];
+          v41 = [firstObject debugDescription];
           *buf = 138412802;
           v57 = v48;
           v58 = 2112;
@@ -1491,7 +1491,7 @@ LABEL_39:
 
     else if (v14)
     {
-      objc_storeStrong(v7 + 6, v13);
+      objc_storeStrong(selfCopy + 6, v13);
     }
 
     else
@@ -1500,7 +1500,7 @@ LABEL_39:
       v25 = _sa_logt();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v43 = *(v7 + 20);
+        v43 = *(selfCopy + 20);
         *buf = 67109120;
         LODWORD(v57) = v43;
         _os_log_error_impl(&dword_1E0E2F000, v25, OS_LOG_TYPE_ERROR, "[%d] Unable to determine main binary", buf, 8u);
@@ -1511,7 +1511,7 @@ LABEL_39:
 
     if (v55)
     {
-      v7[36] = v55;
+      selfCopy[36] = v55;
     }
 
     else
@@ -1520,7 +1520,7 @@ LABEL_39:
       v27 = _sa_logt();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        v42 = *(v7 + 20);
+        v42 = *(selfCopy + 20);
         *buf = 67109120;
         LODWORD(v57) = v42;
         _os_log_error_impl(&dword_1E0E2F000, v27, OS_LOG_TYPE_ERROR, "[%d] Unable to determine architecture", buf, 8u);
@@ -1529,18 +1529,18 @@ LABEL_39:
       *__error() = v26;
     }
 
-    v28 = [v7[32] count];
-    objc_storeStrong(v7 + 32, v9);
-    v29 = v7[33];
+    v28 = [selfCopy[32] count];
+    objc_storeStrong(selfCopy + 32, v9);
+    v29 = selfCopy[33];
     if (v29 && v12 != v29)
     {
       v44 = *__error();
       v45 = _sa_logt();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_FAULT))
       {
-        v49 = [v7 debugDescription];
+        v49 = [selfCopy debugDescription];
         v46 = [v12 debugDescription];
-        v47 = [v7[33] debugDescription];
+        v47 = [selfCopy[33] debugDescription];
         *buf = 138412802;
         v57 = v49;
         v58 = 2112;
@@ -1553,15 +1553,15 @@ LABEL_39:
       *__error() = v44;
     }
 
-    objc_storeStrong(v7 + 33, v11);
+    objc_storeStrong(selfCopy + 33, v11);
     if (v28 == [v10 count])
     {
       v30 = *__error();
       v31 = _sa_logt();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
-        v32 = [v7 debugDescription];
-        v33 = [v7[32] count];
+        v32 = [selfCopy debugDescription];
+        v33 = [selfCopy[32] count];
         *buf = 138412546;
         v57 = v32;
         v58 = 2048;
@@ -1576,8 +1576,8 @@ LABEL_39:
       v31 = _sa_logt();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
-        v37 = [v7 debugDescription];
-        v38 = [v7[32] count];
+        v37 = [selfCopy debugDescription];
+        v38 = [selfCopy[32] count];
         *buf = 138412802;
         v57 = v37;
         v58 = 2048;
@@ -1590,7 +1590,7 @@ LABEL_39:
 
     *__error() = v30;
     v4 = 1;
-    *(v7 + 79) = 1;
+    *(selfCopy + 79) = 1;
 LABEL_38:
 
     goto LABEL_39;
@@ -1601,7 +1601,7 @@ LABEL_40:
   return v4;
 }
 
-- (uint64_t)correspondsToName:(void *)a3 mainBinaryLoadInfo:(uint64_t)a4 architecture:(uint64_t)a5 sharedCache:
+- (uint64_t)correspondsToName:(void *)name mainBinaryLoadInfo:(uint64_t)info architecture:(uint64_t)architecture sharedCache:
 {
   v9 = a2;
   v10 = v9;
@@ -1609,63 +1609,63 @@ LABEL_40:
   {
 
     v10 = 0;
-    if (!a5)
+    if (!architecture)
     {
       goto LABEL_8;
     }
   }
 
-  else if (!a5)
+  else if (!architecture)
   {
     goto LABEL_8;
   }
 
-  v11 = *(a1 + 264);
-  if (v11 && v11 != a5)
+  v11 = *(self + 264);
+  if (v11 && v11 != architecture)
   {
     goto LABEL_25;
   }
 
 LABEL_8:
-  if (*(a1 + 288) && a4 && !CSArchitectureMatchesArchitecture())
+  if (*(self + 288) && info && !CSArchitectureMatchesArchitecture())
   {
     goto LABEL_25;
   }
 
-  if (a3)
+  if (name)
   {
-    if ([a3 loadAddress])
+    if ([name loadAddress])
     {
-      if (*(a1 + 79) == 1)
+      if (*(self + 79) == 1)
       {
-        v12 = [a1 mainBinaryLoadInfo];
-        if (v12)
+        mainBinaryLoadInfo = [self mainBinaryLoadInfo];
+        if (mainBinaryLoadInfo)
         {
-          v13 = v12;
-          v14 = [v12 loadAddress];
-          v15 = [v13 segment];
-          v16 = v15;
-          if (v15)
+          v13 = mainBinaryLoadInfo;
+          loadAddress = [mainBinaryLoadInfo loadAddress];
+          segment = [v13 segment];
+          v16 = segment;
+          if (segment)
           {
-            if ([v15 hasOffsetIntoBinary])
+            if ([segment hasOffsetIntoBinary])
             {
-              v17 = [v13 segment];
-              v14 -= [v17 offsetIntoBinary];
+              segment2 = [v13 segment];
+              loadAddress -= [segment2 offsetIntoBinary];
             }
 
             else
             {
-              v14 = [a3 loadAddress];
+              loadAddress = [name loadAddress];
             }
           }
 
-          if (v14 == [a3 loadAddress])
+          if (loadAddress == [name loadAddress])
           {
-            v19 = [v13 binary];
-            v20 = [v19 uuid];
-            v21 = [a3 binary];
-            v22 = [v21 uuid];
-            v23 = [v20 isEqual:v22];
+            binary = [v13 binary];
+            uuid = [binary uuid];
+            binary2 = [name binary];
+            uuid2 = [binary2 uuid];
+            v23 = [uuid isEqual:uuid2];
 
             if (v23)
             {
@@ -1682,7 +1682,7 @@ LABEL_25:
     }
   }
 
-  if (([(SATask *)a1 _matchesNameStr:v10]& 1) == 0)
+  if (([(SATask *)self _matchesNameStr:v10]& 1) == 0)
   {
     goto LABEL_25;
   }
@@ -1694,12 +1694,12 @@ LABEL_26:
   return v18;
 }
 
-- (void)postprocessWithDataGatheringOptions:(int)a3 mightBeAlive:(void *)a4 machineArchitecture:(uint64_t)a5 dataSource:(uint64_t)a6 spindumpArchitecture:(void *)a7 spindumpSharedCache:(int)a8 additionalCSSymbolicatorFlags:
+- (void)postprocessWithDataGatheringOptions:(int)options mightBeAlive:(void *)alive machineArchitecture:(uint64_t)architecture dataSource:(uint64_t)source spindumpArchitecture:(void *)spindumpArchitecture spindumpSharedCache:(int)cache additionalCSSymbolicatorFlags:
 {
   v252 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v10 = a1;
+    selfCopy = self;
     v197 = 0;
     v198 = &v197;
     v199 = 0x2020000000;
@@ -1709,7 +1709,7 @@ LABEL_26:
     v196[2] = __161__SATask_postprocessWithDataGatheringOptions_mightBeAlive_machineArchitecture_dataSource_spindumpArchitecture_spindumpSharedCache_additionalCSSymbolicatorFlags___block_invoke;
     v196[3] = &unk_1E86F5FD8;
     v196[4] = &v197;
-    v11 = *(a1 + 280);
+    v11 = *(self + 280);
     if (v11)
     {
       [SAFrame enumerateFrameTree:v11 block:v196];
@@ -1717,64 +1717,64 @@ LABEL_26:
 
     if ((a2 & 2) != 0)
     {
-      if (a3)
+      if (options)
       {
-        [(SATask *)v10 _gatherDataFromLiveProcessIsLate:0 mainBinaryPath:?];
-        if ((v198[3] & 1) != 0 || ![*(v10 + 256) count] || !*(v10 + 80))
+        [(SATask *)selfCopy _gatherDataFromLiveProcessIsLate:0 mainBinaryPath:?];
+        if ((v198[3] & 1) != 0 || ![*(selfCopy + 256) count] || !*(selfCopy + 80))
         {
-          [(SATask *)v10 gatherLoadInfoFromLiveProcessWithDataGatheringOptions:a2 additionalCSSymbolicatorFlags:a8];
+          [(SATask *)selfCopy gatherLoadInfoFromLiveProcessWithDataGatheringOptions:a2 additionalCSSymbolicatorFlags:cache];
         }
       }
     }
 
-    v12 = [v10 mainBinary];
-    v183 = v10;
-    if ((a2 & 1) != 0 && !v12)
+    mainBinary = [selfCopy mainBinary];
+    v183 = selfCopy;
+    if ((a2 & 1) != 0 && !mainBinary)
     {
-      if ([*(v10 + 40) isAbsolutePath] && (v13 = *(v10 + 40), objc_copyStruct(dest, (v10 + 288), 8, 1, 0), +[SABinary binaryWithPath:architecture:additionalCSSymbolicatorFlags:](SABinary, v13, *dest), v14 = objc_claimAutoreleasedReturnValue(), (v15 = v14) != 0))
+      if ([*(selfCopy + 40) isAbsolutePath] && (v13 = *(selfCopy + 40), objc_copyStruct(dest, (selfCopy + 288), 8, 1, 0), +[SABinary binaryWithPath:architecture:additionalCSSymbolicatorFlags:](SABinary, v13, *dest), v14 = objc_claimAutoreleasedReturnValue(), (v15 = v14) != 0))
       {
-        objc_storeStrong((v10 + 48), v14);
-        v12 = v15;
+        objc_storeStrong((selfCopy + 48), v14);
+        mainBinary = v15;
       }
 
       else
       {
-        v12 = 0;
+        mainBinary = 0;
       }
     }
 
-    v163 = v12;
-    v164 = [v12 uuid];
-    v165 = [v10 mainBinaryPath];
-    if (v164)
+    v163 = mainBinary;
+    uuid = [mainBinary uuid];
+    mainBinaryPath = [selfCopy mainBinaryPath];
+    if (uuid)
     {
-      if (([v165 isAbsolutePath] & 1) == 0)
+      if (([mainBinaryPath isAbsolutePath] & 1) == 0)
       {
-        [v163 gatherInfoWithDataGatheringOptions:a2 pid:*(v10 + 80)];
-        v22 = [v163 path];
-        v17 = v22;
-        if (v22)
+        [v163 gatherInfoWithDataGatheringOptions:a2 pid:*(selfCopy + 80)];
+        path = [v163 path];
+        v17 = path;
+        if (path)
         {
-          if ([v22 isAbsolutePath])
+          if ([path isAbsolutePath])
           {
             v17 = v17;
 
-            [v10 setMainBinaryPath:v17];
-            v165 = v17;
+            [selfCopy setMainBinaryPath:v17];
+            mainBinaryPath = v17;
           }
 
-          else if (!v165)
+          else if (!mainBinaryPath)
           {
             v17 = v17;
             Path = [(NSString *)v17 copyLastPathComponent];
             v19 = Path;
-            if (*(v10 + 56) && [Path hasPrefix:?])
+            if (*(selfCopy + 56) && [Path hasPrefix:?])
             {
-              v24 = *(v10 + 56);
-              *(v10 + 56) = 0;
+              v24 = *(selfCopy + 56);
+              *(selfCopy + 56) = 0;
             }
 
-            v165 = v17;
+            mainBinaryPath = v17;
             goto LABEL_38;
           }
         }
@@ -1788,15 +1788,15 @@ LABEL_26:
         v17 = v16;
         if (v16)
         {
-          v18 = [(SABinaryLocator *)v16 urlForUUID:v164];
+          v18 = [(SABinaryLocator *)v16 urlForUUID:uuid];
           v19 = v18;
           if (v18)
           {
-            v20 = [v18 path];
-            if (v20)
+            path2 = [v18 path];
+            if (path2)
             {
-              v21 = [v19 path];
-              if ([v21 isEqualToString:v165])
+              path3 = [v19 path];
+              if ([path3 isEqualToString:mainBinaryPath])
               {
 
 LABEL_37:
@@ -1806,9 +1806,9 @@ LABEL_38:
                 goto LABEL_39;
               }
 
-              v25 = [MEMORY[0x1E696AC08] defaultManager];
-              v26 = [v19 path];
-              v27 = [v25 fileExistsAtPath:v26];
+              defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+              path4 = [v19 path];
+              v27 = [defaultManager fileExistsAtPath:path4];
 
               if (v27)
               {
@@ -1820,37 +1820,37 @@ LABEL_38:
             v29 = _sa_logt();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
             {
-              v30 = [v19 path];
+              path5 = [v19 path];
               *dest = 138543874;
-              *&dest[4] = v164;
+              *&dest[4] = uuid;
               v211 = 2112;
-              v212 = v30;
+              v212 = path5;
               v213 = 2112;
-              v214 = v165;
+              v214 = mainBinaryPath;
               _os_log_impl(&dword_1E0E2F000, v29, OS_LOG_TYPE_INFO, "%{public}@ moved: replacing %@ with %@", dest, 0x20u);
             }
 
             *__error() = v28;
-            [(SABinaryLocator *)v17 removeURLForUUID:v164];
+            [(SABinaryLocator *)v17 removeURLForUUID:uuid];
           }
 
-          v31 = [MEMORY[0x1E695DFF8] fileURLWithPath:v165 isDirectory:0];
+          v31 = [MEMORY[0x1E695DFF8] fileURLWithPath:mainBinaryPath isDirectory:0];
 
-          [(SABinaryLocator *)v17 addURL:v31 ForUUID:v164];
+          [(SABinaryLocator *)v17 addURL:v31 ForUUID:uuid];
           v19 = v31;
           goto LABEL_37;
         }
 
 LABEL_39:
 
-        v10 = v183;
+        selfCopy = v183;
       }
     }
 
-    v32 = [v165 isAbsolutePath];
-    if ((a2 & 1) != 0 && ((v32 ^ 1) & 1) == 0 && !*(v10 + 104) && !*(v10 + 112) && !*(v10 + 120) && !*(v10 + 128) && !*(v10 + 136) && !*(v10 + 168) && !*(v10 + 65) && !*(v10 + 176) && !*(v10 + 184) && !*(v10 + 160) && !*(v10 + 200) && (*(v10 + 66) & 1) == 0 && !*(v10 + 192))
+    isAbsolutePath = [mainBinaryPath isAbsolutePath];
+    if ((a2 & 1) != 0 && ((isAbsolutePath ^ 1) & 1) == 0 && !*(selfCopy + 104) && !*(selfCopy + 112) && !*(selfCopy + 120) && !*(selfCopy + 128) && !*(selfCopy + 136) && !*(selfCopy + 168) && !*(selfCopy + 65) && !*(selfCopy + 176) && !*(selfCopy + 184) && !*(selfCopy + 160) && !*(selfCopy + 200) && (*(selfCopy + 66) & 1) == 0 && !*(selfCopy + 192))
     {
-      v33 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v165 isDirectory:0];
+      v33 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:mainBinaryPath isDirectory:0];
       if (v33)
       {
         v34 = _CFBundleCreateWithExecutableURLIfLooksLikeBundle();
@@ -1867,20 +1867,20 @@ LABEL_39:
 
           if (obj)
           {
-            v36 = [v183 name];
-            v37 = [v36 compare:obj] == 0;
+            name = [v183 name];
+            v37 = [name compare:obj] == 0;
 
             if (!v37)
             {
-              objc_storeStrong((v10 + 104), obj);
+              objc_storeStrong((selfCopy + 104), obj);
             }
           }
 
           if (v188)
           {
             v38 = v188;
-            v39 = [(__CFURL *)v38 pathExtension];
-            v40 = [v39 isEqualToString:@"appex"];
+            pathExtension = [(__CFURL *)v38 pathExtension];
+            v40 = [pathExtension isEqualToString:@"appex"];
 
             if (v40)
             {
@@ -1889,11 +1889,11 @@ LABEL_39:
               v42 = v195;
               if (v41)
               {
-                v43 = [v41 containingBundleRecord];
-                v44 = v43;
-                if (v43)
+                containingBundleRecord = [v41 containingBundleRecord];
+                v44 = containingBundleRecord;
+                if (containingBundleRecord)
                 {
-                  v45 = [v43 URL];
+                  v45 = [containingBundleRecord URL];
                   v46 = v45;
                   if (v45)
                   {
@@ -1962,28 +1962,28 @@ LABEL_39:
 
             if (v54)
             {
-              v56 = [v54 deviceIdentifierForVendor];
-              v57 = [v56 UUIDString];
+              deviceIdentifierForVendor = [v54 deviceIdentifierForVendor];
+              uUIDString = [deviceIdentifierForVendor UUIDString];
               v58 = *(v183 + 176);
-              *(v183 + 176) = v57;
+              *(v183 + 176) = uUIDString;
 
-              v59 = [v54 iTunesMetadata];
-              *(v183 + 160) = [v59 storeItemIdentifier];
+              iTunesMetadata = [v54 iTunesMetadata];
+              *(v183 + 160) = [iTunesMetadata storeItemIdentifier];
 
-              v60 = [v54 iTunesMetadata];
-              v61 = [v60 distributorInfo];
-              v62 = [v61 distributorID];
+              iTunesMetadata2 = [v54 iTunesMetadata];
+              distributorInfo = [iTunesMetadata2 distributorInfo];
+              distributorID = [distributorInfo distributorID];
               v63 = *(v183 + 184);
-              *(v183 + 184) = v62;
+              *(v183 + 184) = distributorID;
 
-              v64 = [v54 iTunesMetadata];
-              v65 = [v64 storeCohortWithError:0];
+              iTunesMetadata3 = [v54 iTunesMetadata];
+              v65 = [iTunesMetadata3 storeCohortWithError:0];
               v66 = *(v183 + 192);
               *(v183 + 192) = v65;
 
               *(v183 + 65) = [v54 developerType];
-              v67 = [v54 entitlements];
-              v68 = [v67 objectForKey:@"beta-reports-active" ofClass:objc_opt_class()];
+              entitlements = [v54 entitlements];
+              v68 = [entitlements objectForKey:@"beta-reports-active" ofClass:objc_opt_class()];
 
               if (v68)
               {
@@ -2021,47 +2021,47 @@ LABEL_39:
         }
       }
 
-      v10 = v183;
+      selfCopy = v183;
     }
 
-    if (*(v10 + 40))
+    if (*(selfCopy + 40))
     {
-      v80 = [v10 mainBinary];
-      v81 = [v80 path];
+      mainBinary2 = [selfCopy mainBinary];
+      path6 = [mainBinary2 path];
 
-      if (v81 && [v81 isEqualToString:*(v183 + 40)])
+      if (path6 && [path6 isEqualToString:*(v183 + 40)])
       {
         v82 = *(v183 + 40);
         *(v183 + 40) = 0;
       }
 
-      v10 = v183;
+      selfCopy = v183;
     }
 
-    if (*(v10 + 56))
+    if (*(selfCopy + 56))
     {
-      v83 = [v10 mainBinaryPath];
-      v84 = [(NSString *)v83 copyLastPathComponent];
+      mainBinaryPath2 = [selfCopy mainBinaryPath];
+      copyLastPathComponent = [(NSString *)mainBinaryPath2 copyLastPathComponent];
 
-      if (v84 && [v84 hasPrefix:*(v183 + 56)])
+      if (copyLastPathComponent && [copyLastPathComponent hasPrefix:*(v183 + 56)])
       {
         v85 = *(v183 + 56);
         *(v183 + 56) = 0;
       }
 
-      v10 = v183;
+      selfCopy = v183;
     }
 
-    [*(v10 + 16) enumerateKeysAndObjectsUsingBlock:&__block_literal_global_94];
+    [*(selfCopy + 16) enumerateKeysAndObjectsUsingBlock:&__block_literal_global_94];
     v207 = 0u;
     v208 = 0u;
     v205 = 0u;
     v206 = 0u;
-    v86 = [v10 taskStates];
-    v87 = [v86 countByEnumeratingWithState:&v205 objects:v251 count:16];
+    taskStates = [selfCopy taskStates];
+    v87 = [taskStates countByEnumeratingWithState:&v205 objects:v251 count:16];
     if (v87)
     {
-      obja = v86;
+      obja = taskStates;
       v88 = 0;
       v89 = 0;
       v189 = *v206;
@@ -2086,26 +2086,26 @@ LABEL_39:
               if (os_log_type_enabled(v101, OS_LOG_TYPE_DEBUG))
               {
                 v184 = [v183 debugDescription];
-                v185 = [v183 taskStates];
-                v116 = [v185 count];
+                taskStates2 = [v183 taskStates];
+                v116 = [taskStates2 count];
                 v182 = [v91 debugDescription];
                 v181 = [v92 debugDescription];
-                v180 = [v91 terminatedThreadsCpuTimeNs];
-                v179 = [v91 terminatedThreadsUserTimeInNs];
-                v178 = [v91 terminatedThreadsSystemTimeInNs];
-                v177 = [v92 terminatedThreadsCpuTimeNs];
-                v176 = [v92 terminatedThreadsUserTimeInNs];
-                v175 = [v92 terminatedThreadsSystemTimeInNs];
-                v174 = [v91 terminatedThreadsInstructions];
-                v173 = [v92 terminatedThreadsInstructions];
-                v172 = [v91 terminatedThreadsCycles];
-                v171 = [v92 terminatedThreadsCycles];
-                v170 = [v91 faults];
-                v169 = [v92 faults];
-                v168 = [v91 pageins];
-                v167 = [v92 pageins];
-                v117 = [v91 cowFaults];
-                v118 = [v92 cowFaults];
+                terminatedThreadsCpuTimeNs = [v91 terminatedThreadsCpuTimeNs];
+                terminatedThreadsUserTimeInNs = [v91 terminatedThreadsUserTimeInNs];
+                terminatedThreadsSystemTimeInNs = [v91 terminatedThreadsSystemTimeInNs];
+                terminatedThreadsCpuTimeNs2 = [v92 terminatedThreadsCpuTimeNs];
+                terminatedThreadsUserTimeInNs2 = [v92 terminatedThreadsUserTimeInNs];
+                terminatedThreadsSystemTimeInNs2 = [v92 terminatedThreadsSystemTimeInNs];
+                terminatedThreadsInstructions = [v91 terminatedThreadsInstructions];
+                terminatedThreadsInstructions2 = [v92 terminatedThreadsInstructions];
+                terminatedThreadsCycles = [v91 terminatedThreadsCycles];
+                terminatedThreadsCycles2 = [v92 terminatedThreadsCycles];
+                faults = [v91 faults];
+                faults2 = [v92 faults];
+                pageins = [v91 pageins];
+                pageins2 = [v92 pageins];
+                cowFaults = [v91 cowFaults];
+                cowFaults2 = [v92 cowFaults];
                 *dest = 138417410;
                 *&dest[4] = v184;
                 v211 = 2048;
@@ -2117,110 +2117,110 @@ LABEL_39:
                 v217 = 2112;
                 v218 = v181;
                 v219 = 2048;
-                v220 = v180;
+                v220 = terminatedThreadsCpuTimeNs;
                 v221 = 2048;
-                v222 = v179;
+                v222 = terminatedThreadsUserTimeInNs;
                 v223 = 2048;
-                v224 = v178;
+                v224 = terminatedThreadsSystemTimeInNs;
                 v225 = 2048;
-                v226 = v177;
+                v226 = terminatedThreadsCpuTimeNs2;
                 v227 = 2048;
-                v228 = v176;
+                v228 = terminatedThreadsUserTimeInNs2;
                 v229 = 2048;
-                v230 = v175;
+                v230 = terminatedThreadsSystemTimeInNs2;
                 v231 = 2048;
-                v232 = v174;
+                v232 = terminatedThreadsInstructions;
                 v233 = 2048;
-                v234 = v173;
+                v234 = terminatedThreadsInstructions2;
                 v235 = 2048;
-                v236 = v172;
+                v236 = terminatedThreadsCycles;
                 v237 = 2048;
-                v238 = v171;
+                v238 = terminatedThreadsCycles2;
                 v239 = 1024;
-                v240 = v170;
+                v240 = faults;
                 v241 = 1024;
-                v242 = v169;
+                v242 = faults2;
                 v243 = 1024;
-                v244 = v168;
+                v244 = pageins;
                 v245 = 1024;
-                v246 = v167;
+                v246 = pageins2;
                 v247 = 1024;
-                v248 = v117;
+                v248 = cowFaults;
                 v249 = 1024;
-                v250 = v118;
+                v250 = cowFaults2;
                 _os_log_debug_impl(&dword_1E0E2F000, v101, OS_LOG_TYPE_DEBUG, "Task %@ monotonically increasing data decreased at index %lu of %lu between %@ and %@:\nterminated threads cpu time %llu (%llu + %llu) -> %llu (%llu + %llu)\nterminated threads instructions %llu -> %llu\nterminated threads cycles %llu -> %llu\nfaults %u -> %u\npageins %u -> %u\ncow faults %u -> %u\n", dest, 0xBCu);
               }
 
               *__error() = v100;
             }
 
-            v102 = [v92 terminatedThreadsUserTimeInNs];
-            if (v102 < [v91 terminatedThreadsUserTimeInNs])
+            terminatedThreadsUserTimeInNs3 = [v92 terminatedThreadsUserTimeInNs];
+            if (terminatedThreadsUserTimeInNs3 < [v91 terminatedThreadsUserTimeInNs])
             {
-              v103 = [v91 terminatedThreadsUserTimeInNs];
+              terminatedThreadsUserTimeInNs4 = [v91 terminatedThreadsUserTimeInNs];
               if (v92)
               {
-                *(v92 + 88) = v103;
+                *(v92 + 88) = terminatedThreadsUserTimeInNs4;
               }
             }
 
-            v104 = [v92 terminatedThreadsSystemTimeInNs];
-            if (v104 < [v91 terminatedThreadsSystemTimeInNs])
+            terminatedThreadsSystemTimeInNs3 = [v92 terminatedThreadsSystemTimeInNs];
+            if (terminatedThreadsSystemTimeInNs3 < [v91 terminatedThreadsSystemTimeInNs])
             {
-              v105 = [v91 terminatedThreadsSystemTimeInNs];
+              terminatedThreadsSystemTimeInNs4 = [v91 terminatedThreadsSystemTimeInNs];
               if (v92)
               {
-                *(v92 + 96) = v105;
+                *(v92 + 96) = terminatedThreadsSystemTimeInNs4;
               }
             }
 
-            v106 = [v92 terminatedThreadsInstructions];
-            if (v106 < [v91 terminatedThreadsInstructions])
+            terminatedThreadsInstructions3 = [v92 terminatedThreadsInstructions];
+            if (terminatedThreadsInstructions3 < [v91 terminatedThreadsInstructions])
             {
-              v107 = [v91 terminatedThreadsInstructions];
+              terminatedThreadsInstructions4 = [v91 terminatedThreadsInstructions];
               if (v92)
               {
-                *(v92 + 104) = v107;
+                *(v92 + 104) = terminatedThreadsInstructions4;
               }
             }
 
-            v108 = [v92 terminatedThreadsCycles];
-            if (v108 < [v91 terminatedThreadsCycles])
+            terminatedThreadsCycles3 = [v92 terminatedThreadsCycles];
+            if (terminatedThreadsCycles3 < [v91 terminatedThreadsCycles])
             {
-              v109 = [v91 terminatedThreadsCycles];
+              terminatedThreadsCycles4 = [v91 terminatedThreadsCycles];
               if (v92)
               {
-                *(v92 + 112) = v109;
+                *(v92 + 112) = terminatedThreadsCycles4;
               }
             }
 
-            v110 = [v92 faults];
-            if (v110 < [v91 faults])
+            faults3 = [v92 faults];
+            if (faults3 < [v91 faults])
             {
-              v111 = [v91 faults];
+              faults4 = [v91 faults];
               if (v92)
               {
-                *(v92 + 12) = v111;
+                *(v92 + 12) = faults4;
               }
             }
 
-            v112 = [v92 pageins];
-            if (v112 < [v91 pageins])
+            pageins3 = [v92 pageins];
+            if (pageins3 < [v91 pageins])
             {
-              v113 = [v91 pageins];
+              pageins4 = [v91 pageins];
               if (v92)
               {
-                *(v92 + 16) = v113;
+                *(v92 + 16) = pageins4;
               }
             }
 
-            v114 = [v92 cowFaults];
-            if (v114 < [v91 cowFaults])
+            cowFaults3 = [v92 cowFaults];
+            if (cowFaults3 < [v91 cowFaults])
             {
-              v115 = [v91 cowFaults];
+              cowFaults4 = [v91 cowFaults];
               if (v92)
               {
-                *(v92 + 20) = v115;
+                *(v92 + 20) = cowFaults4;
               }
             }
           }
@@ -2238,13 +2238,13 @@ LABEL_39:
 
       while (v87);
 
-      v86 = obja;
+      taskStates = obja;
     }
 
     v119 = v183;
     if (!*(v183 + 288))
     {
-      [(SATask *)v183 guessArchitectureGivenMachineArchitecture:a4 dataSource:a5];
+      [(SATask *)v183 guessArchitectureGivenMachineArchitecture:alive dataSource:architecture];
     }
 
     if (*(v183 + 272))
@@ -2254,7 +2254,7 @@ LABEL_175:
       if (!v133)
       {
 LABEL_182:
-        if (a7 && !v133)
+        if (spindumpArchitecture && !v133)
         {
           if ((*(v119 + 74) & 1) == 0 && *(v119 + 288) && v159 && CSArchitectureMatchesArchitecture() && *(v119 + 80) && *(v119 + 96))
           {
@@ -2269,7 +2269,7 @@ LABEL_182:
             }
 
             *__error() = v154;
-            objc_storeStrong((v183 + 264), a7);
+            objc_storeStrong((v183 + 264), spindumpArchitecture);
             v119 = v183;
           }
 
@@ -2287,10 +2287,10 @@ LABEL_182:
       if ((v133[24] & 1) == 0)
       {
 LABEL_187:
-        v140 = [v133 startAddress];
+        startAddress = [v133 startAddress];
         if ([*(v119 + 264) startAddress] != -1)
         {
-          v141 = [*(v119 + 264) endAddress];
+          endAddress = [*(v119 + 264) endAddress];
           v192 = 0u;
           v193 = 0u;
           v190 = 0u;
@@ -2311,8 +2311,8 @@ LABEL_187:
                 }
 
                 v147 = *(*(&v190 + 1) + 8 * i);
-                v148 = [v147 loadAddress];
-                if (v148 >= v140 && v148 < v141)
+                loadAddress = [v147 loadAddress];
+                if (loadAddress >= startAddress && loadAddress < endAddress)
                 {
                   if (!v143)
                   {
@@ -2346,18 +2346,18 @@ LABEL_205:
       }
 
       v134 = v133;
-      v135 = [v134 uuid];
-      v136 = +[SASharedCache sharedCacheWithUUID:slide:slidBaseAddress:dataGatheringOptions:](SASharedCache, v135, [v134 slide], objc_msgSend(v134, "slidBaseAddress"), a2);
+      uuid2 = [v134 uuid];
+      v136 = +[SASharedCache sharedCacheWithUUID:slide:slidBaseAddress:dataGatheringOptions:](SASharedCache, uuid2, [v134 slide], objc_msgSend(v134, "slidBaseAddress"), a2);
 
-      v137 = [v136 binaryLoadInfos];
-      if ([v137 count])
+      binaryLoadInfos = [v136 binaryLoadInfos];
+      if ([binaryLoadInfos count])
       {
       }
 
       else
       {
-        v138 = [v134 binaryLoadInfos];
-        v139 = [v138 count] == 0;
+        binaryLoadInfos2 = [v134 binaryLoadInfos];
+        v139 = [binaryLoadInfos2 count] == 0;
 
         if (!v139)
         {
@@ -2381,8 +2381,8 @@ LABEL_181:
       v208 = 0u;
       v205 = 0u;
       v206 = 0u;
-      v122 = [v120 states];
-      v123 = [v122 countByEnumeratingWithState:&v205 objects:dest count:16];
+      states = [v120 states];
+      v123 = [states countByEnumeratingWithState:&v205 objects:dest count:16];
       if (v123)
       {
         v124 = 0;
@@ -2393,13 +2393,13 @@ LABEL_181:
           {
             if (*v206 != v125)
             {
-              objc_enumerationMutation(v122);
+              objc_enumerationMutation(states);
             }
 
-            v127 = [*(*(&v205 + 1) + 8 * j) thread];
+            thread = [*(*(&v205 + 1) + 8 * j) thread];
             if (v124)
             {
-              v128 = v124 == v127;
+              v128 = v124 == thread;
 
               if (!v128)
               {
@@ -2410,11 +2410,11 @@ LABEL_181:
 
             else
             {
-              v124 = v127;
+              v124 = thread;
             }
           }
 
-          v123 = [v122 countByEnumeratingWithState:&v205 objects:dest count:16];
+          v123 = [states countByEnumeratingWithState:&v205 objects:dest count:16];
         }
 
         while (v123);
@@ -2428,8 +2428,8 @@ LABEL_181:
         v204 = 0u;
         v201 = 0u;
         v202 = 0u;
-        v129 = [v124 threadStates];
-        v130 = [v129 countByEnumeratingWithState:&v201 objects:v251 count:16];
+        threadStates = [v124 threadStates];
+        v130 = [threadStates countByEnumeratingWithState:&v201 objects:v251 count:16];
         if (v130)
         {
           v131 = *v202;
@@ -2439,7 +2439,7 @@ LABEL_181:
             {
               if (*v202 != v131)
               {
-                objc_enumerationMutation(v129);
+                objc_enumerationMutation(threadStates);
               }
 
               if ([*(*(&v201 + 1) + 8 * k) isIdleWorkQueue])
@@ -2450,7 +2450,7 @@ LABEL_181:
               }
             }
 
-            v130 = [v129 countByEnumeratingWithState:&v201 objects:v251 count:16];
+            v130 = [threadStates countByEnumeratingWithState:&v201 objects:v251 count:16];
             if (v130)
             {
               continue;
@@ -2464,11 +2464,11 @@ LABEL_216:
 
         v156 = *(v183 + 272);
         *(v183 + 272) = v124;
-        v122 = v124;
+        states = v124;
 
-        if (v122)
+        if (states)
         {
-          v122[17] = 1;
+          states[17] = 1;
         }
       }
 
@@ -2498,11 +2498,11 @@ void __161__SATask_postprocessWithDataGatheringOptions_mightBeAlive_machineArchi
   }
 }
 
-- (void)enumerateFrames:(uint64_t)a1
+- (void)enumerateFrames:(uint64_t)frames
 {
-  if (a1)
+  if (frames)
   {
-    v3 = *(a1 + 280);
+    v3 = *(frames + 280);
     if (v3)
     {
       [SAFrame enumerateFrameTree:v3 block:a2];
@@ -2510,23 +2510,23 @@ void __161__SATask_postprocessWithDataGatheringOptions_mightBeAlive_machineArchi
   }
 }
 
-- (void)_gatherDataFromLiveProcessIsLate:(void *)a3 mainBinaryPath:
+- (void)_gatherDataFromLiveProcessIsLate:(void *)late mainBinaryPath:
 {
   v53 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 73) & 1) == 0)
+  if (self && (*(self + 73) & 1) == 0)
   {
-    v4 = *(a1 + 80);
+    v4 = *(self + 80);
     if (v4)
     {
       if ((v4 & 0x80000000) == 0)
       {
-        *(a1 + 73) = 1;
+        *(self + 73) = 1;
         if (!kill(v4, 0))
         {
           v51 = 0u;
           v52 = 0u;
           memset(buffer, 0, sizeof(buffer));
-          v6 = proc_pidinfo(*(a1 + 80), 13, 1uLL, buffer, 64);
+          v6 = proc_pidinfo(*(self + 80), 13, 1uLL, buffer, 64);
           v7 = DWORD1(buffer[0]);
           v8 = DWORD1(v51);
           if (!v6)
@@ -2535,26 +2535,26 @@ void __161__SATask_postprocessWithDataGatheringOptions_mightBeAlive_machineArchi
             v8 = -314;
           }
 
-          *(a1 + 84) = v7;
-          *(a1 + 92) = v8;
-          v9 = a3;
-          if (!v9)
+          *(self + 84) = v7;
+          *(self + 92) = v8;
+          lateCopy = late;
+          if (!lateCopy)
           {
-            v20 = SAExecutablePath(*(a1 + 80), [*(a1 + 56) UTF8String]);
+            v20 = SAExecutablePath(*(self + 80), [*(self + 56) UTF8String]);
             if (!v20)
             {
               goto LABEL_47;
             }
 
-            v9 = v20;
+            lateCopy = v20;
             if ([v20 isAbsolutePath])
             {
-              [a1 setMainBinaryPath:v9];
+              [self setMainBinaryPath:lateCopy];
             }
           }
 
-          v10 = [a1 name];
-          v11 = [v10 isEqualToString:@"java"];
+          name = [self name];
+          v11 = [name isEqualToString:@"java"];
 
           if (v11)
           {
@@ -2566,14 +2566,14 @@ void __161__SATask_postprocessWithDataGatheringOptions_mightBeAlive_machineArchi
             v12 = malloc_type_calloc(1uLL, _gatherDataFromLiveProcessIsLate_mainBinaryPath__max_arguments_size, 0xE79EE579uLL);
             v44 = _gatherDataFromLiveProcessIsLate_mainBinaryPath__max_arguments_size;
             *flags = 0x3100000001;
-            v49 = *(a1 + 80);
+            v49 = *(self + 80);
             if (sysctl(flags, 3u, v12, &v44, 0, 0))
             {
               v13 = *__error();
               v14 = _sa_logt();
               if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
               {
-                v31 = *(a1 + 80);
+                v31 = *(self + 80);
                 v32 = *__error();
                 v33 = __error();
                 v34 = strerror(*v33);
@@ -2631,7 +2631,7 @@ LABEL_53:
                     v39 = _sa_logt();
                     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
                     {
-                      v43 = *(a1 + 80);
+                      v43 = *(self + 80);
                       *buf = 67109378;
                       *&buf[4] = v43;
                       v46 = 2080;
@@ -2640,11 +2640,11 @@ LABEL_53:
                     }
 
                     *__error() = v38;
-                    if (!*(a1 + 80) || strcmp(v23, "kernel_task"))
+                    if (!*(self + 80) || strcmp(v23, "kernel_task"))
                     {
                       v40 = SANSStringForCString(v23);
-                      v41 = *(a1 + 56);
-                      *(a1 + 56) = v40;
+                      v41 = *(self + 56);
+                      *(self + 56) = v40;
                     }
 
                     goto LABEL_16;
@@ -2679,7 +2679,7 @@ LABEL_53:
               v14 = _sa_logt();
               if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
               {
-                v42 = *(a1 + 80);
+                v42 = *(self + 80);
                 *buf = 67109120;
                 *&buf[4] = v42;
                 _os_log_impl(&dword_1E0E2F000, v14, OS_LOG_TYPE_DEFAULT, "WARNING: Unable to find name for java processes [%d]", buf, 8u);
@@ -2691,18 +2691,18 @@ LABEL_16:
             free(v12);
           }
 
-          if (!*(a1 + 288))
+          if (!*(self + 288))
           {
-            v15 = *(a1 + 80);
+            v15 = *(self + 80);
             *buf = 0;
             if (proc_pidinfo(v15, 19, 1uLL, buf, 8))
             {
-              *(a1 + 288) = *buf | ((*&buf[4] & 0xFFFFFF) << 32);
+              *(self + 288) = *buf | ((*&buf[4] & 0xFFFFFF) << 32);
             }
           }
 
           flags[0] = 0;
-          dirty = proc_get_dirty(*(a1 + 80), flags);
+          dirty = proc_get_dirty(*(self + 80), flags);
           if (dirty)
           {
             v17 = dirty;
@@ -2710,7 +2710,7 @@ LABEL_16:
             v19 = _sa_logt();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
             {
-              v29 = *(a1 + 80);
+              v29 = *(self + 80);
               v30 = strerror(v17);
               *buf = 67109634;
               *&buf[4] = v29;
@@ -2729,21 +2729,21 @@ LABEL_16:
             v21 = flags[0];
             if (flags[0])
             {
-              *(a1 + 68) = 1;
-              *(a1 + 69) = (v21 & 2) != 0;
+              *(self + 68) = 1;
+              *(self + 69) = (v21 & 2) != 0;
             }
           }
 
-          *(a1 + 248) = 0;
+          *(self + 248) = 0;
         }
       }
     }
 
     else
     {
-      *(a1 + 73) = 1;
-      *(a1 + 88) = 0;
-      *(a1 + 84) = 0;
+      *(self + 73) = 1;
+      *(self + 88) = 0;
+      *(self + 84) = 0;
     }
   }
 
@@ -2762,29 +2762,29 @@ uint64_t __58__SATask__gatherDataFromLiveProcessIsLate_mainBinaryPath___block_in
   return result;
 }
 
-- (id)leafFrameAfterAddingStack:(void *)a3 leafOfCRootFramesReplacedBySwiftAsync:
+- (id)leafFrameAfterAddingStack:(void *)stack leafOfCRootFramesReplacedBySwiftAsync:
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 280))
+    if (!*(self + 280))
     {
       v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:1];
-      v7 = *(a1 + 280);
-      *(a1 + 280) = v6;
+      v7 = *(self + 280);
+      *(self + 280) = v6;
     }
 
-    if (a3)
+    if (stack)
     {
-      *a3 = 0;
+      *stack = 0;
     }
 
-    v8 = *(a1 + 280);
-    if (*(a1 + 80))
+    v8 = *(self + 280);
+    if (*(self + 80))
     {
       v9 = [SAFrame addStack:a2 backtraceStyle:1 toSetOfRootFrames:v8];
-      if (a3 && [a2 hasSwiftAsyncStack])
+      if (stack && [a2 hasSwiftAsyncStack])
       {
-        *a3 = [SAFrame addStack:a2 backtraceStyle:16 toSetOfRootFrames:*(a1 + 280)];
+        *stack = [SAFrame addStack:a2 backtraceStyle:16 toSetOfRootFrames:*(self + 280)];
       }
     }
 
@@ -2802,16 +2802,16 @@ uint64_t __58__SATask__gatherDataFromLiveProcessIsLate_mainBinaryPath___block_in
   return v9;
 }
 
-- (SAFrame)truncatedUserStackFrameSwiftAsync:(SAFrame *)a1
+- (SAFrame)truncatedUserStackFrameSwiftAsync:(SAFrame *)async
 {
-  v2 = a1;
-  if (a1)
+  asyncCopy = async;
+  if (async)
   {
-    if (!a1[5]._childFrameOrFrames)
+    if (!async[5]._childFrameOrFrames)
     {
       v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      childFrameOrFrames = v2[5]._childFrameOrFrames;
-      v2[5]._childFrameOrFrames = v4;
+      childFrameOrFrames = asyncCopy[5]._childFrameOrFrames;
+      asyncCopy[5]._childFrameOrFrames = v4;
     }
 
     v6 = objc_alloc_init(SAFrame);
@@ -2830,67 +2830,67 @@ uint64_t __58__SATask__gatherDataFromLiveProcessIsLate_mainBinaryPath___block_in
 
       v9 = v8 | v6->_BOOLs.bits & 0xF5;
       v6->_BOOLs.bits = v9;
-      v6->_BOOLs.bits = v9 & 0xFB | (4 * (LODWORD(v2[1]._parentFrame) == 0));
+      v6->_BOOLs.bits = v9 & 0xFB | (4 * (LODWORD(asyncCopy[1]._parentFrame) == 0));
     }
 
-    v10 = [v2[5]._childFrameOrFrames member:v6];
+    v10 = [asyncCopy[5]._childFrameOrFrames member:v6];
     v11 = v10;
     if (!v10)
     {
-      [v2[5]._childFrameOrFrames addObject:v7];
+      [asyncCopy[5]._childFrameOrFrames addObject:v7];
       v11 = v7;
     }
 
-    v2 = v11;
+    asyncCopy = v11;
   }
 
-  return v2;
+  return asyncCopy;
 }
 
-- (uint64_t)_matchesNameStr:(uint64_t)a1
+- (uint64_t)_matchesNameStr:(uint64_t)str
 {
-  if (*(a1 + 79) == 1)
+  if (*(str + 79) == 1)
   {
-    v4 = [a1 name];
+    name = [str name];
 LABEL_5:
-    v6 = v4;
+    copyLastPathComponent = name;
     goto LABEL_6;
   }
 
-  v5 = *(a1 + 56);
+  v5 = *(str + 56);
   if (v5)
   {
-    v4 = v5;
+    name = v5;
     goto LABEL_5;
   }
 
-  Path = [(NSString *)*(a1 + 40) copyLastPathComponent];
+  Path = [(NSString *)*(str + 40) copyLastPathComponent];
   v9 = Path;
   if (Path)
   {
-    v6 = Path;
+    copyLastPathComponent = Path;
   }
 
   else
   {
-    v17 = [*(a1 + 48) path];
-    v6 = [(NSString *)v17 copyLastPathComponent];
+    path = [*(str + 48) path];
+    copyLastPathComponent = [(NSString *)path copyLastPathComponent];
   }
 
 LABEL_6:
   v7 = 0;
-  if (a2 && v6)
+  if (a2 && copyLastPathComponent)
   {
     if ([a2 length])
     {
-      if ([v6 hasPrefix:a2])
+      if ([copyLastPathComponent hasPrefix:a2])
       {
         [a2 length];
         v7 = 0;
         goto LABEL_18;
       }
 
-      v7 = [a2 hasPrefix:v6];
+      v7 = [a2 hasPrefix:copyLastPathComponent];
     }
 
     else
@@ -2908,7 +2908,7 @@ LABEL_6:
 
 LABEL_18:
   v12 = [a2 length];
-  if (v6)
+  if (copyLastPathComponent)
   {
     v13 = v7;
   }
@@ -2919,11 +2919,11 @@ LABEL_18:
   }
 
   v11 = 1;
-  if (v12 && v13 && (!*(a1 + 80) || ([a2 isEqualToString:@"kernel_task"] & 1) == 0))
+  if (v12 && v13 && (!*(str + 80) || ([a2 isEqualToString:@"kernel_task"] & 1) == 0))
   {
     v14 = [a2 copy];
-    v15 = *(a1 + 56);
-    *(a1 + 56) = v14;
+    v15 = *(str + 56);
+    *(str + 56) = v14;
   }
 
 LABEL_26:
@@ -2931,7 +2931,7 @@ LABEL_26:
   return v11;
 }
 
-- (uint64_t)correspondsToName:(uint64_t *)a3 loadInfos:(int)a4 numLoadInfos:(uint64_t)a5 architecture:(uint64_t)a6 sharedCache:
+- (uint64_t)correspondsToName:(uint64_t *)name loadInfos:(int)infos numLoadInfos:(uint64_t)loadInfos architecture:(uint64_t)architecture sharedCache:
 {
   if (result)
   {
@@ -2949,17 +2949,17 @@ LABEL_26:
       }
 
       v12 = 0;
-      if (a3)
+      if (name)
       {
-        if (a4)
+        if (infos)
         {
-          v13 = uuidForBytes((a3 + 1));
+          v13 = uuidForBytes((name + 1));
           v14 = [SABinary binaryWithUUID:v13 absolutePath:0];
-          v12 = [SABinaryLoadInfo binaryLoadInfoWithBinary:v14 loadAddress:*a3 isInKernelAddressSpace:0 exclave:0];
+          v12 = [SABinaryLoadInfo binaryLoadInfoWithBinary:v14 loadAddress:*name isInKernelAddressSpace:0 exclave:0];
         }
       }
 
-      v15 = [(SATask *)v6 correspondsToName:v11 mainBinaryLoadInfo:v12 architecture:a5 sharedCache:a6];
+      v15 = [(SATask *)v6 correspondsToName:v11 mainBinaryLoadInfo:v12 architecture:loadInfos sharedCache:architecture];
 
       return v15;
     }
@@ -2984,16 +2984,16 @@ LABEL_26:
   return result;
 }
 
-- (BOOL)addImageInfos:(uint64_t)a1
+- (BOOL)addImageInfos:(uint64_t)infos
 {
   v2 = 0;
   v116 = *MEMORY[0x1E69E9840];
-  if (!a1 || !a2)
+  if (!infos || !a2)
   {
     goto LABEL_95;
   }
 
-  v4 = a1;
+  infosCopy = infos;
   if (![a2 count])
   {
     v2 = 0;
@@ -3001,10 +3001,10 @@ LABEL_26:
   }
 
   v5 = [a2 sortedArrayUsingComparator:&__block_literal_global_70];
-  v6 = *(v4 + 256);
+  v6 = *(infosCopy + 256);
   if (!v6 || ![v6 count])
   {
-    objc_storeStrong((v4 + 256), v5);
+    objc_storeStrong((infosCopy + 256), v5);
     v2 = 1;
     goto LABEL_94;
   }
@@ -3038,10 +3038,10 @@ LABEL_26:
 
       v91 = v9;
       v10 = *(*(&v105 + 1) + 8 * v9);
-      v96 = [v10 binary];
-      v11 = [v10 segment];
+      binary = [v10 binary];
+      segment = [v10 segment];
       v94 = [v10 length];
-      v95 = v11;
+      v95 = segment;
       if (v94)
       {
         v12 = 0;
@@ -3049,7 +3049,7 @@ LABEL_26:
 
       else
       {
-        v12 = v11 == 0;
+        v12 = segment == 0;
       }
 
       v93 = v10;
@@ -3059,10 +3059,10 @@ LABEL_26:
         v104 = 0u;
         v101 = 0u;
         v102 = 0u;
-        v13 = [v96 segments];
-        v14 = [v13 reverseObjectEnumerator];
+        segments = [binary segments];
+        reverseObjectEnumerator = [segments reverseObjectEnumerator];
 
-        v15 = [v14 countByEnumeratingWithState:&v101 objects:v114 count:16];
+        v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v101 objects:v114 count:16];
         if (!v15)
         {
           goto LABEL_27;
@@ -3076,7 +3076,7 @@ LABEL_26:
           {
             if (*v102 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v19 = *(*(&v101 + 1) + 8 * i);
@@ -3087,8 +3087,8 @@ LABEL_26:
                 goto LABEL_27;
               }
 
-              v20 = [v19 offsetIntoBinary];
-              v94 = [v19 length] + v20;
+              offsetIntoBinary = [v19 offsetIntoBinary];
+              v94 = [v19 length] + offsetIntoBinary;
 LABEL_28:
 
               v10 = v93;
@@ -3096,7 +3096,7 @@ LABEL_28:
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v101 objects:v114 count:16];
+          v16 = [reverseObjectEnumerator countByEnumeratingWithState:&v101 objects:v114 count:16];
           if (!v16)
           {
 LABEL_27:
@@ -3109,14 +3109,14 @@ LABEL_27:
       while (1)
       {
 LABEL_29:
-        if (v7 >= [*(v4 + 256) count])
+        if (v7 >= [*(infosCopy + 256) count])
         {
           goto LABEL_72;
         }
 
-        v21 = [*(v4 + 256) objectAtIndexedSubscript:v7];
-        v22 = [v21 binary];
-        v23 = [v21 segment];
+        v21 = [*(infosCopy + 256) objectAtIndexedSubscript:v7];
+        binary2 = [v21 binary];
+        segment2 = [v21 segment];
         v24 = [v21 length];
         if (v24)
         {
@@ -3125,7 +3125,7 @@ LABEL_29:
 
         else
         {
-          v25 = v23 == 0;
+          v25 = segment2 == 0;
         }
 
         if (v25)
@@ -3134,14 +3134,14 @@ LABEL_29:
           v100 = 0u;
           v97 = 0u;
           v98 = 0u;
-          v26 = [v22 segments];
-          v27 = [v26 reverseObjectEnumerator];
+          segments2 = [binary2 segments];
+          reverseObjectEnumerator2 = [segments2 reverseObjectEnumerator];
 
-          v24 = [v27 countByEnumeratingWithState:&v97 objects:v113 count:16];
+          v24 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v97 objects:v113 count:16];
           if (v24)
           {
             v92 = v8;
-            v28 = v4;
+            v28 = infosCopy;
             v29 = *v98;
             while (2)
             {
@@ -3149,7 +3149,7 @@ LABEL_29:
               {
                 if (*v98 != v29)
                 {
-                  objc_enumerationMutation(v27);
+                  objc_enumerationMutation(reverseObjectEnumerator2);
                 }
 
                 v31 = *(*(&v97 + 1) + 8 * j);
@@ -3157,8 +3157,8 @@ LABEL_29:
                 {
                   if ([v31 length])
                   {
-                    v32 = [v31 offsetIntoBinary];
-                    v24 = [v31 length] + v32;
+                    offsetIntoBinary2 = [v31 offsetIntoBinary];
+                    v24 = [v31 length] + offsetIntoBinary2;
                   }
 
                   else
@@ -3170,7 +3170,7 @@ LABEL_29:
                 }
               }
 
-              v24 = [v27 countByEnumeratingWithState:&v97 objects:v113 count:16];
+              v24 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v97 objects:v113 count:16];
               if (v24)
               {
                 continue;
@@ -3180,19 +3180,19 @@ LABEL_29:
             }
 
 LABEL_47:
-            v4 = v28;
+            infosCopy = v28;
             v8 = v92;
             v10 = v93;
           }
         }
 
-        v33 = [v21 loadAddress];
+        loadAddress = [v21 loadAddress];
         if (!v24)
         {
           break;
         }
 
-        if (v33 + v24 > [v10 loadAddress])
+        if (loadAddress + v24 > [v10 loadAddress])
         {
           goto LABEL_53;
         }
@@ -3202,28 +3202,28 @@ LABEL_68:
         ++v7;
       }
 
-      if (v33 < [v10 loadAddress])
+      if (loadAddress < [v10 loadAddress])
       {
         goto LABEL_68;
       }
 
 LABEL_53:
-      v34 = [v21 loadAddress];
-      v35 = [v10 loadAddress];
+      loadAddress2 = [v21 loadAddress];
+      loadAddress3 = [v10 loadAddress];
       if (v94)
       {
-        if (v34 >= v35 + v94)
+        if (loadAddress2 >= loadAddress3 + v94)
         {
           goto LABEL_71;
         }
 
 LABEL_57:
-        if (v22 != v96)
+        if (binary2 != binary)
         {
           goto LABEL_79;
         }
 
-        if (v23 == v95)
+        if (segment2 == v95)
         {
           [v21 loadAddress];
           [v10 loadAddress];
@@ -3232,30 +3232,30 @@ LABEL_79:
           goto LABEL_80;
         }
 
-        if (v23 && v95)
+        if (segment2 && v95)
         {
           goto LABEL_79;
         }
 
-        if (!v23)
+        if (!segment2)
         {
           v42 = v10;
-          v43 = [v21 loadAddress];
-          if (v43 > [v42 loadAddress])
+          loadAddress4 = [v21 loadAddress];
+          if (loadAddress4 > [v42 loadAddress])
           {
             goto LABEL_78;
           }
 
-          v44 = [v21 loadAddress];
-          v45 = [v21 length] + v44;
-          v46 = [v42 loadAddress];
-          if (v45 < [v42 length] + v46)
+          loadAddress5 = [v21 loadAddress];
+          v45 = [v21 length] + loadAddress5;
+          loadAddress6 = [v42 loadAddress];
+          if (v45 < [v42 length] + loadAddress6)
           {
             goto LABEL_78;
           }
 
-          v47 = [v42 loadAddress];
-          v48 = v47 - [v21 loadAddress];
+          loadAddress7 = [v42 loadAddress];
+          v48 = loadAddress7 - [v21 loadAddress];
           if ([v95 hasOffsetIntoBinary])
           {
             if ([v95 offsetIntoBinary] == v48)
@@ -3269,22 +3269,22 @@ LABEL_99:
             if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
             {
               v73 = [v21 debugDescription];
-              v74 = [v73 UTF8String];
+              uTF8String = [v73 UTF8String];
               v75 = [v93 debugDescription];
-              v76 = [v75 UTF8String];
+              uTF8String2 = [v75 UTF8String];
               *buf = 136315394;
-              v110 = v74;
+              v110 = uTF8String;
               v111 = 2080;
-              v112 = v76;
+              v112 = uTF8String2;
               _os_log_error_impl(&dword_1E0E2F000, v72, OS_LOG_TYPE_ERROR, "load info for entire binary %s doesn't match segment load info %s", buf, 0x16u);
             }
 
             *__error() = v71;
             v77 = [v21 debugDescription];
-            v78 = [v77 UTF8String];
+            uTF8String3 = [v77 UTF8String];
             v79 = [v93 debugDescription];
             [v79 UTF8String];
-            _SASetCrashLogMessage(1570, "load info for entire binary %s doesn't match segment load info %s", v80, v81, v82, v83, v84, v85, v78);
+            _SASetCrashLogMessage(1570, "load info for entire binary %s doesn't match segment load info %s", v80, v81, v82, v83, v84, v85, uTF8String3);
 
             _os_crash();
             __break(1u);
@@ -3292,51 +3292,51 @@ LABEL_99:
 
           if (v95)
           {
-            v23 = 0;
+            segment2 = 0;
             v95[5] = v48;
           }
 
           else
           {
 LABEL_78:
-            v23 = 0;
+            segment2 = 0;
           }
 
           goto LABEL_79;
         }
 
-        v36 = [v10 loadAddress];
-        if (v36 > [v21 loadAddress])
+        loadAddress8 = [v10 loadAddress];
+        if (loadAddress8 > [v21 loadAddress])
         {
           goto LABEL_79;
         }
 
-        v37 = [v10 loadAddress];
-        v38 = [v10 length] + v37;
-        v39 = [v21 loadAddress];
-        if (v38 < [v21 length] + v39)
+        loadAddress9 = [v10 loadAddress];
+        v38 = [v10 length] + loadAddress9;
+        loadAddress10 = [v21 loadAddress];
+        if (v38 < [v21 length] + loadAddress10)
         {
           goto LABEL_79;
         }
 
-        v40 = [v21 loadAddress];
-        v41 = v40 - [v10 loadAddress];
-        if ([v23 hasOffsetIntoBinary])
+        loadAddress11 = [v21 loadAddress];
+        v41 = loadAddress11 - [v10 loadAddress];
+        if ([segment2 hasOffsetIntoBinary])
         {
-          if ([v23 offsetIntoBinary] != v41)
+          if ([segment2 offsetIntoBinary] != v41)
           {
             v57 = *__error();
             v58 = _sa_logt();
             if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
             {
               v59 = [v10 debugDescription];
-              v60 = [v59 UTF8String];
+              uTF8String4 = [v59 UTF8String];
               v61 = [v21 debugDescription];
-              v62 = [v61 UTF8String];
+              uTF8String5 = [v61 UTF8String];
               *buf = 136315394;
-              v110 = v60;
+              v110 = uTF8String4;
               v111 = 2080;
-              v112 = v62;
+              v112 = uTF8String5;
               _os_log_error_impl(&dword_1E0E2F000, v58, OS_LOG_TYPE_ERROR, "load info for entire binary %s doesn't match segment load info %s", buf, 0x16u);
 
               v10 = v93;
@@ -3344,10 +3344,10 @@ LABEL_78:
 
             *__error() = v57;
             v63 = [v10 debugDescription];
-            v64 = [v63 UTF8String];
+            uTF8String6 = [v63 UTF8String];
             v21 = [v21 debugDescription];
             [v21 UTF8String];
-            _SASetCrashLogMessage(1546, "load info for entire binary %s doesn't match segment load info %s", v65, v66, v67, v68, v69, v70, v64);
+            _SASetCrashLogMessage(1546, "load info for entire binary %s doesn't match segment load info %s", v65, v66, v67, v68, v69, v70, uTF8String6);
 
             _os_crash();
             __break(1u);
@@ -3365,7 +3365,7 @@ LABEL_70:
 
         else
         {
-          v23[5] = v41;
+          segment2[5] = v41;
           if (!v8)
           {
             goto LABEL_70;
@@ -3377,7 +3377,7 @@ LABEL_67:
         goto LABEL_68;
       }
 
-      if (v34 <= v35)
+      if (loadAddress2 <= loadAddress3)
       {
         goto LABEL_57;
       }
@@ -3404,7 +3404,7 @@ LABEL_89:
   v5 = v86;
   if (v50)
   {
-    v51 = [*(v4 + 256) mutableCopy];
+    v51 = [*(infosCopy + 256) mutableCopy];
     v52 = v51;
     if (v8)
     {
@@ -3414,8 +3414,8 @@ LABEL_89:
     [v52 addObjectsFromArray:v88];
     [v52 sortUsingComparator:&__block_literal_global_70];
     v53 = [v52 copy];
-    v54 = *(v4 + 256);
-    *(v4 + 256) = v53;
+    v54 = *(infosCopy + 256);
+    *(infosCopy + 256) = v53;
   }
 
 LABEL_94:
@@ -3424,7 +3424,7 @@ LABEL_95:
   return v2;
 }
 
-- (uint64_t)correspondsToUniquePid:(uint64_t)a3 name:(uint64_t *)a4 loadInfos:(unsigned int)a5 numLoadInfos:(uint64_t)a6 textExecLoadInfos:(unsigned int)a7 numTextExecLoadInfos:(uint64_t)a8 architecture:(uint64_t)a9 sharedCache:
+- (uint64_t)correspondsToUniquePid:(uint64_t)pid name:(uint64_t *)name loadInfos:(unsigned int)infos numLoadInfos:(uint64_t)loadInfos textExecLoadInfos:(unsigned int)execLoadInfos numTextExecLoadInfos:(uint64_t)textExecLoadInfos architecture:(uint64_t)architecture sharedCache:
 {
   if (result)
   {
@@ -3434,20 +3434,20 @@ LABEL_95:
       if (a2)
       {
 
-        return [(SATask *)result correspondsToName:a3 loadInfos:a4 numLoadInfos:a5 architecture:a8 sharedCache:a9];
+        return [(SATask *)result correspondsToName:pid loadInfos:name numLoadInfos:infos architecture:textExecLoadInfos sharedCache:architecture];
       }
 
       else
       {
-        [(SATask *)result _incorporateNewKernelLoadInfos:a4 numLoadInfos:a5 textExecLoadInfos:a6 numTextExecLoadInfos:a7];
+        [(SATask *)result _incorporateNewKernelLoadInfos:name numLoadInfos:infos textExecLoadInfos:loadInfos numTextExecLoadInfos:execLoadInfos];
         if (!*(v9 + 288))
         {
-          *(v9 + 288) = a8;
+          *(v9 + 288) = textExecLoadInfos;
         }
 
-        if (a3 && !*(v9 + 56))
+        if (pid && !*(v9 + 56))
         {
-          v12 = SANSStringForCString(a3);
+          v12 = SANSStringForCString(pid);
           v13 = *(v9 + 56);
           *(v9 + 56) = v12;
         }
@@ -3465,7 +3465,7 @@ LABEL_95:
   return result;
 }
 
-- (uint64_t)correspondsToPid:(uint64_t)a3 name:(uint64_t *)a4 loadInfos:(unsigned int)a5 numLoadInfos:(uint64_t)a6 textExecLoadInfos:(unsigned int)a7 numTextExecLoadInfos:(uint64_t)a8 architecture:(uint64_t)a9 sharedCache:
+- (uint64_t)correspondsToPid:(uint64_t)pid name:(uint64_t *)name loadInfos:(unsigned int)infos numLoadInfos:(uint64_t)loadInfos textExecLoadInfos:(unsigned int)execLoadInfos numTextExecLoadInfos:(uint64_t)textExecLoadInfos architecture:(uint64_t)architecture sharedCache:
 {
   if (result)
   {
@@ -3475,20 +3475,20 @@ LABEL_95:
       if (a2)
       {
 
-        return [(SATask *)result correspondsToName:a3 loadInfos:a4 numLoadInfos:a5 architecture:a8 sharedCache:a9];
+        return [(SATask *)result correspondsToName:pid loadInfos:name numLoadInfos:infos architecture:textExecLoadInfos sharedCache:architecture];
       }
 
       else
       {
-        [(SATask *)result _incorporateNewKernelLoadInfos:a4 numLoadInfos:a5 textExecLoadInfos:a6 numTextExecLoadInfos:a7];
+        [(SATask *)result _incorporateNewKernelLoadInfos:name numLoadInfos:infos textExecLoadInfos:loadInfos numTextExecLoadInfos:execLoadInfos];
         if (!*(v9 + 288))
         {
-          *(v9 + 288) = a8;
+          *(v9 + 288) = textExecLoadInfos;
         }
 
-        if (a3 && !*(v9 + 56))
+        if (pid && !*(v9 + 56))
         {
-          v12 = SANSStringForCString(a3);
+          v12 = SANSStringForCString(pid);
           v13 = *(v9 + 56);
           *(v9 + 56) = v12;
         }
@@ -3521,8 +3521,8 @@ uint64_t __24__SATask_addImageInfos___block_invoke(uint64_t a1, void *a2, void *
 - (NSString)debugDescription
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SATask *)self name];
-  v5 = [v3 initWithFormat:@"%@ [%d]", v4, self->_pid];
+  name = [(SATask *)self name];
+  v5 = [v3 initWithFormat:@"%@ [%d]", name, self->_pid];
 
   return v5;
 }
@@ -3530,15 +3530,15 @@ uint64_t __24__SATask_addImageInfos___block_invoke(uint64_t a1, void *a2, void *
 - (void)fixupThreadSuspension
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v16 = [*(a1 + 16) allValues];
-    v2 = malloc_type_calloc([v16 count], 8uLL, 0x100004000313F17uLL);
+    allValues = [*(self + 16) allValues];
+    v2 = malloc_type_calloc([allValues count], 8uLL, 0x100004000313F17uLL);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v3 = *(a1 + 8);
+    v3 = *(self + 8);
     v4 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v4)
     {
@@ -3556,22 +3556,22 @@ uint64_t __24__SATask_addImageInfos___block_invoke(uint64_t a1, void *a2, void *
           v8 = *(*(&v23 + 1) + 8 * i);
           if ([v8 isSuspended])
           {
-            v9 = [v8 startTimestamp];
-            v10 = [v8 endTimestamp];
-            v11 = [v8 startSampleIndex];
-            v12 = [v8 endSampleIndex];
+            startTimestamp = [v8 startTimestamp];
+            endTimestamp = [v8 endTimestamp];
+            startSampleIndex = [v8 startSampleIndex];
+            endSampleIndex = [v8 endSampleIndex];
             v17[0] = MEMORY[0x1E69E9820];
             v17[1] = 3221225472;
             v17[2] = __31__SATask_fixupThreadSuspension__block_invoke;
             v17[3] = &unk_1E86F8688;
-            v18 = v9;
-            v19 = v10;
+            v18 = startTimestamp;
+            v19 = endTimestamp;
             v20 = v2;
-            v21 = v11;
-            v22 = v12;
-            v13 = v10;
-            v14 = v9;
-            [v16 enumerateObjectsUsingBlock:v17];
+            v21 = startSampleIndex;
+            v22 = endSampleIndex;
+            v13 = endTimestamp;
+            v14 = startTimestamp;
+            [allValues enumerateObjectsUsingBlock:v17];
           }
         }
 
@@ -4314,19 +4314,19 @@ LABEL_73:
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)isAliveAtTimestamp:(void *)a1
+- (uint64_t)isAliveAtTimestamp:(void *)timestamp
 {
-  if (!a1)
+  if (!timestamp)
   {
     return 0;
   }
 
-  v4 = [a1 startTimestamp];
-  v5 = v4;
-  if (v4 && ([v4 gt:a2] & 1) == 0)
+  startTimestamp = [timestamp startTimestamp];
+  v5 = startTimestamp;
+  if (startTimestamp && ([startTimestamp gt:a2] & 1) == 0)
   {
-    v7 = [a1 endTimestamp];
-    v8 = [v7 lt:a2];
+    endTimestamp = [timestamp endTimestamp];
+    v8 = [endTimestamp lt:a2];
 
     v6 = v8 ^ 1u;
   }
@@ -4379,33 +4379,33 @@ LABEL_8:
 LABEL_9:
 }
 
-- (unint64_t)sampleCountInTimestampRangeStart:(id)a3 end:(id)a4
+- (unint64_t)sampleCountInTimestampRangeStart:(id)start end:(id)end
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a3 && a4 && ([a3 le:a4] & 1) == 0)
+  if (start && end && ([start le:end] & 1) == 0)
   {
     v15 = *__error();
     v16 = _sa_logt();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [a3 debugDescription];
-      v18 = [v17 UTF8String];
-      v19 = [a4 debugDescription];
+      v17 = [start debugDescription];
+      uTF8String = [v17 UTF8String];
+      v19 = [end debugDescription];
       *buf = 136315394;
-      *&buf[4] = v18;
+      *&buf[4] = uTF8String;
       *&buf[12] = 2080;
       *&buf[14] = [v19 UTF8String];
       _os_log_error_impl(&dword_1E0E2F000, v16, OS_LOG_TYPE_ERROR, "startTime %s > endTime %s", buf, 0x16u);
     }
 
     *__error() = v15;
-    v20 = [a3 debugDescription];
+    v20 = [start debugDescription];
     v21 = v20;
-    v22 = [v20 UTF8String];
-    v23 = [a4 debugDescription];
+    uTF8String2 = [v20 UTF8String];
+    v23 = [end debugDescription];
     v24 = v23;
     [v23 UTF8String];
-    _SASetCrashLogMessage(1966, "startTime %s > endTime %s", v25, v26, v27, v28, v29, v30, v22);
+    _SASetCrashLogMessage(1966, "startTime %s > endTime %s", v25, v26, v27, v28, v29, v30, uTF8String2);
 
     _os_crash();
     __break(1u);
@@ -4413,7 +4413,7 @@ LABEL_9:
 
   if ([(NSMutableArray *)self->_taskStates count])
   {
-    v7 = [(SATask *)self indexOfFirstTaskStateOnOrAfterTime:a3 sampleIndex:0x7FFFFFFFFFFFFFFFLL];
+    v7 = [(SATask *)self indexOfFirstTaskStateOnOrAfterTime:start sampleIndex:0x7FFFFFFFFFFFFFFFLL];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = 0;
@@ -4422,7 +4422,7 @@ LABEL_9:
     else
     {
       v10 = v7;
-      v11 = [(SATask *)self indexOfLastTaskStateOnOrBeforeTime:a4 sampleIndex:0x7FFFFFFFFFFFFFFFLL];
+      v11 = [(SATask *)self indexOfLastTaskStateOnOrBeforeTime:end sampleIndex:0x7FFFFFFFFFFFFFFFLL];
       if (v11 >= v10)
       {
         v12 = v11 - v10 + 1;
@@ -4456,9 +4456,9 @@ LABEL_9:
     v31[1] = 3221225472;
     v31[2] = __47__SATask_sampleCountInTimestampRangeStart_end___block_invoke;
     v31[3] = &unk_1E86F86D0;
-    v31[5] = a4;
+    v31[5] = end;
     v31[6] = buf;
-    v31[4] = a3;
+    v31[4] = start;
     [(NSMutableDictionary *)threads enumerateKeysAndObjectsUsingBlock:v31];
     v8 = *(*&buf[8] + 24);
     _Block_object_dispose(buf, 8);
@@ -4475,39 +4475,39 @@ uint64_t __47__SATask_sampleCountInTimestampRangeStart_end___block_invoke(void *
   return result;
 }
 
-- (unint64_t)sampleCountInSampleIndexRangeStart:(unint64_t)a3 end:(unint64_t)a4
+- (unint64_t)sampleCountInSampleIndexRangeStart:(unint64_t)start end:(unint64_t)end
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && a4 != 0x7FFFFFFFFFFFFFFFLL && a3 > a4)
+  if (start != 0x7FFFFFFFFFFFFFFFLL && end != 0x7FFFFFFFFFFFFFFFLL && start > end)
   {
     v22 = *__error();
     p_super = _sa_logt();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v42 = a3;
+      startCopy = start;
       v43 = 2048;
-      v44 = a4;
+      endCopy = end;
       _os_log_error_impl(&dword_1E0E2F000, p_super, OS_LOG_TYPE_ERROR, "startSampleIndexCap %lu > endSampleIndexCap %lu", buf, 0x16u);
     }
 
     *__error() = v22;
-    _SASetCrashLogMessage(2002, "startSampleIndexCap %lu > endSampleIndexCap %lu", v23, v24, v25, v26, v27, v28, a3);
+    _SASetCrashLogMessage(2002, "startSampleIndexCap %lu > endSampleIndexCap %lu", v23, v24, v25, v26, v27, v28, start);
     _os_crash();
     __break(1u);
     goto LABEL_33;
   }
 
   p_super = &self->super;
-  v9 = [(NSMutableArray *)self->_taskStates firstObject];
-  v10 = v9;
-  if (!v9)
+  firstObject = [(NSMutableArray *)self->_taskStates firstObject];
+  v10 = firstObject;
+  if (!firstObject)
   {
     v16 = 0;
     goto LABEL_29;
   }
 
-  if ([v9 endSampleIndex] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([firstObject endSampleIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_33:
     v29 = *__error();
@@ -4515,70 +4515,70 @@ LABEL_33:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       v31 = [p_super debugDescription];
-      v32 = [v31 UTF8String];
+      uTF8String = [v31 UTF8String];
       *buf = 136315138;
-      v42 = v32;
+      startCopy = uTF8String;
       _os_log_error_impl(&dword_1E0E2F000, v30, OS_LOG_TYPE_ERROR, "Asking for sample count based on sample indexes when there are no sample indexes: %s", buf, 0xCu);
     }
 
     *__error() = v29;
     v33 = [p_super debugDescription];
-    v34 = [v33 UTF8String];
-    _SASetCrashLogMessage(2009, "Asking for sample count based on sample indexes when there are no sample indexes: %s", v35, v36, v37, v38, v39, v40, v34);
+    uTF8String2 = [v33 UTF8String];
+    _SASetCrashLogMessage(2009, "Asking for sample count based on sample indexes when there are no sample indexes: %s", v35, v36, v37, v38, v39, v40, uTF8String2);
 
     _os_crash();
     __break(1u);
   }
 
-  v11 = [(objc_class *)p_super[1].isa lastObject];
-  v12 = [v11 endSampleIndex];
-  if (v12 >= a4)
+  lastObject = [(objc_class *)p_super[1].isa lastObject];
+  endSampleIndex = [lastObject endSampleIndex];
+  if (endSampleIndex >= end)
   {
-    v13 = a4;
+    endCopy2 = end;
   }
 
   else
   {
-    v13 = v12;
+    endCopy2 = endSampleIndex;
   }
 
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (end == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = v12;
+    v14 = endSampleIndex;
   }
 
   else
   {
-    v14 = v13;
+    v14 = endCopy2;
   }
 
   if ([v10 startSampleIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [v10 endSampleIndex];
+    endSampleIndex2 = [v10 endSampleIndex];
   }
 
   else
   {
-    v15 = [v10 startSampleIndex];
+    endSampleIndex2 = [v10 startSampleIndex];
   }
 
-  if (v15 <= a3)
+  if (endSampleIndex2 <= start)
   {
-    v17 = a3;
+    startCopy2 = start;
   }
 
   else
   {
-    v17 = v15;
+    startCopy2 = endSampleIndex2;
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (start == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v17 = v15;
+    startCopy2 = endSampleIndex2;
   }
 
-  v18 = v14 >= v17;
-  v19 = v14 - v17;
+  v18 = v14 >= startCopy2;
+  v19 = v14 - startCopy2;
   if (v18)
   {
     v16 = v19 + 1;
@@ -4594,10 +4594,10 @@ LABEL_29:
   return v16;
 }
 
-- (void)cpuTimeNs:(void *)a3 cpuInstructions:(void *)a4 cpuCycles:(void *)a5 nonThreadCpuTimeNs:(void *)a6 nonThreadCpuInstructions:(void *)a7 nonThreadCpuCycles:(uint64_t)a8 betweenStartTime:(void *)a9 endTime:
+- (void)cpuTimeNs:(void *)ns cpuInstructions:(void *)instructions cpuCycles:(void *)cycles nonThreadCpuTimeNs:(void *)timeNs nonThreadCpuInstructions:(void *)cpuInstructions nonThreadCpuCycles:(uint64_t)cpuCycles betweenStartTime:(void *)time endTime:
 {
   v106 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_45;
   }
@@ -4607,29 +4607,29 @@ LABEL_29:
     *a2 = 0;
   }
 
-  if (a3)
+  if (ns)
   {
-    *a3 = 0;
+    *ns = 0;
   }
 
-  if (a4)
+  if (instructions)
   {
-    *a4 = 0;
+    *instructions = 0;
   }
 
-  if (a5)
+  if (cycles)
   {
-    *a5 = 0;
+    *cycles = 0;
   }
 
-  if (a6)
+  if (timeNs)
   {
-    *a6 = 0;
+    *timeNs = 0;
   }
 
-  if (a7)
+  if (cpuInstructions)
   {
-    *a7 = 0;
+    *cpuInstructions = 0;
   }
 
   v100 = 0;
@@ -4644,82 +4644,82 @@ LABEL_29:
   v93 = &v92;
   v94 = 0x2020000000;
   v95 = 0;
-  v14 = [a1 lastTaskStateOnOrBeforeTime:a9 sampleIndex:0x7FFFFFFFFFFFFFFFLL];
-  v67 = [v14 terminatedThreadsCpuTimeNs];
-  if (v14 && (!a8 || ([v14 endTimestamp], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "gt:", a8), v15, v16)))
+  v14 = [self lastTaskStateOnOrBeforeTime:time sampleIndex:0x7FFFFFFFFFFFFFFFLL];
+  terminatedThreadsCpuTimeNs = [v14 terminatedThreadsCpuTimeNs];
+  if (v14 && (!cpuCycles || ([v14 endTimestamp], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "gt:", cpuCycles), v15, v16)))
   {
-    v17 = [v14 terminatedThreadsCpuTimeNs];
-    v101[3] += v17;
-    v18 = [v14 terminatedThreadsInstructions];
-    v97[3] += v18;
-    v19 = [v14 terminatedThreadsCycles];
-    v93[3] += v19;
-    v20 = [v14 endTimestamp];
-    if (a8 && (v21 = a1[29]) != 0 && ![v21 lt:a8])
+    terminatedThreadsCpuTimeNs2 = [v14 terminatedThreadsCpuTimeNs];
+    v101[3] += terminatedThreadsCpuTimeNs2;
+    terminatedThreadsInstructions = [v14 terminatedThreadsInstructions];
+    v97[3] += terminatedThreadsInstructions;
+    terminatedThreadsCycles = [v14 terminatedThreadsCycles];
+    v93[3] += terminatedThreadsCycles;
+    endTimestamp = [v14 endTimestamp];
+    if (cpuCycles && (v21 = self[29]) != 0 && ![v21 lt:cpuCycles])
     {
       v24 = 0;
     }
 
     else
     {
-      v65 = [a1 firstTaskStateOnOrAfterTime:a8 sampleIndex:0x7FFFFFFFFFFFFFFFLL];
-      if (!v65 || a9 && ([v65 startTimestamp], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "le:", a9), v22, (v23 & 1) == 0))
+      v65 = [self firstTaskStateOnOrAfterTime:cpuCycles sampleIndex:0x7FFFFFFFFFFFFFFFLL];
+      if (!v65 || time && ([v65 startTimestamp], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "le:", time), v22, (v23 & 1) == 0))
       {
         v44 = *__error();
         v45 = _sa_logt();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
-          v46 = [v65 startTimestamp];
-          v47 = [v46 debugDescription];
+          startTimestamp = [v65 startTimestamp];
+          v47 = [startTimestamp debugDescription];
           v48 = v47;
-          v49 = [v47 UTF8String];
-          v50 = [a9 debugDescription];
+          uTF8String = [v47 UTF8String];
+          v50 = [time debugDescription];
           v51 = v50;
-          v52 = [v50 UTF8String];
+          uTF8String2 = [v50 UTF8String];
           *buf = 136315394;
-          *&buf[4] = v49;
+          *&buf[4] = uTF8String;
           *&buf[12] = 2080;
-          *&buf[14] = v52;
+          *&buf[14] = uTF8String2;
           _os_log_error_impl(&dword_1E0E2F000, v45, OS_LOG_TYPE_ERROR, "firstTaskState.startTimestamp %s > endTimestamp %s", buf, 0x16u);
         }
 
         *__error() = v44;
-        v53 = [v65 startTimestamp];
-        v54 = [v53 debugDescription];
+        startTimestamp2 = [v65 startTimestamp];
+        v54 = [startTimestamp2 debugDescription];
         v55 = v54;
-        v56 = [v54 UTF8String];
-        v57 = [a9 debugDescription];
+        uTF8String3 = [v54 UTF8String];
+        v57 = [time debugDescription];
         v58 = v57;
         [v57 UTF8String];
-        _SASetCrashLogMessage(2086, "firstTaskState.startTimestamp %s > endTimestamp %s", v59, v60, v61, v62, v63, v64, v56);
+        _SASetCrashLogMessage(2086, "firstTaskState.startTimestamp %s > endTimestamp %s", v59, v60, v61, v62, v63, v64, uTF8String3);
 
         _os_crash();
         __break(1u);
       }
 
       v24 = v65;
-      v25 = [v65 terminatedThreadsCpuTimeNs];
-      v101[3] -= v25;
-      v26 = [v65 terminatedThreadsInstructions];
-      v97[3] -= v26;
-      v27 = [v65 terminatedThreadsCycles];
-      v93[3] -= v27;
+      terminatedThreadsCpuTimeNs3 = [v65 terminatedThreadsCpuTimeNs];
+      v101[3] -= terminatedThreadsCpuTimeNs3;
+      terminatedThreadsInstructions2 = [v65 terminatedThreadsInstructions];
+      v97[3] -= terminatedThreadsInstructions2;
+      terminatedThreadsCycles2 = [v65 terminatedThreadsCycles];
+      v93[3] -= terminatedThreadsCycles2;
     }
   }
 
   else
   {
     v24 = 0;
-    v20 = 0;
+    endTimestamp = 0;
   }
 
-  v28 = a9;
-  if (!a9)
+  timeCopy = time;
+  if (!time)
   {
-    v28 = v20;
+    timeCopy = endTimestamp;
   }
 
-  v29 = v28;
+  v29 = timeCopy;
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
@@ -4732,26 +4732,26 @@ LABEL_29:
   v85 = &v84;
   v86 = 0x2020000000;
   v87 = 0;
-  v30 = a1[2];
+  v30 = self[2];
   v70[0] = MEMORY[0x1E69E9820];
   v70[1] = 3221225472;
   v70[2] = __134__SATask_cpuTimeNs_cpuInstructions_cpuCycles_nonThreadCpuTimeNs_nonThreadCpuInstructions_nonThreadCpuCycles_betweenStartTime_endTime___block_invoke;
   v70[3] = &unk_1E86F86F8;
   v31 = v29;
   v71 = v31;
-  v83 = v67 != 0;
-  v32 = v20;
+  v83 = terminatedThreadsCpuTimeNs != 0;
+  v32 = endTimestamp;
   v72 = v32;
   v33 = v14;
   v73 = v33;
-  v74 = a8;
+  cpuCyclesCopy = cpuCycles;
   v78 = &v96;
   v79 = &v92;
   v80 = buf;
   v81 = &v88;
   v82 = &v84;
   v77 = &v100;
-  v75 = a1;
+  selfCopy = self;
   v34 = v24;
   v76 = v34;
   [v30 enumerateKeysAndObjectsUsingBlock:v70];
@@ -4793,29 +4793,29 @@ LABEL_32:
     *v42 = v37[3];
   }
 
-  if (a3)
+  if (ns)
   {
-    *a3 = v39[3];
+    *ns = v39[3];
   }
 
-  if (a4)
+  if (instructions)
   {
-    *a4 = v41[3];
+    *instructions = v41[3];
   }
 
-  if (a5)
+  if (cycles)
   {
-    *a5 = v37[3] - *(v35 + 24);
+    *cycles = v37[3] - *(v35 + 24);
   }
 
-  if (a6)
+  if (timeNs)
   {
-    *a6 = v39[3] - v38[3];
+    *timeNs = v39[3] - v38[3];
   }
 
-  if (a7)
+  if (cpuInstructions)
   {
-    *a7 = v41[3] - v40[3];
+    *cpuInstructions = v41[3] - v40[3];
   }
 
   _Block_object_dispose(&v84, 8);
@@ -5050,21 +5050,21 @@ LABEL_44:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fixupFrameInstructionsWithDataGatheringOptions:(int)a3 mightBeAlive:(_BYTE *)a4 foundNewBinaryInfo:(uint64_t)a5 uuidsWithNewInstructions:(int)a6 additionalCSSymbolicatorFlags:
+- (void)fixupFrameInstructionsWithDataGatheringOptions:(int)options mightBeAlive:(_BYTE *)alive foundNewBinaryInfo:(uint64_t)info uuidsWithNewInstructions:(int)instructions additionalCSSymbolicatorFlags:
 {
   v67 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_52;
   }
 
-  v10 = a1;
-  if (a4)
+  selfCopy = self;
+  if (alive)
   {
-    *a4 = 0;
+    *alive = 0;
   }
 
-  if (!*(a1 + 280))
+  if (!*(self + 280))
   {
     goto LABEL_52;
   }
@@ -5073,7 +5073,7 @@ LABEL_44:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = *(a1 + 256);
+  obj = *(self + 256);
   v11 = [obj countByEnumeratingWithState:&v57 objects:v66 count:16];
   if (!v11)
   {
@@ -5084,11 +5084,11 @@ LABEL_40:
     goto LABEL_42;
   }
 
-  v43 = a3;
+  optionsCopy = options;
   v44 = a2;
-  v45 = a6;
-  v46 = a5;
-  v48 = v10;
+  instructionsCopy = instructions;
+  infoCopy = info;
+  v48 = selfCopy;
   v12 = 0;
   v13 = *v58;
   v14 = obj;
@@ -5106,19 +5106,19 @@ LABEL_40:
       }
 
       v17 = *(*(&v57 + 1) + 8 * v16);
-      v18 = [v17 segment];
+      segment = [v17 segment];
 
-      if (!v18)
+      if (!segment)
       {
-        v19 = [v17 binary];
-        v20 = [v19 segments];
-        if (![v20 count])
+        binary = [v17 binary];
+        segments = [binary segments];
+        if (![segments count])
         {
           goto LABEL_34;
         }
 
-        v21 = [v20 firstObject];
-        if ([v21 hasOffsetIntoBinary] && objc_msgSend(v21, "offsetIntoBinary") < 0)
+        firstObject = [segments firstObject];
+        if ([firstObject hasOffsetIntoBinary] && objc_msgSend(firstObject, "offsetIntoBinary") < 0)
         {
 LABEL_27:
           if (!v12)
@@ -5127,10 +5127,10 @@ LABEL_27:
           }
 
           [v12 removeObject:v17];
-          v32 = [v17 loadAddress];
-          v33 = [v17 isInKernelAddressSpace];
-          v22 = [v17 exclave];
-          v34 = [SABinaryLoadInfo loadInfosForSegmentsInBinary:v19 binaryBaseAddress:v32 isInKernelAddressSpace:v33 exclave:v22];
+          loadAddress = [v17 loadAddress];
+          isInKernelAddressSpace = [v17 isInKernelAddressSpace];
+          exclave = [v17 exclave];
+          v34 = [SABinaryLoadInfo loadInfosForSegmentsInBinary:binary binaryBaseAddress:loadAddress isInKernelAddressSpace:isInKernelAddressSpace exclave:exclave];
           [v12 addObjectsFromArray:v34];
 
 LABEL_31:
@@ -5139,7 +5139,7 @@ LABEL_31:
 
         else
         {
-          if (![v19 length])
+          if (![binary length])
           {
             goto LABEL_33;
           }
@@ -5148,8 +5148,8 @@ LABEL_31:
           v56 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v22 = [v20 reverseObjectEnumerator];
-          v23 = [v22 countByEnumeratingWithState:&v53 objects:v65 count:16];
+          exclave = [segments reverseObjectEnumerator];
+          v23 = [exclave countByEnumeratingWithState:&v53 objects:v65 count:16];
           if (v23)
           {
             v24 = v23;
@@ -5161,7 +5161,7 @@ LABEL_17:
             {
               if (*v54 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(exclave);
               }
 
               v27 = *(*(&v53 + 1) + 8 * v26);
@@ -5172,7 +5172,7 @@ LABEL_17:
 
               if (v24 == ++v26)
               {
-                v24 = [v22 countByEnumeratingWithState:&v53 objects:v65 count:16];
+                v24 = [exclave countByEnumeratingWithState:&v53 objects:v65 count:16];
                 if (v24)
                 {
                   goto LABEL_17;
@@ -5189,9 +5189,9 @@ LABEL_30:
               goto LABEL_31;
             }
 
-            v28 = [v27 offsetIntoBinary];
-            v29 = [v27 length] + v28;
-            v30 = [v19 length];
+            offsetIntoBinary = [v27 offsetIntoBinary];
+            v29 = [v27 length] + offsetIntoBinary;
+            v30 = [binary length];
 
             v31 = v29 > v30;
             v14 = obj;
@@ -5230,30 +5230,30 @@ LABEL_35:
     objc_opt_self();
     [v12 sortUsingComparator:&__block_literal_global_361];
     v35 = [v12 copy];
-    v10 = v48;
+    selfCopy = v48;
     v36 = *(v48 + 256);
     *(v48 + 256) = v35;
-    a5 = v46;
-    a6 = v45;
+    info = infoCopy;
+    instructions = instructionsCopy;
     a2 = v44;
-    a3 = v43;
+    options = optionsCopy;
     goto LABEL_40;
   }
 
-  v10 = v48;
-  a5 = v46;
-  a6 = v45;
+  selfCopy = v48;
+  info = infoCopy;
+  instructions = instructionsCopy;
   a2 = v44;
-  a3 = v43;
+  options = optionsCopy;
 LABEL_42:
-  if ([SAFrame fixupLoadInfosInFrameTree:*(v10 + 256) binaryLoadInfos:*(v10 + 264) libraryCache:a5 uuidsWithNewInstructions:?]&& a3 && [(SATask *)v10 gatherLoadInfoFromLiveProcessWithDataGatheringOptions:a2 additionalCSSymbolicatorFlags:a6])
+  if ([SAFrame fixupLoadInfosInFrameTree:*(selfCopy + 256) binaryLoadInfos:*(selfCopy + 264) libraryCache:info uuidsWithNewInstructions:?]&& options && [(SATask *)selfCopy gatherLoadInfoFromLiveProcessWithDataGatheringOptions:a2 additionalCSSymbolicatorFlags:instructions])
   {
-    if (a4)
+    if (alive)
     {
-      *a4 = 1;
+      *alive = 1;
     }
 
-    v37 = [SAFrame fixupLoadInfosInFrameTree:*(v10 + 256) binaryLoadInfos:*(v10 + 264) libraryCache:a5 uuidsWithNewInstructions:?];
+    v37 = [SAFrame fixupLoadInfosInFrameTree:*(selfCopy + 256) binaryLoadInfos:*(selfCopy + 264) libraryCache:info uuidsWithNewInstructions:?];
     if (v37)
     {
       v38 = v37;
@@ -5261,7 +5261,7 @@ LABEL_42:
       v40 = _sa_logt();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
       {
-        v42 = [v10 debugDescription];
+        v42 = [selfCopy debugDescription];
         *buf = 138412546;
         v62 = v42;
         v63 = 2048;
@@ -5279,19 +5279,19 @@ LABEL_52:
 
 - (uint64_t)isFromCurrentBootCycle
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 forkTimestamp];
-    v3 = v2;
-    if (!v2 || ([v2 wallTime], v4 == 0.0))
+    forkTimestamp = [self forkTimestamp];
+    v3 = forkTimestamp;
+    if (!forkTimestamp || ([forkTimestamp wallTime], v4 == 0.0))
     {
-      v7 = [v1 startTimestamp];
-      v8 = v7;
+      startTimestamp = [selfCopy startTimestamp];
+      v8 = startTimestamp;
       v6 = 0.0;
-      if (v7)
+      if (startTimestamp)
       {
-        [v7 wallTime];
+        [startTimestamp wallTime];
         if (v9 != 0.0)
         {
           [v8 wallTime];
@@ -5308,15 +5308,15 @@ LABEL_52:
 
     if (v6 == 0.0)
     {
-      v11 = [v1 sharedCache];
+      sharedCache = [selfCopy sharedCache];
 
-      if (v11)
+      if (sharedCache)
       {
-        v12 = [v1 sharedCache];
+        sharedCache2 = [selfCopy sharedCache];
         v13 = [SASharedCache currentSharedCacheWithDataGatheringOptions:?];
-        v1 = v12 == v13;
+        selfCopy = sharedCache2 == v13;
 
-        return v1;
+        return selfCopy;
       }
     }
 
@@ -5328,7 +5328,7 @@ LABEL_52:
     return 0;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (unint64_t)sizeInBytesForSerializedVersion
@@ -5341,10 +5341,10 @@ LABEL_52:
   return 8 * (v6 + v7 + [(NSMutableDictionary *)self->_swiftTasks count]) + 245;
 }
 
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v163 = *MEMORY[0x1E69E9840];
-  if ([(SATask *)self sizeInBytesForSerializedVersion]!= a4)
+  if ([(SATask *)self sizeInBytesForSerializedVersion]!= length)
   {
     v39 = *__error();
     v40 = _sa_logt();
@@ -5352,59 +5352,59 @@ LABEL_52:
     {
       v41 = [(SATask *)self debugDescription];
       *buf = 136315650;
-      v152 = [v41 UTF8String];
+      uTF8String = [v41 UTF8String];
       v153 = 2048;
       *v154 = [(SATask *)self sizeInBytesForSerializedVersion];
       *&v154[8] = 2048;
-      v155 = a4;
+      lengthCopy = length;
       _os_log_error_impl(&dword_1E0E2F000, v40, OS_LOG_TYPE_ERROR, "%s: size %lu != buffer length %lu", buf, 0x20u);
     }
 
     *__error() = v39;
     v42 = [(SATask *)self debugDescription];
-    v43 = [v42 UTF8String];
+    uTF8String2 = [v42 UTF8String];
     [(SATask *)self sizeInBytesForSerializedVersion];
-    _SASetCrashLogMessage(3008, "%s: size %lu != buffer length %lu", v44, v45, v46, v47, v48, v49, v43);
+    _SASetCrashLogMessage(3008, "%s: size %lu != buffer length %lu", v44, v45, v46, v47, v48, v49, uTF8String2);
 
     _os_crash();
     __break(1u);
     goto LABEL_13;
   }
 
-  *&a3->var0 = 2817;
-  *(&a3->var1 + 1) = self->_pid;
-  *(&a3->var2 + 2) = self->_ppid;
-  *(&a3->var3 + 2) = self->_rpid;
-  *(&a3->var4 + 2) = self->_uid;
-  *(&a3->var5 + 2) = self->_uniquePid;
-  *(&a3->var10 + 2) = *&self->_timeOfLastResponse;
-  *(&a3->var18 + 6) = self->_architecture;
-  v10 = HIWORD(a3->var19) & 0xFFFE | self->_isUnresponsive;
-  HIWORD(a3->var19) = v10;
+  *&buffer->var0 = 2817;
+  *(&buffer->var1 + 1) = self->_pid;
+  *(&buffer->var2 + 2) = self->_ppid;
+  *(&buffer->var3 + 2) = self->_rpid;
+  *(&buffer->var4 + 2) = self->_uid;
+  *(&buffer->var5 + 2) = self->_uniquePid;
+  *(&buffer->var10 + 2) = *&self->_timeOfLastResponse;
+  *(&buffer->var18 + 6) = self->_architecture;
+  v10 = HIWORD(buffer->var19) & 0xFFFE | self->_isUnresponsive;
+  HIWORD(buffer->var19) = v10;
   v11 = v10 & 0xFFFD | (2 * self->_usesSuddenTermination);
-  HIWORD(a3->var19) = v11;
+  HIWORD(buffer->var19) = v11;
   v12 = v11 & 0xFFFB | (4 * self->_allowsIdleExit);
-  HIWORD(a3->var19) = v12;
+  HIWORD(buffer->var19) = v12;
   v13 = v12 & 0xFFB7 | (self->_isRunningBoardManaged << 6);
-  HIWORD(a3->var19) = v13;
+  HIWORD(buffer->var19) = v13;
   v14 = v13 & 0xFFE7 | (16 * self->_isTranslocated);
-  HIWORD(a3->var19) = v14;
+  HIWORD(buffer->var19) = v14;
   v15 = v14 & 0xFF7F | (self->_hardenedHeap << 7);
-  HIWORD(a3->var19) = v15;
+  HIWORD(buffer->var19) = v15;
   v16 = v15 & 0xFEFF | (self->_mteCheckedAllocationsEnabled << 8);
-  HIWORD(a3->var19) = v16;
+  HIWORD(buffer->var19) = v16;
   v17 = v16 & 0xFDFF | (self->_mteUserDataAllocationsTagged << 9);
-  HIWORD(a3->var19) = v17;
+  HIWORD(buffer->var19) = v17;
   v18 = v17 & 0xFBFF | (self->_mteSoftModeEnabled << 10);
-  HIWORD(a3->var19) = v18;
-  HIWORD(a3->var19) = v18 & 0xF7FF | (self->_mteInheritanceTurnedOn << 11);
-  *(&a3->var6 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_name, a5);
-  *(&a3->var7 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_bundleName, a5);
-  *(&a3->var8 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_execTimestamp, a5);
-  *(&a3->var9 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_exitTimestamp, a5);
-  *(&a3->var15 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_mainThread, a5);
-  *(&a3->var16 + 6) = SASerializableIndexForPointerFromSerializationDictionary(self->_mainBinaryPath, a5);
-  *(&a3->var17 + 6) = SASerializableIndexForPointerFromSerializationDictionary(self->_sharedCache, a5);
+  HIWORD(buffer->var19) = v18;
+  HIWORD(buffer->var19) = v18 & 0xF7FF | (self->_mteInheritanceTurnedOn << 11);
+  *(&buffer->var6 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_name, dictionary);
+  *(&buffer->var7 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_bundleName, dictionary);
+  *(&buffer->var8 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_execTimestamp, dictionary);
+  *(&buffer->var9 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_exitTimestamp, dictionary);
+  *(&buffer->var15 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_mainThread, dictionary);
+  *(&buffer->var16 + 6) = SASerializableIndexForPointerFromSerializationDictionary(self->_mainBinaryPath, dictionary);
+  *(&buffer->var17 + 6) = SASerializableIndexForPointerFromSerializationDictionary(self->_sharedCache, dictionary);
   if ([(NSMutableSet *)self->_rootFrames count]>= 0xFFFFFFFF)
   {
 LABEL_13:
@@ -5413,10 +5413,10 @@ LABEL_13:
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
     {
       v52 = [(SATask *)self debugDescription];
-      v53 = [v52 UTF8String];
+      uTF8String3 = [v52 UTF8String];
       v54 = [(NSMutableSet *)self->_rootFrames count];
       *buf = 136315394;
-      v152 = v53;
+      uTF8String = uTF8String3;
       v153 = 2048;
       *v154 = v54;
       _os_log_error_impl(&dword_1E0E2F000, v51, OS_LOG_TYPE_ERROR, "%s: %lu rootFrames", buf, 0x16u);
@@ -5424,9 +5424,9 @@ LABEL_13:
 
     *__error() = v50;
     v55 = [(SATask *)self debugDescription];
-    v56 = [v55 UTF8String];
+    uTF8String4 = [v55 UTF8String];
     [(NSMutableSet *)self->_rootFrames count];
-    _SASetCrashLogMessage(3043, "%s: %lu rootFrames", v57, v58, v59, v60, v61, v62, v56);
+    _SASetCrashLogMessage(3043, "%s: %lu rootFrames", v57, v58, v59, v60, v61, v62, uTF8String4);
 
     _os_crash();
     __break(1u);
@@ -5434,8 +5434,8 @@ LABEL_13:
   }
 
   v19 = [(NSMutableSet *)self->_rootFrames count];
-  *(&a3->var11 + 2) = v19;
-  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(&a3->var20, v19, self->_rootFrames, a5);
+  *(&buffer->var11 + 2) = v19;
+  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(&buffer->var20, v19, self->_rootFrames, dictionary);
   if ([(NSArray *)self->_binaryLoadInfos count]>= 0xFFFFFFFF)
   {
 LABEL_16:
@@ -5444,10 +5444,10 @@ LABEL_16:
     if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
     {
       v65 = [(SATask *)self debugDescription];
-      v66 = [v65 UTF8String];
+      uTF8String5 = [v65 UTF8String];
       v67 = [(NSArray *)self->_binaryLoadInfos count];
       *buf = 136315394;
-      v152 = v66;
+      uTF8String = uTF8String5;
       v153 = 2048;
       *v154 = v67;
       _os_log_error_impl(&dword_1E0E2F000, v64, OS_LOG_TYPE_ERROR, "%s: %lu binaryLoadInfos", buf, 0x16u);
@@ -5455,9 +5455,9 @@ LABEL_16:
 
     *__error() = v63;
     v68 = [(SATask *)self debugDescription];
-    v69 = [v68 UTF8String];
+    uTF8String6 = [v68 UTF8String];
     [(NSArray *)self->_binaryLoadInfos count];
-    _SASetCrashLogMessage(3048, "%s: %lu binaryLoadInfos", v70, v71, v72, v73, v74, v75, v69);
+    _SASetCrashLogMessage(3048, "%s: %lu binaryLoadInfos", v70, v71, v72, v73, v74, v75, uTF8String6);
 
     _os_crash();
     __break(1u);
@@ -5465,9 +5465,9 @@ LABEL_16:
   }
 
   v20 = [(NSArray *)self->_binaryLoadInfos count];
-  *(&a3->var11 + 6) = v20;
-  v21 = &a3->var20 + *(&a3->var11 + 2);
-  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(v21, v20, self->_binaryLoadInfos, a5);
+  *(&buffer->var11 + 6) = v20;
+  v21 = &buffer->var20 + *(&buffer->var11 + 2);
+  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(v21, v20, self->_binaryLoadInfos, dictionary);
   if ([(NSMutableArray *)self->_taskStates count]>= 0xFFFFFFFF)
   {
 LABEL_19:
@@ -5476,10 +5476,10 @@ LABEL_19:
     if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
     {
       v78 = [(SATask *)self debugDescription];
-      v79 = [v78 UTF8String];
+      uTF8String7 = [v78 UTF8String];
       v80 = [(NSMutableArray *)self->_taskStates count];
       *buf = 136315394;
-      v152 = v79;
+      uTF8String = uTF8String7;
       v153 = 2048;
       *v154 = v80;
       _os_log_error_impl(&dword_1E0E2F000, v77, OS_LOG_TYPE_ERROR, "%s: %lu taskStates", buf, 0x16u);
@@ -5487,9 +5487,9 @@ LABEL_19:
 
     *__error() = v76;
     v81 = [(SATask *)self debugDescription];
-    v82 = [v81 UTF8String];
+    uTF8String8 = [v81 UTF8String];
     [(NSMutableArray *)self->_taskStates count];
-    _SASetCrashLogMessage(3053, "%s: %lu taskStates", v83, v84, v85, v86, v87, v88, v82);
+    _SASetCrashLogMessage(3053, "%s: %lu taskStates", v83, v84, v85, v86, v87, v88, uTF8String8);
 
     _os_crash();
     __break(1u);
@@ -5497,9 +5497,9 @@ LABEL_19:
   }
 
   v22 = [(NSMutableArray *)self->_taskStates count];
-  *(&a3->var12 + 2) = v22;
-  v23 = &v21[*(&a3->var11 + 6)];
-  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(v23, v22, self->_taskStates, a5);
+  *(&buffer->var12 + 2) = v22;
+  v23 = &v21[*(&buffer->var11 + 6)];
+  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(v23, v22, self->_taskStates, dictionary);
   if ([(NSMutableDictionary *)self->_threads count]>= 0xFFFFFFFF)
   {
 LABEL_22:
@@ -5508,10 +5508,10 @@ LABEL_22:
     if (os_log_type_enabled(v90, OS_LOG_TYPE_ERROR))
     {
       v91 = [(SATask *)self debugDescription];
-      v92 = [v91 UTF8String];
+      uTF8String9 = [v91 UTF8String];
       v93 = [(NSMutableDictionary *)self->_threads count];
       *buf = 136315394;
-      v152 = v92;
+      uTF8String = uTF8String9;
       v153 = 2048;
       *v154 = v93;
       _os_log_error_impl(&dword_1E0E2F000, v90, OS_LOG_TYPE_ERROR, "%s: %lu threads", buf, 0x16u);
@@ -5519,9 +5519,9 @@ LABEL_22:
 
     *__error() = v89;
     v94 = [(SATask *)self debugDescription];
-    v95 = [v94 UTF8String];
+    uTF8String10 = [v94 UTF8String];
     [(NSMutableDictionary *)self->_threads count];
-    _SASetCrashLogMessage(3058, "%s: %lu threads", v96, v97, v98, v99, v100, v101, v95);
+    _SASetCrashLogMessage(3058, "%s: %lu threads", v96, v97, v98, v99, v100, v101, uTF8String10);
 
     _os_crash();
     __break(1u);
@@ -5529,11 +5529,11 @@ LABEL_22:
   }
 
   v24 = [(NSMutableDictionary *)self->_threads count];
-  *(&a3->var13 + 2) = v24;
-  v25 = &v23[*(&a3->var12 + 2)];
+  *(&buffer->var13 + 2) = v24;
+  v25 = &v23[*(&buffer->var12 + 2)];
   v26 = v24;
-  v27 = [(NSMutableDictionary *)self->_threads allValues];
-  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(v25, v26, v27, a5);
+  allValues = [(NSMutableDictionary *)self->_threads allValues];
+  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(v25, v26, allValues, dictionary);
 
   if ([(NSMutableDictionary *)self->_dispatchQueues count]>= 0xFFFFFFFF)
   {
@@ -5543,20 +5543,20 @@ LABEL_25:
     if (os_log_type_enabled(v103, OS_LOG_TYPE_ERROR))
     {
       v104 = [(SATask *)self debugDescription];
-      v105 = [v104 UTF8String];
+      uTF8String11 = [v104 UTF8String];
       v106 = [(NSMutableDictionary *)self->_dispatchQueues count];
       *buf = 136315394;
-      v152 = v105;
+      uTF8String = uTF8String11;
       v153 = 2048;
       *v154 = v106;
       _os_log_error_impl(&dword_1E0E2F000, v103, OS_LOG_TYPE_ERROR, "%s: %lu dispatchQueues", buf, 0x16u);
     }
 
     *__error() = v102;
-    a3 = [(SATask *)self debugDescription];
-    v107 = [($0248558AA1E9D335F2AA4C2D9BB3C007 *)a3 UTF8String];
+    buffer = [(SATask *)self debugDescription];
+    uTF8String12 = [($0248558AA1E9D335F2AA4C2D9BB3C007 *)buffer UTF8String];
     [(NSMutableDictionary *)self->_dispatchQueues count];
-    _SASetCrashLogMessage(3063, "%s: %lu dispatchQueues", v108, v109, v110, v111, v112, v113, v107);
+    _SASetCrashLogMessage(3063, "%s: %lu dispatchQueues", v108, v109, v110, v111, v112, v113, uTF8String12);
 
     _os_crash();
     __break(1u);
@@ -5564,14 +5564,14 @@ LABEL_25:
   }
 
   v28 = [(NSMutableDictionary *)self->_dispatchQueues count];
-  *(&a3->var14 + 2) = v28;
-  v29 = &v25[*(&a3->var13 + 2)];
+  *(&buffer->var14 + 2) = v28;
+  v29 = &v25[*(&buffer->var13 + 2)];
   v30 = v28;
-  v31 = [(NSMutableDictionary *)self->_dispatchQueues allValues];
-  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(v29, v30, v31, a5);
+  allValues2 = [(NSMutableDictionary *)self->_dispatchQueues allValues];
+  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(v29, v30, allValues2, dictionary);
 
-  v32 = &v29[8 * *(&a3->var14 + 2)];
-  v5 = v32 + 109 - a3;
+  v32 = &v29[8 * *(&buffer->var14 + 2)];
+  v5 = v32 + 109 - buffer;
   if (v5 > [(SATask *)self sizeInBytesForSerializedVersion])
   {
 LABEL_28:
@@ -5580,23 +5580,23 @@ LABEL_28:
     if (os_log_type_enabled(v114, OS_LOG_TYPE_ERROR))
     {
       v115 = [(SATask *)self debugDescription];
-      v116 = [v115 UTF8String];
-      v117 = *(&a3->var11 + 2);
-      v118 = *(&a3->var11 + 6);
-      v119 = *(&a3->var12 + 2);
-      v120 = *(&a3->var13 + 2);
+      uTF8String13 = [v115 UTF8String];
+      v117 = *(&buffer->var11 + 2);
+      v118 = *(&buffer->var11 + 6);
+      v119 = *(&buffer->var12 + 2);
+      v120 = *(&buffer->var13 + 2);
       log = v114;
-      v121 = *(&a3->var14 + 2);
-      v122 = [(SATask *)self sizeInBytesForSerializedVersion];
+      v121 = *(&buffer->var14 + 2);
+      sizeInBytesForSerializedVersion = [(SATask *)self sizeInBytesForSerializedVersion];
       *buf = 136316930;
-      v152 = v116;
+      uTF8String = uTF8String13;
       v153 = 1024;
       *v154 = v117;
       *&v154[4] = 1024;
       *&v154[6] = v118;
-      LOWORD(v155) = 1024;
-      *(&v155 + 2) = v119;
-      HIWORD(v155) = 1024;
+      LOWORD(lengthCopy) = 1024;
+      *(&lengthCopy + 2) = v119;
+      HIWORD(lengthCopy) = 1024;
       v156 = v120;
       v157 = 1024;
       v158 = v121;
@@ -5604,20 +5604,20 @@ LABEL_28:
       v159 = 2048;
       v160 = v5;
       v161 = 2048;
-      v162 = v122;
+      v162 = sizeInBytesForSerializedVersion;
       _os_log_error_impl(&dword_1E0E2F000, log, OS_LOG_TYPE_ERROR, "%s: after serializing (with %u rootFrames, %u loadInfos, %u task states, %u threads, %u dispatch queues), ended with length %ld, should be %lu", buf, 0x3Eu);
     }
 
     *__error() = v150;
     v123 = [(SATask *)self debugDescription];
-    v124 = [v123 UTF8String];
-    v125 = *(&a3->var11 + 2);
-    v126 = *(&a3->var11 + 6);
-    v127 = *(&a3->var12 + 2);
-    v128 = *(&a3->var13 + 2);
-    v129 = *(&a3->var14 + 2);
+    uTF8String14 = [v123 UTF8String];
+    v125 = *(&buffer->var11 + 2);
+    v126 = *(&buffer->var11 + 6);
+    v127 = *(&buffer->var12 + 2);
+    v128 = *(&buffer->var13 + 2);
+    v129 = *(&buffer->var14 + 2);
     [(SATask *)self sizeInBytesForSerializedVersion];
-    _SASetCrashLogMessage(3070, "%s: after serializing (with %u rootFrames, %u loadInfos, %u task states, %u threads, %u dispatch queues), ended with length %ld, should be %lu", v130, v131, v132, v133, v134, v135, v124);
+    _SASetCrashLogMessage(3070, "%s: after serializing (with %u rootFrames, %u loadInfos, %u task states, %u threads, %u dispatch queues), ended with length %ld, should be %lu", v130, v131, v132, v133, v134, v135, uTF8String14);
 
     _os_crash();
     __break(1u);
@@ -5627,10 +5627,10 @@ LABEL_31:
     if (os_log_type_enabled(v137, OS_LOG_TYPE_ERROR))
     {
       v138 = [(SATask *)self debugDescription];
-      v139 = [v138 UTF8String];
+      uTF8String15 = [v138 UTF8String];
       v140 = [(NSMutableDictionary *)self->_swiftTasks count];
       *buf = 136315394;
-      v152 = v139;
+      uTF8String = uTF8String15;
       v153 = 2048;
       *v154 = v140;
       _os_log_error_impl(&dword_1E0E2F000, v137, OS_LOG_TYPE_ERROR, "%s: %lu swiftTasks", buf, 0x16u);
@@ -5638,27 +5638,27 @@ LABEL_31:
 
     *__error() = v136;
     v141 = [(SATask *)self debugDescription];
-    v142 = [v141 UTF8String];
+    uTF8String16 = [v141 UTF8String];
     [(NSMutableDictionary *)self->_swiftTasks count];
-    _SASetCrashLogMessage(3093, "%s: %lu swiftTasks", v143, v144, v145, v146, v147, v148, v142);
+    _SASetCrashLogMessage(3093, "%s: %lu swiftTasks", v143, v144, v145, v146, v147, v148, uTF8String16);
 
     _os_crash();
     __break(1u);
   }
 
-  *v32 = SASerializableIndexForPointerFromSerializationDictionary(self->_bundleBuildVersion, a5);
-  *(v32 + 1) = SASerializableIndexForPointerFromSerializationDictionary(self->_bundleProjectName, a5);
-  *(v32 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_bundleSourceVersion, a5);
-  *(v32 + 3) = SASerializableIndexForPointerFromSerializationDictionary(self->_bundleProductBuildVersion, a5);
-  *(v32 + 7) = SASerializableIndexForPointerFromSerializationDictionary(self->_mainBinary, a5);
+  *v32 = SASerializableIndexForPointerFromSerializationDictionary(self->_bundleBuildVersion, dictionary);
+  *(v32 + 1) = SASerializableIndexForPointerFromSerializationDictionary(self->_bundleProjectName, dictionary);
+  *(v32 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_bundleSourceVersion, dictionary);
+  *(v32 + 3) = SASerializableIndexForPointerFromSerializationDictionary(self->_bundleProductBuildVersion, dictionary);
+  *(v32 + 7) = SASerializableIndexForPointerFromSerializationDictionary(self->_mainBinary, dictionary);
   *(v32 + 4) = -1;
-  *(v32 + 5) = SASerializableIndexForPointerFromSerializationDictionary(self->_installerVersionID, a5);
+  *(v32 + 5) = SASerializableIndexForPointerFromSerializationDictionary(self->_installerVersionID, dictionary);
   *(v32 + 8) = self->_adamID;
-  *(v32 + 6) = SASerializableIndexForPointerFromSerializationDictionary(self->_vendorID, a5);
-  *(v32 + 9) = SASerializableIndexForPointerFromSerializationDictionary(self->_appType, a5);
-  *(v32 + 10) = SASerializableIndexForPointerFromSerializationDictionary(self->_cohortID, a5);
-  HIWORD(a3->var19) = HIWORD(a3->var19) & 0xFFDF | (32 * self->_isBeta);
-  *(v32 + 11) = SASerializableIndexForPointerFromSerializationDictionary(self->_forkTimestamp, a5);
+  *(v32 + 6) = SASerializableIndexForPointerFromSerializationDictionary(self->_vendorID, dictionary);
+  *(v32 + 9) = SASerializableIndexForPointerFromSerializationDictionary(self->_appType, dictionary);
+  *(v32 + 10) = SASerializableIndexForPointerFromSerializationDictionary(self->_cohortID, dictionary);
+  HIWORD(buffer->var19) = HIWORD(buffer->var19) & 0xFFDF | (32 * self->_isBeta);
+  *(v32 + 11) = SASerializableIndexForPointerFromSerializationDictionary(self->_forkTimestamp, dictionary);
   v32[96] = self->_developerType;
   *(v32 + 97) = self->_resourceCoalitionID;
   if ([(NSMutableDictionary *)self->_swiftTasks count]>= 0xFFFFFFFF)
@@ -5669,42 +5669,42 @@ LABEL_31:
   v33 = [(NSMutableDictionary *)self->_swiftTasks count];
   *(v32 + 105) = v33;
   v34 = v33;
-  v35 = [(NSMutableDictionary *)self->_swiftTasks allValues];
-  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(v32 + 109, v34, v35, a5);
+  allValues3 = [(NSMutableDictionary *)self->_swiftTasks allValues];
+  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(v32 + 109, v34, allValues3, dictionary);
 
   v36 = &v32[8 * *(v32 + 105) + 109];
-  *v36 = SASerializableIndexForPointerFromSerializationDictionary(self->_distributorID, a5);
-  v36[1] = SASerializableIndexForPointerFromSerializationDictionary(self->_resourceCoalitionName, a5);
+  *v36 = SASerializableIndexForPointerFromSerializationDictionary(self->_distributorID, dictionary);
+  v36[1] = SASerializableIndexForPointerFromSerializationDictionary(self->_resourceCoalitionName, dictionary);
   v37 = *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = [objc_opt_class() classDictionaryKey];
-  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, self, v5);
+  classDictionaryKey = [objc_opt_class() classDictionaryKey];
+  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(dictionary, self, classDictionaryKey);
 
   if (v6)
   {
-    [(NSString *)self->_name addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_bundleName addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_bundleBuildVersion addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_bundleProjectName addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_bundleSourceVersion addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_bundleProductBuildVersion addSelfToSerializationDictionary:a3];
-    [(SATimestamp *)self->_execTimestamp addSelfToSerializationDictionary:a3];
-    [(SATimestamp *)self->_exitTimestamp addSelfToSerializationDictionary:a3];
-    [(SAThread *)self->_mainThread addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_mainBinaryPath addSelfToSerializationDictionary:a3];
-    [(SABinary *)self->_mainBinary addSelfToSerializationDictionary:a3];
-    [(SASharedCache *)self->_sharedCache addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_installerVersionID addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_vendorID addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_distributorID addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_appType addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_cohortID addSelfToSerializationDictionary:a3];
-    [(SATimestamp *)self->_forkTimestamp addSelfToSerializationDictionary:a3];
+    [(NSString *)self->_name addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_bundleName addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_bundleBuildVersion addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_bundleProjectName addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_bundleSourceVersion addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_bundleProductBuildVersion addSelfToSerializationDictionary:dictionary];
+    [(SATimestamp *)self->_execTimestamp addSelfToSerializationDictionary:dictionary];
+    [(SATimestamp *)self->_exitTimestamp addSelfToSerializationDictionary:dictionary];
+    [(SAThread *)self->_mainThread addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_mainBinaryPath addSelfToSerializationDictionary:dictionary];
+    [(SABinary *)self->_mainBinary addSelfToSerializationDictionary:dictionary];
+    [(SASharedCache *)self->_sharedCache addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_installerVersionID addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_vendorID addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_distributorID addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_appType addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_cohortID addSelfToSerializationDictionary:dictionary];
+    [(SATimestamp *)self->_forkTimestamp addSelfToSerializationDictionary:dictionary];
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
@@ -5725,7 +5725,7 @@ LABEL_31:
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v37 + 1) + 8 * v11++) addSelfToSerializationDictionary:a3];
+          [*(*(&v37 + 1) + 8 * v11++) addSelfToSerializationDictionary:dictionary];
         }
 
         while (v9 != v11);
@@ -5755,7 +5755,7 @@ LABEL_31:
             objc_enumerationMutation(v12);
           }
 
-          [*(*(&v33 + 1) + 8 * v16++) addSelfToSerializationDictionary:a3];
+          [*(*(&v33 + 1) + 8 * v16++) addSelfToSerializationDictionary:dictionary];
         }
 
         while (v14 != v16);
@@ -5785,7 +5785,7 @@ LABEL_31:
             objc_enumerationMutation(v17);
           }
 
-          [*(*(&v29 + 1) + 8 * v21++) addSelfToSerializationDictionary:a3];
+          [*(*(&v29 + 1) + 8 * v21++) addSelfToSerializationDictionary:dictionary];
         }
 
         while (v19 != v21);
@@ -5800,71 +5800,71 @@ LABEL_31:
     v28[1] = 3221225472;
     v28[2] = __58__SATask_Serialization__addSelfToSerializationDictionary___block_invoke;
     v28[3] = &unk_1E86F6028;
-    v28[4] = a3;
+    v28[4] = dictionary;
     [(NSMutableDictionary *)threads enumerateKeysAndObjectsUsingBlock:v28];
     dispatchQueues = self->_dispatchQueues;
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __58__SATask_Serialization__addSelfToSerializationDictionary___block_invoke_2;
     v27[3] = &unk_1E86F8720;
-    v27[4] = a3;
+    v27[4] = dictionary;
     [(NSMutableDictionary *)dispatchQueues enumerateKeysAndObjectsUsingBlock:v27];
     swiftTasks = self->_swiftTasks;
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __58__SATask_Serialization__addSelfToSerializationDictionary___block_invoke_3;
     v26[3] = &unk_1E86F8748;
-    v26[4] = a3;
+    v26[4] = dictionary;
     [(NSMutableDictionary *)swiftTasks enumerateKeysAndObjectsUsingBlock:v26];
-    [(NSString *)self->_resourceCoalitionName addSelfToSerializationDictionary:a3];
+    [(NSString *)self->_resourceCoalitionName addSelfToSerializationDictionary:dictionary];
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (*a3 >= 0xCu)
+  if (*buffer >= 0xCu)
   {
     goto LABEL_14;
   }
 
-  if (a4 <= 0x77)
+  if (length <= 0x77)
   {
     v9 = *__error();
-    v5 = _sa_logt();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    bufferCopy = _sa_logt();
+    if (os_log_type_enabled(bufferCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v36 = a4;
+      lengthCopy2 = length;
       v37 = 2048;
       *v38 = 120;
-      _os_log_error_impl(&dword_1E0E2F000, v5, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SATask struct %lu", buf, 0x16u);
+      _os_log_error_impl(&dword_1E0E2F000, bufferCopy, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SATask struct %lu", buf, 0x16u);
     }
 
     *__error() = v9;
-    _SASetCrashLogMessage(3165, "bufferLength %lu < serialized SATask struct %lu", v10, v11, v12, v13, v14, v15, a4);
+    _SASetCrashLogMessage(3165, "bufferLength %lu < serialized SATask struct %lu", v10, v11, v12, v13, v14, v15, length);
     _os_crash();
     __break(1u);
     goto LABEL_11;
   }
 
-  v5 = a3;
-  if (8 * (vaddvq_s32(*(a3 + 66)) + *(a3 + 82)) + 120 > a4)
+  bufferCopy = buffer;
+  if (8 * (vaddvq_s32(*(buffer + 66)) + *(buffer + 82)) + 120 > length)
   {
 LABEL_11:
     v16 = *__error();
     v17 = _sa_logt();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = *(v5 + 66);
-      v19 = *(v5 + 70);
-      v20 = *(v5 + 74);
-      v21 = *(v5 + 78);
-      v22 = *(v5 + 82);
+      v18 = *(bufferCopy + 66);
+      v19 = *(bufferCopy + 70);
+      v20 = *(bufferCopy + 74);
+      v21 = *(bufferCopy + 78);
+      v22 = *(bufferCopy + 82);
       *buf = 134219264;
-      v36 = a4;
+      lengthCopy2 = length;
       v37 = 1024;
       *v38 = v18;
       *&v38[4] = 1024;
@@ -5879,12 +5879,12 @@ LABEL_11:
     }
 
     *__error() = v16;
-    v33 = *(v5 + 78);
-    v34 = *(v5 + 82);
-    v31 = *(v5 + 70);
-    v32 = *(v5 + 74);
-    v30 = *(v5 + 66);
-    _SASetCrashLogMessage(3166, "bufferLength %lu < serialized SATask struct with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues", v23, v24, v25, v26, v27, v28, a4);
+    v33 = *(bufferCopy + 78);
+    v34 = *(bufferCopy + 82);
+    v31 = *(bufferCopy + 70);
+    v32 = *(bufferCopy + 74);
+    v30 = *(bufferCopy + 66);
+    _SASetCrashLogMessage(3166, "bufferLength %lu < serialized SATask struct with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues", v23, v24, v25, v26, v27, v28, length);
     _os_crash();
     __break(1u);
 LABEL_14:
@@ -5892,29 +5892,29 @@ LABEL_14:
     objc_exception_throw(v29);
   }
 
-  result = [SATask taskWithPid:*(a3 + 18) uniquePid:0 name:0 sharedCache:?];
-  *(result + 20) = *(v5 + 2);
-  *(result + 21) = *(v5 + 6);
-  *(result + 22) = *(v5 + 10);
-  *(result + 23) = *(v5 + 14);
-  *(result + 12) = *(v5 + 18);
-  *(result + 31) = *(v5 + 58);
-  *(result + 36) = *(v5 + 110);
-  *(result + 67) = *(v5 + 118) & 1;
-  *(result + 68) = (*(v5 + 118) & 2) != 0;
-  *(result + 69) = (*(v5 + 118) & 4) != 0;
-  *(result + 70) = (*(v5 + 118) & 0x10) != 0;
-  v7 = *(v5 + 1);
+  result = [SATask taskWithPid:*(buffer + 18) uniquePid:0 name:0 sharedCache:?];
+  *(result + 20) = *(bufferCopy + 2);
+  *(result + 21) = *(bufferCopy + 6);
+  *(result + 22) = *(bufferCopy + 10);
+  *(result + 23) = *(bufferCopy + 14);
+  *(result + 12) = *(bufferCopy + 18);
+  *(result + 31) = *(bufferCopy + 58);
+  *(result + 36) = *(bufferCopy + 110);
+  *(result + 67) = *(bufferCopy + 118) & 1;
+  *(result + 68) = (*(bufferCopy + 118) & 2) != 0;
+  *(result + 69) = (*(bufferCopy + 118) & 4) != 0;
+  *(result + 70) = (*(bufferCopy + 118) & 0x10) != 0;
+  v7 = *(bufferCopy + 1);
   if (v7 >= 0xA)
   {
-    *(result + 72) = (*(v5 + 118) & 0x40) != 0;
+    *(result + 72) = (*(bufferCopy + 118) & 0x40) != 0;
     if (v7 != 10)
     {
-      *(result + 71) = (*(v5 + 118) & 0x80) != 0;
-      *(result + 75) = *(v5 + 119) & 1;
-      *(result + 76) = (*(v5 + 118) & 0x200) != 0;
-      *(result + 77) = (*(v5 + 118) & 0x400) != 0;
-      *(result + 78) = (*(v5 + 118) & 0x800) != 0;
+      *(result + 71) = (*(bufferCopy + 118) & 0x80) != 0;
+      *(result + 75) = *(bufferCopy + 119) & 1;
+      *(result + 76) = (*(bufferCopy + 118) & 0x200) != 0;
+      *(result + 77) = (*(bufferCopy + 118) & 0x400) != 0;
+      *(result + 78) = (*(bufferCopy + 118) & 0x800) != 0;
     }
   }
 
@@ -5922,50 +5922,50 @@ LABEL_14:
   return result;
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   v366 = *MEMORY[0x1E69E9840];
-  if (*a3 >= 0xCu)
+  if (*buffer >= 0xCu)
   {
     goto LABEL_82;
   }
 
-  if (a4 <= 0x77)
+  if (length <= 0x77)
   {
     v150 = *__error();
-    v10 = _sa_logt();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    bufferCopy = _sa_logt();
+    if (os_log_type_enabled(bufferCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v355 = a4;
+      lengthCopy2 = length;
       v356 = 2048;
       *v357 = 120;
-      _os_log_error_impl(&dword_1E0E2F000, v10, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SATask struct %lu", buf, 0x16u);
+      _os_log_error_impl(&dword_1E0E2F000, bufferCopy, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SATask struct %lu", buf, 0x16u);
     }
 
     *__error() = v150;
-    _SASetCrashLogMessage(3203, "bufferLength %lu < serialized SATask struct %lu", v151, v152, v153, v154, v155, v156, a4);
+    _SASetCrashLogMessage(3203, "bufferLength %lu < serialized SATask struct %lu", v151, v152, v153, v154, v155, v156, length);
     _os_crash();
     __break(1u);
     goto LABEL_52;
   }
 
-  v10 = a3;
-  v349 = 8 * (vaddvq_s32(*(a3 + 66)) + *(a3 + 82));
-  if (v349 + 120 > a4)
+  bufferCopy = buffer;
+  v349 = 8 * (vaddvq_s32(*(buffer + 66)) + *(buffer + 82));
+  if (v349 + 120 > length)
   {
 LABEL_52:
     v157 = *__error();
     v158 = _sa_logt();
     if (os_log_type_enabled(v158, OS_LOG_TYPE_ERROR))
     {
-      v159 = *(v10 + 66);
-      v160 = *(v10 + 70);
-      v161 = *(v10 + 74);
-      v162 = *(v10 + 78);
-      v163 = *(v10 + 82);
+      v159 = *(bufferCopy + 66);
+      v160 = *(bufferCopy + 70);
+      v161 = *(bufferCopy + 74);
+      v162 = *(bufferCopy + 78);
+      v163 = *(bufferCopy + 82);
       *buf = 134219264;
-      v355 = a4;
+      lengthCopy2 = length;
       v356 = 1024;
       *v357 = v159;
       *&v357[4] = 1024;
@@ -5980,12 +5980,12 @@ LABEL_52:
     }
 
     *__error() = v157;
-    v321 = *(v10 + 78);
-    v331 = *(v10 + 82);
-    v301 = *(v10 + 70);
-    v311 = *(v10 + 74);
-    v291 = *(v10 + 66);
-    _SASetCrashLogMessage(3205, "bufferLength %lu < serialized SATask struct with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues", v164, v165, v166, v167, v168, v169, a4);
+    v321 = *(bufferCopy + 78);
+    v331 = *(bufferCopy + 82);
+    v301 = *(bufferCopy + 70);
+    v311 = *(bufferCopy + 74);
+    v291 = *(bufferCopy + 66);
+    _SASetCrashLogMessage(3205, "bufferLength %lu < serialized SATask struct with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues", v164, v165, v166, v167, v168, v169, length);
     _os_crash();
     __break(1u);
 LABEL_55:
@@ -5999,7 +5999,7 @@ LABEL_55:
       v175 = *(v6 + 78);
       v176 = *(v6 + 82);
       *buf = 134219264;
-      v355 = v8;
+      lengthCopy2 = v8;
       v356 = 1024;
       *v357 = v172;
       *&v357[4] = 1024;
@@ -6033,7 +6033,7 @@ LABEL_58:
       v188 = *(v6 + 78);
       v189 = *(v6 + 82);
       *buf = 134219264;
-      v355 = v8;
+      lengthCopy2 = v8;
       v356 = 1024;
       *v357 = v185;
       *&v357[4] = 1024;
@@ -6067,7 +6067,7 @@ LABEL_61:
       v201 = *(v6 + 78);
       v202 = *(v6 + 82);
       *buf = 134219264;
-      v355 = v8;
+      lengthCopy2 = v8;
       v356 = 1024;
       *v357 = v198;
       *&v357[4] = 1024;
@@ -6101,7 +6101,7 @@ LABEL_64:
       v214 = *(v6 + 78);
       v215 = *(v6 + 82);
       *buf = 134219264;
-      v355 = v8;
+      lengthCopy2 = v8;
       v356 = 1024;
       *v357 = v211;
       *&v357[4] = 1024;
@@ -6135,7 +6135,7 @@ LABEL_67:
       v227 = *(v353 + 78);
       v228 = *(v353 + 82);
       *buf = 134219264;
-      v355 = v351;
+      lengthCopy2 = lengthCopy3;
       v356 = 1024;
       *v357 = v224;
       *&v357[4] = 1024;
@@ -6155,7 +6155,7 @@ LABEL_67:
     v306 = *(v353 + 70);
     v316 = *(v353 + 74);
     v296 = *(v353 + 66);
-    _SASetCrashLogMessage(3319, "bufferLength %lu < serialized SATask struct v6 with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues", v229, v230, v231, v232, v233, v234, v351);
+    _SASetCrashLogMessage(3319, "bufferLength %lu < serialized SATask struct v6 with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues", v229, v230, v231, v232, v233, v234, lengthCopy3);
     _os_crash();
     __break(1u);
 LABEL_70:
@@ -6169,7 +6169,7 @@ LABEL_70:
       v240 = *(v353 + 78);
       v241 = *(v353 + 82);
       *buf = 134219264;
-      v355 = v351;
+      lengthCopy2 = lengthCopy3;
       v356 = 1024;
       *v357 = v237;
       *&v357[4] = 1024;
@@ -6189,52 +6189,52 @@ LABEL_70:
     v307 = *(v353 + 70);
     v317 = *(v353 + 74);
     v297 = *(v353 + 66);
-    _SASetCrashLogMessage(3330, "bufferLength %lu < serialized SATask struct v7 with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues", v242, v243, v244, v245, v246, v247, v351);
+    _SASetCrashLogMessage(3330, "bufferLength %lu < serialized SATask struct v7 with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues", v242, v243, v244, v245, v246, v247, lengthCopy3);
     _os_crash();
     __break(1u);
     goto LABEL_73;
   }
 
-  v351 = a4;
-  v14 = *(a3 + 26);
+  lengthCopy3 = length;
+  v14 = *(buffer + 26);
   v15 = objc_opt_class();
-  v16 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v14, a5, a6, v15, 0);
+  v16 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v14, dictionary, bufferDictionary, v15, 0);
   name = self->_name;
   self->_name = v16;
 
-  v18 = *(v10 + 34);
+  v18 = *(bufferCopy + 34);
   v19 = objc_opt_class();
-  v20 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v18, a5, a6, v19, 0);
+  v20 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v18, dictionary, bufferDictionary, v19, 0);
   bundleName = self->_bundleName;
   self->_bundleName = v20;
 
-  v22 = *(v10 + 42);
+  v22 = *(bufferCopy + 42);
   v23 = objc_opt_class();
-  v24 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v22, a5, a6, v23, 0);
+  v24 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v22, dictionary, bufferDictionary, v23, 0);
   execTimestamp = self->_execTimestamp;
   self->_execTimestamp = v24;
 
-  v26 = *(v10 + 50);
+  v26 = *(bufferCopy + 50);
   v27 = objc_opt_class();
-  v28 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v26, a5, a6, v27, 0);
+  v28 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v26, dictionary, bufferDictionary, v27, 0);
   exitTimestamp = self->_exitTimestamp;
   self->_exitTimestamp = v28;
 
-  v30 = *(v10 + 86);
+  v30 = *(bufferCopy + 86);
   v31 = objc_opt_class();
-  v32 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v30, a5, a6, v31, 0);
+  v32 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v30, dictionary, bufferDictionary, v31, 0);
   mainThread = self->_mainThread;
   self->_mainThread = v32;
 
-  v34 = *(v10 + 94);
+  v34 = *(bufferCopy + 94);
   v35 = objc_opt_class();
-  v36 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v34, a5, a6, v35, 0);
+  v36 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v34, dictionary, bufferDictionary, v35, 0);
   mainBinaryPath = self->_mainBinaryPath;
   self->_mainBinaryPath = v36;
 
-  v38 = *(v10 + 102);
+  v38 = *(bufferCopy + 102);
   v39 = objc_opt_class();
-  v40 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v38, a5, a6, v39, 0);
+  v40 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v38, dictionary, bufferDictionary, v39, 0);
   sharedCache = self->_sharedCache;
   self->_sharedCache = v40;
 
@@ -6243,29 +6243,29 @@ LABEL_70:
     self->_hasNoSharedCache = 1;
   }
 
-  v42 = *(v10 + 66);
-  v43 = v10 + 120 + 8 * v42;
-  v353 = v10;
-  v44 = *(v10 + 70);
+  v42 = *(bufferCopy + 66);
+  v43 = bufferCopy + 120 + 8 * v42;
+  v353 = bufferCopy;
+  v44 = *(bufferCopy + 70);
   v45 = objc_opt_class();
-  v46 = SASerializableNewMutableArrayFromIndexList(v43, v44, a5, a6, v45);
+  v46 = SASerializableNewMutableArrayFromIndexList(v43, v44, dictionary, bufferDictionary, v45);
   v47 = [v46 copy];
   binaryLoadInfos = self->_binaryLoadInfos;
   self->_binaryLoadInfos = v47;
 
-  v49 = *(v10 + 66);
+  v49 = *(bufferCopy + 66);
   v50 = objc_opt_class();
   v51 = v49;
-  v6 = v10;
-  v52 = SASerializableNewMutableSetFromIndexList(v10 + 120, v51, a5, a6, v50);
+  v6 = bufferCopy;
+  v52 = SASerializableNewMutableSetFromIndexList(bufferCopy + 120, v51, dictionary, bufferDictionary, v50);
   rootFrames = self->_rootFrames;
   self->_rootFrames = v52;
 
-  v54 = *(v10 + 70);
+  v54 = *(bufferCopy + 70);
   v55 = *(v6 + 74);
   v56 = objc_opt_class();
   v345 = v43 + 8 * v54;
-  v57 = SASerializableNewMutableArrayFromIndexList(v345, v55, a5, a6, v56);
+  v57 = SASerializableNewMutableArrayFromIndexList(v345, v55, dictionary, bufferDictionary, v56);
   taskStates = self->_taskStates;
   self->_taskStates = v57;
 
@@ -6286,7 +6286,7 @@ LABEL_70:
     {
       v64 = *(v63 + 8 * v62);
       v65 = objc_opt_class();
-      v66 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v64, a5, a6, v65, 0);
+      v66 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v64, dictionary, bufferDictionary, v65, 0);
       v67 = self->_threads;
       v68 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v66, "threadId")}];
       v69 = v67;
@@ -6319,7 +6319,7 @@ LABEL_70:
     {
       v76 = *(v74 + 8 * v73);
       v77 = objc_opt_class();
-      v78 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v76, a5, a6, v77, 0);
+      v78 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v76, dictionary, bufferDictionary, v77, 0);
       v79 = self->_dispatchQueues;
       v7 = [*(v75 + 3480) numberWithUnsignedLongLong:{objc_msgSend(v78, "identifier")}];
       v80 = v79;
@@ -6338,13 +6338,13 @@ LABEL_70:
     v81 = 0;
   }
 
-  v8 = v351;
+  v8 = lengthCopy3;
   if (*(v6 + 1) < 2u)
   {
     goto LABEL_48;
   }
 
-  if (v349 + 176 > v351)
+  if (v349 + 176 > lengthCopy3)
   {
     goto LABEL_55;
   }
@@ -6352,25 +6352,25 @@ LABEL_70:
   v7 = v345 + 8 * v352 + 8 * v70 + 8 * v81;
   v82 = *v7;
   v83 = objc_opt_class();
-  v84 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v82, a5, a6, v83, 0);
+  v84 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v82, dictionary, bufferDictionary, v83, 0);
   bundleBuildVersion = self->_bundleBuildVersion;
   self->_bundleBuildVersion = v84;
 
   v86 = *(v7 + 8);
   v87 = objc_opt_class();
-  v88 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v86, a5, a6, v87, 0);
+  v88 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v86, dictionary, bufferDictionary, v87, 0);
   bundleProjectName = self->_bundleProjectName;
   self->_bundleProjectName = v88;
 
   v90 = *(v7 + 16);
   v91 = objc_opt_class();
-  v92 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v90, a5, a6, v91, 0);
+  v92 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v90, dictionary, bufferDictionary, v91, 0);
   bundleSourceVersion = self->_bundleSourceVersion;
   self->_bundleSourceVersion = v92;
 
   v94 = *(v7 + 24);
   v95 = objc_opt_class();
-  v96 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v94, a5, a6, v95, 0);
+  v96 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v94, dictionary, bufferDictionary, v95, 0);
   bundleProductBuildVersion = self->_bundleProductBuildVersion;
   self->_bundleProductBuildVersion = v96;
 
@@ -6378,7 +6378,7 @@ LABEL_70:
   {
     v98 = *(v7 + 32);
     v99 = objc_opt_class();
-    v100 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v98, a5, a6, v99, 0);
+    v100 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v98, dictionary, bufferDictionary, v99, 0);
     if (v100)
     {
       v346 = objc_alloc_init(MEMORY[0x1E696ADA0]);
@@ -6396,7 +6396,7 @@ LABEL_70:
         if (os_log_type_enabled(v103, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412290;
-          v355 = v100;
+          lengthCopy2 = v100;
           _os_log_fault_impl(&dword_1E0E2F000, v103, OS_LOG_TYPE_FAULT, "Unable to parse commerceAppID %@", buf, 0xCu);
         }
 
@@ -6409,13 +6409,13 @@ LABEL_70:
 
   v104 = *(v7 + 40);
   v105 = objc_opt_class();
-  v106 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v104, a5, a6, v105, 0);
+  v106 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v104, dictionary, bufferDictionary, v105, 0);
   installerVersionID = self->_installerVersionID;
   self->_installerVersionID = v106;
 
   v108 = *(v7 + 48);
   v109 = objc_opt_class();
-  v110 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v108, a5, a6, v109, 0);
+  v110 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v108, dictionary, bufferDictionary, v109, 0);
   vendorID = self->_vendorID;
   self->_vendorID = v110;
 
@@ -6424,14 +6424,14 @@ LABEL_70:
     goto LABEL_48;
   }
 
-  if (v349 + 184 > v351)
+  if (v349 + 184 > lengthCopy3)
   {
     goto LABEL_58;
   }
 
   v112 = *(v7 + 56);
   v113 = objc_opt_class();
-  v114 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v112, a5, a6, v113, 0);
+  v114 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v112, dictionary, bufferDictionary, v113, 0);
   mainBinary = self->_mainBinary;
   self->_mainBinary = v114;
 
@@ -6440,7 +6440,7 @@ LABEL_70:
     goto LABEL_48;
   }
 
-  if (v349 + 216 > v351)
+  if (v349 + 216 > lengthCopy3)
   {
     goto LABEL_61;
   }
@@ -6448,20 +6448,20 @@ LABEL_70:
   self->_adamID = *(v7 + 64);
   v116 = *(v7 + 72);
   v117 = objc_opt_class();
-  v118 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v116, a5, a6, v117, 0);
+  v118 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v116, dictionary, bufferDictionary, v117, 0);
   appType = self->_appType;
   self->_appType = v118;
 
   v120 = *(v7 + 80);
   v121 = objc_opt_class();
-  v122 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v120, a5, a6, v121, 0);
+  v122 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v120, dictionary, bufferDictionary, v121, 0);
   cohortID = self->_cohortID;
   self->_cohortID = v122;
 
   self->_isBeta = (*(v6 + 118) & 0x20) != 0;
   v124 = *(v7 + 88);
   v125 = objc_opt_class();
-  v126 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v124, a5, a6, v125, 0);
+  v126 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v124, dictionary, bufferDictionary, v125, 0);
   forkTimestamp = self->_forkTimestamp;
   self->_forkTimestamp = v126;
 
@@ -6470,7 +6470,7 @@ LABEL_70:
     goto LABEL_48;
   }
 
-  if (v349 + 217 > v351)
+  if (v349 + 217 > lengthCopy3)
   {
     goto LABEL_64;
   }
@@ -6482,7 +6482,7 @@ LABEL_70:
     goto LABEL_48;
   }
 
-  if (v349 + 225 > v351)
+  if (v349 + 225 > lengthCopy3)
   {
     goto LABEL_67;
   }
@@ -6493,13 +6493,13 @@ LABEL_70:
     goto LABEL_48;
   }
 
-  if (v349 + 229 > v351)
+  if (v349 + 229 > lengthCopy3)
   {
     goto LABEL_70;
   }
 
   v350 = v349 + 229 + 8 * *(v7 + 105);
-  if (v350 > v351)
+  if (v350 > lengthCopy3)
   {
 LABEL_73:
     v248 = *__error();
@@ -6513,7 +6513,7 @@ LABEL_73:
       v254 = *(v353 + 82);
       v255 = *(v7 + 105);
       *buf = 134219520;
-      v355 = v351;
+      lengthCopy2 = lengthCopy3;
       v356 = 1024;
       *v357 = v250;
       *&v357[4] = 1024;
@@ -6536,7 +6536,7 @@ LABEL_73:
     v328 = *(v353 + 78);
     v298 = *(v353 + 66);
     v308 = *(v353 + 70);
-    _SASetCrashLogMessage(3333, "bufferLength %lu < serialized SATask struct v7 with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues, %u swift tasks", v256, v257, v258, v259, v260, v261, v351);
+    _SASetCrashLogMessage(3333, "bufferLength %lu < serialized SATask struct v7 with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues, %u swift tasks", v256, v257, v258, v259, v260, v261, lengthCopy3);
     _os_crash();
     __break(1u);
     goto LABEL_76;
@@ -6550,12 +6550,12 @@ LABEL_73:
   {
     v131 = 0;
     v132 = 8 * v70 + 8 * v81 + 8 * v347 + 8 * v352 + 8 * v348 + v6 + 229;
-    v133 = a6;
+    bufferDictionaryCopy2 = bufferDictionary;
     do
     {
       v134 = *(v132 + 8 * v131);
       v135 = objc_opt_class();
-      v136 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v134, a5, a6, v135, 0);
+      v136 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v134, dictionary, bufferDictionary, v135, 0);
       v137 = self->_swiftTasks;
       v138 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v136, "identifier")}];
       [(NSMutableDictionary *)v137 setObject:v136 forKeyedSubscript:v138];
@@ -6570,7 +6570,7 @@ LABEL_73:
   else
   {
     v139 = 0;
-    v133 = a6;
+    bufferDictionaryCopy2 = bufferDictionary;
   }
 
   if (*(v353 + 1) < 8u)
@@ -6578,7 +6578,7 @@ LABEL_73:
     goto LABEL_48;
   }
 
-  if (v350 + 8 > v351)
+  if (v350 + 8 > lengthCopy3)
   {
 LABEL_76:
     v262 = *__error();
@@ -6592,7 +6592,7 @@ LABEL_76:
       v268 = *(v353 + 82);
       v269 = *(v7 + 105);
       *buf = 134219520;
-      v355 = v351;
+      lengthCopy2 = lengthCopy3;
       v356 = 1024;
       *v357 = v264;
       *&v357[4] = 1024;
@@ -6615,7 +6615,7 @@ LABEL_76:
     v329 = *(v353 + 78);
     v299 = *(v353 + 66);
     v309 = *(v353 + 70);
-    _SASetCrashLogMessage(3348, "bufferLength %lu < serialized SATask struct v8 with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues, %u swift tasks", v270, v271, v272, v273, v274, v275, v351);
+    _SASetCrashLogMessage(3348, "bufferLength %lu < serialized SATask struct v8 with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues, %u swift tasks", v270, v271, v272, v273, v274, v275, lengthCopy3);
     _os_crash();
     __break(1u);
 LABEL_79:
@@ -6630,7 +6630,7 @@ LABEL_79:
       v282 = *(v353 + 82);
       v283 = *(v7 + 105);
       *buf = 134219520;
-      v355 = v351;
+      lengthCopy2 = lengthCopy3;
       v356 = 1024;
       *v357 = v278;
       *&v357[4] = 1024;
@@ -6653,7 +6653,7 @@ LABEL_79:
     v330 = *(v353 + 78);
     v300 = *(v353 + 66);
     v310 = *(v353 + 70);
-    _SASetCrashLogMessage(3359, "bufferLength %lu < serialized SATask struct v9 with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues, %u swift tasks", v284, v285, v286, v287, v288, v289, v351);
+    _SASetCrashLogMessage(3359, "bufferLength %lu < serialized SATask struct v9 with %u root frames, %u image infos, %u task states, %u threads, %u dispatch queues, %u swift tasks", v284, v285, v286, v287, v288, v289, lengthCopy3);
     _os_crash();
     __break(1u);
 LABEL_82:
@@ -6664,17 +6664,17 @@ LABEL_82:
   v140 = (v7 + 109 + 8 * v139);
   v141 = *v140;
   v142 = objc_opt_class();
-  v143 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v141, a5, v133, v142, 0);
+  v143 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v141, dictionary, bufferDictionaryCopy2, v142, 0);
   distributorID = self->_distributorID;
   self->_distributorID = v143;
 
   if (*(v353 + 1) >= 9u)
   {
-    if (v350 + 16 <= v351)
+    if (v350 + 16 <= lengthCopy3)
     {
       v145 = v140[1];
       v146 = objc_opt_class();
-      v147 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v145, a5, v133, v146, 0);
+      v147 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v145, dictionary, bufferDictionaryCopy2, v146, 0);
       resourceCoalitionName = self->_resourceCoalitionName;
       self->_resourceCoalitionName = v147;
 
@@ -6688,7 +6688,7 @@ LABEL_48:
   v149 = *MEMORY[0x1E69E9840];
 }
 
-+ (double)taskWithoutReferencesFromPAStyleSerializedTask:(uint64_t)a1
++ (double)taskWithoutReferencesFromPAStyleSerializedTask:(uint64_t)task
 {
   objc_opt_self();
   v3 = [SATask taskWithPid:*(a2 + 40) uniquePid:0 name:0 sharedCache:?];
@@ -6725,22 +6725,22 @@ LABEL_48:
   return result;
 }
 
-- (void)populateReferencesUsingPAStyleSerializedTask:(void *)a3 andDeserializationDictionary:(void *)a4 andDataBufferDictionary:
+- (void)populateReferencesUsingPAStyleSerializedTask:(void *)task andDeserializationDictionary:(void *)dictionary andDataBufferDictionary:
 {
-  if (a1)
+  if (self)
   {
     v6 = a2;
     v8 = a2[3];
     v9 = objc_opt_class();
-    v10 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v8, a3, a4, v9, 0);
-    v11 = a1[7];
-    a1[7] = v10;
+    v10 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v8, task, dictionary, v9, 0);
+    v11 = self[7];
+    self[7] = v10;
 
     v12 = v6[4];
     v13 = objc_opt_class();
-    v14 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v12, a3, a4, v13, 0);
-    v15 = a1[13];
-    a1[13] = v14;
+    v14 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v12, task, dictionary, v13, 0);
+    v15 = self[13];
+    self[13] = v14;
 
     v16 = *v6 - 4080925381;
     if (v16 >= 3)
@@ -6766,7 +6766,7 @@ LABEL_48:
     {
       v22 = *v21++;
       v23 = objc_opt_class();
-      v24 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v22, a3, a4, v23, 0);
+      v24 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v22, task, dictionary, v23, 0);
       if (!v24)
       {
         v44 = @"Failed to deserialize paImageInfo";
@@ -6782,8 +6782,8 @@ LABEL_48:
 
     while (v17);
     v28 = [v20 copy];
-    v29 = a1[32];
-    a1[32] = v28;
+    v29 = self[32];
+    self[32] = v28;
 
     v17 = v47;
     v6 = v48;
@@ -6793,21 +6793,21 @@ LABEL_8:
     {
       v30 = &v19[v17];
       v31 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:v18];
-      v32 = a1[35];
-      a1[35] = v31;
+      v32 = self[35];
+      self[35] = v31;
 
       while (1)
       {
         v33 = *v30++;
         v34 = objc_opt_class();
-        v35 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v33, a3, a4, v34, 0);
+        v35 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v33, task, dictionary, v34, 0);
         if (!v35)
         {
           break;
         }
 
         v37 = v35;
-        v38 = a1[35];
+        v38 = self[35];
         v39 = objc_getProperty(v35, v36, 8, 1);
         [v38 addObject:v39];
 
@@ -6826,23 +6826,23 @@ LABEL_17:
 LABEL_12:
     v40 = v6[6];
     v41 = objc_opt_class();
-    v42 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v40, a3, a4, v41, 0);
-    v43 = a1[5];
-    a1[5] = v42;
+    v42 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v40, task, dictionary, v41, 0);
+    v43 = self[5];
+    self[5] = v42;
   }
 }
 
 - (id)removeStacksOutsideThisProcess
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 280) objectsPassingTest:&__block_literal_global_562];
-    v3 = [v2 anyObject];
+    v2 = [*(self + 280) objectsPassingTest:&__block_literal_global_562];
+    anyObject = [v2 anyObject];
 
-    if (v3)
+    if (anyObject)
     {
       v4 = objc_alloc_init(SAStackIterator);
-      [*(a1 + 280) removeObject:v3];
+      [*(self + 280) removeObject:anyObject];
       v5 = objc_alloc_init(SAFrame);
       v6 = v5;
       if (v5)
@@ -6850,16 +6850,16 @@ LABEL_12:
         v5->_BOOLs.bits |= 8u;
       }
 
-      [*(a1 + 280) addObject:v5];
-      v7 = *(a1 + 16);
+      [*(self + 280) addObject:v5];
+      v7 = *(self + 16);
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __55__SATask_Serialization__removeStacksOutsideThisProcess__block_invoke_2;
       v12[3] = &unk_1E86F80A0;
-      v8 = v3;
+      v8 = anyObject;
       v13 = v8;
       v14 = v4;
-      v15 = a1;
+      selfCopy = self;
       v9 = v4;
       [v7 enumerateKeysAndObjectsUsingBlock:v12];
       v10 = v8;
@@ -6868,10 +6868,10 @@ LABEL_12:
 
   else
   {
-    v3 = 0;
+    anyObject = 0;
   }
 
-  return v3;
+  return anyObject;
 }
 
 uint64_t __55__SATask_Serialization__removeStacksOutsideThisProcess__block_invoke(uint64_t a1, void *a2, _BYTE *a3)

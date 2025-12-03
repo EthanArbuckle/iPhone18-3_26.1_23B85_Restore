@@ -1,36 +1,36 @@
 @interface TIStickerCandidateGenerator
 + (TIStickerCandidateGenerator)sharedInstance;
-- (CGImage)_scaledImageForStickerImage:(CGImage *)a3 cellHeight:(double)a4;
-- (CGImage)getRetainedCachedStickerImageForIdentifier:(id)a3;
+- (CGImage)_scaledImageForStickerImage:(CGImage *)image cellHeight:(double)height;
+- (CGImage)getRetainedCachedStickerImageForIdentifier:(id)identifier;
 - (TIStickerCandidateGenerator)init;
-- (id)_ckAttributionInfoFromSticker:(id)a3;
-- (id)_generateKeyboardCandidatesForStickers:(id)a3 withQuery:(id)a4 withRenderTraits:(id)a5;
-- (id)keyboardStickerWithIdentifier:(id)a3 roles:(id)a4;
-- (id)stickersForStickerIdentifiers:(id)a3 roles:(id)a4;
+- (id)_ckAttributionInfoFromSticker:(id)sticker;
+- (id)_generateKeyboardCandidatesForStickers:(id)stickers withQuery:(id)query withRenderTraits:(id)traits;
+- (id)keyboardStickerWithIdentifier:(id)identifier roles:(id)roles;
+- (id)stickersForStickerIdentifiers:(id)identifiers roles:(id)roles;
 - (void)_clearSpotlightCaches;
-- (void)_generateStickerCandidatesForGenerativeEmojiSearchableQueries:(id)a3 withRenderTraits:(id)a4 shouldAppend:(BOOL)a5 language:(id)a6 completionHandler:(id)a7;
+- (void)_generateStickerCandidatesForGenerativeEmojiSearchableQueries:(id)queries withRenderTraits:(id)traits shouldAppend:(BOOL)append language:(id)language completionHandler:(id)handler;
 - (void)_purgeStickerImageCache;
-- (void)cacheStickerImage:(CGImage *)a3 forIdentifier:(id)a4;
+- (void)cacheStickerImage:(CGImage *)image forIdentifier:(id)identifier;
 - (void)clearCache;
 - (void)createContext;
 - (void)dealloc;
-- (void)generateStickerCandidatesForTaxonomySearchableQueries:(id)a3 generativeEmojiSearchableQueries:(id)a4 withRenderTraits:(id)a5 shouldAppend:(BOOL)a6 language:(id)a7 completionHandler:(id)a8;
+- (void)generateStickerCandidatesForTaxonomySearchableQueries:(id)queries generativeEmojiSearchableQueries:(id)searchableQueries withRenderTraits:(id)traits shouldAppend:(BOOL)append language:(id)language completionHandler:(id)handler;
 @end
 
 @implementation TIStickerCandidateGenerator
 
-- (id)_generateKeyboardCandidatesForStickers:(id)a3 withQuery:(id)a4 withRenderTraits:(id)a5
+- (id)_generateKeyboardCandidatesForStickers:(id)stickers withQuery:(id)query withRenderTraits:(id)traits
 {
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v48 = a4;
-  v45 = a5;
-  v47 = [MEMORY[0x277CBEB18] array];
+  stickersCopy = stickers;
+  queryCopy = query;
+  traitsCopy = traits;
+  array = [MEMORY[0x277CBEB18] array];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v8;
+  obj = stickersCopy;
   v50 = [obj countByEnumeratingWithState:&v55 objects:v64 count:16];
   if (v50)
   {
@@ -50,29 +50,29 @@
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
           v35 = MEMORY[0x277CCACA8];
-          v36 = [v11 identifier];
-          v37 = [v35 stringWithFormat:@"%s Setting up candidate for sticker %@.", "-[TIStickerCandidateGenerator _generateKeyboardCandidatesForStickers:withQuery:withRenderTraits:]", v36];
+          identifier = [v11 identifier];
+          v37 = [v35 stringWithFormat:@"%s Setting up candidate for sticker %@.", "-[TIStickerCandidateGenerator _generateKeyboardCandidatesForStickers:withQuery:withRenderTraits:]", identifier];
           LODWORD(buf) = 138412290;
           *(&buf + 4) = v37;
           _os_log_debug_impl(&dword_22CA55000, v12, OS_LOG_TYPE_DEBUG, "%@", &buf, 0xCu);
         }
 
-        v13 = [v11 representations];
-        v14 = [v13 firstObject];
+        representations = [v11 representations];
+        firstObject = [representations firstObject];
 
-        if (v14)
+        if (firstObject)
         {
           *&buf = 0;
           *(&buf + 1) = &buf;
           v62 = 0x2020000000;
-          v15 = [v14 identifier];
-          v16 = [(TIStickerCandidateGenerator *)self getRetainedCachedStickerImageForIdentifier:v15];
+          identifier2 = [firstObject identifier];
+          v16 = [(TIStickerCandidateGenerator *)self getRetainedCachedStickerImageForIdentifier:identifier2];
 
           v63 = v16;
           if (!*(*(&buf + 1) + 24))
           {
-            v17 = [v14 data];
-            v18 = CGImageSourceCreateWithData(v17, 0);
+            data = [firstObject data];
+            v18 = CGImageSourceCreateWithData(data, 0);
 
             ImageAtIndex = CGImageSourceCreateImageAtIndex(v18, 0, 0);
             if (v18)
@@ -82,13 +82,13 @@
 
             if (ImageAtIndex)
             {
-              [v45 singleCellHeight];
+              [traitsCopy singleCellHeight];
               v21 = v20;
-              [v45 screenScale];
+              [traitsCopy screenScale];
               v23 = [(TIStickerCandidateGenerator *)self _scaledImageForStickerImage:ImageAtIndex cellHeight:fmax(v21 * v22, 1.0)];
               *(*(&buf + 1) + 24) = v23;
-              v24 = [v14 identifier];
-              [(TIStickerCandidateGenerator *)self cacheStickerImage:v23 forIdentifier:v24];
+              identifier3 = [firstObject identifier];
+              [(TIStickerCandidateGenerator *)self cacheStickerImage:v23 forIdentifier:identifier3];
 
               CGImageRelease(ImageAtIndex);
             }
@@ -127,24 +127,24 @@
           CGImageRelease(*(*(&buf + 1) + 24));
           v25 = MEMORY[0x277D6F3D8];
           v26 = *(v52 + 6);
-          v27 = [v11 identifier];
-          v28 = [v25 secureCandidateWithCandidate:&stru_283FDFAF8 forInput:v48 slotID:v26 customInfoType:4096 stickerIdentifier:v27];
+          identifier4 = [v11 identifier];
+          v28 = [v25 secureCandidateWithCandidate:&stru_283FDFAF8 forInput:queryCopy slotID:v26 customInfoType:4096 stickerIdentifier:identifier4];
 
-          v29 = self;
-          objc_sync_enter(v29);
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
           v30 = +[TIAppAutofillManager sharedInstance];
-          v31 = [v30 secureCandidateRenderer];
-          v32 = [v11 identifier];
-          v33 = [v31 updateCachedCandidate:v28 withStickerIdentifier:v32];
+          secureCandidateRenderer = [v30 secureCandidateRenderer];
+          identifier5 = [v11 identifier];
+          v33 = [secureCandidateRenderer updateCachedCandidate:v28 withStickerIdentifier:identifier5];
 
-          objc_sync_exit(v29);
-          [v47 addObject:v28];
+          objc_sync_exit(selfCopy);
+          [array addObject:v28];
           v34 = TIStickerCandidateGeneratorOSLogFacility();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
           {
             v38 = MEMORY[0x277CCACA8];
-            v39 = [v11 identifier];
-            v40 = [v38 stringWithFormat:@"%s Submitting sticker %@.", "-[TIStickerCandidateGenerator _generateKeyboardCandidatesForStickers:withQuery:withRenderTraits:]", v39];
+            identifier6 = [v11 identifier];
+            v40 = [v38 stringWithFormat:@"%s Submitting sticker %@.", "-[TIStickerCandidateGenerator _generateKeyboardCandidatesForStickers:withQuery:withRenderTraits:]", identifier6];
             *v59 = 138412290;
             v60 = v40;
             _os_log_debug_impl(&dword_22CA55000, v34, OS_LOG_TYPE_DEBUG, "%@", v59, 0xCu);
@@ -169,7 +169,7 @@ LABEL_25:
 
   v42 = *MEMORY[0x277D85DE8];
 
-  return v47;
+  return array;
 }
 
 void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_withQuery_withRenderTraits___block_invoke(uint64_t a1)
@@ -194,33 +194,33 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
   [v3 registerSlotID:*(*(*(a1 + 48) + 8) + 24)];
 }
 
-- (CGImage)_scaledImageForStickerImage:(CGImage *)a3 cellHeight:(double)a4
+- (CGImage)_scaledImageForStickerImage:(CGImage *)image cellHeight:(double)height
 {
-  Width = CGImageGetWidth(a3);
-  v7 = ceil(a4 * 0.5);
-  v8 = ceil(v7 / CGImageGetHeight(a3) * Width);
-  ColorSpace = CGImageGetColorSpace(a3);
-  v10 = CGBitmapContextCreate(0, a4, a4, 8uLL, 0, ColorSpace, 2u);
+  Width = CGImageGetWidth(image);
+  v7 = ceil(height * 0.5);
+  v8 = ceil(v7 / CGImageGetHeight(image) * Width);
+  ColorSpace = CGImageGetColorSpace(image);
+  v10 = CGBitmapContextCreate(0, height, height, 8uLL, 0, ColorSpace, 2u);
   CGContextSetInterpolationQuality(v10, kCGInterpolationHigh);
-  v13.origin.x = floor((a4 - v8) * 0.5);
-  v13.origin.y = floor((a4 - v7) * 0.5);
+  v13.origin.x = floor((height - v8) * 0.5);
+  v13.origin.y = floor((height - v7) * 0.5);
   v13.size.width = v8;
   v13.size.height = v7;
-  CGContextDrawImage(v10, v13, a3);
+  CGContextDrawImage(v10, v13, image);
   Image = CGBitmapContextCreateImage(v10);
   CGContextRelease(v10);
   return Image;
 }
 
-- (id)stickersForStickerIdentifiers:(id)a3 roles:(id)a4
+- (id)stickersForStickerIdentifiers:(id)identifiers roles:(id)roles
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D681D8];
-  v6 = a4;
-  v7 = a3;
+  rolesCopy = roles;
+  identifiersCopy = identifiers;
   v8 = objc_alloc_init(v5);
   v16 = 0;
-  v9 = [v8 stickersWithIdentifiers:v7 roles:v6 error:&v16];
+  v9 = [v8 stickersWithIdentifiers:identifiersCopy roles:rolesCopy error:&v16];
 
   v10 = v16;
   if (v10)
@@ -247,21 +247,21 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
   return v12;
 }
 
-- (id)_ckAttributionInfoFromSticker:(id)a3
+- (id)_ckAttributionInfoFromSticker:(id)sticker
 {
-  v3 = a3;
+  stickerCopy = sticker;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 attributionInfo];
+    attributionInfo = [stickerCopy attributionInfo];
     v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-    v6 = [v4 adamID];
-    [v5 setObject:v6 forKeyedSubscript:@"adam-id"];
+    adamID = [attributionInfo adamID];
+    [v5 setObject:adamID forKeyedSubscript:@"adam-id"];
 
-    v7 = [v4 bundleIdentifier];
-    [v5 setObject:v7 forKeyedSubscript:@"bundle-id"];
+    bundleIdentifier = [attributionInfo bundleIdentifier];
+    [v5 setObject:bundleIdentifier forKeyedSubscript:@"bundle-id"];
 
-    v8 = [v4 name];
-    [v5 setObject:v8 forKeyedSubscript:@"name"];
+    name = [attributionInfo name];
+    [v5 setObject:name forKeyedSubscript:@"name"];
   }
 
   else
@@ -272,27 +272,27 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
   return v5;
 }
 
-- (id)keyboardStickerWithIdentifier:(id)a3 roles:(id)a4
+- (id)keyboardStickerWithIdentifier:(id)identifier roles:(id)roles
 {
   v76[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v76[0] = v6;
+  identifierCopy = identifier;
+  rolesCopy = roles;
+  v76[0] = identifierCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v76 count:1];
-  v9 = [(TIStickerCandidateGenerator *)self stickersForStickerIdentifiers:v8 roles:v7];
+  v9 = [(TIStickerCandidateGenerator *)self stickersForStickerIdentifiers:v8 roles:rolesCopy];
 
   if ([v9 count])
   {
     v10 = objc_alloc_init(MEMORY[0x277D681D8]);
     v72 = 0;
-    [v10 touchStickerWithIdentifier:v6 error:&v72];
+    [v10 touchStickerWithIdentifier:identifierCopy error:&v72];
     v11 = v72;
     if (v11)
     {
       v12 = TIStickerCandidateGeneratorOSLogFacility();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v56 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Error returned from touching sticker with identifier %@: %@.", "-[TIStickerCandidateGenerator keyboardStickerWithIdentifier:roles:]", v6, v11];
+        v56 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Error returned from touching sticker with identifier %@: %@.", "-[TIStickerCandidateGenerator keyboardStickerWithIdentifier:roles:]", identifierCopy, v11];
         *buf = 138412290;
         v75 = v56;
         _os_log_error_impl(&dword_22CA55000, v12, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
@@ -303,19 +303,19 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
 
     else
     {
-      v58 = self;
+      selfCopy = self;
       v59 = v10;
       v60 = v9;
-      v61 = v7;
-      v62 = v6;
-      v14 = [v9 firstObject];
-      v67 = [MEMORY[0x277CBEB18] array];
+      v61 = rolesCopy;
+      v62 = identifierCopy;
+      firstObject = [v9 firstObject];
+      array = [MEMORY[0x277CBEB18] array];
       v68 = 0u;
       v69 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v64 = v14;
-      obj = [v14 representations];
+      v64 = firstObject;
+      obj = [firstObject representations];
       v15 = [obj countByEnumeratingWithState:&v68 objects:v73 count:16];
       if (v15)
       {
@@ -332,14 +332,14 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
 
             v19 = *(*(&v68 + 1) + 8 * i);
             v20 = objc_alloc(MEMORY[0x277D6F4A0]);
-            v21 = [v19 data];
+            data = [v19 data];
             v22 = [v19 uti];
-            v23 = [v19 role];
+            role = [v19 role];
             [v19 size];
             v25 = v24;
             v27 = v26;
-            v28 = [v19 effect];
-            v29 = [v28 description];
+            effect = [v19 effect];
+            v29 = [effect description];
             v30 = [v29 isEqualToString:@".none"];
 
             if (v30)
@@ -349,7 +349,7 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
 
             else
             {
-              v32 = [v28 description];
+              v32 = [effect description];
               v33 = [v32 isEqualToString:@".stroke"];
 
               if (v33)
@@ -359,7 +359,7 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
 
               else
               {
-                v34 = [v28 description];
+                v34 = [effect description];
                 v35 = [v34 isEqualToString:@".comic"];
 
                 if (v35)
@@ -369,7 +369,7 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
 
                 else
                 {
-                  v36 = [v28 description];
+                  v36 = [effect description];
                   v37 = [v36 isEqualToString:@".puffy"];
 
                   if (v37)
@@ -379,7 +379,7 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
 
                   else
                   {
-                    v38 = [v28 description];
+                    v38 = [effect description];
                     v39 = [v38 isEqualToString:@".iridescent"];
 
                     if (v39)
@@ -396,8 +396,8 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
               }
             }
 
-            v40 = [v20 initWithData:v21 uti:v22 role:v23 size:v31 effect:{v25, v27}];
-            [v67 addObject:v40];
+            v40 = [v20 initWithData:data uti:v22 role:role size:v31 effect:{v25, v27}];
+            [array addObject:v40];
           }
 
           v16 = [obj countByEnumeratingWithState:&v68 objects:v73 count:16];
@@ -418,23 +418,23 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
 
       if (objc_opt_respondsToSelector())
       {
-        v41 = [v64 metadata];
+        metadata = [v64 metadata];
       }
 
       else
       {
-        v41 = 0;
+        metadata = 0;
       }
 
-      v6 = v62;
+      identifierCopy = v62;
       if (objc_opt_respondsToSelector())
       {
-        v42 = [v64 searchText];
+        searchText = [v64 searchText];
       }
 
       else
       {
-        v42 = 0;
+        searchText = 0;
       }
 
       if (objc_opt_respondsToSelector())
@@ -442,7 +442,7 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
         [v64 accessibilityName];
       }
 
-      v43 = [(TIStickerCandidateGenerator *)v58 _ckAttributionInfoFromSticker:v64];
+      v43 = [(TIStickerCandidateGenerator *)selfCopy _ckAttributionInfoFromSticker:v64];
       v44 = v43;
       v45 = MEMORY[0x277CBEC10];
       if (v43)
@@ -453,19 +453,19 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
       v46 = v45;
 
       v47 = objc_alloc(MEMORY[0x277D6F498]);
-      v48 = [v64 identifier];
-      v49 = [v64 name];
-      v50 = [v64 externalURI];
-      v51 = [v64 accessibilityName];
-      v52 = [v64 accessibilityName];
-      v57 = v42;
-      v63 = v42;
-      v53 = v41;
-      v13 = [v47 initWithIdentifier:v48 representations:v67 effectType:obja name:v49 externalURI:v50 accessibilityLabel:v51 metadata:v41 attributionInfo:v46 searchText:v57 accessibilityName:v52];
+      identifier = [v64 identifier];
+      name = [v64 name];
+      externalURI = [v64 externalURI];
+      accessibilityName = [v64 accessibilityName];
+      accessibilityName2 = [v64 accessibilityName];
+      v57 = searchText;
+      v63 = searchText;
+      v53 = metadata;
+      v13 = [v47 initWithIdentifier:identifier representations:array effectType:obja name:name externalURI:externalURI accessibilityLabel:accessibilityName metadata:metadata attributionInfo:v46 searchText:v57 accessibilityName:accessibilityName2];
 
       v12 = v64;
       v9 = v60;
-      v7 = v61;
+      rolesCopy = v61;
       v11 = 0;
       v10 = v59;
     }
@@ -506,12 +506,12 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (CGImage)getRetainedCachedStickerImageForIdentifier:(id)a3
+- (CGImage)getRetainedCachedStickerImageForIdentifier:(id)identifier
 {
   stickerToThumbnailLock = self->_stickerToThumbnailLock;
-  v5 = a3;
+  identifierCopy = identifier;
   [(NSLock *)stickerToThumbnailLock lock];
-  v6 = [(NSMutableDictionary *)self->_stickerToThumbnail objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_stickerToThumbnail objectForKey:identifierCopy];
 
   if (v6)
   {
@@ -522,15 +522,15 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
   return v6;
 }
 
-- (void)cacheStickerImage:(CGImage *)a3 forIdentifier:(id)a4
+- (void)cacheStickerImage:(CGImage *)image forIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
-  if (a3 && v6)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (image && identifierCopy)
   {
     [(NSLock *)self->_stickerToThumbnailLock lock];
-    [(NSMutableDictionary *)self->_stickerToThumbnail setObject:a3 forKey:v7];
+    [(NSMutableDictionary *)self->_stickerToThumbnail setObject:image forKey:v7];
     [(NSLock *)self->_stickerToThumbnailLock unlock];
   }
 
@@ -539,7 +539,7 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
     v8 = TIStickerCandidateGeneratorOSLogFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Could not cache sticker image sticker image ref (%p) and/or identifier (%@) were nil.", "-[TIStickerCandidateGenerator cacheStickerImage:forIdentifier:]", a3, v7];;
+      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Could not cache sticker image sticker image ref (%p) and/or identifier (%@) were nil.", "-[TIStickerCandidateGenerator cacheStickerImage:forIdentifier:]", image, v7];;
       *buf = 138412290;
       v12 = v10;
       _os_log_error_impl(&dword_22CA55000, v8, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
@@ -576,32 +576,32 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
   [(NSCache *)negativeQueryStrings removeAllObjects];
 }
 
-- (void)_generateStickerCandidatesForGenerativeEmojiSearchableQueries:(id)a3 withRenderTraits:(id)a4 shouldAppend:(BOOL)a5 language:(id)a6 completionHandler:(id)a7
+- (void)_generateStickerCandidatesForGenerativeEmojiSearchableQueries:(id)queries withRenderTraits:(id)traits shouldAppend:(BOOL)append language:(id)language completionHandler:(id)handler
 {
   v101[1] = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  traitsCopy = traits;
+  languageCopy = language;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __150__TIStickerCandidateGenerator__generateStickerCandidatesForGenerativeEmojiSearchableQueries_withRenderTraits_shouldAppend_language_completionHandler___block_invoke;
   aBlock[3] = &unk_278731E78;
   aBlock[4] = self;
-  v98 = a5;
-  v50 = v12;
+  appendCopy = append;
+  v50 = traitsCopy;
   v96 = v50;
-  v15 = v14;
+  v15 = handlerCopy;
   v97 = v15;
-  v16 = a3;
+  queriesCopy = queries;
   v53 = _Block_copy(aBlock);
-  v17 = [v16 reverseObjectEnumerator];
+  reverseObjectEnumerator = [queriesCopy reverseObjectEnumerator];
 
-  v18 = [v17 allObjects];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v49 = [MEMORY[0x277CC34D8] emptySuggestion];
+  emptySuggestion = [MEMORY[0x277CC34D8] emptySuggestion];
   v19 = [MEMORY[0x277CC3508] userQueryContextWithCurrentSuggestion:?];
-  v51 = v13;
-  [v19 setKeyboardLanguage:v13];
+  v51 = languageCopy;
+  [v19 setKeyboardLanguage:languageCopy];
   [v19 setBundleIDs:&unk_28400BA30];
   [v19 setFetchAttributes:&unk_28400BA48];
   [v19 setMaxSuggestionCount:50];
@@ -629,14 +629,14 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
   v75 = "";
   v76 = 0;
   v52 = dispatch_group_create();
-  if ([v18 count])
+  if ([allObjects count])
   {
     v20 = 0;
     v47 = v19;
     v48 = v15;
     while (1)
     {
-      v21 = [v18 objectAtIndex:v20];
+      v21 = [allObjects objectAtIndex:v20];
       if ([v21 length] < 3)
       {
         goto LABEL_28;
@@ -653,18 +653,18 @@ void __97__TIStickerCandidateGenerator__generateKeyboardCandidatesForStickers_wi
         break;
       }
 
-      v23 = [v21 normalizedQueryString];
-      v24 = [(NSCache *)self->_negativeQueryStrings objectForKey:v23];
-      v25 = [MEMORY[0x277CBEB68] null];
+      normalizedQueryString = [v21 normalizedQueryString];
+      v24 = [(NSCache *)self->_negativeQueryStrings objectForKey:normalizedQueryString];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v24 == v25)
+      if (v24 == null)
       {
 
 LABEL_28:
         goto LABEL_29;
       }
 
-      v26 = [(NSCache *)self->_queryToUUID objectForKey:v23];
+      v26 = [(NSCache *)self->_queryToUUID objectForKey:normalizedQueryString];
       if (v26)
       {
         v27 = v26;
@@ -681,7 +681,7 @@ LABEL_28:
 
       v30 = [v19 copy];
       v31 = _createFilterQueryForQueryString_onceToken;
-      v32 = v23;
+      v32 = normalizedQueryString;
       if (v31 != -1)
       {
         dispatch_once(&_createFilterQueryForQueryString_onceToken, &__block_literal_global_222);
@@ -801,13 +801,13 @@ LABEL_28:
       }
 
 LABEL_11:
-      if ([v18 count] <= ++v20)
+      if ([allObjects count] <= ++v20)
       {
         goto LABEL_29;
       }
     }
 
-    v23 = v21;
+    normalizedQueryString = v21;
 LABEL_10:
 
     goto LABEL_11;
@@ -1039,23 +1039,23 @@ uint64_t __150__TIStickerCandidateGenerator__generateStickerCandidatesForGenerat
   return v18;
 }
 
-- (void)generateStickerCandidatesForTaxonomySearchableQueries:(id)a3 generativeEmojiSearchableQueries:(id)a4 withRenderTraits:(id)a5 shouldAppend:(BOOL)a6 language:(id)a7 completionHandler:(id)a8
+- (void)generateStickerCandidatesForTaxonomySearchableQueries:(id)queries generativeEmojiSearchableQueries:(id)searchableQueries withRenderTraits:(id)traits shouldAppend:(BOOL)append language:(id)language completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  queriesCopy = queries;
+  searchableQueriesCopy = searchableQueries;
+  traitsCopy = traits;
+  languageCopy = language;
+  handlerCopy = handler;
   if (TIGetShowStickersValue_onceToken != -1)
   {
     dispatch_once(&TIGetShowStickersValue_onceToken, &__block_literal_global_211);
   }
 
-  v18 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v19 = [v18 valueForPreferenceKey:@"ShowStickers"];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v19 = [mEMORY[0x277D6F470] valueForPreferenceKey:@"ShowStickers"];
 
-  LOBYTE(v18) = [v19 BOOLValue];
-  if (v18)
+  LOBYTE(mEMORY[0x277D6F470]) = [v19 BOOLValue];
+  if (mEMORY[0x277D6F470])
   {
     v20 = TIStickerCandidateGeneratorOSLogFacility();
     v21 = os_signpost_id_generate(v20);
@@ -1088,12 +1088,12 @@ uint64_t __150__TIStickerCandidateGenerator__generateStickerCandidatesForGenerat
     v38 = dispatch_group_create();
     if (_os_feature_enabled_impl() & 1) != 0 || (_os_feature_enabled_impl())
     {
-      if (!v14)
+      if (!searchableQueriesCopy)
       {
 LABEL_16:
-        v28 = [(TIStickerCandidateGenerator *)self backgroundOperationQueue];
-        v29 = v17;
-        v24 = v17;
+        backgroundOperationQueue = [(TIStickerCandidateGenerator *)self backgroundOperationQueue];
+        v29 = handlerCopy;
+        v24 = handlerCopy;
         TIDispatchAsync();
 
         _Block_object_dispose(&v33, 8);
@@ -1108,19 +1108,19 @@ LABEL_16:
     else
     {
       v26 = _os_feature_enabled_impl();
-      if (!v14 || (v26 & 1) == 0)
+      if (!searchableQueriesCopy || (v26 & 1) == 0)
       {
         goto LABEL_16;
       }
     }
 
-    if ([v14 count])
+    if ([searchableQueriesCopy count])
     {
       dispatch_group_enter(v34[5]);
-      v27 = [(TIStickerCandidateGenerator *)self backgroundOperationQueue];
-      v30 = v14;
-      v31 = v15;
-      v32 = v16;
+      backgroundOperationQueue2 = [(TIStickerCandidateGenerator *)self backgroundOperationQueue];
+      v30 = searchableQueriesCopy;
+      v31 = traitsCopy;
+      v32 = languageCopy;
       TIDispatchAsync();
     }
 
@@ -1131,8 +1131,8 @@ LABEL_16:
   v48 = 3221225472;
   v49 = __175__TIStickerCandidateGenerator_generateStickerCandidatesForTaxonomySearchableQueries_generativeEmojiSearchableQueries_withRenderTraits_shouldAppend_language_completionHandler___block_invoke;
   v50 = &unk_2787338C0;
-  v51 = v17;
-  v24 = v17;
+  v51 = handlerCopy;
+  v24 = handlerCopy;
   TIDispatchAsync();
   v25 = v51;
 LABEL_17:

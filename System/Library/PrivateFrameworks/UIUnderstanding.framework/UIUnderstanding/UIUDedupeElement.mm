@@ -1,37 +1,37 @@
 @interface UIUDedupeElement
 - (BOOL)isDuplicate;
 - (CGRect)rect;
-- (UIUDedupeElement)initWithContents:(id)a3;
+- (UIUDedupeElement)initWithContents:(id)contents;
 @end
 
 @implementation UIUDedupeElement
 
-- (UIUDedupeElement)initWithContents:(id)a3
+- (UIUDedupeElement)initWithContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   v8.receiver = self;
   v8.super_class = UIUDedupeElement;
   v5 = [(UIUDedupeElement *)&v8 init];
   underlyingObject = v5->_underlyingObject;
-  v5->_underlyingObject = v4;
+  v5->_underlyingObject = contentsCopy;
 
   return v5;
 }
 
 - (BOOL)isDuplicate
 {
-  v2 = [(UIUDedupeElement *)self underlyingObject];
-  v3 = [v2 isDuplicate];
+  underlyingObject = [(UIUDedupeElement *)self underlyingObject];
+  isDuplicate = [underlyingObject isDuplicate];
 
-  return v3;
+  return isDuplicate;
 }
 
 - (CGRect)rect
 {
-  v2 = [(UIUDedupeElement *)self underlyingObject];
-  v3 = [v2 uiObject];
-  v4 = [v3 boundingBox];
-  [v4 rect];
+  underlyingObject = [(UIUDedupeElement *)self underlyingObject];
+  uiObject = [underlyingObject uiObject];
+  boundingBox = [uiObject boundingBox];
+  [boundingBox rect];
   v6 = v5;
   v8 = v7;
   v10 = v9;

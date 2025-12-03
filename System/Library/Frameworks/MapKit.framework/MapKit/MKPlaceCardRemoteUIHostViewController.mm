@@ -1,14 +1,14 @@
 @interface MKPlaceCardRemoteUIHostViewController
 - (MKPlaceCardContentSizeDelegate)placeCardContentSizeDelegate;
-- (MKPlaceCardRemoteUIHostViewController)initWithSceneIdentifier:(id)a3 remoteObjectInterface:(id)a4 placeholderView:(id)a5;
+- (MKPlaceCardRemoteUIHostViewController)initWithSceneIdentifier:(id)identifier remoteObjectInterface:(id)interface placeholderView:(id)view;
 - (int64_t)_mapkit_userInterfaceStyle;
 - (void)_resolvePreferredContentSizeIfNeeded;
 - (void)_startSession;
 - (void)_updatePreferredWidthFromLayout;
 - (void)dealloc;
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -23,48 +23,48 @@
 
 - (int64_t)_mapkit_userInterfaceStyle
 {
-  v2 = [(MKPlaceCardRemoteUIHostViewController *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(MKPlaceCardRemoteUIHostViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 2)
+  if (userInterfaceStyle == 2)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 != 1);
+    return 2 * (userInterfaceStyle != 1);
   }
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v13 = a3;
-  v6 = [a4 userInterfaceStyle];
-  v7 = [(MKPlaceCardRemoteUIHostViewController *)self traitCollection];
-  v8 = [v7 userInterfaceStyle];
+  environmentCopy = environment;
+  userInterfaceStyle = [collection userInterfaceStyle];
+  traitCollection = [(MKPlaceCardRemoteUIHostViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v6 != v8)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v9 = [v13 traitCollection];
-    v10 = [v9 userInterfaceStyle];
+    traitCollection2 = [environmentCopy traitCollection];
+    userInterfaceStyle3 = [traitCollection2 userInterfaceStyle];
 
-    if (v10 == 2)
+    if (userInterfaceStyle3 == 2)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = 2 * (v10 != 1);
+      v11 = 2 * (userInterfaceStyle3 != 1);
     }
 
-    v12 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    [v12 updateInterfaceStyle:v11];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    [remoteObjectProxy updateInterfaceStyle:v11];
   }
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
   v5 = MKGetMKRemoteUILog_23452();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -78,7 +78,7 @@
   self->_connection = 0;
 }
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
   v3 = MKGetMKRemoteUILog_23452();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -102,8 +102,8 @@
   v3 = MKGetMKRemoteUILog_23452();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(MKPlaceCardRemoteUIHostViewController *)self view];
-    [v4 bounds];
+    view = [(MKPlaceCardRemoteUIHostViewController *)self view];
+    [view bounds];
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%.1f, %.1f}", v5, v6];
     *buf = 138412290;
     v18 = *&v7;
@@ -112,8 +112,8 @@
 
   if (self->_preferredWidth <= 0.0)
   {
-    v16 = [(MKPlaceCardRemoteUIHostViewController *)self view];
-    [v16 bounds];
+    view2 = [(MKPlaceCardRemoteUIHostViewController *)self view];
+    [view2 bounds];
     self->_preferredWidth = CGRectGetWidth(v22);
 
     [(MKPlaceCardRemoteUIHostViewController *)self _resolvePreferredContentSizeIfNeeded];
@@ -125,8 +125,8 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       preferredWidth = self->_preferredWidth;
-      v10 = [(MKPlaceCardRemoteUIHostViewController *)self view];
-      [v10 bounds];
+      view3 = [(MKPlaceCardRemoteUIHostViewController *)self view];
+      [view3 bounds];
       v12 = vabdd_f64(preferredWidth, v11);
 
       if (v12 < 0.00000011920929)
@@ -138,8 +138,8 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v13 = self->_preferredWidth;
-        v14 = [(MKPlaceCardRemoteUIHostViewController *)self view];
-        [v14 bounds];
+        view4 = [(MKPlaceCardRemoteUIHostViewController *)self view];
+        [view4 bounds];
         *buf = 134218240;
         v18 = v13;
         v19 = 2048;
@@ -165,14 +165,14 @@
     }
 
     objc_initWeak(buf, self);
-    v5 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
     v6 = self->_preferredWidth;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __77__MKPlaceCardRemoteUIHostViewController__resolvePreferredContentSizeIfNeeded__block_invoke;
     v7[3] = &unk_1E76C9938;
     objc_copyWeak(&v8, buf);
-    [v5 fetchPreferredContentSizeForWidth:v7 completionHandler:v6];
+    [remoteObjectProxy fetchPreferredContentSizeForWidth:v7 completionHandler:v6];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(buf);
@@ -230,11 +230,11 @@ void __77__MKPlaceCardRemoteUIHostViewController__resolvePreferredContentSizeIfN
 
 - (void)_startSession
 {
-  v3 = [MEMORY[0x1E6966CB0] mkRemoteUIIdentity];
-  if (v3)
+  mkRemoteUIIdentity = [MEMORY[0x1E6966CB0] mkRemoteUIIdentity];
+  if (mkRemoteUIIdentity)
   {
     objc_initWeak(location, self);
-    v4 = [objc_alloc(MEMORY[0x1E6966CC8]) initWithExtensionIdentity:v3];
+    v4 = [objc_alloc(MEMORY[0x1E6966CC8]) initWithExtensionIdentity:mkRemoteUIIdentity];
     v5 = [objc_alloc(MEMORY[0x1E6966D68]) initWithSceneIdentifier:self->_sceneIdentifier];
     [v5 setInvalidationHandler:&__block_literal_global_23479];
     v6 = MEMORY[0x1E6966D60];
@@ -328,22 +328,22 @@ void __54__MKPlaceCardRemoteUIHostViewController__startSession__block_invoke()
   [(_EXHostViewController *)&v3 dealloc];
 }
 
-- (MKPlaceCardRemoteUIHostViewController)initWithSceneIdentifier:(id)a3 remoteObjectInterface:(id)a4 placeholderView:(id)a5
+- (MKPlaceCardRemoteUIHostViewController)initWithSceneIdentifier:(id)identifier remoteObjectInterface:(id)interface placeholderView:(id)view
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  interfaceCopy = interface;
+  viewCopy = view;
   v17.receiver = self;
   v17.super_class = MKPlaceCardRemoteUIHostViewController;
   v12 = [(_EXHostViewController *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sceneIdentifier, a3);
-    objc_storeStrong(&v13->_remoteObjectInterface, a4);
+    objc_storeStrong(&v12->_sceneIdentifier, identifier);
+    objc_storeStrong(&v13->_remoteObjectInterface, interface);
     [(_EXHostViewController *)v13 setDelegate:v13];
-    [(_EXHostViewController *)v13 setPlaceholderView:v11];
+    [(_EXHostViewController *)v13 setPlaceholderView:viewCopy];
     v18[0] = objc_opt_class();
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     v15 = [(MKPlaceCardRemoteUIHostViewController *)v13 registerForTraitChanges:v14 withAction:sel_traitEnvironment_didChangeTraitCollection_];

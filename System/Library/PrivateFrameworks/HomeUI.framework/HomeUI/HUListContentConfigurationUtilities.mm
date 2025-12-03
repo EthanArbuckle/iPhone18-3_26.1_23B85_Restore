@@ -1,8 +1,8 @@
 @interface HUListContentConfigurationUtilities
-+ (id)buttonStyleConfigurationForItem:(id)a3 isDestructive:(BOOL)a4;
-+ (id)instructionsConfigurationForItem:(id)a3;
-+ (id)labelConfiguration:(id)a3 forItem:(id)a4;
-+ (id)labelDefaultConfigurationForItem:(id)a3;
++ (id)buttonStyleConfigurationForItem:(id)item isDestructive:(BOOL)destructive;
++ (id)instructionsConfigurationForItem:(id)item;
++ (id)labelConfiguration:(id)configuration forItem:(id)item;
++ (id)labelDefaultConfigurationForItem:(id)item;
 + (void)_setupCachedConfigurations;
 @end
 
@@ -27,18 +27,18 @@ void __65__HUListContentConfigurationUtilities__setupCachedConfigurations__block
   qword_281121FD0 = v2;
 }
 
-+ (id)buttonStyleConfigurationForItem:(id)a3 isDestructive:(BOOL)a4
++ (id)buttonStyleConfigurationForItem:(id)item isDestructive:(BOOL)destructive
 {
-  v4 = a4;
-  v5 = a3;
+  destructiveCopy = destructive;
+  itemCopy = item;
   [objc_opt_class() _setupCachedConfigurations];
   v6 = [qword_281121FD0 copy];
-  v7 = [v5 latestResults];
+  latestResults = [itemCopy latestResults];
 
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   [v6 setText:v8];
 
-  if (v4)
+  if (destructiveCopy)
   {
     [MEMORY[0x277D75348] systemRedColor];
   }
@@ -48,98 +48,98 @@ void __65__HUListContentConfigurationUtilities__setupCachedConfigurations__block
     [MEMORY[0x277D75348] hf_keyColor];
   }
   v9 = ;
-  v10 = [v6 textProperties];
-  [v10 setColor:v9];
+  textProperties = [v6 textProperties];
+  [textProperties setColor:v9];
 
   return v6;
 }
 
-+ (id)labelDefaultConfigurationForItem:(id)a3
++ (id)labelDefaultConfigurationForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   [objc_opt_class() _setupCachedConfigurations];
   v4 = objc_opt_class();
   v5 = [_MergedGlobals_630 copy];
-  v6 = [v4 labelConfiguration:v5 forItem:v3];
+  v6 = [v4 labelConfiguration:v5 forItem:itemCopy];
 
   return v6;
 }
 
-+ (id)labelConfiguration:(id)a3 forItem:(id)a4
++ (id)labelConfiguration:(id)configuration forItem:(id)item
 {
-  v5 = a3;
-  v6 = [a4 latestResults];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  [v5 setText:v7];
+  configurationCopy = configuration;
+  latestResults = [item latestResults];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  [configurationCopy setText:v7];
 
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
-  [v5 setSecondaryText:v8];
+  v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  [configurationCopy setSecondaryText:v8];
 
-  v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v10 = [v5 secondaryTextProperties];
-  [v10 setColor:v9];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  secondaryTextProperties = [configurationCopy secondaryTextProperties];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  v11 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13E98]];
-  v12 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13EA0]];
+  v11 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E98]];
+  v12 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA0]];
   v13 = v12;
   if (v11)
   {
-    [v5 setImage:v11];
+    [configurationCopy setImage:v11];
   }
 
   else if (v12)
   {
     v14 = [MEMORY[0x277D755B8] systemImageNamed:v12];
-    [v5 setImage:v14];
+    [configurationCopy setImage:v14];
   }
 
-  return v5;
+  return configurationCopy;
 }
 
-+ (id)instructionsConfigurationForItem:(id)a3
++ (id)instructionsConfigurationForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   if (qword_281121FE8 != -1)
   {
     dispatch_once(&qword_281121FE8, &__block_literal_global_4_2);
   }
 
-  v4 = [v3 latestResults];
-  v5 = [v4 objectForKeyedSubscript:@"instructionsStyle"];
+  latestResults = [itemCopy latestResults];
+  v5 = [latestResults objectForKeyedSubscript:@"instructionsStyle"];
 
   if (v5)
   {
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
     NSLog(&cfstr_NoInstructions.isa);
-    v6 = -1;
+    integerValue = -1;
   }
 
-  v7 = [v3 latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  latestResults2 = [itemCopy latestResults];
+  v8 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
 
-  v9 = [v3 latestResults];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  latestResults3 = [itemCopy latestResults];
+  v10 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
 
   v11 = 0;
-  if (v6 > 2)
+  if (integerValue > 2)
   {
-    if (v6 == 3)
+    if (integerValue == 3)
     {
       goto LABEL_15;
     }
 
-    if (v6 == 4)
+    if (integerValue == 4)
     {
       v11 = [qword_281121FD8 copy];
       [v11 setText:v8];
       goto LABEL_21;
     }
 
-    if (v6 != 5)
+    if (integerValue != 5)
     {
       goto LABEL_22;
     }
@@ -160,7 +160,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  switch(v6)
+  switch(integerValue)
   {
     case 0:
       v11 = [qword_281121FD8 copy];

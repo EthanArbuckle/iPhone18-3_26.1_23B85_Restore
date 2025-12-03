@@ -1,26 +1,26 @@
 @interface DIVerifyManager
-- (BOOL)runWithError:(id *)a3;
-- (DIVerifyManager)initWithParams:(id)a3;
+- (BOOL)runWithError:(id *)error;
+- (DIVerifyManager)initWithParams:(id)params;
 @end
 
 @implementation DIVerifyManager
 
-- (DIVerifyManager)initWithParams:(id)a3
+- (DIVerifyManager)initWithParams:(id)params
 {
-  v5 = a3;
+  paramsCopy = params;
   v9.receiver = self;
   v9.super_class = DIVerifyManager;
   v6 = [(DIVerifyManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_verifyParams, a3);
+    objc_storeStrong(&v6->_verifyParams, params);
   }
 
   return v7;
 }
 
-- (BOOL)runWithError:(id *)a3
+- (BOOL)runWithError:(id *)error
 {
   v5 = *__error();
   if (sub_1000E044C())
@@ -55,14 +55,14 @@
   }
 
   *__error() = v5;
-  v9 = [(DIVerifyManager *)self verifyParams];
-  v10 = [v9 diskImageParamsXPC];
-  v11 = [(DIVerifyManager *)self verifyParams];
-  v12 = [v11 shadowChain];
-  v13 = [v12 shouldValidate];
-  if (v10)
+  verifyParams = [(DIVerifyManager *)self verifyParams];
+  diskImageParamsXPC = [verifyParams diskImageParamsXPC];
+  verifyParams2 = [(DIVerifyManager *)self verifyParams];
+  shadowChain = [verifyParams2 shadowChain];
+  shouldValidate = [shadowChain shouldValidate];
+  if (diskImageParamsXPC)
   {
-    [v10 createDiskImageWithCache:0 shadowValidation:v13];
+    [diskImageParamsXPC createDiskImageWithCache:0 shadowValidation:shouldValidate];
   }
 
   else
@@ -115,7 +115,7 @@
 
   else
   {
-    LOBYTE(v16) = [DIError failWithEnumValue:152 description:@"Disk image verification failed" error:a3];
+    LOBYTE(v16) = [DIError failWithEnumValue:152 description:@"Disk image verification failed" error:error];
   }
 
   *__p = &v26;

@@ -1,20 +1,20 @@
 @interface SSHTTPServer
-+ (BOOL)_isPortOccupied:(signed __int16)a3;
++ (BOOL)_isPortOccupied:(signed __int16)occupied;
 + (id)sharedServer;
 - (BOOL)start;
 - (SSHTTPServer)init;
 - (id)_ipAddress;
-- (id)responseBlockForPath:(id)a3;
+- (id)responseBlockForPath:(id)path;
 - (id)serverLocalhostURL;
 - (id)serverURL;
 - (int)state;
 - (int64_t)responsesDelivered;
 - (signed)port;
-- (void)_handleConnectWithType:(unint64_t)a3 handle:(int)a4;
+- (void)_handleConnectWithType:(unint64_t)type handle:(int)handle;
 - (void)dealloc;
-- (void)requestDidFinish:(id)a3;
-- (void)setPort:(signed __int16)a3;
-- (void)setResponseForPath:(id)a3 handler:(id)a4;
+- (void)requestDidFinish:(id)finish;
+- (void)setPort:(signed __int16)port;
+- (void)setResponseForPath:(id)path handler:(id)handler;
 - (void)stop;
 @end
 
@@ -94,7 +94,7 @@
   return v3;
 }
 
-- (void)setPort:(signed __int16)a3
+- (void)setPort:(signed __int16)port
 {
   propertyQueue = self->_propertyQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -102,7 +102,7 @@
   v4[2] = __24__SSHTTPServer_setPort___block_invoke;
   v4[3] = &unk_1E84ABF68;
   v4[4] = self;
-  v5 = a3;
+  portCopy = port;
   dispatch_sync(propertyQueue, v4);
 }
 
@@ -178,9 +178,9 @@ LABEL_13:
   return v3;
 }
 
-- (id)responseBlockForPath:(id)a3
+- (id)responseBlockForPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -192,10 +192,10 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __37__SSHTTPServer_responseBlockForPath___block_invoke;
   block[3] = &unk_1E84ABF90;
-  v10 = v4;
+  v10 = pathCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = pathCopy;
   dispatch_sync(propertyQueue, block);
   v7 = MEMORY[0x1DA6DFBB0](v13[5]);
 
@@ -324,20 +324,20 @@ void __34__SSHTTPServer_serverLocalhostURL__block_invoke(uint64_t a1)
   *(v6 + 40) = v5;
 }
 
-- (void)setResponseForPath:(id)a3 handler:(id)a4
+- (void)setResponseForPath:(id)path handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  handlerCopy = handler;
   propertyQueue = self->_propertyQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__SSHTTPServer_setResponseForPath_handler___block_invoke;
   block[3] = &unk_1E84AC000;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = pathCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = pathCopy;
   dispatch_sync(propertyQueue, block);
 }
 
@@ -368,21 +368,21 @@ void __43__SSHTTPServer_setResponseForPath_handler___block_invoke(uint64_t a1)
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
-  v6 = [v4 shouldLogToDisk];
-  v7 = [v4 OSLogObject];
-  v8 = v7;
-  if (v6)
+  shouldLog = [v4 shouldLog];
+  shouldLogToDisk = [v4 shouldLogToDisk];
+  oSLogObject = [v4 OSLogObject];
+  v8 = oSLogObject;
+  if (shouldLogToDisk)
   {
-    v5 |= 2u;
+    shouldLog |= 2u;
   }
 
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v5 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (!v5)
+  if (!shouldLog)
   {
     goto LABEL_10;
   }
@@ -698,14 +698,14 @@ LABEL_20:
   *(*(a1 + 32) + 56) = 1;
 }
 
-- (void)_handleConnectWithType:(unint64_t)a3 handle:(int)a4
+- (void)_handleConnectWithType:(unint64_t)type handle:(int)handle
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a3 == 2)
+  if (type == 2)
   {
     writeStream = 0;
     readStream = 0;
-    CFStreamCreatePairWithSocket(*MEMORY[0x1E695E480], a4, &readStream, &writeStream);
+    CFStreamCreatePairWithSocket(*MEMORY[0x1E695E480], handle, &readStream, &writeStream);
     if (readStream)
     {
       v5 = writeStream == 0;
@@ -724,19 +724,19 @@ LABEL_20:
         v22 = +[SSLogConfig sharedConfig];
       }
 
-      v6 = [(__CFReadStream *)v22 shouldLog];
+      shouldLog = [(__CFReadStream *)v22 shouldLog];
       if ([(__CFReadStream *)v22 shouldLogToDisk])
       {
-        v7 = v6 | 2;
+        v7 = shouldLog | 2;
       }
 
       else
       {
-        v7 = v6;
+        v7 = shouldLog;
       }
 
-      v21 = [(__CFReadStream *)v22 OSLogObject];
-      if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      oSLogObject = [(__CFReadStream *)v22 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v7 &= 2u;
       }
@@ -757,9 +757,9 @@ LABEL_18:
           return;
         }
 
-        v21 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v30, v23}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v30, v23}];
         free(v10);
-        SSFileLog(v22, @"%@", v11, v12, v13, v14, v15, v16, v21);
+        SSFileLog(v22, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
       }
     }
 
@@ -777,8 +777,8 @@ LABEL_18:
       block[3] = &unk_1E84AC078;
       v25 = readStream;
       v26 = writeStream;
-      v27 = self;
-      v21 = writeStream;
+      selfCopy = self;
+      oSLogObject = writeStream;
       v22 = v19;
       dispatch_sync(propertyQueue, block);
     }
@@ -795,17 +795,17 @@ void __46__SSHTTPServer__handleConnectWithType_handle___block_invoke(void *a1)
   [*(a1[6] + 16) addObject:v2];
 }
 
-- (void)requestDidFinish:(id)a3
+- (void)requestDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   propertyQueue = self->_propertyQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__SSHTTPServer_requestDidFinish___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = finishCopy;
+  v6 = finishCopy;
   dispatch_sync(propertyQueue, v7);
 }
 
@@ -845,9 +845,9 @@ void __46__SSHTTPServer__handleConnectWithType_handle___block_invoke(void *a1)
   return v4;
 }
 
-+ (BOOL)_isPortOccupied:(signed __int16)a3
++ (BOOL)_isPortOccupied:(signed __int16)occupied
 {
-  v3 = a3;
+  occupiedCopy = occupied;
   v15 = *MEMORY[0x1E69E9840];
   v4 = CFSocketCreate(*MEMORY[0x1E695E480], 2, 1, 6, 0, 0, 0);
   if (!v4)
@@ -868,7 +868,7 @@ void __46__SSHTTPServer__handleConnectWithType_handle___block_invoke(void *a1)
     v14 = 0;
     *bytes = 528;
     v13 = 0;
-    v12 = bswap32(v3) >> 16;
+    v12 = bswap32(occupiedCopy) >> 16;
     v8 = CFDataCreate(0, bytes, 16);
     v7 = CFSocketSetAddress(v5, v8) != kCFSocketSuccess;
     CFRelease(v8);

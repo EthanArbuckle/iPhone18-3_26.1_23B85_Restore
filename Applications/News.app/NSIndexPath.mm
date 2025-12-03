@@ -1,38 +1,38 @@
 @interface NSIndexPath
-+ (id)fr_indexPathsForRows:(id)a3 inSection:(int64_t)a4;
-- (id)indexPathInvalidatingIndexesFollowingPosition:(int64_t)a3;
++ (id)fr_indexPathsForRows:(id)rows inSection:(int64_t)section;
+- (id)indexPathInvalidatingIndexesFollowingPosition:(int64_t)position;
 @end
 
 @implementation NSIndexPath
 
-- (id)indexPathInvalidatingIndexesFollowingPosition:(int64_t)a3
+- (id)indexPathInvalidatingIndexesFollowingPosition:(int64_t)position
 {
-  if ([(NSIndexPath *)self length]- 1 <= a3)
+  if ([(NSIndexPath *)self length]- 1 <= position)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [(NSIndexPath *)self indexPathByRemovingLastIndex];
-    v6 = [v5 indexPathInvalidatingIndexesFollowingPosition:a3];
+    indexPathByRemovingLastIndex = [(NSIndexPath *)self indexPathByRemovingLastIndex];
+    selfCopy = [indexPathByRemovingLastIndex indexPathInvalidatingIndexesFollowingPosition:position];
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (id)fr_indexPathsForRows:(id)a3 inSection:(int64_t)a4
++ (id)fr_indexPathsForRows:(id)rows inSection:(int64_t)section
 {
-  v5 = a3;
-  if (v5)
+  rowsCopy = rows;
+  if (rowsCopy)
   {
     v6 = objc_opt_new();
-    v7 = [v5 firstIndex];
-    if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [rowsCopy firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v7; i != 0x7FFFFFFFFFFFFFFFLL; i = [v5 indexGreaterThanIndex:i])
+      for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [rowsCopy indexGreaterThanIndex:i])
       {
-        v9 = [NSIndexPath indexPathForRow:i inSection:a4];
+        v9 = [NSIndexPath indexPathForRow:i inSection:section];
         [v6 addObject:v9];
       }
     }

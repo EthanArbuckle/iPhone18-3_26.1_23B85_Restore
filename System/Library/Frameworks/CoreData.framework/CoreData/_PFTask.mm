@@ -1,7 +1,7 @@
 @interface _PFTask
 + (uint64_t)getNumActiveProcessors;
 + (uint64_t)getPhysicalMemory;
-- (_PFTask)initWithFunction:(void *)a3 withArgument:(void *)a4 andPriority:(int)a5;
+- (_PFTask)initWithFunction:(void *)function withArgument:(void *)argument andPriority:(int)priority;
 - (void)dealloc;
 - (void)release;
 @end
@@ -65,30 +65,30 @@
   [(_PFTask *)&v5 dealloc];
 }
 
-- (_PFTask)initWithFunction:(void *)a3 withArgument:(void *)a4 andPriority:(int)a5
+- (_PFTask)initWithFunction:(void *)function withArgument:(void *)argument andPriority:(int)priority
 {
-  v8 = self;
+  selfCopy = self;
   pthread_mutex_init(&self->lock, 0);
-  pthread_cond_init(&v8->condition, 0);
-  v8->isFinishedFlag = 0;
-  v8->_task = a3;
-  v8->arguments = a4;
-  CFRetain(v8);
+  pthread_cond_init(&selfCopy->condition, 0);
+  selfCopy->isFinishedFlag = 0;
+  selfCopy->_task = function;
+  selfCopy->arguments = argument;
+  CFRetain(selfCopy);
   __dmb(0xBu);
-  global_queue = dispatch_get_global_queue(a5, 2uLL);
+  global_queue = dispatch_get_global_queue(priority, 2uLL);
   if (global_queue)
   {
-    dispatch_async_f(global_queue, v8, minion_duties2);
+    dispatch_async_f(global_queue, selfCopy, minion_duties2);
   }
 
   else
   {
-    CFRelease(v8);
+    CFRelease(selfCopy);
 
     return 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

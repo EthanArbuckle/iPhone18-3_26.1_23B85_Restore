@@ -1,44 +1,44 @@
 @interface FPXV2ExtensionWrapper
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isInteractionSuppressedForIdentifier:(id)a3;
-- (FPXV2ExtensionWrapper)initWithDomain:(id)a3;
-- (id)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 contents:(id)a5 options:(unint64_t)a6 request:(id)a7 completionHandler:(id)a8;
-- (id)deleteItemWithIdentifier:(id)a3 baseVersion:(id)a4 options:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7;
-- (id)enumeratorForContainerItemIdentifier:(id)a3 request:(id)a4 error:(id *)a5;
-- (id)enumeratorForSearch:(id)a3 request:(id)a4 error:(id *)a5;
-- (id)fetchContentsForItemWithIdentifier:(id)a3 version:(id)a4 request:(id)a5 completionHandler:(id)a6;
-- (id)fetchContentsForItemWithIdentifier:(id)a3 version:(id)a4 usingExistingContentsAtURL:(id)a5 existingVersion:(id)a6 request:(id)a7 completionHandler:(id)a8;
-- (id)itemForIdentifier:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)modifyItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 options:(unint64_t)a7 request:(id)a8 completionHandler:(id)a9;
-- (id)performActionWithIdentifier:(id)a3 onItemsWithIdentifiers:(id)a4 completionHandler:(id)a5;
-- (id)supportedServiceSourcesForItemIdentifier:(id)a3 completionHandler:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isInteractionSuppressedForIdentifier:(id)identifier;
+- (FPXV2ExtensionWrapper)initWithDomain:(id)domain;
+- (id)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (id)deleteItemWithIdentifier:(id)identifier baseVersion:(id)version options:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (id)enumeratorForContainerItemIdentifier:(id)identifier request:(id)request error:(id *)error;
+- (id)enumeratorForSearch:(id)search request:(id)request error:(id *)error;
+- (id)fetchContentsForItemWithIdentifier:(id)identifier version:(id)version request:(id)request completionHandler:(id)handler;
+- (id)fetchContentsForItemWithIdentifier:(id)identifier version:(id)version usingExistingContentsAtURL:(id)l existingVersion:(id)existingVersion request:(id)request completionHandler:(id)handler;
+- (id)itemForIdentifier:(id)identifier request:(id)request completionHandler:(id)handler;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)modifyItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (id)performActionWithIdentifier:(id)identifier onItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (id)supportedServiceSourcesForItemIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation FPXV2ExtensionWrapper
 
-- (FPXV2ExtensionWrapper)initWithDomain:(id)a3
+- (FPXV2ExtensionWrapper)initWithDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v15.receiver = self;
   v15.super_class = FPXV2ExtensionWrapper;
   v5 = [(FPXV2ExtensionWrapper *)&v15 init];
   if (v5)
   {
-    v6 = [v4 identifier];
-    v7 = [v6 isEqualToString:@"NSFileProviderDomainDefaultIdentifier"];
+    identifier = [domainCopy identifier];
+    v7 = [identifier isEqualToString:@"NSFileProviderDomainDefaultIdentifier"];
 
     if (v7)
     {
 
-      v4 = 0;
+      domainCopy = 0;
     }
 
     v8 = [(objc_class *)v5->_extensionClass instancesRespondToSelector:sel_initWithDomain_];
     extensionClass = v5->_extensionClass;
     if (v8)
     {
-      v10 = [[extensionClass alloc] initWithDomain:v4];
+      v10 = [[extensionClass alloc] initWithDomain:domainCopy];
       extension = v5->_extension;
       v5->_extension = v10;
     }
@@ -49,9 +49,9 @@
       v13 = v5->_extension;
       v5->_extension = v12;
 
-      if (v4)
+      if (domainCopy)
       {
-        [(NSFileProviderExtension *)v5->_extension setDomain:v4];
+        [(NSFileProviderExtension *)v5->_extension setDomain:domainCopy];
       }
     }
   }
@@ -59,35 +59,35 @@
   return v5;
 }
 
-- (id)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 contents:(id)a5 options:(unint64_t)a6 request:(id)a7 completionHandler:(id)a8
+- (id)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
-  v13 = a8;
+  handlerCopy = handler;
   extension = self->_extension;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __101__FPXV2ExtensionWrapper_createItemBasedOnTemplate_fields_contents_options_request_completionHandler___block_invoke;
   v18[3] = &unk_1E793BAB8;
-  v19 = v13;
-  v15 = v13;
-  [(NSFileProviderExtension *)extension createItemBasedOnTemplate:a3 fields:a4 contents:a5 options:a6 completionHandler:v18];
+  v19 = handlerCopy;
+  v15 = handlerCopy;
+  [(NSFileProviderExtension *)extension createItemBasedOnTemplate:template fields:fields contents:contents options:options completionHandler:v18];
 
   v16 = objc_opt_new();
 
   return v16;
 }
 
-- (id)deleteItemWithIdentifier:(id)a3 baseVersion:(id)a4 options:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7
+- (id)deleteItemWithIdentifier:(id)identifier baseVersion:(id)version options:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
-  [(NSFileProviderExtension *)self->_extension deleteItemWithIdentifier:a3 baseVersion:a4 options:a5 completionHandler:a7];
+  [(NSFileProviderExtension *)self->_extension deleteItemWithIdentifier:identifier baseVersion:version options:options completionHandler:handler];
   v7 = objc_opt_new();
 
   return v7;
 }
 
-- (id)enumeratorForContainerItemIdentifier:(id)a3 request:(id)a4 error:(id *)a5
+- (id)enumeratorForContainerItemIdentifier:(id)identifier request:(id)request error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  requestCopy = request;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -107,13 +107,13 @@
   v14[3] = &unk_1E793BAE0;
   v16 = &v24;
   v14[4] = self;
-  v11 = v8;
+  v11 = identifierCopy;
   v15 = v11;
   v17 = &v18;
-  [(NSFileProviderExtension *)extension _withRequest:v9 execute:v14];
-  if (a5)
+  [(NSFileProviderExtension *)extension _withRequest:requestCopy execute:v14];
+  if (error)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   v12 = v25[5];
@@ -137,10 +137,10 @@ void __76__FPXV2ExtensionWrapper_enumeratorForContainerItemIdentifier_request_er
   *(v6 + 40) = v5;
 }
 
-- (id)enumeratorForSearch:(id)a3 request:(id)a4 error:(id *)a5
+- (id)enumeratorForSearch:(id)search request:(id)request error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  searchCopy = search;
+  requestCopy = request;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -158,15 +158,15 @@ void __76__FPXV2ExtensionWrapper_enumeratorForContainerItemIdentifier_request_er
   v14[1] = 3221225472;
   v14[2] = __59__FPXV2ExtensionWrapper_enumeratorForSearch_request_error___block_invoke;
   v14[3] = &unk_1E793BB08;
-  v11 = v8;
+  v11 = searchCopy;
   v15 = v11;
-  v16 = self;
+  selfCopy = self;
   v17 = &v25;
   v18 = &v19;
-  [(NSFileProviderExtension *)extension _withRequest:v9 execute:v14];
-  if (a5)
+  [(NSFileProviderExtension *)extension _withRequest:requestCopy execute:v14];
+  if (error)
   {
-    *a5 = v20[5];
+    *error = v20[5];
   }
 
   v12 = v26[5];
@@ -190,12 +190,12 @@ void __59__FPXV2ExtensionWrapper_enumeratorForSearch_request_error___block_invok
   *(v6 + 40) = v5;
 }
 
-- (id)fetchContentsForItemWithIdentifier:(id)a3 version:(id)a4 request:(id)a5 completionHandler:(id)a6
+- (id)fetchContentsForItemWithIdentifier:(id)identifier version:(id)version request:(id)request completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  versionCopy = version;
+  requestCopy = request;
+  handlerCopy = handler;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -209,13 +209,13 @@ void __59__FPXV2ExtensionWrapper_enumeratorForSearch_request_error___block_invok
   v20[3] = &unk_1E793BB30;
   v24 = &v25;
   v20[4] = self;
-  v15 = v10;
+  v15 = identifierCopy;
   v21 = v15;
-  v16 = v11;
+  v16 = versionCopy;
   v22 = v16;
-  v17 = v13;
+  v17 = handlerCopy;
   v23 = v17;
-  [(NSFileProviderExtension *)extension _withRequest:v12 execute:v20];
+  [(NSFileProviderExtension *)extension _withRequest:requestCopy execute:v20];
   v18 = v26[5];
 
   _Block_object_dispose(&v25, 8);
@@ -233,14 +233,14 @@ uint64_t __94__FPXV2ExtensionWrapper_fetchContentsForItemWithIdentifier_version_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)fetchContentsForItemWithIdentifier:(id)a3 version:(id)a4 usingExistingContentsAtURL:(id)a5 existingVersion:(id)a6 request:(id)a7 completionHandler:(id)a8
+- (id)fetchContentsForItemWithIdentifier:(id)identifier version:(id)version usingExistingContentsAtURL:(id)l existingVersion:(id)existingVersion request:(id)request completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  versionCopy = version;
+  lCopy = l;
+  existingVersionCopy = existingVersion;
+  requestCopy = request;
+  handlerCopy = handler;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -254,17 +254,17 @@ uint64_t __94__FPXV2ExtensionWrapper_fetchContentsForItemWithIdentifier_version_
   v28[3] = &unk_1E793BB58;
   v34 = &v35;
   v28[4] = self;
-  v21 = v14;
+  v21 = identifierCopy;
   v29 = v21;
-  v22 = v15;
+  v22 = versionCopy;
   v30 = v22;
-  v23 = v16;
+  v23 = lCopy;
   v31 = v23;
-  v24 = v17;
+  v24 = existingVersionCopy;
   v32 = v24;
-  v25 = v19;
+  v25 = handlerCopy;
   v33 = v25;
-  [(NSFileProviderExtension *)extension _withRequest:v18 execute:v28];
+  [(NSFileProviderExtension *)extension _withRequest:requestCopy execute:v28];
   v26 = v36[5];
 
   _Block_object_dispose(&v35, 8);
@@ -282,57 +282,57 @@ uint64_t __137__FPXV2ExtensionWrapper_fetchContentsForItemWithIdentifier_version
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)itemForIdentifier:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (id)itemForIdentifier:(id)identifier request:(id)request completionHandler:(id)handler
 {
   extension = self->_extension;
   v12 = 0;
-  v7 = a5;
-  v8 = [(NSFileProviderExtension *)extension itemForIdentifier:a3 error:&v12];
+  handlerCopy = handler;
+  v8 = [(NSFileProviderExtension *)extension itemForIdentifier:identifier error:&v12];
   v9 = v12;
-  v7[2](v7, v8, v9);
+  handlerCopy[2](handlerCopy, v8, v9);
 
   v10 = objc_opt_new();
 
   return v10;
 }
 
-- (id)modifyItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 options:(unint64_t)a7 request:(id)a8 completionHandler:(id)a9
+- (id)modifyItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents options:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
-  [(NSFileProviderExtension *)self->_extension changeItem:a3 baseVersion:a4 changedFields:a5 contents:a6 options:a7 completionHandler:a9];
+  [(NSFileProviderExtension *)self->_extension changeItem:item baseVersion:version changedFields:fields contents:contents options:options completionHandler:handler];
   v9 = objc_opt_new();
 
   return v9;
 }
 
-- (id)supportedServiceSourcesForItemIdentifier:(id)a3 completionHandler:(id)a4
+- (id)supportedServiceSourcesForItemIdentifier:(id)identifier completionHandler:(id)handler
 {
   extension = self->_extension;
   v11 = 0;
-  v6 = a4;
-  v7 = [(NSFileProviderExtension *)extension supportedServiceSourcesForItemIdentifier:a3 error:&v11];
+  handlerCopy = handler;
+  v7 = [(NSFileProviderExtension *)extension supportedServiceSourcesForItemIdentifier:identifier error:&v11];
   v8 = v11;
-  v6[2](v6, v7, v8);
+  handlerCopy[2](handlerCopy, v7, v8);
 
   v9 = objc_opt_new();
 
   return v9;
 }
 
-- (id)performActionWithIdentifier:(id)a3 onItemsWithIdentifiers:(id)a4 completionHandler:(id)a5
+- (id)performActionWithIdentifier:(id)identifier onItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   extension = self->_extension;
   if (objc_opt_respondsToSelector())
   {
-    v12 = [(NSFileProviderExtension *)self->_extension performActionWithIdentifier:v8 onItemsWithIdentifiers:v9 completionHandler:v10];
+    v12 = [(NSFileProviderExtension *)self->_extension performActionWithIdentifier:identifierCopy onItemsWithIdentifiers:identifiersCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3328 userInfo:0];
-    v10[2](v10, v13);
+    handlerCopy[2](handlerCopy, v13);
 
     v12 = objc_opt_new();
   }
@@ -342,13 +342,13 @@ uint64_t __137__FPXV2ExtensionWrapper_fetchContentsForItemWithIdentifier_version
   return v14;
 }
 
-- (BOOL)isInteractionSuppressedForIdentifier:(id)a3
+- (BOOL)isInteractionSuppressedForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   extension = self->_extension;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(NSFileProviderExtension *)self->_extension isInteractionSuppressedForIdentifier:v4];
+    v6 = [(NSFileProviderExtension *)self->_extension isInteractionSuppressedForIdentifier:identifierCopy];
   }
 
   else
@@ -359,7 +359,7 @@ uint64_t __137__FPXV2ExtensionWrapper_fetchContentsForItemWithIdentifier_version
   return v6;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v5 = [(NSFileProviderExtension *)self->_extension methodSignatureForSelector:?];
   v6 = v5;
@@ -372,7 +372,7 @@ uint64_t __137__FPXV2ExtensionWrapper_fetchContentsForItemWithIdentifier_version
   {
     v10.receiver = self;
     v10.super_class = FPXV2ExtensionWrapper;
-    v7 = [(FPXV2ExtensionWrapper *)&v10 methodSignatureForSelector:a3];
+    v7 = [(FPXV2ExtensionWrapper *)&v10 methodSignatureForSelector:selector];
   }
 
   v8 = v7;
@@ -380,19 +380,19 @@ uint64_t __137__FPXV2ExtensionWrapper_fetchContentsForItemWithIdentifier_version
   return v8;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v7.receiver = self;
   v7.super_class = FPXV2ExtensionWrapper;
-  if ([(FPXV2ExtensionWrapper *)&v7 conformsToProtocol:v4])
+  if ([(FPXV2ExtensionWrapper *)&v7 conformsToProtocol:protocolCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [(NSFileProviderExtension *)self->_extension conformsToProtocol:v4];
+    v5 = [(NSFileProviderExtension *)self->_extension conformsToProtocol:protocolCopy];
   }
 
   return v5;

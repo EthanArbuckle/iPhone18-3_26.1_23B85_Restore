@@ -1,11 +1,11 @@
 @interface ASTDwellHotCornerController
-+ (id)_cornerActionForIdentifier:(id)a3;
++ (id)_cornerActionForIdentifier:(id)identifier;
 - (ASTDwellHotCornerController)init;
-- (id)_cornerAction:(id)a3;
-- (id)getCurrentActionForHomeActionListController:(id)a3;
-- (id)selectSpecifier:(id)a3;
+- (id)_cornerAction:(id)action;
+- (id)getCurrentActionForHomeActionListController:(id)controller;
+- (id)selectSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)homeActionListController:(id)a3 selectedAction:(id)a4;
+- (void)homeActionListController:(id)controller selectedAction:(id)action;
 @end
 
 @implementation ASTDwellHotCornerController
@@ -89,11 +89,11 @@ void __35__ASTDwellHotCornerController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = ASTDwellHotCornerController;
-  v4 = [(ASTDwellHotCornerController *)&v6 selectSpecifier:a3];
+  v4 = [(ASTDwellHotCornerController *)&v6 selectSpecifier:specifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -103,9 +103,9 @@ void __35__ASTDwellHotCornerController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)_cornerAction:(id)a3
+- (id)_cornerAction:(id)action
 {
-  v3 = [a3 propertyForKey:@"HOT_CORNER_IDENTIFIER"];
+  v3 = [action propertyForKey:@"HOT_CORNER_IDENTIFIER"];
   v4 = [ASTDwellHotCornerController _cornerActionForIdentifier:v3];
   if (v4)
   {
@@ -121,13 +121,13 @@ void __35__ASTDwellHotCornerController_init__block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (id)_cornerActionForIdentifier:(id)a3
++ (id)_cornerActionForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchMouseDwellControlCornerCustomization];
+  assistiveTouchMouseDwellControlCornerCustomization = [v4 assistiveTouchMouseDwellControlCornerCustomization];
 
-  v6 = [v5 objectForKey:v3];
+  v6 = [assistiveTouchMouseDwellControlCornerCustomization objectForKey:identifierCopy];
 
   if ([v6 isEqualToString:@"__NONE__"])
   {
@@ -142,34 +142,34 @@ void __35__ASTDwellHotCornerController_init__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)getCurrentActionForHomeActionListController:(id)a3
+- (id)getCurrentActionForHomeActionListController:(id)controller
 {
-  v3 = [a3 homeActionType];
-  if ((v3 - 6) > 3)
+  homeActionType = [controller homeActionType];
+  if ((homeActionType - 6) > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [ASTDwellHotCornerController _cornerActionForIdentifier:**(&off_256B40 + (v3 - 6))];
+    v4 = [ASTDwellHotCornerController _cornerActionForIdentifier:**(&off_256B40 + (homeActionType - 6))];
   }
 
   return v4;
 }
 
-- (void)homeActionListController:(id)a3 selectedAction:(id)a4
+- (void)homeActionListController:(id)controller selectedAction:(id)action
 {
-  v11 = a4;
-  v5 = a3;
+  actionCopy = action;
+  controllerCopy = controller;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 assistiveTouchMouseDwellControlCornerCustomization];
-  v8 = [v7 mutableCopy];
+  assistiveTouchMouseDwellControlCornerCustomization = [v6 assistiveTouchMouseDwellControlCornerCustomization];
+  v8 = [assistiveTouchMouseDwellControlCornerCustomization mutableCopy];
 
-  v9 = [v5 homeActionType];
-  if ((v9 - 6) <= 3)
+  homeActionType = [controllerCopy homeActionType];
+  if ((homeActionType - 6) <= 3)
   {
-    [v8 setObject:v11 forKeyedSubscript:**(&off_256B40 + (v9 - 6))];
+    [v8 setObject:actionCopy forKeyedSubscript:**(&off_256B40 + (homeActionType - 6))];
     v10 = +[AXSettings sharedInstance];
     [v10 setAssistiveTouchMouseDwellControlCornerCustomization:v8];
   }

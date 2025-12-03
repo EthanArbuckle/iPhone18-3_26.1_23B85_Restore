@@ -1,30 +1,30 @@
 @interface ATXAppLaunchDuetEvent
-- (ATXAppLaunchDuetEvent)initWithATXEvent:(id)a3;
-- (ATXAppLaunchDuetEvent)initWithBundleId:(id)a3 appLaunchState:(int64_t)a4 launchReason:(id)a5 startDate:(id)a6 endDate:(id)a7;
-- (ATXAppLaunchDuetEvent)initWithCoder:(id)a3;
+- (ATXAppLaunchDuetEvent)initWithATXEvent:(id)event;
+- (ATXAppLaunchDuetEvent)initWithBundleId:(id)id appLaunchState:(int64_t)state launchReason:(id)reason startDate:(id)date endDate:(id)endDate;
+- (ATXAppLaunchDuetEvent)initWithCoder:(id)coder;
 - (ATXAppLaunchDuetEvent)initWithCurrentContextStoreValues;
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXAppLaunchDuetEvent
 
-- (ATXAppLaunchDuetEvent)initWithBundleId:(id)a3 appLaunchState:(int64_t)a4 launchReason:(id)a5 startDate:(id)a6 endDate:(id)a7
+- (ATXAppLaunchDuetEvent)initWithBundleId:(id)id appLaunchState:(int64_t)state launchReason:(id)reason startDate:(id)date endDate:(id)endDate
 {
-  v12 = a3;
-  v13 = a5;
+  idCopy = id;
+  reasonCopy = reason;
   v20.receiver = self;
   v20.super_class = ATXAppLaunchDuetEvent;
-  v14 = [(ATXDuetEvent *)&v20 initWithStartDate:a6 endDate:a7];
+  v14 = [(ATXDuetEvent *)&v20 initWithStartDate:date endDate:endDate];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [idCopy copy];
     bundleId = v14->_bundleId;
     v14->_bundleId = v15;
 
-    v14->_appLaunchState = a4;
-    v17 = [v13 copy];
+    v14->_appLaunchState = state;
+    v17 = [reasonCopy copy];
     launchReason = v14->_launchReason;
     v14->_launchReason = v17;
   }
@@ -32,57 +32,57 @@
   return v14;
 }
 
-- (ATXAppLaunchDuetEvent)initWithATXEvent:(id)a3
+- (ATXAppLaunchDuetEvent)initWithATXEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v14 = __atxlog_handle_default();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [(ATXAppLaunchDuetEvent *)v4 initWithATXEvent:v14];
+      [(ATXAppLaunchDuetEvent *)eventCopy initWithATXEvent:v14];
     }
 
     goto LABEL_8;
   }
 
   v5 = +[_ATXAppIconState sharedInstance];
-  v6 = [v5 allInstalledAppsKnownToSpringBoard];
-  v7 = [v4 bundleID];
-  v8 = [v6 containsObject:v7];
+  allInstalledAppsKnownToSpringBoard = [v5 allInstalledAppsKnownToSpringBoard];
+  bundleID = [eventCopy bundleID];
+  v8 = [allInstalledAppsKnownToSpringBoard containsObject:bundleID];
 
   if ((v8 & 1) == 0)
   {
     v14 = __atxlog_handle_default();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      [(ATXAppLaunchDuetEvent *)v4 initWithATXEvent:v14];
+      [(ATXAppLaunchDuetEvent *)eventCopy initWithATXEvent:v14];
     }
 
 LABEL_8:
 
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
-  v9 = [v4 bundleID];
-  v10 = [v4 launchReason];
-  v11 = [v4 appSessionStartTime];
-  v12 = [v4 appSessionEndTime];
-  self = [(ATXAppLaunchDuetEvent *)self initWithBundleId:v9 appLaunchState:1 launchReason:v10 startDate:v11 endDate:v12];
+  bundleID2 = [eventCopy bundleID];
+  launchReason = [eventCopy launchReason];
+  appSessionStartTime = [eventCopy appSessionStartTime];
+  appSessionEndTime = [eventCopy appSessionEndTime];
+  self = [(ATXAppLaunchDuetEvent *)self initWithBundleId:bundleID2 appLaunchState:1 launchReason:launchReason startDate:appSessionStartTime endDate:appSessionEndTime];
 
-  v13 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v13;
+  return selfCopy;
 }
 
 - (ATXAppLaunchDuetEvent)initWithCurrentContextStoreValues
 {
-  v3 = [MEMORY[0x277CFE318] userContext];
-  v4 = [MEMORY[0x277CFE338] keyPathForAppDataDictionary];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  keyPathForAppDataDictionary = [MEMORY[0x277CFE338] keyPathForAppDataDictionary];
+  v5 = [userContext objectForKeyedSubscript:keyPathForAppDataDictionary];
 
   if (!v5)
   {
@@ -110,8 +110,8 @@ LABEL_9:
     goto LABEL_21;
   }
 
-  v6 = [MEMORY[0x277CFE338] appBundleIdKey];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  appBundleIdKey = [MEMORY[0x277CFE338] appBundleIdKey];
+  v7 = [v5 objectForKeyedSubscript:appBundleIdKey];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -129,12 +129,12 @@ LABEL_9:
 LABEL_21:
     [v27 raise:v28 format:v29];
 LABEL_22:
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_23;
   }
 
-  v9 = [MEMORY[0x277CFE338] appBundleIdKey];
-  v10 = [v5 objectForKeyedSubscript:v9];
+  appBundleIdKey2 = [MEMORY[0x277CFE338] appBundleIdKey];
+  v10 = [v5 objectForKeyedSubscript:appBundleIdKey2];
   v11 = v10;
   if (v10)
   {
@@ -148,15 +148,15 @@ LABEL_22:
 
   v13 = v12;
 
-  v14 = [MEMORY[0x277CFE338] appLaunchReasonKey];
-  v15 = [v5 objectForKeyedSubscript:v14];
+  appLaunchReasonKey = [MEMORY[0x277CFE338] appLaunchReasonKey];
+  v15 = [v5 objectForKeyedSubscript:appLaunchReasonKey];
   objc_opt_class();
   v16 = objc_opt_isKindOfClass();
 
   if (v16)
   {
-    v17 = [MEMORY[0x277CFE338] appLaunchReasonKey];
-    v18 = [v5 objectForKeyedSubscript:v17];
+    appLaunchReasonKey2 = [MEMORY[0x277CFE338] appLaunchReasonKey];
+    v18 = [v5 objectForKeyedSubscript:appLaunchReasonKey2];
     v19 = v18;
     if (v18)
     {
@@ -170,11 +170,11 @@ LABEL_22:
 
     v21 = v20;
 
-    v22 = [MEMORY[0x277CBEAA8] date];
-    v23 = [(ATXAppLaunchDuetEvent *)self initWithBundleId:v13 appLaunchState:1 launchReason:v21 startDate:v22 endDate:v22];
+    date = [MEMORY[0x277CBEAA8] date];
+    v23 = [(ATXAppLaunchDuetEvent *)self initWithBundleId:v13 appLaunchState:1 launchReason:v21 startDate:date endDate:date];
 
     self = v23;
-    v24 = self;
+    selfCopy = self;
   }
 
   else
@@ -186,11 +186,11 @@ LABEL_22:
     }
 
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"Value for 'appLaunchReasonKey' in ContextStore's 'keyPathForAppDataDictionary' is not an NSString."];
-    v24 = 0;
+    selfCopy = 0;
   }
 
 LABEL_23:
-  return v24;
+  return selfCopy;
 }
 
 - (id)description
@@ -199,40 +199,40 @@ LABEL_23:
   bundleId = self->_bundleId;
   appLaunchState = self->_appLaunchState;
   launchReason = self->_launchReason;
-  v7 = [(ATXDuetEvent *)self startDate];
-  v8 = [(ATXDuetEvent *)self endDate];
-  v9 = [v3 stringWithFormat:@"App bundleId: %@, App launch state: %ld, App launch reason: %@, start date: %@, end date: %@", bundleId, appLaunchState, launchReason, v7, v8];
+  startDate = [(ATXDuetEvent *)self startDate];
+  endDate = [(ATXDuetEvent *)self endDate];
+  v9 = [v3 stringWithFormat:@"App bundleId: %@, App launch state: %ld, App launch reason: %@, start date: %@, end date: %@", bundleId, appLaunchState, launchReason, startDate, endDate];
 
   return v9;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!integer)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = *MEMORY[0x277CCA450];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -244,48 +244,48 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXDuetEvent *)self startDate];
-  [v4 encodeObject:v5 forKey:@"codingKeyForStartDate"];
+  coderCopy = coder;
+  startDate = [(ATXDuetEvent *)self startDate];
+  [coderCopy encodeObject:startDate forKey:@"codingKeyForStartDate"];
 
-  v6 = [(ATXDuetEvent *)self endDate];
-  [v4 encodeObject:v6 forKey:@"codingKeyForEndDate"];
+  endDate = [(ATXDuetEvent *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"codingKeyForEndDate"];
 
-  v7 = [(ATXAppLaunchDuetEvent *)self bundleId];
-  [v4 encodeObject:v7 forKey:@"codingKeyForBundleId"];
+  bundleId = [(ATXAppLaunchDuetEvent *)self bundleId];
+  [coderCopy encodeObject:bundleId forKey:@"codingKeyForBundleId"];
 
-  [v4 encodeInteger:-[ATXAppLaunchDuetEvent appLaunchState](self forKey:{"appLaunchState"), @"codingKeyForAppLaunchState"}];
-  v8 = [(ATXAppLaunchDuetEvent *)self launchReason];
-  [v4 encodeObject:v8 forKey:@"codingKeyForLaunchReason"];
+  [coderCopy encodeInteger:-[ATXAppLaunchDuetEvent appLaunchState](self forKey:{"appLaunchState"), @"codingKeyForAppLaunchState"}];
+  launchReason = [(ATXAppLaunchDuetEvent *)self launchReason];
+  [coderCopy encodeObject:launchReason forKey:@"codingKeyForLaunchReason"];
 }
 
-- (ATXAppLaunchDuetEvent)initWithCoder:(id)a3
+- (ATXAppLaunchDuetEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277D42620];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_anchor();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"codingKeyForStartDate" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.AppLaunch" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"codingKeyForStartDate" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.AppLaunch" errorCode:-1 logHandle:v7];
 
-  if (v8 && ([v4 error], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+  if (v8 && ([coderCopy error], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
   {
     v11 = MEMORY[0x277D42620];
     v12 = objc_opt_class();
     v13 = __atxlog_handle_anchor();
-    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"codingKeyForEndDate" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.AppLaunch" errorCode:-1 logHandle:v13];
+    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"codingKeyForEndDate" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.AppLaunch" errorCode:-1 logHandle:v13];
 
-    if (v14 && ([v4 error], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
+    if (v14 && ([coderCopy error], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
     {
       v16 = MEMORY[0x277D42620];
       v17 = objc_opt_class();
       v18 = __atxlog_handle_anchor();
-      v19 = [v16 robustDecodeObjectOfClass:v17 forKey:@"codingKeyForBundleId" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.AppLaunch" errorCode:-1 logHandle:v18];
+      v19 = [v16 robustDecodeObjectOfClass:v17 forKey:@"codingKeyForBundleId" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.AppLaunch" errorCode:-1 logHandle:v18];
 
-      if (!v19 || ([v4 error], v20 = objc_claimAutoreleasedReturnValue(), v20, v20) || (v21 = objc_msgSend(v4, "decodeIntegerForKey:", @"codingKeyForAppLaunchState"), -[ATXAppLaunchDuetEvent checkAndReportDecodingFailureIfNeededForNSInteger:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForNSInteger:key:coder:errorDomain:errorCode:", v21, @"codingKeyForAppLaunchState", v4, @"com.apple.proactive.ATXDuetEvent.AppLaunch", -1)))
+      if (!v19 || ([coderCopy error], v20 = objc_claimAutoreleasedReturnValue(), v20, v20) || (v21 = objc_msgSend(coderCopy, "decodeIntegerForKey:", @"codingKeyForAppLaunchState"), -[ATXAppLaunchDuetEvent checkAndReportDecodingFailureIfNeededForNSInteger:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForNSInteger:key:coder:errorDomain:errorCode:", v21, @"codingKeyForAppLaunchState", coderCopy, @"com.apple.proactive.ATXDuetEvent.AppLaunch", -1)))
       {
-        v10 = 0;
+        selfCopy = 0;
       }
 
       else
@@ -293,33 +293,33 @@ LABEL_7:
         v23 = MEMORY[0x277D42620];
         v24 = objc_opt_class();
         v25 = __atxlog_handle_anchor();
-        v26 = [v23 robustDecodeObjectOfClass:v24 forKey:@"codingKeyForLaunchReason" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.AppLaunch" errorCode:-1 logHandle:v25];
+        v26 = [v23 robustDecodeObjectOfClass:v24 forKey:@"codingKeyForLaunchReason" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.AppLaunch" errorCode:-1 logHandle:v25];
 
-        if (v26 && ([v4 error], v27 = objc_claimAutoreleasedReturnValue(), v27, !v27))
+        if (v26 && ([coderCopy error], v27 = objc_claimAutoreleasedReturnValue(), v27, !v27))
         {
           self = [(ATXAppLaunchDuetEvent *)self initWithBundleId:v19 appLaunchState:v21 launchReason:v26 startDate:v8 endDate:v14];
-          v10 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v10 = 0;
+          selfCopy = 0;
         }
       }
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)initWithATXEvent:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

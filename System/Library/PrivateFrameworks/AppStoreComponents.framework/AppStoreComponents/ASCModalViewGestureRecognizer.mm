@@ -1,25 +1,25 @@
 @interface ASCModalViewGestureRecognizer
-- (ASCModalViewGestureRecognizer)initWithCoder:(id)a3;
-- (ASCModalViewGestureRecognizer)initWithTargetView:(id)a3 target:(id)a4 action:(SEL)a5;
-- (BOOL)isAnyTouch:(id)a3 fromEvent:(id)a4 outsideView:(id)a5;
+- (ASCModalViewGestureRecognizer)initWithCoder:(id)coder;
+- (ASCModalViewGestureRecognizer)initWithTargetView:(id)view target:(id)target action:(SEL)action;
+- (BOOL)isAnyTouch:(id)touch fromEvent:(id)event outsideView:(id)view;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation ASCModalViewGestureRecognizer
 
-- (ASCModalViewGestureRecognizer)initWithTargetView:(id)a3 target:(id)a4 action:(SEL)a5
+- (ASCModalViewGestureRecognizer)initWithTargetView:(id)view target:(id)target action:(SEL)action
 {
-  v9 = a3;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = ASCModalViewGestureRecognizer;
-  v10 = [(ASCModalViewGestureRecognizer *)&v15 initWithTarget:a4 action:a5];
+  v10 = [(ASCModalViewGestureRecognizer *)&v15 initWithTarget:target action:action];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_targetView, a3);
+    objc_storeStrong(&v10->_targetView, view);
     v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
     activeTouches = v11->_activeTouches;
     v11->_activeTouches = v12;
@@ -28,7 +28,7 @@
   return v11;
 }
 
-- (ASCModalViewGestureRecognizer)initWithCoder:(id)a3
+- (ASCModalViewGestureRecognizer)initWithCoder:(id)coder
 {
   [(ASCModalViewGestureRecognizer *)self doesNotRecognizeSelector:a2];
 
@@ -40,21 +40,21 @@
   v4.receiver = self;
   v4.super_class = ASCModalViewGestureRecognizer;
   [(ASCModalViewGestureRecognizer *)&v4 reset];
-  v3 = [(ASCModalViewGestureRecognizer *)self activeTouches];
-  [v3 removeAllObjects];
+  activeTouches = [(ASCModalViewGestureRecognizer *)self activeTouches];
+  [activeTouches removeAllObjects];
 }
 
-- (BOOL)isAnyTouch:(id)a3 fromEvent:(id)a4 outsideView:(id)a5
+- (BOOL)isAnyTouch:(id)touch fromEvent:(id)event outsideView:(id)view
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  touchCopy = touch;
+  eventCopy = event;
+  viewCopy = view;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = v7;
+  v10 = touchCopy;
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
@@ -68,8 +68,8 @@
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v15 + 1) + 8 * i) locationInView:{v9, v15}];
-        if (![v9 pointInside:v8 withEvent:?])
+        [*(*(&v15 + 1) + 8 * i) locationInView:{viewCopy, v15}];
+        if (![viewCopy pointInside:eventCopy withEvent:?])
         {
           LOBYTE(v11) = 1;
           goto LABEL_11;
@@ -91,28 +91,28 @@ LABEL_11:
   return v11;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASCModalViewGestureRecognizer *)self activeTouches];
-  v9 = [v8 count];
+  beganCopy = began;
+  eventCopy = event;
+  activeTouches = [(ASCModalViewGestureRecognizer *)self activeTouches];
+  v9 = [activeTouches count];
 
   if (v9)
   {
     goto LABEL_4;
   }
 
-  v10 = [(ASCModalViewGestureRecognizer *)self targetView];
-  v11 = [(ASCModalViewGestureRecognizer *)self isAnyTouch:v6 fromEvent:v7 outsideView:v10];
+  targetView = [(ASCModalViewGestureRecognizer *)self targetView];
+  v11 = [(ASCModalViewGestureRecognizer *)self isAnyTouch:beganCopy fromEvent:eventCopy outsideView:targetView];
 
   if (v11)
   {
     [(ASCModalViewGestureRecognizer *)self setState:1];
 LABEL_4:
-    v12 = [(ASCModalViewGestureRecognizer *)self activeTouches];
-    [v12 unionSet:v6];
+    activeTouches2 = [(ASCModalViewGestureRecognizer *)self activeTouches];
+    [activeTouches2 unionSet:beganCopy];
 
     goto LABEL_5;
   }
@@ -121,7 +121,7 @@ LABEL_4:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v13 = v6;
+  v13 = beganCopy;
   v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v14)
   {
@@ -137,7 +137,7 @@ LABEL_4:
           objc_enumerationMutation(v13);
         }
 
-        [(ASCModalViewGestureRecognizer *)self ignoreTouch:*(*(&v18 + 1) + 8 * v17++) forEvent:v7, v18];
+        [(ASCModalViewGestureRecognizer *)self ignoreTouch:*(*(&v18 + 1) + 8 * v17++) forEvent:eventCopy, v18];
       }
 
       while (v15 != v17);
@@ -150,14 +150,14 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(ASCModalViewGestureRecognizer *)self activeTouches];
-  [v6 minusSet:v5];
+  endedCopy = ended;
+  activeTouches = [(ASCModalViewGestureRecognizer *)self activeTouches];
+  [activeTouches minusSet:endedCopy];
 
-  v7 = [(ASCModalViewGestureRecognizer *)self activeTouches];
-  v8 = [v7 count];
+  activeTouches2 = [(ASCModalViewGestureRecognizer *)self activeTouches];
+  v8 = [activeTouches2 count];
 
   if (!v8)
   {
@@ -166,14 +166,14 @@ LABEL_5:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(ASCModalViewGestureRecognizer *)self activeTouches];
-  [v6 minusSet:v5];
+  cancelledCopy = cancelled;
+  activeTouches = [(ASCModalViewGestureRecognizer *)self activeTouches];
+  [activeTouches minusSet:cancelledCopy];
 
-  v7 = [(ASCModalViewGestureRecognizer *)self activeTouches];
-  v8 = [v7 count];
+  activeTouches2 = [(ASCModalViewGestureRecognizer *)self activeTouches];
+  v8 = [activeTouches2 count];
 
   if (!v8)
   {

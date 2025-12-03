@@ -1,7 +1,7 @@
 @interface MTLResourceViewPoolDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLResourceViewPoolDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -22,7 +22,7 @@
   [(MTLResourceViewPoolDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setLabel:{-[MTLResourceViewPoolDescriptor label](self, "label")}];
@@ -32,20 +32,20 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   ClassName = object_getClassName(self);
-  if (ClassName != object_getClassName(a3) || *(a3 + 2) != self->_resourceViewCount || *(a3 + 24) != self->_forceBaseResourceID || *(a3 + 4) != self->_baseResourceID)
+  if (ClassName != object_getClassName(equal) || *(equal + 2) != self->_resourceViewCount || *(equal + 24) != self->_forceBaseResourceID || *(equal + 4) != self->_baseResourceID)
   {
     return 0;
   }
 
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
   if (v6 == self->_label)
   {
     return 1;

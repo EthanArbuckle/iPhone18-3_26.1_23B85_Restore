@@ -1,5 +1,5 @@
 @interface CRKCardSectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_setupCardSectionButtons;
 - (void)viewDidLayoutSubviews;
@@ -7,13 +7,13 @@
 
 @implementation CRKCardSectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CRKCardSectionViewController" hasInstanceMethod:@"_setupCardSectionButtons" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CRKCardSectionViewController" hasInstanceMethod:@"viewDidLayoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CRKCardSectionViewController" hasInstanceVariable:@"_overlayButton" withType:"CRKOverlayButton"];
-  [v3 validateClass:@"CRKCardSectionViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CRKCardSectionViewController" hasInstanceMethod:@"_setupCardSectionButtons" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CRKCardSectionViewController" hasInstanceMethod:@"viewDidLayoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CRKCardSectionViewController" hasInstanceVariable:@"_overlayButton" withType:"CRKOverlayButton"];
+  [validationsCopy validateClass:@"CRKCardSectionViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

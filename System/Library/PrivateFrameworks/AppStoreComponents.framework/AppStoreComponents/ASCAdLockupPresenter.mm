@@ -1,36 +1,36 @@
 @interface ASCAdLockupPresenter
-- (ASCAdLockupPresenter)initWithView:(id)a3 lockupPresenter:(id)a4;
+- (ASCAdLockupPresenter)initWithView:(id)view lockupPresenter:(id)presenter;
 - (void)dealloc;
-- (void)lockupPresenterDidChange:(id)a3;
-- (void)setAdTransparencyButtonHidden:(BOOL)a3;
-- (void)setDeveloperName:(id)a3;
-- (void)setEditorsChoice:(BOOL)a3;
-- (void)setLockup:(id)a3;
-- (void)setProductDescription:(id)a3;
-- (void)setProductRating:(float)a3;
-- (void)setProductRatingBadge:(id)a3;
+- (void)lockupPresenterDidChange:(id)change;
+- (void)setAdTransparencyButtonHidden:(BOOL)hidden;
+- (void)setDeveloperName:(id)name;
+- (void)setEditorsChoice:(BOOL)choice;
+- (void)setLockup:(id)lockup;
+- (void)setProductDescription:(id)description;
+- (void)setProductRating:(float)rating;
+- (void)setProductRatingBadge:(id)badge;
 @end
 
 @implementation ASCAdLockupPresenter
 
-- (ASCAdLockupPresenter)initWithView:(id)a3 lockupPresenter:(id)a4
+- (ASCAdLockupPresenter)initWithView:(id)view lockupPresenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  presenterCopy = presenter;
   v16.receiver = self;
   v16.super_class = ASCAdLockupPresenter;
   v9 = [(ASCAdLockupPresenter *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_view, a3);
-    v11 = [v8 lockup];
-    v12 = [v11 copy];
+    objc_storeStrong(&v9->_view, view);
+    lockup = [presenterCopy lockup];
+    v12 = [lockup copy];
     lockup = v10->_lockup;
     v10->_lockup = v12;
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v10 selector:sel_lockupPresenterDidChange_ name:0x2827A3618 object:v8];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_lockupPresenterDidChange_ name:0x2827A3618 object:presenterCopy];
   }
 
   return v10;
@@ -38,35 +38,35 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ASCAdLockupPresenter;
   [(ASCAdLockupPresenter *)&v4 dealloc];
 }
 
-- (void)lockupPresenterDidChange:(id)a3
+- (void)lockupPresenterDidChange:(id)change
 {
-  v5 = [a3 object];
-  v4 = [v5 lockup];
-  [(ASCAdLockupPresenter *)self setLockup:v4];
+  object = [change object];
+  lockup = [object lockup];
+  [(ASCAdLockupPresenter *)self setLockup:lockup];
 }
 
-- (void)setLockup:(id)a3
+- (void)setLockup:(id)lockup
 {
-  v4 = a3;
+  lockupCopy = lockup;
   lockup = self->_lockup;
-  v16 = v4;
-  if (!v4 || !lockup)
+  v16 = lockupCopy;
+  if (!lockupCopy || !lockup)
   {
-    if (lockup == v4)
+    if (lockup == lockupCopy)
     {
       goto LABEL_18;
     }
 
 LABEL_6:
-    v7 = [(ASCLockup *)v4 copy];
+    v7 = [(ASCLockup *)lockupCopy copy];
     v8 = self->_lockup;
     self->_lockup = v7;
 
@@ -81,12 +81,12 @@ LABEL_6:
       goto LABEL_18;
     }
 
-    v9 = [(ASCLockup *)v16 offer];
-    v10 = [v9 flags];
+    offer = [(ASCLockup *)v16 offer];
+    flags = [offer flags];
 
-    if ((v10 & 8) != 0)
+    if ((flags & 8) != 0)
     {
-      v11 = self;
+      selfCopy2 = self;
       v12 = 0;
     }
 
@@ -97,24 +97,24 @@ LABEL_6:
         [(ASCAdLockupPresenter *)self setEditorsChoice:0];
         [(ASCLockup *)v16 productRating];
         [(ASCAdLockupPresenter *)self setProductRating:?];
-        v13 = [(ASCLockup *)v16 productRatingBadge];
-        [(ASCAdLockupPresenter *)self setProductRatingBadge:v13];
+        productRatingBadge = [(ASCLockup *)v16 productRatingBadge];
+        [(ASCAdLockupPresenter *)self setProductRatingBadge:productRatingBadge];
 
         goto LABEL_14;
       }
 
-      v11 = self;
+      selfCopy2 = self;
       v12 = 1;
     }
 
-    [(ASCAdLockupPresenter *)v11 setEditorsChoice:v12];
+    [(ASCAdLockupPresenter *)selfCopy2 setEditorsChoice:v12];
     [(ASCAdLockupPresenter *)self setProductRating:0.0];
     [(ASCAdLockupPresenter *)self setProductRatingBadge:0];
 LABEL_14:
     if ([(ASCAdLockupPresenter *)self shouldDisplayDescriptionForLockup:v16])
     {
-      v14 = [(ASCLockup *)v16 productDescription];
-      [(ASCAdLockupPresenter *)self setProductDescription:v14];
+      productDescription = [(ASCLockup *)v16 productDescription];
+      [(ASCAdLockupPresenter *)self setProductDescription:productDescription];
     }
 
     else
@@ -123,14 +123,14 @@ LABEL_14:
     }
 
     [(ASCAdLockupPresenter *)self setAdTransparencyButtonHidden:0];
-    v15 = [(ASCLockup *)v16 developerName];
-    [(ASCAdLockupPresenter *)self setDeveloperName:v15];
+    developerName = [(ASCLockup *)v16 developerName];
+    [(ASCAdLockupPresenter *)self setDeveloperName:developerName];
 
     goto LABEL_18;
   }
 
-  v6 = [(ASCLockup *)lockup isEqual:v4];
-  v4 = v16;
+  v6 = [(ASCLockup *)lockup isEqual:lockupCopy];
+  lockupCopy = v16;
   if (!v6)
   {
     goto LABEL_6;
@@ -141,75 +141,75 @@ LABEL_18:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setAdTransparencyButtonHidden:(BOOL)a3
+- (void)setAdTransparencyButtonHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(ASCAdLockupPresenter *)self view];
-  [v4 setAdTransparencyButtonHidden:v3];
+  hiddenCopy = hidden;
+  view = [(ASCAdLockupPresenter *)self view];
+  [view setAdTransparencyButtonHidden:hiddenCopy];
 }
 
-- (void)setEditorsChoice:(BOOL)a3
+- (void)setEditorsChoice:(BOOL)choice
 {
-  v3 = a3;
-  v5 = [(ASCAdLockupPresenter *)self view];
+  choiceCopy = choice;
+  view = [(ASCAdLockupPresenter *)self view];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ASCAdLockupPresenter *)self view];
-    [v7 setEditorsChoice:v3];
+    view2 = [(ASCAdLockupPresenter *)self view];
+    [view2 setEditorsChoice:choiceCopy];
   }
 }
 
-- (void)setProductRating:(float)a3
+- (void)setProductRating:(float)rating
 {
-  v5 = [(ASCAdLockupPresenter *)self view];
+  view = [(ASCAdLockupPresenter *)self view];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v8 = [(ASCAdLockupPresenter *)self view];
-    *&v7 = a3;
-    [v8 setProductRating:v7];
+    view2 = [(ASCAdLockupPresenter *)self view];
+    *&v7 = rating;
+    [view2 setProductRating:v7];
   }
 }
 
-- (void)setProductRatingBadge:(id)a3
+- (void)setProductRatingBadge:(id)badge
 {
-  v7 = a3;
-  v4 = [(ASCAdLockupPresenter *)self view];
+  badgeCopy = badge;
+  view = [(ASCAdLockupPresenter *)self view];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ASCAdLockupPresenter *)self view];
-    [v6 setProductRatingBadge:v7];
+    view2 = [(ASCAdLockupPresenter *)self view];
+    [view2 setProductRatingBadge:badgeCopy];
   }
 }
 
-- (void)setProductDescription:(id)a3
+- (void)setProductDescription:(id)description
 {
-  v7 = a3;
-  v4 = [(ASCAdLockupPresenter *)self view];
+  descriptionCopy = description;
+  view = [(ASCAdLockupPresenter *)self view];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ASCAdLockupPresenter *)self view];
-    [v6 setProductDescription:v7];
+    view2 = [(ASCAdLockupPresenter *)self view];
+    [view2 setProductDescription:descriptionCopy];
   }
 }
 
-- (void)setDeveloperName:(id)a3
+- (void)setDeveloperName:(id)name
 {
-  v7 = a3;
-  v4 = [(ASCAdLockupPresenter *)self view];
+  nameCopy = name;
+  view = [(ASCAdLockupPresenter *)self view];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ASCAdLockupPresenter *)self view];
-    [v6 setDeveloperName:v7];
+    view2 = [(ASCAdLockupPresenter *)self view];
+    [view2 setDeveloperName:nameCopy];
   }
 }
 

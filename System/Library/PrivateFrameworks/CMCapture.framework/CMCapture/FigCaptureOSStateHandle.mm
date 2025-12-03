@@ -1,8 +1,8 @@
 @interface FigCaptureOSStateHandle
 + (void)initialize;
-- (id)_initWithTitle:(id)a3 queue:(id)a4 dataProvider:(id)a5 dataProviderBlock:(id)a6;
+- (id)_initWithTitle:(id)title queue:(id)queue dataProvider:(id)provider dataProviderBlock:(id)block;
 - (id)description;
-- (os_state_data_s)_osStateData:(os_state_hints_s *)a3;
+- (os_state_data_s)_osStateData:(os_state_hints_s *)data;
 - (void)dealloc;
 @end
 
@@ -10,7 +10,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -19,9 +19,9 @@
   }
 }
 
-- (id)_initWithTitle:(id)a3 queue:(id)a4 dataProvider:(id)a5 dataProviderBlock:(id)a6
+- (id)_initWithTitle:(id)title queue:(id)queue dataProvider:(id)provider dataProviderBlock:(id)block
 {
-  if (!(a5 | a6))
+  if (!(provider | block))
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"A data provider or data provider block is required to create a FigCaptureOSStateHandle." userInfo:0]);
@@ -32,27 +32,27 @@
   v10 = [(FigCaptureOSStateHandle *)&v17 init];
   if (v10)
   {
-    v10->_title = a3;
-    if (a4)
+    v10->_title = title;
+    if (queue)
     {
-      v11 = a4;
+      queueCopy = queue;
     }
 
     else
     {
-      v11 = dispatch_get_global_queue(0, 0);
+      queueCopy = dispatch_get_global_queue(0, 0);
     }
 
-    v10->_queue = v11;
-    if (a5)
+    v10->_queue = queueCopy;
+    if (provider)
     {
-      v12 = [[FigWeakReference alloc] initWithReferencedObject:a5];
+      v12 = [[FigWeakReference alloc] initWithReferencedObject:provider];
       v13 = 24;
     }
 
     else
     {
-      v12 = [a6 copy];
+      v12 = [block copy];
       v13 = 32;
     }
 
@@ -89,14 +89,14 @@ uint64_t __79__FigCaptureOSStateHandle__initWithTitle_queue_dataProvider_dataPro
   return [v3 stringWithFormat:@"<%@: %p %@>", NSStringFromClass(v4), self, -[FigCaptureOSStateHandle debugDescription](self, "debugDescription")];
 }
 
-- (os_state_data_s)_osStateData:(os_state_hints_s *)a3
+- (os_state_data_s)_osStateData:(os_state_hints_s *)data
 {
   if (!_FigIsCurrentDispatchQueue())
   {
     [FigCaptureOSStateHandle _osStateData:];
   }
 
-  if (a3->var2 != 3)
+  if (data->var2 != 3)
   {
     return 0;
   }
@@ -121,7 +121,7 @@ uint64_t __79__FigCaptureOSStateHandle__initWithTitle_queue_dataProvider_dataPro
 
   title = self->_title;
   v46 = 134218242;
-  v47 = self;
+  selfCopy = self;
   v48 = 2114;
   v49 = title;
   LODWORD(v32) = 22;
@@ -129,7 +129,7 @@ uint64_t __79__FigCaptureOSStateHandle__initWithTitle_queue_dataProvider_dataPro
   v9 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%s ", v39, v32), "length"];
   context = objc_autoreleasePoolPush();
   v10 = malloc_type_malloc(0x2800uLL, 0x5D0CA644uLL);
-  v42 = self;
+  selfCopy2 = self;
   if (getCameraCaptureExcessiveLog_cameraCaptureExcessiveLogOnceToken_1 != -1)
   {
     [FigCaptureOSStateHandle _osStateData:];
@@ -137,7 +137,7 @@ uint64_t __79__FigCaptureOSStateHandle__initWithTitle_queue_dataProvider_dataPro
 
   v46 = 138543362;
   v41 = v7;
-  v47 = v7;
+  selfCopy = v7;
   LODWORD(v33) = 12;
   v37 = v10;
   v36 = _os_log_send_and_compose_impl();
@@ -237,7 +237,7 @@ uint64_t __79__FigCaptureOSStateHandle__initWithTitle_queue_dataProvider_dataPro
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CameraCapture - %@", v42->_title, v34];
+  v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CameraCapture - %@", selfCopy2->_title, v34];
   v31 = [v26 length];
   v28 = malloc_type_calloc(1uLL, v31 + 200, 0x1000040BEF03554uLL);
   [v30 UTF8String];

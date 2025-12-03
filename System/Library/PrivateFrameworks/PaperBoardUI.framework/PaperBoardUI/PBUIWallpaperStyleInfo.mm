@@ -1,14 +1,14 @@
 @interface PBUIWallpaperStyleInfo
-- ($755C52D8C4C0F578426A77B555D45B12)priorityInfoForPriority:(SEL)a3;
+- ($755C52D8C4C0F578426A77B555D45B12)priorityInfoForPriority:(SEL)priority;
 - (PBUIWallpaperStyleInfo)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (int64_t)highestValidPriority;
-- (void)enumerateValidPrioritiesUsingBlock:(id)a3;
-- (void)removePriorityInfoForPriority:(int64_t)a3;
-- (void)setPriorityInfo:(id *)a3 forPriority:(int64_t)a4;
-- (void)setStyleTransitionState:(id *)a3;
+- (void)enumerateValidPrioritiesUsingBlock:(id)block;
+- (void)removePriorityInfoForPriority:(int64_t)priority;
+- (void)setPriorityInfo:(id *)info forPriority:(int64_t)priority;
+- (void)setStyleTransitionState:(id *)state;
 @end
 
 @implementation PBUIWallpaperStyleInfo
@@ -28,7 +28,7 @@
   return result;
 }
 
-- ($755C52D8C4C0F578426A77B555D45B12)priorityInfoForPriority:(SEL)a3
+- ($755C52D8C4C0F578426A77B555D45B12)priorityInfoForPriority:(SEL)priority
 {
   if (a4 >= 5)
   {
@@ -43,34 +43,34 @@
   return self;
 }
 
-- (void)setPriorityInfo:(id *)a3 forPriority:(int64_t)a4
+- (void)setPriorityInfo:(id *)info forPriority:(int64_t)priority
 {
-  if (a4 >= 5)
+  if (priority >= 5)
   {
     v8 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Bad index to setPriorityInfo:atIndex:" userInfo:{0, v4, v5}];
     objc_exception_throw(v8);
   }
 
-  v6 = *&a3->var0;
-  v7 = self + 32 * a4;
-  *(v7 + 24) = *&a3->var1.var1;
+  v6 = *&info->var0;
+  v7 = self + 32 * priority;
+  *(v7 + 24) = *&info->var1.var1;
   *(v7 + 8) = v6;
 }
 
-- (void)removePriorityInfoForPriority:(int64_t)a3
+- (void)removePriorityInfoForPriority:(int64_t)priority
 {
-  if (a3 >= 5)
+  if (priority >= 5)
   {
     v5 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Bad index to removePriorityInfoForPriority:" userInfo:{0, v3, v4}];
     objc_exception_throw(v5);
   }
 
-  self->_priorityInfo[a3].valid = 0;
+  self->_priorityInfo[priority].valid = 0;
 }
 
-- (void)enumerateValidPrioritiesUsingBlock:(id)a3
+- (void)enumerateValidPrioritiesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = &self->_priorityInfo[4];
   for (i = 4; ; --i)
   {
@@ -91,7 +91,7 @@ LABEL_7:
   }
 
   v8 = 0;
-  v4[2](v4, i, &v8);
+  blockCopy[2](blockCopy, i, &v8);
   if (i >= 1 && (v8 & 1) == 0)
   {
     goto LABEL_7;
@@ -124,18 +124,18 @@ uint64_t __46__PBUIWallpaperStyleInfo_highestValidPriority__block_invoke(uint64_
   return result;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIWallpaperStyleInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIWallpaperStyleInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   styleTransitionState = self->_styleTransitionState;
   v7 = PBUIStringForStyleTransitionState(&styleTransitionState);
@@ -148,7 +148,7 @@ uint64_t __46__PBUIWallpaperStyleInfo_highestValidPriority__block_invoke(uint64_
   v13[4] = self;
   v9 = v6;
   v14 = v9;
-  [v9 appendBodySectionWithName:@"priorityInfo" multilinePrefix:v5 block:v13];
+  [v9 appendBodySectionWithName:@"priorityInfo" multilinePrefix:prefixCopy block:v13];
 
   v10 = v14;
   v11 = v9;
@@ -184,16 +184,16 @@ void __64__PBUIWallpaperStyleInfo_descriptionBuilderWithMultilinePrefix___block_
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIWallpaperStyleInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIWallpaperStyleInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)setStyleTransitionState:(id *)a3
+- (void)setStyleTransitionState:(id *)state
 {
-  v3 = *&a3->var0;
-  self->_styleTransitionState.transitionFraction = a3->var2;
+  v3 = *&state->var0;
+  self->_styleTransitionState.transitionFraction = state->var2;
   *&self->_styleTransitionState.startStyle = v3;
 }
 

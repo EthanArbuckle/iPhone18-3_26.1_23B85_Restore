@@ -1,7 +1,7 @@
 @interface FeedbackSubmissionPostActionManager
-- (BOOL)saveFeedbackObject:(id)a3 forSubmissionIdentifier:(id)a4;
+- (BOOL)saveFeedbackObject:(id)object forSubmissionIdentifier:(id)identifier;
 - (FeedbackSubmissionPostActionManager)init;
-- (void)performActionWithFeedbackResponse:(id)a3 feedbackRequest:(id)a4;
+- (void)performActionWithFeedbackResponse:(id)response feedbackRequest:(id)request;
 @end
 
 @implementation FeedbackSubmissionPostActionManager
@@ -21,23 +21,23 @@
   return v2;
 }
 
-- (void)performActionWithFeedbackResponse:(id)a3 feedbackRequest:(id)a4
+- (void)performActionWithFeedbackResponse:(id)response feedbackRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 feedbackRequestParameters];
-  v9 = [v8 submissionParameters];
-  v10 = [v9 clientSubmissionUuid];
+  responseCopy = response;
+  requestCopy = request;
+  feedbackRequestParameters = [requestCopy feedbackRequestParameters];
+  submissionParameters = [feedbackRequestParameters submissionParameters];
+  clientSubmissionUuid = [submissionParameters clientSubmissionUuid];
 
-  v11 = [v7 feedbackRequestParameters];
-  v12 = [v11 submissionParameters];
-  v13 = [v12 hasClientSubmissionUuid];
+  feedbackRequestParameters2 = [requestCopy feedbackRequestParameters];
+  submissionParameters2 = [feedbackRequestParameters2 submissionParameters];
+  hasClientSubmissionUuid = [submissionParameters2 hasClientSubmissionUuid];
 
-  if (v13 && v10)
+  if (hasClientSubmissionUuid && clientSubmissionUuid)
   {
-    v14 = [(FeedbackSubmissionPostActionStorage *)self->_submissionStorage feedbackActionForSubmissionIdentifier:v10];
-    [v14 performActionWithFeedbackResponse:v6 feedbackRequest:v7];
-    [(FeedbackSubmissionPostActionStorage *)self->_submissionStorage removefeedbackActionForSubmissionIdentifier:v10];
+    v14 = [(FeedbackSubmissionPostActionStorage *)self->_submissionStorage feedbackActionForSubmissionIdentifier:clientSubmissionUuid];
+    [v14 performActionWithFeedbackResponse:responseCopy feedbackRequest:requestCopy];
+    [(FeedbackSubmissionPostActionStorage *)self->_submissionStorage removefeedbackActionForSubmissionIdentifier:clientSubmissionUuid];
   }
 
   else
@@ -46,22 +46,22 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412290;
-      v17 = v7;
+      v17 = requestCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "SubmissionIdentifier is nil. Check feedbackRequest %@", &v16, 0xCu);
     }
   }
 }
 
-- (BOOL)saveFeedbackObject:(id)a3 forSubmissionIdentifier:(id)a4
+- (BOOL)saveFeedbackObject:(id)object forSubmissionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = objectCopy;
     v9 = [[RapFeedbackSubmissionPostAction alloc] initWithRapUserProfileRecord:v8];
-    v10 = [(FeedbackSubmissionPostActionStorage *)self->_submissionStorage saveFeedbackAction:v9 forSubmissionIdentifier:v7];
+    v10 = [(FeedbackSubmissionPostActionStorage *)self->_submissionStorage saveFeedbackAction:v9 forSubmissionIdentifier:identifierCopy];
     v11 = sub_10002E924();
     v12 = v11;
     if (v10)
@@ -69,7 +69,7 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v17 = 138412290;
-        v18 = v7;
+        v18 = identifierCopy;
         v13 = "Successfully saved feedback action to disk %@";
         v14 = v12;
         v15 = OS_LOG_TYPE_INFO;
@@ -81,7 +81,7 @@ LABEL_8:
     else if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412290;
-      v18 = v7;
+      v18 = identifierCopy;
       v13 = "Failed to save feedback action to disk %@";
       v14 = v12;
       v15 = OS_LOG_TYPE_ERROR;

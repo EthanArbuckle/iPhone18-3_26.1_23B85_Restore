@@ -1,13 +1,13 @@
 @interface MTLSharedEventHandle
-- (MTLSharedEventHandle)initWithCoder:(id)a3;
-- (MTLSharedEventHandle)initWithSharedEvent:(id)a3;
+- (MTLSharedEventHandle)initWithCoder:(id)coder;
+- (MTLSharedEventHandle)initWithSharedEvent:(id)event;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTLSharedEventHandle
 
-- (MTLSharedEventHandle)initWithSharedEvent:(id)a3
+- (MTLSharedEventHandle)initWithSharedEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = MTLSharedEventHandle;
@@ -15,9 +15,9 @@
   if (v4)
   {
     v4->_priv = malloc_type_calloc(0x18uLL, 1uLL, 0xC92F894uLL);
-    v5 = [a3 eventPort];
-    *v4->_priv = v5;
-    if (mach_port_mod_refs(*MEMORY[0x1E69E9A60], v5, 0, 1))
+    eventPort = [event eventPort];
+    *v4->_priv = eventPort;
+    if (mach_port_mod_refs(*MEMORY[0x1E69E9A60], eventPort, 0, 1))
     {
       *v4->_priv = 0;
 
@@ -26,8 +26,8 @@
 
     else
     {
-      *(v4->_priv + 1) = [objc_msgSend(a3 "label")];
-      *(v4->_priv + 2) = [a3 labelTraceID];
+      *(v4->_priv + 1) = [objc_msgSend(event "label")];
+      *(v4->_priv + 2) = [event labelTraceID];
     }
   }
 
@@ -53,7 +53,7 @@
   [(MTLSharedEventHandle *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -63,16 +63,16 @@
 
   v5 = *self->_priv;
   v6 = xpc_mach_send_create();
-  [a3 encodeXPCObject:v6 forKey:@"Port"];
+  [coder encodeXPCObject:v6 forKey:@"Port"];
   xpc_release(v6);
   v7 = *(self->_priv + 1);
 
-  [a3 encodeObject:v7 forKey:@"Label"];
+  [coder encodeObject:v7 forKey:@"Label"];
 }
 
-- (MTLSharedEventHandle)initWithCoder:(id)a3
+- (MTLSharedEventHandle)initWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   self->_priv = malloc_type_calloc(0x18uLL, 1uLL, 0x8551144BuLL);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -80,10 +80,10 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"This object may only be decoded by an NSXPCCoder."];
   }
 
-  if ([a3 decodeXPCObjectOfType:MEMORY[0x1E69E9EC0] forKey:@"Port"] && (v5 = xpc_mach_send_copy_right()) != 0)
+  if ([coder decodeXPCObjectOfType:MEMORY[0x1E69E9EC0] forKey:@"Port"] && (v5 = xpc_mach_send_copy_right()) != 0)
   {
-    *v4->_priv = v5;
-    *(v4->_priv + 1) = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
+    *selfCopy->_priv = v5;
+    *(selfCopy->_priv + 1) = [coder decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
   }
 
   else
@@ -92,7 +92,7 @@
     return 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

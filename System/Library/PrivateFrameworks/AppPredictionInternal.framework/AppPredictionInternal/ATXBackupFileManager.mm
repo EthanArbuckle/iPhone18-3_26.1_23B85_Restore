@@ -1,68 +1,68 @@
 @interface ATXBackupFileManager
 - (ATXBackupDataProviderDelegate)dataProviderDelegate;
-- (ATXBackupFileManager)initWithBackupDirectory:(id)a3 dataProviderDelegate:(id)a4;
-- (BOOL)commitWithContainerIdentifier:(id)a3;
-- (BOOL)compareBackupIDFromBackupWithPath:(id)a3 toMarkerWithPath:(id)a4;
+- (ATXBackupFileManager)initWithBackupDirectory:(id)directory dataProviderDelegate:(id)delegate;
+- (BOOL)commitWithContainerIdentifier:(id)identifier;
+- (BOOL)compareBackupIDFromBackupWithPath:(id)path toMarkerWithPath:(id)withPath;
 - (BOOL)isD2DRestoreNeeded;
 - (BOOL)isMobileBackupRestoreNeeded;
 - (BOOL)isRestoreNeeded;
-- (BOOL)restoreFromBackup:(id)a3;
+- (BOOL)restoreFromBackup:(id)backup;
 - (BOOL)restoreFromD2D;
 - (BOOL)restoreFromMobileBackup;
 - (BOOL)writeBackupFileForD2D;
-- (BOOL)writeBackupMarkers:(const char *)a3;
-- (BOOL)writeChunk:(id)a3 withFilename:(id)a4 toBackupFile:(__sFILE *)a5;
-- (BOOL)writeContainerID:(id)a3;
-- (BOOL)writeData:(id)a3 toPath:(id)a4;
-- (BOOL)writeDeviceID:(id)a3;
+- (BOOL)writeBackupMarkers:(const char *)markers;
+- (BOOL)writeChunk:(id)chunk withFilename:(id)filename toBackupFile:(__sFILE *)file;
+- (BOOL)writeContainerID:(id)d;
+- (BOOL)writeData:(id)data toPath:(id)path;
+- (BOOL)writeDeviceID:(id)d;
 - (NSString)deviceID;
-- (__sFILE)openBackupFileForWriting:(id)a3;
+- (__sFILE)openBackupFileForWriting:(id)writing;
 - (id)containerIDForCloudKitRestore;
-- (id)pathForFile:(id)a3;
-- (id)readBackupData:(id)a3;
-- (id)writeBackupData:(id)a3 toPath:(id)a4;
+- (id)pathForFile:(id)file;
+- (id)readBackupData:(id)data;
+- (id)writeBackupData:(id)data toPath:(id)path;
 - (void)restoreFromD2D;
 @end
 
 @implementation ATXBackupFileManager
 
-- (ATXBackupFileManager)initWithBackupDirectory:(id)a3 dataProviderDelegate:(id)a4
+- (ATXBackupFileManager)initWithBackupDirectory:(id)directory dataProviderDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  directoryCopy = directory;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = ATXBackupFileManager;
   v9 = [(ATXBackupFileManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_backupDirectory, a3);
-    objc_storeWeak(&v10->_dataProviderDelegate, v8);
+    objc_storeStrong(&v9->_backupDirectory, directory);
+    objc_storeWeak(&v10->_dataProviderDelegate, delegateCopy);
   }
 
   return v10;
 }
 
-- (BOOL)commitWithContainerIdentifier:(id)a3
+- (BOOL)commitWithContainerIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  identifierCopy = identifier;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = [(ATXBackupFileManager *)self pathForFile:@"/Backups/ATXBackupData"];
-  [v5 removeItemAtPath:v6 error:0];
+  [defaultManager removeItemAtPath:v6 error:0];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v8 = [(ATXBackupFileManager *)self pathForFile:@"Backups"];
-  [v7 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:0];
+  [defaultManager2 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:0];
 
-  v9 = [(ATXBackupFileManager *)self writeBackupMarkers:&self->_hdr]&& [(ATXBackupFileManager *)self writeDeviceID:self->_deviceID]&& [(ATXBackupFileManager *)self writeContainerID:v4];
+  v9 = [(ATXBackupFileManager *)self writeBackupMarkers:&self->_hdr]&& [(ATXBackupFileManager *)self writeDeviceID:self->_deviceID]&& [(ATXBackupFileManager *)self writeContainerID:identifierCopy];
   return v9;
 }
 
 - (NSString)deviceID
 {
   v2 = [(ATXBackupFileManager *)self pathForFile:@"/Backups/deviceID"];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:v2];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:v2];
 
   if (v4)
   {
@@ -77,17 +77,17 @@
   return v5;
 }
 
-- (BOOL)restoreFromBackup:(id)a3
+- (BOOL)restoreFromBackup:(id)backup
 {
-  v4 = a3;
+  backupCopy = backup;
   v5 = [(ATXBackupFileManager *)self pathForFile:@"ATXLastBackupVersion"];
   v6 = [(ATXBackupFileManager *)self pathForFile:@"/Backups/backupID"];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  [v7 removeItemAtPath:v5 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtPath:v5 error:0];
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v14 = 0;
-  [v8 copyItemAtPath:v6 toPath:v5 error:&v14];
+  [defaultManager2 copyItemAtPath:v6 toPath:v5 error:&v14];
   v9 = v14;
 
   if (v9)
@@ -101,13 +101,13 @@
 
   else
   {
-    if (!v4)
+    if (!backupCopy)
     {
       v11 = 0;
       goto LABEL_6;
     }
 
-    v10 = [(ATXBackupFileManager *)self readBackupData:v4];
+    v10 = [(ATXBackupFileManager *)self readBackupData:backupCopy];
     if (v10)
     {
       WeakRetained = objc_loadWeakRetained(&self->_dataProviderDelegate);
@@ -128,8 +128,8 @@ LABEL_6:
 {
   v3 = [(ATXBackupFileManager *)self pathForFile:@"/Backups/backupID"];
   v4 = [(ATXBackupFileManager *)self pathForFile:@"ATXLastBackupVersion"];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v3];
 
   if ((v6 & 1) == 0)
   {
@@ -142,13 +142,13 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 fileExistsAtPath:v4];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager2 fileExistsAtPath:v4];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    v10 = [v9 contentsEqualAtPath:v3 andPath:v4];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+    v10 = [defaultManager3 contentsEqualAtPath:v3 andPath:v4];
 
     if (v10)
     {
@@ -167,8 +167,8 @@ LABEL_9:
 - (id)containerIDForCloudKitRestore
 {
   v2 = [(ATXBackupFileManager *)self pathForFile:@"/Backups/containerID"];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:v2];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:v2];
 
   if (v4)
   {
@@ -192,12 +192,12 @@ LABEL_9:
 - (BOOL)writeBackupFileForD2D
 {
   v3 = os_transaction_create();
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v5 = [(ATXBackupFileManager *)self pathForFile:@"D2DBackups"];
-  [v4 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:0];
+  [defaultManager createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:0];
 
-  v6 = [(ATXBackupFileManager *)self dataProviderDelegate];
-  v7 = [v6 filenamesAndDataForBackupShouldPareDown:0 transport:1];
+  dataProviderDelegate = [(ATXBackupFileManager *)self dataProviderDelegate];
+  v7 = [dataProviderDelegate filenamesAndDataForBackupShouldPareDown:0 transport:1];
 
   v8 = [(ATXBackupFileManager *)self writeBackupData:v7 toPath:@"/D2DBackups/ATXBackupData"];
   if (v8)
@@ -271,12 +271,12 @@ LABEL_14:
 
 - (BOOL)isD2DRestoreNeeded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(ATXBackupFileManager *)self pathForFile:@"/D2DBackups/ATXBackupData"];
-  v4 = [(ATXBackupFileManager *)v2 pathForFile:@"ATXD2DLastBackupVersion"];
-  LOBYTE(v2) = [(ATXBackupFileManager *)v2 compareBackupIDFromBackupWithPath:v3 toMarkerWithPath:v4];
+  v4 = [(ATXBackupFileManager *)selfCopy pathForFile:@"ATXD2DLastBackupVersion"];
+  LOBYTE(selfCopy) = [(ATXBackupFileManager *)selfCopy compareBackupIDFromBackupWithPath:v3 toMarkerWithPath:v4];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)restoreFromMobileBackup
@@ -335,19 +335,19 @@ LABEL_14:
 
 - (BOOL)isMobileBackupRestoreNeeded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(ATXBackupFileManager *)self pathForFile:@"/Backups/ATXBackupData"];
-  v4 = [(ATXBackupFileManager *)v2 pathForFile:@"ATXLastBackupVersion"];
-  LOBYTE(v2) = [(ATXBackupFileManager *)v2 compareBackupIDFromBackupWithPath:v3 toMarkerWithPath:v4];
+  v4 = [(ATXBackupFileManager *)selfCopy pathForFile:@"ATXLastBackupVersion"];
+  LOBYTE(selfCopy) = [(ATXBackupFileManager *)selfCopy compareBackupIDFromBackupWithPath:v3 toMarkerWithPath:v4];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)writeBackupMarkers:(const char *)a3
+- (BOOL)writeBackupMarkers:(const char *)markers
 {
   v5 = [(ATXBackupFileManager *)self pathForFile:@"ATXLastBackupVersion"];
   v6 = [(ATXBackupFileManager *)self pathForFile:@"/Backups/backupID"];
-  v7 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:a3 length:16];
+  v7 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:markers length:16];
   if ([(ATXBackupFileManager *)self writeData:v7 toPath:v5])
   {
     v8 = [(ATXBackupFileManager *)self writeData:v7 toPath:v6];
@@ -361,13 +361,13 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)writeDeviceID:(id)a3
+- (BOOL)writeDeviceID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v5 = [(ATXBackupFileManager *)self pathForFile:@"/Backups/deviceID"];
-    v6 = [v4 dataUsingEncoding:4];
+    v6 = [dCopy dataUsingEncoding:4];
     v7 = [(ATXBackupFileManager *)self writeData:v6 toPath:v5];
   }
 
@@ -385,13 +385,13 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)writeContainerID:(id)a3
+- (BOOL)writeContainerID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v5 = [(ATXBackupFileManager *)self pathForFile:@"/Backups/containerID"];
-    v6 = [v4 dataUsingEncoding:4];
+    v6 = [dCopy dataUsingEncoding:4];
     v7 = [(ATXBackupFileManager *)self writeData:v6 toPath:v5];
   }
 
@@ -409,11 +409,11 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)compareBackupIDFromBackupWithPath:(id)a3 toMarkerWithPath:(id)a4
+- (BOOL)compareBackupIDFromBackupWithPath:(id)path toMarkerWithPath:(id)withPath
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = fopen([a3 UTF8String], "r");
+  withPathCopy = withPath;
+  v6 = fopen([path UTF8String], "r");
   if (v6)
   {
     v7 = v6;
@@ -421,7 +421,7 @@ LABEL_14:
     v19 = 0;
     v20 = 0;
     v17 = 0;
-    v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v5 options:0 error:&v17];
+    v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:withPathCopy options:0 error:&v17];
     v9 = v17;
     if (fread(&__ptr, 0x14uLL, 1uLL, v7) == 1)
     {
@@ -438,8 +438,8 @@ LABEL_23:
 
       if ([v8 length] == 16)
       {
-        v10 = [v8 bytes];
-        if (*v10 != __ptr || v10[1] != v19)
+        bytes = [v8 bytes];
+        if (*bytes != __ptr || bytes[1] != v19)
         {
           goto LABEL_9;
         }
@@ -453,7 +453,7 @@ LABEL_23:
           [ATXBackupFileManager compareBackupIDFromBackupWithPath:toMarkerWithPath:];
         }
 
-        unlink([v5 UTF8String]);
+        unlink([withPathCopy UTF8String]);
       }
     }
 
@@ -489,16 +489,16 @@ LABEL_24:
   return v12;
 }
 
-- (id)writeBackupData:(id)a3 toPath:(id)a4
+- (id)writeBackupData:(id)data toPath:(id)path
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dataCopy = data;
+  pathCopy = path;
+  if (dataCopy)
   {
     arc4random_buf(&self->_hdr, 0x10uLL);
-    self->_hdr.chunkCount = [v6 count];
-    v8 = [(ATXBackupFileManager *)self pathForFile:v7];
+    self->_hdr.chunkCount = [dataCopy count];
+    v8 = [(ATXBackupFileManager *)self pathForFile:pathCopy];
     v9 = [(ATXBackupFileManager *)self openBackupFileForWriting:v8];
     if (v9)
     {
@@ -520,8 +520,8 @@ LABEL_24:
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v13 = [v6 allKeys];
-        v14 = [v13 sortedArrayUsingSelector:sel_compare_];
+        allKeys = [dataCopy allKeys];
+        v14 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
         v15 = [v14 countByEnumeratingWithState:&v33 objects:v40 count:16];
         if (v15)
@@ -538,7 +538,7 @@ LABEL_24:
               }
 
               v19 = *(*(&v33 + 1) + 8 * i);
-              v20 = [v6 objectForKeyedSubscript:v19];
+              v20 = [dataCopy objectForKeyedSubscript:v19];
               LOBYTE(v19) = [(ATXBackupFileManager *)self writeChunk:v20 withFilename:v19 toBackupFile:v10];
 
               if ((v19 & 1) == 0)
@@ -569,13 +569,13 @@ LABEL_24:
         }
 
         fclose(v10);
-        v21 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v22 = [(ATXBackupFileManager *)self pathForFile:@"Backups/AppPredictionExpert"];
-        [v21 removeItemAtPath:v22 error:0];
+        [defaultManager removeItemAtPath:v22 error:0];
 
-        v23 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
         v24 = [(ATXBackupFileManager *)self pathForFile:@"Backups/backup_version"];
-        [v23 removeItemAtPath:v24 error:0];
+        [defaultManager2 removeItemAtPath:v24 error:0];
 
         v25 = v30;
         v12 = v31;
@@ -626,19 +626,19 @@ uint64_t __47__ATXBackupFileManager_writeBackupData_toPath___block_invoke(uint64
   return unlink(v3);
 }
 
-- (BOOL)writeChunk:(id)a3 withFilename:(id)a4 toBackupFile:(__sFILE *)a5
+- (BOOL)writeChunk:(id)chunk withFilename:(id)filename toBackupFile:(__sFILE *)file
 {
-  v7 = a3;
-  v8 = [a4 UTF8String];
-  __ptr = strlen(v8);
-  if (fwrite(&__ptr, 4uLL, 1uLL, a5) == 1 && fwrite(v8, __ptr, 1uLL, a5) == 1)
+  chunkCopy = chunk;
+  uTF8String = [filename UTF8String];
+  __ptr = strlen(uTF8String);
+  if (fwrite(&__ptr, 4uLL, 1uLL, file) == 1 && fwrite(uTF8String, __ptr, 1uLL, file) == 1)
   {
-    v9 = [MEMORY[0x277D42570] compress:v7 lowMemory:1];
+    v9 = [MEMORY[0x277D42570] compress:chunkCopy lowMemory:1];
     __ptr = [v9 length];
-    if (fwrite(&__ptr, 4uLL, 1uLL, a5) == 1)
+    if (fwrite(&__ptr, 4uLL, 1uLL, file) == 1)
     {
-      v10 = [v9 bytes];
-      v11 = fwrite(v10, __ptr, 1uLL, a5) == 1;
+      bytes = [v9 bytes];
+      v11 = fwrite(bytes, __ptr, 1uLL, file) == 1;
     }
 
     else
@@ -655,9 +655,9 @@ uint64_t __47__ATXBackupFileManager_writeBackupData_toPath___block_invoke(uint64
   return v11;
 }
 
-- (__sFILE)openBackupFileForWriting:(id)a3
+- (__sFILE)openBackupFileForWriting:(id)writing
 {
-  v3 = open_dprotected_np([a3 UTF8String], 1537, 3, 0, 384);
+  v3 = open_dprotected_np([writing UTF8String], 1537, 3, 0, 384);
   v4 = fdopen(v3, "w");
   if (!v4)
   {
@@ -673,10 +673,10 @@ uint64_t __47__ATXBackupFileManager_writeBackupData_toPath___block_invoke(uint64
   return v4;
 }
 
-- (id)readBackupData:(id)a3
+- (id)readBackupData:(id)data
 {
-  v4 = a3;
-  v5 = fopen([v4 UTF8String], "r");
+  dataCopy = data;
+  v5 = fopen([dataCopy UTF8String], "r");
   if (v5)
   {
     v6 = v5;
@@ -793,10 +793,10 @@ uint64_t __39__ATXBackupFileManager_readBackupData___block_invoke(uint64_t a1)
   return 0;
 }
 
-- (BOOL)writeData:(id)a3 toPath:(id)a4
+- (BOOL)writeData:(id)data toPath:(id)path
 {
   v8 = 0;
-  v4 = [a3 writeToFile:a4 options:0 error:&v8];
+  v4 = [data writeToFile:path options:0 error:&v8];
   v5 = v8;
   if ((v4 & 1) == 0)
   {
@@ -810,11 +810,11 @@ uint64_t __39__ATXBackupFileManager_readBackupData___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)pathForFile:(id)a3
+- (id)pathForFile:(id)file
 {
-  v4 = a3;
-  v5 = [(ATXBackupFileManager *)self backupDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  fileCopy = file;
+  backupDirectory = [(ATXBackupFileManager *)self backupDirectory];
+  v6 = [backupDirectory stringByAppendingPathComponent:fileCopy];
 
   return v6;
 }

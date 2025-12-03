@@ -1,24 +1,24 @@
 @interface _PSAttachment
-- (BOOL)isEqual:(id)a3;
-- (_PSAttachment)initWithCoder:(id)a3;
-- (_PSAttachment)initWithCreationDate:(id)a3 UTI:(id)a4 photoLocalIdentifier:(id)a5 identifier:(id)a6 cloudIdentifier:(id)a7 contentURL:(id)a8 contentText:(id)a9 imageData:(id)a10 photoLocalIdentifiers:(id)a11 suggestedContactIdentifiers:(id)a12 photoSceneDescriptors:(id)a13 peopleInPhoto:(id)a14;
+- (BOOL)isEqual:(id)equal;
+- (_PSAttachment)initWithCoder:(id)coder;
+- (_PSAttachment)initWithCreationDate:(id)date UTI:(id)i photoLocalIdentifier:(id)identifier identifier:(id)a6 cloudIdentifier:(id)cloudIdentifier contentURL:(id)l contentText:(id)text imageData:(id)self0 photoLocalIdentifiers:(id)self1 suggestedContactIdentifiers:(id)self2 photoSceneDescriptors:(id)self3 peopleInPhoto:(id)self4;
 - (id)description;
 - (unint64_t)hash;
-- (unint64_t)totalHashOfElementsFromArray:(id)a3;
+- (unint64_t)totalHashOfElementsFromArray:(id)array;
 - (unsigned)photoAnalysisRequestType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _PSAttachment
 
 - (unsigned)photoAnalysisRequestType
 {
-  v3 = [(_PSAttachment *)self contentURL];
-  if ([v3 isFileURL])
+  contentURL = [(_PSAttachment *)self contentURL];
+  if ([contentURL isFileURL])
   {
-    v4 = [(_PSAttachment *)self contentURLSandboxExtension];
+    contentURLSandboxExtension = [(_PSAttachment *)self contentURLSandboxExtension];
 
-    if (v4)
+    if (contentURLSandboxExtension)
     {
       return 1;
     }
@@ -28,40 +28,40 @@
   {
   }
 
-  v6 = [(_PSAttachment *)self photoLocalIdentifier];
-  v7 = v6 != 0;
+  photoLocalIdentifier = [(_PSAttachment *)self photoLocalIdentifier];
+  v7 = photoLocalIdentifier != 0;
 
   return 2 * v7;
 }
 
-- (_PSAttachment)initWithCreationDate:(id)a3 UTI:(id)a4 photoLocalIdentifier:(id)a5 identifier:(id)a6 cloudIdentifier:(id)a7 contentURL:(id)a8 contentText:(id)a9 imageData:(id)a10 photoLocalIdentifiers:(id)a11 suggestedContactIdentifiers:(id)a12 photoSceneDescriptors:(id)a13 peopleInPhoto:(id)a14
+- (_PSAttachment)initWithCreationDate:(id)date UTI:(id)i photoLocalIdentifier:(id)identifier identifier:(id)a6 cloudIdentifier:(id)cloudIdentifier contentURL:(id)l contentText:(id)text imageData:(id)self0 photoLocalIdentifiers:(id)self1 suggestedContactIdentifiers:(id)self2 photoSceneDescriptors:(id)self3 peopleInPhoto:(id)self4
 {
-  v47 = a3;
-  v46 = a4;
-  v18 = a5;
+  dateCopy = date;
+  iCopy = i;
+  identifierCopy = identifier;
   v19 = a6;
-  v20 = a7;
-  v21 = a8;
+  cloudIdentifierCopy = cloudIdentifier;
+  lCopy = l;
   v22 = v19;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  v26 = a13;
-  v27 = a14;
+  textCopy = text;
+  dataCopy = data;
+  identifiersCopy = identifiers;
+  descriptorsCopy = descriptors;
+  photoCopy = photo;
   v48.receiver = self;
   v48.super_class = _PSAttachment;
   v28 = [(_PSAttachment *)&v48 init];
   if (v28)
   {
-    v29 = [v47 copy];
+    v29 = [dateCopy copy];
     creationDate = v28->_creationDate;
     v28->_creationDate = v29;
 
-    v31 = [v46 copy];
+    v31 = [iCopy copy];
     UTI = v28->_UTI;
     v28->_UTI = v31;
 
-    v33 = [v18 copy];
+    v33 = [identifierCopy copy];
     photoLocalIdentifier = v28->_photoLocalIdentifier;
     v28->_photoLocalIdentifier = v33;
 
@@ -69,90 +69,90 @@
     identifier = v28->_identifier;
     v28->_identifier = v35;
 
-    v37 = [v20 copy];
+    v37 = [cloudIdentifierCopy copy];
     cloudIdentifier = v28->_cloudIdentifier;
     v28->_cloudIdentifier = v37;
 
-    v39 = [v21 copy];
+    v39 = [lCopy copy];
     contentURL = v28->_contentURL;
     v28->_contentURL = v39;
 
-    v41 = [v23 copy];
+    v41 = [textCopy copy];
     contentText = v28->_contentText;
     v28->_contentText = v41;
 
-    objc_storeStrong(&v28->_imageData, a10);
-    objc_storeStrong(&v28->_photoLocalIdentifiers, a11);
-    objc_storeStrong(&v28->_photoSceneDescriptors, a13);
-    objc_storeStrong(&v28->_peopleInPhoto, a14);
+    objc_storeStrong(&v28->_imageData, data);
+    objc_storeStrong(&v28->_photoLocalIdentifiers, identifiers);
+    objc_storeStrong(&v28->_photoSceneDescriptors, descriptors);
+    objc_storeStrong(&v28->_peopleInPhoto, photo);
   }
 
   return v28;
 }
 
-- (_PSAttachment)initWithCoder:(id)a3
+- (_PSAttachment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = _PSAttachment;
   v5 = [(_PSAttachment *)&v42 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UTI"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UTI"];
     UTI = v5->_UTI;
     v5->_UTI = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoLocalIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoLocalIdentifier"];
     photoLocalIdentifier = v5->_photoLocalIdentifier;
     v5->_photoLocalIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cloudIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cloudIdentifier"];
     cloudIdentifier = v5->_cloudIdentifier;
     v5->_cloudIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentURL"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentURL"];
     contentURL = v5->_contentURL;
     v5->_contentURL = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentText"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentText"];
     contentText = v5->_contentText;
     v5->_contentText = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
     imageData = v5->_imageData;
     v5->_imageData = v20;
 
     v22 = MEMORY[0x1E695DFD8];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"photoLocalIdentifiers"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"photoLocalIdentifiers"];
     photoLocalIdentifiers = v5->_photoLocalIdentifiers;
     v5->_photoLocalIdentifiers = v25;
 
     v27 = MEMORY[0x1E695DFD8];
     v28 = objc_opt_class();
     v29 = [v27 setWithObjects:{v28, objc_opt_class(), 0}];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"photoSceneDescriptors"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"photoSceneDescriptors"];
     photoSceneDescriptors = v5->_photoSceneDescriptors;
     v5->_photoSceneDescriptors = v30;
 
     v32 = MEMORY[0x1E695DFD8];
     v33 = objc_opt_class();
     v34 = [v32 setWithObjects:{v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"peopleInPhoto"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"peopleInPhoto"];
     peopleInPhoto = v5->_peopleInPhoto;
     v5->_peopleInPhoto = v35;
 
     v37 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"contentURLSandboxExtension"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"contentURLSandboxExtension"];
     contentURLSandboxExtension = v5->_contentURLSandboxExtension;
     v5->_contentURLSandboxExtension = v38;
 
@@ -162,38 +162,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   creationDate = self->_creationDate;
-  v5 = a3;
-  [v5 encodeObject:creationDate forKey:@"creationDate"];
-  [v5 encodeObject:self->_UTI forKey:@"UTI"];
-  [v5 encodeObject:self->_photoLocalIdentifier forKey:@"photoLocalIdentifier"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_cloudIdentifier forKey:@"cloudIdentifier"];
-  [v5 encodeObject:self->_contentURL forKey:@"contentURL"];
-  [v5 encodeObject:self->_contentText forKey:@"contentText"];
-  [v5 encodeObject:self->_imageData forKey:@"imageData"];
-  [v5 encodeObject:self->_photoLocalIdentifiers forKey:@"photoLocalIdentifiers"];
-  [v5 encodeObject:self->_photoSceneDescriptors forKey:@"photoSceneDescriptors"];
-  [v5 encodeObject:self->_peopleInPhoto forKey:@"peopleInPhoto"];
-  [v5 encodeObject:self->_contentURLSandboxExtension forKey:@"contentURLSandboxExtension"];
+  coderCopy = coder;
+  [coderCopy encodeObject:creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_UTI forKey:@"UTI"];
+  [coderCopy encodeObject:self->_photoLocalIdentifier forKey:@"photoLocalIdentifier"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_cloudIdentifier forKey:@"cloudIdentifier"];
+  [coderCopy encodeObject:self->_contentURL forKey:@"contentURL"];
+  [coderCopy encodeObject:self->_contentText forKey:@"contentText"];
+  [coderCopy encodeObject:self->_imageData forKey:@"imageData"];
+  [coderCopy encodeObject:self->_photoLocalIdentifiers forKey:@"photoLocalIdentifiers"];
+  [coderCopy encodeObject:self->_photoSceneDescriptors forKey:@"photoSceneDescriptors"];
+  [coderCopy encodeObject:self->_peopleInPhoto forKey:@"peopleInPhoto"];
+  [coderCopy encodeObject:self->_contentURLSandboxExtension forKey:@"contentURLSandboxExtension"];
 }
 
 - (id)description
 {
   v18 = MEMORY[0x1E696AEC0];
   v17 = objc_opt_class();
-  v19 = [(_PSAttachment *)self creationDate];
+  creationDate = [(_PSAttachment *)self creationDate];
   v3 = [(_PSAttachment *)self UTI];
-  v4 = [(_PSAttachment *)self photoLocalIdentifier];
-  v5 = [(_PSAttachment *)self contentURL];
-  if (v5)
+  photoLocalIdentifier = [(_PSAttachment *)self photoLocalIdentifier];
+  contentURL = [(_PSAttachment *)self contentURL];
+  if (contentURL)
   {
     v6 = MEMORY[0x1E696AD98];
-    v16 = [(_PSAttachment *)self contentURL];
-    v15 = [v16 absoluteString];
-    v7 = [v6 numberWithUnsignedInteger:{objc_msgSend(v15, "length")}];
+    contentURL2 = [(_PSAttachment *)self contentURL];
+    absoluteString = [contentURL2 absoluteString];
+    v7 = [v6 numberWithUnsignedInteger:{objc_msgSend(absoluteString, "length")}];
   }
 
   else
@@ -201,26 +201,26 @@
     v7 = @"null";
   }
 
-  v8 = [(_PSAttachment *)self contentText];
-  v9 = [(_PSAttachment *)self photoLocalIdentifiers];
-  v10 = [v9 count];
-  v11 = [(_PSAttachment *)self photoSceneDescriptors];
-  v12 = [(_PSAttachment *)self peopleInPhoto];
-  v13 = [v18 stringWithFormat:@"<%@ %p> creationDate: %@, UTI: %@, photoIdentifier: %@, contentURL: %@, contentText: %@ photoLocalIds: %lu, photoSceneDescriptors: %@, peopleInPhoto: %@", v17, self, v19, v3, v4, v7, v8, v10, v11, v12];
+  contentText = [(_PSAttachment *)self contentText];
+  photoLocalIdentifiers = [(_PSAttachment *)self photoLocalIdentifiers];
+  v10 = [photoLocalIdentifiers count];
+  photoSceneDescriptors = [(_PSAttachment *)self photoSceneDescriptors];
+  peopleInPhoto = [(_PSAttachment *)self peopleInPhoto];
+  v13 = [v18 stringWithFormat:@"<%@ %p> creationDate: %@, UTI: %@, photoIdentifier: %@, contentURL: %@, contentText: %@ photoLocalIds: %lu, photoSceneDescriptors: %@, peopleInPhoto: %@", v17, self, creationDate, v3, photoLocalIdentifier, v7, contentText, v10, photoSceneDescriptors, peopleInPhoto];
 
-  if (v5)
+  if (contentURL)
   {
   }
 
   return v13;
 }
 
-- (unint64_t)totalHashOfElementsFromArray:(id)a3
+- (unint64_t)totalHashOfElementsFromArray:(id)array
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (v14 = 0u, v15 = 0u, v12 = 0u, v13 = 0u, (v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16]) != 0))
+  arrayCopy = array;
+  v4 = arrayCopy;
+  if (arrayCopy && (v14 = 0u, v15 = 0u, v12 = 0u, v13 = 0u, (v5 = [arrayCopy countByEnumeratingWithState:&v12 objects:v16 count:16]) != 0))
   {
     v6 = v5;
     v7 = 0;
@@ -259,28 +259,28 @@
   v5 = [(NSUUID *)self->_identifier hash];
   v6 = v4 ^ v5 ^ [(NSUUID *)self->_cloudIdentifier hash];
   v7 = [(NSURL *)self->_contentURL hash];
-  v8 = [(_PSAttachment *)self photoLocalIdentifiers];
-  v9 = v7 ^ [(_PSAttachment *)self totalHashOfElementsFromArray:v8];
+  photoLocalIdentifiers = [(_PSAttachment *)self photoLocalIdentifiers];
+  v9 = v7 ^ [(_PSAttachment *)self totalHashOfElementsFromArray:photoLocalIdentifiers];
 
-  v10 = [(_PSAttachment *)self photoSceneDescriptors];
-  v11 = v6 ^ v9 ^ [(_PSAttachment *)self totalHashOfElementsFromArray:v10];
+  photoSceneDescriptors = [(_PSAttachment *)self photoSceneDescriptors];
+  v11 = v6 ^ v9 ^ [(_PSAttachment *)self totalHashOfElementsFromArray:photoSceneDescriptors];
 
-  v12 = [(_PSAttachment *)self peopleInPhoto];
-  v13 = [(_PSAttachment *)self totalHashOfElementsFromArray:v12];
+  peopleInPhoto = [(_PSAttachment *)self peopleInPhoto];
+  v13 = [(_PSAttachment *)self totalHashOfElementsFromArray:peopleInPhoto];
 
   return v11 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v58 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v7 = [(_PSAttachment *)self UTI];
@@ -302,17 +302,17 @@
       }
     }
 
-    v13 = [(_PSAttachment *)self photoLocalIdentifier];
-    if (v13)
+    photoLocalIdentifier = [(_PSAttachment *)self photoLocalIdentifier];
+    if (photoLocalIdentifier)
     {
-      v14 = v13;
-      v15 = [(_PSAttachment *)v6 photoLocalIdentifier];
+      v14 = photoLocalIdentifier;
+      photoLocalIdentifier2 = [(_PSAttachment *)v6 photoLocalIdentifier];
 
-      if (v15)
+      if (photoLocalIdentifier2)
       {
-        v16 = [(_PSAttachment *)self photoLocalIdentifier];
-        v17 = [(_PSAttachment *)v6 photoLocalIdentifier];
-        v18 = [v16 isEqualToString:v17];
+        photoLocalIdentifier3 = [(_PSAttachment *)self photoLocalIdentifier];
+        photoLocalIdentifier4 = [(_PSAttachment *)v6 photoLocalIdentifier];
+        v18 = [photoLocalIdentifier3 isEqualToString:photoLocalIdentifier4];
 
         if (!v18)
         {
@@ -321,17 +321,17 @@
       }
     }
 
-    v19 = [(_PSAttachment *)self cloudIdentifier];
-    if (v19)
+    cloudIdentifier = [(_PSAttachment *)self cloudIdentifier];
+    if (cloudIdentifier)
     {
-      v20 = v19;
-      v21 = [(_PSAttachment *)v6 cloudIdentifier];
+      v20 = cloudIdentifier;
+      cloudIdentifier2 = [(_PSAttachment *)v6 cloudIdentifier];
 
-      if (v21)
+      if (cloudIdentifier2)
       {
-        v22 = [(_PSAttachment *)self cloudIdentifier];
-        v23 = [(_PSAttachment *)v6 cloudIdentifier];
-        v24 = [v22 isEqual:v23];
+        cloudIdentifier3 = [(_PSAttachment *)self cloudIdentifier];
+        cloudIdentifier4 = [(_PSAttachment *)v6 cloudIdentifier];
+        v24 = [cloudIdentifier3 isEqual:cloudIdentifier4];
 
         if (!v24)
         {
@@ -340,17 +340,17 @@
       }
     }
 
-    v25 = [(_PSAttachment *)self identifier];
-    if (v25)
+    identifier = [(_PSAttachment *)self identifier];
+    if (identifier)
     {
-      v26 = v25;
-      v27 = [(_PSAttachment *)v6 identifier];
+      v26 = identifier;
+      identifier2 = [(_PSAttachment *)v6 identifier];
 
-      if (v27)
+      if (identifier2)
       {
-        v28 = [(_PSAttachment *)self identifier];
-        v29 = [(_PSAttachment *)v6 identifier];
-        v30 = [v28 isEqual:v29];
+        identifier3 = [(_PSAttachment *)self identifier];
+        identifier4 = [(_PSAttachment *)v6 identifier];
+        v30 = [identifier3 isEqual:identifier4];
 
         if (!v30)
         {
@@ -359,23 +359,23 @@
       }
     }
 
-    v31 = [(_PSAttachment *)self contentURL];
-    if (!v31)
+    contentURL = [(_PSAttachment *)self contentURL];
+    if (!contentURL)
     {
       goto LABEL_19;
     }
 
-    v32 = v31;
-    v33 = [(_PSAttachment *)v6 contentURL];
+    v32 = contentURL;
+    contentURL2 = [(_PSAttachment *)v6 contentURL];
 
-    if (!v33)
+    if (!contentURL2)
     {
       goto LABEL_19;
     }
 
-    v34 = [(_PSAttachment *)self contentURL];
-    v35 = [(_PSAttachment *)v6 contentURL];
-    v36 = [v34 isEqual:v35];
+    contentURL3 = [(_PSAttachment *)self contentURL];
+    contentURL4 = [(_PSAttachment *)v6 contentURL];
+    v36 = [contentURL3 isEqual:contentURL4];
 
     if (!v36)
     {
@@ -387,34 +387,34 @@ LABEL_27:
     {
 LABEL_19:
       v37 = objc_alloc(MEMORY[0x1E695DFA8]);
-      v38 = [(_PSAttachment *)self photoLocalIdentifiers];
-      v39 = [v37 initWithArray:v38];
+      photoLocalIdentifiers = [(_PSAttachment *)self photoLocalIdentifiers];
+      v39 = [v37 initWithArray:photoLocalIdentifiers];
 
       v40 = objc_alloc(MEMORY[0x1E695DFA8]);
-      v41 = [(_PSAttachment *)v6 photoLocalIdentifiers];
-      v42 = [v40 initWithArray:v41];
+      photoLocalIdentifiers2 = [(_PSAttachment *)v6 photoLocalIdentifiers];
+      v42 = [v40 initWithArray:photoLocalIdentifiers2];
 
       v43 = [v39 count];
       if (v43 == [v42 count] && objc_msgSend(v39, "isEqualToSet:", v42))
       {
         v44 = objc_alloc(MEMORY[0x1E695DFA8]);
-        v45 = [(_PSAttachment *)self photoSceneDescriptors];
-        v46 = [v44 initWithArray:v45];
+        photoSceneDescriptors = [(_PSAttachment *)self photoSceneDescriptors];
+        v46 = [v44 initWithArray:photoSceneDescriptors];
 
         v47 = objc_alloc(MEMORY[0x1E695DFA8]);
-        v48 = [(_PSAttachment *)v6 photoSceneDescriptors];
-        v49 = [v47 initWithArray:v48];
+        photoSceneDescriptors2 = [(_PSAttachment *)v6 photoSceneDescriptors];
+        v49 = [v47 initWithArray:photoSceneDescriptors2];
 
         v50 = [v46 count];
         if (v50 == [v49 count] && objc_msgSend(v46, "isEqualToSet:", v49))
         {
           v51 = objc_alloc(MEMORY[0x1E695DFA8]);
-          v52 = [(_PSAttachment *)self peopleInPhoto];
-          v53 = [v51 initWithArray:v52];
+          peopleInPhoto = [(_PSAttachment *)self peopleInPhoto];
+          v53 = [v51 initWithArray:peopleInPhoto];
 
           v54 = objc_alloc(MEMORY[0x1E695DFA8]);
-          v55 = [(_PSAttachment *)v6 peopleInPhoto];
-          v56 = [v54 initWithArray:v55];
+          peopleInPhoto2 = [(_PSAttachment *)v6 peopleInPhoto];
+          v56 = [v54 initWithArray:peopleInPhoto2];
 
           v57 = [v53 count];
           if (v57 == [v56 count])

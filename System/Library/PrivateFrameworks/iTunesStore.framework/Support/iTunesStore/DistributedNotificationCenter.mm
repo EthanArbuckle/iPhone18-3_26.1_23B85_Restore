@@ -1,15 +1,15 @@
 @interface DistributedNotificationCenter
 + (id)defaultCenter;
-+ (void)observeXPCServer:(id)a3;
-+ (void)registerObserverWithMessage:(id)a3 connection:(id)a4;
-+ (void)unregisterObserverWithMessage:(id)a3 connection:(id)a4;
++ (void)observeXPCServer:(id)server;
++ (void)registerObserverWithMessage:(id)message connection:(id)connection;
++ (void)unregisterObserverWithMessage:(id)message connection:(id)connection;
 - (DistributedNotificationCenter)init;
-- (void)_addObserverWithPortName:(id)a3 notificationName:(id)a4;
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5;
-- (void)_removeObserverWithPortName:(id)a3 notificationName:(id)a4;
+- (void)_addObserverWithPortName:(id)name notificationName:(id)notificationName;
+- (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block;
+- (void)_removeObserverWithPortName:(id)name notificationName:(id)notificationName;
 - (void)_saveRegisteredPortNames;
 - (void)dealloc;
-- (void)postNotificationName:(__CFString *)a3;
+- (void)postNotificationName:(__CFString *)name;
 @end
 
 @implementation DistributedNotificationCenter
@@ -92,7 +92,7 @@
   block[1] = 3221225472;
   block[2] = sub_10019DC38;
   block[3] = &unk_100327378;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100383FF0 != -1)
   {
     dispatch_once(&qword_100383FF0, block);
@@ -101,7 +101,7 @@
   return qword_100383FE8;
 }
 
-- (void)postNotificationName:(__CFString *)a3
+- (void)postNotificationName:(__CFString *)name
 {
   dispatchQueue = self->_dispatchQueue;
   v6[0] = _NSConcreteStackBlock;
@@ -109,81 +109,81 @@
   v6[2] = sub_10019DCF8;
   v6[3] = &unk_100327808;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = name;
   dispatch_sync(dispatchQueue, v6);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterPostNotification(DarwinNotifyCenter, a3, 0, 0, 1u);
+  CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 1u);
 }
 
-+ (void)observeXPCServer:(id)a3
++ (void)observeXPCServer:(id)server
 {
-  [a3 addObserver:a1 selector:"registerObserverWithMessage:connection:" forMessage:42];
+  [server addObserver:self selector:"registerObserverWithMessage:connection:" forMessage:42];
 
-  [a3 addObserver:a1 selector:"unregisterObserverWithMessage:connection:" forMessage:43];
+  [server addObserver:self selector:"unregisterObserverWithMessage:connection:" forMessage:43];
 }
 
-+ (void)registerObserverWithMessage:(id)a3 connection:(id)a4
++ (void)registerObserverWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10019DF40;
   v4[3] = &unk_100327350;
-  v4[4] = a3;
+  v4[4] = message;
   [+[DistributedNotificationCenter defaultCenter](DistributedNotificationCenter "defaultCenter")];
 }
 
-+ (void)unregisterObserverWithMessage:(id)a3 connection:(id)a4
++ (void)unregisterObserverWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10019E1CC;
   v4[3] = &unk_1003273E0;
-  v4[4] = a3;
-  v4[5] = a1;
+  v4[4] = message;
+  v4[5] = self;
   [+[DistributedNotificationCenter defaultCenter](DistributedNotificationCenter "defaultCenter")];
 }
 
-- (void)_addObserverWithPortName:(id)a3 notificationName:(id)a4
+- (void)_addObserverWithPortName:(id)name notificationName:(id)notificationName
 {
   v7 = [(NSMutableDictionary *)self->_observers objectForKey:?];
   if (!v7)
   {
-    v8 = [[DistributedNotificationObserver alloc] initWithServiceName:a3];
-    [(NSMutableDictionary *)self->_observers setObject:v8 forKey:a3];
+    v8 = [[DistributedNotificationObserver alloc] initWithServiceName:name];
+    [(NSMutableDictionary *)self->_observers setObject:v8 forKey:name];
     v7 = v8;
   }
 
   v9 = v7;
-  [(DistributedNotificationObserver *)v7 addObservedNotificationName:a4];
+  [(DistributedNotificationObserver *)v7 addObservedNotificationName:notificationName];
   [(DistributedNotificationCenter *)self _saveRegisteredPortNames];
 }
 
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5
+- (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block
 {
   [+[Daemon daemon](Daemon "daemon")];
-  xpc_retain(a4);
-  xpc_retain(a3);
+  xpc_retain(connection);
+  xpc_retain(message);
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10019E510;
   block[3] = &unk_100327408;
-  block[5] = a4;
-  block[6] = a5;
-  block[4] = a3;
+  block[5] = connection;
+  block[6] = block;
+  block[4] = message;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_removeObserverWithPortName:(id)a3 notificationName:(id)a4
+- (void)_removeObserverWithPortName:(id)name notificationName:(id)notificationName
 {
   v7 = [(NSMutableDictionary *)self->_observers objectForKey:?];
   if (v7)
   {
     v8 = v7;
-    [v7 removeObservedNotificationName:a4];
+    [v7 removeObservedNotificationName:notificationName];
     if (![objc_msgSend(v8 "observedNotificationNames")])
     {
-      [(NSMutableDictionary *)self->_observers removeObjectForKey:a3];
+      [(NSMutableDictionary *)self->_observers removeObjectForKey:name];
     }
 
     [(DistributedNotificationCenter *)self _saveRegisteredPortNames];

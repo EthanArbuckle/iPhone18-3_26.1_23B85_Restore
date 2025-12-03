@@ -1,6 +1,6 @@
 @interface SessionIntensityView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI20SessionIntensityView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI20SessionIntensityView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -10,7 +10,7 @@
 {
   v3 = OBJC_IVAR____TtC9SeymourUI20SessionIntensityView_label;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI20SessionIntensityView_label);
-  v5 = self;
+  selfCopy = self;
   [v4 intrinsicContentSize];
   v7 = v6;
   [*(&self->super.super.super.isa + v3) intrinsicContentSize];
@@ -38,7 +38,7 @@
   [v4 setFrame_];
 }
 
-- (_TtC9SeymourUI20SessionIntensityView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI20SessionIntensityView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

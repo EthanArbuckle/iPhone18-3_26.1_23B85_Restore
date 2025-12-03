@@ -1,5 +1,5 @@
 @interface PVTaskToken
-- (PVTaskToken)initWithPool:(id)a3 tokenId:(unint64_t)a4;
+- (PVTaskToken)initWithPool:(id)pool tokenId:(unint64_t)id;
 - (PVTaskTokenPool)pool;
 - (void)dealloc;
 - (void)returnToPool;
@@ -9,26 +9,26 @@
 
 - (void)returnToPool
 {
-  v3 = [(PVTaskToken *)self pool];
+  pool = [(PVTaskToken *)self pool];
 
-  if (v3)
+  if (pool)
   {
-    v4 = [(PVTaskToken *)self pool];
-    [v4 returnToken:self];
+    pool2 = [(PVTaskToken *)self pool];
+    [pool2 returnToken:self];
   }
 }
 
-- (PVTaskToken)initWithPool:(id)a3 tokenId:(unint64_t)a4
+- (PVTaskToken)initWithPool:(id)pool tokenId:(unint64_t)id
 {
-  v6 = a3;
+  poolCopy = pool;
   v10.receiver = self;
   v10.super_class = PVTaskToken;
   v7 = [(PVTaskToken *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_pool, v6);
-    v8->_tokenId = a4;
+    objc_storeWeak(&v7->_pool, poolCopy);
+    v8->_tokenId = id;
     [(PVTaskToken *)v8 setReturned:0];
   }
 

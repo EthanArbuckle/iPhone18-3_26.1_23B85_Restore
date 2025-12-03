@@ -1,7 +1,7 @@
 @interface HMHearingTestSDKInstanceConstructor
 + (id)makeStandardViewController;
-+ (id)makeStandardViewControllerAudioGramImportFlowProvider:(id)a3;
-+ (id)makeTestResultsControllerWithSample:(id)a3 bluetoothAddress:(id)a4;
++ (id)makeStandardViewControllerAudioGramImportFlowProvider:(id)provider;
++ (id)makeTestResultsControllerWithSample:(id)sample bluetoothAddress:(id)address;
 @end
 
 @implementation HMHearingTestSDKInstanceConstructor
@@ -11,9 +11,9 @@
   if (dlopen("/System/Library/PrivateFrameworks/HearingTestUI.framework/HearingTestUI", 1))
   {
     v2 = NSClassFromString(&cfstr_HearingtestuiH.isa);
-    v3 = [NSClassFromString(&cfstr_HearingtestuiH_0.isa) none];
+    none = [NSClassFromString(&cfstr_HearingtestuiH_0.isa) none];
     v4 = objc_alloc_init(MEMORY[0x277CCD4D8]);
-    v5 = [(objc_class *)v2 makeStandardViewControllerWithHealthStore:v4 entryPoint:0 options:v3 articleProvider:0 importFlowProvider:0];
+    v5 = [(objc_class *)v2 makeStandardViewControllerWithHealthStore:v4 entryPoint:0 options:none articleProvider:0 importFlowProvider:0];
   }
 
   else
@@ -30,15 +30,15 @@
   return v5;
 }
 
-+ (id)makeStandardViewControllerAudioGramImportFlowProvider:(id)a3
++ (id)makeStandardViewControllerAudioGramImportFlowProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   if (dlopen("/System/Library/PrivateFrameworks/HearingTestUI.framework/HearingTestUI", 1))
   {
     v4 = NSClassFromString(&cfstr_HearingtestuiH.isa);
-    v5 = [NSClassFromString(&cfstr_HearingtestuiH_0.isa) showAudiogramImport];
+    showAudiogramImport = [NSClassFromString(&cfstr_HearingtestuiH_0.isa) showAudiogramImport];
     v6 = objc_alloc_init(MEMORY[0x277CCD4D8]);
-    v7 = [(objc_class *)v4 makeStandardViewControllerWithHealthStore:v6 entryPoint:2 options:v5 articleProvider:0 importFlowProvider:v3];
+    v7 = [(objc_class *)v4 makeStandardViewControllerWithHealthStore:v6 entryPoint:2 options:showAudiogramImport articleProvider:0 importFlowProvider:providerCopy];
   }
 
   else
@@ -55,21 +55,21 @@
   return v7;
 }
 
-+ (id)makeTestResultsControllerWithSample:(id)a3 bluetoothAddress:(id)a4
++ (id)makeTestResultsControllerWithSample:(id)sample bluetoothAddress:(id)address
 {
-  v5 = a3;
-  v6 = a4;
+  sampleCopy = sample;
+  addressCopy = address;
   if (dlopen("/System/Library/PrivateFrameworks/HearingTestUI.framework/HearingTestUI", 1))
   {
     v7 = objc_alloc(NSClassFromString(&cfstr_HearingtestuiH_1.isa));
     v8 = objc_alloc_init(MEMORY[0x277CCD4D8]);
-    v9 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __92__HMHearingTestSDKInstanceConstructor_makeTestResultsControllerWithSample_bluetoothAddress___block_invoke;
     v20[3] = &unk_2796F1D48;
-    v21 = v6;
-    v10 = [v7 initWithAudiogram:v5 healthStore:v8 isHearingAssistAvailable:1 application:v9 deviceBluetoothUUID:v20];
+    v21 = addressCopy;
+    v10 = [v7 initWithAudiogram:sampleCopy healthStore:v8 isHearingAssistAvailable:1 application:mEMORY[0x277D75128] deviceBluetoothUUID:v20];
 
     v11 = v21;
   }

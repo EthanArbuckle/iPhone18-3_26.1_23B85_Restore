@@ -2,10 +2,10 @@
 - (NSArray)appsSpecifiers;
 - (NSArray)specifiers;
 - (_TtPO12FinanceKitUI22PrivacySettingsStaging33PKPrivacySettingsProviderDelegate_)delegate;
-- (id)getAuthWithSpecifier:(id)a3;
-- (void)authChanged:(unint64_t)a3 :(id)a4;
+- (id)getAuthWithSpecifier:(id)specifier;
+- (void)authChanged:(unint64_t)changed :(id)a4;
 - (void)reloadStaleSpecifiers;
-- (void)setAppsSpecifiers:(id)a3;
+- (void)setAppsSpecifiers:(id)specifiers;
 @end
 
 @implementation PrivacyAppSpecifierProvider
@@ -28,7 +28,7 @@
   return v3;
 }
 
-- (void)setAppsSpecifiers:(id)a3
+- (void)setAppsSpecifiers:(id)specifiers
 {
   sub_2384950FC();
   v4 = sub_23875EC80();
@@ -46,7 +46,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_23856831C();
 
   sub_2384950FC();
@@ -65,15 +65,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_238569084();
 }
 
-- (id)getAuthWithSpecifier:(id)a3
+- (id)getAuthWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = self;
-  sub_23856953C(v4);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_23856953C(specifierCopy);
   v7 = v6;
 
   if (v7)
@@ -89,7 +89,7 @@
   return v8;
 }
 
-- (void)authChanged:(unint64_t)a3 :(id)a4
+- (void)authChanged:(unint64_t)changed :(id)a4
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -100,7 +100,7 @@
   }
 
   v6 = a4;
-  v7 = self;
+  selfCopy = self;
   sub_23856C004(v6);
 }
 

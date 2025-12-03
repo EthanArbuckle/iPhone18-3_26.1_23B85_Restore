@@ -1,7 +1,7 @@
 @interface PLAssetCluster
-+ (id)mergedCluster:(id)a3;
++ (id)mergedCluster:(id)cluster;
 + (id)sortByTimeSortDescriptors;
-- (PLAssetCluster)initWithAssetsSortedByDate:(id)a3 region:(id)a4;
+- (PLAssetCluster)initWithAssetsSortedByDate:(id)date region:(id)region;
 - (id)description;
 @end
 
@@ -21,30 +21,30 @@
   return v9;
 }
 
-- (PLAssetCluster)initWithAssetsSortedByDate:(id)a3 region:(id)a4
+- (PLAssetCluster)initWithAssetsSortedByDate:(id)date region:(id)region
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  regionCopy = region;
   v22.receiver = self;
   v22.super_class = PLAssetCluster;
   v9 = [(PLAssetCluster *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assets, a3);
-    v11 = [v7 firstObject];
-    v12 = [v11 dateCreated];
+    objc_storeStrong(&v9->_assets, date);
+    firstObject = [dateCopy firstObject];
+    dateCreated = [firstObject dateCreated];
     startDate = v10->_startDate;
-    v10->_startDate = v12;
+    v10->_startDate = dateCreated;
 
-    v14 = [v7 lastObject];
-    v15 = [v14 dateCreated];
+    lastObject = [dateCopy lastObject];
+    dateCreated2 = [lastObject dateCreated];
     endDate = v10->_endDate;
-    v10->_endDate = v15;
+    v10->_endDate = dateCreated2;
 
-    if (v8)
+    if (regionCopy)
     {
-      [v8 center];
+      [regionCopy center];
       v19 = [objc_alloc(MEMORY[0x1E6985C40]) initWithLatitude:v17 longitude:v18];
       location = v10->_location;
       v10->_location = v19;
@@ -64,21 +64,21 @@
   return v3;
 }
 
-+ (id)mergedCluster:(id)a3
++ (id)mergedCluster:(id)cluster
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 firstObject];
-  if ([v3 count] > 1)
+  clusterCopy = cluster;
+  firstObject = [clusterCopy firstObject];
+  if ([clusterCopy count] > 1)
   {
-    v6 = [v4 assets];
-    v7 = [v6 mutableCopy];
+    assets = [firstObject assets];
+    v7 = [assets mutableCopy];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v3;
+    v8 = clusterCopy;
     v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v9)
     {
@@ -94,10 +94,10 @@
           }
 
           v13 = *(*(&v26 + 1) + 8 * i);
-          if (v13 != v4)
+          if (v13 != firstObject)
           {
-            v14 = [v13 assets];
-            [v7 addObjectsFromArray:v14];
+            assets2 = [v13 assets];
+            [v7 addObjectsFromArray:assets2];
           }
         }
 
@@ -107,18 +107,18 @@
       while (v10);
     }
 
-    v15 = [v8 firstObject];
-    v16 = [v15 location];
+    firstObject2 = [v8 firstObject];
+    location = [firstObject2 location];
 
-    if (v16)
+    if (location)
     {
       v17 = objc_alloc(MEMORY[0x1E695FBB0]);
-      [v16 coordinate];
+      [location coordinate];
       v19 = v18;
       v21 = v20;
-      v22 = [MEMORY[0x1E696AFB0] UUID];
-      v23 = [v22 UUIDString];
-      v24 = [v17 initWithCenter:v23 radius:v19 identifier:{v21, 0.0}];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v24 = [v17 initWithCenter:uUIDString radius:v19 identifier:{v21, 0.0}];
     }
 
     else
@@ -131,7 +131,7 @@
 
   else
   {
-    v5 = v4;
+    v5 = firstObject;
   }
 
   return v5;

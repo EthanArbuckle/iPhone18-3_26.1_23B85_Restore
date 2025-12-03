@@ -1,19 +1,19 @@
 @interface STPresetsChooseAgeTappedCoreAnalyticsEvent
 - (NSDictionary)payload;
-- (STPresetsChooseAgeTappedCoreAnalyticsEvent)initWithSessionId:(id)a3;
+- (STPresetsChooseAgeTappedCoreAnalyticsEvent)initWithSessionId:(id)id;
 @end
 
 @implementation STPresetsChooseAgeTappedCoreAnalyticsEvent
 
-- (STPresetsChooseAgeTappedCoreAnalyticsEvent)initWithSessionId:(id)a3
+- (STPresetsChooseAgeTappedCoreAnalyticsEvent)initWithSessionId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v9.receiver = self;
   v9.super_class = STPresetsChooseAgeTappedCoreAnalyticsEvent;
   v5 = [(STPresetsChooseAgeTappedCoreAnalyticsEvent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [idCopy copy];
     sessionId = v5->_sessionId;
     v5->_sessionId = v6;
   }
@@ -24,8 +24,8 @@
 - (NSDictionary)payload
 {
   v3 = objc_opt_new();
-  v4 = [(STPresetsChooseAgeTappedCoreAnalyticsEvent *)self sessionId];
-  [v3 setObject:v4 forKeyedSubscript:@"sessionId"];
+  sessionId = [(STPresetsChooseAgeTappedCoreAnalyticsEvent *)self sessionId];
+  [v3 setObject:sessionId forKeyedSubscript:@"sessionId"];
 
   return v3;
 }

@@ -22,8 +22,8 @@
 
 - (Class)NSObject
 {
-  v1 = *(a1 + 32);
-  v2 = *(a1 + 40);
+  v1 = *(self + 32);
+  v2 = *(self + 40);
 
   v4 = v1(v3);
 
@@ -55,24 +55,11 @@
   return result;
 }
 
-{
-  result = lazy protocol witness table cache variable for type [String : MediaPlaybackConfigurationItem] and conformance <> [A : B];
-  if (!lazy protocol witness table cache variable for type [String : MediaPlaybackConfigurationItem] and conformance <> [A : B])
-  {
-    __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDySS11WorkoutCore30MediaPlaybackConfigurationItemCGMd, &_sSDySS11WorkoutCore30MediaPlaybackConfigurationItemCGMR);
-    lazy protocol witness table accessor for type MediaPlaybackConfigurationItem and conformance MediaPlaybackConfigurationItem(&lazy protocol witness table cache variable for type MediaPlaybackConfigurationItem and conformance MediaPlaybackConfigurationItem);
-    result = swift_getWitnessTable();
-    atomic_store(result, &lazy protocol witness table cache variable for type [String : MediaPlaybackConfigurationItem] and conformance <> [A : B]);
-  }
-
-  return result;
-}
-
 - (uint64_t)AnyHashable
 {
   v2 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sSS_SDySSs11AnyHashableVGtMd, &_sSS_SDySSs11AnyHashableVGtMR);
-  (*(*(v2 - 8) + 8))(a1, v2);
-  return a1;
+  (*(*(v2 - 8) + 8))(self, v2);
+  return self;
 }
 
 @end

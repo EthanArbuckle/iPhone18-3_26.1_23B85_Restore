@@ -1,15 +1,15 @@
 @interface SFClipLink
-+ (id)localizedCaptionForClipNamed:(id)a3 action:(int64_t)a4;
-+ (id)localizedUppercaseStringForAction:(int64_t)a3;
-- (SFClipLink)initWithURL:(id)a3 bundleIdentifier:(id)a4 actionTitle:(id)a5;
-- (void)getClipAttributesWithCompletionHandler:(id)a3;
++ (id)localizedCaptionForClipNamed:(id)named action:(int64_t)action;
++ (id)localizedUppercaseStringForAction:(int64_t)action;
+- (SFClipLink)initWithURL:(id)l bundleIdentifier:(id)identifier actionTitle:(id)title;
+- (void)getClipAttributesWithCompletionHandler:(id)handler;
 @end
 
 @implementation SFClipLink
 
-+ (id)localizedUppercaseStringForAction:(int64_t)a3
++ (id)localizedUppercaseStringForAction:(int64_t)action
 {
-  if (a3 > 2)
+  if (action > 2)
   {
     v4 = &stru_1EFF36230;
   }
@@ -22,10 +22,10 @@
   return v4;
 }
 
-+ (id)localizedCaptionForClipNamed:(id)a3 action:(int64_t)a4
++ (id)localizedCaptionForClipNamed:(id)named action:(int64_t)action
 {
-  v5 = a3;
-  switch(a4)
+  namedCopy = named;
+  switch(action)
   {
     case 2:
       v6 = MEMORY[0x1E696AEC0];
@@ -37,33 +37,33 @@
       v6 = MEMORY[0x1E696AEC0];
 LABEL_7:
       v7 = _WBSLocalizedString();
-      v8 = [v6 stringWithFormat:v7, v5];
+      namedCopy = [v6 stringWithFormat:v7, namedCopy];
 
       goto LABEL_9;
   }
 
-  v8 = &stru_1EFF36230;
+  namedCopy = &stru_1EFF36230;
 LABEL_9:
 
-  return v8;
+  return namedCopy;
 }
 
-- (SFClipLink)initWithURL:(id)a3 bundleIdentifier:(id)a4 actionTitle:(id)a5
+- (SFClipLink)initWithURL:(id)l bundleIdentifier:(id)identifier actionTitle:(id)title
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
+  titleCopy = title;
   v18.receiver = self;
   v18.super_class = SFClipLink;
   v12 = [(SFClipLink *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_url, a3);
-    objc_storeStrong(&v13->_bundleIdentifier, a4);
-    v14 = [v11 localizedUppercaseString];
+    objc_storeStrong(&v12->_url, l);
+    objc_storeStrong(&v13->_bundleIdentifier, identifier);
+    localizedUppercaseString = [titleCopy localizedUppercaseString];
     actionTitle = v13->_actionTitle;
-    v13->_actionTitle = v14;
+    v13->_actionTitle = localizedUppercaseString;
 
     v16 = v13;
   }
@@ -71,10 +71,10 @@ LABEL_9:
   return v13;
 }
 
-- (void)getClipAttributesWithCompletionHandler:(id)a3
+- (void)getClipAttributesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v16 = 0;
     v17 = &v16;
@@ -101,8 +101,8 @@ LABEL_9:
       v9[1] = 3221225472;
       v9[2] = __53__SFClipLink_getClipAttributesWithCompletionHandler___block_invoke_2;
       v9[3] = &unk_1E721D3D8;
-      v11 = self;
-      v12 = v4;
+      selfCopy = self;
+      v12 = handlerCopy;
       v10 = v7;
       v8 = v7;
       [v8 requestMetadataWithCompletion:v9];
@@ -114,7 +114,7 @@ LABEL_9:
       block[1] = 3221225472;
       block[2] = __53__SFClipLink_getClipAttributesWithCompletionHandler___block_invoke;
       block[3] = &unk_1E721D338;
-      v14 = v4;
+      v14 = handlerCopy;
       dispatch_async(MEMORY[0x1E69E96A0], block);
       v8 = v14;
     }

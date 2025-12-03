@@ -36,20 +36,20 @@
 {
   v8.receiver = self;
   v8.super_class = MSVLyricsWord;
-  v3 = [(MSVLyricsElement *)&v8 agent];
-  v4 = v3;
-  if (v3)
+  agent = [(MSVLyricsElement *)&v8 agent];
+  v4 = agent;
+  if (agent)
   {
-    v5 = v3;
+    agent2 = agent;
   }
 
   else
   {
-    v6 = [(MSVLyricsWord *)self parentLine];
-    v5 = [v6 agent];
+    parentLine = [(MSVLyricsWord *)self parentLine];
+    agent2 = [parentLine agent];
   }
 
-  return v5;
+  return agent2;
 }
 
 - (MSVLyricsWord)init

@@ -1,20 +1,20 @@
 @interface GTServiceVendor
-- (GTServiceVendor)initWithConnectionProvider:(id)a3;
-- (id)_connectionForServicePort:(unint64_t)a3;
-- (id)getSimulatorDeviceBrowserService:(id)a3;
-- (void)addLocalService:(id)a3 forPort:(unint64_t)a4;
+- (GTServiceVendor)initWithConnectionProvider:(id)provider;
+- (id)_connectionForServicePort:(unint64_t)port;
+- (id)getSimulatorDeviceBrowserService:(id)service;
+- (void)addLocalService:(id)service forPort:(unint64_t)port;
 @end
 
 @implementation GTServiceVendor
 
-- (id)getSimulatorDeviceBrowserService:(id)a3
+- (id)getSimulatorDeviceBrowserService:(id)service
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  serviceCopy = service;
+  v5 = serviceCopy;
+  if (serviceCopy)
   {
     portToService = self->_portToService;
-    v7 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 servicePort]);
+    v7 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [serviceCopy servicePort]);
     v8 = [(NSMutableDictionary *)portToService objectForKeyedSubscript:v7];
 
     if (v8)
@@ -37,9 +37,9 @@
   return v9;
 }
 
-- (id)_connectionForServicePort:(unint64_t)a3
+- (id)_connectionForServicePort:(unint64_t)port
 {
-  v4 = [(GTConnectionProvider *)self->_connectionProvider connectionForServicePort:a3];
+  v4 = [(GTConnectionProvider *)self->_connectionProvider connectionForServicePort:port];
   serviceDaemonConnection = v4;
   if (!v4)
   {
@@ -51,21 +51,21 @@
   return v6;
 }
 
-- (void)addLocalService:(id)a3 forPort:(unint64_t)a4
+- (void)addLocalService:(id)service forPort:(unint64_t)port
 {
-  if (a3)
+  if (service)
   {
     portToService = self->_portToService;
-    v6 = a3;
-    v7 = [NSNumber numberWithUnsignedLongLong:a4];
-    [(NSMutableDictionary *)portToService setObject:v6 forKeyedSubscript:v7];
+    serviceCopy = service;
+    v7 = [NSNumber numberWithUnsignedLongLong:port];
+    [(NSMutableDictionary *)portToService setObject:serviceCopy forKeyedSubscript:v7];
   }
 }
 
-- (GTServiceVendor)initWithConnectionProvider:(id)a3
+- (GTServiceVendor)initWithConnectionProvider:(id)provider
 {
-  v5 = a3;
-  if (v5)
+  providerCopy = provider;
+  if (providerCopy)
   {
     v12.receiver = self;
     v12.super_class = GTServiceVendor;
@@ -76,21 +76,21 @@
       portToService = v6->_portToService;
       v6->_portToService = v7;
 
-      objc_storeStrong(&v6->_connectionProvider, a3);
+      objc_storeStrong(&v6->_connectionProvider, provider);
       serviceDaemonConnection = v6->_serviceDaemonConnection;
       v6->_serviceDaemonConnection = 0;
     }
 
     self = v6;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

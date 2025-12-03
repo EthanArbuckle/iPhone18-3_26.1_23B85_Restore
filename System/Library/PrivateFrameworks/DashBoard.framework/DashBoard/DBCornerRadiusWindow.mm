@@ -1,8 +1,8 @@
 @interface DBCornerRadiusWindow
 - (CGRect)frame;
 - (double)cornerRadius;
-- (void)setCornerRadius:(double)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation DBCornerRadiusWindow
@@ -26,21 +26,21 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   v5 = OBJC_IVAR____TtC9DashBoard20DBCornerRadiusWindow_cornerRadius;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
-  v6 = self;
+  *(&self->super.super.super.super.super.super.isa + v5) = radius;
+  selfCopy = self;
   sub_2482A0EEC();
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for DBCornerRadiusWindow();
   v7 = v9.receiver;

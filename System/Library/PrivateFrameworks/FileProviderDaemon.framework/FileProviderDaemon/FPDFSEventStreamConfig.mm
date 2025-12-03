@@ -3,9 +3,9 @@
 - (NSUUID)previousStreamUUID;
 - (_TtC18FileProviderDaemon22FPDFSEventStreamConfig)init;
 - (unint64_t)lastPurgedEventID;
-- (void)setHistoryPurged:(BOOL)a3;
-- (void)setLastPurgedEventID:(unint64_t)a3;
-- (void)setPreviousStreamUUID:(id)a3;
+- (void)setHistoryPurged:(BOOL)purged;
+- (void)setLastPurgedEventID:(unint64_t)d;
+- (void)setPreviousStreamUUID:(id)d;
 @end
 
 @implementation FPDFSEventStreamConfig
@@ -17,11 +17,11 @@
   return *(self + v3);
 }
 
-- (void)setHistoryPurged:(BOOL)a3
+- (void)setHistoryPurged:(BOOL)purged
 {
   v5 = OBJC_IVAR____TtC18FileProviderDaemon22FPDFSEventStreamConfig_historyPurged;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = purged;
 }
 
 - (NSUUID)previousStreamUUID
@@ -47,13 +47,13 @@
   return v11;
 }
 
-- (void)setPreviousStreamUUID:(id)a3
+- (void)setPreviousStreamUUID:(id)d
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC4BEDE0, qword_1CF9FA390);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (d)
   {
     sub_1CF9E5D58();
     v9 = sub_1CF9E5D98();
@@ -68,7 +68,7 @@
 
   v11 = OBJC_IVAR____TtC18FileProviderDaemon22FPDFSEventStreamConfig_previousStreamUUID;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_1CEFFFEB8(v8, self + v11);
   swift_endAccess();
 }
@@ -80,11 +80,11 @@
   return *(self + v3);
 }
 
-- (void)setLastPurgedEventID:(unint64_t)a3
+- (void)setLastPurgedEventID:(unint64_t)d
 {
   v5 = OBJC_IVAR____TtC18FileProviderDaemon22FPDFSEventStreamConfig_lastPurgedEventID;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = d;
 }
 
 - (_TtC18FileProviderDaemon22FPDFSEventStreamConfig)init

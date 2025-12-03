@@ -1,10 +1,10 @@
 @interface SKRunBlock
-+ (id)runBlock:(id)a3 queue:(id)a4;
++ (id)runBlock:(id)block queue:(id)queue;
 - (SKRunBlock)init;
-- (SKRunBlock)initWithCoder:(id)a3;
+- (SKRunBlock)initWithCoder:(id)coder;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithTarget:(id)a3 forTime:(double)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithTarget:(id)target forTime:(double)time;
 @end
 
 @implementation SKRunBlock
@@ -27,21 +27,21 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = SKRunBlock;
-  [(SKAction *)&v5 encodeWithCoder:v4];
+  [(SKAction *)&v5 encodeWithCoder:coderCopy];
   NSLog(&cfstr_SkactionRunBlo.isa);
 }
 
-- (SKRunBlock)initWithCoder:(id)a3
+- (SKRunBlock)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SKRunBlock;
-  v5 = [(SKAction *)&v9 initWithCoder:v4];
+  v5 = [(SKAction *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -54,9 +54,9 @@
   return v6;
 }
 
-- (void)updateWithTarget:(id)a3 forTime:(double)a4
+- (void)updateWithTarget:(id)target forTime:(double)time
 {
-  v11 = a3;
+  targetCopy = target;
   if (![(SKAction *)self finished])
   {
     block = self->_block;
@@ -74,25 +74,25 @@
       }
     }
 
-    v8 = [(SKAction *)self caction];
-    v8->var12 = 0;
-    v9 = [v11 _backingNode];
-    v10.n128_f64[0] = a4;
-    SKCAction::didFinishWithTargetAtTime(v8, v9, v10);
+    caction = [(SKAction *)self caction];
+    caction->var12 = 0;
+    _backingNode = [targetCopy _backingNode];
+    v10.n128_f64[0] = time;
+    SKCAction::didFinishWithTargetAtTime(caction, _backingNode, v10);
   }
 }
 
-+ (id)runBlock:(id)a3 queue:(id)a4
++ (id)runBlock:(id)block queue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  blockCopy = block;
+  queueCopy = queue;
   v7 = objc_alloc_init(SKRunBlock);
-  v8 = [v5 copy];
+  v8 = [blockCopy copy];
   block = v7->_block;
   v7->_block = v8;
 
   queue = v7->_queue;
-  v7->_queue = v6;
+  v7->_queue = queueCopy;
 
   return v7;
 }

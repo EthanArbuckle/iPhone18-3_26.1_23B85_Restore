@@ -1,24 +1,24 @@
 @interface NPTOLibraryInfo
 - (BOOL)isSyncNeeded;
 - (BOOL)isSyncing;
-- (NPTOLibraryInfo)initWithDevice:(id)a3;
+- (NPTOLibraryInfo)initWithDevice:(id)device;
 - (NSDate)lastUpdatedDate;
 - (NSDictionary)collectionTargetMap;
 - (id)_collectionTargetMapFileURL;
 - (id)_syncNeededFileURL;
 - (id)_syncingFileURL;
 - (void)_createLibraryDirectoryIfNeeded;
-- (void)setCollectionTargetMap:(id)a3;
+- (void)setCollectionTargetMap:(id)map;
 - (void)setSyncNeeded;
-- (void)setSyncing:(BOOL)a3;
+- (void)setSyncing:(BOOL)syncing;
 @end
 
 @implementation NPTOLibraryInfo
 
-- (NPTOLibraryInfo)initWithDevice:(id)a3
+- (NPTOLibraryInfo)initWithDevice:(id)device
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v18.receiver = self;
   v18.super_class = NPTOLibraryInfo;
   v5 = [(NPTOLibraryInfo *)&v18 init];
@@ -28,22 +28,22 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v4;
+      v20 = deviceCopy;
       _os_log_impl(&dword_25B657000, v6, OS_LOG_TYPE_DEFAULT, "Creating library info for device: %@", buf, 0xCu);
     }
 
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277D2BB60]];
+    v7 = [deviceCopy objectForKeyedSubscript:*MEMORY[0x277D2BB60]];
     v8 = MEMORY[0x277CBEBC0];
     v9 = [v7 stringByAppendingPathComponent:@"NanoPhotos"];
     v10 = [v8 fileURLWithPath:v9 isDirectory:1];
     libraryURL = v5->_libraryURL;
     v5->_libraryURL = v10;
 
-    v12 = [[NPTONotificationCenter alloc] initWithDevice:v4];
+    v12 = [[NPTONotificationCenter alloc] initWithDevice:deviceCopy];
     notificationCenter = v5->_notificationCenter;
     v5->_notificationCenter = v12;
 
-    v14 = [[NPTOPreferencesAccessor alloc] initWithDevice:v4];
+    v14 = [[NPTOPreferencesAccessor alloc] initWithDevice:deviceCopy];
     legacyPreferencesAccessor = v5->_legacyPreferencesAccessor;
     v5->_legacyPreferencesAccessor = v14;
   }
@@ -55,11 +55,11 @@
 - (NSDate)lastUpdatedDate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(NPTOLibraryInfo *)&self->super.isa _collectionTargetMapFileURL];
+  _collectionTargetMapFileURL = [(NPTOLibraryInfo *)&self->super.isa _collectionTargetMapFileURL];
   v11 = 0;
   v3 = *MEMORY[0x277CBE7B0];
   v10 = 0;
-  v4 = [v2 getResourceValue:&v11 forKey:v3 error:&v10];
+  v4 = [_collectionTargetMapFileURL getResourceValue:&v11 forKey:v3 error:&v10];
   v5 = v11;
   v6 = v10;
 
@@ -81,49 +81,49 @@
 
 - (id)_collectionTargetMapFileURL
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] URLByAppendingPathComponent:@"collectionTargetMap"];
+    self = [self[1] URLByAppendingPathComponent:@"collectionTargetMap"];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)isSyncing
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NPTOLibraryInfo *)&self->super.isa _syncingFileURL];
-  v5 = [v4 path];
-  v6 = [v3 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _syncingFileURL = [(NPTOLibraryInfo *)&self->super.isa _syncingFileURL];
+  path = [_syncingFileURL path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   return v6;
 }
 
 - (id)_syncingFileURL
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] URLByAppendingPathComponent:@"syncing"];
+    self = [self[1] URLByAppendingPathComponent:@"syncing"];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setSyncing:(BOOL)a3
+- (void)setSyncing:(BOOL)syncing
 {
-  v3 = a3;
+  syncingCopy = syncing;
   v26 = *MEMORY[0x277D85DE8];
-  if ([(NPTOLibraryInfo *)self isSyncing]!= a3)
+  if ([(NPTOLibraryInfo *)self isSyncing]!= syncing)
   {
-    if (v3)
+    if (syncingCopy)
     {
       [(NPTOLibraryInfo *)self _createLibraryDirectoryIfNeeded];
-      v5 = [MEMORY[0x277CCAA00] defaultManager];
-      v6 = [(NPTOLibraryInfo *)&self->super.isa _syncingFileURL];
-      v7 = [v6 path];
-      v8 = [v5 createFileAtPath:v7 contents:0 attributes:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      _syncingFileURL = [(NPTOLibraryInfo *)&self->super.isa _syncingFileURL];
+      path = [_syncingFileURL path];
+      v8 = [defaultManager createFileAtPath:path contents:0 attributes:0];
 
       if ((v8 & 1) == 0)
       {
@@ -135,11 +135,11 @@
         }
       }
 
-      v10 = [MEMORY[0x277CCAA00] defaultManager];
-      v11 = [(NPTOLibraryInfo *)&self->super.isa _syncNeededFileURL];
-      v12 = [v11 path];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      _syncNeededFileURL = [(NPTOLibraryInfo *)&self->super.isa _syncNeededFileURL];
+      path2 = [_syncNeededFileURL path];
       v23 = 0;
-      v13 = [v10 removeItemAtPath:v12 error:&v23];
+      v13 = [defaultManager2 removeItemAtPath:path2 error:&v23];
       v14 = v23;
 
       if (v13)
@@ -160,11 +160,11 @@
 
     else
     {
-      v17 = [MEMORY[0x277CCAA00] defaultManager];
-      v18 = [(NPTOLibraryInfo *)&self->super.isa _syncingFileURL];
-      v19 = [v18 path];
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+      _syncingFileURL2 = [(NPTOLibraryInfo *)&self->super.isa _syncingFileURL];
+      path3 = [_syncingFileURL2 path];
       v22 = 0;
-      v20 = [v17 removeItemAtPath:v19 error:&v22];
+      v20 = [defaultManager3 removeItemAtPath:path3 error:&v22];
       v14 = v22;
 
       if (v20)
@@ -201,18 +201,18 @@ LABEL_14:
 - (void)_createLibraryDirectoryIfNeeded
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 8) path];
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [v3 fileExistsAtPath:v2];
+    path = [*(self + 8) path];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v4 = [defaultManager fileExistsAtPath:path];
 
     if ((v4 & 1) == 0)
     {
-      v5 = [MEMORY[0x277CCAA00] defaultManager];
-      v6 = *(a1 + 8);
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      v6 = *(self + 8);
       v11 = 0;
-      v7 = [v5 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v11];
+      v7 = [defaultManager2 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v11];
       v8 = v11;
 
       if ((v7 & 1) == 0)
@@ -233,30 +233,30 @@ LABEL_14:
 
 - (id)_syncNeededFileURL
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] URLByAppendingPathComponent:@"syncneeded"];
+    self = [self[1] URLByAppendingPathComponent:@"syncneeded"];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (NSDictionary)collectionTargetMap
 {
   v23 = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBEA90];
-  v3 = [(NPTOLibraryInfo *)&self->super.isa _collectionTargetMapFileURL];
-  v4 = [v2 dataWithContentsOfURL:v3];
+  _collectionTargetMapFileURL = [(NPTOLibraryInfo *)&self->super.isa _collectionTargetMapFileURL];
+  v4 = [v2 dataWithContentsOfURL:_collectionTargetMapFileURL];
 
   v5 = MEMORY[0x277CCAAC8];
   v6 = MEMORY[0x277CBEB98];
-  v7 = [MEMORY[0x277CBEAC0] classForKeyedUnarchiver];
-  v8 = [MEMORY[0x277CBEA60] classForKeyedUnarchiver];
-  v9 = [MEMORY[0x277CCAD78] classForKeyedUnarchiver];
-  v10 = [MEMORY[0x277CCACA8] classForKeyedUnarchiver];
-  v11 = [MEMORY[0x277CCABB0] classForKeyedUnarchiver];
-  v12 = [v6 setWithObjects:{v7, v8, v9, v10, v11, objc_msgSend(MEMORY[0x277CBEA90], "classForKeyedUnarchiver"), 0}];
+  classForKeyedUnarchiver = [MEMORY[0x277CBEAC0] classForKeyedUnarchiver];
+  classForKeyedUnarchiver2 = [MEMORY[0x277CBEA60] classForKeyedUnarchiver];
+  classForKeyedUnarchiver3 = [MEMORY[0x277CCAD78] classForKeyedUnarchiver];
+  classForKeyedUnarchiver4 = [MEMORY[0x277CCACA8] classForKeyedUnarchiver];
+  classForKeyedUnarchiver5 = [MEMORY[0x277CCABB0] classForKeyedUnarchiver];
+  v12 = [v6 setWithObjects:{classForKeyedUnarchiver, classForKeyedUnarchiver2, classForKeyedUnarchiver3, classForKeyedUnarchiver4, classForKeyedUnarchiver5, objc_msgSend(MEMORY[0x277CBEA90], "classForKeyedUnarchiver"), 0}];
   v18 = 0;
   v13 = [v5 unarchivedObjectOfClasses:v12 fromData:v4 error:&v18];
   v14 = v18;
@@ -279,21 +279,21 @@ LABEL_14:
   return v13;
 }
 
-- (void)setCollectionTargetMap:(id)a3
+- (void)setCollectionTargetMap:(id)map
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5 || ([(NPTOLibraryInfo *)self collectionTargetMap], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  mapCopy = map;
+  if (mapCopy || ([(NPTOLibraryInfo *)self collectionTargetMap], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = [(NPTOLibraryInfo *)self collectionTargetMap];
-    v7 = [v5 isEqual:v6];
+    collectionTargetMap = [(NPTOLibraryInfo *)self collectionTargetMap];
+    v7 = [mapCopy isEqual:collectionTargetMap];
 
-    if (v5)
+    if (mapCopy)
     {
       if ((v7 & 1) == 0)
       {
         v22 = 0;
-        v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v22];
+        v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:mapCopy requiringSecureCoding:1 error:&v22];
         v9 = v22;
         if (v9)
         {
@@ -301,7 +301,7 @@ LABEL_14:
           if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v24 = v5;
+            v24 = mapCopy;
             v25 = 2112;
             v26 = v9;
             _os_log_error_impl(&dword_25B657000, v10, OS_LOG_TYPE_ERROR, "Failed to archive library collection target map %@, error: %@", buf, 0x16u);
@@ -309,9 +309,9 @@ LABEL_14:
         }
 
         [(NPTOLibraryInfo *)self _createLibraryDirectoryIfNeeded];
-        v11 = [(NPTOLibraryInfo *)&self->super.isa _collectionTargetMapFileURL];
+        _collectionTargetMapFileURL = [(NPTOLibraryInfo *)&self->super.isa _collectionTargetMapFileURL];
         v21 = 0;
-        v12 = [v8 writeToURL:v11 options:1 error:&v21];
+        v12 = [v8 writeToURL:_collectionTargetMapFileURL options:1 error:&v21];
         v13 = v21;
 
         if ((v12 & 1) == 0)
@@ -334,11 +334,11 @@ LABEL_14:
 
       if ((v7 & 1) == 0)
       {
-        v15 = [MEMORY[0x277CCAA00] defaultManager];
-        v16 = [(NPTOLibraryInfo *)&self->super.isa _collectionTargetMapFileURL];
-        v17 = [v16 path];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        _collectionTargetMapFileURL2 = [(NPTOLibraryInfo *)&self->super.isa _collectionTargetMapFileURL];
+        path = [_collectionTargetMapFileURL2 path];
         v20 = 0;
-        v18 = [v15 removeItemAtPath:v17 error:&v20];
+        v18 = [defaultManager removeItemAtPath:path error:&v20];
         v9 = v20;
 
         if (v18)
@@ -375,10 +375,10 @@ LABEL_20:
 
 - (BOOL)isSyncNeeded
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NPTOLibraryInfo *)&self->super.isa _syncNeededFileURL];
-  v5 = [v4 path];
-  v6 = [v3 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _syncNeededFileURL = [(NPTOLibraryInfo *)&self->super.isa _syncNeededFileURL];
+  path = [_syncNeededFileURL path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   return v6;
 }
@@ -386,10 +386,10 @@ LABEL_20:
 - (void)setSyncNeeded
 {
   [(NPTOLibraryInfo *)self _createLibraryDirectoryIfNeeded];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NPTOLibraryInfo *)&self->super.isa _syncNeededFileURL];
-  v5 = [v4 path];
-  v6 = [v3 createFileAtPath:v5 contents:0 attributes:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _syncNeededFileURL = [(NPTOLibraryInfo *)&self->super.isa _syncNeededFileURL];
+  path = [_syncNeededFileURL path];
+  v6 = [defaultManager createFileAtPath:path contents:0 attributes:0];
 
   if ((v6 & 1) == 0)
   {

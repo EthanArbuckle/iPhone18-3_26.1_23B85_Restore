@@ -1,35 +1,35 @@
 @interface _UIPointerInteractionPencilHoverDriver
 - (BOOL)isActive;
-- (CAPoint3D)locationInView:(id)a3;
+- (CAPoint3D)locationInView:(id)view;
 - (UIView)view;
-- (_UIPointerInteractionPencilHoverDriver)initWithSink:(id)a3;
-- (void)_handleHoverGesture:(id)a3;
-- (void)_installToView:(id)a3;
-- (void)_updateHover:(id)a3 forced:(BOOL)a4;
+- (_UIPointerInteractionPencilHoverDriver)initWithSink:(id)sink;
+- (void)_handleHoverGesture:(id)gesture;
+- (void)_installToView:(id)view;
+- (void)_updateHover:(id)hover forced:(BOOL)forced;
 - (void)invalidate;
-- (void)setView:(id)a3;
+- (void)setView:(id)view;
 @end
 
 @implementation _UIPointerInteractionPencilHoverDriver
 
-- (_UIPointerInteractionPencilHoverDriver)initWithSink:(id)a3
+- (_UIPointerInteractionPencilHoverDriver)initWithSink:(id)sink
 {
-  v4 = a3;
+  sinkCopy = sink;
   v8.receiver = self;
   v8.super_class = _UIPointerInteractionPencilHoverDriver;
   v5 = [(_UIPointerInteractionPencilHoverDriver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_sink, v4);
+    objc_storeWeak(&v5->_sink, sinkCopy);
   }
 
   return v6;
 }
 
-- (CAPoint3D)locationInView:(id)a3
+- (CAPoint3D)locationInView:(id)view
 {
-  [(UIHoverGestureRecognizer *)self->_hoverGestureRecognizer _location3DInView:a3];
+  [(UIHoverGestureRecognizer *)self->_hoverGestureRecognizer _location3DInView:view];
   result.z = v5;
   result.y = v4;
   result.x = v3;
@@ -38,13 +38,13 @@
 
 - (BOOL)isActive
 {
-  v3 = [(UIGestureRecognizer *)self->_hoverGestureRecognizer state];
-  if (v3 != UIGestureRecognizerStateBegan)
+  state = [(UIGestureRecognizer *)self->_hoverGestureRecognizer state];
+  if (state != UIGestureRecognizerStateBegan)
   {
-    LOBYTE(v3) = [(UIGestureRecognizer *)self->_hoverGestureRecognizer state]== UIGestureRecognizerStateChanged;
+    LOBYTE(state) = [(UIGestureRecognizer *)self->_hoverGestureRecognizer state]== UIGestureRecognizerStateChanged;
   }
 
-  return v3;
+  return state;
 }
 
 - (void)invalidate
@@ -62,12 +62,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_handleHoverGesture:(id)a3
+- (void)_handleHoverGesture:(id)gesture
 {
-  if (self->_hoverGestureRecognizer != a3)
+  if (self->_hoverGestureRecognizer != gesture)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"_UIPointerInteractionPencilHoverDriver.m" lineNumber:94 description:@"Received updates from an unknown hover gesture recognizer."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPointerInteractionPencilHoverDriver.m" lineNumber:94 description:@"Received updates from an unknown hover gesture recognizer."];
   }
 
   self->_flags.invalid = 0;
@@ -75,49 +75,49 @@
   [_UIPointerInteractionPencilHoverDriver _updateHover:"_updateHover:forced:" forced:?];
 }
 
-- (void)_updateHover:(id)a3 forced:(BOOL)a4
+- (void)_updateHover:(id)hover forced:(BOOL)forced
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 state] == 3 || objc_msgSend(v6, "state") == 4)
+  forcedCopy = forced;
+  hoverCopy = hover;
+  if ([hoverCopy state] == 3 || objc_msgSend(hoverCopy, "state") == 4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_sink);
     [WeakRetained driverDidExit:self];
   }
 
-  else if ([v6 state] >= 1)
+  else if ([hoverCopy state] >= 1)
   {
-    v8 = [v6 view];
-    [v6 _location3DInView:v8];
+    view = [hoverCopy view];
+    [hoverCopy _location3DInView:view];
     v10 = v9;
     v12 = v11;
     v14 = v13;
 
-    v15 = v4;
+    v15 = forcedCopy;
     memset(v23, 0, sizeof(v23));
-    [v6 _maximumHoverHeight];
+    [hoverCopy _maximumHoverHeight];
     v17 = v16;
-    v18 = [v6 modifierFlags];
-    LOBYTE(v8) = _UIPlasmaEnabled();
-    v19 = [v6 _trackpadFingerDownCount];
+    modifierFlags = [hoverCopy modifierFlags];
+    LOBYTE(view) = _UIPlasmaEnabled();
+    _trackpadFingerDownCount = [hoverCopy _trackpadFingerDownCount];
     v20 = objc_loadWeakRetained(&self->_sink);
     v21[0] = v10;
     v21[1] = v12;
     v21[2] = v14;
     v21[3] = v17;
-    v21[4] = v18;
+    v21[4] = modifierFlags;
     v21[5] = 0;
     v21[6] = v15;
-    v22 = v8;
+    v22 = view;
     v24 = 0;
-    v25 = v19;
+    v25 = _trackpadFingerDownCount;
     [v20 driver:self didIssueUpdate:v21];
   }
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
   [(_UIPointerInteractionPencilHoverDriver *)self _uninstallFromView:WeakRetained];
 
@@ -130,9 +130,9 @@
   }
 }
 
-- (void)_installToView:(id)a3
+- (void)_installToView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   if (!self->_hoverGestureRecognizer)
   {
     v4 = [(UIHoverGestureRecognizer *)[_UIPointerInteractionHoverGestureRecognizer alloc] initWithTarget:self action:sel__handleHoverGesture_];
@@ -143,9 +143,9 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_sink);
-  [WeakRetained driver:self willAttachHoverGestureRecognizer:self->_hoverGestureRecognizer toView:v7];
+  [WeakRetained driver:self willAttachHoverGestureRecognizer:self->_hoverGestureRecognizer toView:viewCopy];
 
-  [v7 addGestureRecognizer:self->_hoverGestureRecognizer];
+  [viewCopy addGestureRecognizer:self->_hoverGestureRecognizer];
 }
 
 - (UIView)view

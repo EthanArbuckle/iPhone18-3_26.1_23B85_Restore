@@ -6,28 +6,28 @@
 
 - (void)populateQueryDictionary
 {
-  v7 = [(DCMapsURLGenerator *)self queryDictionary];
-  v3 = [(DCMapsURLGenerator *)self mapsLink];
-  v4 = [v3 destinationAddress];
-  if (v4 || ([v3 centerLocation], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  queryDictionary = [(DCMapsURLGenerator *)self queryDictionary];
+  mapsLink = [(DCMapsURLGenerator *)self mapsLink];
+  destinationAddress = [mapsLink destinationAddress];
+  if (destinationAddress || ([mapsLink centerLocation], (destinationAddress = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = v4;
+    searchLocation = destinationAddress;
 LABEL_4:
-    [v7 setObject:v5 forKey:@"to"];
+    [queryDictionary setObject:searchLocation forKey:@"to"];
 
     goto LABEL_5;
   }
 
-  v6 = [v3 searchQuery];
-  if (v6)
+  searchQuery = [mapsLink searchQuery];
+  if (searchQuery)
   {
-    v5 = v6;
+    searchLocation = searchQuery;
 
     goto LABEL_4;
   }
 
-  v5 = [v3 searchLocation];
-  if (v5)
+  searchLocation = [mapsLink searchLocation];
+  if (searchLocation)
   {
     goto LABEL_4;
   }

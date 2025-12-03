@@ -1,29 +1,29 @@
 @interface PRUISPosterSnapshotDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)canvasBounds;
 - (CGRect)salientContentRectangle;
 - (PRUISPosterSnapshotDescriptor)init;
-- (PRUISPosterSnapshotDescriptor)initWithSnapshotDefinition:(id)a3;
-- (PRUISPosterSnapshotDescriptor)initWithSnapshotDescriptor:(id)a3;
-- (PRUISPosterSnapshotDescriptor)initWithUserInterfaceStyle:(int64_t)a3 interfaceOrientation:(int64_t)a4 snapshotDefinition:(id)a5;
+- (PRUISPosterSnapshotDescriptor)initWithSnapshotDefinition:(id)definition;
+- (PRUISPosterSnapshotDescriptor)initWithSnapshotDescriptor:(id)descriptor;
+- (PRUISPosterSnapshotDescriptor)initWithUserInterfaceStyle:(int64_t)style interfaceOrientation:(int64_t)orientation snapshotDefinition:(id)definition;
 - (PUIPosterSnapshotDescriptor)underlyingSnapshotDescriptor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PRUISPosterSnapshotDescriptor
 
-- (PRUISPosterSnapshotDescriptor)initWithSnapshotDescriptor:(id)a3
+- (PRUISPosterSnapshotDescriptor)initWithSnapshotDescriptor:(id)descriptor
 {
-  v5 = a3;
-  if (!v5)
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
     [(PRUISPosterSnapshotDescriptor *)a2 initWithSnapshotDescriptor:?];
   }
 
-  v6 = v5;
+  v6 = descriptorCopy;
   v26.receiver = self;
   v26.super_class = PRUISPosterSnapshotDescriptor;
   v7 = [(PRUISPosterSnapshotDescriptor *)&v26 init];
@@ -31,15 +31,15 @@
   {
     v7->_userInterfaceStyle = [v6 userInterfaceStyle];
     v7->_interfaceOrientation = [v6 interfaceOrientation];
-    v8 = [v6 snapshotDefinition];
+    snapshotDefinition = [v6 snapshotDefinition];
     snapshotDefinition = v7->_snapshotDefinition;
-    v7->_snapshotDefinition = v8;
+    v7->_snapshotDefinition = snapshotDefinition;
 
     [v6 persistenceScale];
     v7->_persistenceScale = v10;
     v7->_accessibilityContrast = [v6 accessibilityContrast];
-    v11 = [v6 displayConfiguration];
-    v12 = [v11 copy];
+    displayConfiguration = [v6 displayConfiguration];
+    v12 = [displayConfiguration copy];
     displayConfiguration = v7->_displayConfiguration;
     v7->_displayConfiguration = v12;
 
@@ -54,8 +54,8 @@
     v7->_salientContentRectangle.origin.y = v19;
     v7->_salientContentRectangle.size.width = v20;
     v7->_salientContentRectangle.size.height = v21;
-    v22 = [v6 contentOcclusionRectangles];
-    v23 = [v22 copy];
+    contentOcclusionRectangles = [v6 contentOcclusionRectangles];
+    v23 = [contentOcclusionRectangles copy];
     contentOcclusionRectangles = v7->_contentOcclusionRectangles;
     v7->_contentOcclusionRectangles = v23;
 
@@ -65,24 +65,24 @@
   return v7;
 }
 
-- (PRUISPosterSnapshotDescriptor)initWithSnapshotDefinition:(id)a3
+- (PRUISPosterSnapshotDescriptor)initWithSnapshotDefinition:(id)definition
 {
-  v5 = a3;
+  definitionCopy = definition;
   v17.receiver = self;
   v17.super_class = PRUISPosterSnapshotDescriptor;
   v6 = [(PRUISPosterSnapshotDescriptor *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_snapshotDefinition, a3);
+    objc_storeStrong(&v6->_snapshotDefinition, definition);
     v7->_predicateOptions = 2;
     v7->_interfaceOrientation = 0;
     v7->_persistenceScale = 1.0;
     *&v7->_accessibilityContrast = xmmword_1CAF02610;
-    v8 = [MEMORY[0x1E699FB10] pui_sharedDisplayMonitor];
-    v9 = [v8 mainConfiguration];
+    pui_sharedDisplayMonitor = [MEMORY[0x1E699FB10] pui_sharedDisplayMonitor];
+    mainConfiguration = [pui_sharedDisplayMonitor mainConfiguration];
     displayConfiguration = v7->_displayConfiguration;
-    v7->_displayConfiguration = v9;
+    v7->_displayConfiguration = mainConfiguration;
 
     [(FBSDisplayConfiguration *)v7->_displayConfiguration bounds];
     v7->_canvasBounds.origin.x = v11;
@@ -98,25 +98,25 @@
   return v7;
 }
 
-- (PRUISPosterSnapshotDescriptor)initWithUserInterfaceStyle:(int64_t)a3 interfaceOrientation:(int64_t)a4 snapshotDefinition:(id)a5
+- (PRUISPosterSnapshotDescriptor)initWithUserInterfaceStyle:(int64_t)style interfaceOrientation:(int64_t)orientation snapshotDefinition:(id)definition
 {
-  v9 = a5;
+  definitionCopy = definition;
   v21.receiver = self;
   v21.super_class = PRUISPosterSnapshotDescriptor;
   v10 = [(PRUISPosterSnapshotDescriptor *)&v21 init];
   v11 = v10;
   if (v10)
   {
-    v10->_userInterfaceStyle = a3;
-    v10->_interfaceOrientation = a4;
-    objc_storeStrong(&v10->_snapshotDefinition, a5);
+    v10->_userInterfaceStyle = style;
+    v10->_interfaceOrientation = orientation;
+    objc_storeStrong(&v10->_snapshotDefinition, definition);
     v11->_predicateOptions = 98;
     v11->_persistenceScale = 1.0;
     v11->_accessibilityContrast = -1;
-    v12 = [MEMORY[0x1E699FB10] pui_sharedDisplayMonitor];
-    v13 = [v12 mainConfiguration];
+    pui_sharedDisplayMonitor = [MEMORY[0x1E699FB10] pui_sharedDisplayMonitor];
+    mainConfiguration = [pui_sharedDisplayMonitor mainConfiguration];
     displayConfiguration = v11->_displayConfiguration;
-    v11->_displayConfiguration = v13;
+    v11->_displayConfiguration = mainConfiguration;
 
     [(FBSDisplayConfiguration *)v11->_displayConfiguration bounds];
     v11->_canvasBounds.origin.x = v15;
@@ -139,25 +139,25 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PRUISPosterSnapshotDescriptor allocWithZone:a3];
+  v4 = [PRUISPosterSnapshotDescriptor allocWithZone:zone];
 
   return [(PRUISPosterSnapshotDescriptor *)v4 initWithSnapshotDescriptor:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [PRUISMutablePosterSnapshotDescriptor allocWithZone:a3];
+  v4 = [PRUISMutablePosterSnapshotDescriptor allocWithZone:zone];
 
   return [(PRUISPosterSnapshotDescriptor *)v4 initWithSnapshotDescriptor:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [MEMORY[0x1E698E6A0] builderWithObject:self ofExpectedClass:objc_opt_class()];
-  v6 = v4;
+  v6 = equalCopy;
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __41__PRUISPosterSnapshotDescriptor_isEqual___block_invoke;
@@ -245,27 +245,27 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendInteger:{-[PRUISPosterSnapshotDescriptor userInterfaceStyle](self, "userInterfaceStyle")}];
-  v5 = [v3 appendInteger:{-[PRUISPosterSnapshotDescriptor interfaceOrientation](self, "interfaceOrientation")}];
-  v6 = [v3 appendInteger:{-[PRUISPosterSnapshotDescriptor accessibilityContrast](self, "accessibilityContrast")}];
-  v7 = [v3 appendBool:{-[PRUISPosterSnapshotDescriptor determineColorStatistics](self, "determineColorStatistics")}];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendInteger:{-[PRUISPosterSnapshotDescriptor userInterfaceStyle](self, "userInterfaceStyle")}];
+  v5 = [builder appendInteger:{-[PRUISPosterSnapshotDescriptor interfaceOrientation](self, "interfaceOrientation")}];
+  v6 = [builder appendInteger:{-[PRUISPosterSnapshotDescriptor accessibilityContrast](self, "accessibilityContrast")}];
+  v7 = [builder appendBool:{-[PRUISPosterSnapshotDescriptor determineColorStatistics](self, "determineColorStatistics")}];
   [(PRUISPosterSnapshotDescriptor *)self persistenceScale];
-  v8 = [v3 appendCGFloat:?];
+  v8 = [builder appendCGFloat:?];
   [(PRUISPosterSnapshotDescriptor *)self canvasBounds];
-  v9 = [v3 appendCGRect:?];
-  v10 = [(PRUISPosterSnapshotDescriptor *)self displayConfiguration];
-  v11 = [v3 appendObject:v10];
+  v9 = [builder appendCGRect:?];
+  displayConfiguration = [(PRUISPosterSnapshotDescriptor *)self displayConfiguration];
+  v11 = [builder appendObject:displayConfiguration];
 
-  v12 = [(PRUISPosterSnapshotDescriptor *)self snapshotDefinition];
-  v13 = [v3 appendObject:v12];
+  snapshotDefinition = [(PRUISPosterSnapshotDescriptor *)self snapshotDefinition];
+  v13 = [builder appendObject:snapshotDefinition];
 
   [(PRUISPosterSnapshotDescriptor *)self salientContentRectangle];
-  v14 = [v3 appendCGRect:?];
-  v15 = [(PRUISPosterSnapshotDescriptor *)self contentOcclusionRectangles];
-  v16 = [v3 appendObject:v15];
+  v14 = [builder appendCGRect:?];
+  contentOcclusionRectangles = [(PRUISPosterSnapshotDescriptor *)self contentOcclusionRectangles];
+  v16 = [builder appendObject:contentOcclusionRectangles];
 
-  v17 = [v3 hash];
+  v17 = [builder hash];
   return v17;
 }
 
@@ -297,8 +297,8 @@
   v8 = __44__PRUISPosterSnapshotDescriptor_description__block_invoke_3(&v30);
   v9 = [v3 appendObject:v8 withName:{@"accessibilityContrast", v30, v31}];
 
-  v10 = [(PRUISPosterSnapshotDescriptor *)self displayConfiguration];
-  [v10 bounds];
+  displayConfiguration = [(PRUISPosterSnapshotDescriptor *)self displayConfiguration];
+  [displayConfiguration bounds];
   v42.origin.x = v11;
   v42.origin.y = v12;
   v42.size.width = v13;
@@ -310,11 +310,11 @@
     v16 = [v3 appendRect:@"canvasBounds" withName:{self->_canvasBounds.origin.x, self->_canvasBounds.origin.y, self->_canvasBounds.size.width, self->_canvasBounds.size.height}];
   }
 
-  v17 = [(PRUISPosterSnapshotDescriptor *)self snapshotDefinition];
-  v18 = [v3 appendObject:v17 withName:@"snapshotDefinition"];
+  snapshotDefinition = [(PRUISPosterSnapshotDescriptor *)self snapshotDefinition];
+  v18 = [v3 appendObject:snapshotDefinition withName:@"snapshotDefinition"];
 
-  v19 = [(PRUISPosterSnapshotDescriptor *)self displayConfiguration];
-  v20 = [v3 appendObject:v19 withName:@"displayConfiguration"];
+  displayConfiguration2 = [(PRUISPosterSnapshotDescriptor *)self displayConfiguration];
+  v20 = [v3 appendObject:displayConfiguration2 withName:@"displayConfiguration"];
 
   [(PRUISPosterSnapshotDescriptor *)self persistenceScale];
   if (v21 != 1.0)
@@ -330,22 +330,22 @@
     v24 = [v3 appendRect:@"salientContentRectangle" withName:{self->_salientContentRectangle.origin.x, self->_salientContentRectangle.origin.y, self->_salientContentRectangle.size.width, self->_salientContentRectangle.size.height}];
   }
 
-  v25 = [(PRUISPosterSnapshotDescriptor *)self contentOcclusionRectangles];
+  contentOcclusionRectangles = [(PRUISPosterSnapshotDescriptor *)self contentOcclusionRectangles];
 
-  if (v25)
+  if (contentOcclusionRectangles)
   {
-    v26 = [(PRUISPosterSnapshotDescriptor *)self contentOcclusionRectangles];
-    v27 = [v3 appendObject:v26 withName:@"contentOcclusionRectangles"];
+    contentOcclusionRectangles2 = [(PRUISPosterSnapshotDescriptor *)self contentOcclusionRectangles];
+    v27 = [v3 appendObject:contentOcclusionRectangles2 withName:@"contentOcclusionRectangles"];
   }
 
-  v28 = [v3 build];
+  build = [v3 build];
   objc_destroyWeak(&v34);
   objc_destroyWeak(&v36);
   objc_destroyWeak(&v38);
 
   objc_destroyWeak(&location);
 
-  return v28;
+  return build;
 }
 
 __CFString *__44__PRUISPosterSnapshotDescriptor_description__block_invoke(uint64_t a1)
@@ -410,22 +410,22 @@ __CFString *__44__PRUISPosterSnapshotDescriptor_description__block_invoke_3(uint
 
 - (PUIPosterSnapshotDescriptor)underlyingSnapshotDescriptor
 {
-  v3 = [(PRUISPosterSnapshotDescriptor *)self interfaceOrientation];
+  interfaceOrientation = [(PRUISPosterSnapshotDescriptor *)self interfaceOrientation];
   v4 = objc_alloc(MEMORY[0x1E69C55F0]);
-  v5 = [(PRUISPosterSnapshotDescriptor *)self snapshotDefinition];
-  v6 = [v5 levelSets];
-  v7 = [v6 bs_map:&__block_literal_global_13];
-  v8 = [(PRUISPosterSnapshotDescriptor *)self snapshotDefinition];
-  v9 = [v8 uniqueIdentifier];
+  snapshotDefinition = [(PRUISPosterSnapshotDescriptor *)self snapshotDefinition];
+  levelSets = [snapshotDefinition levelSets];
+  v7 = [levelSets bs_map:&__block_literal_global_13];
+  snapshotDefinition2 = [(PRUISPosterSnapshotDescriptor *)self snapshotDefinition];
+  uniqueIdentifier = [snapshotDefinition2 uniqueIdentifier];
   [(PRUISPosterSnapshotDescriptor *)self persistenceScale];
-  v10 = [v4 initWithLevelSets:v7 snapshotDefinitionIdentifier:v9 persistenceScale:?];
+  v10 = [v4 initWithLevelSets:v7 snapshotDefinitionIdentifier:uniqueIdentifier persistenceScale:?];
 
-  v11 = [(PRUISPosterSnapshotDescriptor *)self contentOcclusionRectangles];
-  if (v11)
+  contentOcclusionRectangles = [(PRUISPosterSnapshotDescriptor *)self contentOcclusionRectangles];
+  if (contentOcclusionRectangles)
   {
     v12 = objc_alloc(MEMORY[0x1E69C5580]);
-    v13 = [v11 allRects];
-    v14 = [v12 initWithNameToRectMap:v13];
+    allRects = [contentOcclusionRectangles allRects];
+    v14 = [v12 initWithNameToRectMap:allRects];
   }
 
   else
@@ -434,16 +434,16 @@ __CFString *__44__PRUISPosterSnapshotDescriptor_description__block_invoke_3(uint
   }
 
   v15 = objc_alloc(MEMORY[0x1E69C5610]);
-  v16 = [(PRUISPosterSnapshotDescriptor *)self displayConfiguration];
+  displayConfiguration = [(PRUISPosterSnapshotDescriptor *)self displayConfiguration];
   [(PRUISPosterSnapshotDescriptor *)self canvasBounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(PRUISPosterSnapshotDescriptor *)self userInterfaceStyle];
-  v26 = [(PRUISPosterSnapshotDescriptor *)self accessibilityContrast];
+  userInterfaceStyle = [(PRUISPosterSnapshotDescriptor *)self userInterfaceStyle];
+  accessibilityContrast = [(PRUISPosterSnapshotDescriptor *)self accessibilityContrast];
   [(PRUISPosterSnapshotDescriptor *)self salientContentRectangle];
-  v31 = [v15 initWithDisplayConfiguration:v16 canvasBounds:1 interfaceOrientation:v3 deviceOrientation:v25 userInterfaceStyle:v26 accessibilityContrast:v14 salientContentRectangle:v18 contentOcclusionRectangles:{v20, v22, v24, v27, v28, v29, v30}];
+  v31 = [v15 initWithDisplayConfiguration:displayConfiguration canvasBounds:1 interfaceOrientation:interfaceOrientation deviceOrientation:userInterfaceStyle userInterfaceStyle:accessibilityContrast accessibilityContrast:v14 salientContentRectangle:v18 contentOcclusionRectangles:{v20, v22, v24, v27, v28, v29, v30}];
 
   v32 = [objc_alloc(MEMORY[0x1E69C55B0]) initWithDesiredLegibilitySettings:0 determineColorStatistics:{-[PRUISPosterSnapshotDescriptor determineColorStatistics](self, "determineColorStatistics")}];
   v33 = [objc_alloc(MEMORY[0x1E69C55D8]) initWithOutputDescriptor:v10 sceneDescriptor:v31 attachments:0 analysis:v32];

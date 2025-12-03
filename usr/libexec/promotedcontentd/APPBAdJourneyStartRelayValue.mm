@@ -1,39 +1,39 @@
 @interface APPBAdJourneyStartRelayValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)valueAsString:(int)a3;
-- (int)StringAsValue:(id)a3;
+- (id)valueAsString:(int)string;
+- (int)StringAsValue:(id)value;
 - (int)value;
 - (unint64_t)hash;
 - (void)clearOneofValuesForValue;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasValue:(BOOL)a3;
-- (void)setHasValueBool:(BOOL)a3;
-- (void)setHasValueInt:(BOOL)a3;
-- (void)setValueBool:(BOOL)a3;
-- (void)setValueDouble:(double)a3;
-- (void)setValueInt:(int64_t)a3;
-- (void)setValueString:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasValue:(BOOL)value;
+- (void)setHasValueBool:(BOOL)bool;
+- (void)setHasValueInt:(BOOL)int;
+- (void)setValueBool:(BOOL)bool;
+- (void)setValueDouble:(double)double;
+- (void)setValueInt:(int64_t)int;
+- (void)setValueString:(id)string;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAdJourneyStartRelayValue
 
-- (void)setValueBool:(BOOL)a3
+- (void)setValueBool:(BOOL)bool
 {
   [(APPBAdJourneyStartRelayValue *)self clearOneofValuesForValue];
   *&self->_has |= 4u;
   self->_value = 1;
   *&self->_has |= 8u;
-  self->_valueBool = a3;
+  self->_valueBool = bool;
 }
 
-- (void)setHasValueBool:(BOOL)a3
+- (void)setHasValueBool:(BOOL)bool
 {
-  if (a3)
+  if (bool)
   {
     v3 = 8;
   }
@@ -46,18 +46,18 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setValueInt:(int64_t)a3
+- (void)setValueInt:(int64_t)int
 {
   [(APPBAdJourneyStartRelayValue *)self clearOneofValuesForValue];
   *&self->_has |= 4u;
   self->_value = 2;
   *&self->_has |= 2u;
-  self->_valueInt = a3;
+  self->_valueInt = int;
 }
 
-- (void)setHasValueInt:(BOOL)a3
+- (void)setHasValueInt:(BOOL)int
 {
-  if (a3)
+  if (int)
   {
     v3 = 2;
   }
@@ -70,23 +70,23 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setValueDouble:(double)a3
+- (void)setValueDouble:(double)double
 {
   [(APPBAdJourneyStartRelayValue *)self clearOneofValuesForValue];
   *&self->_has |= 4u;
   self->_value = 3;
   *&self->_has |= 1u;
-  self->_valueDouble = a3;
+  self->_valueDouble = double;
 }
 
-- (void)setValueString:(id)a3
+- (void)setValueString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   [(APPBAdJourneyStartRelayValue *)self clearOneofValuesForValue];
   *&self->_has |= 4u;
   self->_value = 4;
   valueString = self->_valueString;
-  self->_valueString = v4;
+  self->_valueString = stringCopy;
 }
 
 - (int)value
@@ -102,9 +102,9 @@
   }
 }
 
-- (void)setHasValue:(BOOL)a3
+- (void)setHasValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -117,45 +117,45 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)valueAsString:(int)a3
+- (id)valueAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047CC68 + a3);
+    v4 = *(&off_10047CC68 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsValue:(id)a3
+- (int)StringAsValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"value_BOOL"])
+  else if ([valueCopy isEqualToString:@"value_BOOL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"value_int"])
+  else if ([valueCopy isEqualToString:@"value_int"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"value_double"])
+  else if ([valueCopy isEqualToString:@"value_double"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"value_string"])
+  else if ([valueCopy isEqualToString:@"value_string"])
   {
     v4 = 4;
   }
@@ -187,8 +187,8 @@
   v7.receiver = self;
   v7.super_class = APPBAdJourneyStartRelayValue;
   v3 = [(APPBAdJourneyStartRelayValue *)&v7 description];
-  v4 = [(APPBAdJourneyStartRelayValue *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAdJourneyStartRelayValue *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -263,21 +263,21 @@ LABEL_7:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -297,43 +297,43 @@ LABEL_5:
   }
 
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   if (*&self->_has)
   {
 LABEL_6:
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_7:
   if (self->_valueString)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[8] = self->_value;
-    *(v4 + 52) |= 4u;
+    toCopy[8] = self->_value;
+    *(toCopy + 52) |= 4u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v6;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 48) = self->_valueBool;
-    *(v4 + 52) |= 8u;
+    *(toCopy + 48) = self->_valueBool;
+    *(toCopy + 52) |= 8u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -352,26 +352,26 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 2) = self->_valueInt;
-  *(v4 + 52) |= 2u;
+  *(toCopy + 2) = self->_valueInt;
+  *(toCopy + 52) |= 2u;
   if (*&self->_has)
   {
 LABEL_8:
-    *(v4 + 1) = *&self->_valueDouble;
-    *(v4 + 52) |= 1u;
+    *(toCopy + 1) = *&self->_valueDouble;
+    *(toCopy + 52) |= 1u;
   }
 
 LABEL_9:
   if (self->_valueString)
   {
     [v6 setValueString:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -379,7 +379,7 @@ LABEL_9:
     *(v5 + 52) |= 4u;
   }
 
-  v7 = [(NSString *)self->_key copyWithZone:a3];
+  v7 = [(NSString *)self->_key copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
@@ -419,17 +419,17 @@ LABEL_6:
   }
 
 LABEL_7:
-  v10 = [(NSString *)self->_valueString copyWithZone:a3];
+  v10 = [(NSString *)self->_valueString copyWithZone:zone];
   v11 = v6[5];
   v6[5] = v10;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
@@ -437,19 +437,19 @@ LABEL_7:
   has = self->_has;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_value != *(v4 + 8))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_value != *(equalCopy + 8))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_30;
   }
 
   key = self->_key;
-  if (key | *(v4 + 3))
+  if (key | *(equalCopy + 3))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -461,7 +461,7 @@ LABEL_7:
 
   if ((has & 8) == 0)
   {
-    if ((*(v4 + 52) & 8) == 0)
+    if ((*(equalCopy + 52) & 8) == 0)
     {
       goto LABEL_12;
     }
@@ -471,20 +471,20 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if ((*(v4 + 52) & 8) == 0)
+  if ((*(equalCopy + 52) & 8) == 0)
   {
     goto LABEL_30;
   }
 
   if (self->_valueBool)
   {
-    if ((*(v4 + 48) & 1) == 0)
+    if ((*(equalCopy + 48) & 1) == 0)
     {
       goto LABEL_30;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_30;
   }
@@ -492,32 +492,32 @@ LABEL_30:
 LABEL_12:
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_valueInt != *(v4 + 2))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_valueInt != *(equalCopy + 2))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_30;
   }
 
   if (has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_valueDouble != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_valueDouble != *(equalCopy + 1))
     {
       goto LABEL_30;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_30;
   }
 
   valueString = self->_valueString;
-  if (valueString | *(v4 + 5))
+  if (valueString | *(equalCopy + 5))
   {
     v8 = [(NSString *)valueString isEqual:?];
   }
@@ -607,28 +607,28 @@ LABEL_7:
   return v4 ^ v3 ^ v7 ^ v8 ^ v12 ^ [(NSString *)self->_valueString hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 52) & 4) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 52) & 4) != 0)
   {
-    self->_value = *(v4 + 8);
+    self->_value = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
-  v6 = v4;
-  if (*(v4 + 3))
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(APPBAdJourneyStartRelayValue *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 8) != 0)
   {
-    self->_valueBool = *(v4 + 48);
+    self->_valueBool = *(fromCopy + 48);
     *&self->_has |= 8u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
     if ((v5 & 2) == 0)
     {
 LABEL_7:
@@ -641,25 +641,25 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 52) & 2) == 0)
+  else if ((*(fromCopy + 52) & 2) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_valueInt = *(v4 + 2);
+  self->_valueInt = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
 LABEL_8:
-    self->_valueDouble = *(v4 + 1);
+    self->_valueDouble = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_9:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(APPBAdJourneyStartRelayValue *)self setValueString:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

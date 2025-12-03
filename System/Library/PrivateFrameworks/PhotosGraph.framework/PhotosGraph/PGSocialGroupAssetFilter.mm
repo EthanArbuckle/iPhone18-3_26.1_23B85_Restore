@@ -1,23 +1,23 @@
 @interface PGSocialGroupAssetFilter
-- (BOOL)asset:(id)a3 passesForPersonLocalIdentifiersInSocialGroup:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)asset:(id)asset passesForPersonLocalIdentifiersInSocialGroup:(id)group;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (PGSocialGroupAssetFilter)init;
-- (id)filteredAssetsFromAssets:(id)a3 withPersonLocalIdentifiersInSocialGroup:(id)a4;
+- (id)filteredAssetsFromAssets:(id)assets withPersonLocalIdentifiersInSocialGroup:(id)group;
 @end
 
 @implementation PGSocialGroupAssetFilter
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -36,24 +36,24 @@
   return v5;
 }
 
-- (BOOL)asset:(id)a3 passesForPersonLocalIdentifiersInSocialGroup:(id)a4
+- (BOOL)asset:(id)asset passesForPersonLocalIdentifiersInSocialGroup:(id)group
 {
-  v6 = a3;
+  assetCopy = asset;
   v7 = MEMORY[0x277CBEB58];
-  v8 = a4;
-  v9 = [v6 clsPersonLocalIdentifiers];
-  v10 = [v7 setWithArray:v9];
+  groupCopy = group;
+  clsPersonLocalIdentifiers = [assetCopy clsPersonLocalIdentifiers];
+  v10 = [v7 setWithArray:clsPersonLocalIdentifiers];
 
-  [v10 intersectSet:v8];
+  [v10 intersectSet:groupCopy];
   v11 = [v10 count];
-  v12 = [v8 count];
+  v12 = [groupCopy count];
 
   if (v11 >= fmax(ceil(self->_minimumRatioOfPersonsInSocialGroupPresent * v12), 2.0))
   {
-    v14 = [v6 clsFaceInformationSummary];
-    v15 = [v14 numberOfFaces];
+    clsFaceInformationSummary = [assetCopy clsFaceInformationSummary];
+    numberOfFaces = [clsFaceInformationSummary numberOfFaces];
 
-    v13 = v11 >= vcvtpd_u64_f64(self->_minimumRatioOfFacesComingFromSocialGroup * v15);
+    v13 = v11 >= vcvtpd_u64_f64(self->_minimumRatioOfFacesComingFromSocialGroup * numberOfFaces);
   }
 
   else
@@ -64,17 +64,17 @@
   return v13;
 }
 
-- (id)filteredAssetsFromAssets:(id)a3 withPersonLocalIdentifiersInSocialGroup:(id)a4
+- (id)filteredAssetsFromAssets:(id)assets withPersonLocalIdentifiersInSocialGroup:(id)group
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  assetsCopy = assets;
+  groupCopy = group;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v6;
+  v9 = assetsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -90,9 +90,9 @@
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        if ([(PGSocialGroupAssetFilter *)self asset:v14 passesForPersonLocalIdentifiersInSocialGroup:v7, v17])
+        if ([(PGSocialGroupAssetFilter *)self asset:v14 passesForPersonLocalIdentifiersInSocialGroup:groupCopy, v17])
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -104,7 +104,7 @@
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array;
 }
 
 - (PGSocialGroupAssetFilter)init

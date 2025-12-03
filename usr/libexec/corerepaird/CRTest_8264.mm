@@ -1,7 +1,7 @@
 @interface CRTest_8264
-- (BOOL)shouldRun:(id)a3;
+- (BOOL)shouldRun:(id)run;
 - (CRTest_8264)init;
-- (void)run:(id)a3 withContext:(id)a4;
+- (void)run:(id)run withContext:(id)context;
 @end
 
 @implementation CRTest_8264
@@ -19,8 +19,8 @@
     if (os_variant_has_internal_content())
     {
       v4 = [[CRUserDefaults alloc] initWithSuiteName:@"com.apple.corerepaird.test"];
-      v5 = [(CRTest *)v3 name];
-      v6 = [v4 dictionaryForKey:v5];
+      name = [(CRTest *)v3 name];
+      v6 = [v4 dictionaryForKey:name];
       [(CRTest *)v3 setOverrides:v6];
     }
   }
@@ -28,27 +28,27 @@
   return v3;
 }
 
-- (BOOL)shouldRun:(id)a3
+- (BOOL)shouldRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v13.receiver = self;
   v13.super_class = CRTest_8264;
-  if (-[CRTest shouldRun:](&v13, "shouldRun:", v4) && ([v4 partSPC], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (-[CRTest shouldRun:](&v13, "shouldRun:", runCopy) && ([runCopy partSPC], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = objc_opt_new();
     [(CRTest *)self setTestingRemovableSPC:v6];
 
-    v7 = [v4 partSPC];
-    v8 = [v7 containsObject:@"IPHONE COMP BATTERY"];
+    partSPC = [runCopy partSPC];
+    v8 = [partSPC containsObject:@"IPHONE COMP BATTERY"];
 
     if (v8)
     {
-      v9 = [(CRTest *)self testingRemovableSPC];
-      [v9 addObject:@"IPHONE COMP BATTERY"];
+      testingRemovableSPC = [(CRTest *)self testingRemovableSPC];
+      [testingRemovableSPC addObject:@"IPHONE COMP BATTERY"];
     }
 
-    v10 = [(CRTest *)self testingRemovableSPC];
-    v11 = [v10 count] != 0;
+    testingRemovableSPC2 = [(CRTest *)self testingRemovableSPC];
+    v11 = [testingRemovableSPC2 count] != 0;
   }
 
   else
@@ -59,24 +59,24 @@
   return v11;
 }
 
-- (void)run:(id)a3 withContext:(id)a4
+- (void)run:(id)run withContext:(id)context
 {
-  v5 = a3;
+  runCopy = run;
   v6 = objc_opt_new();
   [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:@"needRequestURL"];
-  v7 = [(CRTest *)self overrides];
+  overrides = [(CRTest *)self overrides];
 
-  if (v7)
+  if (overrides)
   {
-    v8 = [(CRTest *)self overrides];
-    [v6 addEntriesFromDictionary:v8];
+    overrides2 = [(CRTest *)self overrides];
+    [v6 addEntriesFromDictionary:overrides2];
   }
 
   v11 = @"parameters";
   v12 = v6;
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  v10 = [(CRTest *)self testId];
-  [v5 startTest:v10 parameters:v9];
+  testId = [(CRTest *)self testId];
+  [runCopy startTest:testId parameters:v9];
 }
 
 @end

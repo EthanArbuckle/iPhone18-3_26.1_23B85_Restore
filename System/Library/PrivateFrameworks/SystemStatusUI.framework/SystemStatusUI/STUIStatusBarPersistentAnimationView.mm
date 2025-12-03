@@ -1,39 +1,39 @@
 @interface STUIStatusBarPersistentAnimationView
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (void)setPersistentAnimations:(id)a3;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (void)setPersistentAnimations:(id)animations;
 @end
 
 @implementation STUIStatusBarPersistentAnimationView
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:*MEMORY[0x277CDA7D8]])
+  layerCopy = layer;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:*MEMORY[0x277CDA7D8]])
   {
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __62__STUIStatusBarPersistentAnimationView_actionForLayer_forKey___block_invoke;
     v20 = &unk_279D37F00;
-    v21 = self;
+    selfCopy = self;
 LABEL_5:
     v8 = _StatusBar_UIBlockBasedCAAction();
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x277CDA7D0]])
+  if ([keyCopy isEqualToString:*MEMORY[0x277CDA7D0]])
   {
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __62__STUIStatusBarPersistentAnimationView_actionForLayer_forKey___block_invoke_2;
     v15 = &unk_279D37F00;
-    v16 = self;
+    selfCopy2 = self;
     goto LABEL_5;
   }
 
   v11.receiver = self;
   v11.super_class = STUIStatusBarPersistentAnimationView;
-  v8 = [(STUIStatusBarPersistentAnimationView *)&v11 actionForLayer:v6 forKey:v7];
+  v8 = [(STUIStatusBarPersistentAnimationView *)&v11 actionForLayer:layerCopy forKey:keyCopy];
 LABEL_7:
   v9 = v8;
 
@@ -120,10 +120,10 @@ void __62__STUIStatusBarPersistentAnimationView_actionForLayer_forKey___block_in
   }
 }
 
-- (void)setPersistentAnimations:(id)a3
+- (void)setPersistentAnimations:(id)animations
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  animationsCopy = animations;
   animations = self->_animations;
   if (animations)
   {
@@ -132,19 +132,19 @@ void __62__STUIStatusBarPersistentAnimationView_actionForLayer_forKey___block_in
 
   else
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_animations;
-    self->_animations = v6;
+    self->_animations = weakObjectsHashTable;
   }
 
-  v8 = [(STUIStatusBarPersistentAnimationView *)self layer];
-  v9 = [v8 context];
+  layer = [(STUIStatusBarPersistentAnimationView *)self layer];
+  context = [layer context];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4;
+  v10 = animationsCopy;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
@@ -161,7 +161,7 @@ void __62__STUIStatusBarPersistentAnimationView_actionForLayer_forKey___block_in
 
         v15 = *(*(&v16 + 1) + 8 * i);
         [(NSHashTable *)self->_animations addObject:v15, v16];
-        if (!v9 && (objc_opt_respondsToSelector() & 1) != 0)
+        if (!context && (objc_opt_respondsToSelector() & 1) != 0)
         {
           [v15 pausePersistentAnimation];
         }

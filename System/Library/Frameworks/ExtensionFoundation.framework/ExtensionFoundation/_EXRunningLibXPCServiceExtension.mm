@@ -27,7 +27,7 @@
 
 - (void)resume
 {
-  v2 = self;
+  selfCopy = self;
   _EXRunningLibXPCServiceExtension.resume()();
 }
 

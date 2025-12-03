@@ -1,24 +1,24 @@
 @interface NLContextualEmbedding
-+ (NLContextualEmbedding)contextualEmbeddingWithIdentifier:(id)a3;
-+ (NLContextualEmbedding)contextualEmbeddingWithIdentifier:(id)a3 andOptions:(id)a4;
++ (NLContextualEmbedding)contextualEmbeddingWithIdentifier:(id)identifier;
++ (NLContextualEmbedding)contextualEmbeddingWithIdentifier:(id)identifier andOptions:(id)options;
 + (NLContextualEmbedding)contextualEmbeddingWithLanguage:(NLLanguage)language;
 + (NLContextualEmbedding)contextualEmbeddingWithModelIdentifier:(NSString *)modelIdentifier;
 + (NLContextualEmbedding)contextualEmbeddingWithScript:(NLScript)script;
 + (NSArray)contextualEmbeddingsForValues:(NSDictionary *)valuesDictionary;
 + (id)contextualEmbeddingCatalog;
 + (id)contextualEmbeddingConfigurationCatalog;
-+ (id)contextualEmbeddingForLanguage:(id)a3;
-+ (id)contextualEmbeddingForScript:(id)a3;
-+ (unint64_t)systemVersionForLanguage:(id)a3;
-- (BOOL)compileWithError:(id *)a3;
-- (BOOL)enumerateTokensForString:(id)a3 language:(id)a4 inRange:(_NSRange)a5 error:(id *)a6 usingBlock:(id)a7;
++ (id)contextualEmbeddingForLanguage:(id)language;
++ (id)contextualEmbeddingForScript:(id)script;
++ (unint64_t)systemVersionForLanguage:(id)language;
+- (BOOL)compileWithError:(id *)error;
+- (BOOL)enumerateTokensForString:(id)string language:(id)language inRange:(_NSRange)range error:(id *)error usingBlock:(id)block;
 - (BOOL)hasAvailableAssets;
-- (BOOL)loadSentenceEmbeddingWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)loadWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)requestBackgroundModelLoadingWithTimeout:(double)a3 error:(id *)a4;
+- (BOOL)loadSentenceEmbeddingWithOptions:(id)options error:(id *)error;
+- (BOOL)loadWithOptions:(id)options error:(id *)error;
+- (BOOL)requestBackgroundModelLoadingWithTimeout:(double)timeout error:(id *)error;
 - (BOOL)requiresCompilation;
-- (NLContextualEmbedding)initWithIdentifier:(id)a3 andOptions:(id)a4;
-- (NLContextualEmbedding)initWithOptions:(id)a3;
+- (NLContextualEmbedding)initWithIdentifier:(id)identifier andOptions:(id)options;
+- (NLContextualEmbedding)initWithOptions:(id)options;
 - (NLContextualEmbeddingResult)embeddingResultForString:(NSString *)string language:(NLLanguage)language error:(NSError *)error;
 - (NSArray)languages;
 - (NSArray)scripts;
@@ -26,40 +26,40 @@
 - (NSUInteger)dimension;
 - (NSUInteger)maximumSequenceLength;
 - (NSUInteger)revision;
-- (id)_concatenatedEmbeddingDataForInputEmbeddingData:(id)a3 tokenizedSentences:(id)a4 batchComponentsCountArray:(id)a5 batchComponentRangesArray:(id)a6 maxTokens:(unint64_t)a7;
-- (id)_getSentenceEmbeddingForString:(id)a3 error:(id *)a4;
-- (id)_paddedEmbeddingDataForInputEmbeddingData:(id)a3 tokenizedSentences:(id)a4 batchComponentsCountArray:(id)a5 batchComponentRangesArray:(id)a6 maxTokens:(unint64_t)a7;
-- (id)_sentenceEmbeddingVectorDataForString:(id)a3 error:(id *)a4;
-- (id)_sentenceEmbeddingVectorForString:(id)a3 error:(id *)a4;
-- (id)_taggerForString:(id)a3 language:(id)a4;
-- (id)_tokenRangesForString:(id)a3 language:(id)a4;
-- (id)_tokensForString:(id)a3 tokenRanges:(id)a4;
+- (id)_concatenatedEmbeddingDataForInputEmbeddingData:(id)data tokenizedSentences:(id)sentences batchComponentsCountArray:(id)array batchComponentRangesArray:(id)rangesArray maxTokens:(unint64_t)tokens;
+- (id)_getSentenceEmbeddingForString:(id)string error:(id *)error;
+- (id)_paddedEmbeddingDataForInputEmbeddingData:(id)data tokenizedSentences:(id)sentences batchComponentsCountArray:(id)array batchComponentRangesArray:(id)rangesArray maxTokens:(unint64_t)tokens;
+- (id)_sentenceEmbeddingVectorDataForString:(id)string error:(id *)error;
+- (id)_sentenceEmbeddingVectorForString:(id)string error:(id *)error;
+- (id)_taggerForString:(id)string language:(id)language;
+- (id)_tokenRangesForString:(id)string language:(id)language;
+- (id)_tokensForString:(id)string tokenRanges:(id)ranges;
 - (id)adapters;
 - (id)assetLocale;
 - (id)assetLocaleIdentifier;
 - (id)bundleName;
 - (id)bundlePath;
-- (id)requestBackgroundBatchEmbeddingResultsForStrings:(id)a3 language:(id)a4 error:(id *)a5;
-- (id)requestBackgroundEmbeddingResultForString:(id)a3 language:(id)a4 error:(id *)a5;
-- (id)sentenceEmbeddingVectorDataForString:(id)a3 language:(id)a4 error:(id *)a5;
-- (id)sentenceEmbeddingVectorForString:(id)a3 language:(id)a4 error:(id *)a5;
-- (id)subRangesWithinToken:(id)a3 componentRange:(_NSRange)a4 offset:(unint64_t)a5;
-- (id)subRangesWithinToken:(id)a3 offset:(unint64_t)a4;
-- (id)tokenDictionariesForString:(id)a3 tokens:(id)a4 tokenRanges:(id)a5;
-- (id)tokenDictionariesForString:(id)a3 tokens:(id)a4 tokenRanges:(id)a5 componentRanges:(id)a6 componentsCount:(unint64_t)a7;
-- (id)vectorsForTokenizedSentences:(id)a3 untokenizedSentences:(id)a4 maxTokens:(unint64_t)a5;
+- (id)requestBackgroundBatchEmbeddingResultsForStrings:(id)strings language:(id)language error:(id *)error;
+- (id)requestBackgroundEmbeddingResultForString:(id)string language:(id)language error:(id *)error;
+- (id)sentenceEmbeddingVectorDataForString:(id)string language:(id)language error:(id *)error;
+- (id)sentenceEmbeddingVectorForString:(id)string language:(id)language error:(id *)error;
+- (id)subRangesWithinToken:(id)token componentRange:(_NSRange)range offset:(unint64_t)offset;
+- (id)subRangesWithinToken:(id)token offset:(unint64_t)offset;
+- (id)tokenDictionariesForString:(id)string tokens:(id)tokens tokenRanges:(id)ranges;
+- (id)tokenDictionariesForString:(id)string tokens:(id)tokens tokenRanges:(id)ranges componentRanges:(id)componentRanges componentsCount:(unint64_t)count;
+- (id)vectorsForTokenizedSentences:(id)sentences untokenizedSentences:(id)untokenizedSentences maxTokens:(unint64_t)tokens;
 - (int64_t)getCompilationState;
 - (unint64_t)modelSystemVersion;
 - (unint64_t)sentenceVectorDimension;
 - (unint64_t)tokenVectorDimension;
 - (void)dealloc;
-- (void)requestAssetsWithCompletionHandler:(id)a3;
-- (void)requestBatchEmbeddingResultsForStrings:(id)a3 language:(id)a4 completionHandler:(id)a5;
+- (void)requestAssetsWithCompletionHandler:(id)handler;
+- (void)requestBatchEmbeddingResultsForStrings:(id)strings language:(id)language completionHandler:(id)handler;
 - (void)requestEmbeddingAssetsWithCompletionHandler:(void *)completionHandler;
-- (void)requestEmbeddingResultForString:(id)a3 language:(id)a4 completionHandler:(id)a5;
-- (void)requestModelCompilationWithCompletionHandler:(id)a3;
-- (void)requestModelLoadingWithCompletionHandler:(id)a3;
-- (void)requestSentenceEmbeddingVectorForString:(id)a3 language:(id)a4 completionHandler:(id)a5;
+- (void)requestEmbeddingResultForString:(id)string language:(id)language completionHandler:(id)handler;
+- (void)requestModelCompilationWithCompletionHandler:(id)handler;
+- (void)requestModelLoadingWithCompletionHandler:(id)handler;
+- (void)requestSentenceEmbeddingVectorForString:(id)string language:(id)language completionHandler:(id)handler;
 - (void)unload;
 @end
 
@@ -71,7 +71,7 @@
   block[1] = 3221225472;
   block[2] = __51__NLContextualEmbedding_contextualEmbeddingCatalog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (contextualEmbeddingCatalog_onceToken != -1)
   {
     dispatch_once(&contextualEmbeddingCatalog_onceToken, block);
@@ -84,15 +84,15 @@
 
 - (BOOL)hasAvailableAssets
 {
-  v2 = [(NLContextualEmbedding *)self bundlePath];
-  v3 = v2 != 0;
+  bundlePath = [(NLContextualEmbedding *)self bundlePath];
+  v3 = bundlePath != 0;
 
   return v3;
 }
 
 - (id)bundlePath
 {
-  v3 = [(NLContextualEmbedding *)self assetLocale];
+  assetLocale = [(NLContextualEmbedding *)self assetLocale];
   [(NLContextualEmbedding *)self bundleName];
   v7 = 0;
   v8 = &v7;
@@ -110,10 +110,10 @@
 
 - (id)assetLocale
 {
-  v2 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
-  if (v2)
+  assetLocaleIdentifier = [(NLContextualEmbedding *)self assetLocaleIdentifier];
+  if (assetLocaleIdentifier)
   {
-    v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v2];
+    v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:assetLocaleIdentifier];
   }
 
   else
@@ -331,7 +331,7 @@ LABEL_27:
   block[1] = 3221225472;
   block[2] = __64__NLContextualEmbedding_contextualEmbeddingConfigurationCatalog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (contextualEmbeddingConfigurationCatalog_onceToken != -1)
   {
     dispatch_once(&contextualEmbeddingConfigurationCatalog_onceToken, block);
@@ -473,13 +473,13 @@ LABEL_27:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (NLContextualEmbedding)initWithOptions:(id)a3
+- (NLContextualEmbedding)initWithOptions:(id)options
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"ModelIdentifier"];
-  v6 = [objc_opt_class() contextualEmbeddingCatalog];
-  v7 = [v6 objectForKey:v5];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"ModelIdentifier"];
+  contextualEmbeddingCatalog = [objc_opt_class() contextualEmbeddingCatalog];
+  v7 = [contextualEmbeddingCatalog objectForKey:v5];
 
   if (v7)
   {
@@ -488,10 +488,10 @@ LABEL_27:
     v8 = [(NLContextualEmbedding *)&v27 init];
     if (v8)
     {
-      v9 = [v4 objectForKeyedSubscript:@"UseANE"];
+      v9 = [optionsCopy objectForKeyedSubscript:@"UseANE"];
       if (v9)
       {
-        v10 = [v4 objectForKeyedSubscript:@"UseANE"];
+        v10 = [optionsCopy objectForKeyedSubscript:@"UseANE"];
         v8->_useANE = [v10 BOOLValue];
       }
 
@@ -530,16 +530,16 @@ LABEL_27:
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v25 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 + (NLContextualEmbedding)contextualEmbeddingWithModelIdentifier:(NSString *)modelIdentifier
@@ -557,12 +557,12 @@ LABEL_27:
   return v6;
 }
 
-- (NLContextualEmbedding)initWithIdentifier:(id)a3 andOptions:(id)a4
+- (NLContextualEmbedding)initWithIdentifier:(id)identifier andOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() contextualEmbeddingConfigurationCatalog];
-  v9 = [v8 objectForKey:v6];
+  identifierCopy = identifier;
+  optionsCopy = options;
+  contextualEmbeddingConfigurationCatalog = [objc_opt_class() contextualEmbeddingConfigurationCatalog];
+  v9 = [contextualEmbeddingConfigurationCatalog objectForKey:identifierCopy];
 
   if (v9)
   {
@@ -572,16 +572,16 @@ LABEL_27:
 
   else
   {
-    v10 = v6;
+    v10 = identifierCopy;
     v11 = 0;
   }
 
-  v12 = [v7 mutableCopy];
+  v12 = [optionsCopy mutableCopy];
   [v12 setObject:v10 forKeyedSubscript:@"ModelIdentifier"];
   v13 = [(NLContextualEmbedding *)self initWithOptions:v12];
   if (v13)
   {
-    v14 = [v6 copy];
+    v14 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
@@ -593,20 +593,20 @@ LABEL_27:
   return v13;
 }
 
-+ (NLContextualEmbedding)contextualEmbeddingWithIdentifier:(id)a3
++ (NLContextualEmbedding)contextualEmbeddingWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [NLContextualEmbedding alloc];
-  v5 = [(NLContextualEmbedding *)v4 initWithIdentifier:v3 andOptions:MEMORY[0x1E695E0F8]];
+  v5 = [(NLContextualEmbedding *)v4 initWithIdentifier:identifierCopy andOptions:MEMORY[0x1E695E0F8]];
 
   return v5;
 }
 
-+ (NLContextualEmbedding)contextualEmbeddingWithIdentifier:(id)a3 andOptions:(id)a4
++ (NLContextualEmbedding)contextualEmbeddingWithIdentifier:(id)identifier andOptions:(id)options
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NLContextualEmbedding alloc] initWithIdentifier:v6 andOptions:v5];
+  optionsCopy = options;
+  identifierCopy = identifier;
+  v7 = [[NLContextualEmbedding alloc] initWithIdentifier:identifierCopy andOptions:optionsCopy];
 
   return v7;
 }
@@ -615,13 +615,13 @@ LABEL_27:
 {
   v66 = *MEMORY[0x1E69E9840];
   v60 = valuesDictionary;
-  v53 = [MEMORY[0x1E695DF70] array];
-  v3 = [objc_opt_class() contextualEmbeddingCatalog];
+  array = [MEMORY[0x1E695DF70] array];
+  contextualEmbeddingCatalog = [objc_opt_class() contextualEmbeddingCatalog];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v61 objects:v65 count:16];
+  v4 = [contextualEmbeddingCatalog countByEnumeratingWithState:&v61 objects:v65 count:16];
   if (v4)
   {
     v5 = v4;
@@ -629,7 +629,7 @@ LABEL_27:
     v7 = *v62;
     v8 = 0x1E695D000uLL;
     v55 = *v62;
-    v56 = v3;
+    v56 = contextualEmbeddingCatalog;
     do
     {
       v9 = 0;
@@ -638,7 +638,7 @@ LABEL_27:
       {
         if (*v62 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(contextualEmbeddingCatalog);
         }
 
         v10 = *(*(&v61 + 1) + 8 * v9);
@@ -646,7 +646,7 @@ LABEL_27:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v3 objectForKey:v10];
+          v12 = [contextualEmbeddingCatalog objectForKey:v10];
           v13 = v12;
           if (!v60 || !v12)
           {
@@ -764,7 +764,7 @@ LABEL_49:
                 v49 = v21;
 
                 v7 = v55;
-                v3 = v56;
+                contextualEmbeddingCatalog = v56;
                 v6 = 0x1E696A000;
                 v5 = v57;
                 v8 = 0x1E695D000;
@@ -779,7 +779,7 @@ LABEL_44:
 
               v44 = v47 == 1;
               v7 = v55;
-              v3 = v56;
+              contextualEmbeddingCatalog = v56;
               v6 = 0x1E696A000;
               v5 = v57;
               v8 = 0x1E695D000;
@@ -790,7 +790,7 @@ LABEL_44:
                 if (v48)
                 {
                   v49 = v48;
-                  [v53 addObject:?];
+                  [array addObject:?];
                 }
 
                 else
@@ -844,8 +844,8 @@ LABEL_39:
           {
             v41 = v20;
             v42 = v24;
-            v43 = [v24 unsignedIntegerValue];
-            v44 = v43 == [v41 unsignedIntegerValue];
+            unsignedIntegerValue = [v24 unsignedIntegerValue];
+            v44 = unsignedIntegerValue == [v41 unsignedIntegerValue];
             v24 = v42;
             v20 = v41;
             v40 = v44;
@@ -872,7 +872,7 @@ LABEL_52:
       }
 
       while (v5 != v9);
-      v50 = [v3 countByEnumeratingWithState:&v61 objects:v65 count:16];
+      v50 = [contextualEmbeddingCatalog countByEnumeratingWithState:&v61 objects:v65 count:16];
       v5 = v50;
     }
 
@@ -881,7 +881,7 @@ LABEL_52:
 
   v51 = *MEMORY[0x1E69E9840];
 
-  return v53;
+  return array;
 }
 
 + (NLContextualEmbedding)contextualEmbeddingWithLanguage:(NLLanguage)language
@@ -895,7 +895,7 @@ LABEL_52:
   v14[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:{1, v12}];
 
-  v8 = [a1 contextualEmbeddingsWithValues:v7];
+  v8 = [self contextualEmbeddingsWithValues:v7];
   v9 = mostRecentEmbedding(v8);
 
   v10 = *MEMORY[0x1E69E9840];
@@ -903,18 +903,18 @@ LABEL_52:
   return v9;
 }
 
-+ (id)contextualEmbeddingForLanguage:(id)a3
++ (id)contextualEmbeddingForLanguage:(id)language
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  languageCopy = language;
   v13 = @"Languages";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v12 count:1];
+  languageCopy2 = language;
+  v6 = [v4 arrayWithObjects:&languageCopy count:1];
   v14[0] = v6;
-  v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:{1, v12}];
+  v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:{1, languageCopy}];
 
-  v8 = [a1 contextualEmbeddingsWithValues:v7];
+  v8 = [self contextualEmbeddingsWithValues:v7];
   v9 = mostRecentEmbedding(v8);
 
   v10 = *MEMORY[0x1E69E9840];
@@ -933,7 +933,7 @@ LABEL_52:
   v14[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:{1, v12}];
 
-  v8 = [a1 contextualEmbeddingsWithValues:v7];
+  v8 = [self contextualEmbeddingsWithValues:v7];
   v9 = mostRecentEmbedding(v8);
 
   v10 = *MEMORY[0x1E69E9840];
@@ -941,18 +941,18 @@ LABEL_52:
   return v9;
 }
 
-+ (id)contextualEmbeddingForScript:(id)a3
++ (id)contextualEmbeddingForScript:(id)script
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  scriptCopy = script;
   v13 = @"Scripts";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v12 count:1];
+  scriptCopy2 = script;
+  v6 = [v4 arrayWithObjects:&scriptCopy count:1];
   v14[0] = v6;
-  v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:{1, v12}];
+  v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:{1, scriptCopy}];
 
-  v8 = [a1 contextualEmbeddingsWithValues:v7];
+  v8 = [self contextualEmbeddingsWithValues:v7];
   v9 = mostRecentEmbedding(v8);
 
   v10 = *MEMORY[0x1E69E9840];
@@ -960,10 +960,10 @@ LABEL_52:
   return v9;
 }
 
-+ (unint64_t)systemVersionForLanguage:(id)a3
++ (unint64_t)systemVersionForLanguage:(id)language
 {
-  v4 = a3;
-  if (!v4 || ([a1 contextualEmbeddingWithLanguage:v4], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "modelSystemVersion"), v5, !v6))
+  languageCopy = language;
+  if (!languageCopy || ([self contextualEmbeddingWithLanguage:languageCopy], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "modelSystemVersion"), v5, !v6))
   {
     v6 = 4;
   }
@@ -977,8 +977,8 @@ LABEL_52:
   v8.receiver = self;
   v8.super_class = NLContextualEmbedding;
   v4 = [(NLContextualEmbedding *)&v8 description];
-  v5 = [(NLContextualEmbedding *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@<%@>", v4, v5];
+  identifier = [(NLContextualEmbedding *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@<%@>", v4, identifier];
 
   return v6;
 }
@@ -1003,10 +1003,10 @@ void __35__NLContextualEmbedding_bundlePath__block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (BOOL)loadWithOptions:(id)a3 error:(id *)a4
+- (BOOL)loadWithOptions:(id)options error:(id *)error
 {
   v83 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   if ([(NLContextualEmbedding *)self isLoaded])
   {
     v7 = 1;
@@ -1014,46 +1014,46 @@ void __35__NLContextualEmbedding_bundlePath__block_invoke(uint64_t a1, void *a2,
 
   else
   {
-    v68 = a4;
+    errorCopy = error;
     v8 = objc_autoreleasePoolPush();
     v9 = NLGetLogCategory(self);
-    v10 = [v9 internal];
+    internal = [v9 internal];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(internal, OS_LOG_TYPE_DEFAULT))
     {
       v11 = NLGetLogIdentifier(self);
       v12 = MEMORY[0x1E696AEC0];
-      v13 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
-      v14 = [(NLContextualEmbedding *)self modelIdentifier];
-      v15 = [v12 stringWithFormat:@"Loading embedding model '%@' - '%@'", v13, v14];
+      assetLocaleIdentifier = [(NLContextualEmbedding *)self assetLocaleIdentifier];
+      modelIdentifier = [(NLContextualEmbedding *)self modelIdentifier];
+      v15 = [v12 stringWithFormat:@"Loading embedding model '%@' - '%@'", assetLocaleIdentifier, modelIdentifier];
       *buf = 138543618;
       v80 = v11;
       v81 = 2114;
       v82 = v15;
-      _os_log_impl(&dword_19D48F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
+      _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v69 = [(NLContextualEmbedding *)self bundlePath];
-    if (v69)
+    bundlePath = [(NLContextualEmbedding *)self bundlePath];
+    if (bundlePath)
     {
       v16 = [(NSDictionary *)self->_catalogEntry objectForKey:@"Adapters"];
       v17 = v16;
       if (self->_adapterIdentifier && ([v16 containsObject:?] & 1) == 0)
       {
-        if (v68)
+        if (errorCopy)
         {
           v42 = MEMORY[0x1E696ABC0];
           v75 = *MEMORY[0x1E696A578];
           v76 = @"Backbone model doesn't contain requested adapter";
           v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-          *v68 = [v42 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:7 userInfo:v43];
+          *errorCopy = [v42 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:7 userInfo:v43];
         }
 
-        v26 = +[NLTelemetry sharedInstance];
-        v29 = [(NLContextualEmbedding *)self identifier];
-        v30 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
-        [v26 reportEmbeddingLoadedWithIdentifier:v29 localeIdentifier:v30 useANE:self->_useANE status:2];
+        identifier2 = +[NLTelemetry sharedInstance];
+        identifier = [(NLContextualEmbedding *)self identifier];
+        assetLocaleIdentifier2 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
+        [identifier2 reportEmbeddingLoadedWithIdentifier:identifier localeIdentifier:assetLocaleIdentifier2 useANE:self->_useANE status:2];
         v7 = 0;
       }
 
@@ -1070,15 +1070,15 @@ void __35__NLContextualEmbedding_bundlePath__block_invoke(uint64_t a1, void *a2,
         }
 
         v22 = objc_opt_class();
-        v23 = [v69 stringByAppendingPathComponent:@"embeddings.mil"];
+        v23 = [bundlePath stringByAppendingPathComponent:@"embeddings.mil"];
         v24 = [v22 embeddingModelWithModelPath:v23 useANE:self->_useANE adapters:v17];
 
         v25 = v21;
-        v26 = v25;
+        identifier2 = v25;
         if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v25))
         {
           *buf = 0;
-          _os_signpost_emit_with_name_impl(&dword_19D48F000, v26, OS_SIGNPOST_INTERVAL_END, v19, "loadE5", &unk_19D4EF749, buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_19D48F000, identifier2, OS_SIGNPOST_INTERVAL_END, v19, "loadE5", &unk_19D4EF749, buf, 2u);
         }
 
         embeddingE5 = self->_embeddingE5;
@@ -1088,10 +1088,10 @@ void __35__NLContextualEmbedding_bundlePath__block_invoke(uint64_t a1, void *a2,
         v7 = v28 != 0;
         if (v28)
         {
-          v29 = +[NLTelemetry sharedInstance];
-          v30 = [(NLContextualEmbedding *)self identifier];
-          v31 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
-          [v29 reportEmbeddingLoadedWithIdentifier:v30 localeIdentifier:v31 useANE:self->_useANE status:0];
+          identifier = +[NLTelemetry sharedInstance];
+          assetLocaleIdentifier2 = [(NLContextualEmbedding *)self identifier];
+          assetLocaleIdentifier3 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
+          [identifier reportEmbeddingLoadedWithIdentifier:assetLocaleIdentifier2 localeIdentifier:assetLocaleIdentifier3 useANE:self->_useANE status:0];
         }
 
         else
@@ -1100,20 +1100,20 @@ void __35__NLContextualEmbedding_bundlePath__block_invoke(uint64_t a1, void *a2,
           {
             v44 = objc_autoreleasePoolPush();
             v45 = NLGetLogCategory(self);
-            v46 = [v45 internal];
+            internal2 = [v45 internal];
 
-            if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(internal2, OS_LOG_TYPE_DEFAULT))
             {
               v64 = NLGetLogIdentifier(self);
               v47 = MEMORY[0x1E696AEC0];
               contexta = [(NLContextualEmbedding *)self assetLocaleIdentifier];
-              v48 = [(NLContextualEmbedding *)self modelIdentifier];
-              v49 = [v47 stringWithFormat:@"Requested compilation for embedding model '%@' - '%@'", contexta, v48];
+              modelIdentifier2 = [(NLContextualEmbedding *)self modelIdentifier];
+              v49 = [v47 stringWithFormat:@"Requested compilation for embedding model '%@' - '%@'", contexta, modelIdentifier2];
               *buf = 138543618;
               v80 = v64;
               v81 = 2114;
               v82 = v49;
-              _os_log_impl(&dword_19D48F000, v46, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
+              _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
             }
 
             objc_autoreleasePoolPop(v44);
@@ -1127,7 +1127,7 @@ void __35__NLContextualEmbedding_bundlePath__block_invoke(uint64_t a1, void *a2,
             v73 = *MEMORY[0x1E696A578];
             v74 = @"Embedding model requires compilation";
             v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
-            v29 = [v50 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:7 userInfo:v51];
+            identifier = [v50 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:7 userInfo:v51];
           }
 
           else
@@ -1136,38 +1136,38 @@ void __35__NLContextualEmbedding_bundlePath__block_invoke(uint64_t a1, void *a2,
             v71 = *MEMORY[0x1E696A578];
             v72 = @"Failed to load embedding model";
             v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-            v29 = [v52 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:7 userInfo:v53];
+            identifier = [v52 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:7 userInfo:v53];
           }
 
           context = objc_autoreleasePoolPush();
           v54 = NLGetLogCategory(self);
-          v55 = [v54 internal];
+          internal3 = [v54 internal];
 
-          if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(internal3, OS_LOG_TYPE_ERROR))
           {
             v65 = NLGetLogIdentifier(self);
             v56 = MEMORY[0x1E696AEC0];
-            v57 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
-            v58 = [(NLContextualEmbedding *)self modelIdentifier];
-            v59 = [v56 stringWithFormat:@"Failed to load embedding model '%@' - '%@'", v57, v58];
+            assetLocaleIdentifier4 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
+            modelIdentifier3 = [(NLContextualEmbedding *)self modelIdentifier];
+            v59 = [v56 stringWithFormat:@"Failed to load embedding model '%@' - '%@'", assetLocaleIdentifier4, modelIdentifier3];
             *buf = 138543618;
             v80 = v65;
             v81 = 2114;
             v82 = v59;
-            _os_log_impl(&dword_19D48F000, v55, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
+            _os_log_impl(&dword_19D48F000, internal3, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(context);
-          if (v68)
+          if (errorCopy)
           {
-            v60 = v29;
-            *v68 = v29;
+            v60 = identifier;
+            *errorCopy = identifier;
           }
 
-          v30 = +[NLTelemetry sharedInstance];
-          v31 = [(NLContextualEmbedding *)self identifier];
-          v61 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
-          [v30 reportEmbeddingLoadedWithIdentifier:v31 localeIdentifier:v61 useANE:self->_useANE status:2];
+          assetLocaleIdentifier2 = +[NLTelemetry sharedInstance];
+          assetLocaleIdentifier3 = [(NLContextualEmbedding *)self identifier];
+          assetLocaleIdentifier5 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
+          [assetLocaleIdentifier2 reportEmbeddingLoadedWithIdentifier:assetLocaleIdentifier3 localeIdentifier:assetLocaleIdentifier5 useANE:self->_useANE status:2];
         }
       }
     }
@@ -1176,36 +1176,36 @@ void __35__NLContextualEmbedding_bundlePath__block_invoke(uint64_t a1, void *a2,
     {
       v32 = objc_autoreleasePoolPush();
       v33 = NLGetLogCategory(self);
-      v34 = [v33 internal];
+      internal4 = [v33 internal];
 
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(internal4, OS_LOG_TYPE_ERROR))
       {
         v35 = NLGetLogIdentifier(self);
         v36 = MEMORY[0x1E696AEC0];
-        v37 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
-        v38 = [(NLContextualEmbedding *)self modelIdentifier];
-        v39 = [v36 stringWithFormat:@"Failed to locate assets for '%@' - '%@' embedding model", v37, v38];
+        assetLocaleIdentifier6 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
+        modelIdentifier4 = [(NLContextualEmbedding *)self modelIdentifier];
+        v39 = [v36 stringWithFormat:@"Failed to locate assets for '%@' - '%@' embedding model", assetLocaleIdentifier6, modelIdentifier4];
         *buf = 138543618;
         v80 = v35;
         v81 = 2114;
         v82 = v39;
-        _os_log_impl(&dword_19D48F000, v34, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
+        _os_log_impl(&dword_19D48F000, internal4, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v32);
-      if (v68)
+      if (errorCopy)
       {
         v40 = MEMORY[0x1E696ABC0];
         v77 = *MEMORY[0x1E696A578];
         v78 = @"Failed to locate embedding model";
         v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
-        *v68 = [v40 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v41];
+        *errorCopy = [v40 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v41];
       }
 
       v17 = +[NLTelemetry sharedInstance];
-      v26 = [(NLContextualEmbedding *)self identifier];
-      v29 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
-      [v17 reportEmbeddingLoadedWithIdentifier:v26 localeIdentifier:v29 useANE:self->_useANE status:3];
+      identifier2 = [(NLContextualEmbedding *)self identifier];
+      identifier = [(NLContextualEmbedding *)self assetLocaleIdentifier];
+      [v17 reportEmbeddingLoadedWithIdentifier:identifier2 localeIdentifier:identifier useANE:self->_useANE status:3];
       v7 = 0;
     }
   }
@@ -1247,13 +1247,13 @@ void __47__NLContextualEmbedding_loadWithOptions_error___block_invoke(uint64_t a
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)loadSentenceEmbeddingWithOptions:(id)a3 error:(id *)a4
+- (BOOL)loadSentenceEmbeddingWithOptions:(id)options error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
   [(NLContextualEmbedding *)self load];
   if (![(NLE5Embedding *)self->_embeddingE5 isAdapterLoaded:0x1F10C6DA0]&& ![(NLE5Embedding *)self->_embeddingE5 loadAdapter:0x1F10C6DA0])
   {
-    if (a4)
+    if (error)
     {
       v16 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696A578];
@@ -1266,7 +1266,7 @@ LABEL_13:
       v21 = v16;
       v22 = 7;
 LABEL_16:
-      *a4 = [v21 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:v22 userInfo:v20];
+      *error = [v21 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:v22 userInfo:v20];
     }
 
 LABEL_17:
@@ -1277,10 +1277,10 @@ LABEL_17:
   sentenceEmbeddingHead = self->_sentenceEmbeddingHead;
   if (!sentenceEmbeddingHead)
   {
-    v7 = [(NLContextualEmbedding *)self bundlePath];
-    if (!v7)
+    bundlePath = [(NLContextualEmbedding *)self bundlePath];
+    if (!bundlePath)
     {
-      if (a4)
+      if (error)
       {
         v23 = MEMORY[0x1E696ABC0];
         v27 = *MEMORY[0x1E696A578];
@@ -1294,7 +1294,7 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    v8 = v7;
+    v8 = bundlePath;
     v9 = [NLSentenceEmbeddingHead alloc];
     v10 = MEMORY[0x1E695DFF8];
     v11 = [v8 stringByAppendingPathComponent:@"sentence-embedding-head.mlmodelc"];
@@ -1308,7 +1308,7 @@ LABEL_17:
 
   if (![(NLSentenceEmbeddingHead *)sentenceEmbeddingHead isLoaded]&& ![(NLSentenceEmbeddingHead *)self->_sentenceEmbeddingHead load])
   {
-    if (a4)
+    if (error)
     {
       v16 = MEMORY[0x1E696ABC0];
       v25 = *MEMORY[0x1E696A578];
@@ -1328,14 +1328,14 @@ LABEL_18:
   return result;
 }
 
-- (id)_taggerForString:(id)a3 language:(id)a4
+- (id)_taggerForString:(id)string language:(id)language
 {
-  v6 = a3;
-  v7 = a4;
-  [(NLTagger *)self->_tagger setString:v6];
-  if (v7)
+  stringCopy = string;
+  languageCopy = language;
+  [(NLTagger *)self->_tagger setString:stringCopy];
+  if (languageCopy)
   {
-    -[NLTagger setLanguage:range:](self->_tagger, "setLanguage:range:", v7, 0, [v6 length]);
+    -[NLTagger setLanguage:range:](self->_tagger, "setLanguage:range:", languageCopy, 0, [stringCopy length]);
   }
 
   tagger = self->_tagger;
@@ -1344,20 +1344,20 @@ LABEL_18:
   return tagger;
 }
 
-- (id)_tokenRangesForString:(id)a3 language:(id)a4
+- (id)_tokenRangesForString:(id)string language:(id)language
 {
   v6 = MEMORY[0x1E695DF70];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 array];
-  v10 = [(NLContextualEmbedding *)self _taggerForString:v8 language:v7];
+  languageCopy = language;
+  stringCopy = string;
+  array = [v6 array];
+  v10 = [(NLContextualEmbedding *)self _taggerForString:stringCopy language:languageCopy];
 
-  v11 = [v8 length];
+  v11 = [stringCopy length];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __56__NLContextualEmbedding__tokenRangesForString_language___block_invoke;
   v14[3] = &unk_1E7629D28;
-  v12 = v9;
+  v12 = array;
   v15 = v12;
   [v10 enumerateTagsInRange:0 unit:v11 scheme:0 options:@"TokenType" usingBlock:{36, v14}];
 
@@ -1371,17 +1371,17 @@ void __56__NLContextualEmbedding__tokenRangesForString_language___block_invoke(u
   [v1 addObject:v2];
 }
 
-- (id)_tokensForString:(id)a3 tokenRanges:(id)a4
+- (id)_tokensForString:(id)string tokenRanges:(id)ranges
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  stringCopy = string;
+  rangesCopy = ranges;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v6;
+  v8 = rangesCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -1396,9 +1396,9 @@ void __56__NLContextualEmbedding__tokenRangesForString_language___block_invoke(u
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * i) rangeValue];
-        v15 = [v5 substringWithRange:{v13, v14}];
-        [v7 addObject:v15];
+        rangeValue = [*(*(&v18 + 1) + 8 * i) rangeValue];
+        v15 = [stringCopy substringWithRange:{rangeValue, v14}];
+        [array addObject:v15];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -1409,53 +1409,53 @@ void __56__NLContextualEmbedding__tokenRangesForString_language___block_invoke(u
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return array;
 }
 
-- (id)_concatenatedEmbeddingDataForInputEmbeddingData:(id)a3 tokenizedSentences:(id)a4 batchComponentsCountArray:(id)a5 batchComponentRangesArray:(id)a6 maxTokens:(unint64_t)a7
+- (id)_concatenatedEmbeddingDataForInputEmbeddingData:(id)data tokenizedSentences:(id)sentences batchComponentsCountArray:(id)array batchComponentRangesArray:(id)rangesArray maxTokens:(unint64_t)tokens
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(NLE5Embedding *)self->_embeddingE5 dimension];
-  v17 = [v13 count];
-  v18 = [MEMORY[0x1E695DF88] dataWithLength:12 * v16 * a7 * v17];
-  v43 = v12;
-  v51 = [v12 bytes];
+  dataCopy = data;
+  sentencesCopy = sentences;
+  arrayCopy = array;
+  rangesArrayCopy = rangesArray;
+  dimension = [(NLE5Embedding *)self->_embeddingE5 dimension];
+  v17 = [sentencesCopy count];
+  v18 = [MEMORY[0x1E695DF88] dataWithLength:12 * dimension * tokens * v17];
+  v43 = dataCopy;
+  bytes = [dataCopy bytes];
   v42 = v18;
-  v19 = [v18 mutableBytes];
-  v20 = v19;
-  if (3 * v16 * a7 * v17)
+  mutableBytes = [v18 mutableBytes];
+  v20 = mutableBytes;
+  if (3 * dimension * tokens * v17)
   {
-    bzero(v19, 12 * v16 * v17 * a7);
+    bzero(mutableBytes, 12 * dimension * v17 * tokens);
   }
 
-  if ([v13 count])
+  if ([sentencesCopy count])
   {
     v52 = 0;
     v21 = 0;
-    v22 = 12 * a7;
-    v44 = 12 * a7 * v16;
-    v45 = v15;
-    v23 = 4 * v16;
-    v46 = v14;
-    v47 = v13;
+    v22 = 12 * tokens;
+    v44 = 12 * tokens * dimension;
+    v45 = rangesArrayCopy;
+    v23 = 4 * dimension;
+    v46 = arrayCopy;
+    v47 = sentencesCopy;
     do
     {
-      if (v21 >= [v14 count] || v21 >= objc_msgSend(v15, "count"))
+      if (v21 >= [arrayCopy count] || v21 >= objc_msgSend(rangesArrayCopy, "count"))
       {
         break;
       }
 
       v50 = v20;
-      v24 = [v14 objectAtIndex:v21];
-      v48 = [v24 unsignedIntegerValue];
+      v24 = [arrayCopy objectAtIndex:v21];
+      unsignedIntegerValue = [v24 unsignedIntegerValue];
 
-      v53 = [v13 objectAtIndex:v21];
+      v53 = [sentencesCopy objectAtIndex:v21];
       v49 = v21;
-      v25 = [v15 objectAtIndex:v21];
-      if (a7)
+      v25 = [rangesArrayCopy objectAtIndex:v21];
+      if (tokens)
       {
         v26 = 0;
         v27 = v50;
@@ -1466,9 +1466,9 @@ void __56__NLContextualEmbedding__tokenRangesForString_language___block_invoke(u
             break;
           }
 
-          v28 = a7;
+          tokensCopy = tokens;
           v29 = [v25 objectAtIndex:v26];
-          v30 = [v29 rangeValue];
+          rangeValue = [v29 rangeValue];
           v32 = v31;
 
           v33 = 3;
@@ -1480,13 +1480,13 @@ void __56__NLContextualEmbedding__tokenRangesForString_language___block_invoke(u
           if (v32)
           {
             v34 = 0;
-            v35 = (v51 + v23 * (v52 + v30));
+            v35 = (bytes + v23 * (v52 + rangeValue));
             v36 = v27;
             do
             {
               v37 = v35;
               v38 = v36;
-              for (i = v16; i; --i)
+              for (i = dimension; i; --i)
               {
                 v40 = *v37++;
                 *v38 = v40;
@@ -1503,19 +1503,19 @@ void __56__NLContextualEmbedding__tokenRangesForString_language___block_invoke(u
 
           ++v26;
           v27 += 3;
-          a7 = v28;
+          tokens = tokensCopy;
         }
 
-        while (v26 != v28);
+        while (v26 != tokensCopy);
       }
 
-      v52 += v48;
+      v52 += unsignedIntegerValue;
 
       v21 = v49 + 1;
-      v13 = v47;
-      v15 = v45;
+      sentencesCopy = v47;
+      rangesArrayCopy = v45;
       v20 = v50 + v44;
-      v14 = v46;
+      arrayCopy = v46;
     }
 
     while (v49 + 1 < [v47 count]);
@@ -1524,14 +1524,14 @@ void __56__NLContextualEmbedding__tokenRangesForString_language___block_invoke(u
   return v42;
 }
 
-- (id)subRangesWithinToken:(id)a3 componentRange:(_NSRange)a4 offset:(unint64_t)a5
+- (id)subRangesWithinToken:(id)token componentRange:(_NSRange)range offset:(unint64_t)offset
 {
-  length = a4.length;
+  length = range.length;
   v30[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v28 = self;
-  v9 = [(NLE5Embedding *)self->_embeddingE5 tokenIDsForText:v7];
+  tokenCopy = token;
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  v9 = [(NLE5Embedding *)self->_embeddingE5 tokenIDsForText:tokenCopy];
   if (subRangesWithinToken_componentRange_offset__onceToken != -1)
   {
     [NLContextualEmbedding subRangesWithinToken:componentRange:offset:];
@@ -1546,13 +1546,13 @@ void __56__NLContextualEmbedding__tokenRangesForString_language___block_invoke(u
       v13 = v12;
       if (i || ([v12 isEqual:&unk_1F10D1310] & 1) == 0)
       {
-        if ([v8 count] >= length)
+        if ([array count] >= length)
         {
 
           break;
         }
 
-        embeddingE5 = v28->_embeddingE5;
+        embeddingE5 = selfCopy->_embeddingE5;
         v30[0] = v13;
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
         v16 = [(NLE5Embedding *)embeddingE5 textForTokenIDs:v15];
@@ -1560,40 +1560,40 @@ void __56__NLContextualEmbedding__tokenRangesForString_language___block_invoke(u
 
         v18 = [v17 length];
         v19 = v18 + v10;
-        if (v18 + v10 > [v7 length])
+        if (v18 + v10 > [tokenCopy length])
         {
-          v19 = [v7 length];
+          v19 = [tokenCopy length];
           v18 = v19 - v10;
         }
 
-        v20 = [MEMORY[0x1E696B098] valueWithRange:{v10 + a5, v18}];
-        [v8 addObject:v20];
+        v20 = [MEMORY[0x1E696B098] valueWithRange:{v10 + offset, v18}];
+        [array addObject:v20];
 
         v10 = v19;
       }
     }
   }
 
-  v21 = [v8 count];
+  v21 = [array count];
   v22 = length - v21;
   if (length > v21)
   {
     do
     {
       v23 = v10 + 1;
-      if (v10 + 1 <= [v7 length])
+      if (v10 + 1 <= [tokenCopy length])
       {
         v24 = 1;
       }
 
       else
       {
-        v23 = [v7 length];
+        v23 = [tokenCopy length];
         v24 = v23 - v10;
       }
 
-      v25 = [MEMORY[0x1E696B098] valueWithRange:{v10 + a5, v24}];
-      [v8 addObject:v25];
+      v25 = [MEMORY[0x1E696B098] valueWithRange:{v10 + offset, v24}];
+      [array addObject:v25];
 
       v10 = v23;
       --v22;
@@ -1604,7 +1604,7 @@ void __56__NLContextualEmbedding__tokenRangesForString_language___block_invoke(u
 
   v26 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return array;
 }
 
 uint64_t __68__NLContextualEmbedding_subRangesWithinToken_componentRange_offset___block_invoke()
@@ -1614,78 +1614,78 @@ uint64_t __68__NLContextualEmbedding_subRangesWithinToken_componentRange_offset_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)tokenDictionariesForString:(id)a3 tokens:(id)a4 tokenRanges:(id)a5 componentRanges:(id)a6 componentsCount:(unint64_t)a7
+- (id)tokenDictionariesForString:(id)string tokens:(id)tokens tokenRanges:(id)ranges componentRanges:(id)componentRanges componentsCount:(unint64_t)count
 {
   v39[3] = *MEMORY[0x1E69E9840];
-  v35 = a4;
-  v9 = a5;
-  v10 = a6;
-  v34 = [MEMORY[0x1E695DF70] array];
-  if ([v10 count])
+  tokensCopy = tokens;
+  rangesCopy = ranges;
+  componentRangesCopy = componentRanges;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([componentRangesCopy count])
   {
     v11 = [(NLContextualEmbedding *)self subRangesWithinToken:&stru_1F10C6540 componentRange:0 offset:1, 0];
     if ([v11 count])
     {
       v38[0] = @"TokenRange";
-      v12 = [v11 firstObject];
-      v39[0] = v12;
+      firstObject = [v11 firstObject];
+      v39[0] = firstObject;
       v38[1] = @"ComponentRange";
       v13 = [MEMORY[0x1E696B098] valueWithRange:{0, 1}];
       v38[2] = @"SubtokenRanges";
       v39[1] = v13;
       v39[2] = v11;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:3];
-      [v34 addObject:v14];
+      [array addObject:v14];
     }
   }
 
-  if ([v35 count])
+  if ([tokensCopy count])
   {
     v15 = 0;
     do
     {
-      if (v15 >= [v9 count])
+      if (v15 >= [rangesCopy count])
       {
         break;
       }
 
-      if (v15 >= [v10 count])
+      if (v15 >= [componentRangesCopy count])
       {
         break;
       }
 
-      v16 = [v35 objectAtIndex:v15];
-      v17 = [v9 objectAtIndex:v15];
-      v18 = [v17 rangeValue];
+      v16 = [tokensCopy objectAtIndex:v15];
+      v17 = [rangesCopy objectAtIndex:v15];
+      rangeValue = [v17 rangeValue];
       v20 = v19;
 
-      v21 = [v10 objectAtIndex:v15];
-      v22 = v9;
-      v23 = [v21 rangeValue];
+      v21 = [componentRangesCopy objectAtIndex:v15];
+      v22 = rangesCopy;
+      rangeValue2 = [v21 rangeValue];
       v25 = v24;
 
-      v26 = [v33 subRangesWithinToken:v16 componentRange:v23 offset:{v25, v18}];
+      v26 = [v33 subRangesWithinToken:v16 componentRange:rangeValue2 offset:{v25, rangeValue}];
       v36[0] = @"TokenRange";
-      v27 = [MEMORY[0x1E696B098] valueWithRange:{v18, v20}];
+      v27 = [MEMORY[0x1E696B098] valueWithRange:{rangeValue, v20}];
       v37[0] = v27;
       v36[1] = @"ComponentRange";
-      v28 = [MEMORY[0x1E696B098] valueWithRange:{v23, v25}];
+      v28 = [MEMORY[0x1E696B098] valueWithRange:{rangeValue2, v25}];
       v36[2] = @"SubtokenRanges";
       v37[1] = v28;
       v37[2] = v26;
       v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:3];
-      [v34 addObject:v29];
+      [array addObject:v29];
 
-      v9 = v22;
+      rangesCopy = v22;
       ++v15;
     }
 
-    while (v15 < [v35 count]);
+    while (v15 < [tokensCopy count]);
   }
 
   v30 = *MEMORY[0x1E69E9840];
 
-  return v34;
+  return array;
 }
 
 - (NLContextualEmbeddingResult)embeddingResultForString:(NSString *)string language:(NLLanguage)language error:(NSError *)error
@@ -1721,7 +1721,7 @@ LABEL_6:
     v12 = [(NLContextualEmbedding *)self _tokensForString:v8 tokenRanges:v11];
     v45[0] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if (!self->_adapterIdentifier)
     {
       goto LABEL_10;
@@ -1746,21 +1746,21 @@ LABEL_10:
 
     v35 = v13;
     v36 = error;
-    v37 = [(NLE5Embedding *)self->_embeddingE5 embeddingDataForTokenizedBatch:v13 withOutputProperties:v14];
-    v34 = v14;
+    v37 = [(NLE5Embedding *)self->_embeddingE5 embeddingDataForTokenizedBatch:v13 withOutputProperties:dictionary];
+    v34 = dictionary;
     if (v37)
     {
-      v18 = [v14 objectForKey:0x1F10C6DC0];
-      v19 = [v14 objectForKey:0x1F10C6DE0];
-      v20 = [v18 firstObject];
+      v18 = [dictionary objectForKey:0x1F10C6DC0];
+      v19 = [dictionary objectForKey:0x1F10C6DE0];
+      firstObject = [v18 firstObject];
       v32 = v19;
-      v21 = [(NSError *)v19 firstObject];
-      v22 = [(NLE5Embedding *)self->_embeddingE5 dimension];
+      firstObject2 = [(NSError *)v19 firstObject];
+      dimension = [(NLE5Embedding *)self->_embeddingE5 dimension];
       v33 = v8;
-      if (v20 && v21)
+      if (firstObject && firstObject2)
       {
-        v23 = v22;
-        -[NLContextualEmbedding tokenDictionariesForString:tokens:tokenRanges:componentRanges:componentsCount:](self, "tokenDictionariesForString:tokens:tokenRanges:componentRanges:componentsCount:", v8, v12, v11, v21, [v20 unsignedIntegerValue]);
+        v23 = dimension;
+        -[NLContextualEmbedding tokenDictionariesForString:tokens:tokenRanges:componentRanges:componentsCount:](self, "tokenDictionariesForString:tokens:tokenRanges:componentRanges:componentsCount:", v8, v12, v11, firstObject2, [firstObject unsignedIntegerValue]);
         v25 = v24 = v8;
         v17 = [[NLContextualEmbeddingResult alloc] initWithString:v24 tokenDictionaries:v25 data:v37 language:v9 tokenVectorDimension:v23];
       }
@@ -1817,65 +1817,65 @@ LABEL_22:
   return v17;
 }
 
-- (id)_paddedEmbeddingDataForInputEmbeddingData:(id)a3 tokenizedSentences:(id)a4 batchComponentsCountArray:(id)a5 batchComponentRangesArray:(id)a6 maxTokens:(unint64_t)a7
+- (id)_paddedEmbeddingDataForInputEmbeddingData:(id)data tokenizedSentences:(id)sentences batchComponentsCountArray:(id)array batchComponentRangesArray:(id)rangesArray maxTokens:(unint64_t)tokens
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v38 = a6;
-  v15 = [(NLE5Embedding *)self->_embeddingE5 dimension];
-  v16 = [v13 count];
-  v17 = v15 * a7 * v16;
+  dataCopy = data;
+  sentencesCopy = sentences;
+  arrayCopy = array;
+  rangesArrayCopy = rangesArray;
+  dimension = [(NLE5Embedding *)self->_embeddingE5 dimension];
+  v16 = [sentencesCopy count];
+  v17 = dimension * tokens * v16;
   v18 = [MEMORY[0x1E695DF88] dataWithLength:4 * v17];
-  v36 = v12;
-  v37 = [v12 bytes];
+  v36 = dataCopy;
+  bytes = [dataCopy bytes];
   v35 = v18;
-  v19 = [v18 mutableBytes];
-  v20 = v19;
+  mutableBytes = [v18 mutableBytes];
+  v20 = mutableBytes;
   if (v17)
   {
-    bzero(v19, 4 * v15 * v16 * a7);
+    bzero(mutableBytes, 4 * dimension * v16 * tokens);
   }
 
-  if ([v13 count])
+  if ([sentencesCopy count])
   {
     v21 = 0;
     v22 = 0;
-    v23 = 4 * v15;
+    v23 = 4 * dimension;
     do
     {
-      if (v22 >= [v14 count] || v22 >= objc_msgSend(v38, "count"))
+      if (v22 >= [arrayCopy count] || v22 >= objc_msgSend(rangesArrayCopy, "count"))
       {
         break;
       }
 
-      v24 = [v14 objectAtIndex:v22];
-      v25 = [v24 unsignedIntegerValue];
+      v24 = [arrayCopy objectAtIndex:v22];
+      unsignedIntegerValue = [v24 unsignedIntegerValue];
 
-      if (a7 >= v25)
+      if (tokens >= unsignedIntegerValue)
       {
-        v26 = v25;
+        tokensCopy = unsignedIntegerValue;
       }
 
       else
       {
-        v26 = a7;
+        tokensCopy = tokens;
       }
 
-      if (v26)
+      if (tokensCopy)
       {
         v27 = 0;
-        v28 = (v37 + v23 * v21);
+        v28 = (bytes + v23 * v21);
         v29 = v20;
         do
         {
           v30 = v28;
           v31 = v29;
-          for (i = v15; i; --i)
+          for (i = dimension; i; --i)
           {
             v33 = *v30++;
             *v31 = v33;
-            v31 += a7;
+            v31 += tokens;
           }
 
           ++v27;
@@ -1883,23 +1883,23 @@ LABEL_22:
           v28 = (v28 + v23);
         }
 
-        while (v27 != v26);
+        while (v27 != tokensCopy);
       }
 
-      v21 += v25;
+      v21 += unsignedIntegerValue;
       ++v22;
-      v20 += 4 * v15 * a7;
+      v20 += 4 * dimension * tokens;
     }
 
-    while (v22 < [v13 count]);
+    while (v22 < [sentencesCopy count]);
   }
 
   return v35;
 }
 
-- (id)vectorsForTokenizedSentences:(id)a3 untokenizedSentences:(id)a4 maxTokens:(unint64_t)a5
+- (id)vectorsForTokenizedSentences:(id)sentences untokenizedSentences:(id)untokenizedSentences maxTokens:(unint64_t)tokens
 {
-  v7 = a3;
+  sentencesCopy = sentences;
   if (![(NLContextualEmbedding *)self isLoaded])
   {
     [(NLContextualEmbedding *)self load];
@@ -1911,7 +1911,7 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_adapterIdentifier)
   {
     if (![(NLE5Embedding *)self->_embeddingE5 isAdapterLoaded:?])
@@ -1932,11 +1932,11 @@ LABEL_22:
   }
 
 LABEL_11:
-  v10 = [(NLE5Embedding *)self->_embeddingE5 embeddingDataForTokenizedBatch:v7 withOutputProperties:v8];
+  v10 = [(NLE5Embedding *)self->_embeddingE5 embeddingDataForTokenizedBatch:sentencesCopy withOutputProperties:dictionary];
   if (v10)
   {
-    v11 = [v8 objectForKey:0x1F10C6DC0];
-    v12 = [v8 objectForKey:0x1F10C6DE0];
+    v11 = [dictionary objectForKey:0x1F10C6DC0];
+    v12 = [dictionary objectForKey:0x1F10C6DE0];
     if (!v11)
     {
       goto LABEL_18;
@@ -1944,15 +1944,15 @@ LABEL_11:
 
     v13 = [v11 count];
     v9 = 0;
-    if (v13 != [v7 count] || !v12)
+    if (v13 != [sentencesCopy count] || !v12)
     {
       goto LABEL_19;
     }
 
     v14 = [v12 count];
-    if (v14 == [v7 count])
+    if (v14 == [sentencesCopy count])
     {
-      v9 = [(NLContextualEmbedding *)self _paddedEmbeddingDataForInputEmbeddingData:v10 tokenizedSentences:v7 batchComponentsCountArray:v11 batchComponentRangesArray:v12 maxTokens:a5];
+      v9 = [(NLContextualEmbedding *)self _paddedEmbeddingDataForInputEmbeddingData:v10 tokenizedSentences:sentencesCopy batchComponentsCountArray:v11 batchComponentRangesArray:v12 maxTokens:tokens];
     }
 
     else
@@ -1974,30 +1974,30 @@ LABEL_21:
   return v9;
 }
 
-- (void)requestEmbeddingResultForString:(id)a3 language:(id)a4 completionHandler:(id)a5
+- (void)requestEmbeddingResultForString:(id)string language:(id)language completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  stringCopy = string;
+  languageCopy = language;
+  handlerCopy = handler;
+  if (!languageCopy)
   {
-    v9 = @"und";
+    languageCopy = @"und";
   }
 
   v11 = +[NLXPCEmbeddingServerClient sharedClient];
-  v12 = [(NLContextualEmbedding *)self identifier];
+  identifier = [(NLContextualEmbedding *)self identifier];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __84__NLContextualEmbedding_requestEmbeddingResultForString_language_completionHandler___block_invoke;
   v16[3] = &unk_1E7629D50;
-  v17 = v8;
-  v18 = v9;
-  v19 = self;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  [v11 dataFromTokenVectorEmbeddingForString:v15 language:v14 identifier:v12 completionHandler:v16];
+  v17 = stringCopy;
+  v18 = languageCopy;
+  selfCopy = self;
+  v20 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = languageCopy;
+  v15 = stringCopy;
+  [v11 dataFromTokenVectorEmbeddingForString:v15 language:v14 identifier:identifier completionHandler:v16];
 }
 
 void __84__NLContextualEmbedding_requestEmbeddingResultForString_language_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -2031,32 +2031,32 @@ void __84__NLContextualEmbedding_requestEmbeddingResultForString_language_comple
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestBatchEmbeddingResultsForStrings:(id)a3 language:(id)a4 completionHandler:(id)a5
+- (void)requestBatchEmbeddingResultsForStrings:(id)strings language:(id)language completionHandler:(id)handler
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 count];
+  stringsCopy = strings;
+  languageCopy = language;
+  handlerCopy = handler;
+  v11 = [stringsCopy count];
   if (v11 <= [(NLContextualEmbedding *)self maximumBatchSize])
   {
-    if (!v9)
+    if (!languageCopy)
     {
-      v9 = @"und";
+      languageCopy = @"und";
     }
 
     v15 = +[NLXPCEmbeddingServerClient sharedClient];
-    v16 = [(NLContextualEmbedding *)self identifier];
+    identifier = [(NLContextualEmbedding *)self identifier];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __91__NLContextualEmbedding_requestBatchEmbeddingResultsForStrings_language_completionHandler___block_invoke;
     v18[3] = &unk_1E7629D78;
-    v19 = v8;
-    v9 = v9;
-    v20 = v9;
-    v21 = self;
-    v22 = v10;
-    [v15 batchDataFromTokenVectorEmbeddingForStrings:v19 language:v9 identifier:v16 completionHandler:v18];
+    v19 = stringsCopy;
+    languageCopy = languageCopy;
+    v20 = languageCopy;
+    selfCopy = self;
+    v22 = handlerCopy;
+    [v15 batchDataFromTokenVectorEmbeddingForStrings:v19 language:languageCopy identifier:identifier completionHandler:v18];
 
     v14 = v19;
   }
@@ -2069,7 +2069,7 @@ void __84__NLContextualEmbedding_requestEmbeddingResultForString_language_comple
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v14 = [v12 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:4 userInfo:v13];
 
-    (*(v10 + 2))(v10, 0, v14);
+    (*(handlerCopy + 2))(handlerCopy, 0, v14);
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -2124,10 +2124,10 @@ void __91__NLContextualEmbedding_requestBatchEmbeddingResultsForStrings_language
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)requestBackgroundEmbeddingResultForString:(id)a3 language:(id)a4 error:(id *)a5
+- (id)requestBackgroundEmbeddingResultForString:(id)string language:(id)language error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  languageCopy = language;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -2140,30 +2140,30 @@ void __91__NLContextualEmbedding_requestBatchEmbeddingResultsForStrings_language
   v26 = __Block_byref_object_copy__3;
   v27 = __Block_byref_object_dispose__3;
   v28 = 0;
-  if (!v9)
+  if (!languageCopy)
   {
-    v9 = @"und";
+    languageCopy = @"und";
   }
 
   v10 = +[NLXPCEmbeddingServerClient sharedClient];
-  v11 = [(NLContextualEmbedding *)self identifier];
+  identifier = [(NLContextualEmbedding *)self identifier];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __82__NLContextualEmbedding_requestBackgroundEmbeddingResultForString_language_error___block_invoke;
   v17[3] = &unk_1E7629DA0;
   v21 = &v29;
-  v12 = v8;
+  v12 = stringCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = languageCopy;
   v19 = v13;
-  v20 = self;
+  selfCopy = self;
   v22 = &v23;
-  [v10 synchronousDataFromTokenVectorEmbeddingForString:v12 language:v13 identifier:v11 completionHandler:v17];
+  [v10 synchronousDataFromTokenVectorEmbeddingForString:v12 language:v13 identifier:identifier completionHandler:v17];
 
   v14 = v30[5];
-  if (a5 && !v14)
+  if (error && !v14)
   {
-    *a5 = v24[5];
+    *error = v24[5];
     v14 = v30[5];
   }
 
@@ -2210,11 +2210,11 @@ void __82__NLContextualEmbedding_requestBackgroundEmbeddingResultForString_langu
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)requestBackgroundBatchEmbeddingResultsForStrings:(id)a3 language:(id)a4 error:(id *)a5
+- (id)requestBackgroundBatchEmbeddingResultsForStrings:(id)strings language:(id)language error:(id *)error
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  stringsCopy = strings;
+  languageCopy = language;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -2227,32 +2227,32 @@ void __82__NLContextualEmbedding_requestBackgroundEmbeddingResultForString_langu
   v28 = __Block_byref_object_copy__3;
   v29 = __Block_byref_object_dispose__3;
   v30 = 0;
-  v10 = [v8 count];
+  v10 = [stringsCopy count];
   if (v10 <= [(NLContextualEmbedding *)self maximumBatchSize])
   {
-    if (!v9)
+    if (!languageCopy)
     {
-      v9 = @"und";
+      languageCopy = @"und";
     }
 
     v14 = +[NLXPCEmbeddingServerClient sharedClient];
-    v15 = [(NLContextualEmbedding *)self identifier];
+    identifier = [(NLContextualEmbedding *)self identifier];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __89__NLContextualEmbedding_requestBackgroundBatchEmbeddingResultsForStrings_language_error___block_invoke;
     v19[3] = &unk_1E7629DC8;
-    v20 = v8;
+    v20 = stringsCopy;
     v23 = &v31;
-    v9 = v9;
-    v21 = v9;
-    v22 = self;
+    languageCopy = languageCopy;
+    v21 = languageCopy;
+    selfCopy = self;
     v24 = &v25;
-    [v14 synchronousBatchDataFromTokenVectorEmbeddingForStrings:v20 language:v9 identifier:v15 completionHandler:v19];
+    [v14 synchronousBatchDataFromTokenVectorEmbeddingForStrings:v20 language:languageCopy identifier:identifier completionHandler:v19];
 
     v16 = v32[5];
-    if (a5 && !v16)
+    if (error && !v16)
     {
-      *a5 = v26[5];
+      *error = v26[5];
       v16 = v32[5];
     }
 
@@ -2262,14 +2262,14 @@ void __82__NLContextualEmbedding_requestBackgroundEmbeddingResultForString_langu
     goto LABEL_10;
   }
 
-  if (a5)
+  if (error)
   {
     v11 = MEMORY[0x1E696ABC0];
     v37 = *MEMORY[0x1E696A578];
     v38[0] = @"Maximum batch size exceeded";
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:&v37 count:1];
     [v11 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:4 userInfo:v12];
-    *a5 = v13 = 0;
+    *error = v13 = 0;
 LABEL_10:
 
     goto LABEL_11;
@@ -2337,7 +2337,7 @@ void __89__NLContextualEmbedding_requestBackgroundBatchEmbeddingResultsForString
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)requestBackgroundModelLoadingWithTimeout:(double)a3 error:(id *)a4
+- (BOOL)requestBackgroundModelLoadingWithTimeout:(double)timeout error:(id *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
   v24 = 0;
@@ -2351,17 +2351,17 @@ void __89__NLContextualEmbedding_requestBackgroundBatchEmbeddingResultsForString
   v22 = __Block_byref_object_dispose__3;
   v23 = 0;
   v7 = +[NLXPCEmbeddingServerClient sharedClient];
-  v8 = [(NLContextualEmbedding *)self identifier];
+  identifier = [(NLContextualEmbedding *)self identifier];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__NLContextualEmbedding_requestBackgroundModelLoadingWithTimeout_error___block_invoke;
   v17[3] = &unk_1E7629DF0;
   v17[4] = &v24;
   v17[5] = &v18;
-  [v7 synchronousLoadModelWithIdentifier:v8 timeout:v17 completionHandler:a3];
+  [v7 synchronousLoadModelWithIdentifier:identifier timeout:v17 completionHandler:timeout];
 
   v9 = *(v25 + 24);
-  if (a4 && (v25[3] & 1) == 0)
+  if (error && (v25[3] & 1) == 0)
   {
     v10 = v19[5];
     if (!v10)
@@ -2377,7 +2377,7 @@ void __89__NLContextualEmbedding_requestBackgroundBatchEmbeddingResultsForString
       v10 = v19[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = *(v25 + 24);
   }
 
@@ -2388,18 +2388,18 @@ void __89__NLContextualEmbedding_requestBackgroundBatchEmbeddingResultsForString
   return v9 & 1;
 }
 
-- (void)requestModelLoadingWithCompletionHandler:(id)a3
+- (void)requestModelLoadingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NLXPCEmbeddingServerClient sharedClient];
-  v6 = [(NLContextualEmbedding *)self identifier];
+  identifier = [(NLContextualEmbedding *)self identifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__NLContextualEmbedding_requestModelLoadingWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7629090;
-  v9 = v4;
-  v7 = v4;
-  [v5 loadModelWithIdentifier:v6 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [v5 loadModelWithIdentifier:identifier completionHandler:v8];
 }
 
 void __66__NLContextualEmbedding_requestModelLoadingWithCompletionHandler___block_invoke(uint64_t a1, char a2, void *a3)
@@ -2420,40 +2420,40 @@ void __66__NLContextualEmbedding_requestModelLoadingWithCompletionHandler___bloc
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_getSentenceEmbeddingForString:(id)a3 error:(id *)a4
+- (id)_getSentenceEmbeddingForString:(id)string error:(id *)error
 {
   v33[3] = *MEMORY[0x1E69E9840];
   v31 = 0;
-  v6 = [(NLE5Embedding *)self->_embeddingE5 embeddingDataForString:a3 sequenceSize:&v31 error:a4];
+  v6 = [(NLE5Embedding *)self->_embeddingE5 embeddingDataForString:string sequenceSize:&v31 error:error];
   if (v6)
   {
-    v7 = [(NLE5Embedding *)self->_embeddingE5 dimension];
+    dimension = [(NLE5Embedding *)self->_embeddingE5 dimension];
     v8 = objc_alloc(MEMORY[0x1E695FED0]);
     v33[0] = &unk_1F10D1310;
     v33[1] = &unk_1F10D1310;
     v9 = 0x1E696A000uLL;
-    v30 = v7;
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
+    v30 = dimension;
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:dimension];
     v33[2] = v10;
     v11 = 0x1E695D000uLL;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
-    v13 = [v8 initWithShape:v12 dataType:65568 error:a4];
+    v13 = [v8 initWithShape:v12 dataType:65568 error:error];
 
     if (v13)
     {
-      v27 = self;
-      v28 = a4;
+      selfCopy = self;
+      errorCopy = error;
       v29 = v6;
-      v14 = [v6 bytes];
-      if (v7)
+      bytes = [v6 bytes];
+      if (dimension)
       {
-        v16 = v14;
+        v16 = bytes;
         v17 = 0;
-        v18 = 4 * v7;
+        v18 = 4 * dimension;
         do
         {
           LODWORD(v15) = *(v16 + v18 * (v31 - 1) + 4 * v17);
-          v19 = [*(v9 + 3480) numberWithFloat:{v15, v27, v28}];
+          v19 = [*(v9 + 3480) numberWithFloat:{v15, selfCopy, errorCopy}];
           v32[0] = &unk_1F10D1328;
           v32[1] = &unk_1F10D1328;
           v20 = [*(v9 + 3480) numberWithUnsignedInteger:v17];
@@ -2472,30 +2472,30 @@ void __66__NLContextualEmbedding_requestModelLoadingWithCompletionHandler___bloc
         while (v30 != v17);
       }
 
-      v24 = [(NLSentenceEmbeddingHead *)v27->_sentenceEmbeddingHead getSentenceEmbeddingFromPooledTokenEmbeddings:v13 error:v28, v27, v28];
+      errorCopy = [(NLSentenceEmbeddingHead *)selfCopy->_sentenceEmbeddingHead getSentenceEmbeddingFromPooledTokenEmbeddings:v13 error:errorCopy, selfCopy, errorCopy];
       v6 = v29;
     }
 
     else
     {
-      v24 = 0;
+      errorCopy = 0;
     }
   }
 
   else
   {
-    v24 = 0;
+    errorCopy = 0;
   }
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v24;
+  return errorCopy;
 }
 
-- (id)_sentenceEmbeddingVectorForString:(id)a3 error:(id *)a4
+- (id)_sentenceEmbeddingVectorForString:(id)string error:(id *)error
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v5 = [(NLContextualEmbedding *)self _getSentenceEmbeddingForString:a3 error:a4];
+  v5 = [(NLContextualEmbedding *)self _getSentenceEmbeddingForString:string error:error];
   v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NLSentenceEmbeddingHead outputDimension](self->_sentenceEmbeddingHead, "outputDimension")}];
   if ([(NLSentenceEmbeddingHead *)self->_sentenceEmbeddingHead outputDimension])
   {
@@ -2519,11 +2519,11 @@ void __66__NLContextualEmbedding_requestModelLoadingWithCompletionHandler___bloc
   return v6;
 }
 
-- (id)sentenceEmbeddingVectorForString:(id)a3 language:(id)a4 error:(id *)a5
+- (id)sentenceEmbeddingVectorForString:(id)string language:(id)language error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(NLContextualEmbedding *)self loadSentenceEmbeddingWithError:a5])
+  stringCopy = string;
+  languageCopy = language;
+  if ([(NLContextualEmbedding *)self loadSentenceEmbeddingWithError:error])
   {
     v10 = NLContextualEmbeddingSignpostHandle();
     v11 = os_signpost_id_generate(v10);
@@ -2535,7 +2535,7 @@ void __66__NLContextualEmbedding_requestModelLoadingWithCompletionHandler___bloc
       _os_signpost_emit_with_name_impl(&dword_19D48F000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "sentenceEmbedding", &unk_19D4EF749, buf, 2u);
     }
 
-    v14 = [(NLContextualEmbedding *)self _sentenceEmbeddingVectorForString:v8 error:a5];
+    v14 = [(NLContextualEmbedding *)self _sentenceEmbeddingVectorForString:stringCopy error:error];
     v15 = v13;
     v16 = v15;
     if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
@@ -2553,12 +2553,12 @@ void __66__NLContextualEmbedding_requestModelLoadingWithCompletionHandler___bloc
   return v14;
 }
 
-- (id)_sentenceEmbeddingVectorDataForString:(id)a3 error:(id *)a4
+- (id)_sentenceEmbeddingVectorDataForString:(id)string error:(id *)error
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF88] data];
-  v8 = [(NLContextualEmbedding *)self _getSentenceEmbeddingForString:v6 error:a4];
+  stringCopy = string;
+  data = [MEMORY[0x1E695DF88] data];
+  v8 = [(NLContextualEmbedding *)self _getSentenceEmbeddingForString:stringCopy error:error];
   if ([(NLSentenceEmbeddingHead *)self->_sentenceEmbeddingHead outputDimension])
   {
     v9 = 0;
@@ -2574,7 +2574,7 @@ void __66__NLContextualEmbedding_requestModelLoadingWithCompletionHandler___bloc
       v14 = v13;
 
       v17 = v14;
-      [v7 appendBytes:&v17 length:4];
+      [data appendBytes:&v17 length:4];
       ++v9;
     }
 
@@ -2583,14 +2583,14 @@ void __66__NLContextualEmbedding_requestModelLoadingWithCompletionHandler___bloc
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return data;
 }
 
-- (id)sentenceEmbeddingVectorDataForString:(id)a3 language:(id)a4 error:(id *)a5
+- (id)sentenceEmbeddingVectorDataForString:(id)string language:(id)language error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(NLContextualEmbedding *)self loadSentenceEmbeddingWithError:a5])
+  stringCopy = string;
+  languageCopy = language;
+  if ([(NLContextualEmbedding *)self loadSentenceEmbeddingWithError:error])
   {
     v10 = NLContextualEmbeddingSignpostHandle();
     v11 = os_signpost_id_generate(v10);
@@ -2602,7 +2602,7 @@ void __66__NLContextualEmbedding_requestModelLoadingWithCompletionHandler___bloc
       _os_signpost_emit_with_name_impl(&dword_19D48F000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "sentenceEmbedding", &unk_19D4EF749, buf, 2u);
     }
 
-    v14 = [(NLContextualEmbedding *)self _sentenceEmbeddingVectorDataForString:v8 error:a5];
+    v14 = [(NLContextualEmbedding *)self _sentenceEmbeddingVectorDataForString:stringCopy error:error];
     v15 = v13;
     v16 = v15;
     if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
@@ -2620,20 +2620,20 @@ void __66__NLContextualEmbedding_requestModelLoadingWithCompletionHandler___bloc
   return v14;
 }
 
-- (void)requestSentenceEmbeddingVectorForString:(id)a3 language:(id)a4 completionHandler:(id)a5
+- (void)requestSentenceEmbeddingVectorForString:(id)string language:(id)language completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  languageCopy = language;
+  stringCopy = string;
   v11 = +[NLXPCEmbeddingServerClient sharedClient];
-  v12 = [(NLContextualEmbedding *)self identifier];
+  identifier = [(NLContextualEmbedding *)self identifier];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __92__NLContextualEmbedding_requestSentenceEmbeddingVectorForString_language_completionHandler___block_invoke;
   v14[3] = &unk_1E7629068;
-  v15 = v8;
-  v13 = v8;
-  [v11 dataFromSentenceVectorEmbeddingForString:v10 language:v9 identifier:v12 completionHandler:v14];
+  v15 = handlerCopy;
+  v13 = handlerCopy;
+  [v11 dataFromSentenceVectorEmbeddingForString:stringCopy language:languageCopy identifier:identifier completionHandler:v14];
 }
 
 void __92__NLContextualEmbedding_requestSentenceEmbeddingVectorForString_language_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2684,12 +2684,12 @@ void __92__NLContextualEmbedding_requestSentenceEmbeddingVectorForString_languag
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (id)subRangesWithinToken:(id)a3 offset:(unint64_t)a4
+- (id)subRangesWithinToken:(id)token offset:(unint64_t)offset
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [(NLE5Embedding *)self->_embeddingE5 tokenIDsForText:v5];
+  tokenCopy = token;
+  array = [MEMORY[0x1E695DF70] array];
+  v7 = [(NLE5Embedding *)self->_embeddingE5 tokenIDsForText:tokenCopy];
   if (subRangesWithinToken_offset__onceToken != -1)
   {
     [NLContextualEmbedding subRangesWithinToken:offset:];
@@ -2713,14 +2713,14 @@ void __92__NLContextualEmbedding_requestSentenceEmbeddingVectorForString_languag
 
         v16 = [v15 length];
         v17 = v16 + v8;
-        if (v16 + v8 > [v5 length])
+        if (v16 + v8 > [tokenCopy length])
         {
-          v17 = [v5 length];
+          v17 = [tokenCopy length];
           v16 = v17 - v8;
         }
 
-        v18 = [MEMORY[0x1E696B098] valueWithRange:{v8 + a4, v16}];
-        [v6 addObject:v18];
+        v18 = [MEMORY[0x1E696B098] valueWithRange:{v8 + offset, v16}];
+        [array addObject:v18];
 
         v8 = v17;
       }
@@ -2733,7 +2733,7 @@ void __92__NLContextualEmbedding_requestSentenceEmbeddingVectorForString_languag
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return array;
 }
 
 uint64_t __53__NLContextualEmbedding_subRangesWithinToken_offset___block_invoke()
@@ -2743,13 +2743,13 @@ uint64_t __53__NLContextualEmbedding_subRangesWithinToken_offset___block_invoke(
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)tokenDictionariesForString:(id)a3 tokens:(id)a4 tokenRanges:(id)a5
+- (id)tokenDictionariesForString:(id)string tokens:(id)tokens tokenRanges:(id)ranges
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E695DF70] array];
-  if ([v7 count])
+  tokensCopy = tokens;
+  rangesCopy = ranges;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([tokensCopy count])
   {
     v10 = [MEMORY[0x1E696B098] valueWithRange:{0, 0}];
     v29[0] = v10;
@@ -2758,70 +2758,70 @@ uint64_t __53__NLContextualEmbedding_subRangesWithinToken_offset___block_invoke(
     if ([v11 count])
     {
       v27[0] = @"TokenRange";
-      v12 = [v11 firstObject];
+      firstObject = [v11 firstObject];
       v27[1] = @"SubtokenRanges";
-      v28[0] = v12;
+      v28[0] = firstObject;
       v28[1] = v11;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
-      [v9 addObject:v13];
+      [array addObject:v13];
     }
   }
 
-  if ([v7 count])
+  if ([tokensCopy count])
   {
     v14 = 0;
     do
     {
-      if (v14 >= [v8 count])
+      if (v14 >= [rangesCopy count])
       {
         break;
       }
 
-      v15 = [v7 objectAtIndex:v14];
-      v16 = [v8 objectAtIndex:v14];
-      v17 = [v16 rangeValue];
+      v15 = [tokensCopy objectAtIndex:v14];
+      v16 = [rangesCopy objectAtIndex:v14];
+      rangeValue = [v16 rangeValue];
       v19 = v18;
 
-      v20 = [(NLContextualEmbedding *)self subRangesWithinToken:v15 offset:v17];
-      v21 = [MEMORY[0x1E696B098] valueWithRange:{v17, v19, @"TokenRange"}];
+      v20 = [(NLContextualEmbedding *)self subRangesWithinToken:v15 offset:rangeValue];
+      v21 = [MEMORY[0x1E696B098] valueWithRange:{rangeValue, v19, @"TokenRange"}];
       v25[1] = @"SubtokenRanges";
       v26[0] = v21;
       v26[1] = v20;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
-      [v9 addObject:v22];
+      [array addObject:v22];
 
       ++v14;
     }
 
-    while (v14 < [v7 count]);
+    while (v14 < [tokensCopy count]);
   }
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return array;
 }
 
-- (BOOL)enumerateTokensForString:(id)a3 language:(id)a4 inRange:(_NSRange)a5 error:(id *)a6 usingBlock:(id)a7
+- (BOOL)enumerateTokensForString:(id)string language:(id)language inRange:(_NSRange)range error:(id *)error usingBlock:(id)block
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v54 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v37 = a4;
-  v42 = a7;
-  if (self->_embeddingE5 || [(NLContextualEmbedding *)self loadWithError:a6])
+  stringCopy = string;
+  languageCopy = language;
+  blockCopy = block;
+  if (self->_embeddingE5 || [(NLContextualEmbedding *)self loadWithError:error])
   {
-    v13 = v37;
-    if (!v37)
+    v13 = languageCopy;
+    if (!languageCopy)
     {
       v13 = @"und";
     }
 
-    v37 = v13;
-    v14 = [(NLContextualEmbedding *)self _tokenRangesForString:v36 language:v13];
-    v34 = [(NLContextualEmbedding *)self _tokensForString:v36 tokenRanges:v14];
+    languageCopy = v13;
+    v14 = [(NLContextualEmbedding *)self _tokenRangesForString:stringCopy language:v13];
+    v34 = [(NLContextualEmbedding *)self _tokensForString:stringCopy tokenRanges:v14];
     v35 = v14;
-    [NLContextualEmbedding tokenDictionariesForString:"tokenDictionariesForString:tokens:tokenRanges:" tokens:v36 tokenRanges:?];
+    [NLContextualEmbedding tokenDictionariesForString:"tokenDictionariesForString:tokens:tokenRanges:" tokens:stringCopy tokenRanges:?];
     v51 = 0;
     v47 = 0u;
     v48 = 0u;
@@ -2843,7 +2843,7 @@ LABEL_7:
         v41 = v15;
         v16 = *(*(&v47 + 1) + 8 * v15);
         v17 = [v16 objectForKey:@"TokenRange"];
-        v18 = [v17 rangeValue];
+        rangeValue = [v17 rangeValue];
         v20 = v19;
 
         v21 = [v16 objectForKey:@"SubtokenRanges"];
@@ -2866,11 +2866,11 @@ LABEL_12:
               objc_enumerationMutation(v22);
             }
 
-            v27 = [*(*(&v43 + 1) + 8 * v26) rangeValue];
+            rangeValue2 = [*(*(&v43 + 1) + 8 * v26) rangeValue];
             v29 = v28;
-            if (rangesMatch(location, length, v18, v20) && rangesMatch(location, length, v27, v29))
+            if (rangesMatch(location, length, rangeValue, v20) && rangesMatch(location, length, rangeValue2, v29))
             {
-              v42[2](v42, v27, v29, &v51);
+              blockCopy[2](blockCopy, rangeValue2, v29, &v51);
             }
 
             if (v51)
@@ -2928,15 +2928,15 @@ LABEL_12:
   v2 = [(NSDictionary *)self->_catalogEntry objectForKey:@"Dimension"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (NSUInteger)maximumSequenceLength
@@ -2944,15 +2944,15 @@ LABEL_12:
   v2 = [(NSDictionary *)self->_catalogEntry objectForKey:@"MaximumSequenceLength"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)sentenceVectorDimension
@@ -2960,15 +2960,15 @@ LABEL_12:
   v2 = [(NSDictionary *)self->_catalogEntry objectForKey:@"SentenceEmbeddingDimension"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)tokenVectorDimension
@@ -3047,15 +3047,15 @@ LABEL_12:
   v2 = [(NSDictionary *)self->_catalogEntry objectForKey:@"Revision"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)modelSystemVersion
@@ -3063,43 +3063,43 @@ LABEL_12:
   v2 = [(NSDictionary *)self->_catalogEntry objectForKey:@"NLModelSystemVersion"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)compileWithError:(id *)a3
+- (BOOL)compileWithError:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
   if (!self->_embeddingE5)
   {
-    v6 = [(NLContextualEmbedding *)self bundlePath];
-    if (v6)
+    bundlePath = [(NLContextualEmbedding *)self bundlePath];
+    if (bundlePath)
     {
       v7 = [(NSDictionary *)self->_catalogEntry objectForKey:@"Adapters"];
       v8 = objc_opt_class();
-      v9 = [v6 stringByAppendingPathComponent:@"embeddings.mil"];
+      v9 = [bundlePath stringByAppendingPathComponent:@"embeddings.mil"];
       v3 = [v8 compileEmbeddingModelWithModelPath:v9 useANE:self->_useANE adapters:v7];
 
-      if (a3 && (v3 & 1) == 0)
+      if (error && (v3 & 1) == 0)
       {
         v10 = MEMORY[0x1E696ABC0];
         v15 = *MEMORY[0x1E696A578];
         v16 = @"E5 model compilation failed";
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-        *a3 = [v10 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:7 userInfo:v11];
+        *error = [v10 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:7 userInfo:v11];
       }
     }
 
     else
     {
-      if (!a3)
+      if (!error)
       {
         v3 = 0;
         goto LABEL_10;
@@ -3110,7 +3110,7 @@ LABEL_12:
       v18[0] = @"Failed to locate embedding model";
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
       [v12 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v7];
-      *a3 = v3 = 0;
+      *error = v3 = 0;
     }
 
 LABEL_10:
@@ -3130,15 +3130,15 @@ LABEL_11:
     return 1;
   }
 
-  v4 = [(NLContextualEmbedding *)self bundlePath];
-  if (!v4)
+  bundlePath = [(NLContextualEmbedding *)self bundlePath];
+  if (!bundlePath)
   {
     goto LABEL_5;
   }
 
   v5 = [(NSDictionary *)self->_catalogEntry objectForKey:@"Adapters"];
   v6 = objc_opt_class();
-  v7 = [v4 stringByAppendingPathComponent:@"embeddings.mil"];
+  v7 = [bundlePath stringByAppendingPathComponent:@"embeddings.mil"];
   useANE = self->_useANE;
   v11 = 0;
   v9 = [v6 isCompiledEmbeddingModelWithModelPath:v7 useANE:useANE adapters:v5 error:&v11];
@@ -3160,25 +3160,25 @@ LABEL_5:
 
 - (BOOL)requiresCompilation
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.naturallanguaged"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.naturallanguaged"];
 
   return (v5 & 1) == 0 && [(NLContextualEmbedding *)self getCompilationState]!= 1;
 }
 
-- (void)requestModelCompilationWithCompletionHandler:(id)a3
+- (void)requestModelCompilationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NLXPCEmbeddingServerClient sharedClient];
-  v6 = [(NLContextualEmbedding *)self identifier];
+  identifier = [(NLContextualEmbedding *)self identifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__NLContextualEmbedding_requestModelCompilationWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7629090;
-  v9 = v4;
-  v7 = v4;
-  [v5 compileModelWithIdentifier:v6 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [v5 compileModelWithIdentifier:identifier completionHandler:v8];
 }
 
 void __70__NLContextualEmbedding_requestModelCompilationWithCompletionHandler___block_invoke(uint64_t a1, char a2, void *a3)
@@ -3199,32 +3199,32 @@ void __70__NLContextualEmbedding_requestModelCompilationWithCompletionHandler___
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestAssetsWithCompletionHandler:(id)a3
+- (void)requestAssetsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
-  v6 = [(NLContextualEmbedding *)self modelIdentifier];
+  handlerCopy = handler;
+  assetLocaleIdentifier = [(NLContextualEmbedding *)self assetLocaleIdentifier];
+  modelIdentifier = [(NLContextualEmbedding *)self modelIdentifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__NLContextualEmbedding_requestAssetsWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7629E18;
-  v9 = v4;
-  v7 = v4;
-  [NLTagger requestAssetsForLanguage:v5 assetIdentifier:v6 tagScheme:@"ContextualEmbedding" completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [NLTagger requestAssetsForLanguage:assetLocaleIdentifier assetIdentifier:modelIdentifier tagScheme:@"ContextualEmbedding" completionHandler:v8];
 }
 
 - (void)requestEmbeddingAssetsWithCompletionHandler:(void *)completionHandler
 {
   v4 = completionHandler;
-  v5 = [(NLContextualEmbedding *)self assetLocaleIdentifier];
-  v6 = [(NLContextualEmbedding *)self modelIdentifier];
+  assetLocaleIdentifier = [(NLContextualEmbedding *)self assetLocaleIdentifier];
+  modelIdentifier = [(NLContextualEmbedding *)self modelIdentifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__NLContextualEmbedding_requestEmbeddingAssetsWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7629E18;
   v9 = v4;
   v7 = v4;
-  [NLTagger requestAssetsForLanguage:v5 assetIdentifier:v6 tagScheme:@"ContextualEmbedding" completionHandler:v8];
+  [NLTagger requestAssetsForLanguage:assetLocaleIdentifier assetIdentifier:modelIdentifier tagScheme:@"ContextualEmbedding" completionHandler:v8];
 }
 
 @end

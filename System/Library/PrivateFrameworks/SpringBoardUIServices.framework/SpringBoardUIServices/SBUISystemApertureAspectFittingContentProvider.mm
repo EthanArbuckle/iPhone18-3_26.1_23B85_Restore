@@ -1,24 +1,24 @@
 @interface SBUISystemApertureAspectFittingContentProvider
 - (CGSize)explicitIntrinsicSize;
-- (SBUISystemApertureAspectFittingContentProvider)initWithView:(id)a3;
+- (SBUISystemApertureAspectFittingContentProvider)initWithView:(id)view;
 - (id)_providedView;
-- (void)setContentContainer:(id)a3;
-- (void)setExplicitIntrinsicSize:(CGSize)a3;
+- (void)setContentContainer:(id)container;
+- (void)setExplicitIntrinsicSize:(CGSize)size;
 @end
 
 @implementation SBUISystemApertureAspectFittingContentProvider
 
-- (SBUISystemApertureAspectFittingContentProvider)initWithView:(id)a3
+- (SBUISystemApertureAspectFittingContentProvider)initWithView:(id)view
 {
-  v5 = a3;
-  if (!v5)
+  viewCopy = view;
+  if (!viewCopy)
   {
     [(SBUISystemApertureAspectFittingContentProvider *)a2 initWithView:?];
   }
 
   customView = self->_customView;
-  self->_customView = v5;
-  v7 = v5;
+  self->_customView = viewCopy;
+  v7 = viewCopy;
 
   v8 = [[_SBUISystemApertureAspectFittingView alloc] initWithContentView:v7];
   v11.receiver = self;
@@ -30,8 +30,8 @@
 
 - (CGSize)explicitIntrinsicSize
 {
-  v2 = [(SBUISystemApertureAspectFittingContentProvider *)self _providedView];
-  [v2 explicitIntrinsicSize];
+  _providedView = [(SBUISystemApertureAspectFittingContentProvider *)self _providedView];
+  [_providedView explicitIntrinsicSize];
   v4 = v3;
   v6 = v5;
 
@@ -42,18 +42,18 @@
   return result;
 }
 
-- (void)setExplicitIntrinsicSize:(CGSize)a3
+- (void)setExplicitIntrinsicSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SBUISystemApertureAspectFittingContentProvider *)self explicitIntrinsicSize];
   if (width != v7 || height != v6)
   {
-    v9 = [(SBUISystemApertureAspectFittingContentProvider *)self _providedView];
-    [v9 setExplicitIntrinsicSize:{width, height}];
+    _providedView = [(SBUISystemApertureAspectFittingContentProvider *)self _providedView];
+    [_providedView setExplicitIntrinsicSize:{width, height}];
 
-    v10 = [(SBUISystemApertureCustomContentProvider *)self contentContainer];
-    [v10 preferredContentSizeDidInvalidateForContentViewProvider:self];
+    contentContainer = [(SBUISystemApertureCustomContentProvider *)self contentContainer];
+    [contentContainer preferredContentSizeDidInvalidateForContentViewProvider:self];
   }
 }
 
@@ -61,22 +61,22 @@
 {
   v4.receiver = self;
   v4.super_class = SBUISystemApertureAspectFittingContentProvider;
-  v2 = [(SBUISystemApertureCustomContentProvider *)&v4 providedView];
+  providedView = [(SBUISystemApertureCustomContentProvider *)&v4 providedView];
 
-  return v2;
+  return providedView;
 }
 
-- (void)setContentContainer:(id)a3
+- (void)setContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v7.receiver = self;
   v7.super_class = SBUISystemApertureAspectFittingContentProvider;
-  [(SBUISystemApertureCustomContentProvider *)&v7 setContentContainer:v4];
-  v5 = [(SBUISystemApertureAspectFittingContentProvider *)self _providedView];
-  v6 = v5;
-  if (v5)
+  [(SBUISystemApertureCustomContentProvider *)&v7 setContentContainer:containerCopy];
+  _providedView = [(SBUISystemApertureAspectFittingContentProvider *)self _providedView];
+  v6 = _providedView;
+  if (_providedView)
   {
-    objc_storeWeak((v5 + 416), v4);
+    objc_storeWeak((_providedView + 416), containerCopy);
   }
 }
 

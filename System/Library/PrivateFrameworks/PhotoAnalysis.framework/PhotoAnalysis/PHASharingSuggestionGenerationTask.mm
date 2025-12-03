@@ -1,19 +1,19 @@
 @interface PHASharingSuggestionGenerationTask
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
-- (id)generateSuggestionsWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
+- (id)generateSuggestionsWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
 - (id)taskClassDependencies;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHASharingSuggestionGenerationTask
 
-- (id)generateSuggestionsWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (id)generateSuggestionsWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[PHASuggestionController alloc] initWithGraphManager:v8];
+  reporterCopy = reporter;
+  managerCopy = manager;
+  v9 = [[PHASuggestionController alloc] initWithGraphManager:managerCopy];
 
   if (self->_suggestionOptionsDictionary)
   {
@@ -37,7 +37,7 @@
   v20 = 3221225472;
   v21 = __97__PHASharingSuggestionGenerationTask_generateSuggestionsWithGraphManager_progressReporter_error___block_invoke;
   v22 = &unk_2788B2258;
-  v12 = v7;
+  v12 = reporterCopy;
   v23 = v12;
   v13 = [(PHASuggestionController *)v9 generateSharingSuggestionsWithOptions:v11 progress:&v19];
   if ([v11 discardGeneratedSuggestions])
@@ -70,9 +70,9 @@ uint64_t __97__PHASharingSuggestionGenerationTask_generateSuggestionsWithGraphMa
   return result;
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHASharingSuggestionGenerationTask timeoutFatal:]", "PHASharingSuggestionGenerationTask.m", 85, "NO");
   }
@@ -84,39 +84,39 @@ uint64_t __97__PHASharingSuggestionGenerationTask_generateSuggestionsWithGraphMa
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
-  v5 = [(PHASharingSuggestionGenerationTask *)self generateSuggestionsWithGraphManager:a3 progressReporter:a4 error:a5];
+  v5 = [(PHASharingSuggestionGenerationTask *)self generateSuggestionsWithGraphManager:manager progressReporter:reporter error:error];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
-  v3 = a3;
-  v4 = [v3 workingContext];
-  v5 = [v4 photoLibrary];
-  v6 = [v5 isCloudPhotoLibraryEnabled];
+  managerCopy = manager;
+  workingContext = [managerCopy workingContext];
+  photoLibrary = [workingContext photoLibrary];
+  isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-  if (v6)
+  if (isCloudPhotoLibraryEnabled)
   {
-    v7 = [v3 isReady];
+    isReady = [managerCopy isReady];
   }
 
   else
   {
-    v8 = [v4 loggingConnection];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    loggingConnection = [workingContext loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       *v10 = 0;
-      _os_log_impl(&dword_22FA28000, v8, OS_LOG_TYPE_INFO, "[PHASharingSuggestionGenerationTask] Not running sharing suggestion task because cloud photo library is not enabled", v10, 2u);
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_INFO, "[PHASharingSuggestionGenerationTask] Not running sharing suggestion task because cloud photo library is not enabled", v10, 2u);
     }
 
-    v7 = 0;
+    isReady = 0;
   }
 
-  return v7;
+  return isReady;
 }
 
 - (id)taskClassDependencies

@@ -1,22 +1,22 @@
 @interface HKRemoteFeatureAvailabilityCompoundRule
 - (BOOL)evaluate;
-- (void)processUserInfo:(id)a3;
+- (void)processUserInfo:(id)info;
 @end
 
 @implementation HKRemoteFeatureAvailabilityCompoundRule
 
-- (void)processUserInfo:(id)a3
+- (void)processUserInfo:(id)info
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"grouping"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:@"grouping"];
   [(HKRemoteFeatureAvailabilityCompoundRule *)self setGrouping:v5];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(HKRemoteFeatureAvailabilityCompoundRule *)self setRules:v6];
 
-  v25 = v4;
-  v7 = [v4 objectForKeyedSubscript:@"rules"];
+  v25 = infoCopy;
+  v7 = [infoCopy objectForKeyedSubscript:@"rules"];
   v8 = v7;
   v9 = MEMORY[0x1E695E0F0];
   if (v7)
@@ -50,11 +50,11 @@
         if (v17)
         {
           v18 = v17;
-          v19 = [(HKRemoteFeatureAvailabilityCompoundRule *)self rules];
+          rules = [(HKRemoteFeatureAvailabilityCompoundRule *)self rules];
           v20 = [v18 alloc];
-          v21 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-          v22 = [v20 initWithRawValue:v16 dataSource:v21];
-          [v19 addObject:v22];
+          dataSource = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+          v22 = [v20 initWithRawValue:v16 dataSource:dataSource];
+          [rules addObject:v22];
         }
 
         else
@@ -81,50 +81,50 @@
 
 - (BOOL)evaluate
 {
-  v3 = [(HKRemoteFeatureAvailabilityCompoundRule *)self rules];
-  v4 = [v3 firstObject];
-  v5 = [v4 evaluate];
+  rules = [(HKRemoteFeatureAvailabilityCompoundRule *)self rules];
+  firstObject = [rules firstObject];
+  evaluate = [firstObject evaluate];
 
-  v6 = [(HKRemoteFeatureAvailabilityCompoundRule *)self rules];
-  v7 = [v6 count];
+  rules2 = [(HKRemoteFeatureAvailabilityCompoundRule *)self rules];
+  v7 = [rules2 count];
 
   if (v7 >= 2)
   {
     v8 = 1;
     do
     {
-      v9 = [(HKRemoteFeatureAvailabilityCompoundRule *)self rules];
-      v10 = [v9 objectAtIndexedSubscript:v8];
+      rules3 = [(HKRemoteFeatureAvailabilityCompoundRule *)self rules];
+      v10 = [rules3 objectAtIndexedSubscript:v8];
 
-      v11 = [v10 evaluate];
-      v12 = [(HKRemoteFeatureAvailabilityCompoundRule *)self grouping];
-      v13 = [v12 isEqualToString:@"AND"];
+      evaluate2 = [v10 evaluate];
+      grouping = [(HKRemoteFeatureAvailabilityCompoundRule *)self grouping];
+      v13 = [grouping isEqualToString:@"AND"];
 
       if (v13)
       {
-        v5 &= v11;
+        evaluate &= evaluate2;
       }
 
       else
       {
-        v14 = [(HKRemoteFeatureAvailabilityCompoundRule *)self grouping];
-        v15 = [v14 isEqualToString:@"OR"];
+        grouping2 = [(HKRemoteFeatureAvailabilityCompoundRule *)self grouping];
+        v15 = [grouping2 isEqualToString:@"OR"];
 
         if (v15)
         {
-          v5 |= v11;
+          evaluate |= evaluate2;
         }
       }
 
       ++v8;
-      v16 = [(HKRemoteFeatureAvailabilityCompoundRule *)self rules];
-      v17 = [v16 count];
+      rules4 = [(HKRemoteFeatureAvailabilityCompoundRule *)self rules];
+      v17 = [rules4 count];
     }
 
     while (v8 < v17);
   }
 
-  return v5 & 1;
+  return evaluate & 1;
 }
 
 @end

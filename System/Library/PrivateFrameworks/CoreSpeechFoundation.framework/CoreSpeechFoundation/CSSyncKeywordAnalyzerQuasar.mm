@@ -1,26 +1,26 @@
 @interface CSSyncKeywordAnalyzerQuasar
-+ (id)_phToPhIdMapFromTriggerTokensArray:(id)a3;
-+ (void)dumpEARSpeechRecognitionResults:(id)a3;
-- (id)_getAnalyzedResults:(id)a3;
-- (id)getAnalyzedResultsFromAudioChunk:(id)a3;
++ (id)_phToPhIdMapFromTriggerTokensArray:(id)array;
++ (void)dumpEARSpeechRecognitionResults:(id)results;
+- (id)_getAnalyzedResults:(id)results;
+- (id)getAnalyzedResultsFromAudioChunk:(id)chunk;
 - (id)getResultsFromFlushedAudio;
 - (void)reset;
 @end
 
 @implementation CSSyncKeywordAnalyzerQuasar
 
-- (id)_getAnalyzedResults:(id)a3
+- (id)_getAnalyzedResults:(id)results
 {
   v48 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  resultsCopy = results;
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_numPhrases)
   {
     v5 = 0;
     do
     {
-      v6 = [[CSSyncKeywordAnalyzerQuasarResult alloc] initWithDefaultConfidence];
-      [v4 addObject:v6];
+      initWithDefaultConfidence = [[CSSyncKeywordAnalyzerQuasarResult alloc] initWithDefaultConfidence];
+      [array addObject:initWithDefaultConfidence];
 
       ++v5;
     }
@@ -28,12 +28,12 @@
     while (v5 < self->_numPhrases);
   }
 
-  v36 = self;
+  selfCopy = self;
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v7 = v35;
+  v7 = resultsCopy;
   v8 = [v7 countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (v8)
   {
@@ -47,10 +47,10 @@
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v37 + 1) + 8 * i) tokens];
-        v12 = [v11 lastObject];
+        tokens = [*(*(&v37 + 1) + 8 * i) tokens];
+        lastObject = [tokens lastObject];
 
-        if (!v12 || ([v12 tokenName], v13 = objc_claimAutoreleasedReturnValue(), v14 = v13 == 0, v13, v14))
+        if (!lastObject || ([lastObject tokenName], v13 = objc_claimAutoreleasedReturnValue(), v14 = v13 == 0, v13, v14))
         {
           v28 = CSLogContextFacilityCoreSpeech;
           if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -61,7 +61,7 @@
           *buf = 136315394;
           v42 = "[CSSyncKeywordAnalyzerQuasar _getAnalyzedResults:]";
           v43 = 2114;
-          v44 = v12;
+          v44 = lastObject;
           v29 = v28;
           v30 = "%s Invalid token : %{public}@";
           v31 = 22;
@@ -70,10 +70,10 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        phToPhIdMap = v36->_phToPhIdMap;
-        v16 = [v12 tokenName];
-        v17 = [(NSDictionary *)phToPhIdMap objectForKeyedSubscript:v16];
-        v18 = [v17 unsignedIntegerValue];
+        phToPhIdMap = selfCopy->_phToPhIdMap;
+        tokenName = [lastObject tokenName];
+        v17 = [(NSDictionary *)phToPhIdMap objectForKeyedSubscript:tokenName];
+        unsignedIntegerValue = [v17 unsignedIntegerValue];
 
         v19 = CSLogContextFacilityCoreSpeech;
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -81,13 +81,13 @@ LABEL_22:
           *buf = 136315650;
           v42 = "[CSSyncKeywordAnalyzerQuasar _getAnalyzedResults:]";
           v43 = 2048;
-          v44 = v18;
+          v44 = unsignedIntegerValue;
           v45 = 2114;
-          v46 = v12;
+          v46 = lastObject;
           _os_log_impl(&dword_1DDA4B000, v19, OS_LOG_TYPE_DEFAULT, "%s %tu, token = %{public}@", buf, 0x20u);
         }
 
-        if (v18 >= [v4 count])
+        if (unsignedIntegerValue >= [array count])
         {
           v32 = CSLogContextFacilityCoreSpeech;
           if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -98,20 +98,20 @@ LABEL_22:
           *buf = 136315394;
           v42 = "[CSSyncKeywordAnalyzerQuasar _getAnalyzedResults:]";
           v43 = 1024;
-          LODWORD(v44) = v18;
+          LODWORD(v44) = unsignedIntegerValue;
           v29 = v32;
           v30 = "%s Unable to handle: %d";
           v31 = 18;
           goto LABEL_22;
         }
 
-        v20 = [v4 objectAtIndex:v18];
+        v20 = [array objectAtIndex:unsignedIntegerValue];
         [v20 triggerConfidence];
         v22 = v21;
 
-        [v12 confidence];
+        [lastObject confidence];
         v24 = v23;
-        v25 = [v4 objectAtIndexedSubscript:v18];
+        v25 = [array objectAtIndexedSubscript:unsignedIntegerValue];
         v26 = v25;
         if (v24 >= v22)
         {
@@ -136,26 +136,26 @@ LABEL_23:
 
   v33 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
-- (id)getAnalyzedResultsFromAudioChunk:(id)a3
+- (id)getAnalyzedResultsFromAudioChunk:(id)chunk
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  chunkCopy = chunk;
   self->_requireReset = 1;
-  v5 = [v4 dataForChannel:self->_activeChannel];
-  v6 = [v4 numSamples];
-  v7 = [v4 isFloat];
+  v5 = [chunkCopy dataForChannel:self->_activeChannel];
+  numSamples = [chunkCopy numSamples];
+  isFloat = [chunkCopy isFloat];
   syncRecognizer = self->_syncRecognizer;
-  if (v7)
+  if (isFloat)
   {
-    [(_EARSyncSpeechRecognizer *)syncRecognizer resultsWithAddedFloatAudio:v5 numberOfSamples:v6 taskName:&stru_1F58FE330];
+    [(_EARSyncSpeechRecognizer *)syncRecognizer resultsWithAddedFloatAudio:v5 numberOfSamples:numSamples taskName:&stru_1F58FE330];
   }
 
   else
   {
-    [(_EARSyncSpeechRecognizer *)syncRecognizer resultsWithAddedAudio:v5 numberOfSamples:v6 taskName:&stru_1F58FE330];
+    [(_EARSyncSpeechRecognizer *)syncRecognizer resultsWithAddedAudio:v5 numberOfSamples:numSamples taskName:&stru_1F58FE330];
   }
   v9 = ;
   v10 = [(CSSyncKeywordAnalyzerQuasar *)self _getAnalyzedResults:v9];
@@ -192,8 +192,8 @@ LABEL_23:
     _os_signpost_emit_with_name_impl(&dword_1DDA4B000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "SecondPassInferenceLatency", "%{public, signpost.description:begin_time}llu, %s %s", &v17, 0x20u);
   }
 
-  v8 = [(_EARSyncSpeechRecognizer *)self->_syncRecognizer resultsWithEndedAudio];
-  v9 = [(CSSyncKeywordAnalyzerQuasar *)self _getAnalyzedResults:v8];
+  resultsWithEndedAudio = [(_EARSyncSpeechRecognizer *)self->_syncRecognizer resultsWithEndedAudio];
+  v9 = [(CSSyncKeywordAnalyzerQuasar *)self _getAnalyzedResults:resultsWithEndedAudio];
 
   v10 = mach_absolute_time();
   v11 = CSLogContextFacilityCoreSpeech;
@@ -252,14 +252,14 @@ LABEL_23:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dumpEARSpeechRecognitionResults:(id)a3
++ (void)dumpEARSpeechRecognitionResults:(id)results
 {
   v33 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = a3;
+  obj = results;
   v3 = [obj countByEnumeratingWithState:&v23 objects:v32 count:16];
   if (v3)
   {
@@ -292,8 +292,8 @@ LABEL_23:
         v22 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v7 = [v5 tokens];
-        v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        tokens = [v5 tokens];
+        v8 = [tokens countByEnumeratingWithState:&v19 objects:v27 count:16];
         v18 = v4;
         if (v8)
         {
@@ -304,7 +304,7 @@ LABEL_23:
             {
               if (*v20 != v9)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(tokens);
               }
 
               v11 = CSLogContextFacilityCoreSpeech;
@@ -319,7 +319,7 @@ LABEL_23:
               }
             }
 
-            v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v8 = [tokens countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v8);
@@ -338,14 +338,14 @@ LABEL_23:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_phToPhIdMapFromTriggerTokensArray:(id)a3
++ (id)_phToPhIdMapFromTriggerTokensArray:(id)array
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  for (i = 0; i < [v3 count]; ++i)
+  arrayCopy = array;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  for (i = 0; i < [arrayCopy count]; ++i)
   {
-    v6 = [v3 objectAtIndexedSubscript:i];
+    v6 = [arrayCopy objectAtIndexedSubscript:i];
     v7 = [v6 componentsSeparatedByString:@"_"];
 
     v18 = 0u;
@@ -368,7 +368,7 @@ LABEL_23:
 
           v12 = *(*(&v16 + 1) + 8 * j);
           v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
-          [v4 setObject:v13 forKey:v12];
+          [dictionary setObject:v13 forKey:v12];
         }
 
         v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -380,7 +380,7 @@ LABEL_23:
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return dictionary;
 }
 
 @end

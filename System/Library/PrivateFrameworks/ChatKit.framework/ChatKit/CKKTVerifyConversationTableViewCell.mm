@@ -1,6 +1,6 @@
 @interface CKKTVerifyConversationTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKKTVerifyConversationTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 numberOfRowsInSection:(int64_t)a5 shouldShowMacHeader:(BOOL)a6 ktStatus:(unint64_t)a7;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKKTVerifyConversationTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier numberOfRowsInSection:(int64_t)section shouldShowMacHeader:(BOOL)header ktStatus:(unint64_t)status;
 - (id)verifyTitleString;
 - (void)addConstraints;
 - (void)setupSeparators;
@@ -11,17 +11,17 @@
 
 @implementation CKKTVerifyConversationTableViewCell
 
-- (CKKTVerifyConversationTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 numberOfRowsInSection:(int64_t)a5 shouldShowMacHeader:(BOOL)a6 ktStatus:(unint64_t)a7
+- (CKKTVerifyConversationTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier numberOfRowsInSection:(int64_t)section shouldShowMacHeader:(BOOL)header ktStatus:(unint64_t)status
 {
   v13.receiver = self;
   v13.super_class = CKKTVerifyConversationTableViewCell;
-  v10 = [(CKDetailsCell *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v10 = [(CKDetailsCell *)&v13 initWithStyle:style reuseIdentifier:identifier];
   v11 = v10;
   if (v10)
   {
-    v10->_numberOfRowsInSection = a5;
-    v10->_shouldShowMacHeader = a6;
-    v10->_ktStatus = a7;
+    v10->_numberOfRowsInSection = section;
+    v10->_shouldShowMacHeader = header;
+    v10->_ktStatus = status;
     [(CKKTVerifyConversationTableViewCell *)v10 setupView];
   }
 
@@ -37,8 +37,8 @@
     [(CKKTVerifyConversationTableViewCell *)self setupMacHeaderLabel];
   }
 
-  v3 = [(CKKTVerifyConversationTableViewCell *)self contentView];
-  [v3 setBackgroundColor:0];
+  contentView = [(CKKTVerifyConversationTableViewCell *)self contentView];
+  [contentView setBackgroundColor:0];
 
   [(CKKTVerifyConversationTableViewCell *)self addConstraints];
 }
@@ -46,11 +46,11 @@
 - (void)setupSeparators
 {
   v3 = self->_numberOfRowsInSection < 2;
-  v4 = [(CKDetailsCell *)self topSeperator];
-  [v4 setHidden:v3];
+  topSeperator = [(CKDetailsCell *)self topSeperator];
+  [topSeperator setHidden:v3];
 
-  v5 = [(CKDetailsCell *)self bottomSeperator];
-  [v5 setHidden:1];
+  bottomSeperator = [(CKDetailsCell *)self bottomSeperator];
+  [bottomSeperator setHidden:1];
 
   [(CKDetailsCell *)self setIndentTopSeperator:1];
 
@@ -65,82 +65,82 @@
   self->_verifyConversationLabel = v4;
 
   v6 = self->_verifyConversationLabel;
-  v7 = [(CKKTVerifyConversationTableViewCell *)self verifyTitleString];
-  [(UILabel *)v6 setText:v7];
+  verifyTitleString = [(CKKTVerifyConversationTableViewCell *)self verifyTitleString];
+  [(UILabel *)v6 setText:verifyTitleString];
 
   v8 = self->_verifyConversationLabel;
-  v9 = [(CKKTVerifyConversationTableViewCell *)self textLabel];
-  v10 = [v9 font];
-  [(UILabel *)v8 setFont:v10];
+  textLabel = [(CKKTVerifyConversationTableViewCell *)self textLabel];
+  font = [textLabel font];
+  [(UILabel *)v8 setFont:font];
 
   v11 = self->_verifyConversationLabel;
   v12 = +[CKUIBehavior sharedBehaviors];
-  v13 = [v12 theme];
-  v14 = [v13 detailsTextColor];
-  [(UILabel *)v11 setTextColor:v14];
+  theme = [v12 theme];
+  detailsTextColor = [theme detailsTextColor];
+  [(UILabel *)v11 setTextColor:detailsTextColor];
 
   [(UILabel *)self->_verifyConversationLabel setNumberOfLines:0];
   [(UILabel *)self->_verifyConversationLabel setLineBreakMode:4];
   [(UILabel *)self->_verifyConversationLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v15 = [(CKKTVerifyConversationTableViewCell *)self contentView];
-  [v15 addSubview:self->_verifyConversationLabel];
+  contentView = [(CKKTVerifyConversationTableViewCell *)self contentView];
+  [contentView addSubview:self->_verifyConversationLabel];
 }
 
 - (void)addConstraints
 {
   v55[4] = *MEMORY[0x1E69E9840];
-  v53 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = 0x1E695D000;
   if (CKIsRunningInMacCatalyst() && self->_shouldShowMacHeader)
   {
-    v47 = [(UILabel *)self->_macHeaderLabel topAnchor];
-    v51 = [(CKKTVerifyConversationTableViewCell *)self contentView];
-    v49 = [v51 layoutMarginsGuide];
-    v43 = [v49 topAnchor];
+    topAnchor = [(UILabel *)self->_macHeaderLabel topAnchor];
+    contentView = [(CKKTVerifyConversationTableViewCell *)self contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
     v45 = +[CKUIBehavior sharedBehaviors];
     [v45 detailsSectionHeaderPaddingAbove];
-    v41 = [v47 constraintEqualToAnchor:v43 constant:?];
+    v41 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
     v55[0] = v41;
-    v37 = [(UILabel *)self->_macHeaderLabel heightAnchor];
-    v39 = [(UILabel *)self->_macHeaderLabel font];
-    [v39 pointSize];
-    v35 = [v37 constraintEqualToConstant:?];
+    heightAnchor = [(UILabel *)self->_macHeaderLabel heightAnchor];
+    font = [(UILabel *)self->_macHeaderLabel font];
+    [font pointSize];
+    v35 = [heightAnchor constraintEqualToConstant:?];
     v55[1] = v35;
-    v29 = [(UILabel *)self->_macHeaderLabel leadingAnchor];
-    v33 = [(CKKTVerifyConversationTableViewCell *)self contentView];
-    v31 = [v33 layoutMarginsGuide];
-    v4 = [v31 leadingAnchor];
+    leadingAnchor = [(UILabel *)self->_macHeaderLabel leadingAnchor];
+    contentView2 = [(CKKTVerifyConversationTableViewCell *)self contentView];
+    layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide2 leadingAnchor];
     v5 = +[CKUIBehavior sharedBehaviors];
     [v5 detailsSectionHeaderPaddingLeading];
-    v6 = [v29 constraintEqualToAnchor:v4 constant:?];
+    v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     v55[2] = v6;
-    v7 = [(UILabel *)self->_macHeaderLabel trailingAnchor];
-    v8 = [(CKKTVerifyConversationTableViewCell *)self contentView];
-    v9 = [v8 layoutMarginsGuide];
-    v10 = [v9 trailingAnchor];
-    v11 = [v7 constraintEqualToAnchor:v10];
+    trailingAnchor = [(UILabel *)self->_macHeaderLabel trailingAnchor];
+    contentView3 = [(CKKTVerifyConversationTableViewCell *)self contentView];
+    layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide3 trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v55[3] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:4];
-    [v53 addObjectsFromArray:v12];
+    [array addObjectsFromArray:v12];
 
     v3 = 0x1E695D000uLL;
   }
 
-  v13 = [(UILabel *)self->_verifyConversationLabel leadingAnchor];
-  v50 = [(CKKTVerifyConversationTableViewCell *)self contentView];
-  v48 = [v50 layoutMarginsGuide];
-  [v48 leadingAnchor];
-  v46 = v52 = v13;
-  v44 = [v13 constraintEqualToAnchor:?];
+  leadingAnchor3 = [(UILabel *)self->_verifyConversationLabel leadingAnchor];
+  contentView4 = [(CKKTVerifyConversationTableViewCell *)self contentView];
+  layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+  [layoutMarginsGuide4 leadingAnchor];
+  v46 = v52 = leadingAnchor3;
+  v44 = [leadingAnchor3 constraintEqualToAnchor:?];
   v54[0] = v44;
-  v14 = [(UILabel *)self->_verifyConversationLabel trailingAnchor];
-  v40 = [(CKKTVerifyConversationTableViewCell *)self contentView];
-  v38 = [v40 layoutMarginsGuide];
-  [v38 trailingAnchor];
-  v36 = v42 = v14;
-  v34 = [v14 constraintLessThanOrEqualToAnchor:?];
+  trailingAnchor3 = [(UILabel *)self->_verifyConversationLabel trailingAnchor];
+  contentView5 = [(CKKTVerifyConversationTableViewCell *)self contentView];
+  layoutMarginsGuide5 = [contentView5 layoutMarginsGuide];
+  [layoutMarginsGuide5 trailingAnchor];
+  v36 = v42 = trailingAnchor3;
+  v34 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:?];
   v54[1] = v34;
-  v15 = [(UILabel *)self->_verifyConversationLabel topAnchor];
+  topAnchor3 = [(UILabel *)self->_verifyConversationLabel topAnchor];
   macHeaderLabel = self->_macHeaderLabel;
   v32 = macHeaderLabel;
   if (macHeaderLabel)
@@ -150,47 +150,47 @@
 
   else
   {
-    v28 = [(CKKTVerifyConversationTableViewCell *)self contentView];
-    v27 = [v28 layoutMarginsGuide];
-    [v27 topAnchor];
+    contentView6 = [(CKKTVerifyConversationTableViewCell *)self contentView];
+    layoutMarginsGuide6 = [contentView6 layoutMarginsGuide];
+    [layoutMarginsGuide6 topAnchor];
   }
   v17 = ;
   v30 = +[CKUIBehavior sharedBehaviors];
   [v30 detailsCellLabelPadding];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:?];
+  v18 = [topAnchor3 constraintEqualToAnchor:v17 constant:?];
   v54[2] = v18;
-  v19 = [(UILabel *)self->_verifyConversationLabel bottomAnchor];
-  v20 = [(CKKTVerifyConversationTableViewCell *)self contentView];
-  v21 = [v20 layoutMarginsGuide];
-  v22 = [v21 bottomAnchor];
+  bottomAnchor = [(UILabel *)self->_verifyConversationLabel bottomAnchor];
+  contentView7 = [(CKKTVerifyConversationTableViewCell *)self contentView];
+  layoutMarginsGuide7 = [contentView7 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide7 bottomAnchor];
   v23 = +[CKUIBehavior sharedBehaviors];
   [v23 detailsCellLabelPadding];
-  v25 = [v19 constraintEqualToAnchor:v22 constant:-v24];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v24];
   v54[3] = v25;
   v26 = [*(v3 + 3784) arrayWithObjects:v54 count:4];
-  [v53 addObjectsFromArray:v26];
+  [array addObjectsFromArray:v26];
 
   if (!v32)
   {
 
-    v17 = v28;
+    v17 = contentView6;
   }
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v53];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(CKKTVerifyConversationTableViewCell *)self contentView:a3.width];
+  width = fits.width;
+  v5 = [(CKKTVerifyConversationTableViewCell *)self contentView:fits.width];
   [v5 layoutMargins];
   v7 = v6;
-  v8 = [(CKKTVerifyConversationTableViewCell *)self contentView];
-  [v8 layoutMargins];
+  contentView = [(CKKTVerifyConversationTableViewCell *)self contentView];
+  [contentView layoutMargins];
   v10 = v7 + v9;
 
-  v11 = [(CKKTVerifyConversationTableViewCell *)self contentView];
-  [v11 frame];
+  contentView2 = [(CKKTVerifyConversationTableViewCell *)self contentView];
+  [contentView2 frame];
   v13 = v12 - v10;
 
   v14 = 0.0;
@@ -213,11 +213,11 @@
   [v22 detailsCellLabelPadding];
   v24 = v21 + v23 * 2.0;
 
-  v25 = [(CKKTVerifyConversationTableViewCell *)self contentView];
-  [v25 layoutMargins];
+  contentView3 = [(CKKTVerifyConversationTableViewCell *)self contentView];
+  [contentView3 layoutMargins];
   v27 = v24 + v26;
-  v28 = [(CKKTVerifyConversationTableViewCell *)self contentView];
-  [v28 layoutMargins];
+  contentView4 = [(CKKTVerifyConversationTableViewCell *)self contentView];
+  [contentView4 layoutMargins];
   v30 = v27 + v29;
 
   v31 = width;
@@ -235,9 +235,9 @@
     [(CKKTVerifyConversationTableViewCell *)self setupMacHeaderLabel];
   }
 
-  v4 = [(CKKTVerifyConversationTableViewCell *)self verifyConversationLabel];
-  v3 = [(CKKTVerifyConversationTableViewCell *)self verifyTitleString];
-  [v4 setText:v3];
+  verifyConversationLabel = [(CKKTVerifyConversationTableViewCell *)self verifyConversationLabel];
+  verifyTitleString = [(CKKTVerifyConversationTableViewCell *)self verifyTitleString];
+  [verifyConversationLabel setText:verifyTitleString];
 }
 
 - (id)verifyTitleString

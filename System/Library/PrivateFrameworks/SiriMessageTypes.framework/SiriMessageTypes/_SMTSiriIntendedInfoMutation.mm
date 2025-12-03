@@ -1,6 +1,6 @@
 @interface _SMTSiriIntendedInfoMutation
 - (BOOL)getGazeSignal;
-- (_SMTSiriIntendedInfoMutation)initWithBase:(id)a3;
+- (_SMTSiriIntendedInfoMutation)initWithBase:(id)base;
 - (float)getAftmScore;
 - (float)getCheckerScore;
 - (float)getConversationalOdldScore;
@@ -112,15 +112,15 @@
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_invocationType;
+    invocationType = self->_invocationType;
   }
 
   else
   {
-    v2 = [(SMTSiriIntendedInfo *)self->_base invocationType];
+    invocationType = [(SMTSiriIntendedInfo *)self->_base invocationType];
   }
 
-  return v2;
+  return invocationType;
 }
 
 - (float)getCheckerScore
@@ -178,16 +178,16 @@
   return result;
 }
 
-- (_SMTSiriIntendedInfoMutation)initWithBase:(id)a3
+- (_SMTSiriIntendedInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _SMTSiriIntendedInfoMutation;
   v6 = [(_SMTSiriIntendedInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

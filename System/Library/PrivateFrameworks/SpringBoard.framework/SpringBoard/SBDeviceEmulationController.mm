@@ -8,26 +8,26 @@
 
 + (UISApplicationInitializationContext)applicationInitializationContext
 {
-  v2 = [MEMORY[0x277D77790] defaultContext];
-  [v2 sb_configureForDeviceEmulation];
+  defaultContext = [MEMORY[0x277D77790] defaultContext];
+  [defaultContext sb_configureForDeviceEmulation];
 
-  return v2;
+  return defaultContext;
 }
 
 + (UISDeviceContext)deviceContext
 {
-  v2 = [MEMORY[0x277D77798] defaultContext];
-  [v2 sb_configureForDeviceEmulation];
+  defaultContext = [MEMORY[0x277D77798] defaultContext];
+  [defaultContext sb_configureForDeviceEmulation];
 
-  return v2;
+  return defaultContext;
 }
 
 + (UISDisplayContext)displayContext
 {
-  v2 = [MEMORY[0x277D777A0] defaultContext];
-  [v2 sb_configureForDeviceEmulation];
+  defaultContext = [MEMORY[0x277D777A0] defaultContext];
+  [defaultContext sb_configureForDeviceEmulation];
 
-  return v2;
+  return defaultContext;
 }
 
 @end

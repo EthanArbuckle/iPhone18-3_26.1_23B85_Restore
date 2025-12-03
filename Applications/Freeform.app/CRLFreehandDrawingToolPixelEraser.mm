@@ -1,78 +1,78 @@
 @interface CRLFreehandDrawingToolPixelEraser
-- (BOOL)finalizeAndResetWithSuccess:(BOOL)a3;
-- (CRLFreehandDrawingToolPixelEraser)initWithInteractiveCanvasController:(id)a3 pencilKitCanvasViewController:(id)a4 scaledWidthForSlicingEraser:(double)a5;
+- (BOOL)finalizeAndResetWithSuccess:(BOOL)success;
+- (CRLFreehandDrawingToolPixelEraser)initWithInteractiveCanvasController:(id)controller pencilKitCanvasViewController:(id)viewController scaledWidthForSlicingEraser:(double)eraser;
 - (double)p_unscaledEraserDiameter;
-- (id)p_erasableAreaPathInUnscaledSpaceForErasingStrokePath:(id)a3 withVisibleRulerBezierPath:(id)a4;
-- (int64_t)p_breakApartFilledShapeIfPossible:(id)a3 withDesiredGeometry:(id)a4 bezierPath:(id)a5 previousZOrderOffset:(int64_t)a6;
-- (int64_t)p_breakApartShape:(id)a3 withGeometry:(id)a4 subpaths:(id)a5 previousZOrderOffset:(int64_t)a6;
-- (void)estimatedPropertiesUpdatedOnInputPoint:(id)a3;
-- (void)p_endErasingAndFinalize:(BOOL)a3;
-- (void)p_enqueueCommandsToEraseWithin:(id)a3 withErasingStroke:(id)a4;
-- (void)p_finalizeBitmapEraseWithStroke:(id)a3;
-- (void)p_setUpForManualHitTestingFillEraseForInputPoint:(CGPoint)a3;
-- (void)p_updatePathsForSlicingWithErasingStroke:(id)a3;
-- (void)performActionWithInputPoint:(id)a3 isInitialPoint:(BOOL)a4 isFinalPoint:(BOOL)a5;
-- (void)setScaledWidthForSlicingEraser:(double)a3;
-- (void)updatePencilKitToolIfAppropriateFor:(id)a3;
+- (id)p_erasableAreaPathInUnscaledSpaceForErasingStrokePath:(id)path withVisibleRulerBezierPath:(id)bezierPath;
+- (int64_t)p_breakApartFilledShapeIfPossible:(id)possible withDesiredGeometry:(id)geometry bezierPath:(id)path previousZOrderOffset:(int64_t)offset;
+- (int64_t)p_breakApartShape:(id)shape withGeometry:(id)geometry subpaths:(id)subpaths previousZOrderOffset:(int64_t)offset;
+- (void)estimatedPropertiesUpdatedOnInputPoint:(id)point;
+- (void)p_endErasingAndFinalize:(BOOL)finalize;
+- (void)p_enqueueCommandsToEraseWithin:(id)within withErasingStroke:(id)stroke;
+- (void)p_finalizeBitmapEraseWithStroke:(id)stroke;
+- (void)p_setUpForManualHitTestingFillEraseForInputPoint:(CGPoint)point;
+- (void)p_updatePathsForSlicingWithErasingStroke:(id)stroke;
+- (void)performActionWithInputPoint:(id)point isInitialPoint:(BOOL)initialPoint isFinalPoint:(BOOL)finalPoint;
+- (void)setScaledWidthForSlicingEraser:(double)eraser;
+- (void)updatePencilKitToolIfAppropriateFor:(id)for;
 @end
 
 @implementation CRLFreehandDrawingToolPixelEraser
 
-- (CRLFreehandDrawingToolPixelEraser)initWithInteractiveCanvasController:(id)a3 pencilKitCanvasViewController:(id)a4 scaledWidthForSlicingEraser:(double)a5
+- (CRLFreehandDrawingToolPixelEraser)initWithInteractiveCanvasController:(id)controller pencilKitCanvasViewController:(id)viewController scaledWidthForSlicingEraser:(double)eraser
 {
-  v8 = a4;
+  viewControllerCopy = viewController;
   v12.receiver = self;
   v12.super_class = CRLFreehandDrawingToolPixelEraser;
-  v9 = [(CRLFreehandDrawingTool *)&v12 initWithInteractiveCanvasController:a3];
+  v9 = [(CRLFreehandDrawingTool *)&v12 initWithInteractiveCanvasController:controller];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_pencilKitCanvasViewController, v8);
-    v10->_scaledWidthForSlicingEraser = a5;
+    objc_storeWeak(&v9->_pencilKitCanvasViewController, viewControllerCopy);
+    v10->_scaledWidthForSlicingEraser = eraser;
   }
 
   return v10;
 }
 
-- (void)setScaledWidthForSlicingEraser:(double)a3
+- (void)setScaledWidthForSlicingEraser:(double)eraser
 {
-  self->_scaledWidthForSlicingEraser = a3;
+  self->_scaledWidthForSlicingEraser = eraser;
   v5 = [(CRLFreehandDrawingTool *)self icc];
-  v9 = [v5 freehandDrawingToolkit];
+  freehandDrawingToolkit = [v5 freehandDrawingToolkit];
 
-  v6 = [v9 toolkitUIState];
-  [v6 setCurrentToolWidth:a3];
+  toolkitUIState = [freehandDrawingToolkit toolkitUIState];
+  [toolkitUIState setCurrentToolWidth:eraser];
 
   WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-  v8 = [WeakRetained pencilKitCanvasView];
-  [(CRLFreehandDrawingToolPixelEraser *)self updatePencilKitToolIfAppropriateFor:v8];
+  pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
+  [(CRLFreehandDrawingToolPixelEraser *)self updatePencilKitToolIfAppropriateFor:pencilKitCanvasView];
 
-  [v9 containedToolDidSetWidth:self];
+  [freehandDrawingToolkit containedToolDidSetWidth:self];
 }
 
-- (void)performActionWithInputPoint:(id)a3 isInitialPoint:(BOOL)a4 isFinalPoint:(BOOL)a5
+- (void)performActionWithInputPoint:(id)point isInitialPoint:(BOOL)initialPoint isFinalPoint:(BOOL)finalPoint
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  finalPointCopy = finalPoint;
+  initialPointCopy = initialPoint;
+  pointCopy = point;
   v29.receiver = self;
   v29.super_class = CRLFreehandDrawingToolPixelEraser;
-  [(CRLFreehandDrawingTool *)&v29 performActionWithInputPoint:v8 isInitialPoint:v6 isFinalPoint:v5];
+  [(CRLFreehandDrawingTool *)&v29 performActionWithInputPoint:pointCopy isInitialPoint:initialPointCopy isFinalPoint:finalPointCopy];
   v9 = [(CRLFreehandDrawingTool *)self icc];
   WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-  v11 = [WeakRetained pencilKitCanvasView];
+  pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
 
-  v12 = [v11 _tiledView];
-  v13 = [v12 canvasView];
+  _tiledView = [pencilKitCanvasView _tiledView];
+  canvasView = [_tiledView canvasView];
 
-  if (v6)
+  if (initialPointCopy)
   {
     v14 = objc_alloc_init(PKDrawing);
-    [v11 setDrawing:v14];
+    [pencilKitCanvasView setDrawing:v14];
 
-    if (v8)
+    if (pointCopy)
     {
-      [v8 PKInputPoint];
+      [pointCopy PKInputPoint];
     }
 
     else
@@ -88,19 +88,19 @@
       v21 = 0u;
     }
 
-    v15 = [v9 canvasView];
-    v16 = [v15 unscaledCoordinateSpace];
-    [v13 _replayDrawingBegan:&v20 coordinateSpace:v16 activeInputProperties:objc_msgSend(v8 inputType:{"activeInputProperties"), objc_msgSend(v8, "PKInputType")}];
+    canvasView2 = [v9 canvasView];
+    unscaledCoordinateSpace = [canvasView2 unscaledCoordinateSpace];
+    [canvasView _replayDrawingBegan:&v20 coordinateSpace:unscaledCoordinateSpace activeInputProperties:objc_msgSend(pointCopy inputType:{"activeInputProperties"), objc_msgSend(pointCopy, "PKInputType")}];
 
-    [v8 unscaledPoint];
+    [pointCopy unscaledPoint];
     [(CRLFreehandDrawingToolPixelEraser *)self p_setUpForManualHitTestingFillEraseForInputPoint:?];
   }
 
-  else if (([v8 wasAddedByTouchesEnded] & 1) == 0)
+  else if (([pointCopy wasAddedByTouchesEnded] & 1) == 0)
   {
-    if (v8)
+    if (pointCopy)
     {
-      [v8 PKInputPoint];
+      [pointCopy PKInputPoint];
     }
 
     else
@@ -117,25 +117,25 @@
     }
 
     v17 = [(CRLFreehandDrawingTool *)self icc:v20];
-    v18 = [v17 canvasView];
-    v19 = [v18 unscaledCoordinateSpace];
-    [v13 _replayDrawingMoved:&v20 coordinateSpace:v19];
+    canvasView3 = [v17 canvasView];
+    unscaledCoordinateSpace2 = [canvasView3 unscaledCoordinateSpace];
+    [canvasView _replayDrawingMoved:&v20 coordinateSpace:unscaledCoordinateSpace2];
   }
 }
 
-- (void)estimatedPropertiesUpdatedOnInputPoint:(id)a3
+- (void)estimatedPropertiesUpdatedOnInputPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v11.receiver = self;
   v11.super_class = CRLFreehandDrawingToolPixelEraser;
-  [(CRLFreehandDrawingTool *)&v11 estimatedPropertiesUpdatedOnInputPoint:v4];
+  [(CRLFreehandDrawingTool *)&v11 estimatedPropertiesUpdatedOnInputPoint:pointCopy];
   WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-  v6 = [WeakRetained pencilKitCanvasView];
-  v7 = [v6 _tiledView];
-  v8 = [v7 canvasView];
-  if (v4)
+  pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
+  _tiledView = [pencilKitCanvasView _tiledView];
+  canvasView = [_tiledView canvasView];
+  if (pointCopy)
   {
-    [v4 PKInputPoint];
+    [pointCopy PKInputPoint];
   }
 
   else
@@ -144,42 +144,42 @@
     memset(v9, 0, sizeof(v9));
   }
 
-  [v8 _replayEstimatedPropertiesUpdated:v9];
+  [canvasView _replayEstimatedPropertiesUpdated:v9];
 }
 
-- (BOOL)finalizeAndResetWithSuccess:(BOOL)a3
+- (BOOL)finalizeAndResetWithSuccess:(BOOL)success
 {
   v9.receiver = self;
   v9.super_class = CRLFreehandDrawingToolPixelEraser;
-  v4 = [(CRLFreehandDrawingTool *)&v9 finalizeAndResetWithSuccess:a3];
+  v4 = [(CRLFreehandDrawingTool *)&v9 finalizeAndResetWithSuccess:success];
   [(CRLFreehandDrawingToolPixelEraser *)self p_endErasingAndFinalize:v4];
   v5 = objc_alloc_init(PKDrawing);
   WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-  v7 = [WeakRetained pencilKitCanvasView];
-  [v7 setDrawing:v5];
+  pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
+  [pencilKitCanvasView setDrawing:v5];
 
   return v4;
 }
 
-- (void)updatePencilKitToolIfAppropriateFor:(id)a3
+- (void)updatePencilKitToolIfAppropriateFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v5 = [PKEraserTool alloc];
   [(CRLFreehandDrawingToolPixelEraser *)self scaledWidthForSlicingEraser];
   v6 = [v5 initWithEraserType:2 width:?];
-  [v4 setTool:v6];
+  [forCopy setTool:v6];
 }
 
-- (void)p_endErasingAndFinalize:(BOOL)a3
+- (void)p_endErasingAndFinalize:(BOOL)finalize
 {
-  v3 = a3;
+  finalizeCopy = finalize;
   WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-  v6 = [WeakRetained pencilKitCanvasView];
+  pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
 
-  v7 = [v6 _tiledView];
-  v8 = [v7 canvasView];
+  _tiledView = [pencilKitCanvasView _tiledView];
+  canvasView = [_tiledView canvasView];
 
-  if (v3)
+  if (finalizeCopy)
   {
     v16 = 0;
     v17 = &v16;
@@ -194,7 +194,7 @@
     v15 = &v16;
     v9 = dispatch_semaphore_create(0);
     v14 = v9;
-    [v8 _replayDrawingEndedEstimatesTimeout:&v10 withBackgroundQueueCompletion:0.0];
+    [canvasView _replayDrawingEndedEstimatesTimeout:&v10 withBackgroundQueueCompletion:0.0];
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
     if (v17[5])
     {
@@ -206,30 +206,30 @@
 
   else
   {
-    [v8 _replayDrawingCancelled];
+    [canvasView _replayDrawingCancelled];
   }
 }
 
-- (void)p_finalizeBitmapEraseWithStroke:(id)a3
+- (void)p_finalizeBitmapEraseWithStroke:(id)stroke
 {
-  v4 = a3;
+  strokeCopy = stroke;
   v5 = [(CRLFreehandDrawingTool *)self icc];
-  v6 = [v5 editingCoordinator];
-  v7 = [v6 commandController];
+  editingCoordinator = [v5 editingCoordinator];
+  commandController = [editingCoordinator commandController];
 
   v103 = v5;
   [v5 layoutIfNeeded];
-  [v4 renderBounds];
+  [strokeCopy renderBounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v16 = [(CRLFreehandDrawingTool *)self possibleFreehandDrawingLayoutsInParentContainerAtPoint:sub_100120414(v8, v10, v12, v14)];
-  [v7 openGroup];
+  [commandController openGroup];
   v17 = +[NSBundle mainBundle];
   v18 = [v17 localizedStringForKey:@"Erase" value:0 table:@"UndoStrings"];
-  v105 = v7;
-  [v7 setCurrentGroupActionString:v18];
+  v105 = commandController;
+  [commandController setCurrentGroupActionString:v18];
 
   v122 = 0u;
   v123 = 0u;
@@ -259,12 +259,12 @@
         if (CGRectIntersectsRect(v128, v129))
         {
           v24 = objc_opt_class();
-          v25 = [v23 info];
-          v26 = sub_100014370(v24, v25);
+          info = [v23 info];
+          v26 = sub_100014370(v24, info);
 
           if (v26)
           {
-            [(CRLFreehandDrawingToolPixelEraser *)self p_enqueueCommandsToEraseWithin:v26 withErasingStroke:v4];
+            [(CRLFreehandDrawingToolPixelEraser *)self p_enqueueCommandsToEraseWithin:v26 withErasingStroke:strokeCopy];
           }
         }
       }
@@ -280,30 +280,30 @@
   v29 = v105;
   if ([(CRLBezierHitTester *)self->_fillHitTester pathCount])
   {
-    v101 = [CRLPKStrokeConverter pathFromPKStroke:v4 pencilKitStrokePathData:0];
+    v101 = [CRLPKStrokeConverter pathFromPKStroke:strokeCopy pencilKitStrokePathData:0];
     [(CRLFreehandDrawingToolPixelEraser *)self p_updatePathsForSlicingWithErasingStroke:?];
-    v30 = [CRLPKStrokeConverter pathFromPKStroke:v4 pencilKitStrokePathData:0];
+    v30 = [CRLPKStrokeConverter pathFromPKStroke:strokeCopy pencilKitStrokePathData:0];
     [(CRLFreehandDrawingToolPixelEraser *)self p_unscaledEraserDiameter];
     [v30 setLineWidth:?];
     [v30 setLineCapStyle:1];
     [v30 setLineJoinStyle:1];
-    v31 = [v30 strokedCopy];
+    strokedCopy = [v30 strokedCopy];
 
     WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-    v33 = [WeakRetained pencilKitCanvasView];
-    v34 = [v33 isRulerActive];
+    pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
+    isRulerActive = [pencilKitCanvasView isRulerActive];
 
-    v102 = v4;
-    if (v34)
+    v102 = strokeCopy;
+    if (isRulerActive)
     {
       v35 = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-      v36 = [v35 unscaledRulerBezierPath];
+      unscaledRulerBezierPath = [v35 unscaledRulerBezierPath];
 
-      v37 = [(CRLFreehandDrawingToolPixelEraser *)self p_erasableAreaPathInUnscaledSpaceForErasingStrokePath:v31 withVisibleRulerBezierPath:v36];
-      v38 = v31;
+      v37 = [(CRLFreehandDrawingToolPixelEraser *)self p_erasableAreaPathInUnscaledSpaceForErasingStrokePath:strokedCopy withVisibleRulerBezierPath:unscaledRulerBezierPath];
+      v38 = strokedCopy;
       if (v37)
       {
-        v39 = [v31 intersectBezierPath:v37];
+        v39 = [strokedCopy intersectBezierPath:v37];
 
         v38 = v39;
       }
@@ -311,7 +311,7 @@
 
     else
     {
-      v38 = v31;
+      v38 = strokedCopy;
     }
 
     v40 = [(NSMutableArray *)self->_allHitTesterFillPathsZOrdered crl_arrayWithObjectsInHashTable:self->_hitTesterPathsNeedingFinalizationAtEnd];
@@ -329,7 +329,7 @@
     if (v114)
     {
       v112 = *v117;
-      v113 = self;
+      selfCopy = self;
       do
       {
         v41 = 0;
@@ -410,39 +410,39 @@
             [v43 beginDynamicOperationWithRealTimeCommands:0];
             [v43 dynamicallySetBezierPathSource:v56 atUnscaledOrigin:{v53, v55}];
 
-            v57 = [v43 pathSource];
-            v58 = [v43 finalInfoGeometryForResize];
+            pathSource = [v43 pathSource];
+            finalInfoGeometryForResize = [v43 finalInfoGeometryForResize];
             [v43 endDynamicOperation];
-            v59 = [v43 shapeInfo];
-            v110 = [[_TtC8Freeform23CRLCommandSetPathSource alloc] initWithShapeItem:v59 pathSource:v57];
+            shapeInfo = [v43 shapeInfo];
+            v110 = [[_TtC8Freeform23CRLCommandSetPathSource alloc] initWithShapeItem:shapeInfo pathSource:pathSource];
             [v29 enqueueCommand:?];
-            v60 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:v59 geometry:v58];
+            v60 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:shapeInfo geometry:finalInfoGeometryForResize];
             [v29 enqueueCommand:v60];
-            v61 = [v59 parentInfo];
+            parentInfo = [shapeInfo parentInfo];
             v62 = objc_opt_class();
-            v68 = sub_1003038E0(v61, v62, 1, v63, v64, v65, v66, v67, &OBJC_PROTOCOL___CRLCanvasElementInfo);
+            v68 = sub_1003038E0(parentInfo, v62, 1, v63, v64, v65, v66, v67, &OBJC_PROTOCOL___CRLCanvasElementInfo);
 
-            if (v59 && ([v107 objectForKeyedSubscript:v68], (v69 = objc_claimAutoreleasedReturnValue()) != 0))
+            if (shapeInfo && ([v107 objectForKeyedSubscript:v68], (v69 = objc_claimAutoreleasedReturnValue()) != 0))
             {
               v70 = v69;
-              v71 = [v69 integerValue];
+              integerValue = [v69 integerValue];
             }
 
             else
             {
-              v71 = 0;
+              integerValue = 0;
             }
 
-            v72 = [v57 bezierPath];
-            v73 = [(CRLFreehandDrawingToolPixelEraser *)v113 p_breakApartFilledShapeIfPossible:v59 withDesiredGeometry:v58 bezierPath:v72 previousZOrderOffset:v71];
+            bezierPath = [pathSource bezierPath];
+            v73 = [(CRLFreehandDrawingToolPixelEraser *)selfCopy p_breakApartFilledShapeIfPossible:shapeInfo withDesiredGeometry:finalInfoGeometryForResize bezierPath:bezierPath previousZOrderOffset:integerValue];
 
             if (v68)
             {
-              v74 = [NSNumber numberWithInteger:&v71[v73]];
+              v74 = [NSNumber numberWithInteger:&integerValue[v73]];
               [v107 setObject:v74 forKeyedSubscript:v68];
             }
 
-            self = v113;
+            self = selfCopy;
             v29 = v105;
             v38 = v109;
             v45 = v111;
@@ -450,8 +450,8 @@
 
           else
           {
-            v57 = [v43 shapeInfo];
-            [v104 addObject:v57];
+            pathSource = [v43 shapeInfo];
+            [v104 addObject:pathSource];
           }
 
           v41 = v41 + 1;
@@ -466,23 +466,23 @@
 
     if ([v104 count])
     {
-      v77 = [v104 setRepresentation];
-      v78 = [v103 canvasEditor];
-      v79 = [v78 canvasEditorHelper];
-      v80 = [v79 commandForDeletingInfosPossiblyFromMultipleContainers:v77 shouldRemoveEmptyContainers:1];
+      setRepresentation = [v104 setRepresentation];
+      canvasEditor = [v103 canvasEditor];
+      canvasEditorHelper = [canvasEditor canvasEditorHelper];
+      v80 = [canvasEditorHelper commandForDeletingInfosPossiblyFromMultipleContainers:setRepresentation shouldRemoveEmptyContainers:1];
 
       [v29 enqueueCommand:v80];
       deletedShapeInfos = self->_deletedShapeInfos;
-      v82 = [v104 setRepresentation];
-      v83 = [v82 allObjects];
-      [(NSMutableSet *)deletedShapeInfos addObjectsFromArray:v83];
+      setRepresentation2 = [v104 setRepresentation];
+      allObjects = [setRepresentation2 allObjects];
+      [(NSMutableSet *)deletedShapeInfos addObjectsFromArray:allObjects];
 
       v38 = v109;
     }
 
     [v29 closeGroup];
 
-    v4 = v102;
+    strokeCopy = v102;
     v28 = &OBJC_IVAR___CRLBitmapImageProvider_mValidationStatus;
     v27 = &OBJC_IVAR___CRLBitmapImageProvider_mValidationStatus;
   }
@@ -509,23 +509,23 @@
   v93 = v92;
   if (v91)
   {
-    v94 = [v92 canvasEditor];
-    v95 = [v94 canvasEditorHelper];
-    v96 = [v95 selectionBehaviorForDeletingBoardItems:*(&self->super.super.isa + v90)];
+    canvasEditor2 = [v92 canvasEditor];
+    canvasEditorHelper2 = [canvasEditor2 canvasEditorHelper];
+    v96 = [canvasEditorHelper2 selectionBehaviorForDeletingBoardItems:*(&self->super.super.isa + v90)];
 
     [(CRLCommandSelectionBehavior *)v96 setSelectionFlags:[(CRLCommandSelectionBehavior *)v96 selectionFlags]& 0xFFFFFFFFFFFFFFFBLL];
   }
 
   else
   {
-    v97 = [v92 editorController];
-    v98 = [v97 selectionPath];
+    editorController = [v92 editorController];
+    selectionPath = [editorController selectionPath];
 
-    v96 = [[CRLCommandSelectionBehavior alloc] initWithForwardSelectionPath:v98 reverseSelectionPath:v98];
+    v96 = [[CRLCommandSelectionBehavior alloc] initWithForwardSelectionPath:selectionPath reverseSelectionPath:selectionPath];
   }
 
-  v99 = [v103 pkDrawingProvider];
-  [v99 activeDrawingWillEndAfterInsertingFinalizedDrawingItem];
+  pkDrawingProvider = [v103 pkDrawingProvider];
+  [pkDrawingProvider activeDrawingWillEndAfterInsertingFinalizedDrawingItem];
 
   [v29 closeGroupWithSelectionBehavior:v96];
   v100 = *(&self->super.super.isa + v90);
@@ -537,9 +537,9 @@
   scaledWidthForSlicingEraser = self->_scaledWidthForSlicingEraser;
   v4 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_pencilKitCanvasViewController);
-  v6 = [WeakRetained pencilKitCanvasView];
-  v7 = [v6 tool];
-  v8 = sub_100013F00(v4, v7);
+  pencilKitCanvasView = [WeakRetained pencilKitCanvasView];
+  tool = [pencilKitCanvasView tool];
+  v8 = sub_100013F00(v4, tool);
 
   if (v8)
   {
@@ -554,14 +554,14 @@
   return v12;
 }
 
-- (void)p_enqueueCommandsToEraseWithin:(id)a3 withErasingStroke:(id)a4
+- (void)p_enqueueCommandsToEraseWithin:(id)within withErasingStroke:(id)stroke
 {
-  v6 = a3;
-  v125 = self;
-  v126 = a4;
+  withinCopy = within;
+  selfCopy = self;
+  strokeCopy = stroke;
   v7 = [(CRLFreehandDrawingTool *)self icc];
-  v8 = [v7 editingCoordinator];
-  v138 = [v8 commandController];
+  editingCoordinator = [v7 editingCoordinator];
+  commandController = [editingCoordinator commandController];
 
   v151 = [[NSMapTable alloc] initWithKeyOptions:0 valueOptions:0 capacity:16];
   v9 = v7;
@@ -572,8 +572,8 @@
   v177 = 0u;
   v178 = 0u;
   v179 = 0u;
-  v127 = v6;
-  obj = [v6 childInfos];
+  v127 = withinCopy;
+  obj = [withinCopy childInfos];
   v129 = v7;
   v148 = [obj countByEnumeratingWithState:&v176 objects:v186 count:16];
   if (v148)
@@ -596,19 +596,19 @@
 
         if (v16)
         {
-          v17 = [v16 shapeInfo];
-          v18 = [v17 isTreatedAsFillForFreehandDrawing];
+          shapeInfo = [v16 shapeInfo];
+          isTreatedAsFillForFreehandDrawing = [shapeInfo isTreatedAsFillForFreehandDrawing];
 
-          if (v18)
+          if (isTreatedAsFillForFreehandDrawing)
           {
             goto LABEL_46;
           }
 
-          v19 = [v16 pencilKitStrokes];
-          v20 = v19;
-          if (v19)
+          pencilKitStrokes = [v16 pencilKitStrokes];
+          v20 = pencilKitStrokes;
+          if (pencilKitStrokes)
           {
-            if ([v19 count] != 1)
+            if ([pencilKitStrokes count] != 1)
             {
               v21 = +[CRLAssertionHandler _atomicIncrementAssertCount];
               if (qword_101AD5A10 != -1)
@@ -688,15 +688,15 @@
                   }
 
                   v32 = *(*(&v168 + 1) + 8 * i);
-                  v33 = [v32 _strokeUUID];
-                  [v11 addObject:v33];
+                  _strokeUUID = [v32 _strokeUUID];
+                  [v11 addObject:_strokeUUID];
 
-                  v34 = [v32 _strokeUUID];
-                  [v151 setObject:v16 forKeyedSubscript:v34];
+                  _strokeUUID2 = [v32 _strokeUUID];
+                  [v151 setObject:v16 forKeyedSubscript:_strokeUUID2];
 
-                  v35 = [v32 path];
-                  v36 = [v35 _strokeDataUUID];
-                  [v10 setObject:v16 forKeyedSubscript:v36];
+                  path = [v32 path];
+                  _strokeDataUUID = [path _strokeDataUUID];
+                  [v10 setObject:v16 forKeyedSubscript:_strokeDataUUID];
                 }
 
                 v29 = [v27 countByEnumeratingWithState:&v168 objects:v184 count:16];
@@ -817,16 +817,16 @@ LABEL_46:
   v53 = objc_alloc_init(PKDrawing);
   v54 = [v52 initWithStrokes:v128 fromDrawing:v53];
 
-  [v54 _eraseWithEraserStroke:v126];
+  [v54 _eraseWithEraserStroke:strokeCopy];
   v124 = v54;
-  v55 = [v54 strokes];
+  strokes = [v54 strokes];
   v132 = +[NSMutableArray array];
   v56 = [v11 mutableCopy];
   v164 = 0u;
   v165 = 0u;
   v166 = 0u;
   v167 = 0u;
-  v134 = v55;
+  v134 = strokes;
   v57 = [v134 countByEnumeratingWithState:&v164 objects:v183 count:16];
   if (v57)
   {
@@ -842,13 +842,13 @@ LABEL_46:
         }
 
         v61 = *(*(&v164 + 1) + 8 * j);
-        v62 = [v61 _strokeUUID];
-        v63 = [v11 containsObject:v62];
+        _strokeUUID3 = [v61 _strokeUUID];
+        v63 = [v11 containsObject:_strokeUUID3];
 
         if (v63)
         {
-          v64 = [v61 _strokeUUID];
-          [v56 removeObject:v64];
+          _strokeUUID4 = [v61 _strokeUUID];
+          [v56 removeObject:_strokeUUID4];
         }
 
         else
@@ -937,8 +937,8 @@ LABEL_46:
         }
 
         v77 = objc_opt_class();
-        v78 = [v70 info];
-        v79 = sub_100013F00(v77, v78);
+        info = [v70 info];
+        v79 = sub_100013F00(v77, info);
 
         [v65 crl_addNonNilObject:v79];
         v69 = v69 + 1;
@@ -951,10 +951,10 @@ LABEL_46:
     while (v67);
   }
 
-  [v138 openGroup];
+  [commandController openGroup];
   v82 = v129;
-  v83 = [v129 editingCoordinator];
-  v137 = [v83 boardItemFactory];
+  editingCoordinator2 = [v129 editingCoordinator];
+  boardItemFactory = [editingCoordinator2 boardItemFactory];
 
   v84 = v132;
   if ([v132 count])
@@ -963,11 +963,11 @@ LABEL_46:
     v85 = [v129 layoutForInfo:v127];
     v86 = [CRLCanvasInfoGeometry alloc];
     v123 = v85;
-    v87 = [v85 geometryInRoot];
-    v88 = [(CRLCanvasInfoGeometry *)v86 initWithLayoutGeometry:v87];
+    geometryInRoot = [v85 geometryInRoot];
+    v88 = [(CRLCanvasInfoGeometry *)v86 initWithLayoutGeometry:geometryInRoot];
 
-    v89 = [v127 childItems];
-    v136 = [NSOrderedSet orderedSetWithArray:v89];
+    childItems = [v127 childItems];
+    v136 = [NSOrderedSet orderedSetWithArray:childItems];
 
     v140 = +[NSMutableDictionary dictionary];
     v156 = 0u;
@@ -975,7 +975,7 @@ LABEL_46:
     v158 = 0u;
     v159 = 0u;
     v131 = v132;
-    v90 = v138;
+    v90 = commandController;
     v139 = [v131 countByEnumeratingWithState:&v156 objects:v181 count:16];
     if (v139)
     {
@@ -992,32 +992,32 @@ LABEL_46:
 
           v150 = v91;
           v92 = *(*(&v156 + 1) + 8 * v91);
-          v93 = [v92 path];
-          v94 = [v93 _strokeDataUUID];
-          v95 = [v10 objectForKeyedSubscript:v94];
+          path2 = [v92 path];
+          _strokeDataUUID2 = [path2 _strokeDataUUID];
+          v95 = [v10 objectForKeyedSubscript:_strokeDataUUID2];
 
           v147 = v95;
-          v96 = [v95 shapeInfo];
-          v97 = [v136 indexOfObject:v96];
-          obja = v96;
-          v98 = [v96 stroke];
+          shapeInfo2 = [v95 shapeInfo];
+          v97 = [v136 indexOfObject:shapeInfo2];
+          obja = shapeInfo2;
+          stroke = [shapeInfo2 stroke];
           v141 = v97;
-          v143 = v98;
-          if (v98)
+          v143 = stroke;
+          if (stroke)
           {
-            [v98 width];
+            [stroke width];
             v100 = v99;
           }
 
           else
           {
-            v101 = [v130 anyObject];
-            v102 = [v101 stroke];
-            [v102 width];
+            anyObject = [v130 anyObject];
+            stroke2 = [anyObject stroke];
+            [stroke2 width];
             v100 = v103;
           }
 
-          v104 = [v137 makeShapeItemsForFreehandDrawingWithPKStroke:v92 adjustedBaseWidth:v100];
+          v104 = [boardItemFactory makeShapeItemsForFreehandDrawingWithPKStroke:v92 adjustedBaseWidth:v100];
           v152 = 0u;
           v153 = 0u;
           v154 = 0u;
@@ -1037,8 +1037,8 @@ LABEL_46:
                 }
 
                 v109 = *(*(&v152 + 1) + 8 * k);
-                v110 = [v109 geometry];
-                v111 = [v110 geometryRelativeToGeometry:v88];
+                geometry = [v109 geometry];
+                v111 = [geometry geometryRelativeToGeometry:v88];
                 [v109 setGeometry:v111];
               }
 
@@ -1061,7 +1061,7 @@ LABEL_46:
           [v113 addObjectsFromArray:v104];
 
           v91 = v150 + 1;
-          v90 = v138;
+          v90 = commandController;
         }
 
         while ((v150 + 1) != v139);
@@ -1079,34 +1079,34 @@ LABEL_46:
     v84 = v132;
   }
 
-  v116 = [v82 canvasEditor];
-  v117 = [v116 canvasEditorHelper];
-  v118 = [v117 commandForDeletingInfosPossiblyFromMultipleContainers:v65 shouldRemoveEmptyContainers:{objc_msgSend(v84, "count") == 0}];
+  canvasEditor = [v82 canvasEditor];
+  canvasEditorHelper = [canvasEditor canvasEditorHelper];
+  v118 = [canvasEditorHelper commandForDeletingInfosPossiblyFromMultipleContainers:v65 shouldRemoveEmptyContainers:{objc_msgSend(v84, "count") == 0}];
 
   if (v118)
   {
-    [v138 enqueueCommand:v118];
+    [commandController enqueueCommand:v118];
   }
 
-  [v138 closeGroup];
-  deletedShapeInfos = v125->_deletedShapeInfos;
+  [commandController closeGroup];
+  deletedShapeInfos = selfCopy->_deletedShapeInfos;
   if (!deletedShapeInfos)
   {
     v120 = +[NSMutableSet set];
-    v121 = v125->_deletedShapeInfos;
-    v125->_deletedShapeInfos = v120;
+    v121 = selfCopy->_deletedShapeInfos;
+    selfCopy->_deletedShapeInfos = v120;
 
-    deletedShapeInfos = v125->_deletedShapeInfos;
+    deletedShapeInfos = selfCopy->_deletedShapeInfos;
   }
 
-  v122 = [v65 allObjects];
-  [(NSMutableSet *)deletedShapeInfos addObjectsFromArray:v122];
+  allObjects = [v65 allObjects];
+  [(NSMutableSet *)deletedShapeInfos addObjectsFromArray:allObjects];
 }
 
-- (void)p_setUpForManualHitTestingFillEraseForInputPoint:(CGPoint)a3
+- (void)p_setUpForManualHitTestingFillEraseForInputPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = [(CRLFreehandDrawingTool *)self icc];
   [v6 viewScale];
   v8 = v7;
@@ -1159,16 +1159,16 @@ LABEL_46:
         v56 = v28;
         v29 = *(*(&v62 + 1) + 8 * v28);
         v30 = objc_opt_class();
-        v31 = [v29 info];
-        v32 = sub_100014370(v30, v31);
+        info = [v29 info];
+        v32 = sub_100014370(v30, info);
 
         v60 = 0u;
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
         v55 = v32;
-        v57 = [v32 childInfos];
-        v33 = [v57 countByEnumeratingWithState:&v58 objects:v76 count:16];
+        childInfos = [v32 childInfos];
+        v33 = [childInfos countByEnumeratingWithState:&v58 objects:v76 count:16];
         if (v33)
         {
           v34 = v33;
@@ -1180,7 +1180,7 @@ LABEL_46:
             {
               if (*v59 != v35)
               {
-                objc_enumerationMutation(v57);
+                objc_enumerationMutation(childInfos);
               }
 
               v37 = *(*(&v58 + 1) + 8 * v36);
@@ -1190,23 +1190,23 @@ LABEL_46:
 
               if (v40)
               {
-                v41 = [v40 shapeInfo];
-                v42 = [v41 isTreatedAsFillForFreehandDrawing];
+                shapeInfo = [v40 shapeInfo];
+                isTreatedAsFillForFreehandDrawing = [shapeInfo isTreatedAsFillForFreehandDrawing];
 
-                if (!v42)
+                if (!isTreatedAsFillForFreehandDrawing)
                 {
                   goto LABEL_24;
                 }
 
-                v43 = [v40 pathSource];
-                v44 = [v43 bezierPath];
+                pathSource = [v40 pathSource];
+                bezierPath = [pathSource bezierPath];
 
                 [v40 pureTransformInRoot];
-                [v44 transformUsingAffineTransform:buf];
-                [(CRLBezierHitTester *)self->_fillHitTester addPath:v44 filled:1 clippedToRect:v20, v22, v24, v26];
-                [(NSMutableArray *)self->_allHitTesterFillPathsZOrdered addObject:v44];
-                [(NSMapTable *)self->_shapeFillLayoutsForHitTesterPaths setObject:v40 forKeyedSubscript:v44];
-                [(NSMapTable *)self->_currentPathsForHitTesterPaths setObject:v44 forKeyedSubscript:v44];
+                [bezierPath transformUsingAffineTransform:buf];
+                [(CRLBezierHitTester *)self->_fillHitTester addPath:bezierPath filled:1 clippedToRect:v20, v22, v24, v26];
+                [(NSMutableArray *)self->_allHitTesterFillPathsZOrdered addObject:bezierPath];
+                [(NSMapTable *)self->_shapeFillLayoutsForHitTesterPaths setObject:v40 forKeyedSubscript:bezierPath];
+                [(NSMapTable *)self->_currentPathsForHitTesterPaths setObject:bezierPath forKeyedSubscript:bezierPath];
               }
 
               else
@@ -1251,9 +1251,9 @@ LABEL_46:
                   _os_log_error_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: Assertion backtrace: >>%{public}@<<", buf, 0x12u);
                 }
 
-                v44 = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolPixelEraser p_setUpForManualHitTestingFillEraseForInputPoint:]"];
+                bezierPath = [NSString stringWithUTF8String:"[CRLFreehandDrawingToolPixelEraser p_setUpForManualHitTestingFillEraseForInputPoint:]"];
                 v49 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingToolPixelEraser.m"];
-                [CRLAssertionHandler handleFailureInFunction:v44 file:v49 lineNumber:570 isFatal:0 description:"invalid nil value for '%{public}s'", "shapeLayout"];
+                [CRLAssertionHandler handleFailureInFunction:bezierPath file:v49 lineNumber:570 isFatal:0 description:"invalid nil value for '%{public}s'", "shapeLayout"];
 
                 p_superclass = v47;
               }
@@ -1263,7 +1263,7 @@ LABEL_24:
             }
 
             while (v34 != v36);
-            v34 = [v57 countByEnumeratingWithState:&v58 objects:v76 count:16];
+            v34 = [childInfos countByEnumeratingWithState:&v58 objects:v76 count:16];
           }
 
           while (v34);
@@ -1280,11 +1280,11 @@ LABEL_24:
   }
 }
 
-- (void)p_updatePathsForSlicingWithErasingStroke:(id)a3
+- (void)p_updatePathsForSlicingWithErasingStroke:(id)stroke
 {
-  v4 = a3;
+  strokeCopy = stroke;
   [(CRLFreehandDrawingToolPixelEraser *)self p_unscaledEraserDiameter];
-  v6 = [(CRLBezierHitTester *)self->_fillHitTester pathsCrossingPath:v4 withSearchThreshold:v5 * 0.5];
+  v6 = [(CRLBezierHitTester *)self->_fillHitTester pathsCrossingPath:strokeCopy withSearchThreshold:v5 * 0.5];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1317,14 +1317,14 @@ LABEL_24:
   }
 }
 
-- (int64_t)p_breakApartFilledShapeIfPossible:(id)a3 withDesiredGeometry:(id)a4 bezierPath:(id)a5 previousZOrderOffset:(int64_t)a6
+- (int64_t)p_breakApartFilledShapeIfPossible:(id)possible withDesiredGeometry:(id)geometry bezierPath:(id)path previousZOrderOffset:(int64_t)offset
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [a5 visuallyDistinctSubregions];
-  if ([v12 count] >= 2)
+  possibleCopy = possible;
+  geometryCopy = geometry;
+  visuallyDistinctSubregions = [path visuallyDistinctSubregions];
+  if ([visuallyDistinctSubregions count] >= 2)
   {
-    v13 = [(CRLFreehandDrawingToolPixelEraser *)self p_breakApartShape:v10 withGeometry:v11 subpaths:v12 previousZOrderOffset:a6];
+    v13 = [(CRLFreehandDrawingToolPixelEraser *)self p_breakApartShape:possibleCopy withGeometry:geometryCopy subpaths:visuallyDistinctSubregions previousZOrderOffset:offset];
   }
 
   else
@@ -1335,32 +1335,32 @@ LABEL_24:
   return v13;
 }
 
-- (int64_t)p_breakApartShape:(id)a3 withGeometry:(id)a4 subpaths:(id)a5 previousZOrderOffset:(int64_t)a6
+- (int64_t)p_breakApartShape:(id)shape withGeometry:(id)geometry subpaths:(id)subpaths previousZOrderOffset:(int64_t)offset
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  shapeCopy = shape;
+  geometryCopy = geometry;
+  subpathsCopy = subpaths;
   v12 = [(CRLFreehandDrawingTool *)self icc];
-  v13 = [v12 editingCoordinator];
-  v35 = [v13 commandController];
+  editingCoordinator = [v12 editingCoordinator];
+  commandController = [editingCoordinator commandController];
 
   v36 = v12;
-  v14 = [v12 editingCoordinator];
-  v15 = [v14 boardItemFactory];
+  editingCoordinator2 = [v12 editingCoordinator];
+  boardItemFactory = [editingCoordinator2 boardItemFactory];
 
-  v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
-  if ([v11 count])
+  v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [subpathsCopy count]);
+  if ([subpathsCopy count])
   {
     v17 = 0;
     do
     {
-      v18 = [v11 objectAtIndexedSubscript:v17];
+      v18 = [subpathsCopy objectAtIndexedSubscript:v17];
       v19 = objc_opt_class();
-      [v15 makeDuplicateOfBoardItem:v9];
-      v21 = v20 = v10;
+      [boardItemFactory makeDuplicateOfBoardItem:shapeCopy];
+      v21 = v20 = geometryCopy;
       v22 = sub_100013F00(v19, v21);
 
-      v10 = v20;
+      geometryCopy = v20;
       [v18 bounds];
       v23 = [v20 geometryWithNewBounds:?];
       [v22 setGeometry:v23];
@@ -1368,38 +1368,38 @@ LABEL_24:
       v24 = [CRLBezierPathSource pathSourceWithBezierPath:v18];
       [v22 setPathSource:v24];
 
-      [v22 setAspectRatioLocked:{objc_msgSend(v9, "aspectRatioLocked")}];
+      [v22 setAspectRatioLocked:{objc_msgSend(shapeCopy, "aspectRatioLocked")}];
       [v16 addObject:v22];
 
       ++v17;
     }
 
-    while (v17 < [v11 count]);
+    while (v17 < [subpathsCopy count]);
   }
 
   v25 = objc_opt_class();
-  v26 = [v9 parentInfo];
-  v27 = sub_100013F00(v25, v26);
+  parentInfo = [shapeCopy parentInfo];
+  v27 = sub_100013F00(v25, parentInfo);
 
-  v28 = [v27 childInfos];
-  v29 = [v28 indexOfObject:v9];
+  childInfos = [v27 childInfos];
+  v29 = [childInfos indexOfObject:shapeCopy];
 
-  v30 = [[_TtC8Freeform26CRLCommandInsertBoardItems alloc] initWithParentContainer:v27 boardItems:v16 index:&v29[a6]];
-  [v35 enqueueCommand:v30];
-  v31 = [[_TtC8Freeform26CRLCommandDeleteBoardItems alloc] initWithBoardItemToDelete:v9];
-  [v35 enqueueCommand:v31];
+  v30 = [[_TtC8Freeform26CRLCommandInsertBoardItems alloc] initWithParentContainer:v27 boardItems:v16 index:&v29[offset]];
+  [commandController enqueueCommand:v30];
+  v31 = [[_TtC8Freeform26CRLCommandDeleteBoardItems alloc] initWithBoardItemToDelete:shapeCopy];
+  [commandController enqueueCommand:v31];
   v32 = [v16 count] - 1;
 
   return v32;
 }
 
-- (id)p_erasableAreaPathInUnscaledSpaceForErasingStrokePath:(id)a3 withVisibleRulerBezierPath:(id)a4
+- (id)p_erasableAreaPathInUnscaledSpaceForErasingStrokePath:(id)path withVisibleRulerBezierPath:(id)bezierPath
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  pathCopy = path;
+  bezierPathCopy = bezierPath;
+  if (bezierPathCopy)
   {
-    if ([v6 isEmpty])
+    if ([pathCopy isEmpty])
     {
       v8 = INFINITY;
       v9 = INFINITY;
@@ -1407,7 +1407,7 @@ LABEL_24:
 
     else
     {
-      [v6 elementAtIndex:0 associatedPoints:v45];
+      [pathCopy elementAtIndex:0 associatedPoints:v45];
       v8 = *v45;
       v9 = *&v45[1];
     }
@@ -1459,7 +1459,7 @@ LABEL_24:
       v31 = v30;
 
       v12 = [CRLBezierPath bezierPathWithRect:v25, v27, v29, v31];
-      v13 = [v12 subtractBezierPath:v7];
+      v13 = [v12 subtractBezierPath:bezierPathCopy];
       v32 = [v13 arrayOfSubpathsWithEffectivelyEmptySubpathsRemoved:1];
       if ([v32 count])
       {

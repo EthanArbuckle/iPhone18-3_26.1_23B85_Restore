@@ -1,13 +1,13 @@
 @interface MeasurementUnitPickerParameter
 - (NSArray)possibleStates;
-- (id)localizedLabelForPossibleState:(id)a3;
+- (id)localizedLabelForPossibleState:(id)state;
 @end
 
 @implementation MeasurementUnitPickerParameter
 
 - (NSArray)possibleStates
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA5C648C();
 
   if (v3)
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1CA5C65C4(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1CA5C65C4(stateCopy);
   v7 = v6;
 
   if (v7)

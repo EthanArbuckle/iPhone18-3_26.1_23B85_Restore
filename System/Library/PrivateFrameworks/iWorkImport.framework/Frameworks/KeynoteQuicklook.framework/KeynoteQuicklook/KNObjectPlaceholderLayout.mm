@@ -1,13 +1,13 @@
 @interface KNObjectPlaceholderLayout
-- (id)instructionalStorageForContainedStorage:(id)a3 storageKind:(unsigned __int8)a4;
+- (id)instructionalStorageForContainedStorage:(id)storage storageKind:(unsigned __int8)kind;
 @end
 
 @implementation KNObjectPlaceholderLayout
 
-- (id)instructionalStorageForContainedStorage:(id)a3 storageKind:(unsigned __int8)a4
+- (id)instructionalStorageForContainedStorage:(id)storage storageKind:(unsigned __int8)kind
 {
-  HIDWORD(v58) = a4;
-  v5 = a3;
+  HIDWORD(v58) = kind;
+  storageCopy = storage;
   v8 = objc_msgSend_info(self, v6, v7);
   v11 = objc_msgSend_documentRoot(v8, v9, v10);
   v14 = objc_msgSend_theme(v11, v12, v13);
@@ -50,11 +50,11 @@
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v56, v57);
 LABEL_3:
   v26 = objc_alloc(MEMORY[0x277D80F28]);
-  v29 = objc_msgSend_context(v5, v27, v28);
+  v29 = objc_msgSend_context(storageCopy, v27, v28);
   v32 = objc_msgSend_info(self, v30, v31);
   v35 = objc_msgSend_instructionalText(v32, v33, v34);
-  v38 = objc_msgSend_stylesheet(v5, v36, v37);
-  v40 = objc_msgSend_writingDirectionForParagraphAtCharIndex_(v5, v39, 0);
+  v38 = objc_msgSend_stylesheet(storageCopy, v36, v37);
+  v40 = objc_msgSend_writingDirectionForParagraphAtCharIndex_(storageCopy, v39, 0);
 
   LODWORD(v58) = v40;
   v42 = objc_msgSend_initWithContext_string_kind_stylesheet_paragraphStyle_listStyle_section_columnStyle_paragraphDirection_(v26, v41, v29, v35, HIDWORD(v58), v38, v20, v25, 0, 0, v58);

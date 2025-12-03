@@ -1,8 +1,8 @@
 @interface TSPTemporaryObjectContextDelegate
-+ (id)temporaryObjectContextDelegateWithPackageDataForWrite:(id)a3 additionalDocumentPropertiesForWrite:(id)a4;
++ (id)temporaryObjectContextDelegateWithPackageDataForWrite:(id)write additionalDocumentPropertiesForWrite:(id)forWrite;
 - (TSPTemporaryObjectContextDelegate)init;
-- (id)persistenceWarningsForData:(id)a3 flags:(unint64_t)a4;
-- (void)context:(id)a3 canPerformUserActionUsingBlock:(id)a4;
+- (id)persistenceWarningsForData:(id)data flags:(unint64_t)flags;
+- (void)context:(id)context canPerformUserActionUsingBlock:(id)block;
 @end
 
 @implementation TSPTemporaryObjectContextDelegate
@@ -24,22 +24,22 @@
   return v2;
 }
 
-+ (id)temporaryObjectContextDelegateWithPackageDataForWrite:(id)a3 additionalDocumentPropertiesForWrite:(id)a4
++ (id)temporaryObjectContextDelegateWithPackageDataForWrite:(id)write additionalDocumentPropertiesForWrite:(id)forWrite
 {
-  v5 = a3;
-  v6 = a4;
+  writeCopy = write;
+  forWriteCopy = forWrite;
   v7 = [TSPTemporaryObjectContextDelegateWithPackageDataForWrite alloc];
-  v9 = objc_msgSend_initWithPackageDataForWrite_additionalDocumentPropertiesForWrite_(v7, v8, v5, v6);
+  v9 = objc_msgSend_initWithPackageDataForWrite_additionalDocumentPropertiesForWrite_(v7, v8, writeCopy, forWriteCopy);
 
   return v9;
 }
 
-- (id)persistenceWarningsForData:(id)a3 flags:(unint64_t)a4
+- (id)persistenceWarningsForData:(id)data flags:(unint64_t)flags
 {
-  v4 = a4;
-  v5 = a3;
-  v8 = v5;
-  if (v4)
+  flagsCopy = flags;
+  dataCopy = data;
+  v8 = dataCopy;
+  if (flagsCopy)
   {
     v18 = objc_msgSend_set(MEMORY[0x277CBEB98], v6, v7);
   }
@@ -47,10 +47,10 @@
   else
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = objc_msgSend_filename(v5, v6, v7);
+    v10 = objc_msgSend_filename(dataCopy, v6, v7);
     v12 = v10;
     v13 = @"External";
-    if ((v4 & 2) == 0)
+    if ((flagsCopy & 2) == 0)
     {
       v13 = @"Package";
     }
@@ -64,12 +64,12 @@
   return v18;
 }
 
-- (void)context:(id)a3 canPerformUserActionUsingBlock:(id)a4
+- (void)context:(id)context canPerformUserActionUsingBlock:(id)block
 {
-  v4 = a4;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v4[2](v4, 1);
+    blockCopy[2](blockCopy, 1);
   }
 }
 

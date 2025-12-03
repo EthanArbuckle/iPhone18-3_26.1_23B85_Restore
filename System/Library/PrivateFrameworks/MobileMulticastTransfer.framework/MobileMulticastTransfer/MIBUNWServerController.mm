@@ -1,79 +1,79 @@
 @interface MIBUNWServerController
-- (MIBUNWServerController)initWithPacketProvider:(id)a3 hostAddress:(id)a4 hostPort:(id)a5 nanPort:(id)a6 groupAddress:(id)a7 groupPort:(id)a8 interfaceName:(id)a9 serviceName:(id)a10 countryCode:(id)a11 channelName:(unint64_t)a12 band:(unint64_t)a13 bandwidth:(unint64_t)a14 enableRateAdapter:(BOOL)a15 controllerDelegate:(id)a16;
+- (MIBUNWServerController)initWithPacketProvider:(id)provider hostAddress:(id)address hostPort:(id)port nanPort:(id)nanPort groupAddress:(id)groupAddress groupPort:(id)groupPort interfaceName:(id)name serviceName:(id)self0 countryCode:(id)self1 channelName:(unint64_t)self2 band:(unint64_t)self3 bandwidth:(unint64_t)self4 enableRateAdapter:(BOOL)self5 controllerDelegate:(id)self6;
 - (NSString)description;
 - (id)_packetDropSummary;
-- (void)_adjustBatchSizeWithPacketDroppedInLastInterval:(unint64_t)a3;
+- (void)_adjustBatchSizeWithPacketDroppedInLastInterval:(unint64_t)interval;
 - (void)_calculateEffectiveBandwidth;
 - (void)_fetchOneBatchOfPacketsFromProvider;
-- (void)_handleFetchCompletionWithResult:(BOOL)a3 atEOF:(BOOL)a4 packets:(id)a5;
-- (void)_sendPackets:(id)a3 withCompletion:(id)a4;
+- (void)_handleFetchCompletionWithResult:(BOOL)result atEOF:(BOOL)f packets:(id)packets;
+- (void)_sendPackets:(id)packets withCompletion:(id)completion;
 - (void)_setupFileSenderLoop;
 - (void)_start;
 - (void)_startMulticast;
 - (void)_startNANService;
 - (void)_startTCPListener;
 - (void)_stopMulticast;
-- (void)_stopWithReason:(id)a3;
+- (void)_stopWithReason:(id)reason;
 - (void)_tearDownFileSenderLoop;
-- (void)_updatePacketDropBreakdown:(id)a3;
-- (void)clientDevice:(id)a3 didCheckOutWithError:(id)a4 withSummary:(id)a5;
-- (void)clientDevice:(id)a3 didPingWithPayload:(id)a4;
-- (void)clientDeviceDidCheckIn:(id)a3;
-- (void)clientDeviceDidConnect:(id)a3;
-- (void)clientDeviceDidDisconnect:(id)a3;
-- (void)clientListener:(id)a3 didReceiveNewClientDevice:(id)a4;
-- (void)clientListenerDidStart:(id)a3;
-- (void)clientListenerDidStop:(id)a3 withError:(id)a4;
-- (void)nanPublisher:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5;
-- (void)nanPublisherDidStart:(id)a3 forRetry:(BOOL)a4;
-- (void)nanPublisherDidStop:(id)a3 withError:(id)a4 willRetry:(BOOL)a5;
+- (void)_updatePacketDropBreakdown:(id)breakdown;
+- (void)clientDevice:(id)device didCheckOutWithError:(id)error withSummary:(id)summary;
+- (void)clientDevice:(id)device didPingWithPayload:(id)payload;
+- (void)clientDeviceDidCheckIn:(id)in;
+- (void)clientDeviceDidConnect:(id)connect;
+- (void)clientDeviceDidDisconnect:(id)disconnect;
+- (void)clientListener:(id)listener didReceiveNewClientDevice:(id)device;
+- (void)clientListenerDidStart:(id)start;
+- (void)clientListenerDidStop:(id)stop withError:(id)error;
+- (void)nanPublisher:(id)publisher didReceiveData:(id)data fromPeer:(id)peer;
+- (void)nanPublisherDidStart:(id)start forRetry:(BOOL)retry;
+- (void)nanPublisherDidStop:(id)stop withError:(id)error willRetry:(BOOL)retry;
 - (void)start;
 - (void)stop;
-- (void)updateClientStatus:(id)a3 forDevice:(id)a4;
+- (void)updateClientStatus:(id)status forDevice:(id)device;
 @end
 
 @implementation MIBUNWServerController
 
-- (MIBUNWServerController)initWithPacketProvider:(id)a3 hostAddress:(id)a4 hostPort:(id)a5 nanPort:(id)a6 groupAddress:(id)a7 groupPort:(id)a8 interfaceName:(id)a9 serviceName:(id)a10 countryCode:(id)a11 channelName:(unint64_t)a12 band:(unint64_t)a13 bandwidth:(unint64_t)a14 enableRateAdapter:(BOOL)a15 controllerDelegate:(id)a16
+- (MIBUNWServerController)initWithPacketProvider:(id)provider hostAddress:(id)address hostPort:(id)port nanPort:(id)nanPort groupAddress:(id)groupAddress groupPort:(id)groupPort interfaceName:(id)name serviceName:(id)self0 countryCode:(id)self1 channelName:(unint64_t)self2 band:(unint64_t)self3 bandwidth:(unint64_t)self4 enableRateAdapter:(BOOL)self5 controllerDelegate:(id)self6
 {
-  v20 = a3;
-  v48 = a4;
-  v47 = a5;
-  v46 = a6;
-  v45 = a7;
-  v44 = a8;
-  v43 = a9;
-  v42 = a10;
-  v41 = a11;
-  v40 = a16;
+  providerCopy = provider;
+  addressCopy = address;
+  portCopy = port;
+  nanPortCopy = nanPort;
+  groupAddressCopy = groupAddress;
+  groupPortCopy = groupPort;
+  nameCopy = name;
+  serviceNameCopy = serviceName;
+  codeCopy = code;
+  delegateCopy = delegate;
   v50.receiver = self;
   v50.super_class = MIBUNWServerController;
   v21 = [(MIBUNWServerController *)&v50 init];
   if (v21)
   {
-    v39 = v20;
+    v39 = providerCopy;
     v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v23 = dispatch_queue_create("com.apple.MIBUNWServerController", v22);
     dispatchQueue = v21->_dispatchQueue;
     v21->_dispatchQueue = v23;
 
-    objc_storeStrong(&v21->_packetProvider, a3);
-    objc_storeStrong(&v21->_controllerDelegate, a16);
-    objc_storeStrong(&v21->_serviceName, a10);
+    objc_storeStrong(&v21->_packetProvider, provider);
+    objc_storeStrong(&v21->_controllerDelegate, delegate);
+    objc_storeStrong(&v21->_serviceName, serviceName);
     bandwidthTimer = v21->_bandwidthTimer;
     v21->_bandwidthTimer = 0;
 
-    objc_storeStrong(&v21->_tcpHostAddr, a4);
-    objc_storeStrong(&v21->_tcpHostPort, a5);
-    objc_storeStrong(&v21->_nanHostPort, a6);
-    objc_storeStrong(&v21->_groupAddr, a7);
-    objc_storeStrong(&v21->_groupPort, a8);
-    objc_storeStrong(&v21->_interfaceName, a9);
-    v21->_enableRA = a15;
-    objc_storeStrong(&v21->_countryCode, a11);
-    v21->_channelName = a12;
-    v21->_band = a13;
-    v21->_bandwidth = a14;
+    objc_storeStrong(&v21->_tcpHostAddr, address);
+    objc_storeStrong(&v21->_tcpHostPort, port);
+    objc_storeStrong(&v21->_nanHostPort, nanPort);
+    objc_storeStrong(&v21->_groupAddr, groupAddress);
+    objc_storeStrong(&v21->_groupPort, groupPort);
+    objc_storeStrong(&v21->_interfaceName, name);
+    v21->_enableRA = adapter;
+    objc_storeStrong(&v21->_countryCode, code);
+    v21->_channelName = channelName;
+    v21->_band = band;
+    v21->_bandwidth = bandwidth;
     v26 = objc_opt_new();
     nanIPv6AddrMapping = v21->_nanIPv6AddrMapping;
     v21->_nanIPv6AddrMapping = v26;
@@ -99,7 +99,7 @@
     }
 
     v34 = MIBUConnObj;
-    v20 = v39;
+    providerCopy = v39;
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -200,10 +200,10 @@ void __32__MIBUNWServerController__start__block_invoke()
   }
 }
 
-- (void)_stopWithReason:(id)a3
+- (void)_stopWithReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (MIBUOnceToken != -1)
   {
@@ -214,7 +214,7 @@ void __32__MIBUNWServerController__start__block_invoke()
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
-    v18 = v4;
+    v18 = reasonCopy;
     _os_log_impl(&dword_259B04000, v5, OS_LOG_TYPE_DEFAULT, "Stopping server controller with reason: %{public}@", &v17, 0xCu);
   }
 
@@ -673,7 +673,7 @@ void __49__MIBUNWServerController__tearDownFileSenderLoop__block_invoke_68()
   unk_27F9E4620 = packetSent;
   qword_27F9E4628 = packetDropped;
   [(MIBUNWServerController *)self _adjustBatchSizeWithPacketDroppedInLastInterval:v7];
-  v10 = [(MIBUPacketProvidable *)self->_packetProvider packetSize];
+  packetSize = [(MIBUPacketProvidable *)self->_packetProvider packetSize];
   if (MIBUOnceToken != -1)
   {
     [MIBUNWServerController _calculateEffectiveBandwidth];
@@ -694,7 +694,7 @@ void __49__MIBUNWServerController__tearDownFileSenderLoop__block_invoke_68()
     v24 = 1024;
     v25 = 5;
     v26 = 2048;
-    v27 = (8 * (packetSent - v3) * v10) / 5000000.0;
+    v27 = (8 * (packetSent - v3) * packetSize) / 5000000.0;
     v28 = 2048;
     v29 = v14;
     v30 = 2048;
@@ -706,8 +706,8 @@ void __49__MIBUNWServerController__tearDownFileSenderLoop__block_invoke_68()
     _os_log_impl(&dword_259B04000, v11, OS_LOG_TYPE_DEFAULT, "Fetch issued: %lu, Packets sent: %lu, dropped: %lu in last %ds; Effective bandwidth: %0.5f Mbps, Total packet fetched: %lu, Total packet in flight: %lu, Total packet dropped: %lu, Total packet sent: %lu", &v18, 0x58u);
   }
 
-  v15 = [(MIBUNWServerController *)self _packetDropSummary];
-  if (v15)
+  _packetDropSummary = [(MIBUNWServerController *)self _packetDropSummary];
+  if (_packetDropSummary)
   {
     if (MIBUOnceToken != -1)
     {
@@ -718,7 +718,7 @@ void __49__MIBUNWServerController__tearDownFileSenderLoop__block_invoke_68()
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v15;
+      v19 = _packetDropSummary;
       _os_log_impl(&dword_259B04000, v16, OS_LOG_TYPE_DEFAULT, "Dropped packets breakdown: %@", &v18, 0xCu);
     }
   }
@@ -808,11 +808,11 @@ void __54__MIBUNWServerController__calculateEffectiveBandwidth__block_invoke_73(
   return v12;
 }
 
-- (void)_adjustBatchSizeWithPacketDroppedInLastInterval:(unint64_t)a3
+- (void)_adjustBatchSizeWithPacketDroppedInLastInterval:(unint64_t)interval
 {
   v14 = *MEMORY[0x277D85DE8];
   batchSize = self->_batchSize;
-  if (a3)
+  if (interval)
   {
     v5 = (batchSize * 0.8);
     if (v5 <= 0x100)
@@ -925,12 +925,12 @@ uint64_t __61__MIBUNWServerController__fetchOneBatchOfPacketsFromProvider__block
   return [v2 providePacketsOfCount:v3 withCompletion:v5 inQueue:v1[1]];
 }
 
-- (void)_handleFetchCompletionWithResult:(BOOL)a3 atEOF:(BOOL)a4 packets:(id)a5
+- (void)_handleFetchCompletionWithResult:(BOOL)result atEOF:(BOOL)f packets:(id)packets
 {
-  v5 = a4;
-  v8 = a5;
+  fCopy = f;
+  packetsCopy = packets;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (!a3)
+  if (!result)
   {
     if (MIBUOnceToken != -1)
     {
@@ -948,17 +948,17 @@ uint64_t __61__MIBUNWServerController__fetchOneBatchOfPacketsFromProvider__block
     goto LABEL_15;
   }
 
-  if ([v8 count])
+  if ([packetsCopy count])
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __73__MIBUNWServerController__handleFetchCompletionWithResult_atEOF_packets___block_invoke_94;
     v12[3] = &unk_2798EBE90;
     v12[4] = self;
-    [(MIBUNWServerController *)self _sendPackets:v8 withCompletion:v12];
+    [(MIBUNWServerController *)self _sendPackets:packetsCopy withCompletion:v12];
   }
 
-  if (v5)
+  if (fCopy)
   {
     if (MIBUOnceToken != -1)
     {
@@ -1010,9 +1010,9 @@ void __73__MIBUNWServerController__handleFetchCompletionWithResult_atEOF_packets
   }
 }
 
-- (void)_updatePacketDropBreakdown:(id)a3
+- (void)_updatePacketDropBreakdown:(id)breakdown
 {
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a3, "code")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(breakdown, "code")}];
   v4 = [(NSMutableDictionary *)self->_packetDropBreakdown objectForKey:?];
   v5 = v4;
   if (v4)
@@ -1030,11 +1030,11 @@ void __73__MIBUNWServerController__handleFetchCompletionWithResult_atEOF_packets
   [(NSMutableDictionary *)packetDropBreakdown setObject:v8 forKey:v9];
 }
 
-- (void)_sendPackets:(id)a3 withCompletion:(id)a4
+- (void)_sendPackets:(id)packets withCompletion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v16 = a4;
+  packetsCopy = packets;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v7 = dispatch_group_create();
   v32[0] = 0;
@@ -1051,7 +1051,7 @@ void __73__MIBUNWServerController__handleFetchCompletionWithResult_atEOF_packets
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v6;
+  obj = packetsCopy;
   v8 = [obj countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v8)
   {
@@ -1096,10 +1096,10 @@ void __73__MIBUNWServerController__handleFetchCompletionWithResult_atEOF_packets
   block[2] = __54__MIBUNWServerController__sendPackets_withCompletion___block_invoke_2;
   block[3] = &unk_2798EBEE0;
   block[4] = self;
-  v19 = v16;
+  v19 = completionCopy;
   v20 = v32;
   v21 = v30;
-  v14 = v16;
+  v14 = completionCopy;
   dispatch_group_notify(v7, dispatchQueue, block);
 
   _Block_object_dispose(v30, 8);
@@ -1168,24 +1168,24 @@ uint64_t __54__MIBUNWServerController__sendPackets_withCompletion___block_invoke
   return result;
 }
 
-- (void)updateClientStatus:(id)a3 forDevice:(id)a4
+- (void)updateClientStatus:(id)status forDevice:(id)device
 {
-  v8 = a3;
-  v6 = a4;
+  statusCopy = status;
+  deviceCopy = device;
   controllerDelegate = self->_controllerDelegate;
   if (objc_opt_respondsToSelector())
   {
-    [(MIBUNWServerControllerDelegate *)self->_controllerDelegate serverController:self didReceiveClientDeviceStatus:v8 forDevice:v6];
+    [(MIBUNWServerControllerDelegate *)self->_controllerDelegate serverController:self didReceiveClientDeviceStatus:statusCopy forDevice:deviceCopy];
   }
 }
 
-- (void)clientListenerDidStart:(id)a3
+- (void)clientListenerDidStart:(id)start
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_tcpListener != v4)
+  startCopy = start;
+  v5 = startCopy;
+  if (self->_tcpListener != startCopy)
   {
-    if (self->_nanListener == v4)
+    if (self->_nanListener == startCopy)
     {
       if (MIBUOnceToken != -1)
       {
@@ -1257,12 +1257,12 @@ void __49__MIBUNWServerController_clientListenerDidStart___block_invoke_107()
   }
 }
 
-- (void)clientListenerDidStop:(id)a3 withError:(id)a4
+- (void)clientListenerDidStop:(id)stop withError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (self->_tcpListener == v6)
+  stopCopy = stop;
+  errorCopy = error;
+  if (self->_tcpListener == stopCopy)
   {
     if (MIBUOnceToken != -1)
     {
@@ -1273,13 +1273,13 @@ void __49__MIBUNWServerController_clientListenerDidStart___block_invoke_107()
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = v7;
+      v12 = errorCopy;
       v9 = "TCP listener stopped with error: %{public}@";
       goto LABEL_11;
     }
   }
 
-  else if (self->_nanListener == v6)
+  else if (self->_nanListener == stopCopy)
   {
     if (MIBUOnceToken != -1)
     {
@@ -1290,7 +1290,7 @@ void __49__MIBUNWServerController_clientListenerDidStart___block_invoke_107()
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = v7;
+      v12 = errorCopy;
       v9 = "NAN listener stopped with error: %{public}@";
 LABEL_11:
       _os_log_impl(&dword_259B04000, v8, OS_LOG_TYPE_DEFAULT, v9, &v11, 0xCu);
@@ -1332,20 +1332,20 @@ void __58__MIBUNWServerController_clientListenerDidStop_withError___block_invoke
   }
 }
 
-- (void)clientListener:(id)a3 didReceiveNewClientDevice:(id)a4
+- (void)clientListener:(id)listener didReceiveNewClientDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  deviceCopy = device;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__MIBUNWServerController_clientListener_didReceiveNewClientDevice___block_invoke;
   block[3] = &unk_2798EBCB0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = listenerCopy;
+  selfCopy = self;
+  v14 = deviceCopy;
+  v9 = deviceCopy;
+  v10 = listenerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1445,17 +1445,17 @@ void __67__MIBUNWServerController_clientListener_didReceiveNewClientDevice___blo
   }
 }
 
-- (void)clientDeviceDidConnect:(id)a3
+- (void)clientDeviceDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__MIBUNWServerController_clientDeviceDidConnect___block_invoke;
   v7[3] = &unk_2798EBC88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectCopy;
+  v6 = connectCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1538,17 +1538,17 @@ void __49__MIBUNWServerController_clientDeviceDidConnect___block_invoke_122()
   }
 }
 
-- (void)clientDeviceDidDisconnect:(id)a3
+- (void)clientDeviceDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__MIBUNWServerController_clientDeviceDidDisconnect___block_invoke;
   v7[3] = &unk_2798EBC88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = disconnectCopy;
+  v6 = disconnectCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1680,17 +1680,17 @@ void __52__MIBUNWServerController_clientDeviceDidDisconnect___block_invoke_2_131
   }
 }
 
-- (void)clientDeviceDidCheckIn:(id)a3
+- (void)clientDeviceDidCheckIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__MIBUNWServerController_clientDeviceDidCheckIn___block_invoke;
   v7[3] = &unk_2798EBC88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = inCopy;
+  v6 = inCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1947,23 +1947,23 @@ void __49__MIBUNWServerController_clientDeviceDidCheckIn___block_invoke_148()
   }
 }
 
-- (void)clientDevice:(id)a3 didCheckOutWithError:(id)a4 withSummary:(id)a5
+- (void)clientDevice:(id)device didCheckOutWithError:(id)error withSummary:(id)summary
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  errorCopy = error;
+  summaryCopy = summary;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__MIBUNWServerController_clientDevice_didCheckOutWithError_withSummary___block_invoke;
   v15[3] = &unk_2798EBF08;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = deviceCopy;
+  v17 = errorCopy;
+  v18 = summaryCopy;
+  v12 = summaryCopy;
+  v13 = errorCopy;
+  v14 = deviceCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -2066,20 +2066,20 @@ void __72__MIBUNWServerController_clientDevice_didCheckOutWithError_withSummary_
   }
 }
 
-- (void)clientDevice:(id)a3 didPingWithPayload:(id)a4
+- (void)clientDevice:(id)device didPingWithPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  payloadCopy = payload;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__MIBUNWServerController_clientDevice_didPingWithPayload___block_invoke;
   block[3] = &unk_2798EBCB0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = deviceCopy;
+  v13 = payloadCopy;
+  v9 = payloadCopy;
+  v10 = deviceCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2133,7 +2133,7 @@ void __58__MIBUNWServerController_clientDevice_didPingWithPayload___block_invoke
   }
 }
 
-- (void)nanPublisherDidStart:(id)a3 forRetry:(BOOL)a4
+- (void)nanPublisherDidStart:(id)start forRetry:(BOOL)retry
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2144,18 +2144,18 @@ void __58__MIBUNWServerController_clientDevice_didPingWithPayload___block_invoke
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)nanPublisherDidStop:(id)a3 withError:(id)a4 willRetry:(BOOL)a5
+- (void)nanPublisherDidStop:(id)stop withError:(id)error willRetry:(BOOL)retry
 {
-  v7 = a4;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__MIBUNWServerController_nanPublisherDidStop_withError_willRetry___block_invoke;
   block[3] = &unk_2798EBF30;
-  v12 = a5;
+  retryCopy = retry;
   block[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = errorCopy;
+  v9 = errorCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2176,17 +2176,17 @@ void __66__MIBUNWServerController_nanPublisherDidStop_withError_willRetry___bloc
   }
 }
 
-- (void)nanPublisher:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5
+- (void)nanPublisher:(id)publisher didReceiveData:(id)data fromPeer:(id)peer
 {
-  v6 = a4;
+  dataCopy = data;
   dispatchQueue = self->_dispatchQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__MIBUNWServerController_nanPublisher_didReceiveData_fromPeer___block_invoke;
   v9[3] = &unk_2798EBC88;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = dataCopy;
+  selfCopy = self;
+  v8 = dataCopy;
   dispatch_async(dispatchQueue, v9);
 }
 

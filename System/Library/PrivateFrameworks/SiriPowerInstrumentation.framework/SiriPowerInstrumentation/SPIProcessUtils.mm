@@ -1,14 +1,14 @@
 @interface SPIProcessUtils
-+ (id)getProcessNameForPid:(int)a3;
-+ (int)getUsageForPid:(int)a3 withOutput:(SPIResourceUsage *)a4;
++ (id)getProcessNameForPid:(int)pid;
++ (int)getUsageForPid:(int)pid withOutput:(SPIResourceUsage *)output;
 @end
 
 @implementation SPIProcessUtils
 
-+ (id)getProcessNameForPid:(int)a3
++ (id)getProcessNameForPid:(int)pid
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (proc_name(a3, buffer, 0x400u) < 1)
+  if (proc_name(pid, buffer, 0x400u) < 1)
   {
     v3 = 0;
   }
@@ -23,7 +23,7 @@
   return v3;
 }
 
-+ (int)getUsageForPid:(int)a3 withOutput:(SPIResourceUsage *)a4
++ (int)getUsageForPid:(int)pid withOutput:(SPIResourceUsage *)output
 {
   v20 = *MEMORY[0x277D85DE8];
   memset(v19, 0, sizeof(v19));
@@ -39,11 +39,11 @@
   v10 = 0u;
   v8 = 0u;
   memset(v7, 0, sizeof(v7));
-  result = proc_pid_rusage(a3, 5, v7);
+  result = proc_pid_rusage(pid, 5, v7);
   if (!result)
   {
-    *&a4->cpuCycles = vextq_s8(*(v19 + 8), *(v19 + 8), 8uLL);
-    a4->memPhysFootprint = *(&v8 + 1);
+    *&output->cpuCycles = vextq_s8(*(v19 + 8), *(v19 + 8), 8uLL);
+    output->memPhysFootprint = *(&v8 + 1);
   }
 
   v6 = *MEMORY[0x277D85DE8];

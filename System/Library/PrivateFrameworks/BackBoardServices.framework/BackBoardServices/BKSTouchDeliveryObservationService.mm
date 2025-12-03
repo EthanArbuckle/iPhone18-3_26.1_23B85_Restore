@@ -1,38 +1,38 @@
 @interface BKSTouchDeliveryObservationService
 + (id)sharedInstance;
 - (BKSTouchDeliveryObservationService)init;
-- (BOOL)_queue_addObserver:(id)a3 forTouchIdentifier:(unsigned int)a4;
-- (BOOL)_queue_removeObserver:(id)a3 forTouchIdentifier:(unsigned int)a4;
-- (id)_queue_observersForTouchIdentifier:(unsigned int)a3;
+- (BOOL)_queue_addObserver:(id)observer forTouchIdentifier:(unsigned int)identifier;
+- (BOOL)_queue_removeObserver:(id)observer forTouchIdentifier:(unsigned int)identifier;
+- (id)_queue_observersForTouchIdentifier:(unsigned int)identifier;
 - (void)_connectToTouchDeliveryService;
-- (void)_processTouchEventDeliveryUpdate:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addObserver:(id)a3 forTouchIdentifier:(unsigned int)a4;
+- (void)_processTouchEventDeliveryUpdate:(id)update;
+- (void)addObserver:(id)observer;
+- (void)addObserver:(id)observer forTouchIdentifier:(unsigned int)identifier;
 - (void)dealloc;
-- (void)observeTouchEventDeliveryDidOccur:(id)a3 response:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)observeTouchEventDeliveryDidOccur:(id)occur response:(id)response;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation BKSTouchDeliveryObservationService
 
-- (void)_processTouchEventDeliveryUpdate:(id)a3
+- (void)_processTouchEventDeliveryUpdate:(id)update
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  updateCopy = update;
   v6 = BKLogTouchDeliveryObserver();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v24 = v5;
+    v24 = updateCopy;
     _os_log_debug_impl(&dword_186345000, v6, OS_LOG_TYPE_DEBUG, "update: received touch event update %{public}@", buf, 0xCu);
   }
 
-  v7 = [v5 touchIdentifier];
-  v8 = [v5 pid];
-  v9 = [v5 isDetached];
-  v10 = [v5 contextID];
-  v11 = [v5 type];
-  if (v11)
+  touchIdentifier = [updateCopy touchIdentifier];
+  v8 = [updateCopy pid];
+  isDetached = [updateCopy isDetached];
+  contextID = [updateCopy contextID];
+  type = [updateCopy type];
+  if (type)
   {
     calloutQueue = self->_calloutQueue;
     v15[0] = MEMORY[0x1E69E9820];
@@ -40,13 +40,13 @@
     v15[2] = __71__BKSTouchDeliveryObservationService__processTouchEventDeliveryUpdate___block_invoke;
     v15[3] = &unk_1E6F47390;
     v15[4] = self;
-    v17 = v11;
+    v17 = type;
     v18 = a2;
-    v22 = v9;
-    v19 = v7;
-    v20 = v10;
+    v22 = isDetached;
+    v19 = touchIdentifier;
+    v20 = contextID;
     v21 = v8;
-    v16 = v5;
+    v16 = updateCopy;
     dispatch_async(calloutQueue, v15);
   }
 
@@ -56,7 +56,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v24 = v5;
+      v24 = updateCopy;
       _os_log_error_impl(&dword_186345000, v13, OS_LOG_TYPE_ERROR, "update: invalid update type %{public}@", buf, 0xCu);
     }
   }
@@ -278,16 +278,16 @@ uint64_t __71__BKSTouchDeliveryObservationService__processTouchEventDeliveryUpda
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)observeTouchEventDeliveryDidOccur:(id)a3 response:(id)a4
+- (void)observeTouchEventDeliveryDidOccur:(id)occur response:(id)response
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  occurCopy = occur;
+  responseCopy = response;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [occurCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -299,20 +299,20 @@ uint64_t __71__BKSTouchDeliveryObservationService__processTouchEventDeliveryUpda
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(occurCopy);
         }
 
         [(BKSTouchDeliveryObservationService *)self _processTouchEventDeliveryUpdate:*(*(&v13 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [occurCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 
-  v7[2](v7, 0);
+  responseCopy[2](responseCopy, 0);
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -344,18 +344,18 @@ uint64_t __71__BKSTouchDeliveryObservationService__processTouchEventDeliveryUpda
     v8 = BKLogTouchDeliveryObserver();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [v5 remoteTarget];
+      remoteTarget = [v5 remoteTarget];
       *buf = 138543362;
-      v16 = v13;
+      v16 = remoteTarget;
       _os_log_debug_impl(&dword_186345000, v8, OS_LOG_TYPE_DEBUG, "server remote target %{public}@", buf, 0xCu);
     }
 
-    v9 = [v5 remoteTarget];
+    remoteTarget2 = [v5 remoteTarget];
 
-    if (!v9)
+    if (!remoteTarget2)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"BKSTouchDeliveryObservationService.m" lineNumber:246 description:@"we must have a remote target"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"BKSTouchDeliveryObservationService.m" lineNumber:246 description:@"we must have a remote target"];
     }
   }
 
@@ -455,31 +455,31 @@ void __68__BKSTouchDeliveryObservationService__connectToTouchDeliveryService__bl
   [v4 setObservesTouch:MEMORY[0x1E695E118] withIdentifier:v3];
 }
 
-- (BOOL)_queue_removeObserver:(id)a3 forTouchIdentifier:(unsigned int)a4
+- (BOOL)_queue_removeObserver:(id)observer forTouchIdentifier:(unsigned int)identifier
 {
-  v6 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_V2(self->_touchClientQueue);
-  v7 = a4;
-  v8 = [(BSMutableIntegerMap *)self->_touchIdentifierToObserverLists objectForKey:a4];
+  identifierCopy = identifier;
+  v8 = [(BSMutableIntegerMap *)self->_touchIdentifierToObserverLists objectForKey:identifier];
   v9 = v8;
-  if (v8 && [v8 containsObject:v6])
+  if (v8 && [v8 containsObject:observerCopy])
   {
-    [v9 removeObject:v6];
+    [v9 removeObject:observerCopy];
     v10 = [v9 count];
     v11 = v10 == 0;
     if (!v10)
     {
-      [(BSMutableIntegerMap *)self->_touchIdentifierToObserverLists removeObjectForKey:v7];
+      [(BSMutableIntegerMap *)self->_touchIdentifierToObserverLists removeObjectForKey:identifierCopy];
     }
 
-    v12 = [(NSMapTable *)self->_observersToTouchIdentifiers objectForKey:v6];
+    v12 = [(NSMapTable *)self->_observersToTouchIdentifiers objectForKey:observerCopy];
     v13 = v12;
     if (v12)
     {
-      [v12 removeValue:v7];
+      [v12 removeValue:identifierCopy];
       if (![v13 count])
       {
-        [(NSMapTable *)self->_observersToTouchIdentifiers removeObjectForKey:v6];
+        [(NSMapTable *)self->_observersToTouchIdentifiers removeObjectForKey:observerCopy];
       }
     }
   }
@@ -492,30 +492,30 @@ void __68__BKSTouchDeliveryObservationService__connectToTouchDeliveryService__bl
   return v11;
 }
 
-- (BOOL)_queue_addObserver:(id)a3 forTouchIdentifier:(unsigned int)a4
+- (BOOL)_queue_addObserver:(id)observer forTouchIdentifier:(unsigned int)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_V2(self->_touchClientQueue);
-  v7 = a4;
-  v8 = [(BSMutableIntegerMap *)self->_touchIdentifierToObserverLists objectForKey:a4];
+  identifierCopy = identifier;
+  v8 = [(BSMutableIntegerMap *)self->_touchIdentifierToObserverLists objectForKey:identifier];
   if (!v8)
   {
     v8 = [MEMORY[0x1E696AC70] hashTableWithOptions:517];
-    [(BSMutableIntegerMap *)self->_touchIdentifierToObserverLists setObject:v8 forKey:v7];
+    [(BSMutableIntegerMap *)self->_touchIdentifierToObserverLists setObject:v8 forKey:identifierCopy];
   }
 
-  if (([v8 containsObject:v6] & 1) == 0)
+  if (([v8 containsObject:observerCopy] & 1) == 0)
   {
-    [v8 addObject:v6];
-    v9 = [(NSMapTable *)self->_observersToTouchIdentifiers objectForKey:v6];
+    [v8 addObject:observerCopy];
+    v9 = [(NSMapTable *)self->_observersToTouchIdentifiers objectForKey:observerCopy];
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x1E698E6E8]);
-      [(NSMapTable *)self->_observersToTouchIdentifiers setObject:v9 forKey:v6];
+      [(NSMapTable *)self->_observersToTouchIdentifiers setObject:v9 forKey:observerCopy];
     }
 
-    [v9 addValue:v7];
+    [v9 addValue:identifierCopy];
   }
 
   v10 = BKLogTouchDeliveryObserver();
@@ -531,18 +531,18 @@ void __68__BKSTouchDeliveryObservationService__connectToTouchDeliveryService__bl
   return v11;
 }
 
-- (id)_queue_observersForTouchIdentifier:(unsigned int)a3
+- (id)_queue_observersForTouchIdentifier:(unsigned int)identifier
 {
   dispatch_assert_queue_V2(self->_touchClientQueue);
   touchIdentifierToObserverLists = self->_touchIdentifierToObserverLists;
 
-  return [(BSMutableIntegerMap *)touchIdentifierToObserverLists objectForKey:a3];
+  return [(BSMutableIntegerMap *)touchIdentifierToObserverLists objectForKey:identifier];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v5 = BKLogTouchDeliveryObserver();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -557,9 +557,9 @@ void __68__BKSTouchDeliveryObservationService__connectToTouchDeliveryService__bl
   v10[1] = 3221225472;
   v10[2] = __53__BKSTouchDeliveryObservationService_removeObserver___block_invoke;
   v10[3] = &unk_1E6F47C78;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = observerCopy;
+  selfCopy = self;
+  v7 = observerCopy;
   dispatch_sync(touchClientQueue, v10);
 
   v8 = *MEMORY[0x1E69E9840];
@@ -603,17 +603,17 @@ void __53__BKSTouchDeliveryObservationService_removeObserver___block_invoke_2(ui
   }
 }
 
-- (void)addObserver:(id)a3 forTouchIdentifier:(unsigned int)a4
+- (void)addObserver:(id)observer forTouchIdentifier:(unsigned int)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  observerCopy = observer;
   v7 = BKLogTouchDeliveryObserver();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
     v17 = objc_opt_class();
     v18 = 1024;
-    v19 = a4;
+    identifierCopy = identifier;
     v11 = v17;
     _os_log_debug_impl(&dword_186345000, v7, OS_LOG_TYPE_DEBUG, "add observer:%{public}@ for touch:%X", buf, 0x12u);
   }
@@ -623,10 +623,10 @@ void __53__BKSTouchDeliveryObservationService_removeObserver___block_invoke_2(ui
   block[1] = 3221225472;
   block[2] = __69__BKSTouchDeliveryObservationService_addObserver_forTouchIdentifier___block_invoke;
   block[3] = &unk_1E6F472F0;
-  v13 = v6;
-  v14 = self;
-  v15 = a4;
-  v9 = v6;
+  v13 = observerCopy;
+  selfCopy = self;
+  identifierCopy2 = identifier;
+  v9 = observerCopy;
   dispatch_sync(touchClientQueue, block);
 
   v10 = *MEMORY[0x1E69E9840];
@@ -643,9 +643,9 @@ void __69__BKSTouchDeliveryObservationService_addObserver_forTouchIdentifier___b
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = BKLogTouchDeliveryObserver();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -659,8 +659,8 @@ void __69__BKSTouchDeliveryObservationService_addObserver_forTouchIdentifier___b
   v8[2] = __50__BKSTouchDeliveryObservationService_addObserver___block_invoke;
   v8[3] = &unk_1E6F47C78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = observerCopy;
+  v7 = observerCopy;
   dispatch_sync(touchClientQueue, v8);
 }
 
@@ -693,13 +693,13 @@ void __50__BKSTouchDeliveryObservationService_addObserver___block_invoke(uint64_
     touchIdentifierToObserverLists = v2->_touchIdentifierToObserverLists;
     v2->_touchIdentifierToObserverLists = v3;
 
-    v5 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     observersToTouchIdentifiers = v2->_observersToTouchIdentifiers;
-    v2->_observersToTouchIdentifiers = v5;
+    v2->_observersToTouchIdentifiers = weakToStrongObjectsMapTable;
 
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     generalObservers = v2->_generalObservers;
-    v2->_generalObservers = v7;
+    v2->_generalObservers = weakObjectsHashTable;
 
     Serial = BSDispatchQueueCreateSerial();
     calloutQueue = v2->_calloutQueue;
@@ -709,9 +709,9 @@ void __50__BKSTouchDeliveryObservationService_addObserver___block_invoke(uint64_
     bsServiceDispatchQueue = v2->_bsServiceDispatchQueue;
     v2->_bsServiceDispatchQueue = v11;
 
-    v13 = [(BSServiceDispatchQueue *)v2->_bsServiceDispatchQueue queue];
+    queue = [(BSServiceDispatchQueue *)v2->_bsServiceDispatchQueue queue];
     touchClientQueue = v2->_touchClientQueue;
-    v2->_touchClientQueue = v13;
+    v2->_touchClientQueue = queue;
 
     [(BKSTouchDeliveryObservationService *)v2 _connectToTouchDeliveryService];
   }

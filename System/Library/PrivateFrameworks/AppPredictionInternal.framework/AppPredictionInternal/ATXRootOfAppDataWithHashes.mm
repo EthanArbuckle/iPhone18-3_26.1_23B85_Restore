@@ -1,11 +1,11 @@
 @interface ATXRootOfAppDataWithHashes
 - (ATXRootOfAppDataWithHashes)init;
-- (ATXRootOfAppDataWithHashes)initWithSerialized:(id)a3;
+- (ATXRootOfAppDataWithHashes)initWithSerialized:(id)serialized;
 - (id)description;
 - (id)serialize;
-- (unint64_t)sessionCountForBundleId:(id)a3;
-- (unint64_t)sessionCountForBundleId:(id)a3 firstAction:(id)a4;
-- (void)recordSessionWithBundleId:(id)a3 firstAction:(id)a4;
+- (unint64_t)sessionCountForBundleId:(id)id;
+- (unint64_t)sessionCountForBundleId:(id)id firstAction:(id)action;
+- (void)recordSessionWithBundleId:(id)id firstAction:(id)action;
 - (void)serialize;
 @end
 
@@ -15,41 +15,41 @@
 {
   v6.receiver = self;
   v6.super_class = ATXRootOfAppDataWithHashes;
-  v2 = [(ATXRootOfAppData *)&v6 initInternal];
-  if (v2)
+  initInternal = [(ATXRootOfAppData *)&v6 initInternal];
+  if (initInternal)
   {
     v3 = objc_opt_new();
-    dataForBundleId = v2->_dataForBundleId;
-    v2->_dataForBundleId = v3;
+    dataForBundleId = initInternal->_dataForBundleId;
+    initInternal->_dataForBundleId = v3;
   }
 
-  return v2;
+  return initInternal;
 }
 
-- (ATXRootOfAppDataWithHashes)initWithSerialized:(id)a3
+- (ATXRootOfAppDataWithHashes)initWithSerialized:(id)serialized
 {
-  v4 = a3;
+  serializedCopy = serialized;
   v14.receiver = self;
   v14.super_class = ATXRootOfAppDataWithHashes;
-  v5 = [(ATXRootOfAppData *)&v14 initInternal];
-  if (!v5)
+  initInternal = [(ATXRootOfAppData *)&v14 initInternal];
+  if (!initInternal)
   {
     goto LABEL_4;
   }
 
   v6 = objc_autoreleasePoolPush();
   v13 = 0;
-  v7 = [MEMORY[0x277CCAC58] propertyListWithData:v4 options:2 format:0 error:&v13];
+  v7 = [MEMORY[0x277CCAC58] propertyListWithData:serializedCopy options:2 format:0 error:&v13];
   v8 = v13;
   objc_autoreleasePoolPop(v6);
-  v9 = v5[1];
-  v5[1] = v7;
+  v9 = initInternal[1];
+  initInternal[1] = v7;
 
-  if (v5[1])
+  if (initInternal[1])
   {
 
 LABEL_4:
-    v10 = v5;
+    v10 = initInternal;
     goto LABEL_8;
   }
 
@@ -65,9 +65,9 @@ LABEL_8:
   return v10;
 }
 
-- (unint64_t)sessionCountForBundleId:(id)a3
+- (unint64_t)sessionCountForBundleId:(id)id
 {
-  v3 = [(NSMutableDictionary *)self->_dataForBundleId objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_dataForBundleId objectForKeyedSubscript:id];
   v4 = v3;
   if (v3)
   {
@@ -82,12 +82,12 @@ LABEL_8:
   return v5;
 }
 
-- (unint64_t)sessionCountForBundleId:(id)a3 firstAction:(id)a4
+- (unint64_t)sessionCountForBundleId:(id)id firstAction:(id)action
 {
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_dataForBundleId objectForKeyedSubscript:a3];
+  actionCopy = action;
+  v7 = [(NSMutableDictionary *)self->_dataForBundleId objectForKeyedSubscript:id];
   v8 = v7;
-  if (v7 && (v9 = [v7 mutableBytes], __key[0] = hash32(v6), __key[1] = 0, (v10 = bsearch(__key, (v9 + 4), (objc_msgSend(v8, "length") - 4) >> 3, 8uLL, compareEntries)) != 0))
+  if (v7 && (v9 = [v7 mutableBytes], __key[0] = hash32(actionCopy), __key[1] = 0, (v10 = bsearch(__key, (v9 + 4), (objc_msgSend(v8, "length") - 4) >> 3, 8uLL, compareEntries)) != 0))
   {
     v11 = v10[1];
   }
@@ -100,19 +100,19 @@ LABEL_8:
   return v11;
 }
 
-- (void)recordSessionWithBundleId:(id)a3 firstAction:(id)a4
+- (void)recordSessionWithBundleId:(id)id firstAction:(id)action
 {
-  v6 = a3;
-  v7 = hash32(a4);
-  v8 = [(NSMutableDictionary *)self->_dataForBundleId objectForKeyedSubscript:v6];
+  idCopy = id;
+  v7 = hash32(action);
+  v8 = [(NSMutableDictionary *)self->_dataForBundleId objectForKeyedSubscript:idCopy];
   if (v8)
   {
     v9 = v8;
-    v10 = [v8 mutableBytes];
-    ++*v10;
+    mutableBytes = [v8 mutableBytes];
+    ++*mutableBytes;
     __key[0] = v7;
     __key[1] = 1;
-    v11 = bsearch(__key, v10 + 1, ([v9 length] - 4) >> 3, 8uLL, compareEntries);
+    v11 = bsearch(__key, mutableBytes + 1, ([v9 length] - 4) >> 3, 8uLL, compareEntries);
     if (v11)
     {
       ++v11[1];
@@ -123,21 +123,21 @@ LABEL_8:
       [v9 appendBytes:__key length:8];
       v13 = v9;
       v14 = v9;
-      v15 = [v14 mutableBytes];
+      mutableBytes2 = [v14 mutableBytes];
       v16 = [v14 length];
 
-      qsort((v15 + 4), (v16 - 4) >> 3, 8uLL, compareEntries);
+      qsort((mutableBytes2 + 4), (v16 - 4) >> 3, 8uLL, compareEntries);
     }
   }
 
   else
   {
     v9 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:12];
-    [(NSMutableDictionary *)self->_dataForBundleId setObject:v9 forKeyedSubscript:v6];
-    v12 = [v9 mutableBytes];
-    *v12 = 1;
-    v12[1] = v7;
-    v12[2] = 1;
+    [(NSMutableDictionary *)self->_dataForBundleId setObject:v9 forKeyedSubscript:idCopy];
+    mutableBytes3 = [v9 mutableBytes];
+    *mutableBytes3 = 1;
+    mutableBytes3[1] = v7;
+    mutableBytes3[2] = 1;
   }
 }
 
@@ -170,13 +170,13 @@ LABEL_8:
 
         v11 = *(*(&v20 + 1) + 8 * i);
         v12 = [(NSMutableDictionary *)self->_dataForBundleId objectForKeyedSubscript:v11];
-        v13 = [v12 bytes];
-        [v6 appendFormat:@"\n  %@ (%u): ", v11, *v13];
+        bytes = [v12 bytes];
+        [v6 appendFormat:@"\n  %@ (%u): ", v11, *bytes];
         v14 = [v12 length];
         if ((v14 - 4) >= 8)
         {
           v15 = (v14 - 4) >> 3;
-          v16 = v13 + 2;
+          v16 = bytes + 2;
           do
           {
             [v6 appendFormat:@"%x(%u) ", *(v16 - 1), *v16];
@@ -225,9 +225,9 @@ LABEL_8:
 - (void)serialize
 {
   v5 = MEMORY[0x277CCA890];
-  v6 = *a1;
-  v7 = [v5 currentHandler];
-  [v7 handleFailureInMethod:a2 object:a3 file:@"ATXRootOfAppData.m" lineNumber:221 description:{@"Archiver error: %@", v6}];
+  v6 = *self;
+  currentHandler = [v5 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:a3 file:@"ATXRootOfAppData.m" lineNumber:221 description:{@"Archiver error: %@", v6}];
 }
 
 @end

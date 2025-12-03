@@ -2,21 +2,21 @@
 - (TVDefaultSceneDelegate)defaultSceneDelegate;
 - (TVLockScreenSceneDelegate)lockScreenSceneDelegate;
 - (UIScene)defaultScene;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)lockScreenSceneDelegateSceneDidDisconnect:(id)a3;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)lockScreenSceneDelegateSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation TVRemoteUIServiceAppDelegate
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = [UISceneConfiguration alloc];
-  v7 = [v5 role];
-  v8 = [v6 initWithName:0 sessionRole:v7];
+  role = [sessionCopy role];
+  v8 = [v6 initWithName:0 sessionRole:role];
 
-  v9 = [v5 role];
-  v10 = [v9 isEqualToString:UIWindowSceneSessionRoleApplication];
+  role2 = [sessionCopy role];
+  v10 = [role2 isEqualToString:UIWindowSceneSessionRoleApplication];
 
   if (v10)
   {
@@ -25,8 +25,8 @@
 
   else
   {
-    v12 = [v5 role];
-    v13 = [v12 isEqualToString:_UIWindowSceneSessionTypeCoverSheet];
+    role3 = [sessionCopy role];
+    v13 = [role3 isEqualToString:_UIWindowSceneSessionTypeCoverSheet];
 
     if (!v13)
     {
@@ -50,13 +50,13 @@ LABEL_6:
   if (!WeakRetained)
   {
     v4 = +[UIApplication sharedApplication];
-    v5 = [v4 connectedScenes];
+    connectedScenes = [v4 connectedScenes];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v5;
+    v6 = connectedScenes;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -72,11 +72,11 @@ LABEL_6:
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [v11 delegate];
+          delegate = [v11 delegate];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            objc_storeWeak(&self->_defaultSceneDelegate, v12);
+            objc_storeWeak(&self->_defaultSceneDelegate, delegate);
             objc_storeWeak(&self->_defaultScene, v11);
           }
         }
@@ -110,13 +110,13 @@ LABEL_6:
   if (!WeakRetained)
   {
     v4 = +[UIApplication sharedApplication];
-    v5 = [v4 connectedScenes];
+    connectedScenes = [v4 connectedScenes];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v5;
+    v6 = connectedScenes;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
@@ -132,11 +132,11 @@ LABEL_6:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * v10) delegate];
+          delegate = [*(*(&v16 + 1) + 8 * v10) delegate];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            objc_storeWeak(&self->_defaultSceneDelegate, v11);
+            objc_storeWeak(&self->_defaultSceneDelegate, delegate);
           }
 
           v10 = v10 + 1;
@@ -165,10 +165,10 @@ LABEL_6:
   return v14;
 }
 
-- (void)lockScreenSceneDelegateSceneDidDisconnect:(id)a3
+- (void)lockScreenSceneDelegateSceneDidDisconnect:(id)disconnect
 {
-  v3 = [(TVRemoteUIServiceAppDelegate *)self defaultSceneDelegate];
-  [v3 resetRootViewController];
+  defaultSceneDelegate = [(TVRemoteUIServiceAppDelegate *)self defaultSceneDelegate];
+  [defaultSceneDelegate resetRootViewController];
 }
 
 - (UIScene)defaultScene

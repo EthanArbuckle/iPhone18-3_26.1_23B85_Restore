@@ -1,39 +1,39 @@
 @interface SDAirDropFileZipper
-- (BOOL)addFile:(__CFURL *)a3 withBase:(__CFURL *)a4 toBom:(_BOMBom *)a5;
-- (BOOL)addFileURLToBom:(_BOMBom *)a3 file:(__CFURL *)a4 base:(__CFURL *)a5 propertyKeys:(id)a6 topLevel:(BOOL)a7;
+- (BOOL)addFile:(__CFURL *)file withBase:(__CFURL *)base toBom:(_BOMBom *)bom;
+- (BOOL)addFileURLToBom:(_BOMBom *)bom file:(__CFURL *)file base:(__CFURL *)base propertyKeys:(id)keys topLevel:(BOOL)level;
 - (BOOL)createPlaceholderFiles;
 - (BOOL)initBomWithFiles;
-- (BOOL)pathExistsInPlaceholderInfo:(id)a3;
-- (BOOL)validFileName:(id)a3;
-- (SDAirDropFileZipper)initWithQueue:(id)a3 boundStreamSize:(int64_t)a4;
+- (BOOL)pathExistsInPlaceholderInfo:(id)info;
+- (BOOL)validFileName:(id)name;
+- (SDAirDropFileZipper)initWithQueue:(id)queue boundStreamSize:(int64_t)size;
 - (SDAirDropFileZipperDelegate)delegate;
-- (__CFArray)copyReverseParentChain:(__CFURL *)a3 base:(__CFURL *)a4;
+- (__CFArray)copyReverseParentChain:(__CFURL *)chain base:(__CFURL *)base;
 - (__CFReadStream)copyReadStream;
-- (id)URLFromFileInfo:(id)a3;
-- (id)absoluteURLIfTopLevelFile:(const char *)a3 isDirectory:(BOOL)a4 base:(__CFURL *)a5;
+- (id)URLFromFileInfo:(id)info;
+- (id)absoluteURLIfTopLevelFile:(const char *)file isDirectory:(BOOL)directory base:(__CFURL *)base;
 - (id)bomPath;
-- (id)conflictResolvedURL:(id)a3;
+- (id)conflictResolvedURL:(id)l;
 - (id)containerPath;
-- (id)fixedRelativePath:(const char *)a3;
-- (id)prettyNameBasedOnUUID:(id)a3;
-- (int)bomCopierCopy:(id)a3 destination:(id)a4 options:(id)a5;
-- (int64_t)totalFileSize:(__CFURL *)a3;
-- (void)addParentChain:(_BOMBom *)a3 file:(__CFURL *)a4 base:(__CFURL *)a5;
+- (id)fixedRelativePath:(const char *)path;
+- (id)prettyNameBasedOnUUID:(id)d;
+- (int)bomCopierCopy:(id)copy destination:(id)destination options:(id)options;
+- (int64_t)totalFileSize:(__CFURL *)size;
+- (void)addParentChain:(_BOMBom *)chain file:(__CFURL *)file base:(__CFURL *)base;
 - (void)allowProgressCircleToComplete;
-- (void)bomCopierCopyFileFinished:(const char *)a3 type:(int)a4 size:(int64_t)a5 operation:(int)a6;
-- (void)bomCopierFatalError:(const char *)a3;
-- (void)bomCopierFatalFileError:(int)a3;
+- (void)bomCopierCopyFileFinished:(const char *)finished type:(int)type size:(int64_t)size operation:(int)operation;
+- (void)bomCopierFatalError:(const char *)error;
+- (void)bomCopierFatalFileError:(int)error;
 - (void)dealloc;
-- (void)moveFile:(__CFURL *)a3 toDestination:(__CFURL *)a4;
+- (void)moveFile:(__CFURL *)file toDestination:(__CFURL *)destination;
 - (void)moveFilesToDestination;
-- (void)notifyClientForEvent:(int64_t)a3 withProperty:(void *)a4;
-- (void)notifyProgress:(int64_t)a3 force:(BOOL)a4;
-- (void)removeFileFromPlaceholderList:(id)a3;
+- (void)notifyClientForEvent:(int64_t)event withProperty:(void *)property;
+- (void)notifyProgress:(int64_t)progress force:(BOOL)force;
+- (void)removeFileFromPlaceholderList:(id)list;
 - (void)removeUnusedPlaceholderFiles;
-- (void)setDestination:(id)a3;
-- (void)setPlaceholderFiles:(id)a3 withCreationCompletionHandler:(id)a4;
-- (void)setReadStream:(__CFReadStream *)a3;
-- (void)startBomCopy:(id)a3 destination:(id)a4 options:(id)a5;
+- (void)setDestination:(id)destination;
+- (void)setPlaceholderFiles:(id)files withCreationCompletionHandler:(id)handler;
+- (void)setReadStream:(__CFReadStream *)stream;
+- (void)startBomCopy:(id)copy destination:(id)destination options:(id)options;
 - (void)stop;
 - (void)unzip;
 - (void)zip;
@@ -41,9 +41,9 @@
 
 @implementation SDAirDropFileZipper
 
-- (SDAirDropFileZipper)initWithQueue:(id)a3 boundStreamSize:(int64_t)a4
+- (SDAirDropFileZipper)initWithQueue:(id)queue boundStreamSize:(int64_t)size
 {
-  v7 = a3;
+  queueCopy = queue;
   v33.receiver = self;
   v33.super_class = SDAirDropFileZipper;
   v8 = [(SDAirDropFileZipper *)&v33 init];
@@ -114,12 +114,12 @@
     monitor = v9->_monitor;
     v9->_monitor = v28;
 
-    objc_storeStrong(&v9->_queue, a3);
+    objc_storeStrong(&v9->_queue, queue);
     v30 = dispatch_queue_create("com.apple.airdrop.zip", &_dispatch_queue_attr_concurrent);
     zipQueue = v9->_zipQueue;
     v9->_zipQueue = v30;
 
-    v9->_boundStreamSize = a4;
+    v9->_boundStreamSize = size;
   }
 
   return v9;
@@ -147,8 +147,8 @@
   bomPath = self->_bomPath;
   if (bomPath)
   {
-    v6 = [(NSString *)bomPath UTF8String];
-    remove(v6, v7);
+    uTF8String = [(NSString *)bomPath UTF8String];
+    remove(uTF8String, v7);
   }
 
   tempFolder = self->_tempFolder;
@@ -162,24 +162,24 @@
   [(SDAirDropFileZipper *)&v9 dealloc];
 }
 
-- (void)notifyClientForEvent:(int64_t)a3 withProperty:(void *)a4
+- (void)notifyClientForEvent:(int64_t)event withProperty:(void *)property
 {
-  CFRetain(a4);
+  CFRetain(property);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100180A5C;
   block[3] = &unk_1008D2178;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = event;
+  block[6] = property;
   dispatch_async(queue, block);
 }
 
-- (void)setPlaceholderFiles:(id)a3 withCreationCompletionHandler:(id)a4
+- (void)setPlaceholderFiles:(id)files withCreationCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
+  handlerCopy = handler;
+  v7 = [files mutableCopy];
   placeholderFiles = self->_placeholderFiles;
   self->_placeholderFiles = v7;
 
@@ -209,10 +209,10 @@
         }
 
         v17 = [*(*(&v21 + 1) + 8 * v16) objectForKeyedSubscript:{v15, v21}];
-        v18 = [v17 precomposedStringWithCanonicalMapping];
-        if (v18)
+        precomposedStringWithCanonicalMapping = [v17 precomposedStringWithCanonicalMapping];
+        if (precomposedStringWithCanonicalMapping)
         {
-          [(NSMutableArray *)self->_orderedRelativePaths addObject:v18];
+          [(NSMutableArray *)self->_orderedRelativePaths addObject:precomposedStringWithCanonicalMapping];
         }
 
         v16 = v16 + 1;
@@ -225,40 +225,40 @@
     while (v13);
   }
 
-  v19 = [v6 copy];
+  v19 = [handlerCopy copy];
   creationCompletionHandler = self->_creationCompletionHandler;
   self->_creationCompletionHandler = v19;
 }
 
-- (void)setDestination:(id)a3
+- (void)setDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v5 = airdrop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 path];
+    path = [destinationCopy path];
     v10 = 138412290;
-    v11 = v6;
+    v11 = path;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "AirDrop destination set to %@", &v10, 0xCu);
   }
 
-  v7 = [v4 filePathURL];
-  v8 = [v7 URLByResolvingSymlinksInPath];
+  filePathURL = [destinationCopy filePathURL];
+  uRLByResolvingSymlinksInPath = [filePathURL URLByResolvingSymlinksInPath];
   destination = self->_destination;
-  self->_destination = v8;
+  self->_destination = uRLByResolvingSymlinksInPath;
 }
 
-- (void)setReadStream:(__CFReadStream *)a3
+- (void)setReadStream:(__CFReadStream *)stream
 {
   readStream = self->_readStream;
-  if (readStream != a3)
+  if (readStream != stream)
   {
     if (readStream)
     {
       CFRelease(readStream);
     }
 
-    self->_readStream = CFRetain(a3);
+    self->_readStream = CFRetain(stream);
   }
 }
 
@@ -273,20 +273,20 @@
   return result;
 }
 
-- (void)notifyProgress:(int64_t)a3 force:(BOOL)a4
+- (void)notifyProgress:(int64_t)progress force:(BOOL)force
 {
   Current = CFAbsoluteTimeGetCurrent();
-  if (a4 || Current > self->_lastProgress + 0.2)
+  if (force || Current > self->_lastProgress + 0.2)
   {
     totalBytes = self->_totalBytes;
-    if (self->_totalBytesCopied + a3 >= totalBytes)
+    if (self->_totalBytesCopied + progress >= totalBytes)
     {
       v9 = self->_totalBytes;
     }
 
     else
     {
-      v9 = self->_totalBytesCopied + a3;
+      v9 = self->_totalBytesCopied + progress;
     }
 
     if (totalBytes)
@@ -296,7 +296,7 @@
 
     else
     {
-      v10 = self->_totalBytesCopied + a3;
+      v10 = self->_totalBytesCopied + progress;
     }
 
     if (v10 > self->_lastBytesCopied || [(SDStatusMonitor *)self->_monitor enableBugs])
@@ -326,10 +326,10 @@
   }
 }
 
-- (id)absoluteURLIfTopLevelFile:(const char *)a3 isDirectory:(BOOL)a4 base:(__CFURL *)a5
+- (id)absoluteURLIfTopLevelFile:(const char *)file isDirectory:(BOOL)directory base:(__CFURL *)base
 {
-  v8 = strlen(a3);
-  v9 = CFURLCreateFromFileSystemRepresentation(0, a3, v8, a4);
+  v8 = strlen(file);
+  v9 = CFURLCreateFromFileSystemRepresentation(0, file, v8, directory);
   if (v9)
   {
     v10 = v9;
@@ -343,8 +343,8 @@
         v14 = v13;
         if (CFEqual(v13, @"."))
         {
-          v15 = strlen(a3);
-          v16 = CFURLCreateFromFileSystemRepresentationRelativeToBase(0, a3, v15, a4, a5);
+          v15 = strlen(file);
+          v16 = CFURLCreateFromFileSystemRepresentationRelativeToBase(0, file, v15, directory, base);
         }
 
         else
@@ -379,9 +379,9 @@
   return v16;
 }
 
-- (BOOL)validFileName:(id)a3
+- (BOOL)validFileName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if ([(SDStatusMonitor *)self->_monitor enableBugs])
   {
     v5 = 1;
@@ -410,11 +410,11 @@
           }
 
           v9 = *(*(&v20 + 1) + 8 * i);
-          v10 = [(NSMutableDictionary *)self->_alternateNames objectForKeyedSubscript:v4];
+          v10 = [(NSMutableDictionary *)self->_alternateNames objectForKeyedSubscript:nameCopy];
           v11 = [v9 objectForKeyedSubscript:v18];
-          v12 = [v11 precomposedStringWithCanonicalMapping];
-          v13 = [v10 precomposedStringWithCanonicalMapping];
-          if (v10 && ([v12 isEqualToString:v13] & 1) != 0)
+          precomposedStringWithCanonicalMapping = [v11 precomposedStringWithCanonicalMapping];
+          precomposedStringWithCanonicalMapping2 = [v10 precomposedStringWithCanonicalMapping];
+          if (v10 && ([precomposedStringWithCanonicalMapping isEqualToString:precomposedStringWithCanonicalMapping2] & 1) != 0)
           {
 
 LABEL_16:
@@ -422,8 +422,8 @@ LABEL_16:
             goto LABEL_17;
           }
 
-          v14 = [v4 lastPathComponent];
-          v15 = [v12 isEqualToString:v14];
+          lastPathComponent = [nameCopy lastPathComponent];
+          v15 = [precomposedStringWithCanonicalMapping isEqualToString:lastPathComponent];
 
           if (v15)
           {
@@ -453,24 +453,24 @@ LABEL_17:
   return v5;
 }
 
-- (void)removeFileFromPlaceholderList:(id)a3
+- (void)removeFileFromPlaceholderList:(id)list
 {
-  v17 = a3;
+  listCopy = list;
   v4 = [(NSMutableDictionary *)self->_alternateNames objectForKeyedSubscript:?];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    lastPathComponent = v4;
   }
 
   else
   {
-    v6 = [v17 lastPathComponent];
+    lastPathComponent = [listCopy lastPathComponent];
   }
 
-  v7 = v6;
+  v7 = lastPathComponent;
 
-  v8 = [v7 precomposedStringWithCanonicalMapping];
+  precomposedStringWithCanonicalMapping = [v7 precomposedStringWithCanonicalMapping];
   v9 = [(NSMutableArray *)self->_placeholderFiles count];
   if (v9)
   {
@@ -481,8 +481,8 @@ LABEL_17:
     {
       v13 = [(NSMutableArray *)self->_placeholderFiles objectAtIndexedSubscript:v11];
       v14 = [v13 objectForKeyedSubscript:v12];
-      v15 = [v14 precomposedStringWithCanonicalMapping];
-      v16 = [v8 isEqualToString:v15];
+      precomposedStringWithCanonicalMapping2 = [v14 precomposedStringWithCanonicalMapping];
+      v16 = [precomposedStringWithCanonicalMapping isEqualToString:precomposedStringWithCanonicalMapping2];
 
       if (v16)
       {
@@ -501,9 +501,9 @@ LABEL_17:
 LABEL_10:
 }
 
-- (id)fixedRelativePath:(const char *)a3
+- (id)fixedRelativePath:(const char *)path
 {
-  v4 = CFStringCreateWithCString(0, a3, 0x8000100u);
+  v4 = CFStringCreateWithCString(0, path, 0x8000100u);
   v5 = v4;
   if (v4 && !CFStringHasPrefix(v4, @"./") && ![(SDStatusMonitor *)self->_monitor enableBugs])
   {
@@ -515,10 +515,10 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)pathExistsInPlaceholderInfo:(id)a3
+- (BOOL)pathExistsInPlaceholderInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     v20 = 0u;
     v21 = 0u;
@@ -541,12 +541,12 @@ LABEL_10:
           }
 
           v11 = [*(*(&v18 + 1) + 8 * i) objectForKeyedSubscript:{v9, v18}];
-          v12 = [v11 precomposedStringWithCanonicalMapping];
-          v13 = [v4 precomposedStringWithCanonicalMapping];
-          v14 = v13;
-          if (v12)
+          precomposedStringWithCanonicalMapping = [v11 precomposedStringWithCanonicalMapping];
+          precomposedStringWithCanonicalMapping2 = [infoCopy precomposedStringWithCanonicalMapping];
+          v14 = precomposedStringWithCanonicalMapping2;
+          if (precomposedStringWithCanonicalMapping)
           {
-            v15 = v13 == 0;
+            v15 = precomposedStringWithCanonicalMapping2 == 0;
           }
 
           else
@@ -554,7 +554,7 @@ LABEL_10:
             v15 = 1;
           }
 
-          if (!v15 && [v12 isEqualToString:v13])
+          if (!v15 && [precomposedStringWithCanonicalMapping isEqualToString:precomposedStringWithCanonicalMapping2])
           {
 
             v16 = 1;
@@ -584,14 +584,14 @@ LABEL_17:
   return v16;
 }
 
-- (void)bomCopierCopyFileFinished:(const char *)a3 type:(int)a4 size:(int64_t)a5 operation:(int)a6
+- (void)bomCopierCopyFileFinished:(const char *)finished type:(int)type size:(int64_t)size operation:(int)operation
 {
-  if (!a6)
+  if (!operation)
   {
-    self->_totalBytesCopied += a5;
+    self->_totalBytesCopied += size;
     if ([(SDAirDropFileZipper *)self isCompressor])
     {
-      v9 = [(SDAirDropFileZipper *)self absoluteURLIfTopLevelFile:a3 isDirectory:a4 == 2 base:self->_destination];
+      v9 = [(SDAirDropFileZipper *)self absoluteURLIfTopLevelFile:finished isDirectory:type == 2 base:self->_destination];
       if (v9)
       {
         if (([(NSMutableArray *)self->_topLevelFiles containsObject:v9]& 1) == 0)
@@ -606,16 +606,16 @@ LABEL_17:
 
     else
     {
-      v10 = a4 == 2;
-      v9 = [(SDAirDropFileZipper *)self fixedRelativePath:a3];
+      v10 = type == 2;
+      v9 = [(SDAirDropFileZipper *)self fixedRelativePath:finished];
       v11 = +[NSURL fileURLWithFileSystemRepresentation:isDirectory:relativeToURL:](NSURL, "fileURLWithFileSystemRepresentation:isDirectory:relativeToURL:", [v9 UTF8String], v10, self->_tempFolder);
-      v12 = [v9 precomposedStringWithCanonicalMapping];
+      precomposedStringWithCanonicalMapping = [v9 precomposedStringWithCanonicalMapping];
       if (v11)
       {
         [(SDAirDropFileZipper *)self quarantineFile:v11];
-        if ([(SDAirDropFileZipper *)self pathExistsInPlaceholderInfo:v12])
+        if ([(SDAirDropFileZipper *)self pathExistsInPlaceholderInfo:precomposedStringWithCanonicalMapping])
         {
-          if ([(SDAirDropFileZipper *)self validFileName:v12])
+          if ([(SDAirDropFileZipper *)self validFileName:precomposedStringWithCanonicalMapping])
           {
             if (([(NSMutableArray *)self->_topLevelFiles containsObject:v11]& 1) != 0)
             {
@@ -629,11 +629,11 @@ LABEL_17:
             else
             {
               [(NSMutableArray *)self->_topLevelFiles addObject:v11];
-              [(NSMutableDictionary *)self->_relativePathToFile setObject:v11 forKeyedSubscript:v12];
+              [(NSMutableDictionary *)self->_relativePathToFile setObject:v11 forKeyedSubscript:precomposedStringWithCanonicalMapping];
               [(SDAirDropFileZipper *)self notifyProgress:0 force:1];
             }
 
-            [(SDAirDropFileZipper *)self removeFileFromPlaceholderList:v12];
+            [(SDAirDropFileZipper *)self removeFileFromPlaceholderList:precomposedStringWithCanonicalMapping];
           }
 
           else
@@ -661,16 +661,16 @@ LABEL_17:
   }
 }
 
-- (void)bomCopierFatalFileError:(int)a3
+- (void)bomCopierFatalFileError:(int)error
 {
-  v4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:a3 userInfo:0];
+  v4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:error userInfo:0];
   [(SDAirDropFileZipper *)self notifyClientForEvent:10 withProperty:v4];
 }
 
-- (void)bomCopierFatalError:(const char *)a3
+- (void)bomCopierFatalError:(const char *)error
 {
   v7 = NSLocalizedDescriptionKey;
-  v4 = [NSString stringWithUTF8String:a3];
+  v4 = [NSString stringWithUTF8String:error];
   v8 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
 
@@ -678,12 +678,12 @@ LABEL_17:
   [(SDAirDropFileZipper *)self notifyClientForEvent:10 withProperty:v6];
 }
 
-- (int64_t)totalFileSize:(__CFURL *)a3
+- (int64_t)totalFileSize:(__CFURL *)size
 {
   v3 = -1;
   number = 0;
   valuePtr = -1;
-  if (CFURLCopyResourcePropertyForKey(a3, kCFURLTotalFileSizeKey, &number, 0))
+  if (CFURLCopyResourcePropertyForKey(size, kCFURLTotalFileSizeKey, &number, 0))
   {
     v4 = number == 0;
   }
@@ -707,11 +707,11 @@ LABEL_17:
   return v3;
 }
 
-- (__CFArray)copyReverseParentChain:(__CFURL *)a3 base:(__CFURL *)a4
+- (__CFArray)copyReverseParentChain:(__CFURL *)chain base:(__CFURL *)base
 {
   Mutable = CFArrayCreateMutable(0, 0, &kCFTypeArrayCallBacks);
-  PathComponent = CFURLCreateCopyDeletingLastPathComponent(0, a3);
-  if (CFEqual(a4, PathComponent))
+  PathComponent = CFURLCreateCopyDeletingLastPathComponent(0, chain);
+  if (CFEqual(base, PathComponent))
   {
     v8 = PathComponent;
   }
@@ -726,16 +726,16 @@ LABEL_17:
       PathComponent = v8;
     }
 
-    while (!CFEqual(a4, v8));
+    while (!CFEqual(base, v8));
   }
 
   CFRelease(v8);
   return Mutable;
 }
 
-- (BOOL)addFile:(__CFURL *)a3 withBase:(__CFURL *)a4 toBom:(_BOMBom *)a5
+- (BOOL)addFile:(__CFURL *)file withBase:(__CFURL *)base toBom:(_BOMBom *)bom
 {
-  v7 = sub_1001F0F24(a3);
+  v7 = sub_1001F0F24(file);
   if (!v7)
   {
     return 0;
@@ -744,7 +744,7 @@ LABEL_17:
   v8 = v7;
   if (BOMFSObjectNewFromPath())
   {
-    v9 = sub_1001F09CC(a3, a4);
+    v9 = sub_1001F09CC(file, base);
     if (v9)
     {
       v10 = v9;
@@ -786,16 +786,16 @@ LABEL_17:
   return v12;
 }
 
-- (void)addParentChain:(_BOMBom *)a3 file:(__CFURL *)a4 base:(__CFURL *)a5
+- (void)addParentChain:(_BOMBom *)chain file:(__CFURL *)file base:(__CFURL *)base
 {
-  v8 = [(SDAirDropFileZipper *)self copyReverseParentChain:a4 base:a5];
+  v8 = [(SDAirDropFileZipper *)self copyReverseParentChain:file base:base];
   Count = CFArrayGetCount(v8);
   if (Count >= 1)
   {
     v10 = Count + 1;
     do
     {
-      [(SDAirDropFileZipper *)self addFile:CFArrayGetValueAtIndex(v8 withBase:v10 - 2) toBom:a5, a3];
+      [(SDAirDropFileZipper *)self addFile:CFArrayGetValueAtIndex(v8 withBase:v10 - 2) toBom:base, chain];
       --v10;
     }
 
@@ -805,10 +805,10 @@ LABEL_17:
   CFRelease(v8);
 }
 
-- (BOOL)addFileURLToBom:(_BOMBom *)a3 file:(__CFURL *)a4 base:(__CFURL *)a5 propertyKeys:(id)a6 topLevel:(BOOL)a7
+- (BOOL)addFileURLToBom:(_BOMBom *)bom file:(__CFURL *)file base:(__CFURL *)base propertyKeys:(id)keys topLevel:(BOOL)level
 {
-  v7 = a7;
-  v12 = a6;
+  levelCopy = level;
+  keysCopy = keys;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (!WeakRetained)
   {
@@ -816,7 +816,7 @@ LABEL_17:
   }
 
   v14 = WeakRetained;
-  if ([(NSSet *)self->_skipReadableCheckFiles containsObject:a4])
+  if ([(NSSet *)self->_skipReadableCheckFiles containsObject:file])
   {
 
     goto LABEL_5;
@@ -825,7 +825,7 @@ LABEL_17:
   v15 = *&self->_auditToken.val[4];
   v23[0] = *self->_auditToken.val;
   v23[1] = v15;
-  v16 = sub_1001F0F94(a4, v23);
+  v16 = sub_1001F0F94(file, v23);
 
   if ((v16 & 1) == 0)
   {
@@ -835,27 +835,27 @@ LABEL_17:
   }
 
 LABEL_5:
-  if (v7)
+  if (levelCopy)
   {
-    [(SDAirDropFileZipper *)self addParentChain:a3 file:a4 base:a5];
+    [(SDAirDropFileZipper *)self addParentChain:bom file:file base:base];
   }
 
-  v17 = [(SDAirDropFileZipper *)self addFile:a4 withBase:a5 toBom:a3];
+  v17 = [(SDAirDropFileZipper *)self addFile:file withBase:base toBom:bom];
   if (v17)
   {
     ++self->_fileCount;
   }
 
-  if (sub_1001F0448(a4))
+  if (sub_1001F0448(file))
   {
     *&v23[0] = 0;
-    v18 = CFURLEnumeratorCreateForDirectoryURL(0, a4, 0, v12);
+    v18 = CFURLEnumeratorCreateForDirectoryURL(0, file, 0, keysCopy);
     while (1)
     {
       NextURL = CFURLEnumeratorGetNextURL(v18, v23, 0);
       if (NextURL == kCFURLEnumeratorSuccess)
       {
-        [(SDAirDropFileZipper *)self addFileURLToBom:a3 file:*&v23[0] base:a5 propertyKeys:v12 topLevel:0];
+        [(SDAirDropFileZipper *)self addFileURLToBom:bom file:*&v23[0] base:base propertyKeys:keysCopy topLevel:0];
       }
 
       v20 = objc_loadWeakRetained(&self->_delegate);
@@ -876,7 +876,7 @@ LABEL_23:
 
   else
   {
-    v21 = [(SDAirDropFileZipper *)self totalFileSize:a4];
+    v21 = [(SDAirDropFileZipper *)self totalFileSize:file];
     if (v21 >= 1)
     {
       self->_totalBytes += v21;
@@ -893,16 +893,16 @@ LABEL_24:
   return v17;
 }
 
-- (id)URLFromFileInfo:(id)a3
+- (id)URLFromFileInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (!infoCopy)
   {
     goto LABEL_12;
   }
 
-  v6 = [v4 objectForKeyedSubscript:kSFOperationFileNameKey];
+  v6 = [infoCopy objectForKeyedSubscript:kSFOperationFileNameKey];
 
   v7 = [v5 objectForKeyedSubscript:kSFOperationFileTypeKey];
 
@@ -945,11 +945,11 @@ LABEL_12:
   return v13;
 }
 
-- (id)prettyNameBasedOnUUID:(id)a3
+- (id)prettyNameBasedOnUUID:(id)d
 {
   v6[0] = 0;
   v6[1] = 0;
-  [a3 getUUIDBytes:v6];
+  [d getUUIDBytes:v6];
   v3 = bswap32(LOWORD(v6[0]));
   v4 = [NSString stringWithFormat:@"IMG_%04u", (HIWORD(v3) - 10000 * (((839 * (v3 >> 20)) >> 16) >> 3))];
 
@@ -958,7 +958,7 @@ LABEL_12:
 
 - (BOOL)createPlaceholderFiles
 {
-  v2 = self;
+  selfCopy = self;
   placeholderFiles = self->_placeholderFiles;
   if (placeholderFiles)
   {
@@ -973,7 +973,7 @@ LABEL_12:
       v33 = v4;
       while (1)
       {
-        v6 = [(NSMutableArray *)v2->_placeholderFiles objectAtIndexedSubscript:v5, v33];
+        v6 = [(NSMutableArray *)selfCopy->_placeholderFiles objectAtIndexedSubscript:v5, v33];
         v7 = [v6 objectForKeyedSubscript:v39];
         v8 = v7;
         if (!v7)
@@ -981,8 +981,8 @@ LABEL_12:
           break;
         }
 
-        v9 = [v7 lastPathComponent];
-        if (![v8 isEqual:v9] || (objc_msgSend(v8, "isEqual:", @".") & 1) != 0)
+        lastPathComponent = [v7 lastPathComponent];
+        if (![v8 isEqual:lastPathComponent] || (objc_msgSend(v8, "isEqual:", @".") & 1) != 0)
         {
 
 LABEL_37:
@@ -1004,7 +1004,7 @@ LABEL_37:
         }
 
         v35 = v8;
-        v11 = [(SDAirDropFileZipper *)v2 URLFromFileInfo:v6];
+        v11 = [(SDAirDropFileZipper *)selfCopy URLFromFileInfo:v6];
         while (v11)
         {
           v44 = 0;
@@ -1016,8 +1016,8 @@ LABEL_37:
             goto LABEL_29;
           }
 
-          v15 = [v13 domain];
-          if (![v15 isEqual:NSPOSIXErrorDomain])
+          domain = [v13 domain];
+          if (![domain isEqual:NSPOSIXErrorDomain])
           {
 
 LABEL_24:
@@ -1037,15 +1037,15 @@ LABEL_29:
             break;
           }
 
-          v16 = [v14 code];
+          code = [v14 code];
 
-          if (v16 != 17)
+          if (code != 17)
           {
             goto LABEL_24;
           }
 
-          v17 = [(__CFURL *)v11 lastPathComponent];
-          if (!v17)
+          lastPathComponent2 = [(__CFURL *)v11 lastPathComponent];
+          if (!lastPathComponent2)
           {
             v30 = airdrop_log();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1056,12 +1056,12 @@ LABEL_29:
             goto LABEL_28;
           }
 
-          v18 = v17;
-          v19 = sub_1001F1A78(v17);
+          v18 = lastPathComponent2;
+          v19 = sub_1001F1A78(lastPathComponent2);
           v20 = airdrop_log();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
-            destination = v2->_destination;
+            destination = selfCopy->_destination;
             *buf = 138412802;
             v46 = v18;
             v47 = 2112;
@@ -1087,18 +1087,18 @@ LABEL_29:
 
           else
           {
-            v38 = [(SDAirDropFileZipper *)v2 URLFromFileInfo:v22];
+            v38 = [(SDAirDropFileZipper *)selfCopy URLFromFileInfo:v22];
 
-            alternateNames = v2->_alternateNames;
+            alternateNames = selfCopy->_alternateNames;
             [v22 objectForKeyedSubscript:v36];
-            v26 = v2;
+            v26 = selfCopy;
             v27 = v6;
             v29 = v28 = v5;
             [(NSMutableDictionary *)alternateNames setObject:v19 forKeyedSubscript:v29];
 
             v5 = v28;
             v6 = v27;
-            v2 = v26;
+            selfCopy = v26;
             [(NSMutableArray *)v26->_placeholderFiles setObject:v22 atIndexedSubscript:v5];
             v11 = v38;
           }
@@ -1201,14 +1201,14 @@ LABEL_41:
   }
 }
 
-- (id)conflictResolvedURL:(id)a3
+- (id)conflictResolvedURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 lastPathComponent];
-  if (v5)
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
+  if (lastPathComponent)
   {
-    v6 = [v4 relativePath];
-    v7 = [(NSMutableDictionary *)self->_alternateNames objectForKeyedSubscript:v6];
+    relativePath = [lCopy relativePath];
+    v7 = [(NSMutableDictionary *)self->_alternateNames objectForKeyedSubscript:relativePath];
     v8 = v7;
     if (v7)
     {
@@ -1217,7 +1217,7 @@ LABEL_41:
 
     else
     {
-      v9 = v5;
+      v9 = lastPathComponent;
     }
 
     v10 = v9;
@@ -1233,29 +1233,29 @@ LABEL_41:
   return v11;
 }
 
-- (void)moveFile:(__CFURL *)a3 toDestination:(__CFURL *)a4
+- (void)moveFile:(__CFURL *)file toDestination:(__CFURL *)destination
 {
   v19 = 0;
-  v6 = sub_1001F2338(a3, a4, &v19);
+  v6 = sub_1001F2338(file, destination, &v19);
   v7 = v19;
   v8 = v7;
   if (!v6)
   {
-    v9 = [v7 domain];
-    if ([v9 isEqual:NSPOSIXErrorDomain])
+    domain = [v7 domain];
+    if ([domain isEqual:NSPOSIXErrorDomain])
     {
-      v10 = [v8 code];
+      code = [v8 code];
 
-      if (v10 == 20)
+      if (code == 20)
       {
         v18 = 0;
-        v11 = sub_1001F1630(a4, &v18);
+        v11 = sub_1001F1630(destination, &v18);
         v12 = v18;
         v13 = v12;
         if (v11)
         {
           v17 = v12;
-          v14 = sub_1001F2338(a3, a4, &v17);
+          v14 = sub_1001F2338(file, destination, &v17);
           v15 = v17;
 
           if (v14)
@@ -1385,11 +1385,11 @@ LABEL_16:
   self->_topLevelFiles = v10;
 }
 
-- (int)bomCopierCopy:(id)a3 destination:(id)a4 options:(id)a5
+- (int)bomCopierCopy:(id)copy destination:(id)destination options:(id)options
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  destinationCopy = destination;
+  optionsCopy = options;
+  copyCopy = copy;
   self->_bomCopier = BOMCopierNew();
   BOMCopierSetUserData();
   bomCopier = self->_bomCopier;
@@ -1404,9 +1404,9 @@ LABEL_16:
   BOMCopierSetCopyFileFinishedHandler();
   v16 = self->_bomCopier;
   BOMCopierSetFileConflictErrorHandler();
-  v17 = sub_1001F0F24(v10);
+  v17 = sub_1001F0F24(copyCopy);
 
-  v18 = sub_1001F0F24(v8);
+  v18 = sub_1001F0F24(destinationCopy);
   if (self->_compressionEngine)
   {
     v19 = dispatch_group_create();
@@ -1416,8 +1416,8 @@ LABEL_16:
     block[1] = 3221225472;
     block[2] = sub_100182F54;
     block[3] = &unk_1008CE900;
-    v27 = v8;
-    v28 = self;
+    v27 = destinationCopy;
+    selfCopy = self;
     v29 = v19;
     v21 = v19;
     dispatch_async(zipQueue, block);
@@ -1464,12 +1464,12 @@ LABEL_4:
   usleep(v5);
 }
 
-- (void)startBomCopy:(id)a3 destination:(id)a4 options:(id)a5
+- (void)startBomCopy:(id)copy destination:(id)destination options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(SDAirDropFileZipper *)self isDecompressor]&& (v11 = *&self->_auditToken.val[4], *buf = *self->_auditToken.val, *&buf[16] = v11, sub_1001F1034(v9)) || self->_fileCount)
+  copyCopy = copy;
+  destinationCopy = destination;
+  optionsCopy = options;
+  if ([(SDAirDropFileZipper *)self isDecompressor]&& (v11 = *&self->_auditToken.val[4], *buf = *self->_auditToken.val, *&buf[16] = v11, sub_1001F1034(destinationCopy)) || self->_fileCount)
   {
     v12 = objc_opt_new();
     v13 = [NSNumber numberWithLongLong:self->_totalBytes];
@@ -1507,7 +1507,7 @@ LABEL_4:
         (*(self->_creationCompletionHandler + 2))();
       }
 
-      v19 = [(SDAirDropFileZipper *)self bomCopierCopy:v8 destination:v9 options:v10];
+      v19 = [(SDAirDropFileZipper *)self bomCopierCopy:copyCopy destination:destinationCopy options:optionsCopy];
       if (v19)
       {
         goto LABEL_18;
@@ -1735,18 +1735,18 @@ LABEL_34:
 {
   v2 = +[NSFileManager sharingContainerURL];
   v3 = [v2 URLByAppendingPathComponent:@"airdrop-bom" isDirectory:1];
-  v4 = [v3 path];
+  path = [v3 path];
 
-  return v4;
+  return path;
 }
 
 - (id)bomPath
 {
-  v2 = [(SDAirDropFileZipper *)self containerPath];
-  v3 = v2;
-  if (v2)
+  containerPath = [(SDAirDropFileZipper *)self containerPath];
+  v3 = containerPath;
+  if (containerPath)
   {
-    v4 = v2;
+    v4 = containerPath;
   }
 
   else
@@ -1762,8 +1762,8 @@ LABEL_34:
     {
       v7 = v6;
       v8 = +[NSUUID UUID];
-      v9 = [v8 UUIDString];
-      v10 = CFStringCreateWithFormat(0, 0, @"%@.bom", v9);
+      uUIDString = [v8 UUIDString];
+      v10 = CFStringCreateWithFormat(0, 0, @"%@.bom", uUIDString);
 
       if (v10)
       {
@@ -1832,9 +1832,9 @@ LABEL_34:
 
 - (void)zip
 {
-  v3 = [(SDAirDropFileZipper *)self bomPath];
+  bomPath = [(SDAirDropFileZipper *)self bomPath];
   bomPath = self->_bomPath;
-  self->_bomPath = v3;
+  self->_bomPath = bomPath;
 
   if (!self->_destination)
   {

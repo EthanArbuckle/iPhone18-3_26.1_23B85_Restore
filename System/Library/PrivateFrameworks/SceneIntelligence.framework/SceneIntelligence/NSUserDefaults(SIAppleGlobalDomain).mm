@@ -20,12 +20,12 @@
 
 + (id)appleGlobalDomainSIKeys
 {
-  v0 = [MEMORY[0x277CBEBD0] appleGlobalDomain];
-  v1 = [v0 dictionaryRepresentation];
-  v2 = [v1 allKeys];
+  appleGlobalDomain = [MEMORY[0x277CBEBD0] appleGlobalDomain];
+  dictionaryRepresentation = [appleGlobalDomain dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
 
   v3 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_5];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [allKeys filteredArrayUsingPredicate:v3];
 
   return v4;
 }
@@ -33,16 +33,16 @@
 + (id)appleGlobalDomainSIDefaults
 {
   v18 = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277CBEBD0] appleGlobalDomainSIKeys];
-  v1 = [MEMORY[0x277CBEBD0] appleGlobalDomain];
-  v2 = [v1 dictionaryRepresentation];
+  appleGlobalDomainSIKeys = [MEMORY[0x277CBEBD0] appleGlobalDomainSIKeys];
+  appleGlobalDomain = [MEMORY[0x277CBEBD0] appleGlobalDomain];
+  dictionaryRepresentation = [appleGlobalDomain dictionaryRepresentation];
 
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v0;
+  v4 = appleGlobalDomainSIKeys;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -58,8 +58,8 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v2 objectForKey:{v9, v13}];
-        [v3 setObject:v10 forKey:v9];
+        v10 = [dictionaryRepresentation objectForKey:{v9, v13}];
+        [dictionary setObject:v10 forKey:v9];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -70,7 +70,7 @@
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface BKThumbnailDirectory
 + (CGSize)defaultCellSize;
-- (BKThumbnailDirectory)initWithNibName:(id)a3 bundle:(id)a4;
-- (BOOL)cell:(id)a3 matchesPageNumber:(int64_t)a4;
-- (CGRect)frameForThumbnailAtLocation:(id)a3;
+- (BKThumbnailDirectory)initWithNibName:(id)name bundle:(id)bundle;
+- (BOOL)cell:(id)cell matchesPageNumber:(int64_t)number;
+- (CGRect)frameForThumbnailAtLocation:(id)location;
 - (CGSize)cellSize;
 - (CGSize)imageSize;
 - (Class)cellClass;
-- (double)pNumColumnsForSize:(CGSize)a3;
-- (id)gridView:(id)a3 cellForIndex:(int64_t)a4;
-- (id)thumbnailForPageNumber:(int64_t)a3 size:(CGSize)a4;
+- (double)pNumColumnsForSize:(CGSize)size;
+- (id)gridView:(id)view cellForIndex:(int64_t)index;
+- (id)thumbnailForPageNumber:(int64_t)number size:(CGSize)size;
 - (void)_updateColors;
 - (void)adjustGridMetrics;
-- (void)adjustToNewSize:(CGSize)a3;
-- (void)configureCell:(id)a3 atIndex:(unint64_t)a4;
+- (void)adjustToNewSize:(CGSize)size;
+- (void)configureCell:(id)cell atIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)didRotate;
-- (void)gridView:(id)a3 didSelectItemAtIndex:(int64_t)a4;
+- (void)gridView:(id)view didSelectItemAtIndex:(int64_t)index;
 - (void)loadView;
 - (void)releaseViews;
-- (void)reloadCellAtIndex:(unint64_t)a3;
-- (void)scrollToLocation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setLayoutDirection:(int64_t)a3;
-- (void)setTheme:(id)a3;
-- (void)setThumbnail:(id)a3 forPage:(int64_t)a4;
+- (void)reloadCellAtIndex:(unint64_t)index;
+- (void)scrollToLocation:(id)location;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setLayoutDirection:(int64_t)direction;
+- (void)setTheme:(id)theme;
+- (void)setThumbnail:(id)thumbnail forPage:(int64_t)page;
 - (void)updateVisibleArtwork;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKThumbnailDirectory
 
-- (BKThumbnailDirectory)initWithNibName:(id)a3 bundle:(id)a4
+- (BKThumbnailDirectory)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = BKThumbnailDirectory;
-  v4 = [(BKViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(BKViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     [objc_opt_class() defaultCellAspectRatio];
@@ -73,9 +73,9 @@
   v22.receiver = self;
   v22.super_class = BKThumbnailDirectory;
   [(BKThumbnailDirectory *)&v22 loadView];
-  v3 = [(BKThumbnailDirectory *)self view];
+  view = [(BKThumbnailDirectory *)self view];
   v4 = [IMGridView alloc];
-  [v3 bounds];
+  [view bounds];
   v5 = [v4 initWithFrame:?];
   gridView = self->_gridView;
   self->_gridView = v5;
@@ -84,24 +84,24 @@
   [(IMGridView *)self->_gridView setDelegate:self];
   [(IMGridView *)self->_gridView setDataSource:self];
   [(IMGridView *)self->_gridView setLayoutDirection:[(BKViewController *)self layoutDirection]];
-  [v3 addSubview:self->_gridView];
-  v7 = [v3 safeAreaLayoutGuide];
+  [view addSubview:self->_gridView];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
   [(IMGridView *)self->_gridView leadingAnchor];
-  v21 = v20 = v7;
-  v19 = [v7 leadingAnchor];
-  v18 = [v21 constraintEqualToAnchor:v19];
+  v21 = v20 = safeAreaLayoutGuide;
+  leadingAnchor = [safeAreaLayoutGuide leadingAnchor];
+  v18 = [v21 constraintEqualToAnchor:leadingAnchor];
   v23[0] = v18;
-  v17 = [(IMGridView *)self->_gridView trailingAnchor];
-  v16 = [v7 trailingAnchor];
-  v8 = [v17 constraintEqualToAnchor:v16];
+  trailingAnchor = [(IMGridView *)self->_gridView trailingAnchor];
+  trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v23[1] = v8;
-  v9 = [(IMGridView *)self->_gridView topAnchor];
-  v10 = [v3 topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  topAnchor = [(IMGridView *)self->_gridView topAnchor];
+  topAnchor2 = [view topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v23[2] = v11;
-  v12 = [(IMGridView *)self->_gridView bottomAnchor];
-  v13 = [v3 bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  bottomAnchor = [(IMGridView *)self->_gridView bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v23[3] = v14;
   v15 = [NSArray arrayWithObjects:v23 count:4];
   [NSLayoutConstraint activateConstraints:v15];
@@ -109,20 +109,20 @@
   [(BKThumbnailDirectory *)self _updateColors];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BKThumbnailDirectory;
-  [(BKThumbnailDirectory *)&v4 viewWillAppear:a3];
+  [(BKThumbnailDirectory *)&v4 viewWillAppear:appear];
   [(BKThumbnailDirectory *)self reloadData];
   [(IMGridView *)self->_gridView flashScrollIndicators];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BKThumbnailDirectory;
-  [(BKContentViewController *)&v4 viewDidAppear:a3];
+  [(BKContentViewController *)&v4 viewDidAppear:appear];
   [(IMGridView *)self->_gridView flashScrollIndicators];
 }
 
@@ -144,12 +144,12 @@
   [UIView performWithoutAnimation:v2];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  [v7 transitionDuration];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  [coordinatorCopy transitionDuration];
   v9 = v8;
   if (v8 > 0.0)
   {
@@ -158,7 +158,7 @@
 
   v12.receiver = self;
   v12.super_class = BKThumbnailDirectory;
-  [(BKThumbnailDirectory *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(BKThumbnailDirectory *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_75E28;
@@ -170,21 +170,21 @@
   v10[2] = sub_75E38;
   v10[3] = &unk_1E2A60;
   v10[4] = self;
-  [v7 animateAlongsideTransition:v11 completion:v10];
+  [coordinatorCopy animateAlongsideTransition:v11 completion:v10];
 }
 
-- (void)setLayoutDirection:(int64_t)a3
+- (void)setLayoutDirection:(int64_t)direction
 {
   v5.receiver = self;
   v5.super_class = BKThumbnailDirectory;
   [(BKViewController *)&v5 setLayoutDirection:?];
-  [(IMGridView *)self->_gridView setLayoutDirection:a3];
+  [(IMGridView *)self->_gridView setLayoutDirection:direction];
 }
 
-- (double)pNumColumnsForSize:(CGSize)a3
+- (double)pNumColumnsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(IMGridView *)self->_gridView bounds];
   x = v16.origin.x;
   y = v16.origin.y;
@@ -289,7 +289,7 @@ LABEL_11:
   }
 
   v5 = *v4;
-  [a1 defaultCellAspectRatio];
+  [self defaultCellAspectRatio];
   *&v6 = v5 / v6;
   v7 = roundf(*&v6);
   v8 = v5;
@@ -329,16 +329,16 @@ LABEL_11:
 
 - (CGSize)imageSize
 {
-  v3 = [(BKThumbnailDirectory *)self showSpreads];
+  showSpreads = [(BKThumbnailDirectory *)self showSpreads];
   v4 = isPad();
   v5 = &BKThumbnailDirectoryCellSpreadWidth_iPad;
-  if (!v3)
+  if (!showSpreads)
   {
     v5 = &BKThumbnailDirectoryCellWidth_iPad;
   }
 
   v6 = &BKThumbnailDirectoryCellSpreadWidth_iPhone;
-  if (!v3)
+  if (!showSpreads)
   {
     v6 = &BKThumbnailDirectoryCellWidth_iPhone;
   }
@@ -357,10 +357,10 @@ LABEL_11:
     v8 = v7 / v10;
   }
 
-  v11 = [(BKThumbnailDirectory *)self showSpreads];
+  showSpreads2 = [(BKThumbnailDirectory *)self showSpreads];
   v12 = v8 * 0.5;
   v13 = v7 * 0.5;
-  if (!v11)
+  if (!showSpreads2)
   {
     v13 = v7;
     v12 = v8;
@@ -381,9 +381,9 @@ LABEL_11:
   return v2;
 }
 
-- (CGRect)frameForThumbnailAtLocation:(id)a3
+- (CGRect)frameForThumbnailAtLocation:(id)location
 {
-  v4 = [(BKThumbnailDirectory *)self indexForLocation:a3];
+  v4 = [(BKThumbnailDirectory *)self indexForLocation:location];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     x = CGRectNull.origin.x;
@@ -399,8 +399,8 @@ LABEL_11:
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(BKThumbnailDirectory *)self view];
-    [v17 convertRect:self->_gridView fromView:{v10, v12, v14, v16}];
+    view = [(BKThumbnailDirectory *)self view];
+    [view convertRect:self->_gridView fromView:{v10, v12, v14, v16}];
     x = v18;
     y = v19;
     width = v20;
@@ -418,76 +418,76 @@ LABEL_11:
   return result;
 }
 
-- (void)scrollToLocation:(id)a3
+- (void)scrollToLocation:(id)location
 {
-  v4 = [(BKThumbnailDirectory *)self indexForLocation:a3];
+  v4 = [(BKThumbnailDirectory *)self indexForLocation:location];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
-    v6 = [(BKThumbnailDirectory *)self gridView];
-    [v6 scrollToCellAtIndex:v5 animated:0];
+    gridView = [(BKThumbnailDirectory *)self gridView];
+    [gridView scrollToCellAtIndex:v5 animated:0];
   }
 }
 
-- (BOOL)cell:(id)a3 matchesPageNumber:(int64_t)a4
+- (BOOL)cell:(id)cell matchesPageNumber:(int64_t)number
 {
-  v6 = a3;
+  cellCopy = cell;
   if ([(BKThumbnailDirectory *)self showSpreads])
   {
-    v7 = v6;
-    v8 = [v7 spreadView];
-    v9 = [v8 leftPageView];
-    if ([v9 pageNumber] == a4)
+    pageView = cellCopy;
+    spreadView = [pageView spreadView];
+    leftPageView = [spreadView leftPageView];
+    if ([leftPageView pageNumber] == number)
     {
       v10 = 1;
     }
 
     else
     {
-      v11 = [v7 spreadView];
-      v12 = [v11 rightPageView];
-      v10 = [v12 pageNumber] == a4;
+      spreadView2 = [pageView spreadView];
+      rightPageView = [spreadView2 rightPageView];
+      v10 = [rightPageView pageNumber] == number;
     }
   }
 
   else
   {
-    v7 = [v6 pageView];
-    v10 = [v7 pageNumber] == a4;
+    pageView = [cellCopy pageView];
+    v10 = [pageView pageNumber] == number;
   }
 
   return v10;
 }
 
-- (void)reloadCellAtIndex:(unint64_t)a3
+- (void)reloadCellAtIndex:(unint64_t)index
 {
   v5 = [(IMGridView *)self->_gridView cellForIndex:?];
-  [(BKThumbnailDirectory *)self configureCell:v5 atIndex:a3];
+  [(BKThumbnailDirectory *)self configureCell:v5 atIndex:index];
 }
 
-- (void)adjustToNewSize:(CGSize)a3
+- (void)adjustToNewSize:(CGSize)size
 {
-  [(IMGridView *)self->_gridView prepareToRotateWithDestinationSize:a3.width, a3.height];
+  [(IMGridView *)self->_gridView prepareToRotateWithDestinationSize:size.width, size.height];
   [(BKThumbnailDirectory *)self animateRotationWithDuration:0.0];
 
   [(BKThumbnailDirectory *)self didRotate];
 }
 
-- (void)setThumbnail:(id)a3 forPage:(int64_t)a4
+- (void)setThumbnail:(id)thumbnail forPage:(int64_t)page
 {
-  if (a3)
+  if (thumbnail)
   {
     v6 = [NSIndexSet alloc];
-    v7 = [(IMGridView *)self->_gridView rangeOfVisibleCells];
-    v12 = [v6 initWithIndexesInRange:{v7, v8}];
-    v9 = [v12 firstIndex];
-    if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+    rangeOfVisibleCells = [(IMGridView *)self->_gridView rangeOfVisibleCells];
+    v12 = [v6 initWithIndexesInRange:{rangeOfVisibleCells, v8}];
+    firstIndex = [v12 firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = v9;
+      v10 = firstIndex;
       while (1)
       {
         v11 = [(IMGridView *)self->_gridView cellForIndex:v10];
-        if ([(BKThumbnailDirectory *)self cell:v11 matchesPageNumber:a4])
+        if ([(BKThumbnailDirectory *)self cell:v11 matchesPageNumber:page])
         {
           break;
         }
@@ -507,25 +507,25 @@ LABEL_9:
   }
 }
 
-- (id)thumbnailForPageNumber:(int64_t)a3 size:(CGSize)a4
+- (id)thumbnailForPageNumber:(int64_t)number size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = [(BKDirectoryContent *)self directoryDelegate];
-  v9 = [v8 thumbnailDirectory:self thumbnailForPage:a3 size:self context:{width, height}];
+  height = size.height;
+  width = size.width;
+  directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+  v9 = [directoryDelegate thumbnailDirectory:self thumbnailForPage:number size:self context:{width, height}];
 
   return v9;
 }
 
 - (void)updateVisibleArtwork
 {
-  v3 = [(BKDirectoryContent *)self directoryDelegate];
-  [v3 thumbnailDirectory:self cancelPreviousRenderRequestsWithContext:self];
+  directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+  [directoryDelegate thumbnailDirectory:self cancelPreviousRenderRequestsWithContext:self];
 
-  v4 = [(IMGridView *)self->_gridView rangeOfVisibleCells];
-  if (v4 < &v4[v5])
+  rangeOfVisibleCells = [(IMGridView *)self->_gridView rangeOfVisibleCells];
+  if (rangeOfVisibleCells < &rangeOfVisibleCells[v5])
   {
-    v6 = v4;
+    v6 = rangeOfVisibleCells;
     v7 = v5;
     do
     {
@@ -537,120 +537,120 @@ LABEL_9:
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  if (([v4 isDragging] & 1) == 0 && (objc_msgSend(v4, "isDecelerating") & 1) == 0)
+  scrollCopy = scroll;
+  if (([scrollCopy isDragging] & 1) == 0 && (objc_msgSend(scrollCopy, "isDecelerating") & 1) == 0)
   {
     [(BKThumbnailDirectory *)self updateVisibleArtwork];
   }
 }
 
-- (void)configureCell:(id)a3 atIndex:(unint64_t)a4
+- (void)configureCell:(id)cell atIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (v6)
+  cellCopy = cell;
+  if (cellCopy)
   {
-    v43 = v6;
+    v43 = cellCopy;
     [(BKThumbnailDirectory *)self imageSize];
     v8 = v7;
     v10 = v9;
     if ([(BKThumbnailDirectory *)self showSpreads])
     {
       v11 = v43;
-      v12 = [(BKThumbnailDirectory *)self hidesSpine];
-      v13 = [v11 spreadView];
-      [v13 setHidesSpine:v12];
+      hidesSpine = [(BKThumbnailDirectory *)self hidesSpine];
+      spreadView = [v11 spreadView];
+      [spreadView setHidesSpine:hidesSpine];
 
-      v14 = [(BKThumbnailDirectory *)self leftPageNumberAtIndex:a4];
-      v15 = [(BKThumbnailDirectory *)self rightPageNumberAtIndex:a4];
-      v16 = [v11 spreadView];
-      v17 = [v16 leftPageView];
-      [v17 setPageNumber:v14];
+      v14 = [(BKThumbnailDirectory *)self leftPageNumberAtIndex:index];
+      v15 = [(BKThumbnailDirectory *)self rightPageNumberAtIndex:index];
+      spreadView2 = [v11 spreadView];
+      leftPageView = [spreadView2 leftPageView];
+      [leftPageView setPageNumber:v14];
 
-      v18 = [v11 spreadView];
-      v19 = [v18 rightPageView];
-      [v19 setPageNumber:v15];
+      spreadView3 = [v11 spreadView];
+      rightPageView = [spreadView3 rightPageView];
+      [rightPageView setPageNumber:v15];
 
       v20 = [(BKDirectoryContent *)self pageTitleForPageNumber:v14];
-      v21 = [v11 spreadView];
-      v22 = [v21 leftPageView];
-      [v22 setPageTitle:v20];
+      spreadView4 = [v11 spreadView];
+      leftPageView2 = [spreadView4 leftPageView];
+      [leftPageView2 setPageTitle:v20];
 
       v23 = [(BKDirectoryContent *)self pageTitleForPageNumber:v15];
-      v24 = [v11 spreadView];
-      v25 = [v24 rightPageView];
-      [v25 setPageTitle:v23];
+      spreadView5 = [v11 spreadView];
+      rightPageView2 = [spreadView5 rightPageView];
+      [rightPageView2 setPageTitle:v23];
 
       v26 = [(BKThumbnailDirectory *)self thumbnailForPageNumber:v14 size:v8, v10];
-      v27 = [v11 spreadView];
-      v28 = [v27 leftPageView];
-      [v28 setImage:v26];
+      spreadView6 = [v11 spreadView];
+      leftPageView3 = [spreadView6 leftPageView];
+      [leftPageView3 setImage:v26];
 
       v29 = [(BKThumbnailDirectory *)self thumbnailForPageNumber:v15 size:v8, v10];
-      v30 = [v11 spreadView];
-      v31 = [v30 rightPageView];
-      [v31 setImage:v29];
+      spreadView7 = [v11 spreadView];
+      rightPageView3 = [spreadView7 rightPageView];
+      [rightPageView3 setImage:v29];
 
-      v32 = [v11 spreadView];
-      v33 = [v32 leftPageView];
-      [v33 setShowsPageNumber:1];
+      spreadView8 = [v11 spreadView];
+      leftPageView4 = [spreadView8 leftPageView];
+      [leftPageView4 setShowsPageNumber:1];
 
-      v34 = [v11 spreadView];
-      v35 = [v34 rightPageView];
-      [v35 setShowsPageNumber:1];
+      spreadView9 = [v11 spreadView];
+      rightPageView4 = [spreadView9 rightPageView];
+      [rightPageView4 setShowsPageNumber:1];
 
-      v36 = [v11 spreadView];
+      spreadView10 = [v11 spreadView];
 
-      [v36 setNeedsLayout];
+      [spreadView10 setNeedsLayout];
     }
 
     else
     {
-      v37 = [(BKThumbnailDirectory *)self pageNumberForCellIndex:a4];
+      v37 = [(BKThumbnailDirectory *)self pageNumberForCellIndex:index];
       v38 = [(BKThumbnailDirectory *)self thumbnailForPageNumber:v37 size:v8, v10];
-      v39 = [v43 pageView];
-      [v39 setImage:v38];
+      pageView = [v43 pageView];
+      [pageView setImage:v38];
 
-      v40 = [v43 pageView];
-      [v40 setPageNumber:v37];
+      pageView2 = [v43 pageView];
+      [pageView2 setPageNumber:v37];
 
       v41 = [(BKDirectoryContent *)self pageTitleForPageNumber:v37];
-      v42 = [v43 pageView];
-      [v42 setPageTitle:v41];
+      pageView3 = [v43 pageView];
+      [pageView3 setPageTitle:v41];
 
-      v36 = [v43 pageView];
-      [v36 setShowsPageNumber:1];
+      spreadView10 = [v43 pageView];
+      [spreadView10 setShowsPageNumber:1];
     }
 
-    v6 = v43;
+    cellCopy = v43;
   }
 }
 
-- (id)gridView:(id)a3 cellForIndex:(int64_t)a4
+- (id)gridView:(id)view cellForIndex:(int64_t)index
 {
-  v6 = [a3 dequeueReusableCell];
-  if (!v6)
+  dequeueReusableCell = [view dequeueReusableCell];
+  if (!dequeueReusableCell)
   {
     [(BKThumbnailDirectory *)self cellSize];
-    v6 = [objc_alloc(-[BKThumbnailDirectory cellClass](self "cellClass"))];
+    dequeueReusableCell = [objc_alloc(-[BKThumbnailDirectory cellClass](self "cellClass"))];
   }
 
-  [(BKThumbnailDirectory *)self configureCell:v6 atIndex:a4];
+  [(BKThumbnailDirectory *)self configureCell:dequeueReusableCell atIndex:index];
 
-  return v6;
+  return dequeueReusableCell;
 }
 
-- (void)gridView:(id)a3 didSelectItemAtIndex:(int64_t)a4
+- (void)gridView:(id)view didSelectItemAtIndex:(int64_t)index
 {
-  v5 = [(BKThumbnailDirectory *)self locationAtIndex:a4];
+  v5 = [(BKThumbnailDirectory *)self locationAtIndex:index];
   [(BKDirectoryContent *)self didSelectLocation:v5];
 }
 
 - (void)_updateColors
 {
-  v3 = [(BKThumbnailDirectory *)self theme];
-  v6 = [v3 backgroundColorForTraitEnvironment:self];
+  theme = [(BKThumbnailDirectory *)self theme];
+  v6 = [theme backgroundColorForTraitEnvironment:self];
 
   v4 = v6;
   if (!v6)
@@ -660,15 +660,15 @@ LABEL_9:
 
   v7 = v4;
   [(IMGridView *)self->_gridView setBackgroundColor:v4];
-  v5 = [(BKThumbnailDirectory *)self viewIfLoaded];
-  [v5 setBackgroundColor:v7];
+  viewIfLoaded = [(BKThumbnailDirectory *)self viewIfLoaded];
+  [viewIfLoaded setBackgroundColor:v7];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   v4.receiver = self;
   v4.super_class = BKThumbnailDirectory;
-  [(BKContentViewController *)&v4 setTheme:a3];
+  [(BKContentViewController *)&v4 setTheme:theme];
   [(BKThumbnailDirectory *)self _updateColors];
 }
 

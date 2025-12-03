@@ -2,7 +2,7 @@
 - (NSString)amsSeasonIdentifier;
 - (NSString)amsShowIdentifier;
 - (NSString)artworkURL;
-- (VUIFamilySharingMediaCollection)initWithAMSEntity:(id)a3 requestedProperties:(id)a4 mediaEntityType:(id)a5;
+- (VUIFamilySharingMediaCollection)initWithAMSEntity:(id)entity requestedProperties:(id)properties mediaEntityType:(id)type;
 - (id)contentDescription;
 - (id)contentRating;
 - (id)duration;
@@ -17,23 +17,23 @@
 
 @implementation VUIFamilySharingMediaCollection
 
-- (VUIFamilySharingMediaCollection)initWithAMSEntity:(id)a3 requestedProperties:(id)a4 mediaEntityType:(id)a5
+- (VUIFamilySharingMediaCollection)initWithAMSEntity:(id)entity requestedProperties:(id)properties mediaEntityType:(id)type
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
+  entityCopy = entity;
+  typeCopy = type;
+  propertiesCopy = properties;
   v12 = [VUIFamilySharingMediaEntityIdentifier alloc];
-  v13 = [v9 identifier];
-  v14 = [(VUIFamilySharingMediaEntityIdentifier *)v12 initWithEntityIdentifier:v13 mediaEntityType:v10];
+  identifier = [entityCopy identifier];
+  v14 = [(VUIFamilySharingMediaEntityIdentifier *)v12 initWithEntityIdentifier:identifier mediaEntityType:typeCopy];
 
   v15 = VUIFamilySharingMediaCollectionKind();
   v20.receiver = self;
   v20.super_class = VUIFamilySharingMediaCollection;
-  v16 = [(VUIMediaEntity *)&v20 initWithMediaLibrary:0 identifier:v14 requestedProperties:v11 kind:v15];
+  v16 = [(VUIMediaEntity *)&v20 initWithMediaLibrary:0 identifier:v14 requestedProperties:propertiesCopy kind:v15];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_entity, a3);
+    objc_storeStrong(&v16->_entity, entity);
     v17 = objc_alloc_init(MEMORY[0x1E695DEC8]);
     seasonNumbers = v16->_seasonNumbers;
     v16->_seasonNumbers = v17;
@@ -44,10 +44,10 @@
 
 - (id)title
 {
-  v2 = [(VUIFamilySharingMediaCollection *)self entity];
-  v3 = [v2 showTitle];
+  entity = [(VUIFamilySharingMediaCollection *)self entity];
+  showTitle = [entity showTitle];
 
-  return v3;
+  return showTitle;
 }
 
 - (NSString)artworkURL
@@ -55,10 +55,10 @@
   artworkURL = self->_artworkURL;
   if (!artworkURL)
   {
-    v4 = [(VUIFamilySharingMediaCollection *)self entity];
-    v5 = [v4 artworkURL];
+    entity = [(VUIFamilySharingMediaCollection *)self entity];
+    artworkURL = [entity artworkURL];
     v6 = self->_artworkURL;
-    self->_artworkURL = v5;
+    self->_artworkURL = artworkURL;
 
     artworkURL = self->_artworkURL;
   }
@@ -68,21 +68,21 @@
 
 - (id)seasonNumber
 {
-  v3 = [(VUIFamilySharingMediaCollection *)self entity];
-  v4 = [v3 seasonNumber];
+  entity = [(VUIFamilySharingMediaCollection *)self entity];
+  seasonNumber = [entity seasonNumber];
 
-  if (v4)
+  if (seasonNumber)
   {
-    v5 = [(VUIFamilySharingMediaCollection *)self entity];
-    v6 = [v5 seasonNumber];
+    entity2 = [(VUIFamilySharingMediaCollection *)self entity];
+    seasonNumber2 = [entity2 seasonNumber];
   }
 
   else
   {
-    v6 = 0;
+    seasonNumber2 = 0;
   }
 
-  return v6;
+  return seasonNumber2;
 }
 
 - (NSString)amsShowIdentifier
@@ -90,15 +90,15 @@
   amsShowIdentifier = self->_amsShowIdentifier;
   if (!amsShowIdentifier)
   {
-    v4 = [(VUIFamilySharingMediaCollection *)self entity];
-    v5 = [v4 relationships];
-    v6 = [v5 show];
+    entity = [(VUIFamilySharingMediaCollection *)self entity];
+    relationships = [entity relationships];
+    show = [relationships show];
 
-    if (v6)
+    if (show)
     {
-      v7 = [v6 identifier];
+      identifier = [show identifier];
       v8 = self->_amsShowIdentifier;
-      self->_amsShowIdentifier = v7;
+      self->_amsShowIdentifier = identifier;
     }
 
     amsShowIdentifier = self->_amsShowIdentifier;
@@ -112,15 +112,15 @@
   amsSeasonIdentifier = self->_amsSeasonIdentifier;
   if (!amsSeasonIdentifier)
   {
-    v4 = [(VUIFamilySharingMediaCollection *)self entity];
-    v5 = [v4 relationships];
-    v6 = [v5 season];
+    entity = [(VUIFamilySharingMediaCollection *)self entity];
+    relationships = [entity relationships];
+    season = [relationships season];
 
-    if (v6)
+    if (season)
     {
-      v7 = [v6 identifier];
+      identifier = [season identifier];
       v8 = self->_amsSeasonIdentifier;
-      self->_amsSeasonIdentifier = v7;
+      self->_amsSeasonIdentifier = identifier;
     }
 
     amsSeasonIdentifier = self->_amsSeasonIdentifier;
@@ -131,13 +131,13 @@
 
 - (id)seasonCount
 {
-  v3 = [(VUIFamilySharingMediaCollection *)self seasonNumbers];
+  seasonNumbers = [(VUIFamilySharingMediaCollection *)self seasonNumbers];
 
-  if (v3)
+  if (seasonNumbers)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(VUIFamilySharingMediaCollection *)self seasonNumbers];
-    v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+    seasonNumbers2 = [(VUIFamilySharingMediaCollection *)self seasonNumbers];
+    v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(seasonNumbers2, "count")}];
   }
 
   else
@@ -150,58 +150,58 @@
 
 - (id)contentRating
 {
-  v2 = [(VUIFamilySharingMediaCollection *)self entity];
-  v3 = [v2 contentRating];
+  entity = [(VUIFamilySharingMediaCollection *)self entity];
+  contentRating = [entity contentRating];
 
-  return v3;
+  return contentRating;
 }
 
 - (id)contentDescription
 {
-  v2 = [(VUIFamilySharingMediaCollection *)self entity];
-  v3 = [v2 standardDescription];
+  entity = [(VUIFamilySharingMediaCollection *)self entity];
+  standardDescription = [entity standardDescription];
 
-  return v3;
+  return standardDescription;
 }
 
 - (id)releaseDate
 {
-  v2 = [(VUIFamilySharingMediaCollection *)self entity];
-  v3 = [v2 releaseDate];
+  entity = [(VUIFamilySharingMediaCollection *)self entity];
+  releaseDate = [entity releaseDate];
 
-  return v3;
+  return releaseDate;
 }
 
 - (id)releaseYear
 {
-  v2 = [(VUIFamilySharingMediaCollection *)self releaseDate];
+  releaseDate = [(VUIFamilySharingMediaCollection *)self releaseDate];
   v3 = objc_alloc(MEMORY[0x1E695DEE8]);
   v4 = [v3 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v5 = [v4 components:4 fromDate:v2];
-  v6 = [v5 year];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
+  v5 = [v4 components:4 fromDate:releaseDate];
+  year = [v5 year];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:year];
 
   return v7;
 }
 
 - (id)genreTitle
 {
-  v2 = [(VUIFamilySharingMediaCollection *)self entity];
-  v3 = [v2 genreTitle];
+  entity = [(VUIFamilySharingMediaCollection *)self entity];
+  genreTitle = [entity genreTitle];
 
-  return v3;
+  return genreTitle;
 }
 
 - (id)duration
 {
-  v2 = [(VUIFamilySharingMediaCollection *)self entity];
-  v3 = [v2 offerListing];
-  v4 = [v3 bestStoreBuyOffer];
+  entity = [(VUIFamilySharingMediaCollection *)self entity];
+  offerListing = [entity offerListing];
+  bestStoreBuyOffer = [offerListing bestStoreBuyOffer];
 
-  if (v4)
+  if (bestStoreBuyOffer)
   {
-    v5 = [v4 dictionary];
-    v6 = [v5 vui_numberForKey:@"durationInMilliseconds"];
+    dictionary = [bestStoreBuyOffer dictionary];
+    v6 = [dictionary vui_numberForKey:@"durationInMilliseconds"];
 
     if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 doubleValue], v7 / 1000.0 > 0.0))
     {
@@ -224,10 +224,10 @@
 
 - (id)showTitle
 {
-  v2 = [(VUIFamilySharingMediaCollection *)self entity];
-  v3 = [v2 showTitle];
+  entity = [(VUIFamilySharingMediaCollection *)self entity];
+  showTitle = [entity showTitle];
 
-  return v3;
+  return showTitle;
 }
 
 @end

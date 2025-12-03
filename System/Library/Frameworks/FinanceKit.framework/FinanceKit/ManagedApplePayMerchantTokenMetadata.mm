@@ -1,5 +1,5 @@
 @interface ManagedApplePayMerchantTokenMetadata
-- (_TtC10FinanceKit36ManagedApplePayMerchantTokenMetadata)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit36ManagedApplePayMerchantTokenMetadata)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (void)awakeFromInsert;
 @end
 
@@ -14,19 +14,19 @@
   v7 = &v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = self;
+  selfCopy = self;
   [(ManagedApplePayMerchantTokenMetadata *)&v10 awakeFromInsert];
   sub_1B77FF938();
   v9 = sub_1B77FF8B8();
   (*(v5 + 8))(v7, v4);
-  [(ManagedApplePayMerchantTokenMetadata *)v8 setPrimitiveCreationDate:v9];
+  [(ManagedApplePayMerchantTokenMetadata *)selfCopy setPrimitiveCreationDate:v9];
 }
 
-- (_TtC10FinanceKit36ManagedApplePayMerchantTokenMetadata)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit36ManagedApplePayMerchantTokenMetadata)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedApplePayMerchantTokenMetadata *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedApplePayMerchantTokenMetadata *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

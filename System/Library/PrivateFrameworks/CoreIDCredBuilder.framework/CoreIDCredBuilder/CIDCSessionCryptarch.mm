@@ -1,9 +1,9 @@
 @interface CIDCSessionCryptarch
-- (BOOL)deriveSessionKeysFromSessionTranscript:(id)a3 error:(id *)a4;
-- (BOOL)deriveSessionKeysFromSessionTranscript:(id)a3 intermediateKeyMaterial:(id)a4 error:(id *)a5;
-- (BOOL)setRemoteKey:(id)a3 error:(id *)a4;
+- (BOOL)deriveSessionKeysFromSessionTranscript:(id)transcript error:(id *)error;
+- (BOOL)deriveSessionKeysFromSessionTranscript:(id)transcript intermediateKeyMaterial:(id)material error:(id *)error;
+- (BOOL)setRemoteKey:(id)key error:(id *)error;
 - (CIDCSessionCryptarch)init;
-- (CIDCSessionCryptarch)initWithRole:(unint64_t)a3 curve:(unint64_t)a4 variant:(unint64_t)a5 localKey:(id)a6 error:(id *)a7;
+- (CIDCSessionCryptarch)initWithRole:(unint64_t)role curve:(unint64_t)curve variant:(unint64_t)variant localKey:(id)key error:(id *)error;
 - (NSData)privateKey;
 - (NSData)publicKey;
 - (unint64_t)curve;
@@ -13,55 +13,55 @@
 
 @implementation CIDCSessionCryptarch
 
-- (CIDCSessionCryptarch)initWithRole:(unint64_t)a3 curve:(unint64_t)a4 variant:(unint64_t)a5 localKey:(id)a6 error:(id *)a7
+- (CIDCSessionCryptarch)initWithRole:(unint64_t)role curve:(unint64_t)curve variant:(unint64_t)variant localKey:(id)key error:(id *)error
 {
-  v10 = a6;
+  keyCopy = key;
   v11 = sub_245681B1C();
   v13 = v12;
 
-  return CIDCSessionCryptarch.init(role:curve:variant:localKey:)(a3, a4, a5, v11, v13);
+  return CIDCSessionCryptarch.init(role:curve:variant:localKey:)(role, curve, variant, v11, v13);
 }
 
-- (BOOL)setRemoteKey:(id)a3 error:(id *)a4
+- (BOOL)setRemoteKey:(id)key error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  keyCopy = key;
+  selfCopy = self;
   v7 = sub_245681B1C();
   v9 = v8;
 
-  v10 = *(&v6->super.isa + OBJC_IVAR___CIDCSessionCryptarch_sessionCryptarch);
+  v10 = *(&selfCopy->super.isa + OBJC_IVAR___CIDCSessionCryptarch_sessionCryptarch);
   sub_245681C5C();
 
   sub_24567E548(v7, v9);
   return 1;
 }
 
-- (BOOL)deriveSessionKeysFromSessionTranscript:(id)a3 error:(id *)a4
+- (BOOL)deriveSessionKeysFromSessionTranscript:(id)transcript error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  transcriptCopy = transcript;
+  selfCopy = self;
   v7 = sub_245681B1C();
   v9 = v8;
 
-  v10 = *(&v6->super.isa + OBJC_IVAR___CIDCSessionCryptarch_sessionCryptarch);
+  v10 = *(&selfCopy->super.isa + OBJC_IVAR___CIDCSessionCryptarch_sessionCryptarch);
   sub_245681C2C();
 
   sub_24567E548(v7, v9);
   return 1;
 }
 
-- (BOOL)deriveSessionKeysFromSessionTranscript:(id)a3 intermediateKeyMaterial:(id)a4 error:(id *)a5
+- (BOOL)deriveSessionKeysFromSessionTranscript:(id)transcript intermediateKeyMaterial:(id)material error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  transcriptCopy = transcript;
+  materialCopy = material;
+  selfCopy = self;
   v10 = sub_245681B1C();
   v12 = v11;
 
   v13 = sub_245681B1C();
   v15 = v14;
 
-  v16 = *(&v9->super.isa + OBJC_IVAR___CIDCSessionCryptarch_sessionCryptarch);
+  v16 = *(&selfCopy->super.isa + OBJC_IVAR___CIDCSessionCryptarch_sessionCryptarch);
   sub_245681C2C();
 
   sub_24567E548(v13, v15);
@@ -71,7 +71,7 @@
 
 - (unint64_t)curve
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CIDCSessionCryptarch.curve.getter();
 
   return v3;
@@ -87,7 +87,7 @@
   MEMORY[0x28223BE20](v6);
   v10 = &v16 - v9;
   v11 = *(&self->super.isa + OBJC_IVAR___CIDCSessionCryptarch_sessionCryptarch);
-  v12 = self;
+  selfCopy = self;
   sub_245681C9C();
   (*(v4 + 16))(v8, v10, v3);
   v13 = (*(v4 + 88))(v8, v3);
@@ -113,7 +113,7 @@ LABEL_4:
 
 - (unint64_t)variant
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CIDCSessionCryptarch.variant.getter();
 
   return v3;
@@ -126,7 +126,7 @@ LABEL_4:
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v17 - v5;
   v7 = *(&self->super.isa + OBJC_IVAR___CIDCSessionCryptarch_sessionCryptarch);
-  v8 = self;
+  selfCopy = self;
   sub_245681CEC();
   v9 = sub_245681C4C();
   v10 = *(v9 - 8);
@@ -154,7 +154,7 @@ LABEL_4:
 - (NSData)publicKey
 {
   v2 = *(&self->super.isa + OBJC_IVAR___CIDCSessionCryptarch_sessionCryptarch);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_245681CFC();
   v6 = v5;
 

@@ -1,5 +1,5 @@
 @interface SBFluidSwitcherAppClipLiveContentOverlay
-- (SBFluidSwitcherAppClipLiveContentOverlay)initWithPlaceholderEntity:(id)a3 windowScene:(id)a4;
+- (SBFluidSwitcherAppClipLiveContentOverlay)initWithPlaceholderEntity:(id)entity windowScene:(id)scene;
 - (SBSwitcherLiveContentOverlayDelegate)delegate;
 - (SBWindowScene)_sbWindowScene;
 - (UIRectCornerRadii)cornerRadii;
@@ -8,40 +8,40 @@
 - (id)liveSceneIdentityToken;
 - (void)_beginPollingUpdateStillAvailable;
 - (void)_createAndConfigureStatusBar;
-- (void)_installedApplicationsDidChange:(id)a3;
-- (void)_launchApplication:(id)a3;
+- (void)_installedApplicationsDidChange:(id)change;
+- (void)_launchApplication:(id)application;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setContentReferenceSize:(CGSize)a3 interfaceOrientation:(int64_t)a4;
-- (void)setDisplayLayoutElementActive:(BOOL)a3;
-- (void)setStatusBarHidden:(BOOL)a3 nubViewHidden:(BOOL)a4 animator:(id)a5;
-- (void)sizeObservingView:(id)a3 didChangeSize:(CGSize)a4;
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3;
+- (void)setContentReferenceSize:(CGSize)size interfaceOrientation:(int64_t)orientation;
+- (void)setDisplayLayoutElementActive:(BOOL)active;
+- (void)setStatusBarHidden:(BOOL)hidden nubViewHidden:(BOOL)viewHidden animator:(id)animator;
+- (void)sizeObservingView:(id)view didChangeSize:(CGSize)size;
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder;
 @end
 
 @implementation SBFluidSwitcherAppClipLiveContentOverlay
 
-- (SBFluidSwitcherAppClipLiveContentOverlay)initWithPlaceholderEntity:(id)a3 windowScene:(id)a4
+- (SBFluidSwitcherAppClipLiveContentOverlay)initWithPlaceholderEntity:(id)entity windowScene:(id)scene
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  entityCopy = entity;
+  sceneCopy = scene;
   v42.receiver = self;
   v42.super_class = SBFluidSwitcherAppClipLiveContentOverlay;
   v8 = [(SBFluidSwitcherAppClipLiveContentOverlay *)&v42 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_sbWindowScene, v7);
-    v10 = [v6 bundleIdentifier];
+    objc_storeWeak(&v8->_sbWindowScene, sceneCopy);
+    bundleIdentifier = [entityCopy bundleIdentifier];
     bundleIdentifier = v9->_bundleIdentifier;
-    v9->_bundleIdentifier = v10;
+    v9->_bundleIdentifier = bundleIdentifier;
 
-    v12 = [v6 futureSceneIdentifier];
+    futureSceneIdentifier = [entityCopy futureSceneIdentifier];
     sceneIdentifier = v9->_sceneIdentifier;
-    v9->_sceneIdentifier = v12;
+    v9->_sceneIdentifier = futureSceneIdentifier;
 
-    v9->_isPendingUpdate = [v6 needsUpdate];
+    v9->_isPendingUpdate = [entityCopy needsUpdate];
     v14 = objc_alloc(MEMORY[0x277D67DB0]);
     v15 = [v14 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     containerView = v9->_containerView;
@@ -49,14 +49,14 @@
 
     [(SBUISizeObservingView *)v9->_containerView setDelegate:v9];
     v17 = [SBAppClipOverlayViewController alloc];
-    v18 = [SBApp appClipOverlayCoordinator];
-    v19 = [(SBAppClipOverlayViewController *)v17 initWithCoordinator:v18 bundleIdentifier:v9->_bundleIdentifier sceneIdentifier:v9->_sceneIdentifier];
+    appClipOverlayCoordinator = [SBApp appClipOverlayCoordinator];
+    v19 = [(SBAppClipOverlayViewController *)v17 initWithCoordinator:appClipOverlayCoordinator bundleIdentifier:v9->_bundleIdentifier sceneIdentifier:v9->_sceneIdentifier];
     placeholderViewController = v9->_placeholderViewController;
     v9->_placeholderViewController = v19;
 
     v21 = v9->_containerView;
-    v22 = [(SBAppClipOverlayViewController *)v9->_placeholderViewController view];
-    [(SBUISizeObservingView *)v21 addSubview:v22];
+    view = [(SBAppClipOverlayViewController *)v9->_placeholderViewController view];
+    [(SBUISizeObservingView *)v21 addSubview:view];
 
     [(SBAppClipOverlayViewController *)v9->_placeholderViewController setDisplayedOverPlaceholder:1 animated:0];
     [(SBAppClipOverlayViewController *)v9->_placeholderViewController setSceneActivationState:-1 animated:0];
@@ -75,9 +75,9 @@
     [(SBSDisplayLayoutElement *)v9->_displayLayoutElement setLevel:1];
     [(SBSDisplayLayoutElement *)v9->_displayLayoutElement setUIApplicationElement:1];
     [(SBSDisplayLayoutElement *)v9->_displayLayoutElement setHasKeyboardFocus:0];
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v26 = +[SBApplicationController sharedInstance];
-    [v25 addObserver:v9 selector:sel__installedApplicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:v26];
+    [defaultCenter addObserver:v9 selector:sel__installedApplicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:v26];
 
     v27 = +[SBApplicationPlaceholderController sharedInstance];
     v28 = [v27 placeholderForDisplayID:v9->_bundleIdentifier];
@@ -142,29 +142,29 @@
 - (void)dealloc
 {
   [(BSInvalidatable *)self->_displayLayoutElementAssertion invalidate];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = +[SBApplicationController sharedInstance];
-  [v3 removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:v4];
+  [defaultCenter removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:v4];
 
-  v5 = [(SBFluidSwitcherAppClipLiveContentOverlay *)self _statusBarReusePool];
-  [v5 recycleStatusBar:self->_statusBar];
+  _statusBarReusePool = [(SBFluidSwitcherAppClipLiveContentOverlay *)self _statusBarReusePool];
+  [_statusBarReusePool recycleStatusBar:self->_statusBar];
 
   v6.receiver = self;
   v6.super_class = SBFluidSwitcherAppClipLiveContentOverlay;
   [(SBFluidSwitcherAppClipLiveContentOverlay *)&v6 dealloc];
 }
 
-- (void)sizeObservingView:(id)a3 didChangeSize:(CGSize)a4
+- (void)sizeObservingView:(id)view didChangeSize:(CGSize)size
 {
-  if (self->_containerView == a3)
+  if (self->_containerView == view)
   {
-    [a3 bounds];
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(SBAppClipOverlayViewController *)self->_placeholderViewController view];
-    [v14 setFrame:{v7, v9, v11, v13}];
+    view = [(SBAppClipOverlayViewController *)self->_placeholderViewController view];
+    [view setFrame:{v7, v9, v11, v13}];
 
     statusBar = self->_statusBar;
 
@@ -172,13 +172,13 @@
   }
 }
 
-- (void)setContentReferenceSize:(CGSize)a3 interfaceOrientation:(int64_t)a4
+- (void)setContentReferenceSize:(CGSize)size interfaceOrientation:(int64_t)orientation
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __89__SBFluidSwitcherAppClipLiveContentOverlay_setContentReferenceSize_interfaceOrientation___block_invoke;
   v4[3] = &__block_descriptor_48_e33_v16__0__SBSDisplayLayoutElement_8l;
-  v5 = a3;
+  sizeCopy = size;
   [(SBFluidSwitcherAppClipLiveContentOverlay *)self updateDisplayLayoutElementWithBuilder:v4];
 }
 
@@ -189,20 +189,20 @@ void __89__SBFluidSwitcherAppClipLiveContentOverlay_setContentReferenceSize_inte
   [v2 setReferenceFrame:?];
 }
 
-- (void)setStatusBarHidden:(BOOL)a3 nubViewHidden:(BOOL)a4 animator:(id)a5
+- (void)setStatusBarHidden:(BOOL)hidden nubViewHidden:(BOOL)viewHidden animator:(id)animator
 {
-  v7 = a5;
+  animatorCopy = animator;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __86__SBFluidSwitcherAppClipLiveContentOverlay_setStatusBarHidden_nubViewHidden_animator___block_invoke;
   v10[3] = &unk_2783A9F58;
   v10[4] = self;
-  v11 = a3;
+  hiddenCopy = hidden;
   v8 = MEMORY[0x223D6F7F0](v10);
   v9 = v8;
-  if (v7)
+  if (animatorCopy)
   {
-    v7[2](v7, v8, 0);
+    animatorCopy[2](animatorCopy, v8, 0);
   }
 
   else
@@ -224,18 +224,18 @@ uint64_t __86__SBFluidSwitcherAppClipLiveContentOverlay_setStatusBarHidden_nubVi
 
 - (id)currentStatusBarStyleAttributes
 {
-  v2 = [(UIStatusBar *)self->_statusBar statusBar];
+  statusBar = [(UIStatusBar *)self->_statusBar statusBar];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 styleAttributes];
+    styleAttributes = [statusBar styleAttributes];
   }
 
   else
   {
-    v3 = 0;
+    styleAttributes = 0;
   }
 
-  return v3;
+  return styleAttributes;
 }
 
 - (id)liveSceneIdentityToken
@@ -246,14 +246,14 @@ uint64_t __86__SBFluidSwitcherAppClipLiveContentOverlay_setStatusBarHidden_nubVi
   v10 = __Block_byref_object_copy__42;
   v11 = __Block_byref_object_dispose__42;
   v12 = 0;
-  v3 = [MEMORY[0x277D0AAD8] sharedInstance];
+  mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__SBFluidSwitcherAppClipLiveContentOverlay_liveSceneIdentityToken__block_invoke;
   v6[3] = &unk_2783B0A20;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 enumerateScenesWithBlock:v6];
+  [mEMORY[0x277D0AAD8] enumerateScenesWithBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -291,8 +291,8 @@ void __66__SBFluidSwitcherAppClipLiveContentOverlay_liveSceneIdentityToken__bloc
 
 - (void)_createAndConfigureStatusBar
 {
-  v3 = [(SBFluidSwitcherAppClipLiveContentOverlay *)self _statusBarReusePool];
-  v4 = [v3 getReusableStatusBarWithReason:@"app clip live content overlay"];
+  _statusBarReusePool = [(SBFluidSwitcherAppClipLiveContentOverlay *)self _statusBarReusePool];
+  v4 = [_statusBarReusePool getReusableStatusBarWithReason:@"app clip live content overlay"];
   statusBar = self->_statusBar;
   self->_statusBar = v4;
 
@@ -300,8 +300,8 @@ void __66__SBFluidSwitcherAppClipLiveContentOverlay_liveSceneIdentityToken__bloc
   if ([v13 statusBarDebugBackgroundColorsEnabled])
   {
     v6 = self->_statusBar;
-    v7 = [MEMORY[0x277D75348] yellowColor];
-    v8 = [v7 colorWithAlphaComponent:0.4];
+    yellowColor = [MEMORY[0x277D75348] yellowColor];
+    v8 = [yellowColor colorWithAlphaComponent:0.4];
     [(UIStatusBar *)v6 setBackgroundColor:v8];
   }
 
@@ -311,8 +311,8 @@ void __66__SBFluidSwitcherAppClipLiveContentOverlay_liveSceneIdentityToken__bloc
   [(UIStatusBar *)self->_statusBar setHidden:0];
   [(SBUISizeObservingView *)self->_containerView addSubview:self->_statusBar];
   v11 = self->_statusBar;
-  v12 = [(SBAppClipOverlayViewController *)self->_placeholderViewController view];
-  [v12 bounds];
+  view = [(SBAppClipOverlayViewController *)self->_placeholderViewController view];
+  [view bounds];
   [(UIStatusBar *)v11 setFrame:?];
 
   [(UIStatusBar *)self->_statusBar setAutoresizingMask:18];
@@ -396,7 +396,7 @@ void __77__SBFluidSwitcherAppClipLiveContentOverlay__beginPollingUpdateStillAvai
   }
 }
 
-- (void)_installedApplicationsDidChange:(id)a3
+- (void)_installedApplicationsDidChange:(id)change
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = +[SBApplicationController sharedInstance];
@@ -423,11 +423,11 @@ void __77__SBFluidSwitcherAppClipLiveContentOverlay__beginPollingUpdateStillAvai
     v18 = 3221225472;
     v19 = __76__SBFluidSwitcherAppClipLiveContentOverlay__installedApplicationsDidChange___block_invoke;
     v20 = &unk_2783A92D8;
-    v21 = self;
+    selfCopy = self;
     v22 = v5;
     v12 = [v11 eventWithName:@"LaunchAppClipApplication" handler:&v17];
-    v13 = [MEMORY[0x277D0AB20] sharedInstance];
-    [v13 executeOrAppendEvent:v12];
+    mEMORY[0x277D0AB20] = [MEMORY[0x277D0AB20] sharedInstance];
+    [mEMORY[0x277D0AB20] executeOrAppendEvent:v12];
   }
 
   else
@@ -446,11 +446,11 @@ void __77__SBFluidSwitcherAppClipLiveContentOverlay__beginPollingUpdateStillAvai
   }
 }
 
-- (void)_launchApplication:(id)a3
+- (void)_launchApplication:(id)application
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  applicationCopy = application;
+  if (!applicationCopy)
   {
     [(SBFluidSwitcherAppClipLiveContentOverlay *)self _launchApplication:a2];
   }
@@ -458,9 +458,9 @@ void __77__SBFluidSwitcherAppClipLiveContentOverlay__beginPollingUpdateStillAvai
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
   v7 = [SBDeviceApplicationSceneEntity alloc];
   sceneIdentifier = self->_sceneIdentifier;
-  v9 = [WeakRetained sceneManager];
-  v10 = [WeakRetained _fbsDisplayIdentity];
-  v11 = [(SBDeviceApplicationSceneEntity *)v7 initWithApplication:v5 uniqueIdentifier:sceneIdentifier sceneHandleProvider:v9 displayIdentity:v10];
+  sceneManager = [WeakRetained sceneManager];
+  _fbsDisplayIdentity = [WeakRetained _fbsDisplayIdentity];
+  v11 = [(SBDeviceApplicationSceneEntity *)v7 initWithApplication:applicationCopy uniqueIdentifier:sceneIdentifier sceneHandleProvider:sceneManager displayIdentity:_fbsDisplayIdentity];
 
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
@@ -475,15 +475,15 @@ void __77__SBFluidSwitcherAppClipLiveContentOverlay__beginPollingUpdateStillAvai
   }
 
   v15 = MEMORY[0x277D0AC98];
-  v16 = [v5 bundleIdentifier];
-  v17 = [v15 storeForApplication:v16];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  v17 = [v15 storeForApplication:bundleIdentifier];
 
-  v18 = [(SBApplicationSceneEntity *)v11 sceneHandle];
-  v19 = [v18 sceneIdentifier];
-  v20 = [v17 sceneStoreForIdentifier:v19 creatingIfNecessary:0];
+  sceneHandle = [(SBApplicationSceneEntity *)v11 sceneHandle];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
+  v20 = [v17 sceneStoreForIdentifier:sceneIdentifier creatingIfNecessary:0];
 
   v21 = [v20 objectForKey:@"appClipIdentifier"];
-  v22 = [SBApp webClipService];
+  webClipService = [SBApp webClipService];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __63__SBFluidSwitcherAppClipLiveContentOverlay__launchApplication___block_invoke;
@@ -491,11 +491,11 @@ void __77__SBFluidSwitcherAppClipLiveContentOverlay__beginPollingUpdateStillAvai
   v27 = v11;
   v28 = WeakRetained;
   v29 = v13;
-  v30 = self;
+  selfCopy = self;
   v23 = v13;
   v24 = WeakRetained;
   v25 = v11;
-  [v22 buildLaunchActionsForAppClipWithWebClipIdentifier:v21 completion:v26];
+  [webClipService buildLaunchActionsForAppClipWithWebClipIdentifier:v21 completion:v26];
 }
 
 void __63__SBFluidSwitcherAppClipLiveContentOverlay__launchApplication___block_invoke(uint64_t a1, uint64_t a2)
@@ -610,39 +610,39 @@ BOOL __63__SBFluidSwitcherAppClipLiveContentOverlay__launchApplication___block_i
 - (id)_statusBarReusePool
 {
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
-  v3 = [WeakRetained statusBarManager];
-  v4 = [v3 reusePool];
+  statusBarManager = [WeakRetained statusBarManager];
+  reusePool = [statusBarManager reusePool];
 
-  return v4;
+  return reusePool;
 }
 
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder
 {
   if (self->_displayLayoutElementAssertion)
   {
-    v5 = a3;
+    builderCopy = builder;
     WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
     if (!WeakRetained)
     {
       [(SBFluidSwitcherAppClipLiveContentOverlay *)a2 updateDisplayLayoutElementWithBuilder:?];
     }
 
-    v14 = [WeakRetained displayLayoutPublisher];
-    if (!v14)
+    builderCopy2 = [WeakRetained displayLayoutPublisher];
+    if (!builderCopy2)
     {
       [SBFluidSwitcherAppClipLiveContentOverlay updateDisplayLayoutElementWithBuilder:];
     }
 
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v14 transitionAssertionWithReason:v8];
+    v9 = [builderCopy2 transitionAssertionWithReason:v8];
 
     [(BSInvalidatable *)self->_displayLayoutElementAssertion invalidate];
     displayLayoutElementAssertion = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = 0;
 
-    v5[2](v5, self->_displayLayoutElement);
-    v11 = [v14 addElement:self->_displayLayoutElement];
+    builderCopy[2](builderCopy, self->_displayLayoutElement);
+    v11 = [builderCopy2 addElement:self->_displayLayoutElement];
     v12 = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = v11;
 
@@ -651,16 +651,16 @@ BOOL __63__SBFluidSwitcherAppClipLiveContentOverlay__launchApplication___block_i
 
   else
   {
-    v13 = *(a3 + 2);
-    v14 = a3;
+    v13 = *(builder + 2);
+    builderCopy2 = builder;
     v13();
   }
 }
 
-- (void)setDisplayLayoutElementActive:(BOOL)a3
+- (void)setDisplayLayoutElementActive:(BOOL)active
 {
   displayLayoutElementAssertion = self->_displayLayoutElementAssertion;
-  if (a3)
+  if (active)
   {
     if (displayLayoutElementAssertion)
     {
@@ -673,17 +673,17 @@ BOOL __63__SBFluidSwitcherAppClipLiveContentOverlay__launchApplication___block_i
       [(SBFluidSwitcherAppClipLiveContentOverlay *)a2 setDisplayLayoutElementActive:?];
     }
 
-    v10 = [WeakRetained displayLayoutPublisher];
-    if (!v10)
+    displayLayoutPublisher = [WeakRetained displayLayoutPublisher];
+    if (!displayLayoutPublisher)
     {
       [SBFluidSwitcherAppClipLiveContentOverlay setDisplayLayoutElementActive:];
     }
 
-    v7 = [v10 addElement:self->_displayLayoutElement];
+    v7 = [displayLayoutPublisher addElement:self->_displayLayoutElement];
     v8 = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = v7;
 
-    v9 = v10;
+    v9 = displayLayoutPublisher;
   }
 
   else

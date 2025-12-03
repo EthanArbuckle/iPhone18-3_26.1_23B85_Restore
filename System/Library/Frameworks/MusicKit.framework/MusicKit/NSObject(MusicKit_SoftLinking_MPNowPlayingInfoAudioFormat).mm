@@ -27,25 +27,25 @@
   _Block_object_dispose(&v7, 8);
   if (objc_opt_isKindOfClass())
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (unint64_t)musicKit_nowPlayingInfoAudioFormat_badging
 {
-  v1 = [a1 _musicKit_self_nowPlayingInfoAudioFormat];
-  v2 = [v1 badging];
+  _musicKit_self_nowPlayingInfoAudioFormat = [self _musicKit_self_nowPlayingInfoAudioFormat];
+  badging = [_musicKit_self_nowPlayingInfoAudioFormat badging];
 
-  if (v2 < 6)
+  if (badging < 6)
   {
-    return v2 + 1;
+    return badging + 1;
   }
 
   else

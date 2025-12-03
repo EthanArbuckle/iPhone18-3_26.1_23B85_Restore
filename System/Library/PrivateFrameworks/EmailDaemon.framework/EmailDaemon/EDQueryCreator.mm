@@ -1,35 +1,35 @@
 @interface EDQueryCreator
-- (EDQueryCreator)initWithQueryType:(id)a3;
-- (id)queryWithStartDate:(id)a3 endDate:(id)a4;
+- (EDQueryCreator)initWithQueryType:(id)type;
+- (id)queryWithStartDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation EDQueryCreator
 
-- (EDQueryCreator)initWithQueryType:(id)a3
+- (EDQueryCreator)initWithQueryType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = EDQueryCreator;
   v6 = [(EDQueryCreator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queryType, a3);
+    objc_storeStrong(&v6->_queryType, type);
   }
 
   return v7;
 }
 
-- (id)queryWithStartDate:(id)a3 endDate:(id)a4
+- (id)queryWithStartDate:(id)date endDate:(id)endDate
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(EDQueryCreator *)self queryType];
-  v10 = v9;
-  if (v9 == *MEMORY[0x1E699A978])
+  dateCopy = date;
+  endDateCopy = endDate;
+  queryType = [(EDQueryCreator *)self queryType];
+  v10 = queryType;
+  if (queryType == *MEMORY[0x1E699A978])
   {
-    v13 = [MEMORY[0x1E699ADA0] predicateForSendLaterMessagesWithStartDate:v7 endDate:v8];
+    v13 = [MEMORY[0x1E699ADA0] predicateForSendLaterMessagesWithStartDate:dateCopy endDate:endDateCopy];
     v14 = [MEMORY[0x1E699ADA0] predicateForExcludingMessagesInMailboxesWithTypes:&unk_1F45E6F40];
     v15 = MEMORY[0x1E696AB28];
     v25[0] = v13;
@@ -43,19 +43,19 @@
     }
 
 LABEL_3:
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"EDQueryCreator.m" lineNumber:37 description:@"The query type isn't allowed."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDQueryCreator.m" lineNumber:37 description:@"The query type isn't allowed."];
 
     v12 = 0;
     goto LABEL_7;
   }
 
-  if (v9 != *MEMORY[0x1E699A958])
+  if (queryType != *MEMORY[0x1E699A958])
   {
     goto LABEL_3;
   }
 
-  v12 = [MEMORY[0x1E699ADA0] predicateForReadLaterMessagesWithStartDate:v7 endDate:v8];
+  v12 = [MEMORY[0x1E699ADA0] predicateForReadLaterMessagesWithStartDate:dateCopy endDate:endDateCopy];
   if (!v12)
   {
     goto LABEL_3;

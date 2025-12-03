@@ -1,8 +1,8 @@
 @interface BBSectionInfo
-- (BOOL)_notificationSettings_iconWouldUseApplicationIdentifierForFormat:(int64_t)a3;
+- (BOOL)_notificationSettings_iconWouldUseApplicationIdentifierForFormat:(int64_t)format;
 - (BOOL)_notificationSettings_sectionIdentifierIconDenyListContainsIdentifier;
-- (BOOL)isEqualToSection:(id)a3;
-- (id)_scaledImageForImage:(id)a3;
+- (BOOL)isEqualToSection:(id)section;
+- (id)_scaledImageForImage:(id)image;
 - (id)nc_settingsIconImage;
 - (int64_t)nc_effectiveAnnounceSetting;
 @end
@@ -11,11 +11,11 @@
 
 - (id)nc_settingsIconImage
 {
-  v3 = [(BBSectionInfo *)self icon];
-  v4 = [v3 _bestVariantForFormat:1];
-  v5 = [v4 applicationIdentifier];
+  icon = [(BBSectionInfo *)self icon];
+  v4 = [icon _bestVariantForFormat:1];
+  applicationIdentifier = [v4 applicationIdentifier];
 
-  if (v5)
+  if (applicationIdentifier)
   {
     goto LABEL_16;
   }
@@ -27,58 +27,58 @@
     goto LABEL_16;
   }
 
-  v7 = [v4 imageData];
+  imageData = [v4 imageData];
 
-  if (v7)
+  if (imageData)
   {
-    v8 = [(BBSectionInfo *)self iconData];
-    v7 = [UIImage imageWithData:v8];
+    iconData = [(BBSectionInfo *)self iconData];
+    imageData = [UIImage imageWithData:iconData];
   }
 
-  v9 = [v4 bundlePath];
-  if (v9)
+  bundlePath = [v4 bundlePath];
+  if (bundlePath)
   {
-    v10 = v9;
-    v11 = [v4 imageName];
+    v10 = bundlePath;
+    imageName = [v4 imageName];
 
-    if (v11)
+    if (imageName)
     {
-      v12 = [v4 bundlePath];
-      v13 = [NSBundle bundleWithPath:v12];
+      bundlePath2 = [v4 bundlePath];
+      imagePath2 = [NSBundle bundleWithPath:bundlePath2];
 
-      if (!v13)
+      if (!imagePath2)
       {
 LABEL_13:
 
         goto LABEL_14;
       }
 
-      v14 = [v4 imageName];
-      v15 = [UIImage imageNamed:v14 inBundle:v13];
+      imageName2 = [v4 imageName];
+      v15 = [UIImage imageNamed:imageName2 inBundle:imagePath2];
 
-      v7 = v14;
+      imageData = imageName2;
 LABEL_12:
 
-      v7 = v15;
+      imageData = v15;
       goto LABEL_13;
     }
   }
 
-  v16 = [v4 imagePath];
+  imagePath = [v4 imagePath];
 
-  if (v16)
+  if (imagePath)
   {
-    v13 = [v4 imagePath];
-    v15 = [UIImage imageWithContentsOfFile:v13];
+    imagePath2 = [v4 imagePath];
+    v15 = [UIImage imageWithContentsOfFile:imagePath2];
     goto LABEL_12;
   }
 
 LABEL_14:
-  if (!v7 || ([(BBSectionInfo *)self _scaledImageForImage:v7], v17 = objc_claimAutoreleasedReturnValue(), v7, !v17))
+  if (!imageData || ([(BBSectionInfo *)self _scaledImageForImage:imageData], v17 = objc_claimAutoreleasedReturnValue(), imageData, !v17))
   {
 LABEL_16:
-    v18 = [(BBSectionInfo *)self sectionID];
-    v19 = [v18 isEqualToString:@"com.apple.Passbook"];
+    sectionID = [(BBSectionInfo *)self sectionID];
+    v19 = [sectionID isEqualToString:@"com.apple.Passbook"];
 
     if (v19)
     {
@@ -104,9 +104,9 @@ LABEL_16:
   return [(BBSectionInfo *)self announceSetting];
 }
 
-- (id)_scaledImageForImage:(id)a3
+- (id)_scaledImageForImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v4 = +[UIScreen mainScreen];
   [v4 scale];
   v6 = v5;
@@ -138,9 +138,9 @@ LABEL_16:
   [v12 setContrast:{objc_msgSend(v16, "accessibilityContrast") == &dword_0 + 1}];
 
   v17 = [IFImage alloc];
-  v18 = [v3 CGImage];
-  [v3 scale];
-  v19 = [v17 initWithCGImage:v18 scale:?];
+  cGImage = [imageCopy CGImage];
+  [imageCopy scale];
+  v19 = [v17 initWithCGImage:cGImage scale:?];
   v20 = [ISIcon alloc];
   v29 = v19;
   v21 = [NSArray arrayWithObjects:&v29 count:1];
@@ -152,50 +152,50 @@ LABEL_16:
     v24 = v23;
     if (v23)
     {
-      v25 = [v23 CGImage];
+      cGImage2 = [v23 CGImage];
       v26 = +[UIScreen mainScreen];
       [v26 scale];
-      v27 = [UIImage imageWithCGImage:v25 scale:0 orientation:?];
+      v27 = [UIImage imageWithCGImage:cGImage2 scale:0 orientation:?];
     }
 
     else
     {
-      v27 = v3;
+      v27 = imageCopy;
     }
   }
 
   else
   {
-    v27 = v3;
+    v27 = imageCopy;
   }
 
   return v27;
 }
 
-- (BOOL)_notificationSettings_iconWouldUseApplicationIdentifierForFormat:(int64_t)a3
+- (BOOL)_notificationSettings_iconWouldUseApplicationIdentifierForFormat:(int64_t)format
 {
-  v4 = [(BBSectionInfo *)self icon];
-  v5 = [v4 _bestVariantForFormat:a3];
+  icon = [(BBSectionInfo *)self icon];
+  v5 = [icon _bestVariantForFormat:format];
 
-  v6 = [v5 imageData];
-  v7 = [v5 imagePath];
-  v8 = [v5 imageName];
-  v9 = [v5 bundlePath];
-  v10 = [v5 applicationIdentifier];
-  v11 = ![v6 length] && (!v8 || !v9) && !objc_msgSend(v7, "length") && objc_msgSend(v10, "length") != 0;
+  imageData = [v5 imageData];
+  imagePath = [v5 imagePath];
+  imageName = [v5 imageName];
+  bundlePath = [v5 bundlePath];
+  applicationIdentifier = [v5 applicationIdentifier];
+  v11 = ![imageData length] && (!imageName || !bundlePath) && !objc_msgSend(imagePath, "length") && objc_msgSend(applicationIdentifier, "length") != 0;
 
   return v11;
 }
 
 - (BOOL)_notificationSettings_sectionIdentifierIconDenyListContainsIdentifier
 {
-  v3 = [(BBSectionInfo *)self sectionID];
+  sectionID = [(BBSectionInfo *)self sectionID];
   if (qword_5C598 != -1)
   {
     sub_32BB4();
   }
 
-  if ([qword_5C590 containsObject:v3])
+  if ([qword_5C590 containsObject:sectionID])
   {
     v4 = ![(BBSectionInfo *)self _notificationSettings_iconWouldUseApplicationIdentifierForFormat:1];
   }
@@ -208,32 +208,32 @@ LABEL_16:
   return v4;
 }
 
-- (BOOL)isEqualToSection:(id)a3
+- (BOOL)isEqualToSection:(id)section
 {
-  v4 = a3;
-  v5 = [(BBSectionInfo *)self sectionID];
-  v6 = [v4 sectionID];
-  v23 = [v5 isEqualToString:v6];
+  sectionCopy = section;
+  sectionID = [(BBSectionInfo *)self sectionID];
+  sectionID2 = [sectionCopy sectionID];
+  v23 = [sectionID isEqualToString:sectionID2];
 
-  v22 = [(BBSectionInfo *)self notificationCenterSetting];
-  v21 = [v4 notificationCenterSetting];
-  v20 = [(BBSectionInfo *)self lockScreenSetting];
-  v19 = [v4 lockScreenSetting];
-  v7 = [(BBSectionInfo *)self alertType];
-  v8 = [v4 alertType];
-  v9 = [(BBSectionInfo *)self contentPreviewSetting];
-  v10 = [v4 contentPreviewSetting];
-  v11 = [(BBSectionInfo *)self carPlaySetting];
-  v12 = [v4 carPlaySetting];
-  v18 = [(BBSectionInfo *)self remoteNotificationsSetting];
-  v13 = [v4 remoteNotificationsSetting];
-  v14 = [(BBSectionInfo *)self criticalAlertSetting];
-  v15 = [v4 criticalAlertSetting];
+  notificationCenterSetting = [(BBSectionInfo *)self notificationCenterSetting];
+  notificationCenterSetting2 = [sectionCopy notificationCenterSetting];
+  lockScreenSetting = [(BBSectionInfo *)self lockScreenSetting];
+  lockScreenSetting2 = [sectionCopy lockScreenSetting];
+  alertType = [(BBSectionInfo *)self alertType];
+  alertType2 = [sectionCopy alertType];
+  contentPreviewSetting = [(BBSectionInfo *)self contentPreviewSetting];
+  contentPreviewSetting2 = [sectionCopy contentPreviewSetting];
+  carPlaySetting = [(BBSectionInfo *)self carPlaySetting];
+  carPlaySetting2 = [sectionCopy carPlaySetting];
+  remoteNotificationsSetting = [(BBSectionInfo *)self remoteNotificationsSetting];
+  remoteNotificationsSetting2 = [sectionCopy remoteNotificationsSetting];
+  criticalAlertSetting = [(BBSectionInfo *)self criticalAlertSetting];
+  criticalAlertSetting2 = [sectionCopy criticalAlertSetting];
 
   result = 0;
-  if (v23 && v22 == v21 && v20 == v19 && v7 == v8 && v9 == v10 && v11 == v12)
+  if (v23 && notificationCenterSetting == notificationCenterSetting2 && lockScreenSetting == lockScreenSetting2 && alertType == alertType2 && contentPreviewSetting == contentPreviewSetting2 && carPlaySetting == carPlaySetting2)
   {
-    return v18 == v13 && v14 == v15;
+    return remoteNotificationsSetting == remoteNotificationsSetting2 && criticalAlertSetting == criticalAlertSetting2;
   }
 
   return result;

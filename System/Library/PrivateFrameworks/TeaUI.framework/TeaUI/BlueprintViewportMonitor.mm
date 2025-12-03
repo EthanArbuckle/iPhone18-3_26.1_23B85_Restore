@@ -1,14 +1,14 @@
 @interface BlueprintViewportMonitor
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation BlueprintViewportMonitor
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  BlueprintViewportMonitor.scrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  BlueprintViewportMonitor.scrollViewDidScroll(_:)(scrollCopy);
 }
 
 @end

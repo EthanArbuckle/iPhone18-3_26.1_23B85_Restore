@@ -38,8 +38,8 @@
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Encountered policy error, presenting passcode sheet, %@", buf, 0xCu);
     }
 
-    v11 = [(GAXBiometricManager *)self delegate];
-    [v11 biometricManager:self attemptWasSuccessful:0];
+    delegate = [(GAXBiometricManager *)self delegate];
+    [delegate biometricManager:self attemptWasSuccessful:0];
   }
 
   else
@@ -53,13 +53,13 @@
     v12 = +[AXSpringBoardServer server];
     [v12 invalidateSystemApertureInertAssertion];
 
-    v11 = [v4 localizedReason];
+    delegate = [v4 localizedReason];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_2CA0C;
     v13[3] = &unk_5E050;
     v13[4] = self;
-    [v4 evaluatePolicy:1 localizedReason:v11 reply:v13];
+    [v4 evaluatePolicy:1 localizedReason:delegate reply:v13];
   }
 }
 

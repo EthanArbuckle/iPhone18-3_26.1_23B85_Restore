@@ -1,28 +1,28 @@
 @interface WPDState
-+ (int64_t)getWPStateFromCBManagerState:(int64_t)a3;
++ (int64_t)getWPStateFromCBManagerState:(int64_t)state;
 - (OS_dispatch_queue)cbQueue;
-- (WPDState)initWithQueue:(id)a3;
+- (WPDState)initWithQueue:(id)queue;
 - (id)description;
 - (id)notification;
-- (void)coalesceState:(int64_t *)a3 Restricted:(BOOL *)a4 UpdateCache:(BOOL)a5;
+- (void)coalesceState:(int64_t *)state Restricted:(BOOL *)restricted UpdateCache:(BOOL)cache;
 - (void)dealloc;
-- (void)registerManager:(id)a3;
-- (void)updateWithCompletion:(id)a3;
-- (void)updateWithManager:(id)a3 Completion:(id)a4;
+- (void)registerManager:(id)manager;
+- (void)updateWithCompletion:(id)completion;
+- (void)updateWithManager:(id)manager Completion:(id)completion;
 @end
 
 @implementation WPDState
 
-- (WPDState)initWithQueue:(id)a3
+- (WPDState)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = WPDState;
   v5 = [(WPDState *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_cbQueue, v4);
+    objc_storeWeak(&v5->_cbQueue, queueCopy);
     v6->_state = 0;
     *&v6->_restricted = 0;
     v7 = objc_opt_new();
@@ -41,11 +41,11 @@
 {
   [(WPDState *)self setState:0];
   [(WPDState *)self setRestricted:0];
-  v3 = [(WPDState *)self cbStates];
-  [v3 removeAllObjects];
+  cbStates = [(WPDState *)self cbStates];
+  [cbStates removeAllObjects];
 
-  v4 = [(WPDState *)self cbManagers];
-  [v4 removeAllObjects];
+  cbManagers = [(WPDState *)self cbManagers];
+  [cbManagers removeAllObjects];
 
   v5.receiver = self;
   v5.super_class = WPDState;
@@ -55,20 +55,20 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WPDState *)self state];
-  v5 = [(WPDState *)self restricted];
+  state = [(WPDState *)self state];
+  restricted = [(WPDState *)self restricted];
   v6 = "no";
-  if (v5)
+  if (restricted)
   {
     v6 = "yes";
   }
 
-  return [v3 stringWithFormat:@"state: %d, restricted: %s", v4, v6];
+  return [v3 stringWithFormat:@"state: %d, restricted: %s", state, v6];
 }
 
-- (void)registerManager:(id)a3
+- (void)registerManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   if (WPLogInitOnce != -1)
   {
     [WPDState registerManager:];
@@ -77,39 +77,39 @@
   v5 = WiProxLog;
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
-    [(WPDState *)v4 registerManager:v5];
+    [(WPDState *)managerCopy registerManager:v5];
   }
 
-  v6 = [(WPDState *)self cbManagers];
-  [v6 addObject:v4];
+  cbManagers = [(WPDState *)self cbManagers];
+  [cbManagers addObject:managerCopy];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "state")}];
-  v8 = [(WPDState *)self cbStates];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "hash")}];
-  [v8 setObject:v7 forKeyedSubscript:v9];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(managerCopy, "state")}];
+  cbStates = [(WPDState *)self cbStates];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(managerCopy, "hash")}];
+  [cbStates setObject:v7 forKeyedSubscript:v9];
 }
 
-- (void)updateWithManager:(id)a3 Completion:(id)a4
+- (void)updateWithManager:(id)manager Completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  completionCopy = completion;
   if ([(WPDState *)self initialUpdate])
   {
-    v8 = [(WPDState *)self cbManagers];
-    v9 = [v8 containsObject:v6];
+    cbManagers = [(WPDState *)self cbManagers];
+    v9 = [cbManagers containsObject:managerCopy];
 
     if (v9)
     {
-      v10 = [v6 state];
-      v11 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
-      v12 = [(WPDState *)self cbStates];
-      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "hash")}];
-      [v12 setObject:v11 forKeyedSubscript:v13];
+      state = [managerCopy state];
+      v11 = [MEMORY[0x277CCABB0] numberWithInteger:state];
+      cbStates = [(WPDState *)self cbStates];
+      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(managerCopy, "hash")}];
+      [cbStates setObject:v11 forKeyedSubscript:v13];
 
-      v14 = [WPDState getWPStateFromCBManagerState:v10];
+      v14 = [WPDState getWPStateFromCBManagerState:state];
       v23 = v14;
-      v15 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
+      v15 = [MEMORY[0x277CCABB0] numberWithInteger:state];
       v16 = [&unk_288201970 isEqualToNumber:v15];
 
       v22 = v16;
@@ -123,9 +123,9 @@
       {
         [(WPDState *)self setState:v23];
         [(WPDState *)self setRestricted:v22];
-        if (v7)
+        if (completionCopy)
         {
-          v7[2](v7);
+          completionCopy[2](completionCopy);
         }
 
         if (WPLogInitOnce != -1)
@@ -137,7 +137,7 @@
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412802;
-          v25 = v6;
+          v25 = managerCopy;
           v26 = 1024;
           v27 = v23;
           v28 = 1024;
@@ -157,7 +157,7 @@
       v20 = WiProxLog;
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
       {
-        [WPDState updateWithManager:v6 Completion:v20];
+        [WPDState updateWithManager:managerCopy Completion:v20];
       }
     }
   }
@@ -179,9 +179,9 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithCompletion:(id)a3
+- (void)updateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9 = 0;
   v8 = 0;
   [(WPDState *)self setInitialUpdate:1];
@@ -191,9 +191,9 @@
   {
     [(WPDState *)self setState:v9];
     [(WPDState *)self setRestricted:v8];
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
 
     if (WPLogInitOnce != -1)
@@ -209,29 +209,29 @@
   }
 }
 
-- (void)coalesceState:(int64_t *)a3 Restricted:(BOOL *)a4 UpdateCache:(BOOL)a5
+- (void)coalesceState:(int64_t *)state Restricted:(BOOL *)restricted UpdateCache:(BOOL)cache
 {
   v35 = *MEMORY[0x277D85DE8];
-  v22 = a5;
-  if (a5)
+  cacheCopy = cache;
+  if (cache)
   {
-    v8 = [(WPDState *)self cbManagers];
+    cbManagers = [(WPDState *)self cbManagers];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __49__WPDState_coalesceState_Restricted_UpdateCache___block_invoke;
     v27[3] = &unk_279E58E38;
     v27[4] = self;
-    [v8 enumerateObjectsUsingBlock:v27];
+    [cbManagers enumerateObjectsUsingBlock:v27];
   }
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [(WPDState *)self cbStates];
-  v10 = [v9 allValues];
+  cbStates = [(WPDState *)self cbStates];
+  allValues = [cbStates allValues];
 
-  v11 = [v10 countByEnumeratingWithState:&v23 objects:v34 count:16];
+  v11 = [allValues countByEnumeratingWithState:&v23 objects:v34 count:16];
   if (v11)
   {
     v12 = v11;
@@ -243,17 +243,17 @@ LABEL_5:
     {
       if (*v24 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(allValues);
       }
 
-      v16 = [*(*(&v23 + 1) + 8 * v15) integerValue];
-      v17 = [WPDState getWPStateFromCBManagerState:v16];
+      integerValue = [*(*(&v23 + 1) + 8 * v15) integerValue];
+      v17 = [WPDState getWPStateFromCBManagerState:integerValue];
       if (v17 < v14)
       {
         v14 = v17;
       }
 
-      v18 = [MEMORY[0x277CCABB0] numberWithInteger:v16];
+      v18 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
       v19 = [&unk_288201970 isEqualToNumber:v18];
 
       if (!v14 || (v19 & 1) != 0)
@@ -263,7 +263,7 @@ LABEL_5:
 
       if (v12 == ++v15)
       {
-        v12 = [v10 countByEnumeratingWithState:&v23 objects:v34 count:16];
+        v12 = [allValues countByEnumeratingWithState:&v23 objects:v34 count:16];
         if (v12)
         {
           goto LABEL_5;
@@ -294,12 +294,12 @@ LABEL_5:
     v30 = 1024;
     v31 = v19;
     v32 = 1024;
-    v33 = v22;
+    v33 = cacheCopy;
     _os_log_debug_impl(&dword_272965000, v20, OS_LOG_TYPE_DEBUG, "WPDState coalesce state:%d restricted:%d cache updated:%d ", buf, 0x14u);
   }
 
-  *a3 = v14;
-  *a4 = v19;
+  *state = v14;
+  *restricted = v19;
   v21 = *MEMORY[0x277D85DE8];
 }
 
@@ -316,16 +316,16 @@ void __49__WPDState_coalesceState_Restricted_UpdateCache___block_invoke(uint64_t
   [v5 setObject:v9 forKeyedSubscript:v8];
 }
 
-+ (int64_t)getWPStateFromCBManagerState:(int64_t)a3
++ (int64_t)getWPStateFromCBManagerState:(int64_t)state
 {
-  if (a3 > 0xA)
+  if (state > 0xA)
   {
     return 0;
   }
 
   else
   {
-    return qword_2729CD258[a3];
+    return qword_2729CD258[state];
   }
 }
 

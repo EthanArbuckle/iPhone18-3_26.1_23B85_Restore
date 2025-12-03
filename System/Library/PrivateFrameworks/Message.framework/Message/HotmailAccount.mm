@@ -2,10 +2,10 @@
 + (BOOL)deliveryAccountUsesSSL;
 + (BOOL)usesSSL;
 + (id)authSchemesForAccountClass;
-+ (id)emailAddressWithUsername:(id)a3;
++ (id)emailAddressWithUsername:(id)username;
 + (unsigned)deliveryAccountPortNumber;
-- (HotmailAccount)initWithLibrary:(id)a3 persistentAccount:(id)a4;
-- (id)_deliveryAccountCreateIfNeeded:(BOOL)a3;
+- (HotmailAccount)initWithLibrary:(id)library persistentAccount:(id)account;
+- (id)_deliveryAccountCreateIfNeeded:(BOOL)needed;
 - (id)displayUsername;
 - (id)emailAddressStrings;
 - (id)hostname;
@@ -16,11 +16,11 @@
 
 @implementation HotmailAccount
 
-- (HotmailAccount)initWithLibrary:(id)a3 persistentAccount:(id)a4
+- (HotmailAccount)initWithLibrary:(id)library persistentAccount:(id)account
 {
   v7.receiver = self;
   v7.super_class = HotmailAccount;
-  v4 = [(IMAPAccount *)&v7 initWithLibrary:a3 persistentAccount:a4];
+  v4 = [(IMAPAccount *)&v7 initWithLibrary:library persistentAccount:account];
   if (v4)
   {
     if (RegisterHotmailAuthSchemes_onceToken != -1)
@@ -41,7 +41,7 @@
     +[HotmailAccount authSchemesForAccountClass];
   }
 
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___HotmailAccount;
   v3 = objc_msgSendSuper2(&v5, sel_authSchemesForAccountClass);
 
@@ -50,10 +50,10 @@
 
 + (BOOL)usesSSL
 {
-  v2 = [a1 predefinedValueForKey:@"SSLEnabled"];
-  v3 = [v2 BOOLValue];
+  v2 = [self predefinedValueForKey:@"SSLEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)hostname
@@ -72,8 +72,8 @@
 
 - (unint64_t)credentialAccessibility
 {
-  v3 = [(MFAccount *)self oauth2Token];
-  v4 = [v3 length];
+  oauth2Token = [(MFAccount *)self oauth2Token];
+  v4 = [oauth2Token length];
 
   if (v4)
   {
@@ -85,11 +85,11 @@
   return [(MFAccount *)&v6 credentialAccessibility];
 }
 
-+ (id)emailAddressWithUsername:(id)a3
++ (id)emailAddressWithUsername:(id)username
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 isEqualToString:&stru_1F273A5E0] & 1) == 0)
+  usernameCopy = username;
+  v4 = usernameCopy;
+  if (usernameCopy && ([usernameCopy isEqualToString:&stru_1F273A5E0] & 1) == 0)
   {
     if ([v4 rangeOfString:@"@"] == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -116,8 +116,8 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
-  v4 = [(MFAccount *)self username];
-  v5 = [v3 emailAddressWithUsername:v4];
+  username = [(MFAccount *)self username];
+  v5 = [v3 emailAddressWithUsername:username];
 
   if (v5)
   {
@@ -153,23 +153,23 @@
 
 + (BOOL)deliveryAccountUsesSSL
 {
-  v2 = [a1 standardAccountClass:a1 valueForKey:@"DeliverySSLEnabled"];
-  v3 = [v2 BOOLValue];
+  v2 = [self standardAccountClass:self valueForKey:@"DeliverySSLEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (unsigned)deliveryAccountPortNumber
 {
-  v2 = [a1 standardAccountClass:a1 valueForKey:@"DeliveryPortNumber"];
-  v3 = [v2 unsignedIntValue];
+  v2 = [self standardAccountClass:self valueForKey:@"DeliveryPortNumber"];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
-- (id)_deliveryAccountCreateIfNeeded:(BOOL)a3
+- (id)_deliveryAccountCreateIfNeeded:(BOOL)needed
 {
-  if (a3)
+  if (needed)
   {
     v4 = objc_alloc_init(MFHotmailSMTPAccount);
     [(MFHotmailSMTPAccount *)v4 setMailAccount:self];
@@ -185,17 +185,17 @@
 
 - (id)displayUsername
 {
-  v2 = [(MFAccount *)self username];
-  [v2 rangeOfString:@"@"];
+  username = [(MFAccount *)self username];
+  [username rangeOfString:@"@"];
   if (!v3)
   {
-    v4 = [objc_opt_class() emailAddressHostPart];
-    v5 = [v2 stringByAppendingFormat:@"@%@", v4];
+    emailAddressHostPart = [objc_opt_class() emailAddressHostPart];
+    v5 = [username stringByAppendingFormat:@"@%@", emailAddressHostPart];
 
-    v2 = v5;
+    username = v5;
   }
 
-  return v2;
+  return username;
 }
 
 @end

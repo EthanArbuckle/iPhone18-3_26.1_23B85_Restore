@@ -1,27 +1,27 @@
 @interface BKSampleToPurchaseMonitor
-- (BKSampleToPurchaseMonitor)initWithAssetID:(id)a3 notify:(id)a4;
+- (BKSampleToPurchaseMonitor)initWithAssetID:(id)d notify:(id)notify;
 - (void)dealloc;
-- (void)managedObjectBackgroundMonitor:(id)a3 didSaveNotify:(id)a4;
+- (void)managedObjectBackgroundMonitor:(id)monitor didSaveNotify:(id)notify;
 @end
 
 @implementation BKSampleToPurchaseMonitor
 
-- (BKSampleToPurchaseMonitor)initWithAssetID:(id)a3 notify:(id)a4
+- (BKSampleToPurchaseMonitor)initWithAssetID:(id)d notify:(id)notify
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  notifyCopy = notify;
   v9 = +[BKLibraryManager defaultManager];
-  v10 = [v9 persistentStoreCoordinator];
+  persistentStoreCoordinator = [v9 persistentStoreCoordinator];
   v11 = +[BKLibraryManager predicateForAllStoreLibraryAssetsExcludingUnpurchasedSeriesAssets];
   v12 = [NSSet setWithObjects:@"state", @"dataSourceIdentifier", 0];
   v17.receiver = self;
   v17.super_class = BKSampleToPurchaseMonitor;
-  v13 = [(BKSampleToPurchaseMonitor *)&v17 initWithContext:0 coordinator:v10 entityName:@"BKLibraryAsset" predicate:v11 mapProperty:@"assetID" propertiesOfInterest:v12 observer:self];
+  v13 = [(BKSampleToPurchaseMonitor *)&v17 initWithContext:0 coordinator:persistentStoreCoordinator entityName:@"BKLibraryAsset" predicate:v11 mapProperty:@"assetID" propertiesOfInterest:v12 observer:self];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_assetID, a3);
-    v14 = [v8 copy];
+    objc_storeStrong(&v13->_assetID, d);
+    v14 = [notifyCopy copy];
     notifyBlock = v13->_notifyBlock;
     v13->_notifyBlock = v14;
   }
@@ -39,24 +39,24 @@
   [(BKSampleToPurchaseMonitor *)&v4 dealloc];
 }
 
-- (void)managedObjectBackgroundMonitor:(id)a3 didSaveNotify:(id)a4
+- (void)managedObjectBackgroundMonitor:(id)monitor didSaveNotify:(id)notify
 {
-  v5 = a4;
-  v6 = [v5 updatedObjects];
-  if ([v6 count])
+  notifyCopy = notify;
+  updatedObjects = [notifyCopy updatedObjects];
+  if ([updatedObjects count])
   {
-    [v5 updatedObjects];
+    [notifyCopy updatedObjects];
   }
 
   else
   {
-    [v5 addedObjects];
+    [notifyCopy addedObjects];
   }
   v7 = ;
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  if ([v8 length] && self->_notifyBlock && -[NSString isEqualToString:](self->_assetID, "isEqualToString:", v8))
+  if ([firstObject length] && self->_notifyBlock && -[NSString isEqualToString:](self->_assetID, "isEqualToString:", firstObject))
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;

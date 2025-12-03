@@ -1,16 +1,16 @@
 @interface AppDelegate
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 @end
 
 @implementation AppDelegate
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = [a4 configuration];
+  configuration = [session configuration];
   v6 = objc_opt_self();
-  [v5 setDelegateClass:v6];
+  [configuration setDelegateClass:v6];
 
-  return v5;
+  return configuration;
 }
 
 @end

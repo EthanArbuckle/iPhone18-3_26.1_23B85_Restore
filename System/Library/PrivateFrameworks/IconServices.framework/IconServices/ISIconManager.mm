@@ -2,10 +2,10 @@
 + (ISIconManager)sharedInstance;
 + (id)serviceName;
 - (id)_init;
-- (id)findOrRegisterIcon:(id)a3;
-- (void)addObserver:(id)a3;
+- (id)findOrRegisterIcon:(id)icon;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation ISIconManager
@@ -36,13 +36,13 @@ uint64_t __31__ISIconManager_sharedInstance__block_invoke()
   v2 = [(ISIconManager *)&v29 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     iconRegistry = v2->_iconRegistry;
-    v2->_iconRegistry = v3;
+    v2->_iconRegistry = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable2;
 
     v2->_lock._os_unfair_lock_opaque = 0;
     v7 = objc_alloc(MEMORY[0x1E696B0B8]);
@@ -51,14 +51,14 @@ uint64_t __31__ISIconManager_sharedInstance__block_invoke()
     connection = v2->_connection;
     v2->_connection = v9;
 
-    v11 = [MEMORY[0x1E696B0D0] _IS_iconCacheServiceInterface];
-    [(NSXPCConnection *)v2->_connection setRemoteObjectInterface:v11];
+    _IS_iconCacheServiceInterface = [MEMORY[0x1E696B0D0] _IS_iconCacheServiceInterface];
+    [(NSXPCConnection *)v2->_connection setRemoteObjectInterface:_IS_iconCacheServiceInterface];
     v12 = v2->_connection;
     v13 = +[ISIconManager serviceName];
-    v14 = [v13 UTF8String];
+    uTF8String = [v13 UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_get_global_queue(21, 2uLL);
-    v17 = dispatch_queue_create_with_target_V2(v14, v15, v16);
+    v17 = dispatch_queue_create_with_target_V2(uTF8String, v15, v16);
     [(NSXPCConnection *)v12 _setQueue:v17];
 
     [(NSXPCConnection *)v2->_connection resume];
@@ -93,9 +93,9 @@ uint64_t __31__ISIconManager_sharedInstance__block_invoke()
 + (id)serviceName
 {
   v2 = +[ISDefaults sharedInstance];
-  v3 = [v2 serviceName];
+  serviceName = [v2 serviceName];
 
-  return v3;
+  return serviceName;
 }
 
 void __22__ISIconManager__init__block_invoke_12(uint64_t a1, void *a2)
@@ -140,9 +140,9 @@ void __22__ISIconManager__init__block_invoke(uint64_t a1, void *a2)
   [(ISIconManager *)&v2 dealloc];
 }
 
-- (id)findOrRegisterIcon:(id)a3
+- (id)findOrRegisterIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -154,10 +154,10 @@ void __22__ISIconManager__init__block_invoke(uint64_t a1, void *a2)
   block[1] = 3221225472;
   block[2] = __36__ISIconManager_findOrRegisterIcon___block_invoke;
   block[3] = &unk_1E77C6C40;
-  v10 = v4;
+  v10 = iconCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = iconCopy;
   dispatch_sync(internalQueue, block);
   v7 = v13[5];
 
@@ -189,20 +189,20 @@ void __36__ISIconManager_findOrRegisterIcon___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

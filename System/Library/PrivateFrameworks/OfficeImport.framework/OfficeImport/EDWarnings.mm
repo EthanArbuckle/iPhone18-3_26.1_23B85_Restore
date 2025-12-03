@@ -1,15 +1,15 @@
 @interface EDWarnings
-- (void)addWarning:(id)a3;
-- (void)reportWarningsWithAssociatedObject:(id)a3;
+- (void)addWarning:(id)warning;
+- (void)reportWarningsWithAssociatedObject:(id)object;
 @end
 
 @implementation EDWarnings
 
-- (void)addWarning:(id)a3
+- (void)addWarning:(id)warning
 {
-  v4 = a3;
+  warningCopy = warning;
   mWarnings = self->mWarnings;
-  v8 = v4;
+  v8 = warningCopy;
   if (!mWarnings)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -17,13 +17,13 @@
     self->mWarnings = v6;
 
     mWarnings = self->mWarnings;
-    v4 = v8;
+    warningCopy = v8;
   }
 
-  [(NSMutableArray *)mWarnings addObject:v4];
+  [(NSMutableArray *)mWarnings addObject:warningCopy];
 }
 
-- (void)reportWarningsWithAssociatedObject:(id)a3
+- (void)reportWarningsWithAssociatedObject:(id)object
 {
   v14 = *MEMORY[0x277D85DE8];
   mWarnings = self->mWarnings;

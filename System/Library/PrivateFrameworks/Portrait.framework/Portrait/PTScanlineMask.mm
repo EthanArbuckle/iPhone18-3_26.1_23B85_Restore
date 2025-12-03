@@ -1,15 +1,15 @@
 @interface PTScanlineMask
-+ (id)scanlineMaskWithFocusBlurMap:(id)a3 region:(id)a4;
++ (id)scanlineMaskWithFocusBlurMap:(id)map region:(id)region;
 - (CGRect)placement;
 @end
 
 @implementation PTScanlineMask
 
-+ (id)scanlineMaskWithFocusBlurMap:(id)a3 region:(id)a4
++ (id)scanlineMaskWithFocusBlurMap:(id)map region:(id)region
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PTScanlineMask_FocusBlurMap alloc] initWithFocusBlurMap:v6 region:v5];
+  regionCopy = region;
+  mapCopy = map;
+  v7 = [[PTScanlineMask_FocusBlurMap alloc] initWithFocusBlurMap:mapCopy region:regionCopy];
 
   return v7;
 }

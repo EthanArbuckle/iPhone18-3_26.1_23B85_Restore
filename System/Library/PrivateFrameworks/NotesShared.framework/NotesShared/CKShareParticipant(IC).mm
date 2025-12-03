@@ -34,57 +34,57 @@
 
 - (id)ic_participantName
 {
-  v2 = [a1 userIdentity];
-  v3 = [v2 nameComponents];
+  userIdentity = [self userIdentity];
+  nameComponents = [userIdentity nameComponents];
 
-  if (!v3)
+  if (!nameComponents)
   {
 LABEL_6:
-    v6 = [a1 ic_emailAddress];
-    if ([v6 length])
+    ic_emailAddress = [self ic_emailAddress];
+    if ([ic_emailAddress length])
     {
-      v5 = v6;
+      ic_trimmedString = ic_emailAddress;
     }
 
     else
     {
-      v5 = 0;
+      ic_trimmedString = 0;
     }
 
     goto LABEL_10;
   }
 
-  v4 = [v3 ic_localizedNameWithDefaultFormattingStyle];
-  v5 = [v4 ic_trimmedString];
+  ic_localizedNameWithDefaultFormattingStyle = [nameComponents ic_localizedNameWithDefaultFormattingStyle];
+  ic_trimmedString = [ic_localizedNameWithDefaultFormattingStyle ic_trimmedString];
 
-  if (![v5 length])
+  if (![ic_trimmedString length])
   {
 
     goto LABEL_6;
   }
 
-  if (!v5)
+  if (!ic_trimmedString)
   {
     goto LABEL_6;
   }
 
 LABEL_10:
 
-  return v5;
+  return ic_trimmedString;
 }
 
 - (id)ic_shortParticipantName
 {
-  v1 = [a1 userIdentity];
-  v2 = [v1 nameComponents];
+  userIdentity = [self userIdentity];
+  nameComponents = [userIdentity nameComponents];
 
-  if (v2)
+  if (nameComponents)
   {
-    v3 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:v2 style:1 options:0];
-    v4 = [v3 ic_trimmedString];
-    if ([v4 length])
+    v3 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:nameComponents style:1 options:0];
+    ic_trimmedString = [v3 ic_trimmedString];
+    if ([ic_trimmedString length])
     {
-      v5 = v4;
+      v5 = ic_trimmedString;
     }
 
     else
@@ -103,14 +103,14 @@ LABEL_10:
 
 - (void)ic_emailAddress
 {
-  v1 = [a1 userIdentity];
-  v2 = [v1 lookupInfo];
-  v3 = [v2 emailAddress];
-  v4 = [v3 ic_trimmedString];
+  userIdentity = [self userIdentity];
+  lookupInfo = [userIdentity lookupInfo];
+  emailAddress = [lookupInfo emailAddress];
+  ic_trimmedString = [emailAddress ic_trimmedString];
 
-  if ([v4 length])
+  if ([ic_trimmedString length])
   {
-    v5 = v4;
+    v5 = ic_trimmedString;
   }
 
   else
@@ -125,14 +125,14 @@ LABEL_10:
 
 - (void)ic_phoneNumber
 {
-  v1 = [a1 userIdentity];
-  v2 = [v1 lookupInfo];
-  v3 = [v2 phoneNumber];
-  v4 = [v3 ic_trimmedString];
+  userIdentity = [self userIdentity];
+  lookupInfo = [userIdentity lookupInfo];
+  phoneNumber = [lookupInfo phoneNumber];
+  ic_trimmedString = [phoneNumber ic_trimmedString];
 
-  if ([v4 length])
+  if ([ic_trimmedString length])
   {
-    v5 = v4;
+    v5 = ic_trimmedString;
   }
 
   else
@@ -148,9 +148,9 @@ LABEL_10:
 + (id)ic_participantFallbackNameForUserRecordName:()IC note:
 {
   v5 = a3;
-  v6 = [a4 account];
-  v7 = [v6 userRecordName];
-  v8 = [v5 ic_isCaseInsensitiveEqualToString:v7];
+  account = [a4 account];
+  userRecordName = [account userRecordName];
+  v8 = [v5 ic_isCaseInsensitiveEqualToString:userRecordName];
 
   if (v8)
   {
@@ -172,11 +172,11 @@ LABEL_10:
   v5 = a3;
   v6 = a4;
   v7 = [v6 participantForUserID:v5];
-  v8 = [v7 ic_participantName];
-  v9 = v8;
-  if (v8)
+  ic_participantName = [v7 ic_participantName];
+  v9 = ic_participantName;
+  if (ic_participantName)
   {
-    v10 = v8;
+    v10 = ic_participantName;
   }
 
   else
@@ -194,11 +194,11 @@ LABEL_10:
   v5 = a3;
   v6 = a4;
   v7 = [v6 participantForUserID:v5];
-  v8 = [v7 ic_shortParticipantName];
-  v9 = v8;
-  if (v8)
+  ic_shortParticipantName = [v7 ic_shortParticipantName];
+  v9 = ic_shortParticipantName;
+  if (ic_shortParticipantName)
   {
-    v10 = v8;
+    v10 = ic_shortParticipantName;
   }
 
   else
@@ -213,7 +213,7 @@ LABEL_10:
 
 + (id)ic_displayableNames:()IC maximumNamesCount:
 {
-  v1 = [a1 ic_participantsWithDisplayableNames:? maximumNamesCount:?];
+  v1 = [self ic_participantsWithDisplayableNames:? maximumNamesCount:?];
   v2 = [v1 ic_compactMap:&__block_literal_global_18];
 
   return v2;
@@ -223,7 +223,7 @@ LABEL_10:
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -244,18 +244,18 @@ LABEL_3:
       }
 
       v12 = *(*(&v16 + 1) + 8 * v11);
-      if ([v6 count] >= a4)
+      if ([array count] >= a4)
       {
         break;
       }
 
       if (([v12 isCurrentUser] & 1) == 0)
       {
-        v13 = [v12 ic_participantName];
+        ic_participantName = [v12 ic_participantName];
 
-        if (v13)
+        if (ic_participantName)
         {
-          [v6 ic_addNonNilObject:v12];
+          [array ic_addNonNilObject:v12];
         }
       }
 
@@ -272,7 +272,7 @@ LABEL_3:
     }
   }
 
-  v14 = [v6 copy];
+  v14 = [array copy];
 
   return v14;
 }
@@ -280,34 +280,34 @@ LABEL_3:
 - (id)ic_mentionTokens
 {
   v2 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(objc_opt_class(), "ic_mentionTokensPerParticipant")}];
-  v3 = [a1 userIdentity];
-  v4 = [v3 nameComponents];
-  v5 = [v4 givenName];
-  v6 = [v5 ic_tokenSafeText];
+  userIdentity = [self userIdentity];
+  nameComponents = [userIdentity nameComponents];
+  givenName = [nameComponents givenName];
+  ic_tokenSafeText = [givenName ic_tokenSafeText];
 
-  [v2 ic_addNonEmptyString:v6];
-  v7 = [a1 userIdentity];
-  v8 = [v7 nameComponents];
-  v9 = [v8 familyName];
-  v10 = [v9 ic_tokenSafeText];
+  [v2 ic_addNonEmptyString:ic_tokenSafeText];
+  userIdentity2 = [self userIdentity];
+  nameComponents2 = [userIdentity2 nameComponents];
+  familyName = [nameComponents2 familyName];
+  ic_tokenSafeText2 = [familyName ic_tokenSafeText];
 
-  [v2 ic_addNonEmptyString:v10];
-  v11 = [a1 userIdentity];
-  v12 = [v11 nameComponents];
+  [v2 ic_addNonEmptyString:ic_tokenSafeText2];
+  userIdentity3 = [self userIdentity];
+  nameComponents3 = [userIdentity3 nameComponents];
 
-  if (v12)
+  if (nameComponents3)
   {
-    v13 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:v12 style:4 options:0];
+    v13 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:nameComponents3 style:4 options:0];
     if (([v13 ic_containsWhitespaceCharacters] & 1) == 0)
     {
-      v14 = [v13 ic_tokenSafeText];
-      [v2 ic_addNonEmptyString:v14];
+      ic_tokenSafeText3 = [v13 ic_tokenSafeText];
+      [v2 ic_addNonEmptyString:ic_tokenSafeText3];
     }
 
-    v15 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:v12 style:0 options:0];
+    v15 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:nameComponents3 style:0 options:0];
 
-    v16 = [v15 ic_tokenSafeText];
-    [v2 ic_addNonEmptyString:v16];
+    ic_tokenSafeText4 = [v15 ic_tokenSafeText];
+    [v2 ic_addNonEmptyString:ic_tokenSafeText4];
   }
 
   v17 = [v2 copy];
@@ -317,8 +317,8 @@ LABEL_3:
 
 - (id)ic_mentionTokensFromContacts
 {
-  v1 = [a1 ic_mentionableNamesFromContacts];
-  v2 = [v1 ic_compactMap:&__block_literal_global_57];
+  ic_mentionableNamesFromContacts = [self ic_mentionableNamesFromContacts];
+  v2 = [ic_mentionableNamesFromContacts ic_compactMap:&__block_literal_global_57];
 
   return v2;
 }
@@ -331,14 +331,14 @@ LABEL_3:
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"![NSThread isMainThread]" functionName:"-[CKShareParticipant(IC) ic_mentionableNamesFromContacts]" simulateCrash:1 showAlert:0 format:@"Unexpected call from main thread"];
   }
 
-  v2 = [objc_opt_class() ic_mentionableNamesCache];
-  v3 = [v2 objectForKey:a1];
+  ic_mentionableNamesCache = [objc_opt_class() ic_mentionableNamesCache];
+  v3 = [ic_mentionableNamesCache objectForKey:self];
 
   if (!v3)
   {
     v3 = objc_alloc_init(ICShareParticipantCacheEntry);
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v6 = [a1 ic_emailAddress];
+    ic_emailAddress = [self ic_emailAddress];
     v7 = objc_alloc_init(MEMORY[0x277CBDAB8]);
     v8 = *MEMORY[0x277CBD000];
     v64[0] = *MEMORY[0x277CBD160];
@@ -351,12 +351,12 @@ LABEL_3:
     v64[5] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v64 count:6];
     v48 = v7;
-    v49 = a1;
-    v46 = v6;
+    selfCopy = self;
+    v46 = ic_emailAddress;
     v47 = v11;
-    if ([v6 length])
+    if ([ic_emailAddress length])
     {
-      v12 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:v6];
+      v12 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:ic_emailAddress];
       v60 = 0;
       v13 = [v7 unifiedContactsMatchingPredicate:v12 keysToFetch:v11 error:&v60];
       v50 = v60;
@@ -371,7 +371,7 @@ LABEL_3:
         }
       }
 
-      a1 = v49;
+      self = selfCopy;
     }
 
     else
@@ -382,11 +382,11 @@ LABEL_3:
 
     if (![v13 count])
     {
-      v15 = [a1 ic_phoneNumber];
-      if ([v15 length])
+      ic_phoneNumber = [self ic_phoneNumber];
+      if ([ic_phoneNumber length])
       {
         v16 = MEMORY[0x277CBDA58];
-        v17 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v15];
+        v17 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:ic_phoneNumber];
         v18 = [v16 predicateForContactsMatchingPhoneNumber:v17];
 
         v59 = v50;
@@ -419,10 +419,10 @@ LABEL_3:
     {
 LABEL_46:
 
-      v44 = [objc_opt_class() ic_mentionableNamesCache];
-      [v44 setObject:v3 forKey:v49];
+      ic_mentionableNamesCache2 = [objc_opt_class() ic_mentionableNamesCache];
+      [ic_mentionableNamesCache2 setObject:v3 forKey:selfCopy];
 
-      v4 = [v5 copy];
+      names = [v5 copy];
       goto LABEL_47;
     }
 
@@ -441,52 +441,52 @@ LABEL_23:
       }
 
       v27 = *(*(&v55 + 1) + 8 * v26);
-      v28 = [v27 contactType];
-      if (v28 == 1)
+      contactType = [v27 contactType];
+      if (contactType == 1)
       {
         break;
       }
 
-      if (!v28)
+      if (!contactType)
       {
-        v29 = [v27 givenName];
-        v30 = [v29 ic_trimmedString];
+        givenName = [v27 givenName];
+        ic_trimmedString = [givenName ic_trimmedString];
 
-        if ([v30 length])
+        if ([ic_trimmedString length])
         {
-          [v5 addObject:v30];
-          [(ICShareParticipantCacheEntry *)v3 setGivenName:v30];
+          [v5 addObject:ic_trimmedString];
+          [(ICShareParticipantCacheEntry *)v3 setGivenName:ic_trimmedString];
         }
 
-        v31 = [v27 familyName];
-        v32 = [v31 ic_trimmedString];
+        familyName = [v27 familyName];
+        ic_trimmedString2 = [familyName ic_trimmedString];
 
-        if ([v32 length])
+        if ([ic_trimmedString2 length])
         {
-          [v5 addObject:v32];
-          [(ICShareParticipantCacheEntry *)v3 setFamilyName:v32];
+          [v5 addObject:ic_trimmedString2];
+          [(ICShareParticipantCacheEntry *)v3 setFamilyName:ic_trimmedString2];
         }
 
-        v33 = [v27 nickname];
-        v34 = [v33 ic_trimmedString];
+        nickname = [v27 nickname];
+        ic_trimmedString3 = [nickname ic_trimmedString];
 
-        if ([v34 length])
+        if ([ic_trimmedString3 length])
         {
-          [v5 addObject:v34];
-          [(ICShareParticipantCacheEntry *)v3 setNickname:v34];
+          [v5 addObject:ic_trimmedString3];
+          [(ICShareParticipantCacheEntry *)v3 setNickname:ic_trimmedString3];
         }
 
-        v54 = v34;
+        v54 = ic_trimmedString3;
         v35 = objc_alloc_init(MEMORY[0x277CCAC00]);
-        [v35 setGivenName:v30];
-        [v35 setFamilyName:v32];
-        v36 = [v35 ic_localizedNameWithDefaultFormattingStyle];
-        v37 = [v36 ic_trimmedString];
+        [v35 setGivenName:ic_trimmedString];
+        [v35 setFamilyName:ic_trimmedString2];
+        ic_localizedNameWithDefaultFormattingStyle = [v35 ic_localizedNameWithDefaultFormattingStyle];
+        ic_trimmedString4 = [ic_localizedNameWithDefaultFormattingStyle ic_trimmedString];
 
-        if ([v37 length])
+        if ([ic_trimmedString4 length])
         {
-          [v5 addObject:v37];
-          [(ICShareParticipantCacheEntry *)v3 setDisplayName:v37];
+          [v5 addObject:ic_trimmedString4];
+          [(ICShareParticipantCacheEntry *)v3 setDisplayName:ic_trimmedString4];
         }
 
         v38 = [*(v25 + 3080) localizedStringFromPersonNameComponents:v35 style:4 options:0];
@@ -499,12 +499,12 @@ LABEL_23:
         v39 = v5;
         [*(v25 + 3080) localizedStringFromPersonNameComponents:v35 style:1 options:0];
         v41 = v40 = v3;
-        v42 = [v41 ic_trimmedString];
+        ic_trimmedString5 = [v41 ic_trimmedString];
 
         v3 = v40;
-        if ([v42 length])
+        if ([ic_trimmedString5 length])
         {
-          [(ICShareParticipantCacheEntry *)v40 setActivityStreamDisplayName:v42];
+          [(ICShareParticipantCacheEntry *)v40 setActivityStreamDisplayName:ic_trimmedString5];
         }
 
         v5 = v39;
@@ -526,38 +526,38 @@ LABEL_43:
       }
     }
 
-    v43 = [v27 organizationName];
-    v30 = [v43 ic_trimmedString];
+    organizationName = [v27 organizationName];
+    ic_trimmedString = [organizationName ic_trimmedString];
 
-    if ([v30 length])
+    if ([ic_trimmedString length])
     {
-      [v5 addObject:v30];
-      [(ICShareParticipantCacheEntry *)v3 setDisplayName:v30];
+      [v5 addObject:ic_trimmedString];
+      [(ICShareParticipantCacheEntry *)v3 setDisplayName:ic_trimmedString];
     }
 
     goto LABEL_43;
   }
 
-  v4 = [(ICShareParticipantCacheEntry *)v3 names];
-  if (!v4)
+  names = [(ICShareParticipantCacheEntry *)v3 names];
+  if (!names)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((names) != nil)" functionName:"-[CKShareParticipant(IC) ic_mentionableNamesFromContacts]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "names"}];
   }
 
 LABEL_47:
 
-  return v4;
+  return names;
 }
 
 - (id)ic_cachedDisplayNameFromContacts
 {
   objc_opt_class();
-  v2 = [objc_opt_class() ic_mentionableNamesCache];
-  v3 = [v2 objectForKey:a1];
+  ic_mentionableNamesCache = [objc_opt_class() ic_mentionableNamesCache];
+  v3 = [ic_mentionableNamesCache objectForKey:self];
   v4 = ICCheckedDynamicCast();
-  v5 = [v4 displayName];
+  displayName = [v4 displayName];
 
-  return v5;
+  return displayName;
 }
 
 - (id)ic_participantNameMatchingString:()IC returnFullName:
@@ -569,56 +569,56 @@ LABEL_47:
   v78 = __Block_byref_object_copy__13;
   v79 = __Block_byref_object_dispose__13;
   v80 = 0;
-  v6 = [objc_opt_class() ic_mentionableNamesCache];
-  v7 = [v6 objectForKey:a1];
+  ic_mentionableNamesCache = [objc_opt_class() ic_mentionableNamesCache];
+  v7 = [ic_mentionableNamesCache objectForKey:self];
 
-  v8 = [v5 ic_tokenSafeText];
-  if ([v8 length])
+  ic_tokenSafeText = [v5 ic_tokenSafeText];
+  if ([ic_tokenSafeText length])
   {
-    v9 = [a1 userIdentity];
-    v10 = [v9 nameComponents];
+    userIdentity = [self userIdentity];
+    nameComponents = [userIdentity nameComponents];
 
-    v11 = [a1 userIdentity];
-    v12 = [v11 nameComponents];
-    v60 = [v12 givenName];
+    userIdentity2 = [self userIdentity];
+    nameComponents2 = [userIdentity2 nameComponents];
+    givenName = [nameComponents2 givenName];
 
-    v13 = [a1 userIdentity];
-    v14 = [v13 nameComponents];
-    v59 = [v14 familyName];
+    userIdentity3 = [self userIdentity];
+    nameComponents3 = [userIdentity3 nameComponents];
+    familyName = [nameComponents3 familyName];
 
-    v58 = v10;
-    v63 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:v10 style:0 options:0];
+    v58 = nameComponents;
+    v63 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:nameComponents style:0 options:0];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __74__CKShareParticipant_IC__ic_participantNameMatchingString_returnFullName___block_invoke;
     aBlock[3] = &unk_278196270;
-    v15 = v8;
+    v15 = ic_tokenSafeText;
     v74 = a4;
     v72 = v15;
     v73 = &v75;
     v61 = _Block_copy(aBlock);
     if (v7)
     {
-      v16 = v8;
+      v16 = ic_tokenSafeText;
       v17 = v5;
-      v18 = [v7 initials];
-      v19 = [v7 givenName];
-      v20 = [v7 familyName];
-      v21 = [v7 displayName];
-      v61[2](v61, v18, v19, v20, v21);
+      initials = [v7 initials];
+      givenName2 = [v7 givenName];
+      familyName2 = [v7 familyName];
+      displayName = [v7 displayName];
+      v61[2](v61, initials, givenName2, familyName2, displayName);
 
       v5 = v17;
-      v8 = v16;
+      ic_tokenSafeText = v16;
     }
 
     if (!v76[5])
     {
       v22 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:v58 style:4 options:0];
-      v61[2](v61, v22, v60, v59, v63);
+      v61[2](v61, v22, givenName, familyName, v63);
 
       if (!v76[5])
       {
-        v57 = v8;
+        v57 = ic_tokenSafeText;
         v67 = 0;
         v68 = &v67;
         v69 = 0x2020000000;
@@ -633,23 +633,23 @@ LABEL_47:
         v65 = v24;
         v66 = &v67;
         v25 = _Block_copy(v64);
-        v26 = [v7 givenName];
-        v25[2](v25, v26);
+        givenName3 = [v7 givenName];
+        v25[2](v25, givenName3);
 
-        v27 = [v7 familyName];
-        v25[2](v25, v27);
+        familyName3 = [v7 familyName];
+        v25[2](v25, familyName3);
 
-        v28 = [v7 nickname];
-        v25[2](v25, v28);
+        nickname = [v7 nickname];
+        v25[2](v25, nickname);
 
-        v29 = [v7 displayName];
-        v25[2](v25, v29);
+        displayName2 = [v7 displayName];
+        v25[2](v25, displayName2);
 
-        [v24 ic_addNonNilObject:v60];
-        v30 = [a1 userIdentity];
-        v31 = [v30 nameComponents];
-        v32 = [v31 familyName];
-        [v24 ic_addNonNilObject:v32];
+        [v24 ic_addNonNilObject:givenName];
+        userIdentity4 = [self userIdentity];
+        nameComponents4 = [userIdentity4 nameComponents];
+        familyName4 = [nameComponents4 familyName];
+        [v24 ic_addNonNilObject:familyName4];
 
         [v24 ic_addNonNilObject:v63];
         v55 = v25;
@@ -659,18 +659,18 @@ LABEL_47:
         {
           if (v33 >= v68[3])
           {
-            v35 = v63;
+            displayName3 = v63;
           }
 
           else
           {
-            v35 = [v7 displayName];
+            displayName3 = [v7 displayName];
           }
 
-          v36 = v35;
+          v36 = displayName3;
           v37 = [v24 objectAtIndexedSubscript:v33];
-          v38 = [v37 ic_tokenSafeText];
-          v39 = [v38 isEqualToString:v15];
+          ic_tokenSafeText2 = [v37 ic_tokenSafeText];
+          v39 = [ic_tokenSafeText2 isEqualToString:v15];
 
           if (v39)
           {
@@ -691,8 +691,8 @@ LABEL_47:
 
           if (!v34)
           {
-            v40 = [v37 ic_tokenSafeText];
-            v41 = [v40 hasPrefix:v15];
+            ic_tokenSafeText3 = [v37 ic_tokenSafeText];
+            v41 = [ic_tokenSafeText3 hasPrefix:v15];
 
             if (v41)
             {
@@ -725,7 +725,7 @@ LABEL_47:
 
         _Block_object_dispose(&v67, 8);
         v5 = v56;
-        v8 = v57;
+        ic_tokenSafeText = v57;
       }
     }
   }
@@ -733,19 +733,19 @@ LABEL_47:
   v44 = v76[5];
   if (!v44 || ![v44 length])
   {
-    v45 = [a1 ic_shortParticipantName];
+    ic_shortParticipantName = [self ic_shortParticipantName];
     v46 = v76[5];
-    v76[5] = v45;
+    v76[5] = ic_shortParticipantName;
 
-    v47 = [v7 givenName];
-    v48 = [v47 length];
+    givenName4 = [v7 givenName];
+    v48 = [givenName4 length];
 
     if (v48)
     {
       v49 = MEMORY[0x277CCACA8];
-      v50 = [v7 givenName];
-      v51 = [v7 familyName];
-      v52 = [v49 ic_shortNameFromGivenName:v50 familyName:v51];
+      givenName5 = [v7 givenName];
+      familyName5 = [v7 familyName];
+      v52 = [v49 ic_shortNameFromGivenName:givenName5 familyName:familyName5];
 
       if ([v52 length])
       {
@@ -764,24 +764,24 @@ LABEL_47:
 - (id)ic_activityStreamDisplayName
 {
   objc_opt_class();
-  v2 = [objc_opt_class() ic_mentionableNamesCache];
-  v3 = [v2 objectForKey:a1];
+  ic_mentionableNamesCache = [objc_opt_class() ic_mentionableNamesCache];
+  v3 = [ic_mentionableNamesCache objectForKey:self];
   v4 = ICCheckedDynamicCast();
 
-  v5 = [v4 activityStreamDisplayName];
-  v6 = v5;
-  if (v5)
+  activityStreamDisplayName = [v4 activityStreamDisplayName];
+  v6 = activityStreamDisplayName;
+  if (activityStreamDisplayName)
   {
-    v7 = v5;
+    v7 = activityStreamDisplayName;
   }
 
   else
   {
-    v8 = [a1 ic_shortParticipantName];
-    v9 = v8;
-    if (v8)
+    ic_shortParticipantName = [self ic_shortParticipantName];
+    v9 = ic_shortParticipantName;
+    if (ic_shortParticipantName)
     {
-      v10 = v8;
+      v10 = ic_shortParticipantName;
     }
 
     else
@@ -798,19 +798,19 @@ LABEL_47:
 - (id)ic_userRecordNameInNote:()IC
 {
   v4 = a3;
-  v5 = [a1 userIdentity];
-  v6 = [v5 userRecordID];
-  v7 = [v6 recordName];
+  userIdentity = [self userIdentity];
+  userRecordID = [userIdentity userRecordID];
+  recordName = [userRecordID recordName];
 
-  if ([v7 isEqualToString:*MEMORY[0x277CBBF28]])
+  if ([recordName isEqualToString:*MEMORY[0x277CBBF28]])
   {
-    v8 = [v4 account];
-    v9 = [v8 userRecordName];
+    account = [v4 account];
+    userRecordName = [account userRecordName];
 
-    v7 = v9;
+    recordName = userRecordName;
   }
 
-  return v7;
+  return recordName;
 }
 
 @end

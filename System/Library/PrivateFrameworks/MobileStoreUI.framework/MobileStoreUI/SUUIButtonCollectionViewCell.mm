@@ -1,16 +1,16 @@
 @interface SUUIButtonCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringWithButton:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringWithButton:(id)button context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
 - (BOOL)_usesBackgroundWithAlpha;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5;
-- (void)_buttonAction:(id)a3;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated;
+- (void)_buttonAction:(id)action;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setBackgroundColor:(id)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SUUIButtonCollectionViewCell
@@ -23,12 +23,12 @@
   [(SUUIViewReuseCollectionViewCell *)&v3 dealloc];
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -39,63 +39,63 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [v12 elementType];
-  if (v9 == 141 || v9 == 12)
+  elementCopy = element;
+  contextCopy = context;
+  elementType = [elementCopy elementType];
+  if (elementType == 141 || elementType == 12)
   {
-    v10 = [a1 _attributedStringWithButton:v12 context:v8];
-    v11 = [v8 labelLayoutCache];
-    [v11 requestLayoutForButton:v12 attributedString:v10 width:a4];
+    v10 = [self _attributedStringWithButton:elementCopy context:contextCopy];
+    labelLayoutCache = [contextCopy labelLayoutCache];
+    [labelLayoutCache requestLayoutForButton:elementCopy attributedString:v10 width:width];
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [a5 sizeForViewElement:a4 width:?];
-  v7 = a3;
+  [context sizeForViewElement:element width:?];
+  widthCopy = width;
   result.height = v6;
-  result.width = v7;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __68__SUUIButtonCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
   v24 = &unk_2798F5EF0;
-  v11 = v9;
+  v11 = elementCopy;
   v25 = v11;
-  v26 = self;
-  v28 = a4;
-  v12 = v10;
+  selfCopy = self;
+  widthCopy = width;
+  v12 = contextCopy;
   v27 = v12;
   [(SUUIViewReuseCollectionViewCell *)self modifyUsingBlock:&v21];
   v13 = [v12 imageResourceCacheKeyForViewElement:{v11, v21, v22, v23, v24}];
   buttonImageResourceCacheKey = self->_buttonImageResourceCacheKey;
   self->_buttonImageResourceCacheKey = v13;
 
-  v15 = [v11 style];
+  style = [v11 style];
   viewElementStyle = self->_viewElementStyle;
-  self->_viewElementStyle = v15;
+  self->_viewElementStyle = style;
 
-  v17 = [v11 buyButtonDescriptor];
+  buyButtonDescriptor = [v11 buyButtonDescriptor];
   buyButtonDescriptor = self->_buyButtonDescriptor;
-  self->_buyButtonDescriptor = v17;
+  self->_buyButtonDescriptor = buyButtonDescriptor;
 
-  objc_storeStrong(&self->_viewElement, a3);
+  objc_storeStrong(&self->_viewElement, element);
   if ([(SUUIButtonCollectionViewCell *)self _usesBackgroundWithAlpha])
   {
     button = self->_button;
     if (button)
     {
-      v20 = [MEMORY[0x277D75348] clearColor];
-      [(UIControl *)button setBackgroundColor:v20];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UIControl *)button setBackgroundColor:clearColor];
     }
   }
 }
@@ -115,31 +115,31 @@ void __68__SUUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = SUUIButtonCollectionViewCell;
-  [(SUUIViewReuseCollectionViewCell *)&v6 setBackgroundColor:a3];
+  [(SUUIViewReuseCollectionViewCell *)&v6 setBackgroundColor:color];
   if ([(SUUIButtonCollectionViewCell *)self _usesBackgroundWithAlpha])
   {
     button = self->_button;
     if (button)
     {
-      v5 = [MEMORY[0x277D75348] clearColor];
-      [(UIControl *)button setBackgroundColor:v5];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UIControl *)button setBackgroundColor:clearColor];
     }
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a5 requestIdentifierForResourceCacheKey:self->_buttonImageResourceCacheKey];
-  if (v10 && (v11 = [v9 requestIdentifier], v11 == objc_msgSend(v10, "unsignedIntegerValue")))
+  imageCopy = image;
+  requestCopy = request;
+  v10 = [context requestIdentifierForResourceCacheKey:self->_buttonImageResourceCacheKey];
+  if (v10 && (v11 = [requestCopy requestIdentifier], v11 == objc_msgSend(v10, "unsignedIntegerValue")))
   {
-    v12 = [(UIControl *)self->_button imageView];
-    [v12 setImage:v8];
+    imageView = [(UIControl *)self->_button imageView];
+    [imageView setImage:imageCopy];
 
     v13 = 1;
   }
@@ -152,18 +152,18 @@ void __68__SUUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
   return v13;
 }
 
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SUUIBuyButtonDescriptor *)self->_buyButtonDescriptor canPersonalizeUsingItemState:v8];
+  animatedCopy = animated;
+  stateCopy = state;
+  contextCopy = context;
+  v10 = [(SUUIBuyButtonDescriptor *)self->_buyButtonDescriptor canPersonalizeUsingItemState:stateCopy];
   if (v10)
   {
     button = self->_button;
     buyButtonDescriptor = self->_buyButtonDescriptor;
-    v13 = [v9 clientContext];
-    [(UIControl *)button setValuesUsingBuyButtonDescriptor:buyButtonDescriptor itemState:v8 clientContext:v13 animated:v5];
+    clientContext = [contextCopy clientContext];
+    [(UIControl *)button setValuesUsingBuyButtonDescriptor:buyButtonDescriptor itemState:stateCopy clientContext:clientContext animated:animatedCopy];
   }
 
   return v10;
@@ -176,8 +176,8 @@ void __68__SUUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
   [(SUUICollectionViewCell *)&v25 layoutSubviews];
   if (self->_button)
   {
-    v3 = [(SUUIButtonCollectionViewCell *)self contentView];
-    [v3 bounds];
+    contentView = [(SUUIButtonCollectionViewCell *)self contentView];
+    [contentView bounds];
     v5 = v4;
     v7 = v6;
 
@@ -186,10 +186,10 @@ void __68__SUUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
     v11 = v10;
     v12 = v5 - v8 - v10;
     v13 = self->_viewElementStyle;
-    v14 = [(IKViewElementStyle *)v13 textAlignment];
-    if (!v14)
+    textAlignment = [(IKViewElementStyle *)v13 textAlignment];
+    if (!textAlignment)
     {
-      v14 = [(IKViewElementStyle *)v13 elementAlignment];
+      textAlignment = [(IKViewElementStyle *)v13 elementAlignment];
     }
 
     v15 = *MEMORY[0x277CBF3A0];
@@ -213,15 +213,15 @@ void __68__SUUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
 
     v22 = (v7 - v19) * 0.5;
     v23 = floorf(v22);
-    if (v14 <= 5)
+    if (textAlignment <= 5)
     {
-      if (((1 << v14) & 0x35) != 0)
+      if (((1 << textAlignment) & 0x35) != 0)
       {
         v24 = (v5 - v21) * 0.5;
         v15 = floorf(v24);
       }
 
-      else if (v14 == 1)
+      else if (textAlignment == 1)
       {
         v15 = v9;
       }
@@ -236,16 +236,16 @@ void __68__SUUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
   }
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v8 = SUUICollectionViewForView(self);
-  v4 = [v8 delegate];
+  delegate = [v8 delegate];
   v5 = objc_opt_respondsToSelector();
   viewElement = self->_viewElement;
   if (v5)
   {
     v7 = [v8 indexPathForCell:self];
-    [v4 collectionView:v8 didConfirmButtonElement:viewElement withClickInfo:0 forItemAtIndexPath:v7];
+    [delegate collectionView:v8 didConfirmButtonElement:viewElement withClickInfo:0 forItemAtIndexPath:v7];
   }
 
   else
@@ -254,23 +254,23 @@ void __68__SUUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
   }
 }
 
-+ (id)_attributedStringWithButton:(id)a3 context:(id)a4
++ (id)_attributedStringWithButton:(id)button context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 buttonTitleStyle];
-  v8 = v7;
-  if (v7)
+  buttonCopy = button;
+  contextCopy = context;
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  v8 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v9 = v7;
+    style = buttonTitleStyle;
   }
 
   else
   {
-    v9 = [v5 style];
+    style = [buttonCopy style];
   }
 
-  v10 = v9;
+  v10 = style;
 
   v11 = SUUIViewElementFontWithStyle(v10);
   if (!v11)
@@ -278,12 +278,12 @@ void __68__SUUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
     v11 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   }
 
-  v12 = [v6 tintColor];
-  v13 = SUUIViewElementPlainColorWithStyle(v10, v12);
+  tintColor = [contextCopy tintColor];
+  blackColor = SUUIViewElementPlainColorWithStyle(v10, tintColor);
 
-  if (!v13)
+  if (!blackColor)
   {
-    v13 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
   v14 = SUUIViewElementAlignmentForStyle(v10);
@@ -297,8 +297,8 @@ void __68__SUUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
     v15 = 0;
   }
 
-  v16 = [v5 buttonText];
-  v17 = [v16 attributedStringWithDefaultFont:v11 foregroundColor:v13 textAlignment:v15 style:v10];
+  buttonText = [buttonCopy buttonText];
+  v17 = [buttonText attributedStringWithDefaultFont:v11 foregroundColor:blackColor textAlignment:v15 style:v10];
 
   return v17;
 }
@@ -309,8 +309,8 @@ void __68__SUUIButtonCollectionViewCell_reloadWithViewElement_width_context___bl
   v8 = 0;
   v5 = 0.0;
   v6 = 0;
-  v2 = [(SUUIButtonCollectionViewCell *)self backgroundColor];
-  v3 = [v2 getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5];
+  backgroundColor = [(SUUIButtonCollectionViewCell *)self backgroundColor];
+  v3 = [backgroundColor getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5];
 
   return v3 && v5 < 1.0 && v5 != 0.0;
 }

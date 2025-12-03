@@ -1,44 +1,44 @@
 @interface CCDatabaseSetEnumerator
-+ (id)defaultEnumeratorWithUseCase:(id)a3;
-- (BOOL)enumerateAllSets:(id *)a3 withOptions:(unsigned __int16)a4 setIdentifiers:(id)a5 descriptors:(id)a6 startAfterSet:(id)a7 usingBlock:(id)a8;
-- (CCDatabaseSetEnumerator)initWithReadAccess:(id)a3;
++ (id)defaultEnumeratorWithUseCase:(id)case;
+- (BOOL)enumerateAllSets:(id *)sets withOptions:(unsigned __int16)options setIdentifiers:(id)identifiers descriptors:(id)descriptors startAfterSet:(id)set usingBlock:(id)block;
+- (CCDatabaseSetEnumerator)initWithReadAccess:(id)access;
 @end
 
 @implementation CCDatabaseSetEnumerator
 
-+ (id)defaultEnumeratorWithUseCase:(id)a3
++ (id)defaultEnumeratorWithUseCase:(id)case
 {
-  v3 = a3;
+  caseCopy = case;
   v4 = objc_alloc(objc_opt_class());
-  v5 = [CCDataResourceReadAccess defaultInstanceWithUseCase:v3];
+  v5 = [CCDataResourceReadAccess defaultInstanceWithUseCase:caseCopy];
 
   v6 = [v4 initWithReadAccess:v5];
 
   return v6;
 }
 
-- (CCDatabaseSetEnumerator)initWithReadAccess:(id)a3
+- (CCDatabaseSetEnumerator)initWithReadAccess:(id)access
 {
-  v5 = a3;
+  accessCopy = access;
   v9.receiver = self;
   v9.super_class = CCDatabaseSetEnumerator;
   v6 = [(CCDatabaseSetEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_readAccess, a3);
+    objc_storeStrong(&v6->_readAccess, access);
   }
 
   return v7;
 }
 
-- (BOOL)enumerateAllSets:(id *)a3 withOptions:(unsigned __int16)a4 setIdentifiers:(id)a5 descriptors:(id)a6 startAfterSet:(id)a7 usingBlock:(id)a8
+- (BOOL)enumerateAllSets:(id *)sets withOptions:(unsigned __int16)options setIdentifiers:(id)identifiers descriptors:(id)descriptors startAfterSet:(id)set usingBlock:(id)block
 {
-  v11 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  optionsCopy = options;
+  identifiersCopy = identifiers;
+  descriptorsCopy = descriptors;
+  setCopy = set;
+  blockCopy = block;
   v25 = 0;
   v26[0] = &v25;
   v26[1] = 0x2020000000;
@@ -48,10 +48,10 @@
   v22[1] = 3221225472;
   v22[2] = __108__CCDatabaseSetEnumerator_enumerateAllSets_withOptions_setIdentifiers_descriptors_startAfterSet_usingBlock___block_invoke;
   v22[3] = &unk_1E7C8B198;
-  v19 = v17;
+  v19 = blockCopy;
   v23 = v19;
   v24 = &v25;
-  [(CCDataResourceReadAccess *)readAccess enumerateReadableSets:a3 resourceOptions:0 setIdentifiers:v14 descriptors:v15 startAfterSet:v16 sorted:(v11 >> 1) & 1 usingBlock:v22];
+  [(CCDataResourceReadAccess *)readAccess enumerateReadableSets:sets resourceOptions:0 setIdentifiers:identifiersCopy descriptors:descriptorsCopy startAfterSet:setCopy sorted:(optionsCopy >> 1) & 1 usingBlock:v22];
   v20 = __biome_log_for_category();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {

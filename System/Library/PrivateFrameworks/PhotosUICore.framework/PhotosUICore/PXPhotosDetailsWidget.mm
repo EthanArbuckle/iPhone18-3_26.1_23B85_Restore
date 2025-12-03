@@ -5,12 +5,12 @@
 - (PXWidgetSpec)spec;
 - (UIView)contentView;
 - (UIViewController)contentHostedViewController;
-- (double)preferredContentHeightForWidth:(double)a3;
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3;
+- (double)preferredContentHeightForWidth:(double)width;
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width;
 - (void)contentViewDidDisappear;
-- (void)setContentHostedViewController:(id)a3;
-- (void)setContext:(id)a3;
-- (void)setSpec:(id)a3;
+- (void)setContentHostedViewController:(id)controller;
+- (void)setContext:(id)context;
+- (void)setSpec:(id)spec;
 @end
 
 @implementation PXPhotosDetailsWidget
@@ -26,7 +26,7 @@
 - (PXPhotosDetailsContext)context
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self) + 0x90);
-  v3 = self;
+  selfCopy = self;
   result = v2();
   if (result)
   {
@@ -43,17 +43,17 @@
   return result;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A4110FA4(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1A4110FA4(contextCopy);
 }
 
 - (PXWidgetSpec)spec
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self) + 0xF0);
-  v3 = self;
+  selfCopy = self;
   result = v2();
   if (result)
   {
@@ -70,44 +70,44 @@
   return result;
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A4111958(v4);
+  specCopy = spec;
+  selfCopy = self;
+  sub_1A4111958(specCopy);
 }
 
 - (UIViewController)contentHostedViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A4111D28();
 
   return v3;
 }
 
-- (void)setContentHostedViewController:(id)a3
+- (void)setContentHostedViewController:(id)controller
 {
   v4 = *(self + OBJC_IVAR___PXPhotosDetailsWidget____lazy_storage___contentHostedViewController);
-  *(self + OBJC_IVAR___PXPhotosDetailsWidget____lazy_storage___contentHostedViewController) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR___PXPhotosDetailsWidget____lazy_storage___contentHostedViewController) = controller;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1A3C327F4(v4);
 }
 
-- (double)preferredContentHeightForWidth:(double)a3
+- (double)preferredContentHeightForWidth:(double)width
 {
-  v4 = self;
-  v5 = sub_1A4111FF8(a3);
+  selfCopy = self;
+  v5 = sub_1A4111FF8(width);
 
   return v5;
 }
 
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width
 {
   v3 = *((*MEMORY[0x1E69E7D40] & *self) + 0x108);
-  v4 = self;
+  selfCopy = self;
   v5 = v3();
-  v6 = [v5 contentSizeCategory];
+  contentSizeCategory = [v5 contentSizeCategory];
 
   [objc_opt_self() dynamicTextScaleFactorForCategory_];
   v8 = v7;
@@ -118,21 +118,21 @@
 - (UIView)contentView
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self) + 0x128);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
-  if (!v4 || (v5 = v4, v6 = [v4 view], v5, !v6))
+  if (!v4 || (v5 = v4, initWithFrame_ = [v4 view], v5, !initWithFrame_))
   {
-    v6 = [objc_allocWithZone(MEMORY[0x1E69DD250]) initWithFrame_];
+    initWithFrame_ = [objc_allocWithZone(MEMORY[0x1E69DD250]) initWithFrame_];
   }
 
-  return v6;
+  return initWithFrame_;
 }
 
 - (void)contentViewDidDisappear
 {
   v2 = MEMORY[0x1E69E7D40];
   v3 = *((*MEMORY[0x1E69E7D40] & *self) + 0xD8);
-  v6 = self;
+  selfCopy = self;
   v4 = v3();
   if (v4)
   {

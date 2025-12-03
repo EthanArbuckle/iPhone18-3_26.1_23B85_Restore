@@ -1,21 +1,21 @@
 @interface EGStillImageDeepZoomNode
-- (EGStillImageDeepZoomNode)initWithName:(id)a3 stillImageSettings:(id)a4 portType:(id)a5 delegate:(id)a6;
+- (EGStillImageDeepZoomNode)initWithName:(id)name stillImageSettings:(id)settings portType:(id)type delegate:(id)delegate;
 - (void)dealloc;
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7;
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4;
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err;
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group;
 @end
 
 @implementation EGStillImageDeepZoomNode
 
-- (EGStillImageDeepZoomNode)initWithName:(id)a3 stillImageSettings:(id)a4 portType:(id)a5 delegate:(id)a6
+- (EGStillImageDeepZoomNode)initWithName:(id)name stillImageSettings:(id)settings portType:(id)type delegate:(id)delegate
 {
   v14.receiver = self;
   v14.super_class = EGStillImageDeepZoomNode;
-  v8 = [(EGStillImageProcessorControllerDelegateNode *)&v14 initWithName:a3 delegate:a6];
+  v8 = [(EGStillImageProcessorControllerDelegateNode *)&v14 initWithName:name delegate:delegate];
   if (v8)
   {
-    v8->_stillImageSettings = a4;
-    v8->_portType = a5;
+    v8->_stillImageSettings = settings;
+    v8->_portType = type;
     v9 = [[EGInputGroup alloc] initWithName:@"mainInputGroup"];
     v10 = +[EGStillImageProcessorControllerDelegateNode newProcessorControllerInput];
     v8->_processorInput = v10;
@@ -39,13 +39,13 @@
   [(EGQueueManagementNode *)&v3 dealloc];
 }
 
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group
 {
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", a3, a4)), "sampleBuffer"}];
+  v6 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", data, group)), "sampleBuffer"}];
   if (v6)
   {
     v7 = v6;
-    v8 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](-[EGStillImageDeepZoomNode processorInput](self, "processorInput"), "name")), "processorController"}];
+    v8 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](-[EGStillImageDeepZoomNode processorInput](self, "processorInput"), "name")), "processorController"}];
     if (v8 && (v9 = v8, (v10 = [(BWStillImageProcessorControllerInput *)[BWDeepZoomProcessorInput alloc] initWithSettings:self->_stillImageSettings portType:self->_portType]) != 0))
     {
       v11 = v10;
@@ -75,22 +75,22 @@
   }
 }
 
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err
 {
-  if (a7)
+  if (err)
   {
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!buffer)
   {
-    *&a7 = 4294954516;
+    *&err = 4294954516;
 LABEL_7:
-    [EGStillImageDeepZoomNode processorController:*&a7 didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
+    [EGStillImageDeepZoomNode processorController:*&err didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
     return;
   }
 
-  v8 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:a4];
+  v8 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:buffer];
   [(EGStillImageOutput *)self->_sbufOutput emitPayload:v8];
 }
 

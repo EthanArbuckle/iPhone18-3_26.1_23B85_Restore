@@ -1,29 +1,29 @@
 @interface ExtragalacticPosterRenderer
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)renderer:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)rendererDidInvalidate:(id)a3;
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment;
+- (void)renderer:(id)renderer didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)rendererDidInvalidate:(id)invalidate;
 @end
 
 @implementation ExtragalacticPosterRenderer
 
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment
 {
-  v6 = a3;
+  rendererCopy = renderer;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_10000CF0C(v6, a4);
+  selfCopy = self;
+  sub_10000CF0C(rendererCopy, environment);
 
   swift_unknownObjectRelease();
 }
 
-- (void)renderer:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)renderer:(id)renderer didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
-  v11 = a3;
+  rendererCopy = renderer;
   swift_unknownObjectRetain();
-  v8 = a5;
-  v9 = self;
-  sub_10000D13C(v11, a4);
-  v10 = *(*(&v9->super.isa + OBJC_IVAR____TtC19ExtragalacticPoster27ExtragalacticPosterRenderer_controller) + OBJC_IVAR____TtC19ExtragalacticPoster29ExtragalacticPosterController_rotationAnimator);
+  transitionCopy = transition;
+  selfCopy = self;
+  sub_10000D13C(rendererCopy, environment);
+  v10 = *(*(&selfCopy->super.isa + OBJC_IVAR____TtC19ExtragalacticPoster27ExtragalacticPosterRenderer_controller) + OBJC_IVAR____TtC19ExtragalacticPoster29ExtragalacticPosterController_rotationAnimator);
   if ((sub_100013738() & 1) == 0)
   {
     sub_10000383C();
@@ -32,10 +32,10 @@
   swift_unknownObjectRelease();
 }
 
-- (void)rendererDidInvalidate:(id)a3
+- (void)rendererDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_10000D88C();
 }
 

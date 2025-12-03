@@ -1,23 +1,23 @@
 @interface MBPowerLog
-+ (void)reportBackupStateChangeForEngine:(id)a3 state:(unint64_t)a4 start:(id)a5 end:(id)a6;
++ (void)reportBackupStateChangeForEngine:(id)engine state:(unint64_t)state start:(id)start end:(id)end;
 @end
 
 @implementation MBPowerLog
 
-+ (void)reportBackupStateChangeForEngine:(id)a3 state:(unint64_t)a4 start:(id)a5 end:(id)a6
++ (void)reportBackupStateChangeForEngine:(id)engine state:(unint64_t)state start:(id)start end:(id)end
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  engineCopy = engine;
+  startCopy = start;
+  endCopy = end;
   v11 = +[MBBehaviorOptions sharedOptions];
-  v12 = [v11 usePowerLog];
+  usePowerLog = [v11 usePowerLog];
 
-  if ((v12 & 1) == 0)
+  if ((usePowerLog & 1) == 0)
   {
-    if ([v8 hasError])
+    if ([engineCopy hasError])
     {
-      v13 = [v8 engineError];
-      v14 = MBExtractFirstMBErrorOrCKError(v13);
+      engineError = [engineCopy engineError];
+      v14 = MBExtractFirstMBErrorOrCKError(engineError);
     }
 
     else
@@ -29,9 +29,9 @@
     v16 = MBCKStringForBackupState();
     [v15 setObject:v16 forKeyedSubscript:@"state"];
 
-    [v15 setObject:v9 forKeyedSubscript:@"start"];
-    [v15 setObject:v10 forKeyedSubscript:@"end"];
-    if ([v8 isFinished])
+    [v15 setObject:startCopy forKeyedSubscript:@"start"];
+    [v15 setObject:endCopy forKeyedSubscript:@"end"];
+    if ([engineCopy isFinished])
     {
       v17 = @"YES";
     }
@@ -42,7 +42,7 @@
     }
 
     [v15 setObject:v17 forKeyedSubscript:@"finished"];
-    if ([v8 hasError])
+    if ([engineCopy hasError])
     {
       v18 = @"YES";
     }
@@ -55,12 +55,12 @@
     [v15 setObject:v18 forKeyedSubscript:@"hasError"];
     if (v14)
     {
-      v19 = [v14 domain];
-      [v15 setObject:v19 forKeyedSubscript:@"errorDomain"];
+      domain = [v14 domain];
+      [v15 setObject:domain forKeyedSubscript:@"errorDomain"];
 
       v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v14 code]);
-      v21 = [v20 stringValue];
-      [v15 setObject:v21 forKeyedSubscript:@"errorCode"];
+      stringValue = [v20 stringValue];
+      [v15 setObject:stringValue forKeyedSubscript:@"errorCode"];
     }
 
     v22 = MBGetDefaultLog();

@@ -3,9 +3,9 @@
 + (OS_os_log)log;
 + (id)queryForInboxMessagesToAuthenticate;
 + (id)queryForNonInboxMessagesToAuthenticate;
-- (EDMessageAuthenticationStateMigrator)initWithCategoryPersistence:(id)a3 authenticator:(id)a4 messagePersistence:(id)a5;
-- (void)_authenticateMessageBatch:(id)a3 cancelationToken:(id)a4;
-- (void)migrateMessageAuthenticationStateForQuery:(id)a3 cancelationToken:(id)a4 completion:(id)a5;
+- (EDMessageAuthenticationStateMigrator)initWithCategoryPersistence:(id)persistence authenticator:(id)authenticator messagePersistence:(id)messagePersistence;
+- (void)_authenticateMessageBatch:(id)batch cancelationToken:(id)token;
+- (void)migrateMessageAuthenticationStateForQuery:(id)query cancelationToken:(id)token completion:(id)completion;
 @end
 
 @implementation EDMessageAuthenticationStateMigrator
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __43__EDMessageAuthenticationStateMigrator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_56 != -1)
   {
     dispatch_once(&log_onceToken_56, block);
@@ -35,20 +35,20 @@ void __43__EDMessageAuthenticationStateMigrator_log__block_invoke(uint64_t a1)
   log_log_56 = v1;
 }
 
-- (EDMessageAuthenticationStateMigrator)initWithCategoryPersistence:(id)a3 authenticator:(id)a4 messagePersistence:(id)a5
+- (EDMessageAuthenticationStateMigrator)initWithCategoryPersistence:(id)persistence authenticator:(id)authenticator messagePersistence:(id)messagePersistence
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  persistenceCopy = persistence;
+  authenticatorCopy = authenticator;
+  messagePersistenceCopy = messagePersistence;
   v15.receiver = self;
   v15.super_class = EDMessageAuthenticationStateMigrator;
   v12 = [(EDMessageAuthenticationStateMigrator *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_categoryPersistence, a3);
-    objc_storeStrong(&v13->_messagePersistence, a5);
-    objc_storeStrong(&v13->_authenticator, a4);
+    objc_storeStrong(&v12->_categoryPersistence, persistence);
+    objc_storeStrong(&v13->_messagePersistence, messagePersistence);
+    objc_storeStrong(&v13->_authenticator, authenticator);
   }
 
   return v13;
@@ -113,24 +113,24 @@ void __54__EDMessageAuthenticationStateMigrator_migrationQueue__block_invoke()
   return v8;
 }
 
-- (void)migrateMessageAuthenticationStateForQuery:(id)a3 cancelationToken:(id)a4 completion:(id)a5
+- (void)migrateMessageAuthenticationStateForQuery:(id)query cancelationToken:(id)token completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_opt_class() migrationQueue];
+  queryCopy = query;
+  tokenCopy = token;
+  completionCopy = completion;
+  migrationQueue = [objc_opt_class() migrationQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __110__EDMessageAuthenticationStateMigrator_migrateMessageAuthenticationStateForQuery_cancelationToken_completion___block_invoke;
   v15[3] = &unk_1E8253348;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = queryCopy;
+  v17 = tokenCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = tokenCopy;
+  v14 = queryCopy;
+  dispatch_async(migrationQueue, v15);
 }
 
 void __110__EDMessageAuthenticationStateMigrator_migrateMessageAuthenticationStateForQuery_cancelationToken_completion___block_invoke(void *a1)
@@ -218,13 +218,13 @@ void __167__EDMessageAuthenticationStateMigrator__iteratePersistedMessagesDroppi
   *(v7 + 40) = v6;
 }
 
-- (void)_authenticateMessageBatch:(id)a3 cancelationToken:(id)a4
+- (void)_authenticateMessageBatch:(id)batch cancelationToken:(id)token
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDMessageAuthenticationStateMigrator *)self authenticator];
-  v9 = [v8 authenticateMessages:v6 trustingServer:1 cancelationToken:v7];
+  batchCopy = batch;
+  tokenCopy = token;
+  authenticator = [(EDMessageAuthenticationStateMigrator *)self authenticator];
+  v9 = [authenticator authenticateMessages:batchCopy trustingServer:1 cancelationToken:tokenCopy];
 
   if (v9)
   {
@@ -232,7 +232,7 @@ void __167__EDMessageAuthenticationStateMigrator__iteratePersistedMessagesDroppi
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134217984;
-      v14 = [v6 count];
+      v14 = [batchCopy count];
       _os_log_impl(&dword_1C61EF000, v10, OS_LOG_TYPE_DEFAULT, "Successfully authenticated a batch of messages (count:%lu)", &v13, 0xCu);
     }
   }
@@ -242,12 +242,12 @@ void __167__EDMessageAuthenticationStateMigrator__iteratePersistedMessagesDroppi
     v11 = +[EDMessageAuthenticationStateMigrator log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      -[EDMessageAuthenticationStateMigrator _authenticateMessageBatch:cancelationToken:].cold.1(&v13, [v6 count], v11);
+      -[EDMessageAuthenticationStateMigrator _authenticateMessageBatch:cancelationToken:].cold.1(&v13, [batchCopy count], v11);
     }
 
-    if (v7)
+    if (tokenCopy)
     {
-      [v7 cancel];
+      [tokenCopy cancel];
     }
   }
 

@@ -1,36 +1,36 @@
 @interface RCAddress
-+ (RCAddress)addressWith:(id)a3;
-- (RCAddress)initWithAddress:(id)a3 displayName:(id)a4;
-- (RCAddress)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (RCAddress)addressWith:(id)with;
+- (RCAddress)initWithAddress:(id)address displayName:(id)name;
+- (RCAddress)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RCAddress
 
-- (RCAddress)initWithAddress:(id)a3 displayName:(id)a4
+- (RCAddress)initWithAddress:(id)address displayName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = RCAddress;
   v8 = [(RCAddress *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(RCAddress *)v8 setDisplayName:v7];
-    [(RCAddress *)v9 setEmailAddress:v6];
+    [(RCAddress *)v8 setDisplayName:nameCopy];
+    [(RCAddress *)v9 setEmailAddress:addressCopy];
   }
 
   return v9;
 }
 
-+ (RCAddress)addressWith:(id)a3
++ (RCAddress)addressWith:(id)with
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
+  withCopy = with;
   v5 = [v3 characterSetWithCharactersInString:@"<>"];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  v6 = [withCopy componentsSeparatedByCharactersInSet:v5];
 
   if ([v6 count] == 1)
   {
@@ -56,9 +56,9 @@ LABEL_7:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_displayName copy];
   [v4 setDisplayName:v5];
 
@@ -68,25 +68,25 @@ LABEL_7:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   displayName = self->_displayName;
-  v5 = a3;
-  [v5 encodeObject:displayName forKey:@"_displayName"];
-  [v5 encodeObject:self->_emailAddress forKey:@"_emailAddress"];
+  coderCopy = coder;
+  [coderCopy encodeObject:displayName forKey:@"_displayName"];
+  [coderCopy encodeObject:self->_emailAddress forKey:@"_emailAddress"];
 }
 
-- (RCAddress)initWithCoder:(id)a3
+- (RCAddress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RCAddress *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_displayName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_emailAddress"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_emailAddress"];
     emailAddress = v5->_emailAddress;
     v5->_emailAddress = v8;
   }

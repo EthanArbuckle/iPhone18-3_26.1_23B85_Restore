@@ -1,37 +1,37 @@
 @interface TUIFeedbackSurveyMetadata
-- (TUIFeedbackSurveyMetadata)initWithBuild:(id)a3 model:(id)a4 language:(id)a5 region:(id)a6 initialPreferenceValue:(BOOL)a7 initialInputModes:(id)a8 initialTimestamp:(id)a9 finalPreferenceValue:(BOOL)a10 finalInputModes:(id)a11 finalTimestamp:(id)a12;
+- (TUIFeedbackSurveyMetadata)initWithBuild:(id)build model:(id)model language:(id)language region:(id)region initialPreferenceValue:(BOOL)value initialInputModes:(id)modes initialTimestamp:(id)timestamp finalPreferenceValue:(BOOL)self0 finalInputModes:(id)self1 finalTimestamp:(id)self2;
 - (int64_t)duration;
 @end
 
 @implementation TUIFeedbackSurveyMetadata
 
-- (TUIFeedbackSurveyMetadata)initWithBuild:(id)a3 model:(id)a4 language:(id)a5 region:(id)a6 initialPreferenceValue:(BOOL)a7 initialInputModes:(id)a8 initialTimestamp:(id)a9 finalPreferenceValue:(BOOL)a10 finalInputModes:(id)a11 finalTimestamp:(id)a12
+- (TUIFeedbackSurveyMetadata)initWithBuild:(id)build model:(id)model language:(id)language region:(id)region initialPreferenceValue:(BOOL)value initialInputModes:(id)modes initialTimestamp:(id)timestamp finalPreferenceValue:(BOOL)self0 finalInputModes:(id)self1 finalTimestamp:(id)self2
 {
-  v28 = a7;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
-  v22 = a9;
-  v23 = a11;
-  v24 = a12;
+  valueCopy = value;
+  buildCopy = build;
+  modelCopy = model;
+  languageCopy = language;
+  regionCopy = region;
+  modesCopy = modes;
+  timestampCopy = timestamp;
+  inputModesCopy = inputModes;
+  finalTimestampCopy = finalTimestamp;
   v29.receiver = self;
   v29.super_class = TUIFeedbackSurveyMetadata;
   v25 = [(TUIFeedbackSurveyMetadata *)&v29 init];
   v26 = v25;
   if (v25)
   {
-    [(TUIFeedbackSurveyMetadata *)v25 setBuild:v17];
-    [(TUIFeedbackSurveyMetadata *)v26 setModel:v18];
-    [(TUIFeedbackSurveyMetadata *)v26 setLanguage:v19];
-    [(TUIFeedbackSurveyMetadata *)v26 setRegion:v20];
-    [(TUIFeedbackSurveyMetadata *)v26 setInitialPreferenceValue:v28];
-    [(TUIFeedbackSurveyMetadata *)v26 setInitialInputModes:v21];
-    [(TUIFeedbackSurveyMetadata *)v26 setInitialTimestamp:v22];
-    [(TUIFeedbackSurveyMetadata *)v26 setFinalPreferenceValue:a10];
-    [(TUIFeedbackSurveyMetadata *)v26 setFinalInputModes:v23];
-    [(TUIFeedbackSurveyMetadata *)v26 setFinalTimestamp:v24];
+    [(TUIFeedbackSurveyMetadata *)v25 setBuild:buildCopy];
+    [(TUIFeedbackSurveyMetadata *)v26 setModel:modelCopy];
+    [(TUIFeedbackSurveyMetadata *)v26 setLanguage:languageCopy];
+    [(TUIFeedbackSurveyMetadata *)v26 setRegion:regionCopy];
+    [(TUIFeedbackSurveyMetadata *)v26 setInitialPreferenceValue:valueCopy];
+    [(TUIFeedbackSurveyMetadata *)v26 setInitialInputModes:modesCopy];
+    [(TUIFeedbackSurveyMetadata *)v26 setInitialTimestamp:timestampCopy];
+    [(TUIFeedbackSurveyMetadata *)v26 setFinalPreferenceValue:preferenceValue];
+    [(TUIFeedbackSurveyMetadata *)v26 setFinalInputModes:inputModesCopy];
+    [(TUIFeedbackSurveyMetadata *)v26 setFinalTimestamp:finalTimestampCopy];
   }
 
   return v26;
@@ -41,8 +41,8 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   finalTimestamp = self->_finalTimestamp;
-  v3 = [(TUIFeedbackSurveyMetadata *)self initialTimestamp];
-  [(NSDate *)finalTimestamp timeIntervalSinceDate:v3];
+  initialTimestamp = [(TUIFeedbackSurveyMetadata *)self initialTimestamp];
+  [(NSDate *)finalTimestamp timeIntervalSinceDate:initialTimestamp];
   v5 = v4;
 
   v16 = 0u;

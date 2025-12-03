@@ -1,10 +1,10 @@
 @interface MOSuggestionShowMoreFooterView
-- (_TtC16MomentsUIService30MOSuggestionShowMoreFooterView)initWithCoder:(id)a3;
+- (_TtC16MomentsUIService30MOSuggestionShowMoreFooterView)initWithCoder:(id)coder;
 @end
 
 @implementation MOSuggestionShowMoreFooterView
 
-- (_TtC16MomentsUIService30MOSuggestionShowMoreFooterView)initWithCoder:(id)a3
+- (_TtC16MomentsUIService30MOSuggestionShowMoreFooterView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MomentsUIService30MOSuggestionShowMoreFooterView_showMoreButton;
   closure #1 in variable initialization expression of MOSuggestionShowMoreFooterView.showMoreButton();

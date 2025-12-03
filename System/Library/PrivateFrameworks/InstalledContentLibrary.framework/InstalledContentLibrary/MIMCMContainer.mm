@@ -1,30 +1,30 @@
 @interface MIMCMContainer
-+ (BOOL)deleteContainers:(id)a3 waitForDeletion:(BOOL)a4 error:(id *)a5;
-+ (id)_allContainersForIdentifiers:(id)a3 groupIdentifiers:(id)a4 contentClass:(unint64_t)a5 forPersona:(id)a6 transient:(BOOL)a7 create:(BOOL)a8 error:(id *)a9;
-+ (id)_containerForIdentifier:(id)a3 contentClass:(unint64_t)a4 forPersona:(id)a5 transient:(BOOL)a6 create:(BOOL)a7 error:(id *)a8;
-+ (id)_enumeratorWithContainerClass:(unint64_t)a3 forPersona:(id)a4 isTransient:(BOOL)a5 identifiers:(id)a6 groupIdentifiers:(id)a7 create:(BOOL)a8 usingBlock:(id)a9;
-+ (id)containerForIdentifier:(id)a3 contentClass:(unint64_t)a4 forPersona:(id)a5 create:(BOOL)a6 error:(id *)a7;
-+ (id)containersForBundleIdentifier:(id)a3 contentClass:(unint64_t)a4 forPersona:(id)a5 create:(BOOL)a6 fetchTransient:(BOOL)a7 error:(id *)a8;
-+ (id)containersForContentClass:(unint64_t)a3 forPersona:(id)a4 fetchTransient:(BOOL)a5 error:(id *)a6;
-+ (id)containersForGroupIdentifier:(id)a3 forPersona:(id)a4 create:(BOOL)a5 fetchTransient:(BOOL)a6 error:(id *)a7;
-+ (id)daemonContainerForIdentifier:(id)a3 personaUniqueString:(id)a4 error:(id *)a5;
-+ (id)defaultDirectoriesForContainerType:(unint64_t)a3 error:(id *)a4;
-+ (id)enumerateContainersWithClass:(unint64_t)a3 forPersona:(id)a4 isTransient:(BOOL)a5 identifiers:(id)a6 groupIdentifiers:(id)a7 usingBlock:(id)a8;
-+ (id)transientContainerForIdentifier:(id)a3 contentClass:(unint64_t)a4 forPersona:(id)a5 create:(BOOL)a6 error:(id *)a7;
-+ (void)_performWithLaunchPersona:(id)a3;
-- (BOOL)_doInitWithContainer:(container_object_s *)a3 error:(id *)a4;
-- (BOOL)_refreshContainerMetadataWithError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)purgeContentWithError:(id *)a3;
-- (BOOL)reclaimDiskSpaceWithError:(id *)a3;
-- (BOOL)recreateDefaultStructureWithError:(id *)a3;
-- (BOOL)regenerateDirectoryUUIDWithError:(id *)a3;
-- (BOOL)replaceExistingContainer:(id)a3 error:(id *)a4;
-- (BOOL)setInfoValue:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (MIMCMContainer)initWithContainer:(container_object_s *)a3 error:(id *)a4;
-- (MIMCMContainer)initWithSerializedContainer:(id)a3 matchingWithOptions:(unint64_t)a4 error:(id *)a5;
++ (BOOL)deleteContainers:(id)containers waitForDeletion:(BOOL)deletion error:(id *)error;
++ (id)_allContainersForIdentifiers:(id)identifiers groupIdentifiers:(id)groupIdentifiers contentClass:(unint64_t)class forPersona:(id)persona transient:(BOOL)transient create:(BOOL)create error:(id *)error;
++ (id)_containerForIdentifier:(id)identifier contentClass:(unint64_t)class forPersona:(id)persona transient:(BOOL)transient create:(BOOL)create error:(id *)error;
++ (id)_enumeratorWithContainerClass:(unint64_t)class forPersona:(id)persona isTransient:(BOOL)transient identifiers:(id)identifiers groupIdentifiers:(id)groupIdentifiers create:(BOOL)create usingBlock:(id)block;
++ (id)containerForIdentifier:(id)identifier contentClass:(unint64_t)class forPersona:(id)persona create:(BOOL)create error:(id *)error;
++ (id)containersForBundleIdentifier:(id)identifier contentClass:(unint64_t)class forPersona:(id)persona create:(BOOL)create fetchTransient:(BOOL)transient error:(id *)error;
++ (id)containersForContentClass:(unint64_t)class forPersona:(id)persona fetchTransient:(BOOL)transient error:(id *)error;
++ (id)containersForGroupIdentifier:(id)identifier forPersona:(id)persona create:(BOOL)create fetchTransient:(BOOL)transient error:(id *)error;
++ (id)daemonContainerForIdentifier:(id)identifier personaUniqueString:(id)string error:(id *)error;
++ (id)defaultDirectoriesForContainerType:(unint64_t)type error:(id *)error;
++ (id)enumerateContainersWithClass:(unint64_t)class forPersona:(id)persona isTransient:(BOOL)transient identifiers:(id)identifiers groupIdentifiers:(id)groupIdentifiers usingBlock:(id)block;
++ (id)transientContainerForIdentifier:(id)identifier contentClass:(unint64_t)class forPersona:(id)persona create:(BOOL)create error:(id *)error;
++ (void)_performWithLaunchPersona:(id)persona;
+- (BOOL)_doInitWithContainer:(container_object_s *)container error:(id *)error;
+- (BOOL)_refreshContainerMetadataWithError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)purgeContentWithError:(id *)error;
+- (BOOL)reclaimDiskSpaceWithError:(id *)error;
+- (BOOL)recreateDefaultStructureWithError:(id *)error;
+- (BOOL)regenerateDirectoryUUIDWithError:(id *)error;
+- (BOOL)replaceExistingContainer:(id)container error:(id *)error;
+- (BOOL)setInfoValue:(id)value forKey:(id)key error:(id *)error;
+- (MIMCMContainer)initWithContainer:(container_object_s *)container error:(id *)error;
+- (MIMCMContainer)initWithSerializedContainer:(id)container matchingWithOptions:(unint64_t)options error:(id *)error;
 - (id)description;
-- (id)infoValueForKey:(id)a3 error:(id *)a4;
+- (id)infoValueForKey:(id)key error:(id *)error;
 - (id)serializedContainerRepresentation;
 - (int64_t)transferOwnershipOfSandboxExtensionToCaller;
 - (void)dealloc;
@@ -32,7 +32,7 @@
 
 @implementation MIMCMContainer
 
-- (BOOL)_doInitWithContainer:(container_object_s *)a3 error:(id *)a4
+- (BOOL)_doInitWithContainer:(container_object_s *)container error:(id *)error
 {
   v34 = 0;
   self->_containerClass = container_get_class();
@@ -94,7 +94,7 @@ LABEL_26:
         {
           if (gLogHandle && *(gLogHandle + 44) >= 7)
           {
-            v32 = [(NSURL *)self->_containerURL path];
+            path = [(NSURL *)self->_containerURL path];
             MOLogWrite();
           }
 
@@ -124,7 +124,7 @@ LABEL_26:
       v26 = v25;
 
       v14 = v26;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_20;
       }
@@ -138,7 +138,7 @@ LABEL_26:
     v14 = _CreateAndLogError("[MIMCMContainer _doInitWithContainer:error:]", 125, @"MIContainerManagerErrorDomain", 18, 0, 0, @"Failed to get identifier for the container", v7, v31);
   }
 
-  if (!a4)
+  if (!error)
   {
 LABEL_20:
     v20 = 0;
@@ -148,19 +148,19 @@ LABEL_20:
 LABEL_15:
   v19 = v14;
   v20 = 0;
-  *a4 = v14;
+  *error = v14;
 LABEL_27:
 
   return v20;
 }
 
-- (MIMCMContainer)initWithContainer:(container_object_s *)a3 error:(id *)a4
+- (MIMCMContainer)initWithContainer:(container_object_s *)container error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = MIMCMContainer;
   v6 = [(MIMCMContainer *)&v10 init];
   v7 = v6;
-  if (v6 && ![(MIMCMContainer *)v6 _doInitWithContainer:a3 error:a4])
+  if (v6 && ![(MIMCMContainer *)v6 _doInitWithContainer:container error:error])
   {
     v8 = 0;
   }
@@ -173,9 +173,9 @@ LABEL_27:
   return v8;
 }
 
-- (MIMCMContainer)initWithSerializedContainer:(id)a3 matchingWithOptions:(unint64_t)a4 error:(id *)a5
+- (MIMCMContainer)initWithSerializedContainer:(id)container matchingWithOptions:(unint64_t)options error:(id *)error
 {
-  v7 = a3;
+  containerCopy = container;
   v43.receiver = self;
   v43.super_class = MIMCMContainer;
   last_error = 0;
@@ -188,8 +188,8 @@ LABEL_27:
     goto LABEL_24;
   }
 
-  [v7 bytes];
-  [v7 length];
+  [containerCopy bytes];
+  [containerCopy length];
   v9 = container_serialize_copy_deserialized_reference();
   if (!v9)
   {
@@ -285,10 +285,10 @@ LABEL_23:
 LABEL_24:
   MEMORY[0x1B2732F60](v10);
   container_query_free();
-  if (a5 && !v12)
+  if (error && !v12)
   {
     v40 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   return v8;
@@ -297,13 +297,13 @@ LABEL_24:
 - (void)dealloc
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [*(a1 + 16) path];
+  path = [*(self + 16) path];
   v4 = 136315650;
   v5 = "[MIMCMContainer dealloc]";
   v6 = 2048;
   v7 = a2;
   v8 = 2112;
-  v9 = v3;
+  v9 = path;
   _os_log_fault_impl(&dword_1B16A0000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "%s: Failed to release sandbox token %lld for container %@", &v4, 0x20u);
 }
 
@@ -328,18 +328,18 @@ LABEL_24:
   v4 = objc_opt_class();
   [(MIMCMContainer *)self mcmContainer];
   v5 = _RawContainerDescription();
-  v6 = [(MIMCMContainer *)self personaUniqueString];
-  v7 = [(MIMCMContainer *)self containerURL];
-  v8 = [v7 path];
-  v9 = [v3 stringWithFormat:@"<%@ container=%@ persona=%@ path=%@>", v4, v5, v6, v8];
+  personaUniqueString = [(MIMCMContainer *)self personaUniqueString];
+  containerURL = [(MIMCMContainer *)self containerURL];
+  path = [containerURL path];
+  v9 = [v3 stringWithFormat:@"<%@ container=%@ persona=%@ path=%@>", v4, v5, personaUniqueString, path];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     is_equal = 1;
   }
@@ -349,7 +349,7 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(MIMCMContainer *)self mcmContainer];
       [(MIMCMContainer *)v5 mcmContainer];
 
@@ -365,7 +365,7 @@ LABEL_24:
   return is_equal;
 }
 
-- (BOOL)_refreshContainerMetadataWithError:(id *)a3
+- (BOOL)_refreshContainerMetadataWithError:(id *)error
 {
   [(MIMCMContainer *)self mcmContainer];
   path = container_get_path();
@@ -419,11 +419,11 @@ LABEL_6:
     v12 = v20;
   }
 
-  if (a3)
+  if (error)
   {
     v21 = v12;
     v15 = 0;
-    *a3 = v12;
+    *error = v12;
   }
 
   else
@@ -436,7 +436,7 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)reclaimDiskSpaceWithError:(id *)a3
+- (BOOL)reclaimDiskSpaceWithError:(id *)error
 {
   v4 = container_operation_delete_reclaim_disk_space();
   if (v4)
@@ -461,10 +461,10 @@ LABEL_15:
     v13 = _CreateError("[MIMCMContainer reclaimDiskSpaceWithError:]", 338, @"MIContainerManagerErrorDomain", type, v12, v14, @"%@", v15, v5);
 
     container_error_free();
-    if (a3)
+    if (error)
     {
       v16 = v13;
-      *a3 = v13;
+      *error = v13;
     }
   }
 
@@ -477,7 +477,7 @@ LABEL_15:
   return v4 == 0;
 }
 
-- (BOOL)regenerateDirectoryUUIDWithError:(id *)a3
+- (BOOL)regenerateDirectoryUUIDWithError:(id *)error
 {
   [(MIMCMContainer *)self mcmContainer];
   v5 = container_regenerate_uuid();
@@ -486,7 +486,7 @@ LABEL_15:
     v13 = 0;
     v6 = [(MIMCMContainer *)self _refreshContainerMetadataWithError:&v13];
     v7 = v13;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -504,13 +504,13 @@ LABEL_15:
 
   v7 = _CreateError("[MIMCMContainer regenerateDirectoryUUIDWithError:]", 360, @"MIContainerManagerErrorDomain", v8, 0, 0, @"%s", v10, v11);
   v6 = 0;
-  if (a3)
+  if (error)
   {
 LABEL_7:
     if (!v6)
     {
       v7 = v7;
-      *a3 = v7;
+      *error = v7;
     }
   }
 
@@ -519,7 +519,7 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)purgeContentWithError:(id *)a3
+- (BOOL)purgeContentWithError:(id *)error
 {
   [(MIMCMContainer *)self mcmContainer];
   v5 = container_delete_all_container_content();
@@ -530,34 +530,34 @@ LABEL_9:
 
   else
   {
-    v7 = [(MIMCMContainer *)self identifier];
-    v6 = _CreateAndLogError("[MIMCMContainer purgeContentWithError:]", 400, @"MIContainerManagerErrorDomain", v5, 0, 0, @"Failed to wipe container for identifier %@", v8, v7);
+    identifier = [(MIMCMContainer *)self identifier];
+    v6 = _CreateAndLogError("[MIMCMContainer purgeContentWithError:]", 400, @"MIContainerManagerErrorDomain", v5, 0, 0, @"Failed to wipe container for identifier %@", v8, identifier);
 
-    if (a3)
+    if (error)
     {
       v9 = v6;
-      *a3 = v6;
+      *error = v6;
     }
   }
 
   return v5 == 1;
 }
 
-- (BOOL)replaceExistingContainer:(id)a3 error:(id *)a4
+- (BOOL)replaceExistingContainer:(id)container error:(id *)error
 {
-  v6 = a3;
+  containerCopy = container;
   if ([(MIMCMContainer *)self containerClass]== 1)
   {
     v7 = +[MITestManager sharedInstance];
     if ([v7 testFlagsAreSet:64])
     {
-      v8 = [(MIMCMContainer *)self isTransient];
+      isTransient = [(MIMCMContainer *)self isTransient];
 
-      if (v8)
+      if (isTransient)
       {
         if (!gLogHandle || *(gLogHandle + 44) >= 3)
         {
-          v17 = [(MIMCMContainer *)self identifier];
+          identifier = [(MIMCMContainer *)self identifier];
           MOLogWrite();
         }
 
@@ -570,7 +570,7 @@ LABEL_9:
     }
   }
 
-  [v6 mcmContainer];
+  [containerCopy mcmContainer];
   [(MIMCMContainer *)self mcmContainer];
   v9 = container_replace();
   if (v9 == 1)
@@ -579,7 +579,7 @@ LABEL_9:
     v18 = 0;
     v10 = [(MIMCMContainer *)self _refreshContainerMetadataWithError:&v18];
     v11 = v18;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -597,13 +597,13 @@ LABEL_9:
 
   v11 = _CreateError("[MIMCMContainer replaceExistingContainer:error:]", 429, @"MIContainerManagerErrorDomain", v12, 0, 0, @"%s", v14, v15);
   v10 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_15:
     if (!v10)
     {
       v11 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -612,12 +612,12 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)setInfoValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setInfoValue:(id)value forKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  keyCopy = key;
+  valueCopy = value;
   [(MIMCMContainer *)self mcmContainer];
-  [v8 UTF8String];
+  [keyCopy UTF8String];
 
   v10 = _CFXPCCreateXPCObjectFromCFObject();
   v11 = container_set_info_value();
@@ -637,21 +637,21 @@ LABEL_17:
     }
 
     v12 = _CreateError("[MIMCMContainer setInfoValue:forKey:error:]", 459, @"MIContainerManagerErrorDomain", v11, 0, 0, @"%s", v14, v15);
-    if (a5)
+    if (error)
     {
       v12 = v12;
-      *a5 = v12;
+      *error = v12;
     }
   }
 
   return v11 == 1;
 }
 
-- (id)infoValueForKey:(id)a3 error:(id *)a4
+- (id)infoValueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   [(MIMCMContainer *)self mcmContainer];
-  [v6 UTF8String];
+  [keyCopy UTF8String];
   v7 = container_get_info_value_for_key();
   if (v7)
   {
@@ -663,7 +663,7 @@ LABEL_17:
       goto LABEL_11;
     }
 
-    v15 = _CreateAndLogError("[MIMCMContainer infoValueForKey:error:]", 485, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to retrieve value for key %@ from the underlying xpc object", v9, v6);
+    v15 = _CreateAndLogError("[MIMCMContainer infoValueForKey:error:]", 485, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to retrieve value for key %@ from the underlying xpc object", v9, keyCopy);
   }
 
   else
@@ -679,11 +679,11 @@ LABEL_17:
   }
 
   v11 = v15;
-  if (a4)
+  if (error)
   {
     v16 = v15;
     v10 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -696,7 +696,7 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)recreateDefaultStructureWithError:(id *)a3
+- (BOOL)recreateDefaultStructureWithError:(id *)error
 {
   [(MIMCMContainer *)self mcmContainer];
   v4 = container_recreate_structure();
@@ -715,23 +715,23 @@ LABEL_11:
     }
 
     v5 = _CreateError("[MIMCMContainer recreateDefaultStructureWithError:]", 504, @"MIContainerManagerErrorDomain", v4, 0, 0, @"%s", v7, v8);
-    if (a3)
+    if (error)
     {
       v5 = v5;
-      *a3 = v5;
+      *error = v5;
     }
   }
 
   return v4 == 1;
 }
 
-+ (id)_enumeratorWithContainerClass:(unint64_t)a3 forPersona:(id)a4 isTransient:(BOOL)a5 identifiers:(id)a6 groupIdentifiers:(id)a7 create:(BOOL)a8 usingBlock:(id)a9
++ (id)_enumeratorWithContainerClass:(unint64_t)class forPersona:(id)persona isTransient:(BOOL)transient identifiers:(id)identifiers groupIdentifiers:(id)groupIdentifiers create:(BOOL)create usingBlock:(id)block
 {
   v60 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v42 = a9;
+  personaCopy = persona;
+  identifiersCopy = identifiers;
+  groupIdentifiersCopy = groupIdentifiers;
+  blockCopy = block;
   v52 = 0;
   v53 = &v52;
   v54 = 0x3032000000;
@@ -740,7 +740,7 @@ LABEL_11:
   v57 = 0;
   if (!container_query_create())
   {
-    v36 = _CreateAndLogError("+[MIMCMContainer _enumeratorWithContainerClass:forPersona:isTransient:identifiers:groupIdentifiers:create:usingBlock:]", 526, @"MIContainerManagerErrorDomain", 110, 0, 0, @"Failed to create container query for querying containers for identifier: %@ groupIdentifiers: %@ containerType: %llu", v14, v12);
+    v36 = _CreateAndLogError("+[MIMCMContainer _enumeratorWithContainerClass:forPersona:isTransient:identifiers:groupIdentifiers:create:usingBlock:]", 526, @"MIContainerManagerErrorDomain", 110, 0, 0, @"Failed to create container query for querying containers for identifier: %@ groupIdentifiers: %@ containerType: %llu", v14, identifiersCopy);
 LABEL_29:
     v39 = v53[5];
     v53[5] = v36;
@@ -752,14 +752,14 @@ LABEL_29:
   container_query_set_transient();
   container_query_set_class();
   container_query_set_include_other_owners();
-  if (v13)
+  if (groupIdentifiersCopy)
   {
     v15 = xpc_array_create(0, 0);
     v50 = 0u;
     v51 = 0u;
     v49 = 0u;
     v48 = 0u;
-    v16 = v13;
+    v16 = groupIdentifiersCopy;
     v17 = [v16 countByEnumeratingWithState:&v48 objects:v59 count:16];
     if (v17)
     {
@@ -786,14 +786,14 @@ LABEL_29:
     container_query_set_group_identifiers();
   }
 
-  if (v12)
+  if (identifiersCopy)
   {
     v21 = xpc_array_create(0, 0);
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v22 = v12;
+    v22 = identifiersCopy;
     v23 = [v22 countByEnumeratingWithState:&v44 objects:v58 count:16];
     if (v23)
     {
@@ -820,14 +820,14 @@ LABEL_29:
     container_query_set_identifiers();
   }
 
-  if (v11)
+  if (personaCopy)
   {
-    v27 = v11;
-    [v11 UTF8String];
+    v27 = personaCopy;
+    [personaCopy UTF8String];
     container_query_set_persona_unique_string();
   }
 
-  v43 = v42;
+  v43 = blockCopy;
   iterate_results_sync = container_query_iterate_results_sync();
 
   if (!((v53[5] != 0) | iterate_results_sync & 1) && container_query_get_last_error())
@@ -889,25 +889,25 @@ uint64_t __118__MIMCMContainer__enumeratorWithContainerClass_forPersona_isTransi
   return v8;
 }
 
-+ (id)enumerateContainersWithClass:(unint64_t)a3 forPersona:(id)a4 isTransient:(BOOL)a5 identifiers:(id)a6 groupIdentifiers:(id)a7 usingBlock:(id)a8
++ (id)enumerateContainersWithClass:(unint64_t)class forPersona:(id)persona isTransient:(BOOL)transient identifiers:(id)identifiers groupIdentifiers:(id)groupIdentifiers usingBlock:(id)block
 {
-  v10 = a5;
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
-  v17 = [objc_opt_class() _enumeratorWithContainerClass:a3 forPersona:v16 isTransient:v10 identifiers:v15 groupIdentifiers:v14 create:0 usingBlock:v13];
+  transientCopy = transient;
+  blockCopy = block;
+  groupIdentifiersCopy = groupIdentifiers;
+  identifiersCopy = identifiers;
+  personaCopy = persona;
+  v17 = [objc_opt_class() _enumeratorWithContainerClass:class forPersona:personaCopy isTransient:transientCopy identifiers:identifiersCopy groupIdentifiers:groupIdentifiersCopy create:0 usingBlock:blockCopy];
 
   return v17;
 }
 
-+ (id)_allContainersForIdentifiers:(id)a3 groupIdentifiers:(id)a4 contentClass:(unint64_t)a5 forPersona:(id)a6 transient:(BOOL)a7 create:(BOOL)a8 error:(id *)a9
++ (id)_allContainersForIdentifiers:(id)identifiers groupIdentifiers:(id)groupIdentifiers contentClass:(unint64_t)class forPersona:(id)persona transient:(BOOL)transient create:(BOOL)create error:(id *)error
 {
-  v9 = a8;
-  v10 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  createCopy = create;
+  transientCopy = transient;
+  identifiersCopy = identifiers;
+  groupIdentifiersCopy = groupIdentifiers;
+  personaCopy = persona;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -920,16 +920,16 @@ uint64_t __118__MIMCMContainer__enumeratorWithContainerClass_forPersona_isTransi
   v23[2] = __111__MIMCMContainer__allContainersForIdentifiers_groupIdentifiers_contentClass_forPersona_transient_create_error___block_invoke;
   v23[3] = &unk_1E7AE1C30;
   v23[4] = &v24;
-  v18 = [v17 _enumeratorWithContainerClass:a5 forPersona:v16 isTransient:v10 identifiers:v14 groupIdentifiers:v15 create:v9 usingBlock:v23];
+  v18 = [v17 _enumeratorWithContainerClass:class forPersona:personaCopy isTransient:transientCopy identifiers:identifiersCopy groupIdentifiers:groupIdentifiersCopy create:createCopy usingBlock:v23];
   if (v18)
   {
     v19 = v25[5];
     v25[5] = 0;
 
-    if (a9)
+    if (error)
     {
       v20 = v18;
-      *a9 = v18;
+      *error = v18;
     }
   }
 
@@ -940,18 +940,18 @@ uint64_t __118__MIMCMContainer__enumeratorWithContainerClass_forPersona_isTransi
   return v21;
 }
 
-+ (id)_containerForIdentifier:(id)a3 contentClass:(unint64_t)a4 forPersona:(id)a5 transient:(BOOL)a6 create:(BOOL)a7 error:(id *)a8
++ (id)_containerForIdentifier:(id)identifier contentClass:(unint64_t)class forPersona:(id)persona transient:(BOOL)transient create:(BOOL)create error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  if (!v13 && gLogHandle && *(gLogHandle + 44) >= 7)
+  identifierCopy = identifier;
+  personaCopy = persona;
+  if (!personaCopy && gLogHandle && *(gLogHandle + 44) >= 7)
   {
     MOLogWrite();
   }
 
   if (!container_query_create())
   {
-    v16 = _CreateAndLogError("+[MIMCMContainer _containerForIdentifier:contentClass:forPersona:transient:create:error:]", 633, @"MIContainerManagerErrorDomain", 110, 0, 0, @"Failed to create container query for querying containers for identifier %@", v14, v12);
+    v16 = _CreateAndLogError("+[MIMCMContainer _containerForIdentifier:contentClass:forPersona:transient:create:error:]", 633, @"MIContainerManagerErrorDomain", 110, 0, 0, @"Failed to create container query for querying containers for identifier %@", v14, identifierCopy);
     goto LABEL_9;
   }
 
@@ -959,8 +959,8 @@ uint64_t __118__MIMCMContainer__enumeratorWithContainerClass_forPersona_isTransi
   container_query_set_class();
   container_query_set_transient();
   container_query_set_include_other_owners();
-  v15 = xpc_string_create([v12 UTF8String]);
-  if (a4 == 7)
+  v15 = xpc_string_create([identifierCopy UTF8String]);
+  if (class == 7)
   {
     container_query_set_group_identifiers();
   }
@@ -970,9 +970,9 @@ uint64_t __118__MIMCMContainer__enumeratorWithContainerClass_forPersona_isTransi
     container_query_set_identifiers();
   }
 
-  if (v13)
+  if (personaCopy)
   {
-    [v13 UTF8String];
+    [personaCopy UTF8String];
     container_query_set_persona_unique_string();
   }
 
@@ -1003,7 +1003,7 @@ uint64_t __118__MIMCMContainer__enumeratorWithContainerClass_forPersona_isTransi
       goto LABEL_22;
     }
 
-    if (a7)
+    if (create)
     {
       v19 = 0;
       v17 = 0;
@@ -1029,10 +1029,10 @@ LABEL_22:
   v19 = [objc_alloc(objc_opt_class()) initWithContainer:single_result error:&v35];
   v17 = v35;
 LABEL_23:
-  if (a8 && !v19)
+  if (error && !v19)
   {
     v30 = v17;
-    *a8 = v17;
+    *error = v17;
   }
 
   container_query_free();
@@ -1040,73 +1040,73 @@ LABEL_23:
   return v19;
 }
 
-+ (id)containersForContentClass:(unint64_t)a3 forPersona:(id)a4 fetchTransient:(BOOL)a5 error:(id *)a6
++ (id)containersForContentClass:(unint64_t)class forPersona:(id)persona fetchTransient:(BOOL)transient error:(id *)error
 {
-  v7 = a5;
-  v9 = a4;
-  v10 = [objc_opt_class() _allContainersForIdentifiers:0 groupIdentifiers:0 contentClass:a3 forPersona:v9 transient:v7 create:0 error:a6];
+  transientCopy = transient;
+  personaCopy = persona;
+  v10 = [objc_opt_class() _allContainersForIdentifiers:0 groupIdentifiers:0 contentClass:class forPersona:personaCopy transient:transientCopy create:0 error:error];
 
   return v10;
 }
 
-+ (id)containersForGroupIdentifier:(id)a3 forPersona:(id)a4 create:(BOOL)a5 fetchTransient:(BOOL)a6 error:(id *)a7
++ (id)containersForGroupIdentifier:(id)identifier forPersona:(id)persona create:(BOOL)create fetchTransient:(BOOL)transient error:(id *)error
 {
-  v8 = a5;
+  createCopy = create;
   v16[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a3;
+  personaCopy = persona;
+  identifierCopy = identifier;
   v12 = objc_opt_class();
-  v16[0] = v11;
+  v16[0] = identifierCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
 
-  v14 = [v12 _allContainersForIdentifiers:0 groupIdentifiers:v13 contentClass:7 forPersona:v10 transient:0 create:v8 error:a7];
+  v14 = [v12 _allContainersForIdentifiers:0 groupIdentifiers:v13 contentClass:7 forPersona:personaCopy transient:0 create:createCopy error:error];
 
   return v14;
 }
 
-+ (id)containersForBundleIdentifier:(id)a3 contentClass:(unint64_t)a4 forPersona:(id)a5 create:(BOOL)a6 fetchTransient:(BOOL)a7 error:(id *)a8
++ (id)containersForBundleIdentifier:(id)identifier contentClass:(unint64_t)class forPersona:(id)persona create:(BOOL)create fetchTransient:(BOOL)transient error:(id *)error
 {
-  v9 = a7;
-  v10 = a6;
+  transientCopy = transient;
+  createCopy = create;
   v19[1] = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = a3;
+  personaCopy = persona;
+  identifierCopy = identifier;
   v15 = objc_opt_class();
-  v19[0] = v14;
+  v19[0] = identifierCopy;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
 
-  v17 = [v15 _allContainersForIdentifiers:v16 groupIdentifiers:0 contentClass:a4 forPersona:v13 transient:v9 create:v10 error:a8];
+  v17 = [v15 _allContainersForIdentifiers:v16 groupIdentifiers:0 contentClass:class forPersona:personaCopy transient:transientCopy create:createCopy error:error];
 
   return v17;
 }
 
-+ (id)containerForIdentifier:(id)a3 contentClass:(unint64_t)a4 forPersona:(id)a5 create:(BOOL)a6 error:(id *)a7
++ (id)containerForIdentifier:(id)identifier contentClass:(unint64_t)class forPersona:(id)persona create:(BOOL)create error:(id *)error
 {
-  v8 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [objc_opt_class() _containerForIdentifier:v12 contentClass:a4 forPersona:v11 transient:0 create:v8 error:a7];
+  createCopy = create;
+  personaCopy = persona;
+  identifierCopy = identifier;
+  v13 = [objc_opt_class() _containerForIdentifier:identifierCopy contentClass:class forPersona:personaCopy transient:0 create:createCopy error:error];
 
   return v13;
 }
 
-+ (id)transientContainerForIdentifier:(id)a3 contentClass:(unint64_t)a4 forPersona:(id)a5 create:(BOOL)a6 error:(id *)a7
++ (id)transientContainerForIdentifier:(id)identifier contentClass:(unint64_t)class forPersona:(id)persona create:(BOOL)create error:(id *)error
 {
-  v8 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [objc_opt_class() _containerForIdentifier:v12 contentClass:a4 forPersona:v11 transient:1 create:v8 error:a7];
+  createCopy = create;
+  personaCopy = persona;
+  identifierCopy = identifier;
+  v13 = [objc_opt_class() _containerForIdentifier:identifierCopy contentClass:class forPersona:personaCopy transient:1 create:createCopy error:error];
 
   return v13;
 }
 
-+ (BOOL)deleteContainers:(id)a3 waitForDeletion:(BOOL)a4 error:(id *)a5
++ (BOOL)deleteContainers:(id)containers waitForDeletion:(BOOL)deletion error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  containersCopy = containers;
   v38 = 0;
   v39 = 0;
-  v8 = malloc_type_calloc([v6 count], 8uLL, 0x2004093837F09uLL);
+  v8 = malloc_type_calloc([containersCopy count], 8uLL, 0x2004093837F09uLL);
   if (!v8)
   {
     v17 = @"MIInstallerErrorDomain";
@@ -1120,7 +1120,7 @@ LABEL_23:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = v6;
+  v9 = containersCopy;
   v10 = [v9 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v10)
   {
@@ -1169,7 +1169,7 @@ LABEL_23:
       v15 = _CreateError("+[MIMCMContainer deleteContainers:waitForDeletion:error:]", 737, @"MIContainerManagerErrorDomain", type, v29, v30, @"%@", v31, v22);
 
       container_error_free();
-      if (!a5)
+      if (!error)
       {
         goto LABEL_20;
       }
@@ -1183,7 +1183,7 @@ LABEL_23:
     v20 = 38;
 LABEL_12:
     v15 = _CreateAndLogError("+[MIMCMContainer deleteContainers:waitForDeletion:error:]", v19, v17, v20, 0, 0, v18, v7, v33);
-    if (!a5)
+    if (!error)
     {
 LABEL_20:
       v16 = 0;
@@ -1193,7 +1193,7 @@ LABEL_20:
 LABEL_13:
     v21 = v15;
     v16 = 0;
-    *a5 = v15;
+    *error = v15;
     goto LABEL_21;
   }
 
@@ -1206,7 +1206,7 @@ LABEL_21:
   return v16;
 }
 
-+ (id)defaultDirectoriesForContainerType:(unint64_t)a3 error:(id *)a4
++ (id)defaultDirectoriesForContainerType:(unint64_t)type error:(id *)error
 {
   v6 = container_subdirectories_for_class();
   if (v6)
@@ -1216,7 +1216,7 @@ LABEL_21:
     {
       v9 = [MEMORY[0x1E695DFD8] setWithArray:v8];
       v10 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -1224,7 +1224,7 @@ LABEL_21:
       goto LABEL_10;
     }
 
-    v10 = _CreateAndLogError("+[MIMCMContainer defaultDirectoriesForContainerType:error:]", 772, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to retrieve container subdirectories for class %llu", v7, a3);
+    v10 = _CreateAndLogError("+[MIMCMContainer defaultDirectoriesForContainerType:error:]", 772, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to retrieve container subdirectories for class %llu", v7, type);
   }
 
   else
@@ -1241,7 +1241,7 @@ LABEL_21:
   }
 
   v9 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -1250,7 +1250,7 @@ LABEL_10:
   if (!v9)
   {
     v14 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_12:
@@ -1259,22 +1259,22 @@ LABEL_12:
   return v15;
 }
 
-+ (void)_performWithLaunchPersona:(id)a3
++ (void)_performWithLaunchPersona:(id)persona
 {
-  v3 = a3;
+  personaCopy = persona;
   voucher_adopt();
-  v3[2](v3);
+  personaCopy[2](personaCopy);
 
   v4 = voucher_adopt();
 }
 
-+ (id)daemonContainerForIdentifier:(id)a3 personaUniqueString:(id)a4 error:(id *)a5
++ (id)daemonContainerForIdentifier:(id)identifier personaUniqueString:(id)string error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  identifierCopy = identifier;
+  stringCopy = string;
+  if (!stringCopy)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*MEMORY[0x1E69E9980]];
+    stringCopy = [MEMORY[0x1E696AEC0] stringWithUTF8String:*MEMORY[0x1E69E9980]];
   }
 
   v27 = 0;
@@ -1294,17 +1294,17 @@ LABEL_12:
   v15[2] = __73__MIMCMContainer_daemonContainerForIdentifier_personaUniqueString_error___block_invoke;
   v15[3] = &unk_1E7AE1C58;
   v18 = &v27;
-  v20 = a1;
-  v10 = v8;
+  selfCopy = self;
+  v10 = identifierCopy;
   v16 = v10;
-  v11 = v9;
+  v11 = stringCopy;
   v17 = v11;
   v19 = &v21;
-  [a1 _performWithLaunchPersona:v15];
+  [self _performWithLaunchPersona:v15];
   v12 = v28[5];
-  if (a5 && !v12)
+  if (error && !v12)
   {
-    *a5 = v22[5];
+    *error = v22[5];
     v12 = v28[5];
   }
 

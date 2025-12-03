@@ -1,5 +1,5 @@
 @interface _AFSharedConfidenceScoreMutation
-- (_AFSharedConfidenceScoreMutation)initWithBase:(id)a3;
+- (_AFSharedConfidenceScoreMutation)initWithBase:(id)base;
 - (id)getSharedUserId;
 - (unint64_t)getConfidenceScore;
 @end
@@ -23,27 +23,27 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_sharedUserId;
+    sharedUserId = self->_sharedUserId;
   }
 
   else
   {
-    v2 = [(AFSharedConfidenceScore *)self->_base sharedUserId];
+    sharedUserId = [(AFSharedConfidenceScore *)self->_base sharedUserId];
   }
 
-  return v2;
+  return sharedUserId;
 }
 
-- (_AFSharedConfidenceScoreMutation)initWithBase:(id)a3
+- (_AFSharedConfidenceScoreMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFSharedConfidenceScoreMutation;
   v6 = [(_AFSharedConfidenceScoreMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

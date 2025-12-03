@@ -1,33 +1,33 @@
 @interface HKMobilityUtilities
-+ (BOOL)_valueRangeMin:(double *)a3 max:(double *)a4 forChartData:(id)a5;
-+ (BOOL)chartDataSpansMultipleClassifications:(id)a3;
-+ (id)_localizedStringForClassification:(int64_t)a3 narrow:(BOOL)a4;
-+ (id)generateAppleWalkingSteadinessDataSourceForTimeScope:(int64_t)a3 displayType:(id)a4 healthStore:(id)a5 quantityType:(id)a6 unitController:(id)a7;
-+ (id)generateAppleWalkingSteadinessSeriesForTimeScope:(int64_t)a3 displayType:(id)a4 color:(id)a5;
-+ (id)localizedDescriptionForClassification:(int64_t)a3;
-+ (id)localizedTitleForWalkingSteadinessEventCategoryValue:(int64_t)a3;
-+ (int64_t)classificationForAppleWalkingSteadinessQuantity:(id)a3;
-+ (int64_t)classificationForAppleWalkingSteadinessValue:(double)a3;
++ (BOOL)_valueRangeMin:(double *)min max:(double *)max forChartData:(id)data;
++ (BOOL)chartDataSpansMultipleClassifications:(id)classifications;
++ (id)_localizedStringForClassification:(int64_t)classification narrow:(BOOL)narrow;
++ (id)generateAppleWalkingSteadinessDataSourceForTimeScope:(int64_t)scope displayType:(id)type healthStore:(id)store quantityType:(id)quantityType unitController:(id)controller;
++ (id)generateAppleWalkingSteadinessSeriesForTimeScope:(int64_t)scope displayType:(id)type color:(id)color;
++ (id)localizedDescriptionForClassification:(int64_t)classification;
++ (id)localizedTitleForWalkingSteadinessEventCategoryValue:(int64_t)value;
++ (int64_t)classificationForAppleWalkingSteadinessQuantity:(id)quantity;
++ (int64_t)classificationForAppleWalkingSteadinessValue:(double)value;
 @end
 
 @implementation HKMobilityUtilities
 
-+ (int64_t)classificationForAppleWalkingSteadinessValue:(double)a3
++ (int64_t)classificationForAppleWalkingSteadinessValue:(double)value
 {
   v5 = MEMORY[0x1E696C348];
-  v6 = [MEMORY[0x1E696C510] percentUnit];
-  v7 = [v5 quantityWithUnit:v6 doubleValue:a3];
+  percentUnit = [MEMORY[0x1E696C510] percentUnit];
+  v7 = [v5 quantityWithUnit:percentUnit doubleValue:value];
 
-  v8 = [a1 classificationForAppleWalkingSteadinessQuantity:v7];
+  v8 = [self classificationForAppleWalkingSteadinessQuantity:v7];
   return v8;
 }
 
-+ (int64_t)classificationForAppleWalkingSteadinessQuantity:(id)a3
++ (int64_t)classificationForAppleWalkingSteadinessQuantity:(id)quantity
 {
-  v5 = a3;
+  quantityCopy = quantity;
   errorOut = 0;
   classificationOut = 0;
-  v6 = HKAppleWalkingSteadinessClassificationForQuantity(v5, &classificationOut, &errorOut);
+  v6 = HKAppleWalkingSteadinessClassificationForQuantity(quantityCopy, &classificationOut, &errorOut);
   v7 = errorOut;
   if (!v6)
   {
@@ -35,33 +35,33 @@
     v8 = *MEMORY[0x1E696B980];
     if (os_log_type_enabled(*MEMORY[0x1E696B980], OS_LOG_TYPE_FAULT))
     {
-      [(HKMobilityUtilities *)v8 classificationForAppleWalkingSteadinessQuantity:v5, v7];
+      [(HKMobilityUtilities *)v8 classificationForAppleWalkingSteadinessQuantity:quantityCopy, v7];
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"HKMobilityUtilities.m" lineNumber:47 description:@"Unable to classify provided quantity or value"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMobilityUtilities.m" lineNumber:47 description:@"Unable to classify provided quantity or value"];
   }
 
   v10 = classificationOut;
   if (!classificationOut)
   {
-    [(HKMobilityUtilities *)a2 classificationForAppleWalkingSteadinessQuantity:a1, &classificationOut, &v14];
+    [(HKMobilityUtilities *)a2 classificationForAppleWalkingSteadinessQuantity:self, &classificationOut, &v14];
     v10 = v14;
   }
 
   return v10;
 }
 
-+ (id)localizedDescriptionForClassification:(int64_t)a3
++ (id)localizedDescriptionForClassification:(int64_t)classification
 {
-  if ((a3 - 1) > 2)
+  if ((classification - 1) > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_1E81B90D8[a3 - 1];
+    v3 = off_1E81B90D8[classification - 1];
     v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v5 = [v4 localizedStringForKey:v3 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-WalkingSteadiness"];
   }
@@ -69,10 +69,10 @@
   return v5;
 }
 
-+ (id)_localizedStringForClassification:(int64_t)a3 narrow:(BOOL)a4
++ (id)_localizedStringForClassification:(int64_t)classification narrow:(BOOL)narrow
 {
-  v4 = a4;
-  switch(a3)
+  narrowCopy = narrow;
+  switch(classification)
   {
     case 3:
       v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -92,7 +92,7 @@
       v7 = @"APPLE_WALKING_STEADINESS_CLASSIFICATION_OK";
       v8 = @"APPLE_WALKING_STEADINESS_CLASSIFICATION_NARROW_OK";
 LABEL_7:
-      if (v4)
+      if (narrowCopy)
       {
         v9 = v8;
       }
@@ -113,11 +113,11 @@ LABEL_12:
   return v10;
 }
 
-+ (id)localizedTitleForWalkingSteadinessEventCategoryValue:(int64_t)a3
++ (id)localizedTitleForWalkingSteadinessEventCategoryValue:(int64_t)value
 {
-  if (a3 > 2)
+  if (value > 2)
   {
-    if (a3 == 3)
+    if (value == 3)
     {
       v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v5 = v4;
@@ -125,7 +125,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (a3 == 4)
+    if (value == 4)
     {
       v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v5 = v4;
@@ -136,7 +136,7 @@ LABEL_12:
 
   else
   {
-    if (a3 == 1)
+    if (value == 1)
     {
       v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v5 = v4;
@@ -144,7 +144,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (a3 == 2)
+    if (value == 2)
     {
       v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v5 = v4;
@@ -160,7 +160,7 @@ LABEL_13:
   v7 = *MEMORY[0x1E696B980];
   if (os_log_type_enabled(*MEMORY[0x1E696B980], OS_LOG_TYPE_FAULT))
   {
-    [(HKMobilityUtilities *)a3 localizedTitleForWalkingSteadinessEventCategoryValue:v7];
+    [(HKMobilityUtilities *)value localizedTitleForWalkingSteadinessEventCategoryValue:v7];
   }
 
   v8 = &stru_1F42FFBE0;
@@ -169,28 +169,28 @@ LABEL_14:
   return v8;
 }
 
-+ (id)generateAppleWalkingSteadinessSeriesForTimeScope:(int64_t)a3 displayType:(id)a4 color:(id)a5
++ (id)generateAppleWalkingSteadinessSeriesForTimeScope:(int64_t)scope displayType:(id)type color:(id)color
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [HKAppleWalkingSteadinessAxis standardAxisWithDisplayType:v7];
-  if (a3 == 3)
+  typeCopy = type;
+  colorCopy = color;
+  v9 = [HKAppleWalkingSteadinessAxis standardAxisWithDisplayType:typeCopy];
+  if (scope == 3)
   {
-    v10 = [v7 generateScatterPlotSeriesWithColor:v8];
+    v10 = [typeCopy generateScatterPlotSeriesWithColor:colorCopy];
   }
 
   else
   {
-    if (a3 <= 2)
+    if (scope <= 2)
     {
-      v11 = [MEMORY[0x1E696ADA0] hk_wholeNumberFormatter];
-      v12 = [v7 generateDistributionSeriesWithColor:v8 numberFormatter:v11 lineWidth:0 hasMinMaxOverlay:10.0];
+      hk_wholeNumberFormatter = [MEMORY[0x1E696ADA0] hk_wholeNumberFormatter];
+      v12 = [typeCopy generateDistributionSeriesWithColor:colorCopy numberFormatter:hk_wholeNumberFormatter lineWidth:0 hasMinMaxOverlay:10.0];
 
       [v12 setHollowLineRatio:0.6];
       goto LABEL_7;
     }
 
-    v10 = [[HKJulianIndexedSevenDayQuantitySeries alloc] initWithColor:v8 lineWidth:8.0 hollowLineRatio:0.5];
+    v10 = [[HKJulianIndexedSevenDayQuantitySeries alloc] initWithColor:colorCopy lineWidth:8.0 hollowLineRatio:0.5];
   }
 
   v12 = v10;
@@ -200,17 +200,17 @@ LABEL_7:
   return v12;
 }
 
-+ (id)generateAppleWalkingSteadinessDataSourceForTimeScope:(int64_t)a3 displayType:(id)a4 healthStore:(id)a5 quantityType:(id)a6 unitController:(id)a7
++ (id)generateAppleWalkingSteadinessDataSourceForTimeScope:(int64_t)scope displayType:(id)type healthStore:(id)store quantityType:(id)quantityType unitController:(id)controller
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v14 unitForDisplayType:v11];
+  typeCopy = type;
+  storeCopy = store;
+  quantityTypeCopy = quantityType;
+  controllerCopy = controller;
+  v15 = [controllerCopy unitForDisplayType:typeCopy];
   v16 = v15;
-  if (a3 == 3)
+  if (scope == 3)
   {
-    v17 = [[HKQuantityTypeDataSource alloc] initWithUnitController:v14 options:2 displayType:v11 healthStore:v12];
+    v17 = [[HKQuantityTypeDataSource alloc] initWithUnitController:controllerCopy options:2 displayType:typeCopy healthStore:storeCopy];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __128__HKMobilityUtilities_generateAppleWalkingSteadinessDataSourceForTimeScope_displayType_healthStore_quantityType_unitController___block_invoke;
@@ -222,9 +222,9 @@ LABEL_7:
 
   else
   {
-    if (a3 <= 2)
+    if (scope <= 2)
     {
-      v17 = [[HKQuantityDistributionDataSource alloc] initWithQuantityType:v13 unitController:v14 healthStore:v12 contextStyle:0 predicate:0 options:1 baseDisplayType:v11 specificStartDate:0 specificEndDate:0 userInfoCreationBlock:&__block_literal_global_54];
+      v17 = [[HKQuantityDistributionDataSource alloc] initWithQuantityType:quantityTypeCopy unitController:controllerCopy healthStore:storeCopy contextStyle:0 predicate:0 options:1 baseDisplayType:typeCopy specificStartDate:0 specificEndDate:0 userInfoCreationBlock:&__block_literal_global_54];
       goto LABEL_7;
     }
 
@@ -234,7 +234,7 @@ LABEL_7:
     aBlock[3] = &unk_1E81B90B8;
     v22 = v15;
     v19 = _Block_copy(aBlock);
-    v17 = [[HKJulianIndexedSevenDayQuantityDataSource alloc] initWithDisplayType:v11 healthStore:v12 quantityType:v13 unitController:v14 intervalUserInfoCreationBlock:v19];
+    v17 = [[HKJulianIndexedSevenDayQuantityDataSource alloc] initWithDisplayType:typeCopy healthStore:storeCopy quantityType:quantityTypeCopy unitController:controllerCopy intervalUserInfoCreationBlock:v19];
 
     v18 = v22;
   }
@@ -296,32 +296,32 @@ HKInteractiveChartAppleWalkingSteadinessData *__128__HKMobilityUtilities_generat
   return v4;
 }
 
-+ (BOOL)chartDataSpansMultipleClassifications:(id)a3
++ (BOOL)chartDataSpansMultipleClassifications:(id)classifications
 {
   v7 = 0.0;
   v8 = 0.0;
-  v4 = [a1 _valueRangeMin:&v8 max:&v7 forChartData:a3];
+  v4 = [self _valueRangeMin:&v8 max:&v7 forChartData:classifications];
   if (v4)
   {
-    v5 = [a1 classificationForAppleWalkingSteadinessValue:v8];
-    LOBYTE(v4) = v5 != [a1 classificationForAppleWalkingSteadinessValue:v7];
+    v5 = [self classificationForAppleWalkingSteadinessValue:v8];
+    LOBYTE(v4) = v5 != [self classificationForAppleWalkingSteadinessValue:v7];
   }
 
   return v4;
 }
 
-+ (BOOL)_valueRangeMin:(double *)a3 max:(double *)a4 forChartData:(id)a5
++ (BOOL)_valueRangeMin:(double *)min max:(double *)max forChartData:(id)data
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [v7 count];
+  dataCopy = data;
+  v8 = [dataCopy count];
   if (v8)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = v7;
+    v9 = dataCopy;
     v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
@@ -383,14 +383,14 @@ HKInteractiveChartAppleWalkingSteadinessData *__128__HKMobilityUtilities_generat
       v14 = -1.79769313e308;
     }
 
-    if (a3)
+    if (min)
     {
-      *a3 = v13;
+      *min = v13;
     }
 
-    if (a4)
+    if (max)
     {
-      *a4 = v14;
+      *max = v14;
     }
   }
 

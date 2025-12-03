@@ -2,8 +2,8 @@
 - (BOOL)_accessibilityIsFrameOutOfBounds;
 - (CGPDFPage)_axPageRef;
 - (id)_axAllElements;
-- (id)accessibilityElementsWithPlugin:(id)a3;
-- (id)accessibilityHitTest:(CGPoint)a3 withPlugin:(id)a4;
+- (id)accessibilityElementsWithPlugin:(id)plugin;
+- (id)accessibilityHitTest:(CGPoint)test withPlugin:(id)plugin;
 @end
 
 @implementation PDFPageAccessibility
@@ -11,9 +11,9 @@
 - (CGPDFPage)_axPageRef
 {
   v2 = __UIAccessibilitySafeClass();
-  v3 = [v2 pageRef];
+  pageRef = [v2 pageRef];
 
-  return v3;
+  return pageRef;
 }
 
 - (BOOL)_accessibilityIsFrameOutOfBounds
@@ -23,25 +23,25 @@
   return [(PDFPageAccessibility *)&v3 _accessibilityIsFrameOutOfBounds];
 }
 
-- (id)accessibilityHitTest:(CGPoint)a3 withPlugin:(id)a4
+- (id)accessibilityHitTest:(CGPoint)test withPlugin:(id)plugin
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v20 = *MEMORY[0x29EDCA608];
-  v7 = a4;
-  v8 = [(PDFPageAccessibility *)self plugin];
+  pluginCopy = plugin;
+  plugin = [(PDFPageAccessibility *)self plugin];
 
-  if (!v8)
+  if (!plugin)
   {
-    [(PDFPageAccessibility *)self _axSetPlugin:v7];
+    [(PDFPageAccessibility *)self _axSetPlugin:pluginCopy];
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(PDFPageAccessibility *)self _axAllElements];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _axAllElements = [(PDFPageAccessibility *)self _axAllElements];
+  v10 = [_axAllElements countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -51,7 +51,7 @@
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_axAllElements);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
@@ -65,7 +65,7 @@
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [_axAllElements countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v10)
       {
         continue;
@@ -82,68 +82,68 @@ LABEL_13:
 
 - (id)_axAllElements
 {
-  v3 = [(PDFPageAccessibility *)self _axAllNodeElements];
-  v4 = v3;
-  if (v3 && [v3 count])
+  _axAllNodeElements = [(PDFPageAccessibility *)self _axAllNodeElements];
+  v4 = _axAllNodeElements;
+  if (_axAllNodeElements && [_axAllNodeElements count])
   {
-    v5 = v4;
+    array = v4;
   }
 
   else
   {
-    v5 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
 
-    v6 = [MEMORY[0x29EDB8DE8] array];
-    v7 = [(PDFPageAccessibility *)self accessibilityElements];
-    [v6 addObjectsFromArray:v7];
+    array2 = [MEMORY[0x29EDB8DE8] array];
+    accessibilityElements = [(PDFPageAccessibility *)self accessibilityElements];
+    [array2 addObjectsFromArray:accessibilityElements];
     while (1)
     {
 
-      if (![v6 count])
+      if (![array2 count])
       {
         break;
       }
 
-      v7 = [v6 firstObject];
-      [v6 removeObjectAtIndex:0];
-      if ([v7 isAccessibilityElement])
+      accessibilityElements = [array2 firstObject];
+      [array2 removeObjectAtIndex:0];
+      if ([accessibilityElements isAccessibilityElement])
       {
-        [v5 addObject:v7];
+        [array addObject:accessibilityElements];
       }
 
       else
       {
-        v8 = [v7 accessibilityElements];
-        v9 = [v8 count];
+        v7AccessibilityElements = [accessibilityElements accessibilityElements];
+        v9 = [v7AccessibilityElements count];
 
         if (v9)
         {
-          v10 = [v7 accessibilityElements];
-          [v6 addObjectsFromArray:v10];
+          v7AccessibilityElements2 = [accessibilityElements accessibilityElements];
+          [array2 addObjectsFromArray:v7AccessibilityElements2];
         }
       }
     }
 
-    [(PDFPageAccessibility *)self _axSetAllNodeElements:v5];
+    [(PDFPageAccessibility *)self _axSetAllNodeElements:array];
   }
 
-  return v5;
+  return array;
 }
 
-- (id)accessibilityElementsWithPlugin:(id)a3
+- (id)accessibilityElementsWithPlugin:(id)plugin
 {
-  v4 = a3;
-  v5 = [(PDFPageAccessibility *)self plugin];
+  pluginCopy = plugin;
+  plugin = [(PDFPageAccessibility *)self plugin];
 
-  if (!v5)
+  if (!plugin)
   {
-    [(PDFPageAccessibility *)self _axSetPlugin:v4];
+    [(PDFPageAccessibility *)self _axSetPlugin:pluginCopy];
   }
 
-  v6 = [(PDFPageAccessibility *)self _axPageElements];
-  if (!v6)
+  _axPageElements = [(PDFPageAccessibility *)self _axPageElements];
+  if (!_axPageElements)
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    _axPageElements = [MEMORY[0x29EDB8DE8] array];
     [(PDFPageAccessibility *)self _axPageRef];
     v7 = CGPDFPageCopyRootTaggedNode();
     v8 = [UICGPDFNodeAccessibilityElement alloc];
@@ -151,12 +151,12 @@ LABEL_13:
     v9 = __UIAccessibilityCastAsClass();
     v10 = [(UICGPDFNodeAccessibilityElement *)v8 initWithAccessibilityContainer:self pdfNodeRef:v7 withPage:v9];
 
-    [v6 axSafelyAddObject:v10];
-    [(PDFPageAccessibility *)self _axSetPageElements:v6];
+    [_axPageElements axSafelyAddObject:v10];
+    [(PDFPageAccessibility *)self _axSetPageElements:_axPageElements];
     CGPDFTaggedNodeRelease();
   }
 
-  return v6;
+  return _axPageElements;
 }
 
 @end

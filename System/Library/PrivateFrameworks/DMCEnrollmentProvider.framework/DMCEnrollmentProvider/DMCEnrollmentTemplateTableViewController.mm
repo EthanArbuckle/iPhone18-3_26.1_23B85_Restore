@@ -1,64 +1,64 @@
 @interface DMCEnrollmentTemplateTableViewController
-- (DMCEnrollmentTemplateTableViewController)initWithIconName:(id)a3 iconImage:(id)a4 title:(id)a5 subTitle:(id)a6 layoutStyle:(unint64_t)a7;
-- (DMCEnrollmentTemplateTableViewController)initWithStyle:(int64_t)a3;
-- (SEL)_actionSelectorForBarButtonPosition:(unint64_t)a3;
+- (DMCEnrollmentTemplateTableViewController)initWithIconName:(id)name iconImage:(id)image title:(id)title subTitle:(id)subTitle layoutStyle:(unint64_t)style;
+- (DMCEnrollmentTemplateTableViewController)initWithStyle:(int64_t)style;
+- (SEL)_actionSelectorForBarButtonPosition:(unint64_t)position;
 - (double)_lastCellBlockedHeight;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)_addCellData:(id)a3 createNewSection:(BOOL)a4 animated:(BOOL)a5;
-- (void)_addBottomView:(id)a3;
-- (void)_adjustFloatyViewFrameWithKeyboardFrame:(CGRect)a3 animationDuration:(double)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)_addCellData:(id)data createNewSection:(BOOL)section animated:(BOOL)animated;
+- (void)_addBottomView:(id)view;
+- (void)_adjustFloatyViewFrameWithKeyboardFrame:(CGRect)frame animationDuration:(double)duration;
 - (void)_maskNavigationBar;
 - (void)_setUpBackdrops;
-- (void)_setupHeaderSectionWithIconName:(id)a3 iconImage:(id)a4 title:(id)a5 subTitle:(id)a6;
+- (void)_setupHeaderSectionWithIconName:(id)name iconImage:(id)image title:(id)title subTitle:(id)subTitle;
 - (void)_setupNotification;
-- (void)_touchViewFrame:(id)a3;
+- (void)_touchViewFrame:(id)frame;
 - (void)_updateEffectiveViewVisibility;
-- (void)_updateFloatyViewForKeyboardFrame:(CGRect)a3 duration:(double)a4;
-- (void)addBottomView:(id)a3;
-- (void)addCellData:(id)a3 toSection:(unint64_t)a4 animated:(BOOL)a5;
-- (void)addFloatyBottomView:(id)a3;
-- (void)keyboardDidShow:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)removeCellData:(id)a3 fromSection:(unint64_t)a4 animated:(BOOL)a5;
-- (void)setIconName:(id)a3;
-- (void)setInProgress:(BOOL)a3;
-- (void)setSubtitleText:(id)a3;
-- (void)setTitleText:(id)a3;
+- (void)_updateFloatyViewForKeyboardFrame:(CGRect)frame duration:(double)duration;
+- (void)addBottomView:(id)view;
+- (void)addCellData:(id)data toSection:(unint64_t)section animated:(BOOL)animated;
+- (void)addFloatyBottomView:(id)view;
+- (void)keyboardDidShow:(id)show;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
+- (void)removeCellData:(id)data fromSection:(unint64_t)section animated:(BOOL)animated;
+- (void)setIconName:(id)name;
+- (void)setInProgress:(BOOL)progress;
+- (void)setSubtitleText:(id)text;
+- (void)setTitleText:(id)text;
 - (void)updateContinueButtonStatus;
-- (void)updateNavBarButtonType:(unint64_t)a3 forButtonPosition:(unint64_t)a4 enabled:(BOOL)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)updateNavBarButtonType:(unint64_t)type forButtonPosition:(unint64_t)position enabled:(BOOL)enabled;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation DMCEnrollmentTemplateTableViewController
 
-- (DMCEnrollmentTemplateTableViewController)initWithIconName:(id)a3 iconImage:(id)a4 title:(id)a5 subTitle:(id)a6 layoutStyle:(unint64_t)a7
+- (DMCEnrollmentTemplateTableViewController)initWithIconName:(id)name iconImage:(id)image title:(id)title subTitle:(id)subTitle layoutStyle:(unint64_t)style
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  nameCopy = name;
+  imageCopy = image;
+  titleCopy = title;
+  subTitleCopy = subTitle;
   v16 = [(DMCEnrollmentTemplateTableViewController *)self initWithStyle:2];
   v17 = v16;
   if (v16)
   {
-    v16->_layoutStyle = a7;
-    [(DMCEnrollmentTemplateTableViewController *)v16 _setupHeaderSectionWithIconName:v12 iconImage:v13 title:v14 subTitle:v15];
+    v16->_layoutStyle = style;
+    [(DMCEnrollmentTemplateTableViewController *)v16 _setupHeaderSectionWithIconName:nameCopy iconImage:imageCopy title:titleCopy subTitle:subTitleCopy];
   }
 
   return v17;
 }
 
-- (DMCEnrollmentTemplateTableViewController)initWithStyle:(int64_t)a3
+- (DMCEnrollmentTemplateTableViewController)initWithStyle:(int64_t)style
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v17.receiver = self;
@@ -67,7 +67,7 @@
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277D75B40]);
-    v6 = [v5 initWithFrame:a3 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+    v6 = [v5 initWithFrame:style style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     tableView = v4->_tableView;
     v4->_tableView = v6;
 
@@ -76,8 +76,8 @@
     [(UITableView *)v4->_tableView setDelegate:v4];
     [(UITableView *)v4->_tableView setDataSource:v4];
     [(UITableView *)v4->_tableView setClipsToBounds:0];
-    v8 = [(DMCEnrollmentTemplateTableViewController *)v4 view];
-    [v8 addSubview:v4->_tableView];
+    view = [(DMCEnrollmentTemplateTableViewController *)v4 view];
+    [view addSubview:v4->_tableView];
 
     v9 = objc_opt_new();
     cellDataCollection = v4->_cellDataCollection;
@@ -116,40 +116,40 @@ void __58__DMCEnrollmentTemplateTableViewController_initWithStyle___block_invoke
 
 - (void)_setupNotification
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_keyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_keyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
 }
 
-- (void)_setupHeaderSectionWithIconName:(id)a3 iconImage:(id)a4 title:(id)a5 subTitle:(id)a6
+- (void)_setupHeaderSectionWithIconName:(id)name iconImage:(id)image title:(id)title subTitle:(id)subTitle
 {
-  v26 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  imageCopy = image;
+  titleCopy = title;
+  subTitleCopy = subTitle;
   v13 = objc_opt_new();
-  if (v26)
+  if (nameCopy)
   {
-    v14 = [v26 copy];
+    v14 = [nameCopy copy];
     iconName = self->_iconName;
     self->_iconName = v14;
 
-    v16 = [[DMCEnrollmentTableViewIconCell alloc] initWithIconName:v26];
+    v16 = [[DMCEnrollmentTableViewIconCell alloc] initWithIconName:nameCopy];
   }
 
   else
   {
-    if (!v10)
+    if (!imageCopy)
     {
       goto LABEL_6;
     }
 
-    v16 = [[DMCEnrollmentTableViewIconCell alloc] initWithIconImage:v10 layoutStyle:self->_layoutStyle];
+    v16 = [[DMCEnrollmentTableViewIconCell alloc] initWithIconImage:imageCopy layoutStyle:self->_layoutStyle];
   }
 
   iconCell = self->_iconCell;
@@ -157,26 +157,26 @@ void __58__DMCEnrollmentTemplateTableViewController_initWithStyle___block_invoke
 
   [v13 addObject:self->_iconCell];
 LABEL_6:
-  if ([v11 length])
+  if ([titleCopy length])
   {
-    v18 = [v11 copy];
+    v18 = [titleCopy copy];
     titleText = self->_titleText;
     self->_titleText = v18;
 
-    v20 = [[DMCEnrollmentTableViewTitleCell alloc] initWithTitle:v11];
+    v20 = [[DMCEnrollmentTableViewTitleCell alloc] initWithTitle:titleCopy];
     titleCell = self->_titleCell;
     self->_titleCell = v20;
 
     [v13 addObject:self->_titleCell];
   }
 
-  if ([v12 length])
+  if ([subTitleCopy length])
   {
-    v22 = [v12 copy];
+    v22 = [subTitleCopy copy];
     subtitleText = self->_subtitleText;
     self->_subtitleText = v22;
 
-    v24 = [[DMCEnrollmentTableViewTextCell alloc] initWithText:v12 bold:0];
+    v24 = [[DMCEnrollmentTableViewTextCell alloc] initWithText:subTitleCopy bold:0];
     subtitleCell = self->_subtitleCell;
     self->_subtitleCell = v24;
 
@@ -189,18 +189,18 @@ LABEL_6:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = DMCEnrollmentTemplateTableViewController;
-  [(DMCEnrollmentTemplateTableViewController *)&v8 viewWillAppear:a3];
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v5 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  [(DMCEnrollmentTemplateTableViewController *)&v8 viewWillAppear:appear];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(DMCEnrollmentTemplateTableViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v6 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v7 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-  [v7 setBackgroundColor:v6];
+  systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+  tableView = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+  [tableView setBackgroundColor:systemBackgroundColor2];
 
   [(DMCEnrollmentTemplateTableViewController *)self _maskNavigationBar];
 }
@@ -210,35 +210,35 @@ LABEL_6:
   v74.receiver = self;
   v74.super_class = DMCEnrollmentTemplateTableViewController;
   [(DMCEnrollmentTemplateTableViewController *)&v74 viewWillLayoutSubviews];
-  v3 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-  [v3 contentInset];
+  tableView = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+  [tableView contentInset];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
-  v10 = [MEMORY[0x277D03530] isPad];
+  isPad = [MEMORY[0x277D03530] isPad];
   v11 = 38.0;
-  if (!v10)
+  if (!isPad)
   {
     v11 = 15.0;
   }
 
   v73 = v11;
-  v12 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  v13 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-  [v12 sendSubviewToBack:v13];
+  view = [(DMCEnrollmentTemplateTableViewController *)self view];
+  tableView2 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+  [view sendSubviewToBack:tableView2];
 
-  v14 = [MEMORY[0x277D03530] isPad];
-  v15 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
-  if (v15)
+  isPad2 = [MEMORY[0x277D03530] isPad];
+  floatyBottomView = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
+  if (floatyBottomView)
   {
   }
 
   else
   {
-    v16 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
+    bottomView = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
 
-    if (!v16)
+    if (!bottomView)
     {
       v72 = 0.0;
       goto LABEL_27;
@@ -247,23 +247,23 @@ LABEL_6:
 
   v70 = v7;
   v71 = v5;
-  v17 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  [v17 bounds];
+  view2 = [(DMCEnrollmentTemplateTableViewController *)self view];
+  [view2 bounds];
   v18 = CGRectGetWidth(v75) + v73 * -2.0 + -34.0;
-  v19 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  [v19 safeAreaInsets];
+  view3 = [(DMCEnrollmentTemplateTableViewController *)self view];
+  [view3 safeAreaInsets];
   v21 = v18 + v20 * -2.0;
 
-  v22 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
-  [v22 sizeThatFits:{v21, 1.79769313e308}];
+  bottomView2 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
+  [bottomView2 sizeThatFits:{v21, 1.79769313e308}];
   v24 = v23;
 
-  v25 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
-  [v25 sizeThatFits:{v21, 1.79769313e308}];
+  floatyBottomView2 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
+  [floatyBottomView2 sizeThatFits:{v21, 1.79769313e308}];
   v27 = v26;
 
-  v28 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
-  if (v28)
+  bottomView3 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
+  if (bottomView3)
   {
     v29 = 20.0;
   }
@@ -284,7 +284,7 @@ LABEL_6:
     v31 = v30;
   }
 
-  if (v14)
+  if (isPad2)
   {
     v32 = 46.0;
   }
@@ -294,20 +294,20 @@ LABEL_6:
     v32 = 30.0;
   }
 
-  v33 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  [v33 safeAreaInsets];
+  view4 = [(DMCEnrollmentTemplateTableViewController *)self view];
+  [view4 safeAreaInsets];
   v35 = v32 + v34;
 
-  v36 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
+  floatyBottomView3 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
 
-  if (v36)
+  if (floatyBottomView3)
   {
     v35 = v31 + v27 + v35;
   }
 
-  v37 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
+  bottomView4 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
 
-  if (v37)
+  if (bottomView4)
   {
     v38 = v24 + v35;
   }
@@ -317,21 +317,21 @@ LABEL_6:
     v38 = v35;
   }
 
-  v39 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  [v39 bounds];
+  view5 = [(DMCEnrollmentTemplateTableViewController *)self view];
+  [view5 bounds];
   v40 = CGRectGetMaxY(v76) - v38;
-  v41 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  [v41 bounds];
+  view6 = [(DMCEnrollmentTemplateTableViewController *)self view];
+  [view6 bounds];
   Width = CGRectGetWidth(v77);
-  v43 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+  bottomContainerView = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
   v72 = v38;
-  [v43 setFrame:{0.0, v40, Width, v38}];
+  [bottomContainerView setFrame:{0.0, v40, Width, v38}];
 
-  v44 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  [v44 safeAreaInsets];
+  view7 = [(DMCEnrollmentTemplateTableViewController *)self view];
+  [view7 safeAreaInsets];
   v46 = v73 + 17.0 + v45;
-  v47 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
-  if (v47)
+  floatyBottomView4 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
+  if (floatyBottomView4)
   {
     v48 = v27 + v31 + 22.0;
   }
@@ -341,14 +341,14 @@ LABEL_6:
     v48 = 22.0;
   }
 
-  v49 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
-  [v49 setFrame:{v46, v48, v21, v24}];
+  bottomView5 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
+  [bottomView5 setFrame:{v46, v48, v21, v24}];
 
-  v50 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  [v50 safeAreaInsets];
+  view8 = [(DMCEnrollmentTemplateTableViewController *)self view];
+  [view8 safeAreaInsets];
   v52 = v73 + 17.0 + v51;
-  v53 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
-  [v53 setFrame:{v52, 22.0, v21, v27}];
+  floatyBottomView5 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
+  [floatyBottomView5 setFrame:{v52, 22.0, v21, v27}];
 
   if ([MEMORY[0x277D03530] isPad])
   {
@@ -358,184 +358,184 @@ LABEL_6:
 
   else
   {
-    v54 = [(DMCEnrollmentTemplateTableViewController *)self view];
-    [v54 safeAreaInsets];
+    view9 = [(DMCEnrollmentTemplateTableViewController *)self view];
+    [view9 safeAreaInsets];
     v7 = 8.0 - v55;
 
     v5 = v71;
   }
 
 LABEL_27:
-  v56 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-  [v56 verticalScrollIndicatorInsets];
+  tableView3 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+  [tableView3 verticalScrollIndicatorInsets];
   v58 = v57;
   v60 = v59;
   v62 = v61;
 
-  v63 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-  [v63 setVerticalScrollIndicatorInsets:{v58, v60, v62, -v73}];
+  tableView4 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+  [tableView4 setVerticalScrollIndicatorInsets:{v58, v60, v62, -v73}];
 
-  v64 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  [v64 bounds];
+  view10 = [(DMCEnrollmentTemplateTableViewController *)self view];
+  [view10 bounds];
   v65 = CGRectGetWidth(v78) + v73 * -2.0;
-  v66 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  [v66 bounds];
+  view11 = [(DMCEnrollmentTemplateTableViewController *)self view];
+  [view11 bounds];
   v67 = CGRectGetMaxY(v79) - v72 + 1.0;
-  v68 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-  [v68 setFrame:{v73, 0.0, v65, v67}];
+  tableView5 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+  [tableView5 setFrame:{v73, 0.0, v65, v67}];
 
-  v69 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-  [v69 setContentInset:{-5.0, v5, v7, v9}];
+  tableView6 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+  [tableView6 setContentInset:{-5.0, v5, v7, v9}];
 
   [(DMCEnrollmentTemplateTableViewController *)self _updateEffectiveViewVisibility];
 }
 
-- (void)addBottomView:(id)a3
+- (void)addBottomView:(id)view
 {
-  v6 = a3;
-  v4 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
+  viewCopy = view;
+  bottomView = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
 
-  if (v4)
+  if (bottomView)
   {
-    v5 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
-    [v5 removeFromSuperview];
+    bottomView2 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
+    [bottomView2 removeFromSuperview];
   }
 
-  [(DMCEnrollmentTemplateTableViewController *)self _addBottomView:v6];
-  [(DMCEnrollmentTemplateTableViewController *)self setBottomView:v6];
+  [(DMCEnrollmentTemplateTableViewController *)self _addBottomView:viewCopy];
+  [(DMCEnrollmentTemplateTableViewController *)self setBottomView:viewCopy];
 }
 
-- (void)addFloatyBottomView:(id)a3
+- (void)addFloatyBottomView:(id)view
 {
-  v6 = a3;
-  v4 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
+  viewCopy = view;
+  floatyBottomView = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
 
-  if (v4)
+  if (floatyBottomView)
   {
-    v5 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
-    [v5 removeFromSuperview];
+    floatyBottomView2 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
+    [floatyBottomView2 removeFromSuperview];
   }
 
-  [(DMCEnrollmentTemplateTableViewController *)self _addBottomView:v6];
-  [(DMCEnrollmentTemplateTableViewController *)self setFloatyBottomView:v6];
+  [(DMCEnrollmentTemplateTableViewController *)self _addBottomView:viewCopy];
+  [(DMCEnrollmentTemplateTableViewController *)self setFloatyBottomView:viewCopy];
 }
 
-- (void)_addBottomView:(id)a3
+- (void)_addBottomView:(id)view
 {
-  v4 = a3;
-  v5 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+  viewCopy = view;
+  bottomContainerView = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
 
-  if (!v5)
+  if (!bottomContainerView)
   {
     v6 = objc_opt_new();
     [(DMCEnrollmentTemplateTableViewController *)self setBottomContainerView:v6];
 
-    v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v8 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-    [v8 setBackgroundColor:v7];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    bottomContainerView2 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+    [bottomContainerView2 setBackgroundColor:systemBackgroundColor];
 
-    v9 = [(DMCEnrollmentTemplateTableViewController *)self view];
-    v10 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-    [v9 addSubview:v10];
+    view = [(DMCEnrollmentTemplateTableViewController *)self view];
+    bottomContainerView3 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+    [view addSubview:bottomContainerView3];
 
     [(DMCEnrollmentTemplateTableViewController *)self _setUpBackdrops];
   }
 
-  v11 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-  [v11 addSubview:v4];
+  bottomContainerView4 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+  [bottomContainerView4 addSubview:viewCopy];
 }
 
-- (void)setIconName:(id)a3
+- (void)setIconName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_iconName isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     iconName = self->_iconName;
     self->_iconName = v4;
 
-    [(DMCEnrollmentTableViewIconCell *)self->_iconCell setIconName:v6];
+    [(DMCEnrollmentTableViewIconCell *)self->_iconCell setIconName:nameCopy];
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v8 = a3;
+  textCopy = text;
   if (![(NSString *)self->_titleText isEqualToString:?])
   {
-    v4 = [v8 copy];
+    v4 = [textCopy copy];
     titleText = self->_titleText;
     self->_titleText = v4;
 
     v6 = self->_titleText;
-    v7 = [(DMCEnrollmentTemplateTableViewController *)self titleCell];
-    [v7 setTitle:v6];
+    titleCell = [(DMCEnrollmentTemplateTableViewController *)self titleCell];
+    [titleCell setTitle:v6];
   }
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(NSString *)self->_subtitleText isEqualToString:v4])
+  textCopy = text;
+  if (![(NSString *)self->_subtitleText isEqualToString:textCopy])
   {
-    v5 = [v4 copy];
+    v5 = [textCopy copy];
     subtitleText = self->_subtitleText;
     self->_subtitleText = v5;
 
-    v7 = [(DMCEnrollmentTemplateTableViewController *)self subtitleCell];
-    if (v7)
+    subtitleCell = [(DMCEnrollmentTemplateTableViewController *)self subtitleCell];
+    if (subtitleCell)
     {
     }
 
-    else if ([v4 length])
+    else if ([textCopy length])
     {
-      v13 = [[DMCEnrollmentTableViewTextCell alloc] initWithText:v4 bold:0];
+      v13 = [[DMCEnrollmentTableViewTextCell alloc] initWithText:textCopy bold:0];
       [(DMCEnrollmentTemplateTableViewController *)self setSubtitleCell:v13];
 
-      v11 = [(DMCEnrollmentTemplateTableViewController *)self subtitleCell];
-      v17[0] = v11;
+      subtitleCell2 = [(DMCEnrollmentTemplateTableViewController *)self subtitleCell];
+      v17[0] = subtitleCell2;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
       [(DMCEnrollmentTemplateTableViewController *)self addCellData:v12 toSection:[(DMCEnrollmentTemplateTableViewController *)self headerSection] animated:0];
       goto LABEL_9;
     }
 
-    v8 = [(DMCEnrollmentTemplateTableViewController *)self subtitleCell];
-    if (!v8)
+    subtitleCell3 = [(DMCEnrollmentTemplateTableViewController *)self subtitleCell];
+    if (!subtitleCell3)
     {
       goto LABEL_10;
     }
 
-    v9 = v8;
-    v10 = [v4 length];
+    v9 = subtitleCell3;
+    v10 = [textCopy length];
 
     if (v10)
     {
       goto LABEL_10;
     }
 
-    v11 = [(DMCEnrollmentTemplateTableViewController *)self subtitleCell];
-    v16 = v11;
+    subtitleCell2 = [(DMCEnrollmentTemplateTableViewController *)self subtitleCell];
+    v16 = subtitleCell2;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
     [(DMCEnrollmentTemplateTableViewController *)self removeCellData:v12 fromSection:[(DMCEnrollmentTemplateTableViewController *)self headerSection] animated:0];
 LABEL_9:
 
 LABEL_10:
     v14 = self->_subtitleText;
-    v15 = [(DMCEnrollmentTemplateTableViewController *)self subtitleCell];
-    [v15 setText:v14];
+    subtitleCell4 = [(DMCEnrollmentTemplateTableViewController *)self subtitleCell];
+    [subtitleCell4 setText:v14];
   }
 }
 
-- (void)setInProgress:(BOOL)a3
+- (void)setInProgress:(BOOL)progress
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (self->_inProgress != a3)
+  if (self->_inProgress != progress)
   {
-    v3 = a3;
-    self->_inProgress = a3;
-    v5 = [(DMCEnrollmentTemplateTableViewController *)self view];
-    [v5 setUserInteractionEnabled:!v3];
+    progressCopy = progress;
+    self->_inProgress = progress;
+    view = [(DMCEnrollmentTemplateTableViewController *)self view];
+    [view setUserInteractionEnabled:!progressCopy];
 
     v23 = 0u;
     v24 = 0u;
@@ -579,7 +579,7 @@ LABEL_10:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector())
                 {
-                  [v13 setEnabled:!v3];
+                  [v13 setEnabled:!progressCopy];
                 }
               }
 
@@ -615,37 +615,37 @@ LABEL_10:
   [(DMCEnrollmentTemplateTableViewController *)self updateNavBarButtonType:v3 forButtonPosition:1 enabled:0];
 }
 
-- (void)updateNavBarButtonType:(unint64_t)a3 forButtonPosition:(unint64_t)a4 enabled:(BOOL)a5
+- (void)updateNavBarButtonType:(unint64_t)type forButtonPosition:(unint64_t)position enabled:(BOOL)enabled
 {
-  v5 = a5;
-  v9 = [(DMCEnrollmentTemplateTableViewController *)self navigationItem];
-  v10 = v9;
-  if (a4)
+  enabledCopy = enabled;
+  navigationItem = [(DMCEnrollmentTemplateTableViewController *)self navigationItem];
+  v10 = navigationItem;
+  if (position)
   {
-    [v9 rightBarButtonItem];
+    [navigationItem rightBarButtonItem];
   }
 
   else
   {
-    [v9 leftBarButtonItem];
+    [navigationItem leftBarButtonItem];
   }
   v16 = ;
 
-  if (a3 - 1 < 4)
+  if (type - 1 < 4)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [(DMCEnrollmentUIBarButtonItem *)v16 buttonType]== a3)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [(DMCEnrollmentUIBarButtonItem *)v16 buttonType]== type)
     {
       v11 = v16;
       v12 = v16;
       goto LABEL_17;
     }
 
-    v11 = [[DMCEnrollmentUIBarButtonItem alloc] initWithType:a3 target:self action:[(DMCEnrollmentTemplateTableViewController *)self _actionSelectorForBarButtonPosition:a4]];
+    v11 = [[DMCEnrollmentUIBarButtonItem alloc] initWithType:type target:self action:[(DMCEnrollmentTemplateTableViewController *)self _actionSelectorForBarButtonPosition:position]];
     goto LABEL_13;
   }
 
-  if (a3)
+  if (type)
   {
     v11 = 0;
 LABEL_13:
@@ -663,40 +663,40 @@ LABEL_13:
 LABEL_14:
   if (v11 != v12)
   {
-    [(DMCEnrollmentUIBarButtonItem *)v11 setEnabled:v5];
-    v13 = [(DMCEnrollmentTemplateTableViewController *)self navigationItem];
-    v14 = v13;
-    if (a4)
+    [(DMCEnrollmentUIBarButtonItem *)v11 setEnabled:enabledCopy];
+    navigationItem2 = [(DMCEnrollmentTemplateTableViewController *)self navigationItem];
+    v14 = navigationItem2;
+    if (position)
     {
-      [v13 setRightBarButtonItem:v11];
+      [navigationItem2 setRightBarButtonItem:v11];
     }
 
     else
     {
-      [v13 setLeftBarButtonItem:v11];
+      [navigationItem2 setLeftBarButtonItem:v11];
     }
 
     goto LABEL_20;
   }
 
 LABEL_17:
-  [(DMCEnrollmentUIBarButtonItem *)v12 setEnabled:v5];
+  [(DMCEnrollmentUIBarButtonItem *)v12 setEnabled:enabledCopy];
 LABEL_20:
-  v15 = [(DMCEnrollmentTemplateTableViewController *)self navigationItem];
-  DMCSendNavUIUpdatedNotification(v15);
+  navigationItem3 = [(DMCEnrollmentTemplateTableViewController *)self navigationItem];
+  DMCSendNavUIUpdatedNotification(navigationItem3);
 
   v12 = v16;
 LABEL_21:
 }
 
-- (SEL)_actionSelectorForBarButtonPosition:(unint64_t)a3
+- (SEL)_actionSelectorForBarButtonPosition:(unint64_t)position
 {
-  if (a3 == 1)
+  if (position == 1)
   {
     return sel_rightBarButtonTapped_;
   }
 
-  if (!a3)
+  if (!position)
   {
     return sel_leftBarButtonTapped_;
   }
@@ -709,8 +709,8 @@ LABEL_21:
   v13.width = 1.0;
   v13.height = 1.0;
   UIGraphicsBeginImageContext(v13);
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v3 set];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [systemBackgroundColor set];
 
   v14.origin.x = 0.0;
   v14.origin.y = 0.0;
@@ -719,111 +719,111 @@ LABEL_21:
   UIRectFill(v14);
   v11 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  v4 = [(DMCEnrollmentTemplateTableViewController *)self navigationController];
-  v5 = [v4 navigationBar];
-  [v5 setBackgroundImage:v11 forBarMetrics:0];
+  navigationController = [(DMCEnrollmentTemplateTableViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setBackgroundImage:v11 forBarMetrics:0];
 
-  v6 = [(DMCEnrollmentTemplateTableViewController *)self navigationController];
-  v7 = [v6 navigationBar];
+  navigationController2 = [(DMCEnrollmentTemplateTableViewController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
   v8 = objc_opt_new();
-  [v7 setShadowImage:v8];
+  [navigationBar2 setShadowImage:v8];
 
-  v9 = [(DMCEnrollmentTemplateTableViewController *)self navigationController];
-  v10 = [v9 navigationBar];
-  [v10 setTranslucent:1];
+  navigationController3 = [(DMCEnrollmentTemplateTableViewController *)self navigationController];
+  navigationBar3 = [navigationController3 navigationBar];
+  [navigationBar3 setTranslucent:1];
 }
 
-- (void)addCellData:(id)a3 toSection:(unint64_t)a4 animated:(BOOL)a5
+- (void)addCellData:(id)data toSection:(unint64_t)section animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-  v10 = [v9 count];
+  animatedCopy = animated;
+  dataCopy = data;
+  cellDataCollection = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+  v10 = [cellDataCollection count];
 
-  v11 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-  v12 = v11;
-  if (v10 <= a4)
+  cellDataCollection2 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+  v12 = cellDataCollection2;
+  if (v10 <= section)
   {
-    v16 = [v8 mutableCopy];
+    v16 = [dataCopy mutableCopy];
 
     [v12 addObject:v16];
-    if (!v5)
+    if (!animatedCopy)
     {
       goto LABEL_7;
     }
 
-    v14 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-    v15 = [MEMORY[0x277CCAA78] indexSetWithIndex:a4];
-    [v14 insertSections:v15 withRowAnimation:0];
+    tableView = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+    v15 = [MEMORY[0x277CCAA78] indexSetWithIndex:section];
+    [tableView insertSections:v15 withRowAnimation:0];
   }
 
   else
   {
-    v13 = [v11 objectAtIndexedSubscript:a4];
-    [v13 addObjectsFromArray:v8];
+    v13 = [cellDataCollection2 objectAtIndexedSubscript:section];
+    [v13 addObjectsFromArray:dataCopy];
 
-    if (!v5)
+    if (!animatedCopy)
     {
       goto LABEL_7;
     }
 
-    v14 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-    v15 = [MEMORY[0x277CCAA78] indexSetWithIndex:a4];
-    [v14 reloadSections:v15 withRowAnimation:100];
+    tableView = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+    v15 = [MEMORY[0x277CCAA78] indexSetWithIndex:section];
+    [tableView reloadSections:v15 withRowAnimation:100];
   }
 
 LABEL_7:
-  v17 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-  [v17 reloadData];
+  tableView2 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+  [tableView2 reloadData];
 }
 
-- (unint64_t)_addCellData:(id)a3 createNewSection:(BOOL)a4 animated:(BOOL)a5
+- (unint64_t)_addCellData:(id)data createNewSection:(BOOL)section animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-  v10 = [v9 count] - !v6;
+  animatedCopy = animated;
+  sectionCopy = section;
+  dataCopy = data;
+  cellDataCollection = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+  v10 = [cellDataCollection count] - !sectionCopy;
 
-  [(DMCEnrollmentTemplateTableViewController *)self addCellData:v8 toSection:v10 animated:v5];
+  [(DMCEnrollmentTemplateTableViewController *)self addCellData:dataCopy toSection:v10 animated:animatedCopy];
   return v10;
 }
 
-- (void)removeCellData:(id)a3 fromSection:(unint64_t)a4 animated:(BOOL)a5
+- (void)removeCellData:(id)data fromSection:(unint64_t)section animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-  v10 = [v9 count];
+  animatedCopy = animated;
+  dataCopy = data;
+  cellDataCollection = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+  v10 = [cellDataCollection count];
 
-  if (v10 > a4 && [v8 count])
+  if (v10 > section && [dataCopy count])
   {
     v11 = objc_opt_new();
-    v12 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-    v13 = [v12 objectAtIndexedSubscript:a4];
+    cellDataCollection2 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+    v13 = [cellDataCollection2 objectAtIndexedSubscript:section];
 
     v14 = objc_opt_new();
     v25 = MEMORY[0x277D85DD0];
     v26 = 3221225472;
     v27 = __80__DMCEnrollmentTemplateTableViewController_removeCellData_fromSection_animated___block_invoke;
     v28 = &unk_278EE7D40;
-    v29 = v8;
+    v29 = dataCopy;
     v15 = v11;
     v30 = v15;
     v16 = v14;
     v31 = v16;
-    v32 = a4;
+    sectionCopy = section;
     [v13 enumerateObjectsUsingBlock:&v25];
     v17 = [v15 count];
-    v18 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-    v19 = v18;
+    cellDataCollection3 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+    v19 = cellDataCollection3;
     if (v17)
     {
-      [v18 setObject:v15 atIndexedSubscript:a4];
+      [cellDataCollection3 setObject:v15 atIndexedSubscript:section];
 
-      v20 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-      v21 = v20;
-      if (v5)
+      tableView = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+      tableView2 = tableView;
+      if (animatedCopy)
       {
         v22 = 0;
       }
@@ -833,16 +833,16 @@ LABEL_7:
         v22 = 5;
       }
 
-      [v20 deleteRowsAtIndexPaths:v16 withRowAnimation:v22];
+      [tableView deleteRowsAtIndexPaths:v16 withRowAnimation:v22];
     }
 
     else
     {
-      [v18 removeObjectAtIndex:a4];
+      [cellDataCollection3 removeObjectAtIndex:section];
 
-      v21 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-      v23 = [MEMORY[0x277CCAA78] indexSetWithIndex:a4];
-      if (v5)
+      tableView2 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+      v23 = [MEMORY[0x277CCAA78] indexSetWithIndex:section];
+      if (animatedCopy)
       {
         v24 = 0;
       }
@@ -852,7 +852,7 @@ LABEL_7:
         v24 = 5;
       }
 
-      [v21 deleteSections:v23 withRowAnimation:v24];
+      [tableView2 deleteSections:v23 withRowAnimation:v24];
     }
   }
 }
@@ -873,61 +873,61 @@ void __80__DMCEnrollmentTemplateTableViewController_removeCellData_fromSection_a
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-  v4 = [v3 count];
+  cellDataCollection = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+  v4 = [cellDataCollection count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-  v7 = [v6 count];
+  cellDataCollection = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+  v7 = [cellDataCollection count];
 
-  if (v7 <= a4)
+  if (v7 <= section)
   {
     return 0;
   }
 
-  v8 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-  v9 = [v8 objectAtIndexedSubscript:a4];
+  cellDataCollection2 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+  v9 = [cellDataCollection2 objectAtIndexedSubscript:section];
   v10 = [v9 count];
 
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
-  v8 = [v5 row];
+  pathCopy = path;
+  cellDataCollection = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+  v7 = [cellDataCollection objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  v8 = [pathCopy row];
 
   v9 = [v7 objectAtIndexedSubscript:v8];
-  v10 = [v9 cell];
+  cell = [v9 cell];
 
-  return v10;
+  return cell;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  v7 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-  v8 = [v7 count];
+  pathCopy = path;
+  section = [pathCopy section];
+  cellDataCollection = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+  v8 = [cellDataCollection count];
 
-  if (v6 >= v8)
+  if (section >= v8)
   {
     v13 = *MEMORY[0x277D76F30];
   }
 
   else
   {
-    v9 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+    cellDataCollection2 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+    v10 = [cellDataCollection2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     [v11 cellHeight];
     v13 = v12;
   }
@@ -935,23 +935,23 @@ void __80__DMCEnrollmentTemplateTableViewController_removeCellData_fromSection_a
   return v13;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  v7 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-  v8 = [v7 count];
+  pathCopy = path;
+  section = [pathCopy section];
+  cellDataCollection = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+  v8 = [cellDataCollection count];
 
-  if (v6 >= v8)
+  if (section >= v8)
   {
     v13 = *MEMORY[0x277D76F30];
   }
 
   else
   {
-    v9 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+    cellDataCollection2 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+    v10 = [cellDataCollection2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     [v11 estimatedCellHeight];
     v13 = v12;
   }
@@ -959,7 +959,7 @@ void __80__DMCEnrollmentTemplateTableViewController_removeCellData_fromSection_a
   return v13;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v4 = objc_alloc(MEMORY[0x277D75B70]);
   v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -967,7 +967,7 @@ void __80__DMCEnrollmentTemplateTableViewController_removeCellData_fromSection_a
   return v5;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v4 = objc_alloc(MEMORY[0x277D75B70]);
   v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -975,28 +975,28 @@ void __80__DMCEnrollmentTemplateTableViewController_removeCellData_fromSection_a
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-  v7 = [v6 count];
+  cellDataCollection = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+  v7 = [cellDataCollection count];
 
-  if (v7 <= a4)
+  if (v7 <= section)
   {
     return *MEMORY[0x277D76F30];
   }
 
-  v8 = [(DMCEnrollmentTemplateTableViewController *)self customTopMargin];
+  customTopMargin = [(DMCEnrollmentTemplateTableViewController *)self customTopMargin];
 
-  if (v8)
+  if (customTopMargin)
   {
-    v9 = [(DMCEnrollmentTemplateTableViewController *)self customTopMargin];
-    [v9 floatValue];
+    customTopMargin2 = [(DMCEnrollmentTemplateTableViewController *)self customTopMargin];
+    [customTopMargin2 floatValue];
     v11 = v10;
 
     return v11;
   }
 
-  if (a4)
+  if (section)
   {
     return 0.00100000005;
   }
@@ -1010,19 +1010,19 @@ void __80__DMCEnrollmentTemplateTableViewController_removeCellData_fromSection_a
   return kDMCTopMarginForViewController(self);
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-  v7 = [v6 count];
+  cellDataCollection = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+  v7 = [cellDataCollection count];
 
-  if (v7 > a4)
+  if (v7 > section)
   {
-    v8 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-    v9 = [v8 objectAtIndexedSubscript:a4];
-    v10 = [v9 lastObject];
+    cellDataCollection2 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+    v9 = [cellDataCollection2 objectAtIndexedSubscript:section];
+    lastObject = [v9 lastObject];
 
-    v11 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-    if ([v11 count] - 1 == a4)
+    cellDataCollection3 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+    if ([cellDataCollection3 count] - 1 == section)
     {
     }
 
@@ -1032,7 +1032,7 @@ void __80__DMCEnrollmentTemplateTableViewController_removeCellData_fromSection_a
 
       if (v13)
       {
-        [v10 gapToNextSection];
+        [lastObject gapToNextSection];
         v12 = v14;
 LABEL_10:
 
@@ -1056,10 +1056,10 @@ LABEL_10:
   return *MEMORY[0x277D76F30];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
@@ -1069,10 +1069,10 @@ LABEL_10:
   [(DMCEnrollmentTemplateTableViewController *)self _updateFloatyViewForKeyboardFrame:v7 duration:v9, v11, v13, 0.25];
 }
 
-- (void)keyboardDidShow:(id)a3
+- (void)keyboardDidShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
@@ -1082,15 +1082,15 @@ LABEL_10:
   [(DMCEnrollmentTemplateTableViewController *)self _updateFloatyViewForKeyboardFrame:v7 duration:v9, v11, v13, 0.100000001];
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
-  v4 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
+  floatyBottomView = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
 
-  if (v4)
+  if (floatyBottomView)
   {
     [(DMCEnrollmentTemplateTableViewController *)self setGapBetweenButtons:0.0];
-    v5 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-    [(DMCEnrollmentTemplateTableViewController *)self _touchViewFrame:v5];
+    bottomContainerView = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+    [(DMCEnrollmentTemplateTableViewController *)self _touchViewFrame:bottomContainerView];
 
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -1115,60 +1115,60 @@ void __61__DMCEnrollmentTemplateTableViewController_keyboardWillHide___block_inv
   v5 = [v3 initWithEffect:v4];
   [(DMCEnrollmentTemplateTableViewController *)self setEffectView:v5];
 
-  v6 = [(DMCEnrollmentTemplateTableViewController *)self effectView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  effectView = [(DMCEnrollmentTemplateTableViewController *)self effectView];
+  [effectView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-  v8 = [(DMCEnrollmentTemplateTableViewController *)self effectView];
-  [v7 addSubview:v8];
+  bottomContainerView = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+  effectView2 = [(DMCEnrollmentTemplateTableViewController *)self effectView];
+  [bottomContainerView addSubview:effectView2];
 
   v23 = MEMORY[0x277CCAAD0];
-  v31 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-  v29 = [v31 widthAnchor];
-  v30 = [(DMCEnrollmentTemplateTableViewController *)self effectView];
-  v28 = [v30 widthAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28 multiplier:1.0];
+  bottomContainerView2 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+  widthAnchor = [bottomContainerView2 widthAnchor];
+  effectView3 = [(DMCEnrollmentTemplateTableViewController *)self effectView];
+  widthAnchor2 = [effectView3 widthAnchor];
+  v27 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0];
   v32[0] = v27;
-  v26 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-  v24 = [v26 heightAnchor];
-  v25 = [(DMCEnrollmentTemplateTableViewController *)self effectView];
-  v22 = [v25 heightAnchor];
-  v21 = [v24 constraintEqualToAnchor:v22 multiplier:1.0];
+  bottomContainerView3 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+  heightAnchor = [bottomContainerView3 heightAnchor];
+  effectView4 = [(DMCEnrollmentTemplateTableViewController *)self effectView];
+  heightAnchor2 = [effectView4 heightAnchor];
+  v21 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:1.0];
   v32[1] = v21;
-  v20 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-  v19 = [v20 leadingAnchor];
-  v9 = [(DMCEnrollmentTemplateTableViewController *)self effectView];
-  v10 = [v9 leadingAnchor];
-  v11 = [v19 constraintEqualToAnchor:v10];
+  bottomContainerView4 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+  leadingAnchor = [bottomContainerView4 leadingAnchor];
+  effectView5 = [(DMCEnrollmentTemplateTableViewController *)self effectView];
+  leadingAnchor2 = [effectView5 leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[2] = v11;
-  v12 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-  v13 = [v12 bottomAnchor];
-  v14 = [(DMCEnrollmentTemplateTableViewController *)self effectView];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  bottomContainerView5 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+  bottomAnchor = [bottomContainerView5 bottomAnchor];
+  effectView6 = [(DMCEnrollmentTemplateTableViewController *)self effectView];
+  bottomAnchor2 = [effectView6 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32[3] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:4];
   [v23 activateConstraints:v17];
 
-  v18 = [(DMCEnrollmentTemplateTableViewController *)self effectView];
-  [v18 setAlpha:0.0];
+  effectView7 = [(DMCEnrollmentTemplateTableViewController *)self effectView];
+  [effectView7 setAlpha:0.0];
 }
 
 - (double)_lastCellBlockedHeight
 {
-  v3 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-  v4 = [v3 visibleCells];
-  v5 = [v4 lastObject];
+  tableView = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+  visibleCells = [tableView visibleCells];
+  lastObject = [visibleCells lastObject];
 
-  v6 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
-  v7 = [v6 indexPathForCell:v5];
+  tableView2 = [(DMCEnrollmentTemplateTableViewController *)self tableView];
+  v7 = [tableView2 indexPathForCell:lastObject];
 
-  v8 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-  v9 = [v8 count];
+  cellDataCollection = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+  v9 = [cellDataCollection count];
   if (v9 == [v7 section] + 1)
   {
-    v10 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
+    cellDataCollection2 = [(DMCEnrollmentTemplateTableViewController *)self cellDataCollection];
+    v11 = [cellDataCollection2 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
     v12 = [v11 count];
     if (v12 == [v7 row] + 1)
     {
@@ -1186,27 +1186,27 @@ void __61__DMCEnrollmentTemplateTableViewController_keyboardWillHide___block_inv
     v13 = 50.0;
   }
 
-  v14 = [v5 superview];
-  [v5 frame];
+  superview = [lastObject superview];
+  [lastObject frame];
   v16 = v15;
   v18 = v17;
-  v19 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  v20 = [v19 window];
-  [v14 convertPoint:v20 toView:{v16, v18}];
+  view = [(DMCEnrollmentTemplateTableViewController *)self view];
+  window = [view window];
+  [superview convertPoint:window toView:{v16, v18}];
   v22 = v21;
 
-  v23 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-  v24 = [v23 superview];
-  v25 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-  [v25 frame];
+  bottomContainerView = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+  superview2 = [bottomContainerView superview];
+  bottomContainerView2 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+  [bottomContainerView2 frame];
   v27 = v26;
   v29 = v28;
-  v30 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  v31 = [v30 window];
-  [v24 convertPoint:v31 toView:{v27, v29}];
+  view2 = [(DMCEnrollmentTemplateTableViewController *)self view];
+  window2 = [view2 window];
+  [superview2 convertPoint:window2 toView:{v27, v29}];
   v33 = v32;
 
-  [v5 bounds];
+  [lastObject bounds];
   v35 = v13 + v22 + v34 - v33;
 
   return v35;
@@ -1214,9 +1214,9 @@ void __61__DMCEnrollmentTemplateTableViewController_keyboardWillHide___block_inv
 
 - (void)_updateEffectiveViewVisibility
 {
-  v3 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+  bottomContainerView = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
 
-  if (v3)
+  if (bottomContainerView)
   {
     [(DMCEnrollmentTemplateTableViewController *)self _lastCellBlockedHeight];
     v5 = v4 <= 0.0;
@@ -1230,7 +1230,7 @@ void __61__DMCEnrollmentTemplateTableViewController_keyboardWillHide___block_inv
       v6 = 1.0;
     }
 
-    v12 = self;
+    selfCopy = self;
     v13 = v6;
     [MEMORY[0x277D75D18] animateWithDuration:&v8 animations:0.100000001];
     v7 = [(DMCEnrollmentTemplateTableViewController *)self view:v8];
@@ -1245,23 +1245,23 @@ void __74__DMCEnrollmentTemplateTableViewController__updateEffectiveViewVisibili
   [v2 setAlpha:v1];
 }
 
-- (void)_adjustFloatyViewFrameWithKeyboardFrame:(CGRect)a3 animationDuration:(double)a4
+- (void)_adjustFloatyViewFrameWithKeyboardFrame:(CGRect)frame animationDuration:(double)duration
 {
-  v5 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
-  v6 = [v5 superview];
-  v7 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
-  [v7 frame];
-  [v6 convertRect:0 toView:?];
+  floatyBottomView = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
+  superview = [floatyBottomView superview];
+  floatyBottomView2 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
+  [floatyBottomView2 frame];
+  [superview convertRect:0 toView:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-  v17 = [v16 superview];
-  v18 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-  [v18 frame];
-  [v17 convertRect:0 toView:?];
+  bottomContainerView = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+  superview2 = [bottomContainerView superview];
+  bottomContainerView2 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+  [bottomContainerView2 frame];
+  [superview2 convertRect:0 toView:?];
   v20 = v19;
   rect = v21;
   v23 = v22;
@@ -1273,7 +1273,7 @@ void __74__DMCEnrollmentTemplateTableViewController__updateEffectiveViewVisibili
   v43.size.height = v15;
   v26 = v15;
   v27 = CGRectGetMaxY(v43) + 20.0;
-  v41 = v27 - CGRectGetMinY(a3);
+  v41 = v27 - CGRectGetMinY(frame);
   v44.origin.x = v20;
   v44.origin.y = rect;
   v44.size.width = v23;
@@ -1284,16 +1284,16 @@ void __74__DMCEnrollmentTemplateTableViewController__updateEffectiveViewVisibili
   v45.size.width = v13;
   v45.size.height = v26;
   v29 = MaxY - CGRectGetMaxY(v45) + -8.0;
-  v30 = [(DMCEnrollmentTemplateTableViewController *)self view];
-  [v30 safeAreaInsets];
+  view = [(DMCEnrollmentTemplateTableViewController *)self view];
+  [view safeAreaInsets];
   v32 = v29 - v31;
 
-  v33 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
+  bottomView = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
 
-  if (v33)
+  if (bottomView)
   {
-    v34 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
-    [v34 frame];
+    bottomView2 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
+    [bottomView2 frame];
     v32 = v32 - CGRectGetHeight(v46);
   }
 
@@ -1302,15 +1302,15 @@ void __74__DMCEnrollmentTemplateTableViewController__updateEffectiveViewVisibili
   if (v36 != v35)
   {
     [(DMCEnrollmentTemplateTableViewController *)self setGapBetweenButtons:v35];
-    v37 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
-    [(DMCEnrollmentTemplateTableViewController *)self _touchViewFrame:v37];
+    bottomContainerView3 = [(DMCEnrollmentTemplateTableViewController *)self bottomContainerView];
+    [(DMCEnrollmentTemplateTableViewController *)self _touchViewFrame:bottomContainerView3];
 
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __102__DMCEnrollmentTemplateTableViewController__adjustFloatyViewFrameWithKeyboardFrame_animationDuration___block_invoke;
     v42[3] = &unk_278EE74C0;
     v42[4] = self;
-    [MEMORY[0x277D75D18] animateWithDuration:v42 animations:a4];
+    [MEMORY[0x277D75D18] animateWithDuration:v42 animations:duration];
   }
 }
 
@@ -1320,22 +1320,22 @@ void __102__DMCEnrollmentTemplateTableViewController__adjustFloatyViewFrameWithK
   [v1 layoutIfNeeded];
 }
 
-- (void)_updateFloatyViewForKeyboardFrame:(CGRect)a3 duration:(double)a4
+- (void)_updateFloatyViewForKeyboardFrame:(CGRect)frame duration:(double)duration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  floatyBottomView = [(DMCEnrollmentTemplateTableViewController *)self floatyBottomView];
 
-  if (v10)
+  if (floatyBottomView)
   {
-    v11 = [(DMCEnrollmentTemplateTableViewController *)self navigationController];
-    if (!v11 || (v12 = v11, -[DMCEnrollmentTemplateTableViewController navigationController](self, "navigationController"), v13 = objc_claimAutoreleasedReturnValue(), [v13 topViewController], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v12, v14 == self))
+    navigationController = [(DMCEnrollmentTemplateTableViewController *)self navigationController];
+    if (!navigationController || (v12 = navigationController, -[DMCEnrollmentTemplateTableViewController navigationController](self, "navigationController"), v13 = objc_claimAutoreleasedReturnValue(), [v13 topViewController], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v12, v14 == self))
     {
-      v15 = [(DMCEnrollmentTemplateTableViewController *)self presentedViewController];
+      presentedViewController = [(DMCEnrollmentTemplateTableViewController *)self presentedViewController];
 
-      if (!v15)
+      if (!presentedViewController)
       {
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
@@ -1346,7 +1346,7 @@ void __102__DMCEnrollmentTemplateTableViewController__adjustFloatyViewFrameWithK
         *&v16[6] = y;
         *&v16[7] = width;
         *&v16[8] = height;
-        *&v16[9] = a4;
+        *&v16[9] = duration;
         dispatch_async(MEMORY[0x277D85CD0], v16);
       }
     }
@@ -1368,11 +1368,11 @@ void __87__DMCEnrollmentTemplateTableViewController__updateFloatyViewForKeyboard
   }
 }
 
-- (void)_touchViewFrame:(id)a3
+- (void)_touchViewFrame:(id)frame
 {
-  v3 = a3;
-  [v3 frame];
-  [v3 setFrame:?];
+  frameCopy = frame;
+  [frameCopy frame];
+  [frameCopy setFrame:?];
 }
 
 @end

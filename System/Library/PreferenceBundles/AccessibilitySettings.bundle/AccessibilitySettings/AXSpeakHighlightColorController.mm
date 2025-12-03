@@ -1,18 +1,18 @@
 @interface AXSpeakHighlightColorController
-+ (id)nameForColor:(int64_t)a3;
++ (id)nameForColor:(int64_t)color;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AXSpeakHighlightColorController
 
-+ (id)nameForColor:(int64_t)a3
++ (id)nameForColor:(int64_t)color
 {
   v3 = 0;
-  if (a3 > 2)
+  if (color > 2)
   {
-    switch(a3)
+    switch(color)
     {
       case 3:
         v4 = @"COLOR_GREEN";
@@ -30,16 +30,16 @@
     goto LABEL_14;
   }
 
-  if (a3)
+  if (color)
   {
-    if (a3 == 1)
+    if (color == 1)
     {
       v4 = @"COLOR_BLUE";
     }
 
     else
     {
-      if (a3 != 2)
+      if (color != 2)
       {
         goto LABEL_16;
       }
@@ -72,8 +72,8 @@ LABEL_16:
     v23 = v3;
     *&self->AXUISettingsBaseListController_opaque[v3] = v5;
 
-    v7 = [(AXSpeakHighlightColorController *)self specifier];
-    v8 = [v7 propertyForKey:@"type"];
+    specifier = [(AXSpeakHighlightColorController *)self specifier];
+    v8 = [specifier propertyForKey:@"type"];
     -[AXSpeakHighlightColorController setSentenceStyle:](self, "setSentenceStyle:", [v8 isEqualToString:@"SENTENCE"]);
 
     v26 = +[NSMutableArray array];
@@ -134,53 +134,53 @@ LABEL_16:
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v13 = a4;
+  cellCopy = cell;
   LOBYTE(self) = [(AXSpeakHighlightColorController *)self sentenceStyle];
   v6 = +[AXSettings sharedInstance];
   v7 = v6;
   if (self)
   {
-    v8 = [v6 quickSpeakSentenceHighlightColor];
+    quickSpeakSentenceHighlightColor = [v6 quickSpeakSentenceHighlightColor];
   }
 
   else
   {
-    v8 = [v6 quickSpeakWordHighlightColor];
+    quickSpeakSentenceHighlightColor = [v6 quickSpeakWordHighlightColor];
   }
 
-  v9 = v8;
+  v9 = quickSpeakSentenceHighlightColor;
 
-  v10 = [v13 specifier];
-  v11 = [v10 propertyForKey:@"type"];
+  specifier = [cellCopy specifier];
+  v11 = [specifier propertyForKey:@"type"];
   v12 = [v11 integerValue] == v9;
 
-  [v13 setChecked:v12];
+  [cellCopy setChecked:v12];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = AXSpeakHighlightColorController;
-  v6 = a4;
-  [(AXSpeakHighlightColorController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AXSpeakHighlightColorController *)self specifierForIndexPath:v6, v12.receiver, v12.super_class];
+  pathCopy = path;
+  [(AXSpeakHighlightColorController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AXSpeakHighlightColorController *)self specifierForIndexPath:pathCopy, v12.receiver, v12.super_class];
 
   v8 = [v7 propertyForKey:@"type"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
   LODWORD(v8) = [(AXSpeakHighlightColorController *)self sentenceStyle];
   v10 = +[AXSettings sharedInstance];
   v11 = v10;
   if (v8)
   {
-    [v10 setQuickSpeakSentenceHighlightColor:v9];
+    [v10 setQuickSpeakSentenceHighlightColor:integerValue];
   }
 
   else
   {
-    [v10 setQuickSpeakWordHighlightColor:v9];
+    [v10 setQuickSpeakWordHighlightColor:integerValue];
   }
 
   [(AXSpeakHighlightColorController *)self beginUpdates];

@@ -1,5 +1,5 @@
 @interface MFPriorityLoadingQueue
-- (MFPriorityLoadingQueue)initWithScheduler:(id)a3;
+- (MFPriorityLoadingQueue)initWithScheduler:(id)scheduler;
 - (NSArray)allObjects;
 - (id)dequeue;
 - (id)drain;
@@ -7,19 +7,19 @@
 - (void)_locked_processQueue;
 - (void)_locked_reorderQueue;
 - (void)_noteQueueNeedsProcessing;
-- (void)_performItem:(id)a3 handler:(id)a4 cancelationToken:(id)a5;
+- (void)_performItem:(id)item handler:(id)handler cancelationToken:(id)token;
 - (void)_processQueue;
 - (void)dealloc;
-- (void)dequeueObject:(id)a3;
-- (void)enqueue:(id)a3;
-- (void)setComparator:(id)a3;
+- (void)dequeueObject:(id)object;
+- (void)enqueue:(id)enqueue;
+- (void)setComparator:(id)comparator;
 @end
 
 @implementation MFPriorityLoadingQueue
 
 - (void)_locked_reorderQueue
 {
-  v3 = [(EFQueue *)self->_queue drain];
+  drain = [(EFQueue *)self->_queue drain];
   v4 = [EFQueue priorityQueueWithComparator:self->_comparator];
   queue = self->_queue;
   self->_queue = v4;
@@ -28,7 +28,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v6 = v3;
+  v6 = drain;
   v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v7)
   {
@@ -63,9 +63,9 @@
   [(MFPriorityLoadingQueue *)&v3 dealloc];
 }
 
-- (MFPriorityLoadingQueue)initWithScheduler:(id)a3
+- (MFPriorityLoadingQueue)initWithScheduler:(id)scheduler
 {
-  v5 = a3;
+  schedulerCopy = scheduler;
   v12.receiver = self;
   v12.super_class = MFPriorityLoadingQueue;
   v6 = [(MFPriorityLoadingQueue *)&v12 init];
@@ -75,7 +75,7 @@
     comparator = v6->_comparator;
     v6->_comparator = v7;
 
-    objc_storeStrong(&v6->_scheduler, a3);
+    objc_storeStrong(&v6->_scheduler, scheduler);
     v9 = [EFQueue priorityQueueWithComparator:v6->_comparator];
     queue = v6->_queue;
     v6->_queue = v9;
@@ -84,10 +84,10 @@
   return v6;
 }
 
-- (void)setComparator:(id)a3
+- (void)setComparator:(id)comparator
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  comparatorCopy = comparator;
+  v5 = [comparatorCopy copy];
   v6 = v5;
   if (!v5)
   {
@@ -145,8 +145,8 @@
 {
   if (!self->_workItemCancelable)
   {
-    v3 = [(EFQueue *)self->_queue dequeue];
-    if (v3)
+    dequeue = [(EFQueue *)self->_queue dequeue];
+    if (dequeue)
     {
       v4 = objc_retainBlock(self->_itemHandler);
       scheduler = self->_scheduler;
@@ -155,7 +155,7 @@
       v11[2] = sub_100207894;
       v11[3] = &unk_100655408;
       v11[4] = self;
-      v11[5] = v3;
+      v11[5] = dequeue;
       v6 = v4;
       v12 = v6;
       v7 = [(EFScheduler *)scheduler performCancelableBlock:v11];
@@ -167,7 +167,7 @@
       {
         v10 = self->_workItemCancelable;
         *buf = 138412546;
-        v14 = v3;
+        v14 = dequeue;
         v15 = 2048;
         v16 = v10;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "#priorityLoadingQueue scheduled work %@ with token: %p", buf, 0x16u);
@@ -176,18 +176,18 @@
   }
 }
 
-- (void)_performItem:(id)a3 handler:(id)a4 cancelationToken:(id)a5
+- (void)_performItem:(id)item handler:(id)handler cancelationToken:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([(EFCancelable *)v10 isCanceled]& 1) != 0)
+  itemCopy = item;
+  handlerCopy = handler;
+  tokenCopy = token;
+  if (([(EFCancelable *)tokenCopy isCanceled]& 1) != 0)
   {
     v11 = MFLogGeneral();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v17 = 134217984;
-      v18 = v10;
+      v18 = tokenCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "#priorityLoadingQueue token already canceled, not calling item handler: %p", &v17, 0xCu);
     }
   }
@@ -198,11 +198,11 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v17 = 134217984;
-      v18 = v10;
+      v18 = tokenCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "#priorityLoadingQueue calling item handler with token: %p", &v17, 0xCu);
     }
 
-    v9[2](v9, v8, v10);
+    handlerCopy[2](handlerCopy, itemCopy, tokenCopy);
   }
 
   os_unfair_lock_lock(&self->_lock);
@@ -237,19 +237,19 @@
   [v3 performBlock:v4];
 }
 
-- (void)enqueue:(id)a3
+- (void)enqueue:(id)enqueue
 {
-  v4 = a3;
+  enqueueCopy = enqueue;
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = enqueueCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#priorityLoadingQueue enquing work item: %@", &v6, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(EFQueue *)self->_queue enqueue:v4 replaceIfExists:1];
+  [(EFQueue *)self->_queue enqueue:enqueueCopy replaceIfExists:1];
   os_unfair_lock_unlock(&self->_lock);
   [(MFPriorityLoadingQueue *)self _noteQueueNeedsProcessing];
 }
@@ -257,17 +257,17 @@
 - (id)dequeue
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(EFQueue *)self->_queue dequeue];
+  dequeue = [(EFQueue *)self->_queue dequeue];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return dequeue;
 }
 
-- (void)dequeueObject:(id)a3
+- (void)dequeueObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  [(EFQueue *)self->_queue dequeueObject:v4];
+  [(EFQueue *)self->_queue dequeueObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -282,20 +282,20 @@
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(EFQueue *)self->_queue drain];
+  drain = [(EFQueue *)self->_queue drain];
   [(MFPriorityLoadingQueue *)self _locked_cancelWorkItem];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return drain;
 }
 
 - (NSArray)allObjects
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(EFQueue *)self->_queue allObjects];
+  allObjects = [(EFQueue *)self->_queue allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
 @end

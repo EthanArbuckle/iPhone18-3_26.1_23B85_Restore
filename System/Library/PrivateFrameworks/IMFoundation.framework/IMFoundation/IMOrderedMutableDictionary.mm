@@ -1,12 +1,12 @@
 @interface IMOrderedMutableDictionary
-- (BOOL)containsKey:(id)a3;
-- (BOOL)containsOrderedObject:(id)a3;
+- (BOOL)containsKey:(id)key;
+- (BOOL)containsOrderedObject:(id)object;
 - (IMOrderedMutableDictionary)init;
-- (id)orderedObjectForKey:(id)a3;
+- (id)orderedObjectForKey:(id)key;
 - (id)orderedObjects;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)removeOrderedObjectForKey:(id)a3;
-- (void)setOrderedObject:(id)a3 forKey:(id)a4;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)removeOrderedObjectForKey:(id)key;
+- (void)setOrderedObject:(id)object forKey:(id)key;
 @end
 
 @implementation IMOrderedMutableDictionary
@@ -33,16 +33,16 @@
   return v2;
 }
 
-- (void)setOrderedObject:(id)a3 forKey:(id)a4
+- (void)setOrderedObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = v7;
-  if (v6)
+  objectCopy = object;
+  keyCopy = key;
+  v9 = keyCopy;
+  if (objectCopy)
   {
-    if (v7)
+    if (keyCopy)
     {
-      v10 = objc_msgSend_indexOfObject_(self->_mutableOrderedSet, v8, v7);
+      v10 = objc_msgSend_indexOfObject_(self->_mutableOrderedSet, v8, keyCopy);
       mutableOrderedSet = self->_mutableOrderedSet;
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -56,7 +56,7 @@
         objc_msgSend_moveObjectsAtIndexes_toIndex_(mutableOrderedSet, v28, v24, v27 - 1);
       }
 
-      objc_msgSend_setObject_forKey_(self->_dictionary, v13, v6, v9);
+      objc_msgSend_setObject_forKey_(self->_dictionary, v13, objectCopy, v9);
       orderedItems = self->_orderedItems;
       self->_orderedItems = 0;
 
@@ -125,10 +125,10 @@ LABEL_13:
 LABEL_19:
 }
 
-- (id)orderedObjectForKey:(id)a3
+- (id)orderedObjectForKey:(id)key
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v19[0] = "/Library/Caches/com.apple.xbs/Sources/IMFoundation/IMFoundation/IMOrderedMutableDictionary.m";
     v19[1] = 0;
@@ -157,18 +157,18 @@ LABEL_19:
     }
   }
 
-  v17 = objc_msgSend_objectForKey_(self->_dictionary, v4, v5);
+  v17 = objc_msgSend_objectForKey_(self->_dictionary, v4, keyCopy);
 
   return v17;
 }
 
-- (void)removeOrderedObjectForKey:(id)a3
+- (void)removeOrderedObjectForKey:(id)key
 {
-  v5 = a3;
-  if (v5)
+  keyCopy = key;
+  if (keyCopy)
   {
-    objc_msgSend_removeObject_(self->_mutableOrderedSet, v4, v5);
-    objc_msgSend_removeObjectForKey_(self->_dictionary, v6, v5);
+    objc_msgSend_removeObject_(self->_mutableOrderedSet, v4, keyCopy);
+    objc_msgSend_removeObjectForKey_(self->_dictionary, v6, keyCopy);
     orderedItems = self->_orderedItems;
     self->_orderedItems = 0;
   }
@@ -224,10 +224,10 @@ LABEL_19:
   return orderedItems;
 }
 
-- (BOOL)containsOrderedObject:(id)a3
+- (BOOL)containsOrderedObject:(id)object
 {
-  v6 = a3;
-  if (!v6)
+  objectCopy = object;
+  if (!objectCopy)
   {
     v22[0] = "/Library/Caches/com.apple.xbs/Sources/IMFoundation/IMFoundation/IMOrderedMutableDictionary.m";
     v22[1] = 0;
@@ -257,15 +257,15 @@ LABEL_19:
   }
 
   v18 = objc_msgSend_allValues(self->_dictionary, v4, v5);
-  v20 = objc_msgSend_containsObject_(v18, v19, v6);
+  v20 = objc_msgSend_containsObject_(v18, v19, objectCopy);
 
   return v20;
 }
 
-- (BOOL)containsKey:(id)a3
+- (BOOL)containsKey:(id)key
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v19[0] = "/Library/Caches/com.apple.xbs/Sources/IMFoundation/IMFoundation/IMOrderedMutableDictionary.m";
     v19[1] = 0;
@@ -294,15 +294,15 @@ LABEL_19:
     }
   }
 
-  v17 = objc_msgSend_containsObject_(self->_mutableOrderedSet, v4, v5);
+  v17 = objc_msgSend_containsObject_(self->_mutableOrderedSet, v4, keyCopy);
 
   return v17;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = objc_msgSend_orderedObjects(self, a2, a3);
-  v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, a3, a4, a5);
+  v8 = objc_msgSend_orderedObjects(self, a2, state);
+  v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, state, objects, count);
 
   return v10;
 }

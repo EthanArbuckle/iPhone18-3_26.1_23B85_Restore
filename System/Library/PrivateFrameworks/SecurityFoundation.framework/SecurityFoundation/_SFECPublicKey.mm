@@ -1,35 +1,35 @@
 @interface _SFECPublicKey
-+ (id)_secKeyCreationAttributesForSpecifier:(id)a3;
-+ (id)keyWithSubjectPublicKeyInfo:(id)a3;
++ (id)_secKeyCreationAttributesForSpecifier:(id)specifier;
++ (id)keyWithSubjectPublicKeyInfo:(id)info;
 - (id)encodeSubjectPublicKeyInfo;
-- (id)performWithCCKey:(id)a3;
+- (id)performWithCCKey:(id)key;
 @end
 
 @implementation _SFECPublicKey
 
-+ (id)_secKeyCreationAttributesForSpecifier:(id)a3
++ (id)_secKeyCreationAttributesForSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBFE0], *MEMORY[0x277CDC000]);
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC028], *MEMORY[0x277CDC040]);
   CFDictionarySetValue(Mutable, *MEMORY[0x277CDC090], *MEMORY[0x277CBED28]);
   v5 = *MEMORY[0x277CDC018];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v3 curve];
+  curve = [specifierCopy curve];
 
-  v8 = [v6 numberWithInteger:ECKeyBitSize(v7)];
+  v8 = [v6 numberWithInteger:ECKeyBitSize(curve)];
   CFDictionaryAddValue(Mutable, v5, v8);
 
   return Mutable;
 }
 
-- (id)performWithCCKey:(id)a3
+- (id)performWithCCKey:(id)key
 {
   error[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_SFKey *)self keySpecifier];
-  v6 = (24 * *CCCurveParameters([v5 curve]) + 31) & 0xFFFFFFFFFFFFFFF0;
+  keyCopy = key;
+  keySpecifier = [(_SFKey *)self keySpecifier];
+  v6 = (24 * *CCCurveParameters([keySpecifier curve]) + 31) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v8 = error - v7;
   error[0] = 0;
@@ -50,7 +50,7 @@
     }
   }
 
-  v14 = v4[2](v4, v8, v13);
+  v14 = keyCopy[2](keyCopy, v8, v13);
 
   v15 = *MEMORY[0x277D85DE8];
 
@@ -65,7 +65,7 @@
   return v2;
 }
 
-+ (id)keyWithSubjectPublicKeyInfo:(id)a3
++ (id)keyWithSubjectPublicKeyInfo:(id)info
 {
   v3 = SecKeyCreateFromSubjectPublicKeyInfoData();
   if (v3)

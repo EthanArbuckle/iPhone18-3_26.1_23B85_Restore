@@ -1,5 +1,5 @@
 @interface IMMessageAcknowledgmentChatItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axLabelForAcknowledgmentFromSomeone;
 - (id)_axLabelForAcknowledgmentFromYou;
 - (id)accessibilityLabel;
@@ -7,16 +7,16 @@
 
 @implementation IMMessageAcknowledgmentChatItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"IMMessageAcknowledgmentChatItem" isKindOfClass:@"IMAssociatedMessageChatItem"];
-  [v3 validateClass:@"IMAssociatedMessageChatItem" hasInstanceMethod:@"isFromMe" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"IMAssociatedMessageChatItem" hasInstanceMethod:@"sender" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMAssociatedMessageChatItem" hasInstanceMethod:@"tapback" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMTapback"];
-  [v3 validateClass:@"IMTapback" hasInstanceMethod:@"associatedMessageType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"IMHandle" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"IMMessageAcknowledgmentChatItem" isKindOfClass:@"IMAssociatedMessageChatItem"];
+  [validationsCopy validateClass:@"IMAssociatedMessageChatItem" hasInstanceMethod:@"isFromMe" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"IMAssociatedMessageChatItem" hasInstanceMethod:@"sender" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMAssociatedMessageChatItem" hasInstanceMethod:@"tapback" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMTapback"];
+  [validationsCopy validateClass:@"IMTapback" hasInstanceMethod:@"associatedMessageType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"IMHandle" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

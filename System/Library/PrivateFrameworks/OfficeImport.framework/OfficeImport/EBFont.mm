@@ -1,42 +1,42 @@
 @interface EBFont
-+ (id)edFontFromXlDXfFont:(XlDXfFont *)a3 edResources:(id)a4;
-+ (id)edFontFromXlFont:(XlFont *)a3 edResources:(id)a4;
-+ (int)convertEDScriptEnumToXl:(int)a3;
-+ (int)convertEDUnderlineEnumToXl:(int)a3;
-+ (int)convertXlScriptEnumToED:(int)a3;
-+ (int)convertXlUnderlineEnumToED:(int)a3;
++ (id)edFontFromXlDXfFont:(XlDXfFont *)font edResources:(id)resources;
++ (id)edFontFromXlFont:(XlFont *)font edResources:(id)resources;
++ (int)convertEDScriptEnumToXl:(int)xl;
++ (int)convertEDUnderlineEnumToXl:(int)xl;
++ (int)convertXlScriptEnumToED:(int)d;
++ (int)convertXlUnderlineEnumToED:(int)d;
 @end
 
 @implementation EBFont
 
-+ (id)edFontFromXlFont:(XlFont *)a3 edResources:(id)a4
++ (id)edFontFromXlFont:(XlFont *)font edResources:(id)resources
 {
-  v6 = a4;
-  if (a3)
+  resourcesCopy = resources;
+  if (font)
   {
-    v7 = [[EDFont alloc] initWithResources:v6];
-    var2 = a3->var2;
+    v7 = [[EDFont alloc] initWithResources:resourcesCopy];
+    var2 = font->var2;
     if (var2)
     {
       v9 = [MEMORY[0x277CCACA8] stringWithOcText:var2 + 8];
       [(EDFont *)v7 setName:v9];
     }
 
-    [(EDFont *)v7 setHeight:a3->var3];
-    [(EDFont *)v7 setWeight:a3->var5];
-    [(EDFont *)v7 setCharSet:a3->var15];
-    [(EDFont *)v7 setFamily:a3->var14];
-    v10 = [EBColorReference edColorReferenceFromXlColorIndex:a3->var4 edResources:v6];
+    [(EDFont *)v7 setHeight:font->var3];
+    [(EDFont *)v7 setWeight:font->var5];
+    [(EDFont *)v7 setCharSet:font->var15];
+    [(EDFont *)v7 setFamily:font->var14];
+    v10 = [EBColorReference edColorReferenceFromXlColorIndex:font->var4 edResources:resourcesCopy];
     [(EDFont *)v7 setColorReference:v10];
 
-    v11 = a3->var7 || a3->var5 > 400;
+    v11 = font->var7 || font->var5 > 400;
     [(EDFont *)v7 setBold:v11];
-    [(EDFont *)v7 setItalic:a3->var8];
-    [(EDFont *)v7 setStrike:a3->var10];
-    [(EDFont *)v7 setShadow:a3->var12];
-    [(EDFont *)v7 setOutline:a3->var11];
-    -[EDFont setScript:](v7, "setScript:", [a1 convertXlScriptEnumToED:a3->var6]);
-    -[EDFont setUnderline:](v7, "setUnderline:", [a1 convertXlUnderlineEnumToED:a3->var13]);
+    [(EDFont *)v7 setItalic:font->var8];
+    [(EDFont *)v7 setStrike:font->var10];
+    [(EDFont *)v7 setShadow:font->var12];
+    [(EDFont *)v7 setOutline:font->var11];
+    -[EDFont setScript:](v7, "setScript:", [self convertXlScriptEnumToED:font->var6]);
+    -[EDFont setUnderline:](v7, "setUnderline:", [self convertXlUnderlineEnumToED:font->var13]);
   }
 
   else
@@ -47,35 +47,35 @@
   return v7;
 }
 
-+ (id)edFontFromXlDXfFont:(XlDXfFont *)a3 edResources:(id)a4
++ (id)edFontFromXlDXfFont:(XlDXfFont *)font edResources:(id)resources
 {
-  v6 = a4;
-  if (a3)
+  resourcesCopy = resources;
+  if (font)
   {
-    v7 = [[EDFont alloc] initWithResources:v6];
-    var9 = a3->var9;
+    v7 = [[EDFont alloc] initWithResources:resourcesCopy];
+    var9 = font->var9;
     if (var9 != -1)
     {
-      v9 = [EBColorReference edColorReferenceFromXlColorIndex:var9 edResources:v6];
+      v9 = [EBColorReference edColorReferenceFromXlColorIndex:var9 edResources:resourcesCopy];
       [(EDFont *)v7 setColorReference:v9];
     }
 
-    if (!a3->var14)
+    if (!font->var14)
     {
-      v10 = (a3->var3 & 1) != 0 || a3->var4 == 700;
+      v10 = (font->var3 & 1) != 0 || font->var4 == 700;
       [(EDFont *)v7 setBold:v10];
-      [(EDFont *)v7 setWeight:a3->var4];
-      [(EDFont *)v7 setItalic:(a3->var3 >> 1) & 1];
+      [(EDFont *)v7 setWeight:font->var4];
+      [(EDFont *)v7 setItalic:(font->var3 >> 1) & 1];
     }
 
-    if ((a3->var11 & 0x80) == 0)
+    if ((font->var11 & 0x80) == 0)
     {
-      [(EDFont *)v7 setStrike:(a3->var3 >> 7) & 1];
+      [(EDFont *)v7 setStrike:(font->var3 >> 7) & 1];
     }
 
-    if (!a3->var13)
+    if (!font->var13)
     {
-      -[EDFont setUnderline:](v7, "setUnderline:", [a1 convertXlUnderlineEnumToED:a3->var6]);
+      -[EDFont setUnderline:](v7, "setUnderline:", [self convertXlUnderlineEnumToED:font->var6]);
     }
   }
 
@@ -87,22 +87,22 @@
   return v7;
 }
 
-+ (int)convertXlScriptEnumToED:(int)a3
++ (int)convertXlScriptEnumToED:(int)d
 {
-  if (a3 == 1)
+  if (d == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (d == 2);
   }
 }
 
-+ (int)convertXlUnderlineEnumToED:(int)a3
++ (int)convertXlUnderlineEnumToED:(int)d
 {
-  if (a3 == 33)
+  if (d == 33)
   {
     v3 = 3;
   }
@@ -112,7 +112,7 @@
     v3 = 0;
   }
 
-  if (a3 == 34)
+  if (d == 34)
   {
     v4 = 4;
   }
@@ -122,40 +122,40 @@
     v4 = v3;
   }
 
-  if (a3 >= 3)
+  if (d >= 3)
   {
     return v4;
   }
 
   else
   {
-    return a3;
+    return d;
   }
 }
 
-+ (int)convertEDScriptEnumToXl:(int)a3
++ (int)convertEDScriptEnumToXl:(int)xl
 {
-  if (a3 == 1)
+  if (xl == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (xl == 2);
   }
 }
 
-+ (int)convertEDUnderlineEnumToXl:(int)a3
++ (int)convertEDUnderlineEnumToXl:(int)xl
 {
-  if ((a3 - 1) > 3)
+  if ((xl - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return dword_25D6FE9A0[a3 - 1];
+    return dword_25D6FE9A0[xl - 1];
   }
 }
 

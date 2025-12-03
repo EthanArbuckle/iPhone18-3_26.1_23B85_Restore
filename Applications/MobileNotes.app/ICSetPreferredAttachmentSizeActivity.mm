@@ -1,21 +1,21 @@
 @interface ICSetPreferredAttachmentSizeActivity
-- (ICSetPreferredAttachmentSizeActivity)initWithNote:(id)a3;
+- (ICSetPreferredAttachmentSizeActivity)initWithNote:(id)note;
 - (id)activityTitle;
-- (id)menuWithCompletion:(id)a3;
+- (id)menuWithCompletion:(id)completion;
 @end
 
 @implementation ICSetPreferredAttachmentSizeActivity
 
-- (ICSetPreferredAttachmentSizeActivity)initWithNote:(id)a3
+- (ICSetPreferredAttachmentSizeActivity)initWithNote:(id)note
 {
-  v5 = a3;
+  noteCopy = note;
   v9.receiver = self;
   v9.super_class = ICSetPreferredAttachmentSizeActivity;
   v6 = [(ICSetPreferredAttachmentSizeActivity *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_note, a3);
+    objc_storeStrong(&v6->_note, note);
   }
 
   return v7;
@@ -29,7 +29,7 @@
   return v3;
 }
 
-- (id)menuWithCompletion:(id)a3
+- (id)menuWithCompletion:(id)completion
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -38,14 +38,14 @@
   v12[4] = self;
   v4 = objc_retainBlock(v12);
   v5 = [ICAttachmentSizeMenu alloc];
-  v6 = [(ICSetPreferredAttachmentSizeActivity *)self activityTitle];
-  v7 = [(ICSetPreferredAttachmentSizeActivity *)self activityImage];
-  v8 = [(ICSetPreferredAttachmentSizeActivity *)self note];
-  v9 = [v5 initWithTitle:v6 image:v7 preferredViewSize:objc_msgSend(v8 supportedSizes:"attachmentViewType") supportsPlainLink:&off_10066E338 isOverrideVariant:0 selectedSizeHandler:1 plainLinkHandler:{v4, 0}];
+  activityTitle = [(ICSetPreferredAttachmentSizeActivity *)self activityTitle];
+  activityImage = [(ICSetPreferredAttachmentSizeActivity *)self activityImage];
+  note = [(ICSetPreferredAttachmentSizeActivity *)self note];
+  v9 = [v5 initWithTitle:activityTitle image:activityImage preferredViewSize:objc_msgSend(note supportedSizes:"attachmentViewType") supportsPlainLink:&off_10066E338 isOverrideVariant:0 selectedSizeHandler:1 plainLinkHandler:{v4, 0}];
 
-  v10 = [v9 createMenu];
+  createMenu = [v9 createMenu];
 
-  return v10;
+  return createMenu;
 }
 
 @end

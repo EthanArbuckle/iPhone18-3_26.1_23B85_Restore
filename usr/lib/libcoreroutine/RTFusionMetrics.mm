@@ -1,29 +1,29 @@
 @interface RTFusionMetrics
 + (id)supportedMetricKeys;
-- (BOOL)submitMetricsWithError:(id *)a3;
-- (RTFusionMetrics)initWithLoggingEnabled:(BOOL)a3;
+- (BOOL)submitMetricsWithError:(id *)error;
+- (RTFusionMetrics)initWithLoggingEnabled:(BOOL)enabled;
 - (void)setDerivedMetrics;
-- (void)setInputMetrics:(id)a3;
-- (void)setMetricsUsingInputCandidates:(id)a3 outputFusedInferredMapItems:(id)a4 bestFusedInferredMapItem:(id)a5 outputError:(id)a6;
-- (void)setOutputMetrics:(id)a3 bestFusedInferredMapItem:(id)a4 outputError:(id)a5;
+- (void)setInputMetrics:(id)metrics;
+- (void)setMetricsUsingInputCandidates:(id)candidates outputFusedInferredMapItems:(id)items bestFusedInferredMapItem:(id)item outputError:(id)error;
+- (void)setOutputMetrics:(id)metrics bestFusedInferredMapItem:(id)item outputError:(id)error;
 @end
 
 @implementation RTFusionMetrics
 
-- (RTFusionMetrics)initWithLoggingEnabled:(BOOL)a3
+- (RTFusionMetrics)initWithLoggingEnabled:(BOOL)enabled
 {
   v67 = *MEMORY[0x277D85DE8];
   v61.receiver = self;
   v61.super_class = RTFusionMetrics;
-  v3 = [(RTMetric *)&v61 initWithLoggingEnabled:a3];
+  v3 = [(RTMetric *)&v61 initWithLoggingEnabled:enabled];
   if (v3)
   {
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v4 = [objc_opt_class() BOOLeanKeys];
-    v5 = [v4 countByEnumeratingWithState:&v57 objects:v66 count:16];
+    bOOLeanKeys = [objc_opt_class() BOOLeanKeys];
+    v5 = [bOOLeanKeys countByEnumeratingWithState:&v57 objects:v66 count:16];
     if (v5)
     {
       v6 = v5;
@@ -36,18 +36,18 @@
         {
           if (*v58 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(bOOLeanKeys);
           }
 
           v10 = *(*(&v57 + 1) + 8 * v9);
-          v11 = [(RTMetric *)v3 metrics];
-          [v11 setObject:v8 forKeyedSubscript:v10];
+          metrics = [(RTMetric *)v3 metrics];
+          [metrics setObject:v8 forKeyedSubscript:v10];
 
           ++v9;
         }
 
         while (v6 != v9);
-        v6 = [v4 countByEnumeratingWithState:&v57 objects:v66 count:16];
+        v6 = [bOOLeanKeys countByEnumeratingWithState:&v57 objects:v66 count:16];
       }
 
       while (v6);
@@ -57,8 +57,8 @@
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v12 = [objc_opt_class() unsignedIntegerKeys];
-    v13 = [v12 countByEnumeratingWithState:&v53 objects:v65 count:16];
+    unsignedIntegerKeys = [objc_opt_class() unsignedIntegerKeys];
+    v13 = [unsignedIntegerKeys countByEnumeratingWithState:&v53 objects:v65 count:16];
     if (v13)
     {
       v14 = v13;
@@ -70,18 +70,18 @@
         {
           if (*v54 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(unsignedIntegerKeys);
           }
 
           v17 = *(*(&v53 + 1) + 8 * v16);
-          v18 = [(RTMetric *)v3 metrics];
-          [v18 setObject:&unk_28459F720 forKeyedSubscript:v17];
+          metrics2 = [(RTMetric *)v3 metrics];
+          [metrics2 setObject:&unk_28459F720 forKeyedSubscript:v17];
 
           ++v16;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v53 objects:v65 count:16];
+        v14 = [unsignedIntegerKeys countByEnumeratingWithState:&v53 objects:v65 count:16];
       }
 
       while (v14);
@@ -91,8 +91,8 @@
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v19 = [objc_opt_class() integerKeys];
-    v20 = [v19 countByEnumeratingWithState:&v49 objects:v64 count:16];
+    integerKeys = [objc_opt_class() integerKeys];
+    v20 = [integerKeys countByEnumeratingWithState:&v49 objects:v64 count:16];
     if (v20)
     {
       v21 = v20;
@@ -104,18 +104,18 @@
         {
           if (*v50 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(integerKeys);
           }
 
           v24 = *(*(&v49 + 1) + 8 * v23);
-          v25 = [(RTMetric *)v3 metrics];
-          [v25 setObject:&unk_28459F738 forKeyedSubscript:v24];
+          metrics3 = [(RTMetric *)v3 metrics];
+          [metrics3 setObject:&unk_28459F738 forKeyedSubscript:v24];
 
           ++v23;
         }
 
         while (v21 != v23);
-        v21 = [v19 countByEnumeratingWithState:&v49 objects:v64 count:16];
+        v21 = [integerKeys countByEnumeratingWithState:&v49 objects:v64 count:16];
       }
 
       while (v21);
@@ -125,8 +125,8 @@
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v26 = [objc_opt_class() doubleKeys];
-    v27 = [v26 countByEnumeratingWithState:&v45 objects:v63 count:16];
+    doubleKeys = [objc_opt_class() doubleKeys];
+    v27 = [doubleKeys countByEnumeratingWithState:&v45 objects:v63 count:16];
     if (v27)
     {
       v28 = v27;
@@ -138,18 +138,18 @@
         {
           if (*v46 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(doubleKeys);
           }
 
           v31 = *(*(&v45 + 1) + 8 * v30);
-          v32 = [(RTMetric *)v3 metrics];
-          [v32 setObject:&unk_2845A20B8 forKeyedSubscript:v31];
+          metrics4 = [(RTMetric *)v3 metrics];
+          [metrics4 setObject:&unk_2845A20B8 forKeyedSubscript:v31];
 
           ++v30;
         }
 
         while (v28 != v30);
-        v28 = [v26 countByEnumeratingWithState:&v45 objects:v63 count:16];
+        v28 = [doubleKeys countByEnumeratingWithState:&v45 objects:v63 count:16];
       }
 
       while (v28);
@@ -159,8 +159,8 @@
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v33 = [objc_opt_class() bucketedKeys];
-    v34 = [v33 countByEnumeratingWithState:&v41 objects:v62 count:16];
+    bucketedKeys = [objc_opt_class() bucketedKeys];
+    v34 = [bucketedKeys countByEnumeratingWithState:&v41 objects:v62 count:16];
     if (v34)
     {
       v35 = v34;
@@ -172,18 +172,18 @@
         {
           if (*v42 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(bucketedKeys);
           }
 
           v38 = *(*(&v41 + 1) + 8 * v37);
-          v39 = [(RTMetric *)v3 metrics];
-          [v39 setObject:&unk_2845A20B8 forKeyedSubscript:v38];
+          metrics5 = [(RTMetric *)v3 metrics];
+          [metrics5 setObject:&unk_2845A20B8 forKeyedSubscript:v38];
 
           ++v37;
         }
 
         while (v35 != v37);
-        v35 = [v33 countByEnumeratingWithState:&v41 objects:v62 count:16];
+        v35 = [bucketedKeys countByEnumeratingWithState:&v41 objects:v62 count:16];
       }
 
       while (v35);
@@ -196,47 +196,47 @@
 + (id)supportedMetricKeys
 {
   v2 = MEMORY[0x277CBEB58];
-  v3 = [objc_opt_class() BOOLeanKeys];
-  v4 = [v3 allObjects];
-  v5 = [v2 setWithArray:v4];
+  bOOLeanKeys = [objc_opt_class() BOOLeanKeys];
+  allObjects = [bOOLeanKeys allObjects];
+  v5 = [v2 setWithArray:allObjects];
 
-  v6 = [objc_opt_class() unsignedIntegerKeys];
-  v7 = [v6 allObjects];
-  [v5 addObjectsFromArray:v7];
+  unsignedIntegerKeys = [objc_opt_class() unsignedIntegerKeys];
+  allObjects2 = [unsignedIntegerKeys allObjects];
+  [v5 addObjectsFromArray:allObjects2];
 
-  v8 = [objc_opt_class() integerKeys];
-  v9 = [v8 allObjects];
-  [v5 addObjectsFromArray:v9];
+  integerKeys = [objc_opt_class() integerKeys];
+  allObjects3 = [integerKeys allObjects];
+  [v5 addObjectsFromArray:allObjects3];
 
-  v10 = [objc_opt_class() doubleKeys];
-  v11 = [v10 allObjects];
-  [v5 addObjectsFromArray:v11];
+  doubleKeys = [objc_opt_class() doubleKeys];
+  allObjects4 = [doubleKeys allObjects];
+  [v5 addObjectsFromArray:allObjects4];
 
-  v12 = [objc_opt_class() bucketedKeys];
-  v13 = [v12 allObjects];
-  [v5 addObjectsFromArray:v13];
+  bucketedKeys = [objc_opt_class() bucketedKeys];
+  allObjects5 = [bucketedKeys allObjects];
+  [v5 addObjectsFromArray:allObjects5];
 
   return v5;
 }
 
-- (void)setInputMetrics:(id)a3
+- (void)setInputMetrics:(id)metrics
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
-  v51 = self;
-  v6 = [(RTMetric *)self metrics];
-  [v6 setObject:v5 forKeyedSubscript:@"numberOfCandidates"];
+  metricsCopy = metrics;
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(metricsCopy, "count")}];
+  selfCopy = self;
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:v5 forKeyedSubscript:@"numberOfCandidates"];
 
-  v56 = [MEMORY[0x277CBEB18] array];
-  v52 = [MEMORY[0x277CBEB18] array];
-  v53 = [MEMORY[0x277CBEB18] array];
-  v54 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  obj = v4;
+  obj = metricsCopy;
   v7 = [obj countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (!v7)
   {
@@ -260,47 +260,47 @@
       }
 
       v12 = *(*(&v58 + 1) + 8 * v11);
-      v13 = [v12 firstObject];
-      if ([v13 source] == 0x4000)
+      firstObject = [v12 firstObject];
+      if ([firstObject source] == 0x4000)
       {
 
 LABEL_9:
-        v16 = v56;
+        v16 = array;
         goto LABEL_10;
       }
 
-      v14 = [v12 firstObject];
-      v15 = [v14 source];
+      firstObject2 = [v12 firstObject];
+      source = [firstObject2 source];
 
-      if (v15 == 0x80000)
+      if (source == 0x80000)
       {
         goto LABEL_9;
       }
 
-      v20 = [v12 firstObject];
-      v21 = [v20 source];
+      firstObject3 = [v12 firstObject];
+      source2 = [firstObject3 source];
 
-      if (v21 == 0x2000)
+      if (source2 == 0x2000)
       {
-        v22 = [v12 secondObject];
-        if ([v22 unsignedIntegerValue] == 1)
+        secondObject = [v12 secondObject];
+        if ([secondObject unsignedIntegerValue] == 1)
         {
 
           goto LABEL_26;
         }
 
-        v26 = [v12 secondObject];
-        v27 = [v26 unsignedIntegerValue];
+        secondObject2 = [v12 secondObject];
+        unsignedIntegerValue = [secondObject2 unsignedIntegerValue];
 
-        if (v27 == 2)
+        if (unsignedIntegerValue == 2)
         {
 LABEL_26:
-          v16 = v54;
+          v16 = array4;
         }
 
         else
         {
-          v16 = v53;
+          v16 = array3;
         }
 
 LABEL_10:
@@ -308,20 +308,20 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v23 = [v12 firstObject];
-      if (![v23 source])
+      firstObject4 = [v12 firstObject];
+      if (![firstObject4 source])
       {
         goto LABEL_24;
       }
 
-      v24 = [v12 firstObject];
-      if ([v24 source] == 1)
+      firstObject5 = [v12 firstObject];
+      if ([firstObject5 source] == 1)
       {
         goto LABEL_23;
       }
 
-      v25 = [v12 firstObject];
-      if ([v25 source] == 0x40000)
+      firstObject6 = [v12 firstObject];
+      if ([firstObject6 source] == 0x40000)
       {
 
 LABEL_23:
@@ -330,21 +330,21 @@ LABEL_24:
         goto LABEL_11;
       }
 
-      v28 = [v12 firstObject];
-      v29 = [v28 source];
+      firstObject7 = [v12 firstObject];
+      source3 = [firstObject7 source];
 
-      if (v29 != 2)
+      if (source3 != 2)
       {
-        v16 = v52;
+        v16 = array2;
         goto LABEL_10;
       }
 
 LABEL_11:
-      v17 = [v12 firstObject];
-      v18 = [v17 mapItem];
-      v19 = [v18 mapItemPlaceType];
+      firstObject8 = [v12 firstObject];
+      mapItem = [firstObject8 mapItem];
+      mapItemPlaceType = [mapItem mapItemPlaceType];
 
-      if (v19 == 1)
+      if (mapItemPlaceType == 1)
       {
         ++v10;
       }
@@ -365,77 +365,77 @@ LABEL_11:
   while (v30);
 LABEL_33:
 
-  bluePOICandidates = v51->_bluePOICandidates;
-  v51->_bluePOICandidates = v56;
-  v32 = v56;
+  bluePOICandidates = selfCopy->_bluePOICandidates;
+  selfCopy->_bluePOICandidates = array;
+  v32 = array;
 
-  localHintCandidates = v51->_localHintCandidates;
-  v51->_localHintCandidates = v52;
-  v34 = v52;
+  localHintCandidates = selfCopy->_localHintCandidates;
+  selfCopy->_localHintCandidates = array2;
+  v34 = array2;
 
-  learnedPlaceCandidatesExcludingHomeWork = v51->_learnedPlaceCandidatesExcludingHomeWork;
-  v51->_learnedPlaceCandidatesExcludingHomeWork = v53;
-  v36 = v53;
+  learnedPlaceCandidatesExcludingHomeWork = selfCopy->_learnedPlaceCandidatesExcludingHomeWork;
+  selfCopy->_learnedPlaceCandidatesExcludingHomeWork = array3;
+  v36 = array3;
 
-  learnedPlaceHomeWorkCandidates = v51->_learnedPlaceHomeWorkCandidates;
-  v51->_learnedPlaceHomeWorkCandidates = v54;
-  v38 = v54;
+  learnedPlaceHomeWorkCandidates = selfCopy->_learnedPlaceHomeWorkCandidates;
+  selfCopy->_learnedPlaceHomeWorkCandidates = array4;
+  v38 = array4;
 
   v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSArray count](v32, "count")}];
-  v40 = [(RTMetric *)v51 metrics];
-  [v40 setObject:v39 forKeyedSubscript:@"numberOfBluePOICandidates"];
+  metrics2 = [(RTMetric *)selfCopy metrics];
+  [metrics2 setObject:v39 forKeyedSubscript:@"numberOfBluePOICandidates"];
 
   v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSArray count](v34, "count")}];
-  v42 = [(RTMetric *)v51 metrics];
-  [v42 setObject:v41 forKeyedSubscript:@"numberOfLocalHints"];
+  metrics3 = [(RTMetric *)selfCopy metrics];
+  [metrics3 setObject:v41 forKeyedSubscript:@"numberOfLocalHints"];
 
   v43 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSArray count](v36, "count")}];
-  v44 = [(RTMetric *)v51 metrics];
-  [v44 setObject:v43 forKeyedSubscript:@"numberOfLearnedPlaceUnknownTypeCandidates"];
+  metrics4 = [(RTMetric *)selfCopy metrics];
+  [metrics4 setObject:v43 forKeyedSubscript:@"numberOfLearnedPlaceUnknownTypeCandidates"];
 
   v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSArray count](v38, "count")}];
-  v46 = [(RTMetric *)v51 metrics];
-  [v46 setObject:v45 forKeyedSubscript:@"numberOfLearnedPlaceKnownTypeCandidates"];
+  metrics5 = [(RTMetric *)selfCopy metrics];
+  [metrics5 setObject:v45 forKeyedSubscript:@"numberOfLearnedPlaceKnownTypeCandidates"];
 
   v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
-  v48 = [(RTMetric *)v51 metrics];
-  [v48 setObject:v47 forKeyedSubscript:@"numberOfAOICandidates"];
+  metrics6 = [(RTMetric *)selfCopy metrics];
+  [metrics6 setObject:v47 forKeyedSubscript:@"numberOfAOICandidates"];
 
   v49 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9];
 
-  v50 = [(RTMetric *)v51 metrics];
-  [v50 setObject:v49 forKeyedSubscript:@"numberOfNonAOICandidates"];
+  metrics7 = [(RTMetric *)selfCopy metrics];
+  [metrics7 setObject:v49 forKeyedSubscript:@"numberOfNonAOICandidates"];
 }
 
-- (void)setOutputMetrics:(id)a3 bestFusedInferredMapItem:(id)a4 outputError:(id)a5
+- (void)setOutputMetrics:(id)metrics bestFusedInferredMapItem:(id)item outputError:(id)error
 {
   v91 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metricsCopy = metrics;
+  itemCopy = item;
+  errorCopy = error;
   v11 = 0x277CCA000uLL;
-  if (v10)
+  if (errorCopy)
   {
-    v12 = [(RTMetric *)self metrics];
-    [v12 setObject:&unk_28459F750 forKeyedSubscript:@"fuserAction"];
+    metrics = [(RTMetric *)self metrics];
+    [metrics setObject:&unk_28459F750 forKeyedSubscript:@"fuserAction"];
 
-    v13 = [v10 domain];
-    v14 = [v13 isEqualToString:*MEMORY[0x277D01448]];
+    domain = [errorCopy domain];
+    v14 = [domain isEqualToString:*MEMORY[0x277D01448]];
 
     if (v14)
     {
-      v15 = [(RTMetric *)self metrics];
-      v16 = v15;
+      metrics2 = [(RTMetric *)self metrics];
+      v16 = metrics2;
       v17 = &unk_28459F768;
     }
 
     else
     {
-      v24 = [v10 domain];
-      v25 = [v24 isEqualToString:@"RTInferredMapItemFuserErrorDomain"];
+      domain2 = [errorCopy domain];
+      v25 = [domain2 isEqualToString:@"RTInferredMapItemFuserErrorDomain"];
 
-      v15 = [(RTMetric *)self metrics];
-      v16 = v15;
+      metrics2 = [(RTMetric *)self metrics];
+      v16 = metrics2;
       if (v25)
       {
         v17 = &unk_28459F780;
@@ -447,32 +447,32 @@ LABEL_33:
       }
     }
 
-    [v15 setObject:v17 forKeyedSubscript:@"errorDomain"];
+    [metrics2 setObject:v17 forKeyedSubscript:@"errorDomain"];
 
-    v26 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "code")}];
-    v27 = [(RTMetric *)self metrics];
-    [v27 setObject:v26 forKeyedSubscript:@"errorCode"];
+    firstObject4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
+    metrics3 = [(RTMetric *)self metrics];
+    [metrics3 setObject:firstObject4 forKeyedSubscript:@"errorCode"];
   }
 
   else
   {
-    if (v9)
+    if (itemCopy)
     {
-      v18 = [v9 mapItem];
+      mapItem = [itemCopy mapItem];
 
-      if (v18)
+      if (mapItem)
       {
-        v19 = [v9 mapItem];
-        v20 = [v19 mapItemPlaceType];
+        mapItem2 = [itemCopy mapItem];
+        mapItemPlaceType = [mapItem2 mapItemPlaceType];
 
-        v21 = [(RTMetric *)self metrics];
-        v22 = v21;
-        if (v20 == 1)
+        metrics4 = [(RTMetric *)self metrics];
+        v22 = metrics4;
+        if (mapItemPlaceType == 1)
         {
           v23 = &unk_28459F7B0;
         }
 
-        else if (v20 == 2)
+        else if (mapItemPlaceType == 2)
         {
           v23 = &unk_28459F798;
         }
@@ -485,42 +485,42 @@ LABEL_33:
 
       else
       {
-        v21 = [(RTMetric *)self metrics];
-        v22 = v21;
+        metrics4 = [(RTMetric *)self metrics];
+        v22 = metrics4;
         v23 = &unk_28459F780;
       }
     }
 
     else
     {
-      v21 = [(RTMetric *)self metrics];
-      v22 = v21;
+      metrics4 = [(RTMetric *)self metrics];
+      v22 = metrics4;
       v23 = &unk_28459F768;
     }
 
-    [v21 setObject:v23 forKeyedSubscript:@"fuserAction"];
+    [metrics4 setObject:v23 forKeyedSubscript:@"fuserAction"];
 
-    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
-    v29 = [(RTMetric *)self metrics];
-    [v29 setObject:v28 forKeyedSubscript:@"numberOfFusedCandidates"];
+    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(metricsCopy, "count")}];
+    metrics5 = [(RTMetric *)self metrics];
+    [metrics5 setObject:v28 forKeyedSubscript:@"numberOfFusedCandidates"];
 
-    v30 = [v9 mapItem];
+    mapItem3 = [itemCopy mapItem];
 
-    if (v30)
+    if (mapItem3)
     {
       v87 = 0u;
       v88 = 0u;
       v85 = 0u;
       v86 = 0u;
       v31 = self->_bluePOICandidates;
-      v30 = [(NSArray *)v31 countByEnumeratingWithState:&v85 objects:v90 count:16];
-      v80 = v8;
-      if (v30)
+      mapItem3 = [(NSArray *)v31 countByEnumeratingWithState:&v85 objects:v90 count:16];
+      v80 = metricsCopy;
+      if (mapItem3)
       {
         v32 = *v86;
         while (2)
         {
-          for (i = 0; i != v30; ++i)
+          for (i = 0; i != mapItem3; ++i)
           {
             if (*v86 != v32)
             {
@@ -528,20 +528,20 @@ LABEL_33:
             }
 
             v34 = *(*(&v85 + 1) + 8 * i);
-            v35 = [v9 mapItem];
-            v36 = [v34 firstObject];
-            v37 = [v36 mapItem];
-            v38 = [v35 isEqualToMapItem:v37];
+            mapItem4 = [itemCopy mapItem];
+            firstObject = [v34 firstObject];
+            mapItem5 = [firstObject mapItem];
+            v38 = [mapItem4 isEqualToMapItem:mapItem5];
 
             if (v38)
             {
-              v30 = 1;
+              mapItem3 = 1;
               goto LABEL_28;
             }
           }
 
-          v30 = [(NSArray *)v31 countByEnumeratingWithState:&v85 objects:v90 count:16];
-          if (v30)
+          mapItem3 = [(NSArray *)v31 countByEnumeratingWithState:&v85 objects:v90 count:16];
+          if (mapItem3)
           {
             continue;
           }
@@ -550,8 +550,8 @@ LABEL_33:
         }
 
 LABEL_28:
-        v10 = 0;
-        v8 = v80;
+        errorCopy = 0;
+        metricsCopy = v80;
         v11 = 0x277CCA000;
       }
 
@@ -563,7 +563,7 @@ LABEL_28:
       v40 = [(NSArray *)v39 countByEnumeratingWithState:&v81 objects:v89 count:16];
       if (v40)
       {
-        v79 = v30;
+        v79 = mapItem3;
         v41 = *v82;
         while (2)
         {
@@ -575,10 +575,10 @@ LABEL_28:
             }
 
             v43 = *(*(&v81 + 1) + 8 * j);
-            v44 = [v9 mapItem];
-            v45 = [v43 firstObject];
-            v46 = [v45 mapItem];
-            v47 = [v44 isEqualToMapItem:v46];
+            mapItem6 = [itemCopy mapItem];
+            firstObject2 = [v43 firstObject];
+            mapItem7 = [firstObject2 mapItem];
+            v47 = [mapItem6 isEqualToMapItem:mapItem7];
 
             if (v47)
             {
@@ -597,10 +597,10 @@ LABEL_28:
         }
 
 LABEL_39:
-        v10 = 0;
-        v8 = v80;
+        errorCopy = 0;
+        metricsCopy = v80;
         v11 = 0x277CCA000;
-        v30 = v79;
+        mapItem3 = v79;
       }
     }
 
@@ -609,20 +609,20 @@ LABEL_39:
       v40 = 0;
     }
 
-    v48 = [*(v11 + 2992) numberWithBool:v30];
-    v49 = [(RTMetric *)self metrics];
-    [v49 setObject:v48 forKeyedSubscript:@"bestAgreedWithBluePOI"];
+    v48 = [*(v11 + 2992) numberWithBool:mapItem3];
+    metrics6 = [(RTMetric *)self metrics];
+    [metrics6 setObject:v48 forKeyedSubscript:@"bestAgreedWithBluePOI"];
 
     v50 = [*(v11 + 2992) numberWithBool:v40];
-    v51 = [(RTMetric *)self metrics];
-    [v51 setObject:v50 forKeyedSubscript:@"bestAgreedWithLocalHint"];
+    metrics7 = [(RTMetric *)self metrics];
+    [metrics7 setObject:v50 forKeyedSubscript:@"bestAgreedWithLocalHint"];
 
-    v52 = [v8 firstObject];
-    if (v52)
+    firstObject3 = [metricsCopy firstObject];
+    if (firstObject3)
     {
       v53 = *(v11 + 2992);
-      v51 = [v8 firstObject];
-      [v51 confidence];
+      metrics7 = [metricsCopy firstObject];
+      [metrics7 confidence];
       v54 = [v53 numberWithDouble:?];
     }
 
@@ -631,14 +631,14 @@ LABEL_39:
       v54 = &unk_2845A20B8;
     }
 
-    v55 = [(RTMetric *)self metrics];
-    [v55 setObject:v54 forKeyedSubscript:@"confidenceOfBest"];
+    metrics8 = [(RTMetric *)self metrics];
+    [metrics8 setObject:v54 forKeyedSubscript:@"confidenceOfBest"];
 
-    if (v52)
+    if (firstObject3)
     {
     }
 
-    v56 = [v8 count];
+    v56 = [metricsCopy count];
     if (v56 < 2)
     {
       v58 = &unk_2845A20B8;
@@ -647,142 +647,142 @@ LABEL_39:
     else
     {
       v57 = *(v11 + 2992);
-      v51 = [v8 objectAtIndexedSubscript:1];
-      [v51 confidence];
+      metrics7 = [metricsCopy objectAtIndexedSubscript:1];
+      [metrics7 confidence];
       v58 = [v57 numberWithDouble:?];
     }
 
-    v59 = [(RTMetric *)self metrics];
-    [v59 setObject:v58 forKeyedSubscript:@"confidenceOfSecondBest"];
+    metrics9 = [(RTMetric *)self metrics];
+    [metrics9 setObject:v58 forKeyedSubscript:@"confidenceOfSecondBest"];
 
     if (v56 >= 2)
     {
     }
 
-    v26 = [v8 firstObject];
-    if (v26)
+    firstObject4 = [metricsCopy firstObject];
+    if (firstObject4)
     {
-      v60 = [v9 mapItem];
-      if (v60)
+      mapItem8 = [itemCopy mapItem];
+      if (mapItem8)
       {
-        v61 = v60;
-        v62 = [v9 mapItem];
-        v63 = [v62 mapItemPlaceType];
+        v61 = mapItem8;
+        mapItem9 = [itemCopy mapItem];
+        mapItemPlaceType2 = [mapItem9 mapItemPlaceType];
 
-        if (v63 == 1)
+        if (mapItemPlaceType2 == 1)
         {
-          v64 = [v8 firstObject];
-          v65 = [v64 mapItem];
+          firstObject5 = [metricsCopy firstObject];
+          mapItem10 = [firstObject5 mapItem];
 
-          if (v65)
+          if (mapItem10)
           {
             v66 = *(v11 + 2992);
-            v67 = [v9 mapItem];
-            v68 = [v26 mapItem];
-            v69 = [v66 numberWithInt:{objc_msgSend(v67, "isEqualToMapItem:", v68) ^ 1}];
-            v70 = [(RTMetric *)self metrics];
-            [v70 setObject:v69 forKeyedSubscript:@"usedAOIBasedOnThreshold"];
+            mapItem11 = [itemCopy mapItem];
+            mapItem12 = [firstObject4 mapItem];
+            v69 = [v66 numberWithInt:{objc_msgSend(mapItem11, "isEqualToMapItem:", mapItem12) ^ 1}];
+            metrics10 = [(RTMetric *)self metrics];
+            [metrics10 setObject:v69 forKeyedSubscript:@"usedAOIBasedOnThreshold"];
           }
 
           else
           {
-            v67 = [(RTMetric *)self metrics];
-            [v67 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"usedAOIBasedOnThreshold"];
+            mapItem11 = [(RTMetric *)self metrics];
+            [mapItem11 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"usedAOIBasedOnThreshold"];
           }
         }
       }
     }
 
-    if ([v8 count] >= 2)
+    if ([metricsCopy count] >= 2)
     {
       v71 = *(v11 + 2992);
-      v72 = [v8 objectAtIndexedSubscript:0];
+      v72 = [metricsCopy objectAtIndexedSubscript:0];
       [v72 confidence];
       RTCommonSafeLog();
       v74 = v73;
-      v75 = [v8 objectAtIndexedSubscript:1];
+      v75 = [metricsCopy objectAtIndexedSubscript:1];
       [v75 confidence];
       RTCommonSafeLog();
       v77 = [v71 numberWithDouble:v74 - v76];
-      v78 = [(RTMetric *)self metrics];
-      [v78 setObject:v77 forKeyedSubscript:@"logMax2ConfidenceRatio"];
+      metrics11 = [(RTMetric *)self metrics];
+      [metrics11 setObject:v77 forKeyedSubscript:@"logMax2ConfidenceRatio"];
     }
   }
 }
 
-- (void)setMetricsUsingInputCandidates:(id)a3 outputFusedInferredMapItems:(id)a4 bestFusedInferredMapItem:(id)a5 outputError:(id)a6
+- (void)setMetricsUsingInputCandidates:(id)candidates outputFusedInferredMapItems:(id)items bestFusedInferredMapItem:(id)item outputError:(id)error
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  [(RTFusionMetrics *)self setInputMetrics:a3];
-  [(RTFusionMetrics *)self setOutputMetrics:v12 bestFusedInferredMapItem:v11 outputError:v10];
+  errorCopy = error;
+  itemCopy = item;
+  itemsCopy = items;
+  [(RTFusionMetrics *)self setInputMetrics:candidates];
+  [(RTFusionMetrics *)self setOutputMetrics:itemsCopy bestFusedInferredMapItem:itemCopy outputError:errorCopy];
 }
 
 - (void)setDerivedMetrics
 {
   v39 = [RTMetric binsFromStart:&unk_2845A20C8 toEnd:&unk_2845A20D8 gap:&unk_2845A20E8];
-  v3 = [(RTMetric *)self metrics];
-  v4 = [v3 objectForKeyedSubscript:@"numberOfLearnedPlaceKnownTypeCandidates"];
+  metrics = [(RTMetric *)self metrics];
+  v4 = [metrics objectForKeyedSubscript:@"numberOfLearnedPlaceKnownTypeCandidates"];
   v5 = [RTMetric binForNumber:v4 bins:&unk_2845A1628];
-  v6 = [(RTMetric *)self metrics];
-  [v6 setObject:v5 forKeyedSubscript:@"bucketedNumberOfLearnedPlaceKnownTypeCandidates"];
+  metrics2 = [(RTMetric *)self metrics];
+  [metrics2 setObject:v5 forKeyedSubscript:@"bucketedNumberOfLearnedPlaceKnownTypeCandidates"];
 
-  v7 = [(RTMetric *)self metrics];
-  v8 = [v7 objectForKeyedSubscript:@"numberOfLearnedPlaceUnknownTypeCandidates"];
+  metrics3 = [(RTMetric *)self metrics];
+  v8 = [metrics3 objectForKeyedSubscript:@"numberOfLearnedPlaceUnknownTypeCandidates"];
   v9 = [RTMetric binForNumber:v8 bins:&unk_2845A1628];
-  v10 = [(RTMetric *)self metrics];
-  [v10 setObject:v9 forKeyedSubscript:@"bucketedNumberOfLearnedPlaceUnknownTypeCandidates"];
+  metrics4 = [(RTMetric *)self metrics];
+  [metrics4 setObject:v9 forKeyedSubscript:@"bucketedNumberOfLearnedPlaceUnknownTypeCandidates"];
 
-  v11 = [(RTMetric *)self metrics];
-  v12 = [v11 objectForKeyedSubscript:@"numberOfLocalHints"];
+  metrics5 = [(RTMetric *)self metrics];
+  v12 = [metrics5 objectForKeyedSubscript:@"numberOfLocalHints"];
   v13 = [RTMetric binForNumber:v12 bins:&unk_2845A1628];
-  v14 = [(RTMetric *)self metrics];
-  [v14 setObject:v13 forKeyedSubscript:@"bucketedNumberOfLocalHints"];
+  metrics6 = [(RTMetric *)self metrics];
+  [metrics6 setObject:v13 forKeyedSubscript:@"bucketedNumberOfLocalHints"];
 
-  v15 = [(RTMetric *)self metrics];
-  v16 = [v15 objectForKeyedSubscript:@"numberOfAOICandidates"];
+  metrics7 = [(RTMetric *)self metrics];
+  v16 = [metrics7 objectForKeyedSubscript:@"numberOfAOICandidates"];
   v17 = [RTMetric binForNumber:v16 bins:&unk_2845A1628];
-  v18 = [(RTMetric *)self metrics];
-  [v18 setObject:v17 forKeyedSubscript:@"bucketedNumberOfAOICandidates"];
+  metrics8 = [(RTMetric *)self metrics];
+  [metrics8 setObject:v17 forKeyedSubscript:@"bucketedNumberOfAOICandidates"];
 
-  v19 = [(RTMetric *)self metrics];
-  v20 = [v19 objectForKeyedSubscript:@"numberOfNonAOICandidates"];
+  metrics9 = [(RTMetric *)self metrics];
+  v20 = [metrics9 objectForKeyedSubscript:@"numberOfNonAOICandidates"];
   v21 = [RTMetric binForNumber:v20 bins:&unk_2845A1628];
-  v22 = [(RTMetric *)self metrics];
-  [v22 setObject:v21 forKeyedSubscript:@"bucketedNumberOfNonAOICandidates"];
+  metrics10 = [(RTMetric *)self metrics];
+  [metrics10 setObject:v21 forKeyedSubscript:@"bucketedNumberOfNonAOICandidates"];
 
-  v23 = [(RTMetric *)self metrics];
-  v24 = [v23 objectForKeyedSubscript:@"numberOfFusedCandidates"];
+  metrics11 = [(RTMetric *)self metrics];
+  v24 = [metrics11 objectForKeyedSubscript:@"numberOfFusedCandidates"];
   v25 = [RTMetric binForNumber:v24 bins:&unk_2845A1628];
-  v26 = [(RTMetric *)self metrics];
-  [v26 setObject:v25 forKeyedSubscript:@"bucketedNumberOfFusedCandidates"];
+  metrics12 = [(RTMetric *)self metrics];
+  [metrics12 setObject:v25 forKeyedSubscript:@"bucketedNumberOfFusedCandidates"];
 
-  v27 = [(RTMetric *)self metrics];
-  v28 = [v27 objectForKeyedSubscript:@"confidenceOfBest"];
+  metrics13 = [(RTMetric *)self metrics];
+  v28 = [metrics13 objectForKeyedSubscript:@"confidenceOfBest"];
   v29 = [RTMetric binForNumber:v28 bins:v39];
-  v30 = [(RTMetric *)self metrics];
-  [v30 setObject:v29 forKeyedSubscript:@"bucketedConfidenceOfBest"];
+  metrics14 = [(RTMetric *)self metrics];
+  [metrics14 setObject:v29 forKeyedSubscript:@"bucketedConfidenceOfBest"];
 
-  v31 = [(RTMetric *)self metrics];
-  v32 = [v31 objectForKeyedSubscript:@"confidenceOfSecondBest"];
+  metrics15 = [(RTMetric *)self metrics];
+  v32 = [metrics15 objectForKeyedSubscript:@"confidenceOfSecondBest"];
   v33 = [RTMetric binForNumber:v32 bins:v39];
-  v34 = [(RTMetric *)self metrics];
-  [v34 setObject:v33 forKeyedSubscript:@"bucketedConfidenceOfSecondBest"];
+  metrics16 = [(RTMetric *)self metrics];
+  [metrics16 setObject:v33 forKeyedSubscript:@"bucketedConfidenceOfSecondBest"];
 
-  v35 = [(RTMetric *)self metrics];
-  v36 = [v35 objectForKeyedSubscript:@"logMax2ConfidenceRatio"];
+  metrics17 = [(RTMetric *)self metrics];
+  v36 = [metrics17 objectForKeyedSubscript:@"logMax2ConfidenceRatio"];
   v37 = [RTMetric binForNumber:v36 bins:&unk_2845A1640];
-  v38 = [(RTMetric *)self metrics];
-  [v38 setObject:v37 forKeyedSubscript:@"bucketedLogMax2ConfidenceRatio"];
+  metrics18 = [(RTMetric *)self metrics];
+  [metrics18 setObject:v37 forKeyedSubscript:@"bucketedLogMax2ConfidenceRatio"];
 }
 
-- (BOOL)submitMetricsWithError:(id *)a3
+- (BOOL)submitMetricsWithError:(id *)error
 {
   [(RTFusionMetrics *)self setDerivedMetrics];
   v6.receiver = self;
   v6.super_class = RTFusionMetrics;
-  return [(RTMetric *)&v6 submitMetricsWithError:a3];
+  return [(RTMetric *)&v6 submitMetricsWithError:error];
 }
 
 @end

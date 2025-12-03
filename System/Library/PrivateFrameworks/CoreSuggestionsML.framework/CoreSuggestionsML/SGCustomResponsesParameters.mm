@@ -1,14 +1,14 @@
 @interface SGCustomResponsesParameters
-- (SGCustomResponsesParameters)initWithDictionary:(id)a3;
+- (SGCustomResponsesParameters)initWithDictionary:(id)dictionary;
 @end
 
 @implementation SGCustomResponsesParameters
 
-- (SGCustomResponsesParameters)initWithDictionary:(id)a3
+- (SGCustomResponsesParameters)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
     {
@@ -19,7 +19,7 @@
     }
 
 LABEL_74:
-    v56 = 0;
+    selfCopy = 0;
     goto LABEL_75;
   }
 
@@ -406,10 +406,10 @@ LABEL_73:
   }
 
   self = self;
-  v56 = self;
+  selfCopy = self;
 LABEL_75:
 
-  return v56;
+  return selfCopy;
 }
 
 @end

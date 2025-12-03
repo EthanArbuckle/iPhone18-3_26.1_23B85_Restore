@@ -1,50 +1,50 @@
 @interface VIAnnotation
-- (BOOL)isEqual:(id)a3;
-- (VIAnnotation)initWithReducePersonOverTriggerAnnotation:(id)a3 faceAnnotations:(id)a4 humanAnnotations:(id)a5 nsfwAnnotations:(id)a6 textBlockAnnotation:(id)a7 scenenetAnnotation:(id)a8 barcodeAnnotation:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (VIAnnotation)initWithReducePersonOverTriggerAnnotation:(id)annotation faceAnnotations:(id)annotations humanAnnotations:(id)humanAnnotations nsfwAnnotations:(id)nsfwAnnotations textBlockAnnotation:(id)blockAnnotation scenenetAnnotation:(id)scenenetAnnotation barcodeAnnotation:(id)barcodeAnnotation;
 - (unint64_t)hash;
 @end
 
 @implementation VIAnnotation
 
-- (VIAnnotation)initWithReducePersonOverTriggerAnnotation:(id)a3 faceAnnotations:(id)a4 humanAnnotations:(id)a5 nsfwAnnotations:(id)a6 textBlockAnnotation:(id)a7 scenenetAnnotation:(id)a8 barcodeAnnotation:(id)a9
+- (VIAnnotation)initWithReducePersonOverTriggerAnnotation:(id)annotation faceAnnotations:(id)annotations humanAnnotations:(id)humanAnnotations nsfwAnnotations:(id)nsfwAnnotations textBlockAnnotation:(id)blockAnnotation scenenetAnnotation:(id)scenenetAnnotation barcodeAnnotation:(id)barcodeAnnotation
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  annotationCopy = annotation;
+  annotationsCopy = annotations;
+  humanAnnotationsCopy = humanAnnotations;
+  nsfwAnnotationsCopy = nsfwAnnotations;
+  blockAnnotationCopy = blockAnnotation;
+  scenenetAnnotationCopy = scenenetAnnotation;
+  barcodeAnnotationCopy = barcodeAnnotation;
   v38.receiver = self;
   v38.super_class = VIAnnotation;
   v22 = [(VIAnnotation *)&v38 init];
   if (v22)
   {
-    v23 = [v15 copy];
+    v23 = [annotationCopy copy];
     reducePersonOverTriggerAnnotation = v22->_reducePersonOverTriggerAnnotation;
     v22->_reducePersonOverTriggerAnnotation = v23;
 
-    v25 = [v16 copy];
+    v25 = [annotationsCopy copy];
     faceAnnotations = v22->_faceAnnotations;
     v22->_faceAnnotations = v25;
 
-    v27 = [v17 copy];
+    v27 = [humanAnnotationsCopy copy];
     humanAnnotations = v22->_humanAnnotations;
     v22->_humanAnnotations = v27;
 
-    v29 = [v18 copy];
+    v29 = [nsfwAnnotationsCopy copy];
     nsfwAnnotations = v22->_nsfwAnnotations;
     v22->_nsfwAnnotations = v29;
 
-    v31 = [v19 copy];
+    v31 = [blockAnnotationCopy copy];
     textBlockAnnotation = v22->_textBlockAnnotation;
     v22->_textBlockAnnotation = v31;
 
-    v33 = [v20 copy];
+    v33 = [scenenetAnnotationCopy copy];
     scenenetAnnotation = v22->_scenenetAnnotation;
     v22->_scenenetAnnotation = v33;
 
-    v35 = [v21 copy];
+    v35 = [barcodeAnnotationCopy copy];
     barcodeAnnotation = v22->_barcodeAnnotation;
     v22->_barcodeAnnotation = v35;
   }
@@ -52,10 +52,10 @@
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     IsEqual = 1;
   }
@@ -65,7 +65,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -75,32 +75,32 @@
 
     v6 = v5;
     faceAnnotations = self->_faceAnnotations;
-    v8 = [(VIAnnotation *)v6 faceAnnotations];
-    if (VIObjectIsEqual(faceAnnotations, v8))
+    faceAnnotations = [(VIAnnotation *)v6 faceAnnotations];
+    if (VIObjectIsEqual(faceAnnotations, faceAnnotations))
     {
       humanAnnotations = self->_humanAnnotations;
-      v10 = [(VIAnnotation *)v6 humanAnnotations];
-      if (VIObjectIsEqual(humanAnnotations, v10))
+      humanAnnotations = [(VIAnnotation *)v6 humanAnnotations];
+      if (VIObjectIsEqual(humanAnnotations, humanAnnotations))
       {
         nsfwAnnotations = self->_nsfwAnnotations;
-        v12 = [(VIAnnotation *)v6 nsfwAnnotations];
-        if (VIObjectIsEqual(nsfwAnnotations, v12))
+        nsfwAnnotations = [(VIAnnotation *)v6 nsfwAnnotations];
+        if (VIObjectIsEqual(nsfwAnnotations, nsfwAnnotations))
         {
           textBlockAnnotation = self->_textBlockAnnotation;
-          v14 = [(VIAnnotation *)v6 textBlockAnnotation];
-          if (VIObjectIsEqual(textBlockAnnotation, v14))
+          textBlockAnnotation = [(VIAnnotation *)v6 textBlockAnnotation];
+          if (VIObjectIsEqual(textBlockAnnotation, textBlockAnnotation))
           {
             scenenetAnnotation = self->_scenenetAnnotation;
-            v16 = [(VIAnnotation *)v6 scenenetAnnotation];
-            if (VIObjectIsEqual(scenenetAnnotation, v16))
+            scenenetAnnotation = [(VIAnnotation *)v6 scenenetAnnotation];
+            if (VIObjectIsEqual(scenenetAnnotation, scenenetAnnotation))
             {
               barcodeAnnotation = self->_barcodeAnnotation;
-              v18 = [(VIAnnotation *)v6 barcodeAnnotation];
-              if (VIObjectIsEqual(barcodeAnnotation, v18))
+              barcodeAnnotation = [(VIAnnotation *)v6 barcodeAnnotation];
+              if (VIObjectIsEqual(barcodeAnnotation, barcodeAnnotation))
               {
                 reducePersonOverTriggerAnnotation = self->_reducePersonOverTriggerAnnotation;
-                v20 = [(VIAnnotation *)v6 reducePersonOverTriggerAnnotation];
-                IsEqual = VIObjectIsEqual(reducePersonOverTriggerAnnotation, v20);
+                reducePersonOverTriggerAnnotation = [(VIAnnotation *)v6 reducePersonOverTriggerAnnotation];
+                IsEqual = VIObjectIsEqual(reducePersonOverTriggerAnnotation, reducePersonOverTriggerAnnotation);
               }
 
               else

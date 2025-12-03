@@ -6,9 +6,9 @@
 
 - (unint64_t)unsignedLongLongValue
 {
-  v1 = [a1 UTF8String];
+  uTF8String = [self UTF8String];
 
-  return strtoull(v1, 0, 0);
+  return strtoull(uTF8String, 0, 0);
 }
 
 @end

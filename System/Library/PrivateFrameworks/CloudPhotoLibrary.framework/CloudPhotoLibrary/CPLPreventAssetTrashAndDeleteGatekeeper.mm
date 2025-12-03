@@ -1,23 +1,23 @@
 @interface CPLPreventAssetTrashAndDeleteGatekeeper
-- (int64_t)checkPushedChange:(id)a3;
+- (int64_t)checkPushedChange:(id)change;
 @end
 
 @implementation CPLPreventAssetTrashAndDeleteGatekeeper
 
-- (int64_t)checkPushedChange:(id)a3
+- (int64_t)checkPushedChange:(id)change
 {
-  v4 = a3;
-  if (![v4 isAssetChange])
+  changeCopy = change;
+  if (![changeCopy isAssetChange])
   {
     goto LABEL_6;
   }
 
-  if (([v4 isDelete] & 1) == 0)
+  if (([changeCopy isDelete] & 1) == 0)
   {
-    if ([v4 inTrash])
+    if ([changeCopy inTrash])
     {
-      [v4 setInTrash:0];
-      [v4 setDateDeleted:0];
+      [changeCopy setInTrash:0];
+      [changeCopy setDateDeleted:0];
       v5 = 2;
       goto LABEL_7;
     }
@@ -25,7 +25,7 @@
 LABEL_6:
     v7.receiver = self;
     v7.super_class = CPLPreventAssetTrashAndDeleteGatekeeper;
-    v5 = [(CPLPushPullGatekeeper *)&v7 checkPushedChange:v4];
+    v5 = [(CPLPushPullGatekeeper *)&v7 checkPushedChange:changeCopy];
     goto LABEL_7;
   }
 

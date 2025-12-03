@@ -6,9 +6,9 @@
 
 - (id)newTransitionContextOfAppropriateClass
 {
-  v2 = [(UIApplicationSceneSpecification *)self transitionContextClass];
+  transitionContextClass = [(UIApplicationSceneSpecification *)self transitionContextClass];
 
-  return MEMORY[0x2821F94E8](v2);
+  return MEMORY[0x2821F94E8](transitionContextClass);
 }
 
 @end

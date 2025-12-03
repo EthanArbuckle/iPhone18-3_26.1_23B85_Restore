@@ -21,11 +21,11 @@
   v24.receiver = self;
   v24.super_class = DSSharingReminderCompletedController;
   [(DSOBWelcomeController *)&v24 viewDidLoad];
-  v3 = [(DSSharingReminderCompletedController *)self delegate];
-  v4 = [(DSSharingReminderCompletedController *)v3 unpairedComputers];
-  v5 = [v4 count];
+  delegate = [(DSSharingReminderCompletedController *)self delegate];
+  unpairedComputers = [(DSSharingReminderCompletedController *)delegate unpairedComputers];
+  v5 = [unpairedComputers count];
 
-  v6 = [(DSSharingReminderCompletedController *)self headerView];
+  headerView = [(DSSharingReminderCompletedController *)self headerView];
   v7 = v5 == 0;
   if (v5)
   {
@@ -59,12 +59,12 @@
 
   if (v5)
   {
-    v11 = v3;
+    selfCopy = delegate;
   }
 
   else
   {
-    v11 = self;
+    selfCopy = self;
   }
 
   if (v5)
@@ -79,15 +79,15 @@
 
   if (v7)
   {
-    v13 = v3;
+    selfCopy2 = delegate;
   }
 
   else
   {
-    v13 = self;
+    selfCopy2 = self;
   }
 
-  v23 = v13;
+  v23 = selfCopy2;
   if (v7)
   {
     v14 = &selRef_done;
@@ -109,14 +109,14 @@
   }
 
   v16 = DSUILocStringForKey(v8);
-  [v6 setTitle:v16];
+  [headerView setTitle:v16];
 
-  v17 = [(DSSharingReminderCompletedController *)self headerView];
+  headerView2 = [(DSSharingReminderCompletedController *)self headerView];
   v18 = DSUILocStringForKey(v9);
-  [v17 setDetailText:v18];
+  [headerView2 setDetailText:v18];
 
   v19 = DSUILocStringForKey(v10);
-  v20 = [DSUIUtilities setUpBoldButtonForController:self title:v19 target:v11 selector:*v14];
+  v20 = [DSUIUtilities setUpBoldButtonForController:self title:v19 target:selfCopy selector:*v14];
 
   v21 = DSUILocStringForKey(v12);
   v22 = [DSUIUtilities setUpLinkButtonForController:self title:v21 target:v23 selector:*v15];

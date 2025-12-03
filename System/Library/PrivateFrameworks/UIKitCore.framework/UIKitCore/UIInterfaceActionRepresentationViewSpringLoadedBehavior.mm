@@ -1,16 +1,16 @@
 @interface UIInterfaceActionRepresentationViewSpringLoadedBehavior
-- (BOOL)shouldAllowInteraction:(id)a3 withContext:(id)a4;
+- (BOOL)shouldAllowInteraction:(id)interaction withContext:(id)context;
 @end
 
 @implementation UIInterfaceActionRepresentationViewSpringLoadedBehavior
 
-- (BOOL)shouldAllowInteraction:(id)a3 withContext:(id)a4
+- (BOOL)shouldAllowInteraction:(id)interaction withContext:(id)context
 {
-  v4 = [a3 view];
-  v5 = [v4 action];
-  v6 = [v5 isEnabled];
+  view = [interaction view];
+  action = [view action];
+  isEnabled = [action isEnabled];
 
-  return v6;
+  return isEnabled;
 }
 
 @end

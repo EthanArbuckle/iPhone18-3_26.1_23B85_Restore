@@ -1,22 +1,22 @@
 @interface SASpeculativeDownloadAnalytics
-+ (BOOL)isBundleIdInHierarchy:(id)a3;
++ (BOOL)isBundleIdInHierarchy:(id)hierarchy;
 + (id)SDTelResidencyKeysTranslationTable;
 + (id)SDTelStateKeysTranslationTable;
 + (id)SDTelUrgencyKeysTranslationTable;
 + (id)SDTelVolumeKeysTranslationTable;
-+ (void)loadTelemetry:(id)a3 fromResults:(id)a4 forBundleId:(id)a5;
-+ (void)loadTelemetry:(id)a3 withSdaElem:(id)a4;
-+ (void)sendTelemetry:(id)a3 withSDAState:(id)a4 appSizerTelemetry:(id)a5;
-- (id)collectDenominatorInfoForVolPath:(id)a3 volType:(int)a4 volumeInfo:(id)a5;
-- (void)adjustDenomAgeBy:(unint64_t)a3;
-- (void)analyzeVolumesInfo:(id)a3 pathList:(id)a4 appSizerResults:(id)a5 appSizerTelemetry:(id)a6 shouldStop:(BOOL)a7;
++ (void)loadTelemetry:(id)telemetry fromResults:(id)results forBundleId:(id)id;
++ (void)loadTelemetry:(id)telemetry withSdaElem:(id)elem;
++ (void)sendTelemetry:(id)telemetry withSDAState:(id)state appSizerTelemetry:(id)sizerTelemetry;
+- (id)collectDenominatorInfoForVolPath:(id)path volType:(int)type volumeInfo:(id)info;
+- (void)adjustDenomAgeBy:(unint64_t)by;
+- (void)analyzeVolumesInfo:(id)info pathList:(id)list appSizerResults:(id)results appSizerTelemetry:(id)telemetry shouldStop:(BOOL)stop;
 @end
 
 @implementation SASpeculativeDownloadAnalytics
 
-+ (BOOL)isBundleIdInHierarchy:(id)a3
++ (BOOL)isBundleIdInHierarchy:(id)hierarchy
 {
-  v3 = a3;
+  hierarchyCopy = hierarchy;
   if (qword_100073748 != -1)
   {
     sub_1000400D4();
@@ -40,7 +40,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if ([v3 hasPrefix:{*(*(&v9 + 1) + 8 * i), v9}])
+        if ([hierarchyCopy hasPrefix:{*(*(&v9 + 1) + 8 * i), v9}])
         {
           LOBYTE(v5) = 1;
           goto LABEL_13;
@@ -62,20 +62,20 @@ LABEL_13:
   return v5;
 }
 
-- (id)collectDenominatorInfoForVolPath:(id)a3 volType:(int)a4 volumeInfo:(id)a5
+- (id)collectDenominatorInfoForVolPath:(id)path volType:(int)type volumeInfo:(id)info
 {
-  v6 = a3;
-  v45 = a5;
+  pathCopy = path;
+  infoCopy = info;
   v41 = malloc_type_malloc(0x30000uLL, 0xC8CCB583uLL);
   if (v41)
   {
-    v7 = [v6 fileSystemRepresentation];
+    fileSystemRepresentation = [pathCopy fileSystemRepresentation];
     v8 = objc_opt_new();
     v9 = SALog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
-      *&buf[4] = v7;
+      *&buf[4] = fileSystemRepresentation;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "START: APFSIOC_SPEC_TELEM_OP on path %s.", buf, 0xCu);
     }
 
@@ -99,7 +99,7 @@ LABEL_13:
     *&buf[8] = xmmword_10004CD80;
     v52 = 0x3000000001388;
     v53 = v41;
-    if (fsctl(v7, 0xC0F84A7EuLL, buf, 1u))
+    if (fsctl(fileSystemRepresentation, 0xC0F84A7EuLL, buf, 1u))
     {
 LABEL_36:
       v32 = SALog();
@@ -113,8 +113,8 @@ LABEL_36:
     {
       v39 = v10;
       v42 = v8;
-      v43 = v6;
-      v40 = v7;
+      v43 = pathCopy;
+      v40 = fileSystemRepresentation;
       while (1)
       {
         v11 = DWORD2(v53);
@@ -138,14 +138,14 @@ LABEL_36:
           do
           {
             v15 = [NSNumber numberWithUnsignedLongLong:*v14];
-            v16 = [v45 getDirCacheElementForDirKey:v15 volumePath:v6 climbUpDSHierarchy:1 cacheDiscoveredDirElement:1];
-            v17 = [v16 bundleIDs];
-            if (v17)
+            v16 = [infoCopy getDirCacheElementForDirKey:v15 volumePath:pathCopy climbUpDSHierarchy:1 cacheDiscoveredDirElement:1];
+            bundleIDs = [v16 bundleIDs];
+            if (bundleIDs)
             {
               v47 = v16;
               v48 = v15;
-              v46 = v17;
-              v18 = [v8 objectForKey:v17];
+              v46 = bundleIDs;
+              v18 = [v8 objectForKey:bundleIDs];
               if (!v18)
               {
                 v18 = objc_opt_new();
@@ -194,9 +194,9 @@ LABEL_36:
               }
 
               v8 = v42;
-              v17 = v46;
+              bundleIDs = v46;
               [v42 setObject:v18 forKey:v46];
-              v6 = v43;
+              pathCopy = v43;
               v11 = v44;
               v16 = v47;
               v15 = v48;
@@ -280,7 +280,7 @@ LABEL_36:
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *&buf[4] = v6;
+        *&buf[4] = pathCopy;
         *&buf[12] = 2048;
         *&buf[14] = v37;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "SUCCESS: APFSIOC_SPEC_TELEM_OP for %@ took %lf sec", buf, 0x16u);
@@ -304,75 +304,75 @@ LABEL_36:
   return v8;
 }
 
-+ (void)loadTelemetry:(id)a3 fromResults:(id)a4 forBundleId:(id)a5
++ (void)loadTelemetry:(id)telemetry fromResults:(id)results forBundleId:(id)id
 {
-  v7 = a4;
-  v8 = a3;
-  v16 = [NSSet setWithObject:a5];
-  v9 = [v7 appData];
-  v10 = [v9 objectForKeyedSubscript:v16];
+  resultsCopy = results;
+  telemetryCopy = telemetry;
+  v16 = [NSSet setWithObject:id];
+  appData = [resultsCopy appData];
+  v10 = [appData objectForKeyedSubscript:v16];
 
-  v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v7 diskCapacity] - objc_msgSend(v7, "diskUsed"));
-  [v8 setObject:v11 forKeyedSubscript:@"disk_free_space"];
+  v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [resultsCopy diskCapacity] - objc_msgSend(resultsCopy, "diskUsed"));
+  [telemetryCopy setObject:v11 forKeyedSubscript:@"disk_free_space"];
 
   v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v10 fixedSize] + objc_msgSend(v10, "dataSize"));
-  [v8 setObject:v12 forKeyedSubscript:@"total_size"];
+  [telemetryCopy setObject:v12 forKeyedSubscript:@"total_size"];
 
-  v13 = [v7 getPhySizeForAppSet:v16];
+  v13 = [resultsCopy getPhySizeForAppSet:v16];
   v14 = [NSNumber numberWithUnsignedLongLong:v13];
-  [v8 setObject:v14 forKeyedSubscript:@"total_app_size"];
+  [telemetryCopy setObject:v14 forKeyedSubscript:@"total_app_size"];
 
   v15 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v10 purgeableSize]);
-  [v8 setObject:v15 forKeyedSubscript:@"purgeable_size"];
+  [telemetryCopy setObject:v15 forKeyedSubscript:@"purgeable_size"];
 }
 
-+ (void)loadTelemetry:(id)a3 withSdaElem:(id)a4
++ (void)loadTelemetry:(id)telemetry withSdaElem:(id)elem
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 numOfPristineFiles];
-  [v6 setObject:v7 forKeyedSubscript:@"num_of_pristine_files"];
+  elemCopy = elem;
+  telemetryCopy = telemetry;
+  numOfPristineFiles = [elemCopy numOfPristineFiles];
+  [telemetryCopy setObject:numOfPristineFiles forKeyedSubscript:@"num_of_pristine_files"];
 
-  v8 = [v5 sizeOfPristineFiles];
-  [v6 setObject:v8 forKeyedSubscript:@"size_of_pristine_files"];
+  sizeOfPristineFiles = [elemCopy sizeOfPristineFiles];
+  [telemetryCopy setObject:sizeOfPristineFiles forKeyedSubscript:@"size_of_pristine_files"];
 
-  v9 = [v5 totalNumberOfPristine];
-  [v6 setObject:v9 forKeyedSubscript:@"total_number_of_pristine"];
+  totalNumberOfPristine = [elemCopy totalNumberOfPristine];
+  [telemetryCopy setObject:totalNumberOfPristine forKeyedSubscript:@"total_number_of_pristine"];
 
-  v10 = [v5 totalSizeOfPristine];
-  [v6 setObject:v10 forKeyedSubscript:@"total_size_of_pristine"];
+  totalSizeOfPristine = [elemCopy totalSizeOfPristine];
+  [telemetryCopy setObject:totalSizeOfPristine forKeyedSubscript:@"total_size_of_pristine"];
 
-  v11 = [v5 numOfPristineToday];
-  [v6 setObject:v11 forKeyedSubscript:@"num_of_pristine_today"];
+  numOfPristineToday = [elemCopy numOfPristineToday];
+  [telemetryCopy setObject:numOfPristineToday forKeyedSubscript:@"num_of_pristine_today"];
 
-  v12 = [v5 sizeOfPristineToday];
-  [v6 setObject:v12 forKeyedSubscript:@"size_of_pristine_today"];
+  sizeOfPristineToday = [elemCopy sizeOfPristineToday];
+  [telemetryCopy setObject:sizeOfPristineToday forKeyedSubscript:@"size_of_pristine_today"];
 
-  v13 = [v5 numOfPristine30d];
-  [v6 setObject:v13 forKeyedSubscript:@"num_of_pristine_30d"];
+  numOfPristine30d = [elemCopy numOfPristine30d];
+  [telemetryCopy setObject:numOfPristine30d forKeyedSubscript:@"num_of_pristine_30d"];
 
-  v14 = [v5 sizeOfPristine30d];
-  [v6 setObject:v14 forKeyedSubscript:@"size_of_pristine_30d"];
+  sizeOfPristine30d = [elemCopy sizeOfPristine30d];
+  [telemetryCopy setObject:sizeOfPristine30d forKeyedSubscript:@"size_of_pristine_30d"];
 
-  v15 = [v5 numOfEvents30d];
-  [v6 setObject:v15 forKeyedSubscript:@"num_of_event_30d"];
+  numOfEvents30d = [elemCopy numOfEvents30d];
+  [telemetryCopy setObject:numOfEvents30d forKeyedSubscript:@"num_of_event_30d"];
 
-  v16 = [v5 sizeOfEvents30d];
+  sizeOfEvents30d = [elemCopy sizeOfEvents30d];
 
-  [v6 setObject:v16 forKeyedSubscript:@"size_of_event_30d"];
+  [telemetryCopy setObject:sizeOfEvents30d forKeyedSubscript:@"size_of_event_30d"];
 }
 
-+ (void)sendTelemetry:(id)a3 withSDAState:(id)a4 appSizerTelemetry:(id)a5
++ (void)sendTelemetry:(id)telemetry withSDAState:(id)state appSizerTelemetry:(id)sizerTelemetry
 {
-  v28 = a3;
-  v6 = a4;
+  telemetryCopy = telemetry;
+  stateCopy = state;
   v7 = +[SASpeculativeDownloadAnalytics SDTelVolumeKeysTranslationTable];
   v8 = +[SASpeculativeDownloadAnalytics SDTelStateKeysTranslationTable];
   v9 = +[SASpeculativeDownloadAnalytics SDTelUrgencyKeysTranslationTable];
   v10 = +[SASpeculativeDownloadAnalytics SDTelResidencyKeysTranslationTable];
-  v11 = [v6 volPath];
-  v12 = [v6 histogramPerVol];
-  v13 = [v12 objectForKey:v11];
+  volPath = [stateCopy volPath];
+  histogramPerVol = [stateCopy histogramPerVol];
+  v13 = [histogramPerVol objectForKey:volPath];
 
   if (v13)
   {
@@ -387,17 +387,17 @@ LABEL_36:
     v15 = v10;
     v38 = v15;
     v27 = v10;
-    v16 = v6;
+    v16 = stateCopy;
     v39 = v16;
-    v26 = v11;
+    v26 = volPath;
     v17 = v8;
-    v18 = v28;
+    v18 = telemetryCopy;
     v40 = v18;
     [v13 enumerateBundleHistogram:v34];
-    v19 = v6;
+    v19 = stateCopy;
     v20 = v9;
     v21 = v7;
-    v22 = [v16 volType];
+    volType = [v16 volType];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_100029EF0;
@@ -408,12 +408,12 @@ LABEL_36:
     v23 = v18;
     v8 = v17;
     v33 = v23;
-    v11 = v26;
+    volPath = v26;
     v10 = v27;
-    v24 = v22;
+    v24 = volType;
     v7 = v21;
     v9 = v20;
-    v6 = v19;
+    stateCopy = v19;
     [v31 enumerateAllAverageElementsOfVolType:v24 UsingBlock:v29];
 
     v25 = v35;
@@ -429,16 +429,16 @@ LABEL_36:
   }
 }
 
-- (void)adjustDenomAgeBy:(unint64_t)a3
+- (void)adjustDenomAgeBy:(unint64_t)by
 {
   v4 = [SDAState loadFromFileAtPath:self->_SdaStateFilePath];
   v5 = +[NSDate now];
-  v6 = [v5 dateByAddingTimeInterval:-(86400 * a3)];
+  v6 = [v5 dateByAddingTimeInterval:-(86400 * by)];
   v7 = SALog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218242;
-    v9 = a3;
+    byCopy = by;
     v10 = 2112;
     v11 = v6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "updating lastUpdateDate by %lld days to %@", &v8, 0x16u);
@@ -448,14 +448,14 @@ LABEL_36:
   [v4 saveToFile];
 }
 
-- (void)analyzeVolumesInfo:(id)a3 pathList:(id)a4 appSizerResults:(id)a5 appSizerTelemetry:(id)a6 shouldStop:(BOOL)a7
+- (void)analyzeVolumesInfo:(id)info pathList:(id)list appSizerResults:(id)results appSizerTelemetry:(id)telemetry shouldStop:(BOOL)stop
 {
-  v7 = a7;
-  v65 = a3;
-  v64 = a4;
-  v63 = a5;
-  v62 = a6;
-  v66 = self;
+  stopCopy = stop;
+  infoCopy = info;
+  listCopy = list;
+  resultsCopy = results;
+  telemetryCopy = telemetry;
+  selfCopy = self;
   v12 = [SDAState loadFromFileAtPath:self->_SdaStateFilePath];
   v13 = SALog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -465,21 +465,21 @@ LABEL_36:
   }
 
   [v12 print];
-  v14 = [v12 executionOnGoing];
-  v15 = [v14 isEqual:&off_100068B50];
+  executionOnGoing = [v12 executionOnGoing];
+  v15 = [executionOnGoing isEqual:&off_100068B50];
 
   if (v15)
   {
     v16 = SALog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v12 startExecutionDate];
+      startExecutionDate = [v12 startExecutionDate];
       *buf = 138412290;
-      *&buf[4] = v17;
+      *&buf[4] = startExecutionDate;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "failed to finish processing that started at %@", buf, 0xCu);
     }
 
-    v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v63 diskCapacity] - objc_msgSend(v63, "diskUsed"));
+    v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [resultsCopy diskCapacity] - objc_msgSend(resultsCopy, "diskUsed"));
     [NSDictionary dictionaryWithObjectsAndKeys:&off_100068B68, @"number_of_traversal", &off_100068B38, @"age_bin_version", v18, @"disk_free_space", 0];
     v87 = _NSConcreteStackBlock;
     v88 = 3221225472;
@@ -495,8 +495,8 @@ LABEL_36:
       }
     }
 
-    v21 = [v12 numOfTraversal];
-    v22 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v21 unsignedLongLongValue] + 1);
+    numOfTraversal = [v12 numOfTraversal];
+    v22 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [numOfTraversal unsignedLongLongValue] + 1);
 
     [v12 setNumOfTraversal:v22];
   }
@@ -506,7 +506,7 @@ LABEL_36:
   [v12 setStartExecutionDate:v23];
 
   [v12 saveToFile];
-  if (v7)
+  if (stopCopy)
   {
     v24 = SALog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -521,7 +521,7 @@ LABEL_36:
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = [v65 volumesPaths];
+  obj = [infoCopy volumesPaths];
   v73 = [obj countByEnumeratingWithState:&v83 objects:v105 count:16];
   if (!v73)
   {
@@ -548,16 +548,16 @@ LABEL_36:
       }
 
       v28 = [[NSConditionLock alloc] initWithCondition:0];
-      v29 = [v12 lastEventIdPerVol];
-      v30 = [v29 objectForKey:v26];
+      lastEventIdPerVol = [v12 lastEventIdPerVol];
+      v30 = [lastEventIdPerVol objectForKey:v26];
 
       if (v30)
       {
         sinceWhen = [v30 unsignedLongLongValue];
         [v12 setVolPath:v26];
         v31 = objc_opt_new();
-        v32 = [v12 histogramPerVol];
-        [v32 setObject:v31 forKey:v26];
+        histogramPerVol = [v12 histogramPerVol];
+        [histogramPerVol setObject:v31 forKey:v26];
 
         memset(&__src, 0, 512);
         v33 = v26;
@@ -631,11 +631,11 @@ LABEL_26:
           *v97 = [v12 lastUpdateDate];
           memcpy(&v97[8], &__src, 0x878uLL);
           v98 = v70;
-          v69 = v65;
+          v69 = infoCopy;
           v99 = v69;
           v44 = v26;
           v100 = v44;
-          v68 = v64;
+          v68 = listCopy;
           v101 = v68;
           v45 = v28;
           v102 = v45;
@@ -693,8 +693,8 @@ LABEL_26:
             v56 = +[NSDate now];
             [v12 updateEventId:v55 andDate:v56 forVolPath:v44];
 
-            [(SASpeculativeDownloadAnalytics *)v66 processDenominatorsWithVolPath:v44 volType:v70 pathList:v68 volumesInfo:v69 state:v12];
-            if (v66->_Options)
+            [(SASpeculativeDownloadAnalytics *)selfCopy processDenominatorsWithVolPath:v44 volType:v70 pathList:v68 volumesInfo:v69 state:v12];
+            if (selfCopy->_Options)
             {
               [v67 print];
             }
@@ -706,7 +706,7 @@ LABEL_26:
               _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "SDA: Send telemetry", v92, 2u);
             }
 
-            [SASpeculativeDownloadAnalytics sendTelemetry:v63 withSDAState:v12 appSizerTelemetry:v62];
+            [SASpeculativeDownloadAnalytics sendTelemetry:resultsCopy withSDAState:v12 appSizerTelemetry:telemetryCopy];
           }
 
           else
@@ -746,7 +746,7 @@ LABEL_58:
   while (v73);
 LABEL_60:
 
-  v59 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v63 diskCapacity] - objc_msgSend(v63, "diskUsed"));
+  v59 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [resultsCopy diskCapacity] - objc_msgSend(resultsCopy, "diskUsed"));
   [v12 setFreeDiskSpaceAtStart:v59];
 
   v60 = +[NSDate now];

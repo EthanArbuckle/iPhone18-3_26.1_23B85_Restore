@@ -1,16 +1,16 @@
 @interface TICandidateGatingManager
-+ (unint64_t)stickerUsageCountForApp:(id)a3;
++ (unint64_t)stickerUsageCountForApp:(id)app;
 @end
 
 @implementation TICandidateGatingManager
 
-+ (unint64_t)stickerUsageCountForApp:(id)a3
++ (unint64_t)stickerUsageCountForApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   if (getSTKStickerUsageManagerClass() && (getSTKStickerUsageManagerClass(), (objc_opt_respondsToSelector() & 1) != 0))
   {
-    v4 = [getSTKStickerUsageManagerClass() sharedManager];
-    v5 = [v4 stickerCountsForBundleIdentifier:v3];
+    sharedManager = [getSTKStickerUsageManagerClass() sharedManager];
+    v5 = [sharedManager stickerCountsForBundleIdentifier:appCopy];
   }
 
   else

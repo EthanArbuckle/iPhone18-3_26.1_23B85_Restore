@@ -1,21 +1,21 @@
 @interface SSPreorderManager
 - (NSArray)itemKinds;
 - (NSArray)preorders;
-- (SSPreorderManager)initWithItemKinds:(id)a3;
+- (SSPreorderManager)initWithItemKinds:(id)kinds;
 - (void)_connectAsObserver;
-- (void)_handleMessage:(id)a3 fromServerConnection:(id)a4;
+- (void)_handleMessage:(id)message fromServerConnection:(id)connection;
 - (void)_registerAsObserver;
-- (void)_sendMessageToObservers:(SEL)a3;
-- (void)addObserver:(id)a3;
-- (void)cancelPreorders:(id)a3 withCompletionBlock:(id)a4;
+- (void)_sendMessageToObservers:(SEL)observers;
+- (void)addObserver:(id)observer;
+- (void)cancelPreorders:(id)preorders withCompletionBlock:(id)block;
 - (void)dealloc;
 - (void)reloadFromServer;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SSPreorderManager
 
-- (SSPreorderManager)initWithItemKinds:(id)a3
+- (SSPreorderManager)initWithItemKinds:(id)kinds
 {
   v7.receiver = self;
   v7.super_class = SSPreorderManager;
@@ -24,7 +24,7 @@
   {
     v4->_dispatchQueue = dispatch_queue_create("com.apple.StoreServices.SSPreorderManager", 0);
     v4->_observerQueue = dispatch_queue_create("com.apple.StoreServices.SSPreorderManager.observerQueue", 0);
-    v4->_itemKinds = [a3 copy];
+    v4->_itemKinds = [kinds copy];
     v4->_observers = CFArrayCreateMutable(0, 0, 0);
     [(SSPreorderManager *)v4 _connectAsObserver];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -48,7 +48,7 @@
   [(SSPreorderManager *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -56,11 +56,11 @@
   v4[2] = __33__SSPreorderManager_addObserver___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = observer;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)cancelPreorders:(id)a3 withCompletionBlock:(id)a4
+- (void)cancelPreorders:(id)preorders withCompletionBlock:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -71,15 +71,15 @@
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -116,7 +116,7 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v22 = [a3 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v22 = [preorders countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v22)
   {
     v23 = v22;
@@ -127,13 +127,13 @@
       {
         if (*v31 != v24)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(preorders);
         }
 
         xpc_array_set_int64(v21, 0xFFFFFFFFFFFFFFFFLL, [*(*(&v30 + 1) + 8 * i) persistentIdentifier]);
       }
 
-      v23 = [a3 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v23 = [preorders countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v23);
@@ -146,7 +146,7 @@
   v29[1] = 3221225472;
   v29[2] = __57__SSPreorderManager_cancelPreorders_withCompletionBlock___block_invoke;
   v29[3] = &unk_1E84AC7E0;
-  v29[4] = a4;
+  v29[4] = block;
   [(SSXPCConnection *)connection sendMessage:v20 withReply:v29];
   xpc_release(v20);
 }
@@ -195,15 +195,15 @@ void __57__SSPreorderManager_cancelPreorders_withCompletionBlock___block_invoke(
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -318,15 +318,15 @@ intptr_t __30__SSPreorderManager_preorders__block_invoke_2(uint64_t a1, xpc_obje
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -361,7 +361,7 @@ intptr_t __30__SSPreorderManager_preorders__block_invoke_2(uint64_t a1, xpc_obje
   xpc_release(v16);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -369,7 +369,7 @@ intptr_t __30__SSPreorderManager_preorders__block_invoke_2(uint64_t a1, xpc_obje
   v4[2] = __36__SSPreorderManager_removeObserver___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = observer;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -435,14 +435,14 @@ void __39__SSPreorderManager__connectAsObserver__block_invoke_2(uint64_t a1)
   xpc_release(v2);
 }
 
-- (void)_handleMessage:(id)a3 fromServerConnection:(id)a4
+- (void)_handleMessage:(id)message fromServerConnection:(id)connection
 {
-  int64 = xpc_dictionary_get_int64(a3, "0");
+  int64 = xpc_dictionary_get_int64(message, "0");
   if (int64)
   {
     v8 = int64;
-    reply = xpc_dictionary_create_reply(a3);
-    xpc_connection_send_message(a4, reply);
+    reply = xpc_dictionary_create_reply(message);
+    xpc_connection_send_message(connection, reply);
     xpc_release(reply);
     if (v8 == 1007)
     {
@@ -465,15 +465,15 @@ void __39__SSPreorderManager__connectAsObserver__block_invoke_2(uint64_t a1)
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -503,10 +503,10 @@ void __39__SSPreorderManager__connectAsObserver__block_invoke_2(uint64_t a1)
     }
   }
 
-  v16 = [(SSXPCConnection *)self->_observerConnection createXPCEndpoint];
-  if (v16)
+  createXPCEndpoint = [(SSXPCConnection *)self->_observerConnection createXPCEndpoint];
+  if (createXPCEndpoint)
   {
-    v17 = v16;
+    v17 = createXPCEndpoint;
     v18 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v18, "0", 33);
     SSXPCDictionarySetCFObject(v18, "1", self->_itemKinds);
@@ -517,7 +517,7 @@ void __39__SSPreorderManager__connectAsObserver__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_sendMessageToObservers:(SEL)a3
+- (void)_sendMessageToObservers:(SEL)observers
 {
   if (self->_observers)
   {
@@ -538,7 +538,7 @@ void __39__SSPreorderManager__connectAsObserver__block_invoke_2(uint64_t a1)
       block[3] = &unk_1E84AF158;
       block[4] = self;
       block[5] = v5;
-      block[6] = a3;
+      block[6] = observers;
       dispatch_async(observerQueue, block);
     }
   }

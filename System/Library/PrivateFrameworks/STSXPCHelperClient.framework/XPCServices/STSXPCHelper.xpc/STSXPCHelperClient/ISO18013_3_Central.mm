@@ -1,57 +1,57 @@
 @interface ISO18013_3_Central
-- (BOOL)_isBTPowerOn:(int64_t *)a3;
+- (BOOL)_isBTPowerOn:(int64_t *)on;
 - (BOOL)_startCBCentralManager;
 - (BOOL)_startCBCentralManagerAndWaitForPowerOn;
-- (BOOL)connectBLEAddress:(id)a3 advertiseServiceUUID:(id)a4 readerIdentCharacteristic:(id)a5 onDeviceConnection:(id)a6 onDisconnect:(id)a7 onDataRx:(id)a8;
-- (BOOL)discoverMDOCServiceCharacteristics:(id)a3;
-- (BOOL)setupGATTServerCharacteristics:(id)a3;
-- (BOOL)writeData:(id)a3 toUUID:(id)a4;
-- (BOOL)writeL2CAPData:(id)a3;
+- (BOOL)connectBLEAddress:(id)address advertiseServiceUUID:(id)d readerIdentCharacteristic:(id)characteristic onDeviceConnection:(id)connection onDisconnect:(id)disconnect onDataRx:(id)rx;
+- (BOOL)discoverMDOCServiceCharacteristics:(id)characteristics;
+- (BOOL)setupGATTServerCharacteristics:(id)characteristics;
+- (BOOL)writeData:(id)data toUUID:(id)d;
+- (BOOL)writeL2CAPData:(id)data;
 - (CBService)readerService;
-- (ISO18013_3_Central)initWithWorkQueue:(id)a3 callbackQueue:(id)a4;
-- (id)_extractFromMessage:(const char *)a3 length:(unint64_t)a4 lastPacket:(BOOL *)a5;
-- (id)getBluetoothStatusDict:(id *)a3;
-- (id)getCharacteristic:(id)a3;
+- (ISO18013_3_Central)initWithWorkQueue:(id)queue callbackQueue:(id)callbackQueue;
+- (id)_extractFromMessage:(const char *)message length:(unint64_t)length lastPacket:(BOOL *)packet;
+- (id)getBluetoothStatusDict:(id *)dict;
+- (id)getCharacteristic:(id)characteristic;
 - (int64_t)hardwareAvailable;
-- (void)_activateConnectionBlock:(unint64_t)a3 connectionState:(BOOL)a4;
-- (void)_activateDisconnectBlock:(unint64_t)a3;
-- (void)_activateRxCallbackWithData:(id)a3 lastPacket:(BOOL)a4;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)invalidateAndUpdateStateSignal:(BOOL)a3 reason:(unint64_t)a4;
+- (void)_activateConnectionBlock:(unint64_t)block connectionState:(BOOL)state;
+- (void)_activateDisconnectBlock:(unint64_t)block;
+- (void)_activateRxCallbackWithData:(id)data lastPacket:(BOOL)packet;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)invalidateAndUpdateStateSignal:(BOOL)signal reason:(unint64_t)reason;
 - (void)invalidatePeripheral;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didModifyServices:(id)a4;
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheralIsReadyToSendWriteWithoutResponse:(id)a3;
-- (void)queryBLEGATTServer:(id)a3;
-- (void)receivedData:(id)a3;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didModifyServices:(id)services;
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheralIsReadyToSendWriteWithoutResponse:(id)response;
+- (void)queryBLEGATTServer:(id)server;
+- (void)receivedData:(id)data;
 - (void)setReady;
-- (void)stateChanged:(id)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stateChanged:(id)changed;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation ISO18013_3_Central
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = _os_activity_create(&_mh_execute_header, "centralManagerDidUpdateState:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v5, &state);
   os_activity_scope_leave(&state);
 
-  v6 = [v4 state];
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central centralManagerDidUpdateState:]", 62, self, @"LE: centralManagerDidUpdateState : %ld", v7, v8, v6);
-  if ([v4 state] == 1)
+  state = [stateCopy state];
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central centralManagerDidUpdateState:]", 62, self, @"LE: centralManagerDidUpdateState : %ld", v7, v8, state);
+  if ([stateCopy state] == 1)
   {
-    v9 = [(NSMutableArray *)self->_discoveredReaders firstObject];
+    firstObject = [(NSMutableArray *)self->_discoveredReaders firstObject];
     v10 = NSLocalizedDescriptionKey;
     v21 = NSLocalizedDescriptionKey;
     v22 = off_100069AF8;
@@ -67,13 +67,13 @@ LABEL_5:
     v14 = [NSDictionary dictionaryWithObjects:&state forKeys:v19 count:2];
     v15 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:12 userInfo:v14];
 
-    [(ISO18013_3_Central *)self centralManager:v4 didDisconnectPeripheral:v9 error:v15];
+    [(ISO18013_3_Central *)self centralManager:stateCopy didDisconnectPeripheral:firstObject error:v15];
     goto LABEL_6;
   }
 
-  if ([v4 state] == 4)
+  if ([stateCopy state] == 4)
   {
-    v9 = [(NSMutableArray *)self->_discoveredReaders firstObject];
+    firstObject = [(NSMutableArray *)self->_discoveredReaders firstObject];
     v10 = NSLocalizedDescriptionKey;
     v21 = NSLocalizedDescriptionKey;
     v22 = STSBluetoothErrorDescriptions;
@@ -83,20 +83,20 @@ LABEL_5:
   }
 
 LABEL_6:
-  v16 = [(ISO18013_3_Central *)self centralCallbackLock];
-  [v16 lock];
+  centralCallbackLock = [(ISO18013_3_Central *)self centralCallbackLock];
+  [centralCallbackLock lock];
 
-  v17 = [(ISO18013_3_Central *)self centralCallbackLock];
-  [v17 broadcast];
+  centralCallbackLock2 = [(ISO18013_3_Central *)self centralCallbackLock];
+  [centralCallbackLock2 broadcast];
 
-  v18 = [(ISO18013_3_Central *)self centralCallbackLock];
-  [v18 unlock];
+  centralCallbackLock3 = [(ISO18013_3_Central *)self centralCallbackLock];
+  [centralCallbackLock3 unlock];
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  v8 = a4;
-  v9 = a5;
+  peripheralCopy = peripheral;
+  dataCopy = data;
   v10 = _os_activity_create(&_mh_execute_header, "centralManager:didDiscoverPeripheral:advertisementData:RSSI:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -110,57 +110,57 @@ LABEL_6:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DiscoveredPeripheral", &unk_10005485E, &state, 2u);
   }
 
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central centralManager:didDiscoverPeripheral:advertisementData:RSSI:]", 84, self, @"LE: found device matching UUID %@ !", v12, v13, v9);
-  [(NSMutableArray *)self->_discoveredReaders addObject:v8];
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central centralManager:didDiscoverPeripheral:advertisementData:RSSI:]", 84, self, @"LE: found device matching UUID %@ !", v12, v13, dataCopy);
+  [(NSMutableArray *)self->_discoveredReaders addObject:peripheralCopy];
   if (!self->_remoteReader)
   {
     [(CBCentralManager *)self->_centralManager stopScan];
-    [(ISO18013_3_Central *)self connectPeripheral:v8 delay:0];
+    [(ISO18013_3_Central *)self connectPeripheral:peripheralCopy delay:0];
   }
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a4;
-  v7 = a3;
+  peripheralCopy = peripheral;
+  managerCopy = manager;
   v8 = _os_activity_create(&_mh_execute_header, "centralManager:didConnectPeripheral:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
   os_activity_scope_leave(&state);
 
-  v9 = [v7 state];
-  [v6 state];
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central centralManager:didConnectPeripheral:]", 95, self, @"LE: State=(central: %ld, peripheral: %ld)", v10, v11, v9);
-  [(ISO18013_3_Central *)self queryBLEGATTServer:v6];
+  state = [managerCopy state];
+  [peripheralCopy state];
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central centralManager:didConnectPeripheral:]", 95, self, @"LE: State=(central: %ld, peripheral: %ld)", v10, v11, state);
+  [(ISO18013_3_Central *)self queryBLEGATTServer:peripheralCopy];
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorCopy = error;
+  peripheralCopy = peripheral;
+  managerCopy = manager;
   v11 = _os_activity_create(&_mh_execute_header, "centralManager:didiFailToConnectPeripheral:error:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
   os_activity_scope_leave(&state);
 
-  v12 = [v10 state];
-  [v9 state];
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central centralManager:didFailToConnectPeripheral:error:]", 104, self, @"LE: State=(central: %ld, peripheral: %ld) (error %@)", v13, v14, v12);
+  state = [managerCopy state];
+  [peripheralCopy state];
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central centralManager:didFailToConnectPeripheral:error:]", 104, self, @"LE: State=(central: %ld, peripheral: %ld) (error %@)", v13, v14, state);
 
   remoteReader = self->_remoteReader;
   self->_remoteReader = 0;
 
-  [(ISO18013_3_Central *)self connectPeripheral:v9 delay:1];
+  [(ISO18013_3_Central *)self connectPeripheral:peripheralCopy delay:1];
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorCopy = error;
+  peripheralCopy = peripheral;
+  managerCopy = manager;
   v11 = _os_activity_create(&_mh_execute_header, "centralManager:didDisconnectPeripheral:error:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -174,10 +174,10 @@ LABEL_6:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "BT_PeripheralDisconnected", &unk_10005485E, &state, 2u);
   }
 
-  v13 = [v10 state];
-  [v9 state];
+  state = [managerCopy state];
+  [peripheralCopy state];
 
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central centralManager:didDisconnectPeripheral:error:]", 115, self, @"LE: State=(central: %ld, peripheral: %ld) (error %@)", v14, v15, v13);
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central centralManager:didDisconnectPeripheral:error:]", 115, self, @"LE: State=(central: %ld, peripheral: %ld) (error %@)", v14, v15, state);
   v16 = sub_10001929C(self->_sender);
   sub_100019224(self->_sender, v17, v18, v19, v20, v21, v22, v23);
   sender = self->_sender;
@@ -194,49 +194,49 @@ LABEL_6:
   self->_peripheralReaderIdentState = 0;
   if (self->_l2capChannel)
   {
-    v27 = [(ISO18013_3_Central *)self l2capChannel];
-    v28 = [v27 inputStream];
-    v29 = [(ISO18013_3_Central *)self queue];
-    CFReadStreamSetDispatchQueue(v28, v29);
+    l2capChannel = [(ISO18013_3_Central *)self l2capChannel];
+    inputStream = [l2capChannel inputStream];
+    queue = [(ISO18013_3_Central *)self queue];
+    CFReadStreamSetDispatchQueue(inputStream, queue);
 
-    v30 = [(CBL2CAPChannel *)self->_l2capChannel inputStream];
-    [v30 setDelegate:0];
+    inputStream2 = [(CBL2CAPChannel *)self->_l2capChannel inputStream];
+    [inputStream2 setDelegate:0];
 
-    v31 = [(CBL2CAPChannel *)self->_l2capChannel inputStream];
-    [v31 close];
+    inputStream3 = [(CBL2CAPChannel *)self->_l2capChannel inputStream];
+    [inputStream3 close];
 
-    v32 = [(ISO18013_3_Central *)self l2capChannel];
-    v33 = [v32 outputStream];
-    v34 = [(ISO18013_3_Central *)self queue];
-    CFWriteStreamSetDispatchQueue(v33, v34);
+    l2capChannel2 = [(ISO18013_3_Central *)self l2capChannel];
+    outputStream = [l2capChannel2 outputStream];
+    queue2 = [(ISO18013_3_Central *)self queue];
+    CFWriteStreamSetDispatchQueue(outputStream, queue2);
 
-    v35 = [(CBL2CAPChannel *)self->_l2capChannel outputStream];
-    [v35 setDelegate:0];
+    outputStream2 = [(CBL2CAPChannel *)self->_l2capChannel outputStream];
+    [outputStream2 setDelegate:0];
 
-    v36 = [(CBL2CAPChannel *)self->_l2capChannel outputStream];
-    [v36 close];
+    outputStream3 = [(CBL2CAPChannel *)self->_l2capChannel outputStream];
+    [outputStream3 close];
 
     l2capChannel = self->_l2capChannel;
     self->_l2capChannel = 0;
   }
 
-  v38 = v8;
+  v38 = errorCopy;
   v39 = v38;
   if (!v38)
   {
     goto LABEL_11;
   }
 
-  v40 = [v38 domain];
-  if (([v40 isEqualToString:@"STSXPCHelperErrorDomain"] & 1) == 0)
+  domain = [v38 domain];
+  if (([domain isEqualToString:@"STSXPCHelperErrorDomain"] & 1) == 0)
   {
 
     goto LABEL_11;
   }
 
-  v41 = [v39 code];
+  code = [v39 code];
 
-  if (v41 != 12)
+  if (code != 12)
   {
 LABEL_11:
 
@@ -245,11 +245,11 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v42 = [v39 userInfo];
-  v43 = [v42 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [v39 userInfo];
+  v43 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  v44 = [v43 domain];
-  v45 = [v44 isEqualToString:@"BluetoothDomain"];
+  domain2 = [v43 domain];
+  v45 = [domain2 isEqualToString:@"BluetoothDomain"];
 
   if (v45)
   {
@@ -266,14 +266,14 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v48 = [v46 code];
+  code2 = [v46 code];
   v49 = 5;
   if (!v16)
   {
     v49 = 1;
   }
 
-  if (v48)
+  if (code2)
   {
     v47 = v49;
   }
@@ -287,56 +287,56 @@ LABEL_13:
   [(ISO18013_3_Central *)self _activateDisconnectBlock:v47];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  serviceCopy = service;
+  errorCopy = error;
   v9 = _os_activity_create(&_mh_execute_header, "peripheral:ididDiscoverCharacteristicsForService:error:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v9, &state);
   os_activity_scope_leave(&state);
 
-  if (v8)
+  if (errorCopy)
   {
-    sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central peripheral:didDiscoverCharacteristicsForService:error:]", 158, self, @"LE: error %@", v10, v11, v8);
+    sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central peripheral:didDiscoverCharacteristicsForService:error:]", 158, self, @"LE: error %@", v10, v11, errorCopy);
   }
 
-  v12 = [v7 UUID];
-  v13 = [v12 isEqual:self->_peripheralServiceUUID];
+  uUID = [serviceCopy UUID];
+  v13 = [uUID isEqual:self->_peripheralServiceUUID];
 
-  if (v13 && ![(ISO18013_3_Central *)self setupGATTServerCharacteristics:v7])
+  if (v13 && ![(ISO18013_3_Central *)self setupGATTServerCharacteristics:serviceCopy])
   {
     sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central peripheral:didDiscoverCharacteristicsForService:error:]", 163, self, @"LE: Failed to setup ISO characteristics...", v14, v15, v16);
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a3;
-  v7 = a4;
+  peripheralCopy = peripheral;
+  servicesCopy = services;
   v8 = _os_activity_create(&_mh_execute_header, "perihperal:didDiscoverServices:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
   os_activity_scope_leave(&state);
 
-  if (v7)
+  if (servicesCopy)
   {
-    sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central peripheral:didDiscoverServices:]", 172, self, @"LE: error %@", v9, v10, v7);
+    sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central peripheral:didDiscoverServices:]", 172, self, @"LE: error %@", v9, v10, servicesCopy);
   }
 
-  if (![(ISO18013_3_Central *)self discoverMDOCServiceCharacteristics:v6])
+  if (![(ISO18013_3_Central *)self discoverMDOCServiceCharacteristics:peripheralCopy])
   {
     sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central peripheral:didDiscoverServices:]", 176, self, @"LE: No ISO services...", v11, v12, v13);
-    [(NSMutableArray *)self->_discoveredReaders removeObject:v6];
-    [(CBCentralManager *)self->_centralManager cancelPeripheralConnection:v6];
+    [(NSMutableArray *)self->_discoveredReaders removeObject:peripheralCopy];
+    [(CBCentralManager *)self->_centralManager cancelPeripheralConnection:peripheralCopy];
   }
 }
 
-- (void)peripheral:(id)a3 didModifyServices:(id)a4
+- (void)peripheral:(id)peripheral didModifyServices:(id)services
 {
-  v5 = a3;
+  peripheralCopy = peripheral;
   v6 = _os_activity_create(&_mh_execute_header, "peripheral:didModifyServices:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   v9.opaque[0] = 0;
   v9.opaque[1] = 0;
@@ -345,51 +345,51 @@ LABEL_13:
 
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central peripheral:didModifyServices:]", 184, self, @"LE: didModifyServices", v7, v8, v9.opaque[0]);
   objc_storeWeak(&self->_readerService, 0);
-  [(ISO18013_3_Central *)self queryBLEGATTServer:v5];
+  [(ISO18013_3_Central *)self queryBLEGATTServer:peripheralCopy];
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = _os_activity_create(&_mh_execute_header, "periphperal:didUpdateValueForCharacteristic:error:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
   os_activity_scope_leave(&state);
 
-  if (v10)
+  if (errorCopy)
   {
-    sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central peripheral:didUpdateValueForCharacteristic:error:]", 194, self, @"LE: didUpdateValueForCharacteristic : %@ (error %@)", v12, v13, v9);
+    sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central peripheral:didUpdateValueForCharacteristic:error:]", 194, self, @"LE: didUpdateValueForCharacteristic : %@ (error %@)", v12, v13, characteristicCopy);
   }
 
-  v14 = [v9 UUID];
-  v15 = [(ISO18013_3_Central *)self getStateCharacteristicUUID];
-  v16 = [CBUUID UUIDWithString:v15];
-  v17 = [v14 isEqual:v16];
+  uUID = [characteristicCopy UUID];
+  getStateCharacteristicUUID = [(ISO18013_3_Central *)self getStateCharacteristicUUID];
+  v16 = [CBUUID UUIDWithString:getStateCharacteristicUUID];
+  v17 = [uUID isEqual:v16];
 
   if (v17)
   {
-    [(ISO18013_3_Central *)self stateChanged:v9];
+    [(ISO18013_3_Central *)self stateChanged:characteristicCopy];
     goto LABEL_20;
   }
 
-  v18 = [v9 UUID];
-  v19 = [(ISO18013_3_Central *)self getIncomingDataCharacteristicUUID];
-  v20 = [CBUUID UUIDWithString:v19];
-  v21 = [v18 isEqual:v20];
+  uUID2 = [characteristicCopy UUID];
+  getIncomingDataCharacteristicUUID = [(ISO18013_3_Central *)self getIncomingDataCharacteristicUUID];
+  v20 = [CBUUID UUIDWithString:getIncomingDataCharacteristicUUID];
+  v21 = [uUID2 isEqual:v20];
 
   if (v21)
   {
-    [(ISO18013_3_Central *)self receivedData:v9];
+    [(ISO18013_3_Central *)self receivedData:characteristicCopy];
     goto LABEL_20;
   }
 
-  v22 = [v9 UUID];
-  v23 = [(ISO18013_3_Central *)self getL2CAPCharacteristicUUID];
-  v24 = [CBUUID UUIDWithString:v23];
-  v25 = [v22 isEqual:v24];
+  uUID3 = [characteristicCopy UUID];
+  getL2CAPCharacteristicUUID = [(ISO18013_3_Central *)self getL2CAPCharacteristicUUID];
+  v24 = [CBUUID UUIDWithString:getL2CAPCharacteristicUUID];
+  v25 = [uUID3 isEqual:v24];
 
   if (v25)
   {
@@ -422,10 +422,10 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  v29 = [v9 UUID];
-  v30 = [(ISO18013_3_Central *)self getIdentifierCharacteristicUUID];
-  v31 = [CBUUID UUIDWithString:v30];
-  v32 = [v29 isEqual:v31];
+  uUID4 = [characteristicCopy UUID];
+  getIdentifierCharacteristicUUID = [(ISO18013_3_Central *)self getIdentifierCharacteristicUUID];
+  v31 = [CBUUID UUIDWithString:getIdentifierCharacteristicUUID];
+  v32 = [uUID4 isEqual:v31];
 
   if (!v32)
   {
@@ -463,8 +463,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v38 = [v9 value];
-  v39 = [(NSData *)readerIdentCharacteristic isEqualToData:v38];
+  value = [characteristicCopy value];
+  v39 = [(NSData *)readerIdentCharacteristic isEqualToData:value];
 
   if (v39)
   {
@@ -473,17 +473,17 @@ LABEL_19:
 
   else
   {
-    v40 = [v9 value];
-    sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central peripheral:didUpdateValueForCharacteristic:error:]", 243, self, @"LE: Mismatch reader Ident value: %@", v41, v42, v40);
+    value2 = [characteristicCopy value];
+    sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central peripheral:didUpdateValueForCharacteristic:error:]", 243, self, @"LE: Mismatch reader Ident value: %@", v41, v42, value2);
 
-    [(NSMutableArray *)self->_discoveredReaders removeObject:v8];
-    [(CBCentralManager *)self->_centralManager cancelPeripheralConnection:v8];
+    [(NSMutableArray *)self->_discoveredReaders removeObject:peripheralCopy];
+    [(CBCentralManager *)self->_centralManager cancelPeripheralConnection:peripheralCopy];
   }
 
 LABEL_20:
 }
 
-- (void)peripheralIsReadyToSendWriteWithoutResponse:(id)a3
+- (void)peripheralIsReadyToSendWriteWithoutResponse:(id)response
 {
   v4 = _os_activity_create(&_mh_execute_header, "perihperalIsReadyToSendWriteWithoutResponse:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   v12.opaque[0] = 0;
@@ -494,22 +494,22 @@ LABEL_20:
   sub_10001934C(self->_sender, v5, v6, v7, v8, v9, v10, v11, v12.opaque[0]);
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v8 = a3;
-  if (a4 == 4)
+  streamCopy = stream;
+  if (event == 4)
   {
     v12 = @"NSStreamEventHasSpaceAvailable";
     v13 = OS_LOG_TYPE_INFO;
     v14 = 277;
 LABEL_6:
-    sub_10002483C(v13, 0, "[ISO18013_3_Central stream:handleEvent:]", v14, self, v12, v6, v7, v15);
+    sub_10002483C(v13, 0, "[ISO18013_3_Central stream:handleEvent:]", v14, self, v12, v6, v7, eventCopy);
     goto LABEL_7;
   }
 
-  if (a4 != 2)
+  if (event != 2)
   {
-    v15 = a4;
+    eventCopy = event;
     v12 = @"LE: Stream event %lu on %@";
     v13 = OS_LOG_TYPE_DEFAULT;
     v14 = 279;
@@ -518,109 +518,109 @@ LABEL_6:
 
   bzero(v17, 0x400uLL);
   v16 = 0;
-  v9 = -[ISO18013_3_Central _extractFromMessage:length:lastPacket:](self, "_extractFromMessage:length:lastPacket:", v17, [v8 read:v17 maxLength:1024], &v16);
+  v9 = -[ISO18013_3_Central _extractFromMessage:length:lastPacket:](self, "_extractFromMessage:length:lastPacket:", v17, [streamCopy read:v17 maxLength:1024], &v16);
   sub_10002483C(OS_LOG_TYPE_INFO, 0, "[ISO18013_3_Central stream:handleEvent:]", 274, self, @"LE: L2CAP RX> %@", v10, v11, v9);
   [(ISO18013_3_Central *)self _activateRxCallbackWithData:v9 lastPacket:v16];
 
 LABEL_7:
 }
 
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  channelCopy = channel;
+  errorCopy = error;
   v10 = _os_activity_create(&_mh_execute_header, "peripheral:didOpenL2CAPChannel:error:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v10, &state);
   os_activity_scope_leave(&state);
 
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central peripheral:didOpenL2CAPChannel:error:]", 287, self, @"LE: didOpenL2CAPChannel : %@ (error = %@)", v11, v12, v8);
-  if (v9)
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central peripheral:didOpenL2CAPChannel:error:]", 287, self, @"LE: didOpenL2CAPChannel : %@ (error = %@)", v11, v12, channelCopy);
+  if (errorCopy)
   {
     sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central peripheral:didOpenL2CAPChannel:error:]", 290, self, @"Fallback to GATT??", v13, v14, v26);
   }
 
   else
   {
-    objc_storeStrong(&self->_l2capChannel, a4);
+    objc_storeStrong(&self->_l2capChannel, channel);
     sender = self->_sender;
     self->_sender = 0;
 
-    v16 = [(ISO18013_3_Central *)self l2capChannel];
-    v17 = [v16 inputStream];
-    v18 = [(ISO18013_3_Central *)self queue];
-    CFReadStreamSetDispatchQueue(v17, v18);
+    l2capChannel = [(ISO18013_3_Central *)self l2capChannel];
+    inputStream = [l2capChannel inputStream];
+    queue = [(ISO18013_3_Central *)self queue];
+    CFReadStreamSetDispatchQueue(inputStream, queue);
 
-    v19 = [(CBL2CAPChannel *)self->_l2capChannel inputStream];
-    [v19 setDelegate:self];
+    inputStream2 = [(CBL2CAPChannel *)self->_l2capChannel inputStream];
+    [inputStream2 setDelegate:self];
 
-    v20 = [(CBL2CAPChannel *)self->_l2capChannel inputStream];
-    [v20 open];
+    inputStream3 = [(CBL2CAPChannel *)self->_l2capChannel inputStream];
+    [inputStream3 open];
 
-    v21 = [(ISO18013_3_Central *)self l2capChannel];
-    v22 = [v21 outputStream];
-    v23 = [(ISO18013_3_Central *)self queue];
-    CFWriteStreamSetDispatchQueue(v22, v23);
+    l2capChannel2 = [(ISO18013_3_Central *)self l2capChannel];
+    outputStream = [l2capChannel2 outputStream];
+    queue2 = [(ISO18013_3_Central *)self queue];
+    CFWriteStreamSetDispatchQueue(outputStream, queue2);
 
-    v24 = [(CBL2CAPChannel *)self->_l2capChannel outputStream];
-    [v24 setDelegate:self];
+    outputStream2 = [(CBL2CAPChannel *)self->_l2capChannel outputStream];
+    [outputStream2 setDelegate:self];
 
-    v25 = [(CBL2CAPChannel *)self->_l2capChannel outputStream];
-    [v25 open];
+    outputStream3 = [(CBL2CAPChannel *)self->_l2capChannel outputStream];
+    [outputStream3 open];
   }
 
   [(ISO18013_3_Central *)self setReady];
 }
 
-- (BOOL)writeL2CAPData:(id)a3
+- (BOOL)writeL2CAPData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = 0;
   do
   {
-    v6 = [(CBL2CAPChannel *)self->_l2capChannel outputStream];
-    v7 = [v6 write:&v5[objc_msgSend(v4 maxLength:{"bytes")], objc_msgSend(v4, "length") - v5}];
+    outputStream = [(CBL2CAPChannel *)self->_l2capChannel outputStream];
+    v7 = [outputStream write:&v5[objc_msgSend(dataCopy maxLength:{"bytes")], objc_msgSend(dataCopy, "length") - v5}];
 
     v5 += v7;
-    [v4 length];
+    [dataCopy length];
     sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central writeL2CAPData:]", 317, self, @"LE: L2CAP Wrote %lu bytes out of %lu", v8, v9, v7);
   }
 
   while (v7);
-  v10 = v5 == [v4 length];
+  v10 = v5 == [dataCopy length];
 
   return v10;
 }
 
-- (void)receivedData:(id)a3
+- (void)receivedData:(id)data
 {
-  v4 = [a3 value];
+  value = [data value];
   v6 = 0;
-  v5 = -[ISO18013_3_Central _extractFromMessage:length:lastPacket:](self, "_extractFromMessage:length:lastPacket:", [v4 bytes], objc_msgSend(v4, "length"), &v6);
+  v5 = -[ISO18013_3_Central _extractFromMessage:length:lastPacket:](self, "_extractFromMessage:length:lastPacket:", [value bytes], objc_msgSend(value, "length"), &v6);
   [(ISO18013_3_Central *)self _activateRxCallbackWithData:v5 lastPacket:v6];
 }
 
-- (void)queryBLEGATTServer:(id)a3
+- (void)queryBLEGATTServer:(id)server
 {
-  v4 = a3;
-  [v4 setDelegate:self];
+  serverCopy = server;
+  [serverCopy setDelegate:self];
   v5 = [NSMutableArray alloc];
-  v6 = [(ISO18013_3_Central *)self peripheralServiceUUID];
-  v9 = [v5 initWithObjects:{v6, 0}];
+  peripheralServiceUUID = [(ISO18013_3_Central *)self peripheralServiceUUID];
+  v9 = [v5 initWithObjects:{peripheralServiceUUID, 0}];
 
   sub_10002483C(OS_LOG_TYPE_INFO, 0, "[ISO18013_3_Central queryBLEGATTServer:]", 337, self, @"LE: services=%@", v7, v8, v9);
-  [v4 discoverServices:v9];
+  [serverCopy discoverServices:v9];
 }
 
-- (BOOL)discoverMDOCServiceCharacteristics:(id)a3
+- (BOOL)discoverMDOCServiceCharacteristics:(id)characteristics
 {
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v35 = a3;
-  obj = [v35 services];
+  characteristicsCopy = characteristics;
+  obj = [characteristicsCopy services];
   v4 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v4)
   {
@@ -636,47 +636,47 @@ LABEL_7:
         }
 
         v8 = *(*(&v37 + 1) + 8 * i);
-        v9 = [v8 UUID];
-        sub_10002483C(OS_LOG_TYPE_INFO, 0, "[ISO18013_3_Central discoverMDOCServiceCharacteristics:]", 343, self, @"service UUID: %@", v10, v11, v9);
+        uUID = [v8 UUID];
+        sub_10002483C(OS_LOG_TYPE_INFO, 0, "[ISO18013_3_Central discoverMDOCServiceCharacteristics:]", 343, self, @"service UUID: %@", v10, v11, uUID);
 
-        v12 = [v8 UUID];
-        v13 = [(ISO18013_3_Central *)self peripheralServiceUUID];
-        v14 = [v12 isEqual:v13];
+        uUID2 = [v8 UUID];
+        peripheralServiceUUID = [(ISO18013_3_Central *)self peripheralServiceUUID];
+        v14 = [uUID2 isEqual:peripheralServiceUUID];
 
         if (v14)
         {
-          v34 = [(ISO18013_3_Central *)self getStateCharacteristicUUID];
-          v19 = [CBUUID UUIDWithString:v34];
+          getStateCharacteristicUUID = [(ISO18013_3_Central *)self getStateCharacteristicUUID];
+          v19 = [CBUUID UUIDWithString:getStateCharacteristicUUID];
           v41[0] = v19;
-          v20 = [(ISO18013_3_Central *)self getOutgoingDataCharacteristicUUID];
-          v21 = [CBUUID UUIDWithString:v20];
+          getOutgoingDataCharacteristicUUID = [(ISO18013_3_Central *)self getOutgoingDataCharacteristicUUID];
+          v21 = [CBUUID UUIDWithString:getOutgoingDataCharacteristicUUID];
           v41[1] = v21;
-          v22 = [(ISO18013_3_Central *)self getIncomingDataCharacteristicUUID];
-          v23 = [CBUUID UUIDWithString:v22];
+          getIncomingDataCharacteristicUUID = [(ISO18013_3_Central *)self getIncomingDataCharacteristicUUID];
+          v23 = [CBUUID UUIDWithString:getIncomingDataCharacteristicUUID];
           v41[2] = v23;
           v24 = [NSArray arrayWithObjects:v41 count:3];
           v25 = [NSMutableArray arrayWithArray:v24];
 
-          v26 = [(ISO18013_3_Central *)self getIdentifierCharacteristicUUID];
+          getIdentifierCharacteristicUUID = [(ISO18013_3_Central *)self getIdentifierCharacteristicUUID];
 
-          if (v26)
+          if (getIdentifierCharacteristicUUID)
           {
-            v27 = [(ISO18013_3_Central *)self getIdentifierCharacteristicUUID];
-            v28 = [CBUUID UUIDWithString:v27];
+            getIdentifierCharacteristicUUID2 = [(ISO18013_3_Central *)self getIdentifierCharacteristicUUID];
+            v28 = [CBUUID UUIDWithString:getIdentifierCharacteristicUUID2];
             [v25 addObject:v28];
           }
 
-          v29 = [(ISO18013_3_Central *)self getL2CAPCharacteristicUUID];
+          getL2CAPCharacteristicUUID = [(ISO18013_3_Central *)self getL2CAPCharacteristicUUID];
 
-          if (v29)
+          if (getL2CAPCharacteristicUUID)
           {
-            v30 = [(ISO18013_3_Central *)self getL2CAPCharacteristicUUID];
-            v31 = [CBUUID UUIDWithString:v30];
+            getL2CAPCharacteristicUUID2 = [(ISO18013_3_Central *)self getL2CAPCharacteristicUUID];
+            v31 = [CBUUID UUIDWithString:getL2CAPCharacteristicUUID2];
             [v25 addObject:v31];
           }
 
-          v18 = v35;
-          [v35 discoverCharacteristics:v25 forService:v8];
+          v18 = characteristicsCopy;
+          [characteristicsCopy discoverCharacteristics:v25 forService:v8];
           objc_storeWeak(&self->_readerService, v8);
 
           v17 = 1;
@@ -696,16 +696,16 @@ LABEL_7:
 
   sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central discoverMDOCServiceCharacteristics:]", 366, self, @"LE: Error : No ISO service", v15, v16, v33);
   v17 = 0;
-  v18 = v35;
+  v18 = characteristicsCopy;
 LABEL_15:
 
   return v17;
 }
 
-- (BOOL)setupGATTServerCharacteristics:(id)a3
+- (BOOL)setupGATTServerCharacteristics:(id)characteristics
 {
-  v4 = a3;
-  v54 = [(ISO18013_3_Central *)self getIdentifierCharacteristicUUID];
+  characteristicsCopy = characteristics;
+  getIdentifierCharacteristicUUID = [(ISO18013_3_Central *)self getIdentifierCharacteristicUUID];
 
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central setupGATTServerCharacteristics:]", 375, self, @"LE: Setting up ISO reader characteristics...", v5, v6, v50);
   self->_expectedCharacteristicReadOnStartup = 0;
@@ -713,8 +713,8 @@ LABEL_15:
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v51 = v4;
-  obj = [v4 characteristics];
+  v51 = characteristicsCopy;
+  obj = [characteristicsCopy characteristics];
   v55 = [obj countByEnumeratingWithState:&v56 objects:v60 count:16];
   v7 = 0;
   if (v55)
@@ -730,18 +730,18 @@ LABEL_15:
         }
 
         v9 = *(*(&v56 + 1) + 8 * i);
-        v10 = [v9 properties];
-        v11 = [v9 UUID];
-        v12 = [(ISO18013_3_Central *)self getStateCharacteristicUUID];
-        v13 = [CBUUID UUIDWithString:v12];
-        v14 = [v11 isEqual:v13];
+        properties = [v9 properties];
+        uUID = [v9 UUID];
+        getStateCharacteristicUUID = [(ISO18013_3_Central *)self getStateCharacteristicUUID];
+        v13 = [CBUUID UUIDWithString:getStateCharacteristicUUID];
+        v14 = [uUID isEqual:v13];
 
         if (v14)
         {
-          if ((~v10 & 0x14) != 0)
+          if ((~properties & 0x14) != 0)
           {
-            v15 = [v9 UUID];
-            sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central setupGATTServerCharacteristics:]", 385, self, @"LE: Error : %@ is not notify-able", v16, v17, v15);
+            uUID2 = [v9 UUID];
+            sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central setupGATTServerCharacteristics:]", 385, self, @"LE: Error : %@ is not notify-able", v16, v17, uUID2);
           }
 
           else
@@ -751,33 +751,33 @@ LABEL_15:
           }
         }
 
-        v18 = [v9 UUID];
-        v19 = [(ISO18013_3_Central *)self getOutgoingDataCharacteristicUUID];
-        v20 = [CBUUID UUIDWithString:v19];
-        v21 = [v18 isEqual:v20];
+        uUID3 = [v9 UUID];
+        getOutgoingDataCharacteristicUUID = [(ISO18013_3_Central *)self getOutgoingDataCharacteristicUUID];
+        v20 = [CBUUID UUIDWithString:getOutgoingDataCharacteristicUUID];
+        v21 = [uUID3 isEqual:v20];
 
         if (v21)
         {
-          if ((v10 & 4) != 0)
+          if ((properties & 4) != 0)
           {
             ++v7;
           }
 
           else
           {
-            v22 = [v9 UUID];
-            sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central setupGATTServerCharacteristics:]", 394, self, @"LE: Error : %@ is not write-able", v23, v24, v22);
+            uUID4 = [v9 UUID];
+            sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central setupGATTServerCharacteristics:]", 394, self, @"LE: Error : %@ is not write-able", v23, v24, uUID4);
           }
         }
 
-        v25 = [v9 UUID];
-        v26 = [(ISO18013_3_Central *)self getIncomingDataCharacteristicUUID];
-        v27 = [CBUUID UUIDWithString:v26];
-        v28 = [v25 isEqual:v27];
+        uUID5 = [v9 UUID];
+        getIncomingDataCharacteristicUUID = [(ISO18013_3_Central *)self getIncomingDataCharacteristicUUID];
+        v27 = [CBUUID UUIDWithString:getIncomingDataCharacteristicUUID];
+        v28 = [uUID5 isEqual:v27];
 
         if (v28)
         {
-          if ((v10 & 0x10) != 0)
+          if ((properties & 0x10) != 0)
           {
             [(CBPeripheral *)self->_remoteReader setNotifyValue:1 forCharacteristic:v9];
             ++v7;
@@ -785,21 +785,21 @@ LABEL_15:
 
           else
           {
-            v29 = [v9 UUID];
-            sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central setupGATTServerCharacteristics:]", 402, self, @"LE: Error : %@ is not notify-able", v30, v31, v29);
+            uUID6 = [v9 UUID];
+            sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central setupGATTServerCharacteristics:]", 402, self, @"LE: Error : %@ is not notify-able", v30, v31, uUID6);
           }
         }
 
-        if (v54)
+        if (getIdentifierCharacteristicUUID)
         {
-          v32 = [v9 UUID];
-          v33 = [(ISO18013_3_Central *)self getIdentifierCharacteristicUUID];
-          v34 = [CBUUID UUIDWithString:v33];
-          v35 = [v32 isEqual:v34];
+          uUID7 = [v9 UUID];
+          getIdentifierCharacteristicUUID2 = [(ISO18013_3_Central *)self getIdentifierCharacteristicUUID];
+          v34 = [CBUUID UUIDWithString:getIdentifierCharacteristicUUID2];
+          v35 = [uUID7 isEqual:v34];
 
           if (v35)
           {
-            if ((v10 & 2) != 0)
+            if ((properties & 2) != 0)
             {
               ++v7;
               [(CBPeripheral *)self->_remoteReader readValueForCharacteristic:v9];
@@ -810,20 +810,20 @@ LABEL_15:
 
             else
             {
-              v36 = [v9 UUID];
-              sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central setupGATTServerCharacteristics:]", 411, self, @"LE: Error : %@ is not read-able", v37, v38, v36);
+              uUID8 = [v9 UUID];
+              sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central setupGATTServerCharacteristics:]", 411, self, @"LE: Error : %@ is not read-able", v37, v38, uUID8);
             }
           }
         }
 
-        v40 = [v9 UUID];
-        v41 = [(ISO18013_3_Central *)self getL2CAPCharacteristicUUID];
-        v42 = [CBUUID UUIDWithString:v41];
-        v43 = [v40 isEqual:v42];
+        uUID9 = [v9 UUID];
+        getL2CAPCharacteristicUUID = [(ISO18013_3_Central *)self getL2CAPCharacteristicUUID];
+        v42 = [CBUUID UUIDWithString:getL2CAPCharacteristicUUID];
+        v43 = [uUID9 isEqual:v42];
 
         if (v43)
         {
-          if ((v10 & 2) != 0)
+          if ((properties & 2) != 0)
           {
             [(CBPeripheral *)self->_remoteReader readValueForCharacteristic:v9];
             self->_peripheralL2CapState = 1;
@@ -832,8 +832,8 @@ LABEL_15:
 
           else
           {
-            v44 = [v9 UUID];
-            sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central setupGATTServerCharacteristics:]", 423, self, @"LE: Error : %@ is not readable", v45, v46, v44);
+            uUID10 = [v9 UUID];
+            sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central setupGATTServerCharacteristics:]", 423, self, @"LE: Error : %@ is not readable", v45, v46, uUID10);
           }
         }
       }
@@ -849,7 +849,7 @@ LABEL_15:
     [(ISO18013_3_Central *)self setReady];
   }
 
-  if (v54)
+  if (getIdentifierCharacteristicUUID)
   {
     v47 = 3;
   }
@@ -864,17 +864,17 @@ LABEL_15:
   return v48;
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
-  v10 = a3;
-  v4 = [v10 value];
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central stateChanged:]", 446, self, @"LE: Remote state changed to %@", v5, v6, v4);
+  changedCopy = changed;
+  value = [changedCopy value];
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central stateChanged:]", 446, self, @"LE: Remote state changed to %@", v5, v6, value);
 
-  v7 = [v10 value];
-  if ([v7 length])
+  value2 = [changedCopy value];
+  if ([value2 length])
   {
-    v8 = [v10 value];
-    v9 = *[v8 bytes];
+    value3 = [changedCopy value];
+    v9 = *[value3 bytes];
 
     if (v9 == 2)
     {
@@ -894,9 +894,9 @@ LABEL_15:
   v13 = 0u;
   v14 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_readerService);
-  v4 = [WeakRetained characteristics];
+  characteristics = [WeakRetained characteristics];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [characteristics countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -907,7 +907,7 @@ LABEL_15:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(characteristics);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -917,7 +917,7 @@ LABEL_15:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [characteristics countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -940,8 +940,8 @@ LABEL_15:
 
     else
     {
-      v5 = [(ISO18013_3_Central *)self getStateCharacteristicUUID];
-      v9 = [(ISO18013_3_Central *)self getCharacteristic:v5];
+      getStateCharacteristicUUID = [(ISO18013_3_Central *)self getStateCharacteristicUUID];
+      v9 = [(ISO18013_3_Central *)self getCharacteristic:getStateCharacteristicUUID];
 
       if (v9)
       {
@@ -957,9 +957,9 @@ LABEL_15:
   }
 }
 
-- (id)getCharacteristic:(id)a3
+- (id)getCharacteristic:(id)characteristic
 {
-  v4 = a3;
+  characteristicCopy = characteristic;
   WeakRetained = objc_loadWeakRetained(&self->_readerService);
   v8 = WeakRetained;
   if (self->_remoteReader)
@@ -985,8 +985,8 @@ LABEL_15:
     v23 = 0u;
     v24 = 0u;
     v22 = WeakRetained;
-    v11 = [WeakRetained characteristics];
-    v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    characteristics = [WeakRetained characteristics];
+    v12 = [characteristics countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v12)
     {
       v13 = v12;
@@ -997,13 +997,13 @@ LABEL_15:
         {
           if (*v24 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(characteristics);
           }
 
           v16 = *(*(&v23 + 1) + 8 * i);
-          v17 = [v16 UUID];
-          v18 = [CBUUID UUIDWithString:v4];
-          v19 = [v17 isEqual:v18];
+          uUID = [v16 UUID];
+          v18 = [CBUUID UUIDWithString:characteristicCopy];
+          v19 = [uUID isEqual:v18];
 
           if (v19)
           {
@@ -1013,7 +1013,7 @@ LABEL_15:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v13 = [characteristics countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v13)
         {
           continue;
@@ -1031,18 +1031,18 @@ LABEL_17:
   return v10;
 }
 
-- (ISO18013_3_Central)initWithWorkQueue:(id)a3 callbackQueue:(id)a4
+- (ISO18013_3_Central)initWithWorkQueue:(id)queue callbackQueue:(id)callbackQueue
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  callbackQueueCopy = callbackQueue;
   v16.receiver = self;
   v16.super_class = ISO18013_3_Central;
   v9 = [(ISO18013_3_Central *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientQueue, a4);
-    objc_storeStrong(&v10->_queue, a3);
+    objc_storeStrong(&v9->_clientQueue, callbackQueue);
+    objc_storeStrong(&v10->_queue, queue);
     v11 = objc_opt_new();
     centralCallbackLock = v10->_centralCallbackLock;
     v10->_centralCallbackLock = v11;
@@ -1055,14 +1055,14 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)connectBLEAddress:(id)a3 advertiseServiceUUID:(id)a4 readerIdentCharacteristic:(id)a5 onDeviceConnection:(id)a6 onDisconnect:(id)a7 onDataRx:(id)a8
+- (BOOL)connectBLEAddress:(id)address advertiseServiceUUID:(id)d readerIdentCharacteristic:(id)characteristic onDeviceConnection:(id)connection onDisconnect:(id)disconnect onDataRx:(id)rx
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v22 = [CBUUID UUIDWithData:a4];
+  addressCopy = address;
+  characteristicCopy = characteristic;
+  connectionCopy = connection;
+  disconnectCopy = disconnect;
+  rxCopy = rx;
+  v22 = [CBUUID UUIDWithData:d];
   if (!v22)
   {
     sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central connectBLEAddress:advertiseServiceUUID:readerIdentCharacteristic:onDeviceConnection:onDisconnect:onDataRx:]", 563, self, @"LE: Invalid service UUID", v20, v21, v47);
@@ -1076,35 +1076,35 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&self->_remoteBLEAddress, a3);
-  if (![v15 length])
+  objc_storeStrong(&self->_remoteBLEAddress, address);
+  if (![addressCopy length])
   {
     v24 = 0;
     goto LABEL_18;
   }
 
-  v23 = [(CBCentralManager *)self->_centralManager createPeripheralWithAddress:v15 andIdentifier:0];
+  v23 = [(CBCentralManager *)self->_centralManager createPeripheralWithAddress:addressCopy andIdentifier:0];
   if (v23)
   {
     v24 = v23;
     goto LABEL_18;
   }
 
-  v27 = [v15 bytes];
-  if ([v15 length] == 6)
+  bytes = [addressCopy bytes];
+  if ([addressCopy length] == 6)
   {
-    [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x", *v27, v27[1], v27[2], v27[3], v27[4], v27[5], v48];
+    [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x", *bytes, bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], v48];
   }
 
   else
   {
-    if ([v15 length] != 7)
+    if ([addressCopy length] != 7)
     {
-      sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central connectBLEAddress:advertiseServiceUUID:readerIdentCharacteristic:onDeviceConnection:onDisconnect:onDataRx:]", 590, self, @"Invalid LE address: %@", v28, v29, v15);
+      sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central connectBLEAddress:advertiseServiceUUID:readerIdentCharacteristic:onDeviceConnection:onDisconnect:onDataRx:]", 590, self, @"Invalid LE address: %@", v28, v29, addressCopy);
       goto LABEL_22;
     }
 
-    if (*v27)
+    if (*bytes)
     {
       v30 = "Random";
     }
@@ -1114,7 +1114,7 @@ LABEL_7:
       v30 = "Public";
     }
 
-    [NSString stringWithFormat:@"%s %02x:%02x:%02x:%02x:%02x:%02x", v30, v27[1], v27[2], v27[3], v27[4], v27[5], v27[6]];
+    [NSString stringWithFormat:@"%s %02x:%02x:%02x:%02x:%02x:%02x", v30, bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6]];
   }
   v31 = ;
   v24 = [(CBCentralManager *)self->_centralManager retrievePeripheralWithAddress:v31];
@@ -1127,20 +1127,20 @@ LABEL_22:
   }
 
 LABEL_18:
-  v34 = objc_retainBlock(v19);
+  v34 = objc_retainBlock(rxCopy);
   rxBlock = self->_rxBlock;
   self->_rxBlock = v34;
 
-  v36 = objc_retainBlock(v17);
+  v36 = objc_retainBlock(connectionCopy);
   connectionBlock = self->_connectionBlock;
   self->_connectionBlock = v36;
 
-  v38 = objc_retainBlock(v18);
+  v38 = objc_retainBlock(disconnectCopy);
   disconnectionBlock = self->_disconnectionBlock;
   self->_disconnectionBlock = v38;
 
   objc_storeStrong(&self->_peripheralServiceUUID, v22);
-  objc_storeStrong(&self->_readerIdentCharacteristic, a5);
+  objc_storeStrong(&self->_readerIdentCharacteristic, characteristic);
   self->_invalidated = 0;
   if (v24)
   {
@@ -1172,17 +1172,17 @@ LABEL_8:
   return v25;
 }
 
-- (void)invalidateAndUpdateStateSignal:(BOOL)a3 reason:(unint64_t)a4
+- (void)invalidateAndUpdateStateSignal:(BOOL)signal reason:(unint64_t)reason
 {
-  v7 = [(ISO18013_3_Central *)self queue];
+  queue = [(ISO18013_3_Central *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000359BC;
   block[3] = &unk_100058F70;
-  v9 = a3;
+  signalCopy = signal;
   block[4] = self;
-  block[5] = a4;
-  dispatch_async(v7, block);
+  block[5] = reason;
+  dispatch_async(queue, block);
 }
 
 - (int64_t)hardwareAvailable
@@ -1210,10 +1210,10 @@ LABEL_8:
   return 0;
 }
 
-- (BOOL)writeData:(id)a3 toUUID:(id)a4
+- (BOOL)writeData:(id)data toUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   v37[0] = 0;
   v37[1] = v37;
   v37[2] = 0x3032000000;
@@ -1230,7 +1230,7 @@ LABEL_8:
   v30 = sub_100035E94;
   v31 = sub_100035EA4;
   v32 = 0;
-  v8 = [(ISO18013_3_Central *)self queue];
+  queue = [(ISO18013_3_Central *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100035EAC;
@@ -1238,10 +1238,10 @@ LABEL_8:
   block[4] = self;
   v24 = &v33;
   v25 = v37;
-  v9 = v7;
+  v9 = dCopy;
   v23 = v9;
   v26 = &v27;
-  dispatch_sync(v8, block);
+  dispatch_sync(queue, block);
 
   if ((v34[3] & 1) == 0)
   {
@@ -1251,13 +1251,13 @@ LABEL_8:
   if (!self->_isConnected)
   {
     sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central writeData:toUUID:]", 723, self, @"Alt carrier no longer connected. Bail out", v10, v11, v18);
-    v16 = [(ISO18013_3_Central *)self queue];
+    queue2 = [(ISO18013_3_Central *)self queue];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_10003608C;
     v21[3] = &unk_100058A08;
     v21[4] = self;
-    dispatch_sync(v16, v21);
+    dispatch_sync(queue2, v21);
 
 LABEL_5:
     v15 = 0;
@@ -1271,15 +1271,15 @@ LABEL_5:
   v20[3] = &unk_100059688;
   v20[4] = self;
   v20[5] = v37;
-  v13 = sub_100018BC0(v12, v6, v20);
+  v13 = sub_100018BC0(v12, dataCopy, v20);
   *(v34 + 24) = v13;
-  v14 = [(ISO18013_3_Central *)self queue];
+  queue3 = [(ISO18013_3_Central *)self queue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100036104;
   v19[3] = &unk_100058A08;
   v19[4] = self;
-  dispatch_sync(v14, v19);
+  dispatch_sync(queue3, v19);
 
   v15 = *(v34 + 24);
 LABEL_6:
@@ -1291,7 +1291,7 @@ LABEL_6:
   return v15 & 1;
 }
 
-- (id)getBluetoothStatusDict:(id *)a3
+- (id)getBluetoothStatusDict:(id *)dict
 {
   v7 = 0;
   v8 = &v7;
@@ -1306,7 +1306,7 @@ LABEL_6:
   v6[3] = &unk_100058FE8;
   v6[4] = self;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = dict;
   [(CBCentralManager *)centralManager queryBluetoothStatus:&off_10005F888 completion:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1336,47 +1336,47 @@ LABEL_6:
 
 - (BOOL)_startCBCentralManagerAndWaitForPowerOn
 {
-  v3 = [(ISO18013_3_Central *)self _startCBCentralManager];
-  if (v3)
+  _startCBCentralManager = [(ISO18013_3_Central *)self _startCBCentralManager];
+  if (_startCBCentralManager)
   {
 
-    LOBYTE(v3) = [(ISO18013_3_Central *)self _isBTPowerOn:0];
+    LOBYTE(_startCBCentralManager) = [(ISO18013_3_Central *)self _isBTPowerOn:0];
   }
 
-  return v3;
+  return _startCBCentralManager;
 }
 
-- (BOOL)_isBTPowerOn:(int64_t *)a3
+- (BOOL)_isBTPowerOn:(int64_t *)on
 {
   v5 = 4;
   while (1)
   {
-    v6 = [(CBCentralManager *)self->_centralManager state];
-    if (a3)
+    state = [(CBCentralManager *)self->_centralManager state];
+    if (on)
     {
-      *a3 = v6;
+      *on = state;
     }
 
-    if (v6 == 4)
+    if (state == 4)
     {
       return 0;
     }
 
-    if (v6 == 5)
+    if (state == 5)
     {
       break;
     }
 
-    sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central _isBTPowerOn:]", 816, self, @"Waiting on state update, current value=%ld", v7, v8, v6);
+    sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central _isBTPowerOn:]", 816, self, @"Waiting on state update, current value=%ld", v7, v8, state);
     v9 = [NSDate dateWithTimeIntervalSinceNow:0.3];
-    v10 = [(ISO18013_3_Central *)self centralCallbackLock];
-    [v10 lock];
+    centralCallbackLock = [(ISO18013_3_Central *)self centralCallbackLock];
+    [centralCallbackLock lock];
 
-    v11 = [(ISO18013_3_Central *)self centralCallbackLock];
-    [v11 waitUntilDate:v9];
+    centralCallbackLock2 = [(ISO18013_3_Central *)self centralCallbackLock];
+    [centralCallbackLock2 waitUntilDate:v9];
 
-    v12 = [(ISO18013_3_Central *)self centralCallbackLock];
-    [v12 unlock];
+    centralCallbackLock3 = [(ISO18013_3_Central *)self centralCallbackLock];
+    [centralCallbackLock3 unlock];
 
     if (--v5 <= 1)
     {
@@ -1388,13 +1388,13 @@ LABEL_6:
   return 1;
 }
 
-- (void)_activateConnectionBlock:(unint64_t)a3 connectionState:(BOOL)a4
+- (void)_activateConnectionBlock:(unint64_t)block connectionState:(BOOL)state
 {
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central _activateConnectionBlock:connectionState:]", 834, self, @"LE: status=%lu, isConnected=%d", v4, v5, a3);
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central _activateConnectionBlock:connectionState:]", 834, self, @"LE: status=%lu, isConnected=%d", v4, v5, block);
   if (self->_connectionBlock)
   {
     sub_10002483C(OS_LOG_TYPE_INFO, 0, "[ISO18013_3_Central _activateConnectionBlock:connectionState:]", 836, self, @"LE: Activate connect block", v9, v10, v15);
-    self->_isConnected = a4;
+    self->_isConnected = state;
     v11 = objc_retainBlock(self->_connectionBlock);
     connectionBlock = self->_connectionBlock;
     self->_connectionBlock = 0;
@@ -1405,15 +1405,15 @@ LABEL_6:
     block[2] = sub_100036620;
     block[3] = &unk_100059010;
     v17 = v11;
-    v18 = a3;
+    blockCopy = block;
     v14 = v11;
     dispatch_async(clientQueue, block);
   }
 }
 
-- (void)_activateDisconnectBlock:(unint64_t)a3
+- (void)_activateDisconnectBlock:(unint64_t)block
 {
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central _activateDisconnectBlock:]", 847, self, @"LE: status=%lu", v3, v4, a3);
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISO18013_3_Central _activateDisconnectBlock:]", 847, self, @"LE: status=%lu", v3, v4, block);
   disconnectionBlock = self->_disconnectionBlock;
   if (disconnectionBlock)
   {
@@ -1428,17 +1428,17 @@ LABEL_6:
     block[2] = sub_10003671C;
     block[3] = &unk_100059010;
     v13 = v8;
-    v14 = a3;
+    blockCopy = block;
     v11 = v8;
     dispatch_async(clientQueue, block);
   }
 }
 
-- (void)_activateRxCallbackWithData:(id)a3 lastPacket:(BOOL)a4
+- (void)_activateRxCallbackWithData:(id)data lastPacket:(BOOL)packet
 {
-  v4 = a4;
-  [(NSMutableData *)self->_rxBuffer appendData:a3];
-  if (v4)
+  packetCopy = packet;
+  [(NSMutableData *)self->_rxBuffer appendData:data];
+  if (packetCopy)
   {
     if (self->_rxBlock)
     {
@@ -1462,23 +1462,23 @@ LABEL_6:
   }
 }
 
-- (id)_extractFromMessage:(const char *)a3 length:(unint64_t)a4 lastPacket:(BOOL *)a5
+- (id)_extractFromMessage:(const char *)message length:(unint64_t)length lastPacket:(BOOL *)packet
 {
-  *a5 = 0;
-  if (*a3 == 1)
+  *packet = 0;
+  if (*message == 1)
   {
     goto LABEL_4;
   }
 
-  if (!*a3)
+  if (!*message)
   {
-    *a5 = 1;
+    *packet = 1;
 LABEL_4:
-    v7 = [NSData dataWithBytes:a3 + 1 length:a4 - 1];
+    v7 = [NSData dataWithBytes:message + 1 length:length - 1];
     goto LABEL_6;
   }
 
-  sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central _extractFromMessage:length:lastPacket:]", 905, self, @"Unexpected header byte: 0x%X.  Dropping data", v5, v6, *a3);
+  sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[ISO18013_3_Central _extractFromMessage:length:lastPacket:]", 905, self, @"Unexpected header byte: 0x%X.  Dropping data", v5, v6, *message);
   v7 = 0;
 LABEL_6:
 

@@ -22,8 +22,8 @@
   v9 = NSStringFromBOOL();
   [(SHSheetContentDataSourceChangeDetails *)self animateDifferences];
   v10 = NSStringFromBOOL();
-  v11 = [(SHSheetContentDataSourceChangeDetails *)self modifiedIdentifiers];
-  v12 = [v3 stringWithFormat:@"<%@ snapshotChanged:%@ airDropBadgeChanged:%@ sectionsChanged:%@ peopleCountChanged:%@ forceReload:%@ animateDifferences:%@ modifiedIdentifiers:%@>", v4, v5, v6, v7, v8, v9, v10, v11];
+  modifiedIdentifiers = [(SHSheetContentDataSourceChangeDetails *)self modifiedIdentifiers];
+  v12 = [v3 stringWithFormat:@"<%@ snapshotChanged:%@ airDropBadgeChanged:%@ sectionsChanged:%@ peopleCountChanged:%@ forceReload:%@ animateDifferences:%@ modifiedIdentifiers:%@>", v4, v5, v6, v7, v8, v9, v10, modifiedIdentifiers];
 
   return v12;
 }

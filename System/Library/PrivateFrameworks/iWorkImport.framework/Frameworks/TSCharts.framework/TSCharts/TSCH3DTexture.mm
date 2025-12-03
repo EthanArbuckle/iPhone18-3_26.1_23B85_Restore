@@ -1,5 +1,5 @@
 @interface TSCH3DTexture
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSCH3DTexture)init;
 - (unint64_t)hash;
 - (void)resetResource;
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }

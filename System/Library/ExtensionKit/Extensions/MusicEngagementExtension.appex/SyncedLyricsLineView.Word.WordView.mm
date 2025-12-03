@@ -1,27 +1,27 @@
 @interface SyncedLyricsLineView.Word.WordView
-- (_TtCCC7LyricsX20SyncedLyricsLineView4Word8WordView)initWithCoder:(id)a3;
-- (_TtCCC7LyricsX20SyncedLyricsLineView4Word8WordView)initWithFrame:(CGRect)a3;
+- (_TtCCC7LyricsX20SyncedLyricsLineView4Word8WordView)initWithCoder:(id)coder;
+- (_TtCCC7LyricsX20SyncedLyricsLineView4Word8WordView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SyncedLyricsLineView.Word.WordView
 
-- (_TtCCC7LyricsX20SyncedLyricsLineView4Word8WordView)initWithFrame:(CGRect)a3
+- (_TtCCC7LyricsX20SyncedLyricsLineView4Word8WordView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   return [(SyncedLyricsLineView.Word.WordView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtCCC7LyricsX20SyncedLyricsLineView4Word8WordView)initWithCoder:(id)a3
+- (_TtCCC7LyricsX20SyncedLyricsLineView4Word8WordView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(SyncedLyricsLineView.Word.WordView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SyncedLyricsLineView.Word.WordView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

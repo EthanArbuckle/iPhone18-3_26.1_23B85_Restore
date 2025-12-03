@@ -1,19 +1,19 @@
 @interface PDFBorder
 - (BOOL)_isRectangular;
-- (BOOL)setBorderCharacteristicsFromArray:(CGPDFArray *)a3;
+- (BOOL)setBorderCharacteristicsFromArray:(CGPDFArray *)array;
 - (NSDictionary)borderKeyValues;
 - (PDFBorder)init;
-- (PDFBorder)initWithAnnotationDictionary:(CGPDFDictionary *)a3 forPage:(id)a4;
+- (PDFBorder)initWithAnnotationDictionary:(CGPDFDictionary *)dictionary forPage:(id)page;
 - (__CFDictionary)createDictionaryRef;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_setDashFromArray:(CGPDFArray *)a3;
-- (void)_setStyleFromDictionary:(CGPDFDictionary *)a3;
+- (void)_setDashFromArray:(CGPDFArray *)array;
+- (void)_setStyleFromDictionary:(CGPDFDictionary *)dictionary;
 - (void)_updateDashPatternRaw;
 - (void)dealloc;
-- (void)drawInRect:(CGRect)a3 inContext:(CGContext *)CurrentContext;
 - (void)drawInRect:(CGRect)rect;
-- (void)encodeWithCoder:(id)a3;
+- (void)drawInRect:(CGRect)rect inContext:(CGContext *)CurrentContext;
+- (void)encodeWithCoder:(id)coder;
 - (void)setDashPattern:(NSArray *)dashPattern;
 - (void)setLineWidth:(CGFloat)lineWidth;
 - (void)setStyle:(PDFBorderStyle)style;
@@ -49,26 +49,26 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setStyle:{-[PDFBorder style](self, "style")}];
   [(PDFBorder *)self lineWidth];
   [v4 setLineWidth:?];
-  v5 = [(PDFBorder *)self dashPattern];
-  [v4 setDashPattern:v5];
+  dashPattern = [(PDFBorder *)self dashPattern];
+  [v4 setDashPattern:dashPattern];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[PDFBorder style](self forKey:{"style"), @"PDFBorderStyle"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[PDFBorder style](self forKey:{"style"), @"PDFBorderStyle"}];
   [(PDFBorder *)self lineWidth];
-  [v4 encodeDouble:@"PDFBorderLineWidth" forKey:?];
-  v5 = [(PDFBorder *)self dashPattern];
-  [v4 encodeObject:v5 forKey:@"PDFBorderDashPattern"];
+  [coderCopy encodeDouble:@"PDFBorderLineWidth" forKey:?];
+  dashPattern = [(PDFBorder *)self dashPattern];
+  [coderCopy encodeObject:dashPattern forKey:@"PDFBorderDashPattern"];
 }
 
 - (void)dealloc
@@ -106,9 +106,9 @@
 - (void)setStyle:(PDFBorderStyle)style
 {
   self->_private->style = style;
-  v4 = [(PDFBorder *)self style];
+  style = [(PDFBorder *)self style];
   v5 = self->_private;
-  if (v4 == kPDFBorderStyleDashed && !v5->dashPattern)
+  if (style == kPDFBorderStyleDashed && !v5->dashPattern)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = [MEMORY[0x1E696AD98] numberWithInteger:3];
@@ -210,37 +210,37 @@
   return v3;
 }
 
-- (PDFBorder)initWithAnnotationDictionary:(CGPDFDictionary *)a3 forPage:(id)a4
+- (PDFBorder)initWithAnnotationDictionary:(CGPDFDictionary *)dictionary forPage:(id)page
 {
-  v6 = a4;
+  pageCopy = page;
   v8 = 0;
   value = 0;
-  if (a3)
+  if (dictionary)
   {
     self = [(PDFBorder *)self init];
     if (self)
     {
-      if (CGPDFDictionaryGetDictionary(a3, "BS", &v8))
+      if (CGPDFDictionaryGetDictionary(dictionary, "BS", &v8))
       {
         [(PDFBorder *)self _setStyleFromDictionary:v8];
 LABEL_7:
         self = self;
-        a3 = self;
+        dictionary = self;
         goto LABEL_9;
       }
 
-      if (!CGPDFDictionaryGetArray(a3, "Border", &value) || [(PDFBorder *)self setBorderCharacteristicsFromArray:value])
+      if (!CGPDFDictionaryGetArray(dictionary, "Border", &value) || [(PDFBorder *)self setBorderCharacteristicsFromArray:value])
       {
         goto LABEL_7;
       }
     }
 
-    a3 = 0;
+    dictionary = 0;
   }
 
 LABEL_9:
 
-  return a3;
+  return dictionary;
 }
 
 - (__CFDictionary)createDictionaryRef
@@ -248,13 +248,13 @@ LABEL_9:
   [(PDFBorder *)self lineWidth];
   v4 = v3;
   valuePtr = v3;
-  v5 = [(PDFBorder *)self style];
-  if (v4 == 1.0 && v5 == kPDFBorderStyleSolid)
+  style = [(PDFBorder *)self style];
+  if (v4 == 1.0 && style == kPDFBorderStyleSolid)
   {
     return 0;
   }
 
-  v7 = v5;
+  v7 = style;
   v8 = *MEMORY[0x1E695E480];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   if (v4 != 1.0)
@@ -348,7 +348,7 @@ LABEL_19:
   }
 }
 
-- (void)drawInRect:(CGRect)a3 inContext:(CGContext *)CurrentContext
+- (void)drawInRect:(CGRect)rect inContext:(CGContext *)CurrentContext
 {
   v85 = 0uLL;
   [(PDFBorder *)self lineWidth];
@@ -359,7 +359,7 @@ LABEL_19:
     {
       v82 = v7;
       CGContextSaveGState(CurrentContext);
-      v8 = [(PDFBorder *)self style];
+      style = [(PDFBorder *)self style];
       CTM = CGContextGetCTM(&transform, CurrentContext);
       a = transform.a;
       b = transform.b;
@@ -394,7 +394,7 @@ LABEL_19:
         v89.size.width = v17;
         v89.size.height = v19;
         v90 = PDFRectInset(v89, v82 * 0.5, v82 * 0.5);
-        v22 = [v20 bezierPathWithRect:{v90.origin.x, v90.origin.y, v90.size.width, v90.size.height}];
+        bezierPath = [v20 bezierPathWithRect:{v90.origin.x, v90.origin.y, v90.size.width, v90.size.height}];
       }
 
       else
@@ -404,10 +404,10 @@ LABEL_19:
         [(PDFBorder *)self verticalCornerRadius];
         v25 = fabs(c * v24 + a * v24);
         v27 = fabs(c * v26 + a * v26);
-        v22 = [MEMORY[0x1E69DC728] bezierPath];
+        bezierPath = [MEMORY[0x1E69DC728] bezierPath];
         v28 = v82 * 0.5 + PDFRectGetMinX(v14, v81, v17);
         MaxY = PDFRectGetMaxY(v14, v81, v17, v19);
-        [v22 moveToPoint:{PDFPointMake(v28, MaxY - (v82 * 0.5 + v27))}];
+        [bezierPath moveToPoint:{PDFPointMake(v28, MaxY - (v82 * 0.5 + v27))}];
         v30 = v25;
         v78 = PDFPointMake(v25, v27);
         v32 = v31;
@@ -417,34 +417,34 @@ LABEL_19:
         v34 = v17;
         v36 = v35;
         v37 = PDFPointMake(v30 - 0.55228 * v30, v27);
-        PDFKitAddRelativeCurveToPoint(v22, v78, v32, v33, v36, v37, v38);
+        PDFKitAddRelativeCurveToPoint(bezierPath, v78, v32, v33, v36, v37, v38);
         v39 = v30;
         v40 = PDFRectGetMaxX(v14, v81, v34) - (v82 * 0.5 + v30);
         v41 = PDFRectGetMaxY(v14, v81, v34, v80);
         v42 = PDFPointMake(v40, v41 - v82 * 0.5);
-        PDFKitAddLineToPoint(v22, v42);
+        PDFKitAddLineToPoint(bezierPath, v42);
         v43 = v39;
         v44 = PDFPointMake(v39, -v27);
         v46 = v45;
         v47 = PDFPointMake(v39 * 0.55228, 0.0);
         v49 = v48;
         v50 = PDFPointMake(v43, -(v27 - 0.55228 * v27));
-        PDFKitAddRelativeCurveToPoint(v22, v44, v46, v47, v49, v50, v51);
+        PDFKitAddRelativeCurveToPoint(bezierPath, v44, v46, v47, v49, v50, v51);
         v52 = PDFRectGetMaxX(v14, v81, v79) - v82 * 0.5;
         MinY = PDFRectGetMinY(v14, v81, v79, v80);
         v54 = PDFPointMake(v52, v82 * 0.5 + v27 + MinY);
-        PDFKitAddLineToPoint(v22, v54);
+        PDFKitAddLineToPoint(bezierPath, v54);
         v77 = PDFPointMake(-v43, -v27);
         v56 = v55;
         v57 = PDFPointMake(0.0, -(v27 * 0.55228));
         v59 = v58;
         v60 = PDFPointMake(-(v43 - 0.55228 * v43), -v27);
-        PDFKitAddRelativeCurveToPoint(v22, v77, v56, v57, v59, v60, v61);
+        PDFKitAddRelativeCurveToPoint(bezierPath, v77, v56, v57, v59, v60, v61);
         v62 = v43;
         v63 = v82 * 0.5 + v43 + PDFRectGetMinX(v14, v81, v79);
         v64 = PDFRectGetMinY(v14, v81, v79, v80);
         v65 = PDFPointMake(v63, v82 * 0.5 + v64);
-        PDFKitAddLineToPoint(v22, v65);
+        PDFKitAddLineToPoint(bezierPath, v65);
         v66 = -v43;
         v67 = PDFPointMake(v66, v27);
         v69 = v68;
@@ -452,17 +452,17 @@ LABEL_19:
         v72 = v71;
         v73 = PDFPointMake(v66, v27 - 0.55228 * v27);
         v21 = v82;
-        PDFKitAddRelativeCurveToPoint(v22, v67, v69, v70, v72, v73, v74);
-        [v22 closePath];
+        PDFKitAddRelativeCurveToPoint(bezierPath, v67, v69, v70, v72, v73, v74);
+        [bezierPath closePath];
       }
 
       CGContextSetLineWidth(CurrentContext, v21);
-      if (v8 == kPDFBorderStyleDashed)
+      if (style == kPDFBorderStyleDashed)
       {
-        [v22 setLineDash:self->_private->dashPatternRaw count:self->_private->dashCount phase:0.0];
+        [bezierPath setLineDash:self->_private->dashPatternRaw count:self->_private->dashCount phase:0.0];
       }
 
-      v75 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v22, 0}];
+      v75 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{bezierPath, 0}];
       v76 = [PDFAnnotationDrawing createCGPathArrayWithBezierPaths:v75];
       if ([v75 count] && v76)
       {
@@ -480,17 +480,17 @@ LABEL_19:
   }
 }
 
-- (void)_setStyleFromDictionary:(CGPDFDictionary *)a3
+- (void)_setStyleFromDictionary:(CGPDFDictionary *)dictionary
 {
   v14 = 0;
   value = 0.0;
   v13 = 0;
-  if (CGPDFDictionaryGetNumber(a3, "W", &value))
+  if (CGPDFDictionaryGetNumber(dictionary, "W", &value))
   {
     self->_private->lineWidth = value;
   }
 
-  if (CGPDFDictionaryGetName(a3, "S", &v13))
+  if (CGPDFDictionaryGetName(dictionary, "S", &v13))
   {
     v5 = *v13;
     if (v5 <= 0x48)
@@ -549,7 +549,7 @@ LABEL_20:
 LABEL_21:
   if ([(PDFBorder *)self style]== kPDFBorderStyleDashed)
   {
-    if (CGPDFDictionaryGetArray(a3, "D", &v14))
+    if (CGPDFDictionaryGetArray(dictionary, "D", &v14))
     {
       [(PDFBorder *)self _setDashFromArray:v14];
     }
@@ -574,10 +574,10 @@ LABEL_21:
   }
 }
 
-- (void)_setDashFromArray:(CGPDFArray *)a3
+- (void)_setDashFromArray:(CGPDFArray *)array
 {
   value = 0.0;
-  Count = CGPDFArrayGetCount(a3);
+  Count = CGPDFArrayGetCount(array);
   if (Count)
   {
     if (Count >= 0xA)
@@ -593,7 +593,7 @@ LABEL_21:
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8 = 0;
     v9 = 0.0;
-    while (CGPDFArrayGetNumber(a3, v8, &value))
+    while (CGPDFArrayGetNumber(array, v8, &value))
     {
       v10 = value;
       if (value < 0.0)
@@ -626,25 +626,25 @@ LABEL_21:
   }
 }
 
-- (BOOL)setBorderCharacteristicsFromArray:(CGPDFArray *)a3
+- (BOOL)setBorderCharacteristicsFromArray:(CGPDFArray *)array
 {
-  Count = CGPDFArrayGetCount(a3);
+  Count = CGPDFArrayGetCount(array);
   v6 = Count - 3;
   if (Count - 3 <= 1)
   {
     v7 = Count;
     value = 0.0;
-    if (CGPDFArrayGetNumber(a3, 0, &value))
+    if (CGPDFArrayGetNumber(array, 0, &value))
     {
       self->_private->hCornerRadius = value;
     }
 
-    if (CGPDFArrayGetNumber(a3, 1uLL, &value))
+    if (CGPDFArrayGetNumber(array, 1uLL, &value))
     {
       self->_private->vCornerRadius = value;
     }
 
-    Number = CGPDFArrayGetNumber(a3, 2uLL, &value);
+    Number = CGPDFArrayGetNumber(array, 2uLL, &value);
     v9 = value;
     if (!Number)
     {
@@ -655,7 +655,7 @@ LABEL_21:
     if (v7 == 4)
     {
       v11 = 0;
-      if (CGPDFArrayGetArray(a3, 3uLL, &v11))
+      if (CGPDFArrayGetArray(array, 3uLL, &v11))
       {
         [(PDFBorder *)self _setDashFromArray:v11];
       }

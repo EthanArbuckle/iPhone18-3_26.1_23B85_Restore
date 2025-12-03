@@ -1,12 +1,12 @@
 @interface APTapAction
-+ (id)makeTapActionWithLegacyAction:(id)a3 iTunesMetadata:(id)a4 error:(id *)a5;
++ (id)makeTapActionWithLegacyAction:(id)action iTunesMetadata:(id)metadata error:(id *)error;
 @end
 
 @implementation APTapAction
 
-+ (id)makeTapActionWithLegacyAction:(id)a3 iTunesMetadata:(id)a4 error:(id *)a5
++ (id)makeTapActionWithLegacyAction:(id)action iTunesMetadata:(id)metadata error:(id *)error
 {
-  if (a4)
+  if (metadata)
   {
     sub_10031D144();
     v6 = sub_100399198();
@@ -17,8 +17,8 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = sub_10031CCF8(v7, v6);
+  actionCopy = action;
+  v8 = sub_10031CCF8(actionCopy, v6);
 
   return v8;
 }

@@ -1,9 +1,9 @@
 @interface TransparencyGPBExtensionRegistry
 - (TransparencyGPBExtensionRegistry)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)extensionForDescriptor:(id)a3 fieldNumber:(int64_t)a4;
-- (void)addExtension:(id)a3;
-- (void)addExtensions:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)extensionForDescriptor:(id)descriptor fieldNumber:(int64_t)number;
+- (void)addExtension:(id)extension;
+- (void)addExtensions:(id)extensions;
 - (void)dealloc;
 @end
 
@@ -30,49 +30,49 @@
   [(TransparencyGPBExtensionRegistry *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 addExtensions:self];
   return v4;
 }
 
-- (void)addExtension:(id)a3
+- (void)addExtension:(id)extension
 {
-  if (a3)
+  if (extension)
   {
-    v5 = [a3 containingMessageClass];
-    Value = CFDictionaryGetValue(self->mutableClassMap_, v5);
+    containingMessageClass = [extension containingMessageClass];
+    Value = CFDictionaryGetValue(self->mutableClassMap_, containingMessageClass);
     if (!Value)
     {
       Value = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, 0, &kCFTypeDictionaryValueCallBacks);
-      CFDictionarySetValue(self->mutableClassMap_, v5, Value);
+      CFDictionarySetValue(self->mutableClassMap_, containingMessageClass, Value);
       CFRelease(Value);
     }
 
-    v7 = [a3 fieldNumber];
+    fieldNumber = [extension fieldNumber];
 
-    CFDictionarySetValue(Value, v7, a3);
+    CFDictionarySetValue(Value, fieldNumber, extension);
   }
 }
 
-- (id)extensionForDescriptor:(id)a3 fieldNumber:(int64_t)a4
+- (id)extensionForDescriptor:(id)descriptor fieldNumber:(int64_t)number
 {
-  result = CFDictionaryGetValue(self->mutableClassMap_, [a3 messageClass]);
+  result = CFDictionaryGetValue(self->mutableClassMap_, [descriptor messageClass]);
   if (result)
   {
 
-    return CFDictionaryGetValue(result, a4);
+    return CFDictionaryGetValue(result, number);
   }
 
   return result;
 }
 
-- (void)addExtensions:(id)a3
+- (void)addExtensions:(id)extensions
 {
-  if (a3)
+  if (extensions)
   {
-    CFDictionaryApplyFunction(*(a3 + 1), sub_100034718, self->mutableClassMap_);
+    CFDictionaryApplyFunction(*(extensions + 1), sub_100034718, self->mutableClassMap_);
   }
 }
 

@@ -1,20 +1,20 @@
 @interface CKPackageUploadRequestMetadata
-- (BOOL)isEqual:(id)a3;
-- (CKPackageUploadRequestMetadata)initWithCoder:(id)a3;
-- (CKPackageUploadRequestMetadata)initWithRepairZoneRecordID:(id)a3 databaseScope:(int64_t)a4 recordID:(id)a5 recordType:(id)a6 fieldName:(id)a7;
-- (CKPackageUploadRequestMetadata)initWithRepairZoneRecordID:(id)a3 databaseScope:(int64_t)a4 recordID:(id)a5 recordType:(id)a6 fieldName:(id)a7 fileSignatures:(id)a8 referenceSignatures:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (CKPackageUploadRequestMetadata)initWithCoder:(id)coder;
+- (CKPackageUploadRequestMetadata)initWithRepairZoneRecordID:(id)d databaseScope:(int64_t)scope recordID:(id)iD recordType:(id)type fieldName:(id)name;
+- (CKPackageUploadRequestMetadata)initWithRepairZoneRecordID:(id)d databaseScope:(int64_t)scope recordID:(id)iD recordType:(id)type fieldName:(id)name fileSignatures:(id)signatures referenceSignatures:(id)referenceSignatures;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKPackageUploadRequestMetadata
 
-- (CKPackageUploadRequestMetadata)initWithRepairZoneRecordID:(id)a3 databaseScope:(int64_t)a4 recordID:(id)a5 recordType:(id)a6 fieldName:(id)a7
+- (CKPackageUploadRequestMetadata)initWithRepairZoneRecordID:(id)d databaseScope:(int64_t)scope recordID:(id)iD recordType:(id)type fieldName:(id)name
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  typeCopy = type;
+  nameCopy = name;
   v15 = [CKException alloc];
   v16 = *MEMORY[0x1E695D940];
   v17 = NSStringFromSelector(a2);
@@ -24,20 +24,20 @@
   objc_exception_throw(v19);
 }
 
-- (CKPackageUploadRequestMetadata)initWithRepairZoneRecordID:(id)a3 databaseScope:(int64_t)a4 recordID:(id)a5 recordType:(id)a6 fieldName:(id)a7 fileSignatures:(id)a8 referenceSignatures:(id)a9
+- (CKPackageUploadRequestMetadata)initWithRepairZoneRecordID:(id)d databaseScope:(int64_t)scope recordID:(id)iD recordType:(id)type fieldName:(id)name fileSignatures:(id)signatures referenceSignatures:(id)referenceSignatures
 {
-  v15 = a8;
-  v16 = a9;
+  signaturesCopy = signatures;
+  referenceSignaturesCopy = referenceSignatures;
   v27.receiver = self;
   v27.super_class = CKPackageUploadRequestMetadata;
-  v19 = [(CKUploadRequestMetadata *)&v27 initWithRepairZoneRecordID:a3 databaseScope:a4 recordID:a5 recordType:a6 fieldName:a7];
+  v19 = [(CKUploadRequestMetadata *)&v27 initWithRepairZoneRecordID:d databaseScope:scope recordID:iD recordType:type fieldName:name];
   if (v19)
   {
-    v20 = objc_msgSend_CKDeepCopy(v15, v17, v18);
+    v20 = objc_msgSend_CKDeepCopy(signaturesCopy, v17, v18);
     fileSignatures = v19->_fileSignatures;
     v19->_fileSignatures = v20;
 
-    v24 = objc_msgSend_CKDeepCopy(v16, v22, v23);
+    v24 = objc_msgSend_CKDeepCopy(referenceSignaturesCopy, v22, v23);
     referenceSignatures = v19->_referenceSignatures;
     v19->_referenceSignatures = v24;
   }
@@ -45,12 +45,12 @@
   return v19;
 }
 
-- (CKPackageUploadRequestMetadata)initWithCoder:(id)a3
+- (CKPackageUploadRequestMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = CKPackageUploadRequestMetadata;
-  v5 = [(CKUploadRequestMetadata *)&v26 initWithCoder:v4];
+  v5 = [(CKUploadRequestMetadata *)&v26 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
@@ -59,7 +59,7 @@
     v9 = objc_opt_class();
     v11 = objc_msgSend_setWithObjects_(v7, v10, v8, v9, 0);
     v12 = NSStringFromSelector(sel_fileSignatures);
-    v14 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v13, v11, v12);
+    v14 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v13, v11, v12);
     fileSignatures = v5->_fileSignatures;
     v5->_fileSignatures = v14;
 
@@ -68,7 +68,7 @@
     v18 = objc_opt_class();
     v20 = objc_msgSend_setWithObjects_(v16, v19, v17, v18, 0);
     v21 = NSStringFromSelector(sel_referenceSignatures);
-    v23 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v22, v20, v21);
+    v23 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v22, v20, v21);
     referenceSignatures = v5->_referenceSignatures;
     v5->_referenceSignatures = v23;
 
@@ -78,20 +78,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v16.receiver = self;
   v16.super_class = CKPackageUploadRequestMetadata;
-  [(CKUploadRequestMetadata *)&v16 encodeWithCoder:v4];
+  [(CKUploadRequestMetadata *)&v16 encodeWithCoder:coderCopy];
   v8 = objc_msgSend_fileSignatures(self, v6, v7);
   v9 = NSStringFromSelector(sel_fileSignatures);
-  objc_msgSend_encodeObject_forKey_(v4, v10, v8, v9);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, v8, v9);
 
   v13 = objc_msgSend_referenceSignatures(self, v11, v12);
   v14 = NSStringFromSelector(sel_referenceSignatures);
-  objc_msgSend_encodeObject_forKey_(v4, v15, v13, v14);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, v13, v14);
 
   objc_autoreleasePoolPop(v5);
 }
@@ -109,14 +109,14 @@
   return v15 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v23.receiver = self;
   v23.super_class = CKPackageUploadRequestMetadata;
-  if ([(CKUploadRequestMetadata *)&v23 isEqual:v4])
+  if ([(CKUploadRequestMetadata *)&v23 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = objc_msgSend_fileSignatures(self, v6, v7);
     v11 = objc_msgSend_fileSignatures(v5, v9, v10);
     isEqual = objc_msgSend_isEqual_(v8, v12, v11);

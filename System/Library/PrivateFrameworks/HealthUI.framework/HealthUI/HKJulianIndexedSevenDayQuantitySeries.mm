@@ -1,76 +1,76 @@
 @interface HKJulianIndexedSevenDayQuantitySeries
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4;
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4;
-- (HKJulianIndexedSevenDayQuantitySeries)initWithColor:(id)a3 lineWidth:(double)a4 hollowLineRatio:(double)a5;
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)xAxisSelectedCoordinate:(double)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than;
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than;
+- (HKJulianIndexedSevenDayQuantitySeries)initWithColor:(id)color lineWidth:(double)width hollowLineRatio:(double)ratio;
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)xAxisSelectedCoordinate:(double)coordinate blockCoordinate:(id)blockCoordinate chartRect:(CGRect)rect;
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
 @end
 
 @implementation HKJulianIndexedSevenDayQuantitySeries
 
-- (HKJulianIndexedSevenDayQuantitySeries)initWithColor:(id)a3 lineWidth:(double)a4 hollowLineRatio:(double)a5
+- (HKJulianIndexedSevenDayQuantitySeries)initWithColor:(id)color lineWidth:(double)width hollowLineRatio:(double)ratio
 {
-  v9 = a3;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = HKJulianIndexedSevenDayQuantitySeries;
   v10 = [(HKGraphSeries *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_color, a3);
-    v11->_lineWidth = a4;
-    v12 = 1.0;
-    if (a5 <= 1.0)
+    objc_storeStrong(&v10->_color, color);
+    v11->_lineWidth = width;
+    ratioCopy = 1.0;
+    if (ratio <= 1.0)
     {
-      v12 = a5;
+      ratioCopy = ratio;
     }
 
-    v11->_hollowLineRatio = fmax(v12, 0.0);
+    v11->_hollowLineRatio = fmax(ratioCopy, 0.0);
   }
 
   return v11;
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  v13 = a9;
-  v14 = a3;
+  delegateCopy = delegate;
+  coordinatesCopy = coordinates;
   if ([(HKGraphSeries *)self allowsSelection])
   {
-    v15 = self->_color;
+    hk_chartInactiveSeriesColor = self->_color;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E69DC888] hk_chartInactiveSeriesColor];
+    hk_chartInactiveSeriesColor = [MEMORY[0x1E69DC888] hk_chartInactiveSeriesColor];
   }
 
-  v16 = v15;
-  CGContextSaveGState(a7);
-  CGContextSetLineCap(a7, kCGLineCapRound);
+  v16 = hk_chartInactiveSeriesColor;
+  CGContextSaveGState(context);
+  CGContextSetLineCap(context, kCGLineCapRound);
   v17 = self->_lineWidth * 0.5;
   v22[1] = 3221225472;
   v22[0] = MEMORY[0x1E69E9820];
   v22[2] = __180__HKJulianIndexedSevenDayQuantitySeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelConfiguration_pointTransform_renderContext_secondaryRenderContext_seriesRenderingDelegate___block_invoke;
   v22[3] = &unk_1E81BABA0;
   v25 = v17 + 2.0;
-  v26 = a7;
+  contextCopy = context;
   v22[4] = self;
   v23 = v16;
-  v24 = v13;
-  v18 = *&a6->c;
-  v21[0] = *&a6->a;
+  v24 = delegateCopy;
+  v18 = *&transform->c;
+  v21[0] = *&transform->a;
   v21[1] = v18;
-  v21[2] = *&a6->tx;
-  v19 = v13;
+  v21[2] = *&transform->tx;
+  v19 = delegateCopy;
   v20 = v16;
-  [v14 enumerateCoordinatesWithTransform:v21 roundToViewScale:1 block:v22];
+  [coordinatesCopy enumerateCoordinatesWithTransform:v21 roundToViewScale:1 block:v22];
 
-  CGContextRestoreGState(a7);
+  CGContextRestoreGState(context);
 }
 
 void __180__HKJulianIndexedSevenDayQuantitySeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelConfiguration_pointTransform_renderContext_secondaryRenderContext_seriesRenderingDelegate___block_invoke(uint64_t a1, void *a2)
@@ -138,33 +138,33 @@ void __180__HKJulianIndexedSevenDayQuantitySeries_drawSeriesWithBlockCoordinates
   }
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [a3 chartPoints];
-  if (!v11)
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKJulianIndexedSevenDayQuantitySeries coordinatesForBlock:blockPath:xAxis:yAxis:];
   }
 
-  v12 = [v9 transform];
-  v13 = [v10 transform];
+  transform = [axisCopy transform];
+  transform2 = [yAxisCopy transform];
 
   v14 = objc_opt_new();
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __83__HKJulianIndexedSevenDayQuantitySeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke;
   v22[3] = &unk_1E81BABC8;
-  v23 = v12;
-  v24 = v13;
+  v23 = transform;
+  v24 = transform2;
   v25 = v14;
   v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  [v11 enumerateObjectsUsingBlock:v22];
-  v20 = *&a4->index;
-  resolution = a4->resolution;
+  v16 = transform2;
+  v17 = transform;
+  [chartPoints enumerateObjectsUsingBlock:v22];
+  v20 = *&path->index;
+  resolution = path->resolution;
   v18 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v15 blockPath:&v20];
 
   return v18;
@@ -200,34 +200,34 @@ void __83__HKJulianIndexedSevenDayQuantitySeries_coordinatesForBlock_blockPath_x
   }
 }
 
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  v12 = a4;
-  [(HKJulianIndexedSevenDayQuantitySeries *)self xAxisDistanceFromPoint:v12 blockCoordinate:v10 chartRect:v9, x, y, width, height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = point.y;
+  v10 = point.x;
+  coordinateCopy = coordinate;
+  [(HKJulianIndexedSevenDayQuantitySeries *)self xAxisDistanceFromPoint:coordinateCopy blockCoordinate:v10 chartRect:v9, x, y, width, height];
   v14 = v13;
-  [(HKJulianIndexedSevenDayQuantitySeries *)self yAxisDifferenceToPoint:v12 blockCoordinate:v10 chartRect:v9, x, y, width, height];
+  [(HKJulianIndexedSevenDayQuantitySeries *)self yAxisDifferenceToPoint:coordinateCopy blockCoordinate:v10 chartRect:v9, x, y, width, height];
   v16 = v15;
 
   return sqrt(v16 * v16 + v14 * v14);
 }
 
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  x = a3.x;
-  v6 = a4;
+  x = point.x;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKJulianIndexedSevenDayQuantitySeries xAxisDistanceFromPoint:blockCoordinate:chartRect:];
   }
 
-  v7 = v6;
+  v7 = coordinateCopy;
   [v7 startXValue];
   v9 = v8 - x;
   [v7 endXValue];
@@ -247,32 +247,32 @@ void __83__HKJulianIndexedSevenDayQuantitySeries_coordinatesForBlock_blockPath_x
   return v13;
 }
 
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
-  v6 = a4;
+  y = point.y;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKJulianIndexedSevenDayQuantitySeries yAxisDifferenceToPoint:blockCoordinate:chartRect:];
   }
 
-  [v6 start];
+  [coordinateCopy start];
   v8 = v7 - y;
 
   return v8;
 }
 
-- (double)xAxisSelectedCoordinate:(double)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisSelectedCoordinate:(double)coordinate blockCoordinate:(id)blockCoordinate chartRect:(CGRect)rect
 {
-  v7 = a4;
+  blockCoordinateCopy = blockCoordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKJulianIndexedSevenDayQuantitySeries xAxisSelectedCoordinate:blockCoordinate:chartRect:];
   }
 
-  v8 = v7;
+  v8 = blockCoordinateCopy;
   [v8 startXValue];
   v10 = v9;
   [v8 endXValue];
@@ -292,41 +292,41 @@ void __83__HKJulianIndexedSevenDayQuantitySeries_coordinatesForBlock_blockPath_x
     v16 = v10 + (v12 - v10) * 0.5;
   }
 
-  if (v15 <= a3)
+  if (v15 <= coordinate)
   {
-    v17 = a3;
+    coordinateCopy = coordinate;
   }
 
   else
   {
-    v17 = v15;
+    coordinateCopy = v15;
   }
 
-  if (v17 >= v16)
+  if (coordinateCopy >= v16)
   {
     v18 = v16;
   }
 
   else
   {
-    v18 = v17;
+    v18 = coordinateCopy;
   }
 
   return v18;
 }
 
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than
 {
-  v5 = a3;
-  v6 = a4;
+  coordinateCopy = coordinate;
+  thanCopy = than;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKJulianIndexedSevenDayQuantitySeries blockCoordinate:lessThan:];
   }
 
-  v7 = v6;
-  [v5 start];
+  v7 = thanCopy;
+  [coordinateCopy start];
   v9 = v8;
   [v7 start];
   v11 = v10;
@@ -334,18 +334,18 @@ void __83__HKJulianIndexedSevenDayQuantitySeries_coordinatesForBlock_blockPath_x
   return v9 < v11;
 }
 
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than
 {
-  v5 = a3;
-  v6 = a4;
+  coordinateCopy = coordinate;
+  thanCopy = than;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKJulianIndexedSevenDayQuantitySeries blockCoordinate:greaterThan:];
   }
 
-  v7 = v6;
-  [v5 start];
+  v7 = thanCopy;
+  [coordinateCopy start];
   v9 = v8;
   [v7 start];
   v11 = v10;

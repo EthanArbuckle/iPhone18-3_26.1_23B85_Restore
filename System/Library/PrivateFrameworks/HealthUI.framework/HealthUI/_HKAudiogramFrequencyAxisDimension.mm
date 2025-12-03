@@ -1,12 +1,12 @@
 @interface _HKAudiogramFrequencyAxisDimension
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4;
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size;
 @end
 
 @implementation _HKAudiogramFrequencyAxisDimension
 
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size
 {
-  [a3 doubleValue];
+  [location doubleValue];
   v5 = v4;
   if (v4 < 0.0 || v4 > 6.0)
   {

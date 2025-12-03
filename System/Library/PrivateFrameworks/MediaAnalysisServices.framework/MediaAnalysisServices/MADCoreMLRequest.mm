@@ -1,65 +1,65 @@
 @interface MADCoreMLRequest
-+ (id)requestWithModelURL:(id)a3 error:(id *)a4;
-- (MADCoreMLRequest)initWithCoder:(id)a3;
-- (MADCoreMLRequest)initWithModelURL:(id)a3 error:(id *)a4;
++ (id)requestWithModelURL:(id)l error:(id *)error;
+- (MADCoreMLRequest)initWithCoder:(id)coder;
+- (MADCoreMLRequest)initWithModelURL:(id)l error:(id *)error;
 - (id)_extensionData;
 - (id)description;
 - (void)_extensionData;
 - (void)consumeSandboxExtension;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADCoreMLRequest
 
-- (MADCoreMLRequest)initWithModelURL:(id)a3 error:(id *)a4
+- (MADCoreMLRequest)initWithModelURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = MADCoreMLRequest;
   v7 = [(MADCoreMLRequest *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_modelURL, a3);
-    v9 = [(MADCoreMLRequest *)v8 _extensionData];
+    objc_storeStrong(&v7->_modelURL, l);
+    _extensionData = [(MADCoreMLRequest *)v8 _extensionData];
     extensionData = v8->_extensionData;
-    v8->_extensionData = v9;
+    v8->_extensionData = _extensionData;
   }
 
   return v8;
 }
 
-+ (id)requestWithModelURL:(id)a3 error:(id *)a4
++ (id)requestWithModelURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithModelURL:v6 error:a4];
+  lCopy = l;
+  v7 = [[self alloc] initWithModelURL:lCopy error:error];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MADCoreMLRequest;
-  [(MADRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_modelURL forKey:@"ModelURL"];
-  [v4 encodeObject:self->_extensionData forKey:@"ModelURLExtensionData"];
+  [(MADRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_modelURL forKey:@"ModelURL"];
+  [coderCopy encodeObject:self->_extensionData forKey:@"ModelURLExtensionData"];
 }
 
-- (MADCoreMLRequest)initWithCoder:(id)a3
+- (MADCoreMLRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MADCoreMLRequest;
-  v5 = [(MADRequest *)&v11 initWithCoder:v4];
+  v5 = [(MADRequest *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ModelURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ModelURL"];
     modelURL = v5->_modelURL;
     v5->_modelURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ModelURLExtensionData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ModelURLExtensionData"];
     extensionData = v5->_extensionData;
     v5->_extensionData = v8;
   }
@@ -85,8 +85,8 @@
     [(MADCoreMLRequest *)self _extensionData];
   }
 
-  v3 = [(NSURL *)self->_modelURL path];
-  [v3 UTF8String];
+  path = [(NSURL *)self->_modelURL path];
+  [path UTF8String];
   v4 = sandbox_extension_issue_file();
 
   if (v4)
@@ -147,7 +147,7 @@
 - (void)_extensionData
 {
   v4 = *MEMORY[0x1E69E9840];
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
   v2 = 138412290;
   v3 = v1;
   _os_log_debug_impl(&dword_1C972C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADCoreMLRequest] Getting sandbox extension - %@", &v2, 0xCu);

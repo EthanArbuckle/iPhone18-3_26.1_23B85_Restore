@@ -1,12 +1,12 @@
 @interface NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext
@@ -17,54 +17,54 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext;
   v4 = [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   manualEntryStepContext = self->_manualEntryStepContext;
   if (manualEntryStepContext)
   {
-    v5 = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)manualEntryStepContext dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"manualEntryStepContext"];
+    dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)manualEntryStepContext dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"manualEntryStepContext"];
   }
 
   remoteCredential = self->_remoteCredential;
   if (remoteCredential)
   {
-    v7 = [(NPKProtoStandalonePaymentRemoteCredential *)remoteCredential dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"remoteCredential"];
+    dictionaryRepresentation2 = [(NPKProtoStandalonePaymentRemoteCredential *)remoteCredential dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"remoteCredential"];
   }
 
   credential = self->_credential;
   if (credential)
   {
-    v9 = [(NPKProtoStandalonePaymentCredentialUnion *)credential dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"credential"];
+    dictionaryRepresentation3 = [(NPKProtoStandalonePaymentCredentialUnion *)credential dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"credential"];
   }
 
   if (*&self->_has)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_allowsAddingDifferentCard];
-    [v3 setObject:v10 forKey:@"allowsAddingDifferentCard"];
+    [dictionary setObject:v10 forKey:@"allowsAddingDifferentCard"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_manualEntryStepContext)
   {
     [NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext writeTo:];
   }
 
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteSubmessage();
   if (self->_remoteCredential)
   {
@@ -85,39 +85,39 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setManualEntryStepContext:self->_manualEntryStepContext];
+  toCopy = to;
+  [toCopy setManualEntryStepContext:self->_manualEntryStepContext];
   if (self->_remoteCredential)
   {
-    [v4 setRemoteCredential:?];
+    [toCopy setRemoteCredential:?];
   }
 
   if (self->_credential)
   {
-    [v4 setCredential:?];
+    [toCopy setCredential:?];
   }
 
   if (*&self->_has)
   {
-    v4[32] = self->_allowsAddingDifferentCard;
-    v4[36] |= 1u;
+    toCopy[32] = self->_allowsAddingDifferentCard;
+    toCopy[36] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)self->_manualEntryStepContext copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)self->_manualEntryStepContext copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NPKProtoStandalonePaymentRemoteCredential *)self->_remoteCredential copyWithZone:a3];
+  v8 = [(NPKProtoStandalonePaymentRemoteCredential *)self->_remoteCredential copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NPKProtoStandalonePaymentCredentialUnion *)self->_credential copyWithZone:a3];
+  v10 = [(NPKProtoStandalonePaymentCredentialUnion *)self->_credential copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
@@ -130,16 +130,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   manualEntryStepContext = self->_manualEntryStepContext;
-  if (manualEntryStepContext | *(v4 + 2))
+  if (manualEntryStepContext | *(equalCopy + 2))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)manualEntryStepContext isEqual:?])
     {
@@ -148,7 +148,7 @@
   }
 
   remoteCredential = self->_remoteCredential;
-  if (remoteCredential | *(v4 + 3))
+  if (remoteCredential | *(equalCopy + 3))
   {
     if (![(NPKProtoStandalonePaymentRemoteCredential *)remoteCredential isEqual:?])
     {
@@ -157,7 +157,7 @@
   }
 
   credential = self->_credential;
-  if (credential | *(v4 + 1))
+  if (credential | *(equalCopy + 1))
   {
     if (![(NPKProtoStandalonePaymentCredentialUnion *)credential isEqual:?])
     {
@@ -165,10 +165,10 @@
     }
   }
 
-  v8 = (*(v4 + 36) & 1) == 0;
+  v8 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
 LABEL_10:
       v8 = 0;
@@ -177,13 +177,13 @@ LABEL_10:
 
     if (self->_allowsAddingDifferentCard)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_10;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_10;
     }
@@ -214,12 +214,12 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   manualEntryStepContext = self->_manualEntryStepContext;
-  v6 = *(v4 + 2);
-  v11 = v4;
+  v6 = *(fromCopy + 2);
+  v11 = fromCopy;
   if (manualEntryStepContext)
   {
     if (!v6)
@@ -240,10 +240,10 @@ LABEL_11:
     [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)self setManualEntryStepContext:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
   remoteCredential = self->_remoteCredential;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (remoteCredential)
   {
     if (!v8)
@@ -264,10 +264,10 @@ LABEL_7:
     [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)self setRemoteCredential:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_13:
   credential = self->_credential;
-  v10 = *(v4 + 1);
+  v10 = *(fromCopy + 1);
   if (credential)
   {
     if (!v10)
@@ -288,11 +288,11 @@ LABEL_13:
     [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)self setCredential:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_19:
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_allowsAddingDifferentCard = *(v4 + 32);
+    self->_allowsAddingDifferentCard = *(fromCopy + 32);
     *&self->_has |= 1u;
   }
 }

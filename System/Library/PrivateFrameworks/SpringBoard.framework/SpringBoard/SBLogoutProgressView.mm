@@ -1,5 +1,5 @@
 @interface SBLogoutProgressView
-- (SBLogoutProgressView)initWithFrame:(CGRect)a3;
+- (SBLogoutProgressView)initWithFrame:(CGRect)frame;
 - (double)_goodbyeLabelBaselineOffset;
 - (double)_moreDocumentsLabelBaselineOffset;
 - (double)_userAvatarVerticalOffsetFromCenter;
@@ -8,20 +8,20 @@
 - (void)_updateLegibility;
 - (void)_updateUserAvatar;
 - (void)_updateViewData;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setPendingApplications:(id)a3;
-- (void)setUserContact:(id)a3;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setPendingApplications:(id)applications;
+- (void)setUserContact:(id)contact;
 - (void)updateConstraints;
 @end
 
 @implementation SBLogoutProgressView
 
-- (SBLogoutProgressView)initWithFrame:(CGRect)a3
+- (SBLogoutProgressView)initWithFrame:(CGRect)frame
 {
   v112[25] = *MEMORY[0x277D85DE8];
   v111.receiver = self;
   v111.super_class = SBLogoutProgressView;
-  v3 = [(SBLogoutProgressView *)&v111 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBLogoutProgressView *)&v111 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
@@ -42,10 +42,10 @@
     [(UILabel *)v3->_goodbyeLabel setMinimumScaleFactor:0.8];
     [(UILabel *)v3->_goodbyeLabel setTextAlignment:1];
     [(SBLogoutProgressView *)v3 addSubview:v3->_goodbyeLabel];
-    v13 = [(UILabel *)v3->_goodbyeLabel firstBaselineAnchor];
-    v14 = [(SBLogoutProgressView *)v3 topAnchor];
+    firstBaselineAnchor = [(UILabel *)v3->_goodbyeLabel firstBaselineAnchor];
+    topAnchor = [(SBLogoutProgressView *)v3 topAnchor];
     [(SBLogoutProgressView *)v3 _goodbyeLabelBaselineOffset];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:?];
+    v15 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
     goodbyeLabelConstraint = v3->_goodbyeLabelConstraint;
     v3->_goodbyeLabelConstraint = v15;
 
@@ -55,10 +55,10 @@
 
     [(UIImageView *)v3->_userAvatarView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SBLogoutProgressView *)v3 addSubview:v3->_userAvatarView];
-    v19 = [(UIImageView *)v3->_userAvatarView centerYAnchor];
-    v20 = [(SBLogoutProgressView *)v3 centerYAnchor];
+    centerYAnchor = [(UIImageView *)v3->_userAvatarView centerYAnchor];
+    centerYAnchor2 = [(SBLogoutProgressView *)v3 centerYAnchor];
     [(SBLogoutProgressView *)v3 _userAvatarVerticalOffsetFromCenter];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:?];
+    v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:?];
     userAvatarVerticalConstraint = v3->_userAvatarVerticalConstraint;
     v3->_userAvatarVerticalConstraint = v21;
 
@@ -91,10 +91,10 @@
     [(UILabel *)v3->_savingDocumentsMoreLabel setFont:v23];
     [(UILabel *)v3->_savingDocumentsMoreLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SBLogoutProgressView *)v3 addSubview:v3->_savingDocumentsMoreLabel];
-    v32 = [(UILabel *)v3->_savingDocumentsMoreLabel firstBaselineAnchor];
-    v33 = [(SBLogoutProgressView *)v3 bottomAnchor];
+    firstBaselineAnchor2 = [(UILabel *)v3->_savingDocumentsMoreLabel firstBaselineAnchor];
+    bottomAnchor = [(SBLogoutProgressView *)v3 bottomAnchor];
     [(SBLogoutProgressView *)v3 _moreDocumentsLabelBaselineOffset];
-    v34 = [v32 constraintEqualToAnchor:v33 constant:?];
+    v34 = [firstBaselineAnchor2 constraintEqualToAnchor:bottomAnchor constant:?];
     savingDocumentsMoreLabelConstraint = v3->_savingDocumentsMoreLabelConstraint;
     v3->_savingDocumentsMoreLabelConstraint = v34;
 
@@ -118,95 +118,95 @@
     [(UILabel *)v3->_blameAppNameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v3->_blameContainerView addSubview:v3->_blameAppNameLabel];
     v85 = MEMORY[0x277CCAAD0];
-    v109 = [(UILabel *)v3->_goodbyeLabel centerXAnchor];
-    v108 = [(SBLogoutProgressView *)v3 centerXAnchor];
-    v107 = [v109 constraintEqualToAnchor:v108];
+    centerXAnchor = [(UILabel *)v3->_goodbyeLabel centerXAnchor];
+    centerXAnchor2 = [(SBLogoutProgressView *)v3 centerXAnchor];
+    v107 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v112[0] = v107;
-    v106 = [(UILabel *)v3->_goodbyeLabel widthAnchor];
-    v105 = [(SBLogoutProgressView *)v3 widthAnchor];
-    v104 = [v106 constraintLessThanOrEqualToAnchor:v105 constant:-72.0];
+    widthAnchor = [(UILabel *)v3->_goodbyeLabel widthAnchor];
+    widthAnchor2 = [(SBLogoutProgressView *)v3 widthAnchor];
+    v104 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2 constant:-72.0];
     v112[1] = v104;
     v112[2] = v3->_goodbyeLabelConstraint;
-    v103 = [(UIImageView *)v3->_userAvatarView centerXAnchor];
-    v102 = [(SBLogoutProgressView *)v3 centerXAnchor];
-    v101 = [v103 constraintEqualToAnchor:v102];
+    centerXAnchor3 = [(UIImageView *)v3->_userAvatarView centerXAnchor];
+    centerXAnchor4 = [(SBLogoutProgressView *)v3 centerXAnchor];
+    v101 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v112[3] = v101;
     v112[4] = v3->_userAvatarVerticalConstraint;
-    v100 = [(UIImageView *)v3->_userAvatarView widthAnchor];
-    v99 = [v100 constraintEqualToConstant:256.0];
+    widthAnchor3 = [(UIImageView *)v3->_userAvatarView widthAnchor];
+    v99 = [widthAnchor3 constraintEqualToConstant:256.0];
     v112[5] = v99;
-    v98 = [(UIImageView *)v3->_userAvatarView heightAnchor];
-    v97 = [(UIImageView *)v3->_userAvatarView widthAnchor];
-    v96 = [v98 constraintEqualToAnchor:v97];
+    heightAnchor = [(UIImageView *)v3->_userAvatarView heightAnchor];
+    widthAnchor4 = [(UIImageView *)v3->_userAvatarView widthAnchor];
+    v96 = [heightAnchor constraintEqualToAnchor:widthAnchor4];
     v112[6] = v96;
-    v95 = [(UILabel *)v3->_savingDocumentsLabel centerYAnchor];
-    v94 = [(UIActivityIndicatorView *)v3->_savingDocumentsActivityIndicator centerYAnchor];
-    v93 = [v95 constraintEqualToAnchor:v94];
+    centerYAnchor3 = [(UILabel *)v3->_savingDocumentsLabel centerYAnchor];
+    centerYAnchor4 = [(UIActivityIndicatorView *)v3->_savingDocumentsActivityIndicator centerYAnchor];
+    v93 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v112[7] = v93;
-    v92 = [(UIActivityIndicatorView *)v3->_savingDocumentsActivityIndicator leadingAnchor];
-    v91 = [(UIView *)v3->_savingDocumentsActivityAndLabelContainerView leadingAnchor];
-    v90 = [v92 constraintEqualToAnchor:v91];
+    leadingAnchor = [(UIActivityIndicatorView *)v3->_savingDocumentsActivityIndicator leadingAnchor];
+    leadingAnchor2 = [(UIView *)v3->_savingDocumentsActivityAndLabelContainerView leadingAnchor];
+    v90 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v112[8] = v90;
-    v89 = [(UILabel *)v3->_savingDocumentsLabel leadingAnchor];
-    v88 = [(UIActivityIndicatorView *)v3->_savingDocumentsActivityIndicator trailingAnchor];
-    v87 = [v89 constraintEqualToAnchor:v88 constant:8.0];
+    leadingAnchor3 = [(UILabel *)v3->_savingDocumentsLabel leadingAnchor];
+    trailingAnchor = [(UIActivityIndicatorView *)v3->_savingDocumentsActivityIndicator trailingAnchor];
+    v87 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:8.0];
     v112[9] = v87;
-    v86 = [(UILabel *)v3->_savingDocumentsLabel trailingAnchor];
-    v84 = [(UIView *)v3->_savingDocumentsActivityAndLabelContainerView trailingAnchor];
-    v83 = [v86 constraintEqualToAnchor:v84];
+    trailingAnchor2 = [(UILabel *)v3->_savingDocumentsLabel trailingAnchor];
+    trailingAnchor3 = [(UIView *)v3->_savingDocumentsActivityAndLabelContainerView trailingAnchor];
+    v83 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v112[10] = v83;
-    v82 = [(UILabel *)v3->_savingDocumentsLabel topAnchor];
-    v81 = [(UIView *)v3->_savingDocumentsActivityAndLabelContainerView topAnchor];
-    v80 = [v82 constraintEqualToAnchor:v81];
+    topAnchor2 = [(UILabel *)v3->_savingDocumentsLabel topAnchor];
+    topAnchor3 = [(UIView *)v3->_savingDocumentsActivityAndLabelContainerView topAnchor];
+    v80 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v112[11] = v80;
-    v79 = [(UILabel *)v3->_savingDocumentsLabel bottomAnchor];
-    v78 = [(UIView *)v3->_savingDocumentsActivityAndLabelContainerView bottomAnchor];
-    v77 = [v79 constraintEqualToAnchor:v78];
+    bottomAnchor2 = [(UILabel *)v3->_savingDocumentsLabel bottomAnchor];
+    bottomAnchor3 = [(UIView *)v3->_savingDocumentsActivityAndLabelContainerView bottomAnchor];
+    v77 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v112[12] = v77;
-    v76 = [(UILabel *)v3->_blameAppNameLabel centerYAnchor];
-    v75 = [(UIImageView *)v3->_blameAppIconView centerYAnchor];
-    v74 = [v76 constraintEqualToAnchor:v75];
+    centerYAnchor5 = [(UILabel *)v3->_blameAppNameLabel centerYAnchor];
+    centerYAnchor6 = [(UIImageView *)v3->_blameAppIconView centerYAnchor];
+    v74 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v112[13] = v74;
-    v73 = [(UIImageView *)v3->_blameAppIconView leadingAnchor];
-    v72 = [(UIView *)v3->_blameContainerView leadingAnchor];
-    v71 = [v73 constraintEqualToAnchor:v72];
+    leadingAnchor4 = [(UIImageView *)v3->_blameAppIconView leadingAnchor];
+    leadingAnchor5 = [(UIView *)v3->_blameContainerView leadingAnchor];
+    v71 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v112[14] = v71;
-    v70 = [(UILabel *)v3->_blameAppNameLabel leadingAnchor];
-    v69 = [(UIImageView *)v3->_blameAppIconView trailingAnchor];
-    v68 = [v70 constraintEqualToAnchor:v69 constant:8.0];
+    leadingAnchor6 = [(UILabel *)v3->_blameAppNameLabel leadingAnchor];
+    trailingAnchor4 = [(UIImageView *)v3->_blameAppIconView trailingAnchor];
+    v68 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor4 constant:8.0];
     v112[15] = v68;
-    v67 = [(UILabel *)v3->_blameAppNameLabel trailingAnchor];
-    v66 = [(UIView *)v3->_blameContainerView trailingAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66];
+    trailingAnchor5 = [(UILabel *)v3->_blameAppNameLabel trailingAnchor];
+    trailingAnchor6 = [(UIView *)v3->_blameContainerView trailingAnchor];
+    v65 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v112[16] = v65;
-    v64 = [(UIImageView *)v3->_blameAppIconView topAnchor];
-    v63 = [(UIView *)v3->_blameContainerView topAnchor];
-    v62 = [v64 constraintEqualToAnchor:v63];
+    topAnchor4 = [(UIImageView *)v3->_blameAppIconView topAnchor];
+    topAnchor5 = [(UIView *)v3->_blameContainerView topAnchor];
+    v62 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v112[17] = v62;
-    v61 = [(UIImageView *)v3->_blameAppIconView bottomAnchor];
-    v60 = [(UIView *)v3->_blameContainerView bottomAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    bottomAnchor4 = [(UIImageView *)v3->_blameAppIconView bottomAnchor];
+    bottomAnchor5 = [(UIView *)v3->_blameContainerView bottomAnchor];
+    v59 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v112[18] = v59;
-    v58 = [(UIView *)v3->_savingDocumentsActivityAndLabelContainerView centerXAnchor];
-    v57 = [(SBLogoutProgressView *)v3 centerXAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    centerXAnchor5 = [(UIView *)v3->_savingDocumentsActivityAndLabelContainerView centerXAnchor];
+    centerXAnchor6 = [(SBLogoutProgressView *)v3 centerXAnchor];
+    v56 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v112[19] = v56;
-    v55 = [(UIView *)v3->_blameContainerView centerXAnchor];
-    v54 = [(SBLogoutProgressView *)v3 centerXAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    centerXAnchor7 = [(UIView *)v3->_blameContainerView centerXAnchor];
+    centerXAnchor8 = [(SBLogoutProgressView *)v3 centerXAnchor];
+    v53 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     v112[20] = v53;
-    v52 = [(UILabel *)v3->_savingDocumentsMoreLabel centerXAnchor];
-    v42 = [(SBLogoutProgressView *)v3 centerXAnchor];
-    v43 = [v52 constraintEqualToAnchor:v42];
+    centerXAnchor9 = [(UILabel *)v3->_savingDocumentsMoreLabel centerXAnchor];
+    centerXAnchor10 = [(SBLogoutProgressView *)v3 centerXAnchor];
+    v43 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
     v112[21] = v43;
     v112[22] = v3->_savingDocumentsMoreLabelConstraint;
-    v44 = [(UILabel *)v3->_blameAppNameLabel firstBaselineAnchor];
-    v45 = [(UILabel *)v3->_savingDocumentsMoreLabel firstBaselineAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45 constant:-36.0];
+    firstBaselineAnchor3 = [(UILabel *)v3->_blameAppNameLabel firstBaselineAnchor];
+    firstBaselineAnchor4 = [(UILabel *)v3->_savingDocumentsMoreLabel firstBaselineAnchor];
+    v46 = [firstBaselineAnchor3 constraintEqualToAnchor:firstBaselineAnchor4 constant:-36.0];
     v112[23] = v46;
-    v47 = [(UILabel *)v3->_savingDocumentsLabel firstBaselineAnchor];
-    v48 = [(UILabel *)v3->_blameAppNameLabel firstBaselineAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48 constant:-36.0];
+    firstBaselineAnchor5 = [(UILabel *)v3->_savingDocumentsLabel firstBaselineAnchor];
+    firstBaselineAnchor6 = [(UILabel *)v3->_blameAppNameLabel firstBaselineAnchor];
+    v49 = [firstBaselineAnchor5 constraintEqualToAnchor:firstBaselineAnchor6 constant:-36.0];
     v112[24] = v49;
     v50 = [MEMORY[0x277CBEA60] arrayWithObjects:v112 count:25];
     [v85 activateConstraints:v50];
@@ -215,36 +215,36 @@
   return v3;
 }
 
-- (void)setUserContact:(id)a3
+- (void)setUserContact:(id)contact
 {
-  v5 = a3;
-  if (self->_userContact != v5)
+  contactCopy = contact;
+  if (self->_userContact != contactCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_userContact, a3);
+    v6 = contactCopy;
+    objc_storeStrong(&self->_userContact, contact);
     [(SBLogoutProgressView *)self _updateViewData];
-    v5 = v6;
+    contactCopy = v6;
   }
 }
 
-- (void)setPendingApplications:(id)a3
+- (void)setPendingApplications:(id)applications
 {
-  v4 = [a3 copy];
+  v4 = [applications copy];
   pendingApplications = self->_pendingApplications;
   self->_pendingApplications = v4;
 
   [(SBLogoutProgressView *)self _updateViewData];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (self->_legibilitySettings != v5)
+  settingsCopy = settings;
+  if (self->_legibilitySettings != settingsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    v6 = settingsCopy;
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(SBLogoutProgressView *)self _updateLegibility];
-    v5 = v6;
+    settingsCopy = v6;
   }
 }
 
@@ -278,8 +278,8 @@
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    if ([v2 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
 
       goto LABEL_15;
@@ -295,8 +295,8 @@
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -345,8 +345,8 @@ LABEL_16:
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    if ([v2 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
 
       goto LABEL_15;
@@ -362,8 +362,8 @@ LABEL_16:
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -383,9 +383,9 @@ LABEL_16:
   }
 
 LABEL_15:
-  v12 = [SBApp activeInterfaceOrientation];
+  activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
   result = -128.0;
-  if ((v12 - 3) < 2)
+  if ((activeInterfaceOrientation - 3) < 2)
   {
     return -78.5;
   }
@@ -402,9 +402,9 @@ LABEL_15:
     if (SBFEffectiveDeviceClass() != 2)
     {
 LABEL_14:
-      v12 = [SBApp activeInterfaceOrientation];
+      activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
       result = -20.0;
-      if ((v12 - 3) < 2)
+      if ((activeInterfaceOrientation - 3) < 2)
       {
         return 0.0;
       }
@@ -415,8 +415,8 @@ LABEL_14:
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    if ([v2 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
 
       goto LABEL_14;
@@ -432,8 +432,8 @@ LABEL_14:
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -460,20 +460,20 @@ LABEL_14:
 {
   [(SBLogoutProgressView *)self _updateUserAvatarLegibility];
   goodbyeLabel = self->_goodbyeLabel;
-  v4 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)goodbyeLabel setTextColor:v4];
+  primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)goodbyeLabel setTextColor:primaryColor];
 
   savingDocumentsLabel = self->_savingDocumentsLabel;
-  v6 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)savingDocumentsLabel setTextColor:v6];
+  primaryColor2 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)savingDocumentsLabel setTextColor:primaryColor2];
 
   savingDocumentsMoreLabel = self->_savingDocumentsMoreLabel;
-  v8 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)savingDocumentsMoreLabel setTextColor:v8];
+  primaryColor3 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)savingDocumentsMoreLabel setTextColor:primaryColor3];
 
   blameAppNameLabel = self->_blameAppNameLabel;
-  v10 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)blameAppNameLabel setTextColor:v10];
+  primaryColor4 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)blameAppNameLabel setTextColor:primaryColor4];
 }
 
 - (void)_updateViewData
@@ -486,8 +486,8 @@ LABEL_14:
 
 - (void)_updateGoodbye
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"LOGOUT_GOODBYE_USER_NAME_FORMAT" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"LOGOUT_GOODBYE_USER_NAME_FORMAT" value:&stru_283094718 table:@"SpringBoard"];
 
   v5 = [v4 rangeOfString:@"<[a-z]+>" options:1024];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
@@ -508,7 +508,7 @@ LABEL_14:
         goto LABEL_3;
       }
 
-      v11 = [(CNContact *)self->_userContact givenName];
+      givenName = [(CNContact *)self->_userContact givenName];
     }
 
     else
@@ -534,11 +534,11 @@ LABEL_12:
         goto LABEL_3;
       }
 
-      v11 = [(CNContact *)self->_userContact familyName];
+      givenName = [(CNContact *)self->_userContact familyName];
     }
 
-    v12 = v11;
-    v20 = [v4 stringByReplacingCharactersInRange:v9 withString:{v10, v11}];
+    v12 = givenName;
+    v20 = [v4 stringByReplacingCharactersInRange:v9 withString:{v10, givenName}];
     goto LABEL_12;
   }
 
@@ -550,15 +550,15 @@ LABEL_13:
   if ([v8 length] && (v13 = objc_opt_new(), v14 = objc_msgSend(v13, "isCurrentUserAnonymous"), v13, (v14 & 1) == 0))
   {
     v17 = MEMORY[0x277CCACA8];
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v18 = [v15 localizedStringForKey:@"LOGOUT_GOODBYE_USER" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v18 = [mainBundle2 localizedStringForKey:@"LOGOUT_GOODBYE_USER" value:&stru_283094718 table:@"SpringBoard"];
     v16 = [v17 stringWithFormat:v18, v21];
   }
 
   else
   {
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = [v15 localizedStringForKey:@"LOGOUT_GOODBYE_USER_NO_NAME" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v16 = [mainBundle2 localizedStringForKey:@"LOGOUT_GOODBYE_USER_NO_NAME" value:&stru_283094718 table:@"SpringBoard"];
   }
 
   [(UILabel *)self->_goodbyeLabel setText:v16];
@@ -584,47 +584,47 @@ LABEL_13:
 - (void)_updateBlame
 {
   v3 = objc_opt_new();
-  v4 = [v3 isCurrentUserAnonymous];
+  isCurrentUserAnonymous = [v3 isCurrentUserAnonymous];
 
-  if ((v4 & 1) == 0)
+  if ((isCurrentUserAnonymous & 1) == 0)
   {
     v5 = [(NSArray *)self->_pendingApplications count];
     savingDocumentsLabel = self->_savingDocumentsLabel;
-    v7 = [MEMORY[0x277CCA8D8] mainBundle];
-    v8 = v7;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v8 = mainBundle;
     if (v5)
     {
-      v9 = [v7 localizedStringForKey:@"LOGOUT_SAVING_DOCUMENTS_FROM" value:&stru_283094718 table:@"SpringBoard"];
+      v9 = [mainBundle localizedStringForKey:@"LOGOUT_SAVING_DOCUMENTS_FROM" value:&stru_283094718 table:@"SpringBoard"];
       [(UILabel *)savingDocumentsLabel setText:v9];
 
-      v10 = [(NSArray *)self->_pendingApplications firstObject];
+      firstObject = [(NSArray *)self->_pendingApplications firstObject];
       blameAppNameLabel = self->_blameAppNameLabel;
-      v12 = [v10 displayName];
-      [(UILabel *)blameAppNameLabel setText:v12];
+      displayName = [firstObject displayName];
+      [(UILabel *)blameAppNameLabel setText:displayName];
 
-      v13 = [(UIView *)self _sbWindowScene];
-      v14 = [v13 iconController];
-      v15 = [v14 iconModel];
-      v40 = v10;
-      v16 = [v10 bundleIdentifier];
-      v17 = [v15 applicationIconForBundleIdentifier:v16];
+      _sbWindowScene = [(UIView *)self _sbWindowScene];
+      iconController = [_sbWindowScene iconController];
+      iconModel = [iconController iconModel];
+      v40 = firstObject;
+      bundleIdentifier = [firstObject bundleIdentifier];
+      v17 = [iconModel applicationIconForBundleIdentifier:bundleIdentifier];
 
-      v18 = [(SBLogoutProgressView *)self traitCollection];
-      v19 = [v14 tableUIIconImageCache];
-      v20 = [MEMORY[0x277D75C80] sbh_iconImageAppearanceFromTraitCollection:v18];
-      v21 = [v19 genericImageWithImageAppearance:v20 options:0];
+      traitCollection = [(SBLogoutProgressView *)self traitCollection];
+      tableUIIconImageCache = [iconController tableUIIconImageCache];
+      v20 = [MEMORY[0x277D75C80] sbh_iconImageAppearanceFromTraitCollection:traitCollection];
+      v21 = [tableUIIconImageCache genericImageWithImageAppearance:v20 options:0];
       [(UIImageView *)self->_blameAppIconView setImage:v21];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __36__SBLogoutProgressView__updateBlame__block_invoke;
       v41[3] = &unk_2783B83C0;
-      v22 = v19;
+      v22 = tableUIIconImageCache;
       v42 = v22;
       v23 = v17;
       v43 = v23;
       v24 = v20;
       v44 = v24;
-      v45 = self;
+      selfCopy = self;
       v25 = [v22 cacheImageForIcon:v23 imageAppearance:v24 priority:4 reason:@"logout blame" options:0 completionHandler:v41];
       [(UIView *)self->_blameContainerView setHidden:0];
       v26 = [(NSArray *)self->_pendingApplications count];
@@ -638,21 +638,21 @@ LABEL_13:
       {
         v28 = MEMORY[0x277CCACA8];
         [MEMORY[0x277CCA8D8] mainBundle];
-        v38 = v14;
+        v38 = iconController;
         v39 = v21;
-        v30 = v29 = v13;
+        v30 = v29 = _sbWindowScene;
         [v30 localizedStringForKey:@"LOGOUT_SAVING_DOCUMENTS_MORE_COUNT" value:&stru_283094718 table:@"SpringBoardPlurals"];
         v31 = v22;
         v32 = v23;
-        v34 = v33 = v18;
+        v34 = v33 = traitCollection;
         v35 = [v28 localizedStringWithFormat:v34, v27];
 
-        v18 = v33;
+        traitCollection = v33;
         v23 = v32;
         v22 = v31;
 
-        v13 = v29;
-        v14 = v38;
+        _sbWindowScene = v29;
+        iconController = v38;
         v21 = v39;
         [(UILabel *)self->_savingDocumentsMoreLabel setText:v35];
         [(UILabel *)self->_savingDocumentsMoreLabel setHidden:0];
@@ -661,7 +661,7 @@ LABEL_13:
 
     else
     {
-      v36 = [v7 localizedStringForKey:@"LOGOUT_SAVING_DOCUMENTS" value:&stru_283094718 table:@"SpringBoard"];
+      v36 = [mainBundle localizedStringForKey:@"LOGOUT_SAVING_DOCUMENTS" value:&stru_283094718 table:@"SpringBoard"];
       [(UILabel *)savingDocumentsLabel setText:v36];
 
       [(UILabel *)self->_savingDocumentsMoreLabel setHidden:1];

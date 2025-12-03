@@ -1,18 +1,18 @@
 @interface MaxLoadIndexTableSectionVariable
-- (MaxLoadIndexTableSectionVariable)initWithDecisionTreeSection:(id)a3;
-- (unint64_t)getMaxLI:(unint64_t)a3;
+- (MaxLoadIndexTableSectionVariable)initWithDecisionTreeSection:(id)section;
+- (unint64_t)getMaxLI:(unint64_t)i;
 @end
 
 @implementation MaxLoadIndexTableSectionVariable
 
-- (MaxLoadIndexTableSectionVariable)initWithDecisionTreeSection:(id)a3
+- (MaxLoadIndexTableSectionVariable)initWithDecisionTreeSection:(id)section
 {
   v13.receiver = self;
   v13.super_class = MaxLoadIndexTableSectionVariable;
   v4 = [(MaxLoadIndexTableSection *)&v13 init];
   if (v4)
   {
-    if ([a3 count] == 256)
+    if ([section count] == 256)
     {
       v6 = 0;
       *&v5 = 134217984;
@@ -20,7 +20,7 @@
       v7 = v4;
       do
       {
-        v8 = [objc_msgSend(a3 objectAtIndex:{v6, v12), "unsignedIntValue"}];
+        v8 = [objc_msgSend(section objectAtIndex:{v6, v12), "unsignedIntValue"}];
         v9 = v8;
         if (v8 >= 0x66)
         {
@@ -52,16 +52,16 @@
   return v4;
 }
 
-- (unint64_t)getMaxLI:(unint64_t)a3
+- (unint64_t)getMaxLI:(unint64_t)i
 {
-  if (a3 > 0xFF)
+  if (i > 0xFF)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = self->_maxLoadIndexTableSection[a3];
+    v3 = self->_maxLoadIndexTableSection[i];
   }
 
   self->super._maxLI = v3;

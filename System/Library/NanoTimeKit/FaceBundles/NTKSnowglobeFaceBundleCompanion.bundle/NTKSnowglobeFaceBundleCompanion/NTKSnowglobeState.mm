@@ -1,11 +1,11 @@
 @interface NTKSnowglobeState
 - (NTKSnowglobeState)init;
 - (double)parallaxMultiplier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)withBackgroundObjectOpacity:(double)a3;
-- (id)withIdealizedState:(BOOL)a3 editing:(BOOL)a4;
-- (id)withPalette:(id)a3;
-- (id)withTritiumState:(unint64_t)a3 fraction:(double)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)withBackgroundObjectOpacity:(double)opacity;
+- (id)withIdealizedState:(BOOL)state editing:(BOOL)editing;
+- (id)withPalette:(id)palette;
+- (id)withTritiumState:(unint64_t)state fraction:(double)fraction;
 @end
 
 @implementation NTKSnowglobeState
@@ -30,14 +30,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NTKSnowglobeState);
   if (v4)
   {
-    v5 = [(NTKSnowglobeState *)self palette];
+    palette = [(NTKSnowglobeState *)self palette];
     palette = v4->_palette;
-    v4->_palette = v5;
+    v4->_palette = palette;
 
     v4->_tritiumState = [(NTKSnowglobeState *)self tritiumState];
     [(NTKSnowglobeState *)self tritiumFraction];
@@ -51,38 +51,38 @@
   return v4;
 }
 
-- (id)withIdealizedState:(BOOL)a3 editing:(BOOL)a4
+- (id)withIdealizedState:(BOOL)state editing:(BOOL)editing
 {
   v6 = [(NTKSnowglobeState *)self copy];
-  v6[8] = a3;
-  v6[9] = a4;
+  v6[8] = state;
+  v6[9] = editing;
 
   return v6;
 }
 
-- (id)withPalette:(id)a3
+- (id)withPalette:(id)palette
 {
-  v4 = a3;
+  paletteCopy = palette;
   v5 = [(NTKSnowglobeState *)self copy];
   v6 = v5[2];
-  v5[2] = v4;
+  v5[2] = paletteCopy;
 
   return v5;
 }
 
-- (id)withTritiumState:(unint64_t)a3 fraction:(double)a4
+- (id)withTritiumState:(unint64_t)state fraction:(double)fraction
 {
   v6 = [(NTKSnowglobeState *)self copy];
-  *(v6 + 24) = a3;
-  *(v6 + 32) = a4;
+  *(v6 + 24) = state;
+  *(v6 + 32) = fraction;
 
   return v6;
 }
 
-- (id)withBackgroundObjectOpacity:(double)a3
+- (id)withBackgroundObjectOpacity:(double)opacity
 {
   v4 = [(NTKSnowglobeState *)self copy];
-  v4[5] = a3;
+  v4[5] = opacity;
 
   return v4;
 }

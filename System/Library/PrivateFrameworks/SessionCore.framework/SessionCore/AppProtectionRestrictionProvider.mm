@@ -1,6 +1,6 @@
 @interface AppProtectionRestrictionProvider
 - (_TtC11SessionCoreP33_03222CA904BB2C7146C40B12EAF3EEE332AppProtectionRestrictionProvider)init;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)dealloc;
 @end
 
@@ -28,7 +28,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC11SessionCoreP33_03222CA904BB2C7146C40B12EAF3EEE332AppProtectionRestrictionProvider_subjectMonitorSubscription);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];
@@ -39,9 +39,9 @@
   [(AppProtectionRestrictionProvider *)&v5 dealloc];
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v4 = self;
+  selfCopy = self;
   sub_22CFC6D10();
 }
 

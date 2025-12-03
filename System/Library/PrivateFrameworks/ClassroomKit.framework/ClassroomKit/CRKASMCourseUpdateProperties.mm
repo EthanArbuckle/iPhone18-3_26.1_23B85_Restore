@@ -1,10 +1,10 @@
 @interface CRKASMCourseUpdateProperties
-- (BOOL)areFulfilledByCourse:(id)a3;
+- (BOOL)areFulfilledByCourse:(id)course;
 - (NSSet)trustedUsersToAdd;
 - (NSSet)trustedUsersToRemove;
 - (NSSet)usersToAdd;
 - (NSSet)usersToRemove;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CRKASMCourseUpdateProperties
@@ -69,42 +69,42 @@
   return trustedUsersToRemove;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CRKASMCourseUpdateProperties *)self name];
-  [v4 setName:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  name = [(CRKASMCourseUpdateProperties *)self name];
+  [v4 setName:name];
 
-  v6 = [(CRKASMCourseUpdateProperties *)self color];
-  [v4 setColor:v6];
+  color = [(CRKASMCourseUpdateProperties *)self color];
+  [v4 setColor:color];
 
-  v7 = [(CRKASMCourseUpdateProperties *)self mascot];
-  [v4 setMascot:v7];
+  mascot = [(CRKASMCourseUpdateProperties *)self mascot];
+  [v4 setMascot:mascot];
 
-  v8 = [(CRKASMCourseUpdateProperties *)self usersToAdd];
-  [v4 setUsersToAdd:v8];
+  usersToAdd = [(CRKASMCourseUpdateProperties *)self usersToAdd];
+  [v4 setUsersToAdd:usersToAdd];
 
-  v9 = [(CRKASMCourseUpdateProperties *)self usersToRemove];
-  [v4 setUsersToRemove:v9];
+  usersToRemove = [(CRKASMCourseUpdateProperties *)self usersToRemove];
+  [v4 setUsersToRemove:usersToRemove];
 
-  v10 = [(CRKASMCourseUpdateProperties *)self trustedUsersToAdd];
-  [v4 setTrustedUsersToAdd:v10];
+  trustedUsersToAdd = [(CRKASMCourseUpdateProperties *)self trustedUsersToAdd];
+  [v4 setTrustedUsersToAdd:trustedUsersToAdd];
 
-  v11 = [(CRKASMCourseUpdateProperties *)self trustedUsersToRemove];
-  [v4 setTrustedUsersToRemove:v11];
+  trustedUsersToRemove = [(CRKASMCourseUpdateProperties *)self trustedUsersToRemove];
+  [v4 setTrustedUsersToRemove:trustedUsersToRemove];
 
   return v4;
 }
 
-- (BOOL)areFulfilledByCourse:(id)a3
+- (BOOL)areFulfilledByCourse:(id)course
 {
-  v6 = a3;
-  v7 = [(CRKASMCourseUpdateProperties *)self name];
-  if (v7)
+  courseCopy = course;
+  name = [(CRKASMCourseUpdateProperties *)self name];
+  if (name)
   {
-    v3 = [(CRKASMCourseUpdateProperties *)self name];
-    v4 = [v6 name];
-    if (![v3 isEqualToString:v4])
+    name2 = [(CRKASMCourseUpdateProperties *)self name];
+    name3 = [courseCopy name];
+    if (![name2 isEqualToString:name3])
     {
       LOBYTE(v8) = 0;
 LABEL_36:
@@ -113,21 +113,21 @@ LABEL_36:
     }
   }
 
-  v9 = [(CRKASMCourseUpdateProperties *)self color];
-  if (!v9 || (-[CRKASMCourseUpdateProperties color](self, "color"), v55 = objc_claimAutoreleasedReturnValue(), v10 = [v55 unsignedIntegerValue], v10 == objc_msgSend(v6, "color")))
+  color = [(CRKASMCourseUpdateProperties *)self color];
+  if (!color || (-[CRKASMCourseUpdateProperties color](self, "color"), v55 = objc_claimAutoreleasedReturnValue(), v10 = [v55 unsignedIntegerValue], v10 == objc_msgSend(courseCopy, "color")))
   {
-    v11 = [(CRKASMCourseUpdateProperties *)self mascot];
-    if (v11)
+    mascot = [(CRKASMCourseUpdateProperties *)self mascot];
+    if (mascot)
     {
-      v53 = [(CRKASMCourseUpdateProperties *)self mascot];
-      v12 = [v53 unsignedIntegerValue];
-      if (v12 != [v6 mascot])
+      mascot2 = [(CRKASMCourseUpdateProperties *)self mascot];
+      unsignedIntegerValue = [mascot2 unsignedIntegerValue];
+      if (unsignedIntegerValue != [courseCopy mascot])
       {
         LOBYTE(v8) = 0;
 LABEL_32:
 
 LABEL_33:
-        if (!v9)
+        if (!color)
         {
           goto LABEL_35;
         }
@@ -136,17 +136,17 @@ LABEL_33:
       }
     }
 
-    v54 = [(CRKASMCourseUpdateProperties *)self usersToAdd];
-    v13 = [v54 count];
+    usersToAdd = [(CRKASMCourseUpdateProperties *)self usersToAdd];
+    v13 = [usersToAdd count];
     v14 = v13;
     if (v13)
     {
       v15 = v13;
-      v51 = [(CRKASMCourseUpdateProperties *)self usersToAdd];
-      v50 = [v51 allObjects];
-      v16 = __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(v50, v50);
-      v48 = [v6 users];
-      __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(v48, v48);
+      usersToAdd2 = [(CRKASMCourseUpdateProperties *)self usersToAdd];
+      allObjects = [usersToAdd2 allObjects];
+      v16 = __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(allObjects, allObjects);
+      users = [courseCopy users];
+      __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(users, users);
       v47 = v49 = v16;
       if (![v16 isSubsetOfSet:?])
       {
@@ -154,7 +154,7 @@ LABEL_33:
 LABEL_30:
 
 LABEL_31:
-        if (!v11)
+        if (!mascot)
         {
           goto LABEL_33;
         }
@@ -165,17 +165,17 @@ LABEL_31:
       v14 = v15;
     }
 
-    v52 = [(CRKASMCourseUpdateProperties *)self usersToRemove];
-    v17 = [v52 count];
+    usersToRemove = [(CRKASMCourseUpdateProperties *)self usersToRemove];
+    v17 = [usersToRemove count];
     v18 = v17;
     if (v17)
     {
       v19 = v17;
-      v45 = [(CRKASMCourseUpdateProperties *)self usersToRemove];
-      v44 = [v45 allObjects];
-      v20 = __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(v44, v44);
-      v42 = [v6 users];
-      __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(v42, v42);
+      usersToRemove2 = [(CRKASMCourseUpdateProperties *)self usersToRemove];
+      allObjects2 = [usersToRemove2 allObjects];
+      v20 = __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(allObjects2, allObjects2);
+      users2 = [courseCopy users];
+      __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(users2, users2);
       v41 = v43 = v20;
       if ([v20 intersectsSet:?])
       {
@@ -194,32 +194,32 @@ LABEL_29:
       v18 = v19;
     }
 
-    v46 = [(CRKASMCourseUpdateProperties *)self trustedUsersToAdd];
-    v40 = [v46 count];
-    if (!v40 || (-[CRKASMCourseUpdateProperties trustedUsersToAdd](self, "trustedUsersToAdd"), v39 = objc_claimAutoreleasedReturnValue(), [v39 allObjects], v38 = objc_claimAutoreleasedReturnValue(), __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(v38, v38), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "trustedUsers"), v36 = objc_claimAutoreleasedReturnValue(), __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(v36, v36), v37 = v21, v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "isSubsetOfSet:")))
+    trustedUsersToAdd = [(CRKASMCourseUpdateProperties *)self trustedUsersToAdd];
+    v40 = [trustedUsersToAdd count];
+    if (!v40 || (-[CRKASMCourseUpdateProperties trustedUsersToAdd](self, "trustedUsersToAdd"), v39 = objc_claimAutoreleasedReturnValue(), [v39 allObjects], v38 = objc_claimAutoreleasedReturnValue(), __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(v38, v38), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(courseCopy, "trustedUsers"), v36 = objc_claimAutoreleasedReturnValue(), __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(v36, v36), v37 = v21, v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "isSubsetOfSet:")))
     {
-      v22 = [(CRKASMCourseUpdateProperties *)self trustedUsersToRemove];
-      if ([v22 count])
+      trustedUsersToRemove = [(CRKASMCourseUpdateProperties *)self trustedUsersToRemove];
+      if ([trustedUsersToRemove count])
       {
-        v32 = [(CRKASMCourseUpdateProperties *)self trustedUsersToRemove];
-        v30 = [v32 allObjects];
-        __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(v30, v30);
-        v23 = v31 = v22;
-        [v6 trustedUsers];
-        v24 = v34 = v3;
+        trustedUsersToRemove2 = [(CRKASMCourseUpdateProperties *)self trustedUsersToRemove];
+        allObjects3 = [trustedUsersToRemove2 allObjects];
+        __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(allObjects3, allObjects3);
+        v23 = v31 = trustedUsersToRemove;
+        [courseCopy trustedUsers];
+        v24 = v34 = name2;
         __53__CRKASMCourseUpdateProperties_areFulfilledByCourse___block_invoke(v24, v24);
         v33 = v18;
         v25 = v14;
-        v26 = v11;
-        v28 = v27 = v4;
+        v26 = mascot;
+        v28 = v27 = name3;
         v8 = [v23 intersectsSet:v28] ^ 1;
 
-        v4 = v27;
-        v11 = v26;
+        name3 = v27;
+        mascot = v26;
         v14 = v25;
         v18 = v33;
 
-        v3 = v34;
+        name2 = v34;
       }
 
       else
@@ -253,7 +253,7 @@ LABEL_27:
 LABEL_34:
 
 LABEL_35:
-  if (v7)
+  if (name)
   {
     goto LABEL_36;
   }

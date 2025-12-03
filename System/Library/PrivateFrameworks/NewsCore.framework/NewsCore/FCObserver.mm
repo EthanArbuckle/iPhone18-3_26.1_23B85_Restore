@@ -1,10 +1,10 @@
 @interface FCObserver
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FCObserver)init;
-- (FCObserver)initWithToken:(unint64_t)a3;
+- (FCObserver)initWithToken:(unint64_t)token;
 - (id)keepAliveObject;
 - (void)dispose;
-- (void)disposeOn:(id)a3;
+- (void)disposeOn:(id)on;
 @end
 
 @implementation FCObserver
@@ -42,33 +42,33 @@
   objc_exception_throw(v6);
 }
 
-- (FCObserver)initWithToken:(unint64_t)a3
+- (FCObserver)initWithToken:(unint64_t)token
 {
   v5.receiver = self;
   v5.super_class = FCObserver;
   result = [(FCObserver *)&v5 init];
   if (result)
   {
-    result->_token = a3;
+    result->_token = token;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -86,8 +86,8 @@
 
   if (v7)
   {
-    v8 = [(FCObserver *)self token];
-    v6 = v8 == [v7 token];
+    token = [(FCObserver *)self token];
+    v6 = token == [v7 token];
   }
 
   else
@@ -98,12 +98,12 @@
   return v6;
 }
 
-- (void)disposeOn:(id)a3
+- (void)disposeOn:(id)on
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  onCopy = on;
   [v4 isMainThread];
-  [(FCObserver *)self setKeepAliveObject:v5];
+  [(FCObserver *)self setKeepAliveObject:onCopy];
 }
 
 - (void)dispose

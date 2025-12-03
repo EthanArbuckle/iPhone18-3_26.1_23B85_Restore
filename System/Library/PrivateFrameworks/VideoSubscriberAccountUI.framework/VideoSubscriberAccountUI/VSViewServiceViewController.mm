@@ -1,43 +1,43 @@
 @interface VSViewServiceViewController
-- (VSViewServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_identityProviderRequestForViewServiceRequest:(id)a3 withAccount:(id)a4;
-- (id)_viewServiceResponseWithIdentityProviderResponse:(id)a3;
-- (void)_completeRequest:(id)a3 withResponse:(id)a4;
-- (void)_completeRequestWithResponse:(id)a3;
-- (void)_completeRequestWithResponse:(id)a3 fromIdentityProvider:(id)a4;
-- (void)_determinePreAuthAppIsAuthorized:(id)a3 completion:(id)a4;
+- (VSViewServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_identityProviderRequestForViewServiceRequest:(id)request withAccount:(id)account;
+- (id)_viewServiceResponseWithIdentityProviderResponse:(id)response;
+- (void)_completeRequest:(id)request withResponse:(id)response;
+- (void)_completeRequestWithResponse:(id)response;
+- (void)_completeRequestWithResponse:(id)response fromIdentityProvider:(id)provider;
+- (void)_determinePreAuthAppIsAuthorized:(id)authorized completion:(id)completion;
 - (void)_didCancelRequest;
-- (void)_didDetermineIdentityProvider:(id)a3 withPickerViewController:(id)a4;
+- (void)_didDetermineIdentityProvider:(id)provider withPickerViewController:(id)controller;
 - (void)_dismissInHostIfNecessary;
-- (void)_performRequest:(id)a3 withIdentifier:(id)a4;
-- (void)_performRequestInternal:(id)a3 withID:(id)a4 identityProviders:(id)a5 accounts:(id)a6 currentStorefrontCode:(id)a7 allStorefronts:(id)a8;
-- (void)_performRequestWithIdentityProvider:(id)a3 account:(id)a4;
+- (void)_performRequest:(id)request withIdentifier:(id)identifier;
+- (void)_performRequestInternal:(id)internal withID:(id)d identityProviders:(id)providers accounts:(id)accounts currentStorefrontCode:(id)code allStorefronts:(id)storefronts;
+- (void)_performRequestWithIdentityProvider:(id)provider account:(id)account;
 - (void)_presentInHostIfNecessary;
-- (void)_request:(id)a3 didFailWithError:(id)a4;
-- (void)_requestDidFailWithError:(id)a3;
-- (void)_showIdentityProviderPickerViewControllerWithIdentityProviders:(id)a3 currentStorefrontCode:(id)a4 allStorefronts:(id)a5;
+- (void)_request:(id)_request didFailWithError:(id)error;
+- (void)_requestDidFailWithError:(id)error;
+- (void)_showIdentityProviderPickerViewControllerWithIdentityProviders:(id)providers currentStorefrontCode:(id)code allStorefronts:(id)storefronts;
 - (void)_willAppearInRemoteViewController;
 - (void)dealloc;
-- (void)identityProviderPickerViewController:(id)a3 didPickIdentityProvider:(id)a4;
-- (void)identityProviderPickerViewControllerDidPickAdditionalIdentityProviders:(id)a3;
-- (void)identityProviderViewController:(id)a3 didAuthenticateAccount:(id)a4 forRequest:(id)a5;
-- (void)identityProviderViewController:(id)a3 didFinishRequest:(id)a4 withResult:(id)a5;
-- (void)identityProviderViewControllerDidCancel:(id)a3;
-- (void)identityProviderViewControllerDidFinishLoading:(id)a3;
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4;
-- (void)setCurrentRequest:(id)a3;
+- (void)identityProviderPickerViewController:(id)controller didPickIdentityProvider:(id)provider;
+- (void)identityProviderPickerViewControllerDidPickAdditionalIdentityProviders:(id)providers;
+- (void)identityProviderViewController:(id)controller didAuthenticateAccount:(id)account forRequest:(id)request;
+- (void)identityProviderViewController:(id)controller didFinishRequest:(id)request withResult:(id)result;
+- (void)identityProviderViewControllerDidCancel:(id)cancel;
+- (void)identityProviderViewControllerDidFinishLoading:(id)loading;
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info;
+- (void)setCurrentRequest:(id)request;
 @end
 
 @implementation VSViewServiceViewController
 
-- (VSViewServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VSViewServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
+  bundleCopy = bundle;
+  nameCopy = name;
   VSRequireMainThread();
   v31.receiver = self;
   v31.super_class = VSViewServiceViewController;
-  v8 = [(VSViewServiceViewController *)&v31 initWithNibName:v7 bundle:v6];
+  v8 = [(VSViewServiceViewController *)&v31 initWithNibName:nameCopy bundle:bundleCopy];
 
   if (v8)
   {
@@ -45,9 +45,9 @@
     storage = v8->_storage;
     v8->_storage = v9;
 
-    v11 = [MEMORY[0x277CE22B8] defaultRestrictionsCenter];
+    defaultRestrictionsCenter = [MEMORY[0x277CE22B8] defaultRestrictionsCenter];
     restrictionsCenter = v8->_restrictionsCenter;
-    v8->_restrictionsCenter = v11;
+    v8->_restrictionsCenter = defaultRestrictionsCenter;
 
     v13 = objc_alloc_init(MEMORY[0x277CCABD8]);
     privateQueue = v8->_privateQueue;
@@ -81,12 +81,12 @@
     v8->_navController = v26;
 
     [(VSViewServiceViewController *)v8 addChildViewController:v8->_navController];
-    v28 = [(UINavigationController *)v8->_navController view];
-    v29 = [(VSViewServiceViewController *)v8 view];
-    [v29 bounds];
-    [v28 setFrame:?];
-    [v29 addSubview:v28];
-    [v28 setAutoresizingMask:18];
+    view = [(UINavigationController *)v8->_navController view];
+    view2 = [(VSViewServiceViewController *)v8 view];
+    [view2 bounds];
+    [view setFrame:?];
+    [view2 addSubview:view];
+    [view setAutoresizingMask:18];
     [(UINavigationController *)v8->_navController didMoveToParentViewController:v8];
   }
 
@@ -104,14 +104,14 @@
 - (void)_willAppearInRemoteViewController
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(VSViewServiceViewController *)self _hostApplicationBundleIdentifier];
+  _hostApplicationBundleIdentifier = [(VSViewServiceViewController *)self _hostApplicationBundleIdentifier];
   v4 = VSDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v9 = objc_opt_class();
     v10 = 2112;
-    v11 = v3;
+    v11 = _hostApplicationBundleIdentifier;
     v5 = v9;
     _os_log_impl(&dword_270DD4000, v4, OS_LOG_TYPE_DEFAULT, "%@: Appearing in client: %@", buf, 0x16u);
   }
@@ -123,31 +123,31 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performRequest:(id)a3 withIdentifier:(id)a4
+- (void)_performRequest:(id)request withIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  identifierCopy = identifier;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = requestCopy;
     _os_log_impl(&dword_270DD4000, v8, OS_LOG_TYPE_DEFAULT, "Received view service request: %@", buf, 0xCu);
   }
 
-  v9 = [(VSViewServiceViewController *)self storage];
-  v10 = [v9 accountStore];
+  storage = [(VSViewServiceViewController *)self storage];
+  accountStore = [storage accountStore];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __62__VSViewServiceViewController__performRequest_withIdentifier___block_invoke;
   v14[3] = &unk_279E1A190;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  [v10 fetchAccountsWithCompletionHandler:v14];
+  v15 = requestCopy;
+  v16 = identifierCopy;
+  v11 = identifierCopy;
+  v12 = requestCopy;
+  [accountStore fetchAccountsWithCompletionHandler:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -380,13 +380,13 @@ void __62__VSViewServiceViewController__performRequest_withIdentifier___block_in
   VSPerformBlockOnMainThread();
 }
 
-- (void)setCurrentRequest:(id)a3
+- (void)setCurrentRequest:(id)request
 {
-  v4 = a3;
-  if (self->_currentRequest != v4)
+  requestCopy = request;
+  if (self->_currentRequest != requestCopy)
   {
-    v5 = [(VSViewServiceViewController *)self _hostApplicationBundleIdentifier];
-    v6 = [MEMORY[0x277CC1E70] vs_applicationRecordWithBundleIdentifier:v5];
+    _hostApplicationBundleIdentifier = [(VSViewServiceViewController *)self _hostApplicationBundleIdentifier];
+    v6 = [MEMORY[0x277CC1E70] vs_applicationRecordWithBundleIdentifier:_hostApplicationBundleIdentifier];
     v23 = 0;
     v24 = &v23;
     v25 = 0x3032000000;
@@ -398,37 +398,37 @@ void __62__VSViewServiceViewController__performRequest_withIdentifier___block_in
     v22[2] = __49__VSViewServiceViewController_setCurrentRequest___block_invoke;
     v22[3] = &unk_279E1A1B8;
     v22[4] = &v23;
-    [(VSOptional *)v4 conditionallyUnwrapObject:v22];
-    v7 = [v6 localizedName];
-    if (v7)
+    [(VSOptional *)requestCopy conditionallyUnwrapObject:v22];
+    localizedName = [v6 localizedName];
+    if (localizedName)
     {
-      v8 = [v6 localizedName];
+      localizedName2 = [v6 localizedName];
 
-      if (!v8)
+      if (!localizedName2)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [appRecordOrNil localizedName] parameter must not be nil."];
       }
 
-      v9 = [v6 localizedName];
+      localizedName3 = [v6 localizedName];
     }
 
     else
     {
-      v9 = &stru_2880B8BB0;
+      localizedName3 = &stru_2880B8BB0;
     }
 
     v10 = v24[5];
     v11 = MEMORY[0x277CE2298];
-    v12 = [(__CFString *)v9 copy];
+    v12 = [(__CFString *)localizedName3 copy];
     v13 = [v11 optionalWithObject:v12];
     [v10 setRequestingAppDisplayName:v13];
 
     v14 = MEMORY[0x277CCABB0];
-    v15 = [v6 iTunesMetadata];
-    v16 = [v14 numberWithUnsignedLongLong:{objc_msgSend(v15, "storeItemIdentifier")}];
+    iTunesMetadata = [v6 iTunesMetadata];
+    v16 = [v14 numberWithUnsignedLongLong:{objc_msgSend(iTunesMetadata, "storeItemIdentifier")}];
 
-    v17 = [v16 stringValue];
-    [v24[5] setRequestingAppAdamID:v17];
+    stringValue = [v16 stringValue];
+    [v24[5] setRequestingAppAdamID:stringValue];
     v18 = MEMORY[0x277CE2298];
     v19 = [v24[5] copy];
     v20 = [v18 optionalWithObject:v19];
@@ -449,18 +449,18 @@ uint64_t __49__VSViewServiceViewController_setCurrentRequest___block_invoke(uint
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_performRequestInternal:(id)a3 withID:(id)a4 identityProviders:(id)a5 accounts:(id)a6 currentStorefrontCode:(id)a7 allStorefronts:(id)a8
+- (void)_performRequestInternal:(id)internal withID:(id)d identityProviders:(id)providers accounts:(id)accounts currentStorefrontCode:(id)code allStorefronts:(id)storefronts
 {
   v61 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v54 = a6;
-  v51 = a7;
-  v52 = a8;
-  if (v14)
+  internalCopy = internal;
+  dCopy = d;
+  providersCopy = providers;
+  accountsCopy = accounts;
+  codeCopy = code;
+  storefrontsCopy = storefronts;
+  if (internalCopy)
   {
-    if (v15)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -469,7 +469,7 @@ uint64_t __49__VSViewServiceViewController_setCurrentRequest___block_invoke(uint
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The request parameter must not be nil."];
-    if (v15)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -477,25 +477,25 @@ uint64_t __49__VSViewServiceViewController_setCurrentRequest___block_invoke(uint
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The requestID parameter must not be nil."];
 LABEL_3:
-  v53 = v15;
-  if (!v16)
+  v53 = dCopy;
+  if (!providersCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The identityProviders parameter must not be nil."];
   }
 
-  v17 = [MEMORY[0x277CE2298] optionalWithObject:v14];
+  v17 = [MEMORY[0x277CE2298] optionalWithObject:internalCopy];
   [(VSViewServiceViewController *)self setCurrentRequest:v17];
 
   v18 = MEMORY[0x277CE2298];
-  v19 = [v15 copy];
+  v19 = [dCopy copy];
   v20 = [v18 optionalWithObject:v19];
   [(VSViewServiceViewController *)self setCurrentRequestID:v20];
 
   [(VSViewServiceViewController *)self setDidAuthenticateAccount:0];
   [(VSViewServiceViewController *)self setIdentityProviderPickerRequired:0];
-  v21 = [v14 accountMetadataRequest];
-  v22 = v21;
-  if (!v21)
+  accountMetadataRequest = [internalCopy accountMetadataRequest];
+  v22 = accountMetadataRequest;
+  if (!accountMetadataRequest)
   {
     v27 = objc_alloc_init(MEMORY[0x277CE2338]);
     [(VSViewServiceViewController *)self _completeRequestWithResponse:v27];
@@ -503,9 +503,9 @@ LABEL_3:
     goto LABEL_42;
   }
 
-  v23 = [v21 accountProviderAuthenticationToken];
+  accountProviderAuthenticationToken = [accountMetadataRequest accountProviderAuthenticationToken];
 
-  if (v23)
+  if (accountProviderAuthenticationToken)
   {
     v24 = VSDefaultLogObject();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -518,16 +518,16 @@ LABEL_3:
     *(&buf + 1) = &buf;
     v59 = 0x2020000000;
     v60 = 0;
-    if ([v54 count])
+    if ([accountsCopy count])
     {
-      v25 = [v54 objectAtIndex:0];
-      v26 = [v25 authenticationToken];
+      v25 = [accountsCopy objectAtIndex:0];
+      authenticationToken = [v25 authenticationToken];
       v57[0] = MEMORY[0x277D85DD0];
       v57[1] = 3221225472;
       v57[2] = __126__VSViewServiceViewController__performRequestInternal_withID_identityProviders_accounts_currentStorefrontCode_allStorefronts___block_invoke;
       v57[3] = &unk_279E1A1E0;
       v57[4] = &buf;
-      [v26 conditionallyUnwrapObject:v57];
+      [authenticationToken conditionallyUnwrapObject:v57];
 
       if ((*(*(&buf + 1) + 24) & 1) == 0)
       {
@@ -540,7 +540,7 @@ LABEL_3:
       *(*(&buf + 1) + 24) = 1;
     }
 
-    if ([v14 allowsAuthenticationUI] && objc_msgSend(v16, "count") == 1)
+    if ([internalCopy allowsAuthenticationUI] && objc_msgSend(providersCopy, "count") == 1)
     {
 LABEL_21:
       _Block_object_dispose(&buf, 8);
@@ -561,27 +561,27 @@ LABEL_18:
   }
 
 LABEL_22:
-  if ([v54 count])
+  if ([accountsCopy count])
   {
-    v50 = [v54 objectAtIndex:0];
-    v30 = [v50 identityProviderID];
-    v31 = [v30 forceUnwrapObject];
+    v50 = [accountsCopy objectAtIndex:0];
+    identityProviderID = [v50 identityProviderID];
+    forceUnwrapObject = [identityProviderID forceUnwrapObject];
 
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __126__VSViewServiceViewController__performRequestInternal_withID_identityProviders_accounts_currentStorefrontCode_allStorefronts___block_invoke_114;
     v55[3] = &unk_279E1A208;
-    v32 = v31;
+    v32 = forceUnwrapObject;
     v56 = v32;
-    v33 = [v16 indexOfObjectPassingTest:v55];
+    v33 = [providersCopy indexOfObjectPassingTest:v55];
     if (v33 == 0x7FFFFFFFFFFFFFFFLL)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Current provider not included among providers."];
     }
 
-    v34 = [v16 objectAtIndex:v33];
-    v35 = [v14 supportedAccountProviderAuthenticationSchemes];
-    v36 = [v34 isFullySupportedForRequestsExpectingAuthenticationSchemes:v35];
+    v34 = [providersCopy objectAtIndex:v33];
+    supportedAccountProviderAuthenticationSchemes = [internalCopy supportedAccountProviderAuthenticationSchemes];
+    v36 = [v34 isFullySupportedForRequestsExpectingAuthenticationSchemes:supportedAccountProviderAuthenticationSchemes];
 
     if (v36)
     {
@@ -598,24 +598,24 @@ LABEL_22:
         _os_log_impl(&dword_270DD4000, v41, OS_LOG_TYPE_DEFAULT, "Identity provider %@ is not supported.", &buf, 0xCu);
       }
 
-      v42 = [v34 providerID];
-      v43 = [v42 forceUnwrapObject];
+      providerID = [v34 providerID];
+      forceUnwrapObject2 = [providerID forceUnwrapObject];
 
       v44 = VSPublicUnsupportedProviderError();
       if (([v34 isDeveloper] & 1) == 0)
       {
         v45 = MEMORY[0x277CE2288];
-        v46 = [(VSViewServiceViewController *)self _hostApplicationBundleIdentifier];
-        [v45 recordMetadataRequestWithProviderIdentifier:v43 channelAdamID:v46 fulfilledByProvider:0 error:v44];
+        _hostApplicationBundleIdentifier = [(VSViewServiceViewController *)self _hostApplicationBundleIdentifier];
+        [v45 recordMetadataRequestWithProviderIdentifier:forceUnwrapObject2 channelAdamID:_hostApplicationBundleIdentifier fulfilledByProvider:0 error:v44];
       }
 
       [(VSViewServiceViewController *)self _requestDidFailWithError:v44];
     }
   }
 
-  else if ([v14 allowsAuthenticationUI])
+  else if ([internalCopy allowsAuthenticationUI])
   {
-    if ([v16 count] == 1)
+    if ([providersCopy count] == 1)
     {
       v37 = VSDefaultLogObject();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -624,22 +624,22 @@ LABEL_22:
         _os_log_impl(&dword_270DD4000, v37, OS_LOG_TYPE_DEFAULT, "Will skip identity provider picker due to single provider.", &buf, 2u);
       }
 
-      v38 = [v16 firstObject];
-      v39 = v38 == 0;
+      firstObject = [providersCopy firstObject];
+      v39 = firstObject == 0;
 
       if (v39)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [identityProviders firstObject] parameter must not be nil."];
       }
 
-      v40 = [v16 firstObject];
-      [(VSViewServiceViewController *)self _didDetermineIdentityProvider:v40 withPickerViewController:0];
+      firstObject2 = [providersCopy firstObject];
+      [(VSViewServiceViewController *)self _didDetermineIdentityProvider:firstObject2 withPickerViewController:0];
     }
 
     else
     {
       [(VSViewServiceViewController *)self setIdentityProviderPickerRequired:1];
-      [(VSViewServiceViewController *)self _showIdentityProviderPickerViewControllerWithIdentityProviders:v16 currentStorefrontCode:v51 allStorefronts:v52];
+      [(VSViewServiceViewController *)self _showIdentityProviderPickerViewControllerWithIdentityProviders:providersCopy currentStorefrontCode:codeCopy allStorefronts:storefrontsCopy];
     }
   }
 
@@ -679,10 +679,10 @@ uint64_t __126__VSViewServiceViewController__performRequestInternal_withID_ident
   return v8;
 }
 
-- (id)_identityProviderRequestForViewServiceRequest:(id)a3 withAccount:(id)a4
+- (id)_identityProviderRequestForViewServiceRequest:(id)request withAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  accountCopy = account;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -694,10 +694,10 @@ uint64_t __126__VSViewServiceViewController__performRequestInternal_withID_ident
   v11[2] = __89__VSViewServiceViewController__identityProviderRequestForViewServiceRequest_withAccount___block_invoke;
   v11[3] = &unk_279E1A230;
   v14 = &v15;
-  v8 = v7;
+  v8 = accountCopy;
   v12 = v8;
-  v13 = self;
-  [v6 conditionallyUnwrapObject:v11 otherwise:&__block_literal_global_12];
+  selfCopy = self;
+  [requestCopy conditionallyUnwrapObject:v11 otherwise:&__block_literal_global_12];
   v9 = [MEMORY[0x277CE2298] optionalWithObject:v16[5]];
 
   _Block_object_dispose(&v15, 8);
@@ -736,31 +736,31 @@ void __89__VSViewServiceViewController__identityProviderRequestForViewServiceReq
   }
 }
 
-- (void)_determinePreAuthAppIsAuthorized:(id)a3 completion:(id)a4
+- (void)_determinePreAuthAppIsAuthorized:(id)authorized completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isDeveloper])
+  authorizedCopy = authorized;
+  completionCopy = completion;
+  if ([authorizedCopy isDeveloper])
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
-    v8 = [v6 nonChannelAppDescriptions];
-    if ([v8 count])
+    nonChannelAppDescriptions = [authorizedCopy nonChannelAppDescriptions];
+    if ([nonChannelAppDescriptions count])
     {
-      v29 = v6;
+      v29 = authorizedCopy;
       v9 = MEMORY[0x277CBE660];
-      if (!v8)
+      if (!nonChannelAppDescriptions)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The providerAppDescriptionsOrNil parameter must not be nil."];
       }
 
-      v28 = v8;
-      v10 = v8;
-      v11 = [(VSViewServiceViewController *)self _hostApplicationBundleIdentifier];
+      v28 = nonChannelAppDescriptions;
+      v10 = nonChannelAppDescriptions;
+      _hostApplicationBundleIdentifier = [(VSViewServiceViewController *)self _hostApplicationBundleIdentifier];
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
@@ -782,19 +782,19 @@ void __89__VSViewServiceViewController__identityProviderRequestForViewServiceReq
             }
 
             v18 = *(*(&v30 + 1) + 8 * i);
-            v19 = [v18 bundleID];
-            if (v19)
+            bundleID = [v18 bundleID];
+            if (bundleID)
             {
-              v20 = v19;
-              v21 = [v18 bundleID];
+              v20 = bundleID;
+              bundleID2 = [v18 bundleID];
 
-              if (!v21)
+              if (!bundleID2)
               {
                 [MEMORY[0x277CBEAD8] raise:v16 format:@"The [description bundleID] parameter must not be nil."];
               }
 
-              v22 = [v18 bundleID];
-              v23 = [v11 isEqualToString:v22];
+              bundleID3 = [v18 bundleID];
+              v23 = [_hostApplicationBundleIdentifier isEqualToString:bundleID3];
 
               if (v23)
               {
@@ -830,10 +830,10 @@ void __89__VSViewServiceViewController__identityProviderRequestForViewServiceReq
 
       v25 = 0;
 LABEL_26:
-      v8 = v28;
-      v6 = v29;
+      nonChannelAppDescriptions = v28;
+      authorizedCopy = v29;
 
-      v7[2](v7, v25, 0);
+      completionCopy[2](completionCopy, v25, 0);
     }
 
     else
@@ -845,28 +845,28 @@ LABEL_26:
         _os_log_impl(&dword_270DD4000, v26, OS_LOG_TYPE_DEFAULT, "Identity provider has no apps, will reject any pre-auth requests.", buf, 2u);
       }
 
-      v7[2](v7, 0, 0);
+      completionCopy[2](completionCopy, 0, 0);
     }
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performRequestWithIdentityProvider:(id)a3 account:(id)a4
+- (void)_performRequestWithIdentityProvider:(id)provider account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VSViewServiceViewController *)self currentRequest];
+  providerCopy = provider;
+  accountCopy = account;
+  currentRequest = [(VSViewServiceViewController *)self currentRequest];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__VSViewServiceViewController__performRequestWithIdentityProvider_account___block_invoke;
   v11[3] = &unk_279E1A2A8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 conditionallyUnwrapObject:v11 otherwise:&__block_literal_global_145];
+  v12 = providerCopy;
+  v13 = accountCopy;
+  v9 = accountCopy;
+  v10 = providerCopy;
+  [currentRequest conditionallyUnwrapObject:v11 otherwise:&__block_literal_global_145];
 }
 
 void __75__VSViewServiceViewController__performRequestWithIdentityProvider_account___block_invoke(uint64_t a1, void *a2)
@@ -980,35 +980,35 @@ void __75__VSViewServiceViewController__performRequestWithIdentityProvider_accou
   }
 }
 
-- (void)_showIdentityProviderPickerViewControllerWithIdentityProviders:(id)a3 currentStorefrontCode:(id)a4 allStorefronts:(id)a5
+- (void)_showIdentityProviderPickerViewControllerWithIdentityProviders:(id)providers currentStorefrontCode:(id)code allStorefronts:(id)storefronts
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  codeCopy = code;
+  storefrontsCopy = storefronts;
+  providersCopy = providers;
   v11 = +[VSViewControllerFactory sharedFactory];
-  v12 = [v11 identityProviderPickerViewControllerWithIdentityProviders:v10];
+  v12 = [v11 identityProviderPickerViewControllerWithIdentityProviders:providersCopy];
 
-  v13 = [v12 forceUnwrapObject];
+  forceUnwrapObject = [v12 forceUnwrapObject];
 
-  [v13 setCancellationAllowed:1];
-  [v13 setDelegate:self];
-  v14 = [v13 navigationItem];
-  v15 = [v13 searchController];
-  [v14 setSearchController:v15];
+  [forceUnwrapObject setCancellationAllowed:1];
+  [forceUnwrapObject setDelegate:self];
+  navigationItem = [forceUnwrapObject navigationItem];
+  searchController = [forceUnwrapObject searchController];
+  [navigationItem setSearchController:searchController];
 
-  v16 = [(VSViewServiceViewController *)self currentRequest];
+  currentRequest = [(VSViewServiceViewController *)self currentRequest];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __131__VSViewServiceViewController__showIdentityProviderPickerViewControllerWithIdentityProviders_currentStorefrontCode_allStorefronts___block_invoke;
   v20[3] = &unk_279E1A2D0;
-  v21 = v13;
-  v22 = v9;
-  v23 = v8;
-  v24 = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v13;
-  [v16 conditionallyUnwrapObject:v20 otherwise:&__block_literal_global_148];
+  v21 = forceUnwrapObject;
+  v22 = storefrontsCopy;
+  v23 = codeCopy;
+  selfCopy = self;
+  v17 = codeCopy;
+  v18 = storefrontsCopy;
+  v19 = forceUnwrapObject;
+  [currentRequest conditionallyUnwrapObject:v20 otherwise:&__block_literal_global_148];
 }
 
 void __131__VSViewServiceViewController__showIdentityProviderPickerViewControllerWithIdentityProviders_currentStorefrontCode_allStorefronts___block_invoke(uint64_t a1, void *a2)
@@ -1061,21 +1061,21 @@ void __131__VSViewServiceViewController__showIdentityProviderPickerViewControlle
   }
 }
 
-- (void)_didDetermineIdentityProvider:(id)a3 withPickerViewController:(id)a4
+- (void)_didDetermineIdentityProvider:(id)provider withPickerViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VSViewServiceViewController *)self currentRequest];
+  providerCopy = provider;
+  controllerCopy = controller;
+  currentRequest = [(VSViewServiceViewController *)self currentRequest];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __86__VSViewServiceViewController__didDetermineIdentityProvider_withPickerViewController___block_invoke;
   v11[3] = &unk_279E1A2A8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 conditionallyUnwrapObject:v11 otherwise:&__block_literal_global_157];
+  v12 = providerCopy;
+  selfCopy = self;
+  v14 = controllerCopy;
+  v9 = controllerCopy;
+  v10 = providerCopy;
+  [currentRequest conditionallyUnwrapObject:v11 otherwise:&__block_literal_global_157];
 }
 
 void __86__VSViewServiceViewController__didDetermineIdentityProvider_withPickerViewController___block_invoke(uint64_t a1, void *a2)
@@ -1290,8 +1290,8 @@ void __86__VSViewServiceViewController__didDetermineIdentityProvider_withPickerV
       _os_log_impl(&dword_270DD4000, v3, OS_LOG_TYPE_DEFAULT, "Will present in host", buf, 2u);
     }
 
-    v4 = [(VSViewServiceViewController *)self _viewControllerHost];
-    [v4 _presentViewController];
+    _viewControllerHost = [(VSViewServiceViewController *)self _viewControllerHost];
+    [_viewControllerHost _presentViewController];
 
     v5 = VSDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1316,8 +1316,8 @@ void __86__VSViewServiceViewController__didDetermineIdentityProvider_withPickerV
       _os_log_impl(&dword_270DD4000, v3, OS_LOG_TYPE_DEFAULT, "Will dismiss in host", buf, 2u);
     }
 
-    v4 = [(VSViewServiceViewController *)self _viewControllerHost];
-    [v4 _dismissViewController];
+    _viewControllerHost = [(VSViewServiceViewController *)self _viewControllerHost];
+    [_viewControllerHost _dismissViewController];
 
     v5 = VSDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1330,24 +1330,24 @@ void __86__VSViewServiceViewController__didDetermineIdentityProvider_withPickerV
   }
 }
 
-- (void)_request:(id)a3 didFailWithError:(id)a4
+- (void)_request:(id)_request didFailWithError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 vs_secureCodingSafeError];
+  _requestCopy = _request;
+  errorCopy = error;
+  vs_secureCodingSafeError = [errorCopy vs_secureCodingSafeError];
   v9 = VSDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v6;
+    v14 = _requestCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = errorCopy;
     _os_log_impl(&dword_270DD4000, v9, OS_LOG_TYPE_DEFAULT, "Will fail request %@ in host with error: %@", &v13, 0x16u);
   }
 
-  v10 = [(VSViewServiceViewController *)self _viewControllerHost];
-  [v10 _request:v6 didFailWithError:v8];
+  _viewControllerHost = [(VSViewServiceViewController *)self _viewControllerHost];
+  [_viewControllerHost _request:_requestCopy didFailWithError:vs_secureCodingSafeError];
 
   v11 = VSDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1359,18 +1359,18 @@ void __86__VSViewServiceViewController__didDetermineIdentityProvider_withPickerV
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestDidFailWithError:(id)a3
+- (void)_requestDidFailWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(VSViewServiceViewController *)self currentRequestID];
+  errorCopy = error;
+  currentRequestID = [(VSViewServiceViewController *)self currentRequestID];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__VSViewServiceViewController__requestDidFailWithError___block_invoke;
   v7[3] = &unk_279E19268;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 conditionallyUnwrapObject:v7 otherwise:&__block_literal_global_160];
+  v8 = errorCopy;
+  v6 = errorCopy;
+  [currentRequestID conditionallyUnwrapObject:v7 otherwise:&__block_literal_global_160];
 }
 
 void __56__VSViewServiceViewController__requestDidFailWithError___block_invoke(uint64_t a1, uint64_t a2)
@@ -1397,13 +1397,13 @@ void __56__VSViewServiceViewController__requestDidFailWithError___block_invoke_2
 
 - (void)_didCancelRequest
 {
-  v3 = [(VSViewServiceViewController *)self currentRequestID];
+  currentRequestID = [(VSViewServiceViewController *)self currentRequestID];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__VSViewServiceViewController__didCancelRequest__block_invoke;
   v4[3] = &unk_279E1A348;
   v4[4] = self;
-  [v3 conditionallyUnwrapObject:v4 otherwise:&__block_literal_global_163];
+  [currentRequestID conditionallyUnwrapObject:v4 otherwise:&__block_literal_global_163];
 }
 
 void __48__VSViewServiceViewController__didCancelRequest__block_invoke(uint64_t a1, void *a2)
@@ -1449,30 +1449,30 @@ void __48__VSViewServiceViewController__didCancelRequest__block_invoke_161()
   }
 }
 
-- (void)_completeRequestWithResponse:(id)a3 fromIdentityProvider:(id)a4
+- (void)_completeRequestWithResponse:(id)response fromIdentityProvider:(id)provider
 {
-  v5 = [(VSViewServiceViewController *)self _viewServiceResponseWithIdentityProviderResponse:a3, a4];
-  [(VSViewServiceViewController *)self _completeRequestWithResponse:v5];
+  provider = [(VSViewServiceViewController *)self _viewServiceResponseWithIdentityProviderResponse:response, provider];
+  [(VSViewServiceViewController *)self _completeRequestWithResponse:provider];
 }
 
-- (void)_completeRequest:(id)a3 withResponse:(id)a4
+- (void)_completeRequest:(id)request withResponse:(id)response
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  responseCopy = response;
   [(VSViewServiceViewController *)self _dismissInHostIfNecessary];
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v6;
+    v15 = requestCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = responseCopy;
     _os_log_impl(&dword_270DD4000, v8, OS_LOG_TYPE_DEFAULT, "Will finish request %@ with response %@", &v14, 0x16u);
   }
 
-  v9 = [(VSViewServiceViewController *)self _viewControllerHost];
-  [v9 _request:v6 didFinishWithResponse:v7];
+  _viewControllerHost = [(VSViewServiceViewController *)self _viewControllerHost];
+  [_viewControllerHost _request:requestCopy didFinishWithResponse:responseCopy];
 
   v10 = VSDefaultLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1490,18 +1490,18 @@ void __48__VSViewServiceViewController__didCancelRequest__block_invoke_161()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_completeRequestWithResponse:(id)a3
+- (void)_completeRequestWithResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(VSViewServiceViewController *)self currentRequestID];
+  responseCopy = response;
+  currentRequestID = [(VSViewServiceViewController *)self currentRequestID];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__VSViewServiceViewController__completeRequestWithResponse___block_invoke;
   v7[3] = &unk_279E19268;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 conditionallyUnwrapObject:v7 otherwise:&__block_literal_global_165];
+  v8 = responseCopy;
+  v6 = responseCopy;
+  [currentRequestID conditionallyUnwrapObject:v7 otherwise:&__block_literal_global_165];
 }
 
 void __60__VSViewServiceViewController__completeRequestWithResponse___block_invoke_2()
@@ -1514,39 +1514,39 @@ void __60__VSViewServiceViewController__completeRequestWithResponse___block_invo
   }
 }
 
-- (id)_viewServiceResponseWithIdentityProviderResponse:(id)a3
+- (id)_viewServiceResponseWithIdentityProviderResponse:(id)response
 {
   v3 = MEMORY[0x277CE2338];
-  v4 = a3;
+  responseCopy = response;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 accountMetadata];
+  accountMetadata = [responseCopy accountMetadata];
 
-  [v5 setAccountMetadata:v6];
+  [v5 setAccountMetadata:accountMetadata];
 
   return v5;
 }
 
-- (void)identityProviderPickerViewController:(id)a3 didPickIdentityProvider:(id)a4
+- (void)identityProviderPickerViewController:(id)controller didPickIdentityProvider:(id)provider
 {
   v6 = MEMORY[0x277CE2288];
   v7 = *MEMORY[0x277CE24B0];
   v8 = *MEMORY[0x277CE24B8];
   v9 = *MEMORY[0x277CE2498];
-  v10 = a4;
-  v11 = a3;
+  providerCopy = provider;
+  controllerCopy = controller;
   [v6 recordClickEventWithPage:v7 pageType:v8 target:v9];
-  [(VSViewServiceViewController *)self _didDetermineIdentityProvider:v10 withPickerViewController:v11];
+  [(VSViewServiceViewController *)self _didDetermineIdentityProvider:providerCopy withPickerViewController:controllerCopy];
 }
 
-- (void)identityProviderPickerViewControllerDidPickAdditionalIdentityProviders:(id)a3
+- (void)identityProviderPickerViewControllerDidPickAdditionalIdentityProviders:(id)providers
 {
-  v4 = [(VSViewServiceViewController *)self currentRequestID];
+  currentRequestID = [(VSViewServiceViewController *)self currentRequestID];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __102__VSViewServiceViewController_identityProviderPickerViewControllerDidPickAdditionalIdentityProviders___block_invoke;
   v5[3] = &unk_279E1A348;
   v5[4] = self;
-  [v4 conditionallyUnwrapObject:v5 otherwise:&__block_literal_global_168];
+  [currentRequestID conditionallyUnwrapObject:v5 otherwise:&__block_literal_global_168];
 }
 
 void __102__VSViewServiceViewController_identityProviderPickerViewControllerDidPickAdditionalIdentityProviders___block_invoke(uint64_t a1, void *a2)
@@ -1584,12 +1584,12 @@ void __102__VSViewServiceViewController_identityProviderPickerViewControllerDidP
   }
 }
 
-- (void)identityProviderViewControllerDidCancel:(id)a3
+- (void)identityProviderViewControllerDidCancel:(id)cancel
 {
   if ([(VSViewServiceViewController *)self isIdentityProviderPickerRequired])
   {
-    v5 = [(VSViewServiceViewController *)self navController];
-    v4 = [v5 popToRootViewControllerAnimated:1];
+    navController = [(VSViewServiceViewController *)self navController];
+    v4 = [navController popToRootViewControllerAnimated:1];
   }
 
   else
@@ -1599,22 +1599,22 @@ void __102__VSViewServiceViewController_identityProviderPickerViewControllerDidP
   }
 }
 
-- (void)identityProviderViewController:(id)a3 didFinishRequest:(id)a4 withResult:(id)a5
+- (void)identityProviderViewController:(id)controller didFinishRequest:(id)request withResult:(id)result
 {
-  v7 = a3;
+  controllerCopy = controller;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __90__VSViewServiceViewController_identityProviderViewController_didFinishRequest_withResult___block_invoke;
   v10[3] = &unk_279E1A370;
-  v11 = v7;
-  v12 = self;
+  v11 = controllerCopy;
+  selfCopy = self;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __90__VSViewServiceViewController_identityProviderViewController_didFinishRequest_withResult___block_invoke_173;
   v9[3] = &unk_279E19730;
   v9[4] = self;
-  v8 = v7;
-  [a5 unwrapObject:v10 error:v9];
+  v8 = controllerCopy;
+  [result unwrapObject:v10 error:v9];
 }
 
 void __90__VSViewServiceViewController_identityProviderViewController_didFinishRequest_withResult___block_invoke(uint64_t a1, void *a2)
@@ -1716,26 +1716,26 @@ void __90__VSViewServiceViewController_identityProviderViewController_didFinishR
   v1 = [v2 popToRootViewControllerAnimated:1];
 }
 
-- (void)identityProviderViewController:(id)a3 didAuthenticateAccount:(id)a4 forRequest:(id)a5
+- (void)identityProviderViewController:(id)controller didAuthenticateAccount:(id)account forRequest:(id)request
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [a5 requestingAppAdamID];
-  v27 = v7;
-  v9 = [v7 identityProviderID];
-  v10 = [v9 forceUnwrapObject];
+  accountCopy = account;
+  requestingAppAdamID = [request requestingAppAdamID];
+  v27 = accountCopy;
+  identityProviderID = [accountCopy identityProviderID];
+  forceUnwrapObject = [identityProviderID forceUnwrapObject];
 
-  v26 = self;
-  v11 = [(VSViewServiceViewController *)self storage];
-  v12 = [v11 voucherLockbox];
+  selfCopy = self;
+  storage = [(VSViewServiceViewController *)self storage];
+  voucherLockbox = [storage voucherLockbox];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v28 = v12;
-  v13 = [v12 unredeemedVouchers];
-  v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v28 = voucherLockbox;
+  unredeemedVouchers = [voucherLockbox unredeemedVouchers];
+  v14 = [unredeemedVouchers countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1746,15 +1746,15 @@ void __90__VSViewServiceViewController_identityProviderViewController_didFinishR
       {
         if (*v31 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(unredeemedVouchers);
         }
 
         v18 = *(*(&v30 + 1) + 8 * i);
-        v19 = [v18 appAdamID];
-        if ([v19 isEqual:v8])
+        appAdamID = [v18 appAdamID];
+        if ([appAdamID isEqual:requestingAppAdamID])
         {
-          v20 = [v18 providerID];
-          v21 = [v20 isEqual:v10];
+          providerID = [v18 providerID];
+          v21 = [providerID isEqual:forceUnwrapObject];
 
           if (v21)
           {
@@ -1767,17 +1767,17 @@ void __90__VSViewServiceViewController_identityProviderViewController_didFinishR
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v15 = [unredeemedVouchers countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v15);
   }
 
-  v22 = [(VSViewServiceViewController *)v26 storage];
-  v23 = [v22 privacyFacade];
+  storage2 = [(VSViewServiceViewController *)selfCopy storage];
+  privacyFacade = [storage2 privacyFacade];
 
-  [(VSViewServiceViewController *)v26 _hostAuditToken];
-  if (([v23 setAccessGranted:1 forAuditToken:v29] & 1) == 0)
+  [(VSViewServiceViewController *)selfCopy _hostAuditToken];
+  if (([privacyFacade setAccessGranted:1 forAuditToken:v29] & 1) == 0)
   {
     v24 = VSErrorLogObject();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1786,23 +1786,23 @@ void __90__VSViewServiceViewController_identityProviderViewController_didFinishR
     }
   }
 
-  [(VSViewServiceViewController *)v26 _dismissInHostIfNecessary];
+  [(VSViewServiceViewController *)selfCopy _dismissInHostIfNecessary];
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)identityProviderViewControllerDidFinishLoading:(id)a3
+- (void)identityProviderViewControllerDidFinishLoading:(id)loading
 {
-  v4 = a3;
-  v5 = [(VSViewServiceViewController *)self currentRequest];
+  loadingCopy = loading;
+  currentRequest = [(VSViewServiceViewController *)self currentRequest];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__VSViewServiceViewController_identityProviderViewControllerDidFinishLoading___block_invoke;
   v7[3] = &unk_279E191F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 conditionallyUnwrapObject:v7 otherwise:&__block_literal_global_183];
+  v8 = loadingCopy;
+  selfCopy = self;
+  v6 = loadingCopy;
+  [currentRequest conditionallyUnwrapObject:v7 otherwise:&__block_literal_global_183];
 }
 
 void __78__VSViewServiceViewController_identityProviderViewControllerDidFinishLoading___block_invoke(uint64_t a1, void *a2)
@@ -1850,11 +1850,11 @@ void __78__VSViewServiceViewController_identityProviderViewControllerDidFinishLo
   }
 }
 
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info
 {
-  [(VSViewServiceViewController *)self _didCancelRequest:a3];
-  v5 = [(VSViewServiceViewController *)self topShelfPurger];
-  [v5 purge];
+  [(VSViewServiceViewController *)self _didCancelRequest:notifier];
+  topShelfPurger = [(VSViewServiceViewController *)self topShelfPurger];
+  [topShelfPurger purge];
 }
 
 void __62__VSViewServiceViewController__performRequest_withIdentifier___block_invoke_7_cold_1()

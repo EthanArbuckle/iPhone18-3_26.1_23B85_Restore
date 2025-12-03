@@ -1,81 +1,81 @@
 @interface SFPhotosRankingInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFPhotosRankingInfo)initWithCoder:(id)a3;
-- (SFPhotosRankingInfo)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFPhotosRankingInfo)initWithCoder:(id)coder;
+- (SFPhotosRankingInfo)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFPhotosRankingInfo
 
-- (SFPhotosRankingInfo)initWithProtobuf:(id)a3
+- (SFPhotosRankingInfo)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFPhotosRankingInfo;
   v5 = [(SFPhotosRankingInfo *)&v12 init];
   if (v5)
   {
-    if ([v4 totalNumberOfAssetsIndexed])
+    if ([protobufCopy totalNumberOfAssetsIndexed])
     {
-      -[SFPhotosRankingInfo setTotalNumberOfAssetsIndexed:](v5, "setTotalNumberOfAssetsIndexed:", [v4 totalNumberOfAssetsIndexed]);
+      -[SFPhotosRankingInfo setTotalNumberOfAssetsIndexed:](v5, "setTotalNumberOfAssetsIndexed:", [protobufCopy totalNumberOfAssetsIndexed]);
     }
 
-    if ([v4 totalNumberOfAssetsInLibrary])
+    if ([protobufCopy totalNumberOfAssetsInLibrary])
     {
-      -[SFPhotosRankingInfo setTotalNumberOfAssetsInLibrary:](v5, "setTotalNumberOfAssetsInLibrary:", [v4 totalNumberOfAssetsInLibrary]);
+      -[SFPhotosRankingInfo setTotalNumberOfAssetsInLibrary:](v5, "setTotalNumberOfAssetsInLibrary:", [protobufCopy totalNumberOfAssetsInLibrary]);
     }
 
-    if ([v4 totalNumberOfEmbeddingMatchedAssets])
+    if ([protobufCopy totalNumberOfEmbeddingMatchedAssets])
     {
-      -[SFPhotosRankingInfo setTotalNumberOfEmbeddingMatchedAssets:](v5, "setTotalNumberOfEmbeddingMatchedAssets:", [v4 totalNumberOfEmbeddingMatchedAssets]);
+      -[SFPhotosRankingInfo setTotalNumberOfEmbeddingMatchedAssets:](v5, "setTotalNumberOfEmbeddingMatchedAssets:", [protobufCopy totalNumberOfEmbeddingMatchedAssets]);
     }
 
-    if ([v4 totalNumberOfMetadataMatchedAssets])
+    if ([protobufCopy totalNumberOfMetadataMatchedAssets])
     {
-      -[SFPhotosRankingInfo setTotalNumberOfMetadataMatchedAssets:](v5, "setTotalNumberOfMetadataMatchedAssets:", [v4 totalNumberOfMetadataMatchedAssets]);
+      -[SFPhotosRankingInfo setTotalNumberOfMetadataMatchedAssets:](v5, "setTotalNumberOfMetadataMatchedAssets:", [protobufCopy totalNumberOfMetadataMatchedAssets]);
     }
 
-    if ([v4 assetEstimationOffAmount])
+    if ([protobufCopy assetEstimationOffAmount])
     {
-      -[SFPhotosRankingInfo setAssetEstimationOffAmount:](v5, "setAssetEstimationOffAmount:", [v4 assetEstimationOffAmount]);
+      -[SFPhotosRankingInfo setAssetEstimationOffAmount:](v5, "setAssetEstimationOffAmount:", [protobufCopy assetEstimationOffAmount]);
     }
 
-    if ([v4 indexedAssetsPercentage])
+    if ([protobufCopy indexedAssetsPercentage])
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "indexedAssetsPercentage")}];
+      v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "indexedAssetsPercentage")}];
       [(SFPhotosRankingInfo *)v5 setIndexedAssetsPercentage:v6];
     }
 
-    if ([v4 analyzedAssetsPercentage])
+    if ([protobufCopy analyzedAssetsPercentage])
     {
-      v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "analyzedAssetsPercentage")}];
+      v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "analyzedAssetsPercentage")}];
       [(SFPhotosRankingInfo *)v5 setAnalyzedAssetsPercentage:v7];
     }
 
-    if ([v4 analyzedAndIndexedAssetsPercentage])
+    if ([protobufCopy analyzedAndIndexedAssetsPercentage])
     {
-      v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "analyzedAndIndexedAssetsPercentage")}];
+      v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "analyzedAndIndexedAssetsPercentage")}];
       [(SFPhotosRankingInfo *)v5 setAnalyzedAndIndexedAssetsPercentage:v8];
     }
 
-    if ([v4 embeddedAssetsPercentage])
+    if ([protobufCopy embeddedAssetsPercentage])
     {
-      v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "embeddedAssetsPercentage")}];
+      v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "embeddedAssetsPercentage")}];
       [(SFPhotosRankingInfo *)v5 setEmbeddedAssetsPercentage:v9];
     }
 
-    if ([v4 assetsRetrieved])
+    if ([protobufCopy assetsRetrieved])
     {
-      -[SFPhotosRankingInfo setAssetsRetrieved:](v5, "setAssetsRetrieved:", [v4 assetsRetrieved]);
+      -[SFPhotosRankingInfo setAssetsRetrieved:](v5, "setAssetsRetrieved:", [protobufCopy assetsRetrieved]);
     }
 
-    if ([v4 collectionsRetrieved])
+    if ([protobufCopy collectionsRetrieved])
     {
-      -[SFPhotosRankingInfo setCollectionsRetrieved:](v5, "setCollectionsRetrieved:", [v4 collectionsRetrieved]);
+      -[SFPhotosRankingInfo setCollectionsRetrieved:](v5, "setCollectionsRetrieved:", [protobufCopy collectionsRetrieved]);
     }
 
     v10 = v5;
@@ -86,40 +86,40 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFPhotosRankingInfo *)self totalNumberOfAssetsIndexed];
-  v4 = [(SFPhotosRankingInfo *)self totalNumberOfAssetsInLibrary]^ v3;
-  v5 = [(SFPhotosRankingInfo *)self totalNumberOfEmbeddingMatchedAssets];
-  v6 = v4 ^ v5 ^ [(SFPhotosRankingInfo *)self totalNumberOfMetadataMatchedAssets];
+  totalNumberOfAssetsIndexed = [(SFPhotosRankingInfo *)self totalNumberOfAssetsIndexed];
+  v4 = [(SFPhotosRankingInfo *)self totalNumberOfAssetsInLibrary]^ totalNumberOfAssetsIndexed;
+  totalNumberOfEmbeddingMatchedAssets = [(SFPhotosRankingInfo *)self totalNumberOfEmbeddingMatchedAssets];
+  v6 = v4 ^ totalNumberOfEmbeddingMatchedAssets ^ [(SFPhotosRankingInfo *)self totalNumberOfMetadataMatchedAssets];
   v7 = v6 ^ [(SFPhotosRankingInfo *)self assetEstimationOffAmount];
-  v8 = [(SFPhotosRankingInfo *)self indexedAssetsPercentage];
-  v9 = [v8 hash];
-  v10 = [(SFPhotosRankingInfo *)self analyzedAssetsPercentage];
-  v11 = v9 ^ [v10 hash];
-  v12 = [(SFPhotosRankingInfo *)self analyzedAndIndexedAssetsPercentage];
-  v13 = v11 ^ [v12 hash];
-  v14 = [(SFPhotosRankingInfo *)self embeddedAssetsPercentage];
-  v15 = v13 ^ [v14 hash] ^ v7;
-  v16 = [(SFPhotosRankingInfo *)self assetsRetrieved];
-  v17 = v16 ^ [(SFPhotosRankingInfo *)self collectionsRetrieved];
+  indexedAssetsPercentage = [(SFPhotosRankingInfo *)self indexedAssetsPercentage];
+  v9 = [indexedAssetsPercentage hash];
+  analyzedAssetsPercentage = [(SFPhotosRankingInfo *)self analyzedAssetsPercentage];
+  v11 = v9 ^ [analyzedAssetsPercentage hash];
+  analyzedAndIndexedAssetsPercentage = [(SFPhotosRankingInfo *)self analyzedAndIndexedAssetsPercentage];
+  v13 = v11 ^ [analyzedAndIndexedAssetsPercentage hash];
+  embeddedAssetsPercentage = [(SFPhotosRankingInfo *)self embeddedAssetsPercentage];
+  v15 = v13 ^ [embeddedAssetsPercentage hash] ^ v7;
+  assetsRetrieved = [(SFPhotosRankingInfo *)self assetsRetrieved];
+  v17 = assetsRetrieved ^ [(SFPhotosRankingInfo *)self collectionsRetrieved];
 
   return v15 ^ v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
 
   else
   {
-    if ([(SFPhotosRankingInfo *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(SFPhotosRankingInfo *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
-      v6 = [(SFPhotosRankingInfo *)self totalNumberOfAssetsIndexed];
-      if (v6 != [(SFPhotosRankingInfo *)v5 totalNumberOfAssetsIndexed]|| (v7 = [(SFPhotosRankingInfo *)self totalNumberOfAssetsInLibrary], v7 != [(SFPhotosRankingInfo *)v5 totalNumberOfAssetsInLibrary]) || (v8 = [(SFPhotosRankingInfo *)self totalNumberOfEmbeddingMatchedAssets], v8 != [(SFPhotosRankingInfo *)v5 totalNumberOfEmbeddingMatchedAssets]) || (v9 = [(SFPhotosRankingInfo *)self totalNumberOfMetadataMatchedAssets], v9 != [(SFPhotosRankingInfo *)v5 totalNumberOfMetadataMatchedAssets]) || (v10 = [(SFPhotosRankingInfo *)self assetEstimationOffAmount], v10 != [(SFPhotosRankingInfo *)v5 assetEstimationOffAmount]))
+      v5 = equalCopy;
+      totalNumberOfAssetsIndexed = [(SFPhotosRankingInfo *)self totalNumberOfAssetsIndexed];
+      if (totalNumberOfAssetsIndexed != [(SFPhotosRankingInfo *)v5 totalNumberOfAssetsIndexed]|| (v7 = [(SFPhotosRankingInfo *)self totalNumberOfAssetsInLibrary], v7 != [(SFPhotosRankingInfo *)v5 totalNumberOfAssetsInLibrary]) || (v8 = [(SFPhotosRankingInfo *)self totalNumberOfEmbeddingMatchedAssets], v8 != [(SFPhotosRankingInfo *)v5 totalNumberOfEmbeddingMatchedAssets]) || (v9 = [(SFPhotosRankingInfo *)self totalNumberOfMetadataMatchedAssets], v9 != [(SFPhotosRankingInfo *)v5 totalNumberOfMetadataMatchedAssets]) || (v10 = [(SFPhotosRankingInfo *)self assetEstimationOffAmount], v10 != [(SFPhotosRankingInfo *)v5 assetEstimationOffAmount]))
       {
         v15 = 0;
 LABEL_15:
@@ -127,9 +127,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [(SFPhotosRankingInfo *)self indexedAssetsPercentage];
-      v12 = [(SFPhotosRankingInfo *)v5 indexedAssetsPercentage];
-      if ((v11 != 0) == (v12 == 0))
+      indexedAssetsPercentage = [(SFPhotosRankingInfo *)self indexedAssetsPercentage];
+      indexedAssetsPercentage2 = [(SFPhotosRankingInfo *)v5 indexedAssetsPercentage];
+      if ((indexedAssetsPercentage != 0) == (indexedAssetsPercentage2 == 0))
       {
         v15 = 0;
 LABEL_45:
@@ -137,32 +137,32 @@ LABEL_45:
         goto LABEL_15;
       }
 
-      v13 = [(SFPhotosRankingInfo *)self indexedAssetsPercentage];
-      if (v13)
+      indexedAssetsPercentage3 = [(SFPhotosRankingInfo *)self indexedAssetsPercentage];
+      if (indexedAssetsPercentage3)
       {
-        v14 = [(SFPhotosRankingInfo *)self indexedAssetsPercentage];
-        v45 = [(SFPhotosRankingInfo *)v5 indexedAssetsPercentage];
-        if (![v14 isEqual:?])
+        indexedAssetsPercentage4 = [(SFPhotosRankingInfo *)self indexedAssetsPercentage];
+        indexedAssetsPercentage5 = [(SFPhotosRankingInfo *)v5 indexedAssetsPercentage];
+        if (![indexedAssetsPercentage4 isEqual:?])
         {
           v15 = 0;
           goto LABEL_43;
         }
 
-        v44 = v14;
+        v44 = indexedAssetsPercentage4;
       }
 
-      v46 = [(SFPhotosRankingInfo *)self analyzedAssetsPercentage];
-      v17 = [(SFPhotosRankingInfo *)v5 analyzedAssetsPercentage];
-      if ((v46 != 0) != (v17 == 0))
+      analyzedAssetsPercentage = [(SFPhotosRankingInfo *)self analyzedAssetsPercentage];
+      analyzedAssetsPercentage2 = [(SFPhotosRankingInfo *)v5 analyzedAssetsPercentage];
+      if ((analyzedAssetsPercentage != 0) != (analyzedAssetsPercentage2 == 0))
       {
-        v18 = [(SFPhotosRankingInfo *)self analyzedAssetsPercentage];
-        if (v18)
+        analyzedAssetsPercentage3 = [(SFPhotosRankingInfo *)self analyzedAssetsPercentage];
+        if (analyzedAssetsPercentage3)
         {
-          v19 = v18;
-          v20 = [(SFPhotosRankingInfo *)self analyzedAssetsPercentage];
+          v19 = analyzedAssetsPercentage3;
+          analyzedAssetsPercentage4 = [(SFPhotosRankingInfo *)self analyzedAssetsPercentage];
           [(SFPhotosRankingInfo *)v5 analyzedAssetsPercentage];
-          v43 = v41 = v20;
-          if (![v20 isEqual:?])
+          v43 = v41 = analyzedAssetsPercentage4;
+          if (![analyzedAssetsPercentage4 isEqual:?])
           {
             v15 = 0;
             v25 = v43;
@@ -177,19 +177,19 @@ LABEL_45:
           v42 = 0;
         }
 
-        v21 = [(SFPhotosRankingInfo *)self analyzedAndIndexedAssetsPercentage];
-        v22 = [(SFPhotosRankingInfo *)v5 analyzedAndIndexedAssetsPercentage];
-        if ((v21 != 0) != (v22 == 0))
+        analyzedAndIndexedAssetsPercentage = [(SFPhotosRankingInfo *)self analyzedAndIndexedAssetsPercentage];
+        analyzedAndIndexedAssetsPercentage2 = [(SFPhotosRankingInfo *)v5 analyzedAndIndexedAssetsPercentage];
+        if ((analyzedAndIndexedAssetsPercentage != 0) != (analyzedAndIndexedAssetsPercentage2 == 0))
         {
-          v39 = v21;
-          v40 = v22;
-          v23 = [(SFPhotosRankingInfo *)self analyzedAndIndexedAssetsPercentage];
-          if (v23)
+          v39 = analyzedAndIndexedAssetsPercentage;
+          v40 = analyzedAndIndexedAssetsPercentage2;
+          analyzedAndIndexedAssetsPercentage3 = [(SFPhotosRankingInfo *)self analyzedAndIndexedAssetsPercentage];
+          if (analyzedAndIndexedAssetsPercentage3)
           {
-            v24 = [(SFPhotosRankingInfo *)self analyzedAndIndexedAssetsPercentage];
-            v37 = [(SFPhotosRankingInfo *)v5 analyzedAndIndexedAssetsPercentage];
-            v38 = v24;
-            if (![v24 isEqual:?])
+            analyzedAndIndexedAssetsPercentage4 = [(SFPhotosRankingInfo *)self analyzedAndIndexedAssetsPercentage];
+            analyzedAndIndexedAssetsPercentage5 = [(SFPhotosRankingInfo *)v5 analyzedAndIndexedAssetsPercentage];
+            v38 = analyzedAndIndexedAssetsPercentage4;
+            if (![analyzedAndIndexedAssetsPercentage4 isEqual:?])
             {
               v15 = 0;
               v19 = v42;
@@ -198,15 +198,15 @@ LABEL_45:
             }
           }
 
-          v26 = [(SFPhotosRankingInfo *)self embeddedAssetsPercentage];
-          v27 = [(SFPhotosRankingInfo *)v5 embeddedAssetsPercentage];
-          if ((v26 != 0) == (v27 == 0))
+          embeddedAssetsPercentage = [(SFPhotosRankingInfo *)self embeddedAssetsPercentage];
+          embeddedAssetsPercentage2 = [(SFPhotosRankingInfo *)v5 embeddedAssetsPercentage];
+          if ((embeddedAssetsPercentage != 0) == (embeddedAssetsPercentage2 == 0))
           {
 
             v15 = 0;
             v19 = v42;
             v25 = v43;
-            if (!v23)
+            if (!analyzedAndIndexedAssetsPercentage3)
             {
               goto LABEL_39;
             }
@@ -214,31 +214,31 @@ LABEL_45:
             goto LABEL_38;
           }
 
-          v35 = v27;
-          v36 = v26;
+          v35 = embeddedAssetsPercentage2;
+          v36 = embeddedAssetsPercentage;
           [(SFPhotosRankingInfo *)self embeddedAssetsPercentage];
           v28 = v25 = v43;
           if (v28)
           {
-            v33 = v23;
-            v29 = [(SFPhotosRankingInfo *)self embeddedAssetsPercentage];
-            v31 = [(SFPhotosRankingInfo *)v5 embeddedAssetsPercentage];
-            v32 = v29;
-            if (![v29 isEqual:?])
+            v33 = analyzedAndIndexedAssetsPercentage3;
+            embeddedAssetsPercentage3 = [(SFPhotosRankingInfo *)self embeddedAssetsPercentage];
+            embeddedAssetsPercentage4 = [(SFPhotosRankingInfo *)v5 embeddedAssetsPercentage];
+            v32 = embeddedAssetsPercentage3;
+            if (![embeddedAssetsPercentage3 isEqual:?])
             {
               v15 = 0;
-              v23 = v33;
+              analyzedAndIndexedAssetsPercentage3 = v33;
               goto LABEL_52;
             }
 
-            v23 = v33;
+            analyzedAndIndexedAssetsPercentage3 = v33;
           }
 
-          v34 = [(SFPhotosRankingInfo *)self assetsRetrieved];
-          if (v34 == [(SFPhotosRankingInfo *)v5 assetsRetrieved])
+          assetsRetrieved = [(SFPhotosRankingInfo *)self assetsRetrieved];
+          if (assetsRetrieved == [(SFPhotosRankingInfo *)v5 assetsRetrieved])
           {
-            v30 = [(SFPhotosRankingInfo *)self collectionsRetrieved];
-            v15 = v30 == [(SFPhotosRankingInfo *)v5 collectionsRetrieved];
+            collectionsRetrieved = [(SFPhotosRankingInfo *)self collectionsRetrieved];
+            v15 = collectionsRetrieved == [(SFPhotosRankingInfo *)v5 collectionsRetrieved];
             if (!v28)
             {
               goto LABEL_53;
@@ -253,7 +253,7 @@ LABEL_45:
 LABEL_53:
 
               v19 = v42;
-              if (!v23)
+              if (!analyzedAndIndexedAssetsPercentage3)
               {
 LABEL_39:
 
@@ -262,8 +262,8 @@ LABEL_39:
 LABEL_41:
 
 LABEL_42:
-                  v14 = v44;
-                  if (!v13)
+                  indexedAssetsPercentage4 = v44;
+                  if (!indexedAssetsPercentage3)
                   {
 LABEL_44:
 
@@ -308,28 +308,28 @@ LABEL_16:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setTotalNumberOfAssetsIndexed:{-[SFPhotosRankingInfo totalNumberOfAssetsIndexed](self, "totalNumberOfAssetsIndexed")}];
   [v4 setTotalNumberOfAssetsInLibrary:{-[SFPhotosRankingInfo totalNumberOfAssetsInLibrary](self, "totalNumberOfAssetsInLibrary")}];
   [v4 setTotalNumberOfEmbeddingMatchedAssets:{-[SFPhotosRankingInfo totalNumberOfEmbeddingMatchedAssets](self, "totalNumberOfEmbeddingMatchedAssets")}];
   [v4 setTotalNumberOfMetadataMatchedAssets:{-[SFPhotosRankingInfo totalNumberOfMetadataMatchedAssets](self, "totalNumberOfMetadataMatchedAssets")}];
   [v4 setAssetEstimationOffAmount:{-[SFPhotosRankingInfo assetEstimationOffAmount](self, "assetEstimationOffAmount")}];
-  v5 = [(SFPhotosRankingInfo *)self indexedAssetsPercentage];
-  v6 = [v5 copy];
+  indexedAssetsPercentage = [(SFPhotosRankingInfo *)self indexedAssetsPercentage];
+  v6 = [indexedAssetsPercentage copy];
   [v4 setIndexedAssetsPercentage:v6];
 
-  v7 = [(SFPhotosRankingInfo *)self analyzedAssetsPercentage];
-  v8 = [v7 copy];
+  analyzedAssetsPercentage = [(SFPhotosRankingInfo *)self analyzedAssetsPercentage];
+  v8 = [analyzedAssetsPercentage copy];
   [v4 setAnalyzedAssetsPercentage:v8];
 
-  v9 = [(SFPhotosRankingInfo *)self analyzedAndIndexedAssetsPercentage];
-  v10 = [v9 copy];
+  analyzedAndIndexedAssetsPercentage = [(SFPhotosRankingInfo *)self analyzedAndIndexedAssetsPercentage];
+  v10 = [analyzedAndIndexedAssetsPercentage copy];
   [v4 setAnalyzedAndIndexedAssetsPercentage:v10];
 
-  v11 = [(SFPhotosRankingInfo *)self embeddedAssetsPercentage];
-  v12 = [v11 copy];
+  embeddedAssetsPercentage = [(SFPhotosRankingInfo *)self embeddedAssetsPercentage];
+  v12 = [embeddedAssetsPercentage copy];
   [v4 setEmbeddedAssetsPercentage:v12];
 
   [v4 setAssetsRetrieved:{-[SFPhotosRankingInfo assetsRetrieved](self, "assetsRetrieved")}];
@@ -340,31 +340,31 @@ LABEL_16:
 - (NSData)jsonData
 {
   v2 = [[_SFPBPhotosRankingInfo alloc] initWithFacade:self];
-  v3 = [(_SFPBPhotosRankingInfo *)v2 jsonData];
+  jsonData = [(_SFPBPhotosRankingInfo *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBPhotosRankingInfo alloc] initWithFacade:self];
-  v3 = [(_SFPBPhotosRankingInfo *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBPhotosRankingInfo *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBPhotosRankingInfo alloc] initWithFacade:self];
-  v5 = [(_SFPBPhotosRankingInfo *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBPhotosRankingInfo *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFPhotosRankingInfo)initWithCoder:(id)a3
+- (SFPhotosRankingInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBPhotosRankingInfo alloc] initWithData:v5];
   v7 = [(SFPhotosRankingInfo *)self initWithProtobuf:v6];

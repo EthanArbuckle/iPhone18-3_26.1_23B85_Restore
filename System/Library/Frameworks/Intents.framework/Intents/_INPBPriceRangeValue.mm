@@ -1,39 +1,39 @@
 @interface _INPBPriceRangeValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBPriceRangeValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPriceRangeValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCurrencyCode:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCurrencyCode:(id)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPriceRangeValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_currencyCode)
   {
-    v4 = [(_INPBPriceRangeValue *)self currencyCode];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"currencyCode"];
+    currencyCode = [(_INPBPriceRangeValue *)self currencyCode];
+    v5 = [currencyCode copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"currencyCode"];
   }
 
-  v6 = [(_INPBPriceRangeValue *)self maximumPrice];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"maximumPrice"];
+  maximumPrice = [(_INPBPriceRangeValue *)self maximumPrice];
+  dictionaryRepresentation = [maximumPrice dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"maximumPrice"];
 
-  v8 = [(_INPBPriceRangeValue *)self minimumPrice];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"minimumPrice"];
+  minimumPrice = [(_INPBPriceRangeValue *)self minimumPrice];
+  dictionaryRepresentation2 = [minimumPrice dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"minimumPrice"];
 
-  v10 = [(_INPBPriceRangeValue *)self valueMetadata];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"valueMetadata"];
+  valueMetadata = [(_INPBPriceRangeValue *)self valueMetadata];
+  dictionaryRepresentation3 = [valueMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"valueMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -44,28 +44,28 @@
   return v4 ^ v5 ^ [(_INPBValueMetadata *)self->_valueMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBPriceRangeValue *)self currencyCode];
-  v6 = [v4 currencyCode];
-  if ((v5 != 0) == (v6 == 0))
+  currencyCode = [(_INPBPriceRangeValue *)self currencyCode];
+  currencyCode2 = [equalCopy currencyCode];
+  if ((currencyCode != 0) == (currencyCode2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBPriceRangeValue *)self currencyCode];
-  if (v7)
+  currencyCode3 = [(_INPBPriceRangeValue *)self currencyCode];
+  if (currencyCode3)
   {
-    v8 = v7;
-    v9 = [(_INPBPriceRangeValue *)self currencyCode];
-    v10 = [v4 currencyCode];
-    v11 = [v9 isEqual:v10];
+    v8 = currencyCode3;
+    currencyCode4 = [(_INPBPriceRangeValue *)self currencyCode];
+    currencyCode5 = [equalCopy currencyCode];
+    v11 = [currencyCode4 isEqual:currencyCode5];
 
     if (!v11)
     {
@@ -77,20 +77,20 @@
   {
   }
 
-  v5 = [(_INPBPriceRangeValue *)self maximumPrice];
-  v6 = [v4 maximumPrice];
-  if ((v5 != 0) == (v6 == 0))
+  currencyCode = [(_INPBPriceRangeValue *)self maximumPrice];
+  currencyCode2 = [equalCopy maximumPrice];
+  if ((currencyCode != 0) == (currencyCode2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBPriceRangeValue *)self maximumPrice];
-  if (v12)
+  maximumPrice = [(_INPBPriceRangeValue *)self maximumPrice];
+  if (maximumPrice)
   {
-    v13 = v12;
-    v14 = [(_INPBPriceRangeValue *)self maximumPrice];
-    v15 = [v4 maximumPrice];
-    v16 = [v14 isEqual:v15];
+    v13 = maximumPrice;
+    maximumPrice2 = [(_INPBPriceRangeValue *)self maximumPrice];
+    maximumPrice3 = [equalCopy maximumPrice];
+    v16 = [maximumPrice2 isEqual:maximumPrice3];
 
     if (!v16)
     {
@@ -102,20 +102,20 @@
   {
   }
 
-  v5 = [(_INPBPriceRangeValue *)self minimumPrice];
-  v6 = [v4 minimumPrice];
-  if ((v5 != 0) == (v6 == 0))
+  currencyCode = [(_INPBPriceRangeValue *)self minimumPrice];
+  currencyCode2 = [equalCopy minimumPrice];
+  if ((currencyCode != 0) == (currencyCode2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBPriceRangeValue *)self minimumPrice];
-  if (v17)
+  minimumPrice = [(_INPBPriceRangeValue *)self minimumPrice];
+  if (minimumPrice)
   {
-    v18 = v17;
-    v19 = [(_INPBPriceRangeValue *)self minimumPrice];
-    v20 = [v4 minimumPrice];
-    v21 = [v19 isEqual:v20];
+    v18 = minimumPrice;
+    minimumPrice2 = [(_INPBPriceRangeValue *)self minimumPrice];
+    minimumPrice3 = [equalCopy minimumPrice];
+    v21 = [minimumPrice2 isEqual:minimumPrice3];
 
     if (!v21)
     {
@@ -127,12 +127,12 @@
   {
   }
 
-  v5 = [(_INPBPriceRangeValue *)self valueMetadata];
-  v6 = [v4 valueMetadata];
-  if ((v5 != 0) != (v6 == 0))
+  currencyCode = [(_INPBPriceRangeValue *)self valueMetadata];
+  currencyCode2 = [equalCopy valueMetadata];
+  if ((currencyCode != 0) != (currencyCode2 == 0))
   {
-    v22 = [(_INPBPriceRangeValue *)self valueMetadata];
-    if (!v22)
+    valueMetadata = [(_INPBPriceRangeValue *)self valueMetadata];
+    if (!valueMetadata)
     {
 
 LABEL_25:
@@ -140,10 +140,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_INPBPriceRangeValue *)self valueMetadata];
-    v25 = [v4 valueMetadata];
-    v26 = [v24 isEqual:v25];
+    v23 = valueMetadata;
+    valueMetadata2 = [(_INPBPriceRangeValue *)self valueMetadata];
+    valueMetadata3 = [equalCopy valueMetadata];
+    v26 = [valueMetadata2 isEqual:valueMetadata3];
 
     if (v26)
     {
@@ -163,90 +163,90 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPriceRangeValue allocWithZone:](_INPBPriceRangeValue init];
-  v6 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v6 = [(NSString *)self->_currencyCode copyWithZone:zone];
   [(_INPBPriceRangeValue *)v5 setCurrencyCode:v6];
 
-  v7 = [(_INPBDecimalNumberValue *)self->_maximumPrice copyWithZone:a3];
+  v7 = [(_INPBDecimalNumberValue *)self->_maximumPrice copyWithZone:zone];
   [(_INPBPriceRangeValue *)v5 setMaximumPrice:v7];
 
-  v8 = [(_INPBDecimalNumberValue *)self->_minimumPrice copyWithZone:a3];
+  v8 = [(_INPBDecimalNumberValue *)self->_minimumPrice copyWithZone:zone];
   [(_INPBPriceRangeValue *)v5 setMinimumPrice:v8];
 
-  v9 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:a3];
+  v9 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:zone];
   [(_INPBPriceRangeValue *)v5 setValueMetadata:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPriceRangeValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBPriceRangeValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPriceRangeValue)initWithCoder:(id)a3
+- (_INPBPriceRangeValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPriceRangeValue *)self initWithData:v6];
+    self = [(_INPBPriceRangeValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(_INPBPriceRangeValue *)self currencyCode];
+  toCopy = to;
+  currencyCode = [(_INPBPriceRangeValue *)self currencyCode];
 
-  if (v4)
+  if (currencyCode)
   {
     currencyCode = self->_currencyCode;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBPriceRangeValue *)self maximumPrice];
+  maximumPrice = [(_INPBPriceRangeValue *)self maximumPrice];
 
-  if (v6)
+  if (maximumPrice)
   {
-    v7 = [(_INPBPriceRangeValue *)self maximumPrice];
+    maximumPrice2 = [(_INPBPriceRangeValue *)self maximumPrice];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBPriceRangeValue *)self minimumPrice];
+  minimumPrice = [(_INPBPriceRangeValue *)self minimumPrice];
 
-  if (v8)
+  if (minimumPrice)
   {
-    v9 = [(_INPBPriceRangeValue *)self minimumPrice];
+    minimumPrice2 = [(_INPBPriceRangeValue *)self minimumPrice];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBPriceRangeValue *)self valueMetadata];
+  valueMetadata = [(_INPBPriceRangeValue *)self valueMetadata];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (valueMetadata)
   {
-    v12 = [(_INPBPriceRangeValue *)self valueMetadata];
+    valueMetadata2 = [(_INPBPriceRangeValue *)self valueMetadata];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (void)setCurrencyCode:(id)a3
+- (void)setCurrencyCode:(id)code
 {
-  v4 = [a3 copy];
+  v4 = [code copy];
   currencyCode = self->_currencyCode;
   self->_currencyCode = v4;
 

@@ -1,9 +1,9 @@
 @interface SCLPersistentSettings
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SCLPersistentSettings)init;
-- (SCLPersistentSettings)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SCLPersistentSettings)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCLPersistentSettings
@@ -23,16 +23,16 @@
   return v2;
 }
 
-- (SCLPersistentSettings)initWithCoder:(id)a3
+- (SCLPersistentSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SCLPersistentSettings;
   v5 = [(SCLPersistentSettings *)&v9 init];
   if (v5)
   {
-    v5->_manualSchoolModeEnabled = [v4 decodeBoolForKey:@"manualSchoolModeEnabled"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scheduleSettings"];
+    v5->_manualSchoolModeEnabled = [coderCopy decodeBoolForKey:@"manualSchoolModeEnabled"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scheduleSettings"];
     scheduleSettings = v5->_scheduleSettings;
     v5->_scheduleSettings = v6;
   }
@@ -40,29 +40,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   scheduleSettings = self->_scheduleSettings;
-  v5 = a3;
-  [v5 encodeObject:scheduleSettings forKey:@"scheduleSettings"];
-  [v5 encodeBool:self->_manualSchoolModeEnabled forKey:@"manualSchoolModeEnabled"];
+  coderCopy = coder;
+  [coderCopy encodeObject:scheduleSettings forKey:@"scheduleSettings"];
+  [coderCopy encodeBool:self->_manualSchoolModeEnabled forKey:@"manualSchoolModeEnabled"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SCLPersistentSettings);
   [(SCLPersistentSettings *)v4 setManualSchoolModeEnabled:[(SCLPersistentSettings *)self isManualSchoolModeEnabled]];
-  v5 = [(SCLPersistentSettings *)self scheduleSettings];
-  v6 = [v5 copy];
+  scheduleSettings = [(SCLPersistentSettings *)self scheduleSettings];
+  v6 = [scheduleSettings copy];
   [(SCLPersistentSettings *)v4 setScheduleSettings:v6];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -72,22 +72,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SCLPersistentSettings *)v5 isManualSchoolModeEnabled];
-      if (v6 == [(SCLPersistentSettings *)self isManualSchoolModeEnabled])
+      v5 = equalCopy;
+      isManualSchoolModeEnabled = [(SCLPersistentSettings *)v5 isManualSchoolModeEnabled];
+      if (isManualSchoolModeEnabled == [(SCLPersistentSettings *)self isManualSchoolModeEnabled])
       {
-        v8 = [(SCLPersistentSettings *)v5 scheduleSettings];
-        v9 = [(SCLPersistentSettings *)self scheduleSettings];
-        if (v8 == v9)
+        scheduleSettings = [(SCLPersistentSettings *)v5 scheduleSettings];
+        scheduleSettings2 = [(SCLPersistentSettings *)self scheduleSettings];
+        if (scheduleSettings == scheduleSettings2)
         {
           v7 = 1;
         }
 
         else
         {
-          v10 = [(SCLPersistentSettings *)v5 scheduleSettings];
-          v11 = [(SCLPersistentSettings *)self scheduleSettings];
-          v7 = [v10 isEqual:v11];
+          scheduleSettings3 = [(SCLPersistentSettings *)v5 scheduleSettings];
+          scheduleSettings4 = [(SCLPersistentSettings *)self scheduleSettings];
+          v7 = [scheduleSettings3 isEqual:scheduleSettings4];
         }
       }
 

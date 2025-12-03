@@ -1,38 +1,38 @@
 @interface VCPFaceProcessingResource
-+ (id)resourceWithResource:(id)a3 resourceURL:(id)a4 isBestResource:(BOOL)a5 requestDownload:(BOOL)a6 downloadStatus:(int)a7;
-- (VCPFaceProcessingResource)initWithResource:(id)a3 resourceURL:(id)a4 isBestResource:(BOOL)a5 requestDownload:(BOOL)a6 downloadStatus:(int)a7;
++ (id)resourceWithResource:(id)resource resourceURL:(id)l isBestResource:(BOOL)bestResource requestDownload:(BOOL)download downloadStatus:(int)status;
+- (VCPFaceProcessingResource)initWithResource:(id)resource resourceURL:(id)l isBestResource:(BOOL)bestResource requestDownload:(BOOL)download downloadStatus:(int)status;
 @end
 
 @implementation VCPFaceProcessingResource
 
-- (VCPFaceProcessingResource)initWithResource:(id)a3 resourceURL:(id)a4 isBestResource:(BOOL)a5 requestDownload:(BOOL)a6 downloadStatus:(int)a7
+- (VCPFaceProcessingResource)initWithResource:(id)resource resourceURL:(id)l isBestResource:(BOOL)bestResource requestDownload:(BOOL)download downloadStatus:(int)status
 {
-  v13 = a3;
-  v14 = a4;
+  resourceCopy = resource;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = VCPFaceProcessingResource;
   v15 = [(VCPFaceProcessingResource *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_resource, a3);
-    objc_storeStrong(&v16->_resourceURL, a4);
-    v16->_isBestResource = a5;
-    v16->_requestDownload = a6;
-    v16->_downloadStatus = a7;
+    objc_storeStrong(&v15->_resource, resource);
+    objc_storeStrong(&v16->_resourceURL, l);
+    v16->_isBestResource = bestResource;
+    v16->_requestDownload = download;
+    v16->_downloadStatus = status;
   }
 
   return v16;
 }
 
-+ (id)resourceWithResource:(id)a3 resourceURL:(id)a4 isBestResource:(BOOL)a5 requestDownload:(BOOL)a6 downloadStatus:(int)a7
++ (id)resourceWithResource:(id)resource resourceURL:(id)l isBestResource:(BOOL)bestResource requestDownload:(BOOL)download downloadStatus:(int)status
 {
-  v7 = *&a7;
-  v8 = a6;
-  v9 = a5;
-  v11 = a3;
-  v12 = a4;
-  v13 = [[VCPFaceProcessingResource alloc] initWithResource:v11 resourceURL:v12 isBestResource:v9 requestDownload:v8 downloadStatus:v7];
+  v7 = *&status;
+  downloadCopy = download;
+  bestResourceCopy = bestResource;
+  resourceCopy = resource;
+  lCopy = l;
+  v13 = [[VCPFaceProcessingResource alloc] initWithResource:resourceCopy resourceURL:lCopy isBestResource:bestResourceCopy requestDownload:downloadCopy downloadStatus:v7];
 
   return v13;
 }

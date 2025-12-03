@@ -1,18 +1,18 @@
 @interface VKCActionInfoButton
-+ (id)buttonWithImage:(id)a3 text:(id)a4;
-- (BOOL)hasAction:(SEL)a3;
++ (id)buttonWithImage:(id)image text:(id)text;
+- (BOOL)hasAction:(SEL)action;
 - (VKCActionInfoButtonDelegate)delegate;
 - (id)buttonConfigurationTextAttributesTransformer;
 - (id)dataDetectorContext;
 - (id)defaultSymbolConfigurationForImage;
 - (id)description;
 - (id)filledButtonConfiguration;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (id)translucentButtonConfiguration;
 - (id)translucentSelectedButtonConfiguration;
 - (int64_t)overrideUserInterfaceStyle;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)performDefaultElementAction;
 @end
 
@@ -22,23 +22,23 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(VKCActionInfoButton *)self representedElement];
-  v6 = [v3 stringWithFormat:@"<%@: %p> element: %@", v4, self, v5];
+  representedElement = [(VKCActionInfoButton *)self representedElement];
+  v6 = [v3 stringWithFormat:@"<%@: %p> element: %@", v4, self, representedElement];
 
   return v6;
 }
 
-+ (id)buttonWithImage:(id)a3 text:(id)a4
++ (id)buttonWithImage:(id)image text:(id)text
 {
-  v5 = a4;
-  v6 = a3;
+  textCopy = text;
+  imageCopy = image;
   v7 = [objc_opt_class() buttonWithType:1];
-  [v7 setImage:v6];
+  [v7 setImage:imageCopy];
 
-  [v7 setText:v5];
+  [v7 setText:textCopy];
   [v7 setPreferredBehavioralStyle:1];
-  v8 = [v7 translucentButtonConfiguration];
-  [v7 setConfiguration:v8];
+  translucentButtonConfiguration = [v7 translucentButtonConfiguration];
+  [v7 setConfiguration:translucentButtonConfiguration];
 
   [v7 setMaximumContentSizeCategory:*MEMORY[0x1E69DDC40]];
   [v7 setShowsLargeContentViewer:1];
@@ -51,7 +51,7 @@
   return v7;
 }
 
-- (BOOL)hasAction:(SEL)a3
+- (BOOL)hasAction:(SEL)action
 {
   v28 = *MEMORY[0x1E69E9840];
   v22 = 0u;
@@ -94,7 +94,7 @@
                 objc_enumerationMutation(v11);
               }
 
-              if (NSSelectorFromString(*(*(&v18 + 1) + 8 * j)) == a3)
+              if (NSSelectorFromString(*(*(&v18 + 1) + 8 * j)) == action)
               {
                 v7 = 1;
                 goto LABEL_16;
@@ -131,7 +131,7 @@ LABEL_16:
 - (void)performDefaultElementAction
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(VKCActionInfoButton *)self representedElement];
+  representedElement = [(VKCActionInfoButton *)self representedElement];
   v4 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -140,14 +140,14 @@ LABEL_16:
     _os_log_impl(&dword_1B4335000, v4, OS_LOG_TYPE_DEFAULT, "Performing default element action: %@", &buf, 0xCu);
   }
 
-  if ([v3 isTextDataDetector])
+  if ([representedElement isTextDataDetector])
   {
     DDContextMenuActionClass_1 = getDDContextMenuActionClass_1();
-    v6 = [v3 scannerResult];
-    v7 = [v6 coreResult];
-    v8 = [(VKCActionInfoButton *)self dataDetectorContext];
+    scannerResult = [representedElement scannerResult];
+    coreResult = [scannerResult coreResult];
+    dataDetectorContext = [(VKCActionInfoButton *)self dataDetectorContext];
     v16 = 0;
-    v9 = [DDContextMenuActionClass_1 buttonActionsForURL:0 result:v7 contact:0 icsString:0 context:v8 view:self identifier:0 suggestedActions:0 defaultAction:&v16];
+    v9 = [DDContextMenuActionClass_1 buttonActionsForURL:0 result:coreResult contact:0 icsString:0 context:dataDetectorContext view:self identifier:0 suggestedActions:0 defaultAction:&v16];
     v10 = v16;
 
     if (v10)
@@ -176,25 +176,25 @@ LABEL_16:
       }
     }
 
-    v13 = [(VKCActionInfoButton *)self delegate];
+    delegate = [(VKCActionInfoButton *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(VKCActionInfoButton *)self delegate];
-      [v15 actionInfoButtonDidActivatePrimaryAction:self];
+      delegate2 = [(VKCActionInfoButton *)self delegate];
+      [delegate2 actionInfoButtonDidActivatePrimaryAction:self];
     }
   }
 }
 
 - (id)dataDetectorContext
 {
-  v3 = [(VKCActionInfoButton *)self representedElement];
-  v4 = [v3 scannerResult];
+  representedElement = [(VKCActionInfoButton *)self representedElement];
+  scannerResult = [representedElement scannerResult];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(VKCActionInfoButton *)self allUnfilteredElements];
-  v7 = [v6 vk_compactMap:&__block_literal_global_40];
+  allUnfilteredElements = [(VKCActionInfoButton *)self allUnfilteredElements];
+  v7 = [allUnfilteredElements vk_compactMap:&__block_literal_global_40];
 
   v23 = 0;
   v24 = &v23;
@@ -217,21 +217,21 @@ LABEL_16:
   }
 
   [v5 vk_setNonNilObject:v7 forKey:*v8];
-  v10 = [(VKCActionInfoButton *)self representedElement];
-  v11 = [v10 groupedElementData];
-  [v5 vk_addEntriesFromNonNilDictionary:v11];
+  representedElement2 = [(VKCActionInfoButton *)self representedElement];
+  groupedElementData = [representedElement2 groupedElementData];
+  [v5 vk_addEntriesFromNonNilDictionary:groupedElementData];
 
-  v12 = [(VKCActionInfoButton *)self representedElement];
-  v13 = [v12 scannerResult];
-  v14 = [v13 value];
-  v15 = [v14 length];
+  representedElement3 = [(VKCActionInfoButton *)self representedElement];
+  scannerResult2 = [representedElement3 scannerResult];
+  value = [scannerResult2 value];
+  v15 = [value length];
 
   if (!v15)
   {
     goto LABEL_9;
   }
 
-  v16 = [v4 value];
+  value2 = [scannerResult value];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -254,7 +254,7 @@ LABEL_13:
     _Unwind_Resume(v22);
   }
 
-  [v5 setObject:v16 forKeyedSubscript:*v17];
+  [v5 setObject:value2 forKeyedSubscript:*v17];
 
 LABEL_9:
   DDContextMenuActionClass_1 = getDDContextMenuActionClass_1();
@@ -334,24 +334,24 @@ id __67__VKCActionInfoButton_buttonConfigurationTextAttributesTransformer__block
 
 - (id)filledButtonConfiguration
 {
-  v3 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-  v4 = [(VKCActionInfoButton *)self image];
-  [v3 setImage:v4];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  image = [(VKCActionInfoButton *)self image];
+  [filledButtonConfiguration setImage:image];
 
-  v5 = [(VKCActionInfoButton *)self text];
-  [v3 setTitle:v5];
+  text = [(VKCActionInfoButton *)self text];
+  [filledButtonConfiguration setTitle:text];
 
   [(VKCActionInfoButton *)self setTintAdjustmentMode:1];
-  v6 = [(VKCActionInfoButton *)self buttonConfigurationTextAttributesTransformer];
-  [v3 setTitleTextAttributesTransformer:v6];
+  buttonConfigurationTextAttributesTransformer = [(VKCActionInfoButton *)self buttonConfigurationTextAttributesTransformer];
+  [filledButtonConfiguration setTitleTextAttributesTransformer:buttonConfigurationTextAttributesTransformer];
 
-  [v3 setTitleLineBreakMode:4];
-  [v3 setImagePadding:5.0];
-  [v3 setCornerStyle:4];
-  v7 = [(VKCActionInfoButton *)self defaultSymbolConfigurationForImage];
-  [v3 setPreferredSymbolConfigurationForImage:v7];
+  [filledButtonConfiguration setTitleLineBreakMode:4];
+  [filledButtonConfiguration setImagePadding:5.0];
+  [filledButtonConfiguration setCornerStyle:4];
+  defaultSymbolConfigurationForImage = [(VKCActionInfoButton *)self defaultSymbolConfigurationForImage];
+  [filledButtonConfiguration setPreferredSymbolConfigurationForImage:defaultSymbolConfigurationForImage];
 
-  return v3;
+  return filledButtonConfiguration;
 }
 
 - (id)translucentButtonConfiguration
@@ -367,30 +367,30 @@ id __67__VKCActionInfoButton_buttonConfigurationTextAttributesTransformer__block
     [MEMORY[0x1E69DC740] plainButtonConfiguration];
   }
   v4 = ;
-  v5 = [(VKCActionInfoButton *)self image];
-  [v4 setImage:v5];
+  image = [(VKCActionInfoButton *)self image];
+  [v4 setImage:image];
 
-  v6 = [(VKCActionInfoButton *)self text];
-  [v4 setTitle:v6];
+  text = [(VKCActionInfoButton *)self text];
+  [v4 setTitle:text];
 
   [(VKCActionInfoButton *)self setTintAdjustmentMode:1];
-  v7 = [(VKCActionInfoButton *)self buttonConfigurationTextAttributesTransformer];
-  [v4 setTitleTextAttributesTransformer:v7];
+  buttonConfigurationTextAttributesTransformer = [(VKCActionInfoButton *)self buttonConfigurationTextAttributesTransformer];
+  [v4 setTitleTextAttributesTransformer:buttonConfigurationTextAttributesTransformer];
 
   [v4 setTitleLineBreakMode:4];
   [v4 setImagePadding:5.0];
   [v4 setCornerStyle:4];
   if ((v3 & 1) == 0)
   {
-    v8 = [MEMORY[0x1E69DC6E8] clearConfiguration];
+    clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
     v9 = [MEMORY[0x1E69DC730] effectWithStyle:17];
-    [v8 setVisualEffect:v9];
+    [clearConfiguration setVisualEffect:v9];
 
-    [v4 setBackground:v8];
+    [v4 setBackground:clearConfiguration];
   }
 
-  v10 = [(VKCActionInfoButton *)self defaultSymbolConfigurationForImage];
-  [v4 setPreferredSymbolConfigurationForImage:v10];
+  defaultSymbolConfigurationForImage = [(VKCActionInfoButton *)self defaultSymbolConfigurationForImage];
+  [v4 setPreferredSymbolConfigurationForImage:defaultSymbolConfigurationForImage];
 
   if (([(VKCActionInfoButton *)self isHighlighted]& 1) != 0)
   {
@@ -461,37 +461,37 @@ id __67__VKCActionInfoButton_buttonConfigurationTextAttributesTransformer__block
     [MEMORY[0x1E69DC740] filledButtonConfiguration];
   }
   v4 = ;
-  v5 = [(VKCActionInfoButton *)self image];
-  [v4 setImage:v5];
+  image = [(VKCActionInfoButton *)self image];
+  [v4 setImage:image];
 
-  v6 = [(VKCActionInfoButton *)self text];
-  [v4 setTitle:v6];
+  text = [(VKCActionInfoButton *)self text];
+  [v4 setTitle:text];
 
   [(VKCActionInfoButton *)self setTintAdjustmentMode:1];
-  v7 = [(VKCActionInfoButton *)self buttonConfigurationTextAttributesTransformer];
-  [v4 setTitleTextAttributesTransformer:v7];
+  buttonConfigurationTextAttributesTransformer = [(VKCActionInfoButton *)self buttonConfigurationTextAttributesTransformer];
+  [v4 setTitleTextAttributesTransformer:buttonConfigurationTextAttributesTransformer];
 
   [v4 setTitleLineBreakMode:4];
   [v4 setImagePadding:5.0];
   [v4 setCornerStyle:4];
   if (v3)
   {
-    v8 = [(VKCActionInfoButton *)self tintColor];
-    v9 = [v8 colorWithAlphaComponent:0.85];
+    tintColor = [(VKCActionInfoButton *)self tintColor];
+    v9 = [tintColor colorWithAlphaComponent:0.85];
     [(VKCActionInfoButton *)self setTintColor:v9];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69DC6E8] clearConfiguration];
+    tintColor = [MEMORY[0x1E69DC6E8] clearConfiguration];
     v10 = [MEMORY[0x1E69DC730] effectWithStyle:12];
-    [v8 setVisualEffect:v10];
+    [tintColor setVisualEffect:v10];
 
-    v11 = [(VKCActionInfoButton *)self tintColor];
-    v12 = [v11 colorWithAlphaComponent:0.85];
-    [v8 setBackgroundColor:v12];
+    tintColor2 = [(VKCActionInfoButton *)self tintColor];
+    v12 = [tintColor2 colorWithAlphaComponent:0.85];
+    [tintColor setBackgroundColor:v12];
 
-    [v4 setBackground:v8];
+    [v4 setBackground:tintColor];
   }
 
   if (([(VKCActionInfoButton *)self isHighlighted]& 1) != 0)
@@ -516,13 +516,13 @@ id __67__VKCActionInfoButton_buttonConfigurationTextAttributesTransformer__block
     [v4 setBaseForegroundColor:v15];
   }
 
-  v16 = [(VKCActionInfoButton *)self defaultSymbolConfigurationForImage];
-  [v4 setPreferredSymbolConfigurationForImage:v16];
+  defaultSymbolConfigurationForImage = [(VKCActionInfoButton *)self defaultSymbolConfigurationForImage];
+  [v4 setPreferredSymbolConfigurationForImage:defaultSymbolConfigurationForImage];
 
   return v4;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DCE28]);
   v6 = MEMORY[0x1E69DC728];
@@ -531,8 +531,8 @@ id __67__VKCActionInfoButton_buttonConfigurationTextAttributesTransformer__block
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(VKCActionInfoButton *)self layer];
-  [v15 cornerRadius];
+  layer = [(VKCActionInfoButton *)self layer];
+  [layer cornerRadius];
   v17 = [v6 bezierPathWithRoundedRect:v8 cornerRadius:{v10, v12, v14, v16}];
   [v5 setVisiblePath:v17];
 
@@ -543,59 +543,59 @@ id __67__VKCActionInfoButton_buttonConfigurationTextAttributesTransformer__block
   return v20;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  interactionCopy = interaction;
   v11 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v11, OS_LOG_TYPE_DEFAULT, "Displaying menu for quick action: %@", buf, 0xCu);
   }
 
   v15.receiver = self;
   v15.super_class = VKCActionInfoButton;
-  [(VKCActionInfoButton *)&v15 contextMenuInteraction:v10 willDisplayMenuForConfiguration:v9 animator:v8];
+  [(VKCActionInfoButton *)&v15 contextMenuInteraction:interactionCopy willDisplayMenuForConfiguration:configurationCopy animator:animatorCopy];
 
-  v12 = [(VKCActionInfoButton *)self delegate];
+  delegate = [(VKCActionInfoButton *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(VKCActionInfoButton *)self delegate];
-    [v14 willDisplayMenuForActionInfoButton:self];
+    delegate2 = [(VKCActionInfoButton *)self delegate];
+    [delegate2 willDisplayMenuForActionInfoButton:self];
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  interactionCopy = interaction;
   v11 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v11, OS_LOG_TYPE_DEFAULT, "Hiding menu for quick action: %@", buf, 0xCu);
   }
 
   v15.receiver = self;
   v15.super_class = VKCActionInfoButton;
-  [(VKCActionInfoButton *)&v15 contextMenuInteraction:v10 willEndForConfiguration:v9 animator:v8];
+  [(VKCActionInfoButton *)&v15 contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animatorCopy];
 
-  v12 = [(VKCActionInfoButton *)self delegate];
+  delegate = [(VKCActionInfoButton *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(VKCActionInfoButton *)self delegate];
-    [v14 willHideMenuForActionInfoButton:self];
+    delegate2 = [(VKCActionInfoButton *)self delegate];
+    [delegate2 willHideMenuForActionInfoButton:self];
   }
 }
 

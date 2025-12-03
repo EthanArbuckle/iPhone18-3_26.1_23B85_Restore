@@ -1,27 +1,27 @@
 @interface WFGetWebPageAction
-- (void)getContentDestinationWithCompletionHandler:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)getContentDestinationWithCompletionHandler:(id)handler;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFGetWebPageAction
 
-- (void)getContentDestinationWithCompletionHandler:(id)a3
+- (void)getContentDestinationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFGetWebPageAction *)self input];
+  handlerCopy = handler;
+  input = [(WFGetWebPageAction *)self input];
   WFGetContentLocationFromURLActionInput();
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = objc_opt_class();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__WFGetWebPageAction_runAsynchronouslyWithInput___block_invoke;
   v6[3] = &unk_278C211D0;
   v6[4] = self;
-  [v4 generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
+  [inputCopy generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
 }
 
 void __49__WFGetWebPageAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)

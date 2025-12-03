@@ -1,5 +1,5 @@
 @interface NMSMediaSyncInfoUpdaterHeartbeat
-- (NMSMediaSyncInfoUpdaterHeartbeat)initWithBundleIdentifier:(id)a3;
+- (NMSMediaSyncInfoUpdaterHeartbeat)initWithBundleIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
@@ -7,16 +7,16 @@
 
 @implementation NMSMediaSyncInfoUpdaterHeartbeat
 
-- (NMSMediaSyncInfoUpdaterHeartbeat)initWithBundleIdentifier:(id)a3
+- (NMSMediaSyncInfoUpdaterHeartbeat)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = NMSMediaSyncInfoUpdaterHeartbeat;
   v6 = [(NMSMediaSyncInfoUpdaterHeartbeat *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
   }
 
   return v7;

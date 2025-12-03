@@ -1,8 +1,8 @@
 @interface LNAppConnectionListener
 + (id)sharedListener;
 - (NSXPCListenerEndpoint)listenerEndpoint;
-- (void)handleAction:(id)a3 completionHandler:(id)a4;
-- (void)performOneShotAction:(id)a3 executorOptions:(id)a4 completionHandler:(id)a5;
+- (void)handleAction:(id)action completionHandler:(id)handler;
+- (void)performOneShotAction:(id)action executorOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation LNAppConnectionListener
@@ -28,69 +28,69 @@ void __41__LNAppConnectionListener_sharedListener__block_invoke()
   return v3;
 }
 
-- (void)performOneShotAction:(id)a3 executorOptions:(id)a4 completionHandler:(id)a5
+- (void)performOneShotAction:(id)action executorOptions:(id)options completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  actionCopy = action;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (actionCopy)
   {
-    if (v10)
+    if (optionsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"LNAppConnectionListener.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"executorOptions"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAppConnectionListener.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"executorOptions"}];
 
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"LNAppConnectionListener.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAppConnectionListener.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_4;
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"LNAppConnectionListener.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNAppConnectionListener.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
-  if (!v10)
+  if (!optionsCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v11)
+  if (!handlerCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
   v12 = [LNOneShotActionExecutor alloc];
-  v13 = [(LNConnectionListener *)self appContext];
-  v14 = [(LNOneShotActionExecutor *)v12 initWithAction:v9 executorOptions:v10 appContext:v13];
+  appContext = [(LNConnectionListener *)self appContext];
+  v14 = [(LNOneShotActionExecutor *)v12 initWithAction:actionCopy executorOptions:optionsCopy appContext:appContext];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __82__LNAppConnectionListener_performOneShotAction_executorOptions_completionHandler___block_invoke;
   v20[3] = &unk_1E72B7488;
   v21 = v14;
-  v22 = v11;
-  v15 = v11;
+  v22 = handlerCopy;
+  v15 = handlerCopy;
   v16 = v14;
   [(LNOneShotActionExecutor *)v16 performWithCompletionHandler:v20];
 }
 
-- (void)handleAction:(id)a3 completionHandler:(id)a4
+- (void)handleAction:(id)action completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  handlerCopy = handler;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2050000000;
@@ -119,27 +119,27 @@ LABEL_4:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = actionCopy;
     _os_log_impl(&dword_18F0E9000, v10, OS_LOG_TYPE_INFO, "Received UILinkConnectionAction: %{public}@)", &buf, 0xCu);
   }
 
-  v11 = [v6 action];
+  action = [actionCopy action];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__LNAppConnectionListener_handleAction_completionHandler___block_invoke;
   aBlock[3] = &unk_1E72B74D8;
   aBlock[4] = self;
-  v12 = v11;
+  v12 = action;
   v20 = v12;
-  v13 = v7;
+  v13 = handlerCopy;
   v21 = v13;
   v14 = _Block_copy(aBlock);
   v15 = v12;
   if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v16 = [v15 action];
-    v17 = [v15 executorOptions];
-    [(LNAppConnectionListener *)self performOneShotAction:v16 executorOptions:v17 completionHandler:v14];
+    action2 = [v15 action];
+    executorOptions = [v15 executorOptions];
+    [(LNAppConnectionListener *)self performOneShotAction:action2 executorOptions:executorOptions completionHandler:v14];
   }
 
   else
@@ -205,10 +205,10 @@ void __58__LNAppConnectionListener_handleAction_completionHandler___block_invoke
 
 - (NSXPCListenerEndpoint)listenerEndpoint
 {
-  v2 = [(LNConnectionListener *)self xpcListener];
-  v3 = [v2 endpoint];
+  xpcListener = [(LNConnectionListener *)self xpcListener];
+  endpoint = [xpcListener endpoint];
 
-  return v3;
+  return endpoint;
 }
 
 @end

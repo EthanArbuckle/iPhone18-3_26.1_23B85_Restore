@@ -1,17 +1,17 @@
 @interface MetricsEventCell
-- (_TtC8VideosUI16MetricsEventCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8VideosUI16MetricsEventCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation MetricsEventCell
 
-- (_TtC8VideosUI16MetricsEventCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8VideosUI16MetricsEventCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_1E4205F14();
   }
 
-  return sub_1E3A20B94(a3);
+  return sub_1E3A20B94(style);
 }
 
 @end

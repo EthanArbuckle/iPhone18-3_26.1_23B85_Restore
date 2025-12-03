@@ -3,26 +3,26 @@
 - (NSArray)actions;
 - (NSArray)pingURLs;
 - (NSURL)versionMismatchURL;
-- (SSDictionaryResponse)initWithResponseDictionary:(id)a3;
+- (SSDictionaryResponse)initWithResponseDictionary:(id)dictionary;
 - (id)_copyAccount;
-- (id)_valueForProtocolKey:(id)a3;
-- (id)actionsWithActionType:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_valueForProtocolKey:(id)key;
+- (id)actionsWithActionType:(id)type;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SSDictionaryResponse
 
-- (SSDictionaryResponse)initWithResponseDictionary:(id)a3
+- (SSDictionaryResponse)initWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v9.receiver = self;
     v9.super_class = SSDictionaryResponse;
     v5 = [(SSDictionaryResponse *)&v9 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [dictionaryCopy copy];
       dictionary = v5->_dictionary;
       v5->_dictionary = v6;
     }
@@ -38,10 +38,10 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSDictionary *)self->_dictionary copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSDictionary *)self->_dictionary copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -51,7 +51,7 @@
 - (NSArray)actions
 {
   v53 = *MEMORY[0x1E69E9840];
-  v47 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = [(SSDictionaryResponse *)self _valueForProtocolKey:@"dialog"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -60,7 +60,7 @@
     if (v4)
     {
       v5 = [SSResponseAction _dialogActionWithDialog:v4];
-      [v47 addObject:v5];
+      [array addObject:v5];
     }
   }
 
@@ -82,7 +82,7 @@
   if (v7)
   {
     v8 = [SSResponseAction _dialogActionWithTouchIDDialog:v7];
-    [v47 addObject:v8];
+    [array addObject:v8];
 
     v4 = v7;
 LABEL_8:
@@ -93,14 +93,14 @@ LABEL_8:
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v9 BOOLValue])
   {
     v10 = +[SSResponseAction _invalidateURLBagsAction];
-    [v47 addObject:v10];
+    [array addObject:v10];
   }
 
-  v11 = [(SSDictionaryResponse *)self _copyAccount];
-  if (v11)
+  _copyAccount = [(SSDictionaryResponse *)self _copyAccount];
+  if (_copyAccount)
   {
-    v12 = [SSResponseAction _setActiveAccountActionWithAccount:v11];
-    [v47 addObject:v12];
+    v12 = [SSResponseAction _setActiveAccountActionWithAccount:_copyAccount];
+    [array addObject:v12];
   }
 
   v13 = [(SSDictionaryResponse *)self _valueForProtocolKey:@"creditDisplay"];
@@ -129,7 +129,7 @@ LABEL_8:
       }
 
       v18 = [SSResponseAction _setCreditsActionWithCredits:v13 account:v17];
-      [v47 addObject:v18];
+      [array addObject:v18];
     }
   }
 
@@ -159,7 +159,7 @@ LABEL_8:
             v23 = @"SSResponseActionTypeGotoURL";
 LABEL_65:
             v43 = [SSResponseAction _urlActionWithType:v23 URL:v22];
-            [v47 addObject:v43];
+            [array addObject:v43];
 
             goto LABEL_32;
           }
@@ -187,7 +187,7 @@ LABEL_33:
     }
 
     v22 = [SSResponseAction _actionWithActionType:v24];
-    [v47 addObject:v22];
+    [array addObject:v22];
     goto LABEL_32;
   }
 
@@ -198,14 +198,14 @@ LABEL_34:
   if (objc_opt_isKindOfClass())
   {
     v26 = [SSResponseAction _selectFooterActionWithSection:v25];
-    [v47 addObject:v26];
+    [array addObject:v26];
   }
 
   v27 = [(SSDictionaryResponse *)self _valueForProtocolKey:@"trigger-in-app-purchase-queue"];
 
   objc_opt_class();
-  v45 = v11;
-  v46 = self;
+  v45 = _copyAccount;
+  selfCopy = self;
   v44 = v27;
   if (objc_opt_isKindOfClass())
   {
@@ -257,7 +257,7 @@ LABEL_34:
             if (!v36 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
               v37 = [SSResponseAction _checkInAppQueueActionWithClientID:v35 environment:v36];
-              [v47 addObject:v37];
+              [array addObject:v37];
             }
           }
         }
@@ -269,36 +269,36 @@ LABEL_34:
     while (v31);
   }
 
-  v38 = [(SSDictionaryResponse *)v46 _valueForProtocolKey:@"trigger-download"];
+  v38 = [(SSDictionaryResponse *)selfCopy _valueForProtocolKey:@"trigger-download"];
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v38 BOOLValue])
   {
     v39 = [SSResponseAction _actionWithActionType:@"SSResponseActionTypeCheckDownloadQueues"];
-    [v47 addObject:v39];
+    [array addObject:v39];
   }
 
-  v40 = [(SSDictionaryResponse *)v46 _valueForProtocolKey:@"refresh-subscription-status"];
+  v40 = [(SSDictionaryResponse *)selfCopy _valueForProtocolKey:@"refresh-subscription-status"];
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v40 BOOLValue])
   {
     v41 = [SSResponseAction _actionWithActionType:@"SSResponseActionTypeRefreshSubscriptionStatus"];
-    [v47 addObject:v41];
+    [array addObject:v41];
   }
 
-  return v47;
+  return array;
 }
 
-- (id)actionsWithActionType:(id)a3
+- (id)actionsWithActionType:(id)type
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(SSDictionaryResponse *)self actions];
+  typeCopy = type;
+  array = [MEMORY[0x1E695DF70] array];
+  actions = [(SSDictionaryResponse *)self actions];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [actions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -309,26 +309,26 @@ LABEL_34:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(actions);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 actionType];
-        v13 = [v12 isEqualToString:v4];
+        actionType = [v11 actionType];
+        v13 = [actionType isEqualToString:typeCopy];
 
         if (v13)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [actions countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (BOOL)isSupportedProtocolVersion
@@ -372,7 +372,7 @@ LABEL_34:
     v3 = v5;
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -396,11 +396,11 @@ LABEL_34:
           }
 
           v12 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:*(*(&v15 + 1) + 8 * i)];
-          v13 = [v12 host];
+          host = [v12 host];
 
-          if (v13)
+          if (host)
           {
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
         }
 
@@ -411,7 +411,7 @@ LABEL_34:
     }
   }
 
-  return v6;
+  return array;
 }
 
 - (NSURL)versionMismatchURL
@@ -477,26 +477,26 @@ LABEL_34:
   if (objc_opt_isKindOfClass())
   {
     v6 = [[SSAuthenticationResponse alloc] initWithURLResponse:0 dictionary:v3];
-    v7 = [(SSAuthenticationResponse *)v6 newAccount];
+    newAccount = [(SSAuthenticationResponse *)v6 newAccount];
   }
 
   else
   {
-    v7 = 0;
+    newAccount = 0;
   }
 
-  return v7;
+  return newAccount;
 }
 
-- (id)_valueForProtocolKey:(id)a3
+- (id)_valueForProtocolKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(NSDictionary *)self->_dictionary objectForKey:@"protocol"];
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:keyCopy];
 
   if (!v6)
   {
-    v6 = [(NSDictionary *)self->_dictionary objectForKey:v4];
+    v6 = [(NSDictionary *)self->_dictionary objectForKey:keyCopy];
   }
 
   return v6;

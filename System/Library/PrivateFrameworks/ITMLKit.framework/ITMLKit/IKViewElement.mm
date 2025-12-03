@@ -1,55 +1,55 @@
 @interface IKViewElement
 + (id)DOMEventTypeNameMap;
 + (id)_eventXMLNameMap;
-+ (id)effectiveChildDOMElementsForDOMElement:(id)a3;
-+ (id)supportedFeaturesForElementName:(id)a3;
-+ (unint64_t)evaluateElementUpdateType:(id)a3;
-+ (unint64_t)updateTypeForChangeInAttribute:(id)a3 fromValue:(id)a4 toValue:(id)a5;
-+ (void)willParseDOMElement:(id)a3;
-- (BOOL)_elevateToImplicitUpdateType:(unint64_t)a3;
++ (id)effectiveChildDOMElementsForDOMElement:(id)element;
++ (id)supportedFeaturesForElementName:(id)name;
++ (unint64_t)evaluateElementUpdateType:(id)type;
++ (unint64_t)updateTypeForChangeInAttribute:(id)attribute fromValue:(id)value toValue:(id)toValue;
++ (void)willParseDOMElement:(id)element;
+- (BOOL)_elevateToImplicitUpdateType:(unint64_t)type;
 - (BOOL)isHidden;
 - (BOOL)isProxyElement;
 - (IKAppDocument)appDocument;
-- (IKViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (IKViewElement)initWithOriginalElement:(id)a3;
-- (IKViewElement)initWithPrototypeElement:(id)a3 parent:(id)a4 appDataItem:(id)a5;
+- (IKViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (IKViewElement)initWithOriginalElement:(id)element;
+- (IKViewElement)initWithPrototypeElement:(id)element parent:(id)parent appDataItem:(id)item;
 - (IKViewElement)parent;
 - (IKViewElementStyle)style;
 - (NSArray)children;
 - (NSString)debugDescription;
-- (id)applyUpdatesWithElement:(id)a3;
-- (id)childElementWithType:(unint64_t)a3;
-- (id)childElementsWithType:(unint64_t)a3;
-- (id)childImageElementWithType:(unint64_t)a3;
-- (id)childTextElementWithStyle:(unint64_t)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (unint64_t)_updateSubtreeWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
+- (id)childElementWithType:(unint64_t)type;
+- (id)childElementsWithType:(unint64_t)type;
+- (id)childImageElementWithType:(unint64_t)type;
+- (id)childTextElementWithStyle:(unint64_t)style;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (unint64_t)_updateSubtreeWithElement:(id)element;
 - (void)appDocumentDidMarkStylesDirty;
-- (void)configureUpdatesWithElement:(id)a3;
+- (void)configureUpdatesWithElement:(id)element;
 - (void)dealloc;
-- (void)dispatchEvent:(id)a3 eventAttribute:(id)a4 canBubble:(BOOL)a5 isCancelable:(BOOL)a6 extraInfo:(id)a7 completionBlock:(id)a8;
-- (void)disperseUpdateType:(unint64_t)a3;
-- (void)performImplicitUpdates:(id)a3;
+- (void)dispatchEvent:(id)event eventAttribute:(id)attribute canBubble:(BOOL)bubble isCancelable:(BOOL)cancelable extraInfo:(id)info completionBlock:(id)block;
+- (void)disperseUpdateType:(unint64_t)type;
+- (void)performImplicitUpdates:(id)updates;
 - (void)resetImplicitUpdates;
-- (void)resetProperty:(unint64_t)a3;
+- (void)resetProperty:(unint64_t)property;
 - (void)resetUpdates;
-- (void)setAppDocument:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
-- (void)updateWithActualElement:(id)a3;
+- (void)setAppDocument:(id)document;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
+- (void)updateWithActualElement:(id)element;
 @end
 
 @implementation IKViewElement
 
-+ (void)willParseDOMElement:(id)a3
++ (void)willParseDOMElement:(id)element
 {
   v52 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 jsNodeData];
+  elementCopy = element;
+  jsNodeData = [elementCopy jsNodeData];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __37__IKViewElement_willParseDOMElement___block_invoke;
   v48[3] = &unk_27979C078;
-  v5 = v3;
+  v5 = elementCopy;
   v49 = v5;
   v6 = MEMORY[0x259C21BA0](v48);
   v46[0] = MEMORY[0x277D85DD0];
@@ -65,8 +65,8 @@
   v45 = v7;
   if ((*(v6 + 16))(v6, @"prototypes", v46, v44))
   {
-    [v4 setPrototypesResolved:0];
-    [v4 setUpdated:{objc_msgSend(v4, "containsUpdates")}];
+    [jsNodeData setPrototypesResolved:0];
+    [jsNodeData setUpdated:{objc_msgSend(jsNodeData, "containsUpdates")}];
   }
 
   v42[0] = MEMORY[0x277D85DD0];
@@ -82,18 +82,18 @@
   v41 = v31;
   if ((*(v6 + 16))(v6, @"rules", v42, v40))
   {
-    [v4 setRulesParsed:0];
-    [v4 setUpdated:{objc_msgSend(v4, "containsUpdates")}];
+    [jsNodeData setRulesParsed:0];
+    [jsNodeData setUpdated:{objc_msgSend(jsNodeData, "containsUpdates")}];
   }
 
-  if (![v4 isDataResolved] || !objc_msgSend(v4, "arePrototypesResolved") || (objc_msgSend(v4, "areRulesParsed") & 1) == 0)
+  if (![jsNodeData isDataResolved] || !objc_msgSend(jsNodeData, "arePrototypesResolved") || (objc_msgSend(jsNodeData, "areRulesParsed") & 1) == 0)
   {
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v8 = [v31 childElements];
-    v9 = [v8 countByEnumeratingWithState:&v36 objects:v51 count:16];
+    childElements = [v31 childElements];
+    v9 = [childElements countByEnumeratingWithState:&v36 objects:v51 count:16];
     if (v9)
     {
       v10 = v9;
@@ -104,30 +104,30 @@
         {
           if (*v37 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(childElements);
           }
 
           v13 = *(*(&v36 + 1) + 8 * i);
-          if (([v4 isDataResolved] & 1) == 0)
+          if (([jsNodeData isDataResolved] & 1) == 0)
           {
-            v14 = [v13 jsNodeData];
-            [v14 setDataResolved:0];
+            jsNodeData2 = [v13 jsNodeData];
+            [jsNodeData2 setDataResolved:0];
           }
 
-          if (([v4 arePrototypesResolved] & 1) == 0)
+          if (([jsNodeData arePrototypesResolved] & 1) == 0)
           {
-            v15 = [v13 jsNodeData];
-            [v15 setPrototypesResolved:0];
+            jsNodeData3 = [v13 jsNodeData];
+            [jsNodeData3 setPrototypesResolved:0];
           }
 
-          if (([v4 areRulesParsed] & 1) == 0)
+          if (([jsNodeData areRulesParsed] & 1) == 0)
           {
-            v16 = [v13 jsNodeData];
-            [v16 setRulesParsed:0];
+            jsNodeData4 = [v13 jsNodeData];
+            [jsNodeData4 setRulesParsed:0];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v36 objects:v51 count:16];
+        v10 = [childElements countByEnumeratingWithState:&v36 objects:v51 count:16];
       }
 
       while (v10);
@@ -139,8 +139,8 @@
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v17 = [v31 childElements];
-  v18 = [v17 countByEnumeratingWithState:&v32 objects:v50 count:16];
+  childElements2 = [v31 childElements];
+  v18 = [childElements2 countByEnumeratingWithState:&v32 objects:v50 count:16];
   if (v18)
   {
     v19 = v18;
@@ -151,38 +151,38 @@
       {
         if (*v33 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(childElements2);
         }
 
         v22 = *(*(&v32 + 1) + 8 * j);
-        v23 = [v22 elementName];
-        v24 = [v23 isEqualToString:@"fragment"];
+        elementName = [v22 elementName];
+        v24 = [elementName isEqualToString:@"fragment"];
 
         if (v24)
         {
           [IKViewElement willParseDOMElement:v22];
-          v25 = [v22 jsNodeData];
-          if ([v25 isUpdated])
+          jsNodeData5 = [v22 jsNodeData];
+          if ([jsNodeData5 isUpdated])
           {
           }
 
           else
           {
-            v26 = [v22 jsNodeData];
-            v27 = [v26 isChildrenUpdated];
+            jsNodeData6 = [v22 jsNodeData];
+            isChildrenUpdated = [jsNodeData6 isChildrenUpdated];
 
-            if (!v27)
+            if (!isChildrenUpdated)
             {
               continue;
             }
           }
 
-          v28 = [v31 jsNodeData];
-          [v28 setChildrenUpdated:1];
+          jsNodeData7 = [v31 jsNodeData];
+          [jsNodeData7 setChildrenUpdated:1];
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v32 objects:v50 count:16];
+      v19 = [childElements2 countByEnumeratingWithState:&v32 objects:v50 count:16];
     }
 
     while (v19);
@@ -274,16 +274,16 @@ LABEL_11:
   return v23;
 }
 
-+ (id)effectiveChildDOMElementsForDOMElement:(id)a3
++ (id)effectiveChildDOMElementsForDOMElement:(id)element
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [a3 childElements];
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  childElements = [element childElements];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(childElements, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = childElements;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -299,12 +299,12 @@ LABEL_11:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 elementName];
-        v13 = [v12 isEqualToString:@"fragment"];
+        elementName = [v11 elementName];
+        v13 = [elementName isEqualToString:@"fragment"];
 
         if (v13)
         {
-          v14 = [a1 effectiveChildDOMElementsForDOMElement:v11];
+          v14 = [self effectiveChildDOMElementsForDOMElement:v11];
           [v5 addObjectsFromArray:v14];
         }
 
@@ -326,16 +326,16 @@ LABEL_11:
   return v15;
 }
 
-+ (id)supportedFeaturesForElementName:(id)a3
++ (id)supportedFeaturesForElementName:(id)name
 {
   v3 = objc_opt_class();
 
   return [v3 supportedFeatures];
 }
 
-+ (unint64_t)updateTypeForChangeInAttribute:(id)a3 fromValue:(id)a4 toValue:(id)a5
++ (unint64_t)updateTypeForChangeInAttribute:(id)attribute fromValue:(id)value toValue:(id)toValue
 {
-  if ([a3 isEqualToString:{@"autoHighlight", a4, a5}])
+  if ([attribute isEqualToString:{@"autoHighlight", value, toValue}])
   {
     return 1;
   }
@@ -346,56 +346,56 @@ LABEL_11:
   }
 }
 
-- (IKViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (IKViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
   v115 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v95 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   v110.receiver = self;
   v110.super_class = IKViewElement;
   v10 = [(IKViewElement *)&v110 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_parent, v9);
-    v12 = [IKDOMBindingController domBindingControllerForDOMElement:v8];
+    objc_storeWeak(&v10->_parent, parentCopy);
+    v12 = [IKDOMBindingController domBindingControllerForDOMElement:elementCopy];
     bindingController = v11->_bindingController;
     v11->_bindingController = v12;
 
-    v14 = [(IKDOMBindingController *)v11->_bindingController binding];
+    binding = [(IKDOMBindingController *)v11->_bindingController binding];
     binding = v11->_binding;
-    v11->_binding = v14;
+    v11->_binding = binding;
 
-    v16 = [(IKDOMBindingController *)v11->_bindingController dataItem];
-    v17 = [v16 dataDictionary];
+    dataItem = [(IKDOMBindingController *)v11->_bindingController dataItem];
+    dataDictionary = [dataItem dataDictionary];
     dataDictionary = v11->_dataDictionary;
-    v11->_dataDictionary = v17;
+    v11->_dataDictionary = dataDictionary;
 
-    v11->_isPartOfPrototypeElement = [v8 _isPartOfPrototypeElement];
-    v19 = [v8 jsNodeData];
-    v11->_updateType = [IKViewElement evaluateElementUpdateType:v19];
-    v20 = [v8 _attributes];
-    v21 = [v20 mutableCopy];
+    v11->_isPartOfPrototypeElement = [elementCopy _isPartOfPrototypeElement];
+    jsNodeData = [elementCopy jsNodeData];
+    v11->_updateType = [IKViewElement evaluateElementUpdateType:jsNodeData];
+    _attributes = [elementCopy _attributes];
+    v21 = [_attributes mutableCopy];
 
     v93 = [v21 objectForKeyedSubscript:?];
-    v94 = v8;
-    v22 = [v8 getAttribute:@"class"];
+    v94 = elementCopy;
+    v22 = [elementCopy getAttribute:@"class"];
     v23 = [v22 copy];
     classSelector = v11->_classSelector;
     v11->_classSelector = v23;
 
-    if (!-[IKViewElement isPartOfPrototypeElement](v11, "isPartOfPrototypeElement") && ([v19 isAutoHighlightRead] & 1) == 0)
+    if (!-[IKViewElement isPartOfPrototypeElement](v11, "isPartOfPrototypeElement") && ([jsNodeData isAutoHighlightRead] & 1) == 0)
     {
       v25 = [v21 objectForKeyedSubscript:@"autoHighlight"];
       autoHighlightIdentifier = v11->_autoHighlightIdentifier;
       v11->_autoHighlightIdentifier = v25;
 
       v11->_didUpdateAutoHighlightIdentifier = 1;
-      [v19 setAutoHighlightRead:1];
+      [jsNodeData setAutoHighlightRead:1];
     }
 
-    v97 = v19;
+    v97 = jsNodeData;
     v27 = [v21 objectForKeyedSubscript:@"id"];
     elementID = v11->_elementID;
     v11->_elementID = v27;
@@ -414,19 +414,19 @@ LABEL_11:
       v34 = v33;
       if (v33)
       {
-        v35 = [v33 BOOLValue];
+        bOOLValue = [v33 BOOLValue];
       }
 
       else
       {
-        v35 = [v9 isDisabled];
+        bOOLValue = [parentCopy isDisabled];
       }
 
-      v11->_disabled = v35;
+      v11->_disabled = bOOLValue;
       [v21 removeObjectForKey:@"disabled"];
     }
 
-    v92 = v9;
+    v92 = parentCopy;
     v11->_impressionable = 0;
     v96 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
     v106 = 0u;
@@ -478,18 +478,18 @@ LABEL_11:
       v11->_attributes = v45;
     }
 
-    v8 = v94;
-    v47 = [v94 nodeName];
-    v48 = [v47 ik_sharedInstance];
+    elementCopy = v94;
+    nodeName = [v94 nodeName];
+    ik_sharedInstance = [nodeName ik_sharedInstance];
     elementName = v11->_elementName;
-    v11->_elementName = v48;
+    v11->_elementName = ik_sharedInstance;
 
-    v11->_elementType = [v95 elementTypeByTagName:v11->_elementName];
+    v11->_elementType = [factoryCopy elementTypeByTagName:v11->_elementName];
     v50 = objc_autoreleasePoolPush();
     v51 = [IKViewElementStyle elementStyleWithSelector:v11->_classSelector inlineStyleString:v93 filterBlockedStyles:1];
-    v52 = [v94 domb_boundCSSRule];
+    domb_boundCSSRule = [v94 domb_boundCSSRule];
 
-    if (v52)
+    if (domb_boundCSSRule)
     {
       v53 = ITMLKitGetLogObject(0);
       if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
@@ -498,8 +498,8 @@ LABEL_11:
       }
 
       v54 = v11->_classSelector;
-      v55 = [v94 domb_boundCSSRule];
-      v56 = [IKViewElementStyle elementStyleWithSelector:v54 cssRule:v55 filterBlockedStyles:1];
+      domb_boundCSSRule2 = [v94 domb_boundCSSRule];
+      v56 = [IKViewElementStyle elementStyleWithSelector:v54 cssRule:domb_boundCSSRule2 filterBlockedStyles:1];
 
       if (v51)
       {
@@ -518,8 +518,8 @@ LABEL_11:
       }
     }
 
-    v60 = [v95 styleFactory];
-    v61 = [v60 styleComposerForElement:v11 elementStyleOverrides:v51];
+    styleFactory = [factoryCopy styleFactory];
+    v61 = [styleFactory styleComposerForElement:v11 elementStyleOverrides:v51];
     styleComposer = v11->_styleComposer;
     v11->_styleComposer = v61;
 
@@ -550,7 +550,7 @@ LABEL_11:
             v70 = *(*(&v102 + 1) + 8 * j);
             if ([objc_opt_class() shouldParseChildDOMElement:v70])
             {
-              v71 = [v95 elementForDOMElement:v70 parent:v11];
+              v71 = [factoryCopy elementForDOMElement:v70 parent:v11];
               if (v71)
               {
                 [v64 addObject:v71];
@@ -575,8 +575,8 @@ LABEL_11:
     }
 
     v74 = objc_opt_class();
-    v75 = [(IKViewElement *)v11 elementName];
-    v76 = [v74 supportedFeaturesForElementName:v75];
+    elementName = [(IKViewElement *)v11 elementName];
+    v76 = [v74 supportedFeaturesForElementName:elementName];
 
     if ([v76 count])
     {
@@ -626,7 +626,7 @@ LABEL_11:
         {
 LABEL_55:
 
-          v8 = v94;
+          elementCopy = v94;
           v76 = v91;
           goto LABEL_57;
         }
@@ -639,19 +639,19 @@ LABEL_57:
     features = v11->_features;
     v11->_features = v86;
 
-    v9 = v92;
+    parentCopy = v92;
   }
 
   v88 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (IKViewElement)initWithPrototypeElement:(id)a3 parent:(id)a4 appDataItem:(id)a5
+- (IKViewElement)initWithPrototypeElement:(id)element parent:(id)parent appDataItem:(id)item
 {
   v146 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  itemCopy = item;
   v140.receiver = self;
   v140.super_class = IKViewElement;
   v11 = [(IKViewElement *)&v140 init];
@@ -659,23 +659,23 @@ LABEL_57:
   if (v11)
   {
     v11->_isProxyElement = 1;
-    objc_storeWeak(&v11->_parent, v9);
-    v13 = [v8 classSelector];
-    v14 = [v13 copy];
+    objc_storeWeak(&v11->_parent, parentCopy);
+    classSelector = [elementCopy classSelector];
+    v14 = [classSelector copy];
     classSelector = v12->_classSelector;
     v12->_classSelector = v14;
 
     bindingController = v12->_bindingController;
     v12->_bindingController = 0;
 
-    v17 = [v8 binding];
+    binding = [elementCopy binding];
     binding = v12->_binding;
-    v12->_binding = v17;
+    v12->_binding = binding;
 
-    v123 = v10;
-    v19 = [(IKAppDataItem *)v10 dataDictionary];
+    v123 = itemCopy;
+    dataDictionary = [(IKAppDataItem *)itemCopy dataDictionary];
     dataDictionary = v12->_dataDictionary;
-    v12->_dataDictionary = v19;
+    v12->_dataDictionary = dataDictionary;
 
     elementID = v12->_elementID;
     v12->_elementID = 0;
@@ -683,23 +683,23 @@ LABEL_57:
     itmlID = v12->_itmlID;
     v12->_itmlID = 0;
 
-    v23 = [v8 accessibilityText];
+    accessibilityText = [elementCopy accessibilityText];
     accessibilityText = v12->_accessibilityText;
-    v12->_accessibilityText = v23;
+    v12->_accessibilityText = accessibilityText;
 
-    v25 = [v8 elementName];
+    elementName = [elementCopy elementName];
     elementName = v12->_elementName;
-    v12->_elementName = v25;
+    v12->_elementName = elementName;
 
-    v12->_elementType = [v8 elementType];
+    v12->_elementType = [elementCopy elementType];
     features = v12->_features;
     v12->_features = 0;
 
-    v28 = [v8 attributes];
-    v29 = [v28 mutableCopy];
+    attributes = [elementCopy attributes];
+    v29 = [attributes mutableCopy];
     v30 = v29;
-    v115 = v8;
-    v112 = v9;
+    v115 = elementCopy;
+    v112 = parentCopy;
     if (v29)
     {
       v31 = v29;
@@ -716,10 +716,10 @@ LABEL_57:
     v139 = 0u;
     v136 = 0u;
     v137 = 0u;
-    v32 = [(IKDataBinding *)v12->_binding keyValues];
-    v33 = [v32 allKeys];
+    keyValues = [(IKDataBinding *)v12->_binding keyValues];
+    allKeys = [keyValues allKeys];
 
-    v34 = [v33 countByEnumeratingWithState:&v136 objects:v145 count:16];
+    v34 = [allKeys countByEnumeratingWithState:&v136 objects:v145 count:16];
     v122 = v12;
     if (v34)
     {
@@ -731,14 +731,14 @@ LABEL_57:
         {
           if (*v137 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(allKeys);
           }
 
           v38 = *(*(&v136 + 1) + 8 * i);
           if ([v38 characterAtIndex:0] == 64)
           {
-            v39 = [(IKDataBinding *)v12->_binding keyValues];
-            v40 = [v39 objectForKeyedSubscript:v38];
+            keyValues2 = [(IKDataBinding *)v12->_binding keyValues];
+            v40 = [keyValues2 objectForKeyedSubscript:v38];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -747,9 +747,9 @@ LABEL_57:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v42 = [v41 stringValue];
+                stringValue = [v41 stringValue];
 
-                v41 = v42;
+                v41 = stringValue;
                 v12 = v122;
               }
 
@@ -763,22 +763,22 @@ LABEL_57:
           }
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v136 objects:v145 count:16];
+        v35 = [allKeys countByEnumeratingWithState:&v136 objects:v145 count:16];
       }
 
       while (v35);
     }
 
-    v113 = [v8 styleComposer];
+    styleComposer = [elementCopy styleComposer];
     v116 = objc_opt_new();
     v132 = 0u;
     v133 = 0u;
     v134 = 0u;
     v135 = 0u;
-    v44 = [(IKDataBinding *)v12->_binding keyValues];
-    v45 = [v44 allKeys];
+    keyValues3 = [(IKDataBinding *)v12->_binding keyValues];
+    allKeys2 = [keyValues3 allKeys];
 
-    v46 = [v45 countByEnumeratingWithState:&v132 objects:v144 count:16];
+    v46 = [allKeys2 countByEnumeratingWithState:&v132 objects:v144 count:16];
     if (v46)
     {
       v47 = v46;
@@ -789,15 +789,15 @@ LABEL_57:
         {
           if (*v133 != v48)
           {
-            objc_enumerationMutation(v45);
+            objc_enumerationMutation(allKeys2);
           }
 
           v50 = *(*(&v132 + 1) + 8 * j);
           if ([v50 characterAtIndex:0] == 35)
           {
             v51 = [v50 substringFromIndex:1];
-            v52 = [(IKDataBinding *)v12->_binding keyValues];
-            v53 = [v52 objectForKeyedSubscript:v50];
+            keyValues4 = [(IKDataBinding *)v12->_binding keyValues];
+            v53 = [keyValues4 objectForKeyedSubscript:v50];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -814,7 +814,7 @@ LABEL_57:
           }
         }
 
-        v47 = [v45 countByEnumeratingWithState:&v132 objects:v144 count:16];
+        v47 = [allKeys2 countByEnumeratingWithState:&v132 objects:v144 count:16];
       }
 
       while (v47);
@@ -825,12 +825,12 @@ LABEL_57:
       v56 = objc_opt_new();
       [v56 setDeclarationList:v116];
       v57 = [IKViewElementStyle elementStyleWithSelector:v12->_classSelector cssRule:v56 filterBlockedStyles:1];
-      v58 = [v113 elementStyleOverrides];
-      if (v58)
+      elementStyleOverrides = [styleComposer elementStyleOverrides];
+      if (elementStyleOverrides)
       {
-        v59 = v58;
+        v59 = elementStyleOverrides;
         v60 = v12->_classSelector;
-        v143[0] = v58;
+        v143[0] = elementStyleOverrides;
         v143[1] = v57;
         v61 = [MEMORY[0x277CBEA60] arrayWithObjects:v143 count:2];
         v62 = [IKViewElementStyle elementStyleWithSelector:v60 aggregatingStyles:v61];
@@ -841,10 +841,10 @@ LABEL_57:
         v62 = v57;
       }
 
-      v65 = [v113 defaultStyleComposer];
-      v66 = [v113 parentStyleComposer];
-      v67 = [v113 styleList];
-      v63 = [IKViewElementStyleComposer styleComposerWithDefaultStyleComposer:v65 parentStyleComposer:v66 styleList:v67 elementStyleOverrides:v62];
+      defaultStyleComposer = [styleComposer defaultStyleComposer];
+      parentStyleComposer = [styleComposer parentStyleComposer];
+      styleList = [styleComposer styleList];
+      v63 = [IKViewElementStyleComposer styleComposerWithDefaultStyleComposer:defaultStyleComposer parentStyleComposer:parentStyleComposer styleList:styleList elementStyleOverrides:v62];
 
       v64 = v112;
       v12 = v122;
@@ -853,30 +853,30 @@ LABEL_57:
     else
     {
       v64 = v112;
-      v63 = v113;
+      v63 = styleComposer;
     }
 
     objc_storeStrong(&v12->_styleComposer, v63);
     if (([v64 isProxyElement] & 1) == 0)
     {
-      v68 = [(IKAppDataItem *)v123 identifier];
-      [v120 setObject:v68 forKeyedSubscript:@"itemID"];
+      identifier = [(IKAppDataItem *)v123 identifier];
+      [v120 setObject:identifier forKeyedSubscript:@"itemID"];
     }
 
     v69 = [v120 objectForKeyedSubscript:@"disabled"];
     v111 = v69;
     if (v69)
     {
-      v70 = [v69 BOOLValue];
+      bOOLValue = [v69 BOOLValue];
     }
 
     else
     {
-      v70 = [v64 isDisabled];
+      bOOLValue = [v64 isDisabled];
     }
 
     v114 = v63;
-    v12->_disabled = v70;
+    v12->_disabled = bOOLValue;
     [v120 removeObjectForKey:@"disabled"];
     v71 = [v120 objectForKeyedSubscript:@"autoHighlight"];
     autoHighlightIdentifier = v12->_autoHighlightIdentifier;
@@ -940,43 +940,43 @@ LABEL_57:
     attributes = v12->_attributes;
     v12->_attributes = v82;
 
-    v84 = [(IKViewElement *)v12 appDocument];
-    v85 = [v84 markImplicitlyUpdated];
+    appDocument = [(IKViewElement *)v12 appDocument];
+    markImplicitlyUpdated = [appDocument markImplicitlyUpdated];
 
-    if (v85)
+    if (markImplicitlyUpdated)
     {
       [(IKViewElement *)v12 _elevateToImplicitUpdateType:4];
       if ([v64 _elevateToImplicitUpdateType:3])
       {
-        v86 = [v64 parent];
-        if ([v86 _elevateToImplicitUpdateType:1])
+        parent = [v64 parent];
+        if ([parent _elevateToImplicitUpdateType:1])
         {
           do
           {
-            v87 = [v86 parent];
+            v86Parent = [parent parent];
 
-            v86 = v87;
+            parent = v86Parent;
           }
 
-          while (([v87 _elevateToImplicitUpdateType:1] & 1) != 0);
+          while (([v86Parent _elevateToImplicitUpdateType:1] & 1) != 0);
         }
 
         else
         {
-          v87 = v86;
+          v86Parent = parent;
         }
       }
     }
 
     v88 = MEMORY[0x277CBEB18];
-    v89 = [v8 unfilteredChildren];
-    v90 = [v88 arrayWithCapacity:{objc_msgSend(v89, "count")}];
+    unfilteredChildren = [elementCopy unfilteredChildren];
+    v90 = [v88 arrayWithCapacity:{objc_msgSend(unfilteredChildren, "count")}];
 
     v126 = 0u;
     v127 = 0u;
     v124 = 0u;
     v125 = 0u;
-    obj = [v8 unfilteredChildren];
+    obj = [elementCopy unfilteredChildren];
     v91 = [obj countByEnumeratingWithState:&v124 objects:v141 count:16];
     if (v91)
     {
@@ -992,16 +992,16 @@ LABEL_57:
           }
 
           v94 = *(*(&v124 + 1) + 8 * m);
-          v95 = [v94 bindingController];
-          v96 = [v95 binding];
+          bindingController = [v94 bindingController];
+          binding2 = [bindingController binding];
 
-          v97 = [v96 dataBoundKeys];
-          v98 = [v97 containsObject:@"dataItem"];
+          dataBoundKeys = [binding2 dataBoundKeys];
+          v98 = [dataBoundKeys containsObject:@"dataItem"];
 
           if (v98)
           {
-            v99 = [v96 keyValues];
-            v100 = [v99 objectForKeyedSubscript:@"dataItem"];
+            keyValues5 = [binding2 keyValues];
+            v100 = [keyValues5 objectForKeyedSubscript:@"dataItem"];
 
             v101 = v123;
             v102 = [(IKAppDataItem *)v123 valueForPropertyPath:v100];
@@ -1042,22 +1042,22 @@ LABEL_57:
     }
 
     v12 = v122;
-    v10 = v123;
+    itemCopy = v123;
     unfilteredChildren = v122->_unfilteredChildren;
     v122->_unfilteredChildren = v107;
 
-    v8 = v115;
-    v9 = v112;
+    elementCopy = v115;
+    parentCopy = v112;
   }
 
   v109 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (IKViewElement)initWithOriginalElement:(id)a3
+- (IKViewElement)initWithOriginalElement:(id)element
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementCopy = element;
   v55.receiver = self;
   v55.super_class = IKViewElement;
   v5 = [(IKViewElement *)&v55 init];
@@ -1065,8 +1065,8 @@ LABEL_57:
   if (v5)
   {
     v5->_isProxyElement = 1;
-    v7 = [v4 parent];
-    objc_storeWeak(&v6->_parent, v7);
+    parent = [elementCopy parent];
+    objc_storeWeak(&v6->_parent, parent);
 
     bindingController = v6->_bindingController;
     v6->_bindingController = 0;
@@ -1074,9 +1074,9 @@ LABEL_57:
     binding = v6->_binding;
     v6->_binding = 0;
 
-    v10 = [v4 dataDictionary];
+    dataDictionary = [elementCopy dataDictionary];
     dataDictionary = v6->_dataDictionary;
-    v6->_dataDictionary = v10;
+    v6->_dataDictionary = dataDictionary;
 
     elementID = v6->_elementID;
     v6->_elementID = 0;
@@ -1084,35 +1084,35 @@ LABEL_57:
     itmlID = v6->_itmlID;
     v6->_itmlID = 0;
 
-    v14 = [v4 accessibilityText];
+    accessibilityText = [elementCopy accessibilityText];
     accessibilityText = v6->_accessibilityText;
-    v6->_accessibilityText = v14;
+    v6->_accessibilityText = accessibilityText;
 
-    v16 = [v4 elementName];
+    elementName = [elementCopy elementName];
     elementName = v6->_elementName;
-    v6->_elementName = v16;
+    v6->_elementName = elementName;
 
-    v6->_elementType = [v4 elementType];
-    v18 = [v4 styleComposer];
+    v6->_elementType = [elementCopy elementType];
+    styleComposer = [elementCopy styleComposer];
     styleComposer = v6->_styleComposer;
-    v6->_styleComposer = v18;
+    v6->_styleComposer = styleComposer;
 
     features = v6->_features;
     v6->_features = 0;
 
-    v6->_impressionable = [v4 isImpressionable];
-    v21 = [v4 impressionableAttributes];
+    v6->_impressionable = [elementCopy isImpressionable];
+    impressionableAttributes = [elementCopy impressionableAttributes];
     impressionableAttributes = v6->_impressionableAttributes;
-    v6->_impressionableAttributes = v21;
+    v6->_impressionableAttributes = impressionableAttributes;
 
-    v23 = [v4 attributes];
+    attributes = [elementCopy attributes];
     attributes = v6->_attributes;
-    v6->_attributes = v23;
+    v6->_attributes = attributes;
 
-    v25 = [(IKViewElement *)v6 appDocument];
-    v26 = [v25 markImplicitlyUpdated];
+    appDocument = [(IKViewElement *)v6 appDocument];
+    markImplicitlyUpdated = [appDocument markImplicitlyUpdated];
 
-    if (v26)
+    if (markImplicitlyUpdated)
     {
       [(IKViewElement *)v6 _elevateToImplicitUpdateType:4];
       WeakRetained = objc_loadWeakRetained(&v6->_parent);
@@ -1121,37 +1121,37 @@ LABEL_57:
       if (v28)
       {
         v29 = objc_loadWeakRetained(&v6->_parent);
-        v30 = [v29 parent];
+        parent2 = [v29 parent];
 
-        if ([v30 _elevateToImplicitUpdateType:1])
+        if ([parent2 _elevateToImplicitUpdateType:1])
         {
           do
           {
-            v31 = [v30 parent];
+            v30Parent = [parent2 parent];
 
-            v30 = v31;
+            parent2 = v30Parent;
           }
 
-          while (([v31 _elevateToImplicitUpdateType:1] & 1) != 0);
+          while (([v30Parent _elevateToImplicitUpdateType:1] & 1) != 0);
         }
 
         else
         {
-          v31 = v30;
+          v30Parent = parent2;
         }
       }
     }
 
     v32 = MEMORY[0x277CBEB18];
-    v33 = [v4 unfilteredChildren];
-    v34 = [v32 arrayWithCapacity:{objc_msgSend(v33, "count")}];
+    unfilteredChildren = [elementCopy unfilteredChildren];
+    v34 = [v32 arrayWithCapacity:{objc_msgSend(unfilteredChildren, "count")}];
 
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v35 = [v4 unfilteredChildren];
-    v36 = [v35 countByEnumeratingWithState:&v51 objects:v56 count:16];
+    unfilteredChildren2 = [elementCopy unfilteredChildren];
+    v36 = [unfilteredChildren2 countByEnumeratingWithState:&v51 objects:v56 count:16];
     if (v36)
     {
       v37 = v36;
@@ -1162,14 +1162,14 @@ LABEL_57:
         {
           if (*v52 != v38)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(unfilteredChildren2);
           }
 
           v40 = [objc_alloc(objc_opt_class()) initWithOriginalElement:*(*(&v51 + 1) + 8 * i)];
           [v34 addObject:v40];
         }
 
-        v37 = [v35 countByEnumeratingWithState:&v51 objects:v56 count:16];
+        v37 = [unfilteredChildren2 countByEnumeratingWithState:&v51 objects:v56 count:16];
       }
 
       while (v37);
@@ -1184,7 +1184,7 @@ LABEL_57:
     unfilteredChildren = v6->_unfilteredChildren;
     v6->_unfilteredChildren = v41;
 
-    v43 = [v4[26] mutableCopy];
+    v43 = [elementCopy[26] mutableCopy];
     v44 = v43;
     if (v43)
     {
@@ -1200,8 +1200,8 @@ LABEL_57:
 
     [v46 addObject:v6];
     v47 = [v46 copy];
-    v48 = v4[26];
-    v4[26] = v47;
+    v48 = elementCopy[26];
+    elementCopy[26] = v47;
   }
 
   v49 = *MEMORY[0x277D85DE8];
@@ -1210,26 +1210,26 @@ LABEL_57:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = IKViewElement;
   [(IKViewElement *)&v4 dealloc];
 }
 
-- (void)configureUpdatesWithElement:(id)a3
+- (void)configureUpdatesWithElement:(id)element
 {
-  v4 = a3;
-  v5 = [(IKViewElement *)self unfilteredChildren];
-  v6 = [v4 unfilteredChildren];
+  elementCopy = element;
+  unfilteredChildren = [(IKViewElement *)self unfilteredChildren];
+  unfilteredChildren2 = [elementCopy unfilteredChildren];
 
   if (![(IKViewElement *)self updateType]|| [(IKViewElement *)self updateType]== 3 || [(IKViewElement *)self updateType]== 4)
   {
-    v29 = v5;
-    v7 = [[IKDiffEvaluator alloc] initWithObjects:v5 oldObjects:v6 hashing:&__block_literal_global_27];
-    v28 = v6;
-    v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+    v29 = unfilteredChildren;
+    v7 = [[IKDiffEvaluator alloc] initWithObjects:unfilteredChildren oldObjects:unfilteredChildren2 hashing:&__block_literal_global_27];
+    v28 = unfilteredChildren2;
+    v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(unfilteredChildren2, "count")}];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __45__IKViewElement_configureUpdatesWithElement___block_invoke_2;
@@ -1238,9 +1238,9 @@ LABEL_57:
     v34 = v9;
     [(IKDiffEvaluator *)v7 enumerateCommonObjectsUsingBlock:v33];
     v10 = [IKChangeSet alloc];
-    v11 = [(IKDiffEvaluator *)v7 addedIndexes];
-    v12 = [(IKDiffEvaluator *)v7 removedIndexes];
-    v13 = [(IKDiffEvaluator *)v7 movedIndexesByNewIndex];
+    addedIndexes = [(IKDiffEvaluator *)v7 addedIndexes];
+    removedIndexes = [(IKDiffEvaluator *)v7 removedIndexes];
+    movedIndexesByNewIndex = [(IKDiffEvaluator *)v7 movedIndexesByNewIndex];
     v14 = [v9 count];
     if (v14)
     {
@@ -1253,7 +1253,7 @@ LABEL_57:
     }
 
     v16 = &v34;
-    v17 = [(IKChangeSet *)v10 initWithAddedIndexes:v11 removedIndexes:v12 movedIndexesByNewIndex:v13 updatedIndexesByNewIndex:v15];
+    v17 = [(IKChangeSet *)v10 initWithAddedIndexes:addedIndexes removedIndexes:removedIndexes movedIndexesByNewIndex:movedIndexesByNewIndex updatedIndexesByNewIndex:v15];
     unfilteredChildrenChangeSet = self->_unfilteredChildrenChangeSet;
     self->_unfilteredChildrenChangeSet = v17;
 
@@ -1261,17 +1261,17 @@ LABEL_57:
     {
     }
 
-    v6 = v28;
-    v5 = v29;
+    unfilteredChildren2 = v28;
+    unfilteredChildren = v29;
   }
 
   else
   {
     v19 = MEMORY[0x277CBEAC0];
-    v20 = [v5 valueForKey:@"itmlID"];
-    v21 = [v19 dictionaryWithObjects:v5 forKeys:v20];
+    v20 = [unfilteredChildren valueForKey:@"itmlID"];
+    v21 = [v19 dictionaryWithObjects:unfilteredChildren forKeys:v20];
 
-    v22 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+    v22 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(unfilteredChildren2, "count")}];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __45__IKViewElement_configureUpdatesWithElement___block_invoke_3;
@@ -1280,7 +1280,7 @@ LABEL_57:
     v31 = v7;
     v9 = v22;
     v32 = v9;
-    [v6 enumerateObjectsUsingBlock:v30];
+    [unfilteredChildren2 enumerateObjectsUsingBlock:v30];
     v23 = [IKChangeSet alloc];
     v24 = [v9 count];
     if (v24)
@@ -1302,7 +1302,7 @@ LABEL_57:
     {
     }
 
-    v11 = v32;
+    addedIndexes = v32;
   }
 }
 
@@ -1386,55 +1386,55 @@ void __45__IKViewElement_configureUpdatesWithElement___block_invoke_3(uint64_t a
   }
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
-  v5 = self;
-  if (v4 && v4 != self)
+  elementCopy = element;
+  selfCopy = self;
+  if (elementCopy && elementCopy != self)
   {
-    v6 = [(IKViewElement *)v4 updateType];
-    if (v6 == 4 || (v7 = v6, ([objc_opt_class() shouldParseChildDOMElements] & 1) == 0))
+    updateType = [(IKViewElement *)elementCopy updateType];
+    if (updateType == 4 || (v7 = updateType, ([objc_opt_class() shouldParseChildDOMElements] & 1) == 0))
     {
-      v14 = [(IKViewElement *)v4 unfilteredChildrenChangeSet];
-      v15 = [v14 updatedIndexesByNewIndex];
+      unfilteredChildrenChangeSet = [(IKViewElement *)elementCopy unfilteredChildrenChangeSet];
+      updatedIndexesByNewIndex = [unfilteredChildrenChangeSet updatedIndexesByNewIndex];
       v21 = MEMORY[0x277D85DD0];
       v22 = 3221225472;
       v23 = __41__IKViewElement_applyUpdatesWithElement___block_invoke;
       v24 = &unk_27979B518;
-      v16 = v4;
+      v16 = elementCopy;
       v25 = v16;
-      v26 = v5;
-      [v15 enumerateKeysAndObjectsUsingBlock:&v21];
+      v26 = selfCopy;
+      [updatedIndexesByNewIndex enumerateKeysAndObjectsUsingBlock:&v21];
 
-      if (![(IKViewElement *)v16 didUpdateAutoHighlightIdentifier:v21]&& [(IKViewElement *)v5 didUpdateAutoHighlightIdentifier])
+      if (![(IKViewElement *)v16 didUpdateAutoHighlightIdentifier:v21]&& [(IKViewElement *)selfCopy didUpdateAutoHighlightIdentifier])
       {
         [(IKViewElement *)v16 setDidUpdateAutoHighlightIdentifier:1];
-        v17 = [(IKViewElement *)v5 autoHighlightIdentifier];
-        [(IKViewElement *)v16 setAutoHighlightIdentifier:v17];
+        autoHighlightIdentifier = [(IKViewElement *)selfCopy autoHighlightIdentifier];
+        [(IKViewElement *)v16 setAutoHighlightIdentifier:autoHighlightIdentifier];
       }
 
-      v18 = [(IKViewElement *)v5 parent];
+      parent = [(IKViewElement *)selfCopy parent];
 
-      if (!v18)
+      if (!parent)
       {
-        [(IKViewElement *)v5 setAppDocument:0];
+        [(IKViewElement *)selfCopy setAppDocument:0];
       }
 
       v19 = v16;
 
-      v5 = v19;
+      selfCopy = v19;
     }
 
     else if ((v7 & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
-      v8 = [(IKViewElement *)v5 _updateSubtreeWithElement:v4];
-      v9 = [(IKViewElement *)v5 dataDictionary];
-      v10 = [(IKViewElement *)v4 dataDictionary];
+      v8 = [(IKViewElement *)selfCopy _updateSubtreeWithElement:elementCopy];
+      dataDictionary = [(IKViewElement *)selfCopy dataDictionary];
+      dataDictionary2 = [(IKViewElement *)elementCopy dataDictionary];
 
-      if (v9 != v10)
+      if (dataDictionary != dataDictionary2)
       {
-        v11 = [(IKViewElement *)v4 dataDictionary];
-        [(IKViewElement *)v5 setDataDictionary:v11];
+        dataDictionary3 = [(IKViewElement *)elementCopy dataDictionary];
+        [(IKViewElement *)selfCopy setDataDictionary:dataDictionary3];
 
         if (v8 <= 1)
         {
@@ -1442,11 +1442,11 @@ void __45__IKViewElement_configureUpdatesWithElement___block_invoke_3(uint64_t a
         }
       }
 
-      if ([(IKViewElement *)v4 didUpdateAutoHighlightIdentifier])
+      if ([(IKViewElement *)elementCopy didUpdateAutoHighlightIdentifier])
       {
-        [(IKViewElement *)v5 setDidUpdateAutoHighlightIdentifier:1];
-        v12 = [(IKViewElement *)v4 autoHighlightIdentifier];
-        [(IKViewElement *)v5 setAutoHighlightIdentifier:v12];
+        [(IKViewElement *)selfCopy setDidUpdateAutoHighlightIdentifier:1];
+        autoHighlightIdentifier2 = [(IKViewElement *)elementCopy autoHighlightIdentifier];
+        [(IKViewElement *)selfCopy setAutoHighlightIdentifier:autoHighlightIdentifier2];
 
         if (v8 <= 1)
         {
@@ -1456,15 +1456,15 @@ void __45__IKViewElement_configureUpdatesWithElement___block_invoke_3(uint64_t a
 
       if (v8 >= 2)
       {
-        style = v5->_style;
-        v5->_style = 0;
+        style = selfCopy->_style;
+        selfCopy->_style = 0;
       }
 
-      [(IKViewElement *)v5 setUpdateType:v8];
+      [(IKViewElement *)selfCopy setUpdateType:v8];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 void __41__IKViewElement_applyUpdatesWithElement___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1484,42 +1484,42 @@ void __41__IKViewElement_applyUpdatesWithElement___block_invoke(uint64_t a1, voi
   [v12 applyUpdatesWithElement:v13];
 }
 
-- (void)updateWithActualElement:(id)a3
+- (void)updateWithActualElement:(id)element
 {
-  v20 = a3;
+  elementCopy = element;
   self->_isProxyElement = 0;
-  v4 = [v20 bindingController];
+  bindingController = [elementCopy bindingController];
   bindingController = self->_bindingController;
-  self->_bindingController = v4;
+  self->_bindingController = bindingController;
 
-  v6 = [v20 elementID];
+  elementID = [elementCopy elementID];
   elementID = self->_elementID;
-  self->_elementID = v6;
+  self->_elementID = elementID;
 
-  v8 = [v20 itmlID];
+  itmlID = [elementCopy itmlID];
   itmlID = self->_itmlID;
-  self->_itmlID = v8;
+  self->_itmlID = itmlID;
 
   features = self->_features;
   self->_features = 0;
 
-  v11 = [(IKViewElement *)self unfilteredChildren];
-  v12 = [v11 count];
+  unfilteredChildren = [(IKViewElement *)self unfilteredChildren];
+  v12 = [unfilteredChildren count];
 
   if (v12)
   {
     v13 = 0;
     do
     {
-      v14 = [(IKViewElement *)self unfilteredChildren];
-      v15 = [v14 objectAtIndexedSubscript:v13];
-      v16 = [v20 unfilteredChildren];
-      v17 = [v16 objectAtIndexedSubscript:v13];
+      unfilteredChildren2 = [(IKViewElement *)self unfilteredChildren];
+      v15 = [unfilteredChildren2 objectAtIndexedSubscript:v13];
+      unfilteredChildren3 = [elementCopy unfilteredChildren];
+      v17 = [unfilteredChildren3 objectAtIndexedSubscript:v13];
       [v15 updateWithActualElement:v17];
 
       ++v13;
-      v18 = [(IKViewElement *)self unfilteredChildren];
-      v19 = [v18 count];
+      unfilteredChildren4 = [(IKViewElement *)self unfilteredChildren];
+      v19 = [unfilteredChildren4 count];
     }
 
     while (v13 < v19);
@@ -1542,26 +1542,26 @@ void __41__IKViewElement_applyUpdatesWithElement___block_invoke(uint64_t a1, voi
     [v4 appendFormat:@" updateType=%@", v5];
   }
 
-  v6 = [(IKViewElement *)self style];
-  v7 = [v6 debugDescription];
+  style = [(IKViewElement *)self style];
+  v7 = [style debugDescription];
 
   if ([v7 length])
   {
     [v4 appendFormat:@" style=%@", v7];
   }
 
-  v8 = [(IKViewElement *)self attributes];
-  v9 = [v8 count];
+  attributes = [(IKViewElement *)self attributes];
+  v9 = [attributes count];
 
   if (v9)
   {
-    v10 = [(IKViewElement *)self attributes];
+    attributes2 = [(IKViewElement *)self attributes];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __33__IKViewElement_debugDescription__block_invoke;
     v24[3] = &unk_27979B0C0;
     v25 = v4;
-    [v10 enumerateKeysAndObjectsUsingBlock:v24];
+    [attributes2 enumerateKeysAndObjectsUsingBlock:v24];
   }
 
   [v4 appendString:@">"];
@@ -1607,9 +1607,9 @@ void __41__IKViewElement_applyUpdatesWithElement___block_invoke(uint64_t a1, voi
   style = self->_style;
   if (!style)
   {
-    v4 = [(IKViewElement *)self styleComposer];
-    v5 = [(IKViewElement *)self appDocument];
-    v6 = [v4 composedStyleWithMediaQueryEvaluator:v5];
+    styleComposer = [(IKViewElement *)self styleComposer];
+    appDocument = [(IKViewElement *)self appDocument];
+    v6 = [styleComposer composedStyleWithMediaQueryEvaluator:appDocument];
     v7 = [v6 copy];
 
     if (v7)
@@ -1631,16 +1631,16 @@ void __41__IKViewElement_applyUpdatesWithElement___block_invoke(uint64_t a1, voi
   return style;
 }
 
-- (void)setAppDocument:(id)a3
+- (void)setAppDocument:(id)document
 {
   v15 = *MEMORY[0x277D85DE8];
-  objc_storeWeak(&self->_appDocument, a3);
+  objc_storeWeak(&self->_appDocument, document);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(IKViewElement *)self unfilteredChildren];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  unfilteredChildren = [(IKViewElement *)self unfilteredChildren];
+  v5 = [unfilteredChildren countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1652,14 +1652,14 @@ void __41__IKViewElement_applyUpdatesWithElement___block_invoke(uint64_t a1, voi
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(unfilteredChildren);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) setAppDocument:0];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [unfilteredChildren countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -1674,10 +1674,10 @@ void __41__IKViewElement_applyUpdatesWithElement___block_invoke(uint64_t a1, voi
 
   if (!WeakRetained)
   {
-    v4 = [(IKViewElement *)self parent];
-    v5 = [v4 appDocument];
+    parent = [(IKViewElement *)self parent];
+    appDocument = [parent appDocument];
 
-    objc_storeWeak(&self->_appDocument, v5);
+    objc_storeWeak(&self->_appDocument, appDocument);
   }
 
   v6 = objc_loadWeakRetained(&self->_appDocument);
@@ -1685,43 +1685,43 @@ void __41__IKViewElement_applyUpdatesWithElement___block_invoke(uint64_t a1, voi
   return v6;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = [(IKViewElement *)self metadataDict];
-  v6 = [v5 objectForKey:v4];
+  subscriptCopy = subscript;
+  metadataDict = [(IKViewElement *)self metadataDict];
+  v6 = [metadataDict objectForKey:subscriptCopy];
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(IKViewElement *)self metadataDict];
+  objectCopy = object;
+  subscriptCopy = subscript;
+  metadataDict = [(IKViewElement *)self metadataDict];
 
-  if (v13 && !v7)
+  if (objectCopy && !metadataDict)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    [(IKViewElement *)self setMetadataDict:v8];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(IKViewElement *)self setMetadataDict:dictionary];
 
 LABEL_5:
-    v9 = [(IKViewElement *)self metadataDict];
-    [v9 setObject:v13 forKey:v6];
+    metadataDict2 = [(IKViewElement *)self metadataDict];
+    [metadataDict2 setObject:objectCopy forKey:subscriptCopy];
 
     goto LABEL_6;
   }
 
-  if (v13)
+  if (objectCopy)
   {
     goto LABEL_5;
   }
 
-  v10 = [(IKViewElement *)self metadataDict];
-  [v10 removeObjectForKey:v6];
+  metadataDict3 = [(IKViewElement *)self metadataDict];
+  [metadataDict3 removeObjectForKey:subscriptCopy];
 
-  v11 = [(IKViewElement *)self metadataDict];
-  v12 = [v11 count];
+  metadataDict4 = [(IKViewElement *)self metadataDict];
+  v12 = [metadataDict4 count];
 
   if (!v12)
   {
@@ -1731,76 +1731,76 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)resetProperty:(unint64_t)a3
+- (void)resetProperty:(unint64_t)property
 {
-  if (a3 == 2)
+  if (property == 2)
   {
     [(IKViewElement *)self setDidUpdateAutoHighlightIdentifier:0];
 
     [(IKViewElement *)self setAutoHighlightIdentifier:0];
   }
 
-  else if (a3 == 1)
+  else if (property == 1)
   {
 
     [(IKViewElement *)self resetUpdates];
   }
 }
 
-- (void)dispatchEvent:(id)a3 eventAttribute:(id)a4 canBubble:(BOOL)a5 isCancelable:(BOOL)a6 extraInfo:(id)a7 completionBlock:(id)a8
+- (void)dispatchEvent:(id)event eventAttribute:(id)attribute canBubble:(BOOL)bubble isCancelable:(BOOL)cancelable extraInfo:(id)info completionBlock:(id)block
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  if (([v14 isEqualToString:@"play"] & 1) == 0 && (objc_msgSend(v14, "isEqualToString:", @"select") & 1) == 0 && !objc_msgSend(v14, "isEqualToString:", @"holdselect"))
+  eventCopy = event;
+  attributeCopy = attribute;
+  infoCopy = info;
+  blockCopy = block;
+  if (([eventCopy isEqualToString:@"play"] & 1) == 0 && (objc_msgSend(eventCopy, "isEqualToString:", @"select") & 1) == 0 && !objc_msgSend(eventCopy, "isEqualToString:", @"holdselect"))
   {
     v23 = 0;
 LABEL_11:
-    v24 = [(IKViewElement *)self appDocument];
-    v25 = [v24 appContext];
+    appDocument = [(IKViewElement *)self appDocument];
+    appContext = [appDocument appContext];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __95__IKViewElement_dispatchEvent_eventAttribute_canBubble_isCancelable_extraInfo_completionBlock___block_invoke;
     v27[3] = &unk_27979C168;
-    v28 = v24;
-    v29 = self;
-    v30 = v14;
-    v33 = v17;
-    v31 = v15;
-    v34 = a5;
-    v35 = a6;
-    v32 = v16;
+    v28 = appDocument;
+    selfCopy = self;
+    v30 = eventCopy;
+    v33 = blockCopy;
+    v31 = attributeCopy;
+    bubbleCopy = bubble;
+    cancelableCopy = cancelable;
+    v32 = infoCopy;
     v36 = v23;
-    v26 = v24;
-    [v25 evaluate:v27 completionBlock:0];
+    v26 = appDocument;
+    [appContext evaluate:v27 completionBlock:0];
 
     goto LABEL_12;
   }
 
-  v18 = [(IKViewElement *)self activeSingularEvents];
-  v19 = [v18 containsObject:v14];
+  activeSingularEvents = [(IKViewElement *)self activeSingularEvents];
+  v19 = [activeSingularEvents containsObject:eventCopy];
 
   if (!v19)
   {
-    v20 = [(IKViewElement *)self activeSingularEvents];
+    activeSingularEvents2 = [(IKViewElement *)self activeSingularEvents];
 
-    if (!v20)
+    if (!activeSingularEvents2)
     {
       v21 = [MEMORY[0x277CBEB58] setWithCapacity:1];
       [(IKViewElement *)self setActiveSingularEvents:v21];
     }
 
-    v22 = [(IKViewElement *)self activeSingularEvents];
-    [v22 addObject:v14];
+    activeSingularEvents3 = [(IKViewElement *)self activeSingularEvents];
+    [activeSingularEvents3 addObject:eventCopy];
 
     v23 = 1;
     goto LABEL_11;
   }
 
-  if (v17)
+  if (blockCopy)
   {
-    (*(v17 + 2))(v17, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
   }
 
 LABEL_12:
@@ -1921,18 +1921,18 @@ void __95__IKViewElement_dispatchEvent_eventAttribute_canBubble_isCancelable_ext
     return 1;
   }
 
-  v3 = [(IKViewElement *)self parent];
-  v4 = [v3 isProxyElement];
+  parent = [(IKViewElement *)self parent];
+  isProxyElement = [parent isProxyElement];
 
-  return v4;
+  return isProxyElement;
 }
 
 - (BOOL)isHidden
 {
-  v2 = [(IKViewElement *)self style];
-  v3 = [v2 hidden];
+  style = [(IKViewElement *)self style];
+  hidden = [style hidden];
 
-  return v3;
+  return hidden;
 }
 
 - (NSArray)children
@@ -1973,15 +1973,15 @@ LABEL_10:
   return v8;
 }
 
-- (id)childElementWithType:(unint64_t)a3
+- (id)childElementWithType:(unint64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(IKViewElement *)self children];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  children = [(IKViewElement *)self children];
+  v5 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1992,18 +1992,18 @@ LABEL_10:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 elementType] == a3)
+        if ([v9 elementType] == type)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -2021,19 +2021,19 @@ LABEL_11:
   return v10;
 }
 
-- (id)childElementsWithType:(unint64_t)a3
+- (id)childElementsWithType:(unint64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(IKViewElement *)self children];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  children = [(IKViewElement *)self children];
+  v5 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    array = 0;
     v8 = *v16;
     do
     {
@@ -2041,22 +2041,22 @@ LABEL_11:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        if ([v10 elementType] == a3)
+        if ([v10 elementType] == type)
         {
-          if (!v7)
+          if (!array)
           {
-            v7 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          [v7 addObject:v10];
+          [array addObject:v10];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -2064,12 +2064,12 @@ LABEL_11:
 
   else
   {
-    v7 = 0;
+    array = 0;
   }
 
-  if ([v7 count])
+  if ([array count])
   {
-    v11 = v7;
+    v11 = array;
   }
 
   else
@@ -2083,15 +2083,15 @@ LABEL_11:
   return v11;
 }
 
-- (id)childTextElementWithStyle:(unint64_t)a3
+- (id)childTextElementWithStyle:(unint64_t)style
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(IKViewElement *)self children];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  children = [(IKViewElement *)self children];
+  v5 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2102,18 +2102,18 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 elementType] == 138 && objc_msgSend(v9, "textStyle") == a3)
+        if ([v9 elementType] == 138 && objc_msgSend(v9, "textStyle") == style)
         {
           v10 = v9;
           goto LABEL_12;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -2131,15 +2131,15 @@ LABEL_12:
   return v10;
 }
 
-- (id)childImageElementWithType:(unint64_t)a3
+- (id)childImageElementWithType:(unint64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(IKViewElement *)self children];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  children = [(IKViewElement *)self children];
+  v5 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2150,18 +2150,18 @@ LABEL_12:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 elementType] == 49 && objc_msgSend(v9, "imageType") == a3)
+        if ([v9 elementType] == 49 && objc_msgSend(v9, "imageType") == type)
         {
           v10 = v9;
           goto LABEL_12;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -2179,12 +2179,12 @@ LABEL_12:
   return v10;
 }
 
-- (void)disperseUpdateType:(unint64_t)a3
+- (void)disperseUpdateType:(unint64_t)type
 {
   v16 = *MEMORY[0x277D85DE8];
-  if ([(IKViewElement *)self updateType]< a3)
+  if ([(IKViewElement *)self updateType]< type)
   {
-    [(IKViewElement *)self setUpdateType:a3];
+    [(IKViewElement *)self setUpdateType:type];
   }
 
   v13 = 0u;
@@ -2207,7 +2207,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) disperseUpdateType:{a3, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) disperseUpdateType:{type, v11}];
       }
 
       while (v7 != v9);
@@ -2263,36 +2263,36 @@ LABEL_12:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)evaluateElementUpdateType:(id)a3
++ (unint64_t)evaluateElementUpdateType:(id)type
 {
-  v3 = a3;
-  if ([v3 isUpdated])
+  typeCopy = type;
+  if ([typeCopy isUpdated])
   {
-    v4 = 4;
+    isSubtreeUpdated = 4;
   }
 
-  else if ([v3 isChildrenUpdated])
+  else if ([typeCopy isChildrenUpdated])
   {
-    v4 = 3;
+    isSubtreeUpdated = 3;
   }
 
   else
   {
-    v4 = [v3 isSubtreeUpdated];
+    isSubtreeUpdated = [typeCopy isSubtreeUpdated];
   }
 
-  return v4;
+  return isSubtreeUpdated;
 }
 
-- (void)performImplicitUpdates:(id)a3
+- (void)performImplicitUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(IKViewElement *)self appDocument];
-  [v5 pushTrackingImplictUpdates];
+  updatesCopy = updates;
+  appDocument = [(IKViewElement *)self appDocument];
+  [appDocument pushTrackingImplictUpdates];
 
-  v4[2](v4);
-  v6 = [(IKViewElement *)self appDocument];
-  [v6 popTrackingImplictUpdates];
+  updatesCopy[2](updatesCopy);
+  appDocument2 = [(IKViewElement *)self appDocument];
+  [appDocument2 popTrackingImplictUpdates];
 }
 
 - (void)resetImplicitUpdates
@@ -2340,26 +2340,26 @@ LABEL_12:
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
-  v3 = [(IKViewElement *)self updateType];
+  updateType = [(IKViewElement *)self updateType];
   v4 = 2;
-  if (v3 > 2)
+  if (updateType > 2)
   {
-    v4 = v3;
+    v4 = updateType;
   }
 
   v35 = v4;
-  v5 = [(IKViewElement *)self styleComposer];
-  v6 = [v5 requiresMediaQueryEvaluation];
+  styleComposer = [(IKViewElement *)self styleComposer];
+  requiresMediaQueryEvaluation = [styleComposer requiresMediaQueryEvaluation];
 
-  if (v6)
+  if (requiresMediaQueryEvaluation)
   {
     if (+[IKViewElementStyle isHiddenStyleRegistered])
     {
-      v7 = [(IKViewElement *)self isHidden];
-      v8 = [(IKViewElement *)self styleComposer];
-      [v8 setNeedsRecomposition];
+      isHidden = [(IKViewElement *)self isHidden];
+      styleComposer2 = [(IKViewElement *)self styleComposer];
+      [styleComposer2 setNeedsRecomposition];
 
-      if (v7 != [(IKViewElement *)self isHidden])
+      if (isHidden != [(IKViewElement *)self isHidden])
       {
         v9 = v33[3];
         if (v9 <= 4)
@@ -2373,25 +2373,25 @@ LABEL_12:
 
     else
     {
-      v10 = [(IKViewElement *)self styleComposer];
-      [v10 setNeedsRecomposition];
+      styleComposer3 = [(IKViewElement *)self styleComposer];
+      [styleComposer3 setNeedsRecomposition];
     }
   }
 
-  v11 = [MEMORY[0x277CCAB58] indexSet];
-  v12 = [(IKViewElement *)self unfilteredChildren];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  unfilteredChildren = [(IKViewElement *)self unfilteredChildren];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __46__IKViewElement_appDocumentDidMarkStylesDirty__block_invoke;
   v29[3] = &unk_27979C190;
   v29[4] = self;
   v31 = &v32;
-  v13 = v11;
+  v13 = indexSet;
   v30 = v13;
-  [v12 enumerateObjectsUsingBlock:v29];
+  [unfilteredChildren enumerateObjectsUsingBlock:v29];
 
-  v14 = [(IKViewElement *)self aliases];
-  [v14 enumerateObjectsUsingBlock:&__block_literal_global_148];
+  aliases = [(IKViewElement *)self aliases];
+  [aliases enumerateObjectsUsingBlock:&__block_literal_global_148];
 
   v15 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v13, "count")}];
   for (i = [v13 firstIndex]; i != 0x7FFFFFFFFFFFFFFFLL; i = objc_msgSend(v13, "indexGreaterThanIndex:", i))
@@ -2500,48 +2500,48 @@ void __46__IKViewElement_appDocumentDidMarkStylesDirty__block_invoke(uint64_t a1
   }
 }
 
-- (unint64_t)_updateSubtreeWithElement:(id)a3
+- (unint64_t)_updateSubtreeWithElement:(id)element
 {
   v121 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 updateType];
-  v92 = v4;
-  v6 = [v4 unfilteredChildrenChangeSet];
-  v7 = [(IKViewElement *)self unfilteredChildren];
-  v8 = [v7 mutableCopy];
+  elementCopy = element;
+  updateType = [elementCopy updateType];
+  v92 = elementCopy;
+  unfilteredChildrenChangeSet = [elementCopy unfilteredChildrenChangeSet];
+  unfilteredChildren = [(IKViewElement *)self unfilteredChildren];
+  v8 = [unfilteredChildren mutableCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    array = v8;
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v97 = v10;
-  v87 = v5;
+  v97 = array;
+  v87 = updateType;
 
-  v11 = [MEMORY[0x277CCAB58] indexSet];
-  v12 = [v6 removedIndexes];
-  if (v12)
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  removedIndexes = [unfilteredChildrenChangeSet removedIndexes];
+  if (removedIndexes)
   {
-    v13 = [v6 removedIndexes];
-    v14 = [v13 firstIndex];
+    removedIndexes2 = [unfilteredChildrenChangeSet removedIndexes];
+    firstIndex = [removedIndexes2 firstIndex];
 
-    while (v14 != 0x7FFFFFFFFFFFFFFFLL)
+    while (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v15 = [v97 objectAtIndex:{v14, v87}];
+      v15 = [v97 objectAtIndex:{firstIndex, v87}];
       if ([(IKViewElement *)self canProxyUnloadedChildElement:v15])
       {
-        [v11 addIndex:v14];
+        [indexSet addIndex:firstIndex];
       }
 
       [v15 setAppDocument:0];
       [v15 setParent:0];
-      v16 = [v6 removedIndexes];
-      v14 = [v16 indexGreaterThanIndex:v14];
+      removedIndexes3 = [unfilteredChildrenChangeSet removedIndexes];
+      firstIndex = [removedIndexes3 indexGreaterThanIndex:firstIndex];
     }
   }
 
@@ -2549,30 +2549,30 @@ void __46__IKViewElement_appDocumentDidMarkStylesDirty__block_invoke(uint64_t a1
   {
   }
 
-  v17 = [v6 removedIndexes];
-  v18 = [v17 mutableCopy];
+  removedIndexes4 = [unfilteredChildrenChangeSet removedIndexes];
+  v18 = [removedIndexes4 mutableCopy];
   v19 = v18;
-  v90 = self;
+  selfCopy = self;
   if (v18)
   {
-    v20 = v18;
+    indexSet2 = v18;
   }
 
   else
   {
-    v20 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet2 = [MEMORY[0x277CCAB58] indexSet];
   }
 
-  v21 = v20;
+  v21 = indexSet2;
 
   v116 = 0u;
   v117 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v22 = [v6 movedIndexesByNewIndex];
-  v23 = [v22 allValues];
+  movedIndexesByNewIndex = [unfilteredChildrenChangeSet movedIndexesByNewIndex];
+  allValues = [movedIndexesByNewIndex allValues];
 
-  v24 = [v23 countByEnumeratingWithState:&v114 objects:v120 count:16];
+  v24 = [allValues countByEnumeratingWithState:&v114 objects:v120 count:16];
   if (v24)
   {
     v25 = v24;
@@ -2583,43 +2583,43 @@ void __46__IKViewElement_appDocumentDidMarkStylesDirty__block_invoke(uint64_t a1
       {
         if (*v115 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(allValues);
         }
 
         [v21 addIndex:{objc_msgSend(*(*(&v114 + 1) + 8 * i), "integerValue")}];
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v114 objects:v120 count:16];
+      v25 = [allValues countByEnumeratingWithState:&v114 objects:v120 count:16];
     }
 
     while (v25);
   }
 
   [v97 removeObjectsAtIndexes:v21];
-  v91 = [MEMORY[0x277CCAB58] indexSet];
-  v28 = [v6 addedIndexes];
-  v29 = v28;
-  if (v28)
+  indexSet3 = [MEMORY[0x277CCAB58] indexSet];
+  addedIndexes = [unfilteredChildrenChangeSet addedIndexes];
+  v29 = addedIndexes;
+  if (addedIndexes)
   {
-    v30 = v28;
+    indexSet4 = addedIndexes;
   }
 
   else
   {
-    v30 = [MEMORY[0x277CCAA78] indexSet];
+    indexSet4 = [MEMORY[0x277CCAA78] indexSet];
   }
 
-  v96 = v30;
+  v96 = indexSet4;
 
-  v31 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet5 = [MEMORY[0x277CCAB58] indexSet];
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
-  v32 = [v6 movedIndexesByNewIndex];
-  v33 = [v32 allKeys];
+  movedIndexesByNewIndex2 = [unfilteredChildrenChangeSet movedIndexesByNewIndex];
+  allKeys = [movedIndexesByNewIndex2 allKeys];
 
-  v34 = [v33 countByEnumeratingWithState:&v110 objects:v119 count:16];
+  v34 = [allKeys countByEnumeratingWithState:&v110 objects:v119 count:16];
   if (v34)
   {
     v35 = v34;
@@ -2630,31 +2630,31 @@ void __46__IKViewElement_appDocumentDidMarkStylesDirty__block_invoke(uint64_t a1
       {
         if (*v111 != v36)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(allKeys);
         }
 
-        [v31 addIndex:{objc_msgSend(*(*(&v110 + 1) + 8 * j), "integerValue")}];
+        [indexSet5 addIndex:{objc_msgSend(*(*(&v110 + 1) + 8 * j), "integerValue")}];
       }
 
-      v35 = [v33 countByEnumeratingWithState:&v110 objects:v119 count:16];
+      v35 = [allKeys countByEnumeratingWithState:&v110 objects:v119 count:16];
     }
 
     while (v35);
   }
 
-  v94 = v6;
+  v94 = unfilteredChildrenChangeSet;
 
-  v38 = [v96 firstIndex];
-  v39 = [v31 firstIndex];
-  v40 = v39 != 0x7FFFFFFFFFFFFFFFLL;
-  v41 = v38 != 0x7FFFFFFFFFFFFFFFLL;
-  v42 = v90;
-  while (v38 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex2 = [v96 firstIndex];
+  firstIndex3 = [indexSet5 firstIndex];
+  v40 = firstIndex3 != 0x7FFFFFFFFFFFFFFFLL;
+  v41 = firstIndex2 != 0x7FFFFFFFFFFFFFFFLL;
+  v42 = selfCopy;
+  while (firstIndex2 != 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_33:
     if (v41 && (v40 & 1) != 0)
     {
-      if (v38 <= v39)
+      if (firstIndex2 <= firstIndex3)
       {
         goto LABEL_36;
       }
@@ -2663,64 +2663,64 @@ LABEL_33:
     else if (v41 & ~v40)
     {
 LABEL_36:
-      v43 = [v92 unfilteredChildren];
-      v44 = [v43 objectAtIndexedSubscript:v38];
+      unfilteredChildren2 = [v92 unfilteredChildren];
+      v44 = [unfilteredChildren2 objectAtIndexedSubscript:firstIndex2];
 
-      v45 = [(IKViewElement *)v90 proxyElementForLoadedChildElement:v44];
+      v45 = [(IKViewElement *)selfCopy proxyElementForLoadedChildElement:v44];
       v46 = v45;
       if (v45)
       {
         [v45 updateWithActualElement:v44];
         v47 = v46;
 
-        [v91 addIndex:v38];
+        [indexSet3 addIndex:firstIndex2];
         v44 = v47;
       }
 
       else
       {
-        [(IKViewElement *)v90 adoptElement:v44];
+        [(IKViewElement *)selfCopy adoptElement:v44];
       }
 
-      [v97 insertObject:v44 atIndex:v38];
-      v38 = [v96 indexGreaterThanIndex:v38];
+      [v97 insertObject:v44 atIndex:firstIndex2];
+      firstIndex2 = [v96 indexGreaterThanIndex:firstIndex2];
 
       goto LABEL_42;
     }
 
-    v48 = [v94 movedIndexesByNewIndex];
-    v49 = [MEMORY[0x277CCABB0] numberWithInteger:v39];
-    v44 = [v48 objectForKeyedSubscript:v49];
+    movedIndexesByNewIndex3 = [v94 movedIndexesByNewIndex];
+    v49 = [MEMORY[0x277CCABB0] numberWithInteger:firstIndex3];
+    v44 = [movedIndexesByNewIndex3 objectForKeyedSubscript:v49];
 
-    v50 = -[NSArray objectAtIndexedSubscript:](v90->_unfilteredChildren, "objectAtIndexedSubscript:", [v44 integerValue]);
-    [v97 insertObject:v50 atIndex:v39];
+    v50 = -[NSArray objectAtIndexedSubscript:](selfCopy->_unfilteredChildren, "objectAtIndexedSubscript:", [v44 integerValue]);
+    [v97 insertObject:v50 atIndex:firstIndex3];
 
-    v39 = [v31 indexGreaterThanIndex:v39];
+    firstIndex3 = [indexSet5 indexGreaterThanIndex:firstIndex3];
 LABEL_42:
 
-    v40 = v39 != 0x7FFFFFFFFFFFFFFFLL;
-    v41 = v38 != 0x7FFFFFFFFFFFFFFFLL;
+    v40 = firstIndex3 != 0x7FFFFFFFFFFFFFFFLL;
+    v41 = firstIndex2 != 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v39 != 0x7FFFFFFFFFFFFFFFLL)
+  if (firstIndex3 != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_33;
   }
 
   v51 = 0x277CBE000uLL;
   v52 = v88;
-  v89 = v11;
+  v89 = indexSet;
   if (v88 == 1)
   {
-    v53 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet6 = [MEMORY[0x277CCAB58] indexSet];
     v106 = 0u;
     v107 = 0u;
     v108 = 0u;
     v109 = 0u;
-    v54 = [v94 updatedIndexesByNewIndex];
-    v55 = [v54 allValues];
+    updatedIndexesByNewIndex = [v94 updatedIndexesByNewIndex];
+    allValues2 = [updatedIndexesByNewIndex allValues];
 
-    v56 = [v55 countByEnumeratingWithState:&v106 objects:v118 count:16];
+    v56 = [allValues2 countByEnumeratingWithState:&v106 objects:v118 count:16];
     if (v56)
     {
       v57 = v56;
@@ -2731,23 +2731,23 @@ LABEL_42:
         {
           if (*v107 != v58)
           {
-            objc_enumerationMutation(v55);
+            objc_enumerationMutation(allValues2);
           }
 
-          [v53 addIndex:{objc_msgSend(*(*(&v106 + 1) + 8 * k), "integerValue")}];
+          [indexSet6 addIndex:{objc_msgSend(*(*(&v106 + 1) + 8 * k), "integerValue")}];
         }
 
-        v57 = [v55 countByEnumeratingWithState:&v106 objects:v118 count:16];
+        v57 = [allValues2 countByEnumeratingWithState:&v106 objects:v118 count:16];
       }
 
       while (v57);
     }
 
-    v60 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v53, "count")}];
-    v61 = [v53 firstIndex];
-    if (v61 != 0x7FFFFFFFFFFFFFFFLL)
+    v60 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(indexSet6, "count")}];
+    firstIndex4 = [indexSet6 firstIndex];
+    if (firstIndex4 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v62 = v61;
+      v62 = firstIndex4;
       v63 = 0;
       do
       {
@@ -2756,7 +2756,7 @@ LABEL_42:
         v66 = [MEMORY[0x277CCABB0] numberWithInteger:v62];
         [v60 setObject:v65 forKeyedSubscript:v66];
 
-        v62 = [v53 indexGreaterThanIndex:v62];
+        v62 = [indexSet6 indexGreaterThanIndex:v62];
         v63 = v64;
       }
 
@@ -2765,8 +2765,8 @@ LABEL_42:
 
     v67 = [v60 copy];
 
-    v11 = v89;
-    v42 = v90;
+    indexSet = v89;
+    v42 = selfCopy;
     v52 = 1;
     v51 = 0x277CBE000;
   }
@@ -2776,8 +2776,8 @@ LABEL_42:
     v67 = 0;
   }
 
-  v68 = [*(v51 + 2872) dictionary];
-  v69 = [v94 updatedIndexesByNewIndex];
+  dictionary = [*(v51 + 2872) dictionary];
+  updatedIndexesByNewIndex2 = [v94 updatedIndexesByNewIndex];
   v99[0] = MEMORY[0x277D85DD0];
   v99[1] = 3221225472;
   v99[2] = __43__IKViewElement__updateSubtreeWithElement___block_invoke;
@@ -2788,23 +2788,23 @@ LABEL_42:
   v93 = v67;
   v101 = v93;
   v102 = v42;
-  v71 = v68;
+  v71 = dictionary;
   v103 = v71;
   v72 = v97;
   v104 = v72;
-  [v69 enumerateKeysAndObjectsUsingBlock:v99];
+  [updatedIndexesByNewIndex2 enumerateKeysAndObjectsUsingBlock:v99];
 
-  v73 = [[IKChangeSet alloc] initWithAddedIndexes:v91 removedIndexes:v11 movedIndexesByNewIndex:0 updatedIndexesByNewIndex:v71];
+  v73 = [[IKChangeSet alloc] initWithAddedIndexes:indexSet3 removedIndexes:indexSet movedIndexesByNewIndex:0 updatedIndexesByNewIndex:v71];
   v74 = [v94 changeSetBySubtractingChangeSet:v73];
 
-  v75 = [v74 addedIndexes];
-  if ([v75 count])
+  addedIndexes2 = [v74 addedIndexes];
+  if ([addedIndexes2 count])
   {
     goto LABEL_60;
   }
 
-  v76 = [v74 removedIndexes];
-  if ([v76 count])
+  removedIndexes5 = [v74 removedIndexes];
+  if ([removedIndexes5 count])
   {
 
 LABEL_60:
@@ -2814,8 +2814,8 @@ LABEL_60:
   }
 
   v98 = v70;
-  v84 = [v74 movedIndexesByNewIndex];
-  v95 = [v84 count];
+  movedIndexesByNewIndex4 = [v74 movedIndexesByNewIndex];
+  v95 = [movedIndexesByNewIndex4 count];
 
   if (v95)
   {
@@ -2825,8 +2825,8 @@ LABEL_60:
 
   else
   {
-    v85 = [v74 updatedIndexesByNewIndex];
-    v86 = [v85 count];
+    updatedIndexesByNewIndex3 = [v74 updatedIndexesByNewIndex];
+    v86 = [updatedIndexesByNewIndex3 count];
 
     v77 = v86 != 0;
     v78 = v86 != 0;
@@ -2886,15 +2886,15 @@ void __43__IKViewElement__updateSubtreeWithElement___block_invoke(uint64_t a1, v
   [*(a1 + 64) replaceObjectAtIndex:objc_msgSend(v11 withObject:{"integerValue"), v10}];
 }
 
-- (BOOL)_elevateToImplicitUpdateType:(unint64_t)a3
+- (BOOL)_elevateToImplicitUpdateType:(unint64_t)type
 {
   implicitUpdateType = self->_implicitUpdateType;
-  if (implicitUpdateType < a3)
+  if (implicitUpdateType < type)
   {
-    self->_implicitUpdateType = a3;
+    self->_implicitUpdateType = type;
   }
 
-  return implicitUpdateType < a3;
+  return implicitUpdateType < type;
 }
 
 + (id)DOMEventTypeNameMap

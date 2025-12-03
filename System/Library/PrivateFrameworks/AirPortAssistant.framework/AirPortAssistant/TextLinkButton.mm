@@ -1,17 +1,17 @@
 @interface TextLinkButton
-- (TextLinkButton)initWithCoder:(id)a3;
-- (TextLinkButton)initWithFrame:(CGRect)a3;
+- (TextLinkButton)initWithCoder:(id)coder;
+- (TextLinkButton)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)tapAction:(id)a3;
+- (void)tapAction:(id)action;
 @end
 
 @implementation TextLinkButton
 
-- (TextLinkButton)initWithFrame:(CGRect)a3
+- (TextLinkButton)initWithFrame:(CGRect)frame
 {
   v33.receiver = self;
   v33.super_class = TextLinkButton;
-  v3 = [(TextLinkButton *)&v33 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TextLinkButton *)&v33 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v3;
   if (v3)
   {
@@ -33,11 +33,11 @@
   return v5;
 }
 
-- (TextLinkButton)initWithCoder:(id)a3
+- (TextLinkButton)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = TextLinkButton;
-  v3 = [(TextLinkButton *)&v7 initWithCoder:a3];
+  v3 = [(TextLinkButton *)&v7 initWithCoder:coder];
   v5 = v3;
   if (v3)
   {
@@ -55,9 +55,9 @@
   [(TextLinkButton *)&v3 dealloc];
 }
 
-- (void)tapAction:(id)a3
+- (void)tapAction:(id)action
 {
-  v4 = objc_msgSend_urlString(self, a2, a3);
+  v4 = objc_msgSend_urlString(self, a2, action);
   if (objc_msgSend_length(v4, v5, v6))
   {
     v9 = objc_msgSend_sharedApplication(MEMORY[0x277D75128], v7, v8);

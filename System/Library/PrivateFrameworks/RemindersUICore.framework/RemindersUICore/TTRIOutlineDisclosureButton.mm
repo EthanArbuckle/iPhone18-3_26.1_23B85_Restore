@@ -2,14 +2,14 @@
 - (BOOL)isSelected;
 - (void)buttonShapesSettingDidChange;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation TTRIOutlineDisclosureButton
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   TTRIOutlineDisclosureButton.layoutSubviews()();
 }
 
@@ -20,31 +20,31 @@
   return [(TTRIOutlineDisclosureButton *)&v3 isSelected];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   ObjectType = swift_getObjectType();
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v6 = self;
-  v7 = [(TTRIOutlineDisclosureButton *)&v12 isSelected];
-  v11.receiver = v6;
+  selfCopy = self;
+  isSelected = [(TTRIOutlineDisclosureButton *)&v12 isSelected];
+  v11.receiver = selfCopy;
   v11.super_class = ObjectType;
-  [(TTRIOutlineDisclosureButton *)&v11 setSelected:v3];
-  v10.receiver = v6;
+  [(TTRIOutlineDisclosureButton *)&v11 setSelected:selectedCopy];
+  v10.receiver = selfCopy;
   v10.super_class = ObjectType;
-  if (v7 != [(TTRIOutlineDisclosureButton *)&v10 isSelected])
+  if (isSelected != [(TTRIOutlineDisclosureButton *)&v10 isSelected])
   {
-    v9.receiver = v6;
+    v9.receiver = selfCopy;
     v9.super_class = ObjectType;
-    v8 = [(TTRIOutlineDisclosureButton *)&v9 isSelected];
-    sub_21D30281C(v8);
+    isSelected2 = [(TTRIOutlineDisclosureButton *)&v9 isSelected];
+    sub_21D30281C(isSelected2);
   }
 }
 
 - (void)buttonShapesSettingDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D302BE4();
 }
 

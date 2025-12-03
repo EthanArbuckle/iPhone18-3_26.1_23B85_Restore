@@ -1,15 +1,15 @@
 @interface DMDInstallConfigurationOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (NSSet)excludedBoolRestrictions;
 + (id)_intersectionAliasToFeatures;
 + (id)whitelistedClassesForRequest;
-- (BOOL)_installProfile:(id)a3 withRequest:(id)a4 error:(id *)a5;
-- (BOOL)_installRestrictionsPayload:(id)a3 withRequest:(id)a4 error:(id *)a5;
-- (id)_applyHeuristicsToRestrictions:(id)a3 error:(id *)a4;
-- (id)_intersectionFeatureForPayloadRestrictionKey:(id)a3;
-- (id)_mapMCRestrictionsFromPayload:(id)a3 error:(id *)a4;
-- (void)_rollbackProfile:(id)a3 withRequest:(id)a4 completion:(id)a5;
-- (void)runWithRequest:(id)a3;
+- (BOOL)_installProfile:(id)profile withRequest:(id)request error:(id *)error;
+- (BOOL)_installRestrictionsPayload:(id)payload withRequest:(id)request error:(id *)error;
+- (id)_applyHeuristicsToRestrictions:(id)restrictions error:(id *)error;
+- (id)_intersectionFeatureForPayloadRestrictionKey:(id)key;
+- (id)_mapMCRestrictionsFromPayload:(id)payload error:(id *)error;
+- (void)_rollbackProfile:(id)profile withRequest:(id)request completion:(id)completion;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -29,21 +29,21 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v10.receiver = a1;
+  requestCopy = request;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___DMDInstallConfigurationOperation;
-  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_6;
   }
 
-  v7 = [v6 profile];
+  profile = [requestCopy profile];
 
-  if (!v7)
+  if (!profile)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -51,17 +51,17 @@
     v11 = DMFInvalidParameterErrorKey;
     v12 = @"request.profile";
     v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_6:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_7;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
 + (NSSet)excludedBoolRestrictions
@@ -76,11 +76,11 @@ LABEL_7:
   return v3;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 profile];
-  v6 = [v5 objectForKeyedSubscript:@"PayloadContent"];
+  requestCopy = request;
+  profile = [requestCopy profile];
+  v6 = [profile objectForKeyedSubscript:@"PayloadContent"];
 
   if ([v6 count] == 1)
   {
@@ -90,7 +90,7 @@ LABEL_7:
 
     if (!v9)
     {
-      v15 = [v4 profile];
+      profile2 = [requestCopy profile];
       v10 = 0;
       goto LABEL_9;
     }
@@ -102,15 +102,15 @@ LABEL_7:
   {
     if ([v6 count] == 2)
     {
-      v11 = [v4 profile];
-      v12 = [v11 mutableCopy];
+      profile3 = [requestCopy profile];
+      v12 = [profile3 mutableCopy];
 
       v13 = [v6 objectAtIndexedSubscript:0];
       v29 = v13;
       v14 = [NSArray arrayWithObjects:&v29 count:1];
       [v12 setObject:v14 forKeyedSubscript:@"PayloadContent"];
 
-      v15 = [v12 copy];
+      profile2 = [v12 copy];
       v10 = [v6 objectAtIndexedSubscript:1];
 
       goto LABEL_9;
@@ -119,16 +119,16 @@ LABEL_7:
     v10 = 0;
   }
 
-  v15 = 0;
+  profile2 = 0;
 LABEL_9:
   v26 = 0;
-  v16 = [(DMDInstallConfigurationOperation *)self _installProfile:v15 withRequest:v4 error:&v26];
+  v16 = [(DMDInstallConfigurationOperation *)self _installProfile:profile2 withRequest:requestCopy error:&v26];
   v17 = v26;
   v18 = v17;
   if (v16)
   {
     v25 = v17;
-    v19 = [(DMDInstallConfigurationOperation *)self _installRestrictionsPayload:v10 withRequest:v4 error:&v25];
+    v19 = [(DMDInstallConfigurationOperation *)self _installRestrictionsPayload:v10 withRequest:requestCopy error:&v25];
     v20 = v25;
 
     if (v19)
@@ -146,7 +146,7 @@ LABEL_9:
       v23[4] = self;
       v24 = v20;
       v18 = v20;
-      [(DMDInstallConfigurationOperation *)self _rollbackProfile:v15 withRequest:v4 completion:v23];
+      [(DMDInstallConfigurationOperation *)self _rollbackProfile:profile2 withRequest:requestCopy completion:v23];
     }
   }
 
@@ -166,13 +166,13 @@ LABEL_9:
   }
 }
 
-- (BOOL)_installProfile:(id)a3 withRequest:(id)a4 error:(id *)a5
+- (BOOL)_installProfile:(id)profile withRequest:(id)request error:(id *)error
 {
-  v8 = a4;
-  if (a3)
+  requestCopy = request;
+  if (profile)
   {
     v30 = 0;
-    v9 = [NSPropertyListSerialization dataWithPropertyList:a3 format:200 options:0 error:&v30];
+    v9 = [NSPropertyListSerialization dataWithPropertyList:profile format:200 options:0 error:&v30];
     v10 = v30;
     if (!v9)
     {
@@ -182,11 +182,11 @@ LABEL_9:
         sub_10008468C(v10);
       }
 
-      if (a5)
+      if (error)
       {
         v15 = v10;
         v13 = 0;
-        *a5 = v10;
+        *error = v10;
       }
 
       else
@@ -199,17 +199,17 @@ LABEL_9:
     }
 
     v11 = +[MCProfileConnection sharedConnection];
-    v12 = [(DMDTaskOperation *)self context];
-    if ([v12 runAsUser])
+    context = [(DMDTaskOperation *)self context];
+    if ([context runAsUser])
     {
     }
 
     else
     {
-      v16 = [(DMDInstallConfigurationOperation *)self request];
-      v17 = [v16 type];
+      request = [(DMDInstallConfigurationOperation *)self request];
+      type = [request type];
 
-      if (v17 != 1)
+      if (type != 1)
       {
         v18 = 1;
         goto LABEL_13;
@@ -224,13 +224,13 @@ LABEL_13:
     v20 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v21 = [v20 mutableCopy];
 
-    v22 = [v8 managingProfileIdentifier];
+    managingProfileIdentifier = [requestCopy managingProfileIdentifier];
 
-    if (v22)
+    if (managingProfileIdentifier)
     {
       [v21 setObject:&__kCFBooleanTrue forKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
-      v23 = [v8 managingProfileIdentifier];
-      [v21 setObject:v23 forKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
+      managingProfileIdentifier2 = [requestCopy managingProfileIdentifier];
+      [v21 setObject:managingProfileIdentifier2 forKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
     }
 
     v24 = [v21 copy];
@@ -239,10 +239,10 @@ LABEL_13:
     v26 = v29;
 
     v13 = v25 != 0;
-    if (a5 && !v25)
+    if (error && !v25)
     {
       v27 = v26;
-      *a5 = v26;
+      *error = v26;
     }
 
 LABEL_21:
@@ -255,14 +255,14 @@ LABEL_22:
   return v13;
 }
 
-- (void)_rollbackProfile:(id)a3 withRequest:(id)a4 completion:(id)a5
+- (void)_rollbackProfile:(id)profile withRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = v8;
-  if (a3)
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (profile)
   {
-    v10 = [a4 profile];
-    v11 = [v10 objectForKeyedSubscript:@"PayloadIdentifier"];
+    profile = [request profile];
+    v11 = [profile objectForKeyedSubscript:@"PayloadIdentifier"];
 
     v12 = +[MCProfileConnection sharedConnection];
     v13 = [v12 installedProfileWithIdentifier:v11];
@@ -279,17 +279,17 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v14 = [(DMDTaskOperation *)self context];
-    if ([v14 runAsUser])
+    context = [(DMDTaskOperation *)self context];
+    if ([context runAsUser])
     {
     }
 
     else
     {
-      v17 = [(DMDInstallConfigurationOperation *)self request];
-      v18 = [v17 type];
+      request = [(DMDInstallConfigurationOperation *)self request];
+      type = [request type];
 
-      if (v18 != 1)
+      if (type != 1)
       {
         v19 = 1;
         goto LABEL_10;
@@ -304,17 +304,17 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  (*(v8 + 2))(v8, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_12:
 }
 
-- (BOOL)_installRestrictionsPayload:(id)a3 withRequest:(id)a4 error:(id *)a5
+- (BOOL)_installRestrictionsPayload:(id)payload withRequest:(id)request error:(id *)error
 {
-  v8 = a4;
-  if (a3)
+  requestCopy = request;
+  if (payload)
   {
     v35 = 0;
-    v9 = [(DMDInstallConfigurationOperation *)self _mapMCRestrictionsFromPayload:a3 error:&v35];
+    v9 = [(DMDInstallConfigurationOperation *)self _mapMCRestrictionsFromPayload:payload error:&v35];
     v10 = v35;
     v11 = v10;
     if (v9)
@@ -325,8 +325,8 @@ LABEL_12:
 
       if (v12)
       {
-        v14 = [v8 profile];
-        v15 = [v14 objectForKeyedSubscript:@"PayloadIdentifier"];
+        profile = [requestCopy profile];
+        v15 = [profile objectForKeyedSubscript:@"PayloadIdentifier"];
         v16 = [NSString stringWithFormat:@"%@-restrictions", v15];
 
         v17 = +[MCProfileConnection sharedConnection];
@@ -338,9 +338,9 @@ LABEL_12:
         {
           v19 = MCFeatureMaximumAppsRating;
           v20 = [MCRestrictionManager valueForFeature:MCFeatureMaximumAppsRating withRestrictionsDictionary:v12];
-          v21 = [v20 intValue];
+          intValue = [v20 intValue];
           v22 = DMFAppRatingUnrated;
-          if (v21 == [DMFAppRatingUnrated intValue])
+          if (intValue == [DMFAppRatingUnrated intValue])
           {
             v23 = +[MCProfileConnection sharedConnection];
             v24 = [v23 userValueForSetting:v19];
@@ -362,10 +362,10 @@ LABEL_12:
             sub_100084710(v11);
           }
 
-          if (a5)
+          if (error)
           {
             v31 = v11;
-            *a5 = v11;
+            *error = v11;
           }
         }
       }
@@ -378,11 +378,11 @@ LABEL_12:
           sub_100084794(v13);
         }
 
-        if (a5)
+        if (error)
         {
           v29 = v13;
           v18 = 0;
-          *a5 = v13;
+          *error = v13;
         }
 
         else
@@ -402,11 +402,11 @@ LABEL_12:
         sub_100084818(v11);
       }
 
-      if (a5)
+      if (error)
       {
         v27 = v11;
         v18 = 0;
-        *a5 = v11;
+        *error = v11;
       }
 
       else
@@ -424,10 +424,10 @@ LABEL_12:
   return v18;
 }
 
-- (id)_mapMCRestrictionsFromPayload:(id)a3 error:(id *)a4
+- (id)_mapMCRestrictionsFromPayload:(id)payload error:(id *)error
 {
-  v69 = a4;
-  v90 = a3;
+  errorCopy = error;
+  payloadCopy = payload;
   v4 = [NSMutableDictionary dictionaryWithCapacity:4];
   v5 = +[NSMutableDictionary dictionary];
   v6 = +[NSMutableDictionary dictionary];
@@ -447,13 +447,13 @@ LABEL_12:
   v76 = v8;
   [v4 setObject:v8 forKeyedSubscript:MCUnionKey];
   v13 = +[MCRestrictionManager sharedManager];
-  v14 = [v13 defaultRestrictions];
+  defaultRestrictions = [v13 defaultRestrictions];
 
-  v15 = [v14 objectForKeyedSubscript:v9];
-  v74 = [v14 objectForKeyedSubscript:v10];
-  v73 = [v14 objectForKeyedSubscript:v11];
-  v70 = v14;
-  v72 = [v14 objectForKeyedSubscript:v12];
+  v15 = [defaultRestrictions objectForKeyedSubscript:v9];
+  v74 = [defaultRestrictions objectForKeyedSubscript:v10];
+  v73 = [defaultRestrictions objectForKeyedSubscript:v11];
+  v70 = defaultRestrictions;
+  v72 = [defaultRestrictions objectForKeyedSubscript:v12];
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
@@ -480,7 +480,7 @@ LABEL_12:
 
         if ((v23 & 1) == 0)
         {
-          v24 = [v90 objectForKey:v21];
+          v24 = [payloadCopy objectForKey:v21];
           if (v24)
           {
             if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -499,15 +499,15 @@ LABEL_12:
             }
 
             v25 = [obj objectForKey:v21];
-            v26 = [v25 MCMutableDeepCopy];
+            mCMutableDeepCopy = [v25 MCMutableDeepCopy];
 
-            if (!v26)
+            if (!mCMutableDeepCopy)
             {
-              v26 = objc_alloc_init(NSMutableDictionary);
+              mCMutableDeepCopy = objc_alloc_init(NSMutableDictionary);
             }
 
-            [v26 setObject:v24 forKey:v19];
-            [v88 setObject:v26 forKey:v21];
+            [mCMutableDeepCopy setObject:v24 forKey:v19];
+            [v88 setObject:mCMutableDeepCopy forKey:v21];
           }
         }
       }
@@ -544,7 +544,7 @@ LABEL_17:
         }
 
         v35 = *(*(&v107 + 1) + 8 * j);
-        v36 = [v90 objectForKey:{v35, v69}];
+        v36 = [payloadCopy objectForKey:{v35, errorCopy}];
         if (v36)
         {
           objc_opt_class();
@@ -564,15 +564,15 @@ LABEL_17:
           }
 
           v37 = [v29 objectForKey:v35];
-          v38 = [v37 MCMutableDeepCopy];
+          mCMutableDeepCopy2 = [v37 MCMutableDeepCopy];
 
-          if (!v38)
+          if (!mCMutableDeepCopy2)
           {
-            v38 = objc_alloc_init(NSMutableDictionary);
+            mCMutableDeepCopy2 = objc_alloc_init(NSMutableDictionary);
           }
 
-          [v38 setObject:v36 forKey:v33];
-          [v87 setObject:v38 forKey:v35];
+          [mCMutableDeepCopy2 setObject:v36 forKey:v33];
+          [v87 setObject:mCMutableDeepCopy2 forKey:v35];
         }
       }
 
@@ -608,7 +608,7 @@ LABEL_31:
         }
 
         v41 = *(*(&v103 + 1) + 8 * k);
-        v42 = [v90 objectForKeyedSubscript:{v41, v69}];
+        v42 = [payloadCopy objectForKeyedSubscript:{v41, errorCopy}];
         if (v42)
         {
           objc_opt_class();
@@ -727,7 +727,7 @@ LABEL_55:
     }
 
     v54 = *(*(&v95 + 1) + 8 * v53);
-    v55 = [v90 objectForKeyedSubscript:{v54, v69}];
+    v55 = [payloadCopy objectForKeyedSubscript:{v54, errorCopy}];
     if (v55)
     {
       break;
@@ -825,11 +825,11 @@ LABEL_68:
 LABEL_76:
   v65 = v70;
   v64 = v71;
-  if (v69)
+  if (errorCopy)
   {
     v66 = v28;
     v67 = 0;
-    *v69 = v28;
+    *errorCopy = v28;
   }
 
   else
@@ -842,12 +842,12 @@ LABEL_80:
   return v67;
 }
 
-- (id)_applyHeuristicsToRestrictions:(id)a3 error:(id *)a4
+- (id)_applyHeuristicsToRestrictions:(id)restrictions error:(id *)error
 {
-  v5 = a3;
+  restrictionsCopy = restrictions;
   v6 = +[NSDictionary dictionary];
   v14 = 0;
-  v7 = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v5 toRestrictionsDictionary:v6 outChangeDetected:0 outError:&v14];
+  v7 = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:restrictionsCopy toRestrictionsDictionary:v6 outChangeDetected:0 outError:&v14];
 
   v8 = v14;
   v9 = +[MCHacks sharedHacks];
@@ -856,11 +856,11 @@ LABEL_80:
 
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v11 = v8;
       v12 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -889,11 +889,11 @@ LABEL_80:
   return v3;
 }
 
-- (id)_intersectionFeatureForPayloadRestrictionKey:(id)a3
+- (id)_intersectionFeatureForPayloadRestrictionKey:(id)key
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _intersectionAliasToFeatures];
-  v5 = [v4 objectForKey:v3];
+  keyCopy = key;
+  _intersectionAliasToFeatures = [objc_opt_class() _intersectionAliasToFeatures];
+  v5 = [_intersectionAliasToFeatures objectForKey:keyCopy];
   v6 = v5;
   if (v5)
   {
@@ -902,7 +902,7 @@ LABEL_80:
 
   else
   {
-    v7 = v3;
+    v7 = keyCopy;
   }
 
   v8 = v7;

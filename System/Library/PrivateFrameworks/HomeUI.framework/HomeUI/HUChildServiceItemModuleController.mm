@@ -1,59 +1,59 @@
 @interface HUChildServiceItemModuleController
-- (BOOL)canSelectItem:(id)a3;
-- (BOOL)shouldManageTextFieldForItem:(id)a3;
-- (Class)cellClassForItem:(id)a3;
-- (HUChildServiceItemModuleController)initWithModule:(id)a3;
-- (HUChildServiceItemModuleController)initWithModule:(id)a3 delegate:(id)a4;
+- (BOOL)canSelectItem:(id)item;
+- (BOOL)shouldManageTextFieldForItem:(id)item;
+- (Class)cellClassForItem:(id)item;
+- (HUChildServiceItemModuleController)initWithModule:(id)module;
+- (HUChildServiceItemModuleController)initWithModule:(id)module delegate:(id)delegate;
 - (HUChildServiceModuleControllerDelegate)delegate;
-- (id)defaultTextForTextField:(id)a3 item:(id)a4;
-- (id)placeholderTextForTextField:(id)a3 item:(id)a4;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)_identifyButtonPressed:(id)a3 forEvent:(id)a4;
-- (void)checkmarkTappedInCell:(id)a3 forItem:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)textDidChange:(id)a3 forTextField:(id)a4 item:(id)a5;
-- (void)textFieldDidBeginEditing:(id)a3 item:(id)a4;
-- (void)textFieldDidEndEditing:(id)a3 item:(id)a4;
+- (id)defaultTextForTextField:(id)field item:(id)item;
+- (id)placeholderTextForTextField:(id)field item:(id)item;
+- (unint64_t)didSelectItem:(id)item;
+- (void)_identifyButtonPressed:(id)pressed forEvent:(id)event;
+- (void)checkmarkTappedInCell:(id)cell forItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)textDidChange:(id)change forTextField:(id)field item:(id)item;
+- (void)textFieldDidBeginEditing:(id)editing item:(id)item;
+- (void)textFieldDidEndEditing:(id)editing item:(id)item;
 - (void)updateAllConfigurationDisabled;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUChildServiceItemModuleController
 
-- (HUChildServiceItemModuleController)initWithModule:(id)a3 delegate:(id)a4
+- (HUChildServiceItemModuleController)initWithModule:(id)module delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  moduleCopy = module;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = HUChildServiceItemModuleController;
-  v9 = [(HUItemModuleController *)&v14 initWithModule:v7];
+  v9 = [(HUItemModuleController *)&v14 initWithModule:moduleCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_childServiceItemModule, a3);
-    objc_storeWeak(&v10->_delegate, v8);
-    v11 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    objc_storeStrong(&v9->_childServiceItemModule, module);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     identifyButtonMap = v10->_identifyButtonMap;
-    v10->_identifyButtonMap = v11;
+    v10->_identifyButtonMap = weakToWeakObjectsMapTable;
   }
 
   return v10;
 }
 
-- (HUChildServiceItemModuleController)initWithModule:(id)a3
+- (HUChildServiceItemModuleController)initWithModule:(id)module
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithModule_delegate_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUChildServiceItemModuleController.m" lineNumber:41 description:{@"%s is unavailable; use %@ instead", "-[HUChildServiceItemModuleController initWithModule:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUChildServiceItemModuleController.m" lineNumber:41 description:{@"%s is unavailable; use %@ instead", "-[HUChildServiceItemModuleController initWithModule:]", v6}];
 
   return 0;
 }
 
 - (void)updateAllConfigurationDisabled
 {
-  v3 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-  v4 = [v3 allItems];
-  v5 = [v4 na_filter:&__block_literal_global_279];
+  childServiceItemModule = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+  allItems = [childServiceItemModule allItems];
+  v5 = [allItems na_filter:&__block_literal_global_279];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__HUChildServiceItemModuleController_updateAllConfigurationDisabled__block_invoke_2;
@@ -64,11 +64,11 @@
   if (v6 != [(HUChildServiceItemModuleController *)self allConfigurationDisabled])
   {
     self->_allConfigurationDisabled = v6;
-    v7 = [(HUChildServiceItemModuleController *)self delegate];
-    v8 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-    v9 = [v8 allItems];
-    v10 = [v9 allObjects];
-    [v7 updateCellForItems:v10];
+    delegate = [(HUChildServiceItemModuleController *)self delegate];
+    childServiceItemModule2 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+    allItems2 = [childServiceItemModule2 allItems];
+    allObjects = [allItems2 allObjects];
+    [delegate updateCellForItems:allObjects];
   }
 }
 
@@ -91,27 +91,27 @@ uint64_t __68__HUChildServiceItemModuleController_updateAllConfigurationDisabled
   return v5 ^ 1u;
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v3 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-  [v3 editingMode];
+  childServiceItemModule = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+  [childServiceItemModule editingMode];
 
   v4 = objc_opt_class();
 
   return v4;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v37 = a3;
-  v6 = a4;
-  v7 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-  v8 = [v7 editingMode];
+  cellCopy = cell;
+  itemCopy = item;
+  childServiceItemModule = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+  editingMode = [childServiceItemModule editingMode];
 
-  if (v8 == 1)
+  if (editingMode == 1)
   {
     objc_opt_class();
-    v9 = v37;
+    v9 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
@@ -130,7 +130,7 @@ uint64_t __68__HUChildServiceItemModuleController_updateAllConfigurationDisabled
   }
 
   objc_opt_class();
-  v12 = v37;
+  v12 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -145,8 +145,8 @@ uint64_t __68__HUChildServiceItemModuleController_updateAllConfigurationDisabled
 
   [v11 setDelegate:self];
   objc_opt_class();
-  v36 = v6;
-  v14 = v6;
+  v36 = itemCopy;
+  v14 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v15 = v14;
@@ -159,25 +159,25 @@ uint64_t __68__HUChildServiceItemModuleController_updateAllConfigurationDisabled
 
   v16 = v15;
 
-  v17 = [v16 accessories];
-  v18 = [v17 anyObject];
-  v19 = [v18 hf_owningBridgeAccessory];
+  accessories = [v16 accessories];
+  anyObject = [accessories anyObject];
+  hf_owningBridgeAccessory = [anyObject hf_owningBridgeAccessory];
   v35 = v16;
-  v20 = [v16 service];
-  v21 = [v20 hf_parentService];
-  v22 = [v21 accessory];
-  v23 = v19;
-  v24 = v22;
+  service = [v16 service];
+  hf_parentService = [service hf_parentService];
+  accessory = [hf_parentService accessory];
+  v23 = hf_owningBridgeAccessory;
+  v24 = accessory;
   v25 = v24;
   if (v23 == v24)
   {
 
 LABEL_17:
     objc_opt_class();
-    v17 = [v11 accessoryView];
+    accessories = [v11 accessoryView];
     if (objc_opt_isKindOfClass())
     {
-      v27 = v17;
+      v27 = accessories;
     }
 
     else
@@ -189,32 +189,32 @@ LABEL_17:
 
     if (!v28)
     {
-      v17 = [MEMORY[0x277D75220] buttonWithType:1];
+      accessories = [MEMORY[0x277D75220] buttonWithType:1];
       v29 = _HULocalizedStringWithDefaultValue(@"HUChildServiceModuleIdentifyAccessoryViewTitle", @"HUChildServiceModuleIdentifyAccessoryViewTitle", 1);
-      [v17 setTitle:v29 forState:0];
+      [accessories setTitle:v29 forState:0];
 
       v30 = _HULocalizedStringWithDefaultValue(@"HUChildServiceModuleRunningAccessoryViewTitle", @"HUChildServiceModuleRunningAccessoryViewTitle", 1);
-      [v17 setTitle:v30 forState:2];
+      [accessories setTitle:v30 forState:2];
 
-      v31 = [MEMORY[0x277D75348] hf_keyColor];
-      [v17 setTintColor:v31];
+      hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+      [accessories setTintColor:hf_keyColor];
 
-      v32 = [MEMORY[0x277D75348] systemGrayColor];
-      [v17 setTitleColor:v32 forState:2];
+      systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+      [accessories setTitleColor:systemGrayColor forState:2];
 
-      v33 = [MEMORY[0x277D75348] hf_keyColor];
-      [v17 setTitleColor:v33 forState:0];
+      hf_keyColor2 = [MEMORY[0x277D75348] hf_keyColor];
+      [accessories setTitleColor:hf_keyColor2 forState:0];
 
-      v34 = [MEMORY[0x277D75348] clearColor];
-      [v17 setBackgroundColor:v34];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [accessories setBackgroundColor:clearColor];
 
-      [v17 sizeToFit];
-      [v17 addTarget:self action:sel__identifyButtonPressed_forEvent_ forControlEvents:64];
-      [v11 setAccessoryView:v17];
+      [accessories sizeToFit];
+      [accessories addTarget:self action:sel__identifyButtonPressed_forEvent_ forControlEvents:64];
+      [v11 setAccessoryView:accessories];
     }
 
-    v18 = [(HUChildServiceItemModuleController *)self identifyButtonMap];
-    [v18 setObject:v14 forKey:v17];
+    anyObject = [(HUChildServiceItemModuleController *)self identifyButtonMap];
+    [anyObject setObject:v14 forKey:accessories];
     goto LABEL_24;
   }
 
@@ -233,21 +233,21 @@ LABEL_17:
 LABEL_24:
 LABEL_25:
 
-  v6 = v36;
+  itemCopy = v36;
 LABEL_26:
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v23 = a3;
-  v7 = a4;
-  v8 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-  v9 = [v8 editingMode];
+  cellCopy = cell;
+  itemCopy = item;
+  childServiceItemModule = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+  editingMode = [childServiceItemModule editingMode];
 
-  if (v9 == 1)
+  if (editingMode == 1)
   {
     objc_opt_class();
-    v10 = v23;
+    v10 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -260,21 +260,21 @@ LABEL_26:
 
     v12 = v11;
 
-    v13 = [v7 latestResults];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+    latestResults = [itemCopy latestResults];
+    v14 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
     [v12 setHideValue:{objc_msgSend(v14, "BOOLValue") ^ 1}];
 
 LABEL_6:
     goto LABEL_8;
   }
 
-  v15 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-  v16 = [v15 editingMode];
+  childServiceItemModule2 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+  editingMode2 = [childServiceItemModule2 editingMode];
 
-  if (!v16)
+  if (!editingMode2)
   {
     objc_opt_class();
-    v17 = v23;
+    v17 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v18 = v17;
@@ -294,11 +294,11 @@ LABEL_6:
 
     else
     {
-      v19 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-      v20 = [v19 configurationStateForItem:v7];
+      childServiceItemModule3 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+      v20 = [childServiceItemModule3 configurationStateForItem:itemCopy];
 
-      v21 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-      v22 = [v21 canToggleConfigurationStateForItem:v7];
+      childServiceItemModule4 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+      v22 = [childServiceItemModule4 canToggleConfigurationStateForItem:itemCopy];
 
       [v12 setRemoveCheckmark:0];
       [v12 setAllowCheckmarkSelectionWhileDisabled:v22];
@@ -312,27 +312,27 @@ LABEL_6:
 LABEL_8:
 }
 
-- (BOOL)canSelectItem:(id)a3
+- (BOOL)canSelectItem:(id)item
 {
-  v3 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-  v4 = [v3 editingMode] == 1;
+  childServiceItemModule = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+  v4 = [childServiceItemModule editingMode] == 1;
 
   return v4;
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-  if ([v5 editingMode] == 1)
+  itemCopy = item;
+  childServiceItemModule = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+  if ([childServiceItemModule editingMode] == 1)
   {
-    v6 = [(HUChildServiceItemModuleController *)self delegate];
+    delegate = [(HUChildServiceItemModuleController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(HUChildServiceItemModuleController *)self delegate];
-      v9 = [v8 childServiceEditorModuleController:self didSelectItem:v4];
+      delegate2 = [(HUChildServiceItemModuleController *)self delegate];
+      v9 = [delegate2 childServiceEditorModuleController:self didSelectItem:itemCopy];
 
       goto LABEL_6;
     }
@@ -342,10 +342,10 @@ LABEL_8:
   {
   }
 
-  v10 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-  v11 = [v10 editingMode];
+  childServiceItemModule2 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+  editingMode = [childServiceItemModule2 editingMode];
 
-  if (!v11)
+  if (!editingMode)
   {
     v12 = 1;
     goto LABEL_8;
@@ -354,25 +354,25 @@ LABEL_8:
 LABEL_6:
   v14.receiver = self;
   v14.super_class = HUChildServiceItemModuleController;
-  v12 = [(HUItemModuleController *)&v14 didSelectItem:v4];
+  v12 = [(HUItemModuleController *)&v14 didSelectItem:itemCopy];
 LABEL_8:
 
   return v12;
 }
 
-- (BOOL)shouldManageTextFieldForItem:(id)a3
+- (BOOL)shouldManageTextFieldForItem:(id)item
 {
-  v3 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-  v4 = [v3 editingMode] == 0;
+  childServiceItemModule = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+  v4 = [childServiceItemModule editingMode] == 0;
 
   return v4;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3 item:(id)a4
+- (void)textFieldDidBeginEditing:(id)editing item:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   objc_opt_class();
-  v11 = v5;
+  v11 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v11;
@@ -385,32 +385,32 @@ LABEL_8:
 
   v7 = v6;
 
-  v8 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-  v9 = [v8 home];
-  v10 = [v7 serviceLikeBuilderInHome:v9];
+  childServiceItemModule = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+  home = [childServiceItemModule home];
+  v10 = [v7 serviceLikeBuilderInHome:home];
   [(HUChildServiceItemModuleController *)self setActivelyEditingNameServiceBuilder:v10];
 }
 
-- (void)textDidChange:(id)a3 forTextField:(id)a4 item:(id)a5
+- (void)textDidChange:(id)change forTextField:(id)field item:(id)item
 {
-  v6 = a3;
-  v7 = [(HUChildServiceItemModuleController *)self activelyEditingNameServiceBuilder];
-  [v7 setName:v6];
+  changeCopy = change;
+  activelyEditingNameServiceBuilder = [(HUChildServiceItemModuleController *)self activelyEditingNameServiceBuilder];
+  [activelyEditingNameServiceBuilder setName:changeCopy];
 }
 
-- (void)textFieldDidEndEditing:(id)a3 item:(id)a4
+- (void)textFieldDidEndEditing:(id)editing item:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUChildServiceItemModuleController *)self activelyEditingNameServiceBuilder];
+  editingCopy = editing;
+  itemCopy = item;
+  activelyEditingNameServiceBuilder = [(HUChildServiceItemModuleController *)self activelyEditingNameServiceBuilder];
 
-  if (!v8)
+  if (!activelyEditingNameServiceBuilder)
   {
-    v9 = [(HUChildServiceItemModuleController *)self activelyEditingNameServiceBuilder];
-    NSLog(&cfstr_ServiceBuilder.isa, v9);
+    activelyEditingNameServiceBuilder2 = [(HUChildServiceItemModuleController *)self activelyEditingNameServiceBuilder];
+    NSLog(&cfstr_ServiceBuilder.isa, activelyEditingNameServiceBuilder2);
   }
 
-  v10 = v7;
+  v10 = itemCopy;
   if ([v10 conformsToProtocol:&unk_28251B0C8])
   {
     v11 = v10;
@@ -423,34 +423,34 @@ LABEL_8:
 
   v12 = v11;
 
-  v13 = [v12 namingComponentForHomeKitObject];
-  v14 = [(HUChildServiceItemModuleController *)self defaultTextForTextField:v6 item:v10];
+  namingComponentForHomeKitObject = [v12 namingComponentForHomeKitObject];
+  v14 = [(HUChildServiceItemModuleController *)self defaultTextForTextField:editingCopy item:v10];
 
-  v15 = [v6 text];
-  v16 = [v13 homeKitSafeStringForString:v15];
+  text = [editingCopy text];
+  v16 = [namingComponentForHomeKitObject homeKitSafeStringForString:text];
 
-  v17 = [v6 text];
-  v18 = [v17 isEqualToString:v16];
+  text2 = [editingCopy text];
+  v18 = [text2 isEqualToString:v16];
 
   if ((v18 & 1) == 0)
   {
-    [v6 setText:v16];
+    [editingCopy setText:v16];
   }
 
   if (([v16 isEqualToString:v14] & 1) == 0)
   {
-    v19 = [(HUChildServiceItemModuleController *)self activelyEditingNameServiceBuilder];
-    [v19 setName:v16];
+    activelyEditingNameServiceBuilder3 = [(HUChildServiceItemModuleController *)self activelyEditingNameServiceBuilder];
+    [activelyEditingNameServiceBuilder3 setName:v16];
 
-    v20 = [(HUChildServiceItemModuleController *)self activelyEditingNameServiceBuilder];
-    v21 = [v20 commitItem];
+    activelyEditingNameServiceBuilder4 = [(HUChildServiceItemModuleController *)self activelyEditingNameServiceBuilder];
+    commitItem = [activelyEditingNameServiceBuilder4 commitItem];
 
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __66__HUChildServiceItemModuleController_textFieldDidEndEditing_item___block_invoke;
     v23[3] = &unk_277DB7530;
     v23[4] = self;
-    v22 = [v21 addCompletionBlock:v23];
+    v22 = [commitItem addCompletionBlock:v23];
   }
 }
 
@@ -481,12 +481,12 @@ uint64_t __66__HUChildServiceItemModuleController_textFieldDidEndEditing_item___
   return [*(a1 + 32) setActivelyEditingNameServiceBuilder:0];
 }
 
-- (id)defaultTextForTextField:(id)a3 item:(id)a4
+- (id)defaultTextForTextField:(id)field item:(id)item
 {
-  v4 = a4;
-  if ([v4 conformsToProtocol:&unk_28251B0C8])
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_28251B0C8])
   {
-    v5 = v4;
+    v5 = itemCopy;
   }
 
   else
@@ -495,19 +495,19 @@ uint64_t __66__HUChildServiceItemModuleController_textFieldDidEndEditing_item___
   }
 
   v6 = v5;
-  v7 = [v6 namingComponentForHomeKitObject];
+  namingComponentForHomeKitObject = [v6 namingComponentForHomeKitObject];
 
-  v8 = [v7 textFieldDisplayText];
+  textFieldDisplayText = [namingComponentForHomeKitObject textFieldDisplayText];
 
-  return v8;
+  return textFieldDisplayText;
 }
 
-- (id)placeholderTextForTextField:(id)a3 item:(id)a4
+- (id)placeholderTextForTextField:(id)field item:(id)item
 {
-  v4 = a4;
-  if ([v4 conformsToProtocol:&unk_28251B0C8])
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_28251B0C8])
   {
-    v5 = v4;
+    v5 = itemCopy;
   }
 
   else
@@ -516,18 +516,18 @@ uint64_t __66__HUChildServiceItemModuleController_textFieldDidEndEditing_item___
   }
 
   v6 = v5;
-  v7 = [v6 namingComponentForHomeKitObject];
+  namingComponentForHomeKitObject = [v6 namingComponentForHomeKitObject];
 
-  v8 = [v7 placeholderText];
+  placeholderText = [namingComponentForHomeKitObject placeholderText];
 
-  return v8;
+  return placeholderText;
 }
 
-- (void)_identifyButtonPressed:(id)a3 forEvent:(id)a4
+- (void)_identifyButtonPressed:(id)pressed forEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(HUChildServiceItemModuleController *)self identifyButtonMap];
-  v7 = [v6 objectForKey:v5];
+  pressedCopy = pressed;
+  identifyButtonMap = [(HUChildServiceItemModuleController *)self identifyButtonMap];
+  v7 = [identifyButtonMap objectForKey:pressedCopy];
 
   objc_opt_class();
   v8 = v7;
@@ -543,17 +543,17 @@ uint64_t __66__HUChildServiceItemModuleController_textFieldDidEndEditing_item___
 
   v10 = v9;
 
-  v11 = [v10 accessories];
-  v12 = [v11 anyObject];
+  accessories = [v10 accessories];
+  anyObject = [accessories anyObject];
 
-  [v5 setEnabled:0];
+  [pressedCopy setEnabled:0];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __70__HUChildServiceItemModuleController__identifyButtonPressed_forEvent___block_invoke;
   v14[3] = &unk_277DB8C00;
-  v15 = v5;
-  v13 = v5;
-  [v12 identifyWithCompletionHandler:v14];
+  v15 = pressedCopy;
+  v13 = pressedCopy;
+  [anyObject identifyWithCompletionHandler:v14];
 }
 
 void __70__HUChildServiceItemModuleController__identifyButtonPressed_forEvent___block_invoke(uint64_t a1, void *a2)
@@ -573,11 +573,11 @@ void __70__HUChildServiceItemModuleController__identifyButtonPressed_forEvent___
   }
 }
 
-- (void)checkmarkTappedInCell:(id)a3 forItem:(id)a4
+- (void)checkmarkTappedInCell:(id)cell forItem:(id)item
 {
-  v7 = a4;
-  v5 = [(HUChildServiceItemModuleController *)self childServiceItemModule];
-  v6 = [v5 toggleConfigurationStateForItem:v7];
+  itemCopy = item;
+  childServiceItemModule = [(HUChildServiceItemModuleController *)self childServiceItemModule];
+  v6 = [childServiceItemModule toggleConfigurationStateForItem:itemCopy];
 }
 
 - (HUChildServiceModuleControllerDelegate)delegate

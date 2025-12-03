@@ -1,19 +1,19 @@
 @interface _MLCCPUEmbedding
-- (_MLCCPUEmbedding)initWithDevice:(id)a3 descriptor:(id)a4 weights:(id)a5 inferenceOnly:(BOOL)a6;
+- (_MLCCPUEmbedding)initWithDevice:(id)device descriptor:(id)descriptor weights:(id)weights inferenceOnly:(BOOL)only;
 @end
 
 @implementation _MLCCPUEmbedding
 
-- (_MLCCPUEmbedding)initWithDevice:(id)a3 descriptor:(id)a4 weights:(id)a5 inferenceOnly:(BOOL)a6
+- (_MLCCPUEmbedding)initWithDevice:(id)device descriptor:(id)descriptor weights:(id)weights inferenceOnly:(BOOL)only
 {
   v53[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
+  weightsCopy = weights;
   v13 = MEMORY[0x277CBEBF8];
   v14 = [MEMORY[0x277CBEBF8] mutableCopy];
   v15 = [v13 mutableCopy];
-  if (a6)
+  if (only)
   {
     v16 = 0;
     v17 = 0;
@@ -21,29 +21,29 @@
 
   else
   {
-    v44 = a6;
-    v45 = v10;
+    onlyCopy = only;
+    v45 = deviceCopy;
     v47 = v14;
     memset(v52, 0, sizeof(v52));
-    v18 = [v12 descriptor];
-    v19 = [v18 shape];
-    v20 = [v12 descriptor];
-    v21 = [v20 stride];
-    v22 = [v12 descriptor];
-    v23 = CPU_BuildBNNSNDArrayDescriptorRowMajor(v52, v19, v21, 0, [v22 dataType], 2, 0);
+    descriptor = [weightsCopy descriptor];
+    shape = [descriptor shape];
+    descriptor2 = [weightsCopy descriptor];
+    stride = [descriptor2 stride];
+    descriptor3 = [weightsCopy descriptor];
+    v23 = CPU_BuildBNNSNDArrayDescriptorRowMajor(v52, shape, stride, 0, [descriptor3 dataType], 2, 0);
 
     if (!v23)
     {
-      v41 = 0;
-      v10 = v45;
+      selfCopy2 = 0;
+      deviceCopy = v45;
       v14 = v47;
       goto LABEL_14;
     }
 
     v16 = [MEMORY[0x277CBEA90] dataWithBytes:v52 length:176];
-    v24 = [v12 data];
-    v25 = [v24 bytes];
-    *([v16 bytes] + 136) = v25;
+    data = [weightsCopy data];
+    bytes = [data bytes];
+    *([v16 bytes] + 136) = bytes;
 
     v49 = [MEMORY[0x277CBEA90] dataWithBytes:v52 length:176];
     for (i = 0; i != 3; ++i)
@@ -52,9 +52,9 @@
       [v15 setObject:v27 atIndexedSubscript:i];
     }
 
-    v10 = v45;
+    deviceCopy = v45;
     v14 = v47;
-    a6 = v44;
+    only = onlyCopy;
     v17 = v49;
   }
 
@@ -63,40 +63,40 @@
   if (v28)
   {
     [v14 addObject:v28];
-    v29 = [v11 paddingIndex];
-    [v28 setPaddingIndex:v29];
+    paddingIndex = [descriptorCopy paddingIndex];
+    [v28 setPaddingIndex:paddingIndex];
 
     [v28 setEmbeddingParams:0];
-    v30 = [v11 maximumNorm];
+    maximumNorm = [descriptorCopy maximumNorm];
 
-    if (v30)
+    if (maximumNorm)
     {
-      v31 = [v11 maximumNorm];
-      v53[0] = v31;
-      [v11 pNorm];
-      v46 = v11;
+      maximumNorm2 = [descriptorCopy maximumNorm];
+      v53[0] = maximumNorm2;
+      [descriptorCopy pNorm];
+      v46 = descriptorCopy;
       v48 = v14;
-      v32 = v12;
-      v34 = v33 = v10;
+      v32 = weightsCopy;
+      v34 = v33 = deviceCopy;
       v53[1] = v34;
       [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
       v35 = v16;
-      v36 = self;
-      v38 = v37 = a6;
+      selfCopy = self;
+      v38 = v37 = only;
       [v28 setEmbeddingParams:v38];
 
-      a6 = v37;
-      self = v36;
+      only = v37;
+      self = selfCopy;
       v16 = v35;
 
-      v10 = v33;
-      v12 = v32;
-      v11 = v46;
+      deviceCopy = v33;
+      weightsCopy = v32;
+      descriptorCopy = v46;
       v14 = v48;
     }
 
-    [v28 setScaleGradientByFrequency:{objc_msgSend(v11, "scalesGradientByFrequency")}];
-    if (!a6)
+    [v28 setScaleGradientByFrequency:{objc_msgSend(descriptorCopy, "scalesGradientByFrequency")}];
+    if (!only)
     {
       v39 = [MEMORY[0x277CBEBF8] mutableCopy];
       [v28 setWeightsDeltaDataBytesArray:v39];
@@ -106,13 +106,13 @@
   v40 = [v14 copy];
   v51.receiver = self;
   v51.super_class = _MLCCPUEmbedding;
-  self = [(_MLCCPULayer *)&v51 initWithDevice:v10 deviceOps:v40];
+  self = [(_MLCCPULayer *)&v51 initWithDevice:deviceCopy deviceOps:v40];
 
-  v41 = self;
+  selfCopy2 = self;
 LABEL_14:
 
   v42 = *MEMORY[0x277D85DE8];
-  return v41;
+  return selfCopy2;
 }
 
 @end

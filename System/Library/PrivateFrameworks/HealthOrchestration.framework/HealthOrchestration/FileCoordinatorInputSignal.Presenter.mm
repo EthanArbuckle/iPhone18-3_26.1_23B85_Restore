@@ -24,7 +24,7 @@
   if (swift_weakLoadStrong())
   {
     v3 = OBJC_IVAR____TtCC19HealthOrchestration26FileCoordinatorInputSignal9Presenter_observedURL;
-    v4 = self;
+    selfCopy = self;
     sub_228819478(self + v3);
   }
 }

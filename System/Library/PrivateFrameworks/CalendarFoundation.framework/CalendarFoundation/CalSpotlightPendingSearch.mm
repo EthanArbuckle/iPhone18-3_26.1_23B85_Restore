@@ -1,17 +1,17 @@
 @interface CalSpotlightPendingSearch
-+ (id)_createSearchQueryWithPredicate:(id)a3 options:(id)a4;
++ (id)_createSearchQueryWithPredicate:(id)predicate options:(id)options;
 + (id)_pendingSearches;
 + (id)_queue;
-+ (id)_resultForSearchableItem:(id)a3;
-+ (id)_resultsForSearchableItems:(id)a3;
-- (CalSpotlightPendingSearch)initWithString:(id)a3 clientBundleID:(id)a4 completionHandler:(id)a5;
-- (CalSpotlightPendingSearch)searchWithString:(id)a3;
++ (id)_resultForSearchableItem:(id)item;
++ (id)_resultsForSearchableItems:(id)items;
+- (CalSpotlightPendingSearch)initWithString:(id)string clientBundleID:(id)d completionHandler:(id)handler;
+- (CalSpotlightPendingSearch)searchWithString:(id)string;
 - (void)_searchEnded;
-- (void)_startSearchWithQuery:(id)a3;
+- (void)_startSearchWithQuery:(id)query;
 - (void)cancel;
-- (void)searchQuery:(id)a3 didFailWithError:(id)a4;
-- (void)searchQuery:(id)a3 didReturnItems:(id)a4;
-- (void)searchQuery:(id)a3 statusChanged:(unint64_t)a4;
+- (void)searchQuery:(id)query didFailWithError:(id)error;
+- (void)searchQuery:(id)query didReturnItems:(id)items;
+- (void)searchQuery:(id)query statusChanged:(unint64_t)changed;
 @end
 
 @implementation CalSpotlightPendingSearch
@@ -35,35 +35,35 @@ uint64_t __35__CalSpotlightPendingSearch__queue__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)_createSearchQueryWithPredicate:(id)a3 options:(id)a4
++ (id)_createSearchQueryWithPredicate:(id)predicate options:(id)options
 {
-  v5 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  predicateCopy = predicate;
   v7 = [objc_alloc(EKWeakLinkClass(@"MDSearchQuery" 0xBuLL))];
 
   return v7;
 }
 
-- (CalSpotlightPendingSearch)initWithString:(id)a3 clientBundleID:(id)a4 completionHandler:(id)a5
+- (CalSpotlightPendingSearch)initWithString:(id)string clientBundleID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  dCopy = d;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = CalSpotlightPendingSearch;
   v11 = [(CalSpotlightPendingSearch *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    [(CalSpotlightPendingSearch *)v11 setClientBundleID:v9];
+    [(CalSpotlightPendingSearch *)v11 setClientBundleID:dCopy];
     v13 = objc_opt_new();
     [(CalSpotlightPendingSearch *)v12 setSearchableItemIdentifiers:v13];
 
     v14 = objc_opt_new();
     [(CalSpotlightPendingSearch *)v12 setSearchableItems:v14];
 
-    [(CalSpotlightPendingSearch *)v12 setCompletionHandler:v10];
-    [(CalSpotlightPendingSearch *)v12 searchWithString:v8];
+    [(CalSpotlightPendingSearch *)v12 setCompletionHandler:handlerCopy];
+    [(CalSpotlightPendingSearch *)v12 searchWithString:stringCopy];
   }
 
   return v12;
@@ -84,42 +84,42 @@ uint64_t __35__CalSpotlightPendingSearch__queue__block_invoke()
   return v2;
 }
 
-- (void)_startSearchWithQuery:(id)a3
+- (void)_startSearchWithQuery:(id)query
 {
-  v5 = a3;
-  v4 = [objc_opt_class() _pendingSearches];
-  [v4 addObject:self];
+  queryCopy = query;
+  _pendingSearches = [objc_opt_class() _pendingSearches];
+  [_pendingSearches addObject:self];
 
-  [(CalSpotlightPendingSearch *)self setQuery:v5];
-  [v5 start];
+  [(CalSpotlightPendingSearch *)self setQuery:queryCopy];
+  [queryCopy start];
 }
 
 - (void)_searchEnded
 {
   [(CalSpotlightPendingSearch *)self setQuery:0];
-  v3 = [objc_opt_class() _pendingSearches];
-  [v3 removeObject:self];
+  _pendingSearches = [objc_opt_class() _pendingSearches];
+  [_pendingSearches removeObject:self];
 }
 
-- (CalSpotlightPendingSearch)searchWithString:(id)a3
+- (CalSpotlightPendingSearch)searchWithString:(id)string
 {
-  v4 = a3;
-  v5 = [(CalSpotlightPendingSearch *)self query];
+  stringCopy = string;
+  query = [(CalSpotlightPendingSearch *)self query];
 
-  if (v5)
+  if (query)
   {
     [CalSpotlightPendingSearch searchWithString:];
   }
 
-  v6 = [objc_opt_class() _queue];
+  _queue = [objc_opt_class() _queue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__CalSpotlightPendingSearch_searchWithString___block_invoke;
   v9[3] = &unk_1E7EC6528;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = stringCopy;
+  selfCopy = self;
+  v7 = stringCopy;
+  dispatch_async(_queue, v9);
 
   return result;
 }
@@ -164,13 +164,13 @@ void __46__CalSpotlightPendingSearch_searchWithString___block_invoke(uint64_t a1
 
 - (void)cancel
 {
-  v3 = [objc_opt_class() _queue];
+  _queue = [objc_opt_class() _queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__CalSpotlightPendingSearch_cancel__block_invoke;
   block[3] = &unk_1E7EC66B0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(_queue, block);
 }
 
 void __35__CalSpotlightPendingSearch_cancel__block_invoke(uint64_t a1)
@@ -188,20 +188,20 @@ void __35__CalSpotlightPendingSearch_cancel__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)_resultForSearchableItem:(id)a3
++ (id)_resultForSearchableItem:(id)item
 {
-  v3 = [a3 attributeSet];
-  v4 = v3;
-  if (v3)
+  attributeSet = [item attributeSet];
+  v4 = attributeSet;
+  if (attributeSet)
   {
-    v5 = [v3 identifier];
-    v6 = [v4 title];
-    v7 = v6;
+    identifier = [attributeSet identifier];
+    title = [v4 title];
+    v7 = title;
     v8 = 0;
-    if (v5 && v6)
+    if (identifier && title)
     {
       v8 = objc_opt_new();
-      [v8 setIdentifier:v5];
+      [v8 setIdentifier:identifier];
       [v8 setTitle:v7];
     }
   }
@@ -214,16 +214,16 @@ void __35__CalSpotlightPendingSearch_cancel__block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (id)_resultsForSearchableItems:(id)a3
++ (id)_resultsForSearchableItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  itemsCopy = items;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -238,7 +238,7 @@ void __35__CalSpotlightPendingSearch_cancel__block_invoke(uint64_t a1)
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 _resultForSearchableItem:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self _resultForSearchableItem:{*(*(&v14 + 1) + 8 * i), v14}];
         if (v11)
         {
           [v5 addObject:v11];
@@ -256,21 +256,21 @@ void __35__CalSpotlightPendingSearch_cancel__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)searchQuery:(id)a3 didReturnItems:(id)a4
+- (void)searchQuery:(id)query didReturnItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _queue];
+  queryCopy = query;
+  itemsCopy = items;
+  _queue = [objc_opt_class() _queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__CalSpotlightPendingSearch_searchQuery_didReturnItems___block_invoke;
   block[3] = &unk_1E7EC72B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = queryCopy;
+  v13 = itemsCopy;
+  v9 = itemsCopy;
+  v10 = queryCopy;
+  dispatch_async(_queue, block);
 }
 
 void __56__CalSpotlightPendingSearch_searchQuery_didReturnItems___block_invoke(uint64_t a1)
@@ -335,19 +335,19 @@ void __56__CalSpotlightPendingSearch_searchQuery_didReturnItems___block_invoke(u
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)searchQuery:(id)a3 statusChanged:(unint64_t)a4
+- (void)searchQuery:(id)query statusChanged:(unint64_t)changed
 {
-  v6 = a3;
-  v7 = [objc_opt_class() _queue];
+  queryCopy = query;
+  _queue = [objc_opt_class() _queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__CalSpotlightPendingSearch_searchQuery_statusChanged___block_invoke;
   block[3] = &unk_1E7EC72D8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = queryCopy;
+  changedCopy = changed;
+  v8 = queryCopy;
+  dispatch_async(_queue, block);
 }
 
 void __55__CalSpotlightPendingSearch_searchQuery_statusChanged___block_invoke(uint64_t a1)
@@ -377,21 +377,21 @@ void __55__CalSpotlightPendingSearch_searchQuery_statusChanged___block_invoke(ui
   }
 }
 
-- (void)searchQuery:(id)a3 didFailWithError:(id)a4
+- (void)searchQuery:(id)query didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _queue];
+  queryCopy = query;
+  errorCopy = error;
+  _queue = [objc_opt_class() _queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__CalSpotlightPendingSearch_searchQuery_didFailWithError___block_invoke;
   block[3] = &unk_1E7EC72B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = queryCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = queryCopy;
+  dispatch_async(_queue, block);
 }
 
 void __58__CalSpotlightPendingSearch_searchQuery_didFailWithError___block_invoke(uint64_t a1)

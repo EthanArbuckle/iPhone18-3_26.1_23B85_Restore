@@ -1,11 +1,11 @@
 @interface AAUIOBCustodianIntroViewModel
 - (NSString)secondaryButton;
-- (id)initHidingNotNowButton:(BOOL)a3;
+- (id)initHidingNotNowButton:(BOOL)button;
 @end
 
 @implementation AAUIOBCustodianIntroViewModel
 
-- (id)initHidingNotNowButton:(BOOL)a3
+- (id)initHidingNotNowButton:(BOOL)button
 {
   v10.receiver = self;
   v10.super_class = AAUIOBCustodianIntroViewModel;
@@ -19,7 +19,7 @@
     v4->_image = v7;
 
     v4->_contentViewLayout = 2;
-    v4->_hideNotNowButton = a3;
+    v4->_hideNotNowButton = button;
   }
 
   return v4;
@@ -29,7 +29,7 @@
 {
   if (self->_hideNotNowButton)
   {
-    v4 = 0;
+    secondaryButton = 0;
   }
 
   else
@@ -38,10 +38,10 @@
     v8 = v3;
     v6.receiver = self;
     v6.super_class = AAUIOBCustodianIntroViewModel;
-    v4 = [(AATrustedContactsCustodianSplashScreenModel *)&v6 secondaryButton];
+    secondaryButton = [(AATrustedContactsCustodianSplashScreenModel *)&v6 secondaryButton];
   }
 
-  return v4;
+  return secondaryButton;
 }
 
 @end

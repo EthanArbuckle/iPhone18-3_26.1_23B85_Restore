@@ -1,24 +1,24 @@
 @interface MOTrendsAnalyzer
 - (MOTrendsAnalyzer)init;
-- (MOTrendsAnalyzer)initWithHealthKitManager:(id)a3;
-- (double)timeOfDay:(id)a3;
+- (MOTrendsAnalyzer)initWithHealthKitManager:(id)manager;
+- (double)timeOfDay:(id)day;
 - (id)buildAnalyticsPlans;
-- (id)eventWithOptions:(id)a3 originalTrendsData:(id)a4;
-- (id)indexDate:(id)a3 aggregationDuration:(unint64_t)a4 referenceDate:(id)a5;
-- (id)lookupTrendsDataWithOptions:(id)a3 events:(id)a4;
-- (id)prepareData:(id)a3 aggregationDuration:(unint64_t)a4 aggregationMethod:(unint64_t)a5 valueFunction:(id)a6;
-- (int64_t)trendsfromAnalyticsResult:(unint64_t)a3;
-- (void)analyzeEvents:(id)a3 analyticsPlans:(id)a4 handler:(id)a5;
-- (void)analyzeEvents:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)sendMetricsForTrendsEvents:(id)a3;
-- (void)setCommonFields:(id)a3;
-- (void)setDecimatedValue:(id)a3 forKey:(id)a4 dictionary:(id)a5;
-- (void)setValue:(id)a3 forKey:(id)a4 dictionary:(id)a5;
-- (void)setValue:(id)a3 forKey:(id)a4 dictionary:(id)a5 bins:(id)a6;
-- (void)updateTrendsData:(id)a3 lastEventDate:(id)a4 lastEventInterval:(double)a5;
-- (void)updateTrendsData:(id)a3 model:(id)a4;
-- (void)updateTrendsData:(id)a3 prevTrendsData:(id)a4;
-- (void)updateTrendsData:(id)a3 result:(unint64_t)a4;
+- (id)eventWithOptions:(id)options originalTrendsData:(id)data;
+- (id)indexDate:(id)date aggregationDuration:(unint64_t)duration referenceDate:(id)referenceDate;
+- (id)lookupTrendsDataWithOptions:(id)options events:(id)events;
+- (id)prepareData:(id)data aggregationDuration:(unint64_t)duration aggregationMethod:(unint64_t)method valueFunction:(id)function;
+- (int64_t)trendsfromAnalyticsResult:(unint64_t)result;
+- (void)analyzeEvents:(id)events analyticsPlans:(id)plans handler:(id)handler;
+- (void)analyzeEvents:(id)events options:(id)options resultHandler:(id)handler;
+- (void)sendMetricsForTrendsEvents:(id)events;
+- (void)setCommonFields:(id)fields;
+- (void)setDecimatedValue:(id)value forKey:(id)key dictionary:(id)dictionary;
+- (void)setValue:(id)value forKey:(id)key dictionary:(id)dictionary;
+- (void)setValue:(id)value forKey:(id)key dictionary:(id)dictionary bins:(id)bins;
+- (void)updateTrendsData:(id)data lastEventDate:(id)date lastEventInterval:(double)interval;
+- (void)updateTrendsData:(id)data model:(id)model;
+- (void)updateTrendsData:(id)data prevTrendsData:(id)trendsData;
+- (void)updateTrendsData:(id)data result:(unint64_t)result;
 @end
 
 @implementation MOTrendsAnalyzer
@@ -34,43 +34,43 @@
   return self;
 }
 
-- (MOTrendsAnalyzer)initWithHealthKitManager:(id)a3
+- (MOTrendsAnalyzer)initWithHealthKitManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = MOTrendsAnalyzer;
   v6 = [(MOTrendsAnalyzer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthKitManager, a3);
+    objc_storeStrong(&v6->_healthKitManager, manager);
   }
 
   return v7;
 }
 
-- (id)indexDate:(id)a3 aggregationDuration:(unint64_t)a4 referenceDate:(id)a5
+- (id)indexDate:(id)date aggregationDuration:(unint64_t)duration referenceDate:(id)referenceDate
 {
-  v7 = a3;
-  v8 = a5;
-  switch(a4)
+  dateCopy = date;
+  referenceDateCopy = referenceDate;
+  switch(duration)
   {
     case 2uLL:
       v11 = +[NSCalendar currentCalendar];
-      v12 = [v11 components:512 fromDate:v7];
-      v13 = [v11 components:512 fromDate:v8];
+      v12 = [v11 components:512 fromDate:dateCopy];
+      v13 = [v11 components:512 fromDate:referenceDateCopy];
       v14 = objc_alloc_init(NSDateComponents);
       [v14 setDay:{objc_msgSend(v13, "weekday") - objc_msgSend(v12, "weekday")}];
-      v15 = [v11 dateByAddingComponents:v14 toDate:v7 options:0];
+      v15 = [v11 dateByAddingComponents:v14 toDate:dateCopy options:0];
       v16 = [v11 components:28 fromDate:v15];
       v10 = [v11 dateFromComponents:v16];
 
       break;
     case 1uLL:
-      v9 = [v7 startOfDayWithBoundaryOfADay:10800.0];
+      v9 = [dateCopy startOfDayWithBoundaryOfADay:10800.0];
       goto LABEL_6;
     case 0uLL:
-      v9 = v7;
+      v9 = dateCopy;
 LABEL_6:
       v10 = v9;
       break;
@@ -82,17 +82,17 @@ LABEL_6:
   return v10;
 }
 
-- (id)prepareData:(id)a3 aggregationDuration:(unint64_t)a4 aggregationMethod:(unint64_t)a5 valueFunction:(id)a6
+- (id)prepareData:(id)data aggregationDuration:(unint64_t)duration aggregationMethod:(unint64_t)method valueFunction:(id)function
 {
-  v8 = a3;
-  v9 = a6;
+  dataCopy = data;
+  functionCopy = function;
   v38 = +[NSDate date];
   v10 = objc_opt_new();
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v8;
+  obj = dataCopy;
   v11 = [obj countByEnumeratingWithState:&v39 objects:v53 count:16];
   if (v11)
   {
@@ -100,7 +100,7 @@ LABEL_6:
     v35 = *v40;
     *&v12 = 138412546;
     v31 = v12;
-    v32 = a5;
+    methodCopy = method;
     do
     {
       for (i = 0; i != v13; i = i + 1)
@@ -111,26 +111,26 @@ LABEL_6:
         }
 
         v15 = *(*(&v39 + 1) + 8 * i);
-        v16 = [v15 startDate];
-        v17 = [(MOTrendsAnalyzer *)self indexDate:v16 aggregationDuration:a4 referenceDate:v38];
+        startDate = [v15 startDate];
+        v17 = [(MOTrendsAnalyzer *)self indexDate:startDate aggregationDuration:duration referenceDate:v38];
 
         v18 = [v10 objectForKey:v17];
         if (!v18)
         {
           v18 = objc_opt_new();
-          v19 = [v15 startDate];
-          [v18 setDate:v19];
+          startDate2 = [v15 startDate];
+          [v18 setDate:startDate2];
         }
 
         v20 = _mo_log_facility_get_os_log(&MOLogFacilityTrends);
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
           v26 = NSStringFromSelector(a2);
-          v27 = [v15 startDate];
+          startDate3 = [v15 startDate];
           *buf = 138413314;
           v44 = v26;
           v45 = 2112;
-          v46 = *&v27;
+          v46 = *&startDate3;
           v47 = 2112;
           v48 = v17;
           v49 = 2112;
@@ -139,13 +139,13 @@ LABEL_6:
           v52 = v18;
           _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%@ event.startDate, %@, index, %@, event, %@, data, %@", buf, 0x34u);
 
-          a5 = v32;
+          method = methodCopy;
         }
 
-        v21 = v9[2](v9, v15);
+        v21 = functionCopy[2](functionCopy, v15);
         if (fabs(v21) < 1.79769313e308)
         {
-          switch(a5)
+          switch(method)
           {
             case 2uLL:
               goto LABEL_19;
@@ -177,7 +177,7 @@ LABEL_19:
           v46 = v21;
           _os_log_debug_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "%@ Invalid ranged value, %f", buf, 0x16u);
 
-          a5 = v32;
+          method = methodCopy;
         }
 
 LABEL_21:
@@ -189,28 +189,28 @@ LABEL_21:
     while (v13);
   }
 
-  v29 = [v10 allValues];
+  allValues = [v10 allValues];
 
-  return v29;
+  return allValues;
 }
 
-- (void)analyzeEvents:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (void)analyzeEvents:(id)events options:(id)options resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  eventsCopy = events;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([eventsCopy count])
   {
-    v11 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"provider == %lu AND category == %lu", 5, [v9 category]);
-    v12 = [v8 filteredArrayUsingPredicate:v11];
-    v13 = [(MOTrendsAnalyzer *)self lookupTrendsDataWithOptions:v9 events:v12];
-    v118 = self;
-    v14 = [(MOTrendsAnalyzer *)self eventWithOptions:v9 originalTrendsData:v13];
+    v11 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"provider == %lu AND category == %lu", 5, [optionsCopy category]);
+    v12 = [eventsCopy filteredArrayUsingPredicate:v11];
+    v13 = [(MOTrendsAnalyzer *)self lookupTrendsDataWithOptions:optionsCopy events:v12];
+    selfCopy = self;
+    v14 = [(MOTrendsAnalyzer *)self eventWithOptions:optionsCopy originalTrendsData:v13];
     v15 = _mo_log_facility_get_os_log(&MOLogFacilityTrends);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v88 = NSStringFromSelector(a2);
-      [v9 keyword];
+      [optionsCopy keyword];
       v115 = v12;
       v89 = v14;
       v91 = v90 = v13;
@@ -219,7 +219,7 @@ LABEL_21:
       v135 = 2112;
       v136 = v91;
       v137 = 2112;
-      v138 = v9;
+      v138 = optionsCopy;
       v139 = 2048;
       v140 = [v115 count];
       v141 = 2112;
@@ -233,9 +233,9 @@ LABEL_21:
       v12 = v115;
     }
 
-    if ([v9 category])
+    if ([optionsCopy category])
     {
-      +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"provider != %lu AND category == %lu", 5, [v9 category]);
+      +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"provider != %lu AND category == %lu", 5, [optionsCopy category]);
     }
 
     else
@@ -243,14 +243,14 @@ LABEL_21:
       [NSPredicate predicateWithFormat:@"provider != %lu", 5, v104];
     }
     v17 = ;
-    v16 = [v8 filteredArrayUsingPredicate:v17];
+    v16 = [eventsCopy filteredArrayUsingPredicate:v17];
 
     if ([v16 count])
     {
-      v18 = [v16 lastObject];
-      v19 = [v18 startDate];
+      lastObject = [v16 lastObject];
+      startDate = [lastObject startDate];
 
-      v116 = v19;
+      v116 = startDate;
       if ([v16 count] < 2)
       {
         v23 = 1.79769313e308;
@@ -259,30 +259,30 @@ LABEL_21:
       else
       {
         v20 = [v16 objectAtIndex:{objc_msgSend(v16, "count") - 2}];
-        v21 = [v20 startDate];
-        [v116 timeIntervalSinceDate:v21];
+        startDate2 = [v20 startDate];
+        [v116 timeIntervalSinceDate:startDate2];
         v23 = v22;
 
-        v19 = v116;
+        startDate = v116;
       }
 
       v117 = v16;
       v109 = v13;
       v110 = v11;
       v114 = v12;
-      v111 = v10;
-      v25 = [v14 trends];
-      [(MOTrendsAnalyzer *)v118 updateTrendsData:v25 lastEventDate:v19 lastEventInterval:v23];
+      v111 = handlerCopy;
+      trends = [v14 trends];
+      [(MOTrendsAnalyzer *)selfCopy updateTrendsData:trends lastEventDate:startDate lastEventInterval:v23];
 
       v26 = _mo_log_facility_get_os_log(&MOLogFacilityTrends);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
         v96 = NSStringFromSelector(a2);
-        v97 = [v9 keyword];
+        keyword = [optionsCopy keyword];
         *buf = 138413314;
         v134 = v96;
         v135 = 2112;
-        v136 = v97;
+        v136 = keyword;
         v137 = 2112;
         v138 = v14;
         v139 = 2112;
@@ -294,48 +294,48 @@ LABEL_21:
 
       v113 = v14;
 
-      v27 = [v9 trainDateInterval];
-      v28 = [v27 startDate];
-      v29 = [v9 trainDateInterval];
-      [v29 endDate];
-      v30 = v119 = v9;
-      v31 = [v119 trainDateInterval];
-      v32 = [v31 startDate];
-      v33 = [v119 trainDateInterval];
-      v34 = [v33 endDate];
-      v35 = [NSPredicate predicateWithFormat:@"(startDate >= %@ AND startDate <= %@)", v28, v30, v32, v34];
+      trainDateInterval = [optionsCopy trainDateInterval];
+      startDate3 = [trainDateInterval startDate];
+      trainDateInterval2 = [optionsCopy trainDateInterval];
+      [trainDateInterval2 endDate];
+      v30 = v119 = optionsCopy;
+      trainDateInterval3 = [v119 trainDateInterval];
+      startDate4 = [trainDateInterval3 startDate];
+      trainDateInterval4 = [v119 trainDateInterval];
+      endDate = [trainDateInterval4 endDate];
+      v35 = [NSPredicate predicateWithFormat:@"(startDate >= %@ AND startDate <= %@)", startDate3, v30, startDate4, endDate];
 
       v108 = v35;
       v36 = [v117 filteredArrayUsingPredicate:v35];
-      v37 = [v119 aggregationDuration];
-      v38 = [v119 aggregationMethod];
-      v39 = [v119 valueFunction];
+      aggregationDuration = [v119 aggregationDuration];
+      aggregationMethod = [v119 aggregationMethod];
+      valueFunction = [v119 valueFunction];
       v112 = v36;
-      v40 = [(MOTrendsAnalyzer *)v118 prepareData:v36 aggregationDuration:v37 aggregationMethod:v38 valueFunction:v39];
+      v40 = [(MOTrendsAnalyzer *)selfCopy prepareData:v36 aggregationDuration:aggregationDuration aggregationMethod:aggregationMethod valueFunction:valueFunction];
 
-      v41 = [v119 testDateInterval];
-      v42 = [v41 startDate];
-      v43 = [v119 testDateInterval];
-      v44 = [v43 endDate];
-      v45 = [v119 testDateInterval];
-      v46 = [v45 startDate];
-      v47 = [v119 testDateInterval];
-      v48 = [v47 endDate];
-      v49 = [NSPredicate predicateWithFormat:@"(startDate >= %@ AND startDate <= %@)", v42, v44, v46, v48];
+      testDateInterval = [v119 testDateInterval];
+      startDate5 = [testDateInterval startDate];
+      testDateInterval2 = [v119 testDateInterval];
+      endDate2 = [testDateInterval2 endDate];
+      testDateInterval3 = [v119 testDateInterval];
+      startDate6 = [testDateInterval3 startDate];
+      testDateInterval4 = [v119 testDateInterval];
+      endDate3 = [testDateInterval4 endDate];
+      v49 = [NSPredicate predicateWithFormat:@"(startDate >= %@ AND startDate <= %@)", startDate5, endDate2, startDate6, endDate3];
 
       v50 = v40;
       v107 = v49;
       v51 = [v117 filteredArrayUsingPredicate:v49];
-      v52 = [v119 aggregationDuration];
-      v53 = [v119 aggregationMethod];
-      v54 = [v119 valueFunction];
-      v55 = [(MOTrendsAnalyzer *)v118 prepareData:v51 aggregationDuration:v52 aggregationMethod:v53 valueFunction:v54];
+      aggregationDuration2 = [v119 aggregationDuration];
+      aggregationMethod2 = [v119 aggregationMethod];
+      valueFunction2 = [v119 valueFunction];
+      v55 = [(MOTrendsAnalyzer *)selfCopy prepareData:v51 aggregationDuration:aggregationDuration2 aggregationMethod:aggregationMethod2 valueFunction:valueFunction2];
 
       v56 = _mo_log_facility_get_os_log(&MOLogFacilityTrends);
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
       {
         v98 = NSStringFromSelector(a2);
-        v99 = [v119 keyword];
+        keyword2 = [v119 keyword];
         v100 = [v112 count];
         v101 = [v51 count];
         v102 = [v50 count];
@@ -343,7 +343,7 @@ LABEL_21:
         *buf = 138413826;
         v134 = v98;
         v135 = 2112;
-        v136 = v99;
+        v136 = keyword2;
         v137 = 2112;
         v138 = v119;
         v139 = 2048;
@@ -384,14 +384,14 @@ LABEL_21:
             if (os_log_type_enabled(v63, OS_LOG_TYPE_DEBUG))
             {
               v64 = NSStringFromSelector(a2);
-              v65 = [v62 date];
+              date = [v62 date];
               [v62 value];
               v67 = v66;
               v68 = [v62 count];
               *buf = 138413058;
               v134 = v64;
               v135 = 2112;
-              v136 = v65;
+              v136 = date;
               v137 = 2048;
               v138 = v67;
               v139 = 2048;
@@ -430,14 +430,14 @@ LABEL_21:
             if (os_log_type_enabled(v75, OS_LOG_TYPE_DEBUG))
             {
               v76 = NSStringFromSelector(a2);
-              v77 = [v74 date];
+              date2 = [v74 date];
               [v74 value];
               v79 = v78;
               v80 = [v74 count];
               *buf = 138413058;
               v134 = v76;
               v135 = 2112;
-              v136 = v77;
+              v136 = date2;
               v137 = 2048;
               v138 = v79;
               v139 = 2048;
@@ -454,9 +454,9 @@ LABEL_21:
 
       if ([v57 count] > 5)
       {
-        v9 = v119;
+        optionsCopy = v119;
         v11 = v110;
-        v10 = v111;
+        handlerCopy = v111;
         v14 = v113;
         if (![v69 count])
         {
@@ -491,12 +491,12 @@ LABEL_21:
 
             aSelectora = v86;
             v93 = v113;
-            v94 = [v113 trends];
-            [(MOTrendsAnalyzer *)v118 updateTrendsData:v94 model:v83];
+            trends2 = [v113 trends];
+            [(MOTrendsAnalyzer *)selfCopy updateTrendsData:trends2 model:v83];
 
-            v95 = [v113 trends];
+            trends3 = [v113 trends];
             v92 = aSelectora;
-            [(MOTrendsAnalyzer *)v118 updateTrendsData:v95 result:aSelectora];
+            [(MOTrendsAnalyzer *)selfCopy updateTrendsData:trends3 result:aSelectora];
           }
 
           else
@@ -518,10 +518,10 @@ LABEL_21:
 
       else
       {
-        v10 = v111;
+        handlerCopy = v111;
         v14 = v113;
         (v111)[2](v111, v113, 1);
-        v9 = v119;
+        optionsCopy = v119;
         v11 = v110;
       }
 
@@ -534,30 +534,30 @@ LABEL_21:
 
     else
     {
-      v10[2](v10, 0, 1);
+      handlerCopy[2](handlerCopy, 0, 1);
       v24 = _mo_log_facility_get_os_log(&MOLogFacilityTrends);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
-        [MOTrendsAnalyzer analyzeEvents:a2 options:v9 resultHandler:v24];
+        [MOTrendsAnalyzer analyzeEvents:a2 options:optionsCopy resultHandler:v24];
       }
     }
   }
 
   else
   {
-    v10[2](v10, 0, 1);
-    v16 = v8;
+    handlerCopy[2](handlerCopy, 0, 1);
+    v16 = eventsCopy;
   }
 }
 
-- (id)eventWithOptions:(id)a3 originalTrendsData:(id)a4
+- (id)eventWithOptions:(id)options originalTrendsData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  optionsCopy = options;
+  dataCopy = data;
+  v8 = dataCopy;
+  if (dataCopy)
   {
-    [v7 eventIdentifier];
+    [dataCopy eventIdentifier];
   }
 
   else
@@ -566,61 +566,61 @@ LABEL_21:
   }
   v9 = ;
   v10 = [MOEvent alloc];
-  v11 = [v6 testDateInterval];
-  v12 = [v11 startDate];
-  v13 = [v6 testDateInterval];
-  v14 = [v13 endDate];
+  testDateInterval = [optionsCopy testDateInterval];
+  startDate = [testDateInterval startDate];
+  testDateInterval2 = [optionsCopy testDateInterval];
+  endDate = [testDateInterval2 endDate];
   v15 = +[NSDate date];
-  v16 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v10, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v9, v12, v14, v15, 5, [v6 category]);
+  v16 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v10, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v9, startDate, endDate, v15, 5, [optionsCopy category]);
 
-  v17 = [v6 testDateInterval];
-  v18 = [v17 endDate];
-  v19 = [v18 dateByAddingTimeInterval:2419200.0];
+  testDateInterval3 = [optionsCopy testDateInterval];
+  endDate2 = [testDateInterval3 endDate];
+  v19 = [endDate2 dateByAddingTimeInterval:2419200.0];
   [(MOEvent *)v16 setExpirationDate:v19];
 
   v20 = objc_opt_new();
-  v21 = [v6 keyword];
-  [v20 setObject:v21 forKeyedSubscript:@"keyword"];
+  keyword = [optionsCopy keyword];
+  [v20 setObject:keyword forKeyedSubscript:@"keyword"];
 
-  v22 = [v6 trainDateInterval];
-  v23 = [v22 startDate];
-  [v23 timeIntervalSinceReferenceDate];
+  trainDateInterval = [optionsCopy trainDateInterval];
+  startDate2 = [trainDateInterval startDate];
+  [startDate2 timeIntervalSinceReferenceDate];
   v24 = [NSNumber numberWithDouble:?];
   [v20 setObject:v24 forKeyedSubscript:@"trainStartDate"];
 
-  v25 = [v6 trainDateInterval];
-  v26 = [v25 endDate];
-  [v26 timeIntervalSinceReferenceDate];
+  trainDateInterval2 = [optionsCopy trainDateInterval];
+  endDate3 = [trainDateInterval2 endDate];
+  [endDate3 timeIntervalSinceReferenceDate];
   v27 = [NSNumber numberWithDouble:?];
   [v20 setObject:v27 forKeyedSubscript:@"trainEndDate"];
 
-  v28 = [v6 testDateInterval];
-  v29 = [v28 startDate];
-  [v29 timeIntervalSinceReferenceDate];
+  testDateInterval4 = [optionsCopy testDateInterval];
+  startDate3 = [testDateInterval4 startDate];
+  [startDate3 timeIntervalSinceReferenceDate];
   v30 = [NSNumber numberWithDouble:?];
   [v20 setObject:v30 forKeyedSubscript:@"testStartDate"];
 
-  v31 = [v6 testDateInterval];
-  v32 = [v31 endDate];
-  [v32 timeIntervalSinceReferenceDate];
+  testDateInterval5 = [optionsCopy testDateInterval];
+  endDate4 = [testDateInterval5 endDate];
+  [endDate4 timeIntervalSinceReferenceDate];
   v33 = [NSNumber numberWithDouble:?];
   [v20 setObject:v33 forKeyedSubscript:@"testEndDate"];
 
-  v34 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 aggregationDuration]);
+  v34 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [optionsCopy aggregationDuration]);
   [v20 setObject:v34 forKeyedSubscript:@"aggregationDuration"];
 
-  v35 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 aggregationMethod]);
+  v35 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [optionsCopy aggregationMethod]);
   [v20 setObject:v35 forKeyedSubscript:@"aggregationMethod"];
 
-  v36 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 valueFunctionType]);
+  v36 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [optionsCopy valueFunctionType]);
   [v20 setObject:v36 forKeyedSubscript:@"valueFunctionType"];
 
   [(MOEvent *)v16 setTrends:v20];
   if (v8)
   {
-    v37 = [(MOEvent *)v16 trends];
-    v38 = [v8 trends];
-    [(MOTrendsAnalyzer *)self updateTrendsData:v37 prevTrendsData:v38];
+    trends = [(MOEvent *)v16 trends];
+    trends2 = [v8 trends];
+    [(MOTrendsAnalyzer *)self updateTrendsData:trends prevTrendsData:trends2];
 
     v39 = _mo_log_facility_get_os_log(&MOLogFacilityTrends);
     if (!os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
@@ -632,7 +632,7 @@ LABEL_21:
     *buf = 138412802;
     v45 = v40;
     v46 = 2112;
-    v47 = v6;
+    v47 = optionsCopy;
     v48 = 2112;
     v49 = v16;
     v41 = "%@ options, %@, trends data from origin, event, %@";
@@ -650,7 +650,7 @@ LABEL_21:
     *buf = 138412802;
     v45 = v40;
     v46 = 2112;
-    v47 = v6;
+    v47 = optionsCopy;
     v48 = 2112;
     v49 = v16;
     v41 = "%@ options, %@, new trends data, event, %@";
@@ -663,10 +663,10 @@ LABEL_8:
   return v16;
 }
 
-- (void)updateTrendsData:(id)a3 prevTrendsData:(id)a4
+- (void)updateTrendsData:(id)data prevTrendsData:(id)trendsData
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  trendsDataCopy = trendsData;
   v19[0] = @"lastEventDate";
   v19[1] = @"lastEventInterval";
   [NSArray arrayWithObjects:v19 count:2];
@@ -689,10 +689,10 @@ LABEL_8:
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        v13 = [v6 objectForKey:{v12, v14}];
+        v13 = [trendsDataCopy objectForKey:{v12, v14}];
         if (v13)
         {
-          [v5 setObject:v13 forKeyedSubscript:v12];
+          [dataCopy setObject:v13 forKeyedSubscript:v12];
         }
       }
 
@@ -703,11 +703,11 @@ LABEL_8:
   }
 }
 
-- (void)updateTrendsData:(id)a3 lastEventDate:(id)a4 lastEventInterval:(double)a5
+- (void)updateTrendsData:(id)data lastEventDate:(id)date lastEventInterval:(double)interval
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 objectForKey:@"lastEventDate"];
+  dataCopy = data;
+  dateCopy = date;
+  v10 = [dataCopy objectForKey:@"lastEventDate"];
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityTrends);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -716,14 +716,14 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "updateTrendsData, %@", v27, 0xCu);
   }
 
-  [v9 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v12 = [NSNumber numberWithDouble:?];
-  [v8 setObject:v12 forKeyedSubscript:@"lastEventDate"];
+  [dataCopy setObject:v12 forKeyedSubscript:@"lastEventDate"];
 
-  v13 = 0.0;
+  intervalCopy = 0.0;
   if (v10)
   {
-    [v9 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v15 = v14;
     [v10 doubleValue];
     v17 = v15 - v16;
@@ -739,9 +739,9 @@ LABEL_8:
 
     if (v18 > 1.0)
     {
-      if (v18 < a5)
+      if (v18 < interval)
       {
-        a5 = v18;
+        interval = v18;
       }
 
       v19 = _mo_log_facility_get_os_log(&MOLogFacilityTrends);
@@ -751,7 +751,7 @@ LABEL_8:
       }
 
       *v27 = 134218240;
-      *&v27[4] = a5;
+      *&v27[4] = interval;
       *&v27[12] = 2048;
       *&v27[14] = v18;
       v20 = "updateTrendsData, min, %f, interval , %f";
@@ -760,19 +760,19 @@ LABEL_8:
       goto LABEL_15;
     }
 
-    if (a5 < 1.79769313e308)
+    if (interval < 1.79769313e308)
     {
       v19 = _mo_log_facility_get_os_log(&MOLogFacilityTrends);
       if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
 LABEL_16:
 
-        v13 = a5;
+        intervalCopy = interval;
         goto LABEL_17;
       }
 
       *v27 = 134217984;
-      *&v27[4] = a5;
+      *&v27[4] = interval;
       v20 = "updateTrendsData, min, %f";
       v21 = v19;
       v22 = 12;
@@ -783,90 +783,90 @@ LABEL_15:
   }
 
 LABEL_17:
-  v23 = [NSNumber numberWithDouble:v13, *v27, *&v27[16]];
-  [v8 setObject:v23 forKeyedSubscript:@"lastEventInterval"];
+  v23 = [NSNumber numberWithDouble:intervalCopy, *v27, *&v27[16]];
+  [dataCopy setObject:v23 forKeyedSubscript:@"lastEventInterval"];
 
   v24 = +[NSDate date];
-  [v24 timeIntervalSinceDate:v9];
+  [v24 timeIntervalSinceDate:dateCopy];
   v26 = v25;
 
-  if (v13 > 1814400.0 || v26 > 1814400.0)
+  if (intervalCopy > 1814400.0 || v26 > 1814400.0)
   {
-    [(MOTrendsAnalyzer *)self updateTrendsData:v8 result:8];
+    [(MOTrendsAnalyzer *)self updateTrendsData:dataCopy result:8];
   }
 }
 
-- (void)updateTrendsData:(id)a3 model:(id)a4
+- (void)updateTrendsData:(id)data model:(id)model
 {
-  v5 = a4;
-  v6 = a3;
-  v18 = [v5 getTrainDataStats];
-  v7 = [v5 getTestDataStats];
+  modelCopy = model;
+  dataCopy = data;
+  getTrainDataStats = [modelCopy getTrainDataStats];
+  getTestDataStats = [modelCopy getTestDataStats];
 
-  [v18 mean];
+  [getTrainDataStats mean];
   v8 = [NSNumber numberWithDouble:?];
-  [v6 setObject:v8 forKeyedSubscript:@"trainMean"];
+  [dataCopy setObject:v8 forKeyedSubscript:@"trainMean"];
 
-  [v18 std];
+  [getTrainDataStats std];
   v9 = [NSNumber numberWithDouble:?];
-  [v6 setObject:v9 forKeyedSubscript:@"trainStd"];
+  [dataCopy setObject:v9 forKeyedSubscript:@"trainStd"];
 
-  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v18 count]);
-  [v6 setObject:v10 forKeyedSubscript:@"trainCount"];
+  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [getTrainDataStats count]);
+  [dataCopy setObject:v10 forKeyedSubscript:@"trainCount"];
 
-  [v18 min];
+  [getTrainDataStats min];
   v11 = [NSNumber numberWithDouble:?];
-  [v6 setObject:v11 forKeyedSubscript:@"trainMin"];
+  [dataCopy setObject:v11 forKeyedSubscript:@"trainMin"];
 
-  [v18 max];
+  [getTrainDataStats max];
   v12 = [NSNumber numberWithDouble:?];
-  [v6 setObject:v12 forKeyedSubscript:@"trainMax"];
+  [dataCopy setObject:v12 forKeyedSubscript:@"trainMax"];
 
-  [v7 mean];
+  [getTestDataStats mean];
   v13 = [NSNumber numberWithDouble:?];
-  [v6 setObject:v13 forKeyedSubscript:@"testMean"];
+  [dataCopy setObject:v13 forKeyedSubscript:@"testMean"];
 
-  [v7 std];
+  [getTestDataStats std];
   v14 = [NSNumber numberWithDouble:?];
-  [v6 setObject:v14 forKeyedSubscript:@"testStd"];
+  [dataCopy setObject:v14 forKeyedSubscript:@"testStd"];
 
-  v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 count]);
-  [v6 setObject:v15 forKeyedSubscript:@"testCount"];
+  v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [getTestDataStats count]);
+  [dataCopy setObject:v15 forKeyedSubscript:@"testCount"];
 
-  [v7 min];
+  [getTestDataStats min];
   v16 = [NSNumber numberWithDouble:?];
-  [v6 setObject:v16 forKeyedSubscript:@"testMin"];
+  [dataCopy setObject:v16 forKeyedSubscript:@"testMin"];
 
-  [v7 max];
+  [getTestDataStats max];
   v17 = [NSNumber numberWithDouble:?];
-  [v6 setObject:v17 forKeyedSubscript:@"testMax"];
+  [dataCopy setObject:v17 forKeyedSubscript:@"testMax"];
 }
 
-- (void)updateTrendsData:(id)a3 result:(unint64_t)a4
+- (void)updateTrendsData:(id)data result:(unint64_t)result
 {
-  v5 = a3;
-  v6 = [NSNumber numberWithUnsignedInteger:a4];
-  [v5 setObject:v6 forKeyedSubscript:@"trends"];
+  dataCopy = data;
+  v6 = [NSNumber numberWithUnsignedInteger:result];
+  [dataCopy setObject:v6 forKeyedSubscript:@"trends"];
 }
 
-- (int64_t)trendsfromAnalyticsResult:(unint64_t)a3
+- (int64_t)trendsfromAnalyticsResult:(unint64_t)result
 {
-  if (a3 - 4 > 2)
+  if (result - 4 > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_100323240[a3 - 4];
+    return qword_100323240[result - 4];
   }
 }
 
-- (id)lookupTrendsDataWithOptions:(id)a3 events:(id)a4
+- (id)lookupTrendsDataWithOptions:(id)options events:(id)events
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 count])
+  optionsCopy = options;
+  eventsCopy = events;
+  if (![eventsCopy count])
   {
     v24 = 0;
     goto LABEL_24;
@@ -876,7 +876,7 @@ LABEL_17:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = v6;
+  v7 = eventsCopy;
   v8 = [v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (!v8)
   {
@@ -885,7 +885,7 @@ LABEL_17:
   }
 
   v9 = v8;
-  v26 = v6;
+  v26 = eventsCopy;
   v10 = *v32;
   v29 = v7;
   do
@@ -900,34 +900,34 @@ LABEL_17:
       }
 
       v12 = *(*(&v31 + 1) + 8 * v11);
-      v13 = [v12 trends];
+      trends = [v12 trends];
 
-      if (v13)
+      if (trends)
       {
-        v14 = [v12 trends];
-        v15 = [v14 objectForKeyedSubscript:@"keyword"];
-        v16 = [v5 keyword];
-        if ([v15 isEqualToString:v16])
+        trends2 = [v12 trends];
+        v15 = [trends2 objectForKeyedSubscript:@"keyword"];
+        keyword = [optionsCopy keyword];
+        if ([v15 isEqualToString:keyword])
         {
           v17 = v10;
-          v18 = [v14 objectForKeyedSubscript:@"aggregationDuration"];
-          v19 = [v18 unsignedLongValue];
-          if (v19 == [v5 aggregationDuration])
+          v18 = [trends2 objectForKeyedSubscript:@"aggregationDuration"];
+          unsignedLongValue = [v18 unsignedLongValue];
+          if (unsignedLongValue == [optionsCopy aggregationDuration])
           {
-            v20 = [v14 objectForKeyedSubscript:@"aggregationMethod"];
-            v21 = v5;
-            v22 = [v20 unsignedLongValue];
-            if (v22 == [v21 aggregationMethod])
+            v20 = [trends2 objectForKeyedSubscript:@"aggregationMethod"];
+            v21 = optionsCopy;
+            unsignedLongValue2 = [v20 unsignedLongValue];
+            if (unsignedLongValue2 == [v21 aggregationMethod])
             {
-              v23 = [v14 objectForKeyedSubscript:@"valueFunctionType"];
-              v28 = [v23 unsignedLongValue];
-              v27 = [v21 valueFunctionType];
+              v23 = [trends2 objectForKeyedSubscript:@"valueFunctionType"];
+              unsignedLongValue3 = [v23 unsignedLongValue];
+              valueFunctionType = [v21 valueFunctionType];
 
-              v5 = v21;
+              optionsCopy = v21;
               v10 = v17;
               v7 = v29;
               v9 = v30;
-              if (v28 == v27)
+              if (unsignedLongValue3 == valueFunctionType)
               {
                 v24 = v12;
 
@@ -937,7 +937,7 @@ LABEL_17:
               goto LABEL_16;
             }
 
-            v5 = v21;
+            optionsCopy = v21;
             v7 = v29;
           }
 
@@ -958,7 +958,7 @@ LABEL_16:
   while (v9);
   v24 = 0;
 LABEL_21:
-  v6 = v26;
+  eventsCopy = v26;
 LABEL_23:
 
 LABEL_24:
@@ -1133,18 +1133,18 @@ LABEL_13:
   return v12;
 }
 
-- (void)analyzeEvents:(id)a3 analyticsPlans:(id)a4 handler:(id)a5
+- (void)analyzeEvents:(id)events analyticsPlans:(id)plans handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v18 = a5;
+  eventsCopy = events;
+  plansCopy = plans;
+  handlerCopy = handler;
   v11 = objc_opt_new();
   v12 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v10;
+  obj = plansCopy;
   v13 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v13)
   {
@@ -1169,7 +1169,7 @@ LABEL_13:
         v22 = v17;
         v23 = v11;
         v24 = a2;
-        [(MOTrendsAnalyzer *)self analyzeEvents:v9 options:v17 resultHandler:v20];
+        [(MOTrendsAnalyzer *)self analyzeEvents:eventsCopy options:v17 resultHandler:v20];
 
         v16 = v16 + 1;
       }
@@ -1181,7 +1181,7 @@ LABEL_13:
     while (v14);
   }
 
-  v18[2](v18, v11, v12);
+  handlerCopy[2](handlerCopy, v11, v12);
 }
 
 void __57__MOTrendsAnalyzer_analyzeEvents_analyticsPlans_handler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1217,30 +1217,30 @@ void __57__MOTrendsAnalyzer_analyzeEvents_analyticsPlans_handler___block_invoke(
   }
 }
 
-- (double)timeOfDay:(id)a3
+- (double)timeOfDay:(id)day
 {
-  if (!a3)
+  if (!day)
   {
     return -1.0;
   }
 
-  v3 = a3;
-  v4 = [v3 hours];
-  v5 = [v3 minutes];
+  dayCopy = day;
+  hours = [dayCopy hours];
+  minutes = [dayCopy minutes];
 
-  return (v5 + 60 * v4);
+  return (minutes + 60 * hours);
 }
 
-- (void)sendMetricsForTrendsEvents:(id)a3
+- (void)sendMetricsForTrendsEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v55 = [MOMetric binsFromStart:&off_10036AB40 toEnd:&off_10036E710 gap:&off_10036E720];
   v5 = objc_opt_new();
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  obj = v4;
+  obj = eventsCopy;
   v6 = [obj countByEnumeratingWithState:&v58 objects:v64 count:16];
   if (v6)
   {
@@ -1258,34 +1258,34 @@ void __57__MOTrendsAnalyzer_analyzeEvents_analyticsPlans_handler___block_invoke(
         }
 
         v10 = *(*(&v58 + 1) + 8 * i);
-        v11 = [v10 trends];
+        trends = [v10 trends];
 
-        if (v11)
+        if (trends)
         {
-          v12 = [v10 trends];
-          v13 = [v10 creationDate];
-          [v13 timeIntervalSinceReferenceDate];
+          trends2 = [v10 trends];
+          creationDate = [v10 creationDate];
+          [creationDate timeIntervalSinceReferenceDate];
           v14 = [NSNumber numberWithDouble:?];
           [v5 setObject:v14 forKeyedSubscript:@"creationDate"];
 
-          v15 = [v10 creationDate];
-          v16 = [v15 startOfDay];
-          [v16 timeIntervalSinceReferenceDate];
+          creationDate2 = [v10 creationDate];
+          startOfDay = [creationDate2 startOfDay];
+          [startOfDay timeIntervalSinceReferenceDate];
           v17 = [NSNumber numberWithDouble:?];
           [v5 setObject:v17 forKeyedSubscript:@"creationDateStartOfDay"];
 
-          v18 = [v12 objectForKeyedSubscript:@"trainEndDate"];
+          v18 = [trends2 objectForKeyedSubscript:@"trainEndDate"];
           if (v18)
           {
             v19 = v18;
-            v20 = [v12 objectForKeyedSubscript:@"trainStartDate"];
+            v20 = [trends2 objectForKeyedSubscript:@"trainStartDate"];
 
             if (v20)
             {
-              v21 = [v12 objectForKeyedSubscript:@"trainEndDate"];
+              v21 = [trends2 objectForKeyedSubscript:@"trainEndDate"];
               [v21 doubleValue];
               v23 = v22;
-              v24 = [v12 objectForKeyedSubscript:@"trainStartDate"];
+              v24 = [trends2 objectForKeyedSubscript:@"trainStartDate"];
               [v24 doubleValue];
               v26 = v23 - v25;
 
@@ -1294,18 +1294,18 @@ void __57__MOTrendsAnalyzer_analyzeEvents_analyticsPlans_handler___block_invoke(
             }
           }
 
-          v28 = [v12 objectForKeyedSubscript:@"testEndDate"];
+          v28 = [trends2 objectForKeyedSubscript:@"testEndDate"];
           if (v28)
           {
             v29 = v28;
-            v30 = [v12 objectForKeyedSubscript:@"testStartDate"];
+            v30 = [trends2 objectForKeyedSubscript:@"testStartDate"];
 
             if (v30)
             {
-              v31 = [v12 objectForKeyedSubscript:@"testEndDate"];
+              v31 = [trends2 objectForKeyedSubscript:@"testEndDate"];
               [v31 doubleValue];
               v33 = v32;
-              v34 = [v12 objectForKeyedSubscript:@"testStartDate"];
+              v34 = [trends2 objectForKeyedSubscript:@"testStartDate"];
               [v34 doubleValue];
               v36 = v33 - v35;
 
@@ -1317,49 +1317,49 @@ void __57__MOTrendsAnalyzer_analyzeEvents_analyticsPlans_handler___block_invoke(
           v38 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 category]);
           [(MOTrendsAnalyzer *)self setValue:v38 forKey:@"category" dictionary:v5];
 
-          v39 = [v12 objectForKeyedSubscript:@"keyword"];
+          v39 = [trends2 objectForKeyedSubscript:@"keyword"];
           [(MOTrendsAnalyzer *)self setValue:v39 forKey:@"keyword" dictionary:v5];
 
-          v40 = [v12 objectForKeyedSubscript:@"aggregationDuration"];
+          v40 = [trends2 objectForKeyedSubscript:@"aggregationDuration"];
           [(MOTrendsAnalyzer *)self setValue:v40 forKey:@"aggregationDuration" dictionary:v5];
 
-          v41 = [v12 objectForKeyedSubscript:@"aggregationMethod"];
+          v41 = [trends2 objectForKeyedSubscript:@"aggregationMethod"];
           [(MOTrendsAnalyzer *)self setValue:v41 forKey:@"aggregationMethod" dictionary:v5];
 
-          v42 = [v12 objectForKeyedSubscript:@"valueFunctionType"];
+          v42 = [trends2 objectForKeyedSubscript:@"valueFunctionType"];
           [(MOTrendsAnalyzer *)self setValue:v42 forKey:@"valueFunctionType" dictionary:v5];
 
-          v43 = [v12 objectForKeyedSubscript:@"trainMean"];
+          v43 = [trends2 objectForKeyedSubscript:@"trainMean"];
           [(MOTrendsAnalyzer *)self setDecimatedValue:v43 forKey:@"trainMean" dictionary:v5];
 
-          v44 = [v12 objectForKeyedSubscript:@"trainStd"];
+          v44 = [trends2 objectForKeyedSubscript:@"trainStd"];
           [(MOTrendsAnalyzer *)self setDecimatedValue:v44 forKey:@"trainStd" dictionary:v5];
 
-          v45 = [v12 objectForKeyedSubscript:@"trainCount"];
+          v45 = [trends2 objectForKeyedSubscript:@"trainCount"];
           [(MOTrendsAnalyzer *)self setDecimatedValue:v45 forKey:@"trainCount" dictionary:v5];
 
-          v46 = [v12 objectForKeyedSubscript:@"trainMin"];
+          v46 = [trends2 objectForKeyedSubscript:@"trainMin"];
           [(MOTrendsAnalyzer *)self setDecimatedValue:v46 forKey:@"trainMin" dictionary:v5];
 
-          v47 = [v12 objectForKeyedSubscript:@"trainMax"];
+          v47 = [trends2 objectForKeyedSubscript:@"trainMax"];
           [(MOTrendsAnalyzer *)self setDecimatedValue:v47 forKey:@"trainMax" dictionary:v5];
 
-          v48 = [v12 objectForKeyedSubscript:@"testMean"];
+          v48 = [trends2 objectForKeyedSubscript:@"testMean"];
           [(MOTrendsAnalyzer *)self setDecimatedValue:v48 forKey:@"testMean" dictionary:v5];
 
-          v49 = [v12 objectForKeyedSubscript:@"testStd"];
+          v49 = [trends2 objectForKeyedSubscript:@"testStd"];
           [(MOTrendsAnalyzer *)self setDecimatedValue:v49 forKey:@"testStd" dictionary:v5];
 
-          v50 = [v12 objectForKeyedSubscript:@"testCount"];
+          v50 = [trends2 objectForKeyedSubscript:@"testCount"];
           [(MOTrendsAnalyzer *)self setDecimatedValue:v50 forKey:@"testCount" dictionary:v5];
 
-          v51 = [v12 objectForKeyedSubscript:@"testMin"];
+          v51 = [trends2 objectForKeyedSubscript:@"testMin"];
           [(MOTrendsAnalyzer *)self setDecimatedValue:v51 forKey:@"testMin" dictionary:v5];
 
-          v52 = [v12 objectForKeyedSubscript:@"testMax"];
+          v52 = [trends2 objectForKeyedSubscript:@"testMax"];
           [(MOTrendsAnalyzer *)self setDecimatedValue:v52 forKey:@"testMax" dictionary:v5];
 
-          v53 = [v12 objectForKeyedSubscript:@"trends"];
+          v53 = [trends2 objectForKeyedSubscript:@"trends"];
           [(MOTrendsAnalyzer *)self setValue:v53 forKey:@"trends" dictionary:v5];
 
           [(MOTrendsAnalyzer *)self setCommonFields:v5];
@@ -1369,12 +1369,12 @@ void __57__MOTrendsAnalyzer_analyzeEvents_analyticsPlans_handler___block_invoke(
 
         else
         {
-          v12 = _mo_log_facility_get_os_log(&MOLogFacilityMetric);
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+          trends2 = _mo_log_facility_get_os_log(&MOLogFacilityMetric);
+          if (os_log_type_enabled(trends2, OS_LOG_TYPE_ERROR))
           {
             *buf = v54;
             v63 = v10;
-            _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Trends information is not available. %@", buf, 0xCu);
+            _os_log_error_impl(&_mh_execute_header, trends2, OS_LOG_TYPE_ERROR, "Trends information is not available. %@", buf, 0xCu);
           }
         }
       }
@@ -1386,12 +1386,12 @@ void __57__MOTrendsAnalyzer_analyzeEvents_analyticsPlans_handler___block_invoke(
   }
 }
 
-- (void)setCommonFields:(id)a3
+- (void)setCommonFields:(id)fields
 {
-  v4 = a3;
-  v5 = [(MOTrendsAnalyzer *)self healthKitManager];
+  fieldsCopy = fields;
+  healthKitManager = [(MOTrendsAnalyzer *)self healthKitManager];
 
-  if (v5)
+  if (healthKitManager)
   {
     v49 = 0;
     v50 = &v49;
@@ -1421,7 +1421,7 @@ void __57__MOTrendsAnalyzer_analyzeEvents_analyticsPlans_handler___block_invoke(
       v41 = __Block_byref_object_dispose__29;
       v42 = 0;
       v7 = dispatch_semaphore_create(0);
-      v8 = [(MOTrendsAnalyzer *)self healthKitManager];
+      healthKitManager2 = [(MOTrendsAnalyzer *)self healthKitManager];
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
       v33[2] = __45__MOTrendsAnalyzer_Metrics__setCommonFields___block_invoke;
@@ -1430,7 +1430,7 @@ void __57__MOTrendsAnalyzer_analyzeEvents_analyticsPlans_handler___block_invoke(
       v34 = v9;
       v35 = &v49;
       v36 = buf;
-      [v8 fetchUserBiologicalSexWithHandler:v33];
+      [healthKitManager2 fetchUserBiologicalSexWithHandler:v33];
 
       v10 = [NSString stringWithFormat:@"%@ - [%s] - %d - %s", @"MOSemaphoreWait", "/Library/Caches/com.apple.xbs/Sources/Moments/momentsd/PromptEngine/PromptSource/Trends/MOTrendsAnalyzer.m", 720, "[MOTrendsAnalyzer(Metrics) setCommonFields:]"];
       v32 = 0;
@@ -1452,7 +1452,7 @@ void __57__MOTrendsAnalyzer_analyzeEvents_analyticsPlans_handler___block_invoke(
       v30[4] = __Block_byref_object_dispose__29;
       v31 = 0;
       v13 = dispatch_semaphore_create(0);
-      v14 = [(MOTrendsAnalyzer *)self healthKitManager];
+      healthKitManager3 = [(MOTrendsAnalyzer *)self healthKitManager];
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = __45__MOTrendsAnalyzer_Metrics__setCommonFields___block_invoke_606;
@@ -1461,7 +1461,7 @@ void __57__MOTrendsAnalyzer_analyzeEvents_analyticsPlans_handler___block_invoke(
       v27 = v15;
       v28 = &v43;
       v29 = v30;
-      [v14 fetchUserAgeWithHandler:v26];
+      [healthKitManager3 fetchUserAgeWithHandler:v26];
 
       v16 = [NSString stringWithFormat:@"%@ - [%s] - %d - %s", @"MOSemaphoreWait", "/Library/Caches/com.apple.xbs/Sources/Moments/momentsd/PromptEngine/PromptSource/Trends/MOTrendsAnalyzer.m", 737, "[MOTrendsAnalyzer(Metrics) setCommonFields:]"];
       v25 = 0;
@@ -1480,18 +1480,18 @@ void __57__MOTrendsAnalyzer_analyzeEvents_analyticsPlans_handler___block_invoke(
       _Block_object_dispose(buf, 8);
 
       v20 = [NSNumber numberWithBool:1];
-      [(MOTrendsAnalyzer *)self setValue:v20 forKey:@"IHA_State" dictionary:v4];
+      [(MOTrendsAnalyzer *)self setValue:v20 forKey:@"IHA_State" dictionary:fieldsCopy];
 
       v21 = v44[5];
       if (v21)
       {
-        [(MOTrendsAnalyzer *)self setValue:v21 forKey:@"Age" dictionary:v4 bins:&off_10036DDA0];
+        [(MOTrendsAnalyzer *)self setValue:v21 forKey:@"Age" dictionary:fieldsCopy bins:&off_10036DDA0];
       }
 
       v22 = v50[5];
       if (v22)
       {
-        [(MOTrendsAnalyzer *)self setValue:v22 forKey:@"BiologicalSex" dictionary:v4];
+        [(MOTrendsAnalyzer *)self setValue:v22 forKey:@"BiologicalSex" dictionary:fieldsCopy];
       }
     }
 
@@ -1552,44 +1552,44 @@ void __45__MOTrendsAnalyzer_Metrics__setCommonFields___block_invoke_606(uint64_t
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4 dictionary:(id)a5
+- (void)setValue:(id)value forKey:(id)key dictionary:(id)dictionary
 {
-  if (a3)
+  if (value)
   {
-    v7 = a5;
-    v8 = a4;
-    v9 = [a3 copy];
-    [v7 setObject:v9 forKeyedSubscript:v8];
+    dictionaryCopy = dictionary;
+    keyCopy = key;
+    v9 = [value copy];
+    [dictionaryCopy setObject:v9 forKeyedSubscript:keyCopy];
   }
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4 dictionary:(id)a5 bins:(id)a6
+- (void)setValue:(id)value forKey:(id)key dictionary:(id)dictionary bins:(id)bins
 {
-  if (a3)
+  if (value)
   {
-    v9 = a6;
-    v10 = a5;
-    v11 = a4;
-    v12 = a3;
-    v13 = [v12 copy];
-    [v10 setObject:v13 forKeyedSubscript:v11];
+    binsCopy = bins;
+    dictionaryCopy = dictionary;
+    keyCopy = key;
+    valueCopy = value;
+    v13 = [valueCopy copy];
+    [dictionaryCopy setObject:v13 forKeyedSubscript:keyCopy];
 
-    v15 = [MOMetric binForNumber:v12 bins:v9];
+    v15 = [MOMetric binForNumber:valueCopy bins:binsCopy];
 
-    v14 = [v11 stringByAppendingString:@"_Bucketed"];
+    v14 = [keyCopy stringByAppendingString:@"_Bucketed"];
 
-    [v10 setObject:v15 forKeyedSubscript:v14];
+    [dictionaryCopy setObject:v15 forKeyedSubscript:v14];
   }
 }
 
-- (void)setDecimatedValue:(id)a3 forKey:(id)a4 dictionary:(id)a5
+- (void)setDecimatedValue:(id)value forKey:(id)key dictionary:(id)dictionary
 {
-  if (a3)
+  if (value)
   {
-    v7 = a5;
-    v8 = a4;
-    v9 = a3;
-    [v9 doubleValue];
+    dictionaryCopy = dictionary;
+    keyCopy = key;
+    valueCopy = value;
+    [valueCopy doubleValue];
     v11 = v10;
     v12 = -v10;
     if (v11 >= 0.0)
@@ -1614,17 +1614,17 @@ void __45__MOTrendsAnalyzer_Metrics__setCommonFields___block_invoke_606(uint64_t
       v16 = -v15;
     }
 
-    v17 = [v9 copy];
+    v17 = [valueCopy copy];
 
-    [v7 setObject:v17 forKeyedSubscript:v8];
+    [dictionaryCopy setObject:v17 forKeyedSubscript:keyCopy];
     v18 = [NSNumber numberWithInteger:v14];
-    v19 = [v8 stringByAppendingString:@"_Scale"];
-    [v7 setObject:v18 forKeyedSubscript:v19];
+    v19 = [keyCopy stringByAppendingString:@"_Scale"];
+    [dictionaryCopy setObject:v18 forKeyedSubscript:v19];
 
     v21 = [NSNumber numberWithDouble:v16];
-    v20 = [v8 stringByAppendingString:@"_SignificantValue"];
+    v20 = [keyCopy stringByAppendingString:@"_SignificantValue"];
 
-    [v7 setObject:v21 forKeyedSubscript:v20];
+    [dictionaryCopy setObject:v21 forKeyedSubscript:v20];
   }
 }
 

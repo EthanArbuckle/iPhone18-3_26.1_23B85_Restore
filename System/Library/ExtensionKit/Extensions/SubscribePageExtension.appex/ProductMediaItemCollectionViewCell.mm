@@ -1,12 +1,12 @@
 @interface ProductMediaItemCollectionViewCell
-- (_TtC22SubscribePageExtension34ProductMediaItemCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension34ProductMediaItemCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ProductMediaItemCollectionViewCell
 
-- (_TtC22SubscribePageExtension34ProductMediaItemCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension34ProductMediaItemCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension34ProductMediaItemCollectionViewCell_itemLayoutContext;
   v5 = sub_1007469A4();
@@ -25,13 +25,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10043D818();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10043DA0C();
 }
 

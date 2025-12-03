@@ -1,30 +1,30 @@
 @interface DODMLASRSchemaDODMLASRUserEditExperimentEnded
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRUserEditExperimentEnded)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRUserEditExperimentEnded)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRUserEditExperimentEnded)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRUserEditExperimentEnded)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addRedecodingResults:(id)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasNumAudioFilesSelected:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRedecodingResults:(id)results;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasNumAudioFilesSelected:(BOOL)selected;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRUserEditExperimentEnded
 
-- (DODMLASRSchemaDODMLASRUserEditExperimentEnded)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRUserEditExperimentEnded)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = DODMLASRSchemaDODMLASRUserEditExperimentEnded;
   v5 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"redecodingResults"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"redecodingResults"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"linkId", v22}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"linkId", v22}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,21 +76,21 @@
       [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)v5 setLinkId:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"numAudioFilesAvailable"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"numAudioFilesAvailable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRUserEditExperimentEnded setNumAudioFilesAvailable:](v5, "setNumAudioFilesAvailable:", [v17 unsignedIntValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"numAudioFilesSelected"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"numAudioFilesSelected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRUserEditExperimentEnded setNumAudioFilesSelected:](v5, "setNumAudioFilesSelected:", [v18 unsignedIntValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,30 +103,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRUserEditExperimentEnded)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRUserEditExperimentEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -140,26 +140,26 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[DODMLASRSchemaDODMLASRUserEditExperimentEnded errorCode](self, "errorCode")}];
-    [v3 setObject:v4 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v4 forKeyedSubscript:@"errorCode"];
   }
 
   if (self->_linkId)
   {
-    v5 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    linkId = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
@@ -167,7 +167,7 @@
   if (has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRUserEditExperimentEnded numAudioFilesAvailable](self, "numAudioFilesAvailable")}];
-    [v3 setObject:v9 forKeyedSubscript:@"numAudioFilesAvailable"];
+    [dictionary setObject:v9 forKeyedSubscript:@"numAudioFilesAvailable"];
 
     has = self->_has;
   }
@@ -175,12 +175,12 @@
   if ((has & 2) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRUserEditExperimentEnded numAudioFilesSelected](self, "numAudioFilesSelected")}];
-    [v3 setObject:v10 forKeyedSubscript:@"numAudioFilesSelected"];
+    [dictionary setObject:v10 forKeyedSubscript:@"numAudioFilesSelected"];
   }
 
   if ([(NSArray *)self->_redecodingResults count])
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -200,16 +200,16 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          if (v17)
+          dictionaryRepresentation2 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v11 addObject:v17];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v18 = [MEMORY[0x1E695DFB0] null];
-            [v11 addObject:v18];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -219,12 +219,12 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"redecodingResults"];
+    [dictionary setObject:array forKeyedSubscript:@"redecodingResults"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v20];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v20];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -269,28 +269,28 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self redecodingResults];
-  v6 = [v4 redecodingResults];
-  if ((v5 != 0) == (v6 == 0))
+  redecodingResults = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self redecodingResults];
+  redecodingResults2 = [equalCopy redecodingResults];
+  if ((redecodingResults != 0) == (redecodingResults2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self redecodingResults];
-  if (v7)
+  redecodingResults3 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self redecodingResults];
+  if (redecodingResults3)
   {
-    v8 = v7;
-    v9 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self redecodingResults];
-    v10 = [v4 redecodingResults];
-    v11 = [v9 isEqual:v10];
+    v8 = redecodingResults3;
+    redecodingResults4 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self redecodingResults];
+    redecodingResults5 = [equalCopy redecodingResults];
+    v11 = [redecodingResults4 isEqual:redecodingResults5];
 
     if (!v11)
     {
@@ -302,22 +302,22 @@ LABEL_4:
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  redecodingResults = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
+  redecodingResults2 = [equalCopy linkId];
+  if ((redecodingResults != 0) == (redecodingResults2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
-  if (v12)
+  linkId = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
+  if (linkId)
   {
-    v13 = v12;
-    v14 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
-    v15 = [v4 linkId];
-    v16 = [v14 isEqual:v15];
+    v13 = linkId;
+    linkId2 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
+    linkId3 = [equalCopy linkId];
+    v16 = [linkId2 isEqual:linkId3];
 
     if (!v16)
     {
@@ -330,19 +330,19 @@ LABEL_11:
   }
 
   has = self->_has;
-  v20 = v4[36];
+  v20 = equalCopy[36];
   if ((*&has & 1) == (v20 & 1))
   {
     if (*&has)
     {
       numAudioFilesAvailable = self->_numAudioFilesAvailable;
-      if (numAudioFilesAvailable != [v4 numAudioFilesAvailable])
+      if (numAudioFilesAvailable != [equalCopy numAudioFilesAvailable])
       {
         goto LABEL_12;
       }
 
       has = self->_has;
-      v20 = v4[36];
+      v20 = equalCopy[36];
     }
 
     v22 = (*&has >> 1) & 1;
@@ -351,19 +351,19 @@ LABEL_11:
       if (v22)
       {
         numAudioFilesSelected = self->_numAudioFilesSelected;
-        if (numAudioFilesSelected != [v4 numAudioFilesSelected])
+        if (numAudioFilesSelected != [equalCopy numAudioFilesSelected])
         {
           goto LABEL_12;
         }
 
         has = self->_has;
-        v20 = v4[36];
+        v20 = equalCopy[36];
       }
 
       v24 = (*&has >> 2) & 1;
       if (v24 == ((v20 >> 2) & 1))
       {
-        if (!v24 || (errorCode = self->_errorCode, errorCode == [v4 errorCode]))
+        if (!v24 || (errorCode = self->_errorCode, errorCode == [equalCopy errorCode]))
         {
           v17 = 1;
           goto LABEL_13;
@@ -379,10 +379,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -411,11 +411,11 @@ LABEL_13:
     while (v7);
   }
 
-  v10 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
+  linkId = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
 
-  if (v10)
+  if (linkId)
   {
-    v11 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
+    linkId2 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -454,9 +454,9 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4;
   }
@@ -469,9 +469,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumAudioFilesSelected:(BOOL)a3
+- (void)setHasNumAudioFilesSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     v3 = 2;
   }
@@ -484,39 +484,39 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addRedecodingResults:(id)a3
+- (void)addRedecodingResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   redecodingResults = self->_redecodingResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!redecodingResults)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_redecodingResults;
-    self->_redecodingResults = v6;
+    self->_redecodingResults = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     redecodingResults = self->_redecodingResults;
   }
 
-  [(NSArray *)redecodingResults addObject:v4];
+  [(NSArray *)redecodingResults addObject:resultsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = DODMLASRSchemaDODMLASRUserEditExperimentEnded;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self redecodingResults:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self setRedecodingResults:v7];
 
-  v8 = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  linkId = [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self linkId];
+  v9 = [linkId applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(DODMLASRSchemaDODMLASRUserEditExperimentEnded *)self deleteLinkId];
   }

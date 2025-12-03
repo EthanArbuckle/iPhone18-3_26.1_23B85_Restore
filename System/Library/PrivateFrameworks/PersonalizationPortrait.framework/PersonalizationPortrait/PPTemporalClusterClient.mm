@@ -1,17 +1,17 @@
 @interface PPTemporalClusterClient
 + (id)sharedInstance;
-- (BOOL)rankedTemporalClustersForStartDate:(id)a3 endDate:(id)a4 error:(id *)a5 handleBatch:(id)a6;
+- (BOOL)rankedTemporalClustersForStartDate:(id)date endDate:(id)endDate error:(id *)error handleBatch:(id)batch;
 - (PPTemporalClusterClient)init;
 - (void)_unblockPendingQueries;
 @end
 
 @implementation PPTemporalClusterClient
 
-- (BOOL)rankedTemporalClustersForStartDate:(id)a3 endDate:(id)a4 error:(id *)a5 handleBatch:(id)a6
+- (BOOL)rankedTemporalClustersForStartDate:(id)date endDate:(id)endDate error:(id *)error handleBatch:(id)batch
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  batchCopy = batch;
   v13 = pp_temporal_clusters_log_handle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -26,19 +26,19 @@
   v25[2] = __88__PPTemporalClusterClient_rankedTemporalClustersForStartDate_endDate_error_handleBatch___block_invoke;
   v25[3] = &unk_1E77F7948;
   v25[4] = self;
-  v26 = v10;
-  v27 = v11;
+  v26 = dateCopy;
+  v27 = endDateCopy;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __88__PPTemporalClusterClient_rankedTemporalClustersForStartDate_endDate_error_handleBatch___block_invoke_2;
   v21[3] = &unk_1E77F79C0;
-  v23 = v12;
+  v23 = batchCopy;
   v24 = v14;
   v22 = @"rankedTemporalClustersForStartDate";
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  v19 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedTemporalClustersForStartDate" error:a5 queryInitializer:v25 handleBatch:v21];
+  v16 = batchCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  v19 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedTemporalClustersForStartDate" error:error queryInitializer:v25 handleBatch:v21];
 
   return v19;
 }
@@ -169,7 +169,7 @@ void __31__PPTemporalClusterClient_init__block_invoke_80(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __41__PPTemporalClusterClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken6_6508 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken6_6508, block);

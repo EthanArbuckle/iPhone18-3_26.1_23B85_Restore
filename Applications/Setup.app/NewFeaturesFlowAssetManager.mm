@@ -1,10 +1,10 @@
 @interface NewFeaturesFlowAssetManager
 - (_TtC5Setup27NewFeaturesFlowAssetManager)init;
-- (_TtC5Setup27NewFeaturesFlowAssetManager)initWithManager:(id)a3 networkMonitor:(id)a4;
+- (_TtC5Setup27NewFeaturesFlowAssetManager)initWithManager:(id)manager networkMonitor:(id)monitor;
 - (_TtP5Setup26NewFeaturesFlowManagerType_)manager;
 - (void)downloadAssetsWhenNetworkIsAvailable;
-- (void)networkChangedFromNetworkType:(int)a3 toNetworkType:(int)a4;
-- (void)removeAssetsWithCompletionHandler:(id)a3;
+- (void)networkChangedFromNetworkType:(int)type toNetworkType:(int)networkType;
+- (void)removeAssetsWithCompletionHandler:(id)handler;
 @end
 
 @implementation NewFeaturesFlowAssetManager
@@ -16,29 +16,29 @@
   return v2;
 }
 
-- (_TtC5Setup27NewFeaturesFlowAssetManager)initWithManager:(id)a3 networkMonitor:(id)a4
+- (_TtC5Setup27NewFeaturesFlowAssetManager)initWithManager:(id)manager networkMonitor:(id)monitor
 {
-  *(&self->super.isa + OBJC_IVAR____TtC5Setup27NewFeaturesFlowAssetManager_manager) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC5Setup27NewFeaturesFlowAssetManager_networkMonitor) = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC5Setup27NewFeaturesFlowAssetManager_manager) = manager;
+  *(&self->super.isa + OBJC_IVAR____TtC5Setup27NewFeaturesFlowAssetManager_networkMonitor) = monitor;
   v7.receiver = self;
   v7.super_class = type metadata accessor for NewFeaturesFlowAssetManager();
   swift_unknownObjectRetain();
-  v5 = a4;
+  monitorCopy = monitor;
   return [(NewFeaturesFlowAssetManager *)&v7 init];
 }
 
 - (void)downloadAssetsWhenNetworkIsAvailable
 {
-  v2 = self;
+  selfCopy = self;
   sub_10003F9FC();
 }
 
-- (void)removeAssetsWithCompletionHandler:(id)a3
+- (void)removeAssetsWithCompletionHandler:(id)handler
 {
   v5 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -54,7 +54,7 @@
   v12[3] = 0;
   v12[4] = &unk_100297310;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_100063A28(0, 0, v7, &unk_1002979A0, v12);
 }
 
@@ -65,12 +65,12 @@
   return result;
 }
 
-- (void)networkChangedFromNetworkType:(int)a3 toNetworkType:(int)a4
+- (void)networkChangedFromNetworkType:(int)type toNetworkType:(int)networkType
 {
   v6 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v6 - 8);
   v8 = &v12 - v7;
-  if (a4 == 1)
+  if (networkType == 1)
   {
     v9 = type metadata accessor for TaskPriority();
     (*(*(v9 - 8) + 56))(v8, 1, 1, v9);
@@ -78,7 +78,7 @@
     v10[2] = 0;
     v10[3] = 0;
     v10[4] = self;
-    v11 = self;
+    selfCopy = self;
     sub_100022A78(0, 0, v8, &unk_100298948, v10);
   }
 }

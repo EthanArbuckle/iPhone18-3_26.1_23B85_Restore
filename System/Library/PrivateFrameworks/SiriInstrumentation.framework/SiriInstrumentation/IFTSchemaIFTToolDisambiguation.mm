@@ -1,35 +1,35 @@
 @interface IFTSchemaIFTToolDisambiguation
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTToolDisambiguation)initWithDictionary:(id)a3;
-- (IFTSchemaIFTToolDisambiguation)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTToolDisambiguation)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTToolDisambiguation)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addTools:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTools:(id)tools;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTToolDisambiguation
 
-- (IFTSchemaIFTToolDisambiguation)initWithDictionary:(id)a3
+- (IFTSchemaIFTToolDisambiguation)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = IFTSchemaIFTToolDisambiguation;
   v5 = [(IFTSchemaIFTToolDisambiguation *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTToolDisambiguation setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"assistantSchemaKind"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"assistantSchemaKind"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(IFTSchemaIFTToolDisambiguation *)v5 setAssistantSchemaKind:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"tools"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"tools"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,30 +85,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTToolDisambiguation)initWithJSON:(id)a3
+- (IFTSchemaIFTToolDisambiguation)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTToolDisambiguation *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTToolDisambiguation *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTToolDisambiguation *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -122,23 +122,23 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_assistantSchemaKind)
   {
-    v4 = [(IFTSchemaIFTToolDisambiguation *)self assistantSchemaKind];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"assistantSchemaKind"];
+    assistantSchemaKind = [(IFTSchemaIFTToolDisambiguation *)self assistantSchemaKind];
+    v5 = [assistantSchemaKind copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"assistantSchemaKind"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTToolDisambiguation exists](self, "exists")}];
-    [v3 setObject:v6 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v6 forKeyedSubscript:@"exists"];
   }
 
   if ([(NSArray *)self->_tools count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -158,16 +158,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -177,12 +177,12 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"tools"];
+    [dictionary setObject:array forKeyedSubscript:@"tools"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -201,15 +201,15 @@
   return v4 ^ [(NSArray *)self->_tools hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -217,26 +217,26 @@
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(IFTSchemaIFTToolDisambiguation *)self assistantSchemaKind];
-  v7 = [v4 assistantSchemaKind];
-  if ((v6 != 0) == (v7 == 0))
+  assistantSchemaKind = [(IFTSchemaIFTToolDisambiguation *)self assistantSchemaKind];
+  assistantSchemaKind2 = [equalCopy assistantSchemaKind];
+  if ((assistantSchemaKind != 0) == (assistantSchemaKind2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(IFTSchemaIFTToolDisambiguation *)self assistantSchemaKind];
-  if (v8)
+  assistantSchemaKind3 = [(IFTSchemaIFTToolDisambiguation *)self assistantSchemaKind];
+  if (assistantSchemaKind3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTToolDisambiguation *)self assistantSchemaKind];
-    v11 = [v4 assistantSchemaKind];
-    v12 = [v10 isEqual:v11];
+    v9 = assistantSchemaKind3;
+    assistantSchemaKind4 = [(IFTSchemaIFTToolDisambiguation *)self assistantSchemaKind];
+    assistantSchemaKind5 = [equalCopy assistantSchemaKind];
+    v12 = [assistantSchemaKind4 isEqual:assistantSchemaKind5];
 
     if (!v12)
     {
@@ -248,12 +248,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTToolDisambiguation *)self tools];
-  v7 = [v4 tools];
-  if ((v6 != 0) != (v7 == 0))
+  assistantSchemaKind = [(IFTSchemaIFTToolDisambiguation *)self tools];
+  assistantSchemaKind2 = [equalCopy tools];
+  if ((assistantSchemaKind != 0) != (assistantSchemaKind2 == 0))
   {
-    v13 = [(IFTSchemaIFTToolDisambiguation *)self tools];
-    if (!v13)
+    tools = [(IFTSchemaIFTToolDisambiguation *)self tools];
+    if (!tools)
     {
 
 LABEL_18:
@@ -261,10 +261,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(IFTSchemaIFTToolDisambiguation *)self tools];
-    v16 = [v4 tools];
-    v17 = [v15 isEqual:v16];
+    v14 = tools;
+    tools2 = [(IFTSchemaIFTToolDisambiguation *)self tools];
+    tools3 = [equalCopy tools];
+    v17 = [tools2 isEqual:tools3];
 
     if (v17)
     {
@@ -284,18 +284,18 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(IFTSchemaIFTToolDisambiguation *)self assistantSchemaKind];
+  assistantSchemaKind = [(IFTSchemaIFTToolDisambiguation *)self assistantSchemaKind];
 
-  if (v5)
+  if (assistantSchemaKind)
   {
     PBDataWriterWriteStringField();
   }
@@ -332,37 +332,37 @@ LABEL_16:
   }
 }
 
-- (void)addTools:(id)a3
+- (void)addTools:(id)tools
 {
-  v4 = a3;
+  toolsCopy = tools;
   tools = self->_tools;
-  v8 = v4;
+  v8 = toolsCopy;
   if (!tools)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tools;
-    self->_tools = v6;
+    self->_tools = array;
 
-    v4 = v8;
+    toolsCopy = v8;
     tools = self->_tools;
   }
 
-  [(NSArray *)tools addObject:v4];
+  [(NSArray *)tools addObject:toolsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v9.receiver = self;
   v9.super_class = IFTSchemaIFTToolDisambiguation;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(IFTSchemaIFTToolDisambiguation *)self deleteAssistantSchemaKind];
   }
 
-  v6 = [(IFTSchemaIFTToolDisambiguation *)self tools];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  tools = [(IFTSchemaIFTToolDisambiguation *)self tools];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:tools underConditions:policyCopy];
   [(IFTSchemaIFTToolDisambiguation *)self setTools:v7];
 
   return v5;

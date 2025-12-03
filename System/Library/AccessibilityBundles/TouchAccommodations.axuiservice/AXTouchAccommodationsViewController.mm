@@ -1,12 +1,12 @@
 @interface AXTouchAccommodationsViewController
-- (CGPath)_drawFullCircleWithRadius:(double)a3;
-- (id)_createLayerAtPoint:(CGPoint)a3;
-- (id)_createProgressLayerWithColor:(id)a3 withFilterName:(id)a4 forHoldDuration:(BOOL)a5;
-- (id)_createTransformLayerForHoldDuration:(BOOL)a3;
+- (CGPath)_drawFullCircleWithRadius:(double)radius;
+- (id)_createLayerAtPoint:(CGPoint)point;
+- (id)_createProgressLayerWithColor:(id)color withFilterName:(id)name forHoldDuration:(BOOL)duration;
+- (id)_createTransformLayerForHoldDuration:(BOOL)duration;
 - (void)removeAllHandTouchMarkers;
-- (void)resetProgressTrackOfHandTouchMarkerAtPoints:(id)a3;
-- (void)systemApertureLayoutDidChange:(id)a3;
-- (void)updateLocationOfHandTouchMarkerAtPoints:(id)a3;
+- (void)resetProgressTrackOfHandTouchMarkerAtPoints:(id)points;
+- (void)systemApertureLayoutDidChange:(id)change;
+- (void)updateLocationOfHandTouchMarkerAtPoints:(id)points;
 - (void)viewDidLoad;
 @end
 
@@ -23,8 +23,8 @@
   v5 = [v3 initWithFrame:?];
   [(AXTouchAccommodationsViewController *)self setView:v5];
 
-  v6 = [(AXTouchAccommodationsViewController *)self view];
-  [v6 setUserInteractionEnabled:0];
+  view = [(AXTouchAccommodationsViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
   v7 = objc_alloc_init(SBSSystemApertureLayoutMonitor);
   layoutMonitor = self->_layoutMonitor;
@@ -35,16 +35,16 @@
   self->_foreheadRect.size = 0u;
 }
 
-- (void)resetProgressTrackOfHandTouchMarkerAtPoints:(id)a3
+- (void)resetProgressTrackOfHandTouchMarkerAtPoints:(id)points
 {
-  v24 = a3;
+  pointsCopy = points;
   [(AXTouchAccommodationsViewController *)self updateLocationOfHandTouchMarkerAtPoints:?];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(CATransformLayer *)self->_transformLayer sublayers];
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  sublayers = [(CATransformLayer *)self->_transformLayer sublayers];
+  v5 = [sublayers countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -56,12 +56,12 @@
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v11 isEqualToString:@"tapAssistanceProgressTrack"];
+        name = [v10 name];
+        v12 = [name isEqualToString:@"tapAssistanceProgressTrack"];
 
         if (v12)
         {
@@ -71,7 +71,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v6);
@@ -84,9 +84,9 @@
 
   [v7 removeFromSuperlayer];
   v14 = +[AXSettings sharedInstance];
-  v15 = [v14 touchAccommodationsTapActivationMethod];
+  touchAccommodationsTapActivationMethod = [v14 touchAccommodationsTapActivationMethod];
 
-  if (v15 == &dword_0 + 2)
+  if (touchAccommodationsTapActivationMethod == &dword_0 + 2)
   {
     v16 = +[AXSettings sharedInstance];
     [v16 touchAccommodationsTapActivationTimeout];
@@ -95,7 +95,7 @@
     if (v18 <= 0.289999992)
     {
       v19 = +[UIColor clearColor];
-      v21 = self;
+      selfCopy2 = self;
       v22 = v19;
       v20 = 0;
     }
@@ -104,31 +104,31 @@
     {
       v19 = +[UIColor whiteColor];
       v20 = kCAFilterNormalBlendMode;
-      v21 = self;
+      selfCopy2 = self;
       v22 = v19;
     }
 
-    v23 = [(AXTouchAccommodationsViewController *)v21 _createProgressLayerWithColor:v22 withFilterName:v20 forHoldDuration:0];
+    v23 = [(AXTouchAccommodationsViewController *)selfCopy2 _createProgressLayerWithColor:v22 withFilterName:v20 forHoldDuration:0];
 
     [v23 setName:@"tapAssistanceProgressTrack"];
     [(CATransformLayer *)self->_transformLayer addSublayer:v23];
   }
 }
 
-- (void)updateLocationOfHandTouchMarkerAtPoints:(id)a3
+- (void)updateLocationOfHandTouchMarkerAtPoints:(id)points
 {
-  v47 = a3;
-  v4 = [(AXTouchAccommodationsViewController *)self view];
-  v5 = [v4 layer];
-  v6 = [v5 sublayers];
-  v7 = [v6 count];
-  v8 = [v47 count];
+  pointsCopy = points;
+  view = [(AXTouchAccommodationsViewController *)self view];
+  layer = [view layer];
+  sublayers = [layer sublayers];
+  v7 = [sublayers count];
+  v8 = [pointsCopy count];
 
-  v9 = [v47 count];
-  v10 = [(AXTouchAccommodationsViewController *)self view];
-  v11 = [v10 layer];
-  v12 = [v11 sublayers];
-  v13 = [v12 count];
+  v9 = [pointsCopy count];
+  view2 = [(AXTouchAccommodationsViewController *)self view];
+  layer2 = [view2 layer];
+  sublayers2 = [layer2 sublayers];
+  v13 = [sublayers2 count];
 
   if (v9 < v13)
   {
@@ -137,11 +137,11 @@
     {
       do
       {
-        v15 = [(AXTouchAccommodationsViewController *)self view];
-        v16 = [v15 layer];
-        v17 = [v16 sublayers];
-        v18 = [v17 lastObject];
-        [v18 removeFromSuperlayer];
+        view3 = [(AXTouchAccommodationsViewController *)self view];
+        layer3 = [view3 layer];
+        sublayers3 = [layer3 sublayers];
+        lastObject = [sublayers3 lastObject];
+        [lastObject removeFromSuperlayer];
 
         --v14;
       }
@@ -150,24 +150,24 @@
     }
   }
 
-  if ([v47 count])
+  if ([pointsCopy count])
   {
     v19 = 0;
     do
     {
-      v20 = [(AXTouchAccommodationsViewController *)self view];
-      v21 = [v20 layer];
-      v22 = [v21 sublayers];
-      v23 = [v22 count];
+      view4 = [(AXTouchAccommodationsViewController *)self view];
+      layer4 = [view4 layer];
+      sublayers4 = [layer4 sublayers];
+      v23 = [sublayers4 count];
 
       if (v23 <= v19)
       {
-        v36 = [(AXTouchAccommodationsViewController *)self view];
-        v37 = [v36 layer];
-        v38 = [v47 objectAtIndex:v19];
+        view5 = [(AXTouchAccommodationsViewController *)self view];
+        layer5 = [view5 layer];
+        v38 = [pointsCopy objectAtIndex:v19];
         [v38 CGPointValue];
         v39 = [(AXTouchAccommodationsViewController *)self _createLayerAtPoint:?];
-        [v37 addSublayer:v39];
+        [layer5 addSublayer:v39];
       }
 
       else
@@ -176,15 +176,15 @@
         +[CATransaction begin];
         if (AXDeviceHasJindo())
         {
-          v24 = [v47 objectAtIndex:v19];
+          v24 = [pointsCopy objectAtIndex:v19];
           [v24 CGPointValue];
           v26 = v25;
           v28 = v27;
 
           v29 = +[AXUIDisplayManager sharedDisplayManager];
-          v30 = [v29 activeInterfaceOrientation];
+          activeInterfaceOrientation = [v29 activeInterfaceOrientation];
 
-          if (v30 == (&dword_0 + 3))
+          if (activeInterfaceOrientation == (&dword_0 + 3))
           {
             v45 = self->_foreheadRect.origin.y + self->_foreheadRect.size.height;
             if (v45 > v26 + -50.0)
@@ -193,16 +193,16 @@
             }
           }
 
-          else if (v30 == &dword_4)
+          else if (activeInterfaceOrientation == &dword_4)
           {
-            v31 = [(AXTouchAccommodationsViewController *)self view];
-            [v31 frame];
+            view6 = [(AXTouchAccommodationsViewController *)self view];
+            [view6 frame];
             v33 = v32 - (self->_foreheadRect.origin.y + self->_foreheadRect.size.height);
 
             if (v26 + 50.0 > v33)
             {
-              v34 = [(AXTouchAccommodationsViewController *)self view];
-              [v34 frame];
+              view7 = [(AXTouchAccommodationsViewController *)self view];
+              [view7 frame];
               v26 = v35 - (self->_foreheadRect.origin.y + self->_foreheadRect.size.height + 50.0 + 5.0);
             }
           }
@@ -216,20 +216,20 @@
             }
           }
 
-          v40 = [(AXTouchAccommodationsViewController *)self view];
-          v41 = [v40 layer];
-          v42 = [v41 sublayers];
-          v43 = [v42 objectAtIndex:v19];
+          view8 = [(AXTouchAccommodationsViewController *)self view];
+          layer6 = [view8 layer];
+          sublayers5 = [layer6 sublayers];
+          v43 = [sublayers5 objectAtIndex:v19];
           [v43 setPosition:{v26, v28}];
         }
 
         else
         {
-          v40 = [(AXTouchAccommodationsViewController *)self view];
-          v41 = [v40 layer];
-          v42 = [v41 sublayers];
-          v43 = [v42 objectAtIndex:v19];
-          v44 = [v47 objectAtIndex:v19];
+          view8 = [(AXTouchAccommodationsViewController *)self view];
+          layer6 = [view8 layer];
+          sublayers5 = [layer6 sublayers];
+          v43 = [sublayers5 objectAtIndex:v19];
+          v44 = [pointsCopy objectAtIndex:v19];
           [v44 CGPointValue];
           [v43 setPosition:?];
         }
@@ -241,20 +241,20 @@
       ++v19;
     }
 
-    while ([v47 count] > v19);
+    while ([pointsCopy count] > v19);
   }
 }
 
-- (id)_createLayerAtPoint:(CGPoint)a3
+- (id)_createLayerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 touchAccommodationsHoldDurationEnabled];
+  touchAccommodationsHoldDurationEnabled = [v6 touchAccommodationsHoldDurationEnabled];
 
-  if ((v7 & 1) != 0 || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 touchAccommodationsTapActivationMethod], v8, v9))
+  if ((touchAccommodationsHoldDurationEnabled & 1) != 0 || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 touchAccommodationsTapActivationMethod], v8, v9))
   {
-    v10 = [(AXTouchAccommodationsViewController *)self _createTransformLayerForHoldDuration:v7];
+    v10 = [(AXTouchAccommodationsViewController *)self _createTransformLayerForHoldDuration:touchAccommodationsHoldDurationEnabled];
     transformLayer = self->_transformLayer;
     self->_transformLayer = v10;
   }
@@ -275,11 +275,11 @@
 
   [(CATransformLayer *)v12 setPosition:v14, v13];
   v15 = +[AXSettings sharedInstance];
-  v16 = [v15 touchAccommodationsHoldDurationEnabled];
+  touchAccommodationsHoldDurationEnabled2 = [v15 touchAccommodationsHoldDurationEnabled];
 
   v17 = +[AXSettings sharedInstance];
   v18 = v17;
-  if (v16)
+  if (touchAccommodationsHoldDurationEnabled2)
   {
     [v17 touchAccommodationsHoldDuration];
     v20 = v19;
@@ -287,7 +287,7 @@
     if (v20 <= 0.289999992)
     {
       v21 = +[UIColor clearColor];
-      v23 = self;
+      selfCopy2 = self;
       v24 = v21;
       v22 = 0;
     }
@@ -296,11 +296,11 @@
     {
       v21 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5];
       v22 = kCAFilterMaximum;
-      v23 = self;
+      selfCopy2 = self;
       v24 = v21;
     }
 
-    v33 = [(AXTouchAccommodationsViewController *)v23 _createProgressLayerWithColor:v24 withFilterName:v22 forHoldDuration:1];
+    v33 = [(AXTouchAccommodationsViewController *)selfCopy2 _createProgressLayerWithColor:v24 withFilterName:v22 forHoldDuration:1];
 
     v34 = @"holdDurationProgressTrack";
 LABEL_19:
@@ -310,9 +310,9 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v25 = [v17 touchAccommodationsTapActivationMethod];
+  touchAccommodationsTapActivationMethod = [v17 touchAccommodationsTapActivationMethod];
 
-  if (v25)
+  if (touchAccommodationsTapActivationMethod)
   {
     v26 = +[AXSettings sharedInstance];
     [v26 touchAccommodationsTapActivationTimeout];
@@ -321,7 +321,7 @@ LABEL_19:
     if (v28 <= 0.289999992)
     {
       v29 = +[UIColor clearColor];
-      v31 = self;
+      selfCopy4 = self;
       v32 = v29;
       v30 = 0;
     }
@@ -330,11 +330,11 @@ LABEL_19:
     {
       v29 = +[UIColor whiteColor];
       v30 = kCAFilterNormalBlendMode;
-      v31 = self;
+      selfCopy4 = self;
       v32 = v29;
     }
 
-    v33 = [(AXTouchAccommodationsViewController *)v31 _createProgressLayerWithColor:v32 withFilterName:v30 forHoldDuration:0];
+    v33 = [(AXTouchAccommodationsViewController *)selfCopy4 _createProgressLayerWithColor:v32 withFilterName:v30 forHoldDuration:0];
 
     v34 = @"tapAssistanceProgressTrack";
     goto LABEL_19;
@@ -346,9 +346,9 @@ LABEL_20:
   return v35;
 }
 
-- (id)_createTransformLayerForHoldDuration:(BOOL)a3
+- (id)_createTransformLayerForHoldDuration:(BOOL)duration
 {
-  v3 = a3;
+  durationCopy = duration;
   v5 = +[CATransformLayer layer];
   v6 = objc_alloc_init(CAShapeLayer);
   [v6 setPath:{-[AXTouchAccommodationsViewController _drawFullCircleWithRadius:](self, "_drawFullCircleWithRadius:", 50.0)}];
@@ -365,7 +365,7 @@ LABEL_20:
   [v8 setName:@"shapeLayerEmptyTrack"];
   v10 = +[AXSettings sharedInstance];
   v11 = v10;
-  if (v3)
+  if (durationCopy)
   {
     [v10 touchAccommodationsHoldDuration];
     v13 = v12;
@@ -431,11 +431,11 @@ LABEL_20:
   return v5;
 }
 
-- (id)_createProgressLayerWithColor:(id)a3 withFilterName:(id)a4 forHoldDuration:(BOOL)a5
+- (id)_createProgressLayerWithColor:(id)color withFilterName:(id)name forHoldDuration:(BOOL)duration
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  durationCopy = duration;
+  nameCopy = name;
+  colorCopy = color;
   v10 = objc_alloc_init(CAShapeLayer);
   [v10 setPosition:{CGPointZero.x, CGPointZero.y}];
   [v10 setPath:{-[AXTouchAccommodationsViewController _drawFullCircleWithRadius:](self, "_drawFullCircleWithRadius:", 45.0)}];
@@ -444,13 +444,13 @@ LABEL_20:
   v24[1] = 3221225472;
   v24[2] = sub_3E00;
   v24[3] = &unk_10558;
-  v25 = v5;
+  v25 = durationCopy;
   v24[4] = self;
   [CATransaction setCompletionBlock:v24];
   v11 = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
   v12 = +[AXSettings sharedInstance];
   v13 = v12;
-  if (v5)
+  if (durationCopy)
   {
     [v12 touchAccommodationsHoldDuration];
     v15 = v14 + -0.100000001;
@@ -458,11 +458,11 @@ LABEL_20:
 
   else
   {
-    v16 = [v12 touchAccommodationsHoldDurationEnabled];
+    touchAccommodationsHoldDurationEnabled = [v12 touchAccommodationsHoldDurationEnabled];
 
     v13 = +[AXSettings sharedInstance];
     [v13 touchAccommodationsTapActivationTimeout];
-    if (!v16)
+    if (!touchAccommodationsHoldDurationEnabled)
     {
       v15 = v15 + -0.100000001;
     }
@@ -478,15 +478,15 @@ LABEL_20:
 
   [v10 addAnimation:v11 forKey:@"drawCircleAnimation"];
   +[CATransaction commit];
-  v19 = [v9 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  [v10 setStrokeColor:v19];
+  [v10 setStrokeColor:cGColor];
   v20 = +[UIColor clearColor];
   [v10 setFillColor:{objc_msgSend(v20, "CGColor")}];
 
-  if (v8)
+  if (nameCopy)
   {
-    v21 = [CAFilter filterWithType:v8];
+    v21 = [CAFilter filterWithType:nameCopy];
     [v10 setCompositingFilter:v21];
   }
 
@@ -503,29 +503,29 @@ LABEL_20:
   return v10;
 }
 
-- (CGPath)_drawFullCircleWithRadius:(double)a3
+- (CGPath)_drawFullCircleWithRadius:(double)radius
 {
-  v3 = [UIBezierPath bezierPathWithArcCenter:1 radius:CGPointZero.x startAngle:CGPointZero.y endAngle:a3 clockwise:-1.57079633, 4.71238898];
-  v4 = [v3 CGPath];
+  v3 = [UIBezierPath bezierPathWithArcCenter:1 radius:CGPointZero.x startAngle:CGPointZero.y endAngle:radius clockwise:-1.57079633, 4.71238898];
+  cGPath = [v3 CGPath];
 
-  return v4;
+  return cGPath;
 }
 
 - (void)removeAllHandTouchMarkers
 {
-  v4 = [(AXTouchAccommodationsViewController *)self view];
-  v2 = [v4 layer];
-  v3 = [v2 sublayers];
-  [v3 makeObjectsPerformSelector:"removeFromSuperlayer"];
+  view = [(AXTouchAccommodationsViewController *)self view];
+  layer = [view layer];
+  sublayers = [layer sublayers];
+  [sublayers makeObjectsPerformSelector:"removeFromSuperlayer"];
 }
 
-- (void)systemApertureLayoutDidChange:(id)a3
+- (void)systemApertureLayoutDidChange:(id)change
 {
-  v24 = a3;
-  if ([v24 count] == &dword_0 + 1)
+  changeCopy = change;
+  if ([changeCopy count] == &dword_0 + 1)
   {
     p_foreheadRect = &self->_foreheadRect;
-    v5 = [v24 objectAtIndexedSubscript:0];
+    v5 = [changeCopy objectAtIndexedSubscript:0];
     [v5 CGRectValue];
     p_foreheadRect->origin.x = v6;
     p_foreheadRect->origin.y = v7;
@@ -535,19 +535,19 @@ LABEL_20:
 
   else
   {
-    if ([v24 count] != &dword_0 + 2)
+    if ([changeCopy count] != &dword_0 + 2)
     {
       goto LABEL_6;
     }
 
     v10 = &self->_foreheadRect;
-    v5 = [v24 objectAtIndexedSubscript:0];
+    v5 = [changeCopy objectAtIndexedSubscript:0];
     [v5 CGRectValue];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [v24 objectAtIndexedSubscript:1];
+    v19 = [changeCopy objectAtIndexedSubscript:1];
     [v19 CGRectValue];
     v27.origin.x = v20;
     v27.origin.y = v21;

@@ -1,7 +1,7 @@
 @interface ManagedAppsApplicator
 + (id)supportedConfigurationTypes;
 - (_TtC21ManagedAppsSubscriber21ManagedAppsApplicator)init;
-- (_TtC21ManagedAppsSubscriber21ManagedAppsApplicator)initWithAdapter:(id)a3 inPlaceUpdates:(BOOL)a4;
+- (_TtC21ManagedAppsSubscriber21ManagedAppsApplicator)initWithAdapter:(id)adapter inPlaceUpdates:(BOOL)updates;
 @end
 
 @implementation ManagedAppsApplicator
@@ -22,7 +22,7 @@
   sub_100001658(&qword_100020CD8, &unk_100017E60);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_100017AC0;
-  v3 = [objc_opt_self() registeredIdentifier];
+  registeredIdentifier = [objc_opt_self() registeredIdentifier];
   v4 = sub_100016E20();
   v6 = v5;
 
@@ -36,7 +36,7 @@
   return v7.super.isa;
 }
 
-- (_TtC21ManagedAppsSubscriber21ManagedAppsApplicator)initWithAdapter:(id)a3 inPlaceUpdates:(BOOL)a4
+- (_TtC21ManagedAppsSubscriber21ManagedAppsApplicator)initWithAdapter:(id)adapter inPlaceUpdates:(BOOL)updates
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

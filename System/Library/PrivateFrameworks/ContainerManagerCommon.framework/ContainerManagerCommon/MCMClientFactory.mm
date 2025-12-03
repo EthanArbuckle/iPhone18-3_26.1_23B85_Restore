@@ -1,13 +1,13 @@
 @interface MCMClientFactory
 - (MCMClientCodeSignInfoCache)clientCodeSignInfoCache;
-- (MCMClientFactory)initWithUserIdentityCache:(id)a3 clientCodeSignInfoCache:(id)a4 clientIdentityCache:(id)a5;
+- (MCMClientFactory)initWithUserIdentityCache:(id)cache clientCodeSignInfoCache:(id)infoCache clientIdentityCache:(id)identityCache;
 - (MCMClientIdentityCache)clientIdentityCache;
 - (MCMUserIdentityCache)userIdentityCache;
-- (id)_clientIdentityWithClientMessageContext:(id)a3 error:(id *)a4;
-- (id)_codeSignInfoWithClient:(container_client *)a3 CDHash:(id)a4 identifier:(id)a5 teamIdentifier:(id)a6 error:(id *)a7;
-- (id)_proxiedClientIdentityFromMessage:(id)a3 proximateClient:(id)a4 error:(id *)a5;
-- (id)clientIdentityWithClient:(container_client *)a3 proximateClient:(id)a4 error:(id *)a5;
-- (id)clientIdentityWithClientMessageContext:(id)a3 xpcMessage:(id)a4 error:(id *)a5;
+- (id)_clientIdentityWithClientMessageContext:(id)context error:(id *)error;
+- (id)_codeSignInfoWithClient:(container_client *)client CDHash:(id)hash identifier:(id)identifier teamIdentifier:(id)teamIdentifier error:(id *)error;
+- (id)_proxiedClientIdentityFromMessage:(id)message proximateClient:(id)client error:(id *)error;
+- (id)clientIdentityWithClient:(container_client *)client proximateClient:(id)proximateClient error:(id *)error;
+- (id)clientIdentityWithClientMessageContext:(id)context xpcMessage:(id)message error:(id *)error;
 @end
 
 @implementation MCMClientFactory
@@ -36,12 +36,12 @@
   return result;
 }
 
-- (id)_codeSignInfoWithClient:(container_client *)a3 CDHash:(id)a4 identifier:(id)a5 teamIdentifier:(id)a6 error:(id *)a7
+- (id)_codeSignInfoWithClient:(container_client *)client CDHash:(id)hash identifier:(id)identifier teamIdentifier:(id)teamIdentifier error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  hashCopy = hash;
+  identifierCopy = identifier;
+  teamIdentifierCopy = teamIdentifier;
   v38 = 0u;
   v39 = 0u;
   container_client_get_audit_token();
@@ -81,7 +81,7 @@ LABEL_17:
       v24 = 0;
       v18 = 0;
       v29 = 0;
-      if (!a7)
+      if (!error)
       {
         goto LABEL_20;
       }
@@ -92,33 +92,33 @@ LABEL_17:
     v18 = MEMORY[0x1E695E0F8];
   }
 
-  v35 = v12;
-  v19 = v10;
+  v35 = teamIdentifierCopy;
+  v19 = hashCopy;
 
   v20 = [MCMEntitlements alloc];
   v21 = containermanager_copy_global_configuration();
-  v22 = [v21 staticConfig];
-  v23 = [v22 containerConfigMap];
-  v24 = [(MCMEntitlements *)v20 initWithEntitlements:v18 clientIdentifier:v11 containerConfigMap:v23];
+  staticConfig = [v21 staticConfig];
+  containerConfigMap = [staticConfig containerConfigMap];
+  v24 = [(MCMEntitlements *)v20 initWithEntitlements:v18 clientIdentifier:identifierCopy containerConfigMap:containerConfigMap];
 
   v25 = container_log_handle_for_category();
   v26 = v25;
   if (v24)
   {
-    v10 = v19;
+    hashCopy = v19;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      *&buf[4] = v11;
+      *&buf[4] = identifierCopy;
       _os_log_debug_impl(&dword_1DF2C3000, v26, OS_LOG_TYPE_DEBUG, "Generating new codesign info blob for [%@]", buf, 0xCu);
     }
 
     v27 = [MCMClientCodeSignInfo alloc];
     v28 = v19;
-    v12 = v35;
-    v29 = [(MCMClientCodeSignInfo *)v27 initWithCDHash:v28 entitlements:v24 identifier:v11 teamIdentifier:v35 status:codesign_status];
+    teamIdentifierCopy = v35;
+    v29 = [(MCMClientCodeSignInfo *)v27 initWithCDHash:v28 entitlements:v24 identifier:identifierCopy teamIdentifier:v35 status:codesign_status];
     v15 = 0;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -127,13 +127,13 @@ LABEL_18:
     if (!v29)
     {
       v31 = v15;
-      *a7 = v15;
+      *error = v15;
     }
 
     goto LABEL_20;
   }
 
-  v10 = v19;
+  hashCopy = v19;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
     *buf = 67109120;
@@ -144,8 +144,8 @@ LABEL_18:
   v15 = [[MCMError alloc] initWithErrorType:97 category:3];
   v24 = 0;
   v29 = 0;
-  v12 = v35;
-  if (a7)
+  teamIdentifierCopy = v35;
+  if (error)
   {
     goto LABEL_18;
   }
@@ -157,10 +157,10 @@ LABEL_20:
   return v29;
 }
 
-- (id)clientIdentityWithClient:(container_client *)a3 proximateClient:(id)a4 error:(id *)a5
+- (id)clientIdentityWithClient:(container_client *)client proximateClient:(id)proximateClient error:(id *)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  proximateClientCopy = proximateClient;
   v69 = 0u;
   v70 = 0u;
   container_client_get_audit_token();
@@ -168,7 +168,7 @@ LABEL_20:
   euid = container_client_get_euid();
   pid = container_client_get_pid();
   platform = container_client_get_platform();
-  v56 = v7;
+  v56 = proximateClientCopy;
   if (!container_client_is_signed())
   {
     v21 = [[MCMError alloc] initWithErrorType:98 category:3];
@@ -254,18 +254,18 @@ LABEL_20:
     if (is_test_client)
     {
 LABEL_7:
-      if (v7)
+      if (proximateClientCopy)
       {
         v18 = containermanager_copy_global_configuration();
         if ([v18 isInternalImage])
         {
-          v19 = [v7 isAllowedToTest];
+          isAllowedToTest = [proximateClientCopy isAllowedToTest];
 
-          if (v19)
+          if (isAllowedToTest)
           {
             v52 = pid;
             v64 = 0;
-            v20 = [(MCMClientFactory *)self _codeSignInfoWithClient:a3 CDHash:v54 identifier:v15 teamIdentifier:v17 error:&v64];
+            v20 = [(MCMClientFactory *)self _codeSignInfoWithClient:client CDHash:v54 identifier:v15 teamIdentifier:v17 error:&v64];
             v21 = v64;
             goto LABEL_25;
           }
@@ -309,8 +309,8 @@ LABEL_41:
   }
 
   v52 = pid;
-  v31 = [(MCMClientFactory *)self clientCodeSignInfoCache];
-  v62 = a3;
+  clientCodeSignInfoCache = [(MCMClientFactory *)self clientCodeSignInfoCache];
+  clientCopy = client;
   v63 = 0;
   v58[0] = MEMORY[0x1E69E9820];
   v58[1] = 3221225472;
@@ -320,7 +320,7 @@ LABEL_41:
   v59 = v54;
   v60 = v15;
   v61 = v17;
-  v20 = [v31 codeSignInfoForCDHash:v59 identifier:v60 error:&v63 generator:v58];
+  v20 = [clientCodeSignInfoCache codeSignInfoForCDHash:v59 identifier:v60 error:&v63 generator:v58];
   v21 = v63;
 
 LABEL_25:
@@ -338,9 +338,9 @@ LABEL_25:
   }
 
   is_sandboxed = container_client_is_sandboxed();
-  v32 = [(MCMClientFactory *)self userIdentityCache];
+  userIdentityCache = [(MCMClientFactory *)self userIdentityCache];
   v57 = v21;
-  v26 = [v32 userIdentityForClient:a3 error:&v57];
+  v26 = [userIdentityCache userIdentityForClient:client error:&v57];
   v33 = v57;
 
   if (v26)
@@ -367,11 +367,11 @@ LABEL_25:
       v28 = v54;
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
       {
-        v47 = [v26 shortDescription];
+        shortDescription = [v26 shortDescription];
         *buf = 138412546;
         *&buf[4] = v15;
         *&buf[12] = 2112;
-        *&buf[14] = v47;
+        *&buf[14] = shortDescription;
         _os_log_debug_impl(&dword_1DF2C3000, v44, OS_LOG_TYPE_DEBUG, "Generating new client identity for [%@/%@]", buf, 0x16u);
 
         v28 = v54;
@@ -385,8 +385,8 @@ LABEL_25:
       v29 = [(MCMClientIdentity *)v45 initWithPOSIXUser:v24 POSIXPID:v52 platform:v53 userIdentity:v26 proximateClient:v56 auditToken:buf codeSignInfo:v20 sandboxed:v48 sandboxContainerURL:v25 testClient:v49 kernel:?];
       v21 = v50;
 LABEL_21:
-      v30 = a5;
-      if (!a5)
+      errorCopy2 = error;
+      if (!error)
       {
         goto LABEL_45;
       }
@@ -430,8 +430,8 @@ LABEL_21:
 LABEL_42:
   v29 = 0;
   v28 = v54;
-  v30 = a5;
-  if (!a5)
+  errorCopy2 = error;
+  if (!error)
   {
     goto LABEL_45;
   }
@@ -440,7 +440,7 @@ LABEL_43:
   if (!v29)
   {
     v38 = v21;
-    *v30 = v21;
+    *errorCopy2 = v21;
   }
 
 LABEL_45:
@@ -463,41 +463,41 @@ uint64_t __67__MCMClientFactory_clientIdentityWithClient_proximateClient_error__
   return [v4 _codeSignInfoWithClient:v3 CDHash:v5 identifier:v6 teamIdentifier:v7 error:a2];
 }
 
-- (MCMClientFactory)initWithUserIdentityCache:(id)a3 clientCodeSignInfoCache:(id)a4 clientIdentityCache:(id)a5
+- (MCMClientFactory)initWithUserIdentityCache:(id)cache clientCodeSignInfoCache:(id)infoCache clientIdentityCache:(id)identityCache
 {
   v17 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  cacheCopy = cache;
+  infoCacheCopy = infoCache;
+  identityCacheCopy = identityCache;
   v16.receiver = self;
   v16.super_class = MCMClientFactory;
   v12 = [(MCMClientFactory *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_userIdentityCache, a3);
-    objc_storeStrong(&v13->_clientCodeSignInfoCache, a4);
-    objc_storeStrong(&v13->_clientIdentityCache, a5);
+    objc_storeStrong(&v12->_userIdentityCache, cache);
+    objc_storeStrong(&v13->_clientCodeSignInfoCache, infoCache);
+    objc_storeStrong(&v13->_clientIdentityCache, identityCache);
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (id)_clientIdentityWithClientMessageContext:(id)a3 error:(id *)a4
+- (id)_clientIdentityWithClientMessageContext:(id)context error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  contextCopy = context;
+  v7 = contextCopy;
   v22 = 1;
   v25 = 0u;
   v26 = 0u;
-  if (v6)
+  if (contextCopy)
   {
-    [v6 auditToken];
+    [contextCopy auditToken];
   }
 
-  v8 = [v7 personaUniqueString];
+  personaUniqueString = [v7 personaUniqueString];
   *buf = v25;
   v24 = v26;
   v9 = container_audit_token_copy_codesign_identifier();
@@ -511,18 +511,18 @@ uint64_t __67__MCMClientFactory_clientIdentityWithClient_proximateClient_error__
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        *&buf[4] = v8;
+        *&buf[4] = personaUniqueString;
         _os_log_debug_impl(&dword_1DF2C3000, v11, OS_LOG_TYPE_DEBUG, "Ignoring client persona because it is identified as installd; persona was = [%@]", buf, 0xCu);
       }
 
-      v8 = 0;
+      personaUniqueString = 0;
     }
 
     free(v10);
     memset_s(&__s, 8uLL, 0, 8uLL);
   }
 
-  [v8 UTF8String];
+  [personaUniqueString UTF8String];
   *buf = v25;
   v24 = v26;
   v12 = container_client_create_from_audit_token();
@@ -549,10 +549,10 @@ uint64_t __67__MCMClientFactory_clientIdentityWithClient_proximateClient_error__
   }
 
   container_free_client();
-  if (a4 && !v13)
+  if (error && !v13)
   {
     v17 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -560,11 +560,11 @@ uint64_t __67__MCMClientFactory_clientIdentityWithClient_proximateClient_error__
   return v13;
 }
 
-- (id)_proxiedClientIdentityFromMessage:(id)a3 proximateClient:(id)a4 error:(id *)a5
+- (id)_proxiedClientIdentityFromMessage:(id)message proximateClient:(id)client error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = xpc_dictionary_get_dictionary(a3, "ProxyForClient");
+  clientCopy = client;
+  v9 = xpc_dictionary_get_dictionary(message, "ProxyForClient");
   if (!v9)
   {
     v16 = 0;
@@ -583,7 +583,7 @@ LABEL_13:
 
 LABEL_14:
       v21 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_17;
       }
@@ -614,9 +614,9 @@ LABEL_28:
     goto LABEL_12;
   }
 
-  v13 = [v8 isAllowedToTest];
+  isAllowedToTest = [clientCopy isAllowedToTest];
 
-  if ((v13 & 1) == 0)
+  if ((isAllowedToTest & 1) == 0)
   {
 LABEL_12:
     v16 = +[MCMError notEntitled];
@@ -651,16 +651,16 @@ LABEL_6:
   if (container_client_is_test_client())
   {
     v31 = 0;
-    v21 = [(MCMClientFactory *)self clientIdentityWithClient:v11 proximateClient:v8 error:&v31];
+    v21 = [(MCMClientFactory *)self clientIdentityWithClient:v11 proximateClient:clientCopy error:&v31];
     v16 = v31;
   }
 
   else
   {
-    v26 = [(MCMClientFactory *)self clientIdentityCache];
-    if (v8)
+    clientIdentityCache = [(MCMClientFactory *)self clientIdentityCache];
+    if (clientCopy)
     {
-      [v8 auditToken];
+      [clientCopy auditToken];
     }
 
     else
@@ -675,22 +675,22 @@ LABEL_6:
     v27[2] = __81__MCMClientFactory_XPC___proxiedClientIdentityFromMessage_proximateClient_error___block_invoke;
     v27[3] = &unk_1E86B0060;
     v27[4] = self;
-    v28 = v8;
+    v28 = clientCopy;
     v33[0] = *buf;
     v33[1] = v36;
-    v21 = [v26 clientIdentityWithAuditToken:v33 proximateAuditToken:v34 personaUniqueString:v15 error:&v30 generator:v27];
+    v21 = [clientIdentityCache clientIdentityWithAuditToken:v33 proximateAuditToken:v34 personaUniqueString:v15 error:&v30 generator:v27];
     v16 = v30;
   }
 
   container_free_client();
 
-  if (a5)
+  if (error)
   {
 LABEL_15:
     if (!v21)
     {
       v22 = v16;
-      *a5 = v16;
+      *error = v16;
     }
   }
 
@@ -711,15 +711,15 @@ uint64_t __81__MCMClientFactory_XPC___proxiedClientIdentityFromMessage_proximate
   return [v4 clientIdentityWithClient:v3 proximateClient:v5 error:a2];
 }
 
-- (id)clientIdentityWithClientMessageContext:(id)a3 xpcMessage:(id)a4 error:(id *)a5
+- (id)clientIdentityWithClientMessageContext:(id)context xpcMessage:(id)message error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MCMClientFactory *)self clientIdentityCache];
-  if (v8)
+  contextCopy = context;
+  messageCopy = message;
+  clientIdentityCache = [(MCMClientFactory *)self clientIdentityCache];
+  if (contextCopy)
   {
-    [v8 auditToken];
+    [contextCopy auditToken];
   }
 
   else
@@ -728,24 +728,24 @@ uint64_t __81__MCMClientFactory_XPC___proxiedClientIdentityFromMessage_proximate
     v33 = 0u;
   }
 
-  v11 = [v8 personaUniqueString];
+  personaUniqueString = [contextCopy personaUniqueString];
   v30 = 0;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __81__MCMClientFactory_XPC__clientIdentityWithClientMessageContext_xpcMessage_error___block_invoke;
   v28[3] = &unk_1E86B0038;
   v28[4] = self;
-  v12 = v8;
+  v12 = contextCopy;
   v29 = v12;
   memset(v31, 0, sizeof(v31));
-  v13 = [v10 clientIdentityWithAuditToken:buf proximateAuditToken:v31 personaUniqueString:v11 error:&v30 generator:v28];
+  v13 = [clientIdentityCache clientIdentityWithAuditToken:buf proximateAuditToken:v31 personaUniqueString:personaUniqueString error:&v30 generator:v28];
   v14 = v30;
 
   if (!v13)
   {
     v15 = 0;
-    v17 = 0;
-    if (!a5)
+    entitlements = 0;
+    if (!error)
     {
 LABEL_17:
       v19 = 0;
@@ -755,22 +755,22 @@ LABEL_17:
 LABEL_10:
     v18 = v14;
     v19 = 0;
-    *a5 = v14;
+    *error = v14;
 LABEL_18:
     v16 = v14;
     goto LABEL_19;
   }
 
   v27 = v14;
-  v15 = [(MCMClientFactory *)self _proxiedClientIdentityFromMessage:v9 proximateClient:v13 error:&v27];
+  v15 = [(MCMClientFactory *)self _proxiedClientIdentityFromMessage:messageCopy proximateClient:v13 error:&v27];
   v16 = v27;
 
   if (!v15 && v16)
   {
     v15 = 0;
-    v17 = 0;
+    entitlements = 0;
     v14 = v16;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -778,15 +778,15 @@ LABEL_18:
     goto LABEL_10;
   }
 
-  v20 = [v13 codeSignInfo];
-  v17 = [v20 entitlements];
+  codeSignInfo = [v13 codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
 
   v21 = v13;
   if (v15)
   {
-    v22 = [v17 proxyAllowed];
+    proxyAllowed = [entitlements proxyAllowed];
     v21 = v15;
-    if ((v22 & 1) == 0)
+    if ((proxyAllowed & 1) == 0)
     {
       v14 = +[MCMError notEntitled];
 
@@ -797,7 +797,7 @@ LABEL_18:
         _os_log_error_impl(&dword_1DF2C3000, v23, OS_LOG_TYPE_ERROR, "Not entitled to proxy", buf, 2u);
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_17;
       }

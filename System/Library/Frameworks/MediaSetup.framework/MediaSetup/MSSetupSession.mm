@@ -1,22 +1,22 @@
 @interface MSSetupSession
 - (BOOL)startWithError:(NSError *)error;
-- (MSSetupSession)initWithServiceAccount:(id)a3 test:(unint64_t)a4;
+- (MSSetupSession)initWithServiceAccount:(id)account test:(unint64_t)test;
 - (id)presentationContext;
 @end
 
 @implementation MSSetupSession
 
-- (MSSetupSession)initWithServiceAccount:(id)a3 test:(unint64_t)a4
+- (MSSetupSession)initWithServiceAccount:(id)account test:(unint64_t)test
 {
-  v7 = a3;
+  accountCopy = account;
   v10.receiver = self;
   v10.super_class = MSSetupSession;
   v8 = [(MSSetupSession *)&v10 self];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_account, a3);
-    v8->_testFlags = a4;
+    objc_storeStrong(&v8->_account, account);
+    v8->_testFlags = test;
   }
 
   return v8;
@@ -31,25 +31,25 @@
   WeakRetained = objc_loadWeakRetained(&self->_presentationContext);
   if (WeakRetained)
   {
-    v8 = objc_loadWeakRetained(&self->_presentationContext);
-    v9 = [v8 presentationAnchor];
+    connectedScenes = objc_loadWeakRetained(&self->_presentationContext);
+    presentationAnchor = [connectedScenes presentationAnchor];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D75128] sharedApplication];
-    v8 = [v10 connectedScenes];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    connectedScenes = [mEMORY[0x277D75128] connectedScenes];
 
-    v11 = [v8 na_firstObjectPassingTest:&__block_literal_global];
-    v12 = [v11 windows];
-    v9 = [v12 firstObject];
+    v11 = [connectedScenes na_firstObjectPassingTest:&__block_literal_global];
+    windows = [v11 windows];
+    presentationAnchor = [windows firstObject];
   }
 
-  v13 = [v9 rootViewController];
-  v14 = v13;
-  if (v13)
+  rootViewController = [presentationAnchor rootViewController];
+  v14 = rootViewController;
+  if (rootViewController)
   {
-    [v13 presentViewController:self->_viewController animated:1 completion:0];
+    [rootViewController presentViewController:self->_viewController animated:1 completion:0];
   }
 
   else

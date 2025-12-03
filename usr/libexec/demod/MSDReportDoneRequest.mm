@@ -14,8 +14,8 @@
     return 0;
   }
 
-  v3 = [(MSDReportDoneRequest *)self requestStr];
-  v4 = v3 != 0;
+  requestStr = [(MSDReportDoneRequest *)self requestStr];
+  v4 = requestStr != 0;
 
   return v4;
 }
@@ -23,35 +23,35 @@
 - (id)getPostData
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(MSDReportDoneRequest *)self requestStr];
-  [v3 setObject:v4 forKey:@"RequestOperation"];
+  requestStr = [(MSDReportDoneRequest *)self requestStr];
+  [v3 setObject:requestStr forKey:@"RequestOperation"];
 
-  v5 = [(MSDCommandServerRequest *)self deviceUDID];
-  [v3 setObject:v5 forKey:@"UniqueDeviceID"];
+  deviceUDID = [(MSDCommandServerRequest *)self deviceUDID];
+  [v3 setObject:deviceUDID forKey:@"UniqueDeviceID"];
 
-  v6 = [(MSDReportDoneRequest *)self error];
+  error = [(MSDReportDoneRequest *)self error];
 
-  if (v6)
+  if (error)
   {
     v7 = objc_alloc_init(NSMutableDictionary);
-    v8 = [(MSDReportDoneRequest *)self error];
-    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%08llX", [v8 code]);
+    error2 = [(MSDReportDoneRequest *)self error];
+    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%08llX", [error2 code]);
     [v7 setObject:v9 forKey:@"ErrorCode"];
 
-    v10 = [(MSDReportDoneRequest *)self error];
-    v11 = [v10 domain];
-    [v7 setObject:v11 forKey:@"ErrorDomain"];
+    error3 = [(MSDReportDoneRequest *)self error];
+    domain = [error3 domain];
+    [v7 setObject:domain forKey:@"ErrorDomain"];
 
-    v12 = [(MSDReportDoneRequest *)self error];
-    v13 = [v12 localizedDescription];
-    [v7 setObject:v13 forKey:NSLocalizedDescriptionKey];
+    error4 = [(MSDReportDoneRequest *)self error];
+    localizedDescription = [error4 localizedDescription];
+    [v7 setObject:localizedDescription forKey:NSLocalizedDescriptionKey];
 
     [v3 setObject:v7 forKey:@"Error"];
   }
 
-  v14 = [v3 convertToNSData];
+  convertToNSData = [v3 convertToNSData];
 
-  return v14;
+  return convertToNSData;
 }
 
 @end

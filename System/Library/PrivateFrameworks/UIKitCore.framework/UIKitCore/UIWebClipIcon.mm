@@ -1,29 +1,29 @@
 @interface UIWebClipIcon
 - (CGSize)bestSize;
-- (int64_t)compare:(id)a3 preferringDeviceIconSizes:(BOOL)a4;
+- (int64_t)compare:(id)compare preferringDeviceIconSizes:(BOOL)sizes;
 @end
 
 @implementation UIWebClipIcon
 
-- (int64_t)compare:(id)a3 preferringDeviceIconSizes:(BOOL)a4
+- (int64_t)compare:(id)compare preferringDeviceIconSizes:(BOOL)sizes
 {
-  v4 = a4;
-  v6 = a3;
-  if (-[UIWebClipIcon isSiteWide](self, "isSiteWide") && ![v6 isSiteWide])
+  sizesCopy = sizes;
+  compareCopy = compare;
+  if (-[UIWebClipIcon isSiteWide](self, "isSiteWide") && ![compareCopy isSiteWide])
   {
     goto LABEL_14;
   }
 
-  if (!-[UIWebClipIcon isSiteWide](self, "isSiteWide") && ([v6 isSiteWide] & 1) != 0)
+  if (!-[UIWebClipIcon isSiteWide](self, "isSiteWide") && ([compareCopy isSiteWide] & 1) != 0)
   {
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!sizesCopy)
   {
     [(UIWebClipIcon *)self bestSize];
     v16 = v15;
-    [v6 bestSize];
+    [compareCopy bestSize];
     if (v16 > v17)
     {
       goto LABEL_15;
@@ -31,13 +31,13 @@
 
     [(UIWebClipIcon *)self bestSize];
     v19 = v18;
-    [v6 bestSize];
+    [compareCopy bestSize];
     if (v19 >= v20)
     {
 LABEL_10:
-      if (!-[UIWebClipIcon isPrecomposed](self, "isPrecomposed") || [v6 isPrecomposed])
+      if (!-[UIWebClipIcon isPrecomposed](self, "isPrecomposed") || [compareCopy isPrecomposed])
       {
-        if (-[UIWebClipIcon isPrecomposed](self, "isPrecomposed") || ([v6 isPrecomposed] & 1) == 0)
+        if (-[UIWebClipIcon isPrecomposed](self, "isPrecomposed") || ([compareCopy isPrecomposed] & 1) == 0)
         {
           v14 = 0;
           goto LABEL_17;
@@ -60,7 +60,7 @@ LABEL_14:
   [(UIWebClipIcon *)self bestSize];
   v9 = v8;
   v11 = v10;
-  [v6 bestSize];
+  [compareCopy bestSize];
   v14 = [v7 _compareApplicationIconCanvasSize:v9 withSize:{v11, v12, v13}];
   if (!v14)
   {

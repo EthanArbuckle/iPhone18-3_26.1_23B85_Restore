@@ -1,44 +1,44 @@
 @interface CAMInternalStorage
-- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)_queryQueue_queryAvailableSpaceAndUpdateCachedEstimatesForBytesPerMinute:(SEL)a3 minimumDiskUsageThreshold:(int64_t)a4;
-- (BOOL)_hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 totalFreeBytes:(int64_t)a4 allowPurging:(BOOL)a5 verbose:(BOOL)a6;
-- (BOOL)hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 allowPurging:(BOOL)a4 verbose:(BOOL)a5;
+- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)_queryQueue_queryAvailableSpaceAndUpdateCachedEstimatesForBytesPerMinute:(SEL)minute minimumDiskUsageThreshold:(int64_t)threshold;
+- (BOOL)_hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration totalFreeBytes:(int64_t)bytes allowPurging:(BOOL)purging verbose:(BOOL)verbose;
+- (BOOL)hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration allowPurging:(BOOL)purging verbose:(BOOL)verbose;
 - (BOOL)hasPurgeableResources;
 - (BOOL)isCancelingPurge;
 - (CAMInternalStorage)init;
 - (CAMPurgeableStorageContainerDelegate)delegate;
-- (double)_availableRecordingTimeInMinutesForFreeBytes:(int64_t)a3 minimumDiskUsageThreshold:(int64_t)a4 bytesPerMinute:(int64_t)a5;
-- (double)availableRecordingTimeInSecondsForGraphConfiguration:(id)a3;
+- (double)_availableRecordingTimeInMinutesForFreeBytes:(int64_t)bytes minimumDiskUsageThreshold:(int64_t)threshold bytesPerMinute:(int64_t)minute;
+- (double)availableRecordingTimeInSecondsForGraphConfiguration:(id)configuration;
 - (id)_cacheDeleteVolume;
-- (id)_stringFromAvailableSpace:(id *)a3;
-- (id)_stringFromByteCount:(int64_t)a3;
-- (int64_t)_absoluteMinimumBytesForMode:(int64_t)a3;
-- (int64_t)_fastPurgeThresholdForRequestType:(int64_t)a3;
-- (int64_t)_preferredMinimumBytesForConfiguration:(id)a3;
-- (int64_t)_resourceValueForKey:(id)a3;
+- (id)_stringFromAvailableSpace:(id *)space;
+- (id)_stringFromByteCount:(int64_t)count;
+- (int64_t)_absoluteMinimumBytesForMode:(int64_t)mode;
+- (int64_t)_fastPurgeThresholdForRequestType:(int64_t)type;
+- (int64_t)_preferredMinimumBytesForConfiguration:(id)configuration;
+- (int64_t)_resourceValueForKey:(id)key;
 - (int64_t)_totalBytes;
-- (int64_t)minimumDiskUsageThresholdInBytesForGraphConfiguration:(id)a3;
+- (int64_t)minimumDiskUsageThresholdInBytesForGraphConfiguration:(id)configuration;
 - (int64_t)totalFreeBytes;
-- (void)_copyAndApplyByteStringFormattingFromDictionary:(id)a3 toDictionary:(id)a4 keys:(id)a5;
-- (void)_copyFromDictionary:(id)a3 toDictionary:(id)a4 keys:(id)a5;
+- (void)_copyAndApplyByteStringFormattingFromDictionary:(id)dictionary toDictionary:(id)toDictionary keys:(id)keys;
+- (void)_copyFromDictionary:(id)dictionary toDictionary:(id)toDictionary keys:(id)keys;
 - (void)_loadFreeDiskThresholds;
-- (void)_notifyDelegateOfPurgeCompletionAndUpdateContinuousPurgeWithForceStopWithReason:(id)a3 analyticsEvent:(id)a4;
-- (void)_purgeFastPurgeableSpaceWithThreshold:(int64_t)a3 calledFromPurgeCompletion:(BOOL)a4 forceStopReason:(id)a5 analyticsEvent:(id)a6;
-- (void)_queryQueue_aggregateLowDiskEventWithIdentifier:(id)a3;
+- (void)_notifyDelegateOfPurgeCompletionAndUpdateContinuousPurgeWithForceStopWithReason:(id)reason analyticsEvent:(id)event;
+- (void)_purgeFastPurgeableSpaceWithThreshold:(int64_t)threshold calledFromPurgeCompletion:(BOOL)completion forceStopReason:(id)reason analyticsEvent:(id)event;
+- (void)_queryQueue_aggregateLowDiskEventWithIdentifier:(id)identifier;
 - (void)_queryQueue_cancelCurrentPurge;
-- (void)_queryQueue_purgeFastPurgeableResourcesWithThreshold:(int64_t)a3 analyticsEvent:(id)a4;
-- (void)_queryQueue_updatePurgeRequestStateForTotalFreeBytes:(int64_t)a3 preferredFreeBytes:(int64_t)a4;
-- (void)_setCachedEstimatedSpace:(id *)a3;
-- (void)_setFastPurgeThreshold:(int64_t)a3;
-- (void)_setPurging:(BOOL)a3;
-- (void)_setShouldCancelNextPurge:(BOOL)a3;
-- (void)_statMountPoint:(statfs *)a3;
+- (void)_queryQueue_purgeFastPurgeableResourcesWithThreshold:(int64_t)threshold analyticsEvent:(id)event;
+- (void)_queryQueue_updatePurgeRequestStateForTotalFreeBytes:(int64_t)bytes preferredFreeBytes:(int64_t)freeBytes;
+- (void)_setCachedEstimatedSpace:(id *)space;
+- (void)_setFastPurgeThreshold:(int64_t)threshold;
+- (void)_setPurging:(BOOL)purging;
+- (void)_setShouldCancelNextPurge:(BOOL)purge;
+- (void)_statMountPoint:(statfs *)point;
 - (void)_updateAvailablePurgeableSpaceAsync;
-- (void)_updatePurgeRequestStateForConfiguration:(id)a3 totalFreeBytes:(int64_t)a4;
+- (void)_updatePurgeRequestStateForConfiguration:(id)configuration totalFreeBytes:(int64_t)bytes;
 - (void)cancelPurge;
-- (void)hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 allowPurging:(BOOL)a4 completion:(id)a5;
-- (void)purgeFastPurgeableSpaceWithRequestType:(int64_t)a3;
-- (void)reportLowDiskEventWithIdentifier:(id)a3;
-- (void)setGraphConfiguration:(id)a3;
+- (void)hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration allowPurging:(BOOL)purging completion:(id)completion;
+- (void)purgeFastPurgeableSpaceWithRequestType:(int64_t)type;
+- (void)reportLowDiskEventWithIdentifier:(id)identifier;
+- (void)setGraphConfiguration:(id)configuration;
 @end
 
 @implementation CAMInternalStorage
@@ -72,10 +72,10 @@
     storageMountPoint = v2->__storageMountPoint;
     v2->__storageMountPoint = v10;
 
-    v12 = [MEMORY[0x1E696AAE8] mainBundle];
-    v13 = [v12 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v2->__isLockScreenExtension = [v13 isEqualToString:@"com.apple.camera.lockscreen"];
+    v2->__isLockScreenExtension = [bundleIdentifier isEqualToString:@"com.apple.camera.lockscreen"];
     v14 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v15 = dispatch_queue_create("com.camera.diskSpace", v14);
     diskSpaceQueue = v2->__diskSpaceQueue;
@@ -87,46 +87,46 @@
   return v2;
 }
 
-- (void)_setPurging:(BOOL)a3
+- (void)_setPurging:(BOOL)purging
 {
-  if (self->__purging != a3)
+  if (self->__purging != purging)
   {
-    self->__purging = a3;
-    v5 = [(CAMInternalStorage *)self delegate];
-    [v5 storageControllerDidChangePurgingState:self];
+    self->__purging = purging;
+    delegate = [(CAMInternalStorage *)self delegate];
+    [delegate storageControllerDidChangePurgingState:self];
   }
 }
 
 - (BOOL)isCancelingPurge
 {
-  v3 = [(CAMInternalStorage *)self isPurging];
-  if (v3)
+  isPurging = [(CAMInternalStorage *)self isPurging];
+  if (isPurging)
   {
 
-    LOBYTE(v3) = [(CAMInternalStorage *)self _shouldCancelNextPurge];
+    LOBYTE(isPurging) = [(CAMInternalStorage *)self _shouldCancelNextPurge];
   }
 
-  return v3;
+  return isPurging;
 }
 
-- (void)_setShouldCancelNextPurge:(BOOL)a3
+- (void)_setShouldCancelNextPurge:(BOOL)purge
 {
-  if (self->__shouldCancelNextPurge != a3)
+  if (self->__shouldCancelNextPurge != purge)
   {
-    self->__shouldCancelNextPurge = a3;
-    v5 = [(CAMInternalStorage *)self delegate];
-    [v5 storageControllerDidChangePurgingState:self];
+    self->__shouldCancelNextPurge = purge;
+    delegate = [(CAMInternalStorage *)self delegate];
+    [delegate storageControllerDidChangePurgingState:self];
   }
 }
 
-- (void)_setCachedEstimatedSpace:(id *)a3
+- (void)_setCachedEstimatedSpace:(id *)space
 {
   [(CAMInternalStorage *)self _cachedEstimatedSpace];
-  v5 = v7[5] == a3->var0 && v7[6] == a3->var1;
-  if (!v5 || v7[7] != a3->var2)
+  v5 = v7[5] == space->var0 && v7[6] == space->var1;
+  if (!v5 || v7[7] != space->var2)
   {
-    v6 = *&a3->var0;
-    self->slowPurgeableBytes = a3->var2;
+    v6 = *&space->var0;
+    self->slowPurgeableBytes = space->var2;
     *&self->freeBytes = v6;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -143,38 +143,38 @@ void __47__CAMInternalStorage__setCachedEstimatedSpace___block_invoke(uint64_t a
   [v2 availableDiskSpaceChanged:*(a1 + 32)];
 }
 
-- (void)setGraphConfiguration:(id)a3
+- (void)setGraphConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   p_graphConfiguration = &self->_graphConfiguration;
-  if (self->_graphConfiguration != v5)
+  if (self->_graphConfiguration != configurationCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_graphConfiguration, a3);
+    v7 = configurationCopy;
+    objc_storeStrong(p_graphConfiguration, configuration);
     p_graphConfiguration = [(CAMInternalStorage *)self _updateAvailablePurgeableSpaceAsync];
-    v5 = v7;
+    configurationCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_graphConfiguration, v5);
+  MEMORY[0x1EEE66BB8](p_graphConfiguration, configurationCopy);
 }
 
-- (void)_setFastPurgeThreshold:(int64_t)a3
+- (void)_setFastPurgeThreshold:(int64_t)threshold
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (self->__fastPurgeThreshold != a3)
+  if (self->__fastPurgeThreshold != threshold)
   {
-    self->__fastPurgeThreshold = a3;
+    self->__fastPurgeThreshold = threshold;
     v4 = os_log_create("com.apple.camera", "StorageController");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3 > 2)
+      if (threshold > 2)
       {
         v5 = 0;
       }
 
       else
       {
-        v5 = off_1E76FE918[a3];
+        v5 = off_1E76FE918[threshold];
       }
 
       v6 = 138543362;
@@ -184,22 +184,22 @@ void __47__CAMInternalStorage__setCachedEstimatedSpace___block_invoke(uint64_t a
   }
 }
 
-- (void)hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 allowPurging:(BOOL)a4 completion:(id)a5
+- (void)hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration allowPurging:(BOOL)purging completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CAMInternalStorage *)self _diskSpaceQueue];
+  configurationCopy = configuration;
+  completionCopy = completion;
+  _diskSpaceQueue = [(CAMInternalStorage *)self _diskSpaceQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __90__CAMInternalStorage_hasDiskSpaceToAllowCaptureWithConfiguration_allowPurging_completion___block_invoke;
   v13[3] = &unk_1E76FE830;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = configurationCopy;
+  purgingCopy = purging;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = configurationCopy;
+  dispatch_async(_diskSpaceQueue, v13);
 }
 
 void __90__CAMInternalStorage_hasDiskSpaceToAllowCaptureWithConfiguration_allowPurging_completion___block_invoke(uint64_t a1)
@@ -226,35 +226,35 @@ uint64_t __90__CAMInternalStorage_hasDiskSpaceToAllowCaptureWithConfiguration_al
   return v2();
 }
 
-- (BOOL)hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 allowPurging:(BOOL)a4 verbose:(BOOL)a5
+- (BOOL)hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration allowPurging:(BOOL)purging verbose:(BOOL)verbose
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  LOBYTE(v5) = [(CAMInternalStorage *)self _hasDiskSpaceToAllowCaptureWithConfiguration:v8 totalFreeBytes:[(CAMInternalStorage *)self totalFreeBytes] allowPurging:v6 verbose:v5];
+  verboseCopy = verbose;
+  purgingCopy = purging;
+  configurationCopy = configuration;
+  LOBYTE(verboseCopy) = [(CAMInternalStorage *)self _hasDiskSpaceToAllowCaptureWithConfiguration:configurationCopy totalFreeBytes:[(CAMInternalStorage *)self totalFreeBytes] allowPurging:purgingCopy verbose:verboseCopy];
 
-  return v5;
+  return verboseCopy;
 }
 
-- (BOOL)_hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 totalFreeBytes:(int64_t)a4 allowPurging:(BOOL)a5 verbose:(BOOL)a6
+- (BOOL)_hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration totalFreeBytes:(int64_t)bytes allowPurging:(BOOL)purging verbose:(BOOL)verbose
 {
-  v6 = a6;
-  v7 = a5;
+  verboseCopy = verbose;
+  purgingCopy = purging;
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = -[CAMInternalStorage _absoluteMinimumBytesForMode:](self, "_absoluteMinimumBytesForMode:", [v10 mode]);
-  v12 = [(CAMInternalStorage *)self minimumDiskUsageThresholdInBytesForGraphConfiguration:v10];
+  configurationCopy = configuration;
+  v11 = -[CAMInternalStorage _absoluteMinimumBytesForMode:](self, "_absoluteMinimumBytesForMode:", [configurationCopy mode]);
+  v12 = [(CAMInternalStorage *)self minimumDiskUsageThresholdInBytesForGraphConfiguration:configurationCopy];
   if (v11 <= v12)
   {
     v11 = v12;
   }
 
-  if (v11 >= a4)
+  if (v11 >= bytes)
   {
     v13 = os_log_create("com.apple.camera", "StorageController");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(CAMInternalStorage *)self _stringFromByteCount:a4];
+      v14 = [(CAMInternalStorage *)self _stringFromByteCount:bytes];
       v15 = [(CAMInternalStorage *)self _stringFromByteCount:v11];
       v18 = 138543618;
       v19 = v14;
@@ -269,12 +269,12 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a4 < 2 * v11)
+  if (bytes < 2 * v11)
   {
     v13 = os_log_create("com.apple.camera", "StorageController");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(CAMInternalStorage *)self _stringFromByteCount:a4];
+      v14 = [(CAMInternalStorage *)self _stringFromByteCount:bytes];
       v15 = [(CAMInternalStorage *)self _stringFromByteCount:v11];
       v18 = 138543618;
       v19 = v14;
@@ -290,7 +290,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v6)
+  if (verboseCopy)
   {
     v13 = os_log_create("com.apple.camera", "StorageController");
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -298,7 +298,7 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v14 = [(CAMInternalStorage *)self _stringFromByteCount:a4];
+    v14 = [(CAMInternalStorage *)self _stringFromByteCount:bytes];
     v15 = [(CAMInternalStorage *)self _stringFromByteCount:v11];
     v18 = 138543618;
     v19 = v14;
@@ -309,26 +309,26 @@ LABEL_9:
   }
 
 LABEL_11:
-  if (v7)
+  if (purgingCopy)
   {
-    [(CAMInternalStorage *)self _updatePurgeRequestStateForConfiguration:v10 totalFreeBytes:a4];
+    [(CAMInternalStorage *)self _updatePurgeRequestStateForConfiguration:configurationCopy totalFreeBytes:bytes];
   }
 
-  return v11 < a4;
+  return v11 < bytes;
 }
 
-- (void)reportLowDiskEventWithIdentifier:(id)a3
+- (void)reportLowDiskEventWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [v5 hostProcess];
-  if (v6 <= 4 && ((1 << v6) & 0x15) != 0)
+  hostProcess = [v5 hostProcess];
+  if (hostProcess <= 4 && ((1 << hostProcess) & 0x15) != 0)
   {
     v8 = +[CAMUserPreferences preferences];
-    v9 = [v8 preferredMinimumFreeBytes];
+    preferredMinimumFreeBytes = [v8 preferredMinimumFreeBytes];
     if ([v5 isInternalInstall])
     {
-      v10 = v9 <= 0;
+      v10 = preferredMinimumFreeBytes <= 0;
     }
 
     else
@@ -339,14 +339,14 @@ LABEL_11:
     if (v10)
     {
       objc_initWeak(&location, self);
-      v11 = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
+      _cacheDeleteQueryQueue = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __55__CAMInternalStorage_reportLowDiskEventWithIdentifier___block_invoke;
       block[3] = &unk_1E76F7DC0;
       objc_copyWeak(&v14, &location);
-      v13 = v4;
-      dispatch_async(v11, block);
+      v13 = identifierCopy;
+      dispatch_async(_cacheDeleteQueryQueue, block);
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
@@ -360,11 +360,11 @@ void __55__CAMInternalStorage_reportLowDiskEventWithIdentifier___block_invoke(ui
   [WeakRetained _queryQueue_aggregateLowDiskEventWithIdentifier:*(a1 + 32)];
 }
 
-- (double)availableRecordingTimeInSecondsForGraphConfiguration:(id)a3
+- (double)availableRecordingTimeInSecondsForGraphConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 mode];
-  if (v5 > 8 || ((1 << v5) & 0x186) == 0)
+  configurationCopy = configuration;
+  mode = [configurationCopy mode];
+  if (mode > 8 || ((1 << mode) & 0x186) == 0)
   {
     v13 = 0.0;
   }
@@ -372,14 +372,14 @@ void __55__CAMInternalStorage_reportLowDiskEventWithIdentifier___block_invoke(ui
   else
   {
     v7 = +[CAMCaptureCapabilities capabilities];
-    v8 = [v7 bytesPerMinuteForGraphConfiguration:v4 outputToExternalStorage:0];
+    v8 = [v7 bytesPerMinuteForGraphConfiguration:configurationCopy outputToExternalStorage:0];
     if (v8)
     {
       v9 = v8;
-      v10 = [(CAMInternalStorage *)self totalFreeBytes];
-      v11 = [(CAMInternalStorage *)self minimumDiskUsageThresholdInBytesForGraphConfiguration:v4];
-      v12 = (v10 - v11) * 60.0;
-      if (v10 <= v11)
+      totalFreeBytes = [(CAMInternalStorage *)self totalFreeBytes];
+      v11 = [(CAMInternalStorage *)self minimumDiskUsageThresholdInBytesForGraphConfiguration:configurationCopy];
+      v12 = (totalFreeBytes - v11) * 60.0;
+      if (totalFreeBytes <= v11)
       {
         v12 = 0.0;
       }
@@ -396,27 +396,27 @@ void __55__CAMInternalStorage_reportLowDiskEventWithIdentifier___block_invoke(ui
   return v13;
 }
 
-- (double)_availableRecordingTimeInMinutesForFreeBytes:(int64_t)a3 minimumDiskUsageThreshold:(int64_t)a4 bytesPerMinute:(int64_t)a5
+- (double)_availableRecordingTimeInMinutesForFreeBytes:(int64_t)bytes minimumDiskUsageThreshold:(int64_t)threshold bytesPerMinute:(int64_t)minute
 {
-  if (a5 < 1)
+  if (minute < 1)
   {
     return 0.0;
   }
 
   else
   {
-    return (a3 - a4) / a5;
+    return (bytes - threshold) / minute;
   }
 }
 
-- (int64_t)minimumDiskUsageThresholdInBytesForGraphConfiguration:(id)a3
+- (int64_t)minimumDiskUsageThresholdInBytesForGraphConfiguration:(id)configuration
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = -[CAMInternalStorage _absoluteMinimumBytesForMode:](self, "_absoluteMinimumBytesForMode:", [v4 mode]);
-  v6 = [v4 videoEncodingBehavior];
+  configurationCopy = configuration;
+  v5 = -[CAMInternalStorage _absoluteMinimumBytesForMode:](self, "_absoluteMinimumBytesForMode:", [configurationCopy mode]);
+  videoEncodingBehavior = [configurationCopy videoEncodingBehavior];
 
-  if (v6 != 2)
+  if (videoEncodingBehavior != 2)
   {
     return v5;
   }
@@ -424,19 +424,19 @@ void __55__CAMInternalStorage_reportLowDiskEventWithIdentifier___block_invoke(ui
   v7 = +[CAMCaptureCapabilities capabilities];
   if (![(CAMInternalStorage *)self _proResMinimumDiskUsageThreshold])
   {
-    v8 = [(CAMInternalStorage *)self _totalBytes];
-    v9 = (v8 * 0.1);
+    _totalBytes = [(CAMInternalStorage *)self _totalBytes];
+    v9 = (_totalBytes * 0.1);
     if ([v7 proResMinimumDiskSpaceOverrideMegabytesRelativeToFreeSpace])
     {
-      v10 = [(CAMInternalStorage *)self totalFreeBytes];
-      v11 = v10 + ([v7 proResMinimumDiskSpaceOverrideMegabytesRelativeToFreeSpace] << 20);
+      totalFreeBytes = [(CAMInternalStorage *)self totalFreeBytes];
+      v11 = totalFreeBytes + ([v7 proResMinimumDiskSpaceOverrideMegabytesRelativeToFreeSpace] << 20);
       v12 = os_log_create("com.apple.camera", "StorageController");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *v18 = 134218240;
         *&v18[4] = v11;
         *&v18[12] = 2048;
-        *&v18[14] = (v8 * 0.1);
+        *&v18[14] = (_totalBytes * 0.1);
         v13 = "CAMStorageController: overriding ProRes minimum disk usage threshold to be %lld (used relative override). Default is %lld";
 LABEL_9:
         _os_log_impl(&dword_1A3640000, v12, OS_LOG_TYPE_DEFAULT, v13, v18, 0x16u);
@@ -454,14 +454,14 @@ LABEL_11:
       }
 
       [v7 proResMinimumDiskSpaceOverrideAsFractionOfSystemTotal];
-      v11 = (v15 * v8);
+      v11 = (v15 * _totalBytes);
       v12 = os_log_create("com.apple.camera", "StorageController");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *v18 = 134218240;
         *&v18[4] = v11;
         *&v18[12] = 2048;
-        *&v18[14] = (v8 * 0.1);
+        *&v18[14] = (_totalBytes * 0.1);
         v13 = "CAMStorageController: overriding ProRes minimum disk usage threshold to be %lld (used fraction override). Default is %lld";
         goto LABEL_9;
       }
@@ -472,10 +472,10 @@ LABEL_11:
   }
 
 LABEL_12:
-  v16 = [(CAMInternalStorage *)self _proResMinimumDiskUsageThreshold];
-  if (v5 <= v16)
+  _proResMinimumDiskUsageThreshold = [(CAMInternalStorage *)self _proResMinimumDiskUsageThreshold];
+  if (v5 <= _proResMinimumDiskUsageThreshold)
   {
-    v5 = v16;
+    v5 = _proResMinimumDiskUsageThreshold;
   }
 
   return v5;
@@ -484,19 +484,19 @@ LABEL_12:
 - (void)_updateAvailablePurgeableSpaceAsync
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isCacheDeleteSupported];
+  isCacheDeleteSupported = [v3 isCacheDeleteSupported];
 
-  if (v4)
+  if (isCacheDeleteSupported)
   {
     v5 = +[CAMCaptureCapabilities capabilities];
-    v6 = [(CAMInternalStorage *)self graphConfiguration];
-    v7 = [v5 bytesPerMinuteForGraphConfiguration:v6 outputToExternalStorage:0];
+    graphConfiguration = [(CAMInternalStorage *)self graphConfiguration];
+    v7 = [v5 bytesPerMinuteForGraphConfiguration:graphConfiguration outputToExternalStorage:0];
 
-    v8 = [(CAMInternalStorage *)self graphConfiguration];
-    v9 = [(CAMInternalStorage *)self minimumDiskUsageThresholdInBytesForGraphConfiguration:v8];
+    graphConfiguration2 = [(CAMInternalStorage *)self graphConfiguration];
+    v9 = [(CAMInternalStorage *)self minimumDiskUsageThresholdInBytesForGraphConfiguration:graphConfiguration2];
 
     objc_initWeak(&location, self);
-    v10 = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
+    _cacheDeleteQueryQueue = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __57__CAMInternalStorage__updateAvailablePurgeableSpaceAsync__block_invoke;
@@ -504,7 +504,7 @@ LABEL_12:
     objc_copyWeak(v12, &location);
     v12[1] = v7;
     v12[2] = v9;
-    dispatch_async(v10, v11);
+    dispatch_async(_cacheDeleteQueryQueue, v11);
 
     objc_destroyWeak(v12);
     objc_destroyWeak(&location);
@@ -517,11 +517,11 @@ void __57__CAMInternalStorage__updateAvailablePurgeableSpaceAsync__block_invoke(
   [WeakRetained _queryQueue_queryAvailableSpaceAndUpdateCachedEstimatesForBytesPerMinute:*(a1 + 40) minimumDiskUsageThreshold:*(a1 + 48)];
 }
 
-- (int64_t)_fastPurgeThresholdForRequestType:(int64_t)a3
+- (int64_t)_fastPurgeThresholdForRequestType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    return 2 * (a3 == 1);
+    return 2 * (type == 1);
   }
 
   else
@@ -530,30 +530,30 @@ void __57__CAMInternalStorage__updateAvailablePurgeableSpaceAsync__block_invoke(
   }
 }
 
-- (void)purgeFastPurgeableSpaceWithRequestType:(int64_t)a3
+- (void)purgeFastPurgeableSpaceWithRequestType:(int64_t)type
 {
-  v4 = [(CAMInternalStorage *)self _fastPurgeThresholdForRequestType:a3];
+  v4 = [(CAMInternalStorage *)self _fastPurgeThresholdForRequestType:type];
 
   [(CAMInternalStorage *)self _purgeFastPurgeableSpaceWithThreshold:v4 calledFromPurgeCompletion:0 forceStopReason:0 analyticsEvent:0];
 }
 
-- (void)_purgeFastPurgeableSpaceWithThreshold:(int64_t)a3 calledFromPurgeCompletion:(BOOL)a4 forceStopReason:(id)a5 analyticsEvent:(id)a6
+- (void)_purgeFastPurgeableSpaceWithThreshold:(int64_t)threshold calledFromPurgeCompletion:(BOOL)completion forceStopReason:(id)reason analyticsEvent:(id)event
 {
-  v7 = a4;
+  completionCopy = completion;
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  reasonCopy = reason;
+  eventCopy = event;
   v12 = +[CAMCaptureCapabilities capabilities];
-  v13 = [v12 isCacheDeleteSupported];
+  isCacheDeleteSupported = [v12 isCacheDeleteSupported];
 
-  if (v13)
+  if (isCacheDeleteSupported)
   {
-    if (a3 && !v11)
+    if (threshold && !eventCopy)
     {
-      v14 = [(CAMInternalStorage *)self _requestTypeFromNonZeroFastPurgeThreshold:a3];
+      v14 = [(CAMInternalStorage *)self _requestTypeFromNonZeroFastPurgeThreshold:threshold];
       v15 = [CAMAnalyticsProResPurgeEvent alloc];
-      v16 = [(CAMInternalStorage *)self graphConfiguration];
-      v11 = [(CAMAnalyticsProResPurgeEvent *)v15 initWithRequestType:v14 graphConfiguration:v16 totalBytesInSystem:[(CAMInternalStorage *)self _totalBytes]];
+      graphConfiguration = [(CAMInternalStorage *)self graphConfiguration];
+      eventCopy = [(CAMAnalyticsProResPurgeEvent *)v15 initWithRequestType:v14 graphConfiguration:graphConfiguration totalBytesInSystem:[(CAMInternalStorage *)self _totalBytes]];
     }
 
     objc_initWeak(&location, self);
@@ -562,7 +562,7 @@ void __57__CAMInternalStorage__updateAvailablePurgeableSpaceAsync__block_invoke(
     aBlock[2] = __117__CAMInternalStorage__purgeFastPurgeableSpaceWithThreshold_calledFromPurgeCompletion_forceStopReason_analyticsEvent___block_invoke;
     aBlock[3] = &unk_1E76F7DC0;
     objc_copyWeak(&v38, &location);
-    v17 = v11;
+    v17 = eventCopy;
     v37 = v17;
     v18 = _Block_copy(aBlock);
     v34[0] = MEMORY[0x1E69E9820];
@@ -570,12 +570,12 @@ void __57__CAMInternalStorage__updateAvailablePurgeableSpaceAsync__block_invoke(
     v34[2] = __117__CAMInternalStorage__purgeFastPurgeableSpaceWithThreshold_calledFromPurgeCompletion_forceStopReason_analyticsEvent___block_invoke_2;
     v34[3] = &unk_1E76F7960;
     v34[4] = self;
-    v11 = v17;
-    v35 = v11;
+    eventCopy = v17;
+    v35 = eventCopy;
     v19 = _Block_copy(v34);
-    if (v7 && [(CAMInternalStorage *)self _shouldCancelNextPurge])
+    if (completionCopy && [(CAMInternalStorage *)self _shouldCancelNextPurge])
     {
-      [(CAMAnalyticsProResPurgeEvent *)v11 updateForCancelRequest];
+      [(CAMAnalyticsProResPurgeEvent *)eventCopy updateForCancelRequest];
       v20 = @"honoring cancelation";
 LABEL_29:
       v28 = os_log_create("com.apple.camera", "StorageController");
@@ -594,10 +594,10 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    if (v10)
+    if (reasonCopy)
     {
-      v20 = v10;
-      if (v7)
+      v20 = reasonCopy;
+      if (completionCopy)
       {
         goto LABEL_29;
       }
@@ -605,20 +605,20 @@ LABEL_36:
 
     else if ([(CAMInternalStorage *)self hasPurgeableResources])
     {
-      if (a3)
+      if (threshold)
       {
-        if (a3 != 1 || ([(CAMInternalStorage *)self graphConfiguration], v21 = objc_claimAutoreleasedReturnValue(), [(CAMInternalStorage *)self availableRecordingTimeInSecondsForGraphConfiguration:v21], v23 = v22, v21, v23 < 300.0))
+        if (threshold != 1 || ([(CAMInternalStorage *)self graphConfiguration], v21 = objc_claimAutoreleasedReturnValue(), [(CAMInternalStorage *)self availableRecordingTimeInSecondsForGraphConfiguration:v21], v23 = v22, v21, v23 < 300.0))
         {
           v24 = os_log_create("com.apple.camera", "StorageController");
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
             v25 = @"ProResAutoPurgeRecordTime";
-            if (a3 != 1)
+            if (threshold != 1)
             {
               v25 = 0;
             }
 
-            if (a3 == 2)
+            if (threshold == 2)
             {
               v25 = @"Infinite";
             }
@@ -630,25 +630,25 @@ LABEL_36:
           }
 
           [(CAMInternalStorage *)self _setPurging:1];
-          [(CAMInternalStorage *)self _setFastPurgeThreshold:a3];
+          [(CAMInternalStorage *)self _setFastPurgeThreshold:threshold];
           [(CAMInternalStorage *)self _setShouldCancelNextPurge:0];
-          v27 = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
+          _cacheDeleteQueryQueue = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __117__CAMInternalStorage__purgeFastPurgeableSpaceWithThreshold_calledFromPurgeCompletion_forceStopReason_analyticsEvent___block_invoke_18;
           block[3] = &unk_1E76FE858;
           objc_copyWeak(v33, &location);
-          v33[1] = a3;
-          v31 = v11;
+          v33[1] = threshold;
+          v31 = eventCopy;
           v32 = v18;
-          dispatch_async(v27, block);
+          dispatch_async(_cacheDeleteQueryQueue, block);
 
           objc_destroyWeak(v33);
           v20 = 0;
           goto LABEL_36;
         }
 
-        if (v7)
+        if (completionCopy)
         {
           v20 = @"above auto purge threshold";
           goto LABEL_29;
@@ -661,7 +661,7 @@ LABEL_36:
       else
       {
         v20 = @"zero threshold";
-        if (v7)
+        if (completionCopy)
         {
           goto LABEL_29;
         }
@@ -670,7 +670,7 @@ LABEL_36:
 
     else
     {
-      if (v7)
+      if (completionCopy)
       {
         v20 = @"no purgeable resources";
         goto LABEL_29;
@@ -755,8 +755,8 @@ uint64_t __117__CAMInternalStorage__purgeFastPurgeableSpaceWithThreshold_calledF
 - (BOOL)hasPurgeableResources
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [(CAMInternalStorage *)self graphConfiguration];
-  v5 = [v3 bytesPerMinuteForGraphConfiguration:v4 outputToExternalStorage:0];
+  graphConfiguration = [(CAMInternalStorage *)self graphConfiguration];
+  v5 = [v3 bytesPerMinuteForGraphConfiguration:graphConfiguration outputToExternalStorage:0];
 
   [(CAMInternalStorage *)self _cachedEstimatedSpace];
   return 10 * (v5 / 60) < 0;
@@ -775,13 +775,13 @@ uint64_t __117__CAMInternalStorage__purgeFastPurgeableSpaceWithThreshold_calledF
 
     [(CAMInternalStorage *)self _setShouldCancelNextPurge:1];
     objc_initWeak(buf, self);
-    v4 = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
+    _cacheDeleteQueryQueue = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __33__CAMInternalStorage_cancelPurge__block_invoke;
     block[3] = &unk_1E76F8580;
     objc_copyWeak(&v6, buf);
-    dispatch_async(v4, block);
+    dispatch_async(_cacheDeleteQueryQueue, block);
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(buf);
@@ -794,21 +794,21 @@ void __33__CAMInternalStorage_cancelPurge__block_invoke(uint64_t a1)
   [WeakRetained _queryQueue_cancelCurrentPurge];
 }
 
-- (void)_queryQueue_purgeFastPurgeableResourcesWithThreshold:(int64_t)a3 analyticsEvent:(id)a4
+- (void)_queryQueue_purgeFastPurgeableResourcesWithThreshold:(int64_t)threshold analyticsEvent:(id)event
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
-  dispatch_assert_queue_V2(v7);
+  eventCopy = event;
+  _cacheDeleteQueryQueue = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
+  dispatch_assert_queue_V2(_cacheDeleteQueryQueue);
 
   if ([(CAMInternalStorage *)self _queryQueue_currentToken])
   {
-    v8 = os_log_create("com.apple.camera", "StorageController");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    _cacheDeleteVolume = os_log_create("com.apple.camera", "StorageController");
+    if (os_log_type_enabled(_cacheDeleteVolume, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v9 = "CAMStorageController: Ignoring request to purge since we have an active token";
-      v10 = v8;
+      v10 = _cacheDeleteVolume;
       v11 = 2;
 LABEL_4:
       _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, v9, buf, v11);
@@ -817,10 +817,10 @@ LABEL_4:
 
   else
   {
-    if (!a3)
+    if (!threshold)
     {
-      v8 = os_log_create("com.apple.camera", "StorageController");
-      if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      _cacheDeleteVolume = os_log_create("com.apple.camera", "StorageController");
+      if (!os_log_type_enabled(_cacheDeleteVolume, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_19;
       }
@@ -828,20 +828,20 @@ LABEL_4:
       *buf = 138543362;
       *&buf[4] = @"Zero";
       v9 = "CAMStorageController: Ignoring request to purge, threshold set to %{public}@";
-      v10 = v8;
+      v10 = _cacheDeleteVolume;
       v11 = 12;
       goto LABEL_4;
     }
 
-    v8 = [(CAMInternalStorage *)self _cacheDeleteVolume];
-    if (v8)
+    _cacheDeleteVolume = [(CAMInternalStorage *)self _cacheDeleteVolume];
+    if (_cacheDeleteVolume)
     {
       v12 = +[CAMCaptureCapabilities capabilities];
-      v13 = [(CAMInternalStorage *)self graphConfiguration];
-      v14 = [v12 bytesPerMinuteForGraphConfiguration:v13 outputToExternalStorage:0];
+      graphConfiguration = [(CAMInternalStorage *)self graphConfiguration];
+      v14 = [v12 bytesPerMinuteForGraphConfiguration:graphConfiguration outputToExternalStorage:0];
 
-      v15 = [(CAMInternalStorage *)self graphConfiguration];
-      v16 = [(CAMInternalStorage *)self minimumDiskUsageThresholdInBytesForGraphConfiguration:v15];
+      graphConfiguration2 = [(CAMInternalStorage *)self graphConfiguration];
+      v16 = [(CAMInternalStorage *)self minimumDiskUsageThresholdInBytesForGraphConfiguration:graphConfiguration2];
 
       memset(buf, 0, sizeof(buf));
       v44 = 0;
@@ -870,7 +870,7 @@ LABEL_4:
           v18 = v14;
         }
 
-        v40[0] = v8;
+        v40[0] = _cacheDeleteVolume;
         v39[0] = @"CACHE_DELETE_VOLUME";
         v39[1] = @"CACHE_DELETE_AMOUNT";
         v19 = [MEMORY[0x1E696AD98] numberWithLongLong:v18];
@@ -895,7 +895,7 @@ LABEL_4:
         }
 
         [(CAMInternalStorage *)self _availableRecordingTimeInMinutesForFreeBytes:v17 minimumDiskUsageThreshold:v16 bytesPerMinute:v14];
-        [v6 updateBeforePurgeOperationWithFreeBytes:v17 fastPurgeableBytes:*&buf[8] slowPurgeableBytes:v44 maxRecordingTimeSeconds:v26 * 60.0];
+        [eventCopy updateBeforePurgeOperationWithFreeBytes:v17 fastPurgeableBytes:*&buf[8] slowPurgeableBytes:v44 maxRecordingTimeSeconds:v26 * 60.0];
         Current = CFAbsoluteTimeGetCurrent();
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
@@ -909,7 +909,7 @@ LABEL_4:
         v36 = v44;
         v37 = v29;
         v38 = 10 * (v14 / 60);
-        v31 = v6;
+        v31 = eventCopy;
         v28 = _Block_copy(aBlock);
         [(CAMInternalStorage *)self set_queryQueue_currentToken:CacheDeletePurgeSpaceWithInfo()];
       }
@@ -1043,18 +1043,18 @@ uint64_t __90__CAMInternalStorage__queryQueue_purgeFastPurgeableResourcesWithThr
 - (void)_queryQueue_cancelCurrentPurge
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
-  dispatch_assert_queue_V2(v3);
+  _cacheDeleteQueryQueue = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
+  dispatch_assert_queue_V2(_cacheDeleteQueryQueue);
 
-  v4 = [(CAMInternalStorage *)self _queryQueue_currentToken];
+  _queryQueue_currentToken = [(CAMInternalStorage *)self _queryQueue_currentToken];
   v5 = os_log_create("com.apple.camera", "StorageController");
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (_queryQueue_currentToken)
   {
     if (v6)
     {
       v7 = 138543362;
-      v8 = [(CAMInternalStorage *)self _queryQueue_currentToken];
+      _queryQueue_currentToken2 = [(CAMInternalStorage *)self _queryQueue_currentToken];
       _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "CAMStorageController canceling purge for token %{public}@", &v7, 0xCu);
     }
 
@@ -1072,29 +1072,29 @@ uint64_t __90__CAMInternalStorage__queryQueue_purgeFastPurgeableResourcesWithThr
   }
 }
 
-- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)_queryQueue_queryAvailableSpaceAndUpdateCachedEstimatesForBytesPerMinute:(SEL)a3 minimumDiskUsageThreshold:(int64_t)a4
+- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)_queryQueue_queryAvailableSpaceAndUpdateCachedEstimatesForBytesPerMinute:(SEL)minute minimumDiskUsageThreshold:(int64_t)threshold
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v9 = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
-  dispatch_assert_queue_V2(v9);
+  _cacheDeleteQueryQueue = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
+  dispatch_assert_queue_V2(_cacheDeleteQueryQueue);
 
-  v10 = [(CAMInternalStorage *)self _cacheDeleteVolume];
-  if (v10)
+  _cacheDeleteVolume = [(CAMInternalStorage *)self _cacheDeleteVolume];
+  if (_cacheDeleteVolume)
   {
     Current = CFAbsoluteTimeGetCurrent();
     v31 = @"CACHE_DELETE_VOLUME";
-    v32[0] = v10;
+    v32[0] = _cacheDeleteVolume;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     v12 = CacheDeleteCopyItemizedPurgeableSpaceWithInfo();
     v13 = CFAbsoluteTimeGetCurrent();
-    v14 = [(CAMInternalStorage *)self totalFreeBytes];
-    retstr->var0 = v14;
+    totalFreeBytes = [(CAMInternalStorage *)self totalFreeBytes];
+    retstr->var0 = totalFreeBytes;
     v15 = [v12 objectForKeyedSubscript:@"CACHE_DELETE_TOTAL_FSPURGEABLE"];
-    v16 = [v15 longLongValue];
-    retstr->var1 = v16;
+    longLongValue = [v15 longLongValue];
+    retstr->var1 = longLongValue;
 
     v17 = [v12 objectForKeyedSubscript:@"CACHE_DELETE_TOTAL_AVAILABLE"];
-    retstr->var2 = [v17 longLongValue] - v16;
+    retstr->var2 = [v17 longLongValue] - longLongValue;
 
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
@@ -1104,10 +1104,10 @@ uint64_t __90__CAMInternalStorage__queryQueue_purgeFastPurgeableResourcesWithThr
     v25 = *&retstr->var0;
     var2 = retstr->var2;
     dispatch_async(MEMORY[0x1E69E96A0], v24);
-    v18 = [MEMORY[0x1E695DF90] dictionary];
-    [(CAMInternalStorage *)self _copyAndApplyByteStringFormattingFromDictionary:v12 toDictionary:v18 keys:&unk_1F16C9D28];
-    [(CAMInternalStorage *)self _copyFromDictionary:v12 toDictionary:v18 keys:&unk_1F16C9D40];
-    [(CAMInternalStorage *)self _availableRecordingTimeInMinutesForFreeBytes:v14 minimumDiskUsageThreshold:a5 bytesPerMinute:a4];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(CAMInternalStorage *)self _copyAndApplyByteStringFormattingFromDictionary:v12 toDictionary:dictionary keys:&unk_1F16C9D28];
+    [(CAMInternalStorage *)self _copyFromDictionary:v12 toDictionary:dictionary keys:&unk_1F16C9D40];
+    [(CAMInternalStorage *)self _availableRecordingTimeInMinutesForFreeBytes:totalFreeBytes minimumDiskUsageThreshold:a5 bytesPerMinute:threshold];
     v20 = v19;
     v21 = os_log_create("com.apple.camera", "StorageController");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -1118,7 +1118,7 @@ uint64_t __90__CAMInternalStorage__queryQueue_purgeFastPurgeableResourcesWithThr
       *buf = 134218754;
       *&buf[4] = v13 - Current;
       *&buf[12] = 2114;
-      *&buf[14] = v18;
+      *&buf[14] = dictionary;
       *&buf[22] = 2114;
       v28 = v22;
       v29 = 2048;
@@ -1181,11 +1181,11 @@ void __40__CAMInternalStorage__cacheDeleteVolume__block_invoke(uint64_t a1)
   _cacheDeleteVolume_volume = v5;
 }
 
-- (void)_statMountPoint:(statfs *)a3
+- (void)_statMountPoint:(statfs *)point
 {
-  v5 = [(CAMInternalStorage *)self _storageMountPoint];
-  v6 = [v5 path];
-  v7 = statfs([v6 fileSystemRepresentation], a3);
+  _storageMountPoint = [(CAMInternalStorage *)self _storageMountPoint];
+  path = [_storageMountPoint path];
+  v7 = statfs([path fileSystemRepresentation], point);
 
   if (v7)
   {
@@ -1195,7 +1195,7 @@ void __40__CAMInternalStorage__cacheDeleteVolume__block_invoke(uint64_t a1)
       [CAMInternalStorage _statMountPoint:?];
     }
 
-    bzero(a3, 0x878uLL);
+    bzero(point, 0x878uLL);
   }
 }
 
@@ -1248,12 +1248,12 @@ void __40__CAMInternalStorage__cacheDeleteVolume__block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)_resourceValueForKey:(id)a3
+- (int64_t)_resourceValueForKey:(id)key
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v5 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:@"/"];
-  v22[0] = v4;
+  v22[0] = keyCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
   v15 = 0;
   v7 = [v5 resourceValuesForKeys:v6 error:&v15];
@@ -1261,8 +1261,8 @@ void __40__CAMInternalStorage__cacheDeleteVolume__block_invoke(uint64_t a1)
 
   if (v7)
   {
-    v9 = [v7 objectForKeyedSubscript:v4];
-    v10 = [v9 longValue];
+    v9 = [v7 objectForKeyedSubscript:keyCopy];
+    longValue = [v9 longValue];
   }
 
   else
@@ -1270,22 +1270,22 @@ void __40__CAMInternalStorage__cacheDeleteVolume__block_invoke(uint64_t a1)
     v9 = os_log_create("com.apple.camera", "StorageController");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(CAMInternalStorage *)self _storageMountPoint];
-      v13 = [v12 path];
-      v14 = [v8 localizedDescription];
+      _storageMountPoint = [(CAMInternalStorage *)self _storageMountPoint];
+      path = [_storageMountPoint path];
+      localizedDescription = [v8 localizedDescription];
       *buf = 138543874;
-      v17 = v4;
+      v17 = keyCopy;
       v18 = 2114;
-      v19 = v13;
+      v19 = path;
       v20 = 2114;
-      v21 = v14;
+      v21 = localizedDescription;
       _os_log_error_impl(&dword_1A3640000, v9, OS_LOG_TYPE_ERROR, "CAMStorageController: resourceValuesForKeys failed to get resource for key %{public}@ at storage mount point %{public}@ with error %{public}@", buf, 0x20u);
     }
 
-    v10 = 0;
+    longValue = 0;
   }
 
-  return v10;
+  return longValue;
 }
 
 - (int64_t)_totalBytes
@@ -1306,12 +1306,12 @@ void __40__CAMInternalStorage__cacheDeleteVolume__block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)_absoluteMinimumBytesForMode:(int64_t)a3
+- (int64_t)_absoluteMinimumBytesForMode:(int64_t)mode
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 minimumDiskSpaceReserved];
+  minimumDiskSpaceReserved = [v3 minimumDiskSpaceReserved];
 
-  return v4;
+  return minimumDiskSpaceReserved;
 }
 
 - (void)_loadFreeDiskThresholds
@@ -1322,19 +1322,19 @@ void __40__CAMInternalStorage__cacheDeleteVolume__block_invoke(uint64_t a1)
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
 }
 
-- (void)_notifyDelegateOfPurgeCompletionAndUpdateContinuousPurgeWithForceStopWithReason:(id)a3 analyticsEvent:(id)a4
+- (void)_notifyDelegateOfPurgeCompletionAndUpdateContinuousPurgeWithForceStopWithReason:(id)reason analyticsEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  eventCopy = event;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __117__CAMInternalStorage__notifyDelegateOfPurgeCompletionAndUpdateContinuousPurgeWithForceStopWithReason_analyticsEvent___block_invoke;
   block[3] = &unk_1E76F7938;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = reasonCopy;
+  v12 = eventCopy;
+  v8 = eventCopy;
+  v9 = reasonCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1345,64 +1345,64 @@ void __117__CAMInternalStorage__notifyDelegateOfPurgeCompletionAndUpdateContinuo
   [v2 availableDiskSpaceChanged:*(a1 + 32)];
 }
 
-- (int64_t)_preferredMinimumBytesForConfiguration:(id)a3
+- (int64_t)_preferredMinimumBytesForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CAMInternalStorage *)self _cachedLowDiskThreshold];
-  v6 = [v4 mode];
-  if (v6 <= 9)
+  configurationCopy = configuration;
+  _cachedLowDiskThreshold = [(CAMInternalStorage *)self _cachedLowDiskThreshold];
+  mode = [configurationCopy mode];
+  if (mode <= 9)
   {
-    if (((1 << v6) & 0x259) != 0)
+    if (((1 << mode) & 0x259) != 0)
     {
       v7 = +[CAMCaptureCapabilities capabilities];
-      v8 = [MEMORY[0x1E69870F0] maxLivePhotoDataSize];
+      maxLivePhotoDataSize = [MEMORY[0x1E69870F0] maxLivePhotoDataSize];
       if ([v7 isLivePhotoSupported])
       {
-        v9 = 4 * v8;
+        v9 = 4 * maxLivePhotoDataSize;
       }
 
       else
       {
-        v9 = v8;
+        v9 = maxLivePhotoDataSize;
       }
 
       goto LABEL_8;
     }
 
-    if (((1 << v6) & 0x186) != 0)
+    if (((1 << mode) & 0x186) != 0)
     {
       v7 = +[CAMCaptureCapabilities capabilities];
-      v9 = [v7 bytesPerMinuteForGraphConfiguration:v4 outputToExternalStorage:0];
+      v9 = [v7 bytesPerMinuteForGraphConfiguration:configurationCopy outputToExternalStorage:0];
 LABEL_8:
-      v5 += v9;
+      _cachedLowDiskThreshold += v9;
     }
   }
 
-  return v5;
+  return _cachedLowDiskThreshold;
 }
 
-- (void)_updatePurgeRequestStateForConfiguration:(id)a3 totalFreeBytes:(int64_t)a4
+- (void)_updatePurgeRequestStateForConfiguration:(id)configuration totalFreeBytes:(int64_t)bytes
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = +[CAMCaptureCapabilities capabilities];
-  v8 = [v7 isCacheDeleteSupported];
+  isCacheDeleteSupported = [v7 isCacheDeleteSupported];
 
-  if (v8)
+  if (isCacheDeleteSupported)
   {
-    v9 = [MEMORY[0x1E695DF00] date];
-    v10 = [(CAMInternalStorage *)self _lastPurgeRequestUpdateTime];
-    if (!v10 || ([v9 timeIntervalSinceDate:v10], v11 >= 60.0))
+    date = [MEMORY[0x1E695DF00] date];
+    _lastPurgeRequestUpdateTime = [(CAMInternalStorage *)self _lastPurgeRequestUpdateTime];
+    if (!_lastPurgeRequestUpdateTime || ([date timeIntervalSinceDate:_lastPurgeRequestUpdateTime], v11 >= 60.0))
     {
-      v12 = [(CAMInternalStorage *)self _preferredMinimumBytesForConfiguration:v6];
-      v13 = [(CAMInternalStorage *)self _byteFormatter];
-      if (v12 > a4)
+      v12 = [(CAMInternalStorage *)self _preferredMinimumBytesForConfiguration:configurationCopy];
+      _byteFormatter = [(CAMInternalStorage *)self _byteFormatter];
+      if (v12 > bytes)
       {
         v14 = os_log_create("com.apple.camera", "StorageController");
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v13 stringFromByteCount:a4];
-          v16 = [v13 stringFromByteCount:v12];
+          v15 = [_byteFormatter stringFromByteCount:bytes];
+          v16 = [_byteFormatter stringFromByteCount:v12];
           *buf = 138543618;
           v21 = v15;
           v22 = 2114;
@@ -1412,17 +1412,17 @@ LABEL_8:
 
         [(CAMInternalStorage *)self _setPurging:1];
         objc_initWeak(buf, self);
-        v17 = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
+        _cacheDeleteQueryQueue = [(CAMInternalStorage *)self _cacheDeleteQueryQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __78__CAMInternalStorage__updatePurgeRequestStateForConfiguration_totalFreeBytes___block_invoke;
         block[3] = &unk_1E76F9AB0;
         objc_copyWeak(v19, buf);
-        v19[1] = a4;
+        v19[1] = bytes;
         v19[2] = v12;
-        dispatch_async(v17, block);
+        dispatch_async(_cacheDeleteQueryQueue, block);
 
-        [(CAMInternalStorage *)self set_lastPurgeRequestUpdateTime:v9];
+        [(CAMInternalStorage *)self set_lastPurgeRequestUpdateTime:date];
         objc_destroyWeak(v19);
         objc_destroyWeak(buf);
       }
@@ -1436,60 +1436,60 @@ void __78__CAMInternalStorage__updatePurgeRequestStateForConfiguration_totalFree
   [WeakRetained _queryQueue_updatePurgeRequestStateForTotalFreeBytes:*(a1 + 40) preferredFreeBytes:*(a1 + 48)];
 }
 
-- (void)_queryQueue_aggregateLowDiskEventWithIdentifier:(id)a3
+- (void)_queryQueue_aggregateLowDiskEventWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = NSHomeDirectory();
   v6 = [v3 fileURLWithPath:v5];
 
   CacheDeleteRegisterLowDiskFailure();
 }
 
-- (void)_queryQueue_updatePurgeRequestStateForTotalFreeBytes:(int64_t)a3 preferredFreeBytes:(int64_t)a4
+- (void)_queryQueue_updatePurgeRequestStateForTotalFreeBytes:(int64_t)bytes preferredFreeBytes:(int64_t)freeBytes
 {
   v32 = *MEMORY[0x1E69E9840];
   if ([(CAMInternalStorage *)self _queryQueue_currentToken])
   {
-    v7 = os_log_create("com.apple.camera", "StorageController");
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    _cacheDeleteVolume = os_log_create("com.apple.camera", "StorageController");
+    if (os_log_type_enabled(_cacheDeleteVolume, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "CAMStorageController: Ignoring request to purge preferred free bytes since we have an active token", buf, 2u);
+      _os_log_impl(&dword_1A3640000, _cacheDeleteVolume, OS_LOG_TYPE_DEFAULT, "CAMStorageController: Ignoring request to purge preferred free bytes since we have an active token", buf, 2u);
     }
   }
 
   else
   {
-    v7 = [(CAMInternalStorage *)self _cacheDeleteVolume];
-    if (v7)
+    _cacheDeleteVolume = [(CAMInternalStorage *)self _cacheDeleteVolume];
+    if (_cacheDeleteVolume)
     {
       v23[5] = 0;
       v8 = CacheDeleteCopyAvailableSpaceForVolume();
-      v9 = a4 - a3;
-      v10 = [v8 longLongValue];
+      v9 = freeBytes - bytes;
+      longLongValue = [v8 longLongValue];
       v11 = +[CAMCaptureCapabilities capabilities];
-      v12 = [v11 cacheDeleteUrgency];
+      cacheDeleteUrgency = [v11 cacheDeleteUrgency];
 
-      v13 = [(CAMInternalStorage *)self _byteFormatter];
+      _byteFormatter = [(CAMInternalStorage *)self _byteFormatter];
       v14 = os_log_create("com.apple.camera", "StorageController");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v13 stringFromByteCount:v10 - a3];
-        v16 = [v13 stringFromByteCount:v9];
+        bytes = [_byteFormatter stringFromByteCount:longLongValue - bytes];
+        v16 = [_byteFormatter stringFromByteCount:v9];
         v17 = v16;
-        if ((v12 + 1) > 5)
+        if ((cacheDeleteUrgency + 1) > 5)
         {
           v18 = 0;
         }
 
         else
         {
-          v18 = off_1E76FE930[(v12 + 1)];
+          v18 = off_1E76FE930[(cacheDeleteUrgency + 1)];
         }
 
         *buf = 138543874;
-        v27 = v15;
+        v27 = bytes;
         v28 = 2114;
         v29 = v16;
         v30 = 2114;
@@ -1497,10 +1497,10 @@ void __78__CAMInternalStorage__updatePurgeRequestStateForConfiguration_totalFree
         _os_log_impl(&dword_1A3640000, v14, OS_LOG_TYPE_DEFAULT, "CAMStorageController: CacheDelete indicates %{public}@ bytes purgeable; requesting purge of %{public}@ at %{public}@ urgency", buf, 0x20u);
       }
 
-      v25[0] = v7;
+      v25[0] = _cacheDeleteVolume;
       v24[0] = @"CACHE_DELETE_VOLUME";
       v24[1] = @"CACHE_DELETE_URGENCY_LIMIT";
-      v19 = [MEMORY[0x1E696AD98] numberWithInt:v12];
+      v19 = [MEMORY[0x1E696AD98] numberWithInt:cacheDeleteUrgency];
       v25[1] = v19;
       v24[2] = @"CACHE_DELETE_AMOUNT";
       v20 = [MEMORY[0x1E696AD98] numberWithLongLong:v9];
@@ -1557,17 +1557,17 @@ void __94__CAMInternalStorage__queryQueue_updatePurgeRequestStateForTotalFreeByt
   [WeakRetained _notifyDelegateOfPurgeCompletionAndUpdateContinuousPurgeWithForceStopWithReason:0 analyticsEvent:0];
 }
 
-- (void)_copyFromDictionary:(id)a3 toDictionary:(id)a4 keys:(id)a5
+- (void)_copyFromDictionary:(id)dictionary toDictionary:(id)toDictionary keys:(id)keys
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  toDictionaryCopy = toDictionary;
+  keysCopy = keys;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v10 = [keysCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1578,32 +1578,32 @@ void __94__CAMInternalStorage__queryQueue_updatePurgeRequestStateForTotalFreeByt
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(keysCopy);
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
-        v15 = [v7 objectForKeyedSubscript:v14];
-        [v8 setObject:v15 forKeyedSubscript:v14];
+        v15 = [dictionaryCopy objectForKeyedSubscript:v14];
+        [toDictionaryCopy setObject:v15 forKeyedSubscript:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [keysCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)_copyAndApplyByteStringFormattingFromDictionary:(id)a3 toDictionary:(id)a4 keys:(id)a5
+- (void)_copyAndApplyByteStringFormattingFromDictionary:(id)dictionary toDictionary:(id)toDictionary keys:(id)keys
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  toDictionaryCopy = toDictionary;
+  keysCopy = keys;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v10 = [keysCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1614,11 +1614,11 @@ void __94__CAMInternalStorage__queryQueue_updatePurgeRequestStateForTotalFreeByt
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(keysCopy);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v7 objectForKeyedSubscript:v14];
+        v15 = [dictionaryCopy objectForKeyedSubscript:v14];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -1627,32 +1627,32 @@ void __94__CAMInternalStorage__queryQueue_updatePurgeRequestStateForTotalFreeByt
           v15 = v16;
         }
 
-        [v8 setObject:v15 forKeyedSubscript:v14];
+        [toDictionaryCopy setObject:v15 forKeyedSubscript:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [keysCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
   }
 }
 
-- (id)_stringFromByteCount:(int64_t)a3
+- (id)_stringFromByteCount:(int64_t)count
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(CAMInternalStorage *)self _byteFormatter];
-  v6 = [v5 stringFromByteCount:a3];
-  v7 = [v4 stringWithFormat:@"%lld (%@)", a3, v6];
+  _byteFormatter = [(CAMInternalStorage *)self _byteFormatter];
+  v6 = [_byteFormatter stringFromByteCount:count];
+  v7 = [v4 stringWithFormat:@"%lld (%@)", count, v6];
 
   return v7;
 }
 
-- (id)_stringFromAvailableSpace:(id *)a3
+- (id)_stringFromAvailableSpace:(id *)space
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(CAMInternalStorage *)self _stringFromByteCount:a3->var0];
-  v7 = [(CAMInternalStorage *)self _stringFromByteCount:a3->var1];
-  v8 = [(CAMInternalStorage *)self _stringFromByteCount:a3->var2];
+  v6 = [(CAMInternalStorage *)self _stringFromByteCount:space->var0];
+  v7 = [(CAMInternalStorage *)self _stringFromByteCount:space->var1];
+  v8 = [(CAMInternalStorage *)self _stringFromByteCount:space->var2];
   v9 = [v5 stringWithFormat:@"Available space:\n\tFree=%@\n\tFast=%@\n\tSlow=%@", v6, v7, v8];
 
   return v9;

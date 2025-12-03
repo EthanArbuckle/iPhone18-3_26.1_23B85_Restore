@@ -1,10 +1,10 @@
 @interface CHStrokeClutterFilter
-- (BOOL)isHighDensityStroke:(id)a3;
+- (BOOL)isHighDensityStroke:(id)stroke;
 - (CHStrokeClutterFilter)init;
-- (id)clutterFilterByAddingStrokes:(id)a3 removingStrokeIdentifiers:(id)a4 affectedStrokeIdentifiers:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)clutterFilterByAddingStrokes:(id)strokes removingStrokeIdentifiers:(id)identifiers affectedStrokeIdentifiers:(id *)strokeIdentifiers;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugQuickLookObject;
-- (id)strokeIDsWithinRectangleRegion:(CGRect *)a3;
+- (id)strokeIDsWithinRectangleRegion:(CGRect *)region;
 - (void)dealloc;
 @end
 
@@ -36,9 +36,9 @@
   [(CHStrokeClutterFilter *)&v5 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v7 = objc_msgSend_allocWithZone_(CHStrokeClutterFilter, a2, a3, v3, v4, v5);
+  v7 = objc_msgSend_allocWithZone_(CHStrokeClutterFilter, a2, zone, v3, v4, v5);
   heatMap = self->_heatMap;
   CHStrokeID2HeatmapItemID = self->_CHStrokeID2HeatmapItemID;
   heatmapItemID2CHStrokeID = self->_heatmapItemID2CHStrokeID;
@@ -46,18 +46,18 @@
   return sub_18380F040(v7, heatMap, CHStrokeID2HeatmapItemID, heatmapItemID2CHStrokeID);
 }
 
-- (id)clutterFilterByAddingStrokes:(id)a3 removingStrokeIdentifiers:(id)a4 affectedStrokeIdentifiers:(id *)a5
+- (id)clutterFilterByAddingStrokes:(id)strokes removingStrokeIdentifiers:(id)identifiers affectedStrokeIdentifiers:(id *)strokeIdentifiers
 {
-  v19 = a3;
-  v7 = a4;
-  objc_msgSend_mutableCopy(self->_CHStrokeID2HeatmapItemID, v8, v9, v10, v11, v12, v19, v7, a5);
+  strokesCopy = strokes;
+  identifiersCopy = identifiers;
+  objc_msgSend_mutableCopy(self->_CHStrokeID2HeatmapItemID, v8, v9, v10, v11, v12, strokesCopy, identifiersCopy, strokeIdentifiers);
   objc_msgSend_mutableCopy(self->_heatmapItemID2CHStrokeID, v13, v14, v15, v16, v17);
   operator new();
 }
 
-- (BOOL)isHighDensityStroke:(id)a3
+- (BOOL)isHighDensityStroke:(id)stroke
 {
-  v7 = objc_msgSend_objectForKey_(self->_CHStrokeID2HeatmapItemID, a2, a3, v3, v4, v5);
+  v7 = objc_msgSend_objectForKey_(self->_CHStrokeID2HeatmapItemID, a2, stroke, v3, v4, v5);
   v13 = v7;
   if (v7)
   {
@@ -155,10 +155,10 @@ LABEL_23:
   return 0;
 }
 
-- (id)strokeIDsWithinRectangleRegion:(CGRect *)a3
+- (id)strokeIDsWithinRectangleRegion:(CGRect *)region
 {
   v93 = *MEMORY[0x1E69E9840];
-  v8 = objc_msgSend_count(self->_CHStrokeID2HeatmapItemID, a2, a3, v3, v4, v5);
+  v8 = objc_msgSend_count(self->_CHStrokeID2HeatmapItemID, a2, region, v3, v4, v5);
   if (v8 != objc_msgSend_count(self->_heatmapItemID2CHStrokeID, v9, v10, v11, v12, v13))
   {
     if (qword_1EA84DC48 != -1)
@@ -216,7 +216,7 @@ LABEL_23:
         v95.origin.y = (*heatMap * v63[3]);
         v95.size.width = *heatMap;
         v95.size.height = v95.size.width;
-        v96 = CGRectIntersection(v95, *a3);
+        v96 = CGRectIntersection(v95, *region);
         if (!CGRectEqualToRect(v96, *v64))
         {
           for (i = v63[6]; i; i = *i)

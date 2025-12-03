@@ -1,6 +1,6 @@
 @interface SSSWaitingForImageIdentifierUpdatesAlertContentViewController
 - (void)loadView;
-- (void)setProgress:(double)a3;
+- (void)setProgress:(double)progress;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -17,15 +17,15 @@
   v4.receiver = self;
   v4.super_class = SSSWaitingForImageIdentifierUpdatesAlertContentViewController;
   [(SSSWaitingForImageIdentifierUpdatesAlertContentViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(SSSWaitingForImageIdentifierUpdatesAlertContentViewController *)self view];
-  [v3 intrinsicContentSize];
+  view = [(SSSWaitingForImageIdentifierUpdatesAlertContentViewController *)self view];
+  [view intrinsicContentSize];
   [(SSSWaitingForImageIdentifierUpdatesAlertContentViewController *)self setPreferredContentSize:?];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v4 = [(SSSWaitingForImageIdentifierUpdatesAlertContentViewController *)self _contentView];
-  [v4 setProgress:a3];
+  _contentView = [(SSSWaitingForImageIdentifierUpdatesAlertContentViewController *)self _contentView];
+  [_contentView setProgress:progress];
 }
 
 @end

@@ -1,50 +1,50 @@
 @interface WFFocusMode
-- (WFFocusMode)initWithCoder:(id)a3;
-- (WFFocusMode)initWithFCActivityDescribing:(id)a3;
-- (WFFocusMode)initWithIdentifier:(id)a3 displayName:(id)a4 symbolName:(id)a5 colorName:(id)a6;
+- (WFFocusMode)initWithCoder:(id)coder;
+- (WFFocusMode)initWithFCActivityDescribing:(id)describing;
+- (WFFocusMode)initWithIdentifier:(id)identifier displayName:(id)name symbolName:(id)symbolName colorName:(id)colorName;
 - (WFImage)symbolImage;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFFocusMode
 
-- (WFFocusMode)initWithCoder:(id)a3
+- (WFFocusMode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorName"];
 
   v9 = [(WFFocusMode *)self initWithIdentifier:v5 displayName:v6 symbolName:v7 colorName:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFFocusMode *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFFocusMode *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(WFFocusMode *)self displayName];
-  [v4 encodeObject:v6 forKey:@"displayName"];
+  displayName = [(WFFocusMode *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v7 = [(WFFocusMode *)self symbolName];
-  [v4 encodeObject:v7 forKey:@"symbolName"];
+  symbolName = [(WFFocusMode *)self symbolName];
+  [coderCopy encodeObject:symbolName forKey:@"symbolName"];
 
-  v8 = [(WFFocusMode *)self colorName];
-  [v4 encodeObject:v8 forKey:@"colorName"];
+  colorName = [(WFFocusMode *)self colorName];
+  [coderCopy encodeObject:colorName forKey:@"colorName"];
 }
 
 - (WFImage)symbolImage
 {
   v3 = MEMORY[0x277D79FC8];
-  v4 = [(WFFocusMode *)self symbolName];
-  v5 = [v3 systemImageNamed:v4 configuration:0 renderingMode:2];
+  symbolName = [(WFFocusMode *)self symbolName];
+  v5 = [v3 systemImageNamed:symbolName configuration:0 renderingMode:2];
 
   v6 = MEMORY[0x277D79E20];
-  v7 = [(WFFocusMode *)self colorName];
-  v8 = [v6 colorWithFocusColorName:v7];
+  colorName = [(WFFocusMode *)self colorName];
+  v8 = [v6 colorWithFocusColorName:colorName];
 
   if (v8)
   {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (WFFocusMode)initWithIdentifier:(id)a3 displayName:(id)a4 symbolName:(id)a5 colorName:(id)a6
+- (WFFocusMode)initWithIdentifier:(id)identifier displayName:(id)name symbolName:(id)symbolName colorName:(id)colorName
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  symbolNameCopy = symbolName;
+  colorNameCopy = colorName;
   v25.receiver = self;
   v25.super_class = WFFocusMode;
   v14 = [(WFFocusMode *)&v25 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [nameCopy copy];
     displayName = v14->_displayName;
     v14->_displayName = v17;
 
-    v19 = [v12 copy];
+    v19 = [symbolNameCopy copy];
     symbolName = v14->_symbolName;
     v14->_symbolName = v19;
 
-    v21 = [v13 copy];
+    v21 = [colorNameCopy copy];
     colorName = v14->_colorName;
     v14->_colorName = v21;
 
@@ -89,15 +89,15 @@
   return v14;
 }
 
-- (WFFocusMode)initWithFCActivityDescribing:(id)a3
+- (WFFocusMode)initWithFCActivityDescribing:(id)describing
 {
-  v4 = a3;
-  v5 = [v4 activityIdentifier];
-  v6 = [v4 activityDisplayName];
-  v7 = [v4 activitySymbolImageName];
-  v8 = [v4 activityColorName];
+  describingCopy = describing;
+  activityIdentifier = [describingCopy activityIdentifier];
+  activityDisplayName = [describingCopy activityDisplayName];
+  activitySymbolImageName = [describingCopy activitySymbolImageName];
+  activityColorName = [describingCopy activityColorName];
 
-  v9 = [(WFFocusMode *)self initWithIdentifier:v5 displayName:v6 symbolName:v7 colorName:v8];
+  v9 = [(WFFocusMode *)self initWithIdentifier:activityIdentifier displayName:activityDisplayName symbolName:activitySymbolImageName colorName:activityColorName];
   return v9;
 }
 

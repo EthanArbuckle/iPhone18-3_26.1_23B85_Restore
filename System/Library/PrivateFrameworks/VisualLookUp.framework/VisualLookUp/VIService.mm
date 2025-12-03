@@ -1,20 +1,20 @@
 @interface VIService
-- (CGSize)targetImageSizeForInputImageSize:(CGSize)a3;
+- (CGSize)targetImageSizeForInputImageSize:(CGSize)size;
 - (VIService)init;
-- (VIService)initWithNetworkTimeoutInterval:(int64_t)a3;
-- (VIService)initWithTrialOverrideType:(id)a3 namespaces:(id)a4 factors:(id)a5 values:(id)a6;
-- (id)encryptedSearchWithParsedVisualQuery:(id)a3 domain:(id)a4 completion:(id)a5;
-- (id)getEncryptedSearchDomainsWithVisualQuery:(id)a3 cachedResults:(id)a4 completion:(id)a5;
-- (id)lookupTextWithQuery:(id)a3 completion:(id)a4;
+- (VIService)initWithNetworkTimeoutInterval:(int64_t)interval;
+- (VIService)initWithTrialOverrideType:(id)type namespaces:(id)namespaces factors:(id)factors values:(id)values;
+- (id)encryptedSearchWithParsedVisualQuery:(id)query domain:(id)domain completion:(id)completion;
+- (id)getEncryptedSearchDomainsWithVisualQuery:(id)query cachedResults:(id)results completion:(id)completion;
+- (id)lookupTextWithQuery:(id)query completion:(id)completion;
 - (id)newStreamingSession;
 - (id)ontologyGraph;
-- (id)parseForENLabelWithVisualQuery:(id)a3 cachedResults:(id)a4 domains:(id)a5 completion:(id)a6;
-- (id)parseWithVisualQuery:(id)a3 cachedResults:(id)a4 completion:(id)a5;
-- (id)parseWithVisualQuery:(id)a3 completion:(id)a4;
-- (id)pegasusPayloadWithParsedVisualQuery:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)searchWithParsedVisualQuery:(id)a3 completion:(id)a4;
-- (id)searchWithVisualQuery:(id)a3 completion:(id)a4;
-- (void)checkEncryptedSearchProxyEnabledWithCompletion:(id)a3;
+- (id)parseForENLabelWithVisualQuery:(id)query cachedResults:(id)results domains:(id)domains completion:(id)completion;
+- (id)parseWithVisualQuery:(id)query cachedResults:(id)results completion:(id)completion;
+- (id)parseWithVisualQuery:(id)query completion:(id)completion;
+- (id)pegasusPayloadWithParsedVisualQuery:(id)query options:(unint64_t)options error:(id *)error;
+- (id)searchWithParsedVisualQuery:(id)query completion:(id)completion;
+- (id)searchWithVisualQuery:(id)query completion:(id)completion;
+- (void)checkEncryptedSearchProxyEnabledWithCompletion:(id)completion;
 @end
 
 @implementation VIService
@@ -38,14 +38,14 @@
   return v2;
 }
 
-- (VIService)initWithNetworkTimeoutInterval:(int64_t)a3
+- (VIService)initWithNetworkTimeoutInterval:(int64_t)interval
 {
   v10.receiver = self;
   v10.super_class = VIService;
   v4 = [(VIService *)&v10 init];
   if (v4)
   {
-    v5 = [[_TtC12VisualLookUp35VisualIntelligenceServiceCompatible alloc] initWithTimeoutInterval:a3];
+    v5 = [[_TtC12VisualLookUp35VisualIntelligenceServiceCompatible alloc] initWithTimeoutInterval:interval];
     compatService = v4->_compatService;
     v4->_compatService = v5;
 
@@ -57,18 +57,18 @@
   return v4;
 }
 
-- (VIService)initWithTrialOverrideType:(id)a3 namespaces:(id)a4 factors:(id)a5 values:(id)a6
+- (VIService)initWithTrialOverrideType:(id)type namespaces:(id)namespaces factors:(id)factors values:(id)values
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  namespacesCopy = namespaces;
+  factorsCopy = factors;
+  valuesCopy = values;
   v20.receiver = self;
   v20.super_class = VIService;
   v14 = [(VIService *)&v20 init];
   if (v14)
   {
-    v15 = [[_TtC12VisualLookUp35VisualIntelligenceServiceCompatible alloc] initWithOverrideTrialTypes:v10 namespaces:v11 factors:v12 values:v13];
+    v15 = [[_TtC12VisualLookUp35VisualIntelligenceServiceCompatible alloc] initWithOverrideTrialTypes:typeCopy namespaces:namespacesCopy factors:factorsCopy values:valuesCopy];
     compatService = v14->_compatService;
     v14->_compatService = v15;
 
@@ -80,33 +80,33 @@
   return v14;
 }
 
-- (CGSize)targetImageSizeForInputImageSize:(CGSize)a3
+- (CGSize)targetImageSizeForInputImageSize:(CGSize)size
 {
-  [(VisualIntelligenceServiceCompatible *)self->_compatService targetImageSizeWithInputImageSize:a3.width, a3.height];
+  [(VisualIntelligenceServiceCompatible *)self->_compatService targetImageSizeWithInputImageSize:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (id)parseWithVisualQuery:(id)a3 completion:(id)a4
+- (id)parseWithVisualQuery:(id)query completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  queryCopy = query;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (queryCopy)
   {
     compatService = self->_compatService;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __45__VIService_parseWithVisualQuery_completion___block_invoke;
     v13[3] = &unk_1E858AAB0;
-    v14 = v7;
-    v10 = [(VisualIntelligenceServiceCompatible *)compatService parseWithVisualQuery:v6 completion:v13];
+    v14 = completionCopy;
+    v10 = [(VisualIntelligenceServiceCompatible *)compatService parseWithVisualQuery:queryCopy completion:v13];
   }
 
   else
   {
-    if (v7)
+    if (completionCopy)
     {
       v11 = _VIServiceNilInputError();
       (v8)[2](v8, 0, v11);
@@ -129,26 +129,26 @@ uint64_t __45__VIService_parseWithVisualQuery_completion___block_invoke(uint64_t
   return result;
 }
 
-- (id)parseWithVisualQuery:(id)a3 cachedResults:(id)a4 completion:(id)a5
+- (id)parseWithVisualQuery:(id)query cachedResults:(id)results completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  queryCopy = query;
+  resultsCopy = results;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (queryCopy)
   {
     compatService = self->_compatService;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __59__VIService_parseWithVisualQuery_cachedResults_completion___block_invoke;
     v16[3] = &unk_1E858AAD8;
-    v17 = v10;
-    v13 = [(VisualIntelligenceServiceCompatible *)compatService parseCachedWithVisualQuery:v8 cachedResults:v9 completion:v16];
+    v17 = completionCopy;
+    v13 = [(VisualIntelligenceServiceCompatible *)compatService parseCachedWithVisualQuery:queryCopy cachedResults:resultsCopy completion:v16];
   }
 
   else
   {
-    if (v10)
+    if (completionCopy)
     {
       v14 = _VIServiceNilInputError();
       (v11)[2](v11, 0, 0, v14);
@@ -171,28 +171,28 @@ uint64_t __59__VIService_parseWithVisualQuery_cachedResults_completion___block_i
   return result;
 }
 
-- (id)searchWithParsedVisualQuery:(id)a3 completion:(id)a4
+- (id)searchWithParsedVisualQuery:(id)query completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  queryCopy = query;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (queryCopy)
   {
     compatService = self->_compatService;
-    v10 = [v6 image];
-    v11 = [v6 visualUnderstanding];
-    v12 = [v6 queryContext];
-    v13 = [(VisualIntelligenceServiceCompatible *)compatService searchWithImage:v10 visualUnderstanding:v11 queryContext:v12 completion:v8];
+    image = [queryCopy image];
+    visualUnderstanding = [queryCopy visualUnderstanding];
+    queryContext = [queryCopy queryContext];
+    v13 = [(VisualIntelligenceServiceCompatible *)compatService searchWithImage:image visualUnderstanding:visualUnderstanding queryContext:queryContext completion:v8];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v10 = +[VISearchResult empty];
-    v11 = _VIServiceNilInputError();
-    (v8)[2](v8, v10, v11);
+    image = +[VISearchResult empty];
+    visualUnderstanding = _VIServiceNilInputError();
+    (v8)[2](v8, image, visualUnderstanding);
     v13 = 0;
     goto LABEL_5;
   }
@@ -203,29 +203,29 @@ LABEL_6:
   return v13;
 }
 
-- (id)encryptedSearchWithParsedVisualQuery:(id)a3 domain:(id)a4 completion:(id)a5
+- (id)encryptedSearchWithParsedVisualQuery:(id)query domain:(id)domain completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  queryCopy = query;
+  domainCopy = domain;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (queryCopy)
   {
     compatService = self->_compatService;
-    v13 = [v8 image];
-    v14 = [v8 visualUnderstanding];
-    v15 = [v8 queryContext];
-    v16 = [(VisualIntelligenceServiceCompatible *)compatService encryptedSearchWithImage:v13 visualUnderstanding:v14 queryContext:v15 domain:v9 completion:v11];
+    image = [queryCopy image];
+    visualUnderstanding = [queryCopy visualUnderstanding];
+    queryContext = [queryCopy queryContext];
+    v16 = [(VisualIntelligenceServiceCompatible *)compatService encryptedSearchWithImage:image visualUnderstanding:visualUnderstanding queryContext:queryContext domain:domainCopy completion:v11];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v13 = +[VISearchResult empty];
-    v14 = _VIServiceNilInputError();
-    (v11)[2](v11, v13, v14);
+    image = +[VISearchResult empty];
+    visualUnderstanding = _VIServiceNilInputError();
+    (v11)[2](v11, image, visualUnderstanding);
     v16 = 0;
     goto LABEL_5;
   }
@@ -236,16 +236,16 @@ LABEL_6:
   return v16;
 }
 
-- (void)checkEncryptedSearchProxyEnabledWithCompletion:(id)a3
+- (void)checkEncryptedSearchProxyEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   compatService = self->_compatService;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__VIService_checkEncryptedSearchProxyEnabledWithCompletion___block_invoke;
   v7[3] = &unk_1E858AB00;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(VisualIntelligenceServiceCompatible *)compatService checkEncryptedSearchProxyEnabledWithAction:v7];
 }
 
@@ -260,26 +260,26 @@ uint64_t __60__VIService_checkEncryptedSearchProxyEnabledWithCompletion___block_
   return result;
 }
 
-- (id)getEncryptedSearchDomainsWithVisualQuery:(id)a3 cachedResults:(id)a4 completion:(id)a5
+- (id)getEncryptedSearchDomainsWithVisualQuery:(id)query cachedResults:(id)results completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  queryCopy = query;
+  resultsCopy = results;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (queryCopy)
   {
     compatService = self->_compatService;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __79__VIService_getEncryptedSearchDomainsWithVisualQuery_cachedResults_completion___block_invoke;
     v16[3] = &unk_1E858AB28;
-    v17 = v10;
-    v13 = [(VisualIntelligenceServiceCompatible *)compatService getEncryptedSearchDomainsWithVisualQuery:v8 cachedResults:v9 completion:v16];
+    v17 = completionCopy;
+    v13 = [(VisualIntelligenceServiceCompatible *)compatService getEncryptedSearchDomainsWithVisualQuery:queryCopy cachedResults:resultsCopy completion:v16];
   }
 
   else
   {
-    if (v10)
+    if (completionCopy)
     {
       v14 = _VIServiceNilInputError();
       (v11)[2](v11, 0, 0, v14);
@@ -302,27 +302,27 @@ uint64_t __79__VIService_getEncryptedSearchDomainsWithVisualQuery_cachedResults_
   return result;
 }
 
-- (id)parseForENLabelWithVisualQuery:(id)a3 cachedResults:(id)a4 domains:(id)a5 completion:(id)a6
+- (id)parseForENLabelWithVisualQuery:(id)query cachedResults:(id)results domains:(id)domains completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v10)
+  queryCopy = query;
+  resultsCopy = results;
+  domainsCopy = domains;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (queryCopy)
   {
     compatService = self->_compatService;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __77__VIService_parseForENLabelWithVisualQuery_cachedResults_domains_completion___block_invoke;
     v19[3] = &unk_1E858AAD8;
-    v20 = v13;
-    v16 = [(VisualIntelligenceServiceCompatible *)compatService parseForENRichLabelWithVisualQuery:v10 cachedResults:v11 domains:v12 completion:v19];
+    v20 = completionCopy;
+    v16 = [(VisualIntelligenceServiceCompatible *)compatService parseForENRichLabelWithVisualQuery:queryCopy cachedResults:resultsCopy domains:domainsCopy completion:v19];
   }
 
   else
   {
-    if (v13)
+    if (completionCopy)
     {
       v17 = _VIServiceNilInputError();
       (v14)[2](v14, 0, 0, v17);
@@ -345,19 +345,19 @@ uint64_t __77__VIService_parseForENLabelWithVisualQuery_cachedResults_domains_co
   return result;
 }
 
-- (id)searchWithVisualQuery:(id)a3 completion:(id)a4
+- (id)searchWithVisualQuery:(id)query completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  queryCopy = query;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (queryCopy)
   {
-    v9 = [(VisualIntelligenceServiceCompatible *)self->_compatService searchWithVisualQuery:v6 completion:v7];
+    v9 = [(VisualIntelligenceServiceCompatible *)self->_compatService searchWithVisualQuery:queryCopy completion:completionCopy];
   }
 
   else
   {
-    if (v7)
+    if (completionCopy)
     {
       v10 = +[VISearchResult empty];
       v11 = _VIServiceNilInputError();
@@ -370,23 +370,23 @@ uint64_t __77__VIService_parseForENLabelWithVisualQuery_cachedResults_domains_co
   return v9;
 }
 
-- (id)pegasusPayloadWithParsedVisualQuery:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)pegasusPayloadWithParsedVisualQuery:(id)query options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  queryCopy = query;
+  v9 = queryCopy;
+  if (queryCopy)
   {
     compatService = self->_compatService;
-    v11 = [v8 image];
-    v12 = [v9 visualUnderstanding];
-    v13 = [v9 queryContext];
-    v14 = [(VisualIntelligenceServiceCompatible *)compatService pegasusPayloadDataWithImage:v11 visualUnderstanding:v12 queryContext:v13 options:a4 error:a5];
+    image = [queryCopy image];
+    visualUnderstanding = [v9 visualUnderstanding];
+    queryContext = [v9 queryContext];
+    v14 = [(VisualIntelligenceServiceCompatible *)compatService pegasusPayloadDataWithImage:image visualUnderstanding:visualUnderstanding queryContext:queryContext options:options error:error];
   }
 
-  else if (a5)
+  else if (error)
   {
     _VIServiceNilInputError();
-    *a5 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -397,19 +397,19 @@ uint64_t __77__VIService_parseForENLabelWithVisualQuery_cachedResults_domains_co
   return v14;
 }
 
-- (id)lookupTextWithQuery:(id)a3 completion:(id)a4
+- (id)lookupTextWithQuery:(id)query completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  queryCopy = query;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (queryCopy)
   {
-    v9 = [(VITextLookupFlowCompatible *)self->_textLookupFlow lookupTextWithQuery:v6 completion:v7];
+    v9 = [(VITextLookupFlowCompatible *)self->_textLookupFlow lookupTextWithQuery:queryCopy completion:completionCopy];
   }
 
   else
   {
-    if (v7)
+    if (completionCopy)
     {
       v10 = _VIServiceNilInputError();
       (v8)[2](v8, 0, v10);
@@ -424,8 +424,8 @@ uint64_t __77__VIService_parseForENLabelWithVisualQuery_cachedResults_domains_co
 - (id)ontologyGraph
 {
   v3 = [VIOntologyGraph alloc];
-  v4 = [(VisualIntelligenceServiceCompatible *)self->_compatService ontologyGraph];
-  v5 = [(VIOntologyGraph *)v3 initWithOntologyGraph:v4];
+  ontologyGraph = [(VisualIntelligenceServiceCompatible *)self->_compatService ontologyGraph];
+  v5 = [(VIOntologyGraph *)v3 initWithOntologyGraph:ontologyGraph];
 
   return v5;
 }

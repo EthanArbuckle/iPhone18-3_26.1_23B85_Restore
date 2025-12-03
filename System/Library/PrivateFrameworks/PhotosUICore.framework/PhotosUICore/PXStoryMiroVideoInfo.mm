@@ -1,32 +1,32 @@
 @interface PXStoryMiroVideoInfo
-- (PXStoryMiroVideoInfo)initWithData:(id)a3;
+- (PXStoryMiroVideoInfo)initWithData:(id)data;
 - (id)token;
 @end
 
 @implementation PXStoryMiroVideoInfo
 
-- (PXStoryMiroVideoInfo)initWithData:(id)a3
+- (PXStoryMiroVideoInfo)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = PXStoryMiroVideoInfo;
-  v5 = [(PXStoryMiroAssetInfo *)&v13 initWithData:v4];
+  v5 = [(PXStoryMiroAssetInfo *)&v13 initWithData:dataCopy];
   if (v5)
   {
-    if (__ROR8__(0xCCCCCCCCCCCCCCCDLL * [v4 length] - 0x3333333333333334, 1) <= 0x1999999999999999uLL)
+    if (__ROR8__(0xCCCCCCCCCCCCCCCDLL * [dataCopy length] - 0x3333333333333334, 1) <= 0x1999999999999999uLL)
     {
-      v6 = [v4 subdataWithRange:{0, 4}];
-      v7 = [(PXStoryMiroVideoInfo *)v5 token];
-      v8 = [v6 isEqualToData:v7];
+      v6 = [dataCopy subdataWithRange:{0, 4}];
+      token = [(PXStoryMiroVideoInfo *)v5 token];
+      v8 = [v6 isEqualToData:token];
 
       if (v8)
       {
-        if ([v4 length] >= 5)
+        if ([dataCopy length] >= 5)
         {
           v9 = 4;
           while (1)
           {
-            v10 = [v4 subdataWithRange:{v9, 10}];
+            v10 = [dataCopy subdataWithRange:{v9, 10}];
             v11 = [[PXStoryMiroVideoRangeInfo alloc] initWithData:v10];
             if ([(PXStoryMiroAssetInfo *)v11 isUsed])
             {
@@ -35,7 +35,7 @@
 
             v9 += 10;
 
-            if (v9 >= [v4 length])
+            if (v9 >= [dataCopy length])
             {
               goto LABEL_10;
             }

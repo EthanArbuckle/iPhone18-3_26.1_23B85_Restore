@@ -1,29 +1,29 @@
 @interface APReportDate
-- (APReportDate)initWithDate:(id)a3;
+- (APReportDate)initWithDate:(id)date;
 - (BOOL)lastYearLeap;
 - (NSString)reportDayString;
-- (id)_addDays:(int64_t)a3 toDate:(id)a4;
-- (id)currentDateMinusDays:(unint64_t)a3;
-- (int64_t)_dayOfYearForDate:(id)a3;
+- (id)_addDays:(int64_t)days toDate:(id)date;
+- (id)currentDateMinusDays:(unint64_t)days;
+- (int64_t)_dayOfYearForDate:(id)date;
 - (int64_t)monthDayInteger;
-- (int64_t)numberOfDaysSinceDate:(id)a3;
-- (int64_t)reportDayMinus:(unint64_t)a3;
+- (int64_t)numberOfDaysSinceDate:(id)date;
+- (int64_t)reportDayMinus:(unint64_t)minus;
 - (int64_t)reportEndDay;
 - (int64_t)weekStartDay;
 @end
 
 @implementation APReportDate
 
-- (APReportDate)initWithDate:(id)a3
+- (APReportDate)initWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v16.receiver = self;
   v16.super_class = APReportDate;
   v6 = [(APReportDate *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_date, a3);
+    objc_storeStrong(&v6->_date, date);
     v8 = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     gregorianCalendar = v7->_gregorianCalendar;
     v7->_gregorianCalendar = v8;
@@ -48,16 +48,16 @@
 
 - (int64_t)monthDayInteger
 {
-  v3 = [(APReportDate *)self date];
-  v4 = [(APReportDate *)self _dayOfYearForDate:v3];
+  date = [(APReportDate *)self date];
+  v4 = [(APReportDate *)self _dayOfYearForDate:date];
 
   return v4;
 }
 
 - (int64_t)reportEndDay
 {
-  v3 = [(APReportDate *)self date];
-  v4 = [(APReportDate *)self _addDays:-1 toDate:v3];
+  date = [(APReportDate *)self date];
+  v4 = [(APReportDate *)self _addDays:-1 toDate:date];
 
   v5 = [(APReportDate *)self _dayOfYearForDate:v4];
   return v5;
@@ -65,8 +65,8 @@
 
 - (int64_t)weekStartDay
 {
-  v3 = [(APReportDate *)self date];
-  v4 = [(APReportDate *)self _addDays:-8 toDate:v3];
+  date = [(APReportDate *)self date];
+  v4 = [(APReportDate *)self _addDays:-8 toDate:date];
 
   v5 = [(APReportDate *)self _dayOfYearForDate:v4];
   return v5;
@@ -74,9 +74,9 @@
 
 - (BOOL)lastYearLeap
 {
-  v3 = [(APReportDate *)self gregorianCalendar];
-  v4 = [(APReportDate *)self date];
-  v5 = [v3 component:4 fromDate:v4] - 1;
+  gregorianCalendar = [(APReportDate *)self gregorianCalendar];
+  date = [(APReportDate *)self date];
+  v5 = [gregorianCalendar component:4 fromDate:date] - 1;
 
   return __ROR8__(0x8F5C28F5C28F5C29 * v5 + 0x51EB851EB851EB8, 2) >= 0x28F5C28F5C28F5DuLL && (v5 & 3) == 0 || __ROR8__(0x8F5C28F5C28F5C29 * v5 + 0x51EB851EB851EB0, 4) < 0xA3D70A3D70A3D7uLL;
 }
@@ -84,16 +84,16 @@
 - (NSString)reportDayString
 {
   v2 = [NSNumber numberWithInteger:[(APReportDate *)self reportEndDay]];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  if ([v3 length] == 3)
+  if ([stringValue length] == 3)
   {
-    v4 = [NSString stringWithFormat:@"0%@", v3];
+    v4 = [NSString stringWithFormat:@"0%@", stringValue];
   }
 
   else
   {
-    v4 = v3;
+    v4 = stringValue;
   }
 
   v5 = v4;
@@ -101,62 +101,62 @@
   return v5;
 }
 
-- (int64_t)reportDayMinus:(unint64_t)a3
+- (int64_t)reportDayMinus:(unint64_t)minus
 {
-  v5 = [(APReportDate *)self date];
-  v6 = [(APReportDate *)self _addDays:~a3 toDate:v5];
+  date = [(APReportDate *)self date];
+  v6 = [(APReportDate *)self _addDays:~minus toDate:date];
 
   v7 = [(APReportDate *)self _dayOfYearForDate:v6];
   return v7;
 }
 
-- (int64_t)numberOfDaysSinceDate:(id)a3
+- (int64_t)numberOfDaysSinceDate:(id)date
 {
-  v4 = a3;
-  v5 = [(APReportDate *)self gregorianCalendar];
+  dateCopy = date;
+  gregorianCalendar = [(APReportDate *)self gregorianCalendar];
   v13 = 0;
-  [v5 rangeOfUnit:16 startDate:&v13 interval:0 forDate:v4];
+  [gregorianCalendar rangeOfUnit:16 startDate:&v13 interval:0 forDate:dateCopy];
 
   v6 = v13;
   v12 = 0;
-  v7 = [(APReportDate *)self date];
-  [v5 rangeOfUnit:16 startDate:&v12 interval:0 forDate:v7];
+  date = [(APReportDate *)self date];
+  [gregorianCalendar rangeOfUnit:16 startDate:&v12 interval:0 forDate:date];
   v8 = v12;
 
-  v9 = [v5 components:16 fromDate:v6 toDate:v8 options:0];
+  v9 = [gregorianCalendar components:16 fromDate:v6 toDate:v8 options:0];
 
   v10 = [v9 day];
   return v10;
 }
 
-- (id)currentDateMinusDays:(unint64_t)a3
+- (id)currentDateMinusDays:(unint64_t)days
 {
   v5 = objc_alloc_init(NSDateComponents);
-  [v5 setDay:-a3];
-  v6 = [(APReportDate *)self gregorianCalendar];
-  v7 = [(APReportDate *)self date];
-  v8 = [v6 dateByAddingComponents:v5 toDate:v7 options:0];
+  [v5 setDay:-days];
+  gregorianCalendar = [(APReportDate *)self gregorianCalendar];
+  date = [(APReportDate *)self date];
+  v8 = [gregorianCalendar dateByAddingComponents:v5 toDate:date options:0];
 
   return v8;
 }
 
-- (int64_t)_dayOfYearForDate:(id)a3
+- (int64_t)_dayOfYearForDate:(id)date
 {
-  v4 = a3;
-  v5 = [(APReportDate *)self dateFormatter];
-  v6 = [v5 stringFromDate:v4];
+  dateCopy = date;
+  dateFormatter = [(APReportDate *)self dateFormatter];
+  v6 = [dateFormatter stringFromDate:dateCopy];
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
-- (id)_addDays:(int64_t)a3 toDate:(id)a4
+- (id)_addDays:(int64_t)days toDate:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   v7 = objc_alloc_init(NSDateComponents);
-  [v7 setDay:a3];
-  v8 = [(APReportDate *)self gregorianCalendar];
-  v9 = [v8 dateByAddingComponents:v7 toDate:v6 options:0];
+  [v7 setDay:days];
+  gregorianCalendar = [(APReportDate *)self gregorianCalendar];
+  v9 = [gregorianCalendar dateByAddingComponents:v7 toDate:dateCopy options:0];
 
   return v9;
 }

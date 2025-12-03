@@ -1,13 +1,13 @@
 @interface CUIDesignColor
-- (CUIDesignColor)initWithColor:(CGColor *)a3 blendMode:(int)a4 displayGamut:(int64_t)a5;
+- (CUIDesignColor)initWithColor:(CGColor *)color blendMode:(int)mode displayGamut:(int64_t)gamut;
 - (void)dealloc;
 @end
 
 @implementation CUIDesignColor
 
-- (CUIDesignColor)initWithColor:(CGColor *)a3 blendMode:(int)a4 displayGamut:(int64_t)a5
+- (CUIDesignColor)initWithColor:(CGColor *)color blendMode:(int)mode displayGamut:(int64_t)gamut
 {
-  if (!a3)
+  if (!color)
   {
     return 0;
   }
@@ -17,9 +17,9 @@
   v8 = [(CUIDesignColor *)&v10 init];
   if (v8)
   {
-    v8->_cgColor = CGColorRetain(a3);
-    v8->_blendMode = a4;
-    v8->_displayGamut = a5;
+    v8->_cgColor = CGColorRetain(color);
+    v8->_blendMode = mode;
+    v8->_displayGamut = gamut;
   }
 
   return v8;

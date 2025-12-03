@@ -14,10 +14,10 @@
   [(LPiTunesMediaSongMetadata *)v3 setName:self->_name];
   [(LPiTunesMediaSongMetadata *)v3 setArtist:self->_artist];
   [(LPiTunesMediaSongMetadata *)v3 setAlbum:self->_album];
-  v4 = [(LPiTunesMediaAsset *)self->_artwork metadata];
-  [(LPiTunesMediaSongMetadata *)v3 setArtworkMetadata:v4];
+  metadata = [(LPiTunesMediaAsset *)self->_artwork metadata];
+  [(LPiTunesMediaSongMetadata *)v3 setArtworkMetadata:metadata];
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -37,16 +37,16 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 type];
-        [v5 addObject:v11];
+        type = [v10 type];
+        [array addObject:type];
 
-        v12 = [(LPiTunesMediaSongMetadata *)v3 previewURL];
-        LODWORD(v11) = v12 == 0;
+        previewURL = [(LPiTunesMediaSongMetadata *)v3 previewURL];
+        LODWORD(type) = previewURL == 0;
 
-        if (v11)
+        if (type)
         {
-          v13 = [v10 previewURL];
-          [(LPiTunesMediaSongMetadata *)v3 setPreviewURL:v13];
+          previewURL2 = [v10 previewURL];
+          [(LPiTunesMediaSongMetadata *)v3 setPreviewURL:previewURL2];
         }
       }
 
@@ -56,7 +56,7 @@
     while (v7);
   }
 
-  [(LPiTunesMediaSongMetadata *)v3 setOffers:v5];
+  [(LPiTunesMediaSongMetadata *)v3 setOffers:array];
 
   return v3;
 }

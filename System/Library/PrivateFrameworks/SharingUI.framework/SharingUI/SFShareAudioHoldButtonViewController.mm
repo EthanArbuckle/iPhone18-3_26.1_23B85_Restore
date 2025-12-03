@@ -1,10 +1,10 @@
 @interface SFShareAudioHoldButtonViewController
-- (void)_updateDeviceVisual:(id)a3;
-- (void)eventCancel:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_updateDeviceVisual:(id)visual;
+- (void)eventCancel:(id)cancel;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SFShareAudioHoldButtonViewController
@@ -15,217 +15,217 @@
   v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(SFShareAudioBaseViewController *)self setTitleLabel:v3];
 
-  v4 = [(SFShareAudioBaseViewController *)self titleLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(SFShareAudioBaseViewController *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [(SFShareAudioBaseViewController *)self titleLabel];
-  [v6 setColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  titleLabel2 = [(SFShareAudioBaseViewController *)self titleLabel];
+  [titleLabel2 setColor:whiteColor];
 
   v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDDB8]];
-  v8 = [(SFShareAudioBaseViewController *)self titleLabel];
-  [v8 setFont:v7];
+  titleLabel3 = [(SFShareAudioBaseViewController *)self titleLabel];
+  [titleLabel3 setFont:v7];
 
-  v9 = [(SFShareAudioBaseViewController *)self titleLabel];
-  [v9 setTextAlignment:1];
+  titleLabel4 = [(SFShareAudioBaseViewController *)self titleLabel];
+  [titleLabel4 setTextAlignment:1];
 
-  v10 = [(SFShareAudioBaseViewController *)self titleLabel];
-  [v10 setAdjustsFontSizeToFitWidth:1];
+  titleLabel5 = [(SFShareAudioBaseViewController *)self titleLabel];
+  [titleLabel5 setAdjustsFontSizeToFitWidth:1];
 
-  v11 = [(SFShareAudioBaseViewController *)self titleLabel];
-  [v11 setMinimumScaleFactor:0.5];
+  titleLabel6 = [(SFShareAudioBaseViewController *)self titleLabel];
+  [titleLabel6 setMinimumScaleFactor:0.5];
 
-  v12 = [(SFShareAudioHoldButtonViewController *)self view];
-  v13 = [(SFShareAudioBaseViewController *)self titleLabel];
-  [v12 addSubview:v13];
+  view = [(SFShareAudioHoldButtonViewController *)self view];
+  titleLabel7 = [(SFShareAudioBaseViewController *)self titleLabel];
+  [view addSubview:titleLabel7];
 
   v14 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   [(SFShareAudioHoldButtonViewController *)self setShareImageView:v14];
 
-  v15 = [(SFShareAudioHoldButtonViewController *)self shareImageView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  shareImageView = [(SFShareAudioHoldButtonViewController *)self shareImageView];
+  [shareImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(SFShareAudioHoldButtonViewController *)self view];
-  v17 = [(SFShareAudioHoldButtonViewController *)self shareImageView];
-  [v16 addSubview:v17];
+  view2 = [(SFShareAudioHoldButtonViewController *)self view];
+  shareImageView2 = [(SFShareAudioHoldButtonViewController *)self shareImageView];
+  [view2 addSubview:shareImageView2];
 
   v18 = objc_alloc_init(SFMediaPlayerView);
   [(SFShareAudioHoldButtonViewController *)self setProductMovieView:v18];
 
-  v19 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
-  [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+  productMovieView = [(SFShareAudioHoldButtonViewController *)self productMovieView];
+  [productMovieView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v20 = [(SFShareAudioHoldButtonViewController *)self view];
-  v21 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
-  [v20 addSubview:v21];
+  view3 = [(SFShareAudioHoldButtonViewController *)self view];
+  productMovieView2 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
+  [view3 addSubview:productMovieView2];
 
   v22 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(SFShareAudioHoldButtonViewController *)self setInfoLabel:v22];
 
-  v23 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+  infoLabel = [(SFShareAudioHoldButtonViewController *)self infoLabel];
+  [infoLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v24 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
-  [v24 setNumberOfLines:2];
+  infoLabel2 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
+  [infoLabel2 setNumberOfLines:2];
 
-  v25 = [MEMORY[0x1E69DC888] whiteColor];
-  v26 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
-  [v26 setColor:v25];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  infoLabel3 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
+  [infoLabel3 setColor:whiteColor2];
 
   v27 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-  v28 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
-  [v28 setFont:v27];
+  infoLabel4 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
+  [infoLabel4 setFont:v27];
 
-  v29 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
-  [v29 setTextAlignment:1];
+  infoLabel5 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
+  [infoLabel5 setTextAlignment:1];
 
-  v30 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
-  [v30 setAdjustsFontSizeToFitWidth:1];
+  infoLabel6 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
+  [infoLabel6 setAdjustsFontSizeToFitWidth:1];
 
-  v31 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
-  [v31 setMinimumScaleFactor:0.5];
+  infoLabel7 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
+  [infoLabel7 setMinimumScaleFactor:0.5];
 
-  v32 = [(SFShareAudioHoldButtonViewController *)self view];
-  v33 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
-  [v32 addSubview:v33];
+  view4 = [(SFShareAudioHoldButtonViewController *)self view];
+  infoLabel8 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
+  [view4 addSubview:infoLabel8];
 
   v34 = [MEMORY[0x1E69DC738] buttonWithType:1];
   [(SFShareAudioHoldButtonViewController *)self setCancelButton:v34];
 
-  v35 = [MEMORY[0x1E69DC888] whiteColor];
-  v36 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
-  [v36 setTintColor:v35];
+  whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+  cancelButton = [(SFShareAudioHoldButtonViewController *)self cancelButton];
+  [cancelButton setTintColor:whiteColor3];
 
   v37 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
-  v38 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
-  v39 = [v38 titleLabel];
-  [v39 setFont:v37];
+  cancelButton2 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
+  titleLabel8 = [cancelButton2 titleLabel];
+  [titleLabel8 setFont:v37];
 
-  v40 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
-  [v40 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cancelButton3 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
+  [cancelButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v41 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
+  cancelButton4 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
   v42 = SFLocalizedStringForKey();
-  [v41 setTitle:v42 forState:0];
+  [cancelButton4 setTitle:v42 forState:0];
 
-  v43 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
-  [v43 addTarget:self action:sel_eventCancel_ forControlEvents:64];
+  cancelButton5 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
+  [cancelButton5 addTarget:self action:sel_eventCancel_ forControlEvents:64];
 
-  v44 = [(SFShareAudioHoldButtonViewController *)self view];
-  v45 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
-  [v44 addSubview:v45];
+  view5 = [(SFShareAudioHoldButtonViewController *)self view];
+  cancelButton6 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
+  [view5 addSubview:cancelButton6];
 
-  v46 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
-  v47 = [v46 leadingAnchor];
-  v48 = [(SFShareAudioHoldButtonViewController *)self view];
-  v49 = [v48 leadingAnchor];
-  v50 = [v47 constraintEqualToAnchor:v49 constant:8.0];
+  productMovieView3 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
+  leadingAnchor = [productMovieView3 leadingAnchor];
+  view6 = [(SFShareAudioHoldButtonViewController *)self view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v50 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
   [(SFShareAudioHoldButtonViewController *)self setMovieViewLeadingConstraint:v50];
 
-  v51 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
-  v52 = [v51 trailingAnchor];
-  v53 = [(SFShareAudioHoldButtonViewController *)self view];
-  v54 = [v53 trailingAnchor];
-  v55 = [v52 constraintEqualToAnchor:v54 constant:-8.0];
+  productMovieView4 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
+  trailingAnchor = [productMovieView4 trailingAnchor];
+  view7 = [(SFShareAudioHoldButtonViewController *)self view];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v55 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
   [(SFShareAudioHoldButtonViewController *)self setMovieViewTrailingConstraint:v55];
 
-  v56 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
-  v57 = [v56 heightAnchor];
-  v58 = [v57 constraintEqualToConstant:281.0];
+  productMovieView5 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
+  heightAnchor = [productMovieView5 heightAnchor];
+  v58 = [heightAnchor constraintEqualToConstant:281.0];
   [(SFShareAudioHoldButtonViewController *)self setMovieViewHeightConstraint:v58];
 
   v100 = MEMORY[0x1E696ACD8];
-  v128 = [(SFShareAudioBaseViewController *)self titleLabel];
-  v126 = [v128 leadingAnchor];
-  v127 = [(SFShareAudioHoldButtonViewController *)self view];
-  v125 = [v127 leadingAnchor];
-  v124 = [v126 constraintEqualToAnchor:v125 constant:36.0];
+  titleLabel9 = [(SFShareAudioBaseViewController *)self titleLabel];
+  leadingAnchor3 = [titleLabel9 leadingAnchor];
+  view8 = [(SFShareAudioHoldButtonViewController *)self view];
+  leadingAnchor4 = [view8 leadingAnchor];
+  v124 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:36.0];
   v129[0] = v124;
-  v123 = [(SFShareAudioBaseViewController *)self titleLabel];
-  v121 = [v123 trailingAnchor];
-  v122 = [(SFShareAudioHoldButtonViewController *)self view];
-  v120 = [v122 trailingAnchor];
-  v119 = [v121 constraintEqualToAnchor:v120 constant:-36.0];
+  titleLabel10 = [(SFShareAudioBaseViewController *)self titleLabel];
+  trailingAnchor3 = [titleLabel10 trailingAnchor];
+  view9 = [(SFShareAudioHoldButtonViewController *)self view];
+  trailingAnchor4 = [view9 trailingAnchor];
+  v119 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-36.0];
   v129[1] = v119;
-  v118 = [(SFShareAudioBaseViewController *)self titleLabel];
-  v116 = [v118 topAnchor];
-  v117 = [(SFShareAudioHoldButtonViewController *)self view];
-  v115 = [v117 topAnchor];
-  v114 = [v116 constraintEqualToAnchor:v115 constant:36.0];
+  titleLabel11 = [(SFShareAudioBaseViewController *)self titleLabel];
+  topAnchor = [titleLabel11 topAnchor];
+  view10 = [(SFShareAudioHoldButtonViewController *)self view];
+  topAnchor2 = [view10 topAnchor];
+  v114 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:36.0];
   v129[2] = v114;
-  v113 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
-  v111 = [v113 topAnchor];
-  v112 = [(SFShareAudioBaseViewController *)self titleLabel];
-  v110 = [v112 topAnchor];
-  v109 = [v111 constraintEqualToAnchor:v110];
+  productMovieView6 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
+  topAnchor3 = [productMovieView6 topAnchor];
+  titleLabel12 = [(SFShareAudioBaseViewController *)self titleLabel];
+  topAnchor4 = [titleLabel12 topAnchor];
+  v109 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v129[3] = v109;
-  v108 = [(SFShareAudioHoldButtonViewController *)self movieViewHeightConstraint];
-  v129[4] = v108;
-  v107 = [(SFShareAudioHoldButtonViewController *)self movieViewLeadingConstraint];
-  v129[5] = v107;
-  v106 = [(SFShareAudioHoldButtonViewController *)self movieViewTrailingConstraint];
-  v129[6] = v106;
-  v105 = [(SFShareAudioHoldButtonViewController *)self shareImageView];
-  v103 = [v105 centerXAnchor];
-  v104 = [(SFShareAudioHoldButtonViewController *)self view];
-  v102 = [v104 centerXAnchor];
-  v101 = [v103 constraintEqualToAnchor:v102];
+  movieViewHeightConstraint = [(SFShareAudioHoldButtonViewController *)self movieViewHeightConstraint];
+  v129[4] = movieViewHeightConstraint;
+  movieViewLeadingConstraint = [(SFShareAudioHoldButtonViewController *)self movieViewLeadingConstraint];
+  v129[5] = movieViewLeadingConstraint;
+  movieViewTrailingConstraint = [(SFShareAudioHoldButtonViewController *)self movieViewTrailingConstraint];
+  v129[6] = movieViewTrailingConstraint;
+  shareImageView3 = [(SFShareAudioHoldButtonViewController *)self shareImageView];
+  centerXAnchor = [shareImageView3 centerXAnchor];
+  view11 = [(SFShareAudioHoldButtonViewController *)self view];
+  centerXAnchor2 = [view11 centerXAnchor];
+  v101 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v129[7] = v101;
-  v99 = [(SFShareAudioHoldButtonViewController *)self shareImageView];
-  v97 = [v99 topAnchor];
-  v98 = [(SFShareAudioBaseViewController *)self titleLabel];
-  v96 = [v98 bottomAnchor];
-  v95 = [v97 constraintGreaterThanOrEqualToAnchor:v96 constant:26.0];
+  shareImageView4 = [(SFShareAudioHoldButtonViewController *)self shareImageView];
+  topAnchor5 = [shareImageView4 topAnchor];
+  titleLabel13 = [(SFShareAudioBaseViewController *)self titleLabel];
+  bottomAnchor = [titleLabel13 bottomAnchor];
+  v95 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:bottomAnchor constant:26.0];
   v129[8] = v95;
-  v94 = [(SFShareAudioHoldButtonViewController *)self shareImageView];
-  v92 = [v94 bottomAnchor];
-  v93 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
-  v91 = [v93 topAnchor];
-  v90 = [v92 constraintLessThanOrEqualToAnchor:v91 constant:-16.0];
+  shareImageView5 = [(SFShareAudioHoldButtonViewController *)self shareImageView];
+  bottomAnchor2 = [shareImageView5 bottomAnchor];
+  infoLabel9 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
+  topAnchor6 = [infoLabel9 topAnchor];
+  v90 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:topAnchor6 constant:-16.0];
   v129[9] = v90;
-  v89 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
-  v87 = [v89 leadingAnchor];
-  v88 = [(SFShareAudioHoldButtonViewController *)self view];
-  v86 = [v88 leadingAnchor];
-  v85 = [v87 constraintGreaterThanOrEqualToAnchor:v86 constant:16.0];
+  infoLabel10 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
+  leadingAnchor5 = [infoLabel10 leadingAnchor];
+  view12 = [(SFShareAudioHoldButtonViewController *)self view];
+  leadingAnchor6 = [view12 leadingAnchor];
+  v85 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:leadingAnchor6 constant:16.0];
   v129[10] = v85;
-  v84 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
-  v82 = [v84 trailingAnchor];
-  v83 = [(SFShareAudioHoldButtonViewController *)self view];
-  v81 = [v83 trailingAnchor];
-  v80 = [v82 constraintLessThanOrEqualToAnchor:v81 constant:-16.0];
+  infoLabel11 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
+  trailingAnchor5 = [infoLabel11 trailingAnchor];
+  view13 = [(SFShareAudioHoldButtonViewController *)self view];
+  trailingAnchor6 = [view13 trailingAnchor];
+  v80 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6 constant:-16.0];
   v129[11] = v80;
-  v79 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
-  v77 = [v79 bottomAnchor];
-  v78 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
-  v76 = [v78 topAnchor];
-  v75 = [v77 constraintEqualToAnchor:v76 constant:-26.0];
+  infoLabel12 = [(SFShareAudioHoldButtonViewController *)self infoLabel];
+  bottomAnchor3 = [infoLabel12 bottomAnchor];
+  cancelButton7 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
+  topAnchor7 = [cancelButton7 topAnchor];
+  v75 = [bottomAnchor3 constraintEqualToAnchor:topAnchor7 constant:-26.0];
   v129[12] = v75;
-  v74 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
-  v72 = [v74 leadingAnchor];
-  v73 = [(SFShareAudioHoldButtonViewController *)self view];
-  v71 = [v73 leadingAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71 constant:36.0];
+  cancelButton8 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
+  leadingAnchor7 = [cancelButton8 leadingAnchor];
+  view14 = [(SFShareAudioHoldButtonViewController *)self view];
+  leadingAnchor8 = [view14 leadingAnchor];
+  v70 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:36.0];
   v129[13] = v70;
-  v69 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
-  v59 = [v69 trailingAnchor];
-  v60 = [(SFShareAudioHoldButtonViewController *)self view];
-  v61 = [v60 trailingAnchor];
-  v62 = [v59 constraintEqualToAnchor:v61 constant:-36.0];
+  cancelButton9 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
+  trailingAnchor7 = [cancelButton9 trailingAnchor];
+  view15 = [(SFShareAudioHoldButtonViewController *)self view];
+  trailingAnchor8 = [view15 trailingAnchor];
+  v62 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-36.0];
   v129[14] = v62;
-  v63 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
-  v64 = [v63 bottomAnchor];
-  v65 = [(SFShareAudioHoldButtonViewController *)self view];
-  v66 = [v65 bottomAnchor];
-  v67 = [v64 constraintEqualToAnchor:v66 constant:-21.0];
+  cancelButton10 = [(SFShareAudioHoldButtonViewController *)self cancelButton];
+  bottomAnchor4 = [cancelButton10 bottomAnchor];
+  view16 = [(SFShareAudioHoldButtonViewController *)self view];
+  bottomAnchor5 = [view16 bottomAnchor];
+  v67 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-21.0];
   v129[15] = v67;
   v68 = [MEMORY[0x1E695DEC8] arrayWithObjects:v129 count:16];
   [v100 activateConstraints:v68];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v51[1] = *MEMORY[0x1E69E9840];
   v5 = &OBJC_IVAR___SFAirDropActivityViewController__cachedSharedItems;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
@@ -235,93 +235,93 @@
 
   v48.receiver = self;
   v48.super_class = SFShareAudioHoldButtonViewController;
-  [(SFShareAudioBaseViewController *)&v48 viewWillAppear:v3];
-  v6 = [(SFShareAudioViewController *)self->super._mainController mainBundle];
+  [(SFShareAudioBaseViewController *)&v48 viewWillAppear:appearCopy];
+  mainBundle = [(SFShareAudioViewController *)self->super._mainController mainBundle];
   v7 = [objc_alloc(MEMORY[0x1E69CDEA0]) initWithProductID:self->_colorCode];
-  v8 = [MEMORY[0x1E69CDEA0] airPodsMax];
+  airPodsMax = [MEMORY[0x1E69CDEA0] airPodsMax];
 
-  if (v7 == v8)
+  if (v7 == airPodsMax)
   {
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Localizable-PID_%d", self->_colorCode];
     v14 = MEMORY[0x1E696ACD8];
-    v15 = [(SFShareAudioHoldButtonViewController *)self movieViewHeightConstraint];
-    v51[0] = v15;
+    movieViewHeightConstraint = [(SFShareAudioHoldButtonViewController *)self movieViewHeightConstraint];
+    v51[0] = movieViewHeightConstraint;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:1];
     [v14 deactivateConstraints:v16];
 
-    v17 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
-    v18 = [v17 heightAnchor];
-    v19 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
-    v20 = [v19 widthAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20 multiplier:0.9375];
+    productMovieView = [(SFShareAudioHoldButtonViewController *)self productMovieView];
+    heightAnchor = [productMovieView heightAnchor];
+    productMovieView2 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
+    widthAnchor = [productMovieView2 widthAnchor];
+    v21 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:0.9375];
     [(SFShareAudioHoldButtonViewController *)self setMovieViewHeightConstraint:v21];
 
     v22 = MEMORY[0x1E696ACD8];
-    v23 = [(SFShareAudioHoldButtonViewController *)self movieViewHeightConstraint];
-    v50 = v23;
+    movieViewHeightConstraint2 = [(SFShareAudioHoldButtonViewController *)self movieViewHeightConstraint];
+    v50 = movieViewHeightConstraint2;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
     [v22 activateConstraints:v24];
 
-    v25 = [(SFShareAudioHoldButtonViewController *)self movieViewLeadingConstraint];
-    [v25 setConstant:0.0];
+    movieViewLeadingConstraint = [(SFShareAudioHoldButtonViewController *)self movieViewLeadingConstraint];
+    [movieViewLeadingConstraint setConstant:0.0];
 
-    v26 = [(SFShareAudioHoldButtonViewController *)self movieViewTrailingConstraint];
-    [v26 setConstant:0.0];
+    movieViewTrailingConstraint = [(SFShareAudioHoldButtonViewController *)self movieViewTrailingConstraint];
+    [movieViewTrailingConstraint setConstant:0.0];
 
-    v27 = [(SFShareAudioHoldButtonViewController *)self view];
-    [v27 layoutIfNeeded];
+    view = [(SFShareAudioHoldButtonViewController *)self view];
+    [view layoutIfNeeded];
 
-    v9 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v28 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
-    [v28 bounds];
-    [v9 setFrame:?];
+    b768e = objc_alloc_init(MEMORY[0x1E69DD250]);
+    productMovieView3 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
+    [productMovieView3 bounds];
+    [b768e setFrame:?];
 
     v29 = objc_alloc_init(MEMORY[0x1E6979380]);
-    [v9 bounds];
+    [b768e bounds];
     [v29 setFrame:?];
     [v29 setLocations:&unk_1F37F4008];
     v30 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.0];
-    v31 = [v30 CGColor];
+    cGColor = [v30 CGColor];
 
-    v49[0] = v31;
-    v32 = [MEMORY[0x1E69DC888] whiteColor];
-    v49[1] = [v32 CGColor];
-    v33 = [MEMORY[0x1E69DC888] whiteColor];
-    v49[2] = [v33 CGColor];
-    v49[3] = v31;
+    v49[0] = cGColor;
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v49[1] = [whiteColor CGColor];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    v49[2] = [whiteColor2 CGColor];
+    v49[3] = cGColor;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:4];
     [v29 setColors:v34];
 
     v5 = &OBJC_IVAR___SFAirDropActivityViewController__cachedSharedItems;
-    v35 = [v9 layer];
-    [v35 addSublayer:v29];
+    layer = [b768e layer];
+    [layer addSublayer:v29];
 
-    v36 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
-    [v36 setMaskView:v9];
+    productMovieView4 = [(SFShareAudioHoldButtonViewController *)self productMovieView];
+    [productMovieView4 setMaskView:b768e];
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [MEMORY[0x1E69CDEA0] b768e];
-  if (v7 == v9)
+  b768e = [MEMORY[0x1E69CDEA0] b768e];
+  if (v7 == b768e)
   {
     v13 = @"Localizable-PID_8219";
     goto LABEL_12;
   }
 
-  v10 = [MEMORY[0x1E69CDEA0] b768m];
+  b768m = [MEMORY[0x1E69CDEA0] b768m];
 
-  if (v7 == v10)
+  if (v7 == b768m)
   {
     v13 = @"Localizable-PID_8219";
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69CDEA0] b788];
+    b788 = [MEMORY[0x1E69CDEA0] b788];
 
-    if (v7 == v11)
+    if (v7 == b788)
     {
       v13 = @"Localizable-PID_8231";
     }
@@ -338,9 +338,9 @@ LABEL_12:
       if (v42)
       {
         v43 = v42;
-        v44 = [v42 buttonLocation];
+        buttonLocation = [v42 buttonLocation];
 
-        if (!v44)
+        if (!buttonLocation)
         {
           goto LABEL_9;
         }
@@ -406,9 +406,9 @@ void __55__SFShareAudioHoldButtonViewController_viewWillAppear___block_invoke(ui
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioHoldButtonViewController viewWillDisappear:];
@@ -416,20 +416,20 @@ void __55__SFShareAudioHoldButtonViewController_viewWillAppear___block_invoke(ui
 
   v5.receiver = self;
   v5.super_class = SFShareAudioHoldButtonViewController;
-  [(SFShareAudioBaseViewController *)&v5 viewWillDisappear:v3];
+  [(SFShareAudioBaseViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SFShareAudioHoldButtonViewController;
-  [(SFShareAudioHoldButtonViewController *)&v4 viewDidDisappear:a3];
+  [(SFShareAudioHoldButtonViewController *)&v4 viewDidDisappear:disappear];
   [(SFMediaPlayerView *)self->_productMovieView stop];
 }
 
-- (void)eventCancel:(id)a3
+- (void)eventCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioHoldButtonViewController eventCancel:];
@@ -438,13 +438,13 @@ void __55__SFShareAudioHoldButtonViewController_viewWillAppear___block_invoke(ui
   [(SFShareAudioViewController *)self->super._mainController reportUserCancelled];
 }
 
-- (void)_updateDeviceVisual:(id)a3
+- (void)_updateDeviceVisual:(id)visual
 {
-  v4 = a3;
-  v11 = v4;
-  if (v4)
+  visualCopy = visual;
+  v11 = visualCopy;
+  if (visualCopy)
   {
-    v5 = [MEMORY[0x1E696AAE8] bundleWithPath:v4];
+    v5 = [MEMORY[0x1E696AAE8] bundleWithPath:visualCopy];
   }
 
   else
@@ -473,8 +473,8 @@ void __55__SFShareAudioHoldButtonViewController_viewWillAppear___block_invoke(ui
     }
 
     v8 = MEMORY[0x1E69DCAB8];
-    v9 = [(SFShareAudioViewController *)self->super._mainController mainBundle];
-    v10 = [v8 imageNamed:@"ShareAudioAirPods" inBundle:v9 compatibleWithTraitCollection:0];
+    mainBundle = [(SFShareAudioViewController *)self->super._mainController mainBundle];
+    v10 = [v8 imageNamed:@"ShareAudioAirPods" inBundle:mainBundle compatibleWithTraitCollection:0];
     [(UIImageView *)self->_shareImageView setImage:v10];
 
     [(UIImageView *)self->_shareImageView setHidden:0];

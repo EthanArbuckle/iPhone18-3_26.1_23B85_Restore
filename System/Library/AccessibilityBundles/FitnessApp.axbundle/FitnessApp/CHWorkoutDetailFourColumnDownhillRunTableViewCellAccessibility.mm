@@ -1,39 +1,39 @@
 @interface CHWorkoutDetailFourColumnDownhillRunTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)configureWithDownhillRunsStats:(id)a3 activityType:(id)a4 formattingManager:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)configureWithDownhillRunsStats:(id)stats activityType:(id)type formattingManager:(id)manager;
 @end
 
 @implementation CHWorkoutDetailFourColumnDownhillRunTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHWorkoutDetailFourColumnDownhillRunTableViewCell" hasInstanceMethod:@"configureWithDownhillRunsStats:activityType:formattingManager:" withFullSignature:{"v", "@", "@", "@", 0}];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnDownhillRunTableViewCell" hasInstanceMethod:@"configureWithDownhillRun:downhillRunIndex:activityType:isLastCell:formattingManager:" withFullSignature:{"v", "@", "q", "@", "B", "@", 0}];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnDownhillRunTableViewCell" isKindOfClass:@"CHWorkoutDetailFourColumnTableViewCell"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnOneLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnTwoLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnThreeLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnFourLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnDownhillRunTableViewCell" hasInstanceMethod:@"configureWithDownhillRunsStats:activityType:formattingManager:" withFullSignature:{"v", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnDownhillRunTableViewCell" hasInstanceMethod:@"configureWithDownhillRun:downhillRunIndex:activityType:isLastCell:formattingManager:" withFullSignature:{"v", "@", "q", "@", "B", "@", 0}];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnDownhillRunTableViewCell" isKindOfClass:@"CHWorkoutDetailFourColumnTableViewCell"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnOneLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnTwoLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnThreeLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnFourLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
-- (void)configureWithDownhillRunsStats:(id)a3 activityType:(id)a4 formattingManager:(id)a5
+- (void)configureWithDownhillRunsStats:(id)stats activityType:(id)type formattingManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  statsCopy = stats;
+  typeCopy = type;
+  managerCopy = manager;
   v27.receiver = self;
   v27.super_class = CHWorkoutDetailFourColumnDownhillRunTableViewCellAccessibility;
-  [(CHWorkoutDetailFourColumnDownhillRunTableViewCellAccessibility *)&v27 configureWithDownhillRunsStats:v8 activityType:v9 formattingManager:v10];
+  [(CHWorkoutDetailFourColumnDownhillRunTableViewCellAccessibility *)&v27 configureWithDownhillRunsStats:statsCopy activityType:typeCopy formattingManager:managerCopy];
   objc_opt_class();
   v11 = [(CHWorkoutDetailFourColumnDownhillRunTableViewCellAccessibility *)self safeSwiftValueForKey:@"columnTwoLabel"];
   v12 = __UIAccessibilityCastAsClass();
 
-  v26 = v8;
+  v26 = statsCopy;
   v13 = accessibilityLocalizedString(@"time.value");
-  v14 = [v12 text];
-  v15 = [NSString localizedStringWithFormat:v13, v14];
+  text = [v12 text];
+  v15 = [NSString localizedStringWithFormat:v13, text];
   [v12 setAccessibilityLabel:v15];
 
   objc_opt_class();
@@ -41,8 +41,8 @@
   v17 = __UIAccessibilityCastAsClass();
 
   v18 = accessibilityLocalizedString(@"distance.value");
-  v19 = [v17 text];
-  v20 = [NSString localizedStringWithFormat:v18, v19];
+  text2 = [v17 text];
+  v20 = [NSString localizedStringWithFormat:v18, text2];
   [v17 setAccessibilityLabel:v20];
 
   objc_opt_class();
@@ -50,8 +50,8 @@
   v22 = __UIAccessibilityCastAsClass();
 
   v23 = accessibilityLocalizedString(@"vertical.value");
-  v24 = [v22 text];
-  v25 = [NSString localizedStringWithFormat:v23, v24];
+  text3 = [v22 text];
+  v25 = [NSString localizedStringWithFormat:v23, text3];
   [v22 setAccessibilityLabel:v25];
 }
 

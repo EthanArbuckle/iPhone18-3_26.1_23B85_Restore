@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInCardholderName
-- (PKPaymentSetupFieldBuiltInCardholderName)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInCardholderName)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInCardholderName
 
-- (PKPaymentSetupFieldBuiltInCardholderName)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInCardholderName)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = PKPaymentSetupFieldBuiltInCardholderName;
-  v4 = [(PKPaymentSetupFieldText *)&v7 initWithIdentifier:@"cardholderName" type:a4];
+  v4 = [(PKPaymentSetupFieldText *)&v7 initWithIdentifier:@"cardholderName" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_Name_0.isa, 0);

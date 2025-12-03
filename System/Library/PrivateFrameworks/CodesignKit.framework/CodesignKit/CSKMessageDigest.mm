@@ -1,15 +1,15 @@
 @interface CSKMessageDigest
 - (_TtC11CodesignKit16CSKMessageDigest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSKMessageDigest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_243B8CD68(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_243B8CD68(coderCopy);
 }
 
 - (_TtC11CodesignKit16CSKMessageDigest)init

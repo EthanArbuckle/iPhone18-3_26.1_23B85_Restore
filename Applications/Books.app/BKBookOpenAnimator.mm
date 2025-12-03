@@ -1,13 +1,13 @@
 @interface BKBookOpenAnimator
 + (BOOL)_isSlowModeEnabled;
 - (BKBookOpenTransitioning)bookViewController;
-- (BOOL)_sanityCheckPoint:(CGPoint)a3;
+- (BOOL)_sanityCheckPoint:(CGPoint)point;
 - (BOOL)rightToLeft;
-- (CGPoint)_sanitizedCenterPoint:(CGPoint)a3 name:(id)a4;
+- (CGPoint)_sanitizedCenterPoint:(CGPoint)point name:(id)name;
 - (CGRect)_fullsizeRectForFallback;
-- (CGRect)_sanitizedFrameWithCenteredFrame:(CGRect)a3 ofSize:(CGSize)a4 name:(id)a5;
-- (CGRect)_sanitizedFrameWithFallbackFrame:(CGRect)a3 fallbackFrame:(CGRect)a4 name:(id)a5 fallbackName:(id)a6;
-- (CGRect)_sanitizedFrameWithFullsizeFrame:(CGRect)a3 name:(id)a4;
+- (CGRect)_sanitizedFrameWithCenteredFrame:(CGRect)frame ofSize:(CGSize)size name:(id)name;
+- (CGRect)_sanitizedFrameWithFallbackFrame:(CGRect)frame fallbackFrame:(CGRect)fallbackFrame name:(id)name fallbackName:(id)fallbackName;
+- (CGRect)_sanitizedFrameWithFullsizeFrame:(CGRect)frame name:(id)name;
 - (CGRect)closedCoverFrame;
 - (CGRect)zoomedCoverFrame;
 - (NSArray)bookshelfContentViews;
@@ -15,42 +15,42 @@
 - (double)_debugDragCoefficient;
 - (double)coverAspectRatio;
 - (double)duration;
-- (double)transitionDuration:(id)a3;
-- (id)adjustSpring:(id)a3;
-- (id)initOpening:(BOOL)a3;
+- (double)transitionDuration:(id)duration;
+- (id)adjustSpring:(id)spring;
+- (id)initOpening:(BOOL)opening;
 - (id)minifiedBarAnimator;
 - (id)viewControllerForStatusBarStyle;
 - (void)_adjustShadowForCurrentCoverBounds;
 - (void)_animateTransition;
 - (void)_deferredSetupBookView;
-- (void)_loadStateFromContext:(id)a3;
-- (void)_prepareHostWithCompletion:(id)a3;
-- (void)_setupBookshelfAnimationViewsWithCompletion:(id)a3;
-- (void)_setupSharedViewsWithCompletion:(id)a3;
-- (void)_setupViewController:(id)a3;
+- (void)_loadStateFromContext:(id)context;
+- (void)_prepareHostWithCompletion:(id)completion;
+- (void)_setupBookshelfAnimationViewsWithCompletion:(id)completion;
+- (void)_setupSharedViewsWithCompletion:(id)completion;
+- (void)_setupViewController:(id)controller;
 - (void)animateNonInteractive;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 - (void)animationsDidFinish;
 - (void)bookContentDidLoad;
-- (void)configureWithFromViewController:(id)a3 toViewController:(id)a4;
-- (void)minibarKeyFrameAnimationWithDuration:(double)a3 hide:(double)a4 show:(double)a5 completion:(id)a6;
-- (void)moveCoverToFrame:(CGRect)a3;
-- (void)setBookshelfAlpha:(double)a3;
-- (void)setBookshelfTransform:(CGAffineTransform *)a3;
-- (void)setupShadowForCoverView:(id)a3;
-- (void)teardownViews:(BOOL)a3;
+- (void)configureWithFromViewController:(id)controller toViewController:(id)viewController;
+- (void)minibarKeyFrameAnimationWithDuration:(double)duration hide:(double)hide show:(double)show completion:(id)completion;
+- (void)moveCoverToFrame:(CGRect)frame;
+- (void)setBookshelfAlpha:(double)alpha;
+- (void)setBookshelfTransform:(CGAffineTransform *)transform;
+- (void)setupShadowForCoverView:(id)view;
+- (void)teardownViews:(BOOL)views;
 @end
 
 @implementation BKBookOpenAnimator
 
-- (id)initOpening:(BOOL)a3
+- (id)initOpening:(BOOL)opening
 {
   v5.receiver = self;
   v5.super_class = BKBookOpenAnimator;
   result = [(BKBookOpenAnimator *)&v5 init];
   if (result)
   {
-    *(result + 11) = a3;
+    *(result + 11) = opening;
     *(result + 10) = 0;
   }
 
@@ -93,34 +93,34 @@
 
 - (NSArray)bookshelfContentViews
 {
-  v3 = [(BKBookOpenAnimator *)self bookshelfViewController];
+  bookshelfViewController = [(BKBookOpenAnimator *)self bookshelfViewController];
   objc_opt_class();
   v4 = BUClassAndProtocolCast();
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 transitionContentViews];
+    transitionContentViews = [v4 transitionContentViews];
   }
 
   else
   {
-    v7 = [(BKBookOpenAnimator *)self bookshelfViewController];
-    v8 = [v7 view];
+    bookshelfViewController2 = [(BKBookOpenAnimator *)self bookshelfViewController];
+    view = [bookshelfViewController2 view];
 
-    if (v8)
+    if (view)
     {
-      v10 = v8;
-      v6 = [NSArray arrayWithObjects:&v10 count:1];
+      v10 = view;
+      transitionContentViews = [NSArray arrayWithObjects:&v10 count:1];
     }
 
     else
     {
       sub_100793554();
-      v6 = &__NSArray0__struct;
+      transitionContentViews = &__NSArray0__struct;
     }
   }
 
-  return v6;
+  return transitionContentViews;
 }
 
 - (BKBookOpenTransitioning)bookViewController
@@ -149,41 +149,41 @@
 
 - (BOOL)rightToLeft
 {
-  v2 = [(BKBookOpenAnimator *)self bookViewController];
+  bookViewController = [(BKBookOpenAnimator *)self bookViewController];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 transitionRightToLeft];
+    transitionRightToLeft = [bookViewController transitionRightToLeft];
   }
 
   else
   {
-    v3 = 0;
+    transitionRightToLeft = 0;
   }
 
-  return v3;
+  return transitionRightToLeft;
 }
 
 - (CGRect)zoomedCoverFrame
 {
-  v3 = [(BKBookOpenAnimator *)self containerView];
-  [v3 bounds];
+  containerView = [(BKBookOpenAnimator *)self containerView];
+  [containerView bounds];
   IMActionSafeRectForRect();
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(BKBookOpenAnimator *)self coverImage];
-  [v12 size];
+  coverImage = [(BKBookOpenAnimator *)self coverImage];
+  [coverImage size];
 
   CGSizeScaleThatFitsInCGSize();
   CGSizeScale();
   CGRectMakeWithSize();
-  v13 = [(BKBookOpenAnimator *)self coverContainerView];
-  v14 = [v13 superview];
-  v15 = [(BKBookOpenAnimator *)self containerView];
-  v16 = [v15 superview];
-  [v14 convertRect:v16 fromView:{v5, v7, v9, v11}];
+  coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+  superview = [coverContainerView superview];
+  containerView2 = [(BKBookOpenAnimator *)self containerView];
+  superview2 = [containerView2 superview];
+  [superview convertRect:superview2 fromView:{v5, v7, v9, v11}];
   CGRectCenterRectInRect();
   v18 = v17;
   v20 = v19;
@@ -203,8 +203,8 @@
 
 - (double)coverAspectRatio
 {
-  v2 = [(BKBookOpenAnimator *)self coverImage];
-  [v2 size];
+  coverImage = [(BKBookOpenAnimator *)self coverImage];
+  [coverImage size];
   v4 = v3;
   v6 = v5;
 
@@ -217,14 +217,14 @@
   return 1.0;
 }
 
-- (void)setBookshelfAlpha:(double)a3
+- (void)setBookshelfAlpha:(double)alpha
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(BKBookOpenAnimator *)self bookshelfSnapshots];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  bookshelfSnapshots = [(BKBookOpenAnimator *)self bookshelfSnapshots];
+  v6 = [bookshelfSnapshots countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -236,15 +236,15 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(bookshelfSnapshots);
         }
 
-        [*(*(&v19 + 1) + 8 * v9) setAlpha:a3];
+        [*(*(&v19 + 1) + 8 * v9) setAlpha:alpha];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v7 = [bookshelfSnapshots countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v7);
@@ -254,8 +254,8 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [(BKBookOpenAnimator *)self bookshelfLiveViews];
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  bookshelfLiveViews = [(BKBookOpenAnimator *)self bookshelfLiveViews];
+  v11 = [bookshelfLiveViews countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -267,29 +267,29 @@
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(bookshelfLiveViews);
         }
 
-        [*(*(&v15 + 1) + 8 * v14) setAlpha:a3];
+        [*(*(&v15 + 1) + 8 * v14) setAlpha:alpha];
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v12 = [bookshelfLiveViews countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)setBookshelfTransform:(CGAffineTransform *)a3
+- (void)setBookshelfTransform:(CGAffineTransform *)transform
 {
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(BKBookOpenAnimator *)self bookshelfSnapshots];
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  bookshelfSnapshots = [(BKBookOpenAnimator *)self bookshelfSnapshots];
+  v6 = [bookshelfSnapshots countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -301,20 +301,20 @@
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(bookshelfSnapshots);
         }
 
         v10 = *(*(&v26 + 1) + 8 * v9);
-        v11 = *&a3->c;
-        v23 = *&a3->a;
+        v11 = *&transform->c;
+        v23 = *&transform->a;
         v24 = v11;
-        v25 = *&a3->tx;
+        v25 = *&transform->tx;
         [v10 setTransform:&v23];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v7 = [bookshelfSnapshots countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v7);
@@ -324,8 +324,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [(BKBookOpenAnimator *)self bookshelfLiveViews];
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v30 count:16];
+  bookshelfLiveViews = [(BKBookOpenAnimator *)self bookshelfLiveViews];
+  v13 = [bookshelfLiveViews countByEnumeratingWithState:&v19 objects:v30 count:16];
   if (v13)
   {
     v14 = v13;
@@ -337,32 +337,32 @@
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(bookshelfLiveViews);
         }
 
         v17 = *(*(&v19 + 1) + 8 * v16);
-        v18 = *&a3->c;
-        v23 = *&a3->a;
+        v18 = *&transform->c;
+        v23 = *&transform->a;
         v24 = v18;
-        v25 = *&a3->tx;
+        v25 = *&transform->tx;
         [v17 setTransform:&v23];
         v16 = v16 + 1;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v19 objects:v30 count:16];
+      v14 = [bookshelfLiveViews countByEnumeratingWithState:&v19 objects:v30 count:16];
     }
 
     while (v14);
   }
 }
 
-- (void)moveCoverToFrame:(CGRect)a3
+- (void)moveCoverToFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(BKBookOpenAnimator *)self animatesCoverBounds])
   {
     [(BKBookOpenAnimator *)self _sanitizedFrameWithCenteredFrame:@"cover.coverContainerView.frame" ofSize:x name:y, width, height, CGSizeZero.width, CGSizeZero.height];
@@ -370,8 +370,8 @@
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(BKBookOpenAnimator *)self coverContainerView];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+    [coverContainerView setFrame:{v9, v11, v13, v15}];
 
     [(BKBookOpenAnimator *)self _adjustShadowForCurrentCoverBounds];
   }
@@ -382,48 +382,48 @@
     [(BKBookOpenAnimator *)self _sanitizedCenterPoint:@"cover.coverContainerView.center" name:?];
     v18 = v17;
     v20 = v19;
-    v21 = [(BKBookOpenAnimator *)self coverContainerView];
-    [v21 setCenter:{v18, v20}];
+    coverContainerView2 = [(BKBookOpenAnimator *)self coverContainerView];
+    [coverContainerView2 setCenter:{v18, v20}];
 
-    v22 = [(BKBookOpenAnimator *)self coverImage];
-    [v22 size];
+    coverImage = [(BKBookOpenAnimator *)self coverImage];
+    [coverImage size];
     CGSizeScaleThatFitsInCGSize();
     v24 = v23;
 
     CGAffineTransformMakeScale(&v27, v24, v24);
-    v25 = [(BKBookOpenAnimator *)self coverContainerView];
+    coverContainerView3 = [(BKBookOpenAnimator *)self coverContainerView];
     v26 = v27;
-    [v25 setTransform:&v26];
+    [coverContainerView3 setTransform:&v26];
 
     [(BKBookOpenAnimator *)self _adjustShadowForCurrentCoverBounds];
   }
 }
 
-- (void)teardownViews:(BOOL)a3
+- (void)teardownViews:(BOOL)views
 {
-  v3 = a3;
-  v5 = [(BKBookOpenAnimator *)self bookshelfTintView];
-  [v5 removeFromSuperview];
+  viewsCopy = views;
+  bookshelfTintView = [(BKBookOpenAnimator *)self bookshelfTintView];
+  [bookshelfTintView removeFromSuperview];
 
   [(BKBookOpenAnimator *)self setBookshelfTintView:0];
-  v6 = [(BKBookOpenAnimator *)self coverImageView];
-  [v6 removeFromSuperview];
+  coverImageView = [(BKBookOpenAnimator *)self coverImageView];
+  [coverImageView removeFromSuperview];
 
   [(BKBookOpenAnimator *)self setCoverImageView:0];
-  v7 = [(BKBookOpenAnimator *)self coverShadowView];
-  [v7 removeFromSuperview];
+  coverShadowView = [(BKBookOpenAnimator *)self coverShadowView];
+  [coverShadowView removeFromSuperview];
 
   [(BKBookOpenAnimator *)self setCoverShadowView:0];
-  v8 = [(BKBookOpenAnimator *)self coverContainerView];
-  [v8 removeFromSuperview];
+  coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+  [coverContainerView removeFromSuperview];
 
   [(BKBookOpenAnimator *)self setCoverContainerView:0];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [(BKBookOpenAnimator *)self bookshelfSnapshots];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  bookshelfSnapshots = [(BKBookOpenAnimator *)self bookshelfSnapshots];
+  v10 = [bookshelfSnapshots countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -434,13 +434,13 @@
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(bookshelfSnapshots);
         }
 
         [*(*(&v22 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v11 = [bookshelfSnapshots countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v11);
@@ -448,27 +448,27 @@
 
   [(BKBookOpenAnimator *)self setBookshelfSnapshots:0];
   [(BKBookOpenAnimator *)self setBookshelfLiveViews:0];
-  v14 = [(BKBookOpenAnimator *)self bookshelfViewState];
-  [v14 restore];
+  bookshelfViewState = [(BKBookOpenAnimator *)self bookshelfViewState];
+  [bookshelfViewState restore];
 
-  v15 = [(BKBookOpenAnimator *)self bookViewState];
-  [v15 restore];
+  bookViewState = [(BKBookOpenAnimator *)self bookViewState];
+  [bookViewState restore];
 
-  v16 = [(BKBookOpenAnimator *)self minifiedBarAnimator];
-  v17 = [v16 minifiedBarAnimatorContainerView];
+  minifiedBarAnimator = [(BKBookOpenAnimator *)self minifiedBarAnimator];
+  minifiedBarAnimatorContainerView = [minifiedBarAnimator minifiedBarAnimatorContainerView];
 
-  if (v17)
+  if (minifiedBarAnimatorContainerView)
   {
-    [v17 setAlpha:1.0];
-    v18 = [(BKBookOpenAnimator *)self minibarContainerViewState];
-    [v18 restore];
+    [minifiedBarAnimatorContainerView setAlpha:1.0];
+    minibarContainerViewState = [(BKBookOpenAnimator *)self minibarContainerViewState];
+    [minibarContainerViewState restore];
   }
 
-  v19 = [(BKBookOpenAnimator *)self bookContainerView];
-  [v19 removeFromSuperview];
+  bookContainerView = [(BKBookOpenAnimator *)self bookContainerView];
+  [bookContainerView removeFromSuperview];
 
   [(BKBookOpenAnimator *)self setBookContainerView:0];
-  if (v3)
+  if (viewsCopy)
   {
     [(BKBookOpenAnimator *)self fromViewController];
   }
@@ -478,150 +478,150 @@
     [(BKBookOpenAnimator *)self toViewController];
   }
   v20 = ;
-  v21 = [v20 view];
-  [v21 removeFromSuperview];
+  view = [v20 view];
+  [view removeFromSuperview];
 }
 
 - (void)_adjustShadowForCurrentCoverBounds
 {
-  v3 = [(BKBookOpenAnimator *)self coverShadowView];
+  coverShadowView = [(BKBookOpenAnimator *)self coverShadowView];
 
-  if (v3)
+  if (coverShadowView)
   {
-    v4 = [(BKBookOpenAnimator *)self coverShadowImage];
+    coverShadowImage = [(BKBookOpenAnimator *)self coverShadowImage];
 
-    if (v4)
+    if (coverShadowImage)
     {
-      v5 = [(BKBookOpenAnimator *)self coverShadowView];
-      v6 = [v5 superview];
-      [v6 bounds];
+      coverShadowView2 = [(BKBookOpenAnimator *)self coverShadowView];
+      superview = [coverShadowView2 superview];
+      [superview bounds];
 
       CGRectGetCenterNoRounding();
       v8 = v7;
       v10 = v9;
-      v11 = [(BKBookOpenAnimator *)self coverShadowView];
-      [v11 setCenter:{v8, v10}];
+      coverShadowView3 = [(BKBookOpenAnimator *)self coverShadowView];
+      [coverShadowView3 setCenter:{v8, v10}];
 
-      v12 = [(BKBookOpenAnimator *)self coverShadowImage];
-      [v12 alignmentRectInsets];
+      coverShadowImage2 = [(BKBookOpenAnimator *)self coverShadowImage];
+      [coverShadowImage2 alignmentRectInsets];
 
-      v13 = [(BKBookOpenAnimator *)self coverShadowImage];
-      [v13 size];
+      coverShadowImage3 = [(BKBookOpenAnimator *)self coverShadowImage];
+      [coverShadowImage3 size];
       CGRectMakeWithSize();
 
       CGSizeScaleThatFitsInCGSize();
       CGAffineTransformMakeScale(&v17, v14, v14);
-      v15 = [(BKBookOpenAnimator *)self coverShadowView];
+      coverShadowView4 = [(BKBookOpenAnimator *)self coverShadowView];
       v16 = v17;
-      [v15 setTransform:&v16];
+      [coverShadowView4 setTransform:&v16];
     }
   }
 }
 
-- (void)setupShadowForCoverView:(id)a3
+- (void)setupShadowForCoverView:(id)view
 {
-  v4 = a3;
-  v10 = [v4 layer];
-  [v4 bounds];
+  viewCopy = view;
+  layer = [viewCopy layer];
+  [viewCopy bounds];
   v5 = [UIBezierPath bezierPathWithRect:?];
-  [v10 setShadowPath:{objc_msgSend(v5, "CGPath")}];
+  [layer setShadowPath:{objc_msgSend(v5, "CGPath")}];
 
   v6 = +[UIColor blackColor];
-  [v10 setShadowColor:{objc_msgSend(v6, "CGColor")}];
+  [layer setShadowColor:{objc_msgSend(v6, "CGColor")}];
 
   LODWORD(v7) = 1041865114;
-  [v10 setShadowOpacity:v7];
+  [layer setShadowOpacity:v7];
   [(BKBookOpenAnimator *)self closedCoverFrame];
-  [v4 bounds];
+  [viewCopy bounds];
 
   CGSizeScaleThatFitsInCGSize();
   v9 = v8;
   CGSizeScale();
-  [v10 setShadowOffset:?];
-  [v10 setShadowRadius:v9 * 4.0];
+  [layer setShadowOffset:?];
+  [layer setShadowRadius:v9 * 4.0];
 }
 
-- (void)_setupSharedViewsWithCompletion:(id)a3
+- (void)_setupSharedViewsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(BKBookOpenAnimator *)self opening])
   {
-    v5 = [(BKBookOpenAnimator *)self defersBookViewSetupForOpening];
+    defersBookViewSetupForOpening = [(BKBookOpenAnimator *)self defersBookViewSetupForOpening];
   }
 
   else
   {
-    v5 = 0;
+    defersBookViewSetupForOpening = 0;
   }
 
-  v6 = [(BKBookOpenAnimator *)self containerView];
+  containerView = [(BKBookOpenAnimator *)self containerView];
   if ([(BKBookOpenAnimator *)self opening])
   {
-    v7 = [v6 window];
-    v8 = [BCStatusBarBackgroundController backgroundControllerForWindow:v7];
+    window = [containerView window];
+    v8 = [BCStatusBarBackgroundController backgroundControllerForWindow:window];
     [v8 setOpacity:1 animated:0.0];
   }
 
   v9 = [UIView alloc];
-  [v6 bounds];
+  [containerView bounds];
   v10 = [v9 initWithFrame:?];
   [(BKBookOpenAnimator *)self setBookContainerView:v10];
-  [v6 addSubview:v10];
+  [containerView addSubview:v10];
   [v10 setAlpha:{(-[BKBookOpenAnimator opening](self, "opening") ^ 1)}];
-  v11 = [(BKBookOpenAnimator *)self fromViewController];
-  [(BKBookOpenAnimator *)self _setupViewController:v11];
+  fromViewController = [(BKBookOpenAnimator *)self fromViewController];
+  [(BKBookOpenAnimator *)self _setupViewController:fromViewController];
 
-  if ((v5 & 1) == 0)
+  if ((defersBookViewSetupForOpening & 1) == 0)
   {
-    v12 = [(BKBookOpenAnimator *)self toViewController];
-    [(BKBookOpenAnimator *)self _setupViewController:v12];
+    toViewController = [(BKBookOpenAnimator *)self toViewController];
+    [(BKBookOpenAnimator *)self _setupViewController:toViewController];
   }
 
-  v13 = [(BKBookOpenAnimator *)self preTransitionBlock];
-  v14 = v13;
-  if (v13)
+  preTransitionBlock = [(BKBookOpenAnimator *)self preTransitionBlock];
+  v14 = preTransitionBlock;
+  if (preTransitionBlock)
   {
-    (*(v13 + 16))(v13);
+    (*(preTransitionBlock + 16))(preTransitionBlock);
   }
 
-  v15 = [(BKBookOpenAnimator *)self minifiedBarAnimator];
-  v16 = [v15 minifiedBarAnimatorContainerView];
+  minifiedBarAnimator = [(BKBookOpenAnimator *)self minifiedBarAnimator];
+  minifiedBarAnimatorContainerView = [minifiedBarAnimator minifiedBarAnimatorContainerView];
 
-  if (v16)
+  if (minifiedBarAnimatorContainerView)
   {
-    v17 = [IMViewState saveStateForView:v16 flags:3];
+    v17 = [IMViewState saveStateForView:minifiedBarAnimatorContainerView flags:3];
     [(BKBookOpenAnimator *)self setMinibarContainerViewState:v17];
 
-    v18 = [v16 layer];
-    [v18 setZPosition:1.0];
+    layer = [minifiedBarAnimatorContainerView layer];
+    [layer setZPosition:1.0];
 
-    [v6 addSubview:v16];
+    [containerView addSubview:minifiedBarAnimatorContainerView];
   }
 
-  [v6 bounds];
+  [containerView bounds];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(BKBookOpenAnimator *)self bookshelfViewController];
-  v28 = [v27 view];
-  [v28 setFrame:{v20, v22, v24, v26}];
+  bookshelfViewController = [(BKBookOpenAnimator *)self bookshelfViewController];
+  view = [bookshelfViewController view];
+  [view setFrame:{v20, v22, v24, v26}];
 
-  v29 = [(BKBookOpenAnimator *)self bookshelfViewController];
-  v30 = [v29 view];
-  [v6 addSubview:v30];
+  bookshelfViewController2 = [(BKBookOpenAnimator *)self bookshelfViewController];
+  view2 = [bookshelfViewController2 view];
+  [containerView addSubview:view2];
 
   if (![(BKBookOpenAnimator *)self opening])
   {
-    v31 = [(BKBookOpenAnimator *)self bookContainerView];
-    [v6 addSubview:v31];
+    bookContainerView = [(BKBookOpenAnimator *)self bookContainerView];
+    [containerView addSubview:bookContainerView];
   }
 
-  v32 = [(BKBookOpenAnimator *)self closedCoverFrameBlock];
-  if (v32)
+  closedCoverFrameBlock = [(BKBookOpenAnimator *)self closedCoverFrameBlock];
+  if (closedCoverFrameBlock)
   {
-    v30 = [(BKBookOpenAnimator *)self closedCoverFrameBlock];
-    x = v30[2]();
+    view2 = [(BKBookOpenAnimator *)self closedCoverFrameBlock];
+    x = view2[2]();
     y = v34;
     width = v36;
     height = v38;
@@ -635,15 +635,15 @@
     height = CGRectZero.size.height;
   }
 
-  v40 = [(BKBookOpenAnimator *)self bookshelfViewController];
-  v41 = [v40 view];
-  [v6 convertRect:v41 fromView:{x, y, width, height}];
+  bookshelfViewController3 = [(BKBookOpenAnimator *)self bookshelfViewController];
+  view3 = [bookshelfViewController3 view];
+  [containerView convertRect:view3 fromView:{x, y, width, height}];
   v43 = v42;
   v45 = v44;
   v47 = v46;
   v49 = v48;
 
-  if (v32)
+  if (closedCoverFrameBlock)
   {
   }
 
@@ -672,10 +672,10 @@
   }
 
   [(BKBookOpenAnimator *)self setClosedCoverFrame:v53, v52, v51, v50];
-  v57 = [(BKBookOpenAnimator *)self coverSource];
-  v58 = [v57 coverAnimationSourceAlignment];
+  coverSource = [(BKBookOpenAnimator *)self coverSource];
+  coverAnimationSourceAlignment = [coverSource coverAnimationSourceAlignment];
 
-  if (v58 == 2)
+  if (coverAnimationSourceAlignment == 2)
   {
     v112.origin.x = v43;
     v112.origin.y = v45;
@@ -712,12 +712,12 @@
     }
 
     [(BKBookOpenAnimator *)self setFadeInCover:1];
-    v62 = [(BKBookOpenAnimator *)self containerView];
-    [v62 bounds];
+    containerView2 = [(BKBookOpenAnimator *)self containerView];
+    [containerView2 bounds];
     IMActionSafeRectForRect();
 
-    v63 = [(BKBookOpenAnimator *)self coverImage];
-    [v63 size];
+    coverImage = [(BKBookOpenAnimator *)self coverImage];
+    [coverImage size];
 
     CGSizeScaleThatFitsInCGSize();
     CGSizeScale();
@@ -727,17 +727,17 @@
   }
 
   [(BKBookOpenAnimator *)self bookshelfTintCoversBars];
-  v108 = v6;
+  v108 = containerView;
   v64 = [UIView alloc];
   [v108 bounds];
   v65 = [v64 initWithFrame:?];
-  v66 = [(BKBookOpenAnimator *)self bookshelfTintColor];
-  [v65 setBackgroundColor:v66];
+  bookshelfTintColor = [(BKBookOpenAnimator *)self bookshelfTintColor];
+  [v65 setBackgroundColor:bookshelfTintColor];
   [v65 setAlpha:0.0];
   [v108 addSubview:v65];
   [(BKBookOpenAnimator *)self setBookshelfTintView:v65];
-  v67 = [(BKBookOpenAnimator *)self coverImage];
-  [v67 size];
+  coverImage2 = [(BKBookOpenAnimator *)self coverImage];
+  [coverImage2 size];
   CGRectMakeWithSize();
   IsEmpty = CGRectIsEmpty(v117);
 
@@ -747,8 +747,8 @@
   }
 
   v69 = [UIView alloc];
-  v70 = [(BKBookOpenAnimator *)self coverImage];
-  [v70 size];
+  coverImage3 = [(BKBookOpenAnimator *)self coverImage];
+  [coverImage3 size];
   CGRectMakeWithSize();
   v71 = [v69 initWithFrame:?];
 
@@ -767,43 +767,43 @@
     }
   }
 
-  v73 = [(BKBookOpenAnimator *)self coverContainerView];
-  [v73 setAlpha:v72];
+  coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+  [coverContainerView setAlpha:v72];
 
   if ([(BKBookOpenAnimator *)self wantsCoverShadow])
   {
-    v74 = [(BKBookOpenAnimator *)self coverShadowImage];
+    coverShadowImage = [(BKBookOpenAnimator *)self coverShadowImage];
 
-    if (v74)
+    if (coverShadowImage)
     {
       v75 = [UIImageView alloc];
-      v76 = [(BKBookOpenAnimator *)self coverShadowImage];
-      v77 = [v75 initWithImage:v76];
+      coverShadowImage2 = [(BKBookOpenAnimator *)self coverShadowImage];
+      v77 = [v75 initWithImage:coverShadowImage2];
 
-      v78 = [(BKBookOpenAnimator *)self coverShadowImage];
-      [v78 alignmentRectInsets];
+      coverShadowImage3 = [(BKBookOpenAnimator *)self coverShadowImage];
+      [coverShadowImage3 alignmentRectInsets];
       v80 = v79;
       v82 = v81;
       v84 = v83;
       v86 = v85;
 
-      v87 = [(BKBookOpenAnimator *)self coverShadowImage];
-      [v87 size];
+      coverShadowImage4 = [(BKBookOpenAnimator *)self coverShadowImage];
+      [coverShadowImage4 size];
       v89 = v88;
       v91 = v90;
 
       CGRectMakeWithSize();
       v94 = (v82 + (v92 - (v82 + v86)) * 0.5) / v89;
       v95 = (v80 + (v93 - (v80 + v84)) * 0.5) / v91;
-      v96 = [(BKCustomAnimationPropertiesView *)v77 layer];
-      [v96 setAnchorPoint:{v94, v95}];
+      layer2 = [(BKCustomAnimationPropertiesView *)v77 layer];
+      [layer2 setAnchorPoint:{v94, v95}];
     }
 
     else
     {
       v97 = [BKCustomAnimationPropertiesView alloc];
-      v98 = [(BKBookOpenAnimator *)self coverImage];
-      [v98 size];
+      coverImage4 = [(BKBookOpenAnimator *)self coverImage];
+      [coverImage4 size];
       CGRectMakeWithSize();
       v77 = [(BKCustomAnimationPropertiesView *)v97 initWithFrame:?];
 
@@ -819,22 +819,22 @@
   }
 
   v99 = [UIImageView alloc];
-  v100 = [(BKBookOpenAnimator *)self coverImage];
-  v101 = [v99 initWithImage:v100];
+  coverImage5 = [(BKBookOpenAnimator *)self coverImage];
+  v101 = [v99 initWithImage:coverImage5];
 
   [(BKBookOpenAnimator *)self setCoverImageView:v101];
   [v101 setAccessibilityIgnoresInvertColors:1];
   [v101 setAutoresizingMask:18];
-  v102 = [(BKBookOpenAnimator *)self coverImage];
-  [v102 scale];
+  coverImage6 = [(BKBookOpenAnimator *)self coverImage];
+  [coverImage6 scale];
   v104 = v103;
-  v105 = [v101 layer];
-  [v105 setContentsScale:v104];
+  layer3 = [v101 layer];
+  [layer3 setContentsScale:v104];
 
   [v101 setClipsToBounds:1];
   [v101 setContentMode:{-[BKBookOpenAnimator coverContentMode](self, "coverContentMode")}];
-  v106 = [(BKBookOpenAnimator *)self coverImage];
-  [v106 size];
+  coverImage7 = [(BKBookOpenAnimator *)self coverImage];
+  [coverImage7 size];
   CGRectMakeWithSize();
   [v101 setFrame:?];
 
@@ -847,17 +847,17 @@
   }
 
   [(BKBookOpenAnimator *)self performAdditionSetup];
-  [(BKBookOpenAnimator *)self _prepareHostWithCompletion:v4];
+  [(BKBookOpenAnimator *)self _prepareHostWithCompletion:completionCopy];
 }
 
-- (void)_setupViewController:(id)a3
+- (void)_setupViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BKBookOpenAnimator *)self containerView];
-  v6 = [v4 view];
-  v7 = [(BKBookOpenAnimator *)self fromViewController];
+  controllerCopy = controller;
+  containerView = [(BKBookOpenAnimator *)self containerView];
+  view = [controllerCopy view];
+  fromViewController = [(BKBookOpenAnimator *)self fromViewController];
 
-  v8 = [(BKBookOpenAnimator *)self bookshelfViewController];
+  bookshelfViewController = [(BKBookOpenAnimator *)self bookshelfViewController];
 
   v9 = BUProtocolCast();
   if (objc_opt_respondsToSelector())
@@ -866,15 +866,15 @@
   }
 
   +[CATransaction begin];
-  [v5 addSubview:v6];
-  [v5 bounds];
-  [v6 setFrame:?];
+  [containerView addSubview:view];
+  [containerView bounds];
+  [view setFrame:?];
   kdebug_trace();
   v10 = _AEBookOpenLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"to";
-    if (v7 == v4)
+    if (fromViewController == controllerCopy)
     {
       v11 = @"from";
     }
@@ -888,28 +888,28 @@
   v18[1] = 3221225472;
   v18[2] = sub_1001B60B4;
   v18[3] = &unk_100A033C8;
-  v12 = v6;
+  v12 = view;
   v19 = v12;
   [UIView performWithoutAnimation:v18];
   kdebug_trace();
-  if (v8 == v4)
+  if (bookshelfViewController == controllerCopy)
   {
-    v14 = [(BKBookOpenAnimator *)self bookshelfViewController];
-    v16 = [v14 view];
-    v17 = [IMViewState saveStateForView:v16 flags:1];
+    bookshelfViewController2 = [(BKBookOpenAnimator *)self bookshelfViewController];
+    view2 = [bookshelfViewController2 view];
+    v17 = [IMViewState saveStateForView:view2 flags:1];
     [(BKBookOpenAnimator *)self setBookshelfViewState:v17];
   }
 
   else
   {
-    v13 = [(BKBookOpenAnimator *)self bookViewController];
-    v14 = [v13 view];
+    bookViewController = [(BKBookOpenAnimator *)self bookViewController];
+    bookshelfViewController2 = [bookViewController view];
 
-    v15 = [IMViewState saveStateForView:v14 flags:1];
+    v15 = [IMViewState saveStateForView:bookshelfViewController2 flags:1];
     [(BKBookOpenAnimator *)self setBookViewState:v15];
 
-    v16 = [(BKBookOpenAnimator *)self bookContainerView];
-    [v16 addSubview:v14];
+    view2 = [(BKBookOpenAnimator *)self bookContainerView];
+    [view2 addSubview:bookshelfViewController2];
   }
 
   +[CATransaction commit];
@@ -917,15 +917,15 @@
 
 - (void)_deferredSetupBookView
 {
-  v3 = [(BKBookOpenAnimator *)self toViewController];
-  [(BKBookOpenAnimator *)self _setupViewController:v3];
+  toViewController = [(BKBookOpenAnimator *)self toViewController];
+  [(BKBookOpenAnimator *)self _setupViewController:toViewController];
 }
 
-- (void)_prepareHostWithCompletion:(id)a3
+- (void)_prepareHostWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKBookOpenAnimator *)self toViewController];
-  v6 = [v5 im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCCoverAnimatingHost];
+  completionCopy = completion;
+  toViewController = [(BKBookOpenAnimator *)self toViewController];
+  v6 = [toViewController im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCCoverAnimatingHost];
 
   if (objc_opt_respondsToSelector())
   {
@@ -935,8 +935,8 @@
     v12[3] = &unk_100A03788;
     v7 = &v13;
     v12[4] = self;
-    v13 = v4;
-    v8 = v4;
+    v13 = completionCopy;
+    v8 = completionCopy;
     [v6 coverAnimationHostPrepareWithCompletion:v12];
   }
 
@@ -948,23 +948,23 @@
     v10[3] = &unk_100A03788;
     v7 = &v11;
     v10[4] = self;
-    v11 = v4;
-    v9 = v4;
+    v11 = completionCopy;
+    v9 = completionCopy;
     dispatch_async(&_dispatch_main_q, v10);
   }
 }
 
-- (void)_setupBookshelfAnimationViewsWithCompletion:(id)a3
+- (void)_setupBookshelfAnimationViewsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = UIApp;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001B6398;
   v7[3] = &unk_100A03788;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 _performBlockAfterCATransactionCommits:v7];
 }
 
@@ -979,17 +979,17 @@
   }
 }
 
-- (void)configureWithFromViewController:(id)a3 toViewController:(id)a4
+- (void)configureWithFromViewController:(id)controller toViewController:(id)viewController
 {
-  v6 = a4;
-  [(BKBookOpenAnimator *)self setFromViewController:a3];
-  [(BKBookOpenAnimator *)self setToViewController:v6];
+  viewControllerCopy = viewController;
+  [(BKBookOpenAnimator *)self setFromViewController:controller];
+  [(BKBookOpenAnimator *)self setToViewController:viewControllerCopy];
 }
 
 - (id)viewControllerForStatusBarStyle
 {
-  v3 = [(BKBookOpenAnimator *)self transitionContext];
-  if ([v3 transitionWasCancelled])
+  transitionContext = [(BKBookOpenAnimator *)self transitionContext];
+  if ([transitionContext transitionWasCancelled])
   {
     [(BKBookOpenAnimator *)self fromViewController];
   }
@@ -1012,8 +1012,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "animationsDidFinish signaled", buf, 2u);
   }
 
-  v4 = [(BKBookOpenAnimator *)self transitionContext];
-  v5 = [v4 transitionWasCancelled] ^ 1;
+  transitionContext = [(BKBookOpenAnimator *)self transitionContext];
+  v5 = [transitionContext transitionWasCancelled] ^ 1;
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -1029,11 +1029,11 @@
   v10 = v5;
   v9[4] = self;
   v6 = objc_retainBlock(v9);
-  v7 = [(BKBookOpenAnimator *)self cleanupBlock];
-  v8 = v7;
-  if (v7)
+  cleanupBlock = [(BKBookOpenAnimator *)self cleanupBlock];
+  v8 = cleanupBlock;
+  if (cleanupBlock)
   {
-    (*(v7 + 16))(v7, v5);
+    (*(cleanupBlock + 16))(cleanupBlock, v5);
   }
 
   [(BKBookOpenAnimator *)self setCleanupBlock:0];
@@ -1041,27 +1041,27 @@
   (v6[2])(v6);
 }
 
-- (void)_loadStateFromContext:(id)a3
+- (void)_loadStateFromContext:(id)context
 {
-  v4 = a3;
-  [(BKBookOpenAnimator *)self setTransitionContext:v4];
-  v5 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
+  contextCopy = context;
+  [(BKBookOpenAnimator *)self setTransitionContext:contextCopy];
+  v5 = [contextCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
   [(BKBookOpenAnimator *)self setFromViewController:v5];
 
-  v6 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
+  v6 = [contextCopy viewControllerForKey:UITransitionContextToViewControllerKey];
   [(BKBookOpenAnimator *)self setToViewController:v6];
 
-  v7 = [v4 containerView];
-  [(BKBookOpenAnimator *)self setContainerView:v7];
+  containerView = [contextCopy containerView];
+  [(BKBookOpenAnimator *)self setContainerView:containerView];
 
-  v8 = [v4 isInteractive];
+  isInteractive = [contextCopy isInteractive];
 
-  [(BKBookOpenAnimator *)self setInteractive:v8];
+  [(BKBookOpenAnimator *)self setInteractive:isInteractive];
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  [(BKBookOpenAnimator *)self _loadStateFromContext:a3];
+  [(BKBookOpenAnimator *)self _loadStateFromContext:duration];
   if ([(BKBookOpenAnimator *)self opening])
   {
     return 1.0e10;
@@ -1071,9 +1071,9 @@
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  [(BKBookOpenAnimator *)self _loadStateFromContext:a3];
+  [(BKBookOpenAnimator *)self _loadStateFromContext:transition];
   asyncPrepareWithCompletion = self->_asyncPrepareWithCompletion;
   if (asyncPrepareWithCompletion)
   {
@@ -1098,13 +1098,13 @@
 
 - (void)_animateTransition
 {
-  v3 = [(BKBookOpenAnimator *)self toViewController];
-  v4 = [v3 transitionCoordinator];
-  v5 = [(BKBookOpenAnimator *)self containerView];
-  [v4 animateAlongsideTransitionInView:v5 animation:&stru_100A0A690 completion:0];
+  toViewController = [(BKBookOpenAnimator *)self toViewController];
+  transitionCoordinator = [toViewController transitionCoordinator];
+  containerView = [(BKBookOpenAnimator *)self containerView];
+  [transitionCoordinator animateAlongsideTransitionInView:containerView animation:&stru_100A0A690 completion:0];
 
-  v6 = [(BKBookOpenAnimator *)self coverSource];
-  [v6 coverAnimationSourcePrepare];
+  coverSource = [(BKBookOpenAnimator *)self coverSource];
+  [coverSource coverAnimationSourcePrepare];
 
   kdebug_trace();
   v7 = _AEBookOpenLog();
@@ -1116,10 +1116,10 @@
 
   if ([(BKBookOpenAnimator *)self opening]&& [(BKBookOpenAnimator *)self defersBookViewSetupForOpening])
   {
-    v8 = [(BKBookOpenAnimator *)self bookViewController];
+    bookViewController = [(BKBookOpenAnimator *)self bookViewController];
     if (objc_opt_respondsToSelector())
     {
-      [v8 bookOpenTransitionWillBegin];
+      [bookViewController bookOpenTransitionWillBegin];
     }
   }
 
@@ -1133,27 +1133,27 @@
 
 - (id)minifiedBarAnimator
 {
-  v2 = [(BKBookOpenAnimator *)self toViewController];
-  v3 = [v2 im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKMinifiedBarAnimating];
+  toViewController = [(BKBookOpenAnimator *)self toViewController];
+  v3 = [toViewController im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKMinifiedBarAnimating];
 
   return v3;
 }
 
-- (void)minibarKeyFrameAnimationWithDuration:(double)a3 hide:(double)a4 show:(double)a5 completion:(id)a6
+- (void)minibarKeyFrameAnimationWithDuration:(double)duration hide:(double)hide show:(double)show completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   [(BKBookOpenAnimator *)self minifiedBarAnimator];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1001B74FC;
   v11 = v21[3] = &unk_100A03440;
   v22 = v11;
-  v23 = self;
+  selfCopy = self;
   [UIView performWithoutAnimation:v21];
-  v12 = [(BKBookOpenAnimator *)self opening];
+  opening = [(BKBookOpenAnimator *)self opening];
   if ([(BKBookOpenAnimator *)self opening])
   {
-    v13 = objc_retainBlock(v10);
+    v13 = objc_retainBlock(completionCopy);
 
     if (v13)
     {
@@ -1163,31 +1163,31 @@
 
   else
   {
-    if (v12)
+    if (opening)
     {
-      v14 = a4;
+      showCopy = hide;
     }
 
     else
     {
-      v14 = a5;
+      showCopy = show;
     }
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1001B7550;
     v15[3] = &unk_100A0A6B8;
-    if (!v12)
+    if (!opening)
     {
-      a5 = a4;
+      show = hide;
     }
 
-    v18 = v14;
-    v19 = a3;
+    v18 = showCopy;
+    durationCopy = duration;
     v16 = v11;
-    v17 = self;
-    v20 = a5;
-    [UIView animateKeyframesWithDuration:0 delay:v15 options:v10 animations:a3 completion:0.0];
+    selfCopy2 = self;
+    showCopy2 = show;
+    [UIView animateKeyframesWithDuration:0 delay:v15 options:completionCopy animations:duration completion:0.0];
 
     v13 = v16;
   }
@@ -1218,19 +1218,19 @@
   return v4 * v5;
 }
 
-- (id)adjustSpring:(id)a3
+- (id)adjustSpring:(id)spring
 {
-  v4 = a3;
+  springCopy = spring;
   [(BKBookOpenAnimator *)self _debugDragCoefficient];
   v6 = v5;
   v7 = [UISpringTimingParameters alloc];
-  [v4 mass];
+  [springCopy mass];
   v9 = v8;
-  [v4 stiffness];
+  [springCopy stiffness];
   v11 = v10 / (v6 * v6);
-  [v4 damping];
+  [springCopy damping];
   v13 = v12 / v6;
-  [v4 initialVelocity];
+  [springCopy initialVelocity];
   v15 = v14;
   v17 = v16;
 
@@ -1239,7 +1239,7 @@
   return v18;
 }
 
-- (BOOL)_sanityCheckPoint:(CGPoint)a3
+- (BOOL)_sanityCheckPoint:(CGPoint)point
 {
   IsValid = CGFloatIsValid();
   if (IsValid)
@@ -1251,18 +1251,18 @@
   return IsValid;
 }
 
-- (CGRect)_sanitizedFrameWithFallbackFrame:(CGRect)a3 fallbackFrame:(CGRect)a4 name:(id)a5 fallbackName:(id)a6
+- (CGRect)_sanitizedFrameWithFallbackFrame:(CGRect)frame fallbackFrame:(CGRect)fallbackFrame name:(id)name fallbackName:(id)fallbackName
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.size.height;
-  v12 = a3.size.width;
-  v13 = a3.origin.y;
-  v14 = a3.origin.x;
-  v16 = a5;
-  v17 = a6;
+  height = fallbackFrame.size.height;
+  width = fallbackFrame.size.width;
+  y = fallbackFrame.origin.y;
+  x = fallbackFrame.origin.x;
+  v11 = frame.size.height;
+  v12 = frame.size.width;
+  v13 = frame.origin.y;
+  v14 = frame.origin.x;
+  nameCopy = name;
+  fallbackNameCopy = fallbackName;
   if (![(BKBookOpenAnimator *)self _sanityCheckRect:v14, v13, v12, v11])
   {
     v24.origin.x = v14;
@@ -1277,7 +1277,7 @@
     v23 = NSStringFromCGRect(v25);
     BCReportAssertionFailureWithMessage();
 
-    if ([(BKBookOpenAnimator *)self _shouldFallbackForFailedSanityCheck:v16])
+    if ([(BKBookOpenAnimator *)self _shouldFallbackForFailedSanityCheck:nameCopy])
     {
       v11 = height;
       v12 = width;
@@ -1299,12 +1299,12 @@
 
 - (CGRect)_fullsizeRectForFallback
 {
-  v2 = [(BKBookOpenAnimator *)self containerView];
-  v3 = [v2 window];
+  containerView = [(BKBookOpenAnimator *)self containerView];
+  window = [containerView window];
 
-  if (v3)
+  if (window)
   {
-    [v3 bounds];
+    [window bounds];
     x = v4;
     y = v6;
     width = v8;
@@ -1344,13 +1344,13 @@
   return result;
 }
 
-- (CGRect)_sanitizedFrameWithFullsizeFrame:(CGRect)a3 name:(id)a4
+- (CGRect)_sanitizedFrameWithFullsizeFrame:(CGRect)frame name:(id)name
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  nameCopy = name;
   if (![(BKBookOpenAnimator *)self _sanityCheckRect:x, y, width, height])
   {
     v19.origin.x = x;
@@ -1360,7 +1360,7 @@
     v18 = NSStringFromCGRect(v19);
     BCReportAssertionFailureWithMessage();
 
-    if ([(BKBookOpenAnimator *)self _shouldFallbackForFailedSanityCheck:v9])
+    if ([(BKBookOpenAnimator *)self _shouldFallbackForFailedSanityCheck:nameCopy])
     {
       [(BKBookOpenAnimator *)self _fullsizeRectForFallback];
       x = v10;
@@ -1381,15 +1381,15 @@
   return result;
 }
 
-- (CGRect)_sanitizedFrameWithCenteredFrame:(CGRect)a3 ofSize:(CGSize)a4 name:(id)a5
+- (CGRect)_sanitizedFrameWithCenteredFrame:(CGRect)frame ofSize:(CGSize)size name:(id)name
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3.size.height;
-  v8 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
+  height = size.height;
+  width = size.width;
+  v7 = frame.size.height;
+  v8 = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  nameCopy = name;
   if (![(BKBookOpenAnimator *)self _sanityCheckRect:x, y, v8, v7])
   {
     v24.origin.x = x;
@@ -1402,7 +1402,7 @@
     v22 = NSStringFromCGSize(v23);
     BCReportAssertionFailureWithMessage();
 
-    if ([(BKBookOpenAnimator *)self _shouldFallbackForFailedSanityCheck:v12])
+    if ([(BKBookOpenAnimator *)self _shouldFallbackForFailedSanityCheck:nameCopy])
     {
       [(BKBookOpenAnimator *)self _fullsizeRectForFallback];
       CGRectGetCenter();
@@ -1425,11 +1425,11 @@
   return result;
 }
 
-- (CGPoint)_sanitizedCenterPoint:(CGPoint)a3 name:(id)a4
+- (CGPoint)_sanitizedCenterPoint:(CGPoint)point name:(id)name
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  nameCopy = name;
   if (![(BKBookOpenAnimator *)self _sanityCheckPoint:x, y])
   {
     v13.x = x;
@@ -1437,7 +1437,7 @@
     v12 = NSStringFromCGPoint(v13);
     BCReportAssertionFailureWithMessage();
 
-    if ([(BKBookOpenAnimator *)self _shouldFallbackForFailedSanityCheck:v7])
+    if ([(BKBookOpenAnimator *)self _shouldFallbackForFailedSanityCheck:nameCopy])
     {
       [(BKBookOpenAnimator *)self _fullsizeRectForFallback];
       CGRectGetCenter();

@@ -8,7 +8,7 @@
 
 - (uint64_t)tsu_BOOLValueForKey:()TSUAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (!v1)
   {
     return 0;
@@ -25,7 +25,7 @@
 
 - (uint64_t)tsu_objectOfClass:()TSUAdditions forKey:
 {
-  result = [a1 objectForKey:a4];
+  result = [self objectForKey:a4];
   if (result)
   {
 
@@ -38,9 +38,9 @@
 - (uint64_t)tsu_allKeysAsSet
 {
   v1 = MEMORY[0x277CBEB98];
-  v2 = [a1 allKeys];
+  allKeys = [self allKeys];
 
-  return [v1 setWithArray:v2];
+  return [v1 setWithArray:allKeys];
 }
 
 @end

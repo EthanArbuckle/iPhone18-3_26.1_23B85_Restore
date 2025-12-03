@@ -1,29 +1,29 @@
 @interface VSAccountStore
 + (id)sharedAccountStore;
-- (BOOL)_insertAccount:(id)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)_insertAccount:(id)account inContext:(id)context error:(id *)error;
 - (BOOL)_updateCachedFirstAccount;
 - (NSArray)accounts;
 - (NSUndoManager)undoManager;
 - (VSAccountStore)init;
-- (id)_accountForKeychainItem:(id)a3;
-- (id)_keychainItemsWithLimit:(unint64_t)a3;
-- (id)_uniqueIdentifierForKeychainItem:(id)a3;
+- (id)_accountForKeychainItem:(id)item;
+- (id)_keychainItemsWithLimit:(unint64_t)limit;
+- (id)_uniqueIdentifierForKeychainItem:(id)item;
 - (id)changeObserver;
 - (id)firstAccount;
 - (id)firstAccountIfLoaded;
-- (void)_fetchAccountsSimulatingExpiredToken:(BOOL)a3 forProviderIDs:(id)a4 completion:(id)a5;
-- (void)_insertLegacyKeychainItemForAccount:(id)a3 context:(id)a4;
-- (void)_insertModernKeychainItemForAccount:(id)a3 context:(id)a4;
+- (void)_fetchAccountsSimulatingExpiredToken:(BOOL)token forProviderIDs:(id)ds completion:(id)completion;
+- (void)_insertLegacyKeychainItemForAccount:(id)account context:(id)context;
+- (void)_insertModernKeychainItemForAccount:(id)account context:(id)context;
 - (void)_sendLocalNotification;
 - (void)_sendRemoteNotification;
-- (void)_updateCachedFirstAccountWithCompletion:(id)a3;
+- (void)_updateCachedFirstAccountWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)fetchAccountsWithCompletionHandler:(id)a3;
-- (void)firstAccountWithCompletionHandler:(id)a3;
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4;
-- (void)removeAccounts:(id)a3 withCompletionHandler:(id)a4;
-- (void)saveAccounts:(id)a3 withCompletionHandler:(id)a4;
-- (void)setUndoManager:(id)a3;
+- (void)fetchAccountsWithCompletionHandler:(id)handler;
+- (void)firstAccountWithCompletionHandler:(id)handler;
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info;
+- (void)removeAccounts:(id)accounts withCompletionHandler:(id)handler;
+- (void)saveAccounts:(id)accounts withCompletionHandler:(id)handler;
+- (void)setUndoManager:(id)manager;
 @end
 
 @implementation VSAccountStore
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __36__VSAccountStore_sharedAccountStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAccountStore___vs_lazy_init_predicate != -1)
   {
     dispatch_once(&sharedAccountStore___vs_lazy_init_predicate, block);
@@ -78,14 +78,14 @@ uint64_t __36__VSAccountStore_sharedAccountStore__block_invoke()
     preferences = v2->_preferences;
     v2->_preferences = v9;
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     objc_initWeak(&location, v2);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __22__VSAccountStore_init__block_invoke;
     v16[3] = &unk_278B73400;
     objc_copyWeak(&v17, &location);
-    v12 = [v11 addObserverForName:@"VSAccountStoreDidChangeNotification" object:0 queue:0 usingBlock:v16];
+    v12 = [defaultCenter addObserverForName:@"VSAccountStoreDidChangeNotification" object:0 queue:0 usingBlock:v16];
     objc_storeWeak(&v2->_changeObserver, v12);
 
     v2->_needsUpdateCachedFirstAccount = 1;
@@ -184,11 +184,11 @@ void __22__VSAccountStore_init__block_invoke_2(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   WeakRetained = objc_loadWeakRetained(&self->_changeObserver);
   if (WeakRetained)
   {
-    [v3 removeObserver:WeakRetained];
+    [defaultCenter removeObserver:WeakRetained];
   }
 
   v5.receiver = self;
@@ -196,9 +196,9 @@ void __22__VSAccountStore_init__block_invoke_2(uint64_t a1)
   [(VSAccountStore *)&v5 dealloc];
 }
 
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info
 {
-  v5 = [(VSAccountStore *)self keychainQueue:a3];
+  v5 = [(VSAccountStore *)self keychainQueue:notifier];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __74__VSAccountStore_remoteNotifier_didReceiveRemoteNotificationWithUserInfo___block_invoke;
@@ -216,8 +216,8 @@ void __22__VSAccountStore_init__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_23AB8E000, v3, OS_LOG_TYPE_DEFAULT, "Will send local account store change notificaiton.", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"VSAccountStoreDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"VSAccountStoreDidChangeNotification" object:self];
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -235,8 +235,8 @@ void __22__VSAccountStore_init__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_23AB8E000, v3, OS_LOG_TYPE_DEFAULT, "Will send remote account store change notificaiton.", buf, 2u);
   }
 
-  v4 = [(VSAccountStore *)self remoteNotifier];
-  [v4 postNotification];
+  remoteNotifier = [(VSAccountStore *)self remoteNotifier];
+  [remoteNotifier postNotification];
 
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -246,57 +246,57 @@ void __22__VSAccountStore_init__block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)_uniqueIdentifierForKeychainItem:(id)a3
+- (id)_uniqueIdentifierForKeychainItem:(id)item
 {
-  v4 = a3;
-  v5 = [(VSAccountStore *)self _accountForKeychainItem:v4];
-  v6 = [v5 identityProviderID];
-  v7 = [v6 forceUnwrapObject];
-  v8 = [v7 hash];
-  v9 = [v4 creationDate];
+  itemCopy = item;
+  v5 = [(VSAccountStore *)self _accountForKeychainItem:itemCopy];
+  identityProviderID = [v5 identityProviderID];
+  forceUnwrapObject = [identityProviderID forceUnwrapObject];
+  v8 = [forceUnwrapObject hash];
+  creationDate = [itemCopy creationDate];
 
-  v10 = [v9 hash];
+  v10 = [creationDate hash];
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10 ^ v8];
 
   return v11;
 }
 
-- (id)_accountForKeychainItem:(id)a3
+- (id)_accountForKeychainItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = VSNumberForFourCharCode(VSKeychainItemCreatorCode);
   v6 = VSNumberForFourCharCode(VSKeychainItemV2CreatorCode);
   v7 = objc_alloc_init([objc_opt_class() accountClass]);
   [v7 setAccountStore:self];
-  v8 = [v4 creatorCode];
-  v9 = [v8 isEqual:v5];
+  creatorCode = [itemCopy creatorCode];
+  v9 = [creatorCode isEqual:v5];
 
   if (v9)
   {
-    v10 = [v4 generic];
-    v11 = [v10 copy];
+    generic = [itemCopy generic];
+    data3 = [generic copy];
 
-    [v7 setLegacyKeychainItem:v4];
-    v12 = [v4 account];
-    [v7 setUsername:v12];
+    [v7 setLegacyKeychainItem:itemCopy];
+    account = [itemCopy account];
+    [v7 setUsername:account];
 
-    v13 = [v4 comment];
-    [v7 setPreferredAppID:v13];
+    comment = [itemCopy comment];
+    [v7 setPreferredAppID:comment];
 
-    v14 = [v4 service];
-    v15 = [v14 copy];
+    service = [itemCopy service];
+    v15 = [service copy];
     v16 = [VSOptional optionalWithObject:v15];
     [v7 setOptionalIdentityProviderDisplayName:v16];
 
-    v17 = [VSOptional optionalWithObject:v11];
+    v17 = [VSOptional optionalWithObject:data3];
     [v7 setIdentityProviderID:v17];
 
-    [v7 setSynchronizable:{objc_msgSend(v4, "isSynchronizable")}];
-    v18 = [v4 typeCode];
+    [v7 setSynchronizable:{objc_msgSend(itemCopy, "isSynchronizable")}];
+    typeCode = [itemCopy typeCode];
     v19 = VSNumberForFourCharCode(0x6174684Eu);
-    LODWORD(v15) = [v18 isEqual:v19];
+    LODWORD(v15) = [typeCode isEqual:v19];
 
-    if (v15 || (VSNumberForFourCharCode(0x746F6B4Eu), v40 = objc_claimAutoreleasedReturnValue(), v41 = [v18 isEqual:v40], v40, v41))
+    if (v15 || (VSNumberForFourCharCode(0x746F6B4Eu), v40 = objc_claimAutoreleasedReturnValue(), v41 = [typeCode isEqual:v40], v40, v41))
     {
       v42 = objc_opt_class();
     }
@@ -313,10 +313,10 @@ void __22__VSAccountStore_init__block_invoke_2(uint64_t a1)
       v42 = 0;
     }
 
-    v45 = [v4 data];
-    if (v45)
+    data = [itemCopy data];
+    if (data)
     {
-      v46 = [[v42 alloc] initWithSerializedData:v45];
+      v46 = [[v42 alloc] initWithSerializedData:data];
       v47 = [VSOptional optionalWithObject:v46];
       [v7 setAuthenticationToken:v47];
     }
@@ -334,25 +334,25 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v20 = [v4 creatorCode];
-  v21 = [v20 isEqual:v6];
+  creatorCode2 = [itemCopy creatorCode];
+  v21 = [creatorCode2 isEqual:v6];
 
   if (v21)
   {
-    v22 = [v4 data];
+    data2 = [itemCopy data];
 
-    if (!v22)
+    if (!data2)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [keychainItem data] parameter must not be nil."];
     }
 
-    v11 = [v4 data];
+    data3 = [itemCopy data];
     v58 = 0;
-    v23 = [MEMORY[0x277CCAC58] propertyListWithData:v11 options:0 format:0 error:&v58];
+    v23 = [MEMORY[0x277CCAC58] propertyListWithData:data3 options:0 format:0 error:&v58];
     v24 = v58;
     if (v23)
     {
-      v57 = v11;
+      v57 = data3;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -364,7 +364,7 @@ LABEL_39:
       }
 
       v29 = v23;
-      [v7 setKeychainItem:v4];
+      [v7 setKeychainItem:itemCopy];
       v30 = [v29 objectForKey:@"u"];
       [v7 setUsername:v30];
 
@@ -382,7 +382,7 @@ LABEL_39:
       v36 = [v29 objectForKey:@"lhash"];
       [v7 setLegacyItemHash:v36];
 
-      [v7 setSynchronizable:{objc_msgSend(v4, "isSynchronizable")}];
+      [v7 setSynchronizable:{objc_msgSend(itemCopy, "isSynchronizable")}];
       v37 = [v29 objectForKey:@"channels"];
       [v7 setChannelsData:v37];
 
@@ -425,7 +425,7 @@ LABEL_39:
       [v7 setAuthenticationToken:v54];
 
       v24 = v56;
-      v11 = v57;
+      data3 = v57;
     }
 
     else
@@ -445,7 +445,7 @@ LABEL_39:
   v43 = VSErrorLogObject();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
   {
-    [(VSAccountStore *)v4 _accountForKeychainItem:v43];
+    [(VSAccountStore *)itemCopy _accountForKeychainItem:v43];
   }
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"Unexpected creator code when deserialziing account from keychain item."];
@@ -454,15 +454,15 @@ LABEL_40:
   return v7;
 }
 
-- (void)_fetchAccountsSimulatingExpiredToken:(BOOL)a3 forProviderIDs:(id)a4 completion:(id)a5
+- (void)_fetchAccountsSimulatingExpiredToken:(BOOL)token forProviderIDs:(id)ds completion:(id)completion
 {
-  v80 = a3;
+  tokenCopy = token;
   v151 = *MEMORY[0x277D85DE8];
-  v81 = a4;
-  v82 = a5;
-  v6 = [MEMORY[0x277CCABD8] currentQueue];
-  v7 = [(VSAccountStore *)self keychainQueue];
-  v8 = [v6 isEqual:v7];
+  dsCopy = ds;
+  completionCopy = completion;
+  currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+  keychainQueue = [(VSAccountStore *)self keychainQueue];
+  v8 = [currentQueue isEqual:keychainQueue];
 
   if ((v8 & 1) == 0)
   {
@@ -500,7 +500,7 @@ LABEL_40:
     v125[1] = 3221225472;
     v125[2] = __81__VSAccountStore__fetchAccountsSimulatingExpiredToken_forProviderIDs_completion___block_invoke_3;
     v125[3] = &unk_278B73478;
-    v126 = v82;
+    v126 = completionCopy;
     v127 = &v130;
     VSPerformCompletionHandler(v125);
     v10 = v126;
@@ -540,8 +540,8 @@ LABEL_40:
           }
 
           v18 = *(*(&v121 + 1) + 8 * i);
-          v19 = [v18 data];
-          v20 = v19 == 0;
+          data = [v18 data];
+          v20 = data == 0;
 
           if (v20)
           {
@@ -585,9 +585,9 @@ LABEL_40:
           if (([v13 containsObject:v26] & 1) == 0)
           {
             v27 = [(VSAccountStore *)self _uniqueIdentifierForKeychainItem:v26];
-            v28 = [v26 creatorCode];
+            creatorCode = [v26 creatorCode];
             v29 = VSNumberForFourCharCode(VSKeychainItemCreatorCode);
-            v30 = [v28 isEqual:v29];
+            v30 = [creatorCode isEqual:v29];
 
             v31 = v85;
             if ((v30 & 1) != 0 || ([v26 creatorCode], v32 = objc_claimAutoreleasedReturnValue(), VSNumberForFourCharCode(VSKeychainItemV2CreatorCode), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v32, "isEqual:", v33), v33, v32, v31 = v84, v34))
@@ -637,8 +637,8 @@ LABEL_40:
         _os_log_impl(&dword_23AB8E000, v41, OS_LOG_TYPE_DEFAULT, "deduplicating legacy items.", buf, 2u);
       }
 
-      v42 = [v85 allValues];
-      v43 = [v42 mutableCopy];
+      allValues = [v85 allValues];
+      v43 = [allValues mutableCopy];
 
       [v43 sortUsingComparator:&__block_literal_global_3];
       v115[0] = MEMORY[0x277D85DD0];
@@ -692,7 +692,7 @@ LABEL_40:
         _os_log_impl(&dword_23AB8E000, v47, OS_LOG_TYPE_DEFAULT, "finished processing keychain items (delete=%lu modernize=%lu)", buf, 0x16u);
       }
 
-      v50 = [(VSAccountStore *)self keychainEditingContext];
+      keychainEditingContext = [(VSAccountStore *)self keychainEditingContext];
       v103 = 0u;
       v104 = 0u;
       v101 = 0u;
@@ -711,7 +711,7 @@ LABEL_40:
               objc_enumerationMutation(v51);
             }
 
-            [v50 deleteItem:{*(*(&v101 + 1) + 8 * k), v76}];
+            [keychainEditingContext deleteItem:{*(*(&v101 + 1) + 8 * k), v76}];
           }
 
           v52 = [v51 countByEnumeratingWithState:&v101 objects:v144 count:16];
@@ -738,7 +738,7 @@ LABEL_40:
               objc_enumerationMutation(v55);
             }
 
-            [(VSAccountStore *)self _insertModernKeychainItemForAccount:*(*(&v97 + 1) + 8 * m) context:v50, v76];
+            [(VSAccountStore *)self _insertModernKeychainItemForAccount:*(*(&v97 + 1) + 8 * m) context:keychainEditingContext, v76];
           }
 
           v56 = [v55 countByEnumeratingWithState:&v97 objects:v143 count:16];
@@ -749,18 +749,18 @@ LABEL_40:
 
       v59 = (v131 + 5);
       obj = v131[5];
-      [v50 save:&obj];
+      [keychainEditingContext save:&obj];
       objc_storeStrong(v59, obj);
     }
 
-    if (v80 && [v81 count])
+    if (tokenCopy && [dsCopy count])
     {
-      if (!v81)
+      if (!dsCopy)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The providerIDsOrNil parameter must not be nil."];
       }
 
-      v60 = v81;
+      v60 = dsCopy;
       v92 = 0u;
       v93 = 0u;
       v94 = 0u;
@@ -780,9 +780,9 @@ LABEL_40:
             }
 
             v65 = *(*(&v92 + 1) + 8 * n);
-            v66 = [v65 identityProviderID];
-            v67 = [v66 forceUnwrapObject];
-            v68 = [v60 containsObject:v67];
+            identityProviderID = [v65 identityProviderID];
+            forceUnwrapObject = [identityProviderID forceUnwrapObject];
+            v68 = [v60 containsObject:forceUnwrapObject];
 
             if (v68)
             {
@@ -794,11 +794,11 @@ LABEL_40:
                 _os_log_impl(&dword_23AB8E000, v69, OS_LOG_TYPE_DEFAULT, "simulate expired token enabled, mutating token expiration for account: %@", buf, 0xCu);
               }
 
-              v70 = [v65 authenticationToken];
-              v71 = [v70 forceUnwrapObject];
+              authenticationToken = [v65 authenticationToken];
+              forceUnwrapObject2 = [authenticationToken forceUnwrapObject];
 
-              v72 = [MEMORY[0x277CBEAA8] distantPast];
-              [v71 setExpirationDate:v72];
+              distantPast = [MEMORY[0x277CBEAA8] distantPast];
+              [forceUnwrapObject2 setExpirationDate:distantPast];
             }
           }
 
@@ -824,7 +824,7 @@ LABEL_40:
     v88[1] = 3221225472;
     v88[2] = __81__VSAccountStore__fetchAccountsSimulatingExpiredToken_forProviderIDs_completion___block_invoke_120;
     v88[3] = &unk_278B73558;
-    v90 = v82;
+    v90 = completionCopy;
     v75 = v83;
     v89 = v75;
     v91 = &v130;
@@ -1050,21 +1050,21 @@ uint64_t __81__VSAccountStore__fetchAccountsSimulatingExpiredToken_forProviderID
   return v7;
 }
 
-- (void)_insertModernKeychainItemForAccount:(id)a3 context:(id)a4
+- (void)_insertModernKeychainItemForAccount:(id)account context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 keychainItem];
-  if (v8)
+  accountCopy = account;
+  contextCopy = context;
+  keychainItem = [accountCopy keychainItem];
+  if (keychainItem)
   {
-    v9 = v8;
+    v9 = keychainItem;
   }
 
   else
   {
     v10 = [VSKeychainGenericPassword alloc];
     v11 = VSKeychainItemKindGenericPassword();
-    v9 = [(VSKeychainItem *)v10 initWithItemKind:v11 insertIntoEditingContext:v7];
+    v9 = [(VSKeychainItem *)v10 initWithItemKind:v11 insertIntoEditingContext:contextCopy];
 
     if (!v9)
     {
@@ -1073,60 +1073,60 @@ uint64_t __81__VSAccountStore__fetchAccountsSimulatingExpiredToken_forProviderID
   }
 
   v12 = v9;
-  [v6 setKeychainItem:v12];
+  [accountCopy setKeychainItem:v12];
   [(VSKeychainGenericPassword *)v12 setAccessGroup:@"com.apple.VideoSubscriberAccount"];
   v13 = VSNumberForFourCharCode(VSKeychainItemV2CreatorCode);
   [(VSKeychainGenericPassword *)v12 setCreatorCode:v13];
 
-  v14 = [v6 username];
-  [(VSKeychainGenericPassword *)v12 setAccount:v14];
+  username = [accountCopy username];
+  [(VSKeychainGenericPassword *)v12 setAccount:username];
 
-  -[VSKeychainGenericPassword setSynchronizable:](v12, "setSynchronizable:", [v6 isSynchronizable]);
+  -[VSKeychainGenericPassword setSynchronizable:](v12, "setSynchronizable:", [accountCopy isSynchronizable]);
   [(VSKeychainGenericPassword *)v12 setViewHint:*MEMORY[0x277CDC198]];
   v15 = VSNumberForFourCharCode(0x746F6B32u);
   [(VSKeychainGenericPassword *)v12 setTypeCode:v15];
 
   v16 = MEMORY[0x277CCACA8];
-  v17 = [v6 optionalIdentityProviderDisplayName];
-  v18 = [v17 forceUnwrapObject];
-  v19 = [v16 stringWithFormat:@"TV Provider: %@", v18];
+  optionalIdentityProviderDisplayName = [accountCopy optionalIdentityProviderDisplayName];
+  forceUnwrapObject = [optionalIdentityProviderDisplayName forceUnwrapObject];
+  v19 = [v16 stringWithFormat:@"TV Provider: %@", forceUnwrapObject];
 
   [(VSKeychainGenericPassword *)v12 setService:v19];
   v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v21 = [v6 username];
-  [v20 setObject:v21 forKeyedSubscript:@"u"];
+  username2 = [accountCopy username];
+  [v20 setObject:username2 forKeyedSubscript:@"u"];
 
-  v22 = [v6 identityProviderID];
-  v23 = [v22 forceUnwrapObject];
-  [v20 setObject:v23 forKeyedSubscript:@"pid"];
+  identityProviderID = [accountCopy identityProviderID];
+  forceUnwrapObject2 = [identityProviderID forceUnwrapObject];
+  [v20 setObject:forceUnwrapObject2 forKeyedSubscript:@"pid"];
 
-  v24 = [v6 identityProviderDisplayName];
-  [v20 setObject:v24 forKeyedSubscript:@"dn"];
+  identityProviderDisplayName = [accountCopy identityProviderDisplayName];
+  [v20 setObject:identityProviderDisplayName forKeyedSubscript:@"dn"];
 
-  v25 = [v6 preferredAppID];
-  [v20 setObject:v25 forKeyedSubscript:@"paid"];
+  preferredAppID = [accountCopy preferredAppID];
+  [v20 setObject:preferredAppID forKeyedSubscript:@"paid"];
 
-  v26 = [v6 authenticationToken];
-  v27 = [v26 forceUnwrapObject];
-  v28 = [v27 serializedData];
-  [v20 setObject:v28 forKeyedSubscript:@"data"];
+  authenticationToken = [accountCopy authenticationToken];
+  forceUnwrapObject3 = [authenticationToken forceUnwrapObject];
+  serializedData = [forceUnwrapObject3 serializedData];
+  [v20 setObject:serializedData forKeyedSubscript:@"data"];
 
-  v29 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "isSynchronizable")}];
+  v29 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(accountCopy, "isSynchronizable")}];
   [v20 setObject:v29 forKeyedSubscript:@"sync"];
 
-  v30 = [v6 channelsData];
-  [v20 setObject:v30 forKeyedSubscript:@"channels"];
+  channelsData = [accountCopy channelsData];
+  [v20 setObject:channelsData forKeyedSubscript:@"channels"];
 
-  v31 = [v6 legacyKeychainItem];
-  v32 = [(VSAccountStore *)self _uniqueIdentifierForKeychainItem:v31];
+  legacyKeychainItem = [accountCopy legacyKeychainItem];
+  v32 = [(VSAccountStore *)self _uniqueIdentifierForKeychainItem:legacyKeychainItem];
 
-  [v6 setLegacyItemHash:v32];
+  [accountCopy setLegacyItemHash:v32];
   [v20 setObject:v32 forKeyedSubscript:@"lhash"];
-  v33 = [v6 authenticationToken];
-  v34 = [v33 forceUnwrapObject];
-  LODWORD(v28) = [v34 isOpaque];
+  authenticationToken2 = [accountCopy authenticationToken];
+  forceUnwrapObject4 = [authenticationToken2 forceUnwrapObject];
+  LODWORD(serializedData) = [forceUnwrapObject4 isOpaque];
 
-  if (v28)
+  if (serializedData)
   {
     v35 = @"api";
   }
@@ -1137,10 +1137,10 @@ uint64_t __81__VSAccountStore__fetchAccountsSimulatingExpiredToken_forProviderID
   }
 
   [v20 setObject:v35 forKeyedSubscript:@"proto"];
-  v36 = [v6 authenticationToken];
-  v37 = [v36 forceUnwrapObject];
-  v38 = [v37 serializedData];
-  [v20 setObject:v38 forKeyedSubscript:@"data"];
+  authenticationToken3 = [accountCopy authenticationToken];
+  forceUnwrapObject5 = [authenticationToken3 forceUnwrapObject];
+  serializedData2 = [forceUnwrapObject5 serializedData];
+  [v20 setObject:serializedData2 forKeyedSubscript:@"data"];
 
   v42 = 0;
   v39 = [MEMORY[0x277CCAC58] dataWithPropertyList:v20 format:200 options:0 error:&v42];
@@ -1159,21 +1159,21 @@ uint64_t __81__VSAccountStore__fetchAccountsSimulatingExpiredToken_forProviderID
   [(VSKeychainItem *)v12 setData:v39];
 }
 
-- (void)_insertLegacyKeychainItemForAccount:(id)a3 context:(id)a4
+- (void)_insertLegacyKeychainItemForAccount:(id)account context:(id)context
 {
-  v24 = a3;
-  v5 = a4;
-  v6 = [v24 legacyKeychainItem];
-  if (v6)
+  accountCopy = account;
+  contextCopy = context;
+  legacyKeychainItem = [accountCopy legacyKeychainItem];
+  if (legacyKeychainItem)
   {
-    v7 = v6;
+    v7 = legacyKeychainItem;
   }
 
   else
   {
     v8 = [VSKeychainGenericPassword alloc];
     v9 = VSKeychainItemKindGenericPassword();
-    v7 = [(VSKeychainItem *)v8 initWithItemKind:v9 insertIntoEditingContext:v5];
+    v7 = [(VSKeychainItem *)v8 initWithItemKind:v9 insertIntoEditingContext:contextCopy];
 
     if (!v7)
     {
@@ -1182,35 +1182,35 @@ uint64_t __81__VSAccountStore__fetchAccountsSimulatingExpiredToken_forProviderID
   }
 
   v10 = v7;
-  [v24 setLegacyKeychainItem:v10];
+  [accountCopy setLegacyKeychainItem:v10];
   [(VSKeychainGenericPassword *)v10 setAccessGroup:@"com.apple.VideoSubscriberAccount"];
   v11 = VSNumberForFourCharCode(VSKeychainItemCreatorCode);
   [(VSKeychainGenericPassword *)v10 setCreatorCode:v11];
 
-  v12 = [v24 accountDescription];
-  [(VSKeychainGenericPassword *)v10 setLabel:v12];
+  accountDescription = [accountCopy accountDescription];
+  [(VSKeychainGenericPassword *)v10 setLabel:accountDescription];
 
-  v13 = [v24 username];
-  if ([v13 length])
+  username = [accountCopy username];
+  if ([username length])
   {
-    [(VSKeychainGenericPassword *)v10 setAccount:v13];
+    [(VSKeychainGenericPassword *)v10 setAccount:username];
   }
 
-  v14 = [v24 preferredAppID];
-  [(VSKeychainGenericPassword *)v10 setComment:v14];
+  preferredAppID = [accountCopy preferredAppID];
+  [(VSKeychainGenericPassword *)v10 setComment:preferredAppID];
 
-  v15 = [v24 optionalIdentityProviderDisplayName];
-  v16 = [v15 forceUnwrapObject];
-  [(VSKeychainGenericPassword *)v10 setService:v16];
+  optionalIdentityProviderDisplayName = [accountCopy optionalIdentityProviderDisplayName];
+  forceUnwrapObject = [optionalIdentityProviderDisplayName forceUnwrapObject];
+  [(VSKeychainGenericPassword *)v10 setService:forceUnwrapObject];
 
-  v17 = [v24 identityProviderID];
-  v18 = [v17 forceUnwrapObject];
-  [(VSKeychainGenericPassword *)v10 setGeneric:v18];
+  identityProviderID = [accountCopy identityProviderID];
+  forceUnwrapObject2 = [identityProviderID forceUnwrapObject];
+  [(VSKeychainGenericPassword *)v10 setGeneric:forceUnwrapObject2];
 
-  v19 = [v24 authenticationToken];
-  v20 = [v19 forceUnwrapObject];
+  authenticationToken = [accountCopy authenticationToken];
+  forceUnwrapObject3 = [authenticationToken forceUnwrapObject];
 
-  if ([v20 isOpaque])
+  if ([forceUnwrapObject3 isOpaque])
   {
     v21 = 1953459022;
   }
@@ -1223,17 +1223,17 @@ uint64_t __81__VSAccountStore__fetchAccountsSimulatingExpiredToken_forProviderID
   v22 = VSNumberForFourCharCode(v21);
   [(VSKeychainGenericPassword *)v10 setTypeCode:v22];
 
-  v23 = [v20 serializedData];
-  if ([v23 length])
+  serializedData = [forceUnwrapObject3 serializedData];
+  if ([serializedData length])
   {
-    [(VSKeychainItem *)v10 setData:v23];
+    [(VSKeychainItem *)v10 setData:serializedData];
   }
 
-  -[VSKeychainGenericPassword setSynchronizable:](v10, "setSynchronizable:", [v24 isSynchronizable]);
+  -[VSKeychainGenericPassword setSynchronizable:](v10, "setSynchronizable:", [accountCopy isSynchronizable]);
   [(VSKeychainGenericPassword *)v10 setViewHint:*MEMORY[0x277CDC198]];
 }
 
-- (id)_keychainItemsWithLimit:(unint64_t)a3
+- (id)_keychainItemsWithLimit:(unint64_t)limit
 {
   v35[2] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(VSKeychainFetchRequest);
@@ -1268,7 +1268,7 @@ uint64_t __81__VSAccountStore__fetchAccountsSimulatingExpiredToken_forProviderID
   v16 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v7];
   [(VSKeychainFetchRequest *)v4 setPredicate:v16];
 
-  [(VSKeychainFetchRequest *)v4 setFetchLimit:a3];
+  [(VSKeychainFetchRequest *)v4 setFetchLimit:limit];
   [(VSKeychainFetchRequest *)v4 setIncludesDataValues:1];
   v17 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"modificationDate" ascending:0];
   v18 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"label" ascending:1];
@@ -1277,9 +1277,9 @@ uint64_t __81__VSAccountStore__fetchAccountsSimulatingExpiredToken_forProviderID
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
   [(VSKeychainFetchRequest *)v4 setSortDescriptors:v19];
 
-  v20 = [(VSAccountStore *)self keychainEditingContext];
+  keychainEditingContext = [(VSAccountStore *)self keychainEditingContext];
   v32 = 0;
-  v21 = [v20 executeFetchRequest:v4 error:&v32];
+  v21 = [keychainEditingContext executeFetchRequest:v4 error:&v32];
   v22 = v32;
 
   if (v21)
@@ -1314,32 +1314,32 @@ uint64_t __81__VSAccountStore__fetchAccountsSimulatingExpiredToken_forProviderID
 
 - (NSUndoManager)undoManager
 {
-  v2 = [(VSAccountStore *)self keychainEditingContext];
-  v3 = [v2 undoManager];
+  keychainEditingContext = [(VSAccountStore *)self keychainEditingContext];
+  undoManager = [keychainEditingContext undoManager];
 
-  return v3;
+  return undoManager;
 }
 
-- (void)setUndoManager:(id)a3
+- (void)setUndoManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(VSAccountStore *)self keychainEditingContext];
-  [v5 setUndoManager:v4];
+  managerCopy = manager;
+  keychainEditingContext = [(VSAccountStore *)self keychainEditingContext];
+  [keychainEditingContext setUndoManager:managerCopy];
 }
 
 - (id)firstAccountIfLoaded
 {
   if ([(VSAccountStore *)self needsUpdateCachedFirstAccount]|| ([(VSAccountStore *)self cachedFirstAccount], v3 = objc_claimAutoreleasedReturnValue(), v3, !v3))
   {
-    v4 = 0;
+    firstAccount = 0;
   }
 
   else
   {
-    v4 = [(VSAccountStore *)self firstAccount];
+    firstAccount = [(VSAccountStore *)self firstAccount];
   }
 
-  return v4;
+  return firstAccount;
 }
 
 - (BOOL)_updateCachedFirstAccount
@@ -1348,9 +1348,9 @@ uint64_t __81__VSAccountStore__fetchAccountsSimulatingExpiredToken_forProviderID
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v3 = [MEMORY[0x277CCABD8] currentQueue];
-  v4 = [(VSAccountStore *)self keychainQueue];
-  v5 = [v3 isEqual:v4];
+  currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+  keychainQueue = [(VSAccountStore *)self keychainQueue];
+  v5 = [currentQueue isEqual:keychainQueue];
 
   if ((v5 & 1) == 0)
   {
@@ -1389,9 +1389,9 @@ void __43__VSAccountStore__updateCachedFirstAccount__block_invoke(uint64_t a1)
   [v1 _updateCachedFirstAccountWithCompletion:v4];
 }
 
-- (void)_updateCachedFirstAccountWithCompletion:(id)a3
+- (void)_updateCachedFirstAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v35[0] = 0;
   v35[1] = v35;
   v35[2] = 0x2020000000;
@@ -1401,9 +1401,9 @@ void __43__VSAccountStore__updateCachedFirstAccount__block_invoke(uint64_t a1)
   v33[2] = 0x2020000000;
   v34 = 0;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [MEMORY[0x277CCABD8] currentQueue];
-  v7 = [(VSAccountStore *)self keychainQueue];
-  v8 = [v6 isEqual:v7];
+  currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+  keychainQueue = [(VSAccountStore *)self keychainQueue];
+  v8 = [currentQueue isEqual:keychainQueue];
 
   if ((v8 & 1) == 0)
   {
@@ -1440,7 +1440,7 @@ void __43__VSAccountStore__updateCachedFirstAccount__block_invoke(uint64_t a1)
   v13 = v11;
   v20 = v13;
   v23 = v35;
-  v14 = v4;
+  v14 = completionCopy;
   v21 = v14;
   v15 = [v12 blockOperationWithBlock:&v16];
   [(VSAsyncOperation *)v9 start:v16];
@@ -1639,22 +1639,22 @@ LABEL_14:
   if ([(VSAccountStore *)self needsUpdateCachedFirstAccount]|| ([(VSAccountStore *)self cachedFirstAccount], v3 = objc_claimAutoreleasedReturnValue(), v3, !v3))
   {
     v4 = objc_alloc_init(VSSemaphore);
-    v5 = [(VSAccountStore *)self keychainQueue];
+    keychainQueue = [(VSAccountStore *)self keychainQueue];
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
     v11 = __30__VSAccountStore_firstAccount__block_invoke;
     v12 = &unk_278B73708;
-    v13 = self;
+    selfCopy = self;
     v14 = v4;
     v6 = v4;
-    [v5 addOperationWithBlock:&v9];
+    [keychainQueue addOperationWithBlock:&v9];
 
     [(VSSemaphore *)v6 wait:v9];
   }
 
-  v7 = [(VSAccountStore *)self cachedFirstAccount];
+  cachedFirstAccount = [(VSAccountStore *)self cachedFirstAccount];
 
-  return v7;
+  return cachedFirstAccount;
 }
 
 void __30__VSAccountStore_firstAccount__block_invoke(uint64_t a1)
@@ -1668,25 +1668,25 @@ void __30__VSAccountStore_firstAccount__block_invoke(uint64_t a1)
   [v1 _updateCachedFirstAccountWithCompletion:v2];
 }
 
-- (void)firstAccountWithCompletionHandler:(id)a3
+- (void)firstAccountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(VSAccountStore *)self needsUpdateCachedFirstAccount]|| ([(VSAccountStore *)self cachedFirstAccount], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
-    v7 = [(VSAccountStore *)self keychainQueue];
+    keychainQueue = [(VSAccountStore *)self keychainQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __52__VSAccountStore_firstAccountWithCompletionHandler___block_invoke;
     v8[3] = &unk_278B73758;
     v8[4] = self;
-    v9 = v4;
-    [v7 addOperationWithBlock:v8];
+    v9 = handlerCopy;
+    [keychainQueue addOperationWithBlock:v8];
   }
 
   else
   {
-    v6 = [(VSAccountStore *)self cachedFirstAccount];
-    (*(v4 + 2))(v4, v6);
+    cachedFirstAccount = [(VSAccountStore *)self cachedFirstAccount];
+    (*(handlerCopy + 2))(handlerCopy, cachedFirstAccount);
   }
 }
 
@@ -1756,26 +1756,26 @@ void __26__VSAccountStore_accounts__block_invoke_3(uint64_t a1, void *a2)
   }
 }
 
-- (void)fetchAccountsWithCompletionHandler:(id)a3
+- (void)fetchAccountsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The completionHandler parameter must not be nil."];
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(VSAccountStore *)self keychainQueue];
+  keychainQueue = [(VSAccountStore *)self keychainQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__VSAccountStore_fetchAccountsWithCompletionHandler___block_invoke;
   v9[3] = &unk_278B73848;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v7 = handlerCopy;
   v8 = v5;
-  [v6 addOperationWithBlock:v9];
+  [keychainQueue addOperationWithBlock:v9];
 }
 
 void __53__VSAccountStore_fetchAccountsWithCompletionHandler___block_invoke(uint64_t a1)
@@ -1986,42 +1986,42 @@ void __53__VSAccountStore_fetchAccountsWithCompletionHandler___block_invoke_3_20
   (*(v2 + 16))(v2, v5);
 }
 
-- (BOOL)_insertAccount:(id)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)_insertAccount:(id)account inContext:(id)context error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  accountCopy = account;
+  contextCopy = context;
   v10 = VSDefaultLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v33 = v8;
+    v33 = accountCopy;
     _os_log_impl(&dword_23AB8E000, v10, OS_LOG_TYPE_DEFAULT, "VSAccountStore _insertAccount: %@", buf, 0xCu);
   }
 
-  [(VSAccountStore *)self _insertLegacyKeychainItemForAccount:v8 context:v9];
+  [(VSAccountStore *)self _insertLegacyKeychainItemForAccount:accountCopy context:contextCopy];
   v31 = 0;
-  v11 = [v9 save:&v31];
+  v11 = [contextCopy save:&v31];
   v12 = v31;
   if (v11)
   {
     v13 = VSDefaultLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v8 legacyKeychainItem];
-      v15 = [(VSAccountStore *)self _uniqueIdentifierForKeychainItem:v14];
-      v16 = [v8 legacyKeychainItem];
-      v17 = [v16 creationDate];
+      legacyKeychainItem = [accountCopy legacyKeychainItem];
+      v15 = [(VSAccountStore *)self _uniqueIdentifierForKeychainItem:legacyKeychainItem];
+      legacyKeychainItem2 = [accountCopy legacyKeychainItem];
+      creationDate = [legacyKeychainItem2 creationDate];
       *buf = 138412546;
       v33 = v15;
       v34 = 2112;
-      v35 = v17;
+      v35 = creationDate;
       _os_log_impl(&dword_23AB8E000, v13, OS_LOG_TYPE_DEFAULT, "Successfully committed legacy item with hash %@ (cdat=%@)", buf, 0x16u);
     }
 
-    [(VSAccountStore *)self _insertModernKeychainItemForAccount:v8 context:v9];
+    [(VSAccountStore *)self _insertModernKeychainItemForAccount:accountCopy context:contextCopy];
     v30 = v12;
-    v18 = [v9 save:&v30];
+    v18 = [contextCopy save:&v30];
     v19 = v30;
 
     if (v18)
@@ -2038,22 +2038,22 @@ void __53__VSAccountStore_fetchAccountsWithCompletionHandler___block_invoke_3_20
       }
 
       v24 = v19;
-      *a5 = v19;
+      *error = v19;
 
-      v25 = [v8 legacyKeychainItem];
+      legacyKeychainItem3 = [accountCopy legacyKeychainItem];
 
-      if (!v25)
+      if (!legacyKeychainItem3)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [account legacyKeychainItem] parameter must not be nil."];
       }
 
-      v26 = [v8 legacyKeychainItem];
-      [v9 deleteItem:v26];
+      legacyKeychainItem4 = [accountCopy legacyKeychainItem];
+      [contextCopy deleteItem:legacyKeychainItem4];
 
       v29 = 0;
-      LOBYTE(v26) = [v9 save:&v29];
+      LOBYTE(legacyKeychainItem4) = [contextCopy save:&v29];
       v19 = v29;
-      if ((v26 & 1) == 0)
+      if ((legacyKeychainItem4 & 1) == 0)
       {
         v27 = VSErrorLogObject();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -2076,24 +2076,24 @@ void __53__VSAccountStore_fetchAccountsWithCompletionHandler___block_invoke_3_20
 
     v22 = v12;
     v20 = 0;
-    *a5 = v12;
+    *error = v12;
     v19 = v12;
   }
 
   return v20;
 }
 
-- (void)saveAccounts:(id)a3 withCompletionHandler:(id)a4
+- (void)saveAccounts:(id)accounts withCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  accountsCopy = accounts;
+  handlerCopy = handler;
+  if (!accountsCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The accounts parameter must not be nil."];
   }
 
-  if (![v6 count])
+  if (![accountsCopy count])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Must supply at least one account to save."];
   }
@@ -2106,17 +2106,17 @@ void __53__VSAccountStore_fetchAccountsWithCompletionHandler___block_invoke_3_20
     _os_log_impl(&dword_23AB8E000, v8, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v9 = [(VSAccountStore *)self keychainQueue];
+  keychainQueue = [(VSAccountStore *)self keychainQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__VSAccountStore_saveAccounts_withCompletionHandler___block_invoke;
   v12[3] = &unk_278B73848;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 addOperationWithBlock:v12];
+  v13 = accountsCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = accountsCopy;
+  [keychainQueue addOperationWithBlock:v12];
 }
 
 void __53__VSAccountStore_saveAccounts_withCompletionHandler___block_invoke(uint64_t a1)
@@ -2241,17 +2241,17 @@ void __53__VSAccountStore_saveAccounts_withCompletionHandler___block_invoke_211(
   }
 }
 
-- (void)removeAccounts:(id)a3 withCompletionHandler:(id)a4
+- (void)removeAccounts:(id)accounts withCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  accountsCopy = accounts;
+  handlerCopy = handler;
+  if (!accountsCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The accounts parameter must not be nil."];
   }
 
-  if (![v6 count])
+  if (![accountsCopy count])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Must supply at least one account to remove."];
   }
@@ -2264,17 +2264,17 @@ void __53__VSAccountStore_saveAccounts_withCompletionHandler___block_invoke_211(
     _os_log_impl(&dword_23AB8E000, v8, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v9 = [(VSAccountStore *)self keychainQueue];
+  keychainQueue = [(VSAccountStore *)self keychainQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__VSAccountStore_removeAccounts_withCompletionHandler___block_invoke;
   v12[3] = &unk_278B73848;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 addOperationWithBlock:v12];
+  v13 = accountsCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = accountsCopy;
+  [keychainQueue addOperationWithBlock:v12];
 }
 
 void __55__VSAccountStore_removeAccounts_withCompletionHandler___block_invoke(uint64_t a1)

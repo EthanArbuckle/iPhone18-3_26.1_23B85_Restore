@@ -1,26 +1,26 @@
 @interface CCFindMyDeviceOwner
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCFindMyDeviceOwner)initWithFirstName:(id)a3 lastName:(id)a4 error:(id *)a5;
-- (CCFindMyDeviceOwner)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCFindMyDeviceOwner)initWithFirstName:(id)name lastName:(id)lastName error:(id *)error;
+- (CCFindMyDeviceOwner)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSString)firstName;
 - (NSString)lastName;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCFindMyDeviceOwner
 
-- (CCFindMyDeviceOwner)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCFindMyDeviceOwner)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"firstName"];
-    v10 = [v6 objectForKeyedSubscript:@"lastName"];
-    v11 = [[CCFindMyDeviceOwner alloc] initWithFirstName:v9 lastName:v10 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"firstName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"lastName"];
+    v11 = [[CCFindMyDeviceOwner alloc] initWithFirstName:v9 lastName:v10 error:error];
   }
 
   else
@@ -37,14 +37,14 @@
   v3 = objc_opt_new();
   if (self->_firstName)
   {
-    v4 = [(CCFindMyDeviceOwner *)self firstName];
-    [v3 setObject:v4 forKeyedSubscript:@"firstName"];
+    firstName = [(CCFindMyDeviceOwner *)self firstName];
+    [v3 setObject:firstName forKeyedSubscript:@"firstName"];
   }
 
   if (self->_lastName)
   {
-    v5 = [(CCFindMyDeviceOwner *)self lastName];
-    [v3 setObject:v5 forKeyedSubscript:@"lastName"];
+    lastName = [(CCFindMyDeviceOwner *)self lastName];
+    [v3 setObject:lastName forKeyedSubscript:@"lastName"];
   }
 
   v6 = [v3 copy];
@@ -52,19 +52,19 @@
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_firstName)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27131 stringValue:self->_firstName];
-    v7[2](v7, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_lastName)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27132 stringValue:self->_lastName];
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
@@ -82,10 +82,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -234,15 +234,15 @@ LABEL_38:
   return v30;
 }
 
-- (CCFindMyDeviceOwner)initWithFirstName:(id)a3 lastName:(id)a4 error:(id *)a5
+- (CCFindMyDeviceOwner)initWithFirstName:(id)name lastName:(id)lastName error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  lastNameCopy = lastName;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!nameCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!lastNameCopy)
     {
       goto LABEL_8;
     }
@@ -256,7 +256,7 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
@@ -272,24 +272,24 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (lastNameCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v15 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

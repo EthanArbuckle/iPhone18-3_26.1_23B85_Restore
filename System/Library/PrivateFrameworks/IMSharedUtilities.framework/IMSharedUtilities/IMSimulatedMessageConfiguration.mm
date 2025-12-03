@@ -1,7 +1,7 @@
 @interface IMSimulatedMessageConfiguration
 - (IMSimulatedMessageConfiguration)init;
-- (IMSimulatedMessageConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IMSimulatedMessageConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMSimulatedMessageConfiguration
@@ -20,20 +20,20 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[IMSimulatedMessageConfiguration indexImmediately](self forKey:{"indexImmediately"), @"i"}];
-  [v4 encodeInteger:-[IMSimulatedMessageConfiguration clientBatchSize](self forKey:{"clientBatchSize"), @"c"}];
-  [v4 encodeInteger:-[IMSimulatedMessageConfiguration daemonBatchSize](self forKey:{"daemonBatchSize"), @"b"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[IMSimulatedMessageConfiguration indexImmediately](self forKey:{"indexImmediately"), @"i"}];
+  [coderCopy encodeInteger:-[IMSimulatedMessageConfiguration clientBatchSize](self forKey:{"clientBatchSize"), @"c"}];
+  [coderCopy encodeInteger:-[IMSimulatedMessageConfiguration daemonBatchSize](self forKey:{"daemonBatchSize"), @"b"}];
 }
 
-- (IMSimulatedMessageConfiguration)initWithCoder:(id)a3
+- (IMSimulatedMessageConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  -[IMSimulatedMessageConfiguration setIndexImmediately:](self, "setIndexImmediately:", [v4 decodeBoolForKey:@"i"]);
-  -[IMSimulatedMessageConfiguration setClientBatchSize:](self, "setClientBatchSize:", [v4 decodeIntegerForKey:@"c"]);
-  v5 = [v4 decodeIntegerForKey:@"b"];
+  coderCopy = coder;
+  -[IMSimulatedMessageConfiguration setIndexImmediately:](self, "setIndexImmediately:", [coderCopy decodeBoolForKey:@"i"]);
+  -[IMSimulatedMessageConfiguration setClientBatchSize:](self, "setClientBatchSize:", [coderCopy decodeIntegerForKey:@"c"]);
+  v5 = [coderCopy decodeIntegerForKey:@"b"];
 
   [(IMSimulatedMessageConfiguration *)self setDaemonBatchSize:v5];
   return self;

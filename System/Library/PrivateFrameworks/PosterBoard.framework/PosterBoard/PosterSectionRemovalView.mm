@@ -1,17 +1,17 @@
 @interface PosterSectionRemovalView
-- (_TtC11PosterBoard24PosterSectionRemovalView)initWithCoder:(id)a3;
+- (_TtC11PosterBoard24PosterSectionRemovalView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setDeleteButton:(id)a3;
+- (void)setDeleteButton:(id)button;
 @end
 
 @implementation PosterSectionRemovalView
 
-- (void)setDeleteButton:(id)a3
+- (void)setDeleteButton:(id)button
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11PosterBoard24PosterSectionRemovalView_deleteButton);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11PosterBoard24PosterSectionRemovalView_deleteButton) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11PosterBoard24PosterSectionRemovalView_deleteButton) = button;
+  buttonCopy = button;
 }
 
 - (void)prepareForReuse
@@ -25,7 +25,7 @@
   *(v3 + 1) = 0;
 }
 
-- (_TtC11PosterBoard24PosterSectionRemovalView)initWithCoder:(id)a3
+- (_TtC11PosterBoard24PosterSectionRemovalView)initWithCoder:(id)coder
 {
   *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC11PosterBoard24PosterSectionRemovalView_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -41,7 +41,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B62D254();
 }
 

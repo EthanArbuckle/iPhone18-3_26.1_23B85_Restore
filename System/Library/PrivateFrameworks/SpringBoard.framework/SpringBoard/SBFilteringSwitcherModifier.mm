@@ -1,37 +1,37 @@
 @interface SBFilteringSwitcherModifier
-- (CGRect)routingModifier:(id)a3 containerViewBoundsForModifier:(id)a4;
-- (CGRect)routingModifier:(id)a3 switcherViewBoundsForModifier:(id)a4;
-- (SBFilteringSwitcherModifier)initWithAppLayouts:(id)a3 modifier:(id)a4;
-- (id)routingModifier:(id)a3 animationAttributesModifierForLayoutElement:(id)a4;
-- (id)routingModifier:(id)a3 event:(id)a4 forModifier:(id)a5;
-- (id)routingModifier:(id)a3 filteredAppLayouts:(id)a4 forModifier:(id)a5;
-- (id)routingModifier:(id)a3 modifierForAppLayout:(id)a4;
-- (void)didMoveToParentModifier:(id)a3;
-- (void)setState:(int64_t)a3;
+- (CGRect)routingModifier:(id)modifier containerViewBoundsForModifier:(id)forModifier;
+- (CGRect)routingModifier:(id)modifier switcherViewBoundsForModifier:(id)forModifier;
+- (SBFilteringSwitcherModifier)initWithAppLayouts:(id)layouts modifier:(id)modifier;
+- (id)routingModifier:(id)modifier animationAttributesModifierForLayoutElement:(id)element;
+- (id)routingModifier:(id)modifier event:(id)event forModifier:(id)forModifier;
+- (id)routingModifier:(id)modifier filteredAppLayouts:(id)layouts forModifier:(id)forModifier;
+- (id)routingModifier:(id)modifier modifierForAppLayout:(id)layout;
+- (void)didMoveToParentModifier:(id)modifier;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation SBFilteringSwitcherModifier
 
-- (SBFilteringSwitcherModifier)initWithAppLayouts:(id)a3 modifier:(id)a4
+- (SBFilteringSwitcherModifier)initWithAppLayouts:(id)layouts modifier:(id)modifier
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  layoutsCopy = layouts;
+  modifierCopy = modifier;
   v23.receiver = self;
   v23.super_class = SBFilteringSwitcherModifier;
   v9 = [(SBSwitcherModifier *)&v23 init];
   if (v9)
   {
-    if (v7)
+    if (layoutsCopy)
     {
-      if (v8)
+      if (modifierCopy)
       {
 LABEL_4:
-        v10 = [v7 copy];
+        v10 = [layoutsCopy copy];
         appLayoutsToFilter = v9->_appLayoutsToFilter;
         v9->_appLayoutsToFilter = v10;
 
-        objc_storeStrong(&v9->_modifier, a4);
+        objc_storeStrong(&v9->_modifier, modifier);
         v12 = objc_alloc_init(_SBFilteringPassthroughTargetSwitcherModifier);
         passthroughModifier = v9->_passthroughModifier;
         v9->_passthroughModifier = v12;
@@ -44,9 +44,9 @@ LABEL_4:
 
         [(SBChainableModifier *)v9 addChildModifier:v16 atLevel:0 key:0];
         v17 = MEMORY[0x277CBEB98];
-        v18 = [v7 bs_compactMap:&__block_literal_global_312];
-        v19 = [v18 bs_flatten];
-        v20 = [v17 setWithArray:v19];
+        v18 = [layoutsCopy bs_compactMap:&__block_literal_global_312];
+        bs_flatten = [v18 bs_flatten];
+        v20 = [v17 setWithArray:bs_flatten];
         displayItemsToFilter = v9->_displayItemsToFilter;
         v9->_displayItemsToFilter = v20;
 
@@ -57,7 +57,7 @@ LABEL_4:
     else
     {
       [SBFilteringSwitcherModifier initWithAppLayouts:a2 modifier:v9];
-      if (v8)
+      if (modifierCopy)
       {
         goto LABEL_4;
       }
@@ -72,16 +72,16 @@ LABEL_5:
   return v9;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v6.receiver = self;
   v6.super_class = SBFilteringSwitcherModifier;
   [(SBChainableModifier *)&v6 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
-    v5 = [(SBChainableModifier *)self->_passthroughModifier delegate];
+    delegate = [(SBChainableModifier *)self->_passthroughModifier delegate];
 
-    if (v5)
+    if (delegate)
     {
       [(SBChainableModifier *)self->_passthroughModifier setDelegate:0];
       [(SBChainableModifier *)self addChildModifier:self->_passthroughModifier atLevel:1 key:0];
@@ -90,29 +90,29 @@ LABEL_5:
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v5 = [(SBChainableModifier *)self state];
-  if (a3 == 1 && v5 != 1)
+  state = [(SBChainableModifier *)self state];
+  if (state == 1 && state != 1)
   {
     [(SBFilteringSwitcherModifier *)self newAppLayoutsGenCount];
   }
 
   v6.receiver = self;
   v6.super_class = SBFilteringSwitcherModifier;
-  [(SBChainableModifier *)&v6 setState:a3];
+  [(SBChainableModifier *)&v6 setState:state];
 }
 
-- (id)routingModifier:(id)a3 event:(id)a4 forModifier:(id)a5
+- (id)routingModifier:(id)modifier event:(id)event forModifier:(id)forModifier
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  if ([v7 type] == 17)
+  eventCopy = event;
+  forModifierCopy = forModifier;
+  if ([eventCopy type] == 17)
   {
-    if (self->_modifier != v8 || (v9 = self->_appLayoutsToFilter, [v7 appLayout], v10 = objc_claimAutoreleasedReturnValue(), LODWORD(v9) = -[NSArray containsObject:](v9, "containsObject:", v10), v10, !v9))
+    if (self->_modifier != forModifierCopy || (v9 = self->_appLayoutsToFilter, [eventCopy appLayout], v10 = objc_claimAutoreleasedReturnValue(), LODWORD(v9) = -[NSArray containsObject:](v9, "containsObject:", v10), v10, !v9))
     {
-      if (self->_passthroughModifier != v8 || (appLayoutsToFilter = self->_appLayoutsToFilter, [v7 appLayout], v12 = objc_claimAutoreleasedReturnValue(), LOBYTE(appLayoutsToFilter) = -[NSArray containsObject:](appLayoutsToFilter, "containsObject:", v12), v12, (appLayoutsToFilter & 1) != 0))
+      if (self->_passthroughModifier != forModifierCopy || (appLayoutsToFilter = self->_appLayoutsToFilter, [eventCopy appLayout], v12 = objc_claimAutoreleasedReturnValue(), LOBYTE(appLayoutsToFilter) = -[NSArray containsObject:](appLayoutsToFilter, "containsObject:", v12), v12, (appLayoutsToFilter & 1) != 0))
       {
         v13 = 0;
         goto LABEL_28;
@@ -122,41 +122,41 @@ LABEL_5:
     goto LABEL_17;
   }
 
-  if ([v7 type] != 1)
+  if ([eventCopy type] != 1)
   {
 LABEL_17:
-    v13 = v7;
+    v13 = eventCopy;
     goto LABEL_28;
   }
 
-  v13 = [v7 copy];
-  v14 = [v13 fromAppLayout];
-  v15 = [v13 toAppLayout];
-  if (v14)
+  v13 = [eventCopy copy];
+  fromAppLayout = [v13 fromAppLayout];
+  toAppLayout = [v13 toAppLayout];
+  if (fromAppLayout)
   {
     routingModifier = self->_routingModifier;
-    v32[0] = v14;
+    v32[0] = fromAppLayout;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
-    v18 = [(SBFilteringSwitcherModifier *)self routingModifier:routingModifier filteredAppLayouts:v17 forModifier:v8];
-    v19 = [v18 firstObject];
-    [v13 setFromAppLayout:v19];
+    v18 = [(SBFilteringSwitcherModifier *)self routingModifier:routingModifier filteredAppLayouts:v17 forModifier:forModifierCopy];
+    firstObject = [v18 firstObject];
+    [v13 setFromAppLayout:firstObject];
   }
 
-  if (v15)
+  if (toAppLayout)
   {
     v20 = self->_routingModifier;
-    v31 = v15;
+    v31 = toAppLayout;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
-    v22 = [(SBFilteringSwitcherModifier *)self routingModifier:v20 filteredAppLayouts:v21 forModifier:v8];
-    v23 = [v22 firstObject];
-    [v13 setToAppLayout:v23];
+    v22 = [(SBFilteringSwitcherModifier *)self routingModifier:v20 filteredAppLayouts:v21 forModifier:forModifierCopy];
+    firstObject2 = [v22 firstObject];
+    [v13 setToAppLayout:firstObject2];
   }
 
   if ([v13 fromEnvironmentMode] == 3)
   {
-    v24 = [v13 fromAppLayout];
+    fromAppLayout2 = [v13 fromAppLayout];
 
-    if (!v24)
+    if (!fromAppLayout2)
     {
       v26 = 1;
       goto LABEL_19;
@@ -165,9 +165,9 @@ LABEL_17:
 
   if ([v13 fromEnvironmentMode] == 1)
   {
-    v25 = [v13 fromAppLayout];
+    fromAppLayout3 = [v13 fromAppLayout];
 
-    if (v25)
+    if (fromAppLayout3)
     {
       v26 = 3;
 LABEL_19:
@@ -187,9 +187,9 @@ LABEL_19:
       goto LABEL_27;
     }
 
-    v28 = [v13 toAppLayout];
+    toAppLayout2 = [v13 toAppLayout];
 
-    if (!v28)
+    if (!toAppLayout2)
     {
       goto LABEL_27;
     }
@@ -205,9 +205,9 @@ LABEL_28:
   return v13;
 }
 
-- (id)routingModifier:(id)a3 filteredAppLayouts:(id)a4 forModifier:(id)a5
+- (id)routingModifier:(id)modifier filteredAppLayouts:(id)layouts forModifier:(id)forModifier
 {
-  if (self->_modifier == a5)
+  if (self->_modifier == forModifier)
   {
     v5 = v11;
     v11[0] = MEMORY[0x277D85DD0];
@@ -226,7 +226,7 @@ LABEL_28:
   v5[2] = v6;
   v5[3] = &unk_2783AE218;
   v5[4] = self;
-  v7 = [a4 bs_compactMap:{v9, v10}];
+  v7 = [layouts bs_compactMap:{v9, v10}];
 
   return v7;
 }
@@ -255,9 +255,9 @@ id __78__SBFilteringSwitcherModifier_routingModifier_filteredAppLayouts_forModif
   return v2;
 }
 
-- (id)routingModifier:(id)a3 modifierForAppLayout:(id)a4
+- (id)routingModifier:(id)modifier modifierForAppLayout:(id)layout
 {
-  v5 = [a4 containsAnyItemFromSet:self->_displayItemsToFilter];
+  v5 = [layout containsAnyItemFromSet:self->_displayItemsToFilter];
   v6 = &OBJC_IVAR___SBFilteringSwitcherModifier__passthroughModifier;
   if (v5)
   {
@@ -269,11 +269,11 @@ id __78__SBFilteringSwitcherModifier_routingModifier_filteredAppLayouts_forModif
   return v7;
 }
 
-- (CGRect)routingModifier:(id)a3 containerViewBoundsForModifier:(id)a4
+- (CGRect)routingModifier:(id)modifier containerViewBoundsForModifier:(id)forModifier
 {
   v8.receiver = self;
   v8.super_class = SBFilteringSwitcherModifier;
-  [(SBFilteringSwitcherModifier *)&v8 containerViewBounds:a3];
+  [(SBFilteringSwitcherModifier *)&v8 containerViewBounds:modifier];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -281,11 +281,11 @@ id __78__SBFilteringSwitcherModifier_routingModifier_filteredAppLayouts_forModif
   return result;
 }
 
-- (CGRect)routingModifier:(id)a3 switcherViewBoundsForModifier:(id)a4
+- (CGRect)routingModifier:(id)modifier switcherViewBoundsForModifier:(id)forModifier
 {
   v8.receiver = self;
   v8.super_class = SBFilteringSwitcherModifier;
-  [(SBFilteringSwitcherModifier *)&v8 switcherViewBounds:a3];
+  [(SBFilteringSwitcherModifier *)&v8 switcherViewBounds:modifier];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -293,10 +293,10 @@ id __78__SBFilteringSwitcherModifier_routingModifier_filteredAppLayouts_forModif
   return result;
 }
 
-- (id)routingModifier:(id)a3 animationAttributesModifierForLayoutElement:(id)a4
+- (id)routingModifier:(id)modifier animationAttributesModifierForLayoutElement:(id)element
 {
-  v5 = a4;
-  if ([v5 switcherLayoutElementType] || !-[NSArray containsObject:](self->_appLayoutsToFilter, "containsObject:", v5))
+  elementCopy = element;
+  if ([elementCopy switcherLayoutElementType] || !-[NSArray containsObject:](self->_appLayoutsToFilter, "containsObject:", elementCopy))
   {
     v6 = &OBJC_IVAR___SBFilteringSwitcherModifier__passthroughModifier;
   }

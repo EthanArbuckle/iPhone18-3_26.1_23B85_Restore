@@ -1,44 +1,44 @@
 @interface SUSearchFieldConfiguration
 + (id)defaultConfiguration;
-+ (id)defaultConfigurationWithClientInterface:(id)a3;
-- (SUSearchFieldConfiguration)initWithDictionary:(id)a3;
-- (SUSearchFieldConfiguration)initWithDictionary:(id)a3 clientInterface:(id)a4;
-- (__CFDictionary)_newURLsDictionaryWithDictionary:(id)a3;
-- (double)widthForOrientation:(int64_t)a3;
-- (id)URLRequestPropertiesWithBaseURL:(id)a3 forNetworkType:(int64_t)a4;
-- (id)_initWithClientInterface:(id)a3;
-- (id)_newQueryStringDictionaryForNetworkType:(int64_t)a3;
-- (id)_urlRequestPropertiesForURLBagKey:(id)a3 networkType:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)hintsURLRequestPropertiesForNetworkType:(int64_t)a3;
-- (id)searchURLRequestPropertiesForNetworkType:(int64_t)a3;
-- (int64_t)_locationForString:(id)a3;
-- (void)_setHintURLsFromDictionary:(id)a3;
-- (void)_setSearchURLsFromDictionary:(id)a3;
++ (id)defaultConfigurationWithClientInterface:(id)interface;
+- (SUSearchFieldConfiguration)initWithDictionary:(id)dictionary;
+- (SUSearchFieldConfiguration)initWithDictionary:(id)dictionary clientInterface:(id)interface;
+- (__CFDictionary)_newURLsDictionaryWithDictionary:(id)dictionary;
+- (double)widthForOrientation:(int64_t)orientation;
+- (id)URLRequestPropertiesWithBaseURL:(id)l forNetworkType:(int64_t)type;
+- (id)_initWithClientInterface:(id)interface;
+- (id)_newQueryStringDictionaryForNetworkType:(int64_t)type;
+- (id)_urlRequestPropertiesForURLBagKey:(id)key networkType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)hintsURLRequestPropertiesForNetworkType:(int64_t)type;
+- (id)searchURLRequestPropertiesForNetworkType:(int64_t)type;
+- (int64_t)_locationForString:(id)string;
+- (void)_setHintURLsFromDictionary:(id)dictionary;
+- (void)_setSearchURLsFromDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)loadFromDictionary:(id)a3;
+- (void)loadFromDictionary:(id)dictionary;
 @end
 
 @implementation SUSearchFieldConfiguration
 
-- (SUSearchFieldConfiguration)initWithDictionary:(id)a3
+- (SUSearchFieldConfiguration)initWithDictionary:(id)dictionary
 {
   v5 = +[SUClientDispatch clientInterface];
 
-  return [(SUSearchFieldConfiguration *)self initWithDictionary:a3 clientInterface:v5];
+  return [(SUSearchFieldConfiguration *)self initWithDictionary:dictionary clientInterface:v5];
 }
 
-- (SUSearchFieldConfiguration)initWithDictionary:(id)a3 clientInterface:(id)a4
+- (SUSearchFieldConfiguration)initWithDictionary:(id)dictionary clientInterface:(id)interface
 {
   v8.receiver = self;
   v8.super_class = SUSearchFieldConfiguration;
   v6 = [(SUSearchFieldConfiguration *)&v8 init];
   if (v6)
   {
-    v6->_clientInterface = a4;
+    v6->_clientInterface = interface;
     v6->_location = 2;
     v6->_userDefaultsKey = @"SULastSearch";
-    [(SUSearchFieldConfiguration *)v6 loadFromDictionary:a3];
+    [(SUSearchFieldConfiguration *)v6 loadFromDictionary:dictionary];
   }
 
   return v6;
@@ -63,14 +63,14 @@
   [(SUSearchFieldConfiguration *)&v5 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "_initWithClientInterface:", self->_clientInterface}];
-  *(v5 + 8) = [(NSString *)self->_cancelString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "_initWithClientInterface:", self->_clientInterface}];
+  *(v5 + 8) = [(NSString *)self->_cancelString copyWithZone:zone];
   *(v5 + 32) = self->_location;
-  *(v5 + 40) = [(NSString *)self->_placeholder copyWithZone:a3];
+  *(v5 + 40) = [(NSString *)self->_placeholder copyWithZone:zone];
   *(v5 + 48) = self->_rootViewOnly;
-  *(v5 + 64) = [(NSString *)self->_userDefaultsKey copyWithZone:a3];
+  *(v5 + 64) = [(NSString *)self->_userDefaultsKey copyWithZone:zone];
   *(v5 + 72) = self->_width;
   *(v5 + 80) = self->_widthLandscape;
   *(v5 + 88) = self->_widthPortrait;
@@ -93,12 +93,12 @@
 {
   v3 = +[SUClientDispatch clientInterface];
 
-  return [a1 defaultConfigurationWithClientInterface:v3];
+  return [self defaultConfigurationWithClientInterface:v3];
 }
 
-+ (id)defaultConfigurationWithClientInterface:(id)a3
++ (id)defaultConfigurationWithClientInterface:(id)interface
 {
-  v3 = [objc_alloc(objc_opt_class()) _initWithClientInterface:a3];
+  v3 = [objc_alloc(objc_opt_class()) _initWithClientInterface:interface];
   *(v3 + 8) = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"CANCEL", &stru_1F41B3660, 0}];
   *(v3 + 40) = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"SEARCH", &stru_1F41B3660, 0}];
   *(v3 + 64) = @"SULastSearch";
@@ -122,11 +122,11 @@
   return v3;
 }
 
-- (id)hintsURLRequestPropertiesForNetworkType:(int64_t)a3
+- (id)hintsURLRequestPropertiesForNetworkType:(int64_t)type
 {
   if (self->_hintURLs)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69D4970]) initWithURL:{CFDictionaryGetValue(self->_hintURLs, a3)}];
+    v5 = [objc_alloc(MEMORY[0x1E69D4970]) initWithURL:{CFDictionaryGetValue(self->_hintURLs, type)}];
 
     return v5;
   }
@@ -135,13 +135,13 @@
   {
     v7 = [(SUClientInterface *)self->_clientInterface URLBagKeyForIdentifier:@"SUURLBagKeySearchHints"];
 
-    return [(SUSearchFieldConfiguration *)self _urlRequestPropertiesForURLBagKey:v7 networkType:a3];
+    return [(SUSearchFieldConfiguration *)self _urlRequestPropertiesForURLBagKey:v7 networkType:type];
   }
 }
 
-- (void)loadFromDictionary:(id)a3
+- (void)loadFromDictionary:(id)dictionary
 {
-  v5 = [a3 objectForKey:@"cancel-text"];
+  v5 = [dictionary objectForKey:@"cancel-text"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -149,21 +149,21 @@
     self->_cancelString = v5;
   }
 
-  v6 = [a3 objectForKey:@"hints-urls"];
+  v6 = [dictionary objectForKey:@"hints-urls"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUSearchFieldConfiguration *)self _setHintURLsFromDictionary:v6];
   }
 
-  v7 = [a3 objectForKey:@"location"];
+  v7 = [dictionary objectForKey:@"location"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     self->_location = [(SUSearchFieldConfiguration *)self _locationForString:v7];
   }
 
-  v8 = [a3 objectForKey:@"persistent-id"];
+  v8 = [dictionary objectForKey:@"persistent-id"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -171,7 +171,7 @@
     self->_userDefaultsKey = v8;
   }
 
-  v9 = [a3 objectForKey:@"placeholder"];
+  v9 = [dictionary objectForKey:@"placeholder"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -185,34 +185,34 @@
     self->_placeholder = v10;
   }
 
-  v11 = [a3 objectForKey:@"root-page-only"];
+  v11 = [dictionary objectForKey:@"root-page-only"];
   if (objc_opt_respondsToSelector())
   {
     self->_rootViewOnly = [v11 BOOLValue];
   }
 
-  v12 = [a3 objectForKey:@"search-urls"];
+  v12 = [dictionary objectForKey:@"search-urls"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUSearchFieldConfiguration *)self _setSearchURLsFromDictionary:v12];
   }
 
-  v13 = [a3 objectForKey:@"width"];
+  v13 = [dictionary objectForKey:@"width"];
   if (objc_opt_respondsToSelector())
   {
     [v13 floatValue];
     self->_width = v14;
   }
 
-  v15 = [a3 objectForKey:@"width-landscape"];
+  v15 = [dictionary objectForKey:@"width-landscape"];
   if (objc_opt_respondsToSelector())
   {
     [v15 floatValue];
     self->_widthLandscape = v16;
   }
 
-  v17 = [a3 objectForKey:@"width-portrait"];
+  v17 = [dictionary objectForKey:@"width-portrait"];
   if (objc_opt_respondsToSelector())
   {
     [v17 floatValue];
@@ -220,11 +220,11 @@
   }
 }
 
-- (id)searchURLRequestPropertiesForNetworkType:(int64_t)a3
+- (id)searchURLRequestPropertiesForNetworkType:(int64_t)type
 {
   if (self->_searchURLs)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69D4970]) initWithURL:{CFDictionaryGetValue(self->_searchURLs, a3)}];
+    v5 = [objc_alloc(MEMORY[0x1E69D4970]) initWithURL:{CFDictionaryGetValue(self->_searchURLs, type)}];
 
     return v5;
   }
@@ -233,22 +233,22 @@
   {
     v7 = [(SUClientInterface *)self->_clientInterface URLBagKeyForIdentifier:@"SUURLBagKeySearch"];
 
-    return [(SUSearchFieldConfiguration *)self _urlRequestPropertiesForURLBagKey:v7 networkType:a3];
+    return [(SUSearchFieldConfiguration *)self _urlRequestPropertiesForURLBagKey:v7 networkType:type];
   }
 }
 
-- (id)URLRequestPropertiesWithBaseURL:(id)a3 forNetworkType:(int64_t)a4
+- (id)URLRequestPropertiesWithBaseURL:(id)l forNetworkType:(int64_t)type
 {
-  v6 = [objc_alloc(MEMORY[0x1E69D4970]) initWithURL:a3];
-  v7 = [(SUSearchFieldConfiguration *)self _newQueryStringDictionaryForNetworkType:a4];
+  v6 = [objc_alloc(MEMORY[0x1E69D4970]) initWithURL:l];
+  v7 = [(SUSearchFieldConfiguration *)self _newQueryStringDictionaryForNetworkType:type];
   [v6 setRequestParameters:v7];
 
   return v6;
 }
 
-- (double)widthForOrientation:(int64_t)a3
+- (double)widthForOrientation:(int64_t)orientation
 {
-  if ((a3 - 3) > 1)
+  if ((orientation - 3) > 1)
   {
     result = self->_widthPortrait;
   }
@@ -266,24 +266,24 @@
   return result;
 }
 
-- (id)_initWithClientInterface:(id)a3
+- (id)_initWithClientInterface:(id)interface
 {
   v6.receiver = self;
   v6.super_class = SUSearchFieldConfiguration;
   v4 = [(SUSearchFieldConfiguration *)&v6 init];
   if (v4)
   {
-    v4->_clientInterface = a3;
+    v4->_clientInterface = interface;
   }
 
   return v4;
 }
 
-- (int64_t)_locationForString:(id)a3
+- (int64_t)_locationForString:(id)string
 {
   v4 = 4;
   v5 = 2;
-  for (i = &qword_1E81663D0; ![*(i - 1) isEqualToString:a3]; i += 2)
+  for (i = &qword_1E81663D0; ![*(i - 1) isEqualToString:string]; i += 2)
   {
     if (!--v4)
     {
@@ -294,15 +294,15 @@
   return *i;
 }
 
-- (id)_newQueryStringDictionaryForNetworkType:(int64_t)a3
+- (id)_newQueryStringDictionaryForNetworkType:(int64_t)type
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(SUClientInterface *)self->_clientInterface clientIdentifier];
-  if (v6)
+  clientIdentifier = [(SUClientInterface *)self->_clientInterface clientIdentifier];
+  if (clientIdentifier)
   {
-    v7 = v6;
-    v8 = [MEMORY[0x1E69E47F8] sharedCache];
-    v9 = [objc_msgSend(v8 URLBagForContext:{objc_msgSend(MEMORY[0x1E69D49F8], "contextWithBagType:", 0)), "searchQueryParametersForClientIdentifier:networkType:", v7, a3}];
+    v7 = clientIdentifier;
+    mEMORY[0x1E69E47F8] = [MEMORY[0x1E69E47F8] sharedCache];
+    v9 = [objc_msgSend(mEMORY[0x1E69E47F8] URLBagForContext:{objc_msgSend(MEMORY[0x1E69D49F8], "contextWithBagType:", 0)), "searchQueryParametersForClientIdentifier:networkType:", v7, type}];
     if (v9)
     {
       v10 = [MEMORY[0x1E695DFF8] copyDictionaryForQueryString:v9 unescapedValues:1];
@@ -316,7 +316,7 @@
   return v5;
 }
 
-- (__CFDictionary)_newURLsDictionaryWithDictionary:(id)a3
+- (__CFDictionary)_newURLsDictionaryWithDictionary:(id)dictionary
 {
   Mutable = CFDictionaryCreateMutable(0, 0, 0, MEMORY[0x1E695E9E8]);
   v5 = 0;
@@ -367,7 +367,7 @@ void __63__SUSearchFieldConfiguration__newURLsDictionaryWithDictionary___block_i
   }
 }
 
-- (void)_setHintURLsFromDictionary:(id)a3
+- (void)_setHintURLsFromDictionary:(id)dictionary
 {
   hintURLs = self->_hintURLs;
   if (hintURLs)
@@ -375,10 +375,10 @@ void __63__SUSearchFieldConfiguration__newURLsDictionaryWithDictionary___block_i
     CFRelease(hintURLs);
   }
 
-  self->_hintURLs = [(SUSearchFieldConfiguration *)self _newURLsDictionaryWithDictionary:a3];
+  self->_hintURLs = [(SUSearchFieldConfiguration *)self _newURLsDictionaryWithDictionary:dictionary];
 }
 
-- (void)_setSearchURLsFromDictionary:(id)a3
+- (void)_setSearchURLsFromDictionary:(id)dictionary
 {
   searchURLs = self->_searchURLs;
   if (searchURLs)
@@ -386,17 +386,17 @@ void __63__SUSearchFieldConfiguration__newURLsDictionaryWithDictionary___block_i
     CFRelease(searchURLs);
   }
 
-  self->_searchURLs = [(SUSearchFieldConfiguration *)self _newURLsDictionaryWithDictionary:a3];
+  self->_searchURLs = [(SUSearchFieldConfiguration *)self _newURLsDictionaryWithDictionary:dictionary];
 }
 
-- (id)_urlRequestPropertiesForURLBagKey:(id)a3 networkType:(int64_t)a4
+- (id)_urlRequestPropertiesForURLBagKey:(id)key networkType:(int64_t)type
 {
   v7 = [MEMORY[0x1E69D49F8] contextWithBagType:0];
   result = [objc_msgSend(objc_msgSend(MEMORY[0x1E69E47F8] "sharedCache")];
   if (result)
   {
 
-    return [(SUSearchFieldConfiguration *)self URLRequestPropertiesWithBaseURL:result forNetworkType:a4];
+    return [(SUSearchFieldConfiguration *)self URLRequestPropertiesWithBaseURL:result forNetworkType:type];
   }
 
   return result;

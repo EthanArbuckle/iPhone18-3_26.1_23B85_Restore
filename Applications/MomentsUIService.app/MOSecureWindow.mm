@@ -1,12 +1,12 @@
 @interface MOSecureWindow
-- (_TtC16MomentsUIService14MOSecureWindow)initWithCoder:(id)a3;
-- (_TtC16MomentsUIService14MOSecureWindow)initWithFrame:(CGRect)a3;
-- (_TtC16MomentsUIService14MOSecureWindow)initWithWindowScene:(id)a3;
+- (_TtC16MomentsUIService14MOSecureWindow)initWithCoder:(id)coder;
+- (_TtC16MomentsUIService14MOSecureWindow)initWithFrame:(CGRect)frame;
+- (_TtC16MomentsUIService14MOSecureWindow)initWithWindowScene:(id)scene;
 @end
 
 @implementation MOSecureWindow
 
-- (_TtC16MomentsUIService14MOSecureWindow)initWithCoder:(id)a3
+- (_TtC16MomentsUIService14MOSecureWindow)initWithCoder:(id)coder
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s7Combine9PublishedVy16MomentsUIService24MOAngelControllerWrapperCGMd);
   v5 = *(v4 - 8);
@@ -21,14 +21,14 @@
   return result;
 }
 
-- (_TtC16MomentsUIService14MOSecureWindow)initWithWindowScene:(id)a3
+- (_TtC16MomentsUIService14MOSecureWindow)initWithWindowScene:(id)scene
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC16MomentsUIService14MOSecureWindow)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService14MOSecureWindow)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

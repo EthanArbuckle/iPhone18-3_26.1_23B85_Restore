@@ -1,5 +1,5 @@
 @interface BLSHAssertionProxy
-- (BLSHAssertionProxy)initWithIdentifier:(id)a3 descriptor:(id)a4 remoteTarget:(id)a5;
+- (BLSHAssertionProxy)initWithIdentifier:(id)identifier descriptor:(id)descriptor remoteTarget:(id)target;
 - (BOOL)isAcquired;
 - (NSString)description;
 - (double)_lock_activeDuration;
@@ -9,22 +9,22 @@
 - (unint64_t)acquisitionState;
 - (void)invalidate;
 - (void)serviceDidAcquire;
-- (void)serviceDidCancelWithError:(id)a3;
+- (void)serviceDidCancelWithError:(id)error;
 - (void)serviceDidPause;
 - (void)serviceDidResume;
-- (void)serviceFailedToAcquireWithError:(id)a3;
+- (void)serviceFailedToAcquireWithError:(id)error;
 - (void)serviceWillCancel;
-- (void)setAcquired:(uint64_t)a1;
-- (void)setPaused:(uint64_t)a1;
+- (void)setAcquired:(uint64_t)acquired;
+- (void)setPaused:(uint64_t)paused;
 @end
 
 @implementation BLSHAssertionProxy
 
-- (BLSHAssertionProxy)initWithIdentifier:(id)a3 descriptor:(id)a4 remoteTarget:(id)a5
+- (BLSHAssertionProxy)initWithIdentifier:(id)identifier descriptor:(id)descriptor remoteTarget:(id)target
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
+  targetCopy = target;
   v15.receiver = self;
   v15.super_class = BLSHAssertionProxy;
   v12 = [(BLSHAssertionProxy *)&v15 init];
@@ -32,9 +32,9 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_descriptor, a4);
-    objc_storeStrong(&v13->_remoteTarget, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_descriptor, descriptor);
+    objc_storeStrong(&v13->_remoteTarget, target);
     v13->_lock_valid = 1;
   }
 
@@ -60,9 +60,9 @@
 - (double)activeDuration
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BLSHAssertionProxy *)self _lock_activeDuration];
+  _lock_activeDuration = [(BLSHAssertionProxy *)self _lock_activeDuration];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_activeDuration;
 }
 
 - (unint64_t)acquisitionState
@@ -81,10 +81,10 @@
 - (NSString)description
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BLSHAssertionProxy *)self lock_description];
+  lock_description = [(BLSHAssertionProxy *)self lock_description];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return lock_description;
 }
 
 id __38__BLSHAssertionProxy_lock_description__block_invoke(uint64_t a1)
@@ -125,11 +125,11 @@ id __38__BLSHAssertionProxy_lock_description__block_invoke(uint64_t a1)
 
 - (uint64_t)isValid
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 40));
-    v2 = *(a1 + 44);
-    os_unfair_lock_unlock((a1 + 40));
+    os_unfair_lock_lock((self + 40));
+    v2 = *(self + 44);
+    os_unfair_lock_unlock((self + 40));
   }
 
   else
@@ -140,19 +140,19 @@ id __38__BLSHAssertionProxy_lock_description__block_invoke(uint64_t a1)
   return v2 & 1;
 }
 
-- (void)setAcquired:(uint64_t)a1
+- (void)setAcquired:(uint64_t)acquired
 {
-  if (a1)
+  if (acquired)
   {
-    os_unfair_lock_lock((a1 + 40));
-    *(a1 + 45) = a2;
+    os_unfair_lock_lock((acquired + 40));
+    *(acquired + 45) = a2;
     if (a2)
     {
-      *(a1 + 47) = 0;
+      *(acquired + 47) = 0;
       v4 = mach_continuous_time();
       v5 = 0;
-      *(a1 + 16) = v4;
-      *(a1 + 24) = v4;
+      *(acquired + 16) = v4;
+      *(acquired + 24) = v4;
     }
 
     else
@@ -160,21 +160,21 @@ id __38__BLSHAssertionProxy_lock_description__block_invoke(uint64_t a1)
       v5 = mach_continuous_time();
     }
 
-    *(a1 + 32) = v5;
+    *(acquired + 32) = v5;
 
-    os_unfair_lock_unlock((a1 + 40));
+    os_unfair_lock_unlock((acquired + 40));
   }
 }
 
-- (void)setPaused:(uint64_t)a1
+- (void)setPaused:(uint64_t)paused
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (paused)
   {
-    os_unfair_lock_lock((a1 + 40));
-    v4 = *(a1 + 46);
-    *(a1 + 46) = a2;
-    if (*(a1 + 45) == 1)
+    os_unfair_lock_lock((paused + 40));
+    v4 = *(paused + 46);
+    *(paused + 46) = a2;
+    if (*(paused + 45) == 1)
     {
       if (v4 == a2)
       {
@@ -182,31 +182,31 @@ id __38__BLSHAssertionProxy_lock_description__block_invoke(uint64_t a1)
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
         {
           v9 = 134218498;
-          v10 = a1;
+          pausedCopy = paused;
           v11 = 1024;
           v12 = a2;
           v13 = 2114;
-          v14 = a1;
+          pausedCopy2 = paused;
           _os_log_error_impl(&dword_21FD11000, v5, OS_LOG_TYPE_ERROR, "%p assertion setPaused:%{BOOL}u when not acquired %{public}@", &v9, 0x1Cu);
         }
       }
 
       else if (a2)
       {
-        *(a1 + 47) = 1;
-        v6 = *(a1 + 24);
+        *(paused + 47) = 1;
+        v6 = *(paused + 24);
         mach_continuous_time();
         BSTimeDifferenceFromMachTimeToMachTime();
-        *(a1 + 8) = v7 + *(a1 + 8);
+        *(paused + 8) = v7 + *(paused + 8);
       }
 
       else
       {
-        *(a1 + 24) = mach_continuous_time();
+        *(paused + 24) = mach_continuous_time();
       }
     }
 
-    os_unfair_lock_unlock((a1 + 40));
+    os_unfair_lock_unlock((paused + 40));
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -214,15 +214,15 @@ id __38__BLSHAssertionProxy_lock_description__block_invoke(uint64_t a1)
 
 - (double)_lock_activeDuration
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = *(a1 + 8);
-  if (*(a1 + 45) == 1 && (*(a1 + 46) & 1) == 0)
+  v1 = *(self + 8);
+  if (*(self + 45) == 1 && (*(self + 46) & 1) == 0)
   {
-    v2 = *(a1 + 24);
+    v2 = *(self + 24);
     mach_continuous_time();
     BSTimeDifferenceFromMachTimeToMachTime();
     return v1 + v3;
@@ -242,9 +242,9 @@ id __38__BLSHAssertionProxy_lock_description__block_invoke(uint64_t a1)
   }
 }
 
-- (void)serviceFailedToAcquireWithError:(id)a3
+- (void)serviceFailedToAcquireWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = OUTLINED_FUNCTION_1_8();
   if ([(BLSHAssertionProxy *)v4 isValid])
   {
@@ -262,9 +262,9 @@ id __38__BLSHAssertionProxy_lock_description__block_invoke(uint64_t a1)
   }
 }
 
-- (void)serviceDidCancelWithError:(id)a3
+- (void)serviceDidCancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = OUTLINED_FUNCTION_1_8();
   if ([(BLSHAssertionProxy *)v5 isValid])
   {
@@ -297,8 +297,8 @@ id __38__BLSHAssertionProxy_lock_description__block_invoke(uint64_t a1)
 
 - (id)lock_description
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_opt_new();
     v5 = MEMORY[0x277D85DD0];
@@ -306,13 +306,13 @@ id __38__BLSHAssertionProxy_lock_description__block_invoke(uint64_t a1)
     v7 = __38__BLSHAssertionProxy_lock_description__block_invoke;
     v8 = &unk_27841E538;
     v9 = v2;
-    v10 = v1;
+    v10 = selfCopy;
     v3 = v2;
-    [v3 appendProem:v1 block:&v5];
-    v1 = [v3 description];
+    [v3 appendProem:selfCopy block:&v5];
+    selfCopy = [v3 description];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

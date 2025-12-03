@@ -1,20 +1,20 @@
 @interface SSRRPISamplingXPCListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SSRRPISamplingXPCListener)init;
-- (SSRRPISamplingXPCListener)initWithListener:(id)a3;
+- (SSRRPISamplingXPCListener)initWithListener:(id)listener;
 - (void)listen;
 @end
 
 @implementation SSRRPISamplingXPCListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = *MEMORY[0x277D01970];
   v9 = *MEMORY[0x277D01970];
-  if (self->_listener == v6)
+  if (self->_listener == listenerCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -24,10 +24,10 @@
     }
 
     v11 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_283934D00];
-    [v7 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
     v12 = [@"com.apple.ssr.rpisamplingservice" stringByReplacingOccurrencesOfString:@"com.apple." withString:&stru_283923FC0];
-    v10 = [MEMORY[0x277D018F8] xpcConnection:v7 hasEntitlement:v12];
+    v10 = [MEMORY[0x277D018F8] xpcConnection:connectionCopy hasEntitlement:v12];
     if (v10)
     {
       exportedObject = self->_exportedObject;
@@ -40,8 +40,8 @@
         exportedObject = self->_exportedObject;
       }
 
-      [v7 setExportedObject:exportedObject];
-      [v7 resume];
+      [connectionCopy setExportedObject:exportedObject];
+      [connectionCopy resume];
     }
 
     else
@@ -56,7 +56,7 @@
         _os_log_impl(&dword_225E12000, v16, OS_LOG_TYPE_DEFAULT, "%s SSRRPISamplingXPCListener does not have entitlement: %@", &v19, 0x16u);
       }
 
-      [v7 invalidate];
+      [connectionCopy invalidate];
     }
   }
 
@@ -100,16 +100,16 @@
   return v4;
 }
 
-- (SSRRPISamplingXPCListener)initWithListener:(id)a3
+- (SSRRPISamplingXPCListener)initWithListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v9.receiver = self;
   v9.super_class = SSRRPISamplingXPCListener;
   v6 = [(SSRRPISamplingXPCListener *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listener, a3);
+    objc_storeStrong(&v6->_listener, listener);
   }
 
   return v7;

@@ -1,13 +1,13 @@
 @interface WBRevisionAuthorTable
-+ (void)readFrom:(id)a3 revisionAuthorTable:(id)a4;
++ (void)readFrom:(id)from revisionAuthorTable:(id)table;
 @end
 
 @implementation WBRevisionAuthorTable
 
-+ (void)readFrom:(id)a3 revisionAuthorTable:(id)a4
++ (void)readFrom:(id)from revisionAuthorTable:(id)table
 {
-  v14 = a3;
-  v5 = a4;
+  fromCopy = from;
+  tableCopy = table;
   v6 = [WBObjectFactory create:55];
   if (v6)
   {
@@ -19,9 +19,9 @@
   }
 
   *(v7 + 2) = 51;
-  v8 = [v14 wrdReader];
-  (*(*v8 + 312))(v8, v7);
-  v9 = [v5 authors];
+  wrdReader = [fromCopy wrdReader];
+  (*(*wrdReader + 312))(wrdReader, v7);
+  authors = [tableCopy authors];
   v10 = *(v7 + 2);
   v11 = *(v10 + 8);
   if (*(v10 + 8))
@@ -30,7 +30,7 @@
     do
     {
       v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCsString:{WrdStringWithDataTable::getStringDataReference(*(v7 + 2), v12) + 8}];
-      [v9 addObject:v13];
+      [authors addObject:v13];
 
       ++v12;
     }

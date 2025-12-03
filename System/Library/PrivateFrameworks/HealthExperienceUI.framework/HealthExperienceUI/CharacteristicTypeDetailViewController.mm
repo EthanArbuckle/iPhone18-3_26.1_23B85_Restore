@@ -1,12 +1,12 @@
 @interface CharacteristicTypeDetailViewController
-- (CharacteristicTypeDetailViewController)initWithCoder:(id)a3;
-- (CharacteristicTypeDetailViewController)initWithHealthStore:(id)a3 characteristicType:(id)a4 identifier:(int64_t)a5 firstName:(id)a6 lastName:(id)a7;
-- (CharacteristicTypeDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CharacteristicTypeDetailViewController)initWithCoder:(id)coder;
+- (CharacteristicTypeDetailViewController)initWithHealthStore:(id)store characteristicType:(id)type identifier:(int64_t)identifier firstName:(id)name lastName:(id)lastName;
+- (CharacteristicTypeDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CharacteristicTypeDetailViewControllerDelegate)delegate;
-- (id)getBiologicalSex:(id)a3;
-- (id)getBloodType:(id)a3;
-- (id)getFitzpatrickSkinType:(id)a3;
-- (id)getWheelchairUse:(id)a3;
+- (id)getBiologicalSex:(id)sex;
+- (id)getBloodType:(id)type;
+- (id)getFitzpatrickSkinType:(id)type;
+- (id)getWheelchairUse:(id)use;
 - (id)specifierForBiologicalSex;
 - (id)specifierForBloodType;
 - (id)specifierForFirstName;
@@ -14,60 +14,60 @@
 - (id)specifierForLastName;
 - (id)specifierForWheelchairUse;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_updateFirstName:(id)a3 lastName:(id)a4 completion:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_updateFirstName:(id)name lastName:(id)lastName completion:(id)completion;
 - (void)didUpdateName;
-- (void)setBiologicalSex:(id)a3 specifier:(id)a4;
-- (void)setBloodType:(id)a3 specifier:(id)a4;
-- (void)setFirstName:(id)a3 specifier:(id)a4;
-- (void)setFitzpatrickSkinType:(id)a3 specifier:(id)a4;
-- (void)setLastName:(id)a3 specifier:(id)a4;
-- (void)setWheelchairUse:(id)a3 specifier:(id)a4;
+- (void)setBiologicalSex:(id)sex specifier:(id)specifier;
+- (void)setBloodType:(id)type specifier:(id)specifier;
+- (void)setFirstName:(id)name specifier:(id)specifier;
+- (void)setFitzpatrickSkinType:(id)type specifier:(id)specifier;
+- (void)setLastName:(id)name specifier:(id)specifier;
+- (void)setWheelchairUse:(id)use specifier:(id)specifier;
 @end
 
 @implementation CharacteristicTypeDetailViewController
 
-- (CharacteristicTypeDetailViewController)initWithHealthStore:(id)a3 characteristicType:(id)a4 identifier:(int64_t)a5 firstName:(id)a6 lastName:(id)a7
+- (CharacteristicTypeDetailViewController)initWithHealthStore:(id)store characteristicType:(id)type identifier:(int64_t)identifier firstName:(id)name lastName:(id)lastName
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  storeCopy = store;
+  typeCopy = type;
+  nameCopy = name;
+  lastNameCopy = lastName;
   v25.receiver = self;
   v25.super_class = CharacteristicTypeDetailViewController;
   v17 = [(CharacteristicTypeDetailViewController *)&v25 initWithNibName:0 bundle:0];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_healthStore, a3);
-    objc_storeStrong(&v18->_characteristicType, a4);
-    v19 = [objc_alloc(MEMORY[0x1E69A4048]) initWithHealthStore:v13];
+    objc_storeStrong(&v17->_healthStore, store);
+    objc_storeStrong(&v18->_characteristicType, type);
+    v19 = [objc_alloc(MEMORY[0x1E69A4048]) initWithHealthStore:storeCopy];
     userDefaults = v18->_userDefaults;
     v18->_userDefaults = v19;
 
-    v18->_specifierID = a5;
-    objc_storeStrong(&v18->_firstName, a6);
-    objc_storeStrong(&v18->_lastName, a7);
+    v18->_specifierID = identifier;
+    objc_storeStrong(&v18->_firstName, name);
+    objc_storeStrong(&v18->_lastName, lastName);
   }
 
-  v21 = [(CharacteristicTypeDetailViewController *)v18 title];
-  v22 = [(CharacteristicTypeDetailViewController *)v18 navigationItem];
-  [v22 setTitle:v21];
+  title = [(CharacteristicTypeDetailViewController *)v18 title];
+  navigationItem = [(CharacteristicTypeDetailViewController *)v18 navigationItem];
+  [navigationItem setTitle:title];
 
-  v23 = [(CharacteristicTypeDetailViewController *)v18 navigationItem];
-  [v23 setStyle:0];
+  navigationItem2 = [(CharacteristicTypeDetailViewController *)v18 navigationItem];
+  [navigationItem2 setStyle:0];
 
   return v18;
 }
 
-- (CharacteristicTypeDetailViewController)initWithCoder:(id)a3
+- (CharacteristicTypeDetailViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CharacteristicTypeDetailViewController;
-  return [(CharacteristicTypeDetailViewController *)&v4 initWithCoder:a3];
+  return [(CharacteristicTypeDetailViewController *)&v4 initWithCoder:coder];
 }
 
-- (CharacteristicTypeDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CharacteristicTypeDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D940];
@@ -90,13 +90,13 @@
       switch(specifierID)
       {
         case 4:
-          v7 = [(CharacteristicTypeDetailViewController *)self specifierForBloodType];
+          specifierForBloodType = [(CharacteristicTypeDetailViewController *)self specifierForBloodType];
           goto LABEL_15;
         case 5:
-          v7 = [(CharacteristicTypeDetailViewController *)self specifierForFitzpatrickSkinType];
+          specifierForBloodType = [(CharacteristicTypeDetailViewController *)self specifierForFitzpatrickSkinType];
           goto LABEL_15;
         case 6:
-          v7 = [(CharacteristicTypeDetailViewController *)self specifierForWheelchairUse];
+          specifierForBloodType = [(CharacteristicTypeDetailViewController *)self specifierForWheelchairUse];
           goto LABEL_15;
       }
     }
@@ -106,16 +106,16 @@
       switch(specifierID)
       {
         case 1:
-          v7 = [(CharacteristicTypeDetailViewController *)self specifierForFirstName];
+          specifierForBloodType = [(CharacteristicTypeDetailViewController *)self specifierForFirstName];
           goto LABEL_15;
         case 2:
-          v7 = [(CharacteristicTypeDetailViewController *)self specifierForLastName];
+          specifierForBloodType = [(CharacteristicTypeDetailViewController *)self specifierForLastName];
           goto LABEL_15;
         case 3:
-          v7 = [(CharacteristicTypeDetailViewController *)self specifierForBiologicalSex];
+          specifierForBloodType = [(CharacteristicTypeDetailViewController *)self specifierForBiologicalSex];
 LABEL_15:
-          v8 = v7;
-          [v5 addObject:v7];
+          v8 = specifierForBloodType;
+          [v5 addObject:specifierForBloodType];
 
           break;
       }
@@ -153,23 +153,23 @@ LABEL_15:
   v5 = [v4 localizedStringForKey:@"BIOLOGICAL_SEX" value:&stru_1F3823B88 table:*MEMORY[0x1E696B910]];
   v6 = [v3 preferenceSpecifierNamed:v5 target:self set:sel_setBiologicalSex_specifier_ get:sel_getBiologicalSex_ detail:objc_opt_class() cell:2 edit:0];
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; i != 4; ++i)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:i];
-    [v7 addObject:v9];
+    [array addObject:v9];
   }
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   for (j = 0; j != 4; ++j)
   {
-    v12 = [(CharacteristicTypeDetailViewController *)self delegate];
-    v13 = [v12 _displayStringForBiologicalSex:j];
+    delegate = [(CharacteristicTypeDetailViewController *)self delegate];
+    v13 = [delegate _displayStringForBiologicalSex:j];
 
-    [v10 addObject:v13];
+    [array2 addObject:v13];
   }
 
-  [v6 setValues:v7 titles:v10];
+  [v6 setValues:array titles:array2];
 
   return v6;
 }
@@ -181,23 +181,23 @@ LABEL_15:
   v5 = [v4 localizedStringForKey:@"BLOOD_TYPE" value:&stru_1F3823B88 table:*MEMORY[0x1E696B910]];
   v6 = [v3 preferenceSpecifierNamed:v5 target:self set:sel_setBloodType_specifier_ get:sel_getBloodType_ detail:objc_opt_class() cell:2 edit:0];
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; i != 9; ++i)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:i];
-    [v7 addObject:v9];
+    [array addObject:v9];
   }
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   for (j = 0; j != 9; ++j)
   {
-    v12 = [(CharacteristicTypeDetailViewController *)self delegate];
-    v13 = [v12 _displayStringForBloodType:j];
+    delegate = [(CharacteristicTypeDetailViewController *)self delegate];
+    v13 = [delegate _displayStringForBloodType:j];
 
-    [v10 addObject:v13];
+    [array2 addObject:v13];
   }
 
-  [v6 setValues:v7 titles:v10];
+  [v6 setValues:array titles:array2];
 
   return v6;
 }
@@ -209,23 +209,23 @@ LABEL_15:
   v5 = [v4 localizedStringForKey:@"FITZPATRICK_SKIN_TYPE" value:&stru_1F3823B88 table:*MEMORY[0x1E696B910]];
   v6 = [v3 preferenceSpecifierNamed:v5 target:self set:sel_setFitzpatrickSkinType_specifier_ get:sel_getFitzpatrickSkinType_ detail:objc_opt_class() cell:2 edit:0];
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; i != 7; ++i)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:i];
-    [v7 addObject:v9];
+    [array addObject:v9];
   }
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   for (j = 0; j != 7; ++j)
   {
-    v12 = [(CharacteristicTypeDetailViewController *)self delegate];
-    v13 = [v12 _displayStringForFitzpatrickSkinType:j];
+    delegate = [(CharacteristicTypeDetailViewController *)self delegate];
+    v13 = [delegate _displayStringForFitzpatrickSkinType:j];
 
-    [v10 addObject:v13];
+    [array2 addObject:v13];
   }
 
-  [v6 setValues:v7 titles:v10];
+  [v6 setValues:array titles:array2];
 
   return v6;
 }
@@ -237,34 +237,34 @@ LABEL_15:
   v5 = [v4 localizedStringForKey:@"WHEELCHAIR_USE" value:&stru_1F3823B88 table:*MEMORY[0x1E696B910]];
   v6 = [v3 preferenceSpecifierNamed:v5 target:self set:sel_setWheelchairUse_specifier_ get:sel_getWheelchairUse_ detail:objc_opt_class() cell:2 edit:0];
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; i != 3; ++i)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:i];
-    [v7 addObject:v9];
+    [array addObject:v9];
   }
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   for (j = 0; j != 3; ++j)
   {
-    v12 = [(CharacteristicTypeDetailViewController *)self delegate];
-    v13 = [v12 _displayStringForWheelchairUse:j];
+    delegate = [(CharacteristicTypeDetailViewController *)self delegate];
+    v13 = [delegate _displayStringForWheelchairUse:j];
 
-    [v10 addObject:v13];
+    [array2 addObject:v13];
   }
 
-  [v6 setValues:v7 titles:v10];
+  [v6 setValues:array titles:array2];
 
   return v6;
 }
 
-- (void)setFirstName:(id)a3 specifier:(id)a4
+- (void)setFirstName:(id)name specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  nameCopy = name;
+  specifierCopy = specifier;
+  if (nameCopy)
   {
-    v8 = v6;
+    v8 = nameCopy;
   }
 
   else
@@ -288,10 +288,10 @@ LABEL_15:
   }
 
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v11 = v7;
-  v12 = v6;
+  v16 = nameCopy;
+  v17 = specifierCopy;
+  v11 = specifierCopy;
+  v12 = nameCopy;
   v13 = v10;
   v14 = v8;
   [(CharacteristicTypeDetailViewController *)self _updateFirstName:v14 lastName:v13 completion:v15];
@@ -341,10 +341,10 @@ void __65__CharacteristicTypeDetailViewController_setFirstName_specifier___block
   }
 }
 
-- (void)setLastName:(id)a3 specifier:(id)a4
+- (void)setLastName:(id)name specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  specifierCopy = specifier;
   if (self->_firstName)
   {
     firstName = self->_firstName;
@@ -359,9 +359,9 @@ void __65__CharacteristicTypeDetailViewController_setFirstName_specifier___block
   v14[1] = 3221225472;
   v14[2] = __64__CharacteristicTypeDetailViewController_setLastName_specifier___block_invoke;
   v14[3] = &unk_1E7EEB2D0;
-  if (v6)
+  if (nameCopy)
   {
-    v9 = v6;
+    v9 = nameCopy;
   }
 
   else
@@ -370,10 +370,10 @@ void __65__CharacteristicTypeDetailViewController_setFirstName_specifier___block
   }
 
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = nameCopy;
+  v16 = specifierCopy;
+  v10 = specifierCopy;
+  v11 = nameCopy;
   v12 = v9;
   v13 = firstName;
   [(CharacteristicTypeDetailViewController *)self _updateFirstName:v13 lastName:v12 completion:v14];
@@ -423,11 +423,11 @@ void __64__CharacteristicTypeDetailViewController_setLastName_specifier___block_
   }
 }
 
-- (void)setBiologicalSex:(id)a3 specifier:(id)a4
+- (void)setBiologicalSex:(id)sex specifier:(id)specifier
 {
   healthStore = self->_healthStore;
   v13 = 0;
-  v6 = -[HKHealthStore _setBiologicalSex:error:](healthStore, "_setBiologicalSex:error:", [a3 integerValue], &v13);
+  v6 = -[HKHealthStore _setBiologicalSex:error:](healthStore, "_setBiologicalSex:error:", [sex integerValue], &v13);
   v7 = v13;
   if (v6)
   {
@@ -443,7 +443,7 @@ void __64__CharacteristicTypeDetailViewController_setLastName_specifier___block_
   }
 }
 
-- (id)getBiologicalSex:(id)a3
+- (id)getBiologicalSex:(id)sex
 {
   healthStore = self->_healthStore;
   v12 = 0;
@@ -453,18 +453,18 @@ void __64__CharacteristicTypeDetailViewController_setLastName_specifier___block_
   self->_biologicalSexObject = v5;
 
   v8 = MEMORY[0x1E696AD98];
-  v9 = [(HKBiologicalSexObject *)self->_biologicalSexObject biologicalSex];
+  biologicalSex = [(HKBiologicalSexObject *)self->_biologicalSexObject biologicalSex];
 
-  v10 = [v8 numberWithInteger:v9];
+  v10 = [v8 numberWithInteger:biologicalSex];
 
   return v10;
 }
 
-- (void)setBloodType:(id)a3 specifier:(id)a4
+- (void)setBloodType:(id)type specifier:(id)specifier
 {
   healthStore = self->_healthStore;
   v13 = 0;
-  v6 = -[HKHealthStore _setBloodType:error:](healthStore, "_setBloodType:error:", [a3 integerValue], &v13);
+  v6 = -[HKHealthStore _setBloodType:error:](healthStore, "_setBloodType:error:", [type integerValue], &v13);
   v7 = v13;
   if (v6)
   {
@@ -480,7 +480,7 @@ void __64__CharacteristicTypeDetailViewController_setLastName_specifier___block_
   }
 }
 
-- (id)getBloodType:(id)a3
+- (id)getBloodType:(id)type
 {
   healthStore = self->_healthStore;
   v12 = 0;
@@ -490,18 +490,18 @@ void __64__CharacteristicTypeDetailViewController_setLastName_specifier___block_
   self->_bloodTypeObject = v5;
 
   v8 = MEMORY[0x1E696AD98];
-  v9 = [(HKBloodTypeObject *)self->_bloodTypeObject bloodType];
+  bloodType = [(HKBloodTypeObject *)self->_bloodTypeObject bloodType];
 
-  v10 = [v8 numberWithInteger:v9];
+  v10 = [v8 numberWithInteger:bloodType];
 
   return v10;
 }
 
-- (void)setFitzpatrickSkinType:(id)a3 specifier:(id)a4
+- (void)setFitzpatrickSkinType:(id)type specifier:(id)specifier
 {
   healthStore = self->_healthStore;
   v13 = 0;
-  v6 = -[HKHealthStore _setFitzpatrickSkinType:error:](healthStore, "_setFitzpatrickSkinType:error:", [a3 integerValue], &v13);
+  v6 = -[HKHealthStore _setFitzpatrickSkinType:error:](healthStore, "_setFitzpatrickSkinType:error:", [type integerValue], &v13);
   v7 = v13;
   if (v6)
   {
@@ -526,7 +526,7 @@ void __64__CharacteristicTypeDetailViewController_setLastName_specifier___block_
   }
 }
 
-- (id)getFitzpatrickSkinType:(id)a3
+- (id)getFitzpatrickSkinType:(id)type
 {
   healthStore = self->_healthStore;
   v12 = 0;
@@ -536,18 +536,18 @@ void __64__CharacteristicTypeDetailViewController_setLastName_specifier___block_
   self->_fitzpatrickSkinTypeObject = v5;
 
   v8 = MEMORY[0x1E696AD98];
-  v9 = [(HKFitzpatrickSkinTypeObject *)self->_fitzpatrickSkinTypeObject skinType];
+  skinType = [(HKFitzpatrickSkinTypeObject *)self->_fitzpatrickSkinTypeObject skinType];
 
-  v10 = [v8 numberWithInteger:v9];
+  v10 = [v8 numberWithInteger:skinType];
 
   return v10;
 }
 
-- (void)setWheelchairUse:(id)a3 specifier:(id)a4
+- (void)setWheelchairUse:(id)use specifier:(id)specifier
 {
   healthStore = self->_healthStore;
   v13 = 0;
-  v6 = -[HKHealthStore _setWheelchairUse:error:](healthStore, "_setWheelchairUse:error:", [a3 integerValue], &v13);
+  v6 = -[HKHealthStore _setWheelchairUse:error:](healthStore, "_setWheelchairUse:error:", [use integerValue], &v13);
   v7 = v13;
   if (v6)
   {
@@ -572,7 +572,7 @@ void __64__CharacteristicTypeDetailViewController_setLastName_specifier___block_
   }
 }
 
-- (id)getWheelchairUse:(id)a3
+- (id)getWheelchairUse:(id)use
 {
   healthStore = self->_healthStore;
   v12 = 0;
@@ -582,64 +582,64 @@ void __64__CharacteristicTypeDetailViewController_setLastName_specifier___block_
   self->_wheelchairUseObject = v5;
 
   v8 = MEMORY[0x1E696AD98];
-  v9 = [(HKWheelchairUseObject *)self->_wheelchairUseObject wheelchairUse];
+  wheelchairUse = [(HKWheelchairUseObject *)self->_wheelchairUseObject wheelchairUse];
 
-  v10 = [v8 numberWithInteger:v9];
+  v10 = [v8 numberWithInteger:wheelchairUse];
 
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = CharacteristicTypeDetailViewController;
-  v4 = [(CharacteristicTypeDetailViewController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(CharacteristicTypeDetailViewController *)&v7 tableView:view cellForRowAtIndexPath:path];
   if ([v4 tag] == 8)
   {
-    v5 = [v4 editableTextField];
-    [v5 setAutocapitalizationType:2];
-    [v5 setAutocorrectionType:1];
-    [v5 setAdjustsFontSizeToFitWidth:1];
-    [v5 setTextAlignment:4];
-    [v5 setReturnKeyType:9];
-    [v5 setClearButtonMode:3];
+    editableTextField = [v4 editableTextField];
+    [editableTextField setAutocapitalizationType:2];
+    [editableTextField setAutocorrectionType:1];
+    [editableTextField setAdjustsFontSizeToFitWidth:1];
+    [editableTextField setTextAlignment:4];
+    [editableTextField setReturnKeyType:9];
+    [editableTextField setClearButtonMode:3];
   }
 
   return v4;
 }
 
-- (void)_updateFirstName:(id)a3 lastName:(id)a4 completion:(id)a5
+- (void)_updateFirstName:(id)name lastName:(id)lastName completion:(id)completion
 {
   v18[2] = *MEMORY[0x1E69E9840];
   healthStore = self->_healthStore;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(HKHealthStore *)healthStore profileIdentifier];
-  v13 = [v12 type];
+  completionCopy = completion;
+  lastNameCopy = lastName;
+  nameCopy = name;
+  profileIdentifier = [(HKHealthStore *)healthStore profileIdentifier];
+  type = [profileIdentifier type];
 
-  if (v13 == 1)
+  if (type == 1)
   {
     v14 = *MEMORY[0x1E696C908];
     v17[0] = *MEMORY[0x1E696C900];
     v17[1] = v14;
-    v18[0] = v11;
-    v18[1] = v10;
+    v18[0] = nameCopy;
+    v18[1] = lastNameCopy;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
-    [(WDUserDefaults *)self->_userDefaults setValue:v15 forKey:*MEMORY[0x1E696C918] completion:v9];
+    [(WDUserDefaults *)self->_userDefaults setValue:v15 forKey:*MEMORY[0x1E696C918] completion:completionCopy];
   }
 
   else
   {
     v16 = [objc_alloc(MEMORY[0x1E696C340]) initWithHealthStore:self->_healthStore];
-    [v16 setDisplayFirstName:v11 lastName:v10 completion:v9];
+    [v16 setDisplayFirstName:nameCopy lastName:lastNameCopy completion:completionCopy];
   }
 }
 
 - (void)didUpdateName
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:*MEMORY[0x1E696C910] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E696C910] object:0];
 }
 
 - (CharacteristicTypeDetailViewControllerDelegate)delegate

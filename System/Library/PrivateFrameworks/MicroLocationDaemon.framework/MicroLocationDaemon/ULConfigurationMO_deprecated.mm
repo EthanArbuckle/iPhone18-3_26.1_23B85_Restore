@@ -1,44 +1,44 @@
 @interface ULConfigurationMO_deprecated
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4;
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context;
 - (optional<ULConfigurationDO>)convertToDO;
 @end
 
 @implementation ULConfigurationMO_deprecated
 
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context
 {
-  v5 = [[ULConfigurationMO_deprecated alloc] initWithContext:a4];
-  [(ULConfigurationMO_deprecated *)v5 setGenerationTimestamp:*a3];
-  if (*(a3 + 31) >= 0)
+  v5 = [[ULConfigurationMO_deprecated alloc] initWithContext:context];
+  [(ULConfigurationMO_deprecated *)v5 setGenerationTimestamp:*o];
+  if (*(o + 31) >= 0)
   {
-    v6 = a3 + 8;
+    v6 = o + 8;
   }
 
   else
   {
-    v6 = *(a3 + 1);
+    v6 = *(o + 1);
   }
 
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:v6];
   [(ULConfigurationMO_deprecated *)v5 setLoiType:v7];
 
-  v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3 + 32];
-  v9 = [v8 UUIDString];
-  [(ULConfigurationMO_deprecated *)v5 setLoiId:v9];
+  v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:o + 32];
+  uUIDString = [v8 UUIDString];
+  [(ULConfigurationMO_deprecated *)v5 setLoiId:uUIDString];
 
-  [(ULConfigurationMO_deprecated *)v5 setConfigurationType:*(a3 + 12)];
-  CLMicroLocationProto::Configuration::ByteSize((a3 + 56));
+  [(ULConfigurationMO_deprecated *)v5 setConfigurationType:*(o + 12)];
+  CLMicroLocationProto::Configuration::ByteSize((o + 56));
   operator new[]();
 }
 
 - (optional<ULConfigurationDO>)convertToDO
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = [(ULConfigurationMO_deprecated *)self loiType];
-  v7 = v6;
-  if (v6)
+  loiType = [(ULConfigurationMO_deprecated *)self loiType];
+  v7 = loiType;
+  if (loiType)
   {
-    [v6 stdString];
+    [loiType stdString];
   }
 
   else
@@ -49,11 +49,11 @@
 
   if (BYTE8(v21))
   {
-    v8 = [(ULConfigurationMO_deprecated *)self loiId];
-    v9 = v8;
-    if (v8)
+    loiId = [(ULConfigurationMO_deprecated *)self loiId];
+    v9 = loiId;
+    if (loiId)
     {
-      [v8 boostUUID];
+      [loiId boostUUID];
     }
 
     else
@@ -70,14 +70,14 @@
       v30 = 1;
     }
 
-    v12 = [(ULConfigurationMO_deprecated *)self configuration];
-    v13 = v12;
-    v14 = [v12 bytes];
-    v15 = [(ULConfigurationMO_deprecated *)self configuration];
-    [v15 length];
-    LOBYTE(v14) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v19, v14);
+    configuration = [(ULConfigurationMO_deprecated *)self configuration];
+    v13 = configuration;
+    bytes = [configuration bytes];
+    configuration2 = [(ULConfigurationMO_deprecated *)self configuration];
+    [configuration2 length];
+    LOBYTE(bytes) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v19, bytes);
 
-    if (v14)
+    if (bytes)
     {
       if ((BYTE8(v21) & 1) == 0)
       {

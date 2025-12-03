@@ -1,7 +1,7 @@
 @interface JSClient
 - (NSString)locale;
 - (_TtP14amsengagementd19JSClientDemoExports_)demo;
-- (void)setDemo:(id)a3;
+- (void)setDemo:(id)demo;
 @end
 
 @implementation JSClient
@@ -13,16 +13,16 @@
   return v2;
 }
 
-- (void)setDemo:(id)a3
+- (void)setDemo:(id)demo
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100105EF0(a3);
+  selfCopy = self;
+  sub_100105EF0(demo);
 }
 
 - (NSString)locale
 {
-  v2 = self;
+  selfCopy = self;
   sub_100106000();
 
   v3 = String._bridgeToObjectiveC()();

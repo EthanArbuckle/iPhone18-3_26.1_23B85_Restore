@@ -1,7 +1,7 @@
 @interface WKPDFConfiguration
 - (CGRect)rect;
 - (WKPDFConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation WKPDFConfiguration
@@ -21,9 +21,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(WKPDFConfiguration *)self rect];
   [v4 setRect:?];
   [v4 setAllowTransparentBackground:{-[WKPDFConfiguration allowTransparentBackground](self, "allowTransparentBackground")}];

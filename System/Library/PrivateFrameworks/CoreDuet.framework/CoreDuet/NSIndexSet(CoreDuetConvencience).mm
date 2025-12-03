@@ -18,7 +18,7 @@
   v7 = v8;
   v3 = v2;
   v6 = v3;
-  [a1 enumerateIndexesUsingBlock:v5];
+  [self enumerateIndexesUsingBlock:v5];
 
   _Block_object_dispose(v8, 8);
 

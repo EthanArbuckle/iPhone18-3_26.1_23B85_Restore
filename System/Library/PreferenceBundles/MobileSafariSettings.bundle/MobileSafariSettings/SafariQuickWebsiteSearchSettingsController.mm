@@ -1,33 +1,33 @@
 @interface SafariQuickWebsiteSearchSettingsController
 - (BOOL)_hasSearchProviders;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (SafariQuickWebsiteSearchSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (SafariQuickWebsiteSearchSettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_cancelBarButtonItem;
 - (id)_deleteBarButtonItem;
 - (id)specifiers;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (void)_cancelEditing:(id)a3;
-- (void)_deleteItemsForSpecifiers:(id)a3;
-- (void)_deleteSelectedItems:(id)a3;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (void)_cancelEditing:(id)editing;
+- (void)_deleteItemsForSpecifiers:(id)specifiers;
+- (void)_deleteSelectedItems:(id)items;
 - (void)_updateDeleteButton;
 - (void)_updateEditButton;
 - (void)dealloc;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path;
 - (void)willBecomeActive;
 - (void)willResignActive;
 @end
 
 @implementation SafariQuickWebsiteSearchSettingsController
 
-- (SafariQuickWebsiteSearchSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (SafariQuickWebsiteSearchSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
   v11.receiver = self;
   v11.super_class = SafariQuickWebsiteSearchSettingsController;
-  v4 = [(SafariQuickWebsiteSearchSettingsController *)&v11 initWithNibName:a3 bundle:a4];
+  v4 = [(SafariQuickWebsiteSearchSettingsController *)&v11 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[WBSQuickWebsiteSearchController sharedController];
@@ -125,9 +125,9 @@
     v38 = v6;
     v33 = v12;
     [v6 addObject:v12];
-    v15 = [(SafariQuickWebsiteSearchSettingsController *)self _hasSearchProviders];
+    _hasSearchProviders = [(SafariQuickWebsiteSearchSettingsController *)self _hasSearchProviders];
     v16 = 0;
-    if (v15)
+    if (_hasSearchProviders)
     {
       v16 = SafariSettingsLocalizedString(@"Website shortcuts", @"Safari");
     }
@@ -139,16 +139,16 @@
 
     v31 = v17;
     [v38 addObject:v17];
-    v36 = self;
+    selfCopy = self;
     [(SafariQuickWebsiteSearchSettingsController *)self _updateEditButton];
     v19 = +[WBSQuickWebsiteSearchController sharedController];
-    v20 = [v19 quickWebsiteSearchHosts];
+    quickWebsiteSearchHosts = [v19 quickWebsiteSearchHosts];
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v20;
+    obj = quickWebsiteSearchHosts;
     v21 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v21)
     {
@@ -186,26 +186,26 @@
       while (v22);
     }
 
-    v4 = *&v36->super.PSListController_opaque[v35];
+    v4 = *&selfCopy->super.PSListController_opaque[v35];
   }
 
   return v4;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(SafariQuickWebsiteSearchSettingsController *)self indexForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(SafariQuickWebsiteSearchSettingsController *)self indexForIndexPath:pathCopy];
   v7 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v6];
-  v8 = [v7 identifier];
-  if ([v8 isEqualToString:@"USE_SITE_SPECIFIC_SEARCH"])
+  identifier = [v7 identifier];
+  if ([identifier isEqualToString:@"USE_SITE_SPECIFIC_SEARCH"])
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = v5;
+    v9 = pathCopy;
   }
 
   v10 = v9;
@@ -213,11 +213,11 @@
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEditing])
+  viewCopy = view;
+  pathCopy = path;
+  if ([viewCopy isEditing])
   {
     [(SafariQuickWebsiteSearchSettingsController *)self _updateDeleteButton];
   }
@@ -226,46 +226,46 @@
   {
     v8.receiver = self;
     v8.super_class = SafariQuickWebsiteSearchSettingsController;
-    [(SafariSettingsListController *)&v8 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SafariSettingsListController *)&v8 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  if ([a3 isEditing])
+  if ([view isEditing])
   {
 
     [(SafariQuickWebsiteSearchSettingsController *)self _updateDeleteButton];
   }
 }
 
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path
 {
-  v6 = [(SafariQuickWebsiteSearchSettingsController *)self navigationItem:a3];
-  v5 = [(SafariQuickWebsiteSearchSettingsController *)self _cancelBarButtonItem];
-  [v6 setRightBarButtonItem:v5 animated:1];
+  v6 = [(SafariQuickWebsiteSearchSettingsController *)self navigationItem:view];
+  _cancelBarButtonItem = [(SafariQuickWebsiteSearchSettingsController *)self _cancelBarButtonItem];
+  [v6 setRightBarButtonItem:_cancelBarButtonItem animated:1];
 }
 
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path
 {
-  v6 = [(SafariQuickWebsiteSearchSettingsController *)self navigationItem:a3];
-  v5 = [(SafariQuickWebsiteSearchSettingsController *)self editButtonItem];
-  [v6 setRightBarButtonItem:v5 animated:1];
+  v6 = [(SafariQuickWebsiteSearchSettingsController *)self navigationItem:view];
+  editButtonItem = [(SafariQuickWebsiteSearchSettingsController *)self editButtonItem];
+  [v6 setRightBarButtonItem:editButtonItem animated:1];
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(SafariQuickWebsiteSearchSettingsController *)self specifierAtIndex:[(SafariQuickWebsiteSearchSettingsController *)self indexForIndexPath:a4]];
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"USE_SITE_SPECIFIC_SEARCH"];
+  v4 = [(SafariQuickWebsiteSearchSettingsController *)self specifierAtIndex:[(SafariQuickWebsiteSearchSettingsController *)self indexForIndexPath:path]];
+  identifier = [v4 identifier];
+  v6 = [identifier isEqualToString:@"USE_SITE_SPECIFIC_SEARCH"];
 
   return v6 ^ 1;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v6 = [(SafariQuickWebsiteSearchSettingsController *)self indexForIndexPath:a5, a4];
-  v7 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v6];
+  style = [(SafariQuickWebsiteSearchSettingsController *)self indexForIndexPath:path, style];
+  v7 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:style];
   v9 = v7;
   v8 = [NSArray arrayWithObjects:&v9 count:1];
   [(SafariQuickWebsiteSearchSettingsController *)self _deleteItemsForSpecifiers:v8];
@@ -276,24 +276,24 @@
 - (BOOL)_hasSearchProviders
 {
   v2 = +[WBSQuickWebsiteSearchController sharedController];
-  v3 = [v2 quickWebsiteSearchHosts];
-  v4 = [v3 count] != 0;
+  quickWebsiteSearchHosts = [v2 quickWebsiteSearchHosts];
+  v4 = [quickWebsiteSearchHosts count] != 0;
 
   return v4;
 }
 
 - (void)_updateEditButton
 {
-  v3 = [(SafariQuickWebsiteSearchSettingsController *)self editButtonItem];
-  [v3 setEnabled:{-[SafariQuickWebsiteSearchSettingsController _hasSearchProviders](self, "_hasSearchProviders")}];
+  editButtonItem = [(SafariQuickWebsiteSearchSettingsController *)self editButtonItem];
+  [editButtonItem setEnabled:{-[SafariQuickWebsiteSearchSettingsController _hasSearchProviders](self, "_hasSearchProviders")}];
 }
 
 - (void)_updateDeleteButton
 {
-  v5 = [(SafariQuickWebsiteSearchSettingsController *)self _deleteBarButtonItem];
-  v3 = [(SafariQuickWebsiteSearchSettingsController *)self table];
-  v4 = [v3 indexPathsForSelectedRows];
-  [v5 setEnabled:{objc_msgSend(v4, "count") != 0}];
+  _deleteBarButtonItem = [(SafariQuickWebsiteSearchSettingsController *)self _deleteBarButtonItem];
+  table = [(SafariQuickWebsiteSearchSettingsController *)self table];
+  indexPathsForSelectedRows = [table indexPathsForSelectedRows];
+  [_deleteBarButtonItem setEnabled:{objc_msgSend(indexPathsForSelectedRows, "count") != 0}];
 }
 
 - (id)_deleteBarButtonItem
@@ -330,7 +330,7 @@
   return cancelBarButtonItem;
 }
 
-- (void)_cancelEditing:(id)a3
+- (void)_cancelEditing:(id)editing
 {
   if ([(SafariQuickWebsiteSearchSettingsController *)self isEditing])
   {
@@ -340,22 +340,22 @@
 
   else
   {
-    v4 = [(SafariQuickWebsiteSearchSettingsController *)self table];
-    [v4 setEditing:0 animated:0];
+    table = [(SafariQuickWebsiteSearchSettingsController *)self table];
+    [table setEditing:0 animated:0];
   }
 }
 
-- (void)_deleteSelectedItems:(id)a3
+- (void)_deleteSelectedItems:(id)items
 {
-  v4 = [(SafariQuickWebsiteSearchSettingsController *)self table];
-  v5 = [v4 indexPathsForSelectedRows];
+  table = [(SafariQuickWebsiteSearchSettingsController *)self table];
+  indexPathsForSelectedRows = [table indexPathsForSelectedRows];
 
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [indexPathsForSelectedRows count]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v5;
+  v7 = indexPathsForSelectedRows;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
@@ -419,11 +419,11 @@
   [(SafariQuickWebsiteSearchSettingsController *)self setEditing:0 animated:1];
 }
 
-- (void)_deleteItemsForSpecifiers:(id)a3
+- (void)_deleteItemsForSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   v6 = +[WBSQuickWebsiteSearchController sharedController];
-  v5 = [v4 safari_mapObjectsUsingBlock:&__block_literal_global_7];
+  v5 = [specifiersCopy safari_mapObjectsUsingBlock:&__block_literal_global_7];
 
   [v6 removeProvidersWithHosts:v5 completionHandler:0];
   [(SafariQuickWebsiteSearchSettingsController *)self _updateEditButton];

@@ -3,16 +3,16 @@
 - (BOOL)hasContentToDisplay;
 - (NSMutableArray)voicemails;
 - (NSString)folderName;
-- (_TtC11MobilePhone34VoicemailSearchTableViewController)initWithNavigationController:(id)a3 voicemailController:(id)a4;
-- (_TtC11MobilePhone34VoicemailSearchTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)configureWithCardController:(id)a3 presentationResultForIndex:(id)a4;
-- (void)performTableViewDestructiveActionAtIndexPath:(id)a3;
-- (void)setFolderName:(id)a3;
-- (void)setVoicemails:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (_TtC11MobilePhone34VoicemailSearchTableViewController)initWithNavigationController:(id)controller voicemailController:(id)voicemailController;
+- (_TtC11MobilePhone34VoicemailSearchTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)configureWithCardController:(id)controller presentationResultForIndex:(id)index;
+- (void)performTableViewDestructiveActionAtIndexPath:(id)path;
+- (void)setFolderName:(id)name;
+- (void)setVoicemails:(id)voicemails;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VoicemailSearchTableViewController
@@ -21,17 +21,17 @@
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  v2 = [(MPVoicemailTableViewController *)&v4 voicemails];
+  voicemails = [(MPVoicemailTableViewController *)&v4 voicemails];
 
-  return v2;
+  return voicemails;
 }
 
-- (void)setVoicemails:(id)a3
+- (void)setVoicemails:(id)voicemails
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(MPVoicemailTableViewController *)&v5 setVoicemails:a3];
+  [(MPVoicemailTableViewController *)&v5 setVoicemails:voicemails];
   v4[OBJC_IVAR____TtC11MobilePhone34VoicemailSearchTableViewController_dataSourceNeedsReload] = 1;
 }
 
@@ -44,7 +44,7 @@
   return v2;
 }
 
-- (void)setFolderName:(id)a3
+- (void)setFolderName:(id)name
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -59,8 +59,8 @@
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v2 = v6.receiver;
-  v3 = [(MPVoicemailTableViewController *)&v6 voicemails];
-  v4 = [(NSMutableArray *)v3 count:v6.receiver];
+  voicemails = [(MPVoicemailTableViewController *)&v6 voicemails];
+  v4 = [(NSMutableArray *)voicemails count:v6.receiver];
 
   return v4 > 0;
 }
@@ -80,86 +80,86 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   VoicemailSearchTableViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  VoicemailSearchTableViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  VoicemailSearchTableViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)performTableViewDestructiveActionAtIndexPath:(id)a3
+- (void)performTableViewDestructiveActionAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   VoicemailSearchTableViewController.performTableViewDestructiveAction(at:)(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = VoicemailSearchTableViewController.tableView(_:cellForRowAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = VoicemailSearchTableViewController.tableView(_:cellForRowAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  VoicemailSearchTableViewController.tableView(_:didSelectRowAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  VoicemailSearchTableViewController.tableView(_:didSelectRowAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (int64_t)configureWithCardController:(id)a3 presentationResultForIndex:(id)a4
+- (int64_t)configureWithCardController:(id)controller presentationResultForIndex:(id)index
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = VoicemailSearchTableViewController.configure(cardController:presentationResultForIndex:)(v10);
+  controllerCopy = controller;
+  selfCopy = self;
+  v12 = VoicemailSearchTableViewController.configure(cardController:presentationResultForIndex:)(controllerCopy);
 
   (*(v7 + 8))(v9, v6);
   return v12;
 }
 
-- (_TtC11MobilePhone34VoicemailSearchTableViewController)initWithNavigationController:(id)a3 voicemailController:(id)a4
+- (_TtC11MobilePhone34VoicemailSearchTableViewController)initWithNavigationController:(id)controller voicemailController:(id)voicemailController
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = specialized VoicemailSearchTableViewController.init(navigationController:voicemailController:)(v5, v6);
+  controllerCopy = controller;
+  voicemailControllerCopy = voicemailController;
+  v7 = specialized VoicemailSearchTableViewController.init(navigationController:voicemailController:)(controllerCopy, voicemailControllerCopy);
 
   return v7;
 }
 
-- (_TtC11MobilePhone34VoicemailSearchTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11MobilePhone34VoicemailSearchTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -171,8 +171,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return VoicemailSearchTableViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return VoicemailSearchTableViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

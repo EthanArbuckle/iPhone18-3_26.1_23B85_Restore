@@ -1,6 +1,6 @@
 @interface AEActivationPool
-- (id)initWithPolicyStore:(void *)a3 performancePrimitives:(void *)a4 invalidationHandler:(void *)a5 activations:(void *)a6 queue:;
-- (void)activateWithCompletion:(id *)a1;
+- (id)initWithPolicyStore:(void *)store performancePrimitives:(void *)primitives invalidationHandler:(void *)handler activations:(void *)activations queue:;
+- (void)activateWithCompletion:(id *)completion;
 @end
 
 @implementation AEActivationPool
@@ -47,56 +47,56 @@ void __43__AEActivationPool_activateWithCompletion___block_invoke_2(uint64_t a1)
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (id)initWithPolicyStore:(void *)a3 performancePrimitives:(void *)a4 invalidationHandler:(void *)a5 activations:(void *)a6 queue:
+- (id)initWithPolicyStore:(void *)store performancePrimitives:(void *)primitives invalidationHandler:(void *)handler activations:(void *)activations queue:
 {
   v12 = a2;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (a1)
+  storeCopy = store;
+  primitivesCopy = primitives;
+  handlerCopy = handler;
+  activationsCopy = activations;
+  if (self)
   {
-    v22.receiver = a1;
+    v22.receiver = self;
     v22.super_class = AEActivationPool;
-    a1 = objc_msgSendSuper2(&v22, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v22, sel_init);
+    if (self)
     {
-      v17 = MEMORY[0x23EECC850](v14);
-      v18 = a1[2];
-      a1[2] = v17;
+      v17 = MEMORY[0x23EECC850](primitivesCopy);
+      v18 = self[2];
+      self[2] = v17;
 
-      v19 = [v15 copy];
-      v20 = a1[1];
-      a1[1] = v19;
+      v19 = [handlerCopy copy];
+      v20 = self[1];
+      self[1] = v19;
 
-      objc_storeStrong(a1 + 3, a2);
-      objc_storeStrong(a1 + 4, a3);
-      objc_storeStrong(a1 + 5, a6);
+      objc_storeStrong(self + 3, a2);
+      objc_storeStrong(self + 4, store);
+      objc_storeStrong(self + 5, activations);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)activateWithCompletion:(id *)a1
+- (void)activateWithCompletion:(id *)completion
 {
   v38 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (completion)
   {
     v20 = v3;
     v27 = objc_opt_new();
     v26 = objc_opt_new();
-    v25 = a1[3];
-    v24 = a1[2];
+    v25 = completion[3];
+    v24 = completion[2];
     v5 = dispatch_group_create();
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v23 = a1;
-    obj = a1[1];
+    completionCopy = completion;
+    obj = completion[1];
     v6 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v6)
     {
@@ -116,19 +116,19 @@ void __43__AEActivationPool_activateWithCompletion___block_invoke_2(uint64_t a1)
           v10 = AECoreLog();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
-            v11 = [v9 identifier];
+            identifier = [v9 identifier];
             *buf = 138543362;
-            v36 = v11;
+            v36 = identifier;
             _os_log_impl(&dword_23C1AA000, v10, OS_LOG_TYPE_DEFAULT, "Running activation: %{public}@", buf, 0xCu);
           }
 
-          v12 = [v9 identifier];
-          v13 = [v25 writeOnlyScratchpadForIdentifier:v12];
+          identifier2 = [v9 identifier];
+          v13 = [v25 writeOnlyScratchpadForIdentifier:identifier2];
 
           v14 = AELoggingCategoryForEvent([v9 event]);
-          v15 = v23[4];
-          v16 = [v9 identifier];
-          v17 = [v15 beginIntervalWithCategory:v14 name:v16];
+          v15 = completionCopy[4];
+          identifier3 = [v9 identifier];
+          v17 = [v15 beginIntervalWithCategory:v14 name:identifier3];
 
           v30[0] = MEMORY[0x277D85DD0];
           v30[1] = 3221225472;
@@ -148,7 +148,7 @@ void __43__AEActivationPool_activateWithCompletion___block_invoke_2(uint64_t a1)
       while (v7);
     }
 
-    v18 = v23[5];
+    v18 = completionCopy[5];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __43__AEActivationPool_activateWithCompletion___block_invoke_2;

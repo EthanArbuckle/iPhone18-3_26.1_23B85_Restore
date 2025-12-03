@@ -1,61 +1,61 @@
 @interface _UISpringParameters
-+ (_UISpringParameters)parametersWithDampingRatio:(double)a3 response:(double)a4;
-- (BOOL)isEqual:(id)a3;
-- (_UISpringParameters)initWithCoder:(id)a3;
-- (_UISpringParameters)initWithDampingRatio:(double)a3 response:(double)a4;
++ (_UISpringParameters)parametersWithDampingRatio:(double)ratio response:(double)response;
+- (BOOL)isEqual:(id)equal;
+- (_UISpringParameters)initWithCoder:(id)coder;
+- (_UISpringParameters)initWithDampingRatio:(double)ratio response:(double)response;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UISpringParameters
 
-+ (_UISpringParameters)parametersWithDampingRatio:(double)a3 response:(double)a4
++ (_UISpringParameters)parametersWithDampingRatio:(double)ratio response:(double)response
 {
-  v4 = [[a1 alloc] initWithDampingRatio:a3 response:a4];
+  v4 = [[self alloc] initWithDampingRatio:ratio response:response];
 
   return v4;
 }
 
-- (_UISpringParameters)initWithDampingRatio:(double)a3 response:(double)a4
+- (_UISpringParameters)initWithDampingRatio:(double)ratio response:(double)response
 {
   v7.receiver = self;
   v7.super_class = _UISpringParameters;
   result = [(_UISpringParameters *)&v7 init];
   if (result)
   {
-    result->__dampingRatio = a3;
-    result->__response = a4;
+    result->__dampingRatio = ratio;
+    result->__response = response;
   }
 
   return result;
 }
 
-- (_UISpringParameters)initWithCoder:(id)a3
+- (_UISpringParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"_dampingRatio"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"_dampingRatio"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"_response"];
+  [coderCopy decodeDoubleForKey:@"_response"];
   v8 = v7;
 
   return [(_UISpringParameters *)self initWithDampingRatio:v6 response:v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dampingRatio = self->__dampingRatio;
-  v5 = a3;
-  [v5 encodeDouble:@"_dampingRatio" forKey:dampingRatio];
-  [v5 encodeDouble:@"_response" forKey:self->__response];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"_dampingRatio" forKey:dampingRatio];
+  [coderCopy encodeDouble:@"_response" forKey:self->__response];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(_UISpringParameters *)self _dampingRatio];
     v7 = v6;
     [v5 _dampingRatio];

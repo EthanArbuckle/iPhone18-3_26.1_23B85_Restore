@@ -1,6 +1,6 @@
 @interface NSSNewsTerminationItem
 - (NSSNewsTerminationItem)init;
-- (NSSNewsTerminationItem)initWithProcessType:(unint64_t)a3 bundleID:(id)a4;
+- (NSSNewsTerminationItem)initWithProcessType:(unint64_t)type bundleID:(id)d;
 @end
 
 @implementation NSSNewsTerminationItem
@@ -31,10 +31,10 @@
   objc_exception_throw(v6);
 }
 
-- (NSSNewsTerminationItem)initWithProcessType:(unint64_t)a3 bundleID:(id)a4
+- (NSSNewsTerminationItem)initWithProcessType:(unint64_t)type bundleID:(id)d
 {
-  v6 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NSSNewsTerminationItem initWithProcessType:bundleID:];
   }
@@ -45,8 +45,8 @@
   v8 = v7;
   if (v7)
   {
-    v7->_processType = a3;
-    v9 = [v6 copy];
+    v7->_processType = type;
+    v9 = [dCopy copy];
     bundleID = v8->_bundleID;
     v8->_bundleID = v9;
   }

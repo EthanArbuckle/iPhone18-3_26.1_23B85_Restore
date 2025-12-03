@@ -1,86 +1,86 @@
 @interface AMSAuthenticateTask
 + (AMSBagKeySet)bagKeySet;
-+ (id)_accountStoreForOptions:(id)a3;
++ (id)_accountStoreForOptions:(id)options;
 + (id)_createFallbackBag;
-+ (id)loadCreateAppleIDWithClientInfo:(id)a3 bag:(id)a4;
-+ (id)loadCreateAppleIDWithClientInfo:(id)a3 url:(id)a4 bag:(id)a5;
-- (AMSAuthenticateTask)initWithAccount:(id)a3 accountStore:(id)a4 options:(id)a5;
-- (AMSAuthenticateTask)initWithAccount:(id)a3 accountStore:(id)a4 options:(id)a5 bag:(id)a6;
-- (AMSAuthenticateTask)initWithAccount:(id)a3 options:(id)a4;
-- (AMSAuthenticateTask)initWithAccount:(id)a3 options:(id)a4 bag:(id)a5;
-- (AMSAuthenticateTask)initWithAuthenticationResults:(id)a3 accountStore:(id)a4 options:(id)a5;
-- (AMSAuthenticateTask)initWithAuthenticationResults:(id)a3 accountStore:(id)a4 options:(id)a5 bag:(id)a6;
-- (AMSAuthenticateTask)initWithAuthenticationResults:(id)a3 options:(id)a4;
-- (AMSAuthenticateTask)initWithAuthenticationResults:(id)a3 options:(id)a4 bag:(id)a5;
-- (AMSAuthenticateTask)initWithRequest:(id)a3;
-- (AMSAuthenticateTask)initWithRequest:(id)a3 accountStore:(id)a4;
-- (AMSAuthenticateTask)initWithRequest:(id)a3 accountStore:(id)a4 bag:(id)a5;
-- (AMSAuthenticateTask)initWithRequest:(id)a3 bag:(id)a4;
++ (id)loadCreateAppleIDWithClientInfo:(id)info bag:(id)bag;
++ (id)loadCreateAppleIDWithClientInfo:(id)info url:(id)url bag:(id)bag;
+- (AMSAuthenticateTask)initWithAccount:(id)account accountStore:(id)store options:(id)options;
+- (AMSAuthenticateTask)initWithAccount:(id)account accountStore:(id)store options:(id)options bag:(id)bag;
+- (AMSAuthenticateTask)initWithAccount:(id)account options:(id)options;
+- (AMSAuthenticateTask)initWithAccount:(id)account options:(id)options bag:(id)bag;
+- (AMSAuthenticateTask)initWithAuthenticationResults:(id)results accountStore:(id)store options:(id)options;
+- (AMSAuthenticateTask)initWithAuthenticationResults:(id)results accountStore:(id)store options:(id)options bag:(id)bag;
+- (AMSAuthenticateTask)initWithAuthenticationResults:(id)results options:(id)options;
+- (AMSAuthenticateTask)initWithAuthenticationResults:(id)results options:(id)options bag:(id)bag;
+- (AMSAuthenticateTask)initWithRequest:(id)request;
+- (AMSAuthenticateTask)initWithRequest:(id)request accountStore:(id)store;
+- (AMSAuthenticateTask)initWithRequest:(id)request accountStore:(id)store bag:(id)bag;
+- (AMSAuthenticateTask)initWithRequest:(id)request bag:(id)bag;
 - (AMSAuthenticateTaskDelegate)delegate;
 - (BOOL)_isMetricsEnabled;
-- (BOOL)_shouldShowCreateAccountDialogForAccount:(id)a3;
-- (id)_accountForAuthenticationWithError:(id *)a3;
-- (id)_attemptCompanionAuthenticationForAccount:(id)a3;
-- (id)_attemptPasswordReuseAuthenticationForAccount:(id)a3;
-- (id)_createAuthKitUpdateTaskForAccount:(id)a3;
-- (id)_createAuthKitUpdateTaskForAccount:(id)a3 options:(id)a4;
-- (id)_finishWithVerifiedAccount:(id)a3 andAuthKitUpdateResult:(id)a4;
-- (id)_performAuthenticationUsingAccount:(id)a3 credentialSource:(unint64_t)a4;
+- (BOOL)_shouldShowCreateAccountDialogForAccount:(id)account;
+- (id)_accountForAuthenticationWithError:(id *)error;
+- (id)_attemptCompanionAuthenticationForAccount:(id)account;
+- (id)_attemptPasswordReuseAuthenticationForAccount:(id)account;
+- (id)_createAuthKitUpdateTaskForAccount:(id)account;
+- (id)_createAuthKitUpdateTaskForAccount:(id)account options:(id)options;
+- (id)_finishWithVerifiedAccount:(id)account andAuthKitUpdateResult:(id)result;
+- (id)_performAuthenticationUsingAccount:(id)account credentialSource:(unint64_t)source;
 - (id)_runCreateAccountDialog;
-- (id)_runCreateAccountDialogWithBag:(id)a3;
-- (id)_runDialogRequest:(id)a3;
-- (id)_sanitizeError:(id)a3;
+- (id)_runCreateAccountDialogWithBag:(id)bag;
+- (id)_runDialogRequest:(id)request;
+- (id)_sanitizeError:(id)error;
 - (id)homeID;
 - (id)performAuthentication;
-- (void)_handleDialogFromError:(id)a3 completion:(id)a4;
-- (void)_performAuthenticationAndGeneratePasswordWithAccount:(id)a3;
-- (void)_performAuthenticationWithInitialResultsAndAccount:(id)a3;
-- (void)_postFollowUpForFailedAuthenticationWithAccount:(id)a3;
-- (void)_processAuthKitUpdateResult:(id)a3 error:(id)a4;
-- (void)_updateAccountWithProvidedInformation:(id)a3;
-- (void)setHomeID:(id)a3;
+- (void)_handleDialogFromError:(id)error completion:(id)completion;
+- (void)_performAuthenticationAndGeneratePasswordWithAccount:(id)account;
+- (void)_performAuthenticationWithInitialResultsAndAccount:(id)account;
+- (void)_postFollowUpForFailedAuthenticationWithAccount:(id)account;
+- (void)_processAuthKitUpdateResult:(id)result error:(id)error;
+- (void)_updateAccountWithProvidedInformation:(id)information;
+- (void)setHomeID:(id)d;
 @end
 
 @implementation AMSAuthenticateTask
 
-- (AMSAuthenticateTask)initWithAccount:(id)a3 options:(id)a4
+- (AMSAuthenticateTask)initWithAccount:(id)account options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _createFallbackBag];
-  v9 = [(AMSAuthenticateTask *)self initWithAccount:v7 options:v6 bag:v8];
+  optionsCopy = options;
+  accountCopy = account;
+  _createFallbackBag = [objc_opt_class() _createFallbackBag];
+  v9 = [(AMSAuthenticateTask *)self initWithAccount:accountCopy options:optionsCopy bag:_createFallbackBag];
 
   return v9;
 }
 
-- (AMSAuthenticateTask)initWithAccount:(id)a3 accountStore:(id)a4 options:(id)a5
+- (AMSAuthenticateTask)initWithAccount:(id)account accountStore:(id)store options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() _createFallbackBag];
-  v12 = [(AMSAuthenticateTask *)self initWithAccount:v10 accountStore:v9 options:v8 bag:v11];
+  optionsCopy = options;
+  storeCopy = store;
+  accountCopy = account;
+  _createFallbackBag = [objc_opt_class() _createFallbackBag];
+  v12 = [(AMSAuthenticateTask *)self initWithAccount:accountCopy accountStore:storeCopy options:optionsCopy bag:_createFallbackBag];
 
   return v12;
 }
 
-- (AMSAuthenticateTask)initWithAccount:(id)a3 options:(id)a4 bag:(id)a5
+- (AMSAuthenticateTask)initWithAccount:(id)account options:(id)options bag:(id)bag
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() _accountStoreForOptions:v9];
-  v12 = [(AMSAuthenticateTask *)self initWithAccount:v10 accountStore:v11 options:v9 bag:v8];
+  bagCopy = bag;
+  optionsCopy = options;
+  accountCopy = account;
+  v11 = [objc_opt_class() _accountStoreForOptions:optionsCopy];
+  v12 = [(AMSAuthenticateTask *)self initWithAccount:accountCopy accountStore:v11 options:optionsCopy bag:bagCopy];
 
   return v12;
 }
 
-- (AMSAuthenticateTask)initWithAccount:(id)a3 accountStore:(id)a4 options:(id)a5 bag:(id)a6
+- (AMSAuthenticateTask)initWithAccount:(id)account accountStore:(id)store options:(id)options bag:(id)bag
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accountCopy = account;
+  storeCopy = store;
+  optionsCopy = options;
+  bagCopy = bag;
   v14 = AMSSetLogKeyIfNeeded();
   v41.receiver = self;
   v41.super_class = AMSAuthenticateTask;
@@ -88,20 +88,20 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accountStore, a4);
-    objc_storeStrong(&v16->_bag, a6);
+    objc_storeStrong(&v15->_accountStore, store);
+    objc_storeStrong(&v16->_bag, bag);
     v17 = objc_alloc_init(AMSMutablePromise);
     resultPromise = v16->_resultPromise;
     v16->_resultPromise = v17;
 
-    v19 = v12;
-    if (!v12)
+    v19 = optionsCopy;
+    if (!optionsCopy)
     {
       v19 = objc_alloc_init(AMSAuthenticateOptions);
     }
 
     objc_storeStrong(&v16->_options, v19);
-    if (!v12)
+    if (!optionsCopy)
     {
     }
 
@@ -109,80 +109,80 @@
     errors = v16->_errors;
     v16->_errors = v20;
 
-    v22 = [[AMSAuthenticateMetrics alloc] initWithBag:v13];
+    v22 = [[AMSAuthenticateMetrics alloc] initWithBag:bagCopy];
     metrics = v16->_metrics;
     v16->_metrics = v22;
 
-    v24 = [v10 credential];
-    v25 = [v24 password];
-    v26 = [v25 copy];
+    credential = [accountCopy credential];
+    password = [credential password];
+    v26 = [password copy];
     password = v16->_password;
     v16->_password = v26;
 
-    v28 = [v10 credential];
-    v29 = [v28 credentialItemForKey:*MEMORY[0x1E6959A00]];
+    credential2 = [accountCopy credential];
+    v29 = [credential2 credentialItemForKey:*MEMORY[0x1E6959A00]];
     v30 = [v29 copy];
     rawPassword = v16->_rawPassword;
     v16->_rawPassword = v30;
 
-    v32 = [v10 ams_altDSID];
-    v33 = [v32 copy];
+    ams_altDSID = [accountCopy ams_altDSID];
+    v33 = [ams_altDSID copy];
     altDSID = v16->_altDSID;
     v16->_altDSID = v33;
 
-    v35 = [v10 ams_DSID];
+    ams_DSID = [accountCopy ams_DSID];
     DSID = v16->_DSID;
-    v16->_DSID = v35;
+    v16->_DSID = ams_DSID;
 
-    v37 = [v10 username];
-    v38 = [v37 copy];
+    username = [accountCopy username];
+    v38 = [username copy];
     username = v16->_username;
     v16->_username = v38;
 
-    v16->_isLocalAccountProvided = [v10 ams_isLocalAccount];
+    v16->_isLocalAccountProvided = [accountCopy ams_isLocalAccount];
   }
 
   return v16;
 }
 
-- (AMSAuthenticateTask)initWithAuthenticationResults:(id)a3 options:(id)a4
+- (AMSAuthenticateTask)initWithAuthenticationResults:(id)results options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _createFallbackBag];
-  v9 = [(AMSAuthenticateTask *)self initWithAuthenticationResults:v7 options:v6 bag:v8];
+  optionsCopy = options;
+  resultsCopy = results;
+  _createFallbackBag = [objc_opt_class() _createFallbackBag];
+  v9 = [(AMSAuthenticateTask *)self initWithAuthenticationResults:resultsCopy options:optionsCopy bag:_createFallbackBag];
 
   return v9;
 }
 
-- (AMSAuthenticateTask)initWithAuthenticationResults:(id)a3 accountStore:(id)a4 options:(id)a5
+- (AMSAuthenticateTask)initWithAuthenticationResults:(id)results accountStore:(id)store options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() _createFallbackBag];
-  v12 = [(AMSAuthenticateTask *)self initWithAuthenticationResults:v10 accountStore:v9 options:v8 bag:v11];
+  optionsCopy = options;
+  storeCopy = store;
+  resultsCopy = results;
+  _createFallbackBag = [objc_opt_class() _createFallbackBag];
+  v12 = [(AMSAuthenticateTask *)self initWithAuthenticationResults:resultsCopy accountStore:storeCopy options:optionsCopy bag:_createFallbackBag];
 
   return v12;
 }
 
-- (AMSAuthenticateTask)initWithAuthenticationResults:(id)a3 options:(id)a4 bag:(id)a5
+- (AMSAuthenticateTask)initWithAuthenticationResults:(id)results options:(id)options bag:(id)bag
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() _accountStoreForOptions:v9];
-  v12 = [(AMSAuthenticateTask *)self initWithAuthenticationResults:v10 accountStore:v11 options:v9 bag:v8];
+  bagCopy = bag;
+  optionsCopy = options;
+  resultsCopy = results;
+  v11 = [objc_opt_class() _accountStoreForOptions:optionsCopy];
+  v12 = [(AMSAuthenticateTask *)self initWithAuthenticationResults:resultsCopy accountStore:v11 options:optionsCopy bag:bagCopy];
 
   return v12;
 }
 
-- (AMSAuthenticateTask)initWithAuthenticationResults:(id)a3 accountStore:(id)a4 options:(id)a5 bag:(id)a6
+- (AMSAuthenticateTask)initWithAuthenticationResults:(id)results accountStore:(id)store options:(id)options bag:(id)bag
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  resultsCopy = results;
+  storeCopy = store;
+  optionsCopy = options;
+  bagCopy = bag;
   v14 = AMSSetLogKeyIfNeeded();
   v27.receiver = self;
   v27.super_class = AMSAuthenticateTask;
@@ -190,9 +190,9 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accountStore, a4);
-    objc_storeStrong(&v16->_bag, a6);
-    v17 = [v10 copy];
+    objc_storeStrong(&v15->_accountStore, store);
+    objc_storeStrong(&v16->_bag, bag);
+    v17 = [resultsCopy copy];
     initialAuthenticationResults = v16->_initialAuthenticationResults;
     v16->_initialAuthenticationResults = v17;
 
@@ -200,14 +200,14 @@
     resultPromise = v16->_resultPromise;
     v16->_resultPromise = v19;
 
-    v21 = v12;
-    if (!v12)
+    v21 = optionsCopy;
+    if (!optionsCopy)
     {
       v21 = objc_alloc_init(AMSAuthenticateOptions);
     }
 
     objc_storeStrong(&v16->_options, v21);
-    if (!v12)
+    if (!optionsCopy)
     {
     }
 
@@ -215,7 +215,7 @@
     errors = v16->_errors;
     v16->_errors = v22;
 
-    v24 = [[AMSAuthenticateMetrics alloc] initWithBag:v13];
+    v24 = [[AMSAuthenticateMetrics alloc] initWithBag:bagCopy];
     metrics = v16->_metrics;
     v16->_metrics = v24;
   }
@@ -223,53 +223,53 @@
   return v16;
 }
 
-- (AMSAuthenticateTask)initWithRequest:(id)a3
+- (AMSAuthenticateTask)initWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _createFallbackBag];
-  v6 = [(AMSAuthenticateTask *)self initWithRequest:v4 bag:v5];
+  requestCopy = request;
+  _createFallbackBag = [objc_opt_class() _createFallbackBag];
+  v6 = [(AMSAuthenticateTask *)self initWithRequest:requestCopy bag:_createFallbackBag];
 
   return v6;
 }
 
-- (AMSAuthenticateTask)initWithRequest:(id)a3 accountStore:(id)a4
+- (AMSAuthenticateTask)initWithRequest:(id)request accountStore:(id)store
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _createFallbackBag];
-  v9 = [(AMSAuthenticateTask *)self initWithRequest:v7 accountStore:v6 bag:v8];
+  storeCopy = store;
+  requestCopy = request;
+  _createFallbackBag = [objc_opt_class() _createFallbackBag];
+  v9 = [(AMSAuthenticateTask *)self initWithRequest:requestCopy accountStore:storeCopy bag:_createFallbackBag];
 
   return v9;
 }
 
-- (AMSAuthenticateTask)initWithRequest:(id)a3 bag:(id)a4
+- (AMSAuthenticateTask)initWithRequest:(id)request bag:(id)bag
 {
-  v6 = a4;
-  v7 = a3;
+  bagCopy = bag;
+  requestCopy = request;
   v8 = objc_opt_class();
-  v9 = [v7 options];
-  v10 = [v8 _accountStoreForOptions:v9];
-  v11 = [(AMSAuthenticateTask *)self initWithRequest:v7 accountStore:v10 bag:v6];
+  options = [requestCopy options];
+  v10 = [v8 _accountStoreForOptions:options];
+  v11 = [(AMSAuthenticateTask *)self initWithRequest:requestCopy accountStore:v10 bag:bagCopy];
 
   return v11;
 }
 
-- (AMSAuthenticateTask)initWithRequest:(id)a3 accountStore:(id)a4 bag:(id)a5
+- (AMSAuthenticateTask)initWithRequest:(id)request accountStore:(id)store bag:(id)bag
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 logKey];
+  requestCopy = request;
+  bagCopy = bag;
+  logKey = [requestCopy logKey];
 
-  if (v9)
+  if (logKey)
   {
-    v10 = [v7 logKey];
-    v11 = AMSSetLogKey(v10);
+    logKey2 = [requestCopy logKey];
+    v11 = AMSSetLogKey(logKey2);
   }
 
-  self->_isServerRequested = [v7 isServerRequested];
-  v12 = [v7 account];
-  v13 = [v7 options];
-  v14 = [(AMSAuthenticateTask *)self initWithAccount:v12 options:v13 bag:v8];
+  self->_isServerRequested = [requestCopy isServerRequested];
+  account = [requestCopy account];
+  options = [requestCopy options];
+  v14 = [(AMSAuthenticateTask *)self initWithAccount:account options:options bag:bagCopy];
 
   return v14;
 }
@@ -517,30 +517,30 @@ void __44__AMSAuthenticateTask_performAuthentication__block_invoke_2(uint64_t a1
   }
 }
 
-- (id)_accountForAuthenticationWithError:(id *)a3
+- (id)_accountForAuthenticationWithError:(id *)error
 {
   v115 = *MEMORY[0x1E69E9840];
-  v4 = [(AMSAuthenticateTask *)self accountStore];
-  v5 = [(AMSAuthenticateTask *)self initialAuthenticationResults];
+  accountStore = [(AMSAuthenticateTask *)self accountStore];
+  initialAuthenticationResults = [(AMSAuthenticateTask *)self initialAuthenticationResults];
 
   v6 = 0x1E73B0000uLL;
   v7 = +[AMSLogConfig sharedAccountsConfig];
   v8 = v7;
-  if (v5)
+  if (initialAuthenticationResults)
   {
     if (!v7)
     {
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
-      v12 = [(AMSAuthenticateTask *)self initialAuthenticationResults];
-      [v12 ak_redactedCopy];
-      v14 = v13 = v4;
+      initialAuthenticationResults2 = [(AMSAuthenticateTask *)self initialAuthenticationResults];
+      [initialAuthenticationResults2 ak_redactedCopy];
+      v14 = v13 = accountStore;
       v15 = AMSHashIfNeeded(v14);
       *buf = 138543874;
       v106 = v10;
@@ -548,110 +548,110 @@ void __44__AMSAuthenticateTask_performAuthentication__block_invoke_2(uint64_t a1
       v108 = v11;
       v109 = 2114;
       v110 = v15;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Looking for an existing account matching authentication results. authenticationResults = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Looking for an existing account matching authentication results. authenticationResults = %{public}@", buf, 0x20u);
 
-      v4 = v13;
+      accountStore = v13;
       v6 = 0x1E73B0000uLL;
     }
 
     v16 = MEMORY[0x1E6959A48];
-    v17 = [v4 ams_mediaType];
-    v18 = [v16 ams_accountTypeIdentifierForMediaType:v17];
+    ams_mediaType = [accountStore ams_mediaType];
+    v18 = [v16 ams_accountTypeIdentifierForMediaType:ams_mediaType];
 
-    v19 = [(AMSAuthenticateTask *)self initialAuthenticationResults];
-    v20 = [v19 objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
+    initialAuthenticationResults3 = [(AMSAuthenticateTask *)self initialAuthenticationResults];
+    v20 = [initialAuthenticationResults3 objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
 
-    v21 = [v4 ams_accountWithAltDSID:v20 DSID:0 username:0 accountTypeIdentifier:v18];
+    v21 = [accountStore ams_accountWithAltDSID:v20 DSID:0 username:0 accountTypeIdentifier:v18];
     if (v21)
     {
       v22 = v21;
-      v23 = [v21 username];
+      username = [v21 username];
 
-      if (v23)
+      if (username)
       {
 LABEL_34:
 
 LABEL_35:
         if (([v22 isActive] & 1) == 0)
         {
-          v57 = [MEMORY[0x1E69DF068] sharedManager];
-          v58 = [v57 currentPersona];
+          mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+          currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
-          if ([v58 isEnterprisePersona])
+          if ([currentPersona isEnterprisePersona])
           {
-            v59 = [v58 userPersonaUniqueString];
-            v60 = [*(v6 + 3552) sharedAccountsConfig];
-            if (!v60)
+            userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+            sharedAccountsConfig = [*(v6 + 3552) sharedAccountsConfig];
+            if (!sharedAccountsConfig)
             {
-              v60 = [*(v6 + 3552) sharedConfig];
+              sharedAccountsConfig = [*(v6 + 3552) sharedConfig];
             }
 
-            v61 = [v60 OSLogObject];
-            if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
+            oSLogObject2 = [sharedAccountsConfig OSLogObject];
+            if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
             {
-              v62 = v4;
+              v62 = accountStore;
               v63 = AMSLogKey();
               v64 = MEMORY[0x1E696AEC0];
               v65 = objc_opt_class();
               v66 = v65;
               if (v63)
               {
-                a3 = AMSLogKey();
-                [v64 stringWithFormat:@"%@: [%@] ", v66, a3];
+                error = AMSLogKey();
+                [v64 stringWithFormat:@"%@: [%@] ", v66, error];
               }
 
               else
               {
                 [v64 stringWithFormat:@"%@: ", v65];
               }
-              v67 = ;
-              v81 = AMSHashIfNeeded(v59);
+              errorCopy = ;
+              v81 = AMSHashIfNeeded(userPersonaUniqueString);
               *buf = 138543618;
-              v106 = v67;
+              v106 = errorCopy;
               v107 = 2114;
               v108 = v81;
-              _os_log_impl(&dword_192869000, v61, OS_LOG_TYPE_DEFAULT, "%{public}@The current persona is an enterprise persona. Adding a persona identifier to the account. personaIdentifier = %{public}@", buf, 0x16u);
+              _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@The current persona is an enterprise persona. Adding a persona identifier to the account. personaIdentifier = %{public}@", buf, 0x16u);
               if (v63)
               {
 
-                v67 = a3;
+                errorCopy = error;
               }
 
-              v4 = v62;
+              accountStore = v62;
               v6 = 0x1E73B0000uLL;
             }
 
-            [v22 setObject:v59 forKeyedSubscript:*MEMORY[0x1E69597A0]];
+            [v22 setObject:userPersonaUniqueString forKeyedSubscript:*MEMORY[0x1E69597A0]];
           }
         }
 
-        v82 = [(AMSAuthenticateTask *)self options];
-        v83 = [v82 clientInfo];
-        v84 = [v83 accountMediaType];
+        options = [(AMSAuthenticateTask *)self options];
+        clientInfo = [options clientInfo];
+        accountMediaType = [clientInfo accountMediaType];
 
-        v85 = [(AMSAuthenticateTask *)self accountStore];
-        v86 = [v85 ams_activeiTunesAccount];
+        accountStore2 = [(AMSAuthenticateTask *)self accountStore];
+        ams_activeiTunesAccount = [accountStore2 ams_activeiTunesAccount];
 
-        if (v86)
+        if (ams_activeiTunesAccount)
         {
           goto LABEL_76;
         }
 
-        v87 = [(AMSAuthenticateTask *)self options];
-        if ([v87 canMakeAccountActive])
+        options2 = [(AMSAuthenticateTask *)self options];
+        if ([options2 canMakeAccountActive])
         {
-          v88 = [v22 parentAccount];
+          parentAccount = [v22 parentAccount];
 
-          if (!v88)
+          if (!parentAccount)
           {
-            v89 = [*(v6 + 3552) sharedAccountsConfig];
-            if (!v89)
+            sharedAccountsConfig2 = [*(v6 + 3552) sharedAccountsConfig];
+            if (!sharedAccountsConfig2)
             {
-              v89 = [*(v6 + 3552) sharedConfig];
+              sharedAccountsConfig2 = [*(v6 + 3552) sharedConfig];
             }
 
-            v90 = [v89 OSLogObject];
-            if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
+            oSLogObject3 = [sharedAccountsConfig2 OSLogObject];
+            if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
             {
               v91 = objc_opt_class();
               v92 = AMSLogKey();
@@ -660,11 +660,11 @@ LABEL_35:
               v107 = 2114;
               v108 = v92;
               v109 = 2114;
-              v110 = v84;
-              _os_log_impl(&dword_192869000, v90, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] The device doesn't have an active account for %{public}@. We'll make the account active if we successfully authenticate it.", buf, 0x20u);
+              v110 = accountMediaType;
+              _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] The device doesn't have an active account for %{public}@. We'll make the account active if we successfully authenticate it.", buf, 0x20u);
             }
 
-            [v22 ams_setActive:1 forMediaType:v84];
+            [v22 ams_setActive:1 forMediaType:accountMediaType];
 LABEL_76:
             [(AMSAuthenticateTask *)self _updateAccountWithProvidedInformation:v22];
             v71 = v22;
@@ -677,14 +677,14 @@ LABEL_76:
         {
         }
 
-        v93 = [*(v6 + 3552) sharedAccountsConfig];
-        if (!v93)
+        sharedAccountsConfig3 = [*(v6 + 3552) sharedAccountsConfig];
+        if (!sharedAccountsConfig3)
         {
-          v93 = [*(v6 + 3552) sharedConfig];
+          sharedAccountsConfig3 = [*(v6 + 3552) sharedConfig];
         }
 
-        v94 = [v93 OSLogObject];
-        if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
+        oSLogObject4 = [sharedAccountsConfig3 OSLogObject];
+        if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
         {
           v95 = objc_opt_class();
           v96 = AMSLogKey();
@@ -692,27 +692,27 @@ LABEL_76:
           v106 = v95;
           v107 = 2114;
           v108 = v96;
-          _os_log_impl(&dword_192869000, v94, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] We would normally make the account active, but canMakeAccountActive is set to false.", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] We would normally make the account active, but canMakeAccountActive is set to false.", buf, 0x16u);
         }
 
         goto LABEL_76;
       }
 
-      v24 = +[AMSLogConfig sharedAccountsConfig];
-      if (!v24)
+      oSLogObject6 = +[AMSLogConfig sharedAccountsConfig];
+      if (!oSLogObject6)
       {
-        v24 = +[AMSLogConfig sharedConfig];
+        oSLogObject6 = +[AMSLogConfig sharedConfig];
       }
 
-      v25 = [v24 OSLogObject];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+      oSLogObject5 = [oSLogObject6 OSLogObject];
+      if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
       {
         v98 = objc_opt_class();
         v26 = AMSLogKey();
-        v99 = [(AMSAuthenticateTask *)self initialAuthenticationResults];
-        v27 = [v99 ak_redactedCopy];
-        AMSHashIfNeeded(v27);
-        v28 = v101 = v4;
+        initialAuthenticationResults4 = [(AMSAuthenticateTask *)self initialAuthenticationResults];
+        ak_redactedCopy = [initialAuthenticationResults4 ak_redactedCopy];
+        AMSHashIfNeeded(ak_redactedCopy);
+        v28 = v101 = accountStore;
         v29 = AMSHashIfNeeded(v22);
         *buf = 138544130;
         v106 = v98;
@@ -722,10 +722,10 @@ LABEL_76:
         v110 = v28;
         v111 = 2114;
         v112 = v29;
-        _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Found an account matching the given authentication results’ altDSID, but it has no username. authenticationResults = %{public}@ | account = %{public}@", buf, 0x2Au);
+        _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Found an account matching the given authentication results’ altDSID, but it has no username. authenticationResults = %{public}@ | account = %{public}@", buf, 0x2Au);
 
         v6 = 0x1E73B0000;
-        v4 = v101;
+        accountStore = v101;
       }
     }
 
@@ -737,26 +737,26 @@ LABEL_76:
         v22 = +[AMSLogConfig sharedConfig];
       }
 
-      v24 = [v22 OSLogObject];
-      if (!os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      oSLogObject6 = [v22 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_27;
       }
 
-      v103 = v4;
+      v103 = accountStore;
       v43 = objc_opt_class();
-      v25 = AMSLogKey();
-      v44 = [(AMSAuthenticateTask *)self initialAuthenticationResults];
-      v45 = [v44 ak_redactedCopy];
-      v46 = AMSHashIfNeeded(v45);
+      oSLogObject5 = AMSLogKey();
+      initialAuthenticationResults5 = [(AMSAuthenticateTask *)self initialAuthenticationResults];
+      ak_redactedCopy2 = [initialAuthenticationResults5 ak_redactedCopy];
+      v46 = AMSHashIfNeeded(ak_redactedCopy2);
       *buf = 138543874;
       v106 = v43;
-      v4 = v103;
+      accountStore = v103;
       v107 = 2114;
-      v108 = v25;
+      v108 = oSLogObject5;
       v109 = 2114;
       v110 = v46;
-      _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Did not find an account matching the given authentication results. authenticationResults = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Did not find an account matching the given authentication results. authenticationResults = %{public}@", buf, 0x20u);
 
       v6 = 0x1E73B0000uLL;
     }
@@ -770,18 +770,18 @@ LABEL_27:
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v30 = [v8 OSLogObject];
-  if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+  oSLogObject7 = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_DEFAULT))
   {
     v100 = objc_opt_class();
     v31 = AMSLogKey();
-    v32 = [(AMSAuthenticateTask *)self altDSID];
-    v33 = AMSHashIfNeeded(v32);
-    v34 = [(AMSAuthenticateTask *)self DSID];
-    AMSHashIfNeeded(v34);
-    v35 = v102 = v4;
-    v36 = [(AMSAuthenticateTask *)self username];
-    v37 = AMSHashIfNeeded(v36);
+    altDSID = [(AMSAuthenticateTask *)self altDSID];
+    v33 = AMSHashIfNeeded(altDSID);
+    dSID = [(AMSAuthenticateTask *)self DSID];
+    AMSHashIfNeeded(dSID);
+    v35 = v102 = accountStore;
+    username2 = [(AMSAuthenticateTask *)self username];
+    v37 = AMSHashIfNeeded(username2);
     *buf = 138544386;
     v106 = v100;
     v107 = 2114;
@@ -792,32 +792,32 @@ LABEL_27:
     v112 = v35;
     v113 = 2114;
     v114 = v37;
-    _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Looking for an existing account. altDSID = %{public}@ | DSID = %{public}@ | username = %{public}@", buf, 0x34u);
+    _os_log_impl(&dword_192869000, oSLogObject7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Looking for an existing account. altDSID = %{public}@ | DSID = %{public}@ | username = %{public}@", buf, 0x34u);
 
     v6 = 0x1E73B0000uLL;
-    v4 = v102;
+    accountStore = v102;
   }
 
-  v38 = [(AMSAuthenticateTask *)self altDSID];
-  if (v38 || ([(AMSAuthenticateTask *)self DSID], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
+  altDSID2 = [(AMSAuthenticateTask *)self altDSID];
+  if (altDSID2 || ([(AMSAuthenticateTask *)self DSID], (altDSID2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v39 = v38;
+    v39 = altDSID2;
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v72 = [(AMSAuthenticateTask *)self username];
+  username3 = [(AMSAuthenticateTask *)self username];
 
-  if (!v72)
+  if (!username3)
   {
-    v73 = [v4 ams_demoAccount];
-    v74 = [v73 username];
-    [(AMSAuthenticateTask *)self setUsername:v74];
+    ams_demoAccount = [accountStore ams_demoAccount];
+    username4 = [ams_demoAccount username];
+    [(AMSAuthenticateTask *)self setUsername:username4];
 
-    v75 = [(AMSAuthenticateTask *)self username];
+    username5 = [(AMSAuthenticateTask *)self username];
 
-    if (v75)
+    if (username5)
     {
       v39 = +[AMSLogConfig sharedAccountsConfig];
       if (!v39)
@@ -825,20 +825,20 @@ LABEL_19:
         v39 = +[AMSLogConfig sharedConfig];
       }
 
-      v76 = [v39 OSLogObject];
-      if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
+      oSLogObject8 = [v39 OSLogObject];
+      if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_DEFAULT))
       {
         v77 = objc_opt_class();
         v78 = AMSLogKey();
-        v79 = [(AMSAuthenticateTask *)self username];
-        v80 = AMSHashIfNeeded(v79);
+        username6 = [(AMSAuthenticateTask *)self username];
+        v80 = AMSHashIfNeeded(username6);
         *buf = 138543874;
         v106 = v77;
         v107 = 2114;
         v108 = v78;
         v109 = 2114;
         v110 = v80;
-        _os_log_impl(&dword_192869000, v76, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Using the device's demo account. username = %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Using the device's demo account. username = %{public}@", buf, 0x20u);
       }
 
       goto LABEL_19;
@@ -846,10 +846,10 @@ LABEL_19:
   }
 
 LABEL_20:
-  v40 = [(AMSAuthenticateTask *)self altDSID];
-  v41 = [(AMSAuthenticateTask *)self DSID];
-  v42 = [(AMSAuthenticateTask *)self username];
-  v22 = [v4 ams_iTunesAccountWithAltDSID:v40 DSID:v41 username:v42];
+  altDSID3 = [(AMSAuthenticateTask *)self altDSID];
+  dSID2 = [(AMSAuthenticateTask *)self DSID];
+  username7 = [(AMSAuthenticateTask *)self username];
+  v22 = [accountStore ams_iTunesAccountWithAltDSID:altDSID3 DSID:dSID2 username:username7];
 
   if (v22)
   {
@@ -858,17 +858,17 @@ LABEL_20:
 
 LABEL_28:
   v47 = +[AMSRestrictions allowActiveAccountModifications];
-  v48 = [*(v6 + 3552) sharedAccountsConfig];
-  v49 = v48;
+  sharedAccountsConfig4 = [*(v6 + 3552) sharedAccountsConfig];
+  sharedConfig = sharedAccountsConfig4;
   if (v47)
   {
-    if (!v48)
+    if (!sharedAccountsConfig4)
     {
-      v49 = [*(v6 + 3552) sharedConfig];
+      sharedConfig = [*(v6 + 3552) sharedConfig];
     }
 
-    v50 = [v49 OSLogObject];
-    if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
+    oSLogObject9 = [sharedConfig OSLogObject];
+    if (os_log_type_enabled(oSLogObject9, OS_LOG_TYPE_DEFAULT))
     {
       v51 = objc_opt_class();
       v52 = AMSLogKey();
@@ -876,28 +876,28 @@ LABEL_28:
       v106 = v51;
       v107 = 2114;
       v108 = v52;
-      _os_log_impl(&dword_192869000, v50, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Failed to find an existing account. We'll create a new one instead.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Failed to find an existing account. We'll create a new one instead.", buf, 0x16u);
     }
 
     v53 = MEMORY[0x1E6959A48];
-    v54 = [(AMSAuthenticateTask *)self options];
-    v55 = [v54 clientInfo];
-    v56 = [v55 accountMediaType];
-    v18 = [v53 ams_accountTypeIdentifierForMediaType:v56];
+    options3 = [(AMSAuthenticateTask *)self options];
+    clientInfo2 = [options3 clientInfo];
+    accountMediaType2 = [clientInfo2 accountMediaType];
+    v18 = [v53 ams_accountTypeIdentifierForMediaType:accountMediaType2];
 
-    v20 = [v4 _ams_accountTypeWithAccountTypeIdentifier:v18 error:0];
+    v20 = [accountStore _ams_accountTypeWithAccountTypeIdentifier:v18 error:0];
     v22 = [objc_alloc(MEMORY[0x1E6959A28]) initWithAccountType:v20];
     [v22 setActive:0];
     goto LABEL_34;
   }
 
-  if (!v48)
+  if (!sharedAccountsConfig4)
   {
-    v49 = [*(v6 + 3552) sharedConfig];
+    sharedConfig = [*(v6 + 3552) sharedConfig];
   }
 
-  v68 = [v49 OSLogObject];
-  if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
+  oSLogObject10 = [sharedConfig OSLogObject];
+  if (os_log_type_enabled(oSLogObject10, OS_LOG_TYPE_ERROR))
   {
     v69 = objc_opt_class();
     v70 = AMSLogKey();
@@ -905,13 +905,13 @@ LABEL_28:
     v106 = v69;
     v107 = 2114;
     v108 = v70;
-    _os_log_impl(&dword_192869000, v68, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to find an existing account. Unable to proceed with the authentication because account modifications are not allowed.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to find an existing account. Unable to proceed with the authentication because account modifications are not allowed.", buf, 0x16u);
   }
 
-  if (a3)
+  if (error)
   {
     AMSError(8, @"Account Modifications Disabled", @"Account modifications are disabled. Unable to sign into a new account.", 0);
-    *a3 = v71 = 0;
+    *error = v71 = 0;
   }
 
   else
@@ -924,28 +924,28 @@ LABEL_77:
   return v71;
 }
 
-+ (id)_accountStoreForOptions:(id)a3
++ (id)_accountStoreForOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 clientInfo];
-  v5 = [v4 accountMediaType];
+  optionsCopy = options;
+  clientInfo = [optionsCopy clientInfo];
+  accountMediaType = [clientInfo accountMediaType];
   v6 = MEMORY[0x1E6959A48];
-  if (v5)
+  if (accountMediaType)
   {
-    v7 = [v3 clientInfo];
-    v8 = [v7 accountMediaType];
-    v9 = [v6 ams_sharedAccountStoreForMediaType:v8];
+    clientInfo2 = [optionsCopy clientInfo];
+    accountMediaType2 = [clientInfo2 accountMediaType];
+    ams_sharedAccountStore = [v6 ams_sharedAccountStoreForMediaType:accountMediaType2];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
   }
 
-  return v9;
+  return ams_sharedAccountStore;
 }
 
-- (id)_attemptCompanionAuthenticationForAccount:(id)a3
+- (id)_attemptCompanionAuthenticationForAccount:(id)account
 {
   v3 = AMSError(5, @"Platform not supported", 0, 0);
   v4 = [AMSPromise promiseWithError:v3];
@@ -953,23 +953,23 @@ LABEL_77:
   return v4;
 }
 
-- (id)_attemptPasswordReuseAuthenticationForAccount:(id)a3
+- (id)_attemptPasswordReuseAuthenticationForAccount:(id)account
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_alloc_init(AMSMutablePromise);
-  v6 = [(AMSAuthenticateTask *)self options];
-  if ([v6 authenticationType] == 2 || (objc_msgSend(v4, "ams_password"), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  options = [(AMSAuthenticateTask *)self options];
+  if ([options authenticationType] == 2 || (objc_msgSend(accountCopy, "ams_password"), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     goto LABEL_10;
   }
 
   v8 = v7;
-  v9 = [(AMSAuthenticateTask *)self options];
-  v10 = [v9 serviceIdentifier];
+  options2 = [(AMSAuthenticateTask *)self options];
+  serviceIdentifier = [options2 serviceIdentifier];
 
-  if (v10)
+  if (serviceIdentifier)
   {
 LABEL_10:
     v18 = AMSError(2, @"Password reuse not available for account", @"The account state does not support password reuse.", 0);
@@ -984,8 +984,8 @@ LABEL_10:
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = objc_opt_class();
     v14 = AMSLogKey();
@@ -993,20 +993,20 @@ LABEL_10:
     v25 = v13;
     v26 = 2114;
     v27 = v14;
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to authenticate the account by reusing its password.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to authenticate the account by reusing its password.", buf, 0x16u);
   }
 
-  v15 = [(AMSAuthenticateTask *)self options];
-  v16 = [v15 credentialSource];
+  options3 = [(AMSAuthenticateTask *)self options];
+  credentialSource = [options3 credentialSource];
 
-  v17 = [(AMSAuthenticateTask *)self _performAuthenticationUsingAccount:v4 credentialSource:v16];
+  v17 = [(AMSAuthenticateTask *)self _performAuthenticationUsingAccount:accountCopy credentialSource:credentialSource];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __69__AMSAuthenticateTask__attemptPasswordReuseAuthenticationForAccount___block_invoke;
   v20[3] = &unk_1E73B3770;
   v21 = v5;
-  v22 = v4;
-  v23 = self;
+  v22 = accountCopy;
+  selfCopy = self;
   [v17 resultWithCompletion:v20];
 
 LABEL_11:
@@ -1062,20 +1062,20 @@ void __69__AMSAuthenticateTask__attemptPasswordReuseAuthenticationForAccount___b
   }
 }
 
-- (id)_createAuthKitUpdateTaskForAccount:(id)a3
+- (id)_createAuthKitUpdateTaskForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AMSAuthenticateTask *)self options];
-  v6 = [(AMSAuthenticateTask *)self _createAuthKitUpdateTaskForAccount:v4 options:v5];
+  accountCopy = account;
+  options = [(AMSAuthenticateTask *)self options];
+  v6 = [(AMSAuthenticateTask *)self _createAuthKitUpdateTaskForAccount:accountCopy options:options];
 
   return v6;
 }
 
-- (id)_createAuthKitUpdateTaskForAccount:(id)a3 options:(id)a4
+- (id)_createAuthKitUpdateTaskForAccount:(id)account options:(id)options
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AMSAuthKitUpdateTask alloc] initWithAccount:v6 options:v5];
+  optionsCopy = options;
+  accountCopy = account;
+  v7 = [[AMSAuthKitUpdateTask alloc] initWithAccount:accountCopy options:optionsCopy];
 
   v8 = [AMSPromise promiseWithResult:v7];
 
@@ -1091,8 +1091,8 @@ void __69__AMSAuthenticateTask__attemptPasswordReuseAuthenticationForAccount___b
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = AMSLogKey();
     v7 = MEMORY[0x1E696AEC0];
@@ -1111,7 +1111,7 @@ void __69__AMSAuthenticateTask__attemptPasswordReuseAuthenticationForAccount___b
     v10 = ;
     *buf = 138543362;
     v14 = v10;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@Falling back to sub profile bag", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Falling back to sub profile bag", buf, 0xCu);
     if (v6)
     {
 
@@ -1119,18 +1119,18 @@ void __69__AMSAuthenticateTask__attemptPasswordReuseAuthenticationForAccount___b
     }
   }
 
-  v11 = [a1 createBagForSubProfile];
+  createBagForSubProfile = [self createBagForSubProfile];
 
-  return v11;
+  return createBagForSubProfile;
 }
 
-- (BOOL)_shouldShowCreateAccountDialogForAccount:(id)a3
+- (BOOL)_shouldShowCreateAccountDialogForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AMSAuthenticateTask *)self options];
-  v6 = [v5 enableAccountCreation];
+  accountCopy = account;
+  options = [(AMSAuthenticateTask *)self options];
+  enableAccountCreation = [options enableAccountCreation];
 
-  if (v6 && ([v4 username], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+  if (enableAccountCreation && ([accountCopy username], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
     v8 = [MEMORY[0x1E6959A48] ams_shieldSignInOrCreateFlows] ^ 1;
   }
@@ -1143,12 +1143,12 @@ void __69__AMSAuthenticateTask__attemptPasswordReuseAuthenticationForAccount___b
   return v8;
 }
 
-- (id)_finishWithVerifiedAccount:(id)a3 andAuthKitUpdateResult:(id)a4
+- (id)_finishWithVerifiedAccount:(id)account andAuthKitUpdateResult:(id)result
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  accountCopy = account;
+  resultCopy = result;
+  if (accountCopy)
   {
     v8 = +[AMSLogConfig sharedAccountsConfig];
     if (!v8)
@@ -1156,53 +1156,53 @@ void __69__AMSAuthenticateTask__attemptPasswordReuseAuthenticationForAccount___b
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
-      v12 = AMSHashIfNeeded(v6);
+      v12 = AMSHashIfNeeded(accountCopy);
       *buf = 138543874;
       v46 = v10;
       v47 = 2114;
       v48 = v11;
       v49 = 2114;
       v50 = v12;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Finish with verified account after successful authentication. account = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Finish with verified account after successful authentication. account = %{public}@", buf, 0x20u);
     }
 
-    v13 = [(AMSAuthenticateTask *)self accountStore];
-    v14 = [(AMSAuthenticateTask *)self options];
-    v15 = [v14 clientInfo];
-    v16 = [v15 accountMediaType];
+    accountStore = [(AMSAuthenticateTask *)self accountStore];
+    options = [(AMSAuthenticateTask *)self options];
+    clientInfo = [options clientInfo];
+    accountMediaType = [clientInfo accountMediaType];
 
-    v17 = [v13 ams_activeiTunesAccountForMediaType:v16];
+    v17 = [accountStore ams_activeiTunesAccountForMediaType:accountMediaType];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __73__AMSAuthenticateTask__finishWithVerifiedAccount_andAuthKitUpdateResult___block_invoke;
     v40[3] = &unk_1E73B3BD8;
     v40[4] = self;
-    v41 = v6;
-    v42 = v16;
-    v43 = v13;
-    v44 = v7;
-    v18 = v13;
-    v19 = v16;
+    v41 = accountCopy;
+    v42 = accountMediaType;
+    v43 = accountStore;
+    v44 = resultCopy;
+    v18 = accountStore;
+    v19 = accountMediaType;
     [v17 addFinishBlock:v40];
 
-    v20 = [(AMSAuthenticateTask *)self resultPromise];
+    resultPromise = [(AMSAuthenticateTask *)self resultPromise];
 
     goto LABEL_25;
   }
 
-  v21 = [(AMSAuthenticateTask *)self errors];
-  v22 = [v21 count];
+  errors = [(AMSAuthenticateTask *)self errors];
+  v22 = [errors count];
 
-  v23 = [(AMSAuthenticateTask *)self errors];
-  v24 = v23;
+  errors2 = [(AMSAuthenticateTask *)self errors];
+  errors3 = errors2;
   if (v22 < 2)
   {
-    v27 = [v23 count];
+    v27 = [errors2 count];
 
     if (v27 != 1)
     {
@@ -1210,14 +1210,14 @@ void __69__AMSAuthenticateTask__attemptPasswordReuseAuthenticationForAccount___b
       goto LABEL_13;
     }
 
-    v24 = [(AMSAuthenticateTask *)self errors];
-    v25 = [v24 objectAtIndexedSubscript:0];
+    errors3 = [(AMSAuthenticateTask *)self errors];
+    v25 = [errors3 objectAtIndexedSubscript:0];
     v26 = AMSError(100, @"Authentication Failed", @"The authentication failed.", v25);
   }
 
   else
   {
-    v25 = [v23 copy];
+    v25 = [errors2 copy];
     v26 = AMSErrorWithMultipleUnderlyingErrors(100, @"Authentication Failed", @"The authentication failed.", v25);
   }
 
@@ -1231,8 +1231,8 @@ LABEL_13:
     v28 = +[AMSLogConfig sharedConfig];
   }
 
-  v29 = [v28 OSLogObject];
-  if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v28 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v30 = AMSLogKey();
     v31 = MEMORY[0x1E696AEC0];
@@ -1254,7 +1254,7 @@ LABEL_13:
     v46 = v34;
     v47 = 2114;
     v48 = v35;
-    _os_log_impl(&dword_192869000, v29, OS_LOG_TYPE_ERROR, "%{public}@The authentication failed. error = %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@The authentication failed. error = %{public}@", buf, 0x16u);
     if (v30)
     {
 
@@ -1262,19 +1262,19 @@ LABEL_13:
     }
   }
 
-  v36 = [(AMSAuthenticateTask *)self resultPromise];
-  [v36 finishWithError:v18];
+  resultPromise2 = [(AMSAuthenticateTask *)self resultPromise];
+  [resultPromise2 finishWithError:v18];
 
   if (([v19 ams_recursiveHasDomain:@"AMSErrorDomain" code:308] & 1) == 0)
   {
-    v37 = [v7 account];
-    [(AMSAuthenticateTask *)self _postFollowUpForFailedAuthenticationWithAccount:v37];
+    account = [resultCopy account];
+    [(AMSAuthenticateTask *)self _postFollowUpForFailedAuthenticationWithAccount:account];
   }
 
-  v20 = [(AMSAuthenticateTask *)self resultPromise];
+  resultPromise = [(AMSAuthenticateTask *)self resultPromise];
 LABEL_25:
 
-  return v20;
+  return resultPromise;
 }
 
 void __73__AMSAuthenticateTask__finishWithVerifiedAccount_andAuthKitUpdateResult___block_invoke(uint64_t a1, void *a2)
@@ -1462,13 +1462,13 @@ void __73__AMSAuthenticateTask__finishWithVerifiedAccount_andAuthKitUpdateResult
   }
 }
 
-- (void)_handleDialogFromError:(id)a3 completion:(id)a4
+- (void)_handleDialogFromError:(id)error completion:(id)completion
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"AMSAuthenticateErrorDialog"];
+  errorCopy = error;
+  completionCopy = completion;
+  userInfo = [errorCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"AMSAuthenticateErrorDialog"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1482,7 +1482,7 @@ void __73__AMSAuthenticateTask__finishWithVerifiedAccount_andAuthKitUpdateResult
   if (!v10)
   {
 LABEL_9:
-    v7[2](v7, v6);
+    completionCopy[2](completionCopy, errorCopy);
     v10 = 0;
     goto LABEL_38;
   }
@@ -1493,12 +1493,12 @@ LABEL_9:
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = AMSLogKey();
     v14 = MEMORY[0x1E696AEC0];
-    v44 = self;
+    selfCopy = self;
     v15 = objc_opt_class();
     v16 = v15;
     if (v13)
@@ -1511,17 +1511,17 @@ LABEL_9:
     {
       [v14 stringWithFormat:@"%@: ", v15];
     }
-    v17 = ;
+    selfCopy2 = ;
     *buf = 138543362;
-    v54 = v17;
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@The authentication's error contained an encoded AMSDialogRequest. Decoding it.", buf, 0xCu);
+    v54 = selfCopy2;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@The authentication's error contained an encoded AMSDialogRequest. Decoding it.", buf, 0xCu);
     if (v13)
     {
 
-      v17 = self;
+      selfCopy2 = self;
     }
 
-    self = v44;
+    self = selfCopy;
   }
 
   v50 = 0;
@@ -1529,7 +1529,7 @@ LABEL_9:
   v19 = v50;
   if (v18)
   {
-    v20 = [(AMSAuthenticateTask *)self delegate];
+    delegate = [(AMSAuthenticateTask *)self delegate];
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
@@ -1540,14 +1540,14 @@ LABEL_9:
         v22 = +[AMSLogConfig sharedConfig];
       }
 
-      v23 = [v22 OSLogObject];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v22 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v24 = AMSLogKey();
-        v25 = self;
+        selfCopy3 = self;
         v26 = v24;
         v27 = MEMORY[0x1E696AEC0];
-        v45 = v25;
+        v45 = selfCopy3;
         v28 = objc_opt_class();
         v29 = v28;
         if (v26)
@@ -1563,7 +1563,7 @@ LABEL_9:
         v30 = ;
         *buf = 138543362;
         v54 = v30;
-        _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@Sending dialog request to delegate.", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Sending dialog request to delegate.", buf, 0xCu);
         if (v26)
         {
 
@@ -1585,8 +1585,8 @@ LABEL_9:
       v46[2] = __57__AMSAuthenticateTask__handleDialogFromError_completion___block_invoke_2;
       v46[3] = &unk_1E73B3C28;
       v46[4] = self;
-      v47 = v6;
-      v48 = v7;
+      v47 = errorCopy;
+      v48 = completionCopy;
       [v42 addFinishBlock:v46];
     }
 
@@ -1595,8 +1595,8 @@ LABEL_9:
       v51 = @"AMSAuthenticateErrorDialog";
       v52 = v18;
       v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-      v39 = [v6 ams_errorByAddingUserInfo:v38];
-      v7[2](v7, v39);
+      v39 = [errorCopy ams_errorByAddingUserInfo:v38];
+      completionCopy[2](completionCopy, v39);
     }
   }
 
@@ -1608,8 +1608,8 @@ LABEL_9:
       v31 = +[AMSLogConfig sharedConfig];
     }
 
-    v32 = [v31 OSLogObject];
-    if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v31 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v33 = AMSLogKey();
       v34 = MEMORY[0x1E696AEC0];
@@ -1617,8 +1617,8 @@ LABEL_9:
       v36 = v35;
       if (v33)
       {
-        v44 = AMSLogKey();
-        [v34 stringWithFormat:@"%@: [%@] ", v36, v44];
+        selfCopy = AMSLogKey();
+        [v34 stringWithFormat:@"%@: [%@] ", v36, selfCopy];
       }
 
       else
@@ -1631,15 +1631,15 @@ LABEL_9:
       v54 = v37;
       v55 = 2114;
       v56 = v40;
-      _os_log_impl(&dword_192869000, v32, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode the AMSDialogRequest. error = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode the AMSDialogRequest. error = %{public}@", buf, 0x16u);
       if (v33)
       {
 
-        v37 = v44;
+        v37 = selfCopy;
       }
     }
 
-    v7[2](v7, v6);
+    completionCopy[2](completionCopy, errorCopy);
   }
 
 LABEL_38:
@@ -1729,33 +1729,33 @@ void __57__AMSAuthenticateTask__handleDialogFromError_completion___block_invoke_
 
 - (BOOL)_isMetricsEnabled
 {
-  v3 = [(AMSAuthenticateTask *)self options];
-  v4 = [v3 metricsIdentifier];
+  options = [(AMSAuthenticateTask *)self options];
+  metricsIdentifier = [options metricsIdentifier];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(AMSAuthenticateTask *)self options];
-    v6 = [v5 metricsIdentifier];
-    v7 = [v6 BOOLValue];
+    options2 = [(AMSAuthenticateTask *)self options];
+    metricsIdentifier2 = [options2 metricsIdentifier];
+    bOOLValue = [metricsIdentifier2 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)_performAuthenticationAndGeneratePasswordWithAccount:(id)a3
+- (void)_performAuthenticationAndGeneratePasswordWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__AMSAuthenticateTask__performAuthenticationAndGeneratePasswordWithAccount___block_invoke;
   v6[3] = &unk_1E73B36A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = accountCopy;
+  v5 = accountCopy;
   [(AMSAuthenticateTask *)self _attemptMultiUserTokenAuthenticationForAccount:v5 completion:v6];
 }
 
@@ -2067,12 +2067,12 @@ void __76__AMSAuthenticateTask__performAuthenticationAndGeneratePasswordWithAcco
   }
 }
 
-- (id)_performAuthenticationUsingAccount:(id)a3 credentialSource:(unint64_t)a4
+- (id)_performAuthenticationUsingAccount:(id)account credentialSource:(unint64_t)source
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  accountCopy = account;
   v8 = objc_alloc_init(AMSMutablePromise);
-  if (!a4)
+  if (!source)
   {
     v9 = +[AMSLogConfig sharedAccountsConfig];
     if (!v9)
@@ -2080,8 +2080,8 @@ void __76__AMSAuthenticateTask__performAuthenticationAndGeneratePasswordWithAcco
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = AMSLogKey();
       v12 = MEMORY[0x1E696AEC0];
@@ -2100,7 +2100,7 @@ void __76__AMSAuthenticateTask__performAuthenticationAndGeneratePasswordWithAcco
       v15 = ;
       *buf = 138543362;
       v29 = v15;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@The account’s credential source is unknown.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@The account’s credential source is unknown.", buf, 0xCu);
       if (v11)
       {
 
@@ -2109,24 +2109,24 @@ void __76__AMSAuthenticateTask__performAuthenticationAndGeneratePasswordWithAcco
     }
   }
 
-  v16 = [(AMSAuthenticateTask *)self options];
-  v17 = [v16 copy];
+  options = [(AMSAuthenticateTask *)self options];
+  v17 = [options copy];
 
-  [v17 setCredentialSource:a4];
-  v18 = [v17 optionsDictionary];
-  v19 = [v18 mutableCopy];
+  [v17 setCredentialSource:source];
+  optionsDictionary = [v17 optionsDictionary];
+  v19 = [optionsDictionary mutableCopy];
 
   [v19 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E6959AB8]];
-  v20 = [(AMSAuthenticateTask *)self accountStore];
+  accountStore = [(AMSAuthenticateTask *)self accountStore];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __75__AMSAuthenticateTask__performAuthenticationUsingAccount_credentialSource___block_invoke;
   v24[3] = &unk_1E73B3050;
-  v27 = a4;
+  sourceCopy = source;
   v21 = v8;
   v25 = v21;
-  v26 = self;
-  [v20 verifyCredentialsForAccount:v7 options:v19 completion:v24];
+  selfCopy = self;
+  [accountStore verifyCredentialsForAccount:accountCopy options:v19 completion:v24];
 
   v22 = v21;
   return v21;
@@ -2154,14 +2154,14 @@ void __75__AMSAuthenticateTask__performAuthenticationUsingAccount_credentialSour
   }
 }
 
-- (void)_performAuthenticationWithInitialResultsAndAccount:(id)a3
+- (void)_performAuthenticationWithInitialResultsAndAccount:(id)account
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  accountCopy = account;
   v6 = [AMSAuthKitUpdateResult alloc];
-  v7 = [(AMSAuthenticateTask *)self initialAuthenticationResults];
-  v8 = [(AMSAuthenticateTask *)self options];
-  v9 = [(AMSAuthKitUpdateResult *)v6 initWithAccount:v5 authenticationResults:v7 options:v8];
+  initialAuthenticationResults = [(AMSAuthenticateTask *)self initialAuthenticationResults];
+  options = [(AMSAuthenticateTask *)self options];
+  v9 = [(AMSAuthKitUpdateResult *)v6 initWithAccount:accountCopy authenticationResults:initialAuthenticationResults options:options];
 
   v10 = +[AMSLogConfig sharedAccountsConfig];
   if (!v10)
@@ -2169,8 +2169,8 @@ void __75__AMSAuthenticateTask__performAuthenticationUsingAccount_credentialSour
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = AMSLogKey();
     v13 = MEMORY[0x1E696AEC0];
@@ -2189,7 +2189,7 @@ void __75__AMSAuthenticateTask__performAuthenticationUsingAccount_credentialSour
     v16 = ;
     *buf = 138543362;
     v18 = v16;
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Performing the authentication with initial authentication results.", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Performing the authentication with initial authentication results.", buf, 0xCu);
     if (v12)
     {
 
@@ -2200,7 +2200,7 @@ void __75__AMSAuthenticateTask__performAuthenticationUsingAccount_credentialSour
   [(AMSAuthenticateTask *)self _processAuthKitUpdateResult:v9 error:0];
 }
 
-- (void)_postFollowUpForFailedAuthenticationWithAccount:(id)a3
+- (void)_postFollowUpForFailedAuthenticationWithAccount:(id)account
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = +[AMSLogConfig sharedAccountsConfig];
@@ -2209,8 +2209,8 @@ void __75__AMSAuthenticateTask__performAuthenticationUsingAccount_credentialSour
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -2221,21 +2221,21 @@ void __75__AMSAuthenticateTask__performAuthenticationUsingAccount_credentialSour
   }
 }
 
-- (void)_processAuthKitUpdateResult:(id)a3 error:(id)a4
+- (void)_processAuthKitUpdateResult:(id)result error:(id)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  resultCopy = result;
+  errorCopy = error;
+  if (resultCopy)
   {
-    v8 = [v6 credentialSource];
-    v9 = [(AMSAuthenticateTask *)self options];
-    [v9 setCredentialSource:v8];
+    credentialSource = [resultCopy credentialSource];
+    options = [(AMSAuthenticateTask *)self options];
+    [options setCredentialSource:credentialSource];
 
-    v10 = [(AMSAuthenticateTask *)self options];
-    LODWORD(v9) = [v10 serviceTokenOnly];
+    options2 = [(AMSAuthenticateTask *)self options];
+    LODWORD(options) = [options2 serviceTokenOnly];
 
-    if (v9)
+    if (options)
     {
       v11 = +[AMSLogConfig sharedAccountsConfig];
       if (!v11)
@@ -2243,8 +2243,8 @@ void __75__AMSAuthenticateTask__performAuthenticationUsingAccount_credentialSour
         v11 = +[AMSLogConfig sharedConfig];
       }
 
-      v12 = [v11 OSLogObject];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v11 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v13 = objc_opt_class();
         v14 = AMSLogKey();
@@ -2252,24 +2252,24 @@ void __75__AMSAuthenticateTask__performAuthenticationUsingAccount_credentialSour
         v24 = v13;
         v25 = 2114;
         v26 = v14;
-        _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Request only requires service token; skipping credential verification", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Request only requires service token; skipping credential verification", buf, 0x16u);
       }
 
-      v15 = [v6 account];
-      v16 = [(AMSAuthenticateTask *)self _finishWithVerifiedAccount:v15 andAuthKitUpdateResult:v6];
+      account = [resultCopy account];
+      v16 = [(AMSAuthenticateTask *)self _finishWithVerifiedAccount:account andAuthKitUpdateResult:resultCopy];
     }
 
     else
     {
-      v18 = [v6 account];
-      v19 = [(AMSAuthenticateTask *)self options];
-      v20 = -[AMSAuthenticateTask _performAuthenticationUsingAccount:credentialSource:](self, "_performAuthenticationUsingAccount:credentialSource:", v18, [v19 credentialSource]);
+      account2 = [resultCopy account];
+      options3 = [(AMSAuthenticateTask *)self options];
+      v20 = -[AMSAuthenticateTask _performAuthenticationUsingAccount:credentialSource:](self, "_performAuthenticationUsingAccount:credentialSource:", account2, [options3 credentialSource]);
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __57__AMSAuthenticateTask__processAuthKitUpdateResult_error___block_invoke;
       v21[3] = &unk_1E73B36A8;
       v21[4] = self;
-      v22 = v6;
+      v22 = resultCopy;
       [v20 resultWithCompletion:v21];
     }
   }
@@ -2306,8 +2306,8 @@ void __57__AMSAuthenticateTask__processAuthKitUpdateResult_error___block_invoke(
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = AMSLogKey();
     v8 = MEMORY[0x1E696AEC0];
@@ -2326,7 +2326,7 @@ void __57__AMSAuthenticateTask__processAuthKitUpdateResult_error___block_invoke(
     v11 = ;
     *buf = 138543362;
     v32 = v11;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@Running create account dialog.", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Running create account dialog.", buf, 0xCu);
     if (v7)
     {
 
@@ -2334,9 +2334,9 @@ void __57__AMSAuthenticateTask__processAuthKitUpdateResult_error___block_invoke(
     }
   }
 
-  v12 = [(AMSAuthenticateTask *)self accountStore];
-  v13 = [v12 ams_activeiCloudAccount];
-  if (v13)
+  accountStore = [(AMSAuthenticateTask *)self accountStore];
+  ams_activeiCloudAccount = [accountStore ams_activeiCloudAccount];
+  if (ams_activeiCloudAccount)
   {
     v14 = +[AMSLogConfig sharedAccountsConfig];
     if (!v14)
@@ -2344,8 +2344,8 @@ void __57__AMSAuthenticateTask__processAuthKitUpdateResult_error___block_invoke(
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v16 = AMSLogKey();
       v17 = MEMORY[0x1E696AEC0];
@@ -2361,14 +2361,14 @@ void __57__AMSAuthenticateTask__processAuthKitUpdateResult_error___block_invoke(
       {
         [v17 stringWithFormat:@"%@: ", v18];
       }
-      v20 = ;
+      selfCopy = ;
       *buf = 138543362;
-      v32 = v20;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@Skipping dialog as the user is signed in to iCloud.", buf, 0xCu);
+      v32 = selfCopy;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Skipping dialog as the user is signed in to iCloud.", buf, 0xCu);
       if (v16)
       {
 
-        v20 = self;
+        selfCopy = self;
       }
     }
 
@@ -2386,7 +2386,7 @@ void __57__AMSAuthenticateTask__processAuthKitUpdateResult_error___block_invoke(
     v22 = [(AMSAuthenticateTask *)self bag];
     v23 = [v22 URLForKey:@"signup"];
 
-    v24 = [v23 valuePromise];
+    valuePromise = [v23 valuePromise];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __46__AMSAuthenticateTask__runCreateAccountDialog__block_invoke;
@@ -2395,7 +2395,7 @@ void __57__AMSAuthenticateTask__processAuthKitUpdateResult_error___block_invoke(
     v29 = v21;
     v30 = a2;
     v25 = v21;
-    v26 = [v24 continueWithBlock:v28];
+    v26 = [valuePromise continueWithBlock:v28];
   }
 
   return v26;
@@ -2588,34 +2588,34 @@ id __46__AMSAuthenticateTask__runCreateAccountDialog__block_invoke_118(uint64_t 
   return v13;
 }
 
-+ (id)loadCreateAppleIDWithClientInfo:(id)a3 bag:(id)a4
++ (id)loadCreateAppleIDWithClientInfo:(id)info bag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  infoCopy = info;
+  bagCopy = bag;
+  if (!bagCopy)
   {
-    v7 = +[AMSPurchaseTask createBagForSubProfile];
+    bagCopy = +[AMSPurchaseTask createBagForSubProfile];
   }
 
-  v8 = [v7 URLForKey:@"signup"];
-  v9 = [v8 valuePromise];
+  v8 = [bagCopy URLForKey:@"signup"];
+  valuePromise = [v8 valuePromise];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __59__AMSAuthenticateTask_loadCreateAppleIDWithClientInfo_bag___block_invoke;
   v14[3] = &unk_1E73B3D18;
-  v16 = v7;
-  v17 = a1;
-  v15 = v6;
-  v10 = v7;
-  v11 = v6;
-  v12 = [v9 thenWithBlock:v14];
+  v16 = bagCopy;
+  selfCopy = self;
+  v15 = infoCopy;
+  v10 = bagCopy;
+  v11 = infoCopy;
+  v12 = [valuePromise thenWithBlock:v14];
 
   return v12;
 }
 
-+ (id)loadCreateAppleIDWithClientInfo:(id)a3 url:(id)a4 bag:(id)a5
++ (id)loadCreateAppleIDWithClientInfo:(id)info url:(id)url bag:(id)bag
 {
-  v5 = [AMSOpenURL openURL:a4 clientInfo:a3 bag:a5];
+  v5 = [AMSOpenURL openURL:url clientInfo:info bag:bag];
   v6 = objc_alloc_init(AMSMutablePromise);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -2644,24 +2644,24 @@ void __63__AMSAuthenticateTask_loadCreateAppleIDWithClientInfo_url_bag___block_i
   [v1 finishWithError:v2];
 }
 
-- (id)_runCreateAccountDialogWithBag:(id)a3
+- (id)_runCreateAccountDialogWithBag:(id)bag
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bagCopy = bag;
   v5 = [AMSDialogRequest alloc];
-  v6 = AMSLocalizedString(@"PURCHASE_SIGNIN", v4);
+  v6 = AMSLocalizedString(@"PURCHASE_SIGNIN", bagCopy);
   v7 = [(AMSDialogRequest *)v5 initWithTitle:v6 message:0];
 
   v8 = AMSLogKey();
   [(AMSDialogRequest *)v7 setLogKey:v8];
 
-  v9 = AMSLocalizedString(@"PURCHASE_EXISTING_APPLE_ACCOUNT", v4);
+  v9 = AMSLocalizedString(@"PURCHASE_EXISTING_APPLE_ACCOUNT", bagCopy);
   v10 = [AMSDialogAction actionWithTitle:v9 identifier:@"signin"];
 
-  v11 = AMSLocalizedString(@"PURCHASE_CREATE_APPLE_ACCOUNT", v4);
+  v11 = AMSLocalizedString(@"PURCHASE_CREATE_APPLE_ACCOUNT", bagCopy);
   v12 = [AMSDialogAction actionWithTitle:v11 identifier:@"create"];
 
-  v13 = AMSLocalizedString(@"CANCEL", v4);
+  v13 = AMSLocalizedString(@"CANCEL", bagCopy);
 
   v14 = [AMSDialogAction actionWithTitle:v13 style:2];
 
@@ -2679,22 +2679,22 @@ void __63__AMSAuthenticateTask_loadCreateAppleIDWithClientInfo_url_bag___block_i
   return v16;
 }
 
-- (id)_runDialogRequest:(id)a3
+- (id)_runDialogRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(AMSMutablePromise);
-  v6 = [(AMSAuthenticateTask *)self delegate];
+  delegate = [(AMSAuthenticateTask *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(AMSAuthenticateTask *)self delegate];
+    delegate2 = [(AMSAuthenticateTask *)self delegate];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __41__AMSAuthenticateTask__runDialogRequest___block_invoke;
     v11[3] = &unk_1E73B3D40;
     v12 = v5;
-    [v8 authenticateTask:self handleDialogRequest:v4 completion:v11];
+    [delegate2 authenticateTask:self handleDialogRequest:requestCopy completion:v11];
   }
 
   else
@@ -2706,17 +2706,17 @@ void __63__AMSAuthenticateTask_loadCreateAppleIDWithClientInfo_url_bag___block_i
   return v5;
 }
 
-- (id)_sanitizeError:(id)a3
+- (id)_sanitizeError:(id)error
 {
-  v3 = a3;
-  if ([v3 ams_recursiveHasDomain:*MEMORY[0x1E698DB28] code:-7003])
+  errorCopy = error;
+  if ([errorCopy ams_recursiveHasDomain:*MEMORY[0x1E698DB28] code:-7003])
   {
-    v4 = AMSError(6, @"Authentication Failed", @"User cancelled", v3);
+    v4 = AMSError(6, @"Authentication Failed", @"User cancelled", errorCopy);
   }
 
   else
   {
-    v4 = v3;
+    v4 = errorCopy;
   }
 
   v5 = v4;
@@ -2724,15 +2724,15 @@ void __63__AMSAuthenticateTask_loadCreateAppleIDWithClientInfo_url_bag___block_i
   return v5;
 }
 
-- (void)_updateAccountWithProvidedInformation:(id)a3
+- (void)_updateAccountWithProvidedInformation:(id)information
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 ams_altDSID];
-  if (![v5 length])
+  informationCopy = information;
+  ams_altDSID = [informationCopy ams_altDSID];
+  if (![ams_altDSID length])
   {
-    v6 = [(AMSAuthenticateTask *)self altDSID];
-    v7 = [v6 length];
+    altDSID = [(AMSAuthenticateTask *)self altDSID];
+    v7 = [altDSID length];
 
     if (!v7)
     {
@@ -2745,8 +2745,8 @@ void __63__AMSAuthenticateTask_loadCreateAppleIDWithClientInfo_url_bag___block_i
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
@@ -2754,28 +2754,28 @@ void __63__AMSAuthenticateTask_loadCreateAppleIDWithClientInfo_url_bag___block_i
       v48 = v10;
       v49 = 2114;
       v50 = v11;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] The caller provided an altDSID, and the account didn't have one.", &v47, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] The caller provided an altDSID, and the account didn't have one.", &v47, 0x16u);
     }
 
-    v5 = [(AMSAuthenticateTask *)self altDSID];
-    [v4 ams_setAltDSID:v5];
+    ams_altDSID = [(AMSAuthenticateTask *)self altDSID];
+    [informationCopy ams_setAltDSID:ams_altDSID];
   }
 
 LABEL_9:
-  v12 = [v4 ams_DSID];
-  if (v12)
+  ams_DSID = [informationCopy ams_DSID];
+  if (ams_DSID)
   {
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v39 = [(AMSAuthenticateTask *)self DSID];
-  if (v39)
+  dSID = [(AMSAuthenticateTask *)self DSID];
+  if (dSID)
   {
-    v40 = v39;
-    v41 = [(AMSAuthenticateTask *)self DSID];
-    v42 = [v41 isEqualToNumber:&unk_1F0778FB0];
+    v40 = dSID;
+    dSID2 = [(AMSAuthenticateTask *)self DSID];
+    v42 = [dSID2 isEqualToNumber:&unk_1F0778FB0];
 
     if ((v42 & 1) == 0)
     {
@@ -2785,8 +2785,8 @@ LABEL_10:
         v43 = +[AMSLogConfig sharedConfig];
       }
 
-      v44 = [v43 OSLogObject];
-      if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v43 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v45 = objc_opt_class();
         v46 = AMSLogKey();
@@ -2794,22 +2794,22 @@ LABEL_10:
         v48 = v45;
         v49 = 2114;
         v50 = v46;
-        _os_log_impl(&dword_192869000, v44, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] The caller provided a DSID, and the account didn't have one.", &v47, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] The caller provided a DSID, and the account didn't have one.", &v47, 0x16u);
       }
 
-      v12 = [(AMSAuthenticateTask *)self DSID];
-      [v4 ams_setDSID:v12];
+      ams_DSID = [(AMSAuthenticateTask *)self DSID];
+      [informationCopy ams_setDSID:ams_DSID];
       goto LABEL_10;
     }
   }
 
 LABEL_11:
-  v13 = [(AMSAuthenticateTask *)self username];
-  if ([v13 length])
+  username = [(AMSAuthenticateTask *)self username];
+  if ([username length])
   {
-    v14 = [v4 username];
-    v15 = [(AMSAuthenticateTask *)self username];
-    v16 = [v14 isEqualToString:v15];
+    username2 = [informationCopy username];
+    username3 = [(AMSAuthenticateTask *)self username];
+    v16 = [username2 isEqualToString:username3];
 
     if (v16)
     {
@@ -2822,15 +2822,15 @@ LABEL_11:
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v19 = objc_opt_class();
       v20 = AMSLogKey();
-      v21 = [v4 username];
-      v22 = AMSHashIfNeeded(v21);
-      v23 = [(AMSAuthenticateTask *)self username];
-      v24 = AMSHashIfNeeded(v23);
+      username4 = [informationCopy username];
+      v22 = AMSHashIfNeeded(username4);
+      username5 = [(AMSAuthenticateTask *)self username];
+      v24 = AMSHashIfNeeded(username5);
       v47 = 138544130;
       v48 = v19;
       v49 = 2114;
@@ -2839,25 +2839,25 @@ LABEL_11:
       v52 = v22;
       v53 = 2114;
       v54 = v24;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] The caller provided an updated username. oldUsername = %{public}@ | newUsername = %{public}@", &v47, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] The caller provided an updated username. oldUsername = %{public}@ | newUsername = %{public}@", &v47, 0x2Au);
     }
 
-    v13 = [(AMSAuthenticateTask *)self username];
-    [v4 setUsername:v13];
+    username = [(AMSAuthenticateTask *)self username];
+    [informationCopy setUsername:username];
   }
 
 LABEL_19:
-  v25 = [(AMSAuthenticateTask *)self options];
-  v26 = [v25 isDemoAccountSetup];
+  options = [(AMSAuthenticateTask *)self options];
+  isDemoAccountSetup = [options isDemoAccountSetup];
 
-  if (v26)
+  if (isDemoAccountSetup)
   {
-    [v4 ams_setDemoAccount:1];
+    [informationCopy ams_setDemoAccount:1];
   }
 
-  v27 = [(AMSAuthenticateTask *)self password];
+  password = [(AMSAuthenticateTask *)self password];
 
-  if (v27)
+  if (password)
   {
     v28 = +[AMSLogConfig sharedAccountsConfig];
     if (!v28)
@@ -2865,8 +2865,8 @@ LABEL_19:
       v28 = +[AMSLogConfig sharedConfig];
     }
 
-    v29 = [v28 OSLogObject];
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    oSLogObject4 = [v28 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
       v30 = objc_opt_class();
       v31 = AMSLogKey();
@@ -2874,16 +2874,16 @@ LABEL_19:
       v48 = v30;
       v49 = 2114;
       v50 = v31;
-      _os_log_impl(&dword_192869000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] We have a password (PET) we can use.", &v47, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] We have a password (PET) we can use.", &v47, 0x16u);
     }
 
-    v32 = [(AMSAuthenticateTask *)self password];
-    [v4 ams_setPassword:v32];
+    password2 = [(AMSAuthenticateTask *)self password];
+    [informationCopy ams_setPassword:password2];
   }
 
-  v33 = [(AMSAuthenticateTask *)self rawPassword];
+  rawPassword = [(AMSAuthenticateTask *)self rawPassword];
 
-  if (v33)
+  if (rawPassword)
   {
     v34 = +[AMSLogConfig sharedAccountsConfig];
     if (!v34)
@@ -2891,8 +2891,8 @@ LABEL_19:
       v34 = +[AMSLogConfig sharedConfig];
     }
 
-    v35 = [v34 OSLogObject];
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+    oSLogObject5 = [v34 OSLogObject];
+    if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
     {
       v36 = objc_opt_class();
       v37 = AMSLogKey();
@@ -2900,14 +2900,14 @@ LABEL_19:
       v48 = v36;
       v49 = 2114;
       v50 = v37;
-      _os_log_impl(&dword_192869000, v35, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] We have a raw password we can use.", &v47, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] We have a raw password we can use.", &v47, 0x16u);
     }
 
-    v38 = [(AMSAuthenticateTask *)self rawPassword];
-    [v4 ams_setRawPassword:v38];
+    rawPassword2 = [(AMSAuthenticateTask *)self rawPassword];
+    [informationCopy ams_setRawPassword:rawPassword2];
   }
 
-  [(AMSAuthenticateTask *)self _updateAccountPasswordUsingSecondaryAccounts:v4];
+  [(AMSAuthenticateTask *)self _updateAccountPasswordUsingSecondaryAccounts:informationCopy];
 }
 
 + (AMSBagKeySet)bagKeySet
@@ -2919,17 +2919,17 @@ LABEL_19:
 
 - (id)homeID
 {
-  v2 = [(AMSAuthenticateTask *)self homeIdentifier];
-  v3 = [v2 UUIDString];
+  homeIdentifier = [(AMSAuthenticateTask *)self homeIdentifier];
+  uUIDString = [homeIdentifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)setHomeID:(id)a3
+- (void)setHomeID:(id)d
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithUUIDString:v5];
+  dCopy = d;
+  v6 = [[v4 alloc] initWithUUIDString:dCopy];
 
   [(AMSAuthenticateTask *)self setHomeIdentifier:v6];
 }

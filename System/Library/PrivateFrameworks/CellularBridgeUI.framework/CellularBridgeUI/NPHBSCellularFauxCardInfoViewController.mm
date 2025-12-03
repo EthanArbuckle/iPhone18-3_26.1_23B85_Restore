@@ -1,18 +1,18 @@
 @interface NPHBSCellularFauxCardInfoViewController
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (NPHBSCellularFauxCardInfoViewController)init;
 - (NSLayoutConstraint)infoTableViewHeightConstraint;
 - (UILabel)enterActivationLabel;
 - (UIScrollView)scrollView;
 - (UITableView)infoTableView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)activatePlan:(id)a3;
-- (void)configureCell:(id)a3 atIndexPath:(id)a4;
-- (void)keyboardWasShown:(id)a3;
-- (void)keyboardWillBeHidden:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)activatePlan:(id)plan;
+- (void)configureCell:(id)cell atIndexPath:(id)path;
+- (void)keyboardWasShown:(id)shown;
+- (void)keyboardWillBeHidden:(id)hidden;
 - (void)scrollViewForKeyboardIfNecessary;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -95,10 +95,10 @@
   [v7 setConstant:v6 * 3.0 + -0.5];
 }
 
-- (void)keyboardWasShown:(id)a3
+- (void)keyboardWasShown:(id)shown
 {
-  v7 = [a3 userInfo];
-  v4 = [v7 objectForKey:*MEMORY[0x277D76BB0]];
+  userInfo = [shown userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x277D76BB0]];
   [v4 CGRectValue];
   self->_keyboardSize.width = v5;
   self->_keyboardSize.height = v6;
@@ -106,7 +106,7 @@
   [(NPHBSCellularFauxCardInfoViewController *)self scrollViewForKeyboardIfNecessary];
 }
 
-- (void)keyboardWillBeHidden:(id)a3
+- (void)keyboardWillBeHidden:(id)hidden
 {
   v4 = *MEMORY[0x277D768C8];
   v5 = *(MEMORY[0x277D768C8] + 8);
@@ -146,8 +146,8 @@
 
   if (self->_activeTextField)
   {
-    v10 = [(NPHBSCellularFauxCardInfoViewController *)self view];
-    [v10 frame];
+    view = [(NPHBSCellularFauxCardInfoViewController *)self view];
+    [view frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -183,50 +183,50 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[NSArray objectAtIndexedSubscript:](self->_tableData, "objectAtIndexedSubscript:", [v5 row]);
+  pathCopy = path;
+  v6 = -[NSArray objectAtIndexedSubscript:](self->_tableData, "objectAtIndexedSubscript:", [pathCopy row]);
   v7 = [v6 objectForKeyedSubscript:@"TABLE_CELL_KEY"];
 
   if (!v7)
   {
-    v7 = -[NPHSetupTableViewCell initWithTag:delegate:]([NPHSetupTableViewCell alloc], "initWithTag:delegate:", [v5 row], self);
-    v8 = -[NSArray objectAtIndexedSubscript:](self->_tableData, "objectAtIndexedSubscript:", [v5 row]);
+    v7 = -[NPHSetupTableViewCell initWithTag:delegate:]([NPHSetupTableViewCell alloc], "initWithTag:delegate:", [pathCopy row], self);
+    v8 = -[NSArray objectAtIndexedSubscript:](self->_tableData, "objectAtIndexedSubscript:", [pathCopy row]);
     [v8 setObject:v7 forKeyedSubscript:@"TABLE_CELL_KEY"];
   }
 
-  [(NPHBSCellularFauxCardInfoViewController *)self configureCell:v7 atIndexPath:v5];
+  [(NPHBSCellularFauxCardInfoViewController *)self configureCell:v7 atIndexPath:pathCopy];
 
   return v7;
 }
 
-- (void)configureCell:(id)a3 atIndexPath:(id)a4
+- (void)configureCell:(id)cell atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v15 = -[NSArray objectAtIndexedSubscript:](self->_tableData, "objectAtIndexedSubscript:", [v6 row]);
+  pathCopy = path;
+  cellCopy = cell;
+  v15 = -[NSArray objectAtIndexedSubscript:](self->_tableData, "objectAtIndexedSubscript:", [pathCopy row]);
   v8 = [v15 objectForKeyedSubscript:@"TITLE_KEY"];
-  v9 = [v7 textLabel];
-  [v9 setText:v8];
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:v8];
 
   v10 = [v15 objectForKeyedSubscript:@"PLACEHOLDER_KEY"];
-  v11 = [v7 editableTextField];
-  [v11 setPlaceholder:v10];
+  editableTextField = [cellCopy editableTextField];
+  [editableTextField setPlaceholder:v10];
 
   v12 = [v15 objectForKeyedSubscript:@"VALUE_KEY"];
-  v13 = [v7 editableTextField];
-  [v13 setText:v12];
+  editableTextField2 = [cellCopy editableTextField];
+  [editableTextField2 setText:v12];
 
-  v14 = [v6 row];
-  [v7 setTag:v14];
+  v14 = [pathCopy row];
+  [cellCopy setTag:v14];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  [v4 resignFirstResponder];
-  v5 = [v4 tag];
+  returnCopy = return;
+  [returnCopy resignFirstResponder];
+  v5 = [returnCopy tag];
 
   switch(v5)
   {
@@ -244,8 +244,8 @@ LABEL_6:
       v8 = [(NSArray *)tableData objectAtIndexedSubscript:v7];
       v9 = [v8 objectForKeyedSubscript:@"TABLE_CELL_KEY"];
 
-      v10 = [v9 editableTextField];
-      [v10 becomeFirstResponder];
+      editableTextField = [v9 editableTextField];
+      [editableTextField becomeFirstResponder];
 
       break;
   }
@@ -253,10 +253,10 @@ LABEL_6:
   return 1;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  if ([(UITextField *)v4 tag]== 2)
+  editingCopy = editing;
+  if ([(UITextField *)editingCopy tag]== 2)
   {
     v5 = 11;
   }
@@ -266,35 +266,35 @@ LABEL_6:
     v5 = 4;
   }
 
-  [(UITextField *)v4 setReturnKeyType:v5];
+  [(UITextField *)editingCopy setReturnKeyType:v5];
   activeTextField = self->_activeTextField;
-  self->_activeTextField = v4;
+  self->_activeTextField = editingCopy;
 
   [(NPHBSCellularFauxCardInfoViewController *)self scrollViewForKeyboardIfNecessary];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   tableData = self->_tableData;
-  v5 = a3;
-  v9 = -[NSArray objectAtIndexedSubscript:](tableData, "objectAtIndexedSubscript:", [v5 tag]);
-  v6 = [v5 text];
+  editingCopy = editing;
+  v9 = -[NSArray objectAtIndexedSubscript:](tableData, "objectAtIndexedSubscript:", [editingCopy tag]);
+  text = [editingCopy text];
 
-  v7 = [v6 copy];
+  v7 = [text copy];
   [v9 setObject:v7 forKeyedSubscript:@"VALUE_KEY"];
 
   activeTextField = self->_activeTextField;
   self->_activeTextField = 0;
 }
 
-- (void)activatePlan:(id)a3
+- (void)activatePlan:(id)plan
 {
-  v4 = a3;
-  v5 = [(NPHBSCellularFauxCardInfoViewController *)self view];
-  [v5 endEditing:1];
+  planCopy = plan;
+  view = [(NPHBSCellularFauxCardInfoViewController *)self view];
+  [view endEditing:1];
 
-  v6 = [(NPHBSCellularFauxCardInfoViewController *)self presentingViewController];
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(NPHBSCellularFauxCardInfoViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
   objc_initWeak(&location, self);
   v7 = +[NPHCellularBridgeUIManager sharedInstance];

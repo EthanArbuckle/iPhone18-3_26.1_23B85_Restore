@@ -1,24 +1,24 @@
 @interface ATXModeEntityScorerClient
 - (ATXModeEntityScorerClient)init;
-- (void)assignModeEntityScores:(unint64_t)a3 entityTypeIdentifier:(id)a4 entityIdentifier:(id)a5 score:(double)a6 modeConfigurationType:(int64_t)a7 reply:(id)a8;
+- (void)assignModeEntityScores:(unint64_t)scores entityTypeIdentifier:(id)identifier entityIdentifier:(id)entityIdentifier score:(double)score modeConfigurationType:(int64_t)type reply:(id)reply;
 - (void)dealloc;
-- (void)modeEntityScoresFromCacheForModeEntityTypeIdentifier:(id)a3 modeIdentifier:(id)a4 modeConfigurationType:(int64_t)a5 reply:(id)a6;
-- (void)rankedAppsForDenyListForMode:(unint64_t)a3 reply:(id)a4;
-- (void)rankedAppsForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5;
-- (void)rankedAppsForMode:(unint64_t)a3 reply:(id)a4;
-- (void)rankedAppsForNotificationsForMode:(unint64_t)a3 reply:(id)a4;
-- (void)rankedContactsForDenyListForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5;
-- (void)rankedContactsForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5;
-- (void)rankedContactsForMode:(unint64_t)a3 reply:(id)a4;
-- (void)rankedContactsForNotificationsForMode:(unint64_t)a3 reply:(id)a4;
-- (void)rankedNotificationsForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5;
-- (void)rankedNotificationsForMode:(unint64_t)a3 reply:(id)a4;
-- (void)rankedWidgetsForMode:(unint64_t)a3 reply:(id)a4;
-- (void)scoreApps:(id)a3 mode:(unint64_t)a4 reply:(id)a5;
-- (void)scoreAppsForDenyList:(id)a3 mode:(unint64_t)a4 reply:(id)a5;
-- (void)scoreContacts:(id)a3 mode:(unint64_t)a4 reply:(id)a5;
-- (void)scoreContactsForDenyList:(id)a3 mode:(unint64_t)a4 reply:(id)a5;
-- (void)scoreNotifications:(id)a3 mode:(unint64_t)a4 reply:(id)a5;
+- (void)modeEntityScoresFromCacheForModeEntityTypeIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier modeConfigurationType:(int64_t)type reply:(id)reply;
+- (void)rankedAppsForDenyListForMode:(unint64_t)mode reply:(id)reply;
+- (void)rankedAppsForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply;
+- (void)rankedAppsForMode:(unint64_t)mode reply:(id)reply;
+- (void)rankedAppsForNotificationsForMode:(unint64_t)mode reply:(id)reply;
+- (void)rankedContactsForDenyListForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply;
+- (void)rankedContactsForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply;
+- (void)rankedContactsForMode:(unint64_t)mode reply:(id)reply;
+- (void)rankedContactsForNotificationsForMode:(unint64_t)mode reply:(id)reply;
+- (void)rankedNotificationsForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply;
+- (void)rankedNotificationsForMode:(unint64_t)mode reply:(id)reply;
+- (void)rankedWidgetsForMode:(unint64_t)mode reply:(id)reply;
+- (void)scoreApps:(id)apps mode:(unint64_t)mode reply:(id)reply;
+- (void)scoreAppsForDenyList:(id)list mode:(unint64_t)mode reply:(id)reply;
+- (void)scoreContacts:(id)contacts mode:(unint64_t)mode reply:(id)reply;
+- (void)scoreContactsForDenyList:(id)list mode:(unint64_t)mode reply:(id)reply;
+- (void)scoreNotifications:(id)notifications mode:(unint64_t)mode reply:(id)reply;
 @end
 
 @implementation ATXModeEntityScorerClient
@@ -237,12 +237,12 @@ void __33__ATXModeEntityScorerClient_init__block_invoke_69()
   [(ATXModeEntityScorerClient *)&v3 dealloc];
 }
 
-- (void)scoreContacts:(id)a3 mode:(unint64_t)a4 reply:(id)a5
+- (void)scoreContacts:(id)contacts mode:(unint64_t)mode reply:(id)reply
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (v10)
+  contactsCopy = contacts;
+  replyCopy = reply;
+  if (replyCopy)
   {
     if ([MEMORY[0x1E69C5D20] hasTrueBooleanEntitlement:@"com.apple.ModeEntityScorer" logHandle:0])
     {
@@ -258,8 +258,8 @@ void __33__ATXModeEntityScorerClient_init__block_invoke_69()
       v24[1] = 3221225472;
       v24[2] = __54__ATXModeEntityScorerClient_scoreContacts_mode_reply___block_invoke_84;
       v24[3] = &unk_1E80C0908;
-      v25 = v10;
-      [v12 scoreContacts:v9 mode:a4 reply:v24];
+      v25 = replyCopy;
+      [v12 scoreContacts:contactsCopy mode:mode reply:v24];
     }
 
     else
@@ -277,7 +277,7 @@ void __33__ATXModeEntityScorerClient_init__block_invoke_69()
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       v23 = [v20 initWithDomain:v21 code:1 userInfo:v22];
 
-      (*(v10 + 2))(v10, v9, v23);
+      (*(replyCopy + 2))(replyCopy, contactsCopy, v23);
     }
   }
 
@@ -308,11 +308,11 @@ void __54__ATXModeEntityScorerClient_scoreContacts_mode_reply___block_invoke(uin
   }
 }
 
-- (void)rankedContactsForMode:(unint64_t)a3 reply:(id)a4
+- (void)rankedContactsForMode:(unint64_t)mode reply:(id)reply
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  replyCopy = reply;
+  if (!replyCopy)
   {
     v11 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -345,7 +345,7 @@ void __54__ATXModeEntityScorerClient_scoreContacts_mode_reply___block_invoke(uin
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v14 = [v18 initWithDomain:v19 code:1 userInfo:v20];
 
-    v7[2](v7, MEMORY[0x1E695E0F0], v14);
+    replyCopy[2](replyCopy, MEMORY[0x1E695E0F0], v14);
 LABEL_10:
 
     goto LABEL_11;
@@ -358,7 +358,7 @@ LABEL_10:
   v24[3] = &unk_1E80C1100;
   v26 = a2;
   v24[4] = self;
-  v9 = v7;
+  v9 = replyCopy;
   v25 = v9;
   v10 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v24];
   v21[0] = MEMORY[0x1E69E9820];
@@ -367,7 +367,7 @@ LABEL_10:
   v21[3] = &unk_1E80C26A0;
   v23 = a2;
   v22 = v9;
-  [v10 rankedContactsForMode:a3 reply:v21];
+  [v10 rankedContactsForMode:mode reply:v21];
 
 LABEL_11:
 }
@@ -403,11 +403,11 @@ void __57__ATXModeEntityScorerClient_rankedContactsForMode_reply___block_invoke_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)rankedContactsForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5
+- (void)rankedContactsForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  if (!v9)
+  replyCopy = reply;
+  if (!replyCopy)
   {
     v13 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -440,7 +440,7 @@ void __57__ATXModeEntityScorerClient_rankedContactsForMode_reply___block_invoke_
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v16 = [v20 initWithDomain:v21 code:1 userInfo:v22];
 
-    v9[2](v9, MEMORY[0x1E695E0F0], v16);
+    replyCopy[2](replyCopy, MEMORY[0x1E695E0F0], v16);
 LABEL_10:
 
     goto LABEL_11;
@@ -453,7 +453,7 @@ LABEL_10:
   v26[3] = &unk_1E80C1100;
   v28 = a2;
   v26[4] = self;
-  v11 = v9;
+  v11 = replyCopy;
   v27 = v11;
   v12 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v26];
   v23[0] = MEMORY[0x1E69E9820];
@@ -462,7 +462,7 @@ LABEL_10:
   v23[3] = &unk_1E80C26A0;
   v25 = a2;
   v24 = v11;
-  [v12 rankedContactsForMode:a3 options:a4 reply:v23];
+  [v12 rankedContactsForMode:mode options:options reply:v23];
 
 LABEL_11:
 }
@@ -498,12 +498,12 @@ void __65__ATXModeEntityScorerClient_rankedContactsForMode_options_reply___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)scoreApps:(id)a3 mode:(unint64_t)a4 reply:(id)a5
+- (void)scoreApps:(id)apps mode:(unint64_t)mode reply:(id)reply
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (v10)
+  appsCopy = apps;
+  replyCopy = reply;
+  if (replyCopy)
   {
     if ([MEMORY[0x1E69C5D20] hasTrueBooleanEntitlement:@"com.apple.ModeEntityScorer" logHandle:0])
     {
@@ -519,8 +519,8 @@ void __65__ATXModeEntityScorerClient_rankedContactsForMode_options_reply___block
       v24[1] = 3221225472;
       v24[2] = __50__ATXModeEntityScorerClient_scoreApps_mode_reply___block_invoke_88;
       v24[3] = &unk_1E80C0908;
-      v25 = v10;
-      [v12 scoreApps:v9 mode:a4 reply:v24];
+      v25 = replyCopy;
+      [v12 scoreApps:appsCopy mode:mode reply:v24];
     }
 
     else
@@ -538,7 +538,7 @@ void __65__ATXModeEntityScorerClient_rankedContactsForMode_options_reply___block
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       v23 = [v20 initWithDomain:v21 code:1 userInfo:v22];
 
-      (*(v10 + 2))(v10, v9, v23);
+      (*(replyCopy + 2))(replyCopy, appsCopy, v23);
     }
   }
 
@@ -569,11 +569,11 @@ void __50__ATXModeEntityScorerClient_scoreApps_mode_reply___block_invoke(uint64_
   }
 }
 
-- (void)rankedAppsForMode:(unint64_t)a3 reply:(id)a4
+- (void)rankedAppsForMode:(unint64_t)mode reply:(id)reply
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  replyCopy = reply;
+  if (!replyCopy)
   {
     v11 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -606,7 +606,7 @@ void __50__ATXModeEntityScorerClient_scoreApps_mode_reply___block_invoke(uint64_
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v14 = [v18 initWithDomain:v19 code:1 userInfo:v20];
 
-    v7[2](v7, MEMORY[0x1E695E0F0], v14);
+    replyCopy[2](replyCopy, MEMORY[0x1E695E0F0], v14);
 LABEL_10:
 
     goto LABEL_11;
@@ -619,7 +619,7 @@ LABEL_10:
   v24[3] = &unk_1E80C1100;
   v26 = a2;
   v24[4] = self;
-  v9 = v7;
+  v9 = replyCopy;
   v25 = v9;
   v10 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v24];
   v21[0] = MEMORY[0x1E69E9820];
@@ -628,7 +628,7 @@ LABEL_10:
   v21[3] = &unk_1E80C26A0;
   v23 = a2;
   v22 = v9;
-  [v10 rankedAppsForMode:a3 reply:v21];
+  [v10 rankedAppsForMode:mode reply:v21];
 
 LABEL_11:
 }
@@ -664,11 +664,11 @@ void __53__ATXModeEntityScorerClient_rankedAppsForMode_reply___block_invoke_89(u
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)rankedAppsForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5
+- (void)rankedAppsForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  if (!v9)
+  replyCopy = reply;
+  if (!replyCopy)
   {
     v13 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -701,7 +701,7 @@ void __53__ATXModeEntityScorerClient_rankedAppsForMode_reply___block_invoke_89(u
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v16 = [v20 initWithDomain:v21 code:1 userInfo:v22];
 
-    v9[2](v9, MEMORY[0x1E695E0F0], v16);
+    replyCopy[2](replyCopy, MEMORY[0x1E695E0F0], v16);
 LABEL_10:
 
     goto LABEL_11;
@@ -714,7 +714,7 @@ LABEL_10:
   v26[3] = &unk_1E80C1100;
   v28 = a2;
   v26[4] = self;
-  v11 = v9;
+  v11 = replyCopy;
   v27 = v11;
   v12 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v26];
   v23[0] = MEMORY[0x1E69E9820];
@@ -723,7 +723,7 @@ LABEL_10:
   v23[3] = &unk_1E80C26A0;
   v25 = a2;
   v24 = v11;
-  [v12 rankedAppsForMode:a3 options:a4 reply:v23];
+  [v12 rankedAppsForMode:mode options:options reply:v23];
 
 LABEL_11:
 }
@@ -759,11 +759,11 @@ void __61__ATXModeEntityScorerClient_rankedAppsForMode_options_reply___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)rankedWidgetsForMode:(unint64_t)a3 reply:(id)a4
+- (void)rankedWidgetsForMode:(unint64_t)mode reply:(id)reply
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  replyCopy = reply;
+  if (!replyCopy)
   {
     v11 = __atxlog_handle_modes();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -796,7 +796,7 @@ void __61__ATXModeEntityScorerClient_rankedAppsForMode_options_reply___block_inv
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v14 = [v18 initWithDomain:v19 code:1 userInfo:v20];
 
-    v7[2](v7, MEMORY[0x1E695E0F0], v14);
+    replyCopy[2](replyCopy, MEMORY[0x1E695E0F0], v14);
 LABEL_10:
 
     goto LABEL_11;
@@ -809,7 +809,7 @@ LABEL_10:
   v24[3] = &unk_1E80C1100;
   v26 = a2;
   v24[4] = self;
-  v9 = v7;
+  v9 = replyCopy;
   v25 = v9;
   v10 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v24];
   v21[0] = MEMORY[0x1E69E9820];
@@ -818,7 +818,7 @@ LABEL_10:
   v21[3] = &unk_1E80C26A0;
   v23 = a2;
   v22 = v9;
-  [v10 rankedWidgetsForMode:a3 reply:v21];
+  [v10 rankedWidgetsForMode:mode reply:v21];
 
 LABEL_11:
 }
@@ -854,12 +854,12 @@ void __56__ATXModeEntityScorerClient_rankedWidgetsForMode_reply___block_invoke_9
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)scoreNotifications:(id)a3 mode:(unint64_t)a4 reply:(id)a5
+- (void)scoreNotifications:(id)notifications mode:(unint64_t)mode reply:(id)reply
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (v10)
+  notificationsCopy = notifications;
+  replyCopy = reply;
+  if (replyCopy)
   {
     if ([MEMORY[0x1E69C5D20] hasTrueBooleanEntitlement:@"com.apple.ModeEntityScorer" logHandle:0])
     {
@@ -875,8 +875,8 @@ void __56__ATXModeEntityScorerClient_rankedWidgetsForMode_reply___block_invoke_9
       v24[1] = 3221225472;
       v24[2] = __59__ATXModeEntityScorerClient_scoreNotifications_mode_reply___block_invoke_92;
       v24[3] = &unk_1E80C0908;
-      v25 = v10;
-      [v12 scoreNotifications:v9 mode:a4 reply:v24];
+      v25 = replyCopy;
+      [v12 scoreNotifications:notificationsCopy mode:mode reply:v24];
     }
 
     else
@@ -894,7 +894,7 @@ void __56__ATXModeEntityScorerClient_rankedWidgetsForMode_reply___block_invoke_9
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       v23 = [v20 initWithDomain:v21 code:1 userInfo:v22];
 
-      (*(v10 + 2))(v10, v9, v23);
+      (*(replyCopy + 2))(replyCopy, notificationsCopy, v23);
     }
   }
 
@@ -925,11 +925,11 @@ void __59__ATXModeEntityScorerClient_scoreNotifications_mode_reply___block_invok
   }
 }
 
-- (void)rankedNotificationsForMode:(unint64_t)a3 reply:(id)a4
+- (void)rankedNotificationsForMode:(unint64_t)mode reply:(id)reply
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (v7)
+  replyCopy = reply;
+  if (replyCopy)
   {
     if ([MEMORY[0x1E69C5D20] hasTrueBooleanEntitlement:@"com.apple.ModeEntityScorer" logHandle:0])
     {
@@ -940,7 +940,7 @@ void __59__ATXModeEntityScorerClient_scoreNotifications_mode_reply___block_invok
       v24[3] = &unk_1E80C1100;
       v26 = a2;
       v24[4] = self;
-      v9 = v7;
+      v9 = replyCopy;
       v25 = v9;
       v10 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v24];
       v22[0] = MEMORY[0x1E69E9820];
@@ -948,7 +948,7 @@ void __59__ATXModeEntityScorerClient_scoreNotifications_mode_reply___block_invok
       v22[2] = __62__ATXModeEntityScorerClient_rankedNotificationsForMode_reply___block_invoke_93;
       v22[3] = &unk_1E80C0908;
       v23 = v9;
-      [v10 rankedNotificationsForMode:a3 reply:v22];
+      [v10 rankedNotificationsForMode:mode reply:v22];
     }
 
     else
@@ -966,7 +966,7 @@ void __59__ATXModeEntityScorerClient_scoreNotifications_mode_reply___block_invok
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       v21 = [v18 initWithDomain:v19 code:1 userInfo:v20];
 
-      (*(v7 + 2))(v7, MEMORY[0x1E695E0F0], v21);
+      (*(replyCopy + 2))(replyCopy, MEMORY[0x1E695E0F0], v21);
     }
   }
 
@@ -999,11 +999,11 @@ void __62__ATXModeEntityScorerClient_rankedNotificationsForMode_reply___block_in
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)rankedNotificationsForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5
+- (void)rankedNotificationsForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  if (v9)
+  replyCopy = reply;
+  if (replyCopy)
   {
     if ([MEMORY[0x1E69C5D20] hasTrueBooleanEntitlement:@"com.apple.ModeEntityScorer" logHandle:0])
     {
@@ -1014,7 +1014,7 @@ void __62__ATXModeEntityScorerClient_rankedNotificationsForMode_reply___block_in
       v26[3] = &unk_1E80C1100;
       v28 = a2;
       v26[4] = self;
-      v11 = v9;
+      v11 = replyCopy;
       v27 = v11;
       v12 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v26];
       v24[0] = MEMORY[0x1E69E9820];
@@ -1022,7 +1022,7 @@ void __62__ATXModeEntityScorerClient_rankedNotificationsForMode_reply___block_in
       v24[2] = __70__ATXModeEntityScorerClient_rankedNotificationsForMode_options_reply___block_invoke_94;
       v24[3] = &unk_1E80C0908;
       v25 = v11;
-      [v12 rankedNotificationsForMode:a3 options:a4 reply:v24];
+      [v12 rankedNotificationsForMode:mode options:options reply:v24];
     }
 
     else
@@ -1040,7 +1040,7 @@ void __62__ATXModeEntityScorerClient_rankedNotificationsForMode_reply___block_in
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
       v23 = [v20 initWithDomain:v21 code:1 userInfo:v22];
 
-      (*(v9 + 2))(v9, MEMORY[0x1E695E0F0], v23);
+      (*(replyCopy + 2))(replyCopy, MEMORY[0x1E695E0F0], v23);
     }
   }
 
@@ -1073,11 +1073,11 @@ void __70__ATXModeEntityScorerClient_rankedNotificationsForMode_options_reply___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)rankedAppsForNotificationsForMode:(unint64_t)a3 reply:(id)a4
+- (void)rankedAppsForNotificationsForMode:(unint64_t)mode reply:(id)reply
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (v7)
+  replyCopy = reply;
+  if (replyCopy)
   {
     if ([MEMORY[0x1E69C5D20] hasTrueBooleanEntitlement:@"com.apple.ModeEntityScorer" logHandle:0])
     {
@@ -1088,7 +1088,7 @@ void __70__ATXModeEntityScorerClient_rankedNotificationsForMode_options_reply___
       v24[3] = &unk_1E80C1100;
       v26 = a2;
       v24[4] = self;
-      v9 = v7;
+      v9 = replyCopy;
       v25 = v9;
       v10 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v24];
       v22[0] = MEMORY[0x1E69E9820];
@@ -1096,7 +1096,7 @@ void __70__ATXModeEntityScorerClient_rankedNotificationsForMode_options_reply___
       v22[2] = __69__ATXModeEntityScorerClient_rankedAppsForNotificationsForMode_reply___block_invoke_95;
       v22[3] = &unk_1E80C0908;
       v23 = v9;
-      [v10 rankedAppsForNotificationsForMode:a3 reply:v22];
+      [v10 rankedAppsForNotificationsForMode:mode reply:v22];
     }
 
     else
@@ -1114,7 +1114,7 @@ void __70__ATXModeEntityScorerClient_rankedNotificationsForMode_options_reply___
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       v21 = [v18 initWithDomain:v19 code:1 userInfo:v20];
 
-      (*(v7 + 2))(v7, MEMORY[0x1E695E0F0], v21);
+      (*(replyCopy + 2))(replyCopy, MEMORY[0x1E695E0F0], v21);
     }
   }
 
@@ -1147,11 +1147,11 @@ void __69__ATXModeEntityScorerClient_rankedAppsForNotificationsForMode_reply___b
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)rankedContactsForNotificationsForMode:(unint64_t)a3 reply:(id)a4
+- (void)rankedContactsForNotificationsForMode:(unint64_t)mode reply:(id)reply
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (v7)
+  replyCopy = reply;
+  if (replyCopy)
   {
     if ([MEMORY[0x1E69C5D20] hasTrueBooleanEntitlement:@"com.apple.ModeEntityScorer" logHandle:0])
     {
@@ -1162,7 +1162,7 @@ void __69__ATXModeEntityScorerClient_rankedAppsForNotificationsForMode_reply___b
       v24[3] = &unk_1E80C1100;
       v26 = a2;
       v24[4] = self;
-      v9 = v7;
+      v9 = replyCopy;
       v25 = v9;
       v10 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v24];
       v22[0] = MEMORY[0x1E69E9820];
@@ -1170,7 +1170,7 @@ void __69__ATXModeEntityScorerClient_rankedAppsForNotificationsForMode_reply___b
       v22[2] = __73__ATXModeEntityScorerClient_rankedContactsForNotificationsForMode_reply___block_invoke_96;
       v22[3] = &unk_1E80C0908;
       v23 = v9;
-      [v10 rankedContactsForNotificationsForMode:a3 reply:v22];
+      [v10 rankedContactsForNotificationsForMode:mode reply:v22];
     }
 
     else
@@ -1188,7 +1188,7 @@ void __69__ATXModeEntityScorerClient_rankedAppsForNotificationsForMode_reply___b
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       v21 = [v18 initWithDomain:v19 code:1 userInfo:v20];
 
-      (*(v7 + 2))(v7, MEMORY[0x1E695E0F0], v21);
+      (*(replyCopy + 2))(replyCopy, MEMORY[0x1E695E0F0], v21);
     }
   }
 
@@ -1221,12 +1221,12 @@ void __73__ATXModeEntityScorerClient_rankedContactsForNotificationsForMode_reply
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)scoreAppsForDenyList:(id)a3 mode:(unint64_t)a4 reply:(id)a5
+- (void)scoreAppsForDenyList:(id)list mode:(unint64_t)mode reply:(id)reply
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (v10)
+  listCopy = list;
+  replyCopy = reply;
+  if (replyCopy)
   {
     if ([MEMORY[0x1E69C5D20] hasTrueBooleanEntitlement:@"com.apple.ModeEntityScorer" logHandle:0])
     {
@@ -1242,8 +1242,8 @@ void __73__ATXModeEntityScorerClient_rankedContactsForNotificationsForMode_reply
       v24[1] = 3221225472;
       v24[2] = __61__ATXModeEntityScorerClient_scoreAppsForDenyList_mode_reply___block_invoke_100;
       v24[3] = &unk_1E80C0908;
-      v25 = v10;
-      [v12 scoreAppsForDenyList:v9 mode:a4 reply:v24];
+      v25 = replyCopy;
+      [v12 scoreAppsForDenyList:listCopy mode:mode reply:v24];
     }
 
     else
@@ -1261,7 +1261,7 @@ void __73__ATXModeEntityScorerClient_rankedContactsForNotificationsForMode_reply
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       v23 = [v20 initWithDomain:v21 code:1 userInfo:v22];
 
-      (*(v10 + 2))(v10, v9, v23);
+      (*(replyCopy + 2))(replyCopy, listCopy, v23);
     }
   }
 
@@ -1292,11 +1292,11 @@ void __61__ATXModeEntityScorerClient_scoreAppsForDenyList_mode_reply___block_inv
   }
 }
 
-- (void)rankedAppsForDenyListForMode:(unint64_t)a3 reply:(id)a4
+- (void)rankedAppsForDenyListForMode:(unint64_t)mode reply:(id)reply
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  replyCopy = reply;
+  if (!replyCopy)
   {
     v11 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1329,7 +1329,7 @@ void __61__ATXModeEntityScorerClient_scoreAppsForDenyList_mode_reply___block_inv
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v14 = [v18 initWithDomain:v19 code:1 userInfo:v20];
 
-    v7[2](v7, MEMORY[0x1E695E0F0], v14);
+    replyCopy[2](replyCopy, MEMORY[0x1E695E0F0], v14);
 LABEL_10:
 
     goto LABEL_11;
@@ -1342,7 +1342,7 @@ LABEL_10:
   v24[3] = &unk_1E80C1100;
   v26 = a2;
   v24[4] = self;
-  v9 = v7;
+  v9 = replyCopy;
   v25 = v9;
   v10 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v24];
   v21[0] = MEMORY[0x1E69E9820];
@@ -1351,7 +1351,7 @@ LABEL_10:
   v21[3] = &unk_1E80C26A0;
   v23 = a2;
   v22 = v9;
-  [v10 rankedAppsForDenyListForMode:a3 reply:v21];
+  [v10 rankedAppsForDenyListForMode:mode reply:v21];
 
 LABEL_11:
 }
@@ -1387,12 +1387,12 @@ void __64__ATXModeEntityScorerClient_rankedAppsForDenyListForMode_reply___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)scoreContactsForDenyList:(id)a3 mode:(unint64_t)a4 reply:(id)a5
+- (void)scoreContactsForDenyList:(id)list mode:(unint64_t)mode reply:(id)reply
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (v10)
+  listCopy = list;
+  replyCopy = reply;
+  if (replyCopy)
   {
     if ([MEMORY[0x1E69C5D20] hasTrueBooleanEntitlement:@"com.apple.ModeEntityScorer" logHandle:0])
     {
@@ -1408,8 +1408,8 @@ void __64__ATXModeEntityScorerClient_rankedAppsForDenyListForMode_reply___block_
       v24[1] = 3221225472;
       v24[2] = __65__ATXModeEntityScorerClient_scoreContactsForDenyList_mode_reply___block_invoke_105;
       v24[3] = &unk_1E80C0908;
-      v25 = v10;
-      [v12 scoreContactsForDenyList:v9 mode:a4 reply:v24];
+      v25 = replyCopy;
+      [v12 scoreContactsForDenyList:listCopy mode:mode reply:v24];
     }
 
     else
@@ -1427,7 +1427,7 @@ void __64__ATXModeEntityScorerClient_rankedAppsForDenyListForMode_reply___block_
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       v23 = [v20 initWithDomain:v21 code:1 userInfo:v22];
 
-      (*(v10 + 2))(v10, v9, v23);
+      (*(replyCopy + 2))(replyCopy, listCopy, v23);
     }
   }
 
@@ -1458,11 +1458,11 @@ void __65__ATXModeEntityScorerClient_scoreContactsForDenyList_mode_reply___block
   }
 }
 
-- (void)rankedContactsForDenyListForMode:(unint64_t)a3 options:(unint64_t)a4 reply:(id)a5
+- (void)rankedContactsForDenyListForMode:(unint64_t)mode options:(unint64_t)options reply:(id)reply
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  if (!v9)
+  replyCopy = reply;
+  if (!replyCopy)
   {
     v13 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1495,7 +1495,7 @@ void __65__ATXModeEntityScorerClient_scoreContactsForDenyList_mode_reply___block
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v16 = [v20 initWithDomain:v21 code:1 userInfo:v22];
 
-    v9[2](v9, MEMORY[0x1E695E0F0], v16);
+    replyCopy[2](replyCopy, MEMORY[0x1E695E0F0], v16);
 LABEL_10:
 
     goto LABEL_11;
@@ -1508,7 +1508,7 @@ LABEL_10:
   v26[3] = &unk_1E80C1100;
   v28 = a2;
   v26[4] = self;
-  v11 = v9;
+  v11 = replyCopy;
   v27 = v11;
   v12 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v26];
   v23[0] = MEMORY[0x1E69E9820];
@@ -1517,7 +1517,7 @@ LABEL_10:
   v23[3] = &unk_1E80C26A0;
   v25 = a2;
   v24 = v11;
-  [v12 rankedContactsForDenyListForMode:a3 options:a4 reply:v23];
+  [v12 rankedContactsForDenyListForMode:mode options:options reply:v23];
 
 LABEL_11:
 }
@@ -1553,13 +1553,13 @@ void __76__ATXModeEntityScorerClient_rankedContactsForDenyListForMode_options_re
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)modeEntityScoresFromCacheForModeEntityTypeIdentifier:(id)a3 modeIdentifier:(id)a4 modeConfigurationType:(int64_t)a5 reply:(id)a6
+- (void)modeEntityScoresFromCacheForModeEntityTypeIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier modeConfigurationType:(int64_t)type reply:(id)reply
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
+  replyCopy = reply;
+  v14 = replyCopy;
+  if (replyCopy)
   {
     xpcConnection = self->_xpcConnection;
     v26[0] = MEMORY[0x1E69E9820];
@@ -1568,7 +1568,7 @@ void __76__ATXModeEntityScorerClient_rankedContactsForDenyListForMode_options_re
     v26[3] = &unk_1E80C1100;
     v28 = a2;
     v26[4] = self;
-    v16 = v13;
+    v16 = replyCopy;
     v27 = v16;
     v17 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v26];
     v24[0] = MEMORY[0x1E69E9820];
@@ -1576,7 +1576,7 @@ void __76__ATXModeEntityScorerClient_rankedContactsForDenyListForMode_options_re
     v24[2] = __125__ATXModeEntityScorerClient_modeEntityScoresFromCacheForModeEntityTypeIdentifier_modeIdentifier_modeConfigurationType_reply___block_invoke_107;
     v24[3] = &unk_1E80C26C8;
     v25 = v16;
-    [v17 modeEntityScoresFromCacheForModeEntityTypeIdentifier:v11 modeIdentifier:v12 modeConfigurationType:a5 reply:v24];
+    [v17 modeEntityScoresFromCacheForModeEntityTypeIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy modeConfigurationType:type reply:v24];
   }
 
   else
@@ -1608,13 +1608,13 @@ void __125__ATXModeEntityScorerClient_modeEntityScoresFromCacheForModeEntityType
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)assignModeEntityScores:(unint64_t)a3 entityTypeIdentifier:(id)a4 entityIdentifier:(id)a5 score:(double)a6 modeConfigurationType:(int64_t)a7 reply:(id)a8
+- (void)assignModeEntityScores:(unint64_t)scores entityTypeIdentifier:(id)identifier entityIdentifier:(id)entityIdentifier score:(double)score modeConfigurationType:(int64_t)type reply:(id)reply
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v18 = v17;
-  if (v17)
+  identifierCopy = identifier;
+  entityIdentifierCopy = entityIdentifier;
+  replyCopy = reply;
+  v18 = replyCopy;
+  if (replyCopy)
   {
     xpcConnection = self->_xpcConnection;
     v30[0] = MEMORY[0x1E69E9820];
@@ -1623,7 +1623,7 @@ void __125__ATXModeEntityScorerClient_modeEntityScoresFromCacheForModeEntityType
     v30[3] = &unk_1E80C1100;
     v32 = a2;
     v30[4] = self;
-    v20 = v17;
+    v20 = replyCopy;
     v31 = v20;
     v21 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v30];
     v28[0] = MEMORY[0x1E69E9820];
@@ -1631,7 +1631,7 @@ void __125__ATXModeEntityScorerClient_modeEntityScoresFromCacheForModeEntityType
     v28[2] = __124__ATXModeEntityScorerClient_assignModeEntityScores_entityTypeIdentifier_entityIdentifier_score_modeConfigurationType_reply___block_invoke_109;
     v28[3] = &unk_1E80C26F0;
     v29 = v20;
-    [v21 assignModeEntityScores:a3 entityTypeIdentifier:v15 entityIdentifier:v16 score:a7 modeConfigurationType:v28 reply:a6];
+    [v21 assignModeEntityScores:scores entityTypeIdentifier:identifierCopy entityIdentifier:entityIdentifierCopy score:type modeConfigurationType:v28 reply:score];
   }
 
   else

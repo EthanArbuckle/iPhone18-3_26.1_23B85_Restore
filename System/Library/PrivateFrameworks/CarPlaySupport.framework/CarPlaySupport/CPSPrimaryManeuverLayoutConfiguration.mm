@@ -1,6 +1,6 @@
 @interface CPSPrimaryManeuverLayoutConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConfiguration:(id)configuration;
 - (id)_layoutString;
 - (id)description;
 @end
@@ -9,39 +9,39 @@
 
 - (id)description
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v6 = MEMORY[0x277CCACA8];
   v14.receiver = self;
   v14.super_class = CPSPrimaryManeuverLayoutConfiguration;
   v7 = [(CPSPrimaryManeuverLayoutConfiguration *)&v14 description];
-  v8 = [(CPSPrimaryManeuverLayoutConfiguration *)v16 _layoutString];
-  v9 = [(CPSPrimaryManeuverLayoutConfiguration *)v16 symbolImage];
-  [(CPSPrimaryManeuverLayoutConfiguration *)v16 height];
+  _layoutString = [(CPSPrimaryManeuverLayoutConfiguration *)selfCopy _layoutString];
+  symbolImage = [(CPSPrimaryManeuverLayoutConfiguration *)selfCopy symbolImage];
+  [(CPSPrimaryManeuverLayoutConfiguration *)selfCopy height];
   v10 = v2;
-  v11 = [(CPSPrimaryManeuverLayoutConfiguration *)v16 attributedInstruction];
+  attributedInstruction = [(CPSPrimaryManeuverLayoutConfiguration *)selfCopy attributedInstruction];
   v12 = 0;
-  if (v11)
+  if (attributedInstruction)
   {
-    v5 = v11;
+    v5 = attributedInstruction;
   }
 
   else
   {
-    v13 = [(CPSPrimaryManeuverLayoutConfiguration *)v16 instruction];
+    instruction = [(CPSPrimaryManeuverLayoutConfiguration *)selfCopy instruction];
     v12 = 1;
-    v5 = v13;
+    v5 = instruction;
   }
 
-  v17 = [v6 stringWithFormat:@"%@ [layout: %@, image: %@, height: %f, instruction: %@]", v7, v8, v9, v10, v5];
+  v17 = [v6 stringWithFormat:@"%@ [layout: %@, image: %@, height: %f, instruction: %@]", v7, _layoutString, symbolImage, v10, v5];
   if (v12)
   {
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](instruction);
   }
 
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](attributedInstruction);
+  MEMORY[0x277D82BD8](symbolImage);
+  MEMORY[0x277D82BD8](_layoutString);
   MEMORY[0x277D82BD8](v7);
   v3 = v17;
 
@@ -50,10 +50,10 @@
 
 - (id)_layoutString
 {
-  v3 = [(CPSPrimaryManeuverLayoutConfiguration *)self layout];
-  if (v3)
+  layout = [(CPSPrimaryManeuverLayoutConfiguration *)self layout];
+  if (layout)
   {
-    switch(v3)
+    switch(layout)
     {
       case 1uLL:
         v4 = MEMORY[0x277D82BE0](@"Full");
@@ -96,13 +96,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v5 == location[0])
+  objc_storeStrong(location, equal);
+  if (selfCopy == location[0])
   {
     v6 = 1;
   }
@@ -112,7 +112,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(CPSPrimaryManeuverLayoutConfiguration *)v5 isEqualToConfiguration:location[0]];
+      v6 = [(CPSPrimaryManeuverLayoutConfiguration *)selfCopy isEqualToConfiguration:location[0]];
     }
 
     else
@@ -125,13 +125,13 @@
   return v6 & 1;
 }
 
-- (BOOL)isEqualToConfiguration:(id)a3
+- (BOOL)isEqualToConfiguration:(id)configuration
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(CPSPrimaryManeuverLayoutConfiguration *)v23 layout];
+  objc_storeStrong(location, configuration);
+  layout = [(CPSPrimaryManeuverLayoutConfiguration *)selfCopy layout];
   v20 = 0;
   v18 = 0;
   v16 = 0;
@@ -141,39 +141,39 @@
   v8 = 0;
   v6 = 0;
   v5 = 0;
-  if (v4 == [location[0] layout])
+  if (layout == [location[0] layout])
   {
-    [(CPSPrimaryManeuverLayoutConfiguration *)v23 height];
+    [(CPSPrimaryManeuverLayoutConfiguration *)selfCopy height];
     [location[0] height];
     v5 = 0;
     if (BSFloatEqualToFloat())
     {
-      v21 = [(CPSPrimaryManeuverLayoutConfiguration *)v23 instruction];
+      instruction = [(CPSPrimaryManeuverLayoutConfiguration *)selfCopy instruction];
       v20 = 1;
-      v19 = [location[0] instruction];
+      instruction2 = [location[0] instruction];
       v18 = 1;
       v5 = 0;
-      if ([(NSString *)v21 isEqualToString:?])
+      if ([(NSString *)instruction isEqualToString:?])
       {
-        v17 = [(CPSPrimaryManeuverLayoutConfiguration *)v23 attributedInstruction];
+        attributedInstruction = [(CPSPrimaryManeuverLayoutConfiguration *)selfCopy attributedInstruction];
         v16 = 1;
-        v15 = [location[0] attributedInstruction];
+        attributedInstruction2 = [location[0] attributedInstruction];
         v14 = 1;
         v5 = 0;
-        if ([(NSAttributedString *)v17 isEqualToAttributedString:?])
+        if ([(NSAttributedString *)attributedInstruction isEqualToAttributedString:?])
         {
-          v13 = [(CPSPrimaryManeuverLayoutConfiguration *)v23 symbolImage];
+          symbolImage = [(CPSPrimaryManeuverLayoutConfiguration *)selfCopy symbolImage];
           v12 = 1;
-          v11 = [location[0] symbolImage];
+          symbolImage2 = [location[0] symbolImage];
           v10 = 1;
           v5 = 0;
-          if (([(UIImage *)v13 isEqual:?]& 1) != 0)
+          if (([(UIImage *)symbolImage isEqual:?]& 1) != 0)
           {
-            v9 = [(CPSPrimaryManeuverLayoutConfiguration *)v23 junctionImage];
+            junctionImage = [(CPSPrimaryManeuverLayoutConfiguration *)selfCopy junctionImage];
             v8 = 1;
-            v7 = [location[0] junctionImage];
+            junctionImage2 = [location[0] junctionImage];
             v6 = 1;
-            v5 = [(UIImage *)v9 isEqual:?];
+            v5 = [(UIImage *)junctionImage isEqual:?];
           }
         }
       }
@@ -183,42 +183,42 @@
   v24 = v5 & 1;
   if (v6)
   {
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](junctionImage2);
   }
 
   if (v8)
   {
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](junctionImage);
   }
 
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](symbolImage2);
   }
 
   if (v12)
   {
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](symbolImage);
   }
 
   if (v14)
   {
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](attributedInstruction2);
   }
 
   if (v16)
   {
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](attributedInstruction);
   }
 
   if (v18)
   {
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](instruction2);
   }
 
   if (v20)
   {
-    MEMORY[0x277D82BD8](v21);
+    MEMORY[0x277D82BD8](instruction);
   }
 
   objc_storeStrong(location, 0);

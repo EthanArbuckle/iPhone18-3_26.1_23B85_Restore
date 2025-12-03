@@ -1,30 +1,30 @@
 @interface HDPendingNotificationInstruction
-- (BOOL)isEqual:(id)a3;
-- (HDPendingNotificationInstruction)initWithMessageIdentifier:(id)a3 categoryIdentifier:(id)a4 sendingDeviceName:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HDPendingNotificationInstruction)initWithMessageIdentifier:(id)identifier categoryIdentifier:(id)categoryIdentifier sendingDeviceName:(id)name;
 - (unint64_t)hash;
 @end
 
 @implementation HDPendingNotificationInstruction
 
-- (HDPendingNotificationInstruction)initWithMessageIdentifier:(id)a3 categoryIdentifier:(id)a4 sendingDeviceName:(id)a5
+- (HDPendingNotificationInstruction)initWithMessageIdentifier:(id)identifier categoryIdentifier:(id)categoryIdentifier sendingDeviceName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  categoryIdentifierCopy = categoryIdentifier;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = HDPendingNotificationInstruction;
   v11 = [(HDPendingNotificationInstruction *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     messageIdentifier = v11->_messageIdentifier;
     v11->_messageIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [categoryIdentifierCopy copy];
     categoryIdentifier = v11->_categoryIdentifier;
     v11->_categoryIdentifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [nameCopy copy];
     sendingDeviceName = v11->_sendingDeviceName;
     v11->_sendingDeviceName = v16;
   }
@@ -32,10 +32,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -45,7 +45,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       messageIdentifier = self->_messageIdentifier;
       v7 = v5->_messageIdentifier;
       if (messageIdentifier != v7 && (!v7 || ![(NSString *)messageIdentifier isEqualToString:?]))

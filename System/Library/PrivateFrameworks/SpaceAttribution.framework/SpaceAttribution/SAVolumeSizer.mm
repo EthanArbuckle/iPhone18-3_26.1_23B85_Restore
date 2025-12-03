@@ -1,18 +1,18 @@
 @interface SAVolumeSizer
-+ (BOOL)isInternalVolume:(id)a3;
-+ (void)computeSizeOfVolumeAtURL:(id)a3 completionHandler:(id)a4;
-+ (void)computeSizeOfVolumeAtURL:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
++ (BOOL)isInternalVolume:(id)volume;
++ (void)computeSizeOfVolumeAtURL:(id)l completionHandler:(id)handler;
++ (void)computeSizeOfVolumeAtURL:(id)l options:(unint64_t)options completionHandler:(id)handler;
 @end
 
 @implementation SAVolumeSizer
 
-+ (BOOL)isInternalVolume:(id)a3
++ (BOOL)isInternalVolume:(id)volume
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  volumeCopy = volume;
   existing = 0;
   bzero(&v22, 0x878uLL);
-  if (!statfs([v3 fileSystemRepresentation], &v22))
+  if (!statfs([volumeCopy fileSystemRepresentation], &v22))
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", v22.f_mntfromname];
     v7 = [v6 componentsSeparatedByString:@"/dev/"];
@@ -89,7 +89,7 @@ LABEL_25:
   v5 = SALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [SAVolumeSizer isInternalVolume:v3];
+    [SAVolumeSizer isInternalVolume:volumeCopy];
   }
 
 LABEL_8:
@@ -100,12 +100,12 @@ LABEL_9:
   return v10;
 }
 
-+ (void)computeSizeOfVolumeAtURL:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
++ (void)computeSizeOfVolumeAtURL:(id)l options:(unint64_t)options completionHandler:(id)handler
 {
   v69[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if ([SAVolumeSizer isInternalVolume:v7])
+  lCopy = l;
+  handlerCopy = handler;
+  if ([SAVolumeSizer isInternalVolume:lCopy])
   {
     v64 = 0;
     v65 = &v64;
@@ -167,9 +167,9 @@ LABEL_9:
     v36 = &v64;
     v16 = v14;
     v32 = v16;
-    [v15 computeSizeOfVolumeAtURL:v7 options:a4 completionHandler:v31];
+    [v15 computeSizeOfVolumeAtURL:lCopy options:options completionHandler:v31];
     [v16 wait:{dispatch_time(0, 60000000000)}];
-    if ((a4 & 3) != 0)
+    if ((options & 3) != 0)
     {
       *(v65 + 24) = 1;
       [v16 enter];
@@ -183,7 +183,7 @@ LABEL_9:
       v30 = &v64;
       v17 = v16;
       v26 = v17;
-      [v15 getPurgeableInfo:v7 options:a4 reply:v25];
+      [v15 getPurgeableInfo:lCopy options:options reply:v25];
       [v17 wait:{dispatch_time(0, 60000000000)}];
     }
 
@@ -195,7 +195,7 @@ LABEL_9:
     }
 
     [v59[5] invalidate];
-    v8[2](v8, v49[3], v45[3], v39[5]);
+    handlerCopy[2](handlerCopy, v49[3], v45[3], v39[5]);
 
     _Block_object_dispose(v37, 8);
     _Block_object_dispose(&v38, 8);
@@ -212,7 +212,7 @@ LABEL_9:
     v20 = SALog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [SAVolumeSizer computeSizeOfVolumeAtURL:v7 options:? completionHandler:?];
+      [SAVolumeSizer computeSizeOfVolumeAtURL:lCopy options:? completionHandler:?];
     }
 
     v21 = MEMORY[0x277CCA9B8];
@@ -220,7 +220,7 @@ LABEL_9:
     v69[0] = @"Non internal URL";
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v69 forKeys:&v68 count:1];
     v23 = [v21 errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:v22];
-    v8[2](v8, 0, 0, v23);
+    handlerCopy[2](handlerCopy, 0, 0, v23);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -322,12 +322,12 @@ void __68__SAVolumeSizer_computeSizeOfVolumeAtURL_options_completionHandler___bl
   [*(a1 + 32) leave];
 }
 
-+ (void)computeSizeOfVolumeAtURL:(id)a3 completionHandler:(id)a4
++ (void)computeSizeOfVolumeAtURL:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  lCopy = l;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (!lCopy)
   {
     v8 = SALog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -338,7 +338,7 @@ void __68__SAVolumeSizer_computeSizeOfVolumeAtURL_options_completionHandler___bl
     goto LABEL_8;
   }
 
-  if (!v6)
+  if (!handlerCopy)
   {
     v8 = SALog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -351,7 +351,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [SAVolumeSizer computeSizeOfVolumeAtURL:v5 options:1 completionHandler:v6];
+  [SAVolumeSizer computeSizeOfVolumeAtURL:lCopy options:1 completionHandler:handlerCopy];
 LABEL_9:
 }
 

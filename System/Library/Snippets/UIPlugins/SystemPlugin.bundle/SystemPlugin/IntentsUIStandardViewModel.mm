@@ -1,13 +1,13 @@
 @interface IntentsUIStandardViewModel
-- (id)maximumSizesBySystemVersionForRemoteViewController:(id)a3;
+- (id)maximumSizesBySystemVersionForRemoteViewController:(id)controller;
 @end
 
 @implementation IntentsUIStandardViewModel
 
-- (id)maximumSizesBySystemVersionForRemoteViewController:(id)a3
+- (id)maximumSizesBySystemVersionForRemoteViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_4EEC();
 
   sub_62A0(0, &qword_39128, NSNumber_ptr);

@@ -1,15 +1,15 @@
 @interface TSTWPTableInfo
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
 @end
 
 @implementation TSTWPTableInfo
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  if (*(a3 + 3))
+  if (*(archive + 3))
   {
-    v4 = *(a3 + 3);
+    v4 = *(archive + 3);
   }
 
   else
@@ -19,16 +19,16 @@
 
   v5.receiver = self;
   v5.super_class = TSTWPTableInfo;
-  [(TSTTableInfo *)&v5 loadFromArchive:v4 unarchiver:a4];
+  [(TSTTableInfo *)&v5 loadFromArchive:v4 unarchiver:unarchiver];
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v10 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v10, v4, off_2812E4498[58], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[58], v5, v6);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, v10, v9);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, unarchiverCopy, v9);
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface LNActionSideEffect
 + (id)noneSideEffect;
-+ (id)sideEffectWithChangeEffect:(int64_t)a3;
++ (id)sideEffectWithChangeEffect:(int64_t)effect;
 + (id)unknownSideEffect;
-- (BOOL)isEqual:(id)a3;
-- (LNActionSideEffect)initWithCoder:(id)a3;
-- (LNActionSideEffect)initWithSideEffect:(int64_t)a3 changeEffect:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNActionSideEffect)initWithCoder:(id)coder;
+- (LNActionSideEffect)initWithSideEffect:(int64_t)effect changeEffect:(int64_t)changeEffect;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNActionSideEffect
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
     goto LABEL_10;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -29,16 +29,16 @@
     goto LABEL_7;
   }
 
-  v7 = [(LNActionSideEffect *)self effect];
-  if (v7 != [(LNActionSideEffect *)v6 effect])
+  effect = [(LNActionSideEffect *)self effect];
+  if (effect != [(LNActionSideEffect *)v6 effect])
   {
 LABEL_7:
     v9 = 0;
     goto LABEL_8;
   }
 
-  v8 = [(LNActionSideEffect *)self changeEffect];
-  v9 = v8 == [(LNActionSideEffect *)v6 changeEffect];
+  changeEffect = [(LNActionSideEffect *)self changeEffect];
+  v9 = changeEffect == [(LNActionSideEffect *)v6 changeEffect];
 LABEL_8:
 
 LABEL_10:
@@ -50,14 +50,14 @@ LABEL_10:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNActionSideEffect *)self effect];
+  effect = [(LNActionSideEffect *)self effect];
   v7 = @"Unknown";
-  if (!v6)
+  if (!effect)
   {
     v7 = @"None";
   }
 
-  if (v6 == 1)
+  if (effect == 1)
   {
     v7 = @"Change";
   }
@@ -69,23 +69,23 @@ LABEL_10:
   return v10;
 }
 
-- (LNActionSideEffect)initWithCoder:(id)a3
+- (LNActionSideEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"effect"];
-  v6 = [v4 decodeIntegerForKey:@"changeEffect"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"effect"];
+  v6 = [coderCopy decodeIntegerForKey:@"changeEffect"];
 
   return [(LNActionSideEffect *)self initWithSideEffect:v5 changeEffect:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[LNActionSideEffect effect](self forKey:{"effect"), @"effect"}];
-  [v4 encodeInteger:-[LNActionSideEffect changeEffect](self forKey:{"changeEffect"), @"changeEffect"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[LNActionSideEffect effect](self forKey:{"effect"), @"effect"}];
+  [coderCopy encodeInteger:-[LNActionSideEffect changeEffect](self forKey:{"changeEffect"), @"changeEffect"}];
 }
 
-- (LNActionSideEffect)initWithSideEffect:(int64_t)a3 changeEffect:(int64_t)a4
+- (LNActionSideEffect)initWithSideEffect:(int64_t)effect changeEffect:(int64_t)changeEffect
 {
   v10.receiver = self;
   v10.super_class = LNActionSideEffect;
@@ -93,17 +93,17 @@ LABEL_10:
   v7 = v6;
   if (v6)
   {
-    v6->_effect = a3;
-    v6->_changeEffect = a4;
+    v6->_effect = effect;
+    v6->_changeEffect = changeEffect;
     v8 = v6;
   }
 
   return v7;
 }
 
-+ (id)sideEffectWithChangeEffect:(int64_t)a3
++ (id)sideEffectWithChangeEffect:(int64_t)effect
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithSideEffect:1 changeEffect:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithSideEffect:1 changeEffect:effect];
 
   return v3;
 }

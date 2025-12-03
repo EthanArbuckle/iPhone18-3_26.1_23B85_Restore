@@ -1,29 +1,29 @@
 @interface MADDatabaseRestoreFastPassProcessingTask
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5;
-- (BOOL)run:(id *)a3;
-- (MADDatabaseRestoreFastPassProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5;
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (BOOL)run:(id *)run;
+- (MADDatabaseRestoreFastPassProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
 @end
 
 @implementation MADDatabaseRestoreFastPassProcessingTask
 
-- (MADDatabaseRestoreFastPassProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5
+- (MADDatabaseRestoreFastPassProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10007F488;
   v17[3] = &unk_100284038;
-  v10 = a5;
-  v18 = v10;
+  completionHandlerCopy = completionHandler;
+  v18 = completionHandlerCopy;
   v16.receiver = self;
   v16.super_class = MADDatabaseRestoreFastPassProcessingTask;
   v11 = [(MADDatabaseRestoreFastPassProcessingTask *)&v16 initWithCompletionHandler:v17];
   if (v11)
   {
-    if (v9)
+    if (handlerCopy)
     {
-      v12 = v9;
+      v12 = handlerCopy;
     }
 
     else
@@ -35,23 +35,23 @@
     progressHandler = v11->_progressHandler;
     v11->_progressHandler = v13;
 
-    [(MADDatabaseRestoreFastPassProcessingTask *)v11 setCancelBlock:v8];
+    [(MADDatabaseRestoreFastPassProcessingTask *)v11 setCancelBlock:blockCopy];
   }
 
   return v11;
 }
 
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithCancelBlock:v8 progressHandler:v9 andCompletionHandler:v10];
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v11 = [[self alloc] initWithCancelBlock:blockCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
   return v11;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   if (MediaAnalysisLogLevel() >= 5)
   {
@@ -64,8 +64,8 @@
     }
   }
 
-  v4 = [(MADDatabaseRestoreFastPassProcessingTask *)self cancelBlock];
-  if (!v4 || ([(MADDatabaseRestoreFastPassProcessingTask *)self cancelBlock], v5 = objc_claimAutoreleasedReturnValue(), v6 = v5[2](), v5, v4, !v6))
+  cancelBlock = [(MADDatabaseRestoreFastPassProcessingTask *)self cancelBlock];
+  if (!cancelBlock || ([(MADDatabaseRestoreFastPassProcessingTask *)self cancelBlock], v5 = objc_claimAutoreleasedReturnValue(), v6 = v5[2](), v5, cancelBlock, !v6))
   {
     v11 = +[VCPWatchdog sharedWatchdog];
     [v11 pet];
@@ -92,20 +92,20 @@
         if (_os_feature_enabled_impl())
         {
           v105 = v74;
-          v17 = [NSArray arrayWithObjects:&v105 count:1];
-          v18 = [(MADDatabaseRestoreFastPassProcessingTask *)self cancelBlock];
-          obj = [MADPhotosDatabaseMigrationProcessingTask taskWithPhotoLibraries:v17 progressHandler:0 completionHandler:0 cancelBlock:v18];
+          cancelBlock3 = [NSArray arrayWithObjects:&v105 count:1];
+          cancelBlock2 = [(MADDatabaseRestoreFastPassProcessingTask *)self cancelBlock];
+          obj = [MADPhotosDatabaseMigrationProcessingTask taskWithPhotoLibraries:cancelBlock3 progressHandler:0 completionHandler:0 cancelBlock:cancelBlock2];
         }
 
         else
         {
-          v17 = [(MADDatabaseRestoreFastPassProcessingTask *)self cancelBlock];
-          obj = [MADPhotosLibraryRestoreTask taskWithPhotoLibrary:v74 progressHandler:0 completionHandler:0 cancelBlock:v17];
+          cancelBlock3 = [(MADDatabaseRestoreFastPassProcessingTask *)self cancelBlock];
+          obj = [MADPhotosLibraryRestoreTask taskWithPhotoLibrary:v74 progressHandler:0 completionHandler:0 cancelBlock:cancelBlock3];
         }
 
         if ([obj run])
         {
-          if (a3)
+          if (run)
           {
             v103 = NSLocalizedDescriptionKey;
             v32 = objc_opt_class();
@@ -114,8 +114,8 @@
             v104 = v34;
             v35 = [NSDictionary dictionaryWithObjects:&v104 forKeys:&v103 count:1];
             v36 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v35];
-            v37 = *a3;
-            *a3 = v36;
+            v37 = *run;
+            *run = v36;
           }
 
           goto LABEL_30;
@@ -145,9 +145,9 @@ LABEL_36:
           }
 
           v44 = *(*(&v85 + 1) + 8 * v43);
-          v45 = [v44 unsignedIntegerValue];
+          unsignedIntegerValue = [v44 unsignedIntegerValue];
           v84 = 0;
-          v46 = [BGSystemTaskCheckpoints reportFeatureCheckpoint:50 forFeature:v45 error:&v84];
+          v46 = [BGSystemTaskCheckpoints reportFeatureCheckpoint:50 forFeature:unsignedIntegerValue error:&v84];
           v47 = v84;
           if (v46)
           {
@@ -235,15 +235,15 @@ LABEL_49:
                         _os_log_impl(&_mh_execute_header, &_os_log_default, v76, "%@", buf, 0xCu);
                       }
 
-                      if (a3)
+                      if (run)
                       {
                         v91 = NSLocalizedDescriptionKey;
                         v59 = [NSString stringWithFormat:@"%@", v58];
                         v92 = v59;
                         v60 = [NSDictionary dictionaryWithObjects:&v92 forKeys:&v91 count:1];
                         v61 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v60];
-                        v62 = *a3;
-                        *a3 = v61;
+                        v62 = *run;
+                        *run = v61;
                       }
                     }
 
@@ -272,27 +272,27 @@ LABEL_49:
 
               if ((v51[2])(v51))
               {
-                v63 = [NSString stringWithFormat:@"%@ Operation canceled", @"[Restore-FP]"];
+                completionHandler = [NSString stringWithFormat:@"%@ Operation canceled", @"[Restore-FP]"];
                 if (MediaAnalysisLogLevel() >= 3)
                 {
                   v64 = VCPLogToOSLogType[3];
                   if (os_log_type_enabled(&_os_log_default, v64))
                   {
                     *buf = 138412290;
-                    v95 = v63;
+                    v95 = completionHandler;
                     _os_log_impl(&_mh_execute_header, &_os_log_default, v64, "%@", buf, 0xCu);
                   }
                 }
 
-                if (a3)
+                if (run)
                 {
                   v89 = NSLocalizedDescriptionKey;
-                  v65 = [NSString stringWithFormat:@"%@", v63];
+                  v65 = [NSString stringWithFormat:@"%@", completionHandler];
                   v90 = v65;
                   v66 = [NSDictionary dictionaryWithObjects:&v90 forKeys:&v89 count:1];
                   v67 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v66];
-                  v68 = *a3;
-                  *a3 = v67;
+                  v68 = *run;
+                  *run = v67;
                 }
 
                 v10 = 0;
@@ -309,8 +309,8 @@ LABEL_49:
                   _os_signpost_emit_with_name_impl(&_mh_execute_header, v70, OS_SIGNPOST_INTERVAL_END, spid, "MADDatabaseRestoreFastPassProcessingTask", "", buf, 2u);
                 }
 
-                v63 = [(MADDatabaseRestoreFastPassProcessingTask *)self completionHandler];
-                (v63->data)(v63, 0, 0);
+                completionHandler = [(MADDatabaseRestoreFastPassProcessingTask *)self completionHandler];
+                (completionHandler->data)(completionHandler, 0, 0);
                 v10 = 1;
               }
 
@@ -328,14 +328,14 @@ LABEL_32:
       }
 
       v106 = NSLocalizedDescriptionKey;
-      v26 = [v74 photoLibraryURL];
-      v27 = [v26 path];
-      v28 = [NSString stringWithFormat:@"%@ Photo Library not ready (initial download) for analysis (%@)", @"[Restore-FP]", v27];
+      photoLibraryURL = [v74 photoLibraryURL];
+      path = [photoLibraryURL path];
+      v28 = [NSString stringWithFormat:@"%@ Photo Library not ready (initial download) for analysis (%@)", @"[Restore-FP]", path];
       v107 = v28;
       v29 = [NSDictionary dictionaryWithObjects:&v107 forKeys:&v106 count:1];
       obj = [NSError errorWithDomain:NSOSStatusErrorDomain code:-23812 userInfo:v29];
 
-      v23 = a3;
+      runCopy4 = run;
       if (MediaAnalysisLogLevel() >= 3)
       {
         v30 = VCPLogToOSLogType[3];
@@ -346,11 +346,11 @@ LABEL_32:
           v95 = v31;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v30, "%@", buf, 0xCu);
 
-          v23 = a3;
+          runCopy4 = run;
         }
       }
 
-      if (!v23)
+      if (!runCopy4)
       {
         goto LABEL_30;
       }
@@ -359,14 +359,14 @@ LABEL_32:
     else
     {
       v108 = NSLocalizedDescriptionKey;
-      v19 = [0 photoLibraryURL];
-      v20 = [v19 path];
-      v21 = [NSString stringWithFormat:@"%@ Failed to open Photo Library (%@)", @"[Restore-FP]", v20];
+      photoLibraryURL2 = [0 photoLibraryURL];
+      path2 = [photoLibraryURL2 path];
+      v21 = [NSString stringWithFormat:@"%@ Failed to open Photo Library (%@)", @"[Restore-FP]", path2];
       v109 = v21;
       v22 = [NSDictionary dictionaryWithObjects:&v109 forKeys:&v108 count:1];
       obj = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v22];
 
-      v23 = a3;
+      runCopy4 = run;
       if (MediaAnalysisLogLevel() >= 3)
       {
         v24 = VCPLogToOSLogType[3];
@@ -377,31 +377,31 @@ LABEL_32:
           v95 = v25;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v24, "%@", buf, 0xCu);
 
-          v23 = a3;
+          runCopy4 = run;
         }
       }
 
-      if (!v23)
+      if (!runCopy4)
       {
         goto LABEL_30;
       }
     }
 
-    objc_storeStrong(v23, obj);
+    objc_storeStrong(runCopy4, obj);
 LABEL_30:
     v10 = 0;
     goto LABEL_31;
   }
 
-  if (a3)
+  if (run)
   {
     v110 = NSLocalizedDescriptionKey;
     v7 = [NSString stringWithFormat:@"%@ Operation canceled", @"[Restore-FP]"];
     v111 = v7;
     obj = [NSDictionary dictionaryWithObjects:&v111 forKeys:&v110 count:1];
     v8 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:?];
-    v9 = *a3;
-    *a3 = v8;
+    v9 = *run;
+    *run = v8;
 
     v10 = 0;
     goto LABEL_32;

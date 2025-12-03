@@ -1,33 +1,33 @@
 @interface MKSelectionAccessory
-+ (id)mapItemDetailWithPresentationStyle:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSelectionAccessory:(id)a3;
-- (MKSelectionAccessory)initWithMapItemDetailPresentationStyle:(id)a3;
++ (id)mapItemDetailWithPresentationStyle:(id)style;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSelectionAccessory:(id)accessory;
+- (MKSelectionAccessory)initWithMapItemDetailPresentationStyle:(id)style;
 @end
 
 @implementation MKSelectionAccessory
 
-- (BOOL)isEqualToSelectionAccessory:(id)a3
+- (BOOL)isEqualToSelectionAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  accessoryCopy = accessory;
+  v5 = accessoryCopy;
+  if (!accessoryCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (accessoryCopy == self)
   {
     v9 = 1;
     goto LABEL_7;
   }
 
-  v6 = [(MKSelectionAccessory *)self _style];
-  if (v6 == [(MKSelectionAccessory *)v5 _style])
+  _style = [(MKSelectionAccessory *)self _style];
+  if (_style == [(MKSelectionAccessory *)v5 _style])
   {
-    v7 = [(MKSelectionAccessory *)self _mapItemDetailPresentationStyle];
-    v8 = [(MKSelectionAccessory *)v5 _mapItemDetailPresentationStyle];
-    v9 = v7 == v8;
+    _mapItemDetailPresentationStyle = [(MKSelectionAccessory *)self _mapItemDetailPresentationStyle];
+    _mapItemDetailPresentationStyle2 = [(MKSelectionAccessory *)v5 _mapItemDetailPresentationStyle];
+    v9 = _mapItemDetailPresentationStyle == _mapItemDetailPresentationStyle2;
   }
 
   else
@@ -41,26 +41,26 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MKSelectionAccessory *)self isEqualToSelectionAccessory:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MKSelectionAccessory *)self isEqualToSelectionAccessory:v5];
   }
 
   return v6;
 }
 
-- (MKSelectionAccessory)initWithMapItemDetailPresentationStyle:(id)a3
+- (MKSelectionAccessory)initWithMapItemDetailPresentationStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v9.receiver = self;
   v9.super_class = MKSelectionAccessory;
   v6 = [(MKSelectionAccessory *)&v9 init];
@@ -68,16 +68,16 @@ LABEL_7:
   if (v6)
   {
     v6->_style = 0;
-    objc_storeStrong(&v6->_mapItemDetailPresentationStyle, a3);
+    objc_storeStrong(&v6->_mapItemDetailPresentationStyle, style);
   }
 
   return v7;
 }
 
-+ (id)mapItemDetailWithPresentationStyle:(id)a3
++ (id)mapItemDetailWithPresentationStyle:(id)style
 {
-  v3 = a3;
-  v4 = [[MKSelectionAccessory alloc] initWithMapItemDetailPresentationStyle:v3];
+  styleCopy = style;
+  v4 = [[MKSelectionAccessory alloc] initWithMapItemDetailPresentationStyle:styleCopy];
 
   return v4;
 }

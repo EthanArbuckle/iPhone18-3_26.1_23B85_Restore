@@ -1,15 +1,15 @@
 @interface APExperimentationReportTelemetryDelivery
 - (APExperimentationReportTelemetryDelivery)init;
-- (void)logExperimentationErrorWithErrorType:(int64_t)a3 description:(id)a4;
-- (void)logReportCadenceWithLastReportDate:(id)a3 newReportDate:(id)a4;
+- (void)logExperimentationErrorWithErrorType:(int64_t)type description:(id)description;
+- (void)logReportCadenceWithLastReportDate:(id)date newReportDate:(id)reportDate;
 - (void)logReportSuccededIfNeeded;
 @end
 
 @implementation APExperimentationReportTelemetryDelivery
 
-- (void)logExperimentationErrorWithErrorType:(int64_t)a3 description:(id)a4
+- (void)logExperimentationErrorWithErrorType:(int64_t)type description:(id)description
 {
-  if (a4)
+  if (description)
   {
     v6 = sub_100398F58();
     v8 = v7;
@@ -21,11 +21,11 @@
     v8 = 0;
   }
 
-  v9 = self;
-  sub_100213514(a3, v6, v8);
+  selfCopy = self;
+  sub_100213514(type, v6, v8);
 }
 
-- (void)logReportCadenceWithLastReportDate:(id)a3 newReportDate:(id)a4
+- (void)logReportCadenceWithLastReportDate:(id)date newReportDate:(id)reportDate
 {
   v4 = sub_100397748();
   v5 = *(v4 - 8);
@@ -43,7 +43,7 @@
 
 - (void)logReportSuccededIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_100213C00();
 }
 

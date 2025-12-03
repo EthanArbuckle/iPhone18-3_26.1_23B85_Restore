@@ -1,39 +1,39 @@
 @interface CDMServiceGraphProtoBackedCommand
 + (Class)innerProtoType;
 + (id)innerProtoPropertyName;
-- (CDMServiceGraphProtoBackedCommand)initWithCoder:(id)a3;
+- (CDMServiceGraphProtoBackedCommand)initWithCoder:(id)coder;
 - (id)loggingRequestID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CDMServiceGraphProtoBackedCommand
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CDMServiceGraphProtoBackedCommand;
-  v4 = a3;
-  [(CDMServiceGraphCommand *)&v8 encodeWithCoder:v4];
-  v5 = [objc_opt_class() innerProtoPropertyName];
-  v6 = [(CDMServiceGraphProtoBackedCommand *)self valueForKey:v5];
-  v7 = [v6 data];
+  coderCopy = coder;
+  [(CDMServiceGraphCommand *)&v8 encodeWithCoder:coderCopy];
+  innerProtoPropertyName = [objc_opt_class() innerProtoPropertyName];
+  v6 = [(CDMServiceGraphProtoBackedCommand *)self valueForKey:innerProtoPropertyName];
+  data = [v6 data];
 
-  [v4 encodeObject:v7 forKey:@"innerProtoCodingKey"];
+  [coderCopy encodeObject:data forKey:@"innerProtoCodingKey"];
 }
 
-- (CDMServiceGraphProtoBackedCommand)initWithCoder:(id)a3
+- (CDMServiceGraphProtoBackedCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CDMServiceGraphProtoBackedCommand;
-  v5 = [(CDMServiceGraphCommand *)&v11 initWithCoder:v4];
+  v5 = [(CDMServiceGraphCommand *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [objc_opt_class() innerProtoType];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"innerProtoCodingKey"];
-    v8 = [[v6 alloc] initWithData:v7];
-    v9 = [objc_opt_class() innerProtoPropertyName];
-    [(CDMServiceGraphProtoBackedCommand *)v5 setValue:v8 forKey:v9];
+    innerProtoType = [objc_opt_class() innerProtoType];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"innerProtoCodingKey"];
+    v8 = [[innerProtoType alloc] initWithData:v7];
+    innerProtoPropertyName = [objc_opt_class() innerProtoPropertyName];
+    [(CDMServiceGraphProtoBackedCommand *)v5 setValue:v8 forKey:innerProtoPropertyName];
   }
 
   return v5;
@@ -41,8 +41,8 @@
 
 - (id)loggingRequestID
 {
-  v3 = [objc_opt_class() innerProtoPropertyName];
-  v4 = [(CDMServiceGraphProtoBackedCommand *)self valueForKey:v3];
+  innerProtoPropertyName = [objc_opt_class() innerProtoPropertyName];
+  v4 = [(CDMServiceGraphProtoBackedCommand *)self valueForKey:innerProtoPropertyName];
 
   if (objc_opt_respondsToSelector())
   {

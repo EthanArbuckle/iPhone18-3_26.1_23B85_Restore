@@ -69,14 +69,14 @@
 {
   v17[4] = *MEMORY[0x1E69E9840];
   v3 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_shadowdesat];
-  v4 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
-  [(CIImage *)v4 extent];
+  imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+  [(CIImage *)imageByUnpremultiplyingAlpha extent];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   inputThreshold = self->inputThreshold;
-  v17[0] = v4;
+  v17[0] = imageByUnpremultiplyingAlpha;
   v17[1] = inputThreshold;
   v17[2] = self->inputIntensity;
   v14 = MEMORY[0x1E696AD98];

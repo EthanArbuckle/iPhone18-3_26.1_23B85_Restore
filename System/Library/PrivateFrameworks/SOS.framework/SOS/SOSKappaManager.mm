@@ -1,25 +1,25 @@
 @interface SOSKappaManager
 + (id)sharedInstance;
-+ (int64_t)mapSOSFlowStateToKappaState:(int64_t)a3;
-+ (unint64_t)mapServerResponseToKappaResponse:(int64_t)a3;
++ (int64_t)mapSOSFlowStateToKappaState:(int64_t)state;
++ (unint64_t)mapServerResponseToKappaResponse:(int64_t)response;
 - (NSXPCConnection)connection;
 - (SOSKappaManager)init;
-- (SOSKappaManager)initWithQueue:(id)a3;
-- (void)addObserver:(id)a3;
+- (SOSKappaManager)initWithQueue:(id)queue;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)detectedAnomalyWithElectedDevice:(unint64_t)a3 completion:(id)a4;
-- (void)didDismissClientSOSBeforeSOSCall:(int64_t)a3;
-- (void)didUpdateSOSStatus:(id)a3;
-- (void)dismissClientSOSWithCompletion:(id)a3;
+- (void)detectedAnomalyWithElectedDevice:(unint64_t)device completion:(id)completion;
+- (void)didDismissClientSOSBeforeSOSCall:(int64_t)call;
+- (void)didUpdateSOSStatus:(id)status;
+- (void)dismissClientSOSWithCompletion:(id)completion;
 - (void)forceStartConnection;
-- (void)removeObserver:(id)a3;
-- (void)setConnection:(id)a3;
-- (void)setSendingLocationUpdate:(BOOL)a3;
-- (void)triggerKappaWithCompletion:(id)a3;
-- (void)updateClientCurrentSOSButtonPressState:(id)a3;
-- (void)updateClientCurrentSOSInitiationState:(int64_t)a3;
-- (void)updateClientCurrentSOSInteractiveState:(int64_t)a3;
-- (void)updateObserversWithKappaStatus:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setConnection:(id)connection;
+- (void)setSendingLocationUpdate:(BOOL)update;
+- (void)triggerKappaWithCompletion:(id)completion;
+- (void)updateClientCurrentSOSButtonPressState:(id)state;
+- (void)updateClientCurrentSOSInitiationState:(int64_t)state;
+- (void)updateClientCurrentSOSInteractiveState:(int64_t)state;
+- (void)updateObserversWithKappaStatus:(id)status;
 @end
 
 @implementation SOSKappaManager
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __33__SOSKappaManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_3 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_3, block);
@@ -74,10 +74,10 @@ uint64_t __33__SOSKappaManager_sharedInstance__block_invoke_2(uint64_t a1)
   return 0;
 }
 
-- (SOSKappaManager)initWithQueue:(id)a3
+- (SOSKappaManager)initWithQueue:(id)queue
 {
-  v5 = a3;
-  dispatch_assert_queue_V2(v5);
+  queueCopy = queue;
+  dispatch_assert_queue_V2(queueCopy);
   if ([SOSEntitlement currentProcessHasEntitlement:@"com.apple.sos.trigger"])
   {
     v19.receiver = self;
@@ -92,10 +92,10 @@ uint64_t __33__SOSKappaManager_sharedInstance__block_invoke_2(uint64_t a1)
         _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_DEFAULT, "SOSKappaManager,init", buf, 2u);
       }
 
-      objc_storeStrong(&v6->_serialQueue, a3);
-      v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      objc_storeStrong(&v6->_serialQueue, queue);
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       observers = v6->_observers;
-      v6->_observers = v8;
+      v6->_observers = weakObjectsHashTable;
 
       objc_initWeak(buf, v6);
       v10 = SOSD_CONNECTION_REQUEST_NOTIFICATION_NAME;
@@ -114,7 +114,7 @@ uint64_t __33__SOSKappaManager_sharedInstance__block_invoke_2(uint64_t a1)
     }
 
     self = v6;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -126,10 +126,10 @@ uint64_t __33__SOSKappaManager_sharedInstance__block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_264323000, v14, OS_LOG_TYPE_DEFAULT, "SOSKappaManager,missing SOSTriggerEntitlement", buf, 2u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 void __33__SOSKappaManager_initWithQueue___block_invoke(uint64_t a1)
@@ -189,18 +189,18 @@ void __33__SOSKappaManager_initWithQueue___block_invoke_2(uint64_t a1)
   [(SOSKappaManager *)&v5 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SOSKappaManager *)self serialQueue];
+  observerCopy = observer;
+  serialQueue = [(SOSKappaManager *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__SOSKappaManager_addObserver___block_invoke;
   v7[3] = &unk_279B53BA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 void __31__SOSKappaManager_addObserver___block_invoke(uint64_t a1)
@@ -209,18 +209,18 @@ void __31__SOSKappaManager_addObserver___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SOSKappaManager *)self serialQueue];
+  observerCopy = observer;
+  serialQueue = [(SOSKappaManager *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__SOSKappaManager_removeObserver___block_invoke;
   v7[3] = &unk_279B53BA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 void __34__SOSKappaManager_removeObserver___block_invoke(uint64_t a1)
@@ -229,16 +229,16 @@ void __34__SOSKappaManager_removeObserver___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)triggerKappaWithCompletion:(id)a3
+- (void)triggerKappaWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__2;
   v17 = __Block_byref_object_dispose__2;
-  v18 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v5 = sos_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -248,16 +248,16 @@ void __34__SOSKappaManager_removeObserver___block_invoke(uint64_t a1)
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "SOSKappaManager,Kappa triggered,%@", buf, 0xCu);
   }
 
-  v7 = [(SOSKappaManager *)self serialQueue];
+  serialQueue = [(SOSKappaManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__SOSKappaManager_triggerKappaWithCompletion___block_invoke;
   block[3] = &unk_279B53EB8;
-  v11 = v4;
+  v11 = completionCopy;
   v12 = &v13;
   block[4] = self;
-  v8 = v4;
-  dispatch_async(v7, block);
+  v8 = completionCopy;
+  dispatch_async(serialQueue, block);
 
   _Block_object_dispose(&v13, 8);
   v9 = *MEMORY[0x277D85DE8];
@@ -392,33 +392,33 @@ LABEL_6:
   return result;
 }
 
-- (void)detectedAnomalyWithElectedDevice:(unint64_t)a3 completion:(id)a4
+- (void)detectedAnomalyWithElectedDevice:(unint64_t)device completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = sos_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v13 = a3;
+    deviceCopy = device;
     _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_DEFAULT, "SOSKappaManager,anomaly detected,device,%d", buf, 8u);
   }
 
-  if (a3 == 1)
+  if (device == 1)
   {
-    v8 = [(SOSKappaManager *)self serialQueue];
+    serialQueue = [(SOSKappaManager *)self serialQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __63__SOSKappaManager_detectedAnomalyWithElectedDevice_completion___block_invoke;
     v10[3] = &unk_279B53510;
     v10[4] = self;
-    v11 = v6;
-    dispatch_async(v8, v10);
+    v11 = completionCopy;
+    dispatch_async(serialQueue, v10);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -513,52 +513,52 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSendingLocationUpdate:(BOOL)a3
+- (void)setSendingLocationUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   v7 = *MEMORY[0x277D85DE8];
   v4 = sos_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = updateCopy;
     _os_log_impl(&dword_264323000, v4, OS_LOG_TYPE_DEFAULT, "SOSKappaManager,sending location updates %d", v6, 8u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateClientCurrentSOSInitiationState:(int64_t)a3
+- (void)updateClientCurrentSOSInitiationState:(int64_t)state
 {
-  v3 = a3;
+  stateCopy = state;
   v7 = *MEMORY[0x277D85DE8];
   v4 = sos_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = stateCopy;
     _os_log_impl(&dword_264323000, v4, OS_LOG_TYPE_DEFAULT, "SOSKappaManager,initiation state updated to %d", v6, 8u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateClientCurrentSOSInteractiveState:(int64_t)a3
+- (void)updateClientCurrentSOSInteractiveState:(int64_t)state
 {
-  v3 = a3;
+  stateCopy = state;
   v7 = *MEMORY[0x277D85DE8];
   v4 = sos_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = stateCopy;
     _os_log_impl(&dword_264323000, v4, OS_LOG_TYPE_DEFAULT, "SOSKappaManager,interactive state updated to %d", v6, 8u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateClientCurrentSOSButtonPressState:(id)a3
+- (void)updateClientCurrentSOSButtonPressState:(id)state
 {
   v3 = sos_default_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -568,9 +568,9 @@ LABEL_11:
   }
 }
 
-- (void)dismissClientSOSWithCompletion:(id)a3
+- (void)dismissClientSOSWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = sos_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -578,59 +578,59 @@ LABEL_11:
     _os_log_impl(&dword_264323000, v4, OS_LOG_TYPE_DEFAULT, "SOSKappaManager,sos dismiss received", v5, 2u);
   }
 
-  v3[2](v3, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
-- (void)didDismissClientSOSBeforeSOSCall:(int64_t)a3
+- (void)didDismissClientSOSBeforeSOSCall:(int64_t)call
 {
-  v3 = a3;
+  callCopy = call;
   v7 = *MEMORY[0x277D85DE8];
   v4 = sos_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = callCopy;
     _os_log_impl(&dword_264323000, v4, OS_LOG_TYPE_DEFAULT, "SOSKappaManager,sos dismissal type is %d", v6, 8u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didUpdateSOSStatus:(id)a3
+- (void)didUpdateSOSStatus:(id)status
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SOSKappaManager *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  statusCopy = status;
+  serialQueue = [(SOSKappaManager *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v6 = sos_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = statusCopy;
     _os_log_impl(&dword_264323000, v6, OS_LOG_TYPE_DEFAULT, "SOSKappaManager,receiving update to SOSStatus: %@", &v9, 0xCu);
   }
 
-  v7 = [[SOSKappaStatus alloc] initWithSOSStatus:v4];
-  -[SOSKappaStatus setSosKappaState:](v7, "setSosKappaState:", +[SOSKappaManager mapSOSFlowStateToKappaState:](SOSKappaManager, "mapSOSFlowStateToKappaState:", [v4 flowState]));
+  v7 = [[SOSKappaStatus alloc] initWithSOSStatus:statusCopy];
+  -[SOSKappaStatus setSosKappaState:](v7, "setSosKappaState:", +[SOSKappaManager mapSOSFlowStateToKappaState:](SOSKappaManager, "mapSOSFlowStateToKappaState:", [statusCopy flowState]));
   [(SOSKappaManager *)self updateObserversWithKappaStatus:v7];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateObserversWithKappaStatus:(id)a3
+- (void)updateObserversWithKappaStatus:(id)status
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 isKappaFlow];
+  statusCopy = status;
+  isKappaFlow = [statusCopy isKappaFlow];
   v6 = sos_default_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (isKappaFlow)
   {
     if (v7)
     {
       *buf = 138412290;
-      v20 = v4;
+      v20 = statusCopy;
       _os_log_impl(&dword_264323000, v6, OS_LOG_TYPE_DEFAULT, "SOSKappaManager,updating observers with status: %@", buf, 0xCu);
     }
 
@@ -638,8 +638,8 @@ LABEL_11:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(SOSKappaManager *)self observers];
-    v6 = [v8 copy];
+    observers = [(SOSKappaManager *)self observers];
+    v6 = [observers copy];
 
     v9 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
@@ -655,7 +655,7 @@ LABEL_11:
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v14 + 1) + 8 * i) updatedSOSKappaStatus:v4];
+          [*(*(&v14 + 1) + 8 * i) updatedSOSKappaStatus:statusCopy];
         }
 
         v10 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -668,39 +668,39 @@ LABEL_11:
   else if (v7)
   {
     *buf = 138412290;
-    v20 = v4;
+    v20 = statusCopy;
     _os_log_impl(&dword_264323000, v6, OS_LOG_TYPE_DEFAULT, "SOSKappaManager,not a Kappa flow so not updating observers with status: %@", buf, 0xCu);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v9 = a3;
-  v5 = [(SOSKappaManager *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  connectionCopy = connection;
+  serialQueue = [(SOSKappaManager *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   connection = self->_connection;
   p_connection = &self->_connection;
-  v6 = connection;
-  if (connection != v9)
+  connectionCopy2 = connection;
+  if (connection != connectionCopy)
   {
-    if (v6)
+    if (connectionCopy2)
     {
-      [(NSXPCConnection *)v6 invalidate];
+      [(NSXPCConnection *)connectionCopy2 invalidate];
       [(NSXPCConnection *)*p_connection setInvalidationHandler:0];
       [(NSXPCConnection *)*p_connection setInterruptionHandler:0];
     }
 
-    objc_storeStrong(p_connection, a3);
+    objc_storeStrong(p_connection, connection);
   }
 }
 
 - (NSXPCConnection)connection
 {
-  v3 = [(SOSKappaManager *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(SOSKappaManager *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   connection = self->_connection;
   if (!connection)
@@ -710,8 +710,8 @@ LABEL_11:
     self->_connection = v5;
 
     v7 = self->_connection;
-    v8 = [(SOSKappaManager *)self serialQueue];
-    [(NSXPCConnection *)v7 _setQueue:v8];
+    serialQueue2 = [(SOSKappaManager *)self serialQueue];
+    [(NSXPCConnection *)v7 _setQueue:serialQueue2];
 
     v9 = self->_connection;
     v10 = SOSServerInterface();
@@ -779,8 +779,8 @@ void __29__SOSKappaManager_connection__block_invoke_44(uint64_t a1)
 - (void)forceStartConnection
 {
   objc_initWeak(&location, self);
-  v3 = [(SOSKappaManager *)self connection];
-  v4 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_46];
+  connection = [(SOSKappaManager *)self connection];
+  v4 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_46];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__SOSKappaManager_forceStartConnection__block_invoke_47;
@@ -831,29 +831,29 @@ void __39__SOSKappaManager_forceStartConnection__block_invoke_47(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)mapServerResponseToKappaResponse:(int64_t)a3
++ (unint64_t)mapServerResponseToKappaResponse:(int64_t)response
 {
-  if ((a3 - 1) >= 6)
+  if ((response - 1) >= 6)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return response;
   }
 }
 
-+ (int64_t)mapSOSFlowStateToKappaState:(int64_t)a3
++ (int64_t)mapSOSFlowStateToKappaState:(int64_t)state
 {
-  if ((a3 - 1) >= 0xB)
+  if ((state - 1) >= 0xB)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return state;
   }
 }
 

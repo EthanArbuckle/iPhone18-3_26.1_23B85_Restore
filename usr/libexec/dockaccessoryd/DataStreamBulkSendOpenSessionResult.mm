@@ -1,22 +1,22 @@
 @interface DataStreamBulkSendOpenSessionResult
-- (DataStreamBulkSendOpenSessionResult)initWithSession:(id)a3 payload:(id)a4;
+- (DataStreamBulkSendOpenSessionResult)initWithSession:(id)session payload:(id)payload;
 - (id)attributeDescriptions;
 @end
 
 @implementation DataStreamBulkSendOpenSessionResult
 
-- (DataStreamBulkSendOpenSessionResult)initWithSession:(id)a3 payload:(id)a4
+- (DataStreamBulkSendOpenSessionResult)initWithSession:(id)session payload:(id)payload
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  payloadCopy = payload;
   v12.receiver = self;
   v12.super_class = DataStreamBulkSendOpenSessionResult;
   v9 = [(DataStreamBulkSendOpenSessionResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_session, a3);
-    objc_storeStrong(&v10->_payload, a4);
+    objc_storeStrong(&v9->_session, session);
+    objc_storeStrong(&v10->_payload, payload);
   }
 
   return v10;
@@ -25,12 +25,12 @@
 - (id)attributeDescriptions
 {
   v3 = [HMFAttributeDescription alloc];
-  v4 = [(DataStreamBulkSendOpenSessionResult *)self session];
-  v5 = [v3 initWithName:@"session" value:v4];
+  session = [(DataStreamBulkSendOpenSessionResult *)self session];
+  v5 = [v3 initWithName:@"session" value:session];
   v11[0] = v5;
   v6 = [HMFAttributeDescription alloc];
-  v7 = [(DataStreamBulkSendOpenSessionResult *)self payload];
-  v8 = [v6 initWithName:@"payload" value:v7];
+  payload = [(DataStreamBulkSendOpenSessionResult *)self payload];
+  v8 = [v6 initWithName:@"payload" value:payload];
   v11[1] = v8;
   v9 = [NSArray arrayWithObjects:v11 count:2];
 

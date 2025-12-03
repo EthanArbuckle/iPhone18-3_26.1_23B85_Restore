@@ -1,31 +1,31 @@
 @interface CNDateHelper
-+ (BOOL)isComponentsEmpty:(id)a3;
-+ (BOOL)isGregorianDerivedCalendar:(id)a3;
-+ (BOOL)isGregorianDerivedCalendarIdentifier:(id)a3;
-+ (id)componentsForJanuary1WithYear:(int64_t)a3;
-+ (id)componentsFromDate:(id)a3;
-+ (id)dateComponentsFromDateComponents:(id)a3 preservingUnits:(unint64_t)a4;
-+ (id)dateComponentsInCalendar:(id)a3 fromGregorianDateComponents:(id)a4;
-+ (id)dateComponentsInGregorianYearlessYearForYearlessDateComponents:(id)a3 timeZone:(id)a4;
-+ (id)dateWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5;
-+ (id)dateWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5 hour:(int64_t)a6 minute:(int64_t)a7 second:(int64_t)a8 timeZone:(id)a9;
++ (BOOL)isComponentsEmpty:(id)empty;
++ (BOOL)isGregorianDerivedCalendar:(id)calendar;
++ (BOOL)isGregorianDerivedCalendarIdentifier:(id)identifier;
++ (id)componentsForJanuary1WithYear:(int64_t)year;
++ (id)componentsFromDate:(id)date;
++ (id)dateComponentsFromDateComponents:(id)components preservingUnits:(unint64_t)units;
++ (id)dateComponentsInCalendar:(id)calendar fromGregorianDateComponents:(id)components;
++ (id)dateComponentsInGregorianYearlessYearForYearlessDateComponents:(id)components timeZone:(id)zone;
++ (id)dateWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day;
++ (id)dateWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day hour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second timeZone:(id)zone;
 + (id)gregorianCalendar;
 + (id)gregorianCalendarInGMT;
-+ (id)gregorianDateComponentsFromDateComponents:(id)a3;
++ (id)gregorianDateComponentsFromDateComponents:(id)components;
 + (int64_t)currentGregorianYearInGMT;
-+ (int64_t)gregorianYearFromDate:(id)a3;
-+ (int64_t)gregorianYearInGMTFromDate:(id)a3;
++ (int64_t)gregorianYearFromDate:(id)date;
++ (int64_t)gregorianYearInGMTFromDate:(id)date;
 @end
 
 @implementation CNDateHelper
 
-+ (BOOL)isComponentsEmpty:(id)a3
++ (BOOL)isComponentsEmpty:(id)empty
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  emptyCopy = empty;
+  v4 = emptyCopy;
+  if (emptyCopy)
   {
-    v5 = [v3 year] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "month") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "day") == 0x7FFFFFFFFFFFFFFFLL;
+    v5 = [emptyCopy year] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "month") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "day") == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -84,72 +84,72 @@ void __38__CNDateHelper_gregorianCalendarInGMT__block_invoke()
 
 + (int64_t)currentGregorianYearInGMT
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [a1 gregorianYearInGMTFromDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [self gregorianYearInGMTFromDate:date];
 
   return v4;
 }
 
-+ (int64_t)gregorianYearInGMTFromDate:(id)a3
++ (int64_t)gregorianYearInGMTFromDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 gregorianCalendarInGMT];
-  v6 = [v5 component:4 fromDate:v4];
+  dateCopy = date;
+  gregorianCalendarInGMT = [self gregorianCalendarInGMT];
+  v6 = [gregorianCalendarInGMT component:4 fromDate:dateCopy];
 
   return v6;
 }
 
-+ (int64_t)gregorianYearFromDate:(id)a3
++ (int64_t)gregorianYearFromDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 gregorianCalendar];
-  v6 = [v5 component:4 fromDate:v4];
+  dateCopy = date;
+  gregorianCalendar = [self gregorianCalendar];
+  v6 = [gregorianCalendar component:4 fromDate:dateCopy];
 
   return v6;
 }
 
-+ (id)dateWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5
++ (id)dateWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day
 {
-  v9 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v10 = [a1 dateWithYear:a3 month:a4 day:a5 hour:12 minute:0 second:0 timeZone:v9];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v10 = [self dateWithYear:year month:month day:day hour:12 minute:0 second:0 timeZone:localTimeZone];
 
   return v10;
 }
 
-+ (id)dateWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5 hour:(int64_t)a6 minute:(int64_t)a7 second:(int64_t)a8 timeZone:(id)a9
++ (id)dateWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day hour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second timeZone:(id)zone
 {
   v16 = MEMORY[0x1E695DF10];
-  v17 = a9;
+  zoneCopy = zone;
   v18 = objc_alloc_init(v16);
-  [v18 setYear:a3];
-  [v18 setMonth:a4];
-  [v18 setDay:a5];
-  [v18 setHour:a6];
-  [v18 setMinute:a7];
-  [v18 setSecond:a8];
-  [v18 setTimeZone:v17];
+  [v18 setYear:year];
+  [v18 setMonth:month];
+  [v18 setDay:day];
+  [v18 setHour:hour];
+  [v18 setMinute:minute];
+  [v18 setSecond:second];
+  [v18 setTimeZone:zoneCopy];
 
-  v19 = [a1 gregorianCalendar];
-  v20 = [v19 dateFromComponents:v18];
+  gregorianCalendar = [self gregorianCalendar];
+  v20 = [gregorianCalendar dateFromComponents:v18];
 
   return v20;
 }
 
-+ (id)componentsFromDate:(id)a3
++ (id)componentsFromDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 gregorianCalendar];
-  v6 = [v5 components:2130172 fromDate:v4];
+  dateCopy = date;
+  gregorianCalendar = [self gregorianCalendar];
+  v6 = [gregorianCalendar components:2130172 fromDate:dateCopy];
 
-  [v6 setCalendar:v5];
+  [v6 setCalendar:gregorianCalendar];
 
   return v6;
 }
 
-+ (id)componentsForJanuary1WithYear:(int64_t)a3
++ (id)componentsForJanuary1WithYear:(int64_t)year
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  [v4 setYear:a3];
+  [v4 setYear:year];
   [v4 setMonth:1];
   [v4 setDay:1];
   [v4 setHour:0];
@@ -164,26 +164,26 @@ void __38__CNDateHelper_gregorianCalendarInGMT__block_invoke()
   return v4;
 }
 
-+ (id)dateComponentsInCalendar:(id)a3 fromGregorianDateComponents:(id)a4
++ (id)dateComponentsInCalendar:(id)calendar fromGregorianDateComponents:(id)components
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7 || ([v6 calendarIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E695D850]), v8, v9) || objc_msgSend(v7, "day") == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v7, "month") == 0x7FFFFFFFFFFFFFFFLL)
+  calendarCopy = calendar;
+  componentsCopy = components;
+  if (!componentsCopy || ([calendarCopy calendarIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E695D850]), v8, v9) || objc_msgSend(componentsCopy, "day") == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(componentsCopy, "month") == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = v7;
+    v10 = componentsCopy;
   }
 
   else
   {
-    v12 = [v7 copy];
+    v12 = [componentsCopy copy];
     v13 = objc_opt_new();
     v14 = objc_opt_new();
     v15 = getIntlUtilityClass[0]();
-    v16 = [a1 gregorianCalendarInGMT];
-    [(objc_class *)v15 setYearlessYear:v13 forCalendar:v16];
+    gregorianCalendarInGMT = [self gregorianCalendarInGMT];
+    [(objc_class *)v15 setYearlessYear:v13 forCalendar:gregorianCalendarInGMT];
 
-    [getIntlUtilityClass[0]() setYearlessYear:v14 forCalendar:v6];
-    if ([v7 year] == 0x7FFFFFFFFFFFFFFFLL)
+    [getIntlUtilityClass[0]() setYearlessYear:v14 forCalendar:calendarCopy];
+    if ([componentsCopy year] == 0x7FFFFFFFFFFFFFFFLL)
     {
       [v12 setYear:{objc_msgSend(v13, "year")}];
       v17 = 1;
@@ -191,14 +191,14 @@ void __38__CNDateHelper_gregorianCalendarInGMT__block_invoke()
 
     else
     {
-      v18 = [v7 year];
-      v17 = v18 == [v13 year];
+      year = [componentsCopy year];
+      v17 = year == [v13 year];
     }
 
-    v19 = [a1 gregorianCalendar];
-    v20 = [v19 dateFromComponents:v12];
+    gregorianCalendar = [self gregorianCalendar];
+    v20 = [gregorianCalendar dateFromComponents:v12];
 
-    v21 = [v6 components:1048606 fromDate:v20];
+    v21 = [calendarCopy components:1048606 fromDate:v20];
     v10 = v21;
     if (v17 || (v22 = [v21 year], v22 == objc_msgSend(v14, "year")))
     {
@@ -209,62 +209,62 @@ void __38__CNDateHelper_gregorianCalendarInGMT__block_invoke()
   return v10;
 }
 
-+ (id)gregorianDateComponentsFromDateComponents:(id)a3
++ (id)gregorianDateComponentsFromDateComponents:(id)components
 {
-  v4 = a3;
-  v5 = [v4 calendar];
-  if (!v5)
+  componentsCopy = components;
+  calendar = [componentsCopy calendar];
+  if (!calendar)
   {
     goto LABEL_3;
   }
 
-  v6 = v5;
-  v7 = [v4 calendar];
-  v8 = [v7 calendarIdentifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E695D850]];
+  v6 = calendar;
+  calendar2 = [componentsCopy calendar];
+  calendarIdentifier = [calendar2 calendarIdentifier];
+  v9 = [calendarIdentifier isEqualToString:*MEMORY[0x1E695D850]];
 
   if (v9)
   {
 LABEL_3:
-    v10 = v4;
+    v10 = componentsCopy;
     goto LABEL_17;
   }
 
-  v11 = [v4 copy];
-  v12 = [v11 calendar];
-  v13 = [v12 copy];
+  v11 = [componentsCopy copy];
+  calendar3 = [v11 calendar];
+  v13 = [calendar3 copy];
   [v11 setCalendar:v13];
 
-  v14 = [v4 timeZone];
-  if (v14)
+  timeZone = [componentsCopy timeZone];
+  if (timeZone)
   {
-    v15 = [v4 timeZone];
+    timeZone2 = [componentsCopy timeZone];
   }
 
   else
   {
-    v16 = [v4 calendar];
-    v15 = [v16 timeZone];
+    calendar4 = [componentsCopy calendar];
+    timeZone2 = [calendar4 timeZone];
   }
 
-  if (!v15)
+  if (!timeZone2)
   {
-    v17 = [a1 gregorianCalendarInGMT];
-    v15 = [v17 timeZone];
+    gregorianCalendarInGMT = [self gregorianCalendarInGMT];
+    timeZone2 = [gregorianCalendarInGMT timeZone];
   }
 
-  if ([v4 year] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "era") != 0x7FFFFFFFFFFFFFFFLL)
+  if ([componentsCopy year] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(componentsCopy, "era") != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v27 = [a1 gregorianCalendarInGMT];
-    v28 = [v11 calendar];
-    v29 = [v28 dateFromComponents:v11];
-    v19 = [v27 componentsInTimeZone:v15 fromDate:v29];
+    gregorianCalendarInGMT2 = [self gregorianCalendarInGMT];
+    calendar5 = [v11 calendar];
+    v29 = [calendar5 dateFromComponents:v11];
+    v19 = [gregorianCalendarInGMT2 componentsInTimeZone:timeZone2 fromDate:v29];
 
     v20 = [CNDateHelper dateComponentsFromDateComponents:v19 preservingUnits:1048606];
     goto LABEL_15;
   }
 
-  v18 = [a1 dateComponentsInGregorianYearlessYearForYearlessDateComponents:v4 timeZone:v15];
+  v18 = [self dateComponentsInGregorianYearlessYearForYearlessDateComponents:componentsCopy timeZone:timeZone2];
   v19 = v18;
   if (v18)
   {
@@ -276,13 +276,13 @@ LABEL_15:
   }
 
   v21 = getIntlUtilityClass[0]();
-  v22 = [v11 calendar];
-  [(objc_class *)v21 setYearlessYear:v11 forCalendar:v22];
+  calendar6 = [v11 calendar];
+  [(objc_class *)v21 setYearlessYear:v11 forCalendar:calendar6];
 
-  v23 = [a1 gregorianCalendarInGMT];
-  v24 = [v11 calendar];
-  v25 = [v24 dateFromComponents:v11];
-  v26 = [v23 componentsInTimeZone:v15 fromDate:v25];
+  gregorianCalendarInGMT3 = [self gregorianCalendarInGMT];
+  calendar7 = [v11 calendar];
+  v25 = [calendar7 dateFromComponents:v11];
+  v26 = [gregorianCalendarInGMT3 componentsInTimeZone:timeZone2 fromDate:v25];
 
   v10 = [CNDateHelper dateComponentsFromDateComponents:v26 preservingUnits:1048606];
 
@@ -292,31 +292,31 @@ LABEL_17:
   return v10;
 }
 
-+ (id)dateComponentsInGregorianYearlessYearForYearlessDateComponents:(id)a3 timeZone:(id)a4
++ (id)dateComponentsInGregorianYearlessYearForYearlessDateComponents:(id)components timeZone:(id)zone
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 gregorianCalendarInGMT];
+  zoneCopy = zone;
+  componentsCopy = components;
+  gregorianCalendarInGMT = [self gregorianCalendarInGMT];
   v9 = objc_opt_new();
-  [getIntlUtilityClass[0]() setYearlessYear:v9 forCalendar:v8];
+  [getIntlUtilityClass[0]() setYearlessYear:v9 forCalendar:gregorianCalendarInGMT];
   [v9 setMonth:1];
   [v9 setDay:1];
-  [v9 setCalendar:v8];
-  v10 = [v9 date];
-  v11 = [v7 copy];
+  [v9 setCalendar:gregorianCalendarInGMT];
+  date = [v9 date];
+  v11 = [componentsCopy copy];
   [v11 setSecond:1];
-  v12 = [v7 calendar];
+  calendar = [componentsCopy calendar];
 
-  v13 = [v12 nextDateAfterDate:v10 matchingComponents:v11 options:2];
+  v13 = [calendar nextDateAfterDate:date matchingComponents:v11 options:2];
 
   if (v13)
   {
     v14 = [v9 copy];
     [v14 setYear:{objc_msgSend(v14, "year") + 1}];
-    v15 = [v14 date];
-    if ([v13 compare:v15] == -1)
+    date2 = [v14 date];
+    if ([v13 compare:date2] == -1)
     {
-      v17 = [v8 componentsInTimeZone:v6 fromDate:v13];
+      v17 = [gregorianCalendarInGMT componentsInTimeZone:zoneCopy fromDate:v13];
       v16 = [CNDateHelper dateComponentsFromDateComponents:v17 preservingUnits:1048606];
     }
 
@@ -334,18 +334,18 @@ LABEL_17:
   return v16;
 }
 
-+ (id)dateComponentsFromDateComponents:(id)a3 preservingUnits:(unint64_t)a4
++ (id)dateComponentsFromDateComponents:(id)components preservingUnits:(unint64_t)units
 {
-  v4 = a4;
-  v5 = a3;
+  unitsCopy = units;
+  componentsCopy = components;
   v6 = objc_opt_new();
-  if ((v4 & 2) != 0)
+  if ((unitsCopy & 2) != 0)
   {
-    [v6 setEra:{objc_msgSend(v5, "era")}];
-    if ((v4 & 4) == 0)
+    [v6 setEra:{objc_msgSend(componentsCopy, "era")}];
+    if ((unitsCopy & 4) == 0)
     {
 LABEL_3:
-      if ((v4 & 8) == 0)
+      if ((unitsCopy & 8) == 0)
       {
         goto LABEL_4;
       }
@@ -354,16 +354,16 @@ LABEL_3:
     }
   }
 
-  else if ((v4 & 4) == 0)
+  else if ((unitsCopy & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  [v6 setYear:{objc_msgSend(v5, "year")}];
-  if ((v4 & 8) == 0)
+  [v6 setYear:{objc_msgSend(componentsCopy, "year")}];
+  if ((unitsCopy & 8) == 0)
   {
 LABEL_4:
-    if ((v4 & 0x10) == 0)
+    if ((unitsCopy & 0x10) == 0)
     {
       goto LABEL_5;
     }
@@ -372,11 +372,11 @@ LABEL_4:
   }
 
 LABEL_23:
-  [v6 setMonth:{objc_msgSend(v5, "month")}];
-  if ((v4 & 0x10) == 0)
+  [v6 setMonth:{objc_msgSend(componentsCopy, "month")}];
+  if ((unitsCopy & 0x10) == 0)
   {
 LABEL_5:
-    if ((v4 & 0x20) == 0)
+    if ((unitsCopy & 0x20) == 0)
     {
       goto LABEL_6;
     }
@@ -385,11 +385,11 @@ LABEL_5:
   }
 
 LABEL_24:
-  [v6 setDay:{objc_msgSend(v5, "day")}];
-  if ((v4 & 0x20) == 0)
+  [v6 setDay:{objc_msgSend(componentsCopy, "day")}];
+  if ((unitsCopy & 0x20) == 0)
   {
 LABEL_6:
-    if ((v4 & 0x40) == 0)
+    if ((unitsCopy & 0x40) == 0)
     {
       goto LABEL_7;
     }
@@ -398,11 +398,11 @@ LABEL_6:
   }
 
 LABEL_25:
-  [v6 setHour:{objc_msgSend(v5, "hour")}];
-  if ((v4 & 0x40) == 0)
+  [v6 setHour:{objc_msgSend(componentsCopy, "hour")}];
+  if ((unitsCopy & 0x40) == 0)
   {
 LABEL_7:
-    if ((v4 & 0x80) == 0)
+    if ((unitsCopy & 0x80) == 0)
     {
       goto LABEL_8;
     }
@@ -411,11 +411,11 @@ LABEL_7:
   }
 
 LABEL_26:
-  [v6 setMinute:{objc_msgSend(v5, "minute")}];
-  if ((v4 & 0x80) == 0)
+  [v6 setMinute:{objc_msgSend(componentsCopy, "minute")}];
+  if ((unitsCopy & 0x80) == 0)
   {
 LABEL_8:
-    if ((v4 & 0x8000) == 0)
+    if ((unitsCopy & 0x8000) == 0)
     {
       goto LABEL_9;
     }
@@ -424,11 +424,11 @@ LABEL_8:
   }
 
 LABEL_27:
-  [v6 setSecond:{objc_msgSend(v5, "second")}];
-  if ((v4 & 0x8000) == 0)
+  [v6 setSecond:{objc_msgSend(componentsCopy, "second")}];
+  if ((unitsCopy & 0x8000) == 0)
   {
 LABEL_9:
-    if ((v4 & 0x200) == 0)
+    if ((unitsCopy & 0x200) == 0)
     {
       goto LABEL_10;
     }
@@ -437,11 +437,11 @@ LABEL_9:
   }
 
 LABEL_28:
-  [v6 setNanosecond:{objc_msgSend(v5, "nanosecond")}];
-  if ((v4 & 0x200) == 0)
+  [v6 setNanosecond:{objc_msgSend(componentsCopy, "nanosecond")}];
+  if ((unitsCopy & 0x200) == 0)
   {
 LABEL_10:
-    if ((v4 & 0x400) == 0)
+    if ((unitsCopy & 0x400) == 0)
     {
       goto LABEL_11;
     }
@@ -450,11 +450,11 @@ LABEL_10:
   }
 
 LABEL_29:
-  [v6 setWeekday:{objc_msgSend(v5, "weekday")}];
-  if ((v4 & 0x400) == 0)
+  [v6 setWeekday:{objc_msgSend(componentsCopy, "weekday")}];
+  if ((unitsCopy & 0x400) == 0)
   {
 LABEL_11:
-    if ((v4 & 0x800) == 0)
+    if ((unitsCopy & 0x800) == 0)
     {
       goto LABEL_12;
     }
@@ -463,11 +463,11 @@ LABEL_11:
   }
 
 LABEL_30:
-  [v6 setWeekdayOrdinal:{objc_msgSend(v5, "weekdayOrdinal")}];
-  if ((v4 & 0x800) == 0)
+  [v6 setWeekdayOrdinal:{objc_msgSend(componentsCopy, "weekdayOrdinal")}];
+  if ((unitsCopy & 0x800) == 0)
   {
 LABEL_12:
-    if ((v4 & 0x1000) == 0)
+    if ((unitsCopy & 0x1000) == 0)
     {
       goto LABEL_13;
     }
@@ -476,11 +476,11 @@ LABEL_12:
   }
 
 LABEL_31:
-  [v6 setQuarter:{objc_msgSend(v5, "quarter")}];
-  if ((v4 & 0x1000) == 0)
+  [v6 setQuarter:{objc_msgSend(componentsCopy, "quarter")}];
+  if ((unitsCopy & 0x1000) == 0)
   {
 LABEL_13:
-    if ((v4 & 0x2000) == 0)
+    if ((unitsCopy & 0x2000) == 0)
     {
       goto LABEL_14;
     }
@@ -489,11 +489,11 @@ LABEL_13:
   }
 
 LABEL_32:
-  [v6 setWeekOfMonth:{objc_msgSend(v5, "weekOfMonth")}];
-  if ((v4 & 0x2000) == 0)
+  [v6 setWeekOfMonth:{objc_msgSend(componentsCopy, "weekOfMonth")}];
+  if ((unitsCopy & 0x2000) == 0)
   {
 LABEL_14:
-    if ((v4 & 0x4000) == 0)
+    if ((unitsCopy & 0x4000) == 0)
     {
       goto LABEL_15;
     }
@@ -502,11 +502,11 @@ LABEL_14:
   }
 
 LABEL_33:
-  [v6 setWeekOfYear:{objc_msgSend(v5, "weekOfYear")}];
-  if ((v4 & 0x4000) == 0)
+  [v6 setWeekOfYear:{objc_msgSend(componentsCopy, "weekOfYear")}];
+  if ((unitsCopy & 0x4000) == 0)
   {
 LABEL_15:
-    if ((v4 & 0x100000) == 0)
+    if ((unitsCopy & 0x100000) == 0)
     {
       goto LABEL_16;
     }
@@ -515,11 +515,11 @@ LABEL_15:
   }
 
 LABEL_34:
-  [v6 setYearForWeekOfYear:{objc_msgSend(v5, "yearForWeekOfYear")}];
-  if ((v4 & 0x100000) == 0)
+  [v6 setYearForWeekOfYear:{objc_msgSend(componentsCopy, "yearForWeekOfYear")}];
+  if ((unitsCopy & 0x100000) == 0)
   {
 LABEL_16:
-    if ((v4 & 0x200000) == 0)
+    if ((unitsCopy & 0x200000) == 0)
     {
       goto LABEL_18;
     }
@@ -528,14 +528,14 @@ LABEL_16:
   }
 
 LABEL_35:
-  v9 = [v5 calendar];
-  [v6 setCalendar:v9];
+  calendar = [componentsCopy calendar];
+  [v6 setCalendar:calendar];
 
-  if ((v4 & 0x200000) != 0)
+  if ((unitsCopy & 0x200000) != 0)
   {
 LABEL_17:
-    v7 = [v5 timeZone];
-    [v6 setTimeZone:v7];
+    timeZone = [componentsCopy timeZone];
+    [v6 setTimeZone:timeZone];
   }
 
 LABEL_18:
@@ -543,25 +543,25 @@ LABEL_18:
   return v6;
 }
 
-+ (BOOL)isGregorianDerivedCalendar:(id)a3
++ (BOOL)isGregorianDerivedCalendar:(id)calendar
 {
-  v4 = [a3 calendarIdentifier];
-  LOBYTE(a1) = [a1 isGregorianDerivedCalendarIdentifier:v4];
+  calendarIdentifier = [calendar calendarIdentifier];
+  LOBYTE(self) = [self isGregorianDerivedCalendarIdentifier:calendarIdentifier];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)isGregorianDerivedCalendarIdentifier:(id)a3
++ (BOOL)isGregorianDerivedCalendarIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E695D850]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695D898]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695D868]))
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E695D850]] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x1E695D898]) & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x1E695D868]))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x1E695D820]];
+    v4 = [identifierCopy isEqualToString:*MEMORY[0x1E695D820]];
   }
 
   return v4;

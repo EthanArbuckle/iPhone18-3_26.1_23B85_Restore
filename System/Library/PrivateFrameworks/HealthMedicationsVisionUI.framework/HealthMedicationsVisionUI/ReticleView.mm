@@ -1,17 +1,17 @@
 @interface ReticleView
-- (_TtC25HealthMedicationsVisionUI11ReticleView)initWithCoder:(id)a3;
-- (_TtC25HealthMedicationsVisionUI11ReticleView)initWithFrame:(CGRect)a3;
+- (_TtC25HealthMedicationsVisionUI11ReticleView)initWithCoder:(id)coder;
+- (_TtC25HealthMedicationsVisionUI11ReticleView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ReticleView
 
-- (_TtC25HealthMedicationsVisionUI11ReticleView)initWithFrame:(CGRect)a3
+- (_TtC25HealthMedicationsVisionUI11ReticleView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_2518F0278();
   sub_2518F0268();
   sub_2518F0218();
@@ -25,7 +25,7 @@
   return v7;
 }
 
-- (_TtC25HealthMedicationsVisionUI11ReticleView)initWithCoder:(id)a3
+- (_TtC25HealthMedicationsVisionUI11ReticleView)initWithCoder:(id)coder
 {
   sub_2518F0278();
   sub_2518F0268();
@@ -53,7 +53,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_2518D3D64();
 }
 

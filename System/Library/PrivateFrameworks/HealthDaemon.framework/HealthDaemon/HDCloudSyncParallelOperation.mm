@@ -1,19 +1,19 @@
 @interface HDCloudSyncParallelOperation
-- (HDCloudSyncParallelOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
+- (HDCloudSyncParallelOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
 - (NSArray)operations;
-- (void)addOperation:(id)a3;
-- (void)addOperationOfClass:(Class)a3;
+- (void)addOperation:(id)operation;
+- (void)addOperationOfClass:(Class)class;
 - (void)main;
 - (void)skip;
 @end
 
 @implementation HDCloudSyncParallelOperation
 
-- (HDCloudSyncParallelOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncParallelOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v10.receiver = self;
   v10.super_class = HDCloudSyncParallelOperation;
-  v4 = [(HDCloudSyncOperation *)&v10 initWithConfiguration:a3 cloudState:a4];
+  v4 = [(HDCloudSyncOperation *)&v10 initWithConfiguration:configuration cloudState:state];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -37,8 +37,8 @@
   if ([(NSMutableArray *)self->_operations count])
   {
     v3 = 10 * [(NSMutableArray *)self->_operations count];
-    v4 = [(HDCloudSyncOperation *)self progress];
-    [v4 setTotalUnitCount:v3];
+    progress = [(HDCloudSyncOperation *)self progress];
+    [progress setTotalUnitCount:v3];
 
     [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
     v16 = 0u;
@@ -62,12 +62,12 @@
 
           v10 = *(*(&v16 + 1) + 8 * i);
           [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
-          v11 = [(HDCloudSyncOperation *)self cloudState];
-          [v10 setCloudState:v11];
+          cloudState = [(HDCloudSyncOperation *)self cloudState];
+          [v10 setCloudState:cloudState];
 
-          v12 = [(HDCloudSyncOperation *)self progress];
-          v13 = [v10 progress];
-          [v12 addChild:v13 withPendingUnitCount:10];
+          progress2 = [(HDCloudSyncOperation *)self progress];
+          progress3 = [v10 progress];
+          [progress2 addChild:progress3 withPendingUnitCount:10];
 
           [v10 start];
         }
@@ -138,42 +138,42 @@
   return v3;
 }
 
-- (void)addOperationOfClass:(Class)a3
+- (void)addOperationOfClass:(Class)class
 {
-  v4 = [a3 alloc];
-  v5 = [(HDCloudSyncOperation *)self configuration];
-  v6 = [(HDCloudSyncOperation *)self cloudState];
-  v7 = [v4 initWithConfiguration:v5 cloudState:v6];
+  v4 = [class alloc];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cloudState = [(HDCloudSyncOperation *)self cloudState];
+  v7 = [v4 initWithConfiguration:configuration cloudState:cloudState];
 
   [(HDCloudSyncParallelOperation *)self addOperation:v7];
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   if ([(HDCloudSyncOperation *)self status])
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HDCloudSyncParallelOperation.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncParallelOperation.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
   }
 
-  v6 = [(HDCloudSyncOperation *)self cloudState];
-  [v5 setCloudState:v6];
+  cloudState = [(HDCloudSyncOperation *)self cloudState];
+  [operationCopy setCloudState:cloudState];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__HDCloudSyncParallelOperation_addOperation___block_invoke;
   v9[3] = &unk_278613060;
   v9[4] = self;
-  [v5 setOnSuccess:v9];
+  [operationCopy setOnSuccess:v9];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__HDCloudSyncParallelOperation_addOperation___block_invoke_2;
   v8[3] = &unk_278613088;
   v8[4] = self;
-  [v5 setOnError:v8];
+  [operationCopy setOnError:v8];
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_operations addObject:v5];
+  [(NSMutableArray *)self->_operations addObject:operationCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

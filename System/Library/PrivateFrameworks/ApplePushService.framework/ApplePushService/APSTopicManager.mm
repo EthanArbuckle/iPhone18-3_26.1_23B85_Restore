@@ -1,53 +1,53 @@
 @interface APSTopicManager
-- (APSTopicManager)initWithEnvironment:(id)a3 topicHasher:(id)a4 user:(id)a5 userPreferences:(id)a6 ultraConstrainedProvider:(id)a7 delegate:(id)a8;
+- (APSTopicManager)initWithEnvironment:(id)environment topicHasher:(id)hasher user:(id)user userPreferences:(id)preferences ultraConstrainedProvider:(id)provider delegate:(id)delegate;
 - (APSTopicManagerDelegate)delegate;
-- (BOOL)_addTopic:(id)a3 connectionServer:(id)a4 attributes:(id)a5 change:(int64_t *)a6;
-- (BOOL)_hasTopic:(id)a3;
-- (BOOL)_isValidEnvironmentToTopics:(id)a3;
-- (BOOL)_recategorizeTopic:(id)a3;
-- (BOOL)_removeTopic:(id)a3 connectionServer:(id)a4 filter:(int64_t)a5;
-- (BOOL)hasListeningTopic:(id)a3;
-- (BOOL)hasListeningTopicHash:(id)a3;
+- (BOOL)_addTopic:(id)topic connectionServer:(id)server attributes:(id)attributes change:(int64_t *)change;
+- (BOOL)_hasTopic:(id)topic;
+- (BOOL)_isValidEnvironmentToTopics:(id)topics;
+- (BOOL)_recategorizeTopic:(id)topic;
+- (BOOL)_removeTopic:(id)topic connectionServer:(id)server filter:(int64_t)filter;
+- (BOOL)hasListeningTopic:(id)topic;
+- (BOOL)hasListeningTopicHash:(id)hash;
 - (BOOL)hasListeningTopics;
-- (BOOL)hasPausedTopic:(id)a3;
+- (BOOL)hasPausedTopic:(id)topic;
 - (BOOL)hasPausedTopics;
-- (BOOL)hasSendingTopic:(id)a3;
-- (BOOL)hasSendingTopicHash:(id)a3;
+- (BOOL)hasSendingTopic:(id)topic;
+- (BOOL)hasSendingTopicHash:(id)hash;
 - (BOOL)hasSendingTopics;
-- (BOOL)hasUltraConstrainedPermissionForTopic:(id)a3;
+- (BOOL)hasUltraConstrainedPermissionForTopic:(id)topic;
 - (NSString)logString;
 - (id)_redListTopics;
-- (id)_topicStateForTopic:(id)a3 connectionServer:(id)a4 filter:(int64_t)a5;
+- (id)_topicStateForTopic:(id)topic connectionServer:(id)server filter:(int64_t)filter;
 - (id)debugDescription;
 - (id)description;
-- (id)hasEnabledTopicHash:(id)a3;
-- (id)hasIgnoredTopicHash:(id)a3;
-- (id)hasNonWakingTopicHash:(id)a3;
-- (id)hasOpportunisticTopicHash:(id)a3;
-- (id)hasPausedTopicHash:(id)a3;
-- (id)topicStatesForConnectionServer:(id)a3;
-- (int64_t)_changeFromFilter:(int64_t)a3 toFilter:(int64_t)a4;
-- (int64_t)_potentiallyChangeChosenTopicStateForTopic:(id)a3;
-- (int64_t)filterForTopicHash:(id)a3;
+- (id)hasEnabledTopicHash:(id)hash;
+- (id)hasIgnoredTopicHash:(id)hash;
+- (id)hasNonWakingTopicHash:(id)hash;
+- (id)hasOpportunisticTopicHash:(id)hash;
+- (id)hasPausedTopicHash:(id)hash;
+- (id)topicStatesForConnectionServer:(id)server;
+- (int64_t)_changeFromFilter:(int64_t)filter toFilter:(int64_t)toFilter;
+- (int64_t)_potentiallyChangeChosenTopicStateForTopic:(id)topic;
+- (int64_t)filterForTopicHash:(id)hash;
 - (void)_clearPendingFilterTimer;
-- (void)_filtersWillPotentiallyBeChanged:(id)a3;
-- (void)_forgetRedListTopic:(id)a3;
+- (void)_filtersWillPotentiallyBeChanged:(id)changed;
+- (void)_forgetRedListTopic:(id)topic;
 - (void)_pendingFilterTimerFired;
 - (void)_processPendingChangeIfNeeded;
-- (void)_rememberRedListTopic:(id)a3;
-- (void)_scheduleServerUpdateWithChange:(id)a3 timer:(BOOL)a4 shortInterval:(BOOL)a5;
-- (void)addTopicsAndAttributes:(id)a3 connectionServer:(id)a4;
+- (void)_rememberRedListTopic:(id)topic;
+- (void)_scheduleServerUpdateWithChange:(id)change timer:(BOOL)timer shortInterval:(BOOL)interval;
+- (void)addTopicsAndAttributes:(id)attributes connectionServer:(id)server;
 - (void)beginTransaction;
 - (void)dealloc;
 - (void)endTransaction;
-- (void)filtersWillPotentiallyBeChangedByPolicy:(id)a3;
-- (void)performFilterBlock:(id)a3;
-- (void)performTransactionBlock:(id)a3;
+- (void)filtersWillPotentiallyBeChangedByPolicy:(id)policy;
+- (void)performFilterBlock:(id)block;
+- (void)performTransactionBlock:(id)block;
 - (void)removeAllTopics;
-- (void)removeTopics:(id)a3 connectionServer:(id)a4 filter:(int64_t)a5;
-- (void)removeTopicsForConnectionServer:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setIsPowerEfficientToSendFilter:(BOOL)a3;
+- (void)removeTopics:(id)topics connectionServer:(id)server filter:(int64_t)filter;
+- (void)removeTopicsForConnectionServer:(id)server;
+- (void)setDelegate:(id)delegate;
+- (void)setIsPowerEfficientToSendFilter:(BOOL)filter;
 @end
 
 @implementation APSTopicManager
@@ -66,7 +66,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ _pendingFilterTimerFired", &v5, 0xCu);
   }
 
@@ -92,7 +92,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@: Forcing Mac to connect due to mac sleep default.", &v9, 0xCu);
     }
 
@@ -101,24 +101,24 @@
 
   else
   {
-    v5 = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
-    if ([v5 count])
+    hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
+    if ([hashesToEnabledTopics count])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
-      if ([v6 count])
+      hashesToOpportunisticTopics = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
+      if ([hashesToOpportunisticTopics count])
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
-        v4 = [v7 count] != 0;
+        hashesToNonWakingTopics = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
+        v4 = [hashesToNonWakingTopics count] != 0;
       }
     }
   }
@@ -134,8 +134,8 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = [(APSTopicManager *)self topicsChanged];
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v37 count:16];
+  topicsChanged = [(APSTopicManager *)self topicsChanged];
+  v4 = [topicsChanged countByEnumeratingWithState:&v27 objects:v37 count:16];
   if (v4)
   {
     v5 = v4;
@@ -147,18 +147,18 @@
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(topicsChanged);
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
         policy = self->_policy;
         topicsToTopicsStates = self->_topicsToTopicsStates;
-        v12 = [v9 topicName];
-        v13 = [(NSMutableDictionary *)topicsToTopicsStates objectForKeyedSubscript:v12];
+        topicName = [v9 topicName];
+        v13 = [(NSMutableDictionary *)topicsToTopicsStates objectForKeyedSubscript:topicName];
         v14 = [(APSTopicFilterPolicy *)policy topicChosenByPolicyFromTopics:v13];
 
-        v15 = [(APSTopicManager *)self serverGroup];
-        v16 = [v15 currentFilterForTopicState:v9];
+        serverGroup = [(APSTopicManager *)self serverGroup];
+        v16 = [serverGroup currentFilterForTopicState:v9];
 
         v17 = [(APSTopicManager *)self _changeFromFilter:v16 toFilter:[(APSTopicFilterPolicy *)self->_policy filterChosenByPolicyForTopic:v14]];
         if (v6 <= v17)
@@ -167,7 +167,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v27 objects:v37 count:16];
+      v5 = [topicsChanged countByEnumeratingWithState:&v27 objects:v37 count:16];
     }
 
     while (v5);
@@ -182,21 +182,21 @@
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v19 = sub_1000066D0(v6);
-    v20 = [(APSTopicManager *)self topicsChanged];
+    topicsChanged2 = [(APSTopicManager *)self topicsChanged];
     *buf = 138412802;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v19;
     v35 = 2112;
-    v36 = v20;
+    v36 = topicsChanged2;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@: completed transaction - calculated change %@ {topics changed: %@}", buf, 0x20u);
   }
 
   v21 = [APSFilterChange alloc];
-  v22 = [(APSTopicManager *)self topicsChanged];
-  v23 = [v22 firstObject];
-  v24 = [v23 topicName];
-  v25 = [(APSFilterChange *)v21 initWithChange:v6 triggeringTopic:v24];
+  topicsChanged3 = [(APSTopicManager *)self topicsChanged];
+  firstObject = [topicsChanged3 firstObject];
+  topicName2 = [firstObject topicName];
+  v25 = [(APSFilterChange *)v21 initWithChange:v6 triggeringTopic:topicName2];
 
   [(APSTopicManager *)self setTopicsChanged:0];
   objc_autoreleasePoolPop(context);
@@ -210,35 +210,35 @@
 {
   v3 = objc_opt_class();
   environmentName = self->_environmentName;
-  v5 = [(APSUser *)self->_user name];
-  v6 = [NSString stringWithFormat:@"<%@: %p %@; %@>", v3, self, environmentName, v5];;
+  name = [(APSUser *)self->_user name];
+  v6 = [NSString stringWithFormat:@"<%@: %p %@; %@>", v3, self, environmentName, name];;
 
   return v6;
 }
 
-- (APSTopicManager)initWithEnvironment:(id)a3 topicHasher:(id)a4 user:(id)a5 userPreferences:(id)a6 ultraConstrainedProvider:(id)a7 delegate:(id)a8
+- (APSTopicManager)initWithEnvironment:(id)environment topicHasher:(id)hasher user:(id)user userPreferences:(id)preferences ultraConstrainedProvider:(id)provider delegate:(id)delegate
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v33 = a6;
-  v17 = a7;
-  v18 = a8;
+  environmentCopy = environment;
+  hasherCopy = hasher;
+  userCopy = user;
+  preferencesCopy = preferences;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v34.receiver = self;
   v34.super_class = APSTopicManager;
   v19 = [(APSTopicManager *)&v34 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeWeak(&v19->_delegate, v18);
-    objc_storeStrong(&v20->_user, a5);
-    objc_storeStrong(&v20->_userPreferences, a6);
-    v21 = [v14 name];
+    objc_storeWeak(&v19->_delegate, delegateCopy);
+    objc_storeStrong(&v20->_user, user);
+    objc_storeStrong(&v20->_userPreferences, preferences);
+    name = [environmentCopy name];
     environmentName = v20->_environmentName;
-    v20->_environmentName = v21;
+    v20->_environmentName = name;
 
     v20->_isPowerEfficientToSendFilter = 1;
-    v23 = [[APSTopicFilterPolicyEmbedded alloc] initWithDelegate:v20 ultraConstrainedProvider:v17];
+    v23 = [[APSTopicFilterPolicyEmbedded alloc] initWithDelegate:v20 ultraConstrainedProvider:providerCopy];
     policy = v20->_policy;
     v20->_policy = &v23->super;
 
@@ -250,11 +250,11 @@
     hashesToTopics = v20->_hashesToTopics;
     v20->_hashesToTopics = v27;
 
-    v29 = [[APSTopicGroup alloc] initWithEnvironment:v14 topicHasher:v15 user:v16];
+    v29 = [[APSTopicGroup alloc] initWithEnvironment:environmentCopy topicHasher:hasherCopy user:userCopy];
     group = v20->_group;
     v20->_group = v29;
 
-    objc_storeStrong(&v20->_topicHasher, a4);
+    objc_storeStrong(&v20->_topicHasher, hasher);
     v31 = +[NSNotificationCenter defaultCenter];
     [v31 addObserver:v20 selector:"_filtersWillPotentiallyBeChanged:" name:@"APSFiltersWillPotentiallyBeChangedNotification" object:0];
   }
@@ -274,9 +274,9 @@
   [(APSTopicManager *)&v4 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -287,9 +287,9 @@
   }
 }
 
-- (BOOL)_isValidEnvironmentToTopics:(id)a3
+- (BOOL)_isValidEnvironmentToTopics:(id)topics
 {
-  v3 = [a3 objectForKey:self->_environmentName];
+  v3 = [topics objectForKey:self->_environmentName];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v3 objectForKey:&stru_10018F6A0], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = 0;
@@ -301,8 +301,8 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [v3 allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    allKeys = [v3 allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -313,7 +313,7 @@
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
@@ -334,7 +334,7 @@
           goto LABEL_17;
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
         v5 = 1;
         if (v8)
         {
@@ -358,20 +358,20 @@ LABEL_17:
 
 - (id)_redListTopics
 {
-  v3 = [(APSUserPreferences *)self->_userPreferences tokenTopics];
-  if ([v3 count] && -[APSTopicManager _isValidEnvironmentToTopics:](self, "_isValidEnvironmentToTopics:", v3))
+  tokenTopics = [(APSUserPreferences *)self->_userPreferences tokenTopics];
+  if ([tokenTopics count] && -[APSTopicManager _isValidEnvironmentToTopics:](self, "_isValidEnvironmentToTopics:", tokenTopics))
   {
-    v4 = [v3 objectForKey:self->_environmentName];
+    v4 = [tokenTopics objectForKey:self->_environmentName];
     if (v4)
     {
-      v16 = v3;
+      v16 = tokenTopics;
       v5 = +[NSMutableArray array];
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v6 = [v4 allKeys];
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v27 count:16];
+      allKeys = [v4 allKeys];
+      v7 = [allKeys countByEnumeratingWithState:&v17 objects:v27 count:16];
       if (v7)
       {
         v8 = v7;
@@ -382,7 +382,7 @@ LABEL_17:
           {
             if (*v18 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(allKeys);
             }
 
             v11 = *(*(&v17 + 1) + 8 * i);
@@ -394,7 +394,7 @@ LABEL_17:
               if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412802;
-                v22 = self;
+                selfCopy = self;
                 v23 = 2112;
                 v24 = v11;
                 v25 = 2112;
@@ -409,13 +409,13 @@ LABEL_17:
             }
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v17 objects:v27 count:16];
+          v8 = [allKeys countByEnumeratingWithState:&v17 objects:v27 count:16];
         }
 
         while (v8);
       }
 
-      v3 = v16;
+      tokenTopics = v16;
     }
 
     else
@@ -432,22 +432,22 @@ LABEL_17:
   return v5;
 }
 
-- (void)_rememberRedListTopic:(id)a3
+- (void)_rememberRedListTopic:(id)topic
 {
-  v9 = a3;
-  v4 = [(APSUserPreferences *)self->_userPreferences tokenTopics];
-  v5 = [v4 mutableCopy];
+  topicCopy = topic;
+  tokenTopics = [(APSUserPreferences *)self->_userPreferences tokenTopics];
+  v5 = [tokenTopics mutableCopy];
 
   if (-[APSTopicManager _isValidEnvironmentToTopics:](self, "_isValidEnvironmentToTopics:", v5) && ([v5 objectForKey:self->_environmentName], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "mutableCopy"), v6, v7))
   {
     v8 = +[NSDate date];
-    [v7 setObject:v8 forKey:v9];
+    [v7 setObject:v8 forKey:topicCopy];
   }
 
   else
   {
     v8 = +[NSDate date];
-    v7 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v8, v9, 0];
+    v7 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v8, topicCopy, 0];
   }
 
   if (v5)
@@ -463,11 +463,11 @@ LABEL_17:
   [(APSUserPreferences *)self->_userPreferences setTokenTopics:v5];
 }
 
-- (void)_forgetRedListTopic:(id)a3
+- (void)_forgetRedListTopic:(id)topic
 {
-  v10 = a3;
-  v4 = [(APSUserPreferences *)self->_userPreferences tokenTopics];
-  v5 = [v4 mutableCopy];
+  topicCopy = topic;
+  tokenTopics = [(APSUserPreferences *)self->_userPreferences tokenTopics];
+  v5 = [tokenTopics mutableCopy];
 
   if ([(APSTopicManager *)self _isValidEnvironmentToTopics:v5])
   {
@@ -491,81 +491,81 @@ LABEL_17:
 
     if (v8)
     {
-      v9 = [v8 objectForKey:v10];
+      v9 = [v8 objectForKey:topicCopy];
 
       if (v9)
       {
         [v5 setObject:v8 forKey:self->_environmentName];
-        [v8 removeObjectForKey:v10];
+        [v8 removeObjectForKey:topicCopy];
         [(APSUserPreferences *)self->_userPreferences setTokenTopics:v5];
       }
     }
   }
 }
 
-- (id)hasEnabledTopicHash:(id)a3
+- (id)hasEnabledTopicHash:(id)hash
 {
   group = self->_group;
-  v4 = a3;
-  v5 = [(APSTopicGroup *)group hashesToEnabledTopics];
-  v6 = [v5 objectForKey:v4];
+  hashCopy = hash;
+  hashesToEnabledTopics = [(APSTopicGroup *)group hashesToEnabledTopics];
+  v6 = [hashesToEnabledTopics objectForKey:hashCopy];
 
-  v7 = [v6 topicName];
+  topicName = [v6 topicName];
 
-  return v7;
+  return topicName;
 }
 
-- (id)hasIgnoredTopicHash:(id)a3
+- (id)hasIgnoredTopicHash:(id)hash
 {
   group = self->_group;
-  v4 = a3;
-  v5 = [(APSTopicGroup *)group hashesToIgnoredTopics];
-  v6 = [v5 objectForKey:v4];
+  hashCopy = hash;
+  hashesToIgnoredTopics = [(APSTopicGroup *)group hashesToIgnoredTopics];
+  v6 = [hashesToIgnoredTopics objectForKey:hashCopy];
 
-  v7 = [v6 topicName];
+  topicName = [v6 topicName];
 
-  return v7;
+  return topicName;
 }
 
-- (id)hasPausedTopicHash:(id)a3
+- (id)hasPausedTopicHash:(id)hash
 {
   group = self->_group;
-  v4 = a3;
-  v5 = [(APSTopicGroup *)group hashesToPausedTopics];
-  v6 = [v5 objectForKey:v4];
+  hashCopy = hash;
+  hashesToPausedTopics = [(APSTopicGroup *)group hashesToPausedTopics];
+  v6 = [hashesToPausedTopics objectForKey:hashCopy];
 
-  v7 = [v6 topicName];
+  topicName = [v6 topicName];
 
-  return v7;
+  return topicName;
 }
 
-- (id)hasOpportunisticTopicHash:(id)a3
+- (id)hasOpportunisticTopicHash:(id)hash
 {
   group = self->_group;
-  v4 = a3;
-  v5 = [(APSTopicGroup *)group hashesToOpportunisticTopics];
-  v6 = [v5 objectForKey:v4];
+  hashCopy = hash;
+  hashesToOpportunisticTopics = [(APSTopicGroup *)group hashesToOpportunisticTopics];
+  v6 = [hashesToOpportunisticTopics objectForKey:hashCopy];
 
-  v7 = [v6 topicName];
+  topicName = [v6 topicName];
 
-  return v7;
+  return topicName;
 }
 
-- (id)hasNonWakingTopicHash:(id)a3
+- (id)hasNonWakingTopicHash:(id)hash
 {
   group = self->_group;
-  v4 = a3;
-  v5 = [(APSTopicGroup *)group hashesToNonWakingTopics];
-  v6 = [v5 objectForKey:v4];
+  hashCopy = hash;
+  hashesToNonWakingTopics = [(APSTopicGroup *)group hashesToNonWakingTopics];
+  v6 = [hashesToNonWakingTopics objectForKey:hashCopy];
 
-  v7 = [v6 topicName];
+  topicName = [v6 topicName];
 
-  return v7;
+  return topicName;
 }
 
-- (BOOL)_hasTopic:(id)a3
+- (BOOL)_hasTopic:(id)topic
 {
-  v3 = [(NSMutableDictionary *)self->_topicsToTopicsStates objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_topicsToTopicsStates objectForKey:topic];
   v4 = v3 != 0;
 
   return v4;
@@ -573,20 +573,20 @@ LABEL_17:
 
 - (BOOL)hasPausedTopics
 {
-  v2 = [(APSTopicGroup *)self->_group hashesToPausedTopics];
-  v3 = [v2 count] != 0;
+  hashesToPausedTopics = [(APSTopicGroup *)self->_group hashesToPausedTopics];
+  v3 = [hashesToPausedTopics count] != 0;
 
   return v3;
 }
 
-- (BOOL)hasListeningTopic:(id)a3
+- (BOOL)hasListeningTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   if ([(APSTopicManager *)self hasListeningTopics])
   {
-    v5 = [(APSTopicHasher *)self->_topicHasher topicHashForTopic:v4 user:self->_user];
-    v6 = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
-    v7 = [v6 objectForKey:v5];
+    v5 = [(APSTopicHasher *)self->_topicHasher topicHashForTopic:topicCopy user:self->_user];
+    hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
+    v7 = [hashesToEnabledTopics objectForKey:v5];
     if (v7)
     {
       v8 = 1;
@@ -594,8 +594,8 @@ LABEL_17:
 
     else
     {
-      v9 = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
-      v10 = [v9 objectForKey:v5];
+      hashesToOpportunisticTopics = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
+      v10 = [hashesToOpportunisticTopics objectForKey:v5];
       if (v10)
       {
         v8 = 1;
@@ -603,8 +603,8 @@ LABEL_17:
 
       else
       {
-        v11 = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
-        v12 = [v11 objectForKey:v5];
+        hashesToNonWakingTopics = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
+        v12 = [hashesToNonWakingTopics objectForKey:v5];
         v8 = v12 != 0;
       }
     }
@@ -618,13 +618,13 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)hasListeningTopicHash:(id)a3
+- (BOOL)hasListeningTopicHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   if ([(APSTopicManager *)self hasListeningTopics])
   {
-    v5 = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
-    v6 = [v5 objectForKey:v4];
+    hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
+    v6 = [hashesToEnabledTopics objectForKey:hashCopy];
     if (v6)
     {
       v7 = 1;
@@ -632,8 +632,8 @@ LABEL_17:
 
     else
     {
-      v8 = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
-      v9 = [v8 objectForKey:v4];
+      hashesToOpportunisticTopics = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
+      v9 = [hashesToOpportunisticTopics objectForKey:hashCopy];
       if (v9)
       {
         v7 = 1;
@@ -641,8 +641,8 @@ LABEL_17:
 
       else
       {
-        v10 = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
-        v11 = [v10 objectForKey:v4];
+        hashesToNonWakingTopics = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
+        v11 = [hashesToNonWakingTopics objectForKey:hashCopy];
         v7 = v11 != 0;
       }
     }
@@ -656,12 +656,12 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)hasPausedTopic:(id)a3
+- (BOOL)hasPausedTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   if ([(APSTopicManager *)self hasPausedTopics])
   {
-    v5 = [(APSTopicHasher *)self->_topicHasher topicHashForTopic:v4 user:self->_user];
+    v5 = [(APSTopicHasher *)self->_topicHasher topicHashForTopic:topicCopy user:self->_user];
     v6 = [(APSTopicManager *)self hasPausedTopicHash:v5];
     v7 = v6 != 0;
   }
@@ -676,32 +676,32 @@ LABEL_17:
 
 - (BOOL)hasSendingTopics
 {
-  v3 = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
-  if ([v3 count])
+  hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
+  if ([hashesToEnabledTopics count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(APSTopicGroup *)self->_group hashesToPausedTopics];
-    if ([v5 count])
+    hashesToPausedTopics = [(APSTopicGroup *)self->_group hashesToPausedTopics];
+    if ([hashesToPausedTopics count])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
-      if ([v6 count])
+      hashesToOpportunisticTopics = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
+      if ([hashesToOpportunisticTopics count])
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
-        v4 = [v7 count] != 0;
+        hashesToNonWakingTopics = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
+        v4 = [hashesToNonWakingTopics count] != 0;
       }
     }
   }
@@ -709,13 +709,13 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)hasSendingTopicHash:(id)a3
+- (BOOL)hasSendingTopicHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   if ([(APSTopicManager *)self hasSendingTopics])
   {
-    v5 = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
-    v6 = [v5 objectForKey:v4];
+    hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
+    v6 = [hashesToEnabledTopics objectForKey:hashCopy];
     if (v6)
     {
       v7 = 1;
@@ -723,8 +723,8 @@ LABEL_17:
 
     else
     {
-      v8 = [(APSTopicGroup *)self->_group hashesToPausedTopics];
-      v9 = [v8 objectForKey:v4];
+      hashesToPausedTopics = [(APSTopicGroup *)self->_group hashesToPausedTopics];
+      v9 = [hashesToPausedTopics objectForKey:hashCopy];
       if (v9)
       {
         v7 = 1;
@@ -732,8 +732,8 @@ LABEL_17:
 
       else
       {
-        v10 = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
-        v11 = [v10 objectForKey:v4];
+        hashesToOpportunisticTopics = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
+        v11 = [hashesToOpportunisticTopics objectForKey:hashCopy];
         if (v11)
         {
           v7 = 1;
@@ -741,8 +741,8 @@ LABEL_17:
 
         else
         {
-          v12 = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
-          v13 = [v12 objectForKey:v4];
+          hashesToNonWakingTopics = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
+          v13 = [hashesToNonWakingTopics objectForKey:hashCopy];
           v7 = v13 != 0;
         }
       }
@@ -757,14 +757,14 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)hasSendingTopic:(id)a3
+- (BOOL)hasSendingTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   if ([(APSTopicManager *)self hasSendingTopics])
   {
-    v5 = [(APSTopicHasher *)self->_topicHasher topicHashForTopic:v4 user:self->_user];
-    v6 = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
-    v7 = [v6 objectForKey:v5];
+    v5 = [(APSTopicHasher *)self->_topicHasher topicHashForTopic:topicCopy user:self->_user];
+    hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
+    v7 = [hashesToEnabledTopics objectForKey:v5];
     if (v7)
     {
       v8 = 1;
@@ -772,8 +772,8 @@ LABEL_17:
 
     else
     {
-      v9 = [(APSTopicGroup *)self->_group hashesToPausedTopics];
-      v10 = [v9 objectForKey:v5];
+      hashesToPausedTopics = [(APSTopicGroup *)self->_group hashesToPausedTopics];
+      v10 = [hashesToPausedTopics objectForKey:v5];
       if (v10)
       {
         v8 = 1;
@@ -781,8 +781,8 @@ LABEL_17:
 
       else
       {
-        v11 = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
-        v12 = [v11 objectForKey:v5];
+        hashesToOpportunisticTopics = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
+        v12 = [hashesToOpportunisticTopics objectForKey:v5];
         if (v12)
         {
           v8 = 1;
@@ -790,8 +790,8 @@ LABEL_17:
 
         else
         {
-          v13 = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
-          v14 = [v13 objectForKey:v5];
+          hashesToNonWakingTopics = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
+          v14 = [hashesToNonWakingTopics objectForKey:v5];
           v8 = v14 != 0;
         }
       }
@@ -806,9 +806,9 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)hasUltraConstrainedPermissionForTopic:(id)a3
+- (BOOL)hasUltraConstrainedPermissionForTopic:(id)topic
 {
-  [(NSMutableDictionary *)self->_topicsToTopicsStates objectForKeyedSubscript:a3];
+  [(NSMutableDictionary *)self->_topicsToTopicsStates objectForKeyedSubscript:topic];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -826,10 +826,10 @@ LABEL_17:
           objc_enumerationMutation(v3);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) attributes];
-        v8 = [v7 isUltraConstrainedEnabled];
+        attributes = [*(*(&v10 + 1) + 8 * i) attributes];
+        isUltraConstrainedEnabled = [attributes isUltraConstrainedEnabled];
 
-        if (v8)
+        if (isUltraConstrainedEnabled)
         {
           LOBYTE(v4) = 1;
           goto LABEL_11;
@@ -851,10 +851,10 @@ LABEL_11:
   return v4;
 }
 
-- (int64_t)filterForTopicHash:(id)a3
+- (int64_t)filterForTopicHash:(id)hash
 {
-  v4 = a3;
-  v5 = [(APSTopicManager *)self hasEnabledTopicHash:v4];
+  hashCopy = hash;
+  v5 = [(APSTopicManager *)self hasEnabledTopicHash:hashCopy];
 
   if (v5)
   {
@@ -863,7 +863,7 @@ LABEL_11:
 
   else
   {
-    v7 = [(APSTopicManager *)self hasOpportunisticTopicHash:v4];
+    v7 = [(APSTopicManager *)self hasOpportunisticTopicHash:hashCopy];
 
     if (v7)
     {
@@ -872,7 +872,7 @@ LABEL_11:
 
     else
     {
-      v8 = [(APSTopicManager *)self hasNonWakingTopicHash:v4];
+      v8 = [(APSTopicManager *)self hasNonWakingTopicHash:hashCopy];
 
       if (v8)
       {
@@ -881,7 +881,7 @@ LABEL_11:
 
       else
       {
-        v9 = [(APSTopicManager *)self hasPausedTopicHash:v4];
+        v9 = [(APSTopicManager *)self hasPausedTopicHash:hashCopy];
 
         if (v9)
         {
@@ -890,7 +890,7 @@ LABEL_11:
 
         else
         {
-          v10 = [(APSTopicManager *)self hasIgnoredTopicHash:v4];
+          v10 = [(APSTopicManager *)self hasIgnoredTopicHash:hashCopy];
 
           if (v10)
           {
@@ -909,10 +909,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)_topicStateForTopic:(id)a3 connectionServer:(id)a4 filter:(int64_t)a5
+- (id)_topicStateForTopic:(id)topic connectionServer:(id)server filter:(int64_t)filter
 {
-  v8 = a4;
-  [(NSMutableDictionary *)self->_topicsToTopicsStates objectForKey:a3];
+  serverCopy = server;
+  [(NSMutableDictionary *)self->_topicsToTopicsStates objectForKey:topic];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -932,14 +932,14 @@ LABEL_11:
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 connectionServer];
-        v16 = v15;
-        if (v15 == v8)
+        connectionServer = [v14 connectionServer];
+        v16 = connectionServer;
+        if (connectionServer == serverCopy)
         {
-          v17 = [v14 attributes];
-          v18 = [v17 filter];
+          attributes = [v14 attributes];
+          filter = [attributes filter];
 
-          if (v18 == a5)
+          if (filter == filter)
           {
             v19 = v14;
             goto LABEL_13;
@@ -967,106 +967,106 @@ LABEL_13:
   return v19;
 }
 
-- (BOOL)_recategorizeTopic:(id)a3
+- (BOOL)_recategorizeTopic:(id)topic
 {
-  v4 = a3;
-  v5 = [v4 topicHash];
+  topicCopy = topic;
+  topicHash = [topicCopy topicHash];
   if (self->_inTransaction)
   {
-    v6 = [(APSTopicManager *)self topicsChanged];
+    topicsChanged = [(APSTopicManager *)self topicsChanged];
 
-    if (!v6)
+    if (!topicsChanged)
     {
       v7 = objc_alloc_init(NSMutableArray);
       [(APSTopicManager *)self setTopicsChanged:v7];
     }
 
-    v8 = [(APSTopicManager *)self topicsChanged];
-    v9 = [v8 containsObject:v4];
+    topicsChanged2 = [(APSTopicManager *)self topicsChanged];
+    v9 = [topicsChanged2 containsObject:topicCopy];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [(APSTopicManager *)self topicsChanged];
-      [v10 addObject:v4];
+      topicsChanged3 = [(APSTopicManager *)self topicsChanged];
+      [topicsChanged3 addObject:topicCopy];
     }
   }
 
-  v11 = [v4 desiredFilter];
-  v12 = [v4 currentFilter];
-  if (v11 != v12)
+  desiredFilter = [topicCopy desiredFilter];
+  currentFilter = [topicCopy currentFilter];
+  if (desiredFilter != currentFilter)
   {
-    v13 = [v4 desiredFilter];
-    if (v13 <= 2)
+    desiredFilter2 = [topicCopy desiredFilter];
+    if (desiredFilter2 <= 2)
     {
-      if (v13 == 1)
+      if (desiredFilter2 == 1)
       {
-        v14 = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
+        hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
       }
 
       else
       {
-        if (v13 != 2)
+        if (desiredFilter2 != 2)
         {
           goto LABEL_19;
         }
 
-        v14 = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
+        hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
       }
     }
 
     else
     {
-      switch(v13)
+      switch(desiredFilter2)
       {
         case 3:
-          v14 = [(APSTopicGroup *)self->_group hashesToIgnoredTopics];
+          hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToIgnoredTopics];
           break;
         case 4:
-          v14 = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
+          hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
           break;
         case 5:
-          v14 = [(APSTopicGroup *)self->_group hashesToPausedTopics];
+          hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToPausedTopics];
           break;
         default:
           goto LABEL_19;
       }
     }
 
-    v15 = v14;
-    [v14 setObject:v4 forKey:v5];
+    v15 = hashesToEnabledTopics;
+    [hashesToEnabledTopics setObject:topicCopy forKey:topicHash];
 
 LABEL_19:
-    v16 = [v4 currentFilter];
-    if (v16 <= 2)
+    currentFilter2 = [topicCopy currentFilter];
+    if (currentFilter2 <= 2)
     {
-      if (v16 == 1)
+      if (currentFilter2 == 1)
       {
-        v17 = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
+        hashesToEnabledTopics2 = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
         goto LABEL_30;
       }
 
-      if (v16 == 2)
+      if (currentFilter2 == 2)
       {
-        v17 = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
+        hashesToEnabledTopics2 = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
         goto LABEL_30;
       }
     }
 
     else
     {
-      switch(v16)
+      switch(currentFilter2)
       {
         case 3:
-          v17 = [(APSTopicGroup *)self->_group hashesToIgnoredTopics];
+          hashesToEnabledTopics2 = [(APSTopicGroup *)self->_group hashesToIgnoredTopics];
           goto LABEL_30;
         case 4:
-          v17 = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
+          hashesToEnabledTopics2 = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
           goto LABEL_30;
         case 5:
-          v17 = [(APSTopicGroup *)self->_group hashesToPausedTopics];
+          hashesToEnabledTopics2 = [(APSTopicGroup *)self->_group hashesToPausedTopics];
 LABEL_30:
-          v18 = v17;
-          [v17 removeObjectForKey:v5];
+          v18 = hashesToEnabledTopics2;
+          [hashesToEnabledTopics2 removeObjectForKey:topicHash];
 
           break;
       }
@@ -1075,13 +1075,13 @@ LABEL_30:
     v19 = +[APSLog topicManager];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v4 topicName];
-      v21 = sub_100007D14([v4 currentFilter]);
-      v22 = sub_100007D14([v4 desiredFilter]);
+      topicName = [topicCopy topicName];
+      v21 = sub_100007D14([topicCopy currentFilter]);
+      v22 = sub_100007D14([topicCopy desiredFilter]);
       v24 = 138413058;
-      v25 = self;
+      selfCopy = self;
       v26 = 2112;
-      v27 = v20;
+      v27 = topicName;
       v28 = 2112;
       v29 = v21;
       v30 = 2112;
@@ -1089,37 +1089,37 @@ LABEL_30:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%@: recategorizing topic %@ from %@ to %@", &v24, 0x2Au);
     }
 
-    [v4 setCurrentFilter:{objc_msgSend(v4, "desiredFilter")}];
+    [topicCopy setCurrentFilter:{objc_msgSend(topicCopy, "desiredFilter")}];
   }
 
-  return v11 != v12;
+  return desiredFilter != currentFilter;
 }
 
-- (BOOL)_addTopic:(id)a3 connectionServer:(id)a4 attributes:(id)a5 change:(int64_t *)a6
+- (BOOL)_addTopic:(id)topic connectionServer:(id)server attributes:(id)attributes change:(int64_t *)change
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = -[APSTopicManager _topicStateForTopic:connectionServer:filter:](self, "_topicStateForTopic:connectionServer:filter:", v9, v10, [v11 filter]);
-  v13 = [(APSTopicHasher *)self->_topicHasher topicHashForTopic:v9 user:self->_user];
-  v14 = [[APSTopicState alloc] initWithTopicName:v9 connectionServer:v10 attributes:v11 topicHash:v13];
+  topicCopy = topic;
+  serverCopy = server;
+  attributesCopy = attributes;
+  v12 = -[APSTopicManager _topicStateForTopic:connectionServer:filter:](self, "_topicStateForTopic:connectionServer:filter:", topicCopy, serverCopy, [attributesCopy filter]);
+  v13 = [(APSTopicHasher *)self->_topicHasher topicHashForTopic:topicCopy user:self->_user];
+  v14 = [[APSTopicState alloc] initWithTopicName:topicCopy connectionServer:serverCopy attributes:attributesCopy topicHash:v13];
   v15 = +[APSLog topicManager];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v53 = self;
+    selfCopy2 = self;
     v54 = 2112;
-    v55 = v9;
+    v55 = topicCopy;
     v56 = 2112;
     *v57 = v13;
     *&v57[8] = 2112;
-    v58 = v10;
+    v58 = serverCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@: adding topic %@ (%@) for connection server %@", buf, 0x2Au);
   }
 
   v43 = v13;
 
-  v16 = [(NSMutableDictionary *)self->_topicsToTopicsStates objectForKey:v9];
+  v16 = [(NSMutableDictionary *)self->_topicsToTopicsStates objectForKey:topicCopy];
   v17 = v16;
   if (v12)
   {
@@ -1137,26 +1137,26 @@ LABEL_30:
     else
     {
       v17 = [NSMutableArray arrayWithObject:v14];
-      [(NSMutableDictionary *)self->_topicsToTopicsStates setObject:v17 forKey:v9];
+      [(NSMutableDictionary *)self->_topicsToTopicsStates setObject:v17 forKey:topicCopy];
     }
 
     if ([v17 count] == 1)
     {
       hashesToTopics = self->_hashesToTopics;
-      v19 = [(APSTopicState *)v14 topicHash];
-      [(NSMutableDictionary *)hashesToTopics setObject:v9 forKey:v19];
+      topicHash = [(APSTopicState *)v14 topicHash];
+      [(NSMutableDictionary *)hashesToTopics setObject:topicCopy forKey:topicHash];
     }
   }
 
   v44 = v12;
-  v45 = v11;
-  v46 = v10;
+  v45 = attributesCopy;
+  v46 = serverCopy;
   if ([v17 count] == 1)
   {
     v20 = v14;
 LABEL_12:
     v21 = 0;
-    v22 = 0;
+    currentFilter2 = 0;
     goto LABEL_13;
   }
 
@@ -1165,7 +1165,7 @@ LABEL_12:
   {
     v24 = 0;
     v21 = 0;
-    v25 = [(APSTopicState *)v14 currentFilter];
+    currentFilter = [(APSTopicState *)v14 currentFilter];
     goto LABEL_39;
   }
 
@@ -1196,7 +1196,7 @@ LABEL_12:
       if (v32 != v14 && [*(*(&v48 + 1) + 8 * i) currentFilter])
       {
         v21 = v32;
-        v22 = [(APSTopicState *)v21 currentFilter];
+        currentFilter2 = [(APSTopicState *)v21 currentFilter];
         goto LABEL_46;
       }
     }
@@ -1210,23 +1210,23 @@ LABEL_12:
     break;
   }
 
-  v22 = 0;
+  currentFilter2 = 0;
   v21 = 0;
 LABEL_46:
 
-  v10 = v46;
+  serverCopy = v46;
 LABEL_13:
   [(APSTopicState *)v14 setDesiredFilter:[(APSTopicFilterPolicy *)self->_policy filterChosenByPolicyForTopic:v14]];
   if (v21)
   {
-    v23 = [(APSTopicState *)v14 desiredFilter];
+    desiredFilter = [(APSTopicState *)v14 desiredFilter];
     [(APSTopicState *)v21 setDesiredFilter:0];
     [(APSTopicManager *)self _recategorizeTopic:v21];
     [(APSTopicManager *)self _recategorizeTopic:v14];
-    if (v23 == v22)
+    if (desiredFilter == currentFilter2)
     {
       v24 = 0;
-      v25 = [(APSTopicState *)v14 currentFilter];
+      currentFilter = [(APSTopicState *)v14 currentFilter];
       goto LABEL_39;
     }
   }
@@ -1236,34 +1236,34 @@ LABEL_13:
     [(APSTopicManager *)self _recategorizeTopic:v14];
   }
 
-  v26 = [(APSTopicState *)v20 currentFilter];
-  if (v26 == 3 || v26 == 5)
+  currentFilter3 = [(APSTopicState *)v20 currentFilter];
+  if (currentFilter3 == 3 || currentFilter3 == 5)
   {
     v24 = 1;
-    if (v26 == 3 && v22 == 5)
+    if (currentFilter3 == 3 && currentFilter2 == 5)
     {
-      [(APSTopicManager *)self _forgetRedListTopic:v9];
-      [(APSTopicManager *)self _removeTopic:v9 connectionServer:0 filter:5];
-      v25 = [(APSTopicState *)v14 currentFilter];
+      [(APSTopicManager *)self _forgetRedListTopic:topicCopy];
+      [(APSTopicManager *)self _removeTopic:topicCopy connectionServer:0 filter:5];
+      currentFilter = [(APSTopicState *)v14 currentFilter];
       goto LABEL_39;
     }
   }
 
   else
   {
-    if (v10)
+    if (serverCopy)
     {
-      [(APSTopicManager *)self _rememberRedListTopic:v9];
+      [(APSTopicManager *)self _rememberRedListTopic:topicCopy];
     }
 
     v24 = 1;
   }
 
-  v25 = [(APSTopicState *)v14 currentFilter];
+  currentFilter = [(APSTopicState *)v14 currentFilter];
 LABEL_39:
-  v33 = v25;
-  v34 = [(APSTopicManager *)self serverGroup];
-  v35 = [v34 currentFilterForTopicState:v20];
+  v33 = currentFilter;
+  serverGroup = [(APSTopicManager *)self serverGroup];
+  v35 = [serverGroup currentFilterForTopicState:v20];
 
   if (v24)
   {
@@ -1275,16 +1275,16 @@ LABEL_39:
     v36 = 0;
   }
 
-  v37 = a6;
-  *a6 = v36;
+  changeCopy2 = change;
+  *change = v36;
   v38 = +[APSLog topicManager];
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
   {
-    v39 = sub_1000066D0(*a6);
+    v39 = sub_1000066D0(*change);
     *buf = 138413570;
-    v53 = self;
+    selfCopy2 = self;
     v54 = 2112;
-    v55 = v9;
+    v55 = topicCopy;
     v56 = 1024;
     *v57 = v33;
     *&v57[4] = 1024;
@@ -1295,38 +1295,38 @@ LABEL_39:
     v59 = v39;
     _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%@: calculated change type for %@ {newTopicFilter: %d, previouslyChosenTopicFilter: %d, previousServerTopicFilter: %d change: %@}", buf, 0x32u);
 
-    v37 = a6;
+    changeCopy2 = change;
   }
 
-  v40 = *v37 != 0;
+  v40 = *changeCopy2 != 0;
   return v40;
 }
 
-- (void)performTransactionBlock:(id)a3
+- (void)performTransactionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(APSTopicManager *)self beginTransaction];
-  v4[2](v4, self);
+  blockCopy[2](blockCopy, self);
 
   [(APSTopicManager *)self endTransaction];
 }
 
-- (void)addTopicsAndAttributes:(id)a3 connectionServer:(id)a4
+- (void)addTopicsAndAttributes:(id)attributes connectionServer:(id)server
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  serverCopy = server;
   v8 = &fputc_ptr;
   v9 = +[APSLog topicManager];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 allKeys];
+    allKeys = [attributesCopy allKeys];
     v11 = APSPrettyPrintCollection();
     *buf = 138412802;
     *&buf[4] = self;
     v37 = 2112;
     v38 = v11;
     v39 = 2112;
-    v40 = v7;
+    v40 = serverCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: adding topics %@ for connection server %@", buf, 0x20u);
   }
 
@@ -1334,7 +1334,7 @@ LABEL_39:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v12 = v6;
+  v12 = attributesCopy;
   v13 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v13)
   {
@@ -1354,7 +1354,7 @@ LABEL_39:
         v19 = *(*(&v31 + 1) + 8 * i);
         *buf = 0;
         v20 = [v12 objectForKey:{v19, v31}];
-        v21 = [(APSTopicManager *)self _addTopic:v19 connectionServer:v7 attributes:v20 change:buf];
+        v21 = [(APSTopicManager *)self _addTopic:v19 connectionServer:serverCopy attributes:v20 change:buf];
 
         v22 = *buf;
         if (*buf <= v15)
@@ -1379,9 +1379,9 @@ LABEL_39:
     if (v16)
     {
       v23 = [APSFilterChange alloc];
-      v24 = [v12 allKeys];
-      v25 = [v24 firstObject];
-      v26 = [(APSFilterChange *)v23 initWithChange:v15 triggeringTopic:v25];
+      allKeys2 = [v12 allKeys];
+      firstObject = [allKeys2 firstObject];
+      v26 = [(APSFilterChange *)v23 initWithChange:v15 triggeringTopic:firstObject];
 
       [(APSTopicManager *)self _processTopicChange:v26 immediately:0 alertDelegate:1];
       goto LABEL_21;
@@ -1392,18 +1392,18 @@ LABEL_39:
   {
   }
 
-  v27 = [(APSTopicManager *)self group];
-  v28 = [(APSTopicManager *)self serverGroup];
-  v29 = [v27 isEqual:v28];
+  group = [(APSTopicManager *)self group];
+  serverGroup = [(APSTopicManager *)self serverGroup];
+  v29 = [group isEqual:serverGroup];
 
   if (v29)
   {
-    v30 = [v8[414] topicManager];
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+    topicManager = [v8[414] topicManager];
+    if (os_log_type_enabled(topicManager, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       *&buf[4] = self;
-      _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%@ no change detected between the new filter and the old server filter - cancelling any pending updates", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, topicManager, OS_LOG_TYPE_DEFAULT, "%@ no change detected between the new filter and the old server filter - cancelling any pending updates", buf, 0xCu);
     }
 
     [(APSTopicManager *)self _clearPendingFilterTimer];
@@ -1412,29 +1412,29 @@ LABEL_39:
 LABEL_21:
 }
 
-- (BOOL)_removeTopic:(id)a3 connectionServer:(id)a4 filter:(int64_t)a5
+- (BOOL)_removeTopic:(id)topic connectionServer:(id)server filter:(int64_t)filter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(APSTopicManager *)self _topicStateForTopic:v8 connectionServer:v9 filter:a5];
+  topicCopy = topic;
+  serverCopy = server;
+  v10 = [(APSTopicManager *)self _topicStateForTopic:topicCopy connectionServer:serverCopy filter:filter];
   v11 = +[APSLog topicManager];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138412802;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v8;
+    v26 = topicCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = serverCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@: removing topic %@ for connection server %@", &v23, 0x20u);
   }
 
   if (v10)
   {
-    v12 = [(NSMutableDictionary *)self->_topicsToTopicsStates objectForKey:v8];
+    v12 = [(NSMutableDictionary *)self->_topicsToTopicsStates objectForKey:topicCopy];
     [v12 removeObject:v10];
-    v13 = [v10 currentFilter];
-    if (v13)
+    currentFilter = [v10 currentFilter];
+    if (currentFilter)
     {
       [v10 setDesiredFilter:0];
       [(APSTopicManager *)self _recategorizeTopic:v10];
@@ -1443,7 +1443,7 @@ LABEL_21:
         v14 = [(APSTopicFilterPolicy *)self->_policy topicChosenByPolicyFromTopics:v12];
         [v14 setDesiredFilter:{-[APSTopicFilterPolicy filterChosenByPolicyForTopic:](self->_policy, "filterChosenByPolicyForTopic:", v14)}];
         [(APSTopicManager *)self _recategorizeTopic:v14];
-        v15 = v13 != [v14 currentFilter];
+        v15 = currentFilter != [v14 currentFilter];
       }
 
       else
@@ -1456,11 +1456,11 @@ LABEL_21:
         goto LABEL_15;
       }
 
-      if (v13 == 3)
+      if (currentFilter == 3)
       {
         hashesToTopics = self->_hashesToTopics;
-        v17 = [v10 topicHash];
-        [(NSMutableDictionary *)hashesToTopics removeObjectForKey:v17];
+        topicHash = [v10 topicHash];
+        [(NSMutableDictionary *)hashesToTopics removeObjectForKey:topicHash];
 
         goto LABEL_15;
       }
@@ -1478,14 +1478,14 @@ LABEL_15:
     }
 
     v18 = self->_hashesToTopics;
-    v19 = [v10 topicHash];
-    [(NSMutableDictionary *)v18 removeObjectForKey:v19];
+    topicHash2 = [v10 topicHash];
+    [(NSMutableDictionary *)v18 removeObjectForKey:topicHash2];
 
     topicsToTopicsStates = self->_topicsToTopicsStates;
-    v21 = [v10 topicName];
-    [(NSMutableDictionary *)topicsToTopicsStates removeObjectForKey:v21];
+    topicName = [v10 topicName];
+    [(NSMutableDictionary *)topicsToTopicsStates removeObjectForKey:topicName];
 
-    v15 |= v13 != 5;
+    v15 |= currentFilter != 5;
     goto LABEL_15;
   }
 
@@ -1495,15 +1495,15 @@ LABEL_16:
   return v15 & 1;
 }
 
-- (void)removeTopics:(id)a3 connectionServer:(id)a4 filter:(int64_t)a5
+- (void)removeTopics:(id)topics connectionServer:(id)server filter:(int64_t)filter
 {
-  v8 = a3;
-  v9 = a4;
+  topicsCopy = topics;
+  serverCopy = server;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v10 = [topicsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1515,31 +1515,31 @@ LABEL_16:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(topicsCopy);
         }
 
-        v12 |= [(APSTopicManager *)self _removeTopic:*(*(&v18 + 1) + 8 * i) connectionServer:v9 filter:a5];
+        v12 |= [(APSTopicManager *)self _removeTopic:*(*(&v18 + 1) + 8 * i) connectionServer:serverCopy filter:filter];
       }
 
-      v11 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [topicsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
     if (v12)
     {
       v15 = [APSFilterChange alloc];
-      v16 = [v8 anyObject];
-      v17 = [(APSFilterChange *)v15 initWithChange:2 triggeringTopic:v16];
+      anyObject = [topicsCopy anyObject];
+      v17 = [(APSFilterChange *)v15 initWithChange:2 triggeringTopic:anyObject];
 
       [(APSTopicManager *)self _processTopicChange:v17 immediately:0 alertDelegate:1];
     }
   }
 }
 
-- (void)removeTopicsForConnectionServer:(id)a3
+- (void)removeTopicsForConnectionServer:(id)server
 {
-  v4 = a3;
-  v5 = [(APSTopicManager *)self topicStatesForConnectionServer:v4];
+  serverCopy = server;
+  v5 = [(APSTopicManager *)self topicStatesForConnectionServer:serverCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1560,9 +1560,9 @@ LABEL_16:
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 topicName];
-        v13 = [v11 attributes];
-        v14 = -[APSTopicManager _removeTopic:connectionServer:filter:](self, "_removeTopic:connectionServer:filter:", v12, v4, [v13 filter]);
+        topicName = [v11 topicName];
+        attributes = [v11 attributes];
+        v14 = -[APSTopicManager _removeTopic:connectionServer:filter:](self, "_removeTopic:connectionServer:filter:", topicName, serverCopy, [attributes filter]);
 
         v8 |= v14;
       }
@@ -1574,9 +1574,9 @@ LABEL_16:
     if (v8)
     {
       v15 = [APSFilterChange alloc];
-      v16 = [v5 firstObject];
-      v17 = [v16 topicName];
-      v18 = [(APSFilterChange *)v15 initWithChange:2 triggeringTopic:v17];
+      firstObject = [v5 firstObject];
+      topicName2 = [firstObject topicName];
+      v18 = [(APSFilterChange *)v15 initWithChange:2 triggeringTopic:topicName2];
 
       [(APSTopicManager *)self _processTopicChange:v18 immediately:0 alertDelegate:1];
     }
@@ -1586,41 +1586,41 @@ LABEL_16:
 - (void)removeAllTopics
 {
   v3 = [(NSMutableDictionary *)self->_topicsToTopicsStates count];
-  v4 = [(NSMutableDictionary *)self->_topicsToTopicsStates allKeys];
-  v11 = [v4 firstObject];
+  allKeys = [(NSMutableDictionary *)self->_topicsToTopicsStates allKeys];
+  firstObject = [allKeys firstObject];
 
   [(NSMutableDictionary *)self->_topicsToTopicsStates removeAllObjects];
-  v5 = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
-  [v5 removeAllObjects];
+  hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
+  [hashesToEnabledTopics removeAllObjects];
 
-  v6 = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
-  [v6 removeAllObjects];
+  hashesToOpportunisticTopics = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
+  [hashesToOpportunisticTopics removeAllObjects];
 
-  v7 = [(APSTopicGroup *)self->_group hashesToIgnoredTopics];
-  [v7 removeAllObjects];
+  hashesToIgnoredTopics = [(APSTopicGroup *)self->_group hashesToIgnoredTopics];
+  [hashesToIgnoredTopics removeAllObjects];
 
-  v8 = [(APSTopicGroup *)self->_group hashesToPausedTopics];
-  [v8 removeAllObjects];
+  hashesToPausedTopics = [(APSTopicGroup *)self->_group hashesToPausedTopics];
+  [hashesToPausedTopics removeAllObjects];
 
-  v9 = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
-  [v9 removeAllObjects];
+  hashesToNonWakingTopics = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
+  [hashesToNonWakingTopics removeAllObjects];
 
   if (v3)
   {
-    v10 = [[APSFilterChange alloc] initWithChange:2 triggeringTopic:v11];
+    v10 = [[APSFilterChange alloc] initWithChange:2 triggeringTopic:firstObject];
     [(APSTopicManager *)self _processTopicChange:v10 immediately:0 alertDelegate:1];
   }
 }
 
-- (id)topicStatesForConnectionServer:(id)a3
+- (id)topicStatesForConnectionServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v5 = +[NSMutableArray array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = self;
+  selfCopy = self;
   obj = self->_topicsToTopicsStates;
   v6 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
@@ -1636,7 +1636,7 @@ LABEL_16:
           objc_enumerationMutation(obj);
         }
 
-        v9 = [(NSMutableDictionary *)v19->_topicsToTopicsStates objectForKey:*(*(&v24 + 1) + 8 * i)];
+        v9 = [(NSMutableDictionary *)selfCopy->_topicsToTopicsStates objectForKey:*(*(&v24 + 1) + 8 * i)];
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
@@ -1656,9 +1656,9 @@ LABEL_16:
               }
 
               v14 = *(*(&v20 + 1) + 8 * j);
-              v15 = [v14 connectionServer];
+              connectionServer = [v14 connectionServer];
 
-              if (v15 == v4)
+              if (connectionServer == serverCopy)
               {
                 [v5 addObject:v14];
               }
@@ -1680,39 +1680,39 @@ LABEL_16:
   return v5;
 }
 
-- (void)setIsPowerEfficientToSendFilter:(BOOL)a3
+- (void)setIsPowerEfficientToSendFilter:(BOOL)filter
 {
-  v3 = a3;
-  if (self->_isPowerEfficientToSendFilter != a3)
+  filterCopy = filter;
+  if (self->_isPowerEfficientToSendFilter != filter)
   {
     v5 = +[APSLog topicManager];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (filterCopy)
       {
         v6 = @"YES";
       }
 
       v7 = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
       v10 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ isPowerEfficientToSendFilter changed to %@", &v7, 0x16u);
     }
 
-    self->_isPowerEfficientToSendFilter = v3;
+    self->_isPowerEfficientToSendFilter = filterCopy;
   }
 
-  if (v3)
+  if (filterCopy)
   {
     [(APSTopicManager *)self _processPendingChangeIfNeeded];
   }
 }
 
-- (int64_t)_potentiallyChangeChosenTopicStateForTopic:(id)a3
+- (int64_t)_potentiallyChangeChosenTopicStateForTopic:(id)topic
 {
-  v4 = [(NSMutableDictionary *)self->_topicsToTopicsStates objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_topicsToTopicsStates objectForKey:topic];
   if ([v4 count])
   {
     v17 = 0u;
@@ -1737,7 +1737,7 @@ LABEL_16:
           if ([v9 currentFilter])
           {
             v6 = v9;
-            v10 = [v6 currentFilter];
+            currentFilter = [v6 currentFilter];
             goto LABEL_12;
           }
         }
@@ -1752,7 +1752,7 @@ LABEL_16:
       }
     }
 
-    v10 = 0;
+    currentFilter = 0;
 LABEL_12:
 
     v11 = [(APSTopicFilterPolicy *)self->_policy topicChosenByPolicyFromTopics:v5];
@@ -1765,7 +1765,7 @@ LABEL_12:
     }
 
     [(APSTopicManager *)self _recategorizeTopic:v11, v15];
-    if (v10 == v12)
+    if (currentFilter == v12)
     {
       v13 = 0;
 LABEL_24:
@@ -1773,7 +1773,7 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    if (v10)
+    if (currentFilter)
     {
       if (v12 == 1)
       {
@@ -1798,20 +1798,20 @@ LABEL_25:
   return v13;
 }
 
-- (void)filtersWillPotentiallyBeChangedByPolicy:(id)a3
+- (void)filtersWillPotentiallyBeChangedByPolicy:(id)policy
 {
-  v4 = a3;
-  [v4 logFilterPolicyInformation];
+  policyCopy = policy;
+  [policyCopy logFilterPolicyInformation];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(NSMutableDictionary *)self->_topicsToTopicsStates allKeys];
-  v6 = [(APSFilterChange *)v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allKeys = [(NSMutableDictionary *)self->_topicsToTopicsStates allKeys];
+  v6 = [(APSFilterChange *)allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
-    v17 = v4;
+    v17 = policyCopy;
     v8 = 0;
     v9 = 0;
     v10 = *v19;
@@ -1822,7 +1822,7 @@ LABEL_25:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
@@ -1846,20 +1846,20 @@ LABEL_25:
         }
       }
 
-      v7 = [(APSFilterChange *)v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [(APSFilterChange *)allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
 
     if ((v9 & 1) == 0)
     {
-      v4 = v17;
+      policyCopy = v17;
       goto LABEL_17;
     }
 
-    v5 = [[APSFilterChange alloc] initWithChange:v8 triggeringTopic:v11];
-    [(APSTopicManager *)self _processTopicChange:v5 immediately:1 alertDelegate:1];
-    v4 = v17;
+    allKeys = [[APSFilterChange alloc] initWithChange:v8 triggeringTopic:v11];
+    [(APSTopicManager *)self _processTopicChange:allKeys immediately:1 alertDelegate:1];
+    policyCopy = v17;
   }
 
   else
@@ -1870,10 +1870,10 @@ LABEL_25:
 LABEL_17:
 }
 
-- (void)_filtersWillPotentiallyBeChanged:(id)a3
+- (void)_filtersWillPotentiallyBeChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"topic"];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:@"topic"];
 
   if ([(APSTopicManager *)self _hasTopic:v5])
   {
@@ -1881,7 +1881,7 @@ LABEL_17:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
       v10 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@: Filter will potentially be changed for topic %@", &v7, 0x16u);
@@ -1899,7 +1899,7 @@ LABEL_17:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = 138412290;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ _processPendingChangeIfNeeded, forcing timer to fire!", &v4, 0xCu);
     }
 
@@ -1907,27 +1907,27 @@ LABEL_17:
   }
 }
 
-- (void)_scheduleServerUpdateWithChange:(id)a3 timer:(BOOL)a4 shortInterval:(BOOL)a5
+- (void)_scheduleServerUpdateWithChange:(id)change timer:(BOOL)timer shortInterval:(BOOL)interval
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
-  v10 = [v9 topicGroupChange];
-  if (v10 > [(APSFilterChange *)self->_pendingChange topicGroupChange])
+  intervalCopy = interval;
+  timerCopy = timer;
+  changeCopy = change;
+  topicGroupChange = [changeCopy topicGroupChange];
+  if (topicGroupChange > [(APSFilterChange *)self->_pendingChange topicGroupChange])
   {
-    objc_storeStrong(&self->_pendingChange, a3);
+    objc_storeStrong(&self->_pendingChange, change);
   }
 
   v11 = +[APSLog topicManager];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = sub_1000066D0([v9 topicGroupChange]);
+    v12 = sub_1000066D0([changeCopy topicGroupChange]);
     v13 = v12;
     v14 = @"NO";
     isPowerEfficientToSendFilter = self->_isPowerEfficientToSendFilter;
     *v24 = 138413314;
     *&v24[4] = self;
-    if (v6)
+    if (timerCopy)
     {
       v16 = @"YES";
     }
@@ -1937,7 +1937,7 @@ LABEL_17:
       v16 = @"NO";
     }
 
-    if (v5)
+    if (intervalCopy)
     {
       v17 = @"YES";
     }
@@ -1963,7 +1963,7 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ Schedule server update with change %@; withTimer %@; shortInterval %@; isPowerEfficientToSendFilter %@", v24, 0x34u);
   }
 
-  if (self->_isPowerEfficientToSendFilter && v5)
+  if (self->_isPowerEfficientToSendFilter && intervalCopy)
   {
     v18 = +[APSLog topicManager];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1978,7 +1978,7 @@ LABEL_17:
 
   else
   {
-    if (v6)
+    if (timerCopy)
     {
       [(APSTopicManager *)self _clearPendingFilterTimer];
       v19 = +[APSLog topicManager];
@@ -1990,7 +1990,7 @@ LABEL_17:
       }
 
       v20 = 300.0;
-      if (v5)
+      if (intervalCopy)
       {
         v20 = 20.0;
       }
@@ -2017,49 +2017,49 @@ LABEL_17:
   }
 }
 
-- (void)performFilterBlock:(id)a3
+- (void)performFilterBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[APSLog topicManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ asked to performFilterBlock", &v14, 0xCu);
   }
 
   [(APSTopicManager *)self _clearPendingFilterTimer];
-  v6 = [(APSTopicManager *)self group];
-  v7 = [v6 copy];
+  group = [(APSTopicManager *)self group];
+  v7 = [group copy];
   [(APSTopicManager *)self setServerGroup:v7];
 
-  if (v4)
+  if (blockCopy)
   {
-    v8 = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
-    v9 = [(APSTopicGroup *)self->_group hashesToIgnoredTopics];
-    v10 = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
-    v11 = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
-    v12 = [(APSTopicGroup *)self->_group hashesToPausedTopics];
+    hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
+    hashesToIgnoredTopics = [(APSTopicGroup *)self->_group hashesToIgnoredTopics];
+    hashesToOpportunisticTopics = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
+    hashesToNonWakingTopics = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
+    hashesToPausedTopics = [(APSTopicGroup *)self->_group hashesToPausedTopics];
     v13 = [(APSTopicHasher *)self->_topicHasher topicsToSaltsWithUser:self->_user];
-    v4[2](v4, v8, v9, v10, v11, v12, v13);
+    blockCopy[2](blockCopy, hashesToEnabledTopics, hashesToIgnoredTopics, hashesToOpportunisticTopics, hashesToNonWakingTopics, hashesToPausedTopics, v13);
   }
 }
 
 - (id)debugDescription
 {
   v16 = objc_opt_class();
-  v3 = [(APSUser *)self->_user name];
+  name = [(APSUser *)self->_user name];
   environmentName = self->_environmentName;
-  v15 = v3;
-  v18 = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
+  v15 = name;
+  hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
   v4 = APSPrettyPrintCollection();
-  v17 = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
+  hashesToOpportunisticTopics = [(APSTopicGroup *)self->_group hashesToOpportunisticTopics];
   v5 = APSPrettyPrintCollection();
-  v6 = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
+  hashesToNonWakingTopics = [(APSTopicGroup *)self->_group hashesToNonWakingTopics];
   v7 = APSPrettyPrintCollection();
-  v8 = [(APSTopicGroup *)self->_group hashesToIgnoredTopics];
+  hashesToIgnoredTopics = [(APSTopicGroup *)self->_group hashesToIgnoredTopics];
   v9 = APSPrettyPrintCollection();
-  v10 = [(APSTopicGroup *)self->_group hashesToPausedTopics];
+  hashesToPausedTopics = [(APSTopicGroup *)self->_group hashesToPausedTopics];
   v11 = APSPrettyPrintCollection();
   v12 = [NSString stringWithFormat:@"<<%@: %p>: { userName=%@, environment=%@, enabledTopics=%@, opportunisticTopics=%@, nonWakingTopics=%@, ignoredTopics=%@, pausedTopics=%@ }>", v16, self, v15, environmentName, v4, v5, v7, v9, v11];
 
@@ -2078,11 +2078,11 @@ LABEL_17:
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v50 = self;
-  v8 = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
-  v9 = [v8 allValues];
+  selfCopy = self;
+  hashesToEnabledTopics = [(APSTopicGroup *)self->_group hashesToEnabledTopics];
+  allValues = [hashesToEnabledTopics allValues];
 
-  v10 = [v9 countByEnumeratingWithState:&v67 objects:v75 count:16];
+  v10 = [allValues countByEnumeratingWithState:&v67 objects:v75 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2093,14 +2093,14 @@ LABEL_17:
       {
         if (*v68 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
-        v14 = [*(*(&v67 + 1) + 8 * i) topicName];
-        [v3 addObject:v14];
+        topicName = [*(*(&v67 + 1) + 8 * i) topicName];
+        [v3 addObject:topicName];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v67 objects:v75 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v67 objects:v75 count:16];
     }
 
     while (v11);
@@ -2110,10 +2110,10 @@ LABEL_17:
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v15 = [(APSTopicGroup *)v50->_group hashesToIgnoredTopics];
-  v16 = [v15 allValues];
+  hashesToIgnoredTopics = [(APSTopicGroup *)selfCopy->_group hashesToIgnoredTopics];
+  allValues2 = [hashesToIgnoredTopics allValues];
 
-  v17 = [v16 countByEnumeratingWithState:&v63 objects:v74 count:16];
+  v17 = [allValues2 countByEnumeratingWithState:&v63 objects:v74 count:16];
   if (v17)
   {
     v18 = v17;
@@ -2124,14 +2124,14 @@ LABEL_17:
       {
         if (*v64 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allValues2);
         }
 
-        v21 = [*(*(&v63 + 1) + 8 * j) topicName];
-        [v4 addObject:v21];
+        topicName2 = [*(*(&v63 + 1) + 8 * j) topicName];
+        [v4 addObject:topicName2];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v63 objects:v74 count:16];
+      v18 = [allValues2 countByEnumeratingWithState:&v63 objects:v74 count:16];
     }
 
     while (v18);
@@ -2141,10 +2141,10 @@ LABEL_17:
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v22 = [(APSTopicGroup *)v50->_group hashesToOpportunisticTopics];
-  v23 = [v22 allValues];
+  hashesToOpportunisticTopics = [(APSTopicGroup *)selfCopy->_group hashesToOpportunisticTopics];
+  allValues3 = [hashesToOpportunisticTopics allValues];
 
-  v24 = [v23 countByEnumeratingWithState:&v59 objects:v73 count:16];
+  v24 = [allValues3 countByEnumeratingWithState:&v59 objects:v73 count:16];
   if (v24)
   {
     v25 = v24;
@@ -2155,14 +2155,14 @@ LABEL_17:
       {
         if (*v60 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(allValues3);
         }
 
-        v28 = [*(*(&v59 + 1) + 8 * k) topicName];
-        [v5 addObject:v28];
+        topicName3 = [*(*(&v59 + 1) + 8 * k) topicName];
+        [v5 addObject:topicName3];
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v59 objects:v73 count:16];
+      v25 = [allValues3 countByEnumeratingWithState:&v59 objects:v73 count:16];
     }
 
     while (v25);
@@ -2172,10 +2172,10 @@ LABEL_17:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v29 = [(APSTopicGroup *)v50->_group hashesToPausedTopics];
-  v30 = [v29 allValues];
+  hashesToPausedTopics = [(APSTopicGroup *)selfCopy->_group hashesToPausedTopics];
+  allValues4 = [hashesToPausedTopics allValues];
 
-  v31 = [v30 countByEnumeratingWithState:&v55 objects:v72 count:16];
+  v31 = [allValues4 countByEnumeratingWithState:&v55 objects:v72 count:16];
   if (v31)
   {
     v32 = v31;
@@ -2186,14 +2186,14 @@ LABEL_17:
       {
         if (*v56 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(allValues4);
         }
 
-        v35 = [*(*(&v55 + 1) + 8 * m) topicName];
-        [v7 addObject:v35];
+        topicName4 = [*(*(&v55 + 1) + 8 * m) topicName];
+        [v7 addObject:topicName4];
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v55 objects:v72 count:16];
+      v32 = [allValues4 countByEnumeratingWithState:&v55 objects:v72 count:16];
     }
 
     while (v32);
@@ -2203,10 +2203,10 @@ LABEL_17:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v36 = [(APSTopicGroup *)v50->_group hashesToNonWakingTopics];
-  v37 = [v36 allValues];
+  hashesToNonWakingTopics = [(APSTopicGroup *)selfCopy->_group hashesToNonWakingTopics];
+  allValues5 = [hashesToNonWakingTopics allValues];
 
-  v38 = [v37 countByEnumeratingWithState:&v51 objects:v71 count:16];
+  v38 = [allValues5 countByEnumeratingWithState:&v51 objects:v71 count:16];
   if (v38)
   {
     v39 = v38;
@@ -2217,14 +2217,14 @@ LABEL_17:
       {
         if (*v52 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(allValues5);
         }
 
-        v42 = [*(*(&v51 + 1) + 8 * n) topicName];
-        [v6 addObject:v42];
+        topicName5 = [*(*(&v51 + 1) + 8 * n) topicName];
+        [v6 addObject:topicName5];
       }
 
-      v39 = [v37 countByEnumeratingWithState:&v51 objects:v71 count:16];
+      v39 = [allValues5 countByEnumeratingWithState:&v51 objects:v71 count:16];
     }
 
     while (v39);
@@ -2255,57 +2255,57 @@ LABEL_17:
   return v49;
 }
 
-- (int64_t)_changeFromFilter:(int64_t)a3 toFilter:(int64_t)a4
+- (int64_t)_changeFromFilter:(int64_t)filter toFilter:(int64_t)toFilter
 {
   result = 1;
-  if (a3 <= 1)
+  if (filter <= 1)
   {
-    if (a3)
+    if (filter)
     {
-      if (a3 != 1)
+      if (filter != 1)
       {
         return result;
       }
 
-      if (a4 < 5)
+      if (toFilter < 5)
       {
         v5 = &unk_10015CC88;
-        return v5[a4];
+        return v5[toFilter];
       }
     }
 
-    else if (a4 < 5)
+    else if (toFilter < 5)
     {
       v5 = &unk_10015CC60;
-      return v5[a4];
+      return v5[toFilter];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(filter)
     {
       case 2:
-        if (a4 < 5)
+        if (toFilter < 5)
         {
           v5 = &unk_10015CCB0;
-          return v5[a4];
+          return v5[toFilter];
         }
 
         break;
       case 3:
-        if (a4 < 5)
+        if (toFilter < 5)
         {
           v5 = &unk_10015CCD8;
-          return v5[a4];
+          return v5[toFilter];
         }
 
         break;
       case 4:
-        if (a4 <= 4)
+        if (toFilter <= 4)
         {
           v5 = &unk_10015CD00;
-          return v5[a4];
+          return v5[toFilter];
         }
 
         break;

@@ -1,6 +1,6 @@
 @interface PlatformSelectorView
 - (_TtC11AppStoreKit16DynamicTypeLabel)accessibilityDescriptionLabel;
-- (_TtC20ProductPageExtension20PlatformSelectorView)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension20PlatformSelectorView)initWithCoder:(id)coder;
 - (void)didTapSelectorView;
 - (void)layoutSubviews;
 - (void)smartInvertDidChange;
@@ -8,7 +8,7 @@
 
 @implementation PlatformSelectorView
 
-- (_TtC20ProductPageExtension20PlatformSelectorView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension20PlatformSelectorView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension20PlatformSelectorView_text);
   *v3 = 0;
@@ -26,7 +26,7 @@
 
 - (void)smartInvertDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100508D8C();
 }
 
@@ -35,7 +35,7 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension20PlatformSelectorView_didSelectHandler);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_10001CE50(v2);
     v2(v4);
 
@@ -45,13 +45,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100509498();
 }
 
 - (_TtC11AppStoreKit16DynamicTypeLabel)accessibilityDescriptionLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100509B40();
 
   return v3;

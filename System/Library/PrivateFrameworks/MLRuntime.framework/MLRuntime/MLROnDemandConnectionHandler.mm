@@ -1,18 +1,18 @@
 @interface MLROnDemandConnectionHandler
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
-- (MLROnDemandConnectionHandler)initWithPrincipalObject:(id)a3;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
+- (MLROnDemandConnectionHandler)initWithPrincipalObject:(id)object;
 - (NSString)description;
 - (NSXPCConnection)xpcConnection;
-- (void)performTask:(id)a3 completionHandler:(id)a4;
-- (void)performTaskInternal:(id)a3 completionHandler:(id)a4;
+- (void)performTask:(id)task completionHandler:(id)handler;
+- (void)performTaskInternal:(id)internal completionHandler:(id)handler;
 @end
 
 @implementation MLROnDemandConnectionHandler
 
-- (MLROnDemandConnectionHandler)initWithPrincipalObject:(id)a3
+- (MLROnDemandConnectionHandler)initWithPrincipalObject:(id)object
 {
-  v5 = a3;
-  if ([v5 conformsToProtocol:&unk_2868BF5B8])
+  objectCopy = object;
+  if ([objectCopy conformsToProtocol:&unk_2868BF5B8])
   {
     v11.receiver = self;
     v11.super_class = MLROnDemandConnectionHandler;
@@ -20,44 +20,44 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_pluginPrincipal, a3);
+      objc_storeStrong(&v6->_pluginPrincipal, object);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = [MEMORY[0x277D05600] coreChannel];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+    coreChannel = [MEMORY[0x277D05600] coreChannel];
+    if (os_log_type_enabled(coreChannel, OS_LOG_TYPE_FAULT))
     {
-      [(MLROnDemandConnectionHandler *)v5 initWithPrincipalObject:v9];
+      [(MLROnDemandConnectionHandler *)objectCopy initWithPrincipalObject:coreChannel];
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v4 = a3;
-  [v4 setExportedObject:self];
+  connectionCopy = connection;
+  [connectionCopy setExportedObject:self];
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2868BD320];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
-  [(MLROnDemandConnectionHandler *)self setXpcConnection:v4];
+  [(MLROnDemandConnectionHandler *)self setXpcConnection:connectionCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__MLROnDemandConnectionHandler_shouldAcceptXPCConnection___block_invoke;
   v8[3] = &unk_279840A90;
   v8[4] = self;
   v6 = MEMORY[0x259C65A40](v8);
-  [v4 setInterruptionHandler:v6];
-  [v4 setInvalidationHandler:v6];
-  [v4 resume];
+  [connectionCopy setInterruptionHandler:v6];
+  [connectionCopy setInvalidationHandler:v6];
+  [connectionCopy resume];
 
   return 1;
 }
@@ -85,32 +85,32 @@ void __58__MLROnDemandConnectionHandler_shouldAcceptXPCConnection___block_invoke
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLROnDemandConnectionHandler *)self pluginPrincipal];
+  pluginPrincipal = [(MLROnDemandConnectionHandler *)self pluginPrincipal];
   v7 = [v3 stringWithFormat:@"%@\n{\nprincipal class: %@\n}", v5, objc_opt_class()];
 
   return v7;
 }
 
-- (void)performTask:(id)a3 completionHandler:(id)a4
+- (void)performTask:(id)task completionHandler:(id)handler
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  handlerCopy = handler;
   v8 = MEMORY[0x277D05638];
-  v9 = [(MLROnDemandConnectionHandler *)self xpcConnection];
-  LOBYTE(v8) = [v8 hasOnDemandLaunchEntitlement:v9];
+  xpcConnection = [(MLROnDemandConnectionHandler *)self xpcConnection];
+  LOBYTE(v8) = [v8 hasOnDemandLaunchEntitlement:xpcConnection];
 
   if (v8)
   {
-    [(MLROnDemandConnectionHandler *)self performTaskInternal:v6 completionHandler:v7];
+    [(MLROnDemandConnectionHandler *)self performTaskInternal:taskCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 bundleIdentifier];
-    v13 = [v10 stringWithFormat:@"Missing launch entitlement with expected plugID=%@", v12];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v13 = [v10 stringWithFormat:@"Missing launch entitlement with expected plugID=%@", bundleIdentifier];
 
     v14 = MEMORY[0x277CCA9B8];
     v15 = *MEMORY[0x277D05640];
@@ -119,33 +119,33 @@ void __58__MLROnDemandConnectionHandler_shouldAcceptXPCConnection___block_invoke
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
     v17 = [v14 errorWithDomain:v15 code:8014 userInfo:v16];
 
-    v18 = [MEMORY[0x277D05600] coreChannel];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    coreChannel = [MEMORY[0x277D05600] coreChannel];
+    if (os_log_type_enabled(coreChannel, OS_LOG_TYPE_ERROR))
     {
       [MLROnDemandConnectionHandler performTask:completionHandler:];
     }
 
-    v7[2](v7, 0, v17);
+    handlerCopy[2](handlerCopy, 0, v17);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performTaskInternal:(id)a3 completionHandler:(id)a4
+- (void)performTaskInternal:(id)internal completionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  internalCopy = internal;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(MLROnDemandConnectionHandler *)self principalObject];
+    principalObject = [(MLROnDemandConnectionHandler *)self principalObject];
 
-    if (v8)
+    if (principalObject)
     {
       pluginPrincipal = self->_pluginPrincipal;
       v18 = 0;
-      v10 = [(MLROnDemandTaskPerforming *)pluginPrincipal performTask:v6 error:&v18];
-      v11 = v18;
+      v10 = [(MLROnDemandTaskPerforming *)pluginPrincipal performTask:internalCopy error:&v18];
+      coreChannel2 = v18;
     }
 
     else
@@ -155,40 +155,40 @@ void __58__MLROnDemandConnectionHandler_shouldAcceptXPCConnection___block_invoke
       v19 = *MEMORY[0x277CCA450];
       v20[0] = @"Invalid principal class.";
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-      v11 = [v12 errorWithDomain:v13 code:1 userInfo:v14];
+      coreChannel2 = [v12 errorWithDomain:v13 code:1 userInfo:v14];
 
       v10 = 0;
     }
 
-    v15 = [MEMORY[0x277D05600] coreChannel];
-    v16 = v15;
-    if (v11)
+    coreChannel = [MEMORY[0x277D05600] coreChannel];
+    v16 = coreChannel;
+    if (coreChannel2)
     {
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(coreChannel, OS_LOG_TYPE_ERROR))
       {
         [MLROnDemandConnectionHandler performTaskInternal:completionHandler:];
       }
 
-      v7[2](v7, 0, v11);
+      handlerCopy[2](handlerCopy, 0, coreChannel2);
     }
 
     else
     {
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(coreChannel, OS_LOG_TYPE_DEBUG))
       {
         [MLROnDemandConnectionHandler performTaskInternal:completionHandler:];
       }
 
-      (v7)[2](v7, v10, 0);
+      (handlerCopy)[2](handlerCopy, v10, 0);
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x277D05600] coreChannel];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    coreChannel2 = [MEMORY[0x277D05600] coreChannel];
+    if (os_log_type_enabled(coreChannel2, OS_LOG_TYPE_ERROR))
     {
-      [MLROnDemandConnectionHandler performTaskInternal:v11 completionHandler:?];
+      [MLROnDemandConnectionHandler performTaskInternal:coreChannel2 completionHandler:?];
     }
   }
 

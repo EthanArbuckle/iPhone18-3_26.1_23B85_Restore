@@ -1,25 +1,25 @@
 @interface SBSVolumeEventMonitor
-- (SBSVolumeEventMonitor)initWithTarget:(id)a3;
+- (SBSVolumeEventMonitor)initWithTarget:(id)target;
 @end
 
 @implementation SBSVolumeEventMonitor
 
-- (SBSVolumeEventMonitor)initWithTarget:(id)a3
+- (SBSVolumeEventMonitor)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v9.receiver = self;
   v9.super_class = SBSVolumeEventMonitor;
   v5 = [(SBSVolumeEventMonitor *)&v9 init];
   if (v5)
   {
-    if ([v4 isEqualToString:@"localhost"])
+    if ([targetCopy isEqualToString:@"localhost"])
     {
       [SBSUtils createProxyConnectionForXPCWithExportedObject:0 connection:&v5->_sbConnection];
     }
 
     else
     {
-      [SBSUtils createProxyConnectionForRapportTarget:v4];
+      [SBSUtils createProxyConnectionForRapportTarget:targetCopy];
     }
     v6 = ;
     sbProxy = v5->_sbProxy;

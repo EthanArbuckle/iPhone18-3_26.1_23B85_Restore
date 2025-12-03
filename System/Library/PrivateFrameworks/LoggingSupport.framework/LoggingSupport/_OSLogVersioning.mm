@@ -1,21 +1,21 @@
 @interface _OSLogVersioning
-- (BOOL)checkTimesyncDB:(BOOL *)a3 error:(id *)a4;
-- (BOOL)performDestructiveUpdates:(id *)a3;
-- (BOOL)repairTimesyncDB:(id *)a3;
-- (_OSLogVersioning)initWithCollection:(id)a3 closeOnRelease:(BOOL)a4 error:(id *)a5;
-- (_OSLogVersioning)initWithURL:(id)a3 error:(id *)a4;
+- (BOOL)checkTimesyncDB:(BOOL *)b error:(id *)error;
+- (BOOL)performDestructiveUpdates:(id *)updates;
+- (BOOL)repairTimesyncDB:(id *)b;
+- (_OSLogVersioning)initWithCollection:(id)collection closeOnRelease:(BOOL)release error:(id *)error;
+- (_OSLogVersioning)initWithURL:(id)l error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation _OSLogVersioning
 
-- (BOOL)repairTimesyncDB:(id *)a3
+- (BOOL)repairTimesyncDB:(id *)b
 {
   v17 = *MEMORY[0x277D85DE8];
   v10 = 0;
   v4 = self->_lcr;
-  v5 = [(_OSLogCollectionReference *)v4 timesyncReference];
-  v6 = [v5 fileDescriptor];
+  timesyncReference = [(_OSLogCollectionReference *)v4 timesyncReference];
+  fileDescriptor = [timesyncReference fileDescriptor];
 
   v13 = 0;
   v14 = &v13;
@@ -25,16 +25,16 @@
   v11[1] = 3221225472;
   v11[2] = ___OSRepairTimesync_block_invoke;
   v11[3] = &unk_2787AE5B0;
-  v12 = v6;
+  v12 = fileDescriptor;
   v11[4] = &v13;
   v11[5] = &v10;
-  _timesync_foreach_reg_file_at(v6, v11);
+  _timesync_foreach_reg_file_at(fileDescriptor, v11);
   v7 = *(v14 + 24);
   _Block_object_dispose(&v13, 8);
 
   if (v7)
   {
-    _OSLogFailWithPOSIXError(v10, a3);
+    _OSLogFailWithPOSIXError(v10, b);
   }
 
   result = v7 == 0;
@@ -42,13 +42,13 @@
   return result;
 }
 
-- (BOOL)checkTimesyncDB:(BOOL *)a3 error:(id *)a4
+- (BOOL)checkTimesyncDB:(BOOL *)b error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
   v12 = 0;
   v6 = self->_lcr;
-  v7 = [(_OSLogCollectionReference *)v6 timesyncReference];
-  v8 = [v7 fileDescriptor];
+  timesyncReference = [(_OSLogCollectionReference *)v6 timesyncReference];
+  fileDescriptor = [timesyncReference fileDescriptor];
 
   v15 = 0;
   v16 = &v15;
@@ -58,37 +58,37 @@
   v13[1] = 3221225472;
   v13[2] = ___OSValidateTimesync_block_invoke;
   v13[3] = &unk_2787AE5B0;
-  v14 = v8;
+  v14 = fileDescriptor;
   v13[4] = &v15;
   v13[5] = &v12;
-  _timesync_foreach_reg_file_at(v8, v13);
+  _timesync_foreach_reg_file_at(fileDescriptor, v13);
   v9 = *(v16 + 6);
   _Block_object_dispose(&v15, 8);
 
   if (v9 < 0)
   {
-    _OSLogFailWithPOSIXError(v12, a4);
+    _OSLogFailWithPOSIXError(v12, error);
   }
 
   else
   {
-    *a3 = v9 != 0;
+    *b = v9 != 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
   return v9 >= 0;
 }
 
-- (BOOL)performDestructiveUpdates:(id *)a3
+- (BOOL)performDestructiveUpdates:(id *)updates
 {
   v65 = *MEMORY[0x277D85DE8];
   if (!_os_trace_device_unlocked_since_boot())
   {
 LABEL_57:
     v40 = 1;
-    v41 = a3;
+    updatesCopy = updates;
 LABEL_59:
-    _OSLogFailWithPOSIXError(v40, v41);
+    _OSLogFailWithPOSIXError(v40, updatesCopy);
     goto LABEL_54;
   }
 
@@ -110,16 +110,16 @@ LABEL_59:
   }
 
   v53 = v7 + 1;
-  v54 = a3;
+  updatesCopy2 = updates;
   do
   {
     if (version == 2)
     {
       v55 = self->_lcr;
-      v8 = [(_OSLogCollectionReference *)v55 diagnosticsDirectoryReference];
-      v9 = [v8 fileDescriptor];
+      diagnosticsDirectoryReference = [(_OSLogCollectionReference *)v55 diagnosticsDirectoryReference];
+      fileDescriptor = [diagnosticsDirectoryReference fileDescriptor];
 
-      if (fcntl(v9, 50, &v57) == -1)
+      if (fcntl(fileDescriptor, 50, &v57) == -1)
       {
         v27 = *__error();
         _os_assumes_log();
@@ -135,7 +135,7 @@ LABEL_59:
         goto LABEL_63;
       }
 
-      v11 = openat(v9, "timesync", 0);
+      v11 = openat(fileDescriptor, "timesync", 0);
       if (v11 == -1)
       {
         if (*__error() != 2)
@@ -145,7 +145,7 @@ LABEL_62:
           v42 = v10;
 LABEL_63:
           v43 = __error();
-          _OSLogFailWithPOSIXError(*v43, v54);
+          _OSLogFailWithPOSIXError(*v43, updatesCopy2);
           if (v11 != -1 && close(v11) == -1)
           {
             v50 = *__error();
@@ -208,7 +208,7 @@ LABEL_54:
           v62 = 0u;
           v60 = 0u;
           memset(__str, 0, sizeof(__str));
-          a3 = MEMORY[0x277D86220];
+          updates = MEMORY[0x277D86220];
           os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
           v39 = *__error();
           v63 = 67109120;
@@ -221,7 +221,7 @@ LABEL_54:
 
 LABEL_20:
         _os_trace_scandir_free_namelist();
-        if (unlinkat(v9, "timesync", 128) == -1)
+        if (unlinkat(fileDescriptor, "timesync", 128) == -1)
         {
 LABEL_69:
           v61 = 0u;
@@ -280,9 +280,9 @@ LABEL_71:
         }
       }
 
-      if (mkdirat(v9, "timesync", 0x1EDu) != -1)
+      if (mkdirat(fileDescriptor, "timesync", 0x1EDu) != -1)
       {
-        v16 = openat(v9, "timesync", 0);
+        v16 = openat(fileDescriptor, "timesync", 0);
         if (v16 != -1)
         {
           v17 = v16;
@@ -366,14 +366,14 @@ LABEL_71:
   }
 
   while (version++ != v7);
-  v28 = [(_OSLogCollectionReference *)self->_lcr diagnosticsDirectoryReference];
-  v29 = [v28 fileDescriptor];
+  diagnosticsDirectoryReference2 = [(_OSLogCollectionReference *)self->_lcr diagnosticsDirectoryReference];
+  fileDescriptor2 = [diagnosticsDirectoryReference2 fileDescriptor];
 
-  v30 = openat(v29, "Info.plist", 514, 420);
+  v30 = openat(fileDescriptor2, "Info.plist", 514, 420);
   if (v30 == -1)
   {
     v40 = *__error();
-    v41 = v54;
+    updatesCopy = updatesCopy2;
     goto LABEL_59;
   }
 
@@ -381,8 +381,8 @@ LABEL_71:
   v32 = [v31 readDataToEndOfFileAndReturnError:0];
   if ([v32 length])
   {
-    v33 = v54;
-    v34 = [MEMORY[0x277CCAC58] propertyListWithData:v32 options:1 format:0 error:v54];
+    v33 = updatesCopy2;
+    v34 = [MEMORY[0x277CCAC58] propertyListWithData:v32 options:1 format:0 error:updatesCopy2];
     if (!v34)
     {
 LABEL_53:
@@ -394,7 +394,7 @@ LABEL_53:
   else
   {
     v34 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v33 = v54;
+    v33 = updatesCopy2;
   }
 
   v35 = [MEMORY[0x277CCABB0] numberWithInteger:v53];
@@ -436,27 +436,27 @@ LABEL_55:
   [(_OSLogVersioning *)&v3 dealloc];
 }
 
-- (_OSLogVersioning)initWithURL:(id)a3 error:(id *)a4
+- (_OSLogVersioning)initWithURL:(id)l error:(id *)error
 {
-  v6 = [_OSLogCollectionReference referenceWithURL:a3 error:?];
+  v6 = [_OSLogCollectionReference referenceWithURL:l error:?];
   if (v6)
   {
-    self = [(_OSLogVersioning *)self initWithCollection:v6 closeOnRelease:1 error:a4];
-    v7 = self;
+    self = [(_OSLogVersioning *)self initWithCollection:v6 closeOnRelease:1 error:error];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (_OSLogVersioning)initWithCollection:(id)a3 closeOnRelease:(BOOL)a4 error:(id *)a5
+- (_OSLogVersioning)initWithCollection:(id)collection closeOnRelease:(BOOL)release error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  collectionCopy = collection;
   v41.receiver = self;
   v41.super_class = _OSLogVersioning;
   v10 = [(_OSLogVersioning *)&v41 init];
@@ -468,14 +468,14 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  objc_storeStrong(&v10->_lcr, a3);
-  v11->_closeOnRelease = a4;
-  v12 = v9;
-  v13 = [v12 diagnosticsDirectoryReference];
-  v14 = [v13 fileDescriptor];
+  objc_storeStrong(&v10->_lcr, collection);
+  v11->_closeOnRelease = release;
+  v12 = collectionCopy;
+  diagnosticsDirectoryReference = [v12 diagnosticsDirectoryReference];
+  fileDescriptor = [diagnosticsDirectoryReference fileDescriptor];
 
   v42 = 0;
-  if (fcntl(v14, 50, __s1) == -1)
+  if (fcntl(fileDescriptor, 50, __s1) == -1)
   {
     goto LABEL_17;
   }
@@ -500,7 +500,7 @@ LABEL_28:
     if (*__error() == 2)
     {
       memset(&v54, 0, sizeof(v54));
-      if (fstatat(v14, "FaultsAndErrors", &v54, 0) || (v54.st_mode & 0xF000) != 0x4000)
+      if (fstatat(fileDescriptor, "FaultsAndErrors", &v54, 0) || (v54.st_mode & 0xF000) != 0x4000)
       {
         v49 = 0;
         v50 = &v49;
@@ -563,14 +563,14 @@ LABEL_28:
 
 LABEL_17:
     v25 = __error();
-    _OSLogFailWithPOSIXError(*v25, a5);
+    _OSLogFailWithPOSIXError(*v25, error);
 
     goto LABEL_18;
   }
 
   v17 = objc_alloc(MEMORY[0x277CBEA90]);
   v18 = [v17 initWithBytesNoCopy:v16 length:v42 freeWhenDone:0];
-  v19 = [MEMORY[0x277CCAC58] propertyListWithData:v18 options:0 format:0 error:a5];
+  v19 = [MEMORY[0x277CCAC58] propertyListWithData:v18 options:0 format:0 error:error];
   munmap(v16, v42);
   if (v19)
   {
@@ -623,7 +623,7 @@ LABEL_29:
     }
   }
 
-  _OSLogFailWithPOSIXError(0x16, a5);
+  _OSLogFailWithPOSIXError(0x16, error);
 
 LABEL_18:
   v26 = 0;

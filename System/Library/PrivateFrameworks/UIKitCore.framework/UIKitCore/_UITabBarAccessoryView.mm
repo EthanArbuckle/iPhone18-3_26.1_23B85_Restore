@@ -1,8 +1,8 @@
 @interface _UITabBarAccessoryView
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (CGSize)preferredSize;
 - (_UITabBarAccessoryView)init;
-- (_UITabBarAccessoryView)initWithFrame:(CGRect)a3;
+- (_UITabBarAccessoryView)initWithFrame:(CGRect)frame;
 - (void)commonInit;
 @end
 
@@ -22,11 +22,11 @@
   return v3;
 }
 
-- (_UITabBarAccessoryView)initWithFrame:(CGRect)a3
+- (_UITabBarAccessoryView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UITabBarAccessoryView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -50,27 +50,27 @@
   [(UIView *)self addSubview:v5];
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = _UITabBarAccessoryView;
-  if ([(UIView *)&v9 shouldUpdateFocusInContext:v4])
+  if ([(UIView *)&v9 shouldUpdateFocusInContext:contextCopy])
   {
-    v5 = [v4 nextFocusedView];
-    if ([v5 isDescendantOfView:self])
+    nextFocusedView = [contextCopy nextFocusedView];
+    if ([nextFocusedView isDescendantOfView:self])
     {
-      if ([v4 focusHeading] == 4)
+      if ([contextCopy focusHeading] == 4)
       {
 
 LABEL_9:
-        v6 = [v4 _isInitialMovement];
+        _isInitialMovement = [contextCopy _isInitialMovement];
         goto LABEL_10;
       }
 
-      v7 = [v4 focusHeading];
+      focusHeading = [contextCopy focusHeading];
 
-      if (v7 == 8)
+      if (focusHeading == 8)
       {
         goto LABEL_9;
       }
@@ -80,17 +80,17 @@ LABEL_9:
     {
     }
 
-    v6 = 1;
+    _isInitialMovement = 1;
   }
 
   else
   {
-    v6 = 0;
+    _isInitialMovement = 0;
   }
 
 LABEL_10:
 
-  return v6;
+  return _isInitialMovement;
 }
 
 - (CGSize)preferredSize

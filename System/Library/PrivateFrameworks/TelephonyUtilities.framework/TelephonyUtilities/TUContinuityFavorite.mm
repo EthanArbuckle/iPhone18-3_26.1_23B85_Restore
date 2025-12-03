@@ -1,31 +1,31 @@
 @interface TUContinuityFavorite
 - (NSString)displayName;
-- (TUContinuityFavorite)initWithCoder:(id)a3;
-- (TUContinuityFavorite)initWithContact:(id)a3 contactIdentifier:(id)a4 anonym:(id)a5 actionType:(id)a6 bundleIdentifier:(id)a7;
+- (TUContinuityFavorite)initWithCoder:(id)coder;
+- (TUContinuityFavorite)initWithContact:(id)contact contactIdentifier:(id)identifier anonym:(id)anonym actionType:(id)type bundleIdentifier:(id)bundleIdentifier;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUContinuityFavorite
 
-- (TUContinuityFavorite)initWithContact:(id)a3 contactIdentifier:(id)a4 anonym:(id)a5 actionType:(id)a6 bundleIdentifier:(id)a7
+- (TUContinuityFavorite)initWithContact:(id)contact contactIdentifier:(id)identifier anonym:(id)anonym actionType:(id)type bundleIdentifier:(id)bundleIdentifier
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  contactCopy = contact;
+  identifierCopy = identifier;
+  anonymCopy = anonym;
+  typeCopy = type;
+  bundleIdentifierCopy = bundleIdentifier;
   v21.receiver = self;
   v21.super_class = TUContinuityFavorite;
   v17 = [(TUContinuityFavorite *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_contact, a3);
-    objc_storeStrong(&v18->_contactIdentifier, a4);
-    objc_storeStrong(&v18->_anonym, a5);
-    objc_storeStrong(&v18->_actionType, a6);
-    objc_storeStrong(&v18->_bundleIdentifier, a7);
+    objc_storeStrong(&v17->_contact, contact);
+    objc_storeStrong(&v18->_contactIdentifier, identifier);
+    objc_storeStrong(&v18->_anonym, anonym);
+    objc_storeStrong(&v18->_actionType, type);
+    objc_storeStrong(&v18->_bundleIdentifier, bundleIdentifier);
   }
 
   return v18;
@@ -51,22 +51,22 @@
 
 - (NSString)displayName
 {
-  v3 = [(TUContinuityFavorite *)self contact];
-  v4 = [v3 displayName];
+  contact = [(TUContinuityFavorite *)self contact];
+  displayName = [contact displayName];
 
-  if (v4 && [v4 length])
+  if (displayName && [displayName length])
   {
-    v5 = v4;
+    v5 = displayName;
   }
 
   else
   {
-    v6 = [(TUContinuityFavorite *)self contact];
-    v7 = [v6 organizationName];
+    contact2 = [(TUContinuityFavorite *)self contact];
+    organizationName = [contact2 organizationName];
 
-    if (v7 && [v7 length])
+    if (organizationName && [organizationName length])
     {
-      v5 = v7;
+      v5 = organizationName;
     }
 
     else
@@ -78,55 +78,55 @@
   return v5;
 }
 
-- (TUContinuityFavorite)initWithCoder:(id)a3
+- (TUContinuityFavorite)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_contact);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_contactIdentifier);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_anonym);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
   v14 = objc_opt_class();
   v15 = NSStringFromSelector(sel_actionType);
-  v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+  v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
 
   v17 = objc_opt_class();
   v18 = NSStringFromSelector(sel_bundleIdentifier);
-  v19 = [v4 decodeObjectOfClass:v17 forKey:v18];
+  v19 = [coderCopy decodeObjectOfClass:v17 forKey:v18];
 
   v20 = [(TUContinuityFavorite *)self initWithContact:v7 contactIdentifier:v10 anonym:v13 actionType:v16 bundleIdentifier:v19];
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contact = self->_contact;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_contact);
-  [v5 encodeObject:contact forKey:v6];
+  [coderCopy encodeObject:contact forKey:v6];
 
   contactIdentifier = self->_contactIdentifier;
   v8 = NSStringFromSelector(sel_contactIdentifier);
-  [v5 encodeObject:contactIdentifier forKey:v8];
+  [coderCopy encodeObject:contactIdentifier forKey:v8];
 
   anonym = self->_anonym;
   v10 = NSStringFromSelector(sel_anonym);
-  [v5 encodeObject:anonym forKey:v10];
+  [coderCopy encodeObject:anonym forKey:v10];
 
   actionType = self->_actionType;
   v12 = NSStringFromSelector(sel_actionType);
-  [v5 encodeObject:actionType forKey:v12];
+  [coderCopy encodeObject:actionType forKey:v12];
 
   bundleIdentifier = self->_bundleIdentifier;
   v14 = NSStringFromSelector(sel_bundleIdentifier);
-  [v5 encodeObject:bundleIdentifier forKey:v14];
+  [coderCopy encodeObject:bundleIdentifier forKey:v14];
 }
 
 @end

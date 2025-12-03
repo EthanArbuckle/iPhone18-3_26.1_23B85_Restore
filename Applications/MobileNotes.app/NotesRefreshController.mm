@@ -1,11 +1,11 @@
 @interface NotesRefreshController
 + (NotesRefreshController)sharedInstance;
 - (BOOL)notesNeedRefresh;
-- (BOOL)notesNeedRefreshForCollectionWithID:(id)a3;
+- (BOOL)notesNeedRefreshForCollectionWithID:(id)d;
 - (BOOL)storesListNeedsRefresh;
 - (id)_accountStore;
 - (void)refreshAllNotesIfNeeded;
-- (void)refreshNotesForCollectionWithID:(id)a3;
+- (void)refreshNotesForCollectionWithID:(id)d;
 - (void)refreshOrphanedAccounts;
 - (void)refreshStoresList;
 @end
@@ -17,7 +17,7 @@
   v3 = qword_1006CB460;
   if (!qword_1006CB460)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = qword_1006CB460;
     qword_1006CB460 = v4;
 
@@ -30,9 +30,9 @@
 - (id)_accountStore
 {
   v2 = +[AccountUtilities sharedAccountUtilities];
-  v3 = [v2 accountStore];
+  accountStore = [v2 accountStore];
 
-  return v3;
+  return accountStore;
 }
 
 - (BOOL)storesListNeedsRefresh
@@ -56,18 +56,18 @@
 {
   v3 = [NSMutableSet alloc];
   v4 = +[AccountUtilities sharedAccountUtilities];
-  v5 = [v4 accountIDsEnabledForNotes];
-  v6 = [v3 initWithArray:v5];
+  accountIDsEnabledForNotes = [v4 accountIDsEnabledForNotes];
+  v6 = [v3 initWithArray:accountIDsEnabledForNotes];
 
   v7 = +[NotesApp sharedNotesApp];
-  v8 = [v7 noteContext];
-  v9 = [v8 allAccounts];
+  noteContext = [v7 noteContext];
+  allAccounts = [noteContext allAccounts];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = v9;
+  v10 = allAccounts;
   v11 = [v10 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v11)
   {
@@ -83,10 +83,10 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v27 + 1) + 8 * v14) accountIdentifier];
-        if (([v15 isEqualToString:v13] & 1) == 0)
+        accountIdentifier = [*(*(&v27 + 1) + 8 * v14) accountIdentifier];
+        if (([accountIdentifier isEqualToString:v13] & 1) == 0)
         {
-          [v6 removeObject:v15];
+          [v6 removeObject:accountIdentifier];
         }
 
         v14 = v14 + 1;
@@ -120,8 +120,8 @@
         }
 
         v21 = *(*(&v23 + 1) + 8 * v20);
-        v22 = [*(v2 + 4048) sharedConnection];
-        [v22 updateFolderListForAccountID:v21 andDataclasses:32];
+        sharedConnection = [*(v2 + 4048) sharedConnection];
+        [sharedConnection updateFolderListForAccountID:v21 andDataclasses:32];
 
         v20 = v20 + 1;
       }
@@ -137,14 +137,14 @@
 - (void)refreshStoresList
 {
   v4 = +[NotesApp sharedNotesApp];
-  v5 = [v4 noteContext];
-  v6 = [v5 allAccounts];
+  noteContext = [v4 noteContext];
+  allAccounts = [noteContext allAccounts];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v6;
+  v7 = allAccounts;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -161,11 +161,11 @@
           objc_enumerationMutation(v7);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * v12) accountIdentifier];
-        if (([v13 isEqualToString:v11] & 1) == 0)
+        accountIdentifier = [*(*(&v17 + 1) + 8 * v12) accountIdentifier];
+        if (([accountIdentifier isEqualToString:v11] & 1) == 0)
         {
-          v14 = [*(v2 + 4048) sharedConnection];
-          [v14 updateFolderListForAccountID:v13 andDataclasses:32];
+          sharedConnection = [*(v2 + 4048) sharedConnection];
+          [sharedConnection updateFolderListForAccountID:accountIdentifier andDataclasses:32];
         }
 
         v12 = v12 + 1;
@@ -186,14 +186,14 @@
 - (BOOL)notesNeedRefresh
 {
   v3 = +[NotesApp sharedNotesApp];
-  v4 = [v3 noteContext];
-  v5 = [v4 allAccounts];
+  noteContext = [v3 noteContext];
+  allAccounts = [noteContext allAccounts];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = allAccounts;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -208,8 +208,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) objectID];
-        v12 = [(NotesRefreshController *)self notesNeedRefreshForCollectionWithID:v11];
+        objectID = [*(*(&v15 + 1) + 8 * i) objectID];
+        v12 = [(NotesRefreshController *)self notesNeedRefreshForCollectionWithID:objectID];
 
         if (v12)
         {
@@ -234,17 +234,17 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)notesNeedRefreshForCollectionWithID:(id)a3
+- (BOOL)notesNeedRefreshForCollectionWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[NotesApp sharedNotesApp];
-  v6 = [v5 noteContext];
-  v7 = [v6 collectionForObjectID:v4];
+  noteContext = [v5 noteContext];
+  v7 = [noteContext collectionForObjectID:dCopy];
 
   if (v7)
   {
-    v8 = [v7 basicAccountIdentifier];
-    if ([v8 isEqualToString:kLocalAccountIdentifier])
+    basicAccountIdentifier = [v7 basicAccountIdentifier];
+    if ([basicAccountIdentifier isEqualToString:kLocalAccountIdentifier])
     {
       v9 = 0;
 LABEL_26:
@@ -255,7 +255,7 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [(NSMutableDictionary *)self->_lastNotesRefreshDates objectForKey:v4];
+      v10 = [(NSMutableDictionary *)self->_lastNotesRefreshDates objectForKey:dCopy];
       if (v10)
       {
 LABEL_7:
@@ -272,14 +272,14 @@ LABEL_7:
 
     else
     {
-      v23 = v8;
+      v23 = basicAccountIdentifier;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v22 = v7;
-      v12 = [v22 stores];
-      v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      stores = [v22 stores];
+      v13 = [stores countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v13)
       {
         v14 = v13;
@@ -291,12 +291,12 @@ LABEL_7:
           {
             if (*v25 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(stores);
             }
 
             lastNotesRefreshDates = self->_lastNotesRefreshDates;
-            v18 = [*(*(&v24 + 1) + 8 * i) objectID];
-            v19 = [(NSMutableDictionary *)lastNotesRefreshDates objectForKey:v18];
+            objectID = [*(*(&v24 + 1) + 8 * i) objectID];
+            v19 = [(NSMutableDictionary *)lastNotesRefreshDates objectForKey:objectID];
 
             if (v19)
             {
@@ -311,7 +311,7 @@ LABEL_7:
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v14 = [stores countByEnumeratingWithState:&v24 objects:v28 count:16];
         }
 
         while (v14);
@@ -322,7 +322,7 @@ LABEL_7:
         v10 = 0;
       }
 
-      v8 = v23;
+      basicAccountIdentifier = v23;
       if (v10)
       {
         goto LABEL_7;
@@ -344,14 +344,14 @@ LABEL_27:
 - (void)refreshAllNotesIfNeeded
 {
   v3 = +[NotesApp sharedNotesApp];
-  v4 = [v3 noteContext];
-  v5 = [v4 allAccounts];
+  noteContext = [v3 noteContext];
+  allAccounts = [noteContext allAccounts];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = allAccounts;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -367,10 +367,10 @@ LABEL_27:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v10) objectID];
-        if ([(NotesRefreshController *)self notesNeedRefreshForCollectionWithID:v11])
+        objectID = [*(*(&v12 + 1) + 8 * v10) objectID];
+        if ([(NotesRefreshController *)self notesNeedRefreshForCollectionWithID:objectID])
         {
-          [(NotesRefreshController *)self refreshNotesForCollectionWithID:v11];
+          [(NotesRefreshController *)self refreshNotesForCollectionWithID:objectID];
         }
 
         v10 = v10 + 1;
@@ -384,15 +384,15 @@ LABEL_27:
   }
 }
 
-- (void)refreshNotesForCollectionWithID:(id)a3
+- (void)refreshNotesForCollectionWithID:(id)d
 {
-  v33 = a3;
+  dCopy = d;
   v4 = +[NotesApp sharedNotesApp];
-  v5 = [v4 noteContext];
-  v6 = [v5 collectionForObjectID:v33];
+  noteContext = [v4 noteContext];
+  v6 = [noteContext collectionForObjectID:dCopy];
 
-  v7 = [v6 basicAccountIdentifier];
-  if (([v7 isEqualToString:kLocalAccountIdentifier] & 1) == 0)
+  basicAccountIdentifier = [v6 basicAccountIdentifier];
+  if (([basicAccountIdentifier isEqualToString:kLocalAccountIdentifier] & 1) == 0)
   {
     if (!self->_lastNotesRefreshDates)
     {
@@ -406,8 +406,8 @@ LABEL_27:
     {
       v10 = v6;
       v12 = sub_1004E9EF0(v11);
-      v14 = [*(v13 + 4048) sharedConnection];
-      v15 = [v14 updateContentsOfAllFoldersForAccountID:v7 andDataclass:32];
+      sharedConnection = [*(v13 + 4048) sharedConnection];
+      v15 = [sharedConnection updateContentsOfAllFoldersForAccountID:basicAccountIdentifier andDataclass:32];
 
       if (v15)
       {
@@ -416,8 +416,8 @@ LABEL_27:
         v37 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v17 = [v10 stores];
-        v18 = [v17 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        stores = [v10 stores];
+        v18 = [stores countByEnumeratingWithState:&v34 objects:v39 count:16];
         if (v18)
         {
           v19 = *v35;
@@ -428,18 +428,18 @@ LABEL_27:
             {
               if (*v35 != v19)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(stores);
               }
 
               v21 = self->_lastNotesRefreshDates;
-              v22 = [*(*(&v34 + 1) + 8 * v20) objectID];
-              [(NSMutableDictionary *)v21 setObject:v16 forKey:v22];
+              objectID = [*(*(&v34 + 1) + 8 * v20) objectID];
+              [(NSMutableDictionary *)v21 setObject:v16 forKey:objectID];
 
               v20 = v20 + 1;
             }
 
             while (v18 != v20);
-            v18 = [v17 countByEnumeratingWithState:&v34 objects:v39 count:16];
+            v18 = [stores countByEnumeratingWithState:&v34 objects:v39 count:16];
           }
 
           while (v18);
@@ -456,17 +456,17 @@ LABEL_17:
     {
       v23 = v6;
       v25 = sub_1004E9EF0(v24);
-      v27 = [*(v26 + 4048) sharedConnection];
-      v28 = [v23 externalIdentifier];
-      v38 = v28;
+      sharedConnection2 = [*(v26 + 4048) sharedConnection];
+      externalIdentifier = [v23 externalIdentifier];
+      v38 = externalIdentifier;
       v29 = [NSArray arrayWithObjects:&v38 count:1];
-      v30 = [v27 updateContentsOfFoldersWithKeys:v29 forAccountID:v7 andDataclass:32];
+      v30 = [sharedConnection2 updateContentsOfFoldersWithKeys:v29 forAccountID:basicAccountIdentifier andDataclass:32];
 
       if (v30)
       {
         v31 = self->_lastNotesRefreshDates;
         v32 = +[NSDate date];
-        [(NSMutableDictionary *)v31 setObject:v32 forKey:v33];
+        [(NSMutableDictionary *)v31 setObject:v32 forKey:dCopy];
       }
 
       goto LABEL_17;

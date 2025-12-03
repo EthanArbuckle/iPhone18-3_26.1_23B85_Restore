@@ -1,134 +1,134 @@
 @interface CHTextLineStrokeGroup
-- (CGPath)newEstimatedBaselineForStrokesWithTokens:(id)a3 tokenStrokeIdentifiers:(id)a4 relaxedChecks:(BOOL)a5;
+- (CGPath)newEstimatedBaselineForStrokesWithTokens:(id)tokens tokenStrokeIdentifiers:(id)identifiers relaxedChecks:(BOOL)checks;
 - (CGVector)averageStrokeDeviation;
 - (CGVector)averageWritingOrientation;
-- (CGVector)localWritingOrientationAtStrokeIndex:(int64_t)a3;
-- (CHTextLineStrokeGroup)initWithAncestorIdentifier:(int64_t)a3 strokeIdentifiers:(id)a4 firstStrokeIdentifier:(id)a5 lastStrokeIdentifier:(id)a6 bounds:(CGRect)a7 classification:(int64_t)a8 strategyIdentifier:(id)a9 writingDirectionSortedSubstrokes:(id)a10 averageWritingOrientation:(CGVector)a11 averageStrokeDeviation:(CGVector)a12 writingDirectionSortedStrokeIdentifiers:(id)a13 localStrokeWritingOrientations:(const void *)a14 coalescedLastSubstrokes:(id)a15 groupingConfidence:(double)a16 firstStrokeOrigin:(CGPoint)a17;
-- (CHTextLineStrokeGroup)initWithCoder:(id)a3;
-- (CHTextLineStrokeGroup)initWithUniqueIdentifier:(int64_t)a3 ancestorIdentifier:(int64_t)a4 strokeIdentifiers:(id)a5 firstStrokeIdentifier:(id)a6 lastStrokeIdentifier:(id)a7 bounds:(CGRect)a8 classification:(int64_t)a9 strategyIdentifier:(id)a10 writingDirectionSortedSubstrokes:(id)a11 averageWritingOrientation:(CGVector)a12 averageStrokeDeviation:(CGVector)a13 writingDirectionSortedStrokeIdentifiers:(id)a14 localStrokeWritingOrientations:(const void *)a15 coalescedLastSubstrokes:(id)a16 groupingConfidence:(double)a17 firstStrokeOrigin:(CGPoint)a18;
-- (CHTextLineStrokeGroup)strokeGroupWithUpdatedStrategyIdentifier:(id)a3 classification:(int64_t)a4;
+- (CGVector)localWritingOrientationAtStrokeIndex:(int64_t)index;
+- (CHTextLineStrokeGroup)initWithAncestorIdentifier:(int64_t)identifier strokeIdentifiers:(id)identifiers firstStrokeIdentifier:(id)strokeIdentifier lastStrokeIdentifier:(id)lastStrokeIdentifier bounds:(CGRect)bounds classification:(int64_t)classification strategyIdentifier:(id)strategyIdentifier writingDirectionSortedSubstrokes:(id)self0 averageWritingOrientation:(CGVector)self1 averageStrokeDeviation:(CGVector)self2 writingDirectionSortedStrokeIdentifiers:(id)self3 localStrokeWritingOrientations:(const void *)self4 coalescedLastSubstrokes:(id)self5 groupingConfidence:(double)self6 firstStrokeOrigin:(CGPoint)self7;
+- (CHTextLineStrokeGroup)initWithCoder:(id)coder;
+- (CHTextLineStrokeGroup)initWithUniqueIdentifier:(int64_t)identifier ancestorIdentifier:(int64_t)ancestorIdentifier strokeIdentifiers:(id)identifiers firstStrokeIdentifier:(id)strokeIdentifier lastStrokeIdentifier:(id)lastStrokeIdentifier bounds:(CGRect)bounds classification:(int64_t)classification strategyIdentifier:(id)self0 writingDirectionSortedSubstrokes:(id)self1 averageWritingOrientation:(CGVector)self2 averageStrokeDeviation:(CGVector)self3 writingDirectionSortedStrokeIdentifiers:(id)self4 localStrokeWritingOrientations:(const void *)self5 coalescedLastSubstrokes:(id)self6 groupingConfidence:(double)self7 firstStrokeOrigin:(CGPoint)self8;
+- (CHTextLineStrokeGroup)strokeGroupWithUpdatedStrategyIdentifier:(id)identifier classification:(int64_t)classification;
 - (id).cxx_construct;
-- (id)groupByAddingStrokeIdentifiers:(id)a3 removingStrokeIdentifiers:(id)a4 firstStrokeIdentifier:(id)a5 lastStrokeIdentifier:(id)a6 bounds:(CGRect)a7 writingDirectionSortedSubstrokes:(id)a8 averageWritingOrientation:(CGVector)a9 averageStrokeDeviation:(CGVector)a10 writingDirectionSortedStrokeIdentifiers:(id)a11 localStrokeWritingOrientations:(const void *)a12 coalescedLastSubstrokes:(id)a13 groupingConfidence:(double)a14 lastSubstrokeIndexBeforeMerge:(int64_t)a15 firstStrokeOrigin:(CGPoint)a16;
-- (void)encodeWithCoder:(id)a3;
+- (id)groupByAddingStrokeIdentifiers:(id)identifiers removingStrokeIdentifiers:(id)strokeIdentifiers firstStrokeIdentifier:(id)identifier lastStrokeIdentifier:(id)strokeIdentifier bounds:(CGRect)bounds writingDirectionSortedSubstrokes:(id)substrokes averageWritingOrientation:(CGVector)orientation averageStrokeDeviation:(CGVector)self0 writingDirectionSortedStrokeIdentifiers:(id)self1 localStrokeWritingOrientations:(const void *)self2 coalescedLastSubstrokes:(id)self3 groupingConfidence:(double)self4 lastSubstrokeIndexBeforeMerge:(int64_t)self5 firstStrokeOrigin:(CGPoint)self6;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHTextLineStrokeGroup
 
-- (CHTextLineStrokeGroup)initWithAncestorIdentifier:(int64_t)a3 strokeIdentifiers:(id)a4 firstStrokeIdentifier:(id)a5 lastStrokeIdentifier:(id)a6 bounds:(CGRect)a7 classification:(int64_t)a8 strategyIdentifier:(id)a9 writingDirectionSortedSubstrokes:(id)a10 averageWritingOrientation:(CGVector)a11 averageStrokeDeviation:(CGVector)a12 writingDirectionSortedStrokeIdentifiers:(id)a13 localStrokeWritingOrientations:(const void *)a14 coalescedLastSubstrokes:(id)a15 groupingConfidence:(double)a16 firstStrokeOrigin:(CGPoint)a17
+- (CHTextLineStrokeGroup)initWithAncestorIdentifier:(int64_t)identifier strokeIdentifiers:(id)identifiers firstStrokeIdentifier:(id)strokeIdentifier lastStrokeIdentifier:(id)lastStrokeIdentifier bounds:(CGRect)bounds classification:(int64_t)classification strategyIdentifier:(id)strategyIdentifier writingDirectionSortedSubstrokes:(id)self0 averageWritingOrientation:(CGVector)self1 averageStrokeDeviation:(CGVector)self2 writingDirectionSortedStrokeIdentifiers:(id)self3 localStrokeWritingOrientations:(const void *)self4 coalescedLastSubstrokes:(id)self5 groupingConfidence:(double)self6 firstStrokeOrigin:(CGPoint)self7
 {
-  dy = a11.dy;
-  dx = a11.dx;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v28 = a4;
-  v29 = a5;
-  v30 = a6;
-  v31 = a9;
-  v39 = a10;
-  v38 = a13;
-  v37 = a15;
+  dy = orientation.dy;
+  dx = orientation.dx;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  identifiersCopy = identifiers;
+  strokeIdentifierCopy = strokeIdentifier;
+  lastStrokeIdentifierCopy = lastStrokeIdentifier;
+  strategyIdentifierCopy = strategyIdentifier;
+  substrokesCopy = substrokes;
+  strokeIdentifiersCopy = strokeIdentifiers;
+  lastSubstrokesCopy = lastSubstrokes;
   v40.receiver = self;
   v40.super_class = CHTextLineStrokeGroup;
-  v32 = [(CHStrokeGroup *)&v40 initWithAncestorIdentifier:a3 strokeIdentifiers:v28 firstStrokeIdentifier:v29 lastStrokeIdentifier:v30 bounds:a8 classification:v31 groupingConfidence:x strategyIdentifier:y firstStrokeOrigin:width, height, a16, a17.x, a17.y];
+  v32 = [(CHStrokeGroup *)&v40 initWithAncestorIdentifier:identifier strokeIdentifiers:identifiersCopy firstStrokeIdentifier:strokeIdentifierCopy lastStrokeIdentifier:lastStrokeIdentifierCopy bounds:classification classification:strategyIdentifierCopy groupingConfidence:x strategyIdentifier:y firstStrokeOrigin:width, height, confidence, origin.x, origin.y];
   v33 = v32;
   if (v32)
   {
-    objc_storeStrong(&v32->_writingDirectionSortedSubstrokes, a10);
+    objc_storeStrong(&v32->_writingDirectionSortedSubstrokes, substrokes);
     v33->_averageWritingOrientation.dx = dx;
     v33->_averageWritingOrientation.dy = dy;
-    v33->_averageStrokeDeviation = a12;
-    objc_storeStrong(&v33->_writingDirectionSortedStrokeIdentifiers, a13);
-    if (&v33->_localStrokeWritingOrientations != a14)
+    v33->_averageStrokeDeviation = deviation;
+    objc_storeStrong(&v33->_writingDirectionSortedStrokeIdentifiers, strokeIdentifiers);
+    if (&v33->_localStrokeWritingOrientations != orientations)
     {
-      sub_1836FA644(&v33->_localStrokeWritingOrientations, *a14, *(a14 + 1), (*(a14 + 1) - *a14) >> 4);
+      sub_1836FA644(&v33->_localStrokeWritingOrientations, *orientations, *(orientations + 1), (*(orientations + 1) - *orientations) >> 4);
     }
 
     v33->_lastSubstrokeIndexBeforeMerge = -1;
-    objc_storeStrong(&v33->_coalescedLastSubstrokes, a15);
+    objc_storeStrong(&v33->_coalescedLastSubstrokes, lastSubstrokes);
   }
 
   return v33;
 }
 
-- (CHTextLineStrokeGroup)initWithUniqueIdentifier:(int64_t)a3 ancestorIdentifier:(int64_t)a4 strokeIdentifiers:(id)a5 firstStrokeIdentifier:(id)a6 lastStrokeIdentifier:(id)a7 bounds:(CGRect)a8 classification:(int64_t)a9 strategyIdentifier:(id)a10 writingDirectionSortedSubstrokes:(id)a11 averageWritingOrientation:(CGVector)a12 averageStrokeDeviation:(CGVector)a13 writingDirectionSortedStrokeIdentifiers:(id)a14 localStrokeWritingOrientations:(const void *)a15 coalescedLastSubstrokes:(id)a16 groupingConfidence:(double)a17 firstStrokeOrigin:(CGPoint)a18
+- (CHTextLineStrokeGroup)initWithUniqueIdentifier:(int64_t)identifier ancestorIdentifier:(int64_t)ancestorIdentifier strokeIdentifiers:(id)identifiers firstStrokeIdentifier:(id)strokeIdentifier lastStrokeIdentifier:(id)lastStrokeIdentifier bounds:(CGRect)bounds classification:(int64_t)classification strategyIdentifier:(id)self0 writingDirectionSortedSubstrokes:(id)self1 averageWritingOrientation:(CGVector)self2 averageStrokeDeviation:(CGVector)self3 writingDirectionSortedStrokeIdentifiers:(id)self4 localStrokeWritingOrientations:(const void *)self5 coalescedLastSubstrokes:(id)self6 groupingConfidence:(double)self7 firstStrokeOrigin:(CGPoint)self8
 {
-  dy = a12.dy;
-  dx = a12.dx;
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
-  v28 = a5;
-  v29 = a6;
-  v30 = a7;
-  v31 = a10;
-  v40 = a11;
-  v39 = a14;
-  v32 = a16;
+  dy = orientation.dy;
+  dx = orientation.dx;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  identifiersCopy = identifiers;
+  strokeIdentifierCopy = strokeIdentifier;
+  lastStrokeIdentifierCopy = lastStrokeIdentifier;
+  strategyIdentifierCopy = strategyIdentifier;
+  substrokesCopy = substrokes;
+  strokeIdentifiersCopy = strokeIdentifiers;
+  lastSubstrokesCopy = lastSubstrokes;
   v41.receiver = self;
   v41.super_class = CHTextLineStrokeGroup;
-  v33 = [(CHStrokeGroup *)&v41 initWithUniqueIdentifier:a3 ancestorIdentifier:a4 strokeIdentifiers:v28 firstStrokeIdentifier:v29 lastStrokeIdentifier:v30 bounds:a9 classification:x groupingConfidence:y strategyIdentifier:width firstStrokeOrigin:height, a17, a18.x, a18.y, v31];
-  v34 = v33;
-  if (v33)
+  strategyIdentifierCopy = [(CHStrokeGroup *)&v41 initWithUniqueIdentifier:identifier ancestorIdentifier:ancestorIdentifier strokeIdentifiers:identifiersCopy firstStrokeIdentifier:strokeIdentifierCopy lastStrokeIdentifier:lastStrokeIdentifierCopy bounds:classification classification:x groupingConfidence:y strategyIdentifier:width firstStrokeOrigin:height, confidence, origin.x, origin.y, strategyIdentifierCopy];
+  v34 = strategyIdentifierCopy;
+  if (strategyIdentifierCopy)
   {
-    objc_storeStrong(&v33->_writingDirectionSortedSubstrokes, a11);
+    objc_storeStrong(&strategyIdentifierCopy->_writingDirectionSortedSubstrokes, substrokes);
     v34->_averageWritingOrientation.dx = dx;
     v34->_averageWritingOrientation.dy = dy;
-    v34->_averageStrokeDeviation = a13;
-    objc_storeStrong(&v34->_writingDirectionSortedStrokeIdentifiers, a14);
-    if (&v34->_localStrokeWritingOrientations != a15)
+    v34->_averageStrokeDeviation = deviation;
+    objc_storeStrong(&v34->_writingDirectionSortedStrokeIdentifiers, strokeIdentifiers);
+    if (&v34->_localStrokeWritingOrientations != orientations)
     {
-      sub_1836FA644(&v34->_localStrokeWritingOrientations, *a15, *(a15 + 1), (*(a15 + 1) - *a15) >> 4);
+      sub_1836FA644(&v34->_localStrokeWritingOrientations, *orientations, *(orientations + 1), (*(orientations + 1) - *orientations) >> 4);
     }
 
     v34->_lastSubstrokeIndexBeforeMerge = -1;
-    objc_storeStrong(&v34->_coalescedLastSubstrokes, a16);
+    objc_storeStrong(&v34->_coalescedLastSubstrokes, lastSubstrokes);
   }
 
   return v34;
 }
 
-- (id)groupByAddingStrokeIdentifiers:(id)a3 removingStrokeIdentifiers:(id)a4 firstStrokeIdentifier:(id)a5 lastStrokeIdentifier:(id)a6 bounds:(CGRect)a7 writingDirectionSortedSubstrokes:(id)a8 averageWritingOrientation:(CGVector)a9 averageStrokeDeviation:(CGVector)a10 writingDirectionSortedStrokeIdentifiers:(id)a11 localStrokeWritingOrientations:(const void *)a12 coalescedLastSubstrokes:(id)a13 groupingConfidence:(double)a14 lastSubstrokeIndexBeforeMerge:(int64_t)a15 firstStrokeOrigin:(CGPoint)a16
+- (id)groupByAddingStrokeIdentifiers:(id)identifiers removingStrokeIdentifiers:(id)strokeIdentifiers firstStrokeIdentifier:(id)identifier lastStrokeIdentifier:(id)strokeIdentifier bounds:(CGRect)bounds writingDirectionSortedSubstrokes:(id)substrokes averageWritingOrientation:(CGVector)orientation averageStrokeDeviation:(CGVector)self0 writingDirectionSortedStrokeIdentifiers:(id)self1 localStrokeWritingOrientations:(const void *)self2 coalescedLastSubstrokes:(id)self3 groupingConfidence:(double)self4 lastSubstrokeIndexBeforeMerge:(int64_t)self5 firstStrokeOrigin:(CGPoint)self6
 {
-  dy = a9.dy;
-  dx = a9.dx;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v27 = a3;
-  v28 = a4;
-  v29 = a5;
-  v30 = a6;
-  v44 = a8;
-  v43 = a11;
-  v31 = a13;
+  dy = orientation.dy;
+  dx = orientation.dx;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  identifiersCopy = identifiers;
+  strokeIdentifiersCopy = strokeIdentifiers;
+  identifierCopy = identifier;
+  strokeIdentifierCopy = strokeIdentifier;
+  substrokesCopy = substrokes;
+  sortedStrokeIdentifiersCopy = sortedStrokeIdentifiers;
+  lastSubstrokesCopy = lastSubstrokes;
   v37 = objc_msgSend_classification(self, v32, v33, v34, v35, v36);
   v45.receiver = self;
   v45.super_class = CHTextLineStrokeGroup;
-  v38 = [(CHStrokeGroup *)&v45 groupByAddingStrokeIdentifiers:v27 removingStrokeIdentifiers:v28 firstStrokeIdentifier:v29 lastStrokeIdentifier:v30 bounds:v37 classification:x groupingConfidence:y firstStrokeOrigin:width, height, a14, a16.x, a16.y];
-  objc_storeStrong((v38 + 136), a8);
+  v38 = [(CHStrokeGroup *)&v45 groupByAddingStrokeIdentifiers:identifiersCopy removingStrokeIdentifiers:strokeIdentifiersCopy firstStrokeIdentifier:identifierCopy lastStrokeIdentifier:strokeIdentifierCopy bounds:v37 classification:x groupingConfidence:y firstStrokeOrigin:width, height, confidence, origin.x, origin.y];
+  objc_storeStrong((v38 + 136), substrokes);
   *(v38 + 144) = dx;
   *(v38 + 152) = dy;
-  *(v38 + 160) = a10;
-  objc_storeStrong((v38 + 216), a11);
-  if ((v38 + 176) != a12)
+  *(v38 + 160) = deviation;
+  objc_storeStrong((v38 + 216), sortedStrokeIdentifiers);
+  if ((v38 + 176) != orientations)
   {
-    sub_1836FA644((v38 + 176), *a12, *(a12 + 1), (*(a12 + 1) - *a12) >> 4);
+    sub_1836FA644((v38 + 176), *orientations, *(orientations + 1), (*(orientations + 1) - *orientations) >> 4);
   }
 
-  *(v38 + 200) = a15;
+  *(v38 + 200) = merge;
   v39 = *(v38 + 208);
-  *(v38 + 208) = v31;
+  *(v38 + 208) = lastSubstrokesCopy;
 
   return v38;
 }
 
-- (CHTextLineStrokeGroup)strokeGroupWithUpdatedStrategyIdentifier:(id)a3 classification:(int64_t)a4
+- (CHTextLineStrokeGroup)strokeGroupWithUpdatedStrategyIdentifier:(id)identifier classification:(int64_t)classification
 {
-  v109 = a3;
+  identifierCopy = identifier;
   v107 = [CHTextLineStrokeGroup alloc];
   v10 = objc_msgSend_uniqueIdentifier(self, v5, v6, v7, v8, v9);
   v16 = objc_msgSend_ancestorIdentifier(self, v11, v12, v13, v14, v15);
@@ -153,14 +153,14 @@
   objc_msgSend_groupingConfidence(self, v89, v90, v91, v92, v93);
   v95 = v94;
   objc_msgSend_firstStrokeOrigin(self, v96, v97, v98, v99, v100);
-  StrokeIdentifier_lastStrokeIdentifier_bounds_classification_strategyIdentifier_writingDirectionSortedSubstrokes_averageWritingOrientation_averageStrokeDeviation_writingDirectionSortedStrokeIdentifiers_localStrokeWritingOrientations_coalescedLastSubstrokes_groupingConfidence_firstStrokeOrigin = objc_msgSend_initWithUniqueIdentifier_ancestorIdentifier_strokeIdentifiers_firstStrokeIdentifier_lastStrokeIdentifier_bounds_classification_strategyIdentifier_writingDirectionSortedSubstrokes_averageWritingOrientation_averageStrokeDeviation_writingDirectionSortedStrokeIdentifiers_localStrokeWritingOrientations_coalescedLastSubstrokes_groupingConfidence_firstStrokeOrigin_(v107, v101, v10, v16, v22, v28, v34, a4, v106, v42, v44, v46, v59, v61, v68, v70, v109, v52, v76, v82, v88, v95, v102, v103);
+  StrokeIdentifier_lastStrokeIdentifier_bounds_classification_strategyIdentifier_writingDirectionSortedSubstrokes_averageWritingOrientation_averageStrokeDeviation_writingDirectionSortedStrokeIdentifiers_localStrokeWritingOrientations_coalescedLastSubstrokes_groupingConfidence_firstStrokeOrigin = objc_msgSend_initWithUniqueIdentifier_ancestorIdentifier_strokeIdentifiers_firstStrokeIdentifier_lastStrokeIdentifier_bounds_classification_strategyIdentifier_writingDirectionSortedSubstrokes_averageWritingOrientation_averageStrokeDeviation_writingDirectionSortedStrokeIdentifiers_localStrokeWritingOrientations_coalescedLastSubstrokes_groupingConfidence_firstStrokeOrigin_(v107, v101, v10, v16, v22, v28, v34, classification, v106, v42, v44, v46, v59, v61, v68, v70, identifierCopy, v52, v76, v82, v88, v95, v102, v103);
 
   return StrokeIdentifier_lastStrokeIdentifier_bounds_classification_strategyIdentifier_writingDirectionSortedSubstrokes_averageWritingOrientation_averageStrokeDeviation_writingDirectionSortedStrokeIdentifiers_localStrokeWritingOrientations_coalescedLastSubstrokes_groupingConfidence_firstStrokeOrigin;
 }
 
-- (CGVector)localWritingOrientationAtStrokeIndex:(int64_t)a3
+- (CGVector)localWritingOrientationAtStrokeIndex:(int64_t)index
 {
-  v3 = &self->_localStrokeWritingOrientations.__begin_[a3];
+  v3 = &self->_localStrokeWritingOrientations.__begin_[index];
   dx = v3->dx;
   dy = v3->dy;
   result.dy = dy;
@@ -186,15 +186,15 @@
   return result;
 }
 
-- (CGPath)newEstimatedBaselineForStrokesWithTokens:(id)a3 tokenStrokeIdentifiers:(id)a4 relaxedChecks:(BOOL)a5
+- (CGPath)newEstimatedBaselineForStrokesWithTokens:(id)tokens tokenStrokeIdentifiers:(id)identifiers relaxedChecks:(BOOL)checks
 {
   v507 = *MEMORY[0x1E69E9840];
-  v441 = a3;
-  v478 = a4;
-  v479 = a5;
-  if (!a5)
+  tokensCopy = tokens;
+  identifiersCopy = identifiers;
+  checksCopy = checks;
+  if (!checks)
   {
-    if (!objc_msgSend_count(v478, v7, v8, v9, v10, v11))
+    if (!objc_msgSend_count(identifiersCopy, v7, v8, v9, v10, v11))
     {
       if (qword_1EA84DC48 != -1)
       {
@@ -209,7 +209,7 @@
       }
     }
 
-    if (!objc_msgSend_count(v478, v12, v13, v14, v15, v16))
+    if (!objc_msgSend_count(identifiersCopy, v12, v13, v14, v15, v16))
     {
       if (qword_1EA84DC48 != -1)
       {
@@ -225,9 +225,9 @@
     }
   }
 
-  if (v441)
+  if (tokensCopy)
   {
-    v19 = objc_msgSend_ch_descriptionWithSeparator_filterBlock_(v441, v7, &stru_1EF1C0318, &unk_1EF1BD9A0, v10, v11);
+    v19 = objc_msgSend_ch_descriptionWithSeparator_filterBlock_(tokensCopy, v7, &stru_1EF1C0318, &unk_1EF1BD9A0, v10, v11);
     v25 = objc_msgSend_ch_possibleDescenderCharSet(MEMORY[0x1E696AB08], v20, v21, v22, v23, v24);
     v30 = objc_msgSend_indexesOfCharacters_(v19, v26, v25, v27, v28, v29);
 
@@ -251,9 +251,9 @@
   }
 
   v48 = MEMORY[0x1E695DF70];
-  v49 = objc_msgSend_count(v478, v7, v8, v9, v10, v11);
+  v49 = objc_msgSend_count(identifiersCopy, v7, v8, v9, v10, v11);
   v472 = objc_msgSend_arrayWithCapacity_(v48, v50, v49, v51, v52, v53);
-  for (i = 0; i < objc_msgSend_count(v478, v54, v55, v56, v57, v58); ++i)
+  for (i = 0; i < objc_msgSend_count(identifiersCopy, v54, v55, v56, v57, v58); ++i)
   {
     v65 = objc_msgSend_indexSet(MEMORY[0x1E696AD50], v60, v61, v62, v63, v64);
     objc_msgSend_addObject_(v472, v66, v65, v67, v68, v69);
@@ -264,7 +264,7 @@
   v77 = objc_msgSend_count(v71, v72, v73, v74, v75, v76);
   v477 = objc_msgSend_arrayWithCapacity_(v70, v78, v77, v79, v80, v81);
 
-  if (!v479)
+  if (!checksCopy)
   {
     v87 = objc_msgSend_writingDirectionSortedSubstrokes(self, v82, v83, v84, v85, v86);
     v93 = objc_msgSend_count(v87, v88, v89, v90, v91, v92) == 0;
@@ -327,7 +327,7 @@
         v485[2] = sub_18379BEC8;
         v485[3] = &unk_1E6DDE050;
         v485[4] = v118;
-        v119 = objc_msgSend_indexOfObjectPassingTest_(v478, v111, v485, v112, v113, v114);
+        v119 = objc_msgSend_indexOfObjectPassingTest_(identifiersCopy, v111, v485, v112, v113, v114);
         if (v119 != 0x7FFFFFFFFFFFFFFFLL)
         {
           objc_msgSend_addObject_(v477, v111, v118, v112, v113, v114);
@@ -343,7 +343,7 @@
     while (v115);
   }
 
-  if (!v479)
+  if (!checksCopy)
   {
     if (!objc_msgSend_count(v477, v135, v136, v137, v138, v139))
     {
@@ -399,7 +399,7 @@
     v481[3] = &unk_1E6DDE0A0;
     v190 = v189;
     v482 = v190;
-    objc_msgSend_enumerateObjectsUsingBlock_(v478, v191, v481, v192, v193, v194);
+    objc_msgSend_enumerateObjectsUsingBlock_(identifiersCopy, v191, v481, v192, v193, v194);
     if (qword_1EA84DC48 != -1)
     {
       dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -445,7 +445,7 @@ LABEL_66:
   }
 
   v152 = v477;
-  v444 = v441;
+  v444 = tokensCopy;
   v447 = v472;
   v442 = v440;
   v439 = v152;
@@ -1181,21 +1181,21 @@ LABEL_203:
   return v207;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10 = objc_msgSend_ancestorIdentifier(self, v5, v6, v7, v8, v9);
-  objc_msgSend_encodeInteger_forKey_(v4, v11, v10, @"ancestorIdentifier", v12, v13);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v11, v10, @"ancestorIdentifier", v12, v13);
   v19 = objc_msgSend_uniqueIdentifier(self, v14, v15, v16, v17, v18);
-  objc_msgSend_encodeInteger_forKey_(v4, v20, v19, @"uniqueIdentifier", v21, v22);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v20, v19, @"uniqueIdentifier", v21, v22);
   v28 = objc_msgSend_strokeIdentifiers(self, v23, v24, v25, v26, v27);
-  objc_msgSend_encodeObject_forKey_(v4, v29, v28, @"strokeIdentifiers", v30, v31);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v29, v28, @"strokeIdentifiers", v30, v31);
 
   v37 = objc_msgSend_firstStrokeIdentifier(self, v32, v33, v34, v35, v36);
-  objc_msgSend_encodeObject_forKey_(v4, v38, v37, @"firstStrokeIdentifier", v39, v40);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v38, v37, @"firstStrokeIdentifier", v39, v40);
 
   v46 = objc_msgSend_lastStrokeIdentifier(self, v41, v42, v43, v44, v45);
-  objc_msgSend_encodeObject_forKey_(v4, v47, v46, @"lastStrokeIdentifier", v48, v49);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v47, v46, @"lastStrokeIdentifier", v48, v49);
 
   objc_msgSend_bounds(self, v50, v51, v52, v53, v54);
   v154[0] = v55;
@@ -1203,67 +1203,67 @@ LABEL_203:
   v154[2] = v57;
   v154[3] = v58;
   v62 = objc_msgSend_valueWithBytes_objCType_(MEMORY[0x1E696B098], v59, v154, "{CGRect={CGPoint=dd}{CGSize=dd}}", v60, v61);
-  objc_msgSend_encodeObject_forKey_(v4, v63, v62, @"bounds", v64, v65);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v63, v62, @"bounds", v64, v65);
   v71 = objc_msgSend_classification(self, v66, v67, v68, v69, v70);
-  objc_msgSend_encodeInteger_forKey_(v4, v72, v71, @"classification", v73, v74);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v72, v71, @"classification", v73, v74);
   objc_msgSend_groupingConfidence(self, v75, v76, v77, v78, v79);
-  objc_msgSend_encodeDouble_forKey_(v4, v80, @"groupingConfidence", v81, v82, v83);
+  objc_msgSend_encodeDouble_forKey_(coderCopy, v80, @"groupingConfidence", v81, v82, v83);
   v89 = objc_msgSend_strategyIdentifier(self, v84, v85, v86, v87, v88);
-  objc_msgSend_encodeObject_forKey_(v4, v90, v89, @"strategyIdentifier", v91, v92);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v90, v89, @"strategyIdentifier", v91, v92);
 
   objc_msgSend_firstStrokeOrigin(self, v93, v94, v95, v96, v97);
   v153[0] = v98;
   v153[1] = v99;
   v103 = objc_msgSend_valueWithBytes_objCType_(MEMORY[0x1E696B098], v100, v153, "{CGPoint=dd}", v101, v102);
-  objc_msgSend_encodeObject_forKey_(v4, v104, v103, @"firstStrokeOrigin", v105, v106);
-  objc_msgSend_encodeObject_forKey_(v4, v107, self->_writingDirectionSortedStrokeIdentifiers, @"writingDirectionSortedStrokeIdentifiers", v108, v109);
-  objc_msgSend_encodeObject_forKey_(v4, v110, self->_writingDirectionSortedSubstrokes, @"writingDirectionSortedSubstrokes", v111, v112);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v104, v103, @"firstStrokeOrigin", v105, v106);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v107, self->_writingDirectionSortedStrokeIdentifiers, @"writingDirectionSortedStrokeIdentifiers", v108, v109);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v110, self->_writingDirectionSortedSubstrokes, @"writingDirectionSortedSubstrokes", v111, v112);
   v116 = objc_msgSend_valueWithBytes_objCType_(MEMORY[0x1E696B098], v113, &self->_averageStrokeDeviation, "{CGPoint=dd}", v114, v115);
-  objc_msgSend_encodeObject_forKey_(v4, v117, v116, @"averageStrokeDeviation", v118, v119);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v117, v116, @"averageStrokeDeviation", v118, v119);
   v123 = objc_msgSend_valueWithBytes_objCType_(MEMORY[0x1E696B098], v120, &self->_averageWritingOrientation, "{CGPoint=dd}", v121, v122);
-  objc_msgSend_encodeObject_forKey_(v4, v124, v123, @"averageWritingOrientation", v125, v126);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v124, v123, @"averageWritingOrientation", v125, v126);
   v127 = MEMORY[0x1E695DEF0];
   v133 = *objc_msgSend_localStrokeWritingOrientations(self, v128, v129, v130, v131, v132);
   v139 = objc_msgSend_localStrokeWritingOrientations(self, v134, v135, v136, v137, v138);
   v143 = objc_msgSend_dataWithBytes_length_(v127, v140, v133, v139[1] - *v139, v141, v142);
-  objc_msgSend_encodeObject_forKey_(v4, v144, v143, @"localStrokeWritingOrientations", v145, v146);
-  objc_msgSend_encodeInteger_forKey_(v4, v147, self->_lastSubstrokeIndexBeforeMerge, @"lastSubstrokeIndexBeforeMerge", v148, v149);
-  objc_msgSend_encodeObject_forKey_(v4, v150, self->_coalescedLastSubstrokes, @"coalescedLastSubstrokes", v151, v152);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v144, v143, @"localStrokeWritingOrientations", v145, v146);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v147, self->_lastSubstrokeIndexBeforeMerge, @"lastSubstrokeIndexBeforeMerge", v148, v149);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v150, self->_coalescedLastSubstrokes, @"coalescedLastSubstrokes", v151, v152);
 }
 
-- (CHTextLineStrokeGroup)initWithCoder:(id)a3
+- (CHTextLineStrokeGroup)initWithCoder:(id)coder
 {
   v166[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v149 = self;
-  v9 = objc_msgSend_decodeIntegerForKey_(v4, v5, @"ancestorIdentifier", v6, v7, v8);
-  v14 = objc_msgSend_decodeIntegerForKey_(v4, v10, @"uniqueIdentifier", v11, v12, v13);
+  coderCopy = coder;
+  selfCopy = self;
+  v9 = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"ancestorIdentifier", v6, v7, v8);
+  v14 = objc_msgSend_decodeIntegerForKey_(coderCopy, v10, @"uniqueIdentifier", v11, v12, v13);
   v15 = MEMORY[0x1E695DFD8];
   v166[0] = objc_opt_class();
   v166[1] = objc_opt_class();
   v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v16, v166, 2, v17, v18);
   v24 = objc_msgSend_setWithArray_(v15, v20, v19, v21, v22, v23);
   v148 = v9;
-  v154 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v25, v24, @"strokeIdentifiers", v26, v27);
+  v154 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v25, v24, @"strokeIdentifiers", v26, v27);
 
   v28 = objc_opt_class();
-  v153 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v29, v28, @"firstStrokeIdentifier", v30, v31);
+  v153 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v29, v28, @"firstStrokeIdentifier", v30, v31);
   v32 = objc_opt_class();
-  v152 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v33, v32, @"lastStrokeIdentifier", v34, v35);
+  v152 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v33, v32, @"lastStrokeIdentifier", v34, v35);
   v36 = objc_opt_class();
-  v40 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v37, v36, @"bounds", v38, v39);
+  v40 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v37, v36, @"bounds", v38, v39);
   v41 = *(MEMORY[0x1E695F050] + 16);
   v161 = *MEMORY[0x1E695F050];
   v162 = v41;
   v147 = v40;
   objc_msgSend_getValue_size_(v40, v42, &v161, 32, v43, v44);
-  objc_msgSend_decodeDoubleForKey_(v4, v45, @"groupingConfidence", v46, v47, v48);
+  objc_msgSend_decodeDoubleForKey_(coderCopy, v45, @"groupingConfidence", v46, v47, v48);
   v50 = v49;
-  v55 = objc_msgSend_decodeIntegerForKey_(v4, v51, @"classification", v52, v53, v54);
+  v55 = objc_msgSend_decodeIntegerForKey_(coderCopy, v51, @"classification", v52, v53, v54);
   v56 = objc_opt_class();
-  v151 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v57, v56, @"strategyIdentifier", v58, v59);
+  v151 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v57, v56, @"strategyIdentifier", v58, v59);
   v60 = objc_opt_class();
-  v146 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v61, v60, @"firstStrokeOrigin", v62, v63);
+  v146 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v61, v60, @"firstStrokeOrigin", v62, v63);
   objc_msgSend_getValue_size_(v146, v64, v160, 16, v65, v66);
   v67 = MEMORY[0x1E695DFD8];
   v165[0] = objc_opt_class();
@@ -1271,23 +1271,23 @@ LABEL_203:
   v71 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v68, v165, 2, v69, v70);
   v76 = objc_msgSend_setWithArray_(v67, v72, v71, v73, v74, v75);
   v77 = v55;
-  v150 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v78, v76, @"writingDirectionSortedStrokeIdentifiers", v79, v80);
+  v150 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v78, v76, @"writingDirectionSortedStrokeIdentifiers", v79, v80);
 
   v81 = MEMORY[0x1E695DFD8];
   v164[0] = objc_opt_class();
   v164[1] = objc_opt_class();
   v85 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v82, v164, 2, v83, v84);
   v90 = objc_msgSend_setWithArray_(v81, v86, v85, v87, v88, v89);
-  v94 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v91, v90, @"writingDirectionSortedSubstrokes", v92, v93);
+  v94 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v91, v90, @"writingDirectionSortedSubstrokes", v92, v93);
 
   v95 = objc_opt_class();
-  v99 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v96, v95, @"averageStrokeDeviation", v97, v98);
+  v99 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v96, v95, @"averageStrokeDeviation", v97, v98);
   objc_msgSend_getValue_size_(v99, v100, v159, 16, v101, v102);
   v103 = objc_opt_class();
-  v107 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v104, v103, @"averageWritingOrientation", v105, v106);
+  v107 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v104, v103, @"averageWritingOrientation", v105, v106);
   objc_msgSend_getValue_size_(v107, v108, v158, 16, v109, v110);
   v111 = objc_opt_class();
-  v115 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v112, v111, @"localStrokeWritingOrientations", v113, v114);
+  v115 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v112, v111, @"localStrokeWritingOrientations", v113, v114);
   v121 = objc_msgSend_length(v115, v116, v117, v118, v119, v120);
   v122 = v115;
   v128 = objc_msgSend_bytes(v115, v123, v124, v125, v126, v127);
@@ -1300,9 +1300,9 @@ LABEL_203:
   v163[1] = objc_opt_class();
   v133 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v130, v163, 2, v131, v132);
   v138 = objc_msgSend_setWithArray_(v129, v134, v133, v135, v136, v137);
-  v142 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v139, v138, @"coalescedLastSubstrokes", v140, v141);
+  v142 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v139, v138, @"coalescedLastSubstrokes", v140, v141);
 
-  v144 = objc_msgSend_initWithUniqueIdentifier_ancestorIdentifier_strokeIdentifiers_firstStrokeIdentifier_lastStrokeIdentifier_bounds_classification_strategyIdentifier_writingDirectionSortedSubstrokes_averageWritingOrientation_averageStrokeDeviation_writingDirectionSortedStrokeIdentifiers_localStrokeWritingOrientations_coalescedLastSubstrokes_groupingConfidence_firstStrokeOrigin_(v149, v143, v14, v148, v154, v153, v152, v77, v161, v162, v158[0], v158[1], v159[0], v159[1], v151, v94, v150, &__p, v142, v50, v160[0], v160[1]);
+  v144 = objc_msgSend_initWithUniqueIdentifier_ancestorIdentifier_strokeIdentifiers_firstStrokeIdentifier_lastStrokeIdentifier_bounds_classification_strategyIdentifier_writingDirectionSortedSubstrokes_averageWritingOrientation_averageStrokeDeviation_writingDirectionSortedStrokeIdentifiers_localStrokeWritingOrientations_coalescedLastSubstrokes_groupingConfidence_firstStrokeOrigin_(selfCopy, v143, v14, v148, v154, v153, v152, v77, v161, v162, v158[0], v158[1], v159[0], v159[1], v151, v94, v150, &__p, v142, v50, v160[0], v160[1]);
   if (__p)
   {
     v156 = __p;

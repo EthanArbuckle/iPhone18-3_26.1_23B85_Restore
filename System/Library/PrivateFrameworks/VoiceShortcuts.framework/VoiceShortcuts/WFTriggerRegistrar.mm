@@ -1,49 +1,49 @@
 @interface WFTriggerRegistrar
-- (WFTriggerRegistrar)initWithDatabaseProvider:(id)a3 eventHandler:(id)a4 userNotificationManager:(id)a5;
-- (int64_t)triggerBackingForConfiguredTrigger:(id)a3;
+- (WFTriggerRegistrar)initWithDatabaseProvider:(id)provider eventHandler:(id)handler userNotificationManager:(id)manager;
+- (int64_t)triggerBackingForConfiguredTrigger:(id)trigger;
 - (void)dealloc;
-- (void)deleteTriggerWithIdentifier:(id)a3 allowedDeletionClasses:(id)a4 completion:(id)a5;
+- (void)deleteTriggerWithIdentifier:(id)identifier allowedDeletionClasses:(id)classes completion:(id)completion;
 - (void)deviceDidUnlockForFirstTime;
-- (void)fireTriggerWithIdentifier:(id)a3 force:(BOOL)a4 eventInfo:(id)a5 completion:(id)a6;
-- (void)getConfiguredTriggerDescriptionsWithCompletion:(id)a3;
-- (void)handleRemovedIgnoredNotifications:(id)a3;
-- (void)queue_registerConfiguredTrigger:(id)a3 completion:(id)a4;
-- (void)queue_unregisterConfiguredTrigger:(id)a3;
-- (void)queue_unregisterConfiguredTriggerWithIdentifier:(id)a3 triggerBacking:(int64_t)a4;
-- (void)registerAllTriggersWithCompletion:(id)a3;
-- (void)registerTriggerWithIdentifier:(id)a3 completion:(id)a4;
+- (void)fireTriggerWithIdentifier:(id)identifier force:(BOOL)force eventInfo:(id)info completion:(id)completion;
+- (void)getConfiguredTriggerDescriptionsWithCompletion:(id)completion;
+- (void)handleRemovedIgnoredNotifications:(id)notifications;
+- (void)queue_registerConfiguredTrigger:(id)trigger completion:(id)completion;
+- (void)queue_unregisterConfiguredTrigger:(id)trigger;
+- (void)queue_unregisterConfiguredTriggerWithIdentifier:(id)identifier triggerBacking:(int64_t)backing;
+- (void)registerAllTriggersWithCompletion:(id)completion;
+- (void)registerTriggerWithIdentifier:(id)identifier completion:(id)completion;
 - (void)unregisterAllTriggers;
-- (void)unregisterTriggerWithIdentifier:(id)a3 triggerBacking:(int64_t)a4;
+- (void)unregisterTriggerWithIdentifier:(id)identifier triggerBacking:(int64_t)backing;
 @end
 
 @implementation WFTriggerRegistrar
 
-- (int64_t)triggerBackingForConfiguredTrigger:(id)a3
+- (int64_t)triggerBackingForConfiguredTrigger:(id)trigger
 {
-  v3 = [a3 trigger];
-  v4 = [objc_opt_class() triggerBacking];
+  trigger = [trigger trigger];
+  triggerBacking = [objc_opt_class() triggerBacking];
 
-  return v4;
+  return triggerBacking;
 }
 
-- (void)getConfiguredTriggerDescriptionsWithCompletion:(id)a3
+- (void)getConfiguredTriggerDescriptionsWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFTriggerRegistrar.m" lineNumber:348 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerRegistrar.m" lineNumber:348 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v6 = [(WFTriggerRegistrar *)self queue];
+  queue = [(WFTriggerRegistrar *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__WFTriggerRegistrar_getConfiguredTriggerDescriptionsWithCompletion___block_invoke;
   block[3] = &unk_2788FF680;
   block[4] = self;
-  v10 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v10 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __69__WFTriggerRegistrar_getConfiguredTriggerDescriptionsWithCompletion___block_invoke(uint64_t a1)
@@ -100,25 +100,25 @@ id __69__WFTriggerRegistrar_getConfiguredTriggerDescriptionsWithCompletion___blo
   return v10;
 }
 
-- (void)deleteTriggerWithIdentifier:(id)a3 allowedDeletionClasses:(id)a4 completion:(id)a5
+- (void)deleteTriggerWithIdentifier:(id)identifier allowedDeletionClasses:(id)classes completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(WFTriggerRegistrar *)self queue];
+  identifierCopy = identifier;
+  classesCopy = classes;
+  completionCopy = completion;
+  queue = [(WFTriggerRegistrar *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__WFTriggerRegistrar_deleteTriggerWithIdentifier_allowedDeletionClasses_completion___block_invoke;
   block[3] = &unk_2788FF548;
   block[4] = self;
-  v17 = v9;
-  v19 = v11;
+  v17 = identifierCopy;
+  v19 = completionCopy;
   v20 = a2;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v18 = classesCopy;
+  v13 = classesCopy;
+  v14 = identifierCopy;
+  v15 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __84__WFTriggerRegistrar_deleteTriggerWithIdentifier_allowedDeletionClasses_completion___block_invoke(uint64_t a1)
@@ -168,26 +168,26 @@ LABEL_10:
   }
 }
 
-- (void)fireTriggerWithIdentifier:(id)a3 force:(BOOL)a4 eventInfo:(id)a5 completion:(id)a6
+- (void)fireTriggerWithIdentifier:(id)identifier force:(BOOL)force eventInfo:(id)info completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(WFTriggerRegistrar *)self queue];
+  identifierCopy = identifier;
+  infoCopy = info;
+  completionCopy = completion;
+  queue = [(WFTriggerRegistrar *)self queue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __75__WFTriggerRegistrar_fireTriggerWithIdentifier_force_eventInfo_completion___block_invoke;
   v18[3] = &unk_2788FEF98;
   v18[4] = self;
-  v19 = v11;
-  v21 = v13;
+  v19 = identifierCopy;
+  v21 = completionCopy;
   v22 = a2;
-  v23 = a4;
-  v20 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  dispatch_async(v14, v18);
+  forceCopy = force;
+  v20 = infoCopy;
+  v15 = infoCopy;
+  v16 = identifierCopy;
+  v17 = completionCopy;
+  dispatch_async(queue, v18);
 }
 
 void __75__WFTriggerRegistrar_fireTriggerWithIdentifier_force_eventInfo_completion___block_invoke(uint64_t a1)
@@ -235,79 +235,79 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)queue_unregisterConfiguredTriggerWithIdentifier:(id)a3 triggerBacking:(int64_t)a4
+- (void)queue_unregisterConfiguredTriggerWithIdentifier:(id)identifier triggerBacking:(int64_t)backing
 {
-  v14 = a3;
-  v6 = [(WFTriggerRegistrar *)self queue];
-  dispatch_assert_queue_V2(v6);
+  identifierCopy = identifier;
+  queue = [(WFTriggerRegistrar *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (a4 == 2)
+  if (backing == 2)
   {
-    v7 = [(WFTriggerRegistrar *)self biomeListener];
+    biomeListener = [(WFTriggerRegistrar *)self biomeListener];
   }
 
   else
   {
-    if (a4 != 1)
+    if (backing != 1)
     {
       goto LABEL_6;
     }
 
-    v7 = [(WFTriggerRegistrar *)self coreDuetListener];
+    biomeListener = [(WFTriggerRegistrar *)self coreDuetListener];
   }
 
-  v8 = v7;
-  [v7 unregisterConfiguredTriggerWithIdentifier:v14];
+  v8 = biomeListener;
+  [biomeListener unregisterConfiguredTriggerWithIdentifier:identifierCopy];
 
 LABEL_6:
-  v9 = [(WFTriggerRegistrar *)self databaseProvider];
-  v10 = [v9 databaseWithError:0];
+  databaseProvider = [(WFTriggerRegistrar *)self databaseProvider];
+  v10 = [databaseProvider databaseWithError:0];
 
-  v11 = [(WFTriggerRegistrar *)self triggerBootManager];
-  v12 = [v10 allConfiguredTriggers];
-  v13 = [v12 descriptors];
-  [v11 configuredTriggersDidChange:v13];
+  triggerBootManager = [(WFTriggerRegistrar *)self triggerBootManager];
+  allConfiguredTriggers = [v10 allConfiguredTriggers];
+  descriptors = [allConfiguredTriggers descriptors];
+  [triggerBootManager configuredTriggersDidChange:descriptors];
 }
 
-- (void)queue_unregisterConfiguredTrigger:(id)a3
+- (void)queue_unregisterConfiguredTrigger:(id)trigger
 {
-  v15 = a3;
-  v5 = [(WFTriggerRegistrar *)self queue];
-  dispatch_assert_queue_V2(v5);
+  triggerCopy = trigger;
+  queue = [(WFTriggerRegistrar *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(WFTriggerRegistrar *)self triggerBackingForConfiguredTrigger:v15];
+  v6 = [(WFTriggerRegistrar *)self triggerBackingForConfiguredTrigger:triggerCopy];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v15 trigger];
-  v9 = [v7 stringWithFormat:@"Trigger (%@) did not specify a backing source and cannot be unregistered", v8];
+  trigger = [triggerCopy trigger];
+  v9 = [v7 stringWithFormat:@"Trigger (%@) did not specify a backing source and cannot be unregistered", trigger];
 
   if (!v6)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFTriggerRegistrar.m" lineNumber:252 description:v9];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerRegistrar.m" lineNumber:252 description:v9];
   }
 
-  v10 = [(WFTriggerRegistrar *)self scheduler];
-  v11 = [v15 identifier];
-  [v10 cancelActivitiesFromTriggerIdentifier:v11];
+  scheduler = [(WFTriggerRegistrar *)self scheduler];
+  identifier = [triggerCopy identifier];
+  [scheduler cancelActivitiesFromTriggerIdentifier:identifier];
 
-  v12 = [v15 identifier];
-  v13 = [v15 trigger];
-  -[WFTriggerRegistrar queue_unregisterConfiguredTriggerWithIdentifier:triggerBacking:](self, "queue_unregisterConfiguredTriggerWithIdentifier:triggerBacking:", v12, [objc_opt_class() triggerBacking]);
+  identifier2 = [triggerCopy identifier];
+  trigger2 = [triggerCopy trigger];
+  -[WFTriggerRegistrar queue_unregisterConfiguredTriggerWithIdentifier:triggerBacking:](self, "queue_unregisterConfiguredTriggerWithIdentifier:triggerBacking:", identifier2, [objc_opt_class() triggerBacking]);
 }
 
-- (void)unregisterTriggerWithIdentifier:(id)a3 triggerBacking:(int64_t)a4
+- (void)unregisterTriggerWithIdentifier:(id)identifier triggerBacking:(int64_t)backing
 {
-  v6 = a3;
-  v7 = [(WFTriggerRegistrar *)self queue];
+  identifierCopy = identifier;
+  queue = [(WFTriggerRegistrar *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__WFTriggerRegistrar_unregisterTriggerWithIdentifier_triggerBacking___block_invoke;
   block[3] = &unk_2788FEF70;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = identifierCopy;
+  backingCopy = backing;
+  v8 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __69__WFTriggerRegistrar_unregisterTriggerWithIdentifier_triggerBacking___block_invoke(uint64_t a1)
@@ -328,13 +328,13 @@ void __69__WFTriggerRegistrar_unregisterTriggerWithIdentifier_triggerBacking___b
 
 - (void)unregisterAllTriggers
 {
-  v3 = [(WFTriggerRegistrar *)self queue];
+  queue = [(WFTriggerRegistrar *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__WFTriggerRegistrar_unregisterAllTriggers__block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __43__WFTriggerRegistrar_unregisterAllTriggers__block_invoke(uint64_t a1)
@@ -383,15 +383,15 @@ void __43__WFTriggerRegistrar_unregisterAllTriggers__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queue_registerConfiguredTrigger:(id)a3 completion:(id)a4
+- (void)queue_registerConfiguredTrigger:(id)trigger completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(WFTriggerRegistrar *)self queue];
-  dispatch_assert_queue_V2(v9);
+  triggerCopy = trigger;
+  completionCopy = completion;
+  queue = [(WFTriggerRegistrar *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(WFTriggerRegistrar *)self triggerBackingForConfiguredTrigger:v7];
+  v10 = [(WFTriggerRegistrar *)self triggerBackingForConfiguredTrigger:triggerCopy];
   switch(v10)
   {
     case 1:
@@ -403,7 +403,7 @@ void __43__WFTriggerRegistrar_unregisterAllTriggers__block_invoke(uint64_t a1)
         _os_log_impl(&dword_23103C000, v12, OS_LOG_TYPE_DEFAULT, "%s Using CoreDuet backing source", &v17, 0xCu);
       }
 
-      v13 = [(WFTriggerRegistrar *)self coreDuetListener];
+      coreDuetListener = [(WFTriggerRegistrar *)self coreDuetListener];
       goto LABEL_11;
     case 2:
       v14 = getWFTriggersLogObject();
@@ -414,15 +414,15 @@ void __43__WFTriggerRegistrar_unregisterAllTriggers__block_invoke(uint64_t a1)
         _os_log_impl(&dword_23103C000, v14, OS_LOG_TYPE_DEFAULT, "%s Using Biome backing source", &v17, 0xCu);
       }
 
-      v13 = [(WFTriggerRegistrar *)self biomeListener];
+      coreDuetListener = [(WFTriggerRegistrar *)self biomeListener];
 LABEL_11:
-      v15 = v13;
-      [v13 registerConfiguredTrigger:v7 completion:v8];
+      v15 = coreDuetListener;
+      [coreDuetListener registerConfiguredTrigger:triggerCopy completion:completionCopy];
 
       break;
     case 0:
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"WFTriggerRegistrar.m" lineNumber:198 description:@"Trigger did not specify a backing source and cannot be registered."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerRegistrar.m" lineNumber:198 description:@"Trigger did not specify a backing source and cannot be registered."];
 
       break;
   }
@@ -430,21 +430,21 @@ LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerTriggerWithIdentifier:(id)a3 completion:(id)a4
+- (void)registerTriggerWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFTriggerRegistrar *)self queue];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  queue = [(WFTriggerRegistrar *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__WFTriggerRegistrar_registerTriggerWithIdentifier_completion___block_invoke;
   block[3] = &unk_2788FFF98;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = identifierCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __63__WFTriggerRegistrar_registerTriggerWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -500,18 +500,18 @@ void __63__WFTriggerRegistrar_registerTriggerWithIdentifier_completion___block_i
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerAllTriggersWithCompletion:(id)a3
+- (void)registerAllTriggersWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WFTriggerRegistrar *)self queue];
+  completionCopy = completion;
+  queue = [(WFTriggerRegistrar *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__WFTriggerRegistrar_registerAllTriggersWithCompletion___block_invoke;
   v7[3] = &unk_2788FF680;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __56__WFTriggerRegistrar_registerAllTriggersWithCompletion___block_invoke(uint64_t a1)
@@ -578,64 +578,64 @@ uint64_t __56__WFTriggerRegistrar_registerAllTriggersWithCompletion___block_invo
   return result;
 }
 
-- (void)handleRemovedIgnoredNotifications:(id)a3
+- (void)handleRemovedIgnoredNotifications:(id)notifications
 {
-  v4 = a3;
-  v5 = [(WFTriggerRegistrar *)self eventQueue];
-  [v5 handleRemovedIgnoredNotifications:v4];
+  notificationsCopy = notifications;
+  eventQueue = [(WFTriggerRegistrar *)self eventQueue];
+  [eventQueue handleRemovedIgnoredNotifications:notificationsCopy];
 }
 
 - (void)deviceDidUnlockForFirstTime
 {
-  v3 = [(WFTriggerRegistrar *)self triggerBootManager];
-  [v3 deviceWasUnlockedForTheFirstTime];
+  triggerBootManager = [(WFTriggerRegistrar *)self triggerBootManager];
+  [triggerBootManager deviceWasUnlockedForTheFirstTime];
 
   [(WFTriggerRegistrar *)self registerAllTriggersWithCompletion:0];
 }
 
 - (void)dealloc
 {
-  v3 = [(WFTriggerRegistrar *)self eventHandler];
-  [v3 removeObserver:self name:@"com.apple.mobile.keybagd.first_unlock"];
+  eventHandler = [(WFTriggerRegistrar *)self eventHandler];
+  [eventHandler removeObserver:self name:@"com.apple.mobile.keybagd.first_unlock"];
 
-  v4 = [(WFTriggerRegistrar *)self eventHandler];
-  [v4 removeObserver:self name:@"com.apple.system.timezone"];
+  eventHandler2 = [(WFTriggerRegistrar *)self eventHandler];
+  [eventHandler2 removeObserver:self name:@"com.apple.system.timezone"];
 
-  v5 = [(WFTriggerRegistrar *)self eventHandler];
-  [v5 removeObserver:self name:@"com.apple.system.clock_set"];
+  eventHandler3 = [(WFTriggerRegistrar *)self eventHandler];
+  [eventHandler3 removeObserver:self name:@"com.apple.system.clock_set"];
 
   v6.receiver = self;
   v6.super_class = WFTriggerRegistrar;
   [(WFTriggerRegistrar *)&v6 dealloc];
 }
 
-- (WFTriggerRegistrar)initWithDatabaseProvider:(id)a3 eventHandler:(id)a4 userNotificationManager:(id)a5
+- (WFTriggerRegistrar)initWithDatabaseProvider:(id)provider eventHandler:(id)handler userNotificationManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  handlerCopy = handler;
+  managerCopy = manager;
   v34.receiver = self;
   v34.super_class = WFTriggerRegistrar;
   v12 = [(WFTriggerRegistrar *)&v34 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_databaseProvider, a3);
-    objc_storeStrong(&v13->_eventHandler, a4);
-    v14 = [[WFTriggerUserNotificationManager alloc] initWithUserNotificationManager:v11];
-    v15 = [[WFTriggerNotificationScheduler alloc] initWithUserNotificationManager:v14 databaseProvider:v9];
+    objc_storeStrong(&v12->_databaseProvider, provider);
+    objc_storeStrong(&v13->_eventHandler, handler);
+    v14 = [[WFTriggerUserNotificationManager alloc] initWithUserNotificationManager:managerCopy];
+    v15 = [[WFTriggerNotificationScheduler alloc] initWithUserNotificationManager:v14 databaseProvider:providerCopy];
     scheduler = v13->_scheduler;
     v13->_scheduler = v15;
 
     v17 = objc_alloc(MEMORY[0x277CE2028]);
     v18 = [v17 initWithBundleIdentifier:*MEMORY[0x277D7A340]];
-    v19 = [[WFTriggerBootManager alloc] initWithDatabaseProvider:v9 notificationCenter:v18];
+    v19 = [[WFTriggerBootManager alloc] initWithDatabaseProvider:providerCopy notificationCenter:v18];
     [(WFTriggerBootManager *)v19 start];
     triggerBootManager = v13->_triggerBootManager;
     v13->_triggerBootManager = v19;
     v21 = v19;
 
-    v22 = [[WFTriggerEventQueue alloc] initWithDatabaseProvider:v9 notificationManager:v14 notificationScheduler:v13->_scheduler triggerBootManager:v21];
+    v22 = [[WFTriggerEventQueue alloc] initWithDatabaseProvider:providerCopy notificationManager:v14 notificationScheduler:v13->_scheduler triggerBootManager:v21];
     eventQueue = v13->_eventQueue;
     v13->_eventQueue = v22;
 
@@ -646,7 +646,7 @@ uint64_t __56__WFTriggerRegistrar_registerAllTriggersWithCompletion___block_invo
     queue = v13->_queue;
     v13->_queue = v26;
 
-    v28 = [[WFCoreDuetListener alloc] initWithDatabaseProvider:v9 eventQueue:v13->_eventQueue];
+    v28 = [[WFCoreDuetListener alloc] initWithDatabaseProvider:providerCopy eventQueue:v13->_eventQueue];
     coreDuetListener = v13->_coreDuetListener;
     v13->_coreDuetListener = v28;
 

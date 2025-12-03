@@ -1,79 +1,79 @@
 @interface MONowPlayingMediaManager
-- (BOOL)_needRefreshAppInfo:(id)a3;
-- (BOOL)_persistMediaAppInfoPlistFile:(id)a3 withData:(id)a4;
-- (BOOL)streamNowPlayingEventsFromSource:(id)a3 startDate:(id)a4 endDate:(id)a5 error:(id *)a6 processEvent:(id)a7;
-- (MONowPlayingMediaManager)initWithNowPlayingStream:(id)a3 momentStore:(id)a4;
-- (MONowPlayingMediaManager)initWithUniverse:(id)a3;
-- (double)countTotalPlayTime:(id)a3;
-- (id)_calculateEndDateFromMediaPlaySessions:(id)a3;
-- (id)_calculateStartDateFromMediaPlaySessions:(id)a3;
-- (id)_createEventFromMediaPlayGroupsByDayTitle:(id)a3;
-- (id)_createEventFromMediaPlaySessions:(id)a3;
-- (id)_createNewLeisureMediaEventsFromMediaPlays:(id)a3 storedEvents:(id)a4;
-- (id)_createNewMediaPlayEventsFromMediaPlays:(id)a3 storedEvents:(id)a4;
-- (id)_filterMediaSessionsBasedOnApps:(id)a3;
-- (id)_filterMediaSessionsBasedOnMusicApps:(id)a3;
-- (id)_findUnrehdyratedEventsFromStoredEvents:(id)a3 rehydratedEvents:(id)a4;
-- (id)_generateMediaPlayGroupsByDayTitle:(id)a3;
-- (id)_generateMediaPlaySessionGroupsByDay:(id)a3;
-- (id)_generateMediaPlaySessionsFrom:(id)a3;
+- (BOOL)_needRefreshAppInfo:(id)info;
+- (BOOL)_persistMediaAppInfoPlistFile:(id)file withData:(id)data;
+- (BOOL)streamNowPlayingEventsFromSource:(id)source startDate:(id)date endDate:(id)endDate error:(id *)error processEvent:(id)event;
+- (MONowPlayingMediaManager)initWithNowPlayingStream:(id)stream momentStore:(id)store;
+- (MONowPlayingMediaManager)initWithUniverse:(id)universe;
+- (double)countTotalPlayTime:(id)time;
+- (id)_calculateEndDateFromMediaPlaySessions:(id)sessions;
+- (id)_calculateStartDateFromMediaPlaySessions:(id)sessions;
+- (id)_createEventFromMediaPlayGroupsByDayTitle:(id)title;
+- (id)_createEventFromMediaPlaySessions:(id)sessions;
+- (id)_createNewLeisureMediaEventsFromMediaPlays:(id)plays storedEvents:(id)events;
+- (id)_createNewMediaPlayEventsFromMediaPlays:(id)plays storedEvents:(id)events;
+- (id)_filterMediaSessionsBasedOnApps:(id)apps;
+- (id)_filterMediaSessionsBasedOnMusicApps:(id)apps;
+- (id)_findUnrehdyratedEventsFromStoredEvents:(id)events rehydratedEvents:(id)rehydratedEvents;
+- (id)_generateMediaPlayGroupsByDayTitle:(id)title;
+- (id)_generateMediaPlaySessionGroupsByDay:(id)day;
+- (id)_generateMediaPlaySessionsFrom:(id)from;
 - (id)_getMediaAppCategoryPlistFileURL;
 - (id)_getMediaAppInfoPlistFileURL;
-- (id)_groupMediaPlayGroupsByTitle:(id)a3;
-- (id)_groupMediaPlaySessionsByDay:(id)a3;
-- (id)_groupMediaPlaySessionsByTitle:(id)a3;
-- (id)_groupMediaPlaySessionsByTitleDay:(id)a3;
-- (id)_providerIdOfStartDate:(id)a3 endDate:(id)a4;
-- (id)_readMediaAppInfoPlistFile:(id)a3;
-- (id)_rehydratedMediaEvents:(id)a3 usingNowPlayingEvents:(id)a4;
-- (id)_rehydratedMediaSessionsForEvents:(id)a3 usingNowPlayingEvents:(id)a4;
-- (id)getStringFromBMDeviceType:(int64_t)a3;
-- (id)groupDevicesBaseOnType:(id)a3;
-- (id)rehydratedMediaPlayEvents:(id)a3;
-- (unint64_t)makeDuplicationHashForEvent:(id)a3;
-- (void)_fetchAppCateogryByBundleIds:(id)a3;
-- (void)_fetchMediaPlayEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)_fetchNowPlayingEventsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5;
+- (id)_groupMediaPlayGroupsByTitle:(id)title;
+- (id)_groupMediaPlaySessionsByDay:(id)day;
+- (id)_groupMediaPlaySessionsByTitle:(id)title;
+- (id)_groupMediaPlaySessionsByTitleDay:(id)day;
+- (id)_providerIdOfStartDate:(id)date endDate:(id)endDate;
+- (id)_readMediaAppInfoPlistFile:(id)file;
+- (id)_rehydratedMediaEvents:(id)events usingNowPlayingEvents:(id)playingEvents;
+- (id)_rehydratedMediaSessionsForEvents:(id)events usingNowPlayingEvents:(id)playingEvents;
+- (id)getStringFromBMDeviceType:(int64_t)type;
+- (id)groupDevicesBaseOnType:(id)type;
+- (id)rehydratedMediaPlayEvents:(id)events;
+- (unint64_t)makeDuplicationHashForEvent:(id)event;
+- (void)_fetchAppCateogryByBundleIds:(id)ids;
+- (void)_fetchMediaPlayEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)_fetchNowPlayingEventsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler;
 - (void)_getMediaAppCategoryPlistFileURL;
 - (void)_getMediaAppInfoPlistFileURL;
-- (void)_rehydratedMediaPlayEvents:(id)a3 handler:(id)a4;
-- (void)_removeOldMediaAppCategoryPlistFile:(id)a3;
-- (void)_saveMediaPlayGroupsByDayTitle:(id)a3 startDate:(id)a4 handler:(id)a5;
-- (void)_saveMediaPlaySessionsEvents:(id)a3 handler:(id)a4;
-- (void)_setDynamicProperties:(id)a3 mediaPlay:(id)a4;
-- (void)_updateLearnFromAppStatusTable:(id)a3;
-- (void)fetchMediaPlayEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)rehydratedMediaPlayEvents:(id)a3 handler:(id)a4;
+- (void)_rehydratedMediaPlayEvents:(id)events handler:(id)handler;
+- (void)_removeOldMediaAppCategoryPlistFile:(id)file;
+- (void)_saveMediaPlayGroupsByDayTitle:(id)title startDate:(id)date handler:(id)handler;
+- (void)_saveMediaPlaySessionsEvents:(id)events handler:(id)handler;
+- (void)_setDynamicProperties:(id)properties mediaPlay:(id)play;
+- (void)_updateLearnFromAppStatusTable:(id)table;
+- (void)fetchMediaPlayEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)rehydratedMediaPlayEvents:(id)events handler:(id)handler;
 @end
 
 @implementation MONowPlayingMediaManager
 
-- (MONowPlayingMediaManager)initWithUniverse:(id)a3
+- (MONowPlayingMediaManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 getService:v6];
+  v7 = [universeCopy getService:v6];
   configurationManager = self->_configurationManager;
   self->_configurationManager = v7;
 
   v9 = BiomeLibrary();
-  v10 = [v9 Media];
-  v11 = [v10 NowPlaying];
+  media = [v9 Media];
+  nowPlaying = [media NowPlaying];
 
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v14 = [v4 getService:v13];
+  v14 = [universeCopy getService:v13];
 
-  v15 = [(MONowPlayingMediaManager *)self initWithNowPlayingStream:v11 momentStore:v14];
+  v15 = [(MONowPlayingMediaManager *)self initWithNowPlayingStream:nowPlaying momentStore:v14];
   return v15;
 }
 
-- (MONowPlayingMediaManager)initWithNowPlayingStream:(id)a3 momentStore:(id)a4
+- (MONowPlayingMediaManager)initWithNowPlayingStream:(id)stream momentStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  streamCopy = stream;
+  storeCopy = store;
+  if (!storeCopy)
   {
     v37 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -87,10 +87,10 @@
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!streamCopy)
   {
 LABEL_9:
-    v36 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -100,7 +100,7 @@ LABEL_9:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_stream, a3);
+    objc_storeStrong(&v10->_stream, stream);
     v12 = objc_opt_new();
     syncService = v11->_syncService;
     v11->_syncService = v12;
@@ -110,7 +110,7 @@ LABEL_9:
     queue = v11->_queue;
     v11->_queue = v15;
 
-    objc_storeStrong(&v11->_momentStore, a4);
+    objc_storeStrong(&v11->_momentStore, store);
     v17 = [NSSet alloc];
     v18 = [v17 initWithArray:kFirstPartyMediaBundleId];
     firstPartyBundleIdSet = v11->_firstPartyBundleIdSet;
@@ -129,13 +129,13 @@ LABEL_9:
     v11->_dateFormatter = v24;
     v26 = v24;
 
-    v27 = [(MONowPlayingMediaManager *)v11 _getMediaAppCategoryPlistFileURL];
+    _getMediaAppCategoryPlistFileURL = [(MONowPlayingMediaManager *)v11 _getMediaAppCategoryPlistFileURL];
     plistFileURL = v11->_plistFileURL;
-    v11->_plistFileURL = v27;
+    v11->_plistFileURL = _getMediaAppCategoryPlistFileURL;
 
-    v29 = [(MONowPlayingMediaManager *)v11 _getMediaAppInfoPlistFileURL];
+    _getMediaAppInfoPlistFileURL = [(MONowPlayingMediaManager *)v11 _getMediaAppInfoPlistFileURL];
     plistAppInfoFileURL = v11->_plistAppInfoFileURL;
-    v11->_plistAppInfoFileURL = v29;
+    v11->_plistAppInfoFileURL = _getMediaAppInfoPlistFileURL;
 
     [(MONowPlayingMediaManager *)v11 _removeOldMediaAppCategoryPlistFile:v11->_plistFileURL];
     v31 = [(MONowPlayingMediaManager *)v11 _readMediaAppInfoPlistFile:v11->_plistAppInfoFileURL];
@@ -150,21 +150,21 @@ LABEL_9:
   }
 
   self = v11;
-  v36 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v36;
+  return selfCopy;
 }
 
-- (BOOL)streamNowPlayingEventsFromSource:(id)a3 startDate:(id)a4 endDate:(id)a5 error:(id *)a6 processEvent:(id)a7
+- (BOOL)streamNowPlayingEventsFromSource:(id)source startDate:(id)date endDate:(id)endDate error:(id *)error processEvent:(id)event
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  [v12 timeIntervalSinceReferenceDate];
+  sourceCopy = source;
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventCopy = event;
+  [dateCopy timeIntervalSinceReferenceDate];
   v16 = v15;
-  [v13 timeIntervalSinceReferenceDate];
+  [endDateCopy timeIntervalSinceReferenceDate];
   v18 = v17;
   v19 = CFAbsoluteTimeGetCurrent() + -864000.0;
   if (v16 <= v19)
@@ -172,24 +172,24 @@ LABEL_10:
     v16 = v19;
   }
 
-  if (v11)
+  if (sourceCopy)
   {
-    v20 = [v11 name];
-    v21 = -[MONowPlayingMediaManager getStringFromBMDeviceType:](self, "getStringFromBMDeviceType:", [v11 platform]);
+    name = [sourceCopy name];
+    v21 = -[MONowPlayingMediaManager getStringFromBMDeviceType:](self, "getStringFromBMDeviceType:", [sourceCopy platform]);
     if (v16 < v18)
     {
       stream = self->_stream;
-      v52 = v11;
+      v52 = sourceCopy;
       v23 = [NSArray arrayWithObjects:&v52 count:1];
       v34 = 0;
 LABEL_8:
       v24 = [NSNumber numberWithDouble:v16];
       v25 = [NSNumber numberWithDouble:v18];
-      BYTE1(v33) = v11 == 0;
+      BYTE1(v33) = sourceCopy == 0;
       LOBYTE(v33) = 0;
       v26 = [(BMStream *)stream publishersForDevices:v23 withUseCase:@"Moments" startTime:v24 endTime:v25 maxEvents:0 lastN:0 reversed:v33 includeLocal:&__block_literal_global_59 pipeline:?];
 
-      if (v11)
+      if (sourceCopy)
       {
       }
 
@@ -201,7 +201,7 @@ LABEL_8:
         *&buf[12] = 2048;
         *&buf[14] = v18;
         *&buf[22] = 2112;
-        v49 = v20;
+        v49 = name;
         _os_log_debug_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "Call publishersForDevices with startTime, %f, endTime, %f, device, %@", buf, 0x20u);
       }
 
@@ -215,7 +215,7 @@ LABEL_8:
       v49 = __Block_byref_object_copy__47;
       v50 = __Block_byref_object_dispose__47;
       v51 = 0;
-      v28 = [v26 merge];
+      merge = [v26 merge];
       v43[0] = _NSConcreteStackBlock;
       v43[1] = 3221225472;
       v43[2] = __98__MONowPlayingMediaManager_streamNowPlayingEventsFromSource_startDate_endDate_error_processEvent___block_invoke_158;
@@ -226,19 +226,19 @@ LABEL_8:
       v36[1] = 3221225472;
       v36[2] = __98__MONowPlayingMediaManager_streamNowPlayingEventsFromSource_startDate_endDate_error_processEvent___block_invoke_2;
       v36[3] = &unk_1003406C8;
-      v37 = v12;
-      v38 = v13;
-      v20 = v20;
-      v39 = v20;
+      v37 = dateCopy;
+      v38 = endDateCopy;
+      name = name;
+      v39 = name;
       v42 = v34;
       v21 = v21;
       v40 = v21;
-      v41 = v14;
-      v29 = [v28 sinkWithCompletion:v43 receiveInput:v36];
+      v41 = eventCopy;
+      v29 = [merge sinkWithCompletion:v43 receiveInput:v36];
 
-      if (a6)
+      if (error)
       {
-        *a6 = *(*&buf[8] + 40);
+        *error = *(*&buf[8] + 40);
       }
 
       v30 = *(v45 + 24);
@@ -258,11 +258,11 @@ LABEL_8:
       stream = self->_stream;
       v23 = &__NSArray0__struct;
       v34 = 1;
-      v20 = @"local";
+      name = @"local";
       goto LABEL_8;
     }
 
-    v20 = @"local";
+    name = @"local";
   }
 
   v31 = _mo_log_facility_get_os_log(&MOLogFacilityRepeatedMedia);
@@ -273,11 +273,11 @@ LABEL_8:
     *&buf[12] = 2048;
     *&buf[14] = v18;
     *&buf[22] = 2112;
-    v49 = v20;
+    v49 = name;
     _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "Stop calling publishersForDevices due to inverted start/end timestamp, startTime, %f, endTime, %f, device, %@", buf, 0x20u);
   }
 
-  (*(v14 + 2))(v14, 0);
+  (*(eventCopy + 2))(eventCopy, 0);
   v30 = 1;
 LABEL_19:
 
@@ -325,24 +325,24 @@ void __98__MONowPlayingMediaManager_streamNowPlayingEventsFromSource_startDate_e
   }
 }
 
-- (void)_fetchNowPlayingEventsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5
+- (void)_fetchNowPlayingEventsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MONowPlayingMediaManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(MONowPlayingMediaManager *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __93__MONowPlayingMediaManager__fetchNowPlayingEventsBetweenStartDate_EndDate_CompletionHandler___block_invoke;
   v15[3] = &unk_10033DFC8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
-  dispatch_async(v11, v15);
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  v18 = handlerCopy;
+  v12 = endDateCopy;
+  v13 = dateCopy;
+  v14 = handlerCopy;
+  dispatch_async(queue, v15);
 }
 
 void __93__MONowPlayingMediaManager__fetchNowPlayingEventsBetweenStartDate_EndDate_CompletionHandler___block_invoke(uint64_t a1)
@@ -631,35 +631,35 @@ uint64_t __93__MONowPlayingMediaManager__fetchNowPlayingEventsBetweenStartDate_E
   return _objc_release_x1(v3, v4);
 }
 
-- (unint64_t)makeDuplicationHashForEvent:(id)a3
+- (unint64_t)makeDuplicationHashForEvent:(id)event
 {
-  v3 = a3;
-  [v3 timestamp];
+  eventCopy = event;
+  [eventCopy timestamp];
   v5 = floor(v4 / 60.0);
   v6 = +[BSHashBuilder builder];
-  v7 = [v3 bundleID];
-  v8 = [v6 appendString:v7];
-  v9 = [v3 title];
-  v10 = [v8 appendString:v9];
-  v11 = [v10 appendInteger:{objc_msgSend(v3, "playbackState")}];
-  v12 = [v3 iTunesStoreIdentifier];
+  bundleID = [eventCopy bundleID];
+  v8 = [v6 appendString:bundleID];
+  title = [eventCopy title];
+  v10 = [v8 appendString:title];
+  v11 = [v10 appendInteger:{objc_msgSend(eventCopy, "playbackState")}];
+  iTunesStoreIdentifier = [eventCopy iTunesStoreIdentifier];
 
-  v13 = [v11 appendString:v12];
+  v13 = [v11 appendString:iTunesStoreIdentifier];
   v14 = [v13 appendDouble:v5];
   v15 = [v14 hash];
 
   return v15;
 }
 
-- (id)groupDevicesBaseOnType:(id)a3
+- (id)groupDevicesBaseOnType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = typeCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -703,28 +703,28 @@ uint64_t __93__MONowPlayingMediaManager__fetchNowPlayingEventsBetweenStartDate_E
   return v5;
 }
 
-- (id)getStringFromBMDeviceType:(int64_t)a3
+- (id)getStringFromBMDeviceType:(int64_t)type
 {
-  if (a3 > 7)
+  if (type > 7)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1003407D0[a3];
+    return off_1003407D0[type];
   }
 }
 
-- (id)_groupMediaPlaySessionsByDay:(id)a3
+- (id)_groupMediaPlaySessionsByDay:(id)day
 {
-  v4 = a3;
+  dayCopy = day;
   v5 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = dayCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -741,8 +741,8 @@ uint64_t __93__MONowPlayingMediaManager__fetchNowPlayingEventsBetweenStartDate_E
 
         v11 = *(*(&v19 + 1) + 8 * i);
         dateFormatter = self->_dateFormatter;
-        v13 = [v11 startDate];
-        v14 = [(NSDateFormatter *)dateFormatter stringFromDate:v13];
+        startDate = [v11 startDate];
+        v14 = [(NSDateFormatter *)dateFormatter stringFromDate:startDate];
 
         v15 = [v5 objectForKeyedSubscript:v14];
 
@@ -765,13 +765,13 @@ uint64_t __93__MONowPlayingMediaManager__fetchNowPlayingEventsBetweenStartDate_E
   return v5;
 }
 
-- (BOOL)_needRefreshAppInfo:(id)a3
+- (BOOL)_needRefreshAppInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_bundleIdAppInfoMappings objectForKey:v4];
-  if (v5 && (v6 = v5, [(NSMutableDictionary *)self->_bundleIdAppInfoMappings objectForKey:v4], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  infoCopy = info;
+  v5 = [(NSMutableDictionary *)self->_bundleIdAppInfoMappings objectForKey:infoCopy];
+  if (v5 && (v6 = v5, [(NSMutableDictionary *)self->_bundleIdAppInfoMappings objectForKey:infoCopy], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [(NSMutableDictionary *)self->_bundleIdAppInfoMappings objectForKeyedSubscript:v4];
+    v8 = [(NSMutableDictionary *)self->_bundleIdAppInfoMappings objectForKeyedSubscript:infoCopy];
     v9 = [v8 objectForKeyedSubscript:@"date"];
     v10 = v9;
     if (v9 && ([v9 isEqualToString:&stru_1003416B0] & 1) == 0)
@@ -796,11 +796,11 @@ uint64_t __93__MONowPlayingMediaManager__fetchNowPlayingEventsBetweenStartDate_E
   return v11;
 }
 
-- (void)_fetchAppCateogryByBundleIds:(id)a3
+- (void)_fetchAppCateogryByBundleIds:(id)ids
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  idsCopy = ids;
+  v5 = idsCopy;
+  if (idsCopy && [idsCopy count])
   {
     bundleIdAppInfoMappings = self->_bundleIdAppInfoMappings;
     if (bundleIdAppInfoMappings && [(NSMutableDictionary *)bundleIdAppInfoMappings count])
@@ -870,8 +870,8 @@ LABEL_25:
     {
       v17 = [AMSBag bagForProfile:@"MomentsUIService" profileVersion:@"1"];
       v18 = [[AMSMediaTask alloc] initWithType:0 clientIdentifier:@"com.apple.momentsd" clientVersion:@"1" bag:v17];
-      v19 = [v7 allObjects];
-      [v18 setBundleIdentifiers:v19];
+      allObjects = [v7 allObjects];
+      [v18 setBundleIdentifiers:allObjects];
       v20 = dispatch_semaphore_create(0);
       v21 = _mo_log_facility_get_os_log(&MOLogFacilityMediaPlaySessions);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -881,7 +881,7 @@ LABEL_25:
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Start to fetch category info with bundleIds, %@", buf, 0xCu);
       }
 
-      v22 = [v18 perform];
+      perform = [v18 perform];
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = __57__MONowPlayingMediaManager__fetchAppCateogryByBundleIds___block_invoke;
@@ -890,7 +890,7 @@ LABEL_25:
       v31 = v7;
       v23 = v20;
       v32 = v23;
-      [v22 addFinishBlock:v30];
+      [perform addFinishBlock:v30];
       v24 = [NSString stringWithFormat:@"%@ - [%s] - %d - %s", @"MOSemaphoreWait", "/Library/Caches/com.apple.xbs/Sources/Moments/momentsd/PromptEngine/PromptSource/NowPlaying/MONowPlayingMediaManager.m", 476, "[MONowPlayingMediaManager _fetchAppCateogryByBundleIds:]"];
       v29 = 0;
       v25 = MOSemaphoreWaitAndFaultIfTimeout_Internal(v23, &v29, v24, 120.0);
@@ -1206,14 +1206,14 @@ LABEL_41:
   return v4;
 }
 
-- (void)_removeOldMediaAppCategoryPlistFile:(id)a3
+- (void)_removeOldMediaAppCategoryPlistFile:(id)file
 {
-  v3 = a3;
-  if (v3)
+  fileCopy = file;
+  if (fileCopy)
   {
     v4 = +[NSFileManager defaultManager];
-    v5 = [v3 path];
-    v6 = [v4 fileExistsAtPath:v5];
+    path = [fileCopy path];
+    v6 = [v4 fileExistsAtPath:path];
 
     if (v6)
     {
@@ -1223,9 +1223,9 @@ LABEL_41:
         [MONowPlayingMediaManager _removeOldMediaAppCategoryPlistFile:v7];
       }
 
-      v8 = [v3 path];
+      path2 = [fileCopy path];
       v11 = 0;
-      [v4 removeItemAtPath:v8 error:&v11];
+      [v4 removeItemAtPath:path2 error:&v11];
       v9 = v11;
 
       if (v9)
@@ -1240,14 +1240,14 @@ LABEL_41:
   }
 }
 
-- (id)_readMediaAppInfoPlistFile:(id)a3
+- (id)_readMediaAppInfoPlistFile:(id)file
 {
-  v3 = a3;
-  if (v3)
+  fileCopy = file;
+  if (fileCopy)
   {
     v4 = +[NSFileManager defaultManager];
-    v5 = [v3 path];
-    v6 = [v4 fileExistsAtPath:v5];
+    path = [fileCopy path];
+    v6 = [v4 fileExistsAtPath:path];
 
     if (v6)
     {
@@ -1258,7 +1258,7 @@ LABEL_41:
       }
 
       v16 = 0;
-      v8 = [[NSMutableDictionary alloc] initWithContentsOfURL:v3 error:&v16];
+      v8 = [[NSMutableDictionary alloc] initWithContentsOfURL:fileCopy error:&v16];
       v9 = v16;
       v10 = [NSMutableDictionary dictionaryWithDictionary:v8];
 
@@ -1300,13 +1300,13 @@ LABEL_41:
   return v12;
 }
 
-- (BOOL)_persistMediaAppInfoPlistFile:(id)a3 withData:(id)a4
+- (BOOL)_persistMediaAppInfoPlistFile:(id)file withData:(id)data
 {
-  v5 = a3;
-  if (v5)
+  fileCopy = file;
+  if (fileCopy)
   {
     v17 = 0;
-    v6 = [NSPropertyListSerialization dataWithPropertyList:a4 format:100 options:0 error:&v17];
+    v6 = [NSPropertyListSerialization dataWithPropertyList:data format:100 options:0 error:&v17];
     v7 = v17;
     if (v6)
     {
@@ -1321,7 +1321,7 @@ LABEL_41:
     if (v8)
     {
       v16 = 0;
-      v12 = [v6 writeToURL:v5 options:805306369 error:&v16];
+      v12 = [v6 writeToURL:fileCopy options:805306369 error:&v16];
       v9 = v16;
       v13 = _mo_log_facility_get_os_log(&MOLogFacilityMediaPlaySessions);
       v10 = v13;
@@ -1372,15 +1372,15 @@ LABEL_20:
   return v11;
 }
 
-- (id)_groupMediaPlaySessionsByTitleDay:(id)a3
+- (id)_groupMediaPlaySessionsByTitleDay:(id)day
 {
-  v3 = a3;
+  dayCopy = day;
   v44 = objc_opt_new();
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v4 = v3;
+  v4 = dayCopy;
   v5 = [v4 countByEnumeratingWithState:&v56 objects:v64 count:16];
   v40 = v4;
   if (v5)
@@ -1398,30 +1398,30 @@ LABEL_20:
 
         v9 = *(*(&v56 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v9 startDate];
-        if (v11)
+        startDate = [v9 startDate];
+        if (startDate)
         {
-          v12 = v11;
-          v13 = [v9 title];
-          if (v13)
+          v12 = startDate;
+          title = [v9 title];
+          if (title)
           {
-            v14 = v13;
-            v15 = [v9 bundleId];
+            v14 = title;
+            bundleId = [v9 bundleId];
 
-            if (!v15)
+            if (!bundleId)
             {
               goto LABEL_13;
             }
 
             dateFormatter = self->_dateFormatter;
-            v17 = [v9 startDate];
-            v12 = [(NSDateFormatter *)dateFormatter stringFromDate:v17];
+            startDate2 = [v9 startDate];
+            v12 = [(NSDateFormatter *)dateFormatter stringFromDate:startDate2];
 
-            v18 = [v9 title];
-            v19 = [v18 stringByAppendingString:v12];
+            title2 = [v9 title];
+            v19 = [title2 stringByAppendingString:v12];
 
-            v20 = [v9 bundleId];
-            v21 = [v20 stringByAppendingString:v19];
+            bundleId2 = [v9 bundleId];
+            v21 = [bundleId2 stringByAppendingString:v19];
 
             v22 = [v44 objectForKeyedSubscript:v21];
 
@@ -1532,15 +1532,15 @@ LABEL_13:
   return v25;
 }
 
-- (id)_groupMediaPlaySessionsByTitle:(id)a3
+- (id)_groupMediaPlaySessionsByTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = titleCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -1556,16 +1556,16 @@ LABEL_13:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 title];
-        v12 = [v4 objectForKeyedSubscript:v11];
+        title = [v10 title];
+        v12 = [v4 objectForKeyedSubscript:title];
 
         if (!v12)
         {
           v13 = objc_opt_new();
-          [v4 setObject:v13 forKeyedSubscript:v11];
+          [v4 setObject:v13 forKeyedSubscript:title];
         }
 
-        v14 = [v4 objectForKeyedSubscript:v11];
+        v14 = [v4 objectForKeyedSubscript:title];
         [v14 addObject:v10];
       }
 
@@ -1578,15 +1578,15 @@ LABEL_13:
   return v4;
 }
 
-- (id)_groupMediaPlayGroupsByTitle:(id)a3
+- (id)_groupMediaPlayGroupsByTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = titleCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -1602,24 +1602,24 @@ LABEL_13:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 title];
-        v12 = [v10 title];
+        title = [v10 title];
+        title2 = [v10 title];
 
-        if (!v12)
+        if (!title2)
         {
 
-          v11 = &stru_1003416B0;
+          title = &stru_1003416B0;
         }
 
-        v13 = [v4 objectForKeyedSubscript:v11];
+        v13 = [v4 objectForKeyedSubscript:title];
 
         if (!v13)
         {
           v14 = objc_opt_new();
-          [v4 setObject:v14 forKeyedSubscript:v11];
+          [v4 setObject:v14 forKeyedSubscript:title];
         }
 
-        v15 = [v4 objectForKeyedSubscript:v11];
+        v15 = [v4 objectForKeyedSubscript:title];
         [v15 addObject:v10];
       }
 
@@ -1632,17 +1632,17 @@ LABEL_13:
   return v4;
 }
 
-- (id)_calculateStartDateFromMediaPlaySessions:(id)a3
+- (id)_calculateStartDateFromMediaPlaySessions:(id)sessions
 {
-  v3 = a3;
-  if ([v3 count])
+  sessionsCopy = sessions;
+  if ([sessionsCopy count])
   {
     v4 = +[NSDate distantFuture];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = v3;
+    v5 = sessionsCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -1658,15 +1658,15 @@ LABEL_13:
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 startDate];
-          v12 = [v11 earlierDate:v4];
-          v13 = [v10 startDate];
+          startDate = [v10 startDate];
+          v12 = [startDate earlierDate:v4];
+          startDate2 = [v10 startDate];
 
-          if (v12 == v13)
+          if (v12 == startDate2)
           {
-            v14 = [v10 startDate];
+            startDate3 = [v10 startDate];
 
-            v4 = v14;
+            v4 = startDate3;
           }
         }
 
@@ -1685,17 +1685,17 @@ LABEL_13:
   return v4;
 }
 
-- (id)_calculateEndDateFromMediaPlaySessions:(id)a3
+- (id)_calculateEndDateFromMediaPlaySessions:(id)sessions
 {
-  v3 = a3;
-  if ([v3 count])
+  sessionsCopy = sessions;
+  if ([sessionsCopy count])
   {
     v4 = +[NSDate distantPast];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = v3;
+    v5 = sessionsCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -1711,15 +1711,15 @@ LABEL_13:
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 endDate];
-          v12 = [v11 laterDate:v4];
-          v13 = [v10 endDate];
+          endDate = [v10 endDate];
+          v12 = [endDate laterDate:v4];
+          endDate2 = [v10 endDate];
 
-          if (v12 == v13)
+          if (v12 == endDate2)
           {
-            v14 = [v10 endDate];
+            endDate3 = [v10 endDate];
 
-            v4 = v14;
+            v4 = endDate3;
           }
         }
 
@@ -1738,13 +1738,13 @@ LABEL_13:
   return v4;
 }
 
-- (id)_generateMediaPlaySessionsFrom:(id)a3
+- (id)_generateMediaPlaySessionsFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v5 = objc_opt_new();
-  if ([v4 count])
+  if ([fromCopy count])
   {
-    v6 = [(MONowPlayingMediaManager *)self _groupMediaPlayGroupsByTitle:v4];
+    v6 = [(MONowPlayingMediaManager *)self _groupMediaPlayGroupsByTitle:fromCopy];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = __59__MONowPlayingMediaManager__generateMediaPlaySessionsFrom___block_invoke;
@@ -1876,15 +1876,15 @@ LABEL_24:
 LABEL_28:
 }
 
-- (void)_updateLearnFromAppStatusTable:(id)a3
+- (void)_updateLearnFromAppStatusTable:(id)table
 {
-  v3 = a3;
+  tableCopy = table;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = tableCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1900,12 +1900,12 @@ LABEL_28:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 bundleId];
+        bundleId = [v10 bundleId];
 
-        if (v11)
+        if (bundleId)
         {
-          v12 = [v10 bundleId];
-          [v4 addObject:v12];
+          bundleId2 = [v10 bundleId];
+          [v4 addObject:bundleId2];
         }
       }
 
@@ -1928,13 +1928,13 @@ LABEL_28:
   }
 }
 
-- (id)_generateMediaPlayGroupsByDayTitle:(id)a3
+- (id)_generateMediaPlayGroupsByDayTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = objc_opt_new();
-  if ([v4 count])
+  if ([titleCopy count])
   {
-    v6 = [(MONowPlayingMediaManager *)self _generateMediaPlaySessionsFrom:v4];
+    v6 = [(MONowPlayingMediaManager *)self _generateMediaPlaySessionsFrom:titleCopy];
     v7 = [(MONowPlayingMediaManager *)self _filterMediaSessionsBasedOnMusicApps:v6];
     [(MONowPlayingMediaManager *)self countTotalPlayTime:v7];
     v9 = v8;
@@ -2070,16 +2070,16 @@ LABEL_14:
   }
 }
 
-- (id)_filterMediaSessionsBasedOnMusicApps:(id)a3
+- (id)_filterMediaSessionsBasedOnMusicApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   v53 = objc_opt_new();
   v5 = objc_opt_new();
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v6 = v4;
+  v6 = appsCopy;
   v7 = [v6 countByEnumeratingWithState:&v64 objects:v70 count:16];
   if (v7)
   {
@@ -2095,12 +2095,12 @@ LABEL_14:
         }
 
         v11 = *(*(&v64 + 1) + 8 * i);
-        v12 = [v11 bundleId];
+        bundleId = [v11 bundleId];
 
-        if (v12)
+        if (bundleId)
         {
-          v13 = [v11 bundleId];
-          [v5 addObject:v13];
+          bundleId2 = [v11 bundleId];
+          [v5 addObject:bundleId2];
         }
       }
 
@@ -2133,34 +2133,34 @@ LABEL_14:
 
         v18 = *(*(&v60 + 1) + 8 * j);
         firstPartyBundleIdSet = self->_firstPartyBundleIdSet;
-        v20 = [v18 bundleId];
-        if ([(NSSet *)firstPartyBundleIdSet containsObject:v20])
+        bundleId3 = [v18 bundleId];
+        if ([(NSSet *)firstPartyBundleIdSet containsObject:bundleId3])
         {
-          v21 = [v18 title];
-          v22 = [v21 length];
+          title = [v18 title];
+          v22 = [title length];
 
           if (!v22)
           {
             continue;
           }
 
-          v23 = [v18 bundleId];
-          v24 = [v23 isEqualToString:@"com.apple.MediaPlayer.RemotePlayerService"];
+          bundleId4 = [v18 bundleId];
+          v24 = [bundleId4 isEqualToString:@"com.apple.MediaPlayer.RemotePlayerService"];
 
           if (!v24)
           {
             goto LABEL_21;
           }
 
-          v20 = [v18 mediaType];
-          if ([v20 containsString:@"Music"])
+          bundleId3 = [v18 mediaType];
+          if ([bundleId3 containsString:@"Music"])
           {
-            v25 = [v18 productId];
-            if (v25)
+            productId = [v18 productId];
+            if (productId)
             {
-              v26 = v25;
-              v27 = [v18 productId];
-              v28 = [v27 isEqualToString:&stru_1003416B0];
+              v26 = productId;
+              productId2 = [v18 productId];
+              v28 = [productId2 isEqualToString:&stru_1003416B0];
 
               if (v28)
               {
@@ -2212,9 +2212,9 @@ LABEL_21:
           v35 = objc_autoreleasePoolPush();
           v36 = self->_bundleIdAppInfoMappings;
           v37 = v34;
-          v38 = [v34 bundleId];
+          bundleId5 = [v34 bundleId];
           v39 = +[NSCharacterSet whitespaceCharacterSet];
-          v40 = [v38 stringByTrimmingCharactersInSet:v39];
+          v40 = [bundleId5 stringByTrimmingCharactersInSet:v39];
           v41 = [(NSMutableDictionary *)v36 objectForKeyedSubscript:v40];
 
           if (v41)
@@ -2228,12 +2228,12 @@ LABEL_21:
           }
 
           v43 = self->_firstPartyBundleIdSet;
-          v44 = [v37 bundleId];
-          if (![(NSSet *)v43 containsObject:v44]&& v42 && (([(__CFString *)v42 isEqualToString:v51]& 1) != 0 || ([(__CFString *)v42 isEqualToString:v50]& 1) != 0 || ([(__CFString *)v42 isEqualToString:v49]& 1) != 0))
+          bundleId6 = [v37 bundleId];
+          if (![(NSSet *)v43 containsObject:bundleId6]&& v42 && (([(__CFString *)v42 isEqualToString:v51]& 1) != 0 || ([(__CFString *)v42 isEqualToString:v50]& 1) != 0 || ([(__CFString *)v42 isEqualToString:v49]& 1) != 0))
           {
             mediaBundleDeniedIdSet = self->_mediaBundleDeniedIdSet;
-            v46 = [v37 bundleId];
-            LOBYTE(mediaBundleDeniedIdSet) = [(NSSet *)mediaBundleDeniedIdSet containsObject:v46];
+            bundleId7 = [v37 bundleId];
+            LOBYTE(mediaBundleDeniedIdSet) = [(NSSet *)mediaBundleDeniedIdSet containsObject:bundleId7];
 
             if ((mediaBundleDeniedIdSet & 1) == 0)
             {
@@ -2260,15 +2260,15 @@ LABEL_21:
   return v53;
 }
 
-- (id)_filterMediaSessionsBasedOnApps:(id)a3
+- (id)_filterMediaSessionsBasedOnApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   v42 = objc_opt_new();
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v5 = v4;
+  v5 = appsCopy;
   v6 = [v5 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v6)
   {
@@ -2285,20 +2285,20 @@ LABEL_21:
 
         v9 = *(*(&v44 + 1) + 8 * i);
         firstPartyBundleIdSet = self->_firstPartyBundleIdSet;
-        v11 = [v9 bundleId];
-        if (![(NSSet *)firstPartyBundleIdSet containsObject:v11])
+        bundleId = [v9 bundleId];
+        if (![(NSSet *)firstPartyBundleIdSet containsObject:bundleId])
         {
 
 LABEL_16:
-          v23 = [v9 endDate];
-          v24 = [v9 startDate];
-          [v23 timeIntervalSinceDate:v24];
+          endDate = [v9 endDate];
+          startDate = [v9 startDate];
+          [endDate timeIntervalSinceDate:startDate];
           v26 = v25;
 
           bundleIdAppInfoMappings = self->_bundleIdAppInfoMappings;
-          v28 = [v9 bundleId];
+          bundleId2 = [v9 bundleId];
           v29 = +[NSCharacterSet whitespaceCharacterSet];
-          v30 = [v28 stringByTrimmingCharactersInSet:v29];
+          v30 = [bundleId2 stringByTrimmingCharactersInSet:v29];
           v31 = [(NSMutableDictionary *)bundleIdAppInfoMappings objectForKeyedSubscript:v30];
 
           if (v31)
@@ -2311,15 +2311,15 @@ LABEL_16:
             v32 = &stru_1003416B0;
           }
 
-          v33 = [v9 bundleId];
-          v34 = [v9 mediaType];
-          v35 = [MOMediaPlaySession isValidThirdPartyEvent:v33 bundleCategory:v32 mediaTypeString:v34 playTime:v26];
+          bundleId3 = [v9 bundleId];
+          mediaType = [v9 mediaType];
+          v35 = [MOMediaPlaySession isValidThirdPartyEvent:bundleId3 bundleCategory:v32 mediaTypeString:mediaType playTime:v26];
 
           if (v35)
           {
-            v36 = [v9 title];
+            title = [v9 title];
 
-            if (v36)
+            if (title)
             {
               [v42 addObject:v9];
             }
@@ -2328,21 +2328,21 @@ LABEL_16:
           continue;
         }
 
-        v12 = [v9 title];
-        v13 = [v12 length];
+        title2 = [v9 title];
+        v13 = [title2 length];
 
         if (!v13)
         {
           goto LABEL_16;
         }
 
-        v14 = [v9 bundleId];
-        v15 = [v14 isEqualToString:@"com.apple.Music"];
+        bundleId4 = [v9 bundleId];
+        v15 = [bundleId4 isEqualToString:@"com.apple.Music"];
         if ((v15 & 1) == 0)
         {
-          v16 = [v9 bundleId];
-          v41 = v16;
-          if (([v16 isEqualToString:@"com.apple.podcasts"] & 1) == 0)
+          bundleId5 = [v9 bundleId];
+          v41 = bundleId5;
+          if (([bundleId5 isEqualToString:@"com.apple.podcasts"] & 1) == 0)
           {
 
 LABEL_33:
@@ -2352,8 +2352,8 @@ LABEL_33:
         }
 
         v17 = v5;
-        v18 = [v9 album];
-        if (!v18)
+        album = [v9 album];
+        if (!album)
         {
           if (!v15)
           {
@@ -2366,9 +2366,9 @@ LABEL_25:
           continue;
         }
 
-        v19 = v18;
-        v20 = [v9 album];
-        if (([v20 isEqualToString:&stru_1003416B0] & 1) != 0 || (objc_msgSend(v9, "productId"), (v21 = objc_claimAutoreleasedReturnValue()) == 0))
+        v19 = album;
+        album2 = [v9 album];
+        if (([album2 isEqualToString:&stru_1003416B0] & 1) != 0 || (objc_msgSend(v9, "productId"), (v21 = objc_claimAutoreleasedReturnValue()) == 0))
         {
 
           if (!v15)
@@ -2380,16 +2380,16 @@ LABEL_25:
         }
 
         v22 = v21;
-        v39 = [v9 productId];
-        if ([v39 isEqualToString:&stru_1003416B0])
+        productId = [v9 productId];
+        if ([productId isEqualToString:&stru_1003416B0])
         {
           v40 = 1;
         }
 
         else
         {
-          v38 = [v9 productId];
-          v40 = [v38 isEqualToString:@"null"];
+          productId2 = [v9 productId];
+          v40 = [productId2 isEqualToString:@"null"];
         }
 
         if ((v15 & 1) == 0)
@@ -2412,14 +2412,14 @@ LABEL_25:
   return v42;
 }
 
-- (double)countTotalPlayTime:(id)a3
+- (double)countTotalPlayTime:(id)time
 {
-  v3 = a3;
+  timeCopy = time;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [timeCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2431,17 +2431,17 @@ LABEL_25:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(timeCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 endDate];
-        v11 = [v9 startDate];
-        [v10 timeIntervalSinceDate:v11];
+        endDate = [v9 endDate];
+        startDate = [v9 startDate];
+        [endDate timeIntervalSinceDate:startDate];
         v7 = v7 + v12;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [timeCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -2455,13 +2455,13 @@ LABEL_25:
   return v7;
 }
 
-- (id)_generateMediaPlaySessionGroupsByDay:(id)a3
+- (id)_generateMediaPlaySessionGroupsByDay:(id)day
 {
-  v4 = a3;
-  if ([v4 count])
+  dayCopy = day;
+  if ([dayCopy count])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [(MONowPlayingMediaManager *)self _generateMediaPlaySessionsFrom:v4];
+    v6 = [(MONowPlayingMediaManager *)self _generateMediaPlaySessionsFrom:dayCopy];
     v7 = [(MONowPlayingMediaManager *)self _filterMediaSessionsBasedOnApps:v6];
     v8 = [(MONowPlayingMediaManager *)self _groupMediaPlaySessionsByDay:v7];
 
@@ -2476,11 +2476,11 @@ LABEL_25:
   return v8;
 }
 
-- (id)_createEventFromMediaPlayGroupsByDayTitle:(id)a3
+- (id)_createEventFromMediaPlayGroupsByDayTitle:(id)title
 {
-  v5 = a3;
-  v6 = [v5 mediaPlaySessions];
-  v7 = [v6 count];
+  titleCopy = title;
+  mediaPlaySessions = [titleCopy mediaPlaySessions];
+  v7 = [mediaPlaySessions count];
 
   if (!v7)
   {
@@ -2494,36 +2494,36 @@ LABEL_25:
     [v9 handleFailureInMethod:a2 object:self file:@"MONowPlayingMediaManager.m" lineNumber:854 description:{@"mediaPlay has no mediaPlaySessions. (in %s:%d)", "-[MONowPlayingMediaManager _createEventFromMediaPlayGroupsByDayTitle:]", 854}];
   }
 
-  v10 = [v5 mediaPlaySessions];
-  v11 = [(MONowPlayingMediaManager *)self _calculateStartDateFromMediaPlaySessions:v10];
+  mediaPlaySessions2 = [titleCopy mediaPlaySessions];
+  v11 = [(MONowPlayingMediaManager *)self _calculateStartDateFromMediaPlaySessions:mediaPlaySessions2];
 
-  v12 = [v5 mediaPlaySessions];
+  mediaPlaySessions3 = [titleCopy mediaPlaySessions];
 
-  v13 = [(MONowPlayingMediaManager *)self _calculateEndDateFromMediaPlaySessions:v12];
+  v13 = [(MONowPlayingMediaManager *)self _calculateEndDateFromMediaPlaySessions:mediaPlaySessions3];
 
   v14 = [MOEvent alloc];
   v15 = +[NSUUID UUID];
   v16 = +[NSDate date];
   v17 = [(MOEvent *)v14 initWithEventIdentifier:v15 startDate:v11 endDate:v13 creationDate:v16 provider:3 category:4];
 
-  v18 = [(MONowPlayingMediaManager *)self configurationManager];
+  configurationManager = [(MONowPlayingMediaManager *)self configurationManager];
   LODWORD(v19) = 1242802176;
-  [v18 getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v19];
+  [configurationManager getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v19];
   v21 = [v13 dateByAddingTimeInterval:v20];
   [(MOEvent *)v17 setExpirationDate:v21];
 
   return v17;
 }
 
-- (void)_saveMediaPlayGroupsByDayTitle:(id)a3 startDate:(id)a4 handler:(id)a5
+- (void)_saveMediaPlayGroupsByDayTitle:(id)title startDate:(id)date handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  dateCopy = date;
+  handlerCopy = handler;
   v11 = [NSDate dateWithTimeIntervalSinceNow:-864000.0];
-  if ([v9 isBeforeDate:v11])
+  if ([dateCopy isBeforeDate:v11])
   {
-    v12 = v9;
+    v12 = dateCopy;
 
     v11 = v12;
   }
@@ -2547,7 +2547,7 @@ LABEL_25:
   v21[3] = &unk_100340790;
   v21[4] = self;
   v21[5] = v23;
-  v14 = [v8 _pas_mappedArrayWithTransform:v21];
+  v14 = [titleCopy _pas_mappedArrayWithTransform:v21];
   v15 = self->_momentStore;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
@@ -2555,7 +2555,7 @@ LABEL_25:
   v18[3] = &unk_1003377B8;
   v16 = v14;
   v19 = v16;
-  v17 = v10;
+  v17 = handlerCopy;
   v20 = v17;
   [(MOEventStore *)v15 storeEvents:v16 CompletionHandler:v18];
 
@@ -2669,10 +2669,10 @@ void __77__MONowPlayingMediaManager__saveMediaPlayGroupsByDayTitle_startDate_han
   }
 }
 
-- (void)_saveMediaPlaySessionsEvents:(id)a3 handler:(id)a4
+- (void)_saveMediaPlaySessionsEvents:(id)events handler:(id)handler
 {
-  v38 = a3;
-  v5 = a4;
+  eventsCopy = events;
+  handlerCopy = handler;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
@@ -2689,17 +2689,17 @@ void __77__MONowPlayingMediaManager__saveMediaPlayGroupsByDayTitle_startDate_han
   [(MOEventStore *)momentStore fetchLastEventOfCategories:v6 CompletionHandler:v46];
   v33 = v6;
   v35 = objc_opt_new();
-  v34 = v5;
+  v34 = handlerCopy;
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v8 = [v38 allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v42 objects:v53 count:16];
+  allKeys = [eventsCopy allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v42 objects:v53 count:16];
   if (v9)
   {
     v10 = *v43;
-    obj = v8;
+    obj = allKeys;
     do
     {
       v11 = 0;
@@ -2712,7 +2712,7 @@ void __77__MONowPlayingMediaManager__saveMediaPlayGroupsByDayTitle_startDate_han
 
         v12 = *(*(&v42 + 1) + 8 * v11);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v38 objectForKeyedSubscript:v12];
+        v14 = [eventsCopy objectForKeyedSubscript:v12];
         if ([v14 count])
         {
           v15 = [(MONowPlayingMediaManager *)self _createEventFromMediaPlaySessions:v14];
@@ -2721,19 +2721,19 @@ void __77__MONowPlayingMediaManager__saveMediaPlayGroupsByDayTitle_startDate_han
           {
             if (v48[5])
             {
-              v20 = [v16 startDate];
-              v21 = [v48[5] startDate];
-              v22 = [v20 isEqualToDate:v21];
+              startDate = [v16 startDate];
+              startDate2 = [v48[5] startDate];
+              v22 = [startDate isEqualToDate:startDate2];
 
               if (v22)
               {
-                v23 = [v16 startDate];
-                v24 = [v16 endDate];
-                v25 = [(MONowPlayingMediaManager *)self _providerIdOfStartDate:v23 endDate:v24];
+                startDate3 = [v16 startDate];
+                endDate = [v16 endDate];
+                v25 = [(MONowPlayingMediaManager *)self _providerIdOfStartDate:startDate3 endDate:endDate];
 
-                v26 = [v48[5] startDate];
-                v27 = [v48[5] endDate];
-                v28 = [(MONowPlayingMediaManager *)self _providerIdOfStartDate:v26 endDate:v27];
+                startDate4 = [v48[5] startDate];
+                endDate2 = [v48[5] endDate];
+                v28 = [(MONowPlayingMediaManager *)self _providerIdOfStartDate:startDate4 endDate:endDate2];
 
                 if (([v25 isEqualToString:v28] & 1) == 0)
                 {
@@ -2754,7 +2754,7 @@ void __77__MONowPlayingMediaManager__saveMediaPlayGroupsByDayTitle_startDate_han
       }
 
       while (v9 != v11);
-      v8 = obj;
+      allKeys = obj;
       v29 = [obj countByEnumeratingWithState:&v42 objects:v53 count:16];
       v9 = v29;
     }
@@ -2805,10 +2805,10 @@ void __65__MONowPlayingMediaManager__saveMediaPlaySessionsEvents_handler___block
   }
 }
 
-- (id)_createEventFromMediaPlaySessions:(id)a3
+- (id)_createEventFromMediaPlaySessions:(id)sessions
 {
-  v5 = a3;
-  if (![v5 count])
+  sessionsCopy = sessions;
+  if (![sessionsCopy count])
   {
     v6 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2820,8 +2820,8 @@ void __65__MONowPlayingMediaManager__saveMediaPlaySessionsEvents_handler___block
     [v7 handleFailureInMethod:a2 object:self file:@"MONowPlayingMediaManager.m" lineNumber:947 description:{@"mediaPlaySessions has no sessions. (in %s:%d)", "-[MONowPlayingMediaManager _createEventFromMediaPlaySessions:]", 947}];
   }
 
-  v8 = [(MONowPlayingMediaManager *)self _calculateStartDateFromMediaPlaySessions:v5];
-  v9 = [(MONowPlayingMediaManager *)self _calculateEndDateFromMediaPlaySessions:v5];
+  v8 = [(MONowPlayingMediaManager *)self _calculateStartDateFromMediaPlaySessions:sessionsCopy];
+  v9 = [(MONowPlayingMediaManager *)self _calculateEndDateFromMediaPlaySessions:sessionsCopy];
 
   v10 = [MOEvent alloc];
   v11 = +[NSUUID UUID];
@@ -2834,12 +2834,12 @@ void __65__MONowPlayingMediaManager__saveMediaPlaySessionsEvents_handler___block
   return v13;
 }
 
-- (id)_providerIdOfStartDate:(id)a3 endDate:(id)a4
+- (id)_providerIdOfStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a4;
-  [a3 timeIntervalSinceReferenceDate];
+  endDateCopy = endDate;
+  [date timeIntervalSinceReferenceDate];
   v7 = v6 / 0.01;
-  [v5 timeIntervalSinceReferenceDate];
+  [endDateCopy timeIntervalSinceReferenceDate];
   v9 = v8;
 
   v10 = [[NSString alloc] initWithFormat:@"%ld, %ld", v7, (v9 / 0.01)];
@@ -2847,28 +2847,28 @@ void __65__MONowPlayingMediaManager__saveMediaPlaySessionsEvents_handler___block
   return v10;
 }
 
-- (void)rehydratedMediaPlayEvents:(id)a3 handler:(id)a4
+- (void)rehydratedMediaPlayEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MONowPlayingMediaManager *)self queue];
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MONowPlayingMediaManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __62__MONowPlayingMediaManager_rehydratedMediaPlayEvents_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = eventsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_rehydratedMediaPlayEvents:(id)a3 handler:(id)a4
+- (void)_rehydratedMediaPlayEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count])
+  eventsCopy = events;
+  handlerCopy = handler;
+  if (![eventsCopy count])
   {
     v8 = _mo_log_facility_get_os_log(&MOLogFacilityMediaPlaySessions);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -2877,22 +2877,22 @@ void __65__MONowPlayingMediaManager__saveMediaPlaySessionsEvents_handler___block
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "no event to rehydrate, returning nil", buf, 2u);
     }
 
-    v7[2](v7, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
   }
 
-  v9 = [v6 getDurationOfMOEventArray];
-  v10 = [v9 startDate];
-  v11 = [v9 endDate];
+  getDurationOfMOEventArray = [eventsCopy getDurationOfMOEventArray];
+  startDate = [getDurationOfMOEventArray startDate];
+  endDate = [getDurationOfMOEventArray endDate];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __63__MONowPlayingMediaManager__rehydratedMediaPlayEvents_handler___block_invoke;
   v14[3] = &unk_10033EF30;
-  v16 = self;
-  v17 = v7;
-  v15 = v6;
-  v12 = v6;
-  v13 = v7;
-  [(MONowPlayingMediaManager *)self _fetchNowPlayingEventsBetweenStartDate:v10 EndDate:v11 CompletionHandler:v14];
+  selfCopy = self;
+  v17 = handlerCopy;
+  v15 = eventsCopy;
+  v12 = eventsCopy;
+  v13 = handlerCopy;
+  [(MONowPlayingMediaManager *)self _fetchNowPlayingEventsBetweenStartDate:startDate EndDate:endDate CompletionHandler:v14];
 }
 
 void __63__MONowPlayingMediaManager__rehydratedMediaPlayEvents_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2962,45 +2962,45 @@ LABEL_11:
 LABEL_14:
 }
 
-- (id)rehydratedMediaPlayEvents:(id)a3
+- (id)rehydratedMediaPlayEvents:(id)events
 {
-  v4 = a3;
-  if ([v4 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
-    v5 = [v4 getDurationOfMOEventArray];
+    getDurationOfMOEventArray = [eventsCopy getDurationOfMOEventArray];
     *buf = 0;
     v15 = buf;
     v16 = 0x3032000000;
     v17 = __Block_byref_object_copy__47;
     v18 = __Block_byref_object_dispose__47;
     v19 = 0;
-    v6 = [v5 startDate];
-    v7 = [v5 endDate];
+    startDate = [getDurationOfMOEventArray startDate];
+    endDate = [getDurationOfMOEventArray endDate];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = __54__MONowPlayingMediaManager_rehydratedMediaPlayEvents___block_invoke;
     v13[3] = &unk_100337E98;
     v13[4] = buf;
-    [(MONowPlayingMediaManager *)self _fetchNowPlayingEventsBetweenStartDate:v6 EndDate:v7 CompletionHandler:v13];
+    [(MONowPlayingMediaManager *)self _fetchNowPlayingEventsBetweenStartDate:startDate EndDate:endDate CompletionHandler:v13];
 
     [(MONowPlayingMediaManager *)self waitForQueueEmpty];
-    v8 = [v4 firstObject];
-    v9 = [v8 category];
+    firstObject = [eventsCopy firstObject];
+    category = [firstObject category];
 
-    if (v9 == 6)
+    if (category == 6)
     {
-      v10 = [(MONowPlayingMediaManager *)self _rehydratedMediaSessionsForEvents:v4 usingNowPlayingEvents:*(v15 + 5)];
+      v10 = [(MONowPlayingMediaManager *)self _rehydratedMediaSessionsForEvents:eventsCopy usingNowPlayingEvents:*(v15 + 5)];
     }
 
     else
     {
-      if (v9 != 4)
+      if (category != 4)
       {
         v11 = 0;
         goto LABEL_11;
       }
 
-      v10 = [(MONowPlayingMediaManager *)self _rehydratedMediaEvents:v4 usingNowPlayingEvents:*(v15 + 5)];
+      v10 = [(MONowPlayingMediaManager *)self _rehydratedMediaEvents:eventsCopy usingNowPlayingEvents:*(v15 + 5)];
     }
 
     v11 = v10;
@@ -3010,11 +3010,11 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v5 = _mo_log_facility_get_os_log(&MOLogFacilityMediaPlaySessions);
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  getDurationOfMOEventArray = _mo_log_facility_get_os_log(&MOLogFacilityMediaPlaySessions);
+  if (os_log_type_enabled(getDurationOfMOEventArray, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "no event to rehydrate, returning...", buf, 2u);
+    _os_log_impl(&_mh_execute_header, getDurationOfMOEventArray, OS_LOG_TYPE_INFO, "no event to rehydrate, returning...", buf, 2u);
   }
 
   v11 = &__NSArray0__struct;
@@ -3023,11 +3023,11 @@ LABEL_12:
   return v11;
 }
 
-- (id)_rehydratedMediaSessionsForEvents:(id)a3 usingNowPlayingEvents:(id)a4
+- (id)_rehydratedMediaSessionsForEvents:(id)events usingNowPlayingEvents:(id)playingEvents
 {
-  v6 = a3;
-  v38 = self;
-  v34 = a4;
+  eventsCopy = events;
+  selfCopy = self;
+  playingEventsCopy = playingEvents;
   v39 = [(MONowPlayingMediaManager *)self _generateMediaPlaySessionGroupsByDay:?];
   if ([v39 count])
   {
@@ -3036,7 +3036,7 @@ LABEL_12:
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    obj = v6;
+    obj = eventsCopy;
     v7 = [obj countByEnumeratingWithState:&v53 objects:v62 count:16];
     if (v7)
     {
@@ -3044,7 +3044,7 @@ LABEL_12:
       v9 = 0;
       v10 = *v54;
       v36 = *v54;
-      v37 = v6;
+      v37 = eventsCopy;
       do
       {
         v11 = 0;
@@ -3063,9 +3063,9 @@ LABEL_12:
             v42 = v13;
             v43 = v11;
             v44 = v9;
-            dateFormatter = v38->_dateFormatter;
-            v15 = [v12 startDate];
-            v16 = [(NSDateFormatter *)dateFormatter stringFromDate:v15];
+            dateFormatter = selfCopy->_dateFormatter;
+            startDate = [v12 startDate];
+            v16 = [(NSDateFormatter *)dateFormatter stringFromDate:startDate];
 
             v45 = v16;
             v46 = objc_opt_new();
@@ -3089,13 +3089,13 @@ LABEL_12:
                   }
 
                   v21 = *(*(&v49 + 1) + 8 * i);
-                  v22 = [v21 startDate];
-                  v23 = [v12 startDate];
-                  if ([v22 isOnOrAfter:v23])
+                  startDate2 = [v21 startDate];
+                  startDate3 = [v12 startDate];
+                  if ([startDate2 isOnOrAfter:startDate3])
                   {
-                    v24 = [v21 endDate];
-                    v25 = [v12 endDate];
-                    v26 = [v24 isOnOrBefore:v25];
+                    endDate = [v21 endDate];
+                    endDate2 = [v12 endDate];
+                    v26 = [endDate isOnOrBefore:endDate2];
 
                     if (v26)
                     {
@@ -3137,7 +3137,7 @@ LABEL_12:
 
             v9 = (v44 + 1);
 
-            v6 = v37;
+            eventsCopy = v37;
           }
 
           objc_autoreleasePoolPop(v13);
@@ -3185,16 +3185,16 @@ LABEL_12:
   return v35;
 }
 
-- (id)_rehydratedMediaEvents:(id)a3 usingNowPlayingEvents:(id)a4
+- (id)_rehydratedMediaEvents:(id)events usingNowPlayingEvents:(id)playingEvents
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MONowPlayingMediaManager *)self _generateMediaPlayGroupsByDayTitle:v7];
+  eventsCopy = events;
+  playingEventsCopy = playingEvents;
+  v8 = [(MONowPlayingMediaManager *)self _generateMediaPlayGroupsByDayTitle:playingEventsCopy];
   if ([v8 count])
   {
-    v43 = self;
-    v39 = v7;
-    v40 = v6;
+    selfCopy = self;
+    v39 = playingEventsCopy;
+    v40 = eventsCopy;
     v44 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
     v50 = 0u;
     v51 = 0u;
@@ -3218,13 +3218,13 @@ LABEL_12:
 
           v14 = *(*(&v50 + 1) + 8 * i);
           v15 = objc_autoreleasePoolPush();
-          v16 = [v14 mediaPlaySessions];
-          v17 = [(MONowPlayingMediaManager *)v43 _calculateStartDateFromMediaPlaySessions:v16];
+          mediaPlaySessions = [v14 mediaPlaySessions];
+          v17 = [(MONowPlayingMediaManager *)selfCopy _calculateStartDateFromMediaPlaySessions:mediaPlaySessions];
 
-          v18 = [v14 mediaPlaySessions];
-          v19 = [(MONowPlayingMediaManager *)v43 _calculateEndDateFromMediaPlaySessions:v18];
+          mediaPlaySessions2 = [v14 mediaPlaySessions];
+          v19 = [(MONowPlayingMediaManager *)selfCopy _calculateEndDateFromMediaPlaySessions:mediaPlaySessions2];
 
-          v20 = [(MONowPlayingMediaManager *)v43 _providerIdOfStartDate:v17 endDate:v19];
+          v20 = [(MONowPlayingMediaManager *)selfCopy _providerIdOfStartDate:v17 endDate:v19];
           [v44 setObject:v14 forKeyedSubscript:v20];
 
           objc_autoreleasePoolPop(v15);
@@ -3248,7 +3248,7 @@ LABEL_12:
       v22 = v21;
       v23 = 0;
       v24 = *v47;
-      v25 = v43;
+      v25 = selfCopy;
       do
       {
         for (j = 0; j != v22; j = j + 1)
@@ -3262,16 +3262,16 @@ LABEL_12:
           v28 = objc_autoreleasePoolPush();
           if ([v27 category] == 4)
           {
-            v29 = [v27 startDate];
-            v30 = [v27 endDate];
-            v31 = [(MONowPlayingMediaManager *)v25 _providerIdOfStartDate:v29 endDate:v30];
+            startDate = [v27 startDate];
+            endDate = [v27 endDate];
+            v31 = [(MONowPlayingMediaManager *)v25 _providerIdOfStartDate:startDate endDate:endDate];
             v32 = [v44 objectForKeyedSubscript:v31];
 
-            v25 = v43;
+            v25 = selfCopy;
             if (v32)
             {
               v33 = [v27 copy];
-              [(MONowPlayingMediaManager *)v43 _setDynamicProperties:v33 mediaPlay:v32];
+              [(MONowPlayingMediaManager *)selfCopy _setDynamicProperties:v33 mediaPlay:v32];
               [v41 addObject:v33];
             }
 
@@ -3307,8 +3307,8 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "rehydrated leisure media event count, %lu, stored events count, %d", buf, 0x12u);
     }
 
-    v7 = v39;
-    v6 = v40;
+    playingEventsCopy = v39;
+    eventsCopy = v40;
   }
 
   else
@@ -3325,168 +3325,168 @@ LABEL_12:
   return v41;
 }
 
-- (void)_setDynamicProperties:(id)a3 mediaPlay:(id)a4
+- (void)_setDynamicProperties:(id)properties mediaPlay:(id)play
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 title];
+  propertiesCopy = properties;
+  playCopy = play;
+  title = [playCopy title];
 
-  if (v7)
+  if (title)
   {
-    v8 = [v6 title];
-    [v5 setMediaTitle:v8];
+    title2 = [playCopy title];
+    [propertiesCopy setMediaTitle:title2];
 
     v9 = _mo_log_facility_get_os_log(&MOLogFacilityRepeatedMedia);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [MONowPlayingMediaManager _setDynamicProperties:v5 mediaPlay:?];
+      [MONowPlayingMediaManager _setDynamicProperties:propertiesCopy mediaPlay:?];
     }
   }
 
-  v10 = [v6 album];
+  album = [playCopy album];
 
-  if (v10)
+  if (album)
   {
-    v11 = [v6 album];
-    [v5 setMediaAlbum:v11];
+    album2 = [playCopy album];
+    [propertiesCopy setMediaAlbum:album2];
 
     v12 = _mo_log_facility_get_os_log(&MOLogFacilityRepeatedMedia);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [MONowPlayingMediaManager _setDynamicProperties:v5 mediaPlay:?];
+      [MONowPlayingMediaManager _setDynamicProperties:propertiesCopy mediaPlay:?];
     }
   }
 
-  v13 = [v6 bundleId];
+  bundleId = [playCopy bundleId];
 
-  if (v13)
+  if (bundleId)
   {
-    v14 = [v6 bundleId];
-    [v5 setMediaPlayerBundleId:v14];
+    bundleId2 = [playCopy bundleId];
+    [propertiesCopy setMediaPlayerBundleId:bundleId2];
 
     v15 = _mo_log_facility_get_os_log(&MOLogFacilityRepeatedMedia);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      [MONowPlayingMediaManager _setDynamicProperties:v5 mediaPlay:?];
+      [MONowPlayingMediaManager _setDynamicProperties:propertiesCopy mediaPlay:?];
     }
   }
 
-  v16 = [v6 productId];
+  productId = [playCopy productId];
 
-  if (v16)
+  if (productId)
   {
-    v17 = [v6 productId];
-    [v5 setMediaProductId:v17];
+    productId2 = [playCopy productId];
+    [propertiesCopy setMediaProductId:productId2];
   }
 
-  v18 = [v6 genre];
+  genre = [playCopy genre];
 
-  if (v18)
+  if (genre)
   {
-    v19 = [v6 genre];
-    [v5 setMediaGenre:v19];
+    genre2 = [playCopy genre];
+    [propertiesCopy setMediaGenre:genre2];
   }
 
-  v20 = [v6 mediaType];
+  mediaType = [playCopy mediaType];
 
-  if (v20)
+  if (mediaType)
   {
-    v21 = [v6 mediaType];
-    [v5 setMediaType:v21];
+    mediaType2 = [playCopy mediaType];
+    [propertiesCopy setMediaType:mediaType2];
 
     v22 = _mo_log_facility_get_os_log(&MOLogFacilityRepeatedMedia);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      [MONowPlayingMediaManager _setDynamicProperties:v5 mediaPlay:?];
+      [MONowPlayingMediaManager _setDynamicProperties:propertiesCopy mediaPlay:?];
     }
   }
 
-  v23 = [v6 artist];
+  artist = [playCopy artist];
 
-  if (v23)
+  if (artist)
   {
-    v24 = [v6 artist];
-    [v5 setMediaArtist:v24];
+    artist2 = [playCopy artist];
+    [propertiesCopy setMediaArtist:artist2];
   }
 
-  v25 = [v6 sumTimePlayed];
+  sumTimePlayed = [playCopy sumTimePlayed];
 
-  if (v25)
+  if (sumTimePlayed)
   {
-    v26 = [v6 sumTimePlayed];
-    [v5 setMediaSumTimePlayed:v26];
+    sumTimePlayed2 = [playCopy sumTimePlayed];
+    [propertiesCopy setMediaSumTimePlayed:sumTimePlayed2];
 
     v27 = _mo_log_facility_get_os_log(&MOLogFacilityRepeatedMedia);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
-      [MONowPlayingMediaManager _setDynamicProperties:v5 mediaPlay:?];
+      [MONowPlayingMediaManager _setDynamicProperties:propertiesCopy mediaPlay:?];
     }
   }
 
-  if ([v6 repetitions])
+  if ([playCopy repetitions])
   {
-    v28 = [[NSNumber alloc] initWithInt:{objc_msgSend(v6, "repetitions")}];
-    [v5 setMediaRepetitions:v28];
+    v28 = [[NSNumber alloc] initWithInt:{objc_msgSend(playCopy, "repetitions")}];
+    [propertiesCopy setMediaRepetitions:v28];
     v29 = _mo_log_facility_get_os_log(&MOLogFacilityRepeatedMedia);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
-      [MONowPlayingMediaManager _setDynamicProperties:v5 mediaPlay:?];
+      [MONowPlayingMediaManager _setDynamicProperties:propertiesCopy mediaPlay:?];
     }
   }
 
-  v30 = [v6 mediaPlaySessions];
+  mediaPlaySessions = [playCopy mediaPlaySessions];
 
-  if (v30)
+  if (mediaPlaySessions)
   {
-    v31 = [v6 mediaPlaySessions];
-    [v5 setMediaPlaySessions:v31];
+    mediaPlaySessions2 = [playCopy mediaPlaySessions];
+    [propertiesCopy setMediaPlaySessions:mediaPlaySessions2];
 
     v32 = _mo_log_facility_get_os_log(&MOLogFacilityRepeatedMedia);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
     {
-      [MONowPlayingMediaManager _setDynamicProperties:v5 mediaPlay:?];
+      [MONowPlayingMediaManager _setDynamicProperties:propertiesCopy mediaPlay:?];
     }
   }
 
-  v33 = [v6 firstPartyTimePlayedRatio];
+  firstPartyTimePlayedRatio = [playCopy firstPartyTimePlayedRatio];
 
-  if (v33)
+  if (firstPartyTimePlayedRatio)
   {
-    v34 = [v6 firstPartyTimePlayedRatio];
-    v35 = [v5 mediaEvent];
-    [v35 setMediaFirstPartyTimePlayedRatio:v34];
+    firstPartyTimePlayedRatio2 = [playCopy firstPartyTimePlayedRatio];
+    mediaEvent = [propertiesCopy mediaEvent];
+    [mediaEvent setMediaFirstPartyTimePlayedRatio:firstPartyTimePlayedRatio2];
   }
 }
 
-- (void)fetchMediaPlayEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)fetchMediaPlayEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MONowPlayingMediaManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MONowPlayingMediaManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __98__MONowPlayingMediaManager_fetchMediaPlayEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   block[3] = &unk_100336C98;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = dateCopy;
+  v21 = endDateCopy;
+  v22 = eventsCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = eventsCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchMediaPlayEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)_fetchMediaPlayEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  eventsCopy = events;
   v25 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 4];
   v24 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 6];
   v14 = [NSPredicate predicateWithFormat:@"%K = %lu", @"provider", 3];
@@ -3500,21 +3500,21 @@ LABEL_12:
   v17 = [NSArray arrayWithObjects:v32 count:2];
   v18 = [NSCompoundPredicate andPredicateWithSubpredicates:v17];
 
-  v19 = [v13 filteredArrayUsingPredicate:v18];
+  v19 = [eventsCopy filteredArrayUsingPredicate:v18];
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = __99__MONowPlayingMediaManager__fetchMediaPlayEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   v26[3] = &unk_10033C1E8;
-  v30 = v11;
-  v31 = v12;
+  v30 = endDateCopy;
+  v31 = handlerCopy;
   v27 = v19;
-  v28 = self;
-  v29 = v10;
-  v20 = v11;
-  v21 = v10;
+  selfCopy = self;
+  v29 = dateCopy;
+  v20 = endDateCopy;
+  v21 = dateCopy;
   v22 = v19;
-  v23 = v12;
+  v23 = handlerCopy;
   [(MONowPlayingMediaManager *)self _fetchNowPlayingEventsBetweenStartDate:v21 EndDate:v20 CompletionHandler:v26];
 }
 
@@ -3806,21 +3806,21 @@ LABEL_34:
 LABEL_61:
 }
 
-- (id)_createNewLeisureMediaEventsFromMediaPlays:(id)a3 storedEvents:(id)a4
+- (id)_createNewLeisureMediaEventsFromMediaPlays:(id)plays storedEvents:(id)events
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  playsCopy = plays;
+  eventsCopy = events;
+  if ([playsCopy count])
   {
     v8 = objc_opt_new();
-    v33 = v7;
-    if ([v7 count])
+    v33 = eventsCopy;
+    if ([eventsCopy count])
     {
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v9 = v7;
+      v9 = eventsCopy;
       v10 = [v9 countByEnumeratingWithState:&v41 objects:v48 count:16];
       if (v10)
       {
@@ -3836,9 +3836,9 @@ LABEL_61:
             }
 
             v14 = *(*(&v41 + 1) + 8 * i);
-            v15 = [v14 startDate];
-            v16 = [v14 endDate];
-            v17 = [(MONowPlayingMediaManager *)self _providerIdOfStartDate:v15 endDate:v16];
+            startDate = [v14 startDate];
+            endDate = [v14 endDate];
+            v17 = [(MONowPlayingMediaManager *)self _providerIdOfStartDate:startDate endDate:endDate];
             [v8 addObject:v17];
           }
 
@@ -3849,8 +3849,8 @@ LABEL_61:
       }
     }
 
-    v32 = v6;
-    v18 = [(MONowPlayingMediaManager *)self _generateMediaPlayGroupsByDayTitle:v6];
+    v32 = playsCopy;
+    v18 = [(MONowPlayingMediaManager *)self _generateMediaPlayGroupsByDayTitle:playsCopy];
     v34 = objc_opt_new();
     v37 = 0u;
     v38 = 0u;
@@ -3874,9 +3874,9 @@ LABEL_61:
           v22 = *(*(&v37 + 1) + 8 * j);
           v23 = objc_autoreleasePoolPush();
           v24 = [(MONowPlayingMediaManager *)self _createEventFromMediaPlayGroupsByDayTitle:v22];
-          v25 = [v24 startDate];
-          v26 = [v24 endDate];
-          v27 = [(MONowPlayingMediaManager *)self _providerIdOfStartDate:v25 endDate:v26];
+          startDate2 = [v24 startDate];
+          endDate2 = [v24 endDate];
+          v27 = [(MONowPlayingMediaManager *)self _providerIdOfStartDate:startDate2 endDate:endDate2];
 
           if (![v8 count])
           {
@@ -3923,8 +3923,8 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "new leisure media event count, %lu", buf, 0xCu);
     }
 
-    v6 = v32;
-    v7 = v33;
+    playsCopy = v32;
+    eventsCopy = v33;
   }
 
   else
@@ -3942,20 +3942,20 @@ LABEL_23:
   return v34;
 }
 
-- (id)_createNewMediaPlayEventsFromMediaPlays:(id)a3 storedEvents:(id)a4
+- (id)_createNewMediaPlayEventsFromMediaPlays:(id)plays storedEvents:(id)events
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  playsCopy = plays;
+  eventsCopy = events;
+  if ([playsCopy count])
   {
     v7 = objc_opt_new();
-    if ([v6 count])
+    if ([eventsCopy count])
     {
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v8 = v6;
+      v8 = eventsCopy;
       v9 = [v8 countByEnumeratingWithState:&v44 objects:v51 count:16];
       if (v9)
       {
@@ -3971,9 +3971,9 @@ LABEL_23:
             }
 
             v13 = *(*(&v44 + 1) + 8 * i);
-            v14 = [v13 startDate];
-            v15 = [v13 endDate];
-            v16 = [(MONowPlayingMediaManager *)self _providerIdOfStartDate:v14 endDate:v15];
+            startDate = [v13 startDate];
+            endDate = [v13 endDate];
+            v16 = [(MONowPlayingMediaManager *)self _providerIdOfStartDate:startDate endDate:endDate];
             [v7 addObject:v16];
           }
 
@@ -3984,14 +3984,14 @@ LABEL_23:
       }
     }
 
-    v17 = [(MONowPlayingMediaManager *)self _generateMediaPlaySessionGroupsByDay:v5, v6, v5];
+    playsCopy = [(MONowPlayingMediaManager *)self _generateMediaPlaySessionGroupsByDay:playsCopy, eventsCopy, playsCopy];
     v36 = objc_opt_new();
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v38 = v17;
-    obj = [v17 allKeys];
+    v38 = playsCopy;
+    obj = [playsCopy allKeys];
     v18 = [obj countByEnumeratingWithState:&v40 objects:v50 count:16];
     if (v18)
     {
@@ -4014,8 +4014,8 @@ LABEL_23:
             v25 = [(MONowPlayingMediaManager *)self _createEventFromMediaPlaySessions:v24];
             [v25 startDate];
             v27 = v26 = v7;
-            v28 = [v25 endDate];
-            v29 = [(MONowPlayingMediaManager *)self _providerIdOfStartDate:v27 endDate:v28];
+            endDate2 = [v25 endDate];
+            v29 = [(MONowPlayingMediaManager *)self _providerIdOfStartDate:v27 endDate:endDate2];
 
             v7 = v26;
             if ([v26 count])
@@ -4062,8 +4062,8 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "new media play event count, %lu", buf, 0xCu);
     }
 
-    v6 = v34;
-    v5 = v35;
+    eventsCopy = v34;
+    playsCopy = v35;
   }
 
   else
@@ -4081,13 +4081,13 @@ LABEL_24:
   return v36;
 }
 
-- (id)_findUnrehdyratedEventsFromStoredEvents:(id)a3 rehydratedEvents:(id)a4
+- (id)_findUnrehdyratedEventsFromStoredEvents:(id)events rehydratedEvents:(id)rehydratedEvents
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  eventsCopy = events;
+  rehydratedEventsCopy = rehydratedEvents;
+  if ([rehydratedEventsCopy count])
   {
-    if ([v5 count])
+    if ([eventsCopy count])
     {
       v7 = objc_opt_new();
       v8 = objc_opt_new();
@@ -4095,8 +4095,8 @@ LABEL_24:
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v28 = v6;
-      v9 = v6;
+      v28 = rehydratedEventsCopy;
+      v9 = rehydratedEventsCopy;
       v10 = [v9 countByEnumeratingWithState:&v34 objects:v40 count:16];
       if (v10)
       {
@@ -4111,9 +4111,9 @@ LABEL_24:
               objc_enumerationMutation(v9);
             }
 
-            v14 = [*(*(&v34 + 1) + 8 * i) eventIdentifier];
-            v15 = [v14 UUIDString];
-            [v8 addObject:v15];
+            eventIdentifier = [*(*(&v34 + 1) + 8 * i) eventIdentifier];
+            uUIDString = [eventIdentifier UUIDString];
+            [v8 addObject:uUIDString];
           }
 
           v11 = [v9 countByEnumeratingWithState:&v34 objects:v40 count:16];
@@ -4126,8 +4126,8 @@ LABEL_24:
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v29 = v5;
-      v16 = v5;
+      v29 = eventsCopy;
+      v16 = eventsCopy;
       v17 = [v16 countByEnumeratingWithState:&v30 objects:v39 count:16];
       if (v17)
       {
@@ -4143,9 +4143,9 @@ LABEL_24:
             }
 
             v21 = *(*(&v30 + 1) + 8 * j);
-            v22 = [v21 eventIdentifier];
-            v23 = [v22 UUIDString];
-            v24 = [v8 containsObject:v23];
+            eventIdentifier2 = [v21 eventIdentifier];
+            uUIDString2 = [eventIdentifier2 UUIDString];
+            v24 = [v8 containsObject:uUIDString2];
 
             if ((v24 & 1) == 0)
             {
@@ -4160,8 +4160,8 @@ LABEL_24:
         while (v18);
       }
 
-      v6 = v28;
-      v5 = v29;
+      rehydratedEventsCopy = v28;
+      eventsCopy = v29;
     }
 
     else
@@ -4186,7 +4186,7 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "no media events are rehydrated", buf, 2u);
     }
 
-    v7 = v5;
+    v7 = eventsCopy;
   }
 
   return v7;

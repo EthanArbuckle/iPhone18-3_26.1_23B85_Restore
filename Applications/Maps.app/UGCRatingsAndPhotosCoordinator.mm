@@ -2,50 +2,50 @@
 - (BOOL)isEditingSubmission;
 - (UGCRatingsAndPhotosCoordinator)init;
 - (id)_createPOIEnrichmentFormWithContext;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (int)_generateEntryPointForAnalytics:(int64_t)a3;
-- (void)_dismissPOIEnrichmentEditorWithCompletion:(id)a3;
-- (void)_dismissPhotoPickerWithCompletion:(id)a3;
-- (void)_failLookupWithError:(id)a3;
-- (void)_failWithAccountErrorWithPresentingViewController:(id)a3;
-- (void)_handleLookupSubmissionCompletion:(id)a3 lookupError:(id)a4;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (int)_generateEntryPointForAnalytics:(int64_t)analytics;
+- (void)_dismissPOIEnrichmentEditorWithCompletion:(id)completion;
+- (void)_dismissPhotoPickerWithCompletion:(id)completion;
+- (void)_failLookupWithError:(id)error;
+- (void)_failWithAccountErrorWithPresentingViewController:(id)controller;
+- (void)_handleLookupSubmissionCompletion:(id)completion lookupError:(id)error;
 - (void)_presentPOIEnrichmentViewController;
-- (void)_presentPhotoPickerWithMaxCount:(unint64_t)a3;
-- (void)_presentThirdPartyPhotoSharePromptIfNecessaryForReviewedPlace:(id)a3;
+- (void)_presentPhotoPickerWithMaxCount:(unint64_t)count;
+- (void)_presentThirdPartyPhotoSharePromptIfNecessaryForReviewedPlace:(id)place;
 - (void)_startPOIEnrichmentFlow;
 - (void)_startRatingsAndPhotosFlowDependentUponReviewedPlaceLookup;
 - (void)_startRatingsAndPhotosFlowRequiringInformedConsent;
 - (void)_startRatingsAndPhotosFlowWithInformedConsentIfNeeded;
 - (void)_startRatingsAndPhotosFlowWithSubmissionLookup;
-- (void)captureAnalyticsForRatingsForm:(id)a3 photosForm:(id)a4;
-- (void)poiEnrichmenEditorDidCancel:(id)a3;
-- (void)poiEnrichmentEditor:(id)a3 didSelectTermsOfServiceURL:(id)a4;
-- (void)poiEnrichmentEditor:(id)a3 finishedFillingEnrichmentForm:(id)a4;
-- (void)submissionCompletionWithViewController:(id)a3 enrichmentForm:(id)a4 policy:(int64_t)a5 newReviewedPlace:(id)a6 response:(id)a7 error:(id)a8;
-- (void)takePhotoController:(id)a3 didSelectPhotosWithMetadata:(id)a4;
-- (void)takePhotoControllerDidCancel:(id)a3;
+- (void)captureAnalyticsForRatingsForm:(id)form photosForm:(id)photosForm;
+- (void)poiEnrichmenEditorDidCancel:(id)cancel;
+- (void)poiEnrichmentEditor:(id)editor didSelectTermsOfServiceURL:(id)l;
+- (void)poiEnrichmentEditor:(id)editor finishedFillingEnrichmentForm:(id)form;
+- (void)submissionCompletionWithViewController:(id)controller enrichmentForm:(id)form policy:(int64_t)policy newReviewedPlace:(id)place response:(id)response error:(id)error;
+- (void)takePhotoController:(id)controller didSelectPhotosWithMetadata:(id)metadata;
+- (void)takePhotoControllerDidCancel:(id)cancel;
 @end
 
 @implementation UGCRatingsAndPhotosCoordinator
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MapsFormSheetPresentationController alloc] initWithPresentedViewController:v7 presentingViewController:v6];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v8 = [[MapsFormSheetPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   return v8;
 }
 
-- (void)_dismissPOIEnrichmentEditorWithCompletion:(id)a3
+- (void)_dismissPOIEnrichmentEditorWithCompletion:(id)completion
 {
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100DD71B4;
   v23[3] = &unk_101661090;
   v23[4] = self;
-  v4 = a3;
-  v24 = v4;
+  completionCopy = completion;
+  v24 = completionCopy;
   v5 = objc_retainBlock(v23);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 || [(UGCPOIEnrichmentCoordinator *)self prefersDefaultPresentationOverContainee]&& ([(UGCPOIEnrichmentCoordinator *)self presentingViewController], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
@@ -55,9 +55,9 @@
 
   else
   {
-    v7 = [(UGCPOIEnrichmentCoordinator *)self containerViewController];
+    containerViewController = [(UGCPOIEnrichmentCoordinator *)self containerViewController];
 
-    if (v7)
+    if (containerViewController)
     {
       if (MapsFeature_IsEnabled_SydneyARP() && self->_shouldShowThankYouScreen && !self->_userHasDeletedSubmission)
       {
@@ -67,27 +67,27 @@
         v18 = 3221225472;
         v19 = sub_100DD7208;
         v20 = &unk_101661090;
-        v21 = self;
+        selfCopy = self;
         v22 = v5;
         v11 = [(UGCCommunityAcknowledgementViewController *)v9 initWithOptions:v10 completion:&v17];
         thankYouVC = self->_thankYouVC;
         self->_thankYouVC = v11;
 
         v13 = [UINavigationController alloc];
-        v14 = [v13 initWithRootViewController:{self->_thankYouVC, v17, v18, v19, v20, v21}];
-        v15 = [(UGCCommunityAcknowledgementViewController *)self->_thankYouVC navigationItem];
-        [v15 setHidesBackButton:1];
+        v14 = [v13 initWithRootViewController:{self->_thankYouVC, v17, v18, v19, v20, selfCopy}];
+        navigationItem = [(UGCCommunityAcknowledgementViewController *)self->_thankYouVC navigationItem];
+        [navigationItem setHidesBackButton:1];
 
-        v16 = [v14 presentationController];
-        [v16 setDelegate:self];
+        presentationController = [v14 presentationController];
+        [presentationController setDelegate:self];
 
         [(UGCPOIEnrichmentEditor *)self->_ratingContributionsViewController presentViewController:v14 animated:1 completion:0];
       }
 
       else
       {
-        v8 = [(UGCPOIEnrichmentCoordinator *)self containeeDelegate];
-        [v8 containeeViewControllerGoToPreviousState:self->_ratingContributionsViewController withSender:0];
+        containeeDelegate = [(UGCPOIEnrichmentCoordinator *)self containeeDelegate];
+        [containeeDelegate containeeViewControllerGoToPreviousState:self->_ratingContributionsViewController withSender:0];
 
         (v5[2])(v5);
       }
@@ -95,55 +95,55 @@
   }
 }
 
-- (void)_failWithAccountErrorWithPresentingViewController:(id)a3
+- (void)_failWithAccountErrorWithPresentingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100DD7338;
   v5[3] = &unk_101661B98;
   objc_copyWeak(&v6, &location);
-  [v4 presentLoginFailureAlertWithCancelHandler:v5];
+  [controllerCopy presentLoginFailureAlertWithCancelHandler:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (void)_failLookupWithError:(id)a3
+- (void)_failLookupWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v5 = [(UGCPOIEnrichmentCoordinator *)self presentingViewController];
+  presentingViewController = [(UGCPOIEnrichmentCoordinator *)self presentingViewController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100DD7468;
   v6[3] = &unk_101661B98;
   objc_copyWeak(&v7, &location);
-  [v5 presentLookupFailureAlertWithCancelHandler:v6];
+  [presentingViewController presentLookupFailureAlertWithCancelHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
 
-- (void)_dismissPhotoPickerWithCompletion:(id)a3
+- (void)_dismissPhotoPickerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   photoPicker = self->_photoPicker;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100DD7554;
   v7[3] = &unk_101661090;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(UGCAddPhotosController *)photoPicker dismissWithCompletion:v7];
 }
 
-- (void)takePhotoController:(id)a3 didSelectPhotosWithMetadata:(id)a4
+- (void)takePhotoController:(id)controller didSelectPhotosWithMetadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  [(UGCRatingsAndPhotosCoordinator *)self setInitialPhotosWithMetadata:v7];
+  controllerCopy = controller;
+  metadataCopy = metadata;
+  [(UGCRatingsAndPhotosCoordinator *)self setInitialPhotosWithMetadata:metadataCopy];
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -155,9 +155,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)takePhotoControllerDidCancel:(id)a3
+- (void)takePhotoControllerDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -169,7 +169,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)poiEnrichmenEditorDidCancel:(id)a3
+- (void)poiEnrichmenEditorDidCancel:(id)cancel
 {
   self->_shouldShowThankYouScreen = 0;
   v3[0] = _NSConcreteStackBlock;
@@ -180,44 +180,44 @@
   [(UGCRatingsAndPhotosCoordinator *)self _dismissPOIEnrichmentEditorWithCompletion:v3];
 }
 
-- (void)_presentThirdPartyPhotoSharePromptIfNecessaryForReviewedPlace:(id)a3
+- (void)_presentThirdPartyPhotoSharePromptIfNecessaryForReviewedPlace:(id)place
 {
-  v3 = a3;
-  if (MapsFeature_IsEnabled_SydneyARP() && [v3 numberOfPhotosAdded])
+  placeCopy = place;
+  if (MapsFeature_IsEnabled_SydneyARP() && [placeCopy numberOfPhotosAdded])
   {
     [UGCThirdPartyPhotoSharingSplashViewController checkShouldPresentPhotoSharingSplash:&stru_101655028];
   }
 }
 
-- (int)_generateEntryPointForAnalytics:(int64_t)a3
+- (int)_generateEntryPointForAnalytics:(int64_t)analytics
 {
-  if (a3 == 3)
+  if (analytics == 3)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 2;
+    return analytics == 2;
   }
 }
 
-- (void)captureAnalyticsForRatingsForm:(id)a3 photosForm:(id)a4
+- (void)captureAnalyticsForRatingsForm:(id)form photosForm:(id)photosForm
 {
-  v6 = a3;
-  v7 = a4;
+  formCopy = form;
+  photosFormCopy = photosForm;
   v8 = [(UGCRatingsAndPhotosCoordinator *)self _generateEntryPointForAnalytics:[(UGCPOIEnrichmentCoordinator *)self entryPoint]];
-  v9 = [(UGCPOIEnrichmentCoordinator *)self originTarget];
+  originTarget = [(UGCPOIEnrichmentCoordinator *)self originTarget];
   [GEOAPPortal captureUserAction:301 target:666 value:0];
   v10 = +[GEOAPSharedStateData sharedData];
-  [v10 populateRatingPhotoSubmissionDetailsWithEntryPoint:v8 originTarget:v9];
+  [v10 populateRatingPhotoSubmissionDetailsWithEntryPoint:v8 originTarget:originTarget];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v11 = [v6 allRatingCategories];
-  v12 = [v11 countByEnumeratingWithState:&v49 objects:v55 count:16];
+  allRatingCategories = [formCopy allRatingCategories];
+  v12 = [allRatingCategories countByEnumeratingWithState:&v49 objects:v55 count:16];
   if (v12)
   {
     v13 = *v50;
@@ -227,7 +227,7 @@
       {
         if (*v50 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allRatingCategories);
         }
 
         if ([*(*(&v49 + 1) + 8 * i) isEdited])
@@ -237,7 +237,7 @@
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v49 objects:v55 count:16];
+      v12 = [allRatingCategories countByEnumeratingWithState:&v49 objects:v55 count:16];
       if (v12)
       {
         continue;
@@ -249,9 +249,9 @@
 
 LABEL_11:
 
-  v15 = [v7 numberOfAddedPhotos];
+  numberOfAddedPhotos = [photosFormCopy numberOfAddedPhotos];
   v16 = v12 ^ 1;
-  if (!v15)
+  if (!numberOfAddedPhotos)
   {
     v16 = 1;
   }
@@ -264,9 +264,9 @@ LABEL_11:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v17 = [v7 addedPhotos];
+    addedPhotos = [photosFormCopy addedPhotos];
     v18 = 0;
-    v19 = [v17 countByEnumeratingWithState:&v45 objects:v54 count:16];
+    v19 = [addedPhotos countByEnumeratingWithState:&v45 objects:v54 count:16];
     if (v19)
     {
       v20 = *v46;
@@ -276,20 +276,20 @@ LABEL_11:
         {
           if (*v46 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(addedPhotos);
           }
 
           v18 = v18 + [*(*(&v45 + 1) + 8 * j) isSuggestedPhoto];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v45 objects:v54 count:16];
+        v19 = [addedPhotos countByEnumeratingWithState:&v45 objects:v54 count:16];
       }
 
       while (v19);
     }
 
     v22 = +[GEOAPSharedStateData sharedData];
-    [v22 populatePhotoSubmissionDetailsWithEntryPoint:v8 numberOfPhotos:objc_msgSend(v7 numberOfARPSuggestedPhotos:"numberOfAddedPhotos") originTarget:{v18, v9}];
+    [v22 populatePhotoSubmissionDetailsWithEntryPoint:v8 numberOfPhotos:objc_msgSend(photosFormCopy numberOfARPSuggestedPhotos:"numberOfAddedPhotos") originTarget:{v18, originTarget}];
 
     v41 = 0;
     v42 = &v41;
@@ -301,15 +301,15 @@ LABEL_11:
     v38[2] = sub_100DD8070;
     v38[3] = &unk_101654FC8;
     v40 = &v41;
-    v39 = v6;
-    [v23 populateRatingSubmissionDetailsWithEntryPoint:v8 originTarget:v9 specifierBlock:v38];
+    v39 = formCopy;
+    [v23 populateRatingSubmissionDetailsWithEntryPoint:v8 originTarget:originTarget specifierBlock:v38];
 
 LABEL_22:
     _Block_object_dispose(&v41, 8);
     goto LABEL_34;
   }
 
-  if (![v7 numberOfAddedPhotos])
+  if (![photosFormCopy numberOfAddedPhotos])
   {
     if (!v12)
     {
@@ -327,8 +327,8 @@ LABEL_22:
     v31[2] = sub_100DD81B0;
     v31[3] = &unk_101654FC8;
     v33 = &v41;
-    v32 = v6;
-    [v30 populateRatingSubmissionDetailsWithEntryPoint:v8 originTarget:v9 specifierBlock:v31];
+    v32 = formCopy;
+    [v30 populateRatingSubmissionDetailsWithEntryPoint:v8 originTarget:originTarget specifierBlock:v31];
 
     goto LABEL_22;
   }
@@ -338,9 +338,9 @@ LABEL_22:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v24 = [v7 addedPhotos];
+  addedPhotos2 = [photosFormCopy addedPhotos];
   v25 = 0;
-  v26 = [v24 countByEnumeratingWithState:&v34 objects:v53 count:16];
+  v26 = [addedPhotos2 countByEnumeratingWithState:&v34 objects:v53 count:16];
   if (v26)
   {
     v27 = *v35;
@@ -350,46 +350,46 @@ LABEL_22:
       {
         if (*v35 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(addedPhotos2);
         }
 
         v25 = v25 + [*(*(&v34 + 1) + 8 * k) isSuggestedPhoto];
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v34 objects:v53 count:16];
+      v26 = [addedPhotos2 countByEnumeratingWithState:&v34 objects:v53 count:16];
     }
 
     while (v26);
   }
 
   v29 = +[GEOAPSharedStateData sharedData];
-  [v29 populatePhotoSubmissionDetailsWithEntryPoint:v8 numberOfPhotos:objc_msgSend(v7 numberOfARPSuggestedPhotos:"numberOfAddedPhotos") originTarget:{v25, v9}];
+  [v29 populatePhotoSubmissionDetailsWithEntryPoint:v8 numberOfPhotos:objc_msgSend(photosFormCopy numberOfARPSuggestedPhotos:"numberOfAddedPhotos") originTarget:{v25, originTarget}];
 
 LABEL_34:
 }
 
-- (void)poiEnrichmentEditor:(id)a3 didSelectTermsOfServiceURL:(id)a4
+- (void)poiEnrichmentEditor:(id)editor didSelectTermsOfServiceURL:(id)l
 {
-  v5 = a4;
-  v6 = [(UGCPOIEnrichmentCoordinator *)self delegate];
-  [v6 poiEnrichmentCoordinator:self openURL:v5];
+  lCopy = l;
+  delegate = [(UGCPOIEnrichmentCoordinator *)self delegate];
+  [delegate poiEnrichmentCoordinator:self openURL:lCopy];
 }
 
-- (void)submissionCompletionWithViewController:(id)a3 enrichmentForm:(id)a4 policy:(int64_t)a5 newReviewedPlace:(id)a6 response:(id)a7 error:(id)a8
+- (void)submissionCompletionWithViewController:(id)controller enrichmentForm:(id)form policy:(int64_t)policy newReviewedPlace:(id)place response:(id)response error:(id)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  [v14 submissionFinishedWithError:v18];
-  v19 = [v15 ratingsForm];
-  v20 = [v15 photosForm];
-  [(UGCRatingsAndPhotosCoordinator *)self captureAnalyticsForRatingsForm:v19 photosForm:v20];
+  controllerCopy = controller;
+  formCopy = form;
+  placeCopy = place;
+  responseCopy = response;
+  errorCopy = error;
+  [controllerCopy submissionFinishedWithError:errorCopy];
+  ratingsForm = [formCopy ratingsForm];
+  photosForm = [formCopy photosForm];
+  [(UGCRatingsAndPhotosCoordinator *)self captureAnalyticsForRatingsForm:ratingsForm photosForm:photosForm];
 
-  if (!v18 && ![v17 status])
+  if (!errorCopy && ![responseCopy status])
   {
-    if (!a5)
+    if (!policy)
     {
       [(UGCPOIEnrichmentCoordinator *)self invokeSubmissionUpdate];
     }
@@ -407,8 +407,8 @@ LABEL_34:
         v36[2] = sub_100DD86F4;
         v36[3] = &unk_101661A90;
         v36[4] = self;
-        v37 = v16;
-        [v14 dismissViewControllerAnimated:1 completion:v36];
+        v37 = placeCopy;
+        [controllerCopy dismissViewControllerAnimated:1 completion:v36];
 
         goto LABEL_4;
       }
@@ -420,16 +420,16 @@ LABEL_34:
       v31[1] = 3221225472;
       v31[2] = sub_100DD8758;
       v31[3] = &unk_101661480;
-      v24 = v14;
+      v24 = controllerCopy;
       v32 = v24;
       objc_copyWeak(&v34, &location);
-      v33 = v16;
+      v33 = placeCopy;
       v25 = [(UGCCommunityAcknowledgementViewController *)v22 initWithOptions:v23 completion:v31];
       thankYouVC = self->_thankYouVC;
       self->_thankYouVC = v25;
 
-      v27 = [(UGCCommunityAcknowledgementViewController *)self->_thankYouVC navigationItem];
-      [v27 setHidesBackButton:1];
+      navigationItem = [(UGCCommunityAcknowledgementViewController *)self->_thankYouVC navigationItem];
+      [navigationItem setHidesBackButton:1];
 
       [v24 presentViewController:self->_thankYouVC animated:1 completion:0];
       objc_destroyWeak(&v34);
@@ -449,7 +449,7 @@ LABEL_34:
       v28[2] = sub_100DD881C;
       v28[3] = &unk_101661340;
       objc_copyWeak(&v30, &location);
-      v29 = v16;
+      v29 = placeCopy;
       [(UGCRatingsAndPhotosCoordinator *)self _dismissPOIEnrichmentEditorWithCompletion:v28];
 
       objc_destroyWeak(&v30);
@@ -459,35 +459,35 @@ LABEL_34:
     goto LABEL_4;
   }
 
-  [(UGCRatingsAndPhotosCoordinator *)self _presentFailedToSubmitAlertForResponse:v17 withPresentingViewController:v14];
+  [(UGCRatingsAndPhotosCoordinator *)self _presentFailedToSubmitAlertForResponse:responseCopy withPresentingViewController:controllerCopy];
 LABEL_4:
 }
 
-- (void)poiEnrichmentEditor:(id)a3 finishedFillingEnrichmentForm:(id)a4
+- (void)poiEnrichmentEditor:(id)editor finishedFillingEnrichmentForm:(id)form
 {
-  v6 = a3;
-  v7 = a4;
+  editorCopy = editor;
+  formCopy = form;
   v8 = +[UIApplication sharedMapsDelegate];
-  v9 = [v8 submissionManager];
+  submissionManager = [v8 submissionManager];
 
   v10 = [_TtC4Maps9UGCReport alloc];
-  v11 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
-  v12 = [(UGCReport *)v10 initWithReportType:0 initialForm:v7 mapItem:v11 submitter:v9];
+  mapItem = [(UGCPOIEnrichmentCoordinator *)self mapItem];
+  v12 = [(UGCReport *)v10 initWithReportType:0 initialForm:formCopy mapItem:mapItem submitter:submissionManager];
 
-  v13 = [(UGCReport *)v12 newReviewedPlace];
-  self->_userHasDeletedSubmission = [(UGCReviewedPlace *)v13 isDeleted];
+  newReviewedPlace = [(UGCReport *)v12 newReviewedPlace];
+  self->_userHasDeletedSubmission = [(UGCReviewedPlace *)newReviewedPlace isDeleted];
   IsEnabled_SydneyARP = MapsFeature_IsEnabled_SydneyARP();
   if (MapsFeature_IsEnabled_ARPCommunityID())
   {
-    v15 = [(UGCRatingsAndPhotosCoordinator *)self existingSubmission];
-    -[UGCReport setShouldMigrateRatingsWithICloud:](v12, "setShouldMigrateRatingsWithICloud:", [v15 hasRatingsWithICloud]);
+    existingSubmission = [(UGCRatingsAndPhotosCoordinator *)self existingSubmission];
+    -[UGCReport setShouldMigrateRatingsWithICloud:](v12, "setShouldMigrateRatingsWithICloud:", [existingSubmission hasRatingsWithICloud]);
 
     objc_initWeak(&location, self);
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_100DD8C50;
     v31[3] = &unk_101654F78;
-    v16 = v6;
+    v16 = editorCopy;
     v32 = v16;
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
@@ -495,9 +495,9 @@ LABEL_4:
     v26[3] = &unk_101654FA0;
     objc_copyWeak(v30, &location);
     v27 = v16;
-    v28 = v7;
+    v28 = formCopy;
     v30[1] = IsEnabled_SydneyARP;
-    v29 = v13;
+    v29 = newReviewedPlace;
     [(UGCReport *)v12 submitRatingsAndPhotosWithUploadPolicy:IsEnabled_SydneyARP progressBlock:v31 completion:v26];
 
     objc_destroyWeak(v30);
@@ -511,7 +511,7 @@ LABEL_4:
     v24[1] = 3221225472;
     v24[2] = sub_100DD8CE8;
     v24[3] = &unk_101654F78;
-    v18 = v6;
+    v18 = editorCopy;
     v25 = v18;
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -519,9 +519,9 @@ LABEL_4:
     v19[3] = &unk_101654FA0;
     objc_copyWeak(v23, &location);
     v20 = v18;
-    v21 = v7;
+    v21 = formCopy;
     v23[1] = IsEnabled_SydneyARP;
-    v22 = v13;
+    v22 = newReviewedPlace;
     [(UGCReport *)v12 submitRatingsAndPhotosSimultaneouslyUsingDSIDWithUploadPolicy:IsEnabled_SydneyARP progressBlock:v24 completion:v19];
 
     objc_destroyWeak(v23);
@@ -533,62 +533,62 @@ LABEL_4:
 
 - (BOOL)isEditingSubmission
 {
-  v2 = [(UGCRatingsAndPhotosCoordinator *)self existingSubmission];
-  v3 = v2 != 0;
+  existingSubmission = [(UGCRatingsAndPhotosCoordinator *)self existingSubmission];
+  v3 = existingSubmission != 0;
 
   return v3;
 }
 
 - (id)_createPOIEnrichmentFormWithContext
 {
-  v3 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
-  v4 = [v3 _geoMapItem];
-  v5 = [v4 _placeQuestionnaire];
+  mapItem = [(UGCPOIEnrichmentCoordinator *)self mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
+  _placeQuestionnaire = [_geoMapItem _placeQuestionnaire];
 
-  v6 = [(UGCRatingsAndPhotosCoordinator *)self existingSubmission];
-  v7 = [v6 parentSubmissionIdentifier];
+  existingSubmission = [(UGCRatingsAndPhotosCoordinator *)self existingSubmission];
+  parentSubmissionIdentifier = [existingSubmission parentSubmissionIdentifier];
 
-  v8 = [(UGCRatingsAndPhotosCoordinator *)self existingSubmission];
-  v9 = [v8 previousSubmission];
+  existingSubmission2 = [(UGCRatingsAndPhotosCoordinator *)self existingSubmission];
+  previousSubmission = [existingSubmission2 previousSubmission];
 
   if ([(UGCRatingsAndPhotosCoordinator *)self isEditingSubmission])
   {
-    v10 = [v9 scorecard];
-    v11 = [UGCRatingsForm editRatingFormWithPlaceQuestionnaire:v5 existingScorecard:v10];
+    scorecard = [previousSubmission scorecard];
+    v11 = [UGCRatingsForm editRatingFormWithPlaceQuestionnaire:_placeQuestionnaire existingScorecard:scorecard];
 
-    v12 = [(UGCRatingsAndPhotosCoordinator *)self existingSubmission];
-    v13 = [v12 ratingsSubmissionIdentifier];
-    [v11 setParentSubmissionIdentifier:v13];
+    existingSubmission3 = [(UGCRatingsAndPhotosCoordinator *)self existingSubmission];
+    ratingsSubmissionIdentifier = [existingSubmission3 ratingsSubmissionIdentifier];
+    [v11 setParentSubmissionIdentifier:ratingsSubmissionIdentifier];
 
-    v14 = [v9 images];
-    v15 = [UGCPhotosForm editPhotosFormWithPlaceQuestionnaire:v5 previouslySubmittedImages:v14];
+    images = [previousSubmission images];
+    v15 = [UGCPhotosForm editPhotosFormWithPlaceQuestionnaire:_placeQuestionnaire previouslySubmittedImages:images];
 
-    v16 = [(UGCRatingsAndPhotosCoordinator *)self existingSubmission];
-    v17 = [v16 photosSubmissionIdentifier];
-    [v15 setParentSubmissionIdentifier:v17];
+    existingSubmission4 = [(UGCRatingsAndPhotosCoordinator *)self existingSubmission];
+    photosSubmissionIdentifier = [existingSubmission4 photosSubmissionIdentifier];
+    [v15 setParentSubmissionIdentifier:photosSubmissionIdentifier];
 
-    v18 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
-    [UGCPOIEnrichmentForm editPOIEnrichmentFormWithMapItem:v18 parentSubmissionIdentifier:v7 photosForm:v15 ratingsForm:v11];
+    mapItem2 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
+    [UGCPOIEnrichmentForm editPOIEnrichmentFormWithMapItem:mapItem2 parentSubmissionIdentifier:parentSubmissionIdentifier photosForm:v15 ratingsForm:v11];
   }
 
   else
   {
-    v11 = [UGCRatingsForm addRatingFormWithPlaceQuestionnaire:v5];
-    v19 = [(UGCRatingsAndPhotosCoordinator *)self initialOverallState];
-    v20 = [v11 overallCategory];
-    [v20 setCurrentState:v19];
+    v11 = [UGCRatingsForm addRatingFormWithPlaceQuestionnaire:_placeQuestionnaire];
+    initialOverallState = [(UGCRatingsAndPhotosCoordinator *)self initialOverallState];
+    overallCategory = [v11 overallCategory];
+    [overallCategory setCurrentState:initialOverallState];
 
-    v15 = [UGCPhotosForm addPhotosFormWithPlaceQuestionnaire:v5 photosWithMetadata:&__NSArray0__struct];
-    v18 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
-    [UGCPOIEnrichmentForm addPOIEnrichmentFormWithMapItem:v18 photosForm:v15 ratingsForm:v11];
+    v15 = [UGCPhotosForm addPhotosFormWithPlaceQuestionnaire:_placeQuestionnaire photosWithMetadata:&__NSArray0__struct];
+    mapItem2 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
+    [UGCPOIEnrichmentForm addPOIEnrichmentFormWithMapItem:mapItem2 photosForm:v15 ratingsForm:v11];
   }
   v21 = ;
 
   if ([(UGCRatingsAndPhotosCoordinator *)self initialOverallState])
   {
-    v22 = [(UGCRatingsAndPhotosCoordinator *)self initialOverallState];
-    v23 = [v11 overallCategory];
-    [v23 setCurrentState:v22];
+    initialOverallState2 = [(UGCRatingsAndPhotosCoordinator *)self initialOverallState];
+    overallCategory2 = [v11 overallCategory];
+    [overallCategory2 setCurrentState:initialOverallState2];
   }
 
   [v15 addPhotoListWithMetadata:self->_initialPhotosWithMetadata];
@@ -598,64 +598,64 @@ LABEL_4:
 
 - (void)_presentPOIEnrichmentViewController
 {
-  v13 = [(UGCRatingsAndPhotosCoordinator *)self _createPOIEnrichmentFormWithContext];
+  _createPOIEnrichmentFormWithContext = [(UGCRatingsAndPhotosCoordinator *)self _createPOIEnrichmentFormWithContext];
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v5 = [[MacUGCPOIEnrichmentEditorViewController alloc] initWithPOIEnrichmentForm:v13 delegate:self presentationContext:[(UGCPOIEnrichmentCoordinator *)self presentationContext]];
+    v5 = [[MacUGCPOIEnrichmentEditorViewController alloc] initWithPOIEnrichmentForm:_createPOIEnrichmentFormWithContext delegate:self presentationContext:[(UGCPOIEnrichmentCoordinator *)self presentationContext]];
     [(MacUGCPOIEnrichmentEditorViewController *)v5 setModalInPresentation:1];
     [(MacUGCPOIEnrichmentEditorViewController *)v5 setModalPresentationStyle:2];
     [(MacUGCPOIEnrichmentEditorViewController *)v5 setSuppressRatings:[(UGCRatingsAndPhotosCoordinator *)self suppressRatings]];
     ratingContributionsViewController = self->_ratingContributionsViewController;
     self->_ratingContributionsViewController = v5;
-    v7 = v5;
+    containerViewController2 = v5;
 
-    v8 = [(UGCPOIEnrichmentCoordinator *)self presentingViewController];
-    v9 = v8;
-    v10 = v7;
+    presentingViewController = [(UGCPOIEnrichmentCoordinator *)self presentingViewController];
+    v9 = presentingViewController;
+    v10 = containerViewController2;
 LABEL_6:
-    [(UGCPOIEnrichmentContaineeViewController *)v8 presentViewController:v10 animated:1 completion:0];
+    [(UGCPOIEnrichmentContaineeViewController *)presentingViewController presentViewController:v10 animated:1 completion:0];
     goto LABEL_9;
   }
 
-  v9 = [[UGCPOIEnrichmentContaineeViewController alloc] initWithPOIEnrichmentForm:v13 delegate:self presentationContext:[(UGCPOIEnrichmentCoordinator *)self presentationContext]];
+  v9 = [[UGCPOIEnrichmentContaineeViewController alloc] initWithPOIEnrichmentForm:_createPOIEnrichmentFormWithContext delegate:self presentationContext:[(UGCPOIEnrichmentCoordinator *)self presentationContext]];
   objc_storeStrong(&self->_ratingContributionsViewController, v9);
   [(UGCPOIEnrichmentContaineeViewController *)v9 setSuppressRatings:[(UGCRatingsAndPhotosCoordinator *)self suppressRatings]];
   if ([(UGCPOIEnrichmentCoordinator *)self prefersDefaultPresentationOverContainee])
   {
-    v11 = [(UGCPOIEnrichmentCoordinator *)self presentingViewController];
+    presentingViewController2 = [(UGCPOIEnrichmentCoordinator *)self presentingViewController];
 
-    if (v11)
+    if (presentingViewController2)
     {
       [(UGCPOIEnrichmentContaineeViewController *)v9 setShowCardBackground:1];
       [(UGCPOIEnrichmentContaineeViewController *)v9 setTransitioningDelegate:self];
       [(UGCPOIEnrichmentContaineeViewController *)v9 setModalPresentationStyle:4];
       [(UGCPOIEnrichmentContaineeViewController *)v9 setModalInPresentation:1];
-      v8 = [(UGCPOIEnrichmentCoordinator *)self presentingViewController];
-      v7 = v8;
+      presentingViewController = [(UGCPOIEnrichmentCoordinator *)self presentingViewController];
+      containerViewController2 = presentingViewController;
       v10 = v9;
       goto LABEL_6;
     }
   }
 
-  v12 = [(UGCPOIEnrichmentCoordinator *)self containerViewController];
+  containerViewController = [(UGCPOIEnrichmentCoordinator *)self containerViewController];
 
-  if (!v12)
+  if (!containerViewController)
   {
     goto LABEL_10;
   }
 
-  v7 = [(UGCPOIEnrichmentCoordinator *)self containerViewController];
-  [(MacUGCPOIEnrichmentEditorViewController *)v7 presentController:v9 animated:1];
+  containerViewController2 = [(UGCPOIEnrichmentCoordinator *)self containerViewController];
+  [(MacUGCPOIEnrichmentEditorViewController *)containerViewController2 presentController:v9 animated:1];
 LABEL_9:
 
 LABEL_10:
   [(UGCPOIEnrichmentEditor *)self->_ratingContributionsViewController setAccessibilityIdentifier:@"RatingsAndPhotosView"];
 }
 
-- (void)_presentPhotoPickerWithMaxCount:(unint64_t)a3
+- (void)_presentPhotoPickerWithMaxCount:(unint64_t)count
 {
   if (self->_photoPicker)
   {
@@ -669,12 +669,12 @@ LABEL_10:
   else
   {
     v5 = [UGCAddPhotosController alloc];
-    v6 = [(UGCPOIEnrichmentCoordinator *)self presentingViewController];
-    v7 = [(UGCRatingsAndPhotosCoordinator *)self preferredSourceType];
-    v8 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
-    v9 = [v8 _geoMapItem];
-    v10 = [v9 _placeQuestionnaire];
-    v11 = [(UGCAddPhotosController *)v5 initWithPresentingViewController:v6 sourceType:v7 multipleSelectionLimit:a3 placeQuestionnaire:v10 delegate:self];
+    presentingViewController = [(UGCPOIEnrichmentCoordinator *)self presentingViewController];
+    preferredSourceType = [(UGCRatingsAndPhotosCoordinator *)self preferredSourceType];
+    mapItem = [(UGCPOIEnrichmentCoordinator *)self mapItem];
+    _geoMapItem = [mapItem _geoMapItem];
+    _placeQuestionnaire = [_geoMapItem _placeQuestionnaire];
+    v11 = [(UGCAddPhotosController *)v5 initWithPresentingViewController:presentingViewController sourceType:preferredSourceType multipleSelectionLimit:count placeQuestionnaire:_placeQuestionnaire delegate:self];
     photoPicker = self->_photoPicker;
     self->_photoPicker = v11;
 
@@ -684,37 +684,37 @@ LABEL_10:
   }
 }
 
-- (void)_handleLookupSubmissionCompletion:(id)a3 lookupError:(id)a4
+- (void)_handleLookupSubmissionCompletion:(id)completion lookupError:(id)error
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(UGCPOIEnrichmentCoordinator *)self submissionLookupObserver];
-  [v7 endAnimatingActivityIndicatorWithError:v6];
+  completionCopy = completion;
+  errorCopy = error;
+  submissionLookupObserver = [(UGCPOIEnrichmentCoordinator *)self submissionLookupObserver];
+  [submissionLookupObserver endAnimatingActivityIndicatorWithError:errorCopy];
 
-  if (v6)
+  if (errorCopy)
   {
-    v8 = [(UGCPOIEnrichmentCoordinator *)self submissionStatusDelegate];
+    submissionStatusDelegate = [(UGCPOIEnrichmentCoordinator *)self submissionStatusDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(UGCPOIEnrichmentCoordinator *)self submissionStatusDelegate];
-      [v10 poiEnrichmentCoordinator:self didFinishSubmissionLookup:v14];
+      submissionStatusDelegate2 = [(UGCPOIEnrichmentCoordinator *)self submissionStatusDelegate];
+      [submissionStatusDelegate2 poiEnrichmentCoordinator:self didFinishSubmissionLookup:completionCopy];
     }
 
-    [(UGCRatingsAndPhotosCoordinator *)self _failLookupWithError:v6];
+    [(UGCRatingsAndPhotosCoordinator *)self _failLookupWithError:errorCopy];
   }
 
   else
   {
-    [(UGCRatingsAndPhotosCoordinator *)self setExistingSubmission:v14];
-    v11 = [(UGCPOIEnrichmentCoordinator *)self submissionStatusDelegate];
+    [(UGCRatingsAndPhotosCoordinator *)self setExistingSubmission:completionCopy];
+    submissionStatusDelegate3 = [(UGCPOIEnrichmentCoordinator *)self submissionStatusDelegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(UGCPOIEnrichmentCoordinator *)self submissionStatusDelegate];
-      [v13 poiEnrichmentCoordinator:self didFinishSubmissionLookup:v14];
+      submissionStatusDelegate4 = [(UGCPOIEnrichmentCoordinator *)self submissionStatusDelegate];
+      [submissionStatusDelegate4 poiEnrichmentCoordinator:self didFinishSubmissionLookup:completionCopy];
     }
 
     [(UGCRatingsAndPhotosCoordinator *)self _startPOIEnrichmentFlow];
@@ -723,8 +723,8 @@ LABEL_10:
 
 - (void)_startRatingsAndPhotosFlowWithSubmissionLookup
 {
-  v3 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
-  v4 = [v3 _muid];
+  mapItem = [(UGCPOIEnrichmentCoordinator *)self mapItem];
+  _muid = [mapItem _muid];
 
   v5 = objc_alloc_init(_TtC4Maps26UGCSubmissionLookupManager);
   lookupManager = self->_lookupManager;
@@ -734,15 +734,15 @@ LABEL_10:
   {
     objc_initWeak(&location, self);
     v7 = self->_lookupManager;
-    v8 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
-    v9 = [v8 _geoMapItem];
-    v10 = [v9 _identifierHistory];
+    mapItem2 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
+    _geoMapItem = [mapItem2 _geoMapItem];
+    _identifierHistory = [_geoMapItem _identifierHistory];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100DD96FC;
     v15[3] = &unk_101654F50;
     objc_copyWeak(&v16, &location);
-    [(UGCSubmissionLookupManager *)v7 fetchSubmissionWithCommunityIDAndICloudIDFor:v4 identifierHistory:v10 completion:v15];
+    [(UGCSubmissionLookupManager *)v7 fetchSubmissionWithCommunityIDAndICloudIDFor:_muid identifierHistory:_identifierHistory completion:v15];
 
     v11 = &v16;
   }
@@ -756,7 +756,7 @@ LABEL_10:
     v13[2] = sub_100DD9774;
     v13[3] = &unk_101654F50;
     objc_copyWeak(&v14, &location);
-    [(UGCSubmissionLookupManager *)v12 fetchSubmissionWithICloudIDFor:v4 completion:v13];
+    [(UGCSubmissionLookupManager *)v12 fetchSubmissionWithICloudIDFor:_muid completion:v13];
     v11 = &v14;
   }
 
@@ -768,10 +768,10 @@ LABEL_10:
 {
   if (MapsFeature_IsEnabled_SydneyARP())
   {
-    v3 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
-    v4 = [v3 _geoMapItem];
-    v5 = [v4 _placeQuestionnaire];
-    UInteger = [v5 maximumNumberOfPhotos];
+    mapItem = [(UGCPOIEnrichmentCoordinator *)self mapItem];
+    _geoMapItem = [mapItem _geoMapItem];
+    _placeQuestionnaire = [_geoMapItem _placeQuestionnaire];
+    UInteger = [_placeQuestionnaire maximumNumberOfPhotos];
   }
 
   else
@@ -779,13 +779,13 @@ LABEL_10:
     UInteger = GEOConfigGetUInteger();
   }
 
-  v7 = [(UGCSubmissionLookupResult *)self->_existingSubmission previousSubmission];
-  v8 = [v7 images];
-  v9 = [v8 count];
-  v10 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
-  v11 = [v10 _geoMapItem];
-  v12 = [v11 _placeQuestionnaire];
-  if (v9 >= [v12 maximumNumberOfPhotos])
+  previousSubmission = [(UGCSubmissionLookupResult *)self->_existingSubmission previousSubmission];
+  images = [previousSubmission images];
+  v9 = [images count];
+  mapItem2 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
+  _geoMapItem2 = [mapItem2 _geoMapItem];
+  _placeQuestionnaire2 = [_geoMapItem2 _placeQuestionnaire];
+  if (v9 >= [_placeQuestionnaire2 maximumNumberOfPhotos])
   {
     UInteger = 0;
   }
@@ -806,17 +806,17 @@ LABEL_10:
 - (void)_startRatingsAndPhotosFlowDependentUponReviewedPlaceLookup
 {
   objc_initWeak(&location, self);
-  v3 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
-  v4 = [v3 _muid];
-  v5 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
-  v6 = [v5 _geoMapItem];
-  v7 = [v6 _identifierHistory];
+  mapItem = [(UGCPOIEnrichmentCoordinator *)self mapItem];
+  _muid = [mapItem _muid];
+  mapItem2 = [(UGCPOIEnrichmentCoordinator *)self mapItem];
+  _geoMapItem = [mapItem2 _geoMapItem];
+  _identifierHistory = [_geoMapItem _identifierHistory];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100DD9A84;
   v8[3] = &unk_101654F28;
   objc_copyWeak(&v9, &location);
-  [UGCReviewedPlaceManager fetchReviewedPlaceForMUID:v4 withIdentifierHistory:v7 completion:v8];
+  [UGCReviewedPlaceManager fetchReviewedPlaceForMUID:_muid withIdentifierHistory:_identifierHistory completion:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -825,14 +825,14 @@ LABEL_10:
 - (void)_startRatingsAndPhotosFlowRequiringInformedConsent
 {
   objc_initWeak(&location, self);
-  v3 = [(UGCPOIEnrichmentCoordinator *)self presentingViewController];
-  v4 = [(UGCPOIEnrichmentCoordinator *)self presentationContext];
+  presentingViewController = [(UGCPOIEnrichmentCoordinator *)self presentingViewController];
+  presentationContext = [(UGCPOIEnrichmentCoordinator *)self presentationContext];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100DD9BE4;
   v5[3] = &unk_101654F00;
   objc_copyWeak(&v6, &location);
-  [UGCInformedConsentViewController presentIfNeededWithPresentingViewController:v3 presentationContext:v4 completion:v5];
+  [UGCInformedConsentViewController presentIfNeededWithPresentingViewController:presentingViewController presentationContext:presentationContext completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);

@@ -2,98 +2,98 @@
 - (BOOL)becomeFirstResponder;
 - (BOOL)isModal;
 - (BOOL)isUnanimated;
-- (BOOL)messageEntryViewWidth:(double *)a3 andOffset:(double *)a4;
+- (BOOL)messageEntryViewWidth:(double *)width andOffset:(double *)offset;
 - (CGRect)_initialFrameForCollectionView;
 - (CGRect)_initialFrameForGradientReferenceView;
-- (CGRect)gradientFrameWithInsets:(UIEdgeInsets)a3;
+- (CGRect)gradientFrameWithInsets:(UIEdgeInsets)insets;
 - (CGSize)contentSizeForPinning;
 - (CKChatController)parentChatController;
-- (CKInlineReplyChatController)initWithConversation:(id)a3 threadIdentifier:(id)a4 threadOriginator:(id)a5 transitionContext:(id)a6 originatorMessageSummaryInfo:(id)a7 parentChatController:(id)a8;
+- (CKInlineReplyChatController)initWithConversation:(id)conversation threadIdentifier:(id)identifier threadOriginator:(id)originator transitionContext:(id)context originatorMessageSummaryInfo:(id)info parentChatController:(id)controller;
 - (CKInlineReplyInteractionDelegate)interactionDelegate;
 - (CKTranscriptOverlayTransitionDelegate)transcriptOverlayTransitionDelegate;
 - (UIEdgeInsets)_contentInsetForSendAnimation;
 - (UIEdgeInsets)calculateTranscriptMarginInsets;
 - (UIEdgeInsets)calculateTranscriptSafeAreaInsets;
 - (UIEdgeInsets)navigationBarInsetsWithoutPalette;
-- (UIEdgeInsets)transcriptContentInsetsForMessageEditingViewController:(id)a3;
+- (UIEdgeInsets)transcriptContentInsetsForMessageEditingViewController:(id)controller;
 - (double)accessoryViewHeight;
-- (double)throwAnimationFinalFrameOffset:(id)a3;
-- (double)transcriptCollectionViewController:(id)a3 targetAlphaForChatItem:(id)a4;
+- (double)throwAnimationFinalFrameOffset:(id)offset;
+- (double)transcriptCollectionViewController:(id)controller targetAlphaForChatItem:(id)item;
 - (double)visibleInputViewHeight;
 - (id)_defaultTranscriptNavBarAppearance;
-- (id)_navigationBarAppearanceWithKeyline:(BOOL)a3;
+- (id)_navigationBarAppearanceWithKeyline:(BOOL)keyline;
 - (id)_visibleGUIDs;
-- (id)contextualChatItemsForFullScreenBalloonViewController:(id)a3;
+- (id)contextualChatItemsForFullScreenBalloonViewController:(id)controller;
 - (id)contextualChatItemsForTapbackPicker;
 - (id)inputAccessoryView;
 - (id)inputController;
 - (id)inputViewController;
-- (id)parentViewControllerForPluginViewControllerInMessageEntryView:(id)a3;
+- (id)parentViewControllerForPluginViewControllerInMessageEntryView:(id)view;
 - (int64_t)targetFirstResponder;
-- (void)_animateIn:(BOOL)a3;
-- (void)_animateOutWithCompletion:(id)a3;
-- (void)_didSendCompositionInConversation:(id)a3;
+- (void)_animateIn:(BOOL)in;
+- (void)_animateOutWithCompletion:(id)completion;
+- (void)_didSendCompositionInConversation:(id)conversation;
 - (void)_doneButtonPressed;
 - (void)_requestDismissal;
 - (void)_setConversationDeferredSetup;
 - (void)_setInitialScrollPositionIfNecessary;
-- (void)_updateThreadOriginatorIMMessage:(id)a3 byAddingReplyWithPartCount:(int64_t)a4 toThreadIdentifier:(id)a5;
+- (void)_updateThreadOriginatorIMMessage:(id)message byAddingReplyWithPartCount:(int64_t)count toThreadIdentifier:(id)identifier;
 - (void)addOrRemoveEntryViewIfNeeded;
-- (void)appCardDidChangeEntryViewAlignmentHeight:(double)a3 animated:(BOOL)a4;
+- (void)appCardDidChangeEntryViewAlignmentHeight:(double)height animated:(BOOL)animated;
 - (void)applyInitialContextToCollectionViewIfNeeded;
-- (void)collectMetricsForSending:(id)a3;
-- (void)dismissControllerWithCompletion:(id)a3;
-- (void)invalidateChatItemLayoutForTraitCollectionChangeIfNeeded:(id)a3;
-- (void)messageEntryView:(id)a3 didMoveToWindow:(id)a4;
-- (void)messageEntryViewDidBeginEditingNotAlreadyActive:(id)a3;
-- (void)messageEntryViewSendLaterPluginInfoUpdated:(id)a3;
+- (void)collectMetricsForSending:(id)sending;
+- (void)dismissControllerWithCompletion:(id)completion;
+- (void)invalidateChatItemLayoutForTraitCollectionChangeIfNeeded:(id)needed;
+- (void)messageEntryView:(id)view didMoveToWindow:(id)window;
+- (void)messageEntryViewDidBeginEditingNotAlreadyActive:(id)active;
+- (void)messageEntryViewSendLaterPluginInfoUpdated:(id)updated;
 - (void)reloadEntryViewIfNeeded;
 - (void)reloadInputViews;
-- (void)sendMessage:(id)a3 forConversation:(id)a4 newComposition:(BOOL)a5;
-- (void)sendMessage:(id)a3 forConversation:(id)a4 onService:(id)a5 newComposition:(BOOL)a6;
-- (void)setIsShowingPreview:(BOOL)a3;
-- (void)setShowNavbarKeyline:(BOOL)a3;
-- (void)setTargetFirstResponder:(int64_t)a3;
+- (void)sendMessage:(id)message forConversation:(id)conversation newComposition:(BOOL)composition;
+- (void)sendMessage:(id)message forConversation:(id)conversation onService:(id)service newComposition:(BOOL)composition;
+- (void)setIsShowingPreview:(BOOL)preview;
+- (void)setShowNavbarKeyline:(BOOL)keyline;
+- (void)setTargetFirstResponder:(int64_t)responder;
 - (void)setUpEntryViewLayoutConstraintsIfNecessary;
-- (void)stageAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)tapGestureRecognized:(id)a3;
-- (void)transcriptCollectionViewController:(id)a3 collectionViewContentSizeDidChange:(CGSize)a4;
-- (void)transcriptCollectionViewController:(id)a3 didScroll:(CGPoint)a4;
-- (void)transcriptCollectionViewControllerDidSetChatItems:(id)a3;
-- (void)transcriptCollectionViewControllerRestingStateDidChange:(id)a3;
+- (void)stageAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)tapGestureRecognized:(id)recognized;
+- (void)transcriptCollectionViewController:(id)controller collectionViewContentSizeDidChange:(CGSize)change;
+- (void)transcriptCollectionViewController:(id)controller didScroll:(CGPoint)scroll;
+- (void)transcriptCollectionViewControllerDidSetChatItems:(id)items;
+- (void)transcriptCollectionViewControllerRestingStateDidChange:(id)change;
 - (void)updateActiveEntryViewPositioningGuide;
-- (void)updateScrollGeometryForReason:(id)a3 withDuration:(double)a4 animationCurve:(int64_t)a5;
-- (void)updateScrollGeometryWithoutAnimationForReason:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateScrollGeometryForReason:(id)reason withDuration:(double)duration animationCurve:(int64_t)curve;
+- (void)updateScrollGeometryWithoutAnimationForReason:(id)reason;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation CKInlineReplyChatController
 
-- (CKInlineReplyChatController)initWithConversation:(id)a3 threadIdentifier:(id)a4 threadOriginator:(id)a5 transitionContext:(id)a6 originatorMessageSummaryInfo:(id)a7 parentChatController:(id)a8
+- (CKInlineReplyChatController)initWithConversation:(id)conversation threadIdentifier:(id)identifier threadOriginator:(id)originator transitionContext:(id)context originatorMessageSummaryInfo:(id)info parentChatController:(id)controller
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  identifierCopy = identifier;
+  originatorCopy = originator;
+  contextCopy = context;
+  infoCopy = info;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = CKInlineReplyChatController;
-  v19 = [(CKChatController *)&v22 initWithConversation:a3];
+  v19 = [(CKChatController *)&v22 initWithConversation:conversation];
   v20 = v19;
   if (v19)
   {
-    [(CKInlineReplyChatController *)v19 setParentChatController:v18];
+    [(CKInlineReplyChatController *)v19 setParentChatController:controllerCopy];
     [(CKInlineReplyChatController *)v20 setIsInitialLoad:1];
     [(CKInlineReplyChatController *)v20 setIsInitialSizing:1];
-    [(CKInlineReplyChatController *)v20 setThreadOriginator:v15];
-    [(CKInlineReplyChatController *)v20 setThreadIdentifier:v14];
-    [(CKInlineReplyChatController *)v20 setTransitionContext:v16];
+    [(CKInlineReplyChatController *)v20 setThreadOriginator:originatorCopy];
+    [(CKInlineReplyChatController *)v20 setThreadIdentifier:identifierCopy];
+    [(CKInlineReplyChatController *)v20 setTransitionContext:contextCopy];
     [(CKScrollViewController *)v20 setEnableContentPinning:1];
     v20->_showNavbarKeyline = 1;
-    objc_storeStrong(&v20->_originatorMessageSummaryInfo, a7);
+    objc_storeStrong(&v20->_originatorMessageSummaryInfo, info);
   }
 
   return v20;
@@ -101,18 +101,18 @@
 
 - (BOOL)isModal
 {
-  v2 = [(CKInlineReplyChatController *)self transitionContext];
-  v3 = [v2 wantsModalPresentation];
+  transitionContext = [(CKInlineReplyChatController *)self transitionContext];
+  wantsModalPresentation = [transitionContext wantsModalPresentation];
 
-  return v3;
+  return wantsModalPresentation;
 }
 
 - (BOOL)isUnanimated
 {
-  v2 = [(CKInlineReplyChatController *)self transitionContext];
-  v3 = [v2 wantsUnanimatedPresentation];
+  transitionContext = [(CKInlineReplyChatController *)self transitionContext];
+  wantsUnanimatedPresentation = [transitionContext wantsUnanimatedPresentation];
 
-  return v3;
+  return wantsUnanimatedPresentation;
 }
 
 - (void)_doneButtonPressed
@@ -124,9 +124,9 @@
   }
 }
 
-- (void)dismissControllerWithCompletion:(id)a3
+- (void)dismissControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CKInlineReplyChatController *)self isModal])
   {
     v8[0] = MEMORY[0x1E69E9820];
@@ -134,7 +134,7 @@
     v8[2] = __63__CKInlineReplyChatController_dismissControllerWithCompletion___block_invoke;
     v8[3] = &unk_1E72EBDB8;
     v5 = &v9;
-    v9 = v4;
+    v9 = completionCopy;
     [(CKChatController *)self dismissViewControllerAnimated:1 completion:v8];
 LABEL_5:
 
@@ -148,7 +148,7 @@ LABEL_5:
     v6[2] = __63__CKInlineReplyChatController_dismissControllerWithCompletion___block_invoke_2;
     v6[3] = &unk_1E72ED1F0;
     v5 = &v7;
-    v7 = v4;
+    v7 = completionCopy;
     [(CKInlineReplyChatController *)self _animateOutWithCompletion:v6];
     goto LABEL_5;
   }
@@ -180,11 +180,11 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
 
 - (double)accessoryViewHeight
 {
-  v2 = [(CKChatController *)self entryView];
-  v3 = v2;
-  if (v2)
+  entryView = [(CKChatController *)self entryView];
+  v3 = entryView;
+  if (entryView)
   {
-    [v2 frame];
+    [entryView frame];
     v5 = v4;
   }
 
@@ -196,35 +196,35 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
   return v5;
 }
 
-- (void)updateScrollGeometryWithoutAnimationForReason:(id)a3
+- (void)updateScrollGeometryWithoutAnimationForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(CKChatController *)self entryView];
-  [v5 frame];
+  reasonCopy = reason;
+  entryView = [(CKChatController *)self entryView];
+  [entryView frame];
   [(CKScrollViewController *)self setContentPinningThreshold:CGRectGetHeight(v7)];
 
   v6.receiver = self;
   v6.super_class = CKInlineReplyChatController;
-  [(CKScrollViewController *)&v6 updateScrollGeometryWithoutAnimationForReason:v4];
+  [(CKScrollViewController *)&v6 updateScrollGeometryWithoutAnimationForReason:reasonCopy];
 }
 
-- (void)updateScrollGeometryForReason:(id)a3 withDuration:(double)a4 animationCurve:(int64_t)a5
+- (void)updateScrollGeometryForReason:(id)reason withDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v8 = a3;
-  v9 = [(CKChatController *)self entryView];
-  [v9 frame];
+  reasonCopy = reason;
+  entryView = [(CKChatController *)self entryView];
+  [entryView frame];
   [(CKScrollViewController *)self setContentPinningThreshold:CGRectGetHeight(v11)];
 
   v10.receiver = self;
   v10.super_class = CKInlineReplyChatController;
-  [(CKScrollViewController *)&v10 updateScrollGeometryForReason:v8 withDuration:a5 animationCurve:a4];
+  [(CKScrollViewController *)&v10 updateScrollGeometryForReason:reasonCopy withDuration:curve animationCurve:duration];
 }
 
 - (CGSize)contentSizeForPinning
 {
-  v2 = [(CKChatController *)self collectionView];
-  v3 = [v2 collectionViewLayout];
-  [v3 collectionViewContentSize];
+  collectionView = [(CKChatController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v5 = v4;
   v7 = v6;
 
@@ -237,8 +237,8 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
 
 - (UIEdgeInsets)navigationBarInsetsWithoutPalette
 {
-  v2 = [(CKInlineReplyChatController *)self view];
-  [v2 safeAreaInsets];
+  view = [(CKInlineReplyChatController *)self view];
+  [view safeAreaInsets];
   v4 = v3;
 
   v5 = 0.0;
@@ -252,12 +252,12 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
   return result;
 }
 
-- (CGRect)gradientFrameWithInsets:(UIEdgeInsets)a3
+- (CGRect)gradientFrameWithInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   if ([(CKInlineReplyChatController *)self isModal])
   {
     v25.receiver = self;
@@ -271,8 +271,8 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
 
   else
   {
-    v16 = [(CKInlineReplyChatController *)self interactionDelegate];
-    [v16 inlineReplyController:self gradientFrameWithInsets:{top, left, bottom, right}];
+    interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+    [interactionDelegate inlineReplyController:self gradientFrameWithInsets:{top, left, bottom, right}];
     v9 = v17;
     v11 = v18;
     v13 = v19;
@@ -295,8 +295,8 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
   v4.receiver = self;
   v4.super_class = CKInlineReplyChatController;
   [(CKChatController *)&v4 _setConversationDeferredSetup];
-  v3 = [(CKCoreChatController *)self collectionViewController];
-  [v3 setTranscriptBackgroundColor:0];
+  collectionViewController = [(CKCoreChatController *)self collectionViewController];
+  [collectionViewController setTranscriptBackgroundColor:0];
 }
 
 - (id)inputAccessoryView
@@ -305,15 +305,15 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
   {
     v5.receiver = self;
     v5.super_class = CKInlineReplyChatController;
-    v3 = [(CKChatController *)&v5 inputAccessoryView];
+    inputAccessoryView = [(CKChatController *)&v5 inputAccessoryView];
   }
 
   else
   {
-    v3 = 0;
+    inputAccessoryView = 0;
   }
 
-  return v3;
+  return inputAccessoryView;
 }
 
 - (id)inputViewController
@@ -322,15 +322,15 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
   {
     v5.receiver = self;
     v5.super_class = CKInlineReplyChatController;
-    v3 = [(CKChatController *)&v5 inputViewController];
+    inputViewController = [(CKChatController *)&v5 inputViewController];
   }
 
   else
   {
-    v3 = 0;
+    inputViewController = 0;
   }
 
-  return v3;
+  return inputViewController;
 }
 
 - (void)reloadInputViews
@@ -344,8 +344,8 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
 
   else
   {
-    v3 = [(CKInlineReplyChatController *)self interactionDelegate];
-    [v3 inlineReplyControllerRequestsReloadInputViews:self];
+    interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+    [interactionDelegate inlineReplyControllerRequestsReloadInputViews:self];
   }
 }
 
@@ -355,16 +355,16 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
   {
     v6.receiver = self;
     v6.super_class = CKInlineReplyChatController;
-    v3 = [(CKCoreChatController *)&v6 inputController];
+    inputController = [(CKCoreChatController *)&v6 inputController];
   }
 
   else
   {
-    v4 = [(CKInlineReplyChatController *)self interactionDelegate];
-    v3 = [v4 inlineReplyControllerChatInputController:self];
+    interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+    inputController = [interactionDelegate inlineReplyControllerChatInputController:self];
   }
 
-  return v3;
+  return inputController;
 }
 
 - (void)reloadEntryViewIfNeeded
@@ -399,11 +399,11 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(CKInlineReplyChatController *)self interactionDelegate];
-  if (v3 && (v4 = v3, v5 = [(CKInlineReplyChatController *)self isModal], v4, !v5))
+  interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+  if (interactionDelegate && (v4 = interactionDelegate, v5 = [(CKInlineReplyChatController *)self isModal], v4, !v5))
   {
-    v7 = [(CKInlineReplyChatController *)self interactionDelegate];
-    v8 = [v7 inlineReplyControllerBecomeFirstResponder:self];
+    interactionDelegate2 = [(CKInlineReplyChatController *)self interactionDelegate];
+    v8 = [interactionDelegate2 inlineReplyControllerBecomeFirstResponder:self];
 
     return v8;
   }
@@ -416,30 +416,30 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
   }
 }
 
-- (void)setTargetFirstResponder:(int64_t)a3
+- (void)setTargetFirstResponder:(int64_t)responder
 {
-  v5 = [(CKInlineReplyChatController *)self interactionDelegate];
-  if (v5 && (v6 = v5, v7 = [(CKInlineReplyChatController *)self isModal], v6, !v7))
+  interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+  if (interactionDelegate && (v6 = interactionDelegate, v7 = [(CKInlineReplyChatController *)self isModal], v6, !v7))
   {
-    v8 = [(CKInlineReplyChatController *)self interactionDelegate];
-    [v8 inlineReplyController:self setTargetFirstResponder:a3];
+    interactionDelegate2 = [(CKInlineReplyChatController *)self interactionDelegate];
+    [interactionDelegate2 inlineReplyController:self setTargetFirstResponder:responder];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CKInlineReplyChatController;
-    [(CKChatController *)&v9 setTargetFirstResponder:a3];
+    [(CKChatController *)&v9 setTargetFirstResponder:responder];
   }
 }
 
 - (int64_t)targetFirstResponder
 {
-  v3 = [(CKInlineReplyChatController *)self interactionDelegate];
-  if (v3 && (v4 = v3, v5 = [(CKInlineReplyChatController *)self isModal], v4, !v5))
+  interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+  if (interactionDelegate && (v4 = interactionDelegate, v5 = [(CKInlineReplyChatController *)self isModal], v4, !v5))
   {
-    v7 = [(CKInlineReplyChatController *)self interactionDelegate];
-    v8 = [v7 inlineReplyControllerTargetFirstResponder:self];
+    interactionDelegate2 = [(CKInlineReplyChatController *)self interactionDelegate];
+    v8 = [interactionDelegate2 inlineReplyControllerTargetFirstResponder:self];
 
     return v8;
   }
@@ -452,13 +452,13 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
   }
 }
 
-- (BOOL)messageEntryViewWidth:(double *)a3 andOffset:(double *)a4
+- (BOOL)messageEntryViewWidth:(double *)width andOffset:(double *)offset
 {
-  v7 = [(CKInlineReplyChatController *)self interactionDelegate];
-  if (v7 && (v8 = v7, v9 = [(CKInlineReplyChatController *)self isModal], v8, !v9))
+  interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+  if (interactionDelegate && (v8 = interactionDelegate, v9 = [(CKInlineReplyChatController *)self isModal], v8, !v9))
   {
-    v11 = [(CKInlineReplyChatController *)self interactionDelegate];
-    v12 = [v11 inlineReplyController:self containerWidth:a3 offset:a4];
+    interactionDelegate2 = [(CKInlineReplyChatController *)self interactionDelegate];
+    v12 = [interactionDelegate2 inlineReplyController:self containerWidth:width offset:offset];
 
     return v12;
   }
@@ -467,46 +467,46 @@ uint64_t __63__CKInlineReplyChatController_dismissControllerWithCompletion___blo
   {
     v13.receiver = self;
     v13.super_class = CKInlineReplyChatController;
-    return [(CKChatController *)&v13 messageEntryViewWidth:a3 andOffset:a4];
+    return [(CKChatController *)&v13 messageEntryViewWidth:width andOffset:offset];
   }
 }
 
-- (void)setIsShowingPreview:(BOOL)a3
+- (void)setIsShowingPreview:(BOOL)preview
 {
-  v3 = a3;
+  previewCopy = preview;
   v6.receiver = self;
   v6.super_class = CKInlineReplyChatController;
   [(CKChatController *)&v6 setIsShowingPreview:?];
-  v5 = [(CKInlineReplyChatController *)self interactionDelegate];
-  [v5 inlineReplyController:self setIsShowingPreview:v3];
+  interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+  [interactionDelegate inlineReplyController:self setIsShowingPreview:previewCopy];
 }
 
-- (void)messageEntryViewSendLaterPluginInfoUpdated:(id)a3
+- (void)messageEntryViewSendLaterPluginInfoUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(CKInlineReplyChatController *)self threadOriginator];
-  v6 = [v5 scheduleType];
+  updatedCopy = updated;
+  threadOriginator = [(CKInlineReplyChatController *)self threadOriginator];
+  scheduleType = [threadOriginator scheduleType];
 
-  if (v6 == 2)
+  if (scheduleType == 2)
   {
     [(CKInlineReplyChatController *)self dismissController];
   }
 
   v7.receiver = self;
   v7.super_class = CKInlineReplyChatController;
-  [(CKChatController *)&v7 messageEntryViewSendLaterPluginInfoUpdated:v4];
+  [(CKChatController *)&v7 messageEntryViewSendLaterPluginInfoUpdated:updatedCopy];
 }
 
-- (void)messageEntryViewDidBeginEditingNotAlreadyActive:(id)a3
+- (void)messageEntryViewDidBeginEditingNotAlreadyActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   if ([(CKInlineReplyChatController *)self isModal])
   {
-    v6 = self;
-    v5 = &v6;
+    selfCopy = self;
+    v5 = &selfCopy;
 LABEL_7:
     v5->super_class = CKInlineReplyChatController;
-    [(objc_super *)v5 messageEntryViewDidBeginEditingNotAlreadyActive:v4, v6];
+    [(objc_super *)v5 messageEntryViewDidBeginEditingNotAlreadyActive:activeCopy, selfCopy];
     goto LABEL_8;
   }
 
@@ -534,29 +534,29 @@ LABEL_8:
     [(CKChatController *)&v4 updateActiveEntryViewPositioningGuide];
   }
 
-  v3 = [(CKInlineReplyChatController *)self interactionDelegate];
-  [v3 updateActiveEntryViewPositioningGuideForInlineReplyController:self];
+  interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+  [interactionDelegate updateActiveEntryViewPositioningGuideForInlineReplyController:self];
 }
 
-- (void)messageEntryView:(id)a3 didMoveToWindow:(id)a4
+- (void)messageEntryView:(id)view didMoveToWindow:(id)window
 {
   v9.receiver = self;
   v9.super_class = CKInlineReplyChatController;
-  v6 = a4;
-  v7 = a3;
-  [(CKChatController *)&v9 messageEntryView:v7 didMoveToWindow:v6];
+  windowCopy = window;
+  viewCopy = view;
+  [(CKChatController *)&v9 messageEntryView:viewCopy didMoveToWindow:windowCopy];
   v8 = [(CKInlineReplyChatController *)self interactionDelegate:v9.receiver];
-  [v8 inlineReplyController:self messageEntryView:v7 didMoveToWindow:v6];
+  [v8 inlineReplyController:self messageEntryView:viewCopy didMoveToWindow:windowCopy];
 }
 
-- (UIEdgeInsets)transcriptContentInsetsForMessageEditingViewController:(id)a3
+- (UIEdgeInsets)transcriptContentInsetsForMessageEditingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(CKInlineReplyChatController *)self isModal])
   {
     v23.receiver = self;
     v23.super_class = CKInlineReplyChatController;
-    [(CKChatController *)&v23 transcriptContentInsetsForMessageEditingViewController:v4];
+    [(CKChatController *)&v23 transcriptContentInsetsForMessageEditingViewController:controllerCopy];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -565,14 +565,14 @@ LABEL_8:
 
   else
   {
-    v13 = [(CKInlineReplyChatController *)self interactionDelegate];
-    [v13 parentTranscriptContentInsetsForInlineReplyController:self];
+    interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+    [interactionDelegate parentTranscriptContentInsetsForInlineReplyController:self];
     v6 = v14;
     v8 = v15;
     v12 = v16;
     v22.receiver = self;
     v22.super_class = CKInlineReplyChatController;
-    [(CKChatController *)&v22 transcriptContentInsetsForMessageEditingViewController:v4];
+    [(CKChatController *)&v22 transcriptContentInsetsForMessageEditingViewController:controllerCopy];
     v10 = v17;
   }
 
@@ -587,14 +587,14 @@ LABEL_8:
   return result;
 }
 
-- (void)appCardDidChangeEntryViewAlignmentHeight:(double)a3 animated:(BOOL)a4
+- (void)appCardDidChangeEntryViewAlignmentHeight:(double)height animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v8.receiver = self;
   v8.super_class = CKInlineReplyChatController;
   [CKChatController appCardDidChangeEntryViewAlignmentHeight:sel_appCardDidChangeEntryViewAlignmentHeight_animated_ animated:?];
-  v7 = [(CKInlineReplyChatController *)self interactionDelegate];
-  [v7 inlineReplyController:self appCardDidChangeEntryViewAlignmentHeight:v4 animated:a3];
+  interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+  [interactionDelegate inlineReplyController:self appCardDidChangeEntryViewAlignmentHeight:animatedCopy animated:height];
 }
 
 - (double)visibleInputViewHeight
@@ -608,8 +608,8 @@ LABEL_8:
 
   else
   {
-    v4 = [(CKInlineReplyChatController *)self interactionDelegate];
-    [v4 visibleInputViewHeightForInlineReplyController:self];
+    interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+    [interactionDelegate visibleInputViewHeightForInlineReplyController:self];
     v6 = v5;
 
     return v6;
@@ -627,8 +627,8 @@ LABEL_8:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKChatController *)self collectionView];
-  [v11 contentInset];
+  collectionView = [(CKChatController *)self collectionView];
+  [collectionView contentInset];
   v13 = v4 + v12 - v4;
 
   v14 = v13;
@@ -642,10 +642,10 @@ LABEL_8:
   return result;
 }
 
-- (double)throwAnimationFinalFrameOffset:(id)a3
+- (double)throwAnimationFinalFrameOffset:(id)offset
 {
-  v3 = [(CKInlineReplyChatController *)self view];
-  [v3 safeAreaInsets];
+  view = [(CKInlineReplyChatController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
 
   return v5;
@@ -653,30 +653,30 @@ LABEL_8:
 
 - (id)contextualChatItemsForTapbackPicker
 {
-  v2 = [(CKInlineReplyChatController *)self parentChatController];
-  v3 = [v2 collectionViewController];
-  v4 = [v3 chatItems];
+  parentChatController = [(CKInlineReplyChatController *)self parentChatController];
+  collectionViewController = [parentChatController collectionViewController];
+  chatItems = [collectionViewController chatItems];
 
-  return v4;
+  return chatItems;
 }
 
-- (id)contextualChatItemsForFullScreenBalloonViewController:(id)a3
+- (id)contextualChatItemsForFullScreenBalloonViewController:(id)controller
 {
-  v3 = [(CKInlineReplyChatController *)self parentChatController];
-  v4 = [v3 collectionViewController];
-  v5 = [v4 chatItems];
+  parentChatController = [(CKInlineReplyChatController *)self parentChatController];
+  collectionViewController = [parentChatController collectionViewController];
+  chatItems = [collectionViewController chatItems];
 
-  return v5;
+  return chatItems;
 }
 
-- (void)invalidateChatItemLayoutForTraitCollectionChangeIfNeeded:(id)a3
+- (void)invalidateChatItemLayoutForTraitCollectionChangeIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(CKViewController *)self deferredAppeared])
   {
     v6.receiver = self;
     v6.super_class = CKInlineReplyChatController;
-    [(CKCoreChatController *)&v6 invalidateChatItemLayoutForTraitCollectionChangeIfNeeded:v4];
+    [(CKCoreChatController *)&v6 invalidateChatItemLayoutForTraitCollectionChangeIfNeeded:neededCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -690,88 +690,88 @@ LABEL_8:
   }
 }
 
-- (void)sendMessage:(id)a3 forConversation:(id)a4 onService:(id)a5 newComposition:(BOOL)a6
+- (void)sendMessage:(id)message forConversation:(id)conversation onService:(id)service newComposition:(BOOL)composition
 {
-  v6 = a6;
+  compositionCopy = composition;
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  messageCopy = message;
+  conversationCopy = conversation;
+  serviceCopy = service;
   if (IMOSLoggingEnabled())
   {
     v13 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(CKInlineReplyChatController *)self threadIdentifier];
+      threadIdentifier = [(CKInlineReplyChatController *)self threadIdentifier];
       v20 = 136315394;
       v21 = "[CKInlineReplyChatController sendMessage:forConversation:onService:newComposition:]";
       v22 = 2112;
-      v23 = v14;
+      v23 = threadIdentifier;
       _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "%s Sending reply with thread identifier %@", &v20, 0x16u);
     }
   }
 
-  v15 = [(CKInlineReplyChatController *)self threadIdentifier];
-  [v10 setThreadIdentifier:v15];
-  v16 = [(CKInlineReplyChatController *)self threadOriginator];
-  v17 = [(CKInlineReplyChatController *)self _imMessageForIMMessageItem:v16];
-  v18 = [v10 messageParts];
-  v19 = [v18 count];
+  threadIdentifier2 = [(CKInlineReplyChatController *)self threadIdentifier];
+  [messageCopy setThreadIdentifier:threadIdentifier2];
+  threadOriginator = [(CKInlineReplyChatController *)self threadOriginator];
+  v17 = [(CKInlineReplyChatController *)self _imMessageForIMMessageItem:threadOriginator];
+  messageParts = [messageCopy messageParts];
+  v19 = [messageParts count];
 
-  [(CKInlineReplyChatController *)self _updateThreadOriginatorIMMessage:v17 byAddingReplyWithPartCount:v19 toThreadIdentifier:v15];
-  [v11 sendMessage:v10 onService:v12 newComposition:v6];
-  [(CKInlineReplyChatController *)self collectMetricsForSending:v10];
+  [(CKInlineReplyChatController *)self _updateThreadOriginatorIMMessage:v17 byAddingReplyWithPartCount:v19 toThreadIdentifier:threadIdentifier2];
+  [conversationCopy sendMessage:messageCopy onService:serviceCopy newComposition:compositionCopy];
+  [(CKInlineReplyChatController *)self collectMetricsForSending:messageCopy];
 }
 
-- (void)sendMessage:(id)a3 forConversation:(id)a4 newComposition:(BOOL)a5
+- (void)sendMessage:(id)message forConversation:(id)conversation newComposition:(BOOL)composition
 {
-  v5 = a5;
+  compositionCopy = composition;
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  messageCopy = message;
+  conversationCopy = conversation;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(CKInlineReplyChatController *)self threadIdentifier];
+      threadIdentifier = [(CKInlineReplyChatController *)self threadIdentifier];
       v17 = 136315394;
       v18 = "[CKInlineReplyChatController sendMessage:forConversation:newComposition:]";
       v19 = 2112;
-      v20 = v11;
+      v20 = threadIdentifier;
       _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "%s Sending reply with thread identifier %@", &v17, 0x16u);
     }
   }
 
-  v12 = [(CKInlineReplyChatController *)self threadIdentifier];
-  [v8 setThreadIdentifier:v12];
-  v13 = [(CKInlineReplyChatController *)self threadOriginator];
-  v14 = [(CKInlineReplyChatController *)self _imMessageForIMMessageItem:v13];
-  v15 = [v8 messageParts];
-  v16 = [v15 count];
+  threadIdentifier2 = [(CKInlineReplyChatController *)self threadIdentifier];
+  [messageCopy setThreadIdentifier:threadIdentifier2];
+  threadOriginator = [(CKInlineReplyChatController *)self threadOriginator];
+  v14 = [(CKInlineReplyChatController *)self _imMessageForIMMessageItem:threadOriginator];
+  messageParts = [messageCopy messageParts];
+  v16 = [messageParts count];
 
-  [(CKInlineReplyChatController *)self _updateThreadOriginatorIMMessage:v14 byAddingReplyWithPartCount:v16 toThreadIdentifier:v12];
-  [v8 setThreadOriginator:v14];
-  [v9 sendMessage:v8 newComposition:v5];
-  [(CKInlineReplyChatController *)self collectMetricsForSending:v8];
+  [(CKInlineReplyChatController *)self _updateThreadOriginatorIMMessage:v14 byAddingReplyWithPartCount:v16 toThreadIdentifier:threadIdentifier2];
+  [messageCopy setThreadOriginator:v14];
+  [conversationCopy sendMessage:messageCopy newComposition:compositionCopy];
+  [(CKInlineReplyChatController *)self collectMetricsForSending:messageCopy];
 }
 
-- (void)_updateThreadOriginatorIMMessage:(id)a3 byAddingReplyWithPartCount:(int64_t)a4 toThreadIdentifier:(id)a5
+- (void)_updateThreadOriginatorIMMessage:(id)message byAddingReplyWithPartCount:(int64_t)count toThreadIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v7 && [v8 length])
+  messageCopy = message;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (messageCopy && [identifierCopy length])
   {
     IMMessageThreadIdentifierGetComponents();
     v10 = 0;
     v11 = 0;
     if ([v11 length])
     {
-      v12 = [v7 replyCountsByPart];
-      v13 = [v12 objectForKeyedSubscript:v11];
-      v14 = [v13 integerValue];
-      v15 = [v12 mutableCopy];
+      replyCountsByPart = [messageCopy replyCountsByPart];
+      v13 = [replyCountsByPart objectForKeyedSubscript:v11];
+      integerValue = [v13 integerValue];
+      v15 = [replyCountsByPart mutableCopy];
       v16 = v15;
       if (v15)
       {
@@ -785,83 +785,83 @@ LABEL_8:
 
       v18 = v17;
 
-      v19 = [MEMORY[0x1E696AD98] numberWithInteger:v14 + a4];
+      v19 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + count];
       [v18 setObject:v19 forKeyedSubscript:v11];
 
       v20 = [v18 copy];
-      [v7 setReplyCountsByPart:v20];
+      [messageCopy setReplyCountsByPart:v20];
     }
   }
 }
 
-- (void)_didSendCompositionInConversation:(id)a3
+- (void)_didSendCompositionInConversation:(id)conversation
 {
   v5.receiver = self;
   v5.super_class = CKInlineReplyChatController;
-  [(CKChatController *)&v5 _didSendCompositionInConversation:a3];
-  v4 = [(CKInlineReplyChatController *)self interactionDelegate];
-  [v4 inlineReplyControllerDidSendComposition:self];
+  [(CKChatController *)&v5 _didSendCompositionInConversation:conversation];
+  interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+  [interactionDelegate inlineReplyControllerDidSendComposition:self];
 }
 
-- (void)collectMetricsForSending:(id)a3
+- (void)collectMetricsForSending:(id)sending
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CKInlineReplyChatController *)self originatorMessageSummaryInfo];
-  v4 = [v3 __im_associatedMessageContentType];
-  [v4 integerValue];
+  originatorMessageSummaryInfo = [(CKInlineReplyChatController *)self originatorMessageSummaryInfo];
+  __im_associatedMessageContentType = [originatorMessageSummaryInfo __im_associatedMessageContentType];
+  [__im_associatedMessageContentType integerValue];
 
-  v5 = [MEMORY[0x1E69A8168] sharedInstance];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
   v6 = *MEMORY[0x1E69A7408];
   v9 = @"originatorType";
   v7 = IMMetricsValueForAssociatedMessageContentType();
   v10[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  [v5 trackEvent:v6 withDictionary:v8];
+  [mEMORY[0x1E69A8168] trackEvent:v6 withDictionary:v8];
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
   v4.receiver = self;
   v4.super_class = CKInlineReplyChatController;
-  [(CKChatController *)&v4 tapGestureRecognized:a3];
+  [(CKChatController *)&v4 tapGestureRecognized:recognized];
   [(CKInlineReplyChatController *)self dismissController];
 }
 
 - (id)_defaultTranscriptNavBarAppearance
 {
-  v2 = [(CKInlineReplyChatController *)self navigationController];
-  v3 = [v2 navigationBar];
-  v4 = [v3 standardAppearance];
-  v5 = [v4 copy];
+  navigationController = [(CKInlineReplyChatController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  standardAppearance = [navigationBar standardAppearance];
+  v5 = [standardAppearance copy];
 
   [v5 configureWithTransparentBackground];
 
   return v5;
 }
 
-- (id)_navigationBarAppearanceWithKeyline:(BOOL)a3
+- (id)_navigationBarAppearanceWithKeyline:(BOOL)keyline
 {
-  v3 = a3;
-  v4 = [(CKInlineReplyChatController *)self _defaultTranscriptNavBarAppearance];
-  v5 = v4;
-  if (v3)
+  keylineCopy = keyline;
+  _defaultTranscriptNavBarAppearance = [(CKInlineReplyChatController *)self _defaultTranscriptNavBarAppearance];
+  v5 = _defaultTranscriptNavBarAppearance;
+  if (keylineCopy)
   {
-    [v4 configureWithDefaultShadow];
+    [_defaultTranscriptNavBarAppearance configureWithDefaultShadow];
   }
 
   else
   {
-    [v4 configureWithoutShadow];
+    [_defaultTranscriptNavBarAppearance configureWithoutShadow];
   }
 
   return v5;
 }
 
-- (void)setShowNavbarKeyline:(BOOL)a3
+- (void)setShowNavbarKeyline:(BOOL)keyline
 {
-  if (self->_showNavbarKeyline != a3)
+  if (self->_showNavbarKeyline != keyline)
   {
-    self->_showNavbarKeyline = a3;
+    self->_showNavbarKeyline = keyline;
   }
 }
 
@@ -877,15 +877,15 @@ LABEL_8:
   v17.receiver = self;
   v17.super_class = CKInlineReplyChatController;
   [(CKChatController *)&v17 viewDidLoad];
-  v4 = [(CKInlineReplyChatController *)self view];
-  [v4 setBackgroundColor:0];
+  view = [(CKInlineReplyChatController *)self view];
+  [view setBackgroundColor:0];
 
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 replyTranscriptBackgroundDoesSupportTransparentBlurVisualEffect];
+  replyTranscriptBackgroundDoesSupportTransparentBlurVisualEffect = [v5 replyTranscriptBackgroundDoesSupportTransparentBlurVisualEffect];
 
   v7 = IMLogHandleForCategory();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (replyTranscriptBackgroundDoesSupportTransparentBlurVisualEffect)
   {
     if (v8)
     {
@@ -894,12 +894,12 @@ LABEL_8:
     }
 
     v9 = objc_alloc(MEMORY[0x1E69DD298]);
-    v10 = [(CKInlineReplyChatController *)self view];
-    [v10 bounds];
+    view2 = [(CKInlineReplyChatController *)self view];
+    [view2 bounds];
     v11 = [v9 initWithFrame:?];
 
-    v12 = [(CKInlineReplyChatController *)self view];
-    [v12 insertSubview:v11 atIndex:0];
+    view3 = [(CKInlineReplyChatController *)self view];
+    [view3 insertSubview:v11 atIndex:0];
 
     [(CKInlineReplyChatController *)self setBlurView:v11];
   }
@@ -913,16 +913,16 @@ LABEL_8:
     }
 
     v13 = [CKInlineReplyTransparentBlurBackgroundView alloc];
-    v14 = [(CKInlineReplyChatController *)self view];
-    [v14 bounds];
+    view4 = [(CKInlineReplyChatController *)self view];
+    [view4 bounds];
     v11 = [(CKInlineReplyTransparentBlurBackgroundView *)v13 initWithFrame:?];
 
     [(CKInlineReplyTransparentBlurBackgroundView *)v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [(CKInlineReplyChatController *)self view];
-    [v15 insertSubview:v11 atIndex:0];
+    view5 = [(CKInlineReplyChatController *)self view];
+    [view5 insertSubview:v11 atIndex:0];
 
-    v16 = [(CKInlineReplyChatController *)self view];
-    [(UIView *)v11 __ck_makeEdgesEqualTo:v16];
+    view6 = [(CKInlineReplyChatController *)self view];
+    [(UIView *)v11 __ck_makeEdgesEqualTo:view6];
 
     [(CKInlineReplyChatController *)self setBlurParentView:v11];
   }
@@ -933,25 +933,25 @@ LABEL_8:
   v14.receiver = self;
   v14.super_class = CKInlineReplyChatController;
   [(CKChatController *)&v14 viewDidLayoutSubviews];
-  v3 = [(CKInlineReplyChatController *)self blurView];
+  blurView = [(CKInlineReplyChatController *)self blurView];
 
-  if (v3)
+  if (blurView)
   {
-    v4 = [(CKInlineReplyChatController *)self view];
-    [v4 bounds];
+    view = [(CKInlineReplyChatController *)self view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
 
-    v13 = [(CKInlineReplyChatController *)self blurView];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    blurView2 = [(CKInlineReplyChatController *)self blurView];
+    [blurView2 setFrame:{v6, v8, v10, v12}];
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v27 = *MEMORY[0x1E69E9840];
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -962,11 +962,11 @@ LABEL_8:
 
   v22.receiver = self;
   v22.super_class = CKInlineReplyChatController;
-  [(CKInlineReplyChatController *)&v22 viewIsAppearing:v3];
-  v6 = [(CKInlineReplyChatController *)self isInitialLoad];
+  [(CKInlineReplyChatController *)&v22 viewIsAppearing:appearingCopy];
+  isInitialLoad = [(CKInlineReplyChatController *)self isInitialLoad];
   v7 = IMLogHandleForCategory();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (isInitialLoad)
   {
     if (v8)
     {
@@ -974,31 +974,31 @@ LABEL_8:
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Performing initialLoad", buf, 2u);
     }
 
-    v9 = [(CKInlineReplyChatController *)self interactionDelegate];
-    [v9 inlineReplyControllerIsAppearing:self];
+    interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+    [interactionDelegate inlineReplyControllerIsAppearing:self];
 
-    v10 = [(CKInlineReplyChatController *)self isModal];
-    v11 = [(CKInlineReplyChatController *)self isUnanimated];
-    v12 = v11;
-    if (v10 || v11)
+    isModal = [(CKInlineReplyChatController *)self isModal];
+    isUnanimated = [(CKInlineReplyChatController *)self isUnanimated];
+    v12 = isUnanimated;
+    if (isModal || isUnanimated)
     {
       v15 = IMLogHandleForCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 134218240;
-        v24 = v10;
+        v24 = isModal;
         v25 = 2048;
         v26 = v12;
         _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_INFO, "Calling _animateIn during initialLoad due to isModal: %ld isUnanimated:%ld", buf, 0x16u);
       }
 
       [(CKInlineReplyChatController *)self _animateIn:1];
-      v16 = [(CKInlineReplyChatController *)self traitCollection];
-      v17 = [v16 userInterfaceStyle];
+      traitCollection = [(CKInlineReplyChatController *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      v18 = [(CKChatController *)self entryView];
-      v19 = v18;
-      if (v17 == 2)
+      entryView = [(CKChatController *)self entryView];
+      v19 = entryView;
+      if (userInterfaceStyle == 2)
       {
         v20 = 7;
       }
@@ -1008,7 +1008,7 @@ LABEL_8:
         v20 = 8;
       }
 
-      [v18 setStyle:v20];
+      [entryView setStyle:v20];
 
       [(CKInlineReplyChatController *)self setTargetFirstResponder:1];
       [(CKInlineReplyChatController *)self becomeFirstResponder];
@@ -1016,20 +1016,20 @@ LABEL_8:
 
     else
     {
-      v13 = [(CKInlineReplyChatController *)self inlineCollectionViewController];
-      [v13 setAnimatingIn:1];
+      inlineCollectionViewController = [(CKInlineReplyChatController *)self inlineCollectionViewController];
+      [inlineCollectionViewController setAnimatingIn:1];
 
       if (UIAccessibilityIsReduceMotionEnabled())
       {
-        v14 = [(CKChatController *)self collectionView];
-        [v14 setAlpha:0.0];
+        collectionView = [(CKChatController *)self collectionView];
+        [collectionView setAlpha:0.0];
       }
 
       else
       {
-        v14 = [(CKInlineReplyChatController *)self transcriptOverlayTransitionDelegate];
-        v21 = [(CKInlineReplyChatController *)self _visibleGUIDs];
-        [v14 transcriptOverlayViewController:self visibleGUIDsDidChange:v21];
+        collectionView = [(CKInlineReplyChatController *)self transcriptOverlayTransitionDelegate];
+        _visibleGUIDs = [(CKInlineReplyChatController *)self _visibleGUIDs];
+        [collectionView transcriptOverlayViewController:self visibleGUIDsDidChange:_visibleGUIDs];
       }
 
       if ([(CKInlineReplyChatController *)self shouldReloadInsetsForFloatingKeyboard])
@@ -1055,13 +1055,13 @@ LABEL_8:
 {
   if (!UIAccessibilityIsReduceMotionEnabled() && ![(CKInlineReplyChatController *)self isUnanimated])
   {
-    v7 = [(CKInlineReplyChatController *)self transitionContext];
-    v3 = [(CKInlineReplyChatController *)self inlineCollectionViewController];
-    v4 = [v7 visibleChatItemToFrameMap];
-    [v3 setCollectionViewCurrentFramesForNextLayout:v4];
-    v5 = [(CKInlineReplyChatController *)self transitionContext];
-    v6 = [v5 replyTransitionProperties];
-    [v3 setTransitionProperties:v6];
+    transitionContext = [(CKInlineReplyChatController *)self transitionContext];
+    inlineCollectionViewController = [(CKInlineReplyChatController *)self inlineCollectionViewController];
+    visibleChatItemToFrameMap = [transitionContext visibleChatItemToFrameMap];
+    [inlineCollectionViewController setCollectionViewCurrentFramesForNextLayout:visibleChatItemToFrameMap];
+    transitionContext2 = [(CKInlineReplyChatController *)self transitionContext];
+    replyTransitionProperties = [transitionContext2 replyTransitionProperties];
+    [inlineCollectionViewController setTransitionProperties:replyTransitionProperties];
   }
 }
 
@@ -1076,8 +1076,8 @@ LABEL_8:
   v8.f64[1] = v6;
   if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*MEMORY[0x1E69DDCE0], v7), vceqq_f64(*(MEMORY[0x1E69DDCE0] + 16), v8)))))
   {
-    v9 = [(CKInlineReplyChatController *)self transitionContext];
-    [v9 transcriptMarginInsets];
+    transitionContext = [(CKInlineReplyChatController *)self transitionContext];
+    [transitionContext transcriptMarginInsets];
     v16 = v11;
     v17 = v10;
     v14 = v13;
@@ -1107,8 +1107,8 @@ LABEL_8:
   v8.f64[1] = v6;
   if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*MEMORY[0x1E69DDCE0], v7), vceqq_f64(*(MEMORY[0x1E69DDCE0] + 16), v8)))))
   {
-    v9 = [(CKInlineReplyChatController *)self transitionContext];
-    [v9 transcriptSafeAreaInsets];
+    transitionContext = [(CKInlineReplyChatController *)self transitionContext];
+    [transitionContext transcriptSafeAreaInsets];
     v16 = v11;
     v17 = v10;
     v14 = v13;
@@ -1129,8 +1129,8 @@ LABEL_8:
 
 - (CGRect)_initialFrameForCollectionView
 {
-  v3 = [(CKInlineReplyChatController *)self transitionContext];
-  [v3 parentCollectionViewFrame];
+  transitionContext = [(CKInlineReplyChatController *)self transitionContext];
+  [transitionContext parentCollectionViewFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1151,8 +1151,8 @@ LABEL_8:
 
 - (CGRect)_initialFrameForGradientReferenceView
 {
-  v2 = [(CKInlineReplyChatController *)self transitionContext];
-  [v2 parentCollectionViewFrame];
+  transitionContext = [(CKInlineReplyChatController *)self transitionContext];
+  [transitionContext parentCollectionViewFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1169,9 +1169,9 @@ LABEL_8:
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1181,18 +1181,18 @@ LABEL_8:
 
   v6.receiver = self;
   v6.super_class = CKInlineReplyChatController;
-  [(CKChatController *)&v6 viewDidAppear:v3];
+  [(CKChatController *)&v6 viewDidAppear:appearCopy];
   if (![(CKInlineReplyChatController *)self isModal])
   {
     [(CKInlineReplyChatController *)self _animateIn:0];
   }
 }
 
-- (void)transcriptCollectionViewControllerDidSetChatItems:(id)a3
+- (void)transcriptCollectionViewControllerDidSetChatItems:(id)items
 {
   v5.receiver = self;
   v5.super_class = CKInlineReplyChatController;
-  [(CKChatController *)&v5 transcriptCollectionViewControllerDidSetChatItems:a3];
+  [(CKChatController *)&v5 transcriptCollectionViewControllerDidSetChatItems:items];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __81__CKInlineReplyChatController_transcriptCollectionViewControllerDidSetChatItems___block_invoke;
@@ -1209,21 +1209,21 @@ void __81__CKInlineReplyChatController_transcriptCollectionViewControllerDidSetC
   [v4 transcriptOverlayViewController:v2 visibleGUIDsDidChange:v3];
 }
 
-- (void)transcriptCollectionViewControllerRestingStateDidChange:(id)a3
+- (void)transcriptCollectionViewControllerRestingStateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v8.receiver = self;
   v8.super_class = CKInlineReplyChatController;
-  [(CKCoreChatController *)&v8 transcriptCollectionViewControllerRestingStateDidChange:v4];
+  [(CKCoreChatController *)&v8 transcriptCollectionViewControllerRestingStateDidChange:changeCopy];
   if (!UIAccessibilityIsReduceMotionEnabled())
   {
     if ([(CKInlineReplyChatController *)self animatingOut])
     {
-      v5 = [v4 collectionView];
-      v6 = [v5 collectionViewLayout];
-      v7 = [v6 isResting];
+      collectionView = [changeCopy collectionView];
+      collectionViewLayout = [collectionView collectionViewLayout];
+      isResting = [collectionViewLayout isResting];
 
-      if (v7)
+      if (isResting)
       {
         [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
         [(CKInlineReplyChatController *)self _requestDismissal];
@@ -1232,19 +1232,19 @@ void __81__CKInlineReplyChatController_transcriptCollectionViewControllerDidSetC
   }
 }
 
-- (void)transcriptCollectionViewController:(id)a3 collectionViewContentSizeDidChange:(CGSize)a4
+- (void)transcriptCollectionViewController:(id)controller collectionViewContentSizeDidChange:(CGSize)change
 {
-  height = a4.height;
-  width = a4.width;
+  height = change.height;
+  width = change.width;
   v21.receiver = self;
   v21.super_class = CKInlineReplyChatController;
-  [(CKCoreChatController *)&v21 transcriptCollectionViewController:a3 collectionViewContentSizeDidChange:?];
-  v7 = [(CKInlineReplyChatController *)self view];
-  v8 = [(CKChatController *)self collectionView];
-  [v7 setCollectionView:v8];
+  [(CKCoreChatController *)&v21 transcriptCollectionViewController:controller collectionViewContentSizeDidChange:?];
+  view = [(CKInlineReplyChatController *)self view];
+  collectionView = [(CKChatController *)self collectionView];
+  [view setCollectionView:collectionView];
 
-  v9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v10 = [v9 isOOPKeyboardEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isOOPKeyboardEnabled = [mEMORY[0x1E69A8070] isOOPKeyboardEnabled];
 
   v11 = +[CKUIBehavior sharedBehaviors];
   [v11 transcriptScrollToBottomDuration];
@@ -1254,24 +1254,24 @@ void __81__CKInlineReplyChatController_transcriptCollectionViewControllerDidSetC
   v14 = width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8);
   if (!v14 && [(CKInlineReplyChatController *)self isInitialSizing])
   {
-    if (v10)
+    if (isOOPKeyboardEnabled)
     {
-      v15 = [(CKChatController *)self collectionView];
-      [v15 endHoldingContentOffsetUpdatesForReason:@"InlineReplyChatController"];
+      collectionView2 = [(CKChatController *)self collectionView];
+      [collectionView2 endHoldingContentOffsetUpdatesForReason:@"InlineReplyChatController"];
     }
 
-    v16 = [(CKInlineReplyChatController *)self transitionContext];
-    v17 = [v16 presentWithKeyboard];
+    transitionContext = [(CKInlineReplyChatController *)self transitionContext];
+    presentWithKeyboard = [transitionContext presentWithKeyboard];
 
-    if (v17)
+    if (presentWithKeyboard)
     {
-      v18 = [(CKInlineReplyChatController *)self transitionContext];
-      v19 = [v18 wantsModalPresentation];
+      transitionContext2 = [(CKInlineReplyChatController *)self transitionContext];
+      wantsModalPresentation = [transitionContext2 wantsModalPresentation];
 
-      if (!v19)
+      if (!wantsModalPresentation)
       {
         [(CKChatController *)self showKeyboardForReply];
-        if (v10)
+        if (isOOPKeyboardEnabled)
         {
           goto LABEL_13;
         }
@@ -1282,7 +1282,7 @@ void __81__CKInlineReplyChatController_transcriptCollectionViewControllerDidSetC
       [(CKInlineReplyChatController *)self setTargetFirstResponder:1];
     }
 
-    if (v10)
+    if (isOOPKeyboardEnabled)
     {
 LABEL_13:
       [(CKInlineReplyChatController *)self _setInitialScrollPositionIfNecessary];
@@ -1291,8 +1291,8 @@ LABEL_13:
     }
 
 LABEL_12:
-    v20 = [(CKChatController *)self collectionView];
-    [v20 endHoldingContentOffsetUpdatesForReason:@"InlineReplyChatController"];
+    collectionView3 = [(CKChatController *)self collectionView];
+    [collectionView3 endHoldingContentOffsetUpdatesForReason:@"InlineReplyChatController"];
 
     goto LABEL_13;
   }
@@ -1300,30 +1300,30 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)transcriptCollectionViewController:(id)a3 didScroll:(CGPoint)a4
+- (void)transcriptCollectionViewController:(id)controller didScroll:(CGPoint)scroll
 {
-  y = a4.y;
-  v6 = [CKUIBehavior sharedBehaviors:a3];
+  y = scroll.y;
+  v6 = [CKUIBehavior sharedBehaviors:controller];
   [v6 topTranscriptSpace];
   v8 = y > v7;
 
   [(CKInlineReplyChatController *)self setShowNavbarKeyline:v8];
 }
 
-- (double)transcriptCollectionViewController:(id)a3 targetAlphaForChatItem:(id)a4
+- (double)transcriptCollectionViewController:(id)controller targetAlphaForChatItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   result = 1.0;
   if (isKindOfClass)
   {
-    v8 = [(CKInlineReplyChatController *)self traitCollection];
-    v9 = [v8 isTranscriptBackgroundActive];
+    traitCollection = [(CKInlineReplyChatController *)self traitCollection];
+    isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
     result = 0.5;
-    if (v9)
+    if (isTranscriptBackgroundActive)
     {
       return 1.0;
     }
@@ -1332,7 +1332,7 @@ LABEL_14:
   return result;
 }
 
-- (void)_animateIn:(BOOL)a3
+- (void)_animateIn:(BOOL)in
 {
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1354,8 +1354,8 @@ LABEL_14:
   }
 
   [(CKInlineReplyChatController *)self setAnimatingIn:1];
-  v7 = [(CKInlineReplyChatController *)self blurView];
-  if (v7)
+  blurView = [(CKInlineReplyChatController *)self blurView];
+  if (blurView)
   {
 
 LABEL_10:
@@ -1363,37 +1363,37 @@ LABEL_10:
     [v9 replyTranscriptBackgroundBlurAnimationTime];
     v11 = v10;
 
-    v12 = [(CKInlineReplyChatController *)self transcriptOverlayTransitionDelegate];
-    [v12 transcriptOverlayViewControllerWillAnimateIn:self];
+    transcriptOverlayTransitionDelegate = [(CKInlineReplyChatController *)self transcriptOverlayTransitionDelegate];
+    [transcriptOverlayTransitionDelegate transcriptOverlayViewControllerWillAnimateIn:self];
 
     if ([(CKInlineReplyChatController *)self isModal])
     {
-      v13 = [(CKInlineReplyChatController *)self navigationController];
+      navigationController = [(CKInlineReplyChatController *)self navigationController];
     }
 
     else
     {
-      v14 = [(CKChatController *)self splitViewController];
-      v15 = [v14 isCollapsed];
-      v16 = [(CKChatController *)self splitViewController];
-      v17 = v16;
-      if (v15)
+      splitViewController = [(CKChatController *)self splitViewController];
+      isCollapsed = [splitViewController isCollapsed];
+      splitViewController2 = [(CKChatController *)self splitViewController];
+      v17 = splitViewController2;
+      if (isCollapsed)
       {
-        [v16 masterViewController];
+        [splitViewController2 masterViewController];
       }
 
       else
       {
-        [v16 detailViewController];
+        [splitViewController2 detailViewController];
       }
-      v13 = ;
+      navigationController = ;
     }
 
-    v18 = [v13 navigationBar];
-    [v18 setNeedsLayout];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setNeedsLayout];
 
-    v19 = [v13 navigationBar];
-    [v19 layoutIfNeeded];
+    navigationBar2 = [navigationController navigationBar];
+    [navigationBar2 layoutIfNeeded];
 
     IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -1402,7 +1402,7 @@ LABEL_10:
     aBlock[3] = &unk_1E72EBBC0;
     v30 = IsReduceMotionEnabled;
     aBlock[4] = self;
-    v6 = v13;
+    v6 = navigationController;
     v29 = v6;
     v21 = _Block_copy(aBlock);
     v27[0] = MEMORY[0x1E69E9820];
@@ -1412,7 +1412,7 @@ LABEL_10:
     v27[4] = self;
     v22 = _Block_copy(v27);
     v23 = v22;
-    if (a3)
+    if (in)
     {
       v21[2](v21);
       v23[2](v23);
@@ -1432,9 +1432,9 @@ LABEL_10:
     goto LABEL_20;
   }
 
-  v8 = [(CKInlineReplyChatController *)self blurParentView];
+  blurParentView = [(CKInlineReplyChatController *)self blurParentView];
 
-  if (v8)
+  if (blurParentView)
   {
     goto LABEL_10;
   }
@@ -1511,9 +1511,9 @@ void __42__CKInlineReplyChatController__animateIn___block_invoke_2(uint64_t a1)
   [v4 transcriptOverlayViewControllerDidAnimateIn:*(a1 + 32)];
 }
 
-- (void)_animateOutWithCompletion:(id)a3
+- (void)_animateOutWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1521,41 +1521,41 @@ void __42__CKInlineReplyChatController__animateIn___block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Performing _animateOut", buf, 2u);
   }
 
-  v6 = [(CKInlineReplyChatController *)self view];
-  [v6 setUserInteractionEnabled:0];
+  view = [(CKInlineReplyChatController *)self view];
+  [view setUserInteractionEnabled:0];
 
   [(CKInlineReplyChatController *)self setAnimatingOut:1];
   IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
-  v8 = [(CKInlineReplyChatController *)self inlineCollectionViewController];
-  [v8 setAnimatingOut:1];
-  v9 = [(CKChatController *)self entryView];
-  v10 = [(CKInlineReplyChatController *)self traitCollection];
-  [v9 setEntryViewTraitCollection:v10 resetStyle:1];
+  inlineCollectionViewController = [(CKInlineReplyChatController *)self inlineCollectionViewController];
+  [inlineCollectionViewController setAnimatingOut:1];
+  entryView = [(CKChatController *)self entryView];
+  traitCollection = [(CKInlineReplyChatController *)self traitCollection];
+  [entryView setEntryViewTraitCollection:traitCollection resetStyle:1];
 
-  v11 = [(CKChatController *)self collectionView];
-  [v11 beginHoldingContentOffsetUpdatesForReason:@"InlineReplyChatController"];
+  collectionView = [(CKChatController *)self collectionView];
+  [collectionView beginHoldingContentOffsetUpdatesForReason:@"InlineReplyChatController"];
 
   [(CKScrollViewController *)self beginHoldingScrollGeometryUpdatesForReason:@"InlineReplyAnimateOut"];
   if (!IsReduceMotionEnabled)
   {
-    v12 = [(CKChatController *)self _visibleChatItemsToScreenFrameMap];
-    v13 = [(CKInlineReplyChatController *)self transcriptOverlayTransitionDelegate];
-    v14 = [v13 updatedFrameMapForTranscriptOverlayViewController:self];
+    _visibleChatItemsToScreenFrameMap = [(CKChatController *)self _visibleChatItemsToScreenFrameMap];
+    transcriptOverlayTransitionDelegate = [(CKInlineReplyChatController *)self transcriptOverlayTransitionDelegate];
+    v14 = [transcriptOverlayTransitionDelegate updatedFrameMapForTranscriptOverlayViewController:self];
 
-    [v8 setCollectionViewTargetFrames:v14];
-    [v8 setCollectionViewCurrentFramesForNextLayout:v12];
-    [v8 performCollectionViewReloadForAnimateOut];
+    [inlineCollectionViewController setCollectionViewTargetFrames:v14];
+    [inlineCollectionViewController setCollectionViewCurrentFramesForNextLayout:_visibleChatItemsToScreenFrameMap];
+    [inlineCollectionViewController performCollectionViewReloadForAnimateOut];
   }
 
   v15 = +[CKUIBehavior sharedBehaviors];
   [v15 replyTranscriptBackgroundBlurAnimationTime];
   v17 = v16;
 
-  v18 = [(CKInlineReplyChatController *)self transcriptOverlayTransitionDelegate];
-  [v18 transcriptOverlayViewControllerWillAnimateOut:self];
+  transcriptOverlayTransitionDelegate2 = [(CKInlineReplyChatController *)self transcriptOverlayTransitionDelegate];
+  [transcriptOverlayTransitionDelegate2 transcriptOverlayViewControllerWillAnimateOut:self];
 
-  v19 = [(CKChatController *)self collectionView];
-  [v19 setIgnoresReloadDataRequests:1];
+  collectionView2 = [(CKChatController *)self collectionView];
+  [collectionView2 setIgnoresReloadDataRequests:1];
 
   v20 = MEMORY[0x1E69DD250];
   v25[0] = MEMORY[0x1E69E9820];
@@ -1570,7 +1570,7 @@ void __42__CKInlineReplyChatController__animateIn___block_invoke_2(uint64_t a1)
   v22[3] = &unk_1E72EED18;
   v24 = IsReduceMotionEnabled;
   v22[4] = self;
-  v21 = v4;
+  v21 = completionCopy;
   v23 = v21;
   [v20 animateWithDuration:v25 animations:v22 completion:v17];
   if (!IsReduceMotionEnabled)
@@ -1656,16 +1656,16 @@ void __57__CKInlineReplyChatController__animateOutWithCompletion___block_invoke_
 
 - (void)_setInitialScrollPositionIfNecessary
 {
-  v3 = [(CKInlineReplyChatController *)self transitionContext];
-  v68 = [v3 anchorChatItemGUID];
+  transitionContext = [(CKInlineReplyChatController *)self transitionContext];
+  anchorChatItemGUID = [transitionContext anchorChatItemGUID];
 
-  v4 = [(CKCoreChatController *)self collectionViewController];
-  v5 = [v4 chatItemForGUID:v68];
+  collectionViewController = [(CKCoreChatController *)self collectionViewController];
+  v5 = [collectionViewController chatItemForGUID:anchorChatItemGUID];
 
   if (UIAccessibilityIsReduceMotionEnabled() || (-[CKInlineReplyChatController transitionContext](self, "transitionContext"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 presentWithKeyboard], v6, v7))
   {
-    v8 = [(CKCoreChatController *)self collectionViewController];
-    [v8 scrollTranscriptToEntryViewInsertionTimeWithAnimation:0];
+    collectionViewController2 = [(CKCoreChatController *)self collectionViewController];
+    [collectionViewController2 scrollTranscriptToEntryViewInsertionTimeWithAnimation:0];
 LABEL_4:
 
     goto LABEL_5;
@@ -1674,41 +1674,41 @@ LABEL_4:
   if (v5)
   {
     v9 = *MEMORY[0x1E69DDCE0];
-    v10 = [(CKInlineReplyChatController *)self view];
-    [v10 safeAreaInsets];
+    view = [(CKInlineReplyChatController *)self view];
+    [view safeAreaInsets];
     v12 = v11;
 
-    v13 = [(CKChatController *)self collectionView];
-    [v13 frame];
+    collectionView = [(CKChatController *)self collectionView];
+    [collectionView frame];
     v14 = CGRectGetHeight(v70) - (v9 + v12);
 
-    v8 = [(CKChatController *)self collectionView];
-    v15 = [v8 collectionViewLayout];
-    [v15 collectionViewContentSize];
+    collectionViewController2 = [(CKChatController *)self collectionView];
+    collectionViewLayout = [collectionViewController2 collectionViewLayout];
+    [collectionViewLayout collectionViewContentSize];
     v17 = v16;
 
-    v18 = [(CKCoreChatController *)self collectionViewController];
-    v19 = v18;
+    collectionViewController3 = [(CKCoreChatController *)self collectionViewController];
+    v19 = collectionViewController3;
     if (v17 >= v14)
     {
-      v20 = [v18 chatItems];
-      v21 = [v20 indexOfObject:v5];
+      chatItems = [collectionViewController3 chatItems];
+      v21 = [chatItems indexOfObject:v5];
 
       v19 = [MEMORY[0x1E696AC88] indexPathForRow:v21 inSection:0];
-      v22 = [(CKChatController *)self collectionView];
-      v23 = [v22 collectionViewLayout];
-      v24 = [v23 layoutAttributesForItemAtIndexPath:v19];
+      collectionView2 = [(CKChatController *)self collectionView];
+      collectionViewLayout2 = [collectionView2 collectionViewLayout];
+      v24 = [collectionViewLayout2 layoutAttributesForItemAtIndexPath:v19];
 
       v25 = v24[44];
       v26 = v24[45];
       v27 = v24[46];
       v28 = v24[47];
-      [v8 bounds];
+      [collectionViewController2 bounds];
       v30 = v29;
       v32 = v31;
       v34 = v33;
       v36 = v35;
-      [v8 contentInset];
+      [collectionViewController2 contentInset];
       v66 = v37;
       v67 = v30;
       v39 = v30 + v38;
@@ -1725,15 +1725,15 @@ LABEL_4:
       v72.size.width = v42;
       v72.size.height = v44;
       v46 = MidY + CGRectGetHeight(v72) * -0.5;
-      v47 = [(CKCoreChatController *)self collectionViewController];
-      v48 = [v47 chatItems];
-      v49 = [v48 firstObject];
+      collectionViewController4 = [(CKCoreChatController *)self collectionViewController];
+      chatItems2 = [collectionViewController4 chatItems];
+      firstObject = [chatItems2 firstObject];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v50 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
-        v51 = [v8 layoutAttributesForItemAtIndexPath:v50];
+        v51 = [collectionViewController2 layoutAttributesForItemAtIndexPath:v50];
         [v51 frame];
         v53 = v52;
         v55 = v54;
@@ -1751,8 +1751,8 @@ LABEL_4:
         }
       }
 
-      v61 = [(CKChatController *)self collectionView];
-      [v61 __ck_bottomOffset];
+      collectionView3 = [(CKChatController *)self collectionView];
+      [collectionView3 __ck_bottomOffset];
       v63 = v62;
 
       if (v63 >= v46 - v66)
@@ -1775,12 +1775,12 @@ LABEL_4:
         v65 = v64;
       }
 
-      [v8 setContentOffset:0 animated:{v67, v65}];
+      [collectionViewController2 setContentOffset:0 animated:{v67, v65}];
     }
 
     else
     {
-      [v18 scrollTranscriptToEntryViewInsertionTimeWithAnimation:0];
+      [collectionViewController3 scrollTranscriptToEntryViewInsertionTimeWithAnimation:0];
     }
 
     goto LABEL_4;
@@ -1798,24 +1798,24 @@ LABEL_5:
     _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "Executing _requestDismissal", v8, 2u);
   }
 
-  v4 = [(CKInlineReplyChatController *)self transcriptOverlayTransitionDelegate];
-  [v4 transcriptOverlayViewControllerDidAnimateOut:self];
+  transcriptOverlayTransitionDelegate = [(CKInlineReplyChatController *)self transcriptOverlayTransitionDelegate];
+  [transcriptOverlayTransitionDelegate transcriptOverlayViewControllerDidAnimateOut:self];
 
-  v5 = [(CKInlineReplyChatController *)self interactionDelegate];
-  v6 = [(CKChatController *)self entryView];
-  v7 = [v6 contentView];
-  [v5 inlineReplyControllerRequestsDismissal:self presentKeyboard:{objc_msgSend(v7, "isActive")}];
+  interactionDelegate = [(CKInlineReplyChatController *)self interactionDelegate];
+  entryView = [(CKChatController *)self entryView];
+  contentView = [entryView contentView];
+  [interactionDelegate inlineReplyControllerRequestsDismissal:self presentKeyboard:{objc_msgSend(contentView, "isActive")}];
 }
 
 - (id)_visibleGUIDs
 {
-  v3 = [(CKCoreChatController *)self collectionViewController];
-  v4 = [v3 chatItems];
-  v5 = [v4 __imArrayByApplyingBlock:&__block_literal_global_42];
+  collectionViewController = [(CKCoreChatController *)self collectionViewController];
+  chatItems = [collectionViewController chatItems];
+  v5 = [chatItems __imArrayByApplyingBlock:&__block_literal_global_42];
 
-  v6 = [(CKCoreChatController *)self collectionViewController];
-  v7 = [v6 associatedChatItems];
-  v8 = [v7 __imArrayByApplyingBlock:&__block_literal_global_321];
+  collectionViewController2 = [(CKCoreChatController *)self collectionViewController];
+  associatedChatItems = [collectionViewController2 associatedChatItems];
+  v8 = [associatedChatItems __imArrayByApplyingBlock:&__block_literal_global_321];
 
   v9 = [v5 arrayByAddingObjectsFromArray:v8];
 
@@ -1838,33 +1838,33 @@ id __44__CKInlineReplyChatController__visibleGUIDs__block_invoke_2(uint64_t a1, 
   return v3;
 }
 
-- (id)parentViewControllerForPluginViewControllerInMessageEntryView:(id)a3
+- (id)parentViewControllerForPluginViewControllerInMessageEntryView:(id)view
 {
   if ([(CKInlineReplyChatController *)self isModal])
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = [(CKInlineReplyChatController *)self parentChatController];
+    selfCopy = [(CKInlineReplyChatController *)self parentChatController];
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)stageAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)stageAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
   v9.receiver = self;
   v9.super_class = CKInlineReplyChatController;
-  [(CKChatController *)&v9 stageAssetArchive:a3 skipShelf:a4 completionHandler:a5];
-  v6 = [(CKChatController *)self deferredPresentationBlock];
+  [(CKChatController *)&v9 stageAssetArchive:archive skipShelf:shelf completionHandler:handler];
+  deferredPresentationBlock = [(CKChatController *)self deferredPresentationBlock];
 
-  if (v6)
+  if (deferredPresentationBlock)
   {
     v7 = dispatch_time(0, 200000000);
-    v8 = [(CKChatController *)self deferredPresentationBlock];
-    dispatch_after(v7, MEMORY[0x1E69E96A0], v8);
+    deferredPresentationBlock2 = [(CKChatController *)self deferredPresentationBlock];
+    dispatch_after(v7, MEMORY[0x1E69E96A0], deferredPresentationBlock2);
 
     [(CKChatController *)self setDeferredPresentationBlock:0];
   }

@@ -1,26 +1,26 @@
 @interface BRQueryItemProgressObserver
-- (BRQueryItemProgressObserver)initWithItem:(id)a3;
+- (BRQueryItemProgressObserver)initWithItem:(id)item;
 - (id)description;
 - (void)_stopObserving;
 - (void)_subscribe;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setQueue:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setQueue:(id)queue;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation BRQueryItemProgressObserver
 
-- (BRQueryItemProgressObserver)initWithItem:(id)a3
+- (BRQueryItemProgressObserver)initWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = BRQueryItemProgressObserver;
   v5 = [(BRQueryItemProgressObserver *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemCopy copy];
     item = v5->_item;
     v5->_item = v6;
   }
@@ -49,26 +49,26 @@
   objc_sync_enter(v3);
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  v6 = [(BRQueryItem *)self->_item fileObjectID];
-  v7 = [v6 rawID];
-  v8 = [(BRQueryItem *)self->_item logicalName];
-  v9 = [v4 stringWithFormat:@"<%@:%p %lld %@>", v5, self, v7, v8];
+  fileObjectID = [(BRQueryItem *)self->_item fileObjectID];
+  rawID = [fileObjectID rawID];
+  logicalName = [(BRQueryItem *)self->_item logicalName];
+  v9 = [v4 stringWithFormat:@"<%@:%p %lld %@>", v5, self, rawID, logicalName];
 
   objc_sync_exit(v3);
 
   return v9;
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   queue = self->_queue;
   p_queue = &self->_queue;
-  if (queue != v5)
+  if (queue != queueCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_queue, a3);
-    v5 = v8;
+    v8 = queueCopy;
+    objc_storeStrong(p_queue, queue);
+    queueCopy = v8;
   }
 }
 
@@ -300,14 +300,14 @@ void __35__BRQueryItemProgressObserver_stop__block_invoke(uint64_t a1)
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (self->_item == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (self->_item == context)
   {
-    v13 = v11;
+    v13 = objectCopy;
     if (self->_progress != v13)
     {
       [BRQueryItemProgressObserver observeValueForKeyPath:ofObject:change:context:];
@@ -330,7 +330,7 @@ void __35__BRQueryItemProgressObserver_stop__block_invoke(uint64_t a1)
   {
     v20.receiver = self;
     v20.super_class = BRQueryItemProgressObserver;
-    [(BRQueryItemProgressObserver *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BRQueryItemProgressObserver *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

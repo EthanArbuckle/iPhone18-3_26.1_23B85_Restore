@@ -1,21 +1,21 @@
 @interface SIRINLUEXTERNALNLU_ROUTEREntityIdentifierValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALNLU_ROUTEREntityIdentifierValue
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   type = self->_type;
-  v6 = v4[2];
-  v7 = v4;
+  v6 = fromCopy[2];
+  v7 = fromCopy;
   if (type)
   {
     if (!v6)
@@ -36,9 +36,9 @@
     [(SIRINLUEXTERNALNLU_ROUTEREntityIdentifierValue *)self setType:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(SIRINLUEXTERNALNLU_ROUTEREntityIdentifierValue *)self setIdentifier:?];
   }
@@ -46,13 +46,13 @@ LABEL_7:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((type = self->_type, !(type | v4[2])) || -[SIRINLUEXTERNALNLU_ROUTERTypeIdentifier isEqual:](type, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((type = self->_type, !(type | equalCopy[2])) || -[SIRINLUEXTERNALNLU_ROUTERTypeIdentifier isEqual:](type, "isEqual:")))
   {
     identifier = self->_identifier;
-    if (identifier | v4[1])
+    if (identifier | equalCopy[1])
     {
       v7 = [(NSString *)identifier isEqual:?];
     }
@@ -71,71 +71,71 @@ LABEL_7:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALNLU_ROUTERTypeIdentifier *)self->_type copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALNLU_ROUTERTypeIdentifier *)self->_type copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_identifier copyWithZone:a3];
+  v8 = [(NSString *)self->_identifier copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_type)
   {
-    [v4 setType:?];
-    v4 = v5;
+    [toCopy setType:?];
+    toCopy = v5;
   }
 
   if (self->_identifier)
   {
     [v5 setIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_type)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   type = self->_type;
   if (type)
   {
-    v5 = [(SIRINLUEXTERNALNLU_ROUTERTypeIdentifier *)type dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"type"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERTypeIdentifier *)type dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"type"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -144,8 +144,8 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALNLU_ROUTEREntityIdentifierValue;
   v4 = [(SIRINLUEXTERNALNLU_ROUTEREntityIdentifierValue *)&v8 description];
-  v5 = [(SIRINLUEXTERNALNLU_ROUTEREntityIdentifierValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTEREntityIdentifierValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

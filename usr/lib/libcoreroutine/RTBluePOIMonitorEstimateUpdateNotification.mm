@@ -1,18 +1,18 @@
 @interface RTBluePOIMonitorEstimateUpdateNotification
-- (RTBluePOIMonitorEstimateUpdateNotification)initWithInferredMapItems:(id)a3 referenceLocation:(id)a4 locations:(id)a5 accessPoints:(id)a6;
+- (RTBluePOIMonitorEstimateUpdateNotification)initWithInferredMapItems:(id)items referenceLocation:(id)location locations:(id)locations accessPoints:(id)points;
 @end
 
 @implementation RTBluePOIMonitorEstimateUpdateNotification
 
-- (RTBluePOIMonitorEstimateUpdateNotification)initWithInferredMapItems:(id)a3 referenceLocation:(id)a4 locations:(id)a5 accessPoints:(id)a6
+- (RTBluePOIMonitorEstimateUpdateNotification)initWithInferredMapItems:(id)items referenceLocation:(id)location locations:(id)locations accessPoints:(id)points
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v10)
+  itemsCopy = items;
+  locationCopy = location;
+  locationsCopy = locations;
+  pointsCopy = points;
+  v14 = pointsCopy;
+  if (!itemsCopy)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -27,7 +27,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v11)
+  if (!locationCopy)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -40,7 +40,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (!v12)
+  if (!locationsCopy)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -53,7 +53,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (!v13)
+  if (!pointsCopy)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -65,7 +65,7 @@ LABEL_23:
 
 LABEL_24:
 
-    v31 = 0;
+    selfCopy = 0;
     goto LABEL_25;
   }
 
@@ -74,11 +74,11 @@ LABEL_24:
   v15 = [(RTNotification *)&v40 init];
   if (v15)
   {
-    v16 = [v10 copy];
+    v16 = [itemsCopy copy];
     inferredMapItems = v15->_inferredMapItems;
     v15->_inferredMapItems = v16;
 
-    v18 = [v11 copy];
+    v18 = [locationCopy copy];
     referenceLocation = v15->_referenceLocation;
     v15->_referenceLocation = v18;
 
@@ -87,8 +87,8 @@ LABEL_24:
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v35 = v12;
-    v21 = v12;
+    v35 = locationsCopy;
+    v21 = locationsCopy;
     v22 = [v21 countByEnumeratingWithState:&v36 objects:v42 count:16];
     if (v22)
     {
@@ -121,14 +121,14 @@ LABEL_24:
     accessPoints = v15->_accessPoints;
     v15->_accessPoints = v29;
 
-    v12 = v35;
+    locationsCopy = v35;
   }
 
   self = v15;
-  v31 = self;
+  selfCopy = self;
 LABEL_25:
 
-  return v31;
+  return selfCopy;
 }
 
 @end

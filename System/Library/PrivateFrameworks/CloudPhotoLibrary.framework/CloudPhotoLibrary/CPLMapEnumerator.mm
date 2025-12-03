@@ -1,27 +1,27 @@
 @interface CPLMapEnumerator
-- (CPLMapEnumerator)initWithEnumerator:(id)a3;
-- (CPLMapEnumerator)initWithEnumerator:(id)a3 map:(id)a4;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (CPLMapEnumerator)initWithEnumerator:(id)enumerator;
+- (CPLMapEnumerator)initWithEnumerator:(id)enumerator map:(id)map;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
 @end
 
 @implementation CPLMapEnumerator
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   while (1)
   {
-    a3->var1 = a4;
-    v9 = [(NSFastEnumeration *)self->_enumerator countByEnumeratingWithState:a3 objects:a4 count:a5];
+    state->var1 = objects;
+    v9 = [(NSFastEnumeration *)self->_enumerator countByEnumeratingWithState:state objects:objects count:count];
     if (!v9)
     {
       break;
     }
 
     v10 = v9;
-    var1 = a3->var1;
-    itemsPtr = a4;
-    if (var1 != a4)
+    var1 = state->var1;
+    itemsPtr = objects;
+    if (var1 != objects)
     {
       itemsPtr = self->_itemsPtr;
       if (!itemsPtr)
@@ -40,7 +40,7 @@ LABEL_7:
       }
     }
 
-    a3->var1 = itemsPtr;
+    state->var1 = itemsPtr;
     if (self->_previousResultValuesLength < v10)
     {
       self->_previousResultValuesLength = v10;
@@ -82,7 +82,7 @@ LABEL_7:
       if (v19)
       {
         objc_storeStrong(&self->_resultValues[v17], v19);
-        a3->var1[v17++] = v19;
+        state->var1[v17++] = v19;
       }
 
       ++var1;
@@ -151,18 +151,18 @@ LABEL_23:
   [(CPLMapEnumerator *)&v8 dealloc];
 }
 
-- (CPLMapEnumerator)initWithEnumerator:(id)a3
+- (CPLMapEnumerator)initWithEnumerator:(id)enumerator
 {
   v4 = MEMORY[0x1E695DFB0];
-  v5 = a3;
-  v6 = [v4 null];
+  enumeratorCopy = enumerator;
+  null = [v4 null];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __39__CPLMapEnumerator_initWithEnumerator___block_invoke;
   v10[3] = &unk_1E861CC28;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(CPLMapEnumerator *)self initWithEnumerator:v5 map:v10];
+  v11 = null;
+  v7 = null;
+  v8 = [(CPLMapEnumerator *)self initWithEnumerator:enumeratorCopy map:v10];
 
   return v8;
 }
@@ -180,18 +180,18 @@ id __39__CPLMapEnumerator_initWithEnumerator___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (CPLMapEnumerator)initWithEnumerator:(id)a3 map:(id)a4
+- (CPLMapEnumerator)initWithEnumerator:(id)enumerator map:(id)map
 {
-  v7 = a3;
-  v8 = a4;
+  enumeratorCopy = enumerator;
+  mapCopy = map;
   v14.receiver = self;
   v14.super_class = CPLMapEnumerator;
   v9 = [(CPLMapEnumerator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_enumerator, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_enumerator, enumerator);
+    v11 = [mapCopy copy];
     mapBlock = v10->_mapBlock;
     v10->_mapBlock = v11;
   }

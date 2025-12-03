@@ -1,6 +1,6 @@
 @interface ISPlayerOutputContent
 - (CGSize)videoSize;
-- (ISPlayerOutputContent)initWithPhoto:(CGImage *)a3 photoIsOriginal:(BOOL)a4 photoEXIFOrientation:(int)a5 videoPlayer:(id)a6 aspectRatio:(id)a7;
+- (ISPlayerOutputContent)initWithPhoto:(CGImage *)photo photoIsOriginal:(BOOL)original photoEXIFOrientation:(int)orientation videoPlayer:(id)player aspectRatio:(id)ratio;
 - (id)description;
 - (void)dealloc;
 @end
@@ -35,20 +35,20 @@
   return v5;
 }
 
-- (ISPlayerOutputContent)initWithPhoto:(CGImage *)a3 photoIsOriginal:(BOOL)a4 photoEXIFOrientation:(int)a5 videoPlayer:(id)a6 aspectRatio:(id)a7
+- (ISPlayerOutputContent)initWithPhoto:(CGImage *)photo photoIsOriginal:(BOOL)original photoEXIFOrientation:(int)orientation videoPlayer:(id)player aspectRatio:(id)ratio
 {
-  v13 = a6;
-  v14 = a7;
+  playerCopy = player;
+  ratioCopy = ratio;
   v17.receiver = self;
   v17.super_class = ISPlayerOutputContent;
   v15 = [(ISPlayerOutputContent *)&v17 init];
   if (v15)
   {
-    v15->_photo = CGImageRetain(a3);
-    v15->_photoIsOriginal = a4;
-    v15->_photoEXIFOrientation = a5;
-    objc_storeStrong(&v15->_videoPlayer, a6);
-    objc_storeStrong(&v15->_aspectRatio, a7);
+    v15->_photo = CGImageRetain(photo);
+    v15->_photoIsOriginal = original;
+    v15->_photoEXIFOrientation = orientation;
+    objc_storeStrong(&v15->_videoPlayer, player);
+    objc_storeStrong(&v15->_aspectRatio, ratio);
   }
 
   return v15;

@@ -10,33 +10,33 @@
 - (id)suggestedMarkerColor
 {
   v2 = +[PUInterfaceManager currentTheme];
-  v3 = [v2 photoEditingAdjustmentsBarSuggestedMarkerColor];
+  photoEditingAdjustmentsBarSuggestedMarkerColor = [v2 photoEditingAdjustmentsBarSuggestedMarkerColor];
 
-  return v3;
+  return photoEditingAdjustmentsBarSuggestedMarkerColor;
 }
 
 - (id)originalPositionMarkerColor
 {
   v2 = +[PUInterfaceManager currentTheme];
-  v3 = [v2 photoEditingAdjustmentsBarOriginalPositionMarkerColor];
+  photoEditingAdjustmentsBarOriginalPositionMarkerColor = [v2 photoEditingAdjustmentsBarOriginalPositionMarkerColor];
 
-  return v3;
+  return photoEditingAdjustmentsBarOriginalPositionMarkerColor;
 }
 
 - (id)currentPositionMarkerColor
 {
   v2 = +[PUInterfaceManager currentTheme];
-  v3 = [v2 photoEditingAdjustmentsBarCurrentPositionMarkerColor];
+  photoEditingAdjustmentsBarCurrentPositionMarkerColor = [v2 photoEditingAdjustmentsBarCurrentPositionMarkerColor];
 
-  return v3;
+  return photoEditingAdjustmentsBarCurrentPositionMarkerColor;
 }
 
 - (id)disabledColor
 {
   v2 = +[PUInterfaceManager currentTheme];
-  v3 = [v2 photoEditingAdjustmentsBarCurrentPositionDisabledMarkerColor];
+  photoEditingAdjustmentsBarCurrentPositionDisabledMarkerColor = [v2 photoEditingAdjustmentsBarCurrentPositionDisabledMarkerColor];
 
-  return v3;
+  return photoEditingAdjustmentsBarCurrentPositionDisabledMarkerColor;
 }
 
 @end

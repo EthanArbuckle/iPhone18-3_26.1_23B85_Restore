@@ -1,17 +1,17 @@
 @interface JurassicShareRootController
-- (JurassicShareRootController)initWithCoder:(id)a3;
-- (JurassicShareRootController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (JurassicShareRootController)initWithNibName:(id)a3 bundle:(id)a4;
-- (JurassicShareRootController)initWithRootViewController:(id)a3;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
+- (JurassicShareRootController)initWithCoder:(id)coder;
+- (JurassicShareRootController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (JurassicShareRootController)initWithNibName:(id)name bundle:(id)bundle;
+- (JurassicShareRootController)initWithRootViewController:(id)controller;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
 - (void)viewDidLoad;
 @end
 
 @implementation JurassicShareRootController
 
-- (JurassicShareRootController)initWithNibName:(id)a3 bundle:(id)a4
+- (JurassicShareRootController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100100FD4();
     v7 = v6;
@@ -23,11 +23,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10006C600(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10006C600(v5, v7, bundle);
 }
 
-- (JurassicShareRootController)initWithCoder:(id)a3
+- (JurassicShareRootController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR___JurassicShareRootController____lazy_storage___contentViewController) = 0;
   result = sub_100101D94();
@@ -37,32 +37,32 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006C7E4();
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_10006C588();
   swift_getKeyPath();
   swift_getKeyPath();
   sub_100101644();
 
   v5 = swift_allocObject();
-  *(v5 + 16) = v3;
-  v6 = v3;
+  *(v5 + 16) = selfCopy;
+  v6 = selfCopy;
   sub_1000D24E8(v6, v7, sub_10006CF78, v5);
 }
 
-- (JurassicShareRootController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (JurassicShareRootController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (JurassicShareRootController)initWithRootViewController:(id)a3
+- (JurassicShareRootController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

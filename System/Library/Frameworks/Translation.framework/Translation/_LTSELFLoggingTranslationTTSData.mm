@@ -1,13 +1,13 @@
 @interface _LTSELFLoggingTranslationTTSData
-- (_LTSELFLoggingTranslationTTSData)initWithCoder:(id)a3;
-- (_LTSELFLoggingTranslationTTSData)initWithSourceOrTargetLanguage:(int64_t)a3 isAutoplayTranslation:(BOOL)a4 ttsPlaybackSpeed:(int64_t)a5 audioChannel:(int64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_LTSELFLoggingTranslationTTSData)initWithCoder:(id)coder;
+- (_LTSELFLoggingTranslationTTSData)initWithSourceOrTargetLanguage:(int64_t)language isAutoplayTranslation:(BOOL)translation ttsPlaybackSpeed:(int64_t)speed audioChannel:(int64_t)channel;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTSELFLoggingTranslationTTSData
 
-- (_LTSELFLoggingTranslationTTSData)initWithSourceOrTargetLanguage:(int64_t)a3 isAutoplayTranslation:(BOOL)a4 ttsPlaybackSpeed:(int64_t)a5 audioChannel:(int64_t)a6
+- (_LTSELFLoggingTranslationTTSData)initWithSourceOrTargetLanguage:(int64_t)language isAutoplayTranslation:(BOOL)translation ttsPlaybackSpeed:(int64_t)speed audioChannel:(int64_t)channel
 {
   v14.receiver = self;
   v14.super_class = _LTSELFLoggingTranslationTTSData;
@@ -15,53 +15,53 @@
   v11 = v10;
   if (v10)
   {
-    v10->_isAutoplayTranslation = a4;
-    v10->_audioChannel = a6;
-    v10->_playbackSpeed = a5;
-    v10->_sourceOrTargetLanguage = a3;
+    v10->_isAutoplayTranslation = translation;
+    v10->_audioChannel = channel;
+    v10->_playbackSpeed = speed;
+    v10->_sourceOrTargetLanguage = language;
     v12 = v10;
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceOrTargetLanguage = self->_sourceOrTargetLanguage;
-  v5 = a3;
-  [v5 encodeInteger:sourceOrTargetLanguage forKey:@"sourceOrTargetLanguage"];
-  [v5 encodeBool:self->_isAutoplayTranslation forKey:@"isAutoplayTranslation"];
-  [v5 encodeInteger:self->_audioChannel forKey:@"audioChannel"];
-  [v5 encodeInteger:self->_playbackSpeed forKey:@"playbackSpeed"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:sourceOrTargetLanguage forKey:@"sourceOrTargetLanguage"];
+  [coderCopy encodeBool:self->_isAutoplayTranslation forKey:@"isAutoplayTranslation"];
+  [coderCopy encodeInteger:self->_audioChannel forKey:@"audioChannel"];
+  [coderCopy encodeInteger:self->_playbackSpeed forKey:@"playbackSpeed"];
 }
 
-- (_LTSELFLoggingTranslationTTSData)initWithCoder:(id)a3
+- (_LTSELFLoggingTranslationTTSData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = _LTSELFLoggingTranslationTTSData;
   v5 = [(_LTSELFLoggingTranslationTTSData *)&v8 init];
   if (v5)
   {
-    v5->_sourceOrTargetLanguage = [v4 decodeIntegerForKey:@"sourceOrTargetLanguage"];
-    v5->_isAutoplayTranslation = [v4 decodeBoolForKey:@"isAutoplayTranslation"];
-    v5->_audioChannel = [v4 decodeIntegerForKey:@"audioChannel"];
-    v5->_playbackSpeed = [v4 decodeIntegerForKey:@"playbackSpeed"];
+    v5->_sourceOrTargetLanguage = [coderCopy decodeIntegerForKey:@"sourceOrTargetLanguage"];
+    v5->_isAutoplayTranslation = [coderCopy decodeBoolForKey:@"isAutoplayTranslation"];
+    v5->_audioChannel = [coderCopy decodeIntegerForKey:@"audioChannel"];
+    v5->_playbackSpeed = [coderCopy decodeIntegerForKey:@"playbackSpeed"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_LTSELFLoggingTranslationTTSData alloc];
-  v5 = [(_LTSELFLoggingTranslationTTSData *)self sourceOrTargetLanguage];
-  v6 = [(_LTSELFLoggingTranslationTTSData *)self isAutoplayTranslation];
-  v7 = [(_LTSELFLoggingTranslationTTSData *)self playbackSpeed];
-  v8 = [(_LTSELFLoggingTranslationTTSData *)self audioChannel];
+  sourceOrTargetLanguage = [(_LTSELFLoggingTranslationTTSData *)self sourceOrTargetLanguage];
+  isAutoplayTranslation = [(_LTSELFLoggingTranslationTTSData *)self isAutoplayTranslation];
+  playbackSpeed = [(_LTSELFLoggingTranslationTTSData *)self playbackSpeed];
+  audioChannel = [(_LTSELFLoggingTranslationTTSData *)self audioChannel];
 
-  return [(_LTSELFLoggingTranslationTTSData *)v4 initWithSourceOrTargetLanguage:v5 isAutoplayTranslation:v6 ttsPlaybackSpeed:v7 audioChannel:v8];
+  return [(_LTSELFLoggingTranslationTTSData *)v4 initWithSourceOrTargetLanguage:sourceOrTargetLanguage isAutoplayTranslation:isAutoplayTranslation ttsPlaybackSpeed:playbackSpeed audioChannel:audioChannel];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface NSUUID
-+ (id)csd_UUIDv5ForString:(id)a3;
++ (id)csd_UUIDv5ForString:(id)string;
 @end
 
 @implementation NSUUID
 
-+ (id)csd_UUIDv5ForString:(id)a3
++ (id)csd_UUIDv5ForString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     v5 = [[NSUUID alloc] initWithUUIDString:@"A910C931-A590-41EF-A783-910BFBE500B3"];
     if (v5)
     {
-      v6 = [a1 tu_UUIDv5ForString:v4 namespaceUUID:v5];
+      v6 = [self tu_UUIDv5ForString:stringCopy namespaceUUID:v5];
     }
 
     else

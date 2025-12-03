@@ -2,7 +2,7 @@
 - (BOOL)createKerberosSettingsCache;
 - (SOKerberosSettingsManager)init;
 - (void)createKerberosSettingsCache;
-- (void)saveKerberosValuesForProfile:(id)a3;
+- (void)saveKerberosValuesForProfile:(id)profile;
 @end
 
 @implementation SOKerberosSettingsManager
@@ -14,75 +14,75 @@
   return [(SOKerberosSettingsManager *)&v3 init];
 }
 
-- (void)saveKerberosValuesForProfile:(id)a3
+- (void)saveKerberosValuesForProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = SO_LOG_SOKerberosSettingsManager();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [SOKerberosSettingsManager saveKerberosValuesForProfile:];
   }
 
-  v5 = [v3 realm];
+  realm = [profileCopy realm];
   v36 = 0;
-  v6 = [SOKerberosHeimdalPluginSettings retrieveCurrentSettingsForRealm:v5 error:&v36];
+  v6 = [SOKerberosHeimdalPluginSettings retrieveCurrentSettingsForRealm:realm error:&v36];
   v7 = v36;
 
   if (!v6)
   {
     v8 = [SOKerberosHeimdalPluginSettings alloc];
-    v9 = [v3 realm];
-    v6 = [(SOKerberosHeimdalPluginSettings *)v8 initWithRealm:v9];
+    realm2 = [profileCopy realm];
+    v6 = [(SOKerberosHeimdalPluginSettings *)v8 initWithRealm:realm2];
   }
 
-  v10 = [(SOKerberosHeimdalPluginSettings *)v6 hosts];
-  v11 = [v3 hosts];
-  v12 = [v10 isEqualToArray:v11];
+  hosts = [(SOKerberosHeimdalPluginSettings *)v6 hosts];
+  hosts2 = [profileCopy hosts];
+  v12 = [hosts isEqualToArray:hosts2];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [v3 hosts];
-    v14 = [v13 copy];
+    hosts3 = [profileCopy hosts];
+    v14 = [hosts3 copy];
     [(SOKerberosHeimdalPluginSettings *)v6 setHosts:v14];
   }
 
   v15 = v12 ^ 1;
   v16 = [SOKerberosExtensionData alloc];
-  v17 = [v3 extensionData];
-  v18 = [(SOKerberosExtensionData *)v16 initWithDictionary:v17];
+  extensionData = [profileCopy extensionData];
+  v18 = [(SOKerberosExtensionData *)v16 initWithDictionary:extensionData];
 
   if (!v18)
   {
-    v29 = SO_LOG_SOKerberosSettingsManager();
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+    preferredKDCs2 = SO_LOG_SOKerberosSettingsManager();
+    if (os_log_type_enabled(preferredKDCs2, OS_LOG_TYPE_ERROR))
     {
-      [(SOKerberosSettingsManager *)v3 saveKerberosValuesForProfile:v29];
+      [(SOKerberosSettingsManager *)profileCopy saveKerberosValuesForProfile:preferredKDCs2];
     }
 
     goto LABEL_20;
   }
 
-  v19 = [(SOKerberosHeimdalPluginSettings *)v6 isDefaultRealm];
-  if (v19 != [(SOKerberosExtensionData *)v18 isDefaultRealm])
+  isDefaultRealm = [(SOKerberosHeimdalPluginSettings *)v6 isDefaultRealm];
+  if (isDefaultRealm != [(SOKerberosExtensionData *)v18 isDefaultRealm])
   {
     [(SOKerberosHeimdalPluginSettings *)v6 setDefaultRealm:[(SOKerberosExtensionData *)v18 isDefaultRealm]];
     v15 = 1;
   }
 
-  v20 = [(SOKerberosHeimdalPluginSettings *)v6 domainRealmMapping];
-  v21 = [(SOKerberosExtensionData *)v18 domainRealmMapping];
-  v22 = [v20 isEqualToDictionary:v21];
+  domainRealmMapping = [(SOKerberosHeimdalPluginSettings *)v6 domainRealmMapping];
+  domainRealmMapping2 = [(SOKerberosExtensionData *)v18 domainRealmMapping];
+  v22 = [domainRealmMapping isEqualToDictionary:domainRealmMapping2];
 
   if ((v22 & 1) == 0)
   {
-    v23 = [(SOKerberosExtensionData *)v18 domainRealmMapping];
-    [(SOKerberosHeimdalPluginSettings *)v6 setDomainRealmMapping:v23];
+    domainRealmMapping3 = [(SOKerberosExtensionData *)v18 domainRealmMapping];
+    [(SOKerberosHeimdalPluginSettings *)v6 setDomainRealmMapping:domainRealmMapping3];
 
     v15 = 1;
   }
 
-  v24 = [(SOKerberosHeimdalPluginSettings *)v6 credentialUseMode];
-  if (v24 != [(SOKerberosExtensionData *)v18 credentialUseMode])
+  credentialUseMode = [(SOKerberosHeimdalPluginSettings *)v6 credentialUseMode];
+  if (credentialUseMode != [(SOKerberosExtensionData *)v18 credentialUseMode])
   {
     [(SOKerberosHeimdalPluginSettings *)v6 setCredentialUseMode:[(SOKerberosExtensionData *)v18 credentialUseMode]];
     v15 = 1;
@@ -90,18 +90,18 @@
 
   if (![(SOKerberosExtensionData *)v18 useSiteAutoDiscovery])
   {
-    v25 = [(SOKerberosExtensionData *)v18 siteCode];
-    [(SOKerberosHeimdalPluginSettings *)v6 setSiteCode:v25];
+    siteCode = [(SOKerberosExtensionData *)v18 siteCode];
+    [(SOKerberosHeimdalPluginSettings *)v6 setSiteCode:siteCode];
   }
 
-  v26 = [(SOKerberosHeimdalPluginSettings *)v6 kdcs];
-  v27 = [(SOKerberosExtensionData *)v18 preferredKDCs];
-  v28 = [v26 isEqualToArray:v27];
+  kdcs = [(SOKerberosHeimdalPluginSettings *)v6 kdcs];
+  preferredKDCs = [(SOKerberosExtensionData *)v18 preferredKDCs];
+  v28 = [kdcs isEqualToArray:preferredKDCs];
 
   if ((v28 & 1) == 0)
   {
-    v29 = [(SOKerberosExtensionData *)v18 preferredKDCs];
-    v30 = [v29 copy];
+    preferredKDCs2 = [(SOKerberosExtensionData *)v18 preferredKDCs];
+    v30 = [preferredKDCs2 copy];
     [(SOKerberosHeimdalPluginSettings *)v6 setKdcs:v30];
 
     v15 = 1;
@@ -145,12 +145,12 @@ LABEL_20:
     *buf = 136315394;
     v12 = "[SOKerberosSettingsManager createKerberosSettingsCache]";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24006C000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
   v10 = 0;
   v5 = [SOKerberosHeimdalPluginSettings createSettingCacheEntryIfNeededWithError:&v10];
   v6 = v10;
@@ -163,7 +163,7 @@ LABEL_20:
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy2);
   v8 = *MEMORY[0x277D85DE8];
   return v5;
 }

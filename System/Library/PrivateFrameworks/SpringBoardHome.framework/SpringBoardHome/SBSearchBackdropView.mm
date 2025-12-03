@@ -1,25 +1,25 @@
 @interface SBSearchBackdropView
-+ (int64_t)_builtInMaterialRecipeForStyle:(int64_t)a3;
-- (SBSearchBackdropView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (id)_materialViewForStyle:(int64_t)a3;
-- (void)prepareForTransitionToBlurred:(BOOL)a3;
-- (void)prepareForTransitionType:(int64_t)a3;
-- (void)setTransitionProgress:(double)a3;
++ (int64_t)_builtInMaterialRecipeForStyle:(int64_t)style;
+- (SBSearchBackdropView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (id)_materialViewForStyle:(int64_t)style;
+- (void)prepareForTransitionToBlurred:(BOOL)blurred;
+- (void)prepareForTransitionType:(int64_t)type;
+- (void)setTransitionProgress:(double)progress;
 @end
 
 @implementation SBSearchBackdropView
 
-- (SBSearchBackdropView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (SBSearchBackdropView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v10.receiver = self;
   v10.super_class = SBSearchBackdropView;
-  v5 = [(SBSearchBackdropView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(SBSearchBackdropView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = SBHIsSpotlightFloatingWindowEnabled();
-    if (a4 == 1 || (v6 & 1) == 0)
+    if (style == 1 || (v6 & 1) == 0)
     {
-      v7 = [(SBSearchBackdropView *)v5 _materialViewForStyle:a4];
+      v7 = [(SBSearchBackdropView *)v5 _materialViewForStyle:style];
       if (v7)
       {
         objc_storeStrong(&v5->_materialView, v7);
@@ -36,9 +36,9 @@
   return v5;
 }
 
-- (void)prepareForTransitionToBlurred:(BOOL)a3
+- (void)prepareForTransitionToBlurred:(BOOL)blurred
 {
-  if (a3)
+  if (blurred)
   {
     v3 = 0;
   }
@@ -51,12 +51,12 @@
   [(SBSearchBackdropView *)self prepareForTransitionType:v3];
 }
 
-- (void)prepareForTransitionType:(int64_t)a3
+- (void)prepareForTransitionType:(int64_t)type
 {
-  self->_transitionType = a3;
-  if (a3)
+  self->_transitionType = type;
+  if (type)
   {
-    v3 = a3 == 3;
+    v3 = type == 3;
   }
 
   else
@@ -69,40 +69,40 @@
   [(SBSearchBackdropView *)self setTransitionProgress:0.0];
 }
 
-- (void)setTransitionProgress:(double)a3
+- (void)setTransitionProgress:(double)progress
 {
-  self->_transitionProgress = a3;
+  self->_transitionProgress = progress;
   transitionType = self->_transitionType;
-  v4 = 1.0 - a3;
+  v4 = 1.0 - progress;
   if (transitionType == 1)
   {
-    a3 = 0.0;
+    progress = 0.0;
   }
 
   if (transitionType == 2)
   {
-    a3 = v4;
+    progress = v4;
   }
 
   if (transitionType == 3)
   {
-    a3 = 1.0;
+    progress = 1.0;
   }
 
-  [(MTMaterialView *)self->_materialView setWeighting:a3];
+  [(MTMaterialView *)self->_materialView setWeighting:progress];
 }
 
-- (id)_materialViewForStyle:(int64_t)a3
+- (id)_materialViewForStyle:(int64_t)style
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  if (a3 == 4)
+  if (style == 4)
   {
     v12 = MEMORY[0x1E69AE158];
     v13 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v11 = [v12 materialViewWithRecipeNamed:@"coplanarLeadingTrailingBackgroundBlur" inBundle:v13 options:0 initialWeighting:0 scaleAdjustment:1.0];
   }
 
-  else if (a3 == 3)
+  else if (style == 3)
   {
     v4 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:0];
     v16[0] = v4;
@@ -117,13 +117,13 @@
 
     v8 = MEMORY[0x1E69AE158];
     v9 = SBHBundle();
-    v10 = [(SBSearchBackdropView *)self traitCollection];
-    v11 = [v8 materialViewWithRecipeNamesByTraitCollection:v7 inBundle:v9 options:0 initialWeighting:0 scaleAdjustment:v10 compatibleWithTraitCollection:0.0];
+    traitCollection = [(SBSearchBackdropView *)self traitCollection];
+    v11 = [v8 materialViewWithRecipeNamesByTraitCollection:v7 inBundle:v9 options:0 initialWeighting:0 scaleAdjustment:traitCollection compatibleWithTraitCollection:0.0];
   }
 
   else
   {
-    v14 = [objc_opt_class() _builtInMaterialRecipeForStyle:a3];
+    v14 = [objc_opt_class() _builtInMaterialRecipeForStyle:style];
     if (v14)
     {
       v11 = [MEMORY[0x1E69AE158] materialViewWithRecipe:v14];
@@ -138,11 +138,11 @@
   return v11;
 }
 
-+ (int64_t)_builtInMaterialRecipeForStyle:(int64_t)a3
++ (int64_t)_builtInMaterialRecipeForStyle:(int64_t)style
 {
-  if (a3)
+  if (style)
   {
-    return 4 * (a3 == 2);
+    return 4 * (style == 2);
   }
 
   else

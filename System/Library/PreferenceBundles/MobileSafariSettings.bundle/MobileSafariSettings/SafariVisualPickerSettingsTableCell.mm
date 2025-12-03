@@ -1,53 +1,53 @@
 @interface SafariVisualPickerSettingsTableCell
-+ (id)visualPickerSpecifierWithButtons:(id)a3 preferenceDomain:(id)a4 preferenceKey:(id)a5;
-+ (id)visualPickerSpecifierWithLeadingButton:(id)a3 trailingButton:(id)a4 preferenceDomain:(id)a5 preferenceKey:(id)a6;
-- (SafariVisualPickerSettingsTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)buttonTapped:(id)a3;
++ (id)visualPickerSpecifierWithButtons:(id)buttons preferenceDomain:(id)domain preferenceKey:(id)key;
++ (id)visualPickerSpecifierWithLeadingButton:(id)button trailingButton:(id)trailingButton preferenceDomain:(id)domain preferenceKey:(id)key;
+- (SafariVisualPickerSettingsTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)buttonTapped:(id)tapped;
 @end
 
 @implementation SafariVisualPickerSettingsTableCell
 
-+ (id)visualPickerSpecifierWithLeadingButton:(id)a3 trailingButton:(id)a4 preferenceDomain:(id)a5 preferenceKey:(id)a6
++ (id)visualPickerSpecifierWithLeadingButton:(id)button trailingButton:(id)trailingButton preferenceDomain:(id)domain preferenceKey:(id)key
 {
   v6 = 0;
-  if (a3 && a4)
+  if (button && trailingButton)
   {
-    v17[0] = a3;
-    v17[1] = a4;
-    v11 = a6;
-    v12 = a5;
-    v13 = a4;
-    v14 = a3;
+    v17[0] = button;
+    v17[1] = trailingButton;
+    keyCopy = key;
+    domainCopy = domain;
+    trailingButtonCopy = trailingButton;
+    buttonCopy = button;
     v15 = [NSArray arrayWithObjects:v17 count:2];
 
-    v6 = [a1 visualPickerSpecifierWithButtons:v15 preferenceDomain:v12 preferenceKey:v11];
+    v6 = [self visualPickerSpecifierWithButtons:v15 preferenceDomain:domainCopy preferenceKey:keyCopy];
   }
 
   return v6;
 }
 
-+ (id)visualPickerSpecifierWithButtons:(id)a3 preferenceDomain:(id)a4 preferenceKey:(id)a5
++ (id)visualPickerSpecifierWithButtons:(id)buttons preferenceDomain:(id)domain preferenceKey:(id)key
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [PSSpecifier preferenceSpecifierNamed:0 target:a1 set:0 get:0 detail:0 cell:-1 edit:0];
+  domainCopy = domain;
+  keyCopy = key;
+  buttonsCopy = buttons;
+  v11 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:-1 edit:0];
   v21[0] = PSCellClassKey;
   v22[0] = objc_opt_class();
-  v22[1] = v8;
+  v22[1] = domainCopy;
   v21[1] = PSContainerBundleIDKey;
   v21[2] = PSDefaultsKey;
-  v22[2] = v8;
-  v22[3] = v9;
+  v22[2] = domainCopy;
+  v22[3] = keyCopy;
   v21[3] = PSKeyNameKey;
   v21[4] = PSIDKey;
   v22[4] = SFTabLayoutIdentifierKey;
   v12 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:5];
   [v11 setProperties:v12];
 
-  v13 = [v10 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_2];
+  v13 = [buttonsCopy safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_2];
   v14 = [v13 count];
-  v15 = [v10 count];
+  v15 = [buttonsCopy count];
 
   v16 = 0;
   if (v14 == v15)
@@ -63,21 +63,21 @@
   return v16;
 }
 
-- (SafariVisualPickerSettingsTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (SafariVisualPickerSettingsTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v9 = a5;
+  specifierCopy = specifier;
   v60.receiver = self;
   v60.super_class = SafariVisualPickerSettingsTableCell;
-  v10 = [(SafariVisualPickerSettingsTableCell *)&v60 initWithStyle:a3 reuseIdentifier:a4 specifier:v9];
+  v10 = [(SafariVisualPickerSettingsTableCell *)&v60 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v10)
   {
-    v11 = [v9 userInfo];
-    v12 = [v11 objectForKeyedSubscript:@"SafariSettingsVisualPickerUserInfoArray"];
+    userInfo = [specifierCopy userInfo];
+    v12 = [userInfo objectForKeyedSubscript:@"SafariSettingsVisualPickerUserInfoArray"];
     objc_opt_class();
-    v56 = v9;
+    v56 = specifierCopy;
     if (objc_opt_isKindOfClass())
     {
-      v52 = v11;
+      v52 = userInfo;
       v54 = v10;
       v13 = v12;
       v14 = +[NSMutableArray array];
@@ -122,7 +122,7 @@ LABEL_10:
       }
 
       v10 = v54;
-      v11 = v52;
+      userInfo = v52;
     }
 
     else
@@ -132,14 +132,14 @@ LABEL_10:
 
     if (v21)
     {
-      objc_storeStrong(&v10->_specifier, a5);
+      objc_storeStrong(&v10->_specifier, specifier);
       v57[0] = _NSConcreteStackBlock;
       v57[1] = 3221225472;
       v57[2] = __79__SafariVisualPickerSettingsTableCell_initWithStyle_reuseIdentifier_specifier___block_invoke;
       v57[3] = &unk_89BC0;
       v23 = v10;
       v58 = v23;
-      v59 = v9;
+      v59 = specifierCopy;
       v24 = [v21 safari_mapObjectsUsingBlock:v57];
       buttons = v23->_buttons;
       v23->_buttons = v24;
@@ -148,36 +148,36 @@ LABEL_10:
       [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v26 setDistribution:1];
       [v26 setSpacing:60.0];
-      v27 = [(SafariVisualPickerSettingsTableCell *)v23 contentView];
-      [v27 addSubview:v26];
+      contentView = [(SafariVisualPickerSettingsTableCell *)v23 contentView];
+      [contentView addSubview:v26];
 
-      v51 = [v26 centerXAnchor];
-      v53 = [(SafariVisualPickerSettingsTableCell *)v23 contentView];
-      v50 = [v53 centerXAnchor];
-      v49 = [v51 constraintEqualToAnchor:v50];
+      centerXAnchor = [v26 centerXAnchor];
+      contentView2 = [(SafariVisualPickerSettingsTableCell *)v23 contentView];
+      centerXAnchor2 = [contentView2 centerXAnchor];
+      v49 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v61[0] = v49;
-      v47 = [v26 centerYAnchor];
-      v48 = [(SafariVisualPickerSettingsTableCell *)v23 contentView];
-      v46 = [v48 centerYAnchor];
-      v45 = [v47 constraintEqualToAnchor:v46];
+      centerYAnchor = [v26 centerYAnchor];
+      contentView3 = [(SafariVisualPickerSettingsTableCell *)v23 contentView];
+      centerYAnchor2 = [contentView3 centerYAnchor];
+      v45 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v61[1] = v45;
-      v44 = [(SafariVisualPickerSettingsTableCell *)v23 contentView];
-      v43 = [v44 heightAnchor];
-      v42 = [v26 heightAnchor];
-      v41 = [v43 constraintEqualToAnchor:v42 constant:30.0];
+      contentView4 = [(SafariVisualPickerSettingsTableCell *)v23 contentView];
+      heightAnchor = [contentView4 heightAnchor];
+      heightAnchor2 = [v26 heightAnchor];
+      v41 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:30.0];
       v61[2] = v41;
-      v40 = [(SafariVisualPickerSettingsTableCell *)v23 contentView];
-      v39 = [v40 widthAnchor];
-      v38 = [v26 widthAnchor];
-      v28 = [v39 constraintEqualToAnchor:v38 multiplier:1.5];
+      contentView5 = [(SafariVisualPickerSettingsTableCell *)v23 contentView];
+      widthAnchor = [contentView5 widthAnchor];
+      widthAnchor2 = [v26 widthAnchor];
+      v28 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.5];
       LODWORD(v29) = 1132068864;
       [v28 sf_withPriority:v29];
       v30 = v55 = v21;
       v61[3] = v30;
-      v31 = [(SafariVisualPickerSettingsTableCell *)v23 contentView];
-      v32 = [v31 widthAnchor];
-      v33 = [v26 widthAnchor];
-      v34 = [v32 constraintGreaterThanOrEqualToAnchor:v33 constant:20.0];
+      contentView6 = [(SafariVisualPickerSettingsTableCell *)v23 contentView];
+      widthAnchor3 = [contentView6 widthAnchor];
+      widthAnchor4 = [v26 widthAnchor];
+      v34 = [widthAnchor3 constraintGreaterThanOrEqualToAnchor:widthAnchor4 constant:20.0];
       v61[4] = v34;
       [NSArray arrayWithObjects:v61 count:5];
       v36 = v35 = v10;
@@ -187,7 +187,7 @@ LABEL_10:
       v21 = v55;
 
       v22 = v23;
-      v9 = v56;
+      specifierCopy = v56;
     }
 
     else
@@ -219,18 +219,18 @@ IconSettingsButton *__79__SafariVisualPickerSettingsTableCell_initWithStyle_reus
   return v4;
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    firstObject = tappedCopy;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_buttons firstObject];
+    firstObject = [(NSArray *)self->_buttons firstObject];
   }
 
   v14 = 0u;
@@ -253,7 +253,7 @@ IconSettingsButton *__79__SafariVisualPickerSettingsTableCell_initWithStyle_reus
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v12 + 1) + 8 * v10) setSelected:{v5 == *(*(&v12 + 1) + 8 * v10), v12}];
+        [*(*(&v12 + 1) + 8 * v10) setSelected:{firstObject == *(*(&v12 + 1) + 8 * v10), v12}];
         v10 = v10 + 1;
       }
 
@@ -264,8 +264,8 @@ IconSettingsButton *__79__SafariVisualPickerSettingsTableCell_initWithStyle_reus
     while (v8);
   }
 
-  v11 = [v5 preferenceValue];
-  [PSRootController setPreferenceValue:v11 specifier:self->_specifier];
+  preferenceValue = [firstObject preferenceValue];
+  [PSRootController setPreferenceValue:preferenceValue specifier:self->_specifier];
 }
 
 @end

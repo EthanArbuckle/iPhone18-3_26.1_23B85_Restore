@@ -1,5 +1,5 @@
 @interface FBWorkspaceEndpointPromise
-- (id)_initWithDomain:(void *)a3 identifier:(void *)a4 endpoint:;
+- (id)_initWithDomain:(void *)domain identifier:(void *)identifier endpoint:;
 - (id)description;
 - (id)endpoint;
 - (id)initWithEndpoint:(id *)result;
@@ -11,21 +11,21 @@
 
 - (id)endpoint
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v2 = *(a1 + 8);
+    os_unfair_lock_lock((self + 32));
+    v2 = *(self + 8);
     if (!v2)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
+      WeakRetained = objc_loadWeakRetained((self + 16));
       v4 = WeakRetained;
       if (WeakRetained)
       {
-        v5 = [(FBWorkspaceDomain *)WeakRetained _listenerEndpoint];
-        v6 = v5;
-        if (v5)
+        _listenerEndpoint = [(FBWorkspaceDomain *)WeakRetained _listenerEndpoint];
+        v6 = _listenerEndpoint;
+        if (_listenerEndpoint)
         {
-          v7 = v5;
+          v7 = _listenerEndpoint;
         }
 
         else
@@ -33,22 +33,22 @@
           v7 = +[FBWorkspaceDomain nullEndpoint];
         }
 
-        v9 = *(a1 + 8);
-        *(a1 + 8) = v7;
+        v9 = *(self + 8);
+        *(self + 8) = v7;
       }
 
       else
       {
         v8 = +[FBWorkspaceDomain nullEndpoint];
-        v6 = *(a1 + 8);
-        *(a1 + 8) = v8;
+        v6 = *(self + 8);
+        *(self + 8) = v8;
       }
 
-      v2 = *(a1 + 8);
+      v2 = *(self + 8);
     }
 
     v10 = v2;
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((self + 32));
   }
 
   else
@@ -64,7 +64,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"never nil if created by FBWorkspaceDomain"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -110,9 +110,9 @@
     goto LABEL_11;
   }
 
-  v9 = [(BSServiceConnectionEndpoint *)v8 isNullEndpoint];
+  isNullEndpoint = [(BSServiceConnectionEndpoint *)v8 isNullEndpoint];
   v10 = MEMORY[0x1E696AEC0];
-  if (v9)
+  if (isNullEndpoint)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"<FBWorkspaceEndpointPromise:%@ (null)>", v4];
     v11 = LABEL_11:;
@@ -127,30 +127,30 @@ LABEL_13:
   return v11;
 }
 
-- (id)_initWithDomain:(void *)a3 identifier:(void *)a4 endpoint:
+- (id)_initWithDomain:(void *)domain identifier:(void *)identifier endpoint:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  domainCopy = domain;
+  identifierCopy = identifier;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = FBWorkspaceEndpointPromise;
     v10 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       *(v10 + 8) = 0;
       objc_storeWeak(v10 + 2, v7);
-      v11 = [v8 copy];
-      v12 = a1[3];
-      a1[3] = v11;
+      v11 = [domainCopy copy];
+      v12 = self[3];
+      self[3] = v11;
 
-      objc_storeStrong(a1 + 1, a4);
+      objc_storeStrong(self + 1, identifier);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)initWithEndpoint:(id *)result
@@ -185,9 +185,9 @@ LABEL_13:
 
     v6 = v2;
     os_unfair_lock_unlock(v1 + 8);
-    v7 = [v6 isNullEndpoint];
+    isNullEndpoint = [v6 isNullEndpoint];
 
-    return v7;
+    return isNullEndpoint;
   }
 
   return result;

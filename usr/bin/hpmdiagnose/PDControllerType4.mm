@@ -1,22 +1,22 @@
 @interface PDControllerType4
 - (BOOL)isSPIMaster;
-- (id)dpmrSubCommandFormatterHexDumpWithBuffer:(void *)a3 length:(unint64_t)a4 inputBuffer:(void *)a5 andInputLength:(unint64_t)a6;
+- (id)dpmrSubCommandFormatterHexDumpWithBuffer:(void *)buffer length:(unint64_t)length inputBuffer:(void *)inputBuffer andInputLength:(unint64_t)inputLength;
 - (id)readFullVersion;
-- (id)stringForTitle:(id)a3 valueString:(id)a4;
-- (int)dataBuffer:(char *)a3 fromHexString:(id)a4 ofLengthString:(id)a5;
+- (id)stringForTitle:(id)title valueString:(id)string;
+- (int)dataBuffer:(char *)buffer fromHexString:(id)string ofLengthString:(id)lengthString;
 - (int)printAll;
 - (int)printAllDPMrSubcommands;
 - (int)printDBStateHistory;
-- (int)printDPMrSubCommand:(id)a3 withDeviceConfig:(id)a4;
-- (int)printDPMrSubCommand:(id)a3 withDeviceConfig:(id)a4 writeBuffer:(void *)a5 writeLength:(unint64_t)a6 readBuffer:(void *)a7 readLength:(unint64_t)a8;
-- (int)printDPMrSubCommand:(id)a3 withTitle:(id)a4 andDescription:(id)a5;
+- (int)printDPMrSubCommand:(id)command withDeviceConfig:(id)config;
+- (int)printDPMrSubCommand:(id)command withDeviceConfig:(id)config writeBuffer:(void *)buffer writeLength:(unint64_t)length readBuffer:(void *)readBuffer readLength:(unint64_t)readLength;
+- (int)printDPMrSubCommand:(id)command withTitle:(id)title andDescription:(id)description;
 - (int)printIECSAceSpecificInfo;
 - (int)printIECSStandardInfo;
 - (int)printInfo;
 - (int)printPDStateHistory;
 - (int)printTBRrIfIntelRetimerPresent;
 - (int)printTitle;
-- (unsigned)chrisTracy:(id)a3;
+- (unsigned)chrisTracy:(id)tracy;
 - (unsigned)majorVersionNumber;
 @end
 
@@ -96,10 +96,10 @@
 
 - (int)printTitle
 {
-  v3 = [(PDController *)self userClient];
-  v4 = [v3 routerID];
-  v5 = [(PDController *)self userClient];
-  printf("HPM at RID 0x%x Route 0x%llx Address 0x%02x :\n", v4, [v5 routeString], -[PDController address](self, "address"));
+  userClient = [(PDController *)self userClient];
+  routerID = [userClient routerID];
+  userClient2 = [(PDController *)self userClient];
+  printf("HPM at RID 0x%x Route 0x%llx Address 0x%02x :\n", routerID, [userClient2 routeString], -[PDController address](self, "address"));
 
   return 0;
 }
@@ -113,8 +113,8 @@
     result = [(PDControllerType4 *)self printIECSStandardInfo];
     if (!result)
     {
-      v4 = [(PDControllerType2 *)self readFullVersionWithConfig];
-      printf("0x0f %-22s %s\n", "FW Versions", [v4 UTF8String]);
+      readFullVersionWithConfig = [(PDControllerType2 *)self readFullVersionWithConfig];
+      printf("0x0f %-22s %s\n", "FW Versions", [readFullVersionWithConfig UTF8String]);
 
       putchar(10);
 
@@ -225,20 +225,20 @@
         }
 
         v9 = *(*(&v23 + 1) + 8 * v8);
-        v10 = [(PDControllerType4 *)self dpmrConfigs];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        dpmrConfigs = [(PDControllerType4 *)self dpmrConfigs];
+        v11 = [dpmrConfigs objectForKeyedSubscript:v9];
         v12 = [v11 objectForKeyedSubscript:@"mask"];
-        v13 = [v12 unsignedIntegerValue];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-        v14 = [(PDControllerType4 *)self dpmrConfigs];
-        v15 = [v14 objectForKeyedSubscript:v9];
+        dpmrConfigs2 = [(PDControllerType4 *)self dpmrConfigs];
+        v15 = [dpmrConfigs2 objectForKeyedSubscript:v9];
         v16 = [v15 objectForKeyedSubscript:@"match"];
-        v17 = [v16 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
-        if ((v22 & v13) == v17)
+        if ((v22 & unsignedIntegerValue) == unsignedIntegerValue2)
         {
-          v18 = [(PDControllerType4 *)self dpmrConfigs];
-          v19 = [v18 objectForKeyedSubscript:v9];
+          dpmrConfigs3 = [(PDControllerType4 *)self dpmrConfigs];
+          v19 = [dpmrConfigs3 objectForKeyedSubscript:v9];
           [(PDControllerType4 *)self printDPMrSubCommand:v9 withDeviceConfig:v19];
         }
 
@@ -270,26 +270,26 @@
   return v5;
 }
 
-- (int)dataBuffer:(char *)a3 fromHexString:(id)a4 ofLengthString:(id)a5
+- (int)dataBuffer:(char *)buffer fromHexString:(id)string ofLengthString:(id)lengthString
 {
-  v7 = a4;
-  v8 = [NSScanner scannerWithString:a5];
+  stringCopy = string;
+  v8 = [NSScanner scannerWithString:lengthString];
   v17 = 0;
   [v8 scanHexInt:&v17];
-  if (v7)
+  if (stringCopy)
   {
-    v9 = [v7 length];
+    v9 = [stringCopy length];
     if (v17 == v9 >> 1 && v17 != 0)
     {
       v11 = 0;
       v12 = 0;
       do
       {
-        v13 = [v7 substringWithRange:{v11, 2}];
+        v13 = [stringCopy substringWithRange:{v11, 2}];
         v14 = [NSScanner scannerWithString:v13];
         v16 = 0;
         [v14 scanHexInt:&v16];
-        a3[v12] = v16;
+        buffer[v12] = v16;
 
         ++v12;
         v11 += 2;
@@ -573,29 +573,29 @@ LABEL_22:
   return v6;
 }
 
-- (id)stringForTitle:(id)a3 valueString:(id)a4
+- (id)stringForTitle:(id)title valueString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%-22s %@", [a3 UTF8String], v7);
+  titleCopy = title;
+  stringCopy = string;
+  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%-22s %@", [title UTF8String], stringCopy);
 
   return v8;
 }
 
-- (unsigned)chrisTracy:(id)a3
+- (unsigned)chrisTracy:(id)tracy
 {
-  v3 = a3;
-  if (v3)
+  tracyCopy = tracy;
+  if (tracyCopy)
   {
     v9[0] = &off_10001F670;
     v9[1] = &off_10001F778;
     v10[0] = &off_10001F670;
     v10[1] = &off_10001F670;
     v4 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
-    [v3 cStringUsingEncoding:1];
-    if ([v3 length] <= 8)
+    [tracyCopy cStringUsingEncoding:1];
+    if ([tracyCopy length] <= 8)
     {
-      [v3 length];
+      [tracyCopy length];
     }
 
     __memcpy_chk();
@@ -604,21 +604,21 @@ LABEL_22:
 
     if (v7)
     {
-      v5 = [v7 unsignedLongValue];
+      unsignedLongValue = [v7 unsignedLongValue];
     }
 
     else
     {
-      v5 = *[v3 cStringUsingEncoding:1];
+      unsignedLongValue = *[tracyCopy cStringUsingEncoding:1];
     }
   }
 
   else
   {
-    v5 = 0;
+    unsignedLongValue = 0;
   }
 
-  return bswap32(v5);
+  return bswap32(unsignedLongValue);
 }
 
 - (id)readFullVersion
@@ -688,10 +688,10 @@ LABEL_22:
   return *v4 < 0;
 }
 
-- (int)printDPMrSubCommand:(id)a3 withDeviceConfig:(id)a4 writeBuffer:(void *)a5 writeLength:(unint64_t)a6 readBuffer:(void *)a7 readLength:(unint64_t)a8
+- (int)printDPMrSubCommand:(id)command withDeviceConfig:(id)config writeBuffer:(void *)buffer writeLength:(unint64_t)length readBuffer:(void *)readBuffer readLength:(unint64_t)readLength
 {
-  v13 = a3;
-  v14 = [(PDControllerType4 *)self dpmrSubCommandFormatterHexDumpWithBuffer:a7 length:a8 inputBuffer:a5 andInputLength:a6];
+  commandCopy = command;
+  v14 = [(PDControllerType4 *)self dpmrSubCommandFormatterHexDumpWithBuffer:readBuffer length:readLength inputBuffer:buffer andInputLength:length];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -712,7 +712,7 @@ LABEL_22:
 
           else
           {
-            [(PDControllerType4 *)self printDPMrSubCommand:v13 withTitle:v13 andDescription:v17];
+            [(PDControllerType4 *)self printDPMrSubCommand:commandCopy withTitle:commandCopy andDescription:v17];
           }
 
           ++v16;
@@ -724,22 +724,22 @@ LABEL_22:
 
     else
     {
-      [(PDControllerType4 *)self printDPMrSubCommand:v13 withTitle:v13 andDescription:&stru_10001C6C8];
+      [(PDControllerType4 *)self printDPMrSubCommand:commandCopy withTitle:commandCopy andDescription:&stru_10001C6C8];
     }
   }
 
   else
   {
-    [(PDControllerType4 *)self printDPMrSubCommand:v13 withTitle:v13 andDescription:v14];
+    [(PDControllerType4 *)self printDPMrSubCommand:commandCopy withTitle:commandCopy andDescription:v14];
   }
 
   return 0;
 }
 
-- (int)printDPMrSubCommand:(id)a3 withDeviceConfig:(id)a4
+- (int)printDPMrSubCommand:(id)command withDeviceConfig:(id)config
 {
-  v5 = a3;
-  v6 = a4;
+  commandCopy = command;
+  configCopy = config;
   v7 = malloc_type_malloc(0x40uLL, 0xC91EA880uLL);
   *v7 = 0u;
   v7[1] = 0u;
@@ -752,24 +752,24 @@ LABEL_22:
   v8[1] = 0u;
   v8[2] = 0u;
   v8[3] = 0u;
-  v9 = [v6 objectForKeyedSubscript:@"iecs_style"];
-  v10 = [v9 BOOLValue];
+  v9 = [configCopy objectForKeyedSubscript:@"iecs_style"];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v6 objectForKeyedSubscript:@"i2c_addr"];
+  v11 = [configCopy objectForKeyedSubscript:@"i2c_addr"];
   *v8 = [v11 unsignedCharValue];
 
-  v12 = [v6 objectForKeyedSubscript:@"registers"];
+  v12 = [configCopy objectForKeyedSubscript:@"registers"];
   v13 = [v12 count];
 
   *(v8 + 1) = v13 - 1;
-  v45 = v5;
-  if (v10)
+  v45 = commandCopy;
+  if (bOOLValue)
   {
     v58 = 0uLL;
     v59 = 0uLL;
     v56 = 0uLL;
     v57 = 0uLL;
-    v14 = [v6 objectForKeyedSubscript:@"registers"];
+    v14 = [configCopy objectForKeyedSubscript:@"registers"];
     v15 = [v14 countByEnumeratingWithState:&v56 objects:v63 count:16];
     if (!v15)
     {
@@ -777,7 +777,7 @@ LABEL_22:
     }
 
     v16 = v15;
-    v44 = v6;
+    v44 = configCopy;
     v17 = *v57;
     LODWORD(v18) = 2;
 LABEL_4:
@@ -822,7 +822,7 @@ LABEL_4:
     v55 = 0uLL;
     v52 = 0uLL;
     v53 = 0uLL;
-    v14 = [v6 objectForKeyedSubscript:@"registers"];
+    v14 = [configCopy objectForKeyedSubscript:@"registers"];
     v23 = [v14 countByEnumeratingWithState:&v52 objects:v62 count:16];
     if (!v23)
     {
@@ -830,7 +830,7 @@ LABEL_4:
     }
 
     v24 = v23;
-    v44 = v6;
+    v44 = configCopy;
     v25 = *v53;
     v26 = 2;
 LABEL_13:
@@ -875,7 +875,7 @@ LABEL_13:
     }
   }
 
-  v6 = v44;
+  configCopy = v44;
 LABEL_23:
 
   LODWORD(v43) = 4194368;
@@ -888,8 +888,8 @@ LABEL_23:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v31 = v6;
-  v32 = [v6 objectForKeyedSubscript:@"registers"];
+  v31 = configCopy;
+  v32 = [configCopy objectForKeyedSubscript:@"registers"];
   v33 = [v32 countByEnumeratingWithState:&v48 objects:v61 count:16];
   if (v33)
   {
@@ -931,37 +931,37 @@ LABEL_23:
   return v41;
 }
 
-- (int)printDPMrSubCommand:(id)a3 withTitle:(id)a4 andDescription:(id)a5
+- (int)printDPMrSubCommand:(id)command withTitle:(id)title andDescription:(id)description
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a3 UTF8String];
-  v10 = [v8 UTF8String];
+  commandCopy = command;
+  descriptionCopy = description;
+  uTF8String = [command UTF8String];
+  uTF8String2 = [descriptionCopy UTF8String];
 
-  printf("'%s'\t%s\n", v9, v10);
+  printf("'%s'\t%s\n", uTF8String, uTF8String2);
   return 0;
 }
 
-- (id)dpmrSubCommandFormatterHexDumpWithBuffer:(void *)a3 length:(unint64_t)a4 inputBuffer:(void *)a5 andInputLength:(unint64_t)a6
+- (id)dpmrSubCommandFormatterHexDumpWithBuffer:(void *)buffer length:(unint64_t)length inputBuffer:(void *)inputBuffer andInputLength:(unint64_t)inputLength
 {
   v10 = +[NSMutableArray array];
   v11 = +[NSMutableString string];
-  [v11 appendFormat:@"0x%02llX\t0x", a6];
-  for (; a6; --a6)
+  [v11 appendFormat:@"0x%02llX\t0x", inputLength];
+  for (; inputLength; --inputLength)
   {
-    v12 = *a5;
-    a5 = a5 + 1;
+    v12 = *inputBuffer;
+    inputBuffer = inputBuffer + 1;
     [v11 appendFormat:@"%02X", v12];
   }
 
   [v10 addObject:v11];
   v13 = +[NSMutableString string];
 
-  [v13 appendFormat:@"0x%02llX\t0x", a4];
-  for (; a4; --a4)
+  [v13 appendFormat:@"0x%02llX\t0x", length];
+  for (; length; --length)
   {
-    v14 = *a3;
-    a3 = a3 + 1;
+    v14 = *buffer;
+    buffer = buffer + 1;
     [v13 appendFormat:@"%02x", v14];
   }
 

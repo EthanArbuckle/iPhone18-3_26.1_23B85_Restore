@@ -1,15 +1,15 @@
 @interface CLTileSyncSySerializer
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4;
-- (id)dataFromChange:(id)a3;
+- (id)changeFromData:(id)data ofType:(int64_t)type;
+- (id)dataFromChange:(id)change;
 @end
 
 @implementation CLTileSyncSySerializer
 
-- (id)dataFromChange:(id)a3
+- (id)dataFromChange:(id)change
 {
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = [objc_alloc(off_1025D57A8()) initWithProperties:{objc_msgSend(a3, "properties")}];
+  v5 = [objc_alloc(off_1025D57A8()) initWithProperties:{objc_msgSend(change, "properties")}];
   if (qword_1025D4630 != -1)
   {
     sub_101886EF8();
@@ -40,7 +40,7 @@
   return 0;
 }
 
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4
+- (id)changeFromData:(id)data ofType:(int64_t)type
 {
   if (qword_1025D4630 != -1)
   {
@@ -51,7 +51,7 @@
   if (os_log_type_enabled(qword_1025D4638, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a4;
+    typeCopy = type;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "@GtsWarn, GizmoSync, changeFromData, %ld, #CloneMe", &v7, 0xCu);
   }
 

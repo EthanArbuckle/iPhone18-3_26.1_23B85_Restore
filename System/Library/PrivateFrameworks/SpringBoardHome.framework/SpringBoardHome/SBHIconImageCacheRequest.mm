@@ -1,15 +1,15 @@
 @interface SBHIconImageCacheRequest
-+ (void)performWithDependentRequestLockUsingBlock:(id)a3;
++ (void)performWithDependentRequestLockUsingBlock:(id)block;
 - (SBHIconImageCacheRequest)init;
 - (__CFString)variantDescription;
 - (double)elapsedTime;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initWithIcon:(void *)a3 imageAppearance:(void *)a4 priority:(void *)a5 reason:(void *)a6 imageGeneration:(void *)a7 variant:(void *)a8 options:(void *)a9 sharedCancellation:(void *)a10 iconImageCache:(void *)a11 completionHandler:;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initWithIcon:(void *)icon imageAppearance:(void *)appearance priority:(void *)priority reason:(void *)reason imageGeneration:(void *)generation variant:(void *)variant options:(void *)options sharedCancellation:(void *)self0 iconImageCache:(void *)self1 completionHandler:;
 - (id)succinctDescription;
 - (uint64_t)isCancelled;
 - (uint64_t)matchesIcon:(uint64_t)result;
-- (void)addDependentRequest:(uint64_t)a1;
+- (void)addDependentRequest:(uint64_t)request;
 - (void)callCompletionHandlers;
 - (void)cancel;
 @end
@@ -19,16 +19,16 @@
 - (void)callCompletionHandlers
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = *(a1 + 32);
+  v3 = *(self + 32);
   OUTLINED_FUNCTION_13();
   OUTLINED_FUNCTION_12(&dword_1BEB18000, a2, v4, "Calling completion handlers for dependent requests for request %{public}@", v5);
 }
 
-+ (void)performWithDependentRequestLockUsingBlock:(id)a3
++ (void)performWithDependentRequestLockUsingBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&performWithDependentRequestLockUsingBlock__lock);
-  v3[2](v3);
+  blockCopy[2](blockCopy);
 
   os_unfair_lock_unlock(&performWithDependentRequestLockUsingBlock__lock);
 }
@@ -65,112 +65,112 @@ uint64_t __48__SBHIconImageCacheRequest_addDependentRequest___block_invoke_2(uin
 
 - (id)succinctDescription
 {
-  v2 = [(SBHIconImageCacheRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHIconImageCacheRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHIconImageCacheRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHIconImageCacheRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)initWithIcon:(void *)a3 imageAppearance:(void *)a4 priority:(void *)a5 reason:(void *)a6 imageGeneration:(void *)a7 variant:(void *)a8 options:(void *)a9 sharedCancellation:(void *)a10 iconImageCache:(void *)a11 completionHandler:
+- (id)initWithIcon:(void *)icon imageAppearance:(void *)appearance priority:(void *)priority reason:(void *)reason imageGeneration:(void *)generation variant:(void *)variant options:(void *)options sharedCancellation:(void *)self0 iconImageCache:(void *)self1 completionHandler:
 {
   v17 = a2;
-  v18 = a3;
-  v19 = a5;
-  v45 = a9;
-  v20 = a10;
-  v21 = a11;
-  if (a1)
+  iconCopy = icon;
+  priorityCopy = priority;
+  optionsCopy = options;
+  cancellationCopy = cancellation;
+  cacheCopy = cache;
+  if (self)
   {
-    v46.receiver = a1;
+    v46.receiver = self;
     v46.super_class = SBHIconImageCacheRequest;
     v22 = objc_msgSendSuper2(&v46, sel_init);
-    a1 = v22;
+    self = v22;
     if (v22)
     {
       objc_storeStrong(v22 + 5, a2);
       v23 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-      v24 = a1[4];
-      a1[4] = v23;
+      v24 = self[4];
+      self[4] = v23;
 
-      objc_storeStrong(a1 + 6, a9);
+      objc_storeStrong(self + 6, options);
       v25 = objc_alloc_init(SBHIconImageCacheCancellation);
-      v26 = a1[7];
-      a1[7] = v25;
+      v26 = self[7];
+      self[7] = v25;
 
-      v27 = [v18 copy];
-      v28 = a1[8];
-      a1[8] = v27;
+      v27 = [iconCopy copy];
+      v28 = self[8];
+      self[8] = v27;
 
-      v29 = [v17 imageLoadContext];
-      v30 = [v29 copy];
-      v31 = a1[10];
-      a1[10] = v30;
+      imageLoadContext = [v17 imageLoadContext];
+      v30 = [imageLoadContext copy];
+      v31 = self[10];
+      self[10] = v30;
 
-      a1[11] = a4;
-      v32 = [v19 copy];
-      v33 = a1[12];
-      a1[12] = v32;
+      self[11] = appearance;
+      v32 = [priorityCopy copy];
+      v33 = self[12];
+      self[12] = v32;
 
-      a1[9] = a6;
-      a1[13] = a8;
-      a1[14] = a7;
-      objc_storeWeak(a1 + 23, v20);
-      v34 = [v21 copy];
-      v35 = a1[16];
-      a1[16] = v34;
+      self[9] = reason;
+      self[13] = variant;
+      self[14] = generation;
+      objc_storeWeak(self + 23, cancellationCopy);
+      v34 = [cacheCopy copy];
+      v35 = self[16];
+      self[16] = v34;
 
-      v36 = [v17 iconImageCacheIdentifier];
-      [v20 iconImageInfo];
+      iconImageCacheIdentifier = [v17 iconImageCacheIdentifier];
+      [cancellationCopy iconImageInfo];
       v37 = [SBHIconImageIdentity alloc];
       v38 = OUTLINED_FUNCTION_8();
       v40 = [v39 initWithIconIdentifier:v38 iconImageInfo:? imageGeneration:? imageAppearance:?];
-      v41 = a1[15];
-      a1[15] = v40;
+      v41 = self[15];
+      self[15] = v40;
 
-      a1[17] = mach_continuous_time();
+      self[17] = mach_continuous_time();
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)isCancelled
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = *(a1 + 48);
-  v3 = *(a1 + 56);
+  v2 = *(self + 48);
+  v3 = *(self + 56);
   if ([v3 isCancelled])
   {
-    v4 = 1;
+    isCancelled = 1;
   }
 
   else
   {
-    v4 = [v2 isCancelled];
+    isCancelled = [v2 isCancelled];
   }
 
-  return v4;
+  return isCancelled;
 }
 
-- (void)addDependentRequest:(uint64_t)a1
+- (void)addDependentRequest:(uint64_t)request
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (request)
   {
-    if (*(a1 + 25))
+    if (*(request + 25))
     {
       v13 = MEMORY[0x1E69E9820];
       v14 = 3221225472;
@@ -188,7 +188,7 @@ uint64_t __48__SBHIconImageCacheRequest_addDependentRequest___block_invoke_2(uin
       v8 = 3221225472;
       v9 = __48__SBHIconImageCacheRequest_addDependentRequest___block_invoke_2;
       v10 = &unk_1E8088F18;
-      v11 = a1;
+      requestCopy = request;
       v12 = v4;
       [v6 performWithDependentRequestLockUsingBlock:v7];
       v5 = v12;
@@ -198,9 +198,9 @@ uint64_t __48__SBHIconImageCacheRequest_addDependentRequest___block_invoke_2(uin
 
 - (__CFString)variantDescription
 {
-  if (a1)
+  if (self)
   {
-    data = a1[3].data;
+    data = self[3].data;
     v3 = @"ummasked";
     if (data != 1)
     {
@@ -217,11 +217,11 @@ uint64_t __48__SBHIconImageCacheRequest_addDependentRequest___block_invoke_2(uin
       v4 = @"masked";
     }
 
-    a1 = v4;
+    self = v4;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)matchesIcon:(uint64_t)result
@@ -244,12 +244,12 @@ uint64_t __48__SBHIconImageCacheRequest_addDependentRequest___block_invoke_2(uin
 
 - (double)elapsedTime
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if (!*(a1 + 8))
+  if (!*(self + 8))
   {
     mach_continuous_time();
   }
@@ -268,42 +268,42 @@ uint64_t __48__SBHIconImageCacheRequest_addDependentRequest___block_invoke_2(uin
   [(SBHIconImageCacheRequest *)self cancel];
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   if (self)
   {
     status = self->_status;
-    v6 = [(SBHIconImageCacheRequest *)self succinctDescriptionBuilder];
+    succinctDescriptionBuilder = [(SBHIconImageCacheRequest *)self succinctDescriptionBuilder];
     identifier = self->_identifier;
   }
 
   else
   {
-    v6 = [0 succinctDescriptionBuilder];
+    succinctDescriptionBuilder = [0 succinctDescriptionBuilder];
     status = 0;
     identifier = 0;
   }
 
-  v8 = [v6 appendObject:identifier withName:@"identifier"];
+  v8 = [succinctDescriptionBuilder appendObject:identifier withName:@"identifier"];
   if (self)
   {
-    v9 = [v6 appendObject:self->_icon withName:@"identifier"];
+    v9 = [succinctDescriptionBuilder appendObject:self->_icon withName:@"identifier"];
     imageAppearance = self->_imageAppearance;
   }
 
   else
   {
-    v28 = [v6 appendObject:0 withName:@"identifier"];
+    v28 = [succinctDescriptionBuilder appendObject:0 withName:@"identifier"];
     imageAppearance = 0;
   }
 
-  v11 = [v6 appendObject:imageAppearance withName:@"imageAppearance"];
+  v11 = [succinctDescriptionBuilder appendObject:imageAppearance withName:@"imageAppearance"];
   if (!self)
   {
-    v29 = [v6 appendObject:@"background" withName:@"priority"];
-    v30 = [v6 appendObject:0 withName:@"reason"];
-    v31 = [v6 appendUnsignedInteger:0 withName:@"imageGeneration"];
+    v29 = [succinctDescriptionBuilder appendObject:@"background" withName:@"priority"];
+    v30 = [succinctDescriptionBuilder appendObject:0 withName:@"reason"];
+    v31 = [succinctDescriptionBuilder appendUnsignedInteger:0 withName:@"imageGeneration"];
 LABEL_14:
     v18 = @"masked";
     goto LABEL_15;
@@ -320,9 +320,9 @@ LABEL_14:
     v13 = off_1E8089028[priority];
   }
 
-  v14 = [v6 appendObject:v13 withName:@"priority"];
-  v15 = [v6 appendObject:self->_reason withName:@"reason"];
-  v16 = [v6 appendUnsignedInteger:self->_imageGeneration withName:@"imageGeneration"];
+  v14 = [succinctDescriptionBuilder appendObject:v13 withName:@"priority"];
+  v15 = [succinctDescriptionBuilder appendObject:self->_reason withName:@"reason"];
+  v16 = [succinctDescriptionBuilder appendUnsignedInteger:self->_imageGeneration withName:@"imageGeneration"];
   variant = self->_variant;
   if (variant == 1)
   {
@@ -340,7 +340,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  v19 = [v6 appendObject:v18 withName:@"variant"];
+  v19 = [succinctDescriptionBuilder appendObject:v18 withName:@"variant"];
   if (status > 4)
   {
     v20 = 0;
@@ -351,8 +351,8 @@ LABEL_15:
     v20 = off_1E8089050[status];
   }
 
-  [v6 appendString:v20 withName:@"status"];
-  v21 = [v6 appendBool:-[SBHIconImageCacheRequest isCancelled](self) withName:@"isCancelled" ifEqualTo:1];
+  [succinctDescriptionBuilder appendString:v20 withName:@"status"];
+  v21 = [succinctDescriptionBuilder appendBool:-[SBHIconImageCacheRequest isCancelled](self) withName:@"isCancelled" ifEqualTo:1];
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_blockingRequest);
@@ -363,7 +363,7 @@ LABEL_15:
     WeakRetained = 0;
   }
 
-  v23 = [v6 appendObject:WeakRetained withName:@"blockingRequest" skipIfNil:1];
+  v23 = [succinctDescriptionBuilder appendObject:WeakRetained withName:@"blockingRequest" skipIfNil:1];
 
   if (status == 4 || status == 2)
   {
@@ -386,10 +386,10 @@ LABEL_15:
       v26 = @"cancelled";
     }
 
-    [v6 appendString:v26 withName:@"result"];
+    [succinctDescriptionBuilder appendString:v26 withName:@"result"];
   }
 
-  return v6;
+  return succinctDescriptionBuilder;
 }
 
 @end

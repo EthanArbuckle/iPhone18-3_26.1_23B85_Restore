@@ -1,17 +1,17 @@
 @interface CAMSpatialModeDescriptionOverlayView
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
 @end
 
 @implementation CAMSpatialModeDescriptionOverlayView
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if (![(CAMSpatialModeDescriptionOverlayView *)self _didTapAcknowledgement])
   {
     v7.receiver = self;
     v7.super_class = CAMSpatialModeDescriptionOverlayView;
-    [(CAMDescriptionOverlayView *)&v7 setOrientation:a3 animated:v4];
+    [(CAMDescriptionOverlayView *)&v7 setOrientation:orientation animated:animatedCopy];
   }
 }
 

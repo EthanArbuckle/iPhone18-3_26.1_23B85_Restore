@@ -1,8 +1,8 @@
 @interface HeadphoneConnectViewController
-- (_TtC20HeadphoneProxService30HeadphoneConnectViewController)initWithContentView:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC20HeadphoneProxService30HeadphoneConnectViewController)initWithContentView:(id)view;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HeadphoneConnectViewController
@@ -16,22 +16,22 @@
   [v2 setDismissalType:{1, v3.receiver, v3.super_class}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10005733C(a3);
+  selfCopy = self;
+  sub_10005733C(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10005773C(a3);
+  selfCopy = self;
+  sub_10005773C(disappear);
 }
 
-- (_TtC20HeadphoneProxService30HeadphoneConnectViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService30HeadphoneConnectViewController)initWithContentView:(id)view
 {
-  v4 = a3;
-  v5 = sub_1000620D8(a3);
+  viewCopy = view;
+  v5 = sub_1000620D8(view);
 
   return v5;
 }

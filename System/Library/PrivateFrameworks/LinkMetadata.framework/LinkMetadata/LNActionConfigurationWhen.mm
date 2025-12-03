@@ -1,21 +1,21 @@
 @interface LNActionConfigurationWhen
-- (BOOL)isEqual:(id)a3;
-- (LNActionConfigurationWhen)initWithCoder:(id)a3;
-- (LNActionConfigurationWhen)initWithCondition:(id)a3 when:(id)a4 otherwise:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNActionConfigurationWhen)initWithCoder:(id)coder;
+- (LNActionConfigurationWhen)initWithCondition:(id)condition when:(id)when otherwise:(id)otherwise;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNActionConfigurationWhen
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -24,10 +24,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(LNActionConfigurationWhen *)self condition];
-    v8 = [(LNActionConfigurationWhen *)v6 condition];
-    v9 = v7;
-    v10 = v8;
+    condition = [(LNActionConfigurationWhen *)self condition];
+    condition2 = [(LNActionConfigurationWhen *)v6 condition];
+    v9 = condition;
+    v10 = condition2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -54,10 +54,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(LNActionConfigurationWhen *)self when];
-    v17 = [(LNActionConfigurationWhen *)v6 when];
-    v14 = v16;
-    v18 = v17;
+    when = [(LNActionConfigurationWhen *)self when];
+    when2 = [(LNActionConfigurationWhen *)v6 when];
+    v14 = when;
+    v18 = when2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -84,10 +84,10 @@ LABEL_25:
       }
     }
 
-    v21 = [(LNActionConfigurationWhen *)self otherwise];
-    v22 = [(LNActionConfigurationWhen *)v6 otherwise];
-    v20 = v21;
-    v23 = v22;
+    otherwise = [(LNActionConfigurationWhen *)self otherwise];
+    otherwise2 = [(LNActionConfigurationWhen *)v6 otherwise];
+    v20 = otherwise;
+    v23 = otherwise2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -114,54 +114,54 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v3 = [(LNActionConfigurationWhen *)self when];
-  v4 = [v3 hash];
-  v5 = [(LNActionConfigurationWhen *)self otherwise];
-  v6 = [v5 hash];
+  when = [(LNActionConfigurationWhen *)self when];
+  v4 = [when hash];
+  otherwise = [(LNActionConfigurationWhen *)self otherwise];
+  v6 = [otherwise hash];
 
   return v6 ^ v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNActionConfigurationWhen *)self condition];
-  [v4 encodeObject:v5 forKey:@"condition"];
+  coderCopy = coder;
+  condition = [(LNActionConfigurationWhen *)self condition];
+  [coderCopy encodeObject:condition forKey:@"condition"];
 
-  v6 = [(LNActionConfigurationWhen *)self when];
-  [v4 encodeObject:v6 forKey:@"when"];
+  when = [(LNActionConfigurationWhen *)self when];
+  [coderCopy encodeObject:when forKey:@"when"];
 
-  v7 = [(LNActionConfigurationWhen *)self otherwise];
-  [v4 encodeObject:v7 forKey:@"otherwise"];
+  otherwise = [(LNActionConfigurationWhen *)self otherwise];
+  [coderCopy encodeObject:otherwise forKey:@"otherwise"];
 }
 
-- (LNActionConfigurationWhen)initWithCoder:(id)a3
+- (LNActionConfigurationWhen)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"condition"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"condition"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"when"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"when"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"otherwise"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"otherwise"];
       self = [(LNActionConfigurationWhen *)self initWithCondition:v5 when:v6 otherwise:v7];
 
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)description
@@ -169,23 +169,23 @@ LABEL_28:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNActionConfigurationWhen *)self condition];
-  v7 = [(LNActionConfigurationWhen *)self when];
-  v8 = [(LNActionConfigurationWhen *)self otherwise];
-  v9 = [v3 stringWithFormat:@"<%@: %p, condition: %@, when: %@, otherwise: %@>", v5, self, v6, v7, v8];
+  condition = [(LNActionConfigurationWhen *)self condition];
+  when = [(LNActionConfigurationWhen *)self when];
+  otherwise = [(LNActionConfigurationWhen *)self otherwise];
+  v9 = [v3 stringWithFormat:@"<%@: %p, condition: %@, when: %@, otherwise: %@>", v5, self, condition, when, otherwise];
 
   return v9;
 }
 
-- (LNActionConfigurationWhen)initWithCondition:(id)a3 when:(id)a4 otherwise:(id)a5
+- (LNActionConfigurationWhen)initWithCondition:(id)condition when:(id)when otherwise:(id)otherwise
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  conditionCopy = condition;
+  whenCopy = when;
+  otherwiseCopy = otherwise;
+  if (!whenCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"LNActionConfigurationWhen.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"when"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionConfigurationWhen.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"when"}];
   }
 
   v22.receiver = self;
@@ -193,15 +193,15 @@ LABEL_28:
   v12 = [(LNActionConfigurationWhen *)&v22 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [conditionCopy copy];
     condition = v12->_condition;
     v12->_condition = v13;
 
-    v15 = [v10 copy];
+    v15 = [whenCopy copy];
     when = v12->_when;
     v12->_when = v15;
 
-    v17 = [v11 copy];
+    v17 = [otherwiseCopy copy];
     otherwise = v12->_otherwise;
     v12->_otherwise = v17;
 

@@ -2,31 +2,31 @@
 - (COSBuddyController)controller;
 - (id)getVersionUpdatedFrom;
 - (void)cleanupAfterRestoreSuccess;
-- (void)completedActivation:(id)a3;
+- (void)completedActivation:(id)activation;
 - (void)consistencyCheckInstall;
 - (void)displayUpdatePane;
-- (void)enteredCompatibilityState:(id)a3;
+- (void)enteredCompatibilityState:(id)state;
 - (void)evaluateUpdateCriteria;
-- (void)saveVersionUpdateFrom:(id)a3;
+- (void)saveVersionUpdateFrom:(id)from;
 - (void)sendPairingFailedNotification;
-- (void)startUpdateInSetupWithController:(id)a3 forcedUpdateOrUpdateInBackup:(BOOL)a4 completion:(id)a5;
+- (void)startUpdateInSetupWithController:(id)controller forcedUpdateOrUpdateInBackup:(BOOL)backup completion:(id)completion;
 @end
 
 @implementation COSSetupSoftwareUpdateManager
 
-- (void)startUpdateInSetupWithController:(id)a3 forcedUpdateOrUpdateInBackup:(BOOL)a4 completion:(id)a5
+- (void)startUpdateInSetupWithController:(id)controller forcedUpdateOrUpdateInBackup:(BOOL)backup completion:(id)completion
 {
-  self->_forcedUpdateOrUpdateInBackup = a4;
-  v7 = a3;
-  v8 = objc_retainBlock(a5);
+  self->_forcedUpdateOrUpdateInBackup = backup;
+  controllerCopy = controller;
+  v8 = objc_retainBlock(completion);
   finishCompletion = self->_finishCompletion;
   self->_finishCompletion = v8;
 
-  v10 = [UIApp setupController];
-  v11 = [v10 pairingReportManager];
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  [v11 addPairingTimeEventToPairingReportPlist:57 withValue:&__kCFBooleanTrue withError:0];
-  objc_storeWeak(&self->_controller, v7);
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:57 withValue:&__kCFBooleanTrue withError:0];
+  objc_storeWeak(&self->_controller, controllerCopy);
 
   [(COSSetupSoftwareUpdateManager *)self evaluateUpdateCriteria];
 }
@@ -34,7 +34,7 @@
 - (void)evaluateUpdateCriteria
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 isActivated];
+  isActivated = [v3 isActivated];
 
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -42,14 +42,14 @@
     *buf = 136315394;
     v42 = "[COSSetupSoftwareUpdateManager evaluateUpdateCriteria]";
     v43 = 1024;
-    *v44 = v4;
+    *v44 = isActivated;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s, activated: %{BOOL}d", buf, 0x12u);
   }
 
   v6 = +[NRPairedDeviceRegistry sharedInstance];
-  v7 = [v6 compatibilityState];
+  compatibilityState = [v6 compatibilityState];
 
-  v8 = v7 & 0xFFFE;
+  v8 = compatibilityState & 0xFFFE;
   v9 = pbb_bridge_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -58,18 +58,18 @@
     v43 = 1024;
     *v44 = v8 == 2;
     *&v44[4] = 1024;
-    *&v44[6] = v7;
+    *&v44[6] = compatibilityState;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s, reached valid compatibility state: %{BOOL}d - %hu", buf, 0x18u);
   }
 
-  v10 = [UIApp setupController];
-  v11 = v10;
+  setupController = [UIApp setupController];
+  v11 = setupController;
   if (v8 == 2)
   {
-    if (v4)
+    if (isActivated)
     {
-      v12 = [v10 navigationController];
-      WeakRetained = [v12 topViewController];
+      navigationController = [setupController navigationController];
+      WeakRetained = [navigationController topViewController];
 
       v14 = objc_opt_class();
       if ([v14 isEqual:objc_opt_class()])
@@ -95,20 +95,20 @@
       if (!self->_displayingUpdatePane)
       {
         self->_displayingUpdatePane = 1;
-        v19 = [UIApp activeWatch];
-        v20 = [v19 valueForProperty:NRDevicePropertySystemBuildVersion];
-        v21 = [(COSSetupSoftwareUpdateManager *)self getVersionUpdatedFrom];
+        activeWatch = [UIApp activeWatch];
+        v20 = [activeWatch valueForProperty:NRDevicePropertySystemBuildVersion];
+        getVersionUpdatedFrom = [(COSSetupSoftwareUpdateManager *)self getVersionUpdatedFrom];
         v22 = pbb_bridge_log();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v42 = v21;
+          v42 = getVersionUpdatedFrom;
           v43 = 2112;
           *v44 = v20;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Previous Version: %@ buildVersion: %@", buf, 0x16u);
         }
 
-        if (v21 && ([v20 isEqualToString:v21] & 1) == 0 && v7 == 3)
+        if (getVersionUpdatedFrom && ([v20 isEqualToString:getVersionUpdatedFrom] & 1) == 0 && compatibilityState == 3)
         {
           v23 = pbb_bridge_log();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -118,9 +118,9 @@
           }
 
           v24 = +[UIApplication sharedApplication];
-          v25 = [v24 setupController];
-          v26 = [v25 linkUpgradeMonitor];
-          [v26 requestLinkUpgrade];
+          setupController2 = [v24 setupController];
+          linkUpgradeMonitor = [setupController2 linkUpgradeMonitor];
+          [linkUpgradeMonitor requestLinkUpgrade];
 
           v27 = +[NRPairedDeviceRegistry sharedInstance];
           [v27 resumePairingClientCrashMonitoring];
@@ -166,9 +166,9 @@ LABEL_23:
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_controller);
-      v31 = [WeakRetained delegate];
+      delegate = [WeakRetained delegate];
       v32 = objc_loadWeakRetained(&self->_controller);
-      [v31 buddyControllerDone:v32 nextControllerClass:objc_opt_class()];
+      [delegate buddyControllerDone:v32 nextControllerClass:objc_opt_class()];
 
       goto LABEL_30;
     }
@@ -189,14 +189,14 @@ LABEL_23:
     v38 = self->_connectSpinner;
     self->_connectSpinner = v37;
 
-    v39 = [v11 navigationController];
-    [v39 pushViewController:self->_connectSpinner animated:1];
+    navigationController2 = [v11 navigationController];
+    [navigationController2 pushViewController:self->_connectSpinner animated:1];
 
     [v11 blockGoingBackFromCurrentController];
     goto LABEL_31;
   }
 
-  if ((v4 & 1) == 0)
+  if ((isActivated & 1) == 0)
   {
     goto LABEL_23;
   }
@@ -208,26 +208,26 @@ LABEL_31:
 {
   [(COSSetupSoftwareUpdateManager *)self clearVersionUpdatedFrom];
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 setupController];
-  v5 = [v4 linkUpgradeMonitor];
-  [v5 indicateSoftwareUpdateStateResolved];
+  setupController = [v3 setupController];
+  linkUpgradeMonitor = [setupController linkUpgradeMonitor];
+  [linkUpgradeMonitor indicateSoftwareUpdateStateResolved];
 
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 setupController];
-  [v7 startPostActivationCompatiblePairingBackgroundTasks];
+  setupController2 = [v6 setupController];
+  [setupController2 startPostActivationCompatiblePairingBackgroundTasks];
 
   v8 = UIApp;
   [v8 setIsUpdatingGizmoInSetupFlow:0];
-  v9 = [v8 bridgeController];
+  bridgeController = [v8 bridgeController];
 
-  [v9 setShouldSuppressTransportReachabilityTimeout:0];
+  [bridgeController setShouldSuppressTransportReachabilityTimeout:0];
 
   [(COSSetupSoftwareUpdateManager *)self consistencyCheckInstall];
 }
 
-- (void)saveVersionUpdateFrom:(id)a3
+- (void)saveVersionUpdateFrom:(id)from
 {
-  CFPreferencesSetAppValue(@"kIsUpdatingFromVersionInSetupFlow", a3, @"com.apple.Bridge");
+  CFPreferencesSetAppValue(@"kIsUpdatingFromVersionInSetupFlow", from, @"com.apple.Bridge");
 
   CFPreferencesAppSynchronize(@"com.apple.Bridge");
 }
@@ -239,7 +239,7 @@ LABEL_31:
   return v2;
 }
 
-- (void)enteredCompatibilityState:(id)a3
+- (void)enteredCompatibilityState:(id)state
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -252,7 +252,7 @@ LABEL_31:
   [(COSSetupSoftwareUpdateManager *)self evaluateUpdateCriteria];
 }
 
-- (void)completedActivation:(id)a3
+- (void)completedActivation:(id)activation
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -267,7 +267,7 @@ LABEL_31:
 
 - (void)displayUpdatePane
 {
-  v3 = [UIApp setupController];
+  setupController = [UIApp setupController];
   if (_os_feature_enabled_impl())
   {
     v4 = pbb_bridge_log();
@@ -278,17 +278,17 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s resetting link monitor to proceed with update", buf, 0xCu);
     }
 
-    v5 = [UIApp setupController];
-    v6 = [v5 linkUpgradeMonitor];
-    [v6 resetMonitor];
+    setupController2 = [UIApp setupController];
+    linkUpgradeMonitor = [setupController2 linkUpgradeMonitor];
+    [linkUpgradeMonitor resetMonitor];
   }
 
-  [v3 setResolvedPreconditionsForSoftwareUpdate:1];
+  [setupController setResolvedPreconditionsForSoftwareUpdate:1];
   v7 = +[NRPairedDeviceRegistry sharedInstance];
   [v7 suspendPairingClientCrashMonitoring];
 
   [UIApp setIsUpdatingGizmoInSetupFlow:1];
-  v8 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   if (!self->_updateController)
   {
     v9 = objc_opt_new();
@@ -297,24 +297,24 @@ LABEL_31:
   }
 
   objc_initWeak(buf, self);
-  v11 = [UIApp setupController];
-  v12 = [v11 pairingCompatiblity];
+  setupController3 = [UIApp setupController];
+  pairingCompatiblity = [setupController3 pairingCompatiblity];
 
-  if (self->_forcedUpdateOrUpdateInBackup || [v12 requiresZeroDayUpdate])
+  if (self->_forcedUpdateOrUpdateInBackup || [pairingCompatiblity requiresZeroDayUpdate])
   {
-    v13 = [UIApp bridgeController];
-    [v13 tellWatchToPrepareForForcedSUWithCompletion:&stru_100268678];
+    bridgeController = [UIApp bridgeController];
+    [bridgeController tellWatchToPrepareForForcedSUWithCompletion:&stru_100268678];
   }
 
   v14 = self->_updateController;
   forcedUpdateOrUpdateInBackup = self->_forcedUpdateOrUpdateInBackup;
-  v16 = [v3 navigationController];
+  navigationController = [setupController navigationController];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100020F2C;
   v17[3] = &unk_1002686A0;
   objc_copyWeak(&v18, buf);
-  [(COSSoftwareUpdateController *)v14 presentInSetupFlowForDevice:v8 userForcedUpdate:forcedUpdateOrUpdateInBackup withController:v16 animated:1 completion:v17];
+  [(COSSoftwareUpdateController *)v14 presentInSetupFlowForDevice:activeWatch userForcedUpdate:forcedUpdateOrUpdateInBackup withController:navigationController animated:1 completion:v17];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(buf);
@@ -332,11 +332,11 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%d %s - Checking if update in Setup flow has completed", v8, 0x12u);
   }
 
-  v4 = [UIApp activeWatch];
-  v5 = [v4 valueForProperty:NRDevicePropertyMaxPairingCompatibilityVersion];
+  activeWatch = [UIApp activeWatch];
+  v5 = [activeWatch valueForProperty:NRDevicePropertyMaxPairingCompatibilityVersion];
   [v5 integerValue];
 
-  v6 = [v4 valueForProperty:NRDevicePropertyChipID];
+  v6 = [activeWatch valueForProperty:NRDevicePropertyChipID];
   if ((_BPSIsPairingCompatible() & 1) == 0)
   {
     v7 = pbb_setupflow_log();

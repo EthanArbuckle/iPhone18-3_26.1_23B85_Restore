@@ -2,24 +2,24 @@
 - (BOOL)isEnabled;
 - (NSArray)menuItemTitles;
 - (SUUIItemViewElement)titleItem;
-- (SUUIMenuViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIMenuViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 - (int64_t)selectedItemIndex;
-- (void)_enumerateItemElementsUsingBlock:(id)a3;
-- (void)dispatchEventOfType:(unint64_t)a3 forItemAtIndex:(int64_t)a4;
+- (void)_enumerateItemElementsUsingBlock:(id)block;
+- (void)dispatchEventOfType:(unint64_t)type forItemAtIndex:(int64_t)index;
 @end
 
 @implementation SUUIMenuViewElement
 
-- (SUUIMenuViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIMenuViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v13.receiver = self;
   v13.super_class = SUUIMenuViewElement;
-  v9 = [(SUUIViewElement *)&v13 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v13 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"disabled"];
+    v10 = [elementCopy getAttribute:@"disabled"];
     if ([v10 length])
     {
       v11 = [v10 BOOLValue] ^ 1;
@@ -36,14 +36,14 @@
   return v9;
 }
 
-- (void)dispatchEventOfType:(unint64_t)a3 forItemAtIndex:(int64_t)a4
+- (void)dispatchEventOfType:(unint64_t)type forItemAtIndex:(int64_t)index
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __58__SUUIMenuViewElement_dispatchEventOfType_forItemAtIndex___block_invoke;
   v4[3] = &__block_descriptor_48_e36_v32__0__SUUIItemViewElement_8Q16_B24l;
-  v4[4] = a4;
-  v4[5] = a3;
+  v4[4] = index;
+  v4[5] = type;
   [(SUUIMenuViewElement *)self _enumerateItemElementsUsingBlock:v4];
 }
 
@@ -60,12 +60,12 @@ uint64_t __58__SUUIMenuViewElement_dispatchEventOfType_forItemAtIndex___block_in
 
 - (NSArray)menuItemTitles
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__SUUIMenuViewElement_menuItemTitles__block_invoke;
   v6[3] = &unk_2798FAC28;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SUUIMenuViewElement *)self _enumerateItemElementsUsingBlock:v6];
 
@@ -144,16 +144,16 @@ void __32__SUUIMenuViewElement_titleItem__block_invoke(uint64_t a1, void *a2, ui
   }
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SUUIMenuViewElement;
-  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_enabled = v4->_enabled;
+    self->_enabled = elementCopy->_enabled;
   }
 
   return v6;
@@ -174,9 +174,9 @@ void __32__SUUIMenuViewElement_titleItem__block_invoke(uint64_t a1, void *a2, ui
   return [(SUUIViewElement *)&v6 isEnabled];
 }
 
-- (void)_enumerateItemElementsUsingBlock:(id)a3
+- (void)_enumerateItemElementsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -185,7 +185,7 @@ void __32__SUUIMenuViewElement_titleItem__block_invoke(uint64_t a1, void *a2, ui
   v6[1] = 3221225472;
   v6[2] = __56__SUUIMenuViewElement__enumerateItemElementsUsingBlock___block_invoke;
   v6[3] = &unk_2798F91A8;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   v8 = v9;
   [(SUUIViewElement *)self enumerateChildrenUsingBlock:v6];

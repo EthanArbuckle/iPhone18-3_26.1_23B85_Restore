@@ -1,16 +1,16 @@
 @interface VGChargingNetworkAvailabilityProvider
 - (NSArray)otherNetworks;
 - (NSArray)suggestedNetworks;
-- (VGChargingNetworkAvailabilityProvider)initWithDelegate:(id)a3;
+- (VGChargingNetworkAvailabilityProvider)initWithDelegate:(id)delegate;
 - (void)_reloadNetworks;
-- (void)countryCodeDidChange:(id)a3;
+- (void)countryCodeDidChange:(id)change;
 - (void)dealloc;
-- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)a3;
+- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)group;
 @end
 
 @implementation VGChargingNetworkAvailabilityProvider
 
-- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)a3
+- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)group
 {
   v4 = VGGetChargingNetworksLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -22,7 +22,7 @@
   [(VGChargingNetworkAvailabilityProvider *)self _reloadNetworks];
 }
 
-- (void)countryCodeDidChange:(id)a3
+- (void)countryCodeDidChange:(id)change
 {
   v4 = VGGetChargingNetworksLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -66,8 +66,8 @@ void __62__VGChargingNetworkAvailabilityProvider_countryCodeDidChange___block_in
   self->_otherNetworks = 0;
 
   v6 = GEOConfigGetString();
-  v7 = [MEMORY[0x277D0ECC8] sharedManager];
-  v8 = [v7 dataForResourceWithName:v6 fallbackBundle:0];
+  mEMORY[0x277D0ECC8] = [MEMORY[0x277D0ECC8] sharedManager];
+  v8 = [mEMORY[0x277D0ECC8] dataForResourceWithName:v6 fallbackBundle:0];
 
   if (v8)
   {
@@ -75,8 +75,8 @@ void __62__VGChargingNetworkAvailabilityProvider_countryCodeDidChange___block_in
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 chargingNetworkInfo];
-      if (v11)
+      chargingNetworkInfo = [v9 chargingNetworkInfo];
+      if (chargingNetworkInfo)
       {
         v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -84,26 +84,26 @@ void __62__VGChargingNetworkAvailabilityProvider_countryCodeDidChange___block_in
         v38[1] = 3221225472;
         v38[2] = __56__VGChargingNetworkAvailabilityProvider__reloadNetworks__block_invoke;
         v38[3] = &unk_279E26950;
-        v33 = v11;
+        v33 = chargingNetworkInfo;
         v39 = v33;
         v14 = v12;
         v40 = v14;
         v15 = v13;
         v41 = v15;
         v16 = MEMORY[0x2743B8310](v38);
-        v17 = [MEMORY[0x277D0EB00] sharedConfiguration];
-        v18 = [v17 countryCode];
+        mEMORY[0x277D0EB00] = [MEMORY[0x277D0EB00] sharedConfiguration];
+        countryCode = [mEMORY[0x277D0EB00] countryCode];
 
-        v34 = v18;
+        v34 = countryCode;
         v35 = v16;
-        (*(v16 + 16))(v16, v18);
+        (*(v16 + 16))(v16, countryCode);
         if (!-[NSObject count](v14, "count") && ![v15 count])
         {
           v19 = VGGetChargingNetworksLog();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v43 = v18;
+            v43 = countryCode;
             _os_log_impl(&dword_270EC1000, v19, OS_LOG_TYPE_INFO, "Country code: %@ did not produce any networks, will fallback to using global list.", buf, 0xCu);
           }
 
@@ -114,17 +114,17 @@ void __62__VGChargingNetworkAvailabilityProvider_countryCodeDidChange___block_in
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
           v32 = [v14 count];
-          v21 = v11;
+          v21 = chargingNetworkInfo;
           v22 = v15;
           v23 = [v15 count];
-          v24 = [v33 brandInfoMappings];
-          v25 = [v24 count];
+          brandInfoMappings = [v33 brandInfoMappings];
+          v25 = [brandInfoMappings count];
           *buf = 134218496;
           v43 = v32;
           v44 = 2048;
           v45 = v23;
           v15 = v22;
-          v11 = v21;
+          chargingNetworkInfo = v21;
           v46 = 2048;
           v47 = v25;
           _os_log_impl(&dword_270EC1000, v20, OS_LOG_TYPE_INFO, "Created %lu suggested and %lu other networks out of %lu mappings", buf, 0x20u);
@@ -164,11 +164,11 @@ void __62__VGChargingNetworkAvailabilityProvider_countryCodeDidChange___block_in
 
     else
     {
-      v11 = VGGetChargingNetworksLog();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+      chargingNetworkInfo = VGGetChargingNetworksLog();
+      if (os_log_type_enabled(chargingNetworkInfo, OS_LOG_TYPE_FAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_270EC1000, v11, OS_LOG_TYPE_FAULT, "Failed to parse charging networks pb file", buf, 2u);
+        _os_log_impl(&dword_270EC1000, chargingNetworkInfo, OS_LOG_TYPE_FAULT, "Failed to parse charging networks pb file", buf, 2u);
       }
     }
   }
@@ -383,24 +383,24 @@ uint64_t __58__VGChargingNetworkAvailabilityProvider_suggestedNetworks__block_in
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D0ECD0] modernManager];
-  [v3 removeTileGroupObserver:self];
+  modernManager = [MEMORY[0x277D0ECD0] modernManager];
+  [modernManager removeTileGroupObserver:self];
 
   v4.receiver = self;
   v4.super_class = VGChargingNetworkAvailabilityProvider;
   [(VGChargingNetworkAvailabilityProvider *)&v4 dealloc];
 }
 
-- (VGChargingNetworkAvailabilityProvider)initWithDelegate:(id)a3
+- (VGChargingNetworkAvailabilityProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = VGChargingNetworkAvailabilityProvider;
   v5 = [(VGChargingNetworkAvailabilityProvider *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("VGChargingNetworkAvailabilityProvider.WorkQueue", v7);
     workQueue = v6->_workQueue;
@@ -411,11 +411,11 @@ uint64_t __58__VGChargingNetworkAvailabilityProvider_suggestedNetworks__block_in
     delegateQueue = v6->_delegateQueue;
     v6->_delegateQueue = v11;
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v6 selector:sel_countryCodeDidChange_ name:*MEMORY[0x277D0E7C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_countryCodeDidChange_ name:*MEMORY[0x277D0E7C8] object:0];
 
-    v14 = [MEMORY[0x277D0ECD0] modernManager];
-    [v14 addTileGroupObserver:v6 queue:v6->_workQueue];
+    modernManager = [MEMORY[0x277D0ECD0] modernManager];
+    [modernManager addTileGroupObserver:v6 queue:v6->_workQueue];
 
     objc_initWeak(&location, v6);
     v15 = v6->_workQueue;

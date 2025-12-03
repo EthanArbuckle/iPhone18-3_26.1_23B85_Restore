@@ -1,49 +1,49 @@
 @interface FMDSecureLocationContext
-- (FMDSecureLocationContext)initWithCoder:(id)a3;
+- (FMDSecureLocationContext)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDSecureLocationContext
 
-- (FMDSecureLocationContext)initWithCoder:(id)a3
+- (FMDSecureLocationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FMDSecureLocationContext;
   v5 = [(FMDSecureLocationContext *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"findMyId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"findMyId"];
     [(FMDSecureLocationContext *)v5 setFindMyId:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mode"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mode"];
     [(FMDSecureLocationContext *)v5 setMode:v7];
 
-    -[FMDSecureLocationContext setStopMonitoringActivePolicy:](v5, "setStopMonitoringActivePolicy:", [v4 decodeBoolForKey:@"stopMonitoringActivePolicy"]);
+    -[FMDSecureLocationContext setStopMonitoringActivePolicy:](v5, "setStopMonitoringActivePolicy:", [coderCopy decodeBoolForKey:@"stopMonitoringActivePolicy"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(FMDSecureLocationContext *)self findMyId];
-  [v6 encodeObject:v4 forKey:@"findMyId"];
+  coderCopy = coder;
+  findMyId = [(FMDSecureLocationContext *)self findMyId];
+  [coderCopy encodeObject:findMyId forKey:@"findMyId"];
 
-  v5 = [(FMDSecureLocationContext *)self mode];
-  [v6 encodeObject:v5 forKey:@"mode"];
+  mode = [(FMDSecureLocationContext *)self mode];
+  [coderCopy encodeObject:mode forKey:@"mode"];
 
-  [v6 encodeBool:-[FMDSecureLocationContext stopMonitoringActivePolicy](self forKey:{"stopMonitoringActivePolicy"), @"stopMonitoringActivePolicy"}];
+  [coderCopy encodeBool:-[FMDSecureLocationContext stopMonitoringActivePolicy](self forKey:{"stopMonitoringActivePolicy"), @"stopMonitoringActivePolicy"}];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(FMDSecureLocationContext *)self findMyId];
-  v5 = [(FMDSecureLocationContext *)self mode];
-  v6 = [v3 stringWithFormat:@"findMyId %@ mode %@ stopMonitoringActivePolicy %i", v4, v5, -[FMDSecureLocationContext stopMonitoringActivePolicy](self, "stopMonitoringActivePolicy")];
+  findMyId = [(FMDSecureLocationContext *)self findMyId];
+  mode = [(FMDSecureLocationContext *)self mode];
+  v6 = [v3 stringWithFormat:@"findMyId %@ mode %@ stopMonitoringActivePolicy %i", findMyId, mode, -[FMDSecureLocationContext stopMonitoringActivePolicy](self, "stopMonitoringActivePolicy")];
 
   return v6;
 }

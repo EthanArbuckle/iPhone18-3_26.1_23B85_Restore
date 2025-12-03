@@ -1,12 +1,12 @@
 @interface HUAudioBuffer
-- (HUAudioBuffer)initWithBuffer:(AudioBufferList *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUAudioBuffer)initWithBuffer:(AudioBufferList *)buffer;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation HUAudioBuffer
 
-- (HUAudioBuffer)initWithBuffer:(AudioBufferList *)a3
+- (HUAudioBuffer)initWithBuffer:(AudioBufferList *)buffer
 {
   v9.receiver = self;
   v9.super_class = HUAudioBuffer;
@@ -15,13 +15,13 @@
   {
     v5 = malloc_type_malloc(0x18uLL, 0x10800404ACF7207uLL);
     *v5 = 1;
-    mDataByteSize = a3->mBuffers[0].mDataByteSize;
-    v5[2] = a3->mBuffers[0].mNumberChannels;
+    mDataByteSize = buffer->mBuffers[0].mDataByteSize;
+    v5[2] = buffer->mBuffers[0].mNumberChannels;
     v5[3] = mDataByteSize;
     [(HUAudioBuffer *)v4 setBufferList:v5];
     v7 = malloc_type_malloc(mDataByteSize, 0xDC31400BuLL);
     *([(HUAudioBuffer *)v4 bufferList]+ 16) = v7;
-    memcpy([(HUAudioBuffer *)v4 bufferList][16], a3->mBuffers[0].mData, mDataByteSize);
+    memcpy([(HUAudioBuffer *)v4 bufferList][16], buffer->mBuffers[0].mData, mDataByteSize);
   }
 
   return v4;
@@ -41,12 +41,12 @@
   [(HUAudioBuffer *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HUAudioBuffer alloc];
-  v5 = [(HUAudioBuffer *)self bufferList];
+  bufferList = [(HUAudioBuffer *)self bufferList];
 
-  return [(HUAudioBuffer *)v4 initWithBuffer:v5];
+  return [(HUAudioBuffer *)v4 initWithBuffer:bufferList];
 }
 
 @end

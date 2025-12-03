@@ -1,11 +1,11 @@
 @interface SUCompletionsResponse
-- (SUCompletionsResponse)initWithPropertyList:(id)a3;
+- (SUCompletionsResponse)initWithPropertyList:(id)list;
 - (void)dealloc;
 @end
 
 @implementation SUCompletionsResponse
 
-- (SUCompletionsResponse)initWithPropertyList:(id)a3
+- (SUCompletionsResponse)initWithPropertyList:(id)list
 {
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -13,14 +13,14 @@
   v4 = [(SUCompletionsResponse *)&v18 init];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"title"];
+    v5 = [list objectForKey:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v4->_title = v5;
     }
 
-    v6 = [a3 objectForKey:@"hints"];
+    v6 = [list objectForKey:@"hints"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

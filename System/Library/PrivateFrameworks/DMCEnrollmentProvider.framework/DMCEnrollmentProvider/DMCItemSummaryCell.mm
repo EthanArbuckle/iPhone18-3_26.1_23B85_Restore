@@ -1,19 +1,19 @@
 @interface DMCItemSummaryCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (DMCItemSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)createViewWithDescriptors:(id)a3;
-- (void)createViewWithItemDetailArray:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (DMCItemSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)createViewWithDescriptors:(id)descriptors;
+- (void)createViewWithItemDetailArray:(id)array;
 - (void)layoutSubviews;
-- (void)setDetailLabelOriginX:(double)a3;
+- (void)setDetailLabelOriginX:(double)x;
 @end
 
 @implementation DMCItemSummaryCell
 
-- (DMCItemSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (DMCItemSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = DMCItemSummaryCell;
-  v4 = [(DMCItemSummaryCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(DMCItemSummaryCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -34,8 +34,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(DMCItemSummaryCell *)self detailViews];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  detailViews = [(DMCItemSummaryCell *)self detailViews];
+  v4 = [detailViews countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -48,12 +48,12 @@
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(detailViews);
         }
 
         v9 = *(*(&v19 + 1) + 8 * v8);
-        v10 = [(DMCItemSummaryCell *)self contentView];
-        [v10 frame];
+        contentView = [(DMCItemSummaryCell *)self contentView];
+        [contentView frame];
         v12 = v11;
         v14 = v13;
 
@@ -75,16 +75,16 @@
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v5 = [detailViews countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v5);
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v37 = *MEMORY[0x277D85DE8];
   detailLabelOriginX = self->_detailLabelOriginX;
   if (detailLabelOriginX < 0.0)
@@ -93,8 +93,8 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = [(DMCItemSummaryCell *)self detailViews];
-    v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    detailViews = [(DMCItemSummaryCell *)self detailViews];
+    v7 = [detailViews countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v7)
     {
       v8 = v7;
@@ -106,7 +106,7 @@
         {
           if (*v32 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(detailViews);
           }
 
           [*(*(&v31 + 1) + 8 * i) desiredValueLabelOriginXForSize:{width + -20.0, 3.40282347e38}];
@@ -116,7 +116,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v8 = [detailViews countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v8);
@@ -143,8 +143,8 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v14 = [(DMCItemSummaryCell *)self detailViews];
-  v15 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  detailViews2 = [(DMCItemSummaryCell *)self detailViews];
+  v15 = [detailViews2 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v15)
   {
     v16 = v15;
@@ -156,7 +156,7 @@
       {
         if (*v28 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(detailViews2);
         }
 
         v20 = *(*(&v27 + 1) + 8 * j);
@@ -177,7 +177,7 @@
         v18 = CGRectGetMaxY(v41) + 10.0;
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v16 = [detailViews2 countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v16);
@@ -195,18 +195,18 @@
   return result;
 }
 
-- (void)setDetailLabelOriginX:(double)a3
+- (void)setDetailLabelOriginX:(double)x
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_detailLabelOriginX != a3)
+  if (self->_detailLabelOriginX != x)
   {
-    self->_detailLabelOriginX = a3 + -10.0;
+    self->_detailLabelOriginX = x + -10.0;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(DMCItemSummaryCell *)self detailViews];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    detailViews = [(DMCItemSummaryCell *)self detailViews];
+    v5 = [detailViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -218,14 +218,14 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(detailViews);
           }
 
           [*(*(&v9 + 1) + 8 * v8++) setPreferredValueLabelOriginX:self->_detailLabelOriginX];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [detailViews countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -235,16 +235,16 @@
   }
 }
 
-- (void)createViewWithDescriptors:(id)a3
+- (void)createViewWithDescriptors:(id)descriptors
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(DMCItemSummaryCell *)self detailViews];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  detailViews = [(DMCItemSummaryCell *)self detailViews];
+  v6 = [detailViews countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -255,20 +255,20 @@
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(detailViews);
         }
 
         [*(*(&v22 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [detailViews countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v7);
   }
 
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v4 count])
+  if ([descriptorsCopy count])
   {
     v11 = 0;
     v12 = *MEMORY[0x277CBF3A0];
@@ -277,9 +277,9 @@
     v15 = *(MEMORY[0x277CBF3A0] + 24);
     do
     {
-      v16 = [v4 objectAtIndex:v11];
+      v16 = [descriptorsCopy objectAtIndex:v11];
       v17 = v11 + 1;
-      v18 = [v4 objectAtIndex:v17];
+      v18 = [descriptorsCopy objectAtIndex:v17];
       v19 = [[DMCProfileKeyValueView alloc] initWithFrame:v12, v13, v14, v15];
       v20 = v19;
       if (self->_detailLabelOriginX >= 0.0)
@@ -288,30 +288,30 @@
       }
 
       [(DMCProfileKeyValueView *)v20 setKey:v16 value:v18];
-      v21 = [(DMCItemSummaryCell *)self contentView];
-      [v21 addSubview:v20];
+      contentView = [(DMCItemSummaryCell *)self contentView];
+      [contentView addSubview:v20];
 
       [v10 addObject:v20];
       v11 = v17 + 1;
     }
 
-    while (v11 < [v4 count]);
+    while (v11 < [descriptorsCopy count]);
   }
 
   [(DMCItemSummaryCell *)self setDetailViews:v10];
   [(DMCItemSummaryCell *)self setNeedsLayout];
 }
 
-- (void)createViewWithItemDetailArray:(id)a3
+- (void)createViewWithItemDetailArray:(id)array
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [(DMCItemSummaryCell *)self detailViews];
-  v6 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  detailViews = [(DMCItemSummaryCell *)self detailViews];
+  v6 = [detailViews countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v6)
   {
     v7 = v6;
@@ -322,13 +322,13 @@
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(detailViews);
         }
 
         [*(*(&v29 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v7 = [detailViews countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v7);
@@ -339,7 +339,7 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = v4;
+  v11 = arrayCopy;
   v12 = [v11 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v12)
   {
@@ -368,8 +368,8 @@
         }
 
         [(DMCProfileKeyValueView *)v23 setItemDetail:v20];
-        v24 = [(DMCItemSummaryCell *)self contentView];
-        [v24 addSubview:v23];
+        contentView = [(DMCItemSummaryCell *)self contentView];
+        [contentView addSubview:v23];
 
         [v10 addObject:v23];
       }

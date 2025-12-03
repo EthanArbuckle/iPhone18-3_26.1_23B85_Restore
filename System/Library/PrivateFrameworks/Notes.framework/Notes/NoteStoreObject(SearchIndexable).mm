@@ -7,22 +7,22 @@
 - (NSString)searchDomainIdentifier
 {
   v3 = +[AccountUtilities sharedAccountUtilities];
-  v4 = [v3 accountStore];
+  accountStore = [v3 accountStore];
 
-  v5 = [(NoteStoreObject *)self account];
-  v6 = [v5 accountIdentifier];
-  v7 = [v4 accountWithIdentifier:v6];
+  account = [(NoteStoreObject *)self account];
+  accountIdentifier = [account accountIdentifier];
+  v7 = [accountStore accountWithIdentifier:accountIdentifier];
 
-  v8 = [v7 parentAccount];
-  v9 = v8;
-  if (!v8)
+  parentAccount = [v7 parentAccount];
+  v9 = parentAccount;
+  if (!parentAccount)
   {
-    v8 = v7;
+    parentAccount = v7;
   }
 
-  v10 = [v8 identifier];
+  identifier = [parentAccount identifier];
 
-  return v10;
+  return identifier;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface RMDebounceTimer
-+ (id)debounceTimerWithMinimumInterval:(double)a3 maximumInterval:(double)a4 delegate:(id)a5 identifier:(id)a6;
-- (RMDebounceTimer)initWithMinimumInterval:(double)a3 maximumInterval:(double)a4 delegate:(id)a5 identifier:(id)a6;
++ (id)debounceTimerWithMinimumInterval:(double)interval maximumInterval:(double)maximumInterval delegate:(id)delegate identifier:(id)identifier;
+- (RMDebounceTimer)initWithMinimumInterval:(double)interval maximumInterval:(double)maximumInterval delegate:(id)delegate identifier:(id)identifier;
 - (RMDebounceTimerDelegate)delegate;
 - (void)_timerDidFire;
 - (void)dealloc;
@@ -9,19 +9,19 @@
 
 @implementation RMDebounceTimer
 
-+ (id)debounceTimerWithMinimumInterval:(double)a3 maximumInterval:(double)a4 delegate:(id)a5 identifier:(id)a6
++ (id)debounceTimerWithMinimumInterval:(double)interval maximumInterval:(double)maximumInterval delegate:(id)delegate identifier:(id)identifier
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = [[RMDebounceTimer alloc] initWithMinimumInterval:v10 maximumInterval:v9 delegate:a3 identifier:a4];
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  v11 = [[RMDebounceTimer alloc] initWithMinimumInterval:delegateCopy maximumInterval:identifierCopy delegate:interval identifier:maximumInterval];
 
   return v11;
 }
 
-- (RMDebounceTimer)initWithMinimumInterval:(double)a3 maximumInterval:(double)a4 delegate:(id)a5 identifier:(id)a6
+- (RMDebounceTimer)initWithMinimumInterval:(double)interval maximumInterval:(double)maximumInterval delegate:(id)delegate identifier:(id)identifier
 {
-  v10 = a5;
-  v11 = a6;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = RMDebounceTimer;
   v12 = [(RMDebounceTimer *)&v16 init];
@@ -31,10 +31,10 @@
     lock = v12->_lock;
     v12->_lock = v13;
 
-    v12->_minimumInterval = a3;
-    v12->_maximumInterval = a4;
-    objc_storeWeak(&v12->_delegate, v10);
-    objc_storeStrong(&v12->_identifier, a6);
+    v12->_minimumInterval = interval;
+    v12->_maximumInterval = maximumInterval;
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_identifier, identifier);
   }
 
   return v12;
@@ -42,22 +42,22 @@
 
 - (void)dealloc
 {
-  v3 = [(RMDebounceTimer *)self minimumTimer];
+  minimumTimer = [(RMDebounceTimer *)self minimumTimer];
 
-  if (v3)
+  if (minimumTimer)
   {
-    v4 = [(RMDebounceTimer *)self minimumTimer];
-    [v4 cancel];
+    minimumTimer2 = [(RMDebounceTimer *)self minimumTimer];
+    [minimumTimer2 cancel];
 
     [(RMDebounceTimer *)self setMinimumTimer:0];
   }
 
-  v5 = [(RMDebounceTimer *)self maximumTimer];
+  maximumTimer = [(RMDebounceTimer *)self maximumTimer];
 
-  if (v5)
+  if (maximumTimer)
   {
-    v6 = [(RMDebounceTimer *)self maximumTimer];
-    [v6 cancel];
+    maximumTimer2 = [(RMDebounceTimer *)self maximumTimer];
+    [maximumTimer2 cancel];
 
     [(RMDebounceTimer *)self setMaximumTimer:0];
   }
@@ -73,12 +73,12 @@
   v3 = +[RMLog debounceTimer];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(RMDebounceTimer *)self identifier];
-    v5 = v4;
+    identifier = [(RMDebounceTimer *)self identifier];
+    v5 = identifier;
     v6 = @"unknown";
-    if (v4)
+    if (identifier)
     {
-      v6 = v4;
+      v6 = identifier;
     }
 
     *buf = 138543362;
@@ -88,8 +88,8 @@
 
   v7 = self->_lock;
   objc_sync_enter(v7);
-  v8 = [(RMDebounceTimer *)self minimumTimer];
-  v9 = v8 == 0;
+  minimumTimer = [(RMDebounceTimer *)self minimumTimer];
+  v9 = minimumTimer == 0;
 
   if (!v9)
   {
@@ -99,8 +99,8 @@
       [(RMDebounceTimer *)v10 trigger:v11];
     }
 
-    v18 = [(RMDebounceTimer *)self minimumTimer];
-    [v18 cancel];
+    minimumTimer2 = [(RMDebounceTimer *)self minimumTimer];
+    [minimumTimer2 cancel];
 
     [(RMDebounceTimer *)self setMinimumTimer:0];
   }
@@ -114,8 +114,8 @@
   v19 = [RMTimedDispatch timedDispatchAfterInterval:v24 completionBlock:?];
   [(RMDebounceTimer *)self setMinimumTimer:v19];
 
-  v20 = [(RMDebounceTimer *)self maximumTimer];
-  LODWORD(v19) = v20 == 0;
+  maximumTimer = [(RMDebounceTimer *)self maximumTimer];
+  LODWORD(v19) = maximumTimer == 0;
 
   if (v19)
   {
@@ -216,12 +216,12 @@ void __26__RMDebounceTimer_trigger__block_invoke_11(uint64_t a1)
   v3 = +[RMLog debounceTimer];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(RMDebounceTimer *)self identifier];
-    v5 = v4;
+    identifier = [(RMDebounceTimer *)self identifier];
+    v5 = identifier;
     v6 = @"unknown";
-    if (v4)
+    if (identifier)
     {
-      v6 = v4;
+      v6 = identifier;
     }
 
     v11 = 138543362;
@@ -229,16 +229,16 @@ void __26__RMDebounceTimer_trigger__block_invoke_11(uint64_t a1)
     _os_log_impl(&dword_1E1168000, v3, OS_LOG_TYPE_INFO, "Debounce fired for %{public}@", &v11, 0xCu);
   }
 
-  v7 = [(RMDebounceTimer *)self minimumTimer];
-  [v7 cancel];
+  minimumTimer = [(RMDebounceTimer *)self minimumTimer];
+  [minimumTimer cancel];
 
   [(RMDebounceTimer *)self setMinimumTimer:0];
-  v8 = [(RMDebounceTimer *)self maximumTimer];
-  [v8 cancel];
+  maximumTimer = [(RMDebounceTimer *)self maximumTimer];
+  [maximumTimer cancel];
 
   [(RMDebounceTimer *)self setMaximumTimer:0];
-  v9 = [(RMDebounceTimer *)self delegate];
-  [v9 triggerAggregatingTimerAction];
+  delegate = [(RMDebounceTimer *)self delegate];
+  [delegate triggerAggregatingTimerAction];
 
   v10 = *MEMORY[0x1E69E9840];
 }

@@ -1,63 +1,63 @@
 @interface PGPersonMemoryGenerator
-- (PGPersonMemoryGenerator)initWithMemoryGenerationContext:(id)a3;
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4;
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8;
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3;
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4;
+- (PGPersonMemoryGenerator)initWithMemoryGenerationContext:(id)context;
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph;
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type;
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation PGPersonMemoryGenerator
 
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a7;
-  v12 = [v10 memoryFeatureNodes];
-  if ([v12 count])
+  memoryCopy = memory;
+  contextCopy = context;
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  if ([memoryFeatureNodes count])
   {
-    v13 = [v10 memoryMomentNodes];
-    if ([v13 count])
+    memoryMomentNodes = [memoryCopy memoryMomentNodes];
+    if ([memoryMomentNodes count])
     {
-      v14 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v12];
-      if ([v14 count])
+      loggingConnection3 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:memoryFeatureNodes];
+      if ([loggingConnection3 count])
       {
-        v15 = [v14 anyNode];
-        if (v15)
+        anyNode = [loggingConnection3 anyNode];
+        if (anyNode)
         {
-          v16 = [(PGGraphNodeCollection *)PGGraphSeasonNodeCollection subsetInCollection:v12];
-          if ([v16 count])
+          loggingConnection2 = [(PGGraphNodeCollection *)PGGraphSeasonNodeCollection subsetInCollection:memoryFeatureNodes];
+          if ([loggingConnection2 count])
           {
-            v17 = [v16 anyNode];
-            v18 = [v17 name];
+            anyNode2 = [loggingConnection2 anyNode];
+            name = [anyNode2 name];
 
-            if ([v18 length])
+            if ([name length])
             {
               v19 = [PGPeopleMemoryTitleGenerator alloc];
-              v20 = [v13 temporarySet];
-              [MEMORY[0x277CBEB98] setWithObject:v15];
-              v36 = v16;
-              v22 = v21 = v18;
-              v23 = [(PGPeopleMemoryTitleGenerator *)v19 initWithMomentNodes:v20 personNodes:v22 seasonName:v21 type:4 titleGenerationContext:v11];
+              temporarySet = [memoryMomentNodes temporarySet];
+              [MEMORY[0x277CBEB98] setWithObject:anyNode];
+              v36 = loggingConnection2;
+              v22 = v21 = name;
+              v23 = [(PGPeopleMemoryTitleGenerator *)v19 initWithMomentNodes:temporarySet personNodes:v22 seasonName:v21 type:4 titleGenerationContext:contextCopy];
 
-              v18 = v21;
-              v16 = v36;
+              name = v21;
+              loggingConnection2 = v36;
             }
 
             else
             {
-              v29 = [(PGMemoryGenerator *)self loggingConnection];
-              if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+              loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+              if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
               {
-                [v16 description];
-                v32 = v16;
-                v34 = v33 = v18;
+                [loggingConnection2 description];
+                v32 = loggingConnection2;
+                v34 = v33 = name;
                 *buf = 138412290;
                 v39 = v34;
-                _os_log_error_impl(&dword_22F0FC000, v29, OS_LOG_TYPE_ERROR, "[PGPersonMemoryGenerator] No season name found for season node in collection %@", buf, 0xCu);
+                _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGPersonMemoryGenerator] No season name found for season node in collection %@", buf, 0xCu);
 
-                v18 = v33;
-                v16 = v32;
+                name = v33;
+                loggingConnection2 = v32;
               }
 
               v23 = 0;
@@ -66,30 +66,30 @@
 
           else
           {
-            v18 = [v13 temporarySet];
+            name = [memoryMomentNodes temporarySet];
             v24 = [PGPeopleMemoryTitleGenerator peopleOverTimeTimeTitleOptionsWithMomentNodes:?];
-            v37 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection subsetInCollection:v12];
+            v37 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection subsetInCollection:memoryFeatureNodes];
             if ([v37 count] == 1)
             {
               [v24 setFeaturedYearNodes:v37];
             }
 
             v25 = [PGPeopleMemoryTitleGenerator alloc];
-            v26 = [MEMORY[0x277CBEB98] setWithObject:v15];
+            v26 = [MEMORY[0x277CBEB98] setWithObject:anyNode];
             v27 = v24;
             v35 = v24;
             v28 = v26;
-            v23 = [(PGPeopleMemoryTitleGenerator *)v25 initWithMomentNodes:v18 personNodes:v26 timeTitleOptions:v27 type:0 titleGenerationContext:v11];
+            v23 = [(PGPeopleMemoryTitleGenerator *)v25 initWithMomentNodes:name personNodes:v26 timeTitleOptions:v27 type:0 titleGenerationContext:contextCopy];
           }
         }
 
         else
         {
-          v16 = [(PGMemoryGenerator *)self loggingConnection];
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          loggingConnection2 = [(PGMemoryGenerator *)self loggingConnection];
+          if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
           {
             *buf = 0;
-            _os_log_error_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_ERROR, "[PGPersonMemoryGenerator] unable to cast personNodeCollection.anyNode to PGGraphPersonNode", buf, 2u);
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "[PGPersonMemoryGenerator] unable to cast personNodeCollection.anyNode to PGGraphPersonNode", buf, 2u);
           }
 
           v23 = 0;
@@ -98,11 +98,11 @@
 
       else
       {
-        v15 = [(PGMemoryGenerator *)self loggingConnection];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        anyNode = [(PGMemoryGenerator *)self loggingConnection];
+        if (os_log_type_enabled(anyNode, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
-          _os_log_error_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_ERROR, "[PGPersonMemoryGenerator] personNodeCollection is empty", buf, 2u);
+          _os_log_error_impl(&dword_22F0FC000, anyNode, OS_LOG_TYPE_ERROR, "[PGPersonMemoryGenerator] personNodeCollection is empty", buf, 2u);
         }
 
         v23 = 0;
@@ -111,11 +111,11 @@
 
     else
     {
-      v14 = [(PGMemoryGenerator *)self loggingConnection];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      loggingConnection3 = [(PGMemoryGenerator *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_22F0FC000, v14, OS_LOG_TYPE_ERROR, "[PGPersonMemoryGenerator] momentNodes is empty", buf, 2u);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection3, OS_LOG_TYPE_ERROR, "[PGPersonMemoryGenerator] momentNodes is empty", buf, 2u);
       }
 
       v23 = 0;
@@ -124,11 +124,11 @@
 
   else
   {
-    v13 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    memoryMomentNodes = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(memoryMomentNodes, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F0FC000, v13, OS_LOG_TYPE_ERROR, "[PGPersonMemoryGenerator] featureNodes is empty", buf, 2u);
+      _os_log_error_impl(&dword_22F0FC000, memoryMomentNodes, OS_LOG_TYPE_ERROR, "[PGPersonMemoryGenerator] featureNodes is empty", buf, 2u);
     }
 
     v23 = 0;
@@ -139,26 +139,26 @@
   return v23;
 }
 
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph
 {
   v11.receiver = self;
   v11.super_class = PGPersonMemoryGenerator;
-  v5 = a3;
-  v6 = [(PGMemoryGenerator *)&v11 keyAssetCurationOptionsWithTriggeredMemory:v5 inGraph:a4];
-  v7 = [v5 memoryFeatureNodes];
+  memoryCopy = memory;
+  v6 = [(PGMemoryGenerator *)&v11 keyAssetCurationOptionsWithTriggeredMemory:memoryCopy inGraph:graph];
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
 
-  v8 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v7];
+  v8 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:memoryFeatureNodes];
 
-  v9 = [v8 localIdentifiers];
-  [v6 setReferencePersonLocalIdentifiers:v9];
+  localIdentifiers = [v8 localIdentifiers];
+  [v6 setReferencePersonLocalIdentifiers:localIdentifiers];
 
   return v6;
 }
 
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block
 {
-  v5 = a4;
-  v6 = [PGGraphPersonNodeCollection personNodesExcludingMeInGraph:a3];
+  blockCopy = block;
+  v6 = [PGGraphPersonNodeCollection personNodesExcludingMeInGraph:graph];
   v7 = MEMORY[0x277D22BF8];
   v8 = +[PGGraphFeatureNodeCollection momentOfFeature];
   v9 = [v7 adjacencyWithSources:v6 relation:v8 targetsClass:objc_opt_class()];
@@ -167,8 +167,8 @@
   v11[1] = 3221225472;
   v11[2] = __81__PGPersonMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_usingBlock___block_invoke;
   v11[3] = &unk_278880440;
-  v12 = v5;
-  v10 = v5;
+  v12 = blockCopy;
+  v10 = blockCopy;
   [v9 enumerateTargetsBySourceWithBlock:v11];
 }
 
@@ -180,22 +180,22 @@ void __81__PGPersonMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_us
   (*(v6 + 16))(v6, v7, v8, a4);
 }
 
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type
 {
-  v3 = a3;
+  typeCopy = type;
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 - 1 >= 3)
+  if (type - 1 >= 3)
   {
-    v5 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       v9 = 138412546;
       v10 = v8;
       v11 = 1024;
-      v12 = v3;
-      _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
+      v12 = typeCopy;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
     }
 
     result = 0;
@@ -203,18 +203,18 @@ void __81__PGPersonMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_us
 
   else
   {
-    result = a3 | 0x7D0;
+    result = type | 0x7D0;
   }
 
   v6 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (PGPersonMemoryGenerator)initWithMemoryGenerationContext:(id)a3
+- (PGPersonMemoryGenerator)initWithMemoryGenerationContext:(id)context
 {
   v14.receiver = self;
   v14.super_class = PGPersonMemoryGenerator;
-  v3 = [(PGMemoryGenerator *)&v14 initWithMemoryGenerationContext:a3];
+  v3 = [(PGMemoryGenerator *)&v14 initWithMemoryGenerationContext:context];
   v4 = v3;
   if (v3)
   {

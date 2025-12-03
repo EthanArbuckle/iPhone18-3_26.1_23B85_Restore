@@ -1,17 +1,17 @@
 @interface EKStructuredLocationPrediction
-+ (BOOL)shouldDoLocationPredictionForEvent:(id)a3;
-+ (id)_mockLocationForEventTitle:(id)a3;
-+ (id)locationPredictionForTitle:(id)a3 location:(id)a4 calendar:(id)a5 error:(id *)a6 timeout:(double)a7;
-+ (void)userInteractionWithPredictedLocationOfInterest:(id)a3 interaction:(unint64_t)a4;
++ (BOOL)shouldDoLocationPredictionForEvent:(id)event;
++ (id)_mockLocationForEventTitle:(id)title;
++ (id)locationPredictionForTitle:(id)title location:(id)location calendar:(id)calendar error:(id *)error timeout:(double)timeout;
++ (void)userInteractionWithPredictedLocationOfInterest:(id)interest interaction:(unint64_t)interaction;
 @end
 
 @implementation EKStructuredLocationPrediction
 
-+ (id)locationPredictionForTitle:(id)a3 location:(id)a4 calendar:(id)a5 error:(id *)a6 timeout:(double)a7
++ (id)locationPredictionForTitle:(id)title location:(id)location calendar:(id)calendar error:(id *)error timeout:(double)timeout
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  titleCopy = title;
+  locationCopy = location;
+  calendarCopy = calendar;
   if ([MEMORY[0x1E6992FA0] currentProcessHasBooleanEntitlement:@"com.apple.CoreRoutine.LocationOfInterest"])
   {
     *buf = 0;
@@ -20,10 +20,10 @@
     v41 = __Block_byref_object_copy__25;
     v42 = __Block_byref_object_dispose__25;
     v43 = 0;
-    v14 = [MEMORY[0x1E6992DF0] shared];
-    v15 = [v14 get_suggestedLocationsTestMode];
+    mEMORY[0x1E6992DF0] = [MEMORY[0x1E6992DF0] shared];
+    get_suggestedLocationsTestMode = [mEMORY[0x1E6992DF0] get_suggestedLocationsTestMode];
 
-    if (v15 && ([a1 _mockLocationForEventTitle:v11], v16 = objc_claimAutoreleasedReturnValue(), v17 = *(v39 + 5), *(v39 + 5) = v16, v17, (v18 = *(v39 + 5)) != 0))
+    if (get_suggestedLocationsTestMode && ([self _mockLocationForEventTitle:titleCopy], v16 = objc_claimAutoreleasedReturnValue(), v17 = *(v39 + 5), *(v39 + 5) = v16, v17, (v18 = *(v39 + 5)) != 0))
     {
       v19 = v18;
     }
@@ -31,27 +31,27 @@
     else
     {
       v37 = 0;
-      v21 = [MEMORY[0x1E6992FF0] predictedLocationOfInterestForEventTitle:v11 eventLocation:v12 calendarIdentifier:v13 timeout:dispatch_time(0 error:{(a7 * 1000000000.0)), &v37}];
+      v21 = [MEMORY[0x1E6992FF0] predictedLocationOfInterestForEventTitle:titleCopy eventLocation:locationCopy calendarIdentifier:calendarCopy timeout:dispatch_time(0 error:{(timeout * 1000000000.0)), &v37}];
       v22 = v37;
       if (v21)
       {
         v23 = EKWeakLinkClass();
-        v24 = [v21 locationOfInterest];
+        locationOfInterest = [v21 locationOfInterest];
         v25 = dispatch_semaphore_create(0);
-        v26 = [v23 sharedService];
-        v27 = [v24 mapItem];
-        v28 = [v27 geoMapItemHandle];
+        sharedService = [v23 sharedService];
+        mapItem = [locationOfInterest mapItem];
+        geoMapItemHandle = [mapItem geoMapItemHandle];
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
         v32[2] = __93__EKStructuredLocationPrediction_locationPredictionForTitle_location_calendar_error_timeout___block_invoke;
         v32[3] = &unk_1E7801528;
         v36 = buf;
-        v29 = v24;
+        v29 = locationOfInterest;
         v33 = v29;
         v34 = v21;
         v30 = v25;
         v35 = v30;
-        [v26 resolveMapItemLocallyFromHandle:v28 completionHandler:v32];
+        [sharedService resolveMapItemLocallyFromHandle:geoMapItemHandle completionHandler:v32];
 
         dispatch_semaphore_wait(v30, 0xFFFFFFFFFFFFFFFFLL);
       }
@@ -109,18 +109,18 @@ void __93__EKStructuredLocationPrediction_locationPredictionForTitle_location_ca
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-+ (BOOL)shouldDoLocationPredictionForEvent:(id)a3
++ (BOOL)shouldDoLocationPredictionForEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 preferredLocationWithoutPrediction];
-  v5 = [MEMORY[0x1E6992DF0] shared];
-  if (![v5 get_suggestEventLocations] || (objc_msgSend(v3, "isNew") & 1) != 0)
+  eventCopy = event;
+  preferredLocationWithoutPrediction = [eventCopy preferredLocationWithoutPrediction];
+  mEMORY[0x1E6992DF0] = [MEMORY[0x1E6992DF0] shared];
+  if (![mEMORY[0x1E6992DF0] get_suggestEventLocations] || (objc_msgSend(eventCopy, "isNew") & 1) != 0)
   {
     goto LABEL_11;
   }
 
-  v6 = [v4 geoLocation];
-  if (v6 || [v3 locationPredictionState] || (objc_msgSend(v3, "calendar"), v6 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v6, "allowsContentModifications") & 1) == 0))
+  geoLocation = [preferredLocationWithoutPrediction geoLocation];
+  if (geoLocation || [eventCopy locationPredictionState] || (objc_msgSend(eventCopy, "calendar"), geoLocation = objc_claimAutoreleasedReturnValue(), (objc_msgSend(geoLocation, "allowsContentModifications") & 1) == 0))
   {
 LABEL_10:
 
@@ -130,25 +130,25 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v7 = [v3 calendar];
-  if ([v7 type] == 4)
+  calendar = [eventCopy calendar];
+  if ([calendar type] == 4)
   {
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v8 = [v3 calendar];
-  if ([v8 type] == 3)
+  calendar2 = [eventCopy calendar];
+  if ([calendar2 type] == 3)
   {
 
     goto LABEL_9;
   }
 
-  v11 = [v3 calendar];
-  v12 = [v11 type];
+  calendar3 = [eventCopy calendar];
+  type = [calendar3 type];
 
-  if (v12 == 6)
+  if (type == 6)
   {
     goto LABEL_12;
   }
@@ -162,33 +162,33 @@ LABEL_13:
   return v9;
 }
 
-+ (void)userInteractionWithPredictedLocationOfInterest:(id)a3 interaction:(unint64_t)a4
++ (void)userInteractionWithPredictedLocationOfInterest:(id)interest interaction:(unint64_t)interaction
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 rtPredictedLocationOfInterest];
-  if (v6)
+  interestCopy = interest;
+  rtPredictedLocationOfInterest = [interestCopy rtPredictedLocationOfInterest];
+  if (rtPredictedLocationOfInterest)
   {
     if (userInteractionWithPredictedLocationOfInterest_interaction__onceToken != -1)
     {
       +[EKStructuredLocationPrediction userInteractionWithPredictedLocationOfInterest:interaction:];
     }
 
-    v7 = [userInteractionWithPredictedLocationOfInterest_interaction__RTRoutineManagerClass defaultManager];
-    [v7 userInteractionWithPredictedLocationOfInterest:v6 interaction:a4 feedback:0];
+    defaultManager = [userInteractionWithPredictedLocationOfInterest_interaction__RTRoutineManagerClass defaultManager];
+    [defaultManager userInteractionWithPredictedLocationOfInterest:rtPredictedLocationOfInterest interaction:interaction feedback:0];
     goto LABEL_7;
   }
 
   v8 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = v8;
-    v9 = [v5 customLabel];
+    defaultManager = v8;
+    customLabel = [interestCopy customLabel];
     v11 = 138543618;
-    v12 = v9;
+    v12 = customLabel;
     v13 = 1024;
-    v14 = a4;
-    _os_log_impl(&dword_1A805E000, v7, OS_LOG_TYPE_DEFAULT, "Got user interaction for mocked location of interest (%{public}@). Interaction type = %d", &v11, 0x12u);
+    interactionCopy = interaction;
+    _os_log_impl(&dword_1A805E000, defaultManager, OS_LOG_TYPE_DEFAULT, "Got user interaction for mocked location of interest (%{public}@). Interaction type = %d", &v11, 0x12u);
 
 LABEL_7:
   }
@@ -203,25 +203,25 @@ uint64_t __93__EKStructuredLocationPrediction_userInteractionWithPredictedLocati
   return result;
 }
 
-+ (id)_mockLocationForEventTitle:(id)a3
++ (id)_mockLocationForEventTitle:(id)title
 {
   v3 = _mockLocationForEventTitle__onceToken[0];
-  v4 = a3;
+  titleCopy = title;
   if (v3 != -1)
   {
     +[EKStructuredLocationPrediction _mockLocationForEventTitle:];
   }
 
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS SELF", v4];
+  titleCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS SELF", titleCopy];
 
-  v6 = [_mockLocationForEventTitle__s_mockLocations allKeys];
-  v7 = [v6 filteredArrayUsingPredicate:v5];
-  v8 = [v7 firstObject];
+  allKeys = [_mockLocationForEventTitle__s_mockLocations allKeys];
+  v7 = [allKeys filteredArrayUsingPredicate:titleCopy];
+  firstObject = [v7 firstObject];
 
-  v9 = [_mockLocationForEventTitle__s_mockLocations objectForKey:v8];
-  v10 = [v9 duplicate];
+  v9 = [_mockLocationForEventTitle__s_mockLocations objectForKey:firstObject];
+  duplicate = [v9 duplicate];
 
-  return v10;
+  return duplicate;
 }
 
 void __61__EKStructuredLocationPrediction__mockLocationForEventTitle___block_invoke()

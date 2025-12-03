@@ -1,41 +1,41 @@
 @interface _UICollectionViewFeedbackLoopDebugger
 - (_UICollectionViewFeedbackLoopDebugger)init;
-- (void)printCollectedRecordsForCollectionView:(id)a3 raiseException:(BOOL)a4;
-- (void)recordCollectionViewPointPropertyChange:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5;
-- (void)recordGenericChangeWithMessage:(id)a3;
-- (void)recordInvalidationWithContext:(id)a3;
-- (void)recordPreferredAttributesChangeForElementWithAttributes:(id)a3 reason:(id)a4 changedAttribute:(id)a5 fromValue:(id)a6 toValue:(id)a7 layoutGeneratedValue:(id)a8;
-- (void)recordUpdateVisibleCellsScheduledWithCallStack:(id)a3;
+- (void)printCollectedRecordsForCollectionView:(id)view raiseException:(BOOL)exception;
+- (void)recordCollectionViewPointPropertyChange:(id)change fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint;
+- (void)recordGenericChangeWithMessage:(id)message;
+- (void)recordInvalidationWithContext:(id)context;
+- (void)recordPreferredAttributesChangeForElementWithAttributes:(id)attributes reason:(id)reason changedAttribute:(id)attribute fromValue:(id)value toValue:(id)toValue layoutGeneratedValue:(id)generatedValue;
+- (void)recordUpdateVisibleCellsScheduledWithCallStack:(id)stack;
 @end
 
 @implementation _UICollectionViewFeedbackLoopDebugger
 
-- (void)recordPreferredAttributesChangeForElementWithAttributes:(id)a3 reason:(id)a4 changedAttribute:(id)a5 fromValue:(id)a6 toValue:(id)a7 layoutGeneratedValue:(id)a8
+- (void)recordPreferredAttributesChangeForElementWithAttributes:(id)attributes reason:(id)reason changedAttribute:(id)attribute fromValue:(id)value toValue:(id)toValue layoutGeneratedValue:(id)generatedValue
 {
   v23 = sub_18A4A7288();
   v14 = v13;
   v15 = sub_18A4A7288();
   v17 = v16;
-  v18 = a3;
-  v22 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = self;
-  sub_188F70200(v18, v23, v14, v15, v17, a6, a7, a8);
+  attributesCopy = attributes;
+  valueCopy = value;
+  toValueCopy = toValue;
+  generatedValueCopy = generatedValue;
+  selfCopy = self;
+  sub_188F70200(attributesCopy, v23, v14, v15, v17, value, toValue, generatedValue);
 }
 
-- (void)recordCollectionViewPointPropertyChange:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5
+- (void)recordCollectionViewPointPropertyChange:(id)change fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
+  y = toPoint.y;
+  x = toPoint.x;
+  v7 = point.y;
+  v8 = point.x;
   v10 = sub_18A4A7288();
   v12 = v11;
   v13 = OBJC_IVAR____UICollectionViewFeedbackLoopDebugger_currentlyTrackedChangeRecords;
   swift_beginAccess();
   v14 = *(&self->super.isa + v13);
-  v15 = self;
+  selfCopy = self;
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   *(&self->super.isa + v13) = v14;
   if ((isUniquelyReferenced_nonNull_native & 1) == 0)
@@ -67,14 +67,14 @@
   swift_endAccess();
 }
 
-- (void)recordGenericChangeWithMessage:(id)a3
+- (void)recordGenericChangeWithMessage:(id)message
 {
   v4 = sub_18A4A7288();
   v6 = v5;
   v7 = OBJC_IVAR____UICollectionViewFeedbackLoopDebugger_currentlyTrackedChangeRecords;
   swift_beginAccess();
   v8 = *(&self->super.isa + v7);
-  v9 = self;
+  selfCopy = self;
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   *(&self->super.isa + v7) = v8;
   if ((isUniquelyReferenced_nonNull_native & 1) == 0)
@@ -100,26 +100,26 @@
   swift_endAccess();
 }
 
-- (void)recordInvalidationWithContext:(id)a3
+- (void)recordInvalidationWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_188F70A10(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_188F70A10(contextCopy);
 }
 
-- (void)recordUpdateVisibleCellsScheduledWithCallStack:(id)a3
+- (void)recordUpdateVisibleCellsScheduledWithCallStack:(id)stack
 {
   v4 = sub_18A4A7548();
-  v5 = self;
+  selfCopy = self;
   sub_188F70BB4(v4);
 }
 
-- (void)printCollectedRecordsForCollectionView:(id)a3 raiseException:(BOOL)a4
+- (void)printCollectedRecordsForCollectionView:(id)view raiseException:(BOOL)exception
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_188F70D54(v6, v4);
+  exceptionCopy = exception;
+  viewCopy = view;
+  selfCopy = self;
+  sub_188F70D54(viewCopy, exceptionCopy);
 }
 
 - (_UICollectionViewFeedbackLoopDebugger)init

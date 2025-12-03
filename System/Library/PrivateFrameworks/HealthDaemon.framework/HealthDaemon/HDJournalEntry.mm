@@ -1,6 +1,6 @@
 @interface HDJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (HDJournalEntry)initWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (HDJournalEntry)initWithCoder:(id)coder;
 - (NSString)entryClassName;
 @end
 
@@ -13,14 +13,14 @@
   return NSStringFromClass(v2);
 }
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (HDJournalEntry)initWithCoder:(id)a3
+- (HDJournalEntry)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HDJournalEntry;

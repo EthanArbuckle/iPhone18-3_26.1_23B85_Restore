@@ -1,44 +1,44 @@
 @interface MKFirstPartyRatingStringBuilder
-+ (id)_colorForPercentage:(double)a3;
-+ (id)_stringForPercentage:(double)a3;
-+ (id)carPlayHeaderStringForMapItem:(id)a3 titleAttributes:(id)a4 providerAttributes:(id)a5;
-+ (id)compactUserRecommendedRatingSummaryStringForMapItem:(id)a3;
-+ (id)percentageStringForMapItem:(id)a3 showNumberOfRatings:(BOOL)a4 textColor:(id)a5 font:(id)a6 theme:(id)a7;
-+ (id)ratingColorForMapItem:(id)a3;
-+ (id)ratingPercentageAttributedStringForMapItem:(id)a3 textColor:(id)a4 font:(id)a5 theme:(id)a6;
-+ (id)ratingStringForPercentage:(double)a3 font:(id)a4 color:(id)a5 includeGlyph:(BOOL)a6;
-+ (id)thumbRecommendStringWithMapItem:(id)a3 font:(id)a4 includeGlyph:(BOOL)a5;
-+ (id)userRecommendationStringWithFont:(id)a3 ratingState:(int64_t)a4 numberOfPhotosAdded:(unint64_t)a5;
++ (id)_colorForPercentage:(double)percentage;
++ (id)_stringForPercentage:(double)percentage;
++ (id)carPlayHeaderStringForMapItem:(id)item titleAttributes:(id)attributes providerAttributes:(id)providerAttributes;
++ (id)compactUserRecommendedRatingSummaryStringForMapItem:(id)item;
++ (id)percentageStringForMapItem:(id)item showNumberOfRatings:(BOOL)ratings textColor:(id)color font:(id)font theme:(id)theme;
++ (id)ratingColorForMapItem:(id)item;
++ (id)ratingPercentageAttributedStringForMapItem:(id)item textColor:(id)color font:(id)font theme:(id)theme;
++ (id)ratingStringForPercentage:(double)percentage font:(id)font color:(id)color includeGlyph:(BOOL)glyph;
++ (id)thumbRecommendStringWithMapItem:(id)item font:(id)font includeGlyph:(BOOL)glyph;
++ (id)userRecommendationStringWithFont:(id)font ratingState:(int64_t)state numberOfPhotosAdded:(unint64_t)added;
 @end
 
 @implementation MKFirstPartyRatingStringBuilder
 
-+ (id)ratingColorForMapItem:(id)a3
++ (id)ratingColorForMapItem:(id)item
 {
-  v4 = [a3 _geoMapItem];
-  v5 = [v4 _overallAppleRating];
-  [v5 percentage];
-  v6 = [a1 _colorForPercentage:?];
+  _geoMapItem = [item _geoMapItem];
+  _overallAppleRating = [_geoMapItem _overallAppleRating];
+  [_overallAppleRating percentage];
+  v6 = [self _colorForPercentage:?];
 
   return v6;
 }
 
-+ (id)userRecommendationStringWithFont:(id)a3 ratingState:(int64_t)a4 numberOfPhotosAdded:(unint64_t)a5
++ (id)userRecommendationStringWithFont:(id)font ratingState:(int64_t)state numberOfPhotosAdded:(unint64_t)added
 {
   v44[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  fontCopy = font;
   v9 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v10 = objc_opt_new();
   v11 = MEMORY[0x1E69DB650];
   v12 = 0x1E695D000;
-  if (a4)
+  if (state)
   {
-    v40 = a5;
+    addedCopy = added;
     v13 = MEMORY[0x1E69DCAB8];
-    if (a4 == 2)
+    if (state == 2)
     {
-      v14 = [a1 ratingSymbolName];
-      v15 = [v13 _mapkit_systemImageNamed:v14];
+      ratingSymbolName = [self ratingSymbolName];
+      v15 = [v13 _mapkit_systemImageNamed:ratingSymbolName];
 
       v16 = 1.0;
       v17 = @"You Recommend [UGC]";
@@ -52,9 +52,9 @@
     }
 
     v39 = _MKLocalizedStringFromThisBundle(v17);
-    v18 = [a1 _colorForPercentage:v16];
+    v18 = [self _colorForPercentage:v16];
     v19 = MEMORY[0x1E69DCAD8];
-    [v8 pointSize];
+    [fontCopy pointSize];
     v20 = [v19 _mapkit_configurationWithPointSize:1 weight:? scale:?];
     v21 = [v15 _mapkit_imageWithSymbolConfiguration:v20];
 
@@ -73,20 +73,20 @@
     v26 = *MEMORY[0x1E69DB650];
     v43[0] = *MEMORY[0x1E69DB648];
     v43[1] = v26;
-    v44[0] = v8;
+    v44[0] = fontCopy;
     v44[1] = v18;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:2];
     [v9 addAttributes:v27 range:{0, objc_msgSend(v9, "length")}];
 
     v12 = 0x1E695D000uLL;
-    a5 = v40;
+    added = addedCopy;
   }
 
-  if (a5)
+  if (added)
   {
     v28 = _MKLocalizedStringFromThisBundle(@"Number Of Photos [UGC]");
-    v29 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v28, a5];
-    [v10 addObject:v29];
+    added = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v28, added];
+    [v10 addObject:added];
   }
 
   v30 = _MKLocalizedStringFromThisBundle(@" · [Delimeter]");
@@ -96,15 +96,15 @@
   v33 = *v11;
   v41[0] = *MEMORY[0x1E69DB648];
   v41[1] = v33;
-  v42[0] = v8;
-  v34 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v42[1] = v34;
+  v42[0] = fontCopy;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v42[1] = secondaryLabelColor;
   v35 = [*(v12 + 3872) dictionaryWithObjects:v42 forKeys:v41 count:2];
 
   [v32 addAttributes:v35 range:{0, objc_msgSend(v31, "length")}];
   v36 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v37 = v36;
-  if (a4)
+  if (state)
   {
     [v36 appendAttributedString:v9];
   }
@@ -114,61 +114,61 @@
   return v37;
 }
 
-+ (id)carPlayHeaderStringForMapItem:(id)a3 titleAttributes:(id)a4 providerAttributes:(id)a5
++ (id)carPlayHeaderStringForMapItem:(id)item titleAttributes:(id)attributes providerAttributes:(id)providerAttributes
 {
-  v7 = a4;
-  v8 = [a3 _geoMapItem];
-  v9 = [v8 _overallAppleRating];
+  attributesCopy = attributes;
+  _geoMapItem = [item _geoMapItem];
+  _overallAppleRating = [_geoMapItem _overallAppleRating];
 
-  [v9 percentage];
+  [_overallAppleRating percentage];
   v11 = v10;
-  v12 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
-  v13 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
+  v12 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+  v13 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
 
-  v14 = [a1 ratingStringForPercentage:v12 font:v13 color:0 includeGlyph:v11];
+  v14 = [self ratingStringForPercentage:v12 font:v13 color:0 includeGlyph:v11];
 
   return v14;
 }
 
-+ (id)percentageStringForMapItem:(id)a3 showNumberOfRatings:(BOOL)a4 textColor:(id)a5 font:(id)a6 theme:(id)a7
++ (id)percentageStringForMapItem:(id)item showNumberOfRatings:(BOOL)ratings textColor:(id)color font:(id)font theme:(id)theme
 {
-  v10 = a4;
+  ratingsCopy = ratings;
   v28[2] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [a1 thumbRecommendStringWithMapItem:v12 font:v14 includeGlyph:1];
+  itemCopy = item;
+  colorCopy = color;
+  fontCopy = font;
+  themeCopy = theme;
+  v16 = [self thumbRecommendStringWithMapItem:itemCopy font:fontCopy includeGlyph:1];
   v17 = 0x1E696A000;
-  if (v10)
+  if (ratingsCopy)
   {
-    v18 = [a1 ratingPercentageAttributedStringForMapItem:v12 textColor:v13 font:v14 theme:v15];
+    v18 = [self ratingPercentageAttributedStringForMapItem:itemCopy textColor:colorCopy font:fontCopy theme:themeCopy];
     goto LABEL_10;
   }
 
   v19 = _MKLocalizedStringFromThisBundle(@"Recommend [UGC]");
   v27[0] = *MEMORY[0x1E69DB648];
-  v20 = v14;
-  if (!v14)
+  subtitleFont = fontCopy;
+  if (!fontCopy)
   {
-    v10 = +[MKFontManager sharedManager];
-    v20 = [v10 subtitleFont];
+    ratingsCopy = +[MKFontManager sharedManager];
+    subtitleFont = [ratingsCopy subtitleFont];
   }
 
-  v28[0] = v20;
+  v28[0] = subtitleFont;
   v27[1] = *MEMORY[0x1E69DB650];
-  v21 = v13;
-  if (!v13)
+  textColor = colorCopy;
+  if (!colorCopy)
   {
-    v21 = [v15 textColor];
+    textColor = [themeCopy textColor];
   }
 
-  v28[1] = v21;
+  v28[1] = textColor;
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
-  if (!v13)
+  if (!colorCopy)
   {
 
-    if (v14)
+    if (fontCopy)
     {
       goto LABEL_9;
     }
@@ -178,7 +178,7 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  if (!v14)
+  if (!fontCopy)
   {
     goto LABEL_14;
   }
@@ -199,43 +199,43 @@ LABEL_10:
   return v25;
 }
 
-+ (id)ratingPercentageAttributedStringForMapItem:(id)a3 textColor:(id)a4 font:(id)a5 theme:(id)a6
++ (id)ratingPercentageAttributedStringForMapItem:(id)item textColor:(id)color font:(id)font theme:(id)theme
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v24 = a6;
-  v12 = [a3 _geoMapItem];
-  v13 = [v12 _overallAppleRating];
+  colorCopy = color;
+  fontCopy = font;
+  themeCopy = theme;
+  _geoMapItem = [item _geoMapItem];
+  _overallAppleRating = [_geoMapItem _overallAppleRating];
 
-  if (v13)
+  if (_overallAppleRating)
   {
     v14 = _MKLocalizedStringFromThisBundle(@"Recommend (%@) [UGC]");
-    v15 = +[MKFirstPartyRatingFormatter stringFromCount:](MKFirstPartyRatingFormatter, "stringFromCount:", [v13 numberOfRatingsUsedForScore]);
+    v15 = +[MKFirstPartyRatingFormatter stringFromCount:](MKFirstPartyRatingFormatter, "stringFromCount:", [_overallAppleRating numberOfRatingsUsedForScore]);
     v23 = v14;
     v16 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v14, v15];
     v17 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v16];
     v26[0] = *MEMORY[0x1E69DB648];
-    v18 = v11;
-    if (!v11)
+    subtitleFont = fontCopy;
+    if (!fontCopy)
     {
       v6 = +[MKFontManager sharedManager];
-      v18 = [v6 subtitleFont];
+      subtitleFont = [v6 subtitleFont];
     }
 
-    v27[0] = v18;
+    v27[0] = subtitleFont;
     v26[1] = *MEMORY[0x1E69DB650];
-    v19 = v10;
-    if (!v10)
+    textColor = colorCopy;
+    if (!colorCopy)
     {
-      v19 = [v24 textColor];
+      textColor = [themeCopy textColor];
     }
 
-    v27[1] = v19;
+    v27[1] = textColor;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
-    if (v10)
+    if (colorCopy)
     {
-      if (v11)
+      if (fontCopy)
       {
 LABEL_8:
         [v17 setAttributes:v20 range:{0, objc_msgSend(v17, "length")}];
@@ -248,7 +248,7 @@ LABEL_8:
     else
     {
 
-      if (v11)
+      if (fontCopy)
       {
         goto LABEL_8;
       }
@@ -269,41 +269,41 @@ LABEL_9:
   return v21;
 }
 
-+ (id)compactUserRecommendedRatingSummaryStringForMapItem:(id)a3
++ (id)compactUserRecommendedRatingSummaryStringForMapItem:(id)item
 {
-  v4 = [a3 _geoMapItem];
-  v5 = [v4 _overallAppleRating];
+  _geoMapItem = [item _geoMapItem];
+  _overallAppleRating = [_geoMapItem _overallAppleRating];
 
   v6 = _MKLocalizedStringFromThisBundle(@"Percentage (Count) [UGC]");
-  [v5 percentage];
-  v7 = [a1 _stringForPercentage:?];
-  v8 = +[MKFirstPartyRatingFormatter stringFromCount:](MKFirstPartyRatingFormatter, "stringFromCount:", [v5 numberOfRatingsUsedForScore]);
+  [_overallAppleRating percentage];
+  v7 = [self _stringForPercentage:?];
+  v8 = +[MKFirstPartyRatingFormatter stringFromCount:](MKFirstPartyRatingFormatter, "stringFromCount:", [_overallAppleRating numberOfRatingsUsedForScore]);
   v9 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v6, v7, v8];
 
   return v9;
 }
 
-+ (id)ratingStringForPercentage:(double)a3 font:(id)a4 color:(id)a5 includeGlyph:(BOOL)a6
++ (id)ratingStringForPercentage:(double)percentage font:(id)font color:(id)color includeGlyph:(BOOL)glyph
 {
-  v6 = a6;
+  glyphCopy = glyph;
   v37[2] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  if (a3 < 0.0 || a3 > 1.0)
+  fontCopy = font;
+  colorCopy = color;
+  if (percentage < 0.0 || percentage > 1.0)
   {
     v31 = objc_opt_new();
   }
 
   else
   {
-    v34 = v6;
+    v34 = glyphCopy;
     v13 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
     v14 = MEMORY[0x1E69DCAB8];
-    v15 = [a1 ratingSymbolName];
-    v16 = [v14 _mapkit_systemImageNamed:v15];
+    ratingSymbolName = [self ratingSymbolName];
+    v16 = [v14 _mapkit_systemImageNamed:ratingSymbolName];
 
     v17 = MEMORY[0x1E69DCAD8];
-    [v10 pointSize];
+    [fontCopy pointSize];
     v18 = *MEMORY[0x1E69DB958];
     v33 = [v17 _mapkit_configurationWithPointSize:1 weight:? scale:?];
     v19 = [v16 _mapkit_imageWithSymbolConfiguration:?];
@@ -315,21 +315,21 @@ LABEL_9:
     v22 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v13];
     [v21 appendAttributedString:v22];
 
-    if (!v11)
+    if (!colorCopy)
     {
-      v11 = [a1 _colorForPercentage:a3];
+      colorCopy = [self _colorForPercentage:percentage];
     }
 
-    v35 = v10;
+    v35 = fontCopy;
     v36[0] = *MEMORY[0x1E69DB648];
-    v23 = [v10 _mapkit_fontWithWeight:v18];
+    v23 = [fontCopy _mapkit_fontWithWeight:v18];
     v36[1] = *MEMORY[0x1E69DB650];
     v37[0] = v23;
-    v37[1] = v11;
+    v37[1] = colorCopy;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
 
     [v21 addAttributes:v24 range:{0, objc_msgSend(v21, "length")}];
-    v25 = [a1 _stringForPercentage:a3];
+    v25 = [self _stringForPercentage:percentage];
     v26 = objc_alloc_init(MEMORY[0x1E696AD40]);
     v27 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" " attributes:0];
     [v26 appendAttributedString:v27];
@@ -348,47 +348,47 @@ LABEL_9:
     [v30 appendAttributedString:v26];
     v31 = [v30 copy];
 
-    v10 = v35;
+    fontCopy = v35;
   }
 
   return v31;
 }
 
-+ (id)_stringForPercentage:(double)a3
++ (id)_stringForPercentage:(double)percentage
 {
   v4 = _MKLocalizedStringFromThisBundle(@"%lu%% [UGC]");
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:v4, (a3 * 100.0)];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:v4, (percentage * 100.0)];
 
   return v5;
 }
 
-+ (id)thumbRecommendStringWithMapItem:(id)a3 font:(id)a4 includeGlyph:(BOOL)a5
++ (id)thumbRecommendStringWithMapItem:(id)item font:(id)font includeGlyph:(BOOL)glyph
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [a3 _geoMapItem];
-  v10 = [v9 _overallAppleRating];
+  glyphCopy = glyph;
+  fontCopy = font;
+  _geoMapItem = [item _geoMapItem];
+  _overallAppleRating = [_geoMapItem _overallAppleRating];
 
-  [v10 percentage];
-  v11 = [a1 ratingStringForPercentage:v8 font:0 color:v5 includeGlyph:?];
+  [_overallAppleRating percentage];
+  v11 = [self ratingStringForPercentage:fontCopy font:0 color:glyphCopy includeGlyph:?];
 
   return v11;
 }
 
-+ (id)_colorForPercentage:(double)a3
++ (id)_colorForPercentage:(double)percentage
 {
-  if (a3 <= 0.5)
+  if (percentage <= 0.5)
   {
-    v4 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
   }
 
   else
   {
     v3 = +[MKInfoCardThemeManager currentTheme];
-    v4 = [v3 textColor];
+    systemGrayColor = [v3 textColor];
   }
 
-  return v4;
+  return systemGrayColor;
 }
 
 @end

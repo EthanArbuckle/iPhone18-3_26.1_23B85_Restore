@@ -1,22 +1,22 @@
 @interface GuidanceLaneViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateLanePaths;
 @end
 
 @implementation GuidanceLaneViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GuidanceLaneView" hasInstanceMethod:@"_updateLanePaths" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"GEOComposedRouteLaneInfo"];
-  [v3 validateClass:@"GuidanceLaneView" hasInstanceVariable:@"_laneInfo" withType:"GEOComposedRouteLaneInfo"];
-  [v3 validateClass:@"GEOComposedRouteLaneInfo" hasInstanceMethod:@"hasDirections" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GEOComposedRouteLaneInfo" hasInstanceMethod:@"isPreferredLaneForManeuver" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GEOComposedRouteLaneInfo" hasInstanceMethod:@"directions" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GEOComposedRouteLaneInfo"];
-  [v3 validateClass:@"GEOComposedRouteLaneDirectionInfo" hasInstanceMethod:@"direction" withFullSignature:{"i", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GuidanceLaneView" hasInstanceMethod:@"_updateLanePaths" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"GEOComposedRouteLaneInfo"];
+  [validationsCopy validateClass:@"GuidanceLaneView" hasInstanceVariable:@"_laneInfo" withType:"GEOComposedRouteLaneInfo"];
+  [validationsCopy validateClass:@"GEOComposedRouteLaneInfo" hasInstanceMethod:@"hasDirections" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GEOComposedRouteLaneInfo" hasInstanceMethod:@"isPreferredLaneForManeuver" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GEOComposedRouteLaneInfo" hasInstanceMethod:@"directions" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GEOComposedRouteLaneInfo"];
+  [validationsCopy validateClass:@"GEOComposedRouteLaneDirectionInfo" hasInstanceMethod:@"direction" withFullSignature:{"i", 0}];
 }
 
 - (void)_updateLanePaths
@@ -44,18 +44,18 @@
         for (i = 0; i < [v5 count]; ++i)
         {
           v7 = [v5 objectAtIndexedSubscript:i];
-          v8 = [v7 direction];
-          if (v8 > 15)
+          direction = [v7 direction];
+          if (direction > 15)
           {
-            if (v8 <= 63)
+            if (direction <= 63)
             {
-              if (v8 == 16)
+              if (direction == 16)
               {
                 v9 = @"U_TURN_LEFT";
                 goto LABEL_28;
               }
 
-              if (v8 == 32)
+              if (direction == 32)
               {
                 v9 = @"SHARP_LEFT";
                 goto LABEL_28;
@@ -64,7 +64,7 @@
 
             else
             {
-              switch(v8)
+              switch(direction)
               {
                 case 0x40:
                   v9 = @"LEFT";
@@ -79,15 +79,15 @@
             }
           }
 
-          else if (v8 <= 1)
+          else if (direction <= 1)
           {
             v9 = @"NO_DIRECTIONS_INDICATED";
-            if (!v8)
+            if (!direction)
             {
               goto LABEL_28;
             }
 
-            if (v8 == 1)
+            if (direction == 1)
             {
               v9 = @"STRAIGHT";
               goto LABEL_28;
@@ -96,7 +96,7 @@
 
           else
           {
-            switch(v8)
+            switch(direction)
             {
               case 2:
                 v9 = @"SLIGHT_RIGHT";
@@ -110,7 +110,7 @@
             }
           }
 
-          v9 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"(unknown: %i)", v8];
+          v9 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"(unknown: %i)", direction];
 LABEL_28:
           [v4 appendString:v9];
 

@@ -1,16 +1,16 @@
 @interface UndoMedsIntentHandler
-- (void)handleUndoMeds:(UndoMedsIntent *)a3 completion:(id)a4;
+- (void)handleUndoMeds:(UndoMedsIntent *)meds completion:(id)completion;
 @end
 
 @implementation UndoMedsIntentHandler
 
-- (void)handleUndoMeds:(UndoMedsIntent *)a3 completion:(id)a4
+- (void)handleUndoMeds:(UndoMedsIntent *)meds completion:(id)completion
 {
-  MEMORY[0x277D82BE0](a3);
-  v7 = _Block_copy(a4);
+  MEMORY[0x277D82BE0](meds);
+  v7 = _Block_copy(completion);
   MEMORY[0x277D82BE0](self);
   v4 = swift_allocObject();
-  v4[2] = a3;
+  v4[2] = meds;
   v4[3] = v7;
   v4[4] = self;
   _runTaskForBridgedAsyncMethod(_:)(&async function pointer to partial apply for @objc closure #1 in UndoMedsIntentHandler.handle(intent:), v4);

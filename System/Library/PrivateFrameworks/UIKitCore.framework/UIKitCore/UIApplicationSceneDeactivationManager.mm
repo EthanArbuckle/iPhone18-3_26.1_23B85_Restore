@@ -1,20 +1,20 @@
 @interface UIApplicationSceneDeactivationManager
-- (BOOL)_isEligibleScene:(id)a3;
-- (BOOL)_isEligibleScene:(id)a3 withSettings:(id)a4;
+- (BOOL)_isEligibleScene:(id)scene;
+- (BOOL)_isEligibleScene:(id)scene withSettings:(id)settings;
 - (UIApplicationSceneDeactivationManager)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)newAssertionWithReason:(int64_t)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)newAssertionWithReason:(int64_t)reason;
 - (id)succinctDescription;
-- (unint64_t)_deactivationReasonsForScene:(id)a3 withSettings:(id)a4;
-- (void)_setDeactivationReasons:(unint64_t)a3 onScene:(id)a4 withSettings:(id)a5 reason:(id)a6;
-- (void)_trackScene:(id)a3;
-- (void)_untrackScene:(id)a3;
-- (void)_updateScenesWithTransitionContext:(id)a3 reason:(id)a4;
-- (void)addAssertion:(id)a3 withTransitionContext:(id)a4;
-- (void)amendSceneSettings:(id)a3 forScene:(id)a4;
-- (void)beginTrackingScene:(id)a3;
-- (void)removeAssertion:(id)a3;
+- (unint64_t)_deactivationReasonsForScene:(id)scene withSettings:(id)settings;
+- (void)_setDeactivationReasons:(unint64_t)reasons onScene:(id)scene withSettings:(id)settings reason:(id)reason;
+- (void)_trackScene:(id)scene;
+- (void)_untrackScene:(id)scene;
+- (void)_updateScenesWithTransitionContext:(id)context reason:(id)reason;
+- (void)addAssertion:(id)assertion withTransitionContext:(id)context;
+- (void)amendSceneSettings:(id)settings forScene:(id)scene;
+- (void)beginTrackingScene:(id)scene;
+- (void)removeAssertion:(id)assertion;
 @end
 
 @implementation UIApplicationSceneDeactivationManager
@@ -23,9 +23,9 @@
 {
   if (pthread_main_np() != 1)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[UIApplicationSceneDeactivationManager init]"];
-    [v9 handleFailureInFunction:v10 file:@"UIApplicationSceneDeactivationManager.m" lineNumber:39 description:@"this call must be made on the main thread"];
+    [currentHandler handleFailureInFunction:v10 file:@"UIApplicationSceneDeactivationManager.m" lineNumber:39 description:@"this call must be made on the main thread"];
   }
 
   v11.receiver = self;
@@ -33,9 +33,9 @@
   v3 = [(UIApplicationSceneDeactivationManager *)&v11 init];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     assertions = v3->_assertions;
-    v3->_assertions = v4;
+    v3->_assertions = weakObjectsHashTable;
 
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     eligibleScenes = v3->_eligibleScenes;
@@ -45,96 +45,96 @@
   return v3;
 }
 
-- (id)newAssertionWithReason:(int64_t)a3
+- (id)newAssertionWithReason:(int64_t)reason
 {
   v5 = [UIApplicationSceneDeactivationAssertion alloc];
 
-  return [(UIApplicationSceneDeactivationAssertion *)v5 initWithReason:a3 manager:self];
+  return [(UIApplicationSceneDeactivationAssertion *)v5 initWithReason:reason manager:self];
 }
 
-- (void)beginTrackingScene:(id)a3
+- (void)beginTrackingScene:(id)scene
 {
-  v6 = a3;
-  v4 = [v6 settings];
-  v5 = [(UIApplicationSceneDeactivationManager *)self _isEligibleScene:v6 withSettings:v4];
+  sceneCopy = scene;
+  settings = [sceneCopy settings];
+  v5 = [(UIApplicationSceneDeactivationManager *)self _isEligibleScene:sceneCopy withSettings:settings];
 
   if (v5)
   {
-    [(UIApplicationSceneDeactivationManager *)self _trackScene:v6];
+    [(UIApplicationSceneDeactivationManager *)self _trackScene:sceneCopy];
   }
 }
 
-- (void)amendSceneSettings:(id)a3 forScene:(id)a4
+- (void)amendSceneSettings:(id)settings forScene:(id)scene
 {
-  v7 = a3;
-  v6 = a4;
-  if (self->_updatingScene != v6 && [(UIApplicationSceneDeactivationManager *)self _isEligibleScene:v6])
+  settingsCopy = settings;
+  sceneCopy = scene;
+  if (self->_updatingScene != sceneCopy && [(UIApplicationSceneDeactivationManager *)self _isEligibleScene:sceneCopy])
   {
-    if ([(UIApplicationSceneDeactivationManager *)self _areEligibleSettings:v7])
+    if ([(UIApplicationSceneDeactivationManager *)self _areEligibleSettings:settingsCopy])
     {
-      [(UIApplicationSceneDeactivationManager *)self _trackScene:v6];
-      [(UIApplicationSceneDeactivationManager *)self _setDeactivationReasons:[(UIApplicationSceneDeactivationManager *)self _deactivationReasonsForScene:v6 withSettings:v7] onScene:v6 withSettings:v7 reason:@"scene settings update - settings are eligible for deactivation reasons"];
+      [(UIApplicationSceneDeactivationManager *)self _trackScene:sceneCopy];
+      [(UIApplicationSceneDeactivationManager *)self _setDeactivationReasons:[(UIApplicationSceneDeactivationManager *)self _deactivationReasonsForScene:sceneCopy withSettings:settingsCopy] onScene:sceneCopy withSettings:settingsCopy reason:@"scene settings update - settings are eligible for deactivation reasons"];
     }
 
     else
     {
-      [(UIApplicationSceneDeactivationManager *)self _deactivationReasonsForScene:v6 withSettings:v7];
-      [(UIApplicationSceneDeactivationManager *)self _setDeactivationReasons:0 onScene:v6 withSettings:v7 reason:@"scene settings update - settings are NOT eligible for deactivation reasons"];
-      [(UIApplicationSceneDeactivationManager *)self _untrackScene:v6];
+      [(UIApplicationSceneDeactivationManager *)self _deactivationReasonsForScene:sceneCopy withSettings:settingsCopy];
+      [(UIApplicationSceneDeactivationManager *)self _setDeactivationReasons:0 onScene:sceneCopy withSettings:settingsCopy reason:@"scene settings update - settings are NOT eligible for deactivation reasons"];
+      [(UIApplicationSceneDeactivationManager *)self _untrackScene:sceneCopy];
     }
   }
 }
 
-- (void)addAssertion:(id)a3 withTransitionContext:(id)a4
+- (void)addAssertion:(id)assertion withTransitionContext:(id)context
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assertionCopy = assertion;
+  contextCopy = context;
   v8 = *(__UILogGetCategoryCachedImpl("SceneDeactivation", &addAssertion_withTransitionContext____s_category) + 8);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v6;
+    v10 = assertionCopy;
     _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "Added: %{public}@", &v9, 0xCu);
   }
 
-  if (v6)
+  if (assertionCopy)
   {
-    [(NSHashTable *)self->_assertions addObject:v6];
+    [(NSHashTable *)self->_assertions addObject:assertionCopy];
   }
 
-  [(UIApplicationSceneDeactivationManager *)self _updateScenesWithTransitionContext:v7 reason:@"Assertion added"];
+  [(UIApplicationSceneDeactivationManager *)self _updateScenesWithTransitionContext:contextCopy reason:@"Assertion added"];
 }
 
-- (void)removeAssertion:(id)a3
+- (void)removeAssertion:(id)assertion
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  assertionCopy = assertion;
+  if (assertionCopy)
   {
     v5 = *(__UILogGetCategoryCachedImpl("SceneDeactivation", &removeAssertion____s_category) + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = v4;
+      v7 = assertionCopy;
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "Removed: %{public}@", &v6, 0xCu);
     }
 
-    [(NSHashTable *)self->_assertions removeObject:v4];
+    [(NSHashTable *)self->_assertions removeObject:assertionCopy];
   }
 
   [(UIApplicationSceneDeactivationManager *)self _updateScenesWithTransitionContext:0 reason:@"Assertion removed"];
 }
 
-- (BOOL)_isEligibleScene:(id)a3
+- (BOOL)_isEligibleScene:(id)scene
 {
-  v3 = a3;
-  v4 = [v3 settings];
-  if ([v4 isUISubclass])
+  sceneCopy = scene;
+  settings = [sceneCopy settings];
+  if ([settings isUISubclass])
   {
-    v5 = [v3 definition];
-    v6 = [v5 clientIdentity];
-    v7 = [v6 isLocal] ^ 1;
+    definition = [sceneCopy definition];
+    clientIdentity = [definition clientIdentity];
+    v7 = [clientIdentity isLocal] ^ 1;
   }
 
   else
@@ -145,12 +145,12 @@
   return v7;
 }
 
-- (BOOL)_isEligibleScene:(id)a3 withSettings:(id)a4
+- (BOOL)_isEligibleScene:(id)scene withSettings:(id)settings
 {
-  v6 = a4;
-  if ([(UIApplicationSceneDeactivationManager *)self _isEligibleScene:a3])
+  settingsCopy = settings;
+  if ([(UIApplicationSceneDeactivationManager *)self _isEligibleScene:scene])
   {
-    v7 = [(UIApplicationSceneDeactivationManager *)self _areEligibleSettings:v6];
+    v7 = [(UIApplicationSceneDeactivationManager *)self _areEligibleSettings:settingsCopy];
   }
 
   else
@@ -161,22 +161,22 @@
   return v7;
 }
 
-- (void)_setDeactivationReasons:(unint64_t)a3 onScene:(id)a4 withSettings:(id)a5 reason:(id)a6
+- (void)_setDeactivationReasons:(unint64_t)reasons onScene:(id)scene withSettings:(id)settings reason:(id)reason
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v11 deactivationReasons] != a3)
+  sceneCopy = scene;
+  settingsCopy = settings;
+  reasonCopy = reason;
+  if ([settingsCopy deactivationReasons] != reasons)
   {
-    [v11 setDeactivationReasons:a3];
+    [settingsCopy setDeactivationReasons:reasons];
     v13 = *(__UILogGetCategoryCachedImpl("SceneDeactivation", &_setDeactivationReasons_onScene_withSettings_reason____s_category) + 8);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v10 identifier];
-      if (a3)
+      identifier = [sceneCopy identifier];
+      if (reasons)
       {
-        v6 = UIApplicationSceneDeactivationReasonMaskDescriptionComponents(a3);
+        v6 = UIApplicationSceneDeactivationReasonMaskDescriptionComponents(reasons);
         v15 = [v6 componentsJoinedByString:{@", "}];
       }
 
@@ -186,24 +186,24 @@
       }
 
       v16 = 138543874;
-      v17 = v14;
+      v17 = identifier;
       v18 = 2114;
       v19 = v15;
       v20 = 2114;
-      v21 = v12;
+      v21 = reasonCopy;
       _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Setting deactivation reasons to: '%{public}@' for reason: %{public}@.", &v16, 0x20u);
-      if (a3)
+      if (reasons)
       {
       }
     }
   }
 }
 
-- (void)_updateScenesWithTransitionContext:(id)a3 reason:(id)a4
+- (void)_updateScenesWithTransitionContext:(id)context reason:(id)reason
 {
   v26 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v6 = a4;
+  contextCopy = context;
+  reasonCopy = reason;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -226,9 +226,9 @@
         v12 = *(*(&v21 + 1) + 8 * i);
         if ([v12 isValid])
         {
-          v13 = [v12 uiSettings];
-          v14 = [(UIApplicationSceneDeactivationManager *)self _deactivationReasonsForScene:v12 withSettings:v13];
-          if (v14 != [v13 deactivationReasons])
+          uiSettings = [v12 uiSettings];
+          v14 = [(UIApplicationSceneDeactivationManager *)self _deactivationReasonsForScene:v12 withSettings:uiSettings];
+          if (v14 != [uiSettings deactivationReasons])
           {
             objc_storeStrong(&self->_updatingScene, v12);
             v17[0] = MEMORY[0x1E69E9820];
@@ -238,8 +238,8 @@
             v20 = v14;
             v17[4] = self;
             v17[5] = v12;
-            v18 = v6;
-            v19 = v16;
+            v18 = reasonCopy;
+            v19 = contextCopy;
             [v12 updateUISettingsWithTransitionBlock:v17];
             updatingScene = self->_updatingScene;
             self->_updatingScene = 0;
@@ -270,11 +270,11 @@ id __83__UIApplicationSceneDeactivationManager__updateScenesWithTransitionContex
   return v10;
 }
 
-- (unint64_t)_deactivationReasonsForScene:(id)a3 withSettings:(id)a4
+- (unint64_t)_deactivationReasonsForScene:(id)scene withSettings:(id)settings
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  settingsCopy = settings;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -299,9 +299,9 @@ id __83__UIApplicationSceneDeactivationManager__updateScenesWithTransitionContex
         v15 = 1 << [v14 reason];
         if ((v11 & v15) == 0)
         {
-          v16 = [v14 predicate];
-          v17 = v16;
-          if (!v16 || (*(v16 + 16))(v16, v6, v7))
+          predicate = [v14 predicate];
+          v17 = predicate;
+          if (!predicate || (*(predicate + 16))(predicate, sceneCopy, settingsCopy))
           {
             v11 |= v15;
           }
@@ -322,70 +322,70 @@ id __83__UIApplicationSceneDeactivationManager__updateScenesWithTransitionContex
   return v11;
 }
 
-- (void)_trackScene:(id)a3
+- (void)_trackScene:(id)scene
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([(NSMutableSet *)self->_eligibleScenes containsObject:v4]& 1) == 0)
+  sceneCopy = scene;
+  if (([(NSMutableSet *)self->_eligibleScenes containsObject:sceneCopy]& 1) == 0)
   {
     v5 = *(__UILogGetCategoryCachedImpl("SceneDeactivation", &_trackScene____s_category) + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = v4;
+      v7 = sceneCopy;
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "Now tracking: %{public}@", &v6, 0xCu);
     }
 
-    [(NSMutableSet *)self->_eligibleScenes addObject:v4];
+    [(NSMutableSet *)self->_eligibleScenes addObject:sceneCopy];
   }
 }
 
-- (void)_untrackScene:(id)a3
+- (void)_untrackScene:(id)scene
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(NSMutableSet *)self->_eligibleScenes containsObject:v4])
+  sceneCopy = scene;
+  if ([(NSMutableSet *)self->_eligibleScenes containsObject:sceneCopy])
   {
     v5 = *(__UILogGetCategoryCachedImpl("SceneDeactivation", &_untrackScene____s_category) + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = v4;
+      v7 = sceneCopy;
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "No longer tracking: %{public}@", &v6, 0xCu);
     }
 
-    [(NSMutableSet *)self->_eligibleScenes removeObject:v4];
+    [(NSMutableSet *)self->_eligibleScenes removeObject:sceneCopy];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(UIApplicationSceneDeactivationManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UIApplicationSceneDeactivationManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIApplicationSceneDeactivationManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIApplicationSceneDeactivationManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(UIApplicationSceneDeactivationManager *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(UIApplicationSceneDeactivationManager *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79__UIApplicationSceneDeactivationManager_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E70F35B8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

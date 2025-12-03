@@ -1,70 +1,70 @@
 @interface NCToggleControl
-+ (double)effectiveHeight:(BOOL)a3;
-+ (id)_labelFont:(BOOL)a3;
-+ (id)dismissControlWithMaterialRecipe:(int64_t)a3 clearAllText:(id)a4;
-+ (id)showLessControlWithMaterialRecipe:(int64_t)a3 clearAllText:(id)a4 glyphOrientation:(int64_t)a5;
++ (double)effectiveHeight:(BOOL)height;
++ (id)_labelFont:(BOOL)font;
++ (id)dismissControlWithMaterialRecipe:(int64_t)recipe clearAllText:(id)text;
++ (id)showLessControlWithMaterialRecipe:(int64_t)recipe clearAllText:(id)text glyphOrientation:(int64_t)orientation;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (BOOL)clickInteractionPresenterShouldBegin:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)clickInteractionPresenterShouldBegin:(id)begin;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_unexpandedFrame;
 - (CGSize)_cachedEffectiveMaxExpandedSize;
 - (CGSize)_cachedEffectiveMaxUnexpandedSize;
 - (CGSize)_effectiveExpandedSize;
 - (CGSize)_effectiveGlyphSize;
 - (CGSize)_effectiveUnexpandedSize;
-- (CGSize)_sizeThatFits:(CGSize)a3 whenExpanded:(BOOL)a4;
+- (CGSize)_sizeThatFits:(CGSize)fits whenExpanded:(BOOL)expanded;
 - (NCToggleControlDelegate)delegate;
 - (NCToggleControlPair)_managingPair;
 - (NSString)preferredContentSizeCategory;
 - (double)_effectiveHeight;
 - (double)_effectiveInternalPadding;
 - (double)_effectiveLeadingTrailingPadding;
-- (double)_effectiveValueForMinValue:(double)a3 withFont:(id)a4;
+- (double)_effectiveValueForMinValue:(double)value withFont:(id)font;
 - (id)_labelFont;
-- (id)containerViewForClickInteractionPresenter:(id)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_configureTitleLabelIfNecessaryWithTitle:(id)a3;
-- (void)_handleSecondaryClickEventForGestureRecognizer:(id)a3;
-- (void)_handleTouchUpInsideWithEvent:(id)a3;
-- (void)_sendActionsForEvents:(unint64_t)a3 withEvent:(id)a4;
+- (id)containerViewForClickInteractionPresenter:(id)presenter;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_configureTitleLabelIfNecessaryWithTitle:(id)title;
+- (void)_handleSecondaryClickEventForGestureRecognizer:(id)recognizer;
+- (void)_handleTouchUpInsideWithEvent:(id)event;
+- (void)_sendActionsForEvents:(unint64_t)events withEvent:(id)event;
 - (void)_updateTitleLabelTextAttributes;
-- (void)addTarget:(id)a3 forPreviewInteractionPresentedContentWithAction:(SEL)a4;
-- (void)clickInteractionPresenterDidBeginInteraction:(id)a3;
-- (void)clickInteractionPresenterDidCommitToPresentation:(id)a3;
-- (void)clickInteractionPresenterDidDismiss:(id)a3;
-- (void)clickInteractionPresenterDidPresent:(id)a3;
+- (void)addTarget:(id)target forPreviewInteractionPresentedContentWithAction:(SEL)action;
+- (void)clickInteractionPresenterDidBeginInteraction:(id)interaction;
+- (void)clickInteractionPresenterDidCommitToPresentation:(id)presentation;
+- (void)clickInteractionPresenterDidDismiss:(id)dismiss;
+- (void)clickInteractionPresenterDidPresent:(id)present;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setClearAllText:(id)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setVisualStyle:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setClearAllText:(id)text;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setTitle:(id)title;
+- (void)setVisualStyle:(int64_t)style;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NCToggleControl
 
-+ (id)dismissControlWithMaterialRecipe:(int64_t)a3 clearAllText:(id)a4
++ (id)dismissControlWithMaterialRecipe:(int64_t)recipe clearAllText:(id)text
 {
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___NCToggleControl;
-  v5 = a4;
-  v6 = objc_msgSendSuper2(&v14, sel_dismissControlWithMaterialRecipe_, a3);
+  textCopy = text;
+  v6 = objc_msgSendSuper2(&v14, sel_dismissControlWithMaterialRecipe_, recipe);
   v6[67] = 1;
   v7 = NCUserNotificationsUIKitFrameworkBundle();
   v8 = [v7 localizedStringForKey:@"NOTIFICATION_LIST_CLEAR" value:&stru_282FE84F8 table:{0, v14.receiver, v14.super_class}];
   [v6 setTitle:v8];
 
-  [v6 setClearAllText:v5];
+  [v6 setClearAllText:textCopy];
   [v6 setAnchorEdge:2];
   [v6 setExpanded:0];
   [v6 setAccessibilityIdentifier:@"clear-button"];
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v10 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v11 = [objc_alloc(MEMORY[0x277D75870]) initWithDelegate:v6];
     [v6 setPointerInteraction:v11];
@@ -77,34 +77,34 @@
   return v6;
 }
 
-+ (id)showLessControlWithMaterialRecipe:(int64_t)a3 clearAllText:(id)a4 glyphOrientation:(int64_t)a5
++ (id)showLessControlWithMaterialRecipe:(int64_t)recipe clearAllText:(id)text glyphOrientation:(int64_t)orientation
 {
-  v8 = a4;
-  v9 = [[a1 alloc] initWithMaterialRecipe:a3];
+  textCopy = text;
+  v9 = [[self alloc] initWithMaterialRecipe:recipe];
   v9[67] = 2;
   v10 = MEMORY[0x277D755B8];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v12 = [v10 imageNamed:@"chev" inBundle:v11 compatibleWithTraitCollection:0];
   v13 = [v12 imageWithRenderingMode:2];
 
-  v14 = [v13 CGImage];
+  cGImage = [v13 CGImage];
   v15 = MEMORY[0x277D755B8];
   [v13 scale];
-  v16 = [v15 imageWithCGImage:v14 scale:a5 orientation:?];
+  v16 = [v15 imageWithCGImage:cGImage scale:orientation orientation:?];
 
   [v9 setGlyph:v16];
   v17 = NCUserNotificationsUIKitFrameworkBundle();
   v18 = [v17 localizedStringForKey:@"NOTIFICATION_LIST_SHOW_LESS" value:&stru_282FE84F8 table:0];
   [v9 setTitle:v18];
 
-  [v9 setClearAllText:v8];
+  [v9 setClearAllText:textCopy];
   [v9 setAnchorEdge:2];
   [v9 setGlyphAlwaysVisible:1];
   [v9 setExpanded:1];
-  v19 = [MEMORY[0x277D75418] currentDevice];
-  v20 = [v19 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v20 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v21 = [objc_alloc(MEMORY[0x277D75870]) initWithDelegate:v9];
     [v9 setPointerInteraction:v21];
@@ -122,12 +122,12 @@
   [(NCToggleControl *)&v3 dealloc];
 }
 
-+ (double)effectiveHeight:(BOOL)a3
++ (double)effectiveHeight:(BOOL)height
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  v6 = [v5 preferredContentSizeCategory];
-  IsAX = _NCSizeCategoryIsAX(v6);
+  heightCopy = height;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
   if (IsAX)
   {
@@ -139,7 +139,7 @@
     v8 = 34.0;
   }
 
-  v9 = [a1 _labelFont:v3];
+  v9 = [self _labelFont:heightCopy];
   [v9 _scaledValueForValue:v8];
   if (v10 > v8)
   {
@@ -149,32 +149,32 @@
   return v8;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
-  v4 = [(NCToggleControl *)self title];
-  v5 = [v4 isEqualToString:v6];
+  titleCopy = title;
+  title = [(NCToggleControl *)self title];
+  v5 = [title isEqualToString:titleCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(NCToggleControl *)self _configureTitleLabelIfNecessaryWithTitle:v6];
+    [(NCToggleControl *)self _configureTitleLabelIfNecessaryWithTitle:titleCopy];
   }
 }
 
-- (void)setClearAllText:(id)a3
+- (void)setClearAllText:(id)text
 {
-  objc_storeStrong(&self->_clearAllText, a3);
-  v5 = a3;
-  [(NCClickInteractionPresenter *)self->_previewInteractionPlatterPresenter setTitle:v5];
+  objc_storeStrong(&self->_clearAllText, text);
+  textCopy = text;
+  [(NCClickInteractionPresenter *)self->_previewInteractionPlatterPresenter setTitle:textCopy];
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    self->_expanded = a3;
-    v4 = [(NCToggleControl *)self pointerInteraction];
-    [v4 invalidate];
+    self->_expanded = expanded;
+    pointerInteraction = [(NCToggleControl *)self pointerInteraction];
+    [pointerInteraction invalidate];
 
     [(NCToggleControl *)self setNeedsLayout];
     if ([MEMORY[0x277D75D18] _isInRetargetableAnimationBlock])
@@ -185,9 +185,9 @@
   }
 }
 
-- (void)addTarget:(id)a3 forPreviewInteractionPresentedContentWithAction:(SEL)a4
+- (void)addTarget:(id)target forPreviewInteractionPresentedContentWithAction:(SEL)action
 {
-  v10 = a3;
+  targetCopy = target;
   if ([(NCToggleControl *)self _toggleControlType]== 1)
   {
     v6 = [[NCClickInteractionPresenter alloc] initWithTitle:self->_clearAllText sourceView:self materialRecipe:[(PLGlyphControl *)self materialRecipe]];
@@ -196,29 +196,29 @@
 
     [(NCClickInteractionPresenter *)self->_previewInteractionPlatterPresenter setTitle:self->_clearAllText];
     v8 = self->_previewInteractionPlatterPresenter;
-    v9 = [(NCToggleControl *)self traitCollection];
-    -[NCClickInteractionPresenter setOverrideUserInterfaceStyle:](v8, "setOverrideUserInterfaceStyle:", [v9 userInterfaceStyle]);
+    traitCollection = [(NCToggleControl *)self traitCollection];
+    -[NCClickInteractionPresenter setOverrideUserInterfaceStyle:](v8, "setOverrideUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
 
-    [(NCClickInteractionPresenter *)self->_previewInteractionPlatterPresenter addTarget:v10 action:a4];
+    [(NCClickInteractionPresenter *)self->_previewInteractionPlatterPresenter addTarget:targetCopy action:action];
     [(NCClickInteractionPresenter *)self->_previewInteractionPlatterPresenter setDelegate:self];
   }
 }
 
-- (void)setVisualStyle:(int64_t)a3
+- (void)setVisualStyle:(int64_t)style
 {
   v4.receiver = self;
   v4.super_class = NCToggleControl;
-  [(PLGlyphControl *)&v4 setVisualStyle:a3];
+  [(PLGlyphControl *)&v4 setVisualStyle:style];
   [(NCToggleControl *)self _updateTitleLabelVisualStyling];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v8.receiver = self;
   v8.super_class = NCToggleControl;
-  result = [(NCToggleControl *)&v8 pointInside:a4 withEvent:?];
+  result = [(NCToggleControl *)&v8 pointInside:event withEvent:?];
   if (!self->_expanded)
   {
     [(NCToggleControl *)self _unexpandedFrame];
@@ -236,14 +236,14 @@
   v58.super_class = NCToggleControl;
   [(PLGlyphControl *)&v58 layoutSubviews];
   expanded = self->_expanded;
-  v4 = [(NCToggleControl *)self _shouldReverseLayoutDirection];
-  v5 = [MEMORY[0x277D75D18] _isInRetargetableAnimationBlock];
+  _shouldReverseLayoutDirection = [(NCToggleControl *)self _shouldReverseLayoutDirection];
+  _isInRetargetableAnimationBlock = [MEMORY[0x277D75D18] _isInRetargetableAnimationBlock];
   [(NCToggleControl *)self bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(PLGlyphControl *)self _glyphView];
+  _glyphView = [(PLGlyphControl *)self _glyphView];
   [(NCToggleControl *)self _unexpandedFrame];
   v16 = v15;
   v18 = v17;
@@ -256,13 +256,13 @@
   v26 = v19;
   v27 = v7;
   rect = v19;
-  if (v14)
+  if (_glyphView)
   {
     [(NCToggleControl *)self _effectiveGlyphSize];
     BSRectWithSize();
     v49 = _NCMainScreenScale();
     UIRectCenteredIntegralRectScale();
-    v28 = [v14 setFrame:*&v49];
+    v28 = [_glyphView setFrame:*&v49];
     if (!self->_glyphAlwaysVisible)
     {
       v29 = 1.0;
@@ -271,14 +271,14 @@
         v29 = 0.0;
       }
 
-      if (v5)
+      if (_isInRetargetableAnimationBlock)
       {
-        __33__NCToggleControl_layoutSubviews__block_invoke(v29, 1.0, v28, v14);
+        __33__NCToggleControl_layoutSubviews__block_invoke(v29, 1.0, v28, _glyphView);
       }
 
       else
       {
-        [v14 setAlpha:v29];
+        [_glyphView setAlpha:v29];
       }
     }
 
@@ -314,7 +314,7 @@
       v35 = v13;
       v37 = v36;
       v39 = v38;
-      if ((v4 ^ v31))
+      if ((_shouldReverseLayoutDirection ^ v31))
       {
         v50 = v32;
         v59.origin.x = v7;
@@ -357,10 +357,10 @@
     }
 
     v45 = self->_titleLabel;
-    if (v5)
+    if (_isInRetargetableAnimationBlock)
     {
-      v46 = [(UILabel *)self->_titleLabel text];
-      v47 = [v46 length];
+      text = [(UILabel *)self->_titleLabel text];
+      v47 = [text length];
       __33__NCToggleControl_layoutSubviews__block_invoke(v44, v47, v47, v45);
     }
 
@@ -374,8 +374,8 @@
     v24 = v51;
   }
 
-  v48 = [(PLGlyphControl *)self _backgroundMaterialView];
-  [v48 setFrame:{v27, v55, v56, v24}];
+  _backgroundMaterialView = [(PLGlyphControl *)self _backgroundMaterialView];
+  [_backgroundMaterialView setFrame:{v27, v55, v56, v24}];
 
   [(NCClickInteractionPresenter *)self->_previewInteractionPlatterPresenter setSourceViewVisibleRect:v16, v18, v21, v23];
 }
@@ -419,27 +419,27 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)_sendActionsForEvents:(unint64_t)a3 withEvent:(id)a4
+- (void)_sendActionsForEvents:(unint64_t)events withEvent:(id)event
 {
   self->_expandedPriorToControlEvent = self->_expanded;
   v4.receiver = self;
   v4.super_class = NCToggleControl;
-  [(PLGlyphControl *)&v4 _sendActionsForEvents:a3 withEvent:a4];
+  [(PLGlyphControl *)&v4 _sendActionsForEvents:events withEvent:event];
 }
 
-- (void)_handleTouchUpInsideWithEvent:(id)a3
+- (void)_handleTouchUpInsideWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (![(NCClickInteractionPresenter *)self->_previewInteractionPlatterPresenter isPresented])
   {
     expandedPriorToControlEvent = self->_expandedPriorToControlEvent;
     WeakRetained = objc_loadWeakRetained(&self->_managingPair);
-    [WeakRetained _handleTouchUpInside:self withEvent:v4];
+    [WeakRetained _handleTouchUpInside:self withEvent:eventCopy];
     if (expandedPriorToControlEvent)
     {
       v11.receiver = self;
       v11.super_class = NCToggleControl;
-      [(PLGlyphControl *)&v11 _handleTouchUpInsideWithEvent:v4];
+      [(PLGlyphControl *)&v11 _handleTouchUpInsideWithEvent:eventCopy];
     }
 
     else if (!WeakRetained)
@@ -457,19 +457,19 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = NCToggleControl;
-  [(NCToggleControl *)&v6 traitCollectionDidChange:a3];
+  [(NCToggleControl *)&v6 traitCollectionDidChange:change];
   previewInteractionPlatterPresenter = self->_previewInteractionPlatterPresenter;
-  v5 = [(NCToggleControl *)self traitCollection];
-  -[NCClickInteractionPresenter setOverrideUserInterfaceStyle:](previewInteractionPlatterPresenter, "setOverrideUserInterfaceStyle:", [v5 userInterfaceStyle]);
+  traitCollection = [(NCToggleControl *)self traitCollection];
+  -[NCClickInteractionPresenter setOverrideUserInterfaceStyle:](previewInteractionPlatterPresenter, "setOverrideUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
 
   [(NCClickInteractionPresenter *)self->_previewInteractionPlatterPresenter contentSizeCategoryDidChange];
 }
 
-- (id)containerViewForClickInteractionPresenter:(id)a3
+- (id)containerViewForClickInteractionPresenter:(id)presenter
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -485,7 +485,7 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (BOOL)clickInteractionPresenterShouldBegin:(id)a3
+- (BOOL)clickInteractionPresenterShouldBegin:(id)begin
 {
   if ([(NCToggleControl *)self _toggleControlType]== 1)
   {
@@ -498,14 +498,14 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)clickInteractionPresenterDidCommitToPresentation:(id)a3
+- (void)clickInteractionPresenterDidCommitToPresentation:(id)presentation
 {
   [(NCToggleControl *)self cancelTrackingWithEvent:0];
 
   [(NCToggleControl *)self setEnabled:0];
 }
 
-- (void)clickInteractionPresenterDidBeginInteraction:(id)a3
+- (void)clickInteractionPresenterDidBeginInteraction:(id)interaction
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -514,7 +514,7 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)clickInteractionPresenterDidPresent:(id)a3
+- (void)clickInteractionPresenterDidPresent:(id)present
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -523,7 +523,7 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)clickInteractionPresenterDidDismiss:(id)a3
+- (void)clickInteractionPresenterDidDismiss:(id)dismiss
 {
   [(NCToggleControl *)self setEnabled:1];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -533,11 +533,11 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(NCToggleControl *)self adjustForContentSizeCategoryChange];
   }
 }
@@ -556,15 +556,15 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-  v5 = [(NCToggleControl *)self preferredContentSizeCategory];
-  v6 = [v4 isEqualToString:v5];
+  preferredContentSizeCategory2 = [(NCToggleControl *)self preferredContentSizeCategory];
+  v6 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v6 & 1) == 0)
   {
-    [(NCToggleControl *)self setPreferredContentSizeCategory:v4];
+    [(NCToggleControl *)self setPreferredContentSizeCategory:preferredContentSizeCategory];
     v7 = *MEMORY[0x277CBF3A8];
     self->_cachedEffectiveMaxUnexpandedSize = *MEMORY[0x277CBF3A8];
     self->_cachedEffectiveMaxExpandedSize = v7;
@@ -575,9 +575,9 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
   return v6 ^ 1;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  if ([(NCToggleControl *)self isExpanded:a3])
+  if ([(NCToggleControl *)self isExpanded:interaction])
   {
     [(NCToggleControl *)self bounds];
   }
@@ -592,20 +592,20 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
   return [v6 regionWithRect:@"notification-list-control" identifier:?];
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = MEMORY[0x277D75B90];
-  v6 = a4;
+  regionCopy = region;
   v7 = [[v5 alloc] initWithView:self];
   v8 = [MEMORY[0x277D75878] effectWithPreview:v7];
-  [v6 rect];
+  [regionCopy rect];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(NCToggleControl *)self superview];
-  [(NCToggleControl *)self convertRect:v17 toView:v10, v12, v14, v16];
+  superview = [(NCToggleControl *)self superview];
+  [(NCToggleControl *)self convertRect:superview toView:v10, v12, v14, v16];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -619,9 +619,9 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
   return v29;
 }
 
-- (void)_handleSecondaryClickEventForGestureRecognizer:(id)a3
+- (void)_handleSecondaryClickEventForGestureRecognizer:(id)recognizer
 {
-  if ([a3 state] == 1)
+  if ([recognizer state] == 1)
   {
     previewInteractionPlatterPresenter = self->_previewInteractionPlatterPresenter;
 
@@ -629,10 +629,10 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
   }
 }
 
-+ (id)_labelFont:(BOOL)a3
++ (id)_labelFont:(BOOL)font
 {
-  v3 = a3;
-  if (a3)
+  fontCopy = font;
+  if (font)
   {
     [MEMORY[0x277CF0D60] preferredFontProvider];
   }
@@ -642,21 +642,21 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
     [MEMORY[0x277CF0D60] defaultFontProvider];
   }
   v4 = ;
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  v6 = [v5 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-  v7 = v6;
-  if (v3)
+  v7 = preferredContentSizeCategory;
+  if (fontCopy)
   {
     v8 = *MEMORY[0x277D767F8];
-    if (UIContentSizeCategoryCompareToCategory(v6, *MEMORY[0x277D767F8]) == NSOrderedDescending)
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D767F8]) == NSOrderedDescending)
     {
       v7 = v8;
     }
 
     else
     {
-      v7 = v6;
+      v7 = preferredContentSizeCategory;
     }
   }
 
@@ -694,14 +694,14 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_configureTitleLabelIfNecessaryWithTitle:(id)a3
+- (void)_configureTitleLabelIfNecessaryWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if (!self->_titleLabel)
   {
-    v7 = v4;
-    v4 = [v4 length];
-    if (v4)
+    v7 = titleCopy;
+    titleCopy = [titleCopy length];
+    if (titleCopy)
     {
       v5 = objc_alloc_init(MEMORY[0x277D756B8]);
       titleLabel = self->_titleLabel;
@@ -713,19 +713,19 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
       [(NCToggleControl *)self _updateTitleLabelTextAttributes];
       [(NCToggleControl *)self _updateTitleLabelVisualStyling];
       [(NCToggleControl *)self addSubview:self->_titleLabel];
-      v4 = [(NCToggleControl *)self setNeedsLayout];
+      titleCopy = [(NCToggleControl *)self setNeedsLayout];
     }
   }
 
-  MEMORY[0x2821F96F8](v4);
+  MEMORY[0x2821F96F8](titleCopy);
 }
 
-- (double)_effectiveValueForMinValue:(double)a3 withFont:(id)a4
+- (double)_effectiveValueForMinValue:(double)value withFont:(id)font
 {
-  [a4 _scaledValueForValue:?];
-  if (result <= a3)
+  [font _scaledValueForValue:?];
+  if (result <= value)
   {
-    return a3;
+    return value;
   }
 
   return result;
@@ -734,17 +734,17 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
 - (double)_effectiveHeight
 {
   v3 = objc_opt_class();
-  v4 = [(NCToggleControl *)self adjustsFontForContentSizeCategory];
+  adjustsFontForContentSizeCategory = [(NCToggleControl *)self adjustsFontForContentSizeCategory];
 
-  [v3 effectiveHeight:v4];
+  [v3 effectiveHeight:adjustsFontForContentSizeCategory];
   return result;
 }
 
 - (double)_effectiveLeadingTrailingPadding
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAX = _NCSizeCategoryIsAX(v4);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
   if (IsAX)
   {
@@ -756,8 +756,8 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
     v6 = 12.0;
   }
 
-  v7 = [(NCToggleControl *)self _labelFont];
-  [(NCToggleControl *)self _effectiveValueForMinValue:v7 withFont:v6];
+  _labelFont = [(NCToggleControl *)self _labelFont];
+  [(NCToggleControl *)self _effectiveValueForMinValue:_labelFont withFont:v6];
   v9 = v8;
 
   return v9;
@@ -765,9 +765,9 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
 
 - (double)_effectiveInternalPadding
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAX = _NCSizeCategoryIsAX(v4);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
   if (IsAX)
   {
@@ -779,8 +779,8 @@ double __33__NCToggleControl_layoutSubviews__block_invoke_2(uint64_t a1)
     v6 = 6.0;
   }
 
-  v7 = [(NCToggleControl *)self _labelFont];
-  [(NCToggleControl *)self _effectiveValueForMinValue:v7 withFont:v6];
+  _labelFont = [(NCToggleControl *)self _labelFont];
+  [(NCToggleControl *)self _effectiveValueForMinValue:_labelFont withFont:v6];
   v9 = v8;
 
   return v9;
@@ -818,21 +818,15 @@ LABEL_5:
       goto __NCToggleControl__effectiveExpandedSize_;
     }
 
-    v5 = [(NCToggleControl *)self _toggleControlType];
+    _toggleControlType = [(NCToggleControl *)self _toggleControlType];
 
-    if (v5 == 2)
+    if (_toggleControlType == 2)
     {
       goto LABEL_5;
     }
   }
 
   [(NCToggleControl *)self _sizeThatFits:1 whenExpanded:1.79769313e308, 1.79769313e308];
-__NCToggleControl__effectiveExpandedSize_:
-  result.height = v7;
-  result.width = v6;
-  return result;
-}
-
 - (CGSize)_cachedEffectiveMaxUnexpandedSize
 {
   p_cachedEffectiveMaxUnexpandedSize = &self->_cachedEffectiveMaxUnexpandedSize;
@@ -872,8 +866,8 @@ __NCToggleControl__effectiveExpandedSize_:
 
 - (CGSize)_effectiveGlyphSize
 {
-  v3 = [(PLGlyphControl *)self glyph];
-  [v3 size];
+  glyph = [(PLGlyphControl *)self glyph];
+  [glyph size];
   v5 = v4;
   v7 = v6;
 
@@ -882,8 +876,8 @@ __NCToggleControl__effectiveExpandedSize_:
     v5 = v7;
   }
 
-  v8 = [(NCToggleControl *)self _labelFont];
-  [(NCToggleControl *)self _effectiveValueForMinValue:v8 withFont:v5];
+  _labelFont = [(NCToggleControl *)self _labelFont];
+  [(NCToggleControl *)self _effectiveValueForMinValue:_labelFont withFont:v5];
   v10 = v9;
 
   v11 = v10;
@@ -893,14 +887,14 @@ __NCToggleControl__effectiveExpandedSize_:
   return result;
 }
 
-- (CGSize)_sizeThatFits:(CGSize)a3 whenExpanded:(BOOL)a4
+- (CGSize)_sizeThatFits:(CGSize)fits whenExpanded:(BOOL)expanded
 {
-  v4 = a4;
-  [(NCToggleControl *)self _effectiveLeadingTrailingPadding:a3.width];
+  expandedCopy = expanded;
+  [(NCToggleControl *)self _effectiveLeadingTrailingPadding:fits.width];
   titleLabel = self->_titleLabel;
   if (titleLabel)
   {
-    v7 = !v4;
+    v7 = !expandedCopy;
   }
 
   else
@@ -913,11 +907,11 @@ __NCToggleControl__effectiveExpandedSize_:
     [(UILabel *)titleLabel sizeThatFits:1.79769313e308, 1.79769313e308];
   }
 
-  v8 = [(PLGlyphControl *)self _glyphView];
-  v9 = v8;
+  _glyphView = [(PLGlyphControl *)self _glyphView];
+  v9 = _glyphView;
   if (self->_titleLabel)
   {
-    v10 = v8 == 0;
+    v10 = _glyphView == 0;
   }
 
   else
@@ -925,10 +919,10 @@ __NCToggleControl__effectiveExpandedSize_:
     v10 = 1;
   }
 
-  v11 = v10 || !v4;
+  v11 = v10 || !expandedCopy;
   if (v11)
   {
-    if (!v8)
+    if (!_glyphView)
     {
       goto LABEL_20;
     }
@@ -939,7 +933,7 @@ __NCToggleControl__effectiveExpandedSize_:
     [(NCToggleControl *)self _effectiveInternalPadding];
   }
 
-  if (!v4 || self->_glyphAlwaysVisible)
+  if (!expandedCopy || self->_glyphAlwaysVisible)
   {
     [(NCToggleControl *)self _effectiveGlyphSize];
   }

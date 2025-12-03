@@ -1,41 +1,41 @@
 @interface CNAvatarCardActionsView
-- (BOOL)_gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)_gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)isPerformingAction;
 - (BOOL)performHighlightedAction;
 - (CGPoint)initialLocation;
 - (CGRect)actionsImageFrame;
-- (CNAvatarCardActionsView)initWithFrame:(CGRect)a3;
+- (CNAvatarCardActionsView)initWithFrame:(CGRect)frame;
 - (CNAvatarCardActionsViewDelegate)delegate;
 - (NSArray)actionCategories;
-- (id)_actionAtIndexPath:(id)a3;
+- (id)_actionAtIndexPath:(id)path;
 - (id)_effectiveManagerActions;
-- (id)_indexPathForGestureRecognizer:(id)a3;
-- (id)actionsManager:(id)a3 orderedPropertiesForProperties:(id)a4 category:(id)a5;
-- (id)actionsManager:(id)a3 presentingViewControllerForAction:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_configureCell:(id)a3 forAction:(id)a4;
-- (void)_dismissCardAnimated:(BOOL)a3;
-- (void)_performActionAtIndexPath:(id)a3;
-- (void)_setHighlightedIndexPath:(id)a3 isChange:(BOOL)a4;
-- (void)_startTrackingRolloverOnCellAtIndexPath:(id)a3 withGestureRecognizer:(id)a4;
-- (void)_stopTrackingRolloverOnCellAtIndexPath:(id)a3 withGestureRecognizer:(id)a4;
-- (void)_updateActionsWithBlock:(id)a3;
+- (id)_indexPathForGestureRecognizer:(id)recognizer;
+- (id)actionsManager:(id)manager orderedPropertiesForProperties:(id)properties category:(id)category;
+- (id)actionsManager:(id)manager presentingViewControllerForAction:(id)action;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_configureCell:(id)cell forAction:(id)action;
+- (void)_dismissCardAnimated:(BOOL)animated;
+- (void)_performActionAtIndexPath:(id)path;
+- (void)_setHighlightedIndexPath:(id)path isChange:(BOOL)change;
+- (void)_startTrackingRolloverOnCellAtIndexPath:(id)path withGestureRecognizer:(id)recognizer;
+- (void)_stopTrackingRolloverOnCellAtIndexPath:(id)path withGestureRecognizer:(id)recognizer;
+- (void)_updateActionsWithBlock:(id)block;
 - (void)_updateAllSeparators;
-- (void)_updateCellSeparator:(id)a3 forIndexPath:(id)a4;
-- (void)_updateFromActions:(id)a3 toActions:(id)a4 matchingOldIndex:(int64_t)a5 toNewActionIndex:(int64_t)a6 invertedAnimation:(BOOL)a7;
-- (void)_updateWithActions:(id)a3 withBlock:(id)a4;
+- (void)_updateCellSeparator:(id)separator forIndexPath:(id)path;
+- (void)_updateFromActions:(id)actions toActions:(id)toActions matchingOldIndex:(int64_t)index toNewActionIndex:(int64_t)actionIndex invertedAnimation:(BOOL)animation;
+- (void)_updateWithActions:(id)actions withBlock:(id)block;
 - (void)refreshActions;
 - (void)reloadData;
-- (void)reloadDataWithBlock:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)setActionsImageFrame:(CGRect)a3;
-- (void)setActionsReversed:(BOOL)a3;
-- (void)setContacts:(id)a3;
-- (void)startTrackingRolloverWithGestureRecognizer:(id)a3;
+- (void)reloadDataWithBlock:(id)block;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)setActionsImageFrame:(CGRect)frame;
+- (void)setActionsReversed:(BOOL)reversed;
+- (void)setContacts:(id)contacts;
+- (void)startTrackingRolloverWithGestureRecognizer:(id)recognizer;
 - (void)stopTrackingRollover;
-- (void)updateRollover:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)updateRollover:(id)rollover;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation CNAvatarCardActionsView
@@ -69,9 +69,9 @@
   return result;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  if (([(CNAvatarCardActionsTableView *)self->_tableView isDragging:a3]& 1) != 0)
+  if (([(CNAvatarCardActionsTableView *)self->_tableView isDragging:recognizer]& 1) != 0)
   {
     return 0;
   }
@@ -82,21 +82,21 @@
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(UIGestureRecognizer *)self->_selectionGestureRecognizer setEnabled:1];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNAvatarCardActionsView *)self _actionAtIndexPath:v7];
-  v9 = [(CNAvatarCardActionsView *)self contacts];
-  if ([v9 count] < 2)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(CNAvatarCardActionsView *)self _actionAtIndexPath:pathCopy];
+  contacts = [(CNAvatarCardActionsView *)self contacts];
+  if ([contacts count] < 2)
   {
 
     goto LABEL_6;
@@ -120,33 +120,33 @@ LABEL_6:
 LABEL_8:
   v11 = @"contactCell";
 LABEL_9:
-  v12 = [v6 dequeueReusableCellWithIdentifier:v11 forIndexPath:v7];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:v11 forIndexPath:pathCopy];
   [(CNAvatarCardActionsView *)self _configureCell:v12 forAction:v8];
-  v13 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
-  [v12 setHighlighted:objc_msgSend(v7 animated:{"isEqual:", v13), 0}];
+  highlightedIndexPath = [(CNAvatarCardActionsView *)self highlightedIndexPath];
+  [v12 setHighlighted:objc_msgSend(pathCopy animated:{"isEqual:", highlightedIndexPath), 0}];
 
   return v12;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(CNAvatarCardActionsView *)self actions:a3];
+  v4 = [(CNAvatarCardActionsView *)self actions:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)actionsManager:(id)a3 orderedPropertiesForProperties:(id)a4 category:(id)a5
+- (id)actionsManager:(id)manager orderedPropertiesForProperties:(id)properties category:(id)category
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CNAvatarCardActionsView *)self delegate];
+  propertiesCopy = properties;
+  categoryCopy = category;
+  delegate = [(CNAvatarCardActionsView *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CNAvatarCardActionsView *)self delegate];
-    v12 = [v11 cardActionsView:self orderedPropertiesForProperties:v7 category:v8];
+    delegate2 = [(CNAvatarCardActionsView *)self delegate];
+    v12 = [delegate2 cardActionsView:self orderedPropertiesForProperties:propertiesCopy category:categoryCopy];
   }
 
   else
@@ -157,15 +157,15 @@ LABEL_9:
   return v12;
 }
 
-- (id)actionsManager:(id)a3 presentingViewControllerForAction:(id)a4
+- (id)actionsManager:(id)manager presentingViewControllerForAction:(id)action
 {
-  v5 = [(CNAvatarCardActionsView *)self delegate:a3];
+  v5 = [(CNAvatarCardActionsView *)self delegate:manager];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CNAvatarCardActionsView *)self delegate];
-    v8 = [v7 viewControllerForCardActionsView:self];
+    delegate = [(CNAvatarCardActionsView *)self delegate];
+    v8 = [delegate viewControllerForCardActionsView:self];
   }
 
   else
@@ -176,46 +176,46 @@ LABEL_9:
   return v8;
 }
 
-- (void)_setHighlightedIndexPath:(id)a3 isChange:(BOOL)a4
+- (void)_setHighlightedIndexPath:(id)path isChange:(BOOL)change
 {
-  v4 = a4;
-  v7 = a3;
+  changeCopy = change;
+  pathCopy = path;
   highlightedIndexPath = self->_highlightedIndexPath;
-  v14 = v7;
-  if (highlightedIndexPath != v7)
+  v14 = pathCopy;
+  if (highlightedIndexPath != pathCopy)
   {
     if (highlightedIndexPath)
     {
-      v9 = [(CNAvatarCardActionsView *)self tableView];
-      v10 = [v9 cellForRowAtIndexPath:self->_highlightedIndexPath];
+      tableView = [(CNAvatarCardActionsView *)self tableView];
+      v10 = [tableView cellForRowAtIndexPath:self->_highlightedIndexPath];
 
       [v10 setHighlighted:0];
     }
 
-    objc_storeStrong(&self->_highlightedIndexPath, a3);
+    objc_storeStrong(&self->_highlightedIndexPath, path);
     if (self->_highlightedIndexPath)
     {
-      v11 = [(CNAvatarCardActionsView *)self tableView];
-      v12 = [v11 cellForRowAtIndexPath:self->_highlightedIndexPath];
+      tableView2 = [(CNAvatarCardActionsView *)self tableView];
+      v12 = [tableView2 cellForRowAtIndexPath:self->_highlightedIndexPath];
 
       [v12 setHighlighted:1];
-      if (v4)
+      if (changeCopy)
       {
-        v13 = [(CNAvatarCardActionsView *)self retargetBehavior];
-        [v13 selectionChanged];
+        retargetBehavior = [(CNAvatarCardActionsView *)self retargetBehavior];
+        [retargetBehavior selectionChanged];
       }
     }
   }
 }
 
-- (void)_updateCellSeparator:(id)a3 forIndexPath:(id)a4
+- (void)_updateCellSeparator:(id)separator forIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = [a4 row];
-  v7 = [(CNAvatarCardActionsView *)self actions];
-  v8 = v6 != [v7 count] - 1;
+  separatorCopy = separator;
+  v6 = [path row];
+  actions = [(CNAvatarCardActionsView *)self actions];
+  v8 = v6 != [actions count] - 1;
 
-  [v9 setSeparatorStyle:v8];
+  [separatorCopy setSeparatorStyle:v8];
 }
 
 - (void)_updateAllSeparators
@@ -225,8 +225,8 @@ LABEL_9:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(CNAvatarCardActionsTableView *)self->_tableView indexPathsForVisibleRows];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  indexPathsForVisibleRows = [(CNAvatarCardActionsTableView *)self->_tableView indexPathsForVisibleRows];
+  v4 = [indexPathsForVisibleRows countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -237,7 +237,7 @@ LABEL_9:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(indexPathsForVisibleRows);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -245,34 +245,34 @@ LABEL_9:
         [(CNAvatarCardActionsView *)self _updateCellSeparator:v9 forIndexPath:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [indexPathsForVisibleRows countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_dismissCardAnimated:(BOOL)a3
+- (void)_dismissCardAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(CNAvatarCardActionsView *)self setHighlightedIndexPath:0];
-  v5 = [(CNAvatarCardActionsView *)self delegate];
+  delegate = [(CNAvatarCardActionsView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CNAvatarCardActionsView *)self delegate];
-    [v7 dismissViewControllerForCardActionsView:self animated:v3];
+    delegate2 = [(CNAvatarCardActionsView *)self delegate];
+    [delegate2 dismissViewControllerForCardActionsView:self animated:animatedCopy];
   }
 }
 
-- (void)_configureCell:(id)a3 forAction:(id)a4
+- (void)_configureCell:(id)cell forAction:(id)action
 {
-  v12 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  actionCopy = action;
   if ([(CNAvatarCardActionsView *)self expanded])
   {
-    if ([v6 isBackAction])
+    if ([actionCopy isBackAction])
     {
       v7 = *MEMORY[0x1E69DDCE0];
       v8 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -300,41 +300,41 @@ LABEL_9:
     v10 = *(MEMORY[0x1E69DDCE0] + 24);
   }
 
-  [v12 setSeparatorInset:{v7, v8, v9, v10}];
-  [v12 setContext:v11];
-  [v12 setAction:v6];
-  [v12 reloadData];
+  [cellCopy setSeparatorInset:{v7, v8, v9, v10}];
+  [cellCopy setContext:v11];
+  [cellCopy setAction:actionCopy];
+  [cellCopy reloadData];
 }
 
-- (void)_updateFromActions:(id)a3 toActions:(id)a4 matchingOldIndex:(int64_t)a5 toNewActionIndex:(int64_t)a6 invertedAnimation:(BOOL)a7
+- (void)_updateFromActions:(id)actions toActions:(id)toActions matchingOldIndex:(int64_t)index toNewActionIndex:(int64_t)actionIndex invertedAnimation:(BOOL)animation
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = [(CNAvatarCardActionsView *)self tableView];
-  v15 = [MEMORY[0x1E696AC88] indexPathForRow:a5 inSection:0];
-  v16 = [MEMORY[0x1E696AC88] indexPathForRow:a6 inSection:0];
+  actionsCopy = actions;
+  toActionsCopy = toActions;
+  tableView = [(CNAvatarCardActionsView *)self tableView];
+  v15 = [MEMORY[0x1E696AC88] indexPathForRow:index inSection:0];
+  v16 = [MEMORY[0x1E696AC88] indexPathForRow:actionIndex inSection:0];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __108__CNAvatarCardActionsView__updateFromActions_toActions_matchingOldIndex_toNewActionIndex_invertedAnimation___block_invoke;
   v23[3] = &unk_1E74E6148;
   v23[4] = self;
   v24 = v15;
-  v25 = v13;
-  v26 = v14;
-  v31 = a7;
+  v25 = toActionsCopy;
+  v26 = tableView;
+  animationCopy = animation;
   v27 = v16;
-  v28 = v12;
-  v29 = a6;
-  v30 = a5;
+  v28 = actionsCopy;
+  actionIndexCopy = actionIndex;
+  indexCopy = index;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __108__CNAvatarCardActionsView__updateFromActions_toActions_matchingOldIndex_toNewActionIndex_invertedAnimation___block_invoke_3;
   v22[3] = &unk_1E74E67A8;
   v22[4] = self;
-  v17 = v12;
+  v17 = actionsCopy;
   v18 = v16;
-  v19 = v14;
-  v20 = v13;
+  v19 = tableView;
+  v20 = toActionsCopy;
   v21 = v15;
   [v19 _performBatchUpdates:v23 completion:v22];
 }
@@ -437,29 +437,29 @@ uint64_t __108__CNAvatarCardActionsView__updateFromActions_toActions_matchingOld
   return [v5 setHighlighted:0 animated:1];
 }
 
-- (void)_performActionAtIndexPath:(id)a3
+- (void)_performActionAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CNAvatarCardActionsView *)self _actionAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(CNAvatarCardActionsView *)self _actionAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = v5;
-    v6 = [(CNAvatarCardActionsView *)self tableView];
-    v7 = [v6 cellForRowAtIndexPath:v4];
+    tableView = [(CNAvatarCardActionsView *)self tableView];
+    v7 = [tableView cellForRowAtIndexPath:pathCopy];
 
     if ([v7 moreHighlighted])
     {
       [(CNAvatarCardActionsView *)self setExpanded:1];
-      v8 = [v4 row];
+      v8 = [pathCopy row];
       v28 = 0;
       v29 = &v28;
       v30 = 0x3032000000;
       v31 = __Block_byref_object_copy__56837;
       v32 = __Block_byref_object_dispose__56838;
       v33 = 0;
-      v9 = [v5 title];
-      v10 = [v5 image];
+      title = [v5 title];
+      image = [v5 image];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __53__CNAvatarCardActionsView__performActionAtIndexPath___block_invoke;
@@ -467,27 +467,27 @@ uint64_t __108__CNAvatarCardActionsView__updateFromActions_toActions_matchingOld
       v27[4] = self;
       v27[5] = &v28;
       v27[6] = v8;
-      v11 = [CNQuickAction actionWithTitle:v9 image:v10 block:v27];
+      v11 = [CNQuickAction actionWithTitle:title image:image block:v27];
 
-      v12 = [v5 category];
-      [v11 setCategory:v12];
+      category = [v5 category];
+      [v11 setCategory:category];
 
       [v11 setBackAction:1];
-      v13 = [v5 actions];
-      v14 = [v13 array];
-      v15 = [v14 mutableCopy];
+      actions = [v5 actions];
+      array = [actions array];
+      v15 = [array mutableCopy];
       v16 = v29[5];
       v29[5] = v15;
 
       [v29[5] insertObject:v11 atIndex:0];
-      v17 = [(CNAvatarCardActionsView *)self actions];
+      actions2 = [(CNAvatarCardActionsView *)self actions];
       v18 = v29[5];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __53__CNAvatarCardActionsView__performActionAtIndexPath___block_invoke_3;
       v23[3] = &unk_1E74E6120;
       v23[4] = self;
-      v19 = v17;
+      v19 = actions2;
       v24 = v19;
       v25 = &v28;
       v26 = v8;
@@ -497,9 +497,9 @@ uint64_t __108__CNAvatarCardActionsView__updateFromActions_toActions_matchingOld
       goto LABEL_10;
     }
 
-    v20 = [v5 mainAction];
+    mainAction = [v5 mainAction];
 
-    v5 = v20;
+    v5 = mainAction;
   }
 
   if (![v5 isBackAction])
@@ -552,49 +552,49 @@ void __53__CNAvatarCardActionsView__performActionAtIndexPath___block_invoke_2(vo
   [v2 _updateFromActions:v3 toActions:v4 matchingOldIndex:0 toNewActionIndex:a1[6] invertedAnimation:1];
 }
 
-- (void)_stopTrackingRolloverOnCellAtIndexPath:(id)a3 withGestureRecognizer:(id)a4
+- (void)_stopTrackingRolloverOnCellAtIndexPath:(id)path withGestureRecognizer:(id)recognizer
 {
-  if (a3)
+  if (path)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(CNAvatarCardActionsView *)self tableView];
-    v9 = [v8 cellForRowAtIndexPath:v7];
+    recognizerCopy = recognizer;
+    pathCopy = path;
+    tableView = [(CNAvatarCardActionsView *)self tableView];
+    v9 = [tableView cellForRowAtIndexPath:pathCopy];
 
-    [v9 stopTrackingWithGestureRecognizer:v6];
+    [v9 stopTrackingWithGestureRecognizer:recognizerCopy];
   }
 }
 
-- (void)_startTrackingRolloverOnCellAtIndexPath:(id)a3 withGestureRecognizer:(id)a4
+- (void)_startTrackingRolloverOnCellAtIndexPath:(id)path withGestureRecognizer:(id)recognizer
 {
-  if (a3)
+  if (path)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(CNAvatarCardActionsView *)self tableView];
-    v9 = [v8 cellForRowAtIndexPath:v7];
+    recognizerCopy = recognizer;
+    pathCopy = path;
+    tableView = [(CNAvatarCardActionsView *)self tableView];
+    v9 = [tableView cellForRowAtIndexPath:pathCopy];
 
-    [v9 startTrackingWithGestureRecognizer:v6];
+    [v9 startTrackingWithGestureRecognizer:recognizerCopy];
   }
 }
 
-- (void)updateRollover:(id)a3
+- (void)updateRollover:(id)rollover
 {
-  v17 = a3;
-  if ([v17 state] == 1 || objc_msgSend(v17, "state") == 2 || objc_msgSend(v17, "state") == 4)
+  rolloverCopy = rollover;
+  if ([rolloverCopy state] == 1 || objc_msgSend(rolloverCopy, "state") == 2 || objc_msgSend(rolloverCopy, "state") == 4)
   {
-    if ([v17 state] == 4 || (-[CNAvatarCardActionsView _indexPathForGestureRecognizer:](self, "_indexPathForGestureRecognizer:", v17), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ([rolloverCopy state] == 4 || (-[CNAvatarCardActionsView _indexPathForGestureRecognizer:](self, "_indexPathForGestureRecognizer:", rolloverCopy), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v8 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
+      highlightedIndexPath = [(CNAvatarCardActionsView *)self highlightedIndexPath];
       v6 = 0;
-      if (!v8)
+      if (!highlightedIndexPath)
       {
 LABEL_13:
 
         goto LABEL_14;
       }
 
-      v3 = v8;
+      v3 = highlightedIndexPath;
       v7 = 1;
     }
 
@@ -604,8 +604,8 @@ LABEL_13:
       v7 = 0;
     }
 
-    v9 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
-    v10 = [v6 isEqual:v9];
+    highlightedIndexPath2 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
+    v10 = [v6 isEqual:highlightedIndexPath2];
 
     if (v7)
     {
@@ -613,21 +613,21 @@ LABEL_13:
 
     if ((v10 & 1) == 0)
     {
-      v11 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
-      [(CNAvatarCardActionsView *)self _stopTrackingRolloverOnCellAtIndexPath:v11 withGestureRecognizer:v17];
+      highlightedIndexPath3 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
+      [(CNAvatarCardActionsView *)self _stopTrackingRolloverOnCellAtIndexPath:highlightedIndexPath3 withGestureRecognizer:rolloverCopy];
 
-      [(CNAvatarCardActionsView *)self _startTrackingRolloverOnCellAtIndexPath:v6 withGestureRecognizer:v17];
-      -[CNAvatarCardActionsView _setHighlightedIndexPath:isChange:](self, "_setHighlightedIndexPath:isChange:", v6, [v17 state] == 2);
+      [(CNAvatarCardActionsView *)self _startTrackingRolloverOnCellAtIndexPath:v6 withGestureRecognizer:rolloverCopy];
+      -[CNAvatarCardActionsView _setHighlightedIndexPath:isChange:](self, "_setHighlightedIndexPath:isChange:", v6, [rolloverCopy state] == 2);
     }
 
     goto LABEL_13;
   }
 
-  if ([v17 state] == 3)
+  if ([rolloverCopy state] == 3)
   {
-    v12 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
+    highlightedIndexPath4 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
 
-    if (!v12 || (-[CNAvatarCardActionsView tableView](self, "tableView"), v13 = objc_claimAutoreleasedReturnValue(), -[CNAvatarCardActionsView highlightedIndexPath](self, "highlightedIndexPath"), v14 = objc_claimAutoreleasedReturnValue(), [v13 cellForRowAtIndexPath:v14], v15 = objc_claimAutoreleasedReturnValue(), v14, v13, -[CNAvatarCardActionsView highlightedIndexPath](self, "highlightedIndexPath"), v16 = objc_claimAutoreleasedReturnValue(), -[CNAvatarCardActionsView _stopTrackingRolloverOnCellAtIndexPath:withGestureRecognizer:](self, "_stopTrackingRolloverOnCellAtIndexPath:withGestureRecognizer:", v16, v17), v16, LOBYTE(v16) = objc_msgSend(v15, "swipped"), v15, (v16 & 1) == 0))
+    if (!highlightedIndexPath4 || (-[CNAvatarCardActionsView tableView](self, "tableView"), v13 = objc_claimAutoreleasedReturnValue(), -[CNAvatarCardActionsView highlightedIndexPath](self, "highlightedIndexPath"), v14 = objc_claimAutoreleasedReturnValue(), [v13 cellForRowAtIndexPath:v14], v15 = objc_claimAutoreleasedReturnValue(), v14, v13, -[CNAvatarCardActionsView highlightedIndexPath](self, "highlightedIndexPath"), v16 = objc_claimAutoreleasedReturnValue(), -[CNAvatarCardActionsView _stopTrackingRolloverOnCellAtIndexPath:withGestureRecognizer:](self, "_stopTrackingRolloverOnCellAtIndexPath:withGestureRecognizer:", v16, rolloverCopy), v16, LOBYTE(v16) = objc_msgSend(v15, "swipped"), v15, (v16 & 1) == 0))
     {
       [(CNAvatarCardActionsView *)self performHighlightedAction];
     }
@@ -636,21 +636,21 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)_indexPathForGestureRecognizer:(id)a3
+- (id)_indexPathForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(CNAvatarCardActionsView *)self tableView];
-  [v4 locationInView:v5];
+  recognizerCopy = recognizer;
+  tableView = [(CNAvatarCardActionsView *)self tableView];
+  [recognizerCopy locationInView:tableView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(CNAvatarCardActionsView *)self tableView];
-  [v10 visibleBounds];
+  tableView2 = [(CNAvatarCardActionsView *)self tableView];
+  [tableView2 visibleBounds];
   v21.x = v7;
   v21.y = v9;
-  LODWORD(v5) = CGRectContainsPoint(v22, v21);
+  LODWORD(tableView) = CGRectContainsPoint(v22, v21);
 
-  if (v5)
+  if (tableView)
   {
     [(CNAvatarCardActionsView *)self initialLocation];
     v12 = *MEMORY[0x1E695EFF8];
@@ -666,8 +666,8 @@ LABEL_14:
     {
       [(CNAvatarCardActionsView *)self setInitialLocation:v12, v13];
 LABEL_8:
-      v17 = [(CNAvatarCardActionsView *)self tableView];
-      v18 = [v17 indexPathForRowAtPoint:{v7, v9}];
+      tableView3 = [(CNAvatarCardActionsView *)self tableView];
+      v18 = [tableView3 indexPathForRowAtPoint:{v7, v9}];
 
       goto LABEL_10;
     }
@@ -686,71 +686,71 @@ LABEL_10:
     return 1;
   }
 
-  v4 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
-  v3 = v4 != 0;
+  highlightedIndexPath = [(CNAvatarCardActionsView *)self highlightedIndexPath];
+  v3 = highlightedIndexPath != 0;
 
   return v3;
 }
 
 - (void)stopTrackingRollover
 {
-  v3 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
-  v4 = [(CNAvatarCardActionsView *)self rolloverGestureRecognizer];
-  [(CNAvatarCardActionsView *)self _stopTrackingRolloverOnCellAtIndexPath:v3 withGestureRecognizer:v4];
+  highlightedIndexPath = [(CNAvatarCardActionsView *)self highlightedIndexPath];
+  rolloverGestureRecognizer = [(CNAvatarCardActionsView *)self rolloverGestureRecognizer];
+  [(CNAvatarCardActionsView *)self _stopTrackingRolloverOnCellAtIndexPath:highlightedIndexPath withGestureRecognizer:rolloverGestureRecognizer];
 
-  v5 = [(CNAvatarCardActionsView *)self rolloverGestureRecognizer];
-  [v5 removeTarget:self action:sel_updateRollover_];
+  rolloverGestureRecognizer2 = [(CNAvatarCardActionsView *)self rolloverGestureRecognizer];
+  [rolloverGestureRecognizer2 removeTarget:self action:sel_updateRollover_];
 
   [(CNAvatarCardActionsView *)self setRolloverGestureRecognizer:0];
 }
 
-- (void)startTrackingRolloverWithGestureRecognizer:(id)a3
+- (void)startTrackingRolloverWithGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
+  recognizerCopy = recognizer;
   [(CNAvatarCardActionsView *)self setHighlightedIndexPath:0];
-  [(CNAvatarCardActionsView *)self setRolloverGestureRecognizer:v6];
+  [(CNAvatarCardActionsView *)self setRolloverGestureRecognizer:recognizerCopy];
   [(CNAvatarCardActionsView *)self setInitialLocation:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
-  v4 = [(CNAvatarCardActionsView *)self _indexPathForGestureRecognizer:v6];
+  v4 = [(CNAvatarCardActionsView *)self _indexPathForGestureRecognizer:recognizerCopy];
   if (v4)
   {
-    v5 = [(CNAvatarCardActionsView *)self tableView];
-    [v6 locationInView:v5];
+    tableView = [(CNAvatarCardActionsView *)self tableView];
+    [recognizerCopy locationInView:tableView];
     [(CNAvatarCardActionsView *)self setInitialLocation:?];
   }
 
-  [v6 addTarget:self action:sel_updateRollover_];
-  [(CNAvatarCardActionsView *)self updateRollover:v6];
+  [recognizerCopy addTarget:self action:sel_updateRollover_];
+  [(CNAvatarCardActionsView *)self updateRollover:recognizerCopy];
 }
 
 - (BOOL)performHighlightedAction
 {
-  v3 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
+  highlightedIndexPath = [(CNAvatarCardActionsView *)self highlightedIndexPath];
 
-  if (v3)
+  if (highlightedIndexPath)
   {
-    v4 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
-    [(CNAvatarCardActionsView *)self _performActionAtIndexPath:v4];
+    highlightedIndexPath2 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
+    [(CNAvatarCardActionsView *)self _performActionAtIndexPath:highlightedIndexPath2];
   }
 
-  return v3 != 0;
+  return highlightedIndexPath != 0;
 }
 
 - (void)refreshActions
 {
-  v2 = [(CNAvatarCardActionsView *)self actionsManager];
-  [v2 refreshActions];
+  actionsManager = [(CNAvatarCardActionsView *)self actionsManager];
+  [actionsManager refreshActions];
 }
 
-- (void)reloadDataWithBlock:(id)a3
+- (void)reloadDataWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
-  v6 = [(CNAvatarCardActionsView *)self rolloverGestureRecognizer];
-  [(CNAvatarCardActionsView *)self _stopTrackingRolloverOnCellAtIndexPath:v5 withGestureRecognizer:v6];
+  blockCopy = block;
+  highlightedIndexPath = [(CNAvatarCardActionsView *)self highlightedIndexPath];
+  rolloverGestureRecognizer = [(CNAvatarCardActionsView *)self rolloverGestureRecognizer];
+  [(CNAvatarCardActionsView *)self _stopTrackingRolloverOnCellAtIndexPath:highlightedIndexPath withGestureRecognizer:rolloverGestureRecognizer];
 
-  v4[2](v4);
-  v7 = [(CNAvatarCardActionsView *)self tableView];
-  [v7 invalidateIntrinsicContentSize];
+  blockCopy[2](blockCopy);
+  tableView = [(CNAvatarCardActionsView *)self tableView];
+  [tableView invalidateIntrinsicContentSize];
 }
 
 - (void)reloadData
@@ -769,48 +769,48 @@ void __37__CNAvatarCardActionsView_reloadData__block_invoke(uint64_t a1)
   [v1 reloadData];
 }
 
-- (id)_actionAtIndexPath:(id)a3
+- (id)_actionAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CNAvatarCardActionsView *)self actions];
-  v6 = [v4 item];
+  pathCopy = path;
+  actions = [(CNAvatarCardActionsView *)self actions];
+  item = [pathCopy item];
 
-  v7 = [v5 objectAtIndex:v6];
+  v7 = [actions objectAtIndex:item];
 
   return v7;
 }
 
 - (id)_effectiveManagerActions
 {
-  v3 = [(CNAvatarCardActionsView *)self actionsManager];
-  v4 = [v3 actions];
+  actionsManager = [(CNAvatarCardActionsView *)self actionsManager];
+  actions = [actionsManager actions];
 
   if (self->_actionsReversed)
   {
-    v5 = [v4 reverseObjectEnumerator];
-    v6 = [v5 allObjects];
+    reverseObjectEnumerator = [actions reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
   }
 
   else
   {
-    v6 = v4;
+    allObjects = actions;
   }
 
-  return v6;
+  return allObjects;
 }
 
-- (void)_updateWithActions:(id)a3 withBlock:(id)a4
+- (void)_updateWithActions:(id)actions withBlock:(id)block
 {
-  v14 = a4;
-  v6 = a3;
-  v7 = [(CNAvatarCardActionsView *)self highlightedIndexPath];
-  v8 = [(CNAvatarCardActionsView *)self rolloverGestureRecognizer];
-  [(CNAvatarCardActionsView *)self _stopTrackingRolloverOnCellAtIndexPath:v7 withGestureRecognizer:v8];
+  blockCopy = block;
+  actionsCopy = actions;
+  highlightedIndexPath = [(CNAvatarCardActionsView *)self highlightedIndexPath];
+  rolloverGestureRecognizer = [(CNAvatarCardActionsView *)self rolloverGestureRecognizer];
+  [(CNAvatarCardActionsView *)self _stopTrackingRolloverOnCellAtIndexPath:highlightedIndexPath withGestureRecognizer:rolloverGestureRecognizer];
 
   [(CNAvatarCardActionsView *)self setHighlightedIndexPath:0];
-  v9 = [v6 mutableCopy];
+  v9 = [actionsCopy mutableCopy];
 
-  if (v14)
+  if (blockCopy)
   {
     [(CNAvatarCardActionsView *)self reloadDataWithBlock:?];
   }
@@ -821,46 +821,46 @@ void __37__CNAvatarCardActionsView_reloadData__block_invoke(uint64_t a1)
     [(CNAvatarCardActionsView *)self reloadData];
   }
 
-  v10 = [(CNAvatarCardActionsView *)self delegate];
+  delegate = [(CNAvatarCardActionsView *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(CNAvatarCardActionsView *)self delegate];
-    [v12 cardActionsView:self didShowActions:v9];
+    delegate2 = [(CNAvatarCardActionsView *)self delegate];
+    [delegate2 cardActionsView:self didShowActions:v9];
   }
 
-  v13 = [(CNAvatarCardActionsView *)self rolloverGestureRecognizer];
-  [(CNAvatarCardActionsView *)self updateRollover:v13];
+  rolloverGestureRecognizer2 = [(CNAvatarCardActionsView *)self rolloverGestureRecognizer];
+  [(CNAvatarCardActionsView *)self updateRollover:rolloverGestureRecognizer2];
 }
 
-- (void)_updateActionsWithBlock:(id)a3
+- (void)_updateActionsWithBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   [(CNAvatarCardActionsView *)self setExpanded:0];
-  v6 = [(CNAvatarCardActionsView *)self actionsManager];
-  if (!v6)
+  actionsManager = [(CNAvatarCardActionsView *)self actionsManager];
+  if (!actionsManager)
   {
-    v9 = [(CNAvatarCardActionsView *)self contacts];
-    v7 = [CNQuickActionsManager actionsManagerForContacts:v9];
+    contacts = [(CNAvatarCardActionsView *)self contacts];
+    v7 = [CNQuickActionsManager actionsManagerForContacts:contacts];
 
-    v10 = [(CNAvatarCardActionsView *)self actionCategories];
-    [v7 setCategories:v10];
+    actionCategories = [(CNAvatarCardActionsView *)self actionCategories];
+    [v7 setCategories:actionCategories];
 
-    v11 = [MEMORY[0x1E69DC938] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
-    if (v12 || ([MEMORY[0x1E69DCEB0] mainScreen], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "_referenceBounds"), CGRectGetHeight(v18) <= 667.0))
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+    if (userInterfaceIdiom || ([MEMORY[0x1E69DCEB0] mainScreen], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "_referenceBounds"), CGRectGetHeight(v18) <= 667.0))
     {
-      v13 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v13 userInterfaceIdiom])
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom])
       {
         [v7 setDesiredNumberOfActions:5];
       }
 
       else
       {
-        v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v14 _referenceBounds];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen _referenceBounds];
         if (CGRectGetHeight(v19) <= 568.0)
         {
           v15 = 5;
@@ -874,7 +874,7 @@ void __37__CNAvatarCardActionsView_reloadData__block_invoke(uint64_t a1)
         [v7 setDesiredNumberOfActions:v15];
       }
 
-      if (v12)
+      if (userInterfaceIdiom)
       {
         goto LABEL_14;
       }
@@ -894,15 +894,15 @@ LABEL_14:
     v16[2] = __51__CNAvatarCardActionsView__updateActionsWithBlock___block_invoke;
     v16[3] = &unk_1E74E6DD0;
     v16[4] = self;
-    v17 = v5;
+    v17 = blockCopy;
     [v7 updateActionsWithBlock:v16];
 
     goto LABEL_15;
   }
 
-  v7 = v6;
-  v8 = [(CNAvatarCardActionsView *)self _effectiveManagerActions];
-  [(CNAvatarCardActionsView *)self _updateWithActions:v8 withBlock:v5];
+  v7 = actionsManager;
+  _effectiveManagerActions = [(CNAvatarCardActionsView *)self _effectiveManagerActions];
+  [(CNAvatarCardActionsView *)self _updateWithActions:_effectiveManagerActions withBlock:blockCopy];
 
 LABEL_15:
 }
@@ -930,11 +930,11 @@ void __51__CNAvatarCardActionsView__updateActionsWithBlock___block_invoke(uint64
   return v3;
 }
 
-- (void)setActionsReversed:(BOOL)a3
+- (void)setActionsReversed:(BOOL)reversed
 {
-  if (self->_actionsReversed != a3)
+  if (self->_actionsReversed != reversed)
   {
-    self->_actionsReversed = a3;
+    self->_actionsReversed = reversed;
     if (![(CNAvatarCardActionsView *)self expanded])
     {
 
@@ -943,14 +943,14 @@ void __51__CNAvatarCardActionsView__updateActionsWithBlock___block_invoke(uint64
   }
 }
 
-- (void)setActionsImageFrame:(CGRect)a3
+- (void)setActionsImageFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_actionsImageFrame = &self->_actionsImageFrame;
-  if (!CGRectEqualToRect(a3, self->_actionsImageFrame))
+  if (!CGRectEqualToRect(frame, self->_actionsImageFrame))
   {
     p_actionsImageFrame->origin.x = x;
     p_actionsImageFrame->origin.y = y;
@@ -961,78 +961,78 @@ void __51__CNAvatarCardActionsView__updateActionsWithBlock___block_invoke(uint64
   }
 }
 
-- (void)setContacts:(id)a3
+- (void)setContacts:(id)contacts
 {
-  v5 = a3;
-  if (self->_contacts != v5)
+  contactsCopy = contacts;
+  if (self->_contacts != contactsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contacts, a3);
+    v6 = contactsCopy;
+    objc_storeStrong(&self->_contacts, contacts);
     [(CNAvatarCardActionsView *)self setActionsManager:0];
-    v5 = v6;
+    contactsCopy = v6;
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = [(CNAvatarCardActionsView *)self retargetBehavior];
-  v5 = v4;
-  if (a3)
+  retargetBehavior = [(CNAvatarCardActionsView *)self retargetBehavior];
+  v5 = retargetBehavior;
+  if (window)
   {
-    [v4 activateWithCompletionBlock:0];
+    [retargetBehavior activateWithCompletionBlock:0];
   }
 
   else
   {
-    [v4 deactivate];
+    [retargetBehavior deactivate];
   }
 }
 
-- (CNAvatarCardActionsView)initWithFrame:(CGRect)a3
+- (CNAvatarCardActionsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v23[4] = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = CNAvatarCardActionsView;
   v7 = [(CNAvatarCardActionsView *)&v22 initWithFrame:?];
   [(CNAvatarCardActionsView *)v7 setBackgroundColor:0];
-  v8 = [[CNAvatarCardActionsTableView alloc] initWithFrame:1 style:x, y, width, height];
-  [(CNAvatarCardActionsTableView *)v8 setRowHeight:62.0];
-  [(CNAvatarCardActionsTableView *)v8 setSeparatorStyle:1];
-  [(CNAvatarCardActionsTableView *)v8 setScrollEnabled:1];
-  [(CNAvatarCardActionsTableView *)v8 setAlwaysBounceVertical:0];
-  [(CNAvatarCardActionsTableView *)v8 setBackgroundColor:0];
-  [(CNAvatarCardActionsTableView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(CNAvatarCardActionsTableView *)v8 _setDrawsSeparatorAtTopOfSections:0];
-  [(CNAvatarCardActionsTableView *)v8 _setTopPadding:0.0];
-  [(CNAvatarCardActionsTableView *)v8 _setBottomPadding:0.0];
-  [(CNAvatarCardActionsTableView *)v8 setSectionHeaderHeight:0.0];
-  [(CNAvatarCardActionsTableView *)v8 setSectionFooterHeight:0.0];
-  [(CNAvatarCardActionsTableView *)v8 _setSeparatorBackdropOverlayBlendMode:1];
-  [(CNAvatarCardActionsView *)v7 addSubview:v8];
-  [(CNAvatarCardActionsView *)v7 setTableView:v8];
+  height = [[CNAvatarCardActionsTableView alloc] initWithFrame:1 style:x, y, width, height];
+  [(CNAvatarCardActionsTableView *)height setRowHeight:62.0];
+  [(CNAvatarCardActionsTableView *)height setSeparatorStyle:1];
+  [(CNAvatarCardActionsTableView *)height setScrollEnabled:1];
+  [(CNAvatarCardActionsTableView *)height setAlwaysBounceVertical:0];
+  [(CNAvatarCardActionsTableView *)height setBackgroundColor:0];
+  [(CNAvatarCardActionsTableView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(CNAvatarCardActionsTableView *)height _setDrawsSeparatorAtTopOfSections:0];
+  [(CNAvatarCardActionsTableView *)height _setTopPadding:0.0];
+  [(CNAvatarCardActionsTableView *)height _setBottomPadding:0.0];
+  [(CNAvatarCardActionsTableView *)height setSectionHeaderHeight:0.0];
+  [(CNAvatarCardActionsTableView *)height setSectionFooterHeight:0.0];
+  [(CNAvatarCardActionsTableView *)height _setSeparatorBackdropOverlayBlendMode:1];
+  [(CNAvatarCardActionsView *)v7 addSubview:height];
+  [(CNAvatarCardActionsView *)v7 setTableView:height];
   v9 = MEMORY[0x1E696ACD8];
-  v10 = [MEMORY[0x1E696ACD8] constraintWithItem:v8 attribute:3 relatedBy:0 toItem:v7 attribute:3 multiplier:1.0 constant:0.0];
+  v10 = [MEMORY[0x1E696ACD8] constraintWithItem:height attribute:3 relatedBy:0 toItem:v7 attribute:3 multiplier:1.0 constant:0.0];
   v23[0] = v10;
-  v11 = [MEMORY[0x1E696ACD8] constraintWithItem:v8 attribute:1 relatedBy:0 toItem:v7 attribute:1 multiplier:1.0 constant:0.0];
+  v11 = [MEMORY[0x1E696ACD8] constraintWithItem:height attribute:1 relatedBy:0 toItem:v7 attribute:1 multiplier:1.0 constant:0.0];
   v23[1] = v11;
-  v12 = [MEMORY[0x1E696ACD8] constraintWithItem:v8 attribute:4 relatedBy:0 toItem:v7 attribute:4 multiplier:1.0 constant:0.0];
+  v12 = [MEMORY[0x1E696ACD8] constraintWithItem:height attribute:4 relatedBy:0 toItem:v7 attribute:4 multiplier:1.0 constant:0.0];
   v23[2] = v12;
-  v13 = [MEMORY[0x1E696ACD8] constraintWithItem:v8 attribute:2 relatedBy:0 toItem:v7 attribute:2 multiplier:1.0 constant:0.0];
+  v13 = [MEMORY[0x1E696ACD8] constraintWithItem:height attribute:2 relatedBy:0 toItem:v7 attribute:2 multiplier:1.0 constant:0.0];
   v23[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
   [v9 activateConstraints:v14];
 
   v15 = +[CNAvatarCardActionCell cellNibForActions];
-  [(CNAvatarCardActionsTableView *)v8 registerNib:v15 forCellReuseIdentifier:@"actionCell"];
+  [(CNAvatarCardActionsTableView *)height registerNib:v15 forCellReuseIdentifier:@"actionCell"];
   v16 = +[CNAvatarCardActionCell cellNibForContacts];
 
-  [(CNAvatarCardActionsTableView *)v8 registerNib:v16 forCellReuseIdentifier:@"contactCell"];
-  [(CNAvatarCardActionsTableView *)v8 setDataSource:v7];
-  [(CNAvatarCardActionsTableView *)v8 setDelegate:v7];
+  [(CNAvatarCardActionsTableView *)height registerNib:v16 forCellReuseIdentifier:@"contactCell"];
+  [(CNAvatarCardActionsTableView *)height setDataSource:v7];
+  [(CNAvatarCardActionsTableView *)height setDelegate:v7];
   v17 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v7 action:sel_updateRollover_];
   [v17 setAllowableMovement:0.0];
   [v17 setMinimumPressDuration:0.0];
@@ -1040,10 +1040,10 @@ void __51__CNAvatarCardActionsView__updateActionsWithBlock___block_invoke(uint64
   [v17 setDelegate:v7];
   [(CNAvatarCardActionsView *)v7 addGestureRecognizer:v17];
   [(CNAvatarCardActionsView *)v7 setSelectionGestureRecognizer:v17];
-  v18 = [MEMORY[0x1E69DD6E8] defaultConfiguration];
-  v19 = [v18 tweakedConfigurationForClass:objc_opt_class() usage:@"retarget"];
+  defaultConfiguration = [MEMORY[0x1E69DD6E8] defaultConfiguration];
+  v19 = [defaultConfiguration tweakedConfigurationForClass:objc_opt_class() usage:@"retarget"];
 
-  v20 = [objc_alloc(MEMORY[0x1E69DCF40]) initWithConfiguration:v19 coordinateSpace:v8];
+  v20 = [objc_alloc(MEMORY[0x1E69DCF40]) initWithConfiguration:v19 coordinateSpace:height];
   [(CNAvatarCardActionsView *)v7 setRetargetBehavior:v20];
 
   return v7;

@@ -1,25 +1,25 @@
 @interface HealthTopicStore.HealthTopicStoreProxy
 - (_TtCC12HealthTopics16HealthTopicStoreP33_BB24626011902959971089C4FF0BF64621HealthTopicStoreProxy)init;
-- (void)client_deliverWithError:(id)a3 for:(id)a4;
-- (void)client_deliverWithResponse:(id)a3 finished:(BOOL)a4 for:(id)a5;
+- (void)client_deliverWithError:(id)error for:(id)for;
+- (void)client_deliverWithResponse:(id)response finished:(BOOL)finished for:(id)for;
 @end
 
 @implementation HealthTopicStore.HealthTopicStoreProxy
 
-- (void)client_deliverWithResponse:(id)a3 finished:(BOOL)a4 for:(id)a5
+- (void)client_deliverWithResponse:(id)response finished:(BOOL)finished for:(id)for
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  sub_251F2DB8C(v8, a4, v9);
+  responseCopy = response;
+  forCopy = for;
+  selfCopy = self;
+  sub_251F2DB8C(responseCopy, finished, forCopy);
 }
 
-- (void)client_deliverWithError:(id)a3 for:(id)a4
+- (void)client_deliverWithError:(id)error for:(id)for
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  sub_251F2DFDC(v8, v6);
+  errorCopy = error;
+  forCopy = for;
+  selfCopy = self;
+  sub_251F2DFDC(errorCopy, forCopy);
 }
 
 - (_TtCC12HealthTopics16HealthTopicStoreP33_BB24626011902959971089C4FF0BF64621HealthTopicStoreProxy)init

@@ -1,8 +1,8 @@
 @interface TSCHChartAxisLineLayoutItem
-- (CGAffineTransform)transformForRenderingOutElementSize:(SEL)a3 outClipRect:(CGSize *)a4;
+- (CGAffineTransform)transformForRenderingOutElementSize:(SEL)size outClipRect:(CGSize *)rect;
 - (CGRect)calcDrawingRect;
 - (CGSize)calcMinSize;
-- (TSCHChartAxisLineLayoutItem)initWithParent:(id)a3;
+- (TSCHChartAxisLineLayoutItem)initWithParent:(id)parent;
 - (double)p_strokeWidth;
 - (id)p_axis;
 - (id)p_axisLayoutItemParent;
@@ -10,11 +10,11 @@
 
 @implementation TSCHChartAxisLineLayoutItem
 
-- (TSCHChartAxisLineLayoutItem)initWithParent:(id)a3
+- (TSCHChartAxisLineLayoutItem)initWithParent:(id)parent
 {
   v4.receiver = self;
   v4.super_class = TSCHChartAxisLineLayoutItem;
-  return [(TSCHChartLayoutItem *)&v4 initWithParent:a3];
+  return [(TSCHChartLayoutItem *)&v4 initWithParent:parent];
 }
 
 - (id)p_axisLayoutItemParent
@@ -199,7 +199,7 @@ LABEL_8:
   return result;
 }
 
-- (CGAffineTransform)transformForRenderingOutElementSize:(SEL)a3 outClipRect:(CGSize *)a4
+- (CGAffineTransform)transformForRenderingOutElementSize:(SEL)size outClipRect:(CGSize *)rect
 {
   v134 = *MEMORY[0x277D85DE8];
   x = *MEMORY[0x277CBF398];
@@ -214,7 +214,7 @@ LABEL_8:
   *&v127.c = v121;
   v120 = *(MEMORY[0x277CBF2C0] + 32);
   *&v127.tx = v120;
-  v16 = objc_msgSend_parent(self, a3, *&v120, *&v121, v5);
+  v16 = objc_msgSend_parent(self, size, *&v120, *&v121, v5);
   v21 = objc_msgSend_model(self, v17, v18, v19, v20);
   v26 = objc_msgSend_axisID(v16, v22, v23, v24, v25);
   v31 = objc_msgSend_axisForID_(v21, v27, v28, v29, v30, v26);
@@ -414,10 +414,10 @@ LABEL_20:
     a5->size.height = v13;
   }
 
-  if (a4)
+  if (rect)
   {
-    a4->width = Height;
-    a4->height = v15;
+    rect->width = Height;
+    rect->height = v15;
   }
 
   v96 = *&v127.c;

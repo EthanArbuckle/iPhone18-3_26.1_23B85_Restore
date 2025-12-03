@@ -1,19 +1,19 @@
 @interface SRCHClient
 + (id)_connectionToService;
 + (void)initialize;
-- (SRCHClient)initWithQueue:(id)a3 XPCConnection:(id)a4;
-- (void)_fetchCustomCategoriesWithRetryAttempt:(unint64_t)a3 bundleIdentifiers:(id)a4 completion:(id)a5;
+- (SRCHClient)initWithQueue:(id)queue XPCConnection:(id)connection;
+- (void)_fetchCustomCategoriesWithRetryAttempt:(unint64_t)attempt bundleIdentifiers:(id)identifiers completion:(id)completion;
 - (void)_setupConnection;
 - (void)dealloc;
-- (void)downloadDatabaseAssetIfNeeded:(id)a3;
-- (void)fetchVersion:(id)a3;
+- (void)downloadDatabaseAssetIfNeeded:(id)needed;
+- (void)fetchVersion:(id)version;
 @end
 
 @implementation SRCHClient
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10002B230 = os_log_create("com.apple.SensorKit", "CHClient");
   }
@@ -52,15 +52,15 @@
   objc_destroyWeak(buf);
 }
 
-- (SRCHClient)initWithQueue:(id)a3 XPCConnection:(id)a4
+- (SRCHClient)initWithQueue:(id)queue XPCConnection:(id)connection
 {
   v8.receiver = self;
   v8.super_class = SRCHClient;
   v6 = [(SRCHClient *)&v8 init];
   if (v6)
   {
-    v6->_q = a3;
-    v6->_connection = a4;
+    v6->_q = queue;
+    v6->_connection = connection;
     [(SRCHClient *)v6 _setupConnection];
   }
 
@@ -74,7 +74,7 @@
   [(SRCHClient *)&v3 dealloc];
 }
 
-- (void)_fetchCustomCategoriesWithRetryAttempt:(unint64_t)a3 bundleIdentifiers:(id)a4 completion:(id)a5
+- (void)_fetchCustomCategoriesWithRetryAttempt:(unint64_t)attempt bundleIdentifiers:(id)identifiers completion:(id)completion
 {
   v9 = sub_100001A70(self);
   objc_initWeak(&location, self);
@@ -82,33 +82,33 @@
   v10[1] = 3221225472;
   v10[2] = sub_100001C84;
   v10[3] = &unk_100024908;
-  v11[1] = a3;
+  v11[1] = attempt;
   objc_copyWeak(v11, &location);
-  v10[4] = a4;
-  v10[5] = a5;
-  [objc_msgSend(v9 remoteObjectProxyWithErrorHandler:{v10), "fetchCustomCategoriesForBundleIdentifiers:completion:", a4, a5}];
+  v10[4] = identifiers;
+  v10[5] = completion;
+  [objc_msgSend(v9 remoteObjectProxyWithErrorHandler:{v10), "fetchCustomCategoriesForBundleIdentifiers:completion:", identifiers, completion}];
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
 }
 
-- (void)fetchVersion:(id)a3
+- (void)fetchVersion:(id)version
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100001E80;
   v3[3] = &unk_100024930;
-  v3[4] = a3;
-  [objc_msgSend(sub_100001A70(self) remoteObjectProxyWithErrorHandler:{v3), "fetchVersion:", a3}];
+  v3[4] = version;
+  [objc_msgSend(sub_100001A70(self) remoteObjectProxyWithErrorHandler:{v3), "fetchVersion:", version}];
 }
 
-- (void)downloadDatabaseAssetIfNeeded:(id)a3
+- (void)downloadDatabaseAssetIfNeeded:(id)needed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100001FE4;
   v3[3] = &unk_100024930;
-  v3[4] = a3;
-  [objc_msgSend(sub_100001A70(self) remoteObjectProxyWithErrorHandler:{v3), "downloadDatabaseAssetIfNeeded:", a3}];
+  v3[4] = needed;
+  [objc_msgSend(sub_100001A70(self) remoteObjectProxyWithErrorHandler:{v3), "downloadDatabaseAssetIfNeeded:", needed}];
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface _UIApplicationSceneDisplayClientComponent
 - (UIEdgeInsets)displayBasedSafeAreaInsets;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 @end
 
 @implementation _UIApplicationSceneDisplayClientComponent
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [UIScene _sceneForFBSScene:a3];
+  settingsCopy = settings;
+  v6 = [UIScene _sceneForFBSScene:scene];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 settingsDiff];
-    if ([v7 containsProperty:sel_displayBasedSafeAreaInsetsValue])
+    settingsDiff = [settingsCopy settingsDiff];
+    if ([settingsDiff containsProperty:sel_displayBasedSafeAreaInsetsValue])
     {
 
 LABEL_7:
       v11 = v6;
-      v12 = [v5 transitionContext];
+      transitionContext = [settingsCopy transitionContext];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __69___UIApplicationSceneDisplayClientComponent_scene_didUpdateSettings___block_invoke;
       v14[3] = &unk_1E70F5AC0;
       v15 = v11;
       v13 = v11;
-      _UISceneSettingsDiffActionPerformChangesWithTransitionContextAndCompletion(v12, v14, 0);
+      _UISceneSettingsDiffActionPerformChangesWithTransitionContextAndCompletion(transitionContext, v14, 0);
 
       goto LABEL_8;
     }
 
-    v9 = [v5 settingsDiff];
-    v10 = [v9 containsProperty:sel_interfaceOrientation];
+    settingsDiff2 = [settingsCopy settingsDiff];
+    v10 = [settingsDiff2 containsProperty:sel_interfaceOrientation];
 
     if (v10)
     {
@@ -57,13 +57,13 @@ LABEL_8:
 - (UIEdgeInsets)displayBasedSafeAreaInsets
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(FBSSceneComponent *)self clientScene];
-  v4 = [v3 settings];
-  v5 = [v4 displayBasedSafeAreaInsetsValue];
+  clientScene = [(FBSSceneComponent *)self clientScene];
+  settings = [clientScene settings];
+  displayBasedSafeAreaInsetsValue = [settings displayBasedSafeAreaInsetsValue];
 
-  if (v5)
+  if (displayBasedSafeAreaInsetsValue)
   {
-    [v5 UIEdgeInsetsValue];
+    [displayBasedSafeAreaInsetsValue UIEdgeInsetsValue];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -72,12 +72,12 @@ LABEL_8:
 
   else
   {
-    v14 = [(FBSSceneComponent *)self clientScene];
-    v15 = [v14 settings];
+    clientScene2 = [(FBSSceneComponent *)self clientScene];
+    settings2 = [clientScene2 settings];
 
-    if ([v15 isUISubclass])
+    if ([settings2 isUISubclass])
     {
-      [v15 safeAreaInsetsPortrait];
+      [settings2 safeAreaInsetsPortrait];
       v7 = v16;
       v9 = v17;
       v11 = v18;
@@ -91,7 +91,7 @@ LABEL_8:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
         v25 = 138412290;
-        v26 = v15;
+        v26 = settings2;
         _os_log_impl(&dword_188A29000, v20, OS_LOG_TYPE_FAULT, "Unexpected settings for display client component: %@", &v25, 0xCu);
       }
 

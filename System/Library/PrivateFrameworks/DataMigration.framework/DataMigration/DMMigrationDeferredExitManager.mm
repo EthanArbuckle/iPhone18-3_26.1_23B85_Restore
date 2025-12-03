@@ -2,8 +2,8 @@
 + (id)_serialQueue;
 - (BOOL)_isDeferringExit;
 - (void)_resetGlobalState;
-- (void)cancelDeferredExitWithConnection:(id)a3;
-- (void)deferExitWithConnection:(id)a3;
+- (void)cancelDeferredExitWithConnection:(id)connection;
+- (void)deferExitWithConnection:(id)connection;
 - (void)migrationDidEnd;
 - (void)migrationDidStart;
 @end
@@ -107,9 +107,9 @@ void __49__DMMigrationDeferredExitManager_migrationDidEnd__block_invoke_2(uint64
   }
 }
 
-- (void)deferExitWithConnection:(id)a3
+- (void)deferExitWithConnection:(id)connection
 {
-  if ([a3 hasEntitlement:@"com.apple.datamigrator.deferexit"])
+  if ([connection hasEntitlement:@"com.apple.datamigrator.deferexit"])
   {
     v4 = +[DMMigrationDeferredExitManager _serialQueue];
     dispatch_sync(v4, &__block_literal_global_20);
@@ -137,9 +137,9 @@ void __58__DMMigrationDeferredExitManager_deferExitWithConnection___block_invoke
   }
 }
 
-- (void)cancelDeferredExitWithConnection:(id)a3
+- (void)cancelDeferredExitWithConnection:(id)connection
 {
-  if ([a3 hasEntitlement:@"com.apple.datamigrator.deferexit"])
+  if ([connection hasEntitlement:@"com.apple.datamigrator.deferexit"])
   {
     v5 = +[DMMigrationDeferredExitManager _serialQueue];
     block[0] = MEMORY[0x277D85DD0];

@@ -1,6 +1,6 @@
 @interface ADCommandCenterCurrentRequest
 - (id)description;
-- (void)setCurrentRequestCommand:(id)a3;
+- (void)setCurrentRequestCommand:(id)command;
 @end
 
 @implementation ADCommandCenterCurrentRequest
@@ -12,13 +12,13 @@
   return v2;
 }
 
-- (void)setCurrentRequestCommand:(id)a3
+- (void)setCurrentRequestCommand:(id)command
 {
-  objc_storeStrong(&self->_currentRequestCommand, a3);
-  v7 = a3;
-  v5 = [v7 aceId];
+  objc_storeStrong(&self->_currentRequestCommand, command);
+  commandCopy = command;
+  aceId = [commandCopy aceId];
   currentRequestId = self->_currentRequestId;
-  self->_currentRequestId = v5;
+  self->_currentRequestId = aceId;
 }
 
 @end

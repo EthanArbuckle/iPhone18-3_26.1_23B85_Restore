@@ -13,7 +13,7 @@
   {
     v7 = INImageProxyInjectionQueue();
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([a1 count])
+    if ([self count])
     {
       v9 = objc_alloc_init(MEMORY[0x1E696ADC8]);
       v24 = v7;
@@ -24,7 +24,7 @@
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      obj = a1;
+      obj = self;
       v10 = [obj countByEnumeratingWithState:&v34 objects:v41 count:16];
       if (v10)
       {

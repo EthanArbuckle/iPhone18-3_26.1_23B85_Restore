@@ -1,26 +1,26 @@
 @interface HMDCameraSnapshotFileManager
 + (id)logCategory;
-- (HMDCameraSnapshotFileManager)initWithWorkQueue:(id)a3 imageCacheDirectory:(id)a4 logIdentifier:(id)a5 uniqueIdentifier:(id)a6 messageDispatcher:(id)a7;
-- (HMDCameraSnapshotFileManager)initWithWorkQueue:(id)a3 imageCacheDirectory:(id)a4 logIdentifier:(id)a5 uniqueIdentifier:(id)a6 messageDispatcher:(id)a7 snapshotSlotManager:(id)a8 notificationCenter:(id)a9;
+- (HMDCameraSnapshotFileManager)initWithWorkQueue:(id)queue imageCacheDirectory:(id)directory logIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier messageDispatcher:(id)dispatcher;
+- (HMDCameraSnapshotFileManager)initWithWorkQueue:(id)queue imageCacheDirectory:(id)directory logIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier messageDispatcher:(id)dispatcher snapshotSlotManager:(id)manager notificationCenter:(id)center;
 - (NSDictionary)encodedMostRecentSnapshot;
-- (id)_snapshotFileWithSlotIdentifier:(id *)a1;
-- (id)createSlotForSnapshotFile:(id)a3 requestMessages:(id)a4 shouldNotifyClients:(BOOL)a5;
-- (id)encodedMostRecentSnapshotForMessage:(id)a3;
-- (void)_clearSlotForSnapshotFile:(void *)a1;
-- (void)_createSlotForSnapshotFile:(void *)a1;
+- (id)_snapshotFileWithSlotIdentifier:(id *)identifier;
+- (id)createSlotForSnapshotFile:(id)file requestMessages:(id)messages shouldNotifyClients:(BOOL)clients;
+- (id)encodedMostRecentSnapshotForMessage:(id)message;
+- (void)_clearSlotForSnapshotFile:(void *)file;
+- (void)_createSlotForSnapshotFile:(void *)file;
 - (void)_notifyClientsOfUpdatedMostRecentSnapshot;
-- (void)backboardServicesRelaunched:(id)a3;
-- (void)handleFillSnapshotSlot:(id)a3;
-- (void)handleProcessStateChange:(id)a3;
-- (void)handleReleaseSnapshot:(id)a3;
+- (void)backboardServicesRelaunched:(id)relaunched;
+- (void)handleFillSnapshotSlot:(id)slot;
+- (void)handleProcessStateChange:(id)change;
+- (void)handleReleaseSnapshot:(id)snapshot;
 - (void)registerForMessages;
 @end
 
 @implementation HMDCameraSnapshotFileManager
 
-- (void)backboardServicesRelaunched:(id)a3
+- (void)backboardServicesRelaunched:(id)relaunched
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 32, 1);
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __60__HMDCameraSnapshotFileManager_backboardServicesRelaunched___block_invoke;
   block[3] = &unk_279735D00;
-  block[4] = v3;
+  block[4] = selfCopy;
   dispatch_async(&self->super.super, block);
 }
 
@@ -66,56 +66,56 @@ void __60__HMDCameraSnapshotFileManager_backboardServicesRelaunched___block_invo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clearSlotForSnapshotFile:(void *)a1
+- (void)_clearSlotForSnapshotFile:(void *)file
 {
-  if (a1)
+  if (file)
   {
     v8 = a2;
-    Property = objc_getProperty(a1, v3, 32, 1);
+    Property = objc_getProperty(file, v3, 32, 1);
     dispatch_assert_queue_V2(Property);
-    v6 = objc_getProperty(a1, v5, 64, 1);
-    v7 = [v8 slotIdentifier];
-    [v6 clearSlotWithIdentifier:v7];
+    v6 = objc_getProperty(file, v5, 64, 1);
+    slotIdentifier = [v8 slotIdentifier];
+    [v6 clearSlotWithIdentifier:slotIdentifier];
 
     [v8 setFilled:0];
   }
 }
 
-- (void)_createSlotForSnapshotFile:(void *)a1
+- (void)_createSlotForSnapshotFile:(void *)file
 {
-  if (a1)
+  if (file)
   {
     v3 = a2;
-    Property = objc_getProperty(a1, v4, 32, 1);
+    Property = objc_getProperty(file, v4, 32, 1);
     dispatch_assert_queue_V2(Property);
-    v7 = [objc_getProperty(a1 v6];
+    v7 = [objc_getProperty(file v6];
     [v3 setSlotIdentifier:v7];
   }
 }
 
 - (void)_notifyClientsOfUpdatedMostRecentSnapshot
 {
-  if (a1)
+  if (self)
   {
-    Property = objc_getProperty(a1, a2, 32, 1);
+    Property = objc_getProperty(self, a2, 32, 1);
     dispatch_assert_queue_V2(Property);
-    v11 = [a1 encodedMostRecentSnapshot];
+    encodedMostRecentSnapshot = [self encodedMostRecentSnapshot];
     v4 = objc_alloc(MEMORY[0x277D0F820]);
-    v5 = [a1 uniqueIdentifier];
-    v6 = [v4 initWithTarget:v5];
+    uniqueIdentifier = [self uniqueIdentifier];
+    v6 = [v4 initWithTarget:uniqueIdentifier];
 
     v7 = objc_alloc(MEMORY[0x277D0F848]);
-    v8 = [v7 initWithName:*MEMORY[0x277CCF5C0] destination:v6 payload:v11];
+    v8 = [v7 initWithName:*MEMORY[0x277CCF5C0] destination:v6 payload:encodedMostRecentSnapshot];
     v9 = [[HMDHomeManagerXPCMessageSendPolicy alloc] initWithEntitlements:1 options:513 active:1];
     [v8 setSendPolicy:v9];
 
-    [objc_getProperty(a1 v10];
+    [objc_getProperty(self v10];
   }
 }
 
-- (void)handleProcessStateChange:(id)a3
+- (void)handleProcessStateChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   if (self)
   {
     Property = objc_getProperty(self, v4, 32, 1);
@@ -130,9 +130,9 @@ void __60__HMDCameraSnapshotFileManager_backboardServicesRelaunched___block_invo
   v8[1] = 3221225472;
   v8[2] = __57__HMDCameraSnapshotFileManager_handleProcessStateChange___block_invoke;
   v8[3] = &unk_2797359B0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = changeCopy;
+  selfCopy = self;
+  v7 = changeCopy;
   dispatch_async(Property, v8);
 }
 
@@ -386,20 +386,20 @@ LABEL_22:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_snapshotFileWithSlotIdentifier:(id *)a1
+- (id)_snapshotFileWithSlotIdentifier:(id *)identifier
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (identifier)
   {
-    Property = objc_getProperty(a1, v3, 32, 1);
+    Property = objc_getProperty(identifier, v3, 32, 1);
     dispatch_assert_queue_V2(Property);
-    v7 = [objc_getProperty(a1 v6];
+    v7 = [objc_getProperty(identifier v6];
     v8 = [v7 isEqualToNumber:v4];
 
     if (v8)
     {
-      v10 = objc_getProperty(a1, v9, 72, 1);
+      v10 = objc_getProperty(identifier, v9, 72, 1);
       goto LABEL_15;
     }
 
@@ -407,8 +407,8 @@ LABEL_22:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = [a1[3] objectEnumerator];
-    v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    objectEnumerator = [identifier[3] objectEnumerator];
+    v12 = [objectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v12)
     {
       v13 = v12;
@@ -419,12 +419,12 @@ LABEL_22:
         {
           if (*v22 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
-          v17 = [v16 slotIdentifier];
-          v18 = [v17 isEqualToNumber:v4];
+          slotIdentifier = [v16 slotIdentifier];
+          v18 = [slotIdentifier isEqualToNumber:v4];
 
           if (v18)
           {
@@ -434,7 +434,7 @@ LABEL_22:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v13 = [objectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v13)
         {
           continue;
@@ -455,30 +455,30 @@ LABEL_15:
 
 - (NSDictionary)encodedMostRecentSnapshot
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v3 = objc_getProperty(self, a2, 72, 1);
     if (v3)
     {
       v5 = v3;
-      Property = objc_getProperty(v2, v4, 72, 1);
-      v2 = encodedSnapshotFile(Property);
+      Property = objc_getProperty(selfCopy, v4, 72, 1);
+      selfCopy = encodedSnapshotFile(Property);
     }
 
     else
     {
-      v2 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)encodedMostRecentSnapshotForMessage:(id)a3
+- (id)encodedMostRecentSnapshotForMessage:(id)message
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  messageCopy = message;
   if (self)
   {
     Property = objc_getProperty(self, v4, 32, 1);
@@ -493,21 +493,21 @@ LABEL_15:
   }
 
   v9 = v8;
-  v10 = [v9 slotIdentifier];
+  slotIdentifier = [v9 slotIdentifier];
 
-  if (!v10)
+  if (!slotIdentifier)
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       v26 = HMFGetLogIdentifier();
-      v27 = [v5 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v31 = 138543874;
       v32 = v26;
       v33 = 2112;
-      v34 = v27;
+      v34 = shortDescription;
       v35 = 2112;
       v36 = v9;
       _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_INFO, "%{public}@Not encoding invalid most recent snapshot for message %@: %@", &v31, 0x20u);
@@ -517,8 +517,8 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v11 = [v9 dateCaptured];
-  [v11 timeIntervalSinceNow];
+  dateCaptured = [v9 dateCaptured];
+  [dateCaptured timeIntervalSinceNow];
   v13 = fabs(v12);
 
   if (v13 > 2.0)
@@ -528,14 +528,14 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  v14 = [v5 proxyConnection];
-  v15 = [v14 processInfo];
+  proxyConnection = [messageCopy proxyConnection];
+  processInfo = [proxyConnection processInfo];
 
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy2 = self;
   v18 = HMFGetOSLogHandle();
   v19 = v18;
-  if (v15)
+  if (processInfo)
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -543,7 +543,7 @@ LABEL_14:
       v31 = 138543874;
       v32 = v20;
       v33 = 2112;
-      v34 = v15;
+      v34 = processInfo;
       v35 = 2112;
       v36 = v9;
       _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@Associating process info %@ with most recent snapshot file: %@", &v31, 0x20u);
@@ -552,7 +552,7 @@ LABEL_14:
     objc_autoreleasePoolPop(v16);
     if (self)
     {
-      snapshotFilesByAssociatedProcessInfo = v17->_snapshotFilesByAssociatedProcessInfo;
+      snapshotFilesByAssociatedProcessInfo = selfCopy2->_snapshotFilesByAssociatedProcessInfo;
     }
 
     else
@@ -560,7 +560,7 @@ LABEL_14:
       snapshotFilesByAssociatedProcessInfo = 0;
     }
 
-    [(NSMapTable *)snapshotFilesByAssociatedProcessInfo setObject:v9 forKey:v15];
+    [(NSMapTable *)snapshotFilesByAssociatedProcessInfo setObject:v9 forKey:processInfo];
     v22 = encodedSnapshotFile(v9);
   }
 
@@ -572,7 +572,7 @@ LABEL_14:
       v31 = 138543618;
       v32 = v28;
       v33 = 2112;
-      v34 = v5;
+      v34 = messageCopy;
       _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Cannot encode most recent snapshot for message without process info: %@", &v31, 0x16u);
     }
 
@@ -586,12 +586,12 @@ LABEL_19:
   return v22;
 }
 
-- (id)createSlotForSnapshotFile:(id)a3 requestMessages:(id)a4 shouldNotifyClients:(BOOL)a5
+- (id)createSlotForSnapshotFile:(id)file requestMessages:(id)messages shouldNotifyClients:(BOOL)clients
 {
-  v71 = a5;
+  clientsCopy = clients;
   v90 = *MEMORY[0x277D85DE8];
-  v74 = a3;
-  v8 = a4;
+  fileCopy = file;
+  messagesCopy = messages;
   if (self)
   {
     Property = objc_getProperty(self, v7, 32, 1);
@@ -603,13 +603,13 @@ LABEL_19:
   }
 
   dispatch_assert_queue_V2(Property);
-  v11 = [v74 filePath];
+  filePath = [fileCopy filePath];
   if (self)
   {
     v12 = objc_getProperty(self, v10, 32, 1);
     dispatch_assert_queue_V2(v12);
     v14 = [objc_getProperty(self v13];
-    v15 = [v14 isEqualToString:v11];
+    v15 = [v14 isEqualToString:filePath];
 
     if (v15)
     {
@@ -621,8 +621,8 @@ LABEL_19:
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v18 = [(NSMapTable *)self->_snapshotFilesByAssociatedProcessInfo objectEnumerator];
-    v19 = [v18 countByEnumeratingWithState:&v79 objects:buf count:16];
+    objectEnumerator = [(NSMapTable *)self->_snapshotFilesByAssociatedProcessInfo objectEnumerator];
+    v19 = [objectEnumerator countByEnumeratingWithState:&v79 objects:buf count:16];
     if (v19)
     {
       v20 = v19;
@@ -633,12 +633,12 @@ LABEL_19:
         {
           if (*v80 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v23 = *(*(&v79 + 1) + 8 * i);
-          v24 = [v23 filePath];
-          v25 = [v24 isEqualToString:v11];
+          filePath2 = [v23 filePath];
+          v25 = [filePath2 isEqualToString:filePath];
 
           if (v25)
           {
@@ -648,7 +648,7 @@ LABEL_19:
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v79 objects:buf count:16];
+        v20 = [objectEnumerator countByEnumeratingWithState:&v79 objects:buf count:16];
         if (v20)
         {
           continue;
@@ -666,7 +666,7 @@ LABEL_17:
   if (v17)
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
@@ -679,22 +679,22 @@ LABEL_17:
     }
 
     objc_autoreleasePoolPop(v26);
-    [v74 setUnmanaged:1];
+    [fileCopy setUnmanaged:1];
     v30 = v17;
 
-    v74 = v30;
+    fileCopy = v30;
   }
 
   else
   {
-    [(HMDCameraSnapshotFileManager *)self _createSlotForSnapshotFile:v74];
+    [(HMDCameraSnapshotFileManager *)self _createSlotForSnapshotFile:fileCopy];
   }
 
   v77 = 0u;
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  obj = v8;
+  obj = messagesCopy;
   v31 = [obj countByEnumeratingWithState:&v75 objects:v83 count:16];
   if (v31)
   {
@@ -711,14 +711,14 @@ LABEL_17:
         }
 
         v35 = *(*(&v75 + 1) + 8 * v34);
-        v36 = [v35 proxyConnection];
-        v37 = [v36 processInfo];
+        proxyConnection = [v35 proxyConnection];
+        processInfo = [proxyConnection processInfo];
 
         v38 = objc_autoreleasePoolPush();
-        v39 = self;
+        selfCopy2 = self;
         v40 = HMFGetOSLogHandle();
         v41 = v40;
-        if (v37)
+        if (processInfo)
         {
           if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
           {
@@ -726,16 +726,16 @@ LABEL_17:
             *buf = 138543874;
             v85 = v42;
             v86 = 2112;
-            v87 = v37;
+            v87 = processInfo;
             v88 = 2112;
-            v89 = v74;
+            v89 = fileCopy;
             _os_log_impl(&dword_2531F8000, v41, OS_LOG_TYPE_INFO, "%{public}@Associating process info %@ with snapshot file: %@", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(v38);
           if (self)
           {
-            snapshotFilesByAssociatedProcessInfo = v39->_snapshotFilesByAssociatedProcessInfo;
+            snapshotFilesByAssociatedProcessInfo = selfCopy2->_snapshotFilesByAssociatedProcessInfo;
           }
 
           else
@@ -743,7 +743,7 @@ LABEL_17:
             snapshotFilesByAssociatedProcessInfo = 0;
           }
 
-          [(NSMapTable *)snapshotFilesByAssociatedProcessInfo setObject:v74 forKey:v37];
+          [(NSMapTable *)snapshotFilesByAssociatedProcessInfo setObject:fileCopy forKey:processInfo];
         }
 
         else
@@ -772,7 +772,7 @@ LABEL_17:
     while (v45);
   }
 
-  v47 = v74;
+  v47 = fileCopy;
   if (self)
   {
     v48 = objc_getProperty(self, v46, 32, 1);
@@ -780,15 +780,15 @@ LABEL_17:
     v49 = v47;
     v51 = objc_getProperty(self, v50, 32, 1);
     dispatch_assert_queue_V2(v51);
-    v52 = [v49 slotIdentifier];
+    slotIdentifier = [v49 slotIdentifier];
 
-    if (v52)
+    if (slotIdentifier)
     {
       if (objc_getProperty(self, v53, 72, 1))
       {
         v55 = [objc_getProperty(self v54];
-        v56 = [v49 dateCaptured];
-        v57 = [v55 compare:v56];
+        dateCaptured = [v49 dateCaptured];
+        v57 = [v55 compare:dateCaptured];
 
         if (v57 != -1)
         {
@@ -801,7 +801,7 @@ LABEL_17:
       }
 
       v62 = objc_autoreleasePoolPush();
-      v63 = self;
+      selfCopy3 = self;
       v64 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
       {
@@ -814,17 +814,17 @@ LABEL_17:
       }
 
       objc_autoreleasePoolPop(v62);
-      objc_setProperty_atomic(v63, v66, v49, 72);
-      if (v71)
+      objc_setProperty_atomic(selfCopy3, v66, v49, 72);
+      if (clientsCopy)
       {
-        [(HMDCameraSnapshotFileManager *)v63 _notifyClientsOfUpdatedMostRecentSnapshot];
+        [(HMDCameraSnapshotFileManager *)selfCopy3 _notifyClientsOfUpdatedMostRecentSnapshot];
       }
     }
 
     else
     {
       v58 = objc_autoreleasePoolPush();
-      v59 = self;
+      selfCopy4 = self;
       v60 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
       {
@@ -849,10 +849,10 @@ LABEL_53:
   return v68;
 }
 
-- (void)handleReleaseSnapshot:(id)a3
+- (void)handleReleaseSnapshot:(id)snapshot
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  snapshotCopy = snapshot;
   if (self)
   {
     Property = objc_getProperty(self, v4, 32, 1);
@@ -864,9 +864,9 @@ LABEL_53:
   }
 
   dispatch_assert_queue_V2(Property);
-  v7 = [v5 numberForKey:*MEMORY[0x277CD1060]];
+  v7 = [snapshotCopy numberForKey:*MEMORY[0x277CD1060]];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
   v42 = v7;
@@ -888,10 +888,10 @@ LABEL_53:
     v43 = 0u;
     v44 = 0u;
     v13 = &OBJC_IVAR___HMDBackingStore__dataSource;
-    v40 = v5;
+    v40 = snapshotCopy;
     if (self)
     {
-      snapshotFilesByAssociatedProcessInfo = v9->_snapshotFilesByAssociatedProcessInfo;
+      snapshotFilesByAssociatedProcessInfo = selfCopy->_snapshotFilesByAssociatedProcessInfo;
     }
 
     else
@@ -920,7 +920,7 @@ LABEL_53:
           v21 = v13;
           if (self)
           {
-            v22 = *(&v9->super.super.isa + v13[127]);
+            v22 = *(&selfCopy->super.super.isa + v13[127]);
           }
 
           else
@@ -931,13 +931,13 @@ LABEL_53:
           v23 = v22;
           v24 = [v23 objectForKey:v20];
 
-          v25 = [v24 slotIdentifier];
-          v26 = [v25 isEqualToNumber:v42];
+          slotIdentifier = [v24 slotIdentifier];
+          v26 = [slotIdentifier isEqualToNumber:v42];
 
           if (v26)
           {
             v33 = objc_autoreleasePoolPush();
-            v34 = v9;
+            v34 = selfCopy;
             v35 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
             {
@@ -950,7 +950,7 @@ LABEL_53:
             }
 
             objc_autoreleasePoolPop(v33);
-            v5 = v40;
+            snapshotCopy = v40;
             v32 = obj;
             if (self)
             {
@@ -986,7 +986,7 @@ LABEL_53:
     }
 
     v28 = objc_autoreleasePoolPush();
-    v29 = v9;
+    v29 = selfCopy;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
@@ -1000,7 +1000,7 @@ LABEL_53:
 
     objc_autoreleasePoolPop(v28);
     v32 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    v5 = v40;
+    snapshotCopy = v40;
   }
 
   else
@@ -1011,7 +1011,7 @@ LABEL_53:
       *buf = 138543618;
       v49 = v38;
       v50 = 2112;
-      v51 = v5;
+      v51 = snapshotCopy;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_ERROR, "%{public}@Cannot find slot identifier in release snapshot message payload: %@", buf, 0x16u);
     }
 
@@ -1019,16 +1019,16 @@ LABEL_53:
     v32 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
   }
 
-  [v5 respondWithError:v32];
+  [snapshotCopy respondWithError:v32];
 LABEL_32:
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFillSnapshotSlot:(id)a3
+- (void)handleFillSnapshotSlot:(id)slot
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  slotCopy = slot;
   if (self)
   {
     Property = objc_getProperty(self, v4, 32, 1);
@@ -1040,9 +1040,9 @@ LABEL_32:
   }
 
   dispatch_assert_queue_V2(Property);
-  v7 = [v5 numberForKey:*MEMORY[0x277CD1060]];
+  v7 = [slotCopy numberForKey:*MEMORY[0x277CD1060]];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1055,14 +1055,14 @@ LABEL_32:
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [v5 proxyConnection];
-  v13 = [v12 processInfo];
+  proxyConnection = [slotCopy proxyConnection];
+  processInfo = [proxyConnection processInfo];
 
-  if (v13)
+  if (processInfo)
   {
     if (self)
     {
-      filledSnapshotSlotIdentifiersByProcess = v9->_filledSnapshotSlotIdentifiersByProcess;
+      filledSnapshotSlotIdentifiersByProcess = selfCopy->_filledSnapshotSlotIdentifiersByProcess;
     }
 
     else
@@ -1070,13 +1070,13 @@ LABEL_32:
       filledSnapshotSlotIdentifiersByProcess = 0;
     }
 
-    v15 = [(NSMapTable *)filledSnapshotSlotIdentifiersByProcess objectForKey:v13];
+    v15 = [(NSMapTable *)filledSnapshotSlotIdentifiersByProcess objectForKey:processInfo];
     if (!v15)
     {
       v15 = [MEMORY[0x277CBEB58] set];
       if (self)
       {
-        v16 = v9->_filledSnapshotSlotIdentifiersByProcess;
+        v16 = selfCopy->_filledSnapshotSlotIdentifiersByProcess;
       }
 
       else
@@ -1084,11 +1084,11 @@ LABEL_32:
         v16 = 0;
       }
 
-      [(NSMapTable *)v16 setObject:v15 forKey:v13];
+      [(NSMapTable *)v16 setObject:v15 forKey:processInfo];
     }
 
     [v15 addObject:v7];
-    v17 = [(HMDCameraSnapshotFileManager *)&v9->super.super.isa _snapshotFileWithSlotIdentifier:v7];
+    v17 = [(HMDCameraSnapshotFileManager *)&selfCopy->super.super.isa _snapshotFileWithSlotIdentifier:v7];
     v18 = v17;
     if (v17)
     {
@@ -1097,14 +1097,14 @@ LABEL_32:
       if (self)
       {
         LOBYTE(self) = 1;
-        v21 = objc_getProperty(v9, v19, 32, 1);
+        v21 = objc_getProperty(selfCopy, v19, 32, 1);
         dispatch_assert_queue_V2(v21);
         if (([v20 isFilled] & 1) == 0)
         {
-          v23 = objc_getProperty(v9, v22, 64, 1);
-          v24 = [v20 slotIdentifier];
-          v25 = [v20 filePath];
-          self = [v23 fillSlotWithIdentifier:v24 filePath:v25 error:&v36];
+          v23 = objc_getProperty(selfCopy, v22, 64, 1);
+          slotIdentifier = [v20 slotIdentifier];
+          filePath = [v20 filePath];
+          self = [v23 fillSlotWithIdentifier:slotIdentifier filePath:filePath error:&v36];
 
           [v20 setFilled:self];
         }
@@ -1113,7 +1113,7 @@ LABEL_32:
       v26 = v36;
       if (self)
       {
-        [v5 respondWithSuccess];
+        [slotCopy respondWithSuccess];
 LABEL_25:
 
         goto LABEL_26;
@@ -1123,7 +1123,7 @@ LABEL_25:
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = v9;
+      v32 = selfCopy;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -1139,12 +1139,12 @@ LABEL_25:
       v26 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
     }
 
-    [v5 respondWithError:v26];
+    [slotCopy respondWithError:v26];
     goto LABEL_25;
   }
 
   v27 = objc_autoreleasePoolPush();
-  v28 = v9;
+  v28 = selfCopy;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
@@ -1152,13 +1152,13 @@ LABEL_25:
     *buf = 138543618;
     v38 = v30;
     v39 = 2112;
-    v40 = v5;
+    v40 = slotCopy;
     _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@Cannot fill snapshot for message without process info: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v27);
   v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-  [v5 respondWithError:v15];
+  [slotCopy respondWithError:v15];
 LABEL_26:
 
   v35 = *MEMORY[0x277D85DE8];
@@ -1166,13 +1166,13 @@ LABEL_26:
 
 - (void)registerForMessages
 {
-  v2 = self;
+  selfCopy = self;
   v103 = *MEMORY[0x277D85DE8];
   if (self)
   {
     Property = objc_getProperty(self, a2, 32, 1);
     dispatch_assert_queue_V2(Property);
-    v5 = objc_getProperty(v2, v4, 56, 1);
+    v5 = objc_getProperty(selfCopy, v4, 56, 1);
   }
 
   else
@@ -1181,11 +1181,11 @@ LABEL_26:
     v5 = 0;
   }
 
-  [v5 addObserver:v2 selector:sel_handleProcessStateChange_ name:HMDProcessMonitorProcessStateDidChangeNotification object:0];
-  if (v2)
+  [v5 addObserver:selfCopy selector:sel_handleProcessStateChange_ name:HMDProcessMonitorProcessStateDidChangeNotification object:0];
+  if (selfCopy)
   {
-    v7 = objc_getProperty(v2, v6, 56, 1);
-    v9 = objc_getProperty(v2, v8, 64, 1);
+    v7 = objc_getProperty(selfCopy, v6, 56, 1);
+    v9 = objc_getProperty(selfCopy, v8, 64, 1);
   }
 
   else
@@ -1194,19 +1194,19 @@ LABEL_26:
     v9 = 0;
   }
 
-  [v7 addObserver:v2 selector:sel_backboardServicesRelaunched_ name:@"HMDBackboardServicesRelaunchNotification" object:v9];
+  [v7 addObserver:selfCopy selector:sel_backboardServicesRelaunched_ name:@"HMDBackboardServicesRelaunchNotification" object:v9];
 
-  if (!v2)
+  if (!selfCopy)
   {
     goto LABEL_51;
   }
 
-  v11 = objc_getProperty(v2, v10, 32, 1);
+  v11 = objc_getProperty(selfCopy, v10, 32, 1);
   dispatch_assert_queue_V2(v11);
-  v13 = objc_getProperty(v2, v12, 32, 1);
+  v13 = objc_getProperty(selfCopy, v12, 32, 1);
   dispatch_assert_queue_V2(v13);
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  v16 = [v14 contentsOfDirectoryAtPath:objc_getProperty(v2 error:{v15, 48, 1), 0}];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v16 = [defaultManager contentsOfDirectoryAtPath:objc_getProperty(selfCopy error:{v15, 48, 1), 0}];
 
   v76 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v16, "count")}];
   v85 = 0u;
@@ -1222,7 +1222,7 @@ LABEL_26:
 
   v18 = v17;
   v19 = *v86;
-  v77 = v2;
+  v77 = selfCopy;
   do
   {
     for (i = 0; i != v18; ++i)
@@ -1238,7 +1238,7 @@ LABEL_26:
       if (!v22)
       {
         v25 = objc_autoreleasePoolPush();
-        v26 = v2;
+        v26 = selfCopy;
         v27 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
@@ -1252,7 +1252,7 @@ LABEL_26:
 LABEL_17:
           _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_DEFAULT, v30, buf, 0x16u);
 
-          v2 = v77;
+          selfCopy = v77;
         }
 
 LABEL_18:
@@ -1265,7 +1265,7 @@ LABEL_18:
       if (v24 > 86400.0)
       {
         v25 = objc_autoreleasePoolPush();
-        v26 = v2;
+        v26 = selfCopy;
         v27 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
@@ -1293,7 +1293,7 @@ LABEL_20:
 LABEL_22:
 
   v31 = objc_autoreleasePoolPush();
-  v32 = v2;
+  v32 = selfCopy;
   v33 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
   {
@@ -1306,14 +1306,14 @@ LABEL_22:
   }
 
   objc_autoreleasePoolPop(v31);
-  v35 = [v76 allValues];
-  v36 = [v35 sortedArrayUsingSelector:sel_compare_];
+  allValues = [v76 allValues];
+  v36 = [allValues sortedArrayUsingSelector:sel_compare_];
 
-  v37 = [v36 lastObject];
-  v38 = [v37 hmd_snapshotFileName];
+  lastObject = [v36 lastObject];
+  hmd_snapshotFileName = [lastObject hmd_snapshotFileName];
 
   v78 = v32;
-  if (v38)
+  if (hmd_snapshotFileName)
   {
     v75 = v36;
     v83 = 0u;
@@ -1336,7 +1336,7 @@ LABEL_22:
           }
 
           v44 = *(*(&v81 + 1) + 8 * j);
-          if (([v44 isEqualToString:v38] & 1) == 0)
+          if (([v44 isEqualToString:hmd_snapshotFileName] & 1) == 0)
           {
             v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", objc_getProperty(v32, v45, 48, 1), v44];
             v47 = objc_autoreleasePoolPush();
@@ -1355,8 +1355,8 @@ LABEL_22:
             }
 
             objc_autoreleasePoolPop(v47);
-            v51 = [MEMORY[0x277CCAA00] defaultManager];
-            [v51 removeItemAtPath:v46 error:0];
+            defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+            [defaultManager2 removeItemAtPath:v46 error:0];
           }
         }
 
@@ -1366,12 +1366,12 @@ LABEL_22:
       while (v41);
     }
 
-    v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", objc_getProperty(v32, v52, 48, 1), v38];
+    v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", objc_getProperty(v32, v52, 48, 1), hmd_snapshotFileName];
     v54 = [HMDCameraSnapshotFile alloc];
     v36 = v75;
-    v55 = [v75 lastObject];
+    lastObject2 = [v75 lastObject];
     v80 = 0;
-    v56 = [(HMDCameraSnapshotFile *)v54 initWithFilePath:v53 dateCaptured:v55 error:&v80];
+    v56 = [(HMDCameraSnapshotFile *)v54 initWithFilePath:v53 dateCaptured:lastObject2 error:&v80];
     v57 = v80;
 
     v32 = v78;
@@ -1455,59 +1455,59 @@ LABEL_51:
   v74 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraSnapshotFileManager)initWithWorkQueue:(id)a3 imageCacheDirectory:(id)a4 logIdentifier:(id)a5 uniqueIdentifier:(id)a6 messageDispatcher:(id)a7 snapshotSlotManager:(id)a8 notificationCenter:(id)a9
+- (HMDCameraSnapshotFileManager)initWithWorkQueue:(id)queue imageCacheDirectory:(id)directory logIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier messageDispatcher:(id)dispatcher snapshotSlotManager:(id)manager notificationCenter:(id)center
 {
-  v35 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v34 = a7;
-  v19 = a8;
-  v20 = a9;
+  queueCopy = queue;
+  directoryCopy = directory;
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  dispatcherCopy = dispatcher;
+  managerCopy = manager;
+  centerCopy = center;
   v36.receiver = self;
   v36.super_class = HMDCameraSnapshotFileManager;
   v21 = [(HMDCameraSnapshotFileManager *)&v36 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_workQueue, a3);
-    v23 = [v17 copy];
+    objc_storeStrong(&v21->_workQueue, queue);
+    v23 = [identifierCopy copy];
     logIdentifier = v22->_logIdentifier;
     v22->_logIdentifier = v23;
 
-    v25 = [v16 copy];
+    v25 = [directoryCopy copy];
     imageCacheDirectory = v22->_imageCacheDirectory;
     v22->_imageCacheDirectory = v25;
 
-    v27 = [v18 copy];
+    v27 = [uniqueIdentifierCopy copy];
     uniqueIdentifier = v22->_uniqueIdentifier;
     v22->_uniqueIdentifier = v27;
 
-    objc_storeStrong(&v22->_messageDispatcher, a7);
-    objc_storeStrong(&v22->_snapshotSlotManager, a8);
-    objc_storeStrong(&v22->_notificationCenter, a9);
-    v29 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v22->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v22->_snapshotSlotManager, manager);
+    objc_storeStrong(&v22->_notificationCenter, center);
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     snapshotFilesByAssociatedProcessInfo = v22->_snapshotFilesByAssociatedProcessInfo;
-    v22->_snapshotFilesByAssociatedProcessInfo = v29;
+    v22->_snapshotFilesByAssociatedProcessInfo = strongToStrongObjectsMapTable;
 
-    v31 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     filledSnapshotSlotIdentifiersByProcess = v22->_filledSnapshotSlotIdentifiersByProcess;
-    v22->_filledSnapshotSlotIdentifiersByProcess = v31;
+    v22->_filledSnapshotSlotIdentifiersByProcess = strongToStrongObjectsMapTable2;
   }
 
   return v22;
 }
 
-- (HMDCameraSnapshotFileManager)initWithWorkQueue:(id)a3 imageCacheDirectory:(id)a4 logIdentifier:(id)a5 uniqueIdentifier:(id)a6 messageDispatcher:(id)a7
+- (HMDCameraSnapshotFileManager)initWithWorkQueue:(id)queue imageCacheDirectory:(id)directory logIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier messageDispatcher:(id)dispatcher
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  dispatcherCopy = dispatcher;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  identifierCopy = identifier;
+  directoryCopy = directory;
+  queueCopy = queue;
   v17 = +[HMDCameraSnapshotSlotManager sharedManager];
-  v18 = [MEMORY[0x277CCAB98] defaultCenter];
-  v19 = [(HMDCameraSnapshotFileManager *)self initWithWorkQueue:v16 imageCacheDirectory:v15 logIdentifier:v14 uniqueIdentifier:v13 messageDispatcher:v12 snapshotSlotManager:v17 notificationCenter:v18];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v19 = [(HMDCameraSnapshotFileManager *)self initWithWorkQueue:queueCopy imageCacheDirectory:directoryCopy logIdentifier:identifierCopy uniqueIdentifier:uniqueIdentifierCopy messageDispatcher:dispatcherCopy snapshotSlotManager:v17 notificationCenter:defaultCenter];
 
   return v19;
 }

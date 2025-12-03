@@ -1,30 +1,30 @@
 @interface TSDInfoCollectionSelectionHelper
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)infosWithNonInteractiveInfos;
 - (NSString)UUIDDescription;
 - (NSString)description;
 - (TSDInfoCollectionSelectionHelper)init;
-- (TSDInfoCollectionSelectionHelper)initWithInteractiveInfos:(id)a3;
-- (TSDInfoCollectionSelectionHelper)initWithInteractiveInfos:(id)a3 nonInteractiveInfos:(id)a4;
+- (TSDInfoCollectionSelectionHelper)initWithInteractiveInfos:(id)infos;
+- (TSDInfoCollectionSelectionHelper)initWithInteractiveInfos:(id)infos nonInteractiveInfos:(id)interactiveInfos;
 - (unint64_t)hash;
 @end
 
 @implementation TSDInfoCollectionSelectionHelper
 
-- (TSDInfoCollectionSelectionHelper)initWithInteractiveInfos:(id)a3 nonInteractiveInfos:(id)a4
+- (TSDInfoCollectionSelectionHelper)initWithInteractiveInfos:(id)infos nonInteractiveInfos:(id)interactiveInfos
 {
-  v6 = a3;
-  v7 = a4;
+  infosCopy = infos;
+  interactiveInfosCopy = interactiveInfos;
   v18.receiver = self;
   v18.super_class = TSDInfoCollectionSelectionHelper;
   v10 = [(TSDInfoCollectionSelectionHelper *)&v18 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v11 = objc_msgSend_copy(infosCopy, v8, v9);
     modelInfos = v10->_modelInfos;
     v10->_modelInfos = v11;
 
-    v15 = objc_msgSend_copy(v7, v13, v14);
+    v15 = objc_msgSend_copy(interactiveInfosCopy, v13, v14);
     nonInteractiveInfos = v10->_nonInteractiveInfos;
     v10->_nonInteractiveInfos = v15;
   }
@@ -32,12 +32,12 @@
   return v10;
 }
 
-- (TSDInfoCollectionSelectionHelper)initWithInteractiveInfos:(id)a3
+- (TSDInfoCollectionSelectionHelper)initWithInteractiveInfos:(id)infos
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  infosCopy = infos;
   v8 = objc_msgSend_set(v4, v6, v7);
-  v10 = objc_msgSend_initWithInteractiveInfos_nonInteractiveInfos_(self, v9, v5, v8);
+  v10 = objc_msgSend_initWithInteractiveInfos_nonInteractiveInfos_(self, v9, infosCopy, v8);
 
   return v10;
 }
@@ -73,11 +73,11 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self != a3)
+  if (self != equal)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = TSUDynamicCast();
 
@@ -231,7 +231,7 @@ LABEL_10:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v44 = self;
+  selfCopy = self;
   obj = objc_msgSend_infosWithNonInteractiveInfos(self, v11, v12);
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v13, &v47, v51, 16);
   if (v14)
@@ -299,7 +299,7 @@ LABEL_3:
   }
 
   v33 = MEMORY[0x277CCACA8];
-  v36 = objc_msgSend_infosWithNonInteractiveInfos(v44, v34, v35);
+  v36 = objc_msgSend_infosWithNonInteractiveInfos(selfCopy, v34, v35);
   v39 = objc_msgSend_count(v36, v37, v38);
   v41 = objc_msgSend_stringWithFormat_(v33, v40, @"<%tu %@>", v39, v46);
 

@@ -1,26 +1,26 @@
 @interface AASensorService
 - (AASensorService)init;
-- (AASensorService)initWithCoder:(id)a3;
+- (AASensorService)initWithCoder:(id)coder;
 - (id)_ensureXPCStarted;
 - (id)description;
-- (void)_activateXPC:(id)a3 reactivate:(BOOL)a4;
+- (void)_activateXPC:(id)c reactivate:(BOOL)reactivate;
 - (void)_broadcastAACPAvailabilities;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_reportError:(id)error;
+- (void)activateWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)sensorServiceReportSensorInfo:(id)a3;
-- (void)subscribeWithSensorDataFlags:(unsigned int)a3 rate:(unsigned int)a4 completion:(id)a5;
-- (void)unsubscribeWithSensorDataFlags:(unsigned int)a3;
+- (void)sensorServiceReportSensorInfo:(id)info;
+- (void)subscribeWithSensorDataFlags:(unsigned int)flags rate:(unsigned int)rate completion:(id)completion;
+- (void)unsubscribeWithSensorDataFlags:(unsigned int)flags;
 @end
 
 @implementation AASensorService
 
-- (AASensorService)initWithCoder:(id)a3
+- (AASensorService)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AASensorService *)self init];
   if (v5)
   {
@@ -40,22 +40,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   clientID = self->_clientID;
-  v7 = v4;
+  v7 = coderCopy;
   if (clientID)
   {
-    [v4 encodeInt64:clientID forKey:@"cid"];
-    v4 = v7;
+    [coderCopy encodeInt64:clientID forKey:@"cid"];
+    coderCopy = v7;
   }
 
   subscribedSensors = self->_subscribedSensors;
   if (subscribedSensors)
   {
     [v7 encodeInt64:subscribedSensors forKey:@"sbsn"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
@@ -80,25 +80,25 @@
     dispatchQueue = v2->_dispatchQueue;
     v2->_dispatchQueue = v4;
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     requestedSensorRates = v2->_requestedSensorRates;
-    v2->_requestedSensorRates = v6;
+    v2->_requestedSensorRates = dictionary;
   }
 
   return v2;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__AASensorService_activateWithCompletion___block_invoke;
   v7[3] = &unk_278CDD638;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -179,18 +179,18 @@ LABEL_14:
 LABEL_17:
 }
 
-- (void)_activateXPC:(id)a3 reactivate:(BOOL)a4
+- (void)_activateXPC:(id)c reactivate:(BOOL)reactivate
 {
-  v6 = a3;
+  cCopy = c;
   if (gLogCategory_AASensorService_0 <= 30 && (gLogCategory_AASensorService_0 != -1 || _LogCategory_Initialize()))
   {
     [AASensorService _activateXPC:? reactivate:?];
   }
 
-  v7 = [(AASensorService *)self _ensureXPCStarted];
-  if (v7)
+  _ensureXPCStarted = [(AASensorService *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    v6[2](v6, v7);
+    cCopy[2](cCopy, _ensureXPCStarted);
   }
 
   else
@@ -200,8 +200,8 @@ LABEL_17:
     v13[1] = 3221225472;
     v13[2] = __43__AASensorService__activateXPC_reactivate___block_invoke;
     v13[3] = &unk_278CDD6D8;
-    v15 = a4;
-    v9 = v6;
+    reactivateCopy = reactivate;
+    v9 = cCopy;
     v14 = v9;
     v10 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v13];
     v11[0] = MEMORY[0x277D85DD0];
@@ -407,9 +407,9 @@ void __29__AASensorService_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   if (gLogCategory_AASensorService_0 <= 90 && (gLogCategory_AASensorService_0 != -1 || _LogCategory_Initialize()))
   {
     [AASensorService _reportError:];
@@ -421,18 +421,18 @@ void __29__AASensorService_invalidate__block_invoke(uint64_t a1)
 
   if (v4)
   {
-    (v4)[2](v4, v6);
+    (v4)[2](v4, errorCopy);
   }
 }
 
-- (void)sensorServiceReportSensorInfo:(id)a3
+- (void)sensorServiceReportSensorInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (self->_subscribedSensors & 1) != 0 && (sensorDataInfoUpdatedHandler = self->_sensorDataInfoUpdatedHandler) != 0)
   {
-    sensorDataInfoUpdatedHandler[2](sensorDataInfoUpdatedHandler, v5);
+    sensorDataInfoUpdatedHandler[2](sensorDataInfoUpdatedHandler, infoCopy);
   }
 
   else if (gLogCategory_AASensorService_0 <= 10 && (gLogCategory_AASensorService_0 != -1 || _LogCategory_Initialize()))
@@ -441,18 +441,18 @@ void __29__AASensorService_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)subscribeWithSensorDataFlags:(unsigned int)a3 rate:(unsigned int)a4 completion:(id)a5
+- (void)subscribeWithSensorDataFlags:(unsigned int)flags rate:(unsigned int)rate completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__AASensorService_subscribeWithSensorDataFlags_rate_completion___block_invoke;
   block[3] = &unk_278CDE088;
   block[4] = self;
-  v11 = v7;
-  v12 = a3;
-  v9 = v7;
+  v11 = completionCopy;
+  flagsCopy = flags;
+  v9 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -487,7 +487,7 @@ uint64_t __64__AASensorService_subscribeWithSensorDataFlags_rate_completion___bl
   }
 }
 
-- (void)unsubscribeWithSensorDataFlags:(unsigned int)a3
+- (void)unsubscribeWithSensorDataFlags:(unsigned int)flags
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -495,7 +495,7 @@ uint64_t __64__AASensorService_subscribeWithSensorDataFlags_rate_completion___bl
   v4[2] = __50__AASensorService_unsubscribeWithSensorDataFlags___block_invoke;
   v4[3] = &unk_278CDD5E8;
   v4[4] = self;
-  v5 = a3;
+  flagsCopy = flags;
   dispatch_async(dispatchQueue, v4);
 }
 

@@ -1,5 +1,5 @@
 @interface _CDContextQueries
-+ (BOOL)isMDCSKeyPath:(id)a3;
++ (BOOL)isMDCSKeyPath:(id)path;
 + (id)keyPathForActiveCall;
 + (id)keyPathForActiveComplications;
 + (id)keyPathForAirplaneModeStatus;
@@ -50,12 +50,12 @@
 + (id)keyPathForLocationCoordinates;
 + (id)keyPathForLowBattery;
 + (id)keyPathForLowPowerModeStatus;
-+ (id)keyPathForMDCSDeviceIDsWithProxySourceDeviceUUID:(id)a3;
-+ (id)keyPathForMDCSDevicesWithProxySourceDeviceUUID:(id)a3;
++ (id)keyPathForMDCSDeviceIDsWithProxySourceDeviceUUID:(id)d;
++ (id)keyPathForMDCSDevicesWithProxySourceDeviceUUID:(id)d;
 + (id)keyPathForMDCSProxies;
-+ (id)keyPathForMDCSProxySourceDeviceUUIDWithUserID:(id)a3;
-+ (id)keyPathForMDCSProxyTokenWithUserID:(id)a3;
-+ (id)keyPathForMDCSUserIDWithProxySourceDeviceUUID:(id)a3;
++ (id)keyPathForMDCSProxySourceDeviceUUIDWithUserID:(id)d;
++ (id)keyPathForMDCSProxyTokenWithUserID:(id)d;
++ (id)keyPathForMDCSUserIDWithProxySourceDeviceUUID:(id)d;
 + (id)keyPathForMediaPlayingStatus;
 + (id)keyPathForMostRecentSafariSpotlightDonation;
 + (id)keyPathForMotionState;
@@ -84,15 +84,15 @@
 + (id)keyPathForWiredConnectionQuality;
 + (id)keyPathForWorkoutDataDictionary;
 + (id)keyPathForWorkoutStatus;
-+ (id)predicateForBatteryLevel:(id)a3;
-+ (id)predicateForCellConnectionAvailability:(BOOL)a3;
-+ (id)predicateForCircularLocationRegion:(id)a3 state:(int64_t)a4;
-+ (id)predicateForMDCSDevicesWithDeviceTypes:(unint64_t)a3;
-+ (id)predicateForSystemTime:(id)a3;
-+ (id)predicateForSystemTime:(id)a3 gracePeriod:(double)a4;
-+ (id)predicateForSystemTimeInInterval:(id)a3;
-+ (id)predicateForWiFiConnectionAvailability:(BOOL)a3;
-+ (id)predicateForWiredConnectionAvailability:(BOOL)a3;
++ (id)predicateForBatteryLevel:(id)level;
++ (id)predicateForCellConnectionAvailability:(BOOL)availability;
++ (id)predicateForCircularLocationRegion:(id)region state:(int64_t)state;
++ (id)predicateForMDCSDevicesWithDeviceTypes:(unint64_t)types;
++ (id)predicateForSystemTime:(id)time;
++ (id)predicateForSystemTime:(id)time gracePeriod:(double)period;
++ (id)predicateForSystemTimeInInterval:(id)interval;
++ (id)predicateForWiFiConnectionAvailability:(BOOL)availability;
++ (id)predicateForWiredConnectionAvailability:(BOOL)availability;
 @end
 
 @implementation _CDContextQueries
@@ -745,11 +745,11 @@
   return v3;
 }
 
-+ (id)predicateForWiredConnectionAvailability:(BOOL)a3
++ (id)predicateForWiredConnectionAvailability:(BOOL)availability
 {
-  v3 = a3;
-  v4 = [a1 keyPathForWiredConnectionQuality];
-  if (v3)
+  availabilityCopy = availability;
+  keyPathForWiredConnectionQuality = [self keyPathForWiredConnectionQuality];
+  if (availabilityCopy)
   {
     v5 = @"self.%@.value > 0";
   }
@@ -759,7 +759,7 @@
     v5 = @"self.%@.value == 0";
   }
 
-  v6 = [_CDContextualPredicate predicateForKeyPath:v4 withFormat:v5, v4];
+  v6 = [_CDContextualPredicate predicateForKeyPath:keyPathForWiredConnectionQuality withFormat:v5, keyPathForWiredConnectionQuality];
 
   return v6;
 }
@@ -776,11 +776,11 @@
   return v3;
 }
 
-+ (id)predicateForWiFiConnectionAvailability:(BOOL)a3
++ (id)predicateForWiFiConnectionAvailability:(BOOL)availability
 {
-  v3 = a3;
-  v4 = [a1 keyPathForWiFiConnectionQuality];
-  if (v3)
+  availabilityCopy = availability;
+  keyPathForWiFiConnectionQuality = [self keyPathForWiFiConnectionQuality];
+  if (availabilityCopy)
   {
     v5 = @"self.%@.value > 0";
   }
@@ -790,7 +790,7 @@
     v5 = @"self.%@.value == 0";
   }
 
-  v6 = [_CDContextualPredicate predicateForKeyPath:v4 withFormat:v5, v4];
+  v6 = [_CDContextualPredicate predicateForKeyPath:keyPathForWiFiConnectionQuality withFormat:v5, keyPathForWiFiConnectionQuality];
 
   return v6;
 }
@@ -807,11 +807,11 @@
   return v3;
 }
 
-+ (id)predicateForCellConnectionAvailability:(BOOL)a3
++ (id)predicateForCellConnectionAvailability:(BOOL)availability
 {
-  v3 = a3;
-  v4 = [a1 keyPathForCellConnectionQuality];
-  if (v3)
+  availabilityCopy = availability;
+  keyPathForCellConnectionQuality = [self keyPathForCellConnectionQuality];
+  if (availabilityCopy)
   {
     v5 = @"self.%@.value > 0";
   }
@@ -821,7 +821,7 @@
     v5 = @"self.%@.value == 0";
   }
 
-  v6 = [_CDContextualPredicate predicateForKeyPath:v4 withFormat:v5, v4];
+  v6 = [_CDContextualPredicate predicateForKeyPath:keyPathForCellConnectionQuality withFormat:v5, keyPathForCellConnectionQuality];
 
   return v6;
 }
@@ -838,41 +838,41 @@
   return v3;
 }
 
-+ (id)predicateForSystemTimeInInterval:(id)a3
++ (id)predicateForSystemTimeInInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [a1 keyPathForSystemTime];
+  intervalCopy = interval;
+  keyPathForSystemTime = [self keyPathForSystemTime];
   v6 = MEMORY[0x1E696AE18];
-  v7 = [v4 startDate];
-  v8 = [v4 endDate];
-  v9 = [v6 predicateWithFormat:@"self.%@.value >= %@ AND self.%@.value <= %@", v5, v7, v5, v8];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
+  v9 = [v6 predicateWithFormat:@"self.%@.value >= %@ AND self.%@.value <= %@", keyPathForSystemTime, startDate, keyPathForSystemTime, endDate];
 
-  v10 = [_CDContextualPredicate predicateForKeyPath:v5 withPredicate:v9];
-  v11 = [MEMORY[0x1E695DFB8] orderedSetWithObject:v4];
+  v10 = [_CDContextualPredicate predicateForKeyPath:keyPathForSystemTime withPredicate:v9];
+  v11 = [MEMORY[0x1E695DFB8] orderedSetWithObject:intervalCopy];
 
   [v10 setTimeBasedPredicateEvaluationIntervals:v11];
 
   return v10;
 }
 
-+ (id)predicateForSystemTime:(id)a3
++ (id)predicateForSystemTime:(id)time
 {
   v4 = MEMORY[0x1E696AB80];
-  v5 = a3;
+  timeCopy = time;
   v6 = [v4 alloc];
-  v7 = [MEMORY[0x1E695DF00] distantFuture];
-  v8 = [v6 initWithStartDate:v5 endDate:v7];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v8 = [v6 initWithStartDate:timeCopy endDate:distantFuture];
 
-  v9 = [a1 predicateForSystemTimeInInterval:v8];
+  v9 = [self predicateForSystemTimeInInterval:v8];
 
   return v9;
 }
 
-+ (id)predicateForSystemTime:(id)a3 gracePeriod:(double)a4
++ (id)predicateForSystemTime:(id)time gracePeriod:(double)period
 {
-  v6 = [a3 dateByAddingTimeInterval:-a4];
-  v7 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v6 duration:a4 + a4];
-  v8 = [a1 predicateForSystemTimeInInterval:v7];
+  v6 = [time dateByAddingTimeInterval:-period];
+  period = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v6 duration:period + period];
+  v8 = [self predicateForSystemTimeInInterval:period];
 
   return v8;
 }
@@ -889,13 +889,13 @@
   return v3;
 }
 
-+ (id)predicateForBatteryLevel:(id)a3
++ (id)predicateForBatteryLevel:(id)level
 {
-  v4 = a3;
-  v5 = [a1 keyPathForBatteryLevel];
-  v6 = [_CDContextualPredicate predicateForKeyPath:v5 withFormat:@"self.%@.value == %@", v5, v4];
+  levelCopy = level;
+  keyPathForBatteryLevel = [self keyPathForBatteryLevel];
+  levelCopy = [_CDContextualPredicate predicateForKeyPath:keyPathForBatteryLevel withFormat:@"self.%@.value == %@", keyPathForBatteryLevel, levelCopy];
 
-  return v6;
+  return levelCopy;
 }
 
 + (id)keyPathForNearbyLOIIdentifiers
@@ -958,30 +958,30 @@
   return v3;
 }
 
-+ (id)predicateForCircularLocationRegion:(id)a3 state:(int64_t)a4
++ (id)predicateForCircularLocationRegion:(id)region state:(int64_t)state
 {
-  v6 = a3;
-  if (v6)
+  regionCopy = region;
+  if (regionCopy)
   {
-    v25 = [a1 keyPathForCircularLocationRegions];
+    keyPathForCircularLocationRegions = [self keyPathForCircularLocationRegions];
     v7 = MEMORY[0x1E696AE18];
-    v8 = v6;
+    v8 = regionCopy;
     v9 = +[_CDContextQueries keyPathForCircularLocationRegions];
     v10 = +[_CDContextQueries regionIdentifierKey];
-    v11 = [v8 identifier];
+    identifier = [v8 identifier];
 
     v12 = +[_CDContextQueries regionStateKey];
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    v14 = [v7 predicateWithFormat:@"SUBQUERY(self.%@.value, $regionInfo, $regionInfo.%K == %@ AND $regionInfo.%K == %@).@count > 0", v9, v10, v11, v12, v13];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+    v14 = [v7 predicateWithFormat:@"SUBQUERY(self.%@.value, $regionInfo, $regionInfo.%K == %@ AND $regionInfo.%K == %@).@count > 0", v9, v10, identifier, v12, v13];
 
-    if ((a4 - 1) > 1)
+    if ((state - 1) > 1)
     {
       v21 = 0;
     }
 
     else
     {
-      if (a4 == 1)
+      if (state == 1)
       {
         v15 = 2;
       }
@@ -993,13 +993,13 @@
 
       v16 = MEMORY[0x1E696AE18];
       v17 = +[_CDContextQueries regionIdentifierKey];
-      v18 = [v8 identifier];
+      identifier2 = [v8 identifier];
       v19 = +[_CDContextQueries regionStateKey];
       v20 = [MEMORY[0x1E696AD98] numberWithInteger:v15];
-      v21 = [v16 predicateWithFormat:@"SUBQUERY(SELF.value, $regionInfo, $regionInfo.%K == %@ AND $regionInfo.%K == %@).@count > 0", v17, v18, v19, v20];
+      v21 = [v16 predicateWithFormat:@"SUBQUERY(SELF.value, $regionInfo, $regionInfo.%K == %@ AND $regionInfo.%K == %@).@count > 0", v17, identifier2, v19, v20];
     }
 
-    v22 = [_CDContextualPredicate predicateForKeyPath:v25 withPredicate:v14 withPredicateForPreviousState:v21 withMinimumDurationInPreviousState:0.0];
+    v22 = [_CDContextualPredicate predicateForKeyPath:keyPathForCircularLocationRegions withPredicate:v14 withPredicateForPreviousState:v21 withMinimumDurationInPreviousState:0.0];
     v23 = [MEMORY[0x1E695DFD8] setWithObject:v8];
     [v22 setCircularLocationRegions:v23];
   }
@@ -1120,73 +1120,73 @@
   return v3;
 }
 
-+ (id)keyPathForMDCSProxyTokenWithUserID:(id)a3
++ (id)keyPathForMDCSProxyTokenWithUserID:(id)d
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/private/sync/proxy/%@/token", a3];
+  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/private/sync/proxy/%@/token", d];
   v4 = [_CDContextualKeyPath ephemeralKeyPathWithKey:v3];
 
   return v4;
 }
 
-+ (id)keyPathForMDCSProxySourceDeviceUUIDWithUserID:(id)a3
++ (id)keyPathForMDCSProxySourceDeviceUUIDWithUserID:(id)d
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/private/sync/proxy/%@/uuid", a3];
+  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/private/sync/proxy/%@/uuid", d];
   v4 = [_CDContextualKeyPath keyPathWithKey:v3];
 
   return v4;
 }
 
-+ (id)keyPathForMDCSUserIDWithProxySourceDeviceUUID:(id)a3
++ (id)keyPathForMDCSUserIDWithProxySourceDeviceUUID:(id)d
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 UUIDString];
-  v5 = [v3 stringWithFormat:@"/private/sync/proxy/%@/uid", v4];
+  uUIDString = [d UUIDString];
+  v5 = [v3 stringWithFormat:@"/private/sync/proxy/%@/uid", uUIDString];
 
   v6 = [_CDContextualKeyPath keyPathWithKey:v5];
 
   return v6;
 }
 
-+ (id)keyPathForMDCSDevicesWithProxySourceDeviceUUID:(id)a3
++ (id)keyPathForMDCSDevicesWithProxySourceDeviceUUID:(id)d
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 UUIDString];
-  v5 = [v3 stringWithFormat:@"/private/sync/proxy/%@/no-longer-supported/devices", v4];
+  uUIDString = [d UUIDString];
+  v5 = [v3 stringWithFormat:@"/private/sync/proxy/%@/no-longer-supported/devices", uUIDString];
 
   v6 = [_CDContextualKeyPath keyPathWithKey:v5];
 
   return v6;
 }
 
-+ (id)keyPathForMDCSDeviceIDsWithProxySourceDeviceUUID:(id)a3
++ (id)keyPathForMDCSDeviceIDsWithProxySourceDeviceUUID:(id)d
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 UUIDString];
-  v5 = [v3 stringWithFormat:@"/private/sync/proxy/%@/devices", v4];
+  uUIDString = [d UUIDString];
+  v5 = [v3 stringWithFormat:@"/private/sync/proxy/%@/devices", uUIDString];
 
   v6 = [_CDContextualKeyPath ephemeralKeyPathWithKey:v5];
 
   return v6;
 }
 
-+ (id)predicateForMDCSDevicesWithDeviceTypes:(unint64_t)a3
++ (id)predicateForMDCSDevicesWithDeviceTypes:(unint64_t)types
 {
-  v3 = a3;
+  typesCopy = types;
   v5 = objc_alloc(MEMORY[0x1E696AFB0]);
   v6 = +[_CDDevice localDevice];
-  v7 = [v6 deviceID];
-  v8 = [v5 initWithUUIDString:v7];
+  deviceID = [v6 deviceID];
+  v8 = [v5 initWithUUIDString:deviceID];
 
-  v9 = [a1 keyPathForMDCSDevicesWithProxySourceDeviceUUID:v8];
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = v10;
-  if (v3)
+  v9 = [self keyPathForMDCSDevicesWithProxySourceDeviceUUID:v8];
+  array = [MEMORY[0x1E695DF70] array];
+  v11 = array;
+  if (typesCopy)
   {
-    [v10 addObject:&unk_1F1D19140];
-    if ((v3 & 2) == 0)
+    [array addObject:&unk_1F1D19140];
+    if ((typesCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 0x40) == 0)
+      if ((typesCopy & 0x40) == 0)
       {
         goto LABEL_4;
       }
@@ -1195,16 +1195,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((typesCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v11 addObject:&unk_1F1D19158];
-  if ((v3 & 0x40) == 0)
+  if ((typesCopy & 0x40) == 0)
   {
 LABEL_4:
-    if ((v3 & 8) == 0)
+    if ((typesCopy & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -1214,10 +1214,10 @@ LABEL_4:
 
 LABEL_14:
   [v11 addObject:&unk_1F1D19170];
-  if ((v3 & 8) == 0)
+  if ((typesCopy & 8) == 0)
   {
 LABEL_5:
-    if ((v3 & 0x10) == 0)
+    if ((typesCopy & 0x10) == 0)
     {
       goto LABEL_6;
     }
@@ -1227,10 +1227,10 @@ LABEL_5:
 
 LABEL_15:
   [v11 addObject:&unk_1F1D19188];
-  if ((v3 & 0x10) == 0)
+  if ((typesCopy & 0x10) == 0)
   {
 LABEL_6:
-    if ((v3 & 0x20) == 0)
+    if ((typesCopy & 0x20) == 0)
     {
       goto LABEL_7;
     }
@@ -1240,10 +1240,10 @@ LABEL_6:
 
 LABEL_16:
   [v11 addObject:&unk_1F1D191A0];
-  if ((v3 & 0x20) == 0)
+  if ((typesCopy & 0x20) == 0)
   {
 LABEL_7:
-    if ((v3 & 0x80) == 0)
+    if ((typesCopy & 0x80) == 0)
     {
       goto LABEL_9;
     }
@@ -1253,22 +1253,22 @@ LABEL_7:
 
 LABEL_17:
   [v11 addObject:&unk_1F1D191B8];
-  if ((v3 & 0x80) != 0)
+  if ((typesCopy & 0x80) != 0)
   {
 LABEL_8:
     [v11 addObject:&unk_1F1D191D0];
   }
 
 LABEL_9:
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(SELF.value, $device, $device.deviceClass IN %@ AND $device.companion == %@).@count > 0", v11, HIBYTE(v3) & 1];
+  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(SELF.value, $device, $device.deviceClass IN %@ AND $device.companion == %@).@count > 0", v11, HIBYTE(typesCopy) & 1];
   v13 = [_CDContextualPredicate predicateForKeyPath:v9 withPredicate:v12];
 
   return v13;
 }
 
-+ (BOOL)isMDCSKeyPath:(id)a3
++ (BOOL)isMDCSKeyPath:(id)path
 {
-  v3 = [a3 key];
+  v3 = [path key];
   v4 = [v3 hasPrefix:@"/private/sync/"];
 
   return v4;

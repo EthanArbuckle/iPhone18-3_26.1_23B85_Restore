@@ -1,6 +1,6 @@
 @interface BKUIStyle
 + (UIEdgeInsets)_layoutMarginsForPearEnrollView;
-+ (UIEdgeInsets)_obkStyleButtonMarginsForParentBounds:(CGRect)a3;
++ (UIEdgeInsets)_obkStyleButtonMarginsForParentBounds:(CGRect)bounds;
 + (UIEdgeInsets)buttonMarginsForPhones;
 + (double)_buttonSizeForPads;
 + (id)sharedStyle;
@@ -10,7 +10,7 @@
 
 + (id)sharedStyle
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___BKUIStyle;
   v2 = objc_msgSendSuper2(&v4, sel_sharedStyle);
 
@@ -20,9 +20,9 @@
 + (UIEdgeInsets)_layoutMarginsForPearEnrollView
 {
   v2 = +[BKUIDevice sharedInstance];
-  v3 = [v2 isIdiomPad];
+  isIdiomPad = [v2 isIdiomPad];
 
-  if (v3)
+  if (isIdiomPad)
   {
     v4 = 88.0;
   }
@@ -39,10 +39,10 @@
     else
     {
       v6 = +[BKUIDevice sharedInstance];
-      v7 = [v6 isN84];
+      isN84 = [v6 isN84];
 
       v4 = 24.0;
-      if (!v7)
+      if (!isN84)
       {
         v4 = 44.0;
       }
@@ -59,12 +59,12 @@
   return result;
 }
 
-+ (UIEdgeInsets)_obkStyleButtonMarginsForParentBounds:(CGRect)a3
++ (UIEdgeInsets)_obkStyleButtonMarginsForParentBounds:(CGRect)bounds
 {
-  v4 = [BKUIDevice sharedInstance:a3.origin.x];
-  v5 = [v4 isIdiomPad];
+  v4 = [BKUIDevice sharedInstance:bounds.origin.x];
+  isIdiomPad = [v4 isIdiomPad];
 
-  if (v5)
+  if (isIdiomPad)
   {
     v6 = 0.0;
     v7 = 132.0;
@@ -74,7 +74,7 @@
 
   else
   {
-    [a1 _layoutMarginsForPearEnrollView];
+    [self _layoutMarginsForPearEnrollView];
   }
 
   result.right = v8;

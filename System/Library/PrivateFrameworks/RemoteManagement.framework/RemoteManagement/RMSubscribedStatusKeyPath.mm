@@ -1,10 +1,10 @@
 @interface RMSubscribedStatusKeyPath
-+ (id)fetchRequestWithKeyPaths:(id)a3;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
++ (id)fetchRequestWithKeyPaths:(id)paths;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
 - (id)reportDetails;
-- (void)_validateManagementSourceWithErrors:(id)a3;
-- (void)_validateSetOncePropertiesWithErrors:(id)a3;
+- (void)_validateManagementSourceWithErrors:(id)errors;
+- (void)_validateSetOncePropertiesWithErrors:(id)errors;
 - (void)awakeFromInsert;
 @end
 
@@ -19,7 +19,7 @@
   [(RMSubscribedStatusKeyPath *)self setPrimitiveValue:v3 forKey:@"lastReceivedDate"];
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v5 = objc_opt_new();
   v18.receiver = self;
@@ -33,24 +33,24 @@
     goto LABEL_9;
   }
 
-  v9 = [v7 domain];
-  if (![v9 isEqualToString:NSCocoaErrorDomain])
+  domain = [v7 domain];
+  if (![domain isEqualToString:NSCocoaErrorDomain])
   {
 
     goto LABEL_8;
   }
 
-  v10 = [v8 code];
+  code = [v8 code];
 
-  if (v10 != 1560)
+  if (code != 1560)
   {
 LABEL_8:
     [v5 addObject:v8];
     goto LABEL_9;
   }
 
-  v11 = [v8 userInfo];
-  v12 = [v11 objectForKeyedSubscript:NSDetailedErrorsKey];
+  userInfo = [v8 userInfo];
+  v12 = [userInfo objectForKeyedSubscript:NSDetailedErrorsKey];
 
   if ([v12 count])
   {
@@ -62,20 +62,20 @@ LABEL_9:
   v13 = v5;
   v14 = [v13 count];
   v15 = v14;
-  if (a3 && v14)
+  if (insert && v14)
   {
     v16 = [RMErrorUtilities createMultipleValidationErrorOrReturnTheSingleErrorWithErrors:v13];
     if (v16)
     {
       v16 = v16;
-      *a3 = v16;
+      *insert = v16;
     }
   }
 
   return v15 == 0;
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v5 = objc_opt_new();
   v18.receiver = self;
@@ -89,24 +89,24 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [v7 domain];
-  if (![v9 isEqualToString:NSCocoaErrorDomain])
+  domain = [v7 domain];
+  if (![domain isEqualToString:NSCocoaErrorDomain])
   {
 
     goto LABEL_8;
   }
 
-  v10 = [v8 code];
+  code = [v8 code];
 
-  if (v10 != 1560)
+  if (code != 1560)
   {
 LABEL_8:
     [v5 addObject:v8];
     goto LABEL_9;
   }
 
-  v11 = [v8 userInfo];
-  v12 = [v11 objectForKeyedSubscript:NSDetailedErrorsKey];
+  userInfo = [v8 userInfo];
+  v12 = [userInfo objectForKeyedSubscript:NSDetailedErrorsKey];
 
   if ([v12 count])
   {
@@ -118,36 +118,36 @@ LABEL_9:
   v13 = v5;
   v14 = [v13 count];
   v15 = v14;
-  if (a3 && v14)
+  if (update && v14)
   {
     v16 = [RMErrorUtilities createMultipleValidationErrorOrReturnTheSingleErrorWithErrors:v13];
     if (v16)
     {
       v16 = v16;
-      *a3 = v16;
+      *update = v16;
     }
   }
 
   return v15 == 0;
 }
 
-- (void)_validateManagementSourceWithErrors:(id)a3
+- (void)_validateManagementSourceWithErrors:(id)errors
 {
-  v6 = a3;
-  v4 = [(RMSubscribedStatusKeyPath *)self managementSource];
-  if (!v4)
+  errorsCopy = errors;
+  managementSource = [(RMSubscribedStatusKeyPath *)self managementSource];
+  if (!managementSource)
   {
     v5 = [RMErrorUtilities createMissingMandatoryPropertyErrorWithPropertyNamed:@"managementSource" onObject:self];
-    [v6 addObject:v5];
+    [errorsCopy addObject:v5];
   }
 }
 
-- (void)_validateSetOncePropertiesWithErrors:(id)a3
+- (void)_validateSetOncePropertiesWithErrors:(id)errors
 {
-  v18 = a3;
-  v4 = [(RMSubscribedStatusKeyPath *)self changedValues];
-  v16 = [v4 allKeys];
-  v17 = self;
+  errorsCopy = errors;
+  changedValues = [(RMSubscribedStatusKeyPath *)self changedValues];
+  allKeys = [changedValues allKeys];
+  selfCopy = self;
   v5 = [(RMSubscribedStatusKeyPath *)self committedValuesForKeys:?];
   v25 = @"managementSource";
   [NSArray arrayWithObjects:&v25 count:1];
@@ -173,7 +173,7 @@ LABEL_9:
         v11 = [v5 objectForKeyedSubscript:v10];
         if (v11)
         {
-          v12 = [v4 objectForKeyedSubscript:v10];
+          v12 = [changedValues objectForKeyedSubscript:v10];
           if (([v11 isEqual:v12] & 1) == 0)
           {
             v13 = +[NSNull null];
@@ -181,8 +181,8 @@ LABEL_9:
 
             if ((v14 & 1) == 0)
             {
-              v15 = [RMErrorUtilities createCannotChangeValueErrorForPropertyNamed:v10 onObject:v17];
-              [v18 addObject:v15];
+              v15 = [RMErrorUtilities createCannotChangeValueErrorForPropertyNamed:v10 onObject:selfCopy];
+              [errorsCopy addObject:v15];
             }
           }
         }
@@ -195,35 +195,35 @@ LABEL_9:
   }
 }
 
-+ (id)fetchRequestWithKeyPaths:(id)a3
++ (id)fetchRequestWithKeyPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [a1 fetchRequest];
-  v6 = [NSPredicate predicateWithFormat:@"(%K IN %@)", @"keyPath", v4];
+  pathsCopy = paths;
+  fetchRequest = [self fetchRequest];
+  pathsCopy = [NSPredicate predicateWithFormat:@"(%K IN %@)", @"keyPath", pathsCopy];
 
-  [v5 setPredicate:v6];
+  [fetchRequest setPredicate:pathsCopy];
 
-  return v5;
+  return fetchRequest;
 }
 
 - (id)reportDetails
 {
   v4 = objc_opt_new();
-  v5 = [(RMSubscribedStatusKeyPath *)self lastAcknowledgedDate];
-  [v4 setObject:v5 forKeyedSubscript:@"lastAcknowledgedDate"];
+  lastAcknowledgedDate = [(RMSubscribedStatusKeyPath *)self lastAcknowledgedDate];
+  [v4 setObject:lastAcknowledgedDate forKeyedSubscript:@"lastAcknowledgedDate"];
 
-  v6 = [(RMSubscribedStatusKeyPath *)self lastReceivedDate];
-  [v4 setObject:v6 forKeyedSubscript:@"lastReceivedDate"];
+  lastReceivedDate = [(RMSubscribedStatusKeyPath *)self lastReceivedDate];
+  [v4 setObject:lastReceivedDate forKeyedSubscript:@"lastReceivedDate"];
 
-  v7 = [(RMSubscribedStatusKeyPath *)self keyPath];
-  [v4 setObject:v7 forKeyedSubscript:@"keyPath"];
+  keyPath = [(RMSubscribedStatusKeyPath *)self keyPath];
+  [v4 setObject:keyPath forKeyedSubscript:@"keyPath"];
 
-  v8 = [(RMSubscribedStatusKeyPath *)self lastAcknowledgedDate];
-  if (v8)
+  lastAcknowledgedDate2 = [(RMSubscribedStatusKeyPath *)self lastAcknowledgedDate];
+  if (lastAcknowledgedDate2)
   {
-    v2 = [(RMSubscribedStatusKeyPath *)self lastAcknowledgedDate];
+    lastAcknowledgedDate3 = [(RMSubscribedStatusKeyPath *)self lastAcknowledgedDate];
     self = [(RMSubscribedStatusKeyPath *)self lastReceivedDate];
-    v9 = [v2 isEqualToDate:self] ^ 1;
+    v9 = [lastAcknowledgedDate3 isEqualToDate:self] ^ 1;
   }
 
   else
@@ -234,7 +234,7 @@ LABEL_9:
   v10 = [NSNumber numberWithInt:v9];
   [v4 setObject:v10 forKeyedSubscript:@"needsSync"];
 
-  if (v8)
+  if (lastAcknowledgedDate2)
   {
   }
 

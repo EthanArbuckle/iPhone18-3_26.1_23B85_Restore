@@ -1,7 +1,7 @@
 @interface MapsSuggestionsNavdLBALocationManager
 + (id)sharedLocationManager;
 - (BOOL)hasLocationAccess;
-- (MapsSuggestionsNavdLBALocationManager)initWithName:(id)a3 queue:(id)a4;
+- (MapsSuggestionsNavdLBALocationManager)initWithName:(id)name queue:(id)queue;
 @end
 
 @implementation MapsSuggestionsNavdLBALocationManager
@@ -18,11 +18,11 @@
   return v3;
 }
 
-- (MapsSuggestionsNavdLBALocationManager)initWithName:(id)a3 queue:(id)a4
+- (MapsSuggestionsNavdLBALocationManager)initWithName:(id)name queue:(id)queue
 {
   v5.receiver = self;
   v5.super_class = MapsSuggestionsNavdLBALocationManager;
-  return [(MapsSuggestionsNavdLocationManager *)&v5 initWithName:a3 locationBundlePath:@"/System/Library/LocationBundles/NavdLocationBundleiOS.bundle" queue:a4];
+  return [(MapsSuggestionsNavdLocationManager *)&v5 initWithName:name locationBundlePath:@"/System/Library/LocationBundles/NavdLocationBundleiOS.bundle" queue:queue];
 }
 
 - (BOOL)hasLocationAccess
@@ -34,8 +34,8 @@
     return 0;
   }
 
-  v7 = [(MapsSuggestionsNavdLocationManager *)self locationManager];
-  v6 = [v7 accuracyAuthorization] == 0;
+  locationManager = [(MapsSuggestionsNavdLocationManager *)self locationManager];
+  v6 = [locationManager accuracyAuthorization] == 0;
 
   return v6;
 }

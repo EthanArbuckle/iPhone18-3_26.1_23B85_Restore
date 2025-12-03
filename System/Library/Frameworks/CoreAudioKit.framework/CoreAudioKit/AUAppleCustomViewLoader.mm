@@ -1,17 +1,17 @@
 @interface AUAppleCustomViewLoader
 - (_TtC12CoreAudioKit23AUAppleCustomViewLoader)init;
-- (id)customViewControllerFor:(AudioComponentDescription *)a3 audioUnit:(void *)a4 v3AU:(id)a5;
+- (id)customViewControllerFor:(AudioComponentDescription *)for audioUnit:(void *)unit v3AU:(id)u;
 @end
 
 @implementation AUAppleCustomViewLoader
 
-- (id)customViewControllerFor:(AudioComponentDescription *)a3 audioUnit:(void *)a4 v3AU:(id)a5
+- (id)customViewControllerFor:(AudioComponentDescription *)for audioUnit:(void *)unit v3AU:(id)u
 {
-  componentSubType = a3->componentSubType;
-  componentManufacturer = a3->componentManufacturer;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_237160C18(componentSubType, componentManufacturer, a4, a5);
+  componentSubType = for->componentSubType;
+  componentManufacturer = for->componentManufacturer;
+  uCopy = u;
+  selfCopy = self;
+  v12 = sub_237160C18(componentSubType, componentManufacturer, unit, u);
 
   return v12;
 }

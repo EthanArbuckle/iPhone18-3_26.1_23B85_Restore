@@ -1,27 +1,27 @@
 @interface _EMKTextKit2Controller
 + (OS_os_log)log;
 - (BOOL)isUsingTextEffectBasedEmojiAnimations;
-- (BOOL)touchHasEmojiSignificance:(id)a3;
+- (BOOL)touchHasEmojiSignificance:(id)significance;
 - (EMKTextView)textView;
 - (NSTextLayoutManager)_layoutManager;
-- (_EMKTextKit2Controller)initWithTextView:(id)a3 emojiPreferences:(id)a4;
-- (id)textContentStorage:(id)a3 textParagraphWithRange:(_NSRange)a4;
-- (void)__rippleCoordinatorDidCompleteWithFinished:(BOOL)a3;
+- (_EMKTextKit2Controller)initWithTextView:(id)view emojiPreferences:(id)preferences;
+- (id)textContentStorage:(id)storage textParagraphWithRange:(_NSRange)range;
+- (void)__rippleCoordinatorDidCompleteWithFinished:(BOOL)finished;
 - (void)__startAnimation;
 - (void)__startLegacyRippleAnimation;
 - (void)__startTextEffectBasedAnimation;
 - (void)__stopAnimation;
 - (void)_startOrStopAnimation;
 - (void)_startRippleAnimation;
-- (void)_updateEmojiAttributesOfText:(id)a3;
+- (void)_updateEmojiAttributesOfText:(id)text;
 - (void)_updateOverlayView;
 - (void)dismissOverlayView;
-- (void)replaceRange:(_NSRange)a3 withEmojiToken:(id)a4 language:(id)a5;
-- (void)setEmojiConversionActive:(BOOL)a3;
-- (void)setTextContainerOverlayView:(id)a3;
-- (void)textTapGestureRecognized:(id)a3;
+- (void)replaceRange:(_NSRange)range withEmojiToken:(id)token language:(id)language;
+- (void)setEmojiConversionActive:(BOOL)active;
+- (void)setTextContainerOverlayView:(id)view;
+- (void)textTapGestureRecognized:(id)recognized;
 - (void)textViewDidLayoutSubviews;
-- (void)updateEmojiDisplay:(id)a3;
+- (void)updateEmojiDisplay:(id)display;
 @end
 
 @implementation _EMKTextKit2Controller
@@ -40,18 +40,18 @@
 
 - (void)textViewDidLayoutSubviews
 {
-  v3 = [(_EMKTextKit2Controller *)self textView];
+  textView = [(_EMKTextKit2Controller *)self textView];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(_EMKTextKit2Controller *)self textView];
-    v5 = [v4 _containerView];
-    [v5 bounds];
+    textView2 = [(_EMKTextKit2Controller *)self textView];
+    _containerView = [textView2 _containerView];
+    [_containerView bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(_EMKTextKit2Controller *)self textContainerOverlayView];
-    [v14 setFrame:{v7, v9, v11, v13}];
+    textContainerOverlayView = [(_EMKTextKit2Controller *)self textContainerOverlayView];
+    [textContainerOverlayView setFrame:{v7, v9, v11, v13}];
   }
 
   if (self->_overlayView)
@@ -73,10 +73,10 @@
   return WeakRetained;
 }
 
-- (_EMKTextKit2Controller)initWithTextView:(id)a3 emojiPreferences:(id)a4
+- (_EMKTextKit2Controller)initWithTextView:(id)view emojiPreferences:(id)preferences
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  preferencesCopy = preferences;
   v20.receiver = self;
   v20.super_class = _EMKTextKit2Controller;
   v8 = [(_EMKTextKit2Controller *)&v20 init];
@@ -86,9 +86,9 @@
     rippler = v8->_rippler;
     v8->_rippler = v9;
 
-    objc_storeWeak(&v8->_textView, v6);
-    objc_storeStrong(&v8->_emojiPreferences, a4);
-    v11 = [[EMKTextEnumerator alloc] initWithEmojiPreferences:v7];
+    objc_storeWeak(&v8->_textView, viewCopy);
+    objc_storeStrong(&v8->_emojiPreferences, preferences);
+    v11 = [[EMKTextEnumerator alloc] initWithEmojiPreferences:preferencesCopy];
     textEnumerator = v8->_textEnumerator;
     v8->_textEnumerator = v11;
 
@@ -105,12 +105,12 @@
     containerOverlayView = v8->_containerOverlayView;
     v8->_containerOverlayView = 0;
 
-    v17 = [v6 textLayoutManager];
-    v18 = [v17 textContentManager];
-    [v18 setDelegate:v8];
+    textLayoutManager = [viewCopy textLayoutManager];
+    textContentManager = [textLayoutManager textContentManager];
+    [textContentManager setDelegate:v8];
     if (objc_opt_respondsToSelector())
     {
-      [v17 setRequiresCTLineRef:1];
+      [textLayoutManager setRequiresCTLineRef:1];
     }
   }
 
@@ -120,9 +120,9 @@
 - (NSTextLayoutManager)_layoutManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_textView);
-  v3 = [WeakRetained textLayoutManager];
+  textLayoutManager = [WeakRetained textLayoutManager];
 
-  return v3;
+  return textLayoutManager;
 }
 
 - (void)_startRippleAnimation
@@ -142,29 +142,29 @@
 
 - (void)__startTextEffectBasedAnimation
 {
-  v3 = [(_EMKTextKit2Controller *)self textView];
-  v4 = [v3 textStorage];
-  v5 = [v4 length];
-  v6 = [v3 emojiAnimationDelegate];
-  [v6 textViewWillBeginEmojiRippleAnimation:v3];
+  textView = [(_EMKTextKit2Controller *)self textView];
+  textStorage = [textView textStorage];
+  v5 = [textStorage length];
+  emojiAnimationDelegate = [textView emojiAnimationDelegate];
+  [emojiAnimationDelegate textViewWillBeginEmojiRippleAnimation:textView];
 
   v7 = objc_opt_new();
-  [v4 beginEditing];
+  [textStorage beginEditing];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __57___EMKTextKit2Controller___startTextEffectBasedAnimation__block_invoke;
   v23[3] = &unk_2781C2228;
-  v8 = v4;
+  v8 = textStorage;
   v24 = v8;
   v25 = v7;
   v9 = v7;
   [v8 _enumerateTokenListsInRange:0 usingBlock_emk:{v5, v23}];
   [v8 endEditing];
-  v10 = [(_EMKTextKit2Controller *)self textView];
-  [v10 setNeedsLayout];
+  textView2 = [(_EMKTextKit2Controller *)self textView];
+  [textView2 setNeedsLayout];
 
-  v11 = [(_EMKTextKit2Controller *)self textView];
-  [v11 layoutIfNeeded];
+  textView3 = [(_EMKTextKit2Controller *)self textView];
+  [textView3 layoutIfNeeded];
 
   v12 = [objc_opt_class() log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -174,21 +174,21 @@
   }
 
   v13 = [EMKRippleAnimationCoordinator alloc];
-  v14 = [(_EMKTextKit2Controller *)self textView];
+  textView4 = [(_EMKTextKit2Controller *)self textView];
   v15 = [MEMORY[0x277D75348] colorWithRed:1.0 green:0.498039216 blue:0.0 alpha:1.0];
   v16 = [objc_opt_class() log];
-  v17 = [(EMKRippleAnimationCoordinator *)v13 initWithTextView:v14 animations:v9 foregroundColor:v15 log:v16];
+  v17 = [(EMKRippleAnimationCoordinator *)v13 initWithTextView:textView4 animations:v9 foregroundColor:v15 log:v16];
   [(_EMKTextKit2Controller *)self setRippleCoordinator:v17];
 
-  v18 = [(_EMKTextKit2Controller *)self rippleCoordinator];
+  rippleCoordinator = [(_EMKTextKit2Controller *)self rippleCoordinator];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __57___EMKTextKit2Controller___startTextEffectBasedAnimation__block_invoke_46;
   v20[3] = &unk_2781C2250;
   v20[4] = self;
-  v21 = v3;
-  v19 = v3;
-  [v18 startWithCompletionHandler:v20];
+  v21 = textView;
+  v19 = textView;
+  [rippleCoordinator startWithCompletionHandler:v20];
 }
 
 - (void)__startLegacyRippleAnimation
@@ -207,12 +207,12 @@
     v5 = self->_rippleTimer;
     self->_rippleTimer = v4;
 
-    v6 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v6 addTimer:self->_rippleTimer forMode:*MEMORY[0x277D77228]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [mainRunLoop addTimer:self->_rippleTimer forMode:*MEMORY[0x277D77228]];
   }
 }
 
-- (void)updateEmojiDisplay:(id)a3
+- (void)updateEmojiDisplay:(id)display
 {
   v4 = 0;
   [(_EMKTextContainerOverlayView *)self->_containerOverlayView updateAnimationAndGetFinished:&v4];
@@ -223,15 +223,15 @@
   }
 }
 
-- (void)_updateEmojiAttributesOfText:(id)a3
+- (void)_updateEmojiAttributesOfText:(id)text
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  textCopy = text;
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2155E6000, v5, OS_LOG_TYPE_DEFAULT, "%p _updateEmojiAttributesOfText", buf, 0xCu);
   }
 
@@ -257,15 +257,15 @@
 
         v10 = *(*(&v18 + 1) + 8 * v9);
         textEnumerator = self->_textEnumerator;
-        v12 = [v4 string];
-        v13 = [v4 length];
+        string = [textCopy string];
+        v13 = [textCopy length];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __55___EMKTextKit2Controller__updateEmojiAttributesOfText___block_invoke;
         v15[3] = &unk_2781C2278;
-        v16 = v4;
+        v16 = textCopy;
         v17 = v10;
-        [(EMKTextEnumerator *)textEnumerator enumerateEmojiSignifiersInString:v12 touchingRange:0 language:v13 usingBlock:v10, v15];
+        [(EMKTextEnumerator *)textEnumerator enumerateEmojiSignifiersInString:string touchingRange:0 language:v13 usingBlock:v10, v15];
 
         ++v9;
       }
@@ -280,36 +280,36 @@
 
 - (BOOL)isUsingTextEffectBasedEmojiAnimations
 {
-  v2 = [(_EMKTextKit2Controller *)self textView];
-  v3 = [v2 isUsingTextEffectBasedEmojiAnimations];
+  textView = [(_EMKTextKit2Controller *)self textView];
+  isUsingTextEffectBasedEmojiAnimations = [textView isUsingTextEffectBasedEmojiAnimations];
 
-  return v3;
+  return isUsingTextEffectBasedEmojiAnimations;
 }
 
-- (void)setEmojiConversionActive:(BOOL)a3
+- (void)setEmojiConversionActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v10 = *MEMORY[0x277D85DE8];
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = v3;
+    v9[1] = activeCopy;
     _os_log_impl(&dword_2155E6000, v5, OS_LOG_TYPE_DEFAULT, "setEmojiConversionActive: %{BOOL}d", v9, 8u);
   }
 
-  if (self->_emojiConversionActive != v3)
+  if (self->_emojiConversionActive != activeCopy)
   {
-    self->_emojiConversionActive = v3;
-    if (v3)
+    self->_emojiConversionActive = activeCopy;
+    if (activeCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_textView);
-      v7 = [WeakRetained textStorage];
-      [(_EMKTextKit2Controller *)self _updateEmojiAttributesOfText:v7];
+      textStorage = [WeakRetained textStorage];
+      [(_EMKTextKit2Controller *)self _updateEmojiAttributesOfText:textStorage];
     }
 
-    v8 = [(_EMKTextKit2Controller *)self _layoutManager];
-    if (v8)
+    _layoutManager = [(_EMKTextKit2Controller *)self _layoutManager];
+    if (_layoutManager)
     {
       [(_EMKTextKit2Controller *)self _startOrStopAnimation];
     }
@@ -366,37 +366,37 @@
       v12 = [objc_opt_class() log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(_EMKTextKit2Controller *)self rippleCoordinator];
+        rippleCoordinator = [(_EMKTextKit2Controller *)self rippleCoordinator];
         v16 = 138412290;
-        *v17 = v13;
+        *v17 = rippleCoordinator;
         _os_log_impl(&dword_2155E6000, v12, OS_LOG_TYPE_DEFAULT, "self.rippleCoordinator: %@", &v16, 0xCu);
       }
 
-      v14 = [(_EMKTextKit2Controller *)self rippleCoordinator];
-      [v14 cleanupIncludingFilterEffect:1];
+      rippleCoordinator2 = [(_EMKTextKit2Controller *)self rippleCoordinator];
+      [rippleCoordinator2 cleanupIncludingFilterEffect:1];
 
       [(_EMKTextKit2Controller *)self setRippleCoordinator:0];
     }
 
     else
     {
-      v15 = [(_EMKTextKit2Controller *)self textView];
-      [v15 _setTokenListsHighlighted_emk:0 rippler:self->_rippler];
+      textView = [(_EMKTextKit2Controller *)self textView];
+      [textView _setTokenListsHighlighted_emk:0 rippler:self->_rippler];
     }
   }
 }
 
-- (void)setTextContainerOverlayView:(id)a3
+- (void)setTextContainerOverlayView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   textContainerOverlayView = self->_textContainerOverlayView;
-  if (textContainerOverlayView != v5)
+  if (textContainerOverlayView != viewCopy)
   {
     [(UIView *)textContainerOverlayView removeFromSuperview];
-    objc_storeStrong(&self->_textContainerOverlayView, a3);
-    v7 = [(_EMKTextKit2Controller *)self textView];
-    v8 = [v7 _containerView];
-    [v8 frame];
+    objc_storeStrong(&self->_textContainerOverlayView, view);
+    textView = [(_EMKTextKit2Controller *)self textView];
+    _containerView = [textView _containerView];
+    [_containerView frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -410,12 +410,12 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)__rippleCoordinatorDidCompleteWithFinished:(BOOL)a3
+- (void)__rippleCoordinatorDidCompleteWithFinished:(BOOL)finished
 {
   [(_EMKTextKit2Controller *)self __stopAnimation];
   self->_emojiAnimationActive = 0;
-  v4 = [(_EMKTextKit2Controller *)self rippleCoordinator];
-  [v4 cleanupIncludingFilterEffect:!self->_emojiConversionActive];
+  rippleCoordinator = [(_EMKTextKit2Controller *)self rippleCoordinator];
+  [rippleCoordinator cleanupIncludingFilterEffect:!self->_emojiConversionActive];
 }
 
 - (void)__stopAnimation
@@ -430,8 +430,8 @@
   self->_emojiAnimationActive = 0;
   if ([(_EMKTextKit2Controller *)self isUsingTextEffectBasedEmojiAnimations])
   {
-    v4 = [(_EMKTextKit2Controller *)self rippleCoordinator];
-    [v4 stop];
+    rippleCoordinator = [(_EMKTextKit2Controller *)self rippleCoordinator];
+    [rippleCoordinator stop];
   }
 
   else
@@ -445,8 +445,8 @@
     WeakRetained = objc_loadWeakRetained(&self->_textView);
     [WeakRetained _setTokenListsHidden_emk:0];
 
-    v4 = objc_loadWeakRetained(&self->_textView);
-    [v4 _setTokenListsHighlighted_emk:self->_emojiConversionActive rippler:self->_rippler];
+    rippleCoordinator = objc_loadWeakRetained(&self->_textView);
+    [rippleCoordinator _setTokenListsHighlighted_emk:self->_emojiConversionActive rippler:self->_rippler];
   }
 }
 
@@ -465,11 +465,11 @@
   self->_emojiAnimationActive = 1;
   if ([(_EMKTextKit2Controller *)self isUsingTextEffectBasedEmojiAnimations])
   {
-    v5 = [(_EMKTextKit2Controller *)self textView];
-    [v5 setNeedsLayout];
+    textView = [(_EMKTextKit2Controller *)self textView];
+    [textView setNeedsLayout];
 
-    v6 = [(_EMKTextKit2Controller *)self textView];
-    [v6 layoutIfNeeded];
+    textView2 = [(_EMKTextKit2Controller *)self textView];
+    [textView2 layoutIfNeeded];
   }
 
   else
@@ -478,9 +478,9 @@
     containerOverlayView = self->_containerOverlayView;
     if (!containerOverlayView)
     {
-      v8 = [(_EMKTextKit2Controller *)self textView];
-      v9 = [v8 _containerView];
-      [v9 frame];
+      textView3 = [(_EMKTextKit2Controller *)self textView];
+      _containerView = [textView3 _containerView];
+      [_containerView frame];
       v11 = v10;
       v13 = v12;
       v15 = v14;
@@ -501,8 +501,8 @@
     }
 
     [(_EMKTextContainerOverlayView *)containerOverlayView startAnimation];
-    v6 = objc_loadWeakRetained(&self->_textView);
-    [v6 _setTokenListsHidden_emk:1];
+    textView2 = objc_loadWeakRetained(&self->_textView);
+    [textView2 _setTokenListsHidden_emk:1];
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -513,14 +513,14 @@
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (BOOL)touchHasEmojiSignificance:(id)a3
+- (BOOL)touchHasEmojiSignificance:(id)significance
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  significanceCopy = significance;
   if ([(_EMKTextKit2Controller *)self isEmojiConversionActive]&& [(_EMKTextKit2Controller *)self isEmojiConversionEnabled])
   {
     WeakRetained = objc_loadWeakRetained(&self->_textView);
-    [v4 locationInView:WeakRetained];
+    [significanceCopy locationInView:WeakRetained];
     v7 = v6;
     v9 = v8;
 
@@ -531,23 +531,23 @@
       v59.y = v9;
       v11 = NSStringFromCGPoint(v59);
       *buf = 134218242;
-      *&buf[4] = v4;
+      *&buf[4] = significanceCopy;
       *&buf[12] = 2112;
       *&buf[14] = v11;
       _os_log_impl(&dword_2155E6000, v10, OS_LOG_TYPE_DEFAULT, "touchHasEmojiSignificance: %p - location: %@", buf, 0x16u);
     }
 
     v12 = objc_loadWeakRetained(&self->_textView);
-    v13 = [v12 textLayoutManager];
-    v14 = [v13 textContainer];
+    textLayoutManager = [v12 textLayoutManager];
+    textContainer = [textLayoutManager textContainer];
 
     v15 = objc_loadWeakRetained(&self->_textView);
-    v16 = [v15 textLayoutManager];
+    textLayoutManager2 = [v15 textLayoutManager];
 
-    v17 = [v16 documentRange];
-    [v16 ensureLayoutForRange:v17];
-    v18 = [v17 location];
-    v19 = [v16 lineFragmentRangeForPoint:v18 inContainerAtLocation:{v7, v9}];
+    documentRange = [textLayoutManager2 documentRange];
+    [textLayoutManager2 ensureLayoutForRange:documentRange];
+    location = [documentRange location];
+    v19 = [textLayoutManager2 lineFragmentRangeForPoint:location inContainerAtLocation:{v7, v9}];
 
     v20 = [objc_opt_class() log];
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
@@ -573,19 +573,19 @@
       v22 = *(MEMORY[0x277CBF3A0] + 16);
       v56 = *MEMORY[0x277CBF3A0];
       v57 = v22;
-      v23 = [v19 location];
+      location2 = [v19 location];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __52___EMKTextKit2Controller_touchHasEmojiSignificance___block_invoke;
       v41[3] = &unk_2781C22F0;
-      v24 = v16;
+      v24 = textLayoutManager2;
       v42 = v24;
-      v43 = self;
+      selfCopy = self;
       v46 = v7;
       v47 = v9;
       v44 = &v48;
       v45 = buf;
-      [v24 enumerateSubstringsFromLocation:v23 options:3 usingBlock:v41];
+      [v24 enumerateSubstringsFromLocation:location2 options:3 usingBlock:v41];
 
       v25 = v49[5];
       if (v25)
@@ -594,18 +594,18 @@
         v38 = &v37;
         v39 = 0x2020000000;
         v40 = 0;
-        v26 = [v25 location];
+        location3 = [v25 location];
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __52___EMKTextKit2Controller_touchHasEmojiSignificance___block_invoke_57;
         v31[3] = &unk_2781C2340;
         v31[4] = self;
         v32 = v24;
-        v33 = v17;
+        v33 = documentRange;
         v34 = &v48;
         v35 = &v37;
         v36 = buf;
-        v27 = [v32 enumerateTextLayoutFragmentsFromLocation:v26 options:0 usingBlock:v31];
+        v27 = [v32 enumerateTextLayoutFragmentsFromLocation:location3 options:0 usingBlock:v31];
 
         if (v38[3])
         {
@@ -652,10 +652,10 @@
   return v28 & 1;
 }
 
-- (void)textTapGestureRecognized:(id)a3
+- (void)textTapGestureRecognized:(id)recognized
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recognizedCopy = recognized;
   if (__PAIR64__(self->_emojiConversionActive, self->_emojiConversionEnabled) == 0x100000001)
   {
     v5 = [MEMORY[0x277D75238] sharedCalloutBarIsVisible] ^ 1;
@@ -671,7 +671,7 @@
   {
     lastTouchInfo = self->_lastTouchInfo;
     *buf = 138412802;
-    v35 = v4;
+    v35 = recognizedCopy;
     v36 = 1024;
     v37 = v5;
     v38 = 2112;
@@ -682,33 +682,33 @@
   if (v5)
   {
     WeakRetained = objc_loadWeakRetained(&self->_textView);
-    v9 = [WeakRetained text];
+    text = [WeakRetained text];
 
-    v10 = [(_EMKTouchInfo *)self->_lastTouchInfo tokenListRange];
+    tokenListRange = [(_EMKTouchInfo *)self->_lastTouchInfo tokenListRange];
     v12 = v11;
-    v13 = [v9 substringWithRange:{v10, v11}];
+    v13 = [text substringWithRange:{tokenListRange, v11}];
     objc_initWeak(buf, self);
     v14 = [EMKOverlayView alloc];
-    v15 = [(_EMKTextKit2Controller *)self textView];
+    textView = [(_EMKTextKit2Controller *)self textView];
     [(_EMKTouchInfo *)self->_lastTouchInfo frame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(_EMKTouchInfo *)self->_lastTouchInfo tokenList];
+    tokenList = [(_EMKTouchInfo *)self->_lastTouchInfo tokenList];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __51___EMKTextKit2Controller_textTapGestureRecognized___block_invoke;
     v29[3] = &unk_2781C2368;
     objc_copyWeak(v33, buf);
-    v33[1] = v10;
+    v33[1] = tokenListRange;
     v33[2] = v12;
-    v25 = v9;
+    v25 = text;
     v30 = v25;
     v26 = v13;
     v31 = v26;
-    v32 = self;
-    v27 = [(EMKOverlayView *)v14 initWithView:v15 anchorRect:v24 emojiTokenList:v29 selectionHandler:v17, v19, v21, v23];
+    selfCopy = self;
+    v27 = [(EMKOverlayView *)v14 initWithView:textView anchorRect:tokenList emojiTokenList:v29 selectionHandler:v17, v19, v21, v23];
     overlayView = self->_overlayView;
     self->_overlayView = v27;
 
@@ -717,13 +717,13 @@
   }
 }
 
-- (void)replaceRange:(_NSRange)a3 withEmojiToken:(id)a4 language:(id)a5
+- (void)replaceRange:(_NSRange)range withEmojiToken:(id)token language:(id)language
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v51 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v48 = a5;
+  tokenCopy = token;
+  languageCopy = language;
   v10 = [objc_opt_class() log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -735,21 +735,21 @@
     _os_log_impl(&dword_2155E6000, v10, OS_LOG_TYPE_DEFAULT, "replaceRange:withEmojiToken:language: - range: %@", buf, 0xCu);
   }
 
-  v12 = [v9 string];
-  v45 = [v12 length];
-  v13 = [(_EMKTextKit2Controller *)self textView];
-  v14 = [v13 attributedText];
-  v15 = [v14 attributedSubstringFromRange:{location, length}];
-  v16 = [v15 string];
+  string = [tokenCopy string];
+  v45 = [string length];
+  textView = [(_EMKTextKit2Controller *)self textView];
+  attributedText = [textView attributedText];
+  v15 = [attributedText attributedSubstringFromRange:{location, length}];
+  string2 = [v15 string];
 
   WeakRetained = objc_loadWeakRetained(&self->_textView);
-  v18 = [WeakRetained beginningOfDocument];
+  beginningOfDocument = [WeakRetained beginningOfDocument];
 
   v19 = objc_loadWeakRetained(&self->_textView);
-  v20 = [v19 positionFromPosition:v18 offset:location];
+  v20 = [v19 positionFromPosition:beginningOfDocument offset:location];
 
   v21 = objc_loadWeakRetained(&self->_textView);
-  v22 = [v21 positionFromPosition:v18 offset:location + length];
+  v22 = [v21 positionFromPosition:beginningOfDocument offset:location + length];
 
   v23 = objc_loadWeakRetained(&self->_textView);
   v46 = v22;
@@ -757,27 +757,27 @@
   v24 = [v23 textRangeFromPosition:v20 toPosition:v22];
 
   v25 = objc_loadWeakRetained(&self->_textView);
-  v26 = [v25 inputDelegate];
+  inputDelegate = [v25 inputDelegate];
   v27 = objc_loadWeakRetained(&self->_textView);
-  [v26 textWillChange:v27];
+  [inputDelegate textWillChange:v27];
 
   v28 = objc_loadWeakRetained(&self->_textView);
-  [v28 replaceRange:v24 withText:v12];
+  [v28 replaceRange:v24 withText:string];
 
   v29 = objc_loadWeakRetained(&self->_textView);
-  v30 = [v29 inputDelegate];
+  inputDelegate2 = [v29 inputDelegate];
   v31 = objc_loadWeakRetained(&self->_textView);
-  [v30 textDidChange:v31];
+  [inputDelegate2 textDidChange:v31];
 
-  if ([v16 isEqualToString:v12])
+  if ([string2 isEqualToString:string])
   {
-    v44 = v9;
+    v44 = tokenCopy;
     v32 = objc_loadWeakRetained(&self->_textView);
-    v33 = [v32 inputDelegate];
+    inputDelegate3 = [v32 inputDelegate];
     v34 = objc_loadWeakRetained(&self->_textView);
-    [v33 textWillChange:v34];
+    [inputDelegate3 textWillChange:v34];
 
-    v35 = [[EMKEmojiSignifier alloc] initWithString:v16];
+    v35 = [[EMKEmojiSignifier alloc] initWithString:string2];
     v36 = [objc_opt_class() log];
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
@@ -785,28 +785,28 @@
       _os_log_impl(&dword_2155E6000, v36, OS_LOG_TYPE_DEFAULT, "Adding attributes…", buf, 2u);
     }
 
-    v37 = [(_EMKTextKit2Controller *)self textView];
-    v38 = [v37 attributedText];
-    v39 = [v38 mutableCopy];
+    textView2 = [(_EMKTextKit2Controller *)self textView];
+    attributedText2 = [textView2 attributedText];
+    v39 = [attributedText2 mutableCopy];
 
     [v39 addAttribute:@"EMKEmojiSignifier" value:v35 range:{location, v45}];
-    if (v48)
+    if (languageCopy)
     {
-      [v39 addAttribute:@"EMKEmojiConversionLanguage" value:v48 range:{location, v45}];
+      [v39 addAttribute:@"EMKEmojiConversionLanguage" value:languageCopy range:{location, v45}];
     }
 
     v40 = objc_loadWeakRetained(&self->_textView);
     [v40 setAttributedText:v39];
 
     v41 = objc_loadWeakRetained(&self->_textView);
-    v42 = [v41 inputDelegate];
+    inputDelegate4 = [v41 inputDelegate];
     v43 = objc_loadWeakRetained(&self->_textView);
-    [v42 textDidChange:v43];
+    [inputDelegate4 textDidChange:v43];
 
-    v9 = v44;
+    tokenCopy = v44;
   }
 
-  [(EMFEmojiPreferences *)self->_emojiPreferences didUseEmoji:v9 usageMode:*MEMORY[0x277D072E0] typingName:0 replacementContext:v16];
+  [(EMFEmojiPreferences *)self->_emojiPreferences didUseEmoji:tokenCopy usageMode:*MEMORY[0x277D072E0] typingName:0 replacementContext:string2];
 }
 
 - (void)_updateOverlayView
@@ -814,9 +814,9 @@
   overlayView = self->_overlayView;
   if (overlayView)
   {
-    v4 = [(_EMKTextKit2Controller *)self textView];
+    textView = [(_EMKTextKit2Controller *)self textView];
     [(_EMKTouchInfo *)self->_lastTouchInfo frame];
-    [(EMKOverlayView *)overlayView setView:v4 anchorRect:?];
+    [(EMKOverlayView *)overlayView setView:textView anchorRect:?];
   }
 }
 
@@ -829,7 +829,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 134217984;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_2155E6000, v3, OS_LOG_TYPE_DEFAULT, "Dismissing overlay view: %p", &v5, 0xCu);
     }
 
@@ -839,16 +839,16 @@
   }
 }
 
-- (id)textContentStorage:(id)a3 textParagraphWithRange:(_NSRange)a4
+- (id)textContentStorage:(id)storage textParagraphWithRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = v7;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  v8 = storageCopy;
   if (__PAIR64__(self->_emojiConversionActive, self->_emojiConversionEnabled) == 0x100000001)
   {
-    v9 = [v7 textStorage];
-    v10 = [v9 attributedSubstringFromRange:{location, length}];
+    textStorage = [storageCopy textStorage];
+    v10 = [textStorage attributedSubstringFromRange:{location, length}];
 
     v11 = [v10 mutableCopy];
     [(_EMKTextKit2Controller *)self _updateEmojiAttributesOfText:v11];

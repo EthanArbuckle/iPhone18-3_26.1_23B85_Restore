@@ -1,24 +1,24 @@
 @interface IDSCancelMessage
-- (IDSCancelMessage)initWithQueueOneIdentifier:(id)a3 fromID:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IDSCancelMessage)initWithQueueOneIdentifier:(id)identifier fromID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)messageBody;
 @end
 
 @implementation IDSCancelMessage
 
-- (IDSCancelMessage)initWithQueueOneIdentifier:(id)a3 fromID:(id)a4
+- (IDSCancelMessage)initWithQueueOneIdentifier:(id)identifier fromID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = IDSCancelMessage;
   v9 = [(IDSMessage *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fromID, a4);
-    objc_storeStrong(&v10->_queueOneIdentifier, a3);
+    objc_storeStrong(&v9->_fromID, d);
+    objc_storeStrong(&v10->_queueOneIdentifier, identifier);
   }
 
   return v10;
@@ -28,19 +28,19 @@
 {
   v8.receiver = self;
   v8.super_class = IDSCancelMessage;
-  v3 = [(IDSMessage *)&v8 messageBody];
-  v4 = [v3 mutableCopy];
+  messageBody = [(IDSMessage *)&v8 messageBody];
+  v4 = [messageBody mutableCopy];
 
-  v5 = [(IDSCancelMessage *)self fromID];
-  if (v5)
+  fromID = [(IDSCancelMessage *)self fromID];
+  if (fromID)
   {
-    CFDictionarySetValue(v4, @"sP", v5);
+    CFDictionarySetValue(v4, @"sP", fromID);
   }
 
-  v6 = [(IDSCancelMessage *)self queueOneIdentifier];
-  if (v6)
+  queueOneIdentifier = [(IDSCancelMessage *)self queueOneIdentifier];
+  if (queueOneIdentifier)
   {
-    CFDictionarySetValue(v4, @"qI", v6);
+    CFDictionarySetValue(v4, @"qI", queueOneIdentifier);
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -51,16 +51,16 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = IDSCancelMessage;
-  v4 = [(IDSMessage *)&v8 copyWithZone:a3];
-  v5 = [(IDSCancelMessage *)self fromID];
-  [v4 setFromID:v5];
+  v4 = [(IDSMessage *)&v8 copyWithZone:zone];
+  fromID = [(IDSCancelMessage *)self fromID];
+  [v4 setFromID:fromID];
 
-  v6 = [(IDSCancelMessage *)self queueOneIdentifier];
-  [v4 setQueueOneIdentifier:v6];
+  queueOneIdentifier = [(IDSCancelMessage *)self queueOneIdentifier];
+  [v4 setQueueOneIdentifier:queueOneIdentifier];
 
   return v4;
 }
@@ -68,9 +68,9 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(IDSCancelMessage *)self fromID];
-  v5 = [(IDSCancelMessage *)self queueOneIdentifier];
-  v6 = [v3 stringWithFormat:@"<IDSCancelMessage %p: %@ %@>", self, v4, v5];
+  fromID = [(IDSCancelMessage *)self fromID];
+  queueOneIdentifier = [(IDSCancelMessage *)self queueOneIdentifier];
+  v6 = [v3 stringWithFormat:@"<IDSCancelMessage %p: %@ %@>", self, fromID, queueOneIdentifier];
 
   return v6;
 }

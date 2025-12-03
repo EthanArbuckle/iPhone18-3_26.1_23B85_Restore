@@ -3,7 +3,7 @@
 - (NSString)message;
 - (NSString)openAppCommandTitle;
 - (NSString)title;
-- (id)_initWithCause:(int64_t)a3 application:(id)a4 activity:(id)a5;
+- (id)_initWithCause:(int64_t)cause application:(id)application activity:(id)activity;
 - (id)description;
 - (void)_supersede;
 - (void)openApp;
@@ -13,9 +13,9 @@
 
 - (id)description
 {
-  v3 = [(RidesharingErrorAlertProvider *)self title];
-  v4 = [(RidesharingErrorAlertProvider *)self message];
-  v5 = [NSString stringWithFormat:@"Title: %@, message: %@", v3, v4];
+  title = [(RidesharingErrorAlertProvider *)self title];
+  message = [(RidesharingErrorAlertProvider *)self message];
+  v5 = [NSString stringWithFormat:@"Title: %@, message: %@", title, message];
 
   return v5;
 }
@@ -25,12 +25,12 @@
   if (!self->_superseded)
   {
     self->_superseded = 1;
-    v3 = [(RidesharingErrorAlertProvider *)self didSupersede];
+    didSupersede = [(RidesharingErrorAlertProvider *)self didSupersede];
 
-    if (v3)
+    if (didSupersede)
     {
-      v4 = [(RidesharingErrorAlertProvider *)self didSupersede];
-      v4[2](v4, self);
+      didSupersede2 = [(RidesharingErrorAlertProvider *)self didSupersede];
+      didSupersede2[2](didSupersede2, self);
     }
   }
 }
@@ -45,10 +45,10 @@
 
 - (NSString)dismissCommandTitle
 {
-  v3 = [(RidesharingErrorAlertProvider *)self cause];
-  if (v3 <= 3)
+  cause = [(RidesharingErrorAlertProvider *)self cause];
+  if (cause <= 3)
   {
-    v4 = *(&off_101622F58 + v3);
+    v4 = *(&off_101622F58 + cause);
     v5 = +[NSBundle mainBundle];
     v2 = [v5 localizedStringForKey:v4 value:@"localized string not found" table:0];
   }
@@ -62,24 +62,24 @@
   v4 = [v3 localizedStringForKey:@"Open %@ [ridesharing booking error alert]" value:@"localized string not found" table:0];
 
   v5 = [NSString alloc];
-  v6 = [(RideBookingApplication *)self->_application name];
-  v7 = [v5 initWithFormat:v4, v6];
+  name = [(RideBookingApplication *)self->_application name];
+  v7 = [v5 initWithFormat:v4, name];
 
   return v7;
 }
 
 - (NSString)message
 {
-  v4 = [(RidesharingErrorAlertProvider *)self cause];
-  if (v4 <= 3)
+  cause = [(RidesharingErrorAlertProvider *)self cause];
+  if (cause <= 3)
   {
-    v5 = *(&off_101622F38 + v4);
+    v5 = *(&off_101622F38 + cause);
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:v5 value:@"localized string not found" table:0];
 
     v8 = [NSString alloc];
-    v9 = [(RideBookingApplication *)self->_application name];
-    v2 = [v8 initWithFormat:v7, v9];
+    name = [(RideBookingApplication *)self->_application name];
+    v2 = [v8 initWithFormat:v7, name];
   }
 
   return v2;
@@ -88,22 +88,22 @@
 - (NSString)title
 {
   p_isa = &self->super.isa;
-  v3 = [(RidesharingErrorAlertProvider *)self cause];
-  if (v3 > 1)
+  cause = [(RidesharingErrorAlertProvider *)self cause];
+  if (cause > 1)
   {
-    if (v3 == 2)
+    if (cause == 2)
     {
       v7 = +[NSBundle mainBundle];
       v5 = [v7 localizedStringForKey:@"Set pickup location in %@ [ridesharing API error alert]" value:@"localized string not found" table:0];
 
       v8 = [NSString alloc];
-      v9 = [p_isa[1] name];
-      p_isa = [v8 initWithFormat:v5, v9];
+      name = [p_isa[1] name];
+      p_isa = [v8 initWithFormat:v5, name];
 
       goto LABEL_11;
     }
 
-    if (v3 != 3)
+    if (cause != 3)
     {
       goto LABEL_12;
     }
@@ -111,7 +111,7 @@
     goto LABEL_7;
   }
 
-  if (!v3)
+  if (!cause)
   {
     v4 = +[NSBundle mainBundle];
     v5 = v4;
@@ -119,7 +119,7 @@
     goto LABEL_9;
   }
 
-  if (v3 == 1)
+  if (cause == 1)
   {
 LABEL_7:
     v4 = +[NSBundle mainBundle];
@@ -135,19 +135,19 @@ LABEL_12:
   return p_isa;
 }
 
-- (id)_initWithCause:(int64_t)a3 application:(id)a4 activity:(id)a5
+- (id)_initWithCause:(int64_t)cause application:(id)application activity:(id)activity
 {
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  activityCopy = activity;
   v14.receiver = self;
   v14.super_class = RidesharingErrorAlertProvider;
   v11 = [(RidesharingErrorAlertProvider *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_application, a4);
-    objc_storeStrong(&v12->_activity, a5);
-    v12->_cause = a3;
+    objc_storeStrong(&v11->_application, application);
+    objc_storeStrong(&v12->_activity, activity);
+    v12->_cause = cause;
   }
 
   return v12;

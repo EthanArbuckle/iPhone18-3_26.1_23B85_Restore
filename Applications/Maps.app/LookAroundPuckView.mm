@@ -1,25 +1,25 @@
 @interface LookAroundPuckView
-- (LookAroundPuckView)initWithFrame:(CGRect)a3;
-- (void)updateSubviewsAnimated:(BOOL)a3 completion:(id)a4;
-- (void)updateSubviewsIfNeededAnimated:(BOOL)a3 completion:(id)a4;
+- (LookAroundPuckView)initWithFrame:(CGRect)frame;
+- (void)updateSubviewsAnimated:(BOOL)animated completion:(id)completion;
+- (void)updateSubviewsIfNeededAnimated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation LookAroundPuckView
 
-- (void)updateSubviewsIfNeededAnimated:(BOOL)a3 completion:(id)a4
+- (void)updateSubviewsIfNeededAnimated:(BOOL)animated completion:(id)completion
 {
   if (self->_subviewsNeedUpdate)
   {
     self->_subviewsNeedUpdate = 0;
-    [(LookAroundPuckView *)self updateSubviewsAnimated:a3 completion:a4];
+    [(LookAroundPuckView *)self updateSubviewsAnimated:animated completion:completion];
   }
 }
 
-- (void)updateSubviewsAnimated:(BOOL)a3 completion:(id)a4
+- (void)updateSubviewsAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v35 = [(LookAroundPuckGlyphView *)self->_glyphView isTilted];
+  animatedCopy = animated;
+  completionCopy = completion;
+  isTilted = [(LookAroundPuckGlyphView *)self->_glyphView isTilted];
   v36 = self->_heading + 3.14159265;
   pitch = self->_pitch;
   v8 = 1.0;
@@ -33,22 +33,22 @@
     v9 = 1.0;
   }
 
-  v10 = [(LookAroundPuckView *)self state];
+  state = [(LookAroundPuckView *)self state];
   __asm { FMOV            V0.2D, #1.0 }
 
   *&_Q0 = v36;
-  if (v10 <= 1)
+  if (state <= 1)
   {
-    if (!v10)
+    if (!state)
     {
       v37 = _Q0;
       v9 = 0.0;
       goto LABEL_12;
     }
 
-    if (v10 == 1)
+    if (state == 1)
     {
-      [(LookAroundPuckGlyphView *)self->_glyphView setTilted:0 animated:v4, v36];
+      [(LookAroundPuckGlyphView *)self->_glyphView setTilted:0 animated:animatedCopy, v36];
       v37 = xmmword_101212860;
 LABEL_12:
       v16 = 0.0;
@@ -60,11 +60,11 @@ LABEL_12:
   }
 
   v37 = _Q0;
-  if (v10 != 2)
+  if (state != 2)
   {
-    if (v10 == 3)
+    if (state == 3)
     {
-      [(LookAroundPuckGlyphView *)self->_glyphView setTilted:1 animated:v4];
+      [(LookAroundPuckGlyphView *)self->_glyphView setTilted:1 animated:animatedCopy];
       v16 = 0.0;
       v8 = 1.2;
       goto LABEL_18;
@@ -75,7 +75,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  [(LookAroundPuckGlyphView *)self->_glyphView setTilted:1 animated:v4];
+  [(LookAroundPuckGlyphView *)self->_glyphView setTilted:1 animated:animatedCopy];
   if (self->_dimmed)
   {
     v16 = 0.0;
@@ -87,10 +87,10 @@ LABEL_17:
   }
 
 LABEL_18:
-  v17 = self;
-  v18 = v17->_coneContainerView;
-  v19 = v17->_puckConeView;
-  v20 = v17->_puckImageView;
+  selfCopy = self;
+  v18 = selfCopy->_coneContainerView;
+  v19 = selfCopy->_puckConeView;
+  v20 = selfCopy->_puckImageView;
   v21 = self->_glyphView;
   v50[0] = _NSConcreteStackBlock;
   v50[1] = 3221225472;
@@ -110,14 +110,14 @@ LABEL_18:
   v25 = v21;
   v54 = v25;
   v61 = pitch;
-  v26 = v17;
+  v26 = selfCopy;
   v55 = v26;
   v27 = objc_retainBlock(v50);
   v28 = v27;
-  if (v4)
+  if (animatedCopy)
   {
-    v38 = v6;
-    if ((v35 & 1) == 0)
+    v38 = completionCopy;
+    if ((isTilted & 1) == 0)
     {
       v33 = *&CGAffineTransformIdentity.c;
       v47 = *&CGAffineTransformIdentity.a;
@@ -132,7 +132,7 @@ LABEL_18:
       [(LookAroundPuckGlyphView *)v25 setTransform:&v47];
     }
 
-    v29 = v35 ^ [(LookAroundPuckGlyphView *)self->_glyphView isTilted];
+    v29 = isTilted ^ [(LookAroundPuckGlyphView *)self->_glyphView isTilted];
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = sub_100DF292C;
@@ -158,24 +158,24 @@ LABEL_18:
       [UIView animateWithDuration:0 delay:v39 options:v31 animations:0.3 completion:0.5];
     }
 
-    v6 = v38;
+    completionCopy = v38;
   }
 
   else
   {
     (v27[2])(v27, 1);
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 }
 
-- (LookAroundPuckView)initWithFrame:(CGRect)a3
+- (LookAroundPuckView)initWithFrame:(CGRect)frame
 {
   v45.receiver = self;
   v45.super_class = LookAroundPuckView;
-  v3 = [(LookAroundPuckView *)&v45 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LookAroundPuckView *)&v45 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -202,43 +202,43 @@ LABEL_18:
 
     [(UIImageView *)v3->_puckImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(LookAroundPuckView *)v3 addSubview:v3->_puckImageView];
-    v14 = [[LookAroundPuckGlyphView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[LookAroundPuckGlyphView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     glyphView = v3->_glyphView;
-    v3->_glyphView = v14;
+    v3->_glyphView = height;
 
     [(LookAroundPuckGlyphView *)v3->_glyphView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(LookAroundPuckView *)v3 addSubview:v3->_glyphView];
-    v42 = [(UIView *)v3->_coneContainerView centerXAnchor];
-    v41 = [(LookAroundPuckView *)v3 centerXAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    centerXAnchor = [(UIView *)v3->_coneContainerView centerXAnchor];
+    centerXAnchor2 = [(LookAroundPuckView *)v3 centerXAnchor];
+    v40 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v46[0] = v40;
-    v39 = [(UIView *)v3->_coneContainerView centerYAnchor];
-    v38 = [(LookAroundPuckView *)v3 centerYAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    centerYAnchor = [(UIView *)v3->_coneContainerView centerYAnchor];
+    centerYAnchor2 = [(LookAroundPuckView *)v3 centerYAnchor];
+    v37 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v46[1] = v37;
-    v36 = [(UIImageView *)v3->_puckConeView centerXAnchor];
-    v35 = [(LookAroundPuckView *)v3 centerXAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    centerXAnchor3 = [(UIImageView *)v3->_puckConeView centerXAnchor];
+    centerXAnchor4 = [(LookAroundPuckView *)v3 centerXAnchor];
+    v34 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v46[2] = v34;
-    v33 = [(UIImageView *)v3->_puckConeView centerYAnchor];
-    v32 = [(LookAroundPuckView *)v3 centerYAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    centerYAnchor3 = [(UIImageView *)v3->_puckConeView centerYAnchor];
+    centerYAnchor4 = [(LookAroundPuckView *)v3 centerYAnchor];
+    v31 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v46[3] = v31;
-    v30 = [(UIImageView *)v3->_puckImageView centerXAnchor];
-    v29 = [(LookAroundPuckView *)v3 centerXAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    centerXAnchor5 = [(UIImageView *)v3->_puckImageView centerXAnchor];
+    centerXAnchor6 = [(LookAroundPuckView *)v3 centerXAnchor];
+    v28 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v46[4] = v28;
-    v27 = [(UIImageView *)v3->_puckImageView centerYAnchor];
-    v16 = [(LookAroundPuckView *)v3 centerYAnchor];
-    v17 = [v27 constraintEqualToAnchor:v16];
+    centerYAnchor5 = [(UIImageView *)v3->_puckImageView centerYAnchor];
+    centerYAnchor6 = [(LookAroundPuckView *)v3 centerYAnchor];
+    v17 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v46[5] = v17;
-    v18 = [(LookAroundPuckGlyphView *)v3->_glyphView centerXAnchor];
-    v19 = [(LookAroundPuckView *)v3 centerXAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerXAnchor7 = [(LookAroundPuckGlyphView *)v3->_glyphView centerXAnchor];
+    centerXAnchor8 = [(LookAroundPuckView *)v3 centerXAnchor];
+    v20 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     v46[6] = v20;
-    v21 = [(LookAroundPuckGlyphView *)v3->_glyphView centerYAnchor];
-    v22 = [(LookAroundPuckView *)v3 centerYAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerYAnchor7 = [(LookAroundPuckGlyphView *)v3->_glyphView centerYAnchor];
+    centerYAnchor8 = [(LookAroundPuckView *)v3 centerYAnchor];
+    v23 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
     v46[7] = v23;
     v24 = [NSArray arrayWithObjects:v46 count:8];
     [NSLayoutConstraint activateConstraints:v24];

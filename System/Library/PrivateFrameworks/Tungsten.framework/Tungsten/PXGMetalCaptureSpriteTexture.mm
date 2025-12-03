@@ -2,9 +2,9 @@
 - (BOOL)isOpaque;
 - (CGRect)captureRect;
 - (PXGCaptureSpritePayload)payload;
-- (PXGMetalCaptureSpriteTexture)initWithPayload:(id)a3 presentationType:(unsigned __int8)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)getTextureInfos:(id *)a3 forSpriteIndexes:(const unsigned int *)a4 geometries:(id *)a5 spriteStyles:(id *)a6 spriteInfos:(id *)a7 screenScale:(double)a8 count:(unsigned int)a9;
+- (PXGMetalCaptureSpriteTexture)initWithPayload:(id)payload presentationType:(unsigned __int8)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)getTextureInfos:(id *)infos forSpriteIndexes:(const unsigned int *)indexes geometries:(id *)geometries spriteStyles:(id *)styles spriteInfos:(id *)spriteInfos screenScale:(double)scale count:(unsigned int)count;
 @end
 
 @implementation PXGMetalCaptureSpriteTexture
@@ -13,8 +13,8 @@
 {
   v11.receiver = self;
   v11.super_class = PXGMetalCaptureSpriteTexture;
-  v4 = [(PXGPayloadTexture *)&v11 payload];
-  if (v4)
+  payload = [(PXGPayloadTexture *)&v11 payload];
+  if (payload)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -22,24 +22,24 @@
       goto LABEL_3;
     }
 
-    v6 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v9 = objc_opt_class();
     v8 = NSStringFromClass(v9);
-    v10 = [v4 px_descriptionForAssertionMessage];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXGMetalCaptureSpriteTexture.m" lineNumber:55 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"super.payload", v8, v10}];
+    px_descriptionForAssertionMessage = [payload px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalCaptureSpriteTexture.m" lineNumber:55 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"super.payload", v8, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v6 handleFailureInMethod:a2 object:self file:@"PXGMetalCaptureSpriteTexture.m" lineNumber:55 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"super.payload", v8}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalCaptureSpriteTexture.m" lineNumber:55 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"super.payload", v8}];
   }
 
 LABEL_3:
 
-  return v4;
+  return payload;
 }
 
 - (CGRect)captureRect
@@ -57,46 +57,46 @@ LABEL_3:
 
 - (BOOL)isOpaque
 {
-  v2 = [(PXGMetalCaptureSpriteTexture *)self payload];
-  v3 = [v2 behavior] == 0;
+  payload = [(PXGMetalCaptureSpriteTexture *)self payload];
+  v3 = [payload behavior] == 0;
 
   return v3;
 }
 
-- (void)getTextureInfos:(id *)a3 forSpriteIndexes:(const unsigned int *)a4 geometries:(id *)a5 spriteStyles:(id *)a6 spriteInfos:(id *)a7 screenScale:(double)a8 count:(unsigned int)a9
+- (void)getTextureInfos:(id *)infos forSpriteIndexes:(const unsigned int *)indexes geometries:(id *)geometries spriteStyles:(id *)styles spriteInfos:(id *)spriteInfos screenScale:(double)scale count:(unsigned int)count
 {
-  if ([(PXGBaseTexture *)self spriteCount:a3]< a9)
+  if ([(PXGBaseTexture *)self spriteCount:infos]< count)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXGMetalCaptureSpriteTexture.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"count <= self.spriteCount"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalCaptureSpriteTexture.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"count <= self.spriteCount"}];
   }
 
-  v14 = [(PXGMetalCaptureSpriteTexture *)self texture];
-  v15 = [(PXGMetalCaptureSpriteTexture *)self spriteGeometries];
-  if (!v15)
+  texture = [(PXGMetalCaptureSpriteTexture *)self texture];
+  spriteGeometries = [(PXGMetalCaptureSpriteTexture *)self spriteGeometries];
+  if (!spriteGeometries)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXGMetalCaptureSpriteTexture.m" lineNumber:68 description:{@"%@ must have geometries at this point", self}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGMetalCaptureSpriteTexture.m" lineNumber:68 description:{@"%@ must have geometries at this point", self}];
 
-    if (v14)
+    if (texture)
     {
       goto LABEL_5;
     }
 
 LABEL_7:
-    v16 = 1;
-    v17 = 1;
+    width = 1;
+    height = 1;
     goto LABEL_8;
   }
 
-  if (!v14)
+  if (!texture)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  v16 = [v14 width];
-  v17 = [v14 height];
+  width = [texture width];
+  height = [texture height];
 LABEL_8:
   [(PXGMetalCaptureSpriteTexture *)self captureRect];
   v21 = v20;
@@ -109,27 +109,27 @@ LABEL_8:
   v34[1] = v34;
   v34[2] = 0x2020000000;
   v34[3] = 0;
-  v30 = [(PXGBaseTexture *)self spriteIndexes];
+  spriteIndexes = [(PXGBaseTexture *)self spriteIndexes];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __119__PXGMetalCaptureSpriteTexture_getTextureInfos_forSpriteIndexes_geometries_spriteStyles_spriteInfos_screenScale_count___block_invoke;
   v31[3] = &unk_2782A8060;
-  *&v31[6] = v16;
-  *&v31[7] = v17;
-  v31[8] = v15;
+  *&v31[6] = width;
+  *&v31[7] = height;
+  v31[8] = spriteGeometries;
   v31[9] = v21;
   v31[10] = v23;
   *&v31[11] = v25;
   v31[12] = v27;
-  *&v31[13] = v16 / v25;
+  *&v31[13] = width / v25;
   v31[4] = v34;
-  v31[5] = a7;
-  v31[14] = a3;
-  v31[15] = v16;
-  v31[16] = v17;
+  v31[5] = spriteInfos;
+  v31[14] = infos;
+  v31[15] = width;
+  v31[16] = height;
   v32 = v29;
-  v33 = a9;
-  [v30 enumerateRangesUsingBlock:v31];
+  countCopy = count;
+  [spriteIndexes enumerateRangesUsingBlock:v31];
 
   _Block_object_dispose(v34, 8);
 }
@@ -210,46 +210,46 @@ uint64_t __119__PXGMetalCaptureSpriteTexture_getTextureInfos_forSpriteIndexes_ge
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PXGMetalCaptureSpriteTexture alloc];
-  v5 = [(PXGMetalCaptureSpriteTexture *)self payload];
-  v6 = [(PXGMetalCaptureSpriteTexture *)v4 initWithPayload:v5 presentationType:[(PXGPayloadTexture *)self presentationType]];
+  payload = [(PXGMetalCaptureSpriteTexture *)self payload];
+  v6 = [(PXGMetalCaptureSpriteTexture *)v4 initWithPayload:payload presentationType:[(PXGPayloadTexture *)self presentationType]];
 
-  v7 = [(PXGBaseTexture *)self spriteIndexes];
-  [(PXGBaseTexture *)v6 addSpriteIndexes:v7];
+  spriteIndexes = [(PXGBaseTexture *)self spriteIndexes];
+  [(PXGBaseTexture *)v6 addSpriteIndexes:spriteIndexes];
 
   return v6;
 }
 
-- (PXGMetalCaptureSpriteTexture)initWithPayload:(id)a3 presentationType:(unsigned __int8)a4
+- (PXGMetalCaptureSpriteTexture)initWithPayload:(id)payload presentationType:(unsigned __int8)type
 {
-  v4 = a4;
-  v7 = a3;
+  typeCopy = type;
+  payloadCopy = payload;
   v17.receiver = self;
   v17.super_class = PXGMetalCaptureSpriteTexture;
-  v8 = [(PXGPayloadTexture *)&v17 initWithPayload:v7 presentationType:v4];
+  v8 = [(PXGPayloadTexture *)&v17 initWithPayload:payloadCopy presentationType:typeCopy];
   if (v8)
   {
-    v9 = [v7 renderSnapshot];
-    if (v9)
+    renderSnapshot = [payloadCopy renderSnapshot];
+    if (renderSnapshot)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v13 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
-        v16 = [v9 px_descriptionForAssertionMessage];
-        [v13 handleFailureInMethod:a2 object:v8 file:@"PXGMetalCaptureSpriteTexture.m" lineNumber:41 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"payload.renderSnapshot", v15, v16}];
+        px_descriptionForAssertionMessage = [renderSnapshot px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:v8 file:@"PXGMetalCaptureSpriteTexture.m" lineNumber:41 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"payload.renderSnapshot", v15, px_descriptionForAssertionMessage}];
       }
     }
 
-    v10 = [v9 texture];
+    texture = [renderSnapshot texture];
     snapshotTexture = v8->_snapshotTexture;
-    v8->_snapshotTexture = v10;
+    v8->_snapshotTexture = texture;
 
-    v8->_behavior = [v7 behavior];
+    v8->_behavior = [payloadCopy behavior];
   }
 
   return v8;

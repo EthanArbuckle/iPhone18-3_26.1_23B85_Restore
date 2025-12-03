@@ -1,27 +1,27 @@
 @interface PKAccountWebServiceBankLookupResponse
-- (PKAccountWebServiceBankLookupResponse)initWithData:(id)a3;
+- (PKAccountWebServiceBankLookupResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceBankLookupResponse
 
-- (PKAccountWebServiceBankLookupResponse)initWithData:(id)a3
+- (PKAccountWebServiceBankLookupResponse)initWithData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PKAccountWebServiceBankLookupResponse;
-  v3 = [(PKWebServiceResponse *)&v15 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v15 initWithData:data];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_4;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4->_success = [v5 PKBoolForKey:@"success"];
-    v6 = [v5 PKStringForKey:@"displayName"];
+    v4->_success = [jSONObject PKBoolForKey:@"success"];
+    v6 = [jSONObject PKStringForKey:@"displayName"];
     displayName = v4->_displayName;
     v4->_displayName = v6;
 

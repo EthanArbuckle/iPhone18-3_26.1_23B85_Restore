@@ -1,27 +1,27 @@
 @interface GDGraphSoftware
-- (GDGraphSoftware)initWithEntityIdentifierField:(id)a3 bundleIdField:(id)a4 nameField:(id)a5 allBundleIdField:(id)a6 allNameField:(id)a7;
+- (GDGraphSoftware)initWithEntityIdentifierField:(id)field bundleIdField:(id)idField nameField:(id)nameField allBundleIdField:(id)bundleIdField allNameField:(id)allNameField;
 @end
 
 @implementation GDGraphSoftware
 
-- (GDGraphSoftware)initWithEntityIdentifierField:(id)a3 bundleIdField:(id)a4 nameField:(id)a5 allBundleIdField:(id)a6 allNameField:(id)a7
+- (GDGraphSoftware)initWithEntityIdentifierField:(id)field bundleIdField:(id)idField nameField:(id)nameField allBundleIdField:(id)bundleIdField allNameField:(id)allNameField
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  fieldCopy = field;
+  idFieldCopy = idField;
+  nameFieldCopy = nameField;
+  bundleIdFieldCopy = bundleIdField;
+  allNameFieldCopy = allNameField;
   v21.receiver = self;
   v21.super_class = GDGraphSoftware;
   v17 = [(GDGraphSoftware *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_entityIdentifier, a3);
-    objc_storeStrong(&v18->_bundleId, a4);
-    objc_storeStrong(&v18->_name, a5);
-    objc_storeStrong(&v18->_allBundleId, a6);
-    objc_storeStrong(&v18->_allName, a7);
+    objc_storeStrong(&v17->_entityIdentifier, field);
+    objc_storeStrong(&v18->_bundleId, idField);
+    objc_storeStrong(&v18->_name, nameField);
+    objc_storeStrong(&v18->_allBundleId, bundleIdField);
+    objc_storeStrong(&v18->_allName, allNameField);
   }
 
   return v18;

@@ -1,8 +1,8 @@
 @interface ContactViewController.ContactViewCoordinator
 - (_TtCV7ChatKit21ContactViewController22ContactViewCoordinator)init;
 - (void)backAction;
-- (void)contactViewController:(id)a3 didChangeToEditMode:(BOOL)a4;
-- (void)contactViewController:(id)a3 didDeleteContact:(id)a4;
+- (void)contactViewController:(id)controller didChangeToEditMode:(BOOL)mode;
+- (void)contactViewController:(id)controller didDeleteContact:(id)contact;
 - (void)toggleSharingStateFromABCard;
 @end
 
@@ -10,13 +10,13 @@
 
 - (void)backAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_190ABAFD0();
 }
 
-- (void)contactViewController:(id)a3 didChangeToEditMode:(BOOL)a4
+- (void)contactViewController:(id)controller didChangeToEditMode:(BOOL)mode
 {
-  if (a3)
+  if (controller)
   {
     swift_unknownObjectRetain();
     sub_190D58140();
@@ -31,9 +31,9 @@
   sub_19021E7D8(v4);
 }
 
-- (void)contactViewController:(id)a3 didDeleteContact:(id)a4
+- (void)contactViewController:(id)controller didDeleteContact:(id)contact
 {
-  if (a3)
+  if (controller)
   {
     swift_unknownObjectRetain();
     sub_190D58140();
@@ -50,7 +50,7 @@
 
 - (void)toggleSharingStateFromABCard
 {
-  v2 = self;
+  selfCopy = self;
   sub_190ABB1BC();
 }
 

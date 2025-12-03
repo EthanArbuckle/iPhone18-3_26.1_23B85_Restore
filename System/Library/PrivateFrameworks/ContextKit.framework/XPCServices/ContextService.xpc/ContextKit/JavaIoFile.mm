@@ -5,17 +5,17 @@
 - (BOOL)delete__;
 - (BOOL)isAbsolute;
 - (BOOL)isDirectory;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFile;
 - (BOOL)isHidden;
-- (BOOL)mkdirImplWithNSString:(id)a3;
-- (BOOL)renameToWithJavaIoFile:(id)a3;
-- (BOOL)setExecutableWithBoolean:(BOOL)a3 withBoolean:(BOOL)a4;
-- (BOOL)setLastModifiedWithLong:(int64_t)a3;
-- (BOOL)setReadableWithBoolean:(BOOL)a3 withBoolean:(BOOL)a4;
-- (BOOL)setWritableWithBoolean:(BOOL)a3 withBoolean:(BOOL)a4;
-- (JavaIoFile)initWithJavaIoFile:(id)a3 withNSString:(id)a4;
-- (JavaIoFile)initWithNSString:(id)a3;
+- (BOOL)mkdirImplWithNSString:(id)string;
+- (BOOL)renameToWithJavaIoFile:(id)file;
+- (BOOL)setExecutableWithBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean;
+- (BOOL)setLastModifiedWithLong:(int64_t)long;
+- (BOOL)setReadableWithBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean;
+- (BOOL)setWritableWithBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean;
+- (JavaIoFile)initWithJavaIoFile:(id)file withNSString:(id)string;
+- (JavaIoFile)initWithNSString:(id)string;
 - (__CFString)getAbsoluteName;
 - (id)getAbsoluteFile;
 - (id)getAbsolutePath;
@@ -25,67 +25,67 @@
 - (id)getParent;
 - (id)getParentFile;
 - (id)listFiles;
-- (id)listFilesWithJavaIoFileFilter:(id)a3;
-- (id)listFilesWithJavaIoFilenameFilter:(id)a3;
-- (id)listWithJavaIoFilenameFilter:(id)a3;
+- (id)listFilesWithJavaIoFileFilter:(id)filter;
+- (id)listFilesWithJavaIoFilenameFilter:(id)filter;
+- (id)listWithJavaIoFilenameFilter:(id)filter;
 - (id)toURI;
 - (id)toURL;
-- (int)compareToWithId:(id)a3;
+- (int)compareToWithId:(id)id;
 - (int64_t)getFreeSpace;
 - (int64_t)getTotalSpace;
 - (int64_t)getUsableSpace;
 - (int64_t)lastModified;
 - (int64_t)length;
-- (uint64_t)mkdirsWithBoolean:(void *)a1;
+- (uint64_t)mkdirsWithBoolean:(void *)boolean;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)deleteOnExit;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaIoFile
 
-- (JavaIoFile)initWithJavaIoFile:(id)a3 withNSString:(id)a4
+- (JavaIoFile)initWithJavaIoFile:(id)file withNSString:(id)string
 {
-  if (a3)
+  if (file)
   {
-    v6 = [a3 getPath];
+    getPath = [file getPath];
   }
 
   else
   {
-    v6 = 0;
+    getPath = 0;
   }
 
-  JavaIoFile_initWithNSString_withNSString_(self, v6, a4);
+  JavaIoFile_initWithNSString_withNSString_(self, getPath, string);
   return self;
 }
 
-- (JavaIoFile)initWithNSString:(id)a3
+- (JavaIoFile)initWithNSString:(id)string
 {
-  v4 = sub_1001AA198(a3);
+  v4 = sub_1001AA198(string);
   JreStrongAssign(&self->path_, v4);
   return self;
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (id && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  v5 = [(JavaIoFile *)self getPath];
-  if (!v5 || !a3)
+  getPath = [(JavaIoFile *)self getPath];
+  if (!getPath || !id)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = [a3 getPath];
+  getPath2 = [id getPath];
 
-  return [v5 compareToWithId:v6];
+  return [getPath compareToWithId:getPath2];
 }
 
 - (BOOL)delete__
@@ -113,12 +113,12 @@
   }
 
   v4 = v3;
-  v5 = [(JavaIoFile *)self getAbsolutePath];
+  getAbsolutePath = [(JavaIoFile *)self getAbsolutePath];
 
-  [v4 addFileWithNSString:v5];
+  [v4 addFileWithNSString:getAbsolutePath];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -132,13 +132,13 @@
     if (path)
     {
       objc_opt_class();
-      if (a3)
+      if (equal)
       {
         if (objc_opt_isKindOfClass())
         {
-          v6 = [a3 getPath];
+          getPath = [equal getPath];
 
-          return [(NSString *)path isEqual:v6];
+          return [(NSString *)path isEqual:getPath];
         }
 
 LABEL_17:
@@ -156,7 +156,7 @@ LABEL_16:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_16;
   }
@@ -166,9 +166,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v8 = [a3 getPath];
+  getPath2 = [equal getPath];
 
-  return [(NSString *)path equalsIgnoreCase:v8];
+  return [(NSString *)path equalsIgnoreCase:getPath2];
 }
 
 - (id)getAbsolutePath
@@ -215,9 +215,9 @@ LABEL_16:
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaIoFile *)self getAbsolutePath];
+  getAbsolutePath = [(JavaIoFile *)self getAbsolutePath];
 
-  return [v3 realpathWithNSString:v4];
+  return [v3 realpathWithNSString:getAbsolutePath];
 }
 
 - (id)getCanonicalFile
@@ -385,13 +385,13 @@ LABEL_9:
     return 0;
   }
 
-  v4 = [(NSDictionary *)v3 fileType];
-  if (!v4)
+  fileType = [(NSDictionary *)v3 fileType];
+  if (!fileType)
   {
     return 0;
   }
 
-  return [(NSString *)v4 isEqualToString:NSFileTypeDirectory];
+  return [(NSString *)fileType isEqualToString:NSFileTypeDirectory];
 }
 
 - (BOOL)isFile
@@ -408,13 +408,13 @@ LABEL_9:
     return 0;
   }
 
-  v4 = [(NSDictionary *)v3 fileType];
-  if (!v4)
+  fileType = [(NSDictionary *)v3 fileType];
+  if (!fileType)
   {
     return 0;
   }
 
-  return [(NSString *)v4 isEqualToString:NSFileTypeRegular];
+  return [(NSString *)fileType isEqualToString:NSFileTypeRegular];
 }
 
 - (BOOL)isHidden
@@ -430,14 +430,14 @@ LABEL_9:
     return 0;
   }
 
-  v5 = [(JavaIoFile *)self getName];
-  if (!v5)
+  getName = [(JavaIoFile *)self getName];
+  if (!getName)
   {
 LABEL_8:
     JreThrowNullPointerException();
   }
 
-  return [v5 hasPrefix:@"."];
+  return [getName hasPrefix:@"."];
 }
 
 - (int64_t)lastModified
@@ -461,9 +461,9 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)setLastModifiedWithLong:(int64_t)a3
+- (BOOL)setLastModifiedWithLong:(int64_t)long
 {
-  if (a3 < 0)
+  if (long < 0)
   {
     v6 = new_JavaLangIllegalArgumentException_initWithNSString_(@"time < 0");
     objc_exception_throw(v6);
@@ -471,12 +471,12 @@ LABEL_8:
 
   path = self->path_;
 
-  return sub_1001AAE94(path, a3);
+  return sub_1001AAE94(path, long);
 }
 
-- (BOOL)setExecutableWithBoolean:(BOOL)a3 withBoolean:(BOOL)a4
+- (BOOL)setExecutableWithBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean
 {
-  if (a4)
+  if (withBoolean)
   {
     v4 = 64;
   }
@@ -486,12 +486,12 @@ LABEL_8:
     v4 = 73;
   }
 
-  return sub_1001AAF8C(self, v4, a3);
+  return sub_1001AAF8C(self, v4, boolean);
 }
 
-- (BOOL)setReadableWithBoolean:(BOOL)a3 withBoolean:(BOOL)a4
+- (BOOL)setReadableWithBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean
 {
-  if (a4)
+  if (withBoolean)
   {
     v4 = 256;
   }
@@ -501,12 +501,12 @@ LABEL_8:
     v4 = 292;
   }
 
-  return sub_1001AAF8C(self, v4, a3);
+  return sub_1001AAF8C(self, v4, boolean);
 }
 
-- (BOOL)setWritableWithBoolean:(BOOL)a3 withBoolean:(BOOL)a4
+- (BOOL)setWritableWithBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean
 {
-  if (a4)
+  if (withBoolean)
   {
     v4 = 128;
   }
@@ -516,7 +516,7 @@ LABEL_8:
     v4 = 146;
   }
 
-  return sub_1001AAF8C(self, v4, a3);
+  return sub_1001AAF8C(self, v4, boolean);
 }
 
 - (int64_t)length
@@ -535,11 +535,11 @@ LABEL_8:
   return [(NSDictionary *)v2 fileSize];
 }
 
-- (id)listWithJavaIoFilenameFilter:(id)a3
+- (id)listWithJavaIoFilenameFilter:(id)filter
 {
   result = [(JavaIoFile *)self list];
   v6 = result;
-  if (a3 && result)
+  if (filter && result)
   {
     v7 = new_JavaUtilArrayList_initWithInt_(*(result + 2));
     v8 = (v6 + 24);
@@ -548,7 +548,7 @@ LABEL_8:
     {
       v11 = *v8++;
       v10 = v11;
-      if ([a3 acceptWithJavaIoFile:self withNSString:v11])
+      if ([filter acceptWithJavaIoFile:self withNSString:v11])
       {
         [(JavaUtilArrayList *)v7 addWithId:v10];
       }
@@ -564,23 +564,23 @@ LABEL_8:
 
 - (id)listFiles
 {
-  v3 = [(JavaIoFile *)self list];
+  list = [(JavaIoFile *)self list];
 
-  return sub_1001AB300(self, v3);
+  return sub_1001AB300(self, list);
 }
 
-- (id)listFilesWithJavaIoFilenameFilter:(id)a3
+- (id)listFilesWithJavaIoFilenameFilter:(id)filter
 {
-  v4 = [(JavaIoFile *)self listWithJavaIoFilenameFilter:a3];
+  v4 = [(JavaIoFile *)self listWithJavaIoFilenameFilter:filter];
 
   return sub_1001AB300(self, v4);
 }
 
-- (id)listFilesWithJavaIoFileFilter:(id)a3
+- (id)listFilesWithJavaIoFileFilter:(id)filter
 {
   result = [(JavaIoFile *)self listFiles];
   v5 = result;
-  if (a3 && result)
+  if (filter && result)
   {
     v6 = new_JavaUtilArrayList_initWithInt_(*(result + 2));
     v7 = (v5 + 24);
@@ -589,7 +589,7 @@ LABEL_8:
     {
       v10 = *v7++;
       v9 = v10;
-      if ([a3 acceptWithJavaIoFile:v10])
+      if ([filter acceptWithJavaIoFile:v10])
       {
         [(JavaUtilArrayList *)v6 addWithId:v9];
       }
@@ -603,33 +603,33 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)mkdirImplWithNSString:(id)a3
+- (BOOL)mkdirImplWithNSString:(id)string
 {
   v4 = +[NSFileManager defaultManager];
 
-  return [(NSFileManager *)v4 createDirectoryAtPath:a3 withIntermediateDirectories:0 attributes:0 error:0];
+  return [(NSFileManager *)v4 createDirectoryAtPath:string withIntermediateDirectories:0 attributes:0 error:0];
 }
 
-- (uint64_t)mkdirsWithBoolean:(void *)a1
+- (uint64_t)mkdirsWithBoolean:(void *)boolean
 {
-  if ([a1 exists])
+  if ([boolean exists])
   {
     return 0;
   }
 
-  if ([a1 mkdir])
+  if ([boolean mkdir])
   {
     return 1;
   }
 
-  result = [a1 getParent];
+  result = [boolean getParent];
   if (result)
   {
     result = [new_JavaIoFile_initWithNSString_(result) mkdirs];
     if (result)
     {
 
-      return [a1 mkdir];
+      return [boolean mkdir];
     }
   }
 
@@ -673,7 +673,7 @@ LABEL_12:
   return 1;
 }
 
-- (BOOL)renameToWithJavaIoFile:(id)a3
+- (BOOL)renameToWithJavaIoFile:(id)file
 {
   if ((atomic_load_explicit(LibcoreIoLibcore__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -682,7 +682,7 @@ LABEL_12:
 
   if (LibcoreIoLibcore_os_)
   {
-    v5 = a3 == 0;
+    v5 = file == 0;
   }
 
   else
@@ -695,7 +695,7 @@ LABEL_12:
     JreThrowNullPointerException();
   }
 
-  [LibcoreIoLibcore_os_ renameWithNSString:self->path_ withNSString:*(a3 + 1)];
+  [LibcoreIoLibcore_os_ renameWithNSString:self->path_ withNSString:*(file + 1)];
   return 1;
 }
 
@@ -732,45 +732,45 @@ LABEL_12:
 
 - (__CFString)getAbsoluteName
 {
-  v1 = [a1 getAbsoluteFile];
-  if (!v1)
+  getAbsoluteFile = [self getAbsoluteFile];
+  if (!getAbsoluteFile)
   {
     goto LABEL_14;
   }
 
-  v2 = v1;
-  v3 = [v1 getPath];
+  v2 = getAbsoluteFile;
+  getPath = [getAbsoluteFile getPath];
   if ([v2 isDirectory])
   {
-    if (!v3)
+    if (!getPath)
     {
       goto LABEL_14;
     }
 
-    v4 = [(__CFString *)v3 charAtWithInt:[(__CFString *)v3 length]- 1];
+    v4 = [(__CFString *)getPath charAtWithInt:[(__CFString *)getPath length]- 1];
     if (v4 == JavaIoFile_separatorChar_)
     {
       v12 = v4;
       goto LABEL_8;
     }
 
-    v3 = JreStrcat("$C", v5, v6, v7, v8, v9, v10, v11, v3);
+    getPath = JreStrcat("$C", v5, v6, v7, v8, v9, v10, v11, getPath);
   }
 
   v12 = JavaIoFile_separatorChar_;
 LABEL_8:
   if (v12 == 47)
   {
-    return v3;
+    return getPath;
   }
 
-  if (!v3)
+  if (!getPath)
   {
 LABEL_14:
     JreThrowNullPointerException();
   }
 
-  return [__CFString replace:v3 withChar:"replace:withChar:"];
+  return [__CFString replace:getPath withChar:"replace:withChar:"];
 }
 
 - (id)toURL
@@ -805,22 +805,22 @@ LABEL_8:
   return v19;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
   v4 = JavaIoFile_separatorChar_;
 
-  [a3 writeCharWithInt:v4];
+  [stream writeCharWithInt:v4];
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3 || ([a3 defaultReadObject], v5 = objc_msgSend(a3, "readChar"), path = self->path_, p_path = &self->path_, (v6 = path) == 0))
+  if (!stream || ([stream defaultReadObject], v5 = objc_msgSend(stream, "readChar"), path = self->path_, p_path = &self->path_, (v6 = path) == 0))
   {
     JreThrowNullPointerException();
   }
@@ -884,7 +884,7 @@ LABEL_8:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilRandom_init();
     JreStrongAssignAndConsume(&qword_100554C68, v2);

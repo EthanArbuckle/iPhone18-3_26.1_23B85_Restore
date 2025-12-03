@@ -1,14 +1,14 @@
 @interface FPFootprint
 + (BOOL)breakDownPhysFootprint;
-+ (id)installCancelHandler:(id)a3;
++ (id)installCancelHandler:(id)handler;
 + (int)vmRegionInfoFlags;
-+ (void)setBreakDownPhysFootprint:(BOOL)a3;
-+ (void)setVmRegionInfoFlags:(int)a3;
-- (BOOL)gatherData:(unint64_t)a3;
-- (FPFootprint)initWithProcesses:(id)a3;
++ (void)setBreakDownPhysFootprint:(BOOL)footprint;
++ (void)setVmRegionInfoFlags:(int)flags;
+- (BOOL)gatherData:(unint64_t)data;
+- (FPFootprint)initWithProcesses:(id)processes;
 - (void)analyzeData;
 - (void)dealloc;
-- (void)printOutputVerbose:(BOOL)a3 summarize:(BOOL)a4 noCategories:(BOOL)a5;
+- (void)printOutputVerbose:(BOOL)verbose summarize:(BOOL)summarize noCategories:(BOOL)categories;
 @end
 
 @implementation FPFootprint
@@ -33,10 +33,10 @@
   return v2 == 1;
 }
 
-+ (void)setBreakDownPhysFootprint:(BOOL)a3
++ (void)setBreakDownPhysFootprint:(BOOL)footprint
 {
-  v3 = a3;
-  if (sysctlbyname("vm.self_region_footprint", 0, 0, &v3, 4uLL) && *__error() != 2)
+  footprintCopy = footprint;
+  if (sysctlbyname("vm.self_region_footprint", 0, 0, &footprintCopy, 4uLL) && *__error() != 2)
   {
     perror("Unable to configure physical footprint data collection");
   }
@@ -56,10 +56,10 @@
   return v4;
 }
 
-+ (void)setVmRegionInfoFlags:(int)a3
++ (void)setVmRegionInfoFlags:(int)flags
 {
-  v3 = a3;
-  if (sysctlbyname("vm.self_region_info_flags", 0, 0, &v3, 4uLL))
+  flagsCopy = flags;
+  if (sysctlbyname("vm.self_region_info_flags", 0, 0, &flagsCopy, 4uLL))
   {
     if (*__error() != 2)
     {
@@ -68,16 +68,16 @@
   }
 }
 
-- (FPFootprint)initWithProcesses:(id)a3
+- (FPFootprint)initWithProcesses:(id)processes
 {
-  v5 = a3;
+  processesCopy = processes;
   v11.receiver = self;
   v11.super_class = FPFootprint;
   v6 = [(FPFootprint *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_processes, a3);
+    objc_storeStrong(&v6->_processes, processes);
     v7->_earlyExit = 0;
     v8 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
     outputFormatters = v7->_outputFormatters;
@@ -100,11 +100,11 @@
   [(FPFootprint *)&v3 dealloc];
 }
 
-+ (id)installCancelHandler:(id)a3
++ (id)installCancelHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = dispatch_source_create(MEMORY[0x29EDCA5C0], 2uLL, 0, 0);
-  dispatch_source_set_event_handler(v4, v3);
+  dispatch_source_set_event_handler(v4, handlerCopy);
 
   signal(2, 1);
   dispatch_resume(v4);
@@ -112,15 +112,15 @@
   return v4;
 }
 
-- (BOOL)gatherData:(unint64_t)a3
+- (BOOL)gatherData:(unint64_t)data
 {
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x29EDCA580], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v6 = dispatch_queue_attr_make_with_qos_class(v5, self->_qualityOfService, 0);
 
   v7 = dispatch_queue_create("com.apple.footprint.gatherdata", v6);
-  v8 = [(FPFootprint *)self processes];
+  processes = [(FPFootprint *)self processes];
   objc_opt_self();
-  v9 = [v8 sortedArrayUsingComparator:&unk_2A1E8FA70];
+  v9 = [processes sortedArrayUsingComparator:&unk_2A1E8FA70];
 
   v10 = +[FPTime now];
   gatherStartTime = self->_gatherStartTime;
@@ -135,16 +135,16 @@
   v20 = 3221225472;
   v21 = sub_297E375B8;
   v22 = &unk_29EE854A0;
-  v23 = self;
+  selfCopy = self;
   v25 = &v27;
   v13 = v9;
   v24 = v13;
-  v26 = a3;
+  dataCopy = data;
   dispatch_apply(v12, v7, &v19);
   if (*(v28 + 24) == 1)
   {
-    v14 = [v13 lastObject];
-    [v14 _addGlobalError:@"Footprint exited early due to SIGINT and did not finish gathering all data"];
+    lastObject = [v13 lastObject];
+    [lastObject _addGlobalError:@"Footprint exited early due to SIGINT and did not finish gathering all data"];
   }
 
   v15 = [FPTime now:v19];
@@ -169,34 +169,34 @@ LABEL_85:
     goto LABEL_86;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = objc_alloc_init(MEMORY[0x29EDB8E00]);
-  pidToFootprint = v2->_pidToFootprint;
-  v2->_pidToFootprint = v3;
+  pidToFootprint = selfCopy->_pidToFootprint;
+  selfCopy->_pidToFootprint = v3;
 
   v93 = "memory_objects";
   v94 = 224;
-  p_memoryObjects = &v2->_memoryObjects;
+  p_memoryObjects = &selfCopy->_memoryObjects;
   os_map_64_init();
   v91 = "text_memory_objects";
   v92 = 224;
-  p_textMemoryObjects = &v2->_textMemoryObjects;
+  p_textMemoryObjects = &selfCopy->_textMemoryObjects;
   os_map_64_init();
   v89 = "linkedit_memory_objects";
   v90 = 224;
-  p_linkeditMemoryObjects = &v2->_linkeditMemoryObjects;
+  p_linkeditMemoryObjects = &selfCopy->_linkeditMemoryObjects;
   os_map_64_init();
   v7 = objc_alloc_init(MEMORY[0x29EDB8E00]);
-  sharedCacheMemoryObjectsTable = v2->_sharedCacheMemoryObjectsTable;
-  v2->_sharedCacheMemoryObjectsTable = v7;
+  sharedCacheMemoryObjectsTable = selfCopy->_sharedCacheMemoryObjectsTable;
+  selfCopy->_sharedCacheMemoryObjectsTable = v7;
 
-  v2->_memoryObjectMapsInitialized = 1;
+  selfCopy->_memoryObjectMapsInitialized = 1;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v9 = v2->_processes;
-  v71 = v2;
+  v9 = selfCopy->_processes;
+  v71 = selfCopy;
   v68 = [(NSArray *)v9 countByEnumeratingWithState:&v85 objects:v103 count:16];
   if (v68)
   {
@@ -213,7 +213,7 @@ LABEL_85:
         }
 
         v11 = *(*(&v85 + 1) + 8 * v10);
-        if (!v2->_memoryObjectMapsInitialized)
+        if (!selfCopy->_memoryObjectMapsInitialized)
         {
 LABEL_84:
           _os_assert_log();
@@ -223,16 +223,16 @@ LABEL_84:
         }
 
         v79 = +[FPFootprint breakDownPhysFootprint];
-        v12 = [v11 sharedCache];
-        v74 = [v12 baseAddress];
-        v73 = v12;
+        sharedCache = [v11 sharedCache];
+        baseAddress = [sharedCache baseAddress];
+        v73 = sharedCache;
         v70 = v10;
-        if (v12)
+        if (sharedCache)
         {
-          v13 = v12;
-          v14 = v2->_sharedCacheMemoryObjectsTable;
-          v15 = [v13 uuid];
-          v16 = [(NSMutableDictionary *)v14 objectForKeyedSubscript:v15];
+          v13 = sharedCache;
+          v14 = selfCopy->_sharedCacheMemoryObjectsTable;
+          uuid = [v13 uuid];
+          v16 = [(NSMutableDictionary *)v14 objectForKeyedSubscript:uuid];
 
           if (!v16)
           {
@@ -240,14 +240,14 @@ LABEL_84:
             v108[0] = xmmword_29EE854E0;
             os_map_64_init();
             v16 = [MEMORY[0x29EDBA168] valueWithPointer:v17];
-            v18 = v2->_sharedCacheMemoryObjectsTable;
-            v19 = [v73 uuid];
-            [(NSMutableDictionary *)v18 setObject:v16 forKeyedSubscript:v19];
+            v18 = selfCopy->_sharedCacheMemoryObjectsTable;
+            uuid2 = [v73 uuid];
+            [(NSMutableDictionary *)v18 setObject:v16 forKeyedSubscript:uuid2];
           }
 
           [v16 pointerValue];
 
-          v12 = v73;
+          sharedCache = v73;
         }
 
         v106 = 0u;
@@ -276,7 +276,7 @@ LABEL_84:
               v24 = *(*(&v104 + 1) + 8 * v23);
               if ([(FPMemoryObject *)v24 inSharedCache])
               {
-                if (!v12)
+                if (!sharedCache)
                 {
                   _os_assert_log();
                   _os_crash();
@@ -291,34 +291,34 @@ LABEL_23:
                   goto LABEL_40;
                 }
 
-                v25 = [(FPMemoryObject *)v24 start]- v74 + 1;
+                object_id = [(FPMemoryObject *)v24 start]- baseAddress + 1;
               }
 
               else
               {
-                v25 = [(FPMemoryObject *)v24 object_id];
+                object_id = [(FPMemoryObject *)v24 object_id];
                 [(FPMemoryObject *)v24 segment];
               }
 
-              if ((v25 + 1) <= 1)
+              if ((object_id + 1) <= 1)
               {
                 goto LABEL_23;
               }
 
               if (v79)
               {
-                v26 = [(FPMemoryObject *)v24 ownedExclusivelyByParentProcess];
+                ownedExclusivelyByParentProcess = [(FPMemoryObject *)v24 ownedExclusivelyByParentProcess];
               }
 
               else
               {
-                v26 = 0;
+                ownedExclusivelyByParentProcess = 0;
               }
 
               v27 = os_map_64_find();
               if (!v27)
               {
-                if ((v26 & 1) != 0 || [(FPMemoryObject *)v24 eligibleForProcessView])
+                if ((ownedExclusivelyByParentProcess & 1) != 0 || [(FPMemoryObject *)v24 eligibleForProcessView])
                 {
                   v28 = objc_alloc_init(FPMemoryObject);
                 }
@@ -335,12 +335,12 @@ LABEL_23:
               if (v27 != v24)
               {
                 v29 = p_linkeditMemoryObjects;
-                v30 = [(FPMemoryObject *)v27 ensureMemoryObject];
-                v31 = v30;
-                if (v30 != v27)
+                ensureMemoryObject = [(FPMemoryObject *)v27 ensureMemoryObject];
+                v31 = ensureMemoryObject;
+                if (ensureMemoryObject != v27)
                 {
                   v32 = p_memoryObjects;
-                  v33 = v30;
+                  v33 = ensureMemoryObject;
 
                   v27 = v33;
                   v34 = os_map_64_delete();
@@ -350,13 +350,13 @@ LABEL_23:
                 }
 
                 sub_297E3398C(v31, v24, context);
-                if (v26)
+                if (ownedExclusivelyByParentProcess)
                 {
                   -[FPMemoryObject setOwnerPid:](v31, "setOwnerPid:", [context pid]);
                 }
 
                 p_linkeditMemoryObjects = v29;
-                v12 = v73;
+                sharedCache = v73;
               }
 
               [(FPMemoryObject *)v24 setMemoryObject:v27];
@@ -374,7 +374,7 @@ LABEL_40:
           while (v21);
         }
 
-        v2 = v71;
+        selfCopy = v71;
         v10 = v70 + 1;
         v9 = v67;
       }
@@ -387,7 +387,7 @@ LABEL_40:
   }
 
   v35 = objc_autoreleasePoolPush();
-  if (!v2->_memoryObjectMapsInitialized)
+  if (!selfCopy->_memoryObjectMapsInitialized)
   {
 LABEL_86:
     _os_assert_log();
@@ -403,8 +403,8 @@ LABEL_86:
   v107 = 0u;
   v104 = 0u;
   v105 = 0u;
-  v36 = [(NSMutableDictionary *)v2->_sharedCacheMemoryObjectsTable objectEnumerator];
-  v37 = [v36 countByEnumeratingWithState:&v104 objects:v108 count:16];
+  objectEnumerator = [(NSMutableDictionary *)selfCopy->_sharedCacheMemoryObjectsTable objectEnumerator];
+  v37 = [objectEnumerator countByEnumeratingWithState:&v104 objects:v108 count:16];
   if (v37)
   {
     v38 = v37;
@@ -415,24 +415,24 @@ LABEL_86:
       {
         if (*v105 != v39)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v41 = sub_297E37F6C([*(*(&v104 + 1) + 8 * i) pointerValue]);
       }
 
-      v38 = [v36 countByEnumeratingWithState:&v104 objects:v108 count:{16, v41}];
+      v38 = [objectEnumerator countByEnumeratingWithState:&v104 objects:v108 count:{16, v41}];
     }
 
     while (v38);
   }
 
-  [(NSMutableDictionary *)v2->_pidToFootprint removeAllObjects];
+  [(NSMutableDictionary *)selfCopy->_pidToFootprint removeAllObjects];
   v97 = 0u;
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v80 = sub_297E39B8C(v2);
+  v80 = sub_297E39B8C(selfCopy);
   v82 = [v80 countByEnumeratingWithState:&v95 objects:&v104 count:16];
   if (v82)
   {
@@ -455,8 +455,8 @@ LABEL_86:
           v102 = 0u;
           v99 = 0u;
           v100 = 0u;
-          v46 = [v45 memoryRegions];
-          v47 = [v46 countByEnumeratingWithState:&v99 objects:v108 count:16];
+          memoryRegions = [v45 memoryRegions];
+          v47 = [memoryRegions countByEnumeratingWithState:&v99 objects:v108 count:16];
           if (!v47)
           {
             v49 = 0;
@@ -473,34 +473,34 @@ LABEL_86:
             {
               if (*v100 != v50)
               {
-                objc_enumerationMutation(v46);
+                objc_enumerationMutation(memoryRegions);
               }
 
               v52 = *(*(&v99 + 1) + 8 * k);
-              v53 = [v52 dirtySize];
-              v49 += v53 + [v52 swappedSize];
+              dirtySize = [v52 dirtySize];
+              v49 += dirtySize + [v52 swappedSize];
             }
 
-            v48 = [v46 countByEnumeratingWithState:&v99 objects:v108 count:16];
+            v48 = [memoryRegions countByEnumeratingWithState:&v99 objects:v108 count:16];
           }
 
           while (v48);
-          v2 = v71;
+          selfCopy = v71;
         }
 
         else
         {
           obja = v44;
           v54 = objc_alloc(MEMORY[0x29EDB8E20]);
-          v55 = [v45 memoryRegions];
-          v46 = [v54 initWithCapacity:{objc_msgSend(v55, "count")}];
+          memoryRegions2 = [v45 memoryRegions];
+          memoryRegions = [v54 initWithCapacity:{objc_msgSend(memoryRegions2, "count")}];
 
           v101 = 0u;
           v102 = 0u;
           v99 = 0u;
           v100 = 0u;
-          v56 = [v45 memoryRegions];
-          v57 = [v56 countByEnumeratingWithState:&v99 objects:v108 count:16];
+          memoryRegions3 = [v45 memoryRegions];
+          v57 = [memoryRegions3 countByEnumeratingWithState:&v99 objects:v108 count:16];
           if (v57)
           {
             v58 = v57;
@@ -512,19 +512,19 @@ LABEL_86:
               {
                 if (*v100 != v59)
                 {
-                  objc_enumerationMutation(v56);
+                  objc_enumerationMutation(memoryRegions3);
                 }
 
-                v61 = [*(*(&v99 + 1) + 8 * m) memoryObject];
-                if (([v46 containsObject:v61] & 1) == 0)
+                memoryObject = [*(*(&v99 + 1) + 8 * m) memoryObject];
+                if (([memoryRegions containsObject:memoryObject] & 1) == 0)
                 {
-                  v62 = [v61 dirtySize];
-                  v49 += v62 + [v61 swappedSize];
-                  [v46 addObject:v61];
+                  dirtySize2 = [memoryObject dirtySize];
+                  v49 += dirtySize2 + [memoryObject swappedSize];
+                  [memoryRegions addObject:memoryObject];
                 }
               }
 
-              v58 = [v56 countByEnumeratingWithState:&v99 objects:v108 count:16];
+              v58 = [memoryRegions3 countByEnumeratingWithState:&v99 objects:v108 count:16];
             }
 
             while (v58);
@@ -535,7 +535,7 @@ LABEL_86:
             v49 = 0;
           }
 
-          v2 = v71;
+          selfCopy = v71;
           v42 = v78;
         }
 
@@ -543,7 +543,7 @@ LABEL_86:
 LABEL_80:
 
         v63 = [v44 numberWithUnsignedLongLong:v49];
-        v64 = v2->_pidToFootprint;
+        v64 = selfCopy->_pidToFootprint;
         v65 = [MEMORY[0x29EDBA070] numberWithInt:{objc_msgSend(v45, "pid")}];
         [(NSMutableDictionary *)v64 setObject:v63 forKeyedSubscript:v65];
       }
@@ -558,11 +558,11 @@ LABEL_80:
   v66 = *MEMORY[0x29EDCA608];
 }
 
-- (void)printOutputVerbose:(BOOL)a3 summarize:(BOOL)a4 noCategories:(BOOL)a5
+- (void)printOutputVerbose:(BOOL)verbose summarize:(BOOL)summarize noCategories:(BOOL)categories
 {
-  v206 = a5;
-  v214 = a4;
-  v5 = a3;
+  categoriesCopy = categories;
+  summarizeCopy = summarize;
+  verboseCopy = verbose;
   v355 = *MEMORY[0x29EDCA608];
   v7 = sub_297E39B8C(self);
   v8 = v7;
@@ -585,7 +585,7 @@ LABEL_80:
   v290 = 0u;
   v287 = 0u;
   v288 = 0u;
-  v219 = self;
+  selfCopy = self;
   v9 = self->_outputFormatters;
   v10 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v287 objects:v334 count:16];
   if (v10)
@@ -604,7 +604,7 @@ LABEL_80:
         v14 = *(*(&v287 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v14 startAtTime:v219->_gatherStartTime];
+          [v14 startAtTime:selfCopy->_gatherStartTime];
         }
       }
 
@@ -614,18 +614,18 @@ LABEL_80:
     while (v11);
   }
 
-  p_isa = &v219->super.isa;
-  if (v5)
+  p_isa = &selfCopy->super.isa;
+  if (verboseCopy)
   {
     v16 = v215;
-    if (v219)
+    if (selfCopy)
     {
       v235 = objc_opt_new();
       v343 = 0u;
       v344 = 0u;
       v345 = 0u;
       v346 = 0u;
-      v17 = v219->_outputFormatters;
+      v17 = selfCopy->_outputFormatters;
       v18 = [(NSMutableArray *)v17 countByEnumeratingWithState:&v343 objects:&v352 count:16];
       if (v18)
       {
@@ -697,8 +697,8 @@ LABEL_80:
 
                     v32 = *(*(&v335 + 1) + 8 * m);
                     v33 = objc_autoreleasePoolPush();
-                    v34 = [v26 memoryRegions];
-                    [v32 printVmmapLikeOutputForProcess:v26 regions:v34];
+                    memoryRegions = [v26 memoryRegions];
+                    [v32 printVmmapLikeOutputForProcess:v26 regions:memoryRegions];
 
                     objc_autoreleasePoolPop(v33);
                   }
@@ -719,14 +719,14 @@ LABEL_80:
         v16 = context;
       }
 
-      p_isa = &v219->super.isa;
+      p_isa = &selfCopy->super.isa;
     }
   }
 
   v210 = objc_opt_new();
   v209 = objc_opt_new();
   v202 = 0;
-  if ([v215 count] >= 2 && !v206)
+  if ([v215 count] >= 2 && !categoriesCopy)
   {
     if (p_isa)
     {
@@ -751,17 +751,17 @@ LABEL_80:
             }
 
             v41 = *(*(&v347 + 1) + 8 * n);
-            v42 = [v41 sharedCache];
-            if (v42)
+            sharedCache = [v41 sharedCache];
+            if (sharedCache)
             {
-              v43 = [v35 objectForKeyedSubscript:v42];
-              if (!v43)
+              initUniqueProcessGroup = [v35 objectForKeyedSubscript:sharedCache];
+              if (!initUniqueProcessGroup)
               {
-                v43 = [[FPProcessGroupMinimal alloc] initUniqueProcessGroup];
-                [v35 setObject:v43 forKeyedSubscript:v42];
+                initUniqueProcessGroup = [[FPProcessGroupMinimal alloc] initUniqueProcessGroup];
+                [v35 setObject:initUniqueProcessGroup forKeyedSubscript:sharedCache];
               }
 
-              [v43 addProcess:v41];
+              [initUniqueProcessGroup addProcess:v41];
             }
           }
 
@@ -809,12 +809,12 @@ LABEL_80:
       v202 = 0;
     }
 
-    p_isa = &v219->super.isa;
+    p_isa = &selfCopy->super.isa;
   }
 
-  if (v206)
+  if (categoriesCopy)
   {
-    v233 = 0;
+    dictionary2 = 0;
   }
 
   else
@@ -822,7 +822,7 @@ LABEL_80:
     contexta = v202;
     if (p_isa)
     {
-      v52 = [MEMORY[0x29EDB8E00] dictionary];
+      dictionary = [MEMORY[0x29EDB8E00] dictionary];
       v53 = sub_297E39B8C(p_isa);
       v236 = [objc_alloc(MEMORY[0x29EDB8E20]) initWithCapacity:{objc_msgSend(v53, "count")}];
       v318 = 0u;
@@ -860,7 +860,7 @@ LABEL_80:
       v316 = 0u;
       v315 = 0u;
       v314 = 0u;
-      obja = v219->_processes;
+      obja = selfCopy->_processes;
       v60 = [(NSArray *)obja countByEnumeratingWithState:&v314 objects:v351 count:16];
       if (v60)
       {
@@ -876,12 +876,12 @@ LABEL_80:
             }
 
             v63 = *(*(&v314 + 1) + 8 * kk);
-            v64 = [v63 hiddenFromDisplay];
-            v65 = [v63 sharedCache];
-            if (v65)
+            hiddenFromDisplay = [v63 hiddenFromDisplay];
+            sharedCache2 = [v63 sharedCache];
+            if (sharedCache2)
             {
               v66 = contexta;
-              v67 = [contexta objectForKeyedSubscript:v65];
+              v67 = [contexta objectForKeyedSubscript:sharedCache2];
             }
 
             else
@@ -890,19 +890,19 @@ LABEL_80:
               v66 = contexta;
             }
 
-            v68 = [v63 memoryRegions];
+            memoryRegions2 = [v63 memoryRegions];
             v307[0] = MEMORY[0x29EDCA5F8];
             v307[1] = 3221225472;
             v307[2] = sub_297E3A0E8;
             v307[3] = &unk_29EE854F8;
-            v313 = v64;
+            v313 = hiddenFromDisplay;
             v308 = v236;
             v309 = v66;
             v310 = v67;
-            v311 = v52;
+            v311 = dictionary;
             v312 = v63;
             v69 = v67;
-            [v68 fp_enumerateObjectsWithBatchSize:256 usingBlock:v307];
+            [memoryRegions2 fp_enumerateObjectsWithBatchSize:256 usingBlock:v307];
           }
 
           v61 = [(NSArray *)obja countByEnumeratingWithState:&v314 objects:v351 count:16];
@@ -916,8 +916,8 @@ LABEL_80:
       v304 = 0u;
       v305 = 0u;
       v306 = 0u;
-      v71 = [v52 allKeys];
-      v72 = [v71 countByEnumeratingWithState:&v303 objects:&v347 count:16];
+      allKeys = [dictionary allKeys];
+      v72 = [allKeys countByEnumeratingWithState:&v303 objects:&v347 count:16];
       if (v72)
       {
         v73 = v72;
@@ -928,11 +928,11 @@ LABEL_80:
           {
             if (*v304 != v74)
             {
-              objc_enumerationMutation(v71);
+              objc_enumerationMutation(allKeys);
             }
 
             v76 = *(*(&v303 + 1) + 8 * mm);
-            v77 = [v52 objectForKeyedSubscript:v76];
+            v77 = [dictionary objectForKeyedSubscript:v76];
             v78 = [v70 member:v77];
             if (!v78)
             {
@@ -940,10 +940,10 @@ LABEL_80:
               [v70 addObject:v78];
             }
 
-            [v52 setObject:v78 forKeyedSubscript:v76];
+            [dictionary setObject:v78 forKeyedSubscript:v76];
           }
 
-          v73 = [v71 countByEnumeratingWithState:&v303 objects:&v347 count:16];
+          v73 = [allKeys countByEnumeratingWithState:&v303 objects:&v347 count:16];
         }
 
         while (v73);
@@ -953,7 +953,7 @@ LABEL_80:
       v301 = 0u;
       v300 = 0u;
       v299 = 0u;
-      v79 = v52;
+      v79 = dictionary;
       v80 = [v79 countByEnumeratingWithState:&v299 objects:&v343 count:16];
       if (v80)
       {
@@ -970,8 +970,8 @@ LABEL_80:
 
             v84 = *(*(&v299 + 1) + 8 * nn);
             v85 = [v79 objectForKeyedSubscript:v84];
-            v86 = [v84 nonretainedObjectValue];
-            sub_297E3BC44(v85, v86);
+            nonretainedObjectValue = [v84 nonretainedObjectValue];
+            sub_297E3BC44(v85, nonretainedObjectValue);
           }
 
           v81 = [v79 countByEnumeratingWithState:&v299 objects:&v343 count:16];
@@ -980,7 +980,7 @@ LABEL_80:
         while (v81);
       }
 
-      v233 = [MEMORY[0x29EDB8E00] dictionary];
+      dictionary2 = [MEMORY[0x29EDB8E00] dictionary];
       v295 = 0u;
       v296 = 0u;
       v297 = 0u;
@@ -1000,15 +1000,15 @@ LABEL_80:
             }
 
             v88 = *(*(&v295 + 1) + 8 * i1);
-            v89 = [v88 processes];
-            v90 = [v89 count];
+            processes = [v88 processes];
+            v90 = [processes count];
 
             v294 = 0u;
             v293 = 0u;
             v291 = 0u;
             v292 = 0u;
-            v91 = [v88 processes];
-            v92 = [v91 countByEnumeratingWithState:&v291 objects:&v335 count:16];
+            processes2 = [v88 processes];
+            v92 = [processes2 countByEnumeratingWithState:&v291 objects:&v335 count:16];
             if (v92)
             {
               v93 = v92;
@@ -1019,18 +1019,18 @@ LABEL_80:
                 {
                   if (*v292 != v94)
                   {
-                    objc_enumerationMutation(v91);
+                    objc_enumerationMutation(processes2);
                   }
 
                   v96 = *(*(&v291 + 1) + 8 * i2);
-                  v97 = [v96 asNumber];
-                  v98 = [v233 objectForKeyedSubscript:v97];
+                  asNumber = [v96 asNumber];
+                  v98 = [dictionary2 objectForKeyedSubscript:asNumber];
 
                   if (!v98)
                   {
                     v98 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-                    v99 = [v96 asNumber];
-                    [v233 setObject:v98 forKeyedSubscript:v99];
+                    asNumber2 = [v96 asNumber];
+                    [dictionary2 setObject:v98 forKeyedSubscript:asNumber2];
                   }
 
                   if (v90 == 1)
@@ -1044,7 +1044,7 @@ LABEL_80:
                   }
                 }
 
-                v93 = [v91 countByEnumeratingWithState:&v291 objects:&v335 count:16];
+                v93 = [processes2 countByEnumeratingWithState:&v291 objects:&v335 count:16];
               }
 
               while (v93);
@@ -1060,11 +1060,11 @@ LABEL_80:
 
     else
     {
-      v233 = 0;
+      dictionary2 = 0;
     }
 
-    p_isa = &v219->super.isa;
-    sub_297E37154(v219);
+    p_isa = &selfCopy->super.isa;
+    sub_297E37154(selfCopy);
   }
 
   v201 = objc_autoreleasePoolPush();
@@ -1113,7 +1113,7 @@ LABEL_80:
   {
     v205 = *v280;
     v208 = MEMORY[0x29EDB8EA0];
-    v107 = v219;
+    v107 = selfCopy;
     do
     {
       v108 = 0;
@@ -1126,11 +1126,11 @@ LABEL_80:
 
         v213 = v108;
         v109 = *(*(&v279 + 1) + 8 * v108);
-        v110 = [v109 errors];
-        v237 = [v110 count];
+        errors = [v109 errors];
+        v237 = [errors count];
 
-        v111 = [v109 warnings];
-        v112 = [v111 count];
+        warnings = [v109 warnings];
+        v112 = [warnings count];
 
         if (v112)
         {
@@ -1144,11 +1144,11 @@ LABEL_80:
 
         else
         {
-          v113 = [v109 auxData];
-          v114 = v113;
-          if (v113)
+          auxData = [v109 auxData];
+          v114 = auxData;
+          if (auxData)
           {
-            v115 = [v113 fp_mergeWithData:v208];
+            v115 = [auxData fp_mergeWithData:v208];
 
             v208 = v115;
           }
@@ -1197,11 +1197,11 @@ LABEL_80:
 
         v211 = v118;
 
-        v126 = v219;
-        if (!v206)
+        v126 = selfCopy;
+        if (!categoriesCopy)
         {
-          v127 = [v109 asNumber];
-          v128 = [v233 objectForKeyedSubscript:v127];
+          asNumber3 = [v109 asNumber];
+          v128 = [dictionary2 objectForKeyedSubscript:asNumber3];
 
           v204 = v128;
           if (v128)
@@ -1246,19 +1246,19 @@ LABEL_80:
 
                     v133 = v132;
                     v134 = objc_autoreleasePoolPush();
-                    v135 = [v133 objectEnumerator];
-                    v131 = sub_297E39C10(v219, v135, v109, v351, v214);
+                    objectEnumerator = [v133 objectEnumerator];
+                    v131 = sub_297E39C10(selfCopy, objectEnumerator, v109, v351, summarizeCopy);
 
                     objc_autoreleasePoolPop(v134);
                     if (!v351[0])
                     {
-                      v136 = [v130 processes];
-                      v137 = [v136 count];
+                      processes3 = [v130 processes];
+                      v137 = [processes3 count];
 
                       if (v137 >= 0x1A)
                       {
-                        v138 = [v130 processes];
-                        sub_297E3BCEC(v130, v131, [v138 count] - 1);
+                        processes4 = [v130 processes];
+                        sub_297E3BCEC(v130, v131, [processes4 count] - 1);
                       }
                     }
                   }
@@ -1273,7 +1273,7 @@ LABEL_80:
                   v264 = 0u;
                   v265 = 0u;
                   v266 = 0u;
-                  v139 = v219->_outputFormatters;
+                  v139 = selfCopy->_outputFormatters;
                   v140 = [(NSMutableArray *)v139 countByEnumeratingWithState:&v263 objects:v328 count:16];
                   if (v140)
                   {
@@ -1289,8 +1289,8 @@ LABEL_80:
                         }
 
                         v144 = *(*(&v263 + 1) + 8 * i5);
-                        v145 = [v130 processes];
-                        v146 = [v145 count];
+                        processes5 = [v130 processes];
+                        v146 = [processes5 count];
 
                         if (v146 == 1)
                         {
@@ -1331,7 +1331,7 @@ LABEL_80:
             v272 = 0uLL;
             v273 = 0uLL;
             v274 = 0uLL;
-            v148 = v219->_outputFormatters;
+            v148 = selfCopy->_outputFormatters;
             v149 = [(NSMutableArray *)v148 countByEnumeratingWithState:&v271 objects:v330 count:16];
             if (v149)
             {
@@ -1356,7 +1356,7 @@ LABEL_80:
             }
           }
 
-          v126 = v219;
+          v126 = selfCopy;
         }
 
         v153 = objc_autoreleasePoolPush();
@@ -1380,8 +1380,8 @@ LABEL_80:
               }
 
               v159 = *(*(&v259 + 1) + 8 * i7);
-              v160 = [v109 auxData];
-              [v159 printProcessAuxData:v160 forProcess:v109];
+              auxData2 = [v109 auxData];
+              [v159 printProcessAuxData:auxData2 forProcess:v109];
             }
 
             v156 = [(NSMutableArray *)v154 countByEnumeratingWithState:&v259 objects:v327 count:16];
@@ -1392,7 +1392,7 @@ LABEL_80:
 
         objc_autoreleasePoolPop(v153);
         v108 = v213 + 1;
-        v107 = v219;
+        v107 = selfCopy;
       }
 
       while (v213 + 1 != v207);
@@ -1444,8 +1444,8 @@ LABEL_80:
 
         v168 = v167;
         v169 = objc_autoreleasePoolPush();
-        v170 = [v168 objectEnumerator];
-        v171 = sub_297E39C10(v219, v170, 0, 0, v214);
+        objectEnumerator2 = [v168 objectEnumerator];
+        v171 = sub_297E39C10(selfCopy, objectEnumerator2, 0, 0, summarizeCopy);
 
         objc_autoreleasePoolPop(v169);
         v353 = 0u;
@@ -1456,7 +1456,7 @@ LABEL_80:
         v254 = 0u;
         v251 = 0u;
         v252 = 0u;
-        v172 = v219->_outputFormatters;
+        v172 = selfCopy->_outputFormatters;
         v173 = [(NSMutableArray *)v172 countByEnumeratingWithState:&v251 objects:v325 count:16];
         if (v173)
         {
@@ -1512,8 +1512,8 @@ LABEL_80:
           objc_enumerationMutation(v179);
         }
 
-        v184 = [*(*(&v247 + 1) + 8 * i9) globalErrors];
-        [v178 addObjectsFromArray:v184];
+        globalErrors = [*(*(&v247 + 1) + 8 * i9) globalErrors];
+        [v178 addObjectsFromArray:globalErrors];
       }
 
       v181 = [v179 countByEnumeratingWithState:&v247 objects:v324 count:16];
@@ -1527,7 +1527,7 @@ LABEL_80:
   v244 = 0u;
   v245 = 0u;
   v246 = 0u;
-  v186 = v219->_outputFormatters;
+  v186 = selfCopy->_outputFormatters;
   v187 = [(NSMutableArray *)v186 countByEnumeratingWithState:&v243 objects:v323 count:16];
   if (v187)
   {
@@ -1555,7 +1555,7 @@ LABEL_80:
   v353 = 0u;
   v354 = 0u;
   v352 = 0u;
-  obje = sub_297E39E48(v219, v214);
+  obje = sub_297E39E48(selfCopy, summarizeCopy);
   sub_297E380A4(FPFootprint, obje, &v352);
   if ([v178 count])
   {
@@ -1571,13 +1571,13 @@ LABEL_80:
   v242 = 0u;
   v239 = 0u;
   v240 = 0u;
-  v192 = v219->_outputFormatters;
+  v192 = selfCopy->_outputFormatters;
   v193 = [(NSMutableArray *)v192 countByEnumeratingWithState:&v239 objects:v322 count:16];
   if (v193)
   {
     v194 = v193;
     v195 = *v240;
-    if (v206)
+    if (categoriesCopy)
     {
       v196 = 0;
     }
@@ -1600,7 +1600,7 @@ LABEL_80:
         v199 = objc_autoreleasePoolPush();
         [v198 printSummaryCategories:v196 total:&v352 hadErrors:v191];
         [v198 printGlobalAuxData:v208];
-        [v198 endAtTime:v219->_gatherEndTime];
+        [v198 endAtTime:selfCopy->_gatherEndTime];
         objc_autoreleasePoolPop(v199);
       }
 

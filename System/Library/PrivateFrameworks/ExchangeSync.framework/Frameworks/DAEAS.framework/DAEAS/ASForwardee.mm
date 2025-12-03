@@ -6,9 +6,9 @@
 
 - (void)applyPlaceHolder
 {
-  v3 = [(ASAttendee *)self placeHolder];
+  placeHolder = [(ASAttendee *)self placeHolder];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:5399];
-  v5 = [v3 objectForKey:v4];
+  v5 = [placeHolder objectForKey:v4];
 
   if (v5)
   {
@@ -19,9 +19,9 @@
     }
   }
 
-  v6 = [(ASAttendee *)self placeHolder];
+  placeHolder2 = [(ASAttendee *)self placeHolder];
   v7 = [MEMORY[0x277CCABB0] numberWithInt:5400];
-  v8 = [v6 objectForKey:v7];
+  v8 = [placeHolder2 objectForKey:v7];
 
   if (v8)
   {

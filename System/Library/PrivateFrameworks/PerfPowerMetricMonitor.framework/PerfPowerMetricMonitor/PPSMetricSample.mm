@@ -1,31 +1,31 @@
 @interface PPSMetricSample
-+ (PPSMetricSample)sampleWithValue:(id)a3 timestamp:(id)a4;
++ (PPSMetricSample)sampleWithValue:(id)value timestamp:(id)timestamp;
 - (BOOL)BOOLValue;
-- (PPSMetricSample)initWithCoder:(id)a3;
-- (PPSMetricSample)initWithValue:(id)a3 timestamp:(id)a4;
+- (PPSMetricSample)initWithCoder:(id)coder;
+- (PPSMetricSample)initWithValue:(id)value timestamp:(id)timestamp;
 - (double)doubleValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int)intValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPSMetricSample
 
-+ (PPSMetricSample)sampleWithValue:(id)a3 timestamp:(id)a4
++ (PPSMetricSample)sampleWithValue:(id)value timestamp:(id)timestamp
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PPSMetricSample alloc] initWithValue:v6 timestamp:v5];
+  timestampCopy = timestamp;
+  valueCopy = value;
+  v7 = [[PPSMetricSample alloc] initWithValue:valueCopy timestamp:timestampCopy];
 
   return v7;
 }
 
-- (PPSMetricSample)initWithValue:(id)a3 timestamp:(id)a4
+- (PPSMetricSample)initWithValue:(id)value timestamp:(id)timestamp
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  valueCopy = value;
+  timestampCopy = timestamp;
+  if (valueCopy)
   {
     v13.receiver = self;
     v13.super_class = PPSMetricSample;
@@ -33,35 +33,35 @@
     p_isa = &v9->super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_value, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v9->_value, value);
+      objc_storeStrong(p_isa + 2, timestamp);
     }
 
     self = p_isa;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (PPSMetricSample)initWithCoder:(id)a3
+- (PPSMetricSample)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PPSMetricSample;
   v5 = [(PPSMetricSample *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v5->_value;
     v5->_value = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v8;
   }
@@ -69,24 +69,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PPSMetricSample *)self value];
-  [v4 encodeObject:v5 forKey:@"value"];
+  coderCopy = coder;
+  value = [(PPSMetricSample *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 
-  v6 = [(PPSMetricSample *)self timestamp];
-  [v4 encodeObject:v6 forKey:@"timestamp"];
+  timestamp = [(PPSMetricSample *)self timestamp];
+  [coderCopy encodeObject:timestamp forKey:@"timestamp"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PPSMetricSample allocWithZone:](PPSMetricSample init];
-  v6 = [(NSNumber *)self->_value copyWithZone:a3];
+  v6 = [(NSNumber *)self->_value copyWithZone:zone];
   value = v5->_value;
   v5->_value = v6;
 
-  v8 = [(NSDate *)self->_timestamp copyWithZone:a3];
+  v8 = [(NSDate *)self->_timestamp copyWithZone:zone];
   timestamp = v5->_timestamp;
   v5->_timestamp = v8;
 
@@ -96,33 +96,33 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PPSMetricSample *)self value];
-  v5 = [(PPSMetricSample *)self timestamp];
-  v6 = [v3 stringWithFormat:@"PPSMetric value: %@ timestamp: %@", v4, v5];
+  value = [(PPSMetricSample *)self value];
+  timestamp = [(PPSMetricSample *)self timestamp];
+  v6 = [v3 stringWithFormat:@"PPSMetric value: %@ timestamp: %@", value, timestamp];
 
   return v6;
 }
 
 - (BOOL)BOOLValue
 {
-  v2 = [(PPSMetricSample *)self value];
-  v3 = [v2 BOOLValue];
+  value = [(PPSMetricSample *)self value];
+  bOOLValue = [value BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int)intValue
 {
-  v2 = [(PPSMetricSample *)self value];
-  v3 = [v2 intValue];
+  value = [(PPSMetricSample *)self value];
+  intValue = [value intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (double)doubleValue
 {
-  v2 = [(PPSMetricSample *)self value];
-  [v2 doubleValue];
+  value = [(PPSMetricSample *)self value];
+  [value doubleValue];
   v4 = v3;
 
   return v4;

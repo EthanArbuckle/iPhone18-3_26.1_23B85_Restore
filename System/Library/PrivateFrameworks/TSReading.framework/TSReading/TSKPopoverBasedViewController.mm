@@ -4,57 +4,57 @@
 - (BOOL)p_shouldResizeViewWithKeyboard;
 - (CGRect)frameForCurrentiPhoneOrientation;
 - (CGSize)contentSize;
-- (TSKPopoverBasedViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (TSKPopoverBasedViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (TSKPopoverController)popoverController;
-- (double)p_originOffsetForKeyboardFrame:(CGRect)a3;
+- (double)p_originOffsetForKeyboardFrame:(CGRect)frame;
 - (id)navigationBar;
-- (id)p_newCloseImageBarButtonWithTarget:(id)a3 action:(SEL)a4;
+- (id)p_newCloseImageBarButtonWithTarget:(id)target action:(SEL)action;
 - (id)p_newRootViewController;
 - (id)p_outsideTouchWatchView;
 - (id)p_topParentViewController;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)dealloc;
-- (void)dismissAnimated:(BOOL)a3;
-- (void)keyboardWillHideOrUndock:(id)a3;
-- (void)keyboardWillShowOrDock:(id)a3;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)outsideTouch:(id)a3;
-- (void)p_didDismissPopover:(id)a3;
-- (void)p_dismissFullscreenModalAnimated:(BOOL)a3;
+- (void)dismissAnimated:(BOOL)animated;
+- (void)keyboardWillHideOrUndock:(id)undock;
+- (void)keyboardWillShowOrDock:(id)dock;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)outsideTouch:(id)touch;
+- (void)p_didDismissPopover:(id)popover;
+- (void)p_dismissFullscreenModalAnimated:(BOOL)animated;
 - (void)p_dismissFullscreenModalFromCloseButton;
 - (void)p_dismissHalfHeight;
 - (void)p_dismissHalfHeightFromCloseButton;
-- (void)p_dismissPopoverAnimated:(BOOL)a3;
+- (void)p_dismissPopoverAnimated:(BOOL)animated;
 - (void)p_informDelegateOfDidDismiss;
 - (void)p_informDelegateOfWillDismiss;
 - (void)p_informDelegateOfWillShow;
 - (void)p_installHideOnTouchGesture;
-- (void)p_keyboardWillHide:(BOOL)a3 withNotification:(id)a4;
+- (void)p_keyboardWillHide:(BOOL)hide withNotification:(id)notification;
 - (void)p_registerPopoverBasedViewControllerNotifications;
 - (void)p_removeHideOnTouchGesture;
-- (void)p_showModalInViewController:(id)a3 withTitle:(id)a4 animated:(BOOL)a5 withDoneButton:(BOOL)a6;
+- (void)p_showModalInViewController:(id)controller withTitle:(id)title animated:(BOOL)animated withDoneButton:(BOOL)button;
 - (void)p_willPresentPopover;
-- (void)presentInRect:(CGRect)a3 inView:(id)a4 animated:(BOOL)a5 modal:(BOOL)a6 closeBlock:(id)a7 animations:(id)a8;
-- (void)presentModallyFromBarItem:(id)a3 viewController:(id)a4;
-- (void)presentModallyFromRect:(CGRect)a3 inView:(id)a4 viewController:(id)a5 arrowDirection:(unint64_t)a6 animated:(BOOL)a7 withDoneButton:(BOOL)a8 constrainToView:(BOOL)a9 withPadding:(double)a10 fromToolbar:(BOOL)a11;
-- (void)presentModallyWithTitle:(id)a3 viewController:(id)a4 animated:(BOOL)a5 withDoneButton:(BOOL)a6;
+- (void)presentInRect:(CGRect)rect inView:(id)view animated:(BOOL)animated modal:(BOOL)modal closeBlock:(id)block animations:(id)animations;
+- (void)presentModallyFromBarItem:(id)item viewController:(id)controller;
+- (void)presentModallyFromRect:(CGRect)rect inView:(id)view viewController:(id)controller arrowDirection:(unint64_t)direction animated:(BOOL)animated withDoneButton:(BOOL)button constrainToView:(BOOL)toView withPadding:(double)self0 fromToolbar:(BOOL)self1;
+- (void)presentModallyWithTitle:(id)title viewController:(id)controller animated:(BOOL)animated withDoneButton:(BOOL)button;
 - (void)resetOutsideTouchWatchView;
-- (void)setAllowsOutsideTouch:(BOOL)a3;
-- (void)setWrapInNavigationController:(BOOL)a3;
-- (void)showPopoverFromBarItem:(id)a3;
-- (void)showPopoverFromRect:(CGRect)a3 inView:(id)a4 arrowDirection:(unint64_t)a5 animated:(BOOL)a6 constrainToView:(BOOL)a7 withPadding:(double)a8 fromToolbar:(BOOL)a9;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setAllowsOutsideTouch:(BOOL)touch;
+- (void)setWrapInNavigationController:(BOOL)controller;
+- (void)showPopoverFromBarItem:(id)item;
+- (void)showPopoverFromRect:(CGRect)rect inView:(id)view arrowDirection:(unint64_t)direction animated:(BOOL)animated constrainToView:(BOOL)toView withPadding:(double)padding fromToolbar:(BOOL)toolbar;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TSKPopoverBasedViewController
 
-- (TSKPopoverBasedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TSKPopoverBasedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = TSKPopoverBasedViewController;
-  v4 = [(TSKPopoverBasedViewController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(TSKPopoverBasedViewController *)&v6 initWithNibName:name bundle:bundle];
   if (v4 && TSUPhoneUI())
   {
     v4->mWrapInNavigationController = 1;
@@ -89,62 +89,62 @@
   [(TSKPopoverBasedViewController *)self setEdgesForExtendedLayout:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = TSKPopoverBasedViewController;
-  [(TSKPopoverBasedViewController *)&v4 viewWillAppear:a3];
+  [(TSKPopoverBasedViewController *)&v4 viewWillAppear:appear];
   [TSKKeyboardMonitor addKeyboardObserver:self];
   [(TSKPopoverBasedViewController *)self contentSize];
   [(TSKPopoverBasedViewController *)self setPreferredContentSize:?];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = TSKPopoverBasedViewController;
-  [(TSKPopoverBasedViewController *)&v4 viewDidDisappear:a3];
+  [(TSKPopoverBasedViewController *)&v4 viewDidDisappear:disappear];
   [TSKKeyboardMonitor removeKeyboardObserver:self];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(TSKPopoverBasedViewController *)self presentingViewController];
+  presentingViewController = [(TSKPopoverBasedViewController *)self presentingViewController];
 
-  return [v2 supportedInterfaceOrientations];
+  return [presentingViewController supportedInterfaceOrientations];
 }
 
 - (id)p_topParentViewController
 {
-  v2 = [(TSKPopoverBasedViewController *)self parentViewController];
+  parentViewController = [(TSKPopoverBasedViewController *)self parentViewController];
   do
   {
-    v3 = v2;
-    v2 = [v2 parentViewController];
+    v3 = parentViewController;
+    parentViewController = [parentViewController parentViewController];
   }
 
-  while (v2);
+  while (parentViewController);
   return v3;
 }
 
 - (id)p_newRootViewController
 {
-  v3 = [(TSKPopoverBasedViewController *)self i_contentViewController];
+  i_contentViewController = [(TSKPopoverBasedViewController *)self i_contentViewController];
   if ([(TSKPopoverBasedViewController *)self imposeContentSizeOnViewControllers])
   {
     [(TSKPopoverBasedViewController *)self preferredContentSize];
-    [v3 setPreferredContentSize:?];
+    [i_contentViewController setPreferredContentSize:?];
   }
 
   if (![(TSKPopoverBasedViewController *)self wrapInNavigationController])
   {
-    return v3;
+    return i_contentViewController;
   }
 
-  [v3 setEdgesForExtendedLayout:0];
-  [v3 setAutomaticallyAdjustsScrollViewInsets:0];
+  [i_contentViewController setEdgesForExtendedLayout:0];
+  [i_contentViewController setAutomaticallyAdjustsScrollViewInsets:0];
   TSUPhoneUI();
-  v4 = [objc_alloc(objc_opt_class()) initWithRootViewController:v3];
+  v4 = [objc_alloc(objc_opt_class()) initWithRootViewController:i_contentViewController];
   [v4 setDelegate:self];
   [v4 setWantsFullScreenLayout:0];
   [v4 setToolbarHidden:{-[TSKPopoverBasedViewController shouldHideToolbar](self, "shouldHideToolbar")}];
@@ -154,15 +154,15 @@
     [objc_msgSend(v4 "view")];
   }
 
-  v5 = [v4 isNavigationBarHidden];
-  [v3 preferredContentSize];
+  isNavigationBarHidden = [v4 isNavigationBarHidden];
+  [i_contentViewController preferredContentSize];
   v7 = v6;
   v9 = v8;
-  if ((v5 & 1) == 0)
+  if ((isNavigationBarHidden & 1) == 0)
   {
-    v10 = [v4 navigationBar];
-    [objc_msgSend(v3 "view")];
-    [v10 sizeThatFits:{v11, v12}];
+    navigationBar = [v4 navigationBar];
+    [objc_msgSend(i_contentViewController "view")];
+    [navigationBar sizeThatFits:{v11, v12}];
     v9 = v9 + v13;
   }
 
@@ -170,11 +170,11 @@
   return v4;
 }
 
-- (void)setWrapInNavigationController:(BOOL)a3
+- (void)setWrapInNavigationController:(BOOL)controller
 {
-  if (self->mWrapInNavigationController != a3)
+  if (self->mWrapInNavigationController != controller)
   {
-    self->mWrapInNavigationController = a3;
+    self->mWrapInNavigationController = controller;
     if (![(TSKPopoverBasedViewController *)self isVisible])
     {
       mPopoverController = self->mPopoverController;
@@ -195,14 +195,14 @@
   return [v2 navigationBar];
 }
 
-- (void)outsideTouch:(id)a3
+- (void)outsideTouch:(id)touch
 {
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (mPopoverDelegate = self->mPopoverDelegate, [a3 locationInView:{-[TSKPopoverBasedViewController view](self, "view")}], -[TSKPopoverBasedViewControllerDelegate popoverController:shouldReceiveOutsideTouchAtLocation:inView:](mPopoverDelegate, "popoverController:shouldReceiveOutsideTouchAtLocation:inView:", self, -[TSKPopoverBasedViewController view](self, "view"), v6, v7)))
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (mPopoverDelegate = self->mPopoverDelegate, [touch locationInView:{-[TSKPopoverBasedViewController view](self, "view")}], -[TSKPopoverBasedViewControllerDelegate popoverController:shouldReceiveOutsideTouchAtLocation:inView:](mPopoverDelegate, "popoverController:shouldReceiveOutsideTouchAtLocation:inView:", self, -[TSKPopoverBasedViewController view](self, "view"), v6, v7)))
   {
     if (![(TSKPopoverBasedViewController *)self staysOpenOnOutsideTouches])
     {
       mPopoverToggleView = self->mPopoverToggleView;
-      if (!mPopoverToggleView || (-[UIView bounds](mPopoverToggleView, "bounds"), v10 = v9, v12 = v11, v14 = v13, v16 = v15, [a3 locationInView:self->mPopoverToggleView], v20.x = v17, v20.y = v18, v21.origin.x = v10, v21.origin.y = v12, v21.size.width = v14, v21.size.height = v16, !CGRectContainsPoint(v21, v20)))
+      if (!mPopoverToggleView || (-[UIView bounds](mPopoverToggleView, "bounds"), v10 = v9, v12 = v11, v14 = v13, v16 = v15, [touch locationInView:self->mPopoverToggleView], v20.x = v17, v20.y = v18, v21.origin.x = v10, v21.origin.y = v12, v21.size.width = v14, v21.size.height = v16, !CGRectContainsPoint(v21, v20)))
       {
 
         [(TSKPopoverBasedViewController *)self p_dismissPopoverAnimated:1];
@@ -213,25 +213,25 @@
 
 - (id)p_outsideTouchWatchView
 {
-  v2 = self;
+  selfCopy = self;
   if ([(TSKPopoverBasedViewController *)self wrapInNavigationController])
   {
-    v2 = [(TSKPopoverBasedViewController *)v2 navigationController];
+    selfCopy = [(TSKPopoverBasedViewController *)selfCopy navigationController];
   }
 
-  return [(TSKPopoverBasedViewController *)v2 view];
+  return [(TSKPopoverBasedViewController *)selfCopy view];
 }
 
 - (void)p_installHideOnTouchGesture
 {
   if (TSUPadUI())
   {
-    v3 = [(TSKPopoverBasedViewController *)self p_outsideTouchWatchView];
+    p_outsideTouchWatchView = [(TSKPopoverBasedViewController *)self p_outsideTouchWatchView];
     v4 = [objc_msgSend(objc_msgSend(MEMORY[0x277D75128] "sharedApplication")];
     if (v4)
     {
       v5 = v4;
-      self->mHideOnTouchGestureRecognizer = [[TSKHideOnTouchOutsideViewGestureRecognizer alloc] initWithTarget:self action:sel_outsideTouch_ watchView:v3];
+      self->mHideOnTouchGestureRecognizer = [[TSKHideOnTouchOutsideViewGestureRecognizer alloc] initWithTarget:self action:sel_outsideTouch_ watchView:p_outsideTouchWatchView];
       v6 = [objc_msgSend(objc_msgSend(v5 "view")];
       if (!v6)
       {
@@ -242,9 +242,9 @@
       [objc_msgSend(v5 "view")];
 
       v7 = [MEMORY[0x277CBEA60] arrayWithObject:{objc_msgSend(v5, "view")}];
-      v8 = [(TSKPopoverBasedViewController *)self popoverController];
+      popoverController = [(TSKPopoverBasedViewController *)self popoverController];
 
-      [(TSKPopoverController *)v8 setPassthroughViews:v7];
+      [(TSKPopoverController *)popoverController setPassthroughViews:v7];
     }
   }
 }
@@ -256,18 +256,18 @@
     [-[TSKHideOnTouchOutsideViewGestureRecognizer view](self->mHideOnTouchGestureRecognizer "view")];
 
     self->mHideOnTouchGestureRecognizer = 0;
-    v3 = [(TSKPopoverBasedViewController *)self popoverController];
+    popoverController = [(TSKPopoverBasedViewController *)self popoverController];
 
-    [(TSKPopoverController *)v3 setPassthroughViews:0];
+    [(TSKPopoverController *)popoverController setPassthroughViews:0];
   }
 }
 
-- (void)setAllowsOutsideTouch:(BOOL)a3
+- (void)setAllowsOutsideTouch:(BOOL)touch
 {
-  v3 = a3;
+  touchCopy = touch;
   if (TSUPadUI())
   {
-    self->mAllowsOutsideTouch = v3;
+    self->mAllowsOutsideTouch = touchCopy;
     if ([(TSKPopoverBasedViewController *)self isPopoverVisible])
     {
       mHideOnTouchGestureRecognizer = self->mHideOnTouchGestureRecognizer;
@@ -278,12 +278,12 @@
 
       else
       {
-        v6 = !v3;
+        v6 = !touchCopy;
       }
 
       if (v6)
       {
-        if (mHideOnTouchGestureRecognizer && !v3)
+        if (mHideOnTouchGestureRecognizer && !touchCopy)
         {
 
           [(TSKPopoverBasedViewController *)self p_removeHideOnTouchGesture];
@@ -301,10 +301,10 @@
 
 - (void)resetOutsideTouchWatchView
 {
-  v3 = [(TSKPopoverBasedViewController *)self p_outsideTouchWatchView];
+  p_outsideTouchWatchView = [(TSKPopoverBasedViewController *)self p_outsideTouchWatchView];
   mHideOnTouchGestureRecognizer = self->mHideOnTouchGestureRecognizer;
 
-  [(TSKHideOnTouchOutsideViewGestureRecognizer *)mHideOnTouchGestureRecognizer setWatchView:v3];
+  [(TSKHideOnTouchOutsideViewGestureRecognizer *)mHideOnTouchGestureRecognizer setWatchView:p_outsideTouchWatchView];
 }
 
 - (CGSize)contentSize
@@ -344,9 +344,9 @@
 {
   if ((TSUPhoneUI() & 1) == 0)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKPopoverBasedViewController frameForCurrentiPhoneOrientation]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 423, @"This should only be called from iPhone (or non-iPad)"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 423, @"This should only be called from iPhone (or non-iPad)"}];
   }
 
   if (TSUPhoneUI())
@@ -371,37 +371,37 @@
 
 - (void)p_informDelegateOfWillShow
 {
-  v3 = [(TSKPopoverBasedViewController *)self popoverDelegate];
+  popoverDelegate = [(TSKPopoverBasedViewController *)self popoverDelegate];
   if (objc_opt_respondsToSelector())
   {
 
-    [(TSKPopoverBasedViewControllerDelegate *)v3 popoverControllerWillShowPopoverBasedViewController:self];
+    [(TSKPopoverBasedViewControllerDelegate *)popoverDelegate popoverControllerWillShowPopoverBasedViewController:self];
   }
 }
 
 - (void)p_informDelegateOfWillDismiss
 {
-  v3 = [(TSKPopoverBasedViewController *)self popoverDelegate];
+  popoverDelegate = [(TSKPopoverBasedViewController *)self popoverDelegate];
   if (objc_opt_respondsToSelector())
   {
 
-    [(TSKPopoverBasedViewControllerDelegate *)v3 popoverControllerWillDismissPopoverBasedViewController:self];
+    [(TSKPopoverBasedViewControllerDelegate *)popoverDelegate popoverControllerWillDismissPopoverBasedViewController:self];
   }
 }
 
 - (void)p_informDelegateOfDidDismiss
 {
-  v3 = [(TSKPopoverBasedViewController *)self popoverDelegate];
+  popoverDelegate = [(TSKPopoverBasedViewController *)self popoverDelegate];
   if (objc_opt_respondsToSelector())
   {
 
-    [(TSKPopoverBasedViewControllerDelegate *)v3 popoverControllerDidDismissPopoverBasedViewController:self];
+    [(TSKPopoverBasedViewControllerDelegate *)popoverDelegate popoverControllerDidDismissPopoverBasedViewController:self];
   }
 }
 
-- (void)p_dismissFullscreenModalAnimated:(BOOL)a3
+- (void)p_dismissFullscreenModalAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   self->mViewControllerVisible = 0;
   v5 = [-[TSKPopoverBasedViewController i_contentViewController](self "i_contentViewController")];
   v6[0] = MEMORY[0x277D85DD0];
@@ -409,7 +409,7 @@
   v6[2] = __66__TSKPopoverBasedViewController_p_dismissFullscreenModalAnimated___block_invoke;
   v6[3] = &unk_279D46770;
   v6[4] = self;
-  [v5 dismissViewControllerAnimated:v3 completion:v6];
+  [v5 dismissViewControllerAnimated:animatedCopy completion:v6];
 }
 
 - (void)p_dismissHalfHeightFromCloseButton
@@ -426,19 +426,19 @@
   [(TSKPopoverBasedViewController *)self dismissAnimated:1];
 }
 
-- (void)p_dismissPopoverAnimated:(BOOL)a3
+- (void)p_dismissPopoverAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (TSUPhoneUI())
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKPopoverBasedViewController p_dismissPopoverAnimated:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 494, @"Can't present popovers on the phone!"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 494, @"Can't present popovers on the phone!"}];
   }
 
   mPopoverController = self->mPopoverController;
 
-  [(TSKPopoverController *)mPopoverController dismissPopoverAnimated:v3];
+  [(TSKPopoverController *)mPopoverController dismissPopoverAnimated:animatedCopy];
 }
 
 - (void)p_registerPopoverBasedViewControllerNotifications
@@ -446,21 +446,21 @@
   v3 = MEMORY[0x277CBEAC0];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
   v5 = [v3 dictionaryWithObjectsAndKeys:{v4, TSKPopoverBasedViewControllerIsModalKey, objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", TSUPhoneUI()), TSKPopoverBasedViewControllerIsFullscreenKey, 0}];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v7 = TSKPopoverBasedViewControllerWillPresentNotification;
 
-  [v6 postNotificationName:v7 object:self userInfo:v5];
+  [defaultCenter postNotificationName:v7 object:self userInfo:v5];
 }
 
-- (void)p_showModalInViewController:(id)a3 withTitle:(id)a4 animated:(BOOL)a5 withDoneButton:(BOOL)a6
+- (void)p_showModalInViewController:(id)controller withTitle:(id)title animated:(BOOL)animated withDoneButton:(BOOL)button
 {
-  v6 = a6;
-  v7 = a5;
+  buttonCopy = button;
+  animatedCopy = animated;
   if ((TSUPhoneUI() & 1) == 0)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKPopoverBasedViewController p_showModalInViewController:withTitle:animated:withDoneButton:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 511, @"Can't show modal view controller on iPad."}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 511, @"Can't show modal view controller on iPad."}];
   }
 
   if ([objc_msgSend(MEMORY[0x277D75718] "sharedMenuController")])
@@ -470,7 +470,7 @@
 
   self->mViewControllerVisible = 1;
   [(TSKPopoverBasedViewController *)self p_informDelegateOfWillShow];
-  v13 = [(TSKPopoverBasedViewController *)self p_newRootViewController];
+  p_newRootViewController = [(TSKPopoverBasedViewController *)self p_newRootViewController];
   if ([(TSKPopoverBasedViewController *)self wrapInNavigationController])
   {
     objc_opt_class();
@@ -478,14 +478,14 @@
     if (v14)
     {
       v15 = v14;
-      v16 = [(TSKPopoverBasedViewController *)self popoverDelegate];
-      if ((objc_opt_respondsToSelector() & 1) != 0 && [(TSKPopoverBasedViewControllerDelegate *)v16 wantsCloseArrowForPopoverBasedViewController:self])
+      popoverDelegate = [(TSKPopoverBasedViewController *)self popoverDelegate];
+      if ((objc_opt_respondsToSelector() & 1) != 0 && [(TSKPopoverBasedViewControllerDelegate *)popoverDelegate wantsCloseArrowForPopoverBasedViewController:self])
       {
         v17 = [(TSKPopoverBasedViewController *)self p_newCloseImageBarButtonWithTarget:self action:sel_p_dismissFullscreenModalFromCloseButton];
         goto LABEL_13;
       }
 
-      if (v6)
+      if (buttonCopy)
       {
         if (TSUPhoneUI())
         {
@@ -493,7 +493,7 @@
           v17 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v18];
 LABEL_13:
           v19 = v17;
-          if (!a4)
+          if (!title)
           {
             goto LABEL_19;
           }
@@ -513,7 +513,7 @@ LABEL_13:
 
       v19 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:objc_msgSend(TSKBundle() style:"localizedStringForKey:value:table:" target:v20 action:{&stru_287D36338, @"TSKit", v21, self, sel_p_dismissFullscreenModalFromCloseButton}];
       [(TSKPopoverBasedViewController *)self i_configureCloseItem:v19];
-      if (!a4)
+      if (!title)
       {
 LABEL_19:
         [objc_msgSend(objc_msgSend(v15 "topViewController")];
@@ -529,7 +529,7 @@ LABEL_18:
 
 LABEL_20:
 
-  [a3 presentViewController:v13 animated:v7 completion:0];
+  [controller presentViewController:p_newRootViewController animated:animatedCopy completion:0];
 }
 
 uint64_t __95__TSKPopoverBasedViewController_p_showModalInViewController_withTitle_animated_withDoneButton___block_invoke()
@@ -539,67 +539,67 @@ uint64_t __95__TSKPopoverBasedViewController_p_showModalInViewController_withTit
   return [v0 hideMenu];
 }
 
-- (id)p_newCloseImageBarButtonWithTarget:(id)a3 action:(SEL)a4
+- (id)p_newCloseImageBarButtonWithTarget:(id)target action:(SEL)action
 {
   v7 = objc_alloc(MEMORY[0x277D751E0]);
   v8 = [MEMORY[0x277D755B8] imageNamed:@"TSKInsp_Close-ArrowDown" inBundle:TSKBundle() compatibleWithTraitCollection:{-[TSKPopoverBasedViewController traitCollection](self, "traitCollection")}];
 
-  return [v7 initWithImage:v8 style:1 target:a3 action:a4];
+  return [v7 initWithImage:v8 style:1 target:target action:action];
 }
 
-- (void)presentModallyFromRect:(CGRect)a3 inView:(id)a4 viewController:(id)a5 arrowDirection:(unint64_t)a6 animated:(BOOL)a7 withDoneButton:(BOOL)a8 constrainToView:(BOOL)a9 withPadding:(double)a10 fromToolbar:(BOOL)a11
+- (void)presentModallyFromRect:(CGRect)rect inView:(id)view viewController:(id)controller arrowDirection:(unint64_t)direction animated:(BOOL)animated withDoneButton:(BOOL)button constrainToView:(BOOL)toView withPadding:(double)self0 fromToolbar:(BOOL)self1
 {
-  v12 = a9;
-  v13 = a8;
-  v14 = a7;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  toViewCopy = toView;
+  buttonCopy = button;
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TSKPopoverBasedViewController *)self p_registerPopoverBasedViewControllerNotifications];
   if (TSUPhoneUI())
   {
 
-    [(TSKPopoverBasedViewController *)self p_showModalInViewController:a5 withTitle:0 animated:v14 withDoneButton:v13];
+    [(TSKPopoverBasedViewController *)self p_showModalInViewController:controller withTitle:0 animated:animatedCopy withDoneButton:buttonCopy];
   }
 
   else
   {
 
-    [(TSKPopoverBasedViewController *)self showPopoverFromRect:a4 inView:a6 arrowDirection:v14 animated:v12 constrainToView:a11 withPadding:x fromToolbar:y, width, height, a10];
+    [(TSKPopoverBasedViewController *)self showPopoverFromRect:view inView:direction arrowDirection:animatedCopy animated:toViewCopy constrainToView:toolbar withPadding:x fromToolbar:y, width, height, padding];
   }
 }
 
-- (void)presentModallyFromBarItem:(id)a3 viewController:(id)a4
+- (void)presentModallyFromBarItem:(id)item viewController:(id)controller
 {
   [(TSKPopoverBasedViewController *)self p_registerPopoverBasedViewControllerNotifications];
   if (TSUPhoneUI())
   {
 
-    [(TSKPopoverBasedViewController *)self p_showModalInViewController:a4 withTitle:0 animated:1 withDoneButton:0];
+    [(TSKPopoverBasedViewController *)self p_showModalInViewController:controller withTitle:0 animated:1 withDoneButton:0];
   }
 
   else
   {
 
-    [(TSKPopoverBasedViewController *)self showPopoverFromBarItem:a3];
+    [(TSKPopoverBasedViewController *)self showPopoverFromBarItem:item];
   }
 }
 
-- (void)presentModallyWithTitle:(id)a3 viewController:(id)a4 animated:(BOOL)a5 withDoneButton:(BOOL)a6
+- (void)presentModallyWithTitle:(id)title viewController:(id)controller animated:(BOOL)animated withDoneButton:(BOOL)button
 {
-  v6 = a6;
-  v7 = a5;
+  buttonCopy = button;
+  animatedCopy = animated;
   if ((TSUPhoneUI() & 1) == 0)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKPopoverBasedViewController presentModallyWithTitle:viewController:animated:withDoneButton:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 658, @"presentModallyWithTitle is only intended to be used on the phone."}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 658, @"presentModallyWithTitle is only intended to be used on the phone."}];
   }
 
   [(TSKPopoverBasedViewController *)self p_registerPopoverBasedViewControllerNotifications];
 
-  [(TSKPopoverBasedViewController *)self p_showModalInViewController:a4 withTitle:a3 animated:v7 withDoneButton:v6];
+  [(TSKPopoverBasedViewController *)self p_showModalInViewController:controller withTitle:title animated:animatedCopy withDoneButton:buttonCopy];
 }
 
 - (void)p_dismissHalfHeight
@@ -629,17 +629,17 @@ uint64_t __95__TSKPopoverBasedViewController_p_showModalInViewController_withTit
   v16[6] = self;
   if (self->mHalfHeightAnimated)
   {
-    v7 = [(UIViewController *)v6 view];
-    [(UIView *)v7 frame];
+    view = [(UIViewController *)v6 view];
+    [(UIView *)view frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [[(UIView *)v7 superview] bounds];
+    [[(UIView *)view superview] bounds];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __52__TSKPopoverBasedViewController_p_dismissHalfHeight__block_invoke_2;
     v15[3] = &unk_279D47938;
-    v15[4] = v7;
+    v15[4] = view;
     v15[5] = v9;
     v15[6] = v14;
     v15[7] = v11;
@@ -666,30 +666,30 @@ uint64_t __52__TSKPopoverBasedViewController_p_dismissHalfHeight__block_invoke(u
   return [v2 p_informDelegateOfDidDismiss];
 }
 
-- (void)presentInRect:(CGRect)a3 inView:(id)a4 animated:(BOOL)a5 modal:(BOOL)a6 closeBlock:(id)a7 animations:(id)a8
+- (void)presentInRect:(CGRect)rect inView:(id)view animated:(BOOL)animated modal:(BOOL)modal closeBlock:(id)block animations:(id)animations
 {
-  v10 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  modalCopy = modal;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v18 = MEMORY[0x277CBEAC0];
   v19 = [MEMORY[0x277CCABB0] numberWithBool:0];
   v20 = TSKPopoverBasedViewControllerIsModalKey;
   v21 = [MEMORY[0x277CCABB0] numberWithBool:0];
   v22 = [v18 dictionaryWithObjectsAndKeys:{v19, v20, v21, TSKPopoverBasedViewControllerIsFullscreenKey, 0}];
-  v23 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v23 postNotificationName:TSKPopoverBasedViewControllerWillPresentNotification object:self userInfo:v22];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:TSKPopoverBasedViewControllerWillPresentNotification object:self userInfo:v22];
   self->mViewControllerVisible = 1;
-  if (!a4)
+  if (!view)
   {
-    v24 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKPopoverBasedViewController presentInRect:inView:animated:modal:closeBlock:animations:]"];
-    [v24 handleFailureInFunction:v25 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 743, @"invalid nil value for '%s'", "parentView"}];
+    [currentHandler handleFailureInFunction:v25 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 743, @"invalid nil value for '%s'", "parentView"}];
   }
 
-  self->mHalfHeightParentView = a4;
-  v26 = [(TSKPopoverBasedViewController *)self p_newRootViewController];
+  self->mHalfHeightParentView = view;
+  p_newRootViewController = [(TSKPopoverBasedViewController *)self p_newRootViewController];
   if ([(TSKPopoverBasedViewController *)self wrapInNavigationController])
   {
     objc_opt_class();
@@ -710,39 +710,39 @@ uint64_t __52__TSKPopoverBasedViewController_p_dismissHalfHeight__block_invoke(u
     [v27 setIsFullscreenViewController:0];
   }
 
-  self->mHalfHeightAnimated = a5;
-  [(TSKPopoverBasedViewController *)self setHalfHeightViewController:v26];
+  self->mHalfHeightAnimated = animated;
+  [(TSKPopoverBasedViewController *)self setHalfHeightViewController:p_newRootViewController];
   self->mHalfHeightOriginalFrame.origin.x = x;
   self->mHalfHeightOriginalFrame.origin.y = y;
   self->mHalfHeightOriginalFrame.size.width = width;
   self->mHalfHeightOriginalFrame.size.height = height;
-  [a4 bounds];
+  [view bounds];
   v31 = v30;
 
   self->mHalfHeightTapShield = 0;
-  if (v10)
+  if (modalCopy)
   {
     v32 = [TSKModalShieldView alloc];
-    [a4 bounds];
+    [view bounds];
     v33 = [(TSKModalShieldView *)v32 initWithFrame:?];
     self->mHalfHeightTapShield = v33;
     [(TSKModalShieldView *)v33 setDelegate:self];
-    [a4 addSubview:self->mHalfHeightTapShield];
+    [view addSubview:self->mHalfHeightTapShield];
   }
 
-  v34 = [(UIViewController *)self->mHalfHeightViewController view];
-  v35 = v34;
+  view = [(UIViewController *)self->mHalfHeightViewController view];
+  v35 = view;
   if (self->mHalfHeightAnimated)
   {
-    [(UIView *)v34 setFrame:x, v31, width, height];
+    [(UIView *)view setFrame:x, v31, width, height];
     [(UIView *)v35 layoutIfNeeded];
-    [a4 addSubview:v35];
+    [view addSubview:v35];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __91__TSKPopoverBasedViewController_presentInRect_inView_animated_modal_closeBlock_animations___block_invoke;
     v36[3] = &unk_279D47960;
     v36[4] = v35;
-    v36[5] = a8;
+    v36[5] = animations;
     *&v36[6] = x;
     *&v36[7] = y;
     *&v36[8] = width;
@@ -752,8 +752,8 @@ uint64_t __52__TSKPopoverBasedViewController_p_dismissHalfHeight__block_invoke(u
 
   else
   {
-    [(UIView *)v34 setFrame:x, y, width, height];
-    [a4 addSubview:v35];
+    [(UIView *)view setFrame:x, y, width, height];
+    [view addSubview:v35];
   }
 
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
@@ -763,7 +763,7 @@ uint64_t __52__TSKPopoverBasedViewController_p_dismissHalfHeight__block_invoke(u
     self->mUndoManagerNotificationsRegistered = 1;
   }
 
-  self->mHalfHeightCloseBlock = [a7 copy];
+  self->mHalfHeightCloseBlock = [block copy];
 }
 
 uint64_t __91__TSKPopoverBasedViewController_presentInRect_inView_animated_modal_closeBlock_animations___block_invoke(double *a1)
@@ -783,9 +783,9 @@ uint64_t __91__TSKPopoverBasedViewController_presentInRect_inView_animated_modal
   return [v3 setFrame:{v4, v5, v6, v7}];
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(TSKPopoverBasedViewController *)self p_informDelegateOfWillDismiss];
   if (TSUPhoneUI())
   {
@@ -797,7 +797,7 @@ uint64_t __91__TSKPopoverBasedViewController_presentInRect_inView_animated_modal
 
     if (self->mHalfHeightViewController)
     {
-      self->mHalfHeightAnimated = v3;
+      self->mHalfHeightAnimated = animatedCopy;
 
       [(TSKPopoverBasedViewController *)self p_dismissHalfHeight];
     }
@@ -805,14 +805,14 @@ uint64_t __91__TSKPopoverBasedViewController_presentInRect_inView_animated_modal
     else
     {
 
-      [(TSKPopoverBasedViewController *)self p_dismissFullscreenModalAnimated:v3];
+      [(TSKPopoverBasedViewController *)self p_dismissFullscreenModalAnimated:animatedCopy];
     }
   }
 
   else
   {
 
-    [(TSKPopoverBasedViewController *)self p_dismissPopoverAnimated:v3];
+    [(TSKPopoverBasedViewController *)self p_dismissPopoverAnimated:animatedCopy];
   }
 }
 
@@ -830,9 +830,9 @@ uint64_t __91__TSKPopoverBasedViewController_presentInRect_inView_animated_modal
 {
   if (TSUPhoneUI())
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKPopoverBasedViewController popoverController]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 902, @"iPad-specific API is being called on a phone!"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 902, @"iPad-specific API is being called on a phone!"}];
   }
 
   [(TSKPopoverBasedViewController *)self contentSize];
@@ -849,25 +849,25 @@ uint64_t __91__TSKPopoverBasedViewController_presentInRect_inView_animated_modal
   return result;
 }
 
-- (void)showPopoverFromRect:(CGRect)a3 inView:(id)a4 arrowDirection:(unint64_t)a5 animated:(BOOL)a6 constrainToView:(BOOL)a7 withPadding:(double)a8 fromToolbar:(BOOL)a9
+- (void)showPopoverFromRect:(CGRect)rect inView:(id)view arrowDirection:(unint64_t)direction animated:(BOOL)animated constrainToView:(BOOL)toView withPadding:(double)padding fromToolbar:(BOOL)toolbar
 {
-  v9 = a9;
-  v11 = a7;
-  v12 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  toolbarCopy = toolbar;
+  toViewCopy = toView;
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (TSUPhoneUI())
   {
-    v20 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKPopoverBasedViewController showPopoverFromRect:inView:arrowDirection:animated:constrainToView:withPadding:fromToolbar:]"];
-    [v20 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 929, @"Can't present popovers on the phone!"}];
+    [currentHandler handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 929, @"Can't present popovers on the phone!"}];
   }
 
-  v22 = [(TSKPopoverBasedViewController *)self popoverController];
+  popoverController = [(TSKPopoverBasedViewController *)self popoverController];
   [(TSKPopoverBasedViewController *)self p_willPresentPopover];
-  if (v9)
+  if (toolbarCopy)
   {
     v23 = y + 5.0;
   }
@@ -877,57 +877,57 @@ uint64_t __91__TSKPopoverBasedViewController_presentInRect_inView_animated_modal
     v23 = y;
   }
 
-  [(TSKPopoverController *)v22 presentPopoverFromRect:a4 inView:a5 permittedArrowDirections:v12 animated:v11 constrainToView:x withPadding:v23, width, height, a8];
+  [(TSKPopoverController *)popoverController presentPopoverFromRect:view inView:direction permittedArrowDirections:animatedCopy animated:toViewCopy constrainToView:x withPadding:v23, width, height, padding];
 }
 
-- (void)showPopoverFromBarItem:(id)a3
+- (void)showPopoverFromBarItem:(id)item
 {
   if (TSUPhoneUI())
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKPopoverBasedViewController showPopoverFromBarItem:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 955, @"Can't present popovers on the phone!"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 955, @"Can't present popovers on the phone!"}];
   }
 
   [(TSKPopoverBasedViewController *)self p_willPresentPopover];
-  v7 = [(TSKPopoverBasedViewController *)self popoverController];
+  popoverController = [(TSKPopoverBasedViewController *)self popoverController];
 
-  [(TSKPopoverController *)v7 presentPopoverFromBarButtonItem:a3 permittedArrowDirections:15 animated:1];
+  [(TSKPopoverController *)popoverController presentPopoverFromBarButtonItem:item permittedArrowDirections:15 animated:1];
 }
 
 - (BOOL)isPopoverVisible
 {
   if (TSUPhoneUI())
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKPopoverBasedViewController isPopoverVisible]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 962, @"iPad-specific API is being called on a phone!"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 962, @"iPad-specific API is being called on a phone!"}];
   }
 
   if ((-[TSKPopoverController isPopoverVisible](self->mPopoverController, "isPopoverVisible") & 1) != 0 || [-[TSKPopoverController contentViewController](self->mPopoverController "contentViewController")] && objc_msgSend(objc_msgSend(-[TSKPopoverController contentViewController](self->mPopoverController, "contentViewController"), "view"), "window"))
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(isViewLoaded) = 1;
   }
 
   else
   {
-    v5 = [(TSKPopoverBasedViewController *)self isViewLoaded];
-    if (v5)
+    isViewLoaded = [(TSKPopoverBasedViewController *)self isViewLoaded];
+    if (isViewLoaded)
     {
-      LOBYTE(v5) = [-[TSKPopoverBasedViewController view](self "view")] != 0;
+      LOBYTE(isViewLoaded) = [-[TSKPopoverBasedViewController view](self "view")] != 0;
     }
   }
 
-  return v5;
+  return isViewLoaded;
 }
 
 - (void)p_willPresentPopover
 {
   if (TSUPhoneUI())
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKPopoverBasedViewController p_willPresentPopover]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 979, @"iPad-specific API is being called on a phone!"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 979, @"iPad-specific API is being called on a phone!"}];
   }
 
   if (self->mAllowsOutsideTouch && !self->mHideOnTouchGestureRecognizer)
@@ -941,15 +941,15 @@ uint64_t __91__TSKPopoverBasedViewController_presentInRect_inView_animated_modal
   [(TSKPopoverBasedViewController *)self p_informDelegateOfWillShow];
 }
 
-- (void)p_didDismissPopover:(id)a3
+- (void)p_didDismissPopover:(id)popover
 {
-  if ([a3 object] == self->mPopoverController)
+  if ([popover object] == self->mPopoverController)
   {
     if (TSUPhoneUI())
     {
-      v4 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKPopoverBasedViewController p_didDismissPopover:]"];
-      [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 1001, @"iPad-specific API is being called on a phone!"}];
+      [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKPopoverBasedViewController.m"), 1001, @"iPad-specific API is being called on a phone!"}];
     }
 
     if (self->mHideOnTouchGestureRecognizer)
@@ -965,16 +965,16 @@ uint64_t __91__TSKPopoverBasedViewController_presentInRect_inView_animated_modal
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
   if ([TSUProtocolCast() wantsDismissButton])
   {
-    v8 = [a3 viewControllers];
-    if ([v8 count] >= 2)
+    viewControllers = [controller viewControllers];
+    if ([viewControllers count] >= 2)
     {
       objc_opt_class();
-      [v8 firstObject];
-      [objc_msgSend(a4 "navigationItem")];
+      [viewControllers firstObject];
+      [objc_msgSend(viewController "navigationItem")];
     }
   }
 
@@ -982,49 +982,49 @@ uint64_t __91__TSKPopoverBasedViewController_presentInRect_inView_animated_modal
   {
     [(TSKPopoverBasedViewController *)self preferredContentSize];
 
-    [a4 setPreferredContentSize:?];
+    [viewController setPreferredContentSize:?];
   }
 }
 
-- (void)keyboardWillShowOrDock:(id)a3
+- (void)keyboardWillShowOrDock:(id)dock
 {
   if ([(TSKPopoverBasedViewController *)self viewResizesWithKeyboard])
   {
 
-    [(TSKPopoverBasedViewController *)self p_keyboardWillHide:0 withNotification:a3];
+    [(TSKPopoverBasedViewController *)self p_keyboardWillHide:0 withNotification:dock];
   }
 }
 
-- (void)keyboardWillHideOrUndock:(id)a3
+- (void)keyboardWillHideOrUndock:(id)undock
 {
   if ([(TSKPopoverBasedViewController *)self viewResizesWithKeyboard])
   {
 
-    [(TSKPopoverBasedViewController *)self p_keyboardWillHide:1 withNotification:a3];
+    [(TSKPopoverBasedViewController *)self p_keyboardWillHide:1 withNotification:undock];
   }
 }
 
-- (void)p_keyboardWillHide:(BOOL)a3 withNotification:(id)a4
+- (void)p_keyboardWillHide:(BOOL)hide withNotification:(id)notification
 {
   if ([(TSKPopoverBasedViewController *)self p_shouldResizeViewWithKeyboard])
   {
-    v7 = [a4 userInfo];
-    v8 = [v7 objectForKey:*MEMORY[0x277D76BB0]];
-    v9 = [(TSKPopoverBasedViewController *)self view];
+    userInfo = [notification userInfo];
+    v8 = [userInfo objectForKey:*MEMORY[0x277D76BB0]];
+    view = [(TSKPopoverBasedViewController *)self view];
     [v8 CGRectValue];
-    [v9 convertRect:0 fromView:?];
+    [view convertRect:0 fromView:?];
     v11 = v10;
     [v8 CGRectValue];
     [(TSKPopoverBasedViewController *)self p_originOffsetForKeyboardFrame:?];
     v13 = v12;
-    v14 = [a4 userInfo];
-    v15 = [v14 objectForKey:*MEMORY[0x277D76BB8]];
-    v16 = [(TSKPopoverBasedViewController *)self view];
+    userInfo2 = [notification userInfo];
+    v15 = [userInfo2 objectForKey:*MEMORY[0x277D76BB8]];
+    view2 = [(TSKPopoverBasedViewController *)self view];
     [v15 CGRectValue];
-    [v16 convertRect:0 fromView:?];
+    [view2 convertRect:0 fromView:?];
     v18 = v11 - v17;
-    v19 = [a4 userInfo];
-    v20 = [v19 objectForKey:*MEMORY[0x277D76B78]];
+    userInfo3 = [notification userInfo];
+    v20 = [userInfo3 objectForKey:*MEMORY[0x277D76B78]];
     v34 = 0.0;
     [v20 getValue:&v34];
     [[(UIViewController *)self->mHalfHeightViewController view] frame];
@@ -1034,7 +1034,7 @@ uint64_t __91__TSKPopoverBasedViewController_presentInRect_inView_animated_modal
     v28 = v27 - (v18 - v13);
     if (TSUStatusBarIsLandscape())
     {
-      if (a3)
+      if (hide)
       {
         [(TSKPopoverBasedViewController *)self frameForCurrentiPhoneOrientation];
         v22 = v29;
@@ -1074,12 +1074,12 @@ uint64_t __69__TSKPopoverBasedViewController_p_keyboardWillHide_withNotification
   return [v5 setFrame:{v1, v2, v3, v4}];
 }
 
-- (double)p_originOffsetForKeyboardFrame:(CGRect)a3
+- (double)p_originOffsetForKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [objc_msgSend(MEMORY[0x277D75128] "sharedApplication")];
   [v7 frame];
   v9 = v8;

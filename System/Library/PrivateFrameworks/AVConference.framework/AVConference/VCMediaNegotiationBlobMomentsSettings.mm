@@ -1,26 +1,26 @@
 @interface VCMediaNegotiationBlobMomentsSettings
-+ (unsigned)avcMomentsCapabilitiesForMultiwayMomentsCapabilities:(int)a3;
-+ (unsigned)capabilitiesBitmapWithCapabilities:(unsigned __int8)a3;
-- (BOOL)isEqual:(id)a3;
-- (VCMediaNegotiationBlobMomentsSettings)initWithVideoCodecs:(id)a3 imageTypes:(id)a4 capabilities:(unsigned __int8)a5 multiwayCapabilities:(unsigned __int8)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (unsigned)avcMomentsCapabilitiesForMultiwayMomentsCapabilities:(int)capabilities;
++ (unsigned)capabilitiesBitmapWithCapabilities:(unsigned __int8)capabilities;
+- (BOOL)isEqual:(id)equal;
+- (VCMediaNegotiationBlobMomentsSettings)initWithVideoCodecs:(id)codecs imageTypes:(id)types capabilities:(unsigned __int8)capabilities multiwayCapabilities:(unsigned __int8)multiwayCapabilities;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)newImageTypeSet;
 - (id)newVideoCodecSet;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSupportedImageTypes:(BOOL)a3;
-- (void)setHasSupportedVideoCodecs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSupportedImageTypes:(BOOL)types;
+- (void)setHasSupportedVideoCodecs:(BOOL)codecs;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobMomentsSettings
 
-- (void)setHasSupportedVideoCodecs:(BOOL)a3
+- (void)setHasSupportedVideoCodecs:(BOOL)codecs
 {
-  if (a3)
+  if (codecs)
   {
     v3 = 4;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSupportedImageTypes:(BOOL)a3
+- (void)setHasSupportedImageTypes:(BOOL)types
 {
-  if (a3)
+  if (types)
   {
     v3 = 2;
   }
@@ -58,8 +58,8 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_capabilities), @"capabilities"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_capabilities), @"capabilities"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -69,16 +69,16 @@
     }
 
 LABEL_7:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_supportedImageTypes), @"supportedImageTypes"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_supportedImageTypes), @"supportedImageTypes"}];
     if ((*&self->_has & 1) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_4;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_supportedVideoCodecs), @"supportedVideoCodecs"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_supportedVideoCodecs), @"supportedVideoCodecs"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -89,13 +89,13 @@ LABEL_3:
   if (has)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_multiwayCapabilities), @"multiwayCapabilities"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_multiwayCapabilities), @"multiwayCapabilities"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteUint32Field();
   has = self->_has;
@@ -134,14 +134,14 @@ LABEL_7:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 2) = self->_capabilities;
+  *(to + 2) = self->_capabilities;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 5) = self->_supportedVideoCodecs;
-    *(a3 + 24) |= 4u;
+    *(to + 5) = self->_supportedVideoCodecs;
+    *(to + 24) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -152,8 +152,8 @@ LABEL_3:
       }
 
 LABEL_7:
-      *(a3 + 3) = self->_multiwayCapabilities;
-      *(a3 + 24) |= 1u;
+      *(to + 3) = self->_multiwayCapabilities;
+      *(to + 24) |= 1u;
       return;
     }
   }
@@ -163,17 +163,17 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_supportedImageTypes;
-  *(a3 + 24) |= 2u;
+  *(to + 4) = self->_supportedImageTypes;
+  *(to + 24) |= 2u;
   if (*&self->_has)
   {
     goto LABEL_7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_capabilities;
   has = self->_has;
   if ((has & 4) != 0)
@@ -211,12 +211,12 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_capabilities != *(a3 + 2))
+    if (self->_capabilities != *(equal + 2))
     {
 LABEL_17:
       LOBYTE(v5) = 0;
@@ -225,34 +225,34 @@ LABEL_17:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 24) & 4) == 0 || self->_supportedVideoCodecs != *(a3 + 5))
+      if ((*(equal + 24) & 4) == 0 || self->_supportedVideoCodecs != *(equal + 5))
       {
         goto LABEL_17;
       }
     }
 
-    else if ((*(a3 + 24) & 4) != 0)
+    else if ((*(equal + 24) & 4) != 0)
     {
       goto LABEL_17;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 24) & 2) == 0 || self->_supportedImageTypes != *(a3 + 4))
+      if ((*(equal + 24) & 2) == 0 || self->_supportedImageTypes != *(equal + 4))
       {
         goto LABEL_17;
       }
     }
 
-    else if ((*(a3 + 24) & 2) != 0)
+    else if ((*(equal + 24) & 2) != 0)
     {
       goto LABEL_17;
     }
 
-    LOBYTE(v5) = (*(a3 + 24) & 1) == 0;
+    LOBYTE(v5) = (*(equal + 24) & 1) == 0;
     if (*&self->_has)
     {
-      if ((*(a3 + 24) & 1) == 0 || self->_multiwayCapabilities != *(a3 + 3))
+      if ((*(equal + 24) & 1) == 0 || self->_multiwayCapabilities != *(equal + 3))
       {
         goto LABEL_17;
       }
@@ -300,15 +300,15 @@ LABEL_6:
   return v2 ^ v3 ^ v4 ^ (2654435761 * self->_capabilities);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_capabilities = *(a3 + 2);
-  v3 = *(a3 + 24);
+  self->_capabilities = *(from + 2);
+  v3 = *(from + 24);
   if ((v3 & 4) != 0)
   {
-    self->_supportedVideoCodecs = *(a3 + 5);
+    self->_supportedVideoCodecs = *(from + 5);
     *&self->_has |= 4u;
-    v3 = *(a3 + 24);
+    v3 = *(from + 24);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -318,42 +318,42 @@ LABEL_3:
       }
 
 LABEL_7:
-      self->_multiwayCapabilities = *(a3 + 3);
+      self->_multiwayCapabilities = *(from + 3);
       *&self->_has |= 1u;
       return;
     }
   }
 
-  else if ((*(a3 + 24) & 2) == 0)
+  else if ((*(from + 24) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_supportedImageTypes = *(a3 + 4);
+  self->_supportedImageTypes = *(from + 4);
   *&self->_has |= 2u;
-  if (*(a3 + 24))
+  if (*(from + 24))
   {
     goto LABEL_7;
   }
 }
 
-+ (unsigned)avcMomentsCapabilitiesForMultiwayMomentsCapabilities:(int)a3
++ (unsigned)avcMomentsCapabilitiesForMultiwayMomentsCapabilities:(int)capabilities
 {
-  if ((a3 & 4) != 0)
+  if ((capabilities & 4) != 0)
   {
     return 7;
   }
 
   else
   {
-    return (a3 >> 1) & 1;
+    return (capabilities >> 1) & 1;
   }
 }
 
-- (VCMediaNegotiationBlobMomentsSettings)initWithVideoCodecs:(id)a3 imageTypes:(id)a4 capabilities:(unsigned __int8)a5 multiwayCapabilities:(unsigned __int8)a6
+- (VCMediaNegotiationBlobMomentsSettings)initWithVideoCodecs:(id)codecs imageTypes:(id)types capabilities:(unsigned __int8)capabilities multiwayCapabilities:(unsigned __int8)multiwayCapabilities
 {
-  v6 = a6;
-  v7 = a5;
+  multiwayCapabilitiesCopy = multiwayCapabilities;
+  capabilitiesCopy = capabilities;
   v35 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = VCMediaNegotiationBlobMomentsSettings;
@@ -364,7 +364,7 @@ LABEL_7:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = [a3 countByEnumeratingWithState:&v31 objects:v30 count:16];
+    v11 = [codecs countByEnumeratingWithState:&v31 objects:v30 count:16];
     if (!v11)
     {
       goto LABEL_14;
@@ -378,18 +378,18 @@ LABEL_7:
       {
         if (*v32 != v13)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(codecs);
         }
 
-        v15 = [*(*(&v31 + 1) + 8 * i) intValue];
-        if (v15 == 123)
+        intValue = [*(*(&v31 + 1) + 8 * i) intValue];
+        if (intValue == 123)
         {
           v16 = 1;
         }
 
         else
         {
-          if (v15 != 100)
+          if (intValue != 100)
           {
             continue;
           }
@@ -401,7 +401,7 @@ LABEL_7:
         *&v10->_has |= 4u;
       }
 
-      v12 = [a3 countByEnumeratingWithState:&v31 objects:v30 count:16];
+      v12 = [codecs countByEnumeratingWithState:&v31 objects:v30 count:16];
       if (!v12)
       {
 LABEL_14:
@@ -409,7 +409,7 @@ LABEL_14:
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v17 = [a4 countByEnumeratingWithState:&v26 objects:v25 count:16];
+        v17 = [types countByEnumeratingWithState:&v26 objects:v25 count:16];
         if (!v17)
         {
           goto LABEL_26;
@@ -423,13 +423,13 @@ LABEL_14:
           {
             if (*v27 != v19)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(types);
             }
 
-            v21 = [*(*(&v26 + 1) + 8 * j) intValue];
-            if (v21)
+            intValue2 = [*(*(&v26 + 1) + 8 * j) intValue];
+            if (intValue2)
             {
-              if (v21 != 1)
+              if (intValue2 != 1)
               {
                 continue;
               }
@@ -446,12 +446,12 @@ LABEL_14:
             *&v10->_has |= 2u;
           }
 
-          v18 = [a4 countByEnumeratingWithState:&v26 objects:v25 count:16];
+          v18 = [types countByEnumeratingWithState:&v26 objects:v25 count:16];
           if (!v18)
           {
 LABEL_26:
-            [(VCMediaNegotiationBlobMomentsSettings *)v10 setCapabilities:[VCMediaNegotiationBlobMomentsSettings capabilitiesBitmapWithCapabilities:v7]];
-            [(VCMediaNegotiationBlobMomentsSettings *)v10 setMultiwayCapabilities:[VCMediaNegotiationBlobMomentsSettings capabilitiesBitmapWithCapabilities:v6]];
+            [(VCMediaNegotiationBlobMomentsSettings *)v10 setCapabilities:[VCMediaNegotiationBlobMomentsSettings capabilitiesBitmapWithCapabilities:capabilitiesCopy]];
+            [(VCMediaNegotiationBlobMomentsSettings *)v10 setMultiwayCapabilities:[VCMediaNegotiationBlobMomentsSettings capabilitiesBitmapWithCapabilities:multiwayCapabilitiesCopy]];
             return v10;
           }
         }
@@ -528,9 +528,9 @@ LABEL_7:
   return v3;
 }
 
-+ (unsigned)capabilitiesBitmapWithCapabilities:(unsigned __int8)a3
++ (unsigned)capabilitiesBitmapWithCapabilities:(unsigned __int8)capabilities
 {
-  if (a3 == 1)
+  if (capabilities == 1)
   {
     v3 = 2;
   }
@@ -540,7 +540,7 @@ LABEL_7:
     v3 = 1;
   }
 
-  if (a3 == 2)
+  if (capabilities == 2)
   {
     return 4;
   }

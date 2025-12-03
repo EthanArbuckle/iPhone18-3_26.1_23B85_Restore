@@ -1,9 +1,9 @@
 @interface ContextAwareThermalManager
 + (id)sharedInstance;
-- (BOOL)isContextTriggered:(int)a3;
+- (BOOL)isContextTriggered:(int)triggered;
 - (ContextAwareThermalManager)init;
-- (id)createNewSolarContext:(BOOL)a3;
-- (int)getContextState:(int)a3;
+- (id)createNewSolarContext:(BOOL)context;
+- (int)getContextState:(int)state;
 - (void)iterateAndUpdateContexts;
 @end
 
@@ -46,10 +46,10 @@
   return v2;
 }
 
-- (id)createNewSolarContext:(BOOL)a3
+- (id)createNewSolarContext:(BOOL)context
 {
   v5 = off_100084A18;
-  if (!a3)
+  if (!context)
   {
     v5 = off_1000849F0;
   }
@@ -66,14 +66,14 @@
     v7 = qword_1000AB718;
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
-      sub_100053A3C(a3, v7);
+      sub_100053A3C(context, v7);
     }
   }
 
   return v6;
 }
 
-- (int)getContextState:(int)a3
+- (int)getContextState:(int)state
 {
   if (CFArrayGetCount(self->ctxObjects) < 1)
   {
@@ -97,7 +97,7 @@ LABEL_5:
     while (1)
     {
       ValueAtIndex = CFArrayGetValueAtIndex(self->ctxObjects, v5);
-      if ([ValueAtIndex ctxType] == a3)
+      if ([ValueAtIndex ctxType] == state)
       {
         break;
       }
@@ -112,7 +112,7 @@ LABEL_5:
   }
 }
 
-- (BOOL)isContextTriggered:(int)a3
+- (BOOL)isContextTriggered:(int)triggered
 {
   if (CFArrayGetCount(self->ctxObjects) < 1)
   {
@@ -136,7 +136,7 @@ LABEL_5:
     while (1)
     {
       ValueAtIndex = CFArrayGetValueAtIndex(self->ctxObjects, v5);
-      if ([ValueAtIndex ctxType] == a3)
+      if ([ValueAtIndex ctxType] == triggered)
       {
         break;
       }

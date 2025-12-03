@@ -1,27 +1,27 @@
 @interface WDSymbol
-- (WDSymbol)initWithParagraph:(id)a3;
+- (WDSymbol)initWithParagraph:(id)paragraph;
 - (id)description;
 @end
 
 @implementation WDSymbol
 
-- (WDSymbol)initWithParagraph:(id)a3
+- (WDSymbol)initWithParagraph:(id)paragraph
 {
-  v4 = a3;
+  paragraphCopy = paragraph;
   v14.receiver = self;
   v14.super_class = WDSymbol;
-  v5 = [(WDRunWithCharacterProperties *)&v14 initWithParagraph:v4];
+  v5 = [(WDRunWithCharacterProperties *)&v14 initWithParagraph:paragraphCopy];
   if (v5)
   {
     v6 = [WDCharacterProperties alloc];
-    v7 = [v4 document];
-    v8 = [(WDCharacterProperties *)v6 initWithDocument:v7];
+    document = [paragraphCopy document];
+    v8 = [(WDCharacterProperties *)v6 initWithDocument:document];
     [(WDRunWithCharacterProperties *)v5 setProperties:v8];
 
-    v9 = [v4 document];
-    v10 = [v9 fontTable];
+    document2 = [paragraphCopy document];
+    fontTable = [document2 fontTable];
 
-    v11 = [v10 fontWithName:@"Symbol"];
+    v11 = [fontTable fontWithName:@"Symbol"];
     mFont = v5->mFont;
     v5->mFont = v11;
   }

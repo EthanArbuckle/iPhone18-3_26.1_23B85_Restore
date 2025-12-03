@@ -1,33 +1,33 @@
 @interface RecoverDeviceMenuViewController
-- (id)subtitleForOption:(int)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)titleForOption:(int)a3;
+- (id)subtitleForOption:(int)option;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)titleForOption:(int)option;
 - (int)selectedOption;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)initOptions:(int)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)initOptions:(int)options;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation RecoverDeviceMenuViewController
 
-- (void)initOptions:(int)a3
+- (void)initOptions:(int)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v5 = +[NSMutableArray array];
   [(RecoverDeviceMenuViewController *)self setOptions:v5];
 
-  if ((v3 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
-    if ((v3 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v7 = [(RecoverDeviceMenuViewController *)self options];
-    [v7 addObject:&off_100022168];
+    options = [(RecoverDeviceMenuViewController *)self options];
+    [options addObject:&off_100022168];
 
-    if ((v3 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
       return;
     }
@@ -35,36 +35,36 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [(RecoverDeviceMenuViewController *)self options];
-  [v6 addObject:&off_100022150];
+  options2 = [(RecoverDeviceMenuViewController *)self options];
+  [options2 addObject:&off_100022150];
 
-  if ((v3 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if ((v3 & 4) == 0)
+  if ((optionsCopy & 4) == 0)
   {
     return;
   }
 
 LABEL_7:
-  v8 = [(RecoverDeviceMenuViewController *)self options];
-  [v8 addObject:&off_100022180];
+  options3 = [(RecoverDeviceMenuViewController *)self options];
+  [options3 addObject:&off_100022180];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(RecoverDeviceMenuViewController *)self options:a3];
+  v4 = [(RecoverDeviceMenuViewController *)self options:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)titleForOption:(int)a3
+- (id)titleForOption:(int)option
 {
-  switch(a3)
+  switch(option)
   {
     case 1:
       v3 = @"MENU_SYSTEM_RECOVERY_BUTTON_TITLE";
@@ -87,9 +87,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)subtitleForOption:(int)a3
+- (id)subtitleForOption:(int)option
 {
-  switch(a3)
+  switch(option)
   {
     case 1:
       v4 = @"SYSTEM_RECOVERY_SUBTITLE";
@@ -101,8 +101,8 @@ LABEL_9:
       v4 = @"MENU_EACS_BUTTON_SUBTITLE";
 LABEL_7:
       v5 = +[NSBundle mainBundle];
-      v6 = [(RecoverDeviceMenuViewController *)self deviceType];
-      v7 = [NSString stringWithFormat:@"%@_%@", v4, v6];
+      deviceType = [(RecoverDeviceMenuViewController *)self deviceType];
+      v7 = [NSString stringWithFormat:@"%@_%@", v4, deviceType];
       v8 = [v5 localizedStringForKey:v7 value:&stru_100020878 table:@"Localizable"];
 
       goto LABEL_9;
@@ -114,31 +114,31 @@ LABEL_9:
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(RecoverDeviceMenuViewController *)self options];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
-  v8 = [v7 intValue];
+  pathCopy = path;
+  options = [(RecoverDeviceMenuViewController *)self options];
+  v7 = [options objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  intValue = [v7 intValue];
 
   v9 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
   v10 = +[UIListContentConfiguration subtitleCellConfiguration];
-  v11 = [(RecoverDeviceMenuViewController *)self titleForOption:v8];
+  v11 = [(RecoverDeviceMenuViewController *)self titleForOption:intValue];
   [v10 setText:v11];
 
-  v12 = [v10 textProperties];
-  v13 = [v12 font];
-  [v13 pointSize];
+  textProperties = [v10 textProperties];
+  font = [textProperties font];
+  [font pointSize];
   v14 = [UIFont boldSystemFontOfSize:?];
-  v15 = [v10 textProperties];
-  [v15 setFont:v14];
+  textProperties2 = [v10 textProperties];
+  [textProperties2 setFont:v14];
 
-  v16 = [(RecoverDeviceMenuViewController *)self subtitleForOption:v8];
+  v16 = [(RecoverDeviceMenuViewController *)self subtitleForOption:intValue];
   [v10 setSecondaryText:v16];
 
   v17 = +[UIColor systemGrayColor];
-  v18 = [v10 secondaryTextProperties];
-  [v18 setColor:v17];
+  secondaryTextProperties = [v10 secondaryTextProperties];
+  [secondaryTextProperties setColor:v17];
 
   [v10 setTextToSecondaryTextVerticalPadding:6.0];
   [v10 setDirectionalLayoutMargins:{10.0, 10.0, 10.0, 10.0}];
@@ -154,9 +154,9 @@ LABEL_9:
   v23 = +[UIBackgroundConfiguration clearConfiguration];
   [v9 setBackgroundConfiguration:v23];
 
-  v24 = [v5 row];
-  v25 = [(RecoverDeviceMenuViewController *)self options];
-  v26 = [v25 count] - 1;
+  v24 = [pathCopy row];
+  options2 = [(RecoverDeviceMenuViewController *)self options];
+  v26 = [options2 count] - 1;
 
   if (v24 == v26)
   {
@@ -167,16 +167,16 @@ LABEL_9:
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  viewCopy = view;
+  pathCopy = path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = [UIImageView alloc];
   v10 = [UIImage systemImageNamed:@"checkmark.circle.fill"];
   v11 = [v9 initWithImage:v10];
-  v12 = [v6 cellForRowAtIndexPath:v7];
+  v12 = [viewCopy cellForRowAtIndexPath:pathCopy];
   [v12 setAccessoryView:v11];
 
   v13 = [UIImageView alloc];
@@ -186,14 +186,14 @@ LABEL_9:
   v16 = +[UIColor systemGrayColor];
   [v15 setTintColor:v16];
 
-  v17 = [(RecoverDeviceMenuViewController *)v8 tableView];
-  v18 = [v17 indexPathsForSelectedRows];
+  tableView = [(RecoverDeviceMenuViewController *)selfCopy tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v19 = v18;
+  v19 = indexPathsForSelectedRows;
   v20 = [v19 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v20)
   {
@@ -209,12 +209,12 @@ LABEL_9:
 
         v23 = *(*(&v27 + 1) + 8 * i);
         v24 = [v23 row];
-        if (v24 != [v7 row])
+        if (v24 != [pathCopy row])
         {
-          v25 = [(RecoverDeviceMenuViewController *)v8 tableView];
-          [v25 deselectRowAtIndexPath:v23 animated:1];
+          tableView2 = [(RecoverDeviceMenuViewController *)selfCopy tableView];
+          [tableView2 deselectRowAtIndexPath:v23 animated:1];
 
-          v26 = [v6 cellForRowAtIndexPath:v23];
+          v26 = [viewCopy cellForRowAtIndexPath:v23];
           [v26 setAccessoryView:v15];
         }
       }
@@ -225,21 +225,21 @@ LABEL_9:
     while (v20);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (int)selectedOption
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(RecoverDeviceMenuViewController *)v2 options];
-  v4 = [(RecoverDeviceMenuViewController *)v2 tableView];
-  v5 = [v4 indexPathForSelectedRow];
-  v6 = [v3 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
-  v7 = [v6 intValue];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  options = [(RecoverDeviceMenuViewController *)selfCopy options];
+  tableView = [(RecoverDeviceMenuViewController *)selfCopy tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+  v6 = [options objectAtIndexedSubscript:{objc_msgSend(indexPathForSelectedRow, "row")}];
+  intValue = [v6 intValue];
 
-  objc_sync_exit(v2);
-  return v7;
+  objc_sync_exit(selfCopy);
+  return intValue;
 }
 
 @end

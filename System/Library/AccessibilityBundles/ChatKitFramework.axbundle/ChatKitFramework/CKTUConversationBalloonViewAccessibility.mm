@@ -1,5 +1,5 @@
 @interface CKTUConversationBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)_axMessageTime;
 - (id)accessibilityHint;
@@ -11,23 +11,23 @@
 
 @implementation CKTUConversationBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKTUConversationBalloonView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTUConversationBalloonView" hasInstanceMethod:@"subtitleLabel1" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTUConversationBalloonView" hasInstanceMethod:@"_currentCall" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTUConversationBalloonView" hasInstanceMethod:@"joinButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTUConversationBalloonView" hasInstanceMethod:@"_joinButtonTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKTUConversationBalloonView" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"TUCall"];
-  [v3 validateClass:@"TUCall" hasInstanceMethod:@"callDuration" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKTUConversationBalloonView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTUConversationBalloonView" hasInstanceMethod:@"subtitleLabel1" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTUConversationBalloonView" hasInstanceMethod:@"_currentCall" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTUConversationBalloonView" hasInstanceMethod:@"joinButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTUConversationBalloonView" hasInstanceMethod:@"_joinButtonTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKTUConversationBalloonView" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"TUCall"];
+  [validationsCopy validateClass:@"TUCall" hasInstanceMethod:@"callDuration" withFullSignature:{"d", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(CKTUConversationBalloonViewAccessibility *)self safeValueForKey:@"titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   if ([(CKTUConversationBalloonViewAccessibility *)self _axState]!= 2)
   {
@@ -35,7 +35,7 @@
     v10 = @"__AXStringForVariablesSentinel";
     v5 = __UIAXStringForVariables();
 
-    v4 = v5;
+    accessibilityLabel = v5;
   }
 
   v9 = [(CKTUConversationBalloonViewAccessibility *)self _axMessageTime:v8];
@@ -68,7 +68,7 @@
 {
   v7.receiver = self;
   v7.super_class = CKTUConversationBalloonViewAccessibility;
-  v3 = [(CKTUConversationBalloonViewAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(CKTUConversationBalloonViewAccessibility *)&v7 accessibilityTraits];
   v4 = [(CKTUConversationBalloonViewAccessibility *)self safeValueForKey:@"_currentCall"];
   if (v4)
   {
@@ -80,7 +80,7 @@
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (id)accessibilityHint
@@ -107,7 +107,7 @@
     v8 = 3221225472;
     v9 = __65__CKTUConversationBalloonViewAccessibility_accessibilityActivate__block_invoke;
     v10 = &unk_29F2B08B8;
-    v11 = self;
+    selfCopy = self;
     v12 = v3;
     v4 = v3;
     AXPerformSafeBlock();
@@ -128,30 +128,30 @@
   v9 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 subviews];
+  subviews = [v3 subviews];
 
-  if (v4)
+  if (subviews)
   {
-    v5 = v4;
+    automationElements = subviews;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CKTUConversationBalloonViewAccessibility;
-    v5 = [(CKTUConversationBalloonViewAccessibility *)&v8 automationElements];
+    automationElements = [(CKTUConversationBalloonViewAccessibility *)&v8 automationElements];
   }
 
-  v6 = v5;
+  v6 = automationElements;
 
   return v6;
 }
 
 - (id)_axMessageTime
 {
-  v2 = [(CKTUConversationBalloonViewAccessibility *)self _axConversationItem];
+  _axConversationItem = [(CKTUConversationBalloonViewAccessibility *)self _axConversationItem];
   objc_opt_class();
-  v3 = [v2 safeValueForKey:@"time"];
+  v3 = [_axConversationItem safeValueForKey:@"time"];
   v4 = __UIAccessibilityCastAsClass();
 
   v5 = AXDateStringForFormat();

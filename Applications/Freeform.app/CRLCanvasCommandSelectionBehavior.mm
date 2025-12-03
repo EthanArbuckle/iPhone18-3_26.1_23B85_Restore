@@ -1,16 +1,16 @@
 @interface CRLCanvasCommandSelectionBehavior
-- (CRLCanvasCommandSelectionBehavior)initWithCanvasEditor:(id)a3 type:(int64_t)a4 constructedInfos:(id)a5;
-- (CRLCanvasCommandSelectionBehavior)initWithCanvasEditor:(id)a3 type:(int64_t)a4 selectionPath:(id)a5 selectionFlags:(unint64_t)a6 commitSelectionFlags:(unint64_t)a7 forwardSelectionFlags:(unint64_t)a8 reverseSelectionFlags:(unint64_t)a9;
+- (CRLCanvasCommandSelectionBehavior)initWithCanvasEditor:(id)editor type:(int64_t)type constructedInfos:(id)infos;
+- (CRLCanvasCommandSelectionBehavior)initWithCanvasEditor:(id)editor type:(int64_t)type selectionPath:(id)path selectionFlags:(unint64_t)flags commitSelectionFlags:(unint64_t)selectionFlags forwardSelectionFlags:(unint64_t)forwardSelectionFlags reverseSelectionFlags:(unint64_t)reverseSelectionFlags;
 @end
 
 @implementation CRLCanvasCommandSelectionBehavior
 
-- (CRLCanvasCommandSelectionBehavior)initWithCanvasEditor:(id)a3 type:(int64_t)a4 selectionPath:(id)a5 selectionFlags:(unint64_t)a6 commitSelectionFlags:(unint64_t)a7 forwardSelectionFlags:(unint64_t)a8 reverseSelectionFlags:(unint64_t)a9
+- (CRLCanvasCommandSelectionBehavior)initWithCanvasEditor:(id)editor type:(int64_t)type selectionPath:(id)path selectionFlags:(unint64_t)flags commitSelectionFlags:(unint64_t)selectionFlags forwardSelectionFlags:(unint64_t)forwardSelectionFlags reverseSelectionFlags:(unint64_t)reverseSelectionFlags
 {
-  v14 = a9;
-  v15 = a3;
-  v16 = a5;
-  if (!v15)
+  reverseSelectionFlagsCopy = reverseSelectionFlags;
+  editorCopy = editor;
+  pathCopy = path;
+  if (!editorCopy)
   {
     LODWORD(v35) = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -39,34 +39,34 @@
     [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:26 isFatal:0 description:"invalid nil value for '%{public}s'", "editor", v35];
   }
 
-  if ((a4 - 2) < 2)
+  if ((type - 2) < 2)
   {
-    v22 = [v15 interactiveCanvasController];
-    v23 = [v22 editorController];
-    v20 = [v23 selectionPath];
+    interactiveCanvasController = [editorCopy interactiveCanvasController];
+    editorController = [interactiveCanvasController editorController];
+    selectionPath = [editorController selectionPath];
 
     goto LABEL_22;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
-    if (!a4)
+    if (!type)
     {
-      v20 = [v15 selectionPathWithInfos:0];
-      v21 = self;
+      selectionPath = [editorCopy selectionPathWithInfos:0];
+      selfCopy3 = self;
 LABEL_24:
-      a7 |= 0x46uLL;
-      a8 |= a7;
+      selectionFlags |= 0x46uLL;
+      forwardSelectionFlags |= selectionFlags;
 LABEL_25:
-      v31 = v16;
-      v16 = v20;
+      v31 = pathCopy;
+      pathCopy = selectionPath;
       goto LABEL_32;
     }
 
-    v20 = 0;
+    selectionPath = 0;
 LABEL_22:
-    v21 = self;
-    if (a4 != 3 && a4)
+    selfCopy3 = self;
+    if (type != 3 && type)
     {
       goto LABEL_25;
     }
@@ -74,8 +74,8 @@ LABEL_22:
     goto LABEL_24;
   }
 
-  v37 = a6;
-  v24 = [v16 mostSpecificSelectionOfClass:objc_opt_class()];
+  flagsCopy = flags;
+  v24 = [pathCopy mostSpecificSelectionOfClass:objc_opt_class()];
   v36 = v24;
   if (!v24)
   {
@@ -86,11 +86,11 @@ LABEL_28:
   }
 
   v25 = [v24 infosOfClass:objc_opt_class()];
-  v26 = [v25 anyObject];
+  anyObject = [v25 anyObject];
 
   v27 = objc_opt_class();
-  v28 = [v26 parentInfo];
-  v29 = sub_100014370(v27, v28);
+  parentInfo = [anyObject parentInfo];
+  v29 = sub_100014370(v27, parentInfo);
 
   if (([v29 isSelectable] & 1) == 0)
   {
@@ -107,38 +107,38 @@ LABEL_28:
   v24 = [NSSet setWithObject:v29];
   v30 = 0;
 LABEL_29:
-  v31 = [v15 selectionPathWithInfos:v24];
+  v31 = [editorCopy selectionPathWithInfos:v24];
   if ((v30 & 1) == 0)
   {
   }
 
-  v14 = a9 | 4;
-  a6 = v37;
-  v21 = self;
+  reverseSelectionFlagsCopy = reverseSelectionFlags | 4;
+  flags = flagsCopy;
+  selfCopy3 = self;
 LABEL_32:
-  if (a4 == 3)
+  if (type == 3)
   {
-    v32 = a8;
+    forwardSelectionFlagsCopy = forwardSelectionFlags;
   }
 
   else
   {
-    v32 = 0;
+    forwardSelectionFlagsCopy = 0;
   }
 
-  v33 = [(CRLCommandSelectionBehavior *)v21 initWithForwardSelectionPath:v31 reverseSelectionPath:v16 selectionFlags:a6 commitSelectionFlags:a7 forwardSelectionFlags:a8 reverseSelectionFlags:v32 | v14];
+  reverseSelectionFlagsCopy = [(CRLCommandSelectionBehavior *)selfCopy3 initWithForwardSelectionPath:v31 reverseSelectionPath:pathCopy selectionFlags:flags commitSelectionFlags:selectionFlags forwardSelectionFlags:forwardSelectionFlags reverseSelectionFlags:forwardSelectionFlagsCopy | reverseSelectionFlagsCopy];
 
-  return v33;
+  return reverseSelectionFlagsCopy;
 }
 
-- (CRLCanvasCommandSelectionBehavior)initWithCanvasEditor:(id)a3 type:(int64_t)a4 constructedInfos:(id)a5
+- (CRLCanvasCommandSelectionBehavior)initWithCanvasEditor:(id)editor type:(int64_t)type constructedInfos:(id)infos
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9 && [v9 count])
+  editorCopy = editor;
+  infosCopy = infos;
+  v10 = infosCopy;
+  if (infosCopy && [infosCopy count])
   {
-    if (a4 && a4 != 3)
+    if (type && type != 3)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -167,22 +167,22 @@ LABEL_32:
       [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:95 isFatal:0 description:"Constructed infos should not be provided for this selection type"];
     }
 
-    v14 = [v8 interactiveCanvasController];
-    v15 = [v14 editorController];
-    v16 = [v15 selectionPath];
+    interactiveCanvasController = [editorCopy interactiveCanvasController];
+    editorController = [interactiveCanvasController editorController];
+    selectionPath = [editorController selectionPath];
 
-    v17 = [v8 canvasEditorHelper];
-    v18 = [v17 selectionPathForInsertingBoardItems:v10 byReplacingInfosInSelectionPath:v16 preservingMultipleContainers:a4 == 3];
+    canvasEditorHelper = [editorCopy canvasEditorHelper];
+    selectionPath2 = [canvasEditorHelper selectionPathForInsertingBoardItems:v10 byReplacingInfosInSelectionPath:selectionPath preservingMultipleContainers:type == 3];
   }
 
   else
   {
-    v19 = [v8 interactiveCanvasController];
-    v20 = [v19 editorController];
-    v18 = [v20 selectionPath];
+    interactiveCanvasController2 = [editorCopy interactiveCanvasController];
+    editorController2 = [interactiveCanvasController2 editorController];
+    selectionPath2 = [editorController2 selectionPath];
   }
 
-  v21 = [(CRLCanvasCommandSelectionBehavior *)self initWithCanvasEditor:v8 type:a4 selectionPath:v18];
+  v21 = [(CRLCanvasCommandSelectionBehavior *)self initWithCanvasEditor:editorCopy type:type selectionPath:selectionPath2];
 
   return v21;
 }

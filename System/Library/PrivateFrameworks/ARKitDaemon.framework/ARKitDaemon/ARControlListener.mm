@@ -1,40 +1,40 @@
 @interface ARControlListener
-- (ARControlListener)initWithDelegate:(id)a3 controlClass:(Class)a4 isInProcess:(BOOL)a5;
+- (ARControlListener)initWithDelegate:(id)delegate controlClass:(Class)class isInProcess:(BOOL)process;
 - (ARControlListenerDelegate)delegate;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)dealloc;
 @end
 
 @implementation ARControlListener
 
-- (ARControlListener)initWithDelegate:(id)a3 controlClass:(Class)a4 isInProcess:(BOOL)a5
+- (ARControlListener)initWithDelegate:(id)delegate controlClass:(Class)class isInProcess:(BOOL)process
 {
-  v8 = a3;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = ARControlListener;
   v9 = [(ARControlListener *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    v10->_controlClass = a4;
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    v10->_controlClass = class;
     v11 = ARCreateNonFixedPriorityConcurrentDispatchQueue();
     concurrentConnectionTargetQueue = v10->_concurrentConnectionTargetQueue;
     v10->_concurrentConnectionTargetQueue = v11;
 
     v13 = [(objc_class *)v10->_controlClass performSelector:sel_serviceName];
-    if (a5)
+    if (process)
     {
-      v14 = [MEMORY[0x277CCAE98] anonymousListener];
+      anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
     }
 
     else
     {
-      v14 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:v13];
+      anonymousListener = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:v13];
     }
 
     listener = v10->_listener;
-    v10->_listener = v14;
+    v10->_listener = anonymousListener;
 
     v16 = ARCreateNonFixedPriorityDispatchQueue();
     listenerQueue = v10->_listenerQueue;
@@ -57,10 +57,10 @@
   [(ARControlListener *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = _ARLogDaemon_1();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -69,20 +69,20 @@
     *buf = 138543618;
     v32 = v8;
     v33 = 2048;
-    v34 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_23D391000, v6, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Listener received request for control", buf, 0x16u);
   }
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v5 serviceName];
-  v11 = [v9 stringWithFormat:@"com.apple.arkit.daemonControlConnectionQueue.%@", v10];
+  serviceName = [connectionCopy serviceName];
+  v11 = [v9 stringWithFormat:@"com.apple.arkit.daemonControlConnectionQueue.%@", serviceName];
 
-  v12 = [v11 UTF8String];
+  uTF8String = [v11 UTF8String];
   v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v14 = dispatch_queue_create_with_target_V2(v12, v13, self->_concurrentConnectionTargetQueue);
+  v14 = dispatch_queue_create_with_target_V2(uTF8String, v13, self->_concurrentConnectionTargetQueue);
 
-  [v5 _setQueue:v14];
-  v15 = [objc_alloc(self->_controlClass) initWithConnection:v5];
+  [connectionCopy _setQueue:v14];
+  v15 = [objc_alloc(self->_controlClass) initWithConnection:connectionCopy];
   if (!v15)
   {
     if (ARShouldUseLogTypeError_onceToken != -1)
@@ -102,7 +102,7 @@
         *buf = 138543618;
         v32 = v24;
         v33 = 2048;
-        v34 = self;
+        selfCopy4 = self;
         v25 = "%{public}@ <%p>: Failed to create control.";
         v26 = v22;
         v27 = OS_LOG_TYPE_ERROR;
@@ -118,7 +118,7 @@ LABEL_14:
       *buf = 138543618;
       v32 = v24;
       v33 = 2048;
-      v34 = self;
+      selfCopy4 = self;
       v25 = "Error: %{public}@ <%p>: Failed to create control.";
       v26 = v22;
       v27 = OS_LOG_TYPE_INFO;
@@ -136,14 +136,14 @@ LABEL_14:
     *buf = 138543618;
     v32 = v18;
     v33 = 2048;
-    v34 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_23D391000, v16, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Accepted connection for control.", buf, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didDiscoverControl:v15];
 
-  [v5 resume];
+  [connectionCopy resume];
 LABEL_16:
 
   v29 = *MEMORY[0x277D85DE8];

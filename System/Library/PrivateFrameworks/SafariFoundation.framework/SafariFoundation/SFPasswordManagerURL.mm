@@ -1,18 +1,18 @@
 @interface SFPasswordManagerURL
 + (id)passwordManagerURLForFamilySharingGroupSetup;
-+ (id)passwordManagerURLForSharingGroupWithGroupID:(id)a3;
++ (id)passwordManagerURLForSharingGroupWithGroupID:(id)d;
 @end
 
 @implementation SFPasswordManagerURL
 
-+ (id)passwordManagerURLForSharingGroupWithGroupID:(id)a3
++ (id)passwordManagerURLForSharingGroupWithGroupID:(id)d
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D49A98];
   v10 = *MEMORY[0x277D49C98];
-  v11[0] = a3;
+  v11[0] = d;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v7 = [v3 passwordManagerURLWithDictionary:v6];
 

@@ -1,5 +1,5 @@
 @interface DMFOSStateHandler
-- (DMFOSStateHandler)initWithQueue:(id)a3 name:(id)a4 stateHandlerBlock:(id)a5;
+- (DMFOSStateHandler)initWithQueue:(id)queue name:(id)name stateHandlerBlock:(id)block;
 - (os_state_data_s)_serializeState;
 - (void)_serializeState;
 - (void)dealloc;
@@ -7,27 +7,27 @@
 
 @implementation DMFOSStateHandler
 
-- (DMFOSStateHandler)initWithQueue:(id)a3 name:(id)a4 stateHandlerBlock:(id)a5
+- (DMFOSStateHandler)initWithQueue:(id)queue name:(id)name stateHandlerBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  nameCopy = name;
+  blockCopy = block;
   v20.receiver = self;
   v20.super_class = DMFOSStateHandler;
   v11 = [(DMFOSStateHandler *)&v20 init];
   if (v11)
   {
-    v12 = MEMORY[0x1E128DE70](v10);
+    v12 = MEMORY[0x1E128DE70](blockCopy);
     block = v11->_block;
     v11->_block = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v14;
 
     objc_initWeak(&location, v11);
     objc_copyWeak(&v18, &location);
-    v17 = v8;
+    v17 = queueCopy;
     v11->_handle = os_state_add_handler();
 
     objc_destroyWeak(&v18);
@@ -64,8 +64,8 @@ uint64_t __58__DMFOSStateHandler_initWithQueue_name_stateHandlerBlock___block_in
 
 - (os_state_data_s)_serializeState
 {
-  v3 = [(DMFOSStateHandler *)self block];
-  v4 = v3[2]();
+  block = [(DMFOSStateHandler *)self block];
+  v4 = block[2]();
 
   v12 = 0;
   v5 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:200 options:0 error:&v12];
@@ -79,8 +79,8 @@ uint64_t __58__DMFOSStateHandler_initWithQueue_name_stateHandlerBlock___block_in
       v8 = malloc_type_calloc(1uLL, v7 + 200, 0x3FF68450uLL);
       v8->var0 = 1;
       v8->var1.var1 = v9;
-      v10 = [(DMFOSStateHandler *)self name];
-      [v10 getCString:v8->var3 maxLength:64 encoding:4];
+      name = [(DMFOSStateHandler *)self name];
+      [name getCString:v8->var3 maxLength:64 encoding:4];
 
       [v5 getBytes:v8->var4 length:v9];
       goto LABEL_9;
@@ -115,9 +115,9 @@ LABEL_9:
 - (void)_serializeState
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [a1 name];
+  name = [self name];
   v5 = 138543618;
-  v6 = v3;
+  v6 = name;
   v7 = 2114;
   v8 = a2;
   _os_log_error_impl(&dword_1DBFFF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Can't encode os_state data '%{public}@': %{public}@", &v5, 0x16u);

@@ -1,30 +1,30 @@
 @interface TRIRolloutHistoryRecord
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRecord:(id)a3;
-- (TRIRolloutHistoryRecord)initWithCoder:(id)a3;
-- (TRIRolloutHistoryRecord)initWithEventLogTime:(id)a3 eventType:(unsigned __int8)a4 rolloutId:(id)a5 rampId:(id)a6 factorPackSetId:(id)a7 deploymentId:(int)a8 namespaces:(id)a9;
-- (id)copyWithReplacementEventLogTime:(id)a3;
-- (id)copyWithReplacementFactorPackSetId:(id)a3;
-- (id)copyWithReplacementNamespaces:(id)a3;
-- (id)copyWithReplacementRampId:(id)a3;
-- (id)copyWithReplacementRolloutId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRecord:(id)record;
+- (TRIRolloutHistoryRecord)initWithCoder:(id)coder;
+- (TRIRolloutHistoryRecord)initWithEventLogTime:(id)time eventType:(unsigned __int8)type rolloutId:(id)id rampId:(id)rampId factorPackSetId:(id)setId deploymentId:(int)deploymentId namespaces:(id)namespaces;
+- (id)copyWithReplacementEventLogTime:(id)time;
+- (id)copyWithReplacementFactorPackSetId:(id)id;
+- (id)copyWithReplacementNamespaces:(id)namespaces;
+- (id)copyWithReplacementRampId:(id)id;
+- (id)copyWithReplacementRolloutId:(id)id;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIRolloutHistoryRecord
 
-- (TRIRolloutHistoryRecord)initWithEventLogTime:(id)a3 eventType:(unsigned __int8)a4 rolloutId:(id)a5 rampId:(id)a6 factorPackSetId:(id)a7 deploymentId:(int)a8 namespaces:(id)a9
+- (TRIRolloutHistoryRecord)initWithEventLogTime:(id)time eventType:(unsigned __int8)type rolloutId:(id)id rampId:(id)rampId factorPackSetId:(id)setId deploymentId:(int)deploymentId namespaces:(id)namespaces
 {
-  v14 = a3;
-  v15 = a5;
-  v26 = a6;
-  v16 = a7;
-  v17 = a9;
-  if (v14)
+  timeCopy = time;
+  idCopy = id;
+  rampIdCopy = rampId;
+  setIdCopy = setId;
+  namespacesCopy = namespaces;
+  if (timeCopy)
   {
-    if (v15)
+    if (idCopy)
     {
       goto LABEL_3;
     }
@@ -32,17 +32,17 @@
 
   else
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:2170 description:{@"Invalid parameter not satisfying: %@", @"eventLogTime != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:2170 description:{@"Invalid parameter not satisfying: %@", @"eventLogTime != nil"}];
 
-    if (v15)
+    if (idCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v22 = [MEMORY[0x277CCA890] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:2171 description:{@"Invalid parameter not satisfying: %@", @"rolloutId != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:2171 description:{@"Invalid parameter not satisfying: %@", @"rolloutId != nil"}];
 
 LABEL_3:
   v27.receiver = self;
@@ -51,70 +51,70 @@ LABEL_3:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_eventLogTime, a3);
-    v19->_eventType = a4;
-    objc_storeStrong(&v19->_rolloutId, a5);
-    objc_storeStrong(&v19->_rampId, a6);
-    objc_storeStrong(&v19->_factorPackSetId, a7);
-    v19->_deploymentId = a8;
-    objc_storeStrong(&v19->_namespaces, a9);
+    objc_storeStrong(&v18->_eventLogTime, time);
+    v19->_eventType = type;
+    objc_storeStrong(&v19->_rolloutId, id);
+    objc_storeStrong(&v19->_rampId, rampId);
+    objc_storeStrong(&v19->_factorPackSetId, setId);
+    v19->_deploymentId = deploymentId;
+    objc_storeStrong(&v19->_namespaces, namespaces);
   }
 
   return v19;
 }
 
-- (id)copyWithReplacementEventLogTime:(id)a3
+- (id)copyWithReplacementEventLogTime:(id)time
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithEventLogTime:v4 eventType:self->_eventType rolloutId:self->_rolloutId rampId:self->_rampId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId namespaces:self->_namespaces];
+  timeCopy = time;
+  v5 = [objc_alloc(objc_opt_class()) initWithEventLogTime:timeCopy eventType:self->_eventType rolloutId:self->_rolloutId rampId:self->_rampId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId namespaces:self->_namespaces];
 
   return v5;
 }
 
-- (id)copyWithReplacementRolloutId:(id)a3
+- (id)copyWithReplacementRolloutId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithEventLogTime:self->_eventLogTime eventType:self->_eventType rolloutId:v4 rampId:self->_rampId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId namespaces:self->_namespaces];
+  idCopy = id;
+  v5 = [objc_alloc(objc_opt_class()) initWithEventLogTime:self->_eventLogTime eventType:self->_eventType rolloutId:idCopy rampId:self->_rampId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId namespaces:self->_namespaces];
 
   return v5;
 }
 
-- (id)copyWithReplacementRampId:(id)a3
+- (id)copyWithReplacementRampId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithEventLogTime:self->_eventLogTime eventType:self->_eventType rolloutId:self->_rolloutId rampId:v4 factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId namespaces:self->_namespaces];
+  idCopy = id;
+  v5 = [objc_alloc(objc_opt_class()) initWithEventLogTime:self->_eventLogTime eventType:self->_eventType rolloutId:self->_rolloutId rampId:idCopy factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId namespaces:self->_namespaces];
 
   return v5;
 }
 
-- (id)copyWithReplacementFactorPackSetId:(id)a3
+- (id)copyWithReplacementFactorPackSetId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithEventLogTime:self->_eventLogTime eventType:self->_eventType rolloutId:self->_rolloutId rampId:self->_rampId factorPackSetId:v4 deploymentId:self->_deploymentId namespaces:self->_namespaces];
+  idCopy = id;
+  v5 = [objc_alloc(objc_opt_class()) initWithEventLogTime:self->_eventLogTime eventType:self->_eventType rolloutId:self->_rolloutId rampId:self->_rampId factorPackSetId:idCopy deploymentId:self->_deploymentId namespaces:self->_namespaces];
 
   return v5;
 }
 
-- (id)copyWithReplacementNamespaces:(id)a3
+- (id)copyWithReplacementNamespaces:(id)namespaces
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithEventLogTime:self->_eventLogTime eventType:self->_eventType rolloutId:self->_rolloutId rampId:self->_rampId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId namespaces:v4];
+  namespacesCopy = namespaces;
+  v5 = [objc_alloc(objc_opt_class()) initWithEventLogTime:self->_eventLogTime eventType:self->_eventType rolloutId:self->_rolloutId rampId:self->_rampId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId namespaces:namespacesCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToRecord:(id)a3
+- (BOOL)isEqualToRecord:(id)record
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  recordCopy = record;
+  v5 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_19;
   }
 
   v6 = self->_eventLogTime == 0;
-  v7 = [v4 eventLogTime];
-  v8 = v7 != 0;
+  eventLogTime = [recordCopy eventLogTime];
+  v8 = eventLogTime != 0;
 
   if (v6 == v8)
   {
@@ -124,8 +124,8 @@ LABEL_3:
   eventLogTime = self->_eventLogTime;
   if (eventLogTime)
   {
-    v10 = [v5 eventLogTime];
-    v11 = [(NSDate *)eventLogTime isEqual:v10];
+    eventLogTime2 = [v5 eventLogTime];
+    v11 = [(NSDate *)eventLogTime isEqual:eventLogTime2];
 
     if (!v11)
     {
@@ -140,8 +140,8 @@ LABEL_3:
   }
 
   v13 = self->_rolloutId == 0;
-  v14 = [v5 rolloutId];
-  v15 = v14 != 0;
+  rolloutId = [v5 rolloutId];
+  v15 = rolloutId != 0;
 
   if (v13 == v15)
   {
@@ -151,8 +151,8 @@ LABEL_3:
   rolloutId = self->_rolloutId;
   if (rolloutId)
   {
-    v17 = [v5 rolloutId];
-    v18 = [(NSString *)rolloutId isEqual:v17];
+    rolloutId2 = [v5 rolloutId];
+    v18 = [(NSString *)rolloutId isEqual:rolloutId2];
 
     if (!v18)
     {
@@ -161,8 +161,8 @@ LABEL_3:
   }
 
   v19 = self->_rampId == 0;
-  v20 = [v5 rampId];
-  v21 = v20 != 0;
+  rampId = [v5 rampId];
+  v21 = rampId != 0;
 
   if (v19 == v21)
   {
@@ -172,8 +172,8 @@ LABEL_3:
   rampId = self->_rampId;
   if (rampId)
   {
-    v23 = [v5 rampId];
-    v24 = [(NSString *)rampId isEqual:v23];
+    rampId2 = [v5 rampId];
+    v24 = [(NSString *)rampId isEqual:rampId2];
 
     if (!v24)
     {
@@ -182,8 +182,8 @@ LABEL_3:
   }
 
   v25 = self->_factorPackSetId == 0;
-  v26 = [v5 factorPackSetId];
-  v27 = v26 != 0;
+  factorPackSetId = [v5 factorPackSetId];
+  v27 = factorPackSetId != 0;
 
   if (v25 == v27)
   {
@@ -193,8 +193,8 @@ LABEL_3:
   factorPackSetId = self->_factorPackSetId;
   if (factorPackSetId)
   {
-    v29 = [v5 factorPackSetId];
-    v30 = [(TRIFactorPackSetId *)factorPackSetId isEqual:v29];
+    factorPackSetId2 = [v5 factorPackSetId];
+    v30 = [(TRIFactorPackSetId *)factorPackSetId isEqual:factorPackSetId2];
 
     if (!v30)
     {
@@ -214,8 +214,8 @@ LABEL_19:
     namespaces = self->_namespaces;
     if (namespaces)
     {
-      v36 = [v5 namespaces];
-      v37 = [(NSArray *)namespaces isEqual:v36];
+      namespaces = [v5 namespaces];
+      v37 = [(NSArray *)namespaces isEqual:namespaces];
     }
 
     else
@@ -227,18 +227,18 @@ LABEL_19:
   return v37 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIRolloutHistoryRecord *)self isEqualToRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIRolloutHistoryRecord *)self isEqualToRecord:v5];
   }
 
   return v6;
@@ -255,16 +255,16 @@ LABEL_19:
   return [(NSArray *)self->_namespaces hash]- v8 + 32 * v8;
 }
 
-- (TRIRolloutHistoryRecord)initWithCoder:(id)a3
+- (TRIRolloutHistoryRecord)initWithCoder:(id)coder
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventLogTime"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventLogTime"];
   if (!v5)
   {
-    v17 = [v4 error];
+    error = [coderCopy error];
 
-    if (v17)
+    if (error)
     {
       goto LABEL_15;
     }
@@ -289,33 +289,33 @@ LABEL_19:
     v60 = v22;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
     v24 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIRolloutHistoryRecordOCNTErrorDomain" code:3 userInfo:v23];
-    [v4 failWithError:v24];
+    [coderCopy failWithError:v24];
 
     goto LABEL_13;
   }
 
-  v6 = [v4 decodeInt64ForKey:@"eventType"];
+  v6 = [coderCopy decodeInt64ForKey:@"eventType"];
   if (v6)
   {
     goto LABEL_4;
   }
 
-  v26 = [v4 error];
+  error2 = [coderCopy error];
 
-  if (!v26)
+  if (!error2)
   {
-    if ([v4 containsValueForKey:@"eventType"])
+    if ([coderCopy containsValueForKey:@"eventType"])
     {
 LABEL_4:
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rolloutId"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rolloutId"];
       if (!v7)
       {
-        v27 = [v4 error];
+        error3 = [coderCopy error];
 
-        if (v27)
+        if (error3)
         {
           v7 = 0;
-          v25 = 0;
+          selfCopy = 0;
 LABEL_40:
 
           goto LABEL_41;
@@ -325,23 +325,23 @@ LABEL_40:
         v56 = @"Retrieved nil serialized value for nonnull TRIRolloutHistoryRecord.rolloutId";
         v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
         v9 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIRolloutHistoryRecordOCNTErrorDomain" code:2 userInfo:v8];
-        [v4 failWithError:v9];
+        [coderCopy failWithError:v9];
         goto LABEL_30;
       }
 
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rampId"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rampId"];
       if (!v8)
       {
-        v28 = [v4 error];
+        error4 = [coderCopy error];
 
-        if (v28)
+        if (error4)
         {
           v8 = 0;
           goto LABEL_13;
         }
       }
 
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"factorPackSetId"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"factorPackSetId"];
       if (v9)
       {
         objc_opt_class();
@@ -356,43 +356,43 @@ LABEL_40:
           v54 = v13;
           v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
           v15 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIRolloutHistoryRecordOCNTErrorDomain" code:3 userInfo:v14];
-          [v4 failWithError:v15];
+          [coderCopy failWithError:v15];
 
           v16 = v46;
 LABEL_36:
-          v25 = 0;
+          selfCopy = 0;
           goto LABEL_37;
         }
       }
 
       else
       {
-        v29 = [v4 error];
+        error5 = [coderCopy error];
 
-        if (v29)
+        if (error5)
         {
           v9 = 0;
           goto LABEL_30;
         }
       }
 
-      v30 = [v4 decodeInt64ForKey:@"deploymentId"];
+      v30 = [coderCopy decodeInt64ForKey:@"deploymentId"];
       if (v30)
       {
         goto LABEL_25;
       }
 
-      v40 = [v4 error];
+      error6 = [coderCopy error];
 
-      if (!v40)
+      if (!error6)
       {
-        if (([v4 containsValueForKey:@"deploymentId"] & 1) == 0)
+        if (([coderCopy containsValueForKey:@"deploymentId"] & 1) == 0)
         {
           v51 = *MEMORY[0x277CCA450];
           v52 = @"Missing serialized value for TRIRolloutHistoryRecord.deploymentId";
           v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
           v42 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIRolloutHistoryRecordOCNTErrorDomain" code:1 userInfo:v16];
-          [v4 failWithError:v42];
+          [coderCopy failWithError:v42];
 
           goto LABEL_36;
         }
@@ -402,7 +402,7 @@ LABEL_25:
         v31 = objc_alloc(MEMORY[0x277CBEB98]);
         v32 = objc_opt_class();
         v33 = [v31 initWithObjects:{v32, objc_opt_class(), 0}];
-        v16 = [v4 decodeObjectOfClasses:v33 forKey:@"namespaces"];
+        v16 = [coderCopy decodeObjectOfClasses:v33 forKey:@"namespaces"];
 
         if (v16)
         {
@@ -419,7 +419,7 @@ LABEL_25:
             v50 = v37;
             v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
             v39 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIRolloutHistoryRecordOCNTErrorDomain" code:3 userInfo:v38];
-            [v4 failWithError:v39];
+            [coderCopy failWithError:v39];
 
             v16 = v36;
             goto LABEL_36;
@@ -428,9 +428,9 @@ LABEL_25:
 
         else
         {
-          v41 = [v4 error];
+          error7 = [coderCopy error];
 
-          if (v41)
+          if (error7)
           {
             v16 = 0;
             goto LABEL_36;
@@ -438,14 +438,14 @@ LABEL_25:
         }
 
         self = [(TRIRolloutHistoryRecord *)self initWithEventLogTime:v5 eventType:v6 rolloutId:v7 rampId:v8 factorPackSetId:v9 deploymentId:v47 namespaces:v16];
-        v25 = self;
+        selfCopy = self;
 LABEL_37:
 
         goto LABEL_38;
       }
 
 LABEL_30:
-      v25 = 0;
+      selfCopy = 0;
 LABEL_38:
 
       goto LABEL_39;
@@ -458,34 +458,34 @@ LABEL_38:
     v19 = 1;
 LABEL_11:
     v8 = [v18 initWithDomain:@"TRIRolloutHistoryRecordOCNTErrorDomain" code:v19 userInfo:v7];
-    [v4 failWithError:v8];
+    [coderCopy failWithError:v8];
 LABEL_13:
-    v25 = 0;
+    selfCopy = 0;
 LABEL_39:
 
     goto LABEL_40;
   }
 
 LABEL_15:
-  v25 = 0;
+  selfCopy = 0;
 LABEL_41:
 
   v43 = *MEMORY[0x277D85DE8];
-  return v25;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   eventLogTime = self->_eventLogTime;
-  v11 = v4;
+  v11 = coderCopy;
   if (eventLogTime)
   {
-    [v4 encodeObject:eventLogTime forKey:@"eventLogTime"];
-    v4 = v11;
+    [coderCopy encodeObject:eventLogTime forKey:@"eventLogTime"];
+    coderCopy = v11;
   }
 
-  [v4 encodeInt64:self->_eventType forKey:@"eventType"];
+  [coderCopy encodeInt64:self->_eventType forKey:@"eventType"];
   rolloutId = self->_rolloutId;
   if (rolloutId)
   {

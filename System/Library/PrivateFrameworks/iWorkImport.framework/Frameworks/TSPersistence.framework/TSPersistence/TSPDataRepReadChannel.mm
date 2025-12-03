@@ -1,16 +1,16 @@
 @interface TSPDataRepReadChannel
-- (TSPDataRepReadChannel)initWithRepresentation:(id)a3;
+- (TSPDataRepReadChannel)initWithRepresentation:(id)representation;
 - (void)_close;
 - (void)close;
 - (void)dealloc;
-- (void)readWithHandler:(id)a3;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation TSPDataRepReadChannel
 
-- (TSPDataRepReadChannel)initWithRepresentation:(id)a3
+- (TSPDataRepReadChannel)initWithRepresentation:(id)representation
 {
-  v5 = a3;
+  representationCopy = representation;
   v35.receiver = self;
   v35.super_class = TSPDataRepReadChannel;
   v6 = [(TSPDataRepReadChannel *)&v35 init];
@@ -22,7 +22,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v6->_representation, a3);
+  objc_storeStrong(&v6->_representation, representation);
   v10 = objc_msgSend_inputStream(v7->_representation, v8, v9);
   inputStream = v7->_inputStream;
   v7->_inputStream = v10;
@@ -70,9 +70,9 @@ LABEL_8:
   [(TSPDataRepReadChannel *)&v4 dealloc];
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (!self->_representation)
   {
     v6 = MEMORY[0x277D81150];
@@ -89,8 +89,8 @@ LABEL_8:
   v15[2] = sub_276A4BD84;
   v15[3] = &unk_27A6E4C58;
   v15[4] = self;
-  v16 = v5;
-  v14 = v5;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   dispatch_async(readQueue, v15);
 }
 

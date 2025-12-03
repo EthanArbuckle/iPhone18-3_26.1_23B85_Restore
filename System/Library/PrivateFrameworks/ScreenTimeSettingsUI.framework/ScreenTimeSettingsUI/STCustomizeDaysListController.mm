@@ -3,13 +3,13 @@
 - (STCustomizeDaysListControllerDelegate)delegate;
 - (id)_localizedDayNames;
 - (id)_localizedDayOrder;
-- (id)budgetTime:(id)a3;
-- (id)datePickerForSpecifier:(id)a3;
+- (id)budgetTime:(id)time;
+- (id)datePickerForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_showOrHidePickerSpecifierForSpecifier:(id)a3;
-- (void)datePickerChanged:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)_showOrHidePickerSpecifierForSpecifier:(id)specifier;
+- (void)datePickerChanged:(id)changed;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation STCustomizeDaysListController
@@ -29,14 +29,14 @@
   return v2;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(STCustomizeDaysListController *)self delegate];
+  disappearCopy = disappear;
+  delegate = [(STCustomizeDaysListController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(STCustomizeDaysListController *)self timeByDay];
-    [v5 customizeDaysListController:self didFinishEditingTimeByDay:v6];
+    timeByDay = [(STCustomizeDaysListController *)self timeByDay];
+    [delegate customizeDaysListController:self didFinishEditingTimeByDay:timeByDay];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -47,28 +47,28 @@
 
   v7.receiver = self;
   v7.super_class = STCustomizeDaysListController;
-  [(STCustomizeDaysListController *)&v7 viewWillDisappear:v3];
+  [(STCustomizeDaysListController *)&v7 viewWillDisappear:disappearCopy];
 }
 
 - (id)_localizedDayOrder
 {
   v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:7];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [v3 firstWeekday];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  firstWeekday = [currentCalendar firstWeekday];
 
   for (i = 8; i > 1; --i)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:firstWeekday];
     [v2 addObject:v6];
 
-    if ((v4 + 1) <= 7)
+    if ((firstWeekday + 1) <= 7)
     {
-      ++v4;
+      ++firstWeekday;
     }
 
     else
     {
-      v4 = 1;
+      firstWeekday = 1;
     }
   }
 
@@ -81,24 +81,24 @@
 {
   v2 = objc_opt_new();
   [v2 setFormattingContext:3];
-  v3 = [v2 standaloneWeekdaySymbols];
+  standaloneWeekdaySymbols = [v2 standaloneWeekdaySymbols];
 
-  return v3;
+  return standaloneWeekdaySymbols;
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v32 = *MEMORY[0x277D85DE8];
   v3 = *(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]);
   if (!v3)
   {
     v25 = *MEMORY[0x277D3FC48];
-    [(STCustomizeDaysListController *)v2 setSelectedDaySpecifier:0];
-    v4 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:&stru_28766E5A8 target:v2 set:0 get:0 detail:0 cell:4 edit:0];
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    [v4 setIdentifier:v6];
+    [(STCustomizeDaysListController *)selfCopy setSelectedDaySpecifier:0];
+    v4 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:&stru_28766E5A8 target:selfCopy set:0 get:0 detail:0 cell:4 edit:0];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v4 setIdentifier:uUIDString];
 
     v7 = MEMORY[0x277CCABB0];
     [MEMORY[0x277D3F9E0] preferredHeight];
@@ -107,15 +107,15 @@
 
     [v4 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
     v24 = v4;
-    [(STCustomizeDaysListController *)v2 setTimePickerSpecifier:v4];
-    v9 = [(STCustomizeDaysListController *)v2 _localizedDayNames];
-    v10 = [(STCustomizeDaysListController *)v2 _localizedDayOrder];
-    v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    [(STCustomizeDaysListController *)selfCopy setTimePickerSpecifier:v4];
+    _localizedDayNames = [(STCustomizeDaysListController *)selfCopy _localizedDayNames];
+    _localizedDayOrder = [(STCustomizeDaysListController *)selfCopy _localizedDayOrder];
+    v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(_localizedDayNames, "count")}];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    obj = v10;
+    obj = _localizedDayOrder;
     v12 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v12)
     {
@@ -131,15 +131,15 @@
             objc_enumerationMutation(obj);
           }
 
-          v16 = [*(*(&v27 + 1) + 8 * v15) unsignedIntegerValue];
-          v17 = [v9 objectAtIndex:v16 - 1];
-          [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v17 target:v2 set:0 get:sel_budgetTime_ detail:0 cell:4 edit:0];
-          v19 = v18 = v2;
-          v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v16];
+          unsignedIntegerValue = [*(*(&v27 + 1) + 8 * v15) unsignedIntegerValue];
+          v17 = [_localizedDayNames objectAtIndex:unsignedIntegerValue - 1];
+          [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v17 target:selfCopy set:0 get:sel_budgetTime_ detail:0 cell:4 edit:0];
+          v19 = v18 = selfCopy;
+          v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
           [v19 setUserInfo:v20];
 
           [v11 addObject:v19];
-          v2 = v18;
+          selfCopy = v18;
 
           ++v15;
         }
@@ -152,71 +152,71 @@
     }
 
     v21 = [v11 copy];
-    v22 = *(&v2->super.super.super.super.super.isa + v25);
-    *(&v2->super.super.super.super.super.isa + v25) = v21;
+    v22 = *(&selfCopy->super.super.super.super.super.isa + v25);
+    *(&selfCopy->super.super.super.super.super.isa + v25) = v21;
 
-    v3 = *(&v2->super.super.super.super.super.isa + v25);
+    v3 = *(&selfCopy->super.super.super.super.super.isa + v25);
   }
 
   return v3;
 }
 
-- (void)_showOrHidePickerSpecifierForSpecifier:(id)a3
+- (void)_showOrHidePickerSpecifierForSpecifier:(id)specifier
 {
-  v24 = a3;
+  specifierCopy = specifier;
   v4 = *MEMORY[0x277D40148];
-  v5 = [v24 objectForKeyedSubscript:*MEMORY[0x277D40148]];
-  v6 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
+  v5 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277D40148]];
+  selectedDaySpecifier = [(STCustomizeDaysListController *)self selectedDaySpecifier];
 
-  if (v6 == v24)
+  if (selectedDaySpecifier == specifierCopy)
   {
-    v19 = [MEMORY[0x277D75348] tableCellGrayTextColor];
-    v20 = [v5 detailTextLabel];
-    [v20 setTextColor:v19];
+    tableCellGrayTextColor = [MEMORY[0x277D75348] tableCellGrayTextColor];
+    detailTextLabel = [v5 detailTextLabel];
+    [detailTextLabel setTextColor:tableCellGrayTextColor];
 
-    v21 = [(STCustomizeDaysListController *)self timePickerSpecifier];
-    [(STCustomizeDaysListController *)self removeSpecifier:v21 animated:1];
+    timePickerSpecifier = [(STCustomizeDaysListController *)self timePickerSpecifier];
+    [(STCustomizeDaysListController *)self removeSpecifier:timePickerSpecifier animated:1];
 
-    v22 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
-    v23 = [v22 identifier];
-    [(STCustomizeDaysListController *)self highlightSpecifierWithID:v23];
+    selectedDaySpecifier2 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
+    identifier = [selectedDaySpecifier2 identifier];
+    [(STCustomizeDaysListController *)self highlightSpecifierWithID:identifier];
 
     [(STCustomizeDaysListController *)self setSelectedDaySpecifier:0];
   }
 
   else
   {
-    v7 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
-    v8 = [v7 objectForKeyedSubscript:v4];
+    selectedDaySpecifier3 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
+    v8 = [selectedDaySpecifier3 objectForKeyedSubscript:v4];
 
-    v9 = [v5 detailTextLabel];
-    v10 = [v9 textColor];
-    v11 = [v8 detailTextLabel];
-    [v11 setTextColor:v10];
+    detailTextLabel2 = [v5 detailTextLabel];
+    textColor = [detailTextLabel2 textColor];
+    detailTextLabel3 = [v8 detailTextLabel];
+    [detailTextLabel3 setTextColor:textColor];
 
-    v12 = [MEMORY[0x277D75348] tableCellBlueTextColor];
-    v13 = [v5 detailTextLabel];
-    [v13 setTextColor:v12];
+    tableCellBlueTextColor = [MEMORY[0x277D75348] tableCellBlueTextColor];
+    detailTextLabel4 = [v5 detailTextLabel];
+    [detailTextLabel4 setTextColor:tableCellBlueTextColor];
 
-    [(STCustomizeDaysListController *)self setSelectedDaySpecifier:v24];
-    v14 = [(STCustomizeDaysListController *)self timePickerSpecifier];
-    [(STCustomizeDaysListController *)self removeSpecifier:v14 animated:1];
+    [(STCustomizeDaysListController *)self setSelectedDaySpecifier:specifierCopy];
+    timePickerSpecifier2 = [(STCustomizeDaysListController *)self timePickerSpecifier];
+    [(STCustomizeDaysListController *)self removeSpecifier:timePickerSpecifier2 animated:1];
 
-    v15 = [(STCustomizeDaysListController *)self timePickerSpecifier];
-    v16 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
-    [(STCustomizeDaysListController *)self insertSpecifier:v15 afterSpecifier:v16 animated:1];
+    timePickerSpecifier3 = [(STCustomizeDaysListController *)self timePickerSpecifier];
+    selectedDaySpecifier4 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
+    [(STCustomizeDaysListController *)self insertSpecifier:timePickerSpecifier3 afterSpecifier:selectedDaySpecifier4 animated:1];
 
-    v17 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
-    v18 = [v17 identifier];
-    [(STCustomizeDaysListController *)self highlightSpecifierWithID:v18];
+    selectedDaySpecifier5 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
+    identifier2 = [selectedDaySpecifier5 identifier];
+    [(STCustomizeDaysListController *)self highlightSpecifierWithID:identifier2];
   }
 }
 
-- (id)budgetTime:(id)a3
+- (id)budgetTime:(id)time
 {
-  v4 = [a3 userInfo];
-  v5 = [(STCustomizeDaysListController *)self timeByDay];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  userInfo = [time userInfo];
+  timeByDay = [(STCustomizeDaysListController *)self timeByDay];
+  v6 = [timeByDay objectForKeyedSubscript:userInfo];
 
   if (v6)
   {
@@ -237,11 +237,11 @@
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STCustomizeDaysListController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(STCustomizeDaysListController *)self indexForIndexPath:pathCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -252,66 +252,66 @@
     v9 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndexedSubscript:v8];
   }
 
-  v10 = [(STCustomizeDaysListController *)self timePickerSpecifier];
+  timePickerSpecifier = [(STCustomizeDaysListController *)self timePickerSpecifier];
 
-  if (v9 != v10)
+  if (v9 != timePickerSpecifier)
   {
     [(STCustomizeDaysListController *)self _showOrHidePickerSpecifierForSpecifier:v9];
   }
 
   v11.receiver = self;
   v11.super_class = STCustomizeDaysListController;
-  [(STCustomizeDaysListController *)&v11 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(STCustomizeDaysListController *)&v11 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (void)datePickerChanged:(id)a3
+- (void)datePickerChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 calendar];
-  v6 = [v4 date];
+  changedCopy = changed;
+  calendar = [changedCopy calendar];
+  date = [changedCopy date];
 
-  v17 = [v5 components:96 fromDate:v6];
+  v17 = [calendar components:96 fromDate:date];
 
-  v7 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
-  v8 = [v7 userInfo];
+  selectedDaySpecifier = [(STCustomizeDaysListController *)self selectedDaySpecifier];
+  userInfo = [selectedDaySpecifier userInfo];
 
-  v9 = [(STCustomizeDaysListController *)self timeByDay];
-  v10 = [v9 mutableCopy];
+  timeByDay = [(STCustomizeDaysListController *)self timeByDay];
+  v10 = [timeByDay mutableCopy];
 
-  [v10 setObject:v17 forKeyedSubscript:v8];
+  [v10 setObject:v17 forKeyedSubscript:userInfo];
   v11 = [v10 copy];
   [(STCustomizeDaysListController *)self setTimeByDay:v11];
 
-  v12 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
-  [(STCustomizeDaysListController *)self reloadSpecifier:v12];
+  selectedDaySpecifier2 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
+  [(STCustomizeDaysListController *)self reloadSpecifier:selectedDaySpecifier2];
 
-  v13 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D40148]];
+  selectedDaySpecifier3 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
+  v14 = [selectedDaySpecifier3 objectForKeyedSubscript:*MEMORY[0x277D40148]];
 
-  v15 = [MEMORY[0x277D75348] tableCellBlueTextColor];
-  v16 = [v14 detailTextLabel];
-  [v16 setTextColor:v15];
+  tableCellBlueTextColor = [MEMORY[0x277D75348] tableCellBlueTextColor];
+  detailTextLabel = [v14 detailTextLabel];
+  [detailTextLabel setTextColor:tableCellBlueTextColor];
 }
 
-- (id)datePickerForSpecifier:(id)a3
+- (id)datePickerForSpecifier:(id)specifier
 {
   v4 = MEMORY[0x277D753E8];
-  v5 = a3;
+  specifierCopy = specifier;
   v6 = [v4 alloc];
   v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v7 setPreferredDatePickerStyle:1];
   [v7 setDatePickerMode:3];
   [v7 _setAllowsZeroCountDownDuration:1];
   v8 = objc_opt_new();
-  v9 = [(STCustomizeDaysListController *)self timePickerSpecifier];
+  timePickerSpecifier = [(STCustomizeDaysListController *)self timePickerSpecifier];
 
-  if (v9 == v5)
+  if (timePickerSpecifier == specifierCopy)
   {
-    v10 = [(STCustomizeDaysListController *)self selectedDaySpecifier];
-    v11 = [v10 userInfo];
+    selectedDaySpecifier = [(STCustomizeDaysListController *)self selectedDaySpecifier];
+    userInfo = [selectedDaySpecifier userInfo];
 
-    v12 = [(STCustomizeDaysListController *)self timeByDay];
-    v13 = [v12 objectForKeyedSubscript:v11];
+    timeByDay = [(STCustomizeDaysListController *)self timeByDay];
+    v13 = [timeByDay objectForKeyedSubscript:userInfo];
 
     if (v13)
     {
@@ -326,8 +326,8 @@
     [STCustomizeDaysListController datePickerForSpecifier:];
   }
 
-  v15 = [v7 calendar];
-  v16 = [v15 dateFromComponents:v8];
+  calendar = [v7 calendar];
+  v16 = [calendar dateFromComponents:v8];
   [v7 setDate:v16 animated:1];
 
   return v7;

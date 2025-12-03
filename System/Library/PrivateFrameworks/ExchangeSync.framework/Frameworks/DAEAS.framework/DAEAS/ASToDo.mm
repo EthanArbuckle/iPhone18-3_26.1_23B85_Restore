@@ -5,27 +5,27 @@
 + (BOOL)parsingLeafNode;
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
-+ (id)toDoWithCalTask:(void *)a3 serverID:(id)a4 account:(id)a5;
-- (ASToDo)initWithCalTask:(void *)a3 serverID:(id)a4 account:(id)a5;
-- (ASToDo)initWithCoder:(id)a3;
++ (id)toDoWithCalTask:(void *)task serverID:(id)d account:(id)account;
+- (ASToDo)initWithCalTask:(void *)task serverID:(id)d account:(id)account;
+- (ASToDo)initWithCoder:(id)coder;
 - (BOOL)deleteFromCalendar;
-- (BOOL)loadCalRecordForAccount:(id)a3;
+- (BOOL)loadCalRecordForAccount:(id)account;
 - (BOOL)saveServerIDToCalendar;
 - (BOOL)saveServerIDToExistingItem;
-- (BOOL)saveToCalendarWithExistingRecord:(void *)a3 intoCalendar:(void *)a4 shouldMergeProperties:(BOOL)a5 outMergeDidChooseLocalProperties:(BOOL *)a6 account:(id)a7;
-- (BOOL)saveWithLocalObject:(void *)a3 toContainer:(void *)a4 shouldMergeProperties:(BOOL)a5 outMergeDidChooseLocalProperties:(BOOL *)a6 account:(id)a7;
+- (BOOL)saveToCalendarWithExistingRecord:(void *)record intoCalendar:(void *)calendar shouldMergeProperties:(BOOL)properties outMergeDidChooseLocalProperties:(BOOL *)localProperties account:(id)account;
+- (BOOL)saveWithLocalObject:(void *)object toContainer:(void *)container shouldMergeProperties:(BOOL)properties outMergeDidChooseLocalProperties:(BOOL *)localProperties account:(id)account;
 - (NSString)description;
-- (id)bestGuessTimeZoneWithLocalDate:(id)a3 utcDate:(id)a4;
-- (void)_loadAttributesFromCalTask:(void *)a3 forAccount:(id)a4;
-- (void)appendActiveSyncDataForTask:(id)a3 toWBXMLData:(id)a4;
+- (id)bestGuessTimeZoneWithLocalDate:(id)date utcDate:(id)utcDate;
+- (void)_loadAttributesFromCalTask:(void *)task forAccount:(id)account;
+- (void)appendActiveSyncDataForTask:(id)task toWBXMLData:(id)data;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadClientIDs;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
 - (void)postProcessApplicationData;
-- (void)setBody:(id)a3;
-- (void)setCalTask:(void *)a3;
-- (void)setLocalItem:(void *)a3;
+- (void)setBody:(id)body;
+- (void)setCalTask:(void *)task;
+- (void)setLocalItem:(void *)item;
 @end
 
 @implementation ASToDo
@@ -39,7 +39,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_8 = v2;
     acceptsTopLevelLeaves___haveChecked_8 = 1;
   }
@@ -56,7 +56,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_8 = v2;
     parsingLeafNode___haveChecked_8 = 1;
   }
@@ -73,7 +73,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_8 = v2;
     parsingWithSubItems___haveChecked_8 = 1;
   }
@@ -90,7 +90,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_8 = v2;
     frontingBasicTypes___haveChecked_8 = 1;
   }
@@ -107,7 +107,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_8 = v2;
     notifyOfUnknownTokens___haveChecked_8 = 1;
   }
@@ -118,12 +118,12 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
   {
-    v30.receiver = a1;
+    v30.receiver = self;
     v30.super_class = &OBJC_METACLASS___ASToDo;
     v6 = objc_msgSendSuper2(&v30, sel_asParseRules);
     v5 = [v6 mutableCopy];
@@ -151,14 +151,14 @@
 
     [v5 addEntriesFromDictionary:v16];
     v17 = +[ASItem parseRuleCache];
-    v18 = NSStringFromClass(a1);
+    v18 = NSStringFromClass(self);
     [v17 setObject:v5 forKey:v18];
   }
 
   return v5;
 }
 
-- (void)_loadAttributesFromCalTask:(void *)a3 forAccount:(id)a4
+- (void)_loadAttributesFromCalTask:(void *)task forAccount:(id)account
 {
   v4 = DALoggingwithCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -167,29 +167,29 @@
   }
 }
 
-- (ASToDo)initWithCalTask:(void *)a3 serverID:(id)a4 account:(id)a5
+- (ASToDo)initWithCalTask:(void *)task serverID:(id)d account:(id)account
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  accountCopy = account;
   v13.receiver = self;
   v13.super_class = ASToDo;
   v10 = [(ASChangedCollectionLeaf *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(ASChangedCollectionLeaf *)v10 setServerID:v8];
-    [(ASToDo *)v11 setCalTask:a3];
-    [(ASToDo *)v11 _loadAttributesFromCalTask:a3 forAccount:v9];
+    [(ASChangedCollectionLeaf *)v10 setServerID:dCopy];
+    [(ASToDo *)v11 setCalTask:task];
+    [(ASToDo *)v11 _loadAttributesFromCalTask:task forAccount:accountCopy];
   }
 
   return v11;
 }
 
-+ (id)toDoWithCalTask:(void *)a3 serverID:(id)a4 account:(id)a5
++ (id)toDoWithCalTask:(void *)task serverID:(id)d account:(id)account
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithCalTask:a3 serverID:v9 account:v8];
+  accountCopy = account;
+  dCopy = d;
+  v10 = [[self alloc] initWithCalTask:task serverID:dCopy account:accountCopy];
 
   return v10;
 }
@@ -212,26 +212,26 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ASChangedCollectionLeaf *)self serverID];
-  v6 = [(ASToDo *)self subject];
-  v7 = [(ASToDo *)self startTime];
-  v8 = [v3 stringWithFormat:@"<%@: [%@] [%@] [%@]>", v4, v5, v6, v7];
+  serverID = [(ASChangedCollectionLeaf *)self serverID];
+  subject = [(ASToDo *)self subject];
+  startTime = [(ASToDo *)self startTime];
+  v8 = [v3 stringWithFormat:@"<%@: [%@] [%@] [%@]>", v4, serverID, subject, startTime];
 
   return v8;
 }
 
-- (id)bestGuessTimeZoneWithLocalDate:(id)a3 utcDate:(id)a4
+- (id)bestGuessTimeZoneWithLocalDate:(id)date utcDate:(id)utcDate
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  dateCopy = date;
+  utcDateCopy = utcDate;
+  v7 = utcDateCopy;
+  if (dateCopy && utcDateCopy)
   {
-    [v5 timeIntervalSinceDate:v6];
+    [dateCopy timeIntervalSinceDate:utcDateCopy];
     v9 = v8;
-    v10 = [MEMORY[0x277CBEBB0] localTimeZone];
-    v11 = [v10 secondsFromGMTForDate:v5];
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+    v11 = [localTimeZone secondsFromGMTForDate:dateCopy];
 
     v12 = v9 - v11;
     if (v12 < 0.0)
@@ -248,13 +248,13 @@
     {
       [MEMORY[0x277CBEBB0] localTimeZone];
     }
-    v13 = ;
+    localTimeZone2 = ;
     v14 = DALoggingwithCategory();
     v15 = *(MEMORY[0x277D03988] + 7);
     if (os_log_type_enabled(v14, v15))
     {
       v18 = 138413314;
-      v19 = v5;
+      v19 = dateCopy;
       v20 = 2112;
       v21 = v7;
       v22 = 2048;
@@ -262,22 +262,22 @@
       v24 = 2048;
       v25 = v11;
       v26 = 2112;
-      v27 = v13;
+      v27 = localTimeZone2;
       _os_log_impl(&dword_24A0AC000, v14, v15, "localDate %@ utc date %@ offset %lf myTZDiff %ld.  Returning %@", &v18, 0x34u);
     }
   }
 
   else
   {
-    v13 = [MEMORY[0x277CBEBB0] localTimeZone];
+    localTimeZone2 = [MEMORY[0x277CBEBB0] localTimeZone];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return localTimeZone2;
 }
 
-- (BOOL)saveToCalendarWithExistingRecord:(void *)a3 intoCalendar:(void *)a4 shouldMergeProperties:(BOOL)a5 outMergeDidChooseLocalProperties:(BOOL *)a6 account:(id)a7
+- (BOOL)saveToCalendarWithExistingRecord:(void *)record intoCalendar:(void *)calendar shouldMergeProperties:(BOOL)properties outMergeDidChooseLocalProperties:(BOOL *)localProperties account:(id)account
 {
   v7 = DALoggingwithCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -290,20 +290,20 @@
 
 - (void)postProcessApplicationData
 {
-  v3 = [(ASChangedCollectionLeaf *)self applicationData];
-  v55 = [v3 objectForKeyedSubscript:&unk_285D57AF8];
+  applicationData = [(ASChangedCollectionLeaf *)self applicationData];
+  v55 = [applicationData objectForKeyedSubscript:&unk_285D57AF8];
 
   if (v55)
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithInt:4363];
-    v5 = [v55 objectForKey:v4];
+    applicationData2 = [MEMORY[0x277CCABB0] numberWithInt:4363];
+    v5 = [v55 objectForKey:applicationData2];
   }
 
   else
   {
-    v4 = [(ASChangedCollectionLeaf *)self applicationData];
+    applicationData2 = [(ASChangedCollectionLeaf *)self applicationData];
     v6 = [MEMORY[0x277CCABB0] numberWithInt:2309];
-    v5 = [v4 objectForKey:v6];
+    v5 = [applicationData2 objectForKey:v6];
   }
 
   if (v5)
@@ -315,9 +315,9 @@
     }
   }
 
-  v7 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData3 = [(ASChangedCollectionLeaf *)self applicationData];
   v8 = [MEMORY[0x277CCABB0] numberWithInt:2312];
-  v9 = [v7 objectForKey:v8];
+  v9 = [applicationData3 objectForKey:v8];
 
   if (v9)
   {
@@ -328,9 +328,9 @@
     }
   }
 
-  v10 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData4 = [(ASChangedCollectionLeaf *)self applicationData];
   v11 = [MEMORY[0x277CCABB0] numberWithInt:2314];
-  v12 = [v10 objectForKey:v11];
+  v12 = [applicationData4 objectForKey:v11];
 
   if (v12)
   {
@@ -342,9 +342,9 @@
     }
   }
 
-  v14 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData5 = [(ASChangedCollectionLeaf *)self applicationData];
   v15 = [MEMORY[0x277CCABB0] numberWithInt:2315];
-  v16 = [v14 objectForKey:v15];
+  v16 = [applicationData5 objectForKey:v15];
 
   if (v16)
   {
@@ -356,9 +356,9 @@
     }
   }
 
-  v18 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData6 = [(ASChangedCollectionLeaf *)self applicationData];
   v19 = [MEMORY[0x277CCABB0] numberWithInt:2316];
-  v20 = [v18 objectForKey:v19];
+  v20 = [applicationData6 objectForKey:v19];
 
   if (v20)
   {
@@ -370,9 +370,9 @@
     }
   }
 
-  v22 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData7 = [(ASChangedCollectionLeaf *)self applicationData];
   v23 = [MEMORY[0x277CCABB0] numberWithInt:2317];
-  v24 = [v22 objectForKey:v23];
+  v24 = [applicationData7 objectForKey:v23];
 
   if (v24)
   {
@@ -384,9 +384,9 @@
     }
   }
 
-  v26 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData8 = [(ASChangedCollectionLeaf *)self applicationData];
   v27 = [MEMORY[0x277CCABB0] numberWithInt:2318];
-  v28 = [v26 objectForKey:v27];
+  v28 = [applicationData8 objectForKey:v27];
 
   if (v28)
   {
@@ -398,9 +398,9 @@
     }
   }
 
-  v30 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData9 = [(ASChangedCollectionLeaf *)self applicationData];
   v31 = [MEMORY[0x277CCABB0] numberWithInt:2331];
-  v32 = [v30 objectForKey:v31];
+  v32 = [applicationData9 objectForKey:v31];
 
   if (v32)
   {
@@ -412,9 +412,9 @@
     }
   }
 
-  v34 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData10 = [(ASChangedCollectionLeaf *)self applicationData];
   v35 = [MEMORY[0x277CCABB0] numberWithInt:2332];
-  v36 = [v34 objectForKey:v35];
+  v36 = [applicationData10 objectForKey:v35];
 
   if (v36)
   {
@@ -426,9 +426,9 @@
     }
   }
 
-  v38 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData11 = [(ASChangedCollectionLeaf *)self applicationData];
   v39 = [MEMORY[0x277CCABB0] numberWithInt:2333];
-  v40 = [v38 objectForKey:v39];
+  v40 = [applicationData11 objectForKey:v39];
 
   if (v40)
   {
@@ -440,9 +440,9 @@
     }
   }
 
-  v42 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData12 = [(ASChangedCollectionLeaf *)self applicationData];
   v43 = [MEMORY[0x277CCABB0] numberWithInt:2334];
-  v44 = [v42 objectForKey:v43];
+  v44 = [applicationData12 objectForKey:v43];
 
   if (v44)
   {
@@ -454,9 +454,9 @@
     }
   }
 
-  v46 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData13 = [(ASChangedCollectionLeaf *)self applicationData];
   v47 = [MEMORY[0x277CCABB0] numberWithInt:2335];
-  v48 = [v46 objectForKey:v47];
+  v48 = [applicationData13 objectForKey:v47];
 
   if (v48)
   {
@@ -468,9 +468,9 @@
     }
   }
 
-  v50 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData14 = [(ASChangedCollectionLeaf *)self applicationData];
   v51 = [MEMORY[0x277CCABB0] numberWithInt:2336];
-  v52 = [v50 objectForKey:v51];
+  v52 = [applicationData14 objectForKey:v51];
 
   if (v52)
   {
@@ -481,18 +481,18 @@
     }
   }
 
-  v53 = [(ASChangedCollectionLeaf *)self applicationData];
-  v54 = [v53 objectForKeyedSubscript:&unk_285D57B10];
+  applicationData15 = [(ASChangedCollectionLeaf *)self applicationData];
+  v54 = [applicationData15 objectForKeyedSubscript:&unk_285D57B10];
 
   [(ASToDo *)self setRecurrence:v54];
   [(ASChangedCollectionLeaf *)self setApplicationData:0];
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v10.receiver = self;
   v10.super_class = ASToDo;
-  [(ASChangedCollectionLeaf *)&v10 parseASParseContext:a3 root:a4 parent:a5 callbackDict:a6 streamCallbackDict:a7 account:a8];
+  [(ASChangedCollectionLeaf *)&v10 parseASParseContext:context root:root parent:parent callbackDict:dict streamCallbackDict:callbackDict account:account];
   parsingState = self->super.super._parsingState;
   if (parsingState >= 2)
   {
@@ -519,102 +519,102 @@
   return 1;
 }
 
-- (void)appendActiveSyncDataForTask:(id)a3 toWBXMLData:(id)a4
+- (void)appendActiveSyncDataForTask:(id)task toWBXMLData:(id)data
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 taskManager];
-  v9 = [v8 protocol];
-  v10 = [v9 usesAirSyncBaseNamespace];
+  taskCopy = task;
+  dataCopy = data;
+  taskManager = [taskCopy taskManager];
+  protocol = [taskManager protocol];
+  usesAirSyncBaseNamespace = [protocol usesAirSyncBaseNamespace];
 
-  v11 = [(ASToDo *)self body];
-  if (v10)
+  body = [(ASToDo *)self body];
+  if (usesAirSyncBaseNamespace)
   {
-    [v7 switchToCodePage:17];
-    [v7 openTag:10];
-    [v7 appendTag:6 withIntContent:1];
-    if ([v11 length])
+    [dataCopy switchToCodePage:17];
+    [dataCopy openTag:10];
+    [dataCopy appendTag:6 withIntContent:1];
+    if ([body length])
     {
-      [v7 appendTag:11 withStringContent:v11];
+      [dataCopy appendTag:11 withStringContent:body];
     }
 
     else
     {
-      [v7 appendEmptyTag:11];
+      [dataCopy appendEmptyTag:11];
     }
 
-    [v7 closeTag:10];
-    [v7 switchToCodePage:9];
+    [dataCopy closeTag:10];
+    [dataCopy switchToCodePage:9];
   }
 
   else
   {
-    [v7 switchToCodePage:9];
-    v12 = [(ASToDo *)self body];
-    if (v12)
+    [dataCopy switchToCodePage:9];
+    body2 = [(ASToDo *)self body];
+    if (body2)
     {
-      [v7 appendTag:5 withStringContent:v12];
+      [dataCopy appendTag:5 withStringContent:body2];
     }
   }
 
-  v13 = [(ASToDo *)self subject];
-  if (v13)
+  subject = [(ASToDo *)self subject];
+  if (subject)
   {
-    [v7 appendTag:32 withStringContent:v13];
+    [dataCopy appendTag:32 withStringContent:subject];
   }
 
-  v14 = [(ASToDo *)self importance];
-  v15 = v14;
-  if (v14)
+  importance = [(ASToDo *)self importance];
+  v15 = importance;
+  if (importance)
   {
-    [v7 appendTag:14 withIntContent:{objc_msgSend(v14, "intValue")}];
+    [dataCopy appendTag:14 withIntContent:{objc_msgSend(importance, "intValue")}];
   }
 
-  v16 = [(ASToDo *)self utcStartTime];
-  v17 = v16;
-  if (v16)
+  utcStartTime = [(ASToDo *)self utcStartTime];
+  v17 = utcStartTime;
+  if (utcStartTime)
   {
-    v18 = [v16 activeSyncString];
-    [v7 appendTag:31 withStringContent:v18];
+    activeSyncString = [utcStartTime activeSyncString];
+    [dataCopy appendTag:31 withStringContent:activeSyncString];
   }
 
-  v19 = [(ASToDo *)self startTime];
-  v20 = v19;
-  if (v19)
+  startTime = [(ASToDo *)self startTime];
+  v20 = startTime;
+  if (startTime)
   {
-    v21 = [v19 activeSyncString];
-    [v7 appendTag:30 withStringContent:v21];
+    activeSyncString2 = [startTime activeSyncString];
+    [dataCopy appendTag:30 withStringContent:activeSyncString2];
   }
 
-  v22 = [(ASToDo *)self utcDueDate];
-  v23 = v22;
-  if (v22)
+  utcDueDate = [(ASToDo *)self utcDueDate];
+  v23 = utcDueDate;
+  if (utcDueDate)
   {
-    v24 = [v22 activeSyncString];
-    [v7 appendTag:13 withStringContent:v24];
+    activeSyncString3 = [utcDueDate activeSyncString];
+    [dataCopy appendTag:13 withStringContent:activeSyncString3];
   }
 
-  v25 = [(ASToDo *)self dueDate];
-  v26 = v25;
-  if (v25)
+  dueDate = [(ASToDo *)self dueDate];
+  v26 = dueDate;
+  if (dueDate)
   {
-    v27 = [v25 activeSyncString];
-    [v7 appendTag:12 withStringContent:v27];
+    activeSyncString4 = [dueDate activeSyncString];
+    [dataCopy appendTag:12 withStringContent:activeSyncString4];
   }
 
-  v28 = [(ASToDo *)self categories];
-  v29 = [v28 count];
+  categories = [(ASToDo *)self categories];
+  v29 = [categories count];
 
   if (v29)
   {
-    [v7 openTag:8];
+    [dataCopy openTag:8];
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v30 = [(ASToDo *)self categories];
-    v31 = [v30 countByEnumeratingWithState:&v49 objects:v53 count:16];
+    categories2 = [(ASToDo *)self categories];
+    v31 = [categories2 countByEnumeratingWithState:&v49 objects:v53 count:16];
     if (v31)
     {
       v32 = v31;
@@ -625,65 +625,65 @@
         {
           if (*v50 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(categories2);
           }
 
-          [v7 appendTag:9 withStringContent:*(*(&v49 + 1) + 8 * i)];
+          [dataCopy appendTag:9 withStringContent:*(*(&v49 + 1) + 8 * i)];
         }
 
-        v32 = [v30 countByEnumeratingWithState:&v49 objects:v53 count:16];
+        v32 = [categories2 countByEnumeratingWithState:&v49 objects:v53 count:16];
       }
 
       while (v32);
     }
 
-    [v7 closeTag:8];
+    [dataCopy closeTag:8];
   }
 
-  v35 = [(ASToDo *)self recurrence];
-  [v35 appendActiveSyncDataForTask:v6 toWBXMLData:v7];
+  recurrence = [(ASToDo *)self recurrence];
+  [recurrence appendActiveSyncDataForTask:taskCopy toWBXMLData:dataCopy];
 
-  v36 = [(ASToDo *)self complete];
-  v37 = v36;
-  if (v36)
+  complete = [(ASToDo *)self complete];
+  v37 = complete;
+  if (complete)
   {
-    [v7 appendTag:10 withIntContent:{objc_msgSend(v36, "intValue")}];
+    [dataCopy appendTag:10 withIntContent:{objc_msgSend(complete, "intValue")}];
   }
 
-  v38 = [(ASToDo *)self dateCompleted];
-  v39 = v38;
-  if (v38)
+  dateCompleted = [(ASToDo *)self dateCompleted];
+  v39 = dateCompleted;
+  if (dateCompleted)
   {
-    v40 = [v38 activeSyncString];
-    [v7 appendTag:11 withStringContent:v40];
+    activeSyncString5 = [dateCompleted activeSyncString];
+    [dataCopy appendTag:11 withStringContent:activeSyncString5];
   }
 
-  v41 = [(ASToDo *)self sensitivity];
-  v42 = v41;
-  if (v41)
+  sensitivity = [(ASToDo *)self sensitivity];
+  v42 = sensitivity;
+  if (sensitivity)
   {
-    [v7 appendTag:29 withIntContent:{objc_msgSend(v41, "intValue")}];
+    [dataCopy appendTag:29 withIntContent:{objc_msgSend(sensitivity, "intValue")}];
   }
 
-  v43 = [(ASToDo *)self reminderDateTime];
-  v44 = v43;
-  if (v43)
+  reminderDateTime = [(ASToDo *)self reminderDateTime];
+  v44 = reminderDateTime;
+  if (reminderDateTime)
   {
-    v45 = [v43 activeSyncString];
-    [v7 appendTag:28 withStringContent:v45];
+    activeSyncString6 = [reminderDateTime activeSyncString];
+    [dataCopy appendTag:28 withStringContent:activeSyncString6];
   }
 
-  v46 = [(ASToDo *)self reminderIsSet];
-  v47 = v46;
-  if (v46)
+  reminderIsSet = [(ASToDo *)self reminderIsSet];
+  v47 = reminderIsSet;
+  if (reminderIsSet)
   {
-    [v7 appendTag:27 withIntContent:{objc_msgSend(v46, "intValue")}];
+    [dataCopy appendTag:27 withIntContent:{objc_msgSend(reminderIsSet, "intValue")}];
   }
 
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCalTask:(void *)a3
+- (void)setCalTask:(void *)task
 {
   v3 = DALoggingwithCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -692,7 +692,7 @@
   }
 }
 
-- (BOOL)loadCalRecordForAccount:(id)a3
+- (BOOL)loadCalRecordForAccount:(id)account
 {
   v3 = DALoggingwithCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -723,18 +723,18 @@
   }
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  v4 = [a3 stringByTrimmingNotesJunk];
-  if (self->_body != v4)
+  stringByTrimmingNotesJunk = [body stringByTrimmingNotesJunk];
+  if (self->_body != stringByTrimmingNotesJunk)
   {
-    objc_storeStrong(&self->_body, v4);
+    objc_storeStrong(&self->_body, stringByTrimmingNotesJunk);
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)saveWithLocalObject:(void *)a3 toContainer:(void *)a4 shouldMergeProperties:(BOOL)a5 outMergeDidChooseLocalProperties:(BOOL *)a6 account:(id)a7
+- (BOOL)saveWithLocalObject:(void *)object toContainer:(void *)container shouldMergeProperties:(BOOL)properties outMergeDidChooseLocalProperties:(BOOL *)localProperties account:(id)account
 {
   v7 = DALoggingwithCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -745,7 +745,7 @@
   return 0;
 }
 
-- (void)setLocalItem:(void *)a3
+- (void)setLocalItem:(void *)item
 {
   v3 = DALoggingwithCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -765,18 +765,18 @@
   return 0;
 }
 
-- (ASToDo)initWithCoder:(id)a3
+- (ASToDo)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"ASToDo.m" lineNumber:588 description:{@"Yes, I know ASToDo is a subclass of ASChangedCollectionLeaf, and should handle initWithCoder:.  But I'm lazy, and no one needs this yet"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ASToDo.m" lineNumber:588 description:{@"Yes, I know ASToDo is a subclass of ASChangedCollectionLeaf, and should handle initWithCoder:.  But I'm lazy, and no one needs this yet"}];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"ASToDo.m" lineNumber:593 description:{@"Yes, I know ASToDo is a subclass of ASChangedCollectionLeaf, and should handle encodeWithCoder:.  But I'm lazy, and no one needs this yet"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ASToDo.m" lineNumber:593 description:{@"Yes, I know ASToDo is a subclass of ASChangedCollectionLeaf, and should handle encodeWithCoder:.  But I'm lazy, and no one needs this yet"}];
 }
 
 @end

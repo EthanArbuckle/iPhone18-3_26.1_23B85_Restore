@@ -1,16 +1,16 @@
 @interface PTMSRResizeAdditionalOutput
-- (PTMSRResizeAdditionalOutput)initWithSize:(id *)a3 colorSpace:(CGColorSpace *)a4 pixelFormat:(unsigned int)a5 allowCompressed:(BOOL)a6 metalDevice:(id)a7;
+- (PTMSRResizeAdditionalOutput)initWithSize:(id *)size colorSpace:(CGColorSpace *)space pixelFormat:(unsigned int)format allowCompressed:(BOOL)compressed metalDevice:(id)device;
 - (void)dealloc;
 @end
 
 @implementation PTMSRResizeAdditionalOutput
 
-- (PTMSRResizeAdditionalOutput)initWithSize:(id *)a3 colorSpace:(CGColorSpace *)a4 pixelFormat:(unsigned int)a5 allowCompressed:(BOOL)a6 metalDevice:(id)a7
+- (PTMSRResizeAdditionalOutput)initWithSize:(id *)size colorSpace:(CGColorSpace *)space pixelFormat:(unsigned int)format allowCompressed:(BOOL)compressed metalDevice:(id)device
 {
-  v7 = a6;
-  v8 = *&a5;
+  compressedCopy = compressed;
+  v8 = *&format;
   v30[2] = *MEMORY[0x277D85DE8];
-  v12 = a7;
+  deviceCopy = device;
   v28.receiver = self;
   v28.super_class = PTMSRResizeAdditionalOutput;
   v13 = [(PTMSRResizeAdditionalOutput *)&v28 init];
@@ -22,9 +22,9 @@ LABEL_8:
   }
 
   v14 = *MEMORY[0x277CBECE8];
-  var0 = a3->var0;
-  var1 = a3->var1;
-  if (v7)
+  var0 = size->var0;
+  var1 = size->var1;
+  if (compressedCopy)
   {
     LODWORD(v8) = [PTPixelBufferUtil compressedPixelFormat:v8];
   }
@@ -50,21 +50,21 @@ LABEL_8:
   pixelbuffer = v13->_pixelbuffer;
   if (v20)
   {
-    [PTPixelBufferUtil getMTLTextureFromPixelBuffer:pixelbuffer device:v12];
+    [PTPixelBufferUtil getMTLTextureFromPixelBuffer:pixelbuffer device:deviceCopy];
   }
 
   else
   {
-    [PTPixelBufferUtil createTextureFromPixelBuffer:pixelbuffer device:v12 textureCache:0 sRGB:0 metalYCBCRConversion:1];
+    [PTPixelBufferUtil createTextureFromPixelBuffer:pixelbuffer device:deviceCopy textureCache:0 sRGB:0 metalYCBCRConversion:1];
   }
   v22 = ;
   texture = v13->_texture;
   v13->_texture = v22;
 
-  if (a4)
+  if (space)
   {
     ioSurface = v13->_ioSurface;
-    v25 = CGColorSpaceCopyPropertyList(a4);
+    v25 = CGColorSpaceCopyPropertyList(space);
     if (v25)
     {
       v26 = v25;
@@ -73,7 +73,7 @@ LABEL_8:
     }
   }
 
-  v13->_allowCompressed = v7;
+  v13->_allowCompressed = compressedCopy;
   v13->_enabled = 1;
   v19 = v13;
 LABEL_16:

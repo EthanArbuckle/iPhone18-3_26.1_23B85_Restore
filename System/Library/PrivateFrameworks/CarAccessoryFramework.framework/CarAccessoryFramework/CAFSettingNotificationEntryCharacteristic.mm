@@ -3,14 +3,14 @@
 + (void)load;
 - (CAFSettingNotificationEntry)settingNotificationEntryValue;
 - (id)formattedValue;
-- (void)setSettingNotificationEntryValue:(id)a3;
+- (void)setSettingNotificationEntryValue:(id)value;
 @end
 
 @implementation CAFSettingNotificationEntryCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFSettingNotificationEntryCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -18,22 +18,22 @@
 - (CAFSettingNotificationEntry)settingNotificationEntryValue
 {
   v3 = [CAFSettingNotificationEntry alloc];
-  v4 = [(CAFDictionaryCharacteristic *)self dictionaryValue];
-  v5 = [(CAFSettingNotificationEntry *)v3 initWithDictionary:v4];
+  dictionaryValue = [(CAFDictionaryCharacteristic *)self dictionaryValue];
+  v5 = [(CAFSettingNotificationEntry *)v3 initWithDictionary:dictionaryValue];
 
   return v5;
 }
 
-- (void)setSettingNotificationEntryValue:(id)a3
+- (void)setSettingNotificationEntryValue:(id)value
 {
-  v4 = [a3 dictionaryRepresentation];
-  [(CAFDictionaryCharacteristic *)self setDictionaryValue:v4];
+  dictionaryRepresentation = [value dictionaryRepresentation];
+  [(CAFDictionaryCharacteristic *)self setDictionaryValue:dictionaryRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFSettingNotificationEntryCharacteristic *)self settingNotificationEntryValue];
-  v3 = [v2 description];
+  settingNotificationEntryValue = [(CAFSettingNotificationEntryCharacteristic *)self settingNotificationEntryValue];
+  v3 = [settingNotificationEntryValue description];
 
   return v3;
 }

@@ -1,5 +1,5 @@
 @interface CRLCanvasLayoutGeometryAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (CGRect)_crlaxFrame;
 - (CGSize)crlaxSize;
 - (double)crlaxAngleInDegrees;
@@ -8,11 +8,11 @@
 
 @implementation CRLCanvasLayoutGeometryAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -22,11 +22,11 @@
   v8 = 0u;
   v9 = 0u;
   v7 = 0u;
-  v2 = [(CRLCanvasLayoutGeometryAccessibility *)self crlaxTarget];
-  v3 = v2;
-  if (v2)
+  crlaxTarget = [(CRLCanvasLayoutGeometryAccessibility *)self crlaxTarget];
+  v3 = crlaxTarget;
+  if (crlaxTarget)
   {
-    [v2 transform];
+    [crlaxTarget transform];
   }
 
   else
@@ -46,11 +46,11 @@
 
 - (double)crlaxAngleInRadians
 {
-  v2 = [(CRLCanvasLayoutGeometryAccessibility *)self crlaxTarget];
-  v3 = v2;
-  if (v2)
+  crlaxTarget = [(CRLCanvasLayoutGeometryAccessibility *)self crlaxTarget];
+  v3 = crlaxTarget;
+  if (crlaxTarget)
   {
-    [v2 transform];
+    [crlaxTarget transform];
   }
 
   else
@@ -77,8 +77,8 @@
 
 - (CGRect)_crlaxFrame
 {
-  v2 = [(CRLCanvasLayoutGeometryAccessibility *)self crlaxTarget];
-  [v2 frame];
+  crlaxTarget = [(CRLCanvasLayoutGeometryAccessibility *)self crlaxTarget];
+  [crlaxTarget frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;

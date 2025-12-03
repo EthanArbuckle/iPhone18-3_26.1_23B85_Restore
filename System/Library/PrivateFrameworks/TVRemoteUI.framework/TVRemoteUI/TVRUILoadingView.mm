@@ -1,21 +1,21 @@
 @interface TVRUILoadingView
-- (TVRUILoadingView)initWithFrame:(CGRect)a3;
+- (TVRUILoadingView)initWithFrame:(CGRect)frame;
 - (UIView)effectiveNoContentView;
 - (void)_configureHierarchy;
 - (void)_updateUIFromCurrentState;
-- (void)didStartLoadingWithTimeout:(double)a3;
-- (void)loadingCompleteWithContent:(BOOL)a3;
+- (void)didStartLoadingWithTimeout:(double)timeout;
+- (void)loadingCompleteWithContent:(BOOL)content;
 - (void)reset;
-- (void)setNoContentText:(id)a3;
+- (void)setNoContentText:(id)text;
 @end
 
 @implementation TVRUILoadingView
 
-- (TVRUILoadingView)initWithFrame:(CGRect)a3
+- (TVRUILoadingView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = TVRUILoadingView;
-  result = [(TVRUILoadingView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(TVRUILoadingView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_transitionToActivityIndicatorTimeout = 1.5;
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (void)didStartLoadingWithTimeout:(double)a3
+- (void)didStartLoadingWithTimeout:(double)timeout
 {
   if (![(TVRUILoadingView *)self didConfigureHierarchy])
   {
@@ -53,10 +53,10 @@
     dispatch_after(v8, MEMORY[0x277D85CD0], block);
   }
 
-  if (a3 > 0.0)
+  if (timeout > 0.0)
   {
     objc_initWeak(&location, self);
-    v9 = dispatch_time(0, (a3 * 1000000000.0));
+    v9 = dispatch_time(0, (timeout * 1000000000.0));
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __47__TVRUILoadingView_didStartLoadingWithTimeout___block_invoke_2;
@@ -83,12 +83,12 @@ uint64_t __47__TVRUILoadingView_didStartLoadingWithTimeout___block_invoke_2(uint
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)loadingCompleteWithContent:(BOOL)a3
+- (void)loadingCompleteWithContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   [(TVRUILoadingView *)self setIsLoading:0];
   [(TVRUILoadingView *)self setIsLoaded:1];
-  [(TVRUILoadingView *)self setHasContent:v3];
+  [(TVRUILoadingView *)self setHasContent:contentCopy];
 
   [(TVRUILoadingView *)self _updateUIFromCurrentState];
 }
@@ -104,28 +104,28 @@ uint64_t __47__TVRUILoadingView_didStartLoadingWithTimeout___block_invoke_2(uint
   [(TVRUILoadingView *)self _updateUIFromCurrentState];
 }
 
-- (void)setNoContentText:(id)a3
+- (void)setNoContentText:(id)text
 {
-  objc_storeStrong(&self->_noContentText, a3);
-  v5 = a3;
-  v6 = [(TVRUILoadingView *)self noContentLabel];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_noContentText, text);
+  textCopy = text;
+  noContentLabel = [(TVRUILoadingView *)self noContentLabel];
+  [noContentLabel setText:textCopy];
 }
 
 - (void)_updateUIFromCurrentState
 {
   if (![(TVRUILoadingView *)self didTimeoutWaitingForLoad])
   {
-    v3 = [(TVRUILoadingView *)self loadingStartTime];
-    if (v3 && [(TVRUILoadingView *)self isLoading]&& ![(TVRUILoadingView *)self hasContent])
+    loadingStartTime = [(TVRUILoadingView *)self loadingStartTime];
+    if (loadingStartTime && [(TVRUILoadingView *)self isLoading]&& ![(TVRUILoadingView *)self hasContent])
     {
-      v8 = [(TVRUILoadingView *)self isLoaded];
+      isLoaded = [(TVRUILoadingView *)self isLoaded];
 
-      if (!v8)
+      if (!isLoaded)
       {
         v9 = [MEMORY[0x277CBEAA8] now];
-        v10 = [(TVRUILoadingView *)self loadingStartTime];
-        [v9 timeIntervalSinceDate:v10];
+        loadingStartTime2 = [(TVRUILoadingView *)self loadingStartTime];
+        [v9 timeIntervalSinceDate:loadingStartTime2];
         v12 = v11;
 
         [(TVRUILoadingView *)self transitionToActivityIndicatorTimeout];
@@ -143,62 +143,62 @@ uint64_t __47__TVRUILoadingView_didStartLoadingWithTimeout___block_invoke_2(uint
 
   if ([(TVRUILoadingView *)self didTimeoutWaitingForLoad]&& [(TVRUILoadingView *)self isLoading])
   {
-    v4 = [(TVRUILoadingView *)self isLoaded];
-    v5 = [(TVRUILoadingView *)self activityIndicator];
-    [v5 setHidden:v4];
+    isLoaded2 = [(TVRUILoadingView *)self isLoaded];
+    activityIndicator = [(TVRUILoadingView *)self activityIndicator];
+    [activityIndicator setHidden:isLoaded2];
 
-    if (v4)
+    if (isLoaded2)
     {
       goto LABEL_12;
     }
 
-    v6 = [(TVRUILoadingView *)self activityIndicator];
-    [v6 startAnimating];
+    activityIndicator2 = [(TVRUILoadingView *)self activityIndicator];
+    [activityIndicator2 startAnimating];
   }
 
   else
   {
-    v6 = [(TVRUILoadingView *)self activityIndicator];
-    [v6 setHidden:1];
+    activityIndicator2 = [(TVRUILoadingView *)self activityIndicator];
+    [activityIndicator2 setHidden:1];
   }
 
 LABEL_12:
   if ([(TVRUILoadingView *)self isLoaded])
   {
-    v7 = [(TVRUILoadingView *)self hasContent];
+    hasContent = [(TVRUILoadingView *)self hasContent];
   }
 
   else
   {
-    v7 = 1;
+    hasContent = 1;
   }
 
-  v14 = [(TVRUILoadingView *)self effectiveNoContentView];
-  [v14 setHidden:v7];
+  effectiveNoContentView = [(TVRUILoadingView *)self effectiveNoContentView];
+  [effectiveNoContentView setHidden:hasContent];
 }
 
 - (void)_configureHierarchy
 {
   v46 = *MEMORY[0x277D85DE8];
   [(TVRUILoadingView *)self setUserInteractionEnabled:0];
-  v3 = self;
+  selfCopy = self;
   v4 = objc_alloc_init(MEMORY[0x277D756B8]);
   v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A28]];
   [(UILabel *)v4 setFont:v5];
 
   [(UILabel *)v4 setAdjustsFontForContentSizeCategory:1];
-  v6 = [MEMORY[0x277D75348] lightTextColor];
-  [(UILabel *)v4 setTextColor:v6];
+  lightTextColor = [MEMORY[0x277D75348] lightTextColor];
+  [(UILabel *)v4 setTextColor:lightTextColor];
 
-  v7 = [(TVRUILoadingView *)v3 noContentText];
-  [(UILabel *)v4 setText:v7];
+  noContentText = [(TVRUILoadingView *)selfCopy noContentText];
+  [(UILabel *)v4 setText:noContentText];
 
-  v8 = [(TVRUILoadingView *)v3 noContentView];
-  v9 = v8;
+  noContentView = [(TVRUILoadingView *)selfCopy noContentView];
+  v9 = noContentView;
   v37 = v4;
-  if (v8)
+  if (noContentView)
   {
-    v10 = v8;
+    v10 = noContentView;
   }
 
   else
@@ -232,7 +232,7 @@ LABEL_12:
 
         v18 = *(*(&v38 + 1) + 8 * i);
         [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [(TVRUILoadingView *)v3 addSubview:v18];
+        [(TVRUILoadingView *)selfCopy addSubview:v18];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v38 objects:v45 count:16];
@@ -242,51 +242,51 @@ LABEL_12:
   }
 
   v30 = MEMORY[0x277CCAAD0];
-  v36 = [v11 centerXAnchor];
-  v35 = [(TVRUILoadingView *)v3 centerXAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  centerXAnchor = [v11 centerXAnchor];
+  centerXAnchor2 = [(TVRUILoadingView *)selfCopy centerXAnchor];
+  v34 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v42[0] = v34;
-  v32 = [v11 centerYAnchor];
-  v31 = [(TVRUILoadingView *)v3 centerYAnchor];
-  v19 = [v32 constraintEqualToAnchor:v31];
+  centerYAnchor = [v11 centerYAnchor];
+  centerYAnchor2 = [(TVRUILoadingView *)selfCopy centerYAnchor];
+  v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v42[1] = v19;
-  v20 = [(UIActivityIndicatorView *)v12 centerXAnchor];
-  v21 = [(TVRUILoadingView *)v3 centerXAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  centerXAnchor3 = [(UIActivityIndicatorView *)v12 centerXAnchor];
+  centerXAnchor4 = [(TVRUILoadingView *)selfCopy centerXAnchor];
+  v22 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v42[2] = v22;
-  v23 = [(UIActivityIndicatorView *)v12 centerYAnchor];
-  [(TVRUILoadingView *)v3 centerYAnchor];
+  centerYAnchor3 = [(UIActivityIndicatorView *)v12 centerYAnchor];
+  [(TVRUILoadingView *)selfCopy centerYAnchor];
   v24 = v33 = v11;
-  v25 = [v23 constraintEqualToAnchor:v24];
+  v25 = [centerYAnchor3 constraintEqualToAnchor:v24];
   v42[3] = v25;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:4];
   [v30 activateConstraints:v26];
 
-  noContentLabel = v3->_noContentLabel;
-  v3->_noContentLabel = v37;
+  noContentLabel = selfCopy->_noContentLabel;
+  selfCopy->_noContentLabel = v37;
   v28 = v37;
 
-  activityIndicator = v3->_activityIndicator;
-  v3->_activityIndicator = v12;
+  activityIndicator = selfCopy->_activityIndicator;
+  selfCopy->_activityIndicator = v12;
 
-  [(TVRUILoadingView *)v3 _updateUIFromCurrentState];
+  [(TVRUILoadingView *)selfCopy _updateUIFromCurrentState];
 }
 
 - (UIView)effectiveNoContentView
 {
-  v3 = [(TVRUILoadingView *)self noContentView];
-  v4 = v3;
-  if (v3)
+  noContentView = [(TVRUILoadingView *)self noContentView];
+  v4 = noContentView;
+  if (noContentView)
   {
-    v5 = v3;
+    noContentLabel = noContentView;
   }
 
   else
   {
-    v5 = [(TVRUILoadingView *)self noContentLabel];
+    noContentLabel = [(TVRUILoadingView *)self noContentLabel];
   }
 
-  v6 = v5;
+  v6 = noContentLabel;
 
   return v6;
 }

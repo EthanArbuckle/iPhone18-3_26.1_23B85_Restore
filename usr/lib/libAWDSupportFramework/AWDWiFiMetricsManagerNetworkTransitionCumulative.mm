@@ -1,15 +1,15 @@
 @interface AWDWiFiMetricsManagerNetworkTransitionCumulative
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)channelScanCountAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)channelScanCountAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasColocatedNetworksFoundCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasColocatedNetworksFoundCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerNetworkTransitionCumulative
@@ -22,9 +22,9 @@
   [(AWDWiFiMetricsManagerNetworkTransitionCumulative *)&v3 dealloc];
 }
 
-- (void)setHasColocatedNetworksFoundCount:(BOOL)a3
+- (void)setHasColocatedNetworksFoundCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -37,16 +37,16 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)channelScanCountAtIndex:(unint64_t)a3
+- (unsigned)channelScanCountAtIndex:(unint64_t)index
 {
   p_channelScanCounts = &self->_channelScanCounts;
   count = self->_channelScanCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_channelScanCounts->list[a3];
+  return p_channelScanCounts->list[index];
 }
 
 - (id)description
@@ -58,24 +58,24 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_colocatedNetworksFoundCount), @"colocatedNetworksFoundCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_colocatedNetworksFoundCount), @"colocatedNetworksFoundCount"}];
   }
 
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"channelScanCount"];
-  return v3;
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"channelScanCount"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -106,40 +106,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 4) = self->_timestamp;
-    *(a3 + 44) |= 1u;
+    *(to + 4) = self->_timestamp;
+    *(to + 44) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 10) = self->_colocatedNetworksFoundCount;
-    *(a3 + 44) |= 2u;
+    *(to + 10) = self->_colocatedNetworksFoundCount;
+    *(to + 44) |= 2u;
   }
 
   if ([(AWDWiFiMetricsManagerNetworkTransitionCumulative *)self channelScanCountsCount])
   {
-    [a3 clearChannelScanCounts];
-    v6 = [(AWDWiFiMetricsManagerNetworkTransitionCumulative *)self channelScanCountsCount];
-    if (v6)
+    [to clearChannelScanCounts];
+    channelScanCountsCount = [(AWDWiFiMetricsManagerNetworkTransitionCumulative *)self channelScanCountsCount];
+    if (channelScanCountsCount)
     {
-      v7 = v6;
+      v7 = channelScanCountsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addChannelScanCount:{-[AWDWiFiMetricsManagerNetworkTransitionCumulative channelScanCountAtIndex:](self, "channelScanCountAtIndex:", i)}];
+        [to addChannelScanCount:{-[AWDWiFiMetricsManagerNetworkTransitionCumulative channelScanCountAtIndex:](self, "channelScanCountAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if (has)
@@ -159,36 +159,36 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = *(a3 + 44);
+  v5 = *(equal + 44);
   if (*&self->_has)
   {
-    if ((*(a3 + 44) & 1) == 0 || self->_timestamp != *(a3 + 4))
+    if ((*(equal + 44) & 1) == 0 || self->_timestamp != *(equal + 4))
     {
       return 0;
     }
   }
 
-  else if (*(a3 + 44))
+  else if (*(equal + 44))
   {
     return 0;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 44) & 2) == 0 || self->_colocatedNetworksFoundCount != *(a3 + 10))
+    if ((*(equal + 44) & 2) == 0 || self->_colocatedNetworksFoundCount != *(equal + 10))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 44) & 2) != 0)
+  else if ((*(equal + 44) & 2) != 0)
   {
     return 0;
   }
@@ -222,29 +222,29 @@ LABEL_3:
   return v3 ^ v2 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if (v5)
   {
-    self->_timestamp = *(a3 + 4);
+    self->_timestamp = *(from + 4);
     *&self->_has |= 1u;
-    v5 = *(a3 + 44);
+    v5 = *(from + 44);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_colocatedNetworksFoundCount = *(a3 + 10);
+    self->_colocatedNetworksFoundCount = *(from + 10);
     *&self->_has |= 2u;
   }
 
-  v6 = [a3 channelScanCountsCount];
-  if (v6)
+  channelScanCountsCount = [from channelScanCountsCount];
+  if (channelScanCountsCount)
   {
-    v7 = v6;
+    v7 = channelScanCountsCount;
     for (i = 0; i != v7; ++i)
     {
-      -[AWDWiFiMetricsManagerNetworkTransitionCumulative addChannelScanCount:](self, "addChannelScanCount:", [a3 channelScanCountAtIndex:i]);
+      -[AWDWiFiMetricsManagerNetworkTransitionCumulative addChannelScanCount:](self, "addChannelScanCount:", [from channelScanCountAtIndex:i]);
     }
   }
 }

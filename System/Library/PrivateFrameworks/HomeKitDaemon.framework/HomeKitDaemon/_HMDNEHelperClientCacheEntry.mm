@@ -1,21 +1,21 @@
 @interface _HMDNEHelperClientCacheEntry
-- (_HMDNEHelperClientCacheEntry)initWithSigningId:(id)a3 identifiers:(id)a4;
+- (_HMDNEHelperClientCacheEntry)initWithSigningId:(id)id identifiers:(id)identifiers;
 @end
 
 @implementation _HMDNEHelperClientCacheEntry
 
-- (_HMDNEHelperClientCacheEntry)initWithSigningId:(id)a3 identifiers:(id)a4
+- (_HMDNEHelperClientCacheEntry)initWithSigningId:(id)id identifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  identifiersCopy = identifiers;
   v12.receiver = self;
   v12.super_class = _HMDNEHelperClientCacheEntry;
   v9 = [(_HMDNEHelperClientCacheEntry *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_signingId, a3);
-    objc_storeStrong(&v10->_identifiers, a4);
+    objc_storeStrong(&v9->_signingId, id);
+    objc_storeStrong(&v10->_identifiers, identifiers);
   }
 
   return v10;

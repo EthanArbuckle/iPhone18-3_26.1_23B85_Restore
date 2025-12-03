@@ -1,12 +1,12 @@
 @interface BankConnectInstitutionMatcher
 - (_TtC10FinanceKit29BankConnectInstitutionMatcher)init;
-- (void)institutionForPaymentPass:(id)a3 withCompletion:(id)a4;
-- (void)institutionForPrimaryAccountIdentifier:(NSString *)a3 withCompletion:(id)a4;
+- (void)institutionForPaymentPass:(id)pass withCompletion:(id)completion;
+- (void)institutionForPrimaryAccountIdentifier:(NSString *)identifier withCompletion:(id)completion;
 @end
 
 @implementation BankConnectInstitutionMatcher
 
-- (void)institutionForPaymentPass:(id)a3 withCompletion:(id)a4
+- (void)institutionForPaymentPass:(id)pass withCompletion:(id)completion
 {
   v6 = sub_1B78000B8();
   v7 = *(v6 - 8);
@@ -16,11 +16,11 @@
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB99C280);
   MEMORY[0x1EEE9AC00](v10 - 8);
   v12 = &v24 - v11;
-  v13 = _Block_copy(a4);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
-  v15 = a3;
-  v16 = [v15 primaryAccountIdentifier];
+  passCopy = pass;
+  primaryAccountIdentifier = [passCopy primaryAccountIdentifier];
   v17 = sub_1B7800868();
   v19 = v18;
 
@@ -45,14 +45,14 @@
   sub_1B759B5D0(0, 0, v12, &unk_1B7842D98, v23);
 }
 
-- (void)institutionForPrimaryAccountIdentifier:(NSString *)a3 withCompletion:(id)a4
+- (void)institutionForPrimaryAccountIdentifier:(NSString *)identifier withCompletion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB99C280);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = identifier;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1B7800DF8();
@@ -67,8 +67,8 @@
   v14[3] = 0;
   v14[4] = &unk_1B780BB50;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_1B77E494C(0, 0, v9, &unk_1B780D8F0, v14);
 }
 

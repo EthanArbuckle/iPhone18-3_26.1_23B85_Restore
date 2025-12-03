@@ -1,5 +1,5 @@
 @interface PHAssetView
-+ (CGRect)preferredContentsRectForAsset:(id)a3 targetSize:(CGSize)a4;
++ (CGRect)preferredContentsRectForAsset:(id)asset targetSize:(CGSize)size;
 - (BOOL)allowsTextSelection;
 - (CGRect)stillImageContentsRect;
 - (NSArray)audioIdentifiersToHighlight;
@@ -7,21 +7,21 @@
 - (NSArray)personLocalIdentifiersToHighlight;
 - (NSArray)sceneIdentifiersToHighlight;
 - (NSArray)stringsToHighlight;
-- (PHAssetView)initWithCoder:(id)a3;
-- (PHAssetView)initWithFrame:(CGRect)a3;
+- (PHAssetView)initWithCoder:(id)coder;
+- (PHAssetView)initWithFrame:(CGRect)frame;
 - (int64_t)preferredImageDynamicRange;
 - (void)_commonPHAssetViewInit;
 - (void)layoutSubviews;
-- (void)setAllowsTextSelection:(BOOL)a3;
-- (void)setAsset:(id)a3;
-- (void)setAudioIdentifiersToHighlight:(id)a3;
-- (void)setContentMode:(int64_t)a3;
-- (void)setHumanActionIdentifiersToHighlight:(id)a3;
-- (void)setPersonLocalIdentifiersToHighlight:(id)a3;
-- (void)setPreferredImageDynamicRange:(int64_t)a3;
-- (void)setSceneIdentifiersToHighlight:(id)a3;
-- (void)setStillImageContentsRect:(CGRect)a3;
-- (void)setStringsToHighlight:(id)a3;
+- (void)setAllowsTextSelection:(BOOL)selection;
+- (void)setAsset:(id)asset;
+- (void)setAudioIdentifiersToHighlight:(id)highlight;
+- (void)setContentMode:(int64_t)mode;
+- (void)setHumanActionIdentifiersToHighlight:(id)highlight;
+- (void)setPersonLocalIdentifiersToHighlight:(id)highlight;
+- (void)setPreferredImageDynamicRange:(int64_t)range;
+- (void)setSceneIdentifiersToHighlight:(id)highlight;
+- (void)setStillImageContentsRect:(CGRect)rect;
+- (void)setStringsToHighlight:(id)highlight;
 @end
 
 @implementation PHAssetView
@@ -33,24 +33,24 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PHAssetView *)self impl];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  impl = [(PHAssetView *)self impl];
+  [impl setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)setStillImageContentsRect:(CGRect)a3
+- (void)setStillImageContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(PHAssetView *)self impl];
-  [v7 setStillImageContentsRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  impl = [(PHAssetView *)self impl];
+  [impl setStillImageContentsRect:{x, y, width, height}];
 }
 
 - (CGRect)stillImageContentsRect
 {
-  v2 = [(PHAssetView *)self impl];
-  [v2 stillImageContentsRect];
+  impl = [(PHAssetView *)self impl];
+  [impl stillImageContentsRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -67,170 +67,170 @@
   return result;
 }
 
-- (void)setPreferredImageDynamicRange:(int64_t)a3
+- (void)setPreferredImageDynamicRange:(int64_t)range
 {
-  v4 = [(PHAssetView *)self impl];
-  [v4 setPreferredImageDynamicRange:a3];
+  impl = [(PHAssetView *)self impl];
+  [impl setPreferredImageDynamicRange:range];
 }
 
 - (int64_t)preferredImageDynamicRange
 {
-  v2 = [(PHAssetView *)self impl];
-  v3 = [v2 preferredImageDynamicRange];
+  impl = [(PHAssetView *)self impl];
+  preferredImageDynamicRange = [impl preferredImageDynamicRange];
 
-  return v3;
+  return preferredImageDynamicRange;
 }
 
-- (void)setPersonLocalIdentifiersToHighlight:(id)a3
+- (void)setPersonLocalIdentifiersToHighlight:(id)highlight
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  highlightCopy = highlight;
   v5 = PLUIGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = highlightCopy;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_INFO, "PHAssetView: Set person identifiers to highlight: %@", &v7, 0xCu);
   }
 
-  v6 = [(PHAssetView *)self impl];
-  [v6 setPersonLocalIdentifiersToHighlight:v4];
+  impl = [(PHAssetView *)self impl];
+  [impl setPersonLocalIdentifiersToHighlight:highlightCopy];
 }
 
 - (NSArray)personLocalIdentifiersToHighlight
 {
-  v2 = [(PHAssetView *)self impl];
-  v3 = [v2 personLocalIdentifiersToHighlight];
+  impl = [(PHAssetView *)self impl];
+  personLocalIdentifiersToHighlight = [impl personLocalIdentifiersToHighlight];
 
-  return v3;
+  return personLocalIdentifiersToHighlight;
 }
 
-- (void)setHumanActionIdentifiersToHighlight:(id)a3
+- (void)setHumanActionIdentifiersToHighlight:(id)highlight
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  highlightCopy = highlight;
   v5 = PLUIGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = highlightCopy;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_INFO, "PHAssetView: Set human action identifiers to highlight: %@", &v7, 0xCu);
   }
 
-  v6 = [(PHAssetView *)self impl];
-  [v6 setHumanActionIdentifiersToHighlight:v4];
+  impl = [(PHAssetView *)self impl];
+  [impl setHumanActionIdentifiersToHighlight:highlightCopy];
 }
 
 - (NSArray)humanActionIdentifiersToHighlight
 {
-  v2 = [(PHAssetView *)self impl];
-  v3 = [v2 humanActionIdentifiersToHighlight];
+  impl = [(PHAssetView *)self impl];
+  humanActionIdentifiersToHighlight = [impl humanActionIdentifiersToHighlight];
 
-  return v3;
+  return humanActionIdentifiersToHighlight;
 }
 
-- (void)setAudioIdentifiersToHighlight:(id)a3
+- (void)setAudioIdentifiersToHighlight:(id)highlight
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  highlightCopy = highlight;
   v5 = PLUIGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = highlightCopy;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_INFO, "PHAssetView: Set audio identifiers to highlight: %@", &v7, 0xCu);
   }
 
-  v6 = [(PHAssetView *)self impl];
-  [v6 setAudioIdentifiersToHighlight:v4];
+  impl = [(PHAssetView *)self impl];
+  [impl setAudioIdentifiersToHighlight:highlightCopy];
 }
 
 - (NSArray)audioIdentifiersToHighlight
 {
-  v2 = [(PHAssetView *)self impl];
-  v3 = [v2 audioIdentifiersToHighlight];
+  impl = [(PHAssetView *)self impl];
+  audioIdentifiersToHighlight = [impl audioIdentifiersToHighlight];
 
-  return v3;
+  return audioIdentifiersToHighlight;
 }
 
-- (void)setSceneIdentifiersToHighlight:(id)a3
+- (void)setSceneIdentifiersToHighlight:(id)highlight
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  highlightCopy = highlight;
   v5 = PLUIGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = highlightCopy;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_INFO, "PHAssetView: Set scene identifiers to highlight: %@", &v7, 0xCu);
   }
 
-  v6 = [(PHAssetView *)self impl];
-  [v6 setSceneIdentifiersToHighlight:v4];
+  impl = [(PHAssetView *)self impl];
+  [impl setSceneIdentifiersToHighlight:highlightCopy];
 }
 
 - (NSArray)sceneIdentifiersToHighlight
 {
-  v2 = [(PHAssetView *)self impl];
-  v3 = [v2 sceneIdentifiersToHighlight];
+  impl = [(PHAssetView *)self impl];
+  sceneIdentifiersToHighlight = [impl sceneIdentifiersToHighlight];
 
-  return v3;
+  return sceneIdentifiersToHighlight;
 }
 
-- (void)setStringsToHighlight:(id)a3
+- (void)setStringsToHighlight:(id)highlight
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  highlightCopy = highlight;
   v5 = PLUIGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = highlightCopy;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_INFO, "PHAssetView: Set strings to highlight: %@", &v7, 0xCu);
   }
 
-  v6 = [(PHAssetView *)self impl];
-  [v6 setStringsToHighlight:v4];
+  impl = [(PHAssetView *)self impl];
+  [impl setStringsToHighlight:highlightCopy];
 }
 
 - (NSArray)stringsToHighlight
 {
-  v2 = [(PHAssetView *)self impl];
-  v3 = [v2 stringsToHighlight];
+  impl = [(PHAssetView *)self impl];
+  stringsToHighlight = [impl stringsToHighlight];
 
-  return v3;
+  return stringsToHighlight;
 }
 
-- (void)setAllowsTextSelection:(BOOL)a3
+- (void)setAllowsTextSelection:(BOOL)selection
 {
-  v3 = a3;
-  v4 = [(PHAssetView *)self impl];
-  [v4 setAllowsTextSelection:v3];
+  selectionCopy = selection;
+  impl = [(PHAssetView *)self impl];
+  [impl setAllowsTextSelection:selectionCopy];
 }
 
 - (BOOL)allowsTextSelection
 {
-  v2 = [(PHAssetView *)self impl];
-  v3 = [v2 allowsTextSelection];
+  impl = [(PHAssetView *)self impl];
+  allowsTextSelection = [impl allowsTextSelection];
 
-  return v3;
+  return allowsTextSelection;
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v6.receiver = self;
   v6.super_class = PHAssetView;
   [(PHAssetView *)&v6 setContentMode:?];
-  v5 = [(PHAssetView *)self impl];
-  [v5 setContentMode:a3];
+  impl = [(PHAssetView *)self impl];
+  [impl setContentMode:mode];
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  objc_storeStrong(&self->_asset, a3);
-  v5 = a3;
-  v6 = [(PHAssetView *)self impl];
-  [v6 setAsset:v5];
+  objc_storeStrong(&self->_asset, asset);
+  assetCopy = asset;
+  impl = [(PHAssetView *)self impl];
+  [impl setAsset:assetCopy];
 }
 
 - (void)_commonPHAssetViewInit
@@ -240,16 +240,16 @@
   self->_impl = v3;
 
   [(PHAssetView *)self addSubview:self->_impl];
-  v5 = [(PXPhotoKitAssetView *)self->_impl contentMode];
+  contentMode = [(PXPhotoKitAssetView *)self->_impl contentMode];
 
-  [(PHAssetView *)self setContentMode:v5];
+  [(PHAssetView *)self setContentMode:contentMode];
 }
 
-- (PHAssetView)initWithCoder:(id)a3
+- (PHAssetView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PHAssetView;
-  v3 = [(PHAssetView *)&v6 initWithCoder:a3];
+  v3 = [(PHAssetView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -259,11 +259,11 @@
   return v4;
 }
 
-- (PHAssetView)initWithFrame:(CGRect)a3
+- (PHAssetView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PHAssetView;
-  v3 = [(PHAssetView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHAssetView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -273,9 +273,9 @@
   return v4;
 }
 
-+ (CGRect)preferredContentsRectForAsset:(id)a3 targetSize:(CGSize)a4
++ (CGRect)preferredContentsRectForAsset:(id)asset targetSize:(CGSize)size
 {
-  [MEMORY[0x1E69C3478] preferredContentsRectForAsset:a3 targetSize:{a4.width, a4.height}];
+  [MEMORY[0x1E69C3478] preferredContentsRectForAsset:asset targetSize:{size.width, size.height}];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;

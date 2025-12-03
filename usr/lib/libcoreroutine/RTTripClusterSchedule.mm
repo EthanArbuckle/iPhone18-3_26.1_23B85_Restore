@@ -1,30 +1,30 @@
 @interface RTTripClusterSchedule
-+ (id)createWithManagedObject:(id)a3;
-+ (id)createWithTripClusterScheduleMO:(id)a3;
-+ (int)getTimeIDFromDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSchedule:(id)a3;
++ (id)createWithManagedObject:(id)object;
++ (id)createWithTripClusterScheduleMO:(id)o;
++ (int)getTimeIDFromDate:(id)date;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSchedule:(id)schedule;
 - (NSString)description;
-- (RTTripClusterSchedule)initWithClusterID:(id)a3 timeID:(int)a4 count:(int)a5;
-- (RTTripClusterSchedule)initWithCoder:(id)a3;
-- (RTTripClusterSchedule)initWithTimeAndClusterID:(id)a3 time:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)managedObjectWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RTTripClusterSchedule)initWithClusterID:(id)d timeID:(int)iD count:(int)count;
+- (RTTripClusterSchedule)initWithCoder:(id)coder;
+- (RTTripClusterSchedule)initWithTimeAndClusterID:(id)d time:(id)time;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)managedObjectWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTTripClusterSchedule
 
-+ (id)createWithManagedObject:(id)a3
++ (id)createWithManagedObject:(id)object
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = objectCopy;
       v6 = [objc_opt_class() createWithTripClusterScheduleMO:v5];
 
       goto LABEL_8;
@@ -38,7 +38,7 @@
       v11 = v9;
       v12 = 2112;
       v14 = 2080;
-      v13 = v4;
+      v13 = objectCopy;
       v15 = "+[RTTripClusterSchedule(RTCoreDataTransformable) createWithManagedObject:]";
       v16 = 1024;
       v17 = 32;
@@ -52,32 +52,32 @@ LABEL_8:
   return v6;
 }
 
-+ (id)createWithTripClusterScheduleMO:(id)a3
++ (id)createWithTripClusterScheduleMO:(id)o
 {
-  v3 = a3;
+  oCopy = o;
   v4 = objc_opt_new();
-  v5 = [v3 clusterID];
+  clusterID = [oCopy clusterID];
 
-  if (v5)
+  if (clusterID)
   {
-    v6 = [v3 clusterID];
+    clusterID2 = [oCopy clusterID];
 
-    v4 = v6;
+    v4 = clusterID2;
   }
 
-  if ([v3 timeID])
+  if ([oCopy timeID])
   {
-    v7 = [v3 timeID];
+    timeID = [oCopy timeID];
   }
 
   else
   {
-    v7 = 0;
+    timeID = 0;
   }
 
-  if ([v3 count])
+  if ([oCopy count])
   {
-    v8 = [v3 count];
+    v8 = [oCopy count];
   }
 
   else
@@ -85,16 +85,16 @@ LABEL_8:
     v8 = 0;
   }
 
-  v9 = [[RTTripClusterSchedule alloc] initWithClusterID:v4 timeID:v7 count:v8];
+  v9 = [[RTTripClusterSchedule alloc] initWithClusterID:v4 timeID:timeID count:v8];
 
   return v9;
 }
 
-- (id)managedObjectWithContext:(id)a3
+- (id)managedObjectWithContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = [RTTripClusterScheduleMO managedObjectWithTripClusterSchedule:self inManagedObjectContext:a3];
+    v3 = [RTTripClusterScheduleMO managedObjectWithTripClusterSchedule:self inManagedObjectContext:context];
   }
 
   else
@@ -112,47 +112,47 @@ LABEL_8:
   return v3;
 }
 
-- (RTTripClusterSchedule)initWithClusterID:(id)a3 timeID:(int)a4 count:(int)a5
+- (RTTripClusterSchedule)initWithClusterID:(id)d timeID:(int)iD count:(int)count
 {
-  v9 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = RTTripClusterSchedule;
   v10 = [(RTTripClusterSchedule *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_clusterID, a3);
-    v11->_timeID = a4;
-    v11->_count = a5;
+    objc_storeStrong(&v10->_clusterID, d);
+    v11->_timeID = iD;
+    v11->_count = count;
   }
 
   return v11;
 }
 
-+ (int)getTimeIDFromDate:(id)a3
++ (int)getTimeIDFromDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 component:512 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar component:512 fromDate:dateCopy];
 
-  v7 = [MEMORY[0x277CBEA80] currentCalendar];
-  v8 = [v7 component:32 fromDate:v4];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  v8 = [currentCalendar2 component:32 fromDate:dateCopy];
 
   return v8 / 4 + 6 * v6 - 6;
 }
 
-- (RTTripClusterSchedule)initWithTimeAndClusterID:(id)a3 time:(id)a4
+- (RTTripClusterSchedule)initWithTimeAndClusterID:(id)d time:(id)time
 {
-  v7 = a3;
-  v8 = [RTTripClusterSchedule getTimeIDFromDate:a4];
+  dCopy = d;
+  v8 = [RTTripClusterSchedule getTimeIDFromDate:time];
   v12.receiver = self;
   v12.super_class = RTTripClusterSchedule;
   v9 = [(RTTripClusterSchedule *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clusterID, a3);
+    objc_storeStrong(&v9->_clusterID, d);
     v10->_timeID = v8;
     v10->_count = 1;
   }
@@ -160,30 +160,30 @@ LABEL_8:
   return v10;
 }
 
-- (RTTripClusterSchedule)initWithCoder:(id)a3
+- (RTTripClusterSchedule)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"clusterID"];
-  v6 = [v4 decodeIntForKey:@"timeID"];
-  v7 = [v4 decodeIntForKey:@"count"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"clusterID"];
+  v6 = [coderCopy decodeIntForKey:@"timeID"];
+  v7 = [coderCopy decodeIntForKey:@"count"];
 
   v8 = [(RTTripClusterSchedule *)self initWithClusterID:v5 timeID:v6 count:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(RTTripClusterSchedule *)self clusterID];
-  [v5 encodeObject:v4 forKey:@"clusterID"];
+  coderCopy = coder;
+  clusterID = [(RTTripClusterSchedule *)self clusterID];
+  [coderCopy encodeObject:clusterID forKey:@"clusterID"];
 
-  [v5 encodeInt:-[RTTripClusterSchedule timeID](self forKey:{"timeID"), @"timeID"}];
-  [v5 encodeInt:-[RTTripClusterSchedule count](self forKey:{"count"), @"count"}];
+  [coderCopy encodeInt:-[RTTripClusterSchedule timeID](self forKey:{"timeID"), @"timeID"}];
+  [coderCopy encodeInt:-[RTTripClusterSchedule count](self forKey:{"count"), @"count"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   clusterID = self->_clusterID;
   timeID = self->_timeID;
   count = self->_count;
@@ -191,15 +191,15 @@ LABEL_8:
   return [v4 initWithClusterID:clusterID timeID:timeID count:count];
 }
 
-- (BOOL)isEqualToSchedule:(id)a3
+- (BOOL)isEqualToSchedule:(id)schedule
 {
-  v4 = a3;
-  v5 = [(RTTripClusterSchedule *)self clusterID];
-  v6 = [v4 clusterID];
-  if (v5 == v6 && (v7 = -[RTTripClusterSchedule timeID](self, "timeID"), v7 == [v4 timeID]))
+  scheduleCopy = schedule;
+  clusterID = [(RTTripClusterSchedule *)self clusterID];
+  clusterID2 = [scheduleCopy clusterID];
+  if (clusterID == clusterID2 && (v7 = -[RTTripClusterSchedule timeID](self, "timeID"), v7 == [scheduleCopy timeID]))
   {
     v8 = [(RTTripClusterSchedule *)self count];
-    v9 = v8 == [v4 count];
+    v9 = v8 == [scheduleCopy count];
   }
 
   else
@@ -210,18 +210,18 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripClusterSchedule *)self isEqualToSchedule:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripClusterSchedule *)self isEqualToSchedule:v5];
   }
 
   return v6;
@@ -230,9 +230,9 @@ LABEL_8:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTTripClusterSchedule *)self clusterID];
-  v5 = [v4 UUIDString];
-  v6 = [v3 stringWithFormat:@"clusterID, %@, timeID, %d, count, %d", v5, -[RTTripClusterSchedule timeID](self, "timeID"), -[RTTripClusterSchedule count](self, "count")];
+  clusterID = [(RTTripClusterSchedule *)self clusterID];
+  uUIDString = [clusterID UUIDString];
+  v6 = [v3 stringWithFormat:@"clusterID, %@, timeID, %d, count, %d", uUIDString, -[RTTripClusterSchedule timeID](self, "timeID"), -[RTTripClusterSchedule count](self, "count")];
 
   return v6;
 }

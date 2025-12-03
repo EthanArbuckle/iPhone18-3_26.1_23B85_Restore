@@ -1,17 +1,17 @@
 @interface SKDAnalyticsTrackingEvent
-- (BOOL)supportedEvent:(id)a3;
-- (SKDAnalyticsTrackingEvent)initWithName:(id)a3 event:(id)a4 domain:(id)a5;
+- (BOOL)supportedEvent:(id)event;
+- (SKDAnalyticsTrackingEvent)initWithName:(id)name event:(id)event domain:(id)domain;
 - (id)logs;
-- (void)logEvent:(id)a3;
+- (void)logEvent:(id)event;
 @end
 
 @implementation SKDAnalyticsTrackingEvent
 
-- (SKDAnalyticsTrackingEvent)initWithName:(id)a3 event:(id)a4 domain:(id)a5
+- (SKDAnalyticsTrackingEvent)initWithName:(id)name event:(id)event domain:(id)domain
 {
   v8.receiver = self;
   v8.super_class = SKDAnalyticsTrackingEvent;
-  v5 = [(SKDTrackingEvent *)&v8 initWithName:a3 event:a4 domain:a5];
+  v5 = [(SKDTrackingEvent *)&v8 initWithName:name event:event domain:domain];
   if (v5)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -25,13 +25,13 @@
   return v5;
 }
 
-- (BOOL)supportedEvent:(id)a3
+- (BOOL)supportedEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 status] == 2)
+  eventCopy = event;
+  if ([eventCopy status] == 2)
   {
-    v4 = [v3 feedback];
-    v5 = [v4 objectForKeyedSubscript:@"pipeline"];
+    feedback = [eventCopy feedback];
+    v5 = [feedback objectForKeyedSubscript:@"pipeline"];
     v6 = v5 != 0;
   }
 
@@ -43,19 +43,19 @@
   return v6;
 }
 
-- (void)logEvent:(id)a3
+- (void)logEvent:(id)event
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   ++self->_batchCount;
-  if ([v4 status] == 2)
+  if ([eventCopy status] == 2)
   {
     v5 = &OBJC_IVAR___SKDAnalyticsTrackingEvent__completedCount;
   }
 
   else
   {
-    if ([v4 status] != 4)
+    if ([eventCopy status] != 4)
     {
       goto LABEL_6;
     }
@@ -65,10 +65,10 @@
 
   ++*(&self->super.super.isa + *v5);
 LABEL_6:
-  if ([(SKDAnalyticsTrackingEvent *)self supportedEvent:v4])
+  if ([(SKDAnalyticsTrackingEvent *)self supportedEvent:eventCopy])
   {
-    v6 = [v4 feedback];
-    v7 = [v6 objectForKeyedSubscript:@"pipeline"];
+    feedback = [eventCopy feedback];
+    v7 = [feedback objectForKeyedSubscript:@"pipeline"];
 
     v8 = CFAbsoluteTimeGetCurrent() - self->_lastEventTime;
     logs = self->_logs;
@@ -101,8 +101,8 @@ LABEL_6:
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [v3 addObjectsFromArray:self->_logs];
   v11[0] = @"event";
-  v4 = [(SKDTrackingEvent *)self name];
-  v12[0] = v4;
+  name = [(SKDTrackingEvent *)self name];
+  v12[0] = name;
   v11[1] = @"batchCount";
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_batchCount];
   v12[1] = v5;

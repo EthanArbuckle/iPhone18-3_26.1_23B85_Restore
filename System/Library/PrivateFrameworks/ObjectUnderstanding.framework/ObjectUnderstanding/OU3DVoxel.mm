@@ -1,10 +1,10 @@
 @interface OU3DVoxel
 - (OU3DVoxel)init;
-- (OU3DVoxel)initWithCoder:(id)a3;
-- (OU3DVoxel)initWithDictionaryRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OU3DVoxel)initWithCoder:(id)coder;
+- (OU3DVoxel)initWithDictionaryRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OU3DVoxel
@@ -21,7 +21,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [(__objc2_class *)OU3DVoxel init];
   *&v4->info = *self->center;
@@ -31,32 +31,32 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x277CBEA90] dataWithBytes:self->center length:16];
-  [v4 encodeObject:v5 forKey:@"location"];
+  [coderCopy encodeObject:v5 forKey:@"location"];
   v6 = [MEMORY[0x277CBEA90] dataWithBytes:self->size length:16];
-  [v4 encodeObject:v6 forKey:@"size"];
+  [coderCopy encodeObject:v6 forKey:@"size"];
   semantic_label = self->semantic_label;
   v7 = [MEMORY[0x277CBEA90] dataWithBytes:&semantic_label length:1];
-  [v4 encodeObject:v7 forKey:@"semantic_label"];
-  [v4 encodeObject:self->object_id forKey:@"object_id"];
+  [coderCopy encodeObject:v7 forKey:@"semantic_label"];
+  [coderCopy encodeObject:self->object_id forKey:@"object_id"];
 }
 
-- (OU3DVoxel)initWithCoder:(id)a3
+- (OU3DVoxel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = OU3DVoxel;
   v5 = [(OU3DVoxel *)&v12 init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
   *v5->center = *[v6 bytes];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"size"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"size"];
   *v5->size = *[v7 bytes];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"semantic_label"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"semantic_label"];
   v5->semantic_label = *[v8 bytes];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"object_id"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"object_id"];
   object_id = v5->object_id;
   v5->object_id = v9;
 
@@ -66,48 +66,48 @@
 - (id)dictionaryRepresentation
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = float3ToNSArray(*self->center);
-  [v3 setObject:v4 forKeyedSubscript:@"location"];
+  [dictionary setObject:v4 forKeyedSubscript:@"location"];
 
   v5 = float3ToNSArray(*self->size);
-  [v3 setObject:v5 forKeyedSubscript:@"size"];
+  [dictionary setObject:v5 forKeyedSubscript:@"size"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:self->semantic_label];
   v13[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-  [v3 setObject:v7 forKeyedSubscript:@"semantic_label"];
+  [dictionary setObject:v7 forKeyedSubscript:@"semantic_label"];
 
   object_id = self->object_id;
   if (object_id)
   {
-    v9 = [(NSUUID *)self->object_id UUIDString];
+    uUIDString = [(NSUUID *)self->object_id UUIDString];
   }
 
   else
   {
-    v9 = 0;
+    uUIDString = 0;
   }
 
-  [v3 setObject:v9 forKeyedSubscript:@"object_id"];
+  [dictionary setObject:uUIDString forKeyedSubscript:@"object_id"];
   if (object_id)
   {
   }
 
-  v10 = [v3 copy];
+  v10 = [dictionary copy];
 
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
 }
 
-- (OU3DVoxel)initWithDictionaryRepresentation:(id)a3
+- (OU3DVoxel)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v17.receiver = self;
   v17.super_class = OU3DVoxel;
   v5 = [(OU3DVoxel *)&v17 init];
-  v6 = [v4 objectForKeyedSubscript:@"location"];
+  v6 = [representationCopy objectForKeyedSubscript:@"location"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -124,7 +124,7 @@
     float3FromNSArray(v7, v5->center);
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"size"];
+  v8 = [representationCopy objectForKeyedSubscript:@"size"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -141,7 +141,7 @@
     float3FromNSArray(v9, v5->size);
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"semantic_label"];
+  v10 = [representationCopy objectForKeyedSubscript:@"semantic_label"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -159,7 +159,7 @@
     v5->semantic_label = [v12 intValue];
   }
 
-  v13 = [v4 objectForKeyedSubscript:@"object_id"];
+  v13 = [representationCopy objectForKeyedSubscript:@"object_id"];
   if (v13)
   {
     v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v13];

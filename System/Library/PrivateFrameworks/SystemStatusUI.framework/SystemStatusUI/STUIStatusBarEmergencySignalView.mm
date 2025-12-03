@@ -1,14 +1,14 @@
 @interface STUIStatusBarEmergencySignalView
-+ (double)_fontSizeForIconSize:(int64_t)a3;
-+ (double)_interspaceForIconSize:(int64_t)a3;
++ (double)_fontSizeForIconSize:(int64_t)size;
++ (double)_interspaceForIconSize:(int64_t)size;
 - (CGSize)intrinsicContentSize;
-- (STUIStatusBarEmergencySignalView)initWithCoder:(id)a3;
-- (STUIStatusBarEmergencySignalView)initWithFrame:(CGRect)a3;
+- (STUIStatusBarEmergencySignalView)initWithCoder:(id)coder;
+- (STUIStatusBarEmergencySignalView)initWithFrame:(CGRect)frame;
 - (UIAccessibilityHUDItem)accessibilityHUDRepresentation;
 - (UIEdgeInsets)alignmentRectInsets;
 - (void)_commonInit;
 - (void)_iconSizeDidChange;
-- (void)applyStyleAttributes:(id)a3;
+- (void)applyStyleAttributes:(id)attributes;
 @end
 
 @implementation STUIStatusBarEmergencySignalView
@@ -29,30 +29,30 @@
   self->_iconSize = -1;
   [(STUIStatusBarEmergencySignalView *)self addSubview:self->_sosView];
   [(STUIStatusBarEmergencySignalView *)self addSubview:self->_signalView];
-  v7 = [(UIImageView *)self->_sosView topAnchor];
-  v8 = [(STUIStatusBarEmergencySignalView *)self topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8 constant:0.0];
+  topAnchor = [(UIImageView *)self->_sosView topAnchor];
+  topAnchor2 = [(STUIStatusBarEmergencySignalView *)self topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   topConstraint = self->_topConstraint;
   self->_topConstraint = v9;
 
   [(NSLayoutConstraint *)self->_topConstraint setIdentifier:@"sosCellularTopConstraint"];
-  v11 = [(STUIStatusBarCellularSignalView *)self->_signalView topAnchor];
-  v12 = [(UIImageView *)self->_sosView lastBaselineAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:0.0];
+  topAnchor3 = [(STUIStatusBarCellularSignalView *)self->_signalView topAnchor];
+  lastBaselineAnchor = [(UIImageView *)self->_sosView lastBaselineAnchor];
+  v13 = [topAnchor3 constraintEqualToAnchor:lastBaselineAnchor constant:0.0];
   verticalInterspaceConstraint = self->_verticalInterspaceConstraint;
   self->_verticalInterspaceConstraint = v13;
 
   [(NSLayoutConstraint *)self->_verticalInterspaceConstraint setIdentifier:@"sosCellularSeparationConstraint"];
   v23[0] = self->_topConstraint;
-  v15 = [(UIImageView *)self->_sosView centerXAnchor];
-  v16 = [(STUIStatusBarEmergencySignalView *)self centerXAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  centerXAnchor = [(UIImageView *)self->_sosView centerXAnchor];
+  centerXAnchor2 = [(STUIStatusBarEmergencySignalView *)self centerXAnchor];
+  v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v18 = self->_verticalInterspaceConstraint;
   v23[1] = v17;
   v23[2] = v18;
-  v19 = [(STUIStatusBarCellularSignalView *)self->_signalView centerXAnchor];
-  v20 = [(STUIStatusBarEmergencySignalView *)self centerXAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  centerXAnchor3 = [(STUIStatusBarCellularSignalView *)self->_signalView centerXAnchor];
+  centerXAnchor4 = [(STUIStatusBarEmergencySignalView *)self centerXAnchor];
+  v21 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v23[3] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:4];
 
@@ -83,10 +83,10 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(STUIStatusBarSignalView *)self->_signalView numberOfBars];
-  v4 = [(STUIStatusBarEmergencySignalView *)self iconSize];
+  numberOfBars = [(STUIStatusBarSignalView *)self->_signalView numberOfBars];
+  iconSize = [(STUIStatusBarEmergencySignalView *)self iconSize];
 
-  [STUIStatusBarCellularSignalView _intrinsicContentSizeForNumberOfBars:v3 iconSize:v4];
+  [STUIStatusBarCellularSignalView _intrinsicContentSizeForNumberOfBars:numberOfBars iconSize:iconSize];
   result.height = v6;
   result.width = v5;
   return result;
@@ -105,56 +105,56 @@
   return result;
 }
 
-+ (double)_fontSizeForIconSize:(int64_t)a3
++ (double)_fontSizeForIconSize:(int64_t)size
 {
   result = 0.0;
-  if ((a3 - 1) <= 0x10)
+  if ((size - 1) <= 0x10)
   {
-    return dbl_26C581EB8[a3 - 1];
+    return dbl_26C581EB8[size - 1];
   }
 
   return result;
 }
 
-+ (double)_interspaceForIconSize:(int64_t)a3
++ (double)_interspaceForIconSize:(int64_t)size
 {
   result = 0.0;
-  if ((a3 - 1) <= 0x10)
+  if ((size - 1) <= 0x10)
   {
-    return dbl_26C581F40[a3 - 1];
+    return dbl_26C581F40[size - 1];
   }
 
   return result;
 }
 
-- (STUIStatusBarEmergencySignalView)initWithFrame:(CGRect)a3
+- (STUIStatusBarEmergencySignalView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = STUIStatusBarEmergencySignalView;
-  v3 = [(STUIStatusBarEmergencySignalView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STUIStatusBarEmergencySignalView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(STUIStatusBarEmergencySignalView *)v3 _commonInit];
   return v3;
 }
 
-- (STUIStatusBarEmergencySignalView)initWithCoder:(id)a3
+- (STUIStatusBarEmergencySignalView)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STUIStatusBarEmergencySignalView;
-  v3 = [(STUIStatusBarEmergencySignalView *)&v5 initWithCoder:a3];
+  v3 = [(STUIStatusBarEmergencySignalView *)&v5 initWithCoder:coder];
   [(STUIStatusBarEmergencySignalView *)v3 _commonInit];
   return v3;
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v7 = a3;
-  -[STUIStatusBarCellularSignalView setNeedsLargerScale:](self->_signalView, "setNeedsLargerScale:", [v7 isScaledFixedWidthBar]);
-  v4 = [v7 isRounded];
-  v5 = self->_iconSize != [v7 iconSize] || self->_rounded != v4;
-  -[STUIStatusBarEmergencySignalView setRounded:](self, "setRounded:", [v7 isRounded]);
-  -[STUIStatusBarEmergencySignalView setIconSize:](self, "setIconSize:", [v7 iconSize]);
-  v6 = [v7 imageTintColor];
-  [(UIImageView *)self->_sosView setTintColor:v6];
+  attributesCopy = attributes;
+  -[STUIStatusBarCellularSignalView setNeedsLargerScale:](self->_signalView, "setNeedsLargerScale:", [attributesCopy isScaledFixedWidthBar]);
+  isRounded = [attributesCopy isRounded];
+  v5 = self->_iconSize != [attributesCopy iconSize] || self->_rounded != isRounded;
+  -[STUIStatusBarEmergencySignalView setRounded:](self, "setRounded:", [attributesCopy isRounded]);
+  -[STUIStatusBarEmergencySignalView setIconSize:](self, "setIconSize:", [attributesCopy iconSize]);
+  imageTintColor = [attributesCopy imageTintColor];
+  [(UIImageView *)self->_sosView setTintColor:imageTintColor];
 
   if (v5)
   {
@@ -170,11 +170,11 @@
   }
 
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(STUIStatusBarEmergencySignalView *)self signalView];
-  if ([v4 signalMode] == 2)
+  signalView = [(STUIStatusBarEmergencySignalView *)self signalView];
+  if ([signalView signalMode] == 2)
   {
-    v5 = [(STUIStatusBarEmergencySignalView *)self signalView];
-    v6 = [v3 stringWithFormat:@"AXHUD_Cellular_%d", objc_msgSend(v5, "numberOfActiveBars")];
+    signalView2 = [(STUIStatusBarEmergencySignalView *)self signalView];
+    v6 = [v3 stringWithFormat:@"AXHUD_Cellular_%d", objc_msgSend(signalView2, "numberOfActiveBars")];
   }
 
   else
@@ -182,8 +182,8 @@
     v6 = [v3 stringWithFormat:@"AXHUD_Cellular_%d", 0];
   }
 
-  v7 = [(STUIStatusBarEmergencySignalView *)self _screen];
-  [v7 scale];
+  _screen = [(STUIStatusBarEmergencySignalView *)self _screen];
+  [_screen scale];
   v9 = v8;
 
   [(UIImageView *)self->_sosView alpha];

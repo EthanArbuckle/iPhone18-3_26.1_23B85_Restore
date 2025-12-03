@@ -1,18 +1,18 @@
 @interface PKPassShareAdvancedEntitlementSelectionSectionController
-- (PKPassShareAdvancedEntitlementSelectionSectionController)initWithMode:(unint64_t)a3 entitlementComposer:(id)a4 delegate:(id)a5;
-- (id)decorateListCell:(id)a3 forRowItem:(id)a4;
-- (id)footerAttributedStringForIdentifier:(id)a3;
-- (void)didSelectItem:(id)a3;
-- (void)reloadItemsAnimated:(BOOL)a3;
+- (PKPassShareAdvancedEntitlementSelectionSectionController)initWithMode:(unint64_t)mode entitlementComposer:(id)composer delegate:(id)delegate;
+- (id)decorateListCell:(id)cell forRowItem:(id)item;
+- (id)footerAttributedStringForIdentifier:(id)identifier;
+- (void)didSelectItem:(id)item;
+- (void)reloadItemsAnimated:(BOOL)animated;
 @end
 
 @implementation PKPassShareAdvancedEntitlementSelectionSectionController
 
-- (PKPassShareAdvancedEntitlementSelectionSectionController)initWithMode:(unint64_t)a3 entitlementComposer:(id)a4 delegate:(id)a5
+- (PKPassShareAdvancedEntitlementSelectionSectionController)initWithMode:(unint64_t)mode entitlementComposer:(id)composer delegate:(id)delegate
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  composerCopy = composer;
+  delegateCopy = delegate;
   v24[0] = @"AdvancedEntitlementSelection";
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
   v23.receiver = self;
@@ -21,9 +21,9 @@
 
   if (v12)
   {
-    v12->_mode = a3;
-    objc_storeStrong(&v12->_entitlementComposer, a4);
-    objc_storeWeak(&v12->_delegate, v10);
+    v12->_mode = mode;
+    objc_storeStrong(&v12->_entitlementComposer, composer);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     objc_initWeak(&location, v12);
     v13 = MEMORY[0x1E69DC800];
     v14 = objc_opt_class();
@@ -55,9 +55,9 @@ void __102__PKPassShareAdvancedEntitlementSelectionSectionController_initWithMod
   }
 }
 
-- (void)reloadItemsAnimated:(BOOL)a3
+- (void)reloadItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v11[1] = *MEMORY[0x1E69E9840];
   v11[0] = @"AdvancedEntitlementSelection";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
@@ -75,54 +75,54 @@ void __102__PKPassShareAdvancedEntitlementSelectionSectionController_initWithMod
   [v6 addObject:v7];
   [(PKPaymentSetupListSectionController *)self setItems:v6];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained reloadDataAnimated:v3];
+  [WeakRetained reloadDataAnimated:animatedCopy];
 }
 
-- (id)decorateListCell:(id)a3 forRowItem:(id)a4
+- (id)decorateListCell:(id)cell forRowItem:(id)item
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  v8 = [v6 title];
-  [v7 setText:v8];
+  cellCopy = cell;
+  itemCopy = item;
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  title = [itemCopy title];
+  [valueCellConfiguration setText:title];
 
-  v9 = [v6 subtitle];
-  [v7 setSecondaryText:v9];
+  subtitle = [itemCopy subtitle];
+  [valueCellConfiguration setSecondaryText:subtitle];
 
-  v10 = [v7 secondaryTextProperties];
-  v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v10 setColor:v11];
+  secondaryTextProperties = [valueCellConfiguration secondaryTextProperties];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  [v7 setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 8.0}];
-  v12 = [v6 icon];
+  [valueCellConfiguration setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 8.0}];
+  icon = [itemCopy icon];
 
-  if (v12)
+  if (icon)
   {
-    v13 = [v6 icon];
-    [v7 setImage:v13];
+    icon2 = [itemCopy icon];
+    [valueCellConfiguration setImage:icon2];
 
-    v14 = [v7 imageProperties];
-    v15 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v14 setTintColor:v15];
+    imageProperties = [valueCellConfiguration imageProperties];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [imageProperties setTintColor:systemBlueColor];
   }
 
-  [v5 setContentConfiguration:v7];
-  [v5 setConfigurationUpdateHandler:&__block_literal_global_234];
-  if ([v6 displayChevron] && (v16 = objc_alloc_init(MEMORY[0x1E69DC7A8])) != 0)
+  [cellCopy setContentConfiguration:valueCellConfiguration];
+  [cellCopy setConfigurationUpdateHandler:&__block_literal_global_234];
+  if ([itemCopy displayChevron] && (v16 = objc_alloc_init(MEMORY[0x1E69DC7A8])) != 0)
   {
     v17 = v16;
     v20[0] = v16;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-    [v5 setAccessories:v18];
+    [cellCopy setAccessories:v18];
   }
 
   else
   {
-    [v5 setAccessories:MEMORY[0x1E695E0F0]];
+    [cellCopy setAccessories:MEMORY[0x1E695E0F0]];
   }
 
-  return v7;
+  return valueCellConfiguration;
 }
 
 void __88__PKPassShareAdvancedEntitlementSelectionSectionController_decorateListCell_forRowItem___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -147,7 +147,7 @@ void __88__PKPassShareAdvancedEntitlementSelectionSectionController_decorateList
   [v5 setBackgroundConfiguration:v6];
 }
 
-- (id)footerAttributedStringForIdentifier:(id)a3
+- (id)footerAttributedStringForIdentifier:(id)identifier
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v3 = PKLocalizedShareableCredentialString(&cfstr_ShareOverviewP_4.isa);
@@ -156,15 +156,15 @@ void __88__PKPassShareAdvancedEntitlementSelectionSectionController_decorateList
   v5 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD28], *MEMORY[0x1E69DDC60]);
   v11[0] = v5;
   v10[1] = *MEMORY[0x1E69DB650];
-  v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v11[1] = v6;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v11[1] = secondaryLabelColor;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   v8 = [v4 initWithString:v3 attributes:v7];
 
   return v8;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didTapAdvancedEntitlementSelectionSectionController:self];

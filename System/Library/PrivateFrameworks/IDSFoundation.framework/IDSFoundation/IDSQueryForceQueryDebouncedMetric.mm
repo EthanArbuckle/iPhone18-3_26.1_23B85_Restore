@@ -1,24 +1,24 @@
 @interface IDSQueryForceQueryDebouncedMetric
-- (IDSQueryForceQueryDebouncedMetric)initWithServiceIdentifier:(id)a3 queryReason:(id)a4 uriCount:(unint64_t)a5 preventQuery:(BOOL)a6;
+- (IDSQueryForceQueryDebouncedMetric)initWithServiceIdentifier:(id)identifier queryReason:(id)reason uriCount:(unint64_t)count preventQuery:(BOOL)query;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation IDSQueryForceQueryDebouncedMetric
 
-- (IDSQueryForceQueryDebouncedMetric)initWithServiceIdentifier:(id)a3 queryReason:(id)a4 uriCount:(unint64_t)a5 preventQuery:(BOOL)a6
+- (IDSQueryForceQueryDebouncedMetric)initWithServiceIdentifier:(id)identifier queryReason:(id)reason uriCount:(unint64_t)count preventQuery:(BOOL)query
 {
-  v11 = a3;
-  v12 = a4;
+  identifierCopy = identifier;
+  reasonCopy = reason;
   v16.receiver = self;
   v16.super_class = IDSQueryForceQueryDebouncedMetric;
   v13 = [(IDSQueryForceQueryDebouncedMetric *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_serviceIdentifier, a3);
-    objc_storeStrong(&v14->_queryReason, a4);
-    v14->_uriCount = a5;
-    v14->_preventedQueryFromFlighting = a6;
+    objc_storeStrong(&v13->_serviceIdentifier, identifier);
+    objc_storeStrong(&v14->_queryReason, reason);
+    v14->_uriCount = count;
+    v14->_preventedQueryFromFlighting = query;
   }
 
   return v14;

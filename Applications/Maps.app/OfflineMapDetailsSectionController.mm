@@ -1,13 +1,13 @@
 @interface OfflineMapDetailsSectionController
 - (OfflineMapDetailsActionSectionControllerDelegate)actionDelegate;
-- (OfflineMapDetailsSectionController)initWithSubscriptionInfo:(id)a3;
+- (OfflineMapDetailsSectionController)initWithSubscriptionInfo:(id)info;
 - (double)regionNameBottomOffsetFromTop;
 - (void)_commonInit;
 - (void)_updateNameRowView;
 - (void)_updateRowViews;
 - (void)_updateSizeRowView;
 - (void)_updateSnapshotRowView;
-- (void)setSubscriptionInfo:(id)a3;
+- (void)setSubscriptionInfo:(id)info;
 @end
 
 @implementation OfflineMapDetailsSectionController
@@ -27,48 +27,48 @@
   }
 
   v3 = qword_10195DD70;
-  v4 = [(OfflineMapSectionController *)self subscriptionInfo];
-  v5 = [v4 state];
-  v6 = [v3 stringFromByteCount:{objc_msgSend(v5, "downloadedDataSize")}];
+  subscriptionInfo = [(OfflineMapSectionController *)self subscriptionInfo];
+  state = [subscriptionInfo state];
+  v6 = [v3 stringFromByteCount:{objc_msgSend(state, "downloadedDataSize")}];
   [(UILabel *)self->_sizeRowView setText:v6];
 
   [(UILabel *)self->_sizeRowView setAccessibilityIdentifier:@"SizeRowView"];
-  v7 = [(UILabel *)self->_sizeRowView text];
-  [(UILabel *)self->_sizeRowView setAccessibilityLabel:v7];
+  text = [(UILabel *)self->_sizeRowView text];
+  [(UILabel *)self->_sizeRowView setAccessibilityLabel:text];
 }
 
 - (void)_updateNameRowView
 {
-  v3 = [(OfflineMapSectionController *)self subscriptionInfo];
-  v4 = [v3 subscription];
-  v5 = [v4 displayName];
-  if ([v5 length])
+  subscriptionInfo = [(OfflineMapSectionController *)self subscriptionInfo];
+  subscription = [subscriptionInfo subscription];
+  displayName = [subscription displayName];
+  if ([displayName length])
   {
-    v6 = [(OfflineMapSectionController *)self subscriptionInfo];
-    v7 = [v6 subscription];
-    v8 = [v7 displayName];
+    subscriptionInfo2 = [(OfflineMapSectionController *)self subscriptionInfo];
+    subscription2 = [subscriptionInfo2 subscription];
+    displayName2 = [subscription2 displayName];
     p_nameRowView = &self->_nameRowView;
-    [(UILabel *)*p_nameRowView setText:v8];
+    [(UILabel *)*p_nameRowView setText:displayName2];
   }
 
   else
   {
-    v6 = +[NSBundle mainBundle];
-    v7 = [v6 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
+    subscriptionInfo2 = +[NSBundle mainBundle];
+    subscription2 = [subscriptionInfo2 localizedStringForKey:@"Offline Map" value:@"localized string not found" table:@"Offline"];
     p_nameRowView = &self->_nameRowView;
-    [(UILabel *)*p_nameRowView setText:v7];
+    [(UILabel *)*p_nameRowView setText:subscription2];
   }
 
   [(UILabel *)*p_nameRowView setAccessibilityIdentifier:@"NameRowView"];
-  v10 = [(UILabel *)*p_nameRowView text];
-  [(UILabel *)*p_nameRowView setAccessibilityLabel:v10];
+  text = [(UILabel *)*p_nameRowView text];
+  [(UILabel *)*p_nameRowView setAccessibilityLabel:text];
 }
 
 - (void)_updateSnapshotRowView
 {
   objc_initWeak(&location, self);
-  v3 = [(OfflineMapSectionController *)self subscriptionInfo];
-  [(OfflineMapSnapshotRowView *)self->_snapshotRowView setSubscriptionInfo:v3];
+  subscriptionInfo = [(OfflineMapSectionController *)self subscriptionInfo];
+  [(OfflineMapSnapshotRowView *)self->_snapshotRowView setSubscriptionInfo:subscriptionInfo];
 
   v4 = _NSConcreteStackBlock;
   v5 = 3221225472;
@@ -88,11 +88,11 @@
   return CGRectGetMaxY(*&v2);
 }
 
-- (void)setSubscriptionInfo:(id)a3
+- (void)setSubscriptionInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = OfflineMapDetailsSectionController;
-  [(OfflineMapSectionController *)&v4 setSubscriptionInfo:a3];
+  [(OfflineMapSectionController *)&v4 setSubscriptionInfo:info];
   [(OfflineMapDetailsSectionController *)self _updateSnapshotRowView];
   [(OfflineMapDetailsSectionController *)self _updateNameRowView];
   [(OfflineMapDetailsSectionController *)self _updateSizeRowView];
@@ -101,8 +101,8 @@
 
 - (void)_updateRowViews
 {
-  v3 = [(UIStackView *)self->_sectionView arrangedSubviews];
-  v4 = [v3 copy];
+  arrangedSubviews = [(UIStackView *)self->_sectionView arrangedSubviews];
+  v4 = [arrangedSubviews copy];
 
   v27 = 0u;
   v28 = 0u;
@@ -141,11 +141,11 @@
   v11 = [NSArray arrayWithObjects:v30 count:2];
   v12 = [NSMutableArray arrayWithArray:v11];
 
-  v13 = [(OfflineMapSectionController *)self subscriptionInfo];
-  v14 = [v13 state];
-  v15 = [v14 downloadedDataCount];
+  subscriptionInfo = [(OfflineMapSectionController *)self subscriptionInfo];
+  state = [subscriptionInfo state];
+  downloadedDataCount = [state downloadedDataCount];
 
-  if (v15)
+  if (downloadedDataCount)
   {
     [v12 addObject:self->_sizeRowView];
   }
@@ -213,8 +213,8 @@
   nameRowView = self->_nameRowView;
   self->_nameRowView = v9;
 
-  v11 = [(UILabel *)self->_nameRowView traitCollection];
-  v12 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle2 weight:v11 compatibleWithTraitCollection:UIFontWeightSemibold];
+  traitCollection = [(UILabel *)self->_nameRowView traitCollection];
+  v12 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle2 weight:traitCollection compatibleWithTraitCollection:UIFontWeightSemibold];
   [(UILabel *)self->_nameRowView setFont:v12];
 
   v13 = +[UIColor labelColor];
@@ -227,8 +227,8 @@
   sizeRowView = self->_sizeRowView;
   self->_sizeRowView = v15;
 
-  v17 = [(UILabel *)self->_sizeRowView traitCollection];
-  v18 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleBody weight:v17 compatibleWithTraitCollection:UIFontWeightRegular];
+  traitCollection2 = [(UILabel *)self->_sizeRowView traitCollection];
+  v18 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleBody weight:traitCollection2 compatibleWithTraitCollection:UIFontWeightRegular];
   [(UILabel *)self->_sizeRowView setFont:v18];
 
   v19 = +[UIColor secondaryLabelColor];
@@ -255,17 +255,17 @@
   [(UIButton *)v25 setTitle:v27 forState:0];
 
   [(UIButton *)self->_renameButton setAccessibilityIdentifier:@"RenameOfflineRegion"];
-  v28 = [(UIButton *)self->_renameButton currentTitle];
-  [(UIButton *)self->_renameButton setAccessibilityLabel:v28];
+  currentTitle = [(UIButton *)self->_renameButton currentTitle];
+  [(UIButton *)self->_renameButton setAccessibilityLabel:currentTitle];
 
   LODWORD(v29) = 1148846080;
   [(UIButton *)self->_renameButton setContentCompressionResistancePriority:1 forAxis:v29];
-  v30 = [(UIButton *)self->_renameButton heightAnchor];
+  heightAnchor = [(UIButton *)self->_renameButton heightAnchor];
   LODWORD(v31) = 1144766464;
-  v32 = [v30 constraintEqualToConstant:32.0 priority:v31];
+  v32 = [heightAnchor constraintEqualToConstant:32.0 priority:v31];
   v39[0] = v32;
-  v33 = [(UIButton *)self->_renameButton heightAnchor];
-  v34 = [v33 constraintGreaterThanOrEqualToConstant:32.0];
+  heightAnchor2 = [(UIButton *)self->_renameButton heightAnchor];
+  v34 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:32.0];
   v39[1] = v34;
   v35 = [NSArray arrayWithObjects:v39 count:2];
   [NSLayoutConstraint activateConstraints:v35];
@@ -275,11 +275,11 @@
   objc_destroyWeak(&location);
 }
 
-- (OfflineMapDetailsSectionController)initWithSubscriptionInfo:(id)a3
+- (OfflineMapDetailsSectionController)initWithSubscriptionInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = OfflineMapDetailsSectionController;
-  v3 = [(OfflineMapSectionController *)&v6 initWithSubscriptionInfo:a3];
+  v3 = [(OfflineMapSectionController *)&v6 initWithSubscriptionInfo:info];
   v4 = v3;
   if (v3)
   {

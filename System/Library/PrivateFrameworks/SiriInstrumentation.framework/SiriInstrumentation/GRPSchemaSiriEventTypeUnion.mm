@@ -1,9 +1,9 @@
 @interface GRPSchemaSiriEventTypeUnion
-+ (Class)getEventTypeClassForTag:(int)a3;
-+ (id)getTagForEventTypeClass:(Class)a3;
++ (Class)getEventTypeClassForTag:(int)tag;
++ (id)getTagForEventTypeClass:(Class)class;
 - (ANCSchemaANCClientEvent)ancClientEvent;
 - (ASRSchemaASRClientEvent)asrClientEvent;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CAARSchemaCAARClientEvent)caarClientEvent;
 - (CAMSchemaCAMClientEvent)camClientEvent;
 - (CDASchemaCDAClientEvent)cdaClientEvent;
@@ -15,8 +15,8 @@
 - (EXPSiriSchemaEXPSiriClientEvent)expSiriClientEvent;
 - (FLOWLINKSchemaFLOWLINKClientEvent)flowLinkClientEvent;
 - (FLOWSchemaFLOWClientEvent)flowClientEvent;
-- (GRPSchemaSiriEventTypeUnion)initWithDictionary:(id)a3;
-- (GRPSchemaSiriEventTypeUnion)initWithJSON:(id)a3;
+- (GRPSchemaSiriEventTypeUnion)initWithDictionary:(id)dictionary;
+- (GRPSchemaSiriEventTypeUnion)initWithJSON:(id)n;
 - (HALSchemaHALClientEvent)halClientEvent;
 - (HOMESchemaHOMEClientEvent)homeClientEvent;
 - (HomeKitSchemaHKClientEvent)homeKitClientEvent;
@@ -51,7 +51,7 @@
 - (SUTSchemaTestExecutionEvent)testExecutionEvent;
 - (TTSSchemaTTSClientEvent)ttsClientEvent;
 - (USPSchemaUSPClientEvent)uspClientEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getEventType;
 - (id)suppressMessageUnderConditions;
@@ -102,54 +102,54 @@
 - (void)deleteTtsClientEvent;
 - (void)deleteUeiClientEvent;
 - (void)deleteUspClientEvent;
-- (void)setAncClientEvent:(id)a3;
-- (void)setAsrClientEvent:(id)a3;
-- (void)setCaarClientEvent:(id)a3;
-- (void)setCamClientEvent:(id)a3;
-- (void)setCdaClientEvent:(id)a3;
-- (void)setClpClientEvent:(id)a3;
-- (void)setCnvClientEvent:(id)a3;
-- (void)setDimClientEvent:(id)a3;
-- (void)setDodmlClientEvent:(id)a3;
-- (void)setEventType:(id)a3;
-- (void)setExpSearchClientEvent:(id)a3;
-- (void)setExpSiriClientEvent:(id)a3;
-- (void)setFlowClientEvent:(id)a3;
-- (void)setFlowLinkClientEvent:(id)a3;
-- (void)setGradingOptInStateChange:(id)a3;
-- (void)setHalClientEvent:(id)a3;
-- (void)setHomeClientEvent:(id)a3;
-- (void)setHomeKitClientEvent:(id)a3;
-- (void)setIhClientEvent:(id)a3;
-- (void)setInferenceClientEvent:(id)a3;
-- (void)setLrClientEvent:(id)a3;
-- (void)setMhClientEvent:(id)a3;
-- (void)setMwtClientEvent:(id)a3;
-- (void)setNetClientEvent:(id)a3;
-- (void)setNlxClientEvent:(id)a3;
-- (void)setOptInClientEvent:(id)a3;
-- (void)setOptinStatePropagationEvent:(id)a3;
-- (void)setOrchClientEvent:(id)a3;
-- (void)setPetUploadEvent:(id)a3;
-- (void)setPlusClientEvent:(id)a3;
-- (void)setPommmesClientEvent:(id)a3;
-- (void)setProvisionalEvent:(id)a3;
-- (void)setRequestLinkEvent:(id)a3;
-- (void)setRfClientEvent:(id)a3;
-- (void)setRfgClientEvent:(id)a3;
-- (void)setRrClientEvent:(id)a3;
-- (void)setRssClientEvent:(id)a3;
-- (void)setSadClientEvent:(id)a3;
-- (void)setScClientEvent:(id)a3;
-- (void)setSicClientEvent:(id)a3;
-- (void)setSiriSetupClientEvent:(id)a3;
-- (void)setSrstClientEvent:(id)a3;
-- (void)setSugClientEvent:(id)a3;
-- (void)setTestExecutionEvent:(id)a3;
-- (void)setTtsClientEvent:(id)a3;
-- (void)setUeiClientEvent:(id)a3;
-- (void)setUspClientEvent:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAncClientEvent:(id)event;
+- (void)setAsrClientEvent:(id)event;
+- (void)setCaarClientEvent:(id)event;
+- (void)setCamClientEvent:(id)event;
+- (void)setCdaClientEvent:(id)event;
+- (void)setClpClientEvent:(id)event;
+- (void)setCnvClientEvent:(id)event;
+- (void)setDimClientEvent:(id)event;
+- (void)setDodmlClientEvent:(id)event;
+- (void)setEventType:(id)type;
+- (void)setExpSearchClientEvent:(id)event;
+- (void)setExpSiriClientEvent:(id)event;
+- (void)setFlowClientEvent:(id)event;
+- (void)setFlowLinkClientEvent:(id)event;
+- (void)setGradingOptInStateChange:(id)change;
+- (void)setHalClientEvent:(id)event;
+- (void)setHomeClientEvent:(id)event;
+- (void)setHomeKitClientEvent:(id)event;
+- (void)setIhClientEvent:(id)event;
+- (void)setInferenceClientEvent:(id)event;
+- (void)setLrClientEvent:(id)event;
+- (void)setMhClientEvent:(id)event;
+- (void)setMwtClientEvent:(id)event;
+- (void)setNetClientEvent:(id)event;
+- (void)setNlxClientEvent:(id)event;
+- (void)setOptInClientEvent:(id)event;
+- (void)setOptinStatePropagationEvent:(id)event;
+- (void)setOrchClientEvent:(id)event;
+- (void)setPetUploadEvent:(id)event;
+- (void)setPlusClientEvent:(id)event;
+- (void)setPommmesClientEvent:(id)event;
+- (void)setProvisionalEvent:(id)event;
+- (void)setRequestLinkEvent:(id)event;
+- (void)setRfClientEvent:(id)event;
+- (void)setRfgClientEvent:(id)event;
+- (void)setRrClientEvent:(id)event;
+- (void)setRssClientEvent:(id)event;
+- (void)setSadClientEvent:(id)event;
+- (void)setScClientEvent:(id)event;
+- (void)setSicClientEvent:(id)event;
+- (void)setSiriSetupClientEvent:(id)event;
+- (void)setSrstClientEvent:(id)event;
+- (void)setSugClientEvent:(id)event;
+- (void)setTestExecutionEvent:(id)event;
+- (void)setTtsClientEvent:(id)event;
+- (void)setUeiClientEvent:(id)event;
+- (void)setUspClientEvent:(id)event;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GRPSchemaSiriEventTypeUnion
@@ -170,13 +170,13 @@
   return v4;
 }
 
-- (void)setEventType:(id)a3
+- (void)setEventType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(GRPSchemaSiriEventTypeUnion *)self setUeiClientEvent:v4];
+    [(GRPSchemaSiriEventTypeUnion *)self setUeiClientEvent:typeCopy];
   }
 
   else
@@ -184,7 +184,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(GRPSchemaSiriEventTypeUnion *)self setPetUploadEvent:v4];
+      [(GRPSchemaSiriEventTypeUnion *)self setPetUploadEvent:typeCopy];
     }
 
     else
@@ -192,7 +192,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(GRPSchemaSiriEventTypeUnion *)self setProvisionalEvent:v4];
+        [(GRPSchemaSiriEventTypeUnion *)self setProvisionalEvent:typeCopy];
       }
 
       else
@@ -200,7 +200,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(GRPSchemaSiriEventTypeUnion *)self setTestExecutionEvent:v4];
+          [(GRPSchemaSiriEventTypeUnion *)self setTestExecutionEvent:typeCopy];
         }
 
         else
@@ -208,7 +208,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [(GRPSchemaSiriEventTypeUnion *)self setRequestLinkEvent:v4];
+            [(GRPSchemaSiriEventTypeUnion *)self setRequestLinkEvent:typeCopy];
           }
 
           else
@@ -216,7 +216,7 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [(GRPSchemaSiriEventTypeUnion *)self setFlowClientEvent:v4];
+              [(GRPSchemaSiriEventTypeUnion *)self setFlowClientEvent:typeCopy];
             }
 
             else
@@ -224,7 +224,7 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [(GRPSchemaSiriEventTypeUnion *)self setCamClientEvent:v4];
+                [(GRPSchemaSiriEventTypeUnion *)self setCamClientEvent:typeCopy];
               }
 
               else
@@ -232,7 +232,7 @@
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  [(GRPSchemaSiriEventTypeUnion *)self setUspClientEvent:v4];
+                  [(GRPSchemaSiriEventTypeUnion *)self setUspClientEvent:typeCopy];
                 }
 
                 else
@@ -240,7 +240,7 @@
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    [(GRPSchemaSiriEventTypeUnion *)self setDimClientEvent:v4];
+                    [(GRPSchemaSiriEventTypeUnion *)self setDimClientEvent:typeCopy];
                   }
 
                   else
@@ -248,7 +248,7 @@
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      [(GRPSchemaSiriEventTypeUnion *)self setNlxClientEvent:v4];
+                      [(GRPSchemaSiriEventTypeUnion *)self setNlxClientEvent:typeCopy];
                     }
 
                     else
@@ -256,7 +256,7 @@
                       objc_opt_class();
                       if (objc_opt_isKindOfClass())
                       {
-                        [(GRPSchemaSiriEventTypeUnion *)self setOrchClientEvent:v4];
+                        [(GRPSchemaSiriEventTypeUnion *)self setOrchClientEvent:typeCopy];
                       }
 
                       else
@@ -264,7 +264,7 @@
                         objc_opt_class();
                         if (objc_opt_isKindOfClass())
                         {
-                          [(GRPSchemaSiriEventTypeUnion *)self setAsrClientEvent:v4];
+                          [(GRPSchemaSiriEventTypeUnion *)self setAsrClientEvent:typeCopy];
                         }
 
                         else
@@ -272,7 +272,7 @@
                           objc_opt_class();
                           if (objc_opt_isKindOfClass())
                           {
-                            [(GRPSchemaSiriEventTypeUnion *)self setIhClientEvent:v4];
+                            [(GRPSchemaSiriEventTypeUnion *)self setIhClientEvent:typeCopy];
                           }
 
                           else
@@ -280,7 +280,7 @@
                             objc_opt_class();
                             if (objc_opt_isKindOfClass())
                             {
-                              [(GRPSchemaSiriEventTypeUnion *)self setMhClientEvent:v4];
+                              [(GRPSchemaSiriEventTypeUnion *)self setMhClientEvent:typeCopy];
                             }
 
                             else
@@ -288,7 +288,7 @@
                               objc_opt_class();
                               if (objc_opt_isKindOfClass())
                               {
-                                [(GRPSchemaSiriEventTypeUnion *)self setTtsClientEvent:v4];
+                                [(GRPSchemaSiriEventTypeUnion *)self setTtsClientEvent:typeCopy];
                               }
 
                               else
@@ -296,7 +296,7 @@
                                 objc_opt_class();
                                 if (objc_opt_isKindOfClass())
                                 {
-                                  [(GRPSchemaSiriEventTypeUnion *)self setClpClientEvent:v4];
+                                  [(GRPSchemaSiriEventTypeUnion *)self setClpClientEvent:typeCopy];
                                 }
 
                                 else
@@ -304,7 +304,7 @@
                                   objc_opt_class();
                                   if (objc_opt_isKindOfClass())
                                   {
-                                    [(GRPSchemaSiriEventTypeUnion *)self setRrClientEvent:v4];
+                                    [(GRPSchemaSiriEventTypeUnion *)self setRrClientEvent:typeCopy];
                                   }
 
                                   else
@@ -312,7 +312,7 @@
                                     objc_opt_class();
                                     if (objc_opt_isKindOfClass())
                                     {
-                                      [(GRPSchemaSiriEventTypeUnion *)self setCnvClientEvent:v4];
+                                      [(GRPSchemaSiriEventTypeUnion *)self setCnvClientEvent:typeCopy];
                                     }
 
                                     else
@@ -320,7 +320,7 @@
                                       objc_opt_class();
                                       if (objc_opt_isKindOfClass())
                                       {
-                                        [(GRPSchemaSiriEventTypeUnion *)self setAncClientEvent:v4];
+                                        [(GRPSchemaSiriEventTypeUnion *)self setAncClientEvent:typeCopy];
                                       }
 
                                       else
@@ -328,7 +328,7 @@
                                         objc_opt_class();
                                         if (objc_opt_isKindOfClass())
                                         {
-                                          [(GRPSchemaSiriEventTypeUnion *)self setHalClientEvent:v4];
+                                          [(GRPSchemaSiriEventTypeUnion *)self setHalClientEvent:typeCopy];
                                         }
 
                                         else
@@ -336,7 +336,7 @@
                                           objc_opt_class();
                                           if (objc_opt_isKindOfClass())
                                           {
-                                            [(GRPSchemaSiriEventTypeUnion *)self setNetClientEvent:v4];
+                                            [(GRPSchemaSiriEventTypeUnion *)self setNetClientEvent:typeCopy];
                                           }
 
                                           else
@@ -344,7 +344,7 @@
                                             objc_opt_class();
                                             if (objc_opt_isKindOfClass())
                                             {
-                                              [(GRPSchemaSiriEventTypeUnion *)self setSadClientEvent:v4];
+                                              [(GRPSchemaSiriEventTypeUnion *)self setSadClientEvent:typeCopy];
                                             }
 
                                             else
@@ -352,7 +352,7 @@
                                               objc_opt_class();
                                               if (objc_opt_isKindOfClass())
                                               {
-                                                [(GRPSchemaSiriEventTypeUnion *)self setDodmlClientEvent:v4];
+                                                [(GRPSchemaSiriEventTypeUnion *)self setDodmlClientEvent:typeCopy];
                                               }
 
                                               else
@@ -360,7 +360,7 @@
                                                 objc_opt_class();
                                                 if (objc_opt_isKindOfClass())
                                                 {
-                                                  [(GRPSchemaSiriEventTypeUnion *)self setPlusClientEvent:v4];
+                                                  [(GRPSchemaSiriEventTypeUnion *)self setPlusClientEvent:typeCopy];
                                                 }
 
                                                 else
@@ -368,7 +368,7 @@
                                                   objc_opt_class();
                                                   if (objc_opt_isKindOfClass())
                                                   {
-                                                    [(GRPSchemaSiriEventTypeUnion *)self setExpSearchClientEvent:v4];
+                                                    [(GRPSchemaSiriEventTypeUnion *)self setExpSearchClientEvent:typeCopy];
                                                   }
 
                                                   else
@@ -376,7 +376,7 @@
                                                     objc_opt_class();
                                                     if (objc_opt_isKindOfClass())
                                                     {
-                                                      [(GRPSchemaSiriEventTypeUnion *)self setExpSiriClientEvent:v4];
+                                                      [(GRPSchemaSiriEventTypeUnion *)self setExpSiriClientEvent:typeCopy];
                                                     }
 
                                                     else
@@ -384,7 +384,7 @@
                                                       objc_opt_class();
                                                       if (objc_opt_isKindOfClass())
                                                       {
-                                                        [(GRPSchemaSiriEventTypeUnion *)self setSrstClientEvent:v4];
+                                                        [(GRPSchemaSiriEventTypeUnion *)self setSrstClientEvent:typeCopy];
                                                       }
 
                                                       else
@@ -392,7 +392,7 @@
                                                         objc_opt_class();
                                                         if (objc_opt_isKindOfClass())
                                                         {
-                                                          [(GRPSchemaSiriEventTypeUnion *)self setPommmesClientEvent:v4];
+                                                          [(GRPSchemaSiriEventTypeUnion *)self setPommmesClientEvent:typeCopy];
                                                         }
 
                                                         else
@@ -400,7 +400,7 @@
                                                           objc_opt_class();
                                                           if (objc_opt_isKindOfClass())
                                                           {
-                                                            [(GRPSchemaSiriEventTypeUnion *)self setCdaClientEvent:v4];
+                                                            [(GRPSchemaSiriEventTypeUnion *)self setCdaClientEvent:typeCopy];
                                                           }
 
                                                           else
@@ -408,7 +408,7 @@
                                                             objc_opt_class();
                                                             if (objc_opt_isKindOfClass())
                                                             {
-                                                              [(GRPSchemaSiriEventTypeUnion *)self setMwtClientEvent:v4];
+                                                              [(GRPSchemaSiriEventTypeUnion *)self setMwtClientEvent:typeCopy];
                                                             }
 
                                                             else
@@ -416,7 +416,7 @@
                                                               objc_opt_class();
                                                               if (objc_opt_isKindOfClass())
                                                               {
-                                                                [(GRPSchemaSiriEventTypeUnion *)self setHomeClientEvent:v4];
+                                                                [(GRPSchemaSiriEventTypeUnion *)self setHomeClientEvent:typeCopy];
                                                               }
 
                                                               else
@@ -424,7 +424,7 @@
                                                                 objc_opt_class();
                                                                 if (objc_opt_isKindOfClass())
                                                                 {
-                                                                  [(GRPSchemaSiriEventTypeUnion *)self setGradingOptInStateChange:v4];
+                                                                  [(GRPSchemaSiriEventTypeUnion *)self setGradingOptInStateChange:typeCopy];
                                                                 }
 
                                                                 else
@@ -432,7 +432,7 @@
                                                                   objc_opt_class();
                                                                   if (objc_opt_isKindOfClass())
                                                                   {
-                                                                    [(GRPSchemaSiriEventTypeUnion *)self setOptinStatePropagationEvent:v4];
+                                                                    [(GRPSchemaSiriEventTypeUnion *)self setOptinStatePropagationEvent:typeCopy];
                                                                   }
 
                                                                   else
@@ -440,7 +440,7 @@
                                                                     objc_opt_class();
                                                                     if (objc_opt_isKindOfClass())
                                                                     {
-                                                                      [(GRPSchemaSiriEventTypeUnion *)self setRssClientEvent:v4];
+                                                                      [(GRPSchemaSiriEventTypeUnion *)self setRssClientEvent:typeCopy];
                                                                     }
 
                                                                     else
@@ -448,7 +448,7 @@
                                                                       objc_opt_class();
                                                                       if (objc_opt_isKindOfClass())
                                                                       {
-                                                                        [(GRPSchemaSiriEventTypeUnion *)self setSugClientEvent:v4];
+                                                                        [(GRPSchemaSiriEventTypeUnion *)self setSugClientEvent:typeCopy];
                                                                       }
 
                                                                       else
@@ -456,7 +456,7 @@
                                                                         objc_opt_class();
                                                                         if (objc_opt_isKindOfClass())
                                                                         {
-                                                                          [(GRPSchemaSiriEventTypeUnion *)self setFlowLinkClientEvent:v4];
+                                                                          [(GRPSchemaSiriEventTypeUnion *)self setFlowLinkClientEvent:typeCopy];
                                                                         }
 
                                                                         else
@@ -464,7 +464,7 @@
                                                                           objc_opt_class();
                                                                           if (objc_opt_isKindOfClass())
                                                                           {
-                                                                            [(GRPSchemaSiriEventTypeUnion *)self setRfClientEvent:v4];
+                                                                            [(GRPSchemaSiriEventTypeUnion *)self setRfClientEvent:typeCopy];
                                                                           }
 
                                                                           else
@@ -472,7 +472,7 @@
                                                                             objc_opt_class();
                                                                             if (objc_opt_isKindOfClass())
                                                                             {
-                                                                              [(GRPSchemaSiriEventTypeUnion *)self setSicClientEvent:v4];
+                                                                              [(GRPSchemaSiriEventTypeUnion *)self setSicClientEvent:typeCopy];
                                                                             }
 
                                                                             else
@@ -480,7 +480,7 @@
                                                                               objc_opt_class();
                                                                               if (objc_opt_isKindOfClass())
                                                                               {
-                                                                                [(GRPSchemaSiriEventTypeUnion *)self setInferenceClientEvent:v4];
+                                                                                [(GRPSchemaSiriEventTypeUnion *)self setInferenceClientEvent:typeCopy];
                                                                               }
 
                                                                               else
@@ -488,7 +488,7 @@
                                                                                 objc_opt_class();
                                                                                 if (objc_opt_isKindOfClass())
                                                                                 {
-                                                                                  [(GRPSchemaSiriEventTypeUnion *)self setCaarClientEvent:v4];
+                                                                                  [(GRPSchemaSiriEventTypeUnion *)self setCaarClientEvent:typeCopy];
                                                                                 }
 
                                                                                 else
@@ -496,7 +496,7 @@
                                                                                   objc_opt_class();
                                                                                   if (objc_opt_isKindOfClass())
                                                                                   {
-                                                                                    [(GRPSchemaSiriEventTypeUnion *)self setRfgClientEvent:v4];
+                                                                                    [(GRPSchemaSiriEventTypeUnion *)self setRfgClientEvent:typeCopy];
                                                                                   }
 
                                                                                   else
@@ -504,7 +504,7 @@
                                                                                     objc_opt_class();
                                                                                     if (objc_opt_isKindOfClass())
                                                                                     {
-                                                                                      [(GRPSchemaSiriEventTypeUnion *)self setScClientEvent:v4];
+                                                                                      [(GRPSchemaSiriEventTypeUnion *)self setScClientEvent:typeCopy];
                                                                                     }
 
                                                                                     else
@@ -512,7 +512,7 @@
                                                                                       objc_opt_class();
                                                                                       if (objc_opt_isKindOfClass())
                                                                                       {
-                                                                                        [(GRPSchemaSiriEventTypeUnion *)self setSiriSetupClientEvent:v4];
+                                                                                        [(GRPSchemaSiriEventTypeUnion *)self setSiriSetupClientEvent:typeCopy];
                                                                                       }
 
                                                                                       else
@@ -520,7 +520,7 @@
                                                                                         objc_opt_class();
                                                                                         if (objc_opt_isKindOfClass())
                                                                                         {
-                                                                                          [(GRPSchemaSiriEventTypeUnion *)self setOptInClientEvent:v4];
+                                                                                          [(GRPSchemaSiriEventTypeUnion *)self setOptInClientEvent:typeCopy];
                                                                                         }
 
                                                                                         else
@@ -528,7 +528,7 @@
                                                                                           objc_opt_class();
                                                                                           if (objc_opt_isKindOfClass())
                                                                                           {
-                                                                                            [(GRPSchemaSiriEventTypeUnion *)self setLrClientEvent:v4];
+                                                                                            [(GRPSchemaSiriEventTypeUnion *)self setLrClientEvent:typeCopy];
                                                                                           }
 
                                                                                           else
@@ -536,7 +536,7 @@
                                                                                             objc_opt_class();
                                                                                             if (objc_opt_isKindOfClass())
                                                                                             {
-                                                                                              [(GRPSchemaSiriEventTypeUnion *)self setHomeKitClientEvent:v4];
+                                                                                              [(GRPSchemaSiriEventTypeUnion *)self setHomeKitClientEvent:typeCopy];
                                                                                             }
                                                                                           }
                                                                                         }
@@ -585,16 +585,16 @@
   }
 }
 
-- (GRPSchemaSiriEventTypeUnion)initWithDictionary:(id)a3
+- (GRPSchemaSiriEventTypeUnion)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v139.receiver = self;
   v139.super_class = GRPSchemaSiriEventTypeUnion;
   v5 = [(GRPSchemaSiriEventTypeUnion *)&v139 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ueiClientEvent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ueiClientEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -602,7 +602,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setUeiClientEvent:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"petUploadEvent"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"petUploadEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -610,7 +610,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setPetUploadEvent:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"provisionalEvent"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"provisionalEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -618,7 +618,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setProvisionalEvent:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"testExecutionEvent"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"testExecutionEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -626,7 +626,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setTestExecutionEvent:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"requestLinkEvent"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"requestLinkEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -634,7 +634,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setRequestLinkEvent:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"flowClientEvent"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"flowClientEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -642,7 +642,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setFlowClientEvent:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"camClientEvent"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"camClientEvent"];
     objc_opt_class();
     v138 = v18;
     if (objc_opt_isKindOfClass())
@@ -651,7 +651,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setCamClientEvent:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"uspClientEvent"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"uspClientEvent"];
     objc_opt_class();
     v137 = v20;
     if (objc_opt_isKindOfClass())
@@ -660,7 +660,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setUspClientEvent:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"dimClientEvent"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"dimClientEvent"];
     objc_opt_class();
     v136 = v22;
     if (objc_opt_isKindOfClass())
@@ -669,7 +669,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setDimClientEvent:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"nlxClientEvent"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"nlxClientEvent"];
     objc_opt_class();
     v135 = v24;
     if (objc_opt_isKindOfClass())
@@ -678,7 +678,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setNlxClientEvent:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"orchClientEvent"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"orchClientEvent"];
     objc_opt_class();
     v134 = v26;
     if (objc_opt_isKindOfClass())
@@ -687,7 +687,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setOrchClientEvent:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"asrClientEvent"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"asrClientEvent"];
     objc_opt_class();
     v133 = v28;
     if (objc_opt_isKindOfClass())
@@ -696,7 +696,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setAsrClientEvent:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"ihClientEvent"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"ihClientEvent"];
     objc_opt_class();
     v132 = v30;
     if (objc_opt_isKindOfClass())
@@ -705,7 +705,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setIhClientEvent:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"mhClientEvent"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"mhClientEvent"];
     objc_opt_class();
     v131 = v32;
     if (objc_opt_isKindOfClass())
@@ -714,7 +714,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setMhClientEvent:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"ttsClientEvent"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"ttsClientEvent"];
     objc_opt_class();
     v130 = v34;
     if (objc_opt_isKindOfClass())
@@ -723,7 +723,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setTtsClientEvent:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"clpClientEvent"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"clpClientEvent"];
     objc_opt_class();
     v129 = v36;
     if (objc_opt_isKindOfClass())
@@ -732,7 +732,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setClpClientEvent:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"rrClientEvent"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"rrClientEvent"];
     objc_opt_class();
     v128 = v38;
     if (objc_opt_isKindOfClass())
@@ -741,7 +741,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setRrClientEvent:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"cnvClientEvent"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"cnvClientEvent"];
     objc_opt_class();
     v127 = v40;
     if (objc_opt_isKindOfClass())
@@ -750,7 +750,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setCnvClientEvent:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"ancClientEvent"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"ancClientEvent"];
     objc_opt_class();
     v126 = v42;
     if (objc_opt_isKindOfClass())
@@ -759,7 +759,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setAncClientEvent:v43];
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"halClientEvent"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"halClientEvent"];
     objc_opt_class();
     v125 = v44;
     if (objc_opt_isKindOfClass())
@@ -768,7 +768,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setHalClientEvent:v45];
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"netClientEvent"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"netClientEvent"];
     objc_opt_class();
     v124 = v46;
     if (objc_opt_isKindOfClass())
@@ -777,7 +777,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setNetClientEvent:v47];
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"sadClientEvent"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"sadClientEvent"];
     objc_opt_class();
     v123 = v48;
     if (objc_opt_isKindOfClass())
@@ -786,7 +786,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setSadClientEvent:v49];
     }
 
-    v50 = [v4 objectForKeyedSubscript:@"dodmlClientEvent"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"dodmlClientEvent"];
     objc_opt_class();
     v122 = v50;
     if (objc_opt_isKindOfClass())
@@ -795,7 +795,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setDodmlClientEvent:v51];
     }
 
-    v52 = [v4 objectForKeyedSubscript:@"plusClientEvent"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"plusClientEvent"];
     objc_opt_class();
     v121 = v52;
     if (objc_opt_isKindOfClass())
@@ -804,7 +804,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setPlusClientEvent:v53];
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"expSearchClientEvent"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"expSearchClientEvent"];
     objc_opt_class();
     v120 = v54;
     if (objc_opt_isKindOfClass())
@@ -813,7 +813,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setExpSearchClientEvent:v55];
     }
 
-    v56 = [v4 objectForKeyedSubscript:@"expSiriClientEvent"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"expSiriClientEvent"];
     objc_opt_class();
     v119 = v56;
     if (objc_opt_isKindOfClass())
@@ -822,7 +822,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setExpSiriClientEvent:v57];
     }
 
-    v58 = [v4 objectForKeyedSubscript:@"srstClientEvent"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"srstClientEvent"];
     objc_opt_class();
     v118 = v58;
     if (objc_opt_isKindOfClass())
@@ -831,7 +831,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setSrstClientEvent:v59];
     }
 
-    v60 = [v4 objectForKeyedSubscript:@"pommmesClientEvent"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"pommmesClientEvent"];
     objc_opt_class();
     v117 = v60;
     if (objc_opt_isKindOfClass())
@@ -840,7 +840,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setPommmesClientEvent:v61];
     }
 
-    v62 = [v4 objectForKeyedSubscript:@"cdaClientEvent"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"cdaClientEvent"];
     objc_opt_class();
     v116 = v62;
     if (objc_opt_isKindOfClass())
@@ -849,7 +849,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setCdaClientEvent:v63];
     }
 
-    v64 = [v4 objectForKeyedSubscript:@"mwtClientEvent"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"mwtClientEvent"];
     objc_opt_class();
     v115 = v64;
     if (objc_opt_isKindOfClass())
@@ -858,7 +858,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setMwtClientEvent:v65];
     }
 
-    v66 = [v4 objectForKeyedSubscript:@"homeClientEvent"];
+    v66 = [dictionaryCopy objectForKeyedSubscript:@"homeClientEvent"];
     objc_opt_class();
     v114 = v66;
     if (objc_opt_isKindOfClass())
@@ -867,7 +867,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setHomeClientEvent:v67];
     }
 
-    v68 = [v4 objectForKeyedSubscript:@"gradingOptInStateChange"];
+    v68 = [dictionaryCopy objectForKeyedSubscript:@"gradingOptInStateChange"];
     objc_opt_class();
     v113 = v68;
     if (objc_opt_isKindOfClass())
@@ -876,7 +876,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setGradingOptInStateChange:v69];
     }
 
-    v70 = [v4 objectForKeyedSubscript:@"optinStatePropagationEvent"];
+    v70 = [dictionaryCopy objectForKeyedSubscript:@"optinStatePropagationEvent"];
     objc_opt_class();
     v112 = v70;
     if (objc_opt_isKindOfClass())
@@ -885,7 +885,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setOptinStatePropagationEvent:v71];
     }
 
-    v72 = [v4 objectForKeyedSubscript:@"rssClientEvent"];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"rssClientEvent"];
     objc_opt_class();
     v111 = v72;
     if (objc_opt_isKindOfClass())
@@ -894,7 +894,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setRssClientEvent:v73];
     }
 
-    v74 = [v4 objectForKeyedSubscript:@"sugClientEvent"];
+    v74 = [dictionaryCopy objectForKeyedSubscript:@"sugClientEvent"];
     objc_opt_class();
     v110 = v74;
     if (objc_opt_isKindOfClass())
@@ -903,7 +903,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setSugClientEvent:v75];
     }
 
-    v76 = [v4 objectForKeyedSubscript:@"flowLinkClientEvent"];
+    v76 = [dictionaryCopy objectForKeyedSubscript:@"flowLinkClientEvent"];
     objc_opt_class();
     v109 = v76;
     if (objc_opt_isKindOfClass())
@@ -912,7 +912,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setFlowLinkClientEvent:v77];
     }
 
-    v78 = [v4 objectForKeyedSubscript:@"rfClientEvent"];
+    v78 = [dictionaryCopy objectForKeyedSubscript:@"rfClientEvent"];
     objc_opt_class();
     v108 = v78;
     if (objc_opt_isKindOfClass())
@@ -921,7 +921,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setRfClientEvent:v79];
     }
 
-    v80 = [v4 objectForKeyedSubscript:@"sicClientEvent"];
+    v80 = [dictionaryCopy objectForKeyedSubscript:@"sicClientEvent"];
     objc_opt_class();
     v107 = v80;
     if (objc_opt_isKindOfClass())
@@ -931,7 +931,7 @@
     }
 
     v101 = v16;
-    v82 = [v4 objectForKeyedSubscript:@"inferenceClientEvent"];
+    v82 = [dictionaryCopy objectForKeyedSubscript:@"inferenceClientEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -940,7 +940,7 @@
     }
 
     v106 = v6;
-    v84 = [v4 objectForKeyedSubscript:{@"caarClientEvent", v82}];
+    v84 = [dictionaryCopy objectForKeyedSubscript:{@"caarClientEvent", v82}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -949,7 +949,7 @@
     }
 
     v105 = v8;
-    v86 = [v4 objectForKeyedSubscript:@"rfgClientEvent"];
+    v86 = [dictionaryCopy objectForKeyedSubscript:@"rfgClientEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -958,7 +958,7 @@
     }
 
     v104 = v10;
-    v88 = [v4 objectForKeyedSubscript:@"scClientEvent"];
+    v88 = [dictionaryCopy objectForKeyedSubscript:@"scClientEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -967,7 +967,7 @@
     }
 
     v103 = v12;
-    v90 = [v4 objectForKeyedSubscript:@"siriSetupClientEvent"];
+    v90 = [dictionaryCopy objectForKeyedSubscript:@"siriSetupClientEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -976,7 +976,7 @@
     }
 
     v102 = v14;
-    v92 = [v4 objectForKeyedSubscript:@"optInClientEvent"];
+    v92 = [dictionaryCopy objectForKeyedSubscript:@"optInClientEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -984,7 +984,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setOptInClientEvent:v93];
     }
 
-    v94 = [v4 objectForKeyedSubscript:@"lrClientEvent"];
+    v94 = [dictionaryCopy objectForKeyedSubscript:@"lrClientEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -992,7 +992,7 @@
       [(GRPSchemaSiriEventTypeUnion *)v5 setLrClientEvent:v95];
     }
 
-    v96 = [v4 objectForKeyedSubscript:@"homeKitClientEvent"];
+    v96 = [dictionaryCopy objectForKeyedSubscript:@"homeKitClientEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1006,30 +1006,30 @@
   return v5;
 }
 
-- (GRPSchemaSiriEventTypeUnion)initWithJSON:(id)a3
+- (GRPSchemaSiriEventTypeUnion)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GRPSchemaSiriEventTypeUnion *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GRPSchemaSiriEventTypeUnion *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GRPSchemaSiriEventTypeUnion *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -1042,747 +1042,747 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ancClientEvent)
   {
-    v4 = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ancClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
+    dictionaryRepresentation = [ancClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ancClientEvent"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ancClientEvent"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ancClientEvent"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ancClientEvent"];
     }
   }
 
   if (self->_asrClientEvent)
   {
-    v7 = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    asrClientEvent = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
+    dictionaryRepresentation2 = [asrClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"asrClientEvent"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"asrClientEvent"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"asrClientEvent"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"asrClientEvent"];
     }
   }
 
   if (self->_caarClientEvent)
   {
-    v10 = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    caarClientEvent = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
+    dictionaryRepresentation3 = [caarClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"caarClientEvent"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"caarClientEvent"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"caarClientEvent"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"caarClientEvent"];
     }
   }
 
   if (self->_camClientEvent)
   {
-    v13 = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    camClientEvent = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
+    dictionaryRepresentation4 = [camClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"camClientEvent"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"camClientEvent"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"camClientEvent"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"camClientEvent"];
     }
   }
 
   if (self->_cdaClientEvent)
   {
-    v16 = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    cdaClientEvent = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
+    dictionaryRepresentation5 = [cdaClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"cdaClientEvent"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"cdaClientEvent"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"cdaClientEvent"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"cdaClientEvent"];
     }
   }
 
   if (self->_clpClientEvent)
   {
-    v19 = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    clpClientEvent = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
+    dictionaryRepresentation6 = [clpClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"clpClientEvent"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"clpClientEvent"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"clpClientEvent"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"clpClientEvent"];
     }
   }
 
   if (self->_cnvClientEvent)
   {
-    v22 = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    cnvClientEvent = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
+    dictionaryRepresentation7 = [cnvClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"cnvClientEvent"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"cnvClientEvent"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"cnvClientEvent"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"cnvClientEvent"];
     }
   }
 
   if (self->_dimClientEvent)
   {
-    v25 = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    dimClientEvent = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
+    dictionaryRepresentation8 = [dimClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"dimClientEvent"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"dimClientEvent"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"dimClientEvent"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"dimClientEvent"];
     }
   }
 
   if (self->_dodmlClientEvent)
   {
-    v28 = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    dodmlClientEvent = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
+    dictionaryRepresentation9 = [dodmlClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"dodmlClientEvent"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"dodmlClientEvent"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"dodmlClientEvent"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"dodmlClientEvent"];
     }
   }
 
   if (self->_expSearchClientEvent)
   {
-    v31 = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    expSearchClientEvent = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
+    dictionaryRepresentation10 = [expSearchClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"expSearchClientEvent"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"expSearchClientEvent"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"expSearchClientEvent"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"expSearchClientEvent"];
     }
   }
 
   if (self->_expSiriClientEvent)
   {
-    v34 = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    expSiriClientEvent = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
+    dictionaryRepresentation11 = [expSiriClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"expSiriClientEvent"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"expSiriClientEvent"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"expSiriClientEvent"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"expSiriClientEvent"];
     }
   }
 
   if (self->_flowClientEvent)
   {
-    v37 = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    flowClientEvent = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
+    dictionaryRepresentation12 = [flowClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"flowClientEvent"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"flowClientEvent"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"flowClientEvent"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"flowClientEvent"];
     }
   }
 
   if (self->_flowLinkClientEvent)
   {
-    v40 = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    flowLinkClientEvent = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
+    dictionaryRepresentation13 = [flowLinkClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"flowLinkClientEvent"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"flowLinkClientEvent"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"flowLinkClientEvent"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"flowLinkClientEvent"];
     }
   }
 
   if (self->_gradingOptInStateChange)
   {
-    v43 = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    gradingOptInStateChange = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
+    dictionaryRepresentation14 = [gradingOptInStateChange dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"gradingOptInStateChange"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"gradingOptInStateChange"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"gradingOptInStateChange"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"gradingOptInStateChange"];
     }
   }
 
   if (self->_halClientEvent)
   {
-    v46 = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    halClientEvent = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
+    dictionaryRepresentation15 = [halClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"halClientEvent"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"halClientEvent"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"halClientEvent"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"halClientEvent"];
     }
   }
 
   if (self->_homeClientEvent)
   {
-    v49 = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    homeClientEvent = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
+    dictionaryRepresentation16 = [homeClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"homeClientEvent"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"homeClientEvent"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"homeClientEvent"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"homeClientEvent"];
     }
   }
 
   if (self->_homeKitClientEvent)
   {
-    v52 = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    homeKitClientEvent = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
+    dictionaryRepresentation17 = [homeKitClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"homeKitClientEvent"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"homeKitClientEvent"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"homeKitClientEvent"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"homeKitClientEvent"];
     }
   }
 
   if (self->_ihClientEvent)
   {
-    v55 = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    ihClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
+    dictionaryRepresentation18 = [ihClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"ihClientEvent"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"ihClientEvent"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"ihClientEvent"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"ihClientEvent"];
     }
   }
 
   if (self->_inferenceClientEvent)
   {
-    v58 = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
-    v59 = [v58 dictionaryRepresentation];
-    if (v59)
+    inferenceClientEvent = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
+    dictionaryRepresentation19 = [inferenceClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation19)
     {
-      [v3 setObject:v59 forKeyedSubscript:@"inferenceClientEvent"];
+      [dictionary setObject:dictionaryRepresentation19 forKeyedSubscript:@"inferenceClientEvent"];
     }
 
     else
     {
-      v60 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v60 forKeyedSubscript:@"inferenceClientEvent"];
+      null19 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null19 forKeyedSubscript:@"inferenceClientEvent"];
     }
   }
 
   if (self->_lrClientEvent)
   {
-    v61 = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
-    v62 = [v61 dictionaryRepresentation];
-    if (v62)
+    lrClientEvent = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
+    dictionaryRepresentation20 = [lrClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation20)
     {
-      [v3 setObject:v62 forKeyedSubscript:@"lrClientEvent"];
+      [dictionary setObject:dictionaryRepresentation20 forKeyedSubscript:@"lrClientEvent"];
     }
 
     else
     {
-      v63 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v63 forKeyedSubscript:@"lrClientEvent"];
+      null20 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null20 forKeyedSubscript:@"lrClientEvent"];
     }
   }
 
   if (self->_mhClientEvent)
   {
-    v64 = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
-    v65 = [v64 dictionaryRepresentation];
-    if (v65)
+    mhClientEvent = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
+    dictionaryRepresentation21 = [mhClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation21)
     {
-      [v3 setObject:v65 forKeyedSubscript:@"mhClientEvent"];
+      [dictionary setObject:dictionaryRepresentation21 forKeyedSubscript:@"mhClientEvent"];
     }
 
     else
     {
-      v66 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v66 forKeyedSubscript:@"mhClientEvent"];
+      null21 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null21 forKeyedSubscript:@"mhClientEvent"];
     }
   }
 
   if (self->_mwtClientEvent)
   {
-    v67 = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
-    v68 = [v67 dictionaryRepresentation];
-    if (v68)
+    mwtClientEvent = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
+    dictionaryRepresentation22 = [mwtClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation22)
     {
-      [v3 setObject:v68 forKeyedSubscript:@"mwtClientEvent"];
+      [dictionary setObject:dictionaryRepresentation22 forKeyedSubscript:@"mwtClientEvent"];
     }
 
     else
     {
-      v69 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v69 forKeyedSubscript:@"mwtClientEvent"];
+      null22 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null22 forKeyedSubscript:@"mwtClientEvent"];
     }
   }
 
   if (self->_netClientEvent)
   {
-    v70 = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
-    v71 = [v70 dictionaryRepresentation];
-    if (v71)
+    netClientEvent = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
+    dictionaryRepresentation23 = [netClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation23)
     {
-      [v3 setObject:v71 forKeyedSubscript:@"netClientEvent"];
+      [dictionary setObject:dictionaryRepresentation23 forKeyedSubscript:@"netClientEvent"];
     }
 
     else
     {
-      v72 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v72 forKeyedSubscript:@"netClientEvent"];
+      null23 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null23 forKeyedSubscript:@"netClientEvent"];
     }
   }
 
   if (self->_nlxClientEvent)
   {
-    v73 = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
-    v74 = [v73 dictionaryRepresentation];
-    if (v74)
+    nlxClientEvent = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
+    dictionaryRepresentation24 = [nlxClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation24)
     {
-      [v3 setObject:v74 forKeyedSubscript:@"nlxClientEvent"];
+      [dictionary setObject:dictionaryRepresentation24 forKeyedSubscript:@"nlxClientEvent"];
     }
 
     else
     {
-      v75 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v75 forKeyedSubscript:@"nlxClientEvent"];
+      null24 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null24 forKeyedSubscript:@"nlxClientEvent"];
     }
   }
 
   if (self->_optInClientEvent)
   {
-    v76 = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
-    v77 = [v76 dictionaryRepresentation];
-    if (v77)
+    optInClientEvent = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
+    dictionaryRepresentation25 = [optInClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation25)
     {
-      [v3 setObject:v77 forKeyedSubscript:@"optInClientEvent"];
+      [dictionary setObject:dictionaryRepresentation25 forKeyedSubscript:@"optInClientEvent"];
     }
 
     else
     {
-      v78 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v78 forKeyedSubscript:@"optInClientEvent"];
+      null25 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null25 forKeyedSubscript:@"optInClientEvent"];
     }
   }
 
   if (self->_optinStatePropagationEvent)
   {
-    v79 = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
-    v80 = [v79 dictionaryRepresentation];
-    if (v80)
+    optinStatePropagationEvent = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
+    dictionaryRepresentation26 = [optinStatePropagationEvent dictionaryRepresentation];
+    if (dictionaryRepresentation26)
     {
-      [v3 setObject:v80 forKeyedSubscript:@"optinStatePropagationEvent"];
+      [dictionary setObject:dictionaryRepresentation26 forKeyedSubscript:@"optinStatePropagationEvent"];
     }
 
     else
     {
-      v81 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v81 forKeyedSubscript:@"optinStatePropagationEvent"];
+      null26 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null26 forKeyedSubscript:@"optinStatePropagationEvent"];
     }
   }
 
   if (self->_orchClientEvent)
   {
-    v82 = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
-    v83 = [v82 dictionaryRepresentation];
-    if (v83)
+    orchClientEvent = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
+    dictionaryRepresentation27 = [orchClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation27)
     {
-      [v3 setObject:v83 forKeyedSubscript:@"orchClientEvent"];
+      [dictionary setObject:dictionaryRepresentation27 forKeyedSubscript:@"orchClientEvent"];
     }
 
     else
     {
-      v84 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v84 forKeyedSubscript:@"orchClientEvent"];
+      null27 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null27 forKeyedSubscript:@"orchClientEvent"];
     }
   }
 
   if (self->_petUploadEvent)
   {
-    v85 = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
-    v86 = [v85 dictionaryRepresentation];
-    if (v86)
+    petUploadEvent = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
+    dictionaryRepresentation28 = [petUploadEvent dictionaryRepresentation];
+    if (dictionaryRepresentation28)
     {
-      [v3 setObject:v86 forKeyedSubscript:@"petUploadEvent"];
+      [dictionary setObject:dictionaryRepresentation28 forKeyedSubscript:@"petUploadEvent"];
     }
 
     else
     {
-      v87 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v87 forKeyedSubscript:@"petUploadEvent"];
+      null28 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null28 forKeyedSubscript:@"petUploadEvent"];
     }
   }
 
   if (self->_plusClientEvent)
   {
-    v88 = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
-    v89 = [v88 dictionaryRepresentation];
-    if (v89)
+    plusClientEvent = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
+    dictionaryRepresentation29 = [plusClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation29)
     {
-      [v3 setObject:v89 forKeyedSubscript:@"plusClientEvent"];
+      [dictionary setObject:dictionaryRepresentation29 forKeyedSubscript:@"plusClientEvent"];
     }
 
     else
     {
-      v90 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v90 forKeyedSubscript:@"plusClientEvent"];
+      null29 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null29 forKeyedSubscript:@"plusClientEvent"];
     }
   }
 
   if (self->_pommmesClientEvent)
   {
-    v91 = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
-    v92 = [v91 dictionaryRepresentation];
-    if (v92)
+    pommmesClientEvent = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
+    dictionaryRepresentation30 = [pommmesClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation30)
     {
-      [v3 setObject:v92 forKeyedSubscript:@"pommmesClientEvent"];
+      [dictionary setObject:dictionaryRepresentation30 forKeyedSubscript:@"pommmesClientEvent"];
     }
 
     else
     {
-      v93 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v93 forKeyedSubscript:@"pommmesClientEvent"];
+      null30 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null30 forKeyedSubscript:@"pommmesClientEvent"];
     }
   }
 
   if (self->_provisionalEvent)
   {
-    v94 = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
-    v95 = [v94 dictionaryRepresentation];
-    if (v95)
+    provisionalEvent = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
+    dictionaryRepresentation31 = [provisionalEvent dictionaryRepresentation];
+    if (dictionaryRepresentation31)
     {
-      [v3 setObject:v95 forKeyedSubscript:@"provisionalEvent"];
+      [dictionary setObject:dictionaryRepresentation31 forKeyedSubscript:@"provisionalEvent"];
     }
 
     else
     {
-      v96 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v96 forKeyedSubscript:@"provisionalEvent"];
+      null31 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null31 forKeyedSubscript:@"provisionalEvent"];
     }
   }
 
   if (self->_requestLinkEvent)
   {
-    v97 = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
-    v98 = [v97 dictionaryRepresentation];
-    if (v98)
+    requestLinkEvent = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
+    dictionaryRepresentation32 = [requestLinkEvent dictionaryRepresentation];
+    if (dictionaryRepresentation32)
     {
-      [v3 setObject:v98 forKeyedSubscript:@"requestLinkEvent"];
+      [dictionary setObject:dictionaryRepresentation32 forKeyedSubscript:@"requestLinkEvent"];
     }
 
     else
     {
-      v99 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v99 forKeyedSubscript:@"requestLinkEvent"];
+      null32 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null32 forKeyedSubscript:@"requestLinkEvent"];
     }
   }
 
   if (self->_rfClientEvent)
   {
-    v100 = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
-    v101 = [v100 dictionaryRepresentation];
-    if (v101)
+    rfClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
+    dictionaryRepresentation33 = [rfClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation33)
     {
-      [v3 setObject:v101 forKeyedSubscript:@"rfClientEvent"];
+      [dictionary setObject:dictionaryRepresentation33 forKeyedSubscript:@"rfClientEvent"];
     }
 
     else
     {
-      v102 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v102 forKeyedSubscript:@"rfClientEvent"];
+      null33 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null33 forKeyedSubscript:@"rfClientEvent"];
     }
   }
 
   if (self->_rfgClientEvent)
   {
-    v103 = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
-    v104 = [v103 dictionaryRepresentation];
-    if (v104)
+    rfgClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
+    dictionaryRepresentation34 = [rfgClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation34)
     {
-      [v3 setObject:v104 forKeyedSubscript:@"rfgClientEvent"];
+      [dictionary setObject:dictionaryRepresentation34 forKeyedSubscript:@"rfgClientEvent"];
     }
 
     else
     {
-      v105 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v105 forKeyedSubscript:@"rfgClientEvent"];
+      null34 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null34 forKeyedSubscript:@"rfgClientEvent"];
     }
   }
 
   if (self->_rrClientEvent)
   {
-    v106 = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
-    v107 = [v106 dictionaryRepresentation];
-    if (v107)
+    rrClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
+    dictionaryRepresentation35 = [rrClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation35)
     {
-      [v3 setObject:v107 forKeyedSubscript:@"rrClientEvent"];
+      [dictionary setObject:dictionaryRepresentation35 forKeyedSubscript:@"rrClientEvent"];
     }
 
     else
     {
-      v108 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v108 forKeyedSubscript:@"rrClientEvent"];
+      null35 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null35 forKeyedSubscript:@"rrClientEvent"];
     }
   }
 
   if (self->_rssClientEvent)
   {
-    v109 = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
-    v110 = [v109 dictionaryRepresentation];
-    if (v110)
+    rssClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
+    dictionaryRepresentation36 = [rssClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation36)
     {
-      [v3 setObject:v110 forKeyedSubscript:@"rssClientEvent"];
+      [dictionary setObject:dictionaryRepresentation36 forKeyedSubscript:@"rssClientEvent"];
     }
 
     else
     {
-      v111 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v111 forKeyedSubscript:@"rssClientEvent"];
+      null36 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null36 forKeyedSubscript:@"rssClientEvent"];
     }
   }
 
   if (self->_sadClientEvent)
   {
-    v112 = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
-    v113 = [v112 dictionaryRepresentation];
-    if (v113)
+    sadClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
+    dictionaryRepresentation37 = [sadClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation37)
     {
-      [v3 setObject:v113 forKeyedSubscript:@"sadClientEvent"];
+      [dictionary setObject:dictionaryRepresentation37 forKeyedSubscript:@"sadClientEvent"];
     }
 
     else
     {
-      v114 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v114 forKeyedSubscript:@"sadClientEvent"];
+      null37 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null37 forKeyedSubscript:@"sadClientEvent"];
     }
   }
 
   if (self->_scClientEvent)
   {
-    v115 = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
-    v116 = [v115 dictionaryRepresentation];
-    if (v116)
+    scClientEvent = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
+    dictionaryRepresentation38 = [scClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation38)
     {
-      [v3 setObject:v116 forKeyedSubscript:@"scClientEvent"];
+      [dictionary setObject:dictionaryRepresentation38 forKeyedSubscript:@"scClientEvent"];
     }
 
     else
     {
-      v117 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v117 forKeyedSubscript:@"scClientEvent"];
+      null38 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null38 forKeyedSubscript:@"scClientEvent"];
     }
   }
 
   if (self->_sicClientEvent)
   {
-    v118 = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
-    v119 = [v118 dictionaryRepresentation];
-    if (v119)
+    sicClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
+    dictionaryRepresentation39 = [sicClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation39)
     {
-      [v3 setObject:v119 forKeyedSubscript:@"sicClientEvent"];
+      [dictionary setObject:dictionaryRepresentation39 forKeyedSubscript:@"sicClientEvent"];
     }
 
     else
     {
-      v120 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v120 forKeyedSubscript:@"sicClientEvent"];
+      null39 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null39 forKeyedSubscript:@"sicClientEvent"];
     }
   }
 
   if (self->_siriSetupClientEvent)
   {
-    v121 = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
-    v122 = [v121 dictionaryRepresentation];
-    if (v122)
+    siriSetupClientEvent = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
+    dictionaryRepresentation40 = [siriSetupClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation40)
     {
-      [v3 setObject:v122 forKeyedSubscript:@"siriSetupClientEvent"];
+      [dictionary setObject:dictionaryRepresentation40 forKeyedSubscript:@"siriSetupClientEvent"];
     }
 
     else
     {
-      v123 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v123 forKeyedSubscript:@"siriSetupClientEvent"];
+      null40 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null40 forKeyedSubscript:@"siriSetupClientEvent"];
     }
   }
 
   if (self->_srstClientEvent)
   {
-    v124 = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
-    v125 = [v124 dictionaryRepresentation];
-    if (v125)
+    srstClientEvent = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
+    dictionaryRepresentation41 = [srstClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation41)
     {
-      [v3 setObject:v125 forKeyedSubscript:@"srstClientEvent"];
+      [dictionary setObject:dictionaryRepresentation41 forKeyedSubscript:@"srstClientEvent"];
     }
 
     else
     {
-      v126 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v126 forKeyedSubscript:@"srstClientEvent"];
+      null41 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null41 forKeyedSubscript:@"srstClientEvent"];
     }
   }
 
   if (self->_sugClientEvent)
   {
-    v127 = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
-    v128 = [v127 dictionaryRepresentation];
-    if (v128)
+    sugClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
+    dictionaryRepresentation42 = [sugClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation42)
     {
-      [v3 setObject:v128 forKeyedSubscript:@"sugClientEvent"];
+      [dictionary setObject:dictionaryRepresentation42 forKeyedSubscript:@"sugClientEvent"];
     }
 
     else
     {
-      v129 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v129 forKeyedSubscript:@"sugClientEvent"];
+      null42 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null42 forKeyedSubscript:@"sugClientEvent"];
     }
   }
 
   if (self->_testExecutionEvent)
   {
-    v130 = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
-    v131 = [v130 dictionaryRepresentation];
-    if (v131)
+    testExecutionEvent = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
+    dictionaryRepresentation43 = [testExecutionEvent dictionaryRepresentation];
+    if (dictionaryRepresentation43)
     {
-      [v3 setObject:v131 forKeyedSubscript:@"testExecutionEvent"];
+      [dictionary setObject:dictionaryRepresentation43 forKeyedSubscript:@"testExecutionEvent"];
     }
 
     else
     {
-      v132 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v132 forKeyedSubscript:@"testExecutionEvent"];
+      null43 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null43 forKeyedSubscript:@"testExecutionEvent"];
     }
   }
 
   if (self->_ttsClientEvent)
   {
-    v133 = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
-    v134 = [v133 dictionaryRepresentation];
-    if (v134)
+    ttsClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
+    dictionaryRepresentation44 = [ttsClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation44)
     {
-      [v3 setObject:v134 forKeyedSubscript:@"ttsClientEvent"];
+      [dictionary setObject:dictionaryRepresentation44 forKeyedSubscript:@"ttsClientEvent"];
     }
 
     else
     {
-      v135 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v135 forKeyedSubscript:@"ttsClientEvent"];
+      null44 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null44 forKeyedSubscript:@"ttsClientEvent"];
     }
   }
 
   if (self->_ueiClientEvent)
   {
-    v136 = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
-    v137 = [v136 dictionaryRepresentation];
-    if (v137)
+    ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
+    dictionaryRepresentation45 = [ueiClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation45)
     {
-      [v3 setObject:v137 forKeyedSubscript:@"ueiClientEvent"];
+      [dictionary setObject:dictionaryRepresentation45 forKeyedSubscript:@"ueiClientEvent"];
     }
 
     else
     {
-      v138 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v138 forKeyedSubscript:@"ueiClientEvent"];
+      null45 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null45 forKeyedSubscript:@"ueiClientEvent"];
     }
   }
 
   if (self->_uspClientEvent)
   {
-    v139 = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
-    v140 = [v139 dictionaryRepresentation];
-    if (v140)
+    uspClientEvent = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
+    dictionaryRepresentation46 = [uspClientEvent dictionaryRepresentation];
+    if (dictionaryRepresentation46)
     {
-      [v3 setObject:v140 forKeyedSubscript:@"uspClientEvent"];
+      [dictionary setObject:dictionaryRepresentation46 forKeyedSubscript:@"uspClientEvent"];
     }
 
     else
     {
-      v141 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v141 forKeyedSubscript:@"uspClientEvent"];
+      null46 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null46 forKeyedSubscript:@"uspClientEvent"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v142 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v142 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1835,34 +1835,34 @@
   return v39 ^ v47 ^ [(HomeKitSchemaHKClientEvent *)self->_homeKitClientEvent hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_233;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_233;
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
-  v7 = [v4 ueiClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
+  ueiClientEvent2 = [equalCopy ueiClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v8 = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
-  if (v8)
+  ueiClientEvent3 = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
+  if (ueiClientEvent3)
   {
-    v9 = v8;
-    v10 = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
-    v11 = [v4 ueiClientEvent];
-    v12 = [v10 isEqual:v11];
+    v9 = ueiClientEvent3;
+    ueiClientEvent4 = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
+    ueiClientEvent5 = [equalCopy ueiClientEvent];
+    v12 = [ueiClientEvent4 isEqual:ueiClientEvent5];
 
     if (!v12)
     {
@@ -1874,20 +1874,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
-  v7 = [v4 petUploadEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
+  ueiClientEvent2 = [equalCopy petUploadEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v13 = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
-  if (v13)
+  petUploadEvent = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
+  if (petUploadEvent)
   {
-    v14 = v13;
-    v15 = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
-    v16 = [v4 petUploadEvent];
-    v17 = [v15 isEqual:v16];
+    v14 = petUploadEvent;
+    petUploadEvent2 = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
+    petUploadEvent3 = [equalCopy petUploadEvent];
+    v17 = [petUploadEvent2 isEqual:petUploadEvent3];
 
     if (!v17)
     {
@@ -1899,20 +1899,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
-  v7 = [v4 provisionalEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
+  ueiClientEvent2 = [equalCopy provisionalEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v18 = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
-  if (v18)
+  provisionalEvent = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
+  if (provisionalEvent)
   {
-    v19 = v18;
-    v20 = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
-    v21 = [v4 provisionalEvent];
-    v22 = [v20 isEqual:v21];
+    v19 = provisionalEvent;
+    provisionalEvent2 = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
+    provisionalEvent3 = [equalCopy provisionalEvent];
+    v22 = [provisionalEvent2 isEqual:provisionalEvent3];
 
     if (!v22)
     {
@@ -1924,20 +1924,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
-  v7 = [v4 testExecutionEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
+  ueiClientEvent2 = [equalCopy testExecutionEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v23 = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
-  if (v23)
+  testExecutionEvent = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
+  if (testExecutionEvent)
   {
-    v24 = v23;
-    v25 = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
-    v26 = [v4 testExecutionEvent];
-    v27 = [v25 isEqual:v26];
+    v24 = testExecutionEvent;
+    testExecutionEvent2 = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
+    testExecutionEvent3 = [equalCopy testExecutionEvent];
+    v27 = [testExecutionEvent2 isEqual:testExecutionEvent3];
 
     if (!v27)
     {
@@ -1949,20 +1949,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
-  v7 = [v4 requestLinkEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
+  ueiClientEvent2 = [equalCopy requestLinkEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v28 = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
-  if (v28)
+  requestLinkEvent = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
+  if (requestLinkEvent)
   {
-    v29 = v28;
-    v30 = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
-    v31 = [v4 requestLinkEvent];
-    v32 = [v30 isEqual:v31];
+    v29 = requestLinkEvent;
+    requestLinkEvent2 = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
+    requestLinkEvent3 = [equalCopy requestLinkEvent];
+    v32 = [requestLinkEvent2 isEqual:requestLinkEvent3];
 
     if (!v32)
     {
@@ -1974,20 +1974,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
-  v7 = [v4 flowClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
+  ueiClientEvent2 = [equalCopy flowClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v33 = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
-  if (v33)
+  flowClientEvent = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
+  if (flowClientEvent)
   {
-    v34 = v33;
-    v35 = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
-    v36 = [v4 flowClientEvent];
-    v37 = [v35 isEqual:v36];
+    v34 = flowClientEvent;
+    flowClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
+    flowClientEvent3 = [equalCopy flowClientEvent];
+    v37 = [flowClientEvent2 isEqual:flowClientEvent3];
 
     if (!v37)
     {
@@ -1999,20 +1999,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
-  v7 = [v4 camClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
+  ueiClientEvent2 = [equalCopy camClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v38 = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
-  if (v38)
+  camClientEvent = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
+  if (camClientEvent)
   {
-    v39 = v38;
-    v40 = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
-    v41 = [v4 camClientEvent];
-    v42 = [v40 isEqual:v41];
+    v39 = camClientEvent;
+    camClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
+    camClientEvent3 = [equalCopy camClientEvent];
+    v42 = [camClientEvent2 isEqual:camClientEvent3];
 
     if (!v42)
     {
@@ -2024,20 +2024,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
-  v7 = [v4 uspClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
+  ueiClientEvent2 = [equalCopy uspClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v43 = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
-  if (v43)
+  uspClientEvent = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
+  if (uspClientEvent)
   {
-    v44 = v43;
-    v45 = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
-    v46 = [v4 uspClientEvent];
-    v47 = [v45 isEqual:v46];
+    v44 = uspClientEvent;
+    uspClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
+    uspClientEvent3 = [equalCopy uspClientEvent];
+    v47 = [uspClientEvent2 isEqual:uspClientEvent3];
 
     if (!v47)
     {
@@ -2049,20 +2049,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
-  v7 = [v4 dimClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
+  ueiClientEvent2 = [equalCopy dimClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v48 = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
-  if (v48)
+  dimClientEvent = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
+  if (dimClientEvent)
   {
-    v49 = v48;
-    v50 = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
-    v51 = [v4 dimClientEvent];
-    v52 = [v50 isEqual:v51];
+    v49 = dimClientEvent;
+    dimClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
+    dimClientEvent3 = [equalCopy dimClientEvent];
+    v52 = [dimClientEvent2 isEqual:dimClientEvent3];
 
     if (!v52)
     {
@@ -2074,20 +2074,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
-  v7 = [v4 nlxClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
+  ueiClientEvent2 = [equalCopy nlxClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v53 = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
-  if (v53)
+  nlxClientEvent = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
+  if (nlxClientEvent)
   {
-    v54 = v53;
-    v55 = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
-    v56 = [v4 nlxClientEvent];
-    v57 = [v55 isEqual:v56];
+    v54 = nlxClientEvent;
+    nlxClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
+    nlxClientEvent3 = [equalCopy nlxClientEvent];
+    v57 = [nlxClientEvent2 isEqual:nlxClientEvent3];
 
     if (!v57)
     {
@@ -2099,20 +2099,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
-  v7 = [v4 orchClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
+  ueiClientEvent2 = [equalCopy orchClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v58 = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
-  if (v58)
+  orchClientEvent = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
+  if (orchClientEvent)
   {
-    v59 = v58;
-    v60 = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
-    v61 = [v4 orchClientEvent];
-    v62 = [v60 isEqual:v61];
+    v59 = orchClientEvent;
+    orchClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
+    orchClientEvent3 = [equalCopy orchClientEvent];
+    v62 = [orchClientEvent2 isEqual:orchClientEvent3];
 
     if (!v62)
     {
@@ -2124,20 +2124,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
-  v7 = [v4 asrClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
+  ueiClientEvent2 = [equalCopy asrClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v63 = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
-  if (v63)
+  asrClientEvent = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
+  if (asrClientEvent)
   {
-    v64 = v63;
-    v65 = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
-    v66 = [v4 asrClientEvent];
-    v67 = [v65 isEqual:v66];
+    v64 = asrClientEvent;
+    asrClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
+    asrClientEvent3 = [equalCopy asrClientEvent];
+    v67 = [asrClientEvent2 isEqual:asrClientEvent3];
 
     if (!v67)
     {
@@ -2149,20 +2149,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
-  v7 = [v4 ihClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
+  ueiClientEvent2 = [equalCopy ihClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v68 = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
-  if (v68)
+  ihClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
+  if (ihClientEvent)
   {
-    v69 = v68;
-    v70 = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
-    v71 = [v4 ihClientEvent];
-    v72 = [v70 isEqual:v71];
+    v69 = ihClientEvent;
+    ihClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
+    ihClientEvent3 = [equalCopy ihClientEvent];
+    v72 = [ihClientEvent2 isEqual:ihClientEvent3];
 
     if (!v72)
     {
@@ -2174,20 +2174,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
-  v7 = [v4 mhClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
+  ueiClientEvent2 = [equalCopy mhClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v73 = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
-  if (v73)
+  mhClientEvent = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
+  if (mhClientEvent)
   {
-    v74 = v73;
-    v75 = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
-    v76 = [v4 mhClientEvent];
-    v77 = [v75 isEqual:v76];
+    v74 = mhClientEvent;
+    mhClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
+    mhClientEvent3 = [equalCopy mhClientEvent];
+    v77 = [mhClientEvent2 isEqual:mhClientEvent3];
 
     if (!v77)
     {
@@ -2199,20 +2199,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
-  v7 = [v4 ttsClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
+  ueiClientEvent2 = [equalCopy ttsClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v78 = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
-  if (v78)
+  ttsClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
+  if (ttsClientEvent)
   {
-    v79 = v78;
-    v80 = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
-    v81 = [v4 ttsClientEvent];
-    v82 = [v80 isEqual:v81];
+    v79 = ttsClientEvent;
+    ttsClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
+    ttsClientEvent3 = [equalCopy ttsClientEvent];
+    v82 = [ttsClientEvent2 isEqual:ttsClientEvent3];
 
     if (!v82)
     {
@@ -2224,20 +2224,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
-  v7 = [v4 clpClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
+  ueiClientEvent2 = [equalCopy clpClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v83 = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
-  if (v83)
+  clpClientEvent = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
+  if (clpClientEvent)
   {
-    v84 = v83;
-    v85 = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
-    v86 = [v4 clpClientEvent];
-    v87 = [v85 isEqual:v86];
+    v84 = clpClientEvent;
+    clpClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
+    clpClientEvent3 = [equalCopy clpClientEvent];
+    v87 = [clpClientEvent2 isEqual:clpClientEvent3];
 
     if (!v87)
     {
@@ -2249,20 +2249,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
-  v7 = [v4 rrClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
+  ueiClientEvent2 = [equalCopy rrClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v88 = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
-  if (v88)
+  rrClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
+  if (rrClientEvent)
   {
-    v89 = v88;
-    v90 = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
-    v91 = [v4 rrClientEvent];
-    v92 = [v90 isEqual:v91];
+    v89 = rrClientEvent;
+    rrClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
+    rrClientEvent3 = [equalCopy rrClientEvent];
+    v92 = [rrClientEvent2 isEqual:rrClientEvent3];
 
     if (!v92)
     {
@@ -2274,20 +2274,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
-  v7 = [v4 cnvClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
+  ueiClientEvent2 = [equalCopy cnvClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v93 = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
-  if (v93)
+  cnvClientEvent = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
+  if (cnvClientEvent)
   {
-    v94 = v93;
-    v95 = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
-    v96 = [v4 cnvClientEvent];
-    v97 = [v95 isEqual:v96];
+    v94 = cnvClientEvent;
+    cnvClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
+    cnvClientEvent3 = [equalCopy cnvClientEvent];
+    v97 = [cnvClientEvent2 isEqual:cnvClientEvent3];
 
     if (!v97)
     {
@@ -2299,20 +2299,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
-  v7 = [v4 ancClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
+  ueiClientEvent2 = [equalCopy ancClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v98 = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
-  if (v98)
+  ancClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
+  if (ancClientEvent)
   {
-    v99 = v98;
-    v100 = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
-    v101 = [v4 ancClientEvent];
-    v102 = [v100 isEqual:v101];
+    v99 = ancClientEvent;
+    ancClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
+    ancClientEvent3 = [equalCopy ancClientEvent];
+    v102 = [ancClientEvent2 isEqual:ancClientEvent3];
 
     if (!v102)
     {
@@ -2324,20 +2324,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
-  v7 = [v4 halClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
+  ueiClientEvent2 = [equalCopy halClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v103 = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
-  if (v103)
+  halClientEvent = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
+  if (halClientEvent)
   {
-    v104 = v103;
-    v105 = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
-    v106 = [v4 halClientEvent];
-    v107 = [v105 isEqual:v106];
+    v104 = halClientEvent;
+    halClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
+    halClientEvent3 = [equalCopy halClientEvent];
+    v107 = [halClientEvent2 isEqual:halClientEvent3];
 
     if (!v107)
     {
@@ -2349,20 +2349,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
-  v7 = [v4 netClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
+  ueiClientEvent2 = [equalCopy netClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v108 = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
-  if (v108)
+  netClientEvent = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
+  if (netClientEvent)
   {
-    v109 = v108;
-    v110 = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
-    v111 = [v4 netClientEvent];
-    v112 = [v110 isEqual:v111];
+    v109 = netClientEvent;
+    netClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
+    netClientEvent3 = [equalCopy netClientEvent];
+    v112 = [netClientEvent2 isEqual:netClientEvent3];
 
     if (!v112)
     {
@@ -2374,20 +2374,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
-  v7 = [v4 sadClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
+  ueiClientEvent2 = [equalCopy sadClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v113 = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
-  if (v113)
+  sadClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
+  if (sadClientEvent)
   {
-    v114 = v113;
-    v115 = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
-    v116 = [v4 sadClientEvent];
-    v117 = [v115 isEqual:v116];
+    v114 = sadClientEvent;
+    sadClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
+    sadClientEvent3 = [equalCopy sadClientEvent];
+    v117 = [sadClientEvent2 isEqual:sadClientEvent3];
 
     if (!v117)
     {
@@ -2399,20 +2399,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
-  v7 = [v4 dodmlClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
+  ueiClientEvent2 = [equalCopy dodmlClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v118 = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
-  if (v118)
+  dodmlClientEvent = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
+  if (dodmlClientEvent)
   {
-    v119 = v118;
-    v120 = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
-    v121 = [v4 dodmlClientEvent];
-    v122 = [v120 isEqual:v121];
+    v119 = dodmlClientEvent;
+    dodmlClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
+    dodmlClientEvent3 = [equalCopy dodmlClientEvent];
+    v122 = [dodmlClientEvent2 isEqual:dodmlClientEvent3];
 
     if (!v122)
     {
@@ -2424,20 +2424,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
-  v7 = [v4 plusClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
+  ueiClientEvent2 = [equalCopy plusClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v123 = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
-  if (v123)
+  plusClientEvent = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
+  if (plusClientEvent)
   {
-    v124 = v123;
-    v125 = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
-    v126 = [v4 plusClientEvent];
-    v127 = [v125 isEqual:v126];
+    v124 = plusClientEvent;
+    plusClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
+    plusClientEvent3 = [equalCopy plusClientEvent];
+    v127 = [plusClientEvent2 isEqual:plusClientEvent3];
 
     if (!v127)
     {
@@ -2449,20 +2449,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
-  v7 = [v4 expSearchClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
+  ueiClientEvent2 = [equalCopy expSearchClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v128 = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
-  if (v128)
+  expSearchClientEvent = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
+  if (expSearchClientEvent)
   {
-    v129 = v128;
-    v130 = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
-    v131 = [v4 expSearchClientEvent];
-    v132 = [v130 isEqual:v131];
+    v129 = expSearchClientEvent;
+    expSearchClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
+    expSearchClientEvent3 = [equalCopy expSearchClientEvent];
+    v132 = [expSearchClientEvent2 isEqual:expSearchClientEvent3];
 
     if (!v132)
     {
@@ -2474,20 +2474,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
-  v7 = [v4 expSiriClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
+  ueiClientEvent2 = [equalCopy expSiriClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v133 = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
-  if (v133)
+  expSiriClientEvent = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
+  if (expSiriClientEvent)
   {
-    v134 = v133;
-    v135 = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
-    v136 = [v4 expSiriClientEvent];
-    v137 = [v135 isEqual:v136];
+    v134 = expSiriClientEvent;
+    expSiriClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
+    expSiriClientEvent3 = [equalCopy expSiriClientEvent];
+    v137 = [expSiriClientEvent2 isEqual:expSiriClientEvent3];
 
     if (!v137)
     {
@@ -2499,20 +2499,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
-  v7 = [v4 srstClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
+  ueiClientEvent2 = [equalCopy srstClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v138 = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
-  if (v138)
+  srstClientEvent = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
+  if (srstClientEvent)
   {
-    v139 = v138;
-    v140 = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
-    v141 = [v4 srstClientEvent];
-    v142 = [v140 isEqual:v141];
+    v139 = srstClientEvent;
+    srstClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
+    srstClientEvent3 = [equalCopy srstClientEvent];
+    v142 = [srstClientEvent2 isEqual:srstClientEvent3];
 
     if (!v142)
     {
@@ -2524,20 +2524,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
-  v7 = [v4 pommmesClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
+  ueiClientEvent2 = [equalCopy pommmesClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v143 = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
-  if (v143)
+  pommmesClientEvent = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
+  if (pommmesClientEvent)
   {
-    v144 = v143;
-    v145 = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
-    v146 = [v4 pommmesClientEvent];
-    v147 = [v145 isEqual:v146];
+    v144 = pommmesClientEvent;
+    pommmesClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
+    pommmesClientEvent3 = [equalCopy pommmesClientEvent];
+    v147 = [pommmesClientEvent2 isEqual:pommmesClientEvent3];
 
     if (!v147)
     {
@@ -2549,20 +2549,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
-  v7 = [v4 cdaClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
+  ueiClientEvent2 = [equalCopy cdaClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v148 = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
-  if (v148)
+  cdaClientEvent = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
+  if (cdaClientEvent)
   {
-    v149 = v148;
-    v150 = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
-    v151 = [v4 cdaClientEvent];
-    v152 = [v150 isEqual:v151];
+    v149 = cdaClientEvent;
+    cdaClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
+    cdaClientEvent3 = [equalCopy cdaClientEvent];
+    v152 = [cdaClientEvent2 isEqual:cdaClientEvent3];
 
     if (!v152)
     {
@@ -2574,20 +2574,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
-  v7 = [v4 mwtClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
+  ueiClientEvent2 = [equalCopy mwtClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v153 = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
-  if (v153)
+  mwtClientEvent = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
+  if (mwtClientEvent)
   {
-    v154 = v153;
-    v155 = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
-    v156 = [v4 mwtClientEvent];
-    v157 = [v155 isEqual:v156];
+    v154 = mwtClientEvent;
+    mwtClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
+    mwtClientEvent3 = [equalCopy mwtClientEvent];
+    v157 = [mwtClientEvent2 isEqual:mwtClientEvent3];
 
     if (!v157)
     {
@@ -2599,20 +2599,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
-  v7 = [v4 homeClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
+  ueiClientEvent2 = [equalCopy homeClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v158 = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
-  if (v158)
+  homeClientEvent = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
+  if (homeClientEvent)
   {
-    v159 = v158;
-    v160 = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
-    v161 = [v4 homeClientEvent];
-    v162 = [v160 isEqual:v161];
+    v159 = homeClientEvent;
+    homeClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
+    homeClientEvent3 = [equalCopy homeClientEvent];
+    v162 = [homeClientEvent2 isEqual:homeClientEvent3];
 
     if (!v162)
     {
@@ -2624,20 +2624,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
-  v7 = [v4 gradingOptInStateChange];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
+  ueiClientEvent2 = [equalCopy gradingOptInStateChange];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v163 = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
-  if (v163)
+  gradingOptInStateChange = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
+  if (gradingOptInStateChange)
   {
-    v164 = v163;
-    v165 = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
-    v166 = [v4 gradingOptInStateChange];
-    v167 = [v165 isEqual:v166];
+    v164 = gradingOptInStateChange;
+    gradingOptInStateChange2 = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
+    gradingOptInStateChange3 = [equalCopy gradingOptInStateChange];
+    v167 = [gradingOptInStateChange2 isEqual:gradingOptInStateChange3];
 
     if (!v167)
     {
@@ -2649,20 +2649,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
-  v7 = [v4 optinStatePropagationEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
+  ueiClientEvent2 = [equalCopy optinStatePropagationEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v168 = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
-  if (v168)
+  optinStatePropagationEvent = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
+  if (optinStatePropagationEvent)
   {
-    v169 = v168;
-    v170 = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
-    v171 = [v4 optinStatePropagationEvent];
-    v172 = [v170 isEqual:v171];
+    v169 = optinStatePropagationEvent;
+    optinStatePropagationEvent2 = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
+    optinStatePropagationEvent3 = [equalCopy optinStatePropagationEvent];
+    v172 = [optinStatePropagationEvent2 isEqual:optinStatePropagationEvent3];
 
     if (!v172)
     {
@@ -2674,20 +2674,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
-  v7 = [v4 rssClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
+  ueiClientEvent2 = [equalCopy rssClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v173 = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
-  if (v173)
+  rssClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
+  if (rssClientEvent)
   {
-    v174 = v173;
-    v175 = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
-    v176 = [v4 rssClientEvent];
-    v177 = [v175 isEqual:v176];
+    v174 = rssClientEvent;
+    rssClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
+    rssClientEvent3 = [equalCopy rssClientEvent];
+    v177 = [rssClientEvent2 isEqual:rssClientEvent3];
 
     if (!v177)
     {
@@ -2699,20 +2699,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
-  v7 = [v4 sugClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
+  ueiClientEvent2 = [equalCopy sugClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v178 = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
-  if (v178)
+  sugClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
+  if (sugClientEvent)
   {
-    v179 = v178;
-    v180 = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
-    v181 = [v4 sugClientEvent];
-    v182 = [v180 isEqual:v181];
+    v179 = sugClientEvent;
+    sugClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
+    sugClientEvent3 = [equalCopy sugClientEvent];
+    v182 = [sugClientEvent2 isEqual:sugClientEvent3];
 
     if (!v182)
     {
@@ -2724,20 +2724,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
-  v7 = [v4 flowLinkClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
+  ueiClientEvent2 = [equalCopy flowLinkClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v183 = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
-  if (v183)
+  flowLinkClientEvent = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
+  if (flowLinkClientEvent)
   {
-    v184 = v183;
-    v185 = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
-    v186 = [v4 flowLinkClientEvent];
-    v187 = [v185 isEqual:v186];
+    v184 = flowLinkClientEvent;
+    flowLinkClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
+    flowLinkClientEvent3 = [equalCopy flowLinkClientEvent];
+    v187 = [flowLinkClientEvent2 isEqual:flowLinkClientEvent3];
 
     if (!v187)
     {
@@ -2749,20 +2749,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
-  v7 = [v4 rfClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
+  ueiClientEvent2 = [equalCopy rfClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v188 = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
-  if (v188)
+  rfClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
+  if (rfClientEvent)
   {
-    v189 = v188;
-    v190 = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
-    v191 = [v4 rfClientEvent];
-    v192 = [v190 isEqual:v191];
+    v189 = rfClientEvent;
+    rfClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
+    rfClientEvent3 = [equalCopy rfClientEvent];
+    v192 = [rfClientEvent2 isEqual:rfClientEvent3];
 
     if (!v192)
     {
@@ -2774,20 +2774,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
-  v7 = [v4 sicClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
+  ueiClientEvent2 = [equalCopy sicClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v193 = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
-  if (v193)
+  sicClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
+  if (sicClientEvent)
   {
-    v194 = v193;
-    v195 = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
-    v196 = [v4 sicClientEvent];
-    v197 = [v195 isEqual:v196];
+    v194 = sicClientEvent;
+    sicClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
+    sicClientEvent3 = [equalCopy sicClientEvent];
+    v197 = [sicClientEvent2 isEqual:sicClientEvent3];
 
     if (!v197)
     {
@@ -2799,20 +2799,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
-  v7 = [v4 inferenceClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
+  ueiClientEvent2 = [equalCopy inferenceClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v198 = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
-  if (v198)
+  inferenceClientEvent = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
+  if (inferenceClientEvent)
   {
-    v199 = v198;
-    v200 = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
-    v201 = [v4 inferenceClientEvent];
-    v202 = [v200 isEqual:v201];
+    v199 = inferenceClientEvent;
+    inferenceClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
+    inferenceClientEvent3 = [equalCopy inferenceClientEvent];
+    v202 = [inferenceClientEvent2 isEqual:inferenceClientEvent3];
 
     if (!v202)
     {
@@ -2824,20 +2824,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
-  v7 = [v4 caarClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
+  ueiClientEvent2 = [equalCopy caarClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v203 = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
-  if (v203)
+  caarClientEvent = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
+  if (caarClientEvent)
   {
-    v204 = v203;
-    v205 = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
-    v206 = [v4 caarClientEvent];
-    v207 = [v205 isEqual:v206];
+    v204 = caarClientEvent;
+    caarClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
+    caarClientEvent3 = [equalCopy caarClientEvent];
+    v207 = [caarClientEvent2 isEqual:caarClientEvent3];
 
     if (!v207)
     {
@@ -2849,20 +2849,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
-  v7 = [v4 rfgClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
+  ueiClientEvent2 = [equalCopy rfgClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v208 = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
-  if (v208)
+  rfgClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
+  if (rfgClientEvent)
   {
-    v209 = v208;
-    v210 = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
-    v211 = [v4 rfgClientEvent];
-    v212 = [v210 isEqual:v211];
+    v209 = rfgClientEvent;
+    rfgClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
+    rfgClientEvent3 = [equalCopy rfgClientEvent];
+    v212 = [rfgClientEvent2 isEqual:rfgClientEvent3];
 
     if (!v212)
     {
@@ -2874,20 +2874,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
-  v7 = [v4 scClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
+  ueiClientEvent2 = [equalCopy scClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v213 = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
-  if (v213)
+  scClientEvent = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
+  if (scClientEvent)
   {
-    v214 = v213;
-    v215 = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
-    v216 = [v4 scClientEvent];
-    v217 = [v215 isEqual:v216];
+    v214 = scClientEvent;
+    scClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
+    scClientEvent3 = [equalCopy scClientEvent];
+    v217 = [scClientEvent2 isEqual:scClientEvent3];
 
     if (!v217)
     {
@@ -2899,20 +2899,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
-  v7 = [v4 siriSetupClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
+  ueiClientEvent2 = [equalCopy siriSetupClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v218 = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
-  if (v218)
+  siriSetupClientEvent = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
+  if (siriSetupClientEvent)
   {
-    v219 = v218;
-    v220 = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
-    v221 = [v4 siriSetupClientEvent];
-    v222 = [v220 isEqual:v221];
+    v219 = siriSetupClientEvent;
+    siriSetupClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
+    siriSetupClientEvent3 = [equalCopy siriSetupClientEvent];
+    v222 = [siriSetupClientEvent2 isEqual:siriSetupClientEvent3];
 
     if (!v222)
     {
@@ -2924,20 +2924,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
-  v7 = [v4 optInClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
+  ueiClientEvent2 = [equalCopy optInClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v223 = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
-  if (v223)
+  optInClientEvent = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
+  if (optInClientEvent)
   {
-    v224 = v223;
-    v225 = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
-    v226 = [v4 optInClientEvent];
-    v227 = [v225 isEqual:v226];
+    v224 = optInClientEvent;
+    optInClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
+    optInClientEvent3 = [equalCopy optInClientEvent];
+    v227 = [optInClientEvent2 isEqual:optInClientEvent3];
 
     if (!v227)
     {
@@ -2949,20 +2949,20 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
-  v7 = [v4 lrClientEvent];
-  if ((v6 != 0) == (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
+  ueiClientEvent2 = [equalCopy lrClientEvent];
+  if ((ueiClientEvent != 0) == (ueiClientEvent2 == 0))
   {
     goto LABEL_232;
   }
 
-  v228 = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
-  if (v228)
+  lrClientEvent = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
+  if (lrClientEvent)
   {
-    v229 = v228;
-    v230 = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
-    v231 = [v4 lrClientEvent];
-    v232 = [v230 isEqual:v231];
+    v229 = lrClientEvent;
+    lrClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
+    lrClientEvent3 = [equalCopy lrClientEvent];
+    v232 = [lrClientEvent2 isEqual:lrClientEvent3];
 
     if (!v232)
     {
@@ -2974,12 +2974,12 @@
   {
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
-  v7 = [v4 homeKitClientEvent];
-  if ((v6 != 0) != (v7 == 0))
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
+  ueiClientEvent2 = [equalCopy homeKitClientEvent];
+  if ((ueiClientEvent != 0) != (ueiClientEvent2 == 0))
   {
-    v233 = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
-    if (!v233)
+    homeKitClientEvent = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
+    if (!homeKitClientEvent)
     {
 
 LABEL_236:
@@ -2987,10 +2987,10 @@ LABEL_236:
       goto LABEL_234;
     }
 
-    v234 = v233;
-    v235 = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
-    v236 = [v4 homeKitClientEvent];
-    v237 = [v235 isEqual:v236];
+    v234 = homeKitClientEvent;
+    homeKitClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
+    homeKitClientEvent3 = [equalCopy homeKitClientEvent];
+    v237 = [homeKitClientEvent2 isEqual:homeKitClientEvent3];
 
     if (v237)
     {
@@ -3010,378 +3010,378 @@ LABEL_234:
   return v238;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v97 = a3;
-  v4 = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
+  toCopy = to;
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
 
-  if (v4)
+  if (ueiClientEvent)
   {
-    v5 = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
+    ueiClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
+  petUploadEvent = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
 
-  if (v6)
+  if (petUploadEvent)
   {
-    v7 = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
+    petUploadEvent2 = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
+  provisionalEvent = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
 
-  if (v8)
+  if (provisionalEvent)
   {
-    v9 = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
+    provisionalEvent2 = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
+  testExecutionEvent = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
 
-  if (v10)
+  if (testExecutionEvent)
   {
-    v11 = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
+    testExecutionEvent2 = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
+  requestLinkEvent = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
 
-  if (v12)
+  if (requestLinkEvent)
   {
-    v13 = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
+    requestLinkEvent2 = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
+  flowClientEvent = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
 
-  if (v14)
+  if (flowClientEvent)
   {
-    v15 = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
+    flowClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
+  camClientEvent = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
 
-  if (v16)
+  if (camClientEvent)
   {
-    v17 = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
+    camClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
+  uspClientEvent = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
 
-  if (v18)
+  if (uspClientEvent)
   {
-    v19 = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
+    uspClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
+  dimClientEvent = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
 
-  if (v20)
+  if (dimClientEvent)
   {
-    v21 = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
+    dimClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
+  nlxClientEvent = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
 
-  if (v22)
+  if (nlxClientEvent)
   {
-    v23 = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
+    nlxClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
+  orchClientEvent = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
 
-  if (v24)
+  if (orchClientEvent)
   {
-    v25 = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
+    orchClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
+  asrClientEvent = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
 
-  if (v26)
+  if (asrClientEvent)
   {
-    v27 = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
+    asrClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
+  ihClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
 
-  if (v28)
+  if (ihClientEvent)
   {
-    v29 = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
+    ihClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
+  mhClientEvent = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
 
-  if (v30)
+  if (mhClientEvent)
   {
-    v31 = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
+    mhClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
+  ttsClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
 
-  if (v32)
+  if (ttsClientEvent)
   {
-    v33 = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
+    ttsClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
+  clpClientEvent = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
 
-  if (v34)
+  if (clpClientEvent)
   {
-    v35 = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
+    clpClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
+  rrClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
 
-  if (v36)
+  if (rrClientEvent)
   {
-    v37 = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
+    rrClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
+  cnvClientEvent = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
 
-  if (v38)
+  if (cnvClientEvent)
   {
-    v39 = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
+    cnvClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
+  ancClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
 
-  if (v40)
+  if (ancClientEvent)
   {
-    v41 = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
+    ancClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v42 = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
+  halClientEvent = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
 
-  if (v42)
+  if (halClientEvent)
   {
-    v43 = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
+    halClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v44 = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
+  netClientEvent = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
 
-  if (v44)
+  if (netClientEvent)
   {
-    v45 = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
+    netClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v46 = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
+  sadClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
 
-  if (v46)
+  if (sadClientEvent)
   {
-    v47 = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
+    sadClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v48 = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
+  dodmlClientEvent = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
 
-  if (v48)
+  if (dodmlClientEvent)
   {
-    v49 = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
+    dodmlClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v50 = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
+  plusClientEvent = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
 
-  if (v50)
+  if (plusClientEvent)
   {
-    v51 = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
+    plusClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v52 = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
+  expSearchClientEvent = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
 
-  if (v52)
+  if (expSearchClientEvent)
   {
-    v53 = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
+    expSearchClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v54 = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
+  expSiriClientEvent = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
 
-  if (v54)
+  if (expSiriClientEvent)
   {
-    v55 = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
+    expSiriClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v56 = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
+  srstClientEvent = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
 
-  if (v56)
+  if (srstClientEvent)
   {
-    v57 = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
+    srstClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v58 = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
+  pommmesClientEvent = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
 
-  if (v58)
+  if (pommmesClientEvent)
   {
-    v59 = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
+    pommmesClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v60 = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
+  cdaClientEvent = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
 
-  if (v60)
+  if (cdaClientEvent)
   {
-    v61 = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
+    cdaClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v62 = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
+  mwtClientEvent = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
 
-  if (v62)
+  if (mwtClientEvent)
   {
-    v63 = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
+    mwtClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v64 = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
+  homeClientEvent = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
 
-  if (v64)
+  if (homeClientEvent)
   {
-    v65 = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
+    homeClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v66 = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
+  gradingOptInStateChange = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
 
-  if (v66)
+  if (gradingOptInStateChange)
   {
-    v67 = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
+    gradingOptInStateChange2 = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
     PBDataWriterWriteSubmessage();
   }
 
-  v68 = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
+  optinStatePropagationEvent = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
 
-  if (v68)
+  if (optinStatePropagationEvent)
   {
-    v69 = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
+    optinStatePropagationEvent2 = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v70 = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
+  rssClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
 
-  if (v70)
+  if (rssClientEvent)
   {
-    v71 = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
+    rssClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v72 = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
+  sugClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
 
-  if (v72)
+  if (sugClientEvent)
   {
-    v73 = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
+    sugClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v74 = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
+  flowLinkClientEvent = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
 
-  if (v74)
+  if (flowLinkClientEvent)
   {
-    v75 = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
+    flowLinkClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v76 = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
+  rfClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
 
-  if (v76)
+  if (rfClientEvent)
   {
-    v77 = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
+    rfClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v78 = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
+  sicClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
 
-  if (v78)
+  if (sicClientEvent)
   {
-    v79 = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
+    sicClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v80 = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
+  inferenceClientEvent = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
 
-  if (v80)
+  if (inferenceClientEvent)
   {
-    v81 = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
+    inferenceClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v82 = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
+  caarClientEvent = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
 
-  if (v82)
+  if (caarClientEvent)
   {
-    v83 = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
+    caarClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v84 = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
+  rfgClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
 
-  if (v84)
+  if (rfgClientEvent)
   {
-    v85 = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
+    rfgClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v86 = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
+  scClientEvent = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
 
-  if (v86)
+  if (scClientEvent)
   {
-    v87 = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
+    scClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v88 = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
+  siriSetupClientEvent = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
 
-  if (v88)
+  if (siriSetupClientEvent)
   {
-    v89 = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
+    siriSetupClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v90 = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
+  optInClientEvent = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
 
-  if (v90)
+  if (optInClientEvent)
   {
-    v91 = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
+    optInClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v92 = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
+  lrClientEvent = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
 
-  if (v92)
+  if (lrClientEvent)
   {
-    v93 = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
+    lrClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v94 = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
+  homeKitClientEvent = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
 
-  v95 = v97;
-  if (v94)
+  v95 = toCopy;
+  if (homeKitClientEvent)
   {
-    v96 = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
+    homeKitClientEvent2 = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
     PBDataWriterWriteSubmessage();
 
-    v95 = v97;
+    v95 = toCopy;
   }
 }
 
@@ -3410,9 +3410,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setHomeKitClientEvent:(id)a3
+- (void)setHomeKitClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -3549,14 +3549,14 @@ LABEL_234:
   self->_lrClientEvent = 0;
 
   v50 = 46;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   homeKitClientEvent = self->_homeKitClientEvent;
-  self->_homeKitClientEvent = v4;
+  self->_homeKitClientEvent = eventCopy;
 }
 
 - (void)deleteLrClientEvent
@@ -3584,9 +3584,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setLrClientEvent:(id)a3
+- (void)setLrClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -3723,14 +3723,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 45;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   lrClientEvent = self->_lrClientEvent;
-  self->_lrClientEvent = v4;
+  self->_lrClientEvent = eventCopy;
 }
 
 - (void)deleteOptInClientEvent
@@ -3758,9 +3758,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setOptInClientEvent:(id)a3
+- (void)setOptInClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -3897,14 +3897,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 44;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   optInClientEvent = self->_optInClientEvent;
-  self->_optInClientEvent = v4;
+  self->_optInClientEvent = eventCopy;
 }
 
 - (void)deleteSiriSetupClientEvent
@@ -3932,9 +3932,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setSiriSetupClientEvent:(id)a3
+- (void)setSiriSetupClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -4071,14 +4071,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 43;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   siriSetupClientEvent = self->_siriSetupClientEvent;
-  self->_siriSetupClientEvent = v4;
+  self->_siriSetupClientEvent = eventCopy;
 }
 
 - (void)deleteScClientEvent
@@ -4106,9 +4106,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setScClientEvent:(id)a3
+- (void)setScClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -4245,14 +4245,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 42;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   scClientEvent = self->_scClientEvent;
-  self->_scClientEvent = v4;
+  self->_scClientEvent = eventCopy;
 }
 
 - (void)deleteRfgClientEvent
@@ -4280,9 +4280,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setRfgClientEvent:(id)a3
+- (void)setRfgClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -4419,14 +4419,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 41;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   rfgClientEvent = self->_rfgClientEvent;
-  self->_rfgClientEvent = v4;
+  self->_rfgClientEvent = eventCopy;
 }
 
 - (void)deleteCaarClientEvent
@@ -4454,9 +4454,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setCaarClientEvent:(id)a3
+- (void)setCaarClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -4593,14 +4593,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 40;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   caarClientEvent = self->_caarClientEvent;
-  self->_caarClientEvent = v4;
+  self->_caarClientEvent = eventCopy;
 }
 
 - (void)deleteInferenceClientEvent
@@ -4628,9 +4628,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setInferenceClientEvent:(id)a3
+- (void)setInferenceClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -4767,14 +4767,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 39;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   inferenceClientEvent = self->_inferenceClientEvent;
-  self->_inferenceClientEvent = v4;
+  self->_inferenceClientEvent = eventCopy;
 }
 
 - (void)deleteSicClientEvent
@@ -4802,9 +4802,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setSicClientEvent:(id)a3
+- (void)setSicClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -4941,14 +4941,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 38;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   sicClientEvent = self->_sicClientEvent;
-  self->_sicClientEvent = v4;
+  self->_sicClientEvent = eventCopy;
 }
 
 - (void)deleteRfClientEvent
@@ -4976,9 +4976,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setRfClientEvent:(id)a3
+- (void)setRfClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -5115,14 +5115,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 37;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   rfClientEvent = self->_rfClientEvent;
-  self->_rfClientEvent = v4;
+  self->_rfClientEvent = eventCopy;
 }
 
 - (void)deleteFlowLinkClientEvent
@@ -5150,9 +5150,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setFlowLinkClientEvent:(id)a3
+- (void)setFlowLinkClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -5289,14 +5289,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 36;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   flowLinkClientEvent = self->_flowLinkClientEvent;
-  self->_flowLinkClientEvent = v4;
+  self->_flowLinkClientEvent = eventCopy;
 }
 
 - (void)deleteSugClientEvent
@@ -5324,9 +5324,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setSugClientEvent:(id)a3
+- (void)setSugClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -5463,14 +5463,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 35;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   sugClientEvent = self->_sugClientEvent;
-  self->_sugClientEvent = v4;
+  self->_sugClientEvent = eventCopy;
 }
 
 - (void)deleteRssClientEvent
@@ -5498,9 +5498,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setRssClientEvent:(id)a3
+- (void)setRssClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -5637,14 +5637,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 34;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   rssClientEvent = self->_rssClientEvent;
-  self->_rssClientEvent = v4;
+  self->_rssClientEvent = eventCopy;
 }
 
 - (void)deleteOptinStatePropagationEvent
@@ -5672,9 +5672,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setOptinStatePropagationEvent:(id)a3
+- (void)setOptinStatePropagationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -5811,14 +5811,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 33;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   optinStatePropagationEvent = self->_optinStatePropagationEvent;
-  self->_optinStatePropagationEvent = v4;
+  self->_optinStatePropagationEvent = eventCopy;
 }
 
 - (void)deleteGradingOptInStateChange
@@ -5846,9 +5846,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setGradingOptInStateChange:(id)a3
+- (void)setGradingOptInStateChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -5984,9 +5984,9 @@ LABEL_234:
   homeKitClientEvent = self->_homeKitClientEvent;
   self->_homeKitClientEvent = 0;
 
-  self->_whichEvent_Type = 32 * (v4 != 0);
+  self->_whichEvent_Type = 32 * (changeCopy != 0);
   gradingOptInStateChange = self->_gradingOptInStateChange;
-  self->_gradingOptInStateChange = v4;
+  self->_gradingOptInStateChange = changeCopy;
 }
 
 - (void)deleteHomeClientEvent
@@ -6014,9 +6014,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setHomeClientEvent:(id)a3
+- (void)setHomeClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -6153,14 +6153,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 31;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   homeClientEvent = self->_homeClientEvent;
-  self->_homeClientEvent = v4;
+  self->_homeClientEvent = eventCopy;
 }
 
 - (void)deleteMwtClientEvent
@@ -6188,9 +6188,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setMwtClientEvent:(id)a3
+- (void)setMwtClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -6327,14 +6327,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 30;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   mwtClientEvent = self->_mwtClientEvent;
-  self->_mwtClientEvent = v4;
+  self->_mwtClientEvent = eventCopy;
 }
 
 - (void)deleteCdaClientEvent
@@ -6362,9 +6362,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setCdaClientEvent:(id)a3
+- (void)setCdaClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -6501,14 +6501,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 29;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   cdaClientEvent = self->_cdaClientEvent;
-  self->_cdaClientEvent = v4;
+  self->_cdaClientEvent = eventCopy;
 }
 
 - (void)deletePommmesClientEvent
@@ -6536,9 +6536,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setPommmesClientEvent:(id)a3
+- (void)setPommmesClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -6675,14 +6675,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 28;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   pommmesClientEvent = self->_pommmesClientEvent;
-  self->_pommmesClientEvent = v4;
+  self->_pommmesClientEvent = eventCopy;
 }
 
 - (void)deleteSrstClientEvent
@@ -6710,9 +6710,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setSrstClientEvent:(id)a3
+- (void)setSrstClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -6849,14 +6849,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 27;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   srstClientEvent = self->_srstClientEvent;
-  self->_srstClientEvent = v4;
+  self->_srstClientEvent = eventCopy;
 }
 
 - (void)deleteExpSiriClientEvent
@@ -6884,9 +6884,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setExpSiriClientEvent:(id)a3
+- (void)setExpSiriClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -7023,14 +7023,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 26;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   expSiriClientEvent = self->_expSiriClientEvent;
-  self->_expSiriClientEvent = v4;
+  self->_expSiriClientEvent = eventCopy;
 }
 
 - (void)deleteExpSearchClientEvent
@@ -7058,9 +7058,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setExpSearchClientEvent:(id)a3
+- (void)setExpSearchClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -7197,14 +7197,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 25;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   expSearchClientEvent = self->_expSearchClientEvent;
-  self->_expSearchClientEvent = v4;
+  self->_expSearchClientEvent = eventCopy;
 }
 
 - (void)deletePlusClientEvent
@@ -7232,9 +7232,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setPlusClientEvent:(id)a3
+- (void)setPlusClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -7371,14 +7371,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 24;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   plusClientEvent = self->_plusClientEvent;
-  self->_plusClientEvent = v4;
+  self->_plusClientEvent = eventCopy;
 }
 
 - (void)deleteDodmlClientEvent
@@ -7406,9 +7406,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setDodmlClientEvent:(id)a3
+- (void)setDodmlClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -7545,14 +7545,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 23;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   dodmlClientEvent = self->_dodmlClientEvent;
-  self->_dodmlClientEvent = v4;
+  self->_dodmlClientEvent = eventCopy;
 }
 
 - (void)deleteSadClientEvent
@@ -7580,9 +7580,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setSadClientEvent:(id)a3
+- (void)setSadClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -7719,14 +7719,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 22;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   sadClientEvent = self->_sadClientEvent;
-  self->_sadClientEvent = v4;
+  self->_sadClientEvent = eventCopy;
 }
 
 - (void)deleteNetClientEvent
@@ -7754,9 +7754,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setNetClientEvent:(id)a3
+- (void)setNetClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -7893,14 +7893,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 21;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   netClientEvent = self->_netClientEvent;
-  self->_netClientEvent = v4;
+  self->_netClientEvent = eventCopy;
 }
 
 - (void)deleteHalClientEvent
@@ -7928,9 +7928,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setHalClientEvent:(id)a3
+- (void)setHalClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -8067,14 +8067,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 20;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   halClientEvent = self->_halClientEvent;
-  self->_halClientEvent = v4;
+  self->_halClientEvent = eventCopy;
 }
 
 - (void)deleteAncClientEvent
@@ -8102,9 +8102,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setAncClientEvent:(id)a3
+- (void)setAncClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -8241,14 +8241,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 19;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   ancClientEvent = self->_ancClientEvent;
-  self->_ancClientEvent = v4;
+  self->_ancClientEvent = eventCopy;
 }
 
 - (void)deleteCnvClientEvent
@@ -8276,9 +8276,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setCnvClientEvent:(id)a3
+- (void)setCnvClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -8415,14 +8415,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 18;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   cnvClientEvent = self->_cnvClientEvent;
-  self->_cnvClientEvent = v4;
+  self->_cnvClientEvent = eventCopy;
 }
 
 - (void)deleteRrClientEvent
@@ -8450,9 +8450,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setRrClientEvent:(id)a3
+- (void)setRrClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -8589,14 +8589,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 17;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   rrClientEvent = self->_rrClientEvent;
-  self->_rrClientEvent = v4;
+  self->_rrClientEvent = eventCopy;
 }
 
 - (void)deleteClpClientEvent
@@ -8624,9 +8624,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setClpClientEvent:(id)a3
+- (void)setClpClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -8762,9 +8762,9 @@ LABEL_234:
   homeKitClientEvent = self->_homeKitClientEvent;
   self->_homeKitClientEvent = 0;
 
-  self->_whichEvent_Type = 16 * (v4 != 0);
+  self->_whichEvent_Type = 16 * (eventCopy != 0);
   clpClientEvent = self->_clpClientEvent;
-  self->_clpClientEvent = v4;
+  self->_clpClientEvent = eventCopy;
 }
 
 - (void)deleteTtsClientEvent
@@ -8792,9 +8792,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setTtsClientEvent:(id)a3
+- (void)setTtsClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -8931,14 +8931,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 15;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   ttsClientEvent = self->_ttsClientEvent;
-  self->_ttsClientEvent = v4;
+  self->_ttsClientEvent = eventCopy;
 }
 
 - (void)deleteMhClientEvent
@@ -8966,9 +8966,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setMhClientEvent:(id)a3
+- (void)setMhClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -9105,14 +9105,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 14;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   mhClientEvent = self->_mhClientEvent;
-  self->_mhClientEvent = v4;
+  self->_mhClientEvent = eventCopy;
 }
 
 - (void)deleteIhClientEvent
@@ -9140,9 +9140,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setIhClientEvent:(id)a3
+- (void)setIhClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -9279,14 +9279,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 13;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   ihClientEvent = self->_ihClientEvent;
-  self->_ihClientEvent = v4;
+  self->_ihClientEvent = eventCopy;
 }
 
 - (void)deleteAsrClientEvent
@@ -9314,9 +9314,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setAsrClientEvent:(id)a3
+- (void)setAsrClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -9453,14 +9453,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 12;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   asrClientEvent = self->_asrClientEvent;
-  self->_asrClientEvent = v4;
+  self->_asrClientEvent = eventCopy;
 }
 
 - (void)deleteOrchClientEvent
@@ -9488,9 +9488,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setOrchClientEvent:(id)a3
+- (void)setOrchClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -9627,14 +9627,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 11;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   orchClientEvent = self->_orchClientEvent;
-  self->_orchClientEvent = v4;
+  self->_orchClientEvent = eventCopy;
 }
 
 - (void)deleteNlxClientEvent
@@ -9662,9 +9662,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setNlxClientEvent:(id)a3
+- (void)setNlxClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -9801,14 +9801,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 10;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   nlxClientEvent = self->_nlxClientEvent;
-  self->_nlxClientEvent = v4;
+  self->_nlxClientEvent = eventCopy;
 }
 
 - (void)deleteDimClientEvent
@@ -9836,9 +9836,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setDimClientEvent:(id)a3
+- (void)setDimClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -9975,14 +9975,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 9;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   dimClientEvent = self->_dimClientEvent;
-  self->_dimClientEvent = v4;
+  self->_dimClientEvent = eventCopy;
 }
 
 - (void)deleteUspClientEvent
@@ -10010,9 +10010,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setUspClientEvent:(id)a3
+- (void)setUspClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -10148,9 +10148,9 @@ LABEL_234:
   homeKitClientEvent = self->_homeKitClientEvent;
   self->_homeKitClientEvent = 0;
 
-  self->_whichEvent_Type = 8 * (v4 != 0);
+  self->_whichEvent_Type = 8 * (eventCopy != 0);
   uspClientEvent = self->_uspClientEvent;
-  self->_uspClientEvent = v4;
+  self->_uspClientEvent = eventCopy;
 }
 
 - (void)deleteCamClientEvent
@@ -10178,9 +10178,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setCamClientEvent:(id)a3
+- (void)setCamClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -10317,14 +10317,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 7;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   camClientEvent = self->_camClientEvent;
-  self->_camClientEvent = v4;
+  self->_camClientEvent = eventCopy;
 }
 
 - (void)deleteFlowClientEvent
@@ -10352,9 +10352,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setFlowClientEvent:(id)a3
+- (void)setFlowClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -10491,14 +10491,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 6;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   flowClientEvent = self->_flowClientEvent;
-  self->_flowClientEvent = v4;
+  self->_flowClientEvent = eventCopy;
 }
 
 - (void)deleteRequestLinkEvent
@@ -10526,9 +10526,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setRequestLinkEvent:(id)a3
+- (void)setRequestLinkEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -10665,14 +10665,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 5;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   requestLinkEvent = self->_requestLinkEvent;
-  self->_requestLinkEvent = v4;
+  self->_requestLinkEvent = eventCopy;
 }
 
 - (void)deleteTestExecutionEvent
@@ -10700,9 +10700,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setTestExecutionEvent:(id)a3
+- (void)setTestExecutionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -10838,9 +10838,9 @@ LABEL_234:
   homeKitClientEvent = self->_homeKitClientEvent;
   self->_homeKitClientEvent = 0;
 
-  self->_whichEvent_Type = 4 * (v4 != 0);
+  self->_whichEvent_Type = 4 * (eventCopy != 0);
   testExecutionEvent = self->_testExecutionEvent;
-  self->_testExecutionEvent = v4;
+  self->_testExecutionEvent = eventCopy;
 }
 
 - (void)deleteProvisionalEvent
@@ -10868,9 +10868,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setProvisionalEvent:(id)a3
+- (void)setProvisionalEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -11007,14 +11007,14 @@ LABEL_234:
   self->_homeKitClientEvent = 0;
 
   v50 = 3;
-  if (!v4)
+  if (!eventCopy)
   {
     v50 = 0;
   }
 
   self->_whichEvent_Type = v50;
   provisionalEvent = self->_provisionalEvent;
-  self->_provisionalEvent = v4;
+  self->_provisionalEvent = eventCopy;
 }
 
 - (void)deletePetUploadEvent
@@ -11042,9 +11042,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setPetUploadEvent:(id)a3
+- (void)setPetUploadEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   ueiClientEvent = self->_ueiClientEvent;
   self->_ueiClientEvent = 0;
 
@@ -11180,9 +11180,9 @@ LABEL_234:
   homeKitClientEvent = self->_homeKitClientEvent;
   self->_homeKitClientEvent = 0;
 
-  self->_whichEvent_Type = 2 * (v4 != 0);
+  self->_whichEvent_Type = 2 * (eventCopy != 0);
   petUploadEvent = self->_petUploadEvent;
-  self->_petUploadEvent = v4;
+  self->_petUploadEvent = eventCopy;
 }
 
 - (void)deleteUeiClientEvent
@@ -11210,9 +11210,9 @@ LABEL_234:
   return v3;
 }
 
-- (void)setUeiClientEvent:(id)a3
+- (void)setUeiClientEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   petUploadEvent = self->_petUploadEvent;
   self->_petUploadEvent = 0;
 
@@ -11348,239 +11348,239 @@ LABEL_234:
   homeKitClientEvent = self->_homeKitClientEvent;
   self->_homeKitClientEvent = 0;
 
-  self->_whichEvent_Type = v4 != 0;
+  self->_whichEvent_Type = eventCopy != 0;
   ueiClientEvent = self->_ueiClientEvent;
-  self->_ueiClientEvent = v4;
+  self->_ueiClientEvent = eventCopy;
 }
 
-+ (id)getTagForEventTypeClass:(Class)a3
++ (id)getTagForEventTypeClass:(Class)class
 {
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F6FFA0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F6FFB8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F6FFD0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F6FFE8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70000;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70018;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70030;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70048;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70060;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70078;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70090;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F700A8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F700C0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F700D8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F700F0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70108;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70120;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70138;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70150;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70168;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70180;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70198;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F701B0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F701C8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F701E0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F701F8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70210;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70228;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70240;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70258;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70270;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70288;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F702A0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F702B8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F702D0;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F702E8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70300;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70318;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70330;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70348;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70360;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70378;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F70390;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F703A8;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return &unk_1F1F703C0;
   }
 
-  if ([(objc_class *)a3 isEqual:objc_opt_class()])
+  if ([(objc_class *)class isEqual:objc_opt_class()])
   {
     return &unk_1F1F703D8;
   }
@@ -11588,9 +11588,9 @@ LABEL_234:
   return 0;
 }
 
-+ (Class)getEventTypeClassForTag:(int)a3
++ (Class)getEventTypeClassForTag:(int)tag
 {
-  if ((a3 - 1) > 0x2D)
+  if ((tag - 1) > 0x2D)
   {
     v4 = 0;
   }
@@ -11603,422 +11603,422 @@ LABEL_234:
   return v4;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v146.receiver = self;
   v146.super_class = GRPSchemaSiriEventTypeUnion;
-  v5 = [(SISchemaInstrumentationMessage *)&v146 applySensitiveConditionsPolicy:v4];
-  v6 = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v146 applySensitiveConditionsPolicy:policyCopy];
+  ueiClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ueiClientEvent];
+  v7 = [ueiClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteUeiClientEvent];
   }
 
-  v9 = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  petUploadEvent = [(GRPSchemaSiriEventTypeUnion *)self petUploadEvent];
+  v10 = [petUploadEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deletePetUploadEvent];
   }
 
-  v12 = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  provisionalEvent = [(GRPSchemaSiriEventTypeUnion *)self provisionalEvent];
+  v13 = [provisionalEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteProvisionalEvent];
   }
 
-  v15 = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  testExecutionEvent = [(GRPSchemaSiriEventTypeUnion *)self testExecutionEvent];
+  v16 = [testExecutionEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteTestExecutionEvent];
   }
 
-  v18 = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  requestLinkEvent = [(GRPSchemaSiriEventTypeUnion *)self requestLinkEvent];
+  v19 = [requestLinkEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteRequestLinkEvent];
   }
 
-  v21 = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  flowClientEvent = [(GRPSchemaSiriEventTypeUnion *)self flowClientEvent];
+  v22 = [flowClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteFlowClientEvent];
   }
 
-  v24 = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  camClientEvent = [(GRPSchemaSiriEventTypeUnion *)self camClientEvent];
+  v25 = [camClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteCamClientEvent];
   }
 
-  v27 = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  uspClientEvent = [(GRPSchemaSiriEventTypeUnion *)self uspClientEvent];
+  v28 = [uspClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteUspClientEvent];
   }
 
-  v30 = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  dimClientEvent = [(GRPSchemaSiriEventTypeUnion *)self dimClientEvent];
+  v31 = [dimClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteDimClientEvent];
   }
 
-  v33 = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  nlxClientEvent = [(GRPSchemaSiriEventTypeUnion *)self nlxClientEvent];
+  v34 = [nlxClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteNlxClientEvent];
   }
 
-  v36 = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  orchClientEvent = [(GRPSchemaSiriEventTypeUnion *)self orchClientEvent];
+  v37 = [orchClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteOrchClientEvent];
   }
 
-  v39 = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  asrClientEvent = [(GRPSchemaSiriEventTypeUnion *)self asrClientEvent];
+  v40 = [asrClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteAsrClientEvent];
   }
 
-  v42 = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  ihClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ihClientEvent];
+  v43 = [ihClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteIhClientEvent];
   }
 
-  v45 = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  mhClientEvent = [(GRPSchemaSiriEventTypeUnion *)self mhClientEvent];
+  v46 = [mhClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteMhClientEvent];
   }
 
-  v48 = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  ttsClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ttsClientEvent];
+  v49 = [ttsClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteTtsClientEvent];
   }
 
-  v51 = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  clpClientEvent = [(GRPSchemaSiriEventTypeUnion *)self clpClientEvent];
+  v52 = [clpClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteClpClientEvent];
   }
 
-  v54 = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  rrClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rrClientEvent];
+  v55 = [rrClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteRrClientEvent];
   }
 
-  v57 = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  cnvClientEvent = [(GRPSchemaSiriEventTypeUnion *)self cnvClientEvent];
+  v58 = [cnvClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteCnvClientEvent];
   }
 
-  v60 = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
-  v61 = [v60 applySensitiveConditionsPolicy:v4];
-  v62 = [v61 suppressMessage];
+  ancClientEvent = [(GRPSchemaSiriEventTypeUnion *)self ancClientEvent];
+  v61 = [ancClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage19 = [v61 suppressMessage];
 
-  if (v62)
+  if (suppressMessage19)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteAncClientEvent];
   }
 
-  v63 = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
-  v64 = [v63 applySensitiveConditionsPolicy:v4];
-  v65 = [v64 suppressMessage];
+  halClientEvent = [(GRPSchemaSiriEventTypeUnion *)self halClientEvent];
+  v64 = [halClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage20 = [v64 suppressMessage];
 
-  if (v65)
+  if (suppressMessage20)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteHalClientEvent];
   }
 
-  v66 = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
-  v67 = [v66 applySensitiveConditionsPolicy:v4];
-  v68 = [v67 suppressMessage];
+  netClientEvent = [(GRPSchemaSiriEventTypeUnion *)self netClientEvent];
+  v67 = [netClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage21 = [v67 suppressMessage];
 
-  if (v68)
+  if (suppressMessage21)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteNetClientEvent];
   }
 
-  v69 = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
-  v70 = [v69 applySensitiveConditionsPolicy:v4];
-  v71 = [v70 suppressMessage];
+  sadClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sadClientEvent];
+  v70 = [sadClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage22 = [v70 suppressMessage];
 
-  if (v71)
+  if (suppressMessage22)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteSadClientEvent];
   }
 
-  v72 = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
-  v73 = [v72 applySensitiveConditionsPolicy:v4];
-  v74 = [v73 suppressMessage];
+  dodmlClientEvent = [(GRPSchemaSiriEventTypeUnion *)self dodmlClientEvent];
+  v73 = [dodmlClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage23 = [v73 suppressMessage];
 
-  if (v74)
+  if (suppressMessage23)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteDodmlClientEvent];
   }
 
-  v75 = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
-  v76 = [v75 applySensitiveConditionsPolicy:v4];
-  v77 = [v76 suppressMessage];
+  plusClientEvent = [(GRPSchemaSiriEventTypeUnion *)self plusClientEvent];
+  v76 = [plusClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage24 = [v76 suppressMessage];
 
-  if (v77)
+  if (suppressMessage24)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deletePlusClientEvent];
   }
 
-  v78 = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
-  v79 = [v78 applySensitiveConditionsPolicy:v4];
-  v80 = [v79 suppressMessage];
+  expSearchClientEvent = [(GRPSchemaSiriEventTypeUnion *)self expSearchClientEvent];
+  v79 = [expSearchClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage25 = [v79 suppressMessage];
 
-  if (v80)
+  if (suppressMessage25)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteExpSearchClientEvent];
   }
 
-  v81 = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
-  v82 = [v81 applySensitiveConditionsPolicy:v4];
-  v83 = [v82 suppressMessage];
+  expSiriClientEvent = [(GRPSchemaSiriEventTypeUnion *)self expSiriClientEvent];
+  v82 = [expSiriClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage26 = [v82 suppressMessage];
 
-  if (v83)
+  if (suppressMessage26)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteExpSiriClientEvent];
   }
 
-  v84 = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
-  v85 = [v84 applySensitiveConditionsPolicy:v4];
-  v86 = [v85 suppressMessage];
+  srstClientEvent = [(GRPSchemaSiriEventTypeUnion *)self srstClientEvent];
+  v85 = [srstClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage27 = [v85 suppressMessage];
 
-  if (v86)
+  if (suppressMessage27)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteSrstClientEvent];
   }
 
-  v87 = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
-  v88 = [v87 applySensitiveConditionsPolicy:v4];
-  v89 = [v88 suppressMessage];
+  pommmesClientEvent = [(GRPSchemaSiriEventTypeUnion *)self pommmesClientEvent];
+  v88 = [pommmesClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage28 = [v88 suppressMessage];
 
-  if (v89)
+  if (suppressMessage28)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deletePommmesClientEvent];
   }
 
-  v90 = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
-  v91 = [v90 applySensitiveConditionsPolicy:v4];
-  v92 = [v91 suppressMessage];
+  cdaClientEvent = [(GRPSchemaSiriEventTypeUnion *)self cdaClientEvent];
+  v91 = [cdaClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage29 = [v91 suppressMessage];
 
-  if (v92)
+  if (suppressMessage29)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteCdaClientEvent];
   }
 
-  v93 = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
-  v94 = [v93 applySensitiveConditionsPolicy:v4];
-  v95 = [v94 suppressMessage];
+  mwtClientEvent = [(GRPSchemaSiriEventTypeUnion *)self mwtClientEvent];
+  v94 = [mwtClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage30 = [v94 suppressMessage];
 
-  if (v95)
+  if (suppressMessage30)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteMwtClientEvent];
   }
 
-  v96 = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
-  v97 = [v96 applySensitiveConditionsPolicy:v4];
-  v98 = [v97 suppressMessage];
+  homeClientEvent = [(GRPSchemaSiriEventTypeUnion *)self homeClientEvent];
+  v97 = [homeClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage31 = [v97 suppressMessage];
 
-  if (v98)
+  if (suppressMessage31)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteHomeClientEvent];
   }
 
-  v99 = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
-  v100 = [v99 applySensitiveConditionsPolicy:v4];
-  v101 = [v100 suppressMessage];
+  gradingOptInStateChange = [(GRPSchemaSiriEventTypeUnion *)self gradingOptInStateChange];
+  v100 = [gradingOptInStateChange applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage32 = [v100 suppressMessage];
 
-  if (v101)
+  if (suppressMessage32)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteGradingOptInStateChange];
   }
 
-  v102 = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
-  v103 = [v102 applySensitiveConditionsPolicy:v4];
-  v104 = [v103 suppressMessage];
+  optinStatePropagationEvent = [(GRPSchemaSiriEventTypeUnion *)self optinStatePropagationEvent];
+  v103 = [optinStatePropagationEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage33 = [v103 suppressMessage];
 
-  if (v104)
+  if (suppressMessage33)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteOptinStatePropagationEvent];
   }
 
-  v105 = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
-  v106 = [v105 applySensitiveConditionsPolicy:v4];
-  v107 = [v106 suppressMessage];
+  rssClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rssClientEvent];
+  v106 = [rssClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage34 = [v106 suppressMessage];
 
-  if (v107)
+  if (suppressMessage34)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteRssClientEvent];
   }
 
-  v108 = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
-  v109 = [v108 applySensitiveConditionsPolicy:v4];
-  v110 = [v109 suppressMessage];
+  sugClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sugClientEvent];
+  v109 = [sugClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage35 = [v109 suppressMessage];
 
-  if (v110)
+  if (suppressMessage35)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteSugClientEvent];
   }
 
-  v111 = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
-  v112 = [v111 applySensitiveConditionsPolicy:v4];
-  v113 = [v112 suppressMessage];
+  flowLinkClientEvent = [(GRPSchemaSiriEventTypeUnion *)self flowLinkClientEvent];
+  v112 = [flowLinkClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage36 = [v112 suppressMessage];
 
-  if (v113)
+  if (suppressMessage36)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteFlowLinkClientEvent];
   }
 
-  v114 = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
-  v115 = [v114 applySensitiveConditionsPolicy:v4];
-  v116 = [v115 suppressMessage];
+  rfClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rfClientEvent];
+  v115 = [rfClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage37 = [v115 suppressMessage];
 
-  if (v116)
+  if (suppressMessage37)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteRfClientEvent];
   }
 
-  v117 = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
-  v118 = [v117 applySensitiveConditionsPolicy:v4];
-  v119 = [v118 suppressMessage];
+  sicClientEvent = [(GRPSchemaSiriEventTypeUnion *)self sicClientEvent];
+  v118 = [sicClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage38 = [v118 suppressMessage];
 
-  if (v119)
+  if (suppressMessage38)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteSicClientEvent];
   }
 
-  v120 = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
-  v121 = [v120 applySensitiveConditionsPolicy:v4];
-  v122 = [v121 suppressMessage];
+  inferenceClientEvent = [(GRPSchemaSiriEventTypeUnion *)self inferenceClientEvent];
+  v121 = [inferenceClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage39 = [v121 suppressMessage];
 
-  if (v122)
+  if (suppressMessage39)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteInferenceClientEvent];
   }
 
-  v123 = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
-  v124 = [v123 applySensitiveConditionsPolicy:v4];
-  v125 = [v124 suppressMessage];
+  caarClientEvent = [(GRPSchemaSiriEventTypeUnion *)self caarClientEvent];
+  v124 = [caarClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage40 = [v124 suppressMessage];
 
-  if (v125)
+  if (suppressMessage40)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteCaarClientEvent];
   }
 
-  v126 = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
-  v127 = [v126 applySensitiveConditionsPolicy:v4];
-  v128 = [v127 suppressMessage];
+  rfgClientEvent = [(GRPSchemaSiriEventTypeUnion *)self rfgClientEvent];
+  v127 = [rfgClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage41 = [v127 suppressMessage];
 
-  if (v128)
+  if (suppressMessage41)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteRfgClientEvent];
   }
 
-  v129 = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
-  v130 = [v129 applySensitiveConditionsPolicy:v4];
-  v131 = [v130 suppressMessage];
+  scClientEvent = [(GRPSchemaSiriEventTypeUnion *)self scClientEvent];
+  v130 = [scClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage42 = [v130 suppressMessage];
 
-  if (v131)
+  if (suppressMessage42)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteScClientEvent];
   }
 
-  v132 = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
-  v133 = [v132 applySensitiveConditionsPolicy:v4];
-  v134 = [v133 suppressMessage];
+  siriSetupClientEvent = [(GRPSchemaSiriEventTypeUnion *)self siriSetupClientEvent];
+  v133 = [siriSetupClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage43 = [v133 suppressMessage];
 
-  if (v134)
+  if (suppressMessage43)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteSiriSetupClientEvent];
   }
 
-  v135 = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
-  v136 = [v135 applySensitiveConditionsPolicy:v4];
-  v137 = [v136 suppressMessage];
+  optInClientEvent = [(GRPSchemaSiriEventTypeUnion *)self optInClientEvent];
+  v136 = [optInClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage44 = [v136 suppressMessage];
 
-  if (v137)
+  if (suppressMessage44)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteOptInClientEvent];
   }
 
-  v138 = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
-  v139 = [v138 applySensitiveConditionsPolicy:v4];
-  v140 = [v139 suppressMessage];
+  lrClientEvent = [(GRPSchemaSiriEventTypeUnion *)self lrClientEvent];
+  v139 = [lrClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage45 = [v139 suppressMessage];
 
-  if (v140)
+  if (suppressMessage45)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteLrClientEvent];
   }
 
-  v141 = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
-  v142 = [v141 applySensitiveConditionsPolicy:v4];
-  v143 = [v142 suppressMessage];
+  homeKitClientEvent = [(GRPSchemaSiriEventTypeUnion *)self homeKitClientEvent];
+  v142 = [homeKitClientEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage46 = [v142 suppressMessage];
 
-  if (v143)
+  if (suppressMessage46)
   {
     [(GRPSchemaSiriEventTypeUnion *)self deleteHomeKitClientEvent];
   }

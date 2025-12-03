@@ -1,12 +1,12 @@
 @interface HKCodableSleepingSampleBaselineComparison
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSleepingSampleBaselineComparison
@@ -17,106 +17,106 @@
   v8.receiver = self;
   v8.super_class = HKCodableSleepingSampleBaselineComparison;
   v4 = [(HKCodableSleepingSampleBaselineComparison *)&v8 description];
-  v5 = [(HKCodableSleepingSampleBaselineComparison *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSleepingSampleBaselineComparison *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_dataType];
-    [v3 setObject:v4 forKey:@"dataType"];
+    [dictionary setObject:v4 forKey:@"dataType"];
   }
 
   baseline = self->_baseline;
   if (baseline)
   {
-    v6 = [(HKCodableSleepingSampleBaseline *)baseline dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"baseline"];
+    dictionaryRepresentation = [(HKCodableSleepingSampleBaseline *)baseline dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"baseline"];
   }
 
   aggregate = self->_aggregate;
   if (aggregate)
   {
-    v8 = [(HKCodableSleepingSampleAggregate *)aggregate dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"aggregate"];
+    dictionaryRepresentation2 = [(HKCodableSleepingSampleAggregate *)aggregate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"aggregate"];
   }
 
   availability = self->_availability;
   if (availability)
   {
-    v10 = [(HKCodableSleepingSampleBaselineAvailability *)availability dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"availability"];
+    dictionaryRepresentation3 = [(HKCodableSleepingSampleBaselineAvailability *)availability dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"availability"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_baseline)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_aggregate)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_availability)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_dataType;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_dataType;
+    *(toCopy + 40) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_baseline)
   {
-    [v4 setBaseline:?];
-    v4 = v5;
+    [toCopy setBaseline:?];
+    toCopy = v5;
   }
 
   if (self->_aggregate)
   {
     [v5 setAggregate:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_availability)
   {
     [v5 setAvailability:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -124,38 +124,38 @@
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(HKCodableSleepingSampleBaseline *)self->_baseline copyWithZone:a3];
+  v7 = [(HKCodableSleepingSampleBaseline *)self->_baseline copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(HKCodableSleepingSampleAggregate *)self->_aggregate copyWithZone:a3];
+  v9 = [(HKCodableSleepingSampleAggregate *)self->_aggregate copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(HKCodableSleepingSampleBaselineAvailability *)self->_availability copyWithZone:a3];
+  v11 = [(HKCodableSleepingSampleBaselineAvailability *)self->_availability copyWithZone:zone];
   v12 = v6[3];
   v6[3] = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_dataType != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_dataType != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v8 = 0;
@@ -163,13 +163,13 @@ LABEL_13:
   }
 
   baseline = self->_baseline;
-  if (baseline | *(v4 + 4) && ![(HKCodableSleepingSampleBaseline *)baseline isEqual:?])
+  if (baseline | *(equalCopy + 4) && ![(HKCodableSleepingSampleBaseline *)baseline isEqual:?])
   {
     goto LABEL_13;
   }
 
   aggregate = self->_aggregate;
-  if (aggregate | *(v4 + 2))
+  if (aggregate | *(equalCopy + 2))
   {
     if (![(HKCodableSleepingSampleAggregate *)aggregate isEqual:?])
     {
@@ -178,7 +178,7 @@ LABEL_13:
   }
 
   availability = self->_availability;
-  if (availability | *(v4 + 3))
+  if (availability | *(equalCopy + 3))
   {
     v8 = [(HKCodableSleepingSampleBaselineAvailability *)availability isEqual:?];
   }
@@ -210,13 +210,13 @@ LABEL_14:
   return v4 ^ v5 ^ [(HKCodableSleepingSampleBaselineAvailability *)self->_availability hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
-    self->_dataType = v4[1];
+    self->_dataType = fromCopy[1];
     *&self->_has |= 1u;
   }
 

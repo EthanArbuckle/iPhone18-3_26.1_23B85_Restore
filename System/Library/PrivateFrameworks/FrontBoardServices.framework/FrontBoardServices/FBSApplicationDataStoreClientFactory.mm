@@ -156,12 +156,12 @@ uint64_t __54__FBSApplicationDataStoreClientFactory_sharedInstance__block_invoke
 
 + (BOOL)isServerProcess
 {
-  v2 = [off_1E76BC9E0 environmentAliases];
-  v3 = [off_1E76BCA30 defaultShellMachName];
-  v4 = [v2 resolveMachService:v3];
+  environmentAliases = [off_1E76BC9E0 environmentAliases];
+  defaultShellMachName = [off_1E76BCA30 defaultShellMachName];
+  v4 = [environmentAliases resolveMachService:defaultShellMachName];
 
-  v5 = [off_1E76BCA60 bootstrapConfiguration];
-  v6 = [v5 domainForMachName:v4];
+  bootstrapConfiguration = [off_1E76BCA60 bootstrapConfiguration];
+  v6 = [bootstrapConfiguration domainForMachName:v4];
 
   v7 = +[FBSSystemServiceSpecification identifier];
   v8 = [v6 serviceForIdentifier:v7];

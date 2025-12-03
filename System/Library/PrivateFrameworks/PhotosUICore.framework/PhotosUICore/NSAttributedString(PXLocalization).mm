@@ -169,8 +169,8 @@ LABEL_20:
 
   if (!a3)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:a1 file:@"PXLocalization.m" lineNumber:1041 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLocalization.m" lineNumber:1041 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -249,16 +249,16 @@ LABEL_29:
 
   if (v15 == 1)
   {
-    v22 = [v16 anyObject];
-    v23 = [v22 integerValue];
+    anyObject = [v16 anyObject];
+    integerValue = [anyObject integerValue];
 
     v24 = 0;
-    if (v23 <= 2)
+    if (integerValue <= 2)
     {
       v25 = v29;
-      if (v23)
+      if (integerValue)
       {
-        if (v23 == 1)
+        if (integerValue == 1)
         {
           v26 = @"ICLOUD_SOMEONE_SHARED_PHOTO";
           v27 = @"ICLOUD_YOU_SHARED_PHOTO";
@@ -266,7 +266,7 @@ LABEL_29:
 
         else
         {
-          if (v23 != 2)
+          if (integerValue != 2)
           {
             goto LABEL_30;
           }
@@ -286,9 +286,9 @@ LABEL_29:
     else
     {
       v25 = v29;
-      if (v23 > 4)
+      if (integerValue > 4)
       {
-        if (v23 == 5)
+        if (integerValue == 5)
         {
           v26 = @"ICLOUD_SOMEONE_SHARED_LONGEXP";
           v27 = @"ICLOUD_YOU_SHARED_LONGEXP";
@@ -296,7 +296,7 @@ LABEL_29:
 
         else
         {
-          if (v23 != 6)
+          if (integerValue != 6)
           {
             goto LABEL_30;
           }
@@ -306,7 +306,7 @@ LABEL_29:
         }
       }
 
-      else if (v23 == 3)
+      else if (integerValue == 3)
       {
         v26 = @"ICLOUD_SOMEONE_SHARED_BOUNCE";
         v27 = @"ICLOUD_YOU_SHARED_BOUNCE";
@@ -680,11 +680,11 @@ LABEL_30:
   v16 = a10;
   v17 = a9;
   v18 = a8;
-  v19 = [a7 px_stringConvertedToHTMLString];
-  v20 = v19;
-  if (v19)
+  px_stringConvertedToHTMLString = [a7 px_stringConvertedToHTMLString];
+  v20 = px_stringConvertedToHTMLString;
+  if (px_stringConvertedToHTMLString)
   {
-    v21 = v19;
+    v21 = px_stringConvertedToHTMLString;
   }
 
   else
@@ -961,8 +961,8 @@ LABEL_96:
         [v11 enumerateObjectsAtIndexes:v91 options:0 usingBlock:v110];
 
         v94 = objc_alloc(MEMORY[0x1E696AAB0]);
-        v95 = [v11 lastObject];
-        v96 = [v94 initWithString:v95 attributes:v92];
+        lastObject = [v11 lastObject];
+        v96 = [v94 initWithString:lastObject attributes:v92];
 
         v97 = MEMORY[0x1E696AAB0];
         if (v18)
@@ -1114,8 +1114,8 @@ LABEL_74:
 
     v18 = PXLocalizedStringFromTable(v29, @"PhotosUICore");
     v30 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v31 = [v11 firstObject];
-    v19 = [v30 initWithString:v31 attributes:v13];
+    firstObject = [v11 firstObject];
+    v19 = [v30 initWithString:firstObject attributes:v13];
 
     v32 = MEMORY[0x1E696AAB0];
     if (v18)
@@ -1186,8 +1186,8 @@ LABEL_74:
     [v11 enumerateObjectsAtIndexes:v49 options:0 usingBlock:v106];
 
     v51 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v52 = [v11 lastObject];
-    v53 = [v51 initWithString:v52 attributes:v50];
+    lastObject2 = [v11 lastObject];
+    v53 = [v51 initWithString:lastObject2 attributes:v50];
 
     v54 = MEMORY[0x1E696AAB0];
     if (v18)
@@ -1224,8 +1224,8 @@ LABEL_97:
   v11 = a6;
   v12 = a5;
   a3;
-  v13 = [v10 whitespaceAndNewlineCharacterSet];
-  v14 = [v9 stringByTrimmingCharactersInSet:v13];
+  whitespaceAndNewlineCharacterSet = [v10 whitespaceAndNewlineCharacterSet];
+  v14 = [v9 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (![v14 length])
   {
@@ -1244,8 +1244,8 @@ LABEL_97:
   v8 = MEMORY[0x1E696AB08];
   v9 = a5;
   v10 = a4;
-  v11 = [v8 whitespaceAndNewlineCharacterSet];
-  v12 = [v7 stringByTrimmingCharactersInSet:v11];
+  whitespaceAndNewlineCharacterSet = [v8 whitespaceAndNewlineCharacterSet];
+  v12 = [v7 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (![(__CFString *)v12 length])
   {

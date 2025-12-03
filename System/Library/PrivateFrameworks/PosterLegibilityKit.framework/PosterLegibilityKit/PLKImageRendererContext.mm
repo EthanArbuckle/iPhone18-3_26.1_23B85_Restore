@@ -10,17 +10,17 @@
   overrideCurrentImage = self->_overrideCurrentImage;
   if (overrideCurrentImage)
   {
-    v3 = overrideCurrentImage;
+    currentImage = overrideCurrentImage;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PLKImageRendererContext;
-    v3 = [(UIGraphicsImageRendererContext *)&v5 currentImage];
+    currentImage = [(UIGraphicsImageRendererContext *)&v5 currentImage];
   }
 
-  return v3;
+  return currentImage;
 }
 
 - (CGRect)contentRect
@@ -28,8 +28,8 @@
   p_contentRect = &self->_contentRect;
   if (CGRectEqualToRect(*MEMORY[0x277CBF3A0], self->_contentRect))
   {
-    v4 = [(UIGraphicsRendererContext *)self format];
-    [v4 bounds];
+    format = [(UIGraphicsRendererContext *)self format];
+    [format bounds];
     x = v5;
     y = v7;
     width = v9;

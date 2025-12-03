@@ -1,17 +1,17 @@
 @interface AutoBugCaptureHelper
 - (AutoBugCaptureHelper)init;
-- (void)reportWithDomain:(id)a3 type:(id)a4 subtype:(id)a5 subtypeContext:(id)a6;
+- (void)reportWithDomain:(id)domain type:(id)type subtype:(id)subtype subtypeContext:(id)context;
 @end
 
 @implementation AutoBugCaptureHelper
 
-- (void)reportWithDomain:(id)a3 type:(id)a4 subtype:(id)a5 subtypeContext:(id)a6
+- (void)reportWithDomain:(id)domain type:(id)type subtype:(id)subtype subtypeContext:(id)context
 {
   sub_2426ABA10();
   sub_2426ABA10();
   sub_2426ABA10();
   sub_2426ABA10();
-  v7 = self;
+  selfCopy = self;
   sub_242666FE4();
 }
 

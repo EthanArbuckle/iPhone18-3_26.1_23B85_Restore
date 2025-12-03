@@ -18,27 +18,27 @@
 + (PHPickerFilter)spatialMediaFilter;
 + (PHPickerFilter)timelapseVideosFilter;
 + (PHPickerFilter)videosFilter;
-+ (id)_itemIdentifiersFilter:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithPUPickerFilter:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_itemIdentifiersFilter:(id)filter;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithPUPickerFilter:(id)filter;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PHPickerFilter
 
-- (id)_initWithPUPickerFilter:(id)a3
+- (id)_initWithPUPickerFilter:(id)filter
 {
-  v5 = a3;
-  if (v5)
+  filterCopy = filter;
+  if (filterCopy)
   {
-    v6 = v5;
+    v6 = filterCopy;
     v13.receiver = self;
     v13.super_class = PHPickerFilter;
     v7 = [(PHPickerFilter *)&v13 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->__puPickerFilter, a3);
+      objc_storeStrong(&v7->__puPickerFilter, filter);
     }
 
     return v8;
@@ -51,19 +51,19 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PHPickerFilter alloc];
-  v6 = [(PUPickerFilter *)self->__puPickerFilter copyWithZone:a3];
+  v6 = [(PUPickerFilter *)self->__puPickerFilter copyWithZone:zone];
   v7 = [(PHPickerFilter *)v5 _initWithPUPickerFilter:v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
     goto LABEL_8;
@@ -76,7 +76,7 @@
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = objc_opt_class();
   if (v5)
   {
@@ -106,10 +106,10 @@ LABEL_8:
   return [(PHPickerFilter *)v11 init];
 }
 
-+ (id)_itemIdentifiersFilter:(id)a3
++ (id)_itemIdentifiersFilter:(id)filter
 {
-  v3 = a3;
-  v4 = [[PUPickerItemIdentifiersFilter alloc] initWithItemIdentifiers:v3];
+  filterCopy = filter;
+  v4 = [[PUPickerItemIdentifiersFilter alloc] initWithItemIdentifiers:filterCopy];
 
   v5 = [[PHPickerFilter alloc] _initWithPUPickerFilter:v4];
 
@@ -151,8 +151,8 @@ LABEL_8:
 
   v4 = v3;
   v5 = [PUPickerCompoundFilter alloc];
-  v6 = [(PHPickerFilter *)v4 _puPickerFilter];
-  v12[0] = v6;
+  _puPickerFilter = [(PHPickerFilter *)v4 _puPickerFilter];
+  v12[0] = _puPickerFilter;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v8 = [(PUPickerCompoundFilter *)v5 initWithFilterType:2 subfilters:v7];
 

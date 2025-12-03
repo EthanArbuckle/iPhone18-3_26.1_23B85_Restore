@@ -1,52 +1,52 @@
 @interface PGPeopleWallpaperSuggesterPersonInformation
-- (PGPeopleWallpaperSuggesterPersonInformation)initWithPersonLocalIdentifier:(id)a3 importance:(int64_t)a4 unverifiedMergeCandidateLocalIdentifiers:(id)a5;
-- (void)mergeImportance:(int64_t)a3;
+- (PGPeopleWallpaperSuggesterPersonInformation)initWithPersonLocalIdentifier:(id)identifier importance:(int64_t)importance unverifiedMergeCandidateLocalIdentifiers:(id)identifiers;
+- (void)mergeImportance:(int64_t)importance;
 @end
 
 @implementation PGPeopleWallpaperSuggesterPersonInformation
 
-- (void)mergeImportance:(int64_t)a3
+- (void)mergeImportance:(int64_t)importance
 {
   importance = self->_importance;
-  v4 = importance | a3;
-  if (importance >= a3)
+  v4 = importance | importance;
+  if (importance >= importance)
   {
-    v5 = a3;
+    importanceCopy = importance;
   }
 
   else
   {
-    v5 = self->_importance;
+    importanceCopy = self->_importance;
   }
 
-  if (importance <= a3)
+  if (importance <= importance)
   {
-    importance = a3;
+    importance = importance;
   }
 
   if (v4 < 0)
   {
-    importance = v5;
+    importance = importanceCopy;
   }
 
   self->_importance = importance;
 }
 
-- (PGPeopleWallpaperSuggesterPersonInformation)initWithPersonLocalIdentifier:(id)a3 importance:(int64_t)a4 unverifiedMergeCandidateLocalIdentifiers:(id)a5
+- (PGPeopleWallpaperSuggesterPersonInformation)initWithPersonLocalIdentifier:(id)identifier importance:(int64_t)importance unverifiedMergeCandidateLocalIdentifiers:(id)identifiers
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   v16.receiver = self;
   v16.super_class = PGPeopleWallpaperSuggesterPersonInformation;
   v11 = [(PGPeopleWallpaperSuggesterPersonInformation *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_personLocalIdentifier, a3);
-    v12->_importance = a4;
-    if (v10)
+    objc_storeStrong(&v11->_personLocalIdentifier, identifier);
+    v12->_importance = importance;
+    if (identifiersCopy)
     {
-      v13 = v10;
+      v13 = identifiersCopy;
     }
 
     else

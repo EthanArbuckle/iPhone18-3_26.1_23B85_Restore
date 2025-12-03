@@ -1,54 +1,54 @@
 @interface MTLVertexAttributeDescriptor
-+ (MTLVertexAttributeDescriptor)allocWithZone:(_NSZone *)a3;
-- (BOOL)isEqual:(id)a3;
++ (MTLVertexAttributeDescriptor)allocWithZone:(_NSZone *)zone;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation MTLVertexAttributeDescriptor
 
-+ (MTLVertexAttributeDescriptor)allocWithZone:(_NSZone *)a3
++ (MTLVertexAttributeDescriptor)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [MTLVertexAttributeDescriptorInternal allocWithZone:a3];
+    return [MTLVertexAttributeDescriptorInternal allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MTLVertexAttributeDescriptor;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
-  v6 = [(MTLVertexAttributeDescriptor *)self format];
-  if (v6 != [a3 format])
+  format = [(MTLVertexAttributeDescriptor *)self format];
+  if (format != [equal format])
   {
     return 0;
   }
 
-  v7 = [(MTLVertexAttributeDescriptor *)self offset];
-  if (v7 != [a3 offset])
+  offset = [(MTLVertexAttributeDescriptor *)self offset];
+  if (offset != [equal offset])
   {
     return 0;
   }
 
-  v8 = [(MTLVertexAttributeDescriptor *)self bufferIndex];
-  return v8 == [a3 bufferIndex];
+  bufferIndex = [(MTLVertexAttributeDescriptor *)self bufferIndex];
+  return bufferIndex == [equal bufferIndex];
 }
 
 - (unint64_t)hash

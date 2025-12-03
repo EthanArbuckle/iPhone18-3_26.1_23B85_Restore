@@ -1,22 +1,22 @@
 @interface OITSURangeList
-- (OITSURangeList)initWithRange:(_NSRange)a3;
-- (OITSURangeList)initWithRangeList:(id)a3;
-- (OITSURangeList)initWithString:(id)a3;
-- (_NSRange)rangeAtIndex:(unint64_t)a3;
+- (OITSURangeList)initWithRange:(_NSRange)range;
+- (OITSURangeList)initWithRangeList:(id)list;
+- (OITSURangeList)initWithString:(id)string;
+- (_NSRange)rangeAtIndex:(unint64_t)index;
 - (id).cxx_construct;
 - (id)stringValue;
 - (void)consolidate;
-- (void)removeRangeAtIndex:(unint64_t)a3;
-- (void)replaceWithRange:(_NSRange)a3 atIndex:(unint64_t)a4;
+- (void)removeRangeAtIndex:(unint64_t)index;
+- (void)replaceWithRange:(_NSRange)range atIndex:(unint64_t)index;
 - (void)reverse;
 @end
 
 @implementation OITSURangeList
 
-- (OITSURangeList)initWithRange:(_NSRange)a3
+- (OITSURangeList)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = [(OITSURangeList *)self init];
   v6 = v5;
   if (v5)
@@ -30,19 +30,19 @@
   return v6;
 }
 
-- (OITSURangeList)initWithRangeList:(id)a3
+- (OITSURangeList)initWithRangeList:(id)list
 {
   v4 = [(OITSURangeList *)self init];
   if (v4)
   {
-    std::vector<_NSRange>::resize(&v4->mRangeList.__begin_, [a3 count]);
-    if ([a3 count])
+    std::vector<_NSRange>::resize(&v4->mRangeList.__begin_, [list count]);
+    if ([list count])
     {
       v5 = 0;
       v6 = 0;
       do
       {
-        v7 = [a3 rangeAtIndex:v6];
+        v7 = [list rangeAtIndex:v6];
         v8 = &v4->mRangeList.__begin_[v5];
         v8->location = v7;
         v8->length = v9;
@@ -50,67 +50,67 @@
         ++v5;
       }
 
-      while (v6 < [a3 count]);
+      while (v6 < [list count]);
     }
   }
 
   return v4;
 }
 
-- (OITSURangeList)initWithString:(id)a3
+- (OITSURangeList)initWithString:(id)string
 {
   v4 = [(OITSURangeList *)self init];
   v5 = v4;
-  if (a3 && v4 && [a3 length] >= 3 && objc_msgSend(a3, "length"))
+  if (string && v4 && [string length] >= 3 && objc_msgSend(string, "length"))
   {
     v6 = 0;
     v7 = 1;
     do
     {
-      if ([a3 characterAtIndex:v7 - 1] == 123)
+      if ([string characterAtIndex:v7 - 1] == 123)
       {
         v6 = v7 - 1;
       }
 
-      else if ([a3 characterAtIndex:v7 - 1] == 125)
+      else if ([string characterAtIndex:v7 - 1] == 125)
       {
-        v8 = [a3 substringWithRange:{v6, v7 - v6}];
+        v8 = [string substringWithRange:{v6, v7 - v6}];
         v11 = 0;
         v11 = NSRangeFromString(v8);
         std::vector<_NSRange>::push_back[abi:ne200100](&v5->mRangeList, &v11);
       }
     }
 
-    while (v7++ < [a3 length]);
+    while (v7++ < [string length]);
   }
 
   return v5;
 }
 
-- (void)removeRangeAtIndex:(unint64_t)a3
+- (void)removeRangeAtIndex:(unint64_t)index
 {
   begin = self->mRangeList.__begin_;
   end = self->mRangeList.__end_;
-  v6 = &begin[a3];
+  v6 = &begin[index];
   v7 = (end - &v6[1]);
   if (end != &v6[1])
   {
-    memmove(&begin[a3], &v6[1], end - &v6[1]);
+    memmove(&begin[index], &v6[1], end - &v6[1]);
   }
 
   self->mRangeList.__end_ = &v7[v6];
 }
 
-- (void)replaceWithRange:(_NSRange)a3 atIndex:(unint64_t)a4
+- (void)replaceWithRange:(_NSRange)range atIndex:(unint64_t)index
 {
   begin = self->mRangeList.__begin_;
   v9 = self->mRangeList.__end_ - begin;
-  if (v9 <= a4)
+  if (v9 <= index)
   {
-    objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:@"IndexOutOfBound" reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"Getting object at %lu from an array with size %lu", a3.length, a4, v9, v5, v4, v6, v7), 0}]);
+    objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:@"IndexOutOfBound" reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"Getting object at %lu from an array with size %lu", range.length, index, v9, v5, v4, v6, v7), 0}]);
   }
 
-  begin[a4] = a3;
+  begin[index] = range;
 }
 
 - (void)reverse
@@ -132,16 +132,16 @@
   }
 }
 
-- (_NSRange)rangeAtIndex:(unint64_t)a3
+- (_NSRange)rangeAtIndex:(unint64_t)index
 {
   begin = self->mRangeList.__begin_;
   v8 = self->mRangeList.__end_ - begin;
-  if (v8 <= a3)
+  if (v8 <= index)
   {
-    objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:@"IndexOutOfBound" reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"Getting object at %lu from an array with size %lu", a3, v8, v4, v3, v5, v6), 0}]);
+    objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:@"IndexOutOfBound" reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"Getting object at %lu from an array with size %lu", index, v8, v4, v3, v5, v6), 0}]);
   }
 
-  p_location = &begin[a3].location;
+  p_location = &begin[index].location;
   v10 = *p_location;
   v11 = p_location[1];
   result.length = v11;

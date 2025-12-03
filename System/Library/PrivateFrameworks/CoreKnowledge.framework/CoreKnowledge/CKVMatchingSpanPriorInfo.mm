@@ -1,25 +1,25 @@
 @interface CKVMatchingSpanPriorInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMatchingSpanPriorInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMatchingSpanPriorInfo:(id)info;
 - (CKVMatchingSpanPriorInfo)init;
-- (CKVMatchingSpanPriorInfo)initWithCoder:(id)a3;
-- (CKVMatchingSpanPriorInfo)initWithOrdinality:(unsigned int)a3 score:(float)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CKVMatchingSpanPriorInfo)initWithCoder:(id)coder;
+- (CKVMatchingSpanPriorInfo)initWithOrdinality:(unsigned int)ordinality score:(float)score;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKVMatchingSpanPriorInfo
 
-- (BOOL)isEqualToMatchingSpanPriorInfo:(id)a3
+- (BOOL)isEqualToMatchingSpanPriorInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   ordinality = self->_ordinality;
-  if (ordinality == [v4 ordinality])
+  if (ordinality == [infoCopy ordinality])
   {
     score = self->_score;
-    [v4 score];
+    [infoCopy score];
     v8 = score == v7;
   }
 
@@ -31,51 +31,51 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVMatchingSpanPriorInfo *)self isEqualToMatchingSpanPriorInfo:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVMatchingSpanPriorInfo *)self isEqualToMatchingSpanPriorInfo:v5];
   }
 
   return v6;
 }
 
-- (CKVMatchingSpanPriorInfo)initWithCoder:(id)a3
+- (CKVMatchingSpanPriorInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CKVMatchingSpanPriorInfo;
   v5 = [(CKVMatchingSpanPriorInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ordinality"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ordinality"];
     v5->_ordinality = [v6 unsignedIntValue];
 
-    [v4 decodeFloatForKey:@"score"];
+    [coderCopy decodeFloatForKey:@"score"];
     v5->_score = v7;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   ordinality = self->_ordinality;
-  v8 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInt:ordinality];
-  [v8 encodeObject:v6 forKey:@"ordinality"];
+  [coderCopy encodeObject:v6 forKey:@"ordinality"];
 
   *&v7 = self->_score;
-  [v8 encodeFloat:@"score" forKey:v7];
+  [coderCopy encodeFloat:@"score" forKey:v7];
 }
 
 - (unint64_t)hash
@@ -99,9 +99,9 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   *(result + 2) = self->_ordinality;
   *(result + 3) = LODWORD(self->_score);
   return result;
@@ -113,7 +113,7 @@
   objc_exception_throw(v2);
 }
 
-- (CKVMatchingSpanPriorInfo)initWithOrdinality:(unsigned int)a3 score:(float)a4
+- (CKVMatchingSpanPriorInfo)initWithOrdinality:(unsigned int)ordinality score:(float)score
 {
   v14 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -125,10 +125,10 @@
     goto LABEL_7;
   }
 
-  if (a4 >= 0.0)
+  if (score >= 0.0)
   {
-    v6->_ordinality = a3;
-    v6->_score = a4;
+    v6->_ordinality = ordinality;
+    v6->_score = score;
 LABEL_7:
     v9 = v6;
     goto LABEL_8;

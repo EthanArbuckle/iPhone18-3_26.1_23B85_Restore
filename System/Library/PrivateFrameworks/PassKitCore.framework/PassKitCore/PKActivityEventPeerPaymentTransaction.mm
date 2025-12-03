@@ -1,24 +1,24 @@
 @interface PKActivityEventPeerPaymentTransaction
-- (BOOL)isEqualToActivityEvent:(id)a3;
-- (PKActivityEventPeerPaymentTransaction)initWithTransaction:(id)a3 relatedTopUpWithdrawlTransaction:(id)a4 relatedTopUpDepositTransaction:(id)a5 unread:(BOOL)a6;
+- (BOOL)isEqualToActivityEvent:(id)event;
+- (PKActivityEventPeerPaymentTransaction)initWithTransaction:(id)transaction relatedTopUpWithdrawlTransaction:(id)withdrawlTransaction relatedTopUpDepositTransaction:(id)depositTransaction unread:(BOOL)unread;
 - (unint64_t)hash;
 @end
 
 @implementation PKActivityEventPeerPaymentTransaction
 
-- (PKActivityEventPeerPaymentTransaction)initWithTransaction:(id)a3 relatedTopUpWithdrawlTransaction:(id)a4 relatedTopUpDepositTransaction:(id)a5 unread:(BOOL)a6
+- (PKActivityEventPeerPaymentTransaction)initWithTransaction:(id)transaction relatedTopUpWithdrawlTransaction:(id)withdrawlTransaction relatedTopUpDepositTransaction:(id)depositTransaction unread:(BOOL)unread
 {
-  v6 = a6;
-  v11 = a4;
-  v12 = a5;
+  unreadCopy = unread;
+  withdrawlTransactionCopy = withdrawlTransaction;
+  depositTransactionCopy = depositTransaction;
   v16.receiver = self;
   v16.super_class = PKActivityEventPeerPaymentTransaction;
-  v13 = [(PKActivityEventTransaction *)&v16 initWithTransaction:a3 unread:v6];
+  v13 = [(PKActivityEventTransaction *)&v16 initWithTransaction:transaction unread:unreadCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_relatedTopUpPeerPaymentAccountDepositTransaction, a5);
-    objc_storeStrong(&v14->_relatedTopUpFundingSourceWithdrawlTransaction, a4);
+    objc_storeStrong(&v13->_relatedTopUpPeerPaymentAccountDepositTransaction, depositTransaction);
+    objc_storeStrong(&v14->_relatedTopUpFundingSourceWithdrawlTransaction, withdrawlTransaction);
   }
 
   return v14;
@@ -33,9 +33,9 @@
   return [(PKPaymentTransaction *)self->_relatedTopUpPeerPaymentAccountDepositTransaction hash]- v4 + 32 * v4;
 }
 
-- (BOOL)isEqualToActivityEvent:(id)a3
+- (BOOL)isEqualToActivityEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -43,7 +43,7 @@
     goto LABEL_12;
   }
 
-  v5 = v4;
+  v5 = eventCopy;
   v14.receiver = self;
   v14.super_class = PKActivityEventPeerPaymentTransaction;
   if ([(PKActivityEventTransaction *)&v14 isEqualToActivityEvent:v5])

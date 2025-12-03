@@ -1,21 +1,21 @@
 @interface MapDataSubscriptionsDebugViewController
-- (id)_configuredCellForSubscriptionIdentifier:(id)a3;
+- (id)_configuredCellForSubscriptionIdentifier:(id)identifier;
 - (void)_reloadSubscriptions;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MapDataSubscriptionsDebugViewController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy section])
   {
-    v8 = [v7 row];
+    v8 = [pathCopy row];
     if (v8 >= [(NSArray *)self->_subscriptions count])
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
@@ -27,12 +27,12 @@
 
     else
     {
-      v9 = -[NSArray objectAtIndexedSubscript:](self->_subscriptions, "objectAtIndexedSubscript:", [v7 row]);
+      v9 = -[NSArray objectAtIndexedSubscript:](self->_subscriptions, "objectAtIndexedSubscript:", [pathCopy row]);
       v10 = [[MapDataSubscriptionDetailsDebugViewController alloc] initWithSubscription:v9];
-      v11 = [(MapDataSubscriptionsDebugViewController *)self navigationController];
-      [v11 pushViewController:v10 animated:1];
+      navigationController = [(MapDataSubscriptionsDebugViewController *)self navigationController];
+      [navigationController pushViewController:v10 animated:1];
 
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     }
   }
 }
@@ -53,9 +53,9 @@
   objc_destroyWeak(&location);
 }
 
-- (id)_configuredCellForSubscriptionIdentifier:(id)a3
+- (id)_configuredCellForSubscriptionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -75,9 +75,9 @@ LABEL_3:
       }
 
       v9 = *(*(&v39 + 1) + 8 * v8);
-      v10 = [v9 subscription];
-      v11 = [v10 identifier];
-      v12 = [v11 isEqual:v4];
+      subscription = [v9 subscription];
+      identifier = [subscription identifier];
+      v12 = [identifier isEqual:identifierCopy];
 
       if (v12)
       {
@@ -104,24 +104,24 @@ LABEL_3:
       goto LABEL_19;
     }
 
-    v14 = [(MapDataSubscriptionsDebugViewController *)self tableView];
-    v6 = [v14 dequeueReusableCellWithIdentifier:@"subscription"];
+    tableView = [(MapDataSubscriptionsDebugViewController *)self tableView];
+    v6 = [tableView dequeueReusableCellWithIdentifier:@"subscription"];
 
-    v15 = [(NSArray *)v13 state];
+    state = [(NSArray *)v13 state];
     v16 = +[UIListContentConfiguration subtitleCellConfiguration];
-    v17 = [(NSArray *)v13 subscription];
-    v18 = [v17 identifier];
-    [v16 setText:v18];
+    subscription2 = [(NSArray *)v13 subscription];
+    identifier2 = [subscription2 identifier];
+    [v16 setText:identifier2];
 
-    v19 = [(NSArray *)v13 subscription];
-    [v19 policy];
+    subscription3 = [(NSArray *)v13 subscription];
+    [subscription3 policy];
     v20 = GEOMapDataSubscriptionPolicyAsString();
-    [v19 dataTypes];
+    [subscription3 dataTypes];
     v21 = GEOMapDataSubscriptionDataTypeAsString();
     v22 = [NSString stringWithFormat:@"%@ • %@", v20, v21];
 
     [v16 setSecondaryText:v22];
-    if ([v15 loadState])
+    if ([state loadState])
     {
       [v6 setAccessoryView:0];
       [v6 setAccessoryType:1];
@@ -130,8 +130,8 @@ LABEL_3:
     else
     {
       objc_initWeak(&location, self);
-      v23 = [v15 downloadProgress];
-      v24 = v23 == 0;
+      downloadProgress = [state downloadProgress];
+      v24 = downloadProgress == 0;
 
       if (v24)
       {
@@ -159,8 +159,8 @@ LABEL_3:
         v26 = [UIImage systemImageNamed:@"stop.fill"];
         [v25 setImage:v26];
 
-        v27 = [v15 downloadProgress];
-        [v25 setProgress:v27];
+        downloadProgress2 = [state downloadProgress];
+        [v25 setProgress:downloadProgress2];
 
         v35[0] = _NSConcreteStackBlock;
         v35[1] = 3221225472;
@@ -189,20 +189,20 @@ LABEL_19:
   return v6;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = MapDataSubscriptionsDebugViewController;
-  [(MapDataSubscriptionsDebugViewController *)&v4 viewWillDisappear:a3];
+  [(MapDataSubscriptionsDebugViewController *)&v4 viewWillDisappear:disappear];
   notify_cancel(self->_subscriptionsChangedNotifyToken);
   self->_subscriptionsChangedNotifyToken = 0;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = MapDataSubscriptionsDebugViewController;
-  [(MapDataSubscriptionsDebugViewController *)&v14 viewWillAppear:a3];
+  [(MapDataSubscriptionsDebugViewController *)&v14 viewWillAppear:appear];
   if (!self->_subscriptionManager)
   {
     v4 = objc_alloc_init(GEOMapDataSubscriptionManager);
@@ -230,21 +230,21 @@ LABEL_19:
   v20.receiver = self;
   v20.super_class = MapDataSubscriptionsDebugViewController;
   [(MapDataSubscriptionsDebugViewController *)&v20 viewDidLoad];
-  v3 = [(MapDataSubscriptionsDebugViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"subscription"];
+  tableView = [(MapDataSubscriptionsDebugViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"subscription"];
 
-  v4 = [(MapDataSubscriptionsDebugViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"map"];
+  tableView2 = [(MapDataSubscriptionsDebugViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"map"];
 
   objc_initWeak(&location, self);
   v5 = [UITableViewDiffableDataSource alloc];
-  v6 = [(MapDataSubscriptionsDebugViewController *)self tableView];
+  tableView3 = [(MapDataSubscriptionsDebugViewController *)self tableView];
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100937FFC;
   v17 = &unk_10162F088;
   objc_copyWeak(&v18, &location);
-  v7 = [v5 initWithTableView:v6 cellProvider:&v14];
+  v7 = [v5 initWithTableView:tableView3 cellProvider:&v14];
   dataSource = self->_dataSource;
   self->_dataSource = v7;
 

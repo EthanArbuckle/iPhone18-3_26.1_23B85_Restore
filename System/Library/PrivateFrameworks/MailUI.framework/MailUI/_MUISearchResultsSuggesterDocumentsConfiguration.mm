@@ -3,8 +3,8 @@
 + (id)documentTypeFilterQuery;
 - (NSArray)categories;
 - (NSArray)fetchAttributes;
-- (id)processSuggestionsResults:(id)a3 phraseManager:(id)a4 messageList:(id)a5;
-- (id)suggestionFilterQueryWithPhraseManager:(id)a3 senderFilterQuery:(id)a4;
+- (id)processSuggestionsResults:(id)results phraseManager:(id)manager messageList:(id)list;
+- (id)suggestionFilterQueryWithPhraseManager:(id)manager senderFilterQuery:(id)query;
 @end
 
 @implementation _MUISearchResultsSuggesterDocumentsConfiguration
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __55___MUISearchResultsSuggesterDocumentsConfiguration_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_13 != -1)
   {
     dispatch_once(&log_onceToken_13, block);
@@ -49,27 +49,27 @@
   return v0;
 }
 
-- (id)suggestionFilterQueryWithPhraseManager:(id)a3 senderFilterQuery:(id)a4
+- (id)suggestionFilterQueryWithPhraseManager:(id)manager senderFilterQuery:(id)query
 {
-  v5 = a4;
-  v6 = [a3 phrase];
+  queryCopy = query;
+  phrase = [manager phrase];
   v7 = MEMORY[0x277CCACA8];
   v8 = +[MUISearchResultsSuggester dateQueryString];
   v9 = +[_MUISearchResultsSuggesterDocumentsConfiguration documentTypeFilterQuery];
   v10 = [v7 stringWithFormat:@"(%@) && (%@) && (%@)", @"(kMDItemAccountIdentifier = '*') && (kMDItemRelatedUniqueIdentifier = '*') && (kMDItemContentURL = '*')", v8, v9];
 
-  if ([v6 length])
+  if ([phrase length])
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@) && ((kMDItemDisplayName = '%@*'cdw) || (kMDItemTextContent = '%@*'cdw))", v10, v6, v6];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@) && ((kMDItemDisplayName = '%@*'cdw) || (kMDItemTextContent = '%@*'cdw))", v10, phrase, phrase];
 
     v10 = v11;
   }
 
-  if ([v5 length])
+  if ([queryCopy length])
   {
-    v12 = [v10 stringByAppendingFormat:@" && (%@)", v5];
+    queryCopy = [v10 stringByAppendingFormat:@" && (%@)", queryCopy];
 
-    v10 = v12;
+    v10 = queryCopy;
   }
 
   return v10;
@@ -87,10 +87,10 @@
   return v3;
 }
 
-- (id)processSuggestionsResults:(id)a3 phraseManager:(id)a4 messageList:(id)a5
+- (id)processSuggestionsResults:(id)results phraseManager:(id)manager messageList:(id)list
 {
-  v6 = a5;
-  v7 = [MUISearchResultsSuggester suggestionResultsSortedByDate:a3];
+  listCopy = list;
+  v7 = [MUISearchResultsSuggester suggestionResultsSortedByDate:results];
   v8 = [v7 ef_prefix:3];
 
   v9 = [v8 ef_prefix:3];
@@ -98,8 +98,8 @@
   v13[1] = 3221225472;
   v13[2] = __104___MUISearchResultsSuggesterDocumentsConfiguration_processSuggestionsResults_phraseManager_messageList___block_invoke;
   v13[3] = &unk_27818AEE0;
-  v14 = v6;
-  v10 = v6;
+  v14 = listCopy;
+  v10 = listCopy;
   v11 = [v9 ef_compactMap:v13];
 
   return v11;

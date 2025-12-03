@@ -1,10 +1,10 @@
 @interface DisplayLinkTarget
-- (BOOL)drawAndReturnError:(id *)a3;
+- (BOOL)drawAndReturnError:(id *)error;
 @end
 
 @implementation DisplayLinkTarget
 
-- (BOOL)drawAndReturnError:(id *)a3
+- (BOOL)drawAndReturnError:(id *)error
 {
   Strong = swift_weakLoadStrong();
   if (Strong)

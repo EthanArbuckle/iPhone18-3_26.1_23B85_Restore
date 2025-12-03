@@ -1,72 +1,72 @@
 @interface _HKActivityStatisticsStandHourInfo
-- (BOOL)isEqual:(id)a3;
-- (_HKActivityStatisticsStandHourInfo)initWithCoder:(id)a3;
-- (_HKActivityStatisticsStandHourInfo)initWithTimeStamp:(double)a3 state:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (_HKActivityStatisticsStandHourInfo)initWithCoder:(id)coder;
+- (_HKActivityStatisticsStandHourInfo)initWithTimeStamp:(double)stamp state:(int64_t)state;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKActivityStatisticsStandHourInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timeStamp = self->_timeStamp;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_timeStamp);
-  [v5 encodeDouble:v6 forKey:timeStamp];
+  [coderCopy encodeDouble:v6 forKey:timeStamp];
 
   state = self->_state;
   v8 = NSStringFromSelector(sel_state);
-  [v5 encodeInteger:state forKey:v8];
+  [coderCopy encodeInteger:state forKey:v8];
 }
 
-- (_HKActivityStatisticsStandHourInfo)initWithTimeStamp:(double)a3 state:(int64_t)a4
+- (_HKActivityStatisticsStandHourInfo)initWithTimeStamp:(double)stamp state:(int64_t)state
 {
   v7.receiver = self;
   v7.super_class = _HKActivityStatisticsStandHourInfo;
   result = [(_HKActivityStatisticsStandHourInfo *)&v7 init];
   if (result)
   {
-    result->_timeStamp = a3;
-    result->_state = a4;
+    result->_timeStamp = stamp;
+    result->_state = state;
   }
 
   return result;
 }
 
-- (_HKActivityStatisticsStandHourInfo)initWithCoder:(id)a3
+- (_HKActivityStatisticsStandHourInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _HKActivityStatisticsStandHourInfo;
   v5 = [(_HKActivityStatisticsStandHourInfo *)&v10 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_timeStamp);
-    [v4 decodeDoubleForKey:v6];
+    [coderCopy decodeDoubleForKey:v6];
     v5->_timeStamp = v7;
 
     v8 = NSStringFromSelector(sel_state);
-    v5->_state = [v4 decodeIntegerForKey:v8];
+    v5->_state = [coderCopy decodeIntegerForKey:v8];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     v5 = *MEMORY[0x1E695E480];
-    [v4 timeStamp];
+    [equalCopy timeStamp];
     v7 = CFDateCreate(v5, v6);
     [(_HKActivityStatisticsStandHourInfo *)self timeStamp];
     v9 = CFDateCreate(v5, v8);
     if ([(__CFDate *)v7 isEqualToDate:v9])
     {
-      v10 = [v4 state];
-      v11 = v10 == [(_HKActivityStatisticsStandHourInfo *)self state];
+      state = [equalCopy state];
+      v11 = state == [(_HKActivityStatisticsStandHourInfo *)self state];
     }
 
     else
@@ -92,9 +92,9 @@
   v5 = MEMORY[0x1E695DF00];
   [(_HKActivityStatisticsStandHourInfo *)self timeStamp];
   v6 = [v5 dateWithTimeIntervalSinceReferenceDate:?];
-  v7 = [(_HKActivityStatisticsStandHourInfo *)self state];
+  state = [(_HKActivityStatisticsStandHourInfo *)self state];
   v8 = @"Idle";
-  if (!v7)
+  if (!state)
   {
     v8 = @"Stood";
   }

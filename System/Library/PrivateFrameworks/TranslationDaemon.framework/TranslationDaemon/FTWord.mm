@@ -1,19 +1,19 @@
 @interface FTWord
-- (FTWord)initWithFlatbuffData:(id)a3 root:(const Word *)a4 verify:(BOOL)a5;
+- (FTWord)initWithFlatbuffData:(id)data root:(const Word *)root verify:(BOOL)verify;
 - (NSString)orthography;
 - (NSString)tag;
-- (Offset<siri::speech::schema_fb::Word>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::Word>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int)frequency;
-- (void)pronunciations:(id)a3;
+- (void)pronunciations:(id)pronunciations;
 @end
 
 @implementation FTWord
 
-- (FTWord)initWithFlatbuffData:(id)a3 root:(const Word *)a4 verify:(BOOL)a5
+- (FTWord)initWithFlatbuffData:(id)data root:(const Word *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTWord;
   v10 = [(FTWord *)&v25 init];
@@ -22,35 +22,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -99,14 +99,14 @@ LABEL_13:
   return v6;
 }
 
-- (void)pronunciations:(id)a3
+- (void)pronunciations:(id)pronunciations
 {
   root = self->_root;
   v5 = &root[-*root->var0];
-  v6 = a3;
+  pronunciationsCopy = pronunciations;
   v7 = *root[*v5[6].var0 + *root[*v5[6].var0].var0].var0;
-  v8 = v6;
-  (*(a3 + 2))();
+  v8 = pronunciationsCopy;
+  (*(pronunciations + 2))();
 }
 
 - (int)frequency
@@ -147,18 +147,18 @@ LABEL_13:
   return v6;
 }
 
-- (Offset<siri::speech::schema_fb::Word>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::Word>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTWord *)self orthography];
-  v6 = v5;
-  if (!v5)
+  orthography = [(FTWord *)self orthography];
+  v6 = orthography;
+  if (!orthography)
   {
-    v5 = &stru_284834138;
+    orthography = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)orthography UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
   v21 = 0;
   v22 = &v21;
@@ -172,9 +172,9 @@ LABEL_13:
   v20[2] = __28__FTWord_addObjectToBuffer___block_invoke;
   v20[3] = &unk_2789B8AB0;
   v20[4] = &v21;
-  v20[5] = a3;
+  v20[5] = buffer;
   [(FTWord *)self pronunciations:v20];
-  v10 = [(FTWord *)self frequency];
+  frequency = [(FTWord *)self frequency];
   v11 = [(FTWord *)self tag];
   v12 = v11;
   if (!v11)
@@ -182,19 +182,19 @@ LABEL_13:
     v11 = &stru_284834138;
   }
 
-  v13 = [(__CFString *)v11 UTF8String];
-  v14 = strlen(v13);
-  LODWORD(v13) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v13, v14);
+  uTF8String2 = [(__CFString *)v11 UTF8String];
+  v14 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v14);
 
-  *(a3 + 70) = 1;
-  v15 = *(a3 + 8);
-  v16 = *(a3 + 12);
-  v17 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, *(v22 + 12));
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v10, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v13);
-  v18.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v15 - v16 + v17);
+  *(buffer + 70) = 1;
+  v15 = *(buffer + 8);
+  v16 = *(buffer + 12);
+  v17 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, *(v22 + 12));
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, frequency, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, uTF8String2);
+  v18.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v15 - v16 + v17);
   _Block_object_dispose(&v21, 8);
   return v18;
 }

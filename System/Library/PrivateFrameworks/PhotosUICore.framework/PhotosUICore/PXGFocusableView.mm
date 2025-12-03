@@ -1,13 +1,13 @@
 @interface PXGFocusableView
 - (BOOL)_isEligibleForFocusInteraction;
 - (BOOL)canBecomeFocused;
-- (CGPoint)convertHostedChildCenter:(CGPoint)a3 fromGlobalLayer:(id)a4;
+- (CGPoint)convertHostedChildCenter:(CGPoint)center fromGlobalLayer:(id)layer;
 - (CGRect)clippingRect;
 - (id)description;
-- (void)addHostedLayer:(id)a3;
-- (void)didHintFocusMovement:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setUserData:(id)a3;
+- (void)addHostedLayer:(id)layer;
+- (void)didHintFocusMovement:(id)movement;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXGFocusableView
@@ -25,13 +25,13 @@
   return result;
 }
 
-- (CGPoint)convertHostedChildCenter:(CGPoint)a3 fromGlobalLayer:(id)a4
+- (CGPoint)convertHostedChildCenter:(CGPoint)center fromGlobalLayer:(id)layer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PXGFocusableView *)self layer];
-  [v8 convertPoint:v7 fromLayer:{x, y}];
+  y = center.y;
+  x = center.x;
+  layerCopy = layer;
+  layer = [(PXGFocusableView *)self layer];
+  [layer convertPoint:layerCopy fromLayer:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -42,22 +42,22 @@
   return result;
 }
 
-- (void)addHostedLayer:(id)a3
+- (void)addHostedLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [(PXGFocusableView *)self layer];
-  [v5 addSublayer:v4];
+  layerCopy = layer;
+  layer = [(PXGFocusableView *)self layer];
+  [layer addSublayer:layerCopy];
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   userData = self->_userData;
-  if (userData != v4)
+  if (userData != dataCopy)
   {
-    v15 = v4;
-    v6 = [(PXGFocusableViewConfiguration *)userData isEqual:v4];
-    v4 = v15;
+    v15 = dataCopy;
+    v6 = [(PXGFocusableViewConfiguration *)userData isEqual:dataCopy];
+    dataCopy = v15;
     if (!v6)
     {
       v7 = [(PXGFocusableViewConfiguration *)v15 copy];
@@ -65,8 +65,8 @@
       self->_userData = v7;
 
       [(PXGFocusableView *)self setNeedsLayout];
-      v9 = [(PXGFocusableView *)self userData];
-      v10 = [v9 delegate];
+      userData = [(PXGFocusableView *)self userData];
+      delegate = [userData delegate];
 
       *&self->_delegateFlags = *&self->_delegateFlags & 0xFE | objc_opt_respondsToSelector() & 1;
       if (objc_opt_respondsToSelector())
@@ -95,51 +95,51 @@
       *&self->_delegateFlags = delegateFlags & 0xFB | v14;
       if (delegateFlags)
       {
-        [v10 focusableViewDidUpdateUserInfo:self];
+        [delegate focusableViewDidUpdateUserInfo:self];
       }
 
-      v4 = v15;
+      dataCopy = v15;
     }
   }
 }
 
-- (void)didHintFocusMovement:(id)a3
+- (void)didHintFocusMovement:(id)movement
 {
   if ((*&self->_delegateFlags & 4) != 0)
   {
-    v5 = a3;
-    v7 = [(PXGFocusableView *)self userData];
-    v6 = [v7 delegate];
-    [v6 focusableView:self didHintFocusMovement:v5];
+    movementCopy = movement;
+    userData = [(PXGFocusableView *)self userData];
+    delegate = [userData delegate];
+    [delegate focusableView:self didHintFocusMovement:movementCopy];
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   if ((*&self->_delegateFlags & 2) != 0)
   {
-    v7 = a4;
-    v8 = a3;
-    v10 = [(PXGFocusableView *)self userData];
-    v9 = [v10 delegate];
-    [v9 focusableView:self didUpdateFocusInContext:v8 withAnimationCoordinator:v7];
+    coordinatorCopy = coordinator;
+    contextCopy = context;
+    userData = [(PXGFocusableView *)self userData];
+    delegate = [userData delegate];
+    [delegate focusableView:self didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
   }
 }
 
 - (BOOL)canBecomeFocused
 {
-  v4 = [(PXGFocusableView *)self userData];
-  v5 = [v4 focusability];
+  userData = [(PXGFocusableView *)self userData];
+  focusability = [userData focusability];
 
-  if (!v5)
+  if (!focusability)
   {
     return 1;
   }
 
-  if (v5 != 1)
+  if (focusability != 1)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXGFocusableView.m" lineNumber:119 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGFocusableView.m" lineNumber:119 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -149,18 +149,18 @@
 
 - (BOOL)_isEligibleForFocusInteraction
 {
-  v4 = [(PXGFocusableView *)self userData];
-  v5 = [v4 focusability];
+  userData = [(PXGFocusableView *)self userData];
+  focusability = [userData focusability];
 
-  if (v5 == 1)
+  if (focusability == 1)
   {
     return 0;
   }
 
-  if (v5)
+  if (focusability)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXGFocusableView.m" lineNumber:108 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGFocusableView.m" lineNumber:108 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -172,17 +172,17 @@
 
 - (id)description
 {
-  v3 = [(PXGFocusableView *)self userData];
-  v4 = [v3 focusability];
-  v5 = [v3 debugName];
+  userData = [(PXGFocusableView *)self userData];
+  focusability = [userData focusability];
+  debugName = [userData debugName];
   v6 = objc_alloc(MEMORY[0x1E696AD60]);
-  if (v4)
+  if (focusability)
   {
-    if (v4 != 1)
+    if (focusability != 1)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *PXGFocusableViewFocusabilityDescription(PXGFocusableViewFocusability)"];
-      [v16 handleFailureInFunction:v17 file:@"PXGFocusableView.m" lineNumber:24 description:@"Code which should be unreachable has been reached"];
+      [currentHandler handleFailureInFunction:v17 file:@"PXGFocusableView.m" lineNumber:24 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -197,9 +197,9 @@
 
   v8 = [v6 initWithFormat:@"; focusability = %@", v7];
   v9 = v8;
-  if (v5)
+  if (debugName)
   {
-    [v8 appendFormat:@"; debugName = '%@'", v5];
+    [v8 appendFormat:@"; debugName = '%@'", debugName];
   }
 
   v18.receiver = self;

@@ -1,54 +1,54 @@
 @interface _UITabElementGroup
 - (BOOL)_canBeReordered;
-- (BOOL)_canReorderChild:(id)a3;
+- (BOOL)_canReorderChild:(id)child;
 - (BOOL)_isCustomizable;
-- (_UITabElementGroup)initWithIdentifier:(id)a3 title:(id)a4 image:(id)a5 children:(id)a6;
+- (_UITabElementGroup)initWithIdentifier:(id)identifier title:(id)title image:(id)image children:(id)children;
 - (_UITabElementGroupDelegate)_delegate;
 - (id)_defaultChildElement;
 - (id)_filteredDisplayOrderIdentifiers;
-- (id)_orderedChildrenForDisplayOrder:(id)a3;
-- (id)_tabForIdentifier:(id)a3;
-- (void)_didChangeTabModel:(id)a3;
+- (id)_orderedChildrenForDisplayOrder:(id)order;
+- (id)_tabForIdentifier:(id)identifier;
+- (void)_didChangeTabModel:(id)model;
 - (void)_notifyObserversElementsChanged;
-- (void)_selectElement:(id)a3 notifyingDelegate:(BOOL)a4 notifyOnReselection:(BOOL)a5 performBeforeNotifyingDelegate:(id)a6;
-- (void)_setAllowsReordering:(BOOL)a3;
-- (void)_setChildren:(id)a3;
-- (void)_setDelegate:(id)a3;
-- (void)_setDisplayOrder:(id)a3 notifyingDelegate:(BOOL)a4;
-- (void)_setSidebarAppearance:(unint64_t)a3;
-- (void)_updateDescriptionWithBuilder:(id)a3 recursive:(BOOL)a4;
+- (void)_selectElement:(id)element notifyingDelegate:(BOOL)delegate notifyOnReselection:(BOOL)reselection performBeforeNotifyingDelegate:(id)notifyingDelegate;
+- (void)_setAllowsReordering:(BOOL)reordering;
+- (void)_setChildren:(id)children;
+- (void)_setDelegate:(id)delegate;
+- (void)_setDisplayOrder:(id)order notifyingDelegate:(BOOL)delegate;
+- (void)_setSidebarAppearance:(unint64_t)appearance;
+- (void)_updateDescriptionWithBuilder:(id)builder recursive:(BOOL)recursive;
 @end
 
 @implementation _UITabElementGroup
 
 - (void)_notifyObserversElementsChanged
 {
-  v3 = [(UITab *)self _tabModel];
-  [v3 elementsDidChangeForGroup:self];
+  _tabModel = [(UITab *)self _tabModel];
+  [_tabModel elementsDidChangeForGroup:self];
 }
 
-- (_UITabElementGroup)initWithIdentifier:(id)a3 title:(id)a4 image:(id)a5 children:(id)a6
+- (_UITabElementGroup)initWithIdentifier:(id)identifier title:(id)title image:(id)image children:(id)children
 {
-  v10 = a6;
+  childrenCopy = children;
   v15.receiver = self;
   v15.super_class = _UITabElementGroup;
-  v11 = [(_UITabElement *)&v15 initWithIdentifier:a3 title:a4 image:a5];
+  v11 = [(_UITabElement *)&v15 initWithIdentifier:identifier title:title image:image];
   v12 = v11;
   if (v11)
   {
     children = v11->_children;
     v11->_children = MEMORY[0x1E695E0F0];
 
-    [(_UITabElementGroup *)v12 _setChildren:v10];
+    [(_UITabElementGroup *)v12 _setChildren:childrenCopy];
   }
 
   return v12;
 }
 
-- (void)_setDelegate:(id)a3
+- (void)_setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   *&self->_delegateImplements = *&self->_delegateImplements & 0xFE | objc_opt_respondsToSelector() & 1;
   v5 = objc_opt_respondsToSelector();
 
@@ -65,17 +65,17 @@
   *&self->_delegateImplements = *&self->_delegateImplements & 0xFD | v6;
 }
 
-- (void)_setChildren:(id)a3
+- (void)_setChildren:(id)children
 {
   v64 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  childrenCopy = children;
+  if (!childrenCopy)
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"UITabGroup.m" lineNumber:808 description:{@"Invalid parameter not satisfying: %@", @"children"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITabGroup.m" lineNumber:808 description:{@"Invalid parameter not satisfying: %@", @"children"}];
   }
 
-  v6 = [v5 differenceFromArray:self->_children withOptions:0 usingEquivalenceTest:&__block_literal_global_217];
+  v6 = [childrenCopy differenceFromArray:self->_children withOptions:0 usingEquivalenceTest:&__block_literal_global_217];
   if ([v6 hasChanges])
   {
     v40 = a2;
@@ -85,8 +85,8 @@
     v58 = 0u;
     v59 = 0u;
     v41 = v6;
-    v8 = [v6 removals];
-    v9 = [v8 countByEnumeratingWithState:&v56 objects:v63 count:16];
+    removals = [v6 removals];
+    v9 = [removals countByEnumeratingWithState:&v56 objects:v63 count:16];
     if (v9)
     {
       v10 = v9;
@@ -97,14 +97,14 @@
         {
           if (*v57 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(removals);
           }
 
-          v13 = [*(*(&v56 + 1) + 8 * i) object];
-          [v7 addObject:v13];
+          object = [*(*(&v56 + 1) + 8 * i) object];
+          [v7 addObject:object];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v56 objects:v63 count:16];
+        v10 = [removals countByEnumeratingWithState:&v56 objects:v63 count:16];
       }
 
       while (v10);
@@ -114,8 +114,8 @@
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v14 = [v41 insertions];
-    v15 = [v14 countByEnumeratingWithState:&v52 objects:v62 count:16];
+    insertions = [v41 insertions];
+    v15 = [insertions countByEnumeratingWithState:&v52 objects:v62 count:16];
     if (v15)
     {
       v16 = v15;
@@ -126,14 +126,14 @@
         {
           if (*v53 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(insertions);
           }
 
-          v19 = [*(*(&v52 + 1) + 8 * j) object];
-          [v7 removeObject:v19];
+          object2 = [*(*(&v52 + 1) + 8 * j) object];
+          [v7 removeObject:object2];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v52 objects:v62 count:16];
+        v16 = [insertions countByEnumeratingWithState:&v52 objects:v62 count:16];
       }
 
       while (v16);
@@ -167,7 +167,7 @@
       while (v22);
     }
 
-    v25 = [v5 copy];
+    v25 = [childrenCopy copy];
     children = self->_children;
     self->_children = v25;
 
@@ -175,7 +175,7 @@
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v27 = v5;
+    v27 = childrenCopy;
     v28 = [v27 countByEnumeratingWithState:&v44 objects:v60 count:16];
     if (v28)
     {
@@ -193,8 +193,8 @@
           v32 = *(*(&v44 + 1) + 8 * m);
           if (([v32 _isUniquelySPI] & 1) == 0)
           {
-            v33 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v33 handleFailureInMethod:v40 object:self file:@"UITabGroup.m" lineNumber:829 description:@"Cannot add UITab objects to a UITabElementGroup. Please use UITab + UITabGroup directly."];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:v40 object:self file:@"UITabGroup.m" lineNumber:829 description:@"Cannot add UITab objects to a UITabElementGroup. Please use UITab + UITabGroup directly."];
           }
 
           [v32 set_parent:self];
@@ -212,9 +212,9 @@
     v6 = v41;
     if (v34)
     {
-      v36 = [(_UITab *)v34 _parent];
+      _parent = [(_UITab *)v34 _parent];
 
-      if (v36 != self)
+      if (_parent != self)
       {
         v42[0] = MEMORY[0x1E69E9820];
         v42[1] = 3221225472;
@@ -240,21 +240,21 @@
   }
 }
 
-- (void)_setSidebarAppearance:(unint64_t)a3
+- (void)_setSidebarAppearance:(unint64_t)appearance
 {
-  if (self->__sidebarAppearance != a3)
+  if (self->__sidebarAppearance != appearance)
   {
-    self->__sidebarAppearance = a3;
+    self->__sidebarAppearance = appearance;
     [(_UITabElementGroup *)self _notifyObserversElementsChanged];
   }
 }
 
-- (void)_setDisplayOrder:(id)a3 notifyingDelegate:(BOOL)a4
+- (void)_setDisplayOrder:(id)order notifyingDelegate:(BOOL)delegate
 {
-  v4 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  orderCopy = order;
   displayOrder = self->__displayOrder;
-  v13 = v7;
+  v13 = orderCopy;
   v9 = displayOrder;
   if (v9 == v13)
   {
@@ -279,12 +279,12 @@ LABEL_11:
   {
   }
 
-  objc_storeStrong(&self->__displayOrder, a3);
+  objc_storeStrong(&self->__displayOrder, order);
   [(_UITabElementGroup *)self _notifyObserversElementsChanged];
-  v12 = [(UITab *)self _tabModel];
-  [v12 displayOrderIdentifiersDidChangeForGroup:self];
+  _tabModel = [(UITab *)self _tabModel];
+  [_tabModel displayOrderIdentifiersDidChangeForGroup:self];
 
-  if (v4 && (*&self->_delegateImplements & 2) != 0)
+  if (delegateCopy && (*&self->_delegateImplements & 2) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained _tabElementGroup:self didCustomizeDisplayOrder:v13];
@@ -294,34 +294,34 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)_setAllowsReordering:(BOOL)a3
+- (void)_setAllowsReordering:(BOOL)reordering
 {
-  if (self->__allowsReordering != a3)
+  if (self->__allowsReordering != reordering)
   {
-    self->__allowsReordering = a3;
+    self->__allowsReordering = reordering;
     [(UITab *)self _customizabilityDidChange];
   }
 }
 
-- (id)_orderedChildrenForDisplayOrder:(id)a3
+- (id)_orderedChildrenForDisplayOrder:(id)order
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  orderCopy = order;
+  if (!orderCopy)
   {
-    v4 = [(_UITabElementGroup *)self _displayOrder];
+    orderCopy = [(_UITabElementGroup *)self _displayOrder];
   }
 
-  v5 = [(_UITabElementGroup *)self _children];
-  if ([v4 count])
+  _children = [(_UITabElementGroup *)self _children];
+  if ([orderCopy count])
   {
-    v6 = [v5 mutableCopy];
-    v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    v6 = [_children mutableCopy];
+    v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(_children, "count")}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    obj = v4;
+    obj = orderCopy;
     v7 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
@@ -363,7 +363,7 @@ LABEL_12:
 
   else
   {
-    v16 = v5;
+    v16 = _children;
   }
 
   return v16;
@@ -371,7 +371,7 @@ LABEL_12:
 
 - (id)_defaultChildElement
 {
-  v3 = [(_UITabElementGroup *)self _defaultChildIdentifier];
+  _defaultChildIdentifier = [(_UITabElementGroup *)self _defaultChildIdentifier];
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
@@ -388,17 +388,17 @@ LABEL_12:
   v17 = __Block_byref_object_copy__64;
   v18 = __Block_byref_object_dispose__64;
   v19 = 0;
-  v4 = [(_UITabElementGroup *)self _children];
+  _children = [(_UITabElementGroup *)self _children];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42___UITabElementGroup__defaultChildElement__block_invoke;
   v9[3] = &unk_1E71058B8;
-  v5 = v3;
+  v5 = _defaultChildIdentifier;
   v10 = v5;
   v11 = &v20;
   v12 = v26;
   v13 = &v14;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [_children enumerateObjectsUsingBlock:v9];
 
   v6 = v21[5];
   if (!v6)
@@ -416,49 +416,49 @@ LABEL_12:
   return v7;
 }
 
-- (void)_selectElement:(id)a3 notifyingDelegate:(BOOL)a4 notifyOnReselection:(BOOL)a5 performBeforeNotifyingDelegate:(id)a6
+- (void)_selectElement:(id)element notifyingDelegate:(BOOL)delegate notifyOnReselection:(BOOL)reselection performBeforeNotifyingDelegate:(id)notifyingDelegate
 {
-  v7 = a5;
-  v8 = a4;
-  v12 = a3;
-  v13 = a6;
-  if (v12 && ([v12 _isElement] & 1) == 0)
+  reselectionCopy = reselection;
+  delegateCopy = delegate;
+  elementCopy = element;
+  notifyingDelegateCopy = notifyingDelegate;
+  if (elementCopy && ([elementCopy _isElement] & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UITabGroup.m" lineNumber:957 description:{@"Cannot select a tab (%@) that is not selectable in %@.", v12, self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITabGroup.m" lineNumber:957 description:{@"Cannot select a tab (%@) that is not selectable in %@.", elementCopy, self}];
   }
 
-  v19 = v12;
+  v19 = elementCopy;
   selectedElement = self->_selectedElement;
-  objc_storeStrong(&self->_selectedElement, a3);
-  if (v13)
+  objc_storeStrong(&self->_selectedElement, element);
+  if (notifyingDelegateCopy)
   {
-    v13[2](v13);
+    notifyingDelegateCopy[2](notifyingDelegateCopy);
   }
 
-  if (selectedElement != v19 || v7)
+  if (selectedElement != v19 || reselectionCopy)
   {
-    if (v8 && (*&self->_delegateImplements & 1) != 0)
+    if (delegateCopy && (*&self->_delegateImplements & 1) != 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained _tabElementGroup:self didSelectElement:v19];
     }
 
-    v17 = [(UITab *)self _tabModel];
-    [v17 selectedElementDidChangeForGroup:self];
+    _tabModel = [(UITab *)self _tabModel];
+    [_tabModel selectedElementDidChangeForGroup:self];
   }
 }
 
-- (id)_tabForIdentifier:(id)a3
+- (id)_tabForIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(_UITabElementGroup *)self _children];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  _children = [(_UITabElementGroup *)self _children];
+  v6 = [_children countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v6)
   {
     goto LABEL_13;
@@ -472,12 +472,12 @@ LABEL_12:
     {
       if (*v17 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(_children);
       }
 
       v10 = *(*(&v16 + 1) + 8 * i);
-      v11 = [v10 _identifier];
-      v12 = [v11 isEqualToString:v4];
+      _identifier = [v10 _identifier];
+      v12 = [_identifier isEqualToString:identifierCopy];
 
       if (v12)
       {
@@ -491,7 +491,7 @@ LABEL_12:
           continue;
         }
 
-        v13 = [v10 tabForIdentifier:v4];
+        v13 = [v10 tabForIdentifier:identifierCopy];
       }
 
       v14 = v13;
@@ -501,7 +501,7 @@ LABEL_12:
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v7 = [_children countByEnumeratingWithState:&v16 objects:v20 count:16];
   }
 
   while (v7);
@@ -519,7 +519,7 @@ LABEL_14:
   v11 = 0x2020000000;
   v8.receiver = self;
   v8.super_class = _UITabElementGroup;
-  v12 = [(UITab *)&v8 _isCustomizable];
+  _isCustomizable = [(UITab *)&v8 _isCustomizable];
   if ((v10[3] & 1) != 0 || (v3 = [(_UITabElementGroup *)self allowsReordering], (*(v10 + 24) = v3) != 0))
   {
     v4 = 1;
@@ -527,13 +527,13 @@ LABEL_14:
 
   else
   {
-    v5 = [(_UITabElementGroup *)self children];
+    children = [(_UITabElementGroup *)self children];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __37___UITabElementGroup__isCustomizable__block_invoke;
     v7[3] = &unk_1E71057F8;
     v7[4] = &v9;
-    [v5 enumerateObjectsUsingBlock:v7];
+    [children enumerateObjectsUsingBlock:v7];
 
     v4 = *(v10 + 24);
   }
@@ -542,18 +542,18 @@ LABEL_14:
   return v4 & 1;
 }
 
-- (void)_didChangeTabModel:(id)a3
+- (void)_didChangeTabModel:(id)model
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   v17.receiver = self;
   v17.super_class = _UITabElementGroup;
-  [(UITab *)&v17 _didChangeTabModel:v4];
-  if (v4)
+  [(UITab *)&v17 _didChangeTabModel:modelCopy];
+  if (modelCopy)
   {
-    v5 = [v4 customizationStore];
-    v6 = [(UITab *)self identifier];
-    v7 = [v5 displayOrderIdentifiersForGroupWithIdentifier:v6];
+    customizationStore = [modelCopy customizationStore];
+    identifier = [(UITab *)self identifier];
+    v7 = [customizationStore displayOrderIdentifiersForGroupWithIdentifier:identifier];
 
     if (v7)
     {
@@ -581,7 +581,7 @@ LABEL_14:
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) _didChangeTabModel:{v4, v13}];
+        [*(*(&v13 + 1) + 8 * v12++) _didChangeTabModel:{modelCopy, v13}];
       }
 
       while (v10 != v12);
@@ -604,11 +604,11 @@ LABEL_14:
   return [(UITab *)&v4 _canBeReordered];
 }
 
-- (BOOL)_canReorderChild:(id)a3
+- (BOOL)_canReorderChild:(id)child
 {
-  v4 = a3;
-  v5 = [(_UITabElementGroup *)self _children];
-  v6 = [v5 containsObject:v4];
+  childCopy = child;
+  _children = [(_UITabElementGroup *)self _children];
+  v6 = [_children containsObject:childCopy];
   v8 = v6 && (-[_UITabElementGroup _sidebarAppearance](self, "_sidebarAppearance") != 1 || (-[_UITab _parent](self, "_parent"), v7 = ;
   return v8;
 }
@@ -616,12 +616,12 @@ LABEL_14:
 - (id)_filteredDisplayOrderIdentifiers
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(_UITabElementGroup *)self _children];
-  v4 = [v3 mutableCopy];
+  _children = [(_UITabElementGroup *)self _children];
+  v4 = [_children mutableCopy];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(_UITabElementGroup *)self _displayOrder];
-  v7 = [v6 count];
+  _displayOrder = [(_UITabElementGroup *)self _displayOrder];
+  v7 = [_displayOrder count];
 
   if (v7)
   {
@@ -686,8 +686,8 @@ LABEL_14:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v24 + 1) + 8 * j) _identifier];
-        [v5 addObject:v21];
+        _identifier = [*(*(&v24 + 1) + 8 * j) _identifier];
+        [v5 addObject:_identifier];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v24 objects:v33 count:16];
@@ -699,16 +699,16 @@ LABEL_14:
   return v5;
 }
 
-- (void)_updateDescriptionWithBuilder:(id)a3 recursive:(BOOL)a4
+- (void)_updateDescriptionWithBuilder:(id)builder recursive:(BOOL)recursive
 {
-  v4 = a4;
-  v6 = a3;
+  recursiveCopy = recursive;
+  builderCopy = builder;
   v8.receiver = self;
   v8.super_class = _UITabElementGroup;
-  [(UITab *)&v8 _updateDescriptionWithBuilder:v6 recursive:v4];
-  if (!v4 && [(NSArray *)self->_children count])
+  [(UITab *)&v8 _updateDescriptionWithBuilder:builderCopy recursive:recursiveCopy];
+  if (!recursiveCopy && [(NSArray *)self->_children count])
   {
-    v7 = [v6 appendName:@"children" object:self->_children usingLightweightDescription:1];
+    v7 = [builderCopy appendName:@"children" object:self->_children usingLightweightDescription:1];
   }
 }
 

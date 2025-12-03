@@ -1,7 +1,7 @@
 @interface BrightnessSystemClientExportedObj
 - (void)dealloc;
-- (void)notifyChangedProperty:(id)a3 value:(id)a4;
-- (void)registerNotificationBlock:(id)a3;
+- (void)notifyChangedProperty:(id)property value:(id)value;
+- (void)registerNotificationBlock:(id)block;
 - (void)unregisterNotificationBlock;
 @end
 
@@ -21,44 +21,44 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   objc_sync_enter(self);
-  if (v5->clientBlock)
+  if (selfCopy->clientBlock)
   {
-    _Block_release(v5->clientBlock);
+    _Block_release(selfCopy->clientBlock);
   }
 
-  if (v5->queue)
+  if (selfCopy->queue)
   {
-    dispatch_release(v5->queue);
+    dispatch_release(selfCopy->queue);
   }
 
   objc_sync_exit(self);
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = BrightnessSystemClientExportedObj;
   [(BrightnessSystemClientExportedObj *)&v3 dealloc];
 }
 
-- (void)registerNotificationBlock:(id)a3
+- (void)registerNotificationBlock:(id)block
 {
   [(BrightnessSystemClientExportedObj *)self unregisterNotificationBlock];
   objc_sync_enter(self);
-  if (a3)
+  if (block)
   {
-    self->clientBlock = _Block_copy(a3);
+    self->clientBlock = _Block_copy(block);
   }
 
   objc_sync_exit(self);
 }
 
-- (void)notifyChangedProperty:(id)a3 value:(id)a4
+- (void)notifyChangedProperty:(id)property value:(id)value
 {
   v21 = *MEMORY[0x1E69E9840];
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
-  v16 = a4;
+  propertyCopy = property;
+  valueCopy = value;
   if (_COREBRIGHTNESS_LOG_DEFAULT)
   {
     inited = _COREBRIGHTNESS_LOG_DEFAULT;
@@ -73,28 +73,28 @@
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(inited, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_4_8_64_8_64_8_0_8_0(v20, v17, v16, v19->queue, v19->clientBlock);
+    __os_log_helper_16_2_4_8_64_8_64_8_0_8_0(v20, propertyCopy, valueCopy, selfCopy->queue, selfCopy->clientBlock);
     _os_log_debug_impl(&dword_1DE8E5000, oslog, type, "key=%@ property=%@ queue=%p clientBlock=%p", v20, 0x2Au);
   }
 
-  if (!v19->queue)
+  if (!selfCopy->queue)
   {
-    v19->queue = dispatch_queue_create(0, 0);
+    selfCopy->queue = dispatch_queue_create(0, 0);
   }
 
-  if (v19->clientBlock && v19->queue)
+  if (selfCopy->clientBlock && selfCopy->queue)
   {
-    MEMORY[0x1E69E5928](v17);
-    MEMORY[0x1E69E5928](v16);
-    queue = v19->queue;
+    MEMORY[0x1E69E5928](propertyCopy);
+    MEMORY[0x1E69E5928](valueCopy);
+    queue = selfCopy->queue;
     block = MEMORY[0x1E69E9820];
     v7 = -1073741824;
     v8 = 0;
     v9 = __65__BrightnessSystemClientExportedObj_notifyChangedProperty_value___block_invoke;
     v10 = &unk_1E867B750;
-    v11 = v19;
-    v12 = v17;
-    v13 = v16;
+    v11 = selfCopy;
+    v12 = propertyCopy;
+    v13 = valueCopy;
     dispatch_async(queue, &block);
   }
 

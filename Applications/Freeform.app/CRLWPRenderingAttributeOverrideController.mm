@@ -1,10 +1,10 @@
 @interface CRLWPRenderingAttributeOverrideController
 - (CRLWPRenderingAttributeOverrideController)init;
-- (id)overrideWithKey:(id)a3 forStorage:(id)a4;
-- (id)overridesForStorage:(id)a3;
-- (void)addOverride:(id)a3 forStorage:(id)a4;
-- (void)removeAllOverridesForStorage:(id)a3;
-- (void)removeOverrideWithKey:(id)a3 forStorage:(id)a4;
+- (id)overrideWithKey:(id)key forStorage:(id)storage;
+- (id)overridesForStorage:(id)storage;
+- (void)addOverride:(id)override forStorage:(id)storage;
+- (void)removeAllOverridesForStorage:(id)storage;
+- (void)removeOverrideWithKey:(id)key forStorage:(id)storage;
 - (void)reset;
 @end
 
@@ -33,80 +33,80 @@
   objc_sync_exit(obj);
 }
 
-- (void)addOverride:(id)a3 forStorage:(id)a4
+- (void)addOverride:(id)override forStorage:(id)storage
 {
-  v14 = a3;
-  v6 = a4;
+  overrideCopy = override;
+  storageCopy = storage;
   v7 = self->_map;
   objc_sync_enter(v7);
   v8 = objc_opt_class();
   v9 = [(CRLWPRenderingAttributeOverrideController *)self map];
-  v10 = [v9 objectForKey:v6];
+  v10 = [v9 objectForKey:storageCopy];
   v11 = sub_100013F00(v8, v10);
 
   if (!v11)
   {
     v11 = objc_alloc_init(NSMutableDictionary);
     v12 = [(CRLWPRenderingAttributeOverrideController *)self map];
-    [v12 setObject:v11 forKey:v6];
+    [v12 setObject:v11 forKey:storageCopy];
   }
 
-  v13 = [v14 key];
-  [v11 setObject:v14 forKeyedSubscript:v13];
+  v13 = [overrideCopy key];
+  [v11 setObject:overrideCopy forKeyedSubscript:v13];
 
   objc_sync_exit(v7);
 }
 
-- (void)removeAllOverridesForStorage:(id)a3
+- (void)removeAllOverridesForStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v4 = self->_map;
   objc_sync_enter(v4);
-  [(NSMapTable *)self->_map removeObjectForKey:v5];
+  [(NSMapTable *)self->_map removeObjectForKey:storageCopy];
   objc_sync_exit(v4);
 }
 
-- (void)removeOverrideWithKey:(id)a3 forStorage:(id)a4
+- (void)removeOverrideWithKey:(id)key forStorage:(id)storage
 {
-  v12 = a3;
-  v6 = a4;
+  keyCopy = key;
+  storageCopy = storage;
   v7 = self->_map;
   objc_sync_enter(v7);
   v8 = objc_opt_class();
   v9 = [(CRLWPRenderingAttributeOverrideController *)self map];
-  v10 = [v9 objectForKey:v6];
+  v10 = [v9 objectForKey:storageCopy];
   v11 = sub_100013F00(v8, v10);
-  [v11 setObject:0 forKeyedSubscript:v12];
+  [v11 setObject:0 forKeyedSubscript:keyCopy];
 
   objc_sync_exit(v7);
 }
 
-- (id)overrideWithKey:(id)a3 forStorage:(id)a4
+- (id)overrideWithKey:(id)key forStorage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  storageCopy = storage;
   v8 = self->_map;
   objc_sync_enter(v8);
   v9 = [(CRLWPRenderingAttributeOverrideController *)self map];
-  v10 = [v9 objectForKey:v7];
-  v11 = [v10 objectForKeyedSubscript:v6];
+  v10 = [v9 objectForKey:storageCopy];
+  v11 = [v10 objectForKeyedSubscript:keyCopy];
 
   objc_sync_exit(v8);
 
   return v11;
 }
 
-- (id)overridesForStorage:(id)a3
+- (id)overridesForStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v5 = self->_map;
   objc_sync_enter(v5);
-  v6 = [(NSMapTable *)self->_map objectForKey:v4];
-  v7 = [v6 allValues];
+  v6 = [(NSMapTable *)self->_map objectForKey:storageCopy];
+  allValues = [v6 allValues];
 
   objc_sync_exit(v5);
 
-  return v7;
+  return allValues;
 }
 
 @end

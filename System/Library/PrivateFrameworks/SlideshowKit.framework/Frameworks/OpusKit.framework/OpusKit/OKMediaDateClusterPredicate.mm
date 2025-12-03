@@ -1,16 +1,16 @@
 @interface OKMediaDateClusterPredicate
-- (OKMediaDateClusterPredicate)initWithType:(unint64_t)a3;
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4;
-- (id)timeOfDayAsString:(unint64_t)a3;
+- (OKMediaDateClusterPredicate)initWithType:(unint64_t)type;
+- (id)evaluateItems:(id)items progressBlock:(id)block;
+- (id)timeOfDayAsString:(unint64_t)string;
 - (id)title;
-- (int64_t)hourInGMT:(id)a3;
-- (unint64_t)timeOfDay:(id)a3;
+- (int64_t)hourInGMT:(id)t;
+- (unint64_t)timeOfDay:(id)day;
 - (void)dealloc;
 @end
 
 @implementation OKMediaDateClusterPredicate
 
-- (OKMediaDateClusterPredicate)initWithType:(unint64_t)a3
+- (OKMediaDateClusterPredicate)initWithType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = OKMediaDateClusterPredicate;
@@ -18,8 +18,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
-    -[OKMediaClusterPredicate setUniqueID:](v4, "setUniqueID:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%lu", @"date", a3]);
+    v4->_type = type;
+    -[OKMediaClusterPredicate setUniqueID:](v4, "setUniqueID:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%lu", @"date", type]);
     [(OKMediaClusterPredicate *)v5 setCategory:0];
   }
 
@@ -76,15 +76,15 @@ LABEL_11:
   return [v3 localizedStringForKey:v4 value:v4 table:@"Localizable"];
 }
 
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4
+- (id)evaluateItems:(id)items progressBlock:(id)block
 {
   v62 = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_autoreleasePoolPush();
-  v51 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v8 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"metadata.creationDate" ascending:0];
   v46 = v6;
-  obj = [a3 sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v8)}];
+  obj = [items sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v8)}];
   type = self->_type;
   context = v7;
   if (type > 3)
@@ -106,7 +106,7 @@ LABEL_11:
   {
     v11 = v10;
     v48 = *v57;
-    v49 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v11; ++i)
@@ -120,20 +120,20 @@ LABEL_11:
         v14 = [objc_msgSend(v13 "metadata")];
         v15 = [objc_msgSend(MEMORY[0x277CBEA80] "currentCalendar")];
         v16 = [objc_msgSend(MEMORY[0x277CBEA80] "currentCalendar")];
-        v17 = v16;
+        title = v16;
         if (self->_type == 3)
         {
           v18 = v13;
           v19 = [(OKMediaDateClusterPredicate *)self timeOfDay:v16];
           v20 = v11;
           v21 = MEMORY[0x277CCACA8];
-          v22 = [v14 shortDescription];
+          shortDescription = [v14 shortDescription];
           v23 = v19;
           v13 = v18;
           v44 = [(OKMediaDateClusterPredicate *)self timeOfDayAsString:v23];
           v24 = v21;
           v11 = v20;
-          v25 = [v24 stringWithFormat:@"%@:%@", v22, v44];
+          v25 = [v24 stringWithFormat:@"%@:%@", shortDescription, v44];
           v26 = v25;
         }
 
@@ -143,19 +143,19 @@ LABEL_11:
           v25 = v16;
         }
 
-        v27 = [v51 objectForKey:v25];
+        v27 = [dictionary objectForKey:v25];
         if (v27)
         {
           [objc_msgSend(v27 "items")];
-          self = v49;
+          self = selfCopy;
           continue;
         }
 
         v28 = v13;
         v29 = objc_alloc_init(OKMediaCluster);
         v30 = v29;
-        self = v49;
-        v31 = v49->_type;
+        self = selfCopy;
+        v31 = selfCopy->_type;
         if (v31 > 1)
         {
           if (v31 == 2)
@@ -165,7 +165,7 @@ LABEL_11:
             v34 = @"yyyy";
 LABEL_24:
             [v32 setDateFormat:v34];
-            -[OKMediaCluster setTitle:](v30, "setTitle:", [v33 stringFromDate:v17]);
+            -[OKMediaCluster setTitle:](v30, "setTitle:", [v33 stringFromDate:title]);
             if (v33)
             {
             }
@@ -175,9 +175,9 @@ LABEL_24:
 
           if (v31 == 3)
           {
-            v35 = v26;
+            shortDescription2 = v26;
 LABEL_22:
-            [(OKMediaCluster *)v29 setTitle:v35];
+            [(OKMediaCluster *)v29 setTitle:shortDescription2];
           }
         }
 
@@ -185,7 +185,7 @@ LABEL_22:
         {
           if (!v31)
           {
-            v35 = [(NSString *)v17 shortDescription];
+            shortDescription2 = [(NSString *)title shortDescription];
             v29 = v30;
             goto LABEL_22;
           }
@@ -201,12 +201,12 @@ LABEL_22:
 
 LABEL_26:
         [(NSMutableArray *)[(OKMediaCluster *)v30 items] addObject:v28];
-        if (v49->_type == 3)
+        if (selfCopy->_type == 3)
         {
-          v17 = [(OKMediaCluster *)v30 title];
+          title = [(OKMediaCluster *)v30 title];
         }
 
-        [v51 setObject:v30 forKey:v17];
+        [dictionary setObject:v30 forKey:title];
       }
 
       v11 = [obj countByEnumeratingWithState:&v56 objects:v61 count:16];
@@ -216,8 +216,8 @@ LABEL_26:
   }
 
   v36 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"self" ascending:0];
-  v37 = [v51 allKeys];
-  v38 = [v37 sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v36)}];
+  allKeys = [dictionary allKeys];
+  v38 = [allKeys sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v36)}];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -236,7 +236,7 @@ LABEL_26:
           objc_enumerationMutation(v38);
         }
 
-        [v46 addObject:{objc_msgSend(v51, "objectForKey:", *(*(&v52 + 1) + 8 * j))}];
+        [v46 addObject:{objc_msgSend(dictionary, "objectForKey:", *(*(&v52 + 1) + 8 * j))}];
       }
 
       v40 = [v38 countByEnumeratingWithState:&v52 objects:v60 count:16];
@@ -249,9 +249,9 @@ LABEL_26:
   return v46;
 }
 
-- (unint64_t)timeOfDay:(id)a3
+- (unint64_t)timeOfDay:(id)day
 {
-  v3 = [(OKMediaDateClusterPredicate *)self hourInGMT:a3];
+  v3 = [(OKMediaDateClusterPredicate *)self hourInGMT:day];
   if ((v3 - 13) >= 5)
   {
     v4 = 4 * ((v3 - 18) < 7);
@@ -283,31 +283,31 @@ LABEL_26:
   }
 }
 
-- (id)timeOfDayAsString:(unint64_t)a3
+- (id)timeOfDayAsString:(unint64_t)string
 {
-  if (a3 - 1 > 3)
+  if (string - 1 > 3)
   {
     return @"unknown time of day";
   }
 
   else
   {
-    return off_279C8FAD8[a3 - 1];
+    return off_279C8FAD8[string - 1];
   }
 }
 
-- (int64_t)hourInGMT:(id)a3
+- (int64_t)hourInGMT:(id)t
 {
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v4 setTimeZone:{objc_msgSend(MEMORY[0x277CBEBB0], "timeZoneWithName:", @"GMT"}];
   [v4 setDateFormat:@"HH"];
-  v5 = [v4 stringFromDate:a3];
+  v5 = [v4 stringFromDate:t];
   v6 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v6 setNumberStyle:1];
   v7 = [v6 numberFromString:v5];
 
-  v8 = [v7 integerValue];
-  return v8;
+  integerValue = [v7 integerValue];
+  return integerValue;
 }
 
 @end

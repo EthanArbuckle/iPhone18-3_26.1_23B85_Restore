@@ -1,25 +1,25 @@
 @interface PLConcurrencyLimiter
 + (BOOL)isRunningUnderLimiter;
-+ (id)debugDescriptionOfEnqueuedBlocksOnQueue:(id)a3;
++ (id)debugDescriptionOfEnqueuedBlocksOnQueue:(id)queue;
 + (id)sharedLimiter;
-+ (void)configureListTrackingForDispatchQueue:(id)a3;
-+ (void)reportBlockEnqueued:(id)a3 isNotifyBlock:(BOOL)a4 onQueue:(id)a5 forLibrary:(id)a6;
++ (void)configureListTrackingForDispatchQueue:(id)queue;
++ (void)reportBlockEnqueued:(id)enqueued isNotifyBlock:(BOOL)block onQueue:(id)queue forLibrary:(id)library;
 - (PLConcurrencyLimiter)init;
-- (id)_nextQueueForQoS:(unsigned int)a3 libraryRole:(unint64_t)a4;
+- (id)_nextQueueForQoS:(unsigned int)s libraryRole:(unint64_t)role;
 - (id)_queuesTrackingBlocks;
 - (id)debugDescription;
 - (int64_t)maxConcurrency;
-- (void)_async:(id)a3 identifyingBlock:(id)a4 libraryRole:(unint64_t)a5 libraryForTelemetry:(id)a6;
-- (void)_callOutForQoS:(unsigned int)a3 fromQueue:(id)a4;
-- (void)_sync:(id)a3 identifyingBlock:(id)a4 libraryRole:(unint64_t)a5 libraryForTelemetry:(id)a6;
-- (void)_syncPerformBlockNotOnAnyQueue:(id)a3;
-- (void)async:(id)a3 identifyingBlock:(id)a4 library:(id)a5;
-- (void)asyncPerformOnContext:(id)a3 identifyingBlock:(id)a4 block:(id)a5;
-- (void)dispatchAfterTime:(unint64_t)a3 library:(id)a4 block:(id)a5;
-- (void)dispatchAsync:(id)a3 block:(id)a4;
-- (void)groupNotify:(id)a3 queue:(id)a4 block:(id)a5;
-- (void)reportBlockDequeuedOnQueue:(id)a3 executionTimeNS:(unint64_t)a4;
-- (void)sync:(id)a3 identifyingBlock:(id)a4 library:(id)a5;
+- (void)_async:(id)_async identifyingBlock:(id)block libraryRole:(unint64_t)role libraryForTelemetry:(id)telemetry;
+- (void)_callOutForQoS:(unsigned int)s fromQueue:(id)queue;
+- (void)_sync:(id)_sync identifyingBlock:(id)block libraryRole:(unint64_t)role libraryForTelemetry:(id)telemetry;
+- (void)_syncPerformBlockNotOnAnyQueue:(id)queue;
+- (void)async:(id)async identifyingBlock:(id)block library:(id)library;
+- (void)asyncPerformOnContext:(id)context identifyingBlock:(id)block block:(id)a5;
+- (void)dispatchAfterTime:(unint64_t)time library:(id)library block:(id)block;
+- (void)dispatchAsync:(id)async block:(id)block;
+- (void)groupNotify:(id)notify queue:(id)queue block:(id)block;
+- (void)reportBlockDequeuedOnQueue:(id)queue executionTimeNS:(unint64_t)s;
+- (void)sync:(id)sync identifyingBlock:(id)block library:(id)library;
 @end
 
 @implementation PLConcurrencyLimiter
@@ -46,18 +46,18 @@
   return pthread_getspecific(_limiterDepthThreadKey_s_key) > 0;
 }
 
-- (void)reportBlockDequeuedOnQueue:(id)a3 executionTimeNS:(unint64_t)a4
+- (void)reportBlockDequeuedOnQueue:(id)queue executionTimeNS:(unint64_t)s
 {
   v89 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  specific = dispatch_queue_get_specific(v6, PLConcurrencyLimiterTrackingStatsKey);
+  queueCopy = queue;
+  specific = dispatch_queue_get_specific(queueCopy, PLConcurrencyLimiterTrackingStatsKey);
   os_unfair_lock_lock(specific + 4);
   v8 = *&specific->_os_unfair_lock_opaque;
   if (!*&specific->_os_unfair_lock_opaque)
   {
-    v50 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v51 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLConcurrencyLimiter(Statistics) reportBlockDequeuedOnQueue:executionTimeNS:]"];
-    [v50 handleFailureInFunction:v51 file:@"PLConcurrencyLimiter+Statistics.m" lineNumber:200 description:@"no head"];
+    [currentHandler handleFailureInFunction:v51 file:@"PLConcurrencyLimiter+Statistics.m" lineNumber:200 description:@"no head"];
   }
 
   v9 = *v8;
@@ -75,9 +75,9 @@
     if (!v11)
     {
       v52 = *(v8 + 6);
-      v53 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v54 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLConcurrencyLimiter(Statistics) reportBlockDequeuedOnQueue:executionTimeNS:]"];
-      [v53 handleFailureInFunction:v54 file:@"PLConcurrencyLimiter+Statistics.m" lineNumber:215 description:@"head with no next"];
+      [currentHandler2 handleFailureInFunction:v54 file:@"PLConcurrencyLimiter+Statistics.m" lineNumber:215 description:@"head with no next"];
 
       v10 = v52;
     }
@@ -90,7 +90,7 @@
 
   free(v8);
   os_unfair_lock_unlock(specific + 4);
-  if (a4 >= 0x6FC23AC00 && [(PLConcurrencyLimiter *)self isRunningInPhotolibraryd])
+  if (s >= 0x6FC23AC00 && [(PLConcurrencyLimiter *)self isRunningInPhotolibraryd])
   {
     v61 = v10;
     context = objc_autoreleasePoolPush();
@@ -99,9 +99,9 @@
     v14 = backtrace_symbols(&v81, 1);
     if (!v14)
     {
-      v55 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void PLLogBlockExecutionTime(void *, PLPhotoLibrary *__strong, qos_class_t, uint64_t)"}];
-      [v55 handleFailureInFunction:v56 file:@"PLConcurrencyLimiter+Statistics.m" lineNumber:46 description:@"backtrace_symbols returned NULL"];
+      [currentHandler3 handleFailureInFunction:v56 file:@"PLConcurrencyLimiter+Statistics.m" lineNumber:46 description:@"backtrace_symbols returned NULL"];
     }
 
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*v14];
@@ -192,7 +192,7 @@ LABEL_27:
     {
       v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v57 = v25;
-      v58 = v6;
+      v58 = queueCopy;
       v66 = 0u;
       v67 = 0u;
       v64 = 0u;
@@ -225,7 +225,7 @@ LABEL_27:
       }
 
       v25 = v57;
-      v6 = v58;
+      queueCopy = v58;
       v32 = [v26 componentsJoinedByString:@" "];
       v33 = v72[5];
       v72[5] = v32;
@@ -233,10 +233,10 @@ LABEL_27:
 
     v34 = MEMORY[0x1E696AEC0];
     v35 = PLShortStringFromQoSClass();
-    v36 = [v34 stringWithFormat:@"Limiter block execution time %.6f sec, qos %@, context: %@, symbol: %@", a4 / 1000000000.0, v35, v72[5], v25];
+    v36 = [v34 stringWithFormat:@"Limiter block execution time %.6f sec, qos %@, context: %@, symbol: %@", s / 1000000000.0, v35, v72[5], v25];
 
-    v37 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v38 = [v37 BOOLForKey:@"PLConcurrencyLimiterTimeViolationEnableTTR"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v38 = [standardUserDefaults BOOLForKey:@"PLConcurrencyLimiterTimeViolationEnableTTR"];
 
     if (v38)
     {
@@ -265,14 +265,14 @@ LABEL_27:
 
     v41 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v42 = MEMORY[0x1E696AD98];
-    v43 = [v60 libraryServicesManager];
-    v44 = [v42 numberWithInteger:{objc_msgSend(v43, "wellKnownPhotoLibraryIdentifier")}];
+    libraryServicesManager = [v60 libraryServicesManager];
+    v44 = [v42 numberWithInteger:{objc_msgSend(libraryServicesManager, "wellKnownPhotoLibraryIdentifier")}];
     [v41 setObject:v44 forKeyedSubscript:@"wellKnownPhotoLibraryIdentifier"];
 
     [v41 setObject:v72[5] forKeyedSubscript:@"contextName"];
     [v41 setObject:v25 forKeyedSubscript:@"symbol"];
-    v45 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4 / 0x3B9ACA00];
-    [v41 setObject:v45 forKeyedSubscript:@"executionTimeInSeconds"];
+    0x3B9ACA00 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:s / 0x3B9ACA00];
+    [v41 setObject:0x3B9ACA00 forKeyedSubscript:@"executionTimeInSeconds"];
 
     v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v61];
     [v41 setObject:v46 forKeyedSubscript:@"qos"];
@@ -294,11 +294,11 @@ LABEL_27:
   }
 }
 
-+ (id)debugDescriptionOfEnqueuedBlocksOnQueue:(id)a3
++ (id)debugDescriptionOfEnqueuedBlocksOnQueue:(id)queue
 {
-  v3 = a3;
-  specific = dispatch_queue_get_specific(v3, PLConcurrencyLimiterTrackingStatsKey);
-  v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"queue: %@, scheduled blocks (max: %d) with wait times:\n", v3, 20];
+  queueCopy = queue;
+  specific = dispatch_queue_get_specific(queueCopy, PLConcurrencyLimiterTrackingStatsKey);
+  v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"queue: %@, scheduled blocks (max: %d) with wait times:\n", queueCopy, 20];
   os_unfair_lock_lock(specific + 4);
   v19 = specific;
   v6 = *&specific->_os_unfair_lock_opaque;
@@ -361,14 +361,14 @@ LABEL_18:
       v10 = *(v6 + 32);
       if (v10)
       {
-        v11 = [v10 managedObjectContext];
+        managedObjectContext = [v10 managedObjectContext];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
           v13 = v12;
-          [v11 lastResetTimestamp];
-          [v5 appendFormat:@"(Moc age: %g sec) %@\n", v13 - v14, v11];
+          [managedObjectContext lastResetTimestamp];
+          [v5 appendFormat:@"(Moc age: %g sec) %@\n", v13 - v14, managedObjectContext];
         }
       }
 
@@ -399,27 +399,27 @@ LABEL_18:
   return v5;
 }
 
-+ (void)reportBlockEnqueued:(id)a3 isNotifyBlock:(BOOL)a4 onQueue:(id)a5 forLibrary:(id)a6
++ (void)reportBlockEnqueued:(id)enqueued isNotifyBlock:(BOOL)block onQueue:(id)queue forLibrary:(id)library
 {
-  v19 = a3;
-  v9 = a5;
-  v10 = a6;
-  specific = dispatch_queue_get_specific(v9, PLConcurrencyLimiterTrackingStatsKey);
+  enqueuedCopy = enqueued;
+  queueCopy = queue;
+  libraryCopy = library;
+  specific = dispatch_queue_get_specific(queueCopy, PLConcurrencyLimiterTrackingStatsKey);
   if (!specific)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLConcurrencyLimiter(Statistics) reportBlockEnqueued:isNotifyBlock:onQueue:forLibrary:]"];
-    [v15 handleFailureInFunction:v16 file:@"PLConcurrencyLimiter+Statistics.m" lineNumber:163 description:@"no stat struct."];
+    [currentHandler handleFailureInFunction:v16 file:@"PLConcurrencyLimiter+Statistics.m" lineNumber:163 description:@"no stat struct."];
   }
 
   v12 = malloc_type_calloc(1uLL, 0x28uLL, 0x10A0040E2C296BEuLL);
-  *v12 = v19[2];
+  *v12 = enqueuedCopy[2];
   *(v12 + 2) = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   *(v12 + 6) = qos_class_self();
-  *(v12 + 28) = a4;
-  if (v10)
+  *(v12 + 28) = block;
+  if (libraryCopy)
   {
-    objc_storeStrong(v12 + 4, a6);
+    objc_storeStrong(v12 + 4, library);
   }
 
   os_unfair_lock_lock(specific + 4);
@@ -429,9 +429,9 @@ LABEL_18:
     v14 = *(specific + 1);
     if (!v14)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLConcurrencyLimiter(Statistics) reportBlockEnqueued:isNotifyBlock:onQueue:forLibrary:]"];
-      [v17 handleFailureInFunction:v18 file:@"PLConcurrencyLimiter+Statistics.m" lineNumber:184 description:@"no tail"];
+      [currentHandler2 handleFailureInFunction:v18 file:@"PLConcurrencyLimiter+Statistics.m" lineNumber:184 description:@"no tail"];
     }
 
     *(v14 + 8) = v12;
@@ -447,14 +447,14 @@ LABEL_18:
   os_unfair_lock_unlock(specific + 4);
 }
 
-+ (void)configureListTrackingForDispatchQueue:(id)a3
++ (void)configureListTrackingForDispatchQueue:(id)queue
 {
-  queue = a3;
+  queue = queue;
   if (!queue)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLConcurrencyLimiter(Statistics) configureListTrackingForDispatchQueue:]"];
-    [v4 handleFailureInFunction:v5 file:@"PLConcurrencyLimiter+Statistics.m" lineNumber:153 description:@"queue required."];
+    [currentHandler handleFailureInFunction:v5 file:@"PLConcurrencyLimiter+Statistics.m" lineNumber:153 description:@"queue required."];
   }
 
   v3 = malloc_type_calloc(1uLL, 0x18uLL, 0x1020040EDCEB4C7uLL);
@@ -462,44 +462,44 @@ LABEL_18:
   dispatch_queue_set_specific(queue, PLConcurrencyLimiterTrackingStatsKey, v3, _PLConcurrencyLimiterQueueTrackingStatsDestructor);
 }
 
-- (void)async:(id)a3 identifyingBlock:(id)a4 library:(id)a5
+- (void)async:(id)async identifyingBlock:(id)block library:(id)library
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  -[PLConcurrencyLimiter _async:identifyingBlock:libraryRole:libraryForTelemetry:](self, "_async:identifyingBlock:libraryRole:libraryForTelemetry:", v10, v9, [v8 role], v8);
+  libraryCopy = library;
+  blockCopy = block;
+  asyncCopy = async;
+  -[PLConcurrencyLimiter _async:identifyingBlock:libraryRole:libraryForTelemetry:](self, "_async:identifyingBlock:libraryRole:libraryForTelemetry:", asyncCopy, blockCopy, [libraryCopy role], libraryCopy);
 }
 
-- (void)sync:(id)a3 identifyingBlock:(id)a4 library:(id)a5
+- (void)sync:(id)sync identifyingBlock:(id)block library:(id)library
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  -[PLConcurrencyLimiter _sync:identifyingBlock:libraryRole:libraryForTelemetry:](self, "_sync:identifyingBlock:libraryRole:libraryForTelemetry:", v10, v9, [v8 role], v8);
+  libraryCopy = library;
+  blockCopy = block;
+  syncCopy = sync;
+  -[PLConcurrencyLimiter _sync:identifyingBlock:libraryRole:libraryForTelemetry:](self, "_sync:identifyingBlock:libraryRole:libraryForTelemetry:", syncCopy, blockCopy, [libraryCopy role], libraryCopy);
 }
 
-- (void)groupNotify:(id)a3 queue:(id)a4 block:(id)a5
+- (void)groupNotify:(id)notify queue:(id)queue block:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  queueCopy = queue;
+  blockCopy = block;
+  notifyCopy = notify;
   v11 = qos_class_self();
   v12 = [(PLConcurrencyLimiter *)self _nextQueueForQoS:v11 libraryRole:0];
   v13 = [(PLConcurrencyLimiter *)self _callOutForQoS:v11 fromQueue:v12];
-  [objc_opt_class() reportBlockEnqueued:v9 isNotifyBlock:1 onQueue:v12 forLibrary:0];
+  [objc_opt_class() reportBlockEnqueued:blockCopy isNotifyBlock:1 onQueue:v12 forLibrary:0];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__PLConcurrencyLimiter_groupNotify_queue_block___block_invoke;
   block[3] = &unk_1E7576190;
-  v21 = v9;
+  v21 = blockCopy;
   v22 = v13;
-  v18 = v8;
-  v19 = self;
+  v18 = queueCopy;
+  selfCopy = self;
   v20 = v12;
   v14 = v12;
-  v15 = v9;
-  v16 = v8;
-  dispatch_group_notify(v10, v14, block);
+  v15 = blockCopy;
+  v16 = queueCopy;
+  dispatch_group_notify(notifyCopy, v14, block);
 }
 
 void __48__PLConcurrencyLimiter_groupNotify_queue_block___block_invoke(uint64_t a1)
@@ -545,28 +545,28 @@ void __48__PLConcurrencyLimiter_groupNotify_queue_block___block_invoke(uint64_t 
   [*(a1 + 40) reportBlockDequeuedOnQueue:*(a1 + 48) executionTimeNS:v8];
 }
 
-- (void)dispatchAfterTime:(unint64_t)a3 library:(id)a4 block:(id)a5
+- (void)dispatchAfterTime:(unint64_t)time library:(id)library block:(id)block
 {
-  v8 = a5;
-  v9 = a4;
+  blockCopy = block;
+  libraryCopy = library;
   v10 = qos_class_self();
-  v11 = [v9 options];
-  v12 = -[PLConcurrencyLimiter _nextQueueForQoS:libraryRole:](self, "_nextQueueForQoS:libraryRole:", v10, [v11 libraryRole]);
+  options = [libraryCopy options];
+  v12 = -[PLConcurrencyLimiter _nextQueueForQoS:libraryRole:](self, "_nextQueueForQoS:libraryRole:", v10, [options libraryRole]);
 
   v13 = [(PLConcurrencyLimiter *)self _callOutForQoS:v10 fromQueue:v12];
-  [objc_opt_class() reportBlockEnqueued:v8 isNotifyBlock:0 onQueue:v12 forLibrary:v9];
+  [objc_opt_class() reportBlockEnqueued:blockCopy isNotifyBlock:0 onQueue:v12 forLibrary:libraryCopy];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __56__PLConcurrencyLimiter_dispatchAfterTime_library_block___block_invoke;
   v16[3] = &unk_1E7576078;
-  v18 = v8;
+  v18 = blockCopy;
   v19 = v13;
   v16[4] = self;
   v17 = v12;
   v14 = v12;
-  v15 = v8;
-  dispatch_after(a3, v14, v16);
+  v15 = blockCopy;
+  dispatch_after(time, v14, v16);
 }
 
 uint64_t __56__PLConcurrencyLimiter_dispatchAfterTime_library_block___block_invoke(uint64_t a1)
@@ -593,39 +593,39 @@ uint64_t __56__PLConcurrencyLimiter_dispatchAfterTime_library_block___block_invo
   return [v5 reportBlockDequeuedOnQueue:v6 executionTimeNS:v4];
 }
 
-- (void)dispatchAsync:(id)a3 block:(id)a4
+- (void)dispatchAsync:(id)async block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  asyncCopy = async;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44__PLConcurrencyLimiter_dispatchAsync_block___block_invoke;
   v10[3] = &unk_1E7577C08;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = asyncCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = asyncCopy;
   [(PLConcurrencyLimiter *)self _async:v10 identifyingBlock:0 libraryRole:0 libraryForTelemetry:0];
 }
 
-- (void)asyncPerformOnContext:(id)a3 identifyingBlock:(id)a4 block:(id)a5
+- (void)asyncPerformOnContext:(id)context identifyingBlock:(id)block block:(id)a5
 {
-  v8 = a3;
+  contextCopy = context;
   v9 = a5;
   v14 = MEMORY[0x1E69E9820];
-  v15 = v8;
+  v15 = contextCopy;
   v16 = v9;
   v10 = v9;
-  v11 = v8;
-  v12 = a4;
-  v13 = [v11 photoLibrary];
-  -[PLConcurrencyLimiter _async:identifyingBlock:libraryRole:libraryForTelemetry:](self, "_async:identifyingBlock:libraryRole:libraryForTelemetry:", &v14, v12, [v13 role], 0);
+  v11 = contextCopy;
+  blockCopy = block;
+  photoLibrary = [v11 photoLibrary];
+  -[PLConcurrencyLimiter _async:identifyingBlock:libraryRole:libraryForTelemetry:](self, "_async:identifyingBlock:libraryRole:libraryForTelemetry:", &v14, blockCopy, [photoLibrary role], 0);
 }
 
 - (int64_t)maxConcurrency
 {
-  v2 = [(PLConcurrencyLimiter *)self _queuesTrackingBlocks];
-  v3 = [v2 count];
+  _queuesTrackingBlocks = [(PLConcurrencyLimiter *)self _queuesTrackingBlocks];
+  v3 = [_queuesTrackingBlocks count];
 
   return v3;
 }
@@ -633,15 +633,15 @@ uint64_t __56__PLConcurrencyLimiter_dispatchAfterTime_library_block___block_invo
 - (id)debugDescription
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"PLConcurrencyLimiter: \n"];
-  v4 = [(PLConcurrencyLimiter *)self _queuesTrackingBlocks];
+  _queuesTrackingBlocks = [(PLConcurrencyLimiter *)self _queuesTrackingBlocks];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__PLConcurrencyLimiter_debugDescription__block_invoke;
   v8[3] = &unk_1E7573948;
   v5 = v3;
   v9 = v5;
-  v10 = self;
-  [v4 enumerateObjectsWithOptions:2 usingBlock:v8];
+  selfCopy = self;
+  [_queuesTrackingBlocks enumerateObjectsWithOptions:2 usingBlock:v8];
 
   v6 = v5;
   return v5;
@@ -710,31 +710,31 @@ void __40__PLConcurrencyLimiter_debugDescription__block_invoke(uint64_t a1, void
   return v2;
 }
 
-- (void)_async:(id)a3 identifyingBlock:(id)a4 libraryRole:(unint64_t)a5 libraryForTelemetry:(id)a6
+- (void)_async:(id)_async identifyingBlock:(id)block libraryRole:(unint64_t)role libraryForTelemetry:(id)telemetry
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  _asyncCopy = _async;
+  blockCopy = block;
+  telemetryCopy = telemetry;
   v13 = qos_class_self();
-  v14 = [(PLConcurrencyLimiter *)self _nextQueueForQoS:v13 libraryRole:a5];
-  if (!v11)
+  v14 = [(PLConcurrencyLimiter *)self _nextQueueForQoS:v13 libraryRole:role];
+  if (!blockCopy)
   {
-    v11 = _Block_copy(v10);
+    blockCopy = _Block_copy(_asyncCopy);
   }
 
   v15 = [(PLConcurrencyLimiter *)self _callOutForQoS:v13 fromQueue:v14];
-  [objc_opt_class() reportBlockEnqueued:v11 isNotifyBlock:0 onQueue:v14 forLibrary:v12];
+  [objc_opt_class() reportBlockEnqueued:blockCopy isNotifyBlock:0 onQueue:v14 forLibrary:telemetryCopy];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __80__PLConcurrencyLimiter__async_identifyingBlock_libraryRole_libraryForTelemetry___block_invoke;
   v18[3] = &unk_1E7576078;
-  v20 = v10;
+  v20 = _asyncCopy;
   v21 = v15;
   v18[4] = self;
   v19 = v14;
   v16 = v14;
-  v17 = v10;
+  v17 = _asyncCopy;
   dispatch_async(v16, v18);
 }
 
@@ -762,26 +762,26 @@ uint64_t __80__PLConcurrencyLimiter__async_identifyingBlock_libraryRole_libraryF
   return [v5 reportBlockDequeuedOnQueue:v6 executionTimeNS:v4];
 }
 
-- (void)_sync:(id)a3 identifyingBlock:(id)a4 libraryRole:(unint64_t)a5 libraryForTelemetry:(id)a6
+- (void)_sync:(id)_sync identifyingBlock:(id)block libraryRole:(unint64_t)role libraryForTelemetry:(id)telemetry
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  _syncCopy = _sync;
+  blockCopy = block;
+  telemetryCopy = telemetry;
   v13 = qos_class_self();
   if ([objc_opt_class() isRunningUnderLimiter])
   {
-    [(PLConcurrencyLimiter *)self _syncPerformBlockNotOnAnyQueue:v10];
+    [(PLConcurrencyLimiter *)self _syncPerformBlockNotOnAnyQueue:_syncCopy];
   }
 
   else
   {
-    v14 = [(PLConcurrencyLimiter *)self _nextQueueForQoS:v13 libraryRole:a5];
-    if (!v11)
+    v14 = [(PLConcurrencyLimiter *)self _nextQueueForQoS:v13 libraryRole:role];
+    if (!blockCopy)
     {
-      v11 = _Block_copy(v10);
+      blockCopy = _Block_copy(_syncCopy);
     }
 
-    [objc_opt_class() reportBlockEnqueued:v11 isNotifyBlock:0 onQueue:v14 forLibrary:v12];
+    [objc_opt_class() reportBlockEnqueued:blockCopy isNotifyBlock:0 onQueue:v14 forLibrary:telemetryCopy];
     v15 = [(PLConcurrencyLimiter *)self _callOutForQoS:v13 fromQueue:v14];
     v21 = 0;
     v22 = &v21;
@@ -794,7 +794,7 @@ uint64_t __80__PLConcurrencyLimiter__async_identifyingBlock_libraryRole_libraryF
     v20 = &v21;
     v16 = v14;
     v18 = v16;
-    v19 = v10;
+    v19 = _syncCopy;
     v15(v17);
     [(PLConcurrencyLimiter *)self reportBlockDequeuedOnQueue:v16 executionTimeNS:v22[3]];
 
@@ -839,9 +839,9 @@ uint64_t __79__PLConcurrencyLimiter__sync_identifyingBlock_libraryRole_libraryFo
   return _limiterDepthPop();
 }
 
-- (void)_syncPerformBlockNotOnAnyQueue:(id)a3
+- (void)_syncPerformBlockNotOnAnyQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = [(PLConcurrencyLimiter *)self _callOutForQoS:qos_class_self() fromQueue:0];
   if (_limiterDepthThreadKey_s_onceToken != -1)
   {
@@ -855,7 +855,7 @@ uint64_t __79__PLConcurrencyLimiter__sync_identifyingBlock_libraryRole_libraryFo
   }
 
   pthread_setspecific(_limiterDepthThreadKey_s_key, v6 + 1);
-  v5(v4);
+  v5(queueCopy);
 
   _limiterDepthPop();
 }
@@ -871,13 +871,13 @@ uint64_t __79__PLConcurrencyLimiter__sync_identifyingBlock_libraryRole_libraryFo
   return v2;
 }
 
-- (id)_nextQueueForQoS:(unsigned int)a3 libraryRole:(unint64_t)a4
+- (id)_nextQueueForQoS:(unsigned int)s libraryRole:(unint64_t)role
 {
-  v4 = *&a3;
-  v5 = self;
-  if (a4 > 2)
+  v4 = *&s;
+  selfCopy = self;
+  if (role > 2)
   {
-    if (a4 - 3 >= 2)
+    if (role - 3 >= 2)
     {
       goto LABEL_13;
     }
@@ -885,18 +885,18 @@ uint64_t __79__PLConcurrencyLimiter__sync_identifyingBlock_libraryRole_libraryFo
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!role)
   {
     goto LABEL_8;
   }
 
-  if (a4 == 1)
+  if (role == 1)
   {
     v6 = 32;
     goto LABEL_12;
   }
 
-  if (a4 != 2)
+  if (role != 2)
   {
     goto LABEL_13;
   }
@@ -909,7 +909,7 @@ LABEL_8:
     v7 = v8 >> 3;
     if (v7 >= 4)
     {
-      [(PLConcurrencyLimiter *)v5 _handleUnexpectedQoSClass:v4];
+      [(PLConcurrencyLimiter *)selfCopy _handleUnexpectedQoSClass:v4];
       v6 = 16;
     }
 
@@ -923,16 +923,16 @@ LABEL_8:
 
   v6 = 24;
 LABEL_12:
-  self = *(&v5->super.isa + v6);
+  self = *(&selfCopy->super.isa + v6);
 LABEL_13:
 
   return self;
 }
 
-- (void)_callOutForQoS:(unsigned int)a3 fromQueue:(id)a4
+- (void)_callOutForQoS:(unsigned int)s fromQueue:(id)queue
 {
-  v6 = a4;
-  if (self->_highQOSAssetIngestQueue == v6 && (v7 = qos_class_self(), v8 = __PLQUEUE_DISPATCH_IS_CALLING_OUT_TO_HIGH_QOS_INGEST_BLOCK__, v7 == QOS_CLASS_USER_INITIATED) || (v8 = __PLQUEUE_DISPATCH_IS_CALLING_OUT_TO_MOMENTS_BLOCK__, self->_exclusiveMomentsQueue == v6) || (HIDWORD(v10) = a3 - 9, LODWORD(v10) = a3 - 9, v9 = v10 >> 2, v8 = __PLQUEUE_DISPATCH_IS_CALLING_OUT_TO_UN_BLOCK__, v9 > 6))
+  queueCopy = queue;
+  if (self->_highQOSAssetIngestQueue == queueCopy && (v7 = qos_class_self(), v8 = __PLQUEUE_DISPATCH_IS_CALLING_OUT_TO_HIGH_QOS_INGEST_BLOCK__, v7 == QOS_CLASS_USER_INITIATED) || (v8 = __PLQUEUE_DISPATCH_IS_CALLING_OUT_TO_MOMENTS_BLOCK__, self->_exclusiveMomentsQueue == queueCopy) || (HIDWORD(v10) = s - 9, LODWORD(v10) = s - 9, v9 = v10 >> 2, v8 = __PLQUEUE_DISPATCH_IS_CALLING_OUT_TO_UN_BLOCK__, v9 > 6))
   {
     v11 = v8;
   }

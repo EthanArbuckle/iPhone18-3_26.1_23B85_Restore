@@ -1,93 +1,93 @@
 @interface WFLinkCodableValueContentItem
-+ (id)_localizedTypeDescriptionWithContext:(id)a3 pluralizationNumber:(int64_t)a4;
++ (id)_localizedTypeDescriptionWithContext:(id)context pluralizationNumber:(int64_t)number;
 + (id)coercions;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (LNCodableValue)codableValue;
-- (WFLinkCodableValueContentItem)initWithCoder:(id)a3;
+- (WFLinkCodableValueContentItem)initWithCoder:(id)coder;
 - (id)name;
-- (void)copyStateToItem:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)copyStateToItem:(id)item;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFLinkCodableValueContentItem
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  v5 = a3;
-  v6 = [(WFLinkCodableValueContentItem *)self displayRepresentation];
-  v7 = [v6 image];
-  v8 = [v7 wf_image];
+  thumbnailCopy = thumbnail;
+  displayRepresentation = [(WFLinkCodableValueContentItem *)self displayRepresentation];
+  image = [displayRepresentation image];
+  wf_image = [image wf_image];
 
-  if (v5 && v8)
+  if (thumbnailCopy && wf_image)
   {
-    v5[2](v5, v8, 0);
+    thumbnailCopy[2](thumbnailCopy, wf_image, 0);
   }
 
-  return v8 != 0;
+  return wf_image != 0;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WFLinkCodableValueContentItem *)self displayRepresentation];
-  v6 = [v5 subtitle];
-  v7 = [v6 wf_localizedString];
+  subtitleCopy = subtitle;
+  displayRepresentation = [(WFLinkCodableValueContentItem *)self displayRepresentation];
+  subtitle = [displayRepresentation subtitle];
+  wf_localizedString = [subtitle wf_localizedString];
 
-  if (v4 && v7)
+  if (subtitleCopy && wf_localizedString)
   {
-    v4[2](v4, v7);
+    subtitleCopy[2](subtitleCopy, wf_localizedString);
   }
 
-  return v7 != 0;
+  return wf_localizedString != 0;
 }
 
 - (id)name
 {
-  v2 = [(WFLinkCodableValueContentItem *)self displayRepresentation];
-  v3 = [v2 title];
-  v4 = [v3 wf_localizedString];
-  v5 = v4;
-  if (v4)
+  displayRepresentation = [(WFLinkCodableValueContentItem *)self displayRepresentation];
+  title = [displayRepresentation title];
+  wf_localizedString = [title wf_localizedString];
+  v5 = wf_localizedString;
+  if (wf_localizedString)
   {
-    v6 = v4;
+    localizedTypeDescription = wf_localizedString;
   }
 
   else
   {
-    v6 = [objc_opt_class() localizedTypeDescription];
+    localizedTypeDescription = [objc_opt_class() localizedTypeDescription];
   }
 
-  v7 = v6;
+  v7 = localizedTypeDescription;
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFLinkCodableValueContentItem *)self codableValue];
-  [v4 encodeObject:v5 forKey:@"codableValue"];
+  coderCopy = coder;
+  codableValue = [(WFLinkCodableValueContentItem *)self codableValue];
+  [coderCopy encodeObject:codableValue forKey:@"codableValue"];
 
-  v6 = [(WFLinkCodableValueContentItem *)self displayRepresentation];
-  [v4 encodeObject:v6 forKey:@"displayRepresentation"];
+  displayRepresentation = [(WFLinkCodableValueContentItem *)self displayRepresentation];
+  [coderCopy encodeObject:displayRepresentation forKey:@"displayRepresentation"];
 
-  v7 = [objc_opt_class() valueType];
-  [v4 encodeObject:v7 forKey:@"valueType"];
+  valueType = [objc_opt_class() valueType];
+  [coderCopy encodeObject:valueType forKey:@"valueType"];
 }
 
-- (WFLinkCodableValueContentItem)initWithCoder:(id)a3
+- (WFLinkCodableValueContentItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = WFLinkCodableValueContentItem;
   v5 = [(WFLinkCodableValueContentItem *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"valueType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"valueType"];
     if (v6)
     {
       objc_opt_class();
@@ -108,11 +108,11 @@
     }
 
     v9 = v7;
-    v10 = [v9 wf_contentItemClass];
+    wf_contentItemClass = [v9 wf_contentItemClass];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codableValue"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayRepresentation"];
-    v8 = [v10 itemWithObject:v11];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codableValue"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayRepresentation"];
+    v8 = [wf_contentItemClass itemWithObject:v11];
     [(WFLinkCodableValueContentItem *)v8 setDisplayRepresentation:v12];
   }
 
@@ -124,32 +124,32 @@
   return v8;
 }
 
-- (void)copyStateToItem:(id)a3
+- (void)copyStateToItem:(id)item
 {
-  objc_storeStrong(a3 + 6, self->_displayRepresentation);
-  v5 = a3;
-  objc_storeStrong(v5 + 7, self->_codableValueType);
+  objc_storeStrong(item + 6, self->_displayRepresentation);
+  itemCopy = item;
+  objc_storeStrong(itemCopy + 7, self->_codableValueType);
 }
 
 - (LNCodableValue)codableValue
 {
-  v3 = [objc_opt_class() valueType];
-  v4 = -[WFLinkCodableValueContentItem objectForClass:](self, "objectForClass:", [v3 wf_objectClass]);
+  valueType = [objc_opt_class() valueType];
+  v4 = -[WFLinkCodableValueContentItem objectForClass:](self, "objectForClass:", [valueType wf_objectClass]);
 
   return v4;
 }
 
 + (id)coercions
 {
-  v2 = [a1 valueType];
-  v3 = [v2 coercions];
+  valueType = [self valueType];
+  coercions = [valueType coercions];
 
-  return v3;
+  return coercions;
 }
 
 + (id)outputTypes
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___WFLinkCodableValueContentItem;
   v2 = objc_msgSendSuper2(&v6, sel_outputTypes);
   v3 = [v2 mutableCopy];
@@ -160,19 +160,19 @@
   return v3;
 }
 
-+ (id)_localizedTypeDescriptionWithContext:(id)a3 pluralizationNumber:(int64_t)a4
++ (id)_localizedTypeDescriptionWithContext:(id)context pluralizationNumber:(int64_t)number
 {
-  v6 = a3;
-  v7 = [a1 valueType];
-  v8 = [v7 wf_displayRepresentation];
+  contextCopy = context;
+  valueType = [self valueType];
+  wf_displayRepresentation = [valueType wf_displayRepresentation];
 
-  v9 = [v8 name];
-  v10 = [v9 localizedStringResource];
+  name = [wf_displayRepresentation name];
+  localizedStringResource = [name localizedStringResource];
 
-  if (v10)
+  if (localizedStringResource)
   {
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    v12 = [v6 localize:v10 pluralizationNumber:v11];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:number];
+    v12 = [contextCopy localize:localizedStringResource pluralizationNumber:v11];
 
     if ([(__CFString *)v12 length])
     {
@@ -190,8 +190,8 @@ LABEL_5:
 {
   v2 = MEMORY[0x1E695DFB8];
   v3 = MEMORY[0x1E6996ED0];
-  v4 = [objc_opt_class() valueType];
-  v5 = [v3 typeWithClass:{objc_msgSend(v4, "wf_objectClass")}];
+  valueType = [objc_opt_class() valueType];
+  v5 = [v3 typeWithClass:{objc_msgSend(valueType, "wf_objectClass")}];
   v6 = [v2 orderedSetWithObject:v5];
 
   return v6;
@@ -199,10 +199,10 @@ LABEL_5:
 
 + (id)propertyBuilders
 {
-  v2 = [a1 valueType];
-  v3 = [v2 propertyBuilders];
+  valueType = [self valueType];
+  propertyBuilders = [valueType propertyBuilders];
 
-  return v3;
+  return propertyBuilders;
 }
 
 @end

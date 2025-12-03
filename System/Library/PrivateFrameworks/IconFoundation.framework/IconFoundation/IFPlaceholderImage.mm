@@ -2,21 +2,21 @@
 - (CGSize)iconSize;
 - (CGSize)minimumSize;
 - (CGSize)size;
-- (IFPlaceholderImage)initWithImage:(id)a3;
+- (IFPlaceholderImage)initWithImage:(id)image;
 @end
 
 @implementation IFPlaceholderImage
 
-- (IFPlaceholderImage)initWithImage:(id)a3
+- (IFPlaceholderImage)initWithImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v9.receiver = self;
   v9.super_class = IFPlaceholderImage;
-  v6 = [(IFImage *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(IFImage *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 6, a3);
+    objc_storeStrong(_init + 6, image);
   }
 
   return v7;

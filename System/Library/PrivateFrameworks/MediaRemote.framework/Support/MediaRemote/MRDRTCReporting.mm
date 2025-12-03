@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (MRDRTCReporting)init;
 - (OS_dispatch_queue)rtcQueue;
-- (void)reportRoutePickerInteractionWithDuration:(double)a3 success:(BOOL)a4;
-- (void)sendMessage:(id)a3;
+- (void)reportRoutePickerInteractionWithDuration:(double)duration success:(BOOL)success;
+- (void)sendMessage:(id)message;
 - (void)startConfiguration;
 @end
 
@@ -56,37 +56,37 @@
 
 - (void)startConfiguration
 {
-  v3 = [(MRDRTCReporting *)self rtcQueue];
+  rtcQueue = [(MRDRTCReporting *)self rtcQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A09D0;
   block[3] = &unk_1004B6D08;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(rtcQueue, block);
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(MRDRTCReporting *)self rtcQueue];
+  messageCopy = message;
+  rtcQueue = [(MRDRTCReporting *)self rtcQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001A0F94;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = messageCopy;
+  v6 = messageCopy;
+  dispatch_async(rtcQueue, v7);
 }
 
-- (void)reportRoutePickerInteractionWithDuration:(double)a3 success:(BOOL)a4
+- (void)reportRoutePickerInteractionWithDuration:(double)duration success:(BOOL)success
 {
-  v4 = a4;
+  successCopy = success;
   v7 = [[NSMutableDictionary alloc] initWithCapacity:2];
-  v8 = [NSNumber numberWithLongLong:llround(a3 * 1000.0)];
+  v8 = [NSNumber numberWithLongLong:llround(duration * 1000.0)];
   [v7 setObject:v8 forKeyedSubscript:@"MRTotalRequestTime"];
 
-  v9 = [NSNumber numberWithInt:!v4];
+  v9 = [NSNumber numberWithInt:!successCopy];
   [v7 setObject:v9 forKeyedSubscript:@"MXErrorStatus"];
 
   v11[0] = kRTCReportingMessageParametersCategory;

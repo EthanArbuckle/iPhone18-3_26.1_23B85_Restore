@@ -1,9 +1,9 @@
 @interface CTCellularPlanProvisioningRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTCellularPlanProvisioningRequest)init;
-- (CTCellularPlanProvisioningRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CTCellularPlanProvisioningRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCellularPlanProvisioningRequest
@@ -38,38 +38,38 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
 
-  else if ([(CTCellularPlanProvisioningRequest *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(CTCellularPlanProvisioningRequest *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     address = self->_address;
-    v6 = [(CTCellularPlanProvisioningRequest *)v4 address];
-    if (IsEqualString(address, v6))
+    address = [(CTCellularPlanProvisioningRequest *)equalCopy address];
+    if (IsEqualString(address, address))
     {
       matchingID = self->_matchingID;
-      v8 = [(CTCellularPlanProvisioningRequest *)v4 matchingID];
-      if (IsEqualString(matchingID, v8))
+      matchingID = [(CTCellularPlanProvisioningRequest *)equalCopy matchingID];
+      if (IsEqualString(matchingID, matchingID))
       {
         OID = self->_OID;
-        v10 = [(CTCellularPlanProvisioningRequest *)v4 OID];
+        v10 = [(CTCellularPlanProvisioningRequest *)equalCopy OID];
         if (IsEqualString(OID, v10))
         {
           confirmationCode = self->_confirmationCode;
-          v12 = [(CTCellularPlanProvisioningRequest *)v4 confirmationCode];
-          if (IsEqualString(confirmationCode, v12))
+          confirmationCode = [(CTCellularPlanProvisioningRequest *)equalCopy confirmationCode];
+          if (IsEqualString(confirmationCode, confirmationCode))
           {
             ICCID = self->_ICCID;
-            v14 = [(CTCellularPlanProvisioningRequest *)v4 ICCID];
-            if (IsEqualString(ICCID, v14))
+            iCCID = [(CTCellularPlanProvisioningRequest *)equalCopy ICCID];
+            if (IsEqualString(ICCID, iCCID))
             {
               EID = self->_EID;
-              v16 = [(CTCellularPlanProvisioningRequest *)v4 EID];
+              v16 = [(CTCellularPlanProvisioningRequest *)equalCopy EID];
               v17 = IsEqualString(EID, v16);
             }
 
@@ -111,71 +111,71 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_address copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_address copyWithZone:zone];
   [v5 setAddress:v6];
 
-  v7 = [(NSString *)self->_matchingID copyWithZone:a3];
+  v7 = [(NSString *)self->_matchingID copyWithZone:zone];
   [v5 setMatchingID:v7];
 
-  v8 = [(NSString *)self->_OID copyWithZone:a3];
+  v8 = [(NSString *)self->_OID copyWithZone:zone];
   [v5 setOID:v8];
 
-  v9 = [(NSString *)self->_confirmationCode copyWithZone:a3];
+  v9 = [(NSString *)self->_confirmationCode copyWithZone:zone];
   [v5 setConfirmationCode:v9];
 
-  v10 = [(NSString *)self->_ICCID copyWithZone:a3];
+  v10 = [(NSString *)self->_ICCID copyWithZone:zone];
   [v5 setICCID:v10];
 
-  v11 = [(NSString *)self->_EID copyWithZone:a3];
+  v11 = [(NSString *)self->_EID copyWithZone:zone];
   [v5 setEID:v11];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   address = self->_address;
-  v5 = a3;
-  [v5 encodeObject:address forKey:@"address"];
-  [v5 encodeObject:self->_matchingID forKey:@"matchingID"];
-  [v5 encodeObject:self->_OID forKey:@"OID"];
-  [v5 encodeObject:self->_confirmationCode forKey:@"confirmationCode"];
-  [v5 encodeObject:self->_ICCID forKey:@"ICCID"];
-  [v5 encodeObject:self->_EID forKey:@"EID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:address forKey:@"address"];
+  [coderCopy encodeObject:self->_matchingID forKey:@"matchingID"];
+  [coderCopy encodeObject:self->_OID forKey:@"OID"];
+  [coderCopy encodeObject:self->_confirmationCode forKey:@"confirmationCode"];
+  [coderCopy encodeObject:self->_ICCID forKey:@"ICCID"];
+  [coderCopy encodeObject:self->_EID forKey:@"EID"];
 }
 
-- (CTCellularPlanProvisioningRequest)initWithCoder:(id)a3
+- (CTCellularPlanProvisioningRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CTCellularPlanProvisioningRequest;
   v5 = [(CTCellularPlanProvisioningRequest *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"address"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"address"];
     address = v5->_address;
     v5->_address = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchingID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchingID"];
     matchingID = v5->_matchingID;
     v5->_matchingID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OID"];
     OID = v5->_OID;
     v5->_OID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"confirmationCode"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"confirmationCode"];
     confirmationCode = v5->_confirmationCode;
     v5->_confirmationCode = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ICCID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ICCID"];
     ICCID = v5->_ICCID;
     v5->_ICCID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EID"];
     EID = v5->_EID;
     v5->_EID = v16;
   }

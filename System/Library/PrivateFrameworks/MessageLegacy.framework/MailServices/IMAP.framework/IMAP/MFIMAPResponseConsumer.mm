@@ -1,6 +1,6 @@
 @interface MFIMAPResponseConsumer
-- (void)addConsumer:(id)a3 forSection:(id)a4;
-- (void)appendData:(id)a3 forSection:(id)a4;
+- (void)addConsumer:(id)consumer forSection:(id)section;
+- (void)appendData:(id)data forSection:(id)section;
 - (void)dealloc;
 - (void)done;
 @end
@@ -14,16 +14,16 @@
   [(MFIMAPResponseConsumer *)&v3 dealloc];
 }
 
-- (void)addConsumer:(id)a3 forSection:(id)a4
+- (void)addConsumer:(id)consumer forSection:(id)section
 {
-  if (a4)
+  if (section)
   {
-    v6 = a4;
+    sectionCopy = section;
   }
 
   else
   {
-    v6 = @"<null>";
+    sectionCopy = @"<null>";
   }
 
   consumersBySection = self->_consumersBySection;
@@ -33,46 +33,46 @@
     self->_consumersBySection = consumersBySection;
   }
 
-  if ([(NSMutableDictionary *)consumersBySection objectForKey:v6])
+  if ([(NSMutableDictionary *)consumersBySection objectForKey:sectionCopy])
   {
     [MFIMAPResponseConsumer addConsumer:forSection:];
   }
 
   v8 = self->_consumersBySection;
 
-  [(NSMutableDictionary *)v8 setObject:a3 forKey:v6];
+  [(NSMutableDictionary *)v8 setObject:consumer forKey:sectionCopy];
 }
 
-- (void)appendData:(id)a3 forSection:(id)a4
+- (void)appendData:(id)data forSection:(id)section
 {
-  if (a4)
+  if (section)
   {
-    v5 = a4;
+    sectionCopy = section;
   }
 
   else
   {
-    v5 = @"<null>";
+    sectionCopy = @"<null>";
   }
 
-  v6 = [(NSMutableDictionary *)self->_consumersBySection objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_consumersBySection objectForKey:sectionCopy];
   if (!v6)
   {
     v7 = MFLogGeneral();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [MFIMAPResponseConsumer appendData:v5 forSection:v7];
+      [MFIMAPResponseConsumer appendData:sectionCopy forSection:v7];
     }
   }
 
-  [v6 appendData:a3];
+  [v6 appendData:data];
 }
 
 - (void)done
 {
-  v2 = [(NSMutableDictionary *)self->_consumersBySection allValues];
+  allValues = [(NSMutableDictionary *)self->_consumersBySection allValues];
 
-  [v2 makeObjectsPerformSelector:sel_done];
+  [allValues makeObjectsPerformSelector:sel_done];
 }
 
 - (void)appendData:(uint64_t)a1 forSection:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

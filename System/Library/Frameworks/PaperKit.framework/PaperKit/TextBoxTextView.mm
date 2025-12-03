@@ -1,16 +1,16 @@
 @interface TextBoxTextView
 - (NSArray)keyCommands;
 - (NSUndoManager)undoManager;
-- (_TtC8PaperKit15TextBoxTextView)initWithCoder:(id)a3;
-- (_TtC8PaperKit15TextBoxTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (void)autoFillDidInsertWithExplicitInvocationMode:(BOOL)a3;
-- (void)insertText:(id)a3;
-- (void)insertTextSuggestion:(id)a3;
+- (_TtC8PaperKit15TextBoxTextView)initWithCoder:(id)coder;
+- (_TtC8PaperKit15TextBoxTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (void)autoFillDidInsertWithExplicitInvocationMode:(BOOL)mode;
+- (void)insertText:(id)text;
+- (void)insertTextSuggestion:(id)suggestion;
 @end
 
 @implementation TextBoxTextView
 
-- (_TtC8PaperKit15TextBoxTextView)initWithCoder:(id)a3
+- (_TtC8PaperKit15TextBoxTextView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = self + OBJC_IVAR____TtC8PaperKit15TextBoxTextView_formAutofillDelegate;
@@ -24,48 +24,48 @@
 
 - (NSUndoManager)undoManager
 {
-  v2 = self;
-  v3 = [(TextBoxTextView *)v2 nextResponder];
-  if (v3 && (v4 = v3, type metadata accessor for PKMathRecognitionItemAttributes(0, &lazy cache variable for type metadata for UIResponder), v5 = v2, v6 = static NSObject.== infix(_:_:)(), v4, v5, (v6 & 1) != 0))
+  selfCopy = self;
+  nextResponder = [(TextBoxTextView *)selfCopy nextResponder];
+  if (nextResponder && (v4 = nextResponder, type metadata accessor for PKMathRecognitionItemAttributes(0, &lazy cache variable for type metadata for UIResponder), nextResponder2 = selfCopy, v6 = static NSObject.== infix(_:_:)(), v4, nextResponder2, (v6 & 1) != 0))
   {
-    v7 = 0;
+    undoManager = 0;
   }
 
   else
   {
-    v5 = [(TextBoxTextView *)v2 nextResponder];
-    v7 = [(TextBoxTextView *)v5 undoManager];
+    nextResponder2 = [(TextBoxTextView *)selfCopy nextResponder];
+    undoManager = [(TextBoxTextView *)nextResponder2 undoManager];
   }
 
-  return v7;
+  return undoManager;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   TextBoxTextView.insertText(_:)(v8);
 }
 
-- (void)insertTextSuggestion:(id)a3
+- (void)insertTextSuggestion:(id)suggestion
 {
-  v5 = a3;
-  v6 = self;
-  TextBoxTextView.insert(_:)(a3);
+  suggestionCopy = suggestion;
+  selfCopy = self;
+  TextBoxTextView.insert(_:)(suggestion);
 }
 
-- (void)autoFillDidInsertWithExplicitInvocationMode:(BOOL)a3
+- (void)autoFillDidInsertWithExplicitInvocationMode:(BOOL)mode
 {
-  v4 = self;
-  TextBoxTextView.autoFillDidInsert(withExplicitInvocationMode:)(a3);
+  selfCopy = self;
+  TextBoxTextView.autoFillDidInsert(withExplicitInvocationMode:)(mode);
 }
 
 - (NSArray)keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TextBoxTextView.keyCommands.getter();
 
   if (v3)
@@ -82,7 +82,7 @@
   return v4.super.isa;
 }
 
-- (_TtC8PaperKit15TextBoxTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC8PaperKit15TextBoxTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

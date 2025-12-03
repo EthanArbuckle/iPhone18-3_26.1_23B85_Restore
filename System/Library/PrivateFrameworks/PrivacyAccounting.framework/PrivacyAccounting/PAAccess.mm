@@ -1,31 +1,31 @@
 @interface PAAccess
 + (NSArray)allAccessClasses;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BOOL)isEqualToAccess:(id)a3 withOptions:(unint64_t)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BOOL)isEqualToAccess:(id)access withOptions:(unint64_t)options;
 - (BOOL)supportsSameMinuteAccessCountLogging;
 - (NSString)description;
 - (NSString)descriptionForCategory;
-- (PAAccess)initWithAccessor:(id)a3 assetIdentifiers:(id)a4;
-- (PAAccess)initWithAccessor:(id)a3 identifier:(id)a4 kind:(int64_t)a5 assetIdentifiers:(id)a6 visibilityState:(int64_t)a7 accessEventCount:(unint64_t)a8 accessCount:(unint64_t)a9;
-- (PAAccess)initWithCoder:(id)a3;
-- (PAAccess)initWithProto:(id)a3;
-- (PAAccess)initWithProtoData:(id)a3;
+- (PAAccess)initWithAccessor:(id)accessor assetIdentifiers:(id)identifiers;
+- (PAAccess)initWithAccessor:(id)accessor identifier:(id)identifier kind:(int64_t)kind assetIdentifiers:(id)identifiers visibilityState:(int64_t)state accessEventCount:(unint64_t)count accessCount:(unint64_t)accessCount;
+- (PAAccess)initWithCoder:(id)coder;
+- (PAAccess)initWithProto:(id)proto;
+- (PAAccess)initWithProtoData:(id)data;
 - (id)JSONObject;
 - (id)asIntervalBeginEvent;
-- (id)asIntervalEndEventWithTimestampAdjustment:(double)a3;
-- (id)asIntervalEventWithAssetIdentifiers:(id)a3 visibilityState:(int64_t)a4 accessEventCount:(unint64_t)a5;
-- (id)copyWithNewAccessor:(id)a3;
-- (id)copyWithNewAssetIdentifiers:(id)a3;
-- (id)copyWithNewIdentifier:(id)a3;
-- (id)copyWithNewKind:(int64_t)a3;
-- (id)copyWithNewTimestampAdjustment:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)asIntervalEndEventWithTimestampAdjustment:(double)adjustment;
+- (id)asIntervalEventWithAssetIdentifiers:(id)identifiers visibilityState:(int64_t)state accessEventCount:(unint64_t)count;
+- (id)copyWithNewAccessor:(id)accessor;
+- (id)copyWithNewAssetIdentifiers:(id)identifiers;
+- (id)copyWithNewIdentifier:(id)identifier;
+- (id)copyWithNewKind:(int64_t)kind;
+- (id)copyWithNewTimestampAdjustment:(double)adjustment;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionForKind;
 - (id)encodeAsProto;
 - (id)json;
 - (id)proto;
-- (unint64_t)hashWithOptions:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)hashWithOptions:(unint64_t)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PAAccess
@@ -47,17 +47,17 @@
   v12[0] = @"access";
   v11[0] = @"type";
   v11[1] = @"accessor";
-  v3 = [(PAApplication *)self->_accessor JSONObject];
-  v12[1] = v3;
+  jSONObject = [(PAApplication *)self->_accessor JSONObject];
+  v12[1] = jSONObject;
   v11[2] = @"category";
-  v4 = [(PAAccess *)self descriptionForCategory];
-  v12[2] = v4;
+  descriptionForCategory = [(PAAccess *)self descriptionForCategory];
+  v12[2] = descriptionForCategory;
   v11[3] = @"identifier";
-  v5 = [(NSUUID *)self->_identifier UUIDString];
-  v12[3] = v5;
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
+  v12[3] = uUIDString;
   v11[4] = @"kind";
-  v6 = [(PAAccess *)self descriptionForKind];
-  v12[4] = v6;
+  descriptionForKind = [(PAAccess *)self descriptionForKind];
+  v12[4] = descriptionForKind;
   v11[5] = @"accessCount";
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PAAccess accessCount](self, "accessCount")}];
   v12[5] = v7;
@@ -88,9 +88,9 @@
   v4 = objc_opt_class();
   accessor = self->_accessor;
   identifier = self->_identifier;
-  v7 = [(PAAccess *)self descriptionForKind];
+  descriptionForKind = [(PAAccess *)self descriptionForKind];
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestampAdjustment];
-  v9 = [v3 stringWithFormat:@"<%@ %p> accessor:<%@> identifier:%@ kind:%@ timestampAdjustment:%@ visibilityState:%lu assetIdentifierCount:%lu accessCount:%lu", v4, self, accessor, identifier, v7, v8, self->_visibilityState, -[NSSet count](self->_assetIdentifiers, "count"), self->_accessCount];
+  v9 = [v3 stringWithFormat:@"<%@ %p> accessor:<%@> identifier:%@ kind:%@ timestampAdjustment:%@ visibilityState:%lu assetIdentifierCount:%lu accessCount:%lu", v4, self, accessor, identifier, descriptionForKind, v8, self->_visibilityState, -[NSSet count](self->_assetIdentifiers, "count"), self->_accessCount];
 
   return v9;
 }
@@ -109,34 +109,34 @@
   return v2;
 }
 
-- (PAAccess)initWithAccessor:(id)a3 assetIdentifiers:(id)a4
+- (PAAccess)initWithAccessor:(id)accessor assetIdentifiers:(id)identifiers
 {
   v6 = MEMORY[0x1E696AFB0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 UUID];
-  v10 = [(PAAccess *)self initWithAccessor:v8 identifier:v9 kind:1 assetIdentifiers:v7 visibilityState:0 accessEventCount:0 accessCount:0];
+  identifiersCopy = identifiers;
+  accessorCopy = accessor;
+  uUID = [v6 UUID];
+  v10 = [(PAAccess *)self initWithAccessor:accessorCopy identifier:uUID kind:1 assetIdentifiers:identifiersCopy visibilityState:0 accessEventCount:0 accessCount:0];
 
   return v10;
 }
 
-- (PAAccess)initWithAccessor:(id)a3 identifier:(id)a4 kind:(int64_t)a5 assetIdentifiers:(id)a6 visibilityState:(int64_t)a7 accessEventCount:(unint64_t)a8 accessCount:(unint64_t)a9
+- (PAAccess)initWithAccessor:(id)accessor identifier:(id)identifier kind:(int64_t)kind assetIdentifiers:(id)identifiers visibilityState:(int64_t)state accessEventCount:(unint64_t)count accessCount:(unint64_t)accessCount
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
+  accessorCopy = accessor;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   v26.receiver = self;
   v26.super_class = PAAccess;
   v19 = [(PAAccess *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_accessor, a3);
-    objc_storeStrong(&v20->_identifier, a4);
-    v20->_kind = a5;
+    objc_storeStrong(&v19->_accessor, accessor);
+    objc_storeStrong(&v20->_identifier, identifier);
+    v20->_kind = kind;
     v20->_timestampAdjustment = 0.0;
-    v20->_visibilityState = a7;
-    v21 = [v18 copy];
+    v20->_visibilityState = state;
+    v21 = [identifiersCopy copy];
     v22 = v21;
     if (v21)
     {
@@ -151,14 +151,14 @@
     assetIdentifiers = v20->_assetIdentifiers;
     v20->_assetIdentifiers = v23;
 
-    v20->_accessCount = a9;
-    v20->_eventCount = a8;
+    v20->_accessCount = accessCount;
+    v20->_eventCount = count;
   }
 
   return v20;
 }
 
-- (id)asIntervalEndEventWithTimestampAdjustment:(double)a3
+- (id)asIntervalEndEventWithTimestampAdjustment:(double)adjustment
 {
   v4 = [(PAAccess *)self copy];
   *(v4 + 32) = 3;
@@ -166,17 +166,17 @@
   v6 = *(v4 + 40);
   *(v4 + 40) = v5;
 
-  *(v4 + 48) = a3;
+  *(v4 + 48) = adjustment;
 
   return v4;
 }
 
-- (id)asIntervalEventWithAssetIdentifiers:(id)a3 visibilityState:(int64_t)a4 accessEventCount:(unint64_t)a5
+- (id)asIntervalEventWithAssetIdentifiers:(id)identifiers visibilityState:(int64_t)state accessEventCount:(unint64_t)count
 {
-  v8 = a3;
+  identifiersCopy = identifiers;
   v9 = [(PAAccess *)self copy];
   v9[4] = 4;
-  v10 = [v8 copy];
+  v10 = [identifiersCopy copy];
 
   if (v10)
   {
@@ -191,43 +191,43 @@
   v12 = v9[5];
   v9[5] = v11;
 
-  v9[1] = a4;
-  v9[8] = a5;
+  v9[1] = state;
+  v9[8] = count;
 
   return v9;
 }
 
-- (id)copyWithNewIdentifier:(id)a3
+- (id)copyWithNewIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(PAAccess *)self copy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong((v6 + 24), a3);
+    objc_storeStrong((v6 + 24), identifier);
   }
 
   return v7;
 }
 
-- (id)copyWithNewKind:(int64_t)a3
+- (id)copyWithNewKind:(int64_t)kind
 {
   result = [(PAAccess *)self copy];
   if (result)
   {
-    *(result + 4) = a3;
+    *(result + 4) = kind;
   }
 
   return result;
 }
 
-- (id)copyWithNewAssetIdentifiers:(id)a3
+- (id)copyWithNewAssetIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [(PAAccess *)self copy];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifiersCopy copy];
     v7 = v6;
     if (v6)
     {
@@ -254,19 +254,19 @@
     return 0;
   }
 
-  v3 = [(PAAccess *)self category];
-  v4 = [v3 isEqual:@"contacts"];
+  category = [(PAAccess *)self category];
+  v4 = [category isEqual:@"contacts"];
 
   return v4;
 }
 
 - (NSString)descriptionForCategory
 {
-  v2 = [(PAAccess *)self category];
-  v3 = v2;
-  if (v2)
+  category = [(PAAccess *)self category];
+  v3 = category;
+  if (category)
   {
-    v4 = v2;
+    v4 = category;
   }
 
   else
@@ -279,13 +279,13 @@
   return &v4->isa;
 }
 
-- (unint64_t)hashWithOptions:(unint64_t)a3
+- (unint64_t)hashWithOptions:(unint64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v5 = [(PAApplication *)self->_accessor hash];
-  if (v3)
+  if (optionsCopy)
   {
-    if ((v3 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       goto LABEL_3;
     }
@@ -294,10 +294,10 @@
   else
   {
     v5 = [(NSUUID *)self->_identifier hash]- v5 + 32 * v5;
-    if ((v3 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
 LABEL_3:
-      if ((v3 & 4) != 0)
+      if ((optionsCopy & 4) != 0)
       {
         goto LABEL_4;
       }
@@ -307,17 +307,17 @@ LABEL_3:
   }
 
   v5 = self->_kind - v5 + 32 * v5;
-  if ((v3 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
 LABEL_4:
-    if ((v3 & 8) != 0)
+    if ((optionsCopy & 8) != 0)
     {
       goto LABEL_5;
     }
 
 LABEL_11:
     v5 = [(NSSet *)self->_assetIdentifiers hash]- v5 + 32 * v5;
-    if ((v3 & 0x10) != 0)
+    if ((optionsCopy & 0x10) != 0)
     {
       return v5;
     }
@@ -329,13 +329,13 @@ LABEL_10:
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestampAdjustment];
   v5 = [v7 hash] - v5 + 32 * v5;
 
-  if ((v3 & 8) == 0)
+  if ((optionsCopy & 8) == 0)
   {
     goto LABEL_11;
   }
 
 LABEL_5:
-  if ((v3 & 0x10) == 0)
+  if ((optionsCopy & 0x10) == 0)
   {
     return self->_visibilityState - v5 + 32 * v5;
   }
@@ -343,31 +343,31 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqualToAccess:(id)a3 withOptions:(unint64_t)a4
+- (BOOL)isEqualToAccess:(id)access withOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6 != self)
+  optionsCopy = options;
+  accessCopy = access;
+  if (accessCopy != self)
   {
-    if (![(PAAccess *)v6 isMemberOfClass:objc_opt_class()])
+    if (![(PAAccess *)accessCopy isMemberOfClass:objc_opt_class()])
     {
       goto LABEL_18;
     }
 
     accessor = self->_accessor;
-    v8 = [(PAAccess *)v6 accessor];
-    LODWORD(accessor) = [(PAApplication *)accessor isEqual:v8];
+    accessor = [(PAAccess *)accessCopy accessor];
+    LODWORD(accessor) = [(PAApplication *)accessor isEqual:accessor];
 
     if (!accessor)
     {
       goto LABEL_18;
     }
 
-    if ((v4 & 1) == 0)
+    if ((optionsCopy & 1) == 0)
     {
       identifier = self->_identifier;
-      v10 = [(PAAccess *)v6 identifier];
-      LODWORD(identifier) = [(NSUUID *)identifier isEqual:v10];
+      identifier = [(PAAccess *)accessCopy identifier];
+      LODWORD(identifier) = [(NSUUID *)identifier isEqual:identifier];
 
       if (!identifier)
       {
@@ -375,39 +375,39 @@ LABEL_5:
       }
     }
 
-    if ((v4 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
       kind = self->_kind;
-      if (kind != [(PAAccess *)v6 kind])
+      if (kind != [(PAAccess *)accessCopy kind])
       {
         goto LABEL_18;
       }
     }
 
-    if ((v4 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
       timestampAdjustment = self->_timestampAdjustment;
-      [(PAAccess *)v6 timestampAdjustment];
+      [(PAAccess *)accessCopy timestampAdjustment];
       if (timestampAdjustment != v13)
       {
         goto LABEL_18;
       }
     }
 
-    if ((v4 & 8) == 0)
+    if ((optionsCopy & 8) == 0)
     {
       assetIdentifiers = self->_assetIdentifiers;
-      v15 = [(PAAccess *)v6 assetIdentifiers];
-      v16 = v15;
-      if (assetIdentifiers == v15)
+      assetIdentifiers = [(PAAccess *)accessCopy assetIdentifiers];
+      v16 = assetIdentifiers;
+      if (assetIdentifiers == assetIdentifiers)
       {
       }
 
       else
       {
         v17 = self->_assetIdentifiers;
-        v18 = [(PAAccess *)v6 assetIdentifiers];
-        LODWORD(v17) = [(NSSet *)v17 isEqual:v18];
+        assetIdentifiers2 = [(PAAccess *)accessCopy assetIdentifiers];
+        LODWORD(v17) = [(NSSet *)v17 isEqual:assetIdentifiers2];
 
         if (!v17)
         {
@@ -418,10 +418,10 @@ LABEL_18:
       }
     }
 
-    if ((v4 & 0x10) == 0)
+    if ((optionsCopy & 0x10) == 0)
     {
       visibilityState = self->_visibilityState;
-      if (visibilityState != [(PAAccess *)v6 visibilityState])
+      if (visibilityState != [(PAAccess *)accessCopy visibilityState])
       {
         goto LABEL_18;
       }
@@ -434,55 +434,55 @@ LABEL_19:
   return v20;
 }
 
-- (id)copyWithNewAccessor:(id)a3
+- (id)copyWithNewAccessor:(id)accessor
 {
-  v5 = a3;
+  accessorCopy = accessor;
   accessor = self->_accessor;
-  if (accessor == v5 || [(PAApplication *)accessor isEqual:v5])
+  if (accessor == accessorCopy || [(PAApplication *)accessor isEqual:accessorCopy])
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
     v8 = [(PAAccess *)self copy];
-    v7 = v8;
+    selfCopy = v8;
     if (v8)
     {
-      objc_storeStrong((v8 + 16), a3);
+      objc_storeStrong((v8 + 16), accessor);
     }
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)copyWithNewTimestampAdjustment:(double)a3
+- (id)copyWithNewTimestampAdjustment:(double)adjustment
 {
   result = [(PAAccess *)self copy];
   if (result)
   {
-    *(result + 6) = a3;
+    *(result + 6) = adjustment;
   }
 
   return result;
 }
 
-- (PAAccess)initWithCoder:(id)a3
+- (PAAccess)initWithCoder:(id)coder
 {
   v4 = initWithCoder__once;
-  v5 = a3;
+  coderCopy = coder;
   if (v4 != -1)
   {
     [PAAccess initWithCoder:];
   }
 
-  v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"accessor"];
-  v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v8 = [v5 decodeIntegerForKey:@"kind"];
-  v9 = [v5 decodeObjectOfClasses:initWithCoder__allowedIdentifierClasses forKey:@"assetIdentifiers"];
-  v10 = [v5 decodeIntegerForKey:@"visibilityState"];
-  v11 = [v5 decodeIntegerForKey:@"eventCount"];
-  v12 = [v5 decodeIntegerForKey:@"accessCount"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessor"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v8 = [coderCopy decodeIntegerForKey:@"kind"];
+  v9 = [coderCopy decodeObjectOfClasses:initWithCoder__allowedIdentifierClasses forKey:@"assetIdentifiers"];
+  v10 = [coderCopy decodeIntegerForKey:@"visibilityState"];
+  v11 = [coderCopy decodeIntegerForKey:@"eventCount"];
+  v12 = [coderCopy decodeIntegerForKey:@"accessCount"];
 
   v13 = [(PAAccess *)self initWithAccessor:v6 identifier:v7 kind:v8 assetIdentifiers:v9 visibilityState:v10 accessEventCount:v11 accessCount:v12];
   return v13;
@@ -502,25 +502,25 @@ void __26__PAAccess_initWithCoder___block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accessor = self->_accessor;
-  v5 = a3;
-  [v5 encodeObject:accessor forKey:@"accessor"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_kind forKey:@"kind"];
-  [v5 encodeObject:self->_assetIdentifiers forKey:@"assetIdentifiers"];
-  [v5 encodeInteger:self->_visibilityState forKey:@"visibilityState"];
-  [v5 encodeInteger:self->_eventCount forKey:@"eventCount"];
-  [v5 encodeInteger:self->_accessCount forKey:@"accessCount"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accessor forKey:@"accessor"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_kind forKey:@"kind"];
+  [coderCopy encodeObject:self->_assetIdentifiers forKey:@"assetIdentifiers"];
+  [coderCopy encodeInteger:self->_visibilityState forKey:@"visibilityState"];
+  [coderCopy encodeInteger:self->_eventCount forKey:@"eventCount"];
+  [coderCopy encodeInteger:self->_accessCount forKey:@"accessCount"];
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 >= 3)
+  if (version >= 3)
   {
-    v6 = a3;
-    v4 = [[a1 alloc] initWithProtoData:v6];
+    dataCopy = data;
+    v4 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -534,17 +534,17 @@ void __26__PAAccess_initWithCoder___block_invoke()
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(PAAccess *)self JSONObject];
-  v4 = [v2 dataWithJSONObject:v3 options:3 error:0];
+  jSONObject = [(PAAccess *)self JSONObject];
+  v4 = [v2 dataWithJSONObject:jSONObject options:3 error:0];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(PAApplication *)self->_accessor copyWithZone:a3];
-  v7 = [(NSUUID *)self->_identifier copyWithZone:a3];
+  v6 = [(PAApplication *)self->_accessor copyWithZone:zone];
+  v7 = [(NSUUID *)self->_identifier copyWithZone:zone];
   v8 = [v5 initWithAccessor:v6 identifier:v7 kind:self->_kind assetIdentifiers:self->_assetIdentifiers visibilityState:self->_visibilityState accessEventCount:self->_eventCount accessCount:self->_accessCount];
 
   return v8;
@@ -552,38 +552,38 @@ void __26__PAAccess_initWithCoder___block_invoke()
 
 - (id)encodeAsProto
 {
-  v2 = [(PAAccess *)self proto];
-  v3 = [v2 data];
+  proto = [(PAAccess *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (PAAccess)initWithProto:(id)a3
+- (PAAccess)initWithProto:(id)proto
 {
-  v4 = a3;
+  protoCopy = proto;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = protoCopy;
     v6 = [PAApplication alloc];
-    v7 = [v5 accessor];
-    v8 = [(PAApplication *)v6 initWithProto:v7];
+    accessor = [v5 accessor];
+    v8 = [(PAApplication *)v6 initWithProto:accessor];
 
     if (v8 && ([v5 identifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v10 == 16))
     {
       v11 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v12 = [v5 identifier];
-      v13 = [v11 initWithUUIDBytes:{objc_msgSend(v12, "bytes")}];
+      identifier = [v5 identifier];
+      v13 = [v11 initWithUUIDBytes:{objc_msgSend(identifier, "bytes")}];
 
       if (v13 && (v14 = [v5 kind], v14 - 1 <= 3))
       {
         v15 = v14;
-        v16 = [v5 assetIdentifiers];
+        assetIdentifiers = [v5 assetIdentifiers];
         v17 = MEMORY[0x1E695DFD8];
-        if (v16)
+        if (assetIdentifiers)
         {
-          v18 = [v5 assetIdentifiers];
-          v19 = [v17 setWithArray:v18];
+          assetIdentifiers2 = [v5 assetIdentifiers];
+          v19 = [v17 setWithArray:assetIdentifiers2];
         }
 
         else
@@ -599,35 +599,35 @@ void __26__PAAccess_initWithCoder___block_invoke()
           self->_accessCount = [v5 accessCount];
         }
 
-        v20 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v20 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v20 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (PAAccess)initWithProtoData:(id)a3
+- (PAAccess)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[PAPBAccess alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[PAPBAccess alloc] initWithData:dataCopy];
 
     v6 = [(PAAccess *)self initWithProto:v5];
     self = v6;
@@ -645,8 +645,8 @@ void __26__PAAccess_initWithCoder___block_invoke()
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(PAApplication *)self->_accessor proto];
-  [v3 setAccessor:v4];
+  proto = [(PAApplication *)self->_accessor proto];
+  [v3 setAccessor:proto];
 
   v12[0] = 0;
   v12[1] = 0;
@@ -668,9 +668,9 @@ void __26__PAAccess_initWithCoder___block_invoke()
       [v3 setAccessCount:?];
     }
 
-    v7 = [(PAAccess *)self assetIdentifiers];
-    v8 = [v7 allObjects];
-    v9 = [v8 mutableCopy];
+    assetIdentifiers = [(PAAccess *)self assetIdentifiers];
+    allObjects = [assetIdentifiers allObjects];
+    v9 = [allObjects mutableCopy];
     [v3 setAssetIdentifiers:v9];
 
     v6 = v3;

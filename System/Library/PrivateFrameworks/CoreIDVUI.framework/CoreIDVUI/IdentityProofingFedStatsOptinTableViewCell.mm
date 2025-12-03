@@ -1,15 +1,15 @@
 @interface IdentityProofingFedStatsOptinTableViewCell
-- (_TtC9CoreIDVUI42IdentityProofingFedStatsOptinTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC9CoreIDVUI42IdentityProofingFedStatsOptinTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)setupBackgroundColor;
 @end
 
 @implementation IdentityProofingFedStatsOptinTableViewCell
 
-- (_TtC9CoreIDVUI42IdentityProofingFedStatsOptinTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC9CoreIDVUI42IdentityProofingFedStatsOptinTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_245910A04();
+    identifier = sub_245910A04();
     v6 = v5;
   }
 
@@ -18,12 +18,12 @@
     v6 = 0;
   }
 
-  return sub_2457BC6F8(a3, a4, v6);
+  return sub_2457BC6F8(style, identifier, v6);
 }
 
 - (void)setupBackgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   sub_2457BCD8C();
 }
 

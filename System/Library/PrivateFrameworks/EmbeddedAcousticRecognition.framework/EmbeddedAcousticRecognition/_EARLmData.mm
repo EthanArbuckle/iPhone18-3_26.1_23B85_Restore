@@ -1,18 +1,18 @@
 @interface _EARLmData
 + (void)initialize;
-- (_EARLmData)initWithConfiguration:(id)a3 ncsRoot:(id)a4 recognizerConfiguration:(id)a5;
+- (_EARLmData)initWithConfiguration:(id)configuration ncsRoot:(id)root recognizerConfiguration:(id)recognizerConfiguration;
 - (id).cxx_construct;
 - (id)metrics;
 - (id)sources;
 - (id)wordFrequency;
 - (shared_ptr<quasar::PersonalizedLmData>)data;
-- (void)addDocumentWithUUID:(id)a3 content:(id)a4;
-- (void)addDocumentWithUUID:(id)a3 content:(id)a4 metadata:(id)a5;
-- (void)addLineWithType:(unint64_t)a3 uuid:(id)a4 content:(id)a5;
-- (void)addNgramCountWithType:(unint64_t)a3 content:(id)a4;
-- (void)addSentenceWithType:(unint64_t)a3 uuid:(id)a4 content:(id)a5 hasWeights:(BOOL)a6;
-- (void)enumerateSentencesOfType:(unint64_t)a3 block:(id)a4;
-- (void)setInputFormat:(int64_t)a3;
+- (void)addDocumentWithUUID:(id)d content:(id)content;
+- (void)addDocumentWithUUID:(id)d content:(id)content metadata:(id)metadata;
+- (void)addLineWithType:(unint64_t)type uuid:(id)uuid content:(id)content;
+- (void)addNgramCountWithType:(unint64_t)type content:(id)content;
+- (void)addSentenceWithType:(unint64_t)type uuid:(id)uuid content:(id)content hasWeights:(BOOL)weights;
+- (void)enumerateSentencesOfType:(unint64_t)type block:(id)block;
+- (void)setInputFormat:(int64_t)format;
 @end
 
 @implementation _EARLmData
@@ -20,19 +20,19 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (_EARLmData)initWithConfiguration:(id)a3 ncsRoot:(id)a4 recognizerConfiguration:(id)a5
+- (_EARLmData)initWithConfiguration:(id)configuration ncsRoot:(id)root recognizerConfiguration:(id)recognizerConfiguration
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  rootCopy = root;
+  recognizerConfigurationCopy = recognizerConfiguration;
   v18.receiver = self;
   v18.super_class = _EARLmData;
   v11 = [(_EARLmData *)&v18 init];
@@ -42,30 +42,30 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = configurationCopy;
       _os_log_impl(&dword_1B501D000, v12, OS_LOG_TYPE_DEFAULT, "Initializing %@", &buf, 0xCu);
     }
 
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
-    v14 = [v13 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v14 = [defaultManager fileExistsAtPath:configurationCopy];
 
     if (v14)
     {
-      if (v9)
+      if (rootCopy)
       {
-        [_EARQuasarTokenizer tokenizerWithNcsRoot:v9];
+        [_EARQuasarTokenizer tokenizerWithNcsRoot:rootCopy];
       }
 
       else
       {
-        [_EARQuasarTokenizer tokenizerWithRecognizerConfigPath:v8];
+        [_EARQuasarTokenizer tokenizerWithRecognizerConfigPath:configurationCopy];
       }
 
       *&buf = 0;
-      if (v8)
+      if (configurationCopy)
       {
-        [v8 ear_toString];
-        if (!v10)
+        [configurationCopy ear_toString];
+        if (!recognizerConfigurationCopy)
         {
           goto LABEL_15;
         }
@@ -75,14 +75,14 @@
       {
         buf = 0uLL;
         v20 = 0;
-        if (!v10)
+        if (!recognizerConfigurationCopy)
         {
 LABEL_15:
           std::allocate_shared[abi:ne200100]<quasar::PersonalizedLmData,std::allocator<quasar::PersonalizedLmData>,std::string,char const(&)[1],std::unique_ptr<quasar::TextTokenizer>,std::string,BOOL,BOOL,0>();
         }
       }
 
-      [v10 ear_toString];
+      [recognizerConfigurationCopy ear_toString];
       goto LABEL_15;
     }
 
@@ -90,7 +90,7 @@ LABEL_15:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = configurationCopy;
       _os_log_impl(&dword_1B501D000, v15, OS_LOG_TYPE_DEFAULT, "File does not exist %@", &buf, 0xCu);
     }
 
@@ -105,16 +105,16 @@ LABEL_15:
   return v16;
 }
 
-- (void)addDocumentWithUUID:(id)a3 content:(id)a4
+- (void)addDocumentWithUUID:(id)d content:(id)content
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  dCopy = d;
+  contentCopy = content;
+  v8 = contentCopy;
+  if (dCopy && contentCopy)
   {
     ptr = self->_data.__ptr_;
-    [v6 ear_toString];
+    [dCopy ear_toString];
     [v8 ear_toString];
     v10 = 0;
     quasar::PersonalizedLmData::addDocument(ptr, &v13, &__p, &v10);
@@ -130,16 +130,16 @@ LABEL_15:
   }
 }
 
-- (void)addDocumentWithUUID:(id)a3 content:(id)a4 metadata:(id)a5
+- (void)addDocumentWithUUID:(id)d content:(id)content metadata:(id)metadata
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9)
+  dCopy = d;
+  contentCopy = content;
+  metadataCopy = metadata;
+  v11 = metadataCopy;
+  if (dCopy && contentCopy)
   {
-    v12 = [v10 valueForKey:@"type"];
+    v12 = [metadataCopy valueForKey:@"type"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -148,10 +148,10 @@ LABEL_15:
       if (v13)
       {
         ptr = self->_data.__ptr_;
-        [v8 ear_toString];
-        [v9 ear_toString];
-        v16 = [v13 intValue];
-        quasar::PersonalizedLmData::addDocument(ptr, buf, &__p, &v16);
+        [dCopy ear_toString];
+        [contentCopy ear_toString];
+        intValue = [v13 intValue];
+        quasar::PersonalizedLmData::addDocument(ptr, buf, &__p, &intValue);
         if (v18 < 0)
         {
           operator delete(__p);
@@ -186,18 +186,18 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)addLineWithType:(unint64_t)a3 uuid:(id)a4 content:(id)a5
+- (void)addLineWithType:(unint64_t)type uuid:(id)uuid content:(id)content
 {
-  v6 = a3;
+  typeCopy = type;
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8 && v9)
+  uuidCopy = uuid;
+  contentCopy = content;
+  v10 = contentCopy;
+  if (uuidCopy && contentCopy)
   {
     ptr = self->_data.__ptr_;
-    v14 = v6;
-    [v8 ear_toString];
+    v14 = typeCopy;
+    [uuidCopy ear_toString];
     [v10 ear_toString];
     quasar::LmData::addLine(ptr, &v14, &v15, &__p);
     if (v13 < 0)
@@ -212,21 +212,21 @@ LABEL_14:
   }
 }
 
-- (void)addSentenceWithType:(unint64_t)a3 uuid:(id)a4 content:(id)a5 hasWeights:(BOOL)a6
+- (void)addSentenceWithType:(unint64_t)type uuid:(id)uuid content:(id)content hasWeights:(BOOL)weights
 {
-  v6 = a6;
-  v8 = a3;
+  weightsCopy = weights;
+  typeCopy = type;
   v19 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10 && v11)
+  uuidCopy = uuid;
+  contentCopy = content;
+  v12 = contentCopy;
+  if (uuidCopy && contentCopy)
   {
     ptr = self->_data.__ptr_;
-    v16 = v8;
-    [v10 ear_toString];
+    v16 = typeCopy;
+    [uuidCopy ear_toString];
     [v12 ear_toString];
-    (*(*ptr + 24))(ptr, &v16, &v17, &__p, v6, 0, 0);
+    (*(*ptr + 24))(ptr, &v16, &v17, &__p, weightsCopy, 0, 0);
     if (v15 < 0)
     {
       operator delete(__p);
@@ -239,20 +239,20 @@ LABEL_14:
   }
 }
 
-- (void)addNgramCountWithType:(unint64_t)a3 content:(id)a4
+- (void)addNgramCountWithType:(unint64_t)type content:(id)content
 {
-  v4 = a3;
+  typeCopy = type;
   __p[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  contentCopy = content;
+  if (contentCopy)
   {
     ptr = self->_data.__ptr_;
-    [v6 ear_toString];
-    quasar::LmData::addNgramCount(ptr, v4, __p);
+    [contentCopy ear_toString];
+    quasar::LmData::addNgramCount(ptr, typeCopy, __p);
   }
 }
 
-- (void)setInputFormat:(int64_t)a3
+- (void)setInputFormat:(int64_t)format
 {
   cntrl = self->_data.__cntrl_;
   v6[0] = self->_data.__ptr_;
@@ -262,22 +262,22 @@ LABEL_14:
     atomic_fetch_add_explicit(cntrl + 1, 1uLL, memory_order_relaxed);
   }
 
-  setInputFormatHelper(v6, a3);
+  setInputFormatHelper(v6, format);
   if (cntrl)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](cntrl);
   }
 
-  self->_inputType = a3;
+  self->_inputType = format;
 }
 
-- (void)enumerateSentencesOfType:(unint64_t)a3 block:(id)a4
+- (void)enumerateSentencesOfType:(unint64_t)type block:(id)block
 {
-  v4 = a3;
+  typeCopy = type;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v16 = 0;
-  Sentences = quasar::LmData::getSentences(self->_data.__ptr_, v4);
+  Sentences = quasar::LmData::getSentences(self->_data.__ptr_, typeCopy);
   v18 = 0;
   v19 = 0;
   v20 = 0;
@@ -305,7 +305,7 @@ LABEL_14:
         v13 += 3;
       }
 
-      v6[2](v6, v11, &v16);
+      blockCopy[2](blockCopy, v11, &v16);
     }
 
     objc_autoreleasePoolPop(v10);

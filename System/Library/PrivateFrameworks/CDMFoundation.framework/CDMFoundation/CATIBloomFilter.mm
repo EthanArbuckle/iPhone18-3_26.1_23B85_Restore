@@ -1,15 +1,15 @@
 @interface CATIBloomFilter
-- (BOOL)contains:(id)a3;
-- (CATIBloomFilter)initWithExceptedNumberOfItems:(unint64_t)a3 falsePositiveRate:(double)a4 seed:(unsigned int)a5;
-- (void)add:(id)a3;
+- (BOOL)contains:(id)contains;
+- (CATIBloomFilter)initWithExceptedNumberOfItems:(unint64_t)items falsePositiveRate:(double)rate seed:(unsigned int)seed;
+- (void)add:(id)add;
 @end
 
 @implementation CATIBloomFilter
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
-  v4 = a3;
-  v5 = +[MurmurHash3 hash128WithKey:length:seed:](MurmurHash3, "hash128WithKey:length:seed:", [v4 bytes], objc_msgSend(v4, "length"), self->_seed);
+  containsCopy = contains;
+  v5 = +[MurmurHash3 hash128WithKey:length:seed:](MurmurHash3, "hash128WithKey:length:seed:", [containsCopy bytes], objc_msgSend(containsCopy, "length"), self->_seed);
   if (self->_numberHashes)
   {
     v7 = v5;
@@ -38,11 +38,11 @@
   return v11;
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  v11 = a3;
-  v4 = v11;
-  v5 = +[MurmurHash3 hash128WithKey:length:seed:](MurmurHash3, "hash128WithKey:length:seed:", [v11 bytes], objc_msgSend(v11, "length"), self->_seed);
+  addCopy = add;
+  v4 = addCopy;
+  v5 = +[MurmurHash3 hash128WithKey:length:seed:](MurmurHash3, "hash128WithKey:length:seed:", [addCopy bytes], objc_msgSend(addCopy, "length"), self->_seed);
   if (self->_numberHashes)
   {
     v7 = v5;
@@ -59,7 +59,7 @@
   }
 }
 
-- (CATIBloomFilter)initWithExceptedNumberOfItems:(unint64_t)a3 falsePositiveRate:(double)a4 seed:(unsigned int)a5
+- (CATIBloomFilter)initWithExceptedNumberOfItems:(unint64_t)items falsePositiveRate:(double)rate seed:(unsigned int)seed
 {
   v15.receiver = self;
   v15.super_class = CATIBloomFilter;
@@ -67,11 +67,11 @@
   v9 = v8;
   if (v8)
   {
-    v8->_seed = a5;
-    v10 = a3 + a5;
+    v8->_seed = seed;
+    v10 = items + seed;
     v8->_expectedNumberOfItems = v10;
-    v8->_falsePositiveRate = a4;
-    v11 = vcvtpd_u64_f64(log(a4) * v10 / -0.480453014);
+    v8->_falsePositiveRate = rate;
+    v11 = vcvtpd_u64_f64(log(rate) * v10 / -0.480453014);
     v9->_numberOfBits = v11;
     v9->_numberHashes = vcvtpd_u64_f64((v11 / v10) * 0.693147181);
     v12 = [[CATIBitVector alloc] initWithNumberOfBits:v9->_numberOfBits];

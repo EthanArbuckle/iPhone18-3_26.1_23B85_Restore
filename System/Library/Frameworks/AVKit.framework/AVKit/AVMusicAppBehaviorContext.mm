@@ -1,13 +1,13 @@
 @interface AVMusicAppBehaviorContext
 - (AVMusicAppBehavior)behavior;
-- (AVMusicAppBehaviorContext)initWithAVKitOwner:(id)a3;
+- (AVMusicAppBehaviorContext)initWithAVKitOwner:(id)owner;
 - (AVPlayerViewController)playerViewController;
 - (void)_updatePlaybackControlsInclusion;
 - (void)_updateSkipItemButtonsEnabled;
 - (void)dealloc;
-- (void)didAddBehavior:(id)a3;
-- (void)didRemoveBehavior:(id)a3;
-- (void)playerViewController:(id)a3 didCollectMetricsEvent:(int64_t)a4;
+- (void)didAddBehavior:(id)behavior;
+- (void)didRemoveBehavior:(id)behavior;
+- (void)playerViewController:(id)controller didCollectMetricsEvent:(int64_t)event;
 - (void)viewDidLoad;
 @end
 
@@ -29,75 +29,75 @@
 
 - (void)_updatePlaybackControlsInclusion
 {
-  v3 = [(AVMusicAppBehaviorContext *)self playerViewController];
-  v4 = [v3 isPresentingFullScreenFromInline];
-  if (v4)
+  playerViewController = [(AVMusicAppBehaviorContext *)self playerViewController];
+  isPresentingFullScreenFromInline = [playerViewController isPresentingFullScreenFromInline];
+  if (isPresentingFullScreenFromInline)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(AVMusicAppBehaviorContext *)self playerViewController];
-    v7 = [v6 isPresentedFullScreen];
+    playerViewController2 = [(AVMusicAppBehaviorContext *)self playerViewController];
+    isPresentedFullScreen = [playerViewController2 isPresentedFullScreen];
 
-    if (v7)
+    if (isPresentedFullScreen)
     {
       v5 = 1;
-      v4 = 1;
+      isPresentingFullScreenFromInline = 1;
       goto LABEL_7;
     }
 
-    v3 = [(AVMusicAppBehaviorContext *)self playerViewController];
-    v5 = [v3 isPictureInPictureActive] ^ 1;
+    playerViewController = [(AVMusicAppBehaviorContext *)self playerViewController];
+    v5 = [playerViewController isPictureInPictureActive] ^ 1;
   }
 
 LABEL_7:
-  v8 = [(AVMusicAppBehaviorContext *)self playerViewController];
-  v9 = [v8 playbackControlsController];
-  [v9 setPlaybackControlsIncludeVolumeControls:v4];
+  playerViewController3 = [(AVMusicAppBehaviorContext *)self playerViewController];
+  playbackControlsController = [playerViewController3 playbackControlsController];
+  [playbackControlsController setPlaybackControlsIncludeVolumeControls:isPresentingFullScreenFromInline];
 
-  v10 = [(AVMusicAppBehaviorContext *)self playerViewController];
-  v11 = [v10 playbackControlsController];
-  [v11 setPlaybackControlsIncludeTransportControls:v4];
+  playerViewController4 = [(AVMusicAppBehaviorContext *)self playerViewController];
+  playbackControlsController2 = [playerViewController4 playbackControlsController];
+  [playbackControlsController2 setPlaybackControlsIncludeTransportControls:isPresentingFullScreenFromInline];
 
-  v13 = [(AVMusicAppBehaviorContext *)self playerViewController];
-  v12 = [v13 playbackControlsController];
-  [v12 setPlaybackControlsIncludeDisplayModeControls:v5];
+  playerViewController5 = [(AVMusicAppBehaviorContext *)self playerViewController];
+  playbackControlsController3 = [playerViewController5 playbackControlsController];
+  [playbackControlsController3 setPlaybackControlsIncludeDisplayModeControls:v5];
 }
 
 - (void)_updateSkipItemButtonsEnabled
 {
-  v3 = [(AVMusicAppBehaviorContext *)self playerViewController];
-  v4 = [v3 playbackControlsController];
-  v5 = [v3 view];
-  v6 = [v5 effectiveUserInterfaceLayoutDirection];
+  playerViewController = [(AVMusicAppBehaviorContext *)self playerViewController];
+  playbackControlsController = [playerViewController playbackControlsController];
+  view = [playerViewController view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  if (v6)
+  if (effectiveUserInterfaceLayoutDirection)
   {
-    v7 = [(AVMusicAppBehaviorContext *)self isSkipToNextItemButtonEnabled];
-    v8 = [(AVMusicAppBehaviorContext *)self isSkipToPreviousItemButtonEnabled];
+    isSkipToNextItemButtonEnabled = [(AVMusicAppBehaviorContext *)self isSkipToNextItemButtonEnabled];
+    isSkipToPreviousItemButtonEnabled = [(AVMusicAppBehaviorContext *)self isSkipToPreviousItemButtonEnabled];
   }
 
   else
   {
-    v7 = [(AVMusicAppBehaviorContext *)self isSkipToPreviousItemButtonEnabled];
-    v8 = [(AVMusicAppBehaviorContext *)self isSkipToNextItemButtonEnabled];
+    isSkipToNextItemButtonEnabled = [(AVMusicAppBehaviorContext *)self isSkipToPreviousItemButtonEnabled];
+    isSkipToPreviousItemButtonEnabled = [(AVMusicAppBehaviorContext *)self isSkipToNextItemButtonEnabled];
   }
 
-  v9 = v8;
-  [v4 setStartLeftwardContentTransitionButtonEnabled:v7];
-  [v4 setStartRightwardContentTransitionButtonEnabled:v9];
-  [v4 setPlaybackControlsIncludeStartContentTransitionButtons:{-[AVMusicAppBehaviorContext showsSkipItemButtons](self, "showsSkipItemButtons")}];
-  if ([(AVMusicAppBehaviorContext *)self showsSkipItemButtons]&& (v7 || v9))
+  v9 = isSkipToPreviousItemButtonEnabled;
+  [playbackControlsController setStartLeftwardContentTransitionButtonEnabled:isSkipToNextItemButtonEnabled];
+  [playbackControlsController setStartRightwardContentTransitionButtonEnabled:v9];
+  [playbackControlsController setPlaybackControlsIncludeStartContentTransitionButtons:{-[AVMusicAppBehaviorContext showsSkipItemButtons](self, "showsSkipItemButtons")}];
+  if ([(AVMusicAppBehaviorContext *)self showsSkipItemButtons]&& (isSkipToNextItemButtonEnabled || v9))
   {
-    v10 = [v3 controlsViewController];
-    [v10 setSecondaryPlaybackControlsType:1];
+    controlsViewController = [playerViewController controlsViewController];
+    [controlsViewController setSecondaryPlaybackControlsType:1];
     WeakRetained = objc_loadWeakRetained(&self->_behavior);
-    [v10 addAction:sel_skipToNextItem withTarget:WeakRetained forEvent:@"AVControlsSkipForwardPressedEvent"];
+    [controlsViewController addAction:sel_skipToNextItem withTarget:WeakRetained forEvent:@"AVControlsSkipForwardPressedEvent"];
 
     v12 = objc_loadWeakRetained(&self->_behavior);
-    [v10 addAction:sel_skipToPreviousItem withTarget:v12 forEvent:@"AVControlsSkipBackwardPressedEvent"];
+    [controlsViewController addAction:sel_skipToPreviousItem withTarget:v12 forEvent:@"AVControlsSkipBackwardPressedEvent"];
 
     objc_initWeak(&location, self);
     v13[0] = MEMORY[0x1E69E9820];
@@ -105,14 +105,14 @@ LABEL_7:
     v13[2] = __58__AVMusicAppBehaviorContext__updateSkipItemButtonsEnabled__block_invoke;
     v13[3] = &unk_1E7209618;
     objc_copyWeak(&v14, &location);
-    [v4 setContentTransitionAction:v13];
+    [playbackControlsController setContentTransitionAction:v13];
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
 
   else
   {
-    [v4 setContentTransitionAction:0];
+    [playbackControlsController setContentTransitionAction:0];
   }
 }
 
@@ -146,17 +146,17 @@ void __58__AVMusicAppBehaviorContext__updateSkipItemButtonsEnabled__block_invoke
 LABEL_7:
 }
 
-- (void)playerViewController:(id)a3 didCollectMetricsEvent:(int64_t)a4
+- (void)playerViewController:(id)controller didCollectMetricsEvent:(int64_t)event
 {
-  v6 = a3;
-  if (a4 <= 3)
+  controllerCopy = controller;
+  if (event <= 3)
   {
-    v7 = qword_18B6EC5B8[a4];
-    v9 = v6;
-    v8 = [(AVMusicAppBehaviorContext *)self behavior];
-    [v8 contextWillHandleUserAction:v7];
+    v7 = qword_18B6EC5B8[event];
+    v9 = controllerCopy;
+    behavior = [(AVMusicAppBehaviorContext *)self behavior];
+    [behavior contextWillHandleUserAction:v7];
 
-    v6 = v9;
+    controllerCopy = v9;
   }
 }
 
@@ -167,63 +167,63 @@ LABEL_7:
   [(AVMusicAppBehaviorContext *)self _updatePlaybackControlsInclusion];
 }
 
-- (void)didRemoveBehavior:(id)a3
+- (void)didRemoveBehavior:(id)behavior
 {
-  v3 = [(AVMusicAppBehaviorContext *)self observationController];
-  [v3 stopAllObservation];
+  observationController = [(AVMusicAppBehaviorContext *)self observationController];
+  [observationController stopAllObservation];
 }
 
-- (void)didAddBehavior:(id)a3
+- (void)didAddBehavior:(id)behavior
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v4 = [(AVMusicAppBehaviorContext *)self playerViewController];
-  v5 = [v4 playerController];
-  [(AVMusicAppBehaviorContext *)self setPlayerController:v5];
+  playerViewController = [(AVMusicAppBehaviorContext *)self playerViewController];
+  playerController = [playerViewController playerController];
+  [(AVMusicAppBehaviorContext *)self setPlayerController:playerController];
 
-  v6 = [(AVMusicAppBehaviorContext *)self playerViewController];
-  [v6 setCanPausePlaybackWhenClosingPictureInPicture:0];
+  playerViewController2 = [(AVMusicAppBehaviorContext *)self playerViewController];
+  [playerViewController2 setCanPausePlaybackWhenClosingPictureInPicture:0];
 
   [(AVMusicAppBehaviorContext *)self _updatePlaybackControlsInclusion];
-  v7 = [(AVMusicAppBehaviorContext *)self observationController];
-  v8 = [(AVMusicAppBehaviorContext *)self playerViewController];
-  [v7 startObservingNotificationForName:@"AVPlayerViewControllerDidChangePlayerControllerNotification" object:v8 notificationCenter:0 observationHandler:&__block_literal_global_6606];
+  observationController = [(AVMusicAppBehaviorContext *)self observationController];
+  playerViewController3 = [(AVMusicAppBehaviorContext *)self playerViewController];
+  [observationController startObservingNotificationForName:@"AVPlayerViewControllerDidChangePlayerControllerNotification" object:playerViewController3 notificationCenter:0 observationHandler:&__block_literal_global_6606];
 
-  v9 = [(AVMusicAppBehaviorContext *)self observationController];
-  v10 = [v9 startObserving:self keyPath:@"playerController.scrubbing" includeInitialValue:0 observationHandler:&__block_literal_global_20];
+  observationController2 = [(AVMusicAppBehaviorContext *)self observationController];
+  v10 = [observationController2 startObserving:self keyPath:@"playerController.scrubbing" includeInitialValue:0 observationHandler:&__block_literal_global_20];
 
-  v11 = [(AVMusicAppBehaviorContext *)self observationController];
-  v12 = [v11 startObserving:self keyPath:@"playerController.player.currentItem" includeInitialValue:1 observationHandler:&__block_literal_global_25];
+  observationController3 = [(AVMusicAppBehaviorContext *)self observationController];
+  v12 = [observationController3 startObserving:self keyPath:@"playerController.player.currentItem" includeInitialValue:1 observationHandler:&__block_literal_global_25];
 
-  v13 = [(AVMusicAppBehaviorContext *)self observationController];
+  observationController4 = [(AVMusicAppBehaviorContext *)self observationController];
   v27[0] = @"playerController.seekToTime";
   v27[1] = @"playerController.seeking";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
-  v15 = [v13 startObserving:self keyPaths:v14 includeInitialValue:0 observationHandler:&__block_literal_global_34];
+  v15 = [observationController4 startObserving:self keyPaths:v14 includeInitialValue:0 observationHandler:&__block_literal_global_34];
 
-  v16 = [(AVMusicAppBehaviorContext *)self observationController];
-  v17 = [(AVMusicAppBehaviorContext *)self playerController];
-  [v16 startObservingNotificationForName:@"AVPlayerControllerDidBeginScanningNotification" object:v17 notificationCenter:0 observationHandler:&__block_literal_global_37_6612];
+  observationController5 = [(AVMusicAppBehaviorContext *)self observationController];
+  playerController2 = [(AVMusicAppBehaviorContext *)self playerController];
+  [observationController5 startObservingNotificationForName:@"AVPlayerControllerDidBeginScanningNotification" object:playerController2 notificationCenter:0 observationHandler:&__block_literal_global_37_6612];
 
-  v18 = [(AVMusicAppBehaviorContext *)self observationController];
-  v19 = [(AVMusicAppBehaviorContext *)self playerController];
-  [v18 startObservingNotificationForName:@"AVPlayerControllerDidEndScanningNotification" object:v19 notificationCenter:0 observationHandler:&__block_literal_global_39];
+  observationController6 = [(AVMusicAppBehaviorContext *)self observationController];
+  playerController3 = [(AVMusicAppBehaviorContext *)self playerController];
+  [observationController6 startObservingNotificationForName:@"AVPlayerControllerDidEndScanningNotification" object:playerController3 notificationCenter:0 observationHandler:&__block_literal_global_39];
 
-  v20 = [(AVMusicAppBehaviorContext *)self observationController];
-  v21 = [(AVMusicAppBehaviorContext *)self playerViewController];
-  [v20 startObservingNotificationForName:@"AVPlayerViewControllerDidEnterFullScreenFromInline" object:v21 notificationCenter:0 observationHandler:&__block_literal_global_41];
+  observationController7 = [(AVMusicAppBehaviorContext *)self observationController];
+  playerViewController4 = [(AVMusicAppBehaviorContext *)self playerViewController];
+  [observationController7 startObservingNotificationForName:@"AVPlayerViewControllerDidEnterFullScreenFromInline" object:playerViewController4 notificationCenter:0 observationHandler:&__block_literal_global_41];
 
-  v22 = [(AVMusicAppBehaviorContext *)self observationController];
-  v23 = [(AVMusicAppBehaviorContext *)self playerViewController];
-  [v22 startObservingNotificationForName:@"AVPlayerViewControllerDidExitFullScreenFromInline" object:v23 notificationCenter:0 observationHandler:&__block_literal_global_43];
+  observationController8 = [(AVMusicAppBehaviorContext *)self observationController];
+  playerViewController5 = [(AVMusicAppBehaviorContext *)self playerViewController];
+  [observationController8 startObservingNotificationForName:@"AVPlayerViewControllerDidExitFullScreenFromInline" object:playerViewController5 notificationCenter:0 observationHandler:&__block_literal_global_43];
 
-  v24 = [(AVMusicAppBehaviorContext *)self observationController];
-  [v24 startObservingNotificationForName:@"AVPictureInPictureControllerUserPlaybackStateDidChangeNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_45];
+  observationController9 = [(AVMusicAppBehaviorContext *)self observationController];
+  [observationController9 startObservingNotificationForName:@"AVPictureInPictureControllerUserPlaybackStateDidChangeNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_45];
 
-  v25 = [(AVMusicAppBehaviorContext *)self observationController];
-  [v25 startObservingNotificationForName:@"AVPictureInPictureControllerWillStartNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_47];
+  observationController10 = [(AVMusicAppBehaviorContext *)self observationController];
+  [observationController10 startObservingNotificationForName:@"AVPictureInPictureControllerWillStartNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_47];
 
-  v26 = [(AVMusicAppBehaviorContext *)self observationController];
-  [v26 startObservingNotificationForName:@"AVPictureInPictureControllerWillStopNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_49_6613];
+  observationController11 = [(AVMusicAppBehaviorContext *)self observationController];
+  [observationController11 startObservingNotificationForName:@"AVPictureInPictureControllerWillStopNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_49_6613];
 }
 
 void __44__AVMusicAppBehaviorContext_didAddBehavior___block_invoke_9(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -388,24 +388,24 @@ void __44__AVMusicAppBehaviorContext_didAddBehavior___block_invoke(uint64_t a1, 
 
 - (void)dealloc
 {
-  v3 = [(AVMusicAppBehaviorContext *)self observationController];
-  [v3 stopAllObservation];
+  observationController = [(AVMusicAppBehaviorContext *)self observationController];
+  [observationController stopAllObservation];
 
   v4.receiver = self;
   v4.super_class = AVMusicAppBehaviorContext;
   [(AVMusicAppBehaviorContext *)&v4 dealloc];
 }
 
-- (AVMusicAppBehaviorContext)initWithAVKitOwner:(id)a3
+- (AVMusicAppBehaviorContext)initWithAVKitOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v10.receiver = self;
   v10.super_class = AVMusicAppBehaviorContext;
   v5 = [(AVMusicAppBehaviorContext *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playerViewController, v4);
+    objc_storeWeak(&v5->_playerViewController, ownerCopy);
     v7 = [[AVObservationController alloc] initWithOwner:v6];
     observationController = v6->_observationController;
     v6->_observationController = v7;

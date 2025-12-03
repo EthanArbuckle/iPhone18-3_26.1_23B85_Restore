@@ -1,15 +1,15 @@
 @interface TSCHChartAxis
-+ (id)axisForInfo:(id)a3;
-+ (id)paragraphStyleForLabelsFontForInfo:(id)a3;
-+ (tvec2<float>)sizeOfLabelsForInfo:(id)a3 onlyHeight:(BOOL)a4;
-+ (tvec2<float>)sizeOfSeriesLabelsForInfo:(id)a3 onlyHeight:(BOOL)a4;
-- (BOOL)hasCustomFormatForGridValueType:(int)a3;
++ (id)axisForInfo:(id)info;
++ (id)paragraphStyleForLabelsFontForInfo:(id)info;
++ (tvec2<float>)sizeOfLabelsForInfo:(id)info onlyHeight:(BOOL)height;
++ (tvec2<float>)sizeOfSeriesLabelsForInfo:(id)info onlyHeight:(BOOL)height;
+- (BOOL)hasCustomFormatForGridValueType:(int)type;
 - (BOOL)supportsLabelAngleBaselineOptions;
 - (NSArray)majorGridLocations;
 - (NSArray)minorGridLocations;
 - (NSArray)referenceLines;
 - (NSString)description;
-- (TSCHChartAxis)initWithAxisID:(id)a3 model:(id)a4;
+- (TSCHChartAxis)initWithAxisID:(id)d model:(id)model;
 - (TSCHChartAxis)nonTransientCounterpart;
 - (TSCHChartAxisAnalysis)analysis;
 - (TSCHChartAxisAnalysis)axisAnalysisFromCurrentModel;
@@ -23,86 +23,86 @@
 - (double)currentDataSetModelMax;
 - (double)currentDataSetModelMedian;
 - (double)currentDataSetModelMin;
-- (double)interceptForAxis:(id)a3;
+- (double)interceptForAxis:(id)axis;
 - (double)max;
 - (double)min;
 - (double)modelMax;
 - (double)modelMin;
 - (double)range;
-- (double)unitSpaceCenterValueForSeries:(id)a3 groupIndex:(unint64_t)a4;
-- (double)unitSpaceCenterValueForValue:(double)a3;
-- (double)unitSpaceCenterValueHalfOffsetWithCount:(double)a3;
-- (double)unitSpaceCenterValuesForSeries:(id)a3 groupIndexSet:(id)a4 count:(unint64_t)a5;
-- (double)unitSpaceValueForCountSpaceValue:(double)a3;
-- (double)unitSpaceValueForCountSpaceValue:(double)a3 min:(double)a4 count:(double)a5;
-- (double)unitSpaceValueForDataSpaceValue:(double)a3;
-- (double)unitSpaceValueForDataSpaceValue:(double)a3 min:(double)a4 max:(double)a5;
-- (double)unitSpaceValueForSeries:(id)a3 groupIndex:(unint64_t)a4;
-- (double)unitSpaceValueForSeries:(id)a3 groupIndex:(unint64_t)a4 min:(double)a5 max:(double)a6;
-- (double)unitSpaceValuesForCountSpaceValuesWithCount:(unint64_t)a3;
-- (double)unitSpaceValuesForSeries:(id)a3 groupIndexSet:(id)a4;
-- (double)unitSpaceValuesForSeries:(id)a3 groupIndexSet:(id)a4 min:(double)a5 max:(double)a6;
-- (float)floatValueForProperty:(int)a3 defaultValue:(float)a4;
+- (double)unitSpaceCenterValueForSeries:(id)series groupIndex:(unint64_t)index;
+- (double)unitSpaceCenterValueForValue:(double)value;
+- (double)unitSpaceCenterValueHalfOffsetWithCount:(double)count;
+- (double)unitSpaceCenterValuesForSeries:(id)series groupIndexSet:(id)set count:(unint64_t)count;
+- (double)unitSpaceValueForCountSpaceValue:(double)value;
+- (double)unitSpaceValueForCountSpaceValue:(double)value min:(double)min count:(double)count;
+- (double)unitSpaceValueForDataSpaceValue:(double)value;
+- (double)unitSpaceValueForDataSpaceValue:(double)value min:(double)min max:(double)max;
+- (double)unitSpaceValueForSeries:(id)series groupIndex:(unint64_t)index;
+- (double)unitSpaceValueForSeries:(id)series groupIndex:(unint64_t)index min:(double)min max:(double)max;
+- (double)unitSpaceValuesForCountSpaceValuesWithCount:(unint64_t)count;
+- (double)unitSpaceValuesForSeries:(id)series groupIndexSet:(id)set;
+- (double)unitSpaceValuesForSeries:(id)series groupIndexSet:(id)set min:(double)min max:(double)max;
+- (float)floatValueForProperty:(int)property defaultValue:(float)value;
 - (id)chartInfo;
-- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)a3;
-- (id)computeMinorGridlinesFromMajorGridlinesInAnalysis:(id)a3;
+- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)analysis;
+- (id)computeMinorGridlinesFromMajorGridlinesInAnalysis:(id)analysis;
 - (id)context;
-- (id)customFormatForGridValueType:(int)a3;
+- (id)customFormatForGridValueType:(int)type;
 - (id)defaultProperties;
 - (id)drawableInfo;
-- (id)formattedStringForAxisValue:(id)a3;
-- (id)formattedStringForSeries:(id)a3 groupIndex:(unint64_t)a4;
-- (id)formattedStringForSeries:(id)a3 groupIndex:(unint64_t)a4 multiDataSetIndex:(unint64_t)a5;
+- (id)formattedStringForAxisValue:(id)value;
+- (id)formattedStringForSeries:(id)series groupIndex:(unint64_t)index;
+- (id)formattedStringForSeries:(id)series groupIndex:(unint64_t)index multiDataSetIndex:(unint64_t)setIndex;
 - (id)g_genericToDefaultPropertyMap;
-- (id)g_operationPropertyNameForGenericProperty:(int)a3;
-- (id)gridValueAxisToModelValue:(double)a3;
-- (id)inspectorStringForSeries:(id)a3 groupIndex:(unint64_t)a4 value:(id)a5;
+- (id)g_operationPropertyNameForGenericProperty:(int)property;
+- (id)gridValueAxisToModelValue:(double)value;
+- (id)inspectorStringForSeries:(id)series groupIndex:(unint64_t)index value:(id)value;
 - (id)nonstyle;
-- (id)objectValueForProperty:(int)a3;
+- (id)objectValueForProperty:(int)property;
 - (id)p_axisDataFormatterFromCurrentModel;
-- (id)p_dataFormatterForSeries:(id)a3 groupIndex:(unint64_t)a4 onlyForValidValue:(BOOL)a5;
-- (id)p_fixupNegativeStyleForDataFormatter:(id)a3;
+- (id)p_dataFormatterForSeries:(id)series groupIndex:(unint64_t)index onlyForValidValue:(BOOL)value;
+- (id)p_fixupNegativeStyleForDataFormatter:(id)formatter;
 - (id)p_interceptAnalysisFromCurrentModel;
 - (id)p_multiDataAxisAnalysisFromCurrentModel;
-- (id)referenceLineAtIndex:(unint64_t)a3;
-- (id)referenceLineWithUUID:(id)a3;
-- (id)swapTuplesForMutations:(id)a3 forImport:(BOOL)a4;
-- (id)transformedTuplesWithTuple:(id)a3;
-- (id)unitSpaceValuesForDataSpaceValues:(id)a3;
-- (id)valueForFormattedString:(id)a3;
+- (id)referenceLineAtIndex:(unint64_t)index;
+- (id)referenceLineWithUUID:(id)d;
+- (id)swapTuplesForMutations:(id)mutations forImport:(BOOL)import;
+- (id)transformedTuplesWithTuple:(id)tuple;
+- (id)unitSpaceValuesForDataSpaceValues:(id)values;
+- (id)valueForFormattedString:(id)string;
 - (int)adjustedNumberFormatType;
-- (int)defaultPropertyForGeneric:(int)a3;
+- (int)defaultPropertyForGeneric:(int)generic;
 - (int)gridValueType;
-- (int)intValueForProperty:(int)a3 defaultValue:(int)a4;
+- (int)intValueForProperty:(int)property defaultValue:(int)value;
 - (int)p_axisGridValueType;
 - (int64_t)currentAxisScaleSetting;
-- (tvec2<float>)sizeOfLabelsForInfo:(id)a3 enumerator:(id)a4 onlyHeight:(BOOL)a5;
+- (tvec2<float>)sizeOfLabelsForInfo:(id)info enumerator:(id)enumerator onlyHeight:(BOOL)height;
 - (unint64_t)axisIndex;
 - (unint64_t)p_count;
 - (void)invalidateMultiDataSetAnalysis;
 - (void)invalidateTransientState;
 - (void)p_setupMultiDataSetAnalysisCacheIfNeeded;
-- (void)propertiesWereMutated:(id)a3;
-- (void)setNonStyle:(id)a3 index:(unint64_t)a4;
-- (void)setStyle:(id)a3 index:(unint64_t)a4;
-- (void)updateAxisDateInterceptInAnalysis:(id)a3;
-- (void)updateGridValueTypeInterceptInAnalysis:(id)a3;
-- (void)updateMinMaxGridLocationsInAnalysis:(id)a3;
-- (void)updateModelAxisAnalysis:(id)a3;
-- (void)updateMultiDataModelAxisAnalysis:(id)a3;
+- (void)propertiesWereMutated:(id)mutated;
+- (void)setNonStyle:(id)style index:(unint64_t)index;
+- (void)setStyle:(id)style index:(unint64_t)index;
+- (void)updateAxisDateInterceptInAnalysis:(id)analysis;
+- (void)updateGridValueTypeInterceptInAnalysis:(id)analysis;
+- (void)updateMinMaxGridLocationsInAnalysis:(id)analysis;
+- (void)updateModelAxisAnalysis:(id)analysis;
+- (void)updateMultiDataModelAxisAnalysis:(id)analysis;
 @end
 
 @implementation TSCHChartAxis
 
-- (tvec2<float>)sizeOfLabelsForInfo:(id)a3 enumerator:(id)a4 onlyHeight:(BOOL)a5
+- (tvec2<float>)sizeOfLabelsForInfo:(id)info enumerator:(id)enumerator onlyHeight:(BOOL)height
 {
-  v6 = a5;
+  heightCopy = height;
   v9 = v5;
-  v62 = a3;
-  v10 = a4;
+  infoCopy = info;
+  enumeratorCopy = enumerator;
   v15 = objc_msgSend_intValueForProperty_defaultValue_(self, v11, v12, v13, v14, 1034, 0);
-  v20 = objc_msgSend_paragraphStyleAtIndex_(v62, v16, v17, v18, v19, v15);
-  v25 = objc_msgSend_enumerator(v10, v21, v22, v23, v24);
+  v20 = objc_msgSend_paragraphStyleAtIndex_(infoCopy, v16, v17, v18, v19, v15);
+  v25 = objc_msgSend_enumerator(enumeratorCopy, v21, v22, v23, v24);
   v31 = objc_msgSend_sharedText(TSCHText, v26, v27, v28, v29);
   v35 = 0;
   v36 = 0.0;
@@ -118,7 +118,7 @@
 
     v44 = objc_msgSend_string(v38, v39, v40, v41, v42);
 
-    if (!v6)
+    if (!heightCopy)
     {
       v49 = objc_msgSend_string(v43, v45, v46, v47, v48);
       objc_msgSend_measureText_paragraphStyle_(v31, v50, v51, v52, v53, v49, v20);
@@ -141,7 +141,7 @@
     v35 = v44;
   }
 
-  if (v6 && v35)
+  if (heightCopy && v35)
   {
     objc_msgSend_measureText_paragraphStyle_(v31, v39, v40, v41, v42, v35, v20);
     v37 = v60;
@@ -153,17 +153,17 @@
   return v61;
 }
 
-+ (tvec2<float>)sizeOfLabelsForInfo:(id)a3 onlyHeight:(BOOL)a4
++ (tvec2<float>)sizeOfLabelsForInfo:(id)info onlyHeight:(BOOL)height
 {
-  v5 = a4;
+  heightCopy = height;
   v7 = v4;
-  v8 = a3;
-  v13 = objc_msgSend_axisForInfo_(a1, v9, v10, v11, v12, v8);
+  infoCopy = info;
+  v13 = objc_msgSend_axisForInfo_(self, v9, v10, v11, v12, infoCopy);
   v18 = v13;
   if (v13)
   {
     objc_msgSend_labelEnumeratorPair(v13, v14, v15, v16, v17);
-    objc_msgSend_sizeOfLabelsForInfo_enumerator_onlyHeight_(v18, v19, v20, v21, v22, v8, v40, v5);
+    objc_msgSend_sizeOfLabelsForInfo_enumerator_onlyHeight_(v18, v19, v20, v21, v22, infoCopy, v40, heightCopy);
     v23 = v41;
   }
 
@@ -183,12 +183,12 @@
   return v39;
 }
 
-+ (tvec2<float>)sizeOfSeriesLabelsForInfo:(id)a3 onlyHeight:(BOOL)a4
++ (tvec2<float>)sizeOfSeriesLabelsForInfo:(id)info onlyHeight:(BOOL)height
 {
-  v5 = a4;
+  heightCopy = height;
   v7 = v4;
-  v8 = a3;
-  v13 = objc_msgSend_axisForInfo_(a1, v9, v10, v11, v12, v8);
+  infoCopy = info;
+  v13 = objc_msgSend_axisForInfo_(self, v9, v10, v11, v12, infoCopy);
   v18 = v13;
   if (v13)
   {
@@ -224,16 +224,16 @@
   }
 
 LABEL_6:
-  objc_msgSend_sizeOfLabelsForInfo_enumerator_onlyHeight_(v18, v19, v20, v21, v22, v8, v55, v5);
+  objc_msgSend_sizeOfLabelsForInfo_enumerator_onlyHeight_(v18, v19, v20, v21, v22, infoCopy, v55, heightCopy);
 LABEL_8:
 
   return v53;
 }
 
-+ (id)paragraphStyleForLabelsFontForInfo:(id)a3
++ (id)paragraphStyleForLabelsFontForInfo:(id)info
 {
-  v4 = a3;
-  v10 = objc_msgSend_axisForInfo_(a1, v5, v6, v7, v8, v4);
+  infoCopy = info;
+  v10 = objc_msgSend_axisForInfo_(self, v5, v6, v7, v8, infoCopy);
   if (!v10)
   {
     v14 = MEMORY[0x277D81150];
@@ -245,12 +245,12 @@ LABEL_8:
   }
 
   v29 = objc_msgSend_intValueForProperty_defaultValue_(v10, v9, v11, v12, v13, 1034, 0);
-  v34 = objc_msgSend_paragraphStyleAtIndex_(v4, v30, v31, v32, v33, v29);
+  v34 = objc_msgSend_paragraphStyleAtIndex_(infoCopy, v30, v31, v32, v33, v29);
 
   return v34;
 }
 
-+ (id)axisForInfo:(id)a3
++ (id)axisForInfo:(id)info
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "+[TSCHChartAxis(TSCH3DLabelSizeUtility) axisForInfo:]");
@@ -261,11 +261,11 @@ LABEL_8:
   return 0;
 }
 
-- (TSCHChartAxis)initWithAxisID:(id)a3 model:(id)a4
+- (TSCHChartAxis)initWithAxisID:(id)d model:(id)model
 {
-  v7 = a3;
-  v9 = a4;
-  if (!v9)
+  dCopy = d;
+  modelCopy = model;
+  if (!modelCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v10, v11, v12, "[TSCHChartAxis initWithAxisID:model:]");
@@ -281,8 +281,8 @@ LABEL_8:
   v29 = v28;
   if (v28)
   {
-    objc_storeStrong(&v28->_axisID, a3);
-    objc_storeWeak(&v29->_model, v9);
+    objc_storeStrong(&v28->_axisID, d);
+    objc_storeWeak(&v29->_model, modelCopy);
     objc_initWeak(&location, v29);
     WeakRetained = objc_loadWeakRetained(&v29->_model);
     isTransient = objc_msgSend_isTransient(WeakRetained, v31, v32, v33, v34);
@@ -293,7 +293,7 @@ LABEL_8:
       v41 = objc_msgSend_chartInfo(v36, v37, v38, v39, v40);
       v46 = objc_msgSend_model(v41, v42, v43, v44, v45);
 
-      v51 = objc_msgSend_axisForID_(v46, v47, v48, v49, v50, v7);
+      v51 = objc_msgSend_axisForID_(v46, v47, v48, v49, v50, dCopy);
       objc_storeWeak(&v29->_nonTransientCounterpart, v51);
     }
 
@@ -398,26 +398,26 @@ LABEL_8:
   return v23;
 }
 
-- (id)referenceLineAtIndex:(unint64_t)a3
+- (id)referenceLineAtIndex:(unint64_t)index
 {
   v7 = objc_msgSend_referenceLines(self, a2, v3, v4, v5);
-  if (objc_msgSend_count(v7, v8, v9, v10, v11) <= a3)
+  if (objc_msgSend_count(v7, v8, v9, v10, v11) <= index)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = objc_msgSend_objectAtIndexedSubscript_(v7, v12, v13, v14, v15, a3);
+    v16 = objc_msgSend_objectAtIndexedSubscript_(v7, v12, v13, v14, v15, index);
   }
 
   return v16;
 }
 
-- (id)referenceLineWithUUID:(id)a3
+- (id)referenceLineWithUUID:(id)d
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -439,7 +439,7 @@ LABEL_3:
       objc_opt_class();
       v17 = TSUDynamicCast();
       v22 = objc_msgSend_uuid(v17, v18, v19, v20, v21);
-      isEqual = objc_msgSend_isEqual_(v22, v23, v24, v25, v26, v4);
+      isEqual = objc_msgSend_isEqual_(v22, v23, v24, v25, v26, dCopy);
 
       if (isEqual)
       {
@@ -474,15 +474,15 @@ LABEL_9:
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    selfCopy = WeakRetained;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   interceptCache = v6->_interceptCache;
 
@@ -495,15 +495,15 @@ LABEL_9:
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    selfCopy = WeakRetained;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   analysisCache = v6->_analysisCache;
 
@@ -565,12 +565,12 @@ LABEL_9:
   return v6;
 }
 
-- (double)interceptForAxis:(id)a3
+- (double)interceptForAxis:(id)axis
 {
-  v4 = a3;
-  v9 = v4;
+  axisCopy = axis;
+  v9 = axisCopy;
   v10 = NAN;
-  if (v4 && v4 != self)
+  if (axisCopy && axisCopy != self)
   {
     v11 = objc_msgSend_model(self, v5, v6, v7, v8);
     v16 = objc_msgSend_model(v9, v12, v13, v14, v15);
@@ -673,17 +673,17 @@ LABEL_9:
   return v20;
 }
 
-- (void)updateGridValueTypeInterceptInAnalysis:(id)a3
+- (void)updateGridValueTypeInterceptInAnalysis:(id)analysis
 {
-  v35 = a3;
+  analysisCopy = analysis;
   v8 = objc_msgSend_p_axisGridValueType(self, v4, v5, v6, v7);
-  objc_msgSend_setGridValueType_(v35, v9, v10, v11, v12, v8);
-  if (objc_msgSend_gridValueType(v35, v13, v14, v15, v16) == 2)
+  objc_msgSend_setGridValueType_(analysisCopy, v9, v10, v11, v12, v8);
+  if (objc_msgSend_gridValueType(analysisCopy, v13, v14, v15, v16) == 2)
   {
     v21 = objc_msgSend_distantPast(MEMORY[0x277CBEAA8], v17, v18, v19, v20);
     v26 = objc_msgSend_dateValueWithNSDate_(TSCHChartGridValue, v22, v23, v24, v25, v21);
     objc_msgSend_doubleValue(v26, v27, v28, v29, v30);
-    objc_msgSend_setAxisInterceptPosition_(v35, v31, v32, v33, v34);
+    objc_msgSend_setAxisInterceptPosition_(analysisCopy, v31, v32, v33, v34);
   }
 }
 
@@ -763,16 +763,16 @@ LABEL_9:
   return v6;
 }
 
-- (id)customFormatForGridValueType:(int)a3
+- (id)customFormatForGridValueType:(int)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     v6 = 0;
   }
 
   else
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       objc_msgSend_valueForProperty_(self, a2, v3, v4, v5, 1029);
     }
@@ -798,9 +798,9 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)hasCustomFormatForGridValueType:(int)a3
+- (BOOL)hasCustomFormatForGridValueType:(int)type
 {
-  v6 = objc_msgSend_customFormatForGridValueType_(self, a2, v3, v4, v5, *&a3);
+  v6 = objc_msgSend_customFormatForGridValueType_(self, a2, v3, v4, v5, *&type);
   v7 = v6 != 0;
 
   return v7;
@@ -943,10 +943,10 @@ LABEL_32:
   return v72;
 }
 
-- (void)updateModelAxisAnalysis:(id)a3
+- (void)updateModelAxisAnalysis:(id)analysis
 {
   v115 = *MEMORY[0x277D85DE8];
-  v103 = a3;
+  analysisCopy = analysis;
   WeakRetained = objc_loadWeakRetained(&self->_model);
   isMultiData = objc_msgSend_isMultiData(WeakRetained, v5, v6, v7, v8);
 
@@ -976,7 +976,7 @@ LABEL_32:
         }
 
         v38 = *(*(&v109 + 1) + 8 * v37);
-        v39 = objc_msgSend_type(v19, v31, v32, v33, v34, v103);
+        v39 = objc_msgSend_type(v19, v31, v32, v33, v34, analysisCopy);
         v44 = objc_msgSend_axisIDForAxisType_(v38, v40, v41, v42, v43, v39);
         isEqual = objc_msgSend_isEqual_(v44, v45, v46, v47, v48, v19);
 
@@ -1025,22 +1025,22 @@ LABEL_32:
 
   objc_msgSend_min(v14, v63, v64, v65, v66);
   v68 = v67;
-  objc_msgSend_setDataSetModelMin_(v103, v69, v67, v70, v71);
-  objc_msgSend_setModelMin_(v103, v72, v68, v73, v74);
+  objc_msgSend_setDataSetModelMin_(analysisCopy, v69, v67, v70, v71);
+  objc_msgSend_setModelMin_(analysisCopy, v72, v68, v73, v74);
   objc_msgSend_max(v14, v75, v76, v77, v78);
   v80 = v79;
-  objc_msgSend_setDataSetModelMax_(v103, v81, v79, v82, v83);
-  objc_msgSend_setModelMax_(v103, v84, v80, v85, v86);
+  objc_msgSend_setDataSetModelMax_(analysisCopy, v81, v79, v82, v83);
+  objc_msgSend_setModelMax_(analysisCopy, v84, v80, v85, v86);
   objc_msgSend_average(v14, v87, v88, v89, v90);
-  objc_msgSend_setModelAverage_(v103, v91, v92, v93, v94);
+  objc_msgSend_setModelAverage_(analysisCopy, v91, v92, v93, v94);
   objc_msgSend_median(v14, v95, v96, v97, v98);
-  objc_msgSend_setModelMedian_(v103, v99, v100, v101, v102);
+  objc_msgSend_setModelMedian_(analysisCopy, v99, v100, v101, v102);
 }
 
-- (void)updateMultiDataModelAxisAnalysis:(id)a3
+- (void)updateMultiDataModelAxisAnalysis:(id)analysis
 {
   v126 = *MEMORY[0x277D85DE8];
-  v118 = a3;
+  analysisCopy = analysis;
   WeakRetained = objc_loadWeakRetained(&self->_model);
   isMultiData = objc_msgSend_isMultiData(WeakRetained, v5, v6, v7, v8);
 
@@ -1113,16 +1113,16 @@ LABEL_32:
 
   objc_msgSend_min(v29, v78, v79, v80, v81);
   v83 = v82;
-  objc_msgSend_setDataSetModelMin_(v118, v84, v82, v85, v86);
-  objc_msgSend_setModelMin_(v118, v87, v83, v88, v89);
+  objc_msgSend_setDataSetModelMin_(analysisCopy, v84, v82, v85, v86);
+  objc_msgSend_setModelMin_(analysisCopy, v87, v83, v88, v89);
   objc_msgSend_max(v29, v90, v91, v92, v93);
   v95 = v94;
-  objc_msgSend_setDataSetModelMax_(v118, v96, v94, v97, v98);
-  objc_msgSend_setModelMax_(v118, v99, v95, v100, v101);
+  objc_msgSend_setDataSetModelMax_(analysisCopy, v96, v94, v97, v98);
+  objc_msgSend_setModelMax_(analysisCopy, v99, v95, v100, v101);
   objc_msgSend_average(v29, v102, v103, v104, v105);
-  objc_msgSend_setModelAverage_(v118, v106, v107, v108, v109);
+  objc_msgSend_setModelAverage_(analysisCopy, v106, v107, v108, v109);
   objc_msgSend_median(v29, v110, v111, v112, v113);
-  objc_msgSend_setModelMedian_(v118, v114, v115, v116, v117);
+  objc_msgSend_setModelMedian_(analysisCopy, v114, v115, v116, v117);
 }
 
 - (double)modelMin
@@ -1223,36 +1223,36 @@ LABEL_32:
   return v18;
 }
 
-- (id)gridValueAxisToModelValue:(double)a3
+- (id)gridValueAxisToModelValue:(double)value
 {
-  objc_msgSend_doubleAxisToModelValue_(self, a2, a3, v3, v4);
+  objc_msgSend_doubleAxisToModelValue_(self, a2, value, v3, v4);
 
   return objc_msgSend_numberValueWithDouble_(TSCHChartGridValue, v5, v6, v7, v8);
 }
 
-- (void)updateMinMaxGridLocationsInAnalysis:(id)a3
+- (void)updateMinMaxGridLocationsInAnalysis:(id)analysis
 {
-  v56 = a3;
+  analysisCopy = analysis;
   v8 = objc_msgSend_model(self, v4, v5, v6, v7);
   v13 = objc_msgSend_syncRoot(v8, v9, v10, v11, v12);
 
   objc_sync_enter(v13);
-  objc_msgSend_updateModelAxisAnalysis_(self, v14, v15, v16, v17, v56);
-  objc_msgSend_modelMin(v56, v18, v19, v20, v21);
-  objc_msgSend_setMin_(v56, v22, v23, v24, v25);
-  objc_msgSend_modelMax(v56, v26, v27, v28, v29);
-  objc_msgSend_setMax_(v56, v30, v31, v32, v33);
-  objc_msgSend_adjustMinMaxForDataRangeInAnalysis_(self, v34, v35, v36, v37, v56);
-  v42 = objc_msgSend_computeMajorGridlinesFromMinMaxInAnalysis_(self, v38, v39, v40, v41, v56);
-  objc_msgSend_setMajorGridLocations_(v56, v43, v44, v45, v46, v42);
+  objc_msgSend_updateModelAxisAnalysis_(self, v14, v15, v16, v17, analysisCopy);
+  objc_msgSend_modelMin(analysisCopy, v18, v19, v20, v21);
+  objc_msgSend_setMin_(analysisCopy, v22, v23, v24, v25);
+  objc_msgSend_modelMax(analysisCopy, v26, v27, v28, v29);
+  objc_msgSend_setMax_(analysisCopy, v30, v31, v32, v33);
+  objc_msgSend_adjustMinMaxForDataRangeInAnalysis_(self, v34, v35, v36, v37, analysisCopy);
+  v42 = objc_msgSend_computeMajorGridlinesFromMinMaxInAnalysis_(self, v38, v39, v40, v41, analysisCopy);
+  objc_msgSend_setMajorGridLocations_(analysisCopy, v43, v44, v45, v46, v42);
 
-  v51 = objc_msgSend_computeMinorGridlinesFromMajorGridlinesInAnalysis_(self, v47, v48, v49, v50, v56);
-  objc_msgSend_setMinorGridLocations_(v56, v52, v53, v54, v55, v51);
+  v51 = objc_msgSend_computeMinorGridlinesFromMajorGridlinesInAnalysis_(self, v47, v48, v49, v50, analysisCopy);
+  objc_msgSend_setMinorGridLocations_(analysisCopy, v52, v53, v54, v55, v51);
 
   objc_sync_exit(v13);
 }
 
-- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)a3
+- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)analysis
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCHChartAxis computeMajorGridlinesFromMinMaxInAnalysis:]");
@@ -1263,9 +1263,9 @@ LABEL_32:
   return 0;
 }
 
-- (id)computeMinorGridlinesFromMajorGridlinesInAnalysis:(id)a3
+- (id)computeMinorGridlinesFromMajorGridlinesInAnalysis:(id)analysis
 {
-  v7 = objc_msgSend_majorGridLocations(a3, a2, v3, v4, v5);
+  v7 = objc_msgSend_majorGridLocations(analysis, a2, v3, v4, v5);
   v12 = objc_msgSend_count(v7, v8, v9, v10, v11);
   v17 = objc_msgSend_intValueForProperty_defaultValue_(self, v13, v14, v15, v16, 1046, 0);
   v22 = 0;
@@ -1383,10 +1383,10 @@ LABEL_32:
   return v22;
 }
 
-- (double)unitSpaceValueForSeries:(id)a3 groupIndex:(unint64_t)a4 min:(double)a5 max:(double)a6
+- (double)unitSpaceValueForSeries:(id)series groupIndex:(unint64_t)index min:(double)min max:(double)max
 {
-  v11 = a3;
-  if (!v11)
+  seriesCopy = series;
+  if (!seriesCopy)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v12, v13, v14, "[TSCHChartAxis unitSpaceValueForSeries:groupIndex:min:max:]");
@@ -1396,12 +1396,12 @@ LABEL_32:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29);
   }
 
-  v30 = objc_msgSend_valueForAxis_groupIndex_(v11, v10, v12, v13, v14, self, a4);
+  v30 = objc_msgSend_valueForAxis_groupIndex_(seriesCopy, v10, v12, v13, v14, self, index);
   v35 = v30;
   if (v30 && (objc_msgSend_doubleValue(v30, v31, v32, v33, v34), (*&v37 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL))
   {
-    objc_msgSend_doubleModelToAxisValue_forSeries_(self, v36, v37, v38, v39, v11);
-    objc_msgSend_unitSpaceValueForDataSpaceValue_min_max_(self, v41, v42, a5, a6);
+    objc_msgSend_doubleModelToAxisValue_forSeries_(self, v36, v37, v38, v39, seriesCopy);
+    objc_msgSend_unitSpaceValueForDataSpaceValue_min_max_(self, v41, v42, min, max);
     v40 = v43;
   }
 
@@ -1413,11 +1413,11 @@ LABEL_32:
   return v40;
 }
 
-- (double)unitSpaceValuesForSeries:(id)a3 groupIndexSet:(id)a4 min:(double)a5 max:(double)a6
+- (double)unitSpaceValuesForSeries:(id)series groupIndexSet:(id)set min:(double)min max:(double)max
 {
-  v10 = a3;
-  v12 = a4;
-  if (!v10)
+  seriesCopy = series;
+  setCopy = set;
+  if (!seriesCopy)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v13, v14, v15, "[TSCHChartAxis unitSpaceValuesForSeries:groupIndexSet:min:max:]");
@@ -1427,7 +1427,7 @@ LABEL_32:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
   }
 
-  v31 = objc_msgSend_count(v12, v11, v13, v14, v15);
+  v31 = objc_msgSend_count(setCopy, v11, v13, v14, v15);
   v36 = objc_msgSend_dataWithLength_(MEMORY[0x277CBEB28], v32, v33, v34, v35, 8 * v31);
   v37 = v36;
   v42 = objc_msgSend_mutableBytes(v37, v38, v39, v40, v41);
@@ -1437,82 +1437,82 @@ LABEL_32:
   v56[1] = 3221225472;
   v56[2] = sub_276229B38;
   v56[3] = &unk_27A6B6CB8;
-  v49 = v10;
+  v49 = seriesCopy;
   v57 = v49;
-  v58 = self;
+  selfCopy = self;
   v50 = v47;
   v59 = v50;
   v60 = v42;
-  v61 = a5;
-  v62 = a6;
-  objc_msgSend_tsu_enumerateIndexesAndPositionsUsingBlock_(v12, v51, v52, v53, v54, v56);
+  minCopy = min;
+  maxCopy = max;
+  objc_msgSend_tsu_enumerateIndexesAndPositionsUsingBlock_(setCopy, v51, v52, v53, v54, v56);
 
   objc_autoreleasePoolPop(v48);
   return v42;
 }
 
-- (double)unitSpaceValueForSeries:(id)a3 groupIndex:(unint64_t)a4
+- (double)unitSpaceValueForSeries:(id)series groupIndex:(unint64_t)index
 {
-  v6 = a3;
+  seriesCopy = series;
   objc_msgSend_min(self, v7, v8, v9, v10);
   v12 = v11;
   objc_msgSend_max(self, v13, v11, v14, v15);
-  objc_msgSend_unitSpaceValueForSeries_groupIndex_min_max_(self, v16, v12, v17, v18, v6, a4);
+  objc_msgSend_unitSpaceValueForSeries_groupIndex_min_max_(self, v16, v12, v17, v18, seriesCopy, index);
   v20 = v19;
 
   return v20;
 }
 
-- (double)unitSpaceValuesForSeries:(id)a3 groupIndexSet:(id)a4
+- (double)unitSpaceValuesForSeries:(id)series groupIndexSet:(id)set
 {
-  v6 = a4;
-  v7 = a3;
+  setCopy = set;
+  seriesCopy = series;
   objc_msgSend_min(self, v8, v9, v10, v11);
   v13 = v12;
   objc_msgSend_max(self, v14, v12, v15, v16);
-  v20 = objc_msgSend_unitSpaceValuesForSeries_groupIndexSet_min_max_(self, v17, v13, v18, v19, v7, v6);
+  v20 = objc_msgSend_unitSpaceValuesForSeries_groupIndexSet_min_max_(self, v17, v13, v18, v19, seriesCopy, setCopy);
 
   return v20;
 }
 
-- (double)unitSpaceValueForDataSpaceValue:(double)a3 min:(double)a4 max:(double)a5
+- (double)unitSpaceValueForDataSpaceValue:(double)value min:(double)min max:(double)max
 {
-  v5 = a3;
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
+  valueCopy = value;
+  if ((*&value & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    if ((*&a4 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+    if ((*&min & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
     {
       v8 = MEMORY[0x277D81150];
-      v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a3, a4, a5, "[TSCHChartAxis unitSpaceValueForDataSpaceValue:min:max:]");
+      v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, value, min, max, "[TSCHChartAxis unitSpaceValueForDataSpaceValue:min:max:]");
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartAxis.m");
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v15, v16, v17, v18, v9, v14, 637, 0, "inf/NAN minValue!");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
     }
 
-    if ((*&a5 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+    if ((*&max & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
     {
       v23 = MEMORY[0x277D81150];
-      v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a3, a4, a5, "[TSCHChartAxis unitSpaceValueForDataSpaceValue:min:max:]");
+      v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, value, min, max, "[TSCHChartAxis unitSpaceValueForDataSpaceValue:min:max:]");
       v29 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, v26, v27, v28, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartAxis.m");
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v23, v30, v31, v32, v33, v24, v29, 638, 0, "inf/NAN maxValue!");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v34, v35, v36, v37);
     }
 
-    if (a5 - a4 < 0.0)
+    if (max - min < 0.0)
     {
       v38 = MEMORY[0x277D81150];
-      v39 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a3, a4, a5, "[TSCHChartAxis unitSpaceValueForDataSpaceValue:min:max:]");
+      v39 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, value, min, max, "[TSCHChartAxis unitSpaceValueForDataSpaceValue:min:max:]");
       v44 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v40, v41, v42, v43, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartAxis.m");
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v38, v45, v46, v47, v48, v39, v44, 639, 0, "max - min < 0!");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v49, v50, v51, v52);
     }
 
-    if (a5 == a4)
+    if (max == min)
     {
-      if (a5 == v5)
+      if (max == valueCopy)
       {
         return 0.0;
       }
@@ -1525,35 +1525,35 @@ LABEL_32:
 
     else
     {
-      return (v5 - a4) / (a5 - a4);
+      return (valueCopy - min) / (max - min);
     }
   }
 
-  return v5;
+  return valueCopy;
 }
 
-- (double)unitSpaceValueForDataSpaceValue:(double)a3
+- (double)unitSpaceValueForDataSpaceValue:(double)value
 {
-  objc_msgSend_min(self, a2, a3, v3, v4);
+  objc_msgSend_min(self, a2, value, v3, v4);
   v8 = v7;
   objc_msgSend_max(self, v9, v7, v10, v11);
 
-  objc_msgSend_unitSpaceValueForDataSpaceValue_min_max_(self, v12, a3, v8, v13);
+  objc_msgSend_unitSpaceValueForDataSpaceValue_min_max_(self, v12, value, v8, v13);
   return result;
 }
 
-- (id)unitSpaceValuesForDataSpaceValues:(id)a3
+- (id)unitSpaceValuesForDataSpaceValues:(id)values
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valuesCopy = values;
   v5 = MEMORY[0x277CBEB18];
-  v10 = objc_msgSend_count(v4, v6, v7, v8, v9);
+  v10 = objc_msgSend_count(valuesCopy, v6, v7, v8, v9);
   v15 = objc_msgSend_arrayWithCapacity_(v5, v11, v12, v13, v14, v10);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v16 = v4;
+  v16 = valuesCopy;
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, v18, v19, v20, &v43, v47, 16);
   if (v21)
   {
@@ -1583,13 +1583,13 @@ LABEL_32:
   return v15;
 }
 
-- (double)unitSpaceValueForCountSpaceValue:(double)a3 min:(double)a4 count:(double)a5
+- (double)unitSpaceValueForCountSpaceValue:(double)value min:(double)min count:(double)count
 {
-  objc_msgSend_doubleModelToAxisValue_forSeries_(self, a2, a3, a4, a5, 0);
+  objc_msgSend_doubleModelToAxisValue_forSeries_(self, a2, value, min, count, 0);
   v11 = v8;
   if ((*&v8 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    if ((*&a4 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+    if ((*&min & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
     {
       v12 = MEMORY[0x277D81150];
       v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v8, v9, v10, "[TSCHChartAxis unitSpaceValueForCountSpaceValue:min:count:]");
@@ -1599,7 +1599,7 @@ LABEL_32:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
     }
 
-    if ((*&a5 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+    if ((*&count & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
     {
       v27 = MEMORY[0x277D81150];
       v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v8, v9, v10, "[TSCHChartAxis unitSpaceValueForCountSpaceValue:min:count:]");
@@ -1609,7 +1609,7 @@ LABEL_32:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v38, v39, v40, v41);
     }
 
-    v42 = a5 - a4;
+    v42 = count - min;
     if (v42 <= 0.0)
     {
       v43 = MEMORY[0x277D81150];
@@ -1620,44 +1620,44 @@ LABEL_32:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v54, v55, v56, v57);
     }
 
-    return (v11 - a4) / v42;
+    return (v11 - min) / v42;
   }
 
   return v11;
 }
 
-- (double)unitSpaceValueForCountSpaceValue:(double)a3
+- (double)unitSpaceValueForCountSpaceValue:(double)value
 {
-  objc_msgSend_min(self, a2, a3, v3, v4);
+  objc_msgSend_min(self, a2, value, v3, v4);
   v8 = v7;
   v13 = objc_msgSend_p_count(self, v9, v7, v10, v11);
 
-  objc_msgSend_unitSpaceValueForCountSpaceValue_min_count_(self, v12, a3, v8, v13);
+  objc_msgSend_unitSpaceValueForCountSpaceValue_min_count_(self, v12, value, v8, v13);
   return result;
 }
 
-- (double)unitSpaceCenterValueHalfOffsetWithCount:(double)a3
+- (double)unitSpaceCenterValueHalfOffsetWithCount:(double)count
 {
-  isRangeContinuous = objc_msgSend_isRangeContinuous(self, a2, a3, v3, v4);
+  isRangeContinuous = objc_msgSend_isRangeContinuous(self, a2, count, v3, v4);
   result = 0.0;
   if ((isRangeContinuous & 1) == 0)
   {
-    return 1.0 / (a3 + a3);
+    return 1.0 / (count + count);
   }
 
   return result;
 }
 
-- (double)unitSpaceCenterValueForValue:(double)a3
+- (double)unitSpaceCenterValueForValue:(double)value
 {
-  if (objc_msgSend_isRangeContinuous(self, a2, a3, v3, v4))
+  if (objc_msgSend_isRangeContinuous(self, a2, value, v3, v4))
   {
-    objc_msgSend_unitSpaceValueForDataSpaceValue_(self, v7, a3, v8, v9);
+    objc_msgSend_unitSpaceValueForDataSpaceValue_(self, v7, value, v8, v9);
   }
 
   else
   {
-    objc_msgSend_unitSpaceValueForCountSpaceValue_(self, v7, a3, v8, v9);
+    objc_msgSend_unitSpaceValueForCountSpaceValue_(self, v7, value, v8, v9);
   }
 
   v11 = v10;
@@ -1669,33 +1669,33 @@ LABEL_32:
   return v22;
 }
 
-- (double)unitSpaceCenterValueForSeries:(id)a3 groupIndex:(unint64_t)a4
+- (double)unitSpaceCenterValueForSeries:(id)series groupIndex:(unint64_t)index
 {
-  v6 = a3;
+  seriesCopy = series;
   if (objc_msgSend_isRangeContinuous(self, v7, v8, v9, v10))
   {
-    objc_msgSend_unitSpaceValueForSeries_groupIndex_(self, v11, v12, v13, v14, v6, a4);
+    objc_msgSend_unitSpaceValueForSeries_groupIndex_(self, v11, v12, v13, v14, seriesCopy, index);
   }
 
   else
   {
-    objc_msgSend_unitSpaceValueForCountSpaceValue_(self, v11, a4, v13, v14);
+    objc_msgSend_unitSpaceValueForCountSpaceValue_(self, v11, index, v13, v14);
   }
 
   v16 = v15;
   WeakRetained = objc_loadWeakRetained(&self->_model);
-  v22 = objc_msgSend_numberOfGroupsInSeries_(WeakRetained, v18, v19, v20, v21, v6);
+  v22 = objc_msgSend_numberOfGroupsInSeries_(WeakRetained, v18, v19, v20, v21, seriesCopy);
   objc_msgSend_unitSpaceCenterValueHalfOffsetWithCount_(self, v23, v22, v24, v25);
   v27 = v16 + v26;
 
   return v27;
 }
 
-- (double)unitSpaceCenterValuesForSeries:(id)a3 groupIndexSet:(id)a4 count:(unint64_t)a5
+- (double)unitSpaceCenterValuesForSeries:(id)series groupIndexSet:(id)set count:(unint64_t)count
 {
-  v8 = a3;
-  v10 = a4;
-  if (!v8)
+  seriesCopy = series;
+  setCopy = set;
+  if (!seriesCopy)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v11, v12, v13, "[TSCHChartAxis unitSpaceCenterValuesForSeries:groupIndexSet:count:]");
@@ -1705,16 +1705,16 @@ LABEL_32:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  v29 = objc_msgSend_count(v10, v9, v11, v12, v13);
+  v29 = objc_msgSend_count(setCopy, v9, v11, v12, v13);
   isRangeContinuous = objc_msgSend_isRangeContinuous(self, v30, v31, v32, v33);
   WeakRetained = objc_loadWeakRetained(&self->_model);
-  v40 = objc_msgSend_numberOfGroupsInSeries_(WeakRetained, v36, v37, v38, v39, v8);
+  v40 = objc_msgSend_numberOfGroupsInSeries_(WeakRetained, v36, v37, v38, v39, seriesCopy);
   objc_msgSend_unitSpaceCenterValueHalfOffsetWithCount_(self, v41, v40, v42, v43);
   v45 = v44;
 
   if (isRangeContinuous)
   {
-    v50 = objc_msgSend_unitSpaceValuesForSeries_groupIndexSet_(self, v46, v47, v48, v49, v8, v10);
+    v50 = objc_msgSend_unitSpaceValuesForSeries_groupIndexSet_(self, v46, v47, v48, v49, seriesCopy, setCopy);
   }
 
   else
@@ -1723,7 +1723,7 @@ LABEL_32:
     v52 = v51;
     v50 = objc_msgSend_mutableBytes(v52, v53, v54, v55, v56);
 
-    if (v29 > a5 || objc_msgSend_lastIndex(v10, v57, v58, v59, v60) >= a5)
+    if (v29 > count || objc_msgSend_lastIndex(setCopy, v57, v58, v59, v60) >= count)
     {
       v61 = MEMORY[0x277D81150];
       v62 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v57, v58, v59, v60, "[TSCHChartAxis unitSpaceCenterValuesForSeries:groupIndexSet:count:]");
@@ -1741,8 +1741,8 @@ LABEL_32:
     v82[4] = self;
     v82[5] = v50;
     *&v82[6] = v76;
-    v82[7] = a5;
-    objc_msgSend_tsu_enumerateIndexesAndPositionsUsingBlock_(v10, v77, v76, COERCE_DOUBLE(3221225472), v78, v82);
+    v82[7] = count;
+    objc_msgSend_tsu_enumerateIndexesAndPositionsUsingBlock_(setCopy, v77, v76, COERCE_DOUBLE(3221225472), v78, v82);
   }
 
   if (v45 != 0.0 && v29 != 0)
@@ -1761,35 +1761,35 @@ LABEL_32:
   return v50;
 }
 
-- (double)unitSpaceValuesForCountSpaceValuesWithCount:(unint64_t)a3
+- (double)unitSpaceValuesForCountSpaceValuesWithCount:(unint64_t)count
 {
-  v8 = objc_msgSend_dataWithLength_(MEMORY[0x277CBEB28], a2, v3, v4, v5, 8 * a3);
+  v8 = objc_msgSend_dataWithLength_(MEMORY[0x277CBEB28], a2, v3, v4, v5, 8 * count);
   v9 = v8;
   v14 = objc_msgSend_mutableBytes(v9, v10, v11, v12, v13);
 
-  if (a3)
+  if (count)
   {
     v19 = 0;
     do
     {
       objc_msgSend_min(self, v15, v16, v17, v18);
-      objc_msgSend_unitSpaceValueForCountSpaceValue_min_count_(self, v20, v19, v21, a3);
+      objc_msgSend_unitSpaceValueForCountSpaceValue_min_count_(self, v20, v19, v21, count);
       v14[v19++] = v16;
     }
 
-    while (a3 != v19);
+    while (count != v19);
   }
 
   return v14;
 }
 
-- (id)p_fixupNegativeStyleForDataFormatter:(id)a3
+- (id)p_fixupNegativeStyleForDataFormatter:(id)formatter
 {
-  v3 = a3;
+  formatterCopy = formatter;
   objc_opt_class();
   v4 = TSUDynamicCast();
   v9 = v4;
-  v10 = v3;
+  v10 = formatterCopy;
   if (v4)
   {
     v10 = objc_msgSend_numberFormatByResettingToDefaultNegativeStyleIfAvailable(v4, v5, v6, v7, v8);
@@ -1889,11 +1889,11 @@ LABEL_15:
   return v117;
 }
 
-- (id)p_dataFormatterForSeries:(id)a3 groupIndex:(unint64_t)a4 onlyForValidValue:(BOOL)a5
+- (id)p_dataFormatterForSeries:(id)series groupIndex:(unint64_t)index onlyForValidValue:(BOOL)value
 {
-  v5 = a5;
-  v8 = a3;
-  v13 = objc_msgSend_intValueForProperty_defaultValue_(v8, v9, v10, v11, v12, 1167, 2);
+  valueCopy = value;
+  seriesCopy = series;
+  v13 = objc_msgSend_intValueForProperty_defaultValue_(seriesCopy, v9, v10, v11, v12, 1167, 2);
   v18 = objc_msgSend_chartInfo(self, v14, v15, v16, v17);
   v23 = objc_msgSend_mediator(v18, v19, v20, v21, v22);
 
@@ -1913,7 +1913,7 @@ LABEL_25:
     }
   }
 
-  if (!v5 || (objc_msgSend_valueForAxis_groupIndex_(v8, v34, v35, v36, v37, self, a4), v50 = objc_claimAutoreleasedReturnValue(), v50, v50))
+  if (!valueCopy || (objc_msgSend_valueForAxis_groupIndex_(seriesCopy, v34, v35, v36, v37, self, index), v50 = objc_claimAutoreleasedReturnValue(), v50, v50))
   {
     v51 = objc_msgSend_interceptAnalysis(self, v34, v35, v36, v37);
     v56 = objc_msgSend_gridValueType(v51, v52, v53, v54, v55);
@@ -1941,7 +1941,7 @@ LABEL_25:
     {
       if (v76 == 10)
       {
-        v39 = objc_msgSend_objectValueForProperty_(v8, v72, v73, v74, v75, 1137);
+        v39 = objc_msgSend_objectValueForProperty_(seriesCopy, v72, v73, v74, v75, 1137);
         v49 = TSUCheckedProtocolCast();
 LABEL_26:
 
@@ -1953,7 +1953,7 @@ LABEL_26:
       if (v76 == 7)
       {
         objc_opt_class();
-        v81 = objc_msgSend_objectValueForProperty_(v8, v77, v78, v79, v80, 1136);
+        v81 = objc_msgSend_objectValueForProperty_(seriesCopy, v77, v78, v79, v80, 1136);
         v39 = TSUCheckedDynamicCast();
 
         if (!v39)
@@ -1984,7 +1984,7 @@ LABEL_26:
     }
 
     objc_opt_class();
-    v129 = objc_msgSend_objectValueForProperty_(v8, v125, v126, v127, v128, 1166);
+    v129 = objc_msgSend_objectValueForProperty_(seriesCopy, v125, v126, v127, v128, 1166);
     v39 = TSUCheckedDynamicCast();
 
     v44 = objc_msgSend_drawableInfo(self, v130, v131, v132, v133);
@@ -2003,17 +2003,17 @@ LABEL_27:
   return v156;
 }
 
-- (id)inspectorStringForSeries:(id)a3 groupIndex:(unint64_t)a4 value:(id)a5
+- (id)inspectorStringForSeries:(id)series groupIndex:(unint64_t)index value:(id)value
 {
-  v8 = a3;
-  v10 = a5;
-  v14 = v10;
-  if (!v10)
+  seriesCopy = series;
+  valueCopy = value;
+  v14 = valueCopy;
+  if (!valueCopy)
   {
-    v14 = objc_msgSend_valueForAxis_groupIndex_(v8, v9, v11, v12, v13, self, a4);
+    v14 = objc_msgSend_valueForAxis_groupIndex_(seriesCopy, v9, v11, v12, v13, self, index);
   }
 
-  v15 = objc_msgSend_p_dataFormatterForSeries_groupIndex_onlyForValidValue_(self, v9, v11, v12, v13, v8, a4, v10 == 0);
+  v15 = objc_msgSend_p_dataFormatterForSeries_groupIndex_onlyForValidValue_(self, v9, v11, v12, v13, seriesCopy, index, valueCopy == 0);
   v20 = objc_msgSend_locale(self, v16, v17, v18, v19);
   v25 = objc_msgSend_chartFormattedInspectorStringForValue_locale_(v15, v21, v22, v23, v24, v14, v20);
 
@@ -2028,11 +2028,11 @@ LABEL_27:
   return v10;
 }
 
-- (id)formattedStringForAxisValue:(id)a3
+- (id)formattedStringForAxisValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    objc_msgSend_doubleValue(a3, a2, v3, v4, v5);
+    objc_msgSend_doubleValue(value, a2, v3, v4, v5);
     v11 = objc_msgSend_gridValueAxisToModelValue_(self, v7, v8, v9, v10);
   }
 
@@ -2048,11 +2048,11 @@ LABEL_27:
   return v22;
 }
 
-- (id)formattedStringForSeries:(id)a3 groupIndex:(unint64_t)a4
+- (id)formattedStringForSeries:(id)series groupIndex:(unint64_t)index
 {
-  v6 = a3;
-  v11 = objc_msgSend_valueForAxis_groupIndex_(v6, v7, v8, v9, v10, self, a4);
-  v16 = objc_msgSend_dataFormatterForSeries_groupIndex_(self, v12, v13, v14, v15, v6, a4);
+  seriesCopy = series;
+  v11 = objc_msgSend_valueForAxis_groupIndex_(seriesCopy, v7, v8, v9, v10, self, index);
+  v16 = objc_msgSend_dataFormatterForSeries_groupIndex_(self, v12, v13, v14, v15, seriesCopy, index);
 
   v21 = objc_msgSend_locale(self, v17, v18, v19, v20);
   v26 = objc_msgSend_chartFormattedStringForValue_locale_(v16, v22, v23, v24, v25, v11, v21);
@@ -2060,12 +2060,12 @@ LABEL_27:
   return v26;
 }
 
-- (id)valueForFormattedString:(id)a3
+- (id)valueForFormattedString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v7 = MEMORY[0x277CCABB0];
-    objc_msgSend_doubleValue(a3, a2, v4, v5, v6);
+    objc_msgSend_doubleValue(string, a2, v4, v5, v6);
     v12 = objc_msgSend_numberWithDouble_(v7, v8, v9, v10, v11);
   }
 
@@ -2077,10 +2077,10 @@ LABEL_27:
   return v12;
 }
 
-- (void)updateAxisDateInterceptInAnalysis:(id)a3
+- (void)updateAxisDateInterceptInAnalysis:(id)analysis
 {
   v73 = *MEMORY[0x277D85DE8];
-  v61 = a3;
+  analysisCopy = analysis;
   v8 = objc_msgSend_axisID(self, v4, v5, v6, v7);
   v67 = 0u;
   v68 = 0u;
@@ -2203,19 +2203,19 @@ LABEL_27:
     v28 = 0.0;
   }
 
-  objc_msgSend_setAxisInterceptPosition_(v61, v59, v28 + (v26 - v28) * -0.1, -0.1, v60);
+  objc_msgSend_setAxisInterceptPosition_(analysisCopy, v59, v28 + (v26 - v28) * -0.1, -0.1, v60);
 }
 
-- (id)formattedStringForSeries:(id)a3 groupIndex:(unint64_t)a4 multiDataSetIndex:(unint64_t)a5
+- (id)formattedStringForSeries:(id)series groupIndex:(unint64_t)index multiDataSetIndex:(unint64_t)setIndex
 {
-  v8 = a3;
+  seriesCopy = series;
   WeakRetained = objc_loadWeakRetained(&self->_model);
   isMultiData = objc_msgSend_isMultiData(WeakRetained, v10, v11, v12, v13);
 
   if (isMultiData)
   {
-    v20 = objc_msgSend_valueForAxis_groupIndex_multiDataSetIndex_(v8, v15, v16, v17, v18, self, a4, a5);
-    if (v20 && (objc_msgSend_p_dataFormatterForSeries_groupIndex_onlyForValidValue_(self, v19, v21, v22, v23, v8, a4, 0), (v24 = objc_claimAutoreleasedReturnValue()) != 0))
+    v20 = objc_msgSend_valueForAxis_groupIndex_multiDataSetIndex_(seriesCopy, v15, v16, v17, v18, self, index, setIndex);
+    if (v20 && (objc_msgSend_p_dataFormatterForSeries_groupIndex_onlyForValidValue_(self, v19, v21, v22, v23, seriesCopy, index, 0), (v24 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v29 = v24;
       v30 = objc_msgSend_locale(self, v25, v26, v27, v28);
@@ -2230,33 +2230,33 @@ LABEL_27:
 
   else
   {
-    v35 = objc_msgSend_formattedStringForSeries_groupIndex_(self, v15, v16, v17, v18, v8, a4);
+    v35 = objc_msgSend_formattedStringForSeries_groupIndex_(self, v15, v16, v17, v18, seriesCopy, index);
   }
 
   return v35;
 }
 
-- (void)setStyle:(id)a3 index:(unint64_t)a4
+- (void)setStyle:(id)style index:(unint64_t)index
 {
-  v42 = a3;
+  styleCopy = style;
   isCategory = objc_msgSend_isCategory(self, v7, v8, v9, v10);
   v16 = objc_msgSend_chartInfo(self, v12, v13, v14, v15);
   v21 = v16;
   if (isCategory)
   {
-    objc_msgSend_categoryAxisStyleAtIndex_(v16, v17, v18, v19, v20, a4);
+    objc_msgSend_categoryAxisStyleAtIndex_(v16, v17, v18, v19, v20, index);
   }
 
   else
   {
-    objc_msgSend_valueAxisStyleAtIndex_(v16, v17, v18, v19, v20, a4);
+    objc_msgSend_valueAxisStyleAtIndex_(v16, v17, v18, v19, v20, index);
   }
   v22 = ;
 
-  if (v22 == v42)
+  if (v22 == styleCopy)
   {
-    objc_storeStrong(&self->_style, a3);
-    self->_styleIndex = a4;
+    objc_storeStrong(&self->_style, style);
+    self->_styleIndex = index;
   }
 
   else
@@ -2270,27 +2270,27 @@ LABEL_27:
   }
 }
 
-- (void)setNonStyle:(id)a3 index:(unint64_t)a4
+- (void)setNonStyle:(id)style index:(unint64_t)index
 {
-  v42 = a3;
+  styleCopy = style;
   isCategory = objc_msgSend_isCategory(self, v7, v8, v9, v10);
   v16 = objc_msgSend_chartInfo(self, v12, v13, v14, v15);
   v21 = v16;
   if (isCategory)
   {
-    objc_msgSend_categoryAxisNonstyleAtIndex_(v16, v17, v18, v19, v20, a4);
+    objc_msgSend_categoryAxisNonstyleAtIndex_(v16, v17, v18, v19, v20, index);
   }
 
   else
   {
-    objc_msgSend_valueAxisNonstyleAtIndex_(v16, v17, v18, v19, v20, a4);
+    objc_msgSend_valueAxisNonstyleAtIndex_(v16, v17, v18, v19, v20, index);
   }
   v22 = ;
 
-  if (v22 == v42)
+  if (v22 == styleCopy)
   {
-    objc_storeStrong(&self->_nonStyle, a3);
-    self->_nonStyleIndex = a4;
+    objc_storeStrong(&self->_nonStyle, style);
+    self->_nonStyleIndex = index;
   }
 
   else
@@ -2323,12 +2323,12 @@ LABEL_27:
   return v6;
 }
 
-- (int)defaultPropertyForGeneric:(int)a3
+- (int)defaultPropertyForGeneric:(int)generic
 {
   v7 = objc_msgSend_p_genericToDefaultPropertyMap(self, a2, v3, v4, v5);
-  if (objc_msgSend_containsKey_(v7, v8, v9, v10, v11, a3))
+  if (objc_msgSend_containsKey_(v7, v8, v9, v10, v11, generic))
   {
-    v16 = objc_msgSend_intForKey_(v7, v12, v13, v14, v15, a3);
+    v16 = objc_msgSend_intForKey_(v7, v12, v13, v14, v15, generic);
   }
 
   else
@@ -2339,36 +2339,36 @@ LABEL_27:
   return v16;
 }
 
-- (int)intValueForProperty:(int)a3 defaultValue:(int)a4
+- (int)intValueForProperty:(int)property defaultValue:(int)value
 {
   v6 = 0;
-  if (sub_2762E5130(self, self->_style, self->_nonStyle, *&a3, &v6))
+  if (sub_2762E5130(self, self->_style, self->_nonStyle, *&property, &v6))
   {
     return v6;
   }
 
   else
   {
-    return a4;
+    return value;
   }
 }
 
-- (float)floatValueForProperty:(int)a3 defaultValue:(float)a4
+- (float)floatValueForProperty:(int)property defaultValue:(float)value
 {
   v7 = 0.0;
-  v5 = sub_2762E5658(self, self->_style, self->_nonStyle, *&a3, &v7);
+  v5 = sub_2762E5658(self, self->_style, self->_nonStyle, *&property, &v7);
   result = v7;
   if (!v5)
   {
-    return a4;
+    return value;
   }
 
   return result;
 }
 
-- (id)objectValueForProperty:(int)a3
+- (id)objectValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   style = self->_style;
   nonStyle = self->_nonStyle;
   v9 = 0;
@@ -2409,10 +2409,10 @@ LABEL_27:
   return v12;
 }
 
-- (id)swapTuplesForMutations:(id)a3 forImport:(BOOL)a4
+- (id)swapTuplesForMutations:(id)mutations forImport:(BOOL)import
 {
-  v4 = a4;
-  v6 = a3;
+  importCopy = import;
+  mutationsCopy = mutations;
   if (objc_msgSend_isCategory(self, v7, v8, v9, v10))
   {
     v15 = 7;
@@ -2425,22 +2425,22 @@ LABEL_27:
 
   if (objc_msgSend_isCategory(self, v11, v12, v13, v14))
   {
-    objc_msgSend_convertToStyleSwapTuplesForStyleOwner_styleSwapType_nonStyleSwapType_index_fromMutations_forImport_withOptionalStyleValueConversionBlock_(TSCHPropertyMutationHelper, v16, v17, v18, v19, self, v15, 8, self->_styleIndex, v6, v4, 0);
+    objc_msgSend_convertToStyleSwapTuplesForStyleOwner_styleSwapType_nonStyleSwapType_index_fromMutations_forImport_withOptionalStyleValueConversionBlock_(TSCHPropertyMutationHelper, v16, v17, v18, v19, self, v15, 8, self->_styleIndex, mutationsCopy, importCopy, 0);
   }
 
   else
   {
-    objc_msgSend_convertToStyleSwapTuplesForStyleOwner_styleSwapType_nonStyleSwapType_index_fromMutations_forImport_withOptionalStyleValueConversionBlock_(TSCHPropertyMutationHelper, v16, v17, v18, v19, self, v15, 6, self->_styleIndex, v6, v4, 0);
+    objc_msgSend_convertToStyleSwapTuplesForStyleOwner_styleSwapType_nonStyleSwapType_index_fromMutations_forImport_withOptionalStyleValueConversionBlock_(TSCHPropertyMutationHelper, v16, v17, v18, v19, self, v15, 6, self->_styleIndex, mutationsCopy, importCopy, 0);
   }
   v20 = ;
 
   return v20;
 }
 
-- (void)propertiesWereMutated:(id)a3
+- (void)propertiesWereMutated:(id)mutated
 {
-  v57 = a3;
-  if (objc_msgSend_count(v57, v4, v5, v6, v7))
+  mutatedCopy = mutated;
+  if (objc_msgSend_count(mutatedCopy, v4, v5, v6, v7))
   {
     v8 = objc_alloc(MEMORY[0x277D80AC0]);
     v13 = objc_msgSend_specificPropertyForGeneric_(self, v9, v10, v11, v12, 1045);
@@ -2451,7 +2451,7 @@ LABEL_27:
     v38 = objc_msgSend_specificPropertyForGeneric_(self, v34, v35, v36, v37, 1064);
     v43 = objc_msgSend_specificPropertyForGeneric_(self, v39, v40, v41, v42, 1065);
     v48 = objc_msgSend_initWithProperties_(v8, v44, v45, v46, v47, v13, v18, v23, v28, v33, v38, v43, 0);
-    if (objc_msgSend_intersectsProperties_(v57, v49, v50, v51, v52, v48))
+    if (objc_msgSend_intersectsProperties_(mutatedCopy, v49, v50, v51, v52, v48))
     {
       objc_msgSend_invalidateTransientState(self, v53, v54, v55, v56);
     }
@@ -2472,12 +2472,12 @@ LABEL_27:
   return TSUDynamicCast();
 }
 
-- (id)transformedTuplesWithTuple:(id)a3
+- (id)transformedTuplesWithTuple:(id)tuple
 {
   v70[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tupleCopy = tuple;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  objc_msgSend_addObject_(v5, v6, v7, v8, v9, v4);
+  objc_msgSend_addObject_(v5, v6, v7, v8, v9, tupleCopy);
   v14 = objc_msgSend_axisID(self, v10, v11, v12, v13);
   if (objc_msgSend_type(v14, v15, v16, v17, v18) == 2)
   {
@@ -2493,7 +2493,7 @@ LABEL_27:
   v33 = objc_msgSend_axisID(self, v29, v30, v31, v32);
   if (objc_msgSend_type(v33, v34, v35, v36, v37) == 1 || v28)
   {
-    v42 = objc_msgSend_mutations(v4, v38, v39, v40, v41);
+    v42 = objc_msgSend_mutations(tupleCopy, v38, v39, v40, v41);
     v47 = objc_msgSend_objectForKey_(v42, v43, v44, v45, v46, &unk_28856BD38);
 
     if (!v47)
@@ -2543,9 +2543,9 @@ LABEL_9:
   return v3;
 }
 
-- (id)g_operationPropertyNameForGenericProperty:(int)a3
+- (id)g_operationPropertyNameForGenericProperty:(int)property
 {
-  v6 = *&a3;
+  v6 = *&property;
   v8 = objc_msgSend_specificPropertyForGeneric_(self, a2, v3, v4, v5);
   if (v8 || (v8 = objc_msgSend_defaultPropertyForGeneric_(self, v9, v10, v11, v12, v6), v8))
   {

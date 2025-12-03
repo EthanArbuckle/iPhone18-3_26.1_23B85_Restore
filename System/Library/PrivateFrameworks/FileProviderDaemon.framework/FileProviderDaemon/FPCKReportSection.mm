@@ -3,7 +3,7 @@
 - (NSString)build;
 - (NSString)description;
 - (_TtC18FileProviderDaemon17FPCKReportSection)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPCKReportSection
@@ -34,7 +34,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CF4D639C();
 
   v3 = sub_1CF9E6888();
@@ -42,11 +42,11 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1CF4D7040(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1CF4D7040(coderCopy);
 }
 
 - (_TtC18FileProviderDaemon17FPCKReportSection)init

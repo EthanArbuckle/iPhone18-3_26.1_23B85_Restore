@@ -1,10 +1,10 @@
 @interface _PIPosterLayoutPropertiesJob
-- (BOOL)prepare:(id *)a3;
-- (BOOL)render:(id *)a3;
+- (BOOL)prepare:(id *)prepare;
+- (BOOL)render:(id *)render;
 - (CGRect)adaptiveTimeFrame;
 - (CGRect)adaptiveVisibleFrame;
 - (CGRect)visibleFrame;
-- (_PIPosterLayoutPropertiesJob)initWithLayoutPropertiesRequest:(id)a3;
+- (_PIPosterLayoutPropertiesJob)initWithLayoutPropertiesRequest:(id)request;
 - (id)result;
 @end
 
@@ -65,11 +65,11 @@
   return v3;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   p_isa = &self->super.super.isa;
   v325 = *MEMORY[0x1E69E9840];
-  v316 = [(NURenderJob *)self renderer:a3];
+  v316 = [(NURenderJob *)self renderer:render];
   if (!v316)
   {
     v264 = NUAssertLogger();
@@ -115,8 +115,8 @@
     goto LABEL_81;
   }
 
-  v14 = [p_isa segmentationItem];
-  if (!v14)
+  segmentationItem = [p_isa segmentationItem];
+  if (!segmentationItem)
   {
     v267 = NUAssertLogger();
     if (os_log_type_enabled(v267, OS_LOG_TYPE_ERROR))
@@ -166,9 +166,9 @@ LABEL_81:
     goto LABEL_83;
   }
 
-  specific = v14;
-  v16 = [p_isa layoutConfiguration];
-  if (!v16)
+  specific = segmentationItem;
+  layoutConfiguration = [p_isa layoutConfiguration];
+  if (!layoutConfiguration)
   {
     v270 = NUAssertLogger();
     if (os_log_type_enabled(v270, OS_LOG_TYPE_ERROR))
@@ -218,9 +218,9 @@ LABEL_84:
     goto LABEL_86;
   }
 
-  v3 = v16;
-  v17 = [p_isa layout];
-  if (!v17)
+  v3 = layoutConfiguration;
+  layout = [p_isa layout];
+  if (!layout)
   {
     v273 = NUAssertLogger();
     v3 = &qword_1C7845000;
@@ -271,39 +271,39 @@ LABEL_87:
     goto LABEL_89;
   }
 
-  v4 = v17;
-  v5 = [p_isa matteImage];
-  v18 = [specific classification];
-  v19 = [specific regions];
-  v20 = [v19 petRegions];
-  v21 = [v20 count];
+  v4 = layout;
+  matteImage = [p_isa matteImage];
+  classification = [specific classification];
+  regions = [specific regions];
+  petRegions = [regions petRegions];
+  v21 = [petRegions count];
 
-  v22 = [specific originalLayout];
-  v23 = [specific regions];
-  [v23 preferredCropRect];
+  originalLayout = [specific originalLayout];
+  regions2 = [specific regions];
+  [regions2 preferredCropRect];
   v304 = v24;
   v26 = v25;
   v28 = v27;
   v30 = v29;
 
-  v31 = [specific regions];
-  [v31 acceptableCropRect];
+  regions3 = [specific regions];
+  [regions3 acceptableCropRect];
   v313 = v33;
   recta = v32;
   v308 = v35;
   v311 = v34;
 
   v36 = MEMORY[0x1E69C07A8];
-  v306 = v22;
-  [v22 imageSize];
+  v306 = originalLayout;
+  [originalLayout imageSize];
   v38 = v37;
   v40 = v39;
   [v3 screenSize];
   v42 = v41;
   v44 = v43;
-  v45 = [specific regions];
-  v46 = [v45 faceRegions];
-  [v36 bestFaceRectWithImageSize:v46 deviceSize:v38 faceRegions:{v40, v42, v44}];
+  regions4 = [specific regions];
+  faceRegions = [regions4 faceRegions];
+  [v36 bestFaceRectWithImageSize:faceRegions deviceSize:v38 faceRegions:{v40, v42, v44}];
   v48 = v47;
   v50 = v49;
   v52 = v51;
@@ -311,7 +311,7 @@ LABEL_87:
 
   if (([v4 hasTopEdgeContact] & 1) == 0)
   {
-    [v5 extent];
+    [matteImage extent];
     v301 = v50;
     v302 = v48;
     v56 = v55;
@@ -322,8 +322,8 @@ LABEL_87:
     v62 = v61;
     v63 = v30;
     v65 = *MEMORY[0x1E69C0C68] * v64;
-    v66 = [MEMORY[0x1E695F658] blackImage];
-    v67 = [v5 imageByCompositingOverImage:v66];
+    blackImage = [MEMORY[0x1E695F658] blackImage];
+    v67 = [matteImage imageByCompositingOverImage:blackImage];
     v68 = v56;
     v69 = v59;
     v26 = v57;
@@ -336,14 +336,14 @@ LABEL_87:
     v30 = v63;
     v72 = [v67 imageByCroppingToRect:{v68, v69, v70, v71}];
 
-    v5 = v72;
+    matteImage = v72;
   }
 
   v73 = v21 != 0;
   v74 = MEMORY[0x1E69C07A8];
-  v75 = [specific regions];
-  [v75 gazeAreaRect];
-  [v74 effectiveAcceptableRectForClassification:v18 havePetFaces:v73 sourcePreferredCropRectNormalized:v304 sourceAcceptableCropRectNormalized:v26 sourceFaceAreaRectNormalized:v28 sourceGazeAreaRectNormalized:{v30, recta, v313, v311, v308, v48, v50, v52, v54, v76, v77, v78, v79}];
+  regions5 = [specific regions];
+  [regions5 gazeAreaRect];
+  [v74 effectiveAcceptableRectForClassification:classification havePetFaces:v73 sourcePreferredCropRectNormalized:v304 sourceAcceptableCropRectNormalized:v26 sourceFaceAreaRectNormalized:v28 sourceGazeAreaRectNormalized:{v30, recta, v313, v311, v308, v48, v50, v52, v54, v76, v77, v78, v79}];
   v81 = v80;
   v83 = v82;
   v85 = v84;
@@ -354,17 +354,17 @@ LABEL_87:
   v91 = v83 * v90 + 0.0;
   v92 = v85 * v88;
   v93 = v87 * v90;
-  v94 = [p_isa segmentationItem];
-  if ([v94 classification] == 1)
+  segmentationItem2 = [p_isa segmentationItem];
+  if ([segmentationItem2 classification] == 1)
   {
   }
 
   else
   {
-    v95 = [p_isa segmentationItem];
-    v96 = [v95 classification];
+    segmentationItem3 = [p_isa segmentationItem];
+    classification2 = [segmentationItem3 classification];
 
-    if (v96 != 2)
+    if (classification2 != 2)
     {
       goto LABEL_11;
     }
@@ -377,11 +377,11 @@ LABEL_87:
   v93 = v100;
 LABEL_11:
   v101 = MEMORY[0x1E695F058];
-  v102 = [p_isa matteImage];
+  matteImage2 = [p_isa matteImage];
 
   v286.size.width = v92;
   v286.size.height = v93;
-  if (v102)
+  if (matteImage2)
   {
     v326.origin.x = v89;
     v326.origin.y = v91;
@@ -393,8 +393,8 @@ LABEL_11:
     v107 = v106;
     v109 = v108;
     v111 = v110;
-    v112 = [v316 context];
-    [PISegmentationHelper computeCenterZoomAreaWithMidpoint:v5 visibleFrame:v3 segmentationMatte:v112 layoutConfiguration:MidX context:v105, v107, v109, v111];
+    context = [v316 context];
+    [PISegmentationHelper computeCenterZoomAreaWithMidpoint:matteImage visibleFrame:v3 segmentationMatte:context layoutConfiguration:MidX context:v105, v107, v109, v111];
     v297 = v114;
     v298 = v113;
     v295 = v116;
@@ -409,11 +409,11 @@ LABEL_11:
     v296 = v101[2];
   }
 
-  v117 = [p_isa matteImage];
+  matteImage3 = [p_isa matteImage];
 
   v286.origin.x = v89;
   v286.origin.y = v91;
-  if (v117)
+  if (matteImage3)
   {
     [v4 visibleFrame];
     v119 = v118;
@@ -423,8 +423,8 @@ LABEL_11:
     [v4 extendedImageSize];
     v127 = v126;
     v129 = v128;
-    v130 = [v316 context];
-    [PISegmentationHelper computeStretchOverlapYOffsetWithVisibleFrame:v5 imageSize:0 segmentationMatte:v3 classicOverlap:v130 layoutConfiguration:v119 context:v121, v123, v125, v127, v129];
+    context2 = [v316 context];
+    [PISegmentationHelper computeStretchOverlapYOffsetWithVisibleFrame:matteImage imageSize:0 segmentationMatte:v3 classicOverlap:context2 layoutConfiguration:v119 context:v121, v123, v125, v127, v129];
     v132 = v131;
 
     [v4 visibleFrame];
@@ -467,8 +467,8 @@ LABEL_11:
   v148 = v147;
   v150 = v149;
   v152 = v151;
-  v153 = [p_isa layoutPropertiesRequest];
-  v154 = [v153 calculateAdaptiveFrame];
+  layoutPropertiesRequest = [p_isa layoutPropertiesRequest];
+  calculateAdaptiveFrame = [layoutPropertiesRequest calculateAdaptiveFrame];
 
   v155 = MEMORY[0x1E69B3D80];
   *&v299[16] = v150;
@@ -477,7 +477,7 @@ LABEL_11:
   *&v299[8] = v148;
   v312 = v140;
   rect = v142;
-  if (v154)
+  if (calculateAdaptiveFrame)
   {
     v285 = v138;
     v292 = v144;
@@ -509,18 +509,18 @@ LABEL_11:
     }
 
     v175 = MEMORY[0x1E69C07A8];
-    v176 = [p_isa layoutConfiguration];
+    layoutConfiguration2 = [p_isa layoutConfiguration];
     v283 = v158;
     v284 = v164;
     v293 = v160;
     v280 = v162;
-    [v175 adaptiveFrameForTopEdgeVisibleFrame:v176 layoutConfiguration:buf outVisibleFrame:v158 maxClockStretchOverride:{v160, v162, v164, v174}];
+    [v175 adaptiveFrameForTopEdgeVisibleFrame:layoutConfiguration2 layoutConfiguration:buf outVisibleFrame:v158 maxClockStretchOverride:{v160, v162, v164, v174}];
     v281 = v178;
     v282 = v177;
     v180 = v179;
     v182 = v181;
 
-    if (v5)
+    if (matteImage)
     {
       [v4 visibleFrame];
       v184 = v183;
@@ -530,16 +530,16 @@ LABEL_11:
       [v4 extendedImageSize];
       v192 = v191;
       v194 = v193;
-      v195 = [v316 context];
-      [PISegmentationHelper computeStretchOverlapYOffsetWithVisibleFrame:v5 imageSize:1 segmentationMatte:v3 classicOverlap:v195 layoutConfiguration:v184 context:v186, v188, v190, v192, v194];
+      context3 = [v316 context];
+      [PISegmentationHelper computeStretchOverlapYOffsetWithVisibleFrame:matteImage imageSize:1 segmentationMatte:v3 classicOverlap:context3 layoutConfiguration:v184 context:v186, v188, v190, v192, v194];
       v197 = v196;
     }
 
     else
     {
       MaxY = CGRectGetMaxY(v286);
-      v203 = [p_isa layoutConfiguration];
-      [v203 timeOverlapCheckBottom];
+      layoutConfiguration3 = [p_isa layoutConfiguration];
+      [layoutConfiguration3 timeOverlapCheckBottom];
       v205 = v204;
       v207 = v206;
       [v4 visibleFrame];
@@ -550,12 +550,12 @@ LABEL_11:
     }
 
     v6 = v155;
-    v212 = [p_isa layoutConfiguration];
-    [v212 timeRect];
+    layoutConfiguration4 = [p_isa layoutConfiguration];
+    [layoutConfiguration4 timeRect];
     v214 = v293 + v213 * v284;
 
-    v215 = [p_isa layoutConfiguration];
-    [v215 timeRect];
+    layoutConfiguration5 = [p_isa layoutConfiguration];
+    [layoutConfiguration5 timeRect];
     v217 = *&buf[8] + v216 * *&buf[24];
 
     *&log = v197;
@@ -789,74 +789,74 @@ LABEL_49:
   return 1;
 }
 
-- (BOOL)prepare:(id *)a3
+- (BOOL)prepare:(id *)prepare
 {
-  v4 = [(_PIPosterLayoutPropertiesJob *)self layoutPropertiesRequest];
-  v5 = [v4 segmentationItem];
-  v6 = [v4 layout];
-  v7 = [v6 orientation];
-  v8 = [v5 layoutConfiguration];
-  v9 = v8;
-  if (v7 == 2)
+  layoutPropertiesRequest = [(_PIPosterLayoutPropertiesJob *)self layoutPropertiesRequest];
+  segmentationItem = [layoutPropertiesRequest segmentationItem];
+  layout = [layoutPropertiesRequest layout];
+  orientation = [layout orientation];
+  layoutConfiguration = [segmentationItem layoutConfiguration];
+  v9 = layoutConfiguration;
+  if (orientation == 2)
   {
-    [v8 landscapeConfiguration];
+    [layoutConfiguration landscapeConfiguration];
   }
 
   else
   {
-    [v8 portraitConfiguration];
+    [layoutConfiguration portraitConfiguration];
   }
   v10 = ;
 
   if (!v10)
   {
-    v10 = [MEMORY[0x1E69C0790] deviceConfigurationForOrientation:{objc_msgSend(v6, "orientation")}];
+    v10 = [MEMORY[0x1E69C0790] deviceConfigurationForOrientation:{objc_msgSend(layout, "orientation")}];
   }
 
-  v11 = [v5 segmentationMatte];
+  segmentationMatte = [segmentationItem segmentationMatte];
 
-  if (v11)
+  if (segmentationMatte)
   {
     v12 = MEMORY[0x1E695F658];
-    v13 = [v5 segmentationMatte];
-    v14 = [v12 imageWithNUImageBuffer:v13];
+    segmentationMatte2 = [segmentationItem segmentationMatte];
+    v14 = [v12 imageWithNUImageBuffer:segmentationMatte2];
 
-    [v6 imageSize];
+    [layout imageSize];
     v16 = v15;
     [v14 extent];
     CGAffineTransformMakeScale(&v20, v16 / v17, v16 / v17);
-    v11 = [v14 imageByApplyingTransform:&v20];
+    segmentationMatte = [v14 imageByApplyingTransform:&v20];
 
-    if ([v5 classification] == 3 || objc_msgSend(v5, "classification") == 4)
+    if ([segmentationItem classification] == 3 || objc_msgSend(segmentationItem, "classification") == 4)
     {
-      v18 = [PISegmentationHelper invertImage:v11];
+      v18 = [PISegmentationHelper invertImage:segmentationMatte];
 
-      v11 = v18;
+      segmentationMatte = v18;
     }
   }
 
-  [(_PIPosterLayoutPropertiesJob *)self setSegmentationItem:v5];
-  [(_PIPosterLayoutPropertiesJob *)self setMatteImage:v11];
-  [(_PIPosterLayoutPropertiesJob *)self setLayout:v6];
+  [(_PIPosterLayoutPropertiesJob *)self setSegmentationItem:segmentationItem];
+  [(_PIPosterLayoutPropertiesJob *)self setMatteImage:segmentationMatte];
+  [(_PIPosterLayoutPropertiesJob *)self setLayout:layout];
   [(_PIPosterLayoutPropertiesJob *)self setLayoutConfiguration:v10];
-  [v6 visibleFrame];
+  [layout visibleFrame];
   [(_PIPosterLayoutPropertiesJob *)self setVisibleFrame:?];
-  -[_PIPosterLayoutPropertiesJob setLayoutVariant:](self, "setLayoutVariant:", [v6 layoutVariant]);
-  [v6 adaptiveVisibleFrame];
+  -[_PIPosterLayoutPropertiesJob setLayoutVariant:](self, "setLayoutVariant:", [layout layoutVariant]);
+  [layout adaptiveVisibleFrame];
   [(_PIPosterLayoutPropertiesJob *)self setAdaptiveVisibleFrame:?];
-  [v6 adaptiveTimeFrame];
+  [layout adaptiveTimeFrame];
   [(_PIPosterLayoutPropertiesJob *)self setAdaptiveTimeFrame:?];
-  [v6 maxClockShift];
+  [layout maxClockShift];
   [(_PIPosterLayoutPropertiesJob *)self setMaxClockShift:?];
 
   return 1;
 }
 
-- (_PIPosterLayoutPropertiesJob)initWithLayoutPropertiesRequest:(id)a3
+- (_PIPosterLayoutPropertiesJob)initWithLayoutPropertiesRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = _PIPosterLayoutPropertiesJob;
-  return [(NURenderJob *)&v4 initWithRequest:a3];
+  return [(NURenderJob *)&v4 initWithRequest:request];
 }
 
 @end

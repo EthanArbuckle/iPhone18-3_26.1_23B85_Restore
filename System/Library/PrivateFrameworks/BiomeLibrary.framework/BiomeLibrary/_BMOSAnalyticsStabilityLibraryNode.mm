@@ -2,7 +2,7 @@
 + (id)Crash;
 + (id)configurationForCrash;
 + (id)storeConfigurationForCrash;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)Crash
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForCrash];
+  configurationForCrash = [self configurationForCrash];
   v3 = +[BMProcessCrash columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"OSAnalytics.Stability.Crash" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"OSAnalytics.Stability.Crash" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"OSAnalytics.Stability.Crash" schema:v9 configuration:configurationForCrash];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForCrash
 {
-  v3 = [a1 storeConfigurationForCrash];
-  v4 = [a1 syncPolicyForCrash];
+  storeConfigurationForCrash = [self storeConfigurationForCrash];
+  syncPolicyForCrash = [self syncPolicyForCrash];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"1EBEF233-3ED8-4A00-8E96-3A2D71B4E0B1"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"OSAnalytics.Stability.Crash" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"OSAnalytics.Stability.Crash" eventClass:objc_opt_class() storeConfig:storeConfigurationForCrash syncPolicy:syncPolicyForCrash legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -52,19 +52,19 @@
   return v4;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Crash"])
+  if ([name isEqualToString:@"Crash"])
   {
-    v4 = [a1 Crash];
+    crash = [self Crash];
   }
 
   else
   {
-    v4 = 0;
+    crash = 0;
   }
 
-  return v4;
+  return crash;
 }
 
 + (id)validKeyPaths

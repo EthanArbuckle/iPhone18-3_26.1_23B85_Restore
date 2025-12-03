@@ -1,12 +1,12 @@
 @interface MCNearbyPeerTableViewHeader
-- (MCNearbyPeerTableViewHeader)initWithTitle:(id)a3;
+- (MCNearbyPeerTableViewHeader)initWithTitle:(id)title;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation MCNearbyPeerTableViewHeader
 
-- (MCNearbyPeerTableViewHeader)initWithTitle:(id)a3
+- (MCNearbyPeerTableViewHeader)initWithTitle:(id)title
 {
   v7.receiver = self;
   v7.super_class = MCNearbyPeerTableViewHeader;
@@ -22,7 +22,7 @@
     -[UILabel setTextColor:](v4->_text, "setTextColor:", [MEMORY[0x277D75348] colorWithWhite:0.3 alpha:1.0]);
     [(UIActivityIndicatorView *)v4->_spinner setHidesWhenStopped:1];
     -[UILabel setBackgroundColor:](v4->_text, "setBackgroundColor:", [MEMORY[0x277D75348] clearColor]);
-    -[UILabel setText:](v4->_text, "setText:", [a3 uppercaseString]);
+    -[UILabel setText:](v4->_text, "setText:", [title uppercaseString]);
     [(MCNearbyPeerTableViewHeader *)v4 addSubview:v4->_text];
     [(MCNearbyPeerTableViewHeader *)v4 addSubview:v4->_spinner];
   }

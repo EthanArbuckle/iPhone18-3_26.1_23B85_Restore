@@ -1,10 +1,10 @@
 @interface BLEMIDITimeStamper
 - (BLEMIDITimeStamper)init;
-- (BOOL)offsetIsUsable:(unsigned __int16)a3 numberOfWraps:(unsigned __int16 *)a4;
-- (int)modsignWithTimeDifference:(int64_t)a3 range:(unsigned __int16)a4;
-- (void)addOffset:(unsigned __int16)a3;
+- (BOOL)offsetIsUsable:(unsigned __int16)usable numberOfWraps:(unsigned __int16 *)wraps;
+- (int)modsignWithTimeDifference:(int64_t)difference range:(unsigned __int16)range;
+- (void)addOffset:(unsigned __int16)offset;
 - (void)reset;
-- (void)setReceiveTime:(unint64_t)a3;
+- (void)setReceiveTime:(unint64_t)time;
 @end
 
 @implementation BLEMIDITimeStamper
@@ -31,11 +31,11 @@
   self->hasBeenReset = 1;
 }
 
-- (void)setReceiveTime:(unint64_t)a3
+- (void)setReceiveTime:(unint64_t)time
 {
   receivedTime = self->receivedTime;
   connectionInterval_ns = self->connectionInterval_ns;
-  if (a3 - receivedTime <= connectionInterval_ns / 0xF4240)
+  if (time - receivedTime <= connectionInterval_ns / 0xF4240)
   {
     v6 = self->connectionInterval_ns;
   }
@@ -45,7 +45,7 @@
     v6 = 3 * connectionInterval_ns;
   }
 
-  self->receivedTime = a3;
+  self->receivedTime = time;
   self->lastReceivedTime = receivedTime;
   self->lastReceivedOffsetTimestamp = self->lastGeneratedTimestamp;
   self->averageWaitTime_ns = v6 >> 1;
@@ -70,9 +70,9 @@
   }
 }
 
-- (void)addOffset:(unsigned __int16)a3
+- (void)addOffset:(unsigned __int16)offset
 {
-  v3 = a3;
+  offsetCopy = offset;
   if (!self->hasBeenReset)
   {
     sub_B5F8();
@@ -85,23 +85,23 @@
       v9 = 1024;
       v10 = 68;
       v11 = 1024;
-      v12 = v3;
+      v12 = offsetCopy;
       v13 = 1024;
       v14 = lastReceivedOffset;
       v15 = 1024;
-      v16 = v3 - lastReceivedOffset;
+      v16 = offsetCopy - lastReceivedOffset;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d this offset = %d, lastReceivedOffset = %d (delta = %d)", &v7, 0x24u);
     }
   }
 
   self->hasBeenReset = 0;
-  self->lastReceivedOffset = v3;
+  self->lastReceivedOffset = offsetCopy;
 }
 
-- (BOOL)offsetIsUsable:(unsigned __int16)a3 numberOfWraps:(unsigned __int16 *)a4
+- (BOOL)offsetIsUsable:(unsigned __int16)usable numberOfWraps:(unsigned __int16 *)wraps
 {
   v4 = self->receivedTime - self->lastReceivedTime;
-  v5 = a3 - self->lastReceivedOffset + ((a3 - self->lastReceivedOffset) >> 31 << 13);
+  v5 = usable - self->lastReceivedOffset + ((usable - self->lastReceivedOffset) >> 31 << 13);
   v6 = v4 - v5;
   if (v6 > -4097)
   {
@@ -118,7 +118,7 @@
 
     if (v14 < 0xC78)
     {
-      *a4 = ((v6 + 12288) >> 13) - 1;
+      *wraps = ((v6 + 12288) >> 13) - 1;
       LOBYTE(v8) = 1;
       return v8;
     }
@@ -175,30 +175,30 @@ LABEL_10:
   return v8;
 }
 
-- (int)modsignWithTimeDifference:(int64_t)a3 range:(unsigned __int16)a4
+- (int)modsignWithTimeDifference:(int64_t)difference range:(unsigned __int16)range
 {
-  v4 = a3 % a4;
-  if (v4 >= a4 >> 1)
+  v4 = difference % range;
+  if (v4 >= range >> 1)
   {
-    v5 = a4;
+    rangeCopy = range;
   }
 
   else
   {
-    v5 = 0;
+    rangeCopy = 0;
   }
 
-  if (v4 + (a4 >> 1) < 0 != __OFADD__(v4, a4 >> 1))
+  if (v4 + (range >> 1) < 0 != __OFADD__(v4, range >> 1))
   {
-    v6 = a4;
+    rangeCopy2 = range;
   }
 
   else
   {
-    v6 = -v5;
+    rangeCopy2 = -rangeCopy;
   }
 
-  return v6 + v4;
+  return rangeCopy2 + v4;
 }
 
 @end

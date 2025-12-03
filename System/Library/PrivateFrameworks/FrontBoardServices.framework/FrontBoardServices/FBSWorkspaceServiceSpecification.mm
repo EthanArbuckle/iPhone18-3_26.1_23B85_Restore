@@ -1,5 +1,5 @@
 @interface FBSWorkspaceServiceSpecification
-+ (id)_interfaceWithInversion:(uint64_t)a1;
++ (id)_interfaceWithInversion:(uint64_t)inversion;
 - (FBSWorkspaceServiceSpecification)init;
 @end
 
@@ -18,7 +18,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSWorkspaceServiceSpecification.m";
     v16 = 1024;
@@ -32,7 +32,7 @@
   _bs_set_crash_log_message();
 }
 
-+ (id)_interfaceWithInversion:(uint64_t)a1
++ (id)_interfaceWithInversion:(uint64_t)inversion
 {
   v3 = objc_opt_self();
   block[0] = MEMORY[0x1E69E9820];

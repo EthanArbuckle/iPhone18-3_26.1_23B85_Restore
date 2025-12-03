@@ -1,19 +1,19 @@
 @interface CRAddressHandlerIdentity
-+ (id)identityForAddressHandler:(id)a3;
-- (id)initForAddressHandler:(id)a3;
++ (id)identityForAddressHandler:(id)handler;
+- (id)initForAddressHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation CRAddressHandlerIdentity
 
-+ (id)identityForAddressHandler:(id)a3
++ (id)identityForAddressHandler:(id)handler
 {
-  v3 = [[a1 alloc] initForAddressHandler:a3];
+  v3 = [[self alloc] initForAddressHandler:handler];
 
   return v3;
 }
 
-- (id)initForAddressHandler:(id)a3
+- (id)initForAddressHandler:(id)handler
 {
   v7.receiver = self;
   v7.super_class = CRAddressHandlerIdentity;
@@ -22,7 +22,7 @@
   {
     v5 = objc_opt_class();
     v4->_className = NSStringFromClass(v5);
-    v4->_supportedAddressKinds = [objc_msgSend(a3 "supportedAddressKinds")];
+    v4->_supportedAddressKinds = [objc_msgSend(handler "supportedAddressKinds")];
   }
 
   return v4;

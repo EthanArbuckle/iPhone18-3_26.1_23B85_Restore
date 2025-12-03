@@ -1,36 +1,36 @@
 @interface PKPaymentPassDetailBalanceSectionController
-+ (BOOL)validForPaymentPass:(id)a3;
-- (PKPaymentPassDetailBalanceSectionController)initWithDelegate:(id)a3;
++ (BOOL)validForPaymentPass:(id)pass;
+- (PKPaymentPassDetailBalanceSectionController)initWithDelegate:(id)delegate;
 - (PKPaymentPassDetailWrapperSectionControllerDelegate)delegate;
 - (id)allSectionIdentifiers;
 - (id)sectionIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (void)setBalance:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (void)setBalance:(id)balance;
 @end
 
 @implementation PKPaymentPassDetailBalanceSectionController
 
-- (PKPaymentPassDetailBalanceSectionController)initWithDelegate:(id)a3
+- (PKPaymentPassDetailBalanceSectionController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = PKPaymentPassDetailBalanceSectionController;
   v5 = [(PKPaymentPassDetailSectionController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)setBalance:(id)a3
+- (void)setBalance:(id)balance
 {
-  objc_storeStrong(&self->_balance, a3);
+  objc_storeStrong(&self->_balance, balance);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(PKPaymentPassDetailBalanceSectionController *)self sectionIdentifiers];
-  [WeakRetained reloadSections:v4];
+  sectionIdentifiers = [(PKPaymentPassDetailBalanceSectionController *)self sectionIdentifiers];
+  [WeakRetained reloadSections:sectionIdentifiers];
 }
 
 - (id)allSectionIdentifiers
@@ -46,31 +46,31 @@
 {
   if ([(PKPaymentPassDetailSectionController *)self currentSegment]|| !self->_balance)
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allSectionIdentifiers = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v3 = [(PKPaymentPassDetailBalanceSectionController *)self allSectionIdentifiers];
+    allSectionIdentifiers = [(PKPaymentPassDetailBalanceSectionController *)self allSectionIdentifiers];
   }
 
-  return v3;
+  return allSectionIdentifiers;
 }
 
-+ (BOOL)validForPaymentPass:(id)a3
++ (BOOL)validForPaymentPass:(id)pass
 {
-  v3 = [a3 devicePrimaryPaymentApplication];
-  v4 = [v3 paymentNetworkIdentifier] == 135;
+  devicePrimaryPaymentApplication = [pass devicePrimaryPaymentApplication];
+  v4 = [devicePrimaryPaymentApplication paymentNetworkIdentifier] == 135;
 
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = PKLocalizedPaymentString(&cfstr_PassDetailsDef.isa);
-  v8 = [(PKCurrencyAmount *)self->_balance formattedStringValue];
-  v9 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v7 detailText:v8 cellStyle:1 forTableView:v6];
+  formattedStringValue = [(PKCurrencyAmount *)self->_balance formattedStringValue];
+  v9 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v7 detailText:formattedStringValue cellStyle:1 forTableView:viewCopy];
 
   [v9 setSelectionStyle:0];
 

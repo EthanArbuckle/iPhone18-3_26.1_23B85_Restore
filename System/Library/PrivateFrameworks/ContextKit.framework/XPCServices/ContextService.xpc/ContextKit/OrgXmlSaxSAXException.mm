@@ -1,8 +1,8 @@
 @interface OrgXmlSaxSAXException
 - (OrgXmlSaxSAXException)init;
-- (OrgXmlSaxSAXException)initWithJavaLangException:(id)a3;
-- (OrgXmlSaxSAXException)initWithNSString:(id)a3;
-- (OrgXmlSaxSAXException)initWithNSString:(id)a3 withJavaLangException:(id)a4;
+- (OrgXmlSaxSAXException)initWithJavaLangException:(id)exception;
+- (OrgXmlSaxSAXException)initWithNSString:(id)string;
+- (OrgXmlSaxSAXException)initWithNSString:(id)string withJavaLangException:(id)exception;
 - (id)description;
 - (id)getMessage;
 - (void)dealloc;
@@ -17,24 +17,24 @@
   return self;
 }
 
-- (OrgXmlSaxSAXException)initWithNSString:(id)a3
+- (OrgXmlSaxSAXException)initWithNSString:(id)string
 {
-  JavaLangException_initWithNSString_(self, a3);
+  JavaLangException_initWithNSString_(self, string);
   JreStrongAssign(&self->exception_, 0);
   return self;
 }
 
-- (OrgXmlSaxSAXException)initWithJavaLangException:(id)a3
+- (OrgXmlSaxSAXException)initWithJavaLangException:(id)exception
 {
   JavaLangException_init(self, a2);
-  JreStrongAssign(&self->exception_, a3);
+  JreStrongAssign(&self->exception_, exception);
   return self;
 }
 
-- (OrgXmlSaxSAXException)initWithNSString:(id)a3 withJavaLangException:(id)a4
+- (OrgXmlSaxSAXException)initWithNSString:(id)string withJavaLangException:(id)exception
 {
-  JavaLangException_initWithNSString_(self, a3);
-  JreStrongAssign(&self->exception_, a4);
+  JavaLangException_initWithNSString_(self, string);
+  JreStrongAssign(&self->exception_, exception);
   return self;
 }
 

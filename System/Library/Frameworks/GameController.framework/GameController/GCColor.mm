@@ -1,9 +1,9 @@
 @interface GCColor
-- (GCColor)initWithCoder:(id)a3;
-- (GCColor)initWithColorPreset:(int64_t)a3;
+- (GCColor)initWithCoder:(id)coder;
+- (GCColor)initWithColorPreset:(int64_t)preset;
 - (GCColor)initWithRed:(float)red green:(float)green blue:(float)blue;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCColor
@@ -23,40 +23,40 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   red = self->_red;
-  v8 = a3;
+  coderCopy = coder;
   *&v5 = red;
-  [v8 encodeFloat:@"red" forKey:v5];
+  [coderCopy encodeFloat:@"red" forKey:v5];
   *&v6 = self->_green;
-  [v8 encodeFloat:@"green" forKey:v6];
+  [coderCopy encodeFloat:@"green" forKey:v6];
   *&v7 = self->_blue;
-  [v8 encodeFloat:@"blue" forKey:v7];
+  [coderCopy encodeFloat:@"blue" forKey:v7];
 }
 
-- (GCColor)initWithCoder:(id)a3
+- (GCColor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = GCColor;
   v5 = [(GCColor *)&v10 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"red"];
+    [coderCopy decodeFloatForKey:@"red"];
     v5->_red = v6;
-    [v4 decodeFloatForKey:@"green"];
+    [coderCopy decodeFloatForKey:@"green"];
     v5->_green = v7;
-    [v4 decodeFloatForKey:@"blue"];
+    [coderCopy decodeFloatForKey:@"blue"];
     v5->_blue = v8;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     *(result + 2) = LODWORD(self->_red);
@@ -67,11 +67,11 @@
   return result;
 }
 
-- (GCColor)initWithColorPreset:(int64_t)a3
+- (GCColor)initWithColorPreset:(int64_t)preset
 {
-  if (a3 <= 3)
+  if (preset <= 3)
   {
-    if (a3 == 2)
+    if (preset == 2)
     {
       LODWORD(v3) = 1056997505;
       LODWORD(v4) = 1017159841;
@@ -79,7 +79,7 @@
       goto LABEL_15;
     }
 
-    if (a3 != 3)
+    if (preset != 3)
     {
 LABEL_14:
       LODWORD(v3) = 1056997505;
@@ -95,21 +95,21 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  if (a3 == 4)
+  if (preset == 4)
   {
     LODWORD(v3) = 1017159841;
     LODWORD(v5) = 1056997505;
     goto LABEL_10;
   }
 
-  if (a3 == 5)
+  if (preset == 5)
   {
     LODWORD(v4) = 1017159841;
     LODWORD(v3) = 1056997505;
     goto LABEL_12;
   }
 
-  if (a3 != 6)
+  if (preset != 6)
   {
     goto LABEL_14;
   }

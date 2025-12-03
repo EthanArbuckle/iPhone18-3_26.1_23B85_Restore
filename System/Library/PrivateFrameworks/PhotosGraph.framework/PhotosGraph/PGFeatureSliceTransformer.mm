@@ -1,16 +1,16 @@
 @interface PGFeatureSliceTransformer
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4;
++ (id)instanceWithParameters:(id)parameters error:(id *)error;
 + (id)name;
-- (id)applyTransformationToFloatVector:(id)a3 error:(id *)a4;
-- (id)floatVectorWithFloatVector:(id)a3 error:(id *)a4;
-- (id)initFromIndex:(int64_t)a3 toIndex:(int64_t)a4;
+- (id)applyTransformationToFloatVector:(id)vector error:(id *)error;
+- (id)floatVectorWithFloatVector:(id)vector error:(id *)error;
+- (id)initFromIndex:(int64_t)index toIndex:(int64_t)toIndex;
 @end
 
 @implementation PGFeatureSliceTransformer
 
-- (id)applyTransformationToFloatVector:(id)a3 error:(id *)a4
+- (id)applyTransformationToFloatVector:(id)vector error:(id *)error
 {
-  v5 = a3;
+  vectorCopy = vector;
   v6 = MEMORY[0x277CBEAD8];
   v7 = *MEMORY[0x277CBE658];
   v8 = MEMORY[0x277CCACA8];
@@ -22,12 +22,12 @@
   objc_exception_throw(v11);
 }
 
-- (id)floatVectorWithFloatVector:(id)a3 error:(id *)a4
+- (id)floatVectorWithFloatVector:(id)vector error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PGFeatureSliceTransformer *)self fromIndex];
-  v8 = v7 & ~(v7 >> 63);
-  v9 = [v6 count];
+  vectorCopy = vector;
+  fromIndex = [(PGFeatureSliceTransformer *)self fromIndex];
+  v8 = fromIndex & ~(fromIndex >> 63);
+  v9 = [vectorCopy count];
   if (v8 >= v9)
   {
     v10 = v9;
@@ -38,24 +38,24 @@
     v10 = v8;
   }
 
-  v11 = [(PGFeatureSliceTransformer *)self toIndex];
-  v12 = [v6 count];
-  if (v11 >= v12)
+  toIndex = [(PGFeatureSliceTransformer *)self toIndex];
+  v12 = [vectorCopy count];
+  if (toIndex >= v12)
   {
     v13 = v12;
   }
 
   else
   {
-    v13 = v11;
+    v13 = toIndex;
   }
 
   v14 = v13 & ~(v13 >> 63);
-  v15 = [v6 sliceFromStart:0 toEnd:v10];
-  v16 = [v6 sliceFromStart:v10 toEnd:v14];
-  v17 = [v6 sliceFromStart:v14 toEnd:{objc_msgSend(v6, "count")}];
+  v15 = [vectorCopy sliceFromStart:0 toEnd:v10];
+  v16 = [vectorCopy sliceFromStart:v10 toEnd:v14];
+  v17 = [vectorCopy sliceFromStart:v14 toEnd:{objc_msgSend(vectorCopy, "count")}];
 
-  v18 = [(PGFeatureSliceTransformer *)self applyTransformationToFloatVector:v16 error:a4];
+  v18 = [(PGFeatureSliceTransformer *)self applyTransformationToFloatVector:v16 error:error];
   if (v18)
   {
     v19 = [v15 vectorByAppendingVector:v18];
@@ -70,15 +70,15 @@
   return v20;
 }
 
-- (id)initFromIndex:(int64_t)a3 toIndex:(int64_t)a4
+- (id)initFromIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
   v7.receiver = self;
   v7.super_class = PGFeatureSliceTransformer;
   result = [(PGFeatureSliceTransformer *)&v7 init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
+    *(result + 1) = index;
+    *(result + 2) = toIndex;
   }
 
   return result;
@@ -97,9 +97,9 @@
   objc_exception_throw(v7);
 }
 
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4
++ (id)instanceWithParameters:(id)parameters error:(id *)error
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v6 = MEMORY[0x277CBEAD8];
   v7 = *MEMORY[0x277CBE658];
   v8 = MEMORY[0x277CCACA8];

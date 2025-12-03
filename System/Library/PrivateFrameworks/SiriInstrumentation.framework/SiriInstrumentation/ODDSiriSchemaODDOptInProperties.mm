@@ -1,44 +1,44 @@
 @interface ODDSiriSchemaODDOptInProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDOptInProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDOptInProperties)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDOptInProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDOptInProperties)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addGradingOptInStateChanges:(id)a3;
-- (void)setHasDataSharingOptInStatus:(BOOL)a3;
-- (void)setHasIsServerUserDataSyncEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addGradingOptInStateChanges:(id)changes;
+- (void)setHasDataSharingOptInStatus:(BOOL)status;
+- (void)setHasIsServerUserDataSyncEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDOptInProperties
 
-- (ODDSiriSchemaODDOptInProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDOptInProperties)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = ODDSiriSchemaODDOptInProperties;
   v5 = [(ODDSiriSchemaODDOptInProperties *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isMteUploadEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isMteUploadEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDOptInProperties setIsMteUploadEnabled:](v5, "setIsMteUploadEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"dataSharingOptInStatus"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"dataSharingOptInStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDOptInProperties setDataSharingOptInStatus:](v5, "setDataSharingOptInStatus:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"gradingOptInStateChanges"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"gradingOptInStateChanges"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
       v7 = v19;
     }
 
-    v16 = [v4 objectForKeyedSubscript:{@"isServerUserDataSyncEnabled", v19, v20, v21}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"isServerUserDataSyncEnabled", v19, v20, v21}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,30 +94,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDOptInProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDOptInProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDOptInProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDOptInProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDOptInProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -131,7 +131,7 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*(&self->_isServerUserDataSyncEnabled + 1) & 2) != 0)
   {
     v4 = [(ODDSiriSchemaODDOptInProperties *)self dataSharingOptInStatus]- 1;
@@ -145,12 +145,12 @@
       v5 = off_1E78DD950[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"dataSharingOptInStatus"];
+    [dictionary setObject:v5 forKeyedSubscript:@"dataSharingOptInStatus"];
   }
 
   if ([(NSArray *)self->_gradingOptInStateChanges count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -170,16 +170,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -189,14 +189,14 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"gradingOptInStateChanges"];
+    [dictionary setObject:array forKeyedSubscript:@"gradingOptInStateChanges"];
   }
 
   v14 = *(&self->_isServerUserDataSyncEnabled + 1);
   if (v14)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDOptInProperties isMteUploadEnabled](self, "isMteUploadEnabled")}];
-    [v3 setObject:v15 forKeyedSubscript:@"isMteUploadEnabled"];
+    [dictionary setObject:v15 forKeyedSubscript:@"isMteUploadEnabled"];
 
     v14 = *(&self->_isServerUserDataSyncEnabled + 1);
   }
@@ -204,12 +204,12 @@
   if ((v14 & 4) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDOptInProperties isServerUserDataSyncEnabled](self, "isServerUserDataSyncEnabled")}];
-    [v3 setObject:v16 forKeyedSubscript:@"isServerUserDataSyncEnabled"];
+    [dictionary setObject:v16 forKeyedSubscript:@"isServerUserDataSyncEnabled"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -250,16 +250,16 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   v5 = *(&self->_isServerUserDataSyncEnabled + 1);
-  v6 = v4[25];
+  v6 = equalCopy[25];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_19;
@@ -268,7 +268,7 @@ LABEL_6:
   if (v5)
   {
     isMteUploadEnabled = self->_isMteUploadEnabled;
-    if (isMteUploadEnabled != [v4 isMteUploadEnabled])
+    if (isMteUploadEnabled != [equalCopy isMteUploadEnabled])
     {
 LABEL_19:
       v20 = 0;
@@ -276,7 +276,7 @@ LABEL_19:
     }
 
     v5 = *(&self->_isServerUserDataSyncEnabled + 1);
-    v6 = v4[25];
+    v6 = equalCopy[25];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -288,28 +288,28 @@ LABEL_19:
   if (v8)
   {
     dataSharingOptInStatus = self->_dataSharingOptInStatus;
-    if (dataSharingOptInStatus != [v4 dataSharingOptInStatus])
+    if (dataSharingOptInStatus != [equalCopy dataSharingOptInStatus])
     {
       goto LABEL_19;
     }
   }
 
-  v10 = [(ODDSiriSchemaODDOptInProperties *)self gradingOptInStateChanges];
-  v11 = [v4 gradingOptInStateChanges];
-  v12 = v11;
-  if ((v10 != 0) == (v11 == 0))
+  gradingOptInStateChanges = [(ODDSiriSchemaODDOptInProperties *)self gradingOptInStateChanges];
+  gradingOptInStateChanges2 = [equalCopy gradingOptInStateChanges];
+  v12 = gradingOptInStateChanges2;
+  if ((gradingOptInStateChanges != 0) == (gradingOptInStateChanges2 == 0))
   {
 
     goto LABEL_19;
   }
 
-  v13 = [(ODDSiriSchemaODDOptInProperties *)self gradingOptInStateChanges];
-  if (v13)
+  gradingOptInStateChanges3 = [(ODDSiriSchemaODDOptInProperties *)self gradingOptInStateChanges];
+  if (gradingOptInStateChanges3)
   {
-    v14 = v13;
-    v15 = [(ODDSiriSchemaODDOptInProperties *)self gradingOptInStateChanges];
-    v16 = [v4 gradingOptInStateChanges];
-    v17 = [v15 isEqual:v16];
+    v14 = gradingOptInStateChanges3;
+    gradingOptInStateChanges4 = [(ODDSiriSchemaODDOptInProperties *)self gradingOptInStateChanges];
+    gradingOptInStateChanges5 = [equalCopy gradingOptInStateChanges];
+    v17 = [gradingOptInStateChanges4 isEqual:gradingOptInStateChanges5];
 
     if (!v17)
     {
@@ -322,7 +322,7 @@ LABEL_19:
   }
 
   v18 = (*(&self->_isServerUserDataSyncEnabled + 1) >> 2) & 1;
-  if (v18 != ((v4[25] >> 2) & 1))
+  if (v18 != ((equalCopy[25] >> 2) & 1))
   {
     goto LABEL_19;
   }
@@ -330,7 +330,7 @@ LABEL_19:
   if (v18)
   {
     isServerUserDataSyncEnabled = self->_isServerUserDataSyncEnabled;
-    if (isServerUserDataSyncEnabled != [v4 isServerUserDataSyncEnabled])
+    if (isServerUserDataSyncEnabled != [equalCopy isServerUserDataSyncEnabled])
     {
       goto LABEL_19;
     }
@@ -342,10 +342,10 @@ LABEL_20:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_isServerUserDataSyncEnabled + 1);
   if (v5)
   {
@@ -392,9 +392,9 @@ LABEL_20:
   }
 }
 
-- (void)setHasIsServerUserDataSyncEnabled:(BOOL)a3
+- (void)setHasIsServerUserDataSyncEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -407,27 +407,27 @@ LABEL_20:
   *(&self->_isServerUserDataSyncEnabled + 1) = *(&self->_isServerUserDataSyncEnabled + 1) & 0xFB | v3;
 }
 
-- (void)addGradingOptInStateChanges:(id)a3
+- (void)addGradingOptInStateChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   gradingOptInStateChanges = self->_gradingOptInStateChanges;
-  v8 = v4;
+  v8 = changesCopy;
   if (!gradingOptInStateChanges)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_gradingOptInStateChanges;
-    self->_gradingOptInStateChanges = v6;
+    self->_gradingOptInStateChanges = array;
 
-    v4 = v8;
+    changesCopy = v8;
     gradingOptInStateChanges = self->_gradingOptInStateChanges;
   }
 
-  [(NSArray *)gradingOptInStateChanges addObject:v4];
+  [(NSArray *)gradingOptInStateChanges addObject:changesCopy];
 }
 
-- (void)setHasDataSharingOptInStatus:(BOOL)a3
+- (void)setHasDataSharingOptInStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -440,14 +440,14 @@ LABEL_20:
   *(&self->_isServerUserDataSyncEnabled + 1) = *(&self->_isServerUserDataSyncEnabled + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDOptInProperties;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDOptInProperties *)self gradingOptInStateChanges:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(ODDSiriSchemaODDOptInProperties *)self setGradingOptInStateChanges:v7];
 

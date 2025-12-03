@@ -1,37 +1,37 @@
 @interface PGSuggestionNotificationProfile
-+ (double)_requiredTimeIntervalFromLastNotificationForUserType:(unsigned __int8)a3;
-+ (unsigned)_requiredNotificationQualityForUserType:(unsigned __int8)a3;
++ (double)_requiredTimeIntervalFromLastNotificationForUserType:(unsigned __int8)type;
++ (unsigned)_requiredNotificationQualityForUserType:(unsigned __int8)type;
 - (BOOL)eligibleForNotification;
-- (BOOL)shouldNotifyForSuggestion:(id)a3 withOptions:(id)a4;
+- (BOOL)shouldNotifyForSuggestion:(id)suggestion withOptions:(id)options;
 - (NSDate)dateOfLastNotification;
-- (PGSuggestionNotificationProfile)initWithExistingSuggestions:(id)a3 serviceManager:(id)a4;
+- (PGSuggestionNotificationProfile)initWithExistingSuggestions:(id)suggestions serviceManager:(id)manager;
 - (id)shareParticipantContactIdentifiers;
-- (unsigned)notificationQualityForHighlightNode:(id)a3;
+- (unsigned)notificationQualityForHighlightNode:(id)node;
 - (unsigned)userType;
 - (void)_determineUserTypeAndEligibility;
 @end
 
 @implementation PGSuggestionNotificationProfile
 
-- (unsigned)notificationQualityForHighlightNode:(id)a3
+- (unsigned)notificationQualityForHighlightNode:(id)node
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 meaningLabels];
-  v6 = [v4 personNodes];
+  nodeCopy = node;
+  meaningLabels = [nodeCopy meaningLabels];
+  personNodes = [nodeCopy personNodes];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __71__PGSuggestionNotificationProfile_notificationQualityForHighlightNode___block_invoke;
   v35[3] = &unk_27887F678;
   v35[4] = self;
   v7 = [MEMORY[0x277CCAC30] predicateWithBlock:v35];
-  v8 = [v6 filteredSetUsingPredicate:v7];
+  v8 = [personNodes filteredSetUsingPredicate:v7];
 
   v9 = [v8 count];
-  if ([v5 count])
+  if ([meaningLabels count])
   {
     v10 = +[PGGraph mostSignificantMeaningLabels];
-    if ([v5 intersectsSet:v10])
+    if ([meaningLabels intersectsSet:v10])
     {
 
 LABEL_9:
@@ -39,7 +39,7 @@ LABEL_9:
       if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v37 = v5;
+        v37 = meaningLabels;
         _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[Sharing Suggestion] Highlight node notification quality must see: %@", buf, 0xCu);
       }
 
@@ -47,9 +47,9 @@ LABEL_9:
       goto LABEL_36;
     }
 
-    v14 = [v4 isPartOfTrip];
+    isPartOfTrip = [nodeCopy isPartOfTrip];
 
-    if (v14)
+    if (isPartOfTrip)
     {
       goto LABEL_9;
     }
@@ -60,8 +60,8 @@ LABEL_9:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v30 = v6;
-    v16 = v6;
+    v30 = personNodes;
+    v16 = personNodes;
     v17 = [v16 countByEnumeratingWithState:&v31 objects:v44 count:16];
     if (v17)
     {
@@ -105,7 +105,7 @@ LABEL_9:
       if (v25)
       {
         *buf = 138413058;
-        v37 = v5;
+        v37 = meaningLabels;
         v38 = 2048;
         v39 = v28;
         v40 = 2048;
@@ -123,7 +123,7 @@ LABEL_9:
       if (v25)
       {
         *buf = 138412290;
-        v37 = v5;
+        v37 = meaningLabels;
         _os_log_impl(&dword_22F0FC000, v24, OS_LOG_TYPE_DEFAULT, "[Sharing Suggestion] Highlight node notification quality great: it has a meaning %@", buf, 0xCu);
       }
 
@@ -131,7 +131,7 @@ LABEL_9:
     }
 
     v8 = v29;
-    v6 = v30;
+    personNodes = v30;
   }
 
   else
@@ -182,12 +182,12 @@ uint64_t __71__PGSuggestionNotificationProfile_notificationQualityForHighlightNo
 - (void)_determineUserTypeAndEligibility
 {
   v87 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CD9948] sharedMomentSharePhotoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedMomentSharePhotoLibrary];
+  librarySpecificFetchOptions = [mEMORY[0x277CD9948] librarySpecificFetchOptions];
 
   v58 = objc_opt_new();
-  v52 = v4;
-  [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:7 subtype:0x7FFFFFFFFFFFFFFFLL options:v4];
+  v52 = librarySpecificFetchOptions;
+  [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:7 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
@@ -233,15 +233,15 @@ uint64_t __71__PGSuggestionNotificationProfile_notificationQualityForHighlightNo
               }
 
               v13 = *(*(&v63 + 1) + 8 * v12);
-              v14 = [v13 emailAddress];
-              if (v14 || ([v13 phoneNumber], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+              emailAddress = [v13 emailAddress];
+              if (emailAddress || ([v13 phoneNumber], (emailAddress = objc_claimAutoreleasedReturnValue()) != 0))
               {
-                v15 = v14;
-                v16 = [(CLSServiceManager *)self->_serviceManager personForPersonHandle:v14];
-                v17 = [v16 CNIdentifier];
-                if ([v17 length])
+                v15 = emailAddress;
+                v16 = [(CLSServiceManager *)self->_serviceManager personForPersonHandle:emailAddress];
+                cNIdentifier = [v16 CNIdentifier];
+                if ([cNIdentifier length])
                 {
-                  [v58 addObject:v17];
+                  [v58 addObject:cNIdentifier];
                 }
 
                 else
@@ -280,18 +280,18 @@ uint64_t __71__PGSuggestionNotificationProfile_notificationQualityForHighlightNo
           while (v20);
         }
 
-        v21 = [v54 creationDate];
-        v22 = v21;
+        creationDate = [v54 creationDate];
+        v22 = creationDate;
         if (v56)
         {
-          v23 = [v21 laterDate:v56];
+          v23 = [creationDate laterDate:v56];
 
           v5 = v23;
         }
 
         else
         {
-          v5 = v21;
+          v5 = creationDate;
         }
 
         v7 = v55 + 1;
@@ -332,11 +332,11 @@ uint64_t __71__PGSuggestionNotificationProfile_notificationQualityForHighlightNo
         if ([v30 notificationState])
         {
           dateOfLastNotification = self->_dateOfLastNotification;
-          v32 = [v30 creationDate];
-          v33 = v32;
+          creationDate2 = [v30 creationDate];
+          v33 = creationDate2;
           if (dateOfLastNotification)
           {
-            v34 = [(NSDate *)dateOfLastNotification laterDate:v32];
+            v34 = [(NSDate *)dateOfLastNotification laterDate:creationDate2];
             v35 = self->_dateOfLastNotification;
             self->_dateOfLastNotification = v34;
           }
@@ -344,7 +344,7 @@ uint64_t __71__PGSuggestionNotificationProfile_notificationQualityForHighlightNo
           else
           {
             v36 = self->_dateOfLastNotification;
-            self->_dateOfLastNotification = v32;
+            self->_dateOfLastNotification = creationDate2;
             v33 = v36;
           }
 
@@ -359,19 +359,19 @@ uint64_t __71__PGSuggestionNotificationProfile_notificationQualityForHighlightNo
           }
         }
 
-        v37 = [v30 creationDate];
-        if ([v30 state] == 3 && v37 != 0)
+        creationDate3 = [v30 creationDate];
+        if ([v30 state] == 3 && creationDate3 != 0)
         {
           if (v5)
           {
-            v39 = [v37 laterDate:v5];
+            v39 = [creationDate3 laterDate:v5];
 
             v5 = v39;
           }
 
           else
           {
-            v5 = v37;
+            v5 = creationDate3;
           }
         }
       }
@@ -448,16 +448,16 @@ uint64_t __71__PGSuggestionNotificationProfile_notificationQualityForHighlightNo
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldNotifyForSuggestion:(id)a3 withOptions:(id)a4
+- (BOOL)shouldNotifyForSuggestion:(id)suggestion withOptions:(id)options
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  suggestionCopy = suggestion;
   v7 = MEMORY[0x277D27690];
-  v8 = [a4 localToday];
-  v9 = [v7 universalDateFromLocalDate:v8];
+  localToday = [options localToday];
+  v9 = [v7 universalDateFromLocalDate:localToday];
 
-  v10 = [v6 universalEndDate];
-  [v9 timeIntervalSinceDate:v10];
+  universalEndDate = [suggestionCopy universalEndDate];
+  [v9 timeIntervalSinceDate:universalEndDate];
   if (v11 < 0.0)
   {
     v11 = -v11;
@@ -465,16 +465,16 @@ uint64_t __71__PGSuggestionNotificationProfile_notificationQualityForHighlightNo
 
   if (v11 <= 604800.0)
   {
-    v14 = [(PGSuggestionNotificationProfile *)self userType];
-    v15 = [v6 notificationQuality];
-    if (v15 >= [objc_opt_class() _requiredNotificationQualityForUserType:v14])
+    userType = [(PGSuggestionNotificationProfile *)self userType];
+    notificationQuality = [suggestionCopy notificationQuality];
+    if (notificationQuality >= [objc_opt_class() _requiredNotificationQualityForUserType:userType])
     {
-      v16 = [(PGSuggestionNotificationProfile *)self dateOfLastNotification];
-      if (v16)
+      dateOfLastNotification = [(PGSuggestionNotificationProfile *)self dateOfLastNotification];
+      if (dateOfLastNotification)
       {
-        [objc_opt_class() _requiredTimeIntervalFromLastNotificationForUserType:v14];
+        [objc_opt_class() _requiredTimeIntervalFromLastNotificationForUserType:userType];
         v18 = v17;
-        [v9 timeIntervalSinceDate:v16];
+        [v9 timeIntervalSinceDate:dateOfLastNotification];
         if (v19 >= 0.0)
         {
           v20 = v19;
@@ -513,26 +513,26 @@ uint64_t __71__PGSuggestionNotificationProfile_notificationQualityForHighlightNo
     v22 = self->_loggingConnection;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      if (v15 > 4)
+      if (notificationQuality > 4)
       {
         v23 = @"Unknown";
       }
 
       else
       {
-        v23 = off_278884400[v15];
+        v23 = off_278884400[notificationQuality];
       }
 
       v24 = v23;
       v25 = v24;
-      if (v14 > 4)
+      if (userType > 4)
       {
         v26 = @"Unknown";
       }
 
       else
       {
-        v26 = off_27887F698[v14];
+        v26 = off_27887F698[userType];
       }
 
       v29 = 67109634;
@@ -556,7 +556,7 @@ uint64_t __71__PGSuggestionNotificationProfile_notificationQualityForHighlightNo
       *&v30[8] = 2112;
       *&v30[10] = v9;
       *&v30[18] = 2112;
-      *&v30[20] = v10;
+      *&v30[20] = universalEndDate;
       _os_log_impl(&dword_22F0FC000, v12, OS_LOG_TYPE_DEFAULT, "[Sharing Suggestion] Cannot notify suggestion: above time window limit of %lu days (query date %@, suggestion date %@)", &v29, 0x20u);
       LOBYTE(v13) = 0;
     }
@@ -568,98 +568,98 @@ uint64_t __71__PGSuggestionNotificationProfile_notificationQualityForHighlightNo
 
 - (NSDate)dateOfLastNotification
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_userType)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_userType)
   {
-    [(PGSuggestionNotificationProfile *)v2 _determineUserTypeAndEligibility];
+    [(PGSuggestionNotificationProfile *)selfCopy _determineUserTypeAndEligibility];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  dateOfLastNotification = v2->_dateOfLastNotification;
+  dateOfLastNotification = selfCopy->_dateOfLastNotification;
 
   return dateOfLastNotification;
 }
 
 - (id)shareParticipantContactIdentifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_userType)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_userType)
   {
-    [(PGSuggestionNotificationProfile *)v2 _determineUserTypeAndEligibility];
+    [(PGSuggestionNotificationProfile *)selfCopy _determineUserTypeAndEligibility];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  shareParticipantContactIdentifiers = v2->_shareParticipantContactIdentifiers;
+  shareParticipantContactIdentifiers = selfCopy->_shareParticipantContactIdentifiers;
 
   return shareParticipantContactIdentifiers;
 }
 
 - (unsigned)userType
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_userType)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_userType)
   {
-    [(PGSuggestionNotificationProfile *)v2 _determineUserTypeAndEligibility];
+    [(PGSuggestionNotificationProfile *)selfCopy _determineUserTypeAndEligibility];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v2->_userType;
+  return selfCopy->_userType;
 }
 
 - (BOOL)eligibleForNotification
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_userType)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_userType)
   {
-    [(PGSuggestionNotificationProfile *)v2 _determineUserTypeAndEligibility];
+    [(PGSuggestionNotificationProfile *)selfCopy _determineUserTypeAndEligibility];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v2->_eligibleForNotification;
+  return selfCopy->_eligibleForNotification;
 }
 
-- (PGSuggestionNotificationProfile)initWithExistingSuggestions:(id)a3 serviceManager:(id)a4
+- (PGSuggestionNotificationProfile)initWithExistingSuggestions:(id)suggestions serviceManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  suggestionsCopy = suggestions;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = PGSuggestionNotificationProfile;
   v9 = [(PGSuggestionNotificationProfile *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_existingSuggestions, a3);
-    objc_storeStrong(&v10->_serviceManager, a4);
+    objc_storeStrong(&v9->_existingSuggestions, suggestions);
+    objc_storeStrong(&v10->_serviceManager, manager);
   }
 
   return v10;
 }
 
-+ (double)_requiredTimeIntervalFromLastNotificationForUserType:(unsigned __int8)a3
++ (double)_requiredTimeIntervalFromLastNotificationForUserType:(unsigned __int8)type
 {
-  if ((a3 - 1) > 3u)
+  if ((type - 1) > 3u)
   {
     return 978307200.0;
   }
 
   else
   {
-    return dbl_22F78C1E8[(a3 - 1)];
+    return dbl_22F78C1E8[(type - 1)];
   }
 }
 
-+ (unsigned)_requiredNotificationQualityForUserType:(unsigned __int8)a3
++ (unsigned)_requiredNotificationQualityForUserType:(unsigned __int8)type
 {
-  v3 = 0x304020300uLL >> (8 * a3);
-  if (a3 >= 5u)
+  v3 = 0x304020300uLL >> (8 * type);
+  if (type >= 5u)
   {
     LOBYTE(v3) = 0;
   }

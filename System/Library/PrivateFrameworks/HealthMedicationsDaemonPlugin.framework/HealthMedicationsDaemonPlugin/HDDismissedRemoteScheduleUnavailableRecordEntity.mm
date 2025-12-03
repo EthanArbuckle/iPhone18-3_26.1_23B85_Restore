@@ -1,7 +1,7 @@
 @interface HDDismissedRemoteScheduleUnavailableRecordEntity
-+ (BOOL)_insertRemoteScheduleUnavailableRecord:(void *)a3 transaction:(uint64_t)a4 error:;
-+ (BOOL)enumerateDismissedRemoteScheduleUnavailableRecordEntitiesWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (BOOL)insertDismissedRemoteScheduleUnavailableRecords:(id)a3 profile:(id)a4 error:(id *)a5;
++ (BOOL)_insertRemoteScheduleUnavailableRecord:(void *)record transaction:(uint64_t)transaction error:;
++ (BOOL)enumerateDismissedRemoteScheduleUnavailableRecordEntitiesWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)insertDismissedRemoteScheduleUnavailableRecords:(id)records profile:(id)profile error:(id *)error;
 + (id)_propertiesForEntity;
 + (id)uniquedColumns;
 @end
@@ -18,23 +18,23 @@
   return v2;
 }
 
-+ (BOOL)enumerateDismissedRemoteScheduleUnavailableRecordEntitiesWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)enumerateDismissedRemoteScheduleUnavailableRecordEntitiesWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [a4 databaseForEntityClass:a1];
-  v13 = [a1 queryWithDatabase:v12 predicate:v11];
+  handlerCopy = handler;
+  predicateCopy = predicate;
+  v12 = [transaction databaseForEntityClass:self];
+  v13 = [self queryWithDatabase:v12 predicate:predicateCopy];
 
   v14 = +[HDDismissedRemoteScheduleUnavailableRecordEntity _propertiesForEntity];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __160__HDDismissedRemoteScheduleUnavailableRecordEntity_enumerateDismissedRemoteScheduleUnavailableRecordEntitiesWithPredicate_transaction_error_enumerationHandler___block_invoke;
   v17[3] = &unk_2796CDFB0;
-  v18 = v10;
-  v15 = v10;
-  LOBYTE(a5) = [v13 enumerateProperties:v14 error:a5 enumerationHandler:v17];
+  v18 = handlerCopy;
+  v15 = handlerCopy;
+  LOBYTE(error) = [v13 enumerateProperties:v14 error:error enumerationHandler:v17];
 
-  return a5;
+  return error;
 }
 
 + (id)_propertiesForEntity
@@ -76,22 +76,22 @@ id __160__HDDismissedRemoteScheduleUnavailableRecordEntity_enumerateDismissedRem
   return v4;
 }
 
-+ (BOOL)insertDismissedRemoteScheduleUnavailableRecords:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)insertDismissedRemoteScheduleUnavailableRecords:(id)records profile:(id)profile error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[HDDismissedRemoteScheduleUnavailableRecordInsertOperation alloc] initWithRemoteScheduleUnavailableRecords:v8];
+  profileCopy = profile;
+  recordsCopy = records;
+  v9 = [[HDDismissedRemoteScheduleUnavailableRecordInsertOperation alloc] initWithRemoteScheduleUnavailableRecords:recordsCopy];
 
-  LOBYTE(a5) = [(HDJournalableOperation *)v9 performOrJournalWithProfile:v7 error:a5];
-  return a5;
+  LOBYTE(error) = [(HDJournalableOperation *)v9 performOrJournalWithProfile:profileCopy error:error];
+  return error;
 }
 
-+ (BOOL)_insertRemoteScheduleUnavailableRecord:(void *)a3 transaction:(uint64_t)a4 error:
++ (BOOL)_insertRemoteScheduleUnavailableRecord:(void *)record transaction:(uint64_t)transaction error:
 {
   v6 = a2;
-  v7 = a3;
+  recordCopy = record;
   v8 = objc_opt_self();
-  v9 = [v7 databaseForEntityClass:v8];
+  v9 = [recordCopy databaseForEntityClass:v8];
 
   v10 = +[HDDismissedRemoteScheduleUnavailableRecordEntity _propertiesForEntity];
   v15[0] = MEMORY[0x277D85DD0];
@@ -100,7 +100,7 @@ id __160__HDDismissedRemoteScheduleUnavailableRecordEntity_enumerateDismissedRem
   v15[3] = &unk_2796CDFD8;
   v16 = v6;
   v11 = v6;
-  v12 = [v8 insertOrReplaceEntity:1 database:v9 properties:v10 error:a4 bindingHandler:v15];
+  v12 = [v8 insertOrReplaceEntity:1 database:v9 properties:v10 error:transaction bindingHandler:v15];
   v13 = v12 != 0;
 
   return v13;

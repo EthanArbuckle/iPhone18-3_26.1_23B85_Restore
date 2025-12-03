@@ -1,44 +1,44 @@
 @interface _UIPreviewTransitionController
-+ (id)performCommitTransitionWithDelegate:(id)a3 forViewController:(id)a4 previewViewController:(id)a5 previewInteractionController:(id)a6 completion:(id)a7;
++ (id)performCommitTransitionWithDelegate:(id)delegate forViewController:(id)controller previewViewController:(id)viewController previewInteractionController:(id)interactionController completion:(id)completion;
 - (UIViewControllerContextTransitioning)transitionContext;
-- (_UIPreviewTransitionController)initWithInteractionProgress:(id)a3 targetPresentationPhase:(unint64_t)a4;
-- (void)_animateCommitTransition:(id)a3;
-- (void)_animateDismissTransition:(id)a3;
-- (void)_animatePreviewTransition:(id)a3;
-- (void)_animateRevealTransition:(id)a3;
-- (void)_completeAnimationWithPresentationPhase:(unint64_t)a3 finished:(BOOL)a4;
-- (void)_layoutForPresentationPhase:(unint64_t)a3;
-- (void)animateTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
+- (_UIPreviewTransitionController)initWithInteractionProgress:(id)progress targetPresentationPhase:(unint64_t)phase;
+- (void)_animateCommitTransition:(id)transition;
+- (void)_animateDismissTransition:(id)transition;
+- (void)_animatePreviewTransition:(id)transition;
+- (void)_animateRevealTransition:(id)transition;
+- (void)_completeAnimationWithPresentationPhase:(unint64_t)phase finished:(BOOL)finished;
+- (void)_layoutForPresentationPhase:(unint64_t)phase;
+- (void)animateTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
 - (void)cancelInteractiveTransition;
 - (void)finishInteractiveTransition;
-- (void)interactionProgress:(id)a3 didEnd:(BOOL)a4;
-- (void)interactionProgressDidUpdate:(id)a3;
-- (void)setAnimations:(id)a3 completion:(id)a4 forPresentationPhase:(unint64_t)a5;
-- (void)startInteractiveTransition:(id)a3;
-- (void)updateInteractiveTransition:(double)a3;
+- (void)interactionProgress:(id)progress didEnd:(BOOL)end;
+- (void)interactionProgressDidUpdate:(id)update;
+- (void)setAnimations:(id)animations completion:(id)completion forPresentationPhase:(unint64_t)phase;
+- (void)startInteractiveTransition:(id)transition;
+- (void)updateInteractiveTransition:(double)transition;
 @end
 
 @implementation _UIPreviewTransitionController
 
-- (_UIPreviewTransitionController)initWithInteractionProgress:(id)a3 targetPresentationPhase:(unint64_t)a4
+- (_UIPreviewTransitionController)initWithInteractionProgress:(id)progress targetPresentationPhase:(unint64_t)phase
 {
-  v7 = a3;
+  progressCopy = progress;
   v13.receiver = self;
   v13.super_class = _UIPreviewTransitionController;
   v8 = [(UIPercentDrivenInteractiveTransition *)&v13 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    [(_UIPreviewTransitionController *)v8 setAnimationsByPresentationPhase:v9];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(_UIPreviewTransitionController *)v8 setAnimationsByPresentationPhase:dictionary];
 
-    [v7 addProgressObserver:v8];
-    [(_UIPreviewTransitionController *)v8 setInteractionProgress:v7];
-    [(_UIPreviewTransitionController *)v8 setTargetPresentationPhase:a4];
-    if (a4 > 5 || ((1 << a4) & 0x34) == 0)
+    [progressCopy addProgressObserver:v8];
+    [(_UIPreviewTransitionController *)v8 setInteractionProgress:progressCopy];
+    [(_UIPreviewTransitionController *)v8 setTargetPresentationPhase:phase];
+    if (phase > 5 || ((1 << phase) & 0x34) == 0)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:v8 file:@"_UIPreviewTransitionController.m" lineNumber:58 description:{@"The targetPresentationPhase needs to be Preview, Commit or Cancelled."}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v8 file:@"_UIPreviewTransitionController.m" lineNumber:58 description:{@"The targetPresentationPhase needs to be Preview, Commit or Cancelled."}];
     }
 
     v11 = v8;
@@ -47,13 +47,13 @@
   return v8;
 }
 
-- (void)setAnimations:(id)a3 completion:(id)a4 forPresentationPhase:(unint64_t)a5
+- (void)setAnimations:(id)animations completion:(id)completion forPresentationPhase:(unint64_t)phase
 {
-  aBlock = a4;
+  aBlock = completion;
   v8 = MEMORY[0x1E695DF90];
-  v9 = a3;
+  animationsCopy = animations;
   v10 = [v8 dictionaryWithCapacity:2];
-  v11 = _Block_copy(v9);
+  v11 = _Block_copy(animationsCopy);
 
   [v10 setObject:v11 forKeyedSubscript:@"animations"];
   if (aBlock)
@@ -62,50 +62,50 @@
     [v10 setObject:v12 forKeyedSubscript:@"completion"];
   }
 
-  v13 = [(_UIPreviewTransitionController *)self animationsByPresentationPhase];
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-  [v13 setObject:v10 forKeyedSubscript:v14];
+  animationsByPresentationPhase = [(_UIPreviewTransitionController *)self animationsByPresentationPhase];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:phase];
+  [animationsByPresentationPhase setObject:v10 forKeyedSubscript:v14];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v5 = a3;
+  transitionCopy = transition;
   [(_UIPreviewTransitionController *)self setTransitionContext:?];
   if ([(_UIPreviewTransitionController *)self targetPresentationPhase]== 2)
   {
-    v4 = [(_UIPreviewTransitionController *)self interactionProgress];
+    interactionProgress = [(_UIPreviewTransitionController *)self interactionProgress];
 
-    if (v4)
+    if (interactionProgress)
     {
-      [(_UIPreviewTransitionController *)self _animateRevealTransition:v5];
+      [(_UIPreviewTransitionController *)self _animateRevealTransition:transitionCopy];
     }
 
     else
     {
       [(_UIPreviewTransitionController *)self _layoutForPresentationPhase:1];
-      [v5 completeTransition:1];
+      [transitionCopy completeTransition:1];
       [(_UIPreviewTransitionController *)self _completeAnimationWithPresentationPhase:1 finished:1];
     }
   }
 
   else if ([(_UIPreviewTransitionController *)self targetPresentationPhase]== 4)
   {
-    [(_UIPreviewTransitionController *)self _animateCommitTransition:v5];
+    [(_UIPreviewTransitionController *)self _animateCommitTransition:transitionCopy];
   }
 
   else
   {
-    [(_UIPreviewTransitionController *)self _animateDismissTransition:v5];
+    [(_UIPreviewTransitionController *)self _animateDismissTransition:transitionCopy];
   }
 }
 
-- (void)startInteractiveTransition:(id)a3
+- (void)startInteractiveTransition:(id)transition
 {
   v5.receiver = self;
   v5.super_class = _UIPreviewTransitionController;
-  v4 = a3;
-  [(UIPercentDrivenInteractiveTransition *)&v5 startInteractiveTransition:v4];
-  [(_UIPreviewTransitionController *)self setTransitionContext:v4, v5.receiver, v5.super_class];
+  transitionCopy = transition;
+  [(UIPercentDrivenInteractiveTransition *)&v5 startInteractiveTransition:transitionCopy];
+  [(_UIPreviewTransitionController *)self setTransitionContext:transitionCopy, v5.receiver, v5.super_class];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -117,11 +117,11 @@
   }
 }
 
-- (void)updateInteractiveTransition:(double)a3
+- (void)updateInteractiveTransition:(double)transition
 {
   v3.receiver = self;
   v3.super_class = _UIPreviewTransitionController;
-  [(UIPercentDrivenInteractiveTransition *)&v3 updateInteractiveTransition:a3];
+  [(UIPercentDrivenInteractiveTransition *)&v3 updateInteractiveTransition:transition];
 }
 
 - (void)cancelInteractiveTransition
@@ -140,18 +140,18 @@
   [(UIPercentDrivenInteractiveTransition *)&v3 finishInteractiveTransition];
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
-  if (a3 && [(_UIPreviewTransitionController *)self targetPresentationPhase]== 2)
+  if (ended && [(_UIPreviewTransitionController *)self targetPresentationPhase]== 2)
   {
-    v4 = [(_UIPreviewTransitionController *)self transitionContext];
-    [(_UIPreviewTransitionController *)self _animatePreviewTransition:v4];
+    transitionContext = [(_UIPreviewTransitionController *)self transitionContext];
+    [(_UIPreviewTransitionController *)self _animatePreviewTransition:transitionContext];
   }
 }
 
-- (void)interactionProgressDidUpdate:(id)a3
+- (void)interactionProgressDidUpdate:(id)update
 {
-  [a3 percentComplete];
+  [update percentComplete];
   if (v4 > 1.0)
   {
     v4 = 1.0;
@@ -159,22 +159,22 @@
 
   v5 = fmax(v4, 0.0);
   [(_UIPreviewTransitionController *)self updateInteractiveTransition:v5];
-  v6 = [(_UIPreviewTransitionController *)self feedbackGenerator];
-  [v6 transitionToState:@"preview" updated:v5];
+  feedbackGenerator = [(_UIPreviewTransitionController *)self feedbackGenerator];
+  [feedbackGenerator transitionToState:@"preview" updated:v5];
 }
 
-- (void)interactionProgress:(id)a3 didEnd:(BOOL)a4
+- (void)interactionProgress:(id)progress didEnd:(BOOL)end
 {
-  v4 = a4;
-  v8 = [(_UIPreviewTransitionController *)self transitionContext];
-  if ([v8 isInteractive])
+  endCopy = end;
+  transitionContext = [(_UIPreviewTransitionController *)self transitionContext];
+  if ([transitionContext isInteractive])
   {
-    v6 = [(_UIPreviewTransitionController *)self transitionContext];
-    v7 = [v6 transitionWasCancelled];
+    transitionContext2 = [(_UIPreviewTransitionController *)self transitionContext];
+    transitionWasCancelled = [transitionContext2 transitionWasCancelled];
 
-    if ((v7 & 1) == 0)
+    if ((transitionWasCancelled & 1) == 0)
     {
-      if (v4)
+      if (endCopy)
       {
 
         [(_UIPreviewTransitionController *)self finishInteractiveTransition];
@@ -193,10 +193,10 @@
   }
 }
 
-- (void)_animateRevealTransition:(id)a3
+- (void)_animateRevealTransition:(id)transition
 {
-  v4 = a3;
-  [(_UIPreviewTransitionController *)self transitionDuration:v4];
+  transitionCopy = transition;
+  [(_UIPreviewTransitionController *)self transitionDuration:transitionCopy];
   v6 = v5;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -208,12 +208,12 @@
   v8[2] = __59___UIPreviewTransitionController__animateRevealTransition___block_invoke_2;
   v8[3] = &unk_1E70F3C60;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = transitionCopy;
+  v7 = transitionCopy;
   [UIView animateWithDuration:0 delay:v10 options:v8 animations:v6 completion:0.0];
 }
 
-- (void)_animatePreviewTransition:(id)a3
+- (void)_animatePreviewTransition:(id)transition
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -239,13 +239,13 @@
     [UIView _animateUsingSpringWithDuration:"_animateUsingSpringWithDuration:delay:options:mass:stiffness:damping:initialVelocity:animations:completion:" delay:0 options:v4 mass:v5 stiffness:? damping:? initialVelocity:? animations:? completion:?];
   }
 
-  v6 = [(_UIPreviewTransitionController *)self feedbackGenerator];
-  [v6 transitionToState:@"preview" ended:1];
+  feedbackGenerator = [(_UIPreviewTransitionController *)self feedbackGenerator];
+  [feedbackGenerator transitionToState:@"preview" ended:1];
 }
 
-- (void)_animateDismissTransition:(id)a3
+- (void)_animateDismissTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60___UIPreviewTransitionController__animateDismissTransition___block_invoke;
@@ -257,29 +257,29 @@
   v8[2] = __60___UIPreviewTransitionController__animateDismissTransition___block_invoke_2;
   v8[3] = &unk_1E70F3C60;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = transitionCopy;
+  v6 = transitionCopy;
   v7 = _Block_copy(v8);
   [UIView animateWithDuration:v5 animations:v7 completion:0.25];
 }
 
-- (void)_animateCommitTransition:(id)a3
+- (void)_animateCommitTransition:(id)transition
 {
-  v4 = a3;
-  v69 = [v4 viewForKey:@"UITransitionContextToView"];
-  v5 = [v4 viewControllerForKey:@"UITransitionContextToViewController"];
-  v73 = [v4 viewControllerForKey:@"UITransitionContextFromViewController"];
-  v6 = [v73 navigationController];
-  v76 = self;
-  v7 = [(_UIPreviewTransitionController *)self viewsParticipatingInCommitTransition];
-  v8 = [v7 objectForKeyedSubscript:@"backgroundView"];
-  v9 = [v7 objectForKeyedSubscript:@"presentationContainerView"];
-  v10 = [v7 objectForKeyedSubscript:@"presentationContainerView"];
-  v60 = [v10 platterView];
+  transitionCopy = transition;
+  v69 = [transitionCopy viewForKey:@"UITransitionContextToView"];
+  v5 = [transitionCopy viewControllerForKey:@"UITransitionContextToViewController"];
+  v73 = [transitionCopy viewControllerForKey:@"UITransitionContextFromViewController"];
+  navigationController = [v73 navigationController];
+  selfCopy = self;
+  viewsParticipatingInCommitTransition = [(_UIPreviewTransitionController *)self viewsParticipatingInCommitTransition];
+  v8 = [viewsParticipatingInCommitTransition objectForKeyedSubscript:@"backgroundView"];
+  v9 = [viewsParticipatingInCommitTransition objectForKeyedSubscript:@"presentationContainerView"];
+  v10 = [viewsParticipatingInCommitTransition objectForKeyedSubscript:@"presentationContainerView"];
+  platterView = [v10 platterView];
 
-  v72 = v7;
-  v78 = [v7 objectForKeyedSubscript:@"presentationView"];
-  v71 = [v6 delegate];
+  v72 = viewsParticipatingInCommitTransition;
+  v78 = [viewsParticipatingInCommitTransition objectForKeyedSubscript:@"presentationView"];
+  delegate = [navigationController delegate];
   v56 = objc_opt_respondsToSelector();
   if ([v5 _isNestedNavigationController])
   {
@@ -288,43 +288,43 @@
 
   else
   {
-    v11 = v6;
+    v11 = navigationController;
   }
 
   v12 = v11;
-  v13 = [v6 navigationBar];
+  navigationBar = [navigationController navigationBar];
   v77 = v12;
-  v14 = [v12 toolbar];
-  v67 = [v14 superview];
-  v62 = [v13 superview];
-  [v4 finalFrameForViewController:v5];
+  toolbar = [v12 toolbar];
+  superview = [toolbar superview];
+  superview2 = [navigationBar superview];
+  [transitionCopy finalFrameForViewController:v5];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v64 = v4;
-  v23 = [v4 containerView];
-  [v23 addSubview:v9];
-  v74 = v14;
-  [v23 addSubview:v14];
-  [v23 addSubview:v13];
+  v64 = transitionCopy;
+  containerView = [transitionCopy containerView];
+  [containerView addSubview:v9];
+  v74 = toolbar;
+  [containerView addSubview:toolbar];
+  [containerView addSubview:navigationBar];
   v24 = [[_UIBackdropView alloc] initWithPrivateStyle:-4];
   [(_UIBackdropView *)v24 setGroupName:@"commitAnimation"];
-  [v23 bounds];
+  [containerView bounds];
   [(UIView *)v24 setFrame:?];
-  [v23 addSubview:v24];
+  [containerView addSubview:v24];
   v58 = v8;
-  [v23 addSubview:v8];
-  v25 = [v23 window];
-  v26 = __UIStatusBarManagerForWindow(v25);
+  [containerView addSubview:v8];
+  window = [containerView window];
+  v26 = __UIStatusBarManagerForWindow(window);
   [v26 statusBarHeight];
   v28 = v27;
 
   v29 = 0.0;
   v30 = 0.0;
-  if (([v6 isNavigationBarHidden] & 1) == 0)
+  if (([navigationController isNavigationBarHidden] & 1) == 0)
   {
-    [v13 bounds];
+    [navigationBar bounds];
     v30 = v31;
   }
 
@@ -346,20 +346,20 @@
 
   v34 = v28 + v30;
   v35 = objc_alloc_init(UIView);
-  [v23 bounds];
+  [containerView bounds];
   v37 = v36;
-  [v23 bounds];
+  [containerView bounds];
   [(UIView *)v35 setBounds:0.0, v34, v37];
-  [v23 bounds];
+  [containerView bounds];
   v39 = v38;
-  [v23 bounds];
+  [containerView bounds];
   [(UIView *)v35 setFrame:0.0, v34, v39, v40 - v34 - v29];
   [(UIView *)v35 setClipsToBounds:1];
   v41 = [[_UIBackdropView alloc] initWithPrivateStyle:-4];
   [(_UIBackdropView *)v41 setGroupName:@"commitAnimation"];
   [(UIView *)v35 addSubview:v41];
-  [v23 addSubview:v35];
-  [v60 addSubview:v78];
+  [containerView addSubview:v35];
+  [platterView addSubview:v78];
   [v78 addSubview:v69];
   [v9 setNeedsLayout];
   [v9 layoutIfNeeded];
@@ -370,7 +370,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __59___UIPreviewTransitionController__animateCommitTransition___block_invoke;
   aBlock[3] = &unk_1E70F4570;
-  v98 = v6;
+  v98 = navigationController;
   v99 = v5;
   v42 = v9;
   v100 = v42;
@@ -378,12 +378,12 @@
   v101 = v43;
   v44 = v69;
   v102 = v44;
-  v103 = v60;
+  v103 = platterView;
   v45 = v41;
   v104 = v45;
-  v59 = v60;
+  v59 = platterView;
   v70 = v5;
-  v61 = v6;
+  v61 = navigationController;
   v55 = v24;
   v57 = _Block_copy(aBlock);
   v79[0] = MEMORY[0x1E69E9820];
@@ -395,25 +395,25 @@
   v82 = v35;
   v83 = v43;
   v84 = v42;
-  v85 = v23;
+  v85 = containerView;
   v93 = v16;
   v94 = v18;
   v95 = v20;
   v96 = v22;
   v86 = v44;
-  v87 = v67;
+  v87 = superview;
   v88 = v74;
-  v89 = v62;
-  v90 = v13;
-  v91 = v76;
+  v89 = superview2;
+  v90 = navigationBar;
+  v91 = selfCopy;
   v92 = v64;
   v65 = v64;
-  v66 = v13;
-  v63 = v62;
+  v66 = navigationBar;
+  v63 = superview2;
   v46 = v74;
-  v75 = v67;
+  v75 = superview;
   v68 = v44;
-  v47 = v23;
+  v47 = containerView;
   v48 = v42;
   v49 = v43;
   v50 = v35;
@@ -421,15 +421,15 @@
   v52 = v55;
   v53 = _Block_copy(v79);
   [UIView _animateUsingDefaultDampedSpringWithDelay:0 initialSpringVelocity:v57 options:v53 animations:0.0 completion:v33];
-  v54 = [(_UIPreviewTransitionController *)v76 feedbackGenerator];
-  [v54 transitionToState:@"commit" ended:1];
+  feedbackGenerator = [(_UIPreviewTransitionController *)selfCopy feedbackGenerator];
+  [feedbackGenerator transitionToState:@"commit" ended:1];
 }
 
-- (void)_layoutForPresentationPhase:(unint64_t)a3
+- (void)_layoutForPresentationPhase:(unint64_t)phase
 {
-  v4 = [(_UIPreviewTransitionController *)self animationsByPresentationPhase];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v8 = [v4 objectForKeyedSubscript:v5];
+  animationsByPresentationPhase = [(_UIPreviewTransitionController *)self animationsByPresentationPhase];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:phase];
+  v8 = [animationsByPresentationPhase objectForKeyedSubscript:v5];
 
   v6 = [v8 objectForKeyedSubscript:@"animations"];
   v7 = v6;
@@ -439,25 +439,25 @@
   }
 }
 
-- (void)_completeAnimationWithPresentationPhase:(unint64_t)a3 finished:(BOOL)a4
+- (void)_completeAnimationWithPresentationPhase:(unint64_t)phase finished:(BOOL)finished
 {
-  v4 = a4;
-  v7 = [(_UIPreviewTransitionController *)self animationsByPresentationPhase];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v12 = [v7 objectForKeyedSubscript:v8];
+  finishedCopy = finished;
+  animationsByPresentationPhase = [(_UIPreviewTransitionController *)self animationsByPresentationPhase];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:phase];
+  v12 = [animationsByPresentationPhase objectForKeyedSubscript:v8];
 
   v9 = [v12 objectForKeyedSubscript:@"completion"];
-  if (a3 == 1 && !v4)
+  if (phase == 1 && !finishedCopy)
   {
     v10 = _UIStatesFeedbackGeneratorForcePresentationStatePreview;
 LABEL_7:
-    v11 = [(_UIPreviewTransitionController *)self feedbackGenerator];
-    [v11 transitionToState:*v10 ended:0];
+    feedbackGenerator = [(_UIPreviewTransitionController *)self feedbackGenerator];
+    [feedbackGenerator transitionToState:*v10 ended:0];
 
     goto LABEL_8;
   }
 
-  if (a3 == 5 && v4)
+  if (phase == 5 && finishedCopy)
   {
     v10 = _UIStatesFeedbackGeneratorForcePresentationStateCommit;
     goto LABEL_7;
@@ -466,38 +466,38 @@ LABEL_7:
 LABEL_8:
   if (v9)
   {
-    v9[2](v9, v4);
+    v9[2](v9, finishedCopy);
   }
 }
 
-+ (id)performCommitTransitionWithDelegate:(id)a3 forViewController:(id)a4 previewViewController:(id)a5 previewInteractionController:(id)a6 completion:(id)a7
++ (id)performCommitTransitionWithDelegate:(id)delegate forViewController:(id)controller previewViewController:(id)viewController previewInteractionController:(id)interactionController completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v11 previewInteractionControllerShouldPerformCompatibilityCommitTransition:v14])
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  interactionControllerCopy = interactionController;
+  completionCopy = completion;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegateCopy previewInteractionControllerShouldPerformCompatibilityCommitTransition:interactionControllerCopy])
   {
-    v26 = [[_UIPreviewInteractionCommitTransition alloc] initWithPresentedViewController:v13];
+    v26 = [[_UIPreviewInteractionCommitTransition alloc] initWithPresentedViewController:viewControllerCopy];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __150___UIPreviewTransitionController_performCommitTransitionWithDelegate_forViewController_previewViewController_previewInteractionController_completion___block_invoke_4;
     v28[3] = &unk_1E70F6228;
-    v29 = v11;
-    v30 = v14;
-    v31 = v13;
-    [(_UIPreviewInteractionCommitTransition *)v26 performTransitionWithPresentationBlock:v28 completion:v15];
+    v29 = delegateCopy;
+    v30 = interactionControllerCopy;
+    v31 = viewControllerCopy;
+    [(_UIPreviewInteractionCommitTransition *)v26 performTransitionWithPresentationBlock:v28 completion:completionCopy];
 
     v18 = v29;
-    v17 = v15;
+    v17 = completionCopy;
   }
 
   else
   {
-    if (v15)
+    if (completionCopy)
     {
-      v16 = v15;
+      v16 = completionCopy;
     }
 
     else
@@ -507,19 +507,19 @@ LABEL_8:
 
     v17 = _Block_copy(v16);
 
-    v18 = v11;
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v18 performsCustomCommitTransitionForPreviewInteractionController:v14])
+    v18 = delegateCopy;
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [v18 performsCustomCommitTransitionForPreviewInteractionController:interactionControllerCopy])
     {
-      [v18 previewInteractionController:v14 performCustomCommitForPreviewViewController:v13 completion:v17];
+      [v18 previewInteractionController:interactionControllerCopy performCustomCommitForPreviewViewController:viewControllerCopy completion:v17];
     }
 
-    else if ([v18 performsViewControllerCommitTransitionForPreviewInteractionController:v14])
+    else if ([v18 performsViewControllerCommitTransitionForPreviewInteractionController:interactionControllerCopy])
     {
-      v19 = v13;
+      v19 = viewControllerCopy;
       v20 = v19;
       if (objc_opt_respondsToSelector())
       {
-        v20 = [v18 previewInteractionController:v14 committedViewControllerForPreviewViewController:v19];
+        v20 = [v18 previewInteractionController:interactionControllerCopy committedViewControllerForPreviewViewController:v19];
       }
 
       v45[0] = MEMORY[0x1E69E9820];
@@ -529,7 +529,7 @@ LABEL_8:
       v46 = v19;
       v18 = v18;
       v47 = v18;
-      v48 = v14;
+      v48 = interactionControllerCopy;
       v49 = v20;
       v21 = v20;
       [v46 _transitionToViewController:v21 whilePerforming:v45 completion:v17];
@@ -545,7 +545,7 @@ LABEL_8:
       v43 = __Block_byref_object_dispose__156;
       if (objc_opt_isKindOfClass())
       {
-        v23 = v12;
+        v23 = controllerCopy;
       }
 
       else
@@ -560,7 +560,7 @@ LABEL_8:
       v38[3] = &unk_1E711B270;
       v38[4] = &v39;
       v38[5] = v22;
-      [v12 _traverseViewControllerHierarchyFromLevel:0 withBlock:v38];
+      [controllerCopy _traverseViewControllerHierarchyFromLevel:0 withBlock:v38];
       v24 = v40[5];
       if (!v24)
       {
@@ -572,19 +572,19 @@ LABEL_8:
       v34[1] = 3221225472;
       v34[2] = __150___UIPreviewTransitionController_performCommitTransitionWithDelegate_forViewController_previewViewController_previewInteractionController_completion___block_invoke_2_54;
       v34[3] = &unk_1E711B298;
-      v35 = v13;
+      v35 = viewControllerCopy;
       v18 = v18;
       v36 = v18;
-      v37 = v14;
+      v37 = interactionControllerCopy;
       [v35 _transitionToNavigationViewController:v24 withWrapper:v34];
-      v25 = [v40[5] transitionCoordinator];
+      transitionCoordinator = [v40[5] transitionCoordinator];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __150___UIPreviewTransitionController_performCommitTransitionWithDelegate_forViewController_previewViewController_previewInteractionController_completion___block_invoke_3_56;
       v32[3] = &unk_1E70F3770;
       v17 = v17;
       v33 = v17;
-      [v25 animateAlongsideTransitionInView:0 animation:0 completion:v32];
+      [transitionCoordinator animateAlongsideTransitionInView:0 animation:0 completion:v32];
 
       _Block_object_dispose(&v39, 8);
     }

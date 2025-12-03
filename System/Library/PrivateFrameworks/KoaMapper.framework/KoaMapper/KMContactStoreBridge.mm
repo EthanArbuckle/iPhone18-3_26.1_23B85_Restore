@@ -1,12 +1,12 @@
 @interface KMContactStoreBridge
 + (id)_contactFetchKeys;
 - (BOOL)_checkAuthorization;
-- (BOOL)enumerateDeltaItemsWithError:(id *)a3 addOrUpdateBlock:(id)a4 removeBlock:(id)a5;
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
+- (BOOL)enumerateDeltaItemsWithError:(id *)error addOrUpdateBlock:(id)block removeBlock:(id)removeBlock;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
 - (BOOL)wasLastDonationAccepted;
-- (KMContactStoreBridge)initWithContactStore:(id)a3 historyLog:(id)a4;
-- (KMContactStoreBridge)initWithDirectory:(id)a3;
-- (id)_fetchContactsWithIdentifiers:(id)a3 error:(id *)a4;
+- (KMContactStoreBridge)initWithContactStore:(id)store historyLog:(id)log;
+- (KMContactStoreBridge)initWithDirectory:(id)directory;
+- (id)_fetchContactsWithIdentifiers:(id)identifiers error:(id *)error;
 - (void)resetDeltaState;
 @end
 
@@ -32,11 +32,11 @@
   return result;
 }
 
-- (BOOL)enumerateDeltaItemsWithError:(id *)a3 addOrUpdateBlock:(id)a4 removeBlock:(id)a5
+- (BOOL)enumerateDeltaItemsWithError:(id *)error addOrUpdateBlock:(id)block removeBlock:(id)removeBlock
 {
   v73 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  blockCopy = block;
+  removeBlockCopy = removeBlock;
   if (![(KMContactStoreBridge *)self _checkAuthorization])
   {
     v17 = 0;
@@ -81,14 +81,14 @@
   v51 = v9;
   v18 = objc_alloc_init(KMDeltaContactCollector);
   v58 = v11;
-  v19 = [v11 value];
-  v20 = [v19 nextObject];
+  value = [v11 value];
+  nextObject = [value nextObject];
 
   v57 = 0;
   do
   {
     v21 = 0;
-    v22 = v20;
+    v22 = nextObject;
     while (1)
     {
       v23 = objc_autoreleasePoolPush();
@@ -106,18 +106,18 @@
         goto LABEL_58;
       }
 
-      v24 = [(KMDeltaContactCollector *)v18 contactIdentifier];
-      v25 = [(KMDeltaContactCollector *)v18 deltaType];
-      if ((v25 - 1) >= 2)
+      contactIdentifier = [(KMDeltaContactCollector *)v18 contactIdentifier];
+      deltaType = [(KMDeltaContactCollector *)v18 deltaType];
+      if ((deltaType - 1) >= 2)
       {
-        if (v25 != 3)
+        if (deltaType != 3)
         {
           goto LABEL_26;
         }
 
-        if (v24)
+        if (contactIdentifier)
         {
-          if (v8[2](v8, v24))
+          if (removeBlockCopy[2](removeBlockCopy, contactIdentifier))
           {
             goto LABEL_26;
           }
@@ -140,7 +140,7 @@ LABEL_59:
 
       else
       {
-        if (!v24)
+        if (!contactIdentifier)
         {
           v26 = KMLogContextCore;
           if (!os_log_type_enabled(KMLogContextCore, OS_LOG_TYPE_ERROR))
@@ -162,16 +162,16 @@ LABEL_36:
           v21 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:250];
         }
 
-        [v21 addObject:v24];
+        [v21 addObject:contactIdentifier];
       }
 
 LABEL_26:
       [(KMDeltaContactCollector *)v18 reset];
-      v27 = [v58 value];
-      v20 = [v27 nextObject];
+      value2 = [v58 value];
+      nextObject = [value2 nextObject];
 
       v28 = [v21 count];
-      v29 = v28 && v20 == 0;
+      v29 = v28 && nextObject == 0;
       v30 = v29;
       if (v28 == 250 || v30)
       {
@@ -179,15 +179,15 @@ LABEL_26:
       }
 
       objc_autoreleasePoolPop(v23);
-      v22 = v20;
-      if (!v20)
+      v22 = nextObject;
+      if (!nextObject)
       {
         goto LABEL_63;
       }
     }
 
     v64 = v57;
-    v56 = self;
+    selfCopy = self;
     v31 = [(KMContactStoreBridge *)self _fetchContactsWithIdentifiers:v21 error:&v64];
     v32 = v64;
 
@@ -207,8 +207,8 @@ LABEL_26:
     v54 = [obj countByEnumeratingWithState:&v60 objects:v72 count:16];
     if (v54)
     {
-      v50 = v8;
-      v55 = v7;
+      v50 = removeBlockCopy;
+      v55 = blockCopy;
       v53 = *v61;
       v33 = v32;
       while (2)
@@ -222,8 +222,8 @@ LABEL_26:
 
           v35 = *(*(&v60 + 1) + 8 * i);
           v36 = objc_autoreleasePoolPush();
-          itemMapper = v56->_itemMapper;
-          mapperAdditionalFields = v56->_mapperAdditionalFields;
+          itemMapper = selfCopy->_itemMapper;
+          mapperAdditionalFields = selfCopy->_mapperAdditionalFields;
           v59 = v33;
           v39 = [(KVItemMapper *)itemMapper mapObject:v35 additionalFields:mapperAdditionalFields error:&v59];
           v57 = v59;
@@ -231,7 +231,7 @@ LABEL_26:
           if ([v39 count] != 1)
           {
             v43 = KMLogContextCore;
-            v8 = v50;
+            removeBlockCopy = v50;
             if (os_log_type_enabled(KMLogContextCore, OS_LOG_TYPE_ERROR))
             {
               *buf = 136315650;
@@ -245,12 +245,12 @@ LABEL_26:
 
             objc_autoreleasePoolPop(v36);
             v42 = 1;
-            v7 = v55;
+            blockCopy = v55;
             goto LABEL_52;
           }
 
-          v40 = [v39 firstObject];
-          v41 = v55[2](v55, v40);
+          firstObject = [v39 firstObject];
+          v41 = v55[2](v55, firstObject);
 
           objc_autoreleasePoolPop(v36);
           if (!v41)
@@ -258,9 +258,9 @@ LABEL_26:
 
             objc_autoreleasePoolPop(v23);
             v17 = 0;
-            v22 = v20;
-            v7 = v55;
-            v8 = v50;
+            v22 = nextObject;
+            blockCopy = v55;
+            removeBlockCopy = v50;
             v9 = v51;
             v11 = v58;
             goto LABEL_64;
@@ -280,8 +280,8 @@ LABEL_26:
       }
 
       v42 = 0;
-      v7 = v55;
-      v8 = v50;
+      blockCopy = v55;
+      removeBlockCopy = v50;
     }
 
     else
@@ -291,12 +291,12 @@ LABEL_26:
     }
 
 LABEL_52:
-    self = v56;
+    self = selfCopy;
 
     objc_autoreleasePoolPop(v23);
   }
 
-  while (v20 && (v42 & 1) == 0);
+  while (nextObject && (v42 & 1) == 0);
   v21 = 0;
   v45 = v57;
   if (v42)
@@ -305,19 +305,19 @@ LABEL_62:
     v57 = v45;
     KVSetError();
     v17 = 0;
-    v22 = v20;
+    v22 = nextObject;
     goto LABEL_59;
   }
 
 LABEL_63:
   v11 = v58;
   v9 = v51;
-  v46 = [v58 currentHistoryToken];
+  currentHistoryToken = [v58 currentHistoryToken];
   historyToken = self->_historyToken;
-  self->_historyToken = v46;
+  self->_historyToken = currentHistoryToken;
 
   v17 = 1;
-  v22 = v20;
+  v22 = nextObject;
 LABEL_64:
 
   v16 = v57;
@@ -328,15 +328,15 @@ LABEL_66:
   return v17;
 }
 
-- (id)_fetchContactsWithIdentifiers:(id)a3 error:(id *)a4
+- (id)_fetchContactsWithIdentifiers:(id)identifiers error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBDA58] predicateForContactsWithIdentifiers:v5];
+  identifiersCopy = identifiers;
+  v6 = [MEMORY[0x277CBDA58] predicateForContactsWithIdentifiers:identifiersCopy];
   contactStore = self->_contactStore;
-  v8 = [objc_opt_class() _contactFetchKeys];
+  _contactFetchKeys = [objc_opt_class() _contactFetchKeys];
   v18 = 0;
-  v9 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v6 keysToFetch:v8 error:&v18];
+  v9 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v6 keysToFetch:_contactFetchKeys error:&v18];
   v10 = v18;
 
   if (v9)
@@ -351,7 +351,7 @@ LABEL_66:
     {
       v15 = MEMORY[0x277CCABB0];
       v16 = v12;
-      v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+      v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(identifiersCopy, "count")}];
       *buf = 136315650;
       v20 = "[KMContactStoreBridge _fetchContactsWithIdentifiers:error:]";
       v21 = 2112;
@@ -378,21 +378,21 @@ LABEL_66:
 
 - (BOOL)wasLastDonationAccepted
 {
-  v3 = [(KMProviderHistoryLog *)self->_log getDonationStartTime];
-  v4 = [(KMProviderHistoryLog *)self->_log getDonationEndTime];
-  v5 = [v4 compare:v3] == 1;
+  getDonationStartTime = [(KMProviderHistoryLog *)self->_log getDonationStartTime];
+  getDonationEndTime = [(KMProviderHistoryLog *)self->_log getDonationEndTime];
+  v5 = [getDonationEndTime compare:getDonationStartTime] == 1;
 
   return v5;
 }
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   if ([(KMContactStoreBridge *)self _checkAuthorization])
   {
     v6 = objc_alloc(MEMORY[0x277CBDA70]);
-    v7 = [objc_opt_class() _contactFetchKeys];
-    v8 = [v6 initWithKeysToFetch:v7];
+    _contactFetchKeys = [objc_opt_class() _contactFetchKeys];
+    v8 = [v6 initWithKeysToFetch:_contactFetchKeys];
 
     v25 = 0;
     v26 = &v25;
@@ -413,7 +413,7 @@ LABEL_66:
     v14[3] = &unk_279805C80;
     v14[4] = self;
     v16 = &v19;
-    v15 = v5;
+    v15 = blockCopy;
     v10 = [(CNContactStore *)contactStore enumerateContactsWithFetchRequest:v8 error:&obj usingBlock:v14];
     objc_storeStrong(&v24, obj);
     if (v10 && *(v26 + 24) != 1)
@@ -485,11 +485,11 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (KMContactStoreBridge)initWithContactStore:(id)a3 historyLog:(id)a4
+- (KMContactStoreBridge)initWithContactStore:(id)store historyLog:(id)log
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  logCopy = log;
   v23.receiver = self;
   v23.super_class = KMContactStoreBridge;
   v9 = [(KMContactStoreBridge *)&v23 init];
@@ -499,7 +499,7 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v9->_log, a4);
+  objc_storeStrong(&v9->_log, log);
   if (!v10->_log)
   {
     v17 = KMLogContextCore;
@@ -517,7 +517,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  objc_storeStrong(&v10->_contactStore, a3);
+  objc_storeStrong(&v10->_contactStore, store);
   if (!v10->_contactStore)
   {
     v17 = KMLogContextCore;
@@ -553,9 +553,9 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v14 = [(KMProviderHistoryLog *)v10->_log getHistoryToken];
+  getHistoryToken = [(KMProviderHistoryLog *)v10->_log getHistoryToken];
   historyToken = v10->_historyToken;
-  v10->_historyToken = v14;
+  v10->_historyToken = getHistoryToken;
 
   v10->_version = [(KMProviderHistoryLog *)v10->_log getVersion]+ 1;
 LABEL_6:
@@ -566,11 +566,11 @@ LABEL_16:
   return v16;
 }
 
-- (KMContactStoreBridge)initWithDirectory:(id)a3
+- (KMContactStoreBridge)initWithDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v5 = [KMProviderHistoryLog alloc];
-  v6 = [(KMProviderHistoryLog *)v5 initWithDirectory:v4 originAppId:*MEMORY[0x277D22CD8]];
+  v6 = [(KMProviderHistoryLog *)v5 initWithDirectory:directoryCopy originAppId:*MEMORY[0x277D22CD8]];
 
   v7 = objc_alloc_init(MEMORY[0x277CBDAB8]);
   v8 = [(KMContactStoreBridge *)self initWithContactStore:v7 historyLog:v6];

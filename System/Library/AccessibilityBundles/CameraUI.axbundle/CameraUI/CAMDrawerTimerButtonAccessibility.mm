@@ -1,5 +1,5 @@
 @interface CAMDrawerTimerButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -8,16 +8,16 @@
 
 @implementation CAMDrawerTimerButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMDrawerTimerButton" hasInstanceMethod:@"timerDuration" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerTimerButton" isKindOfClass:@"CAMControlDrawerButton"];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerTimerButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMDrawerTimerButton" hasInstanceMethod:@"timerDuration" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerTimerButton" isKindOfClass:@"CAMControlDrawerButton"];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerTimerButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
 }
 
 - (BOOL)accessibilityActivate
@@ -46,7 +46,7 @@
       v4 = 0;
     }
 
-    v12 = self;
+    selfCopy = self;
     v13 = v4;
     AXPerformSafeBlock();
     return 1;
@@ -70,9 +70,9 @@ void __58__CAMDrawerTimerButtonAccessibility_accessibilityActivate__block_invoke
 - (id)accessibilityValue
 {
   v2 = [(CAMDrawerTimerButtonAccessibility *)self safeValueForKey:@"timerDuration"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return accessibilityStringForTimeDuration(v3, v4);
+  return accessibilityStringForTimeDuration(integerValue, v4);
 }
 
 - (void)layoutSubviews

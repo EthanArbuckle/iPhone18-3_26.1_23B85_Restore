@@ -1,47 +1,47 @@
 @interface AXLiveRegionNode
-+ (id)createNodeFromObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)createNodeFromObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (id)object;
 @end
 
 @implementation AXLiveRegionNode
 
-+ (id)createNodeFromObject:(id)a3
++ (id)createNodeFromObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_alloc_init(AXLiveRegionNode);
-  v5 = [v3 accessibilityLabel];
-  [(AXLiveRegionNode *)v4 setLabel:v5];
+  accessibilityLabel = [objectCopy accessibilityLabel];
+  [(AXLiveRegionNode *)v4 setLabel:accessibilityLabel];
 
-  v6 = [v3 accessibilityValue];
-  [(AXLiveRegionNode *)v4 setValue:v6];
+  accessibilityValue = [objectCopy accessibilityValue];
+  [(AXLiveRegionNode *)v4 setValue:accessibilityValue];
 
-  -[AXLiveRegionNode setTraits:](v4, "setTraits:", [v3 accessibilityTraits]);
-  [(AXLiveRegionNode *)v4 setObject:v3];
+  -[AXLiveRegionNode setTraits:](v4, "setTraits:", [objectCopy accessibilityTraits]);
+  [(AXLiveRegionNode *)v4 setObject:objectCopy];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AXLiveRegionNode *)self object];
-    v6 = [v4 object];
-    if (v5 == v6)
+    object = [(AXLiveRegionNode *)self object];
+    object2 = [equalCopy object];
+    if (object == object2)
     {
-      v8 = [(AXLiveRegionNode *)self label];
-      v9 = [v4 label];
-      if ([v8 isEqualToString:v9])
+      label = [(AXLiveRegionNode *)self label];
+      label2 = [equalCopy label];
+      if ([label isEqualToString:label2])
       {
-        v10 = [(AXLiveRegionNode *)self value];
-        v11 = [v4 value];
-        if ([v10 isEqualToString:v11])
+        value = [(AXLiveRegionNode *)self value];
+        value2 = [equalCopy value];
+        if ([value isEqualToString:value2])
         {
-          v12 = [(AXLiveRegionNode *)self traits];
-          v7 = v12 == [v4 traits];
+          traits = [(AXLiveRegionNode *)self traits];
+          v7 = traits == [equalCopy traits];
         }
 
         else

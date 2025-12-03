@@ -1,17 +1,17 @@
 @interface ACHBuiltinTemplateSource
-- (id)localizationBundleURLForTemplate:(id)a3;
-- (id)propertyListBundleURLForTemplate:(id)a3;
-- (id)resourceBundleURLForTemplate:(id)a3;
-- (void)templatesForDate:(id)a3 completion:(id)a4;
+- (id)localizationBundleURLForTemplate:(id)template;
+- (id)propertyListBundleURLForTemplate:(id)template;
+- (id)resourceBundleURLForTemplate:(id)template;
+- (void)templatesForDate:(id)date completion:(id)completion;
 @end
 
 @implementation ACHBuiltinTemplateSource
 
-- (void)templatesForDate:(id)a3 completion:(id)a4
+- (void)templatesForDate:(id)date completion:(id)completion
 {
   v108[16] = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v44 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   v43 = objc_alloc(MEMORY[0x277CBEB58]);
   v94 = NewMoveGoalAchievedTemplate();
   v96 = DailyMoveRecordTemplate();
@@ -177,19 +177,19 @@
   v38 = BestWorkoutElevationGainedTemplateForWorkoutActivityType();
   [v14 addObject:v38];
 
-  if (v44)
+  if (completionCopy)
   {
     v39 = [v14 copy];
-    (*(v44 + 2))(v44, v39, 0, 0);
+    (*(completionCopy + 2))(completionCopy, v39, 0, 0);
   }
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (id)localizationBundleURLForTemplate:(id)a3
+- (id)localizationBundleURLForTemplate:(id)template
 {
-  v3 = [a3 uniqueName];
-  v4 = [*MEMORY[0x277CE8C50] stringByAppendingPathComponent:v3];
+  uniqueName = [template uniqueName];
+  v4 = [*MEMORY[0x277CE8C50] stringByAppendingPathComponent:uniqueName];
   v5 = [v4 stringByAppendingPathComponent:@"localization"];
 
   v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
@@ -197,10 +197,10 @@
   return v6;
 }
 
-- (id)resourceBundleURLForTemplate:(id)a3
+- (id)resourceBundleURLForTemplate:(id)template
 {
-  v3 = [a3 uniqueName];
-  v4 = [*MEMORY[0x277CE8C50] stringByAppendingPathComponent:v3];
+  uniqueName = [template uniqueName];
+  v4 = [*MEMORY[0x277CE8C50] stringByAppendingPathComponent:uniqueName];
   v5 = [v4 stringByAppendingPathComponent:@"badgemodel"];
 
   v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
@@ -208,10 +208,10 @@
   return v6;
 }
 
-- (id)propertyListBundleURLForTemplate:(id)a3
+- (id)propertyListBundleURLForTemplate:(id)template
 {
-  v3 = [a3 uniqueName];
-  v4 = [*MEMORY[0x277CE8C50] stringByAppendingPathComponent:v3];
+  uniqueName = [template uniqueName];
+  v4 = [*MEMORY[0x277CE8C50] stringByAppendingPathComponent:uniqueName];
   v5 = [v4 stringByAppendingPathComponent:@"badgeproperties"];
 
   v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];

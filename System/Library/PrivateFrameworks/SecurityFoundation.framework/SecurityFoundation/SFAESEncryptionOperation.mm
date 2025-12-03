@@ -1,22 +1,22 @@
 @interface SFAESEncryptionOperation
-- (SFAESEncryptionOperation)initWithCoder:(id)a3;
-- (SFAESEncryptionOperation)initWithKeySpecifier:(id)a3 mode:(int64_t)a4;
+- (SFAESEncryptionOperation)initWithCoder:(id)coder;
+- (SFAESEncryptionOperation)initWithKeySpecifier:(id)specifier mode:(int64_t)mode;
 @end
 
 @implementation SFAESEncryptionOperation
 
-- (SFAESEncryptionOperation)initWithKeySpecifier:(id)a3 mode:(int64_t)a4
+- (SFAESEncryptionOperation)initWithKeySpecifier:(id)specifier mode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = SFAESEncryptionOperation;
-  return [(SFSymmetricEncryptionOperation *)&v5 initWithKeySpecifier:a3 mode:a4];
+  return [(SFSymmetricEncryptionOperation *)&v5 initWithKeySpecifier:specifier mode:mode];
 }
 
-- (SFAESEncryptionOperation)initWithCoder:(id)a3
+- (SFAESEncryptionOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFAESEncryptionOperation;
-  return [(SFSymmetricEncryptionOperation *)&v4 initWithCoder:a3];
+  return [(SFSymmetricEncryptionOperation *)&v4 initWithCoder:coder];
 }
 
 @end
